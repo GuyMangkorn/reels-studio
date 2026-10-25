@@ -135,7 +135,8 @@ Add new work in these places. Create the folder when the first file needs it:
 | `src/rig/poses/` | One pose module per file once `presets.ts` is crowded. Re-export from `src/rig/presets.ts` so scenes still import `{ presets }`. |
 | `src/rig/costumes.ts` | Named channel costumes (`kid-mint`, `kid-peach`, …) as `Costume` objects. Add this file with the second outfit. |
 | `src/assets/backgrounds/` | One background component per location (`park-day`, `kitchen`, …). |
-| `src/assets/props/` | One prop component per object (`banknote`, `bowl`, …). |
+| `src/assets/props/` | One prop component per object (`banknote`, `bowl`, `sofa`, …). The sofa exposes a seat height. See [Known visual issues](#known-visual-issues). |
+| `src/assets/overlays/` | Planned shared screen graphics: `RuleCard.tsx` (`rule-card`), `PhoneChat.tsx` (`phone-chat`). Not in the repo yet. See [Planned reusable overlay components](#planned-reusable-overlay-components). |
 | `src/scenes/` | Thin scene components, or the renderer that reads scene JSON. No pasted art. |
 | `scripts/` | JSON timelines, one file per short or chapter. Helpers that call TTS stay here and read secrets from the environment. |
 
@@ -174,6 +175,96 @@ Add `src/rig/Dog.tsx` or `src/rig/Cat.tsx` only when the body cannot share the h
 Add `src/assets/backgrounds/ParkDay.tsx` or `src/assets/props/Banknote.tsx`. Export one component, named for the id the JSON will use (`park-day`, `banknote`). Scenes import that module. Copying paths into `Demo.tsx` or a chapter file creates a second source of truth. Do not do that.
 
 The pastel sky, sun, clouds, and ground currently live inline in `src/Demo.tsx`. The next background should extract that staging into `src/assets/backgrounds/` instead of growing another copy inside a scene.
+
+## Planned reusable overlay components
+
+These two overlays are not in the repo yet. Build each one once, under `src/assets/overlays/`, and select it from scene JSON by id. A chapter does not redraw the card or the phone. Both use Noto Sans Thai. Both are the same component in `Short` and `Long`.
+
+### RuleCard
+
+Style reference: a cream rules placard in a dark interior. File `src/assets/overlays/RuleCard.tsx`, JSON id `rule-card`.
+
+- Cream fill, large corner radius, a thin dark border, and a soft shadow.
+- A small heading line, lighter and smaller than the rules. Example: `คนในหุบนี้สอนว่า`.
+- A hairline under the heading and between items.
+- Each item is a black circle badge with a white number (1-based, in array order) and large bold Thai text.
+- The card is centered, with side margins and a width cap, so a line stays readable at 1080×1920 and at 1920×1080.
+
+The card and heading are in at `startFrame`. Item `i` pops in at `startFrame + i * staggerFrames` with Remotion `spring()` and a slight scale (about 0.92 settling at 1). An item that has not arrived yet is left out. Earlier items stay.
+
+| Prop | Type | Role |
+| --- | --- | --- |
+| `heading` | `string` | The small line above the rules |
+| `items` | `string[]` | Rule lines, in order |
+| `startFrame` | `number` | Frame the card appears |
+| `staggerFrames` | `number` | Frames between item pop-ins |
+
+```json
+{
+  "overlay": "rule-card",
+  "heading": "คนในหุบนี้สอนว่า",
+  "items": [
+    "อย่าขานรับเสียงเรียก",
+    "อย่าเปิดประตู",
+    "รอจนแดดส่องถึงพื้น"
+  ],
+  "startFrame": 90,
+  "staggerFrames": 18
+}
+```
+
+### PhoneChat
+
+Style reference: a handset in a dark room, one group chat on the screen, episode subtitle in the bottom band under the phone. File `src/assets/overlays/PhoneChat.tsx`, JSON id `phone-chat`.
+
+Draw a generic handset: rounded frame, a plain pill notch, time on the left of the status bar, signal bars and a battery outline on the right. Leave out the Apple logo and any trademark phone UI.
+
+- The screen is a light panel.
+- The header is a circular badge plus the chat name in bold. Example name: `รอหมอกจาง`. The reference badge reads `5`. Optional `badge` sets that mark; when it is omitted, show the number of distinct senders.
+- Each message is a small sender label (example: `คุณเทียน`) and a rounded light bubble. Text wraps. Bubbles stack from the top and stay once shown. Overflow scrolls inside the screen.
+- At `atSec` the next slot shows a typing-dots indicator, then the bubble replaces the dots after a short hold (about 0.4s). `atSec` is seconds from the start of the composition (`frame / fps`).
+
+| Prop | Type | Role |
+| --- | --- | --- |
+| `time` | `string` | Status-bar clock, e.g. `05:40` |
+| `chatName` | `string` | Group title in the header |
+| `messages` | `{ sender: string, text: string, atSec: number }[]` | Lines, in order |
+| `scale` | `number` | Uniform scale of the whole phone |
+| `x`, `y` | `number` | Center of the phone, in composition pixels |
+| `badge` | `string` (optional) | Mark inside the header circle |
+
+`x`, `y`, and `scale` are how one component fits both frames. A Short scene can pass a large centered phone. A Long scene passes a smaller one. Keep the bottom subtitle band clear. PhoneChat does not draw the episode subtitle.
+
+```json
+{
+  "overlay": "phone-chat",
+  "time": "05:40",
+  "chatName": "รอหมอกจาง",
+  "badge": "5",
+  "x": 540,
+  "y": 820,
+  "scale": 1,
+  "messages": [
+    {
+      "sender": "คุณเทียน",
+      "text": "6:15 ลุงเปิดไฟหน้ารถ เปิดประตู รอ",
+      "atSec": 2.4
+    }
+  ]
+}
+```
+
+The `x` and `y` above are for a 1080×1920 frame. The Long composition supplies its own.
+
+## Known visual issues
+
+These show up in channel pictures. Fix them in the shared rig or prop, once that asset is in the repo. A scene does not get its own private workaround.
+
+(a) **Cat walking right to left looks like it walks backwards.** Facing comes from the move: `to.x < from.x` faces left, `to.x > from.x` faces right. The walk cycle has to travel in that same direction. Mirroring the body and leaving the cycle unflipped is the backwards walk. One rule on the cat rig, used by every scene.
+
+(b) **Sitting on the sofa leaves the hips floating.** The sofa prop exposes a seat height (the cushion surface, in scene pixels). The sit pose puts the hip origin on that height. If the sofa moves or scales, the sitter stays on the cushion. Scenes do not hand-nudge `bodyY` to fake contact.
+
+(c) **The footer label `LITTLE WANDER` is hard-coded English.** The channel name is a scene field, or the footer is hidden. It must not cover subtitles. Subtitles own the bottom band. A channel name, when it is shown, sits clear of that band.
 
 ## Workflow
 
