@@ -137,6 +137,7 @@ Add new work in these places. Create the folder when the first file needs it:
 | `src/assets/backgrounds/` | One background component per location (`park-day`, `kitchen`, …). |
 | `src/assets/props/` | One prop component per object (`banknote`, `bowl`, `sofa`, …). The sofa exposes a seat height. See [Known visual issues](#known-visual-issues). |
 | `src/assets/overlays/` | Planned shared screen graphics: `RuleCard.tsx` (`rule-card`), `PhoneChat.tsx` (`phone-chat`). Not in the repo yet. See [Planned reusable overlay components](#planned-reusable-overlay-components). |
+| `src/assets/cameras/` | Planned POV presets (`povWindow`, `povDoorCrack`, `povBed`, `povHallway`, `povFlashlight`, `povKeyhole`). Not in the repo yet. See [Shot variety and POV (horror-film feel)](#shot-variety-and-pov-horror-film-feel). |
 | `src/scenes/` | Thin scene components, or the renderer that reads scene JSON. No pasted art. |
 | `scripts/` | JSON timelines, one file per short or chapter. Helpers that call TTS stay here and read secrets from the environment. |
 
@@ -255,6 +256,52 @@ Draw a generic handset: rounded frame, a plain pill notch, time on the left of t
 ```
 
 The `x` and `y` above are for a 1080×1920 frame. The Long composition supplies its own.
+
+## Shot variety and POV (horror-film feel)
+
+Reusing a character, a room, or a prop is the point of the library. The same wide, evenly lit framing in every shot is what makes a chapter dull. Get variety from the camera, the light, and the crop. A new episode does not need a new skeleton to feel new.
+
+The picture stays flat pastel vector. A scare is a darker grade of that same palette, plus framing and timing. It is not a switch to realistic rendering.
+
+Use a first-person POV now and then, for suspense, in the manner of a horror film. About 1–2 POV shots per long-form chapter (a chapter is 45–60 seconds). Never every scene. A Short cut from that chapter may keep the POV that is already in it. Do not add a POV to every line of the Short.
+
+Build each POV once, as a camera preset under `src/assets/cameras/`. Scene JSON selects it. A chapter does not draw its own window, door crack, keyhole, or flashlight cone.
+
+| Preset | Shot |
+| --- | --- |
+| `povWindow` | Looking out a window into darkness, where something may appear. |
+| `povDoorCrack` | Peeking through a half-open door. |
+| `povBed` | From the bed toward the foot of the bed (`bedroomPOV`). |
+| `povHallway` | Down a dark staircase or a dark hallway. |
+| `povKeyhole` | Through a keyhole. Same idea as the door crack, tighter frame. |
+| `povFlashlight` | A flashlight cone sweeping a basement. |
+
+Suspense grammar lives in the preset:
+
+- Hold on an empty frame before anything enters.
+- Leave dead space at the edges, so a shape has somewhere to arrive.
+- A slow push-in.
+- A delayed reveal. Whatever is in the window or the doorway appears a beat late, or the viewer catches it only on a second look.
+- A false scare, the cat or the dog, before the real one.
+- A sound cue before the visual.
+- A vignette and darkened edges.
+
+Subtitles stay as specified under [Thai subtitles and narration](#thai-subtitles-and-narration): large, bottom, white with a dark stroke, on screen from frame 0. The vignette sits on the picture. It does not move, restyle, or cover the subtitle line. The same preset frames itself in `Short` and in `Long`.
+
+```json
+{
+  "camera": {
+    "preset": "povWindow",
+    "reveal": { "actor": "cat", "atSec": 3.6 }
+  }
+}
+```
+
+`preset` is `povWindow`, `povDoorCrack`, `povBed`, `povHallway`, `povFlashlight`, or `povKeyhole`.
+
+`reveal.actor` is a library id: a character, the cat, the dog, or a simple silhouette. `reveal.atSec` is seconds from the start of the shot when that actor enters. Omit `reveal` to hold on the empty frame. A false scare is an early `reveal` of `cat` or `dog`. The beat that matters comes later, or on a second use of the same preset.
+
+Keep it channel-safe. Creepy, not gory: no blood, wounds, or injury. The twist can be funny. The shape in the window can be the cat. A subtitle on the empty hold can be `มีอะไรรึเปล่า... นอกหน้าต่าง`.
 
 ## Known visual issues
 
