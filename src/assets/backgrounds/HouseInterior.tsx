@@ -6,6 +6,7 @@ export const interiorVariants = [
   'staircase',
   'kitchen',
   'bedroomPOV',
+  'window',
 ] as const;
 export type InteriorVariant = (typeof interiorVariants)[number];
 export type BackgroundOptions = {

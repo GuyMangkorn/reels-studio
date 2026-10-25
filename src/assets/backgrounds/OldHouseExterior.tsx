@@ -6,12 +6,13 @@ export function exteriorPlacement<T extends {x: number; y: number; scale: number
   actor: Actor,
   w: number,
   h: number,
+  scaleFactor = 0.28,
 ): T {
   return {
     ...base,
-    x: w * (0.4 + 0.2 * (base.x / w)),
+    x: w * (0.3 + 0.4 * (base.x / w)),
     y: h * (actor.y ?? 0.84),
-    scale: exteriorScale(w, h) * 0.28 * (actor.scale ?? 1),
+    scale: exteriorScale(w, h) * scaleFactor * (actor.scale ?? 1),
   };
 }
 type HouseColors = {dark: boolean; lit: boolean};

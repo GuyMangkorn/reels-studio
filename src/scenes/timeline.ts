@@ -12,6 +12,7 @@ import {
   type PoseTransition,
 } from '../rig/poses';
 import {HUMAN_HIP_FROM_ANCHOR} from '../rig/geometry';
+import {cameraPresetNames} from '../camera/Camera';
 import type {Actor, Timeline} from './types';
 const bgNames = Object.keys(backgroundRegistry);
 const propNames = Object.keys(propRegistry);
@@ -105,12 +106,20 @@ export function validateTimeline(value: unknown): asserts value is Timeline {
         fail(`${ap}.opacity`, 'expected 0..1');
       if (
         a.depth !== undefined &&
-        (a.depth !== 'bedEnd' ||
-          s.bg !== 'houseInterior' ||
-          !record(s.background) ||
-          s.background.variant !== 'bedroomPOV')
+        !(
+          a.depth === 'bedEnd' &&
+          s.bg === 'houseInterior' &&
+          record(s.background) &&
+          s.background.variant === 'bedroomPOV'
+        ) &&
+        !(
+          a.depth === 'window' &&
+          s.bg === 'houseInterior' &&
+          record(s.background) &&
+          s.background.variant === 'window'
+        )
       )
-        fail(`${ap}.depth`, 'bedEnd depth requires houseInterior bedroomPOV');
+        fail(`${ap}.depth`, 'depth must match bedroomPOV bedEnd or window');
       if (a.poses !== undefined) {
         if (!Array.isArray(a.poses)) fail(`${ap}.poses`, 'expected array');
         let last = -1;
@@ -176,6 +185,11 @@ export function validateTimeline(value: unknown): asserts value is Timeline {
     if (s.camera !== undefined) {
       if (!record(s.camera)) fail(`${path}.camera`, 'expected camera object');
       const c = s.camera as Record<string, unknown>;
+      if (
+        c.preset !== undefined &&
+        !cameraPresetNames.includes(String(c.preset) as (typeof cameraPresetNames)[number])
+      )
+        fail(`${path}.camera.preset`, 'unknown camera preset');
       const pair = (v: unknown): v is [number, number] =>
         Array.isArray(v) && v.length === 2 && v.every(finite);
       if (c.zoom !== undefined && (!pair(c.zoom) || c.zoom.some((v) => v < 1 || v > 4)))

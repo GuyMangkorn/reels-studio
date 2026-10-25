@@ -26,7 +26,7 @@ export type Actor = {
   ghostVariant?: GhostVariant;
   opacity?: number;
   showPivots?: boolean;
-  depth?: 'bedEnd';
+  depth?: 'bedEnd' | 'window';
   hairColor?: string;
   hairStyle?: CharacterProps['hairStyle'];
   expression?: CharacterProps['expression'];

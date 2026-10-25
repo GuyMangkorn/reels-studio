@@ -16,11 +16,16 @@ import {
   useVideoConfig,
   interpolate,
 } from 'remotion';
+import {renderToStaticMarkup} from 'react-dom/server';
 import {sofaSeat} from '../assets/props/Sofa';
 import {poseWeightAt} from '../rig/poses';
 import {Background} from '../assets/Background';
 import {SceneProp} from '../assets/Props';
-import {Character, Cat, Dog, type PoseName} from '../rig';
+import {Character, CharacterArt, Cat, CatArt, Dog, DogArt, type PoseName} from '../rig';
+import {ThreeStage} from '../three/ThreeStage';
+import type {CutoutPlaneData} from '../three/CutoutPlane';
+import {threeBackgroundComponents} from '../three/backgrounds/components';
+import {resolveThreeBackground} from '../three/backgrounds/registry';
 import {Subtitles} from './Subtitles';
 import {
   actorIdentity,
@@ -72,6 +77,7 @@ const SceneView = ({
   const portrait = height > width;
   const duration = sceneFrames(scene.durationSec, fps);
   const pov = scene.bg === 'houseInterior' && scene.background?.variant === 'bedroomPOV';
+  const threeBackground = resolveThreeBackground(scene);
   const night = scene.time === 'night' || scene.time === 'moonlight' || pov;
   const final = index === total - 1;
   const state = endingState(frame, duration, fps, ending);
@@ -93,6 +99,7 @@ const SceneView = ({
       night={night}
     />
   ));
+  const cutouts: CutoutPlaneData[] = [];
   const actors = scene.actors.map((actor, i) => {
     const identity = actorIdentity(actor, i);
     const prev = previous?.actors.find((a, j) => actorIdentity(a, j) === identity);
@@ -117,7 +124,13 @@ const SceneView = ({
       pov && actor.depth === 'bedEnd'
         ? bedEndPlacement(basePosition, actor, height, povState)
         : scene.bg === 'oldHouseExterior'
-          ? exteriorPlacement(basePosition, actor, width, height)
+          ? exteriorPlacement(
+              basePosition,
+              actor,
+              width,
+              height,
+              threeBackground === 'exterior' ? 0.4 : undefined,
+            )
           : scene.bg === 'houseInterior'
             ? interiorPlacement(basePosition, actor, width, height)
             : basePosition;
@@ -125,32 +138,73 @@ const SceneView = ({
       const lying = poseWeightAt(actorPoseTrack(actor, fps, previousPose), 'lie', poseFrame, fps);
       position.y = lieFloorAnchor(position.y, position.scale, lying);
     }
+    const artworkWidth = actor.type === 'narrator' ? 320 : actor.type === 'ghost' ? 380 : 300;
+    const artworkHeight = actor.type === 'narrator' ? 430 : actor.type === 'ghost' ? 280 : 210;
+    const footOffset = actor.type === 'narrator' ? 200 : actor.type === 'ghost' ? 120 : 95;
+    const rigPosition = threeBackground
+      ? {
+          ...position,
+          x: (artworkWidth / 2) * position.scale,
+          y:
+            (actor.type === 'narrator' ? 415 : actor.type === 'ghost' ? 260 : 200) * position.scale,
+        }
+      : position;
     const pose = poseAt(actor, poseFrame, fps, previousPose);
     const figure =
       actor.type === 'ghost' ? (
         <Ghost
-          {...position}
+          {...rigPosition}
           variant={actor.ghostVariant}
           opacity={actor.opacity}
           frame={poseFrame}
           fps={fps}
         />
       ) : actor.type === 'narrator' ? (
-        <Character
-          {...(actor.character ? costumes[actor.character] : {})}
-          {...actor}
-          {...position}
-          pose={pose}
-          frame={poseFrame}
-          mouth={mouth}
-        />
+        threeBackground ? (
+          <CharacterArt
+            {...(actor.character ? costumes[actor.character] : {})}
+            {...actor}
+            {...rigPosition}
+            pose={pose}
+            frame={poseFrame}
+            fps={fps}
+            mouth={mouth}
+          />
+        ) : (
+          <Character
+            {...(actor.character ? costumes[actor.character] : {})}
+            {...actor}
+            {...position}
+            pose={pose}
+            frame={poseFrame}
+            mouth={mouth}
+          />
+        )
       ) : actor.type === 'cat' ? (
-        <Cat
-          key={identity}
-          {...position}
+        threeBackground ? (
+          <CatArt
+            {...rigPosition}
+            color={actor.color}
+            pose={pose.to as 'idle' | 'walk' | 'sit' | 'wave'}
+            frame={poseFrame}
+            fps={fps}
+          />
+        ) : (
+          <Cat
+            key={identity}
+            {...position}
+            color={actor.color}
+            pose={pose.to as 'idle' | 'walk' | 'sit' | 'wave'}
+            frame={poseFrame}
+          />
+        )
+      ) : threeBackground ? (
+        <DogArt
+          {...rigPosition}
           color={actor.color}
           pose={pose.to as 'idle' | 'walk' | 'sit' | 'wave'}
           frame={poseFrame}
+          fps={fps}
         />
       ) : (
         <Dog
@@ -160,23 +214,54 @@ const SceneView = ({
           frame={poseFrame}
         />
       );
-    return (
+    const silhouetteFilter =
+      scene.camera?.lighting === 'silhouette' && actor.type === 'ghost'
+        ? 'brightness(0.68)'
+        : undefined;
+    const actorContent = (
       <div
-        key={identity}
         style={{
           position: 'absolute',
           inset: 0,
-          filter:
-            scene.camera?.lighting === 'silhouette'
-              ? 'brightness(0.18)'
-              : pov && actor.depth === 'bedEnd'
-                ? 'brightness(0.5) blur(1.1px)'
-                : undefined,
+          filter: silhouetteFilter,
         }}
       >
         {figure}
       </div>
     );
+    if (threeBackground) {
+      const svg = renderToStaticMarkup(figure);
+      const z =
+        actor.depth === 'window'
+          ? -9.2
+          : actor.depth === 'bedEnd'
+            ? 3.4
+            : threeBackground === 'exterior'
+              ? 2.4
+              : 1.4;
+      cutouts.push({
+        id: identity,
+        width,
+        height,
+        x: position.x,
+        y: position.y,
+        z,
+        scale: position.scale,
+        artworkWidth,
+        artworkHeight,
+        footOffset,
+        svg: svg.replace(/style="([^"]*)"/, (_match, style: string) => {
+          const opacity = /(?:^|;)\s*opacity:\s*([^;]+)/.exec(style)?.[1];
+          const textureStyles = [
+            opacity ? `opacity:${opacity}` : undefined,
+            silhouetteFilter ? 'filter:brightness(0.68)' : undefined,
+          ].filter(Boolean);
+          return textureStyles.length ? `style="${textureStyles.join(';')}"` : '';
+        }),
+      });
+      return null;
+    }
+    return <div key={identity}>{actorContent}</div>;
   });
   return (
     <AbsoluteFill
@@ -187,44 +272,84 @@ const SceneView = ({
         fontFamily: 'Noto Sans Thai, sans-serif',
       }}
     >
-      <Camera
-        camera={scene.camera}
-        frame={poseFrame}
-        duration={duration}
-        fps={fps}
-        impact={pov ? scene.impact : undefined}
-        width={width}
-        height={height}
-      >
-        {pov ? (
-          <BedroomPOV
-            width={width}
-            height={height}
-            frame={poseFrame}
-            fps={fps}
-            duration={duration}
-            options={scene.background}
-            impact={scene.impact}
-          >
-            {props}
-            {actors}
-          </BedroomPOV>
-        ) : (
-          <>
-            <Background
-              kind={scene.bg}
-              time={scene.time}
+      {threeBackground ? (
+        <ThreeStage
+          width={width}
+          height={height}
+          frame={poseFrame}
+          fps={fps}
+          duration={duration}
+          camera={scene.camera}
+          impact={scene.impact}
+          lamp={
+            threeBackground === 'drawingRoom'
+              ? {x: 0.82, y: 0.55}
+              : threeBackground === 'window'
+                ? {x: 0.2, y: 0.63}
+                : undefined
+          }
+          cutouts={cutouts}
+        >
+          {(() => {
+            const Background3D = threeBackgroundComponents[threeBackground];
+            return (
+              <>
+                <Background3D
+                  width={width}
+                  height={height}
+                  frame={poseFrame}
+                  fps={fps}
+                  duration={duration}
+                  time={scene.time ?? 'day'}
+                  background={scene.background}
+                  camera={scene.camera}
+                  impact={scene.impact}
+                />
+                {actors}
+              </>
+            );
+          })()}
+        </ThreeStage>
+      ) : (
+        <Camera
+          camera={scene.camera}
+          frame={poseFrame}
+          duration={duration}
+          fps={fps}
+          impact={pov ? scene.impact : undefined}
+          width={width}
+          height={height}
+        >
+          {pov ? (
+            <BedroomPOV
+              width={width}
+              height={height}
+              frame={poseFrame}
+              fps={fps}
+              duration={duration}
               options={scene.background}
-              view={scene.camera?.view}
-              parallax={scene.camera?.parallax}
-              panX={cameraAt(scene.camera, poseFrame, duration).x}
-            />
-            {props}
+              impact={scene.impact}
+            >
+              {props}
+              {actors}
+            </BedroomPOV>
+          ) : (
+            <>
+              <Background
+                kind={scene.bg}
+                time={scene.time}
+                options={scene.background}
+                view={scene.camera?.view}
+                parallax={scene.camera?.parallax}
+                panX={cameraAt(scene.camera, poseFrame, duration).x}
+              />
+              {props}
 
-            {actors}
-          </>
-        )}
-      </Camera>
+              {actors}
+            </>
+          )}
+        </Camera>
+      )}
       {(scene.eyebrow || scene.title) && (
         <div
           style={{

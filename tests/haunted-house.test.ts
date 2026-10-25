@@ -8,7 +8,7 @@ import showcase from '../scripts/haunted-house-p1.json';
 
 test('P1 showcase selects every set, costume, ghost and required pose through JSON', () => {
   validateTimeline(showcase);
-  assert.equal(timelineFrames(showcase, 30), 1050);
+  assert.equal(timelineFrames(showcase, 30), 1140);
   assert.deepEqual(
     new Set(
       showcase
@@ -27,7 +27,11 @@ test('P1 showcase selects every set, costume, ghost and required pose through JS
   );
   assert.deepEqual(
     new Set(showcase.filter((s) => s.bg === 'houseInterior').map((s) => s.background?.variant)),
-    new Set(['drawing', 'dining', 'staircase', 'bedroomPOV', 'kitchen']),
+    new Set(['drawing', 'dining', 'staircase', 'window', 'bedroomPOV', 'kitchen']),
+  );
+  assert.deepEqual(
+    new Set(showcase.map((scene) => scene.camera?.preset).filter(Boolean)),
+    new Set(['dolly', 'truck', 'povCreep', 'peek', 'watcher']),
   );
 });
 test('every bedroom beat is POV-only and places ghosts at the bed end', () => {

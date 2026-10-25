@@ -1,6 +1,6 @@
 # Haunted house P1 asset library
 
-Scope: Issue #6 P1 assets, a silent 35-second review timeline, and JSON camera controls. This is an asset showcase, not the narrated historical episode. P2 (street, garden, supporting cast, blood-cell diagram) is tracked in #7 and P3 (overlays) in #8 for separate PRs.
+Scope: Issue #6 P1 assets, a silent 38-second review timeline, and JSON camera controls. This is an asset showcase, not the narrated historical episode. P2 (street, garden, supporting cast, blood-cell diagram) is tracked in #7 and P3 (overlays) in #8 for separate PRs.
 
 All artwork is original SVG written in this repository and uses the channel's pastel palette. No imported art, audio or fonts. Prettier is a development-only formatting dependency.
 

@@ -3,9 +3,7 @@
     "durationSec": 3,
     "bg": "oldHouseExterior",
     "time": "day",
-    "background": {
-      "windowLights": false
-    },
+    "background": {"windowLights": false},
     "actors": [
       {
         "type": "narrator",
@@ -15,27 +13,16 @@
         "x": 0.35,
         "scale": 0.8
       },
-      {
-        "type": "narrator",
-        "character": "mrH",
-        "id": "mr",
-        "pose": "stand",
-        "x": 0.66,
-        "scale": 0.8
-      }
+      {"type": "narrator", "character": "mrH", "id": "mr", "pose": "stand", "x": 0.66, "scale": 0.8}
     ],
     "subtitle": "บ้านหลังนี้ซ่อนอะไรไว้?",
-    "camera": {
-      "zoom": [1, 1.1]
-    }
+    "camera": {"preset": "truck", "zoom": [1, 1.1]}
   },
   {
     "durationSec": 3,
     "bg": "oldHouseExterior",
     "time": "dusk",
-    "background": {
-      "windowLights": true
-    },
+    "background": {"windowLights": true},
     "actors": [
       {
         "type": "narrator",
@@ -48,46 +35,24 @@
       }
     ],
     "subtitle": "ยามเย็น แสงไฟส่องจากหน้าต่าง",
-    "camera": {
-      "zoom": [1.15, 1.2],
-      "pan": {
-        "from": [0.02, 0],
-        "to": [-0.02, 0]
-      },
-      "parallax": 0.6
-    }
+    "camera": {"preset": "dolly"}
   },
   {
     "durationSec": 3,
     "bg": "houseInterior",
-    "background": {
-      "variant": "drawing"
-    },
+    "background": {"variant": "drawing"},
     "actors": [
-      {
-        "type": "narrator",
-        "character": "mrsH",
-        "id": "mrs",
-        "pose": "stand",
-        "x": 0.32
-      },
-      {
-        "type": "narrator",
-        "character": "mrH",
-        "id": "mr",
-        "pose": "stand",
-        "x": 0.7
-      }
+      {"type": "narrator", "character": "mrsH", "id": "mrs", "pose": "stand", "x": 0.32},
+      {"type": "narrator", "character": "mrH", "id": "mr", "pose": "stand", "x": 0.7}
     ],
-    "subtitle": "ห้องรับแขกและซุ้มประตู"
+    "subtitle": "ห้องรับแขกและซุ้มประตู",
+    "camera": {"preset": "peek"}
   },
   {
-    "durationSec": 3,
+    "durationSec": 2,
     "bg": "houseInterior",
     "time": "dusk",
-    "background": {
-      "variant": "dining"
-    },
+    "background": {"variant": "dining"},
     "actors": [
       {
         "type": "narrator",
@@ -98,132 +63,139 @@
         "scale": 0.8
       }
     ],
-    "subtitle": "พี่น้องในห้องอาหาร"
+    "subtitle": "พี่น้องในห้องอาหาร",
+    "camera": {"preset": "dolly"}
   },
   {
     "durationSec": 3,
     "bg": "houseInterior",
     "time": "night",
-    "background": {
-      "variant": "drawing"
-    },
+    "background": {"variant": "drawing"},
     "actors": [
       {
         "type": "narrator",
         "character": "mrsH",
         "id": "mrs",
-        "pose": "shock",
+        "pose": "stand",
         "expression": "shock",
         "x": 0.3
       },
       {
         "type": "ghost",
+        "id": "woman-in-black",
         "ghostVariant": "womanBlack",
-        "opacity": 0.65,
+        "opacity": 0.78,
         "x": 0.72,
         "scale": 1.6
       }
     ],
     "subtitle": "เงาหญิงในชุดดำ",
-    "camera": {
-      "zoom": [1, 1.08],
-      "lighting": "silhouette"
-    }
+    "camera": {"preset": "truck", "lighting": "silhouette"}
   },
   {
     "durationSec": 3,
     "bg": "houseInterior",
     "time": "night",
-    "background": {
-      "variant": "staircase"
-    },
-    "actors": [],
-    "subtitle": "มองลงไปตามบันได",
-    "camera": {
-      "view": "topDown",
-      "zoom": [1, 1.15]
-    }
+    "background": {"variant": "staircase"},
+    "actors": [
+      {
+        "type": "ghost",
+        "id": "stair-watcher",
+        "ghostVariant": "womanBlack",
+        "opacity": 0.64,
+        "x": 0.68,
+        "y": 0.62,
+        "scale": 1.8
+      }
+    ],
+    "subtitle": "บางคนกำลังเฝ้ามองจากบันได",
+    "camera": {"preset": "watcher"}
+  },
+  {
+    "durationSec": 2,
+    "bg": "houseInterior",
+    "time": "moonlight",
+    "background": {"variant": "window"},
+    "actors": [
+      {
+        "type": "ghost",
+        "id": "window-ghost",
+        "depth": "window",
+        "ghostVariant": "womanBlack",
+        "opacity": 0.82,
+        "x": 0.53,
+        "y": 0.58,
+        "scale": 1.2
+      }
+    ],
+    "subtitle": "มีใครอยู่หลังหน้าต่าง",
+    "camera": {"preset": "povCreep"}
   },
   {
     "durationSec": 3,
     "bg": "houseInterior",
     "time": "moonlight",
-    "background": {
-      "variant": "bedroomPOV",
-      "blanketPull": 0,
-      "vignette": true
-    },
+    "background": {"variant": "bedroomPOV", "blanketPull": 0, "vignette": true},
     "actors": [
       {
         "type": "ghost",
+        "id": "bed-end-pair",
         "depth": "bedEnd",
         "ghostVariant": "seatedPair",
-        "opacity": 0.6,
+        "opacity": 0.78,
         "x": 0.5,
-        "scale": 1.5
+        "y": 0.58,
+        "scale": 1.7
       }
     ],
     "subtitle": "สองเงาที่ปลายเตียง",
-    "camera": {
-      "zoom": [1, 1.02]
-    }
+    "camera": {"preset": "dolly"}
   },
   {
     "durationSec": 4,
     "bg": "houseInterior",
     "time": "moonlight",
-    "background": {
-      "variant": "bedroomPOV",
-      "blanketPull": [0, 1],
-      "vignette": true
-    },
-    "impact": {
-      "atSec": 2.1
-    },
+    "background": {"variant": "bedroomPOV", "blanketPull": [0, 1], "vignette": true},
+    "impact": {"atSec": 2.1},
     "actors": [
       {
         "type": "ghost",
         "id": "bed-end-pair",
-        "ghostVariant": "seatedPair",
         "depth": "bedEnd",
-        "opacity": 0.8,
+        "ghostVariant": "seatedPair",
+        "opacity": 0.84,
         "x": 0.5,
-        "scale": 1.8
+        "y": 0.58,
+        "scale": 1.9
       }
     ],
     "subtitle": "สองเงานั่งที่ปลายเตียง... แล้วผ้าห่มก็เลื่อนออก",
-    "camera": {
-      "zoom": [1, 1.025]
-    }
+    "camera": {"preset": "povCreep"}
   },
   {
     "durationSec": 3,
     "bg": "houseInterior",
     "time": "moonlight",
-    "background": {
-      "variant": "bedroomPOV",
-      "blanketPull": [0.1, 0.1],
-      "vignette": true
-    },
+    "background": {"variant": "bedroomPOV", "blanketPull": [0.1, 0.1], "vignette": true},
     "actors": [
       {
         "type": "ghost",
         "depth": "bedEnd",
         "ghostVariant": "crawler",
-        "opacity": 0.7,
+        "opacity": 0.9,
         "from": 0.7,
         "to": 0.4,
-        "scale": 1.6
+        "y": 0.58,
+        "scale": 3
       }
     ],
-    "subtitle": "เงาสีม่วงขาวคลานเข้ามาใกล้"
+    "subtitle": "เงาสีม่วงขาวคลานเข้ามาใกล้",
+    "camera": {"preset": "dolly"}
   },
   {
     "durationSec": 3,
     "bg": "houseInterior",
-    "background": {
-      "variant": "kitchen"
-    },
+    "background": {"variant": "kitchen"},
     "actors": [
       {
         "type": "narrator",
@@ -233,18 +205,14 @@
         "x": 0.5,
         "y": 0.84,
         "scale": 0.85,
-        "poses": [
-          {
-            "atSec": 0.5,
-            "pose": "lie"
-          }
-        ]
+        "poses": [{"atSec": 0.5, "pose": "lie"}]
       }
     ],
-    "subtitle": "ทดสอบท่านอนและเครื่องแต่งกาย"
+    "subtitle": "ใครบางคนล้มลงบนพื้นครัว",
+    "camera": {"preset": "truck"}
   },
   {
-    "durationSec": 4,
+    "durationSec": 6,
     "bg": "basement",
     "time": "night",
     "actors": [
@@ -257,18 +225,8 @@
         "scale": 0.85
       }
     ],
-    "props": [
-      {
-        "type": "furnace",
-        "x": 0.68,
-        "y": 0.8,
-        "size": 430,
-        "smoke": 0.6
-      }
-    ],
-    "subtitle": "เตาในห้องใต้ดิน",
-    "camera": {
-      "zoom": [1.05, 1.15]
-    }
+    "props": [{"type": "furnace", "x": 0.68, "y": 0.8, "size": 430, "smoke": 0.6}],
+    "subtitle": "อย่าชี้ไปที่เสียงในห้องใต้ดิน",
+    "camera": {"preset": "peek", "zoom": [1.05, 1.15]}
   }
 ]

@@ -108,12 +108,13 @@ export const Ghost = ({
   return (
     <svg
       aria-label={`Ghost ${variant}`}
-      viewBox="-150 -260 300 280"
-      width={300 * scale}
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="-190 -260 380 280"
+      width={380 * scale}
       height={280 * scale}
       style={{
         position: 'absolute',
-        left: x - 150 * scale,
+        left: x - 190 * scale,
         top: y - 260 * scale,
         overflow: 'visible',
         opacity: Math.max(0, Math.min(1, opacity)),
@@ -121,8 +122,10 @@ export const Ghost = ({
     >
       <g
         transform={`scale(${flip ? -1 : 1} 1)`}
-        fill={variant === 'crawler' ? '#EADFF7' : '#332D42'}
-        stroke={variant === 'crawler' ? '#6E537F' : '#332D42'}
+        fill={variant === 'crawler' ? '#EADFF7' : variant === 'seatedPair' ? '#B4A9C8' : '#332D42'}
+        stroke={
+          variant === 'crawler' ? '#6E537F' : variant === 'seatedPair' ? '#61566F' : '#332D42'
+        }
         strokeWidth={4}
         strokeLinejoin="round"
       >
@@ -130,8 +133,8 @@ export const Ghost = ({
           <Crawler frame={frame} fps={fps} />
         ) : variant === 'seatedPair' ? (
           <>
-            <SilhouettePerson offset={-66} seated />
-            <SilhouettePerson offset={44} seated />
+            <SilhouettePerson offset={-84} seated />
+            <SilhouettePerson offset={84} seated />
           </>
         ) : (
           <SilhouettePerson />

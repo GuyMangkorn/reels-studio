@@ -103,7 +103,7 @@ const CharacterHead = ({
     )}
   </Joint>
 );
-export const Character = ({
+export const CharacterArt = ({
   x = 0,
   y = 0,
   scale = 1,
@@ -122,11 +122,9 @@ export const Character = ({
   talking = false,
   mouth: openness = 0,
   seatWeight = 0,
-  frame: clock,
-}: CharacterProps) => {
-  const current = useCurrentFrame();
-  const {fps} = useVideoConfig();
-  const frame = clock ?? current;
+  frame = 0,
+  fps = 30,
+}: CharacterProps & {fps?: number}) => {
   const livePose = useRef<PoseChangeState | null>(null);
   if (typeof pose === 'string')
     livePose.current = advancePoseChange(livePose.current, pose, frame, fps);
@@ -169,6 +167,7 @@ export const Character = ({
   return (
     <svg
       aria-label="Narrator cut-out rig"
+      xmlns="http://www.w3.org/2000/svg"
       width={320 * scale}
       height={430 * scale}
       viewBox="-160 -230 320 430"
@@ -251,4 +250,11 @@ export const Character = ({
       </PivotDebug>
     </svg>
   );
+};
+
+/** Composition-aware wrapper for the shared SVG art. */
+export const Character = (props: CharacterProps) => {
+  const current = useCurrentFrame();
+  const {fps} = useVideoConfig();
+  return <CharacterArt {...props} frame={props.frame ?? current} fps={fps} />;
 };

@@ -6,6 +6,8 @@ import {houseInterior} from '../src/assets/backgrounds/HouseInterior';
 import {BedroomPOV, bedEndPlacement, bedroomPOVAt} from '../src/assets/backgrounds/BedroomPOV';
 import {samplePose} from '../src/rig/poses';
 import {Ghost} from '../src/rig/Ghost';
+import {CharacterArt} from '../src/rig/Character';
+import {CatArt, DogArt} from '../src/rig/Animal';
 import {layoutActor} from '../src/scenes/timeline';
 
 test('interior and POV artwork preserve aspect ratio in both layouts', () => {
@@ -76,6 +78,17 @@ test('ghost silhouettes keep the requested eerie poses and connected seated figu
   const crawler = renderToStaticMarkup(createElement(Ghost, {x: 540, y: 1056, variant: 'crawler'}));
   assert.match(crawler, /data-crawler-face="nightmare"/);
   assert.doesNotMatch(crawler, /fill="#FFF3B0"/);
+});
+test('existing character and animal rigs can render as cutouts without Remotion hooks', () => {
+  assert.doesNotThrow(() =>
+    renderToStaticMarkup(createElement(CharacterArt, {x: 540, y: 1400, frame: 24, fps: 30})),
+  );
+  assert.doesNotThrow(() =>
+    renderToStaticMarkup(createElement(CatArt, {x: 540, y: 1400, frame: 24, fps: 30})),
+  );
+  assert.doesNotThrow(() =>
+    renderToStaticMarkup(createElement(DogArt, {x: 540, y: 1400, frame: 24, fps: 30})),
+  );
 });
 test('lying hip moves down to floor contact while remaining below the cabinets', async () => {
   const {lieFloorAnchor, interiorPlacement} = await import('../src/assets/backgrounds/layout');

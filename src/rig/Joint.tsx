@@ -19,13 +19,7 @@ export const Joint = ({
   const debug = useContext(pivotContext);
   return (
     <g transform={`translate(${x} ${y})`} data-joint={name}>
-      <g
-        style={{
-          transformBox: 'view-box',
-          transformOrigin: '0px 0px',
-          transform: `rotate(${angle}deg)`,
-        }}
-      >
+      <g transform={`rotate(${angle})`}>
         {children}
         {debug && <circle r={5} fill="red" stroke="none" />}
       </g>
