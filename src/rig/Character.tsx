@@ -181,6 +181,15 @@ export const Character = ({
     >
       <PivotDebug value={showPivots}>
         <g transform={`scale(${flip ? -1 : 1} 1)`}>
+          <ellipse
+            data-floor-plane="lie"
+            cx={0}
+            cy={12}
+            rx={168}
+            ry={16}
+            fill="#253047"
+            opacity={0.22 * Math.min(1, Math.abs(a.root) / 90) * (1 - seatWeight)}
+          />
           <g
             transform={`rotate(${a.root + rotation})`}
             stroke={outfit === 'modern' ? 'none' : '#4A3B3B'}

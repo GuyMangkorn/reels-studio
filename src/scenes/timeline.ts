@@ -240,6 +240,14 @@ export function actorPosition(actor: Actor, frame: number, duration: number) {
   const to = actor.to ?? actor.x ?? from;
   return from + (to - from) * smoothstep(frame / Math.max(1, duration - 1));
 }
+export type ActorPlacement = {
+  /** 0 standing, 1 fully lying. Hips ease onto the open floor. */
+  lie?: number;
+  /** Screen-space ground under an x, used when the actor did not author y. */
+  groundY?: (x: number) => number;
+  /** Extra scale, 1 leaves the usual portrait/landscape size. */
+  scaleBoost?: number;
+};
 /** Coordinates are normalized. Portrait compresses horizontal spacing and uses a taller stage. */
 export function layoutActor(
   actor: Actor,
@@ -247,20 +255,31 @@ export function layoutActor(
   width: number,
   height: number,
   seat?: {y: number; amount: number},
+  placement?: ActorPlacement,
 ) {
   const portrait = height > width;
   const scale =
     (actor.scale ?? 1) *
-    (actor.type === 'narrator' ? (portrait ? 1.75 : 1.42) : portrait ? 1.05 : 1.08);
-  const standingY = height * (actor.y ?? (portrait ? (actor.type === 'dog' ? 0.835 : 0.79) : 0.81));
+    (actor.type === 'narrator' ? (portrait ? 1.75 : 1.42) : portrait ? 1.05 : 1.08) *
+    (placement?.scaleBoost ?? 1);
+  const x = width * (portrait ? 0.06 + normalizedX * 0.88 : normalizedX);
+  const standingY =
+    placement?.groundY && actor.y === undefined
+      ? placement.groundY(x)
+      : height * (actor.y ?? (portrait ? (actor.type === 'dog' ? 0.835 : 0.79) : 0.81));
   const seatWeight = actor.type === 'narrator' && seat ? Math.max(0, Math.min(1, seat.amount)) : 0;
   const seatedY = seat ? seat.y + HUMAN_HIP_FROM_ANCHOR * scale : standingY;
+  const lie = actor.type === 'narrator' ? Math.max(0, Math.min(1, placement?.lie ?? 0)) : 0;
+  // Landscape counter sits higher in the frame, so the hip drops further onto the floor.
+  const floorHip = height * (portrait ? 0.86 : 0.9);
+  const lieAnchor = floorHip + HUMAN_HIP_FROM_ANCHOR * scale;
   const from = actor.from ?? actor.x ?? 0.5;
   const to = actor.to ?? actor.x ?? from;
   const flip = actor.flip ?? (actor.type !== 'narrator' && from > to);
+  const planted = standingY + (seatedY - standingY) * seatWeight;
   return {
-    x: width * (portrait ? 0.06 + normalizedX * 0.88 : normalizedX),
-    y: standingY + (seatedY - standingY) * seatWeight,
+    x,
+    y: planted + (lieAnchor - planted) * lie,
     scale,
     flip,
     seatWeight,

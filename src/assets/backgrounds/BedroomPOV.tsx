@@ -1,5 +1,6 @@
 import type {ReactNode} from 'react';
 import {smoothstep} from '../../rig/poses';
+import {uniformStage, uniformStageTransform} from '../../layout/uniformStage';
 import {impactAt, type ImpactConfig} from '../../camera/Camera';
 import type {Actor} from '../../scenes/types';
 
@@ -31,10 +32,10 @@ export function bedEndPlacement<T extends Placement>(
   height: number,
   state: ReturnType<typeof bedroomPOVAt>,
 ): T {
-  return {...base, y: (actor.y ?? 0.54) * height + state.figuresY, scale: base.scale * 0.68};
+  return {...base, y: (actor.y ?? 0.54) * height + state.figuresY, scale: base.scale * 0.62};
 }
 
-// All artwork uses a normalized 1080x1920 canvas, stretched like the other shared sets.
+// Artwork stays on a 1080x1920 stage. Wide frames extend the wall and floor; they do not stretch it.
 const BackWall = () => (
   <>
     <rect width={1080} height={1920} fill="#57536D" />
@@ -59,10 +60,10 @@ const BedEnd = () => (
 );
 const Duvet = () => (
   <g data-duvet-edge="only">
-    <path d="M345 1040 H735 L1100 1960 H-20Z" fill="#A8B9D0" />
-    <path d="M345 1040 H735 L762 1110 H318Z" fill="#D1DAE8" />
+    <path d="M345 1220 H735 L1100 1960 H-20Z" fill="#A8B9D0" />
+    <path d="M345 1220 H735 L762 1290 H318Z" fill="#D1DAE8" />
     <path
-      d="M300 1140 L85 1890 M780 1140 L995 1890 M540 1200 V1920"
+      d="M300 1280 L140 1890 M780 1280 L940 1890 M540 1320 V1920"
       fill="none"
       stroke="#899DBB"
       strokeWidth={5}
@@ -85,13 +86,23 @@ const Layer = ({
 }) => (
   <svg
     data-depth={name}
+    data-uniform-scale={uniformStage(width, height).scale}
     width={width}
     height={height}
-    viewBox="0 0 1080 1920"
-    preserveAspectRatio="none"
     style={{position: 'absolute', inset: 0, overflow: 'visible', transform: `translateY(${y}px)`}}
   >
-    <g stroke="#4A3B3B" strokeWidth={5} strokeLinejoin="round">
+    {name === 'back-wall' && (
+      <>
+        <rect width={width} height={height * 0.5} fill="#57536D" />
+        <rect y={height * 0.5} width={width} height={height * 0.5} fill="#786A80" />
+      </>
+    )}
+    <g
+      transform={uniformStageTransform(width, height)}
+      stroke="#4A3B3B"
+      strokeWidth={5}
+      strokeLinejoin="round"
+    >
       {children}
     </g>
   </svg>

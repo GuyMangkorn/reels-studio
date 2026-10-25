@@ -39,10 +39,32 @@ const base: JointAngles = {
 };
 export const poses: Record<PoseName, JointAngles> = {
   stand: {...base},
-  lie: {...base, root: 90, upperArmL: 18, upperArmR: -18, lowerLegL: 8, lowerLegR: 8},
+  // Arms tuck along the body. A raised right arm becomes the upward side once root is 90°.
+  lie: {
+    ...base,
+    root: 90,
+    head: 6,
+    upperArmL: 4,
+    upperArmR: 14,
+    lowerArmL: -8,
+    lowerArmR: 24,
+    handR: 6,
+    lowerLegL: 8,
+    lowerLegR: 8,
+  },
   idle: {...base},
   walk: {...base},
-  point: {...base, upperArmR: -100, lowerArmR: 8, handR: -12, head: -5},
+  // Elbow stays bent: a straight upper-arm-plus-forearm reads as a stiff stick.
+  point: {
+    ...base,
+    torso: -4,
+    upperArmR: -58,
+    lowerArmR: -46,
+    handR: -8,
+    head: -7,
+    upperArmL: 12,
+    lowerArmL: 16,
+  },
   shock: {
     ...base,
     upperArmL: 145,

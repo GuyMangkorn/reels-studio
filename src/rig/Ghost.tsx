@@ -1,34 +1,32 @@
 export const ghostVariants = ['womanBlack', 'seatedPair', 'crawler'] as const;
 export type GhostVariant = (typeof ghostVariants)[number];
-const SilhouettePerson = ({offset = 0, seated = false}: {offset?: number; seated?: boolean}) => (
-  <g transform={`translate(${offset} 0)`}>
-    <ellipse cy={-205} rx={28} ry={36} />
-    <path
-      d={
-        seated
-          ? 'M-26-174 Q0-190 26-174 L37-80 H65 V-30 H32 L14-84 H-31Z'
-          : 'M-26-174 Q0-190 26-174 L70-8 Q0 7-70-8Z'
-      }
-    />
-    <path d="M-22-156 L-49-87 M22-156 L49-87" strokeWidth={18} strokeLinecap="round" />
+/** Opaque overlapping parts. Transparency was letting the bed rail slice the legs off. */
+const SeatedFigure = ({tilt = -4, fill}: {tilt?: number; fill: string}) => (
+  <g transform={`rotate(${tilt})`} fill={fill} stroke="none">
+    <path d="M-36-16 C-62 0 -66 52 -46 96 C-34 122 -4 118 6 88 L14 24 C12-4 -12-24 -36-16 Z" />
+    <path d="M-4-12 C14-24 52-4 60 42 C68 86 38 118 14 104 L-2 30 C-8 2 -14-4 -4-12 Z" />
+    <path d="M-42-108 C-60-86 -58-36 -44 0 C-34 22 0 28 16 12 C36-4 48-40 40-82 C32-116 8-132 -10-124 C-24-118 -32-112 -42-108 Z" />
+    <ellipse cx={-4} cy={-136} rx={30} ry={34} />
+  </g>
+);
+/** Narrow gown, arms inside the silhouette and hanging, head tilted. Not a raised cheer. */
+const WomanBlack = () => (
+  <g transform="rotate(-8)">
+    <path d="M-12-234 C-32-234 -40-212 -34-194 C-44-184 -22-170 -6-172 L-4-154 C-20-152 -24-136 -20-70 L-16 6 C-14 18 16 18 18 6 L22-70 C26-136 22-152 6-154 L8-172 C24-170 42-184 36-196 C44-216 32-234 12-234 C4-216 -2-216 -12-234 Z" />
   </g>
 );
 const CrawlerLimb = ({x, y, side, phase}: {x: number; y: number; side: -1 | 1; phase: number}) => {
-  const upper = side * (18 + Math.sin(phase) * 18);
-  const lower = side * (-34 + Math.sin(phase + 0.9) * 24);
+  const upper = side * (36 + Math.sin(phase) * 7);
+  const lower = -78 + Math.sin(phase + 0.8) * 10;
+  const upperLen = 118;
+  const lowerLen = 132;
   return (
     <g data-crawler-joint transform={`translate(${x} ${y}) rotate(${upper})`}>
-      <path d="M0 0 L0 42" fill="none" strokeWidth={15} strokeLinecap="round" />
-      <circle data-crawler-joint cx={0} cy={42} r={7} fill="#A894CC" stroke="none" />
-      <g transform={`translate(0 42) rotate(${lower})`}>
-        <path d="M0 0 L0 44" fill="none" strokeWidth={12} strokeLinecap="round" />
-        <circle data-crawler-joint cx={0} cy={44} r={6} fill="#8C71AD" stroke="none" />
-        <path
-          d={`M0 44 L${side * 17} 53 M0 44 L${side * 7} 59`}
-          fill="none"
-          strokeWidth={5}
-          strokeLinecap="round"
-        />
+      <path d={`M0 0 L0 ${upperLen}`} fill="none" strokeWidth={2.6} strokeLinecap="round" />
+      <circle data-crawler-joint cx={0} cy={upperLen} r={2.2} fill="#140E1C" stroke="none" />
+      <g transform={`translate(0 ${upperLen}) rotate(${lower})`}>
+        <path d={`M0 0 L0 ${lowerLen}`} fill="none" strokeWidth={1.7} strokeLinecap="round" />
+        <circle data-crawler-joint cx={0} cy={lowerLen} r={1.6} fill="#0C0A10" stroke="none" />
       </g>
     </g>
   );
@@ -36,49 +34,28 @@ const CrawlerLimb = ({x, y, side, phase}: {x: number; y: number; side: -1 | 1; p
 const Crawler = ({frame, fps}: {frame: number; fps: number}) => {
   const gait = (frame / fps) * ((Math.PI * 2) / 0.9);
   const drift = Math.sin(gait * 0.5) * 2;
+  const hunch = Math.sin(gait * 0.5) * 3;
   const limbs = [
-    {x: -52, y: -59, side: -1 as const, phase: gait},
-    {x: -24, y: -45, side: 1 as const, phase: gait + 1.8},
-    {x: 14, y: -47, side: -1 as const, phase: gait + 3.1},
-    {x: 43, y: -38, side: 1 as const, phase: gait + 4.6},
+    {x: -48, y: -46, side: -1 as const, phase: gait},
+    {x: -8, y: -28, side: 1 as const, phase: gait + 2.4},
+    {x: 28, y: -52, side: -1 as const, phase: gait + 1.2},
+    {x: 58, y: -22, side: 1 as const, phase: gait + 3.6},
   ];
   return (
-    <g data-crawler="articulated" transform={`translate(0 ${drift}) scale(-1 1)`}>
+    <g data-crawler="articulated" transform={`translate(0 ${drift - 30}) scale(-1 1)`}>
       {limbs.map((limb, i) => (
         <CrawlerLimb key={i} {...limb} />
       ))}
-      <ellipse cx={0} cy={-17} rx={86} ry={13} fill="#241D31" opacity={0.28} stroke="none" />
-      <path d="M-78-69 Q-45-119 17-102 Q60-89 77-53 Q42-24-11-28 Q-56-28-78-69Z" fill="#C8B5E1" />
-      <path
-        d="M-66-65 Q-27-89 38-70 M-49-49 Q-13-69 43-54"
-        fill="none"
-        stroke="#9C83BD"
-        strokeWidth={7}
-        strokeLinecap="round"
-      />
-      <g data-crawler-face="nightmare" transform="rotate(-12 -91 -94)">
-        <path
-          d="M-119-117 Q-94-143-70-120 Q-56-97-69-75 Q-91-52-113-70 Q-126-94-119-117Z"
-          fill="#D8C8EB"
-        />
-        <path
-          d="M-111-104 Q-102-111-94-104 M-88-102 Q-80-109-72-101"
-          fill="none"
-          stroke="#241D31"
-          strokeWidth={5}
-          strokeLinecap="round"
-        />
-        <circle cx={-101} cy={-105} r={2} fill="#FFF3B0" stroke="none" />
-        <circle cx={-80} cy={-103} r={2} fill="#FFF3B0" stroke="none" />
-        <path
-          d="M-120-80 Q-94-39-63-76 Q-89-58-120-80Z"
-          fill="#171223"
-          stroke="#241D31"
-          strokeWidth={3}
-        />
-        <path d="M-108-69 L-103-58 L-97-68 L-90-56 L-84-66 L-77-61" fill="#EADFF7" stroke="none" />
+      <ellipse cx={6} cy={36} rx={70} ry={7} fill="#140E1C" opacity={0.4} stroke="none" />
+      <g transform={`translate(0 ${hunch}) rotate(-28)`} fill="#CDBFE0">
+        <path d="M-86 18 L-70-8 L-28-34 L8-18 L22 6 L4 16 L-24-2 L-58 8 Z" />
+        <path d="M-62-4 H-18 M-54 6 H-8" fill="none" stroke="#5C4672" strokeWidth={2} />
+        <g data-crawler-face="nightmare" transform="translate(18 -36)" stroke="none" fill="#D4C8E2">
+          <path d="M2 18 C-8 6 -4-16 12-24 C28-30 40-12 34 8 C28 20 12 22 2 18 Z" stroke="none" />
+          <ellipse cx={12} cy={-2} rx={8} ry={10} fill="#07060C" stroke="none" />
+          <ellipse cx={26} cy={0} rx={7} ry={9} fill="#07060C" stroke="none" />
+        </g>
       </g>
-      <path d="M-112-67 Q-98-53-82-58" fill="none" stroke="#8C71AD" strokeWidth={5} />
     </g>
   );
 };
@@ -113,7 +90,7 @@ export const Ghost = ({
         left: x - 150 * scale,
         top: y - 260 * scale,
         overflow: 'visible',
-        opacity: Math.max(0, Math.min(1, opacity)),
+        opacity: variant === 'seatedPair' ? 1 : Math.max(0, Math.min(1, opacity)),
       }}
     >
       <g
@@ -127,11 +104,15 @@ export const Ghost = ({
           <Crawler frame={frame} fps={fps} />
         ) : variant === 'seatedPair' ? (
           <>
-            <SilhouettePerson offset={-66} seated />
-            <SilhouettePerson offset={44} seated />
+            <g transform="translate(-64 -22) scale(0.76)" style={{filter: 'blur(0.85px)'}}>
+              <SeatedFigure tilt={-7} fill="#14111C" />
+            </g>
+            <g transform="translate(36 6)">
+              <SeatedFigure tilt={5} fill="#241E32" />
+            </g>
           </>
         ) : (
-          <SilhouettePerson />
+          <WomanBlack />
         )}
       </g>
     </svg>

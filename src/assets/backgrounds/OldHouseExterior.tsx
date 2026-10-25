@@ -47,10 +47,62 @@ const Porch = () => (
     <path d="M-425 55 H225 M-440 75 H240" stroke="#B4A2A2" strokeWidth={20} />
   </>
 );
+/** Local height of one story in the exterior rig. */
+export const EXTERIOR_STORY = 200;
+const PERSON_LOCAL = 397;
+const PORCH_LOCAL = 62;
+
+export const exteriorPath = {
+  farY: 0.78,
+  nearY: 1,
+  leftFar: 0.46,
+  rightFar: 0.56,
+  leftNear: 0.16,
+  rightNear: 0.86,
+};
+
+/**
+ * Feet land on the path interior, not on the lawn beside its edge.
+ * Wider parts of the trapezoid are nearer the camera, so an x outside the
+ * far mouth walks downhill until the walkway is wide enough to hold them.
+ */
+export function exteriorPathGroundY(width: number, height: number, x: number) {
+  const path = exteriorPath;
+  const nx = x / width;
+  const margin = 0.045;
+  const tLeft = (path.leftFar + margin - nx) / (path.leftFar - path.leftNear);
+  const tRight = (nx - (path.rightFar - margin)) / (path.rightNear - path.rightFar);
+  const t = Math.max(0.14, Math.min(0.72, Math.max(tLeft, tRight)));
+  return height * (path.farY + t * (path.nearY - path.farY));
+}
+
+/**
+ * Long frames used to shrink the house to a short strip, so a person matched two floors.
+ * Keep one uniform house scale and, on 16:9, a person clearly shorter than a story.
+ */
+export function exteriorFit(width: number, height: number) {
+  const portrait = height > width;
+  const houseScale = portrait
+    ? Math.min(width / 1000, height / 1550)
+    : Math.min(width / 1280, height / 1020);
+  const storyPx = EXTERIOR_STORY * houseScale;
+  const layoutBase = portrait ? 1.75 : 1.42;
+  const actorBoost = portrait ? 1 : (storyPx * 0.62) / (PERSON_LOCAL * layoutBase);
+  return {
+    houseScale,
+    actorBoost,
+    storyPx,
+    houseOriginY: height * exteriorPath.farY - PORCH_LOCAL * houseScale,
+    groundY: (x: number) => exteriorPathGroundY(width, height, x),
+  };
+}
+
 /** Three occupied floors, tower, porch and steep Victorian roof. */
 export const oldHouseExterior: BackgroundBuilder = ({w, h, time, options}) => {
   const dark = time !== 'day';
   const lit = options.windowLights ?? dark;
+  const fit = exteriorFit(w, h);
+  const path = exteriorPath;
   return {
     far: (
       <>
@@ -68,7 +120,8 @@ export const oldHouseExterior: BackgroundBuilder = ({w, h, time, options}) => {
     ),
     mid: (
       <g
-        transform={`translate(${w / 2} ${h * 0.76}) scale(${Math.min(w / 1040, h / 1700)})`}
+        data-uniform-scale={fit.houseScale}
+        transform={`translate(${w / 2} ${fit.houseOriginY}) scale(${fit.houseScale})`}
         stroke="#4A3B3B"
         strokeWidth={5}
         strokeLinejoin="round"
@@ -81,7 +134,7 @@ export const oldHouseExterior: BackgroundBuilder = ({w, h, time, options}) => {
     near: (
       <>
         <path
-          d={`M${w * 0.44} ${h * 0.79} L${w * 0.27} ${h} H${w * 0.76} L${w * 0.57} ${h * 0.79}Z`}
+          d={`M${w * path.leftFar} ${h * path.farY} L${w * path.leftNear} ${h * path.nearY} H${w * path.rightNear} L${w * path.rightFar} ${h * path.farY}Z`}
           fill={dark ? '#9B8B9F' : '#DEC8AD'}
         />
         <path

@@ -1,4 +1,5 @@
 import type {BackgroundBuilder} from '../Background';
+import {uniformStageTransform} from '../../layout/uniformStage';
 export const interiorVariants = [
   'drawing',
   'dining',
@@ -13,21 +14,103 @@ export type BackgroundOptions = {
   blanketPull?: number | [number, number];
   vignette?: boolean;
 };
-const Staircase = () => (
-  <>
-    <rect x={250} y={390} width={580} height={920} fill="#524C61" />
-    {staircaseSteps.map((step, i) => (
-      <rect key={i} {...step} fill={i % 2 ? '#BC9F9A' : '#D2B8A8'} />
-    ))}
-    <path d="M280 410 V1320 M810 410 V1320" stroke="#FFF3B0" strokeWidth={14} />
-  </>
-);
-export const staircaseSteps = Array.from({length: 12}, (_, i) => ({
-  x: 399 - i * 9,
-  y: 420 + i * 66,
-  width: 282 + i * 18,
-  height: 64,
-}));
+const STAIR_COUNT = 12;
+/** Spiral treads seen from above. Later steps are nearer: lower, wider, and shifted left. */
+export const staircaseSteps = Array.from({length: STAIR_COUNT}, (_, i) => {
+  const t = i / (STAIR_COUNT - 1);
+  const ang = -Math.PI * 0.72 + t * Math.PI * 1.85;
+  const rad = 140 + t * 320;
+  const cx = 520 + Math.cos(ang) * rad * 0.78;
+  const width = 70 + i * 15;
+  return {
+    x: cx - width / 2,
+    y: 340 + i * 86,
+    width,
+    height: 28 + i * 5,
+    angle: (ang * 180) / Math.PI,
+  };
+});
+const treadColor = (u: number) => {
+  const v = Math.round(52 + u * 96);
+  return `rgb(${v + 12},${v - 4},${v + 8})`;
+};
+/** Plan view of one flight. Treads share edges and run to the side walls, so the frame has no empty panel. */
+const Stairwell = ({w, h}: {w: number; h: number}) => {
+  const count = 14;
+  const margin = Math.min(w, h) * 0.035;
+  const top = h * 0.02;
+  const bottom = h * 0.98;
+  const treadH = (bottom - top) / count;
+  const rail = Math.max(4, Math.min(w, h) * 0.006);
+  const footprints: {x: number; y: number; rx: number; ry: number; opacity: number}[] = [];
+  return (
+    <g data-stairwell="top-down">
+      <rect width={w} height={h} fill="#2A2436" />
+      {Array.from({length: 24}, (_, i) => (
+        <path
+          key={`course-${i}`}
+          d={`M0 ${((i + 1) * h) / 25} H${w}`}
+          stroke="#3A3348"
+          strokeWidth={2}
+        />
+      ))}
+      {Array.from({length: count}, (_, i) => {
+        const u = i / (count - 1);
+        const inset = (1 - u) * w * 0.045;
+        const x = margin + inset;
+        const tw = w - margin * 2 - inset * 2;
+        const y = top + i * treadH;
+        const side = i % 2 === 0 ? 0.36 : 0.64;
+        footprints.push({
+          x: x + tw * side,
+          y: y + treadH * 0.64,
+          rx: tw * (0.028 + u * 0.018),
+          ry: Math.max(3.5, treadH * 0.16),
+          opacity: 0.3 + u * 0.32,
+        });
+        return (
+          <g key={i}>
+            <rect x={x} y={y} width={tw} height={treadH + 0.8} fill={treadColor(u)} />
+            <rect
+              x={x}
+              y={y}
+              width={tw}
+              height={Math.max(4, treadH * 0.2)}
+              fill="#120E1A"
+              opacity={0.28 + (1 - u) * 0.28}
+            />
+            <path
+              d={`M${x} ${y + treadH - 1.2} H${x + tw}`}
+              stroke="#F4E7D6"
+              strokeWidth={Math.max(1.4, treadH * 0.05)}
+              opacity={0.42}
+            />
+          </g>
+        );
+      })}
+      <path
+        d={`M${margin} ${top} V${bottom} M${w - margin} ${top} V${bottom}`}
+        fill="none"
+        stroke="#D9C6B2"
+        strokeWidth={rail}
+      />
+      <g data-footstep-track="stairwell">
+        {footprints.map((step, i) => (
+          <ellipse
+            key={i}
+            data-footstep
+            cx={step.x}
+            cy={step.y}
+            rx={step.rx}
+            ry={step.ry}
+            fill="#100C16"
+            opacity={step.opacity}
+          />
+        ))}
+      </g>
+    </g>
+  );
+};
 const ArchAndWindow = ({dark}: {dark: boolean}) => (
   <>
     <path d="M75 1240 V610 Q250 360 425 610 V1240" fill="#A69AB2" />
@@ -39,14 +122,15 @@ const ArchAndWindow = ({dark}: {dark: boolean}) => (
 );
 const Kitchen = () => (
   <>
-    <rect x={120} y={1020} width={840} height={320} rx={18} fill="#A9C5B5" />
-    <path d="M100 1015 H980" stroke="#FFF3D9" strokeWidth={28} />
-    {[150, 410, 670].map((x) => (
-      <rect key={x} x={x} y={1070} width={220} height={230} rx={12} fill="#C8DDC5" />
+    {/* Counter sits below the arch. The wall cabinet is under the window, clear of the doorway. */}
+    <rect x={150} y={1292} width={780} height={200} rx={16} fill="#A9C5B5" />
+    <path d="M130 1288 H960" stroke="#FFF3D9" strokeWidth={26} />
+    {[180, 420, 660].map((x) => (
+      <rect key={x} x={x} y={1340} width={200} height={130} rx={10} fill="#C8DDC5" />
     ))}
-    <ellipse cx={730} cy={1015} rx={110} ry={20} fill="#6D7686" />
-    <path d="M810 1000 V930 Q810 885 755 930" fill="none" strokeWidth={12} />
-    <rect x={150} y={600} width={300} height={280} rx={12} fill="#A9C5B5" />
+    <ellipse cx={700} cy={1288} rx={90} ry={16} fill="#6D7686" />
+    <path d="M770 1274 V1216 Q770 1176 722 1216" fill="none" strokeWidth={12} />
+    <rect x={640} y={968} width={250} height={190} rx={12} fill="#A9C5B5" />
   </>
 );
 const DiningRoom = () => (
@@ -85,41 +169,30 @@ export const houseInterior: BackgroundBuilder = ({w, h, time, options, view}) =>
             strokeWidth={3}
           />
         ))}
-        {!overhead && <rect width={w} height={h * 0.66} fill={wall} />}
+        {overhead ? (
+          <rect width={w} height={h} fill="#3C384C" />
+        ) : (
+          <rect width={w} height={h * 0.66} fill={wall} />
+        )}
       </>
     ),
-    mid: (
+    mid: overhead ? (
+      <Stairwell w={w} h={h} />
+    ) : (
       <g
-        transform={`scale(${w / 1080} ${h / 1920})`}
+        data-uniform-scale="interior"
+        transform={uniformStageTransform(w, h)}
         stroke="#4A3B3B"
         strokeWidth={5}
         strokeLinejoin="round"
       >
-        {overhead ? (
-          <>
-            <rect
-              x={42}
-              y={250}
-              width={996}
-              height={1220}
-              rx={20}
-              fill="none"
-              stroke={wall}
-              strokeWidth={50}
-            />
-            <Staircase />
-          </>
+        <ArchAndWindow dark={dark} />
+        {variant === 'kitchen' ? (
+          <Kitchen />
+        ) : variant === 'dining' ? (
+          <DiningRoom />
         ) : (
-          <>
-            <ArchAndWindow dark={dark} />
-            {variant === 'kitchen' ? (
-              <Kitchen />
-            ) : variant === 'dining' ? (
-              <DiningRoom />
-            ) : (
-              <DrawingRoom />
-            )}
-          </>
+          <DrawingRoom />
         )}
       </g>
     ),

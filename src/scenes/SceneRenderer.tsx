@@ -14,6 +14,7 @@ import {
   useVideoConfig,
   interpolate,
 } from 'remotion';
+import {exteriorFit} from '../assets/backgrounds/OldHouseExterior';
 import {sofaSeat} from '../assets/props/Sofa';
 import {poseWeightAt} from '../rig/poses';
 import {Background} from '../assets/Background';
@@ -79,6 +80,7 @@ const SceneView = ({
   const mouth = narration ? mouthAt(narration.amplitude, audioFrame) : 0;
   const ink = night ? '#fff1da' : '#49445c';
   const povState = bedroomPOVAt(poseFrame, fps, duration, scene.background?.blanketPull);
+  const exterior = scene.bg === 'oldHouseExterior' ? exteriorFit(width, height) : undefined;
   const props = scene.props?.map((p, i) => (
     <SceneProp
       key={i}
@@ -104,12 +106,17 @@ const SceneView = ({
             amount: poseWeightAt(actorPoseTrack(actor, fps, previousPose), 'sit', poseFrame, fps),
           }
         : undefined;
+    const lie =
+      actor.type === 'narrator'
+        ? poseWeightAt(actorPoseTrack(actor, fps, previousPose), 'lie', poseFrame, fps)
+        : 0;
     const basePosition = layoutActor(
       actor,
       actorPosition(actor, poseFrame, duration),
       width,
       height,
       seat,
+      {lie, groundY: exterior?.groundY, scaleBoost: exterior?.actorBoost},
     );
     const position =
       pov && actor.depth === 'bedEnd'
@@ -159,8 +166,8 @@ const SceneView = ({
           filter:
             scene.camera?.lighting === 'silhouette'
               ? 'brightness(0.18)'
-              : pov && actor.depth === 'bedEnd'
-                ? 'brightness(0.72) blur(0.7px)'
+              : pov && actor.depth === 'bedEnd' && actor.ghostVariant !== 'crawler'
+                ? 'brightness(0.62) blur(0.45px)'
                 : undefined,
         }}
       >
@@ -212,6 +219,19 @@ const SceneView = ({
             {props}
 
             {actors}
+            {scene.bg === 'houseInterior' && scene.background?.variant === 'kitchen' && (
+              <svg
+                data-floor-plane="front"
+                width={width}
+                height={height}
+                style={{position: 'absolute', inset: 0, pointerEvents: 'none', zIndex: 2}}
+              >
+                <path
+                  d={`M-20 ${height * 0.995} Q${width * 0.5} ${height * 0.974} ${width + 20} ${height * 0.995} V${height + 8} H-20 Z`}
+                  fill={night ? '#6E657C' : '#C9A88E'}
+                />
+              </svg>
+            )}
           </>
         )}
       </Camera>
