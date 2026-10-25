@@ -180,8 +180,7 @@ The pastel sky, sun, clouds, and ground currently live inline in `src/Demo.tsx`.
 Tasks are GitHub issues on `GuyMangkorn/reels-studio`.
 
 - Label the issue `owner:codex` or `owner:grokbot`. One owner per issue.
-- One branch per issue, from `main`. Name it `codex/<issue>-<slug>` or `grokbot/<issue>-<slug>`.
-- Open a PR that references the issue (`Fixes #12` when the PR completes it).
+- One branch per issue, from `main`. Name it after the issue: `codex/12-walk-cycle`, or `grokbot/<issue>-<slug>`.
 - Keep the PR small: one pose, one background, one scene, or one bugfix.
 - Before the PR, run `npm run typecheck` and a few-frame render of each composition you touched:
 
@@ -191,6 +190,21 @@ npx remotion render src/index.ts Long out/long-check.mp4 --frames=0-5
 ```
 
 - Do not commit `out/`, mp4, or mp3. Do commit amplitude JSON and library code.
+- Never push directly to `main`. Landing a task is the pull request in [Finishing a task](#finishing-a-task).
+
+## Finishing a task
+
+When a coding agent (Codex) finishes a task, it commits, pushes, and opens a pull request. It does not push to `main`.
+
+1. Commit on a branch named after the issue, for example `codex/12-walk-cycle`.
+2. Push that branch.
+3. Open a pull request into `main`. The description must include all of the following:
+   - The issue reference `Closes #N` (for example `Closes #12`).
+   - A summary of the change.
+   - The new or changed reusable assets (poses, characters, animals, backgrounds, props, scenes). Write "none" when the change does not add or edit library assets.
+   - How it was verified: `npm run typecheck`, and the test render (which composition, which frames).
+
+A `grokbot/` branch uses the same close-out. The base branch is always `main`.
 
 ## Secrets, brands, licenses
 
