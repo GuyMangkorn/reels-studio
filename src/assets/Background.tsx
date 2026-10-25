@@ -1,21 +1,27 @@
+import {oldHouseExterior} from './backgrounds/OldHouseExterior';
+import {houseInterior, type BackgroundOptions} from './backgrounds/HouseInterior';
+import {basement} from './backgrounds/Basement';
 import type {ReactNode} from 'react';
 import {useCurrentFrame, useVideoConfig} from 'remotion';
 import {Sofa} from './props/Sofa';
 import {Tree, House} from './Props';
-export type BackgroundName = 'forest' | 'city' | 'room' | 'sea' | 'nightSky';
-export type TimeOfDay = 'day' | 'night';
+export type BackgroundName = 'forest' | 'city' | 'room' | 'sea' | 'nightSky' | 'oldHouseExterior' | 'houseInterior' | 'basement';
+export type TimeOfDay = 'day' | 'dusk' | 'night' | 'moonlight';
 type Palette = {sky: string; far: string; mid: string; near: string; accent: string};
 const palettes: Record<TimeOfDay, Palette> = {
   day: {sky: '#f6e8d5', far: '#d8e0c2', mid: '#a9d0b8', near: '#83b69e', accent: '#ffce89'},
+  dusk: {sky: '#B5A1C5', far: '#A99CB2', mid: '#8185ad', near: '#66667F', accent: '#FFD166'},
+  moonlight: {sky: '#424668', far: '#686b92', mid: '#8185ad', near: '#555e83', accent: '#D6E5FF'},
   night: {sky: '#424668', far: '#686b92', mid: '#8185ad', near: '#555e83', accent: '#ffe0a8'},
 };
-type Context = {w: number; h: number; p: Palette; night: boolean; t: number};
+type Context = {w: number; h: number; p: Palette; night: boolean; t: number; time: TimeOfDay; options: BackgroundOptions; view?: 'front' | 'topDown'};
 type Layers = {far: ReactNode; mid: ReactNode; near: ReactNode};
 export type BackgroundBuilder = (ctx: Context) => Layers;
 const cloud = (x: number, y: number, s = 1) => <g key={x} transform={`translate(${x} ${y}) scale(${s})`} fill="#fff8eb" opacity={0.7}><ellipse rx={90} ry={20}/><ellipse cx={-26} cy={-17} rx={38} ry={29}/><ellipse cx={27} cy={-11} rx={37} ry={25}/></g>;
 const hills = (w: number, h: number, color: string, level: number) => <path d={`M-120 ${h * level} Q${w * .12} ${h * (level - .22)} ${w * .4} ${h * level} T${w + 150} ${h * (level - .06)} V${h + 100} H-120Z`} fill={color}/>;
 const stars = (w: number, h: number) => Array.from({length: 32}, (_, i) => {const x = ((i * 277 + 35) % 997) / 997 * w; const y = ((i * 113 + 37) % 431) / 431 * h * .58; return <path key={i} d={`M${x - 4} ${y} h8 M${x} ${y - 4} v8`} stroke="#fff0cb" strokeWidth={2.5} strokeLinecap="round" opacity={.35 + (i % 3) * .2}/>;});
 export const backgroundRegistry: Record<BackgroundName, BackgroundBuilder> = {
+  oldHouseExterior, houseInterior, basement,
   forest: ({w, h, p, night}) => ({
     far: <>{night ? stars(w, h) : <>{cloud(w * .22, h * .2)}{cloud(w * .77, h * .3, 1.4)}</>}{hills(w, h, p.far, .62)}</>,
     mid: <>{hills(w, h, p.mid, .73)}{Array.from({length: 9}, (_, i) => <g key={i} transform={`translate(${i * w / 7 - 160} ${h * .78 - 224 * Math.min(w, h) / 650}) scale(${Math.min(w, h) / 650})`}><Tree color={night ? '#737fa0' : i % 2 ? '#91bea9' : '#a8cbb1'}/></g>)}</>,
@@ -42,11 +48,11 @@ export const backgroundRegistry: Record<BackgroundName, BackgroundBuilder> = {
     near: <>{hills(w, h, p.near, .91)}<rect x={-100} y={h * .9} width={w + 200} height={h * .2} fill={p.near}/></>,
   }),
 };
-export const Background = ({kind, time = 'day'}: {kind: BackgroundName; time?: TimeOfDay}) => {
+export const Background = ({kind, time = 'day', options = {}, view, panX = 0, parallax = 0}: {kind: BackgroundName; time?: TimeOfDay; options?: BackgroundOptions; view?: 'front' | 'topDown'; panX?: number; parallax?: number}) => {
   const {width: w, height: h, fps} = useVideoConfig(); const t = useCurrentFrame() / fps;
-  const p = palettes[time]; const layers = backgroundRegistry[kind]({w, h, p, night: time === 'night', t});
+  const p = palettes[time]; const layers = backgroundRegistry[kind]({w, h, p, night: time === 'night' || time === 'moonlight', t, time, options, view});
   return <svg width={w} height={h} style={{position: 'absolute', inset: 0}}><rect width={w} height={h} fill={p.sky}/>
     <circle cx={w * .81} cy={h * .18} r={Math.min(w, h) * .065} fill={p.accent}/>
-    {(['far', 'mid', 'near'] as const).map((layer, i) => <g key={layer} data-parallax={layer} transform={`translate(${Math.sin(t * .18) * (i + 1) * 7} 0)`}>{layers[layer]}</g>)}
+    {(['far', 'mid', 'near'] as const).map((layer, i) => <g key={layer} data-parallax={layer} transform={`translate(${Math.sin(t * .18) * (i + 1) * 7 - panX * w * parallax * (2 - i) * .15} 0) translate(${w/2} ${h/2}) scale(${1.04 + parallax * .08}) translate(${-w/2} ${-h/2})`}>{layers[layer]}</g>)}
   </svg>;
 };

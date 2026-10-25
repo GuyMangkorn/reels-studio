@@ -1,11 +1,17 @@
+import type {CameraConfig} from '../camera/Camera';
+import type {CostumeName} from '../rig/costumes';
+import type {GhostVariant} from '../rig/Ghost';
+import type {BackgroundOptions} from '../assets/backgrounds/HouseInterior';
 import type {BackgroundName, TimeOfDay} from '../assets/Background';
 import type {PropName} from '../assets/Props';
 import type {CharacterProps} from '../rig/Character';
 import type {PoseName} from '../rig/poses';
 export type Actor = {
-  id?: string; type: 'narrator' | 'cat' | 'dog'; pose?: PoseName;
+  id?: string; type: 'narrator' | 'cat' | 'dog' | 'ghost'; pose?: PoseName;
   x?: number; y?: number; from?: number; to?: number; scale?: number; flip?: boolean; talking?: boolean;
   skinColor?: CharacterProps['skinColor']; shirtColor?: string; pantsColor?: string; color?: string;
+  character?: CostumeName; ghostVariant?: GhostVariant; opacity?: number; showPivots?: boolean;
+  hairColor?: string;
   hairStyle?: CharacterProps['hairStyle']; expression?: CharacterProps['expression'];
   poses?: {atSec: number; pose: PoseName}[];
   /** Contact the room's sofa cushion while entering or leaving sit. */
@@ -13,7 +19,8 @@ export type Actor = {
 };
 export type Scene = {
   durationSec: number; bg: BackgroundName; time?: TimeOfDay; actors: Actor[]; subtitle: string;
-  title?: string; eyebrow?: string;
-  props?: {type: PropName; x: number; y?: number; size?: number; color?: string}[];
+  background?: BackgroundOptions; camera?: CameraConfig;
+  title?: string; eyebrow?: string; channelName?: string;
+  props?: {type: PropName; x: number; y?: number; size?: number; color?: string; smoke?: number}[];
 };
 export type Timeline = Scene[];

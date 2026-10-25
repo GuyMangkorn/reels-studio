@@ -1,11 +1,11 @@
 /** Degrees, clockwise in SVG coordinates. Local joints inherit their parent's rotation. */
-export const joints = ['torso', 'head', 'upperArmL', 'upperArmR', 'lowerArmL', 'lowerArmR', 'handL', 'handR', 'upperLegL', 'upperLegR', 'lowerLegL', 'lowerLegR', 'footL', 'footR'] as const;
+export const joints = ['root', 'torso', 'head', 'upperArmL', 'upperArmR', 'lowerArmL', 'lowerArmR', 'handL', 'handR', 'upperLegL', 'upperLegR', 'lowerLegL', 'lowerLegR', 'footL', 'footR'] as const;
 export type Joint = typeof joints[number];
 export type JointAngles = Record<Joint, number>;
-export type PoseName = 'idle' | 'walk' | 'point' | 'shock' | 'think' | 'wave' | 'sit';
-const base: JointAngles = {torso: 0, head: 0, upperArmL: 8, upperArmR: -8, lowerArmL: -8, lowerArmR: 8, handL: 0, handR: 0, upperLegL: 0, upperLegR: 0, lowerLegL: 0, lowerLegR: 0, footL: 0, footR: 0};
+export type PoseName = 'idle' | 'walk' | 'point' | 'shock' | 'think' | 'wave' | 'sit' | 'stand' | 'lie';
+const base: JointAngles = {root: 0, torso: 0, head: 0, upperArmL: 8, upperArmR: -8, lowerArmL: -8, lowerArmR: 8, handL: 0, handR: 0, upperLegL: 0, upperLegR: 0, lowerLegL: 0, lowerLegR: 0, footL: 0, footR: 0};
 export const poses: Record<PoseName, JointAngles> = {
-  idle: {...base}, walk: {...base},
+  stand: {...base}, lie: {...base, root: 90, upperArmL: 18, upperArmR: -18, lowerLegL: 8, lowerLegR: 8}, idle: {...base}, walk: {...base},
   point: {...base, upperArmR: -100, lowerArmR: 8, handR: -12, head: -5},
   shock: {...base, upperArmL: 145, upperArmR: -145, lowerArmL: 24, lowerArmR: -24, head: -5, upperLegL: 7, upperLegR: -7},
   think: {...base, upperArmR: -25, lowerArmR: -140, handR: 20, head: 12, upperArmL: 20, lowerArmL: -55},

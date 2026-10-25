@@ -1,8 +1,13 @@
+import {backgroundRegistry} from '../assets/Background';
+import {propRegistry} from '../assets/Props';
+import {costumes} from '../rig/costumes';
+import {ghostVariants} from '../rig/Ghost';
+import {interiorVariants} from '../assets/backgrounds/HouseInterior';
 import {poses, smoothstep, transitionAtTrack, type PoseName, type PoseTrack, type PoseTransition} from '../rig/poses';
 import {HUMAN_HIP_FROM_ANCHOR} from '../rig/geometry';
 import type {Actor, Timeline} from './types';
-const bgNames = ['forest', 'city', 'room', 'sea', 'nightSky'];
-const propNames = ['tree', 'house', 'car', 'boat', 'sign'];
+const bgNames = Object.keys(backgroundRegistry);
+const propNames = Object.keys(propRegistry);
 const animalPoses = ['idle', 'walk', 'sit', 'wave'];
 const finite = (v: unknown): v is number => typeof v === 'number' && Number.isFinite(v);
 const record = (v: unknown): v is Record<string, unknown> => v !== null && typeof v === 'object' && !Array.isArray(v);
@@ -15,26 +20,29 @@ export function validateTimeline(value: unknown): asserts value is Timeline {
     const s = raw as Record<string, unknown>; const path = `[${i}]`;
     if (!finite(s.durationSec) || s.durationSec <= 0) fail(`${path}.durationSec`, 'must be positive');
     if (!bgNames.includes(String(s.bg))) fail(`${path}.bg`, 'unknown background');
-    if (s.time !== undefined && !['day', 'night'].includes(String(s.time))) fail(`${path}.time`, 'expected day or night');
+    if (s.time !== undefined && !['day', 'dusk', 'night', 'moonlight'].includes(String(s.time))) fail(`${path}.time`, 'unknown time of day');
     if (typeof s.subtitle !== 'string') fail(`${path}.subtitle`, 'expected text');
-    for (const key of ['title', 'eyebrow']) if (s[key] !== undefined && typeof s[key] !== 'string') fail(`${path}.${key}`, 'expected text');
+    for (const key of ['title', 'eyebrow', 'channelName']) if (s[key] !== undefined && typeof s[key] !== 'string') fail(`${path}.${key}`, 'expected text');
     if (!Array.isArray(s.actors)) fail(`${path}.actors`, 'expected array');
     const ids = new Set<string>();
     (s.actors as unknown[]).forEach((rawActor, j) => {
       const ap = `${path}.actors[${j}]`;
       if (!record(rawActor)) fail(ap, 'expected actor object');
       const a = rawActor as Record<string, unknown>;
-      if (!['narrator', 'cat', 'dog'].includes(String(a.type))) fail(`${ap}.type`, 'unknown actor');
+      if (!['narrator', 'cat', 'dog', 'ghost'].includes(String(a.type))) fail(`${ap}.type`, 'unknown actor');
       if (a.id !== undefined) {if (typeof a.id !== 'string' || ids.has(a.id)) fail(`${ap}.id`, 'expected unique string'); ids.add(a.id as string);}
-      const checkPose = (p: unknown) => {if (typeof p !== 'string' || !Object.hasOwn(poses, p) || (a.type !== 'narrator' && !animalPoses.includes(p))) fail(`${ap}.pose`, 'unsupported pose for this actor');};
+      const checkPose = (p: unknown) => {if (typeof p !== 'string' || !Object.hasOwn(poses, p) || ((a.type === 'cat' || a.type === 'dog') && !animalPoses.includes(p))) fail(`${ap}.pose`, 'unsupported pose for this actor');};
       if (a.pose !== undefined) checkPose(a.pose);
       for (const key of ['x', 'y', 'from', 'to', 'scale']) if (a[key] !== undefined && !finite(a[key])) fail(`${ap}.${key}`, 'expected finite number');
       if (a.scale !== undefined && (a.scale as number) <= 0) fail(`${ap}.scale`, 'must be positive');
-      for (const key of ['flip', 'talking']) if (a[key] !== undefined && typeof a[key] !== 'boolean') fail(`${ap}.${key}`, 'expected boolean');
-      if (a.hairStyle !== undefined && !['short', 'long', 'bald'].includes(String(a.hairStyle))) fail(`${ap}.hairStyle`, 'unknown hair style');
+      for (const key of ['flip', 'talking', 'showPivots']) if (a[key] !== undefined && typeof a[key] !== 'boolean') fail(`${ap}.${key}`, 'expected boolean');
+      if (a.hairStyle !== undefined && !['short', 'long', 'bald', 'bun'].includes(String(a.hairStyle))) fail(`${ap}.hairStyle`, 'unknown hair style');
       if (a.expression !== undefined && !['neutral', 'happy', 'shock', 'think'].includes(String(a.expression))) fail(`${ap}.expression`, 'unknown expression');
       if (a.seat !== undefined && (a.seat !== 'sofa' || a.type !== 'narrator' || s.bg !== 'room')) fail(`${ap}.seat`, 'sofa seating requires a narrator in the room');
-      for (const key of ['skinColor', 'shirtColor', 'pantsColor', 'color']) if (a[key] !== undefined && typeof a[key] !== 'string') fail(`${ap}.${key}`, 'expected CSS color string');
+      for (const key of ['skinColor', 'shirtColor', 'pantsColor', 'color', 'hairColor']) if (a[key] !== undefined && typeof a[key] !== 'string') fail(`${ap}.${key}`, 'expected CSS color string');
+      if (a.character !== undefined && (a.type !== 'narrator' || typeof a.character !== 'string' || !Object.hasOwn(costumes,a.character))) fail(`${ap}.character`, 'unknown human costume');
+      if (a.ghostVariant !== undefined && (a.type !== 'ghost' || !ghostVariants.includes(a.ghostVariant as typeof ghostVariants[number]))) fail(`${ap}.ghostVariant`, 'unknown ghost variant');
+      if (a.opacity !== undefined && (!finite(a.opacity) || a.opacity < 0 || a.opacity > 1)) fail(`${ap}.opacity`, 'expected 0..1');
       if (a.poses !== undefined) {
         if (!Array.isArray(a.poses)) fail(`${ap}.poses`, 'expected array');
         let last = -1;
@@ -44,6 +52,24 @@ export function validateTimeline(value: unknown): asserts value is Timeline {
         });
       }
     });
+    if (s.background !== undefined) {
+      if (!record(s.background)) fail(`${path}.background`, 'expected options object');
+      const bg = s.background as Record<string,unknown>;
+      if (bg.variant !== undefined && (s.bg !== 'houseInterior' || !interiorVariants.includes(bg.variant as typeof interiorVariants[number]))) fail(`${path}.background.variant`, 'unknown interior variant');
+      if (bg.windowLights !== undefined && typeof bg.windowLights !== 'boolean') fail(`${path}.background.windowLights`, 'expected boolean');
+    }
+    if (s.camera !== undefined) {
+      if (!record(s.camera)) fail(`${path}.camera`, 'expected camera object');
+      const c = s.camera as Record<string,unknown>;
+      const pair = (v: unknown): v is [number,number] => Array.isArray(v) && v.length === 2 && v.every(finite);
+      if (c.zoom !== undefined && (!pair(c.zoom) || c.zoom.some(v => v < 1 || v > 4))) fail(`${path}.camera.zoom`, 'expected two zooms in 1..4');
+      if (c.pan !== undefined && (!record(c.pan) || !pair(c.pan.from) || !pair(c.pan.to))) fail(`${path}.camera.pan`, 'expected from/to coordinate pairs');
+      if (c.parallax !== undefined && (!finite(c.parallax) || c.parallax < 0 || c.parallax > 1)) fail(`${path}.camera.parallax`, 'expected 0..1');
+      if (c.view !== undefined && !['front','topDown'].includes(String(c.view))) fail(`${path}.camera.view`, 'unknown view');
+      if (c.view === 'topDown' && s.bg !== 'houseInterior') fail(`${path}.camera.view`, 'topDown requires houseInterior');
+      if (c.view === 'topDown' && (!record(s.background) || !['bedroom','staircase'].includes(String(s.background.variant)))) fail(`${path}.camera.view`, 'topDown requires an authored bedroom or staircase variant');
+      if (c.lighting !== undefined && !['normal','silhouette'].includes(String(c.lighting))) fail(`${path}.camera.lighting`, 'unknown lighting');
+    }
     if (s.props !== undefined) {
       if (!Array.isArray(s.props)) fail(`${path}.props`, 'expected array');
       (s.props as unknown[]).forEach((p, j) => {
@@ -51,6 +77,7 @@ export function validateTimeline(value: unknown): asserts value is Timeline {
         if (!record(p) || !propNames.includes(String(p.type)) || !finite(p.x)) fail(pp, 'expected known type and numeric x');
         const prop = p as Record<string, unknown>;
         for (const key of ['y', 'size']) if (prop[key] !== undefined && !finite(prop[key])) fail(`${pp}.${key}`, 'expected finite number');
+        if (prop.smoke !== undefined && (prop.type !== 'furnace' || !finite(prop.smoke) || prop.smoke < 0 || prop.smoke > 1)) fail(`${pp}.smoke`, 'expected furnace smoke 0..1');
         if (prop.size !== undefined && (prop.size as number) <= 0) fail(`${pp}.size`, 'must be positive');
       });
     }
