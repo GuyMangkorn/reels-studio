@@ -137,7 +137,7 @@ Add new work in these places. Create the folder when the first file needs it:
 | `src/assets/backgrounds/` | One background component per location (`park-day`, `kitchen`, …). |
 | `src/assets/props/` | One prop component per object (`banknote`, `bowl`, `sofa`, …). The sofa exposes a seat height. See [Known visual issues](#known-visual-issues). |
 | `src/assets/overlays/` | Planned shared screen graphics: `RuleCard.tsx` (`rule-card`), `PhoneChat.tsx` (`phone-chat`). Not in the repo yet. See [Planned reusable overlay components](#planned-reusable-overlay-components). |
-| `src/assets/cameras/` | Planned POV presets (`povWindow`, `povDoorCrack`, `povBed`, `povHallway`, `povFlashlight`, `povKeyhole`). Not in the repo yet. See [Shot variety and POV (horror-film feel)](#shot-variety-and-pov-horror-film-feel). |
+| `src/assets/cameras/` | Planned POV presets (`povWindow`, `povDoorCrack`, `povBed`, `povHallway`, `povFlashlight`, `povKeyhole`, `povWatcher`). Not in the repo yet. See [Shot variety and POV (horror-film feel)](#shot-variety-and-pov-horror-film-feel). |
 | `src/scenes/` | Thin scene components, or the renderer that reads scene JSON. No pasted art. |
 | `scripts/` | JSON timelines, one file per short or chapter. Helpers that call TTS stay here and read secrets from the environment. |
 
@@ -263,9 +263,18 @@ Reusing a character, a room, or a prop is the point of the library. The same wid
 
 The picture stays flat pastel vector. A scare is a darker grade of that same palette, plus framing and timing. It is not a switch to realistic rendering.
 
-Use a first-person POV now and then, for suspense, in the manner of a horror film. About 1–2 POV shots per long-form chapter (a chapter is 45–60 seconds). Never every scene. A Short cut from that chapter may keep the POV that is already in it. Do not add a POV to every line of the Short.
+Use a first-person POV now and then, for suspense, in the manner of a horror film. A Short cut from a chapter may keep a POV that is already in that chapter. Do not add a POV to every line of the Short.
 
-Build each POV once, as a camera preset under `src/assets/cameras/`. Scene JSON selects it. A chapter does not draw its own window, door crack, keyhole, or flashlight cone.
+Build each POV once, as a camera preset under `src/assets/cameras/`. Scene JSON selects it. A chapter does not draw its own window, door crack, keyhole, flashlight cone, curtain, or foliage.
+
+### How often
+
+This restraint applies to every POV preset, including `povWatcher`.
+
+- Use a POV only when the beat needs it: a suspense build, or a reveal. Default to normal framing otherwise.
+- POV shots of any kind stay a minority of the shots in a chapter. About 1–2 per long-form chapter (a chapter is 45–60 seconds). Never every scene.
+- Never place two POV shots back to back. A normal shot sits between them.
+- `povWatcher` is rarer: at most about one per chapter, and not in consecutive chapters by default.
 
 | Preset | Shot |
 | --- | --- |
@@ -275,6 +284,7 @@ Build each POV once, as a camera preset under `src/assets/cameras/`. Scene JSON 
 | `povHallway` | Down a dark staircase or a dark hallway. |
 | `povKeyhole` | Through a keyhole. Same idea as the door crack, tighter frame. |
 | `povFlashlight` | A flashlight cone sweeping a basement. |
+| `povWatcher` | The view from an unseen presence watching the characters. |
 
 Suspense grammar lives in the preset:
 
@@ -297,9 +307,31 @@ Subtitles stay as specified under [Thai subtitles and narration](#thai-subtitles
 }
 ```
 
-`preset` is `povWindow`, `povDoorCrack`, `povBed`, `povHallway`, `povFlashlight`, or `povKeyhole`.
+`preset` is `povWindow`, `povDoorCrack`, `povBed`, `povHallway`, `povFlashlight`, `povKeyhole`, or `povWatcher`.
 
 `reveal.actor` is a library id: a character, the cat, the dog, or a simple silhouette. `reveal.atSec` is seconds from the start of the shot when that actor enters. Omit `reveal` to hold on the empty frame. A false scare is an early `reveal` of `cat` or `dog`. The beat that matters comes later, or on a second use of the same preset.
+
+### Watcher POV
+
+`povWatcher` is the camera of someone the characters do not see. The lens sits in a hiding place and looks at them:
+
+- Behind curtains.
+- Outside the window, looking in.
+- The dark top of the stairs.
+- Through foliage in the garden.
+- A corner, with furniture between the lens and the room.
+
+One preset covers those places. `place` picks the foreground: `curtains`, `outsideWindow`, `stairTop`, `foliage`, or `furnitureCorner`. The occluder (cloth, window frame, stair rail, leaves, a chair back) is part of the preset and covers part of the frame. The camera has a slight handheld sway, slow and small, like a body holding still. The same vignette and darkened edges as the other POV presets apply. The characters on screen are the scene's actors. `reveal` is optional here. Use it when something extra arrives late, such as a head turning toward the hiding place.
+
+```json
+{
+  "camera": {
+    "preset": "povWatcher",
+    "place": "curtains",
+    "reveal": { "actor": "kid-mint", "atSec": 1.2 }
+  }
+}
+```
 
 Keep it channel-safe. Creepy, not gory: no blood, wounds, or injury. The twist can be funny. The shape in the window can be the cat. A subtitle on the empty hold can be `มีอะไรรึเปล่า... นอกหน้าต่าง`.
 
