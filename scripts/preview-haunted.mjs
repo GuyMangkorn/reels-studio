@@ -10,19 +10,72 @@ const serveUrl = await bundle({entryPoint: path.resolve('src/index.ts'), enableC
 const browser = await openBrowser('chrome');
 try {
   for (const id of ['Short', 'Long']) {
-    const composition = await selectComposition({port: 3106, serveUrl, id, browserInstance: browser, inputProps});
+    const composition = await selectComposition({
+      port: 3106,
+      serveUrl,
+      id,
+      browserInstance: browser,
+      inputProps,
+    });
     await mkdir(`out/haunted-qa/${id}`, {recursive: true});
     let start = 0;
     for (const [index, scene] of timeline.entries()) {
       const frame = start + 60;
-      await renderStill({port: 3106, serveUrl, composition, browserInstance: browser, inputProps, frame, output: `out/haunted-qa/${id}/${index}.png`});
+      await renderStill({
+        port: 3106,
+        serveUrl,
+        composition,
+        browserInstance: browser,
+        inputProps,
+        frame,
+        output: `out/haunted-qa/${id}/${index}.png`,
+      });
       console.log(`${id}: shot ${index + 1}, frame ${frame}`);
+      if (scene.background?.variant === 'bedroomPOV') {
+        for (const [label, offset] of [
+          ['start', 0],
+          ['end', Math.round(scene.durationSec * composition.fps) - 1],
+        ]) {
+          await renderStill({
+            port: 3106,
+            serveUrl,
+            composition,
+            browserInstance: browser,
+            inputProps,
+            frame: start + offset,
+            output: `out/haunted-qa/${id}/pov-${label}.png`,
+          });
+        }
+      }
       start += Math.round(scene.durationSec * composition.fps);
     }
     // Exercise nested joint debug markers without changing delivered JSON.
-    const pivotProps = {...inputProps, timeline: [{...timeline[4], durationSec: 4, actors: timeline[4].actors.map(actor => ({...actor, showPivots: true}))}]};
-    const pivotComposition = await selectComposition({port: 3106, serveUrl, id, browserInstance: browser, inputProps: pivotProps});
-    await renderStill({port: 3106, serveUrl, composition: pivotComposition, browserInstance: browser, inputProps: pivotProps, frame: 30, output: `out/haunted-qa/${id}/pivots.png`});
+    const pivotProps = {
+      ...inputProps,
+      timeline: [
+        {
+          ...timeline[4],
+          durationSec: 4,
+          actors: timeline[4].actors.map((actor) => ({...actor, showPivots: true})),
+        },
+      ],
+    };
+    const pivotComposition = await selectComposition({
+      port: 3106,
+      serveUrl,
+      id,
+      browserInstance: browser,
+      inputProps: pivotProps,
+    });
+    await renderStill({
+      port: 3106,
+      serveUrl,
+      composition: pivotComposition,
+      browserInstance: browser,
+      inputProps: pivotProps,
+      frame: 30,
+      output: `out/haunted-qa/${id}/pivots.png`,
+    });
   }
 } finally {
   await browser.close({silent: true});
