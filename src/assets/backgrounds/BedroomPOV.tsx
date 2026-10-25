@@ -135,7 +135,8 @@ export const BedroomPOV = ({
       </div>
       <Layer width={width} height={height} y={state.blanketY} name="blanket">
         <g
-          transform={`translate(0 ${-state.pull * 160}) translate(540 1040) scale(${1 - state.pull * 0.12} ${1 - state.pull * 0.06}) translate(-540 -1040)`}
+          data-blanket-motion="toward-foot"
+          transform={`translate(0 ${state.pull * 160}) translate(540 1040) scale(${1 - state.pull * 0.12} ${1 - state.pull * 0.06}) translate(-540 -1040)`}
         >
           <Duvet />
         </g>

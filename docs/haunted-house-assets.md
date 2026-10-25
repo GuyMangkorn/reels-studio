@@ -10,7 +10,7 @@ All artwork is original SVG written in this repository and uses the channel's pa
 | ----------------------------------------- | ----------------------------------------------------------------------------- |
 | Actor `type: narrator`, `character`       | `mrsH` (bun/skirt), `mrH` (vest/moustache), `brotherH` (recolor/bald variant) |
 | Human `pose`                              | Existing poses plus `stand` and `lie`; Mrs. H supports stand/walk/shock/lie   |
-| Actor `type: ghost`, `ghostVariant`       | `womanBlack`, `seatedPair`, `crawler`                                         |
+| Actor `type: ghost`, `ghostVariant`       | `womanBlack`, `seatedPair`, `crawler` (articulated, frame-driven crawl)       |
 | Ghost `opacity`                           | 0..1, default .55; `scale`, `flip`, `from`/`to` also apply                    |
 | `bg: oldHouseExterior`                    | `time: day/dusk/night/moonlight`, `background.windowLights: boolean`          |
 | `bg: houseInterior`, `background.variant` | `drawing`, `dining`, `staircase`, `bedroomPOV`, `kitchen`                     |
@@ -38,6 +38,8 @@ Furnace smoke is a stylized combustion/exhaust cue. CO itself is invisible; do n
 Zoom endpoints are 1..4; pan coordinates are fractions of composition width/height, clamped to available zoom overscan so the stage cannot expose empty edges. Motion eases over shot-local duration and is deterministic when seeking. Parallax (0..1) adds depth-dependent movement to the existing far/mid/near layers. Background overscan covers the added layer motion. Silhouette lighting darkens actors while preserving the set and screen text. Titles and Thai subtitles stay outside the camera.
 
 `view: topDown` selects the authored overhead staircase geometry in `houseInterior`; it is valid for the staircase only and is rejected for every other variant. Bedrooms are POV-only and must use `background.variant: bedroomPOV`. It does not turn a frontal human drawing into a 3D overhead figure. `time: moonlight` adds a moonlight shaft. Drawing/dining/kitchen share the arch/window shell.
+
+The staircase top-down view is authored as a look down the stairs: the far steps are narrower and higher in the frame, while the near steps widen toward the bottom. The same geometry is used by Short and Long so the orientation does not flip between aspect ratios.
 
 The single channel config is `src/config/channel.ts`: Thai name **ทำไมล่ะ**, romanized **TamMaiLa**. Omitting `channelName` uses the Thai default. A `SceneRenderer`/input-props `channelName` overrides the whole timeline; a scene value overrides that inherited label. `null` or `false` explicitly hides it. The footer has a fixed band below subtitles in both formats; long labels truncate within that band.
 
@@ -72,6 +74,8 @@ Four ordered layers draw the back wall/window/moonlight, bed end, figures, then 
 `background.blanketPull` accepts a fixed number in 0..1 or two endpoints `[from, to]` in 0..1. Endpoints ease over the shot, sliding and foreshortening the duvet toward the foot without revealing a body or legs. It is measured in scene-local time, so seeking and both aspect ratios produce the same beat. Camera zoom/pan still operate on the world; subtitles and channel footer stay fixed outside it.
 
 An optional POV shoulder-hit beat is declared at scene level as `impact: {"atSec": 2.1}`. During the short deterministic window, the camera shakes and a shadow briefly flickers over the world; subtitles and the channel footer remain fixed. The impact is accepted only on `bedroomPOV` scenes. Ghosts at the bed end use `depth: "bedEnd"`, which keeps them smaller, darker and slightly blurred behind the duvet.
+
+The `crawler` ghost is a reusable articulated silhouette. Its shoulder/elbow and hip/knee chains use phase-lagged joints for a crawling gait; an irregular face, pinprick eyes, open jaw and teeth keep the figure threatening without adding scene-specific artwork.
 
 ## Preview and validation
 

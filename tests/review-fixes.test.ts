@@ -7,6 +7,7 @@ import {captionLayout} from '../src/scenes/captionLayout';
 import {cameraAt, impactAt} from '../src/camera/Camera';
 import {validateTimeline, layoutActor} from '../src/scenes/timeline';
 import {BedroomPOV, bedroomPOVAt, bedEndPlacement} from '../src/assets/backgrounds/BedroomPOV';
+import {Ghost} from '../src/rig/Ghost';
 import type {Scene} from '../src/scenes/types';
 
 const room: Scene = {
@@ -106,6 +107,16 @@ test('bedroom POV depth motion and blanket pull remain deterministic when seekin
     );
     assert.ok(html.indexOf('ghosts') < layers[3]);
     assert.ok(html.includes('data-duvet-edge="only"'));
+    const endHtml = renderToStaticMarkup(
+      createElement(
+        BedroomPOV,
+        {width, height, frame: 120, fps: 30, duration: 121, options: {blanketPull: [0, 1]}},
+        createElement('div', null, 'ghosts'),
+      ),
+    );
+    assert.ok(endHtml.includes('data-blanket-motion="toward-foot"'));
+    assert.match(endHtml, /translate\(0 160\)/);
+    assert.doesNotMatch(endHtml, /translate\(0 -160\)/);
     assert.doesNotMatch(html, /M210 1810|M355 1480/);
   }
 });
@@ -155,4 +166,17 @@ test('POV scene JSON validates bounded pull and rejects misplaced depth controls
     /background.variant/,
   );
   assert.throws(() => validateTimeline([{...room, channelName: 2}]), /channelName/);
+});
+test('crawler is an articulated, frame-driven silhouette', () => {
+  const render = (frame: number) =>
+    renderToStaticMarkup(
+      createElement(Ghost, {x: 300, y: 500, variant: 'crawler', frame, fps: 30}),
+    );
+  const start = render(0);
+  const later = render(14);
+  assert.ok(start.includes('data-crawler="articulated"'));
+  assert.ok(start.includes('data-crawler-face="nightmare"'));
+  assert.ok(start.includes('scale(-1 1)'));
+  assert.ok((start.match(/data-crawler-joint/g) ?? []).length >= 4);
+  assert.notEqual(start, later);
 });

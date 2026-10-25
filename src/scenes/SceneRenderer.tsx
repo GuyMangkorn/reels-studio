@@ -118,7 +118,13 @@ const SceneView = ({
     const pose = poseAt(actor, poseFrame, fps, previousPose);
     const figure =
       actor.type === 'ghost' ? (
-        <Ghost {...position} variant={actor.ghostVariant} opacity={actor.opacity} />
+        <Ghost
+          {...position}
+          variant={actor.ghostVariant}
+          opacity={actor.opacity}
+          frame={poseFrame}
+          fps={fps}
+        />
       ) : actor.type === 'narrator' ? (
         <Character
           {...(actor.character ? costumes[actor.character] : {})}
@@ -209,49 +215,51 @@ const SceneView = ({
           </>
         )}
       </Camera>
-      <div
-        style={{
-          position: 'absolute',
-          left: width * 0.075,
-          top: height * (portrait ? 0.085 : 0.067),
-          color: ink,
-          opacity: interpolate(frame, [0, 12], [0, 1], {
-            extrapolateLeft: 'clamp',
-            extrapolateRight: 'clamp',
-          }),
-          transform: `translateY(${interpolate(frame, [0, 18], [15, 0], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'})}px)`,
-        }}
-      >
-        {scene.eyebrow && (
-          <div style={{fontSize: portrait ? 24 : 21, fontWeight: 600, letterSpacing: 4}}>
-            {scene.eyebrow}
-          </div>
-        )}
-        {scene.title && (
-          <div
-            style={{
-              fontFamily: 'Noto Sans Thai, sans-serif',
-              fontSize: portrait ? 105 : 76,
-              lineHeight: 1.13,
-              fontWeight: 800,
-              letterSpacing: -4,
-              whiteSpace: 'pre-line',
-              marginTop: 24,
-            }}
-          >
-            {scene.title}
-          </div>
-        )}
+      {(scene.eyebrow || scene.title) && (
         <div
           style={{
-            width: 65,
-            height: 7,
-            borderRadius: 8,
-            background: night ? '#ffdba4' : '#e5a08c',
-            marginTop: 25,
+            position: 'absolute',
+            left: width * 0.075,
+            top: height * (portrait ? 0.085 : 0.067),
+            color: ink,
+            opacity: interpolate(frame, [0, 12], [0, 1], {
+              extrapolateLeft: 'clamp',
+              extrapolateRight: 'clamp',
+            }),
+            transform: `translateY(${interpolate(frame, [0, 18], [15, 0], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'})}px)`,
           }}
-        />
-      </div>
+        >
+          {scene.eyebrow && (
+            <div style={{fontSize: portrait ? 24 : 21, fontWeight: 600, letterSpacing: 4}}>
+              {scene.eyebrow}
+            </div>
+          )}
+          {scene.title && (
+            <div
+              style={{
+                fontFamily: 'Noto Sans Thai, sans-serif',
+                fontSize: portrait ? 105 : 76,
+                lineHeight: 1.13,
+                fontWeight: 800,
+                letterSpacing: -4,
+                whiteSpace: 'pre-line',
+                marginTop: 24,
+              }}
+            >
+              {scene.title}
+            </div>
+          )}
+          <div
+            style={{
+              width: 65,
+              height: 7,
+              borderRadius: 8,
+              background: night ? '#ffdba4' : '#e5a08c',
+              marginTop: 25,
+            }}
+          />
+        </div>
+      )}
       <Subtitles text={scene.subtitle} />
       <Footer
         width={width}

@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import {cameraAt} from '../src/camera/Camera';
 import {samplePose, resolvePose} from '../src/rig/poses';
 import {validateTimeline, timelineFrames} from '../src/scenes/timeline';
+import {staircaseSteps} from '../src/assets/backgrounds/HouseInterior';
 import showcase from '../scripts/haunted-house-p1.json';
 
 test('P1 showcase selects every set, costume, ghost and required pose through JSON', () => {
@@ -47,6 +48,13 @@ test('every bedroom beat is POV-only and places ghosts at the bed end', () => {
         .every((actor) => 'depth' in actor && actor.depth === 'bedEnd'),
     );
   }
+});
+test('staircase top-down geometry recedes toward the top of the frame', () => {
+  const first = staircaseSteps[0];
+  const last = staircaseSteps[staircaseSteps.length - 1];
+  assert.ok(first.y < last.y);
+  assert.ok(first.width < last.width);
+  assert.ok(first.x > last.x);
 });
 test('camera reaches exact endpoints, clamps seeking and has deterministic midpoint', () => {
   const camera = {zoom: [1, 2], pan: {from: [0, 0], to: [-0.1, 0.08]}} as {

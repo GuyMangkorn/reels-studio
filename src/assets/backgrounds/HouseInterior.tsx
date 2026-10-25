@@ -16,19 +16,18 @@ export type BackgroundOptions = {
 const Staircase = () => (
   <>
     <rect x={250} y={390} width={580} height={920} fill="#524C61" />
-    {Array.from({length: 12}, (_, i) => (
-      <rect
-        key={i}
-        x={300 + i * 9}
-        y={420 + i * 66}
-        width={480 - i * 18}
-        height={64}
-        fill={i % 2 ? '#BC9F9A' : '#D2B8A8'}
-      />
+    {staircaseSteps.map((step, i) => (
+      <rect key={i} {...step} fill={i % 2 ? '#BC9F9A' : '#D2B8A8'} />
     ))}
     <path d="M280 410 V1320 M810 410 V1320" stroke="#FFF3B0" strokeWidth={14} />
   </>
 );
+export const staircaseSteps = Array.from({length: 12}, (_, i) => ({
+  x: 399 - i * 9,
+  y: 420 + i * 66,
+  width: 282 + i * 18,
+  height: 64,
+}));
 const ArchAndWindow = ({dark}: {dark: boolean}) => (
   <>
     <path d="M75 1240 V610 Q250 360 425 610 V1240" fill="#A69AB2" />
