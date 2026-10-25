@@ -1,9 +1,11 @@
 import {AbsoluteFill, Freeze, Audio, staticFile, Sequence, useCurrentFrame, useVideoConfig, interpolate} from 'remotion';
+import {sofaSeat} from '../assets/props/Sofa';
+import {poseWeightAt} from '../rig/poses';
 import {Background} from '../assets/Background';
 import {SceneProp} from '../assets/Props';
 import {Character, Cat, Dog, type PoseName} from '../rig';
 import {Subtitles} from './Subtitles';
-import {actorIdentity, actorPosition, layoutActor, poseAt, sceneFrames, validateTimeline} from './timeline';
+import {actorIdentity, actorPoseTrack, actorPosition, layoutActor, poseAt, sceneFrames, validateTimeline} from './timeline';
 import {mouthAt} from '../rig/drivers';
 import {endingState, type Ending} from './endings';
 import type {Timeline, Scene} from './types';
@@ -32,9 +34,10 @@ const SceneView = ({scene, index, total, previous, start, narration, ending}: {s
       const identity = actorIdentity(actor, i);
       const prev = previous?.actors.find((a, j) => actorIdentity(a, j) === identity);
       const previousPose: PoseName = prev ? (prev.poses?.at(-1)?.pose ?? prev.pose ?? 'idle') : 'idle';
-      const position = layoutActor(actor, actorPosition(actor, poseFrame, duration), width, height);
+      const seat = actor.seat === 'sofa' ? {y: sofaSeat(width, height).y, amount: poseWeightAt(actorPoseTrack(actor, fps, previousPose), 'sit', poseFrame, fps)} : undefined;
+      const position = layoutActor(actor, actorPosition(actor, poseFrame, duration), width, height, seat);
       const pose = poseAt(actor, poseFrame, fps, previousPose);
-      return actor.type === 'narrator' ? <Character key={identity} {...actor} {...position} pose={pose} frame={poseFrame} mouth={mouth}/> : actor.type === 'cat' ? <Cat key={identity} {...position} flip={actor.flip} color={actor.color} pose={pose.to as 'idle' | 'walk' | 'sit' | 'wave'} frame={poseFrame}/> : <Dog key={identity} {...position} flip={actor.flip} color={actor.color} pose={pose.to as 'idle' | 'walk' | 'sit' | 'wave'} frame={poseFrame}/>;
+      return actor.type === 'narrator' ? <Character key={identity} {...actor} {...position} pose={pose} frame={poseFrame} mouth={mouth}/> : actor.type === 'cat' ? <Cat key={identity} {...position} color={actor.color} pose={pose.to as 'idle' | 'walk' | 'sit' | 'wave'} frame={poseFrame}/> : <Dog key={identity} {...position} color={actor.color} pose={pose.to as 'idle' | 'walk' | 'sit' | 'wave'} frame={poseFrame}/>;
     })}
     <Subtitles text={scene.subtitle}/>
     <div style={{position: 'absolute', bottom: portrait ? 53 : 24, left: width * .075, right: width * .075, display: 'flex', alignItems: 'center', gap: 12}}>

@@ -1,5 +1,6 @@
 import {useRef} from 'react';
 import {useCurrentFrame, useVideoConfig} from 'remotion';
+import {HUMAN_HIP_FROM_ANCHOR} from './geometry';
 import {Joint} from './Joint';
 import {blinkAt} from './drivers';
 import {advancePoseChange, resolvePose, type PoseInput, type PoseChangeState} from './poses';
@@ -8,9 +9,10 @@ export type CharacterProps = {
   x?: number; y?: number; scale?: number; flip?: boolean; skinColor?: string; shirtColor?: string; pantsColor?: string;
   hairStyle?: 'short' | 'long' | 'bald'; expression?: Expression; pose?: PoseInput; talking?: boolean;
   /** Audio-driven openness, 0..1. No procedural talking fallback. */ mouth?: number;
+  /** Seating blend suppresses hip bob and the standing floor shadow. */ seatWeight?: number;
   /** Optional explicit animation clock in scene-local frames. */ frame?: number;
 };
-export const Character = ({x = 0, y = 0, scale = 1, flip = false, skinColor = '#efb78e', shirtColor = '#fb947e', pantsColor = '#666cac', hairStyle = 'short', expression = 'happy', pose = 'idle', talking = false, mouth: openness = 0, frame: clock}: CharacterProps) => {
+export const Character = ({x = 0, y = 0, scale = 1, flip = false, skinColor = '#efb78e', shirtColor = '#fb947e', pantsColor = '#666cac', hairStyle = 'short', expression = 'happy', pose = 'idle', talking = false, mouth: openness = 0, seatWeight = 0, frame: clock}: CharacterProps) => {
   const current = useCurrentFrame(); const {fps} = useVideoConfig(); const frame = clock ?? current;
   const livePose = useRef<PoseChangeState | null>(null);
   if (typeof pose === 'string') livePose.current = advancePoseChange(livePose.current, pose, frame, fps);
@@ -29,10 +31,10 @@ export const Character = ({x = 0, y = 0, scale = 1, flip = false, skinColor = '#
     <Joint name={`lowerArm${side}`} y={65} angle={a[`lowerArm${side}`]}><rect x={-12} y={-9} width={24} height={68} rx={12} fill={skinColor}/>
       <Joint name={`hand${side}`} y={54} angle={a[`hand${side}`]}><ellipse cy={10} rx={15} ry={21} fill={skinColor}/><ellipse cx={side === 'L' ? 12 : -12} cy={6} rx={7} ry={11} fill={skinColor}/></Joint>
     </Joint></Joint>;
-  return <svg aria-label="Narrator cut-out rig" width={320 * scale} height={430 * scale} viewBox="-160 -230 320 430" style={{position: 'absolute', left: x - 160 * scale, top: y - 415 * scale, overflow: 'visible'}}>
+  return <svg aria-label="Narrator cut-out rig" width={320 * scale} height={430 * scale} viewBox="-160 -230 320 430" style={{position: 'absolute', left: x - 160 * scale, top: y - (230 + HUMAN_HIP_FROM_ANCHOR) * scale, overflow: 'visible'}}>
     <g transform={`scale(${flip ? -1 : 1} 1)`}>
-      <ellipse cx={8} cy={185} rx={68} ry={10} fill="#253047" opacity={0.12}/>
-      <g transform={`translate(0 ${Math.sin(t * 2.7) * 2.3})`}>
+      <ellipse cx={8} cy={185} rx={68} ry={10} fill="#253047" opacity={0.12 * (1 - seatWeight)}/>
+      <g transform={`translate(0 ${Math.sin(t * 2.7) * 2.3 * (1 - seatWeight)})`}>
         {leg('L')}{leg('R')}
         <Joint name="torso" angle={a.torso}>
           {arm('L')}

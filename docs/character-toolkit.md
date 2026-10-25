@@ -45,6 +45,7 @@ npm run render:long
 | `src/rig/Animal.tsx` | Shared quadruped skeleton, Cat and Dog, articulated legs, tail wag and ear twitch |
 | `src/rig/index.ts` | Public rig exports |
 | `src/assets/Background.tsx` | Forest, city, room, sea and nightSky builders; far/mid/near parallax and day/night palettes |
+| `src/assets/props/Sofa.tsx` | Shared sofa artwork and cushion contact surface |
 | `src/assets/Props.tsx` | Tree, House, Car, Boat, Sign and placement registry |
 | `src/scenes/types.ts` | Timeline, Scene and Actor contracts |
 | `src/scenes/timeline.ts` | JSON validation, duration, identity, movement, pose tracks and adaptive layout |
@@ -112,8 +113,9 @@ Edit `scripts/demo.json`, or pass a typed `timeline` prop to `SceneRenderer`. CL
 ]
 ```
 
-- Actor `x`, `from`, `to` are normalized horizontal positions; `from/to` override `x` and ease over the scene. Values outside 0–1 permit entrances. Movement does not automatically change pose; set `pose: "walk"` too.
+- Actor `x`, `from`, `to` are normalized horizontal positions; `from/to` override `x` and ease over the scene. Values outside 0–1 permit entrances. Animals automatically face their direction of travel (`from > to` faces left); an explicit `flip` overrides this. Stationary animals retain their authored facing. Movement does not automatically change pose; set `pose: "walk"` too.
 - `y` is an optional normalized foot anchor. The default depends on aspect ratio and species; portrait staggers the dog forward. `scale` multiplies the responsive base scale. Prop `x/y` are normalized anchors; `size` is pixels before the portrait multiplier.
+- Set `"seat": "sofa"` on the narrator in a room scene to align its hip with the cushion during `sit`. The cushion height comes from the sofa asset, scales with the layout, and uses the same 0.4-second blend as the joints, including interrupted pose changes. Seated hips stop bobbing and the standing floor shadow fades away.
 - Stable `id`s allow the narrator to interpolate from its previous scene's final pose. Without IDs, identity falls back to type + index. `poses` keyframes are scene-local seconds and must be strictly increasing, within scene duration. Keyframes choose the target at that time; interpolation takes the next 0.4 seconds.
 - Scenes cut at exact duration boundaries. Secondary motion restarts on each scene's local clock. Narration uses the composition clock across scene cuts; scene-local pose clocks never restart the audio envelope. `SceneRenderer` accepts optional `narration: {src, amplitude, fps, startFrame?}` and `ending: "A_fade" | "B_loop"`. Omit narration for a silent custom scene. The registered demo expects the local `public/narration.mp3`; regenerate it before rendering a fresh checkout.
 - Animals have their own procedural pose sampling; their pose switches are immediate, with smooth cyclic leg / tail motion.

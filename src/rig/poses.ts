@@ -15,6 +15,19 @@ export const poses: Record<PoseName, JointAngles> = {
 export type PoseTransition = {from: PoseName; to: PoseName; startFrame: number; durationFrames?: number; fromAngles?: JointAngles};
 export type PoseTrack = {initial: PoseName; from?: PoseName; keys: {frame: number; pose: PoseName}[]; durationFrames?: number};
 export type PoseInput = PoseName | PoseTransition | PoseTrack;
+/** Blend a posture channel with the same interrupted transitions as the joint track. */
+export function poseWeightAt(track: PoseTrack, name: PoseName, frame: number, fps: number): number {
+  let from = (track.from ?? track.initial) === name ? 1 : 0;
+  let to = track.initial === name ? 1 : 0;
+  let start = 0;
+  const duration = track.durationFrames ?? Math.round(fps * .4);
+  const sample = (at: number) => from + (to - from) * smoothstep(duration <= 0 ? 1 : (at - start) / duration);
+  for (const key of track.keys) {
+    if (frame < key.frame) break;
+    from = sample(key.frame); to = key.pose === name ? 1 : 0; start = key.frame;
+  }
+  return sample(frame);
+}
 export const mixAngles = (a: JointAngles, b: JointAngles, t: number): JointAngles => t <= 0 ? {...a} : t >= 1 ? {...b} : Object.fromEntries(joints.map(j => [j, a[j] + (b[j] - a[j]) * t])) as JointAngles;
 export const smoothstep = (t: number) => {const v = Math.max(0, Math.min(1, t)); return v * v * (3 - 2 * v);};
 export function samplePose(name: PoseName, frame: number, fps: number): JointAngles {

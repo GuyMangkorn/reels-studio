@@ -8,6 +8,8 @@ export type Actor = {
   skinColor?: CharacterProps['skinColor']; shirtColor?: string; pantsColor?: string; color?: string;
   hairStyle?: CharacterProps['hairStyle']; expression?: CharacterProps['expression'];
   poses?: {atSec: number; pose: PoseName}[];
+  /** Contact the room's sofa cushion while entering or leaving sit. */
+  seat?: 'sofa';
 };
 export type Scene = {
   durationSec: number; bg: BackgroundName; time?: TimeOfDay; actors: Actor[]; subtitle: string;

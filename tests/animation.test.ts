@@ -1,9 +1,10 @@
 import {test} from 'node:test';
 import assert from 'node:assert/strict';
-import {advancePoseChange, mixAngles, poses, resolvePose, samplePose} from '../src/rig/poses';
-import {actorPosition, layoutActor, poseAt, timelineFrames, validateTimeline} from '../src/scenes/timeline';
+import {poseWeightAt, advancePoseChange, mixAngles, poses, resolvePose, samplePose} from '../src/rig/poses';
+import {actorPoseTrack, actorPosition, layoutActor, poseAt, timelineFrames, validateTimeline} from '../src/scenes/timeline';
 import demo from '../scripts/demo.json';
 import amplitude from '../src/amplitude.json';
+import {sofaSeat} from '../src/assets/props/Sofa';
 import type {Timeline} from '../src/scenes/types';
 
 test('demo has five scenes and exactly 600 frames at 30fps', () => {
@@ -127,4 +128,35 @@ test('demo envelope spans all five scenes with speech and closed-mouth pauses', 
     assert.ok(amplitude.slice(start, start + 100).some(value => value > .2));
     assert.equal(mouthAt(amplitude, start + 119), 0);
   }
+});
+
+test('moving animals face their travel direction unless flip is explicitly authored', () => {
+  for (const type of ['cat', 'dog'] as const) {
+    assert.equal(layoutActor({type, from: 1.12, to: .63}, .8, 1080, 1920).flip, true);
+    assert.equal(layoutActor({type, from: .46, to: .61}, .5, 1080, 1920).flip, false);
+    assert.equal(layoutActor({type, from: 1, to: 0, flip: false}, .5, 1080, 1920).flip, false);
+    assert.equal(layoutActor({type, x: .5, flip: true}, .5, 1080, 1920).flip, true);
+  }
+});
+test('seated human hip contacts the sofa cushion at both aspect ratios and scales', () => {
+  for (const [width,height] of [[1080,1920], [1920,1080]]) for (const scale of [1, .8, 1.3]) {
+    const actor = {type: 'narrator' as const, scale};
+    const seatY = sofaSeat(width, height).y;
+    const p = layoutActor(actor, .28, width, height, {y:seatY, amount:1});
+    assert.ok(Math.abs(p.y - 185 * p.scale - seatY) < 1e-8, `hip must meet cushion at ${width}x${height}`);
+  }
+});
+
+test('sofa contact eases with sit joints and preserves interrupted seating progress', () => {
+  const actor = {type:'narrator' as const, pose:'think' as const, poses:[{atSec:1,pose:'sit' as const},{atSec:1.2,pose:'wave' as const}]};
+  const track = actorPoseTrack(actor, 30);
+  assert.equal(poseWeightAt(track, 'sit', 30, 30), 0);
+  assert.equal(poseWeightAt(track, 'sit', 36, 30), .5);
+  assert.equal(poseWeightAt(track, 'sit', 48, 30), 0);
+  const withoutInterrupt = actorPoseTrack({...actor,poses:actor.poses.slice(0,1)},30);
+  assert.equal(poseWeightAt(withoutInterrupt, 'sit', 36, 30), .5);
+  assert.equal(poseWeightAt(withoutInterrupt, 'sit', 42, 30), 1);
+  const sought = poseWeightAt(track, 'sit', 39, 30);
+  for (const frame of [100, 0, 30, 48]) poseWeightAt(track, 'sit', frame, 30);
+  assert.equal(poseWeightAt(track, 'sit', 39, 30), sought);
 });

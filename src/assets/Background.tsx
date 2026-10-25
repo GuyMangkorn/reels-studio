@@ -1,5 +1,6 @@
 import type {ReactNode} from 'react';
 import {useCurrentFrame, useVideoConfig} from 'remotion';
+import {Sofa} from './props/Sofa';
 import {Tree, House} from './Props';
 export type BackgroundName = 'forest' | 'city' | 'room' | 'sea' | 'nightSky';
 export type TimeOfDay = 'day' | 'night';
@@ -27,7 +28,7 @@ export const backgroundRegistry: Record<BackgroundName, BackgroundBuilder> = {
   }),
   room: ({w, h, p, night}) => ({
     far: <><rect width={w} height={h} fill={night ? '#69647e' : '#f0d7c6'}/>{Array.from({length: 18}, (_, i) => <path key={i} d={`M${i * w / 16} 0 V${h}`} stroke={night ? '#79758d' : '#e8cbbd'} strokeWidth={3}/>)}<rect x={w * .59} y={h * .25} width={w * .28} height={h * .32} rx={20} fill="#fff1d9"/><rect x={w * .605} y={h * .265} width={w * .25} height={h * .29} rx={10} fill={night ? '#454b70' : '#b7d9df'}/><circle cx={w * .76} cy={h * .34} r={h * .035} fill={p.accent}/><path d={`M${w * .73} ${h * .26} V${h * .57} M${w * .59} ${h * .41} H${w * .87}`} stroke="#fff1d9" strokeWidth={10}/></>,
-    mid: <><rect x={w * .08} y={h * .57} width={w * .4} height={h * .15} rx={35} fill={night ? '#9c8da7' : '#c7b3ce'}/><rect x={w * .065} y={h * .65} width={w * .43} height={h * .13} rx={24} fill={night ? '#9c8da7' : '#b5a0c1'}/><rect x={w * .1} y={h * .77} width={14} height={h * .04} fill="#b28d77"/><rect x={w * .45} y={h * .77} width={14} height={h * .04} fill="#b28d77"/></>,
+    mid: <Sofa width={w} height={h} night={night}/>,
     near: <><rect x={-100} y={h * .8} width={w + 200} height={h * .3} fill={night ? '#8d8091' : '#dfbca0'}/><ellipse cx={w * .5} cy={h * .89} rx={w * .35} ry={h * .075} fill={night ? '#b2a0ac' : '#f0d7bb'}/></>,
   }),
   sea: ({w, h, p, night, t}) => ({

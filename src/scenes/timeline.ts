@@ -1,4 +1,5 @@
-import {poses, smoothstep, transitionAtTrack, type PoseName, type PoseTransition} from '../rig/poses';
+import {poses, smoothstep, transitionAtTrack, type PoseName, type PoseTrack, type PoseTransition} from '../rig/poses';
+import {HUMAN_HIP_FROM_ANCHOR} from '../rig/geometry';
 import type {Actor, Timeline} from './types';
 const bgNames = ['forest', 'city', 'room', 'sea', 'nightSky'];
 const propNames = ['tree', 'house', 'car', 'boat', 'sign'];
@@ -32,6 +33,7 @@ export function validateTimeline(value: unknown): asserts value is Timeline {
       for (const key of ['flip', 'talking']) if (a[key] !== undefined && typeof a[key] !== 'boolean') fail(`${ap}.${key}`, 'expected boolean');
       if (a.hairStyle !== undefined && !['short', 'long', 'bald'].includes(String(a.hairStyle))) fail(`${ap}.hairStyle`, 'unknown hair style');
       if (a.expression !== undefined && !['neutral', 'happy', 'shock', 'think'].includes(String(a.expression))) fail(`${ap}.expression`, 'unknown expression');
+      if (a.seat !== undefined && (a.seat !== 'sofa' || a.type !== 'narrator' || s.bg !== 'room')) fail(`${ap}.seat`, 'sofa seating requires a narrator in the room');
       for (const key of ['skinColor', 'shirtColor', 'pantsColor', 'color']) if (a[key] !== undefined && typeof a[key] !== 'string') fail(`${ap}.${key}`, 'expected CSS color string');
       if (a.poses !== undefined) {
         if (!Array.isArray(a.poses)) fail(`${ap}.poses`, 'expected array');
@@ -57,15 +59,22 @@ export function validateTimeline(value: unknown): asserts value is Timeline {
 export const sceneFrames = (seconds: number, fps: number) => Math.max(1, Math.round(seconds * fps));
 export const timelineFrames = (timeline: Timeline, fps: number) => timeline.reduce((sum, s) => sum + sceneFrames(s.durationSec, fps), 0);
 export const actorIdentity = (actor: Actor, index: number) => actor.id ?? `${actor.type}-${index}`;
+export const actorPoseTrack = (actor: Actor, fps: number, previous: PoseName = 'idle'): PoseTrack => ({initial: actor.pose ?? 'idle', from: previous, keys: (actor.poses ?? []).map(key => ({frame: Math.round(key.atSec * fps), pose: key.pose}))});
 export function poseAt(actor: Actor, frame: number, fps: number, previous: PoseName = 'idle'): PoseTransition {
-  return transitionAtTrack({initial: actor.pose ?? 'idle', from: previous, keys: (actor.poses ?? []).map(key => ({frame: Math.round(key.atSec * fps), pose: key.pose}))}, frame, fps);
+  return transitionAtTrack(actorPoseTrack(actor, fps, previous), frame, fps);
 }
 export function actorPosition(actor: Actor, frame: number, duration: number) {
   const from = actor.from ?? actor.x ?? .5; const to = actor.to ?? actor.x ?? from;
   return from + (to - from) * smoothstep(frame / Math.max(1, duration - 1));
 }
 /** Coordinates are normalized. Portrait compresses horizontal spacing and uses a taller stage. */
-export function layoutActor(actor: Actor, normalizedX: number, width: number, height: number) {
+export function layoutActor(actor: Actor, normalizedX: number, width: number, height: number, seat?: {y: number; amount: number}) {
   const portrait = height > width;
-  return {x: width * (portrait ? .06 + normalizedX * .88 : normalizedX), y: height * (actor.y ?? (portrait ? (actor.type === 'dog' ? .835 : .79) : .81)), scale: (actor.scale ?? 1) * (actor.type === 'narrator' ? (portrait ? 1.75 : 1.42) : (portrait ? 1.05 : 1.08))};
+  const scale = (actor.scale ?? 1) * (actor.type === 'narrator' ? (portrait ? 1.75 : 1.42) : (portrait ? 1.05 : 1.08));
+  const standingY = height * (actor.y ?? (portrait ? (actor.type === 'dog' ? .835 : .79) : .81));
+  const seatWeight = actor.type === 'narrator' && seat ? Math.max(0, Math.min(1, seat.amount)) : 0;
+  const seatedY = seat ? seat.y + HUMAN_HIP_FROM_ANCHOR * scale : standingY;
+  const from = actor.from ?? actor.x ?? .5; const to = actor.to ?? actor.x ?? from;
+  const flip = actor.flip ?? (actor.type !== 'narrator' && from > to);
+  return {x: width * (portrait ? .06 + normalizedX * .88 : normalizedX), y: standingY + (seatedY - standingY) * seatWeight, scale, flip, seatWeight};
 }

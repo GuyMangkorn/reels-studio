@@ -22,7 +22,7 @@
   {
     "durationSec":4,"bg":"room","time":"day","eyebrow":"03 / A MOMENT TO PAUSE","title":"Small pause.\nBig ideas.",
     "actors":[
-      {"id":"host","type":"narrator","pose":"think","expression":"think","x":0.28,"talking":true,"poses":[{"atSec":2.3,"pose":"sit"}]},
+      {"id":"host","type":"narrator","pose":"think","seat":"sofa","expression":"think","x":0.28,"talking":true,"poses":[{"atSec":2.3,"pose":"sit"}]},
       {"id":"milo","type":"cat","pose":"sit","x":0.62},
       {"id":"mochi","type":"dog","pose":"idle","x":0.85}
     ],
