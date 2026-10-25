@@ -1,5 +1,6 @@
 import type {ReactNode} from 'react';
 import {smoothstep} from '../../rig/poses';
+import {impactAt, type ImpactConfig} from '../../camera/Camera';
 import type {Actor} from '../../scenes/types';
 
 export type BedroomPOVOptions = {blanketPull?: number | [number, number]; vignette?: boolean};
@@ -57,24 +58,16 @@ const BedEnd = () => (
   </>
 );
 const Duvet = () => (
-  <>
+  <g data-duvet-edge="only">
     <path d="M345 1040 H735 L1100 1960 H-20Z" fill="#A8B9D0" />
     <path d="M345 1040 H735 L762 1110 H318Z" fill="#D1DAE8" />
-    <path
-      d="M210 1810 Q160 1460 325 1435 Q438 1440 455 1810 M625 1810 Q642 1440 755 1435 Q920 1460 870 1810"
-      fill="#B5C4D9"
-    />
-    <path
-      d="M355 1480 Q300 1280 395 1260 Q455 1260 470 1480 M610 1480 Q625 1260 685 1260 Q780 1280 725 1480"
-      fill="#BDCBE0"
-    />
     <path
       d="M300 1140 L85 1890 M780 1140 L995 1890 M540 1200 V1920"
       fill="none"
       stroke="#899DBB"
       strokeWidth={5}
     />
-  </>
+  </g>
 );
 
 const Layer = ({
@@ -112,6 +105,7 @@ export const BedroomPOV = ({
   fps,
   duration,
   options = {},
+  impact,
   children,
 }: {
   width: number;
@@ -120,9 +114,11 @@ export const BedroomPOV = ({
   fps: number;
   duration: number;
   options?: BedroomPOVOptions;
+  impact?: ImpactConfig;
   children?: ReactNode;
 }) => {
   const state = bedroomPOVAt(frame, fps, duration, options.blanketPull);
+  const impactState = impactAt(impact, frame, fps);
   return (
     <div
       aria-label="Bedroom from the pillow toward the foot of the bed"
@@ -144,6 +140,20 @@ export const BedroomPOV = ({
           <Duvet />
         </g>
       </Layer>
+      {impactState.flicker > 0 && (
+        <div
+          data-impact-flicker
+          style={{
+            position: 'absolute',
+            inset: 0,
+            pointerEvents: 'none',
+            mixBlendMode: 'multiply',
+            background:
+              'radial-gradient(ellipse at 52% 56%, rgba(30,24,54,0.08), rgba(30,24,54,0.7) 100%)',
+            opacity: impactState.flicker,
+          }}
+        />
+      )}
       {options.vignette !== false && (
         <div
           data-vignette

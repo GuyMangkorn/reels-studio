@@ -1,5 +1,5 @@
 import type {ChannelName} from '../config/channel';
-import type {CameraConfig} from '../camera/Camera';
+import type {CameraConfig, ImpactConfig} from '../camera/Camera';
 import type {CostumeName} from '../rig/costumes';
 import type {GhostVariant} from '../rig/Ghost';
 import type {BackgroundOptions} from '../assets/backgrounds/HouseInterior';
@@ -42,6 +42,7 @@ export type Scene = {
   subtitle: string;
   background?: BackgroundOptions;
   camera?: CameraConfig;
+  impact?: ImpactConfig;
   title?: string;
   eyebrow?: string;
   channelName?: ChannelName;

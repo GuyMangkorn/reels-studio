@@ -4,6 +4,7 @@ import {createElement} from 'react';
 import {renderToStaticMarkup} from 'react-dom/server';
 import {Footer} from '../src/scenes/Footer';
 import {captionLayout} from '../src/scenes/captionLayout';
+import {cameraAt, impactAt} from '../src/camera/Camera';
 import {validateTimeline, layoutActor} from '../src/scenes/timeline';
 import {BedroomPOV, bedroomPOVAt, bedEndPlacement} from '../src/assets/backgrounds/BedroomPOV';
 import type {Scene} from '../src/scenes/types';
@@ -11,7 +12,7 @@ import type {Scene} from '../src/scenes/types';
 const room: Scene = {
   durationSec: 4,
   bg: 'houseInterior',
-  background: {variant: 'bedroom'},
+  background: {variant: 'staircase'},
   actors: [],
   subtitle: 'เงาที่ปลายเตียง',
 };
@@ -46,16 +47,19 @@ test('footer renders Thai default, override, and explicitly hidden labels in bot
     assert.ok(layout.subtitleBottom > layout.footerBottom + layout.footerHeight + 8);
   }
 });
-test('top-down validator accepts only authored overhead bedrooms/staircases', () => {
-  for (const variant of ['bedroom', 'staircase'])
-    assert.doesNotThrow(() =>
-      validateTimeline([{...room, background: {variant}, camera: {view: 'topDown'}}]),
-    );
+test('top-down validator accepts the authored staircase only', () => {
+  assert.doesNotThrow(() =>
+    validateTimeline([{...room, background: {variant: 'staircase'}, camera: {view: 'topDown'}}]),
+  );
   for (const variant of ['drawing', 'dining', 'kitchen', 'bedroomPOV'])
     assert.throws(
       () => validateTimeline([{...room, background: {variant}, camera: {view: 'topDown'}}]),
-      /camera.view.*bedroom or staircase/,
+      /camera.view.*staircase/,
     );
+  assert.throws(
+    () => validateTimeline([{...room, background: {variant: 'bedroom' as never}}]),
+    /background.variant/,
+  );
   for (const bg of ['forest', 'oldHouseExterior', 'basement'])
     assert.throws(
       () => validateTimeline([{...room, bg, background: undefined, camera: {view: 'topDown'}}]),
@@ -101,7 +105,37 @@ test('bedroom POV depth motion and blanket pull remain deterministic when seekin
       [...layers].sort((a, b) => a - b),
     );
     assert.ok(html.indexOf('ghosts') < layers[3]);
+    assert.ok(html.includes('data-duvet-edge="only"'));
+    assert.doesNotMatch(html, /M210 1810|M355 1480/);
   }
+});
+test('POV impact adds a bounded camera shake and shadow flicker without moving captions', () => {
+  const impact = {atSec: 1.5};
+  assert.deepEqual(impactAt(undefined, 45, 30), {x: 0, y: 0, flicker: 0});
+  assert.ok(impactAt(impact, 50, 30).flicker > 0);
+  assert.deepEqual(impactAt(impact, 100, 30), {x: 0, y: 0, flicker: 0});
+  assert.notDeepEqual(cameraAt({}, 50, 121, 30, impact), cameraAt({}, 50, 121));
+  const pov = {
+    ...room,
+    background: {variant: 'bedroomPOV', blanketPull: [0, 1]},
+    actors: [{type: 'ghost', ghostVariant: 'seatedPair', depth: 'bedEnd'}],
+    impact,
+  };
+  assert.doesNotThrow(() => validateTimeline([pov]));
+  assert.throws(() => validateTimeline([{...room, impact}]), /impact/);
+  assert.throws(() => validateTimeline([{...pov, impact: {atSec: 4}}]), /impact.atSec/);
+  const html = renderToStaticMarkup(
+    createElement(BedroomPOV, {
+      width: 1080,
+      height: 1920,
+      frame: 50,
+      fps: 30,
+      duration: 121,
+      options: {blanketPull: [0, 1]},
+      impact,
+    }),
+  );
+  assert.ok(html.includes('data-impact-flicker'));
 });
 test('POV scene JSON validates bounded pull and rejects misplaced depth controls', () => {
   const pov = {
@@ -115,6 +149,10 @@ test('POV scene JSON validates bounded pull and rejects misplaced depth controls
       () => validateTimeline([{...pov, background: {...pov.background, blanketPull}}]),
       /blanketPull/,
     );
-  assert.throws(() => validateTimeline([{...pov, background: {variant: 'bedroom'}}]), /depth/);
+  assert.throws(() => validateTimeline([{...pov, background: {variant: 'staircase'}}]), /depth/);
+  assert.throws(
+    () => validateTimeline([{...pov, background: {variant: 'bedroom' as never}, actors: []}]),
+    /background.variant/,
+  );
   assert.throws(() => validateTimeline([{...room, channelName: 2}]), /channelName/);
 });

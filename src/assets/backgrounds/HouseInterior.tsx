@@ -3,7 +3,6 @@ export const interiorVariants = [
   'drawing',
   'dining',
   'staircase',
-  'bedroom',
   'kitchen',
   'bedroomPOV',
 ] as const;
@@ -28,18 +27,6 @@ const Staircase = () => (
       />
     ))}
     <path d="M280 410 V1320 M810 410 V1320" stroke="#FFF3B0" strokeWidth={14} />
-  </>
-);
-const OverheadBedroom = () => (
-  <>
-    <rect x={295} y={460} width={490} height={760} rx={35} fill="#917A87" />
-    <rect x={320} y={490} width={440} height={700} rx={30} fill="#F8E8D6" />
-    <rect x={335} y={670} width={410} height={495} rx={20} fill="#A4BAD2" />
-    {[350, 560].map((x) => (
-      <rect key={x} x={x} y={510} width={170} height={130} rx={22} fill="#FFF3D9" />
-    ))}
-    <rect x={125} y={490} width={120} height={140} rx={12} fill="#BA9F99" />
-    <rect x={835} y={490} width={120} height={140} rx={12} fill="#BA9F99" />
   </>
 );
 const ArchAndWindow = ({dark}: {dark: boolean}) => (
@@ -80,11 +67,11 @@ const DrawingRoom = () => (
     <ellipse cx={540} cy={1470} rx={420} ry={90} fill="#D3BFD5" />
   </>
 );
-/** One shell and shared furnishings; bedroom/stairs have authored overhead geometry. */
+/** One shell and shared furnishings; only the staircase keeps authored overhead geometry. */
 export const houseInterior: BackgroundBuilder = ({w, h, time, options, view}) => {
   const variant = options.variant ?? 'drawing';
   const dark = time === 'night' || time === 'moonlight';
-  const overhead = view === 'topDown' || variant === 'staircase' || variant === 'bedroom';
+  const overhead = view === 'topDown' || variant === 'staircase';
   const floor = dark ? '#80758D' : '#DEBFA6';
   const wall = dark ? '#5C5775' : '#E9D2CA';
   return {
@@ -121,7 +108,7 @@ export const houseInterior: BackgroundBuilder = ({w, h, time, options, view}) =>
               stroke={wall}
               strokeWidth={50}
             />
-            {variant === 'staircase' ? <Staircase /> : <OverheadBedroom />}
+            <Staircase />
           </>
         ) : (
           <>

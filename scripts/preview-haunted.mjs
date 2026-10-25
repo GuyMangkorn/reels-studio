@@ -43,7 +43,7 @@ try {
             browserInstance: browser,
             inputProps,
             frame: start + offset,
-            output: `out/haunted-qa/${id}/pov-${label}.png`,
+            output: `out/haunted-qa/${id}/pov-${index}-${label}.png`,
           });
         }
       }

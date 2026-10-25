@@ -158,6 +158,21 @@ export function validateTimeline(value: unknown): asserts value is Timeline {
       if (bg.windowLights !== undefined && typeof bg.windowLights !== 'boolean')
         fail(`${path}.background.windowLights`, 'expected boolean');
     }
+    if (s.impact !== undefined) {
+      const impact = s.impact;
+      if (!record(impact)) fail(`${path}.impact.atSec`, 'expected a finite time');
+      const rawAtSec = (impact as Record<string, unknown>).atSec;
+      if (!finite(rawAtSec)) fail(`${path}.impact.atSec`, 'expected a finite time');
+      const atSec = rawAtSec as number;
+      if (atSec < 0 || atSec >= (s.durationSec as number))
+        fail(`${path}.impact.atSec`, 'must fall inside the scene');
+      if (
+        s.bg !== 'houseInterior' ||
+        !record(s.background) ||
+        s.background.variant !== 'bedroomPOV'
+      )
+        fail(`${path}.impact`, 'impact is only supported for houseInterior bedroomPOV scenes');
+    }
     if (s.camera !== undefined) {
       if (!record(s.camera)) fail(`${path}.camera`, 'expected camera object');
       const c = s.camera as Record<string, unknown>;
@@ -173,11 +188,8 @@ export function validateTimeline(value: unknown): asserts value is Timeline {
         fail(`${path}.camera.view`, 'unknown view');
       if (c.view === 'topDown' && s.bg !== 'houseInterior')
         fail(`${path}.camera.view`, 'topDown requires houseInterior');
-      if (
-        c.view === 'topDown' &&
-        (!record(s.background) || !['bedroom', 'staircase'].includes(String(s.background.variant)))
-      )
-        fail(`${path}.camera.view`, 'topDown requires an authored bedroom or staircase variant');
+      if (c.view === 'topDown' && (!record(s.background) || s.background.variant !== 'staircase'))
+        fail(`${path}.camera.view`, 'topDown requires the authored staircase variant');
       if (c.lighting !== undefined && !['normal', 'silhouette'].includes(String(c.lighting)))
         fail(`${path}.camera.lighting`, 'unknown lighting');
     }

@@ -26,8 +26,27 @@ test('P1 showcase selects every set, costume, ghost and required pose through JS
   );
   assert.deepEqual(
     new Set(showcase.filter((s) => s.bg === 'houseInterior').map((s) => s.background?.variant)),
-    new Set(['drawing', 'dining', 'staircase', 'bedroom', 'bedroomPOV', 'kitchen']),
+    new Set(['drawing', 'dining', 'staircase', 'bedroomPOV', 'kitchen']),
   );
+});
+test('every bedroom beat is POV-only and places ghosts at the bed end', () => {
+  const bedroomScenes = showcase.filter(
+    (scene) => scene.bg === 'houseInterior' && scene.background?.variant === 'bedroomPOV',
+  );
+  assert.equal(bedroomScenes.length, 3);
+  assert.equal(
+    showcase.filter(
+      (scene) => scene.bg === 'houseInterior' && scene.background?.variant === 'bedroom',
+    ).length,
+    0,
+  );
+  for (const scene of bedroomScenes) {
+    assert.ok(
+      scene.actors
+        .filter((actor) => actor.type === 'ghost')
+        .every((actor) => 'depth' in actor && actor.depth === 'bedEnd'),
+    );
+  }
 });
 test('camera reaches exact endpoints, clamps seeking and has deterministic midpoint', () => {
   const camera = {zoom: [1, 2], pan: {from: [0, 0], to: [-0.1, 0.08]}} as {

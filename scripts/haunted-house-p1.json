@@ -149,21 +149,23 @@
     "bg": "houseInterior",
     "time": "moonlight",
     "background": {
-      "variant": "bedroom"
+      "variant": "bedroomPOV",
+      "blanketPull": 0,
+      "vignette": true
     },
     "actors": [
       {
         "type": "ghost",
+        "depth": "bedEnd",
         "ghostVariant": "seatedPair",
         "opacity": 0.6,
         "x": 0.5,
-        "y": 0.68,
         "scale": 1.5
       }
     ],
     "subtitle": "สองเงาที่ปลายเตียง",
     "camera": {
-      "view": "topDown"
+      "zoom": [1, 1.02]
     }
   },
   {
@@ -174,6 +176,9 @@
       "variant": "bedroomPOV",
       "blanketPull": [0, 1],
       "vignette": true
+    },
+    "impact": {
+      "atSec": 2.1
     },
     "actors": [
       {
@@ -196,20 +201,22 @@
     "bg": "houseInterior",
     "time": "moonlight",
     "background": {
-      "variant": "bedroom"
+      "variant": "bedroomPOV",
+      "blanketPull": [0.1, 0.1],
+      "vignette": true
     },
     "actors": [
       {
         "type": "ghost",
+        "depth": "bedEnd",
         "ghostVariant": "crawler",
         "opacity": 0.7,
         "from": 0.7,
         "to": 0.4,
-        "y": 0.7,
         "scale": 1.6
       }
     ],
-    "subtitle": "ร่างสีม่วงขาวคลานผ่านห้อง"
+    "subtitle": "เงาสีม่วงขาวคลานเข้ามาใกล้"
   },
   {
     "durationSec": 3,

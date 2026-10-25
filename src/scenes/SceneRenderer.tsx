@@ -175,6 +175,8 @@ const SceneView = ({
         camera={scene.camera}
         frame={poseFrame}
         duration={duration}
+        fps={fps}
+        impact={pov ? scene.impact : undefined}
         width={width}
         height={height}
       >
@@ -186,6 +188,7 @@ const SceneView = ({
             fps={fps}
             duration={duration}
             options={scene.background}
+            impact={scene.impact}
           >
             {props}
             {actors}
