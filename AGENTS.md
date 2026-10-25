@@ -19,16 +19,10 @@ Example scene the channel would repeat (library ids, not new drawings):
   "fps": 30,
   "hook": "น้องหมาเจอเงินตกอยู่... มันจะเก็บไว้ไหม?",
   "moral": "ของที่ไม่ได้เป็นของเรา ควรคืนเจ้าของ",
-  "voice": {"name": "Niwat", "rate": 1.05},
+  "voice": { "name": "Niwat", "rate": 1.05 },
   "shots": [
-    {"start": 0, "pose": "idle", "background": "park-day", "subtitle": "เช้าวันหนึ่งที่สวน"},
-    {
-      "start": 48,
-      "pose": "point",
-      "character": "kid-mint",
-      "prop": "banknote",
-      "subtitle": "เงินกองนี้อยู่กลางทางเดิน"
-    }
+    { "start": 0, "pose": "idle", "background": "park-day", "subtitle": "เช้าวันหนึ่งที่สวน" },
+    { "start": 48, "pose": "point", "character": "kid-mint", "prop": "banknote", "subtitle": "เงินกองนี้อยู่กลางทางเดิน" }
   ]
 }
 ```
@@ -41,18 +35,18 @@ Flat 2D vector, cut-out rig, bright pastel. The picture is solid fills, round co
 
 Match the palette already in the rig:
 
-| Role           | Hex                   |
-| -------------- | --------------------- |
-| Skin           | `#FFD9B8`             |
+| Role | Hex |
+| --- | --- |
+| Skin | `#FFD9B8` |
 | Shirt / accent | `#FF8FA3` / `#FFF3B0` |
-| Pants          | `#7ED6B2`             |
-| Shoes          | `#FF9F5A`             |
-| Hair           | `#6B4A3A`             |
-| Cheek          | `#FFADAD`             |
-| Outline        | `#4A3B3B`             |
-| Sky gradient   | `#FFF1C9` → `#FFE0E6` |
-| Sun            | `#FFD166`             |
-| Ground         | `#B8F2C9`             |
+| Pants | `#7ED6B2` |
+| Shoes | `#FF9F5A` |
+| Hair | `#6B4A3A` |
+| Cheek | `#FFADAD` |
+| Outline | `#4A3B3B` |
+| Sky gradient | `#FFF1C9` → `#FFE0E6` |
+| Sun | `#FFD166` |
+| Ground | `#B8F2C9` |
 
 Motion:
 
@@ -65,10 +59,10 @@ Motion:
 
 Every scene renders twice from the same component, at 30 fps:
 
-| Composition | Size      | Use            |
-| ----------- | --------- | -------------- |
-| `Short`     | 1080×1920 | YouTube Shorts |
-| `Long`      | 1920×1080 | long-form      |
+| Composition | Size | Use |
+| --- | --- | --- |
+| `Short` | 1080×1920 | YouTube Shorts |
+| `Long` | 1920×1080 | long-form |
 
 `Rig2DDemo` is the original portrait id. It is the same frame as `Short` (1080×1920, 210 frames). Layout math is defined at 1080×1920 and scaled with `width / 1080` and `height / 1920`, so `Long` shows the same staging.
 
@@ -135,16 +129,17 @@ public/narration.mp3     demo voice line, present locally, gitignored
 
 Add new work in these places. Create the folder when the first file needs it:
 
-| Path                      | Put here                                                                                                                                                                                            |
-| ------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `src/rig/`                | Shared skeletons. One component per body type (human already). A dog or cat that cannot use the human joints gets `src/rig/Dog.tsx` or `src/rig/Cat.tsx`, once.                                     |
-| `src/rig/poses/`          | One pose module per file once `presets.ts` is crowded. Re-export from `src/rig/presets.ts` so scenes still import `{ presets }`.                                                                    |
-| `src/rig/costumes.ts`     | Named channel costumes (`kid-mint`, `kid-peach`, …) as `Costume` objects. Add this file with the second outfit.                                                                                     |
-| `src/assets/backgrounds/` | One background component per location (`park-day`, `kitchen`, …).                                                                                                                                   |
-| `src/assets/props/`       | One prop component per object (`banknote`, `bowl`, `sofa`, …). The sofa exposes a seat height. See [Known visual issues](#known-visual-issues).                                                     |
-| `src/assets/overlays/`    | Planned shared screen graphics: `RuleCard.tsx` (`rule-card`), `PhoneChat.tsx` (`phone-chat`). Not in the repo yet. See [Planned reusable overlay components](#planned-reusable-overlay-components). |
-| `src/scenes/`             | Thin scene components, or the renderer that reads scene JSON. No pasted art.                                                                                                                        |
-| `scripts/`                | JSON timelines, one file per short or chapter. Helpers that call TTS stay here and read secrets from the environment.                                                                               |
+| Path | Put here |
+| --- | --- |
+| `src/rig/` | Shared skeletons. One component per body type (human already). A dog or cat that cannot use the human joints gets `src/rig/Dog.tsx` or `src/rig/Cat.tsx`, once. |
+| `src/rig/poses/` | One pose module per file once `presets.ts` is crowded. Re-export from `src/rig/presets.ts` so scenes still import `{ presets }`. |
+| `src/rig/costumes.ts` | Named channel costumes (`kid-mint`, `kid-peach`, …) as `Costume` objects. Add this file with the second outfit. |
+| `src/assets/backgrounds/` | One background component per location (`park-day`, `kitchen`, …). |
+| `src/assets/props/` | One prop component per object (`banknote`, `bowl`, `sofa`, …). The sofa exposes a seat height. See [Known visual issues](#known-visual-issues). |
+| `src/assets/overlays/` | Planned shared screen graphics: `RuleCard.tsx` (`rule-card`), `PhoneChat.tsx` (`phone-chat`). Not in the repo yet. See [Planned reusable overlay components](#planned-reusable-overlay-components). |
+| `src/assets/cameras/` | Planned POV presets (`povWindow`, `povDoorCrack`, `povBed`, `povHallway`, `povFlashlight`, `povKeyhole`, `povWatcher`). Not in the repo yet. See [Shot variety and POV (horror-film feel)](#shot-variety-and-pov-horror-film-feel). |
+| `src/scenes/` | Thin scene components, or the renderer that reads scene JSON. No pasted art. |
+| `scripts/` | JSON timelines, one file per short or chapter. Helpers that call TTS stay here and read secrets from the environment. |
 
 `Pose` fields (degrees unless noted): `bodyY` (px), `torso`, `breath` (0..1), `head`, `lShoulder`, `lElbow`, `lWrist`, `rShoulder`, `rElbow`, `rWrist`, `lHip`, `lKnee`, `rHip`, `rKnee`, `lFootLift`, `rFootLift`, `lLegUp`, `rLegUp` (px), `mouth` (0..1), `blink` (0 open .. 1 closed). Blend with `mixPose(a, b, t)`.
 
@@ -171,7 +166,7 @@ const pose = {
   blink: blinkAt(frame, fps),
   mouth: mouthAt(amp, frame, 12),
 };
-<Character pose={pose} costume={costumes['kid-mint']} x={540} y={1180} scale={1.65} />;
+<Character pose={pose} costume={costumes["kid-mint"]} x={540} y={1180} scale={1.65} />
 ```
 
 Add `src/rig/Dog.tsx` or `src/rig/Cat.tsx` only when the body cannot share the human joint map. That file becomes the only dog or the only cat. Later videos import it. They do not draw a second dog.
@@ -198,18 +193,22 @@ Style reference: a cream rules placard in a dark interior. File `src/assets/over
 
 The card and heading are in at `startFrame`. Item `i` pops in at `startFrame + i * staggerFrames` with Remotion `spring()` and a slight scale (about 0.92 settling at 1). An item that has not arrived yet is left out. Earlier items stay.
 
-| Prop            | Type       | Role                           |
-| --------------- | ---------- | ------------------------------ |
-| `heading`       | `string`   | The small line above the rules |
-| `items`         | `string[]` | Rule lines, in order           |
-| `startFrame`    | `number`   | Frame the card appears         |
-| `staggerFrames` | `number`   | Frames between item pop-ins    |
+| Prop | Type | Role |
+| --- | --- | --- |
+| `heading` | `string` | The small line above the rules |
+| `items` | `string[]` | Rule lines, in order |
+| `startFrame` | `number` | Frame the card appears |
+| `staggerFrames` | `number` | Frames between item pop-ins |
 
 ```json
 {
   "overlay": "rule-card",
   "heading": "คนในหุบนี้สอนว่า",
-  "items": ["อย่าขานรับเสียงเรียก", "อย่าเปิดประตู", "รอจนแดดส่องถึงพื้น"],
+  "items": [
+    "อย่าขานรับเสียงเรียก",
+    "อย่าเปิดประตู",
+    "รอจนแดดส่องถึงพื้น"
+  ],
   "startFrame": 90,
   "staggerFrames": 18
 }
@@ -226,14 +225,14 @@ Draw a generic handset: rounded frame, a plain pill notch, time on the left of t
 - Each message is a small sender label (example: `คุณเทียน`) and a rounded light bubble. Text wraps. Bubbles stack from the top and stay once shown. Overflow scrolls inside the screen.
 - At `atSec` the next slot shows a typing-dots indicator, then the bubble replaces the dots after a short hold (about 0.4s). `atSec` is seconds from the start of the composition (`frame / fps`).
 
-| Prop       | Type                                                | Role                                       |
-| ---------- | --------------------------------------------------- | ------------------------------------------ |
-| `time`     | `string`                                            | Status-bar clock, e.g. `05:40`             |
-| `chatName` | `string`                                            | Group title in the header                  |
-| `messages` | `{ sender: string, text: string, atSec: number }[]` | Lines, in order                            |
-| `scale`    | `number`                                            | Uniform scale of the whole phone           |
-| `x`, `y`   | `number`                                            | Center of the phone, in composition pixels |
-| `badge`    | `string` (optional)                                 | Mark inside the header circle              |
+| Prop | Type | Role |
+| --- | --- | --- |
+| `time` | `string` | Status-bar clock, e.g. `05:40` |
+| `chatName` | `string` | Group title in the header |
+| `messages` | `{ sender: string, text: string, atSec: number }[]` | Lines, in order |
+| `scale` | `number` | Uniform scale of the whole phone |
+| `x`, `y` | `number` | Center of the phone, in composition pixels |
+| `badge` | `string` (optional) | Mark inside the header circle |
 
 `x`, `y`, and `scale` are how one component fits both frames. A Short scene can pass a large centered phone. A Long scene passes a smaller one. Keep the bottom subtitle band clear. PhoneChat does not draw the episode subtitle.
 
@@ -258,6 +257,84 @@ Draw a generic handset: rounded frame, a plain pill notch, time on the left of t
 
 The `x` and `y` above are for a 1080×1920 frame. The Long composition supplies its own.
 
+## Shot variety and POV (horror-film feel)
+
+Reusing a character, a room, or a prop is the point of the library. The same wide, evenly lit framing in every shot is what makes a chapter dull. Get variety from the camera, the light, and the crop. A new episode does not need a new skeleton to feel new.
+
+The picture stays flat pastel vector. A scare is a darker grade of that same palette, plus framing and timing. It is not a switch to realistic rendering.
+
+Use a first-person POV now and then, for suspense, in the manner of a horror film. A Short cut from a chapter may keep a POV that is already in that chapter. Do not add a POV to every line of the Short.
+
+Build each POV once, as a camera preset under `src/assets/cameras/`. Scene JSON selects it. A chapter does not draw its own window, door crack, keyhole, flashlight cone, curtain, or foliage.
+
+### How often
+
+This restraint applies to every POV preset, including `povWatcher`.
+
+- Use a POV only when the beat needs it: a suspense build, or a reveal. Default to normal framing otherwise.
+- POV shots of any kind stay a minority of the shots in a chapter. About 1–2 per long-form chapter (a chapter is 45–60 seconds). Never every scene.
+- Never place two POV shots back to back. A normal shot sits between them.
+- `povWatcher` is rarer: at most about one per chapter, and not in consecutive chapters by default.
+
+| Preset | Shot |
+| --- | --- |
+| `povWindow` | Looking out a window into darkness, where something may appear. |
+| `povDoorCrack` | Peeking through a half-open door. |
+| `povBed` | From the bed toward the foot of the bed (`bedroomPOV`). |
+| `povHallway` | Down a dark staircase or a dark hallway. |
+| `povKeyhole` | Through a keyhole. Same idea as the door crack, tighter frame. |
+| `povFlashlight` | A flashlight cone sweeping a basement. |
+| `povWatcher` | The view from an unseen presence watching the characters. |
+
+Suspense grammar lives in the preset:
+
+- Hold on an empty frame before anything enters.
+- Leave dead space at the edges, so a shape has somewhere to arrive.
+- A slow push-in.
+- A delayed reveal. Whatever is in the window or the doorway appears a beat late, or the viewer catches it only on a second look.
+- A false scare, the cat or the dog, before the real one.
+- A sound cue before the visual.
+- A vignette and darkened edges.
+
+Subtitles stay as specified under [Thai subtitles and narration](#thai-subtitles-and-narration): large, bottom, white with a dark stroke, on screen from frame 0. The vignette sits on the picture. It does not move, restyle, or cover the subtitle line. The same preset frames itself in `Short` and in `Long`.
+
+```json
+{
+  "camera": {
+    "preset": "povWindow",
+    "reveal": { "actor": "cat", "atSec": 3.6 }
+  }
+}
+```
+
+`preset` is `povWindow`, `povDoorCrack`, `povBed`, `povHallway`, `povFlashlight`, `povKeyhole`, or `povWatcher`.
+
+`reveal.actor` is a library id: a character, the cat, the dog, or a simple silhouette. `reveal.atSec` is seconds from the start of the shot when that actor enters. Omit `reveal` to hold on the empty frame. A false scare is an early `reveal` of `cat` or `dog`. The beat that matters comes later, or on a second use of the same preset.
+
+### Watcher POV
+
+`povWatcher` is the camera of someone the characters do not see. The lens sits in a hiding place and looks at them:
+
+- Behind curtains.
+- Outside the window, looking in.
+- The dark top of the stairs.
+- Through foliage in the garden.
+- A corner, with furniture between the lens and the room.
+
+One preset covers those places. `place` picks the foreground: `curtains`, `outsideWindow`, `stairTop`, `foliage`, or `furnitureCorner`. The occluder (cloth, window frame, stair rail, leaves, a chair back) is part of the preset and covers part of the frame. The camera has a slight handheld sway, slow and small, like a body holding still. The same vignette and darkened edges as the other POV presets apply. The characters on screen are the scene's actors. `reveal` is optional here. Use it when something extra arrives late, such as a head turning toward the hiding place.
+
+```json
+{
+  "camera": {
+    "preset": "povWatcher",
+    "place": "curtains",
+    "reveal": { "actor": "kid-mint", "atSec": 1.2 }
+  }
+}
+```
+
+Keep it channel-safe. Creepy, not gory: no blood, wounds, or injury. The twist can be funny. The shape in the window can be the cat. A subtitle on the empty hold can be `มีอะไรรึเปล่า... นอกหน้าต่าง`.
+
 ## Known visual issues
 
 These show up in channel pictures. Fix them in the shared rig or prop, once that asset is in the repo. A scene does not get its own private workaround.
@@ -266,7 +343,7 @@ These show up in channel pictures. Fix them in the shared rig or prop, once that
 
 (b) **Sitting on the sofa leaves the hips floating.** The sofa prop exposes a seat height (the cushion surface, in scene pixels). The sit pose puts the hip origin on that height. If the sofa moves or scales, the sitter stays on the cushion. Scenes do not hand-nudge `bodyY` to fake contact.
 
-(c) **Channel footer.** Use `src/config/channel.ts` for the default Thai name. Timeline or scene `channelName` may override it; `null` or `false` hides it. It must not cover subtitles. Subtitles own the bottom band. A channel name, when it is shown, sits clear of that band.
+(c) **The footer label `LITTLE WANDER` is hard-coded English.** The channel name is a scene field, or the footer is hidden. It must not cover subtitles. Subtitles own the bottom band. A channel name, when it is shown, sits clear of that band.
 
 ## Workflow
 
