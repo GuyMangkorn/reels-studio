@@ -1,25 +1,33 @@
 {
-  "name": "rig2d",
+  "name": "pastel-cutout-studio",
   "version": "1.0.0",
-  "description": "Thai YouTube Shorts and long-form studio. Flat pastel 2D cut-out rig rendered with Remotion.",
-  "main": "index.js",
+  "private": true,
   "scripts": {
-    "studio": "remotion studio src/index.ts",
+    "start": "remotion studio src/index.ts --no-open",
     "typecheck": "tsc --noEmit",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "node --import tsx --test tests/*.test.ts",
+    "render:short": "node scripts/render.mjs --short",
+    "render:long": "node scripts/render.mjs --long",
+    "render": "node scripts/render.mjs",
+    "render:stills": "node scripts/render.mjs --stills",
+    "narration": "python3 scripts/narration.py"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "type": "commonjs",
   "dependencies": {
-    "@remotion/cli": "^4.0.538",
-    "react": "^19.3.1",
-    "react-dom": "^19.3.1",
-    "remotion": "^4.0.538"
+    "@remotion/cli": "4.0.538",
+    "@remotion/fonts": "^4.0.538",
+    "react": "19.1.0",
+    "react-dom": "19.1.0",
+    "remotion": "4.0.538",
+    "@remotion/bundler": "4.0.538",
+    "@remotion/renderer": "4.0.538"
   },
   "devDependencies": {
-    "@types/react": "^19.3.0",
-    "typescript": "^7.0.2"
+    "@types/react": "19.1.0",
+    "@types/react-dom": "19.1.0",
+    "tsx": "4.20.6",
+    "typescript": "5.8.3"
+  },
+  "overrides": {
+    "zod": "4.5.4"
   }
 }
