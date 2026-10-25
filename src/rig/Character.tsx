@@ -1,24 +1,24 @@
 import {useRef} from 'react';
 import {useCurrentFrame, useVideoConfig} from 'remotion';
 import {Joint} from './Joint';
+import {blinkAt} from './drivers';
 import {advancePoseChange, resolvePose, type PoseInput, type PoseChangeState} from './poses';
 export type Expression = 'neutral' | 'happy' | 'shock' | 'think';
 export type CharacterProps = {
   x?: number; y?: number; scale?: number; flip?: boolean; skinColor?: string; shirtColor?: string; pantsColor?: string;
   hairStyle?: 'short' | 'long' | 'bald'; expression?: Expression; pose?: PoseInput; talking?: boolean;
+  /** Audio-driven openness, 0..1. No procedural talking fallback. */ mouth?: number;
   /** Optional explicit animation clock in scene-local frames. */ frame?: number;
 };
-export const Character = ({x = 0, y = 0, scale = 1, flip = false, skinColor = '#efb78e', shirtColor = '#fb947e', pantsColor = '#666cac', hairStyle = 'short', expression = 'happy', pose = 'idle', talking = false, frame: clock}: CharacterProps) => {
+export const Character = ({x = 0, y = 0, scale = 1, flip = false, skinColor = '#efb78e', shirtColor = '#fb947e', pantsColor = '#666cac', hairStyle = 'short', expression = 'happy', pose = 'idle', talking = false, mouth: openness = 0, frame: clock}: CharacterProps) => {
   const current = useCurrentFrame(); const {fps} = useVideoConfig(); const frame = clock ?? current;
   const livePose = useRef<PoseChangeState | null>(null);
   if (typeof pose === 'string') livePose.current = advancePoseChange(livePose.current, pose, frame, fps);
   else livePose.current = null;
   const a = resolvePose(typeof pose === 'string' ? livePose.current!.pose : pose, frame, fps); const t = frame / fps;
-  // Repeating 2.7 / 3.3 / 2.4-second intervals, with a 130ms triangular blink.
-  const cycle = ((t % 8.4) + 8.4) % 8.4;
-  const blink = Math.max(...[2.7, 6, 8.4].map(at => Math.max(0, 1 - Math.abs(cycle - (at - 0.1)) / 0.065)));
+  const blink = blinkAt(frame, fps);
   const eye = Math.max(0.09, 1 - blink);
-  const mouth = talking ? 4 + (0.5 + Math.sin(t * 26) * 0.5) * 12 : expression === 'shock' ? 12 : 3;
+  const mouth = talking ? Math.max(0, Math.min(1, openness)) * 16 : expression === 'shock' ? 12 : 3;
   const leg = (side: 'L' | 'R') => <Joint name={`upperLeg${side}`} x={side === 'L' ? -23 : 23} angle={a[`upperLeg${side}`]}>
     <rect x={-17} y={-7} width={34} height={91} rx={17} fill={pantsColor}/>
     <Joint name={`lowerLeg${side}`} y={78} angle={a[`lowerLeg${side}`]}><rect x={-15} y={-7} width={30} height={84} rx={15} fill={pantsColor}/>

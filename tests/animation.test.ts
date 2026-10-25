@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import {advancePoseChange, mixAngles, poses, resolvePose, samplePose} from '../src/rig/poses';
 import {actorPosition, layoutActor, poseAt, timelineFrames, validateTimeline} from '../src/scenes/timeline';
 import demo from '../scripts/demo.json';
+import amplitude from '../src/amplitude.json';
 import type {Timeline} from '../src/scenes/types';
 
 test('demo has five scenes and exactly 600 frames at 30fps', () => {
@@ -85,4 +86,45 @@ test('character-level pose tracks support random seeking and closely spaced keys
   const reference = resolvePose(input, 8, 30);
   for (const frame of [100, 0, 8, 3, 7, 8]) assert.ok(Number.isFinite(resolvePose(input, frame, 30).upperArmR));
   assert.deepEqual(resolvePose(input, 8, 30), reference);
+});
+
+import {mouthAt, blinkAt} from '../src/rig/drivers';
+import {endingState} from '../src/scenes/endings';
+test('mouth follows audio, gates silence and respects clip offsets and boundaries', () => {
+  const amplitude = [0, .8, .5, 0, 0];
+  assert.equal(mouthAt(amplitude, 9, 10), 0);
+  assert.equal(mouthAt(amplitude, 10, 10), 0);
+  assert.ok(mouthAt(amplitude, 11, 10) > .5);
+  assert.equal(mouthAt(amplitude, 14, 10), 0);
+  assert.equal(mouthAt(amplitude, 15, 10), 0);
+  assert.equal(mouthAt([], 0), 0);
+  const sought = mouthAt(amplitude, 12, 10);
+  for (const frame of [14, 10, 99, 11]) mouthAt(amplitude, frame, 10);
+  assert.equal(mouthAt(amplitude, 12, 10), sought);
+});
+test('endings hold final pose, retain three readable seconds, then fade only A', () => {
+  assert.equal(endingState(29, 120, 30, 'B_loop').poseFrame, 29);
+  for (const ending of ['A_fade', 'B_loop'] as const) {
+    assert.equal(endingState(30, 120, 30, ending).poseFrame, 30);
+    assert.equal(endingState(119, 120, 30, ending).poseFrame, 30);
+    assert.equal(endingState(89, 120, 30, ending).opacity, 1);
+  }
+  assert.equal(endingState(119, 120, 30, 'A_fade').opacity, 0);
+  assert.equal(endingState(119, 120, 30, 'B_loop').opacity, 1);
+  assert.ok(endingState(105, 120, 30, 'A_fade').opacity > 0);
+  assert.ok(endingState(105, 120, 30, 'A_fade').opacity < 1);
+});
+test('blink driver is deterministic under seeking', () => {
+  assert.equal(blinkAt(25, 30), blinkAt(25, 30));
+  assert.equal(blinkAt(25, 30), 1);
+  assert.equal(blinkAt(0, 30), 0);
+});
+
+test('demo envelope spans all five scenes with speech and closed-mouth pauses', () => {
+  assert.equal(amplitude.length, timelineFrames(demo as Timeline, 30));
+  assert.ok(amplitude.every(value => Number.isFinite(value) && value >= 0 && value <= 1));
+  for (let start = 0; start < 600; start += 120) {
+    assert.ok(amplitude.slice(start, start + 100).some(value => value > .2));
+    assert.equal(mouthAt(amplitude, start + 119), 0);
+  }
 });

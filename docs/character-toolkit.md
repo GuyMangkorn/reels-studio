@@ -4,9 +4,9 @@ Thai YouTube studio for Shorts and long-form videos, built with Remotion. Read [
 
 ## Character work in progress
 
-This branch imports the existing Reels Creator character work for review. It replaces the original seven-second narrated rig demo with a silent twenty-second JSON demo and introduces a different Character API. `Short` and `Long` remain the render IDs; `Rig2DDemo`, the original `Pose`/`Costume` API, and amplitude-driven narration are not carried over by this import. Existing callers need migration before merging.
+This branch imports the existing Reels Creator character work for review. It replaces the original seven-second narrated rig demo with a narrated twenty-second JSON demo and introduces a different Character API. `Short` and `Long` remain the render IDs; `Rig2DDemo` and the original `Pose`/`Costume` API are not carried over by this import. Audio-driven mouth movement is restored on the Joint rig using a committed per-frame RMS envelope. Existing callers need migration before merging.
 
-`AGENTS.md` is preserved from `main`; its descriptions of the original files and API still refer to that baseline. The implementation below documents this branch. Production story lengths, narration, and ending variants described in `AGENTS.md` remain future work; the included timeline is an asset demonstration.
+`AGENTS.md` is preserved from `main`; its descriptions of the original files and API still refer to that baseline. The implementation below documents this branch. Production story lengths described in `AGENTS.md` remain future work; the included timeline is an asset demonstration.
 
 ## Little Wander — reusable cut-out animation
 
@@ -19,6 +19,7 @@ npm ci
 npm start              # Remotion Studio, http://localhost:3000
 npm run typecheck
 npm test
+npm run narration     # Requires Python edge-tts==7.3.1; sends demo subtitles to Microsoft Edge TTS
 npm run render:stills   # Five check frames per format in out/qa/
 npm run render         # Both MP4s; bundles once, shares a browser
 npm run render:short
@@ -27,7 +28,8 @@ npm run render:long
 
 - `Short`: 1080 × 1920, 30fps, 600 frames / 20 seconds → `out/demo_short.mp4`
 - `Long`: 1920 × 1080, 30fps, 600 frames / 20 seconds → `out/demo_long.mp4`
-- H.264, yuv420p, CRF 18, no audio. Rendering uses port 3101 to avoid Studio's port.
+- Each render exports `_A_fade.mp4` and `_B_loop.mp4`; the unsuffixed file is a copy of B for review. The final scene holds its actor pose for three seconds. A keeps the Thai closing line readable for three seconds, then fades to black over the last second; B keeps the final pose visible for looping. Both stay exactly 20 seconds.
+- H.264, yuv420p, CRF 18, with Thai Niwat narration at +5%. Rendering uses port 3101 to avoid Studio's port.
 - The first render may download Remotion's Chrome Headless Shell. The Noto Sans Thai font is bundled and requires no font network requests.
 - Outputs, generated bundles and node_modules are ignored by Git.
 
@@ -53,7 +55,8 @@ npm run render:long
 | `tests/animation.test.ts` | Timeline, validation, deterministic interpolation, walk loop and layout checks |
 | `public/fonts/NotoSansThai.ttf` | Bundled variable Noto Sans Thai font |
 | `public/fonts/OFL.txt` | Font license |
-| `docs/superpowers/plans/2026-10-25-cutout-animation.md` | Implementation plan and verification record |
+| `scripts/narration.py`, `src/amplitude.json`, `src/rig/drivers.ts` | Niwat audio generation, committed 30fps RMS and audio-driven mouth / blink sampling |
+| `src/scenes/endings.ts` | Shared final-pose hold and A/B ending timing |
 | `package.json`, `package-lock.json`, `tsconfig.json`, `.gitignore` | Reproducible build and project configuration |
 
 ## Character API
@@ -85,7 +88,7 @@ Live changes to a plain pose name blend from the currently displayed pose over 0
 
 Tracks carry complete history and automatically interpolate every change, including interruptions mid-blend. A bare prop computed from the current frame alone cannot supply its earlier values to a fresh parallel render worker; author those changes as a track. Live name tracking resets on backward seeking. The default transition takes 0.4 seconds. All clocks use composition fps; optional `frame` overrides the rig clock in local frames.
 
-The torso group contains shoulders and head. An arm contains a lower-arm joint, which contains a hand joint. Hips contain knees, which contain feet. Parts are named with `data-joint` attributes. The `Joint` wrapper first translates the pivot, then rotates artwork around the local `(0, 0)` origin. Face shapes remain part of the head and inherit its rotation. A deterministic 8.4-second blink schedule has 2.7, 3.3, and 2.4-second intervals. Talking uses procedural mouth flaps, not phoneme matching.
+The torso group contains shoulders and head. An arm contains a lower-arm joint, which contains a hand joint. Hips contain knees, which contain feet. Parts are named with `data-joint` attributes. The `Joint` wrapper first translates the pivot, then rotates artwork around the local `(0, 0)` origin. Face shapes remain part of the head and inherit its rotation. Blinking uses the shared deterministic `blinkAt` driver. Pass `talking` and `mouth={mouthAt(amplitude, frame, startFrame)}` for audio-driven mouth openness (0..1); silence and missing audio samples close the mouth. There is no sine-wave talking fallback.
 
 ## Scene JSON
 
@@ -112,7 +115,7 @@ Edit `scripts/demo.json`, or pass a typed `timeline` prop to `SceneRenderer`. CL
 - Actor `x`, `from`, `to` are normalized horizontal positions; `from/to` override `x` and ease over the scene. Values outside 0–1 permit entrances. Movement does not automatically change pose; set `pose: "walk"` too.
 - `y` is an optional normalized foot anchor. The default depends on aspect ratio and species; portrait staggers the dog forward. `scale` multiplies the responsive base scale. Prop `x/y` are normalized anchors; `size` is pixels before the portrait multiplier.
 - Stable `id`s allow the narrator to interpolate from its previous scene's final pose. Without IDs, identity falls back to type + index. `poses` keyframes are scene-local seconds and must be strictly increasing, within scene duration. Keyframes choose the target at that time; interpolation takes the next 0.4 seconds.
-- Scenes cut at exact duration boundaries. Secondary motion restarts on each scene's local clock. No audio is required or included.
+- Scenes cut at exact duration boundaries. Secondary motion restarts on each scene's local clock. Narration uses the composition clock across scene cuts; scene-local pose clocks never restart the audio envelope. `SceneRenderer` accepts optional `narration: {src, amplitude, fps, startFrame?}` and `ending: "A_fade" | "B_loop"`. Omit narration for a silent custom scene. The registered demo expects the local `public/narration.mp3`; regenerate it before rendering a fresh checkout.
 - Animals have their own procedural pose sampling; their pose switches are immediate, with smooth cyclic leg / tail motion.
 - Thai text wraps within a safe bottom region. The demo fits one line; extremely long subtitles should be split into shorter scenes.
 - Runtime validation reports paths for malformed scene fields, unknown assets / poses, invalid timing and duplicate actor IDs.
@@ -135,4 +138,4 @@ For a new prop, add artwork on the 240×240 prop canvas, then update `PropName`,
 
 ## Verification
 
-`npm run typecheck` and `npm test` verify contracts and deterministic math. QA stills at frames 90, 210, 330, 450 and 570 cover all five scenes in both aspect ratios. Final exports can be checked with Remotion's bundled ffprobe. The project pins all Remotion packages to 4.0.538 and overrides its transitive Zod dependency to patched 4.6.6; npm audit reports no known vulnerabilities at delivery.
+`npm run typecheck` and `npm test` verify contracts and deterministic math. QA stills at frames 90, 210, 330, 450 and 570 cover all five scenes in both aspect ratios. Final exports can be checked with Remotion's bundled ffprobe. The project pins all Remotion packages to 4.0.538 and overrides Zod to exactly 4.5.4, matching the version required by the installed Remotion packages. MP3/MP4 outputs and `docs/superpowers/` remain ignored.

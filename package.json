@@ -9,7 +9,8 @@
     "render:short": "node scripts/render.mjs --short",
     "render:long": "node scripts/render.mjs --long",
     "render": "node scripts/render.mjs",
-    "render:stills": "node scripts/render.mjs --stills"
+    "render:stills": "node scripts/render.mjs --stills",
+    "narration": "python3 scripts/narration.py"
   },
   "dependencies": {
     "@remotion/cli": "4.0.538",
@@ -27,6 +28,6 @@
     "typescript": "5.8.3"
   },
   "overrides": {
-    "zod": "4.6.6"
+    "zod": "4.5.4"
   }
 }
