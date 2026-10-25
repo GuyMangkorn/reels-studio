@@ -1,3 +1,5 @@
+import {exteriorPlacement} from '../assets/backgrounds/OldHouseExterior';
+import {lieFloorAnchor, interiorPlacement} from '../assets/backgrounds/layout';
 import {Footer} from './Footer';
 import {resolveChannelName, type ChannelName} from '../config/channel';
 import {BedroomPOV, bedroomPOVAt, bedEndPlacement} from '../assets/backgrounds/BedroomPOV';
@@ -114,7 +116,15 @@ const SceneView = ({
     const position =
       pov && actor.depth === 'bedEnd'
         ? bedEndPlacement(basePosition, actor, height, povState)
-        : basePosition;
+        : scene.bg === 'oldHouseExterior'
+          ? exteriorPlacement(basePosition, actor, width, height)
+          : scene.bg === 'houseInterior'
+            ? interiorPlacement(basePosition, actor, width, height)
+            : basePosition;
+    if (actor.type === 'narrator') {
+      const lying = poseWeightAt(actorPoseTrack(actor, fps, previousPose), 'lie', poseFrame, fps);
+      position.y = lieFloorAnchor(position.y, position.scale, lying);
+    }
     const pose = poseAt(actor, poseFrame, fps, previousPose);
     const figure =
       actor.type === 'ghost' ? (
@@ -160,7 +170,7 @@ const SceneView = ({
             scene.camera?.lighting === 'silhouette'
               ? 'brightness(0.18)'
               : pov && actor.depth === 'bedEnd'
-                ? 'brightness(0.72) blur(0.7px)'
+                ? 'brightness(0.5) blur(1.1px)'
                 : undefined,
         }}
       >

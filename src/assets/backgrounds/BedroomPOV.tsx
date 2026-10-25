@@ -1,4 +1,5 @@
 import type {ReactNode} from 'react';
+import {setLayout} from './layout';
 import {smoothstep} from '../../rig/poses';
 import {impactAt, type ImpactConfig} from '../../camera/Camera';
 import type {Actor} from '../../scenes/types';
@@ -31,16 +32,24 @@ export function bedEndPlacement<T extends Placement>(
   height: number,
   state: ReturnType<typeof bedroomPOVAt>,
 ): T {
-  return {...base, y: (actor.y ?? 0.54) * height + state.figuresY, scale: base.scale * 0.68};
+  return {
+    ...base,
+    y: (actor.y ?? 0.55) * height + state.figuresY,
+    scale: (height / 1920) * (actor.scale ?? 1) * 0.5,
+  };
 }
 
-// All artwork uses a normalized 1080x1920 canvas, stretched like the other shared sets.
-const BackWall = () => (
+// Bed and window use uniform authored units; the shell extends into the wider viewport.
+const BackWall = ({left, span}: {left: number; span: number}) => (
   <>
-    <rect width={1080} height={1920} fill="#57536D" />
-    <path d="M0 960 H1080 V1920 H0Z" fill="#786A80" />
-    <path d="M0 960 H1080 M0 990 H1080" stroke="#A89AAE" strokeWidth={12} />
-    {[150, 340, 530, 720, 910].map((x) => (
+    <rect x={left - 100} y={-100} width={span + 200} height={2120} fill="#57536D" />
+    <path d={`M${left - 100} 960 h${span + 200} V2020 H${left - 100}Z`} fill="#786A80" />
+    <path
+      d={`M${left - 100} 960 h${span + 200} M${left - 100} 990 h${span + 200}`}
+      stroke="#A89AAE"
+      strokeWidth={12}
+    />
+    {Array.from({length: Math.ceil(span / 190) + 1}, (_, i) => left + i * 190).map((x) => (
       <path key={x} d={`M${x} 0 V950`} stroke="#655F7A" strokeWidth={3} />
     ))}
     <rect x={660} y={250} width={265} height={520} rx={90} fill="#343951" />
@@ -87,8 +96,8 @@ const Layer = ({
     data-depth={name}
     width={width}
     height={height}
-    viewBox="0 0 1080 1920"
-    preserveAspectRatio="none"
+    viewBox={`${setLayout(width, height).left} 0 ${setLayout(width, height).span} 1920`}
+    preserveAspectRatio="xMidYMid meet"
     style={{position: 'absolute', inset: 0, overflow: 'visible', transform: `translateY(${y}px)`}}
   >
     <g stroke="#4A3B3B" strokeWidth={5} strokeLinejoin="round">
@@ -125,7 +134,7 @@ export const BedroomPOV = ({
       style={{position: 'absolute', inset: 0, overflow: 'hidden'}}
     >
       <Layer width={width} height={height} y={state.wallY} name="back-wall">
-        <BackWall />
+        <BackWall left={setLayout(width, height).left} span={setLayout(width, height).span} />
       </Layer>
       <Layer width={width} height={height} y={state.bedY} name="bed-end">
         <BedEnd />
@@ -136,7 +145,7 @@ export const BedroomPOV = ({
       <Layer width={width} height={height} y={state.blanketY} name="blanket">
         <g
           data-blanket-motion="toward-foot"
-          transform={`translate(0 ${state.pull * 160}) translate(540 1040) scale(${1 - state.pull * 0.12} ${1 - state.pull * 0.06}) translate(-540 -1040)`}
+          transform={`translate(0 ${state.pull * 160}) translate(540 1040) scale(${1 - state.pull * 0.09}) translate(-540 -1040)`}
         >
           <Duvet />
         </g>

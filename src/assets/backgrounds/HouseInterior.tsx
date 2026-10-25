@@ -1,4 +1,5 @@
 import type {BackgroundBuilder} from '../Background';
+import {setLayout} from './layout';
 export const interiorVariants = [
   'drawing',
   'dining',
@@ -13,21 +14,76 @@ export type BackgroundOptions = {
   blanketPull?: number | [number, number];
   vignette?: boolean;
 };
-const Staircase = () => (
-  <>
-    <rect x={250} y={390} width={580} height={920} fill="#524C61" />
-    {staircaseSteps.map((step, i) => (
-      <rect key={i} {...step} fill={i % 2 ? '#BC9F9A' : '#D2B8A8'} />
+const polar = (r: number, angle: number) => {
+  const a = (angle * Math.PI) / 180;
+  return `${540 + r * Math.cos(a)} ${900 + r * Math.sin(a)}`;
+};
+/** Looking vertically into a spiral well: concentric turns descend into darkness. */
+export const staircaseSteps = Array.from({length: 36}, (_, i) => {
+  const angle = -90 + i * 20;
+  const outer = 690 - i * 12;
+  const inner = outer - 205;
+  return {
+    angle,
+    outer,
+    inner,
+    d: `M${polar(inner, angle)} L${polar(outer, angle)} A${outer} ${outer} 0 0 1 ${polar(outer, angle + 20)} L${polar(inner, angle + 20)} A${inner} ${inner} 0 0 0 ${polar(inner, angle)}Z`,
+  };
+});
+export const stairFootsteps = Array.from({length: 14}, (_, i) => {
+  const step = staircaseSteps[i + 2];
+  const radius = (step.outer + step.inner) / 2 + (i % 2 ? 22 : -22);
+  const angle = step.angle + 10;
+  return {
+    x: 540 + radius * Math.cos((angle * Math.PI) / 180),
+    y: 900 + radius * Math.sin((angle * Math.PI) / 180),
+    angle: angle + 90,
+    atSec: i * 0.16,
+  };
+});
+const Staircase = ({t, left, span}: {t: number; left: number; span: number}) => (
+  <g data-view="spiral-top-down">
+    <rect x={left - 100} y={-100} width={span + 200} height={2120} fill="#4A4258" />
+    {Array.from({length: Math.ceil(span / 140) + 2}, (_, i) => (
+      <path key={i} d={`M${left + i * 140} -100 V2020`} stroke="#66586C" strokeWidth={4} />
     ))}
-    <path d="M280 410 V1320 M810 410 V1320" stroke="#FFF3B0" strokeWidth={14} />
-  </>
+    {[820, 745].map((r) => (
+      <circle key={r} cx={540} cy={900} r={r} fill="none" stroke="#8D7887" strokeWidth={22} />
+    ))}
+    <circle cx={540} cy={900} r={705} fill="#272335" />
+    {staircaseSteps.map((step, i) => (
+      <path
+        key={i}
+        d={step.d}
+        fill={i % 2 ? '#BC9F9A' : '#D2B8A8'}
+        style={{filter: `brightness(${1 - i * 0.018})`}}
+      />
+    ))}
+    <circle cx={540} cy={900} r={62} fill="#1C1929" />
+    {stairFootsteps.map((foot, i) => (
+      <g
+        key={i}
+        data-footstep-shadow
+        transform={`translate(${foot.x} ${foot.y}) rotate(${foot.angle})`}
+        opacity={t >= foot.atSec ? 0.52 : 0}
+        fill="#211B30"
+        stroke="none"
+      >
+        <path d="M-11-24 Q-18-5-9 10 Q0 17 9 7 L10-19 Q0-34-11-24Z" />
+        <ellipse cy={23} rx={9} ry={10} />
+      </g>
+    ))}
+    <circle cx={540} cy={900} r={710} fill="none" stroke="#E4CBAF" strokeWidth={12} />
+    {Array.from({length: 32}, (_, i) => (
+      <path
+        key={i}
+        d={`M${polar(710, i * 11.25)} L${polar(750, i * 11.25)}`}
+        stroke="#B3A1A8"
+        strokeWidth={9}
+      />
+    ))}
+  </g>
 );
-export const staircaseSteps = Array.from({length: 12}, (_, i) => ({
-  x: 399 - i * 9,
-  y: 420 + i * 66,
-  width: 282 + i * 18,
-  height: 64,
-}));
 const ArchAndWindow = ({dark}: {dark: boolean}) => (
   <>
     <path d="M75 1240 V610 Q250 360 425 610 V1240" fill="#A69AB2" />
@@ -67,10 +123,11 @@ const DrawingRoom = () => (
   </>
 );
 /** One shell and shared furnishings; only the staircase keeps authored overhead geometry. */
-export const houseInterior: BackgroundBuilder = ({w, h, time, options, view}) => {
+export const houseInterior: BackgroundBuilder = ({w, h, time, options, view, t}) => {
   const variant = options.variant ?? 'drawing';
   const dark = time === 'night' || time === 'moonlight';
   const overhead = view === 'topDown' || variant === 'staircase';
+  const layout = setLayout(w, h);
   const floor = dark ? '#80758D' : '#DEBFA6';
   const wall = dark ? '#5C5775' : '#E9D2CA';
   return {
@@ -90,27 +147,23 @@ export const houseInterior: BackgroundBuilder = ({w, h, time, options, view}) =>
     ),
     mid: (
       <g
-        transform={`scale(${w / 1080} ${h / 1920})`}
+        transform={`translate(${layout.x} 0) scale(${layout.scale})`}
         stroke="#4A3B3B"
         strokeWidth={5}
         strokeLinejoin="round"
       >
         {overhead ? (
-          <>
-            <rect
-              x={42}
-              y={250}
-              width={996}
-              height={1220}
-              rx={20}
-              fill="none"
-              stroke={wall}
-              strokeWidth={50}
-            />
-            <Staircase />
-          </>
+          <Staircase t={t} left={layout.left} span={layout.span} />
         ) : (
           <>
+            {Array.from({length: Math.ceil(layout.span / 180)}, (_, i) => (
+              <path
+                key={i}
+                d={`M${layout.left + i * 180} 0 V1265`}
+                stroke={dark ? '#69617E' : '#DEC1BC'}
+                strokeWidth={3}
+              />
+            ))}
             <ArchAndWindow dark={dark} />
             {variant === 'kitchen' ? (
               <Kitchen />

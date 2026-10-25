@@ -54,14 +54,14 @@ test('kitchen lie beat is anchored on the floor below the counter', () => {
     (scene) => scene.bg === 'houseInterior' && scene.background?.variant === 'kitchen',
   );
   const actor = kitchen?.actors.find((item) => item.type === 'narrator');
-  assert.ok(actor && 'y' in actor && actor.y >= 0.9);
+  assert.ok(actor && 'y' in actor && actor.y >= 0.8 && actor.y <= 0.85);
 });
-test('staircase top-down geometry recedes toward the top of the frame', () => {
+test('staircase descends through two complete turns into the central well', () => {
   const first = staircaseSteps[0];
-  const last = staircaseSteps[staircaseSteps.length - 1];
-  assert.ok(first.y < last.y);
-  assert.ok(first.width < last.width);
-  assert.ok(first.x > last.x);
+  const last = staircaseSteps.at(-1)!;
+  assert.ok(last.angle - first.angle >= 700);
+  assert.ok(last.outer < first.inner);
+  assert.ok(staircaseSteps.every((step) => step.outer > step.inner));
 });
 test('camera reaches exact endpoints, clamps seeking and has deterministic midpoint', () => {
   const camera = {zoom: [1, 2], pan: {from: [0, 0], to: [-0.1, 0.08]}} as {

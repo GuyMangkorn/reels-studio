@@ -1,4 +1,19 @@
 import type {BackgroundBuilder} from '../Background';
+import type {Actor} from '../../scenes/types';
+export const exteriorScale = (w: number, h: number) => Math.min(w / 1040, h / 1600);
+export function exteriorPlacement<T extends {x: number; y: number; scale: number}>(
+  base: T,
+  actor: Actor,
+  w: number,
+  h: number,
+): T {
+  return {
+    ...base,
+    x: w * (0.4 + 0.2 * (base.x / w)),
+    y: h * (actor.y ?? 0.84),
+    scale: exteriorScale(w, h) * 0.28 * (actor.scale ?? 1),
+  };
+}
 type HouseColors = {dark: boolean; lit: boolean};
 const HouseFloors = ({dark, lit}: HouseColors) => (
   <>
@@ -68,7 +83,7 @@ export const oldHouseExterior: BackgroundBuilder = ({w, h, time, options}) => {
     ),
     mid: (
       <g
-        transform={`translate(${w / 2} ${h * 0.76}) scale(${Math.min(w / 1040, h / 1700)})`}
+        transform={`translate(${w / 2} ${h * 0.76}) scale(${exteriorScale(w, h)})`}
         stroke="#4A3B3B"
         strokeWidth={5}
         strokeLinejoin="round"

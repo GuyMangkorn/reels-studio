@@ -180,6 +180,15 @@ export const Character = ({
       }}
     >
       <PivotDebug value={showPivots}>
+        <ellipse
+          data-floor-shadow="lie"
+          cx={15}
+          cy={58}
+          rx={210}
+          ry={10}
+          fill="#253047"
+          opacity={0.16 * Math.min(1, Math.abs(a.root) / 90)}
+        />
         <g transform={`scale(${flip ? -1 : 1} 1)`}>
           <g
             transform={`rotate(${a.root + rotation})`}

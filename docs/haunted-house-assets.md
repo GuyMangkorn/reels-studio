@@ -39,7 +39,7 @@ Zoom endpoints are 1..4; pan coordinates are fractions of composition width/heig
 
 `view: topDown` selects the authored overhead staircase geometry in `houseInterior`; it is valid for the staircase only and is rejected for every other variant. Bedrooms are POV-only and must use `background.variant: bedroomPOV`. It does not turn a frontal human drawing into a 3D overhead figure. `time: moonlight` adds a moonlight shaft. Drawing/dining/kitchen share the arch/window shell.
 
-The staircase top-down view is authored as a look down the stairs: the far steps are narrower and higher in the frame, while the near steps widen toward the bottom. The same geometry is used by Short and Long so the orientation does not flip between aspect ratios.
+The staircase view looks straight down into a spiral stairwell. Concentric treads descend into a dark central well, and footstep shadows trace the stair path over time. The scene fills the frame in both aspect ratios without stretching the treads.
 
 The single channel config is `src/config/channel.ts`: Thai name **ทำไมล่ะ**, romanized **TamMaiLa**. Omitting `channelName` uses the Thai default. A `SceneRenderer`/input-props `channelName` overrides the whole timeline; a scene value overrides that inherited label. `null` or `false` explicitly hides it. The footer has a fixed band below subtitles in both formats; long labels truncate within that band.
 
@@ -69,15 +69,15 @@ Select `bg: houseInterior` with `background.variant: bedroomPOV`. This is the on
 
 Four ordered layers draw the back wall/window/moonlight, bed end, figures, then the foreground duvet edge. There are no viewer legs, feet, or knee bumps; the foreground is only the duvet and its subtle folds. Breathing runs on a deterministic 4.8-second cycle with a slight drift, moving the blanket more than the figures, bed end and wall. The optional vignette defaults on; `vignette: false` disables it.
 
-`depth: bedEnd` is valid only in this set. It scales an actor to 68% of normal stage size, defaults its anchor to 54% of frame height, and applies slight darkening/blur. Actor `x`, `y` and `scale` remain adjustable; the duvet draws in front of the figures. Use the existing ghost variants or human rig without duplicating artwork.
+`depth: bedEnd` is valid only in this set. It scales an actor to half its authored size using the composition height, defaults its anchor to 55% of frame height, and applies darkening and slight blur. Actor `x`, `y` and `scale` remain adjustable; the duvet draws in front of the figures. Use the existing ghost variants or human rig without duplicating artwork.
 
 `background.blanketPull` accepts a fixed number in 0..1 or two endpoints `[from, to]` in 0..1. Endpoints ease over the shot, sliding and foreshortening the duvet toward the foot without revealing a body or legs. It is measured in scene-local time, so seeking and both aspect ratios produce the same beat. Camera zoom/pan still operate on the world; subtitles and channel footer stay fixed outside it.
 
 An optional POV shoulder-hit beat is declared at scene level as `impact: {"atSec": 2.1}`. During the short deterministic window, the camera shakes and a shadow briefly flickers over the world; subtitles and the channel footer remain fixed. The impact is accepted only on `bedroomPOV` scenes. Ghosts at the bed end use `depth: "bedEnd"`, which keeps them smaller, darker and slightly blurred behind the duvet.
 
-The `crawler` ghost is a reusable articulated silhouette. Its shoulder/elbow and hip/knee chains use phase-lagged joints for a crawling gait; an irregular face, pinprick eyes, open jaw and teeth keep the figure threatening without adding scene-specific artwork.
+The `crawler` ghost is a reusable articulated silhouette. Its shoulder/elbow and hip/knee chains use phase-lagged joints for a crawling gait; elongated limbs and a dark, irregular face keep it threatening without cute facial features or scene-specific artwork.
 
-The showcase kitchen lie beat uses an explicit floor anchor (`y: 0.9`) so the transition from standing to lying settles below the counter rather than hovering over the worktop.
+The showcase kitchen lie beat uses an explicit floor anchor (`y: 0.84`) and hip-to-floor compensation so the transition from standing to lying settles below the counter rather than hovering over the worktop.
 
 ## Preview and validation
 
