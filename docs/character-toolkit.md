@@ -28,7 +28,7 @@ npm run render:long
 
 - `Short`: 1080 × 1920, 30fps, 600 frames / 20 seconds → `out/demo_short.mp4`
 - `Long`: 1920 × 1080, 30fps, 600 frames / 20 seconds → `out/demo_long.mp4`
-- Each render exports `_A_fade.mp4` and `_B_loop.mp4`; the unsuffixed file is a copy of B for review. The final scene holds its actor pose for three seconds. A keeps the Thai closing line readable for three seconds, then fades to black over the last second; B keeps the final pose visible for looping. Both stay exactly 20 seconds.
+- Each render exports `_A_fade.mp4` and `_B_loop.mp4`; the unsuffixed file is a copy of B for review. The final scene holds its actor pose for three seconds. A keeps the Thai closing line readable for three seconds, then fades to black over the last second; B cuts back on its last frame to the exact first timeline frame, including the background, actors, subtitles and progress bar. The next playback cycle begins on the same image. Audio continues on its original clock and is not replayed by this visual cut. Both stay exactly 20 seconds.
 - H.264, yuv420p, CRF 18, with Thai Niwat narration at +5%. Rendering uses port 3101 to avoid Studio's port.
 - The first render may download Remotion's Chrome Headless Shell. The Noto Sans Thai font is bundled and requires no font network requests.
 - Outputs, generated bundles and node_modules are ignored by Git.
@@ -56,7 +56,7 @@ npm run render:long
 | `public/fonts/NotoSansThai.ttf` | Bundled variable Noto Sans Thai font |
 | `public/fonts/OFL.txt` | Font license |
 | `scripts/narration.py`, `src/amplitude.json`, `src/rig/drivers.ts` | Niwat audio generation, committed 30fps RMS and audio-driven mouth / blink sampling |
-| `src/scenes/endings.ts` | Shared final-pose hold and A/B ending timing |
+| `src/scenes/endings.ts` | Shared final-pose hold and fade timing |
 | `package.json`, `package-lock.json`, `tsconfig.json`, `.gitignore` | Reproducible build and project configuration |
 
 ## Character API
@@ -117,6 +117,7 @@ Edit `scripts/demo.json`, or pass a typed `timeline` prop to `SceneRenderer`. CL
 - Stable `id`s allow the narrator to interpolate from its previous scene's final pose. Without IDs, identity falls back to type + index. `poses` keyframes are scene-local seconds and must be strictly increasing, within scene duration. Keyframes choose the target at that time; interpolation takes the next 0.4 seconds.
 - Scenes cut at exact duration boundaries. Secondary motion restarts on each scene's local clock. Narration uses the composition clock across scene cuts; scene-local pose clocks never restart the audio envelope. `SceneRenderer` accepts optional `narration: {src, amplitude, fps, startFrame?}` and `ending: "A_fade" | "B_loop"`. Omit narration for a silent custom scene. The registered demo expects the local `public/narration.mp3`; regenerate it before rendering a fresh checkout.
 - Animals have their own procedural pose sampling; their pose switches are immediate, with smooth cyclic leg / tail motion.
+- Eyebrows appear only when `scene.eyebrow` contains text; there is no generated scene-number label.
 - Thai text wraps within a safe bottom region. The demo fits one line; extremely long subtitles should be split into shorter scenes.
 - Runtime validation reports paths for malformed scene fields, unknown assets / poses, invalid timing and duplicate actor IDs.
 

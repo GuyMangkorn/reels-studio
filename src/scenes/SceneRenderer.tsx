@@ -1,4 +1,4 @@
-import {AbsoluteFill, Audio, staticFile, Sequence, useCurrentFrame, useVideoConfig, interpolate} from 'remotion';
+import {AbsoluteFill, Freeze, Audio, staticFile, Sequence, useCurrentFrame, useVideoConfig, interpolate} from 'remotion';
 import {Background} from '../assets/Background';
 import {SceneProp} from '../assets/Props';
 import {Character, Cat, Dog, type PoseName} from '../rig';
@@ -24,7 +24,7 @@ const SceneView = ({scene, index, total, previous, start, narration, ending}: {s
     <Background kind={scene.bg} time={scene.time}/>
     {scene.props?.map((p, i) => <SceneProp key={i} type={p.type} x={p.x * width} y={(p.y ?? .8) * height} size={(p.size ?? 240) * (portrait ? 1.1 : 1)} color={p.color} night={night}/>)}
     <div style={{position: 'absolute', left: width * .075, top: height * (portrait ? .085 : .067), color: ink, opacity: interpolate(frame, [0, 12], [0, 1], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'}), transform: `translateY(${interpolate(frame, [0, 18], [15, 0], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'})}px)`}}>
-      <div style={{fontSize: portrait ? 24 : 21, fontWeight: 600, letterSpacing: 4}}>{scene.eyebrow ?? `${String(index + 1).padStart(2, '0')} / LITTLE STORIES`}</div>
+      {scene.eyebrow && <div style={{fontSize: portrait ? 24 : 21, fontWeight: 600, letterSpacing: 4}}>{scene.eyebrow}</div>}
       {scene.title && <div style={{fontFamily: 'Noto Sans Thai, sans-serif', fontSize: portrait ? 105 : 76, lineHeight: 1.13, fontWeight: 800, letterSpacing: -4, whiteSpace: 'pre-line', marginTop: 24}}>{scene.title}</div>}
       <div style={{width: 65, height: 7, borderRadius: 8, background: night ? '#ffdba4' : '#e5a08c', marginTop: 25}}/>
     </div>
@@ -45,10 +45,12 @@ const SceneView = ({scene, index, total, previous, start, narration, ending}: {s
 };
 /** Scenes are intentionally data-driven: edit JSON, never duplicate layout for aspect ratios. */
 export const SceneRenderer = ({timeline, narration, ending = 'B_loop'}: SceneRendererProps) => {
-  const {fps} = useVideoConfig(); validateTimeline(timeline);
+  const {fps, durationInFrames} = useVideoConfig();
+  const frame = useCurrentFrame();
+  validateTimeline(timeline);
   let start = 0;
-  return <AbsoluteFill style={{backgroundColor: 'black'}}>{narration && <Sequence from={narration.startFrame ?? 0} premountFor={fps}><Audio src={staticFile(narration.src)}/></Sequence>}{timeline.map((scene, index) => {
+  return <AbsoluteFill style={{backgroundColor: 'black'}}>{narration && <Sequence from={narration.startFrame ?? 0} premountFor={fps}><Audio src={staticFile(narration.src)}/></Sequence>}<Freeze frame={0} active={ending === 'B_loop' && frame === durationInFrames - 1}>{timeline.map((scene, index) => {
     const from = start; const duration = sceneFrames(scene.durationSec, fps); start += duration;
     return <Sequence key={index} name={scene.eyebrow ?? scene.bg} from={from} durationInFrames={duration} premountFor={fps}><SceneView scene={scene} index={index} total={timeline.length} previous={timeline[index - 1]} start={from} narration={narration} ending={ending}/></Sequence>;
-  })}</AbsoluteFill>;
+  })}</Freeze></AbsoluteFill>;
 };
