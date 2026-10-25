@@ -1,0 +1,51 @@
+import type {ReactNode} from 'react';
+import {useCurrentFrame, useVideoConfig} from 'remotion';
+import {Tree, House} from './Props';
+export type BackgroundName = 'forest' | 'city' | 'room' | 'sea' | 'nightSky';
+export type TimeOfDay = 'day' | 'night';
+type Palette = {sky: string; far: string; mid: string; near: string; accent: string};
+const palettes: Record<TimeOfDay, Palette> = {
+  day: {sky: '#f6e8d5', far: '#d8e0c2', mid: '#a9d0b8', near: '#83b69e', accent: '#ffce89'},
+  night: {sky: '#424668', far: '#686b92', mid: '#8185ad', near: '#555e83', accent: '#ffe0a8'},
+};
+type Context = {w: number; h: number; p: Palette; night: boolean; t: number};
+type Layers = {far: ReactNode; mid: ReactNode; near: ReactNode};
+export type BackgroundBuilder = (ctx: Context) => Layers;
+const cloud = (x: number, y: number, s = 1) => <g key={x} transform={`translate(${x} ${y}) scale(${s})`} fill="#fff8eb" opacity={0.7}><ellipse rx={90} ry={20}/><ellipse cx={-26} cy={-17} rx={38} ry={29}/><ellipse cx={27} cy={-11} rx={37} ry={25}/></g>;
+const hills = (w: number, h: number, color: string, level: number) => <path d={`M-120 ${h * level} Q${w * .12} ${h * (level - .22)} ${w * .4} ${h * level} T${w + 150} ${h * (level - .06)} V${h + 100} H-120Z`} fill={color}/>;
+const stars = (w: number, h: number) => Array.from({length: 32}, (_, i) => {const x = ((i * 277 + 35) % 997) / 997 * w; const y = ((i * 113 + 37) % 431) / 431 * h * .58; return <path key={i} d={`M${x - 4} ${y} h8 M${x} ${y - 4} v8`} stroke="#fff0cb" strokeWidth={2.5} strokeLinecap="round" opacity={.35 + (i % 3) * .2}/>;});
+export const backgroundRegistry: Record<BackgroundName, BackgroundBuilder> = {
+  forest: ({w, h, p, night}) => ({
+    far: <>{night ? stars(w, h) : <>{cloud(w * .22, h * .2)}{cloud(w * .77, h * .3, 1.4)}</>}{hills(w, h, p.far, .62)}</>,
+    mid: <>{hills(w, h, p.mid, .73)}{Array.from({length: 9}, (_, i) => <g key={i} transform={`translate(${i * w / 7 - 160} ${h * .78 - 224 * Math.min(w, h) / 650}) scale(${Math.min(w, h) / 650})`}><Tree color={night ? '#737fa0' : i % 2 ? '#91bea9' : '#a8cbb1'}/></g>)}</>,
+    near: <><rect x={-100} y={h * .78} width={w + 200} height={h * .3} fill={p.near}/><path d={`M${w * .46} ${h * .78} L${w * .73} ${h} H${w * .14}Z`} fill={night ? '#7d7998' : '#e7d1ad'}/>{Array.from({length: 17}, (_, i) => <ellipse key={i} cx={i * w / 15} cy={h * (.86 + (i % 3) * .045)} rx={8} ry={4} fill={p.accent} opacity={.6}/>)}</>,
+  }),
+  city: ({w, h, p, night}) => ({
+    far: <>{Array.from({length: 12}, (_, i) => <rect key={i} x={i * w / 10 - 100} y={h * (.35 + (i % 4) * .055)} width={w / 9} height={h * .5} rx={12} fill={p.far}/>)}</>,
+    mid: <>{Array.from({length: 7}, (_, i) => <g key={i} transform={`translate(${i * w / 5 - 130} ${h * .49}) scale(${h / 850})`}><House night={night} color={['#dfb5b3', '#c7badc', '#e7c6a3'][i % 3]}/></g>)}</>,
+    near: <><rect x={-100} y={h * .77} width={w + 200} height={h * .3} fill={night ? '#787894' : '#cec8d1'}/><rect x={-100} y={h * .82} width={w + 200} height={h * .2} fill={night ? '#555d78' : '#a9b5bd'}/><path d={`M-100 ${h * .92} H${w + 100}`} stroke="#f9dfae" strokeWidth={8} strokeDasharray="65 50"/></>,
+  }),
+  room: ({w, h, p, night}) => ({
+    far: <><rect width={w} height={h} fill={night ? '#69647e' : '#f0d7c6'}/>{Array.from({length: 18}, (_, i) => <path key={i} d={`M${i * w / 16} 0 V${h}`} stroke={night ? '#79758d' : '#e8cbbd'} strokeWidth={3}/>)}<rect x={w * .59} y={h * .25} width={w * .28} height={h * .32} rx={20} fill="#fff1d9"/><rect x={w * .605} y={h * .265} width={w * .25} height={h * .29} rx={10} fill={night ? '#454b70' : '#b7d9df'}/><circle cx={w * .76} cy={h * .34} r={h * .035} fill={p.accent}/><path d={`M${w * .73} ${h * .26} V${h * .57} M${w * .59} ${h * .41} H${w * .87}`} stroke="#fff1d9" strokeWidth={10}/></>,
+    mid: <><rect x={w * .08} y={h * .57} width={w * .4} height={h * .15} rx={35} fill={night ? '#9c8da7' : '#c7b3ce'}/><rect x={w * .065} y={h * .65} width={w * .43} height={h * .13} rx={24} fill={night ? '#9c8da7' : '#b5a0c1'}/><rect x={w * .1} y={h * .77} width={14} height={h * .04} fill="#b28d77"/><rect x={w * .45} y={h * .77} width={14} height={h * .04} fill="#b28d77"/></>,
+    near: <><rect x={-100} y={h * .8} width={w + 200} height={h * .3} fill={night ? '#8d8091' : '#dfbca0'}/><ellipse cx={w * .5} cy={h * .89} rx={w * .35} ry={h * .075} fill={night ? '#b2a0ac' : '#f0d7bb'}/></>,
+  }),
+  sea: ({w, h, p, night, t}) => ({
+    far: <>{cloud(w * .21, h * .3, 1.3)}{cloud(w * .78, h * .23)}<path d={`M-100 ${h * .58} H${w + 100} V${h} H-100Z`} fill={night ? '#667fa4' : '#a1d3d6'}/></>,
+    mid: <>{[.62, .68, .74].map((level, i) => <path key={level} d={`M-120 ${h * level} Q${w * .2} ${h * level - 20 + Math.sin(t + i) * 6} ${w * .5} ${h * level} T${w + 120} ${h * level}`} stroke={night ? '#94aaca' : '#d4f0e9'} strokeWidth={10} fill="none"/>)}</>,
+    near: <><path d={`M-100 ${h * .82} Q${w * .25} ${h * .73} ${w * .55} ${h * .81} T${w + 120} ${h * .78} V${h + 100} H-100Z`} fill={night ? '#bab0bb' : '#f1d4a8'}/>{[.12, .45, .83].map(x => <path key={x} d={`M${w * x} ${h * .92} q15-20 30 0`} stroke="#e4b99f" strokeWidth={4} fill="none"/>)}</>,
+  }),
+  nightSky: ({w, h, p, night, t}) => ({
+    far: <>{stars(w, h)}<path d={`M${w * .13} ${h * .4} Q${w * .48} ${h * .15} ${w * .9} ${h * .4}`} fill="none" stroke={night ? '#7b799b' : '#eed5d8'} strokeWidth={h * .07} opacity={.45}/></>,
+    mid: <>{hills(w, h, p.far, .7)}<g opacity={.8} transform={`translate(${Math.sin(t * .2) * 10} 0)`}>{hills(w, h, p.mid, .8)}</g></>,
+    near: <>{hills(w, h, p.near, .91)}<rect x={-100} y={h * .9} width={w + 200} height={h * .2} fill={p.near}/></>,
+  }),
+};
+export const Background = ({kind, time = 'day'}: {kind: BackgroundName; time?: TimeOfDay}) => {
+  const {width: w, height: h, fps} = useVideoConfig(); const t = useCurrentFrame() / fps;
+  const p = palettes[time]; const layers = backgroundRegistry[kind]({w, h, p, night: time === 'night', t});
+  return <svg width={w} height={h} style={{position: 'absolute', inset: 0}}><rect width={w} height={h} fill={p.sky}/>
+    <circle cx={w * .81} cy={h * .18} r={Math.min(w, h) * .065} fill={p.accent}/>
+    {(['far', 'mid', 'near'] as const).map((layer, i) => <g key={layer} data-parallax={layer} transform={`translate(${Math.sin(t * .18) * (i + 1) * 7} 0)`}>{layers[layer]}</g>)}
+  </svg>;
+};

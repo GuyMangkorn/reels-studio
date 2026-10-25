@@ -1,0 +1,50 @@
+[
+  {
+    "durationSec": 4, "bg": "forest", "time": "day", "eyebrow": "01 / THE DEPARTURE", "title": "A little\nwander.",
+    "actors": [
+      {"id":"host","type":"narrator","pose":"wave","x":0.29,"talking":true,"poses":[{"atSec":2.1,"pose":"point"}]},
+      {"id":"milo","type":"cat","pose":"walk","from":1.12,"to":0.63},
+      {"id":"mochi","type":"dog","pose":"walk","from":1.4,"to":0.85}
+    ],
+    "props": [{"type":"sign","x":0.84,"y":0.64,"size":190}],
+    "subtitle":"วันนี้เราออกเดินทางไปด้วยกัน"
+  },
+  {
+    "durationSec":4,"bg":"city","time":"day","eyebrow":"02 / FOLLOW YOUR CURIOSITY","title":"Hello,\nbig world.",
+    "actors":[
+      {"id":"host","type":"narrator","pose":"point","x":0.27,"talking":true,"poses":[{"atSec":1.8,"pose":"shock"}],"expression":"shock"},
+      {"id":"milo","type":"cat","pose":"walk","from":0.46,"to":0.61},
+      {"id":"mochi","type":"dog","pose":"walk","from":0.77,"to":0.86}
+    ],
+    "props":[{"type":"car","x":0.73,"y":0.69,"size":210}],
+    "subtitle":"ว้าว! เมืองนี้มีเรื่องน่าตื่นเต้นมากมาย"
+  },
+  {
+    "durationSec":4,"bg":"room","time":"day","eyebrow":"03 / A MOMENT TO PAUSE","title":"Small pause.\nBig ideas.",
+    "actors":[
+      {"id":"host","type":"narrator","pose":"think","expression":"think","x":0.28,"talking":true,"poses":[{"atSec":2.3,"pose":"sit"}]},
+      {"id":"milo","type":"cat","pose":"sit","x":0.62},
+      {"id":"mochi","type":"dog","pose":"idle","x":0.85}
+    ],
+    "subtitle":"พักสักนิด แล้วคิดถึงจุดหมายต่อไป"
+  },
+  {
+    "durationSec":4,"bg":"sea","time":"day","eyebrow":"04 / THE SCENIC ROUTE","title":"Let’s take\nthe slow way.",
+    "actors":[
+      {"id":"host","type":"narrator","pose":"walk","x":0.28,"talking":true,"poses":[{"atSec":1.6,"pose":"point"}]},
+      {"id":"milo","type":"cat","pose":"walk","from":0.52,"to":0.64},
+      {"id":"mochi","type":"dog","pose":"walk","from":0.76,"to":0.86}
+    ],
+    "props":[{"type":"boat","x":0.77,"y":0.69,"size":220}],
+    "subtitle":"ลมทะเลพาเราไปพบเรื่องราวใหม่"
+  },
+  {
+    "durationSec":4,"bg":"nightSky","time":"night","eyebrow":"05 / UNTIL TOMORROW","title":"Good friends.\nBright nights.",
+    "actors":[
+      {"id":"host","type":"narrator","pose":"wave","x":0.29,"expression":"happy","talking":true},
+      {"id":"milo","type":"cat","pose":"idle","x":0.63},
+      {"id":"mochi","type":"dog","pose":"wave","x":0.85}
+    ],
+    "subtitle":"ค่ำคืนนี้มีดาว และมีเพื่อนข้างกาย"
+  }
+]
