@@ -77,6 +77,8 @@ An optional POV shoulder-hit beat is declared at scene level as `impact: {"atSec
 
 The `crawler` ghost is a reusable articulated silhouette. Its shoulder/elbow and hip/knee chains use phase-lagged joints for a crawling gait; an irregular face, pinprick eyes, open jaw and teeth keep the figure threatening without adding scene-specific artwork.
 
+The showcase kitchen lie beat uses an explicit floor anchor (`y: 0.9`) so the transition from standing to lying settles below the counter rather than hovering over the worktop.
+
 ## Preview and validation
 
 ```sh

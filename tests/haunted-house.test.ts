@@ -49,6 +49,13 @@ test('every bedroom beat is POV-only and places ghosts at the bed end', () => {
     );
   }
 });
+test('kitchen lie beat is anchored on the floor below the counter', () => {
+  const kitchen = showcase.find(
+    (scene) => scene.bg === 'houseInterior' && scene.background?.variant === 'kitchen',
+  );
+  const actor = kitchen?.actors.find((item) => item.type === 'narrator');
+  assert.ok(actor && 'y' in actor && actor.y >= 0.9);
+});
 test('staircase top-down geometry recedes toward the top of the frame', () => {
   const first = staircaseSteps[0];
   const last = staircaseSteps[staircaseSteps.length - 1];
