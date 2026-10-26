@@ -1,12 +1,12 @@
 # CATBOX — แมวกับกล่อง: คดีที่ปิดด้วยคำตอบเดียวไม่ได้
 
-- Episode ID: `CATBOX`; script revision **R2**; ผู้เขียน: แพรว (Preaw); 26 ตุลาคม 2026
+- Episode ID: `CATBOX`; script revision **R4**; ผู้เขียน: แพรว (Preaw); 26 ตุลาคม 2026
 - Brief: [preaw-handoff.md](preaw-handoff.md); research **R1**: [research.md](research.md)
 - Story mode: `fiction-with-factual-knowledge` — เจ้าของกับแมวชื่อโมจิเป็นเรื่องแต่งเชื่อม factual educational explainer; งานวิจัย/จำนวนที่กล่าวถึงเป็นรายงานจริงตาม ledger
 - Target: Long **8–10 นาที**; ผังประกอบตั้งต้น **9:00** = 6 บทเนื้อหา × 2 production units × 45s. บทเนื้อหา 90s ไม่เปลี่ยน convention production unit 45–60s ของช่อง
 - Timing status: **estimated** เท่านั้น ยังไม่อ่านออกเสียง/ไม่ `audio-tested`; ช่องเวลาเป็นงบเวลาเพื่อทดลองเสียง ไม่ใช่เวลาที่ตรวจผ่าน. ห้ามเติมช่วงเงียบยาวให้ครบ 9:00; หาก VO ล้น/สั้น ปรับถ้อยคำและงบเวลาภายในเป้า 8–10 นาทีแล้วเพิ่ม revision
 - Short: มี full VO 6 เรื่องแยกในแต่ละไฟล์ เป้าเรื่องละ **45s** รวมท้ายค้าง 3s; เป็นบทตัดต่อที่มีถ้อยคำใหม่ จึงต้องตรวจ facts แยกจาก Long
-- Approval: หัวข้ออนุมัติตาม brief; **บท R2 ยังไม่อนุมัติ**; editorial status `draft-for-fact-check`; ไม่ใช่ `ready-for-storyboard`
+- Approval: หัวข้ออนุมัติตาม brief; **บท R4 ยังไม่อนุมัติ**; editorial status `draft-for-fact-check`; ไม่ใช่ `ready-for-storyboard`
 - Narration target: Thai Niwat `th-TH`, speakingRate `1.05`; เอกสารนี้ยังไม่สร้างเสียง/runtime/subtitle timing
 
 ## แกนเรื่องและ ending
@@ -48,9 +48,9 @@ Logline: เจ้าของเห็นแมวในกรอบที่�
 
 ## Handoff สำหรับโบ็ต แล้วจึงมาร์ค
 
-โบ็ตตรวจ `episode-script.md` และ `ch01-script.md`–`ch06-script.md` **R2 ทั้ง Long/Short/ซับ/ชื่อ/ข้อความภาพ** เทียบ research R1. ตาราง mapping แต่ละบทครอบคลุมกลุ่มประโยคที่ใช้ claim เดียวกัน; คำถามเชิงวาทศิลป์ยังต้องตรวจ implied claim. ไม่มี claims ใหม่ที่ตั้งใจให้เป็น fact นอก ledger. ถ้าพบ implication ใหม่ ให้เปิด `needs-research` แล้วส่งแพรว rewrite ห้ามถือว่าการวิจัยก่อนหน้าเป็นผลตรวจบท
+โบ็ตตรวจ `episode-script.md` และ `ch01-script.md`–`ch06-script.md` **R4** โดยทวน VO ที่แก้ปีตีพิมพ์ใน C01/C02, หน่วยผู้สมัครใน C01 และหน่วยอุณหภูมิใน C04 ทั้ง Long/Short; เทียบ research R1 พร้อมตรวจข้อเท็จจริงและขอบเขตความไม่แน่นอนร่วมกับซับ/ชื่อ/ข้อความภาพที่เกี่ยวข้อง. ตาราง mapping แต่ละบทครอบคลุมกลุ่มประโยคที่ใช้ claim เดียวกัน; คำถามเชิงวาทศิลป์ยังต้องตรวจ implied claim. ไม่มี claims ใหม่ที่ตั้งใจให้เป็น fact นอก ledger. ถ้าพบ implication ใหม่ ให้เปิด `needs-research` แล้วส่งแพรว rewrite ห้ามถือว่าการวิจัยก่อนหน้าเป็นผลตรวจบท
 
-ส่ง Mark เมื่อ script กับ fact-check ตรง revision และสถานะพร้อมเท่านั้น. เขารับเส้นเรื่อง ข้อที่ต้องเห็น สิ่งห้ามเฉลยก่อนเวลา และข้อจำกัดความรู้; เลือก framing/light/camera เอง. ไม่ lock แล็บเป็นสถานที่ทดลองจริง: ถ้าใช้ให้เป็นห้องอ่านหลักฐานของเจ้าของ. งานกรอบปี2021ทำที่บ้านผู้เข้าร่วม. `room`/cat ใช้เป็นฐานได้ตาม research; lab/box/tape-square/Kanizsa/toy/evidence-board ยังต้องตรวจ/สร้าง library ก่อน production. แมว เจ้าของ interaction props 2D; กล่องหนึ่งภาพสมบูรณ์ต่อมุม; Boss ตรวจ contact/occlusion. ไม่มี runtime capability ที่เพิ่มด้วยเอกสารนี้
+ส่ง Mark เมื่อ script กับ fact-check ตรง revision และสถานะพร้อมเท่านั้น. เขารับเส้นเรื่อง ข้อที่ต้องเห็น สิ่งห้ามเฉลยก่อนเวลา และข้อจำกัดความรู้; เลือก framing/light/camera เอง. ไม่ lock แล็บเป็นสถานที่ทดลองจริง: ถ้าใช้ให้เป็นห้องอ่านหลักฐานของเจ้าของ. งานวิจัยเรื่องกรอบของ Smith ตีพิมพ์ในปี 2021; เก็บข้อมูลที่บ้านผู้เข้าร่วม. `room`/cat ใช้เป็นฐานได้ตาม research; lab/box/tape-square/Kanizsa/toy/evidence-board ยังต้องตรวจ/สร้าง library ก่อน production. แมว เจ้าของ interaction props 2D; กล่องหนึ่งภาพสมบูรณ์ต่อมุม; Boss ตรวจ contact/occlusion. ไม่มี runtime capability ที่เพิ่มด้วยเอกสารนี้
 
 Ending Long และทุก Short: ค้างสาระ/มุกท้ายราว3s แล้วให้ผู้ทำ timeline เสนอ `_A_fade` และ `_B_loop`; loop กลับคำถามต้นเรื่องได้แต่ห้ามทำให้สมมติฐานกลายเป็นข้อสรุป. ยังไม่มี render หรือไฟล์ ending จริง
 
@@ -63,3 +63,7 @@ Ending Long และทุก Short: ค้างสาระ/มุกท้�
 - R1: สร้างแพ็กครั้งแรก 6บท/12U และ6Short; ปลูกกล่องเก่าและช่องคำตอบว่างก่อน ending; ใช้ hypothesis qualifiers ตรงจุดรับข้อมูล; ไม่มี user script approval/fact-check แฝง
 
 - R2: ตามข้อทักท้วง Boat แก้ C02-U02-B02/B03 และ C02-S01-B03 พร้อมซับ/ภาพ/mapping ให้12วันจำกัดที่การวัดคะแนนกับน้ำหนัก และใช้ถ้อยคำความต่างอย่างมีนัยสำคัญทางสถิติ. C05-U02-B02แก้เป็นเติมกลิ่นหนู/ไม่เติมกลิ่นหนู ไม่เหมาว่าวัตถุไร้กลิ่นทั้งหมด; C01/C03/C04/C06 เนื้อหาคงเดิมจากR1 (revision carry-forward); R2ยังรอBoat recheckข้อความเปลี่ยน/ผลกระทบ ไม่อ้างผลตรวจพร้อมก่อนรายงานตรงฉบับ.
+
+- R3: แพรวเกลา VO Long/Short ทั้ง 6 บทให้เป็นภาษาพูด ประโยคสั้น และไม่เกินหนึ่งตัวเลขต่อประโยค; คงเรื่อง เหตุการณ์ ข้อเท็จจริง และขอบเขตหลักฐานตาม R2. ส่งโบ๊ท fact-check wording ที่แก้และ claim ที่ได้รับผลก่อนทำ storyboard.
+
+- R4: แก้ปีใน VO ของ C01/C02 ให้ชัดว่าเป็นปีตีพิมพ์, ระบุว่าเป็นผู้สมัครจากแบบสำรวจแรกและใช้หน่วย “ราย” ตามแหล่ง, และเติม “เซลเซียส” ให้ช่วงอุณหภูมิ C04; ส่งโบ๊ทตรวจ revision R4. คงซับ ภาพ claim mapping และ beats ตาม R3. เพิ่มคำชี้แจงใน handoff ว่างานกรอบตีพิมพ์ปี 2021 แต่เก็บข้อมูลที่บ้านในปี 2020.
