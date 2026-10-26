@@ -4,6 +4,8 @@
 
 รับบทจากแพรวและผลตรวจของโบ็ตตาม [editorial-workflow.md](editorial-workflow.md) ระบุ script/review revision ให้ตรงกันและรักษา beat, clue และ claim IDs ใน mapping ไปช็อต หากรับ draft ให้บันทึก factual gaps ที่อาจทำให้ต้องแก้ภาพ; งาน visual direction และวิธีผลิตยังเป็นอำนาจมาร์ค
 
+เมื่อใช้ MCP ช่วยวาด/แก้บอร์ด อ่าน [excalidraw-mcp.md](excalidraw-mcp.md) สำหรับเครื่องมือจริง checkpoint และการเก็บไฟล์รายฉาก ต้องตรวจว่าผลแก้ล่าสุดใน widget ตรงกับไฟล์ที่ส่ง dev
+
 ตัวอย่างเรียกใช้:
 
 > ให้มาร์ค (mark) อ่านบท [path] แล้วทำ storyboard เฉพาะบท 1 ฉาก 2 พร้อม scene sheet และรายการ asset ที่ dev ต้องเพิ่ม
