@@ -66,6 +66,8 @@ Three.js คำนวณแสงใน Linear-sRGB แต่ texture สีจ�
 
 ## 7. Contact และเงา
 
+ขนาดอ้างอิง, visible bounds, หน่วย, camera projection และความสัมพันธ์ของ foot/seat/grip ขณะเปลี่ยนระยะ ใช้ [หลักสัดส่วนและ perspective](scale-and-perspective-principles.md) ร่วมกับหัวข้อนี้ แยก physical dimensions ใน library ออกจาก projected size ที่กล้องสร้าง
+
 Three.js manual อธิบาย shadow maps มีค่าใช้จ่ายในการ render เพิ่ม และยก fake shadow เป็นทางเลือก โดยผูก shadow กับวัตถุให้เคลื่อนสัมพันธ์กัน เลือกจริงตาม medium, look และ render cost ไม่สมมติว่าเงาของภาพแบนเทียบเท่า mesh ที่มีปริมาตร
 
 ข้อเสนอสำหรับงาน hybrid: เลือก real shadow, fake shadow plane หรือ shared 2D layer ตาม composition strategy ระบุ caster/receiver, material และ coordinate space รักษา anchor ของฝ่าเท้า/สะโพก/มือให้ตรง surface/seat/grip และตรวจเงาเคลื่อนสัมพันธ์กับกล้องและวัตถุ เงาอย่างเดียวไม่แก้ตัวละครลอยเหนือเบาะ

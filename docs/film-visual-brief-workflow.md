@@ -28,9 +28,12 @@
 
 ใช้เท่าที่เกี่ยวข้อง ระบุ `N/A` พร้อมเหตุผลได้ ไม่ต้องบังคับ hybrid ทุกฉาก อ่านหลักฐานและข้อควรระวังใน [asset-engineering-principles.md](asset-engineering-principles.md)
 
+ก่อนเลือกกล้องหรือกำหนดขนาดภาพ ใช้ [หลักสัดส่วนและ perspective](scale-and-perspective-principles.md) กับงาน 2D, 3D และ hybrid: Film กำหนดหน่วย ขนาดอ้างอิงและ projection contract ให้ Mark/Boss ใช้ร่วมกัน จบเมื่อมี scale baseline พร้อมที่มา/สถานะ estimated และวิธีตรวจ physical size แยกจาก projected size; หากเปลี่ยนแนวทางให้ระบุ decision/revision ที่ได้รับผล
+
 | รอยต่อ | สิ่งที่ brief ต้องตัดสิน/ส่งต่อ | หลักฐานที่ต้องพิสูจน์ |
 | --- | --- | --- |
 | Composition | DOM/SVG ทับ WebGL, 2D cut-out อยู่ใน world, 3D ทั้งฉาก หรือ pre-render แยก pass; องค์ประกอบใดอยู่ screen/world space และใครเป็นเจ้าของ transform | DOM overlay ไม่แชร์ depth buffer กับ Three.js; ถ้าต้องบังสลับหน้า–หลัง ต้องมี world-space adapter, masks หรือ compositing passes ที่ระบุชัด |
+| Scale / projection | อ้าง scale baseline ของ library: dimensions/units/anchors, neutral pose และข้อยกเว้น stylization; เลือก perspective/orthographic หรือ shared 2D mapping พร้อม camera height/pose/FOV หรือ bounds | เทียบ actor–animal–furniture–prop บนระนาบเดียวก่อนจัดระยะ; ตรวจใกล้/ไกล การเคลื่อนตาม depth และ contact โดยมี projection owner เดียวตามคู่มือสัดส่วน |
 | Coordinates / camera | ชื่อ coordinate space, origin/axes/units, pixel↔world mapping, perspective/orthographic, camera target, crop-safe bounds สองสัดส่วน | camera move start/mid/end ไม่ทำให้ actor หลุด contact หรือเห็น cut-out เป็นขอบบาง; ระบุ fixed-plane/billboard และช่วงมุมที่ยอมรับได้ |
 | Contact / identity | asset IDs, logical bounds, foot/hip/grip/seat anchors, facing, held-prop parent และจุด attach/detach | anchor อยู่ใน space ใดและแปลงอย่างไร; pose/scale/camera และการเปลี่ยน representation ข้าม cut รักษา identity และ contact |
 | Depth / alpha | foreground/midground/background, opaque/alpha-cutout/soft transparency, occlusion ที่ reveal ต้องใช้ | ทดสอบการเดินผ่านวัตถุและมุมกล้องสุดขอบ; `transparent`, `DoubleSide`, `renderOrder` ไม่ใช่สูตรแก้ทุกกรณี |
@@ -60,6 +63,10 @@ Audience knowledge + mood; color/value key; camera language; conceal/reveal cons
 | ... | VD01 | ... | ... | ... | ... |
 
 ## Technical handoff
+Scale baseline: shared reference path/revision, dimensions/units/anchors,
+source or estimated status, stylization exceptions; calibration view
+Projection contract: camera/ground plane, perspective or orthographic,
+FOV/bounds + aspect/crop Short/Long; shared projection owner + feasibility
 Per decision: composition strategy, spaces/anchors/camera, depth/alpha/light,
 clocks/loading/resource ownership, actual paths + implementation status,
 proposed shared interface (design only), dependency order + consumers,
