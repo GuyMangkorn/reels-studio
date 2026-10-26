@@ -137,3 +137,121 @@ SHA-256 ใช้ระบุเนื้อหาที่ผลตรวจน
 | [ch06-script.md](ch06-script.md) | `374857c7e3cc11fd33c80b48495462921c02b179ee5fbd8482207cb2752d7ce3` |
 
 Change log FC-R2: ตรวจทุกsurfaceR1 → ส่งREV01–03ให้แพรวแก้ → เปิดอ่านR2/recheckข้อความเปลี่ยนและcarry-forwarddependenciesครบ → สรุปพร้อมด้านข้อเท็จจริงเฉพาะR2. ไม่มีการแก้บทโดยBoat ไม่มีGitHubmutation/commit/pushในงานตรวจนี้
+
+## Recheck R3 — VO polish
+
+- Review revision: FC-R3 initial pass; reviewer: Boat; access date: 26 ตุลาคม 2026.
+- Research baseline: research R1. Exact script revision reviewed: episode-script.md R3 and ch01–ch06 R3.
+- Scope: all 72 Long/Short VO blocks across six chapters, including spoken hooks and factual implications; checked changed episode-level revision/handoff metadata and related study-year wording. Subtitles, visual directions, claim mappings and source list remain R2; R2 review coverage is retained only for surfaces verified unchanged. This pass does not inherit R2 verdicts for changed VO.
+- Outcome: revision-required. The evidence, methods and uncertainty remain correctly bounded in most revised lines, but six spoken year references need to identify publication year rather than study date; one count changes the unit to people; three temperature references omit Celsius.
+
+### R3 findings
+
+| Claim / location | R3 wording or issue | Verdict | Evidence + locator | Precise correction |
+| --- | --- | --- | --- | --- |
+| F001–F003 / C01-U01-B02 and C01-S01-B02 | “งานนี้ทำในปีสองพันยี่สิบเอ็ด” states that the study was conducted in 2021. | needs-qualification | SRC001 §§2.1–2.2: data were collected June–August 2020; the paper was published online 30 April 2021 and in the 2021 journal issue. | Change to “งานวิจัยชิ้นนี้ตีพิมพ์ในปีสองพันยี่สิบเอ็ด.” |
+| F002 / C01-U02-B01 | “ผู้สมัครห้าร้อยหกสิบเอ็ดคน” turns 561 preliminary-survey enrollments into a count of people. | needs-qualification | SRC001 §2.2 and §3.1: cats were enrolled by their owners; the preliminary survey had 561 enrollments. The result is reported as enrollment records, not a confirmed count of unique people. | Change to “แบบสำรวจแรกมีผู้สมัครห้าร้อยหกสิบเอ็ดราย.” Keep 30 completed cats, six trials, nine cats with a selection, and 16 selections separate as in R3. |
+| F004 / C02-U01-B02 and C02-S01-B02 | “งานนี้ทำ…ในปีสองพันสิบสี่” implies the trial was conducted in 2014. | needs-qualification | SRC002 is accessible only at institutional-abstract/record level; it establishes a 2014 publication and reports the 19-cat, 14-day trial, but the accessible material does not establish the data-collection year. G02 remains. | Change to “งานที่ตีพิมพ์ในปีสองพันสิบสี่ศึกษาแมวที่เพิ่งเข้าศูนย์พักพิงในเนเธอร์แลนด์.” |
+| F005 / C02-U02-B02 and C02-S01-B03 | “งานติดตามอีกชิ้นทำในปีสองพันสิบเก้า” says the PLOS study was performed in 2019. | needs-qualification | SRC008, Materials and methods (study population): cats entered the shelter between 4 November and 30 December 2015; the article was published 14 October 2019. | Change to “งานติดตามอีกชิ้นตีพิมพ์ในปีสองพันสิบเก้า.” The remaining R3 facts are supported: 23 cats (12/11), first 12 days, CSS declined faster with a box, and tests did not find significant differences in weight loss, adoption rate or length of stay. |
+| F006 / C04-U01-B01, C04-U01-B03 and C04-S01-B01 | The spoken range says “สามสิบองศา” and “สามสิบแปดองศา” without naming the Celsius scale. | needs-qualification | SRC005 §3.3.3.1 reports the disputed range as 30–38°C; SRC006 Table 3-1 also gives a Celsius range. | Say “สามสิบองศาเซลเซียส” and “สามสิบแปดองศาเซลเซียส.” Keep each endpoint in its own sentence. |
+| F003 / C01-U02-B03 and C01-S01-B03 | Plain wording “ผลทดสอบจับความต่างได้/แยก…ไม่ได้” summarizes pairwise test results. | supported | SRC001 Table 3: Kanizsa–control p<.05; square–control p=.40; Kanizsa–square p=.29. | No correction required. In context, “จับความต่างไม่ได้” is a plain rendering of a non-significant result; the following line correctly says that this does not prove equality. |
+| F004 / C02-U01-B03 and C02-S01-B02 | Lower CSS on observation days three and four; mean scores equal on day 14, with the hiding-box group reaching that level around day three. | supported | SRC002 abstract. | No correction required. Keep this scoped to the shelter cats and behavioral CSS. |
+| F005 / C02-U02-B02/B03 and C02-S01-B03 | Faster CSS decline, with no detected significant difference for weight loss, adoption or length of stay; non-significance is not described as proof of no effect. | supported | SRC008 Abstract, Results and Discussion. | No correction required. The limitation in the VO is appropriate. |
+| F008/F011 / C03 Long and Short | Predatory play is a real feline behavior; a box can provide concealment, while a flat outline cannot hide the body; the observed toy chase is kept separate from a motive for entering the box. | supported; fictional events are not-factual | SRC007 Pillar 1, pp. 222–223 and Pillar 3, pp. 224–225; SRC010 only supports attribution of an expert proposal, not a proven box-choice mechanism. | No correction required. Keep the chase and Mochi’s motive marked as fiction/hypothesis. |
+| F006/F007 / C04 except the missing unit above | The thermoneutral-zone explanation is simplified to spoken language; the VO distinguishes body-temperature regulation from comfort/preference and says the 30–38 range is disputed, not a universal home-temperature rule. Warm-seeking/insulating material is framed as a possible factor, not Mochi’s proven motive. | supported | SRC005 §§3.3.2.2 and 3.3.3.1; SRC006 Table 3-1. | No correction beyond naming Celsius. Do not present the disputed range as a recommended room setting or settled TNZ. |
+| F009/F010 / C05 Long and Short | Side contact is attributed as an expert suggestion and remains unconfirmed; the 21 adult cats / novel object / rat-scented versus unscented cube study is described as exploration, not box sitting. | supported | SRC010 interview; SRC009 Methods, Results and Discussion, pp. 492–496. The accessible author manuscript identifies 21 adult cats and three conditions; the cube study does not test a box open for cats to sit inside. | No correction required. Preserve “อาจ,” the limited search wording and the distinction between approaching/exploring and choosing to rest. |
+| F001–F012 / C06 Long and Short | The conclusion separates observations from possible reasons; the ending labels Mochi’s return to the old box as fiction and retains “ยังไม่รู้.” | supported; Mochi plot events are not-factual | SRC001, SRC002, SRC005, SRC007–SRC010 as mapped in R1; F012 is dramatization, not study data. | No correction required beyond the year/unit fixes above. |
+
+### Coverage, carry-forward limits and readiness
+
+Read all 72 VO blocks: C01–C06, each with Long U01/U02 and Short S01, four beats per unit. Grouped repeat claims were checked in each occurrence, including hooks, numerical statements, causal wording, study design, comparisons and uncertainty. Reviewed the unchanged subtitles, on-screen study labels, claim mappings and visual notes for dependencies on the rewritten VO. The claim-family results above cover the R3 factual wording; no other factual drift was identified.
+
+Remaining evidence limits from research R1 still apply: SRC002 is abstract-level only, so its protocol and actual data-collection date remain unverified; SRC003–SRC004 are metadata-only, so the 1970 methods/sample sizes remain unknown (G01); the pressure/comfort and specific-motive hypotheses remain unconfirmed (G03). SRC010 is an interview reporting an expert’s proposal, not a test of that mechanism. R3’s TNZ wording appropriately reports EFSA’s concern about interpreting 30–38°C, but the Celsius unit must be spoken. R3’s timing remains estimated and was not audio-tested; that is outside this factual verdict.
+
+R3 status is revision-required, not ready-for-storyboard, until the publication-year wording, 561-enrollment unit and Celsius wording are corrected and the affected surfaces are rechecked. Script approval remains with the user.
+
+### Fingerprint of files reviewed at R3
+
+SHA-256 identifies the exact seven-file snapshot reviewed above. Any later file edit requires a new change-impact check.
+
+| File | SHA-256 |
+| --- | --- |
+| episode-script.md | 074796f7a6eaf74e34dc2d11f4fc7c751e44919543701b63c1caca0b518ef345 |
+| ch01-script.md | 0da40565e65e52f8befb6df0ea4001ff9cd57ef5aed1cb7811ed77dfd830ceb3 |
+| ch02-script.md | bc56ac54a98fa7e3dc694ac9cd3a854fadc5b4660d4b76517f5bbb618309c39c |
+| ch03-script.md | f29b0773f3e6488a900fd5036002eaed5af79c9868390024b77b81292612b5fb |
+| ch04-script.md | 0ab9c292aacc4930d4a1ecb7293ad288869d1a21153faa28a75e93f9ef321d0c |
+| ch05-script.md | 286503ca289649ea3c7500303db80aa373d2075610c3b9f36dfe9e6ff85837df |
+| ch06-script.md | b4eb7e6b67208e3505aedd439ab365bca127c10cbcc6166a89f2d1813f623bb2 |
+
+Change log FC-R3: ตรวจ VO ครบ 72 blocks และเทียบ research R1; พบ year attribution ที่ต้องแก้ 6 จุด, unit ของ sample enrollment 1 จุด, และการระบุหน่วยเซลเซียสในช่วงอุณหภูมิ 3 จุด. ส่งแพรวแก้เป็น R4; ไม่เปลี่ยนเนื้อหาบท.
+
+## Recheck R4 — ปิดข้อแก้ VO และตรวจ surfaces ที่เกี่ยวข้อง
+
+ตรวจ `episode-script.md` และ `ch01-script.md`–`ch06-script.md` revision **R4** เทียบ research **R1**. ขอบเขต recheck คือ wording ปีตีพิมพ์ C01/C02, จำนวนลงทะเบียน C01, endpoints อุณหภูมิ C04, และ subtitles/ข้อความภาพ/metadata ที่อ้างถึง claims เหล่านี้. VO ที่ไม่เปลี่ยนยังอิงผลตรวจครบ 72 blocks ใน R3; ไม่พบ R4 wording change อื่นใน claim mapping หรือข้อเท็จจริงของ beat. ตรวจซ้ำด้วยไฟล์ปัจจุบันและเก็บ SHA-256 ด้านล่าง.
+
+### R4 findings
+
+| Claim / location | R4 wording or surface | Verdict | Evidence + locator / reason | Precise correction |
+| --- | --- | --- | --- | --- |
+| F001–F003 / C01-U01-B02 and C01-S01-B02 | “งานวิจัยนี้ตีพิมพ์ในปีสองพันยี่สิบเอ็ด.” | supported | SRC001 §§2.1–2.2, p. 2: data collection ran June–August 2020; paper metadata, p. 1, says online publication 30 April 2021 and 2021 issue. The VO now distinguishes publication year from fieldwork. | None for these VO lines. Keep “ตีพิมพ์” explicit. |
+| F002 / C01-U02-B01 | “แบบสำรวจแรกมีผู้สมัครห้าร้อยหกสิบเอ็ดราย.” | supported | SRC001 §2.2 and §3.1: owners enrolled cats through a preliminary survey; the survey received 561 enrollments. “ราย” keeps the spoken count separate from the later 30 cats who completed all six trials and the 9 cats who selected at least once. It does not say 561 cats completed the experiment. | None. If a later surface needs a literal record-count label, use “แบบสำรวจแรกมีรายการลงทะเบียน 561 รายการ.” |
+| F004 / C02-U01-B02 and C02-S01-B02 | The shelter study “ตีพิมพ์ในปีสองพันสิบสี่.” | supported, source-limited | SRC002 Utrecht University record, Abstract and publication-status field: 2014 publication; Dutch shelter; 19 cats, 10/9 groups, 14-day CSS observation, and day-3/day-4 differences. The accessible source remains abstract/record only and does not establish when data collection occurred (G02). R4 no longer assigns the trial itself to 2014. | None for VO. Do not add a data-collection year or uninspected method detail. |
+| F005 / C02-U02-B02 and C02-S01-B03 | The follow-up study “ตีพิมพ์ในปีสองพันสิบเก้า.” | supported | SRC008 article metadata: published 14 October 2019. Materials and Methods, Animal shelter: cats entered between 4 November and 30 December 2015. The R4 VO now correctly names publication year; the separate sample/outcome wording remains within SRC008 Abstract/Results. | None for VO. |
+| F006 / C04-U01-B01, C04-U01-B03, C04-S01-B01 | Each endpoint is now spoken as “สามสิบองศาเซลเซียส” or “สามสิบแปดองศาเซลเซียส.” | supported with qualification preserved | SRC005 §3.3.3.1 reports that some authors give 30–38°C as the cat TNZ, then says this range may have been misinterpreted and should be reconsidered for adult cats. SRC005 §3.3.2.2 distinguishes TNZ from thermal comfort/preference. SRC006 Table 3-1 gives 35–38°C; it confirms a Celsius-scale reference but does not independently establish the whole 30–38°C range. R4 keeps the endpoints in separate spoken sentences and retains the warning that the range is not a universal comfort rule or a home-temperature recommendation. | None for the six VO endpoints. Do not present 30–38°C as settled or as advice. |
+| F003 / C01-U02-B03, C01-S01-B03; F004–F005 / C02 comparisons; F006 / C04 TNZ explanation | R4 did not change the plain statistical wording or the spoken TNZ explanation reviewed at R3. | supported; carried forward from R3 | SRC001 Table 3 supports the pairwise comparison wording; SRC002 Abstract and SRC008 Abstract/Results support the shelter-study summaries within their stated limits; SRC005 §§3.3.2.2, 3.3.3.1 supports the simplified physiology distinction. “จับความต่างไม่ได้” remains about the test result, not proof of equality; TNZ remains distinct from comfort or preferred temperature. | None. Preserve the non-significance and TNZ qualifications already recorded in R3. |
+| Episode handoff / `episode-script.md`, handoff paragraph | “งานวิจัยเรื่องกรอบของ Smith ตีพิมพ์ในปี 2021; เก็บข้อมูลที่บ้านผู้เข้าร่วม.” The R4 changelog further identifies the collection period as 2020. | supported | SRC001 §§2.1–2.2: the study was conducted June–August 2020; subjects were household pets, and trials were incorporated into the owners’ average day. The handoff now labels 2021 as publication year and describes home data collection; the R4 changelog states the 2020 year explicitly. | None. |
+
+### R4 coverage, access limits and readiness
+
+The six R3 VO year findings are closed in the chapter scripts: C01 now states 2021 as the publication year in Long and Short; C02 does the same for the 2014 and 2019 papers in Long and Short. The 561-enrollment wording no longer calls the count “people,” and all six C04 spoken endpoints name Celsius. The episode handoff now distinguishes the 2021 publication year from home data collection, and its R4 changelog identifies collection in 2020. The author-year on-screen labels (“Smith 2021,” “Vinke 2014,” “van der Leij 2019”) remain bibliographic labels; subtitles do not independently state that fieldwork took place in those years. The pairwise statistical simplifications and TNZ wording carry forward from R3 unchanged.
+
+R4 status: **ready-for-storyboard on factual review**. This is not user script approval. The corrected C01/C02/C04 VO and the clarified episode handoff are supported within the cited source limits.
+
+Source access limits remain: SRC001 was inspected as the available full-text PDF copy; the publisher/CUNY copies were unavailable in R1, and a mirrored copy is not independent corroboration. SRC002 remains accessible only as the Utrecht abstract/record; its full methods and data-collection date are unverified (G02). SRC005 was inspected at §§3.3.2.2, 3.3.3.1 and Table 7; upstream SRC003–SRC004 methods/sample sizes remain uninspected (G01). SRC006 is the previously inspected National Academies Table 3-1 and is not used to corroborate 30–38°C as a whole. Specific pressure, comfort and motive mechanisms remain unconfirmed (G03). R4 timing is still estimated and not audio-tested; this factual recheck does not establish spoken-duration compliance.
+
+### Fingerprints of files reviewed at R4
+
+These SHA-256 fingerprints identify the seven-file R4 snapshot reviewed above. Any later change requires a change-impact review.
+
+| File | SHA-256 |
+| --- | --- |
+| episode-script.md | 49d9263921dd9e9826451a8526d647c08a2a7ae2c67c4150dfbdcfdc63aab1fa |
+| ch01-script.md | f9cf052e11a86ad49f725ba7147e7fe0c9b5f7f7ecf2552f2eab5e1c8b394fa1 |
+| ch02-script.md | abf505c06035156b9ae108bad5b7ad2282f3579f507b6a76ce54ffac29439a3f |
+| ch03-script.md | be4324e1d356ed82142a9b030eac133ca9daf03f74bb9e93843a26cb6a0455a2 |
+| ch04-script.md | 9c4821aaa4d4452a39ca324da9bbf6aabae917e5b9c3da0a14c7f76b7977ed6f |
+| ch05-script.md | 0a32919a7aee061eca4d00d2dac1662861bd95aa1458cd1fb57e24350ceb521f |
+| ch06-script.md | a71357fdb2b7a9930538971ac5b40d9300e03d81db5eb5befed228ab3bbea7d5 |
+
+Change log FC-R4: rechecked the R3 year, enrollment-unit and Celsius findings against SRC001/002/005/006/008 and related chapter surfaces. The six VO year findings, enrollment unit, Celsius endpoints and episode-handoff year clarification are supported; R4 is factually ready for storyboard handoff, with user script approval separate.
+
+## Focused recheck C01 R5 — full chapter pass
+
+- Exact scope: `scripts/cat-boxes/ch01-script.md` R5, research R1. Re-read all 12 VO blocks (Long U01/U02 and Short S01), including hooks, implied claims, numbers/units, method details, uncertainty, and the effect of joined sentences. Subtitles, on-screen labels, visual directions and claim mapping remain as reviewed at R4; I checked the current C01 surfaces for impact. This recheck covers **C01 only**. C02–C06 retain their R4 findings.
+- Result: **supported**. R5’s connective/list wording (“และ,” “ส่วน,” “แล้วเทียบรูปสามแบบ”) and added “ยังไม่รู้ว่า” do not change the study date, count units, comparisons, causal scope or uncertainty. The Short’s “สามแบบ” describes the three stimulus types across the experiment; it does not assert that all three appeared simultaneously. SRC001 describes paired stimuli across six daily trials.
+
+| Location | Assertion / implication reviewed | Verdict | Evidence + locator / reason |
+| --- | --- | --- | --- |
+| C01-U01-B01 | Question about a cat sitting in an empty outline; the owner’s clip and reaction are framed as fiction. | not-factual for the fictional event | The scene directions require a “เรื่องสมมติ” label from the start. The question does not assert that all cats do this. |
+| C01-U01-B02 | Someone studied a similar question; the study was published in 2021; owners placed paper stimuli at home and recorded the cat’s choice. | supported | SRC001 p. 1 gives online publication on 30 April 2021. §§2.1–2.2 describe remote/home study activity and pet cats in owners’ homes; §§2.4.2–2.4.3 describe owners reporting and recording the trials. Data collection was June–August 2020 (§2.1), so the “and” does not imply fieldwork in 2021 or add a causal link. |
+| C01-U01-B03 | Square outline, inward-facing Kanizsa inducers, outward-facing control, and an incomplete contour that may suggest a square. | supported | SRC001 §2.3.1 and Figs. 2–3: the three stimuli and inward/outward directions are accurately distinguished. |
+| C01-U01-B04 | Some cats choose an outline; a clip does not generalize to every cat or reveal what a cat thinks. | supported with qualification | SRC001 Abstract and §3.1 report nine cats selecting at least one stimulus out of the 30 completers; the study measured choices, not belief in an invisible box (§4). |
+| C01-U02-B01 | 561 preliminary-survey enrollments; 30 cats completed all six trials; nine cats selected at least once; not all applicants completed the study. | supported; unit remains scoped to enrollments | SRC001 §2.2 and §3.1: the preliminary survey received 561 enrollments; 30 completed Trial 6; nine of those selected at least once. “ผู้สมัคร…ราย” refers to the survey enrollment count here, not 561 completers or a verified count of unique owners. |
+| C01-U02-B02 | 16 selection occasions, split 8 square / 7 Kanizsa / 1 control; all limbs inside the contour for at least 3 seconds. | supported | SRC001 §3.1 gives the total and breakdown; §2.4.4 defines a selection as sitting or standing within the contour with all limbs for at least three seconds. R5’s “ส่วนแบบเทียบ” and “นี่นับเป็นครั้ง” preserve the comparison and event-count unit. The visual note still bars treating this tally as the pairwise test. |
+| C01-U02-B03 | A detectable Kanizsa–control difference and no detectable square–control difference; possible contour perception is not proof of human-like perception or belief in an invisible wall. | supported with qualification | SRC001 Table 3 and §4 support the pairwise wording and cautious interpretation. “ส่วน” marks a separate comparison; the following caveat preserves that non-significance is not equality and behavior does not prove belief. |
+| C01-U02-B04 | No detected difference does not prove equality; the owner leaves the cause unresolved. | supported; fictional owner action is not-factual | SRC001 Table 3 reports a non-significant square–control result, not equivalence. The owner’s blank “เพราะ” note is a fictional framing device and does not supply a causal explanation. |
+| C01-S01-B01 | Some cats do it; that does not mean every cat sees an invisible box. | supported with qualification | SRC001 §§3.1, 4 support the observed selections while limiting claims about every cat and subjective belief. |
+| C01-S01-B02 | 2021 publication; three stimulus types; 30 cats completed six trials; nine selected at least once. | supported | SRC001 p. 1, §§2.3.1, 2.4.1–2.4.3 and §3.1. “เทียบรูปสามแบบ” summarizes the stimulus types over the task; the following six-trial sentence and the study’s paired presentation do not imply a single simultaneous three-way trial. Counts remain separate by sentence. |
+| C01-S01-B03 | Kanizsa–control result contrasted with square–control; failure to detect a difference is not proof the conditions are the same. | supported with qualification | SRC001 Table 3 and §4 support the comparison and the retained non-equivalence caveat. |
+| C01-S01-B04 | The result may indicate contour perception, but the study does not establish what the cat thinks; some cats selected an outline, and the reason remains unknown. | supported with qualification | SRC001 Abstract, §§3.1 and 4. The added “ยังไม่รู้ว่า” reinforces the study’s limit; it does not overstate what the behavior proves. |
+
+R1 limits for C01 remain: SRC001 was inspected from the available full-text PDF copy, not an independently corroborating copy; the study had substantial attrition and only 30 cats completed all trials. Its findings do not establish a population rate or the cats’ subjective belief. C01 R5 fact-check status: **ready-for-storyboard, supported**. This status covers C01 only and is not user approval or audio-duration verification; C02–C06 remain at their R4 results.
+
+### Fingerprint of the C01 R5 file reviewed
+
+| File | SHA-256 |
+| --- | --- |
+| ch01-script.md | 67af7bc25344963f4c7dba5a623e9ee72afaf056427784ac2cb5b60e925c08a4 |
+
+Change log FC-R5-C01: reviewed all 12 C01 R5 Long/Short VO blocks, including changed connectives/list wording and joined phrases. No factual correction is required. This pass covers C01 only; C02–C06 retain their R4 fact-check results.

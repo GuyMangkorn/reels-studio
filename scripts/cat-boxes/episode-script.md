@@ -1,13 +1,13 @@
 # CATBOX — แมวกับกล่อง: คดีที่ปิดด้วยคำตอบเดียวไม่ได้
 
-- Episode ID: `CATBOX`; script revision **R2**; ผู้เขียน: แพรว (Preaw); 26 ตุลาคม 2026
+- Episode ID: `CATBOX`; script revision **R5** (C01 pilot; C02–C06 remain R4); ผู้เขียน: แพรว (Preaw); 26 ตุลาคม 2026
 - Brief: [preaw-handoff.md](preaw-handoff.md); research **R1**: [research.md](research.md)
 - Story mode: `fiction-with-factual-knowledge` — เจ้าของกับแมวชื่อโมจิเป็นเรื่องแต่งเชื่อม factual educational explainer; งานวิจัย/จำนวนที่กล่าวถึงเป็นรายงานจริงตาม ledger
 - Target: Long **8–10 นาที**; ผังประกอบตั้งต้น **9:00** = 6 บทเนื้อหา × 2 production units × 45s. บทเนื้อหา 90s ไม่เปลี่ยน convention production unit 45–60s ของช่อง
-- Timing status: **estimated** เท่านั้น ยังไม่อ่านออกเสียง/ไม่ `audio-tested`; ช่องเวลาเป็นงบเวลาเพื่อทดลองเสียง ไม่ใช่เวลาที่ตรวจผ่าน. ห้ามเติมช่วงเงียบยาวให้ครบ 9:00; หาก VO ล้น/สั้น ปรับถ้อยคำและงบเวลาภายในเป้า 8–10 นาทีแล้วเพิ่ม revision
+- Timing status: **estimated**; generated one C01 R5 Long voice preview with Niwat 1.05 (82.92s for two units budgeted at 90s), but subtitle sync and final timing are not approved. Other chapters and Shorts are not audio-tested. Do not add long silence to reach 9:00; revise wording and timing estimates within the 8–10 minute target if VO runs long or short, then increment the revision.
 - Short: มี full VO 6 เรื่องแยกในแต่ละไฟล์ เป้าเรื่องละ **45s** รวมท้ายค้าง 3s; เป็นบทตัดต่อที่มีถ้อยคำใหม่ จึงต้องตรวจ facts แยกจาก Long
-- Approval: หัวข้ออนุมัติตาม brief; **บท R2 ยังไม่อนุมัติ**; editorial status `draft-for-fact-check`; ไม่ใช่ `ready-for-storyboard`
-- Narration target: Thai Niwat `th-TH`, speakingRate `1.05`; เอกสารนี้ยังไม่สร้างเสียง/runtime/subtitle timing
+- Approval: หัวข้ออนุมัติตาม brief; **บท R5 ยังไม่อนุมัติ**; editorial status `draft-for-fact-check`; ไม่ใช่ `ready-for-storyboard`
+- Narration target: Thai Niwat `th-TH`, speakingRate `1.05`; generated one C01 Long VO preview only; no runtime or subtitle timing was created
 
 ## แกนเรื่องและ ending
 
@@ -48,9 +48,9 @@ Logline: เจ้าของเห็นแมวในกรอบที่�
 
 ## Handoff สำหรับโบ็ต แล้วจึงมาร์ค
 
-โบ็ตตรวจ `episode-script.md` และ `ch01-script.md`–`ch06-script.md` **R2 ทั้ง Long/Short/ซับ/ชื่อ/ข้อความภาพ** เทียบ research R1. ตาราง mapping แต่ละบทครอบคลุมกลุ่มประโยคที่ใช้ claim เดียวกัน; คำถามเชิงวาทศิลป์ยังต้องตรวจ implied claim. ไม่มี claims ใหม่ที่ตั้งใจให้เป็น fact นอก ledger. ถ้าพบ implication ใหม่ ให้เปิด `needs-research` แล้วส่งแพรว rewrite ห้ามถือว่าการวิจัยก่อนหน้าเป็นผลตรวจบท
+โบ็ตตรวจ `ch01-script.md` **R5** ครบทั้ง 12 VO blocks ของ Long U01/U02 และ Short S01 แล้ว: supported/ready-for-storyboard ทางข้อเท็จจริง; ไม่พบ factual drift หรือการเปลี่ยน causal scope/uncertainty จากคำเชื่อมและประโยคที่ปรับ. C02–C06 คงผลตรวจ **R4** ใน `episode-fact-check.md`; หากแก้ claim หรือ surface ต่อ ให้ส่งตรวจผลกระทบ revision ใหม่ก่อน. ตาราง mapping แต่ละบทครอบคลุมกลุ่มประโยคที่ใช้ claim เดียวกัน; คำถามเชิงวาทศิลป์ยังต้องตรวจ implied claim. ไม่มี claims ใหม่ที่ตั้งใจให้เป็น fact นอก ledger. ถ้าพบ implication ใหม่ ให้เปิด `needs-research` แล้วส่งแพรว rewrite ห้ามถือว่าการวิจัยก่อนหน้าเป็นผลตรวจบท
 
-ส่ง Mark เมื่อ script กับ fact-check ตรง revision และสถานะพร้อมเท่านั้น. เขารับเส้นเรื่อง ข้อที่ต้องเห็น สิ่งห้ามเฉลยก่อนเวลา และข้อจำกัดความรู้; เลือก framing/light/camera เอง. ไม่ lock แล็บเป็นสถานที่ทดลองจริง: ถ้าใช้ให้เป็นห้องอ่านหลักฐานของเจ้าของ. งานกรอบปี2021ทำที่บ้านผู้เข้าร่วม. `room`/cat ใช้เป็นฐานได้ตาม research; lab/box/tape-square/Kanizsa/toy/evidence-board ยังต้องตรวจ/สร้าง library ก่อน production. แมว เจ้าของ interaction props 2D; กล่องหนึ่งภาพสมบูรณ์ต่อมุม; Boss ตรวจ contact/occlusion. ไม่มี runtime capability ที่เพิ่มด้วยเอกสารนี้
+ส่ง Mark เมื่อ script กับ fact-check ตรง revision และสถานะพร้อมเท่านั้น. เขารับเส้นเรื่อง ข้อที่ต้องเห็น สิ่งห้ามเฉลยก่อนเวลา และข้อจำกัดความรู้; เลือก framing/light/camera เอง. ไม่ lock แล็บเป็นสถานที่ทดลองจริง: ถ้าใช้ให้เป็นห้องอ่านหลักฐานของเจ้าของ. งานวิจัยเรื่องกรอบของ Smith ตีพิมพ์ในปี 2021; เก็บข้อมูลที่บ้านผู้เข้าร่วม. `room`/cat ใช้เป็นฐานได้ตาม research; lab/box/tape-square/Kanizsa/toy/evidence-board ยังต้องตรวจ/สร้าง library ก่อน production. แมว เจ้าของ interaction props 2D; กล่องหนึ่งภาพสมบูรณ์ต่อมุม; Boss ตรวจ contact/occlusion. ไม่มี runtime capability ที่เพิ่มด้วยเอกสารนี้
 
 Ending Long และทุก Short: ค้างสาระ/มุกท้ายราว3s แล้วให้ผู้ทำ timeline เสนอ `_A_fade` และ `_B_loop`; loop กลับคำถามต้นเรื่องได้แต่ห้ามทำให้สมมติฐานกลายเป็นข้อสรุป. ยังไม่มี render หรือไฟล์ ending จริง
 
@@ -59,7 +59,13 @@ Ending Long และทุก Short: ค้างสาระ/มุกท้�
 - `G01` n/วิธีการงานอุณหภูมิ1970ยังไม่ตรวจ: R2 ไม่กล่าว n หรือจำลองผลทดลองนั้น ไม่สั่งอุ่นห้อง ไม่กำหนดช่วง TNZ สากล
 - `G02` งาน2014ใช้ได้ระดับ abstract: R2 ไม่เติม protocol/cortisol/รายละเอียดผู้ประเมิน
 - `G03` เหตุจูงใจเฉพาะตัวและแรงกดยังไม่แยก: ต้องคงคำ “อาจ/สมมติฐาน/ยังไม่รู้” ทั้งภาพและ ending
-- Timing: ต้องทดสอบ Niwat1.05 ก่อนล็อก9นาที/45s; ยังไม่มีหลักฐานว่าพูดลงเวลาจริง
+- Timing: C01 R5 Long Niwat 1.05 TTS preview ยาว 82.92s เทียบกับงบ 90s; ยังรอผู้ใช้ฟังและยังไม่ล็อกเวลา. บทอื่นและ Shorts ยังไม่ได้ audio-test ก่อนล็อก9นาที/45s.
 - R1: สร้างแพ็กครั้งแรก 6บท/12U และ6Short; ปลูกกล่องเก่าและช่องคำตอบว่างก่อน ending; ใช้ hypothesis qualifiers ตรงจุดรับข้อมูล; ไม่มี user script approval/fact-check แฝง
 
 - R2: ตามข้อทักท้วง Boat แก้ C02-U02-B02/B03 และ C02-S01-B03 พร้อมซับ/ภาพ/mapping ให้12วันจำกัดที่การวัดคะแนนกับน้ำหนัก และใช้ถ้อยคำความต่างอย่างมีนัยสำคัญทางสถิติ. C05-U02-B02แก้เป็นเติมกลิ่นหนู/ไม่เติมกลิ่นหนู ไม่เหมาว่าวัตถุไร้กลิ่นทั้งหมด; C01/C03/C04/C06 เนื้อหาคงเดิมจากR1 (revision carry-forward); R2ยังรอBoat recheckข้อความเปลี่ยน/ผลกระทบ ไม่อ้างผลตรวจพร้อมก่อนรายงานตรงฉบับ.
+
+- R3: แพรวเกลา VO Long/Short ทั้ง 6 บทให้เป็นภาษาพูด ประโยคสั้น และไม่เกินหนึ่งตัวเลขต่อประโยค; คงเรื่อง เหตุการณ์ ข้อเท็จจริง และขอบเขตหลักฐานตาม R2. ส่งโบ๊ท fact-check wording ที่แก้และ claim ที่ได้รับผลก่อนทำ storyboard.
+
+- R4: แก้ปีใน VO ของ C01/C02 ให้ชัดว่าเป็นปีตีพิมพ์, ระบุว่าเป็นผู้สมัครจากแบบสำรวจแรกและใช้หน่วย “ราย” ตามแหล่ง, และเติม “เซลเซียส” ให้ช่วงอุณหภูมิ C04; ส่งโบ๊ทตรวจ revision R4. คงซับ ภาพ claim mapping และ beats ตาม R3. เพิ่มคำชี้แจงใน handoff ว่างานกรอบตีพิมพ์ปี 2021 แต่เก็บข้อมูลที่บ้านในปี 2020.
+
+- R5 pilot: แพรวปรับจังหวะ VO ใน C01 Long U01/U02 และ Short S01 โดยคง facts, counts, uncertainty, beats, subtitles, visuals และ claim mapping. โบ๊ท recheck C01 R5 ครบ 12 VO blocks แล้วและไม่พบ factual drift; C02–C06 ยังคง R4. สร้างเสียง preview C01 Long ด้วย th-TH-NiwatNeural ที่ +5% ได้ 82.92s เทียบงบ 90s; รอผู้ใช้ประเมินจังหวะก่อนขยายรูปแบบนี้ไปบทอื่น.
