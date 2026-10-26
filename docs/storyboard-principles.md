@@ -58,6 +58,8 @@ Adobe อธิบาย anticipation เป็นการเตรียมผ
 
 ## ข้อเสนอการประยุกต์กับ agent (การสังเคราะห์ ไม่ใช่มาตรฐานจากแหล่งเดียว)
 
+เรื่องขนาดสัมพันธ์ของคน สัตว์ เฟอร์นิเจอร์และสิ่งของก่อนจัดระยะ อ่าน [หลักสัดส่วนและ perspective](scale-and-perspective-principles.md) ซึ่งเชื่อม Solid Drawing/staging กับ camera projection, foreshortening, parallax และเกณฑ์ส่งต่อ Film → Mark → Boss
+
 - เก็บภาพรวม episode/chapter ไว้เพื่อมอง hook, escalation, payoff และความต่อเนื่อง แต่ส่งชุดทำงานแยก scene
 - แต่ละ scene มีวัตถุประสงค์ การเปลี่ยนแปลงตอนจบ state เข้า/ออก รายการ assets และ shots เรียงลำดับ
 - แต่ละ shot มี ID คงที่ ช่วงเวลา/เฟรม ขนาดภาพ มุมกล้อง camera movement action dialogue/subtitle sound และ key panels ที่จำเป็น ไม่มีจำนวน panels ตายตัว

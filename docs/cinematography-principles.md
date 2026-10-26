@@ -29,6 +29,8 @@
 
 ## ขอบเขตทางเทคนิคของกล้อง
 
+สำหรับ physical scale, projection, horizon/foreshortening, parallax และความต่างของ dolly กับ zoom ใช้ [หลักสัดส่วนและ perspective](scale-and-perspective-principles.md) เป็นเอกสารร่วมของ Film/Mark/Boss โดยส่ง scale baseline ก่อนเลือก framing
+
 Three.js `PerspectiveCamera` กำหนด vertical FOV, aspect และ near/far clipping การระบุ “เลนส์ 35mm” ใน brief จึงยังไม่ใช่ค่า runtime ที่ครบ ต้องกำหนด mapping/film gauge และทดสอบ framing; การตั้ง `focus` อย่างเดียวไม่ได้เพิ่ม depth of field ให้ภาพปกติ ถ้าต้องการ DOF ให้ระบุ pass/implementation และค่าใช้จ่ายที่ต้องทดลองแยก
 
 แหล่ง: [Three.js — PerspectiveCamera](https://threejs.org/docs/pages/PerspectiveCamera.html) แยก camera intent ใน brief ออกจาก parameters ที่ Boss ตรวจใน installed API หลีกเลี่ยงแต่งค่าทางกายภาพหรือ benchmark ที่ยังไม่ได้วัด

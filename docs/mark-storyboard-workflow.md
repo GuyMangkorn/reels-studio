@@ -63,6 +63,12 @@ Remotion มี [@remotion/three](https://www.remotion.dev/docs/three) สำห
 
 ลำดับพัฒนาแยกงาน foundation/capability ที่ใช้ร่วมออกจาก scene integration/polish ระบุ dependency issues/PRs และฉากที่ใช้แต่ละ asset เมื่อ dependency merge แล้วจึงเริ่ม branch ฉากจาก `main` ล่าสุดตาม AGENTS.md หากงานเป็น asset-only หรือ bug fix เฉพาะจุด ให้ใช้บริบทที่เกี่ยวข้องโดยไม่เพิ่มงานวางทั้งตอน
 
+## สัดส่วนและ perspective ในบอร์ด
+
+ก่อนวาง depth, ปรับขนาดภาพ หรือรีวิว render อ่าน [หลักสัดส่วนและ perspective](scale-and-perspective-principles.md) ใช้ scale baseline และ projection contract revision จาก Film/เจ้าของ library แล้วเติม geography รายช็อต: floor/seat plane, camera height/eye level, horizon/vanishing directions เมื่อเกี่ยวข้อง, ตำแหน่งและระยะ FG/MG/BG, contact anchors และใกล้–ไกลสุดของ motion แสดงคน สัตว์ เฟอร์นิเจอร์และของถือเทียบกันบนระนาบเดียวก่อนจัด perspective; ขนาดที่ยังไม่ทราบให้ระบุ estimated/missing เพื่อให้ Boss ตรวจต่อ
+
+บอร์ดต้องสื่อว่าอะไรเปลี่ยนจาก camera/position และอะไรเป็น authored deformation โดยมี key panels รองรับ foreshortening, occlusion และ parallax ที่สำคัญ จบเมื่อ Boss วางตำแหน่งและตรวจ projected size ได้โดยไม่เดาสัดส่วนหรือใช้ scale keyframes กลบระยะที่ไม่ชัด จัด Short/Long ด้วย framing ตามคู่มือ; การเปลี่ยน projection หรือ physical baseline ที่กระทบ brief ให้คืน Film/Boss และบันทึก revision
+
 ## แสง เงา และสีเป็นส่วนหนึ่งของบอร์ด
 
 มาร์คลงรายละเอียด art direction ตาม brief ของ Film พร้อมบันทึกให้ dev ทำตาม การเลือกสีและแสงช่วยชี้นำสายตา อารมณ์ เวลา และข้อมูลที่คนดูเห็นหรือยังไม่เห็น แหล่ง Pixar อธิบาย colorscript ว่าใช้กำหนด palette และทดลอง lighting ideas; ดูหลักฐานใน [storyboard-principles.md](storyboard-principles.md) และ [cinematography-principles.md](cinematography-principles.md)
@@ -148,6 +154,9 @@ FPS: 30 | scene durationFrames: ... | chapter/composition offset: ...
 | ID | บทบาท | สถานะ | หลักฐาน path/registry | งานที่ dev ต้องเพิ่ม |
 | ... | ... | missing | ... | ... |
 
+- Scale baseline: path/revision ร่วมกับ Film/library; dimensions/units/neutral pose/anchors, reference หรือ estimated, intentional stylization:
+- Calibration/blockout: ภาพเทียบขนาดบนระนาบเดียว; evidence หรือ unverified:
+
 ## วิธีผลิตตาม Film brief และรายละเอียดที่มาร์คเพิ่ม
 - Set / characters / props / effects: 2D / 3D / hybrid และ library:
 - เหตุผลด้านเรื่องและคุณภาพภาพ:
@@ -167,6 +176,7 @@ FPS: 30 | scene durationFrames: ... | chapter/composition offset: ...
 - ช่วง frame แบบ scene-local [start, endExclusive):
 - Short framing / Long framing; focal point; subtitle-safe region:
 - Camera: ขนาดภาพ มุม ตำแหน่งและการเคลื่อน; FG/MG/BG:
+- Projection/depth: Film decision/revision, ground/seat plane, eye level/horizon/แนว perspective ที่เกี่ยวข้อง, ตำแหน่ง/ระยะและ contact; near/far/key motion frames ใน Short/Long:
 - Acting: ตัวละคร การกระทำ ท่าหลัก สายตา และ motion arrow:
 - Events (shot-local frames): เสียง / action / reveal / hold:
 - VO / dialogue: ข้อความเต็มหรือ source range:
@@ -188,6 +198,8 @@ FPS: 30 | scene durationFrames: ... | chapter/composition offset: ...
 ใช้ `ready-for-dev` เมื่อ coverage, ภาพ, timing ที่ระบุระดับความมั่นใจ, dependencies, entry/exit และเกณฑ์ตรวจครบ เป็นความพร้อมของ handoff ให้บอสเริ่ม implementation/blockout ไม่ใช่การอ้างว่าผู้ใช้อนุมัติหรือ runtime render ผ่านแล้ว ก่อน scene polish ต้องมีหลักฐานตรวจ assembled blockout ตาม AGENTS.md ระบุเพื่อนบ้านหรือรอยต่อที่ขาดเป็น unverified
 
 ## เกณฑ์ภาพและการตรวจ render
+
+เมื่อขนาดหรือ perspective ได้รับผล ให้ตรวจตาม [scale/projection QA](scale-and-perspective-principles.md) เพิ่มจากเกณฑ์ด้านล่าง: เทียบ physical baseline ก่อน camera projection แล้วตรวจผลบนภาพที่ระยะสำคัญและรอยต่อ รายงานความคลาดเคลื่อนพร้อม owner ของ asset, staging หรือ camera; บอร์ดอย่างเดียวไม่ใช่หลักฐาน runtime
 
 - จุดสนใจหลักและการกระทำอ่านออก แม้ปิดเสียง VO; ความหมายเชิงภาษาอาจยังต้องอาศัยบทตามปกติ
 - ทุก beat สำคัญมีภาพก่อน/ขณะ/หลังเท่าที่จำเป็น ไม่มีสูตรจำนวน panels หรือจำนวนช็อตตายตัว
