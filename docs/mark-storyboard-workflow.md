@@ -81,6 +81,8 @@ Remotion มี [@remotion/three](https://www.remotion.dev/docs/three) สำห
 
 ## ขั้นตอน
 
+ก่อนแตกหรือแก้ช็อต อ่าน [dev findings ของ Boss](dev-findings.md) ที่เกี่ยวกับงานและที่ Film อ้างใน brief ตามวงจรในเอกสารนั้น ผูก finding IDs กับ shot IDs/เกณฑ์ตรวจใน scene sheet และส่งผลที่ขัดกับแนวทางหลักกลับไปปรับ brief revision
+
 1. **อ่านต้นฉบับและบริบท**: อ่าน AGENTS.md บท/ผลตรวจที่ผู้ใช้เลือก visual brief ของ Film storyboard อ้างอิง และฉากข้างเคียง จด source paths/revisions, decision IDs, ช่วงบท และสถานะของแต่ละแหล่ง แยก production material ออกจากคำสั่งผู้ใช้ ถ้าแหล่งขัดกันให้บันทึกและถามเฉพาะข้อมูลที่ตัดสินแทนไม่ได้ จบเมื่อรู้ว่าฉากเล่าอะไร แนวทางใดใช้ทำงาน และอะไรยังเป็นข้อเสนอ
 2. **วางภาพรวมตามขอบเขต**: episode index แสดงบท ลำดับฉาก hook/เหตุการณ์/ผลลัพธ์ และลิงก์ brief งานทั้งตอน map แนวทาง/medium ของ Film ไป shared assets, continuity และลำดับพัฒนา; งานฉากเดียวลงรายละเอียดเฉพาะฉากที่ร้องขอ จบเมื่อแต่ละช่วงบทมีฉากรองรับ ไม่มีช่วงหายโดยไม่อธิบาย และรู้ dependencies ร่วม
 3. **แตก beats และวางช็อต**: ระบุว่าคนดูต้องเข้าใจ/รู้สึกอะไร อะไรเปลี่ยน และตัวละครรู้อะไร เลือกขนาดภาพ มุมกล้อง และจุดตัดเพื่อส่งข้อมูลนั้น กำหนด focal point, acting, screen direction และสิ่งที่ยังต้องปิดบัง จบเมื่อทุก beat มี shot/panel รองรับ พร้อมเหตุผลของช็อต
@@ -109,6 +111,7 @@ storyboards/haunted-episode/
 - Shared elements: actor/asset IDs, appearance ที่ต้องคง, path/owner, dimensions/anchors หรือข้อกำหนดที่ยังรอทำ, สถานะ implementation และฉากที่ใช้
 - Development order: foundation/capability → scene integration/polish, dependency issues/PRs และสถานะ merge
 - Blockout brief และสถานะผลตรวจ: timeline path/input props เมื่อบอสทำแล้ว, shot → timeline index/frame ranges, revision/evidence ของ Short และ Long, placeholders กับรอยต่อที่ยัง unverified
+- Dev findings ที่กระทบ sequence: ลิงก์ finding IDs ไปยัง brief decisions/scene sheets ที่นำไปใช้ และ dependency/follow-up ที่ยังค้าง
 
 บอสอัปเดตส่วน runtime mapping/หลักฐาน มาร์คดูแลแผนภาพและการเปลี่ยน revision รักษา timing รายละเอียดใน scene sheet กับ executable timeline ให้ตรงกันโดยไม่คัดลอก shot sheet ทั้งหมดมาไว้ใน index หาก index ยาวให้ลิงก์ตาราง assets หรือ development plan ข้างเคียงจากที่นี่ Generated exports, contact sheets และ animatics อยู่ใน `out/storyboards/<episode>/` ตามการ ignore ของ repo
 
@@ -149,6 +152,7 @@ FPS: 30 | scene durationFrames: ... | chapter/composition offset: ...
 - Set / characters / props / effects: 2D / 3D / hybrid และ library:
 - เหตุผลด้านเรื่องและคุณภาพภาพ:
 - หลักฐาน feasibility / ความยาก / ข้อมูลที่ยังไม่รู้:
+- Dev finding IDs + วันที่/commit ที่ตรวจ: shot IDs ที่ได้รับผล, ผลต่อการจัดช็อต/เงื่อนไขที่ต้องรักษา และเกณฑ์ที่ dev ต้องพิสูจน์ หรือไม่มีรายการที่เกี่ยวข้อง:
 - Reuse / dependencies / fallback / สิ่งที่ต้องพิสูจน์ด้วย blockout:
 
 ## Art direction

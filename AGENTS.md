@@ -18,6 +18,8 @@ For work assigned to มาร์ค / Mark, use `.codex/agents/mark.toml` (`gpt
 
 For asset creation, scene implementation or visual bug fixes, use `.codex/agents/boss.toml` and read [docs/boss-asset-workflow.md](docs/boss-asset-workflow.md). Boss builds reusable 2D/3D library assets and integrates Mark's scene packs and Film's technical requirements. Its production rules own medium flexibility, texture lifecycle, demo lighting, character contact/scale and pre-push visual QA. Source-backed technical guidance: [docs/asset-engineering-principles.md](docs/asset-engineering-principles.md).
 
+Development feedback lives in [docs/dev-findings.md](docs/dev-findings.md). Boss records and updates reusable findings when dev/blockout/QA reveals a blocker, workaround or planning constraint. Film consults relevant findings before choosing or revising 2D/3D/hybrid approaches; Mark consults them before authoring or revising shots. Follow the log's evidence, revalidation and handoff rules, and link finding IDs to affected brief decisions and board shots.
+
 ## Remotion toolkit: required preflight
 
 Before implementing a scene, overlay, subtitle layout, camera effect, transition or sound cue, read [docs/remotion-toolkit.md](docs/remotion-toolkit.md). It maps installed packages to shot requirements, shows frame-driven recipes, identifies integration points and distinguishes usable APIs from planned scene JSON fields. Use it when reviewing these changes too.

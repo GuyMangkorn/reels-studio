@@ -49,6 +49,8 @@ Foundation/capability PR ต้อง merge ก่อนเริ่ม branch �
 
 ## ขั้นตอนทำงาน
 
+อ่านและอัปเดต [dev findings](dev-findings.md) ตามวงจรในเอกสารนั้นเมื่อพบ blocker, workaround หรือบทเรียนที่กระทบการเลือกเทคนิค/ออกแบบช็อต จดระหว่าง dev/blockout/QA และทบทวนสถานะก่อน PR; ใช้ finding IDs ส่งผลกลับ Film/Mark พร้อมลิงก์ brief/board ที่ได้รับผล
+
 1. **รับขอบเขต**: ระบุ issue, branch, asset หรือ scene/shot IDs และ script/visual-brief/storyboard revisions อ่าน episode index, brief decision IDs, scene sheet และ entry/exit ของฉากข้างเคียง จัดงานเป็น foundation/blockout หรือ scene integration/polish พร้อม dependencies ตรวจ conflict ก่อนเขียน ไม่แก้เรื่อง/facts หรือเปลี่ยน timing เงียบ ๆ
 2. **ตรวจ checkout**: อ่าน AGENTS.md และ [remotion-toolkit.md](remotion-toolkit.md) รัน `npm ls --depth=0`, `npx remotion versions`; ตรวจ source/registries/types/validator/renderer และ helper render ที่จะใช้ ดู [character-toolkit.md](character-toolkit.md) เมื่อเปลี่ยน rig/poses จบเมื่อแยก existing-integrated / needs-integration / missing ได้ทุก dependency
 3. **วาง ownership และ interface**: สร้าง/แก้ library เดียวต่อ asset ให้ id, bounds, pivot, seat/grip/floor anchors, appearance parameters และ resource ownership ฉากเป็น staging/timing และ asset IDs เท่านั้น แปลงพิกัดจาก logical asset space สู่ stage ครั้งเดียวใน owner ที่ชัดเจน
@@ -56,7 +58,7 @@ Foundation/capability PR ต้อง merge ก่อนเริ่ม branch �
 5. **เขียน deterministic implementation**: frame/fps เป็น clock; seeded flicker/noise; cache textures ไม่ผูกกับ frame ใน key สำหรับ static art; จัดการ loading/error/disposal และ resource readiness ให้ตรงทั้ง Studio/render อ่าน [asset-engineering-principles.md](asset-engineering-principles.md) สำหรับข้อจำกัด `ThreeCanvas`, `useLoader`, color space และ alpha/depth
 6. **Integrate ให้ครบ**: field ใหม่ต้องอัปเดต types + validator + shared component + dispatch/renderer ร่วมกัน พร้อม tests ที่ตรวจ input, timing, contact หรือ regression จริง ไม่เขียนแค่ test ยืนยันตัวเลขเดียวกับ implementation ไม่วาด SVG/geometry ซ้ำใน scene
 7. **ตรวจภาพ/เวลา**: ทำ QA ทั้งหมดด้านล่าง แก้ root cause ใน shared owner แล้วตรวจ affected scenes ที่ใช้ asset นั้นร่วมกัน การแก้ขนาด/สี/lighting ต้องไม่ทำให้ฉากอื่นเสีย
-8. **ส่งงาน**: commit/push issue branch และ PR ตาม AGENTS.md ระบุ reusable assets, shot mapping, ตรวจอะไรจริง และอะไรยังค้าง แยก new asset ready ออกจาก scene integrated และแยก code-pass ออกจาก visual-pass
+8. **ส่งงาน**: commit/push issue branch และ PR ตาม AGENTS.md ระบุ reusable assets, shot mapping, ตรวจอะไรจริง และอะไรยังค้าง พร้อม finding IDs ที่เพิ่ม/อัปเดตและผลที่ Film/Mark ต้องใช้ต่อ แยก new asset ready ออกจาก scene integrated และแยก code-pass ออกจาก visual-pass
 
 ## Texture, lighting และ contact ที่ต้องตรวจเป็นพิเศษ
 
