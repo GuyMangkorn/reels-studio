@@ -31,28 +31,28 @@ test('display-authored colors are encoded for linear WebGL output', () => {
 
 test('JSON camera schema accepts every preset and rejects unknown presets', () => {
   for (const preset of presets) {
-    const timeline = structuredClone(showcase) as any;
+    const timeline = structuredClone(showcase) as unknown as Array<Record<string, unknown>>;
     timeline[0].camera = {preset};
     assert.doesNotThrow(() => validateTimeline(timeline));
   }
 
-  const malformed = structuredClone(showcase) as any;
+  const malformed = structuredClone(showcase) as unknown as Array<Record<string, unknown>>;
   malformed[0].camera = {preset: 'orbit'};
   assert.throws(() => validateTimeline(malformed), /camera\.preset/);
 });
 
 test('watcher camera schema accepts known foreground places and rejects misplaced values', () => {
   for (const place of watcherPlaceNames) {
-    const timeline = structuredClone(showcase) as any;
+    const timeline = structuredClone(showcase) as unknown as Array<Record<string, unknown>>;
     timeline[0].camera = {preset: 'watcher', place};
     assert.doesNotThrow(() => validateTimeline(timeline), place);
   }
 
-  const invalid = structuredClone(showcase) as any;
+  const invalid = structuredClone(showcase) as unknown as Array<Record<string, unknown>>;
   invalid[0].camera = {preset: 'watcher', place: 'attic'};
   assert.throws(() => validateTimeline(invalid), /camera\.place/);
 
-  const misplaced = structuredClone(showcase) as any;
+  const misplaced = structuredClone(showcase) as unknown as Array<Record<string, unknown>>;
   misplaced[0].camera = {preset: 'dolly', place: 'curtains'};
   assert.throws(() => validateTimeline(misplaced), /camera\.place/);
 });
@@ -85,12 +85,13 @@ test('lamp light follows the specified oscillation and briefly drops out every 9
 });
 
 test('3D scene routing selects reusable haunted-house sets and falls back elsewhere', () => {
-  const timeline = structuredClone(showcase) as any;
-  const scene = (bg: string, variant?: string) => ({
-    ...timeline[0],
-    bg,
-    background: variant ? {variant} : undefined,
-  });
+  const timeline = structuredClone(showcase) as unknown as Array<Record<string, unknown>>;
+  const scene = (bg: Scene['bg'], variant?: NonNullable<Scene['background']>['variant']) =>
+    ({
+      ...timeline[0],
+      bg,
+      background: variant ? {variant} : undefined,
+    }) as unknown as Scene;
 
   assert.equal(resolveThreeBackground(scene('oldHouseExterior')), 'exterior');
   assert.equal(resolveThreeBackground(scene('houseInterior', 'drawing')), 'drawingRoom');
@@ -139,7 +140,7 @@ test('3D scene routing supplies detailed texture layers and leaves unhandled set
 });
 
 test('window-depth actors are valid only for the reusable window scene', () => {
-  const timeline = structuredClone(showcase) as any;
+  const timeline = structuredClone(showcase) as unknown as Array<Record<string, unknown>>;
   const windowScene = {
     ...timeline[0],
     bg: 'houseInterior',

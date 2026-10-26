@@ -1,4 +1,2 @@
-import type {ThreeBackgroundProps} from './registry';
-
 /** The complete hand-drawn exterior is split into lit sky, house and path texture planes. */
-export const Exterior3D = (_props: ThreeBackgroundProps) => null;
+export const Exterior3D = () => null;

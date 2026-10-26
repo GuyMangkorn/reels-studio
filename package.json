@@ -5,6 +5,7 @@
   "scripts": {
     "start": "remotion studio src/index.ts --no-open",
     "typecheck": "tsc --noEmit",
+    "lint": "eslint src tests",
     "test": "node --import tsx --test tests/*.test.ts",
     "render:short": "node scripts/render.mjs --short",
     "render:long": "node scripts/render.mjs --long",
@@ -16,19 +17,28 @@
   "dependencies": {
     "@react-three/drei": "10.7.9",
     "@react-three/fiber": "9.1.2",
+    "@remotion/animation-utils": "4.0.538",
     "@remotion/bundler": "4.0.538",
+    "@remotion/captions": "4.0.538",
     "@remotion/cli": "4.0.538",
-    "@remotion/fonts": "^4.0.538",
+    "@remotion/fonts": "4.0.538",
+    "@remotion/layout-utils": "4.0.538",
+    "@remotion/noise": "4.0.538",
     "@remotion/renderer": "4.0.538",
+    "@remotion/sfx": "4.0.538",
+    "@remotion/shapes": "4.0.538",
     "@remotion/three": "4.0.538",
+    "@remotion/transitions": "4.0.538",
     "react": "19.1.0",
     "react-dom": "19.1.0",
     "remotion": "4.0.538",
     "three": "0.171.0"
   },
   "devDependencies": {
+    "@remotion/eslint-config-flat": "4.0.538",
     "@types/react": "19.1.0",
     "@types/react-dom": "19.1.0",
+    "eslint": "10.13.0",
     "prettier": "3.9.10",
     "tsx": "4.20.6",
     "typescript": "5.8.3"

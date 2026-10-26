@@ -107,7 +107,7 @@ test('external JSON rejects malformed camera, variants and bounded prop/actor in
     ['props', [{type: 'furnace', x: 0.5, smoke: 2}], /smoke/],
   ];
   for (const [key, value, path] of cases) {
-    const data = structuredClone(showcase) as any;
+    const data = structuredClone(showcase) as unknown as Array<Record<string, unknown>>;
     data[0][key] = value;
     assert.throws(() => validateTimeline(data), path);
   }

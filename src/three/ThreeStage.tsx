@@ -317,7 +317,7 @@ export const ThreeStage = ({
       if (pendingLayerReady.current?.revision === layerRevision) pendingLayerReady.current = null;
       release();
     };
-  }, [cancelRender, continueRender, delayRender, layerRevision]);
+  }, [cancelRender, continueRender, delayRender, layerRevision, textureLayers.length]);
 
   useEffect(() => {
     return () => {

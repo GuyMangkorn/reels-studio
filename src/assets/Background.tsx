@@ -214,7 +214,7 @@ export const backgroundRegistry: Record<BackgroundName, BackgroundBuilder> = {
       </>
     ),
   }),
-  sea: ({w, h, p, night, t}) => ({
+  sea: ({w, h, night, t}) => ({
     far: (
       <>
         {cloud(w * 0.21, h * 0.3, 1.3)}
