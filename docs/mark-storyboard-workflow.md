@@ -6,6 +6,8 @@
 
 เมื่อใช้ MCP ช่วยวาด/แก้บอร์ด อ่าน [excalidraw-mcp.md](excalidraw-mcp.md) สำหรับเครื่องมือจริง checkpoint และการเก็บไฟล์รายฉาก ต้องตรวจว่าผลแก้ล่าสุดใน widget ตรงกับไฟล์ที่ส่ง dev
 
+เมื่อช็อตใช้ผลผลิต Blender อ่าน [blender-mcp-workflow.md](blender-mcp-workflow.md) รักษา delivery route จาก Film และระบุ source/export revision, framing สองสัดส่วน, camera owner, action/reveal frames, contact/occlusion และรอยต่อใน scene sheet/index แยกภาพ viewport reference จากหลักฐาน runtime ที่ Boss ตรวจจริง
+
 ตัวอย่างเรียกใช้:
 
 > ให้มาร์ค (mark) อ่านบท [path] และ visual brief [path/revision] แล้วทำ storyboard เฉพาะบท 1 ฉาก 2 พร้อม scene sheet และรายการ asset ที่ dev ต้องเพิ่ม

@@ -2,6 +2,8 @@
 
 บอสเป็น coder ของทีม สร้าง shared assets 2D/3D, rigs, props, backgrounds และความสามารถของ scene renderer รวมถึงแก้ visual bugs ที่ต้นทาง ใช้ `.codex/agents/boss.toml` แพรวเขียนบท โบ็ตตรวจ facts [ฟิล์มวาง visual/technical brief](film-visual-brief-workflow.md) มาร์คแตกบอร์ด แล้วบอสทำให้ภาพนั้น render ได้ตามแผนที่ตรวจจริง
 
+เมื่อสร้าง/แก้/import/export assets หรือผลิต rendered shots ด้วย Blender MCP อ่าน [blender-mcp-workflow.md](blender-mcp-workflow.md) บอสเป็นเจ้าของ shared sources/scripts/manifests, export contract และการนำเข้า Remotion ตรวจการเชื่อมต่อจริงก่อนแก้ฉาก และตรวจ source → export → runtime → visual แยกสถานะตามหลักฐาน
+
 ตัวอย่างเรียกใช้:
 
 > ให้บอส (boss) ทำ sofa asset ตาม scene pack นี้ พร้อม seat/grip anchors แล้วเช็ก contact และแสงทั้ง Short/Long

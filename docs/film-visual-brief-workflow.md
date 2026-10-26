@@ -4,6 +4,8 @@
 
 ลำดับงาน: โบ็ตค้นข้อมูล → แพรวเขียน → โบ็ตตรวจ/แพรวแก้ → **ฟิล์มวาง visual + technical brief** → **มาร์คทำ scene boards** → **บอสเขียนโค้ดและพิสูจน์ผล render** ผู้ประสานงานเรียก agent ตามโจทย์; ไฟล์เหล่านี้ไม่ได้ติดตั้ง pipeline อัตโนมัติหรือส่งข้อความข้ามแชต
 
+เมื่อเลือก Blender สำหรับ assets หรือ rendered shots อ่าน [blender-mcp-workflow.md](blender-mcp-workflow.md) เลือก pre-render, GLB/Three.js หรือ hybrid พร้อมเหตุผลและ integration evidence ส่ง camera/scale/light contract ให้ Mark/Boss โดยคง Remotion เป็นเจ้าของ timeline/เสียง/ซับและ final export
+
 ## ขอบเขตและอำนาจตัดสินใจ
 
 - **Film** เลือก medium ของ set/characters/props/effects, art direction, แสงเงาสี, camera language และวิธีประกอบ 2D/Three.js ระบุเหตุผล ข้อจำกัดและความเสี่ยงที่ dev ใช้ทำงานต่อได้
