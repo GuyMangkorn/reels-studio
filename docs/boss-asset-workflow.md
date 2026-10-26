@@ -28,12 +28,31 @@
 
 ฉาก 2D ล้วนทำ light/look เดียวกันด้วย 2D grading, fill, masks และ glow ที่ควบคุมได้ แยก desired appearance จาก property ของ renderer ไม่อ้างว่ามี ambientLight จริงเมื่อเป็นภาพ 2D ส่วน floor/seat/grip เป็น logical anchors ของภาพครบชิ้น ไม่ต้องแยกภาพ prop เพื่อให้มี anchors
 
+## โครงรวมก่อน polish รายฉาก
+
+ใช้กฎ **Shared sequence and continuity** ใน [AGENTS.md](../AGENTS.md#shared-sequence-and-continuity) เป็นหลัก อ่าน episode index, scene sheets และฉากข้างเคียงก่อนแยกงาน โดยแบ่งความรับผิดชอบดังนี้:
+
+| ส่วน | บอสต้องส่งอะไร |
+| --- | --- |
+| Shared elements | Library module/capability เดียวต่อองค์ประกอบ พร้อม stable identity, appearance interface, logical bounds/pivots/anchors และพิกัดที่ตกลงกับมาร์ค; ระบุ consumers และสถานะใน index |
+| Sequence blockout | Executable timeline ครบช่วงที่รับทำ ใช้ shared placeholders ที่มีสเกล/contact ใกล้ของจริง เก็บ timing/reveal และเปิดเล่นต่อกันได้ใน Short/Long ก่อน polish |
+| Scene integration | แทน placeholder และจัด staging/timing ด้วย library เดิม อัปเดต timeline รวมกับ shot mapping ใน PR เดียวกัน |
+| Boundary evidence | Entry/exit ที่ทำจริง, composition audio offsets และผลตรวจรอยต่อกับฉากข้างเคียง พร้อมระบุสิ่งที่ยัง unverified |
+
+ตรวจ `Root`, types, validator และ renderer ก่อนเลือกวิธีประกอบ timeline ถ้า checkout ยังโหลด array ไฟล์เดียว ให้ใช้รูปแบบนั้นก่อน การแยก source รายฉากต้องมี assembly path ที่ deterministic และทดสอบแล้วก่อนใช้งาน ไม่เพิ่ม `entry`/`exit`, preset หรือ include/import fields ลง JSON เพียงเพราะเอกสารออกแบบไว้
+
+สถานะข้ามฉากต้องคำนวณจาก authored data และ frame ที่ seek ได้โดยตรง เช่น actor ID เดิมพร้อมตำแหน่ง/appearance ที่ระบุสอดคล้องกัน ใช้ supported fields ก่อน; หากต้องขยาย state resolution ให้ทำเป็น shared capability ครบ types/validation/renderer และ regression tests หลีกเลี่ยงการสืบทอด mutable state ที่ต้องเล่นฉากก่อนจึงถูกต้อง
+
+ก่อน polish บันทึก blockout revision, timeline/input props, scene/shot mapping, placeholders, ผลตรวจต่อเนื่องสองสัดส่วน และปัญหาค้างใน index/QA notes หากเพื่อนบ้านยังไม่มี ให้ใช้ boundary placeholder ที่ติดป้ายหรือบันทึก gap เป็น unverified โดยไม่อ้าง continuity pass งานฉากเดียวทำเท่าที่จำเป็นกับรอยต่อ; asset-only/bug fix เฉพาะจุดใช้ consumers ที่ได้รับผลกระทบ ไม่ต้อง blockout ทั้งตอนใหม่
+
+Foundation/capability PR ต้อง merge ก่อนเริ่ม branch ของฉากที่พึ่งมันจาก `main` ล่าสุด แยก issue ตาม dependency แทนคัดลอก foundation ไปทุก branch เมื่อแก้ interface ร่วม ให้ปรับ consumers และตรวจ regression ในขอบเขตที่ได้รับผลกระทบ การจบฉากกลาง sequence ใช้ cut/transition ตามบอร์ด ส่วน fade/loop ใช้ที่ปลาย output ที่จะเผยแพร่
+
 ## ขั้นตอนทำงาน
 
-1. **รับขอบเขต**: ระบุ issue, branch, asset หรือ scene/shot IDs และ storyboard/script revisions อ่าน scene sheet และกฎด้านบน ตรวจ conflict ก่อนเขียน ไม่แก้เรื่อง/facts หรือเปลี่ยน timing เงียบ ๆ
+1. **รับขอบเขต**: ระบุ issue, branch, asset หรือ scene/shot IDs และ storyboard/script revisions อ่าน episode index, scene sheet และ entry/exit ของฉากข้างเคียง จัดงานเป็น foundation/blockout หรือ scene integration/polish พร้อม dependencies ตรวจ conflict ก่อนเขียน ไม่แก้เรื่อง/facts หรือเปลี่ยน timing เงียบ ๆ
 2. **ตรวจ checkout**: อ่าน AGENTS.md และ [remotion-toolkit.md](remotion-toolkit.md) รัน `npm ls --depth=0`, `npx remotion versions`; ตรวจ source/registries/types/validator/renderer และ helper render ที่จะใช้ ดู [character-toolkit.md](character-toolkit.md) เมื่อเปลี่ยน rig/poses จบเมื่อแยก existing-integrated / needs-integration / missing ได้ทุก dependency
 3. **วาง ownership และ interface**: สร้าง/แก้ library เดียวต่อ asset ให้ id, bounds, pivot, seat/grip/floor anchors, appearance parameters และ resource ownership ฉากเป็น staging/timing และ asset IDs เท่านั้น แปลงพิกัดจาก logical asset space สู่ stage ครั้งเดียวใน owner ที่ชัดเจน
-4. **ทำ blockout ก่อน polish**: วาง 2D contact assets และ actors ให้สะโพก/เท้า/มือสัมผัส anchors ตรวจ framing, scale, motion และ occlusion สองสัดส่วน ก่อนเพิ่มแสง/รายละเอียด หากต้องใช้ 3D ให้จำกัด deep background และติดตั้ง/ integrate เฉพาะความสามารถที่ขอบเขตงานต้องใช้
+4. **ทำ blockout ต่อเนื่องก่อน polish**: ประกอบทุกฉากของ sequence ที่รับทำตามหัวข้อด้านบน วาง 2D contact assets และ actors ให้สะโพก/เท้า/มือสัมผัส anchors ตรวจ framing, scale, motion, occlusion, timing/reveal และรอยต่อสองสัดส่วน บันทึกหลักฐานก่อนเพิ่มรายละเอียดรายฉาก หากต้องใช้ 3D ให้จำกัด deep background และติดตั้ง/integrate เฉพาะความสามารถที่ขอบเขตงานต้องใช้
 5. **เขียน deterministic implementation**: frame/fps เป็น clock; seeded flicker/noise; cache textures ไม่ผูกกับ frame ใน key สำหรับ static art; จัดการ loading/error/disposal และ resource readiness ให้ตรงทั้ง Studio/render อ่าน [asset-engineering-principles.md](asset-engineering-principles.md) สำหรับข้อจำกัด `ThreeCanvas`, `useLoader`, color space และ alpha/depth
 6. **Integrate ให้ครบ**: field ใหม่ต้องอัปเดต types + validator + shared component + dispatch/renderer ร่วมกัน พร้อม tests ที่ตรวจ input, timing, contact หรือ regression จริง ไม่เขียนแค่ test ยืนยันตัวเลขเดียวกับ implementation ไม่วาด SVG/geometry ซ้ำใน scene
 7. **ตรวจภาพ/เวลา**: ทำ QA ทั้งหมดด้านล่าง แก้ root cause ใน shared owner แล้วตรวจ affected scenes ที่ใช้ asset นั้นร่วมกัน การแก้ขนาด/สี/lighting ต้องไม่ทำให้ฉากอื่นเสีย
@@ -56,11 +75,11 @@
 3. Render ทั้ง Short และ Long ที่ได้รับผลกระทบ รวม shot start/mid/end และช่วง motion/reveal ทั้งช่วง; 0–5 frames เป็นเพียง smoke test ถ้า bug อยู่ภายหลังต้อง render ให้โดน จัด inputProps/timeline ให้ตรง revision ที่ตรวจจริง
 4. ทำ contact sheets ของ render ที่จะส่ง ทุกหนึ่งวินาทีและเฟรมสุดท้ายในทุก affected composition ใส่ composition/shot/time/frame ใต้แต่ละ tile และแบ่งหลาย sheet ให้ครอบคลุมทั้งช่วง เก็บที่ `out/qa/<episode>/<scene>/<composition>/` พร้อม frame manifest/qa notes ข้างกัน
 5. เพิ่มเฟรม `F-1`, `F`, `F+1` ที่ shot cut, transition, pose switch, attach/detach, sit/stand, texture ready/change, reveal, flash และ loop seam แยก intentional cut จาก unintended pop ตรวจตำแหน่ง ขนาด สี เงา occlusion และ contact เป็นคู่เฟรมติดกัน
-6. ตรวจ render ต่อเนื่องครบ affected sequence และไล่ adjacent frames เมื่อพบ discontinuity/ช่วงเสี่ยง หากอ้างว่าทุกเฟรมไม่มี jump ต้องมีการตรวจลำดับเฟรมทั้งหมด (เช่นตรวจทุก adjacent pair พร้อมทบทวน outliers/intentional cuts) ไม่สรุปจาก 1 Hz samples อย่างเดียว ภาพ diff สูงไม่เท่ากับ bug อัตโนมัติ โดยเฉพาะ hard cut และ flash ที่ตั้งใจ
+6. ตรวจ render ต่อเนื่องครบ affected sequence จาก timeline รวม โดยรวมฉากก่อน → ฉากที่แก้ → ฉากถัดไปเมื่อมี ตรวจ entry/exit, actor IDs/appearance, ตำแหน่ง/ทิศหัน/pose/contact, prop state, lighting และ composition audio offsets ตามบอร์ด หากขาดเพื่อนบ้านให้ระบุ boundary unverified และ follow-up แยก intentional cut/time jump จาก defect; ตรวจ consumers ที่ได้รับผลกระทบเมื่อเปลี่ยน shared asset/interface และไล่ adjacent frames เมื่อพบ discontinuity/ช่วงเสี่ยง หากอ้างว่าทุกเฟรมไม่มี jump ต้องมีการตรวจลำดับเฟรมทั้งหมด (เช่นตรวจทุก adjacent pair พร้อมทบทวน outliers/intentional cuts) ไม่สรุปจาก 1 Hz samples อย่างเดียว ภาพ diff สูงไม่เท่ากับ bug อัตโนมัติ โดยเฉพาะ hard cut และ flash ที่ตั้งใจ
 7. วัด screen-space lead height ≥0.25 ของ Short หลัง transforms/crop ที่ช่วงต่ำสุดของแต่ละช็อต ยืนยัน movement ทุกช็อตมีผลจริง ไม่หลุดภาพหรือเปิดขอบ stage ตรวจ rim/ground shadow ทุกตัวและ props สัมผัสตัวละครตรง anchors
 8. ตรวจซับไทย overlay safe regions และ audio/reveal timing รวมสอง ending ที่แตะ บันทึกผลตรงกับหลักฐาน หาก Studio/renderer/tooling ใช้ไม่ได้ ให้ระบุข้อจำกัดและสิ่งที่ยัง unverified ไม่เขียนว่า visual-pass หรือไม่มีเฟรมกระโดด
 
-QA notes อย่างน้อยมี commit/revision, composition/inputProps, shot/frame ranges, contact-sheet paths, Studio/seek results, cut/event coverage, ขนาดตัวละครต่ำสุด, lighting/material checks และ defects ที่แก้ Generated images/audio/video อยู่ `out/` และไม่ commit
+QA notes อย่างน้อยมี commit/revision, executable timeline, composition/inputProps, shot/frame ranges, blockout/placeholder status, neighboring scene IDs และ boundary results, contact-sheet paths, Studio/seek results, cut/event coverage, ขนาดตัวละครต่ำสุด, lighting/material checks และ defects ที่แก้ Generated images/audio/video อยู่ `out/` และไม่ commit
 
 ## ขอบเขตที่ตรวจในรอบตั้ง agent
 

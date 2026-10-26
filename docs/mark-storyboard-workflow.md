@@ -28,7 +28,7 @@
 | Shot / ช็อต | ช่วงภาพต่อเนื่องก่อนตัด อาจมีกล้องเคลื่อน | `E01-C01-S02-SH03` |
 | Panel / ภาพสำคัญ | สถานะสำคัญภายในช็อต เช่น ก่อนเคาะ หันมอง เห็นเงา | `E01-C01-S02-SH03-P02` |
 
-ใช้ฉากเป็นหน่วยส่ง dev และหน่วยตรวจ เปลี่ยนฉากเมื่อเวลา/สถานที่หรือเหตุการณ์เปลี่ยนอย่างมีสาระ ไม่แบ่งตามประโยคบรรยายหรือจำนวนวินาทีตายตัว หนึ่งฉากมีหลายช็อตได้ แต่ละช็อตมีภาพเท่าที่สื่อการเปลี่ยนแปลงได้ชัด
+ใช้ฉากเป็นหน่วยส่ง dev และหน่วยตรวจรายละเอียด โดยวางแผนและตรวจความต่อเนื่องตามกฎ **Shared sequence and continuity** ใน [AGENTS.md](../AGENTS.md#shared-sequence-and-continuity) ก่อน polish รายฉาก เปลี่ยนฉากเมื่อเวลา/สถานที่หรือเหตุการณ์เปลี่ยนอย่างมีสาระ ไม่แบ่งตามประโยคบรรยายหรือจำนวนวินาทีตายตัว หนึ่งฉากมีหลายช็อตได้ แต่ละช็อตมีภาพเท่าที่สื่อการเปลี่ยนแปลงได้ชัด
 
 `Scene` ใน `src/scenes/types.ts` เป็นหน่วย runtime ของโค้ดปัจจุบัน ให้ระบุ mapping จาก shot ID ไปไฟล์และ timeline index จริง แทนการสมมติว่าเท่ากับ story scene หรือว่ารองรับ ID แล้ว
 
@@ -58,6 +58,10 @@
 Remotion มี [@remotion/three](https://www.remotion.dev/docs/three) สำหรับเชื่อม React Three Fiber; การที่เอกสารรองรับไม่ได้แปลว่า checkout นี้ติดตั้งและ integrate แล้ว อ่าน `docs/remotion-toolkit.md`, package.json และ source ของ branch เป้าหมายก่อนเลือก อีก library เป็นข้อเสนอที่ต้องตรวจ API, license และการ render ร่วมกับ Remotion ไม่ติดตั้งเป็นผลข้างเคียงของงานวาง storyboard
 
 กรณีงานทั้งตอน ให้สำรวจบทครบก่อนเลือก asset ร่วม วาง visual continuity และ development order ตาม dependency แล้วลงรายละเอียด scene pack ทีละฉากตามขอบเขตที่ขอ งานฉากเดียวให้ใช้ภาพรวมที่มีโดยไม่ขยายงานทั้งตอนเอง ถ้าพบโจทย์ที่ยังพิสูจน์ไม่ได้ ให้ระบุ blockout ที่เล็กที่สุดเพื่อหาคำตอบ
+
+ก่อนส่งฉากไป polish ให้มาร์คกำหนด blockout brief ของ sequence ที่รับทำ: ลำดับทุกฉาก, timing/reveal สำคัญ, shared elements และขนาด/anchors ที่ placeholder ต้องรักษา, entry/exit และเกณฑ์ตรวจสองสัดส่วน บอสเป็นผู้ประกอบ runtime blockout; มาร์คตรวจผลต่อเนื่องก่อนลงรายละเอียดภาพ ไม่ต้องรอวาดทุก panel จนสวยจึงส่ง brief นี้ การส่งบอร์ดพร้อม brief ไม่ได้แปลว่า runtime ผ่านแล้ว
+
+ลำดับพัฒนาแยกงาน foundation/capability ที่ใช้ร่วมออกจาก scene integration/polish ระบุ dependency issues/PRs และฉากที่ใช้แต่ละ asset เมื่อ dependency merge แล้วจึงเริ่ม branch ฉากจาก `main` ล่าสุดตาม AGENTS.md หากงานเป็น asset-only หรือ bug fix เฉพาะจุด ให้ใช้บริบทที่เกี่ยวข้องโดยไม่เพิ่มงานวางทั้งตอน
 
 ## แสง เงา และสีเป็นส่วนหนึ่งของบอร์ด
 
@@ -99,7 +103,14 @@ storyboards/haunted-episode/
   ch01-sc03.md
 ```
 
-`index.md` เก็บ episode/chapter/scene IDs, ลำดับ, source/revision และลิงก์ไป scene pack เป็นแผนที่ภาพรวม ไม่คัดลอก shot sheet ทุกฉากมารวมอีกชุด Generated exports, contact sheets และ animatics อยู่ใน `out/storyboards/<episode>/` ตามการ ignore ของ repo
+`index.md` เป็นจุดรวมแผนและสถานะของ sequence โดยลิงก์ไป scene sheets ซึ่งถือรายละเอียดรายฉาก:
+
+- Episode/chapter/scene IDs, ลำดับ, script/review/board revisions และลิงก์ scene packs
+- Shared elements: actor/asset IDs, appearance ที่ต้องคง, path/owner, dimensions/anchors หรือข้อกำหนดที่ยังรอทำ, สถานะ implementation และฉากที่ใช้
+- Development order: foundation/capability → scene integration/polish, dependency issues/PRs และสถานะ merge
+- Blockout brief และสถานะผลตรวจ: timeline path/input props เมื่อบอสทำแล้ว, shot → timeline index/frame ranges, revision/evidence ของ Short และ Long, placeholders กับรอยต่อที่ยัง unverified
+
+บอสอัปเดตส่วน runtime mapping/หลักฐาน มาร์คดูแลแผนภาพและการเปลี่ยน revision รักษา timing รายละเอียดใน scene sheet กับ executable timeline ให้ตรงกันโดยไม่คัดลอก shot sheet ทั้งหมดมาไว้ใน index หาก index ยาวให้ลิงก์ตาราง assets หรือ development plan ข้างเคียงจากที่นี่ Generated exports, contact sheets และ animatics อยู่ใน `out/storyboards/<episode>/` ตามการ ignore ของ repo
 
 บอร์ดแต่ละไฟล์เป็น Excalidraw JSON ที่เปิดแก้ได้และมี panels เฉพาะฉากนั้น ใช้ schema ที่เข้ากับ Excalidraw ปัจจุบัน ตรวจว่าไฟล์ parse ได้และตรวจภาพ export เมื่อทำได้ ไฟล์ภาพนิ่งอย่างเดียวไม่ถือว่าได้ส่ง editable board แล้ว
 
@@ -120,10 +131,14 @@ FPS: 30 | scene durationFrames: ... | chapter/composition offset: ...
 - ข้อเสนอเปลี่ยนบทหรือข้อมูลที่ขาด (ถ้ามี):
 
 ## Continuity
-- Entry: ที่อยู่/ทิศหัน/สายตาของ actors, prop และมือที่ถือ,
-  ประตู/หน้าต่าง/ไฟ, เวลาและสถานที่; อ้าง exit ของฉากก่อน
-- Exit: สถานะเดียวกันหลังฉาก; อ้างฉากถัดไปถ้าทราบ
-- การข้ามแกน/เปลี่ยนทิศโดยตั้งใจ และเหตุผล:
+- Previous / next scene IDs และ scene-sheet revision; ปลาย sequence ที่ไม่มีเพื่อนบ้านตามแผนใช้ N/A, ส่วนข้อมูลที่ยังไม่ได้รับใช้ unverified:
+- Entry: actor IDs/appearance, ตำแหน่งพร้อม coordinate space, ทิศหัน/สายตา,
+  pose/contact anchors, prop IDs/มือที่ถือ, ประตู/หน้าต่าง/ไฟ, เวลาและสถานที่;
+  อ้าง exit ของฉากก่อน
+- Exit: สถานะชุดเดียวกันหลังฉาก; อ้าง entry ของฉากถัดไป
+- Audio: composition offset/ช่วง VO หรือเสียงที่ข้ามรอยต่อ และ timing status:
+- Cut / transition / time jump / การข้ามแกนโดยตั้งใจ และเหตุผล:
+- Boundary checks: frame ranges สองสัดส่วน, expected และ evidence หรือ unverified:
 
 ## Assets และ capabilities
 | ID | บทบาท | สถานะ | หลักฐาน path/registry | งานที่ dev ต้องเพิ่ม |
@@ -159,12 +174,13 @@ FPS: 30 | scene durationFrames: ... | chapter/composition offset: ...
 | ... | ... | ... | ... |
 
 ## ส่งต่อ dev
-- ขอบเขตฉากนี้ / shared assets ที่เป็น dependency:
+- ขอบเขตฉากนี้ / shared assets ที่เป็น dependency / foundation PRs:
+- Sequence index / blockout brief / runtime blockout revision และสถานะก่อน polish:
 - ข้อจำกัดและ fallback ที่เสนอ (ยังไม่ใช่การอนุมัติแทนผู้ใช้):
 - สิ่งที่ตรวจแล้ว / ยังไม่ได้ตรวจ / คำถามที่ค้าง:
 ```
 
-ใช้ `ready-for-dev` เมื่อ coverage, ภาพ, timing ที่ระบุระดับความมั่นใจ, dependencies และเกณฑ์ตรวจครบ เป็นความพร้อมของ handoff ไม่ใช่การอ้างว่าผู้ใช้อนุมัติหรือ runtime render ผ่านแล้ว
+ใช้ `ready-for-dev` เมื่อ coverage, ภาพ, timing ที่ระบุระดับความมั่นใจ, dependencies, entry/exit และเกณฑ์ตรวจครบ เป็นความพร้อมของ handoff ให้บอสเริ่ม implementation/blockout ไม่ใช่การอ้างว่าผู้ใช้อนุมัติหรือ runtime render ผ่านแล้ว ก่อน scene polish ต้องมีหลักฐานตรวจ assembled blockout ตาม AGENTS.md ระบุเพื่อนบ้านหรือรอยต่อที่ขาดเป็น unverified
 
 ## เกณฑ์ภาพและการตรวจ render
 
@@ -177,7 +193,7 @@ FPS: 30 | scene durationFrames: ... | chapter/composition offset: ...
 
 ตัวอย่างเกณฑ์ที่ตรวจได้: “`SH02-P02`, shot-local F54: เงาเพิ่งเข้าจากขอบขวาหลังเสียงเคาะที่ F36; F53 ยังเห็นทางเดินว่าง; เห็นเหตุการณ์ครบใน Short และ Long” ตัวเลขเป็นตัวอย่างวิธีเขียน ไม่ใช่ timing ที่อนุมัติให้เรื่องใด
 
-เมื่อรีวิว render ให้ระบุ board revision, composition, shot ID, ชนิด clock และ frame/timecode ของหลักฐาน เทียบ start/key action/reveal/end รวมรอยต่อ รายงาน expected → observed → owner ที่ควรแก้ (rig, prop, camera, scene timing ฯลฯ) และผลกระทบต่อฉากข้างเคียง ขาดเสียงหรือภาพสัดส่วนใดให้ระบุว่า unverified
+เมื่อรีวิว render ให้ระบุ board revision, composition, shot ID, ชนิด clock และ frame/timecode ของหลักฐาน เทียบ start/key action/reveal/end รวมการเล่นฉากก่อน → ฉากที่แก้ → ฉากถัดไปจาก timeline รวม และคู่เฟรมตรงรอยต่อ แยก intentional cut/time jump ออกจาก continuity defect รายงาน expected → observed → owner ที่ควรแก้ (rig, prop, camera, scene timing ฯลฯ) และผลกระทบต่อฉากข้างเคียง ขาดเสียงหรือภาพสัดส่วนใดให้ระบุว่า unverified
 
 หาก dev พบปัญหาเชิงเทคนิค ให้ทำข้อเสนอแก้พร้อมผลต่อเรื่องและสองสัดส่วน ปรับบอร์ดเมื่อมีการเลือก revision ใหม่อย่างชัดเจน รักษา IDs เดิมและบันทึก change log เพื่อให้เทียบรอบถัดไปได้
 
