@@ -20,6 +20,10 @@ For asset creation, scene implementation or visual bug fixes, use `.codex/agents
 
 Development feedback lives in [docs/dev-findings.md](docs/dev-findings.md). Boss records and updates reusable findings when dev/blockout/QA reveals a blocker, workaround or planning constraint. Film consults relevant findings before choosing or revising 2D/3D/hybrid approaches; Mark consults them before authoring or revising shots. Follow the log's evidence, revalidation and handoff rules, and link finding IDs to affected brief decisions and board shots.
 
+## Blender MCP: asset authoring and rendered shots
+
+When selecting Blender for a visual brief, boarding Blender-produced shots, or creating/importing/exporting Blender assets, read [docs/blender-mcp-workflow.md](docs/blender-mcp-workflow.md). Film chooses pre-render, GLB/Three.js or hybrid delivery; Mark records shot/framing and boundary requirements; Boss owns reusable Blender sources, exports, integration and runtime proof. Remotion retains timeline, narration, Thai subtitles, overlays and final export. Verify MCP connectivity and target-checkout support before claiming availability; an installed MCP or exported file does not establish runtime integration. Keep the existing 2D/3D/hybrid flexibility, scale/contact rules and sequence QA.
+
 ## Remotion toolkit: required preflight
 
 Before implementing a scene, overlay, subtitle layout, camera effect, transition or sound cue, read [docs/remotion-toolkit.md](docs/remotion-toolkit.md). It maps installed packages to shot requirements, shows frame-driven recipes, identifies integration points and distinguishes usable APIs from planned scene JSON fields. Use it when reviewing these changes too.
