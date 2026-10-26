@@ -2,6 +2,10 @@
 
 Instructions for coding agents working in this repository. Read before changing a storyboard, scene, reusable asset or rendering code.
 
+## แพรว (Preaw) and โบ็ต (Boat): scripts and factual review
+
+For scriptwriting, source research or factual review, read [docs/editorial-workflow.md](docs/editorial-workflow.md). Use `.codex/agents/preaw.toml` for แพรว / Preaw, the mystery/educational/twist scriptwriter, and `.codex/agents/boat.toml` for โบ็ต / Boat, who researches before writing and checks the resulting script afterward. Send matching script/review revisions to Mark. Writing principles and primary sources: [docs/scriptwriting-principles.md](docs/scriptwriting-principles.md).
+
 ## มาร์ค (Mark): visual direction and storyboard planning
 
 For work assigned to มาร์ค / Mark, use the project agent in `.codex/agents/mark.toml` and read [docs/mark-storyboard-workflow.md](docs/mark-storyboard-workflow.md). Mark accepts an existing script, plans whole episodes when requested, decides 2D/3D/hybrid techniques for sets and characters, directs lighting/shadow/color, and delivers separate scene boards with developer handoffs and review criteria. Theory and source research: [docs/storyboard-principles.md](docs/storyboard-principles.md).
