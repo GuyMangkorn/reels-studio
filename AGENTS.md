@@ -2,6 +2,10 @@
 
 Instructions for coding agents working in this repository. Read before changing a storyboard, scene, reusable asset or rendering code.
 
+## มาร์ค (Mark): visual direction and storyboard planning
+
+For work assigned to มาร์ค / Mark, use the project agent in `.codex/agents/mark.toml` and read [docs/mark-storyboard-workflow.md](docs/mark-storyboard-workflow.md). Mark accepts an existing script, plans whole episodes when requested, decides 2D/3D/hybrid techniques for sets and characters, directs lighting/shadow/color, and delivers separate scene boards with developer handoffs and review criteria. Theory and source research: [docs/storyboard-principles.md](docs/storyboard-principles.md).
+
 ## Remotion toolkit: required preflight
 
 Before implementing a scene, overlay, subtitle layout, camera effect, transition or sound cue, read [docs/remotion-toolkit.md](docs/remotion-toolkit.md). It maps installed packages to shot requirements, shows frame-driven recipes, identifies integration points and distinguishes usable APIs from planned scene JSON fields. Use it when reviewing these changes too.
@@ -12,9 +16,9 @@ Run `npm run lint` alongside typecheck and relevant tests before a PR. The toolk
 
 ## Production direction
 
-This is a Thai YouTube studio for Shorts and long-form videos. Development starts from a storyboard. Remotion controls the timeline, narration, subtitles and video export; Three.js provides 3D sets, cameras, depth and lighting. Shots can use 3D, existing 2D cut-out rigs, or a hybrid of both, according to the storyboard.
+This is a Thai YouTube studio for Shorts and long-form videos. Development starts from a storyboard. Remotion controls the timeline, narration, subtitles and video export. Choose 2D, 3D or hybrid according to story clarity, visual quality and production feasibility. Sets, characters, props and effects may each use the technique that suits the shot; characters are not restricted to 2D and scenes are not required to be 3D. Three.js / React Three Fiber is a 3D option; consider another library when verified capabilities offer a concrete advantage.
 
-A storyboard that calls for a 3D camera or spatial reveal is a requirement to implement that shot in 3D. Preserve its framing, perspective and occlusion when choosing the implementation. Layered planes are useful for cut-outs and stylized scenery; use volumetric geometry where the camera needs to see around an object.
+Mark decides the visual approach while authoring the storyboard and records the reason, reusable dependencies, feasibility evidence and fallback. Once a board revision is selected for development, preserve its framing, perspective, occlusion, lighting and beat timing. A camera move alone does not require 3D; use geometry when the shot needs to reveal different surfaces or travel through space. Record proposed changes to an agreed approach so the board and implementation stay consistent.
 
 Characters, animals, costumes, poses, sets, props and camera behaviors form one reusable library. A new video selects and stages those assets by id. Extend a missing asset once in the library, then reference it from the scene.
 
@@ -58,7 +62,7 @@ Read [docs/character-toolkit.md](docs/character-toolkit.md) when changing the ex
 
 ## Visual direction and motion
 
-Use original stylized artwork, readable silhouettes, simple forms and a consistent channel palette. Existing 2D characters keep solid fills, rounded shapes and dark outlines. Match 3D sets and materials to those characters. The storyboard determines daylight, dusk, night, moonlight, shadows and atmosphere; bright daytime pastel lighting is not mandatory for every shot. Three.js is an intended production tool, including for actual 3D geometry and spatial camera movement.
+Use original stylized artwork, readable silhouettes, simple forms and a consistent channel palette. Existing 2D characters keep solid fills, rounded shapes and dark outlines. Characters may also be 3D when that serves the shot and is feasible. Keep the chosen 2D/3D/hybrid assets visually consistent through shape language, materials, lighting and color. The storyboard determines daylight, dusk, night, moonlight, shadows and atmosphere; bright daytime pastel lighting is not mandatory for every shot. Three.js is an intended production tool, including for actual 3D geometry and spatial camera movement.
 
 The existing palette is a reference for asset continuity:
 
@@ -85,7 +89,7 @@ The existing palette is a reference for asset continuity:
 
 For a pose, extend `PoseName`, the pose registry and frame sampling in `src/rig/poses.ts`; update species-specific sampling and validation when needed. Start from an existing joint set, keep lag and use the shared transition system.
 
-For a character variant, reuse its body type and expose appearance parameters or named costumes. The current `Character` uses appearance props and pose inputs; confirm the exported API before writing an example. Add a new skeleton only for a body type that needs different joints. Cat and Dog currently share `src/rig/Animal.tsx`.
+Choose a 2D or 3D character representation for the required camera and performance, checking available rigs, assets and render feasibility. Reuse shared character assets across scenes. For a variant of an existing character, reuse its body type and expose appearance parameters or named costumes. The current `Character` uses appearance props and pose inputs; confirm the exported API before writing an example. Add a new skeleton only for a body type that needs different joints. Cat and Dog currently share `src/rig/Animal.tsx`.
 
 For a 3D set, prop or camera, implement one shared module and register it with the scene pipeline. Compose from reusable geometry, materials and lighting. Expose parameters for time of day, reveal state or set dressing when the storyboard needs them. Define dimensions and floor/seat anchors so actors stay in contact as sets move or scale.
 
