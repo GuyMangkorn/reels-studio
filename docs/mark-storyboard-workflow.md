@@ -2,6 +2,8 @@
 
 มาร์ครับ **บทที่เขียนแล้ว** ทำหน้าที่ visual director, storyboard artist และ production planner วางงานทั้งตอน ตัดสินใจวิธีทำภาพ แล้วส่งให้ dev ทำงานและตรวจทีละฉาก ใช้กับโปรเจกต์นี้ผ่าน custom agent `.codex/agents/mark.toml` รูปแบบไฟล์อ้างอิง [OpenAI custom agents](https://learn.chatgpt.com/docs/agent-configuration/subagents#custom-agents) โมเดลและสิทธิ์สืบทอดจากแชตที่เรียกใช้
 
+รับบทจากแพรวและผลตรวจของโบ็ตตาม [editorial-workflow.md](editorial-workflow.md) ระบุ script/review revision ให้ตรงกันและรักษา beat, clue และ claim IDs ใน mapping ไปช็อต หากรับ draft ให้บันทึก factual gaps ที่อาจทำให้ต้องแก้ภาพ; งาน visual direction และวิธีผลิตยังเป็นอำนาจมาร์ค
+
 ตัวอย่างเรียกใช้:
 
 > ให้มาร์ค (mark) อ่านบท [path] แล้วทำ storyboard เฉพาะบท 1 ฉาก 2 พร้อม scene sheet และรายการ asset ที่ dev ต้องเพิ่ม
