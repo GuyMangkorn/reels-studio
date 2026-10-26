@@ -31,7 +31,7 @@ export const backgroundRegistry: Record<BackgroundName, BackgroundBuilder> = {
     mid: <Sofa width={w} height={h} night={night}/>,
     near: <><rect x={-100} y={h * .8} width={w + 200} height={h * .3} fill={night ? '#8d8091' : '#dfbca0'}/><ellipse cx={w * .5} cy={h * .89} rx={w * .35} ry={h * .075} fill={night ? '#b2a0ac' : '#f0d7bb'}/></>,
   }),
-  sea: ({w, h, p, night, t}) => ({
+  sea: ({w, h, night, t}) => ({
     far: <>{cloud(w * .21, h * .3, 1.3)}{cloud(w * .78, h * .23)}<path d={`M-100 ${h * .58} H${w + 100} V${h} H-100Z`} fill={night ? '#667fa4' : '#a1d3d6'}/></>,
     mid: <>{[.62, .68, .74].map((level, i) => <path key={level} d={`M-120 ${h * level} Q${w * .2} ${h * level - 20 + Math.sin(t + i) * 6} ${w * .5} ${h * level} T${w + 120} ${h * level}`} stroke={night ? '#94aaca' : '#d4f0e9'} strokeWidth={10} fill="none"/>)}</>,
     near: <><path d={`M-100 ${h * .82} Q${w * .25} ${h * .73} ${w * .55} ${h * .81} T${w + 120} ${h * .78} V${h + 100} H-100Z`} fill={night ? '#bab0bb' : '#f1d4a8'}/>{[.12, .45, .83].map(x => <path key={x} d={`M${w * x} ${h * .92} q15-20 30 0`} stroke="#e4b99f" strokeWidth={4} fill="none"/>)}</>,
