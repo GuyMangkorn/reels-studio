@@ -1,6 +1,7 @@
 import {poses, smoothstep, transitionAtTrack, type PoseName, type PoseTrack, type PoseTransition} from '../rig/poses';
 import {HUMAN_HIP_FROM_ANCHOR} from '../rig/geometry';
-import {propNames, type PropName} from '../assets/Props';
+import {propNames, propSpecs, type PropName} from '../assets/Props';
+import {PHYSICAL_ACTOR_SPECS} from '../rig/physicalScale';
 import type {Actor, Scene, ScenePropSpec, Timeline} from './types';
 const bgNames = ['forest', 'city', 'room', 'sea', 'nightSky'];
 const animalPoses = ['idle', 'walk', 'sit', 'wave'];
@@ -17,9 +18,63 @@ export function validateTimeline(value: unknown): asserts value is Timeline {
     const s = raw as Record<string, unknown>; const path = `[${i}]`;
     if (!finite(s.durationSec) || s.durationSec <= 0) fail(`${path}.durationSec`, 'must be positive');
     if (!bgNames.includes(String(s.bg))) fail(`${path}.bg`, 'unknown background');
+    if (s.projection !== undefined && s.bg !== 'room') fail(`${path}.bg`, 'background has no implementation for the physical metre stage');
     if (s.time !== undefined && !['day', 'night'].includes(String(s.time))) fail(`${path}.time`, 'expected day or night');
     if (typeof s.subtitle !== 'string') fail(`${path}.subtitle`, 'expected text');
     for (const key of ['title', 'eyebrow']) if (s[key] !== undefined && typeof s[key] !== 'string') fail(`${path}.${key}`, 'expected text');
+    if (s.projection !== undefined) {
+      if (!record(s.projection)) fail(`${path}.projection`, 'expected orthographic projection object');
+      const projection = s.projection as Record<string, unknown>;
+      if (projection.unit !== 'm') fail(`${path}.projection.unit`, 'expected metre units');
+      const readBounds = (rawBounds: unknown, boundsPath: string) => {
+        if (!record(rawBounds)) fail(boundsPath, 'expected bounds object');
+        const bounds = rawBounds as Record<string, unknown>;
+        for (const edge of ['left', 'right', 'bottom', 'top']) if (!finite(bounds[edge])) fail(`${boundsPath}.${edge}`, 'expected finite metres');
+        if ((bounds.right as number) <= (bounds.left as number) || (bounds.top as number) <= (bounds.bottom as number)) fail(boundsPath, 'right/top must exceed left/bottom');
+        return bounds as {left: number; right: number; bottom: number; top: number};
+      };
+      const stage = readBounds(projection.stage, `${path}.projection.stage`);
+      if (!record(projection.views)) fail(`${path}.projection.views`, 'expected short and long view objects');
+      const views = projection.views as Record<string, unknown>;
+      for (const [name, ratio] of [['short', 1080 / 1920], ['long', 1920 / 1080]] as const) {
+        if (!record(views[name])) fail(`${path}.projection.views.${name}`, 'expected view object');
+        const view = views[name] as Record<string, unknown>;
+        const bounds = readBounds(view.bounds, `${path}.projection.views.${name}.bounds`);
+        if (bounds.left < stage.left || bounds.right > stage.right || bounds.bottom < stage.bottom || bounds.top > stage.top) fail(`${path}.projection.views.${name}.bounds`, 'view must stay inside the authored stage bounds');
+        const aspect = (bounds.right - bounds.left) / (bounds.top - bounds.bottom);
+        if (Math.abs(aspect - ratio) / ratio > 0.005) fail(`${path}.projection.views.${name}.bounds`, 'view aspect ratio must match its output composition');
+        if (view.cameraMoves !== undefined) {
+          if (!Array.isArray(view.cameraMoves) || view.cameraMoves.length < 2) fail(`${path}.projection.views.${name}.cameraMoves`, 'expected at least two camera keys');
+          let last = -1;
+          let previousKey: Record<string, unknown> | undefined;
+          (view.cameraMoves as unknown[]).forEach((rawKey, k) => {
+            const kp = `${path}.projection.views.${name}.cameraMoves[${k}]`;
+            if (!record(rawKey) || !finite(rawKey.atSec) || rawKey.atSec < 0 || rawKey.atSec > (s.durationSec as number) || rawKey.atSec <= last) fail(kp, 'camera times must increase within the scene');
+            const key = rawKey as Record<string, unknown>;
+            if (k === 0 && key.atSec !== 0) fail(`${kp}.atSec`, 'first camera key must start at zero');
+            for (const axis of ['x', 'y']) if (!finite(key[axis])) fail(`${kp}.${axis}`, 'expected finite metre offset');
+            if (key.zoom !== undefined && (!finite(key.zoom) || key.zoom <= 0 || key.zoom > 8)) fail(`${kp}.zoom`, 'must be greater than zero and at most 8');
+            if (key.cut !== undefined && typeof key.cut !== 'boolean') fail(`${kp}.cut`, 'expected boolean');
+            const zoom = (key.zoom as number | undefined) ?? 1;
+            const centerX = (bounds.left + bounds.right) / 2 + (key.x as number);
+            const centerY = (bounds.bottom + bounds.top) / 2 + (key.y as number);
+            const halfWidth = (bounds.right - bounds.left) / (2 * zoom);
+            const halfHeight = (bounds.top - bounds.bottom) / (2 * zoom);
+            if (centerX - halfWidth < stage.left || centerX + halfWidth > stage.right || centerY - halfHeight < stage.bottom || centerY + halfHeight > stage.top) fail(kp, 'camera view must stay inside the physical stage bounds');
+            if (previousKey && key.cut !== true) {
+              const previousZoom = (previousKey.zoom as number | undefined) ?? 1;
+              const maxHalfWidth = (bounds.right - bounds.left) / (2 * Math.min(previousZoom, zoom));
+              const maxHalfHeight = (bounds.top - bounds.bottom) / (2 * Math.min(previousZoom, zoom));
+              const previousCenterX = (bounds.left + bounds.right) / 2 + (previousKey.x as number);
+              const previousCenterY = (bounds.bottom + bounds.top) / 2 + (previousKey.y as number);
+              if (Math.min(centerX, previousCenterX) - maxHalfWidth < stage.left || Math.max(centerX, previousCenterX) + maxHalfWidth > stage.right || Math.min(centerY, previousCenterY) - maxHalfHeight < stage.bottom || Math.max(centerY, previousCenterY) + maxHalfHeight > stage.top) fail(kp, 'interpolated camera move may expose outside the physical stage bounds');
+            }
+            previousKey = key;
+            last = key.atSec as number;
+          });
+        }
+      }
+    }
     if (s.pictureMove !== undefined) {
       if (!Array.isArray(s.pictureMove) || s.pictureMove.length < 2) fail(`${path}.pictureMove`, 'expected at least two keyframes');
       let last = -1;
@@ -54,6 +109,25 @@ export function validateTimeline(value: unknown): asserts value is Timeline {
       if (!record(rawActor)) fail(ap, 'expected actor object');
       const a = rawActor as Record<string, unknown>;
       if (!['narrator', 'cat', 'dog'].includes(String(a.type))) fail(`${ap}.type`, 'unknown actor');
+      if (s.projection !== undefined) {
+        if (a.world === undefined || !record(a.world)) fail(`${ap}.world`, 'projected scenes require a metre-space world path');
+        if (a.seat !== undefined) fail(`${ap}.seat`, 'physical projection uses explicit world anchors; normalized sofa seating is unavailable');
+        if (typeof a.type !== 'string' || !Object.hasOwn(PHYSICAL_ACTOR_SPECS, a.type)) fail(`${ap}.type`, 'actor has no CATBOX physical dimension spec');
+        for (const key of ['x', 'y', 'from', 'to', 'scale', 'portrait']) if (a[key] !== undefined) fail(`${ap}.${key}`, 'normalized or actor-only portrait layout is not allowed with physical projection');
+        const world = a.world as Record<string, unknown>;
+        if (!Array.isArray(world.keys) || world.keys.length === 0) fail(`${ap}.world.keys`, 'expected at least one position key');
+        let last = -1;
+        (world.keys as unknown[]).forEach((rawKey, k) => {
+          const kp = `${ap}.world.keys[${k}]`;
+          if (!record(rawKey) || !finite(rawKey.atSec) || rawKey.atSec < 0 || rawKey.atSec > (s.durationSec as number) || rawKey.atSec <= last) fail(kp, 'position times must increase within scene');
+          const key = rawKey as Record<string, unknown>;
+          if (k === 0 && key.atSec !== 0) fail(`${kp}.atSec`, 'first world key must start at zero');
+          for (const axis of ['x', 'y']) if (!finite(key[axis])) fail(`${kp}.${axis}`, 'expected finite metres');
+          last = key.atSec as number;
+        });
+      } else if (a.world !== undefined) {
+        fail(`${ap}.world`, 'metre-space actor paths require a scene projection');
+      }
       if (a.id !== undefined) {if (typeof a.id !== 'string' || ids.has(a.id)) fail(`${ap}.id`, 'expected unique string'); ids.add(a.id as string);}
       const checkPose = (p: unknown) => {if (typeof p !== 'string' || !Object.hasOwn(poses, p) || (a.type !== 'narrator' && !animalPoses.includes(p))) fail(`${ap}.pose`, 'unsupported pose for this actor');};
       if (a.pose !== undefined) checkPose(a.pose);
@@ -83,8 +157,23 @@ export function validateTimeline(value: unknown): asserts value is Timeline {
       if (!Array.isArray(s.props)) fail(`${path}.props`, 'expected array');
       (s.props as unknown[]).forEach((p, j) => {
         const pp = `${path}.props[${j}]`;
-        if (!record(p) || !propNames.includes(String(p.type) as PropName) || !finite(p.x)) fail(pp, 'expected known type and numeric x');
+        if (!record(p) || !propNames.includes(String(p.type) as PropName)) fail(pp, 'expected known prop type');
         const prop = p as Record<string, unknown>;
+        const projectedScene = s.projection !== undefined;
+        if (projectedScene) {
+          if (!['screen', 'world'].includes(String(prop.space))) fail(`${pp}.space`, 'projected scenes must declare screen or world space');
+          if (prop.space === 'world') {
+            if (!record(prop.world) || !finite(prop.world.x) || !finite(prop.world.y)) fail(`${pp}.world`, 'expected metre-space floor anchor');
+            if (prop.x !== undefined || prop.y !== undefined || prop.size !== undefined || prop.portrait !== undefined) fail(pp, 'world props use canonical dimensions and metre anchors only');
+            if (!propSpecs[prop.type as PropName].physicalEstimate || !propSpecs[prop.type as PropName].floorAnchor) fail(`${pp}.type`, 'world prop has no physical bounds/floor anchor');
+          } else {
+            if (prop.world !== undefined) fail(`${pp}.world`, 'screen-space props cannot also specify a world anchor');
+            if (!finite(prop.x) || (prop.x as number) < 0 || (prop.x as number) > 1) fail(`${pp}.x`, 'expected normalized screen position from 0 to 1');
+          }
+        } else {
+          if (!finite(prop.x)) fail(`${pp}.x`, 'expected numeric x');
+          if (prop.space === 'world' || prop.world !== undefined) fail(`${pp}.world`, 'metre-space props require a scene projection');
+        }
         for (const key of ['y', 'size']) if (prop[key] !== undefined && !finite(prop[key])) fail(`${pp}.${key}`, 'expected finite number');
         if (prop.size !== undefined && (prop.size as number) <= 0) fail(`${pp}.size`, 'must be positive');
         for (const key of ['color', 'label', 'detail']) if (prop[key] !== undefined && typeof prop[key] !== 'string') fail(`${pp}.${key}`, 'expected text');
@@ -94,6 +183,7 @@ export function validateTimeline(value: unknown): asserts value is Timeline {
         if (prop.startSec !== undefined && (!finite(prop.startSec) || prop.startSec < 0 || prop.startSec >= (s.durationSec as number))) fail(`${pp}.startSec`, 'must fall inside scene');
         if (prop.endSec !== undefined && (!finite(prop.endSec) || prop.endSec <= (prop.startSec as number ?? 0) || prop.endSec > (s.durationSec as number))) fail(`${pp}.endSec`, 'must follow startSec and stay within scene');
         if (prop.portrait !== undefined) {
+          if (projectedScene) fail(`${pp}.portrait`, 'projected screen props use one screen-space layout; physical world props cannot use portrait overrides');
           if (!record(prop.portrait)) fail(`${pp}.portrait`, 'expected portrait layout object');
           const layout = prop.portrait as Record<string, unknown>;
           for (const key of ['x', 'y']) if (layout[key] !== undefined && (!finite(layout[key]) || layout[key] < 0 || layout[key] > 1)) fail(`${pp}.portrait.${key}`, 'expected normalized position from 0 to 1');
@@ -146,7 +236,7 @@ export function layoutSceneProp(prop: ScenePropSpec, width: number, height: numb
   const portrait = height > width;
   const layout = portrait ? prop.portrait : undefined;
   return {
-    x: (layout?.x ?? prop.x) * width,
+    x: (layout?.x ?? prop.x ?? .5) * width,
     y: (layout?.y ?? prop.y ?? .8) * height,
     size: (layout?.size ?? prop.size ?? 240) * (portrait ? 1.1 : 1),
   };

@@ -1724,9 +1724,6 @@
         "id": "owner",
         "type": "narrator",
         "pose": "think",
-        "x": 0.18,
-        "y": 0.84,
-        "scale": 0.55,
         "expression": "think",
         "hairStyle": "short",
         "skinColor": "#FFD9B8",
@@ -1746,68 +1743,102 @@
             "pose": "point"
           }
         ],
-        "portrait": {
-          "from": 0.13,
-          "to": 0.13,
-          "scale": 0.66
+        "world": {
+          "keys": [
+            {
+              "atSec": 0,
+              "x": -2.2,
+              "y": 0
+            }
+          ]
         }
       },
       {
         "id": "mochi",
         "type": "cat",
-        "pose": "walk",
-        "from": 0.66,
-        "to": 0.74,
-        "y": 0.84,
-        "scale": 2.25,
+        "pose": "idle",
         "color": "#c7b5e7",
         "poses": [
+          {
+            "atSec": 23,
+            "pose": "walk"
+          },
           {
             "atSec": 35,
             "pose": "sit"
           }
         ],
-        "portrait": {
-          "from": 0.63,
-          "to": 0.67,
-          "scale": 2.2
+        "world": {
+          "keys": [
+            {
+              "atSec": 0,
+              "x": -0.55,
+              "y": 0
+            },
+            {
+              "atSec": 23,
+              "x": -0.55,
+              "y": 0
+            },
+            {
+              "atSec": 29,
+              "x": -0.25,
+              "y": 0
+            },
+            {
+              "atSec": 35,
+              "x": 0,
+              "y": 0.09191489361702128
+            },
+            {
+              "atSec": 45,
+              "x": 0,
+              "y": 0.09191489361702128
+            }
+          ]
         }
       }
     ],
     "props": [
       {
         "type": "catbox-old",
-        "x": 0.79,
-        "y": 0.86,
-        "size": 300,
         "layer": "front",
-        "portrait": {
-          "x": 0.63,
-          "y": 0.84,
-          "size": 270
+        "space": "world",
+        "world": {
+          "x": 0,
+          "y": 0
         }
       },
       {
         "type": "catbox-folder",
         "x": 0.4,
-        "y": 0.87,
+        "y": 0.73,
         "size": 220,
-        "label": "แฟ้ม"
+        "label": "แฟ้ม",
+        "space": "screen",
+        "startSec": 0,
+        "endSec": 23
       },
       {
         "type": "catbox-card",
         "x": 0.48,
-        "y": 0.49,
+        "y": 0.28,
         "size": 270,
         "tone": "fiction",
         "label": "ครั้งนี้ยังไม่รู้",
-        "detail": "เรื่องสมมติ: โมจิเลือกกล่องเก่า\nเห็นการกระทำ\nยังไม่รู้เหตุเฉพาะ"
+        "detail": "เรื่องสมมติ: โมจิเลือกกล่องเก่า\nเห็นการกระทำ\nยังไม่รู้เหตุเฉพาะ",
+        "space": "screen",
+        "startSec": 35,
+        "endSec": 45
       },
       {
         "type": "catbox-outline",
-        "x": 0.61,
-        "y": 0.52,
-        "size": 160
+        "x": 0.75,
+        "y": 0.31,
+        "size": 160,
+        "space": "screen",
+        "startSec": 0,
+        "endSec": 23
       }
     ],
     "subtitle": "นั่งในกรอบ ≠ ยืนยันว่าคิดว่ามีกล่อง",
@@ -1880,6 +1911,66 @@
         "y": -0.001,
         "scale": 1.07
       }
-    ]
+    ],
+    "projection": {
+      "unit": "m",
+      "stage": {
+        "left": -3.6,
+        "right": 2.44,
+        "bottom": -0.85,
+        "top": 3.4
+      },
+      "views": {
+        "short": {
+          "bounds": {
+            "left": -0.3234375,
+            "right": 0.3234375,
+            "bottom": -0.275,
+            "top": 0.875
+          },
+          "cameraMoves": [
+            {
+              "atSec": 0,
+              "x": -0.2,
+              "y": 0,
+              "zoom": 1
+            },
+            {
+              "atSec": 22.966667,
+              "x": -0.2,
+              "y": 0,
+              "zoom": 1
+            },
+            {
+              "atSec": 23,
+              "x": -0.55,
+              "y": 0,
+              "zoom": 1,
+              "cut": true
+            },
+            {
+              "atSec": 29,
+              "x": -0.25,
+              "y": 0,
+              "zoom": 1
+            },
+            {
+              "atSec": 34.966667,
+              "x": 0,
+              "y": 0,
+              "zoom": 1
+            }
+          ]
+        },
+        "long": {
+          "bounds": {
+            "left": -3.6,
+            "right": 2.44,
+            "bottom": -0.85,
+            "top": 2.55
+          }
+        }
+      }
+    }
   }
 ]

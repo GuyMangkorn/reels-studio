@@ -3,6 +3,7 @@
 **Storyboard issue/branch:** #31 / `codex/31-catbox-storyboard` (merged in PR #32)
 **Runtime foundation:** issue #33 / `codex/33-catbox-foundation` (current implementation branch)
 **Base:** `main` at `9ba8dd1116c423ec6e3b3d94c425a663b127ff30` (PR #30 merged)
+**Runtime instruction refresh:** issue #33 has been rebased onto `main` `ce2a0b1981572ad3373f4132ed32f5a2242e0752` (PR #40 adds Film-owned physical scale/projection rules; PR #42 removes agent model/reasoning overrides). The storyboard's original 2D choices remain proposals; C06-S02 board/sheet R4 follows Film briefR3 and has an integrated shared orthographic projection with bounded CLI QA in the index. The other 11 scenes have not been audited against the new baseline.
 **Sources:** `scripts/cat-boxes/episode-script.md` R5; `ch01-script.md` R5; `ch02`–`ch06-script.md` R4; `episode-fact-check.md` FC-R4 plus focused C01 R5 recheck; research R1.
 **Editorial status:** Board coverage follows the current reviewed wording, but the episode/chapter files still label the script `draft-for-fact-check` and the user has not approved the script. FC-R4 says C02–C06 ready for storyboard, and its focused FC-R5-C01 says C01 is supported; that difference in status labels is retained as an unresolved metadata mismatch.
 **Timing:** All beats remain estimates. C01 Long has one 82.92s Niwat +5% preview against a 90s budget; it has not been approved and is not synced to subtitles. Other chapters and all Shorts have not been audio-tested.

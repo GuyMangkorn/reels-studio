@@ -1,24 +1,39 @@
 import {useCurrentFrame, useVideoConfig} from 'remotion';
 import {Joint} from './Joint';
-export type AnimalProps = {x?: number; y?: number; scale?: number; flip?: boolean; pose?: 'idle' | 'walk' | 'sit' | 'wave'; color?: string; frame?: number};
+import {CAT_SEATED_BODY_DROP_UNITS} from './geometry';
+export type AnimalProps = {x?: number; y?: number; scale?: number; flip?: boolean; pose?: 'idle' | 'walk' | 'sit' | 'wave'; color?: string; frame?: number; physicalPose?: boolean; physicalSitWeight?: number; physicalWalkWeight?: number};
 /** Shared quadruped skeleton; species supply silhouette, ears, muzzle and tail. */
-export const Animal = ({species, x = 0, y = 0, scale = 1, flip = false, pose = 'idle', color, frame: clock}: AnimalProps & {species: 'dog' | 'cat'}) => {
+export const Animal = ({species, x = 0, y = 0, scale = 1, flip = false, pose = 'idle', color, frame: clock, physicalPose = false, physicalSitWeight, physicalWalkWeight}: AnimalProps & {species: 'dog' | 'cat'}) => {
   const current = useCurrentFrame(); const {fps} = useVideoConfig(); const t = (clock ?? current) / fps; const dog = species === 'dog';
   const fur = color ?? (dog ? '#eab278' : '#c7b5e7'); const p = t * Math.PI * 2 / 0.7;
   const walking = pose === 'walk'; const sitting = pose === 'sit';
+  const sitWeight = physicalPose ? Math.max(0, Math.min(1, physicalSitWeight ?? (sitting ? 1 : 0))) : (sitting ? 1 : 0);
+  const walkWeight = physicalPose ? Math.max(0, Math.min(1, physicalWalkWeight ?? (walking ? 1 : 0))) : (walking ? 1 : 0);
+  const bodyDrop = physicalPose && !dog ? CAT_SEATED_BODY_DROP_UNITS * sitWeight : 0;
+  const bodyBob = -Math.abs(Math.sin(p)) * 4 * walkWeight + Math.sin(t * 3) * 1.3 * (1 - walkWeight) * (1 - sitWeight);
   return <svg aria-label={`${species} cut-out rig`} viewBox="-150 -170 300 210" width={300 * scale} height={210 * scale} style={{position: 'absolute', left: x - 150 * scale, top: y - 200 * scale, overflow: 'visible'}}>
     <g transform={`scale(${flip ? -1 : 1} 1)`}>
       <ellipse cy={30} rx={103} ry={10} fill="#253047" opacity={0.13}/>
-      <g transform={`translate(0 ${walking ? -Math.abs(Math.sin(p)) * 4 : Math.sin(t * 3) * 1.3})`}>
-        <Joint name="tail" x={-75} y={-62} angle={Math.sin(t * (dog ? 12 : 4)) * (dog ? 23 : 12)}>
+      <g transform={`translate(0 ${physicalPose ? bodyBob : walking ? -Math.abs(Math.sin(p)) * 4 : Math.sin(t * 3) * 1.3})`}>
+        <Joint name="tail" x={-75} y={-62 + bodyDrop} angle={Math.sin(t * (dog ? 12 : 4)) * (dog ? 23 : 12)}>
           <path d={dog ? 'M0 0 Q-53-17-42-53' : 'M0 0 Q-75-5-66-62 Q-61-91-80-88'} fill="none" stroke={fur} strokeWidth={dog ? 22 : 17} strokeLinecap="round"/>
         </Joint>
-        {[0, 1, 2, 3].map((i) => <Joint key={i} name={`upperLeg${i}`} x={i < 2 ? -52 : 51} y={-45} angle={sitting ? (i < 2 ? -60 : 0) : walking ? Math.sin(p + (i % 2 ? Math.PI : 0) + (i < 2 ? 0 : Math.PI)) * 25 : pose === 'wave' && i === 3 ? -75 : 0}>
-          <rect x={-10} y={-3} width={20} height={44} rx={10} fill={i % 2 ? fur : dog ? '#c99366' : '#a798c6'}/>
-          <Joint name={`lowerLeg${i}`} y={30} angle={walking ? Math.max(0, Math.sin(p + i * Math.PI)) * 22 : sitting && i < 2 ? 65 : 0}><rect x={-9} y={-3} width={18} height={41} rx={9} fill={fur}/><ellipse cx={7} cy={35} rx={19} ry={9} fill="#fbedd9"/></Joint>
-        </Joint>)}
-        <ellipse cx={-9} cy={-64} rx={78} ry={42} fill={fur}/><ellipse cx={25} cy={-55} rx={27} ry={26} fill="#fff0d9"/>
-        <Joint name="head" x={69} y={-101} angle={Math.sin(t * 2) * 3}>
+        {[0, 1, 2, 3].map((i) => {
+          const walkUpper = Math.sin(p + (i % 2 ? Math.PI : 0) + (i < 2 ? 0 : Math.PI)) * 25;
+          const sitUpper = i < 2 ? -60 : 0;
+          const oldUpperAngle = sitting ? sitUpper : walking ? walkUpper : pose === 'wave' && i === 3 ? -75 : 0;
+          const upperAngle = physicalPose ? ((pose === 'wave' && i === 3 ? -75 : walkUpper * walkWeight) * (1 - sitWeight)) + sitUpper * sitWeight : oldUpperAngle;
+          const walkLower = Math.max(0, Math.sin(p + i * Math.PI)) * 22;
+          const sitLower = i < 2 ? 65 : 0;
+          const oldLowerAngle = walking ? walkLower : sitting && i < 2 ? 65 : 0;
+          const lowerAngle = physicalPose ? walkLower * walkWeight * (1 - sitWeight) + sitLower * sitWeight : oldLowerAngle;
+          return <Joint key={i} name={`upperLeg${i}`} x={i < 2 ? -52 : 51} y={-45} angle={upperAngle}>
+            <rect x={-10} y={-3} width={20} height={44} rx={10} fill={i % 2 ? fur : dog ? '#c99366' : '#a798c6'}/>
+            <Joint name={`lowerLeg${i}`} y={30} angle={lowerAngle}><rect x={-9} y={-3} width={18} height={41} rx={9} fill={fur}/><ellipse cx={7} cy={35} rx={19} ry={9} fill="#fbedd9"/></Joint>
+          </Joint>;
+        })}
+        <ellipse cx={-9} cy={-64 + bodyDrop} rx={78} ry={42} fill={fur}/><ellipse cx={25} cy={-55 + bodyDrop} rx={27} ry={26} fill="#fff0d9"/>
+        <Joint name="head" x={69} y={-101 + bodyDrop} angle={Math.sin(t * 2) * 3}>
           {[-28, 25].map((ex, i) => <Joint key={ex} name={`ear${i}`} x={ex} y={-30} angle={Math.sin(t * 5 + i) * 4 + (t % 3 > 2.8 ? Math.sin(t * 45) * 8 : 0)}>
             <path d={dog ? 'M-14-7 Q-28 44-7 47 Q16 36 15-7Z' : 'M-17 9 L-14-39 Q-8-48 17 3Z'} fill={dog ? '#ac795e' : fur}/>{!dog && <path d="M-9 0 L-9-25 L8-1Z" fill="#edb1b9"/>}
           </Joint>)}

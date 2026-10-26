@@ -1,11 +1,14 @@
 import {test} from 'node:test';
 import assert from 'node:assert/strict';
 import {poseWeightAt, advancePoseChange, mixAngles, poses, resolvePose, samplePose} from '../src/rig/poses';
-import {actorPoseTrack, actorPosition, layoutActor, layoutSceneProp, pictureMoveAt, poseAt, propVisibleAt, subtitleAt, timelineFrames, validateTimeline} from '../src/scenes/timeline';
+import {actorPoseTrack, actorPosition, layoutActor, pictureMoveAt, poseAt, propVisibleAt, subtitleAt, timelineFrames, validateTimeline} from '../src/scenes/timeline';
 import demo from '../scripts/demo.json';
 import catboxBlockout from '../scripts/cat-boxes/blockout.json';
 import amplitude from '../src/amplitude.json';
-import {sofaSeat} from '../src/assets/props/Sofa';
+import {propAnchorOffsetMeters, propSpecs} from '../src/assets/Props';
+import {sofaSeat, PHYSICAL_SOFA_SPEC, physicalSofaSeatAnchorWorld} from '../src/assets/props/Sofa';
+import {PHYSICAL_ACTOR_SPECS} from '../src/rig/physicalScale';
+import {layoutWorldActor, layoutWorldProp, orthographicViewAt, worldPositionAt, worldToOutputPoint} from '../src/scenes/projection';
 import type {Scene, Timeline} from '../src/scenes/types';
 
 test('demo has five scenes and exactly 600 frames at 30fps', () => {
@@ -29,26 +32,70 @@ test('CATBOX blockout maps all 12 storyboard scenes into one 9-minute timeline',
   assert.equal(propVisibleAt(stimuli[0], 18 * 30, 30, 45), true);
   assert.equal(propVisibleAt(stimuli[1], 22 * 30, 30, 45), false);
   assert.equal(propVisibleAt(stimuli[1], 23 * 30, 30, 45), true);
-  assert.equal(catboxBlockout[11].props?.find(prop => prop.type === 'catbox-old')?.layer, 'front');
-  const oldBox = catboxBlockout[11].props?.find(prop => prop.type === 'catbox-old');
+  const finalScene = catboxBlockout[11] as Timeline[number];
+  const projection = finalScene.projection;
+  assert.ok(projection);
+  const oldBox = finalScene.props?.find(prop => prop.type === 'catbox-old');
   assert.ok(oldBox);
-  const portraitBox = layoutSceneProp(oldBox, 1080, 1920);
-  const landscapeBox = layoutSceneProp(oldBox, 1920, 1080);
-  assert.ok(Math.abs(portraitBox.x - 680.4) < 1e-8);
-  assert.ok(Math.abs(portraitBox.y - 1612.8) < 1e-8);
-  assert.equal(portraitBox.size, 297);
-  assert.ok(Math.abs(landscapeBox.x - 1516.8) < 1e-8);
-  assert.equal(landscapeBox.size, 300);
-  const finalOwner = catboxBlockout[11].actors[0];
-  const finalOwnerX = actorPosition(finalOwner, 1349, 1350, true);
-  assert.equal(finalOwnerX, .13);
-  const finalOwnerPortrait = layoutActor(finalOwner, finalOwnerX, 1080, 1920);
-  assert.ok(430 * finalOwnerPortrait.scale >= 480, 'portrait owner lead must meet the storyboard minimum');
-  const finalCat = catboxBlockout[11].actors[1];
-  assert.equal(actorPosition(finalCat, 0, 1350, true), .63);
-  assert.equal(actorPosition(finalCat, 1349, 1350, true), .67);
-  const finalCatPortrait = layoutActor(finalCat, .67, 1080, 1920);
-  assert.ok(210 * finalCatPortrait.scale >= 480, 'portrait cat lead must meet the storyboard minimum');
+  assert.equal(oldBox.space, 'world');
+  assert.deepEqual(oldBox.world, {x: 0, y: 0});
+  assert.deepEqual(propAnchorOffsetMeters('catbox-old', 'floor'), {x: 0, y: 0});
+  const boxSeat = propAnchorOffsetMeters('catbox-old', 'seat');
+  const frontRim = propAnchorOffsetMeters('catbox-old', 'frontRim');
+  assert.ok(Math.abs(boxSeat.y - .09191489361702128) < 1e-12);
+  assert.ok(frontRim.y > boxSeat.y && frontRim.y < .32);
+  assert.equal(PHYSICAL_SOFA_SPEC.widthM, 1.6);
+  assert.equal(PHYSICAL_SOFA_SPEC.seatHeightM, .45);
+  assert.deepEqual(physicalSofaSeatAnchorWorld(), {x: -1.2, y: .45});
+
+  const shortStart = orthographicViewAt(projection, 1080, 1920, 0, 30, true);
+  const shortCut = orthographicViewAt(projection, 1080, 1920, 690, 30, true);
+  const shortMid = orthographicViewAt(projection, 1080, 1920, 870, 30, true);
+  const shortEnd = orthographicViewAt(projection, 1080, 1920, 1049, 30, true);
+  const longView = orthographicViewAt(projection, 1920, 1080, 1062, 30, false);
+  assert.ok(Math.abs((shortStart.view.left + shortStart.view.right) / 2 + .2) < 1e-9);
+  assert.ok(Math.abs((shortCut.view.left + shortCut.view.right) / 2 + .55) < 1e-9);
+  assert.ok(Math.abs((shortMid.view.left + shortMid.view.right) / 2 + .25) < 1e-9);
+  assert.ok(Math.abs((shortEnd.view.left + shortEnd.view.right) / 2) < 1e-9);
+  assert.ok(Math.abs(shortEnd.view.top - .875) < 1e-9);
+  assert.ok(Math.abs(shortEnd.view.bottom + .275) < 1e-9);
+  assert.ok(Math.abs((longView.view.left + longView.view.right) / 2 + .58) < 1e-9);
+  assert.ok(Math.abs((longView.view.bottom + longView.view.top) / 2 - .85) < 1e-9);
+
+  const cat = finalScene.actors[1];
+  const catPositionAt = (frame: number) => worldPositionAt(cat.world!.keys, frame, 30);
+  assert.equal(catPositionAt(0).x, -.55);
+  assert.equal(catPositionAt(689).x, -.55);
+  assert.ok(Math.abs(catPositionAt(870).x + .25) < 1e-8);
+  assert.equal(catPositionAt(1050).x, 0);
+  assert.ok(Math.abs(catPositionAt(1050).y - boxSeat.y) < 1e-12, 'seated cat floor anchor contacts BOX-OLD seat anchor');
+  const catSpec = PHYSICAL_ACTOR_SPECS.cat;
+  assert.ok(catSpec);
+  assert.equal(catSpec.heightM, .45);
+  assert.equal(catSpec.bodyLengthM, .48);
+  assert.deepEqual(catSpec.floorAnchor, {x: 0, y: 30, source: 'Animal floor shadow center / paw baseline'});
+  const seatedHeightM = catSpec.heightM * ((catSpec.solidBounds.bottom - catSpec.solidBounds.top - catSpec.seatedBodyDropUnits!) / (catSpec.solidBounds.bottom - catSpec.solidBounds.top));
+  const visibleCatAboveRimM = boxSeat.y + seatedHeightM - frontRim.y;
+  assert.ok(Math.abs(visibleCatAboveRimM * shortEnd.pixelsPerMeter - 480) < 60, 'visible silhouette is measured after the shared front wall occlusion');
+  assert.ok(visibleCatAboveRimM * shortEnd.pixelsPerMeter >= 480, 'Short crop meets the 25% lead size after box occlusion');
+
+  const boxLayout = layoutWorldProp(oldBox, shortEnd);
+  const boxSpec = propSpecs['catbox-old'];
+  const boxSvgScaleX = boxLayout.width / boxSpec.bounds.width;
+  const boxFloorScreenX = boxLayout.x - boxSpec.pivot.x * boxSvgScaleX + boxSpec.floorAnchor!.x * boxSvgScaleX;
+  const projectedOrigin = worldToOutputPoint({x: 0, y: 0}, shortEnd);
+  assert.ok(Math.abs(boxFloorScreenX - projectedOrigin.x) < 1e-8, 'rendered prop floor anchor matches the projected world origin');
+  const visibleBoxPixels = boxLayout.width * (boxSpec.physicalEstimate!.solidBounds.right - boxSpec.physicalEstimate!.solidBounds.left) / boxSpec.bounds.width;
+  assert.ok(Math.abs(visibleBoxPixels - .38 * shortEnd.pixelsPerMeter) < 1e-8);
+  const owner = finalScene.actors[0];
+  const ownerPoint = worldPositionAt(owner.world!.keys, 0, 30);
+  const ownerLayout = layoutWorldActor(owner, ownerPoint, longView);
+  const ownerSpec = PHYSICAL_ACTOR_SPECS.narrator;
+  assert.ok(ownerSpec);
+  assert.ok(Math.abs(ownerLayout.scale * (ownerSpec.solidBounds.bottom - ownerSpec.solidBounds.top) - 1.7 * longView.pixelsPerMeter) < 1e-8, 'Long owner keeps canonical metre-to-pixel scale');
+  assert.equal(propVisibleAt(finalScene.props!.find(prop => prop.type === 'catbox-card')!, 34 * 30, 30, 45), false);
+  assert.equal(propVisibleAt(finalScene.props!.find(prop => prop.type === 'catbox-card')!, 35 * 30, 30, 45), true);
+  assert.equal(propVisibleAt(finalScene.props!.find(prop => prop.type === 'catbox-folder')!, 23 * 30, 30, 45), false);
 });
 test('picture-stage movement interpolates from frame data and is stable under random seeking', () => {
   const scene: Scene = {
@@ -84,7 +131,7 @@ test('validation checks picture movement, subtitle cue timing and reusable CATBO
     [(data: typeof base) => Object.assign(data[0].props![2], {variant: 'unsupported'}), /props\[2\]\.variant/],
     [(data: typeof base) => Object.assign(data[0].props![0], {layer: 'middle'}), /props\[0\]\.layer/],
     [(data: typeof base) => Object.assign(data[0].props![2], {startSec: 46}), /props\[2\]\.startSec/],
-    [(data: typeof base) => Object.assign(data[11].props![0], {portrait: {x: 1.5}}), /props\[0\]\.portrait\.x/],
+    [(data: typeof base) => Object.assign(data[11].props![0], {portrait: {x: 1.5}}), /world props use canonical dimensions/],
     [(data: typeof base) => Object.assign(data[0].actors[1], {portrait: {scale: 0}}), /actors\[1\]\.portrait\.scale/],
   ] as const;
   for (const [mutate, path] of invalidCases) {

@@ -5,7 +5,9 @@ export type PropName =
   | 'catbox-old' | 'catbox-outline' | 'catbox-stimulus' | 'catbox-folder' | 'catbox-card' | 'catbox-toy' | 'catbox-cube';
 export type StimulusVariant = 'square' | 'kanizsa' | 'outward-control';
 export type PropTone = 'observed' | 'hypothesis' | 'warning' | 'fiction' | 'neutral';
+export type PropPart = 'complete' | 'rear' | 'front';
 export type Point2D = {x: number; y: number};
+export type SolidBounds2D = {left: number; top: number; right: number; bottom: number};
 export type PropSpec = {
   bounds: {width: number; height: number};
   /** SVG-space transform origin and stage-space placement anchor. */
@@ -13,6 +15,10 @@ export type PropSpec = {
   floorAnchor?: Point2D;
   seatAnchor?: Point2D;
   gripAnchor?: Point2D;
+  /** Source-space top of the front occlusion wall after its outline stroke. */
+  frontRimAnchor?: Point2D;
+  /** CATBOX-METER-R1 estimate for this asset's visible solid bounds, excluding SVG padding. */
+  physicalEstimate?: {widthM: number; heightM: number; solidBounds: SolidBounds2D};
 };
 export type PropProps = {
   color?: string;
@@ -21,6 +27,8 @@ export type PropProps = {
   detail?: string;
   variant?: StimulusVariant;
   tone?: PropTone;
+  /** Shared multi-plane construction for props such as BOX-OLD. */
+  part?: PropPart;
 };
 
 const commonSpec = {bounds: {width: 240, height: 240}, pivot: {x: 120, y: 228}} as const;
@@ -31,7 +39,10 @@ export const propSpecs: Record<PropName, PropSpec> = {
   car: {...commonSpec, floorAnchor: {x: 120, y: 220}},
   boat: {...commonSpec, floorAnchor: {x: 120, y: 218}},
   sign: {...commonSpec, floorAnchor: {x: 120, y: 228}},
-  'catbox-old': {...commonSpec, floorAnchor: {x: 120, y: 226}, seatAnchor: {x: 120, y: 172}, gripAnchor: {x: 53, y: 91}},
+  'catbox-old': {...commonSpec, floorAnchor: {x: 120, y: 226}, seatAnchor: {x: 120, y: 172}, gripAnchor: {x: 53, y: 91},
+    frontRimAnchor: {x: 120, y: 149.5},
+    // Exterior solid bounds traced from the authored SVG paths; metre dimensions remain design estimates.
+    physicalEstimate: {widthM: 0.38, heightM: 0.32, solidBounds: {left: 27, top: 41, right: 213, bottom: 229}}},
   'catbox-outline': {...commonSpec, floorAnchor: {x: 120, y: 205}},
   'catbox-stimulus': {...commonSpec, floorAnchor: {x: 120, y: 218}},
   'catbox-folder': {...commonSpec, floorAnchor: {x: 120, y: 220}, gripAnchor: {x: 42, y: 62}},
@@ -39,6 +50,21 @@ export const propSpecs: Record<PropName, PropSpec> = {
   'catbox-toy': {...commonSpec, floorAnchor: {x: 120, y: 201}, gripAnchor: {x: 104, y: 118}},
   'catbox-cube': {...commonSpec, floorAnchor: {x: 120, y: 220}},
 };
+
+/** Convert an image-space anchor into metres relative to the asset's floor contact anchor. */
+export function propAnchorOffsetMeters(type: PropName, anchor: 'floor' | 'seat' | 'grip' | 'frontRim') {
+  const spec = propSpecs[type];
+  const physical = spec.physicalEstimate;
+  const floor = spec.floorAnchor;
+  const point = anchor === 'floor' ? floor : anchor === 'seat' ? spec.seatAnchor : anchor === 'grip' ? spec.gripAnchor : spec.frontRimAnchor;
+  if (!physical || !floor || !point) throw new Error(`${type} has no physical ${anchor} anchor`);
+  const solidWidth = physical.solidBounds.right - physical.solidBounds.left;
+  const solidHeight = physical.solidBounds.bottom - physical.solidBounds.top;
+  return {
+    x: (point.x - floor.x) * physical.widthM / solidWidth,
+    y: (floor.y - point.y) * physical.heightM / solidHeight,
+  };
+}
 
 export const Tree = ({color = '#8bcbb2'}: PropProps) => <><path d="M109 224 L114 77 H128 L135 224Z" fill="#b38777"/><circle cx={119} cy={80} r={64} fill={color}/><circle cx={73} cy={118} r={48} fill={color}/><circle cx={162} cy={121} r={52} fill={color}/><path d="M122 163 V101 M122 144 L91 126 M123 122 L147 103" stroke="#629d8a" opacity={0.5} strokeWidth={7} strokeLinecap="round"/></>;
 export const House = ({color = '#f6bdad', night}: PropProps) => <><rect x={31} y={103} width={177} height={123} rx={7} fill={color}/><path d="M16 108 L120 23 L224 108Z" fill="#a190bc"/><rect x={98} y={151} width={42} height={75} rx={7} fill="#b18880"/><rect x={52} y={131} width={29} height={37} rx={5} fill={night ? '#ffe5a0' : '#d1edf0'}/><rect x={157} y={131} width={29} height={37} rx={5} fill={night ? '#ffe5a0' : '#d1edf0'}/><circle cx={129} cy={189} r={3} fill="#fce5ab"/></>;
@@ -48,13 +74,17 @@ export const Sign = ({color = '#ffd8a0'}: PropProps) => <><rect x={111} y={93} w
 
 const SvgLines = ({text, x, y, size = 14, fill = '#4a3b3b', weight = 600, anchor = 'start'}: {text?: string; x: number; y: number; size?: number; fill?: string; weight?: number; anchor?: 'start' | 'middle' | 'end'}) => <text x={x} y={y} fill={fill} fontFamily="Noto Sans Thai, sans-serif" fontSize={size} fontWeight={weight} textAnchor={anchor}>{(text ?? '').split('\n').map((line, i) => <tspan key={`${i}-${line}`} x={x} dy={i === 0 ? 0 : size + 4}>{line}</tspan>)}</text>;
 
-export const CatboxOld = () => <g stroke="#4a3b3b" strokeWidth={5} strokeLinejoin="round">
-  <path d="M27 75 L120 41 L213 75 V199 L120 229 L27 199Z" fill="#bd8f6c"/>
-  <path d="M27 75 L120 41 L213 75 L120 109Z" fill="#dfb891"/>
-  <path d="M72 91 L120 108 L168 91 V154 L120 174 L72 154Z" fill="#514b5f"/>
-  <path d="M27 152 L120 181 L213 152 V199 L120 229 L27 199Z" fill="#a7795c"/>
-  <path d="M27 152 L120 181 L213 152" fill="none" stroke="#805d4e" strokeWidth={4}/>
-  <path d="M45 190 L120 214 L195 190" fill="none" stroke="#d3a27b" strokeWidth={3} opacity={0.8}/>
+export const CatboxOld = ({part = 'complete'}: PropProps) => <g stroke="#4a3b3b" strokeWidth={5} strokeLinejoin="round">
+  {part !== 'front' && <>
+    <path d="M27 75 L120 41 L213 75 V199 L120 229 L27 199Z" fill="#bd8f6c"/>
+    <path d="M27 75 L120 41 L213 75 L120 109Z" fill="#dfb891"/>
+    <path d="M72 91 L120 108 L168 91 V154 L120 174 L72 154Z" fill="#514b5f"/>
+  </>}
+  {part !== 'rear' && <>
+    <path d="M27 152 L120 181 L213 152 V199 L120 229 L27 199Z" fill="#a7795c"/>
+    <path d="M27 152 L120 181 L213 152" fill="none" stroke="#805d4e" strokeWidth={4}/>
+    <path d="M45 190 L120 214 L195 190" fill="none" stroke="#d3a27b" strokeWidth={3} opacity={0.8}/>
+  </>}
 </g>;
 
 export const CatboxOutline = () => <g stroke="#4a3b3b" strokeWidth={8} strokeLinejoin="round" fill="none">
@@ -130,11 +160,12 @@ export const propRegistry: Record<PropName, (props: PropProps) => ReactNode> = {
   'catbox-old': CatboxOld, 'catbox-outline': CatboxOutline, 'catbox-stimulus': CatboxStimulus,
   'catbox-folder': CatboxFolder, 'catbox-card': CatboxCard, 'catbox-toy': CatboxToy, 'catbox-cube': CatboxCube,
 };
-export const SceneProp = ({type, x, y, size, ...props}: PropProps & {type: PropName; x: number; y: number; size?: number}) => {
+export const SceneProp = ({type, x, y, size, width, height, part, ...props}: PropProps & {type: PropName; x: number; y: number; size?: number; width?: number; height?: number}) => {
   const Asset = propRegistry[type];
   const spec = propSpecs[type];
-  const logicalWidth = size ?? spec.bounds.width;
-  const scale = logicalWidth / spec.bounds.width;
-  const logicalHeight = spec.bounds.height * scale;
-  return <svg viewBox="0 0 240 240" width={logicalWidth} height={logicalHeight} style={{position: 'absolute', left: x - spec.pivot.x * scale, top: y - spec.pivot.y * scale, overflow: 'visible', filter: 'drop-shadow(0 6px 5px rgba(37,48,71,.12))'}}><Asset {...props}/></svg>;
+  const logicalWidth = width ?? size ?? spec.bounds.width;
+  const logicalHeight = height ?? (size === undefined ? spec.bounds.height : spec.bounds.height * size / spec.bounds.width);
+  const scaleX = logicalWidth / spec.bounds.width;
+  const scaleY = logicalHeight / spec.bounds.height;
+  return <svg viewBox="0 0 240 240" preserveAspectRatio="none" width={logicalWidth} height={logicalHeight} style={{position: 'absolute', left: x - spec.pivot.x * scaleX, top: y - spec.pivot.y * scaleY, overflow: 'visible', filter: 'drop-shadow(0 6px 5px rgba(37,48,71,.12))'}}><Asset {...props} part={part}/></svg>;
 };
