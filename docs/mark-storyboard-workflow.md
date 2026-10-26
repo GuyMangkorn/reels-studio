@@ -1,6 +1,6 @@
 # มาร์ค (Mark): storyboard รายฉาก
 
-มาร์ครับ **บทที่เขียนแล้ว + ผล fact-check + visual/technical brief จาก Film** ทำหน้าที่ storyboard artist, shot director และ production planner วาง sequence ตามขอบเขต แล้วส่งให้ dev ทำงานและตรวจทีละฉาก ใช้ `.codex/agents/mark.toml` โมเดล `gpt-6-luna` / reasoning `max` รูปแบบไฟล์อ้างอิง [OpenAI custom agents](https://learn.chatgpt.com/docs/agent-configuration/subagents#custom-agents) สิทธิ์สืบทอดจากแชตที่เรียกใช้
+มาร์ครับ **บทที่เขียนแล้ว + ผล fact-check + visual/technical brief จาก Film** ทำหน้าที่ storyboard artist, shot director และ production planner วาง sequence ตามขอบเขต แล้วส่งให้ dev ทำงานและตรวจทีละฉาก ใช้ `.codex/agents/mark.toml` รูปแบบไฟล์อ้างอิง [OpenAI custom agents](https://learn.chatgpt.com/docs/agent-configuration/subagents#custom-agents) สิทธิ์สืบทอดจากแชตที่เรียกใช้
 
 รับบทจากแพรวและผลตรวจของโบ็ตตาม [editorial-workflow.md](editorial-workflow.md) พร้อม [brief ของ Film](film-visual-brief-workflow.md) ระบุ script/review/brief revision ให้ตรงกันและรักษา beat, clue, claim และ visual decision IDs ใน mapping ไปช็อต หากรับ draft ให้บันทึก factual gaps ที่กระทบภาพ Film เลือกแนวทางภาพ/เทคนิค มาร์คลงรายละเอียดช็อตและบอร์ด ถ้ายังไม่มี brief ให้ส่งส่วนที่ขาดไป Film ผ่านผู้ประสานงาน; rough boards ที่ผู้ใช้ขอโดยตรงทำต่อได้โดยติดป้าย provisional และระบุสิ่งที่ต้อง reconcile
 
