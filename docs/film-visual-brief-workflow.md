@@ -14,6 +14,8 @@
 
 ## ขั้นตอน
 
+ก่อนเลือกหรือแก้ medium/compositing/camera/light strategy อ่าน [dev findings ของ Boss](dev-findings.md) ที่เกี่ยวข้องและทำตามวงจรตรวจซ้ำในเอกสารนั้น ผูก finding IDs กับ visual decision และผลตัดสินใน brief โดยตรวจขอบเขต branch/commit ของหลักฐานกับ checkout เป้าหมาย
+
 1. **อ่านเรื่องก่อนเลือกเทคนิค**: อ่าน AGENTS.md, [editorial workflow](editorial-workflow.md), script/review revision ที่ตรงกัน และ index/ฉากข้างเคียงที่มี รักษา beat/clue/claim IDs, story timing และข้อมูลที่ต้องซ่อน ถ้ารับ draft ให้ระบุ factual gaps ที่กระทบภาพ จบเมื่อรู้ว่าคนดูต้องเห็น/รู้สึก/เข้าใจอะไรในทุกฉากที่รับทำ
 2. **ตรวจ checkout เป้าหมาย**: อ่าน `package.json`, `npm ls --depth=0`, `npx remotion versions`, scene types/validator/renderer และ shared asset owners ตาม [Remotion toolkit](remotion-toolkit.md) ตรวจ license ของ resource ที่จะเสนอ แยก `existing-integrated`, `exists-unintegrated`, `missing`, `unknown` พร้อม code paths และ branch/commit ที่ตรวจ แพ็กเกจ extraneous หรือมีแค่ใน node_modules ไม่ใช่ dependency ที่รับประกันจาก clean install จบเมื่อแต่ละความสามารถสำคัญมีหลักฐานหรือคำถามตรวจต่อที่ชัด
 3. **เลือกแนวทางรายฉาก**: ระบุ visual purpose, mood/value/color key และ medium แยกองค์ประกอบ ใช้ 2D, 3D หรือ hybrid ได้ทั้ง set, character และ prop ตาม [กฎปัจจุบัน](boss-asset-workflow.md#กฎการผลิตล่าสุดของผู้ใช้) เลือก Three.js เมื่อ spatial parallax, การหมุนมองด้านใหม่, occlusion หรือแสงเงาเชิงพื้นที่ช่วย beat จริง; เปรียบเทียบวิธีเรียบง่ายกว่าที่รักษาเจตนาได้ จบเมื่อทุกฉากมีทางเลือกที่แนะนำและเหตุผล ไม่ใช่แค่รายการตัวเลือกให้ Mark ตัดสินใหม่
@@ -62,6 +64,8 @@ Per decision: composition strategy, spaces/anchors/camera, depth/alpha/light,
 clocks/loading/resource ownership, actual paths + implementation status,
 proposed shared interface (design only), dependency order + consumers,
 risk/difficulty, smallest spike + observable acceptance criteria
+Dev findings: relevant finding IDs + last-checked date/commit, scope match,
+effect on each decision and chosen response; none relevant if applicable
 
 ## Handoff to Mark
 Constraints to preserve; choices left to Mark; missing evidence;

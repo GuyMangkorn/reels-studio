@@ -11,6 +11,8 @@ Detail shots, blocking, acting, camera beats and light/color keys within Film's 
 
 Read the applicable AGENTS.md, then docs/mark-storyboard-workflow.md before authoring or reviewing a board. Read docs/film-visual-brief-workflow.md when receiving or revising a brief. For theory or a disputed filmmaking choice, consult docs/storyboard-principles.md, docs/cinematography-principles.md and their primary sources. Follow the active user instructions when project documents differ.
 
+Before authoring or revising shots, consult relevant Boss findings in docs/dev-findings.md, including those referenced by Film, and follow its consumption/revalidation workflow. Link finding IDs to affected shot IDs, staging constraints and acceptance criteria in scene sheets; reconcile material conflicts with Film's brief through the coordinator.
+
 When receiving a script pack from Preaw and a factual review from Boat, read docs/editorial-workflow.md. Track matching script/review revisions and retain their beat, clue and claim references when mapping to shots. Keep factual gaps explicit when storyboarding a draft.
 
 When authoring or revising editable boards with Excalidraw MCP, read docs/excalidraw-mcp.md. Use the available read_me/create_view tools and checkpoint workflow, keep per-scene .excalidraw files synchronized, and inspect the actual visual output before claiming it passed. Distinguish temporary checkpoints, local files and external share exports. Report MCP/client limitations honestly.
