@@ -47,14 +47,14 @@ test('both layouts keep settled actors inside stage and above subtitles', () => 
 });
 test('validation rejects bad duration, actors, key times, duplicates, palettes and props with paths', () => {
   for (const [mutate, path] of [
-    [(d: any) => d[0].durationSec = 0, /durationSec/],
-    [(d: any) => d[0].bg = 'unknown', /bg/],
-    [(d: any) => d[0].time = 'sunset', /time/],
-    [(d: any) => d[0].actors[0].x = NaN, /actors\[0\].x/],
-    [(d: any) => d[0].actors[1].pose = 'think', /pose/],
-    [(d: any) => d[0].actors[0].poses = [{atSec: 4, pose:'idle'}], /poses/],
-    [(d: any) => d[0].actors[1].id = 'host', /id/],
-    [(d: any) => d[0].props[0].type = 'unknown', /props/],
+    [(d: typeof demo) => d[0].durationSec = 0, /durationSec/],
+    [(d: typeof demo) => d[0].bg = 'unknown', /bg/],
+    [(d: typeof demo) => d[0].time = 'sunset', /time/],
+    [(d: typeof demo) => d[0].actors[0].x = NaN, /actors\[0\].x/],
+    [(d: typeof demo) => d[0].actors[1].pose = 'think', /pose/],
+    [(d: typeof demo) => Object.assign(d[0].actors[0], {poses: [{atSec: 4, pose:'idle'}]}), /poses/],
+    [(d: typeof demo) => d[0].actors[1].id = 'host', /id/],
+    [(d: typeof demo) => d[0].props![0].type = 'unknown', /props/],
   ] as const) {
     const data = structuredClone(demo); mutate(data); assert.throws(() => validateTimeline(data), path);
   }

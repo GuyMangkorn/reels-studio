@@ -6,6 +6,8 @@ The same story renders at 30 fps as **Short** (1080×1920) and **Long** (1920×1
 
 Agents should read [AGENTS.md](AGENTS.md) for production rules, asset ownership and the issue/branch/PR workflow.
 
+[docs/remotion-toolkit.md](docs/remotion-toolkit.md) maps the installed animation, text layout, noise, captions, transitions, sound and SVG tools to reusable scene components, with examples and integration checks. Run `npm run lint` for the Remotion, TypeScript and React Hooks checks.
+
 ## From storyboard to video
 
 1. **Storyboard:** start with an editable board such as `sceneA.excalidraw`. Give each panel a shot id, duration, action, camera direction, lighting, narration/subtitle and framing for both aspect ratios.

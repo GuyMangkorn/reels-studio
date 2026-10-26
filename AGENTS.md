@@ -2,6 +2,14 @@
 
 Instructions for coding agents working in this repository. Read before changing a storyboard, scene, reusable asset or rendering code.
 
+## Remotion toolkit: required preflight
+
+Before implementing a scene, overlay, subtitle layout, camera effect, transition or sound cue, read [docs/remotion-toolkit.md](docs/remotion-toolkit.md). It maps installed packages to shot requirements, shows frame-driven recipes, identifies integration points and distinguishes usable APIs from planned scene JSON fields. Use it when reviewing these changes too.
+
+Check `package.json`, `npm ls --depth=0` and `npx remotion versions` in the active checkout before choosing tools. Prefer an installed package or existing shared asset that fits the shot. Keep direct `remotion` / `@remotion/*` versions identical and exact. Installing a package does not register a scene feature: extend types, validation, shared implementation and renderer dispatch together before using new JSON fields.
+
+Run `npm run lint` alongside typecheck and relevant tests before a PR. The toolkit guide contains the package-specific checks for Thai text, deterministic motion, audio timing and sound licenses.
+
 ## Production direction
 
 This is a Thai YouTube studio for Shorts and long-form videos. Development starts from a storyboard. Remotion controls the timeline, narration, subtitles and video export; Three.js provides 3D sets, cameras, depth and lighting. Shots can use 3D, existing 2D cut-out rigs, or a hybrid of both, according to the storyboard.
