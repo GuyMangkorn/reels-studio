@@ -10,7 +10,7 @@ Issue #31 • branch `codex/31-catbox-storyboard` • storyboard revision 1 • 
 - The script files still label the episode/chapter pack `draft-for-fact-check` and script approval is pending. The fact-check concludes C01 supported/ready-for-storyboard and C02–C06 FC-R4 ready for storyboard; this metadata mismatch is preserved, not silently resolved.
 - Research baseline R1. G01 (1970 full methods/sample unknown), G02 (2014 shelter paper available only as abstract/record), and G03 (specific comfort/pressure/motive mechanisms unconfirmed) remain bounded. Boards add no study quantities or unreviewed claims.
 - Timing is estimated. One C01 Long TTS preview: 82.92s vs a 90s budget, unapproved and unsynced; all other Long units and all six Shorts are not audio-tested. The 9:00 Long and 45s Shorts are estimates only.
-- Board handoff is ready for Boss planning, not runtime integration or user approval. No scene JSON, render, animatic or production QA is claimed.
+- Board handoff is ready for development, but the scripts still await user approval. Issue #33 adds a runnable shared-sequence blockout; it is an implementation preview, not a narration-approved or publishable episode.
 
 ## Shared sequence blockout (written before scene packs)
 
@@ -35,6 +35,41 @@ All six chapters unfold in the same fictional living room through the owner’s 
 | 11 | C06 / จัดแฟ้มตามระดับหลักฐาน (`CATBOX-C06-S01`) | ~07:30–08:15 | C06 U01 B01–B04 | นำผลที่สังเกต/วัดกับเหตุเสนอไปวางคนละกอง; แสดงน้ำหนักหลักฐานไม่เท่ากันและไม่สรุปว่าเป็นไปไม่ได้ Entry/exit: see scene sheet; persistent box/sofa axis preserved. | [ch06-sc01.excalidraw](ch06-sc01.excalidraw) · [ch06-sc01.md](ch06-sc01.md) |
 | 12 | C06 / กล่องเดิม คำตอบยังว่าง (`CATBOX-C06-S02`) | ~08:15–09:00 | C06 U02 B01–B04 | ปิดคำถามโดยไม่อ่านใจ: Mochi กลับกล่องเก่าที่ปลูกไว้; owner แก้ป้าย “เพราะ…” เป็น “ครั้งนี้ยังไม่รู้”; ending supports both fade/loop conceptually Entry/exit: see scene sheet; persistent box/sofa axis preserved. | [ch06-sc02.excalidraw](ch06-sc02.excalidraw) · [ch06-sc02.md](ch06-sc02.md) |
 
+## Runtime blockout — issue #33
+
+- Branch: `codex/33-catbox-foundation`, based on `main` at `dd64af9fdea80d8030d8f87c6aeb2caf6f5277d7` (storyboard PR #32 merged).
+- Executable timeline: [`scripts/cat-boxes/blockout.json`](../../scripts/cat-boxes/blockout.json), the current `Scene[]` array. `Root.tsx` supplies this same timeline to `Short` and `Long`; narration is omitted until approved audio exists; ending defaults to `B_loop` for preview.
+- The blockout has 12 runtime entries at 45 seconds each, 30 fps, total 540 seconds / 16,200 frames. Each entry maps to one storyboard scene; each scene sheet retains its four shot-local intervals. This preserves the full Long sequence and lets both aspect ratios review the same actions.
+- C01-S01 stimulus cards use `startSec` cues in board order; C06-S02 uses validated portrait actor/prop layout overrides and foreground box ordering so Mochi's final sit can contact the same image while Long keeps the room-right path. Props remain one complete 2D asset each.
+- The renderer footer uses the required default label `ทำไมล่ะ`. This checkout has no shared channel config or per-scene override path yet; both remain unimplemented.
+- **Short cut mapping remains a production gap.** The boards describe separate 45-second Short S01 edits, while the active runtime contract shares one timeline between `Short` and `Long`. This blockout therefore renders the whole nine-minute sequence in both portrait and landscape as a preview. It is not a publishable Short. Follow-up Short assembly must resolve this contract without silently replacing the storyboard cut map.
+- `subtitleCues` preserve the sheet's slash-separated phrase order. Cue times are estimates evenly divided within each authored shot interval; they are not synced to narration and must be revised after the script and audio are approved.
+
+| Order | Storyboard scene | Runtime scene index | Composition frames | Shot-local frames (`SH01` → `SH04`) |
+|---:|---|---:|---:|---|
+| 1 | CATBOX-C01-S01 | `scene[0]` | `[0,1350)` | `[0,210)` · `[210,540)` · `[540,990)` · `[990,1350)` |
+| 2 | CATBOX-C01-S02 | `scene[1]` | `[1350,2700)` | `[0,360)` · `[360,720)` · `[720,1080)` · `[1080,1350)` |
+| 3 | CATBOX-C02-S01 | `scene[2]` | `[2700,4050)` | `[0,270)` · `[270,690)` · `[690,1050)` · `[1050,1350)` |
+| 4 | CATBOX-C02-S02 | `scene[3]` | `[4050,5400)` | `[0,300)` · `[300,720)` · `[720,1050)` · `[1050,1350)` |
+| 5 | CATBOX-C03-S01 | `scene[4]` | `[5400,6750)` | `[0,240)` · `[240,630)` · `[630,1020)` · `[1020,1350)` |
+| 6 | CATBOX-C03-S02 | `scene[5]` | `[6750,8100)` | `[0,300)` · `[300,690)` · `[690,1050)` · `[1050,1350)` |
+| 7 | CATBOX-C04-S01 | `scene[6]` | `[8100,9450)` | `[0,300)` · `[300,750)` · `[750,1080)` · `[1080,1350)` |
+| 8 | CATBOX-C04-S02 | `scene[7]` | `[9450,10800)` | `[0,300)` · `[300,690)` · `[690,1050)` · `[1050,1350)` |
+| 9 | CATBOX-C05-S01 | `scene[8]` | `[10800,12150)` | `[0,300)` · `[300,690)` · `[690,1050)` · `[1050,1350)` |
+| 10 | CATBOX-C05-S02 | `scene[9]` | `[12150,13500)` | `[0,300)` · `[300,720)` · `[720,1050)` · `[1050,1350)` |
+| 11 | CATBOX-C06-S01 | `scene[10]` | `[13500,14850)` | `[0,300)` · `[300,690)` · `[690,1050)` · `[1050,1350)` |
+| 12 | CATBOX-C06-S02 | `scene[11]` | `[14850,16200)` | `[0,300)` · `[300,690)` · `[690,1050)` · `[1050,1350)` |
+
+## Runtime QA — issue #33
+
+- **One-second coverage:** `Short` and `Long` each rendered 540 JPEG samples at 0, 30, …, 16,170 frames (30 fps), at 50% scale for sheet review. Raw sequence folders: `out/qa/cat-boxes/Short-1hz/` and `out/qa/cat-boxes/Long-1hz/`. The labeled contact sheets are under `out/qa/cat-boxes/contact-sheets/` (60 PNGs total): 17 one-second pages per composition (`Short-1hz-01.png`–`17.png`, `Long-1hz-01.png`–`17.png`), two scene-boundary pages per composition, ten critical-event pages per composition, and one A-fade ending page per composition. The pages label composition, scene/shot, time and frame. They are overview evidence, not proof that every adjacent pair is jump-free.
+- **Critical boundary set:** both formats rendered 45 F-1/F/F+1 samples covering all 11 runtime scene boundaries, the C06-S02 reveal `[15539,15540,15541]`, the ending-shot start `[15899,15900,15901]`, A-fade hold onset `[16109,16110,16111]`, and the B-loop seam `[0,16198,16199]`. Folders: `out/qa/cat-boxes/Short-boundary/` and `out/qa/cat-boxes/Long-boundary/`.
+- **Authored motion/event keys:** both formats also rendered 306 F-1/F/F+1 samples around picture-move keys, actor pose changes and prop visibility cues, plus the scene-cut/reveal/ending frames above. Folders: `out/qa/cat-boxes/Short-critical/` and `out/qa/cat-boxes/Long-critical/`.
+- **Endings:** full-resolution stills show the C06-S02 closing card at A-fade frame 16,110. B-loop frame 16,199 is pixel-identical to frame 0 in both formats; F16,198 differs, so this is an intentional hard cut to the loop seam, not a seamless loop. The portrait and landscape blockout are previews; neither the nine-minute portrait output nor its seam is approved for publication.
+- **Crop/contact:** the final Short uses the validated portrait layouts for Mochi and the same BOX-OLD asset. At 1080×1920, the cat rig is projected at 485 px minimum before stage zoom; the owner at 497 px in C06-S02. Full-resolution stills confirm the owner's face stays clear and Mochi's body meets the box image; exact physical seat contact still needs scene polish.
+- **Checks:** after clean `npm ci` in the managed worktree, `npm run typecheck`, `npm run lint`, and `npm test` all passed (22 tests). Remotion packages remain at 4.0.538; no dependencies changed.
+- **Studio/audio:** Studio seek/playback remains unverified. `npm run start` fails before bundling with `EMFILE: too many open files, watch`, including after clean `npm ci`, with raw QA folders moved aside, `CHOKIDAR_USEPOLLING=true`, `--webpack-poll=1000`, and `--disable-git-source`. Narration is omitted; script approval and audio/subtitle synchronization remain pending. Contact sheets do not establish random-seek/reload parity by themselves.
+
 ## Shared assets and capabilities
 
 | Shared ID | Use / status | First scene and reuse | Dependency / note |
@@ -42,14 +77,14 @@ All six chapters unfold in the same fictional living room through the owner’s 
 | ROOM-2D + SOFA-2D | Existing integrated 2D `room` background / sofa source | C01-S01 → all scenes | `src/assets/Background.tsx`, `src/assets/props/Sofa.tsx`; visual QA both crops. |
 | HUMAN-2D | Existing 2D owner rig | C01-S01 → all scenes | `src/rig/Character.tsx`; check pose and hand gesture coverage. |
 | CAT-2D | Existing 2D Mochi rig | C01-S01 → C06-S02 | `src/rig/Animal.tsx`; check facing, sit/walk/pounce contact and Short lead height. |
-| BOX-OLD | Missing complete 2D box image/plane + floor anchor | C01-S01 → C06-S02 payoff | One image per instance; no split walls/lid; preserve identity and location. |
-| OUTLINE / STIMULI | Missing 2D outline, Kanizsa and outward-control graphics | C01-S01 → C04/C06 | Correct gaps/direction; each stimulus is one complete 2D graphic. |
-| FILE / STUDY-CARDS | Missing reusable folder, evidence cards, CSS/study inlays | C01-S01 → C06-S02 | Cards use Thai-readable fonts and fact-bound text; no unlisted numbers. |
-| TOY-2D | Missing complete 2D toy image | C03-S01 only | SFX/action is fictional; no live prey. |
-| CUBE-2D | Missing complete 2D cloth-wrapped wood-cube study illustration | C05-S02 only | Not an open box or sitting prop; show both rat-scented/no-rat-scent condition wording. |
-| PICTURE-MOVE | Missing/not represented in current Scene type | All shots | Shared deterministic 2D pan/push on whole picture layer; captions remain screen-space. |
+| BOX-OLD | Implemented in issue #33 as complete 2D image + logical floor/seat/grip anchors | C01-S01 → C06-S02 payoff | One image per instance; no split walls/lid. Same library ID; portrait crop places the C06 box under Mochi at the seat anchor. Check contact in render. |
+| OUTLINE / STIMULI | Implemented in issue #33 as 2D outline and square/Kanizsa/outward-control cards | C01-S01 → C04/C06 | Complete SVG image per prop; verify gaps/direction in both formats during scene polish. |
+| FILE / STUDY-CARDS | Implemented in issue #33 as reusable folder and parameterized evidence card | C01-S01 → C06-S02 | Thai labels are drawn from the reviewed scene sheets; current cards are blockout layout, not final typography. |
+| TOY-2D | Implemented in issue #33 as one complete 2D toy image | C03-S01 only | Fictional action; no live prey. Actor path is representative blockout. |
+| CUBE-2D | Implemented in issue #33 as a closed, cloth-wrapped 2D cube image | C05-S02 only | Not an open box or sitting prop; study details remain scoped to the board. |
+| PICTURE-MOVE | Implemented in issue #33 through scene `pictureMove` keys, validation and renderer dispatch | All 48 storyboard shots | Deterministic 2D whole-picture transform; subtitles/footer remain in screen-space. Start/mid/end render checks still required. |
 
-Implementation status grounded in inspected source: `BackgroundName` includes `room` in `src/assets/Background.tsx`; `sofaSeat`/sofa artwork exists in `src/assets/props/Sofa.tsx`; human/cat rigs are in `src/rig/Character.tsx` and `src/rig/Animal.tsx`. Existing `PropName` in `src/assets/Props.tsx` contains tree/house/car/boat/sign but no CATBOX interaction props. `src/scenes/types.ts` has no camera/picture-movement field; `SceneRenderer.tsx` has no 2D picture-stage dispatch. Do not treat the board labels as usable runtime API.
+Implementation status on the issue #33 branch: existing room/sofa and human/cat rigs are in `src/assets/Background.tsx`, `src/assets/props/Sofa.tsx`, and `src/rig/`. `src/assets/Props.tsx` now registers the reusable CATBOX props and contact metadata. `src/scenes/types.ts`, `timeline.ts`, and `SceneRenderer.tsx` integrate and validate `pictureMove` and `subtitleCues`. The timeline is a runnable blockout, not scene polish.
 
 ## Scene entry → exit continuity
 
@@ -75,19 +110,17 @@ Implementation status grounded in inspected source: `BackgroundName` includes `r
 - Camera grammar: small frame-driven 2D picture-stage pan/push across the whole picture, with actor/card action; no 3D camera movement. Mochi remains ≥480 visible pixels in every Short shot where he appears; if the owner is also a foreground lead, he also remains ≥480px. Owner-only explainer crops omit Mochi. Subtitle band stays fixed in screen-space.
 - Reveal grammar: CL01 old box is partially screened by a folder from C01-S01 and uncovered by the C06-S02 walk. CL02 blank “เพราะ…” is planted C01-S02 and resolved only as “ครั้งนี้ยังไม่รู้” in C06-S02. CL03 evidence piles return in C06-S01; CL04 action vs motive returns in C06-S02; CL05 novelty card appears in C05-S02 and is separated from rest.
 
-## Suggested dependency-aware PR order for later production
+## Dependency-aware PR order
 
-These are proposed production PRs, not already opened issues or implementation approvals. The current storyboard PR for issue #31 contains this episode storyboard. The order keeps shared assets and picture movement ahead of dependent scene code:
-
-1. **CATBOX storyboard PR (issue #31, current):** blockout, twelve editable scene boards, scene sheets and index. Production work waits on this review/merge.
-2. **Shared library PR — CATBOX 2D assets + picture-stage movement:** box, outline/stimuli, folder/cards, toy, cube; add registry/validation and deterministic whole-picture movement. This is a prerequisite for every timeline scene; does not introduce a 3D dependency.
-3. **Scene PRs in narrative order:** `CATBOX-C01-S01` → `C01-S02` → `C02-S01` → `C02-S02` → `C03-S01` → `C03-S02` → `C04-S01` → `C04-S02` → `C05-S01` → `C05-S02` → `C06-S01` → `C06-S02`. Each waits for the shared library PR and the prior scene PR so the shared room/file/box states stay continuous. These are proposed scene-scoped PR boundaries; create issues only when implementation is requested.
-4. **Short and Long assembly/QA PR:** wait for all twelve scene PRs, then apply the Short-specific cut map from each sheet, run animatic/audio timing, verify captions, contact sheets, lead height and the fade/loop seam.
+1. **Storyboard PR #32:** merged to `main`; contains the blockout brief, editable boards and scene sheets.
+2. **Shared foundation / runnable blockout issue #33:** current branch `codex/33-catbox-foundation`. It adds shared 2D assets, picture movement and the executable 12-scene placeholder sequence. Dependent scene branches start from refreshed `main` after this PR merges.
+3. **Scene PRs in narrative order:** `CATBOX-C01-S01` → `C01-S02` → `C02-S01` → `C02-S02` → `C03-S01` → `C03-S02` → `C04-S01` → `C04-S02` → `C05-S01` → `C05-S02` → `C06-S01` → `C06-S02`. Each scene PR waits for issue #33 and the previous scene PR, updates the same timeline and index mapping, and checks the adjacent cut.
+4. **Short-specific assembly remains a follow-up:** the current runtime uses the same 12-scene timeline for Short and Long. A later capability/assembly issue must implement the authored Short cut map without changing the storyboard order or silently duplicating timelines.
 
 ## Feasibility and review criteria
 
-- No existing runtime camera JSON feature or CATBOX asset is assumed. Extend type → validator → shared implementation → renderer dispatch together before timeline use.
+- Issue #33 adds the initial `pictureMove` contract and CATBOX asset registry. New runtime fields still require types → validation → shared implementation → renderer dispatch together.
 - Every SH panel has a small 2D picture-stage move and a visible actor/hand/card action; a pre-padded 2D crop is the fallback. Check that crop does not clamp to a static image.
 - Validate the three stimulus drawings and their labels; C01 tally and pairwise comparison must remain separate; C02 CSS is qualitative and scoped; C04 range never reads as comfort/thermostat advice; C05 cube remains distinct from a sitting box; C06 old box matches CL01 and the reason remains blank.
-- Verify Short/Long at start/middle/end and reveal frames after implementation. The Excalidraw board check does not validate animation, timing, contact, runtime support or audio sync.
+- Verify both formats at start/middle/end, shot boundaries and the C06-S02 box reveal. The current portrait output is the full blockout, not the authored 45-second Short edit. Excalidraw checks do not validate animation, timing, contact, runtime support or audio sync.
 

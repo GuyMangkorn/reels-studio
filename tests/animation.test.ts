@@ -1,14 +1,95 @@
 import {test} from 'node:test';
 import assert from 'node:assert/strict';
 import {poseWeightAt, advancePoseChange, mixAngles, poses, resolvePose, samplePose} from '../src/rig/poses';
-import {actorPoseTrack, actorPosition, layoutActor, poseAt, timelineFrames, validateTimeline} from '../src/scenes/timeline';
+import {actorPoseTrack, actorPosition, layoutActor, layoutSceneProp, pictureMoveAt, poseAt, propVisibleAt, subtitleAt, timelineFrames, validateTimeline} from '../src/scenes/timeline';
 import demo from '../scripts/demo.json';
+import catboxBlockout from '../scripts/cat-boxes/blockout.json';
 import amplitude from '../src/amplitude.json';
 import {sofaSeat} from '../src/assets/props/Sofa';
-import type {Timeline} from '../src/scenes/types';
+import type {Scene, Timeline} from '../src/scenes/types';
 
 test('demo has five scenes and exactly 600 frames at 30fps', () => {
   validateTimeline(demo); assert.equal(demo.length, 5); assert.equal(timelineFrames(demo, 30), 600);
+});
+test('CATBOX blockout maps all 12 storyboard scenes into one 9-minute timeline', () => {
+  validateTimeline(catboxBlockout);
+  assert.equal(catboxBlockout.length, 12);
+  assert.equal(timelineFrames(catboxBlockout, 30), 16200);
+  for (const scene of catboxBlockout as Timeline) {
+    assert.equal(scene.durationSec, 45);
+    assert.equal(scene.pictureMove?.length, 5);
+    assert.equal(scene.subtitleCues?.[0]?.atSec, 0);
+    assert.ok(scene.props?.some(prop => prop.type === 'catbox-old'));
+  }
+  assert.equal(catboxBlockout[0].eyebrow?.startsWith('CATBOX-C01-S01'), true);
+  assert.equal(catboxBlockout[11].eyebrow?.startsWith('CATBOX-C06-S02'), true);
+  const stimuli = catboxBlockout[0].props?.filter(prop => prop.type === 'catbox-stimulus') ?? [];
+  assert.equal(stimuli.length, 3);
+  assert.equal(propVisibleAt(stimuli[0], 17 * 30, 30, 45), false);
+  assert.equal(propVisibleAt(stimuli[0], 18 * 30, 30, 45), true);
+  assert.equal(propVisibleAt(stimuli[1], 22 * 30, 30, 45), false);
+  assert.equal(propVisibleAt(stimuli[1], 23 * 30, 30, 45), true);
+  assert.equal(catboxBlockout[11].props?.find(prop => prop.type === 'catbox-old')?.layer, 'front');
+  const oldBox = catboxBlockout[11].props?.find(prop => prop.type === 'catbox-old');
+  assert.ok(oldBox);
+  const portraitBox = layoutSceneProp(oldBox, 1080, 1920);
+  const landscapeBox = layoutSceneProp(oldBox, 1920, 1080);
+  assert.ok(Math.abs(portraitBox.x - 680.4) < 1e-8);
+  assert.ok(Math.abs(portraitBox.y - 1612.8) < 1e-8);
+  assert.equal(portraitBox.size, 297);
+  assert.ok(Math.abs(landscapeBox.x - 1516.8) < 1e-8);
+  assert.equal(landscapeBox.size, 300);
+  const finalOwner = catboxBlockout[11].actors[0];
+  const finalOwnerX = actorPosition(finalOwner, 1349, 1350, true);
+  assert.equal(finalOwnerX, .13);
+  const finalOwnerPortrait = layoutActor(finalOwner, finalOwnerX, 1080, 1920);
+  assert.ok(430 * finalOwnerPortrait.scale >= 480, 'portrait owner lead must meet the storyboard minimum');
+  const finalCat = catboxBlockout[11].actors[1];
+  assert.equal(actorPosition(finalCat, 0, 1350, true), .63);
+  assert.equal(actorPosition(finalCat, 1349, 1350, true), .67);
+  const finalCatPortrait = layoutActor(finalCat, .67, 1080, 1920);
+  assert.ok(210 * finalCatPortrait.scale >= 480, 'portrait cat lead must meet the storyboard minimum');
+});
+test('picture-stage movement interpolates from frame data and is stable under random seeking', () => {
+  const scene: Scene = {
+    durationSec: 10, bg: 'room', actors: [], subtitle: 'test',
+    pictureMove: [{atSec: 0, x: -.01, y: 0, scale: 1.04}, {atSec: 10, x: .01, y: .02, scale: 1.08}],
+  };
+  assert.deepEqual(pictureMoveAt(scene, 0, 30), {x: -.01, y: 0, scale: 1.04});
+  const middle = pictureMoveAt(scene, 150, 30);
+  assert.ok(Math.abs(middle.x) < 1e-12);
+  assert.equal(middle.y, .01);
+  assert.equal(middle.scale, 1.06);
+  const sought = pictureMoveAt(scene, 126, 30);
+  for (const frame of [270, 0, 150, 30, 90]) pictureMoveAt(scene, frame, 30);
+  assert.deepEqual(pictureMoveAt(scene, 126, 30), sought);
+  assert.deepEqual(pictureMoveAt(scene, 330, 30), {x: .01, y: .02, scale: 1.08});
+});
+test('scene-local subtitle cues hold until the next authored cue and work after seeking backward', () => {
+  const scene: Scene = {
+    durationSec: 5, bg: 'room', actors: [], subtitle: 'เปิด',
+    subtitleCues: [{atSec: 0, text: 'เปิด'}, {atSec: 2, text: 'ถัดไป'}],
+  };
+  assert.equal(subtitleAt(scene, 0, 30), 'เปิด');
+  assert.equal(subtitleAt(scene, 59, 30), 'เปิด');
+  assert.equal(subtitleAt(scene, 60, 30), 'ถัดไป');
+  assert.equal(subtitleAt(scene, 15, 30), 'เปิด');
+});
+test('validation checks picture movement, subtitle cue timing and reusable CATBOX prop parameters', () => {
+  const base = structuredClone(catboxBlockout);
+  const invalidCases = [
+    [(data: typeof base) => data[0].pictureMove![1].atSec = 0, /pictureMove\[1\]\.atSec/],
+    [(data: typeof base) => data[0].pictureMove![1].scale = .9, /pictureMove\[1\]\.scale/],
+    [(data: typeof base) => data[0].subtitleCues![0].atSec = .2, /subtitleCues\[0\]\.atSec/],
+    [(data: typeof base) => Object.assign(data[0].props![2], {variant: 'unsupported'}), /props\[2\]\.variant/],
+    [(data: typeof base) => Object.assign(data[0].props![0], {layer: 'middle'}), /props\[0\]\.layer/],
+    [(data: typeof base) => Object.assign(data[0].props![2], {startSec: 46}), /props\[2\]\.startSec/],
+    [(data: typeof base) => Object.assign(data[11].props![0], {portrait: {x: 1.5}}), /props\[0\]\.portrait\.x/],
+    [(data: typeof base) => Object.assign(data[0].actors[1], {portrait: {scale: 0}}), /actors\[1\]\.portrait\.scale/],
+  ] as const;
+  for (const [mutate, path] of invalidCases) {
+    const data = structuredClone(base); mutate(data); assert.throws(() => validateTimeline(data), path);
+  }
 });
 test('pose interpolation reaches both endpoints and is independent of sampling order', () => {
   assert.deepEqual(mixAngles(poses.idle, poses.shock, 0), poses.idle);
@@ -36,6 +117,17 @@ test('offscreen entrances reach their exact destination', () => {
   const actor = {type: 'cat', from: 1.1, to: .7} as const;
   assert.equal(actorPosition(actor, 0, 120), 1.1);
   assert.equal(actorPosition(actor, 119, 120), .7);
+});
+test('portrait actor layout reframes the same scene while Long keeps the authored room position', () => {
+  const actor = {type: 'cat', from: .66, to: .74, portrait: {from: .52, to: .65}, scale: 2.25} as const;
+  assert.equal(actorPosition(actor, 0, 120, true), .52);
+  assert.equal(actorPosition(actor, 119, 120, true), .65);
+  assert.equal(actorPosition(actor, 119, 120, false), .74);
+  const portrait = layoutActor(actor, .65, 1080, 1920);
+  const landscape = layoutActor(actor, .74, 1920, 1080);
+  assert.ok(Math.abs(portrait.x - 1080 * (.06 + .65 * .88)) < 1e-8);
+  assert.ok(Math.abs(portrait.scale - 2.3625) < 1e-10);
+  assert.equal(landscape.x, 1920 * .74);
 });
 test('both layouts keep settled actors inside stage and above subtitles', () => {
   for (const [w, h] of [[1080,1920], [1920,1080]]) for (const scene of demo as Timeline) for (const actor of scene.actors) {

@@ -1,0 +1,1885 @@
+[
+  {
+    "durationSec": 45,
+    "bg": "room",
+    "time": "day",
+    "eyebrow": "CATBOX-C01-S01 · 1/12",
+    "actors": [
+      {
+        "id": "owner",
+        "type": "narrator",
+        "pose": "think",
+        "x": 0.24,
+        "y": 0.84,
+        "scale": 0.68,
+        "expression": "think",
+        "hairStyle": "short",
+        "skinColor": "#FFD9B8",
+        "shirtColor": "#FF8FA3",
+        "pantsColor": "#7ED6B2",
+        "poses": [
+          {
+            "atSec": 7.1,
+            "pose": "point"
+          },
+          {
+            "atSec": 18.1,
+            "pose": "think"
+          },
+          {
+            "atSec": 33.1,
+            "pose": "point"
+          }
+        ]
+      },
+      {
+        "id": "mochi",
+        "type": "cat",
+        "pose": "idle",
+        "from": 0.62,
+        "to": 0.62,
+        "y": 0.84,
+        "scale": 1.1,
+        "color": "#c7b5e7",
+        "poses": []
+      }
+    ],
+    "props": [
+      {
+        "type": "catbox-old",
+        "x": 0.79,
+        "y": 0.86,
+        "size": 300
+      },
+      {
+        "type": "catbox-folder",
+        "x": 0.79,
+        "y": 0.87,
+        "size": 220,
+        "label": "แฟ้ม"
+      },
+      {
+        "type": "catbox-card",
+        "x": 0.48,
+        "y": 0.35,
+        "size": 270,
+        "tone": "fiction",
+        "label": "เรื่องสมมติ",
+        "detail": "กรอบเปล่า\nไม่ใช่ผนังกล่อง\nภาพอธิบายงานวิจัย"
+      },
+      {
+        "type": "catbox-stimulus",
+        "x": 0.37,
+        "y": 0.5,
+        "size": 170,
+        "variant": "square",
+        "label": "สี่เหลี่ยม",
+        "startSec": 18
+      },
+      {
+        "type": "catbox-stimulus",
+        "x": 0.53,
+        "y": 0.5,
+        "size": 170,
+        "variant": "kanizsa",
+        "label": "ช่องเปิดหันเข้า",
+        "startSec": 23
+      },
+      {
+        "type": "catbox-stimulus",
+        "x": 0.69,
+        "y": 0.5,
+        "size": 170,
+        "variant": "outward-control",
+        "label": "ช่องเปิดหันออก",
+        "startSec": 28
+      }
+    ],
+    "subtitle": "กรอบเปล่า แมวก็นั่งเหรอ?",
+    "subtitleCues": [
+      {
+        "atSec": 0.0,
+        "text": "กรอบเปล่า แมวก็นั่งเหรอ?"
+      },
+      {
+        "atSec": 3.5,
+        "text": "ไม่มีผนัง มีแค่กรอบ"
+      },
+      {
+        "atSec": 7.0,
+        "text": "มีงานศึกษาที่บ้านจริง"
+      },
+      {
+        "atSec": 12.5,
+        "text": "จัดรูปกระดาษ แล้วบันทึกการเลือก"
+      },
+      {
+        "atSec": 18.0,
+        "text": "กรอบสี่เหลี่ยม"
+      },
+      {
+        "atSec": 21.733333,
+        "text": "คานิซซา"
+      },
+      {
+        "atSec": 25.5,
+        "text": "แบบควบคุม"
+      },
+      {
+        "atSec": 29.233333,
+        "text": "หันเข้า กับหันออก คนละเงื่อนไข"
+      },
+      {
+        "atSec": 33.0,
+        "text": "บางตัวเข้าไปอยู่จริง"
+      },
+      {
+        "atSec": 39.0,
+        "text": "การนั่งยังอ่านใจไม่ได้"
+      }
+    ],
+    "pictureMove": [
+      {
+        "atSec": 0,
+        "x": -0.008,
+        "y": 0,
+        "scale": 1.035
+      },
+      {
+        "atSec": 7.0,
+        "x": -0.002,
+        "y": -0.002,
+        "scale": 1.045
+      },
+      {
+        "atSec": 18.0,
+        "x": 0.005,
+        "y": 0.002,
+        "scale": 1.055
+      },
+      {
+        "atSec": 33.0,
+        "x": 0.008,
+        "y": 0.001,
+        "scale": 1.065
+      },
+      {
+        "atSec": 44.7,
+        "x": 0.001,
+        "y": -0.001,
+        "scale": 1.07
+      }
+    ]
+  },
+  {
+    "durationSec": 45,
+    "bg": "room",
+    "time": "day",
+    "eyebrow": "CATBOX-C01-S02 · 2/12",
+    "actors": [
+      {
+        "id": "owner",
+        "type": "narrator",
+        "pose": "think",
+        "x": 0.24,
+        "y": 0.84,
+        "scale": 0.68,
+        "expression": "think",
+        "hairStyle": "short",
+        "skinColor": "#FFD9B8",
+        "shirtColor": "#FF8FA3",
+        "pantsColor": "#7ED6B2",
+        "poses": [
+          {
+            "atSec": 12.1,
+            "pose": "point"
+          },
+          {
+            "atSec": 24.1,
+            "pose": "think"
+          },
+          {
+            "atSec": 36.1,
+            "pose": "point"
+          }
+        ]
+      },
+      {
+        "id": "mochi",
+        "type": "cat",
+        "pose": "idle",
+        "from": 0.62,
+        "to": 0.62,
+        "y": 0.84,
+        "scale": 1.1,
+        "color": "#c7b5e7",
+        "poses": []
+      }
+    ],
+    "props": [
+      {
+        "type": "catbox-old",
+        "x": 0.79,
+        "y": 0.86,
+        "size": 300
+      },
+      {
+        "type": "catbox-folder",
+        "x": 0.79,
+        "y": 0.87,
+        "size": 220,
+        "label": "แฟ้ม"
+      },
+      {
+        "type": "catbox-card",
+        "x": 0.48,
+        "y": 0.49,
+        "size": 270,
+        "tone": "observed",
+        "label": "จำนวนคนละหน่วย",
+        "detail": "สมัคร 561 ราย\nทำครบ 30 ตัว / 6 รอบ\nเลือกอย่างน้อยหนึ่งแบบ 9 ตัว\nรวม 16 ครั้ง ≠ 16 ตัว"
+      },
+      {
+        "type": "catbox-outline",
+        "x": 0.65,
+        "y": 0.52,
+        "size": 160
+      }
+    ],
+    "subtitle": "แมวเห็นอะไรอยู่?",
+    "subtitleCues": [
+      {
+        "atSec": 0.0,
+        "text": "แมวเห็นอะไรอยู่?"
+      },
+      {
+        "atSec": 3.0,
+        "text": "สมัคร 561"
+      },
+      {
+        "atSec": 6.0,
+        "text": "ทำครบ 30"
+      },
+      {
+        "atSec": 9.0,
+        "text": "มีการเลือก 9 ตัว"
+      },
+      {
+        "atSec": 12.0,
+        "text": "รวม 16 ครั้ง ไม่ใช่ 16 ตัว"
+      },
+      {
+        "atSec": 14.4,
+        "text": "square 8"
+      },
+      {
+        "atSec": 16.8,
+        "text": "Kanizsa 7"
+      },
+      {
+        "atSec": 19.2,
+        "text": "control 1"
+      },
+      {
+        "atSec": 21.6,
+        "text": "ทุกขาอยู่ในพื้นที่ ≥3 วินาที"
+      },
+      {
+        "atSec": 24.0,
+        "text": "คานิซซา–ควบคุม: พบความต่าง"
+      },
+      {
+        "atSec": 28.0,
+        "text": "สี่เหลี่ยม–ควบคุม: ไม่พบความต่างอย่างมีนัยสำคัญ"
+      },
+      {
+        "atSec": 32.0,
+        "text": "ไม่ใช่หลักฐานว่าคิดว่ามีกล่อง"
+      },
+      {
+        "atSec": 36.0,
+        "text": "ไม่พบความต่าง ≠ พิสูจน์ว่าเท่ากัน"
+      },
+      {
+        "atSec": 40.5,
+        "text": "กลับไปหากล่องจริง"
+      }
+    ],
+    "pictureMove": [
+      {
+        "atSec": 0,
+        "x": -0.008,
+        "y": 0,
+        "scale": 1.035
+      },
+      {
+        "atSec": 12.0,
+        "x": -0.002,
+        "y": -0.002,
+        "scale": 1.045
+      },
+      {
+        "atSec": 24.0,
+        "x": 0.005,
+        "y": 0.002,
+        "scale": 1.055
+      },
+      {
+        "atSec": 36.0,
+        "x": 0.008,
+        "y": 0.001,
+        "scale": 1.065
+      },
+      {
+        "atSec": 44.7,
+        "x": 0.001,
+        "y": -0.001,
+        "scale": 1.07
+      }
+    ]
+  },
+  {
+    "durationSec": 45,
+    "bg": "room",
+    "time": "day",
+    "eyebrow": "CATBOX-C02-S01 · 3/12",
+    "actors": [
+      {
+        "id": "owner",
+        "type": "narrator",
+        "pose": "think",
+        "x": 0.24,
+        "y": 0.84,
+        "scale": 0.68,
+        "expression": "think",
+        "hairStyle": "short",
+        "skinColor": "#FFD9B8",
+        "shirtColor": "#FF8FA3",
+        "pantsColor": "#7ED6B2",
+        "poses": [
+          {
+            "atSec": 9.1,
+            "pose": "point"
+          },
+          {
+            "atSec": 23.1,
+            "pose": "think"
+          },
+          {
+            "atSec": 35.1,
+            "pose": "point"
+          }
+        ]
+      },
+      {
+        "id": "mochi",
+        "type": "cat",
+        "pose": "sit",
+        "from": 0.62,
+        "to": 0.62,
+        "y": 0.84,
+        "scale": 1.1,
+        "color": "#c7b5e7",
+        "poses": []
+      }
+    ],
+    "props": [
+      {
+        "type": "catbox-old",
+        "x": 0.79,
+        "y": 0.86,
+        "size": 300
+      },
+      {
+        "type": "catbox-folder",
+        "x": 0.79,
+        "y": 0.87,
+        "size": 220,
+        "label": "แฟ้ม"
+      },
+      {
+        "type": "catbox-card",
+        "x": 0.48,
+        "y": 0.49,
+        "size": 270,
+        "tone": "observed",
+        "label": "Vinke และคณะ · 2014",
+        "detail": "แมว 19 ตัว\nมีที่ซ่อน 10 · ไม่มี 9\nติดตาม 14 วัน\nวัดคะแนนจากพฤติกรรม"
+      }
+    ],
+    "subtitle": "กล่องช่วยอะไรได้บ้าง?",
+    "subtitleCues": [
+      {
+        "atSec": 0.0,
+        "text": "กล่องช่วยอะไรได้บ้าง?"
+      },
+      {
+        "atSec": 4.5,
+        "text": "มองหน้าที่ของที่หลบ"
+      },
+      {
+        "atSec": 9.0,
+        "text": "2014"
+      },
+      {
+        "atSec": 11.333333,
+        "text": "19 ตัว"
+      },
+      {
+        "atSec": 13.666667,
+        "text": "ติดตาม 14 วัน"
+      },
+      {
+        "atSec": 16.0,
+        "text": "มีที่ซ่อน 10"
+      },
+      {
+        "atSec": 18.333333,
+        "text": "ไม่มี 9"
+      },
+      {
+        "atSec": 20.666667,
+        "text": "วัดคะแนนจากพฤติกรรม"
+      },
+      {
+        "atSec": 23.0,
+        "text": "วันที่ 3–4: กลุ่มมีที่ซ่อน CSS ต่ำกว่า"
+      },
+      {
+        "atSec": 27.0,
+        "text": "วันที่ 14: ค่าเฉลี่ยเท่ากัน"
+      },
+      {
+        "atSec": 31.0,
+        "text": "กลุ่มมีที่ซ่อนถึงระดับนั้นราววันที่ 3"
+      },
+      {
+        "atSec": 35.0,
+        "text": "ช่วยการปรับตัวในบริบทที่ศึกษา"
+      },
+      {
+        "atSec": 40.0,
+        "text": "ยังใช้ยืนยันผลของกรอบเทปไม่ได้"
+      }
+    ],
+    "pictureMove": [
+      {
+        "atSec": 0,
+        "x": -0.008,
+        "y": 0,
+        "scale": 1.035
+      },
+      {
+        "atSec": 9.0,
+        "x": -0.002,
+        "y": -0.002,
+        "scale": 1.045
+      },
+      {
+        "atSec": 23.0,
+        "x": 0.005,
+        "y": 0.002,
+        "scale": 1.055
+      },
+      {
+        "atSec": 35.0,
+        "x": 0.008,
+        "y": 0.001,
+        "scale": 1.065
+      },
+      {
+        "atSec": 44.7,
+        "x": 0.001,
+        "y": -0.001,
+        "scale": 1.07
+      }
+    ]
+  },
+  {
+    "durationSec": 45,
+    "bg": "room",
+    "time": "day",
+    "eyebrow": "CATBOX-C02-S02 · 4/12",
+    "actors": [
+      {
+        "id": "owner",
+        "type": "narrator",
+        "pose": "think",
+        "x": 0.24,
+        "y": 0.84,
+        "scale": 0.68,
+        "expression": "think",
+        "hairStyle": "short",
+        "skinColor": "#FFD9B8",
+        "shirtColor": "#FF8FA3",
+        "pantsColor": "#7ED6B2",
+        "poses": [
+          {
+            "atSec": 10.1,
+            "pose": "point"
+          },
+          {
+            "atSec": 24.1,
+            "pose": "think"
+          },
+          {
+            "atSec": 35.1,
+            "pose": "point"
+          }
+        ]
+      },
+      {
+        "id": "mochi",
+        "type": "cat",
+        "pose": "sit",
+        "from": 0.62,
+        "to": 0.62,
+        "y": 0.84,
+        "scale": 1.1,
+        "color": "#c7b5e7",
+        "poses": []
+      }
+    ],
+    "props": [
+      {
+        "type": "catbox-old",
+        "x": 0.79,
+        "y": 0.86,
+        "size": 300
+      },
+      {
+        "type": "catbox-folder",
+        "x": 0.79,
+        "y": 0.87,
+        "size": 220,
+        "label": "แฟ้ม"
+      },
+      {
+        "type": "catbox-card",
+        "x": 0.48,
+        "y": 0.49,
+        "size": 270,
+        "tone": "observed",
+        "label": "งานปี 2019",
+        "detail": "แมว 23 ตัว\nมีที่ซ่อน 12 · ไม่มี 11\nCSS ลดเร็วกว่า\nผลน้ำหนัก: ไม่พบความต่าง"
+      }
+    ],
+    "subtitle": "คะแนนดีขึ้น แล้วอย่างอื่นล่ะ?",
+    "subtitleCues": [
+      {
+        "atSec": 0.0,
+        "text": "คะแนนดีขึ้น แล้วอย่างอื่นล่ะ?"
+      },
+      {
+        "atSec": 5.0,
+        "text": "ต้องดูสิ่งที่งานวัดจริง"
+      },
+      {
+        "atSec": 10.0,
+        "text": "อีกงาน: 2019"
+      },
+      {
+        "atSec": 12.0,
+        "text": "23 ตัว"
+      },
+      {
+        "atSec": 14.0,
+        "text": "คะแนนกับน้ำหนัก: 12 วันแรก"
+      },
+      {
+        "atSec": 16.0,
+        "text": "มีที่ซ่อน 12"
+      },
+      {
+        "atSec": 18.0,
+        "text": "ไม่มี 11"
+      },
+      {
+        "atSec": 20.0,
+        "text": "CSS ลดเร็วกว่า"
+      },
+      {
+        "atSec": 22.0,
+        "text": "การลดน้ำหนัก: ไม่พบความต่างอย่างมีนัยสำคัญ"
+      },
+      {
+        "atSec": 24.0,
+        "text": "การลดน้ำหนัก"
+      },
+      {
+        "atSec": 26.733333,
+        "text": "การรับเลี้ยง"
+      },
+      {
+        "atSec": 29.5,
+        "text": "ระยะพัก: ไม่พบความต่างอย่างมีนัยสำคัญ"
+      },
+      {
+        "atSec": 32.233333,
+        "text": "ไม่พบความต่าง ≠ พิสูจน์ว่าเป็นศูนย์"
+      },
+      {
+        "atSec": 35.0,
+        "text": "ผลที่วัด"
+      },
+      {
+        "atSec": 38.333333,
+        "text": "สิ่งที่เดา"
+      },
+      {
+        "atSec": 41.666667,
+        "text": "กล่องกับกรอบ ทำหน้าที่ไม่ครบเหมือนกัน"
+      }
+    ],
+    "pictureMove": [
+      {
+        "atSec": 0,
+        "x": -0.008,
+        "y": 0,
+        "scale": 1.035
+      },
+      {
+        "atSec": 10.0,
+        "x": -0.002,
+        "y": -0.002,
+        "scale": 1.045
+      },
+      {
+        "atSec": 24.0,
+        "x": 0.005,
+        "y": 0.002,
+        "scale": 1.055
+      },
+      {
+        "atSec": 35.0,
+        "x": 0.008,
+        "y": 0.001,
+        "scale": 1.065
+      },
+      {
+        "atSec": 44.7,
+        "x": 0.001,
+        "y": -0.001,
+        "scale": 1.07
+      }
+    ]
+  },
+  {
+    "durationSec": 45,
+    "bg": "room",
+    "time": "day",
+    "eyebrow": "CATBOX-C03-S01 · 5/12",
+    "actors": [
+      {
+        "id": "owner",
+        "type": "narrator",
+        "pose": "think",
+        "x": 0.18,
+        "y": 0.84,
+        "scale": 0.55,
+        "expression": "think",
+        "hairStyle": "short",
+        "skinColor": "#FFD9B8",
+        "shirtColor": "#FF8FA3",
+        "pantsColor": "#7ED6B2",
+        "poses": [
+          {
+            "atSec": 8.1,
+            "pose": "point"
+          },
+          {
+            "atSec": 21.1,
+            "pose": "think"
+          },
+          {
+            "atSec": 34.1,
+            "pose": "point"
+          }
+        ]
+      },
+      {
+        "id": "mochi",
+        "type": "cat",
+        "pose": "sit",
+        "from": 0.65,
+        "to": 0.6,
+        "y": 0.84,
+        "scale": 2.25,
+        "color": "#c7b5e7",
+        "poses": [
+          {
+            "atSec": 7.9,
+            "pose": "walk"
+          },
+          {
+            "atSec": 34,
+            "pose": "sit"
+          }
+        ]
+      }
+    ],
+    "props": [
+      {
+        "type": "catbox-old",
+        "x": 0.79,
+        "y": 0.86,
+        "size": 300
+      },
+      {
+        "type": "catbox-folder",
+        "x": 0.79,
+        "y": 0.87,
+        "size": 220,
+        "label": "แฟ้ม"
+      },
+      {
+        "type": "catbox-card",
+        "x": 0.48,
+        "y": 0.49,
+        "size": 270,
+        "tone": "fiction",
+        "label": "เรื่องโมจิ ≠ ข้อมูลทดลอง",
+        "detail": "พุ่งตามของเล่น\nไม่ยืนยันเหตุที่เข้ากล่อง\nฐานล่า: ข้อเดา"
+      },
+      {
+        "type": "catbox-toy",
+        "x": 0.61,
+        "y": 0.84,
+        "size": 145
+      }
+    ],
+    "subtitle": "นั่งพัก หรือรอพุ่ง?",
+    "subtitleCues": [
+      {
+        "atSec": 0.0,
+        "text": "นั่งพัก หรือรอพุ่ง?"
+      },
+      {
+        "atSec": 4.0,
+        "text": "ของเล่นผ่าน… โมจิพุ่ง!"
+      },
+      {
+        "atSec": 8.0,
+        "text": "ย่อง"
+      },
+      {
+        "atSec": 11.233333,
+        "text": "ไล่"
+      },
+      {
+        "atSec": 14.5,
+        "text": "พุ่ง เป็นพฤติกรรมที่พบจริง"
+      },
+      {
+        "atSec": 17.733333,
+        "text": "ยังปิดแฟ้มไม่ได้"
+      },
+      {
+        "atSec": 21.0,
+        "text": "เห็น: พุ่งตามของเล่น"
+      },
+      {
+        "atSec": 25.333333,
+        "text": "เดา: เข้าไปเพื่อซุ่มตั้งแต่แรก"
+      },
+      {
+        "atSec": 29.666667,
+        "text": "ที่ซุ่มเล่น: หนึ่งสมมติฐาน"
+      },
+      {
+        "atSec": 34.0,
+        "text": "กล่องใบเดียวทำอะไรได้บ้าง?"
+      },
+      {
+        "atSec": 39.5,
+        "text": "ภาพตอนพุ่ง ไม่ตอบทุกตอนที่นิ่ง"
+      }
+    ],
+    "pictureMove": [
+      {
+        "atSec": 0,
+        "x": -0.008,
+        "y": 0,
+        "scale": 1.035
+      },
+      {
+        "atSec": 8.0,
+        "x": -0.002,
+        "y": -0.002,
+        "scale": 1.045
+      },
+      {
+        "atSec": 21.0,
+        "x": 0.005,
+        "y": 0.002,
+        "scale": 1.055
+      },
+      {
+        "atSec": 34.0,
+        "x": 0.008,
+        "y": 0.001,
+        "scale": 1.065
+      },
+      {
+        "atSec": 44.7,
+        "x": 0.001,
+        "y": -0.001,
+        "scale": 1.07
+      }
+    ]
+  },
+  {
+    "durationSec": 45,
+    "bg": "room",
+    "time": "day",
+    "eyebrow": "CATBOX-C03-S02 · 6/12",
+    "actors": [
+      {
+        "id": "owner",
+        "type": "narrator",
+        "pose": "think",
+        "x": 0.24,
+        "y": 0.84,
+        "scale": 0.68,
+        "expression": "think",
+        "hairStyle": "short",
+        "skinColor": "#FFD9B8",
+        "shirtColor": "#FF8FA3",
+        "pantsColor": "#7ED6B2",
+        "poses": [
+          {
+            "atSec": 10.1,
+            "pose": "point"
+          },
+          {
+            "atSec": 23.1,
+            "pose": "think"
+          },
+          {
+            "atSec": 35.1,
+            "pose": "point"
+          }
+        ]
+      },
+      {
+        "id": "mochi",
+        "type": "cat",
+        "pose": "sit",
+        "from": 0.62,
+        "to": 0.62,
+        "y": 0.84,
+        "scale": 1.1,
+        "color": "#c7b5e7",
+        "poses": []
+      }
+    ],
+    "props": [
+      {
+        "type": "catbox-old",
+        "x": 0.79,
+        "y": 0.86,
+        "size": 300
+      },
+      {
+        "type": "catbox-folder",
+        "x": 0.79,
+        "y": 0.87,
+        "size": 220,
+        "label": "แฟ้ม"
+      },
+      {
+        "type": "catbox-card",
+        "x": 0.48,
+        "y": 0.49,
+        "size": 270,
+        "tone": "hypothesis",
+        "label": "หน้าที่ทางกายภาพ",
+        "detail": "กล่องบังสายตาได้\nกรอบแบนทำไม่ได้\nที่ซุ่ม: อาจเป็นหนึ่งเหตุ"
+      },
+      {
+        "type": "catbox-outline",
+        "x": 0.6,
+        "y": 0.52,
+        "size": 160
+      }
+    ],
+    "subtitle": "กล่องที่หลบได้ กับกรอบแบน",
+    "subtitleCues": [
+      {
+        "atSec": 0.0,
+        "text": "กล่องที่หลบได้ กับกรอบแบน"
+      },
+      {
+        "atSec": 5.0,
+        "text": "หน้าที่ทางกายภาพต่างกัน"
+      },
+      {
+        "atSec": 10.0,
+        "text": "แนวทางพูดถึงพื้นที่ปลอดภัย"
+      },
+      {
+        "atSec": 16.5,
+        "text": "กล่องที่จัดเป็นที่หลบ เป็นตัวอย่างหนึ่ง"
+      },
+      {
+        "atSec": 23.0,
+        "text": "หน้าที่ที่ทำได้ ≠ เหตุเฉพาะที่พิสูจน์แล้ว"
+      },
+      {
+        "atSec": 29.0,
+        "text": "เรื่องโมจิยังเป็นเรื่องสมมติ"
+      },
+      {
+        "atSec": 35.0,
+        "text": "ที่ซุ่ม: อาจเป็นหนึ่งเหตุ"
+      },
+      {
+        "atSec": 40.0,
+        "text": "แล้วเรื่องความอุ่นล่ะ?"
+      }
+    ],
+    "pictureMove": [
+      {
+        "atSec": 0,
+        "x": -0.008,
+        "y": 0,
+        "scale": 1.035
+      },
+      {
+        "atSec": 10.0,
+        "x": -0.002,
+        "y": -0.002,
+        "scale": 1.045
+      },
+      {
+        "atSec": 23.0,
+        "x": 0.005,
+        "y": 0.002,
+        "scale": 1.055
+      },
+      {
+        "atSec": 35.0,
+        "x": 0.008,
+        "y": 0.001,
+        "scale": 1.065
+      },
+      {
+        "atSec": 44.7,
+        "x": 0.001,
+        "y": -0.001,
+        "scale": 1.07
+      }
+    ]
+  },
+  {
+    "durationSec": 45,
+    "bg": "room",
+    "time": "day",
+    "eyebrow": "CATBOX-C04-S01 · 7/12",
+    "actors": [
+      {
+        "id": "owner",
+        "type": "narrator",
+        "pose": "think",
+        "x": 0.24,
+        "y": 0.84,
+        "scale": 0.68,
+        "expression": "think",
+        "hairStyle": "short",
+        "skinColor": "#FFD9B8",
+        "shirtColor": "#FF8FA3",
+        "pantsColor": "#7ED6B2",
+        "poses": [
+          {
+            "atSec": 10.1,
+            "pose": "point"
+          },
+          {
+            "atSec": 25.1,
+            "pose": "think"
+          },
+          {
+            "atSec": 36.1,
+            "pose": "point"
+          }
+        ]
+      },
+      {
+        "id": "mochi",
+        "type": "cat",
+        "pose": "idle",
+        "from": 0.62,
+        "to": 0.62,
+        "y": 0.84,
+        "scale": 1.1,
+        "color": "#c7b5e7",
+        "poses": []
+      }
+    ],
+    "props": [
+      {
+        "type": "catbox-old",
+        "x": 0.79,
+        "y": 0.86,
+        "size": 300
+      },
+      {
+        "type": "catbox-folder",
+        "x": 0.79,
+        "y": 0.87,
+        "size": 220,
+        "label": "แฟ้ม"
+      },
+      {
+        "type": "catbox-card",
+        "x": 0.48,
+        "y": 0.49,
+        "size": 270,
+        "tone": "warning",
+        "label": "ตรวจคำอ้าง",
+        "detail": "30–38°C\nไม่ใช่ช่วงสบายที่ยืนยันแล้ว\nTNZ เป็นนิยามสรีรวิทยา\nไม่ใช่ค่าตั้งห้อง"
+      }
+    ],
+    "subtitle": "เพราะกล่องอุ่น จบไหม?",
+    "subtitleCues": [
+      {
+        "atSec": 0.0,
+        "text": "เพราะกล่องอุ่น จบไหม?"
+      },
+      {
+        "atSec": 5.0,
+        "text": "30–38°C = ต้องอยู่ถึงสบาย? สรุปแบบนี้ไม่ได้"
+      },
+      {
+        "atSec": 10.0,
+        "text": "TNZ: ช่วงเป็นกลางทางความร้อน"
+      },
+      {
+        "atSec": 15.0,
+        "text": "คงอุณหภูมิกายโดยไม่เพิ่มการสร้างความร้อน"
+      },
+      {
+        "atSec": 20.0,
+        "text": "หรือเพิ่มการระบายความร้อนด้วยการระเหย"
+      },
+      {
+        "atSec": 25.0,
+        "text": "TNZ ไม่ใช่ช่วงที่เลือกอยู่เสมอ"
+      },
+      {
+        "atSec": 30.5,
+        "text": "EFSA 2023 ทักท้วงการตีความช่วงดังกล่าว"
+      },
+      {
+        "atSec": 36.0,
+        "text": "ตัวเลขวัดอะไร?"
+      },
+      {
+        "atSec": 40.5,
+        "text": "ไม่ใช่คำแนะนำให้อุ่นห้องตามนี้"
+      }
+    ],
+    "pictureMove": [
+      {
+        "atSec": 0,
+        "x": -0.008,
+        "y": 0,
+        "scale": 1.035
+      },
+      {
+        "atSec": 10.0,
+        "x": -0.002,
+        "y": -0.002,
+        "scale": 1.045
+      },
+      {
+        "atSec": 25.0,
+        "x": 0.005,
+        "y": 0.002,
+        "scale": 1.055
+      },
+      {
+        "atSec": 36.0,
+        "x": 0.008,
+        "y": 0.001,
+        "scale": 1.065
+      },
+      {
+        "atSec": 44.7,
+        "x": 0.001,
+        "y": -0.001,
+        "scale": 1.07
+      }
+    ]
+  },
+  {
+    "durationSec": 45,
+    "bg": "room",
+    "time": "day",
+    "eyebrow": "CATBOX-C04-S02 · 8/12",
+    "actors": [
+      {
+        "id": "owner",
+        "type": "narrator",
+        "pose": "think",
+        "x": 0.24,
+        "y": 0.84,
+        "scale": 0.68,
+        "expression": "think",
+        "hairStyle": "short",
+        "skinColor": "#FFD9B8",
+        "shirtColor": "#FF8FA3",
+        "pantsColor": "#7ED6B2",
+        "poses": [
+          {
+            "atSec": 10.1,
+            "pose": "point"
+          },
+          {
+            "atSec": 23.1,
+            "pose": "think"
+          },
+          {
+            "atSec": 35.1,
+            "pose": "point"
+          }
+        ]
+      },
+      {
+        "id": "mochi",
+        "type": "cat",
+        "pose": "sit",
+        "from": 0.62,
+        "to": 0.62,
+        "y": 0.84,
+        "scale": 1.1,
+        "color": "#c7b5e7",
+        "poses": []
+      }
+    ],
+    "props": [
+      {
+        "type": "catbox-old",
+        "x": 0.79,
+        "y": 0.86,
+        "size": 300
+      },
+      {
+        "type": "catbox-folder",
+        "x": 0.79,
+        "y": 0.87,
+        "size": 220,
+        "label": "แฟ้ม"
+      },
+      {
+        "type": "catbox-card",
+        "x": 0.48,
+        "y": 0.49,
+        "size": 270,
+        "tone": "hypothesis",
+        "label": "ความอุ่น",
+        "detail": "อาจเป็นหนึ่งปัจจัย\nยังไม่ยืนยันเหตุ\nกรอบ ≠ กล่องจริง"
+      },
+      {
+        "type": "catbox-outline",
+        "x": 0.62,
+        "y": 0.52,
+        "size": 160
+      }
+    ],
+    "subtitle": "แล้วกรอบเปล่าล่ะ?",
+    "subtitleCues": [
+      {
+        "atSec": 0.0,
+        "text": "แล้วกรอบเปล่าล่ะ?"
+      },
+      {
+        "atSec": 5.0,
+        "text": "ยังสรุปไม่ได้ว่าความอุ่นไม่เกี่ยวทุกกรณี"
+      },
+      {
+        "atSec": 10.0,
+        "text": "ความอุ่น: อาจเป็นหนึ่งปัจจัย"
+      },
+      {
+        "atSec": 16.5,
+        "text": "ยังไม่ยืนยันเหตุของกล่องใบนี้"
+      },
+      {
+        "atSec": 23.0,
+        "text": "กรอบไม่มีผนังแบบกล่อง"
+      },
+      {
+        "atSec": 29.0,
+        "text": "ผลของกรอบ ไม่ตัดสินทุกหน้าที่ของกล่อง"
+      },
+      {
+        "atSec": 35.0,
+        "text": "อาจเป็นไปได้ ≠ พิสูจน์แล้ว"
+      },
+      {
+        "atSec": 40.0,
+        "text": "คำตอบที่ฟังดูใช่ จะจริงไหม?"
+      }
+    ],
+    "pictureMove": [
+      {
+        "atSec": 0,
+        "x": -0.008,
+        "y": 0,
+        "scale": 1.035
+      },
+      {
+        "atSec": 10.0,
+        "x": -0.002,
+        "y": -0.002,
+        "scale": 1.045
+      },
+      {
+        "atSec": 23.0,
+        "x": 0.005,
+        "y": 0.002,
+        "scale": 1.055
+      },
+      {
+        "atSec": 35.0,
+        "x": 0.008,
+        "y": 0.001,
+        "scale": 1.065
+      },
+      {
+        "atSec": 44.7,
+        "x": 0.001,
+        "y": -0.001,
+        "scale": 1.07
+      }
+    ]
+  },
+  {
+    "durationSec": 45,
+    "bg": "room",
+    "time": "day",
+    "eyebrow": "CATBOX-C05-S01 · 9/12",
+    "actors": [
+      {
+        "id": "owner",
+        "type": "narrator",
+        "pose": "think",
+        "x": 0.24,
+        "y": 0.84,
+        "scale": 0.68,
+        "expression": "think",
+        "hairStyle": "short",
+        "skinColor": "#FFD9B8",
+        "shirtColor": "#FF8FA3",
+        "pantsColor": "#7ED6B2",
+        "poses": [
+          {
+            "atSec": 10.1,
+            "pose": "point"
+          },
+          {
+            "atSec": 23.1,
+            "pose": "think"
+          },
+          {
+            "atSec": 35.1,
+            "pose": "point"
+          }
+        ]
+      },
+      {
+        "id": "mochi",
+        "type": "cat",
+        "pose": "idle",
+        "from": 0.62,
+        "to": 0.62,
+        "y": 0.84,
+        "scale": 1.1,
+        "color": "#c7b5e7",
+        "poses": []
+      }
+    ],
+    "props": [
+      {
+        "type": "catbox-old",
+        "x": 0.79,
+        "y": 0.86,
+        "size": 300
+      },
+      {
+        "type": "catbox-folder",
+        "x": 0.79,
+        "y": 0.87,
+        "size": 220,
+        "label": "แฟ้ม"
+      },
+      {
+        "type": "catbox-card",
+        "x": 0.48,
+        "y": 0.49,
+        "size": 270,
+        "tone": "hypothesis",
+        "label": "เหมือนอ้อมกอด?",
+        "detail": "สมมติฐาน\nยังไม่ยืนยันกลไก\nไม่มีภาพความทรงจำแม่แมว"
+      }
+    ],
+    "subtitle": "กล่องกอดแมวได้เหรอ?",
+    "subtitleCues": [
+      {
+        "atSec": 0.0,
+        "text": "กล่องกอดแมวได้เหรอ?"
+      },
+      {
+        "atSec": 5.0,
+        "text": "ข้อเสนอ: สัมผัสด้านข้างอาจทำให้สบาย"
+      },
+      {
+        "atSec": 10.0,
+        "text": "มีข้อเสนอจากผู้เชี่ยวชาญ"
+      },
+      {
+        "atSec": 16.5,
+        "text": "ยังไม่พบการแยกทดลองแรงกดในหลักฐานชุดนี้"
+      },
+      {
+        "atSec": 23.0,
+        "text": "จำอ้อมกอดแม่?"
+      },
+      {
+        "atSec": 27.0,
+        "text": "ยังไม่มีหลักฐานยืนยันในชุดนี้"
+      },
+      {
+        "atSec": 31.0,
+        "text": "น่ารัก ไม่เท่ากับยืนยันแล้ว"
+      },
+      {
+        "atSec": 35.0,
+        "text": "คำเปรียบ ≠ ผลทดลอง"
+      },
+      {
+        "atSec": 40.0,
+        "text": "แรงสัมผัสอาจมีส่วน แต่ยังไม่ยืนยัน"
+      }
+    ],
+    "pictureMove": [
+      {
+        "atSec": 0,
+        "x": -0.008,
+        "y": 0,
+        "scale": 1.035
+      },
+      {
+        "atSec": 10.0,
+        "x": -0.002,
+        "y": -0.002,
+        "scale": 1.045
+      },
+      {
+        "atSec": 23.0,
+        "x": 0.005,
+        "y": 0.002,
+        "scale": 1.055
+      },
+      {
+        "atSec": 35.0,
+        "x": 0.008,
+        "y": 0.001,
+        "scale": 1.065
+      },
+      {
+        "atSec": 44.7,
+        "x": 0.001,
+        "y": -0.001,
+        "scale": 1.07
+      }
+    ]
+  },
+  {
+    "durationSec": 45,
+    "bg": "room",
+    "time": "day",
+    "eyebrow": "CATBOX-C05-S02 · 10/12",
+    "actors": [
+      {
+        "id": "owner",
+        "type": "narrator",
+        "pose": "think",
+        "x": 0.18,
+        "y": 0.84,
+        "scale": 0.55,
+        "expression": "think",
+        "hairStyle": "short",
+        "skinColor": "#FFD9B8",
+        "shirtColor": "#FF8FA3",
+        "pantsColor": "#7ED6B2",
+        "poses": [
+          {
+            "atSec": 10.1,
+            "pose": "point"
+          },
+          {
+            "atSec": 24.1,
+            "pose": "think"
+          },
+          {
+            "atSec": 35.1,
+            "pose": "point"
+          }
+        ]
+      },
+      {
+        "id": "mochi",
+        "type": "cat",
+        "pose": "walk",
+        "from": 0.65,
+        "to": 0.59,
+        "y": 0.84,
+        "scale": 2.25,
+        "color": "#c7b5e7",
+        "poses": [
+          {
+            "atSec": 32,
+            "pose": "idle"
+          }
+        ]
+      }
+    ],
+    "props": [
+      {
+        "type": "catbox-old",
+        "x": 0.79,
+        "y": 0.86,
+        "size": 300
+      },
+      {
+        "type": "catbox-folder",
+        "x": 0.79,
+        "y": 0.87,
+        "size": 220,
+        "label": "แฟ้ม"
+      },
+      {
+        "type": "catbox-card",
+        "x": 0.48,
+        "y": 0.49,
+        "size": 270,
+        "tone": "observed",
+        "label": "วัตถุใหม่ · 2014",
+        "detail": "แมวโต 21 ตัว\nไม้ทรงลูกบาศก์หุ้มผ้า\nสำรวจ ≠ เลือกพัก\nไม่ใช่กล่องเปิดให้นั่ง"
+      },
+      {
+        "type": "catbox-cube",
+        "x": 0.62,
+        "y": 0.84,
+        "size": 170
+      }
+    ],
+    "subtitle": "เดินมาดู แล้วเลือกอยู่ไหม?",
+    "subtitleCues": [
+      {
+        "atSec": 0.0,
+        "text": "เดินมาดู แล้วเลือกอยู่ไหม?"
+      },
+      {
+        "atSec": 5.0,
+        "text": "เรื่องสมมติ: โมจิดมแล้วเดินออก"
+      },
+      {
+        "atSec": 10.0,
+        "text": "งานสำรวจวัตถุใหม่"
+      },
+      {
+        "atSec": 13.5,
+        "text": "แมวโต 21 ตัว"
+      },
+      {
+        "atSec": 17.0,
+        "text": "ไม้ทรงลูกบาศก์หุ้มผ้า"
+      },
+      {
+        "atSec": 20.5,
+        "text": "ไม่ใช่กล่องเปิดให้นั่ง"
+      },
+      {
+        "atSec": 24.0,
+        "text": "เหตุที่เดินมาสำรวจ"
+      },
+      {
+        "atSec": 29.5,
+        "text": "ยังไม่เท่ากับเหตุที่เลือกพัก"
+      },
+      {
+        "atSec": 35.0,
+        "text": "คำตอบของคนละคำถาม"
+      },
+      {
+        "atSec": 40.0,
+        "text": "ได้เวลาจัดแฟ้มใหม่"
+      }
+    ],
+    "pictureMove": [
+      {
+        "atSec": 0,
+        "x": -0.008,
+        "y": 0,
+        "scale": 1.035
+      },
+      {
+        "atSec": 10.0,
+        "x": -0.002,
+        "y": -0.002,
+        "scale": 1.045
+      },
+      {
+        "atSec": 24.0,
+        "x": 0.005,
+        "y": 0.002,
+        "scale": 1.055
+      },
+      {
+        "atSec": 35.0,
+        "x": 0.008,
+        "y": 0.001,
+        "scale": 1.065
+      },
+      {
+        "atSec": 44.7,
+        "x": 0.001,
+        "y": -0.001,
+        "scale": 1.07
+      }
+    ]
+  },
+  {
+    "durationSec": 45,
+    "bg": "room",
+    "time": "day",
+    "eyebrow": "CATBOX-C06-S01 · 11/12",
+    "actors": [
+      {
+        "id": "owner",
+        "type": "narrator",
+        "pose": "think",
+        "x": 0.24,
+        "y": 0.84,
+        "scale": 0.68,
+        "expression": "think",
+        "hairStyle": "short",
+        "skinColor": "#FFD9B8",
+        "shirtColor": "#FF8FA3",
+        "pantsColor": "#7ED6B2",
+        "poses": [
+          {
+            "atSec": 10.1,
+            "pose": "point"
+          },
+          {
+            "atSec": 23.1,
+            "pose": "think"
+          },
+          {
+            "atSec": 35.1,
+            "pose": "point"
+          }
+        ]
+      },
+      {
+        "id": "mochi",
+        "type": "cat",
+        "pose": "idle",
+        "from": 0.62,
+        "to": 0.65,
+        "y": 0.84,
+        "scale": 1.1,
+        "color": "#c7b5e7",
+        "poses": [
+          {
+            "atSec": 39,
+            "pose": "walk"
+          }
+        ]
+      }
+    ],
+    "props": [
+      {
+        "type": "catbox-old",
+        "x": 0.79,
+        "y": 0.86,
+        "size": 300
+      },
+      {
+        "type": "catbox-folder",
+        "x": 0.79,
+        "y": 0.87,
+        "size": 220,
+        "label": "แฟ้ม"
+      },
+      {
+        "type": "catbox-card",
+        "x": 0.48,
+        "y": 0.49,
+        "size": 270,
+        "tone": "observed",
+        "label": "ผลที่วัด / สิ่งที่เดา",
+        "detail": "บางตัวเลือกกรอบ\nCSS ในงานที่หลบตามบริบท\nอุ่น · ซุ่ม · สัมผัสข้าง\nข้อเสนอไม่เท่าผลยืนยัน"
+      }
+    ],
+    "subtitle": "เราเลือกคำตอบเร็วไปไหม?",
+    "subtitleCues": [
+      {
+        "atSec": 0.0,
+        "text": "เราเลือกคำตอบเร็วไปไหม?"
+      },
+      {
+        "atSec": 5.0,
+        "text": "หลักฐานชุดนี้บอกอะไรได้บ้าง?"
+      },
+      {
+        "atSec": 10.0,
+        "text": "สังเกต: บางตัวเลือกกรอบ"
+      },
+      {
+        "atSec": 14.333333,
+        "text": "วัด: ผลของที่ซ่อนในบริบทที่ศึกษา"
+      },
+      {
+        "atSec": 18.666667,
+        "text": "ยังใช้แทนเหตุเดียวกันไม่ได้"
+      },
+      {
+        "atSec": 23.0,
+        "text": "เหตุเสนอ: อุ่น"
+      },
+      {
+        "atSec": 25.4,
+        "text": "ซุ่ม"
+      },
+      {
+        "atSec": 27.8,
+        "text": "สัมผัสข้าง"
+      },
+      {
+        "atSec": 30.2,
+        "text": "ความใหม่: สำรวจ ≠ เลือกพัก"
+      },
+      {
+        "atSec": 32.6,
+        "text": "หลักฐานแต่ละข้อไม่เท่ากัน"
+      },
+      {
+        "atSec": 35.0,
+        "text": "ทุกตัวต้องลง"
+      },
+      {
+        "atSec": 38.333333,
+        "text": "จำแม่แน่นอน: ยังสรุปไม่ได้"
+      },
+      {
+        "atSec": 41.666667,
+        "text": "เป็นไปได้ ≠ ยืนยันแล้ว"
+      }
+    ],
+    "pictureMove": [
+      {
+        "atSec": 0,
+        "x": -0.008,
+        "y": 0,
+        "scale": 1.035
+      },
+      {
+        "atSec": 10.0,
+        "x": -0.002,
+        "y": -0.002,
+        "scale": 1.045
+      },
+      {
+        "atSec": 23.0,
+        "x": 0.005,
+        "y": 0.002,
+        "scale": 1.055
+      },
+      {
+        "atSec": 35.0,
+        "x": 0.008,
+        "y": 0.001,
+        "scale": 1.065
+      },
+      {
+        "atSec": 44.7,
+        "x": 0.001,
+        "y": -0.001,
+        "scale": 1.07
+      }
+    ]
+  },
+  {
+    "durationSec": 45,
+    "bg": "room",
+    "time": "day",
+    "eyebrow": "CATBOX-C06-S02 · 12/12",
+    "actors": [
+      {
+        "id": "owner",
+        "type": "narrator",
+        "pose": "think",
+        "x": 0.18,
+        "y": 0.84,
+        "scale": 0.55,
+        "expression": "think",
+        "hairStyle": "short",
+        "skinColor": "#FFD9B8",
+        "shirtColor": "#FF8FA3",
+        "pantsColor": "#7ED6B2",
+        "poses": [
+          {
+            "atSec": 10.1,
+            "pose": "point"
+          },
+          {
+            "atSec": 23.1,
+            "pose": "think"
+          },
+          {
+            "atSec": 35.1,
+            "pose": "point"
+          }
+        ],
+        "portrait": {
+          "from": 0.13,
+          "to": 0.13,
+          "scale": 0.66
+        }
+      },
+      {
+        "id": "mochi",
+        "type": "cat",
+        "pose": "walk",
+        "from": 0.66,
+        "to": 0.74,
+        "y": 0.84,
+        "scale": 2.25,
+        "color": "#c7b5e7",
+        "poses": [
+          {
+            "atSec": 35,
+            "pose": "sit"
+          }
+        ],
+        "portrait": {
+          "from": 0.63,
+          "to": 0.67,
+          "scale": 2.2
+        }
+      }
+    ],
+    "props": [
+      {
+        "type": "catbox-old",
+        "x": 0.79,
+        "y": 0.86,
+        "size": 300,
+        "layer": "front",
+        "portrait": {
+          "x": 0.63,
+          "y": 0.84,
+          "size": 270
+        }
+      },
+      {
+        "type": "catbox-folder",
+        "x": 0.4,
+        "y": 0.87,
+        "size": 220,
+        "label": "แฟ้ม"
+      },
+      {
+        "type": "catbox-card",
+        "x": 0.48,
+        "y": 0.49,
+        "size": 270,
+        "tone": "fiction",
+        "label": "ครั้งนี้ยังไม่รู้",
+        "detail": "เรื่องสมมติ: โมจิเลือกกล่องเก่า\nเห็นการกระทำ\nยังไม่รู้เหตุเฉพาะ"
+      },
+      {
+        "type": "catbox-outline",
+        "x": 0.61,
+        "y": 0.52,
+        "size": 160
+      }
+    ],
+    "subtitle": "นั่งในกรอบ ≠ ยืนยันว่าคิดว่ามีกล่อง",
+    "subtitleCues": [
+      {
+        "atSec": 0.0,
+        "text": "นั่งในกรอบ ≠ ยืนยันว่าคิดว่ามีกล่อง"
+      },
+      {
+        "atSec": 5.0,
+        "text": "กรอบแบนยังไม่ใช่ที่หลบจริง"
+      },
+      {
+        "atSec": 10.0,
+        "text": "เห็นการกระทำ"
+      },
+      {
+        "atSec": 14.333333,
+        "text": "หรือเติมเหตุผล?"
+      },
+      {
+        "atSec": 18.666667,
+        "text": "เรื่องโมจิ ≠ ข้อมูลทดลอง"
+      },
+      {
+        "atSec": 23.0,
+        "text": "เรื่องสมมติ: โมจิเลือกกล่องเก่า"
+      },
+      {
+        "atSec": 29.0,
+        "text": "แล้วใบนี้ เลือกเพราะอะไร?"
+      },
+      {
+        "atSec": 35.0,
+        "text": "กล่องมีหลายหน้าที่"
+      },
+      {
+        "atSec": 40.0,
+        "text": "เหตุที่เลือกใบนี้ ยังไม่รู้"
+      }
+    ],
+    "pictureMove": [
+      {
+        "atSec": 0,
+        "x": -0.008,
+        "y": 0,
+        "scale": 1.035
+      },
+      {
+        "atSec": 10.0,
+        "x": -0.002,
+        "y": -0.002,
+        "scale": 1.045
+      },
+      {
+        "atSec": 23.0,
+        "x": 0.005,
+        "y": 0.002,
+        "scale": 1.055
+      },
+      {
+        "atSec": 35.0,
+        "x": 0.008,
+        "y": 0.001,
+        "scale": 1.065
+      },
+      {
+        "atSec": 44.7,
+        "x": 0.001,
+        "y": -0.001,
+        "scale": 1.07
+      }
+    ]
+  }
+]

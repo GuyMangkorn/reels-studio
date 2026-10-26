@@ -1,10 +1,17 @@
 # ทำไมแมวเห็นกล่องแล้วต้องเข้าไปนั่ง? (CATBOX) — shared sequence blockout
 
-**Issue/branch:** #31 / `codex/31-catbox-storyboard`
+**Storyboard issue/branch:** #31 / `codex/31-catbox-storyboard` (merged in PR #32)
+**Runtime foundation:** issue #33 / `codex/33-catbox-foundation` (current implementation branch)
 **Base:** `main` at `9ba8dd1116c423ec6e3b3d94c425a663b127ff30` (PR #30 merged)
 **Sources:** `scripts/cat-boxes/episode-script.md` R5; `ch01-script.md` R5; `ch02`–`ch06-script.md` R4; `episode-fact-check.md` FC-R4 plus focused C01 R5 recheck; research R1.
 **Editorial status:** Board coverage follows the current reviewed wording, but the episode/chapter files still label the script `draft-for-fact-check` and the user has not approved the script. FC-R4 says C02–C06 ready for storyboard, and its focused FC-R5-C01 says C01 is supported; that difference in status labels is retained as an unresolved metadata mismatch.
 **Timing:** All beats remain estimates. C01 Long has one 82.92s Niwat +5% preview against a 90s budget; it has not been approved and is not synced to subtitles. Other chapters and all Shorts have not been audio-tested.
+
+## Runtime blockout status (issue #33)
+
+The current executable array is `scripts/cat-boxes/blockout.json`: 12 scene records, 45 seconds each, 30 fps, 540 seconds total. `Root.tsx` gives the same `Timeline` to `Short` and `Long`; narration is omitted until an approved voice recording and amplitude envelope exist. `pictureMove` animates the whole background/prop/actor layer, while subtitle and footer layers stay fixed. `subtitleCues` preserve each scene sheet's ordered slash-separated text, spaced evenly inside the authored shot intervals as an unsynced estimate.
+
+The storyboards specify separate 45-second Short S01 edits. The active runtime contract shares one timeline between the two compositions, so the current portrait blockout is the complete nine-minute sequence for layout review, not a publishable Short. The separate Short cuts remain a follow-up assembly/capability task; the boards have not been changed.
 
 ## Sequence before scene detail
 
@@ -54,16 +61,16 @@ Twelve story scenes split at each Long production unit, not at every sentence. T
 | ROOM-2D | `room` environment and sofa | Existing 2D (`src/assets/Background.tsx`, `src/assets/props/Sofa.tsx`) | All scenes; scene continuity must preserve screen axis and box placement. |
 | HUMAN-2D | Human rig | Existing 2D (`src/rig/Character.tsx`) | Owner's reading, pointing, filing and writing. Expression and pose options must be checked by Boss before use. |
 | CAT-2D | Cat rig | Existing 2D (`src/rig/Animal.tsx`) | Mochi's sit, turn, walk and play; contact, facing, ground shadow and Short scale require visual QA. |
-| BOX-OLD | One complete 2D box image/plane, with floor contact anchor | Missing; no CATBOX box registry found | C01 plant through C06 payoff; one reusable asset, no separated lid/walls/parts. |
-| OUTLINE-2D | Flat square/tape and the exact three paper-stimulus pictures | Missing | C01–C04 and C06; keep Kanizsa inducers/gaps and outward-facing control unmistakable. Each stimulus image remains a complete 2D graphic. |
-| FILE-2D | Evidence folder, notes, two evidence piles, blank “เพราะ…” label | Missing | All scenes, particularly C01 / C02 / C06. Prefer reusable screen-space cards over new scene code. |
-| TOY-2D | Single complete toy image | Missing | C03 fictional play only; movement can be hand-keyframed across the floor. |
-| CUBE-2D | Complete wood-cube-with-cloth image for the novelty study illustration | Missing | C05 only; never make it resemble an open sitting box. |
-| STUDY-CARDS | 2D research inlays, legible type, exact labels with bounded claims | Missing as CATBOX assets; existing subtitle is only runtime text | C01–C06; design cards as static authored visuals, not new factual data. |
-| PICTURE-MOVE | Frame-driven 2D picture-stage pan/push for background+actors+props | Scene schema exposes no camera field in `src/scenes/types.ts`; no shared effect was found in `src/scenes/SceneRenderer.tsx` | All shots. Requires a shared 2D capability before scene timeline integration; prototype the crop and movement in blockout. |
+| BOX-OLD | One complete 2D box image/plane, with floor, seat and grip anchors | Implemented in `src/assets/Props.tsx` on issue #33 branch | C01 plant through C06 payoff; one image per instance, no separated lid/walls. The C06 Short crop has a layout-only placement override. |
+| OUTLINE-2D | Flat square and paper-stimulus graphics | Implemented as shared 2D props on issue #33 branch | C01–C04/C06; verify Kanizsa gaps and outward-facing control in both formats during scene polish. |
+| FILE-2D | Evidence folder and reusable study cards | Implemented as shared 2D props on issue #33 branch | Blockout uses short Thai labels/detail lines; typography/layout is not final. |
+| TOY-2D | Single complete 2D toy image | Implemented in `src/assets/Props.tsx` on issue #33 branch | C03-S01; actor movement is representative blockout, not final hand-keyframing. |
+| CUBE-2D | Complete wood cube with draped cloth | Implemented in `src/assets/Props.tsx` on issue #33 branch | C05-S02; closed cube, not an open sitting box. |
+| STUDY-CARDS | 2D inlay cards with label/detail and evidence tone | Implemented in `src/assets/Props.tsx` on issue #33 branch | C01–C06; facts remain bounded to the sheets; layouts await scene polish. |
+| PICTURE-MOVE | Frame-driven 2D pan/push across the picture stage | Implemented through `pictureMove` in types, validation and `SceneRenderer.tsx` | All 48 board shots map to four authored key segments per runtime scene; render QA still needed. |
 
-No runtime scene JSON is included. Every request for animation, camera, labels and cards is a visual requirement until Boss confirms the registry, type, validation and renderer support on the implementation branch.
+The runtime JSON and required types/validation/renderer dispatch are now present on issue #33. The blockout's placeholder staging still requires Short/Long visual QA and scene-scoped polish before production use.
 
 ## Timing convention for the boards
 
-The scripts use estimated Long unit-local seconds and 30 fps. The board sheets convert each stated beat edge to integer frames (`seconds × 30`) and use half-open ranges. Those are bookkeeping translations of script estimates, not audio-tested durations. Long unit offsets are estimated at the script's two 45-second units per chapter; the episode's 9:00 target is not locked. Each Short remains an independently edited 45-second estimate with its own S01 beat ranges; no Long narration is claimed to fit a Short.
+The scripts use estimated Long unit-local seconds and 30 fps. The board sheets convert each stated beat edge to integer frames (`seconds × 30`) and use half-open ranges. Those are bookkeeping translations of script estimates, not audio-tested durations. The blockout keeps 12 × 45-second scene estimates and maps scene/shot IDs to global frames in `index.md`; the nine-minute target remains unlocked. Each Short remains a separate estimated 45-second edit in the scene sheets; no Long narration is claimed to fit a Short.
