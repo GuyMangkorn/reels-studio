@@ -225,3 +225,33 @@ These SHA-256 fingerprints identify the seven-file R4 snapshot reviewed above. A
 | ch06-script.md | a71357fdb2b7a9930538971ac5b40d9300e03d81db5eb5befed228ab3bbea7d5 |
 
 Change log FC-R4: rechecked the R3 year, enrollment-unit and Celsius findings against SRC001/002/005/006/008 and related chapter surfaces. The six VO year findings, enrollment unit, Celsius endpoints and episode-handoff year clarification are supported; R4 is factually ready for storyboard handoff, with user script approval separate.
+
+## Focused recheck C01 R5 — full chapter pass
+
+- Exact scope: `scripts/cat-boxes/ch01-script.md` R5, research R1. Re-read all 12 VO blocks (Long U01/U02 and Short S01), including hooks, implied claims, numbers/units, method details, uncertainty, and the effect of joined sentences. Subtitles, on-screen labels, visual directions and claim mapping remain as reviewed at R4; I checked the current C01 surfaces for impact. This recheck covers **C01 only**. C02–C06 retain their R4 findings.
+- Result: **supported**. R5’s connective/list wording (“และ,” “ส่วน,” “แล้วเทียบรูปสามแบบ”) and added “ยังไม่รู้ว่า” do not change the study date, count units, comparisons, causal scope or uncertainty. The Short’s “สามแบบ” describes the three stimulus types across the experiment; it does not assert that all three appeared simultaneously. SRC001 describes paired stimuli across six daily trials.
+
+| Location | Assertion / implication reviewed | Verdict | Evidence + locator / reason |
+| --- | --- | --- | --- |
+| C01-U01-B01 | Question about a cat sitting in an empty outline; the owner’s clip and reaction are framed as fiction. | not-factual for the fictional event | The scene directions require a “เรื่องสมมติ” label from the start. The question does not assert that all cats do this. |
+| C01-U01-B02 | Someone studied a similar question; the study was published in 2021; owners placed paper stimuli at home and recorded the cat’s choice. | supported | SRC001 p. 1 gives online publication on 30 April 2021. §§2.1–2.2 describe remote/home study activity and pet cats in owners’ homes; §§2.4.2–2.4.3 describe owners reporting and recording the trials. Data collection was June–August 2020 (§2.1), so the “and” does not imply fieldwork in 2021 or add a causal link. |
+| C01-U01-B03 | Square outline, inward-facing Kanizsa inducers, outward-facing control, and an incomplete contour that may suggest a square. | supported | SRC001 §2.3.1 and Figs. 2–3: the three stimuli and inward/outward directions are accurately distinguished. |
+| C01-U01-B04 | Some cats choose an outline; a clip does not generalize to every cat or reveal what a cat thinks. | supported with qualification | SRC001 Abstract and §3.1 report nine cats selecting at least one stimulus out of the 30 completers; the study measured choices, not belief in an invisible box (§4). |
+| C01-U02-B01 | 561 preliminary-survey enrollments; 30 cats completed all six trials; nine cats selected at least once; not all applicants completed the study. | supported; unit remains scoped to enrollments | SRC001 §2.2 and §3.1: the preliminary survey received 561 enrollments; 30 completed Trial 6; nine of those selected at least once. “ผู้สมัคร…ราย” refers to the survey enrollment count here, not 561 completers or a verified count of unique owners. |
+| C01-U02-B02 | 16 selection occasions, split 8 square / 7 Kanizsa / 1 control; all limbs inside the contour for at least 3 seconds. | supported | SRC001 §3.1 gives the total and breakdown; §2.4.4 defines a selection as sitting or standing within the contour with all limbs for at least three seconds. R5’s “ส่วนแบบเทียบ” and “นี่นับเป็นครั้ง” preserve the comparison and event-count unit. The visual note still bars treating this tally as the pairwise test. |
+| C01-U02-B03 | A detectable Kanizsa–control difference and no detectable square–control difference; possible contour perception is not proof of human-like perception or belief in an invisible wall. | supported with qualification | SRC001 Table 3 and §4 support the pairwise wording and cautious interpretation. “ส่วน” marks a separate comparison; the following caveat preserves that non-significance is not equality and behavior does not prove belief. |
+| C01-U02-B04 | No detected difference does not prove equality; the owner leaves the cause unresolved. | supported; fictional owner action is not-factual | SRC001 Table 3 reports a non-significant square–control result, not equivalence. The owner’s blank “เพราะ” note is a fictional framing device and does not supply a causal explanation. |
+| C01-S01-B01 | Some cats do it; that does not mean every cat sees an invisible box. | supported with qualification | SRC001 §§3.1, 4 support the observed selections while limiting claims about every cat and subjective belief. |
+| C01-S01-B02 | 2021 publication; three stimulus types; 30 cats completed six trials; nine selected at least once. | supported | SRC001 p. 1, §§2.3.1, 2.4.1–2.4.3 and §3.1. “เทียบรูปสามแบบ” summarizes the stimulus types over the task; the following six-trial sentence and the study’s paired presentation do not imply a single simultaneous three-way trial. Counts remain separate by sentence. |
+| C01-S01-B03 | Kanizsa–control result contrasted with square–control; failure to detect a difference is not proof the conditions are the same. | supported with qualification | SRC001 Table 3 and §4 support the comparison and the retained non-equivalence caveat. |
+| C01-S01-B04 | The result may indicate contour perception, but the study does not establish what the cat thinks; some cats selected an outline, and the reason remains unknown. | supported with qualification | SRC001 Abstract, §§3.1 and 4. The added “ยังไม่รู้ว่า” reinforces the study’s limit; it does not overstate what the behavior proves. |
+
+R1 limits for C01 remain: SRC001 was inspected from the available full-text PDF copy, not an independently corroborating copy; the study had substantial attrition and only 30 cats completed all trials. Its findings do not establish a population rate or the cats’ subjective belief. C01 R5 fact-check status: **ready-for-storyboard, supported**. This status covers C01 only and is not user approval or audio-duration verification; C02–C06 remain at their R4 results.
+
+### Fingerprint of the C01 R5 file reviewed
+
+| File | SHA-256 |
+| --- | --- |
+| ch01-script.md | 67af7bc25344963f4c7dba5a623e9ee72afaf056427784ac2cb5b60e925c08a4 |
+
+Change log FC-R5-C01: reviewed all 12 C01 R5 Long/Short VO blocks, including changed connectives/list wording and joined phrases. No factual correction is required. This pass covers C01 only; C02–C06 retain their R4 fact-check results.
