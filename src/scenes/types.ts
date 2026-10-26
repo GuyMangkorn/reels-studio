@@ -1,3 +1,4 @@
+import type {SceneVisual} from '../assets/visuals/types';
 import type {BackgroundName, TimeOfDay} from '../assets/Background';
 import type {PropName, PropTone, StimulusVariant} from '../assets/Props';
 import type {CharacterProps} from '../rig/Character';
@@ -14,7 +15,7 @@ export type WorldPositionKey = {atSec: number; x: number; y: number};
 export type WorldActorLayout = {keys: WorldPositionKey[]};
 export type WorldPropLayout = {x: number; y: number};
 export type SubtitleCue = {atSec: number; text: string};
-export type ScenePropSpec = {type: PropName; x?: number; y?: number; size?: number; color?: string; label?: string; detail?: string; variant?: StimulusVariant; tone?: PropTone; layer?: 'back' | 'front'; startSec?: number; endSec?: number; portrait?: {x?: number; y?: number; size?: number}; space?: 'screen' | 'world'; world?: WorldPropLayout};
+export type ScenePropSpec = {type: PropName; x?: number; y?: number; size?: number; color?: string; label?: string; detail?: string; variant?: StimulusVariant; tone?: PropTone; layer?: 'back' | 'front'; startSec?: number; endSec?: number; portrait?: {x?: number; y?: number; size?: number}; space?: 'screen' | 'world'; world?: WorldPropLayout; worldMotion?: WorldPositionKey[]};
 export type ActorPortraitLayout = {from?: number; to?: number; scale?: number};
 export type Actor = {
   id?: string; type: 'narrator' | 'cat' | 'dog'; pose?: PoseName;
@@ -30,6 +31,7 @@ export type Actor = {
   seat?: 'sofa';
 };
 export type Scene = {
+  visuals?: SceneVisual[];
   durationSec: number; bg: BackgroundName; time?: TimeOfDay; actors: Actor[]; subtitle: string;
   title?: string; eyebrow?: string;
   /** Frame-sampled movement for the complete background + props + actors stage. Values are normalized stage offsets and scale. */

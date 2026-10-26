@@ -71,6 +71,24 @@ export function worldPositionAt(keys: readonly WorldPositionKey[], frame: number
   return {x: last.x, y: last.y, direction: Math.sign(last.x - (keys.at(-2)?.x ?? last.x))};
 }
 
+/** Resolve a reusable world's prop anchor from scene-local motion keys, or its static anchor. */
+export function worldPropPositionAt(prop: ScenePropSpec, frame: number, fps: number) {
+  const keys = prop.worldMotion;
+  if (!keys?.length) return prop.world!;
+  const seconds = Math.max(0, frame / fps);
+  let from = keys[0];
+  for (let i = 1; i < keys.length; i++) {
+    const to = keys[i];
+    if (seconds <= to.atSec) {
+      const progress = smoothstep((seconds - from.atSec) / (to.atSec - from.atSec));
+      return {x: from.x + (to.x - from.x) * progress, y: from.y + (to.y - from.y) * progress};
+    }
+    from = to;
+  }
+  const last = keys.at(-1)!;
+  return {x: last.x, y: last.y};
+}
+
 /** Project a world floor anchor while preserving the rig's canonical proportions. */
 export function layoutWorldActor(actor: Actor, point: {x: number; y: number; direction?: number}, view: ProjectedView) {
   if (!actor.world) throw new Error(`Actor ${actor.id ?? actor.type} is missing a world path`);

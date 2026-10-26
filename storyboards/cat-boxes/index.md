@@ -6,17 +6,78 @@ Issue #31 • branch `codex/31-catbox-storyboard` • storyboard revision 1 • 
 
 ## Source and readiness
 
+The Issue #31 / codex/31-catbox-storyboard header above records the original storyboard source. Current continuation context: branch codex/33-catbox-foundation, latest known origin/main 5095d25 (PR #46 merged), PR #38 open.
+
 - Episode script R5; C01 script R5 with focused Boat FC-R5-C01; C02–C06 script R4 with Boat FC-R4. The fact-check scopes are matched. C01 FC-R5 covers all C01 R5 Long/Short VO blocks; C02–C06 retain R4 findings.
 - The script files still label the episode/chapter pack `draft-for-fact-check` and script approval is pending. The fact-check concludes C01 supported/ready-for-storyboard and C02–C06 FC-R4 ready for storyboard; this metadata mismatch is preserved, not silently resolved.
 - Research baseline R1. G01 (1970 full methods/sample unknown), G02 (2014 shelter paper available only as abstract/record), and G03 (specific comfort/pressure/motive mechanisms unconfirmed) remain bounded. Boards add no study quantities or unreviewed claims.
 - Timing is estimated. One C01 Long TTS preview: 82.92s vs a 90s budget, unapproved and unsynced; all other Long units and all six Shorts are not audio-tested. The 9:00 Long and 45s Shorts are estimates only.
 - Board handoff is ready for development, but the scripts still await user approval. Issue #33 adds a runnable shared-sequence blockout; it is an implementation preview, not a narration-approved or publishable episode. C06-S02 has Film scale/projection brief [VB-C06-S02-R3](ch06-sc02-visual-brief.md) and Mark's board/sheet R4. The editable board parses with unique element IDs; MCP preview calls succeeded, but a visual export inspection remains unverified.
 
+## Active Shorts-first release set
+
+This is the active scope on codex/33-catbox-foundation with latest known origin/main 5095d25 (PR #46 merged). PR #38 remains open and is the update target.
+
+This pass covers six independent Short S01 cuts, one per chapter. Each is estimated at 45 seconds / 1,350 frames at 30 fps, portrait 1080×1920. Script approval remains pending; VO and subtitle timing are untested. Film brief: [VB-CATBOX-R4](visual-brief.md). New IDs use the SHORT namespace; original Long IDs, boards, sheets, and the 540-second source timeline remain intact.
+
+| Chapter | New Short shot | Exact source beat | Short frames | Existing Long source shots | Relationship |
+|---:|---|---|---:|---|---|
+| 1 | CATBOX-C01-SHORT-S01-SH01 | CATBOX-C01-S01-B01 | [0,210) | CATBOX-C01-S01-SH01/SH02 | Retimed; Long source retained |
+| 1 | CATBOX-C01-SHORT-S01-SH02 | CATBOX-C01-S01-B02 | [210,600) | CATBOX-C01-S01-SH02/SH03; CATBOX-C01-S02-SH01 | Retimed; Long source retained |
+| 1 | CATBOX-C01-SHORT-S01-SH03 | CATBOX-C01-S01-B03 | [600,1020) | CATBOX-C01-S01-SH03; CATBOX-C01-S02-SH03 | Retimed; Long source retained |
+| 1 | CATBOX-C01-SHORT-S01-SH04 | CATBOX-C01-S01-B04 | [1020,1350) | CATBOX-C01-S02-SH04 | Retimed; Long source retained |
+| 2 | CATBOX-C02-SHORT-S01-SH01 | CATBOX-C02-S01-B01 | [0,240) | CATBOX-C02-S01-SH01 | Retimed; Long source retained |
+| 2 | CATBOX-C02-SHORT-S01-SH02 | CATBOX-C02-S01-B02 | [240,660) | CATBOX-C02-S01-SH02/SH03 | Retimed; Long source retained |
+| 2 | CATBOX-C02-SHORT-S01-SH03 | CATBOX-C02-S01-B03 | [660,1020) | CATBOX-C02-S02-SH02/SH03 | Retimed; Long source retained |
+| 2 | CATBOX-C02-SHORT-S01-SH04 | CATBOX-C02-S01-B04 | [1020,1350) | CATBOX-C02-S02-SH04 | Retimed; Long source retained |
+| 3 | CATBOX-C03-SHORT-S01-SH01 | CATBOX-C03-S01-B01 | [0,240) | CATBOX-C03-S01-SH01 | Retimed; Long source retained |
+| 3 | CATBOX-C03-SHORT-S01-SH02 | CATBOX-C03-S01-B02 | [240,630) | CATBOX-C03-S01-SH02/SH03 | Retimed; Long source retained |
+| 3 | CATBOX-C03-SHORT-S01-SH03 | CATBOX-C03-S01-B03 | [630,990) | CATBOX-C03-S02-SH01/SH03 | Retimed; Long source retained |
+| 3 | CATBOX-C03-SHORT-S01-SH04 | CATBOX-C03-S01-B04 | [990,1350) | CATBOX-C03-S02-SH04 | Retimed; Long source retained |
+| 4 | CATBOX-C04-SHORT-S01-SH01 | CATBOX-C04-S01-B01 | [0,270) | CATBOX-C04-S01-SH01 | Retimed; Long source retained |
+| 4 | CATBOX-C04-SHORT-S01-SH02 | CATBOX-C04-S01-B02 | [270,690) | CATBOX-C04-S01-SH02/SH04 | Retimed; Long source retained |
+| 4 | CATBOX-C04-SHORT-S01-SH03 | CATBOX-C04-S01-B03 | [690,1020) | CATBOX-C04-S01-SH03; CATBOX-C04-S02-SH02 | Retimed; Long source retained |
+| 4 | CATBOX-C04-SHORT-S01-SH04 | CATBOX-C04-S01-B04 | [1020,1350) | CATBOX-C04-S01-SH04 | Retimed; Long source retained |
+| 5 | CATBOX-C05-SHORT-S01-SH01 | CATBOX-C05-S01-B01 | [0,240) | CATBOX-C05-S01-SH01 | Retimed; Long source retained |
+| 5 | CATBOX-C05-SHORT-S01-SH02 | CATBOX-C05-S01-B02 | [240,660) | CATBOX-C05-S01-SH02 | Retimed; Long source retained |
+| 5 | CATBOX-C05-SHORT-S01-SH03 | CATBOX-C05-S01-B03 | [660,1020) | CATBOX-C05-S01-SH03/SH04 | Retimed; Long source retained |
+| 5 | CATBOX-C05-SHORT-S01-SH04 | CATBOX-C05-S01-B04 | [1020,1350) | CATBOX-C05-S01-SH04 | Retimed; Long source retained |
+| 6 | CATBOX-C06-SHORT-S01-SH01 | CATBOX-C06-S01-B01 | [0,240) | CATBOX-C06-S01-SH01/SH02 | Retimed; CL01 replanted self-contained |
+| 6 | CATBOX-C06-SHORT-S01-SH02 | CATBOX-C06-S01-B02 | [240,660) | CATBOX-C06-S02-SH01/SH02 | Retimed; Long source retained |
+| 6 | CATBOX-C06-SHORT-S01-SH03 | CATBOX-C06-S01-B03 | [660,1020) | CATBOX-C06-S01-SH03; CATBOX-C06-S02-SH02 | Retimed; Long source retained |
+| 6 | CATBOX-C06-SHORT-S01-SH04 | CATBOX-C06-S01-B04 | [1020,1350) | CATBOX-C06-S02-SH03/SH04 | Retimed; Long source retained |
+
+| Short | Script | Executable Short input / composition | Board / sheet |
+|---|---|---|---|
+| C01 | ch01 R5 | [short-c01.json](../../scripts/cat-boxes/short-c01.json) → `CATBOX-C01-Short` · 4 scenes / 1,350 frames | [short-c01.excalidraw](short-c01.excalidraw) · [short-c01.md](short-c01.md) |
+| C02 | ch02 R4 | [short-c02.json](../../scripts/cat-boxes/short-c02.json) → `CATBOX-C02-Short` · 4 scenes / 1,350 frames | [short-c02.excalidraw](short-c02.excalidraw) · [short-c02.md](short-c02.md) |
+| C03 | ch03 R4 | [short-c03.json](../../scripts/cat-boxes/short-c03.json) → `CATBOX-C03-Short` · 4 scenes / 1,350 frames | [short-c03.excalidraw](short-c03.excalidraw) · [short-c03.md](short-c03.md) |
+| C04 | ch04 R4 | [short-c04.json](../../scripts/cat-boxes/short-c04.json) → `CATBOX-C04-Short` · 4 scenes / 1,350 frames | [short-c04.excalidraw](short-c04.excalidraw) · [short-c04.md](short-c04.md) |
+| C05 | ch05 R4 | [short-c05.json](../../scripts/cat-boxes/short-c05.json) → `CATBOX-C05-Short` · 4 scenes / 1,350 frames | [short-c05.excalidraw](short-c05.excalidraw) · [short-c05.md](short-c05.md) |
+| C06 | ch06 R4 | [short-c06.json](../../scripts/cat-boxes/short-c06.json) → `CATBOX-C06-Short` · 4 scenes / 1,350 frames | [short-c06.excalidraw](short-c06.excalidraw) · [short-c06.md](short-c06.md) |
+
+Boss runtime status: six independent portrait compositions are registered in `src/Root.tsx`; the existing generic `Short` and `Long` blockout compositions remain available. The visual contract, validation and `VisualStage` dispatch are integrated for the modes used by these Shorts. `PhysicalAction`'s `visit` source remains unregistered and unused. C03 and C06 are the only Short home-scale scenes; C06-S02's Long source framing and scale remain unchanged.
+
+### Boss Short runtime and QA evidence
+
+The final full six-cut CLI QA was run at 1080×1920 / 30 fps after the shared status-text fix. Each Short has 1,350 frames, 46 one-second/final stills, critical boundary samples, an A-fade preview, same-browser/random-seek and remount parity checks, and a B-loop seam check. The complete frame lists, sample paths, contact-sheet pages and per-cut UTC refresh timestamps are in the [QA manifest](../../out/qa/cat-boxes/shorts-r1/manifest.json); the [QA README](../../out/qa/cat-boxes/shorts-r1/README.md) links previews and contact sheets. C03's F59/F60/F61 encoded-preview spot check is available as [F59](../../out/qa/cat-boxes/shorts-r1/C03/playback-check/f00059.png), [F60](../../out/qa/cat-boxes/shorts-r1/C03/playback-check/f00060.png) and [F61](../../out/qa/cat-boxes/shorts-r1/C03/playback-check/f00061.png); direct, same-browser and remount frames all retain `เรื่องสมมติ` and match.
+
+| Cut | Continuous A-fade preview | One-second / final and critical contact sheets |
+|---|---|---|
+| C01 | [CATBOX-C01-Short](../../out/qa/cat-boxes/shorts-r1/C01/CATBOX-C01-Short_A_fade-preview.mp4) | [one-second](../../out/qa/cat-boxes/shorts-r1/contact-sheets/C01-one-second-01.svg) · [critical](../../out/qa/cat-boxes/shorts-r1/contact-sheets/C01-critical-01.svg) |
+| C02 | [CATBOX-C02-Short](../../out/qa/cat-boxes/shorts-r1/C02/CATBOX-C02-Short_A_fade-preview.mp4) | [one-second](../../out/qa/cat-boxes/shorts-r1/contact-sheets/C02-one-second-01.svg) · [critical](../../out/qa/cat-boxes/shorts-r1/contact-sheets/C02-critical-01.svg) |
+| C03 | [CATBOX-C03-Short](../../out/qa/cat-boxes/shorts-r1/C03/CATBOX-C03-Short_A_fade-preview.mp4) | [one-second](../../out/qa/cat-boxes/shorts-r1/contact-sheets/C03-one-second-01.svg) · [critical](../../out/qa/cat-boxes/shorts-r1/contact-sheets/C03-critical-01.svg) |
+| C04 | [CATBOX-C04-Short](../../out/qa/cat-boxes/shorts-r1/C04/CATBOX-C04-Short_A_fade-preview.mp4) | [one-second](../../out/qa/cat-boxes/shorts-r1/contact-sheets/C04-one-second-01.svg) · [critical](../../out/qa/cat-boxes/shorts-r1/contact-sheets/C04-critical-01.svg) |
+| C05 | [CATBOX-C05-Short](../../out/qa/cat-boxes/shorts-r1/C05/CATBOX-C05-Short_A_fade-preview.mp4) | [one-second](../../out/qa/cat-boxes/shorts-r1/contact-sheets/C05-one-second-01.svg) · [critical](../../out/qa/cat-boxes/shorts-r1/contact-sheets/C05-critical-01.svg) |
+| C06 | [CATBOX-C06-Short](../../out/qa/cat-boxes/shorts-r1/C06/CATBOX-C06-Short_A_fade-preview.mp4) | [one-second](../../out/qa/cat-boxes/shorts-r1/contact-sheets/C06-one-second-01.svg) · [critical](../../out/qa/cat-boxes/shorts-r1/contact-sheets/C06-critical-01.svg) |
+
+Script approval is pending, narration is absent, and subtitle timing is estimated and not audio-synced. Runtime factual-image review remains unverified; FC-VIS-R1 is planning review only. Studio playback/seeking remains unverified separately from the successful CLI renders. C06-SH01's outline enters at an estimated 0.5 seconds, not an audio cue. The 12-scene / 540-second blockout and all Long scripts/boards remain source material; Long implementation, rendering and QA are deferred and have no pass claim.
+
 ## Shared sequence blockout (written before scene packs)
 
 [blockout.md](blockout.md) is the sequence-first brief. It sets the room axis, old-box clue, six chapter turns, original 2D production proposal, all-shots-move rule, research boundaries, Short crop rule and shared dependencies before the scene boards below. Current medium choices follow Film's brief and the latest production rules.
 
-## Sequence map
+## Retained Long-source sequence map (unchanged)
 
 All six chapters unfold in the same fictional living room through the owner’s case file. Research pictures are labeled 2D explainers and never become a lab scene or a claim that Mochi was tested. Each Long unit has one independently reviewable story scene; the Shorts are separate edits across their two scene boards.
 
@@ -37,12 +98,14 @@ All six chapters unfold in the same fictional living room through the owner’s 
 
 ## Runtime blockout — issue #33
 
+Historical foundation snapshot from the earlier issue-#33 implementation. The branch/base and pending-status statements below predate current origin/main 5095d25 and the Shorts-first continuation. Preserve this source map and QA record, but do not treat the old projection status or Short-gap statement as current.
+
 - Branch: `codex/33-catbox-foundation`, rebased onto `main` at `ce2a0b1981572ad3373f4132ed32f5a2242e0752` (PR #40 adds the scale/perspective workflow; PR #42 removes agent model/reasoning overrides). The refreshed PR head will include this baseline and the visual revision.
 - Executable timeline: [`scripts/cat-boxes/blockout.json`](../../scripts/cat-boxes/blockout.json), the current `Scene[]` array. `Root.tsx` supplies this same timeline to `Short` and `Long`; narration is omitted until approved audio exists; ending defaults to `B_loop` for preview.
 - The blockout has 12 runtime entries at 45 seconds each, 30 fps, total 540 seconds / 16,200 frames. Each entry maps to one storyboard scene; each scene sheet retains its four shot-local intervals. This preserves the full Long sequence and lets both aspect ratios review the same actions.
 - C01-S01 stimulus cards use `startSec` cues in board order. C06-S02's portrait actor/prop layout overrides are temporary blockout values, not canonical scale; Film brief R1 replaces them with a proposed shared orthographic crop. Runtime projection/anchor conversion is not implemented yet.
 - The renderer footer uses the required default label `ทำไมล่ะ`. This checkout has no shared channel config or per-scene override path yet; both remain unimplemented.
-- **Short cut mapping remains a production gap.** The boards describe separate 45-second Short S01 edits, while the active runtime contract shares one timeline between `Short` and `Long`. This blockout therefore renders the whole nine-minute sequence in both portrait and landscape as a preview. It is not a publishable Short. Follow-up Short assembly must resolve this contract without silently replacing the storyboard cut map.
+- Historical Short gap, superseded by the active Shorts-first set (26 October 2026). When the original 12-scene shared timeline was authored, separate Short S01 compositions were not implemented. The source gap is retained here as history; six runtime inputs remain a Boss handoff.
 - `subtitleCues` preserve the sheet's slash-separated phrase order. Cue times are estimates evenly divided within each authored shot interval; they are not synced to narration and must be revised after the script and audio are approved.
 
 ## Scale and projection — Film C06-S02 brief R3
@@ -79,6 +142,8 @@ All six chapters unfold in the same fictional living room through the owner’s 
 - **Studio/audio:** Studio seek/playback remains unverified. `npm run start` fails before bundling with `EMFILE: too many open files, watch`, including after clean `npm ci`, with raw QA folders moved aside, `CHOKIDAR_USEPOLLING=true`, `--webpack-poll=1000`, and `--disable-git-source`. Narration is omitted; script approval and audio/subtitle synchronization remain pending. Contact sheets do not establish random-seek/reload parity by themselves.
 
 ## C06-S02 R4 runtime QA
+
+Historical bounded QA snapshot from the earlier CATBOX implementation branch, before current origin/main 5095d25 and before these six Short boards. It does not establish visual QA for the six new Short cuts; Boss must create fresh Short-only evidence.
 
 - Inputs: `scripts/cat-boxes/blockout.json`, scene[11], Short1080×1920 / Long1920×1080 at30fps, `ending: A_fade`; current base main`ce2a0b1`, runtime working tree on`906a85e`. No approved narration is supplied.
 - Both compositions rendered77 full-resolution checks: one-second samplesF14850,14880,…,16170, finalF16199, F-1/F/F+1 at scene start/shot edges/sit/hold, and unchanged-consumer samplesF0/F8100/F12150. Exact lists are in `out/qa/cat-boxes/projection-final/manifest.json`; images and labeled contact sheets are in that folder.
@@ -131,17 +196,19 @@ Implementation status on the issue #33 branch: existing room/sofa and human/cat 
 - Camera grammar: small frame-driven 2D picture-stage pan/push across the whole picture, with actor/card action; no 3D camera movement. Mochi remains ≥480 visible pixels in every Short shot where he appears; if the owner is also a foreground lead, he also remains ≥480px. Owner-only explainer crops omit Mochi. Subtitle band stays fixed in screen-space.
 - Reveal grammar: CL01 old box is partially screened by a folder from C01-S01 and uncovered by the C06-S02 walk. CL02 blank “เพราะ…” is planted C01-S02 and resolved only as “ครั้งนี้ยังไม่รู้” in C06-S02. CL03 evidence piles return in C06-S01; CL04 action vs motive returns in C06-S02; CL05 novelty card appears in C05-S02 and is separated from rest.
 
-## Dependency-aware PR order
+## Dependency-aware PR order — historical Long-source plan
+
+This sequence plan belongs to the retained 12-scene Long source. The Shorts-first runtime below supersedes its former Short assembly follow-up; it does not replace the Long scene/continuity map.
 
 1. **Storyboard PR #32:** merged to `main`; contains the blockout brief, editable boards and scene sheets.
 2. **Shared foundation / runnable blockout issue #33:** current branch `codex/33-catbox-foundation`. It adds shared 2D assets, picture movement and the executable 12-scene placeholder sequence. Dependent scene branches start from refreshed `main` after this PR merges.
 3. **Scene PRs in narrative order:** `CATBOX-C01-S01` → `C01-S02` → `C02-S01` → `C02-S02` → `C03-S01` → `C03-S02` → `C04-S01` → `C04-S02` → `C05-S01` → `C05-S02` → `C06-S01` → `C06-S02`. Each scene PR waits for issue #33 and the previous scene PR, updates the same timeline and index mapping, and checks the adjacent cut.
-4. **Short-specific assembly remains a follow-up:** the current runtime uses the same 12-scene timeline for Short and Long. A later capability/assembly issue must implement the authored Short cut map without changing the storyboard order or silently duplicating timelines.
+4. **Short-specific assembly:** implemented on the current `codex/33-catbox-foundation` continuation in PR #38 as six independent four-scene JSON inputs and six registered Short compositions. The generic `Short` and `Long` compositions still use the retained 12-scene / 540-second blockout.
 
 ## Feasibility and review criteria
 
-- Issue #33 adds the initial `pictureMove` contract and CATBOX asset registry. New runtime fields still require types → validation → shared implementation → renderer dispatch together.
-- Every SH panel has a small 2D picture-stage move and a visible actor/hand/card action; a pre-padded 2D crop is the fallback. Check that crop does not clamp to a static image.
+- Issue #33 adds the initial `pictureMove` contract and CATBOX asset registry; PR #38 integrates the visual modes needed by the six Shorts through types → validation → shared implementation → renderer dispatch.
+- Every Short shot has authored frame-driven visual progression; camera/framing supports the action and is not its only change. C03/C06 use the calibrated physical home stage; diagrams remain screen-space explainers.
 - Validate the three stimulus drawings and their labels; C01 tally and pairwise comparison must remain separate; C02 CSS is qualitative and scoped; C04 range never reads as comfort/thermostat advice; C05 cube remains distinct from a sitting box; C06 old box matches CL01 and the reason remains blank.
-- Verify both formats at start/middle/end, shot boundaries and the C06-S02 box reveal. The current portrait output is the full blockout, not the authored 45-second Short edit. Excalidraw checks do not validate animation, timing, contact, runtime support or audio sync.
+- This pass verifies the six new 45-second portrait Shorts only. Long rendering and QA remain a later project; the retained 12-scene / 540-second blockout, Long scripts and boards are source material and have no new Long pass claim. The Shorts remain draft because script approval is pending, narration is absent, subtitle timing is estimated, Studio seeking and runtime factual-image approval are unverified. Excalidraw checks alone do not establish runtime or audio sync.
 

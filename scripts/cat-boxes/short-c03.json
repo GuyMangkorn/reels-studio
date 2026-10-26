@@ -1,0 +1,344 @@
+[
+  {
+    "durationSec": 8,
+    "bg": "room",
+    "actors": [
+      {
+        "id": "mochi",
+        "type": "cat",
+        "pose": "sit",
+        "color": "#c7b5e7",
+        "world": {
+          "keys": [
+            {
+              "atSec": 0,
+              "x": -0.16,
+              "y": 0.09191489361702128
+            },
+            {
+              "atSec": 0.55,
+              "x": -0.16,
+              "y": 0.09191489361702128
+            },
+            {
+              "atSec": 2.8,
+              "x": 0.06,
+              "y": 0
+            },
+            {
+              "atSec": 8,
+              "x": 0.06,
+              "y": 0
+            }
+          ]
+        },
+        "poses": [
+          {
+            "atSec": 0.5,
+            "pose": "walk"
+          },
+          {
+            "atSec": 3,
+            "pose": "sit"
+          }
+        ]
+      }
+    ],
+    "subtitle": "นั่งพัก หรือรอพุ่ง?",
+    "subtitleCues": [
+      {
+        "atSec": 0,
+        "text": "นั่งพัก หรือรอพุ่ง?"
+      }
+    ],
+    "visuals": [
+      {
+        "id": "toy-pursuit",
+        "shotId": "CATBOX-C03-SHORT-S01-SH01",
+        "startSec": 0,
+        "endSec": 8,
+        "phase": 0,
+        "heading": "นั่งพัก หรือรอพุ่ง?",
+        "labels": [
+          "เจ้าของเดาว่า “ฐานล่า”"
+        ],
+        "labelsAtSec": [3.2],
+        "status": "fiction",
+        "sourceBeatId": "CATBOX-C03-S01-B01"
+      }
+    ],
+    "projection": {
+      "unit": "m",
+      "stage": {
+        "left": -5,
+        "right": 5,
+        "bottom": -2,
+        "top": 4
+      },
+      "views": {
+        "short": {
+          "bounds": {
+            "left": -0.3234375,
+            "right": 0.3234375,
+            "bottom": -0.275,
+            "top": 0.875
+          },
+          "cameraMoves": [
+            {
+              "atSec": 0,
+              "x": -0.05,
+              "y": 0,
+              "zoom": 1
+            },
+            {
+              "atSec": 2.8,
+              "x": 0,
+              "y": 0,
+              "zoom": 0.95
+            },
+            {
+              "atSec": 8,
+              "x": 0,
+              "y": 0,
+              "zoom": 0.95
+            }
+          ]
+        },
+        "long": {
+          "bounds": {
+            "left": -2.1333333333,
+            "right": 2.1333333333,
+            "bottom": -0.45,
+            "top": 1.95
+          }
+        }
+      }
+    },
+    "props": [
+      {
+        "type": "catbox-old",
+        "space": "world",
+        "layer": "back",
+        "world": {
+          "x": -0.16,
+          "y": 0
+        }
+      },
+      {
+        "type": "catbox-toy",
+        "space": "world",
+        "layer": "front",
+        "world": {
+          "x": -0.5,
+          "y": 0
+        },
+        "worldMotion": [
+          {
+            "atSec": 0,
+            "x": -0.5,
+            "y": 0
+          },
+          {
+            "atSec": 0.5,
+            "x": -0.5,
+            "y": 0
+          },
+          {
+            "atSec": 2.7,
+            "x": 0.1,
+            "y": 0
+          },
+          {
+            "atSec": 8,
+            "x": 0.1,
+            "y": 0
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "durationSec": 13,
+    "bg": "room",
+    "actors": [],
+    "subtitle": "ย่อง / ไล่ / พุ่ง พบจริง",
+    "subtitleCues": [
+      {
+        "atSec": 0,
+        "text": "ย่อง / ไล่ / พุ่ง พบจริง"
+      },
+      {
+        "atSec": 6.5,
+        "text": "เข้าไปเพื่อซุ่ม: ยังเป็นสมมติฐาน"
+      }
+    ],
+    "visuals": [
+      {
+        "id": "toy-pursuit",
+        "shotId": "CATBOX-C03-SHORT-S01-SH02",
+        "startSec": 0,
+        "endSec": 13,
+        "phase": 1,
+        "heading": "เห็นการกระทำ • เดาเหตุเข้าไป",
+        "labels": [
+          "ย่อง → ไล่ → พุ่ง",
+          "เข้าไปเพื่อซุ่ม?",
+          "ยังเป็นสมมติฐาน"
+        ],
+        "status": "hypothesis",
+        "sourceBeatId": "CATBOX-C03-S01-B02"
+      }
+    ]
+  },
+  {
+    "durationSec": 12,
+    "bg": "room",
+    "actors": [],
+    "subtitle": "ที่หลบจริงมีส่วนบังตัว",
+    "subtitleCues": [
+      {
+        "atSec": 0,
+        "text": "ที่หลบจริงมีส่วนบังตัว"
+      },
+      {
+        "atSec": 6,
+        "text": "ครั้งที่พุ่ง ไม่อธิบายทุกครั้งที่นิ่ง"
+      }
+    ],
+    "visuals": [
+      {
+        "id": "occlusion-compare",
+        "shotId": "CATBOX-C03-SHORT-S01-SH03",
+        "startSec": 0,
+        "endSec": 12,
+        "phase": 2,
+        "heading": "กล่องที่หลบได้ ต่างจากกรอบแบน",
+        "labels": [
+          "กล่องมีส่วนบังตัว",
+          "กรอบแบนมีแค่ขอบ",
+          "ภาพอธิบายหน้าที่"
+        ],
+        "status": "diagram",
+        "sourceBeatId": "CATBOX-C03-S01-B03"
+      }
+    ]
+  },
+  {
+    "durationSec": 12,
+    "bg": "room",
+    "actors": [
+      {
+        "id": "mochi",
+        "type": "cat",
+        "pose": "walk",
+        "color": "#c7b5e7",
+        "world": {
+          "keys": [
+            {
+              "atSec": 0,
+              "x": 0.05,
+              "y": 0
+            },
+            {
+              "atSec": 3,
+              "x": -0.16,
+              "y": 0.09191489361702128
+            },
+            {
+              "atSec": 9,
+              "x": -0.16,
+              "y": 0.09191489361702128
+            },
+            {
+              "atSec": 12,
+              "x": -0.16,
+              "y": 0.09191489361702128
+            }
+          ]
+        },
+        "poses": [
+          {
+            "atSec": 3,
+            "pose": "sit"
+          }
+        ]
+      }
+    ],
+    "subtitle": "เห็นการกระทำ / ยังไม่รู้เหตุที่เข้าไป",
+    "subtitleCues": [
+      {
+        "atSec": 0,
+        "text": "เห็นการกระทำ / ยังไม่รู้เหตุที่เข้าไป"
+      }
+    ],
+    "visuals": [
+      {
+        "id": "toy-pursuit",
+        "shotId": "CATBOX-C03-SHORT-S01-SH04",
+        "startSec": 0,
+        "endSec": 12,
+        "phase": 3,
+        "heading": "เห็นการกระทำ • ยังไม่รู้เหตุที่เข้าไป",
+        "labels": [
+          "เรื่องสมมติ",
+          "โมจิพุ่งตามของเล่น",
+          "เหตุที่เข้าไปยังไม่รู้"
+        ],
+        "status": "fiction",
+        "sourceBeatId": "CATBOX-C03-S01-B04"
+      }
+    ],
+    "projection": {
+      "unit": "m",
+      "stage": {
+        "left": -5,
+        "right": 5,
+        "bottom": -2,
+        "top": 4
+      },
+      "views": {
+        "short": {
+          "bounds": {
+            "left": -0.3234375,
+            "right": 0.3234375,
+            "bottom": -0.275,
+            "top": 0.875
+          },
+          "cameraMoves": [
+            {
+              "atSec": 0,
+              "x": -0.05,
+              "y": 0,
+              "zoom": 1
+            },
+            {
+              "atSec": 12,
+              "x": -0.05,
+              "y": 0,
+              "zoom": 1
+            }
+          ]
+        },
+        "long": {
+          "bounds": {
+            "left": -2.1333333333,
+            "right": 2.1333333333,
+            "bottom": -0.45,
+            "top": 1.95
+          }
+        }
+      }
+    },
+    "props": [
+      {
+        "type": "catbox-old",
+        "space": "world",
+        "layer": "back",
+        "world": {
+          "x": -0.16,
+          "y": 0
+        }
+      }
+    ]
+  }
+]

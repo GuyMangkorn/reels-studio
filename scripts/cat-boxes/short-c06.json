@@ -1,0 +1,285 @@
+[
+  {
+    "durationSec": 8,
+    "bg": "room",
+    "actors": [],
+    "subtitle": "เราเลือกคำตอบเร็วไปไหม?",
+    "subtitleCues": [
+      {
+        "atSec": 0,
+        "text": "เราเลือกคำตอบเร็วไปไหม?"
+      },
+      {
+        "atSec": 4,
+        "text": "เลือกกรอบ ≠ คิดว่ามีกล่องแน่นอน"
+      }
+    ],
+    "visuals": [
+      {
+        "id": "paper-stimuli",
+        "shotId": "CATBOX-C06-SHORT-S01-SH01",
+        "startSec": 0,
+        "endSec": 8,
+        "phase": 0,
+        "heading": "เราเลือกคำตอบเร็วไปไหม?",
+        "labels": [
+          "เรื่องสมมติ • กล่องเก่าในห้อง"
+        ],
+        "status": "research",
+        "sourceBeatId": "CATBOX-C06-S01-B01"
+      }
+    ],
+    "projection": {
+      "unit": "m",
+      "stage": {
+        "left": -5,
+        "right": 5,
+        "bottom": -2,
+        "top": 4
+      },
+      "views": {
+        "short": {
+          "bounds": {
+            "left": -0.43125,
+            "right": 0.43125,
+            "bottom": -0.466,
+            "top": 1.066
+          },
+          "cameraMoves": [
+            {
+              "atSec": 0,
+              "x": 0,
+              "y": 0,
+              "zoom": 0.75
+            },
+            {
+              "atSec": 8,
+              "x": 0,
+              "y": 0,
+              "zoom": 0.75
+            }
+          ]
+        },
+        "long": {
+          "bounds": {
+            "left": -2.1333333333,
+            "right": 2.1333333333,
+            "bottom": -0.45,
+            "top": 1.95
+          }
+        }
+      }
+    },
+    "props": [
+      {
+        "type": "catbox-old",
+        "space": "world",
+        "layer": "back",
+        "world": {
+          "x": 0,
+          "y": 0
+        }
+      },
+      {
+        "type": "catbox-outline",
+        "space": "screen",
+        "x": 0.72,
+        "y": 0.5,
+        "size": 220,
+        "startSec": 0.5,
+        "endSec": 8
+      }
+    ]
+  },
+  {
+    "durationSec": 14,
+    "bg": "room",
+    "actors": [],
+    "subtitle": "งานต่างกัน วัดคนละอย่าง",
+    "subtitleCues": [
+      {
+        "atSec": 0,
+        "text": "งานต่างกัน วัดคนละอย่าง"
+      },
+      {
+        "atSec": 7,
+        "text": "กล่องที่หลบได้ ต่างจากกรอบแบน"
+      }
+    ],
+    "visuals": [
+      {
+        "id": "evidence-sort",
+        "shotId": "CATBOX-C06-SHORT-S01-SH02",
+        "startSec": 0,
+        "endSec": 14,
+        "phase": 1,
+        "heading": "งานต่างกัน • วัดคนละอย่าง",
+        "labels": [
+          "งานเรื่องกรอบดูการเลือก",
+          "งานที่ซ่อนในศูนย์พักพิงดูคะแนนความเครียด",
+          "กล่องมีผนัง • กรอบแบนไม่มี"
+        ],
+        "status": "research",
+        "sourceBeatId": "CATBOX-C06-S01-B02"
+      }
+    ]
+  },
+  {
+    "durationSec": 12,
+    "bg": "room",
+    "actors": [],
+    "subtitle": "เหตุเสนอมีหลักฐานไม่เท่ากัน",
+    "subtitleCues": [
+      {
+        "atSec": 0,
+        "text": "เหตุเสนอมีหลักฐานไม่เท่ากัน"
+      },
+      {
+        "atSec": 6,
+        "text": "ยังไม่ยืนยันเหตุเฉพาะครั้ง"
+      }
+    ],
+    "visuals": [
+      {
+        "id": "evidence-sort",
+        "shotId": "CATBOX-C06-SHORT-S01-SH03",
+        "startSec": 0,
+        "endSec": 12,
+        "phase": 2,
+        "heading": "เหตุเสนอมีหลักฐานไม่เท่ากัน",
+        "labels": [
+          "ความอุ่น • การซุ่ม • สัมผัสด้านข้าง",
+          "ยังไม่รู้ว่าเลือกกล่องเพราะอะไร"
+        ],
+        "status": "hypothesis",
+        "sourceBeatId": "CATBOX-C06-S01-B03"
+      }
+    ]
+  },
+  {
+    "durationSec": 11,
+    "bg": "room",
+    "actors": [
+      {
+        "id": "mochi",
+        "type": "cat",
+        "pose": "walk",
+        "color": "#c7b5e7",
+        "world": {
+          "keys": [
+            {
+              "atSec": 0,
+              "x": -0.55,
+              "y": 0
+            },
+            {
+              "atSec": 7.7,
+              "x": -0.025,
+              "y": 0.09191489361702128
+            },
+            {
+              "atSec": 8,
+              "x": 0,
+              "y": 0.09191489361702128
+            },
+            {
+              "atSec": 11,
+              "x": 0,
+              "y": 0.09191489361702128
+            }
+          ]
+        },
+        "poses": [
+          {
+            "atSec": 7.7,
+            "pose": "sit"
+          }
+        ]
+      }
+    ],
+    "subtitle": "เรื่องสมมติ ไม่ใช่ผลทดลอง",
+    "subtitleCues": [
+      {
+        "atSec": 0,
+        "text": "เรื่องสมมติ ไม่ใช่ผลทดลอง"
+      },
+      {
+        "atSec": 5.5,
+        "text": "เหตุที่เลือกใบนี้ ยังไม่รู้"
+      }
+    ],
+    "visuals": [
+      {
+        "id": "evidence-sort",
+        "shotId": "CATBOX-C06-SHORT-S01-SH04",
+        "startSec": 0,
+        "endSec": 11,
+        "phase": 3,
+        "heading": "กล่องมีหลายหน้าที่",
+        "labels": [
+          "เรื่องสมมติ • ไม่ใช่ผลทดลอง"
+        ],
+        "status": "fiction",
+        "sourceBeatId": "CATBOX-C06-S01-B04"
+      }
+    ],
+    "projection": {
+      "unit": "m",
+      "stage": {
+        "left": -3.6,
+        "right": 2.44,
+        "bottom": -0.85,
+        "top": 3.4
+      },
+      "views": {
+        "short": {
+          "bounds": {
+            "left": -0.3234375,
+            "right": 0.3234375,
+            "bottom": -0.275,
+            "top": 0.875
+          },
+          "cameraMoves": [
+            {
+              "atSec": 0,
+              "x": -0.296,
+              "y": 0,
+              "zoom": 0.66
+            },
+            {
+              "atSec": 8,
+              "x": 0,
+              "y": 0,
+              "zoom": 1
+            },
+            {
+              "atSec": 11,
+              "x": 0,
+              "y": 0,
+              "zoom": 1
+            }
+          ]
+        },
+        "long": {
+          "bounds": {
+            "left": -3.6,
+            "right": 2.44,
+            "bottom": -0.85,
+            "top": 2.55
+          }
+        }
+      }
+    },
+    "props": [
+      {
+        "type": "catbox-old",
+        "space": "world",
+        "layer": "front",
+        "world": {
+          "x": 0,
+          "y": 0
+        }
+      }
+    ]
+  }
+]

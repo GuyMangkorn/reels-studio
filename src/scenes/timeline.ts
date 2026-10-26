@@ -1,3 +1,4 @@
+import {visualModes} from '../assets/visuals/types';
 import {poses, smoothstep, transitionAtTrack, type PoseName, type PoseTrack, type PoseTransition} from '../rig/poses';
 import {HUMAN_HIP_FROM_ANCHOR} from '../rig/geometry';
 import {propNames, propSpecs, type PropName} from '../assets/Props';
@@ -22,6 +23,32 @@ export function validateTimeline(value: unknown): asserts value is Timeline {
     if (s.time !== undefined && !['day', 'night'].includes(String(s.time))) fail(`${path}.time`, 'expected day or night');
     if (typeof s.subtitle !== 'string') fail(`${path}.subtitle`, 'expected text');
     for (const key of ['title', 'eyebrow']) if (s[key] !== undefined && typeof s[key] !== 'string') fail(`${path}.${key}`, 'expected text');
+    if (s.visuals !== undefined) {
+      if (!Array.isArray(s.visuals) || s.visuals.length === 0) fail(`${path}.visuals`, 'expected non-empty timed visuals');
+      let end = 0;
+      const shotIds = new Set<string>();
+      (s.visuals as unknown[]).forEach((rawVisual, j) => {
+        const vp = `${path}.visuals[${j}]`;
+        if (!record(rawVisual)) fail(vp, 'expected visual object');
+        const visual = rawVisual as Record<string, unknown>;
+        if (!(visualModes as readonly string[]).includes(String(visual.id))) fail(`${vp}.id`, 'unknown visual mode');
+        if (typeof visual.shotId !== 'string' || !visual.shotId.trim() || shotIds.has(visual.shotId)) fail(`${vp}.shotId`, 'expected unique stable shot ID');
+        shotIds.add(visual.shotId as string);
+        if (typeof visual.sourceBeatId !== 'string' || !visual.sourceBeatId.trim()) fail(`${vp}.sourceBeatId`, 'expected the source script beat ID');
+        if (!finite(visual.startSec) || visual.startSec < end || !finite(visual.endSec) || visual.endSec <= visual.startSec || visual.endSec > (s.durationSec as number)) fail(vp, 'visual intervals must be ordered, non-overlapping and inside scene');
+        end = visual.endSec as number;
+        if (!finite(visual.phase) || !Number.isInteger(visual.phase) || visual.phase < 0 || visual.phase > 3) fail(`${vp}.phase`, 'expected phase 0–3');
+        if (!['fiction', 'diagram', 'research', 'hypothesis'].includes(String(visual.status))) fail(`${vp}.status`, 'expected factual image status');
+        if (typeof visual.heading !== 'string' || !visual.heading.trim()) fail(`${vp}.heading`, 'expected heading');
+        if (!Array.isArray(visual.labels) || visual.labels.length > 8 || visual.labels.some(label => typeof label !== 'string')) fail(`${vp}.labels`, 'expected up to eight text labels');
+        if (visual.labelsAtSec !== undefined) {
+          if (!Array.isArray(visual.labelsAtSec) || visual.labelsAtSec.length !== (visual.labels as unknown[]).length) fail(`${vp}.labelsAtSec`, 'expected one reveal time per visual label');
+          (visual.labelsAtSec as unknown[]).forEach((atSec, k) => {
+            if (!finite(atSec) || atSec < (visual.startSec as number) || atSec >= (visual.endSec as number)) fail(`${vp}.labelsAtSec[${k}]`, 'reveal time must fall inside the visual interval');
+          });
+        }
+      });
+    }
     if (s.projection !== undefined) {
       if (!record(s.projection)) fail(`${path}.projection`, 'expected orthographic projection object');
       const projection = s.projection as Record<string, unknown>;
@@ -166,8 +193,21 @@ export function validateTimeline(value: unknown): asserts value is Timeline {
             if (!record(prop.world) || !finite(prop.world.x) || !finite(prop.world.y)) fail(`${pp}.world`, 'expected metre-space floor anchor');
             if (prop.x !== undefined || prop.y !== undefined || prop.size !== undefined || prop.portrait !== undefined) fail(pp, 'world props use canonical dimensions and metre anchors only');
             if (!propSpecs[prop.type as PropName].physicalEstimate || !propSpecs[prop.type as PropName].floorAnchor) fail(`${pp}.type`, 'world prop has no physical bounds/floor anchor');
+            if (prop.worldMotion !== undefined) {
+              if (!Array.isArray(prop.worldMotion) || prop.worldMotion.length === 0) fail(`${pp}.worldMotion`, 'expected a non-empty scene-local path');
+              let motionLast = -1;
+              (prop.worldMotion as unknown[]).forEach((rawKey, k) => {
+                const kp = `${pp}.worldMotion[${k}]`;
+                if (!record(rawKey) || !finite(rawKey.atSec) || rawKey.atSec < 0 || rawKey.atSec > (s.durationSec as number) || rawKey.atSec <= motionLast) fail(kp, 'position times must increase within scene');
+                const key = rawKey as Record<string, unknown>;
+                if (k === 0 && key.atSec !== 0) fail(`${kp}.atSec`, 'first world path key must start at zero');
+                for (const axis of ['x', 'y']) if (!finite(key[axis])) fail(`${kp}.${axis}`, 'expected finite metres');
+                motionLast = key.atSec as number;
+              });
+            }
           } else {
             if (prop.world !== undefined) fail(`${pp}.world`, 'screen-space props cannot also specify a world anchor');
+            if (prop.worldMotion !== undefined) fail(`${pp}.worldMotion`, 'world prop paths require world space');
             if (!finite(prop.x) || (prop.x as number) < 0 || (prop.x as number) > 1) fail(`${pp}.x`, 'expected normalized screen position from 0 to 1');
           }
         } else {

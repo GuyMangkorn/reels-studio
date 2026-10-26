@@ -47,7 +47,9 @@ export const propSpecs: Record<PropName, PropSpec> = {
   'catbox-stimulus': {...commonSpec, floorAnchor: {x: 120, y: 218}},
   'catbox-folder': {...commonSpec, floorAnchor: {x: 120, y: 220}, gripAnchor: {x: 42, y: 62}},
   'catbox-card': {...commonSpec, floorAnchor: {x: 120, y: 220}, gripAnchor: {x: 26, y: 42}},
-  'catbox-toy': {...commonSpec, floorAnchor: {x: 120, y: 201}, gripAnchor: {x: 104, y: 118}},
+  'catbox-toy': {...commonSpec, floorAnchor: {x: 120, y: 171}, gripAnchor: {x: 104, y: 118},
+    // Production design estimate from the authored toy silhouette; excludes SVG padding and tail shadow.
+    physicalEstimate: {widthM: 0.143, heightM: 0.09, solidBounds: {left: 49, top: 62, right: 222, bottom: 171}}},
   'catbox-cube': {...commonSpec, floorAnchor: {x: 120, y: 220}},
 };
 

@@ -1,0 +1,128 @@
+[
+  {
+    "durationSec": 8,
+    "bg": "room",
+    "actors": [],
+    "subtitle": "กล่องช่วยแมวได้แค่ไหน?",
+    "subtitleCues": [
+      {
+        "atSec": 0,
+        "text": "กล่องช่วยแมวได้แค่ไหน?"
+      },
+      {
+        "atSec": 4,
+        "text": "ช่วยบางด้าน ไม่ใช่ทุกอย่าง"
+      }
+    ],
+    "visuals": [
+      {
+        "id": "shelter-context",
+        "shotId": "CATBOX-C02-SHORT-S01-SH01",
+        "startSec": 0,
+        "endSec": 8,
+        "phase": 0,
+        "heading": "กล่องช่วยแมวได้แค่ไหน?",
+        "labels": [
+          "มีงานเรื่องที่ซ่อนจริง",
+          "ช่วยบางด้าน • ไม่ใช่ทุกอย่าง"
+        ],
+        "status": "research",
+        "sourceBeatId": "CATBOX-C02-S01-B01"
+      }
+    ]
+  },
+  {
+    "durationSec": 14,
+    "bg": "room",
+    "actors": [],
+    "subtitle": "2014 / 19 ตัว / 14 วัน",
+    "subtitleCues": [
+      {
+        "atSec": 0,
+        "text": "2014 / 19 ตัว / 14 วัน"
+      },
+      {
+        "atSec": 7,
+        "text": "วันที่ 3–4: CSS ต่ำกว่าอย่างมีนัยสำคัญ"
+      }
+    ],
+    "visuals": [
+      {
+        "id": "shelter-context",
+        "shotId": "CATBOX-C02-SHORT-S01-SH02",
+        "startSec": 0,
+        "endSec": 14,
+        "phase": 1,
+        "heading": "งานศูนย์พักพิง • 2014",
+        "labels": [
+          "10 ตัวมีที่ซ่อน • 9 ตัวไม่มี",
+          "ติดตาม 14 วัน",
+          "วันที่ 3–4: CSS ต่ำกว่าอย่างมีนัยสำคัญ"
+        ],
+        "status": "research",
+        "sourceBeatId": "CATBOX-C02-S01-B02"
+      }
+    ]
+  },
+  {
+    "durationSec": 12,
+    "bg": "room",
+    "actors": [],
+    "subtitle": "2019: คะแนนลดเร็วกว่า",
+    "subtitleCues": [
+      {
+        "atSec": 0,
+        "text": "2019: คะแนนลดเร็วกว่า"
+      },
+      {
+        "atSec": 6,
+        "text": "ผลลัพธ์อื่นที่วัด: ไม่พบความต่างอย่างมีนัยสำคัญ"
+      }
+    ],
+    "visuals": [
+      {
+        "id": "outcome-tracks",
+        "shotId": "CATBOX-C02-SHORT-S01-SH03",
+        "startSec": 0,
+        "endSec": 12,
+        "phase": 2,
+        "heading": "อีกงาน • 2019",
+        "labels": [
+          "CSS ลดเร็วกว่า",
+          "น้ำหนักที่ลด • การรับเลี้ยง • ระยะพัก",
+          "ไม่พบความต่างอย่างมีนัยสำคัญ"
+        ],
+        "status": "research",
+        "sourceBeatId": "CATBOX-C02-S01-B03"
+      }
+    ]
+  },
+  {
+    "durationSec": 11,
+    "bg": "room",
+    "actors": [],
+    "subtitle": "หลักฐานของที่ซ่อน / ยังไม่ใช่หลักฐานของกรอบเทป",
+    "subtitleCues": [
+      {
+        "atSec": 0,
+        "text": "หลักฐานของที่ซ่อน / ยังไม่ใช่หลักฐานของกรอบเทป"
+      }
+    ],
+    "visuals": [
+      {
+        "id": "occlusion-compare",
+        "shotId": "CATBOX-C02-SHORT-S01-SH04",
+        "startSec": 0,
+        "endSec": 11,
+        "phase": 3,
+        "heading": "หลักฐานในงานนี้คือที่ซ่อนจริง",
+        "labels": [
+          "กรอบเทปไม่ได้ถูกทดสอบ",
+          "ภาพอธิบายหน้าที่"
+        ],
+        "status": "diagram",
+        "sourceBeatId": "CATBOX-C02-S01-B04"
+      }
+    ]
+  }
+]

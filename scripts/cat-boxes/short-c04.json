@@ -1,0 +1,128 @@
+[
+  {
+    "durationSec": 9,
+    "bg": "room",
+    "actors": [],
+    "subtitle": "30–38°C = ต้องอยู่ถึงสบาย?",
+    "subtitleCues": [
+      {
+        "atSec": 0,
+        "text": "30–38°C = ต้องอยู่ถึงสบาย?"
+      },
+      {
+        "atSec": 4.5,
+        "text": "สรุปแบบนี้ไม่ได้ / ไม่ใช่คำแนะนำอุ่นห้อง"
+      }
+    ],
+    "visuals": [
+      {
+        "id": "physiology-definition",
+        "shotId": "CATBOX-C04-SHORT-S01-SH01",
+        "startSec": 0,
+        "endSec": 9,
+        "phase": 0,
+        "heading": "30–38°C = ต้องอยู่ถึงสบาย?",
+        "labels": [
+          "ตรวจคำอ้าง",
+          "ไม่ใช่คำแนะนำตั้งอุณหภูมิ",
+          "สรุปแบบนี้ไม่ได้"
+        ],
+        "status": "diagram",
+        "sourceBeatId": "CATBOX-C04-S01-B01"
+      }
+    ]
+  },
+  {
+    "durationSec": 14,
+    "bg": "room",
+    "actors": [],
+    "subtitle": "TNZ เป็นนิยามทางสรีรวิทยา",
+    "subtitleCues": [
+      {
+        "atSec": 0,
+        "text": "TNZ เป็นนิยามทางสรีรวิทยา"
+      },
+      {
+        "atSec": 7,
+        "text": "ไม่ใช่ช่วงที่แมวเลือกอยู่เสมอ"
+      }
+    ],
+    "visuals": [
+      {
+        "id": "physiology-definition",
+        "shotId": "CATBOX-C04-SHORT-S01-SH02",
+        "startSec": 0,
+        "endSec": 14,
+        "phase": 1,
+        "heading": "TNZ บอกการทำงานของร่างกาย",
+        "labels": [
+          "ไม่ต้องเร่งสร้างความร้อนเพิ่ม",
+          "ไม่ต้องเร่งระบายด้วยการระเหย",
+          "ไม่ใช่ความสบายหรือความชอบ"
+        ],
+        "status": "diagram",
+        "sourceBeatId": "CATBOX-C04-S01-B02"
+      }
+    ]
+  },
+  {
+    "durationSec": 11,
+    "bg": "room",
+    "actors": [],
+    "subtitle": "EFSA ทักท้วงการตีความช่วงนี้",
+    "subtitleCues": [
+      {
+        "atSec": 0,
+        "text": "EFSA ทักท้วงการตีความช่วงนี้"
+      },
+      {
+        "atSec": 5.5,
+        "text": "ความอุ่น: หนึ่งสมมติฐาน"
+      }
+    ],
+    "visuals": [
+      {
+        "id": "wall-warmth",
+        "shotId": "CATBOX-C04-SHORT-S01-SH03",
+        "startSec": 0,
+        "endSec": 11,
+        "phase": 2,
+        "heading": "EFSA ทักท้วงการตีความช่วงนี้",
+        "labels": [
+          "ความอุ่นอาจมีส่วน",
+          "ยังไม่มีหลักฐานว่าเป็นเหตุให้เลือกทุกกล่อง"
+        ],
+        "status": "research",
+        "sourceBeatId": "CATBOX-C04-S01-B03"
+      }
+    ]
+  },
+  {
+    "durationSec": 11,
+    "bg": "room",
+    "actors": [],
+    "subtitle": "ตัวเลขวัดอะไร / ตอบคำถามไหน?",
+    "subtitleCues": [
+      {
+        "atSec": 0,
+        "text": "ตัวเลขวัดอะไร / ตอบคำถามไหน?"
+      }
+    ],
+    "visuals": [
+      {
+        "id": "physiology-definition",
+        "shotId": "CATBOX-C04-SHORT-S01-SH04",
+        "startSec": 0,
+        "endSec": 11,
+        "phase": 3,
+        "heading": "ตัวเลขวัดอะไร?",
+        "labels": [
+          "ตอบคำถามไหน?",
+          "ไม่ตอบแทนความรู้สึกของแมวทุกตัว"
+        ],
+        "status": "diagram",
+        "sourceBeatId": "CATBOX-C04-S01-B04"
+      }
+    ]
+  }
+]

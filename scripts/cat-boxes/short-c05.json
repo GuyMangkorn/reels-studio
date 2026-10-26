@@ -1,0 +1,128 @@
+[
+  {
+    "durationSec": 8,
+    "bg": "room",
+    "actors": [],
+    "subtitle": "กล่องเหมือนอ้อมกอด?",
+    "subtitleCues": [
+      {
+        "atSec": 0,
+        "text": "กล่องเหมือนอ้อมกอด?"
+      },
+      {
+        "atSec": 4,
+        "text": "ยังไม่ใช่เหตุที่พิสูจน์แล้ว"
+      }
+    ],
+    "visuals": [
+      {
+        "id": "contact-hypothesis",
+        "shotId": "CATBOX-C05-SHORT-S01-SH01",
+        "startSec": 0,
+        "endSec": 8,
+        "phase": 0,
+        "heading": "กล่องเหมือนอ้อมกอด?",
+        "labels": [
+          "สมมติฐาน — ยังไม่ยืนยันกลไก",
+          "ข้อเสนอในการสัมภาษณ์",
+          "ไม่ใช่ผลทดลองกลไก"
+        ],
+        "status": "hypothesis",
+        "sourceBeatId": "CATBOX-C05-S01-B01"
+      }
+    ]
+  },
+  {
+    "durationSec": 14,
+    "bg": "room",
+    "actors": [],
+    "subtitle": "สัมผัสด้านข้างอาจมีส่วน",
+    "subtitleCues": [
+      {
+        "atSec": 0,
+        "text": "สัมผัสด้านข้างอาจมีส่วน"
+      },
+      {
+        "atSec": 7,
+        "text": "ยังไม่พบการแยกทดลองแรงกดในชุดนี้"
+      }
+    ],
+    "visuals": [
+      {
+        "id": "contact-hypothesis",
+        "shotId": "CATBOX-C05-SHORT-S01-SH02",
+        "startSec": 0,
+        "endSec": 14,
+        "phase": 1,
+        "heading": "แยกข้อเสนอออกจากผลทดลอง",
+        "labels": [
+          "ซ่อน • อุ่น • สัมผัส",
+          "แรงกด: ยังไม่ยืนยันกลไก"
+        ],
+        "status": "hypothesis",
+        "sourceBeatId": "CATBOX-C05-S01-B02"
+      }
+    ]
+  },
+  {
+    "durationSec": 12,
+    "bg": "room",
+    "actors": [],
+    "subtitle": "ผลของที่ซ่อน ไม่ได้ยืนยันแรงกด",
+    "subtitleCues": [
+      {
+        "atSec": 0,
+        "text": "ผลของที่ซ่อน ไม่ได้ยืนยันแรงกด"
+      },
+      {
+        "atSec": 6,
+        "text": "เรื่องจำอ้อมกอดแม่: ยังไม่ยืนยัน"
+      }
+    ],
+    "visuals": [
+      {
+        "id": "evidence-sort",
+        "shotId": "CATBOX-C05-SHORT-S01-SH03",
+        "startSec": 0,
+        "endSec": 12,
+        "phase": 2,
+        "heading": "ผลของที่ซ่อน ≠ หลักฐานแรงกด",
+        "labels": [
+          "งานที่ซ่อนช่วยการปรับตัว",
+          "ไม่พิสูจน์ว่าแรงกดเป็นเหตุ",
+          "จำอ้อมกอดแม่: ยังไม่ยืนยัน"
+        ],
+        "status": "hypothesis",
+        "sourceBeatId": "CATBOX-C05-S01-B03"
+      }
+    ]
+  },
+  {
+    "durationSec": 11,
+    "bg": "room",
+    "actors": [],
+    "subtitle": "น่ากอด ก็ยังต้องมีหลักฐาน",
+    "subtitleCues": [
+      {
+        "atSec": 0,
+        "text": "น่ากอด ก็ยังต้องมีหลักฐาน"
+      }
+    ],
+    "visuals": [
+      {
+        "id": "contact-hypothesis",
+        "shotId": "CATBOX-C05-SHORT-S01-SH04",
+        "startSec": 0,
+        "endSec": 11,
+        "phase": 3,
+        "heading": "แรงสัมผัสอาจมีส่วน",
+        "labels": [
+          "ยังไม่ใช่เฉลยที่ยืนยันแล้ว",
+          "ยังไม่พิสูจน์ และยังไม่ถูกหักล้าง"
+        ],
+        "status": "hypothesis",
+        "sourceBeatId": "CATBOX-C05-S01-B04"
+      }
+    ]
+  }
+]
