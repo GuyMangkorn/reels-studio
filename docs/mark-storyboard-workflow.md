@@ -65,6 +65,14 @@ Remotion มี [@remotion/three](https://www.remotion.dev/docs/three) สำห
 
 ลำดับพัฒนาแยกงาน foundation/capability ที่ใช้ร่วมออกจาก scene integration/polish ระบุ dependency issues/PRs และฉากที่ใช้แต่ละ asset เมื่อ dependency merge แล้วจึงเริ่ม branch ฉากจาก `main` ล่าสุดตาม AGENTS.md หากงานเป็น asset-only หรือ bug fix เฉพาะจุด ให้ใช้บริบทที่เกี่ยวข้องโดยไม่เพิ่มงานวางทั้งตอน
 
+## หน้าที่ภาพและการตรวจความซ้ำ
+
+ใช้ [visual progression ของ Film](film-visual-brief-workflow.md#visual-progression-before-asset-selection) เป็นฐาน ใน shot mapping ระบุ **การกระทำที่เห็น / ข้อมูลหรืออารมณ์ก่อน → หลัง / เหตุผลของช็อตและการกลับมาใช้ภาพเดิม** ช็อตที่ตั้งใจ hold หรือย้ำให้บอกหน้าที่ เช่น รอ reveal หรือ payoff; เปลี่ยน crop โดยไม่เปลี่ยนสิ่งที่คนดูรับรู้ยังต้องมีเหตุผลนั้น
+
+ก่อน `ready-for-dev` อ่าน boards ต่อเนื่องครบขอบเขต เปรียบเทียบการกระทำ ปฏิสัมพันธ์ และวิธีส่งข้อมูลของช็อตติดกันและช่วงที่กลับมาใช้ซ้ำ จด shot IDs ที่ซ้ำโดยไม่มีพัฒนาการและแก้บอร์ด หรือส่งการเปลี่ยน treatment กลับ Film ตรวจว่าภาพสื่อ beat ได้โดยไม่พึ่ง VO/การ์ดทุกช่วง ทั้งนี้ข้อความและภาพนามธรรมยังใช้ได้เมื่อจำเป็นต่อความหมาย รักษา claim references และป้ายภาพจำลองจาก brief
+
+ก่อน polish ตรวจประเด็นเหล่านี้ซ้ำจาก assembled blockout ทั้ง Short/Long กับ Film บันทึก revision, ช่วงเฟรม/shot IDs, evidence, สิ่งที่แก้แล้วและค้างใน index การมีไฟล์ครบทุกฉากหรือเล่นครบเวลาเป็นเพียง coverage; placeholder ที่ยังพิสูจน์การกระทำหรือวิธีเล่าไม่ได้ให้ระบุ unverified พร้อมงานต่อ เกณฑ์นี้ใช้ตามขอบเขตเดิม ไม่ขยายงานฉากเดียวเป็นทั้งตอน
+
 ## สัดส่วนและ perspective ในบอร์ด
 
 ก่อนวาง depth, ปรับขนาดภาพ หรือรีวิว render อ่าน [หลักสัดส่วนและ perspective](scale-and-perspective-principles.md) ใช้ scale baseline และ projection contract revision จาก Film/เจ้าของ library แล้วเติม geography รายช็อต: floor/seat plane, camera height/eye level, horizon/vanishing directions เมื่อเกี่ยวข้อง, ตำแหน่งและระยะ FG/MG/BG, contact anchors และใกล้–ไกลสุดของ motion แสดงคน สัตว์ เฟอร์นิเจอร์และของถือเทียบกันบนระนาบเดียวก่อนจัด perspective; ขนาดที่ยังไม่ทราบให้ระบุ estimated/missing เพื่อให้ Boss ตรวจต่อ

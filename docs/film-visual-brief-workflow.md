@@ -18,13 +18,26 @@
 
 ก่อนเลือกหรือแก้ medium/compositing/camera/light strategy อ่าน [dev findings ของ Boss](dev-findings.md) ที่เกี่ยวข้องและทำตามวงจรตรวจซ้ำในเอกสารนั้น ผูก finding IDs กับ visual decision และผลตัดสินใน brief โดยตรวจขอบเขต branch/commit ของหลักฐานกับ checkout เป้าหมาย
 
-1. **อ่านเรื่องก่อนเลือกเทคนิค**: อ่าน AGENTS.md, [editorial workflow](editorial-workflow.md), script/review revision ที่ตรงกัน และ index/ฉากข้างเคียงที่มี รักษา beat/clue/claim IDs, story timing และข้อมูลที่ต้องซ่อน ถ้ารับ draft ให้ระบุ factual gaps ที่กระทบภาพ จบเมื่อรู้ว่าคนดูต้องเห็น/รู้สึก/เข้าใจอะไรในทุกฉากที่รับทำ
+1. **อ่านเรื่องก่อนเลือกเทคนิค**: อ่าน AGENTS.md, [editorial workflow](editorial-workflow.md), script/review revision ที่ตรงกัน และ index/ฉากข้างเคียงที่มี รักษา beat/clue/claim IDs, story timing และข้อมูลที่ต้องซ่อน ถ้ารับ draft ให้ระบุ factual gaps ที่กระทบภาพ วาง [visual progression](#visual-progression-before-asset-selection) ก่อน map asset จบเมื่อรู้ว่าคนดูต้องเห็น/รู้สึก/เข้าใจอะไรในทุกฉากที่รับทำ
 2. **ตรวจ checkout เป้าหมาย**: อ่าน `package.json`, `npm ls --depth=0`, `npx remotion versions`, scene types/validator/renderer และ shared asset owners ตาม [Remotion toolkit](remotion-toolkit.md) ตรวจ license ของ resource ที่จะเสนอ แยก `existing-integrated`, `exists-unintegrated`, `missing`, `unknown` พร้อม code paths และ branch/commit ที่ตรวจ แพ็กเกจ extraneous หรือมีแค่ใน node_modules ไม่ใช่ dependency ที่รับประกันจาก clean install จบเมื่อแต่ละความสามารถสำคัญมีหลักฐานหรือคำถามตรวจต่อที่ชัด
 3. **เลือกแนวทางรายฉาก**: ระบุ visual purpose, mood/value/color key และ medium แยกองค์ประกอบ ใช้ 2D, 3D หรือ hybrid ได้ทั้ง set, character และ prop ตาม [กฎปัจจุบัน](boss-asset-workflow.md#กฎการผลิตล่าสุดของผู้ใช้) เลือก Three.js เมื่อ spatial parallax, การหมุนมองด้านใหม่, occlusion หรือแสงเงาเชิงพื้นที่ช่วย beat จริง; เปรียบเทียบวิธีเรียบง่ายกว่าที่รักษาเจตนาได้ จบเมื่อทุกฉากมีทางเลือกที่แนะนำและเหตุผล ไม่ใช่แค่รายการตัวเลือกให้ Mark ตัดสินใหม่
 4. **ทำ technical BA ของรอยต่อ**: ใช้ตารางด้านล่างกับวิธีที่เลือก แยก desired look, integration proposal และ tested evidence พร้อมงาน shared capability ที่ต้องสร้างก่อน scene จบเมื่อ Boss รู้ขอบเขต module/interface, dependency, risk และวิธีพิสูจน์ โดยยังเลือก implementation details ได้
 5. **ส่ง rough brief ให้ Mark**: เขียนไฟล์ตามรูปแบบด้านล่าง ลิงก์จาก sequence index ถ้ามี ส่ง script/review/brief revision เดียวกัน พร้อมข้อกำหนดที่ต้องรักษาและส่วนที่ Mark ตัดสินต่อได้ งานทั้งตอนต้องครอบคลุมลำดับทั้งตอน; งานฉากเดียวใช้เฉพาะฉากนั้นกับ boundary context จบเมื่อ Mark แตกบอร์ดได้โดยไม่ต้องเดา medium หรือวิธีผสานหลัก
 
 งานนี้เป็น planning ไม่ติดตั้ง package, สร้าง runtime หรือวาดบอร์ดละเอียดเป็นผลข้างเคียง ถ้าต้องทดลอง ให้ระบุ spike/blockout ที่เล็กที่สุดและ acceptance criteria สำหรับ Boss; ลงมือทดลองเองเมื่อได้รับมอบหมายเพิ่มและทำตาม workflow implementation
+
+## Visual progression before asset selection
+
+ก่อนเลือก asset วาง visual treatment ครบ sequence ที่รับทำ งานทั้งตอนครอบคลุมทั้งตอน; งานฉากเดียวใช้แผนเดิมและบริบทข้างเคียง ระบุใน brief เป็นตาราง:
+
+| Scene / beat refs | คนดูเห็นอะไรเกิดขึ้น | ข้อมูล / อารมณ์ที่พัฒนา | รูปแบบภาพและเหตุผล | สิ่งที่ซ้ำ / เหตุผลที่กลับมาใช้ |
+| --- | --- | --- | --- | --- |
+
+เลือกการกระทำ ปฏิสัมพันธ์ การสาธิต การเปรียบเทียบ แผนภาพ หรือภาพจำลองตามหน้าที่ของ beat แล้วจึง map library และงานที่ขาด การตรวจ checkout เป็นข้อมูล feasibility; หาก asset ยังไม่มี ให้เสนอ shared asset/capability และ fallback ที่รักษาหน้าที่ภาพ พร้อมงานเพิ่มและผลเสียที่ต้องแลก การลดความซับซ้อนต้องระบุว่าข้อมูลหรือ reveal ใดเปลี่ยนและปรับ brief/board ร่วมกับเจ้าของ
+
+ภาพเชิงข้อเท็จจริงอ้าง claim IDs และผล review เดิม แยกภาพจำลอง ตัวอย่างสมมติ และแผนภาพอธิบายให้คนดูเข้าใจสถานะนั้น; รายละเอียดที่ไม่มีหลักฐานส่งกลับ Preaw/Boat ตรวจ การสร้างภาพใหม่ไม่ให้อำนาจเพิ่มข้ออ้างหรือทำให้ภาพจำลองดูเป็นบันทึกเหตุการณ์จริง
+
+ก่อนส่ง `ready-for-mark` ตรวจตารางต่อเนื่อง: ทุกช่วงมีหน้าที่ภาพชัด ระบุช่วงที่ซ้ำการกระทำ/วิธีส่งข้อมูล เช่น ผู้บรรยายชี้การ์ดต่อเนื่อง แล้วแก้หรือให้เหตุผลด้านเรื่อง การเปลี่ยนมุม crop แสง หรือข้อความอย่างเดียวไม่ใช่หลักฐานว่าภาพพัฒนา ฉากห้องเดียวและการ์ดใช้ได้เมื่อทำหน้าที่นั้น; ไม่มีโควตาสถานที่ เทคนิค หรือความถี่ตัด บันทึกช่วงที่ต้องพิสูจน์ใน blockout ให้ Mark/Boss ตรวจต่อ ก่อน polish Film และ Mark ทบทวน sequence จริงในสองสัดส่วนและบันทึก shot refs, evidence, ปัญหาและข้อแก้ใน index; แยกการผ่านแผนจากการผ่าน runtime
 
 ## Technical BA: ต้องตอบอะไรเมื่อผสม 2D กับ Three.js
 
@@ -59,6 +72,11 @@ Target checkout: <branch + commit>; scope / adjacent boundaries: ...
 
 ## Visual intent
 Audience knowledge + mood; color/value key; camera language; conceal/reveal constraints
+
+## Visual progression
+Scene/beat refs; visible action; information/emotional change; visual form/reason;
+repetition/return rationale; missing assets and story-preserving alternatives;
+factual status and claim references for explanatory or reconstructed images
 
 ## Scene decisions
 | Scene / beat refs | Decision ID | Set / actors / props / effects medium | Framing / camera intent Short + Long | Light / shadow / color | Why / fallback |

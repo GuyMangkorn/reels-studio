@@ -50,6 +50,12 @@
 
 Foundation/capability PR ต้อง merge ก่อนเริ่ม branch ของฉากที่พึ่งมันจาก `main` ล่าสุด แยก issue ตาม dependency แทนคัดลอก foundation ไปทุก branch เมื่อแก้ interface ร่วม ให้ปรับ consumers และตรวจ regression ในขอบเขตที่ได้รับผลกระทบ การจบฉากกลาง sequence ใช้ cut/transition ตามบอร์ด ส่วน fade/loop ใช้ที่ปลาย output ที่จะเผยแพร่
 
+## สร้าง library ให้รองรับหน้าที่ภาพ
+
+เมื่อ map บอร์ดเข้ากับ library ให้บันทึก requirement ที่ยังขาดพร้อม shot/decision IDs เสนอการเพิ่มหรือขยาย shared asset/capability, dependency และต้นทุน/ความเสี่ยงเชิงคุณภาพ หากยังไม่วัดให้ระบุ estimated พร้อม fallback และผลต่อการกระทำ ข้อมูล และ reveal ส่ง material changes กลับ Film/Mark และอัปเดต brief/board ก่อนเปลี่ยนแผน การมี asset พร้อมใช้เพียงอย่างเดียวไม่ใช่เหตุให้แทนการสาธิตหรือเหตุการณ์ที่บอร์ดต้องการด้วยผู้บรรยายชี้การ์ด
+
+Blockout ต้องมี placeholder ที่แสดงการกระทำและวิธีส่งข้อมูลตาม [visual progression](film-visual-brief-workflow.md#visual-progression-before-asset-selection) พอให้ Film/Mark ตัดสินได้ ก่อน polish ส่ง sequence สองสัดส่วนให้ตรวจและบันทึก shot/frame refs, ผล review และข้อค้างใน index ถ้า placeholder ยังพิสูจน์หน้าที่ภาพไม่ได้ ให้ระบุ unverified และงานที่ต้องทำก่อนผ่าน review การผ่าน code/contact/continuity QA และการเล่นครบเวลาไม่ยืนยันว่าภาพเล่าเรื่องผ่าน
+
 ## ขั้นตอนทำงาน
 
 อ่านและอัปเดต [dev findings](dev-findings.md) ตามวงจรในเอกสารนั้นเมื่อพบ blocker, workaround หรือบทเรียนที่กระทบการเลือกเทคนิค/ออกแบบช็อต จดระหว่าง dev/blockout/QA และทบทวนสถานะก่อน PR; ใช้ finding IDs ส่งผลกลับ Film/Mark พร้อมลิงก์ brief/board ที่ได้รับผล
