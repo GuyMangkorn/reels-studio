@@ -225,25 +225,3 @@ These SHA-256 fingerprints identify the seven-file R4 snapshot reviewed above. A
 | ch06-script.md | a71357fdb2b7a9930538971ac5b40d9300e03d81db5eb5befed228ab3bbea7d5 |
 
 Change log FC-R4: rechecked the R3 year, enrollment-unit and Celsius findings against SRC001/002/005/006/008 and related chapter surfaces. The six VO year findings, enrollment unit, Celsius endpoints and episode-handoff year clarification are supported; R4 is factually ready for storyboard handoff, with user script approval separate.
-
-## Recheck R5 — punctuation impact
-
-- Revision reviewed: episode pack and C01–C06 **R5**, research R1. Preaw reports that all 72 VO blocks are word-identical to R4 after punctuation/whitespace normalization and that 94 internal periods became spaces. This pass reviewed the current R5 VO for meaning changes at regrouped clauses; it does not repeat the R4 source review for unchanged wording.
-- Verdict: **supported; no factual change found**. Joins preserve the scope and contrast in C01’s pairwise results; C02’s statement that no detected difference does not prove no effect; C04’s warning that the cited 30–38°C range is disputed and not home-temperature advice; C05’s attribution of side pressure as an unconfirmed proposal; and C06’s separation of observed outcomes from possible causes. No joined phrase turns a possibility into a fact, changes a comparison, or removes a material qualification. The year, enrollment and Celsius findings remain as reviewed at R4.
-- No punctuation correction is required for factual accuracy. This is an impact check, not a new timing/audio review. R4’s source access limits and factual verdicts carry forward.
-
-### Fingerprints of files reviewed at R5
-
-SHA-256 identifies the current seven-file R5 snapshot. R4 fingerprints and findings above are preserved as history.
-
-| File | SHA-256 |
-| --- | --- |
-| episode-script.md | 50f44bb058aa60744af156d91ec662999cc47063d5b6b542d4faa769efdf5f35 |
-| ch01-script.md | 53dc72945012a8c09682db0c267a50584ca55935a5d93fabda798b90c0962ce7 |
-| ch02-script.md | a0bc48f6167f2ae6dc328393d5581e5b42d66adc58f278f18d34eab1fb96540e |
-| ch03-script.md | 7b9738baf1076af02c3b9ab3c232902be95942c3d88ff10c463929449cac83da |
-| ch04-script.md | 86784f470109f299a2af33e3b1bf15a2b003fad520a584592859738c1024f09f |
-| ch05-script.md | 83de1b64cc9e1bcbd29f2aedf7e0dc6532dfceaf1b874733761c14a8163d3f0b |
-| ch06-script.md | fb408d0f744de5edb3053b1aa5babe056388495ca31d6e9644d40d95c7b6ba0b |
-
-Change log FC-R5: examined the factual effect of the punctuation regrouping across all 72 current VO blocks. No claim, comparison, causal implication or material qualification changed; R4 evidence checks carry forward.
