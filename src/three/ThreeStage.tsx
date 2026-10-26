@@ -1,7 +1,7 @@
 import {ThreeCanvas} from '@remotion/three';
 import {useCallback, useEffect, useLayoutEffect, useRef, useState, type ReactNode} from 'react';
 import {useDelayRender} from 'remotion';
-import {CanvasTexture, LinearSRGBColorSpace, PerspectiveCamera} from 'three';
+import {CanvasTexture, LinearSRGBColorSpace, SRGBColorSpace, PerspectiveCamera} from 'three';
 import {useThree} from '@react-three/fiber';
 import {Disc} from './primitives/Disc';
 import {
@@ -15,6 +15,8 @@ import {
 import {lampFlickerAt} from './lighting';
 import {pixelPointToWorld} from './space';
 import {CutoutPlane, type CutoutPlaneData} from './CutoutPlane';
+import {SvgTexturePlane, type SvgTextureLayerData} from './SvgTexturePlane';
+import {WatcherForeground} from './backgrounds/parts';
 
 type ThreeStageProps = {
   width: number;
@@ -24,9 +26,10 @@ type ThreeStageProps = {
   duration: number;
   camera?: CameraConfig;
   impact?: ImpactConfig;
-  lamp?: {x: number; y: number};
+  lamp?: {x: number; y: number; z?: number};
   children?: ReactNode;
   cutouts?: CutoutPlaneData[];
+  textureLayers?: SvgTextureLayerData[];
 };
 
 const rasterizeCutout = (cutout: CutoutPlaneData) =>
@@ -44,7 +47,7 @@ const rasterizeCutout = (cutout: CutoutPlaneData) =>
       context.clearRect(0, 0, canvas.width, canvas.height);
       context.drawImage(image, 0, 0, canvas.width, canvas.height);
       const texture = new CanvasTexture(canvas);
-      texture.colorSpace = LinearSRGBColorSpace;
+      texture.colorSpace = SRGBColorSpace;
       texture.needsUpdate = true;
       texture.anisotropy = 8;
       resolve(texture);
@@ -53,7 +56,48 @@ const rasterizeCutout = (cutout: CutoutPlaneData) =>
     image.src = `data:image/svg+xml;charset=utf-8,${encodeURIComponent(cutout.svg)}`;
   });
 
+const rasterizeSvgLayer = (layer: SvgTextureLayerData) =>
+  new Promise<CanvasTexture>((resolve, reject) => {
+    const image = new Image();
+    image.onload = () => {
+      const canvas = document.createElement('canvas');
+      canvas.width = Math.max(1, layer.textureWidth);
+      canvas.height = Math.max(1, layer.textureHeight);
+      const context = canvas.getContext('2d');
+      if (!context) {
+        reject(new Error(`Could not create a 2D canvas for SVG layer ${layer.id}`));
+        return;
+      }
+      context.clearRect(0, 0, canvas.width, canvas.height);
+      context.drawImage(image, 0, 0, canvas.width, canvas.height);
+      const texture = new CanvasTexture(canvas);
+      // The linear WebGL output expects color-authored SVG channel values as-is.
+      texture.colorSpace = LinearSRGBColorSpace;
+      texture.needsUpdate = true;
+      texture.anisotropy = 8;
+      resolve(texture);
+    };
+    image.onerror = () => reject(new Error(`Could not load ${layer.id} as an SVG texture`));
+    image.src = `data:image/svg+xml;charset=utf-8,${encodeURIComponent(layer.svg)}`;
+  });
+
 const CutoutTextureCommit = ({
+  revision,
+  onPainted,
+}: {
+  revision: string;
+  onPainted: (revision: string) => void;
+}) => {
+  const advance = useThree((store) => store.advance);
+  useLayoutEffect(() => {
+    if (!revision) return;
+    advance(performance.now());
+    requestAnimationFrame(() => onPainted(revision));
+  }, [advance, onPainted, revision]);
+  return null;
+};
+
+const SvgLayerTextureCommit = ({
   revision,
   onPainted,
 }: {
@@ -94,11 +138,11 @@ const SharedLighting = ({
   width: number;
   height: number;
   impactFlicker: number;
-  lamp?: {x: number; y: number};
+  lamp?: {x: number; y: number; z?: number};
 }) => {
   const flicker = lampFlickerAt(frame) * (1 + impactFlicker * 0.65);
   const lampPosition = lamp
-    ? pixelPointToWorld(width * lamp.x, height * lamp.y, width, height, 1.8)
+    ? pixelPointToWorld(width * lamp.x, height * lamp.y, width, height, lamp.z ?? -2.42)
     : null;
 
   return (
@@ -108,20 +152,26 @@ const SharedLighting = ({
         <>
           <pointLight
             color="#ffe0ae"
-            intensity={1.45 * flicker}
-            distance={16}
+            intensity={3.2 * flicker}
+            distance={10}
             decay={2}
             position={lampPosition}
           />
           <Disc
-            radius={0.52}
+            radius={0.92}
             color="#ffe0ae"
-            opacity={0.2 * flicker}
-            position={[lampPosition[0], lampPosition[1], lampPosition[2] - 0.04]}
+            opacity={0.12 * flicker}
+            position={[lampPosition[0], lampPosition[1], lampPosition[2] - 0.035]}
+          />
+          <Disc
+            radius={0.48}
+            color="#ffe0ae"
+            opacity={0.18 * flicker}
+            position={[lampPosition[0], lampPosition[1], lampPosition[2] - 0.03]}
           />
         </>
       )}
-      <pointLight color="#d0dcff" intensity={0.75} distance={22} decay={2} position={[-4, 5, 3]} />
+      <pointLight color="#d0dcff" intensity={0.82} distance={22} decay={2} position={[-4, 5, 1]} />
     </>
   );
 };
@@ -137,18 +187,32 @@ export const ThreeStage = ({
   lamp,
   children,
   cutouts = [],
+  textureLayers = [],
 }: ThreeStageProps) => {
   const {delayRender, continueRender, cancelRender} = useDelayRender();
   const [cutoutTextures, setCutoutTextures] = useState<Record<string, CanvasTexture>>({});
   const [loadedCutoutRevision, setLoadedCutoutRevision] = useState('');
-  const pendingReady = useRef<{revision: string; release: () => void} | null>(null);
+  const [layerTextures, setLayerTextures] = useState<Record<string, CanvasTexture>>({});
+  const [loadedLayerRevision, setLoadedLayerRevision] = useState('');
+  const pendingCutoutReady = useRef<{revision: string; release: () => void} | null>(null);
+  const pendingLayerReady = useRef<{revision: string; release: () => void} | null>(null);
   const cutoutsRef = useRef(cutouts);
   cutoutsRef.current = cutouts;
+  const layersRef = useRef(textureLayers);
+  layersRef.current = textureLayers;
   const cutoutRevision = JSON.stringify(cutouts.map(({id, svg}) => [id, svg]));
+  const layerRevision = JSON.stringify(
+    textureLayers.map(({id, svg, textureWidth, textureHeight}) => [
+      id,
+      svg,
+      textureWidth,
+      textureHeight,
+    ]),
+  );
   const onCutoutsPainted = useCallback((revision: string) => {
-    const pending = pendingReady.current;
+    const pending = pendingCutoutReady.current;
     if (!pending || pending.revision !== revision) return;
-    pendingReady.current = null;
+    pendingCutoutReady.current = null;
     pending.release();
   }, []);
 
@@ -182,7 +246,7 @@ export const ThreeStage = ({
           createdTextures.forEach((texture) => texture.dispose());
           return;
         }
-        pendingReady.current = {revision: cutoutRevision, release};
+        pendingCutoutReady.current = {revision: cutoutRevision, release};
         setCutoutTextures(Object.fromEntries(entries));
         setLoadedCutoutRevision(cutoutRevision);
       })
@@ -194,16 +258,78 @@ export const ThreeStage = ({
 
     return () => {
       cancelled = true;
-      if (pendingReady.current?.revision === cutoutRevision) pendingReady.current = null;
+      if (pendingCutoutReady.current?.revision === cutoutRevision)
+        pendingCutoutReady.current = null;
       release();
     };
   }, [cancelRender, continueRender, cutoutRevision, delayRender]);
+
+  const onLayersPainted = useCallback((revision: string) => {
+    const pending = pendingLayerReady.current;
+    if (!pending || pending.revision !== revision) return;
+    pendingLayerReady.current = null;
+    pending.release();
+  }, []);
+
+  useLayoutEffect(() => {
+    if (textureLayers.length === 0) {
+      setLayerTextures({});
+      setLoadedLayerRevision(layerRevision);
+      return;
+    }
+
+    const handle = delayRender(
+      'Rasterizing the legacy SVG background layers for the Three.js scene',
+    );
+    let cancelled = false;
+    let released = false;
+    const createdTextures: CanvasTexture[] = [];
+    const release = () => {
+      if (released) return;
+      released = true;
+      continueRender(handle);
+    };
+
+    Promise.all(
+      layersRef.current.map(async (layer) => {
+        const texture = await rasterizeSvgLayer(layer);
+        createdTextures.push(texture);
+        return [layer.id, texture] as const;
+      }),
+    )
+      .then((entries) => {
+        if (cancelled) {
+          createdTextures.forEach((texture) => texture.dispose());
+          return;
+        }
+        pendingLayerReady.current = {revision: layerRevision, release};
+        setLayerTextures(Object.fromEntries(entries));
+        setLoadedLayerRevision(layerRevision);
+      })
+      .catch((error: unknown) => {
+        createdTextures.forEach((texture) => texture.dispose());
+        if (!cancelled) cancelRender(error instanceof Error ? error : new Error(String(error)));
+        release();
+      });
+
+    return () => {
+      cancelled = true;
+      if (pendingLayerReady.current?.revision === layerRevision) pendingLayerReady.current = null;
+      release();
+    };
+  }, [cancelRender, continueRender, delayRender, layerRevision]);
 
   useEffect(() => {
     return () => {
       Object.values(cutoutTextures).forEach((texture) => texture.dispose());
     };
   }, [cutoutTextures]);
+
+  useEffect(() => {
+    return () => {
+      Object.values(layerTextures).forEach((texture) => texture.dispose());
+    };
+  }, [layerTextures]);
 
   const fov = fovForAspect(width, height);
   const baseState = threeCameraAt(camera?.preset, frame, duration, fps);
@@ -244,11 +370,32 @@ export const ThreeStage = ({
         lamp={lamp}
       />
       <CutoutTextureCommit revision={loadedCutoutRevision} onPainted={onCutoutsPainted} />
+      <SvgLayerTextureCommit revision={loadedLayerRevision} onPainted={onLayersPainted} />
+      {textureLayers.map((layer) => {
+        const texture = layerTextures[layer.id];
+        return texture ? (
+          <SvgTexturePlane
+            key={layer.id}
+            layer={layer}
+            texture={texture}
+            compositionWidth={width}
+            compositionHeight={height}
+          />
+        ) : null;
+      })}
       {cutouts.map((cutout) => {
         const texture = cutoutTextures[cutout.id];
         return texture ? <CutoutPlane key={cutout.id} {...cutout} texture={texture} /> : null;
       })}
       {children}
+      {camera?.preset === 'watcher' && (
+        <WatcherForeground
+          width={width}
+          height={height}
+          place={camera.place ?? 'curtains'}
+          strength={cameraState.foregroundBlur}
+        />
+      )}
     </ThreeCanvas>
   );
 };

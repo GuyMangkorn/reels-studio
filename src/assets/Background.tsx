@@ -16,8 +16,8 @@ export type BackgroundName =
   | 'houseInterior'
   | 'basement';
 export type TimeOfDay = 'day' | 'dusk' | 'night' | 'moonlight';
-type Palette = {sky: string; far: string; mid: string; near: string; accent: string};
-const palettes: Record<TimeOfDay, Palette> = {
+export type Palette = {sky: string; far: string; mid: string; near: string; accent: string};
+export const palettes: Record<TimeOfDay, Palette> = {
   day: {sky: '#f6e8d5', far: '#d8e0c2', mid: '#a9d0b8', near: '#83b69e', accent: '#ffce89'},
   dusk: {sky: '#B5A1C5', far: '#A99CB2', mid: '#8185ad', near: '#66667F', accent: '#FFD166'},
   moonlight: {sky: '#424668', far: '#686b92', mid: '#8185ad', near: '#555e83', accent: '#D6E5FF'},

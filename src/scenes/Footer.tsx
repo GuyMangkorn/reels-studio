@@ -61,7 +61,7 @@ export const Footer = ({
           title={label}
           lang="th"
           style={{
-            fontSize: 19,
+            fontSize: 24,
             lineHeight: `${layout.footerHeight}px`,
             color: night ? '#fff1da' : '#49445c',
             maxWidth: '30%',

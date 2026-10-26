@@ -58,7 +58,9 @@ test('kitchen lie beat is anchored on the floor below the counter', () => {
     (scene) => scene.bg === 'houseInterior' && scene.background?.variant === 'kitchen',
   );
   const actor = kitchen?.actors.find((item) => item.type === 'narrator');
-  assert.ok(actor && 'y' in actor && actor.y >= 0.8 && actor.y <= 0.85);
+  assert.ok(
+    actor && 'y' in actor && typeof actor.y === 'number' && actor.y >= 0.8 && actor.y <= 0.85,
+  );
 });
 test('staircase descends through two complete turns into the central well', () => {
   const first = staircaseSteps[0];

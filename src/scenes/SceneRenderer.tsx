@@ -26,6 +26,8 @@ import {ThreeStage} from '../three/ThreeStage';
 import type {CutoutPlaneData} from '../three/CutoutPlane';
 import {threeBackgroundComponents} from '../three/backgrounds/components';
 import {resolveThreeBackground} from '../three/backgrounds/registry';
+import {createSceneTextureLayers} from '../three/textureLayers';
+import {setLayout} from '../assets/backgrounds/layout';
 import {Subtitles} from './Subtitles';
 import {
   actorIdentity,
@@ -87,6 +89,9 @@ const SceneView = ({
   const mouth = narration ? mouthAt(narration.amplitude, audioFrame) : 0;
   const ink = night ? '#fff1da' : '#49445c';
   const povState = bedroomPOVAt(poseFrame, fps, duration, scene.background?.blanketPull);
+  const textureLayers = threeBackground
+    ? createSceneTextureLayers(scene, width, height, poseFrame, fps, duration)
+    : [];
   const props = scene.props?.map((p, i) => (
     <SceneProp
       key={i}
@@ -120,7 +125,7 @@ const SceneView = ({
       height,
       seat,
     );
-    const position =
+    const scenePosition =
       pov && actor.depth === 'bedEnd'
         ? bedEndPlacement(basePosition, actor, height, povState)
         : scene.bg === 'oldHouseExterior'
@@ -129,24 +134,48 @@ const SceneView = ({
               actor,
               width,
               height,
-              threeBackground === 'exterior' ? 0.4 : undefined,
+              threeBackground === 'exterior' ? 0.82 : undefined,
             )
           : scene.bg === 'houseInterior'
             ? interiorPlacement(basePosition, actor, width, height)
             : basePosition;
+    const windowLayout = setLayout(width, height);
+    const position =
+      scene.bg === 'houseInterior' &&
+      scene.background?.variant === 'window' &&
+      actor.depth === 'window'
+        ? {
+            ...scenePosition,
+            x: windowLayout.x + 790 * windowLayout.scale,
+            y: 840 * windowLayout.scale,
+            scale: (actor.scale ?? 1) * windowLayout.scale,
+          }
+        : scene.bg === 'houseInterior' && scene.background?.variant === 'staircase'
+          ? {...scenePosition, scale: scenePosition.scale, y: (actor.y ?? 0.5) * height}
+          : scenePosition;
     if (actor.type === 'narrator') {
       const lying = poseWeightAt(actorPoseTrack(actor, fps, previousPose), 'lie', poseFrame, fps);
       position.y = lieFloorAnchor(position.y, position.scale, lying);
     }
-    const artworkWidth = actor.type === 'narrator' ? 320 : actor.type === 'ghost' ? 380 : 300;
-    const artworkHeight = actor.type === 'narrator' ? 430 : actor.type === 'ghost' ? 280 : 210;
-    const footOffset = actor.type === 'narrator' ? 200 : actor.type === 'ghost' ? 120 : 95;
+    const crawler = actor.type === 'ghost' && actor.ghostVariant === 'crawler';
+    const artworkWidth =
+      actor.type === 'narrator' ? 320 : actor.type === 'ghost' ? (crawler ? 420 : 380) : 300;
+    const artworkHeight =
+      actor.type === 'narrator' ? 430 : actor.type === 'ghost' ? (crawler ? 450 : 280) : 210;
+    const footOffset =
+      actor.type === 'narrator' ? 200 : actor.type === 'ghost' ? (crawler ? 225 : 120) : 95;
     const rigPosition = threeBackground
       ? {
           ...position,
           x: (artworkWidth / 2) * position.scale,
           y:
-            (actor.type === 'narrator' ? 415 : actor.type === 'ghost' ? 260 : 200) * position.scale,
+            (actor.type === 'narrator'
+              ? 415
+              : actor.type === 'ghost'
+                ? crawler
+                  ? 300
+                  : 260
+                : 200) * position.scale,
         }
       : position;
     const pose = poseAt(actor, poseFrame, fps, previousPose);
@@ -236,9 +265,11 @@ const SceneView = ({
           ? -9.2
           : actor.depth === 'bedEnd'
             ? 3.4
-            : threeBackground === 'exterior'
-              ? 2.4
-              : 1.4;
+            : scene.bg === 'houseInterior' && scene.background?.variant === 'staircase'
+              ? -2.8
+              : threeBackground === 'exterior'
+                ? 2.4
+                : 1.4;
       cutouts.push({
         id: identity,
         width,
@@ -283,12 +314,13 @@ const SceneView = ({
           impact={scene.impact}
           lamp={
             threeBackground === 'drawingRoom'
-              ? {x: 0.82, y: 0.55}
+              ? {x: 0.82, y: 0.55, z: -2.42}
               : threeBackground === 'window'
                 ? {x: 0.2, y: 0.63}
                 : undefined
           }
           cutouts={cutouts}
+          textureLayers={textureLayers}
         >
           {(() => {
             const Background3D = threeBackgroundComponents[threeBackground];

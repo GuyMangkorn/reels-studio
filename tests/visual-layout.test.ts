@@ -35,15 +35,16 @@ test('bed-end figures follow set scale instead of foreground actor scale', () =>
     const actor = {type: 'ghost', ghostVariant: 'seatedPair', scale: 1.8} as const;
     const base = layoutActor(actor, 0.5, w, h);
     const placed = bedEndPlacement(base, actor, h, bedroomPOVAt(0, 30, 90));
-    assert.ok(placed.scale <= (h / 1920) * 1.8 * 0.51);
+    assert.ok(placed.scale <= (h / 1920) * 1.8 * 0.82);
   }
 });
 test('point keeps a visibly bent elbow while the forearm points outward', () => {
   for (const frame of [0, 30, 60]) {
     const pose = samplePose('point', frame, 30);
-    assert.ok(Math.abs(pose.lowerArmR) >= 30);
-    assert.ok(pose.upperArmR + pose.lowerArmR < -65);
-    assert.ok(pose.upperArmR + pose.lowerArmR > -110);
+    assert.ok(pose.upperArmR < -60);
+    assert.ok(pose.lowerArmR > 35);
+    assert.ok(pose.upperArmR + pose.lowerArmR > -35);
+    assert.ok(pose.upperArmR + pose.lowerArmR < -10);
   }
 });
 
@@ -58,9 +59,17 @@ test('exterior people fit one floor and stand within the path in both layouts', 
     for (const x of [0.3, 0.55, 0.66]) {
       const placed = exteriorPlacement(layoutActor(actor, x, w, h), actor, w, h);
       assert.ok((430 * placed.scale) / (200 * exteriorScale(w, h)) < 0.5);
-      assert.ok(placed.x > w * 0.4 && placed.x < w * 0.6);
+      const pathCenter = w / 2 - 80 * exteriorScale(w, h);
+      const pathHalfWidth = exteriorScale(w, h) * (72 + (300 - 72) * ((0.84 - 0.79) / (1 - 0.79)));
+      assert.ok(Math.abs(placed.x - pathCenter) < pathHalfWidth);
       assert.equal(placed.y, h * 0.84);
     }
+    const leftBase = layoutActor(actor, 0.35, w, h);
+    const rightBase = layoutActor(actor, 0.66, w, h);
+    const left = exteriorPlacement(leftBase, actor, w, h);
+    const right = exteriorPlacement(rightBase, actor, w, h);
+    const normalizedGap = (rightBase.x - leftBase.x) / w;
+    assert.ok(right.x - left.x >= normalizedGap * 480 * exteriorScale(w, h) - 0.001);
   }
 });
 test('ghost silhouettes keep the requested eerie poses and connected seated figures', () => {

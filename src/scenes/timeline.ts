@@ -12,7 +12,7 @@ import {
   type PoseTransition,
 } from '../rig/poses';
 import {HUMAN_HIP_FROM_ANCHOR} from '../rig/geometry';
-import {cameraPresetNames} from '../camera/Camera';
+import {cameraPresetNames, watcherPlaceNames} from '../camera/Camera';
 import type {Actor, Timeline} from './types';
 const bgNames = Object.keys(backgroundRegistry);
 const propNames = Object.keys(propRegistry);
@@ -190,6 +190,12 @@ export function validateTimeline(value: unknown): asserts value is Timeline {
         !cameraPresetNames.includes(String(c.preset) as (typeof cameraPresetNames)[number])
       )
         fail(`${path}.camera.preset`, 'unknown camera preset');
+      if (
+        c.place !== undefined &&
+        (c.preset !== 'watcher' ||
+          !watcherPlaceNames.includes(String(c.place) as (typeof watcherPlaceNames)[number]))
+      )
+        fail(`${path}.camera.place`, 'place requires watcher and a known foreground');
       const pair = (v: unknown): v is [number, number] =>
         Array.isArray(v) && v.length === 2 && v.every(finite);
       if (c.zoom !== undefined && (!pair(c.zoom) || c.zoom.some((v) => v < 1 || v > 4)))

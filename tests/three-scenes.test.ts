@@ -1,12 +1,19 @@
 import {test} from 'node:test';
 import assert from 'node:assert/strict';
-import {fovForAspect, threeCameraAt, type CameraPresetName} from '../src/camera/Camera';
+import {
+  fovForAspect,
+  threeCameraAt,
+  watcherPlaceNames,
+  type CameraPresetName,
+} from '../src/camera/Camera';
 import {validateTimeline} from '../src/scenes/timeline';
 import {lampFlickerAt} from '../src/three/lighting';
 import {resolveThreeBackground} from '../src/three/backgrounds/registry';
 import {pixelSizeToWorld, stageMetrics} from '../src/three/space';
 import {windowMoonPixelPoint} from '../src/three/backgrounds/Window3D';
 import {linearOutputColor} from '../src/three/color';
+import {createSceneTextureLayers} from '../src/three/textureLayers';
+import type {Scene} from '../src/scenes/types';
 import showcase from '../scripts/haunted-house-p1.json';
 
 const presets: CameraPresetName[] = ['dolly', 'truck', 'povCreep', 'peek', 'watcher'];
@@ -34,6 +41,22 @@ test('JSON camera schema accepts every preset and rejects unknown presets', () =
   assert.throws(() => validateTimeline(malformed), /camera\.preset/);
 });
 
+test('watcher camera schema accepts known foreground places and rejects misplaced values', () => {
+  for (const place of watcherPlaceNames) {
+    const timeline = structuredClone(showcase) as any;
+    timeline[0].camera = {preset: 'watcher', place};
+    assert.doesNotThrow(() => validateTimeline(timeline), place);
+  }
+
+  const invalid = structuredClone(showcase) as any;
+  invalid[0].camera = {preset: 'watcher', place: 'attic'};
+  assert.throws(() => validateTimeline(invalid), /camera\.place/);
+
+  const misplaced = structuredClone(showcase) as any;
+  misplaced[0].camera = {preset: 'dolly', place: 'curtains'};
+  assert.throws(() => validateTimeline(misplaced), /camera\.place/);
+});
+
 test('3D camera presets are deterministic, aspect-independent poses with a dolly default', () => {
   for (const preset of presets) {
     const first = threeCameraAt(preset, 42, 90, 30);
@@ -44,6 +67,14 @@ test('3D camera presets are deterministic, aspect-independent poses with a dolly
   }
 
   assert.equal(threeCameraAt(undefined, 0, 90, 30).preset, 'dolly');
+});
+
+test('each 3D camera preset moves over a shot instead of holding a static frame', () => {
+  for (const preset of presets) {
+    const first = threeCameraAt(preset, 0, 91, 30);
+    const last = threeCameraAt(preset, 90, 91, 30);
+    assert.notDeepEqual(first.position, last.position, `${preset} camera position should move`);
+  }
 });
 
 test('lamp light follows the specified oscillation and briefly drops out every 97 frames', () => {
@@ -69,6 +100,42 @@ test('3D scene routing selects reusable haunted-house sets and falls back elsewh
   assert.equal(resolveThreeBackground(scene('houseInterior', 'window')), 'window');
   assert.equal(resolveThreeBackground(scene('room')), null);
   assert.equal(resolveThreeBackground(scene('basement')), null);
+});
+
+test('3D scene routing supplies detailed texture layers and leaves unhandled sets on 2D', () => {
+  const expectedLayers = [
+    {variant: 'oldHouseExterior', id: 'exterior-house'},
+    {variant: 'drawing', id: 'interior-furnishings'},
+    {variant: 'dining', id: 'interior-furnishings'},
+    {variant: 'kitchen', id: 'interior-furnishings'},
+    {variant: 'staircase', id: 'stair-tread-0'},
+    {variant: 'bedroomPOV', id: 'bedroom-bed-rails'},
+    {variant: 'window', id: 'interior-wall-art'},
+  ] as const;
+
+  for (const {variant, id} of expectedLayers) {
+    const scene = (variant === 'oldHouseExterior'
+      ? showcase[0]
+      : {...showcase[2], background: {variant}}) as unknown as Scene;
+    const layers = createSceneTextureLayers(scene, 1080, 1920, 0, 30, 90);
+    assert.ok(
+      layers.some((layer) => layer.id === id),
+      `${variant} should retain its 2D art`,
+    );
+    assert.equal(new Set(layers.map((layer) => layer.id)).size, layers.length);
+  }
+
+  assert.deepEqual(
+    createSceneTextureLayers(
+      {...showcase[0], bg: 'basement'} as unknown as Scene,
+      1080,
+      1920,
+      0,
+      30,
+      90,
+    ),
+    [],
+  );
 });
 
 test('window-depth actors are valid only for the reusable window scene', () => {

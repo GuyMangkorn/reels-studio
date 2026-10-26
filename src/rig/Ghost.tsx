@@ -25,13 +25,13 @@ const CrawlerLimb = ({x, y, side, phase}: {x: number; y: number; side: -1 | 1; p
   const lower = side * (-34 + Math.sin(phase + 0.9) * 24);
   return (
     <g data-crawler-joint transform={`translate(${x} ${y}) rotate(${upper})`}>
-      <path d="M0 0 L0 82" fill="none" strokeWidth={10} strokeLinecap="round" />
-      <circle data-crawler-joint cx={0} cy={82} r={7} fill="#A894CC" stroke="none" />
-      <g transform={`translate(0 82) rotate(${lower})`}>
-        <path d="M0 0 L0 88" fill="none" strokeWidth={8} strokeLinecap="round" />
-        <circle data-crawler-joint cx={0} cy={88} r={6} fill="#8C71AD" stroke="none" />
+      <path d="M0 0 L0 100" fill="none" strokeWidth={12} strokeLinecap="round" />
+      <circle data-crawler-joint cx={0} cy={100} r={8} fill="#A894CC" stroke="none" />
+      <g transform={`translate(0 100) rotate(${lower})`}>
+        <path d="M0 0 L0 112" fill="none" strokeWidth={9} strokeLinecap="round" />
+        <circle data-crawler-joint cx={0} cy={112} r={7} fill="#8C71AD" stroke="none" />
         <path
-          d={`M0 88 L${side * 24} 100 M0 88 L${side * 10} 112 M0 88 L${side * 32} 92`}
+          d={`M0 112 L${side * 30} 128 M0 112 L${side * 12} 145 M0 112 L${side * 42} 118`}
           fill="none"
           strokeWidth={5}
           strokeLinecap="round"
@@ -105,17 +105,22 @@ export const Ghost = ({
   frame?: number;
   fps?: number;
 }) => {
+  const crawling = variant === 'crawler';
+  const svgWidth = crawling ? 420 : 380;
+  const svgHeight = crawling ? 450 : 280;
+  const viewBox = crawling ? '-210 -300 420 450' : '-190 -260 380 280';
+  const topAnchor = crawling ? 300 : 260;
   return (
     <svg
       aria-label={`Ghost ${variant}`}
       xmlns="http://www.w3.org/2000/svg"
-      viewBox="-190 -260 380 280"
-      width={380 * scale}
-      height={280 * scale}
+      viewBox={viewBox}
+      width={svgWidth * scale}
+      height={svgHeight * scale}
       style={{
         position: 'absolute',
         left: x - 190 * scale,
-        top: y - 260 * scale,
+        top: y - topAnchor * scale,
         overflow: 'visible',
         opacity: Math.max(0, Math.min(1, opacity)),
       }}

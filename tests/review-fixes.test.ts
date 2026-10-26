@@ -115,8 +115,8 @@ test('bedroom POV depth motion and blanket pull remain deterministic when seekin
       ),
     );
     assert.ok(endHtml.includes('data-blanket-motion="toward-foot"'));
-    assert.match(endHtml, /translate\(0 160\)/);
-    assert.doesNotMatch(endHtml, /translate\(0 -160\)/);
+    assert.match(endHtml, /translate\(0 220\)/);
+    assert.doesNotMatch(endHtml, /translate\(0 -220\)/);
     assert.doesNotMatch(html, /M210 1810|M355 1480/);
   }
 });

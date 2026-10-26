@@ -8,9 +8,12 @@ export function exteriorPlacement<T extends {x: number; y: number; scale: number
   h: number,
   scaleFactor = 0.28,
 ): T {
+  const pathCenter = w / 2 - 80 * exteriorScale(w, h);
   return {
     ...base,
-    x: w * (0.3 + 0.4 * (base.x / w)),
+    // Keep the pair spaced in the same world units in both aspect ratios.
+    // Scaling the raw composition width made them overlap in portrait.
+    x: pathCenter + (base.x / w - 0.5) * 480 * exteriorScale(w, h),
     y: h * (actor.y ?? 0.84),
     scale: exteriorScale(w, h) * scaleFactor * (actor.scale ?? 1),
   };
@@ -67,6 +70,8 @@ const Porch = () => (
 export const oldHouseExterior: BackgroundBuilder = ({w, h, time, options}) => {
   const dark = time !== 'day';
   const lit = options.windowLights ?? dark;
+  const scale = exteriorScale(w, h);
+  const doorX = w / 2 - 80 * scale;
   return {
     far: (
       <>
@@ -97,7 +102,8 @@ export const oldHouseExterior: BackgroundBuilder = ({w, h, time, options}) => {
     near: (
       <>
         <path
-          d={`M${w * 0.44} ${h * 0.79} L${w * 0.27} ${h} H${w * 0.76} L${w * 0.57} ${h * 0.79}Z`}
+          data-path-to-door
+          d={`M${doorX - 72 * scale} ${h * 0.79} L${doorX - 300 * scale} ${h} H${doorX + 300 * scale} L${doorX + 72 * scale} ${h * 0.79}Z`}
           fill={dark ? '#9B8B9F' : '#DEC8AD'}
         />
         <path

@@ -2,6 +2,7 @@ import {Plane, ScreenPlane} from '../primitives/Plane';
 import {Disc} from '../primitives/Disc';
 import {pixelPointToWorld, pixelSizeToWorld, stageMetrics} from '../space';
 import type {TimeOfDay} from '../../assets/Background';
+import type {WatcherPlaceName} from '../../camera/Camera';
 
 export const ScreenCover = ({
   width,
@@ -278,7 +279,7 @@ export const TableLamp = ({
   height,
   x = 0.82,
   y = 0.55,
-  z = 1.79,
+  z = -2.42,
 }: {
   width: number;
   height: number;
@@ -330,9 +331,9 @@ export const PeekDoor = ({
   height: number;
   reveal: number;
 }) => {
-  const doorX = width * (0.18 - reveal * 0.75);
-  const doorWidth = width * 0.44;
-  const knob = pixelPointToWorld(doorX + doorWidth * 0.82, height * 0.5, width, height, 4.82);
+  const doorWidth = width * 0.09;
+  const doorX = -doorWidth * 0.88 + reveal * doorWidth * 0.45;
+  const knob = pixelPointToWorld(doorX + doorWidth * 0.82, height * 0.55, width, height, 4.82);
   const [knobDiameter] = pixelSizeToWorld(22, 22, width, height, 4.82);
 
   return (
@@ -341,26 +342,225 @@ export const PeekDoor = ({
         x={doorX}
         y={height * 0.5}
         pixelWidth={doorWidth}
-        pixelHeight={height * 1.3}
+        pixelHeight={height * 1.16}
         compositionWidth={width}
         compositionHeight={height}
         z={4.8}
-        color="#a38c93"
+        color="#78606c"
         lit
         renderOrder={10}
       />
       <ScreenPlane
-        x={doorX + doorWidth * 0.5}
+        x={doorX + doorWidth * 0.93}
         y={height * 0.5}
-        pixelWidth={12}
-        pixelHeight={height * 1.3}
+        pixelWidth={15}
+        pixelHeight={height * 1.16}
         compositionWidth={width}
         compositionHeight={height}
         z={4.82}
-        color="#e2c0a4"
+        color="#d2ae95"
         renderOrder={11}
       />
+      {[0.35, 0.69].map((y) => (
+        <ScreenPlane
+          key={y}
+          x={doorX + doorWidth * 0.5}
+          y={height * y}
+          pixelWidth={doorWidth * 0.62}
+          pixelHeight={height * 0.16}
+          compositionWidth={width}
+          compositionHeight={height}
+          z={4.83}
+          color="#8e7380"
+          opacity={0.9}
+          transparent
+          renderOrder={11}
+        />
+      ))}
       <Disc radius={knobDiameter * 0.42} color="#f2c675" position={knob} renderOrder={12} />
+    </>
+  );
+};
+
+/** Soft near-camera occlusion gives watcher shots a hiding-place foreground and parallax. */
+export const WatcherForeground = ({
+  width,
+  height,
+  place,
+  strength = 1,
+}: {
+  width: number;
+  height: number;
+  place: WatcherPlaceName;
+  strength?: number;
+}) => {
+  const z = 5.3;
+  const opacity = Math.max(0, Math.min(1, strength));
+  const edge = (side: 'left' | 'right', pixelWidth: number, alpha: number, inset: number) => (
+    <ScreenPlane
+      key={`${side}-${pixelWidth}-${inset}`}
+      x={side === 'left' ? inset : width - inset}
+      y={height * 0.5}
+      pixelWidth={pixelWidth}
+      pixelHeight={height * 1.12}
+      compositionWidth={width}
+      compositionHeight={height}
+      z={z + inset * 0.0001}
+      color="#3b3145"
+      opacity={alpha * opacity}
+      transparent
+      renderOrder={90}
+    />
+  );
+
+  return (
+    <>
+      {/* A translucent full-frame plane and two feathered edges suggest a defocused lens. */}
+      <ScreenPlane
+        x={width / 2}
+        y={height / 2}
+        pixelWidth={width * 1.35}
+        pixelHeight={height * 1.35}
+        compositionWidth={width}
+        compositionHeight={height}
+        z={z}
+        color="#352c41"
+        opacity={0.055 * opacity}
+        transparent
+        renderOrder={80}
+      />
+      {edge('left', width * 0.1, 0.2, width * 0.035)}
+      {edge('right', width * 0.1, 0.2, width * 0.035)}
+      {edge('left', width * 0.065, 0.13, width * 0.075)}
+      {edge('right', width * 0.065, 0.13, width * 0.075)}
+      {place === 'curtains' && (
+        <>
+          {[width * 0.055, width * 0.945].map((x) => (
+            <ScreenPlane
+              key={x}
+              x={x}
+              y={height * 0.5}
+              pixelWidth={width * 0.025}
+              pixelHeight={height * 1.08}
+              compositionWidth={width}
+              compositionHeight={height}
+              z={z + 0.04}
+              color="#a58899"
+              opacity={0.22 * opacity}
+              transparent
+              renderOrder={91}
+            />
+          ))}
+        </>
+      )}
+      {place === 'outsideWindow' && (
+        <>
+          <ScreenPlane
+            x={width * 0.5}
+            y={height * 0.08}
+            pixelWidth={width * 0.8}
+            pixelHeight={height * 0.055}
+            compositionWidth={width}
+            compositionHeight={height}
+            z={z + 0.04}
+            color="#352c41"
+            opacity={0.25 * opacity}
+            transparent
+            renderOrder={91}
+          />
+          <ScreenPlane
+            x={width * 0.08}
+            y={height * 0.52}
+            pixelWidth={width * 0.04}
+            pixelHeight={height * 0.88}
+            compositionWidth={width}
+            compositionHeight={height}
+            z={z + 0.04}
+            color="#a58899"
+            opacity={0.2 * opacity}
+            transparent
+            renderOrder={91}
+          />
+        </>
+      )}
+      {place === 'stairTop' && (
+        <>
+          <ScreenPlane
+            x={width * 0.5}
+            y={height * 0.09}
+            pixelWidth={width * 0.58}
+            pixelHeight={height * 0.024}
+            compositionWidth={width}
+            compositionHeight={height}
+            z={z + 0.05}
+            color="#43374d"
+            opacity={0.35 * opacity}
+            transparent
+            renderOrder={91}
+          />
+          <ScreenPlane
+            x={width * 0.5}
+            y={height * 0.16}
+            pixelWidth={width * 0.44}
+            pixelHeight={height * 0.018}
+            compositionWidth={width}
+            compositionHeight={height}
+            z={z + 0.05}
+            color="#a58899"
+            opacity={0.18 * opacity}
+            transparent
+            renderOrder={91}
+          />
+        </>
+      )}
+      {place === 'foliage' && (
+        <>
+          {[
+            [0.04, 0.08, 0.16],
+            [0.11, 0.19, 0.12],
+            [0.96, 0.12, 0.18],
+            [0.89, 0.26, 0.13],
+          ].map(([x, y, size]) => (
+            <Disc
+              key={`${x}-${y}`}
+              radius={width * size * 0.025}
+              color="#465447"
+              opacity={0.36 * opacity}
+              position={pixelPointToWorld(width * x, height * y, width, height, z + 0.05)}
+            />
+          ))}
+        </>
+      )}
+      {place === 'furnitureCorner' && (
+        <>
+          <ScreenPlane
+            x={width * 0.12}
+            y={height * 0.82}
+            pixelWidth={width * 0.28}
+            pixelHeight={height * 0.35}
+            compositionWidth={width}
+            compositionHeight={height}
+            z={z + 0.05}
+            color="#514453"
+            opacity={0.36 * opacity}
+            transparent
+            renderOrder={91}
+          />
+          <ScreenPlane
+            x={width * 0.29}
+            y={height * 0.95}
+            pixelWidth={width * 0.45}
+            pixelHeight={height * 0.08}
+            compositionWidth={width}
+            compositionHeight={height}
+            z={z + 0.05}
+            color="#342d3b"
+            opacity={0.26 * opacity}
+            transparent
+            renderOrder={91}
+          />
+        </>
+      )}
     </>
   );
 };

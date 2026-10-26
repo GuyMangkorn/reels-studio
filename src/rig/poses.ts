@@ -42,7 +42,7 @@ export const poses: Record<PoseName, JointAngles> = {
   lie: {...base, root: 90, upperArmL: 18, upperArmR: -18, lowerLegL: 8, lowerLegR: 8},
   idle: {...base},
   walk: {...base},
-  point: {...base, upperArmR: -52, lowerArmR: -38, handR: -5, head: -5},
+  point: {...base, upperArmR: -68, lowerArmR: 42, handR: -5, head: -5},
   shock: {
     ...base,
     upperArmL: 145,

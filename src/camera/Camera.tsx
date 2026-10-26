@@ -1,7 +1,16 @@
 import type {ReactNode} from 'react';
+import {Easing, interpolate} from 'remotion';
 import {smoothstep} from '../rig/poses';
 export const cameraPresetNames = ['dolly', 'truck', 'povCreep', 'peek', 'watcher'] as const;
 export type CameraPresetName = (typeof cameraPresetNames)[number];
+export const watcherPlaceNames = [
+  'curtains',
+  'outsideWindow',
+  'stairTop',
+  'foliage',
+  'furnitureCorner',
+] as const;
+export type WatcherPlaceName = (typeof watcherPlaceNames)[number];
 export type ThreeCameraState = {
   preset: CameraPresetName;
   position: [number, number, number];
@@ -15,6 +24,13 @@ export function fovForAspect(width: number, height: number): number {
   return height > width ? 62 : 42;
 }
 
+const easedProgress = (frame: number, duration: number) =>
+  interpolate(frame, [0, Math.max(1, duration - 1)], [0, 1], {
+    easing: Easing.inOut(Easing.sin),
+    extrapolateLeft: 'clamp',
+    extrapolateRight: 'clamp',
+  });
+
 /** Declarative 3D camera presets; all motion is a pure function of the local frame. */
 export function threeCameraAt(
   preset: CameraPresetName | undefined,
@@ -25,16 +41,16 @@ export function threeCameraAt(
   const selected = preset ?? 'dolly';
   const lastFrame = Math.max(1, duration - 1);
   const localFrame = Math.max(0, Math.min(frame, lastFrame));
-  const progress = smoothstep(localFrame / lastFrame);
+  const progress = easedProgress(localFrame, duration);
   const seconds = localFrame / Math.max(1, fps);
   const bob = Math.sin((seconds * Math.PI * 2) / 4.8);
 
   switch (selected) {
     case 'truck': {
-      const x = -0.7 + progress * 1.4;
+      const x = -0.34 + progress * 0.68;
       return {
         preset: selected,
-        position: [x, 1.6, 9],
+        position: [x, 1.6 + bob * 0.018, 9.15 - progress * 0.35],
         target: [x * 0.55, -0.8, 0],
         reveal: 1,
         foregroundBlur: 0,
@@ -43,17 +59,17 @@ export function threeCameraAt(
     case 'povCreep':
       return {
         preset: selected,
-        position: [0, 1.6 + bob * 0.035, 9 - progress * 1.7],
-        target: [0, -0.8 + bob * 0.025, 0],
+        position: [0.025 * Math.sin(seconds * 0.4), 1.6 + bob * 0.045, 9.15 - progress * 1.85],
+        target: [0, -0.8 + bob * 0.032, 0],
         reveal: 1,
         foregroundBlur: 0,
       };
     case 'peek': {
-      const x = -1.05 + progress * 0.7;
+      const x = -0.24 + progress * 0.42;
       return {
         preset: selected,
-        position: [x, 1.55, 9],
-        target: [0.25 * progress, -0.8, 0],
+        position: [x, 1.58 + bob * 0.012, 9.1 - progress * 0.28],
+        target: [0.08 * progress, -0.8, 0],
         reveal: progress,
         foregroundBlur: 0,
       };
@@ -62,7 +78,7 @@ export function threeCameraAt(
       const drift = Math.sin(seconds * 0.32) * 0.18;
       return {
         preset: selected,
-        position: [drift, 0.72, 8.9],
+        position: [drift, 0.94 + bob * 0.025, 9.05 - progress * 0.4],
         target: [drift * 0.35, -0.8, 0],
         reveal: 1,
         foregroundBlur: 1,
@@ -72,7 +88,7 @@ export function threeCameraAt(
     default:
       return {
         preset: 'dolly',
-        position: [0, 1.6, 9 - progress * 1.25],
+        position: [0.018 * Math.sin(seconds * 0.32), 1.6 + bob * 0.012, 9.15 - progress * 1.35],
         target: [0, -0.8, 0],
         reveal: 1,
         foregroundBlur: 0,
@@ -108,6 +124,7 @@ export type CameraConfig = {
   parallax?: number;
   view?: 'front' | 'topDown';
   lighting?: 'normal' | 'silhouette';
+  place?: WatcherPlaceName;
 };
 /** Pan offsets are fractions of stage width/height; progress is local to each shot. */
 export function cameraAt(
