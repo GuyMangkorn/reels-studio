@@ -38,6 +38,8 @@ This is a Thai YouTube studio for Shorts and long-form videos. Film prepares the
 
 Film decides the visual and technical approach, including 2D/Three.js interoperability; Mark develops framing, staging, lighting and beat timing from that brief; Boss implements reusable assets and scene integration. Record reasons, dependencies and feasibility evidence. Revise outdated plans explicitly while preserving story, timing and reveal. Three.js / React Three Fiber is available as an approach for any suitable element, subject to verified dependencies and integration in the target checkout. Permission to choose a technique does not mean the runtime already supports it.
 
+Visual storytelling leads asset selection: design what the audience needs to see, understand and feel across the requested sequence, then reuse or extend the library to serve it. Existing inventory is a feasibility input, not a limit on the visual treatment. Film owns sequence-level visual progression, Mark owns shot-level information and action, and Boss owns implementation tradeoffs. Review visual repetition before scene polish using the linked role workflows.
+
 Characters, animals, costumes, poses, sets, props and camera behaviors form one reusable library. A new video selects and stages those assets by id. Extend a missing asset once in the library, then reference it from the scene.
 
 ## Physical scale and perspective
@@ -240,7 +242,7 @@ The `x` and `y` above are for a 1080×1920 frame. The Long composition supplies 
 
 These are storyboard directions and planned camera contracts. Check the active camera module, scene types and validator before using these fields in JSON. Implement shared POV/image framing under `src/camera/` according to Film's brief. Distinguish picture-space effects from spatial camera motion and keep subtitles in screen space.
 
-Reusing a character, a room, or a prop is the point of the library. The same wide, evenly lit framing in every shot is what makes a chapter dull. Get variety from the camera, the light, and the crop. A new episode does not need a new skeleton to feel new.
+Reuse characters, rooms and props while developing action, relationships, evidence and audience knowledge across the sequence. Camera, light and crop support that progression; changing them alone does not establish a new storytelling beat. A single location can sustain a story when its actions and discoveries develop. Choose additional locations, demonstrations, diagrams or representations when they clarify the story, with no quota for locations, cuts or 3D elements. Use the sequence review in [Film’s workflow](docs/film-visual-brief-workflow.md#visual-progression-before-asset-selection) before polish.
 
 Keep the channel's stylized palette across 3D sets and 2D cut-outs. Suspense comes from spatial framing, lighting, foreground occlusion and timing, with darker grades of that palette as needed.
 
