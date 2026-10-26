@@ -1,6 +1,6 @@
 # ฟิล์ม (Film): visual brief และ technical BA ก่อน Mark
 
-ฟิล์มรับบทและผล fact-check แล้วตัดสินใจแนวทางภาพคร่าว ๆ ก่อนมาร์คทำ storyboard ใช้ project agent `.codex/agents/film.toml`: `gpt-6.1-sol` / `medium` ส่วนมาร์คใช้ `gpt-6-luna` / `max` ตั้งค่าด้วย `model` และ `model_reasoning_effort` ตาม [OpenAI custom agents](https://learn.chatgpt.com/docs/agent-configuration/subagents#custom-agents) สิทธิ์และ MCP สืบทอดจากแชตต้นทาง
+ฟิล์มรับบทและผล fact-check แล้วตัดสินใจแนวทางภาพคร่าว ๆ ก่อนมาร์คทำ storyboard ใช้ project agent `.codex/agents/film.toml` รูปแบบไฟล์อ้างอิง [OpenAI custom agents](https://learn.chatgpt.com/docs/agent-configuration/subagents#custom-agents) สิทธิ์และ MCP สืบทอดจากแชตต้นทาง
 
 ลำดับงาน: โบ็ตค้นข้อมูล → แพรวเขียน → โบ็ตตรวจ/แพรวแก้ → **ฟิล์มวาง visual + technical brief** → **มาร์คทำ scene boards** → **บอสเขียนโค้ดและพิสูจน์ผล render** ผู้ประสานงานเรียก agent ตามโจทย์; ไฟล์เหล่านี้ไม่ได้ติดตั้ง pipeline อัตโนมัติหรือส่งข้อความข้ามแชต
 

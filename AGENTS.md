@@ -8,11 +8,11 @@ For scriptwriting, source research or factual review, read [docs/editorial-workf
 
 ## ฟิล์ม (Film): visual brief and technical BA before Mark
 
-For 2D/3D decisions, cinematography direction or a visual/technical brief before storyboarding, use `.codex/agents/film.toml` (`gpt-6.1-sol`, `medium`) and read [docs/film-visual-brief-workflow.md](docs/film-visual-brief-workflow.md). Film chooses scene-level medium, lighting/shadow/color and camera language, checks how 2D and Three.js can work together in the target checkout, and hands Mark a rough brief with implementation evidence, shared interface requirements, dependencies, risks, fallbacks and acceptance criteria. Theory: [docs/cinematography-principles.md](docs/cinematography-principles.md). Film owns the approach; Mark details the boards; Boss owns code and runtime proof.
+For 2D/3D decisions, cinematography direction or a visual/technical brief before storyboarding, use `.codex/agents/film.toml` and read [docs/film-visual-brief-workflow.md](docs/film-visual-brief-workflow.md). Film chooses scene-level medium, lighting/shadow/color and camera language, checks how 2D and Three.js can work together in the target checkout, and hands Mark a rough brief with implementation evidence, shared interface requirements, dependencies, risks, fallbacks and acceptance criteria. Theory: [docs/cinematography-principles.md](docs/cinematography-principles.md). Film owns the approach; Mark details the boards; Boss owns code and runtime proof.
 
 ## มาร์ค (Mark): visual direction and storyboard planning
 
-For work assigned to มาร์ค / Mark, use `.codex/agents/mark.toml` (`gpt-6-luna`, `max`) and read [docs/mark-storyboard-workflow.md](docs/mark-storyboard-workflow.md). Mark accepts the script/review and Film's visual brief, plans the requested sequence, details shots, staging, lighting and camera beats, and delivers separate scene boards with developer handoffs and review criteria. Track the brief revision and decisions rather than independently replacing its medium/technical approach. Theory and source research: [docs/storyboard-principles.md](docs/storyboard-principles.md).
+For work assigned to มาร์ค / Mark, use `.codex/agents/mark.toml` and read [docs/mark-storyboard-workflow.md](docs/mark-storyboard-workflow.md). Mark accepts the script/review and Film's visual brief, plans the requested sequence, details shots, staging, lighting and camera beats, and delivers separate scene boards with developer handoffs and review criteria. Track the brief revision and decisions rather than independently replacing its medium/technical approach. Theory and source research: [docs/storyboard-principles.md](docs/storyboard-principles.md).
 
 ## บอส (Boss): asset code and scene implementation
 
