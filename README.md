@@ -6,6 +6,8 @@ The same story renders at 30 fps as **Short** (1080×1920) and **Long** (1920×1
 
 Agents should read [AGENTS.md](AGENTS.md) for production rules, asset ownership and the issue/branch/PR workflow.
 
+The planning handoff is **Boat research → Preaw script → Boat fact-check → Film visual/technical brief → Mark storyboard → Boss implementation**. [Film](docs/film-visual-brief-workflow.md) uses `gpt-6.1-sol` / `medium` to choose suitable 2D/3D/hybrid techniques, lighting and camera language, and specify how the parts can work together. [Mark](docs/mark-storyboard-workflow.md) uses `gpt-6-luna` / `max` to develop the brief into scene boards. Sets, characters and interaction props may all use 2D or 3D as appropriate; actual capabilities still require checkout verification. Agent files live in `.codex/agents/`; this documents a handoff, not an automatic runner.
+
 [docs/remotion-toolkit.md](docs/remotion-toolkit.md) maps the installed animation, text layout, noise, captions, transitions, sound and SVG tools to reusable scene components, with examples and integration checks. Run `npm run lint` for the Remotion, TypeScript and React Hooks checks.
 
 ## From storyboard to video

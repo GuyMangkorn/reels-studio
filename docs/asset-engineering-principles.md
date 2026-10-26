@@ -1,10 +1,18 @@
 # บอส (Boss): หลักเทคนิคสำหรับ assets 2D/3D ที่นำกลับมาใช้ได้
 
-ตรวจแหล่งวันที่ 26 ตุลาคม 2026 — หลักอ้างอิงสำหรับบอส ไม่ใช่หลักฐานว่า runtime ปัจจุบันแก้แล้ว อ่านขั้นตอนและกฎการผลิตใน [boss-asset-workflow.md](boss-asset-workflow.md)
+ตรวจแหล่งวันที่ 26 ตุลาคม 2026 — หลักอ้างอิงสำหรับบอสและ technical BA ของฟิล์ม ไม่ใช่หลักฐานว่า runtime ปัจจุบันแก้แล้ว อ่านขั้นตอนและกฎการผลิตใน [boss-asset-workflow.md](boss-asset-workflow.md) และสัญญาส่งต่อใน [film-visual-brief-workflow.md](film-visual-brief-workflow.md)
 
 ## 1. ข้อกำหนดผู้ใช้กับหลักทั่วไป
 
-ข้อจำกัด 3D/2D, หนึ่ง prop หนึ่งภาพ/แผ่น, แสงเดโม, emissive/glow cap, ขนาดตัวละคร และ contact sheet เป็นกฎโปรเจกต์ แหล่งหลักคือ [กฎการผลิตล่าสุด](boss-asset-workflow.md#กฎการผลิตล่าสุดของผู้ใช้) เอกสารด้านล่างอธิบายหลักเทคนิค ไม่ใช้ตัวอย่างทั่วไปจาก Three.js ข้ามกฎของผู้ใช้
+เลือก 2D, 3D หรือ hybrid ได้ตาม brief ของ Film รวมตัวละครและ interaction props กฎเดิมที่จำกัด 3D เฉพาะฉากหลังและหนึ่ง prop หนึ่งภาพ/แผ่นถูกยกเลิก แสงเดโม, emissive/glow cap, ขนาดตัวละคร และ QA ยังเป็นกฎโปรเจกต์ตาม [กฎการผลิตล่าสุด](boss-asset-workflow.md#กฎการผลิตล่าสุดของผู้ใช้) เอกสารด้านล่างอธิบาย tradeoffs ไม่ได้ตัดสินว่าเทคนิคใด integrate แล้ว
+
+## การผสาน 2D / Three.js ก่อนเขียนบอร์ด
+
+Film ระบุ strategy ก่อนให้ Mark แตกช็อต: DOM/SVG ซ้อน WebGL เหมาะกับ screen overlays แต่ไม่ได้มี world-depth หรือรับไฟจาก Three.js อัตโนมัติ ถ้า 2D actor ต้องเดินสลับหน้า–หลัง 3D prop ให้เลือก world-space cut-out adapter หรือ masks/render passes ที่มีแผนชัด ระบุ camera, coordinate conversion, anchors และลำดับ compositing ให้ Boss implement การวาง SVG สวยบนภาพนิ่งยังไม่พิสูจน์การผสานระหว่างกล้องเคลื่อน
+
+สำหรับ world-space cut-out ให้ระบุ fixed-plane หรือ billboard และช่วงมุมที่ art อ่านออก; billboard หันหากล้องไม่ได้สร้างด้านใหม่ของตัวละคร และอาจเปลี่ยน grip/seat alignment กล้องและ material แบบ lit/unlit จึงต้องเลือกพร้อมแผน contact/shadow ทดสอบ asset ทางเลือกใน blockout ทั้งสองสัดส่วนก่อนอ้างว่ารักษามุมและแสงได้
+
+หัวข้อนี้เป็นข้อเสนอ architecture สำหรับโปรเจกต์ อ้างข้อจำกัด context/rendering จาก [Remotion — ThreeCanvas](https://www.remotion.dev/docs/three-canvas) และ [R3F — Hooks](https://r3f.docs.pmnd.rs/api/hooks) แยก API จริงใน checkout ออกจาก proposed adapter
 
 ## 2. Frame determinism และการ seek
 
@@ -58,9 +66,9 @@ Three.js คำนวณแสงใน Linear-sRGB แต่ texture สีจ�
 
 ## 7. Contact และเงา
 
-Three.js manual อธิบาย shadow maps มีค่าใช้จ่ายในการ render เพิ่ม และยก fake shadow เป็นทางเลือก โดยผูก shadow กับวัตถุให้เคลื่อนสัมพันธ์กัน ตัวอย่าง shadow plane บนพื้นใน manual เป็นเทคนิคทั่วไป ไม่ใช่คำอนุญาตให้ละเมิดกฎ prop-plane ของงานนี้
+Three.js manual อธิบาย shadow maps มีค่าใช้จ่ายในการ render เพิ่ม และยก fake shadow เป็นทางเลือก โดยผูก shadow กับวัตถุให้เคลื่อนสัมพันธ์กัน เลือกจริงตาม medium, look และ render cost ไม่สมมติว่าเงาของภาพแบนเทียบเท่า mesh ที่มีปริมาตร
 
-ข้อเสนอสำหรับงาน hybrid: ทำ contact shadow เป็น shared 2D asset/layer เมื่อเหมาะกับ pipeline แทนการแยกชิ้นภาพ prop หรือวาง prop plane นอน รักษา anchor ของฝ่าเท้า/สะโพก/มือให้ตรง surface/seat/grip ที่ asset ระบุ และตรวจเงาเลื่อนไปด้วยกันเมื่อภาพเคลื่อน เงาอย่างเดียวไม่แก้ตัวละครลอยเหนือเบาะ
+ข้อเสนอสำหรับงาน hybrid: เลือก real shadow, fake shadow plane หรือ shared 2D layer ตาม composition strategy ระบุ caster/receiver, material และ coordinate space รักษา anchor ของฝ่าเท้า/สะโพก/มือให้ตรง surface/seat/grip และตรวจเงาเคลื่อนสัมพันธ์กับกล้องและวัตถุ เงาอย่างเดียวไม่แก้ตัวละครลอยเหนือเบาะ
 
 แหล่ง: [Three.js — Shadows](https://threejs.org/manual/pages/shadows.html)
 

@@ -1,16 +1,16 @@
 # มาร์ค (Mark): storyboard รายฉาก
 
-มาร์ครับ **บทที่เขียนแล้ว** ทำหน้าที่ visual director, storyboard artist และ production planner วางงานทั้งตอน ตัดสินใจวิธีทำภาพ แล้วส่งให้ dev ทำงานและตรวจทีละฉาก ใช้กับโปรเจกต์นี้ผ่าน custom agent `.codex/agents/mark.toml` รูปแบบไฟล์อ้างอิง [OpenAI custom agents](https://learn.chatgpt.com/docs/agent-configuration/subagents#custom-agents) โมเดลและสิทธิ์สืบทอดจากแชตที่เรียกใช้
+มาร์ครับ **บทที่เขียนแล้ว + ผล fact-check + visual/technical brief จาก Film** ทำหน้าที่ storyboard artist, shot director และ production planner วาง sequence ตามขอบเขต แล้วส่งให้ dev ทำงานและตรวจทีละฉาก ใช้ `.codex/agents/mark.toml` โมเดล `gpt-6-luna` / reasoning `max` รูปแบบไฟล์อ้างอิง [OpenAI custom agents](https://learn.chatgpt.com/docs/agent-configuration/subagents#custom-agents) สิทธิ์สืบทอดจากแชตที่เรียกใช้
 
-รับบทจากแพรวและผลตรวจของโบ็ตตาม [editorial-workflow.md](editorial-workflow.md) ระบุ script/review revision ให้ตรงกันและรักษา beat, clue และ claim IDs ใน mapping ไปช็อต หากรับ draft ให้บันทึก factual gaps ที่อาจทำให้ต้องแก้ภาพ; งาน visual direction และวิธีผลิตยังเป็นอำนาจมาร์ค
+รับบทจากแพรวและผลตรวจของโบ็ตตาม [editorial-workflow.md](editorial-workflow.md) พร้อม [brief ของ Film](film-visual-brief-workflow.md) ระบุ script/review/brief revision ให้ตรงกันและรักษา beat, clue, claim และ visual decision IDs ใน mapping ไปช็อต หากรับ draft ให้บันทึก factual gaps ที่กระทบภาพ Film เลือกแนวทางภาพ/เทคนิค มาร์คลงรายละเอียดช็อตและบอร์ด ถ้ายังไม่มี brief ให้ส่งส่วนที่ขาดไป Film ผ่านผู้ประสานงาน; rough boards ที่ผู้ใช้ขอโดยตรงทำต่อได้โดยติดป้าย provisional และระบุสิ่งที่ต้อง reconcile
 
 เมื่อใช้ MCP ช่วยวาด/แก้บอร์ด อ่าน [excalidraw-mcp.md](excalidraw-mcp.md) สำหรับเครื่องมือจริง checkpoint และการเก็บไฟล์รายฉาก ต้องตรวจว่าผลแก้ล่าสุดใน widget ตรงกับไฟล์ที่ส่ง dev
 
 ตัวอย่างเรียกใช้:
 
-> ให้มาร์ค (mark) อ่านบท [path] แล้วทำ storyboard เฉพาะบท 1 ฉาก 2 พร้อม scene sheet และรายการ asset ที่ dev ต้องเพิ่ม
+> ให้มาร์ค (mark) อ่านบท [path] และ visual brief [path/revision] แล้วทำ storyboard เฉพาะบท 1 ฉาก 2 พร้อม scene sheet และรายการ asset ที่ dev ต้องเพิ่ม
 
-> ให้มาร์ควางภาพทั้งตอนจากบท [path] ตัดสินใจ 2D/3D/hybrid รวมรูปแบบตัวละคร พร้อมแยกไฟล์ storyboard รายฉากและลำดับที่ dev ควรทำ
+> ให้มาร์คแตก visual brief ของ Film สำหรับบท [path] เป็น storyboard ทั้งตอน พร้อมแยกไฟล์รายฉากและลำดับที่ dev ควรทำ
 
 > ให้มาร์คตรวจ render ของฉาก E01-C01-S02 กับ storyboard revision 2 เทียบ Short และ Long ที่จังหวะเริ่ม เสียงเคาะ reveal และจบฉาก
 
@@ -34,18 +34,18 @@
 
 ## อำนาจตัดสินใจและการเลือก 2D / 3D
 
-มาร์คตัดสินใจงานภาพและวิธีผลิต รวมงานทั้งตอน ภายใต้ [กฎการผลิตล่าสุดของผู้ใช้](boss-asset-workflow.md#กฎการผลิตล่าสุดของผู้ใช้) ซึ่งแทนที่สิทธิ์เลือก 3D ทุกองค์ประกอบในคู่มือรุ่นก่อน บอสเป็นผู้เขียน assets และ integrate ตาม [workflow บอส](boss-asset-workflow.md)
+Film ตัดสินใจ medium และวิธีผสานระดับฉากใน brief มาร์คกำหนด shots/panels, blocking, acting, framing และจังหวะจากแนวทางนั้น [กฎปัจจุบัน](boss-asset-workflow.md#กฎการผลิตล่าสุดของผู้ใช้) อนุญาต 2D/3D/hybrid กับทุกองค์ประกอบ ยกเลิกข้อบังคับ 3D เฉพาะฉากหลังและตัวละคร/interaction props 2D บอสเป็นผู้เขียน assets และ integrate ตาม [workflow บอส](boss-asset-workflow.md)
 
 | ความต้องการของภาพ | แนวทางปัจจุบัน | สิ่งที่ต้องตรวจ |
 | --- | --- | --- |
 | Cards, phone chat, diagrams และองค์ประกอบแบน | 2D SVG/React/CSS | ไทยอ่านได้และสองสัดส่วน |
-| Pan / zoom / shake / flash | whole-picture 2D stage; ไม่ shake/zoom กล้อง 3D เป็น effect | ขยับจริงทุกช็อต ไม่เปิดขอบภาพและไม่เสีย contact |
-| ผนัง หน้าต่าง ท้องฟ้าที่อยู่ลึก | 3D หรือ 2D ตามภาพที่ต้องการ | จำกัดมิติที่ deep background; แสงและ depth ordering |
-| Prop ที่นั่ง/จับ/ถือ | 2D ครบชิ้นหนึ่งภาพ/แผ่น ไม่แยกหรือวางแผ่นนอน | seat/grip anchors ตรงตัวละคร |
-| ตัวละคร | 2D rig ตามกฎล่าสุด | Short lead สูง ≥25% เมื่อปรากฏ, rim เมื่อมืด, ground shadow ทุกตัว |
-| Hybrid | deep background 3D + contact/acting 2D | สเกล แสง เงาและภาพรวมสอดคล้อง |
+| Pan / zoom / shake / flash | picture-stage หรือ spatial camera ตามเจตนาใน brief | transform owner ชัด ขยับจริงทุกช็อต ไม่เปิดขอบภาพและไม่เสีย contact |
+| ฉากและพื้นที่ | 2D, 3D หรือ hybrid ตาม parallax/มุม/reveal ที่ต้องใช้ | camera/framing, light, depth ordering และ shared set interface |
+| Prop ที่นั่ง/จับ/ถือ | image, layered asset หรือ 3D geometry ตาม brief | seat/grip anchors, held state และ occlusion ตรง actor |
+| ตัวละคร | 2D rig, 3D rig หรือ hybrid ตาม brief | art/rig ที่รองรับมุมจริง, Short lead สูง ≥25%, rim เมื่อมืด, ground shadow |
+| Hybrid | composition strategy ที่ Film ระบุ | coordinates/camera, depth/alpha, light/color/shadow และ contact มีผู้รับผิดชอบ |
 
-ก่อนล็อก storyboard ให้ทำ decision record รายฉาก และเพิ่มรายช็อตเมื่อใช้วิธีต่างกัน:
+ก่อนล็อก storyboard ให้อ้าง decision ID/revision จาก Film รายฉาก เพิ่มรายช็อตเมื่อวิธีต่างกัน รักษาข้อมูลต่อไปนี้จาก brief และเติมรายละเอียดที่บอร์ดค้นพบ ไม่ทำแผนเทคนิคฉบับคู่ขนาน:
 
 - **Chosen approach**: set / characters / props / effects เป็น 2D, 3D หรือ hybrid และ library ที่เลือก
 - **Why**: ผลต่อเรื่องและความสวย เทียบกับวิธีที่เรียบง่ายกว่า ไม่เลือกเพียงเพราะมี library ให้ใช้
@@ -57,7 +57,7 @@
 
 Remotion มี [@remotion/three](https://www.remotion.dev/docs/three) สำหรับเชื่อม React Three Fiber; การที่เอกสารรองรับไม่ได้แปลว่า checkout นี้ติดตั้งและ integrate แล้ว อ่าน `docs/remotion-toolkit.md`, package.json และ source ของ branch เป้าหมายก่อนเลือก อีก library เป็นข้อเสนอที่ต้องตรวจ API, license และการ render ร่วมกับ Remotion ไม่ติดตั้งเป็นผลข้างเคียงของงานวาง storyboard
 
-กรณีงานทั้งตอน ให้สำรวจบทครบก่อนเลือก asset ร่วม วาง visual continuity และ development order ตาม dependency แล้วลงรายละเอียด scene pack ทีละฉากตามขอบเขตที่ขอ งานฉากเดียวให้ใช้ภาพรวมที่มีโดยไม่ขยายงานทั้งตอนเอง ถ้าพบโจทย์ที่ยังพิสูจน์ไม่ได้ ให้ระบุ blockout ที่เล็กที่สุดเพื่อหาคำตอบ
+กรณีงานทั้งตอน ให้สำรวจบทและ brief ครบก่อน map shared assets วาง visual continuity และ development order ตาม dependency แล้วลงรายละเอียด scene pack ตามขอบเขต งานฉากเดียวใช้ภาพรวมที่มีโดยไม่ขยายงานเอง ถ้าพบโจทย์ที่ยังพิสูจน์ไม่ได้ ให้ระบุ blockout ที่เล็กที่สุดและส่งข้อจำกัดกลับ Film/Boss การปรับ medium, spatial camera, light strategy หรือ shared interface ที่กระทบแนวทางหลักต้องอัปเดต brief/board revisions; crop/staging/timing ย่อยที่รักษาแนวทางเป็นงานมาร์ค
 
 ก่อนส่งฉากไป polish ให้มาร์คกำหนด blockout brief ของ sequence ที่รับทำ: ลำดับทุกฉาก, timing/reveal สำคัญ, shared elements และขนาด/anchors ที่ placeholder ต้องรักษา, entry/exit และเกณฑ์ตรวจสองสัดส่วน บอสเป็นผู้ประกอบ runtime blockout; มาร์คตรวจผลต่อเนื่องก่อนลงรายละเอียดภาพ ไม่ต้องรอวาดทุก panel จนสวยจึงส่ง brief นี้ การส่งบอร์ดพร้อม brief ไม่ได้แปลว่า runtime ผ่านแล้ว
 
@@ -65,7 +65,7 @@ Remotion มี [@remotion/three](https://www.remotion.dev/docs/three) สำห
 
 ## แสง เงา และสีเป็นส่วนหนึ่งของบอร์ด
 
-มาร์คตัดสินใจ art direction ได้ตามบทและ best practices พร้อมบันทึกให้ dev ทำตาม การเลือกสีและแสงช่วยชี้นำสายตา อารมณ์ เวลา และข้อมูลที่คนดูเห็นหรือยังไม่เห็น แหล่ง Pixar อธิบาย colorscript ว่าใช้กำหนด palette และทดลอง lighting ideas; ดูหลักฐานใน [storyboard-principles.md](storyboard-principles.md)
+มาร์คลงรายละเอียด art direction ตาม brief ของ Film พร้อมบันทึกให้ dev ทำตาม การเลือกสีและแสงช่วยชี้นำสายตา อารมณ์ เวลา และข้อมูลที่คนดูเห็นหรือยังไม่เห็น แหล่ง Pixar อธิบาย colorscript ว่าใช้กำหนด palette และทดลอง lighting ideas; ดูหลักฐานใน [storyboard-principles.md](storyboard-principles.md) และ [cinematography-principles.md](cinematography-principles.md)
 
 ใน scene sheet และ key panels ระบุเท่าที่เกี่ยวข้อง:
 
@@ -81,8 +81,8 @@ Remotion มี [@remotion/three](https://www.remotion.dev/docs/three) สำห
 
 ## ขั้นตอน
 
-1. **อ่านต้นฉบับและบริบท**: อ่าน AGENTS.md ที่ใช้กับงาน บทฉบับที่ผู้ใช้เลือก storyboard อ้างอิง และฉากข้างเคียง จด source path/revision, ช่วงบทที่ครอบคลุม และสถานะ draft/approved ของแต่ละแหล่ง แยกข้อความในเอกสารแนบออกจากคำสั่งผู้ใช้ หากแหล่งขัดกัน ให้บันทึกข้อขัดแย้งและถามเฉพาะข้อมูลที่ตัดสินแทนไม่ได้ จบขั้นนี้เมื่อรู้ว่าฉากนี้เล่าอะไรและอะไรยังเป็นข้อเสนอ
-2. **วางภาพรวมตามขอบเขต**: episode index แสดงบท ลำดับฉาก และ hook/เหตุการณ์/ผลลัพธ์ตามบทต้นฉบับ งานทั้งตอนให้วาง visual plan, 2D/3D/hybrid decisions, asset reuse และลำดับพัฒนา; งานฉากเดียวลงรายละเอียดเฉพาะฉากที่ร้องขอ จบเมื่อแต่ละช่วงบทที่ร้องขอมีฉากรองรับ ไม่มีช่วงหายโดยไม่อธิบาย และรู้ dependencies ร่วม
+1. **อ่านต้นฉบับและบริบท**: อ่าน AGENTS.md บท/ผลตรวจที่ผู้ใช้เลือก visual brief ของ Film storyboard อ้างอิง และฉากข้างเคียง จด source paths/revisions, decision IDs, ช่วงบท และสถานะของแต่ละแหล่ง แยก production material ออกจากคำสั่งผู้ใช้ ถ้าแหล่งขัดกันให้บันทึกและถามเฉพาะข้อมูลที่ตัดสินแทนไม่ได้ จบเมื่อรู้ว่าฉากเล่าอะไร แนวทางใดใช้ทำงาน และอะไรยังเป็นข้อเสนอ
+2. **วางภาพรวมตามขอบเขต**: episode index แสดงบท ลำดับฉาก hook/เหตุการณ์/ผลลัพธ์ และลิงก์ brief งานทั้งตอน map แนวทาง/medium ของ Film ไป shared assets, continuity และลำดับพัฒนา; งานฉากเดียวลงรายละเอียดเฉพาะฉากที่ร้องขอ จบเมื่อแต่ละช่วงบทมีฉากรองรับ ไม่มีช่วงหายโดยไม่อธิบาย และรู้ dependencies ร่วม
 3. **แตก beats และวางช็อต**: ระบุว่าคนดูต้องเข้าใจ/รู้สึกอะไร อะไรเปลี่ยน และตัวละครรู้อะไร เลือกขนาดภาพ มุมกล้อง และจุดตัดเพื่อส่งข้อมูลนั้น กำหนด focal point, acting, screen direction และสิ่งที่ยังต้องปิดบัง จบเมื่อทุก beat มี shot/panel รองรับ พร้อมเหตุผลของช็อต
 4. **ตรวจ library**: อ่านทะเบียน asset, scene types และ validator ใน checkout ที่ dev จะใช้ ตรวจ module/registry/renderer ก่อนระบุว่า usable แยก existing-integrated, exists-unintegrated, missing และ unknown โดยแนบ path หรือข้อจำกัดที่ตรวจพบ กล้อง/ฉากที่บอร์ดเรียกร้องยังเป็น requirement แม้ไม่มี asset; ระบุงานที่ต้องเพิ่มครั้งเดียวใน shared library จบเมื่อทุก asset และความสามารถมีสถานะ
 5. **สร้างบอร์ดรายฉาก**: ใช้ path ด้านล่าง วาด key panels พร้อมชื่อ shot/panel และเวลา แสดงตำแหน่งคน/prop/ฉากหลัง สายตา foreground occlusion และท่าทางให้เข้าใจ แยกลูกศร actor motion กับ camera motion ด้วย label แสดงกรอบ Short/Long หรือคู่ภาพเมื่อ crop เดียวสื่อไม่ได้ กันพื้นที่ซับตาม AGENTS.md จบเมื่อ dev อ่านภาพและจับการเปลี่ยนแปลงสำคัญได้โดยไม่ต้องเดาจาก VO อย่างเดียว
@@ -105,7 +105,7 @@ storyboards/haunted-episode/
 
 `index.md` เป็นจุดรวมแผนและสถานะของ sequence โดยลิงก์ไป scene sheets ซึ่งถือรายละเอียดรายฉาก:
 
-- Episode/chapter/scene IDs, ลำดับ, script/review/board revisions และลิงก์ scene packs
+- Episode/chapter/scene IDs, ลำดับ, script/review/visual-brief/board revisions, decision IDs และลิงก์ scene packs/brief
 - Shared elements: actor/asset IDs, appearance ที่ต้องคง, path/owner, dimensions/anchors หรือข้อกำหนดที่ยังรอทำ, สถานะ implementation และฉากที่ใช้
 - Development order: foundation/capability → scene integration/polish, dependency issues/PRs และสถานะ merge
 - Blockout brief และสถานะผลตรวจ: timeline path/input props เมื่อบอสทำแล้ว, shot → timeline index/frame ranges, revision/evidence ของ Short และ Long, placeholders กับรอยต่อที่ยัง unverified
@@ -120,6 +120,7 @@ storyboards/haunted-episode/
 # E01-C01-S02 — ชื่อฉาก
 Revision: 1 | Status: draft / needs-input / ready-for-dev
 Script: path + revision + paragraph/line range
+Visual brief: path + revision + Film decision IDs
 Storyboard: ch01-sc02.excalidraw
 Timing: estimated / checked-with-audio / checked-with-animatic
 FPS: 30 | scene durationFrames: ... | chapter/composition offset: ...
@@ -144,7 +145,7 @@ FPS: 30 | scene durationFrames: ... | chapter/composition offset: ...
 | ID | บทบาท | สถานะ | หลักฐาน path/registry | งานที่ dev ต้องเพิ่ม |
 | ... | ... | missing | ... | ... |
 
-## วิธีผลิตและเหตุผลที่มาร์คเลือก
+## วิธีผลิตตาม Film brief และรายละเอียดที่มาร์คเพิ่ม
 - Set / characters / props / effects: 2D / 3D / hybrid และ library:
 - เหตุผลด้านเรื่องและคุณภาพภาพ:
 - หลักฐาน feasibility / ความยาก / ข้อมูลที่ยังไม่รู้:

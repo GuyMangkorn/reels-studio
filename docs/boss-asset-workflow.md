@@ -1,6 +1,6 @@
 # บอส (Boss): เขียน asset และทำฉากจาก storyboard
 
-บอสเป็น coder ของทีม สร้าง shared assets 2D/3D, rigs, props, backgrounds และความสามารถของ scene renderer รวมถึงแก้ visual bugs ที่ต้นทาง ใช้ `.codex/agents/boss.toml` แพรวเขียนบท โบ็ตตรวจ facts มาร์ควางภาพ แล้วบอสทำให้ภาพนั้น render ได้ตามข้อจำกัดล่าสุด
+บอสเป็น coder ของทีม สร้าง shared assets 2D/3D, rigs, props, backgrounds และความสามารถของ scene renderer รวมถึงแก้ visual bugs ที่ต้นทาง ใช้ `.codex/agents/boss.toml` แพรวเขียนบท โบ็ตตรวจ facts [ฟิล์มวาง visual/technical brief](film-visual-brief-workflow.md) มาร์คแตกบอร์ด แล้วบอสทำให้ภาพนั้น render ได้ตามแผนที่ตรวจจริง
 
 ตัวอย่างเรียกใช้:
 
@@ -10,23 +10,23 @@
 
 ## กฎการผลิตล่าสุดของผู้ใช้
 
-ตารางนี้เป็นแหล่งหลักของกฎแก้ปัญหาที่ผู้ใช้กำหนดวันที่ 26 ตุลาคม 2026 ใช้ทั้งมาร์คและบอส แทนแนวทางเก่าที่อนุญาตเลือก 3D ได้ทุกองค์ประกอบ ค่าตัวเลขและข้อจำกัดเหล่านี้เป็นกฎโปรเจกต์ ไม่ใช่ค่า universal จาก Three.js/Remotion
+ตารางนี้เป็นแหล่งหลักของกฎผู้ใช้ อัปเดต 26 ตุลาคม 2026 หลังผู้ใช้ยกเลิกข้อจำกัด 3D เฉพาะฉากหลังและบังคับตัวละคร/interaction props เป็น 2D ให้ Film เลือกตามความเหมาะสมและ feasibility ใช้กับ Film, Mark และ Boss กฎเรื่อง medium/prop-plane/effect-stage เดิมถูกแทนด้วยการตัดสินใจด้านล่าง ส่วน lifecycle, demo lighting, contact/scale และ QA ยังใช้ ค่าตัวเลขเป็นกฎโปรเจกต์ ไม่ใช่ค่า universal จาก Three.js/Remotion
 
 | กฎ | วิธีทำและหลักฐานตรวจ |
 | --- | --- |
-| **3D เฉพาะฉากหลังลึก** | ผนัง หน้าต่าง ท้องฟ้าเป็น 3D ได้; ตัวละครและ foreground ที่มีปฏิสัมพันธ์ใช้ 2D การนั่ง/จับ/ถือใช้ props 2D |
-| **หนึ่ง prop = หนึ่งภาพ = หนึ่งแผ่น** | ใช้ภาพครบชิ้นหนึ่งภาพต่อ prop instance เป็น front-facing/upright plane หรือ equivalent 2D image ห้ามแยกเบาะ/พนัก/ขาออกหลาย image planes และห้ามหมุน prop plane นอนเพื่อทำผิวรองนั่ง กฎนี้ไม่ห้ามเขียนต้นฉบับ SVG หลาย paths ที่รวมเป็นภาพเดียว |
-| **Shake / zoom / flash เป็น 2D ทั้งภาพ** | ทำที่ picture-stage wrapper ร่วมของ background+actors+props ไม่ขยับเฉพาะ prop และไม่ shake/zoom กล้อง 3D เป็น effect ซับและ UI ยังเป็น screen-space ที่อ่านได้ตาม AGENTS.md |
+| **เลือก 2D / 3D / hybrid ตามเรื่องและเทคนิค** | ใช้ได้กับ set, character, prop และ effect; Film บันทึกเหตุผลและวิธีผสานใน brief, Mark แตกบอร์ด, Boss พิสูจน์ implementation; ตรวจ dependencies/API และสองสัดส่วนก่อนอ้างว่าใช้ได้ |
+| **Prop เป็น shared asset ตาม representation ที่เลือก** | ใช้ภาพครบชิ้น, layered planes หรือ geometry ได้ตามภาพ/มุม/interaction ที่ต้องการ กำหนด bounds/pivots/seat/grip anchors; ตรวจ contact, occlusion และ texture cost แทนบังคับหนึ่งภาพหนึ่งแผ่น |
+| **Effects และ camera มีเจ้าของ transform ชัดเจน** | เลือก picture-stage pan/zoom/shake/flash หรือ spatial camera ตาม beat; ระบุสิ่งที่ขยับและสิ่งที่คงใน screen space ไม่ขยับซ้ำจน contact/เงาหลุด ซับและ UI ต้องอ่านได้ |
 | **Texture สร้างครั้งเดียวต่อฉาก** | แต่ละ texture reuse ภายใน mounted scene/worker ด้วย key คงที่ ไม่สร้าง/rasterize ใหม่ทุกเฟรม ตรวจ allocations/dependencies, first frame และ seeking ใน Studio; worker/remount แต่ละตัวมี lifecycle ของตนเอง |
 | **แสงตามเดโม** | ambient `#c8bdf0` ประมาณ `2.6` + lantern flicker + glow รอบตะเกียง จำกัด material `emissiveIntensity` ไม่เกิน `0.3`; สำหรับ normalized glow strength/opacity ใช้ไม่เกิน `0.3` เช่นกัน ค่า point-light intensity เป็นคนละหน่วย ไม่ใช้เพดานนี้แทนทุก light property |
-| **ตัวละครต้องอ่านออกและไม่ลอย** | ตัวละครมืดมี rim/edge light; ทุกตัวรวมคนและสัตว์มี ground shadow ใช้ shared 2D shadow layer ที่เคลื่อนตาม foot/ground anchor ได้ เงาต้องไม่แทนการแก้ hips/feet/grip ที่ลอย |
+| **ตัวละครต้องอ่านออกและไม่ลอย** | ตัวละครมืดมี rim/edge light; ทุกตัวรวมคนและสัตว์มี ground shadow เลือก real/fake shadow หรือ shared 2D layer ตาม brief และให้สัมพันธ์กับ foot/ground anchor เงาต้องไม่แทนการแก้ hips/feet/grip ที่ลอย |
 | **Short ตัวละครหลักสูง ≥25% ของจอ** | วัดความสูงของภาพตัวละครที่มองเห็นหลัง camera/crop/scale ไม่รวม transparent padding, glow หรือเงา ที่ความสูง 1920 ต้อง ≥480 px ตลอดช่วงที่ตัวละครหลักปรากฏ ตรวจ min ตลอด motion ไม่ใช่ frame แรกอย่างเดียว |
-| **ทุกช็อตมีกล้อง/ภาพเคลื่อน** | กำหนด 2D pan หรือ slow push ที่ตั้งใจและเป็น frame-driven; ตรวจผล start/mid/end ว่าขยับจริง ไม่ถูก crop clamp จนหยุดนิ่ง ไม่มีการสั่นแรงเพื่อให้ผ่านกฎ เฟรมซับยังอ่านได้ |
+| **ทุกช็อตมีกล้อง/ภาพเคลื่อน** | กำหนด picture pan/push หรือ spatial camera move ที่ตั้งใจและเป็น frame-driven ตาม brief; ตรวจผล start/mid/end ว่าขยับจริง ไม่ถูก crop clamp จนหยุดนิ่ง ไม่มีการสั่นแรงเพื่อให้ผ่านกฎ เฟรมซับยังอ่านได้ |
 | **ก่อน push งานภาพ มี contact sheet ทุก 1 วินาทีและตรวจ jumps** | ทุก affected composition มี samples F0, Ffps, F2fps… และเฟรมสุดท้าย พร้อมเวลา/shot ID เสริม temporal QA ด้านล่างเพื่อจับอาการกระโดดเฟรมเดียว |
 
-ห้ามใช้ความยืดหยุ่นของมาร์คหรือเทคนิคตัวอย่างจากเอกสารทั่วไปข้ามกฎนี้ หากบอร์ดเก่าใช้ 3D character/interaction prop หรือ flat prop planes ให้บอสระบุ conflict และปรับ visual plan ร่วมกับมาร์คภายใต้กฎล่าสุด รักษาเรื่องและ beat/reveal ผู้ใช้เป็นผู้เปลี่ยนข้อจำกัดเมื่อมีคำสั่งใหม่
+บอร์ดเดิมที่เลือก 2D ยังใช้ได้ ไม่ต้องแปลงเป็น 3D ทั้งหมด เมื่อเทคนิคใหม่เหมาะกว่า ให้บอสสะท้อนข้อจำกัด/ผลทดลองกลับ Film และ Mark แล้วปรับ brief/board revision ให้ตรงกัน รักษาเรื่องและ beat/reveal ไม่ถือว่ากฎเก่าบังคับ medium ต่อไป และไม่ถือว่าการอนุญาตเท่ากับ feature integrate แล้ว
 
-ฉาก 2D ล้วนทำ light/look เดียวกันด้วย 2D grading, fill, masks และ glow ที่ควบคุมได้ แยก desired appearance จาก property ของ renderer ไม่อ้างว่ามี ambientLight จริงเมื่อเป็นภาพ 2D ส่วน floor/seat/grip เป็น logical anchors ของภาพครบชิ้น ไม่ต้องแยกภาพ prop เพื่อให้มี anchors
+ฉาก 2D ล้วนทำ light/look ด้วย grading, fill, masks และ glow ที่ควบคุมได้ แยก desired appearance จาก property ของ renderer ไม่อ้างว่ามี ambientLight จริงเมื่อเป็น DOM/SVG ฉาก hybrid ต้องระบุ composition strategy, coordinate/camera mapping, depth/alpha และ light/shadow ของแต่ละ representation ตาม [technical BA ของ Film](film-visual-brief-workflow.md#technical-ba-ต้องตอบอะไรเมื่อผสม-2d-กับ-threejs) Floor/seat/grip เป็น logical anchors ของ asset ไม่ขึ้นกับจำนวน image planes หรือ geometry
 
 ## โครงรวมก่อน polish รายฉาก
 
@@ -49,10 +49,10 @@ Foundation/capability PR ต้อง merge ก่อนเริ่ม branch �
 
 ## ขั้นตอนทำงาน
 
-1. **รับขอบเขต**: ระบุ issue, branch, asset หรือ scene/shot IDs และ storyboard/script revisions อ่าน episode index, scene sheet และ entry/exit ของฉากข้างเคียง จัดงานเป็น foundation/blockout หรือ scene integration/polish พร้อม dependencies ตรวจ conflict ก่อนเขียน ไม่แก้เรื่อง/facts หรือเปลี่ยน timing เงียบ ๆ
+1. **รับขอบเขต**: ระบุ issue, branch, asset หรือ scene/shot IDs และ script/visual-brief/storyboard revisions อ่าน episode index, brief decision IDs, scene sheet และ entry/exit ของฉากข้างเคียง จัดงานเป็น foundation/blockout หรือ scene integration/polish พร้อม dependencies ตรวจ conflict ก่อนเขียน ไม่แก้เรื่อง/facts หรือเปลี่ยน timing เงียบ ๆ
 2. **ตรวจ checkout**: อ่าน AGENTS.md และ [remotion-toolkit.md](remotion-toolkit.md) รัน `npm ls --depth=0`, `npx remotion versions`; ตรวจ source/registries/types/validator/renderer และ helper render ที่จะใช้ ดู [character-toolkit.md](character-toolkit.md) เมื่อเปลี่ยน rig/poses จบเมื่อแยก existing-integrated / needs-integration / missing ได้ทุก dependency
 3. **วาง ownership และ interface**: สร้าง/แก้ library เดียวต่อ asset ให้ id, bounds, pivot, seat/grip/floor anchors, appearance parameters และ resource ownership ฉากเป็น staging/timing และ asset IDs เท่านั้น แปลงพิกัดจาก logical asset space สู่ stage ครั้งเดียวใน owner ที่ชัดเจน
-4. **ทำ blockout ต่อเนื่องก่อน polish**: ประกอบทุกฉากของ sequence ที่รับทำตามหัวข้อด้านบน วาง 2D contact assets และ actors ให้สะโพก/เท้า/มือสัมผัส anchors ตรวจ framing, scale, motion, occlusion, timing/reveal และรอยต่อสองสัดส่วน บันทึกหลักฐานก่อนเพิ่มรายละเอียดรายฉาก หากต้องใช้ 3D ให้จำกัด deep background และติดตั้ง/integrate เฉพาะความสามารถที่ขอบเขตงานต้องใช้
+4. **ทำ blockout ต่อเนื่องก่อน polish**: ประกอบทุกฉากของ sequence ที่รับทำตามหัวข้อด้านบน ใช้ representation ตาม Film/Mark วาง actors/props ให้สะโพก/เท้า/มือสัมผัส anchors ตรวจ framing, scale, motion, occlusion, timing/reveal และรอยต่อสองสัดส่วน โดยเฉพาะการผสาน 2D/3D บันทึกหลักฐานก่อนเพิ่มรายละเอียดรายฉาก ติดตั้ง/integrate เฉพาะความสามารถที่ขอบเขตงานต้องใช้
 5. **เขียน deterministic implementation**: frame/fps เป็น clock; seeded flicker/noise; cache textures ไม่ผูกกับ frame ใน key สำหรับ static art; จัดการ loading/error/disposal และ resource readiness ให้ตรงทั้ง Studio/render อ่าน [asset-engineering-principles.md](asset-engineering-principles.md) สำหรับข้อจำกัด `ThreeCanvas`, `useLoader`, color space และ alpha/depth
 6. **Integrate ให้ครบ**: field ใหม่ต้องอัปเดต types + validator + shared component + dispatch/renderer ร่วมกัน พร้อม tests ที่ตรวจ input, timing, contact หรือ regression จริง ไม่เขียนแค่ test ยืนยันตัวเลขเดียวกับ implementation ไม่วาด SVG/geometry ซ้ำใน scene
 7. **ตรวจภาพ/เวลา**: ทำ QA ทั้งหมดด้านล่าง แก้ root cause ใน shared owner แล้วตรวจ affected scenes ที่ใช้ asset นั้นร่วมกัน การแก้ขนาด/สี/lighting ต้องไม่ทำให้ฉากอื่นเสีย

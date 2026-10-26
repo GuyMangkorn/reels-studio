@@ -1,6 +1,6 @@
-# แพรว (Preaw) + โบ็ต (Boat): ก่อนส่งบทให้มาร์ค
+# แพรว (Preaw) + โบ็ต (Boat): ก่อนส่งบทให้ Film และ Mark
 
-สำหรับ Reels/Shorts แนวลึกลับ แทรกความรู้ และหักมุม รวมงานทั้งตอนเมื่อร้องขอ ทั้งคู่เป็น project agents ใน `.codex/agents/` ใช้ชื่อ `preaw` และ `boat` ตามชื่อที่ผู้ใช้ตั้ง โมเดลและสิทธิ์สืบทอดจากแชตที่เรียกใช้ เช่นเดียวกับมาร์ค
+สำหรับ Reels/Shorts แนวลึกลับ แทรกความรู้ และหักมุม รวมงานทั้งตอนเมื่อร้องขอ ทั้งคู่เป็น project agents ใน `.codex/agents/` ใช้ชื่อ `preaw` และ `boat` ตามชื่อที่ผู้ใช้ตั้ง โมเดลและสิทธิ์ของทั้งคู่สืบทอดจากแชตที่เรียกใช้ ส่วน Film และ Mark มี model/effort กำหนดไว้ใน agent TOML ของแต่ละคน
 
 ## หน้าที่และลำดับงาน
 
@@ -10,7 +10,8 @@
 | Script | แพรว | บทเต็ม beats เบาะแส เฉลย และ claim references |
 | Fact-check | โบ็ต | ตรวจบทฉบับที่ระบุทีละข้อ พร้อมคำแก้และผลกระทบ |
 | Revision / recheck | แพรว → โบ็ต | แก้บทและตรวจ claims ที่เปลี่ยนหรือได้รับผลกระทบ |
-| Storyboard | มาร์ค | ตัดสินใจภาพ 2D/3D/hybrid แสงเงาสีและช็อต แยก scene pack |
+| Visual / technical brief | ฟิล์ม | เลือก 2D/3D/hybrid แสงเงาสี camera language และวิธีผสาน 2D/Three.js พร้อม feasibility/risks |
+| Storyboard | มาร์ค | แตก brief เป็นช็อต/panels, staging, timing และ scene pack |
 | Production | Dev / editor | ทำฉากและเสียง ตรวจเทียบกับบทและ storyboard |
 
 โบ็ตทำสองรอบใน agent เดียว การเคยค้นข้อมูลก่อนเขียนไม่ได้แปลว่าตรวจถ้อยคำหลังเขียนแล้ว ผู้ประสานงานส่งไฟล์และโจทย์ให้แต่ละ agent ตามงานที่ผู้ใช้มอบหมาย; config เหล่านี้ไม่ได้ติดตั้งการรันอัตโนมัติหรือส่งข้อความข้ามแชตเอง
@@ -23,7 +24,7 @@
 
 > ให้โบ็ตตรวจ ch01-script.md revision 2 ทีละ claim แล้วเสนอคำแก้และระบุว่าส่วนใดยังยืนยันไม่ได้
 
-> ให้มาร์คใช้บท revision 3 กับ fact-check ที่ตรงฉบับ ทำ storyboard แยกรายฉาก
+> ให้ฟิล์มใช้บท revision 3 กับ fact-check ที่ตรงฉบับทำ visual/technical brief แล้วส่ง brief revision ให้มาร์คทำ storyboard แยกรายฉาก
 
 ## หน่วยและไฟล์
 
@@ -62,7 +63,7 @@ Runtime timelines ยังคงใช้สัญญาใน AGENTS.md แล
 - **บทเต็ม**: narration/dialogue ภาษาไทยที่จะพูดจริง แยกซับที่ย่อหรือเปลี่ยนถ้อยคำออกจาก VO พร้อม pauses และ sound/story events ที่จำเป็น ไม่ส่งเพียง synopsis แทนบท
 - **Clue ledger**: `CL01`, จุดปลูก/beat, สิ่งที่คนดูสังเกตได้, ความหมายแรก, ความหมายหลังเฉลย และจุด payoff แยกเบาะแสในนิยายออกจากหลักฐานจริงที่อ้างกับคนดู
 - **Claim mapping**: factual sentence/beat → `F001` → `SRC001` และ locator; ข้อใหม่ที่ยังไม่มีหลักฐานใช้สถานะ `needs-research`
-- **Handoff ให้มาร์ค**: ข้อมูลที่ต้องเห็น/ได้ยิน ข้อมูลที่ต้องซ่อนจนถึง beat ใด continuity สำคัญ และข้อจำกัดของเรื่อง ให้มาร์คเลือกภาพ กล้อง แสง สี และ medium
+- **Handoff ให้ Film → Mark**: ข้อมูลที่ต้องเห็น/ได้ยิน ข้อมูลที่ต้องซ่อนจนถึง beat ใด continuity สำคัญ และข้อจำกัดของเรื่อง Film เลือก visual/technical approach ตาม [workflow brief](film-visual-brief-workflow.md) แล้ว Mark แตกบอร์ด ทั้งคู่รับ script/review revision ตรงกัน
 - **Change log / open questions**: revision นี้เปลี่ยนอะไร กระทบ claims/clues/ฉากไหน และอะไรต้องให้โบ็ตตรวจใหม่
 
 แพรวเลือกงานสร้างสรรค์ตาม brief เองได้ รวมหัวข้อเมื่อได้รับโจทย์เปิด hook, beats และ twist อ่านออกเสียงหรือใช้เสียงทดลองก่อนอ้างว่า timing ลงตัว; ตัวเลขคำภาษาไทยอย่างเดียวไม่ยืนยันความยาวจริง กฎช่องใช้ตาม AGENTS.md ส่วนโครง 45 วินาทีเป็นแนวทดลอง ไม่ใช่สูตรบังคับทุกเรื่อง
@@ -87,7 +88,7 @@ Verdicts: `supported` = หลักฐานรองรับถ้อยค�
 
 ## ส่งต่อและตรวจบทก่อนลงทุนทำภาพ
 
-ก่อนส่งมาร์ค แพรวตรวจว่า hook ได้ payoff, ทุกฉากขยับเรื่อง, twist ย้อนเข้าใจได้ และความรู้มีผลต่อ plot โบ็ตตรวจ facts แยกอีก pass มาร์ครับ script revision และ fact-check revision ที่สอดคล้องกัน; ข้อผิดพลาดด้านบทส่งกลับแพรว/โบ็ต ส่วนภาพและวิธีผลิตเป็นอำนาจมาร์ค
+ก่อนส่ง Film แพรวตรวจว่า hook ได้ payoff, ทุกฉากขยับเรื่อง, twist ย้อนเข้าใจได้ และความรู้มีผลต่อ plot โบ็ตตรวจ facts แยกอีก pass Film รับ script/review revision ที่สอดคล้องกันเพื่อทำ visual/technical brief แล้ว Mark รับชุดเดียวกันพร้อม brief revision; ข้อผิดพลาดด้านบทส่งกลับแพรว/โบ็ต แนวทางภาพและวิธีผสานเป็นงาน Film รายละเอียด storyboard เป็นงาน Mark โค้ดและผลทดลองเป็นงาน Boss
 
 ผู้ใช้สามารถขอ rough storyboard จาก draft ได้ ให้ระบุ revision และ unresolved claims ที่อาจทำให้ต้องแก้ภาพ บทที่สร้างหรือผลตรวจที่พร้อมไม่ได้หมายความว่าได้รับอนุมัติแล้ว ถ้า animatic เผยปัญหาจังหวะ ให้ย้อนแก้บท พร้อมปรับ revision และตรวจ factual/continuity impact
 
