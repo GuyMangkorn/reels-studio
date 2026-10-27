@@ -2,7 +2,7 @@
 
 Revision 1 · ready-for-dev storyboard handoff · script approval pending
 Script: scripts/cat-boxes/ch02-script.md R4 · Boat: FC-R4
-Film brief: visual-brief.md VB-CATBOX-R4 / VS02 · FC-VIS-R1 is planning-only, not runtime visual approval
+Film brief: visual-brief.md VB-CATBOX-R5 / VS02 · FC-VIS-R1 is planning-only, not runtime visual approval
 Cut: 45s estimated · 30 fps · 1,350 frames · 1080×1920 portrait only
 
 ## Purpose and boundaries
@@ -10,6 +10,8 @@ Cut: 45s estimated · 30 fps · 1,350 frames · 1080×1920 portrait only
 Move from the function of a hiding place to two distinct shelter studies, then limit what their results support. CL03 sorting piles is retained Long-source material and is not planted here.
 
 Entry shows a wall occluding a schematic target. Exit separates an actual hiding place from a flat outline. Shelter art is a diagram, not footage or a reconstruction of a real building.
+
+**R5 corrective staging:** the user's direction supersedes the earlier full-screen study-panel treatment. Keep Mochi in `CatboxRoom` through all four beats and the owner visible for the comparison/sorting actions. Study results remain legible screen-space overlays in the upper third; the room and cat action stay visible underneath. VO and subtitle strings remain unchanged.
 
 ## Shot map
 
@@ -42,7 +44,7 @@ Compare a real wall with a flat outline. End with the studied hide-place conclus
 
 ## Shared assets and acceptance
 
-Use fixed screen-space explanatory stages in cream/blue with amber qualification. Shelter-context, outcome-tracks and occlusion-compare are integrated shared modes. Movement comes from switching study and result panels, not camera-only changes.
+Use cream/blue study overlays with amber qualification over the room scene. Shelter-context, outcome-tracks and occlusion-compare are integrated shared modes. Keep the cat and owner visible as the study/result cards change.
 
 ## Current implementation and CLI evidence
 

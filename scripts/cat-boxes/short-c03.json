@@ -4,6 +4,34 @@
     "bg": "room",
     "actors": [
       {
+        "id": "owner",
+        "type": "narrator",
+        "pose": "think",
+        "world": {
+          "keys": [
+            {
+              "atSec": 0,
+              "x": 0.4,
+              "y": 0
+            }
+          ]
+        },
+        "poses": [
+          {
+            "atSec": 3.36,
+            "pose": "point"
+          },
+          {
+            "atSec": 5.76,
+            "pose": "think"
+          }
+        ],
+        "hairStyle": "short",
+        "skinColor": "#FFD9B8",
+        "shirtColor": "#FF8FA3",
+        "pantsColor": "#7ED6B2"
+      },
+      {
         "id": "mochi",
         "type": "cat",
         "pose": "sit",
@@ -58,11 +86,13 @@
         "startSec": 0,
         "endSec": 8,
         "phase": 0,
-        "heading": "นั่งพัก หรือรอพุ่ง?",
+        "heading": "ภาพสมมติ • บันทึกการเล่น",
         "labels": [
-          "เจ้าของเดาว่า “ฐานล่า”"
+          "เจ้าของเดา: ฐานล่า"
         ],
-        "labelsAtSec": [3.2],
+        "labelsAtSec": [
+          3.2
+        ],
         "status": "fiction",
         "sourceBeatId": "CATBOX-C03-S01-B01"
       }
@@ -70,10 +100,10 @@
     "projection": {
       "unit": "m",
       "stage": {
-        "left": -5,
-        "right": 5,
-        "bottom": -2,
-        "top": 4
+        "left": -3.6,
+        "right": 2.44,
+        "bottom": -0.85,
+        "top": 2.55
       },
       "views": {
         "short": {
@@ -106,10 +136,10 @@
         },
         "long": {
           "bounds": {
-            "left": -2.1333333333,
-            "right": 2.1333333333,
-            "bottom": -0.45,
-            "top": 1.95
+            "left": -3.6,
+            "right": 2.44,
+            "bottom": -0.85,
+            "top": 2.55
           }
         }
       }
@@ -127,7 +157,7 @@
       {
         "type": "catbox-toy",
         "space": "world",
-        "layer": "front",
+        "layer": "back",
         "world": {
           "x": -0.5,
           "y": 0
@@ -139,18 +169,23 @@
             "y": 0
           },
           {
-            "atSec": 0.5,
-            "x": -0.5,
-            "y": 0
+            "atSec": 1.5,
+            "x": -0.3,
+            "y": 0.18
           },
           {
-            "atSec": 2.7,
-            "x": 0.1,
+            "atSec": 2,
+            "x": 0.22,
+            "y": 0.18
+          },
+          {
+            "atSec": 2.8,
+            "x": 0.15,
             "y": 0
           },
           {
             "atSec": 8,
-            "x": 0.1,
+            "x": 0.15,
             "y": 0
           }
         ]
@@ -160,7 +195,51 @@
   {
     "durationSec": 13,
     "bg": "room",
-    "actors": [],
+    "actors": [
+      {
+        "id": "owner",
+        "type": "narrator",
+        "pose": "think",
+        "world": {
+          "keys": [
+            {
+              "atSec": 0,
+              "x": -0.45,
+              "y": 0
+            }
+          ]
+        },
+        "poses": [
+          {
+            "atSec": 5.46,
+            "pose": "point"
+          },
+          {
+            "atSec": 9.36,
+            "pose": "think"
+          }
+        ],
+        "hairStyle": "short",
+        "skinColor": "#FFD9B8",
+        "shirtColor": "#FF8FA3",
+        "pantsColor": "#7ED6B2"
+      },
+      {
+        "id": "mochi",
+        "type": "cat",
+        "pose": "sit",
+        "color": "#c7b5e7",
+        "world": {
+          "keys": [
+            {
+              "atSec": 0,
+              "x": 0.06,
+              "y": 0
+            }
+          ]
+        }
+      }
+    ],
     "subtitle": "ย่อง / ไล่ / พุ่ง พบจริง",
     "subtitleCues": [
       {
@@ -188,12 +267,114 @@
         "status": "hypothesis",
         "sourceBeatId": "CATBOX-C03-S01-B02"
       }
-    ]
+    ],
+    "props": [
+      {
+        "type": "catbox-old",
+        "space": "world",
+        "world": {
+          "x": -0.16,
+          "y": 0
+        },
+        "layer": "back"
+      }
+    ],
+    "projection": {
+      "unit": "m",
+      "stage": {
+        "left": -3.6,
+        "right": 2.44,
+        "bottom": -0.85,
+        "top": 2.55
+      },
+      "views": {
+        "short": {
+          "bounds": {
+            "left": -0.3234375,
+            "right": 0.3234375,
+            "bottom": -0.275,
+            "top": 0.875
+          },
+          "cameraMoves": [
+            {
+              "atSec": 0,
+              "x": -0.05,
+              "y": 0,
+              "zoom": 1
+            },
+            {
+              "atSec": 6.5,
+              "x": 0,
+              "y": 0,
+              "zoom": 0.95
+            },
+            {
+              "atSec": 13,
+              "x": 0,
+              "y": 0,
+              "zoom": 0.95
+            }
+          ]
+        },
+        "long": {
+          "bounds": {
+            "left": -3.6,
+            "right": 2.44,
+            "bottom": -0.85,
+            "top": 2.55
+          }
+        }
+      }
+    }
   },
   {
     "durationSec": 12,
     "bg": "room",
-    "actors": [],
+    "actors": [
+      {
+        "id": "owner",
+        "type": "narrator",
+        "pose": "think",
+        "world": {
+          "keys": [
+            {
+              "atSec": 0,
+              "x": -0.45,
+              "y": 0
+            }
+          ]
+        },
+        "poses": [
+          {
+            "atSec": 5.04,
+            "pose": "point"
+          },
+          {
+            "atSec": 8.64,
+            "pose": "think"
+          }
+        ],
+        "hairStyle": "short",
+        "skinColor": "#FFD9B8",
+        "shirtColor": "#FF8FA3",
+        "pantsColor": "#7ED6B2"
+      },
+      {
+        "id": "mochi",
+        "type": "cat",
+        "pose": "sit",
+        "color": "#c7b5e7",
+        "world": {
+          "keys": [
+            {
+              "atSec": 0,
+              "x": 0.06,
+              "y": 0
+            }
+          ]
+        }
+      }
+    ],
     "subtitle": "ที่หลบจริงมีส่วนบังตัว",
     "subtitleCues": [
       {
@@ -212,7 +393,7 @@
         "startSec": 0,
         "endSec": 12,
         "phase": 2,
-        "heading": "กล่องที่หลบได้ ต่างจากกรอบแบน",
+        "heading": "กล่องจริงบังตัว • กรอบแบนไม่บัง",
         "labels": [
           "กล่องมีส่วนบังตัว",
           "กรอบแบนมีแค่ขอบ",
@@ -221,12 +402,98 @@
         "status": "diagram",
         "sourceBeatId": "CATBOX-C03-S01-B03"
       }
-    ]
+    ],
+    "props": [
+      {
+        "type": "catbox-old",
+        "space": "world",
+        "world": {
+          "x": -0.16,
+          "y": 0
+        },
+        "layer": "back"
+      }
+    ],
+    "projection": {
+      "unit": "m",
+      "stage": {
+        "left": -3.6,
+        "right": 2.44,
+        "bottom": -0.85,
+        "top": 2.55
+      },
+      "views": {
+        "short": {
+          "bounds": {
+            "left": -0.3234375,
+            "right": 0.3234375,
+            "bottom": -0.275,
+            "top": 0.875
+          },
+          "cameraMoves": [
+            {
+              "atSec": 0,
+              "x": -0.05,
+              "y": 0,
+              "zoom": 1
+            },
+            {
+              "atSec": 6,
+              "x": 0,
+              "y": 0,
+              "zoom": 0.95
+            },
+            {
+              "atSec": 12,
+              "x": 0,
+              "y": 0,
+              "zoom": 0.95
+            }
+          ]
+        },
+        "long": {
+          "bounds": {
+            "left": -3.6,
+            "right": 2.44,
+            "bottom": -0.85,
+            "top": 2.55
+          }
+        }
+      }
+    }
   },
   {
     "durationSec": 12,
     "bg": "room",
     "actors": [
+      {
+        "id": "owner",
+        "type": "narrator",
+        "pose": "think",
+        "world": {
+          "keys": [
+            {
+              "atSec": 0,
+              "x": -0.45,
+              "y": 0
+            }
+          ]
+        },
+        "poses": [
+          {
+            "atSec": 5.04,
+            "pose": "point"
+          },
+          {
+            "atSec": 8.64,
+            "pose": "think"
+          }
+        ],
+        "hairStyle": "short",
+        "skinColor": "#FFD9B8",
+        "shirtColor": "#FF8FA3",
+        "pantsColor": "#7ED6B2"
+      },
       {
         "id": "mochi",
         "type": "cat",
@@ -278,7 +545,7 @@
         "startSec": 0,
         "endSec": 12,
         "phase": 3,
-        "heading": "เห็นการกระทำ • ยังไม่รู้เหตุที่เข้าไป",
+        "heading": "เรื่องแต่ง • เหตุยังไม่รู้",
         "labels": [
           "เรื่องสมมติ",
           "โมจิพุ่งตามของเล่น",
@@ -291,10 +558,10 @@
     "projection": {
       "unit": "m",
       "stage": {
-        "left": -5,
-        "right": 5,
-        "bottom": -2,
-        "top": 4
+        "left": -3.6,
+        "right": 2.44,
+        "bottom": -0.85,
+        "top": 2.55
       },
       "views": {
         "short": {
@@ -321,10 +588,10 @@
         },
         "long": {
           "bounds": {
-            "left": -2.1333333333,
-            "right": 2.1333333333,
-            "bottom": -0.45,
-            "top": 1.95
+            "left": -3.6,
+            "right": 2.44,
+            "bottom": -0.85,
+            "top": 2.55
           }
         }
       }

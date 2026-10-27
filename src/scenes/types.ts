@@ -29,6 +29,8 @@ export type Actor = {
   poses?: {atSec: number; pose: PoseName}[];
   /** Contact the room's sofa cushion while entering or leaving sit. */
   seat?: 'sofa';
+  /** Optional actor-local duration for authored pose transitions, in frames. */
+  poseTransitionFrames?: number;
 };
 export type Scene = {
   visuals?: SceneVisual[];

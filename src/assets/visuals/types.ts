@@ -12,6 +12,8 @@ export type SceneVisual = {
   labels: string[];
   /** Optional per-label reveal times in scene-local seconds. */
   labelsAtSec?: number[];
+  /** Hide the explanatory drawing when a shared prop supplies the same visual beat. */
+  showDiagram?: boolean;
   status: 'fiction' | 'diagram' | 'research' | 'hypothesis';
 };
 /** Half-open intervals make the visual at a cut independent of playback history. */

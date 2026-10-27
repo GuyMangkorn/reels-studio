@@ -2,7 +2,7 @@
 
 Revision 1 · ready-for-dev storyboard handoff · script approval pending
 Script: scripts/cat-boxes/ch05-script.md R4 · Boat: FC-R4
-Film brief: visual-brief.md VB-CATBOX-R4 / VS05 · FC-VIS-R1 is planning-only, not runtime visual approval
+Film brief: visual-brief.md VB-CATBOX-R5 / VS05 · FC-VIS-R1 is planning-only, not runtime visual approval
 Cut: 45s estimated · 30 fps · 1,350 frames · 1080×1920 portrait only
 
 ## Purpose and boundaries
@@ -10,6 +10,8 @@ Cut: 45s estimated · 30 fps · 1,350 frames · 1080×1920 portrait only
 Keep side contact as a bounded hypothesis and distinguish it from shelter findings. This is the contact-only Short: do not insert Long C05-S02’s novelty study, sniff/leave fiction, F010 or CL05.
 
 Entry carries “สมมติฐาน — ยังไม่ยืนยันกลไก” and “ข้อเสนอในการสัมภาษณ์ / ไม่ใช่ผลทดลองกลไก” beside the first metaphor. Exit preserves “อาจมีส่วน” without a proven stamp or disproof.
+
+**R5 corrective staging:** the user's direction supersedes the diagram-only treatment below. Keep Mochi in `CatboxRoom` across all four beats and the owner visible where the file/evidence action needs him. Hypothesis/evidence cards stay in the upper third over the room action. VO and subtitle strings remain unchanged.
 
 ## Shot map
 
@@ -42,7 +44,7 @@ Keep the contact token dotted and in the “อาจ” lane. No green check, �
 
 ## Shared assets and acceptance
 
-Use screen-space explanatory diagrams only. Contact-hypothesis/evidence-sort modes are integrated shared capabilities. Cream/blue explains; amber marks uncertainty. Fixed camera and object movement only when they advance the evidence.
+Use contact-hypothesis/evidence overlays in the upper third of the room stage. Cream/blue explains; amber marks uncertainty. Keep Mochi visible and use camera/object movement only when it advances the evidence.
 
 ## Current implementation and CLI evidence
 

@@ -2,7 +2,51 @@
   {
     "durationSec": 8,
     "bg": "room",
-    "actors": [],
+    "actors": [
+      {
+        "id": "owner",
+        "type": "narrator",
+        "pose": "think",
+        "world": {
+          "keys": [
+            {
+              "atSec": 0,
+              "x": 0.4,
+              "y": 0
+            }
+          ]
+        },
+        "poses": [
+          {
+            "atSec": 3.36,
+            "pose": "point"
+          },
+          {
+            "atSec": 5.76,
+            "pose": "think"
+          }
+        ],
+        "hairStyle": "short",
+        "skinColor": "#FFD9B8",
+        "shirtColor": "#FF8FA3",
+        "pantsColor": "#7ED6B2"
+      },
+      {
+        "id": "mochi",
+        "type": "cat",
+        "pose": "idle",
+        "color": "#c7b5e7",
+        "world": {
+          "keys": [
+            {
+              "atSec": 0,
+              "x": -0.3,
+              "y": 0
+            }
+          ]
+        }
+      }
+    ],
     "subtitle": "เราเลือกคำตอบเร็วไปไหม?",
     "subtitleCues": [
       {
@@ -21,21 +65,22 @@
         "startSec": 0,
         "endSec": 8,
         "phase": 0,
-        "heading": "เราเลือกคำตอบเร็วไปไหม?",
+        "heading": "กรอบแบน • คำตอบไม่ชัด",
         "labels": [
           "เรื่องสมมติ • กล่องเก่าในห้อง"
         ],
         "status": "research",
-        "sourceBeatId": "CATBOX-C06-S01-B01"
+        "sourceBeatId": "CATBOX-C06-S01-B01",
+        "showDiagram": false
       }
     ],
     "projection": {
       "unit": "m",
       "stage": {
-        "left": -5,
-        "right": 5,
-        "bottom": -2,
-        "top": 4
+        "left": -3.6,
+        "right": 2.44,
+        "bottom": -0.85,
+        "top": 2.55
       },
       "views": {
         "short": {
@@ -48,24 +93,30 @@
           "cameraMoves": [
             {
               "atSec": 0,
-              "x": 0,
+              "x": -0.14,
               "y": 0,
-              "zoom": 0.75
+              "zoom": 1.26
+            },
+            {
+              "atSec": 4,
+              "x": -0.14,
+              "y": 0,
+              "zoom": 1.26
             },
             {
               "atSec": 8,
-              "x": 0,
+              "x": -0.14,
               "y": 0,
-              "zoom": 0.75
+              "zoom": 1.26
             }
           ]
         },
         "long": {
           "bounds": {
-            "left": -2.1333333333,
-            "right": 2.1333333333,
-            "bottom": -0.45,
-            "top": 1.95
+            "left": -3.6,
+            "right": 2.44,
+            "bottom": -0.85,
+            "top": 2.55
           }
         }
       }
@@ -94,7 +145,51 @@
   {
     "durationSec": 14,
     "bg": "room",
-    "actors": [],
+    "actors": [
+      {
+        "id": "owner",
+        "type": "narrator",
+        "pose": "think",
+        "world": {
+          "keys": [
+            {
+              "atSec": 0,
+              "x": 0.4,
+              "y": 0
+            }
+          ]
+        },
+        "poses": [
+          {
+            "atSec": 5.88,
+            "pose": "point"
+          },
+          {
+            "atSec": 10.08,
+            "pose": "think"
+          }
+        ],
+        "hairStyle": "short",
+        "skinColor": "#FFD9B8",
+        "shirtColor": "#FF8FA3",
+        "pantsColor": "#7ED6B2"
+      },
+      {
+        "id": "mochi",
+        "type": "cat",
+        "pose": "idle",
+        "color": "#c7b5e7",
+        "world": {
+          "keys": [
+            {
+              "atSec": 0,
+              "x": -0.3,
+              "y": 0
+            }
+          ]
+        }
+      }
+    ],
     "subtitle": "งานต่างกัน วัดคนละอย่าง",
     "subtitleCues": [
       {
@@ -113,7 +208,7 @@
         "startSec": 0,
         "endSec": 14,
         "phase": 1,
-        "heading": "งานต่างกัน • วัดคนละอย่าง",
+        "heading": "สองงานคนละคำถาม",
         "labels": [
           "งานเรื่องกรอบดูการเลือก",
           "งานที่ซ่อนในศูนย์พักพิงดูคะแนนความเครียด",
@@ -122,12 +217,114 @@
         "status": "research",
         "sourceBeatId": "CATBOX-C06-S01-B02"
       }
-    ]
+    ],
+    "props": [
+      {
+        "type": "catbox-old",
+        "space": "world",
+        "world": {
+          "x": 0,
+          "y": 0
+        },
+        "layer": "back"
+      }
+    ],
+    "projection": {
+      "unit": "m",
+      "stage": {
+        "left": -3.6,
+        "right": 2.44,
+        "bottom": -0.85,
+        "top": 2.55
+      },
+      "views": {
+        "short": {
+          "bounds": {
+            "left": -0.43125,
+            "right": 0.43125,
+            "bottom": -0.466,
+            "top": 1.066
+          },
+          "cameraMoves": [
+            {
+              "atSec": 0,
+              "x": -0.14,
+              "y": 0,
+              "zoom": 1.26
+            },
+            {
+              "atSec": 7,
+              "x": -0.14,
+              "y": 0,
+              "zoom": 1.26
+            },
+            {
+              "atSec": 14,
+              "x": -0.14,
+              "y": 0,
+              "zoom": 1.26
+            }
+          ]
+        },
+        "long": {
+          "bounds": {
+            "left": -3.6,
+            "right": 2.44,
+            "bottom": -0.85,
+            "top": 2.55
+          }
+        }
+      }
+    }
   },
   {
     "durationSec": 12,
     "bg": "room",
-    "actors": [],
+    "actors": [
+      {
+        "id": "owner",
+        "type": "narrator",
+        "pose": "think",
+        "world": {
+          "keys": [
+            {
+              "atSec": 0,
+              "x": 0.4,
+              "y": 0
+            }
+          ]
+        },
+        "poses": [
+          {
+            "atSec": 5.04,
+            "pose": "point"
+          },
+          {
+            "atSec": 8.64,
+            "pose": "think"
+          }
+        ],
+        "hairStyle": "short",
+        "skinColor": "#FFD9B8",
+        "shirtColor": "#FF8FA3",
+        "pantsColor": "#7ED6B2"
+      },
+      {
+        "id": "mochi",
+        "type": "cat",
+        "pose": "idle",
+        "color": "#c7b5e7",
+        "world": {
+          "keys": [
+            {
+              "atSec": 0,
+              "x": -0.3,
+              "y": 0
+            }
+          ]
+        }
+      }
+    ],
     "subtitle": "เหตุเสนอมีหลักฐานไม่เท่ากัน",
     "subtitleCues": [
       {
@@ -146,7 +343,7 @@
         "startSec": 0,
         "endSec": 12,
         "phase": 2,
-        "heading": "เหตุเสนอมีหลักฐานไม่เท่ากัน",
+        "heading": "สามข้อเสนอ • เหตุยังไม่ยืนยัน",
         "labels": [
           "ความอุ่น • การซุ่ม • สัมผัสด้านข้าง",
           "ยังไม่รู้ว่าเลือกกล่องเพราะอะไร"
@@ -154,12 +351,98 @@
         "status": "hypothesis",
         "sourceBeatId": "CATBOX-C06-S01-B03"
       }
-    ]
+    ],
+    "props": [
+      {
+        "type": "catbox-old",
+        "space": "world",
+        "world": {
+          "x": 0,
+          "y": 0
+        },
+        "layer": "back"
+      }
+    ],
+    "projection": {
+      "unit": "m",
+      "stage": {
+        "left": -3.6,
+        "right": 2.44,
+        "bottom": -0.85,
+        "top": 2.55
+      },
+      "views": {
+        "short": {
+          "bounds": {
+            "left": -0.43125,
+            "right": 0.43125,
+            "bottom": -0.466,
+            "top": 1.066
+          },
+          "cameraMoves": [
+            {
+              "atSec": 0,
+              "x": -0.14,
+              "y": 0,
+              "zoom": 1.26
+            },
+            {
+              "atSec": 6,
+              "x": -0.14,
+              "y": 0,
+              "zoom": 1.26
+            },
+            {
+              "atSec": 12,
+              "x": -0.14,
+              "y": 0,
+              "zoom": 1.26
+            }
+          ]
+        },
+        "long": {
+          "bounds": {
+            "left": -3.6,
+            "right": 2.44,
+            "bottom": -0.85,
+            "top": 2.55
+          }
+        }
+      }
+    }
   },
   {
     "durationSec": 11,
     "bg": "room",
     "actors": [
+      {
+        "id": "owner",
+        "type": "narrator",
+        "pose": "think",
+        "world": {
+          "keys": [
+            {
+              "atSec": 0,
+              "x": 0.4,
+              "y": 0
+            }
+          ]
+        },
+        "poses": [
+          {
+            "atSec": 4.62,
+            "pose": "point"
+          },
+          {
+            "atSec": 7.92,
+            "pose": "think"
+          }
+        ],
+        "hairStyle": "short",
+        "skinColor": "#FFD9B8",
+        "shirtColor": "#FF8FA3",
+        "pantsColor": "#7ED6B2"
+      },
       {
         "id": "mochi",
         "type": "cat",
@@ -215,7 +498,7 @@
         "startSec": 0,
         "endSec": 11,
         "phase": 3,
-        "heading": "กล่องมีหลายหน้าที่",
+        "heading": "กลับสู่กล่องเดิม",
         "labels": [
           "เรื่องสมมติ • ไม่ใช่ผลทดลอง"
         ],
@@ -229,7 +512,7 @@
         "left": -3.6,
         "right": 2.44,
         "bottom": -0.85,
-        "top": 3.4
+        "top": 2.55
       },
       "views": {
         "short": {
@@ -242,21 +525,27 @@
           "cameraMoves": [
             {
               "atSec": 0,
-              "x": -0.296,
-              "y": 0,
-              "zoom": 0.66
+              "x": -0.45,
+              "y": -0.173,
+              "zoom": 1.58
             },
             {
-              "atSec": 8,
+              "atSec": 3,
+              "x": -0.18,
+              "y": -0.173,
+              "zoom": 1.58
+            },
+            {
+              "atSec": 7.7,
               "x": 0,
-              "y": 0,
-              "zoom": 1
+              "y": -0.173,
+              "zoom": 1.58
             },
             {
               "atSec": 11,
               "x": 0,
-              "y": 0,
-              "zoom": 1
+              "y": -0.173,
+              "zoom": 1.58
             }
           ]
         },
@@ -274,7 +563,7 @@
       {
         "type": "catbox-old",
         "space": "world",
-        "layer": "front",
+        "layer": "back",
         "world": {
           "x": 0,
           "y": 0

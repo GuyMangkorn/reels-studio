@@ -14,6 +14,7 @@ export type ActorScaleSpec = {
 
 /**
  * CATBOX-METER-R1 design estimates for the existing shared SVG cut-outs.
+ * R5 sets the cat's shared height to one sixth of the owner's to meet the user-directed Short scale.
  * Solid vertical extents are source-path bounds (shadow excluded), not scanned measurements.
  * Keep this registry as the single conversion from an actor's authored height to rig units.
  */
@@ -27,7 +28,9 @@ export const PHYSICAL_ACTOR_SPECS: Partial<Record<Actor['type'], ActorScaleSpec>
   },
   cat: {
     physicalEstimate: true,
-    heightM: 0.45,
+    // CATBOX Short baseline R2: a full standing floor-to-ear silhouette estimate.
+    // At 1.70m for the owner, 0.2833m keeps the canonical height ratio close to 6:1.
+    heightM: 1.70 / 6,
     bodyLengthM: 0.48,
     solidBoundsSource: 'authored-svg-path-extents',
     solidBounds: {left: -155, top: -179, right: 123, bottom: 29},

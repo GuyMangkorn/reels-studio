@@ -2,14 +2,16 @@
 
 Revision 1 · ready-for-dev storyboard handoff · script approval pending
 Script: scripts/cat-boxes/ch06-script.md R4 · Boat: FC-R4
-Film brief: visual-brief.md VB-CATBOX-R4 / VS06 · FC-VIS-R1 is planning-only, not runtime visual approval
+Film brief: visual-brief.md VB-CATBOX-R5 / VS06 · FC-VIS-R1 is planning-only, not runtime visual approval
 Cut: 45s estimated · 30 fps · 1,350 frames · 1080×1920 portrait only
 
 ## Purpose and boundaries
 
 Make the ending self-contained: plant the same old box at the start, sort observations from proposed causes, then let fictional Mochi return while the owner writes “ครั้งนี้ยังไม่รู้.” A viewer need not watch C01–C05 first.
 
-Reuse the existing C06-S02 physical contract without editing that source: BOX-OLD origin/anchors, 1.15m Short-view source, orthographic projection and unchanged actor proportions. Dimensions are production estimates. New Short-local motion timing is a separate path; Long implementation, render and QA are deferred.
+Reuse BOX-OLD's origin and contact anchors. R5 uses the shared 1.70m owner / 0.2833m cat metre-space baseline and keeps actor scale uniform. The legacy C06-S02 Short crop remains historical source material; Long output and QA are deferred and no longer verified at the revised cat height.
+
+**R5 corrective staging:** keep the living-room set and Mochi visible through the evidence-sorting middle beats; explanatory cards remain upper-third overlays. Preserve BOX-OLD at F0 and its single outline entrance at F15. During the return, use the close camera crop to keep Mochi large after front-rim occlusion. VO and subtitle strings remain unchanged.
 
 ## Shot map
 
@@ -42,7 +44,7 @@ Mochi walks to the same BOX-OLD identity planted at F0 and settles on the same f
 
 ## Shared assets and acceptance
 
-Reuse CAT-2D, ROOM-2D/CatboxRoom, BOX-OLD and the integrated orthographic projection. Apply DF-20261026-subpixel-stage-projection to output-pixel layouts. C06-S02’s source board, sheet, scale/framing and prior Long QA remain unchanged.
+Reuse CAT-2D, ROOM-2D/CatboxRoom, BOX-OLD and the integrated orthographic projection. Apply DF-20261026-subpixel-stage-projection to output-pixel layouts. Keep the single shared outline asset; no duplicate inline frame or label. Long implementation/render/QA remains deferred.
 
 ## Current implementation and CLI evidence
 

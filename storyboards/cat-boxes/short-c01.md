@@ -2,7 +2,7 @@
 
 Revision 1 · ready-for-dev storyboard handoff · script approval pending
 Script: scripts/cat-boxes/ch01-script.md R5 · Boat: FC-R5-C01
-Film brief: visual-brief.md VB-CATBOX-R4 / VS01 · FC-VIS-R1 is planning-only, not runtime visual approval
+Film brief: visual-brief.md VB-CATBOX-R5 / VS01 · FC-VIS-R1 is planning-only, not runtime visual approval
 Cut: 45s estimated · 30 fps · 1,350 frames · 1080×1920 portrait only
 
 ## Purpose and boundaries
@@ -10,6 +10,8 @@ Cut: 45s estimated · 30 fps · 1,350 frames · 1080×1920 portrait only
 Turn the flat-frame question into a careful comparison of stimulus types and pairwise results. The Short is independent and adds no CL01–CL05 clue dependency.
 
 Entry shows an empty flat paper frame. Exit leaves “คิดว่ามีกล่องหรือเปล่า?” open. Do not show an invisible solid wall, a thought bubble, or a claim that every cat interprets the frame the same way.
+
+**R5 corrective staging:** the user's direction supersedes this sheet's earlier diagram-only frame notes. Keep Mochi visible in `CatboxRoom` through all four beats, with the owner present where the evidence action needs him. Stimulus/result cards are screen-space overlays in the upper third; keep the room and cat action visible underneath. VO and subtitle strings remain unchanged.
 
 ## Shot map
 
@@ -42,7 +44,7 @@ Settle “บางตัวเลือกกรอบ” in the observed lane 
 
 ## Shared assets and acceptance
 
-Use existing CATBOX paper-stimulus and outline assets. The relevant explanatory modes are integrated through the scene contract, validation and shared VisualStage dispatch. Cream/blue diagram palette, amber qualification, dark outline. Keep labels above the subtitle band; demonstrate information changes with stimulus assembly and comparison, not camera-only changes.
+Use existing CATBOX paper-stimulus and outline assets. The relevant explanatory modes are integrated through the scene contract, validation and shared VisualStage dispatch. Cream/blue diagram palette, amber qualification, dark outline. Keep labels above the subtitle band; demonstrate information changes with stimulus assembly and comparison while the cat and room remain visible.
 
 ## Current implementation and CLI evidence
 
@@ -79,7 +81,7 @@ Audio: no Short-specific recording or approved SFX; synchronization unverified.
 All frame numbers are Short-composition-local at 30 fps. Each state must be authored so direct seeking reproduces it without React state from the preceding shot.
 | Shot | Entry state | Exit / next-cut state |
 |---|---|---|
-| CATBOX-C01-SHORT-S01-SH01 | F0: empty paper frame with schematic marker outside; diagram-only stage, no owner/Mochi state inherited. | F209: marker ends inside the outline; next cut replaces the single frame with the three stimulus cards. |
+| CATBOX-C01-SHORT-S01-SH01 | F0: empty paper frame overlay in `CatboxRoom`; Mochi and the owner have authored world paths. | F209: marker ends inside the overlay; next cut replaces the single frame with the three stimulus cards. |
 | CATBOX-C01-SHORT-S01-SH02 | F210: three source stimulus cards enter in fixed screen-space positions; counts are separate labels. | F599: 30 completers and 9 selectors remain separately labeled; next cut changes to pairwise cards. |
 | CATBOX-C01-SHORT-S01-SH03 | F600: start a fresh paired-comparison diagram; no bar or tally is carried over as a measured effect. | F1019: qualified pairwise result is held; next cut opens the motive question. |
 | CATBOX-C01-SHORT-S01-SH04 | F1020: start on observed selection card and a blank motive slot. | F1349: motive slot stays blank and the ending line holds; no Long clue state is required. |

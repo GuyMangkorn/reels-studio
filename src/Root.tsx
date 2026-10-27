@@ -23,7 +23,7 @@ const catboxShorts: Array<{id: string; timeline: Timeline}> = [
 ];
 catboxShorts.forEach(short => validateTimeline(short.timeline));
 export const Root = () => <>
-  <Composition id="Short" component={Episode} width={1080} height={1920} fps={30} durationInFrames={16200} defaultProps={{timeline: catboxTimeline, ending: 'B_loop' as const}} calculateMetadata={({props}: {props: {timeline?: Timeline}}) => ({durationInFrames: timelineFrames(props.timeline ?? catboxTimeline, 30)})}/>
+  <Composition id="Short" component={Episode} width={1080} height={1920} fps={30} durationInFrames={16200} defaultProps={{timeline: catboxTimeline, ending: 'B_loop' as const, sceneTransitionFrames: 12, loopFadeFrames: 12}} calculateMetadata={({props}: {props: {timeline?: Timeline}}) => ({durationInFrames: timelineFrames(props.timeline ?? catboxTimeline, 30)})}/>
   <Composition id="Long" component={Episode} width={1920} height={1080} fps={30} durationInFrames={16200} defaultProps={{timeline: catboxTimeline, ending: 'B_loop' as const}} calculateMetadata={({props}: {props: {timeline?: Timeline}}) => ({durationInFrames: timelineFrames(props.timeline ?? catboxTimeline, 30)})}/>
-  {catboxShorts.map(({id, timeline}) => <Composition key={id} id={id} component={Episode} width={1080} height={1920} fps={30} durationInFrames={1350} defaultProps={{timeline, ending: 'A_fade' as const}} calculateMetadata={({props}: {props: {timeline?: Timeline}}) => ({durationInFrames: timelineFrames(props.timeline ?? timeline, 30)})}/>)}
+  {catboxShorts.map(({id, timeline}) => <Composition key={id} id={id} component={Episode} width={1080} height={1920} fps={30} durationInFrames={1350} defaultProps={{timeline, ending: 'A_fade' as const, loopFadeFrames: 12}} calculateMetadata={({props}: {props: {timeline?: Timeline}}) => ({durationInFrames: timelineFrames(props.timeline ?? timeline, 30)})}/>)}
 </>;

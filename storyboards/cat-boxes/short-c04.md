@@ -2,7 +2,7 @@
 
 Revision 1 · ready-for-dev storyboard handoff · script approval pending
 Script: scripts/cat-boxes/ch04-script.md R4 · Boat: FC-R4
-Film brief: visual-brief.md VB-CATBOX-R4 / VS04 · FC-VIS-R1 is planning-only, not runtime visual approval
+Film brief: visual-brief.md VB-CATBOX-R5 / VS04 · FC-VIS-R1 is planning-only, not runtime visual approval
 Cut: 45s estimated · 30 fps · 1,350 frames · 1080×1920 portrait only
 
 ## Purpose and boundaries
@@ -10,6 +10,8 @@ Cut: 45s estimated · 30 fps · 1,350 frames · 1080×1920 portrait only
 Put the disputed Celsius range inside a claim-review frame, separate physiology from comfort/preference, and end by asking what the number measures. No CL01–CL05 clue is required.
 
 Entry shows 30–38°C and “ไม่ใช่คำแนะนำให้อุ่นห้อง” together from frame 0. Exit leaves “ตัวเลขวัดอะไร / ตอบคำถามไหน?” open. No thermostat, heating advice, comfort band or invented temperature experiment.
+
+**R5 corrective staging:** the user's direction supersedes the diagram-only treatment below. Keep Mochi in `CatboxRoom` and the owner present for the claim review and note-taking beats; use large upper-third overlays to support the action. Do not make a full-frame data panel. VO and subtitle strings remain unchanged.
 
 ## Shot map
 
@@ -42,7 +44,7 @@ Move the number out of the answer position; “วัดอะไร?” and “
 
 ## Shared assets and acceptance
 
-Use fixed screen-space 2D explanatory diagrams, cream/blue with amber for qualification. The modes used here are integrated through the shared runtime dispatch. No Long framing is authored.
+Use cream/blue claim overlays with amber for qualification over the living-room scene. The modes used here are integrated through the shared runtime dispatch. No Long framing is authored.
 
 ## Current implementation and CLI evidence
 

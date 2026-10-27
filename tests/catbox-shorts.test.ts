@@ -68,13 +68,17 @@ test('the C03 toy follows its metre-space floor path deterministically', () => {
   const toy = c03[0].props?.find(prop => prop.type === 'catbox-toy') as unknown as ScenePropSpec | undefined;
   assert.ok(toy?.worldMotion);
   assert.deepEqual(worldPropPositionAt(toy, 0, 30), {x: -.5, y: 0});
-  assert.deepEqual(worldPropPositionAt(toy, 15, 30), {x: -.5, y: 0});
+  const entering = worldPropPositionAt(toy, 60, 30);
+  assert.ok(Math.abs(entering.x - .22) < 1e-9);
+  assert.equal(entering.y, .18);
+  const pawContact = worldPropPositionAt(toy, 120, 30);
+  assert.deepEqual(pawContact, {x: .15, y: 0});
   const middle = worldPropPositionAt(toy, 45, 30);
   assert.ok(middle.x > -.5 && middle.x < .1);
   for (const frame of [180, 0, 60, 15, 210, 45]) worldPropPositionAt(toy, frame, 30);
   assert.deepEqual(worldPropPositionAt(toy, 45, 30), middle);
-  assert.deepEqual(worldPropPositionAt(toy, 8 * 30 - 1, 30), {x: .1, y: 0});
-  assert.equal(toy.layer, 'front');
+  assert.deepEqual(worldPropPositionAt(toy, 8 * 30 - 1, 30), {x: .15, y: 0});
+  assert.equal(toy.layer, 'back');
   const cat = c03[0].actors.find(actor => actor.id === 'mochi');
   assert.ok(cat?.world);
   assert.deepEqual(worldPositionAt(cat.world.keys, 90, 30).x, 0.06);
@@ -85,6 +89,23 @@ test('the C03 owner inference appears after the fictional pounce', () => {
   assert.equal(visual.status, 'fiction');
   assert.deepEqual(visual.labelsAtSec, [3.2]);
   assert.equal(visualProgressAt(visual, 90, 30), 90 / 240);
+});
+
+test('every chapter Short keeps Mochi and the owner in the metre-space living room', () => {
+  for (const [short, timeline] of checks) {
+    for (const [i, scene] of timeline.entries()) {
+      assert.ok(scene.projection, `${short} scene ${i + 1} has no room projection`);
+      assert.ok(scene.actors.some(actor => actor.id === 'mochi' && actor.world), `${short} scene ${i + 1} has no projected Mochi`);
+      assert.ok(scene.actors.some(actor => actor.id === 'owner' && actor.world), `${short} scene ${i + 1} has no projected owner`);
+      assert.equal(scene.bg, 'room');
+    }
+  }
+});
+
+test('chapter overlay headlines differ from their subtitle cues', () => {
+  for (const [, timeline] of checks) {
+    for (const scene of timeline) assert.notEqual(scene.visuals?.[0]?.heading, scene.subtitleCues?.[0]?.text);
+  }
 });
 
 test('visual intervals are half-open and progress is stable after out-of-order seeks', () => {

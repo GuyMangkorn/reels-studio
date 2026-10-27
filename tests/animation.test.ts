@@ -20,7 +20,7 @@ test('CATBOX blockout maps all 12 storyboard scenes into one 9-minute timeline',
   assert.equal(timelineFrames(catboxBlockout, 30), 16200);
   for (const scene of catboxBlockout as Timeline) {
     assert.equal(scene.durationSec, 45);
-    assert.equal(scene.pictureMove?.length, 5);
+    assert.ok((scene.projection?.views.short.cameraMoves?.length ?? 0) > 2);
     assert.equal(scene.subtitleCues?.[0]?.atSec, 0);
     assert.ok(scene.props?.some(prop => prop.type === 'catbox-old'));
   }
@@ -51,18 +51,20 @@ test('CATBOX blockout maps all 12 storyboard scenes into one 9-minute timeline',
   const shortStart = orthographicViewAt(projection, 1080, 1920, 0, 30, true);
   const shortCut = orthographicViewAt(projection, 1080, 1920, 690, 30, true);
   const shortMid = orthographicViewAt(projection, 1080, 1920, 870, 30, true);
-  const shortEnd = orthographicViewAt(projection, 1080, 1920, 1049, 30, true);
+  const shortEnd = orthographicViewAt(projection, 1080, 1920, 1349, 30, true);
   const longView = orthographicViewAt(projection, 1920, 1080, 1062, 30, false);
   assert.ok(Math.abs((shortStart.view.left + shortStart.view.right) / 2 + .2) < 1e-9);
   assert.ok(Math.abs((shortCut.view.left + shortCut.view.right) / 2 + .55) < 1e-9);
   assert.ok(Math.abs((shortMid.view.left + shortMid.view.right) / 2 + .25) < 1e-9);
   assert.ok(Math.abs((shortEnd.view.left + shortEnd.view.right) / 2) < 1e-9);
-  assert.ok(Math.abs(shortEnd.view.top - .875) < 1e-9);
-  assert.ok(Math.abs(shortEnd.view.bottom + .275) < 1e-9);
+  assert.ok(Math.abs(shortEnd.view.top - .5477941176470589) < 1e-9);
+  assert.ok(Math.abs(shortEnd.view.bottom + .2977941176470588) < 1e-9);
   assert.ok(Math.abs((longView.view.left + longView.view.right) / 2 + .58) < 1e-9);
   assert.ok(Math.abs((longView.view.bottom + longView.view.top) / 2 - .85) < 1e-9);
 
   const cat = finalScene.actors[1];
+  assert.equal(cat.poseTransitionFrames, 9);
+  assert.equal(actorPoseTrack(cat, 30).durationFrames, 9);
   const catPositionAt = (frame: number) => worldPositionAt(cat.world!.keys, frame, 30);
   assert.equal(catPositionAt(0).x, -.55);
   assert.equal(catPositionAt(689).x, -.55);
@@ -71,7 +73,7 @@ test('CATBOX blockout maps all 12 storyboard scenes into one 9-minute timeline',
   assert.ok(Math.abs(catPositionAt(1050).y - boxSeat.y) < 1e-12, 'seated cat floor anchor contacts BOX-OLD seat anchor');
   const catSpec = PHYSICAL_ACTOR_SPECS.cat;
   assert.ok(catSpec);
-  assert.equal(catSpec.heightM, .45);
+  assert.equal(catSpec.heightM, 1.7 / 6);
   assert.equal(catSpec.bodyLengthM, .48);
   assert.deepEqual(catSpec.floorAnchor, {x: 0, y: 30, source: 'Animal floor shadow center / paw baseline'});
   const seatedHeightM = catSpec.heightM * ((catSpec.solidBounds.bottom - catSpec.solidBounds.top - catSpec.seatedBodyDropUnits!) / (catSpec.solidBounds.bottom - catSpec.solidBounds.top));
@@ -122,17 +124,17 @@ test('scene-local subtitle cues hold until the next authored cue and work after 
   assert.equal(subtitleAt(scene, 60, 30), 'ถัดไป');
   assert.equal(subtitleAt(scene, 15, 30), 'เปิด');
 });
-test('validation checks picture movement, subtitle cue timing and reusable CATBOX prop parameters', () => {
+test('validation checks camera movement, subtitle cue timing and reusable CATBOX prop parameters', () => {
   const base = structuredClone(catboxBlockout);
   const invalidCases = [
-    [(data: typeof base) => data[0].pictureMove![1].atSec = 0, /pictureMove\[1\]\.atSec/],
-    [(data: typeof base) => data[0].pictureMove![1].scale = .9, /pictureMove\[1\]\.scale/],
+    [(data: typeof base) => data[0].projection!.views.short.cameraMoves![1].atSec = 0, /cameraMoves\[1\]: camera times/],
+    [(data: typeof base) => data[0].projection!.views.short.cameraMoves![1].zoom = 0, /cameraMoves\[1\]\.zoom/],
     [(data: typeof base) => data[0].subtitleCues![0].atSec = .2, /subtitleCues\[0\]\.atSec/],
     [(data: typeof base) => Object.assign(data[0].props![2], {variant: 'unsupported'}), /props\[2\]\.variant/],
     [(data: typeof base) => Object.assign(data[0].props![0], {layer: 'middle'}), /props\[0\]\.layer/],
     [(data: typeof base) => Object.assign(data[0].props![2], {startSec: 46}), /props\[2\]\.startSec/],
     [(data: typeof base) => Object.assign(data[11].props![0], {portrait: {x: 1.5}}), /world props use canonical dimensions/],
-    [(data: typeof base) => Object.assign(data[0].actors[1], {portrait: {scale: 0}}), /actors\[1\]\.portrait\.scale/],
+    [(data: typeof base) => Object.assign(data[0].actors[1], {portrait: {scale: 0}}), /actors\[1\]\.portrait/],
   ] as const;
   for (const [mutate, path] of invalidCases) {
     const data = structuredClone(base); mutate(data); assert.throws(() => validateTimeline(data), path);

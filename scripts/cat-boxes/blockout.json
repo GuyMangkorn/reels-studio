@@ -9,9 +9,6 @@
         "id": "owner",
         "type": "narrator",
         "pose": "think",
-        "x": 0.24,
-        "y": 0.84,
-        "scale": 0.68,
         "expression": "think",
         "hairStyle": "short",
         "skinColor": "#FFD9B8",
@@ -30,75 +27,98 @@
             "atSec": 33.1,
             "pose": "point"
           }
-        ]
+        ],
+        "world": {
+          "keys": [
+            {
+              "atSec": 0,
+              "x": -2.2,
+              "y": 0
+            }
+          ]
+        }
       },
       {
         "id": "mochi",
         "type": "cat",
         "pose": "idle",
-        "from": 0.62,
-        "to": 0.62,
-        "y": 0.84,
-        "scale": 1.1,
         "color": "#c7b5e7",
-        "poses": []
+        "poses": [],
+        "world": {
+          "keys": [
+            {
+              "atSec": 0,
+              "x": 0.32,
+              "y": 0
+            }
+          ]
+        }
       }
     ],
     "props": [
       {
         "type": "catbox-old",
-        "x": 0.79,
-        "y": 0.86,
-        "size": 300
+        "space": "world",
+        "world": {
+          "x": 0,
+          "y": 0
+        },
+        "layer": "back"
       },
       {
         "type": "catbox-folder",
-        "x": 0.79,
-        "y": 0.87,
+        "x": 0.82,
+        "y": 0.7,
         "size": 220,
-        "label": "แฟ้ม"
+        "label": "แฟ้ม",
+        "space": "screen"
       },
       {
         "type": "catbox-card",
-        "x": 0.48,
-        "y": 0.35,
-        "size": 270,
+        "x": 0.78,
+        "y": 0.26,
+        "size": 400,
         "tone": "fiction",
         "label": "เรื่องสมมติ",
-        "detail": "กรอบเปล่า\nไม่ใช่ผนังกล่อง\nภาพอธิบายงานวิจัย"
+        "detail": "กรอบเปล่า\nไม่มีผนังกล่อง\nภาพอธิบาย",
+        "space": "screen",
+        "endSec": 18
       },
       {
         "type": "catbox-stimulus",
-        "x": 0.37,
-        "y": 0.5,
-        "size": 170,
+        "x": 0.15,
+        "y": 0.25,
+        "size": 270,
         "variant": "square",
         "label": "สี่เหลี่ยม",
-        "startSec": 18
+        "startSec": 18,
+        "space": "screen"
       },
       {
         "type": "catbox-stimulus",
-        "x": 0.53,
-        "y": 0.5,
-        "size": 170,
+        "x": 0.5,
+        "y": 0.25,
+        "size": 270,
         "variant": "kanizsa",
         "label": "ช่องเปิดหันเข้า",
-        "startSec": 23
+        "startSec": 23,
+        "space": "screen"
       },
       {
         "type": "catbox-stimulus",
-        "x": 0.69,
-        "y": 0.5,
-        "size": 170,
+        "x": 0.85,
+        "y": 0.25,
+        "size": 270,
         "variant": "outward-control",
         "label": "ช่องเปิดหันออก",
-        "startSec": 28
+        "startSec": 28,
+        "space": "screen"
       }
     ],
     "subtitle": "กรอบเปล่า แมวก็นั่งเหรอ?",
     "subtitleCues": [
       {
-        "atSec": 0.0,
+        "atSec": 0,
         "text": "กรอบเปล่า แมวก็นั่งเหรอ?"
       },
       {
@@ -106,7 +126,7 @@
         "text": "ไม่มีผนัง มีแค่กรอบ"
       },
       {
-        "atSec": 7.0,
+        "atSec": 7,
         "text": "มีงานศึกษาที่บ้านจริง"
       },
       {
@@ -114,7 +134,7 @@
         "text": "จัดรูปกระดาษ แล้วบันทึกการเลือก"
       },
       {
-        "atSec": 18.0,
+        "atSec": 18,
         "text": "กรอบสี่เหลี่ยม"
       },
       {
@@ -130,46 +150,73 @@
         "text": "หันเข้า กับหันออก คนละเงื่อนไข"
       },
       {
-        "atSec": 33.0,
+        "atSec": 33,
         "text": "บางตัวเข้าไปอยู่จริง"
       },
       {
-        "atSec": 39.0,
+        "atSec": 39,
         "text": "การนั่งยังอ่านใจไม่ได้"
       }
     ],
-    "pictureMove": [
-      {
-        "atSec": 0,
-        "x": -0.008,
-        "y": 0,
-        "scale": 1.035
+    "projection": {
+      "unit": "m",
+      "stage": {
+        "left": -3.6,
+        "right": 2.44,
+        "bottom": -0.85,
+        "top": 2.55
       },
-      {
-        "atSec": 7.0,
-        "x": -0.002,
-        "y": -0.002,
-        "scale": 1.045
-      },
-      {
-        "atSec": 18.0,
-        "x": 0.005,
-        "y": 0.002,
-        "scale": 1.055
-      },
-      {
-        "atSec": 33.0,
-        "x": 0.008,
-        "y": 0.001,
-        "scale": 1.065
-      },
-      {
-        "atSec": 44.7,
-        "x": 0.001,
-        "y": -0.001,
-        "scale": 1.07
+      "views": {
+        "short": {
+          "bounds": {
+            "left": -0.3234375,
+            "right": 0.3234375,
+            "bottom": -0.45,
+            "top": 0.7
+          },
+          "cameraMoves": [
+            {
+              "atSec": 0,
+              "x": 0.24,
+              "y": 0,
+              "zoom": 1.15
+            },
+            {
+              "atSec": 11.25,
+              "x": 0.258,
+              "y": 0.006,
+              "zoom": 1.16
+            },
+            {
+              "atSec": 22.5,
+              "x": 0.24,
+              "y": 0,
+              "zoom": 1.18
+            },
+            {
+              "atSec": 33.75,
+              "x": 0.222,
+              "y": -0.006,
+              "zoom": 1.16
+            },
+            {
+              "atSec": 45,
+              "x": 0.24,
+              "y": 0,
+              "zoom": 1.15
+            }
+          ]
+        },
+        "long": {
+          "bounds": {
+            "left": -3.6,
+            "right": 2.44,
+            "bottom": -0.85,
+            "top": 2.55
+          }
+        }
       }
-    ]
+    }
   },
   {
     "durationSec": 45,
@@ -181,9 +228,6 @@
         "id": "owner",
         "type": "narrator",
         "pose": "think",
-        "x": 0.24,
-        "y": 0.84,
-        "scale": 0.68,
         "expression": "think",
         "hairStyle": "short",
         "skinColor": "#FFD9B8",
@@ -202,70 +246,90 @@
             "atSec": 36.1,
             "pose": "point"
           }
-        ]
+        ],
+        "world": {
+          "keys": [
+            {
+              "atSec": 0,
+              "x": -2.2,
+              "y": 0
+            }
+          ]
+        }
       },
       {
         "id": "mochi",
         "type": "cat",
         "pose": "idle",
-        "from": 0.62,
-        "to": 0.62,
-        "y": 0.84,
-        "scale": 1.1,
         "color": "#c7b5e7",
-        "poses": []
+        "poses": [],
+        "world": {
+          "keys": [
+            {
+              "atSec": 0,
+              "x": 0.32,
+              "y": 0
+            }
+          ]
+        }
       }
     ],
     "props": [
       {
         "type": "catbox-old",
-        "x": 0.79,
-        "y": 0.86,
-        "size": 300
+        "space": "world",
+        "world": {
+          "x": 0,
+          "y": 0
+        },
+        "layer": "back"
       },
       {
         "type": "catbox-folder",
-        "x": 0.79,
-        "y": 0.87,
+        "x": 0.82,
+        "y": 0.7,
         "size": 220,
-        "label": "แฟ้ม"
+        "label": "แฟ้ม",
+        "space": "screen"
       },
       {
         "type": "catbox-card",
-        "x": 0.48,
-        "y": 0.49,
-        "size": 270,
+        "x": 0.78,
+        "y": 0.26,
+        "size": 400,
         "tone": "observed",
-        "label": "จำนวนคนละหน่วย",
-        "detail": "สมัคร 561 ราย\nทำครบ 30 ตัว / 6 รอบ\nเลือกอย่างน้อยหนึ่งแบบ 9 ตัว\nรวม 16 ครั้ง ≠ 16 ตัว"
+        "label": "คนละหน่วย",
+        "detail": "ครบทุกครั้ง: 30\nเลือกแบบ: 9\n16 ครั้ง ≠ 16 ตัว",
+        "space": "screen"
       },
       {
         "type": "catbox-outline",
         "x": 0.65,
-        "y": 0.52,
-        "size": 160
+        "y": 0.34,
+        "size": 190,
+        "space": "screen"
       }
     ],
     "subtitle": "แมวเห็นอะไรอยู่?",
     "subtitleCues": [
       {
-        "atSec": 0.0,
+        "atSec": 0,
         "text": "แมวเห็นอะไรอยู่?"
       },
       {
-        "atSec": 3.0,
+        "atSec": 3,
         "text": "สมัคร 561"
       },
       {
-        "atSec": 6.0,
+        "atSec": 6,
         "text": "ทำครบ 30"
       },
       {
-        "atSec": 9.0,
+        "atSec": 9,
         "text": "มีการเลือก 9 ตัว"
       },
       {
-        "atSec": 12.0,
+        "atSec": 12,
         "text": "รวม 16 ครั้ง ไม่ใช่ 16 ตัว"
       },
       {
@@ -285,19 +349,19 @@
         "text": "ทุกขาอยู่ในพื้นที่ ≥3 วินาที"
       },
       {
-        "atSec": 24.0,
+        "atSec": 24,
         "text": "คานิซซา–ควบคุม: พบความต่าง"
       },
       {
-        "atSec": 28.0,
+        "atSec": 28,
         "text": "สี่เหลี่ยม–ควบคุม: ไม่พบความต่างอย่างมีนัยสำคัญ"
       },
       {
-        "atSec": 32.0,
+        "atSec": 32,
         "text": "ไม่ใช่หลักฐานว่าคิดว่ามีกล่อง"
       },
       {
-        "atSec": 36.0,
+        "atSec": 36,
         "text": "ไม่พบความต่าง ≠ พิสูจน์ว่าเท่ากัน"
       },
       {
@@ -305,38 +369,65 @@
         "text": "กลับไปหากล่องจริง"
       }
     ],
-    "pictureMove": [
-      {
-        "atSec": 0,
-        "x": -0.008,
-        "y": 0,
-        "scale": 1.035
+    "projection": {
+      "unit": "m",
+      "stage": {
+        "left": -3.6,
+        "right": 2.44,
+        "bottom": -0.85,
+        "top": 2.55
       },
-      {
-        "atSec": 12.0,
-        "x": -0.002,
-        "y": -0.002,
-        "scale": 1.045
-      },
-      {
-        "atSec": 24.0,
-        "x": 0.005,
-        "y": 0.002,
-        "scale": 1.055
-      },
-      {
-        "atSec": 36.0,
-        "x": 0.008,
-        "y": 0.001,
-        "scale": 1.065
-      },
-      {
-        "atSec": 44.7,
-        "x": 0.001,
-        "y": -0.001,
-        "scale": 1.07
+      "views": {
+        "short": {
+          "bounds": {
+            "left": -0.3234375,
+            "right": 0.3234375,
+            "bottom": -0.45,
+            "top": 0.7
+          },
+          "cameraMoves": [
+            {
+              "atSec": 0,
+              "x": 0.24,
+              "y": 0,
+              "zoom": 1.15
+            },
+            {
+              "atSec": 11.25,
+              "x": 0.222,
+              "y": 0.006,
+              "zoom": 1.16
+            },
+            {
+              "atSec": 22.5,
+              "x": 0.24,
+              "y": 0,
+              "zoom": 1.18
+            },
+            {
+              "atSec": 33.75,
+              "x": 0.258,
+              "y": -0.006,
+              "zoom": 1.16
+            },
+            {
+              "atSec": 45,
+              "x": 0.24,
+              "y": 0,
+              "zoom": 1.15
+            }
+          ]
+        },
+        "long": {
+          "bounds": {
+            "left": -3.6,
+            "right": 2.44,
+            "bottom": -0.85,
+            "top": 2.55
+          }
+        }
       }
-    ]
+    }
   },
   {
     "durationSec": 45,
@@ -348,9 +439,6 @@
         "id": "owner",
         "type": "narrator",
         "pose": "think",
-        "x": 0.24,
-        "y": 0.84,
-        "scale": 0.68,
         "expression": "think",
         "hairStyle": "short",
         "skinColor": "#FFD9B8",
@@ -369,48 +457,67 @@
             "atSec": 35.1,
             "pose": "point"
           }
-        ]
+        ],
+        "world": {
+          "keys": [
+            {
+              "atSec": 0,
+              "x": -2.2,
+              "y": 0
+            }
+          ]
+        }
       },
       {
         "id": "mochi",
         "type": "cat",
         "pose": "sit",
-        "from": 0.62,
-        "to": 0.62,
-        "y": 0.84,
-        "scale": 1.1,
         "color": "#c7b5e7",
-        "poses": []
+        "poses": [],
+        "world": {
+          "keys": [
+            {
+              "atSec": 0,
+              "x": 0.32,
+              "y": 0
+            }
+          ]
+        }
       }
     ],
     "props": [
       {
         "type": "catbox-old",
-        "x": 0.79,
-        "y": 0.86,
-        "size": 300
+        "space": "world",
+        "world": {
+          "x": 0,
+          "y": 0
+        },
+        "layer": "back"
       },
       {
         "type": "catbox-folder",
-        "x": 0.79,
-        "y": 0.87,
+        "x": 0.82,
+        "y": 0.7,
         "size": 220,
-        "label": "แฟ้ม"
+        "label": "แฟ้ม",
+        "space": "screen"
       },
       {
         "type": "catbox-card",
-        "x": 0.48,
-        "y": 0.49,
-        "size": 270,
+        "x": 0.78,
+        "y": 0.26,
+        "size": 400,
         "tone": "observed",
-        "label": "Vinke และคณะ · 2014",
-        "detail": "แมว 19 ตัว\nมีที่ซ่อน 10 · ไม่มี 9\nติดตาม 14 วัน\nวัดคะแนนจากพฤติกรรม"
+        "label": "งานปี 2014",
+        "detail": "แมว 19 ตัว\nซ่อน 10 / ไม่ซ่อน 9\n14 วัน · CSS",
+        "space": "screen"
       }
     ],
     "subtitle": "กล่องช่วยอะไรได้บ้าง?",
     "subtitleCues": [
       {
-        "atSec": 0.0,
+        "atSec": 0,
         "text": "กล่องช่วยอะไรได้บ้าง?"
       },
       {
@@ -418,7 +525,7 @@
         "text": "มองหน้าที่ของที่หลบ"
       },
       {
-        "atSec": 9.0,
+        "atSec": 9,
         "text": "2014"
       },
       {
@@ -430,7 +537,7 @@
         "text": "ติดตาม 14 วัน"
       },
       {
-        "atSec": 16.0,
+        "atSec": 16,
         "text": "มีที่ซ่อน 10"
       },
       {
@@ -442,58 +549,85 @@
         "text": "วัดคะแนนจากพฤติกรรม"
       },
       {
-        "atSec": 23.0,
+        "atSec": 23,
         "text": "วันที่ 3–4: กลุ่มมีที่ซ่อน CSS ต่ำกว่า"
       },
       {
-        "atSec": 27.0,
+        "atSec": 27,
         "text": "วันที่ 14: ค่าเฉลี่ยเท่ากัน"
       },
       {
-        "atSec": 31.0,
+        "atSec": 31,
         "text": "กลุ่มมีที่ซ่อนถึงระดับนั้นราววันที่ 3"
       },
       {
-        "atSec": 35.0,
+        "atSec": 35,
         "text": "ช่วยการปรับตัวในบริบทที่ศึกษา"
       },
       {
-        "atSec": 40.0,
+        "atSec": 40,
         "text": "ยังใช้ยืนยันผลของกรอบเทปไม่ได้"
       }
     ],
-    "pictureMove": [
-      {
-        "atSec": 0,
-        "x": -0.008,
-        "y": 0,
-        "scale": 1.035
+    "projection": {
+      "unit": "m",
+      "stage": {
+        "left": -3.6,
+        "right": 2.44,
+        "bottom": -0.85,
+        "top": 2.55
       },
-      {
-        "atSec": 9.0,
-        "x": -0.002,
-        "y": -0.002,
-        "scale": 1.045
-      },
-      {
-        "atSec": 23.0,
-        "x": 0.005,
-        "y": 0.002,
-        "scale": 1.055
-      },
-      {
-        "atSec": 35.0,
-        "x": 0.008,
-        "y": 0.001,
-        "scale": 1.065
-      },
-      {
-        "atSec": 44.7,
-        "x": 0.001,
-        "y": -0.001,
-        "scale": 1.07
+      "views": {
+        "short": {
+          "bounds": {
+            "left": -0.3234375,
+            "right": 0.3234375,
+            "bottom": -0.45,
+            "top": 0.7
+          },
+          "cameraMoves": [
+            {
+              "atSec": 0,
+              "x": 0.24,
+              "y": 0,
+              "zoom": 1.15
+            },
+            {
+              "atSec": 11.25,
+              "x": 0.258,
+              "y": 0.006,
+              "zoom": 1.16
+            },
+            {
+              "atSec": 22.5,
+              "x": 0.24,
+              "y": 0,
+              "zoom": 1.18
+            },
+            {
+              "atSec": 33.75,
+              "x": 0.222,
+              "y": -0.006,
+              "zoom": 1.16
+            },
+            {
+              "atSec": 45,
+              "x": 0.24,
+              "y": 0,
+              "zoom": 1.15
+            }
+          ]
+        },
+        "long": {
+          "bounds": {
+            "left": -3.6,
+            "right": 2.44,
+            "bottom": -0.85,
+            "top": 2.55
+          }
+        }
       }
-    ]
+    }
   },
   {
     "durationSec": 45,
@@ -505,9 +639,6 @@
         "id": "owner",
         "type": "narrator",
         "pose": "think",
-        "x": 0.24,
-        "y": 0.84,
-        "scale": 0.68,
         "expression": "think",
         "hairStyle": "short",
         "skinColor": "#FFD9B8",
@@ -526,84 +657,103 @@
             "atSec": 35.1,
             "pose": "point"
           }
-        ]
+        ],
+        "world": {
+          "keys": [
+            {
+              "atSec": 0,
+              "x": -2.2,
+              "y": 0
+            }
+          ]
+        }
       },
       {
         "id": "mochi",
         "type": "cat",
         "pose": "sit",
-        "from": 0.62,
-        "to": 0.62,
-        "y": 0.84,
-        "scale": 1.1,
         "color": "#c7b5e7",
-        "poses": []
+        "poses": [],
+        "world": {
+          "keys": [
+            {
+              "atSec": 0,
+              "x": 0.32,
+              "y": 0
+            }
+          ]
+        }
       }
     ],
     "props": [
       {
         "type": "catbox-old",
-        "x": 0.79,
-        "y": 0.86,
-        "size": 300
+        "space": "world",
+        "world": {
+          "x": 0,
+          "y": 0
+        },
+        "layer": "back"
       },
       {
         "type": "catbox-folder",
-        "x": 0.79,
-        "y": 0.87,
+        "x": 0.82,
+        "y": 0.7,
         "size": 220,
-        "label": "แฟ้ม"
+        "label": "แฟ้ม",
+        "space": "screen"
       },
       {
         "type": "catbox-card",
-        "x": 0.48,
-        "y": 0.49,
-        "size": 270,
+        "x": 0.78,
+        "y": 0.26,
+        "size": 400,
         "tone": "observed",
         "label": "งานปี 2019",
-        "detail": "แมว 23 ตัว\nมีที่ซ่อน 12 · ไม่มี 11\nCSS ลดเร็วกว่า\nผลน้ำหนัก: ไม่พบความต่าง"
+        "detail": "แมว 23 ตัว\nซ่อน 12 / ไม่ซ่อน 11\nCSS ลดเร็วกว่า",
+        "space": "screen"
       }
     ],
     "subtitle": "คะแนนดีขึ้น แล้วอย่างอื่นล่ะ?",
     "subtitleCues": [
       {
-        "atSec": 0.0,
+        "atSec": 0,
         "text": "คะแนนดีขึ้น แล้วอย่างอื่นล่ะ?"
       },
       {
-        "atSec": 5.0,
+        "atSec": 5,
         "text": "ต้องดูสิ่งที่งานวัดจริง"
       },
       {
-        "atSec": 10.0,
+        "atSec": 10,
         "text": "อีกงาน: 2019"
       },
       {
-        "atSec": 12.0,
+        "atSec": 12,
         "text": "23 ตัว"
       },
       {
-        "atSec": 14.0,
+        "atSec": 14,
         "text": "คะแนนกับน้ำหนัก: 12 วันแรก"
       },
       {
-        "atSec": 16.0,
+        "atSec": 16,
         "text": "มีที่ซ่อน 12"
       },
       {
-        "atSec": 18.0,
+        "atSec": 18,
         "text": "ไม่มี 11"
       },
       {
-        "atSec": 20.0,
+        "atSec": 20,
         "text": "CSS ลดเร็วกว่า"
       },
       {
-        "atSec": 22.0,
+        "atSec": 22,
         "text": "การลดน้ำหนัก: ไม่พบความต่างอย่างมีนัยสำคัญ"
       },
       {
-        "atSec": 24.0,
+        "atSec": 24,
         "text": "การลดน้ำหนัก"
       },
       {
@@ -619,7 +769,7 @@
         "text": "ไม่พบความต่าง ≠ พิสูจน์ว่าเป็นศูนย์"
       },
       {
-        "atSec": 35.0,
+        "atSec": 35,
         "text": "ผลที่วัด"
       },
       {
@@ -631,38 +781,65 @@
         "text": "กล่องกับกรอบ ทำหน้าที่ไม่ครบเหมือนกัน"
       }
     ],
-    "pictureMove": [
-      {
-        "atSec": 0,
-        "x": -0.008,
-        "y": 0,
-        "scale": 1.035
+    "projection": {
+      "unit": "m",
+      "stage": {
+        "left": -3.6,
+        "right": 2.44,
+        "bottom": -0.85,
+        "top": 2.55
       },
-      {
-        "atSec": 10.0,
-        "x": -0.002,
-        "y": -0.002,
-        "scale": 1.045
-      },
-      {
-        "atSec": 24.0,
-        "x": 0.005,
-        "y": 0.002,
-        "scale": 1.055
-      },
-      {
-        "atSec": 35.0,
-        "x": 0.008,
-        "y": 0.001,
-        "scale": 1.065
-      },
-      {
-        "atSec": 44.7,
-        "x": 0.001,
-        "y": -0.001,
-        "scale": 1.07
+      "views": {
+        "short": {
+          "bounds": {
+            "left": -0.3234375,
+            "right": 0.3234375,
+            "bottom": -0.45,
+            "top": 0.7
+          },
+          "cameraMoves": [
+            {
+              "atSec": 0,
+              "x": 0.24,
+              "y": 0,
+              "zoom": 1.15
+            },
+            {
+              "atSec": 11.25,
+              "x": 0.222,
+              "y": 0.006,
+              "zoom": 1.16
+            },
+            {
+              "atSec": 22.5,
+              "x": 0.24,
+              "y": 0,
+              "zoom": 1.18
+            },
+            {
+              "atSec": 33.75,
+              "x": 0.258,
+              "y": -0.006,
+              "zoom": 1.16
+            },
+            {
+              "atSec": 45,
+              "x": 0.24,
+              "y": 0,
+              "zoom": 1.15
+            }
+          ]
+        },
+        "long": {
+          "bounds": {
+            "left": -3.6,
+            "right": 2.44,
+            "bottom": -0.85,
+            "top": 2.55
+          }
+        }
       }
-    ]
+    }
   },
   {
     "durationSec": 45,
@@ -674,9 +851,6 @@
         "id": "owner",
         "type": "narrator",
         "pose": "think",
-        "x": 0.18,
-        "y": 0.84,
-        "scale": 0.55,
         "expression": "think",
         "hairStyle": "short",
         "skinColor": "#FFD9B8",
@@ -695,16 +869,21 @@
             "atSec": 34.1,
             "pose": "point"
           }
-        ]
+        ],
+        "world": {
+          "keys": [
+            {
+              "atSec": 0,
+              "x": -2.2,
+              "y": 0
+            }
+          ]
+        }
       },
       {
         "id": "mochi",
         "type": "cat",
         "pose": "sit",
-        "from": 0.65,
-        "to": 0.6,
-        "y": 0.84,
-        "scale": 2.25,
         "color": "#c7b5e7",
         "poses": [
           {
@@ -715,51 +894,105 @@
             "atSec": 34,
             "pose": "sit"
           }
-        ]
+        ],
+        "world": {
+          "keys": [
+            {
+              "atSec": 0,
+              "x": 0.32,
+              "y": 0
+            },
+            {
+              "atSec": 7.9,
+              "x": 0.32,
+              "y": 0
+            },
+            {
+              "atSec": 17,
+              "x": 0.14,
+              "y": 0
+            },
+            {
+              "atSec": 45,
+              "x": 0.14,
+              "y": 0
+            }
+          ]
+        }
       }
     ],
     "props": [
       {
         "type": "catbox-old",
-        "x": 0.79,
-        "y": 0.86,
-        "size": 300
+        "space": "world",
+        "world": {
+          "x": 0,
+          "y": 0
+        },
+        "layer": "back"
       },
       {
         "type": "catbox-folder",
-        "x": 0.79,
-        "y": 0.87,
+        "x": 0.82,
+        "y": 0.7,
         "size": 220,
-        "label": "แฟ้ม"
+        "label": "แฟ้ม",
+        "space": "screen"
       },
       {
         "type": "catbox-card",
-        "x": 0.48,
-        "y": 0.49,
-        "size": 270,
+        "x": 0.78,
+        "y": 0.26,
+        "size": 400,
         "tone": "fiction",
-        "label": "เรื่องโมจิ ≠ ข้อมูลทดลอง",
-        "detail": "พุ่งตามของเล่น\nไม่ยืนยันเหตุที่เข้ากล่อง\nฐานล่า: ข้อเดา"
+        "label": "โมจิ ≠ ผลทดลอง",
+        "detail": "เห็น: พุ่งตาม\nเหตุ: ยังไม่รู้\nฐานล่า: ข้อเดา",
+        "space": "screen"
       },
       {
         "type": "catbox-toy",
-        "x": 0.61,
-        "y": 0.84,
-        "size": 145
+        "space": "world",
+        "layer": "back",
+        "world": {
+          "x": -0.5,
+          "y": 0
+        },
+        "worldMotion": [
+          {
+            "atSec": 0,
+            "x": -0.5,
+            "y": 0
+          },
+          {
+            "atSec": 8,
+            "x": -0.5,
+            "y": 0
+          },
+          {
+            "atSec": 14,
+            "x": 0.13,
+            "y": 0
+          },
+          {
+            "atSec": 45,
+            "x": 0.13,
+            "y": 0
+          }
+        ]
       }
     ],
     "subtitle": "นั่งพัก หรือรอพุ่ง?",
     "subtitleCues": [
       {
-        "atSec": 0.0,
+        "atSec": 0,
         "text": "นั่งพัก หรือรอพุ่ง?"
       },
       {
-        "atSec": 4.0,
+        "atSec": 4,
         "text": "ของเล่นผ่าน… โมจิพุ่ง!"
       },
       {
-        "atSec": 8.0,
+        "atSec": 8,
         "text": "ย่อง"
       },
       {
@@ -775,7 +1008,7 @@
         "text": "ยังปิดแฟ้มไม่ได้"
       },
       {
-        "atSec": 21.0,
+        "atSec": 21,
         "text": "เห็น: พุ่งตามของเล่น"
       },
       {
@@ -787,7 +1020,7 @@
         "text": "ที่ซุ่มเล่น: หนึ่งสมมติฐาน"
       },
       {
-        "atSec": 34.0,
+        "atSec": 34,
         "text": "กล่องใบเดียวทำอะไรได้บ้าง?"
       },
       {
@@ -795,38 +1028,65 @@
         "text": "ภาพตอนพุ่ง ไม่ตอบทุกตอนที่นิ่ง"
       }
     ],
-    "pictureMove": [
-      {
-        "atSec": 0,
-        "x": -0.008,
-        "y": 0,
-        "scale": 1.035
+    "projection": {
+      "unit": "m",
+      "stage": {
+        "left": -3.6,
+        "right": 2.44,
+        "bottom": -0.85,
+        "top": 2.55
       },
-      {
-        "atSec": 8.0,
-        "x": -0.002,
-        "y": -0.002,
-        "scale": 1.045
-      },
-      {
-        "atSec": 21.0,
-        "x": 0.005,
-        "y": 0.002,
-        "scale": 1.055
-      },
-      {
-        "atSec": 34.0,
-        "x": 0.008,
-        "y": 0.001,
-        "scale": 1.065
-      },
-      {
-        "atSec": 44.7,
-        "x": 0.001,
-        "y": -0.001,
-        "scale": 1.07
+      "views": {
+        "short": {
+          "bounds": {
+            "left": -0.3234375,
+            "right": 0.3234375,
+            "bottom": -0.45,
+            "top": 0.7
+          },
+          "cameraMoves": [
+            {
+              "atSec": 0,
+              "x": 0.24,
+              "y": 0,
+              "zoom": 1.15
+            },
+            {
+              "atSec": 11.25,
+              "x": 0.258,
+              "y": 0.006,
+              "zoom": 1.16
+            },
+            {
+              "atSec": 22.5,
+              "x": 0.24,
+              "y": 0,
+              "zoom": 1.18
+            },
+            {
+              "atSec": 33.75,
+              "x": 0.222,
+              "y": -0.006,
+              "zoom": 1.16
+            },
+            {
+              "atSec": 45,
+              "x": 0.24,
+              "y": 0,
+              "zoom": 1.15
+            }
+          ]
+        },
+        "long": {
+          "bounds": {
+            "left": -3.6,
+            "right": 2.44,
+            "bottom": -0.85,
+            "top": 2.55
+          }
+        }
       }
-    ]
+    }
   },
   {
     "durationSec": 45,
@@ -838,9 +1098,6 @@
         "id": "owner",
         "type": "narrator",
         "pose": "think",
-        "x": 0.24,
-        "y": 0.84,
-        "scale": 0.68,
         "expression": "think",
         "hairStyle": "short",
         "skinColor": "#FFD9B8",
@@ -859,62 +1116,82 @@
             "atSec": 35.1,
             "pose": "point"
           }
-        ]
+        ],
+        "world": {
+          "keys": [
+            {
+              "atSec": 0,
+              "x": -2.2,
+              "y": 0
+            }
+          ]
+        }
       },
       {
         "id": "mochi",
         "type": "cat",
         "pose": "sit",
-        "from": 0.62,
-        "to": 0.62,
-        "y": 0.84,
-        "scale": 1.1,
         "color": "#c7b5e7",
-        "poses": []
+        "poses": [],
+        "world": {
+          "keys": [
+            {
+              "atSec": 0,
+              "x": 0.32,
+              "y": 0
+            }
+          ]
+        }
       }
     ],
     "props": [
       {
         "type": "catbox-old",
-        "x": 0.79,
-        "y": 0.86,
-        "size": 300
+        "space": "world",
+        "world": {
+          "x": 0,
+          "y": 0
+        },
+        "layer": "back"
       },
       {
         "type": "catbox-folder",
-        "x": 0.79,
-        "y": 0.87,
+        "x": 0.82,
+        "y": 0.7,
         "size": 220,
-        "label": "แฟ้ม"
+        "label": "แฟ้ม",
+        "space": "screen"
       },
       {
         "type": "catbox-card",
-        "x": 0.48,
-        "y": 0.49,
-        "size": 270,
+        "x": 0.78,
+        "y": 0.26,
+        "size": 400,
         "tone": "hypothesis",
         "label": "หน้าที่ทางกายภาพ",
-        "detail": "กล่องบังสายตาได้\nกรอบแบนทำไม่ได้\nที่ซุ่ม: อาจเป็นหนึ่งเหตุ"
+        "detail": "กล่องบังสายตา\nกรอบแบนไม่บัง\nซุ่ม = อาจเป็นเหตุ",
+        "space": "screen"
       },
       {
         "type": "catbox-outline",
         "x": 0.6,
-        "y": 0.52,
-        "size": 160
+        "y": 0.34,
+        "size": 190,
+        "space": "screen"
       }
     ],
     "subtitle": "กล่องที่หลบได้ กับกรอบแบน",
     "subtitleCues": [
       {
-        "atSec": 0.0,
+        "atSec": 0,
         "text": "กล่องที่หลบได้ กับกรอบแบน"
       },
       {
-        "atSec": 5.0,
+        "atSec": 5,
         "text": "หน้าที่ทางกายภาพต่างกัน"
       },
       {
-        "atSec": 10.0,
+        "atSec": 10,
         "text": "แนวทางพูดถึงพื้นที่ปลอดภัย"
       },
       {
@@ -922,54 +1199,81 @@
         "text": "กล่องที่จัดเป็นที่หลบ เป็นตัวอย่างหนึ่ง"
       },
       {
-        "atSec": 23.0,
+        "atSec": 23,
         "text": "หน้าที่ที่ทำได้ ≠ เหตุเฉพาะที่พิสูจน์แล้ว"
       },
       {
-        "atSec": 29.0,
+        "atSec": 29,
         "text": "เรื่องโมจิยังเป็นเรื่องสมมติ"
       },
       {
-        "atSec": 35.0,
+        "atSec": 35,
         "text": "ที่ซุ่ม: อาจเป็นหนึ่งเหตุ"
       },
       {
-        "atSec": 40.0,
+        "atSec": 40,
         "text": "แล้วเรื่องความอุ่นล่ะ?"
       }
     ],
-    "pictureMove": [
-      {
-        "atSec": 0,
-        "x": -0.008,
-        "y": 0,
-        "scale": 1.035
+    "projection": {
+      "unit": "m",
+      "stage": {
+        "left": -3.6,
+        "right": 2.44,
+        "bottom": -0.85,
+        "top": 2.55
       },
-      {
-        "atSec": 10.0,
-        "x": -0.002,
-        "y": -0.002,
-        "scale": 1.045
-      },
-      {
-        "atSec": 23.0,
-        "x": 0.005,
-        "y": 0.002,
-        "scale": 1.055
-      },
-      {
-        "atSec": 35.0,
-        "x": 0.008,
-        "y": 0.001,
-        "scale": 1.065
-      },
-      {
-        "atSec": 44.7,
-        "x": 0.001,
-        "y": -0.001,
-        "scale": 1.07
+      "views": {
+        "short": {
+          "bounds": {
+            "left": -0.3234375,
+            "right": 0.3234375,
+            "bottom": -0.45,
+            "top": 0.7
+          },
+          "cameraMoves": [
+            {
+              "atSec": 0,
+              "x": 0.24,
+              "y": 0,
+              "zoom": 1.15
+            },
+            {
+              "atSec": 11.25,
+              "x": 0.222,
+              "y": 0.006,
+              "zoom": 1.16
+            },
+            {
+              "atSec": 22.5,
+              "x": 0.24,
+              "y": 0,
+              "zoom": 1.18
+            },
+            {
+              "atSec": 33.75,
+              "x": 0.258,
+              "y": -0.006,
+              "zoom": 1.16
+            },
+            {
+              "atSec": 45,
+              "x": 0.24,
+              "y": 0,
+              "zoom": 1.15
+            }
+          ]
+        },
+        "long": {
+          "bounds": {
+            "left": -3.6,
+            "right": 2.44,
+            "bottom": -0.85,
+            "top": 2.55
+          }
+        }
       }
-    ]
+    }
   },
   {
     "durationSec": 45,
@@ -981,9 +1285,6 @@
         "id": "owner",
         "type": "narrator",
         "pose": "think",
-        "x": 0.24,
-        "y": 0.84,
-        "scale": 0.68,
         "expression": "think",
         "hairStyle": "short",
         "skinColor": "#FFD9B8",
@@ -1002,68 +1303,87 @@
             "atSec": 36.1,
             "pose": "point"
           }
-        ]
+        ],
+        "world": {
+          "keys": [
+            {
+              "atSec": 0,
+              "x": -2.2,
+              "y": 0
+            }
+          ]
+        }
       },
       {
         "id": "mochi",
         "type": "cat",
         "pose": "idle",
-        "from": 0.62,
-        "to": 0.62,
-        "y": 0.84,
-        "scale": 1.1,
         "color": "#c7b5e7",
-        "poses": []
+        "poses": [],
+        "world": {
+          "keys": [
+            {
+              "atSec": 0,
+              "x": 0.32,
+              "y": 0
+            }
+          ]
+        }
       }
     ],
     "props": [
       {
         "type": "catbox-old",
-        "x": 0.79,
-        "y": 0.86,
-        "size": 300
+        "space": "world",
+        "world": {
+          "x": 0,
+          "y": 0
+        },
+        "layer": "back"
       },
       {
         "type": "catbox-folder",
-        "x": 0.79,
-        "y": 0.87,
+        "x": 0.82,
+        "y": 0.7,
         "size": 220,
-        "label": "แฟ้ม"
+        "label": "แฟ้ม",
+        "space": "screen"
       },
       {
         "type": "catbox-card",
-        "x": 0.48,
-        "y": 0.49,
-        "size": 270,
+        "x": 0.78,
+        "y": 0.26,
+        "size": 400,
         "tone": "warning",
         "label": "ตรวจคำอ้าง",
-        "detail": "30–38°C\nไม่ใช่ช่วงสบายที่ยืนยันแล้ว\nTNZ เป็นนิยามสรีรวิทยา\nไม่ใช่ค่าตั้งห้อง"
+        "detail": "30–38°C\nไม่ใช่ช่วงสบาย\nTNZ: นิยามร่างกาย",
+        "space": "screen"
       }
     ],
     "subtitle": "เพราะกล่องอุ่น จบไหม?",
     "subtitleCues": [
       {
-        "atSec": 0.0,
+        "atSec": 0,
         "text": "เพราะกล่องอุ่น จบไหม?"
       },
       {
-        "atSec": 5.0,
+        "atSec": 5,
         "text": "30–38°C = ต้องอยู่ถึงสบาย? สรุปแบบนี้ไม่ได้"
       },
       {
-        "atSec": 10.0,
+        "atSec": 10,
         "text": "TNZ: ช่วงเป็นกลางทางความร้อน"
       },
       {
-        "atSec": 15.0,
+        "atSec": 15,
         "text": "คงอุณหภูมิกายโดยไม่เพิ่มการสร้างความร้อน"
       },
       {
-        "atSec": 20.0,
+        "atSec": 20,
         "text": "หรือเพิ่มการระบายความร้อนด้วยการระเหย"
       },
       {
-        "atSec": 25.0,
+        "atSec": 25,
         "text": "TNZ ไม่ใช่ช่วงที่เลือกอยู่เสมอ"
       },
       {
@@ -1071,7 +1391,7 @@
         "text": "EFSA 2023 ทักท้วงการตีความช่วงดังกล่าว"
       },
       {
-        "atSec": 36.0,
+        "atSec": 36,
         "text": "ตัวเลขวัดอะไร?"
       },
       {
@@ -1079,38 +1399,65 @@
         "text": "ไม่ใช่คำแนะนำให้อุ่นห้องตามนี้"
       }
     ],
-    "pictureMove": [
-      {
-        "atSec": 0,
-        "x": -0.008,
-        "y": 0,
-        "scale": 1.035
+    "projection": {
+      "unit": "m",
+      "stage": {
+        "left": -3.6,
+        "right": 2.44,
+        "bottom": -0.85,
+        "top": 2.55
       },
-      {
-        "atSec": 10.0,
-        "x": -0.002,
-        "y": -0.002,
-        "scale": 1.045
-      },
-      {
-        "atSec": 25.0,
-        "x": 0.005,
-        "y": 0.002,
-        "scale": 1.055
-      },
-      {
-        "atSec": 36.0,
-        "x": 0.008,
-        "y": 0.001,
-        "scale": 1.065
-      },
-      {
-        "atSec": 44.7,
-        "x": 0.001,
-        "y": -0.001,
-        "scale": 1.07
+      "views": {
+        "short": {
+          "bounds": {
+            "left": -0.3234375,
+            "right": 0.3234375,
+            "bottom": -0.45,
+            "top": 0.7
+          },
+          "cameraMoves": [
+            {
+              "atSec": 0,
+              "x": 0.24,
+              "y": 0,
+              "zoom": 1.15
+            },
+            {
+              "atSec": 11.25,
+              "x": 0.258,
+              "y": 0.006,
+              "zoom": 1.16
+            },
+            {
+              "atSec": 22.5,
+              "x": 0.24,
+              "y": 0,
+              "zoom": 1.18
+            },
+            {
+              "atSec": 33.75,
+              "x": 0.222,
+              "y": -0.006,
+              "zoom": 1.16
+            },
+            {
+              "atSec": 45,
+              "x": 0.24,
+              "y": 0,
+              "zoom": 1.15
+            }
+          ]
+        },
+        "long": {
+          "bounds": {
+            "left": -3.6,
+            "right": 2.44,
+            "bottom": -0.85,
+            "top": 2.55
+          }
+        }
       }
-    ]
+    }
   },
   {
     "durationSec": 45,
@@ -1122,9 +1469,6 @@
         "id": "owner",
         "type": "narrator",
         "pose": "think",
-        "x": 0.24,
-        "y": 0.84,
-        "scale": 0.68,
         "expression": "think",
         "hairStyle": "short",
         "skinColor": "#FFD9B8",
@@ -1143,62 +1487,82 @@
             "atSec": 35.1,
             "pose": "point"
           }
-        ]
+        ],
+        "world": {
+          "keys": [
+            {
+              "atSec": 0,
+              "x": -2.2,
+              "y": 0
+            }
+          ]
+        }
       },
       {
         "id": "mochi",
         "type": "cat",
         "pose": "sit",
-        "from": 0.62,
-        "to": 0.62,
-        "y": 0.84,
-        "scale": 1.1,
         "color": "#c7b5e7",
-        "poses": []
+        "poses": [],
+        "world": {
+          "keys": [
+            {
+              "atSec": 0,
+              "x": 0.32,
+              "y": 0
+            }
+          ]
+        }
       }
     ],
     "props": [
       {
         "type": "catbox-old",
-        "x": 0.79,
-        "y": 0.86,
-        "size": 300
+        "space": "world",
+        "world": {
+          "x": 0,
+          "y": 0
+        },
+        "layer": "back"
       },
       {
         "type": "catbox-folder",
-        "x": 0.79,
-        "y": 0.87,
+        "x": 0.82,
+        "y": 0.7,
         "size": 220,
-        "label": "แฟ้ม"
+        "label": "แฟ้ม",
+        "space": "screen"
       },
       {
         "type": "catbox-card",
-        "x": 0.48,
-        "y": 0.49,
-        "size": 270,
+        "x": 0.78,
+        "y": 0.26,
+        "size": 400,
         "tone": "hypothesis",
         "label": "ความอุ่น",
-        "detail": "อาจเป็นหนึ่งปัจจัย\nยังไม่ยืนยันเหตุ\nกรอบ ≠ กล่องจริง"
+        "detail": "อุ่น: อาจมีส่วน\nเหตุยังไม่ยืนยัน\nกรอบ ≠ กล่อง",
+        "space": "screen"
       },
       {
         "type": "catbox-outline",
         "x": 0.62,
-        "y": 0.52,
-        "size": 160
+        "y": 0.34,
+        "size": 190,
+        "space": "screen"
       }
     ],
     "subtitle": "แล้วกรอบเปล่าล่ะ?",
     "subtitleCues": [
       {
-        "atSec": 0.0,
+        "atSec": 0,
         "text": "แล้วกรอบเปล่าล่ะ?"
       },
       {
-        "atSec": 5.0,
+        "atSec": 5,
         "text": "ยังสรุปไม่ได้ว่าความอุ่นไม่เกี่ยวทุกกรณี"
       },
       {
-        "atSec": 10.0,
+        "atSec": 10,
         "text": "ความอุ่น: อาจเป็นหนึ่งปัจจัย"
       },
       {
@@ -1206,54 +1570,81 @@
         "text": "ยังไม่ยืนยันเหตุของกล่องใบนี้"
       },
       {
-        "atSec": 23.0,
+        "atSec": 23,
         "text": "กรอบไม่มีผนังแบบกล่อง"
       },
       {
-        "atSec": 29.0,
+        "atSec": 29,
         "text": "ผลของกรอบ ไม่ตัดสินทุกหน้าที่ของกล่อง"
       },
       {
-        "atSec": 35.0,
+        "atSec": 35,
         "text": "อาจเป็นไปได้ ≠ พิสูจน์แล้ว"
       },
       {
-        "atSec": 40.0,
+        "atSec": 40,
         "text": "คำตอบที่ฟังดูใช่ จะจริงไหม?"
       }
     ],
-    "pictureMove": [
-      {
-        "atSec": 0,
-        "x": -0.008,
-        "y": 0,
-        "scale": 1.035
+    "projection": {
+      "unit": "m",
+      "stage": {
+        "left": -3.6,
+        "right": 2.44,
+        "bottom": -0.85,
+        "top": 2.55
       },
-      {
-        "atSec": 10.0,
-        "x": -0.002,
-        "y": -0.002,
-        "scale": 1.045
-      },
-      {
-        "atSec": 23.0,
-        "x": 0.005,
-        "y": 0.002,
-        "scale": 1.055
-      },
-      {
-        "atSec": 35.0,
-        "x": 0.008,
-        "y": 0.001,
-        "scale": 1.065
-      },
-      {
-        "atSec": 44.7,
-        "x": 0.001,
-        "y": -0.001,
-        "scale": 1.07
+      "views": {
+        "short": {
+          "bounds": {
+            "left": -0.3234375,
+            "right": 0.3234375,
+            "bottom": -0.45,
+            "top": 0.7
+          },
+          "cameraMoves": [
+            {
+              "atSec": 0,
+              "x": 0.24,
+              "y": 0,
+              "zoom": 1.15
+            },
+            {
+              "atSec": 11.25,
+              "x": 0.222,
+              "y": 0.006,
+              "zoom": 1.16
+            },
+            {
+              "atSec": 22.5,
+              "x": 0.24,
+              "y": 0,
+              "zoom": 1.18
+            },
+            {
+              "atSec": 33.75,
+              "x": 0.258,
+              "y": -0.006,
+              "zoom": 1.16
+            },
+            {
+              "atSec": 45,
+              "x": 0.24,
+              "y": 0,
+              "zoom": 1.15
+            }
+          ]
+        },
+        "long": {
+          "bounds": {
+            "left": -3.6,
+            "right": 2.44,
+            "bottom": -0.85,
+            "top": 2.55
+          }
+        }
       }
-    ]
+    }
   },
   {
     "durationSec": 45,
@@ -1265,9 +1656,6 @@
         "id": "owner",
         "type": "narrator",
         "pose": "think",
-        "x": 0.24,
-        "y": 0.84,
-        "scale": 0.68,
         "expression": "think",
         "hairStyle": "short",
         "skinColor": "#FFD9B8",
@@ -1286,56 +1674,75 @@
             "atSec": 35.1,
             "pose": "point"
           }
-        ]
+        ],
+        "world": {
+          "keys": [
+            {
+              "atSec": 0,
+              "x": -2.2,
+              "y": 0
+            }
+          ]
+        }
       },
       {
         "id": "mochi",
         "type": "cat",
         "pose": "idle",
-        "from": 0.62,
-        "to": 0.62,
-        "y": 0.84,
-        "scale": 1.1,
         "color": "#c7b5e7",
-        "poses": []
+        "poses": [],
+        "world": {
+          "keys": [
+            {
+              "atSec": 0,
+              "x": 0.32,
+              "y": 0
+            }
+          ]
+        }
       }
     ],
     "props": [
       {
         "type": "catbox-old",
-        "x": 0.79,
-        "y": 0.86,
-        "size": 300
+        "space": "world",
+        "world": {
+          "x": 0,
+          "y": 0
+        },
+        "layer": "back"
       },
       {
         "type": "catbox-folder",
-        "x": 0.79,
-        "y": 0.87,
+        "x": 0.82,
+        "y": 0.7,
         "size": 220,
-        "label": "แฟ้ม"
+        "label": "แฟ้ม",
+        "space": "screen"
       },
       {
         "type": "catbox-card",
-        "x": 0.48,
-        "y": 0.49,
-        "size": 270,
+        "x": 0.78,
+        "y": 0.26,
+        "size": 400,
         "tone": "hypothesis",
         "label": "เหมือนอ้อมกอด?",
-        "detail": "สมมติฐาน\nยังไม่ยืนยันกลไก\nไม่มีภาพความทรงจำแม่แมว"
+        "detail": "สมมติฐาน\nกลไกไม่ยืนยัน\nภาพจำแม่แมว?",
+        "space": "screen"
       }
     ],
     "subtitle": "กล่องกอดแมวได้เหรอ?",
     "subtitleCues": [
       {
-        "atSec": 0.0,
+        "atSec": 0,
         "text": "กล่องกอดแมวได้เหรอ?"
       },
       {
-        "atSec": 5.0,
+        "atSec": 5,
         "text": "ข้อเสนอ: สัมผัสด้านข้างอาจทำให้สบาย"
       },
       {
-        "atSec": 10.0,
+        "atSec": 10,
         "text": "มีข้อเสนอจากผู้เชี่ยวชาญ"
       },
       {
@@ -1343,58 +1750,85 @@
         "text": "ยังไม่พบการแยกทดลองแรงกดในหลักฐานชุดนี้"
       },
       {
-        "atSec": 23.0,
+        "atSec": 23,
         "text": "จำอ้อมกอดแม่?"
       },
       {
-        "atSec": 27.0,
+        "atSec": 27,
         "text": "ยังไม่มีหลักฐานยืนยันในชุดนี้"
       },
       {
-        "atSec": 31.0,
+        "atSec": 31,
         "text": "น่ารัก ไม่เท่ากับยืนยันแล้ว"
       },
       {
-        "atSec": 35.0,
+        "atSec": 35,
         "text": "คำเปรียบ ≠ ผลทดลอง"
       },
       {
-        "atSec": 40.0,
+        "atSec": 40,
         "text": "แรงสัมผัสอาจมีส่วน แต่ยังไม่ยืนยัน"
       }
     ],
-    "pictureMove": [
-      {
-        "atSec": 0,
-        "x": -0.008,
-        "y": 0,
-        "scale": 1.035
+    "projection": {
+      "unit": "m",
+      "stage": {
+        "left": -3.6,
+        "right": 2.44,
+        "bottom": -0.85,
+        "top": 2.55
       },
-      {
-        "atSec": 10.0,
-        "x": -0.002,
-        "y": -0.002,
-        "scale": 1.045
-      },
-      {
-        "atSec": 23.0,
-        "x": 0.005,
-        "y": 0.002,
-        "scale": 1.055
-      },
-      {
-        "atSec": 35.0,
-        "x": 0.008,
-        "y": 0.001,
-        "scale": 1.065
-      },
-      {
-        "atSec": 44.7,
-        "x": 0.001,
-        "y": -0.001,
-        "scale": 1.07
+      "views": {
+        "short": {
+          "bounds": {
+            "left": -0.3234375,
+            "right": 0.3234375,
+            "bottom": -0.45,
+            "top": 0.7
+          },
+          "cameraMoves": [
+            {
+              "atSec": 0,
+              "x": 0.24,
+              "y": 0,
+              "zoom": 1.15
+            },
+            {
+              "atSec": 11.25,
+              "x": 0.258,
+              "y": 0.006,
+              "zoom": 1.16
+            },
+            {
+              "atSec": 22.5,
+              "x": 0.24,
+              "y": 0,
+              "zoom": 1.18
+            },
+            {
+              "atSec": 33.75,
+              "x": 0.222,
+              "y": -0.006,
+              "zoom": 1.16
+            },
+            {
+              "atSec": 45,
+              "x": 0.24,
+              "y": 0,
+              "zoom": 1.15
+            }
+          ]
+        },
+        "long": {
+          "bounds": {
+            "left": -3.6,
+            "right": 2.44,
+            "bottom": -0.85,
+            "top": 2.55
+          }
+        }
       }
-    ]
+    }
   },
   {
     "durationSec": 45,
@@ -1406,9 +1840,6 @@
         "id": "owner",
         "type": "narrator",
         "pose": "think",
-        "x": 0.18,
-        "y": 0.84,
-        "scale": 0.55,
         "expression": "think",
         "hairStyle": "short",
         "skinColor": "#FFD9B8",
@@ -1427,67 +1858,102 @@
             "atSec": 35.1,
             "pose": "point"
           }
-        ]
+        ],
+        "world": {
+          "keys": [
+            {
+              "atSec": 0,
+              "x": -2.2,
+              "y": 0
+            }
+          ]
+        }
       },
       {
         "id": "mochi",
         "type": "cat",
         "pose": "walk",
-        "from": 0.65,
-        "to": 0.59,
-        "y": 0.84,
-        "scale": 2.25,
         "color": "#c7b5e7",
         "poses": [
           {
             "atSec": 32,
             "pose": "idle"
           }
-        ]
+        ],
+        "world": {
+          "keys": [
+            {
+              "atSec": 0,
+              "x": 0.32,
+              "y": 0
+            },
+            {
+              "atSec": 20,
+              "x": 0.32,
+              "y": 0
+            },
+            {
+              "atSec": 32,
+              "x": 0.2,
+              "y": 0
+            },
+            {
+              "atSec": 45,
+              "x": 0.2,
+              "y": 0
+            }
+          ]
+        }
       }
     ],
     "props": [
       {
         "type": "catbox-old",
-        "x": 0.79,
-        "y": 0.86,
-        "size": 300
+        "space": "world",
+        "world": {
+          "x": 0,
+          "y": 0
+        },
+        "layer": "back"
       },
       {
         "type": "catbox-folder",
-        "x": 0.79,
-        "y": 0.87,
+        "x": 0.82,
+        "y": 0.7,
         "size": 220,
-        "label": "แฟ้ม"
+        "label": "แฟ้ม",
+        "space": "screen"
       },
       {
         "type": "catbox-card",
-        "x": 0.48,
-        "y": 0.49,
-        "size": 270,
+        "x": 0.78,
+        "y": 0.26,
+        "size": 400,
         "tone": "observed",
         "label": "วัตถุใหม่ · 2014",
-        "detail": "แมวโต 21 ตัว\nไม้ทรงลูกบาศก์หุ้มผ้า\nสำรวจ ≠ เลือกพัก\nไม่ใช่กล่องเปิดให้นั่ง"
+        "detail": "แมวโต 21 ตัว\nลูกบาศก์หุ้มผ้า\nสำรวจ ≠ เลือกพัก",
+        "space": "screen"
       },
       {
         "type": "catbox-cube",
         "x": 0.62,
         "y": 0.84,
-        "size": 170
+        "size": 170,
+        "space": "screen"
       }
     ],
     "subtitle": "เดินมาดู แล้วเลือกอยู่ไหม?",
     "subtitleCues": [
       {
-        "atSec": 0.0,
+        "atSec": 0,
         "text": "เดินมาดู แล้วเลือกอยู่ไหม?"
       },
       {
-        "atSec": 5.0,
+        "atSec": 5,
         "text": "เรื่องสมมติ: โมจิดมแล้วเดินออก"
       },
       {
-        "atSec": 10.0,
+        "atSec": 10,
         "text": "งานสำรวจวัตถุใหม่"
       },
       {
@@ -1495,7 +1961,7 @@
         "text": "แมวโต 21 ตัว"
       },
       {
-        "atSec": 17.0,
+        "atSec": 17,
         "text": "ไม้ทรงลูกบาศก์หุ้มผ้า"
       },
       {
@@ -1503,7 +1969,7 @@
         "text": "ไม่ใช่กล่องเปิดให้นั่ง"
       },
       {
-        "atSec": 24.0,
+        "atSec": 24,
         "text": "เหตุที่เดินมาสำรวจ"
       },
       {
@@ -1511,46 +1977,73 @@
         "text": "ยังไม่เท่ากับเหตุที่เลือกพัก"
       },
       {
-        "atSec": 35.0,
+        "atSec": 35,
         "text": "คำตอบของคนละคำถาม"
       },
       {
-        "atSec": 40.0,
+        "atSec": 40,
         "text": "ได้เวลาจัดแฟ้มใหม่"
       }
     ],
-    "pictureMove": [
-      {
-        "atSec": 0,
-        "x": -0.008,
-        "y": 0,
-        "scale": 1.035
+    "projection": {
+      "unit": "m",
+      "stage": {
+        "left": -3.6,
+        "right": 2.44,
+        "bottom": -0.85,
+        "top": 2.55
       },
-      {
-        "atSec": 10.0,
-        "x": -0.002,
-        "y": -0.002,
-        "scale": 1.045
-      },
-      {
-        "atSec": 24.0,
-        "x": 0.005,
-        "y": 0.002,
-        "scale": 1.055
-      },
-      {
-        "atSec": 35.0,
-        "x": 0.008,
-        "y": 0.001,
-        "scale": 1.065
-      },
-      {
-        "atSec": 44.7,
-        "x": 0.001,
-        "y": -0.001,
-        "scale": 1.07
+      "views": {
+        "short": {
+          "bounds": {
+            "left": -0.3234375,
+            "right": 0.3234375,
+            "bottom": -0.45,
+            "top": 0.7
+          },
+          "cameraMoves": [
+            {
+              "atSec": 0,
+              "x": 0.24,
+              "y": 0,
+              "zoom": 1.15
+            },
+            {
+              "atSec": 11.25,
+              "x": 0.222,
+              "y": 0.006,
+              "zoom": 1.16
+            },
+            {
+              "atSec": 22.5,
+              "x": 0.24,
+              "y": 0,
+              "zoom": 1.18
+            },
+            {
+              "atSec": 33.75,
+              "x": 0.258,
+              "y": -0.006,
+              "zoom": 1.16
+            },
+            {
+              "atSec": 45,
+              "x": 0.24,
+              "y": 0,
+              "zoom": 1.15
+            }
+          ]
+        },
+        "long": {
+          "bounds": {
+            "left": -3.6,
+            "right": 2.44,
+            "bottom": -0.85,
+            "top": 2.55
+          }
+        }
       }
-    ]
+    }
   },
   {
     "durationSec": 45,
@@ -1562,9 +2055,6 @@
         "id": "owner",
         "type": "narrator",
         "pose": "think",
-        "x": 0.24,
-        "y": 0.84,
-        "scale": 0.68,
         "expression": "think",
         "hairStyle": "short",
         "skinColor": "#FFD9B8",
@@ -1583,61 +2073,90 @@
             "atSec": 35.1,
             "pose": "point"
           }
-        ]
+        ],
+        "world": {
+          "keys": [
+            {
+              "atSec": 0,
+              "x": -2.2,
+              "y": 0
+            }
+          ]
+        }
       },
       {
         "id": "mochi",
         "type": "cat",
         "pose": "idle",
-        "from": 0.62,
-        "to": 0.65,
-        "y": 0.84,
-        "scale": 1.1,
         "color": "#c7b5e7",
         "poses": [
           {
             "atSec": 39,
             "pose": "walk"
           }
-        ]
+        ],
+        "world": {
+          "keys": [
+            {
+              "atSec": 0,
+              "x": 0.32,
+              "y": 0
+            },
+            {
+              "atSec": 39,
+              "x": 0.32,
+              "y": 0
+            },
+            {
+              "atSec": 45,
+              "x": 0.26,
+              "y": 0
+            }
+          ]
+        }
       }
     ],
     "props": [
       {
         "type": "catbox-old",
-        "x": 0.79,
-        "y": 0.86,
-        "size": 300
+        "space": "world",
+        "world": {
+          "x": 0,
+          "y": 0
+        },
+        "layer": "back"
       },
       {
         "type": "catbox-folder",
-        "x": 0.79,
-        "y": 0.87,
+        "x": 0.82,
+        "y": 0.7,
         "size": 220,
-        "label": "แฟ้ม"
+        "label": "แฟ้ม",
+        "space": "screen"
       },
       {
         "type": "catbox-card",
-        "x": 0.48,
-        "y": 0.49,
-        "size": 270,
+        "x": 0.78,
+        "y": 0.26,
+        "size": 400,
         "tone": "observed",
-        "label": "ผลที่วัด / สิ่งที่เดา",
-        "detail": "บางตัวเลือกกรอบ\nCSS ในงานที่หลบตามบริบท\nอุ่น · ซุ่ม · สัมผัสข้าง\nข้อเสนอไม่เท่าผลยืนยัน"
+        "label": "ผลวัด / สิ่งเดา",
+        "detail": "บางตัวเลือกกรอบ\nCSS: ที่ซ่อน\nอุ่น / ซุ่ม / สัมผัส",
+        "space": "screen"
       }
     ],
     "subtitle": "เราเลือกคำตอบเร็วไปไหม?",
     "subtitleCues": [
       {
-        "atSec": 0.0,
+        "atSec": 0,
         "text": "เราเลือกคำตอบเร็วไปไหม?"
       },
       {
-        "atSec": 5.0,
+        "atSec": 5,
         "text": "หลักฐานชุดนี้บอกอะไรได้บ้าง?"
       },
       {
-        "atSec": 10.0,
+        "atSec": 10,
         "text": "สังเกต: บางตัวเลือกกรอบ"
       },
       {
@@ -1649,7 +2168,7 @@
         "text": "ยังใช้แทนเหตุเดียวกันไม่ได้"
       },
       {
-        "atSec": 23.0,
+        "atSec": 23,
         "text": "เหตุเสนอ: อุ่น"
       },
       {
@@ -1669,7 +2188,7 @@
         "text": "หลักฐานแต่ละข้อไม่เท่ากัน"
       },
       {
-        "atSec": 35.0,
+        "atSec": 35,
         "text": "ทุกตัวต้องลง"
       },
       {
@@ -1681,38 +2200,65 @@
         "text": "เป็นไปได้ ≠ ยืนยันแล้ว"
       }
     ],
-    "pictureMove": [
-      {
-        "atSec": 0,
-        "x": -0.008,
-        "y": 0,
-        "scale": 1.035
+    "projection": {
+      "unit": "m",
+      "stage": {
+        "left": -3.6,
+        "right": 2.44,
+        "bottom": -0.85,
+        "top": 2.55
       },
-      {
-        "atSec": 10.0,
-        "x": -0.002,
-        "y": -0.002,
-        "scale": 1.045
-      },
-      {
-        "atSec": 23.0,
-        "x": 0.005,
-        "y": 0.002,
-        "scale": 1.055
-      },
-      {
-        "atSec": 35.0,
-        "x": 0.008,
-        "y": 0.001,
-        "scale": 1.065
-      },
-      {
-        "atSec": 44.7,
-        "x": 0.001,
-        "y": -0.001,
-        "scale": 1.07
+      "views": {
+        "short": {
+          "bounds": {
+            "left": -0.3234375,
+            "right": 0.3234375,
+            "bottom": -0.45,
+            "top": 0.7
+          },
+          "cameraMoves": [
+            {
+              "atSec": 0,
+              "x": 0.24,
+              "y": 0,
+              "zoom": 1.15
+            },
+            {
+              "atSec": 11.25,
+              "x": 0.258,
+              "y": 0.006,
+              "zoom": 1.16
+            },
+            {
+              "atSec": 22.5,
+              "x": 0.24,
+              "y": 0,
+              "zoom": 1.18
+            },
+            {
+              "atSec": 33.75,
+              "x": 0.222,
+              "y": -0.006,
+              "zoom": 1.16
+            },
+            {
+              "atSec": 45,
+              "x": 0.24,
+              "y": 0,
+              "zoom": 1.15
+            }
+          ]
+        },
+        "long": {
+          "bounds": {
+            "left": -3.6,
+            "right": 2.44,
+            "bottom": -0.85,
+            "top": 2.55
+          }
+        }
       }
-    ]
+    }
   },
   {
     "durationSec": 45,
@@ -1796,13 +2342,14 @@
               "y": 0.09191489361702128
             }
           ]
-        }
+        },
+        "poseTransitionFrames": 9
       }
     ],
     "props": [
       {
         "type": "catbox-old",
-        "layer": "front",
+        "layer": "back",
         "space": "world",
         "world": {
           "x": 0,
@@ -1811,8 +2358,8 @@
       },
       {
         "type": "catbox-folder",
-        "x": 0.4,
-        "y": 0.73,
+        "x": 0.82,
+        "y": 0.7,
         "size": 220,
         "label": "แฟ้ม",
         "space": "screen",
@@ -1821,12 +2368,12 @@
       },
       {
         "type": "catbox-card",
-        "x": 0.48,
-        "y": 0.28,
-        "size": 270,
+        "x": 0.78,
+        "y": 0.26,
+        "size": 400,
         "tone": "fiction",
         "label": "ครั้งนี้ยังไม่รู้",
-        "detail": "เรื่องสมมติ: โมจิเลือกกล่องเก่า\nเห็นการกระทำ\nยังไม่รู้เหตุเฉพาะ",
+        "detail": "เรื่องสมมติ\nกลับกล่องเก่า\nเหตุยังไม่รู้",
         "space": "screen",
         "startSec": 35,
         "endSec": 45
@@ -1834,8 +2381,8 @@
       {
         "type": "catbox-outline",
         "x": 0.75,
-        "y": 0.31,
-        "size": 160,
+        "y": 0.34,
+        "size": 190,
         "space": "screen",
         "startSec": 0,
         "endSec": 23
@@ -1844,15 +2391,15 @@
     "subtitle": "นั่งในกรอบ ≠ ยืนยันว่าคิดว่ามีกล่อง",
     "subtitleCues": [
       {
-        "atSec": 0.0,
+        "atSec": 0,
         "text": "นั่งในกรอบ ≠ ยืนยันว่าคิดว่ามีกล่อง"
       },
       {
-        "atSec": 5.0,
+        "atSec": 5,
         "text": "กรอบแบนยังไม่ใช่ที่หลบจริง"
       },
       {
-        "atSec": 10.0,
+        "atSec": 10,
         "text": "เห็นการกระทำ"
       },
       {
@@ -1864,52 +2411,20 @@
         "text": "เรื่องโมจิ ≠ ข้อมูลทดลอง"
       },
       {
-        "atSec": 23.0,
+        "atSec": 23,
         "text": "เรื่องสมมติ: โมจิเลือกกล่องเก่า"
       },
       {
-        "atSec": 29.0,
+        "atSec": 29,
         "text": "แล้วใบนี้ เลือกเพราะอะไร?"
       },
       {
-        "atSec": 35.0,
+        "atSec": 35,
         "text": "กล่องมีหลายหน้าที่"
       },
       {
-        "atSec": 40.0,
+        "atSec": 40,
         "text": "เหตุที่เลือกใบนี้ ยังไม่รู้"
-      }
-    ],
-    "pictureMove": [
-      {
-        "atSec": 0,
-        "x": -0.008,
-        "y": 0,
-        "scale": 1.035
-      },
-      {
-        "atSec": 10.0,
-        "x": -0.002,
-        "y": -0.002,
-        "scale": 1.045
-      },
-      {
-        "atSec": 23.0,
-        "x": 0.005,
-        "y": 0.002,
-        "scale": 1.055
-      },
-      {
-        "atSec": 35.0,
-        "x": 0.008,
-        "y": 0.001,
-        "scale": 1.065
-      },
-      {
-        "atSec": 44.7,
-        "x": 0.001,
-        "y": -0.001,
-        "scale": 1.07
       }
     ],
     "projection": {
@@ -1918,47 +2433,59 @@
         "left": -3.6,
         "right": 2.44,
         "bottom": -0.85,
-        "top": 3.4
+        "top": 2.55
       },
       "views": {
         "short": {
           "bounds": {
             "left": -0.3234375,
             "right": 0.3234375,
-            "bottom": -0.275,
-            "top": 0.875
+            "bottom": -0.45,
+            "top": 0.7
           },
           "cameraMoves": [
             {
               "atSec": 0,
               "x": -0.2,
               "y": 0,
-              "zoom": 1
+              "zoom": 1.03
             },
             {
               "atSec": 22.966667,
               "x": -0.2,
               "y": 0,
-              "zoom": 1
+              "zoom": 1.03
             },
             {
               "atSec": 23,
               "x": -0.55,
               "y": 0,
-              "zoom": 1,
+              "zoom": 1.03,
               "cut": true
             },
             {
               "atSec": 29,
               "x": -0.25,
               "y": 0,
-              "zoom": 1
+              "zoom": 1.03
             },
             {
-              "atSec": 34.966667,
+              "atSec": 34,
               "x": 0,
               "y": 0,
-              "zoom": 1
+              "zoom": 1.03
+            },
+            {
+              "atSec": 35,
+              "x": 0,
+              "y": 0,
+              "zoom": 1.36
+            },
+            {
+              "atSec": 45,
+              "x": 0,
+              "y": 0,
+              "zoom": 1.36
             }
           ]
         },

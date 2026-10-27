@@ -3,7 +3,9 @@ import assert from 'node:assert/strict';
 import blockout from '../scripts/cat-boxes/blockout.json';
 import {orthographicViewAt, worldPositionAt, worldToOutputPoint} from '../src/scenes/projection';
 import {validateTimeline} from '../src/scenes/timeline';
-import type {Scene} from '../src/scenes/types';
+import {PHYSICAL_ACTOR_SPECS} from '../src/rig/physicalScale';
+import {CAT_SEATED_BODY_DROP_UNITS} from '../src/rig/geometry';
+import type {Scene, Timeline} from '../src/scenes/types';
 
 const fixture = () => structuredClone(blockout[11]) as unknown as Scene;
 const near = (actual: number, expected: number) => assert.ok(Math.abs(actual - expected) < 1e-8, `${actual} ≠ ${expected}`);
@@ -19,6 +21,28 @@ test('one metre projects uniformly on both axes and both output formats', () => 
     near(right.y, origin.y);
     near(up.x, origin.x);
     near(view.pixelsPerMeter, right.x - origin.x);
+  }
+});
+
+test('all twelve Short scenes use the shared physical scale and frame Mochi between 420 and 560px at midpoint', () => {
+  const ownerHeight = PHYSICAL_ACTOR_SPECS.narrator!.heightM;
+  const catSpec = PHYSICAL_ACTOR_SPECS.cat!;
+  near(ownerHeight / catSpec.heightM, 6);
+  const timeline = blockout as unknown as Timeline;
+  for (const [i, scene] of timeline.entries()) {
+    assert.ok(scene.projection, `S${i + 1} has no shared projection`);
+    assert.ok(scene.actors.every(actor => actor.world && actor.scale === undefined && actor.portrait === undefined), `S${i + 1} has a per-scene scale override`);
+    assert.equal(scene.bg, 'room');
+    const cat = scene.actors.find(actor => actor.type === 'cat');
+    assert.ok(cat);
+    const midpoint = Math.round(scene.durationSec * 15);
+    const view = orthographicViewAt(scene.projection, 1080, 1920, midpoint, 30, true);
+    let pose = cat.pose ?? 'idle';
+    for (const key of cat.poses ?? []) if (key.atSec <= midpoint / 30) pose = key.pose;
+    const seatedRatio = pose === 'sit' ? (208 - CAT_SEATED_BODY_DROP_UNITS) / 208 : 1;
+    const projectedHeight = catSpec.heightM * view.pixelsPerMeter * seatedRatio;
+    assert.ok(projectedHeight >= 420 && projectedHeight <= 560, `S${i + 1} midpoint cat height ${projectedHeight.toFixed(1)}px`);
+    if (i < 11) assert.ok((scene.projection.views.short.cameraMoves?.length ?? 0) > 2, `S${i + 1} camera is static`);
   }
 });
 

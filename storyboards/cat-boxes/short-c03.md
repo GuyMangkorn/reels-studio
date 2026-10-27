@@ -2,14 +2,16 @@
 
 Revision 1 · ready-for-dev storyboard handoff · script approval pending
 Script: scripts/cat-boxes/ch03-script.md R4 · Boat: FC-R4
-Film brief: visual-brief.md VB-CATBOX-R4 / VS03 · FC-VIS-R1 is planning-only, not runtime visual approval
+Film brief: visual-brief.md VB-CATBOX-R5 / VS03 · FC-VIS-R1 is planning-only, not runtime visual approval
 Cut: 45s estimated · 30 fps · 1,350 frames · 1080×1920 portrait only
 
 ## Purpose and boundaries
 
 Open on an explicitly fictional toy chase, separate observed play from a possible motive, demonstrate actual occlusion, then return to the owner’s revised note. CL04’s action-versus-cause distinction is restaged self-contained; the Short does not require the Long chapter.
 
-Home uses the existing fixed-plane orthographic stage: BOX-OLD floor origin, +X right, +Y up, +Z toward viewer. CATBOX-METER-R1 dimensions are production estimates, not factual measurements. Keep actor/box/toy proportions, floor anchors, shadow and occlusion; frame Mochi at least 25% of portrait height without rig inflation.
+Home uses the shared fixed-plane orthographic stage: BOX-OLD floor origin, +X right, +Y up, +Z toward viewer. CATBOX-METER-R2 dimensions are production estimates, not factual measurements: owner 1.70m and Mochi 0.2833m standing for a 6:1 canonical height ratio. Keep actor/box/toy proportions, floor anchors, shadow and occlusion; frame Mochi at least 25% of portrait height without rig inflation.
+
+**R5 corrective staging:** keep the same `CatboxRoom` visible through all four beats; overlay the inference/geometry cards instead of cutting to a full-frame panel. Keep Mochi visible in the middle scenes. In SH01, preserve the crop with the muzzle fully inside frame; the toy starts at the box's chest line, moves into the front paw, and stays at paw contact through F239. VO and subtitle strings remain unchanged.
 
 ## Shot map
 
@@ -42,7 +44,7 @@ Mochi settles. Separate “เห็น: พุ่งตามของเล่
 
 ## Shared assets and acceptance
 
-Reuse CAT-2D, BOX-OLD, CATBOX-TOY, CatboxRoom and the integrated orthographic projection. Frame-sampled toy motion and the visual-stage dispatch are implemented. DF-20261026-subpixel-stage-projection applies to this portrait crop; Studio seeking remains separately unverified under DF-20261026-studio-emfile.
+Reuse CAT-2D, BOX-OLD, CATBOX-TOY, CatboxRoom and the integrated orthographic projection. Keep the toy in the foreground at the cat's paw contact point. Frame-sampled toy motion and the visual-stage dispatch are implemented. DF-20261026-subpixel-stage-projection applies to this portrait crop; Studio seeking remains separately unverified under DF-20261026-studio-emfile.
 
 ## Current implementation and CLI evidence
 
@@ -79,7 +81,7 @@ Audio: no Short-specific recording or approved SFX; synchronization unverified.
 All frame numbers are Short-composition-local at 30 fps. Each state must be authored so direct seeking reproduces it without React state from the preceding shot.
 | Shot | Entry state | Exit / next-cut state |
 |---|---|---|
-| CATBOX-C03-SHORT-S01-SH01 | F0: home stage; Mochi sits in the old box at its seat anchor, toy is offscreen left, owner’s fiction label is visible. | F239: toy has crossed before the pounce; owner’s “ฐานล่า” note is visibly a guess. |
-| CATBOX-C03-SHORT-S01-SH02 | F240: intentional cut to a schematic play strip; physical actor stage is absent. | F629: observed play strip and dotted unknown-motive arrow hold separately. |
-| CATBOX-C03-SHORT-S01-SH03 | F630: fresh equal-size schematic target comparison; labels say diagram, not a test. | F989: wall hides the target and flat outline does not; next cut returns to the home stage. |
+| CATBOX-C03-SHORT-S01-SH01 | F0: home stage; Mochi sits in the old box at its seat anchor, toy is offscreen left, owner’s fiction label is visible. | F239: toy finishes its arc from chest height into the floor contact area under Mochi’s forepaw; owner’s “ฐานล่า” note is visibly a guess. |
+| CATBOX-C03-SHORT-S01-SH02 | F240: keep the living-room stage and Mochi visible; the play strip and unknown-motive arrow are screen-space overlays. | F629: observed play and unknown motive hold as overlaid evidence; cat, owner, box and room remain in continuity. |
+| CATBOX-C03-SHORT-S01-SH03 | F630: keep Mochi in the home stage beneath an equal-size schematic target comparison overlay; labels say diagram, not a test. | F989: the wall/flat-outline comparison remains an overlay; the home axis continues into the next cut. |
 | CATBOX-C03-SHORT-S01-SH04 | F990: return to the same home axis and actor identity; toy is stopped, Mochi returns to the old box, owner’s note is editable. | F1349: Mochi is seated at the box contact anchor; note separates observed pounce from unknown entry reason. |

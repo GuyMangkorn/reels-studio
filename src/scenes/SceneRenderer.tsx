@@ -1,4 +1,4 @@
-import {AbsoluteFill, Freeze, Audio, staticFile, Sequence, useCurrentFrame, useVideoConfig, interpolate} from 'remotion';
+import {AbsoluteFill, Audio, staticFile, Sequence, useCurrentFrame, useVideoConfig, interpolate} from 'remotion';
 import {sofaSeat} from '../assets/props/Sofa';
 import {poseWeightAt} from '../rig/poses';
 import {Background} from '../assets/Background';
@@ -14,7 +14,27 @@ import {visualAt} from '../assets/visuals/types';
 import {VisualStage} from '../assets/visuals/VisualStage';
 
 export type Narration = {src: string; amplitude: readonly number[]; fps: number; startFrame?: number};
-export type SceneRendererProps = {timeline: Timeline; narration?: Narration; ending?: Ending};
+export type SceneRendererProps = {timeline: Timeline; narration?: Narration; ending?: Ending; sceneTransitionFrames?: number; loopFadeFrames?: number};
+
+const transitionOpacityAt = (frame: number, timeline: Timeline, fps: number, transitionFrames: number) => {
+  if (transitionFrames <= 0 || timeline.length < 2) return 0;
+  const radius = Math.max(1, transitionFrames / 2);
+  let boundary = 0;
+  let opacity = 0;
+  for (let i = 0; i < timeline.length - 1; i++) {
+    boundary += sceneFrames(timeline[i].durationSec, fps);
+    const progress = Math.max(0, 1 - Math.abs(frame - boundary) / radius);
+    opacity = Math.max(opacity, progress * 0.75);
+  }
+  return opacity;
+};
+
+const loopFadeOpacityAt = (frame: number, duration: number, ending: Ending, fadeFrames: number) => {
+  if (ending !== 'B_loop' || fadeFrames <= 0) return 0;
+  const start = Math.max(0, 1 - frame / fadeFrames);
+  const end = Math.max(0, 1 - (duration - 1 - frame) / fadeFrames);
+  return Math.min(1, Math.max(start, end));
+};
 
 const ProjectedSceneStage = ({scene, previous, poseFrame, width, height, fps, mouth}: {
   scene: Scene; previous?: Scene; poseFrame: number; width: number; height: number; fps: number; mouth: number;
@@ -90,11 +110,11 @@ const SceneView = ({scene, index, total, previous, start, narration, ending}: {s
       return <SceneProp key={`screen-${i}`} type={prop.type} x={placement.x} y={placement.y} size={placement.size} color={prop.color} night={night} label={prop.label} detail={prop.detail} variant={prop.variant} tone={prop.tone}/>;
     })}
     {visualAt(scene.visuals, sceneFrame, fps) && <VisualStage visual={visualAt(scene.visuals, sceneFrame, fps)!} frame={sceneFrame} fps={fps} width={width} height={height} physical={Boolean(scene.projection)}/>}
-    <div style={{position: 'absolute', left: width * .075, top: height * (portrait ? .085 : .067), color: ink, opacity: interpolate(frame, [0, 12], [0, 1], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'}), transform: `translateY(${interpolate(frame, [0, 18], [15, 0], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'})}px)`}}>
+    {(scene.eyebrow || scene.title) && <div style={{position: 'absolute', left: width * .075, top: height * (portrait ? .085 : .067), color: ink, opacity: interpolate(frame, [0, 12], [0, 1], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'}), transform: `translateY(${interpolate(frame, [0, 18], [15, 0], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'})}px)`}}>
       {scene.eyebrow && <div style={{fontSize: portrait ? 24 : 21, fontWeight: 600, letterSpacing: 4}}>{scene.eyebrow}</div>}
       {scene.title && <div style={{fontFamily: 'Noto Sans Thai, sans-serif', fontSize: portrait ? 105 : 76, lineHeight: 1.13, fontWeight: 800, letterSpacing: -4, whiteSpace: 'pre-line', marginTop: 24}}>{scene.title}</div>}
       <div style={{width: 65, height: 7, borderRadius: 8, background: night ? '#ffdba4' : '#e5a08c', marginTop: 25}}/>
-    </div>
+    </div>}
     <Subtitles text={subtitleAt(scene, sceneFrame, fps)}/>
     <div style={{position: 'absolute', bottom: portrait ? 53 : 24, left: width * .075, right: width * .075, display: 'flex', alignItems: 'center', gap: 12}}>
       {Array.from({length: total}, (_, i) => <div key={i} style={{height: 4, flex: 1, borderRadius: 8, background: night ? '#ffffff25' : '#49445c20', overflow: 'hidden'}}><div style={{height: '100%', width: `${i < index ? 100 : i === index ? (frame + 1) / duration * 100 : 0}%`, background: night ? '#ffe0a8' : '#77718f'}}/></div>)}
@@ -103,13 +123,16 @@ const SceneView = ({scene, index, total, previous, start, narration, ending}: {s
   </AbsoluteFill>;
 };
 /** Scenes are intentionally data-driven: edit JSON, never duplicate layout for aspect ratios. */
-export const SceneRenderer = ({timeline, narration, ending = 'B_loop'}: SceneRendererProps) => {
+export const SceneRenderer = ({timeline, narration, ending = 'B_loop', sceneTransitionFrames = 0, loopFadeFrames = 0}: SceneRendererProps) => {
   const {fps, durationInFrames} = useVideoConfig();
   const frame = useCurrentFrame();
   validateTimeline(timeline);
+  const transitionOpacity = transitionOpacityAt(frame, timeline, fps, sceneTransitionFrames);
+  const loopOpacity = loopFadeOpacityAt(frame, durationInFrames, ending, loopFadeFrames);
+  const pictureOpacity = Math.max(transitionOpacity, loopOpacity);
   let start = 0;
-  return <AbsoluteFill style={{backgroundColor: 'black'}}>{narration && <Sequence from={narration.startFrame ?? 0} premountFor={fps}><Audio src={staticFile(narration.src)}/></Sequence>}<Freeze frame={0} active={ending === 'B_loop' && frame === durationInFrames - 1}>{timeline.map((scene, index) => {
+  return <AbsoluteFill style={{backgroundColor: 'black'}}>{narration && <Sequence from={narration.startFrame ?? 0} premountFor={fps}><Audio src={staticFile(narration.src)}/></Sequence>}{timeline.map((scene, index) => {
     const from = start; const duration = sceneFrames(scene.durationSec, fps); start += duration;
     return <Sequence key={index} name={scene.eyebrow ?? scene.bg} from={from} durationInFrames={duration} premountFor={fps}><SceneView scene={scene} index={index} total={timeline.length} previous={timeline[index - 1]} start={from} narration={narration} ending={ending}/></Sequence>;
-  })}</Freeze></AbsoluteFill>;
+  })}{pictureOpacity > 0 && <AbsoluteFill style={{backgroundColor: '#101018', opacity: pictureOpacity, pointerEvents: 'none'}}/>}</AbsoluteFill>;
 };

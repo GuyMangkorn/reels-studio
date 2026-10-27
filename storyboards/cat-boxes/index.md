@@ -18,7 +18,7 @@ The Issue #31 / codex/31-catbox-storyboard header above records the original sto
 
 This is the active scope on codex/33-catbox-foundation with latest known origin/main 5095d25 (PR #46 merged). PR #38 remains open and is the update target.
 
-This pass covers six independent Short S01 cuts, one per chapter. Each is estimated at 45 seconds / 1,350 frames at 30 fps, portrait 1080×1920. Script approval remains pending; VO and subtitle timing are untested. Film brief: [VB-CATBOX-R4](visual-brief.md). New IDs use the SHORT namespace; original Long IDs, boards, sheets, and the 540-second source timeline remain intact.
+The active delivery now covers the existing 12-scene main portrait Short plus six independent Short S01 cuts, one per chapter. Each chapter Short is estimated at 45 seconds / 1,350 frames at 30 fps, portrait 1080×1920. Script approval remains pending; VO and subtitle timing are untested. Film brief: [VB-CATBOX-R5](visual-brief.md). New chapter-cut IDs use the SHORT namespace; original Long IDs, boards, sheets, story order and 540-second durations remain source material. The shared `blockout.json` render setup now carries the main Short's metre-space room, actor and camera data. Long uses that same JSON input, but Long output was not rendered or reviewed in this pass.
 
 | Chapter | New Short shot | Exact source beat | Short frames | Existing Long source shots | Relationship |
 |---:|---|---|---:|---|---|
@@ -56,28 +56,30 @@ This pass covers six independent Short S01 cuts, one per chapter. Each is estima
 | C05 | ch05 R4 | [short-c05.json](../../scripts/cat-boxes/short-c05.json) → `CATBOX-C05-Short` · 4 scenes / 1,350 frames | [short-c05.excalidraw](short-c05.excalidraw) · [short-c05.md](short-c05.md) |
 | C06 | ch06 R4 | [short-c06.json](../../scripts/cat-boxes/short-c06.json) → `CATBOX-C06-Short` · 4 scenes / 1,350 frames | [short-c06.excalidraw](short-c06.excalidraw) · [short-c06.md](short-c06.md) |
 
-Boss runtime status: six independent portrait compositions are registered in `src/Root.tsx`; the existing generic `Short` and `Long` blockout compositions remain available. The visual contract, validation and `VisualStage` dispatch are integrated for the modes used by these Shorts. `PhysicalAction`'s `visit` source remains unregistered and unused. C03 and C06 are the only Short home-scale scenes; C06-S02's Long source framing and scale remain unchanged.
+Boss runtime status: six independent portrait compositions are registered in `src/Root.tsx`; the generic `Short` and `Long` compositions remain available and both use the shared 12-scene `blockout.json`. All twelve main Short scenes and the six chapter Shorts use the shared metre-space projection and `CatboxRoom`. The visual contract, validation and `VisualStage` dispatch are integrated for the used visual modes. `PhysicalAction`'s `visit` source remains unregistered and unused. The shared physical-scale registry changes Short framing and actor scale; Long rendering and QA remain unverified.
 
-### Boss Short runtime and QA evidence
+### Boss Short runtime and QA evidence — R5 review fixes
 
-The final full six-cut CLI QA was run at 1080×1920 / 30 fps after the shared status-text fix. Each Short has 1,350 frames, 46 one-second/final stills, critical boundary samples, an A-fade preview, same-browser/random-seek and remount parity checks, and a B-loop seam check. The complete frame lists, sample paths, contact-sheet pages and per-cut UTC refresh timestamps are in the [QA manifest](../../out/qa/cat-boxes/shorts-r1/manifest.json); the [QA README](../../out/qa/cat-boxes/shorts-r1/README.md) links previews and contact sheets. C03's F59/F60/F61 encoded-preview spot check is available as [F59](../../out/qa/cat-boxes/shorts-r1/C03/playback-check/f00059.png), [F60](../../out/qa/cat-boxes/shorts-r1/C03/playback-check/f00060.png) and [F61](../../out/qa/cat-boxes/shorts-r1/C03/playback-check/f00061.png); direct, same-browser and remount frames all retain `เรื่องสมมติ` and match.
+The main Short renders 16,200 frames at 1080×1920 / 30 fps with the requested loop seam fade. All six chapter Shorts render 1,350 frames each at 1080×1920 / 30 fps, with an A-fade preview, one-second frame samples, critical boundary frames, same-browser/remount parity, and loop-seam checks. Local render outputs and exact frame lists are under `out/qa/cat-boxes/shorts-r2/`; review stills and one-fps contact sheets are committed with PR #38 below. Long was not rendered or reviewed.
 
-| Cut | Continuous A-fade preview | One-second / final and critical contact sheets |
+| Cut | One-fps contact sheet | Exact review frames |
 |---|---|---|
-| C01 | [CATBOX-C01-Short](../../out/qa/cat-boxes/shorts-r1/C01/CATBOX-C01-Short_A_fade-preview.mp4) | [one-second](../../out/qa/cat-boxes/shorts-r1/contact-sheets/C01-one-second-01.svg) · [critical](../../out/qa/cat-boxes/shorts-r1/contact-sheets/C01-critical-01.svg) |
-| C02 | [CATBOX-C02-Short](../../out/qa/cat-boxes/shorts-r1/C02/CATBOX-C02-Short_A_fade-preview.mp4) | [one-second](../../out/qa/cat-boxes/shorts-r1/contact-sheets/C02-one-second-01.svg) · [critical](../../out/qa/cat-boxes/shorts-r1/contact-sheets/C02-critical-01.svg) |
-| C03 | [CATBOX-C03-Short](../../out/qa/cat-boxes/shorts-r1/C03/CATBOX-C03-Short_A_fade-preview.mp4) | [one-second](../../out/qa/cat-boxes/shorts-r1/contact-sheets/C03-one-second-01.svg) · [critical](../../out/qa/cat-boxes/shorts-r1/contact-sheets/C03-critical-01.svg) |
-| C04 | [CATBOX-C04-Short](../../out/qa/cat-boxes/shorts-r1/C04/CATBOX-C04-Short_A_fade-preview.mp4) | [one-second](../../out/qa/cat-boxes/shorts-r1/contact-sheets/C04-one-second-01.svg) · [critical](../../out/qa/cat-boxes/shorts-r1/contact-sheets/C04-critical-01.svg) |
-| C05 | [CATBOX-C05-Short](../../out/qa/cat-boxes/shorts-r1/C05/CATBOX-C05-Short_A_fade-preview.mp4) | [one-second](../../out/qa/cat-boxes/shorts-r1/contact-sheets/C05-one-second-01.svg) · [critical](../../out/qa/cat-boxes/shorts-r1/contact-sheets/C05-critical-01.svg) |
-| C06 | [CATBOX-C06-Short](../../out/qa/cat-boxes/shorts-r1/C06/CATBOX-C06-Short_A_fade-preview.mp4) | [one-second](../../out/qa/cat-boxes/shorts-r1/contact-sheets/C06-one-second-01.svg) · [critical](../../out/qa/cat-boxes/shorts-r1/contact-sheets/C06-critical-01.svg) |
+| C01 | [45-frame sheet](../../out/qa/cat-boxes/pr38/pr-assets/C01-one-fps-contact.jpg) | Full A-fade render, frame samples and parity checks in the local shorts-r2 QA output |
+| C02 | [45-frame sheet](../../out/qa/cat-boxes/pr38/pr-assets/C02-one-fps-contact.jpg) | Full A-fade render, frame samples and parity checks in the local shorts-r2 QA output |
+| C03 | [45-frame sheet](../../out/qa/cat-boxes/pr38/pr-assets/C03-one-fps-contact.jpg) | [F120](../../out/qa/cat-boxes/pr38/pr-assets/C03-F120.png) · [F239](../../out/qa/cat-boxes/pr38/pr-assets/C03-F239.png) |
+| C04 | [45-frame sheet](../../out/qa/cat-boxes/pr38/pr-assets/C04-one-fps-contact.jpg) | Full A-fade render, frame samples and parity checks in the local shorts-r2 QA output |
+| C05 | [45-frame sheet](../../out/qa/cat-boxes/pr38/pr-assets/C05-one-fps-contact.jpg) | Full A-fade render, frame samples and parity checks in the local shorts-r2 QA output |
+| C06 | [45-frame sheet](../../out/qa/cat-boxes/pr38/pr-assets/C06-one-fps-contact.jpg) | [F0](../../out/qa/cat-boxes/pr38/pr-assets/C06-F0.png) · [F15](../../out/qa/cat-boxes/pr38/pr-assets/C06-F15.png) · [F1100](../../out/qa/cat-boxes/pr38/pr-assets/C06-F1100.png) |
 
-Script approval is pending, narration is absent, and subtitle timing is estimated and not audio-synced. Runtime factual-image review remains unverified; FC-VIS-R1 is planning review only. Studio playback/seeking remains unverified separately from the successful CLI renders. C06-SH01's outline enters at an estimated 0.5 seconds, not an audio cue. The 12-scene / 540-second blockout and all Long scripts/boards remain source material; Long implementation, rendering and QA are deferred and have no pass claim.
+Main Short seam frames: [F16199](../../out/qa/cat-boxes/pr38/pr-assets/Main-F16199.png) · [first frame of the next loop, F0](../../out/qa/cat-boxes/pr38/pr-assets/Main-F0-after-loop.png). The midpoint height and 6:1 physical owner/cat ratio table is in the PR description.
+
+Script approval is pending, narration is absent, and subtitle timing remains estimated and not audio-synced. Runtime factual-image review remains unverified; FC-VIS-R1 is planning review only. Studio playback/seeking remains unverified separately from the successful CLI renders. Long uses the shared source JSON but was not rendered or QA-reviewed.
 
 ## Shared sequence blockout (written before scene packs)
 
 [blockout.md](blockout.md) is the sequence-first brief. It sets the room axis, old-box clue, six chapter turns, original 2D production proposal, all-shots-move rule, research boundaries, Short crop rule and shared dependencies before the scene boards below. Current medium choices follow Film's brief and the latest production rules.
 
-## Retained Long-source sequence map (unchanged)
+## Retained Long-source story map (source beats and timing unchanged)
 
 All six chapters unfold in the same fictional living room through the owner’s case file. Research pictures are labeled 2D explainers and never become a lab scene or a claim that Mochi was tested. Each Long unit has one independently reviewable story scene; the Shorts are separate edits across their two scene boards.
 

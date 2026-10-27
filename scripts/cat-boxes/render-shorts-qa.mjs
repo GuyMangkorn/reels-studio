@@ -11,7 +11,7 @@ const execFileAsync = promisify(execFile);
 const fps = 30;
 const width = 1080;
 const height = 1920;
-const root = path.resolve('out/qa/cat-boxes/shorts-r1');
+const root = path.resolve('out/qa/cat-boxes/shorts-r2');
 const bundleDir = path.join(root, 'bundle');
 const sheetDir = path.join(root, 'contact-sheets');
 const shortSpecs = [
@@ -168,7 +168,7 @@ for (const short of specs) {
   if (focusFrames) {
     const focusDir = path.join(shortDir, 'focus-recheck');
     await mkdir(focusDir, {recursive: true});
-    const browser = await openBrowser('chrome');
+    const browser = await openBrowser('chrome', {chromiumOptions: {gl: 'swangle'}});
     try {
       const composition = await selectComposition({serveUrl, id: short.id, browserInstance: browser, inputProps: propsFor('A_fade')});
       for (const frame of focusFrames) {
@@ -188,7 +188,7 @@ for (const short of specs) {
   await Promise.all([sampleDir, criticalDir, seekDir, loopDir].map((dir) => mkdir(dir, {recursive: true})));
   const inputProps = propsFor('A_fade');
   const sameBrowserParity = [];
-  let browser = await openBrowser('chrome');
+  let browser = await openBrowser('chrome', {chromiumOptions: {gl: 'swangle'}});
   let composition;
   let loop;
   try {
@@ -242,7 +242,7 @@ for (const short of specs) {
     await browser.close({silent: true});
   }
 
-  browser = await openBrowser('chrome');
+  browser = await openBrowser('chrome', {chromiumOptions: {gl: 'swangle'}});
   const remountParity = [];
   try {
     composition = await selectComposition({serveUrl, id: short.id, browserInstance: browser, inputProps});
@@ -313,7 +313,7 @@ const readme = [
   '',
   'The six source scripts remain draft. No Short narration is supplied; subtitle timing is estimated and not audio-synced. Studio playback/seeking is unverified separately from these CLI renders.',
   '',
-  'C03 and C06 received targeted refreshes after visual review; all six Shorts then received a full refresh after the shared status-text fix. The manifest records a per-composition `qaRefreshedAt` timestamp, exact frame coverage, source-beat map, parity results and loop seams.',
+  'R5 refreshes all six chapter Shorts after the user-directed room, actor, card and scale corrections. The manifest records a per-composition `qaRefreshedAt` timestamp, exact frame coverage, source-beat map, parity results and loop seams; the separate 12-scene main Short render is tracked in the PR evidence.',
   '',
   'C03 `playback-check/` contains frames F59/F60/F61 decoded from its continuous A-fade preview for review alongside the direct still, same-browser and remount parity evidence.',
   '',
@@ -326,3 +326,4 @@ const readme = [
 ].join('\n');
 await writeFile(path.join(root, 'README.md'), readme, 'utf8');
 console.log('Wrote Short-only QA manifest: ' + path.join(root, 'manifest.json'));
+process.exit(0);

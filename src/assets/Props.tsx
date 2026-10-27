@@ -74,7 +74,27 @@ export const Car = ({color = '#f4a4a2'}: PropProps) => <><path d="M23 155 L57 10
 export const Boat = ({color = '#a58dbf'}: PropProps) => <><path d="M19 170 H222 Q209 218 178 218 H64 Q32 210 19 170" fill={color}/><path d="M119 167 V26" stroke="#b78b72" strokeWidth={8}/><path d="M109 36 L35 154 H109Z" fill="#fff1d6"/><path d="M129 57 L197 154 H129Z" fill="#f6ae9b"/><path d="M49 188 H193" stroke="#d2bde1" strokeWidth={7} strokeLinecap="round"/></>;
 export const Sign = ({color = '#ffd8a0'}: PropProps) => <><rect x={111} y={93} width={17} height={137} rx={5} fill="#b38b78"/><path d="M24 54 H177 L218 92 L177 130 H24Z" fill={color}/><path d="M67 92 H164 M146 77 L164 92 L146 107" stroke="#a38073" strokeWidth={9} strokeLinecap="round" strokeLinejoin="round" fill="none"/></>;
 
-const SvgLines = ({text, x, y, size = 14, fill = '#4a3b3b', weight = 600, anchor = 'start'}: {text?: string; x: number; y: number; size?: number; fill?: string; weight?: number; anchor?: 'start' | 'middle' | 'end'}) => <text x={x} y={y} fill={fill} fontFamily="Noto Sans Thai, sans-serif" fontSize={size} fontWeight={weight} textAnchor={anchor}>{(text ?? '').split('\n').map((line, i) => <tspan key={`${i}-${line}`} x={x} dy={i === 0 ? 0 : size + 4}>{line}</tspan>)}</text>;
+const wrapThai = (text: string, maxGraphemes: number) => {
+  const Segmenter = Intl.Segmenter;
+  const segment = (value: string) => Array.from(new Segmenter('th', {granularity: 'grapheme'}).segment(value), part => part.segment);
+  const words = text.trim().split(/\s+/).filter(Boolean).flatMap(word => {
+    const graphemes = segment(word);
+    if (graphemes.length <= maxGraphemes) return [word];
+    const chunks: string[] = [];
+    for (let i = 0; i < graphemes.length; i += maxGraphemes) chunks.push(graphemes.slice(i, i + maxGraphemes).join(''));
+    return chunks;
+  });
+  const lines: string[] = [];
+  let line = '';
+  for (const word of words) {
+    const next = line ? `${line} ${word}` : word;
+    if (segment(next).length > maxGraphemes && line) { lines.push(line); line = word; }
+    else line = next;
+  }
+  if (line) lines.push(line);
+  return lines;
+};
+const SvgLines = ({text, x, y, size = 14, fill = '#4a3b3b', weight = 600, anchor = 'start', maxGraphemes}: {text?: string; x: number; y: number; size?: number; fill?: string; weight?: number; anchor?: 'start' | 'middle' | 'end'; maxGraphemes?: number}) => <text x={x} y={y} fill={fill} fontFamily="Noto Sans Thai, sans-serif" fontSize={size} fontWeight={weight} textAnchor={anchor}>{(text ?? '').split('\n').flatMap((line, i) => (maxGraphemes ? wrapThai(line, maxGraphemes) : [line]).map((wrapped, j) => <tspan key={`${i}-${j}-${wrapped}`} x={x} dy={i === 0 && j === 0 ? 0 : size + 4}>{wrapped}</tspan>))}</text>;
 
 export const CatboxOld = ({part = 'complete'}: PropProps) => <g stroke="#4a3b3b" strokeWidth={5} strokeLinejoin="round">
   {part !== 'front' && <>
@@ -102,7 +122,7 @@ export const CatboxStimulus = ({variant = 'square', label = 'รูปกระ�
   const turns = variant === 'outward-control' ? [225, 315, 45, 135] : [45, 135, 225, 315];
   return <>
     <rect x={14} y={19} width={212} height={202} rx={19} fill="#fff9ee" stroke="#766b79" strokeWidth={4}/>
-    <SvgLines text={label} x={120} y={47} size={15} fill="#59627d" weight={800} anchor="middle"/>
+    <SvgLines text={label} x={120} y={47} size={30} fill="#59627d" weight={800} anchor="middle"/>
     {variant === 'square' ? <rect x={67} y={76} width={106} height={106} fill="none" stroke="#4a3b3b" strokeWidth={8}/> : <>
       <Pacman x={83} y={94} angle={turns[0]}/><Pacman x={157} y={94} angle={turns[1]}/><Pacman x={157} y={166} angle={turns[2]}/><Pacman x={83} y={166} angle={turns[3]}/>
     </>}
@@ -113,7 +133,7 @@ export const CatboxFolder = ({label = 'แฟ้มหลักฐาน'}: Prop
   <path d="M24 61 H94 L111 80 H216 V211 H24Z" fill="#d7c4ad"/>
   <path d="M24 81 H216 V211 H24Z" fill="#eee0ca"/>
   <path d="M36 97 H204 V192 H36Z" fill="#fff8ea" stroke="#b79d86" strokeWidth={2}/>
-  <SvgLines text={label} x={120} y={139} size={22} weight={800} anchor="middle"/>
+  <SvgLines text={label} x={120} y={139} size={36} weight={800} anchor="middle"/>
   <path d="M55 159 H185 M55 176 H162" stroke="#c4b6a8" strokeWidth={3} strokeLinecap="round"/>
 </g>;
 
@@ -128,10 +148,10 @@ export const CatboxCard = ({label = 'บันทึก', detail = '', tone = 'n
   const color = toneColors[tone];
   return <>
     <rect x={13} y={19} width={214} height={202} rx={17} fill={color.fill} stroke={color.edge} strokeWidth={4}/>
-    <path d="M30 20 H210 Q225 20 225 35 V59 H15 V35 Q15 20 30 20Z" fill={color.tab}/>
-    <SvgLines text={label} x={120} y={47} size={16} weight={800} anchor="middle"/>
-    <path d="M30 72 H210" stroke="#cabdaf" strokeWidth={2}/>
-    <SvgLines text={detail} x={30} y={99} size={13} fill="#403a42" weight={600}/>
+    <path d="M30 20 H210 Q225 20 225 35 V98 H15 V35 Q15 20 30 20Z" fill={color.tab}/>
+    <SvgLines text={label} x={120} y={44} size={34} weight={800} anchor="middle" maxGraphemes={10}/>
+    <path d="M30 98 H210" stroke="#cabdaf" strokeWidth={2}/>
+    <SvgLines text={detail} x={30} y={122} size={20} fill="#403a42" weight={600} maxGraphemes={12}/>
     {tone === 'warning' && <path d="M31 194 H209" stroke="#d89559" strokeWidth={4} strokeLinecap="round"/>}
     {tone === 'hypothesis' && <text x={204} y={208} fill="#a36b49" fontSize={17} textAnchor="end" fontFamily="Noto Sans Thai, sans-serif" fontWeight={800}>?</text>}
   </>;

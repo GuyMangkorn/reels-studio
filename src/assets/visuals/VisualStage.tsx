@@ -6,6 +6,26 @@ const statusText = {fiction: 'เรื่องสมมติ', diagram: 'ภ�
 
 const reveal = (progress: number, order: number) => Math.max(0, Math.min(1, (progress - order * 0.16) / 0.12));
 
+const wrapLabel = (text: string, maxGraphemes = 17) => {
+  const segment = (value: string) => Array.from(new Intl.Segmenter('th', {granularity: 'grapheme'}).segment(value), part => part.segment);
+  const words = text.trim().split(/\s+/).filter(Boolean).flatMap(word => {
+    const graphemes = segment(word);
+    if (graphemes.length <= maxGraphemes) return [word];
+    const chunks: string[] = [];
+    for (let i = 0; i < graphemes.length; i += maxGraphemes) chunks.push(graphemes.slice(i, i + maxGraphemes).join(''));
+    return chunks;
+  });
+  const lines: string[] = [];
+  let line = '';
+  for (const word of words) {
+    const next = line ? `${line} ${word}` : word;
+    if (segment(next).length > maxGraphemes && line) { lines.push(line); line = word; }
+    else line = next;
+  }
+  if (line) lines.push(line);
+  return lines.join('\n');
+};
+
 const Pill = ({x, y, width, text, fill = colors.cream, size = 30}: {x: number; y: number; width: number; text: string; fill?: string; size?: number}) => (
   <g>
     <rect x={x} y={y} width={width} height={72} rx={20} fill={fill} stroke={ink} strokeWidth={3}/>
@@ -254,25 +274,25 @@ export const VisualStage = ({visual, frame, fps, width, height, physical = false
 }) => {
   const progress = visualProgressAt(visual, frame, fps);
   const status = statusText[visual.status];
-  const headerY = height * 0.105;
-  const headingY = height * 0.19;
-  const labelTop = height * 0.252;
+  const headerY = height * 0.092;
+  const headingY = height * 0.17;
+  const labelTop = height * 0.22;
   return <svg width={width} height={height} viewBox={`0 0 ${width} ${height}`} style={{position: 'absolute', inset: 0, overflow: 'hidden', pointerEvents: 'none'}} aria-label={visual.heading}>
     {!physical && <rect x={0} y={0} width={width} height={height} fill={colors.cream}/>}
-    <rect x={width * 0.075} y={headerY - 42} width={width * 0.44} height={64} rx={18} fill={visual.status === 'hypothesis' ? '#fff0cf' : visual.status === 'research' ? '#e7f4f5' : '#fff9ef'} stroke={ink} strokeWidth={3}/>
-    <Text x={width * 0.295} y={headerY} size={28}>{status}</Text>
-    <LineText x={width / 2} y={headingY} text={visual.heading} size={42}/>
-    {!physical && <DiagramBody visual={visual} width={width} height={height} progress={progress}/>}
+    <rect x={width * 0.075} y={headerY - 36} width={width * 0.52} height={72} rx={18} fill={visual.status === 'hypothesis' ? '#fff0cf' : visual.status === 'research' ? '#e7f4f5' : '#fff9ef'} stroke={ink} strokeWidth={3}/>
+    <Text x={width * 0.335} y={headerY + 13} size={36}>{status}</Text>
+    <LineText x={width / 2} y={headingY} text={visual.heading} size={60}/>
+    {!physical && visual.showDiagram !== false && <DiagramBody visual={visual} width={width} height={height} progress={progress}/>}
     {physical && visual.phase === 3 && (visual.id === 'evidence-sort' || visual.id === 'toy-pursuit') && (() => {
       const holdStartsAt = Math.max(0, visual.endSec - 3);
       const revealProgress = Math.max(0, Math.min(1, (frame / fps - (holdStartsAt - 1)) / 1));
       const message = visual.id === 'evidence-sort' ? 'ครั้งนี้ยังไม่รู้' : 'เห็นการกระทำ\nยังไม่รู้เหตุที่เข้าไป';
       const written = message.slice(0, Math.ceil(message.length * revealProgress));
-      return <g>
+      return revealProgress > 0 && written.length > 0 ? <g>
         <Paper x={width * 0.62} y={height * 0.33} w={width * 0.32} h={144} fill={colors.cream}>
-          <LineText x={width * 0.78} y={height * 0.33 + 83} text={written} size={30}/>
+          <LineText x={width * 0.78} y={height * 0.33 + 83} text={written} size={36}/>
         </Paper>
-      </g>;
+      </g> : null;
     })()}
     {!!visual.labels.length && <g>
       {visual.labels.slice(0, 4).map((label, i) => {
@@ -282,10 +302,10 @@ export const VisualStage = ({visual, frame, fps, width, height, physical = false
         const row = Math.floor(i / 2);
         const pillWidth = width * 0.42;
         const x = width * (column === 0 ? 0.075 : 0.505);
-        const y = labelTop + row * 60;
+        const y = labelTop + row * 106;
         return <g key={`${visual.shotId}-label-${i}`} opacity={labelReveal} transform={`translate(0 ${8 * (1 - labelReveal)})`}>
-          <rect x={x} y={y} width={pillWidth} height={54} rx={16} fill={visual.status === 'hypothesis' ? '#fff4ce' : visual.status === 'research' ? '#e7f4f5' : colors.cream} stroke={ink} strokeWidth={2}/>
-          <LineText x={x + pillWidth / 2} y={y + 35} text={label} size={22}/>
+          <rect x={x} y={y} width={pillWidth} height={98} rx={16} fill={visual.status === 'hypothesis' ? '#fff4ce' : visual.status === 'research' ? '#e7f4f5' : colors.cream} stroke={ink} strokeWidth={2}/>
+          <LineText x={x + pillWidth / 2} y={y + 36} text={wrapLabel(label)} size={36}/>
         </g>;
       })}
     </g>}

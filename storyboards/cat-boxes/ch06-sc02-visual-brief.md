@@ -1,5 +1,11 @@
 # Visual brief — CATBOX-C06-S02
 
+## R5 user-directed Short scale update (27 October 2026)
+
+The R3/R4 `0.45m` / `0.316m` cat-height figures below are historical Short framing estimates. For PR #38's requested Short pass, the shared rig now uses Mochi `1.70/6m` (`0.2833m`) against the owner's `1.70m`, and the main Short's S1–S12 plus all six chapter Shorts use the same metre-space scale without per-scene actor-size overrides. This implements the user's requested ~6:1 owner/cat physical-height ratio; Short framing supplies the lead size. Source VO, script claims and subtitle wording are unchanged.
+
+This shared scale change also affects any composition that imports the same physical-scale registry. Long output was not rendered or reviewed in this Short-only pass, so its resulting scale/framing is unverified and needs a later review. The original R3/R4 Long treatment and evidence below are retained as historical source, not a Long pass claim.
+
 Revision: `VB-C06-S02-R3` | Status: `blockout-integrated` (Mark board R4; bounded Short/Long CLI proof recorded in index; script approval pending)
 Script: `scripts/cat-boxes/ch06-script.md` R4, `CATBOX-C06-U02-B01`–`B04`; episode script R5
 Fact-check: `scripts/cat-boxes/episode-fact-check.md` FC-R4, including F012 (the return to the old box and the unresolved reason are fictional; no causal answer is added)

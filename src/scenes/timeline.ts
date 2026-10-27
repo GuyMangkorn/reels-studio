@@ -41,6 +41,7 @@ export function validateTimeline(value: unknown): asserts value is Timeline {
         if (!['fiction', 'diagram', 'research', 'hypothesis'].includes(String(visual.status))) fail(`${vp}.status`, 'expected factual image status');
         if (typeof visual.heading !== 'string' || !visual.heading.trim()) fail(`${vp}.heading`, 'expected heading');
         if (!Array.isArray(visual.labels) || visual.labels.length > 8 || visual.labels.some(label => typeof label !== 'string')) fail(`${vp}.labels`, 'expected up to eight text labels');
+        if (visual.showDiagram !== undefined && typeof visual.showDiagram !== 'boolean') fail(`${vp}.showDiagram`, 'expected boolean');
         if (visual.labelsAtSec !== undefined) {
           if (!Array.isArray(visual.labelsAtSec) || visual.labelsAtSec.length !== (visual.labels as unknown[]).length) fail(`${vp}.labelsAtSec`, 'expected one reveal time per visual label');
           (visual.labelsAtSec as unknown[]).forEach((atSec, k) => {
@@ -179,6 +180,7 @@ export function validateTimeline(value: unknown): asserts value is Timeline {
           const item = key as {atSec: number; pose: unknown}; checkPose(item.pose); last = item.atSec;
         });
       }
+      if (a.poseTransitionFrames !== undefined && (!Number.isInteger(a.poseTransitionFrames) || (a.poseTransitionFrames as number) < 1 || (a.poseTransitionFrames as number) > 120)) fail(`${ap}.poseTransitionFrames`, 'expected 1–120 frames');
     });
     if (s.props !== undefined) {
       if (!Array.isArray(s.props)) fail(`${path}.props`, 'expected array');
@@ -282,7 +284,7 @@ export function layoutSceneProp(prop: ScenePropSpec, width: number, height: numb
   };
 }
 export const actorIdentity = (actor: Actor, index: number) => actor.id ?? `${actor.type}-${index}`;
-export const actorPoseTrack = (actor: Actor, fps: number, previous: PoseName = 'idle'): PoseTrack => ({initial: actor.pose ?? 'idle', from: previous, keys: (actor.poses ?? []).map(key => ({frame: Math.round(key.atSec * fps), pose: key.pose}))});
+export const actorPoseTrack = (actor: Actor, fps: number, previous: PoseName = 'idle'): PoseTrack => ({initial: actor.pose ?? 'idle', from: previous, keys: (actor.poses ?? []).map(key => ({frame: Math.round(key.atSec * fps), pose: key.pose})), ...(actor.poseTransitionFrames === undefined ? {} : {durationFrames: actor.poseTransitionFrames})});
 export function poseAt(actor: Actor, frame: number, fps: number, previous: PoseName = 'idle'): PoseTransition {
   return transitionAtTrack(actorPoseTrack(actor, fps, previous), frame, fps);
 }

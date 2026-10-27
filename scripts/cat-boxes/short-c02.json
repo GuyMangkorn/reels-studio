@@ -2,7 +2,51 @@
   {
     "durationSec": 8,
     "bg": "room",
-    "actors": [],
+    "actors": [
+      {
+        "id": "owner",
+        "type": "narrator",
+        "pose": "think",
+        "world": {
+          "keys": [
+            {
+              "atSec": 0,
+              "x": -0.9,
+              "y": 0
+            }
+          ]
+        },
+        "poses": [
+          {
+            "atSec": 3.36,
+            "pose": "point"
+          },
+          {
+            "atSec": 5.76,
+            "pose": "think"
+          }
+        ],
+        "hairStyle": "short",
+        "skinColor": "#FFD9B8",
+        "shirtColor": "#FF8FA3",
+        "pantsColor": "#7ED6B2"
+      },
+      {
+        "id": "mochi",
+        "type": "cat",
+        "pose": "sit",
+        "color": "#c7b5e7",
+        "world": {
+          "keys": [
+            {
+              "atSec": 0,
+              "x": -1.2,
+              "y": 0
+            }
+          ]
+        }
+      }
+    ],
     "subtitle": "กล่องช่วยแมวได้แค่ไหน?",
     "subtitleCues": [
       {
@@ -21,7 +65,7 @@
         "startSec": 0,
         "endSec": 8,
         "phase": 0,
-        "heading": "กล่องช่วยแมวได้แค่ไหน?",
+        "heading": "ที่ซ่อนช่วยด้านไหน",
         "labels": [
           "มีงานเรื่องที่ซ่อนจริง",
           "ช่วยบางด้าน • ไม่ใช่ทุกอย่าง"
@@ -29,12 +73,103 @@
         "status": "research",
         "sourceBeatId": "CATBOX-C02-S01-B01"
       }
-    ]
+    ],
+    "projection": {
+      "unit": "m",
+      "stage": {
+        "left": -3.6,
+        "right": 2.44,
+        "bottom": -0.85,
+        "top": 2.55
+      },
+      "views": {
+        "short": {
+          "bounds": {
+            "left": -1.5234375,
+            "right": -0.8765624999999999,
+            "bottom": -0.45,
+            "top": 0.7
+          },
+          "cameraMoves": [
+            {
+              "atSec": 0,
+              "x": 0,
+              "y": 0,
+              "zoom": 1.12
+            },
+            {
+              "atSec": 4,
+              "x": 0.015,
+              "y": 0,
+              "zoom": 1.15
+            },
+            {
+              "atSec": 8,
+              "x": 0,
+              "y": 0,
+              "zoom": 1.12
+            }
+          ]
+        },
+        "long": {
+          "bounds": {
+            "left": -3.6,
+            "right": 2.44,
+            "bottom": -0.85,
+            "top": 2.55
+          }
+        }
+      }
+    }
   },
   {
     "durationSec": 14,
     "bg": "room",
-    "actors": [],
+    "actors": [
+      {
+        "id": "owner",
+        "type": "narrator",
+        "pose": "think",
+        "world": {
+          "keys": [
+            {
+              "atSec": 0,
+              "x": -0.9,
+              "y": 0
+            }
+          ]
+        },
+        "poses": [
+          {
+            "atSec": 5.88,
+            "pose": "point"
+          },
+          {
+            "atSec": 10.08,
+            "pose": "think"
+          }
+        ],
+        "hairStyle": "short",
+        "skinColor": "#FFD9B8",
+        "shirtColor": "#FF8FA3",
+        "pantsColor": "#7ED6B2"
+      },
+      {
+        "id": "mochi",
+        "type": "cat",
+        "pose": "sit",
+        "color": "#c7b5e7",
+        "world": {
+          "keys": [
+            {
+              "atSec": 0,
+              "x": -1.2,
+              "y": 0
+            }
+          ]
+        }
+      }
+    ],
     "subtitle": "2014 / 19 ตัว / 14 วัน",
     "subtitleCues": [
       {
@@ -62,12 +197,103 @@
         "status": "research",
         "sourceBeatId": "CATBOX-C02-S01-B02"
       }
-    ]
+    ],
+    "projection": {
+      "unit": "m",
+      "stage": {
+        "left": -3.6,
+        "right": 2.44,
+        "bottom": -0.85,
+        "top": 2.55
+      },
+      "views": {
+        "short": {
+          "bounds": {
+            "left": -1.5234375,
+            "right": -0.8765624999999999,
+            "bottom": -0.45,
+            "top": 0.7
+          },
+          "cameraMoves": [
+            {
+              "atSec": 0,
+              "x": 0,
+              "y": 0,
+              "zoom": 1.12
+            },
+            {
+              "atSec": 7,
+              "x": 0.015,
+              "y": 0,
+              "zoom": 1.15
+            },
+            {
+              "atSec": 14,
+              "x": 0,
+              "y": 0,
+              "zoom": 1.12
+            }
+          ]
+        },
+        "long": {
+          "bounds": {
+            "left": -3.6,
+            "right": 2.44,
+            "bottom": -0.85,
+            "top": 2.55
+          }
+        }
+      }
+    }
   },
   {
     "durationSec": 12,
     "bg": "room",
-    "actors": [],
+    "actors": [
+      {
+        "id": "owner",
+        "type": "narrator",
+        "pose": "think",
+        "world": {
+          "keys": [
+            {
+              "atSec": 0,
+              "x": -0.9,
+              "y": 0
+            }
+          ]
+        },
+        "poses": [
+          {
+            "atSec": 5.04,
+            "pose": "point"
+          },
+          {
+            "atSec": 8.64,
+            "pose": "think"
+          }
+        ],
+        "hairStyle": "short",
+        "skinColor": "#FFD9B8",
+        "shirtColor": "#FF8FA3",
+        "pantsColor": "#7ED6B2"
+      },
+      {
+        "id": "mochi",
+        "type": "cat",
+        "pose": "sit",
+        "color": "#c7b5e7",
+        "world": {
+          "keys": [
+            {
+              "atSec": 0,
+              "x": -1.2,
+              "y": 0
+            }
+          ]
+        }
+      }
+    ],
     "subtitle": "2019: คะแนนลดเร็วกว่า",
     "subtitleCues": [
       {
@@ -95,12 +321,103 @@
         "status": "research",
         "sourceBeatId": "CATBOX-C02-S01-B03"
       }
-    ]
+    ],
+    "projection": {
+      "unit": "m",
+      "stage": {
+        "left": -3.6,
+        "right": 2.44,
+        "bottom": -0.85,
+        "top": 2.55
+      },
+      "views": {
+        "short": {
+          "bounds": {
+            "left": -1.5234375,
+            "right": -0.8765624999999999,
+            "bottom": -0.45,
+            "top": 0.7
+          },
+          "cameraMoves": [
+            {
+              "atSec": 0,
+              "x": 0,
+              "y": 0,
+              "zoom": 1.12
+            },
+            {
+              "atSec": 6,
+              "x": 0.015,
+              "y": 0,
+              "zoom": 1.15
+            },
+            {
+              "atSec": 12,
+              "x": 0,
+              "y": 0,
+              "zoom": 1.12
+            }
+          ]
+        },
+        "long": {
+          "bounds": {
+            "left": -3.6,
+            "right": 2.44,
+            "bottom": -0.85,
+            "top": 2.55
+          }
+        }
+      }
+    }
   },
   {
     "durationSec": 11,
     "bg": "room",
-    "actors": [],
+    "actors": [
+      {
+        "id": "owner",
+        "type": "narrator",
+        "pose": "think",
+        "world": {
+          "keys": [
+            {
+              "atSec": 0,
+              "x": -0.9,
+              "y": 0
+            }
+          ]
+        },
+        "poses": [
+          {
+            "atSec": 4.62,
+            "pose": "point"
+          },
+          {
+            "atSec": 7.92,
+            "pose": "think"
+          }
+        ],
+        "hairStyle": "short",
+        "skinColor": "#FFD9B8",
+        "shirtColor": "#FF8FA3",
+        "pantsColor": "#7ED6B2"
+      },
+      {
+        "id": "mochi",
+        "type": "cat",
+        "pose": "sit",
+        "color": "#c7b5e7",
+        "world": {
+          "keys": [
+            {
+              "atSec": 0,
+              "x": -1.2,
+              "y": 0
+            }
+          ]
+        }
+      }
+    ],
     "subtitle": "หลักฐานของที่ซ่อน / ยังไม่ใช่หลักฐานของกรอบเทป",
     "subtitleCues": [
       {
@@ -123,6 +440,53 @@
         "status": "diagram",
         "sourceBeatId": "CATBOX-C02-S01-B04"
       }
-    ]
+    ],
+    "projection": {
+      "unit": "m",
+      "stage": {
+        "left": -3.6,
+        "right": 2.44,
+        "bottom": -0.85,
+        "top": 2.55
+      },
+      "views": {
+        "short": {
+          "bounds": {
+            "left": -1.5234375,
+            "right": -0.8765624999999999,
+            "bottom": -0.45,
+            "top": 0.7
+          },
+          "cameraMoves": [
+            {
+              "atSec": 0,
+              "x": 0,
+              "y": 0,
+              "zoom": 1.12
+            },
+            {
+              "atSec": 5.5,
+              "x": 0.015,
+              "y": 0,
+              "zoom": 1.15
+            },
+            {
+              "atSec": 11,
+              "x": 0,
+              "y": 0,
+              "zoom": 1.12
+            }
+          ]
+        },
+        "long": {
+          "bounds": {
+            "left": -3.6,
+            "right": 2.44,
+            "bottom": -0.85,
+            "top": 2.55
+          }
+        }
+      }
+    }
   }
 ]
