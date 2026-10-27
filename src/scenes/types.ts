@@ -32,9 +32,41 @@ export type Actor = {
   /** Optional actor-local duration for authored pose transitions, in frames. */
   poseTransitionFrames?: number;
 };
+/** Footage or a still image in screen space. `src` is a path under public/ or an http(s) URL. Times are scene-local. */
+export type MediaClip = {
+  kind: 'video' | 'image'; src: string;
+  startSec?: number; endSec?: number;
+  /** cover (default) fills the box and crops; contain letterboxes. */
+  fit?: 'cover' | 'contain';
+  /** back (default) sits under actors and moves with pictureMove; front sits over actors. */
+  layer?: 'back' | 'front';
+  /** Fractions of the frame; default is the full frame. */
+  box?: {x: number; y: number; width: number; height: number};
+  opacity?: number;
+  /** Video only. Source offset, playback speed and clip audio gain (default 0 = muted). */
+  trimStartSec?: number; playbackRate?: number; volume?: number;
+};
+/** A one-shot sound at a scene-local time. */
+export type SceneSoundCue = {src: string; atSec: number; volume?: number; trimStartSec?: number; durationSec?: number};
+/**
+ * The incoming scene enters over the last `frames` of the previous scene, held on its own first frame.
+ * Scene durations, cut frames and narration sync are unchanged.
+ */
+export type SceneTransition = {type: 'fade' | 'slide' | 'wipe'; frames: number; direction?: 'left' | 'right' | 'up' | 'down'};
+/** Music or ambience on the composition clock. */
+export type AudioTrack = {
+  src: string; startSec?: number; endSec?: number; trimStartSec?: number;
+  volume?: number; fadeInSec?: number; fadeOutSec?: number; loop?: boolean;
+  /** Gain multiplier while narration is speaking, e.g. 0.25. Omit for no ducking. */
+  duckUnderNarration?: number;
+};
+export type CaptionStyle = {preset?: 'outline' | 'box' | 'none'; position?: 'bottom' | 'middle' | 'top'; color?: string; scale?: number};
+/** Channel label (false hides it) and the scene progress bar. */
+export type ChromeStyle = {channelLabel?: string | false; progressBar?: boolean};
 export type Scene = {
   visuals?: SceneVisual[];
-  durationSec: number; bg: BackgroundName; time?: TimeOfDay; actors: Actor[]; subtitle: string;
+  /** `none` renders no illustrated background, for footage/image-led scenes. */
+  durationSec: number; bg: BackgroundName | 'none'; time?: TimeOfDay; actors: Actor[]; subtitle: string;
   title?: string; eyebrow?: string;
   /** Frame-sampled movement for the complete background + props + actors stage. Values are normalized stage offsets and scale. */
   pictureMove?: PictureMoveKey[];
@@ -43,5 +75,8 @@ export type Scene = {
   props?: ScenePropSpec[];
   /** Shared orthographic metre-to-pixel projection; actors and world props retain canonical dimensions. */
   projection?: OrthographicProjection;
+  media?: MediaClip[];
+  sfx?: SceneSoundCue[];
+  transitionIn?: SceneTransition;
 };
 export type Timeline = Scene[];

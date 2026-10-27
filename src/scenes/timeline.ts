@@ -4,6 +4,7 @@ import {HUMAN_HIP_FROM_ANCHOR} from '../rig/geometry';
 import {propNames, propSpecs, type PropName} from '../assets/Props';
 import {PHYSICAL_ACTOR_SPECS} from '../rig/physicalScale';
 import type {Actor, Scene, ScenePropSpec, Timeline} from './types';
+import {validateSceneMedia} from './media';
 const bgNames = ['forest', 'city', 'room', 'sea', 'nightSky'];
 const animalPoses = ['idle', 'walk', 'sit', 'wave'];
 const stimulusVariants = ['square', 'kanizsa', 'outward-control'];
@@ -11,14 +12,14 @@ const propTones = ['observed', 'hypothesis', 'warning', 'fiction', 'neutral'];
 const finite = (v: unknown): v is number => typeof v === 'number' && Number.isFinite(v);
 const record = (v: unknown): v is Record<string, unknown> => v !== null && typeof v === 'object' && !Array.isArray(v);
 /** Validate external JSON before rendering, with a path to every invalid value. */
-export function validateTimeline(value: unknown): asserts value is Timeline {
+export function validateTimeline(value: unknown, fps = 30): asserts value is Timeline {
   const fail = (path: string, message: string): never => {throw new Error(`Timeline ${path}: ${message}`);};
   if (!Array.isArray(value) || value.length === 0) fail('scenes', 'expected a non-empty array');
   (value as unknown[]).forEach((raw, i) => {
     if (!record(raw)) fail(`[${i}]`, 'expected scene object');
     const s = raw as Record<string, unknown>; const path = `[${i}]`;
     if (!finite(s.durationSec) || s.durationSec <= 0) fail(`${path}.durationSec`, 'must be positive');
-    if (!bgNames.includes(String(s.bg))) fail(`${path}.bg`, 'unknown background');
+    if (!bgNames.includes(String(s.bg)) && s.bg !== 'none') fail(`${path}.bg`, 'unknown background');
     if (s.projection !== undefined && s.bg !== 'room') fail(`${path}.bg`, 'background has no implementation for the physical metre stage');
     if (s.time !== undefined && !['day', 'night'].includes(String(s.time))) fail(`${path}.time`, 'expected day or night');
     if (typeof s.subtitle !== 'string') fail(`${path}.subtitle`, 'expected text');
@@ -240,6 +241,7 @@ export function validateTimeline(value: unknown): asserts value is Timeline {
         }
       });
     }
+    validateSceneMedia(s, path, i, i > 0 ? ((value as Record<string, unknown>[])[i - 1].durationSec as number) : undefined, fps, fail);
   });
 }
 export const sceneFrames = (seconds: number, fps: number) => Math.max(1, Math.round(seconds * fps));

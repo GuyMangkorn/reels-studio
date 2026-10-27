@@ -1,6 +1,6 @@
 import type {Ending} from '../scenes/endings';
 import type {Narration} from '../scenes/SceneRenderer';
-import type {Timeline} from '../scenes/types';
+import type {AudioTrack, CaptionStyle, ChromeStyle, Timeline} from '../scenes/types';
 
 /** Canvas presets from docs/production-requirements.md; a video selects one instead of repeating sizes. */
 export const FORMATS = {
@@ -19,6 +19,10 @@ export type VideoDefinition = {
   narration?: Narration;
   sceneTransitionFrames?: number;
   loopFadeFrames?: number;
+  /** Music/ambience on the composition clock. */
+  audio?: AudioTrack[];
+  captionStyle?: CaptionStyle;
+  chrome?: ChromeStyle;
 };
 
 /** Default export shape of `src/videos/<episode>/index.ts`. */

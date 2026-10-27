@@ -22,6 +22,7 @@ The executable timeline is a `Scene[]`. The baseline supports `durationSec`, `bg
 | Subtle handheld drift, irregular light, atmospheric movement | `@remotion/noise` | `src/camera/`, shared lighting or background module |
 | Subtitle cues within a shot, imported SRT/VTT, SRT export | `@remotion/captions` | `src/scenes/` and authoring/export helpers in `scripts/` |
 | A scene handoff calls for a dissolve or wipe between shots | `@remotion/transitions` | Shared sequencing and timing in `src/scenes/` |
+| Footage/stills, music, ducking, entry transitions, caption presets | Core `Img` / `OffthreadVideo` / `Audio` (integrated, see 10a) | `src/scenes/media.ts`, `MediaLayers.tsx` |
 | Notification, page turn or whoosh at a specific beat | `@remotion/sfx` + core `Audio` / `Sequence` | Shared sound registry and renderer dispatch |
 | Arrow, speech callout, star, heart or reaction symbol | `@remotion/shapes` | `src/assets/props/` or `src/assets/overlays/` |
 | Find incorrect API usage and TypeScript / Hooks mistakes | `@remotion/eslint-config-flat` + `eslint` | `eslint.config.mjs`; run `npm run lint` |
@@ -211,6 +212,27 @@ export const ReactionStar = () => <Star
 ```
 
 Wrap and name channel symbols once in the shared asset library, then expose parameters such as color/size and register ids if JSON needs them. Keep outline weight consistent after scaling. Use existing human/animal rigs for characters; a shape generator does not replace an articulated skeleton. Verify clipping, pivot placement and selected/affected aspect ratios when animating a symbol.
+
+## 10a. Footage, stills, music, entry transitions and caption styles
+
+**Status:** `existing-integrated` in `src/scenes/` (types in `types.ts`, validation in `media.ts` + `validateTimeline`, rendering in `MediaLayers.tsx` and `SceneRenderer.tsx`; issue #70). Use these fields for genres that are not illustrated stories: footage-led edits, slideshows, talking-head cutaways, ads and screen recordings. Existing timelines render unchanged.
+
+| Need | Field | Notes |
+| --- | --- | --- |
+| Footage or still image | `scene.media[]` (`kind: 'video' \| 'image'`, `src`, `startSec`/`endSec`, `fit`, `box`, `layer`, `opacity`; video: `trimStartSec`, `playbackRate`, `volume`) | `src` is a path under `public/` or an `http(s)` URL. Video is muted unless `volume` is set. Scene-local seconds. Not supported in projected scenes. |
+| Scene without an illustrated set | `scene.bg: 'none'` | Pair with `media` or overlays. |
+| One-shot sound | `scene.sfx[]` (`src`, `atSec`, `volume`, `trimStartSec`, `durationSec`) | Mounted on the composition clock at the scene start. |
+| Music / ambience | `video.audio[]` (`src`, `startSec`/`endSec`, `trimStartSec`, `volume`, `fadeInSec`/`fadeOutSec`, `loop`, `duckUnderNarration`) | `duckUnderNarration: 0.25` multiplies the track gain while the narration amplitude envelope is speaking. Without narration it has no effect. |
+| Transition into a scene | `scene.transitionIn` (`type: 'fade' \| 'slide' \| 'wipe'`, `frames`, `direction`) | The incoming scene enters over the last `frames` of the previous scene, held on its first frame. **Scene durations, cut frames and narration sync do not change**; `frames` must be shorter than the previous scene. Subtitles and chrome of the incoming scene appear when the transition ends. `sceneTransitionFrames` (the older dip-to-dark) is separate. |
+| Caption look | `video.captionStyle` (`preset: 'outline' \| 'box' \| 'none'`, `position`, `color`, `scale`) | Default is the channel's white-on-dark outline at the bottom. |
+| Channel label / progress bar | `video.chrome` (`channelLabel: string \| false`, `progressBar`) | Default keeps `ทำไมล่ะ` and the bar. |
+
+Authoring rules:
+
+- Imported footage, images and music need a license that allows commercial YouTube use; record it beside the file in a `NOTICE` ([production requirements](production-requirements.md#secrets-brands-and-licenses)). WAV/PNG are not Git-ignored (MP3/MP4 are): keep large local media out of commits unless the episode needs them.
+- Footage playback is deterministic under seeking (`OffthreadVideo`), but confirm the codec renders and that clip length covers its `startSec`–`endSec` window.
+- Check actual frames: one still inside each clip, the first/middle/last frame of every `transitionIn`, music level with and without narration, and the Thai caption against busy footage (use `preset: 'box'` for contrast).
+- Verification evidence for this capability (2026-10-27, `main` + issue #70 branch): unit tests in `tests/media.test.ts`; a three-scene check render with full-frame video, contained image, picture-in-picture video, slide and wipe transitions, box captions and hidden channel label; audio RMS confirmed SFX spike, fade-in/out and a 0.2× duck while narration speaks.
 
 ## 11. Verification and dependency maintenance
 
