@@ -9,7 +9,7 @@ npm ls --depth=0
 npx remotion versions
 ```
 
-Inspect `package.json`, `src/scenes/types.ts`, `validateTimeline` in `src/scenes/timeline.ts`, `src/scenes/SceneRenderer.tsx` and `src/Root.tsx`. Check asset registries before drawing or adding a dependency. Read `scripts/render.mjs` before exporting because branches can select different timelines and audio.
+Inspect `package.json`, `src/scenes/types.ts`, `validateTimeline` in `src/scenes/timeline.ts`, `src/scenes/SceneRenderer.tsx`, `src/Root.tsx` and the episode registry in `src/videos/<episode>/index.ts`. Check asset registries before drawing or adding a dependency. Read `scripts/render.mjs` before exporting because branches can select different timelines and audio.
 
 The executable timeline is a `Scene[]`. The baseline supports `durationSec`, `bg`, `actors`, `subtitle` and the optional fields in its types. The package inventory and integration statements below describe the toolkit change that introduced this guide, not a fresh audit of the active checkout. Automatic text fitting, timed captions, scene transitions, SFX dispatch, `RuleCard` and `PhoneChat` were documented as **recipes to implement**, not features registered by that change. Confirm current modules, dependencies and dispatch before classifying any capability. See [planned visual components](planned-visual-components.md) for design specifications.
 
