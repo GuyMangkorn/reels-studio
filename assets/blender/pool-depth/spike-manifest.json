@@ -1,0 +1,346 @@
+{
+  "s0": {
+    "frames": 60,
+    "devices": [
+      {
+        "name": "Apple M1",
+        "type": "CPU",
+        "use": false
+      },
+      {
+        "name": "Apple M1 (GPU - 8 cores)",
+        "type": "METAL",
+        "use": true
+      }
+    ],
+    "samples": 32,
+    "scale_pct": 100,
+    "seconds_first_frame": 135.40477514266968,
+    "seconds_mean_excl_first": 3.789098125393108,
+    "seconds_max": 135.40477514266968,
+    "seconds_total": 358.96156454086304,
+    "frame_files": "renders/s0/frame_0001..0060.png (local)"
+  },
+  "_meta": {
+    "blender": "5.2.3 LTS",
+    "units": "metre, Z up",
+    "output": "1080x1920@30",
+    "generated_by": "build.py"
+  },
+  "s1": {
+    "camera_height_above_surface_m": 2.0,
+    "depth_m": 1.0,
+    "fov_v_deg": 60.0,
+    "f_px": 1662.7687752661227,
+    "samples": 32,
+    "devices": [
+      {
+        "name": "Apple M1",
+        "type": "CPU",
+        "use": false
+      },
+      {
+        "name": "Apple M1 (GPU - 8 cores)",
+        "type": "METAL",
+        "use": true
+      }
+    ],
+    "cases": {
+      "ior_1.000": {
+        "ior": 1.0,
+        "render_seconds": 15.106409788131714,
+        "markers": [
+          {
+            "axis": "x",
+            "floor_offset_m": 0.3,
+            "found": true,
+            "predicted_px": 166.30459495910543,
+            "measured_px": 166.2959001164112,
+            "error_px": -0.008694842694239924,
+            "flat_px_no_refraction": 166.27687752661225
+          },
+          {
+            "axis": "x",
+            "floor_offset_m": 0.6,
+            "found": true,
+            "predicted_px": 332.60918991821086,
+            "measured_px": 332.55849975242415,
+            "error_px": -0.05069016578670471,
+            "flat_px_no_refraction": 332.5537550532245
+          },
+          {
+            "axis": "x",
+            "floor_offset_m": 0.9,
+            "found": true,
+            "predicted_px": 498.91378487731635,
+            "measured_px": 498.89117582813356,
+            "error_px": -0.022609049182790386,
+            "flat_px_no_refraction": 498.83063257983684
+          },
+          {
+            "axis": "y",
+            "floor_offset_m": 0.3,
+            "found": true,
+            "predicted_px": 166.30459495910543,
+            "measured_px": 166.3086643433578,
+            "error_px": 0.00406938425237513,
+            "flat_px_no_refraction": 166.27687752661225
+          },
+          {
+            "axis": "y",
+            "floor_offset_m": 0.6,
+            "found": true,
+            "predicted_px": 332.60918991821086,
+            "measured_px": 332.59138265227693,
+            "error_px": -0.01780726593392501,
+            "flat_px_no_refraction": 332.5537550532245
+          },
+          {
+            "axis": "y",
+            "floor_offset_m": 0.9,
+            "found": true,
+            "predicted_px": 498.91378487731635,
+            "measured_px": 498.8181755798646,
+            "error_px": -0.09560929745174462,
+            "flat_px_no_refraction": 498.83063257983684
+          }
+        ]
+      },
+      "ior_1.333": {
+        "ior": 1.333,
+        "render_seconds": 13.365854978561401,
+        "markers": [
+          {
+            "axis": "x",
+            "floor_offset_m": 0.3,
+            "found": true,
+            "predicted_px": 181.53380839450364,
+            "measured_px": 181.54931639436404,
+            "error_px": 0.015507999860403743,
+            "flat_px_no_refraction": 166.27687752661225
+          },
+          {
+            "axis": "x",
+            "floor_offset_m": 0.6,
+            "found": true,
+            "predicted_px": 363.8330253190264,
+            "measured_px": 363.80713177828727,
+            "error_px": -0.025893540739104992,
+            "flat_px_no_refraction": 332.5537550532245
+          },
+          {
+            "axis": "x",
+            "floor_offset_m": 0.9,
+            "found": false
+          },
+          {
+            "axis": "y",
+            "floor_offset_m": 0.3,
+            "found": true,
+            "predicted_px": 181.53380839450364,
+            "measured_px": 181.48438775752675,
+            "error_px": -0.049420636976890364,
+            "flat_px_no_refraction": 166.27687752661225
+          },
+          {
+            "axis": "y",
+            "floor_offset_m": 0.6,
+            "found": true,
+            "predicted_px": 363.8330253190264,
+            "measured_px": 363.83551639204666,
+            "error_px": 0.00249107302028051,
+            "flat_px_no_refraction": 332.5537550532245
+          },
+          {
+            "axis": "y",
+            "floor_offset_m": 0.9,
+            "found": true,
+            "predicted_px": 547.6358474894888,
+            "measured_px": 547.5970064256603,
+            "error_px": -0.0388410638284995,
+            "flat_px_no_refraction": 498.83063257983684
+          }
+        ]
+      }
+    },
+    "paraxial_expectation": {
+      "apparent_depth_m": 0.7501875468867217,
+      "ratio": 0.7501875468867217,
+      "note": "brief rounds to 3/4 (0.7502)"
+    }
+  },
+  "s2": {
+    "design": {
+      "eye_angle_from_vertical_deg": 40,
+      "inner_diameter_m": 0.08,
+      "inner_height_m": 0.09,
+      "water_depth_m": 0.07,
+      "hidden_zone_ends_at_x_from_near_wall_m": 0.07551896680595518,
+      "visible_from_with_water_x_from_near_wall_m": 0.05531243828874832,
+      "coin_diameter_m": 0.02,
+      "coin_centre_from_near_wall_m": 0.064,
+      "coin_extent_from_near_wall_m": [
+        0.054,
+        0.074
+      ],
+      "analytic_visible_fraction_after_pour_centre_ray": 0.9343780855625838,
+      "camera_distance_m": 1.0,
+      "camera_vfov_deg": 13.233475795821665,
+      "refraction_angle_deg": 28.829922755731342
+    },
+    "samples": 64,
+    "devices": [
+      {
+        "name": "Apple M1",
+        "type": "CPU",
+        "use": false
+      },
+      {
+        "name": "Apple M1 (GPU - 8 cores)",
+        "type": "METAL",
+        "use": true
+      }
+    ],
+    "renders": {
+      "empty_mask": {
+        "frame": 1,
+        "mug_hidden": false,
+        "seconds": 12.154901027679443,
+        "coin_px": 0.0
+      },
+      "full_mask": {
+        "frame": 31,
+        "mug_hidden": false,
+        "seconds": 13.347343921661377,
+        "coin_px": 13987.0
+      },
+      "full_mask_nomug": {
+        "frame": 31,
+        "mug_hidden": true,
+        "seconds": 21.136965036392212,
+        "coin_px": 14431.0
+      },
+      "empty_mask_nomug": {
+        "frame": 1,
+        "mug_hidden": true,
+        "seconds": 6.036882162094116,
+        "coin_px": 14154.0
+      },
+      "air_ref_mask": {
+        "seconds": 5.881537675857544,
+        "coin_px": 14154.0
+      },
+      "beauty_01": {
+        "seconds": 11.142166137695312
+      },
+      "beauty_12": {
+        "seconds": 11.917731285095215
+      },
+      "beauty_22": {
+        "seconds": 12.589706897735596
+      },
+      "beauty_31": {
+        "seconds": 12.343235969543457
+      }
+    },
+    "results": {
+      "coin_px_before_pour": 0.0,
+      "coin_px_after_pour": 13987.0,
+      "coin_px_after_no_mug_reference": 14431.0,
+      "visible_after_over_water_reference": 0.9692329013928349,
+      "visible_after_over_air_reference": 0.9882012152041826,
+      "coin_has_animation_data": false,
+      "camera_has_animation_data": false,
+      "camera_data_has_animation": false,
+      "water_keyed_only": true
+    },
+    "water_ior": 1.333
+  },
+  "s2_control_ior_1.0": {
+    "design": {
+      "eye_angle_from_vertical_deg": 40,
+      "inner_diameter_m": 0.08,
+      "inner_height_m": 0.09,
+      "water_depth_m": 0.07,
+      "hidden_zone_ends_at_x_from_near_wall_m": 0.07551896680595518,
+      "visible_from_with_water_x_from_near_wall_m": 0.05531243828874832,
+      "coin_diameter_m": 0.02,
+      "coin_centre_from_near_wall_m": 0.064,
+      "coin_extent_from_near_wall_m": [
+        0.054,
+        0.074
+      ],
+      "analytic_visible_fraction_after_pour_centre_ray": 0.9343780855625838,
+      "camera_distance_m": 1.0,
+      "camera_vfov_deg": 13.233475795821665,
+      "refraction_angle_deg": 28.829922755731342
+    },
+    "samples": 64,
+    "devices": [
+      {
+        "name": "Apple M1",
+        "type": "CPU",
+        "use": false
+      },
+      {
+        "name": "Apple M1 (GPU - 8 cores)",
+        "type": "METAL",
+        "use": true
+      }
+    ],
+    "renders": {
+      "empty_mask": {
+        "frame": 1,
+        "mug_hidden": false,
+        "seconds": 11.434420824050903,
+        "coin_px": 0.0
+      },
+      "full_mask": {
+        "frame": 31,
+        "mug_hidden": false,
+        "seconds": 12.842919826507568,
+        "coin_px": 0.0
+      },
+      "full_mask_nomug": {
+        "frame": 31,
+        "mug_hidden": true,
+        "seconds": 19.826477766036987,
+        "coin_px": 14142.0
+      },
+      "empty_mask_nomug": {
+        "frame": 1,
+        "mug_hidden": true,
+        "seconds": 6.0418548583984375,
+        "coin_px": 14154.0
+      },
+      "air_ref_mask": {
+        "seconds": 6.1704421043396,
+        "coin_px": 14154.0
+      },
+      "beauty_01": {
+        "seconds": 10.835817813873291
+      },
+      "beauty_12": {
+        "seconds": 12.487575054168701
+      },
+      "beauty_22": {
+        "seconds": 13.303277015686035
+      },
+      "beauty_31": {
+        "seconds": 12.49622130393982
+      }
+    },
+    "results": {
+      "coin_px_before_pour": 0.0,
+      "coin_px_after_pour": 0.0,
+      "coin_px_after_no_mug_reference": 14142.0,
+      "visible_after_over_water_reference": 0.0,
+      "visible_after_over_air_reference": 0.0,
+      "coin_has_animation_data": false,
+      "camera_has_animation_data": false,
+      "camera_data_has_animation": false,
+      "water_keyed_only": true
+    },
+    "water_ior": 1.0
+  }
+}
