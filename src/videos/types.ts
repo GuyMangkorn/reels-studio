@@ -19,6 +19,8 @@ export type VideoDefinition = {
   narration?: Narration;
   sceneTransitionFrames?: number;
   loopFadeFrames?: number;
+  /** C_seamless only: frames over which the last scene blends into the first frame (default 15). */
+  loopBlendFrames?: number;
   /** Music/ambience on the composition clock. */
   audio?: AudioTrack[];
   captionStyle?: CaptionStyle;

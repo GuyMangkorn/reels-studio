@@ -48,3 +48,21 @@ test('track fades and entry transitions reach their end states', () => {
   assert.equal(entryTransitionStyle({type: 'slide', frames: 10, direction: 'left'}, 0).transform, 'translateX(100%)');
   assert.equal(entryTransitionStyle({type: 'wipe', frames: 10, direction: 'up'}, 5).clipPath, 'inset(50% 0 0 0)');
 });
+
+import {endingState, loopBlendOpacity} from '../src/scenes/endings';
+import {collectEpisodes} from '../src/videos/registry';
+
+test('C_seamless has no hold or fade and blends the last frame into the first', () => {
+  assert.deepEqual(endingState(119, 120, 30, 'C_seamless'), {poseFrame: 119, opacity: 1});
+  assert.equal(loopBlendOpacity(104, 120, 15), 0);
+  assert.ok(loopBlendOpacity(112, 120, 15) > 0 && loopBlendOpacity(112, 120, 15) < 1);
+  assert.equal(loopBlendOpacity(119, 120, 15), 1, 'last frame equals the frozen first frame');
+  assert.equal(loopBlendOpacity(119, 120, 0), 0);
+});
+
+test('loopBlendFrames must be a frame count shorter than the last scene', () => {
+  const video = (loopBlendFrames: number) => ({episode: 'x', videos: [{id: `L${loopBlendFrames}`, format: 'short' as const, ending: 'C_seamless' as const, loopBlendFrames, timeline: [plain({durationSec: 1})]}]});
+  collectEpisodes([video(10)]);
+  assert.throws(() => collectEpisodes([video(30)]), /shorter than the last scene/);
+  assert.throws(() => collectEpisodes([video(-1)]), /loopBlendFrames/);
+});

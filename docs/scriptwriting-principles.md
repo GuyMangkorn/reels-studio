@@ -55,6 +55,11 @@ Resolve [delivery selection](delivery-workflow.md) before writing. Give each sel
 - Reread to test the twist: clues remain present, causes still connect and the reveal changes the meaning of earlier information.
 - Write Thai for listening. Remove repeated explanation, leave pauses for information and emotion, and test audio before locking timing.
 
+<a id="loop-friendly-writing"></a>
+## Loop-friendly writing
+
+For a deliverable whose style profile asks for a seamless loop (`C_seamless` ending), design the last line and the first line as a pair: the closing beat should raise or answer the hook so that the video can start again without feeling restarted (a closing question the opening line answers, an ending that is the cause the opening shows, or an opening that makes sense as a continuation of the final words). Keep the final ~0.5 s free of speech for the blend window, avoid a goodbye or call to action that breaks the circle, and make sure the last visual state can plausibly return to the opening frame. A loop does not replace the payoff: the reveal still lands before the seam. Whether looping raises replays or watch time for this channel is untested.
+
 <a id="โครงทดลองประมาณ-45-วินาที"></a>
 ## Experimental structure for roughly 45 seconds
 

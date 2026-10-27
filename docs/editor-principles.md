@@ -86,6 +86,7 @@
 - Use authored Thai phrase/word boundaries and short readable pages; preserve tone marks, punctuation and sufficient vertical room. Split a cue before shrinking it below readable size.
 - Keep captions stable through picture motion and transitions. Choose one active subtitle layer rather than dissolving two full subtitle layers together.
 - Lower or reshape competing music/SFX around speech; check that consonants, quiet words and line endings remain understandable on ordinary listening devices.
+- For a `C_seamless` loop, keep voice, music and SFX continuous across the seam: no fade-out on the music (end it at the loop point at the same level the start begins), no speech in the final blend window, no cue that retriggers audibly at frame 0, and a last spoken beat that leads into the opening line. Listen to the render looped back to back.
 - Set cue attack, tail, trimming and fades deliberately. Listen for clicks, clipping, abrupt ambience loss, doubled cues and a loop seam that retriggers sound.
 - Use silence intentionally. A constant music bed or a whoosh on every cut is not the default.
 - Verify each imported sound's commercial-use license and attribution. A package license does not establish the license of every sound file.
