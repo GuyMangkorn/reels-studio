@@ -1,5 +1,8 @@
 # CATBOX C01 Short S01 — กรอบเปล่าเรียกแมวได้ไหม?
 
+**27 October 2026 handoff migration:** Drawings are retired; this written source retains its timing and stable IDs. Current handoff status: `needs-input` until Mark audits coordinate/anchor/camera details against the [written-handoff migration](handoff-migration.md). Earlier readiness/BOARD/Pxx labels below are historical provenance. This edit creates no element captures, scene samples or new runtime/visual/audio approval.
+
+
 Revision 1 · ready-for-dev storyboard handoff · script approval pending
 Script: scripts/cat-boxes/ch01-script.md R5 · Boat: FC-R5-C01
 Film brief: visual-brief.md VB-CATBOX-R5 / VS01 · FC-VIS-R1 is planning-only, not runtime visual approval

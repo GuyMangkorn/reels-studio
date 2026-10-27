@@ -21,7 +21,7 @@ The executable timeline is a `Scene[]`. The baseline supports `durationSec`, `bg
 | Pop a card, slide a phone, fade a title, combine CSS transforms | `@remotion/animation-utils` + core `spring` / `interpolate` | `src/assets/overlays/` |
 | Subtle handheld drift, irregular light, atmospheric movement | `@remotion/noise` | `src/camera/`, shared lighting or background module |
 | Subtitle cues within a shot, imported SRT/VTT, SRT export | `@remotion/captions` | `src/scenes/` and authoring/export helpers in `scripts/` |
-| A storyboard calls for a dissolve or wipe between shots | `@remotion/transitions` | Shared sequencing and timing in `src/scenes/` |
+| A scene handoff calls for a dissolve or wipe between shots | `@remotion/transitions` | Shared sequencing and timing in `src/scenes/` |
 | Notification, page turn or whoosh at a specific beat | `@remotion/sfx` + core `Audio` / `Sequence` | Shared sound registry and renderer dispatch |
 | Arrow, speech callout, star, heart or reaction symbol | `@remotion/shapes` | `src/assets/props/` or `src/assets/overlays/` |
 | Find incorrect API usage and TypeScript / Hooks mistakes | `@remotion/eslint-config-flat` + `eslint` | `eslint.config.mjs`; run `npm run lint` |
@@ -33,10 +33,10 @@ Use core `spring()` for spring progress, `interpolate()` for numbers, `interpola
 
 ## 3. Integrate a capability once
 
-1. Map the storyboard beat to a row above and to an existing asset id. State whether the capability already works in this checkout or needs implementation.
+1. Map the scene handoff beat to a row above and to an existing asset id. State whether the capability already works in this checkout or needs implementation.
 2. Implement the missing behavior in its shared owner. Keep SVG, geometry, layout and package imports there; the episode selects ids and parameters.
 3. When exposing it to JSON, update `types.ts`, `validateTimeline` and `SceneRenderer.tsx` together. Validate known ids, finite numbers, bounds, ordering and the chosen clock. Add meaningful validation/timing tests for the new behavior.
-4. Match each selected deliverable's storyboard and check affected shared consumers under [delivery workflow](delivery-workflow.md). Keep screen overlays and subtitles outside camera transforms. World objects remain in the camera's coordinate system.
+4. Match each selected deliverable's scene handoff and check affected shared consumers under [delivery workflow](delivery-workflow.md). Keep screen overlays and subtitles outside camera transforms. World objects remain in the camera's coordinate system.
 5. Check start, key action/reveal, end and random-seek frames; use the package-specific checks below. Follow the [issue/PR workflow](contributing.md).
 
 The examples below are independent authoring recipes, not registered assets. A copied component still needs shared placement, schema integration where applicable and visual verification before a timeline can select it.
@@ -148,7 +148,7 @@ Choose a clock in the schema: composition-global captions use `sceneStartFrame +
 
 ## 8. Scene transitions: transitions
 
-Use [TransitionSeries](https://www.remotion.dev/docs/transitions/transitionseries), `linearTiming` / `springTiming` and presentations such as `fade()` or `wipe()` when the storyboard calls for them. A hard cut remains a valid shot boundary.
+Use [TransitionSeries](https://www.remotion.dev/docs/transitions/transitionseries), `linearTiming` / `springTiming` and presentations such as `fade()` or `wipe()` when the scene handoff calls for them. A hard cut remains a valid shot boundary.
 
 ```tsx
 import {TransitionSeries, linearTiming} from '@remotion/transitions';
@@ -169,7 +169,7 @@ export const DissolveExample = () => <TransitionSeries>
 </TransitionSeries>;
 ```
 
-This example lasts **228 frames**, because the 12-frame overlap is subtracted from 240. The documented baseline `timelineFrames()` sums durations without overlaps; inspect its current implementation before integrating transitions. Before enabling JSON transitions, update scene starts and total duration together with composition metadata, narration, amplitude sampling, captions and ending holds. Preserve storyboard timing by defining whether supplied durations include the overlap. A transition must fit within both adjacent shots. Use a single shared timing calculation rather than separately adjusting the audio and picture.
+This example lasts **228 frames**, because the 12-frame overlap is subtracted from 240. The documented baseline `timelineFrames()` sums durations without overlaps; inspect its current implementation before integrating transitions. Before enabling JSON transitions, update scene starts and total duration together with composition metadata, narration, amplitude sampling, captions and ending holds. Preserve scene handoff timing by defining whether supplied durations include the overlap. A transition must fit within both adjacent shots. Use a single shared timing calculation rather than separately adjusting the audio and picture.
 
 Keep subtitles legible during a dissolve; fading two complete SceneViews together can put two subtitle lines on top of each other. Choose the active subtitle separately from picture transitions. Test a cut, a transition, the shortest permitted shot, the overlap boundary, both ending variants and the last-to-first loop seam.
 
@@ -214,7 +214,7 @@ Wrap and name channel symbols once in the shared asset library, then expose para
 
 ## 11. Verification and dependency maintenance
 
-`npm run lint` applies Remotion's flat config plus TypeScript and Hooks rules to `src` and `tests`. `npm run typecheck` remains responsible for TypeScript contract checking. New runtime behavior also needs relevant tests and storyboard-frame checks.
+`npm run lint` applies Remotion's flat config plus TypeScript and Hooks rules to `src` and `tests`. `npm run typecheck` remains responsible for TypeScript contract checking. New runtime behavior also needs relevant tests and scene handoff-frame checks.
 
 The documented ESLint 10 setup requires Node.js 20.19+, 22.13+, or 24+. Check `node --version` when setting up another machine.
 

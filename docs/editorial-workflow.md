@@ -17,8 +17,9 @@ Before format-dependent research/writing, resolve the [delivery selection and re
 | Fact-check | Boat | Claim-by-claim review of a named revision, corrections and impact |
 | Revision / recheck | Preaw → Boat | Script changes and review of changed/dependent claims |
 | Visual / technical brief | Film | 2D/3D/hybrid choice, lighting/shadow/color, camera language, 2D/Three.js integration, feasibility and risks |
-| Storyboard | Mark | Shots/panels, staging, timing and scene packs from the brief |
-| Production | Developer / editor | Scenes and audio checked against script and boards |
+| Scene handoff | Mark | Written shots/key states, numeric staging/camera paths, event frames and scene packs from the brief |
+| Shared assets/capabilities | Boss | Verified reusable assets/rigs/renderer APIs and affected-consumer evidence |
+| Scene integration / editing | Editor | Executable scenes/audio/effects/transitions checked against script and handoff; actual scene-frame samples |
 
 Boat performs two separate passes. Research before writing does not establish that the final wording has been checked. The coordinator supplies files and assignments within the user's requested scope; these configs do not install automatic execution or cross-chat messaging.
 
@@ -30,12 +31,12 @@ Example requests:
 
 > Ask Boat to check ch01-script.md revision 2 claim by claim, propose corrections and identify what remains unverified.
 
-> Ask Film to use script revision 3 and its matching fact-check for a visual/technical brief, then give that brief revision to Mark for separate scene boards.
+> Ask Film to use script revision 3 and its matching fact-check for a visual/technical brief, then give that brief revision to Mark for separate written scene sheets.
 
 <a id="หน่วยและไฟล์"></a>
 ## Units and files
 
-Use episode / chapter / story scene as defined in [Mark's workflow](mark-storyboard-workflow.md). Preaw assigns beat IDs such as `E01-C01-S02-B01`; Mark maps these to shot/panel IDs. The writer does not prescribe every camera angle.
+Use episode / chapter / story scene as defined in [Mark's workflow](mark-storyboard-workflow.md). Preaw assigns beat IDs such as `E01-C01-S02-B01`; Mark maps these to shot/key-state IDs (retaining existing panel IDs). The writer does not prescribe every camera angle.
 
 Use the variant folders and deliverable IDs in [delivery workflow](delivery-workflow.md#files-and-stable-ids). Share `scripts/<episode>/research.md` and track selection in `delivery.md`; keep `short/script.md` + `short/fact-check.md` separate from `long/episode-script.md` + `long/fact-check.md` (optional Long chapter files). These are authoring conventions, **not a runtime JSON schema**. Existing material keeps its paths/IDs until an explicitly scoped migration.
 
@@ -67,7 +68,7 @@ The handoff contains:
 - **Full script:** the actual spoken Thai narration/dialogue, with pauses and necessary sound/story events. Identify subtitles that shorten or change VO wording separately. A synopsis is not a full script.
 - **Clue ledger:** `CL01`, plant/beat, observable information, initial interpretation, post-reveal interpretation and payoff. Distinguish fictional clues from real evidence presented to viewers.
 - **Claim mapping:** factual sentence/beat → `F001` → `SRC001` and locator. Mark unsupported new claims `needs-research`.
-- **Film → Mark handoff:** what must be seen/heard, what must stay hidden until which beat, essential continuity and story constraints. Film chooses the approach using the [brief workflow](film-visual-brief-workflow.md); Mark develops the boards. Both receive matching script/review revisions.
+- **Film → Mark handoff:** what must be seen/heard, what must stay hidden until which beat, essential continuity and story constraints. Film chooses the approach using the [brief workflow](film-visual-brief-workflow.md); Mark develops the scene sheets. Both receive matching script/review revisions.
 - **Change log / open questions:** changes in this revision, affected claims/clues/scenes and Boat's recheck scope.
 
 Preaw makes routine creative decisions within the brief, including the topic for an open assignment, hook, beats and twist. Read aloud or use test audio before claiming the timing works; a Thai word count alone does not establish duration. Follow the channel rules linked from AGENTS.md. The 45-second structure is an experiment, not a required formula.
@@ -87,16 +88,16 @@ Verdicts: `supported` means the evidence supports this wording and scope; `needs
 
 Report errors affecting the premise, reveal or learning takeaway before minor details. Boat proposes accurate wording and beat/clue impact; Preaw rewrites the story. The final twist must preserve factual corrections so viewers do not leave with the wrong knowledge.
 
-Conclude for the named revision only: `revision-required`, `verification-incomplete`, or `ready-for-storyboard` when no story/knowledge-critical factual gaps remain and necessary qualifications appear in the script. Readiness neither records user approval nor guarantees that no error remains.
+Conclude for the named revision only: `revision-required`, `verification-incomplete`, or `ready-for-storyboard` when no story/knowledge-critical factual gaps remain and necessary qualifications appear in the script. The legacy verdict `ready-for-storyboard` means factual readiness for Film/Mark visual planning; it requires no drawn board. Readiness neither records user approval nor guarantees that no error remains.
 
 After a script revision, assess changes to factual wording and dependent claims. Recheck affected items and record coverage of the new revision. Synchronize the script header and delivery record with the resulting factual status while preserving dated history and separate user-approval/timing status. Reuse earlier results only after checking that the wording is unchanged and no new contrary evidence applies.
 
 <a id="ส่งต่อและตรวจบทก่อนลงทุนทำภาพ"></a>
 ## Handoff and editorial check before visual production
 
-Before handing off to Film, Preaw checks hook/payoff, scene progression, fair twist logic and the knowledge's role in the plot. Boat checks facts in a separate pass. Film receives matching script/review revisions for the visual/technical brief; Mark receives those revisions with the brief revision. Return script issues to Preaw/Boat, approach/integration issues to Film, board details to Mark and code/experimental proof to Boss.
+Before handing off to Film, Preaw checks hook/payoff, scene progression, fair twist logic and the knowledge's role in the plot. Boat checks facts in a separate pass. Film receives matching script/review revisions for the visual/technical brief; Mark receives those revisions with the brief revision. Return script issues to Preaw/Boat, approach/integration issues to Film, handoff details to Mark and shared code/asset proof to Boss and scene integration/editing proof to Editor.
 
-The user may request rough boards from a draft. Identify the revision and unresolved claims that may require visual changes. A completed script or ready factual review does not imply approval. If an animatic exposes timing problems, revise the script, increment its revision and check factual/continuity impact.
+The user may request rough scene sheets from a draft. Identify the revision and unresolved claims that may require visual changes. A completed script or ready factual review does not imply approval. If an animatic exposes timing problems, revise the script, increment its revision and check factual/continuity impact.
 
 <a id="หลักการและแหล่งอ้างอิง"></a>
 ## Principles and sources

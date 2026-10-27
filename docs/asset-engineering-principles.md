@@ -1,3 +1,4 @@
+<a id="2d--threejs-integration-before-storyboarding"></a>
 # Boss: reusable 2D/3D asset engineering principles
 
 Sources inspected on 26 October 2026. This is technical reference for Boss and Film's technical analysis, not evidence that the current runtime has been repaired. Read [Boss's workflow](boss-asset-workflow.md) for production requirements and [Film's workflow](film-visual-brief-workflow.md) for the handoff contract. Recommendations below explain tradeoffs; verify APIs and integration in the target checkout.
@@ -8,7 +9,7 @@ Sources inspected on 26 October 2026. This is technical reference for Boss and F
 Choose 2D, 3D or hybrid according to Film's brief, including characters and interaction props. The former background-only 3D and one-image/plane-per-prop restrictions were revoked. Demo lighting, the emissive/glow cap, character size and QA remain project requirements in [current production rules](boss-asset-workflow.md#latest-production-rules). This reference does not establish which techniques are integrated.
 
 <a id="การผสาน-2d--threejs-ก่อนเขียนบอร์ด"></a>
-## 2D / Three.js integration before storyboarding
+## 2D / Three.js integration before shot planning
 
 Film selects a strategy before Mark details shots. DOM/SVG over WebGL suits screen overlays but does not automatically share world depth or Three.js lighting. When a 2D actor must move in front of and behind a 3D prop, choose a world-space cut-out adapter or an explicit mask/render-pass plan. Specify camera, coordinate conversion, anchors and compositing order for Boss. A convincing static SVG composite does not prove integration under camera motion.
 

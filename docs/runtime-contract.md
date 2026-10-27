@@ -14,7 +14,7 @@ For any capability, record `existing-integrated`, `exists-unintegrated`, `missin
 
 | Path | Responsibility |
 | --- | --- |
-| `storyboards/` | Editable storyboard sources and shot breakdowns; create on first use |
+| `storyboards/` | Written Film briefs, Mark scene sheets and sequence indices per selected deliverable; retained directory name |
 | `scripts/` | Delivery records, per-deliverable timelines/narration/cues and render helpers under [delivery workflow](delivery-workflow.md) |
 | `src/scenes/` | Scene contracts, validation, sequencing and shared staging |
 | `src/three/` | Shared Remotion/Three.js stage, coordinate conversion and 2D cut-out integration |
@@ -30,4 +30,3 @@ For any capability, record `existing-integrated`, `exists-unintegrated`, `missin
 Use `src/scenes/types.ts` and `validateTimeline` in `src/scenes/timeline.ts` as the runtime contract. The current baseline timeline is an array of scenes with `durationSec`, `bg`, `actors`, `subtitle` and optional supported fields. It is not the old illustrative `{fps, hook, moral, shots}` object. Add camera, lighting, overlay or asset-selection fields to the contract and renderer before documenting them as usable JSON. Keep planned examples explicitly labeled as designs.
 
 Read [docs/character-toolkit.md](character-toolkit.md) when changing the existing rig or pose tracks. Confirm APIs against the source because development branches may extend them.
-

@@ -1,19 +1,19 @@
 # Film: visual brief and technical BA before Mark
 
-Film receives the script and factual review, then chooses a rough visual approach before Mark storyboards it. Use `.codex/agents/film.toml`; configuration reference: [OpenAI custom agents](https://learn.chatgpt.com/docs/agent-configuration/subagents#custom-agents). Permissions and MCP access are inherited from the calling chat.
+Film receives the script and factual review, then chooses a rough visual approach before Mark writes the scene handoff. Use `.codex/agents/film.toml`; configuration reference: [OpenAI custom agents](https://learn.chatgpt.com/docs/agent-configuration/subagents#custom-agents). Permissions and MCP access are inherited from the calling chat.
 
-Workflow: Boat research → Preaw script → Boat review / Preaw revision → **Film visual/technical brief** → **Mark scene boards** → **Boss code and rendered proof**. The coordinator invokes agents for the assigned scope; these files do not install an automatic pipeline or send cross-chat messages.
+Workflow: Boat research → Preaw script → Boat review / Preaw revision → **Film visual/technical brief** → **Mark written scene sheets** → **Boss shared assets/capabilities** → **Editor integration and rendered proof**. The coordinator invokes agents for the assigned scope; these files do not install an automatic pipeline or send cross-chat messages.
 
-For Blender assets/rendered shots, read [blender-mcp-workflow.md](blender-mcp-workflow.md). Choose pre-render, GLB/Three.js or hybrid with reasons and integration evidence; hand Mark/Boss the camera/scale/light contract. Remotion retains timeline/audio/subtitles/final export ownership.
+For Blender assets/rendered shots, read [blender-mcp-workflow.md](blender-mcp-workflow.md). Choose pre-render, GLB/Three.js or hybrid with reasons and integration evidence; hand Mark/Boss/Editor the camera/scale/light contract. Remotion retains timeline/audio/subtitles/final export ownership.
 
 <a id="ขอบเขตและอำนาจตัดสินใจ"></a>
 ## Scope and decision ownership — requirements
 
 - **Film** chooses medium per set/character/prop/effect, art direction, lighting/shadows/color, camera language and 2D/Three.js composition. Record reasons, constraints and risks the developer can act on.
-- **Mark** develops shots/panels, blocking, acting, cuts and selected-deliverable framing, with scene sheets and sequence index. Reference Film decision IDs rather than reopening medium choices for every shot.
-- **Boss** owns interfaces/APIs, reusable implementation, runtime integration and QA; feed observed constraints back into brief/board revisions.
+- **Mark** develops shots/key states, blocking, acting, cuts and selected-deliverable framing, with scene sheets and sequence index. Reference Film decision IDs rather than reopening medium choices for every shot.
+- **Boss** owns shared interfaces/APIs, assets/renderer capabilities and affected-consumer proof. **Editor** owns scene/timeline integration, editing and runtime QA; both feed observed constraints back into brief/handoff revisions.
 
-Routine crop/staging/timing refinements preserving story and approach belong to Mark. Material changes to medium, spatial camera, light strategy, shared interfaces or reveal require recorded reasons and synchronized brief/board revisions. Routine work adds no user approval gate. Explicit user direction takes precedence over team recommendations.
+Routine crop/staging/timing refinements preserving story and approach belong to Mark. Material changes to medium, spatial camera, light strategy, shared interfaces or reveal require recorded reasons and synchronized brief/handoff revisions. Routine work adds no user approval gate. Explicit user direction takes precedence over team recommendations.
 
 <a id="ขั้นตอน"></a>
 ## Briefing steps
@@ -26,9 +26,9 @@ Before selecting/revising medium/compositing/camera/light strategy, consult rele
 2. **Inspect target checkout:** inspect `package.json`, `npm ls --depth=0`, `npx remotion versions`, types/validator/renderer and shared asset owners under [Remotion toolkit](remotion-toolkit.md). Check resource licenses. Classify `existing-integrated`, `exists-unintegrated`, `missing` or `unknown`, with paths and inspected branch/commit. Extraneous node_modules are not clean-install dependencies. Finish when important capabilities have evidence or explicit follow-up questions.
 3. **Choose per-scene approach:** state visual purpose, mood/value/color key and medium per element. Sets, characters and props may use 2D, 3D or hybrid under [current production rules](boss-asset-workflow.md#latest-production-rules--requirements). Choose Three.js when spatial parallax, new-angle rotation, occlusion or spatial light/shadows serves the beat; compare simpler story-preserving approaches. Finish with a recommended approach and reason for every scene rather than an undecided menu for Mark.
 4. **Perform technical BA at seams:** apply the table below. Separate desired look, integration proposal and tested evidence, including shared foundations needed before scenes. Finish when Boss knows module/interface scope, dependencies, risks and proof criteria while retaining implementation discretion.
-5. **Hand rough brief to Mark:** use the format below and link the sequence index where present. Hand over matching script/review/brief revisions, constraints and decisions left to Mark. Episode work covers the episode; single-scene work covers that scene and needed boundaries. Finish when Mark can board without guessing the medium or primary integration strategy.
+5. **Hand rough brief to Mark:** use the format below and link the sequence index where present. Hand over matching script/review/brief revisions, constraints and decisions left to Mark. Episode work covers the episode; single-scene work covers that scene and needed boundaries. Finish when Mark can write shot direction without guessing the medium or primary integration strategy.
 
-This role is planning. It does not install packages, implement runtime or draw detailed boards as a side effect. Specify the smallest feasibility spike/blockout and observable acceptance criteria for Boss. Run a spike yourself only when separately assigned, following implementation workflow.
+This role is planning. It does not install packages, implement runtime or author detailed scene sheets as a side effect. Specify the smallest feasibility spike/blockout and observable acceptance criteria for Boss. Run a spike yourself only when separately assigned, following implementation workflow.
 
 ## Visual progression before asset selection
 
@@ -37,18 +37,18 @@ Before asset selection, plan the visual treatment for the full requested sequenc
 | Scene / beat refs | Visible action | Information / emotional change | Visual form and reason | Repetition / reason to return |
 | --- | --- | --- | --- | --- |
 
-Choose action, interaction, demonstration, comparison, diagram or reconstruction for the beat's purpose, then map the library and missing work. Checkout inventory informs feasibility; missing assets call for shared capabilities and a story-preserving fallback, with added work and tradeoffs. Simplifications must identify changed information/reveals and be reconciled with brief/board owners.
+Choose action, interaction, demonstration, comparison, diagram or reconstruction for the beat's purpose, then map the library and missing work. Checkout inventory informs feasibility; missing assets call for shared capabilities and a story-preserving fallback, with added work and tradeoffs. Simplifications must identify changed information/reveals and be reconciled with brief/handoff owners.
 
 Factual visuals retain claim IDs and existing review results. Make reconstructions, hypothetical examples and explanatory diagrams recognizable as such to viewers. Return unsupported details to Preaw/Boat; generating a new image does not authorize new factual claims or making a reconstruction appear to be documentary evidence.
 
-Before `ready-for-mark`, review the table continuously: every section needs a visual purpose. Identify repeated action/information delivery, such as consecutive narrator-and-card beats; revise or justify them in story terms. Changing camera angle, crop, light or text alone does not demonstrate visual progression. One-room scenes and cards are valid when serving the purpose; there are no location/technique/cut quotas. Record beats requiring blockout proof for Mark/Boss. Before polish, Film and Mark review the actual assembled sequence for each selected deliverable and record shot references, evidence, issues and corrections in the index. Planning readiness and runtime approval are distinct.
+Before `ready-for-mark`, review the table continuously: every section needs a visual purpose. Identify repeated action/information delivery, such as consecutive narrator-and-card beats; revise or justify them in story terms. Changing camera angle, crop, light or text alone does not demonstrate visual progression. One-room scenes and cards are valid when serving the purpose; there are no location/technique/cut quotas. Record beats requiring blockout proof for Mark/Boss/Editor. Before polish, Film and Mark review the actual assembled sequence for each selected deliverable and record shot references, evidence, issues and corrections in the index. Planning readiness and runtime approval are distinct.
 
 <a id="technical-ba-ต้องตอบอะไรเมื่อผสม-2d-กับ-threejs"></a>
 ## Technical BA for 2D and Three.js
 
 Apply relevant rows; `N/A` with a reason is valid. Hybrid is not mandatory. Read evidence/cautions in [asset-engineering-principles.md](asset-engineering-principles.md).
 
-Before choosing camera or projected size, follow [scale and perspective](scale-and-perspective-principles.md) for 2D, 3D and hybrid. Film establishes shared units, size references and projection contract for Mark/Boss. Finish with a scale baseline, sources/estimated status, and separate physical/projected measurement checks. Record affected decisions/revisions when the approach changes.
+Before choosing camera or projected size, follow [scale and perspective](scale-and-perspective-principles.md) for 2D, 3D and hybrid. Film establishes shared units, size references and projection contract for Mark/Boss/Editor. Finish with a scale baseline, sources/estimated status, and separate physical/projected measurement checks. Record affected decisions/revisions when the approach changes.
 
 | Seam | Brief decision / handoff | Evidence to establish |
 | --- | --- | --- |
@@ -92,7 +92,7 @@ factual status and claim references for explanatory or reconstructed images
 ## Technical handoff
 Scale baseline: shared reference path/revision, dimensions/units/anchors,
 source or estimated status, stylization exceptions; calibration view
-Projection contract: camera/ground plane, perspective or orthographic,
+Projection contract: named spaces/origin/axes/units, camera/ground plane, perspective or orthographic,
 FOV/bounds + this deliverable's aspect/crop; shared projection owner + feasibility
 Per decision: composition strategy, spaces/anchors/camera, depth/alpha/light,
 clocks/loading/resource ownership, actual paths + implementation status,
@@ -106,4 +106,4 @@ Constraints to preserve; choices left to Mark; missing evidence;
 scene/boundary continuity; affected decisions on revision
 ```
 
-`ready-for-mark` means sufficient information to storyboard, not user-approved or runtime-tested. For `needs-feasibility`, identify which unknown affects which decision; Mark may rough-board independent portions. Use [cinematography principles](cinematography-principles.md) and [storyboard principles](storyboard-principles.md) as visual guidance, separate from observed experimental results.
+`ready-for-mark` means sufficient information to scene handoff, not user-approved or runtime-tested. For `needs-feasibility`, identify which unknown affects which decision; Mark may rough-handoff independent portions. Use [cinematography principles](cinematography-principles.md) and [scene handoff principles](storyboard-principles.md) as visual guidance, separate from observed experimental results.

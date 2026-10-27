@@ -89,7 +89,7 @@ The `x` and `y` above are for a 1080×1920 frame. The Long composition supplies 
 
 ## Shot variety and POV (horror-film feel)
 
-These are storyboard directions and planned camera contracts. Check the active camera module, scene types and validator before using these fields in JSON. Implement shared POV/image framing under `src/camera/` according to Film's brief. Distinguish picture-space effects from spatial camera motion and keep subtitles in screen space.
+These are scene handoff directions and planned camera contracts. Check the active camera module, scene types and validator before using these fields in JSON. Implement shared POV/image framing under `src/camera/` according to Film's brief. Distinguish picture-space effects from spatial camera motion and keep subtitles in screen space.
 
 Reuse characters, rooms and props while developing action, relationships, evidence and audience knowledge across the sequence. Camera, light and crop support that progression; changing them alone does not establish a new storytelling beat. A single location can sustain a story when its actions and discoveries develop. Choose additional locations, demonstrations, diagrams or representations when they clarify the story, with no quota for locations, cuts or 3D elements. Use the sequence review in [Film’s workflow](film-visual-brief-workflow.md#visual-progression-before-asset-selection) before polish.
 
@@ -101,7 +101,7 @@ Build each POV once, as a camera preset under `src/camera/`. Scene JSON selects 
 
 ### How often
 
-Use this restraint when planning shots, including `povWatcher`. These are planning defaults. When a supplied storyboard intentionally uses a different POV sequence, preserve its shot order and record that choice in the shot sheet.
+Use this restraint when planning shots, including `povWatcher`. These are planning defaults. When a supplied scene handoff intentionally uses a different POV sequence, preserve its shot order and record that choice in the shot sheet.
 
 - Use a POV only when the beat needs it: a suspense build, or a reveal. Default to normal framing otherwise.
 - POV shots of any kind stay a minority of the shots in a chapter. As guidance, about 1–2 per long-form chapter when useful; chapter length follows the selected story under [production requirements](production-requirements.md#outputs-and-story-timing). Never every scene.
@@ -166,4 +166,3 @@ One preset covers those places. `place` picks the foreground: `curtains`, `outsi
 ```
 
 Keep it channel-safe. Creepy, not gory: no blood, wounds, or injury. The twist can be funny. The shape in the window can be the cat. A subtitle on the empty hold can be `มีอะไรรึเปล่า... นอกหน้าต่าง`.
-

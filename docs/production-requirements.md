@@ -6,7 +6,7 @@ For medium flexibility, demo lighting, texture lifecycle, lead size, shot moveme
 
 ## Visual direction and motion
 
-Use original stylized artwork, readable silhouettes, simple forms and a consistent channel palette. Existing 2D characters keep solid fills, rounded shapes and dark outlines. Character representation follows Film's brief; preserve identity and appearance when switching medium. Keep the chosen 2D/3D/hybrid assets visually consistent through shape language, materials, lighting and color. The brief and storyboard determine daylight, dusk, night, moonlight, shadows and atmosphere; bright daytime pastel lighting is not mandatory for every shot. Three.js is an intended production tool, including for actual 3D geometry and spatial camera movement.
+Use original stylized artwork, readable silhouettes, simple forms and a consistent channel palette. Existing 2D characters keep solid fills, rounded shapes and dark outlines. Character representation follows Film's brief; preserve identity and appearance when switching medium. Keep the chosen 2D/3D/hybrid assets visually consistent through shape language, materials, lighting and color. The brief and scene handoff determine daylight, dusk, night, moonlight, shadows and atmosphere; bright daytime pastel lighting is not mandatory for every shot. Three.js is an intended production tool, including for actual 3D geometry and spatial camera movement.
 
 **Reference palette:** The existing colors guide asset continuity; the brief determines the shot lighting and grade:
 
@@ -27,7 +27,7 @@ Use original stylized artwork, readable silhouettes, simple forms and a consiste
 - Derive animation, cameras, lighting, flicker and particles from Remotion frame/fps and seeded deterministic functions. Render seeking and parallel workers must reproduce the same frame.
 - Place reusable 2D rigs in 3D through a shared cut-out adapter when needed. Preserve depth ordering, transparent edges, shadows and floor/seat contact across camera motion.
 - Wait for textures, models and fonts through Remotion's render-loading lifecycle. Release GPU resources in shared components.
-- Keep Thai subtitles, cards and channel labels in screen space unless the storyboard explicitly places an element in the world. Camera movement must keep the subtitle band readable.
+- Keep Thai subtitles, cards and channel labels in screen space unless the scene handoff explicitly places an element in the world. Camera movement must keep the subtitle band readable.
 
 
 ## Adding reusable assets
@@ -36,25 +36,25 @@ For a pose, extend `PoseName`, the pose registry and frame sampling in `src/rig/
 
 Choose 2D or 3D characters from Film's brief, checking available rigs, assets and render feasibility. Reuse shared character assets across scenes. For a variant of an existing character, reuse its body type and expose appearance parameters or named costumes. The current 2D `Character` uses appearance props and pose inputs; confirm the exported API before writing an example. New 3D rigs/adapters require explicit shared implementation and integration. Add a new skeleton only when the selected body or representation requires it. Cat and Dog currently share `src/rig/Animal.tsx`.
 
-For 3D sets, characters or props, implement shared modules and register them with the scene pipeline. Follow Film's composition strategy for hybrid work: specify spaces, camera, depth/alpha, lighting, anchors and resource ownership. Compose from reusable geometry, materials and lighting. Expose parameters for time of day, reveal state or set dressing when the storyboard needs them. Define dimensions and floor/seat/grip anchors so actors stay in contact as assets move or scale. DOM overlays do not automatically share WebGL depth or lighting.
+For 3D sets, characters or props, implement shared modules and register them with the scene pipeline. Follow Film's composition strategy for hybrid work: specify spaces, camera, depth/alpha, lighting, anchors and resource ownership. Compose from reusable geometry, materials and lighting. Expose parameters for time of day, reveal state or set dressing when the scene handoff needs them. Define dimensions and floor/seat/grip anchors so actors stay in contact as assets move or scale. DOM overlays do not automatically share WebGL depth or lighting.
 
 For a 2D background or prop, extend its shared registry and validator. For an overlay, implement the shared screen component and scene dispatch. A chapter references library ids and timing rather than copying SVG, geometry, pose functions or layout code.
 
 
 ## Outputs and story timing
 
-Resolve the requested deliverables through [delivery workflow](delivery-workflow.md) before writing. Each selected editorial version has its own script, boards, timeline, narration and subtitle timing, using shared scene components and assets at 30 fps:
+Resolve the requested deliverables through [delivery workflow](delivery-workflow.md) before writing. Each selected editorial version has its own script, scene sheets, timeline, narration and subtitle timing, using shared scene components and assets at 30 fps:
 
 | Composition | Size | Use |
 | --- | --- | --- |
 | `Short` | 1080×1920 | YouTube Shorts / Reels |
 | `Long` | 1920×1080 | Long-form |
 
-Short and Long may have different scene order, beat timing and spoken wording. Adapt framing, camera aspect/FOV and safe regions to each selected version's own storyboard while keeping character proportions and 3D geometry intact. An explicitly requested alternate framing of the same edit preserves that edit's action/timing; it does not supply the other editorial version. In production guides, “both formats” checks apply when both are selected or an affected shared consumer needs regression coverage; a single-format request does not create another deliverable.
+Short and Long may have different scene order, beat timing and spoken wording. Adapt framing, camera aspect/FOV and safe regions to each selected version's own scene handoff while keeping character proportions and 3D geometry intact. An explicitly requested alternate framing of the same edit preserves that edit's action/timing; it does not supply the other editorial version. In production guides, “both formats” checks apply when both are selected or an affected shared consumer needs regression coverage; a single-format request does not create another deliverable.
 
-**Duration defaults:** A standalone Short targets **40–60 seconds**; a normal YouTube Long targets **9–10 minutes (540–600 seconds)**. These are full-video durations including closing holds and ending behavior, not targets for each scene. Long chapters follow the story; no fixed chapter duration or automatic chapter-to-Short split is required. Explicit user durations override these defaults with a recorded reason. Keep timing `estimated` until a spoken read or audio/animatic check supports it; verify the final executable/rendered duration before release. Do not pad silence, repeat material or speed up narration merely to reach the range. **Hook requirement:** Each publishable chapter/Short opens with a hook in the first 2 seconds (60 frames), without an intro/logo/subscribe card. A 20-second storyboard fragment or shorter asset demo is valid development material; its length is not a new production requirement.
+**Duration defaults:** A standalone Short targets **40–60 seconds**; a normal YouTube Long targets **9–10 minutes (540–600 seconds)**. These are full-video durations including closing holds and ending behavior, not targets for each scene. Long chapters follow the story; no fixed chapter duration or automatic chapter-to-Short split is required. Explicit user durations override these defaults with a recorded reason. Keep timing `estimated` until a spoken read or audio/animatic check supports it; verify the final executable/rendered duration before release. Do not pad silence, repeat material or speed up narration merely to reach the range. **Hook requirement:** Each publishable chapter/Short opens with a hook in the first 2 seconds (60 frames), without an intro/logo/subscribe card. A 20-second scene handoff fragment or shorter asset demo is valid development material; its length is not a new production requirement.
 
-Subtitles are visible from frame 0. Hold the closing line, moral when appropriate, or intended final beat for about 3 seconds. Deliver two endings through the shared ending behavior: `_A_fade` holds then fades; `_B_loop` holds and uses the shared loop seam. Check the last-to-first transition against the intended storyboard. Store MP4s in `out/`, for example `scene-a_A_fade.mp4` and `scene-a_B_loop.mp4`.
+Subtitles are visible from frame 0. Hold the closing line, moral when appropriate, or intended final beat for about 3 seconds. Deliver two endings through the shared ending behavior: `_A_fade` holds then fades; `_B_loop` holds and uses the shared loop seam. Check the last-to-first transition against the intended scene handoff. Store MP4s in `out/`, for example `scene-a_A_fade.mp4` and `scene-a_B_loop.mp4`.
 
 
 ## Thai subtitles, narration and channel label
