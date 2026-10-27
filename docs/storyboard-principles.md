@@ -1,126 +1,144 @@
-# หลักการ storyboard สำหรับมาร์ค (Mark)
+<a id="หลักการ-storyboard-สำหรับมาร์ค-mark"></a>
+# Storyboard principles for Mark
 
-ค้นเมื่อ 26 ตุลาคม 2026 สำหรับมาร์ค (Mark) ในโปรเจกต์ Reels Creator: รับบทและ visual/technical brief จาก Film วาง sequence ตามขอบเขต แล้วส่ง storyboard แยกรายฉากให้ dev การตัดสินใจแนวทางภาพอยู่ที่ [workflow Film](film-visual-brief-workflow.md) และ [หลัก cinema](cinematography-principles.md)
+Researched on 26 October 2026 for Reels Creator. Mark receives the script and Film's visual/technical brief, plans the requested sequence and delivers separate scene boards to the developer. Approach decisions belong to [Film's workflow](film-visual-brief-workflow.md) and the [cinematography principles](cinematography-principles.md).
 
-ส่วน “สิ่งที่แหล่งต้นทางยืนยัน” เป็นข้อค้นพบจากแหล่งอ้างอิง ส่วนการจัด agent/scene pack และเกณฑ์เลือกเทคนิคเป็นการสังเคราะห์สำหรับโปรเจกต์นี้ คู่มือใช้งานอยู่ที่ [mark-storyboard-workflow.md](mark-storyboard-workflow.md)
+The primary-source section records source findings. Agent organization, scene packs and technique-selection guidance are project synthesis. Required operating workflow: [mark-storyboard-workflow.md](mark-storyboard-workflow.md).
 
-## สิ่งที่แหล่งต้นทางยืนยัน
+<a id="สิ่งที่แหล่งต้นทางยืนยัน"></a>
+## What the primary sources establish
 
-### 1. เริ่มจากสิ่งที่ฉากต้องสื่อ แล้วค่อยเลือกภาพ
+<a id="1-เริ่มจากสิ่งที่ฉากต้องสื่อ-แล้วค่อยเลือกภาพ"></a>
+### 1. Start with what the scene must communicate
 
-นิทรรศการ The Science Behind Pixar ซึ่ง Museum of Science, Boston พัฒนาร่วมกับ Pixar แสดง storyboard ของ Luca เป็นภาพเส้น key moments ที่ค้างแต่ละภาพตามจังหวะของฉาก และอธิบายว่าช่วง story มีการปรับ plot, pacing และ camera angles งาน storyboard จึงมีทั้งหน้าที่เล่าเรื่องและวางการสื่อผ่านภาพ
+The Science Behind Pixar exhibition, developed by Museum of Science, Boston with Pixar, presents Luca boards as line-drawn key moments held according to scene timing. It describes story-stage changes to plot, pacing and camera angles. Boards therefore both develop the story and plan its visual communication.
 
-แหล่ง: [The Science Behind Pixar — Story and Art](https://sciencebehindpixar.org/pipeline/story-and-art)
+Source: [The Science Behind Pixar — Story and Art](https://sciencebehindpixar.org/pipeline/story-and-art).
 
-### 2. แตกฉากเป็น beats แล้วสื่อด้วย key panels
+<a id="2-แตกฉากเป็น-beats-แล้วสื่อด้วย-key-panels"></a>
+### 2. Break scenes into beats and communicate with key panels
 
-ข้อเสนอจากการสังเคราะห์: ก่อนวาด ให้แบ่งความเปลี่ยนแปลงของฉากเป็น beats เช่น ได้ยินเสียง → หันไปมอง → เห็นเงา → ตัดสินใจเปิดประตู ใช้ภาพ key moment เท่าที่ช่วยสื่อ acting และ motion พร้อมลูกศร/คำอธิบาย ไม่ต้องวาดทุกเฟรม และไม่กำหนดจำนวนภาพเท่ากันทุกฉาก หลักฐานจาก Pixar ข้างต้นแสดงการใช้ภาพ key moments กับระยะค้างภาพที่ต่างกัน
+Project synthesis: before drawing, identify changes such as hearing a sound → looking toward it → seeing a shadow → deciding to open the door. Use enough key moments, arrows and notes to communicate acting/motion. Panel count follows the action, rather than every frame or a fixed quota. The Pixar example above supports key moments held for different durations.
 
-### 3. ต้องตกลงความหมายของ scene, shot, panel
+<a id="3-ต้องตกลงความหมายของ-scene-shot-panel"></a>
+### 3. Agree on scene, shot and panel definitions
 
-ข้อเสนอสำหรับงานนี้: ใช้ episode/chapter → story scene (เหตุการณ์ในเวลาและสถานที่ต่อเนื่อง) → shot (ช่วงมุมกล้องต่อเนื่อง) → panel (key moment) เพื่อไม่ให้ dev สับสนว่าหนึ่งฉากเท่ากับหนึ่งภาพ นี่คือนิยามของ pipeline ที่เสนอ ไม่ใช่การอ้างว่าทุกสตูดิโอใช้ศัพท์เหมือนกัน
+Project convention: episode/chapter → story scene (continuous event in time/place) → shot (continuous camera view) → panel (key moment). This prevents treating one scene as one image. These are pipeline definitions, not a claim that every studio uses the same terminology.
 
-### 4. Staging คือการทำให้ผู้ชมอ่านประเด็นหลักออก
+<a id="4-staging-คือการทำให้ผู้ชมอ่านประเด็นหลักออก"></a>
+### 4. Staging makes the central idea readable
 
-Animation Mentor อธิบายการชี้นำความสนใจผ่านตำแหน่งตัวละคร แสง foreground เส้นนำสายตา และทิศทางบนจอ การจัดหนึ่งในสามหรือกึ่งกลางเป็นเครื่องมือให้เลือกตามเรื่อง ไม่ใช่ตารางที่ต้องใช้ทุกภาพ
+Animation Mentor describes guiding attention through character position, lighting, foreground, lines of focus and screen direction. Thirds and centered framing are choices serving the story, not mandatory grids.
 
-ข้อเสนอให้ agent ระบุ: focal point ของ panel, ตัวละครกำลังมองอะไร, gesture ที่อ่านออก, สิ่งใดควรเด่น/รอง และพื้นที่สำหรับซับ ภาพร่างควรพอให้เห็น acting และ spatial relationship ก่อนขัดความสวย
+Application: specify each panel's focal point, gaze, readable gesture, hierarchy and subtitle space. A rough board must communicate acting and spatial relationships before visual polish.
 
-แหล่ง: [Animation Mentor — Staging: The 12 Basic Principles of Animation](https://www.animationmentor.com/blog/staging-the-12-basic-principles-of-animation/)
+Source: [Animation Mentor — Staging: The 12 Basic Principles of Animation](https://www.animationmentor.com/blog/staging-the-12-basic-principles-of-animation/).
 
-### 5. Continuity ช่วยให้ผู้ชมติดตามพื้นที่และการกระทำ
+<a id="5-continuity-ช่วยให้ผู้ชมติดตามพื้นที่และการกระทำ"></a>
+### 5. Continuity helps viewers follow space and action
 
-Adobe อธิบาย 180-degree rule เป็น guideline ให้กล้องอยู่ด้านเดียวของแกนระหว่างผู้สนทนา เพื่อรักษาความสัมพันธ์เชิงพื้นที่และไม่รบกวนความเข้าใจ และย้ำว่าสามารถข้ามแกนอย่างมีเจตนาเพื่อสื่อความสับสนหรือการเปลี่ยนอำนาจได้ Animation Mentor แนะนำรักษา screen direction ให้คนดูไม่หลงระหว่างการตัดภาพ
+Adobe describes the 180-degree rule as a guideline for keeping a camera on one side of an axis between speakers, preserving spatial understanding. It allows intentional crossings to communicate confusion or a power shift. Animation Mentor recommends consistent screen direction across cuts.
 
-ข้อเสนอให้ agent ส่งต่อ state: ตัวละครอยู่ซ้าย/ขวา หันทางไหน เดินเข้าหรือออกทางไหน ถือ prop มือไหน ประตูเปิดระดับใด และ target ของสายตา ตรวจข้าม shot และข้าม scene ด้วย ไม่ใช่ตรวจภาพแยกใบอย่างเดียว
+Application: hand off character side, facing, entry/exit direction, prop-holding hand, door-open state and gaze target. Check across shots and scenes, not only isolated panels.
 
-แหล่ง: [Adobe — What is the 180-degree rule?](https://www.adobe.com/uk/creativecloud/video/discover/what-is-the-180-degree-rule.html), [Animation Mentor — Staging](https://www.animationmentor.com/blog/staging-the-12-basic-principles-of-animation/)
+Sources: [Adobe — What is the 180-degree rule?](https://www.adobe.com/uk/creativecloud/video/discover/what-is-the-180-degree-rule.html), [Animation Mentor — Staging](https://www.animationmentor.com/blog/staging-the-12-basic-principles-of-animation/).
 
-### 6. Storyboard ต้องผ่าน animatic เพื่อทดสอบเวลา
+<a id="6-storyboard-ต้องผ่าน-animatic-เพื่อทดสอบเวลา"></a>
+### 6. Test storyboard timing through an animatic
 
-Adobe อธิบาย animatic เป็น storyboard ที่เรียงเป็นวิดีโอแบบร่าง เพื่อทดสอบ timing, flow และความหมายที่ผู้ชมได้รับ อาจมีเสียงพูด เสียงประกอบ หรือดนตรี ช่วยให้ทีมเสนอแก้ก่อนลงแรงผลิตเต็ม จึงใช้ฟังและดูจริงว่ามุก เงียบรอ reveal และบทพูดยาวพอหรือไม่ ไม่ควรสรุป timing จากภาพนิ่งอย่างเดียว
+Adobe describes an animatic as boards assembled into rough video to test timing, flow and communicated meaning. Speech, effects or music may be included so the team can revise before full production. Listen/watch to test jokes, empty holds, reveals and dialogue duration; still images alone cannot establish pacing.
 
-แหล่ง: [Adobe — What are animatics and how can I make them?](https://www.adobe.com/uk/creativecloud/animation/discover/animatics.html)
+Source: [Adobe — What are animatics and how can I make them?](https://www.adobe.com/uk/creativecloud/animation/discover/animatics.html).
 
-### 7. Anticipation ทำให้ action อ่านทัน
+<a id="7-anticipation-ทำให้-action-อ่านทัน"></a>
+### 7. Anticipation makes action readable
 
-Adobe อธิบาย anticipation เป็นการเตรียมผู้ชมก่อน action และยกตัวอย่างการเหวี่ยงแขนก่อนตีลูก หรือให้ตัวละครคาดหมายการเข้ามาของใครบางคน จึงควรมี key moment ของ preparation → main action → result เมื่อจังหวะต้องใช้ ไม่ได้แปลว่าทุก gesture ต้องมีเวลาคงที่เท่ากัน
+Adobe describes anticipation as preparing viewers before an action, for example drawing an arm back before hitting a ball or having a character expect an arrival. Include preparation → main action → result when a beat needs it, without imposing equal duration on every gesture.
 
-แหล่ง: [Adobe — Understanding the 12 principles of animation](https://www.adobe.com/uk/creativecloud/animation/discover/principles-of-animation.html)
+Source: [Adobe — Understanding the 12 principles of animation](https://www.adobe.com/uk/creativecloud/animation/discover/principles-of-animation.html).
 
-### 8. Suspense มาจากการจัดข้อมูลให้ผู้ชมและการแบ่ง shot
+<a id="8-suspense-มาจากการจัดข้อมูลให้ผู้ชมและการแบ่ง-shot"></a>
+### 8. Suspense depends on audience information and shot choices
 
-บทความที่ Alfred Hitchcock เขียนเองและ BFI นำกลับมาเผยแพร่ อธิบายการวางเรื่องก่อนถ่าย การทำให้คนดูรู้ความขัดแย้งที่ตัวละครบางคนไม่รู้ และการใช้วัตถุ รายละเอียด reaction และการตัดภาพเพื่อสื่อความคิด แหล่งนี้รองรับการออกแบบ information/reaction ไม่ได้รองรับสูตรว่า horror ต้องมืดหรือใช้ POV ทุกฉาก
+Alfred Hitchcock's own article, republished by BFI, describes planning before filming, giving viewers knowledge that some characters lack, and using objects, details, reactions and cuts to communicate thought. It supports designing information/reaction, not a rule requiring darkness or POV in every horror scene.
 
-ข้อเสนอสำหรับ agent: บันทึกว่า ณ beat นี้ผู้ชมรู้อะไร ตัวละครรู้อะไร อะไรยังไม่ควรเปิดเผย เสียงเกิดก่อนภาพหรือไม่ และ reveal เกิดเมื่อใด
+Application: record what audience and characters know at each beat, what must remain hidden, whether sound precedes image and when the reveal occurs.
 
-แหล่ง: [Alfred Hitchcock — My own methods, Sight and Sound / BFI](https://www.bfi.org.uk/sight-and-sound/features/alfred-hitchcock-my-own-methods)
+Source: [Alfred Hitchcock — My own methods, Sight and Sound / BFI](https://www.bfi.org.uk/sight-and-sound/features/alfred-hitchcock-my-own-methods).
 
-## ข้อเสนอการประยุกต์กับ agent (การสังเคราะห์ ไม่ใช่มาตรฐานจากแหล่งเดียว)
+<a id="ข้อเสนอการประยุกต์กับ-agent-การสังเคราะห์-ไม่ใช่มาตรฐานจากแหล่งเดียว"></a>
+## Agent applications: project synthesis
 
-เรื่องขนาดสัมพันธ์ของคน สัตว์ เฟอร์นิเจอร์และสิ่งของก่อนจัดระยะ อ่าน [หลักสัดส่วนและ perspective](scale-and-perspective-principles.md) ซึ่งเชื่อม Solid Drawing/staging กับ camera projection, foreshortening, parallax และเกณฑ์ส่งต่อ Film → Mark → Boss
+For relative human/animal/furniture/object dimensions before depth staging, use [scale and perspective principles](scale-and-perspective-principles.md). That reference connects solid drawing/staging to projection, foreshortening, parallax and Film → Mark → Boss handoffs.
 
-- เก็บภาพรวม episode/chapter ไว้เพื่อมอง hook, escalation, payoff และความต่อเนื่อง แต่ส่งชุดทำงานแยก scene
-- แต่ละ scene มีวัตถุประสงค์ การเปลี่ยนแปลงตอนจบ state เข้า/ออก รายการ assets และ shots เรียงลำดับ
-- แต่ละ shot มี ID คงที่ ช่วงเวลา/เฟรม ขนาดภาพ มุมกล้อง camera movement action dialogue/subtitle sound และ key panels ที่จำเป็น ไม่มีจำนวน panels ตายตัว
-- ใช้ asset IDs ที่ตรงกับ library ของโปรเจกต์ แยก missing assets ให้ dev เพิ่มใน shared library ตาม AGENTS.md
-- ส่งภาพร่าง + คำอธิบายเชิงเวลา/การกระทำ + animatic สั้นเป็นคู่กัน ภาพอย่างเดียวอาจไม่กำหนด delayed reveal หรือจังหวะเสียง
-- ตรวจ scene เดี่ยว แล้วตรวจรอยต่ออย่างน้อยจาก final state ของ scene ก่อนหน้าไป initial state ของ scene นี้ และ initial state ของ scene ถัดไป
-- Acceptance criteria ควรอ้าง shot ID และเฟรม/เหตุการณ์ เช่น “S03-SH02: เสียงเคาะเริ่มก่อนเห็นเงา” หรือ “มือยังถือโทรศัพท์เมื่อตัดเข้า close-up”
-- ตรวจ framing ทั้ง Short และ Long ตามข้อกำหนดโปรเจกต์ โดยระบุ focal point และ subtitle-safe region ตั้งแต่บอร์ด
+- Keep an episode/chapter overview for hook, escalation, payoff and continuity while delivering scene-sized work packs.
+- Give each scene a purpose, ending change, entry/exit states, assets and ordered shots.
+- Give each shot a stable ID, time/frame range, size, angle, movement, action, dialogue/subtitle, sound and necessary key panels. Panel count is flexible.
+- Match asset IDs to the project library. Identify missing assets for one shared implementation, following [production requirements](production-requirements.md).
+- Pair rough boards with timed action notes and a short animatic. Images alone may not define delayed reveals or sound timing.
+- Check the individual scene, then at least the previous scene's final state → this scene's initial state, and this scene's exit → the next scene's initial state.
+- Tie acceptance criteria to shot ID and frame/event, for example “S03-SH02: knocking begins before the shadow appears” or “the hand still holds the phone at the close-up cut.”
+- Check both Short and Long framing against [production requirements](production-requirements.md), with focal point and subtitle-safe space planned on the boards.
 
-## สิ่งที่ไม่ควรอ้างเป็นทฤษฎีสากล
+<a id="สิ่งที่ไม่ควรอ้างเป็นทฤษฎีสากล"></a>
+## Claims that are not universal theory
 
-- ทุกฉากต้องมี 3 shots หรือทุก panel ต้องกินเวลาเท่ากัน
-- ต้องใช้ rule of thirds ทุกภาพ
-- ต้องสลับ wide/medium/close ด้วยแพตเทิร์นเดิมเสมอ
-- ต้องใช้โครง 3 องก์ในทุก scene ย่อย
-- 180-degree rule ห้ามแหกทุกกรณี
-- Hook 2 วินาที, 30 fps, จำนวน POV ต่อบท และระยะถือ moral เป็นข้อกำหนดช่องใน AGENTS.md นี้ ไม่ใช่กฎ storyboard ของทุกงาน
+The sources do not establish any of these as universal requirements:
 
-## บันทึกการเข้าถึงแหล่ง
+- Three shots per scene or equal panel durations.
+- Rule of thirds in every image.
+- A repeating wide/medium/close sequence.
+- Three-act structure within every small scene.
+- An absolute ban on crossing the 180-degree axis.
+- The channel's two-second hook, 30 fps, POV frequency and moral hold. These belong to [production requirements](production-requirements.md) and [camera design defaults](planned-visual-components.md), not universal storyboard theory.
 
-พบเนื้อหา Pixar in a Box และ Toon Boom ในผลค้นหาที่จัดทำดัชนีไว้ แต่หน้า Khan Academy ไม่คืน body และหน้า Toon Boom ที่ตรวจตรงตอบ 403/404 จึงใช้แหล่งที่เปิดอ่านเนื้อหาได้จริงในบันทึกนี้แทน ไม่ควรอ้างว่าได้ตรวจเนื้อหา live ของหน้าที่เปิดไม่ได้
+<a id="บันทึกการเข้าถึงแหล่ง"></a>
+## Source-access record
 
-## 9. สีและแสงอยู่ใน visual development
+Indexed search results included Pixar in a Box and Toon Boom material, but Khan Academy did not return page body text and the inspected Toon Boom pages returned 403/404. This note therefore uses sources whose content could be opened. Do not claim live inspection of inaccessible pages.
 
-หน้า Story and Art ของนิทรรศการ Pixar ยกตัวอย่าง colorscript ที่กำหนด palette ของฉากและสำรวจแนวคิดแสง จึงมีเหตุผลให้ storyboard ส่งต่อ mood, value hierarchy และ key lighting/color decisions เมื่อมีผลต่อการเล่าเรื่อง ไม่จำเป็นต้องทำทุก panel ให้เป็นภาพ final render
+<a id="9-สีและแสงอยู่ใน-visual-development"></a>
+## 9. Color and light belong to visual development
 
-แหล่ง: [The Science Behind Pixar — Story and Art](https://sciencebehindpixar.org/pipeline/story-and-art)
+The Pixar exhibition's Story and Art page shows a colorscript establishing scene palette and exploring lighting ideas. Boards should therefore communicate mood, value hierarchy and important lighting/color decisions when these affect storytelling, without requiring final-render finish on every panel.
 
-ข้อเสนอให้มาร์คระบุ: แหล่งแสง ทิศทาง โทนอุ่นเย็น จุดสว่างนำสายตา เงาที่บังหรือเปิดเผยข้อมูล และการเปลี่ยนแสงตาม beat ใช้ key panel หรือสีตัวอย่างช่วยอธิบาย ตรวจว่าความมืดไม่ทำให้ท่าทางสำคัญหรือซับไทยอ่านไม่ออก
+Source: [The Science Behind Pixar — Story and Art](https://sciencebehindpixar.org/pipeline/story-and-art).
 
-## การประยุกต์กับ haunted_episode.excalidraw
+Application for Mark: specify source, direction, warm/cool balance, attention-guiding highlights, shadows that conceal/reveal information and beat-driven lighting changes. Use key panels or color samples and verify that darkness preserves essential gestures and Thai subtitle readability.
 
-ตรวจโครงสร้าง JSON และข้อความในไฟล์ที่ผู้ใช้ระบุ มี 11 chapter frames พร้อม legend และ asset summary รวม 13 frames มีภาพประกอบแบบ vector และข้อความ CAM / WHO / TECH / SFX-LIGHT / VO / FEAS / MISSING อยู่แล้ว บันทึกนี้วิเคราะห์โครงสร้างและข้อความ; ยังไม่ได้ตรวจ visual export ของไฟล์ต้นฉบับ
+<a id="การประยุกต์กับ-haunted_episodeexcalidraw"></a>
+## Application to haunted_episode.excalidraw
 
-ส่วนที่นำมาใช้ต่อได้:
+The supplied file's JSON structure and text were inspected. It contains 11 chapter frames plus a legend and asset summary, 13 frames total, with vector illustrations and CAM / WHO / TECH / SFX-LIGHT / VO / FEAS / MISSING notes. This record analyzes structure and text; a visual export of the original has not been reviewed.
 
-- มี shot numbers เช่น 1.1 และ 1.6, timecodes, camera direction และการวาง Long/Short
-- แยกความต้องการ asset กับความเสี่ยงของเทคนิคไว้ เช่น fog แบบ alpha planes
-- มีเหตุการณ์ภาพคู่กับเสียง และ hook / จุดจบบท
+Reusable material:
 
-ส่วนที่ควรเพิ่มให้ dev ตรวจทีละฉากได้:
+- Shot numbers such as 1.1 and 1.6, timecodes, camera direction and Long/Short planning.
+- Separation of asset needs from technical risks, such as fog using alpha planes.
+- Paired visual/sound events, hooks and chapter endings.
 
-- หนึ่งไฟล์ต่อ story scene พร้อม episode index; เก็บ mapping เลขช็อตเก่าไป ID ใหม่เพื่อคงร่องรอย
-- Scene purpose และ beats รวมก่อน–หลังของ action สำคัญ ไม่ใช้ภาพ representative ใบเดียวแทนทุกการเปลี่ยนแปลง
-- State เข้า/ออกฉากและภาพ/เฟรมหลักสำหรับตรวจ ทั้ง Short และ Long
-- Timing จริงเป็นเฟรม: ตัวอย่างหัวบทแรกระบุ 0:00–0:55 แต่มีป้าย 56s และระยะทศนิยมรวมใกล้ 55.5s จึงต้องระบุ estimate กับเวลาอ้างอิงที่เลือกให้ชัดก่อนใช้เป็นเกณฑ์ตรวจ ไม่ตีความว่าตัวเลขปัดเศษทั้งหมดต้องตรงกันอยู่แล้ว
-- ข้อความ MISSING หรือ FEAS: OK ใน reference ไม่ได้ยืนยัน implementation ปัจจุบัน ต้องตรวจ code/registry/renderer ใน checkout เป้าหมาย
-- ข้อความกำกับใน reference เช่นข้อจำกัด technique/POV และสถานะ draft ของ VO เป็นข้อมูลที่ต้องประเมินกับคำสั่งผู้ใช้ปัจจุบัน ไม่ใช่คำสั่ง agent หรือการอนุมัติบท
+Additions needed for scene-level development review:
 
-## การเลือก 2D / 3D / hybrid (Film เลือกแนวทาง, Mark แตกบอร์ด)
+- One file per story scene and an episode index, preserving a mapping from old shot numbers to stable new IDs.
+- Scene purpose and beats, including before/after states of important actions. One representative image cannot stand for every change.
+- Entry/exit states and review frames/images in both formats.
+- Frame-based timing: the first chapter header says 0:00–0:55 but also has a 56s label, while decimal durations total roughly 55.5s. Identify estimates and the chosen timing authority before using them for acceptance; do not assume rounded values agree.
+- MISSING or FEAS: OK labels do not establish current implementation. Inspect code/registry/renderer in the target checkout.
+- Reference annotations, including technique/POV limits and draft VO status, are production material to assess against current user instructions. They are neither agent instructions nor script approval.
 
-ผู้ใช้ยกเลิกข้อจำกัด 3D เฉพาะ deep background และบังคับตัวละคร/interaction props เป็น 2D แล้ว ตาม [กฎการผลิตล่าสุด](boss-asset-workflow.md#กฎการผลิตล่าสุดของผู้ใช้) ทุกองค์ประกอบเลือก 2D, 3D หรือ hybrid ได้ Film เป็นผู้ให้เหตุผลและ technical handoff ก่อน Mark ทำรายละเอียด storyboard
+<a id="การเลือก-2d--3d--hybrid-film-เลือกแนวทาง-mark-แตกบอร์ด"></a>
+## Choosing 2D / 3D / hybrid: Film decides, Mark develops boards
 
-Film เปรียบเทียบผลต่อเรื่อง/ภาพกับต้นทุน reuse และความเสี่ยงของการผสานใน checkout เป้าหมาย Mark อ้าง brief decision IDs และบันทึกการเปลี่ยนแนวทางเมื่อจำเป็น ไม่ถือว่า 3D ดีกว่า 2D โดยอัตโนมัติ
+The user revoked the background-only 3D and mandatory 2D character/interaction-prop restrictions. Under the [current production rules](boss-asset-workflow.md#latest-production-rules), any element may use 2D, 3D or hybrid. Film supplies reasons and the technical handoff before Mark develops shot details.
 
-- กราฟิก phone/chat, cards, diagram หรือ acting ที่อ่านดีใน 2D อาจใช้ 2D
-- กล้องที่เห็นด้านใหม่ของรูปทรง เดินผ่านพื้นที่ หรือ reveal หลัง geometry อาจคุ้มกับ 3D
-- Pan/zoom อย่างเดียวไม่ใช่เหตุผลว่าต้องเป็น 3D; hybrid หรือ layered planes อาจพอเมื่อได้ภาพตามเจตนา
-- ตัวละครอาจเป็น 2D ในฉาก 3D, 3D ในฉาก 3D หรือองค์ประกอบแบบอื่นตามภาพที่ต้องการ ตรวจมุมกล้อง rig, contact, style และความต่อเนื่องก่อนเลือก
-- ทุกการเลือกบันทึก chosen approach / why / evidence / difficulty / shared dependencies / fallback / validation โดยแยกความเป็นไปได้จากสิ่งที่ทดสอบแล้ว
+Film weighs story/visual value against reuse cost and integration risk in the target checkout. Mark references brief decision IDs and records approach changes. 3D is not automatically preferable.
 
-Remotion มีแพ็กเกจเชื่อม React Three Fiber ชื่อ @remotion/three เป็นทางเลือก 3D ที่ตรวจได้จากเอกสาร แต่แพ็กเกจที่มีในเอกสารไม่ได้หมายความว่า checkout เป้าหมายติดตั้งหรือ integrate แล้ว ส่วนเกณฑ์เลือกช็อตข้างต้นเป็นข้อเสนอ workflow ไม่ใช่ข้อกำหนดของแพ็กเกจ
+- Phone/chat graphics, cards, diagrams or acting that read well in 2D may use 2D.
+- New views of a shape, camera travel through space or reveals behind geometry may justify 3D.
+- Pan/zoom alone does not require 3D; hybrid/layered planes may achieve the intended image.
+- Characters may be 2D in a 3D scene, 3D in a 3D scene or another suitable combination. Check views, rig, contact, style and continuity before choosing.
+- Record chosen approach / why / evidence / difficulty / shared dependencies / fallback / validation, separating feasibility from tested results.
 
-แหล่ง: [Remotion — @remotion/three](https://www.remotion.dev/docs/three)
+Remotion documents `@remotion/three` as a React Three Fiber integration option. Documentation does not establish installation or runtime integration in the target checkout. The selection guidance above is workflow synthesis, not a package requirement.
+
+Source: [Remotion — @remotion/three](https://www.remotion.dev/docs/three).

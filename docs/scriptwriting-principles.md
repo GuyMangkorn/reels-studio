@@ -1,62 +1,70 @@
-# หลักเขียน Reels ลึกลับ แทรกความรู้ และหักมุม
+<a id="หลักเขียน-reels-ลึกลับ-แทรกความรู้-และหักมุม"></a>
+# Scriptwriting principles for mystery, knowledge and twist Reels
 
-วิจัยและสังเคราะห์ 26 ตุลาคม 2026 สำหรับแพรวและโบ็ต ขั้นตอนทำงานและไฟล์ส่งต่ออยู่ใน [editorial-workflow.md](editorial-workflow.md) หลักด้านล่างเป็นเครื่องมือเลือกใช้ ไม่ใช่สูตรรับประกันยอดดูหรือกฎว่าทุกเรื่องต้องเหมือนกัน
+Researched and synthesized on 26 October 2026 for Preaw and Boat. The required workflow and handoff files are in [editorial-workflow.md](editorial-workflow.md). The principles below are selective creative guidance, not a guarantee of views or a requirement that every story use the same structure.
 
-## หลักจากแหล่งต้นทาง
+<a id="หลักจากแหล่งต้นทาง"></a>
+## Principles from primary sources
 
-### Hook และ mini-story
+<a id="hook-และ-mini-story"></a>
+### Hook and mini-story
 
-บทสนทนา YouTube Shorts Product Lead Todd Sherman กับ Jenny Hoyos เน้นดึงความสนใจทันทีและเล่า mini-story ที่กระชับ ข้อแนะนำภายในหนึ่งวินาทีเป็นประสบการณ์ของ creator ที่บทความรายงาน ไม่ใช่ข้อบังคับหรือคำอธิบายอัลกอริทึม
+The conversation between YouTube Shorts Product Lead Todd Sherman and Jenny Hoyos emphasizes immediate attention and a compact mini-story. The one-second recommendation is creator experience reported in the article, not a channel requirement or an explanation of the algorithm.
 
-ประยุกต์: เปิดความผิดปกติหรือคำถามที่เล่าให้จบได้จริง และให้ ending ตอบสิ่งที่ hook สัญญาไว้ ใช้เป้าหมายเวลาของช่องตาม AGENTS.md
+Application: open with an anomaly or question that the story can resolve, and make the ending deliver the hook's promise. Follow the channel timing targets linked from AGENTS.md.
 
-แหล่ง: [YouTube Shorts deep dive — YouTube Blog](https://blog.youtube/creator-and-artist-stories/youtube-shorts-deep-dive/), 28 มกราคม 2025
+Source: [YouTube Shorts deep dive — YouTube Blog](https://blog.youtube/creator-and-artist-stories/youtube-shorts-deep-dive/), 28 January 2025.
 
-### ความต้องการและอุปสรรค
+<a id="ความต้องการและอุปสรรค"></a>
+### Intention and obstacle
 
-Aaron Sorkin สอนให้เริ่มจากคนที่ต้องการบางสิ่งและมีอุปสรรคที่มีน้ำหนัก เพื่อให้เรื่องมีแรงขับ มากกว่ามีเพียงบทพูดที่ดีแต่เรื่องไม่เดิน
+Aaron Sorkin teaches starting with someone who wants something and faces a meaningful obstacle. This drives a story beyond attractive dialogue without progression.
 
-ประยุกต์: ให้ตัวละครสังเกต ค้นหา ทดสอบ หรือตัดสินใจ และให้การกระทำนั้นมีผลต่อเหตุการณ์ ความตั้งใจอาจเป็นการหาคำตอบ ไม่จำเป็นต้องมีภัยอันตรายในทุกเรื่อง
+Application: let characters observe, investigate, test or decide, and let those actions affect events. The intention can be finding an answer; every story does not need danger.
 
-แหล่ง: [Intention & Obstacle — Aaron Sorkin / MasterClass](https://www.masterclass.com/classes/aaron-sorkin-teaches-screenwriting/chapters/intention-obstacle-11ba8c15-7856-490d-85bb-eb0601e02c55), อ่าน preview ของผู้สอนโดยตรง
+Source: [Intention & Obstacle — Aaron Sorkin / MasterClass](https://www.masterclass.com/classes/aaron-sorkin-teaches-screenwriting/chapters/intention-obstacle-11ba8c15-7856-490d-85bb-eb0601e02c55), instructor preview inspected directly.
 
-### Twist ที่ย้อนเข้าใจได้
+<a id="twist-ที่ย้อนเข้าใจได้"></a>
+### A twist that rewards looking back
 
-Writing Excuses โดยนักเขียนผู้จัดรายการอธิบาย twist ที่ทำให้ย้อนมองสิ่งก่อนหน้าต่างไป ผ่าน expectations, misdirection และเบาะแสที่ปรากฏอยู่แล้ว แบบฝึกให้ไล่เหตุผลสู่ reveal แล้วลองตัดรายละเอียดเพื่อหาว่าอะไรจำเป็นต่อความสมเหตุผล
+Writing Excuses' author-hosts explain twists that change how earlier information is understood through expectations, misdirection and already-visible clues. Their exercise reasons backward from the reveal, then removes details to identify what its logic requires.
 
-ประยุกต์: เลือก ending และความจริงเบื้องหลังก่อน ย้อนวาง clues ที่อ่านได้สองความหมาย ความประหลาดใจไม่ควรต้องอาศัยกฎสำคัญที่เพิ่งแต่งขึ้นในตอนจบ
+Application: choose the underlying truth and ending first, then plant clues with two coherent readings. Surprise should not depend on a decisive rule invented at the ending.
 
-แหล่ง: [Twists: How to Make the Unexpected Feel Inevitable — Writing Excuses](https://writingexcuses.com/21-36-twists-how-to-make-the-unexpected-feel-inevitable/)
+Source: [Twists: How to Make the Unexpected Feel Inevitable — Writing Excuses](https://writingexcuses.com/21-36-twists-how-to-make-the-unexpected-feel-inevitable/).
 
-### ตรวจถ้อยคำจริงกับหลักฐาน
+<a id="ตรวจถ้อยคำจริงกับหลักฐาน"></a>
+### Check actual wording against evidence
 
-คู่มือ Knight Science Journalism at MIT โดย Brooke Borel แนะนำ writer ใส่แหล่งของทุก fact จากนั้นตรวจทีละบรรทัด ประเมินคุณภาพหลักฐาน และปรับถ้อยคำให้สะท้อน uncertainty เมื่อหลักฐานไม่ตรงกัน กระบวนการแยกหน้าที่เขียน แก้ และตรวจ โดยปรับความละเอียดได้ตามงาน
+Brooke Borel's Knight Science Journalism at MIT handbook recommends sourcing every fact, checking line by line, assessing evidence quality and wording uncertainty when sources disagree. Writing, editing and verification are separate responsibilities, with the level of detail adapted to the assignment.
 
-ประยุกต์: โบ็ตค้นก่อนเขียนและตรวจหลังเขียนเป็นคนละ pass ระบุ claim/source IDs และ script revision การมีกลไกที่เป็นไปได้ไม่ได้พิสูจน์ว่ากลไกนั้นเกิดขึ้นในเคสจริงที่เล่า
+Application: Boat's research and post-writing fact-check are separate passes with claim/source IDs and a named script revision. A possible mechanism does not establish that it caused a particular real case.
 
-แหล่ง: [The Fact-Checking Process — KSJ Handbook](https://ksjhandbook.org/fact-checking-science-journalism-how-to-make-sure-your-stories-are-true/the-fact-checking-process/)
+Source: [The Fact-Checking Process — KSJ Handbook](https://ksjhandbook.org/fact-checking-science-journalism-how-to-make-sure-your-stories-are-true/the-fact-checking-process/).
 
-## ข้อเสนอสำหรับแนวช่องนี้
+<a id="ข้อเสนอสำหรับแนวช่องนี้"></a>
+## Guidance for this channel
 
-- เริ่มที่คำถามหลักและความรู้หลักเท่าที่เวลาเล่าให้เข้าใจได้ ปรับจากการอ่านออกเสียง/animatic ไม่ยึดจำนวนประโยคตายตัว
-- เชื่อม beats ด้วยเหตุ–ผล เช่น พบ clue จึงลองทำบางอย่าง แต่ผลกลับเปลี่ยนสมมติฐาน แทนการเรียงเหตุการณ์แปลกที่ไม่เกี่ยวกัน
-- ความรู้มีหน้าที่ต่อ plot: ใช้สังเกต ทดสอบ ตัดสินใจ หรือทำความเข้าใจ reveal การตัดความรู้ออกแล้วเรื่องไม่เปลี่ยนเป็นสัญญาณให้ทบทวนว่าความรู้ยังแปะท้ายอยู่หรือไม่
-- ไม่จำเป็นต้องจบว่าทุกเรื่องเหนือธรรมชาติมีคำอธิบายวิทยาศาสตร์เสมอไป เคสที่ยังไม่รู้ต้องรักษาสถานะนั้น; fiction สามารถจบลึกลับได้โดยไม่ทำให้คนดูเข้าใจว่าส่วนแต่งเป็นหลักฐานจริง
-- จัดการข้อมูลที่คนดูและตัวละครรู้ต่างกันได้ แต่ hook/ผู้บรรยายที่อ้างเรื่องจริงต้องซื่อสัตย์ต่อหลักฐาน
-- ตรวจ twist จากการอ่านซ้ำ: clues ยังอยู่ เหตุผลยังต่อกัน และ reveal เปลี่ยนความหมายของข้อมูลเดิมจริง
-- เขียนภาษาไทยสำหรับการฟัง ตัดคำอธิบายซ้ำ เว้น pause ให้รับข้อมูลและอารมณ์ ทดลองเสียงก่อนล็อกเวลา
+- Start with a central question and a learning takeaway that fit the available time. Adjust through spoken reads/animatics rather than a fixed sentence count.
+- Connect beats causally: a clue prompts a test, whose result changes the hypothesis. Avoid unrelated strange events in sequence.
+- Give knowledge a plot function: observation, testing, decisions or understanding the reveal. If removing it leaves the story unchanged, reconsider whether it is merely appended.
+- A supernatural story need not always end with a scientific explanation. Preserve uncertainty in unresolved cases. Fiction may remain mysterious without presenting invented material as real evidence.
+- Manage differences between audience and character knowledge while keeping real-case hooks/narration faithful to evidence.
+- Reread to test the twist: clues remain present, causes still connect and the reveal changes the meaning of earlier information.
+- Write Thai for listening. Remove repeated explanation, leave pauses for information and emotion, and test audio before locking timing.
 
-## โครงทดลองประมาณ 45 วินาที
+<a id="โครงทดลองประมาณ-45-วินาที"></a>
+## Experimental structure for roughly 45 seconds
 
-ตัวอย่างการแบ่งเวลาเพื่อทดลอง ไม่ใช่ข้อกำหนด Reels/Shorts หรือสูตรสำหรับทุกเรื่อง:
+This timing split is an experiment, not a Reels/Shorts requirement or a formula for every story:
 
-| เวลาโดยประมาณ | หน้าที่ |
+| Approximate time | Purpose |
 | --- | --- |
-| 0–2 วินาที | เปิดเหตุการณ์ผิดปกติและคำถาม |
-| 2–10 | บริบท ความต้องการ และ clue แรก |
-| 10–25 | สืบ/ทดลอง อุปสรรคหรือหลักฐานที่เปลี่ยนสมมติฐาน |
-| 25–35 | ใช้ความรู้หลักและขยับเข้าหาเฉลย |
-| 35–42 | Reveal / twist ที่เชื่อมกับ clues เดิม |
-| 42–45 | ผลของเรื่องและเวลารับ ending |
+| 0–2 seconds | Anomaly and central question |
+| 2–10 | Context, intention and first clue |
+| 10–25 | Investigation/test, obstacle or hypothesis-changing evidence |
+| 25–35 | Apply the main knowledge and approach the answer |
+| 35–42 | Reveal / twist connected to earlier clues |
+| 42–45 | Consequence and time to absorb the ending |
 
-ปรับตามบท เสียงจริง และ AGENTS.md การแบ่งช่วงนี้ยังไม่ได้พิสูจน์ performance ของช่องนี้
+Adapt to the script, actual audio and channel rules linked from AGENTS.md. This structure has not demonstrated performance for this channel.

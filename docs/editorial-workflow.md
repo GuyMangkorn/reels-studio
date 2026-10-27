@@ -1,36 +1,41 @@
-# แพรว (Preaw) + โบ็ต (Boat): ก่อนส่งบทให้ Film และ Mark
+<a id="แพรว-preaw--โบ็ต-boat-ก่อนส่งบทให้-film-และ-mark"></a>
+# Preaw and Boat: editorial handoff to Film and Mark
 
-สำหรับ Reels/Shorts แนวลึกลับ แทรกความรู้ และหักมุม รวมงานทั้งตอนเมื่อร้องขอ ทั้งคู่เป็น project agents ใน `.codex/agents/` ใช้ชื่อ `preaw` และ `boat` ตามชื่อที่ผู้ใช้ตั้ง โมเดลและสิทธิ์ของทั้งคู่สืบทอดจากแชตที่เรียกใช้ ส่วน Film และ Mark มี model/effort กำหนดไว้ใน agent TOML ของแต่ละคน
+This workflow covers mystery, educational and twist Reels/Shorts, including a whole episode when requested. Preaw and Boat are project agents in `.codex/agents/`, invoked as `preaw` and `boat`. Their models and permissions inherit from the calling chat. Check each agent TOML for Film and Mark's model/effort settings.
 
-## หน้าที่และลำดับงาน
+**Requirements:** the packets, revision tracking, factual distinctions and completion criteria below are the editorial handoff contract. **Defaults and guidance:** creative techniques and example timings live in [scriptwriting-principles.md](scriptwriting-principles.md); use them selectively. Readiness records evidence and handoff status; user approval is recorded separately.
 
-| ขั้น | ผู้รับผิดชอบ | ผลส่งต่อ |
+<a id="หน้าที่และลำดับงาน"></a>
+## Responsibilities and sequence
+
+| Stage | Owner | Handoff |
 | --- | --- | --- |
-| Brief / research | โบ็ต | คำถาม หลักฐาน ความรู้ที่เล่าได้ และสิ่งที่ยังไม่รู้ |
-| Script | แพรว | บทเต็ม beats เบาะแส เฉลย และ claim references |
-| Fact-check | โบ็ต | ตรวจบทฉบับที่ระบุทีละข้อ พร้อมคำแก้และผลกระทบ |
-| Revision / recheck | แพรว → โบ็ต | แก้บทและตรวจ claims ที่เปลี่ยนหรือได้รับผลกระทบ |
-| Visual / technical brief | ฟิล์ม | เลือก 2D/3D/hybrid แสงเงาสี camera language และวิธีผสาน 2D/Three.js พร้อม feasibility/risks |
-| Storyboard | มาร์ค | แตก brief เป็นช็อต/panels, staging, timing และ scene pack |
-| Production | Dev / editor | ทำฉากและเสียง ตรวจเทียบกับบทและ storyboard |
+| Brief / research | Boat | Questions, evidence, usable knowledge and unresolved gaps |
+| Script | Preaw | Full script, beats, clues, reveal and claim references |
+| Fact-check | Boat | Claim-by-claim review of a named revision, corrections and impact |
+| Revision / recheck | Preaw → Boat | Script changes and review of changed/dependent claims |
+| Visual / technical brief | Film | 2D/3D/hybrid choice, lighting/shadow/color, camera language, 2D/Three.js integration, feasibility and risks |
+| Storyboard | Mark | Shots/panels, staging, timing and scene packs from the brief |
+| Production | Developer / editor | Scenes and audio checked against script and boards |
 
-โบ็ตทำสองรอบใน agent เดียว การเคยค้นข้อมูลก่อนเขียนไม่ได้แปลว่าตรวจถ้อยคำหลังเขียนแล้ว ผู้ประสานงานส่งไฟล์และโจทย์ให้แต่ละ agent ตามงานที่ผู้ใช้มอบหมาย; config เหล่านี้ไม่ได้ติดตั้งการรันอัตโนมัติหรือส่งข้อความข้ามแชตเอง
+Boat performs two separate passes. Research before writing does not establish that the final wording has been checked. The coordinator supplies files and assignments within the user's requested scope; these configs do not install automatic execution or cross-chat messaging.
 
-ตัวอย่างเรียกใช้:
+Example requests:
 
-> ให้โบ็ต (boat) ค้นข้อมูลเรื่อง [หัวข้อ] สำหรับคลิปลึกลับแทรกความรู้ พร้อมหลักฐานและมุมที่นำมาเล่าได้
+> Ask Boat (`boat`) to research [topic] for a mystery clip with educational content, supplying evidence and usable story angles.
 
-> ให้แพรว (preaw) ใช้ research.md เขียน Reels ประมาณ 45 วินาที มีหักมุมที่ย้อนเข้าใจเบาะแสเดิมได้ พร้อมบทพากย์เต็ม
+> Ask Preaw (`preaw`) to use research.md for a roughly 45-second Reel with a twist that changes the interpretation of earlier clues, including full narration.
 
-> ให้โบ็ตตรวจ ch01-script.md revision 2 ทีละ claim แล้วเสนอคำแก้และระบุว่าส่วนใดยังยืนยันไม่ได้
+> Ask Boat to check ch01-script.md revision 2 claim by claim, propose corrections and identify what remains unverified.
 
-> ให้ฟิล์มใช้บท revision 3 กับ fact-check ที่ตรงฉบับทำ visual/technical brief แล้วส่ง brief revision ให้มาร์คทำ storyboard แยกรายฉาก
+> Ask Film to use script revision 3 and its matching fact-check for a visual/technical brief, then give that brief revision to Mark for separate scene boards.
 
-## หน่วยและไฟล์
+<a id="หน่วยและไฟล์"></a>
+## Units and files
 
-ใช้ episode / chapter / story scene ตาม [workflow มาร์ค](mark-storyboard-workflow.md) แพรวให้ beat IDs เช่น `E01-C01-S02-B01`; มาร์คค่อย map ไป shot/panel IDs แทนการให้ writer กำหนดทุกมุมกล้อง
+Use episode / chapter / story scene as defined in [Mark's workflow](mark-storyboard-workflow.md). Preaw assigns beat IDs such as `E01-C01-S02-B01`; Mark maps these to shot/panel IDs. The writer does not prescribe every camera angle.
 
-เก็บไฟล์ authoring ข้างงานใน `scripts/<episode>/` ตัวอย่างต่อไปนี้เป็น convention สำหรับเอกสาร ไม่ใช่ runtime JSON schema:
+Store authoring files beside the work in `scripts/<episode>/`. This is a document convention, **not a runtime JSON schema**:
 
 ```text
 scripts/<episode>/
@@ -39,59 +44,64 @@ scripts/<episode>/
   ch01-fact-check.md
 ```
 
-Runtime timelines ยังคงใช้สัญญาใน AGENTS.md และโค้ดปัจจุบัน การสร้างบทไม่ได้สร้าง timeline หรืออ้างว่า renderer รองรับทุกสิ่งที่เขียนลงบทแล้ว
+Runtime timelines follow the current source contract linked from AGENTS.md. Writing a script neither creates an executable timeline nor establishes renderer support for its contents.
 
-## Research packet — โบ็ต
+<a id="research-packet--โบ็ต"></a>
+## Research packet — Boat
 
-1. ระบุ brief, ประเภทเรื่อง, คำถามหลัก, learning takeaway, ช่วงเวลาหรือบริบท และวันที่ค้น เมื่อผู้ใช้ระบุเคสจริง ให้ตรวจข้อเท็จจริงของเคสนั้น; brief แต่งเรื่องกว้าง ๆ ใช้โหมดที่ติดป้าย `fiction-with-factual-knowledge` ได้
-2. เปิดอ่านแหล่งที่รองรับ claims สำคัญจริง ค้นหลักฐานขัดแย้งและข้อจำกัด แหล่งต้นทางหนึ่งชิ้นที่ถูกหลายเว็บคัดลอกยังเป็นหลักฐานต้นทางเดียว แยก `documented fact`, `reported experience`, `folklore`, `hypothesis`, `fiction/dramatization` ตามสิ่งที่แหล่งยืนยัน ไม่เหมาว่ารายงานประสบการณ์ยืนยันสาเหตุเหนือธรรมชาติหรือสาเหตุทางวิทยาศาสตร์
-3. ทำ source registry เช่น `SRC001`: ชื่อ ผู้เขียน/หน่วยงาน วันที่เผยแพร่/แก้ไข URL ตรง section/page และวันที่เข้าถึง ระบุ `inspected` หรือ `inaccessible/lead-only` พร้อมข้อจำกัด ใช้ข้อความอ้างอิงสั้นเท่าที่จำเป็น
-4. ทำ claim ledger เช่น `F001`: ข้อกล่าวอ้าง ขอบเขต/เงื่อนไข แหล่งและ locator สิ่งที่สนับสนุน/คัดค้าน และ wording ที่ใช้ได้ แยกกลไกที่เป็นไปได้จากคำอธิบายที่พิสูจน์แล้วในเคสเฉพาะ
-5. สรุปมุมเล่าเรื่องที่มีหลักฐานรองรับและคำถามที่ยังต้องหา เมื่อข้อมูลหลักไม่พอ ให้ส่ง research gaps ชัดเจน; ห้ามเติมหลักฐานหรืออ้างว่าเข้าถึงแหล่งที่อ่านไม่ได้
+1. Record the brief, story type, central question, learning takeaway, period/context and research date. For a named real case, investigate that case. For an open fictional brief without a specified mode, use and visibly label the default `fiction-with-factual-knowledge`.
+2. Open and inspect sources supporting important claims. Seek contrary evidence and limitations. Multiple sites copying one original remain one original source. Distinguish `documented fact`, `reported experience`, `folklore`, `hypothesis` and `fiction/dramatization` according to what the evidence establishes. A report of an experience does not establish its supernatural or scientific cause.
+3. Maintain a source registry, for example `SRC001`: title, author/organization, publication/update date, direct URL, section/page and access date. Mark `inspected` or `inaccessible/lead-only` and explain limitations. Quote only the short passages needed. Describe confidence qualitatively with reasons; do not invent numerical probabilities.
+4. Maintain a claim ledger, for example `F001`: assertion, scope/conditions, source and locator, supporting/contrary evidence and usable wording. Distinguish a possible mechanism from an explanation demonstrated in a specific case.
+5. Summarize supported story angles and remaining research questions. Identify material gaps explicitly; never invent evidence or claim to have inspected an inaccessible source.
 
-จบ research เมื่อทุก premise-critical claim มีหลักฐานและข้อจำกัด หรือถูกระบุว่ายัง unresolved อย่างมองเห็นได้ ความไม่ครบไม่ใช่ผลตรวจผ่าน
+Research is complete when every premise-critical claim has evidence and limitations or is visibly unresolved. Incomplete verification is not a passing factual review.
 
-## Script pack — แพรว
+<a id="script-pack--แพรว"></a>
+## Script pack — Preaw
 
-ระบุหัวเอกสาร: episode/chapter IDs, script revision, brief/research revision, story mode, target duration และ timing status (`estimated` / `read-aloud` / `audio-tested`) แยกสถานะ approval ของผู้ใช้ออกจากสถานะการเขียนและตรวจข้อเท็จจริง
+Record episode/chapter IDs, script revision, brief/research revision, story mode, target duration and timing status (`estimated` / `read-aloud` / `audio-tested`) in the header. Keep user approval separate from writing and factual-review status.
 
-บทที่ส่งต่อมี:
+The handoff contains:
 
-- **แกนเรื่อง**: logline, คำถามหลัก, ตัวละครต้องการอะไร/อะไรขวาง, อารมณ์เป้าหมาย และความรู้ที่คนดูควรเข้าใจ
-- **ความจริงและ ending**: สิ่งที่เกิดขึ้นจริงภายในเรื่อง ข้อเท็จจริงที่ยืนยันได้ และสิ่งที่ยังไม่แน่นอน วาง ending ก่อนย้อนปลูก clues โดยเคสจริงต้องไม่เปลี่ยนหลักฐานให้เข้ากับ ending ที่อยากได้
-- **Scene / beat list**: IDs, หน้าที่ของฉาก เหตุ–ผล สิ่งที่เปลี่ยน และช่วงเวลาประมาณ แยกบริบทของเรื่องจากเวลาที่ผ่านในคลิป
-- **บทเต็ม**: narration/dialogue ภาษาไทยที่จะพูดจริง แยกซับที่ย่อหรือเปลี่ยนถ้อยคำออกจาก VO พร้อม pauses และ sound/story events ที่จำเป็น ไม่ส่งเพียง synopsis แทนบท
-- **Clue ledger**: `CL01`, จุดปลูก/beat, สิ่งที่คนดูสังเกตได้, ความหมายแรก, ความหมายหลังเฉลย และจุด payoff แยกเบาะแสในนิยายออกจากหลักฐานจริงที่อ้างกับคนดู
-- **Claim mapping**: factual sentence/beat → `F001` → `SRC001` และ locator; ข้อใหม่ที่ยังไม่มีหลักฐานใช้สถานะ `needs-research`
-- **Handoff ให้ Film → Mark**: ข้อมูลที่ต้องเห็น/ได้ยิน ข้อมูลที่ต้องซ่อนจนถึง beat ใด continuity สำคัญ และข้อจำกัดของเรื่อง Film เลือก visual/technical approach ตาม [workflow brief](film-visual-brief-workflow.md) แล้ว Mark แตกบอร์ด ทั้งคู่รับ script/review revision ตรงกัน
-- **Change log / open questions**: revision นี้เปลี่ยนอะไร กระทบ claims/clues/ฉากไหน และอะไรต้องให้โบ็ตตรวจใหม่
+- **Story core:** logline, central question, character intention/obstacle, intended feeling and learning takeaway.
+- **Truth and ending:** what actually happens within the story, verified facts and remaining uncertainty. Choose the ending before planting clues; for real cases, preserve the evidence rather than bending it to a preferred ending.
+- **Scene / beat list:** IDs, scene purpose, causal links, what changes and estimated timing. Distinguish story-world time from elapsed video time.
+- **Full script:** the actual spoken Thai narration/dialogue, with pauses and necessary sound/story events. Identify subtitles that shorten or change VO wording separately. A synopsis is not a full script.
+- **Clue ledger:** `CL01`, plant/beat, observable information, initial interpretation, post-reveal interpretation and payoff. Distinguish fictional clues from real evidence presented to viewers.
+- **Claim mapping:** factual sentence/beat → `F001` → `SRC001` and locator. Mark unsupported new claims `needs-research`.
+- **Film → Mark handoff:** what must be seen/heard, what must stay hidden until which beat, essential continuity and story constraints. Film chooses the approach using the [brief workflow](film-visual-brief-workflow.md); Mark develops the boards. Both receive matching script/review revisions.
+- **Change log / open questions:** changes in this revision, affected claims/clues/scenes and Boat's recheck scope.
 
-แพรวเลือกงานสร้างสรรค์ตาม brief เองได้ รวมหัวข้อเมื่อได้รับโจทย์เปิด hook, beats และ twist อ่านออกเสียงหรือใช้เสียงทดลองก่อนอ้างว่า timing ลงตัว; ตัวเลขคำภาษาไทยอย่างเดียวไม่ยืนยันความยาวจริง กฎช่องใช้ตาม AGENTS.md ส่วนโครง 45 วินาทีเป็นแนวทดลอง ไม่ใช่สูตรบังคับทุกเรื่อง
+Preaw makes routine creative decisions within the brief, including the topic for an open assignment, hook, beats and twist. Read aloud or use test audio before claiming the timing works; a Thai word count alone does not establish duration. Follow the channel rules linked from AGENTS.md. The 45-second structure is an experiment, not a required formula.
 
-จบ draft เมื่อช่วงบทที่ร้องขอมีบทพากย์เต็มและ beats/clues/claims ครบตามความเกี่ยวข้อง พร้อม gaps ที่ชัดเจน งานที่มี premise-critical gap ยังเป็น draft สำหรับค้นข้อมูลต่อ
+A draft is complete when the requested scope has full spoken wording and applicable beats/clues/claims, with visible gaps. A premise-critical gap keeps it a draft requiring more research.
 
-## Fact-check — โบ็ต
+<a id="fact-check--โบ็ต"></a>
+## Fact-check — Boat
 
-ระบุ script path/revision และ research revision ที่ตรวจ อ่านบททั้งฉบับแล้วตรวจทุก assertion รวม hook, ชื่อคลิปที่ให้มา, ซับ, ตัวเลข, คำอ้าง, เหตุและผล และข้อความความรู้ในภาพที่ระบุไว้ ไม่จัดคำพูดหรือความเชื่อตัวละครเป็นความจริงของผู้บรรยายโดยอัตโนมัติ
+Identify the script path/revision and research revision reviewed. Read the whole script and check every assertion, including hook, supplied video title, subtitles, quantities, quotations, causality and knowledge conveyed by proposed visuals. Character speech or belief is not automatically a narrator assertion.
 
-| Claim / location | ถ้อยคำที่ตรวจ | ประเภท | Verdict | Evidence + locator | เหตุผล / คำแก้ / ผลต่อเรื่อง |
+| Claim / location | Exact wording checked | Classification | Verdict | Evidence + locator | Reason / correction / story impact |
 | --- | --- | --- | --- | --- | --- |
-| `F001` / beat ID | ข้อความตรงจาก revision นี้ | fact / report / hypothesis / fiction | ค่าด้านล่าง | `SRC001` + section | ... |
+| `F001` / beat ID | Wording from this revision | fact / report / hypothesis / fiction | Vocabulary below | `SRC001` + section | ... |
 
-Verdicts: `supported` = หลักฐานรองรับถ้อยคำและขอบเขตนี้; `needs-qualification` = ต้องลดระดับ/เติมเงื่อนไข; `contradicted` = มีหลักฐานขัดกับคำกล่าว; `unverified` = ยังยืนยันไม่ได้; `not-factual` = เนื้อหานิยาย/การประเมินที่ไม่ได้อ้างเป็น fact โดยยังตรวจว่าการนำเสนอทำให้เข้าใจผิดหรือไม่
+Verdicts: `supported` means the evidence supports this wording and scope; `needs-qualification` requires weaker wording or conditions; `contradicted` means evidence conflicts with the assertion; `unverified` means it remains unconfirmed; `not-factual` covers fiction/judgment not asserted as fact, while still checking whether presentation misleads.
 
-ข้อผิดพลาดที่ทำลาย premise, reveal หรือ learning takeaway ให้รายงานก่อนรายละเอียดจุกจิก โบ็ตเสนอ wording ที่ถูกและผลต่อ beats/clues; แพรวเป็นผู้ rewrite บท การแก้ข้อเท็จจริงต้องไม่ถูกหักมุมท้ายคลิปให้คนดูจำความรู้ผิดอีก
+Report errors affecting the premise, reveal or learning takeaway before minor details. Boat proposes accurate wording and beat/clue impact; Preaw rewrites the story. The final twist must preserve factual corrections so viewers do not leave with the wrong knowledge.
 
-สรุปผลสำหรับ revision ที่ระบุเท่านั้น: `revision-required`, `verification-incomplete` หรือ `ready-for-storyboard` เมื่อไม่มี factual gap ที่กระทบเรื่อง/ความรู้ค้าง และข้อจำกัดที่จำเป็นปรากฏในบทแล้ว Readiness ไม่ใช่การอ้างว่าผู้ใช้อนุมัติ หรือว่าจะไม่มีข้อผิดพลาดหลงเหลือ
+Conclude for the named revision only: `revision-required`, `verification-incomplete`, or `ready-for-storyboard` when no story/knowledge-critical factual gaps remain and necessary qualifications appear in the script. Readiness neither records user approval nor guarantees that no error remains.
 
-เมื่อบทเปลี่ยน revision ให้ทำ change impact ต่อ factual wording และ claims ที่พึ่งพากัน ตรวจซ้ำรายการที่ได้รับผลกระทบและบันทึก coverage ของฉบับใหม่ ใช้ผลเก่าได้เฉพาะส่วนที่ตรวจว่าไม่เปลี่ยนและไม่มีหลักฐานใหม่ขัดกัน
+After a script revision, assess changes to factual wording and dependent claims. Recheck affected items and record coverage of the new revision. Reuse earlier results only after checking that the wording is unchanged and no new contrary evidence applies.
 
-## ส่งต่อและตรวจบทก่อนลงทุนทำภาพ
+<a id="ส่งต่อและตรวจบทก่อนลงทุนทำภาพ"></a>
+## Handoff and editorial check before visual production
 
-ก่อนส่ง Film แพรวตรวจว่า hook ได้ payoff, ทุกฉากขยับเรื่อง, twist ย้อนเข้าใจได้ และความรู้มีผลต่อ plot โบ็ตตรวจ facts แยกอีก pass Film รับ script/review revision ที่สอดคล้องกันเพื่อทำ visual/technical brief แล้ว Mark รับชุดเดียวกันพร้อม brief revision; ข้อผิดพลาดด้านบทส่งกลับแพรว/โบ็ต แนวทางภาพและวิธีผสานเป็นงาน Film รายละเอียด storyboard เป็นงาน Mark โค้ดและผลทดลองเป็นงาน Boss
+Before handing off to Film, Preaw checks hook/payoff, scene progression, fair twist logic and the knowledge's role in the plot. Boat checks facts in a separate pass. Film receives matching script/review revisions for the visual/technical brief; Mark receives those revisions with the brief revision. Return script issues to Preaw/Boat, approach/integration issues to Film, board details to Mark and code/experimental proof to Boss.
 
-ผู้ใช้สามารถขอ rough storyboard จาก draft ได้ ให้ระบุ revision และ unresolved claims ที่อาจทำให้ต้องแก้ภาพ บทที่สร้างหรือผลตรวจที่พร้อมไม่ได้หมายความว่าได้รับอนุมัติแล้ว ถ้า animatic เผยปัญหาจังหวะ ให้ย้อนแก้บท พร้อมปรับ revision และตรวจ factual/continuity impact
+The user may request rough boards from a draft. Identify the revision and unresolved claims that may require visual changes. A completed script or ready factual review does not imply approval. If an animatic exposes timing problems, revise the script, increment its revision and check factual/continuity impact.
 
-## หลักการและแหล่งอ้างอิง
+<a id="หลักการและแหล่งอ้างอิง"></a>
+## Principles and sources
 
-ดู [scriptwriting-principles.md](scriptwriting-principles.md) สำหรับ hook, intention/obstacle, causality, fair twists, การแทรกความรู้และวิธีตรวจหลักฐาน ส่วนคำสั่งแต่ละ agent อยู่ใน `.codex/agents/preaw.toml` และ `.codex/agents/boat.toml` รูปแบบ config อ้างอิง [OpenAI custom agents](https://learn.chatgpt.com/docs/agent-configuration/subagents#custom-agents)
+Use [scriptwriting-principles.md](scriptwriting-principles.md) for hooks, intention/obstacle, causality, fair twists, educational integration and evidence checks. Agent instructions live in `.codex/agents/preaw.toml` and `.codex/agents/boat.toml`. Config reference: [OpenAI custom agents](https://learn.chatgpt.com/docs/agent-configuration/subagents#custom-agents).

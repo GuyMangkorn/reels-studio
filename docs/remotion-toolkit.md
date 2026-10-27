@@ -1,6 +1,6 @@
 # Remotion toolkit for scene authors and agents
 
-Read this before implementing or reviewing subtitles, overlays, camera effects, transitions or sound cues. [AGENTS.md](../AGENTS.md) owns production direction and asset conventions. This guide owns tool selection and integration recipes; `package.json` and the installed types own available versions and signatures.
+Read this before implementing or reviewing subtitles, overlays, camera effects, transitions or sound cues. [Production requirements](production-requirements.md) own production direction and asset conventions; [runtime contract](runtime-contract.md) identifies implementation evidence. This guide owns tool selection and integration recipes; `package.json` and the installed types own available versions and signatures.
 
 ## 1. Check the active checkout
 
@@ -9,13 +9,13 @@ npm ls --depth=0
 npx remotion versions
 ```
 
-Inspect `src/scenes/types.ts`, `validateTimeline` in `src/scenes/timeline.ts`, `src/scenes/SceneRenderer.tsx` and `src/Root.tsx`. Check asset registries before drawing or adding a dependency. Read `scripts/render.mjs` before exporting because branches can select different timelines and audio.
+Inspect `package.json`, `src/scenes/types.ts`, `validateTimeline` in `src/scenes/timeline.ts`, `src/scenes/SceneRenderer.tsx` and `src/Root.tsx`. Check asset registries before drawing or adding a dependency. Read `scripts/render.mjs` before exporting because branches can select different timelines and audio.
 
-The executable timeline is a `Scene[]`. The baseline supports `durationSec`, `bg`, `actors`, `subtitle` and the optional fields in its types. In this toolkit change, the packages below are installed, but automatic text fitting, timed captions, scene transitions, SFX dispatch, `RuleCard` and `PhoneChat` are **recipes to implement**, not new runtime features. Existing scene behavior is unchanged. Camera and Three.js integration may be present on another branch; confirm the actual modules and dependencies first.
+The executable timeline is a `Scene[]`. The baseline supports `durationSec`, `bg`, `actors`, `subtitle` and the optional fields in its types. The package inventory and integration statements below describe the toolkit change that introduced this guide, not a fresh audit of the active checkout. Automatic text fitting, timed captions, scene transitions, SFX dispatch, `RuleCard` and `PhoneChat` were documented as **recipes to implement**, not features registered by that change. Confirm current modules, dependencies and dispatch before classifying any capability. See [planned visual components](planned-visual-components.md) for design specifications.
 
 ## 2. Choose by the shot's need
 
-| Shot requirement | Installed tool | Put the reusable implementation here |
+| Shot requirement | Tool to verify in the checkout | Put the reusable implementation here |
 | --- | --- | --- |
 | Fit a Thai heading, subtitle or bubble within a safe region | `@remotion/layout-utils` + `@remotion/fonts` | `src/scenes/` text layout helper, or the owning overlay |
 | Pop a card, slide a phone, fade a title, combine CSS transforms | `@remotion/animation-utils` + core `spring` / `interpolate` | `src/assets/overlays/` |
@@ -37,7 +37,7 @@ Use core `spring()` for spring progress, `interpolate()` for numbers, `interpola
 2. Implement the missing behavior in its shared owner. Keep SVG, geometry, layout and package imports there; the episode selects ids and parameters.
 3. When exposing it to JSON, update `types.ts`, `validateTimeline` and `SceneRenderer.tsx` together. Validate known ids, finite numbers, bounds, ordering and the chosen clock. Add meaningful validation/timing tests for the new behavior.
 4. Match the storyboard in both Short and Long. Keep screen overlays and subtitles outside camera transforms. World objects remain in the camera's coordinate system.
-5. Check start, key action/reveal, end and random-seek frames; use the package-specific checks below. Follow the issue/PR workflow in AGENTS.md.
+5. Check start, key action/reveal, end and random-seek frames; use the package-specific checks below. Follow the [issue/PR workflow](contributing.md).
 
 The examples below are independent authoring recipes, not registered assets. A copied component still needs shared placement, schema integration where applicable and visual verification before a timeline can select it.
 
@@ -75,11 +75,11 @@ export async function fitThaiHeading(text: string, width: number) {
 
 This helper is for a short, single-line heading. The 44–72 px range is this recipe's choice, not a replacement subtitle specification. Call async measurement from the shared component's loading effect; gate rendering with `useDelayRender`, continue only after layout is ready, and route failures to `cancelRender`. Account for unmounting when updating state.
 
-Thai needs a word-boundary policy. In the installed 4.0.538 implementation, `fitTextOnNLines()` splits on spaces. For unspaced Thai, use authored breaks or `Intl.Segmenter('th', {granularity: 'word'})`, then measure each **whole candidate line** so shaping is retained. Preserve punctuation and authored spaces. Prefer another subtitle cue/page to unreadably small text. Reserve space for vowel/tone marks, line height, dark stroke and platform controls; width fitting alone does not prove a subtitle fits vertically. Inspect real Thai glyphs in both outputs.
+Thai needs a word-boundary policy. In the recorded 4.0.538 implementation, `fitTextOnNLines()` splits on spaces. For unspaced Thai, use authored breaks or `Intl.Segmenter('th', {granularity: 'word'})`, then measure each **whole candidate line** so shaping is retained. Preserve punctuation and authored spaces. Prefer another subtitle cue/page to unreadably small text. Reserve space for vowel/tone marks, line height, dark stroke and platform controls; width fitting alone does not prove a subtitle fits vertically. Inspect real Thai glyphs in both outputs.
 
 ## 5. Overlay motion: animation-utils
 
-Use [makeTransform](https://www.remotion.dev/docs/animation-utils/make-transform) for ordered CSS transforms and [interpolateStyles](https://www.remotion.dev/docs/animation-utils/interpolate-styles) for style keyframes. Create the card/phone once under `src/assets/overlays/`; use the design props in AGENTS.md when implementing them.
+Use [makeTransform](https://www.remotion.dev/docs/animation-utils/make-transform) for ordered CSS transforms and [interpolateStyles](https://www.remotion.dev/docs/animation-utils/interpolate-styles) for style keyframes. Create the card/phone once under `src/assets/overlays/`; use the [planned visual component contracts](planned-visual-components.md) when implementing them.
 
 ```tsx
 import {makeTransform, scale, translateY} from '@remotion/animation-utils';
@@ -169,7 +169,7 @@ export const DissolveExample = () => <TransitionSeries>
 </TransitionSeries>;
 ```
 
-This example lasts **228 frames**, because the 12-frame overlap is subtracted from 240. The baseline `timelineFrames()` currently sums durations without overlaps. Before enabling JSON transitions, update scene starts and total duration together with composition metadata, narration, amplitude sampling, captions and ending holds. Preserve storyboard timing by defining whether supplied durations include the overlap. A transition must fit within both adjacent shots. Use a single shared timing calculation rather than separately adjusting the audio and picture.
+This example lasts **228 frames**, because the 12-frame overlap is subtracted from 240. The documented baseline `timelineFrames()` sums durations without overlaps; inspect its current implementation before integrating transitions. Before enabling JSON transitions, update scene starts and total duration together with composition metadata, narration, amplitude sampling, captions and ending holds. Preserve storyboard timing by defining whether supplied durations include the overlap. A transition must fit within both adjacent shots. Use a single shared timing calculation rather than separately adjusting the audio and picture.
 
 Keep subtitles legible during a dissolve; fading two complete SceneViews together can put two subtitle lines on top of each other. Choose the active subtitle separately from picture transitions. Test a cut, a transition, the shortest permitted shot, the overlap boundary, both ending variants and the last-to-first loop seam.
 
@@ -216,7 +216,7 @@ Wrap and name channel symbols once in the shared asset library, then expose para
 
 `npm run lint` applies Remotion's flat config plus TypeScript and Hooks rules to `src` and `tests`. `npm run typecheck` remains responsible for TypeScript contract checking. New runtime behavior also needs relevant tests and storyboard-frame checks.
 
-The installed ESLint 10 requires Node.js 20.19+, 22.13+, or 24+. Check `node --version` when setting up another machine.
+The documented ESLint 10 setup requires Node.js 20.19+, 22.13+, or 24+. Check `node --version` when setting up another machine.
 
 ```bash
 npm run lint
@@ -229,6 +229,6 @@ npx remotion render src/index.ts Long out/long-check.mp4 --frames=0-5
 
 For a silent CLI check when local narration is absent, add `--props='{"narration":null}'`. The standalone render helper can still require a local audio file; inspect it first. A render of frames 0–5 only proves startup: add frames covering the changed text, pop-in, noise, caption, transition or reveal, and listen to changed sound cues.
 
-Keep direct `remotion` and `@remotion/*` dependencies at one exact version; this installation uses **4.0.538**. Use `npx remotion add @remotion/<package>` to select the matching version, inspect the resulting dependency section, and place lint-only tools in `devDependencies`. Pin any newly added tool versions and commit both manifest and lockfile. Run `npm ci` to verify a fresh installation. Do not upgrade the whole renderer just to add one helper.
+Keep direct `remotion` and `@remotion/*` dependencies at one exact version; the documented toolkit installation used **4.0.538**; verify the active manifest and installed versions. Use `npx remotion add @remotion/<package>` to select the matching version, inspect the resulting dependency section, and place lint-only tools in `devDependencies`. Pin any newly added tool versions and commit both manifest and lockfile. Run `npm ci` to verify a fresh installation. Do not upgrade the whole renderer just to add one helper.
 
 Add another package only when a shot or product requirement needs it. Google Fonts downloads, transcription engines, Lottie/Rive, an embedded Player and cloud rendering are separate decisions. The current local font, Niwat generation, RMS mouth driver and CLI render pipeline already have owners; extend them deliberately rather than introducing a second competing system.

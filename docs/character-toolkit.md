@@ -1,12 +1,12 @@
-# reels-studio
+# Character toolkit
 
 Thai YouTube studio for Shorts and long-form videos, built with Remotion. Read [AGENTS.md](../AGENTS.md) before making changes. Repository: [GuyMangkorn/reels-studio](https://github.com/GuyMangkorn/reels-studio).
 
-## Character work in progress
+## Reference snapshot and implementation status
 
-This branch imports the existing Reels Creator character work for review. It replaces the original seven-second narrated rig demo with a narrated twenty-second JSON demo and introduces a different Character API. `Short` and `Long` remain the render IDs; `Rig2DDemo` and the original `Pose`/`Costume` API are not carried over by this import. Audio-driven mouth movement is restored on the Joint rig using a committed per-frame RMS envelope. Existing callers need migration before merging.
+This guide records the character import that replaced the original seven-second narrated rig demo with a twenty-second JSON demo. It introduced a different Character API; `Short` and `Long` remained the render IDs, while `Rig2DDemo` and the original `Pose`/`Costume` API were not carried over. Audio-driven mouth movement was restored on the Joint rig with a committed per-frame RMS envelope. Migration requirements described that import, not a fresh review of current callers.
 
-`AGENTS.md` is preserved from `main`; its descriptions of the original files and API still refer to that baseline. The implementation below documents this branch. Production story lengths described in `AGENTS.md` remain future work; the included timeline is an asset demonstration.
+Treat APIs, inventory, demo durations and verification below as a reference snapshot. Confirm exported types, validators, registries, package scripts and the selected timeline in the active checkout before using them. [Runtime contract](runtime-contract.md) owns implementation-status rules; [production requirements](production-requirements.md) own output requirements. The included demo is development material, not the required length of a publishable story.
 
 ## Little Wander — reusable cut-out animation
 
@@ -141,4 +141,4 @@ For a new prop, add artwork on the 240×240 prop canvas, then update `PropName`,
 
 ## Verification
 
-`npm run typecheck` and `npm test` verify contracts and deterministic math. QA stills at frames 90, 210, 330, 450 and 570 cover all five scenes in both aspect ratios. Final exports can be checked with Remotion's bundled ffprobe. The project pins all Remotion packages to 4.0.538 and overrides Zod to exactly 4.5.4, matching the version required by the installed Remotion packages. MP3/MP4 outputs and `docs/superpowers/` remain ignored.
+`npm run typecheck` and `npm test` verify contracts and deterministic math. QA stills at frames 90, 210, 330, 450 and 570 cover all five scenes in both aspect ratios. Final exports can be checked with Remotion's bundled ffprobe. The recorded setup pinned all Remotion packages to 4.0.538 and overrode Zod to exactly 4.5.4 to match that Remotion installation; verify current manifest/lockfile values before relying on them. MP3/MP4 outputs and `docs/superpowers/` remain ignored.
