@@ -1,15 +1,15 @@
 import {useCurrentFrame, useVideoConfig} from 'remotion';
 import {Joint} from './Joint';
 import {CAT_SEATED_BODY_DROP_UNITS} from './geometry';
-export type AnimalProps = {x?: number; y?: number; scale?: number; flip?: boolean; pose?: 'idle' | 'walk' | 'sit' | 'wave'; color?: string; frame?: number; physicalPose?: boolean; physicalSitWeight?: number; physicalWalkWeight?: number};
+export type AnimalProps = {x?: number; y?: number; scale?: number; flip?: boolean; pose?: 'idle' | 'walk' | 'sit' | 'wave'; color?: string; frame?: number; physicalPose?: boolean; physicalSitWeight?: number; physicalWalkWeight?: number; physicalBodyDropUnits?: number};
 /** Shared quadruped skeleton; species supply silhouette, ears, muzzle and tail. */
-export const Animal = ({species, x = 0, y = 0, scale = 1, flip = false, pose = 'idle', color, frame: clock, physicalPose = false, physicalSitWeight, physicalWalkWeight}: AnimalProps & {species: 'dog' | 'cat'}) => {
+export const Animal = ({species, x = 0, y = 0, scale = 1, flip = false, pose = 'idle', color, frame: clock, physicalPose = false, physicalSitWeight, physicalWalkWeight, physicalBodyDropUnits = CAT_SEATED_BODY_DROP_UNITS}: AnimalProps & {species: 'dog' | 'cat'}) => {
   const current = useCurrentFrame(); const {fps} = useVideoConfig(); const t = (clock ?? current) / fps; const dog = species === 'dog';
   const fur = color ?? (dog ? '#eab278' : '#c7b5e7'); const p = t * Math.PI * 2 / 0.7;
   const walking = pose === 'walk'; const sitting = pose === 'sit';
   const sitWeight = physicalPose ? Math.max(0, Math.min(1, physicalSitWeight ?? (sitting ? 1 : 0))) : (sitting ? 1 : 0);
   const walkWeight = physicalPose ? Math.max(0, Math.min(1, physicalWalkWeight ?? (walking ? 1 : 0))) : (walking ? 1 : 0);
-  const bodyDrop = physicalPose && !dog ? CAT_SEATED_BODY_DROP_UNITS * sitWeight : 0;
+  const bodyDrop = physicalPose && !dog ? physicalBodyDropUnits * sitWeight : 0;
   const bodyBob = -Math.abs(Math.sin(p)) * 4 * walkWeight + Math.sin(t * 3) * 1.3 * (1 - walkWeight) * (1 - sitWeight);
   return <svg aria-label={`${species} cut-out rig`} viewBox="-150 -170 300 210" width={300 * scale} height={210 * scale} style={{position: 'absolute', left: x - 150 * scale, top: y - 200 * scale, overflow: 'visible'}}>
     <g transform={`scale(${flip ? -1 : 1} 1)`}>

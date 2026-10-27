@@ -21,6 +21,7 @@ export type PropSpec = {
   physicalEstimate?: {widthM: number; heightM: number; solidBounds: SolidBounds2D};
 };
 export type PropProps = {
+  shortCard?: boolean;
   color?: string;
   night?: boolean;
   label?: string;
@@ -118,22 +119,22 @@ const Pacman = ({x, y, angle}: {x: number; y: number; angle: number}) => <g tran
   <circle r={22} fill="#4a3b3b"/>
   <path d="M0 0 L24 -12 L24 12Z" fill="#fff9ee"/>
 </g>;
-export const CatboxStimulus = ({variant = 'square', label = 'รูปกระดาษ'}: PropProps) => {
+export const CatboxStimulus = ({shortCard, variant = 'square', label = 'รูปกระดาษ'}: PropProps) => {
   const turns = variant === 'outward-control' ? [225, 315, 45, 135] : [45, 135, 225, 315];
   return <>
     <rect x={14} y={19} width={212} height={202} rx={19} fill="#fff9ee" stroke="#766b79" strokeWidth={4}/>
-    <SvgLines text={label} x={120} y={47} size={30} fill="#59627d" weight={800} anchor="middle"/>
+    <SvgLines text={label} x={120} y={47} size={shortCard ? 30 : 15} fill="#59627d" weight={800} anchor="middle"/>
     {variant === 'square' ? <rect x={67} y={76} width={106} height={106} fill="none" stroke="#4a3b3b" strokeWidth={8}/> : <>
       <Pacman x={83} y={94} angle={turns[0]}/><Pacman x={157} y={94} angle={turns[1]}/><Pacman x={157} y={166} angle={turns[2]}/><Pacman x={83} y={166} angle={turns[3]}/>
     </>}
   </>;
 };
 
-export const CatboxFolder = ({label = 'แฟ้มหลักฐาน'}: PropProps) => <g stroke="#5a4f60" strokeWidth={4} strokeLinejoin="round">
+export const CatboxFolder = ({shortCard, label = 'แฟ้มหลักฐาน'}: PropProps) => <g stroke="#5a4f60" strokeWidth={4} strokeLinejoin="round">
   <path d="M24 61 H94 L111 80 H216 V211 H24Z" fill="#d7c4ad"/>
   <path d="M24 81 H216 V211 H24Z" fill="#eee0ca"/>
   <path d="M36 97 H204 V192 H36Z" fill="#fff8ea" stroke="#b79d86" strokeWidth={2}/>
-  <SvgLines text={label} x={120} y={139} size={36} weight={800} anchor="middle"/>
+  <SvgLines text={label} x={120} y={139} size={shortCard ? 36 : 22} weight={800} anchor="middle"/>
   <path d="M55 159 H185 M55 176 H162" stroke="#c4b6a8" strokeWidth={3} strokeLinecap="round"/>
 </g>;
 
@@ -144,16 +145,29 @@ const toneColors: Record<PropTone, {fill: string; tab: string; edge: string}> = 
   fiction: {fill: '#edf2fa', tab: '#c3d2eb', edge: '#64718f'},
   neutral: {fill: '#fff9ec', tab: '#e8d7c4', edge: '#766b79'},
 };
-export const CatboxCard = ({label = 'บันทึก', detail = '', tone = 'neutral'}: PropProps) => {
+export const CatboxCard = ({label = 'บันทึก', detail = '', tone = 'neutral', shortCard = false}: PropProps) => {
   const color = toneColors[tone];
-  return <>
+  if (!shortCard) return <>
     <rect x={13} y={19} width={214} height={202} rx={17} fill={color.fill} stroke={color.edge} strokeWidth={4}/>
-    <path d="M30 20 H210 Q225 20 225 35 V98 H15 V35 Q15 20 30 20Z" fill={color.tab}/>
-    <SvgLines text={label} x={120} y={44} size={34} weight={800} anchor="middle" maxGraphemes={10}/>
-    <path d="M30 98 H210" stroke="#cabdaf" strokeWidth={2}/>
-    <SvgLines text={detail} x={30} y={122} size={20} fill="#403a42" weight={600} maxGraphemes={12}/>
+    <path d="M30 20 H210 Q225 20 225 35 V59 H15 V35 Q15 20 30 20Z" fill={color.tab}/>
+    <SvgLines text={label} x={120} y={47} size={16} weight={800} anchor="middle"/>
+    <path d="M30 72 H210" stroke="#cabdaf" strokeWidth={2}/>
+    <SvgLines text={detail} x={30} y={99} size={13} fill="#403a42" weight={600}/>
     {tone === 'warning' && <path d="M31 194 H209" stroke="#d89559" strokeWidth={4} strokeLinecap="round"/>}
     {tone === 'hypothesis' && <text x={204} y={208} fill="#a36b49" fontSize={17} textAnchor="end" fontFamily="Noto Sans Thai, sans-serif" fontWeight={800}>?</text>}
+  </>;
+  const labelLines = label.split('\n').flatMap(line => wrapThai(line, 10));
+  const detailLines = detail.split('\n').flatMap(line => wrapThai(line, 12));
+  const divider = Math.max(98, 80 + (labelLines.length - 1) * 38);
+  const bottom = Math.max(221, divider + 44 + Math.max(0, detailLines.length - 1) * 24 + 25);
+  return <>
+    <rect x={13} y={19} width={214} height={bottom - 19} rx={17} fill={color.fill} stroke={color.edge} strokeWidth={4}/>
+    <path d={`M30 20 H210 Q225 20 225 35 V${divider} H15 V35 Q15 20 30 20Z`} fill={color.tab}/>
+    <SvgLines text={label} x={120} y={62} size={34} weight={800} anchor="middle" maxGraphemes={10}/>
+    <path d={`M30 ${divider} H210`} stroke="#cabdaf" strokeWidth={2}/>
+    <SvgLines text={detail} x={30} y={divider + 32} size={22} fill="#403a42" weight={600} maxGraphemes={12}/>
+    {tone === 'warning' && <path d={`M31 ${bottom - 14} H209`} stroke="#d89559" strokeWidth={4} strokeLinecap="round"/>}
+    {tone === 'hypothesis' && <text x={204} y={bottom - 12} fill="#a36b49" fontSize={17} textAnchor="end" fontFamily="Noto Sans Thai, sans-serif" fontWeight={800}>?</text>}
   </>;
 };
 

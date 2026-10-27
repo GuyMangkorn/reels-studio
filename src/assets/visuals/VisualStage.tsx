@@ -289,8 +289,8 @@ export const VisualStage = ({visual, frame, fps, width, height, physical = false
       const message = visual.id === 'evidence-sort' ? 'ครั้งนี้ยังไม่รู้' : 'เห็นการกระทำ\nยังไม่รู้เหตุที่เข้าไป';
       const written = message.slice(0, Math.ceil(message.length * revealProgress));
       return revealProgress > 0 && written.length > 0 ? <g>
-        <Paper x={width * 0.62} y={height * 0.33} w={width * 0.32} h={144} fill={colors.cream}>
-          <LineText x={width * 0.78} y={height * 0.33 + 83} text={written} size={36}/>
+        <Paper x={width * 0.62} y={height * 0.71} w={width * 0.32} h={144} fill={colors.cream}>
+          <LineText x={width * 0.78} y={height * 0.71 + 83} text={written} size={36}/>
         </Paper>
       </g> : null;
     })()}

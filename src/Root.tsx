@@ -1,6 +1,7 @@
 import {Composition} from 'remotion';
 import {SceneRenderer, type SceneRendererProps} from './scenes/SceneRenderer';
 import catboxBlockout from '../scripts/cat-boxes/blockout.json';
+import catboxLongBlockout from '../scripts/cat-boxes/blockout-long.json';
 import catboxShortC01 from '../scripts/cat-boxes/short-c01.json';
 import catboxShortC02 from '../scripts/cat-boxes/short-c02.json';
 import catboxShortC03 from '../scripts/cat-boxes/short-c03.json';
@@ -24,6 +25,6 @@ const catboxShorts: Array<{id: string; timeline: Timeline}> = [
 catboxShorts.forEach(short => validateTimeline(short.timeline));
 export const Root = () => <>
   <Composition id="Short" component={Episode} width={1080} height={1920} fps={30} durationInFrames={16200} defaultProps={{timeline: catboxTimeline, ending: 'B_loop' as const, sceneTransitionFrames: 12, loopFadeFrames: 12}} calculateMetadata={({props}: {props: {timeline?: Timeline}}) => ({durationInFrames: timelineFrames(props.timeline ?? catboxTimeline, 30)})}/>
-  <Composition id="Long" component={Episode} width={1920} height={1080} fps={30} durationInFrames={16200} defaultProps={{timeline: catboxTimeline, ending: 'B_loop' as const}} calculateMetadata={({props}: {props: {timeline?: Timeline}}) => ({durationInFrames: timelineFrames(props.timeline ?? catboxTimeline, 30)})}/>
-  {catboxShorts.map(({id, timeline}) => <Composition key={id} id={id} component={Episode} width={1080} height={1920} fps={30} durationInFrames={1350} defaultProps={{timeline, ending: 'A_fade' as const, loopFadeFrames: 12}} calculateMetadata={({props}: {props: {timeline?: Timeline}}) => ({durationInFrames: timelineFrames(props.timeline ?? timeline, 30)})}/>)}
+  <Composition id="Long" component={Episode} width={1920} height={1080} fps={30} durationInFrames={16200} defaultProps={{timeline: catboxLongBlockout as Timeline, ending: 'B_loop' as const}} calculateMetadata={({props}: {props: {timeline?: Timeline}}) => ({durationInFrames: timelineFrames(props.timeline ?? (catboxLongBlockout as Timeline), 30)})}/>
+  {catboxShorts.map(({id, timeline}) => <Composition key={id} id={id} component={Episode} width={1080} height={1920} fps={30} durationInFrames={1350} defaultProps={{timeline, ending: 'A_fade' as const, loopFadeFrames: 12, sceneTransitionFrames: 12}} calculateMetadata={({props}: {props: {timeline?: Timeline}}) => ({durationInFrames: timelineFrames(props.timeline ?? timeline, 30)})}/>)}
 </>;

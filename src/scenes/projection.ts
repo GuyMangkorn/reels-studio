@@ -9,6 +9,7 @@ export type ProjectedView = {
   pixelsPerMeter: number;
   letterboxX: number;
   letterboxY: number;
+  portrait: boolean;
 };
 
 export function worldToOutputPoint(point: {x: number; y: number}, view: ProjectedView) {
@@ -51,6 +52,7 @@ export function orthographicViewAt(projection: OrthographicProjection, width: nu
     pixelsPerMeter,
     letterboxX,
     letterboxY,
+    portrait,
   };
 }
 
@@ -95,7 +97,8 @@ export function layoutWorldActor(actor: Actor, point: {x: number; y: number; dir
   const spec = actor.type === 'narrator' || actor.type === 'cat' ? PHYSICAL_ACTOR_SPECS[actor.type] : undefined;
   if (!spec) throw new Error(`No physical-scale spec for actor ${actor.type}`);
   const position = worldToOutputPoint(point, view);
-  const scaleY = spec.heightM / (spec.solidBounds.bottom - spec.solidBounds.top) * view.pixelsPerMeter;
+  const heightM = actor.type === 'cat' && !view.portrait ? 0.45 : spec.heightM;
+  const scaleY = heightM / (spec.solidBounds.bottom - spec.solidBounds.top) * view.pixelsPerMeter;
   return {
     ...position,
     scale: scaleY,

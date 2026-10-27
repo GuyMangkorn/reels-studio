@@ -1,4 +1,4 @@
-import {AbsoluteFill, Audio, staticFile, Sequence, useCurrentFrame, useVideoConfig, interpolate} from 'remotion';
+import {AbsoluteFill, Freeze, Audio, staticFile, Sequence, useCurrentFrame, useVideoConfig, interpolate} from 'remotion';
 import {sofaSeat} from '../assets/props/Sofa';
 import {poseWeightAt} from '../rig/poses';
 import {Background} from '../assets/Background';
@@ -66,7 +66,7 @@ const ProjectedSceneStage = ({scene, previous, poseFrame, width, height, fps, mo
       const pose = poseAt(actor, poseFrame, fps, previousPose);
       const sitWeight = actor.type === 'cat' ? poseWeightAt(track, 'sit', poseFrame, fps) : 0;
       const walkWeight = actor.type === 'cat' ? poseWeightAt(track, 'walk', poseFrame, fps) : 0;
-      return actor.type === 'narrator' ? <Character key={identity} {...actor} {...layout} pose={pose} frame={poseFrame} mouth={mouth} seatWeight={layout.seatWeight}/> : actor.type === 'cat' ? <Cat key={identity} {...layout} color={actor.color} pose={pose.to as 'idle' | 'walk' | 'sit' | 'wave'} frame={poseFrame} physicalPose physicalSitWeight={sitWeight} physicalWalkWeight={walkWeight}/> : <Dog key={identity} {...layout} color={actor.color} pose={pose.to as 'idle' | 'walk' | 'sit' | 'wave'} frame={poseFrame}/>;
+      return actor.type === 'narrator' ? <Character key={identity} {...actor} {...layout} pose={pose} frame={poseFrame} mouth={mouth} seatWeight={layout.seatWeight}/> : actor.type === 'cat' ? <Cat key={identity} {...layout} color={actor.color} pose={pose.to as 'idle' | 'walk' | 'sit' | 'wave'} frame={poseFrame} physicalPose physicalBodyDropUnits={portrait ? 24 : 46} physicalSitWeight={sitWeight} physicalWalkWeight={walkWeight}/> : <Dog key={identity} {...layout} color={actor.color} pose={pose.to as 'idle' | 'walk' | 'sit' | 'wave'} frame={poseFrame}/>;
     })}
     {worldProps('front')}
   </div>;
@@ -80,6 +80,7 @@ const SceneView = ({scene, index, total, previous, start, narration, ending}: {s
   const poseFrame = final ? state.poseFrame : frame;
   const sceneFrame = poseFrame;
   const pictureMove = pictureMoveAt(scene, sceneFrame, fps);
+  const ownerPoints = portrait && scene.actors.some(actor => actor.type === 'narrator' && poseAt(actor, sceneFrame, fps).to === 'point');
   const audioFrame = (start + frame - (narration?.startFrame ?? 0)) * (narration?.fps ?? fps) / fps;
   const mouth = narration ? mouthAt(narration.amplitude, audioFrame) : 0;
   const ink = night ? '#fff1da' : '#49445c';
@@ -107,10 +108,11 @@ const SceneView = ({scene, index, total, previous, start, narration, ending}: {s
     {scene.projection && scene.props?.filter(prop => prop.space === 'screen').map((prop, i) => {
       if (!propVisibleAt(prop, sceneFrame, fps, duration)) return null;
       const placement = layoutSceneProp(prop, width, height);
-      return <SceneProp key={`screen-${i}`} type={prop.type} x={placement.x} y={placement.y} size={placement.size} color={prop.color} night={night} label={prop.label} detail={prop.detail} variant={prop.variant} tone={prop.tone}/>;
+      return <SceneProp key={`screen-${i}`} shortCard={portrait} type={prop.type} x={placement.x} y={placement.y} size={placement.size} color={prop.color} night={night} label={prop.label} detail={prop.detail} variant={prop.variant} tone={prop.tone}/>;
     })}
+    {ownerPoints && <svg width={width * .34} height={height * .12} viewBox="0 0 370 230" style={{position: 'absolute', left: -28, top: height * .34, pointerEvents: 'none', zIndex: 2}} aria-label="เจ้าของชี้ไปที่กล่อง"><path d="M-10 58 H142 Q165 58 183 78 L245 139 Q257 151 244 164 L232 176 Q220 188 206 174 L155 126 Q143 114 128 114 H-10Z" fill="#ff8fa3" stroke="#55465a" strokeWidth="7" strokeLinejoin="round"/><path d="M180 81 Q200 66 215 77 L275 127 Q289 139 277 153 L263 167 Q251 179 238 166 L191 126 Q177 114 163 117 L142 120 Q125 123 122 107 Q119 92 136 87Z" fill="#ffd9b8" stroke="#55465a" strokeWidth="7" strokeLinejoin="round"/><path d="M268 132 L330 149 L287 163Z" fill="#ffd9b8" stroke="#55465a" strokeWidth="7" strokeLinejoin="round"/></svg>}
     {visualAt(scene.visuals, sceneFrame, fps) && <VisualStage visual={visualAt(scene.visuals, sceneFrame, fps)!} frame={sceneFrame} fps={fps} width={width} height={height} physical={Boolean(scene.projection)}/>}
-    {(scene.eyebrow || scene.title) && <div style={{position: 'absolute', left: width * .075, top: height * (portrait ? .085 : .067), color: ink, opacity: interpolate(frame, [0, 12], [0, 1], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'}), transform: `translateY(${interpolate(frame, [0, 18], [15, 0], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'})}px)`}}>
+    {(!portrait || scene.eyebrow || scene.title) && <div style={{position: 'absolute', left: width * .075, top: height * (portrait ? .085 : .067), color: ink, opacity: interpolate(frame, [0, 12], [0, 1], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'}), transform: `translateY(${interpolate(frame, [0, 18], [15, 0], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'})}px)`}}>
       {scene.eyebrow && <div style={{fontSize: portrait ? 24 : 21, fontWeight: 600, letterSpacing: 4}}>{scene.eyebrow}</div>}
       {scene.title && <div style={{fontFamily: 'Noto Sans Thai, sans-serif', fontSize: portrait ? 105 : 76, lineHeight: 1.13, fontWeight: 800, letterSpacing: -4, whiteSpace: 'pre-line', marginTop: 24}}>{scene.title}</div>}
       <div style={{width: 65, height: 7, borderRadius: 8, background: night ? '#ffdba4' : '#e5a08c', marginTop: 25}}/>
@@ -124,15 +126,16 @@ const SceneView = ({scene, index, total, previous, start, narration, ending}: {s
 };
 /** Scenes are intentionally data-driven: edit JSON, never duplicate layout for aspect ratios. */
 export const SceneRenderer = ({timeline, narration, ending = 'B_loop', sceneTransitionFrames = 0, loopFadeFrames = 0}: SceneRendererProps) => {
-  const {fps, durationInFrames} = useVideoConfig();
+  const {fps, durationInFrames, width, height} = useVideoConfig();
+  const portraitFormat = height > width;
   const frame = useCurrentFrame();
   validateTimeline(timeline);
   const transitionOpacity = transitionOpacityAt(frame, timeline, fps, sceneTransitionFrames);
   const loopOpacity = loopFadeOpacityAt(frame, durationInFrames, ending, loopFadeFrames);
   const pictureOpacity = Math.max(transitionOpacity, loopOpacity);
   let start = 0;
-  return <AbsoluteFill style={{backgroundColor: 'black'}}>{narration && <Sequence from={narration.startFrame ?? 0} premountFor={fps}><Audio src={staticFile(narration.src)}/></Sequence>}{timeline.map((scene, index) => {
+  return <AbsoluteFill style={{backgroundColor: 'black'}}>{narration && <Sequence from={narration.startFrame ?? 0} premountFor={fps}><Audio src={staticFile(narration.src)}/></Sequence>}<Freeze frame={0} active={!portraitFormat && ending === 'B_loop' && frame === durationInFrames - 1}>{timeline.map((scene, index) => {
     const from = start; const duration = sceneFrames(scene.durationSec, fps); start += duration;
     return <Sequence key={index} name={scene.eyebrow ?? scene.bg} from={from} durationInFrames={duration} premountFor={fps}><SceneView scene={scene} index={index} total={timeline.length} previous={timeline[index - 1]} start={from} narration={narration} ending={ending}/></Sequence>;
-  })}{pictureOpacity > 0 && <AbsoluteFill style={{backgroundColor: '#101018', opacity: pictureOpacity, pointerEvents: 'none'}}/>}</AbsoluteFill>;
+  })}</Freeze>{pictureOpacity > 0 && <AbsoluteFill style={{backgroundColor: '#101018', opacity: pictureOpacity, pointerEvents: 'none'}}/>}</AbsoluteFill>;
 };
