@@ -1,11 +1,14 @@
 # CATBOX-SHORT storyboard index
 
+**27 October 2026 handoff migration:** Drawings are retired; this written source retains its timing and stable IDs. Current handoff status: `needs-input` until Mark audits coordinate/anchor/camera details against the [written-handoff migration](../handoff-migration.md). Earlier readiness/BOARD/Pxx labels below are historical provenance. This edit creates no element captures, scene samples or new runtime/visual/audio approval.
+
+
 Deliverable: `CATBOX-SHORT`; selected script `scripts/cat-boxes/short/script.md` `CATBOX-C01-SHORT-R1`; fact-check `scripts/cat-boxes/short/fact-check.md`.
-Film brief: `visual-brief.md` `VB-CATBOX-SHORT-R1`; selected storyboard set `CATBOX-SHORT-BOARD-R2`. Source board and IDs are preserved from `short-c01.md` / `short-c01.excalidraw` (source Mark revision 1; migrated sheet revision 2).
+Film brief: `visual-brief.md` `VB-CATBOX-SHORT-R1`; retained planning revision `CATBOX-SHORT-BOARD-R2`. Source board and IDs are preserved from `short-c01.md` (source Mark revision 1; migrated sheet revision 2).
 
 | Scene / selected Short shot IDs | Source beats | Frames at 30 fps | Runtime | Board / timing |
 | --- | --- | --- | --- | --- |
-| `CATBOX-C01-SHORT-S01` / `SH01–SH04` | `CATBOX-C01-S01-B01`–`B04` | `[0,1350)` / 45 sec | Composition `CATBOX-C01-Short`; `scripts/cat-boxes/short-c01.json` | [scene sheet](sc01.md) · [editable board](sc01.excalidraw); timing estimated, VO/subtitle sync absent. |
+| `CATBOX-C01-SHORT-S01` / `SH01–SH04` | `CATBOX-C01-S01-B01`–`B04` | `[0,1350)` / 45 sec | Composition `CATBOX-C01-Short`; `scripts/cat-boxes/short-c01.json` | [scene sheet](sc01.md); timing estimated, VO/subtitle sync absent. |
 
 The five other chapter Shorts and the former 12-scene portrait composition remain in the root-level historical index; they are not selected outputs for this delivery.
 

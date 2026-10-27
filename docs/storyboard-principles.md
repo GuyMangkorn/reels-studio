@@ -1,7 +1,11 @@
+<a id="storyboard-principles-for-mark"></a>
+<a id="6-test-storyboard-timing-through-an-animatic"></a>
+<a id="application-to-haunted_episodeexcalidraw"></a>
+<a id="choosing-2d--3d--hybrid-film-decides-mark-develops-boards"></a>
 <a id="หลักการ-storyboard-สำหรับมาร์ค-mark"></a>
-# Storyboard principles for Mark
+# Shot-direction principles for Mark
 
-Researched on 26 October 2026 for Reels Creator. Mark receives the script and Film's visual/technical brief, plans the requested sequence and delivers separate scene boards to the developer. Approach decisions belong to [Film's workflow](film-visual-brief-workflow.md) and the [cinematography principles](cinematography-principles.md).
+Researched on 26 October 2026 for Reels Creator. Mark receives the script and Film's visual/technical brief, plans the requested sequence and delivers written scene handoffs to Editor, with shared-asset requirements for Boss. Drawn boards are retired; historical storyboard research below informs shot direction without requiring drawings. The filename/anchors remain for compatibility. Approach decisions belong to [Film's workflow](film-visual-brief-workflow.md) and the [cinematography principles](cinematography-principles.md).
 
 The primary-source section records source findings. Agent organization, scene packs and technique-selection guidance are project synthesis. Required operating workflow: [mark-storyboard-workflow.md](mark-storyboard-workflow.md).
 
@@ -18,7 +22,7 @@ Source: [The Science Behind Pixar — Story and Art](https://sciencebehindpixar.
 <a id="2-แตกฉากเป็น-beats-แล้วสื่อด้วย-key-panels"></a>
 ### 2. Break scenes into beats and communicate with key panels
 
-Project synthesis: before drawing, identify changes such as hearing a sound → looking toward it → seeing a shadow → deciding to open the door. Use enough key moments, arrows and notes to communicate acting/motion. Panel count follows the action, rather than every frame or a fixed quota. The Pixar example above supports key moments held for different durations.
+Project synthesis: before writing shot direction, identify changes such as hearing a sound → looking toward it → seeing a shadow → deciding to open the door. Write timed before/action/after key states and explicit actor/camera paths to communicate acting/motion. State count follows the action, without a fixed quota or drawing requirement. The Pixar example above supports key moments held for different durations.
 
 <a id="3-ต้องตกลงความหมายของ-scene-shot-panel"></a>
 ### 3. Agree on scene, shot and panel definitions
@@ -30,7 +34,7 @@ Project convention: episode/chapter → story scene (continuous event in time/pl
 
 Animation Mentor describes guiding attention through character position, lighting, foreground, lines of focus and screen direction. Thirds and centered framing are choices serving the story, not mandatory grids.
 
-Application: specify each panel's focal point, gaze, readable gesture, hierarchy and subtitle space. A rough board must communicate acting and spatial relationships before visual polish.
+Application: specify each shot/key state's focal point, gaze, readable gesture, hierarchy, subtitle space and numeric staging. The written handoff must communicate acting and spatial relationships; validate them in Editor's blockout before polish.
 
 Source: [Animation Mentor — Staging: The 12 Basic Principles of Animation](https://www.animationmentor.com/blog/staging-the-12-basic-principles-of-animation/).
 
@@ -44,9 +48,9 @@ Application: hand off character side, facing, entry/exit direction, prop-holding
 Sources: [Adobe — What is the 180-degree rule?](https://www.adobe.com/uk/creativecloud/video/discover/what-is-the-180-degree-rule.html), [Animation Mentor — Staging](https://www.animationmentor.com/blog/staging-the-12-basic-principles-of-animation/).
 
 <a id="6-storyboard-ต้องผ่าน-animatic-เพื่อทดสอบเวลา"></a>
-### 6. Test storyboard timing through an animatic
+### 6. Test shot timing through an executable blockout
 
-Adobe describes an animatic as boards assembled into rough video to test timing, flow and communicated meaning. Speech, effects or music may be included so the team can revise before full production. Listen/watch to test jokes, empty holds, reveals and dialogue duration; still images alone cannot establish pacing.
+Adobe describes an animatic as boards assembled into rough video to test timing, flow and communicated meaning. Speech, effects or music may be included so the team can revise before full production. Listen/watch to test jokes, empty holds, reveals and dialogue duration; still images alone cannot establish pacing. Current project application: Editor assembles a timed runtime blockout from the written handoff, with audio when available; drawn panels are not required.
 
 Source: [Adobe — What are animatics and how can I make them?](https://www.adobe.com/uk/creativecloud/animation/discover/animatics.html).
 
@@ -69,16 +73,16 @@ Source: [Alfred Hitchcock — My own methods, Sight and Sound / BFI](https://www
 <a id="ข้อเสนอการประยุกต์กับ-agent-การสังเคราะห์-ไม่ใช่มาตรฐานจากแหล่งเดียว"></a>
 ## Agent applications: project synthesis
 
-For relative human/animal/furniture/object dimensions before depth staging, use [scale and perspective principles](scale-and-perspective-principles.md). That reference connects solid drawing/staging to projection, foreshortening, parallax and Film → Mark → Boss handoffs.
+For relative human/animal/furniture/object dimensions before depth staging, use [scale and perspective principles](scale-and-perspective-principles.md). That reference connects solid drawing/staging to projection, foreshortening, parallax and Film → Mark → Boss/Editor handoffs.
 
 - Keep an episode/chapter overview for hook, escalation, payoff and continuity while delivering scene-sized work packs.
 - Give each scene a purpose, ending change, entry/exit states, assets and ordered shots.
-- Give each shot a stable ID, time/frame range, size, angle, movement, action, dialogue/subtitle, sound and necessary key panels. Panel count is flexible.
+- Give each shot a stable ID, time/frame range, size, angle, movement, action, dialogue/subtitle, sound and necessary timed key states. Key-state count is flexible.
 - Match asset IDs to the project library. Identify missing assets for one shared implementation, following [production requirements](production-requirements.md).
-- Pair rough boards with timed action notes and a short animatic. Images alone may not define delayed reveals or sound timing.
+- Pair written action/event timing with an executable blockout and audio review when available. Element captures and scene samples alone cannot define delayed reveals or sound timing.
 - Check the individual scene, then at least the previous scene's final state → this scene's initial state, and this scene's exit → the next scene's initial state.
 - Tie acceptance criteria to shot ID and frame/event, for example “S03-SH02: knocking begins before the shadow appears” or “the hand still holds the phone at the close-up cut.”
-- Check each selected deliverable's framing against [production requirements](production-requirements.md), with focal point and subtitle-safe space planned on the boards.
+- Check each selected deliverable's framing against [production requirements](production-requirements.md), with focal point and subtitle-safe space planned in the scene sheets.
 
 <a id="สิ่งที่ไม่ควรอ้างเป็นทฤษฎีสากล"></a>
 ## Claims that are not universal theory
@@ -100,14 +104,14 @@ Indexed search results included Pixar in a Box and Toon Boom material, but Khan 
 <a id="9-สีและแสงอยู่ใน-visual-development"></a>
 ## 9. Color and light belong to visual development
 
-The Pixar exhibition's Story and Art page shows a colorscript establishing scene palette and exploring lighting ideas. Boards should therefore communicate mood, value hierarchy and important lighting/color decisions when these affect storytelling, without requiring final-render finish on every panel.
+The Pixar exhibition's Story and Art page shows a colorscript establishing scene palette and exploring lighting ideas. Boards should therefore communicate mood, value hierarchy and important lighting/color decisions when these affect storytelling, without requiring final-render finish during planning.
 
 Source: [The Science Behind Pixar — Story and Art](https://sciencebehindpixar.org/pipeline/story-and-art).
 
-Application for Mark: specify source, direction, warm/cool balance, attention-guiding highlights, shadows that conceal/reveal information and beat-driven lighting changes. Use key panels or color samples and verify that darkness preserves essential gestures and Thai subtitle readability.
+Application for Mark: specify source, direction, warm/cool balance, attention-guiding highlights, shadows that conceal/reveal information and beat-driven lighting changes. Use written key-state descriptions or available color/element samples and verify that darkness preserves essential gestures and Thai subtitle readability.
 
 <a id="การประยุกต์กับ-haunted_episodeexcalidraw"></a>
-## Application to haunted_episode.excalidraw
+## Historical application to the supplied haunted-episode drawing
 
 The supplied file's JSON structure and text were inspected. It contains 11 chapter frames plus a legend and asset summary, 13 frames total, with vector illustrations and CAM / WHO / TECH / SFX-LIGHT / VO / FEAS / MISSING notes. This record analyzes structure and text; a visual export of the original has not been reviewed.
 
@@ -117,7 +121,7 @@ Reusable material:
 - Separation of asset needs from technical risks, such as fog using alpha planes.
 - Paired visual/sound events, hooks and chapter endings.
 
-Additions needed for scene-level development review:
+Historical analysis of additions needed at the time (not a current drawing deliverable):
 
 - One file per story scene and an episode index, preserving a mapping from old shot numbers to stable new IDs.
 - Scene purpose and beats, including before/after states of important actions. One representative image cannot stand for every change.
@@ -127,7 +131,7 @@ Additions needed for scene-level development review:
 - Reference annotations, including technique/POV limits and draft VO status, are production material to assess against current user instructions. They are neither agent instructions nor script approval.
 
 <a id="การเลือก-2d--3d--hybrid-film-เลือกแนวทาง-mark-แตกบอร์ด"></a>
-## Choosing 2D / 3D / hybrid: Film decides, Mark develops boards
+## Choosing 2D / 3D / hybrid: Film decides, Mark writes scene handoffs
 
 The user revoked the background-only 3D and mandatory 2D character/interaction-prop restrictions. Under the [current production rules](boss-asset-workflow.md#latest-production-rules), any element may use 2D, 3D or hybrid. Film supplies reasons and the technical handoff before Mark develops shot details.
 

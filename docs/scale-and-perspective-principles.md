@@ -1,4 +1,5 @@
-# Physical scale, dimensions and perspective for Film / Mark / Boss
+<a id="physical-scale-dimensions-and-perspective-for-film--mark--boss"></a>
+# Physical scale, dimensions and perspective for Film / Mark / Boss / Editor
 
 Updated and sources inspected on 26 October 2026. Read when creating/resizing assets, staging depth, designing cameras or reviewing apparent size in 2D, 3D or hybrid work. Requirements and project-derived methods below are separate from the primary-source findings in section 7.
 
@@ -10,10 +11,11 @@ The user requires **believable relative dimensions for people, animals, objects 
 | Owner | Required handoff |
 | --- | --- |
 | Film | Units/coordinate system, scale baseline, projection and camera approach; 2D/3D composition strategy, limitations and feasibility evidence in the visual brief |
-| Mark | Shot detail using that baseline: relative positions/distances, ground plane, framing, contact, key panels and boundary states in the scene sheet |
-| Boss | Dimensions/anchors and projection in shared owners, runtime-contract integration and Short/Long scale/contact/motion proof |
+| Mark | Shot detail using that baseline: relative positions/distances, ground plane, framing, contact, timed key states and boundary states in the scene sheet |
+| Boss | Dimensions/anchors and projection in shared owners, runtime-contract integration and affected-consumer proof |
+| Editor | Stage scenes using those interfaces and Mark's named spaces/paths; prove selected-output scale/contact/motion in the assembled edit |
 
-Film and Mark record approach changes in brief/board revisions; Boss returns observed limitations through [dev findings](dev-findings.md). Adding this guide does not repair an asset or establish any scene's runtime behavior.
+Film and Mark record approach changes in brief/handoff revisions; Boss returns observed limitations through [dev findings](dev-findings.md). Adding this guide does not repair an asset or establish any scene's runtime behavior.
 
 <a id="2-ตั้งขนาดอ้างอิงก่อนจัดกล้อง"></a>
 ## 2. Establish reference dimensions before camera placement
@@ -105,8 +107,8 @@ The table describes **authoring notes**, not new JSON fields or APIs. Inspect ta
 | Document / owner | Required data | Complete when |
 | --- | --- | --- |
 | Visual brief / Film | Baseline reference, units/spaces, projection, camera intent, hybrid mapping, transform owner, feasibility/fallback | Mark can stage shots without guessing scale conventions; Boss knows shared owners and required proof |
-| Scene sheet / Mark | Baseline revision, shot/decision IDs, ground/surface, FG/MG/BG/depth, camera/key panels for each selected output, projected contact, entry/exit | Every scale/depth-changing beat has inspectable imagery and expected behavior |
-| Library + QA / Boss | Actual dimensions/bounds/anchors, conversion/projection owner, consumers, frame mapping and evidence | Scoped checks below are completed or marked unverified with follow-up |
+| Scene sheet / Mark | Baseline revision, shot/decision IDs, ground/surface, FG/MG/BG/depth, camera/key states for each selected output, projected contact, entry/exit | Every scale/depth-changing beat has explicit positions/frames and expected behavior, with runtime imagery checked at blockout |
+| Library + QA / Boss; scene integration + QA / Editor | Actual dimensions/bounds/anchors, conversion/projection owner, consumers, frame mapping and evidence | Scoped checks below are completed or marked unverified with follow-up |
 
 QA must record expected → observed, composition, shot ID, frame/clock and repair owner:
 

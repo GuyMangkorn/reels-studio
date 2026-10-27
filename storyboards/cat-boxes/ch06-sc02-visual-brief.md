@@ -9,7 +9,7 @@ This shared scale change also affects any composition that imports the same phys
 Revision: `VB-C06-S02-R3` | Status: `blockout-integrated` (Mark board R4; bounded Short/Long CLI proof recorded in index; script approval pending)
 Script: `scripts/cat-boxes/ch06-script.md` R4, `CATBOX-C06-U02-B01`–`B04`; episode script R5
 Fact-check: `scripts/cat-boxes/episode-fact-check.md` FC-R4, including F012 (the return to the old box and the unresolved reason are fictional; no causal answer is added)
-Board/sheet: `ch06-sc02.excalidraw` / `ch06-sc02.md` revision 4; Mark completed the R4 source and checked the current Short keyframes. Excalidraw MCP `create_view` returned `Diagram displayed` but no screenshot/export, so visual export review remains unverified.
+Written source: `ch06-sc02.md` revision 4; Mark completed the R4 source and checked the current Short keyframes. Historical tooling note: the former drawing preview returned `Diagram displayed` without image/export evidence. Drawing-export review is retired; this is not a current runtime/visual pass.
 Target runtime checkout: `codex/33-catbox-foundation` at `906a85e`, based on `main` `ce2a0b1`; Boss's R4 projection/crop changes are in the issue working tree; final Short/Long CLI evidence is recorded in `index.md`.
 Scope: C06-S02, with the C06-S01 exit and C01-S01 CL01 box placement as continuity boundaries; other scene sheets are not revised by this brief
 Timing: estimated 45 seconds at 30 fps, `[0,1350)`; SH01 `[0,300)`, SH02 `[300,690)`, SH03 `[690,1050)`, SH04 `[1050,1350)`. VO is unapproved and subtitle cues are unsynced estimates.
@@ -87,7 +87,7 @@ The user permits 3D props. A 3D open box could provide an actual interior, front
 
 ## Handoff and review status
 
-- **Mark:** board/sheet R4 records the final crop, continuous world path, camera cut, layered box and inlay/payoff timing. Source JSON IDs/indices and diff checks pass. Native Excalidraw export inspection remains unverified.
+- **Mark:** board/sheet R4 records the final crop, continuous world path, camera cut, layered box and inlay/payoff timing. Source JSON IDs/indices and diff checks pass. Drawing-export review is retired; written-handoff and runtime checks follow the current workflow.
 - **Boss:** shared projection/anchors, uniform rig scale and layered BOX-OLD are integrated in scene[11]. Short/Long CLI previews, adjacent-frame/cut/sit checks and remount evidence are linked from the sequence index. No actor-only portrait inflation remains in C06-S02.
 - **Follow-up:** scene acting/handwriting polish, approved audio/subtitle sync, the other eleven scene scale audits and separate publishable Short assembly remain open. 3D remains available for a future Film decision when the shot benefits.
 

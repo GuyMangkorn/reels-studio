@@ -1,7 +1,7 @@
 <a id="หลัก-cinema-สำหรับ-film-และ-mark"></a>
 # Cinematography principles for Film and Mark
 
-Sources checked on 26 October 2026. Film uses this reference for visual briefs; Mark develops the boards. These are decision tools for the channel's stylized work, not a formula requiring the same lens, palette, shot count or technique in every scene. Roles and workflow: [film-visual-brief-workflow.md](film-visual-brief-workflow.md).
+Sources checked on 26 October 2026. Film uses this reference for visual briefs; Mark develops the scene sheets. These are decision tools for the channel's stylized work, not a formula requiring the same lens, palette, shot count or technique in every scene. Roles and workflow: [film-visual-brief-workflow.md](film-visual-brief-workflow.md).
 
 <a id="หลักฐานต้นทาง"></a>
 ## Primary-source evidence
@@ -27,7 +27,7 @@ This section synthesizes the sources with channel requirements. It does not attr
 6. **Build suspense with information:** state audience knowledge, character knowledge, expectation and what must remain hidden. Place empty holds, offscreen sound, reactions and reveals according to the script. Use POV when the beat needs it, within channel frequency defaults linked from AGENTS.md. Darkness alone does not establish suspense.
 7. **Give lighting a cause and purpose:** identify motivated sources, direction, softness, warm/cool balance and value hierarchy. Use rim/fill for readable silhouettes; shadow/occlusion for depth and reveals. Keep gestures/subtitles legible. Use colorscripts/value keys for continuity, separating desired look from untested renderer settings.
 8. **Cut when action or meaning changes:** include preparation → action → result where needed for readability. Allow reactions and processing time. Place sound before/after visuals intentionally. Listen to narration or watch an animatic before claiming successful timing.
-9. **Compose for each selected deliverable:** follow its own script, timing and boards under [delivery workflow](delivery-workflow.md). Adapt staging, camera aspect/FOV and crop so focal point/contact/reveal remain visible; reserve subtitle space. Preserve beat timing between aspect-ratio adaptations only when the same edit is explicitly requested.
+9. **Compose for each selected deliverable:** follow its own script, timing and scene sheets under [delivery workflow](delivery-workflow.md). Adapt staging, camera aspect/FOV and crop so focal point/contact/reveal remain visible; reserve subtitle space. Preserve beat timing between aspect-ratio adaptations only when the same edit is explicitly requested.
 10. **Choose a technique that can make the image:** any element may be 2D, 3D or hybrid. Choose for needed views, occlusion, acting, light/shadow, reuse and integration risk. If a cut-out needs unseen sides, propose more views/poses or 3D rather than expecting billboarding to supply missing art. Use Film's technical handoff workflow.
 
 <a id="ขอบเขตทางเทคนิคของกล้อง"></a>

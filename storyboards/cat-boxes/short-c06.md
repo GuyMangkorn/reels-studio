@@ -1,5 +1,8 @@
 # CATBOX C06 Short S01 — แมวเลือกกล่อง แต่เราเลือกคำตอบเร็วไปไหม?
 
+**27 October 2026 handoff migration:** Drawings are retired; this written source retains its timing and stable IDs. Current handoff status: `needs-input` until Mark audits coordinate/anchor/camera details against the [written-handoff migration](handoff-migration.md). Earlier readiness/BOARD/Pxx labels below are historical provenance. This edit creates no element captures, scene samples or new runtime/visual/audio approval.
+
+
 Revision 1 · ready-for-dev storyboard handoff · script approval pending
 Script: scripts/cat-boxes/ch06-script.md R4 · Boat: FC-R4
 Film brief: visual-brief.md VB-CATBOX-R5 / VS06 · FC-VIS-R1 is planning-only, not runtime visual approval
