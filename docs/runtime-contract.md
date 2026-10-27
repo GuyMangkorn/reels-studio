@@ -30,4 +30,6 @@ For any capability, record `existing-integrated`, `exists-unintegrated`, `missin
 
 Use `src/scenes/types.ts` and `validateTimeline` in `src/scenes/timeline.ts` as the runtime contract. The current baseline timeline is an array of scenes with `durationSec`, `bg`, `actors`, `subtitle` and optional supported fields. It is not the old illustrative `{fps, hook, moral, shots}` object. Add camera, lighting, overlay or asset-selection fields to the contract and renderer before documenting them as usable JSON. Keep planned examples explicitly labeled as designs.
 
+**Media fields (integrated 2026-10-27):** `Scene.media`, `Scene.sfx`, `Scene.transitionIn`, `bg: 'none'` and the video-level `audio`, `captionStyle`, `chrome` are part of the runtime contract; see [Remotion toolkit 10a](remotion-toolkit.md#10a-footage-stills-music-entry-transitions-and-caption-styles). Validation lives in `src/scenes/media.ts` and runs from `validateTimeline` and the video registry.
+
 Read [docs/character-toolkit.md](character-toolkit.md) when changing the existing rig or pose tracks. Confirm APIs against the source because development branches may extend them.

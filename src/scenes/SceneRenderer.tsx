@@ -9,12 +9,14 @@ import {actorIdentity, actorPoseTrack, actorPosition, layoutActor, layoutScenePr
 import {layoutWorldActor, layoutWorldProp, orthographicViewAt, worldPositionAt, worldPropPositionAt} from './projection';
 import {mouthAt} from '../rig/drivers';
 import {endingState, type Ending} from './endings';
-import type {Timeline, Scene} from './types';
+import type {AudioTrack, CaptionStyle, ChromeStyle, Timeline, Scene} from './types';
+import {defaultChrome, validateVideoStyle} from './media';
+import {AudioTracks, EntryTransition, MediaLayer, SceneSounds} from './MediaLayers';
 import {visualAt} from '../assets/visuals/types';
 import {VisualStage} from '../assets/visuals/VisualStage';
 
 export type Narration = {src: string; amplitude: readonly number[]; fps: number; startFrame?: number};
-export type SceneRendererProps = {timeline: Timeline; narration?: Narration; ending?: Ending; sceneTransitionFrames?: number; loopFadeFrames?: number};
+export type SceneRendererProps = {timeline: Timeline; narration?: Narration; ending?: Ending; sceneTransitionFrames?: number; loopFadeFrames?: number; audio?: AudioTrack[]; captionStyle?: CaptionStyle; chrome?: ChromeStyle};
 
 const transitionOpacityAt = (frame: number, timeline: Timeline, fps: number, transitionFrames: number) => {
   if (transitionFrames <= 0 || timeline.length < 2) return 0;
@@ -54,7 +56,7 @@ const ProjectedSceneStage = ({scene, previous, poseFrame, width, height, fps, mo
     return <SceneProp key={`world-${layer}-${i}`} type={prop.type} part={splitBox ? layer === 'back' ? 'rear' : 'front' : undefined} x={layout.x} y={layout.y} width={layout.width} height={layout.height} color={prop.color} night={night} label={prop.label} detail={prop.detail} variant={prop.variant} tone={prop.tone}/>;
   });
   return <div style={{position: 'absolute', inset: 0, transform: `translate3d(${pictureMove.x * width}px, ${pictureMove.y * height}px, 0) scale(${pictureMove.scale})`, transformOrigin: '50% 50%', willChange: 'transform'}}>
-    <Background kind={scene.bg} time={scene.time} physicalStage={projection.stage} physicalView={view.view}/>
+    {scene.bg !== 'none' && <Background kind={scene.bg} time={scene.time} physicalStage={projection.stage} physicalView={view.view}/>}
     {worldProps('back')}
     {scene.actors.map((actor, i) => {
       const identity = actorIdentity(actor, i);
@@ -72,7 +74,7 @@ const ProjectedSceneStage = ({scene, previous, poseFrame, width, height, fps, mo
   </div>;
 };
 
-const SceneView = ({scene, index, total, previous, start, narration, ending, loopFadeFrames}: {scene: Scene; index: number; total: number; previous?: Scene; start: number; narration?: Narration; ending: Ending; loopFadeFrames: number}) => {
+const SceneView = ({scene, index, total, previous, start, narration, ending, loopFadeFrames, captionStyle, chrome, entering}: {scene: Scene; index: number; total: number; previous?: Scene; start: number; narration?: Narration; ending: Ending; loopFadeFrames: number; captionStyle?: CaptionStyle; chrome: Required<ChromeStyle>; entering: boolean}) => {
   const frame = useCurrentFrame(); const {width, height, fps} = useVideoConfig(); const portrait = height > width;
   const duration = sceneFrames(scene.durationSec, fps); const night = scene.time === 'night';
   const final = index === total - 1;
@@ -94,7 +96,8 @@ const SceneView = ({scene, index, total, previous, start, narration, ending, loo
   });
   return <AbsoluteFill style={{backgroundColor: night ? '#424668' : '#f6e8d5', opacity: final ? state.opacity : 1, overflow: 'hidden', fontFamily: 'Noto Sans Thai, sans-serif'}}>
     {scene.projection ? <ProjectedSceneStage scene={scene} previous={previous} poseFrame={poseFrame} width={width} height={height} fps={fps} mouth={mouth}/> : <div style={{position: 'absolute', inset: 0, transform: `translate3d(${pictureMove.x * width}px, ${pictureMove.y * height}px, 0) scale(${pictureMove.scale})`, transformOrigin: '50% 50%', willChange: 'transform'}}>
-      <Background kind={scene.bg} time={scene.time}/>
+      {scene.bg !== 'none' && <Background kind={scene.bg} time={scene.time}/>}
+      <MediaLayer clips={scene.media} layer="back" frame={sceneFrame}/>
       {renderProps('back')}
       {scene.actors.map((actor, i) => {
         const identity = actorIdentity(actor, i);
@@ -106,6 +109,7 @@ const SceneView = ({scene, index, total, previous, start, narration, ending, loo
         return actor.type === 'narrator' ? <Character key={identity} {...actor} {...position} pose={pose} frame={poseFrame} mouth={mouth}/> : actor.type === 'cat' ? <Cat key={identity} {...position} color={actor.color} pose={pose.to as 'idle' | 'walk' | 'sit' | 'wave'} frame={poseFrame}/> : <Dog key={identity} {...position} color={actor.color} pose={pose.to as 'idle' | 'walk' | 'sit' | 'wave'} frame={poseFrame}/>;
       })}
       {renderProps('front')}
+      <MediaLayer clips={scene.media} layer="front" frame={sceneFrame}/>
     </div>}
     {scene.projection && scene.props?.filter(prop => prop.space === 'screen').map((prop, i) => {
       if (!propVisibleAt(prop, sceneFrame, fps, duration)) return null;
@@ -119,25 +123,30 @@ const SceneView = ({scene, index, total, previous, start, narration, ending, loo
       {scene.title && <div style={{fontFamily: 'Noto Sans Thai, sans-serif', fontSize: portrait ? 105 : 76, lineHeight: 1.13, fontWeight: 800, letterSpacing: -4, whiteSpace: 'pre-line', marginTop: 24}}>{scene.title}</div>}
       <div style={{width: 65, height: 7, borderRadius: 8, background: night ? '#ffdba4' : '#e5a08c', marginTop: 25}}/>
     </div>}
-    <Subtitles text={subtitleAt(scene, sceneFrame, fps)}/>
-    <div style={{position: 'absolute', bottom: portrait ? 53 : 24, left: width * .075, right: width * .075, display: 'flex', alignItems: 'center', gap: 12}}>
-      {Array.from({length: total}, (_, i) => <div key={i} style={{height: 4, flex: 1, borderRadius: 8, background: night ? '#ffffff25' : '#49445c20', overflow: 'hidden'}}><div style={{height: '100%', width: `${i < index ? 100 : i === index ? (frame + 1) / duration * 100 : 0}%`, background: night ? '#ffe0a8' : '#77718f'}}/></div>)}
-      <span lang="th" style={{fontSize: 19, color: ink, marginLeft: 12}}>ทำไมล่ะ</span>
-    </div>
+    {!entering && <Subtitles text={subtitleAt(scene, sceneFrame, fps)} style={captionStyle}/>}
+    {!entering && <div style={{position: 'absolute', bottom: portrait ? 53 : 24, left: width * .075, right: width * .075, display: 'flex', alignItems: 'center', gap: 12}}>
+      {chrome.progressBar && Array.from({length: total}, (_, i) => <div key={i} style={{height: 4, flex: 1, borderRadius: 8, background: night ? '#ffffff25' : '#49445c20', overflow: 'hidden'}}><div style={{height: '100%', width: `${i < index ? 100 : i === index ? (frame + 1) / duration * 100 : 0}%`, background: night ? '#ffe0a8' : '#77718f'}}/></div>)}
+      {chrome.channelLabel !== false && <span lang="th" style={{fontSize: 19, color: ink, marginLeft: chrome.progressBar ? 12 : 'auto'}}>{chrome.channelLabel}</span>}
+    </div>}
   </AbsoluteFill>;
 };
 /** Scenes are intentionally data-driven: edit JSON, never duplicate layout for aspect ratios. */
-export const SceneRenderer = ({timeline, narration, ending = 'B_loop', sceneTransitionFrames = 0, loopFadeFrames = 0}: SceneRendererProps) => {
-  const {fps, durationInFrames, width, height} = useVideoConfig();
+export const SceneRenderer = ({timeline, narration, ending = 'B_loop', sceneTransitionFrames = 0, loopFadeFrames = 0, audio, captionStyle, chrome}: SceneRendererProps) => {
+  const {fps, durationInFrames, width, height, id} = useVideoConfig();
   const portraitFormat = height > width;
   const frame = useCurrentFrame();
-  validateTimeline(timeline);
+  validateTimeline(timeline, fps);
+  validateVideoStyle({audio, captionStyle, chrome}, id);
+  const chromeStyle = {...defaultChrome, ...chrome};
   const transitionOpacity = transitionOpacityAt(frame, timeline, fps, sceneTransitionFrames);
   const loopOpacity = loopFadeOpacityAt(frame, durationInFrames, ending, loopFadeFrames);
   const pictureOpacity = Math.max(transitionOpacity, loopOpacity);
   let start = 0;
-  return <AbsoluteFill style={{backgroundColor: 'black'}}>{narration && <Sequence from={narration.startFrame ?? 0} premountFor={fps}><Audio src={staticFile(narration.src)}/></Sequence>}<Freeze frame={0} active={!portraitFormat && ending === 'B_loop' && frame === durationInFrames - 1}>{timeline.map((scene, index) => {
+  return <AbsoluteFill style={{backgroundColor: 'black'}}>{narration && <Sequence from={narration.startFrame ?? 0} premountFor={fps}><Audio src={staticFile(narration.src)}/></Sequence>}<AudioTracks tracks={audio} narration={narration}/>{timeline.map((scene, index) => <SceneSounds key={`sfx-${index}`} cues={scene.sfx} sceneStart={timeline.slice(0, index).reduce((sum, s) => sum + sceneFrames(s.durationSec, fps), 0)}/>)}<Freeze frame={0} active={!portraitFormat && ending === 'B_loop' && frame === durationInFrames - 1}>{timeline.map((scene, index) => {
     const from = start; const duration = sceneFrames(scene.durationSec, fps); start += duration;
-    return <Sequence key={index} name={scene.eyebrow ?? scene.bg} from={from} durationInFrames={duration} premountFor={fps}><SceneView scene={scene} index={index} total={timeline.length} previous={timeline[index - 1]} start={from} narration={narration} ending={ending} loopFadeFrames={loopFadeFrames}/></Sequence>;
+    // An entry transition starts the incoming scene early, held on its first frame, so cut frames stay put.
+    const lead = index > 0 && scene.transitionIn ? scene.transitionIn.frames : 0;
+    const view = <SceneView scene={scene} index={index} total={timeline.length} previous={timeline[index - 1]} start={from} narration={narration} ending={ending} loopFadeFrames={loopFadeFrames} captionStyle={captionStyle} chrome={chromeStyle} entering={frame < from}/>;
+    return <Sequence key={index} name={scene.eyebrow ?? scene.bg} from={from - lead} durationInFrames={duration + lead} premountFor={fps}>{lead > 0 ? <EntryTransition entry={scene.transitionIn!}><Freeze frame={lead} active={f => f < lead}><Sequence from={lead} durationInFrames={duration}>{view}</Sequence></Freeze></EntryTransition> : view}</Sequence>;
   })}</Freeze>{pictureOpacity > 0 && <AbsoluteFill style={{backgroundColor: '#101018', opacity: pictureOpacity, pointerEvents: 'none'}}/>}</AbsoluteFill>;
 };

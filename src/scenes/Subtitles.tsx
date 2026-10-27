@@ -1,7 +1,15 @@
 import {loadFont} from '@remotion/fonts';
 import {staticFile, useVideoConfig} from 'remotion';
+import {defaultCaptionStyle} from './media';
+import type {CaptionStyle} from './types';
 loadFont({family: 'Noto Sans Thai', url: staticFile('fonts/NotoSansThai.ttf'), weight: '100 900'});
-export const Subtitles = ({text}: {text: string}) => {
+export const Subtitles = ({text, style}: {text: string; style?: CaptionStyle}) => {
   const {width, height} = useVideoConfig(); const portrait = height > width;
-  return <div lang="th" style={{position: 'absolute', bottom: portrait ? 134 : 58, left: '6%', width: '88%', textAlign: 'center', fontFamily: 'Noto Sans Thai', fontWeight: 700, fontSize: portrait ? 51 : 44, lineHeight: 1.65, color: '#fff', WebkitTextStroke: '7px #3d3c53', paintOrder: 'stroke fill', overflowWrap: 'anywhere', textShadow: '0 4px 0 #3d3c53'}}>{text}</div>;
+  const {preset, position, color, scale} = {...defaultCaptionStyle, ...style};
+  if (preset === 'none' || !text) return null;
+  const place = position === 'top' ? {top: height * (portrait ? .2 : .1)} : position === 'middle' ? {top: '50%', transform: 'translateY(-50%)'} : {bottom: portrait ? 134 : 58};
+  const look = preset === 'box'
+    ? {color, background: 'rgba(16, 16, 24, .72)', borderRadius: 18, padding: portrait ? '10px 28px' : '6px 22px', boxDecorationBreak: 'clone' as const, WebkitBoxDecorationBreak: 'clone' as const}
+    : {color, WebkitTextStroke: '7px #3d3c53', paintOrder: 'stroke fill', textShadow: '0 4px 0 #3d3c53'};
+  return <div lang="th" style={{position: 'absolute', ...place, left: '6%', width: '88%', textAlign: 'center', fontFamily: 'Noto Sans Thai', fontWeight: 700, fontSize: (portrait ? 51 : 44) * scale, lineHeight: 1.65, overflowWrap: 'anywhere'}}><span style={look}>{text}</span></div>;
 };
