@@ -72,7 +72,7 @@ const ProjectedSceneStage = ({scene, previous, poseFrame, width, height, fps, mo
   </div>;
 };
 
-const SceneView = ({scene, index, total, previous, start, narration, ending}: {scene: Scene; index: number; total: number; previous?: Scene; start: number; narration?: Narration; ending: Ending}) => {
+const SceneView = ({scene, index, total, previous, start, narration, ending, loopFadeFrames}: {scene: Scene; index: number; total: number; previous?: Scene; start: number; narration?: Narration; ending: Ending; loopFadeFrames: number}) => {
   const frame = useCurrentFrame(); const {width, height, fps} = useVideoConfig(); const portrait = height > width;
   const duration = sceneFrames(scene.durationSec, fps); const night = scene.time === 'night';
   const final = index === total - 1;
@@ -80,7 +80,9 @@ const SceneView = ({scene, index, total, previous, start, narration, ending}: {s
   const poseFrame = final ? state.poseFrame : frame;
   const sceneFrame = poseFrame;
   const pictureMove = pictureMoveAt(scene, sceneFrame, fps);
-  const ownerPoints = portrait && scene.actors.some(actor => actor.type === 'narrator' && poseAt(actor, sceneFrame, fps).to === 'point');
+  const ownerPointWeight = portrait ? scene.actors.reduce((weight, actor) => actor.type === 'narrator' ? Math.max(weight, poseWeightAt(actorPoseTrack(actor, fps), 'point', sceneFrame, fps)) : weight, 0) : 0;
+  const finalLoopFade = final && ending === 'B_loop' && loopFadeFrames > 0 ? Math.max(0, 1 - (duration - 1 - frame) / loopFadeFrames) : 0;
+  const ownerPointOpacity = ownerPointWeight * (1 - finalLoopFade);
   const audioFrame = (start + frame - (narration?.startFrame ?? 0)) * (narration?.fps ?? fps) / fps;
   const mouth = narration ? mouthAt(narration.amplitude, audioFrame) : 0;
   const ink = night ? '#fff1da' : '#49445c';
@@ -110,7 +112,7 @@ const SceneView = ({scene, index, total, previous, start, narration, ending}: {s
       const placement = layoutSceneProp(prop, width, height);
       return <SceneProp key={`screen-${i}`} shortCard={portrait} type={prop.type} x={placement.x} y={placement.y} size={placement.size} color={prop.color} night={night} label={prop.label} detail={prop.detail} variant={prop.variant} tone={prop.tone}/>;
     })}
-    {ownerPoints && <svg width={width * .34} height={height * .12} viewBox="0 0 370 230" style={{position: 'absolute', left: -28, top: height * .34, pointerEvents: 'none', zIndex: 2}} aria-label="เจ้าของชี้ไปที่กล่อง"><path d="M-10 58 H142 Q165 58 183 78 L245 139 Q257 151 244 164 L232 176 Q220 188 206 174 L155 126 Q143 114 128 114 H-10Z" fill="#ff8fa3" stroke="#55465a" strokeWidth="7" strokeLinejoin="round"/><path d="M180 81 Q200 66 215 77 L275 127 Q289 139 277 153 L263 167 Q251 179 238 166 L191 126 Q177 114 163 117 L142 120 Q125 123 122 107 Q119 92 136 87Z" fill="#ffd9b8" stroke="#55465a" strokeWidth="7" strokeLinejoin="round"/><path d="M268 132 L330 149 L287 163Z" fill="#ffd9b8" stroke="#55465a" strokeWidth="7" strokeLinejoin="round"/></svg>}
+    {ownerPointOpacity > 0 && <svg opacity={ownerPointOpacity} width={width * .34} height={height * .12} viewBox="0 0 370 230" style={{position: 'absolute', left: -28, top: height * .34, pointerEvents: 'none', zIndex: 2}} aria-label="เจ้าของชี้ไปที่กล่อง"><path d="M-10 58 H142 Q165 58 183 78 L245 139 Q257 151 244 164 L232 176 Q220 188 206 174 L155 126 Q143 114 128 114 H-10Z" fill="#ff8fa3" stroke="#55465a" strokeWidth="7" strokeLinejoin="round"/><path d="M180 81 Q200 66 215 77 L275 127 Q289 139 277 153 L263 167 Q251 179 238 166 L191 126 Q177 114 163 117 L142 120 Q125 123 122 107 Q119 92 136 87Z" fill="#ffd9b8" stroke="#55465a" strokeWidth="7" strokeLinejoin="round"/><path d="M268 132 L330 149 L287 163Z" fill="#ffd9b8" stroke="#55465a" strokeWidth="7" strokeLinejoin="round"/></svg>}
     {visualAt(scene.visuals, sceneFrame, fps) && <VisualStage visual={visualAt(scene.visuals, sceneFrame, fps)!} frame={sceneFrame} fps={fps} width={width} height={height} physical={Boolean(scene.projection)}/>}
     {(!portrait || scene.eyebrow || scene.title) && <div style={{position: 'absolute', left: width * .075, top: height * (portrait ? .085 : .067), color: ink, opacity: interpolate(frame, [0, 12], [0, 1], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'}), transform: `translateY(${interpolate(frame, [0, 18], [15, 0], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'})}px)`}}>
       {scene.eyebrow && <div style={{fontSize: portrait ? 24 : 21, fontWeight: 600, letterSpacing: 4}}>{scene.eyebrow}</div>}
@@ -136,6 +138,6 @@ export const SceneRenderer = ({timeline, narration, ending = 'B_loop', sceneTran
   let start = 0;
   return <AbsoluteFill style={{backgroundColor: 'black'}}>{narration && <Sequence from={narration.startFrame ?? 0} premountFor={fps}><Audio src={staticFile(narration.src)}/></Sequence>}<Freeze frame={0} active={!portraitFormat && ending === 'B_loop' && frame === durationInFrames - 1}>{timeline.map((scene, index) => {
     const from = start; const duration = sceneFrames(scene.durationSec, fps); start += duration;
-    return <Sequence key={index} name={scene.eyebrow ?? scene.bg} from={from} durationInFrames={duration} premountFor={fps}><SceneView scene={scene} index={index} total={timeline.length} previous={timeline[index - 1]} start={from} narration={narration} ending={ending}/></Sequence>;
+    return <Sequence key={index} name={scene.eyebrow ?? scene.bg} from={from} durationInFrames={duration} premountFor={fps}><SceneView scene={scene} index={index} total={timeline.length} previous={timeline[index - 1]} start={from} narration={narration} ending={ending} loopFadeFrames={loopFadeFrames}/></Sequence>;
   })}</Freeze>{pictureOpacity > 0 && <AbsoluteFill style={{backgroundColor: '#101018', opacity: pictureOpacity, pointerEvents: 'none'}}/>}</AbsoluteFill>;
 };
