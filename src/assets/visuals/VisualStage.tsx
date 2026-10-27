@@ -387,10 +387,10 @@ export const VisualStage = ({visual, frame, fps, width, height, physical = false
       </g>;
     })()}
     {!projectedR6 && !!visual.labels.length && (() => {
-      const labelSize = 36; const padding = 18; const gap = 12;
+      const labelSize = 36; const padding = 12; const gap = 10; const minHeight = 88;
       const pillWidth = width * 0.42;
       const items = visual.labels.slice(0, 4).map((label, i) => ({label, i, column: physical && visual.labels.length === 1 ? 1 : i % 2, row: Math.floor(i / 2), lines: breakLines(label, pillWidth - 32, labelSize)}));
-      const rowHeights = [0, 1].map(row => Math.max(0, ...items.filter(item => item.row === row).map(item => labelHeight(item.lines.length, labelSize, padding))));
+      const rowHeights = [0, 1].map(row => Math.max(minHeight, ...items.filter(item => item.row === row).map(item => labelHeight(item.lines.length, labelSize, padding))));
       const rowTops = [labelTop, labelTop + rowHeights[0] + gap];
       return <g>
         {items.map(({i, column, row, lines}) => {
