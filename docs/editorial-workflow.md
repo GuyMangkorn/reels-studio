@@ -8,6 +8,8 @@ This workflow covers mystery, educational and twist Reels/Shorts, including a wh
 <a id="หน้าที่และลำดับงาน"></a>
 ## Responsibilities and sequence
 
+Before format-dependent research/writing, resolve the [delivery selection and record](delivery-workflow.md). Shared research can proceed while awaiting selection. Apply the sequence below to each selected deliverable; writing-only scope does not automatically invoke later roles.
+
 | Stage | Owner | Handoff |
 | --- | --- | --- |
 | Brief / research | Boat | Questions, evidence, usable knowledge and unresolved gaps |
@@ -35,14 +37,7 @@ Example requests:
 
 Use episode / chapter / story scene as defined in [Mark's workflow](mark-storyboard-workflow.md). Preaw assigns beat IDs such as `E01-C01-S02-B01`; Mark maps these to shot/panel IDs. The writer does not prescribe every camera angle.
 
-Store authoring files beside the work in `scripts/<episode>/`. This is a document convention, **not a runtime JSON schema**:
-
-```text
-scripts/<episode>/
-  research.md
-  ch01-script.md
-  ch01-fact-check.md
-```
+Use the variant folders and deliverable IDs in [delivery workflow](delivery-workflow.md#files-and-stable-ids). Share `scripts/<episode>/research.md` and track selection in `delivery.md`; keep `short/script.md` + `short/fact-check.md` separate from `long/episode-script.md` + `long/fact-check.md` (optional Long chapter files). These are authoring conventions, **not a runtime JSON schema**. Existing material keeps its paths/IDs until an explicitly scoped migration.
 
 Runtime timelines follow the current source contract linked from AGENTS.md. Writing a script neither creates an executable timeline nor establishes renderer support for its contents.
 
@@ -60,7 +55,9 @@ Research is complete when every premise-critical claim has evidence and limitati
 <a id="script-pack--แพรว"></a>
 ## Script pack — Preaw
 
-Record episode/chapter IDs, script revision, brief/research revision, story mode, target duration and timing status (`estimated` / `read-aloud` / `audio-tested`) in the header. Keep user approval separate from writing and factual-review status.
+Record deliverable/episode/chapter IDs, the delivery-record path, script revision, brief/research revision, story mode, target duration and timing status (`estimated` / `read-aloud` / `audio-tested`) in the header. Keep user approval separate from writing and factual-review status.
+
+Create one complete script pack per selected deliverable. With both selected, write two complete spoken versions with independent beats/timing and claim coverage. Short has a standalone hook/question/payoff; Long develops the story without forced fixed-length chapters. Sources and claims may be shared; shortening wording still requires review. A second crop or chapter outline is not a second script.
 
 The handoff contains:
 
@@ -80,7 +77,7 @@ A draft is complete when the requested scope has full spoken wording and applica
 <a id="fact-check--โบ็ต"></a>
 ## Fact-check — Boat
 
-Identify the script path/revision and research revision reviewed. Read the whole script and check every assertion, including hook, supplied video title, subtitles, quantities, quotations, causality and knowledge conveyed by proposed visuals. Character speech or belief is not automatically a narrator assertion.
+Identify the deliverable ID, script path/revision and research revision reviewed. Check each selected version separately; name both scopes explicitly when sharing a review document for legacy material. Read the whole script and check every assertion, including hook, supplied video title, subtitles, quantities, quotations, causality and knowledge conveyed by proposed visuals. Character speech or belief is not automatically a narrator assertion.
 
 | Claim / location | Exact wording checked | Classification | Verdict | Evidence + locator | Reason / correction / story impact |
 | --- | --- | --- | --- | --- | --- |
@@ -92,7 +89,7 @@ Report errors affecting the premise, reveal or learning takeaway before minor de
 
 Conclude for the named revision only: `revision-required`, `verification-incomplete`, or `ready-for-storyboard` when no story/knowledge-critical factual gaps remain and necessary qualifications appear in the script. Readiness neither records user approval nor guarantees that no error remains.
 
-After a script revision, assess changes to factual wording and dependent claims. Recheck affected items and record coverage of the new revision. Reuse earlier results only after checking that the wording is unchanged and no new contrary evidence applies.
+After a script revision, assess changes to factual wording and dependent claims. Recheck affected items and record coverage of the new revision. Synchronize the script header and delivery record with the resulting factual status while preserving dated history and separate user-approval/timing status. Reuse earlier results only after checking that the wording is unchanged and no new contrary evidence applies.
 
 <a id="ส่งต่อและตรวจบทก่อนลงทุนทำภาพ"></a>
 ## Handoff and editorial check before visual production

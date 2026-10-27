@@ -104,7 +104,7 @@ Build each POV once, as a camera preset under `src/camera/`. Scene JSON selects 
 Use this restraint when planning shots, including `povWatcher`. These are planning defaults. When a supplied storyboard intentionally uses a different POV sequence, preserve its shot order and record that choice in the shot sheet.
 
 - Use a POV only when the beat needs it: a suspense build, or a reveal. Default to normal framing otherwise.
-- POV shots of any kind stay a minority of the shots in a chapter. About 1–2 per long-form chapter (a chapter is 45–60 seconds). Never every scene.
+- POV shots of any kind stay a minority of the shots in a chapter. As guidance, about 1–2 per long-form chapter when useful; chapter length follows the selected story under [production requirements](production-requirements.md#outputs-and-story-timing). Never every scene.
 - Normally place a shot with normal framing between POV shots.
 - `povWatcher` is rarer: at most about one per chapter, and not in consecutive chapters by default.
 

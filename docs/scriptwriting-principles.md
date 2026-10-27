@@ -45,6 +45,8 @@ Source: [The Fact-Checking Process — KSJ Handbook](https://ksjhandbook.org/fac
 <a id="ข้อเสนอสำหรับแนวช่องนี้"></a>
 ## Guidance for this channel
 
+Resolve [delivery selection](delivery-workflow.md) before writing. Give each selected version its own narrative progression: a focused standalone Short and a developed Long, using the targets in [production requirements](production-requirements.md#outputs-and-story-timing). The experimental Short structure below does not set Long chapter lengths or automatically create a Short per chapter.
+
 - Start with a central question and a learning takeaway that fit the available time. Adjust through spoken reads/animatics rather than a fixed sentence count.
 - Connect beats causally: a clue prompts a test, whose result changes the hypothesis. Avoid unrelated strange events in sequence.
 - Give knowledge a plot function: observation, testing, decisions or understanding the reveal. If removing it leaves the story unchanged, reconsider whether it is merely appended.

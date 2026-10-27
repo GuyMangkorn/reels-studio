@@ -10,13 +10,15 @@ For Blender assets/rendered shots, read [blender-mcp-workflow.md](blender-mcp-wo
 ## Scope and decision ownership — requirements
 
 - **Film** chooses medium per set/character/prop/effect, art direction, lighting/shadows/color, camera language and 2D/Three.js composition. Record reasons, constraints and risks the developer can act on.
-- **Mark** develops shots/panels, blocking, acting, cuts and both-format framing, with scene sheets and sequence index. Reference Film decision IDs rather than reopening medium choices for every shot.
+- **Mark** develops shots/panels, blocking, acting, cuts and selected-deliverable framing, with scene sheets and sequence index. Reference Film decision IDs rather than reopening medium choices for every shot.
 - **Boss** owns interfaces/APIs, reusable implementation, runtime integration and QA; feed observed constraints back into brief/board revisions.
 
 Routine crop/staging/timing refinements preserving story and approach belong to Mark. Material changes to medium, spatial camera, light strategy, shared interfaces or reveal require recorded reasons and synchronized brief/board revisions. Routine work adds no user approval gate. Explicit user direction takes precedence over team recommendations.
 
 <a id="ขั้นตอน"></a>
 ## Briefing steps
+
+Read the [delivery record](delivery-workflow.md): prepare a distinct brief for each selected editorial version, matching its script/review and timing. Shared visual decisions/assets may be referenced; a paired crop of one edit is not two briefs. Checks cover selected deliverables plus affected shared consumers under production requirements.
 
 Before selecting/revising medium/compositing/camera/light strategy, consult relevant [Boss dev findings](dev-findings.md) and follow their revalidation cycle. Link finding IDs to visual decisions and outcomes; compare evidence branch/commit with the target checkout.
 
@@ -39,7 +41,7 @@ Choose action, interaction, demonstration, comparison, diagram or reconstruction
 
 Factual visuals retain claim IDs and existing review results. Make reconstructions, hypothetical examples and explanatory diagrams recognizable as such to viewers. Return unsupported details to Preaw/Boat; generating a new image does not authorize new factual claims or making a reconstruction appear to be documentary evidence.
 
-Before `ready-for-mark`, review the table continuously: every section needs a visual purpose. Identify repeated action/information delivery, such as consecutive narrator-and-card beats; revise or justify them in story terms. Changing camera angle, crop, light or text alone does not demonstrate visual progression. One-room scenes and cards are valid when serving the purpose; there are no location/technique/cut quotas. Record beats requiring blockout proof for Mark/Boss. Before polish, Film and Mark review the actual assembled sequence in both formats and record shot references, evidence, issues and corrections in the index. Planning readiness and runtime approval are distinct.
+Before `ready-for-mark`, review the table continuously: every section needs a visual purpose. Identify repeated action/information delivery, such as consecutive narrator-and-card beats; revise or justify them in story terms. Changing camera angle, crop, light or text alone does not demonstrate visual progression. One-room scenes and cards are valid when serving the purpose; there are no location/technique/cut quotas. Record beats requiring blockout proof for Mark/Boss. Before polish, Film and Mark review the actual assembled sequence for each selected deliverable and record shot references, evidence, issues and corrections in the index. Planning readiness and runtime approval are distinct.
 
 <a id="technical-ba-ต้องตอบอะไรเมื่อผสม-2d-กับ-threejs"></a>
 ## Technical BA for 2D and Three.js
@@ -52,7 +54,7 @@ Before choosing camera or projected size, follow [scale and perspective](scale-a
 | --- | --- | --- |
 | Composition | DOM/SVG over WebGL, world-space cut-outs, full 3D or separate pre-render passes; screen/world-space elements and transform owners | DOM overlays do not share the Three.js depth buffer. Alternating occlusion requires an explicit world-space adapter, masks or compositing passes. |
 | Scale / projection | Library scale baseline: dimensions/units/anchors, neutral pose and stylization exceptions; perspective/orthographic/shared 2D mapping with camera height/pose/FOV or bounds | Compare actors, animals, furniture and props on one plane before depth staging; near/far, depth motion and contact use one projection owner under the scale guide. |
-| Coordinates / camera | Named spaces, origin/axes/units, pixel↔world mapping, projection, camera target and both-format safe bounds | Camera start/mid/end preserve contact and avoid thin-edge cut-out views; document fixed-plane/billboard strategy and allowable view-angle range. |
+| Coordinates / camera | Named spaces, origin/axes/units, pixel↔world mapping, projection, camera target and safe bounds for the selected output | Camera start/mid/end preserve contact and avoid thin-edge cut-out views; document fixed-plane/billboard strategy and allowable view-angle range. |
 | Contact / identity | Asset IDs, logical bounds, foot/hip/grip/seat anchors, facing, held-prop parent and attach/detach events | Identify anchor spaces/conversions; pose/scale/camera and cross-cut representation changes retain identity/contact. |
 | Depth / alpha | Foreground/midground/background, opaque/alpha-cutout/soft transparency, required reveal occlusion | Test crossing objects and extreme camera angles. `transparent`, `DoubleSide` and `renderOrder` are not universal fixes. |
 | Lighting / color | Motivated key/fill/rim, lit/unlit materials, painted 2D light versus runtime light, caster/receiver or fake/contact shadows | Three.js lights do not automatically illuminate DOM/SVG; flat images lack mesh-like volume. Define texture color space, tone mapping/output and overall look checks rather than compensating for pipeline errors with emissive. |
@@ -66,10 +68,11 @@ Design example, not an existing feature: a 2D actor walking behind a 3D door dur
 <a id="ไฟล์ส่งมอบ"></a>
 ## Deliverables
 
-Use `storyboards/<episode>/visual-brief.md` for the assigned episode/chapter, with scope metadata. A single scene uses `<scene>-visual-brief.md` to preserve the episode brief. Update existing `index.md` or create a compact scoped index without claiming a sequence blockout exists.
+Use `storyboards/<episode>/<short|long>/visual-brief.md` for each selected deliverable, with its ID and scope metadata; follow [delivery paths](delivery-workflow.md#files-and-stable-ids). Preserve legacy paths until an explicit migration. A single scene uses `<scene>-visual-brief.md` to preserve the episode brief. Update existing `index.md` or create a compact scoped index without claiming a sequence blockout exists.
 
 ```markdown
 # Visual brief — <episode/chapter/scene>
+Deliverable: <ID>; delivery record: <path>; target duration / timing status: ...
 Revision: VB-R1; status: draft / ready-for-mark / needs-feasibility
 Script: <path + revision>; fact-check: <path + revision/coverage>
 Target checkout: <branch + commit>; scope / adjacent boundaries: ...
@@ -83,14 +86,14 @@ repetition/return rationale; missing assets and story-preserving alternatives;
 factual status and claim references for explanatory or reconstructed images
 
 ## Scene decisions
-| Scene / beat refs | Decision ID | Set / actors / props / effects medium | Framing / camera intent Short + Long | Light / shadow / color | Why / fallback |
+| Scene / beat refs | Decision ID | Set / actors / props / effects medium | Framing / camera intent for this deliverable | Light / shadow / color | Why / fallback |
 | ... | VD01 | ... | ... | ... | ... |
 
 ## Technical handoff
 Scale baseline: shared reference path/revision, dimensions/units/anchors,
 source or estimated status, stylization exceptions; calibration view
 Projection contract: camera/ground plane, perspective or orthographic,
-FOV/bounds + aspect/crop Short/Long; shared projection owner + feasibility
+FOV/bounds + this deliverable's aspect/crop; shared projection owner + feasibility
 Per decision: composition strategy, spaces/anchors/camera, depth/alpha/light,
 clocks/loading/resource ownership, actual paths + implementation status,
 proposed shared interface (design only), dependency order + consumers,

@@ -8,17 +8,17 @@ Read this when Film selects Blender, Mark boards Blender-produced shots, or Boss
 Sequence: Boat researches → Preaw writes → Boat reviews → Film prepares the brief → Mark boards → Boss produces with Blender/code and integrates → Remotion → QA.
 
 - **Film** selects medium and delivery route per shot. Record decision ID/revision, story value, camera/scale/light contract, dependencies, fallback and missing evidence. Use Blender when geometry, new angles, parallax, lighting/shadows or occlusion serve the image. Keep 2D/3D/hybrid available for every element.
-- **Mark** details shots from the brief: cameras for both aspect ratios, action/reveal frames, contact, foreground and boundaries. Record the Blender source/export revision reviewed. A viewport reference is not runtime proof.
+- **Mark** details shots from the brief: cameras for selected output aspects, action/reveal frames, contact, foreground and boundaries. Record the Blender source/export revision reviewed. A viewport reference is not runtime proof.
 - **Boss** owns Blender sources, scripts, reusable assets, export settings and scene-pipeline integration. Fix geometry/rig/anchors in the shared source, re-export, and check both Blender and the output actually used by Remotion.
 - **Remotion** owns the executable timeline, narration/amplitude, Thai subtitles, channel label, screen overlays, endings and final export. Read [Remotion toolkit](remotion-toolkit.md) before adding capabilities.
 
 | Route | Choose when | Required proof before timeline use |
 | --- | --- | --- |
-| Blender pre-render: stills/image sequence/video | Blender lighting, materials, effects or camera animation must be retained | Shared-renderer media support, frame mapping, alpha/color, loading and seeking; separate Short/Long framing when one crop cannot preserve action |
+| Blender pre-render: stills/image sequence/video | Blender lighting, materials, effects or camera animation must be retained | Shared-renderer media support, frame mapping, alpha/color, loading and seeking; framing for each selected deliverable and explicitly requested framing adaptation; use separate views when a crop cannot preserve action |
 | GLB/glTF export to Three.js | Reuse models and adjust staging/camera/animation in code | Declared dependencies, loader/stage, materials, animation sampling, anchors, shadows and type/validator/renderer integration in the target checkout |
 | Hybrid / separate passes | Multiple representations must be composited | Matching cameras/projection, masks/depth/alpha, light/color and one transform owner per layer |
 
-Start with a shared set/prop and one camera shot demonstrating contact/reveal in both aspect ratios before adding rig or episode complexity. Pre-render is the recommended starting route when Blender's look matters and GLB runtime integration is unavailable. Its media integration still needs implementation and verification; fallback does not imply existing support.
+Start with a shared set/prop and one camera shot demonstrating contact/reveal in selected output aspects before adding rig or episode complexity. Pre-render is the recommended starting route when Blender's look matters and GLB runtime integration is unavailable. Its media integration still needs implementation and verification; fallback does not imply existing support.
 
 <a id="1-preflight-ก่อนแก้ฉาก"></a>
 ## 1. Preflight before scene changes
@@ -49,7 +49,7 @@ The manifest must contain at least:
 | --- | --- |
 | Identity / revisions | Asset ID, source/build revision, Blender/exporter versions, brief decision/board shot IDs, consumers, source/export paths and integration status |
 | Physical contract | Units, axes/up/forward, canonical dimensions/bounds excluding padding, origin/pivots, named floor/foot/hip/seat/grip anchors with spaces/coordinates and required export transforms |
-| Camera / framing | Projection, lens/FOV or ortho bounds, aspect, clipping, camera/target/path, Short/Long framing and camera owner so Blender and Remotion do not duplicate motion |
+| Camera / framing | Projection, lens/FOV or ortho bounds, aspect, clipping, camera/target/path, selected-deliverable framing, requested alternate framing and camera owner so Blender and Remotion do not duplicate motion |
 | Motion / clock | Actions/clips, duration, fps, source frame range with inclusive/exclusive bounds, shot-local frame mapping, holds/loop seam, composition audio offsets and cache/bake locations |
 | Appearance | Renderer/settings, materials/textures, color management/view transform/output color space, alpha convention, light/shadow ownership, passes/masks and export settings |
 | Delivery / evidence | Resolutions, output formats/paths, license/provenance, regeneration command/steps, load readiness/resource owner, QA frames and limitations |
@@ -59,19 +59,19 @@ Blender and Three.js camera, light and material numbers are not interchangeable.
 <a id="3-ผลิตแบบ-deterministic-แล้วเชื่อม-runtime"></a>
 ## 3. Deterministic production and runtime integration
 
-1. Block out dimensions/anchors before polish. Compare actor–set–prop relationships on a common plane and camera start/mid/end in both aspect ratios. Preserve identity and meet the Short lead-size rule through framing.
+1. Block out dimensions/anchors before polish. Compare actor–set–prop relationships on a common plane and camera start/mid/end in selected/affected aspects. Preserve identity and meet the Short lead-size rule through framing.
 2. Use the shared timeline's 30 fps. Record frame mapping explicitly, including Blender's possible frame-1 start versus Remotion's frame 0. Author action/camera with absolute time, seed randomness and bake history-dependent physics/particles/constraints before export. Verify direct seeking and looping without prior playback.
 3. Check the delivery route. For GLB, verify actual material/rig/animation/constraint export support, bake/convert as needed and inspect the destination renderer. For pre-render, inspect alpha edges, color, frame count and trim/hold independently of audio timing. Use motion blur only when it helps movement readability without concealing clues/reveals.
-4. Export from one shared source revision. Produce storyboard-matching Short/Long framing and record reproducible settings. Include all required occluding/occluded passes. Flat output cannot reveal unrendered sides or automatically receive volumetric lighting.
+4. Export from one shared source revision. Produce framing matching each selected deliverable's storyboard and record reproducible settings. Include all required occluding/occluded passes. Flat output cannot reveal unrendered sides or automatically receive volumetric lighting.
 5. Before JSON selects the asset/media/animation, Boss adds missing capabilities to the shared module, scene types, validator and renderer dispatch together. The shared representation owner handles model loading, frame/fps animation sampling, readiness/errors and disposal.
 6. Update the executable timeline, shot mapping/index and entry/exit states under [sequence rules](sequence-workflow.md). Return constraints that change medium/camera/light/interfaces to Film/Mark and align revisions.
 
-Integration is complete when the timeline loads actual output through the shared pipeline and random seeking produces expected frames in both Short and Long. Export success alone is insufficient.
+Integration is complete when the timeline loads actual output through the shared pipeline and random seeking produces expected frames in each selected deliverable and affected shared consumer. Export success alone is insufficient.
 
 <a id="4-qa-และส่งต่อ"></a>
 ## 4. QA and handoff
 
-For visual/runtime changes, complete [Boss's pre-push QA](boss-asset-workflow.md#qa-ก่อน-push-งานภาพหรือ-runtime): Studio cold load/play/scrub/random seeking, renders in both aspect ratios, one-second/final-frame contact sheets, event/cut `F-1/F/F+1`, continuous sequence review and available neighbors.
+For visual/runtime changes, complete [Boss's pre-push QA](boss-asset-workflow.md#qa-ก่อน-push-งานภาพหรือ-runtime): Studio cold load/play/scrub/random seeking, renders for selected deliverables and affected shared consumers, one-second/final-frame contact sheets, event/cut `F-1/F/F+1`, continuous sequence review and available neighbors.
 
 Also compare Blender export and Remotion at corresponding source/output frames: scale/contact, foot sliding, grip/seat, clipping, occlusion, alpha halos, color/shadows, texture/model loading, animation starts/ends, reveals and subtitle safe regions. Check rendered files separately from previews. When evaluating cost, measure production/render times; MCP alone does not prove smoother visuals or faster rendering.
 

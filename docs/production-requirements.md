@@ -43,16 +43,16 @@ For a 2D background or prop, extend its shared registry and validator. For an ov
 
 ## Outputs and story timing
 
-Both outputs use the same timeline and scene components at 30 fps:
+Resolve the requested deliverables through [delivery workflow](delivery-workflow.md) before writing. Each selected editorial version has its own script, boards, timeline, narration and subtitle timing, using shared scene components and assets at 30 fps:
 
 | Composition | Size | Use |
 | --- | --- | --- |
 | `Short` | 1080×1920 | YouTube Shorts / Reels |
 | `Long` | 1920×1080 | Long-form |
 
-Adapt framing, camera aspect/FOV and safe regions for each output while preserving the action and beat timing. Keep character proportions and 3D geometry intact. Important action must remain visible in both storyboard framings.
+Short and Long may have different scene order, beat timing and spoken wording. Adapt framing, camera aspect/FOV and safe regions to each selected version's own storyboard while keeping character proportions and 3D geometry intact. An explicitly requested alternate framing of the same edit preserves that edit's action/timing; it does not supply the other editorial version. In production guides, “both formats” checks apply when both are selected or an affected shared consumer needs regression coverage; a single-format request does not create another deliverable.
 
-**Duration defaults:** Production targets are roughly 40–45 seconds for a standalone Short (a moral drama may reach 55 seconds), and 8–10 minutes for long-form episodes divided into 45–60 second chapters. **Hook requirement:** Each publishable chapter/Short opens with a hook in the first 2 seconds (60 frames), without an intro/logo/subscribe card. A 20-second storyboard fragment or shorter asset demo is valid development material; its length is not a new production requirement.
+**Duration defaults:** A standalone Short targets **40–60 seconds**; a normal YouTube Long targets **9–10 minutes (540–600 seconds)**. These are full-video durations including closing holds and ending behavior, not targets for each scene. Long chapters follow the story; no fixed chapter duration or automatic chapter-to-Short split is required. Explicit user durations override these defaults with a recorded reason. Keep timing `estimated` until a spoken read or audio/animatic check supports it; verify the final executable/rendered duration before release. Do not pad silence, repeat material or speed up narration merely to reach the range. **Hook requirement:** Each publishable chapter/Short opens with a hook in the first 2 seconds (60 frames), without an intro/logo/subscribe card. A 20-second storyboard fragment or shorter asset demo is valid development material; its length is not a new production requirement.
 
 Subtitles are visible from frame 0. Hold the closing line, moral when appropriate, or intended final beat for about 3 seconds. Deliver two endings through the shared ending behavior: `_A_fade` holds then fades; `_B_loop` holds and uses the shared loop seam. Check the last-to-first transition against the intended storyboard. Store MP4s in `out/`, for example `scene-a_A_fade.mp4` and `scene-a_B_loop.mp4`.
 

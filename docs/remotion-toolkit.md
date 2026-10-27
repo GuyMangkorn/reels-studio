@@ -36,7 +36,7 @@ Use core `spring()` for spring progress, `interpolate()` for numbers, `interpola
 1. Map the storyboard beat to a row above and to an existing asset id. State whether the capability already works in this checkout or needs implementation.
 2. Implement the missing behavior in its shared owner. Keep SVG, geometry, layout and package imports there; the episode selects ids and parameters.
 3. When exposing it to JSON, update `types.ts`, `validateTimeline` and `SceneRenderer.tsx` together. Validate known ids, finite numbers, bounds, ordering and the chosen clock. Add meaningful validation/timing tests for the new behavior.
-4. Match the storyboard in both Short and Long. Keep screen overlays and subtitles outside camera transforms. World objects remain in the camera's coordinate system.
+4. Match each selected deliverable's storyboard and check affected shared consumers under [delivery workflow](delivery-workflow.md). Keep screen overlays and subtitles outside camera transforms. World objects remain in the camera's coordinate system.
 5. Check start, key action/reveal, end and random-seek frames; use the package-specific checks below. Follow the [issue/PR workflow](contributing.md).
 
 The examples below are independent authoring recipes, not registered assets. A copied component still needs shared placement, schema integration where applicable and visual verification before a timeline can select it.
@@ -75,7 +75,7 @@ export async function fitThaiHeading(text: string, width: number) {
 
 This helper is for a short, single-line heading. The 44–72 px range is this recipe's choice, not a replacement subtitle specification. Call async measurement from the shared component's loading effect; gate rendering with `useDelayRender`, continue only after layout is ready, and route failures to `cancelRender`. Account for unmounting when updating state.
 
-Thai needs a word-boundary policy. In the recorded 4.0.538 implementation, `fitTextOnNLines()` splits on spaces. For unspaced Thai, use authored breaks or `Intl.Segmenter('th', {granularity: 'word'})`, then measure each **whole candidate line** so shaping is retained. Preserve punctuation and authored spaces. Prefer another subtitle cue/page to unreadably small text. Reserve space for vowel/tone marks, line height, dark stroke and platform controls; width fitting alone does not prove a subtitle fits vertically. Inspect real Thai glyphs in both outputs.
+Thai needs a word-boundary policy. In the recorded 4.0.538 implementation, `fitTextOnNLines()` splits on spaces. For unspaced Thai, use authored breaks or `Intl.Segmenter('th', {granularity: 'word'})`, then measure each **whole candidate line** so shaping is retained. Preserve punctuation and authored spaces. Prefer another subtitle cue/page to unreadably small text. Reserve space for vowel/tone marks, line height, dark stroke and platform controls; width fitting alone does not prove a subtitle fits vertically. Inspect real Thai glyphs in each selected/affected output.
 
 ## 5. Overlay motion: animation-utils
 
@@ -210,7 +210,7 @@ export const ReactionStar = () => <Star
 />;
 ```
 
-Wrap and name channel symbols once in the shared asset library, then expose parameters such as color/size and register ids if JSON needs them. Keep outline weight consistent after scaling. Use existing human/animal rigs for characters; a shape generator does not replace an articulated skeleton. Verify clipping, pivot placement and both aspect ratios when animating a symbol.
+Wrap and name channel symbols once in the shared asset library, then expose parameters such as color/size and register ids if JSON needs them. Keep outline weight consistent after scaling. Use existing human/animal rigs for characters; a shape generator does not replace an articulated skeleton. Verify clipping, pivot placement and selected/affected aspect ratios when animating a symbol.
 
 ## 11. Verification and dependency maintenance
 

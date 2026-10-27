@@ -8,7 +8,7 @@ This log records observed issues and reusable lessons from development, blockout
 1. **Boss records findings when observed:** blockers, production/shot changes, workarounds and reusable lessons across 2D/3D/hybrid. Search for an existing entry and update its stable ID for the same issue. Record known symptoms/scope immediately, even with unknown cause, then add experiments and fixes during work and before the PR. Create no empty entry when nothing new or changed was found.
 2. **Film reads before choosing/revising approach:** compare relevant entries with target checkout, code/dependencies and applicable conditions. Cite finding ID + checked date/commit and decision ID in the brief, with outcome: use conditionally / build shared capability first / fallback / spike / irrelevant with reason. State when none apply; that does not establish tested feasibility.
 3. **Mark reads before creating/revising boards:** consult Film's cited findings and camera/staging findings. Link IDs to affected shots in scene sheets, framing/motion/contact/reveal constraints or fallback, and Boss proof requirements. Reconcile conflicts through the coordinator so brief/board revisions agree.
-4. **Feed back impacts on active plans:** as soon as the plan cannot be implemented as written, Boss reports finding ID, scene/shot/decision IDs, effects on story/time/both formats and proposed response through the coordinator. Link open items in handoff/PR; keep details authoritative here. Writing this log does not send messages or invoke agents automatically.
+4. **Feed back impacts on active plans:** as soon as the plan cannot be implemented as written, Boss reports finding ID, scene/shot/decision IDs, effects on story/time/selected deliverables and affected shared consumers and proposed response through the coordinator. Link open items in handoff/PR; keep details authoritative here. Writing this log does not send messages or invoke agents automatically.
 5. **Revalidate after fixes/tool changes:** Boss updates status with commit/PR and repeated-test evidence while retaining original symptoms/attempts. After baseline changes, Film/Mark verify the fix exists in the target checkout before reuse. Update active affected brief/boards and link the original finding when results change plans.
 
 <a id="ขอบเขตหลักฐานและสถานะ"></a>
@@ -60,7 +60,7 @@ Add actual entries below this template and link each in the index. Use unique st
 
 ### Planning impact
 - Film: medium/compositing/camera/light/interface effect; fallback/shared capability:
-- Mark: both-format shot/framing/staging/contact/reveal effect; preserved constraints:
+- Mark: selected-deliverable shot/framing/staging/contact/reveal effect; preserved constraints:
 - Follow-up: owner + issue/PR; spike/acceptance criteria; brief/board/index updates:
 
 ### Revalidation history

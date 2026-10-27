@@ -18,9 +18,9 @@ This table is the authoritative home for the user's rules, updated 26 October 20
 
 | Requirement | Implementation and evidence |
 | --- | --- |
-| **Choose 2D / 3D / hybrid for story and technique** | Any set, character, prop or effect may use these media. Film records reasons and integration strategy, Mark develops boards, and Boss proves implementation. Check dependencies/APIs and both aspect ratios before claiming support. |
+| **Choose 2D / 3D / hybrid for story and technique** | Any set, character, prop or effect may use these media. Film records reasons and integration strategy, Mark develops boards, and Boss proves implementation. Check dependencies/APIs and each selected/affected aspect ratio before claiming support. |
 | **Props are shared assets in the chosen representation** | Complete images, layered planes or geometry may serve the required views/interactions. Define bounds, pivots and seat/grip anchors; assess contact, occlusion and texture cost rather than imposing one-image/one-plane construction. |
-| **Physical dimensions precede perspective** | Follow [scale and perspective](scale-and-perspective-principles.md): define canonical dimensions/units and library anchors; compare people, animals, furniture and held objects before framing. Use one projection owner; check calibration, near/far views, depth motion and contact in both formats. |
+| **Physical dimensions precede perspective** | Follow [scale and perspective](scale-and-perspective-principles.md): define canonical dimensions/units and library anchors; compare people, animals, furniture and held objects before framing. Use one projection owner; check calibration, near/far views, depth motion and contact in each selected/affected output. |
 | **Effects and cameras have explicit transform ownership** | Choose picture-stage pan/zoom/shake/flash or a spatial camera for the beat. Identify moving elements and screen-space elements. Avoid duplicate transforms that separate contact/shadows; retain readable subtitles and UI. |
 | **Create textures once per mounted scene lifecycle** | Reuse each texture within its mounted scene/worker under stable keys instead of recreating/rasterizing every frame. Inspect allocations/dependencies, first frame and Studio seeking. Each worker/remount has its own lifecycle. |
 | **Use the demo lighting baseline** | Ambient `#c8bdf0` around `2.6`, lantern flicker and surrounding glow. Material `emissiveIntensity` must be ≤`0.3`; normalized glow strength/opacity must also be ≤`0.3`. Point-light intensity uses different units: do not apply this cap to every light property. |
@@ -36,20 +36,22 @@ Pure 2D creates lighting/look through grading, fills, masks and controlled glow.
 <a id="โครงรวมก่อน-polish-รายฉาก"></a>
 ## Sequence baseline before scene polish — requirements
 
+Read the [delivery record](delivery-workflow.md). Own one deterministic assembly per selected deliverable, with matching script/brief/board and its own audio, cues, boundaries and ending. Share renderer/assets; do not use a crop or the other version's timeline/audio as a substitute. Production QA covers selected deliveries plus affected existing shared consumers, without expanding the release set.
+
 Follow [sequence workflow](sequence-workflow.md). Read the episode index, scene sheets and adjacent scenes before splitting work.
 
 | Area | Boss deliverable |
 | --- | --- |
 | Shared elements | One library module/capability per element, stable identity, appearance interface, logical bounds/pivots/anchors and coordinates agreed with Mark; record consumers/status in the index. |
-| Sequence blockout | Executable timeline for the entire requested scope, shared placeholders with representative scale/contact, retained timing/reveal, and continuous playback in Short/Long before polish. |
+| Sequence blockout | Executable timeline for the entire requested scope, shared placeholders with representative scale/contact, retained timing/reveal, and continuous playback per selected deliverable before polish. |
 | Scene integration | Replace placeholders and author staging/timing with the same library; update the combined timeline and shot mapping in the same PR. |
 | Boundary evidence | Implemented entry/exit states, composition audio offsets and adjacent-cut checks, identifying unverified parts. |
 
-Inspect `Root`, types, validator and renderer before choosing timeline assembly. If the checkout loads a single array, use it. Split sources require one deterministic, tested assembly path. Designed `entry`/`exit`, presets or include/import fields are not automatically usable JSON.
+Inspect `Root`, types, validator and renderer before choosing timeline assembly. Record each deliverable's actual composition/input props/timeline and measured duration; existing composition names do not establish selection or release readiness. If the checkout loads a single array, use it. Split sources require one deterministic, tested assembly path. Designed `entry`/`exit`, presets or include/import fields are not automatically usable JSON.
 
 Cross-scene states must be derived directly from authored data and the sought frame: use consistent actor IDs with explicit positions/appearances. Prefer supported fields; extend state resolution through shared types/validation/renderer and regression tests when needed. Playback-dependent mutable inheritance cannot reproduce direct seeks.
 
-Before polish, record blockout revision, timeline/input props, scene/shot mapping, placeholders, both-format continuous review and unresolved issues in index/QA notes. Missing neighbors require a labeled boundary placeholder or an explicitly unverified gap. Single-scene work covers needed boundaries only; asset-only/scoped bug fixes cover affected consumers without a new episode blockout.
+Before polish, record blockout revision, timeline/input props, scene/shot mapping, placeholders, continuous review per selected deliverable and unresolved issues in index/QA notes. Missing neighbors require a labeled boundary placeholder or an explicitly unverified gap. Single-scene work covers needed boundaries only; asset-only/scoped bug fixes cover affected consumers without a new episode blockout.
 
 Merge foundation/capability PRs before starting dependent scene branches from refreshed `main`. Track dependency issues instead of copying foundations into every branch. Shared-interface changes update affected consumers and regression checks. Intermediate scenes use authored cuts/transitions; fade/loop endings belong at publishable output boundaries.
 
@@ -58,17 +60,17 @@ Merge foundation/capability PRs before starting dependent scene branches from re
 
 When mapping boards to the library, record missing requirements against shot/decision IDs. Propose shared assets/capabilities, dependencies and qualitative costs/risks; label unmeasured costs `estimated`. Include a fallback and its effect on action, information and reveal. Reconcile material changes with Film/Mark and update brief/board before changing the plan. An available asset alone does not justify replacing the required demonstration/event with a narrator pointing at cards.
 
-Blockout placeholders must demonstrate action and information delivery from [visual progression](film-visual-brief-workflow.md#visual-progression-before-asset-selection) well enough for Film/Mark to judge. Before polish, submit both-format sequences and record shot/frame references, review results and unresolved items in the index. If a placeholder cannot demonstrate the purpose, mark it unverified and state the required follow-up. Code/contact/continuity QA and correct total duration do not establish a storytelling pass.
+Blockout placeholders must demonstrate action and information delivery from [visual progression](film-visual-brief-workflow.md#visual-progression-before-asset-selection) well enough for Film/Mark to judge. Before polish, submit each selected deliverable's sequence and record shot/frame references, review results and unresolved items in the index. If a placeholder cannot demonstrate the purpose, mark it unverified and state the required follow-up. Code/contact/continuity QA and correct total duration do not establish a storytelling pass.
 
 <a id="ขั้นตอนทำงาน"></a>
 ## Implementation steps
 
 Read and update [dev findings](dev-findings.md) when blockers, workarounds or reusable lessons affect technique/shot decisions. Record them during dev/blockout/QA, revisit status before the PR, and link finding IDs to affected Film/Mark decisions.
 
-1. **Establish scope:** identify issue, branch, asset/scene/shot IDs and script/brief/board revisions. Read index, brief decisions, scene sheet and adjacent entry/exit states. Classify foundation/blockout versus integration/polish and dependencies. Resolve conflicts before writing; preserve story/facts/timing or record the agreed revision.
+1. **Establish scope:** identify issue, branch, selected deliverable IDs, asset/scene/shot IDs and script/brief/board revisions. Read index, brief decisions, scene sheet and adjacent entry/exit states. Classify foundation/blockout versus integration/polish and dependencies. Resolve conflicts before writing; preserve story/facts/timing or record the agreed revision.
 2. **Inspect checkout:** read AGENTS.md and [remotion-toolkit.md](remotion-toolkit.md); run `npm ls --depth=0` and `npx remotion versions`. Inspect APIs/registries/types/validator/renderer/render helpers; use [character-toolkit.md](character-toolkit.md) for rigs/poses. Finish when every dependency is classified `existing-integrated`, `exists-unintegrated`, `missing` or `unknown`.
 3. **Define ownership/interfaces:** one library owner per asset, with ID, bounds, pivot, seat/grip/floor anchors, appearance parameters and resource ownership. Scenes select IDs and stage/time them. One explicit owner converts logical asset coordinates to stage space.
-4. **Build continuous blockout before polish:** assemble every scene in scope using Film/Mark's representation. Place hips/feet/hands on anchors; review framing, scale, motion, occlusion, timing/reveal and boundaries in both formats, especially hybrid seams. Record evidence before detail. Install/integrate capabilities required by scope only.
+4. **Build continuous blockout before polish:** assemble every scene in scope using Film/Mark's representation. Place hips/feet/hands on anchors; review framing, scale, motion, occlusion, timing/reveal and boundaries in each selected output, especially hybrid seams. Record evidence before detail. Install/integrate capabilities required by scope only.
 5. **Implement deterministically:** frame/fps clock, seeded flicker/noise, static-art texture keys independent of frame, loading/error/disposal and readiness consistent in Studio/render. Read [asset-engineering-principles.md](asset-engineering-principles.md) for `ThreeCanvas`, `useLoader`, color space and alpha/depth constraints.
 6. **Integrate the full pipeline:** update types + validator + shared component + renderer dispatch together. Tests should exercise input, timing, contact or actual regressions rather than restating implementation constants. Keep SVG/geometry in shared assets.
 7. **Review picture/time:** complete QA below, fix root causes in shared owners and check affected consumers. Scale/color/lighting changes must preserve their scenes.
