@@ -1,15 +1,55 @@
 # POOLDEPTH-SHORT Blender manifest (Boss)
 
-Status: spike stage (S0-S2 run 2026-10-28); `VD01` route Blender pre-render to MP4 consumed by `Scene.media`. Results: `scripts/pool-depth/spike-results.md`. Computed numbers: `spike-manifest.json` (written by `build.py`).
+Status: `source-ready` for D3 (pool set, child, sign), S3 (diagram geometry) and S4 (loop seam) at the stated evidence; **no clip rendered, nothing `export-ready`/`runtime-integrated`/`visual-verified`**. `VD01` route: Blender pre-render to MP4 consumed by `Scene.media`. Results and numbers: `scripts/pool-depth/spike-results.md` (S0-S2 and D3/S3/S4 sections); computed output: `spike-manifest.json` (written by `build.py`); Remotion overlay data: `plate-quads-SH05.json`. Brief `VB-POOLDEPTH-SHORT-R1` and sheet `POOLDEPTH-SHORT-BOARD-R1` were not edited; deviations below are for Mark/Film/Editor.
+
+Source: `assets/blender/pool-depth/build.py` (Blender 5.2.3 LTS, headless; one run = one command). No `.blend` is committed: scenes are rebuilt from the script (state is a pure function of shot and shot-local frame, so any frame renders directly). Branch `claude/pool-depth-short` after `148f3bc` (uncommitted working tree).
+
+## Contract
 
 | ID | Item | Value | Source |
 | --- | --- | --- | --- |
-| M1 | Units / axes | 1 BU = 1 m, Z up, camera looks along -Z local | brief scale baseline |
+| M1 | Units / axes | 1 BU = 1 m, Z up; `POOL` origin on the deck edge line at the waterline mid-point, +x along the edge, +y into the pool; `DIAG` = XZ plane at y=0, surface z=0, 1 u read as 1 m | brief scale baseline |
 | M2 | Output | 1080x1920, 30 fps, PNG 8-bit sRGB (Standard view transform), frame 1 = scene-local frame 0 | `VD10` |
-| M3 | Engine / device | Cycles, `device=GPU`, Metal (Apple M1 GPU, 8 cores) set in `build.py` | preflight PF3d |
-| M4 | Water | closed Glass BSDF volume, IOR 1.333, bottom and sides buried in opaque geometry | S1, S2 |
-| M5 | Spike pool | depth 1.0 m, camera 2.0 m above surface, vFOV 60 deg | S1 |
-| M6 | Mug demo | inner Ø 0.08 m, inner height 0.09 m, water 0.07 m, coin Ø 0.02 m x 0.001 m at 0.064 m from the near wall, eye 40 deg from vertical, camera 1.0 m, vFOV 13.2 deg | S2 |
-| M7 | Clip encode | libx264 crf 12 yuv420p, tags bt709/tv (recipe in spike-results.md) | S0 |
+| M3 | Engine / device | Cycles, `device=GPU`, Metal (Apple M1 GPU, 8 cores); look stills at 40 spp + OIDN (GPU) denoise; diagram at 16 spp, no denoise | preflight PF3d; D3 |
+| M4 | Water | closed Glass BSDF volume IOR 1.333 + Volume Absorption (aqua), bottom 1 cm inside the floor slab, sides 1 cm inside the walls; shadow rays see Transparent (`Is Shadow Ray` mix) so floor and child shadow are lit without caustics; ripples = bump from 4 travelling sines (amplitudes 1.6-4.2 mm, wavelengths 0.22-0.90 m), integer cycles per 30 frames | S1, S2, D3, `DF-20261028-blender-cycles-water-spike` |
+| M5 | Pool | rectangular x -3..3, y 0..6, floor z -1.0 (depth 1.0 m), deck top z +0.15, brick-tile floor 0.25 m with a dark lane line (x 0.45-0.60) and a checker patch (x -1.75..-0.35, y 0.5..4.0, 0.35 m squares), deck slabs 0.625 m, hedge at y 11-12.6, far wall y 12.6-13 | `VD02` |
+| M6 | Light | sun lamp `#FFE2B8`, strength 1.35, angle 1.2 deg, elevation 50 deg, light travels toward +x,+y (upper-left rear); procedural Nishita sky (no sun disc, no HDRI, no external file) strength 0.07 | `VD02` |
+| M7 | Child `PD_Child_*` | faceless doll-like, standing height 1.25 m (head top), knee 0.35, hip joint 0.62, eye 1.14, shoulder width 0.31 incl. arms; shirt `#FF8FA3`, skin `#E4AB86`, hair `#2B1F18`, shorts `#33507A`; built from primitives, posed from joints (no armature); root = toes midpoint `(0.0,-0.03,0.15)`; idle sway +-1.5 cm of the upper body, period 30 frames; `pose_seated(t)` for SH06 (legs only in frame, head never in frame) | `VD02`, sheet SH01/SH06 |
+| M8 | Sign `PD_Sign_*` | two uprights (0.05 m) at +-0.23 m about `(1.4,-0.5)`, yaw -40 deg (faces the SH01/SH05/SH07 cameras), two rails, **blank** depth plate 0.30 x 0.20 m centre z 1.35 (navy border `#1B3A57`, face `#F7F7F2`), no-diving plate O 0.28 m centre z 0.95 (generic red ring + slash + flat diver glyph, no organization's sign, no text) | `VD07`, decision Q4 |
+| M9 | Cameras | vertical FOV (not focal length): `CAM-POOL-A0` pos (-1.0,-3.3,2.2) target (0.21,0.90,-0.22) 45 deg; `CAM-SIGN` pos (0.2,-1.7,1.2) target (1.4,-0.5,1.35) 35 deg, +0.2 m ease-out push; `CAM-FEET` (-0.9,0.9,0.35) -> (0,0,-0.05) 40 deg, +0.2 m ease-out; `CAM-NODIVE` (0.5,-1.6,1.3) -> (0.55,-1.7,1.05), target (1.4,-0.5,0.95) 35 deg, ease in-out; SH08 returns by `smooth((f+1)/91)` to A0 exactly at F90 and holds. Diagram: orthographic, 6.4 u vertical (300 px/u), centre x 0, z -0.6, looking along +y. Camera owner: Blender only | `VD02`, sheet |
+| M10 | Clock / seam | ripple and sway phase = `(shot start + f) % 30`, SH08 `(f+1) % 30` so SH08 F209 and SH01 F0 are phase 0; SH01 dolly 0.15 m smoothstep over F0-F179; SH08 hold F90-F209 repeats every 30 frames (render F90-F119 once and reuse) | sheet loop seam |
+| M11 | Diagram `PD_Diag_*` | flat emissive geometry (exact palette under Standard): ground `#F4F7FA`, water block alpha 0.7 `#BFE8F2` (no refraction shader), floor/walls `#9FB4C2`, ray `#FF9F5A` (r 0.012 u), true `#1B6F86`, apparent `#FFD166`, eye `#2B3A55`; geometry from `snell_surface_point` / `snell_from_air_angle` (n = 1.333); true depth 2.0 u, apparent 2.0/1.333 = 1.50038 u | `VD04`, `VD06` |
+| M12 | Clip encode | libx264 crf 12 yuv420p, tags bt709/tv (recipe in spike-results.md) | S0 |
 
-Commands: `Blender -b --python assets/blender/pool-depth/build.py -- s0|s1|s2 [--samples N] [--scale PCT] [--coin_x M] [--ior N]`. Renders go to `renders/<spike>/` (local only). Packaging policy: see spike-results.md (proposed).
+Commands: `Blender -b --python assets/blender/pool-depth/build.py -- s0|s1|s2 [...]` (spikes), `-- d3 [--samples N]` (refraction + framing checks, writes `plate-quads-SH05.json`), `-- s3 [--samples N]`, `-- s4 [--samples N] [--denoise 0|1]`, `-- stills SH01:0 SH05:99 ... [--samples N --scale PCT --denoise 0|1]`, `-- diff a.png b.png`. Renders go to `renders/<name>/` (gitignored). Add a retry loop around long runs (one Metal kernel-compile crash seen).
+
+## Decisions recorded 2026-10-28 (coordinator answers to Mark's open questions; brief and sheet not edited)
+
+| ID | Decision | Effect / owner |
+| --- | --- | --- |
+| Q4a | Depth sign text is `1.0 m`, **rendered by Remotion**, not Blender. Blender provides a blank plate; `plate-quads-SH05.json` gives its four screen corners (TL,TR,BR,BL, px, 1080x1920) for every SH05 frame (0-99) so Editor can place or perspective-warp the text. SH01 plate stays blank (unreadable at that size by design) | Editor: SH05 overlay; Mark/Film: informational |
+| Q4b | `ฉากสมมติ` label only on B01 (SH01). Not on SH05-SH08 | Editor |
+| Q8b / packaging | Do not commit clips or renders. `renders/` is gitignored, `*.mp4` stays ignored. When clips exist, record per clip in the table below: codec, size, SHA-256, frames, source command | Boss at clip render |
+| Q6 | No pour SFX for now (SH03 `sfx` stays empty; the pour onset F150 keeps its design role for the VO) | Editor |
+| Q7 | If an S1-style EEVEE fallback is ever needed it applies to SH01/SH05-SH08 only; **SH03 stays Cycles**. Not needed: Cycles passed S1 (spikes) and the D3 oblique check | Film |
+
+### Clip packaging table (empty: no clip rendered yet)
+
+| Clip | Frames | Codec / tags | Size | SHA-256 | Source command |
+| --- | ---: | --- | --- | --- | --- |
+| `shot-01..08` | 180/300/300/360/100/80/90/210 | libx264 crf 12 yuv420p, bt709/tv | pending | pending | pending |
+
+## Deviations from the sheet numbers (for Mark / Film / Editor)
+
+1. **`CAM-POOL-A0` target** is `(0.21, 0.90, -0.22)` (pitch 29 deg, yaw 16 deg), not `(-0.2, 1.6, -0.9)` (pitch 32 deg): the sheet target put the head top at Y 194 px, inside the label band (Y < 269). Result at F0: child X 479-721, Y 321-1072 (height 756 px), over the dolly Y top 290.5, bottom 1082, min height 756 px (rule >= 480 and band [269,1440] met). Position, lens and vFOV are as designed.
+2. The sheet's silhouette box X 400-720 / Y 560-1250 and "water fills the lower-middle (Y 900-1440)" cannot hold from a camera behind the child: the near deck is the foreground (about Y 1000-1920) and the water is above the child's feet. Measured layout above.
+3. **`CAM-SIGN` target x** is 1.4 (the plate centre), not 1.2: x 1.2 cut the plate off at the frame edge. Depth plate width: 45.2% of the frame at F0, 51.3% at F99, first >= 50% at F56 (sheet asks plate >= 50% frame width): moving the F0 camera about 0.15 m closer meets it from F0; left to Mark/Film.
+4. **Sign yaw** -40 deg (faces the cameras) instead of facing -y; facing -y would show the plates 40-45 deg edge-on. Plates still read as flat blanks; Remotion text should use the quad in `plate-quads-SH05.json`.
+5. **SH06 seated pose:** the legs-only ankle ends at z -0.158, not -0.20: with the thigh clearing the deck corner (minimum clearance +1.5 mm) and the pelvis on the deck (lowest pelvis vertex z 0.153) the shin cannot reach -0.20. Hips at `(+-0.06,-0.11,0.285)` (joint) instead of `(0,-0.10,0.15)` (that point is the deck level, not the hip joint). No head, torso cut at the top of frame.
+6. **SH04 eye swing** keeps constant height 1.6 u (eye x from -1.2 to +1.24, Snell holds on every frame) instead of a constant-radius arc; a dashed back-extension to the ghost marker is drawn during the oblique state as in SH02 (no number, no bar). The apparent depth in the oblique state is 1.312 u (internal, never captioned).
+7. Floor "appears about 0.5-0.75 of the true depth" (brief) holds only near vertical: at the B01 camera (air angle 65-76 deg from vertical) Snell gives 0.29-0.44, floor markers lift by 174-187 px. This is physical, not a defect; the honesty rule (no number on oblique views) is unchanged.
+8. Floor/child lighting uses shadow rays that see through the water (no caustics) so the floor and the child's shadow are lit cleanly; the water still refracts camera rays.
+
+## Evidence index (local, gitignored unless noted)
+
+Stills: `renders/d3/` (SH01 F0/F90/F179, SH05 F0/F99, SH06 F0/F40/F79, SH07 F0/F89, SH08 F0/F45/F209; contact sheets `contact_A.png`, `contact_B.png`; refraction test `refr_ior_*.png`), `renders/s3/` (SH02 F20/F70/F130/F230, SH04 F100/F200/F310/F340, masks), `renders/s4/` (seam pair and neighbours). Committable data: `spike-manifest.json` (keys `d3_stills`, `d3_checks`, `s3`, `s4_dn_40spp`), `plate-quads-SH05.json`.

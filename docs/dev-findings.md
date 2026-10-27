@@ -221,9 +221,12 @@ PYCODE
 ### Attempts and results
 - Rules: bury the water bottom and side faces inside opaque geometry (no air gap, no coincident faces); keep the tested IOR 1.0 control; count coin pixels from an emissive mask, threshold 0.5 (indirect bleed from an emissive object is below it).
 - Cost: 32 spp, no denoise, 1080x1920, Cycles Metal: 3.8 s/frame for a trivial emissive scene, 13-15 s/frame for a glass+floor scene, 11-13 s/frame for the mug scene at 64 spp (grainy: glass blocks shadow rays, light reaches the cup floor only through noisy indirect paths).
+- 2026-10-28 D3 follow-up (pool set, `assets/blender/pool-depth/build.py`): the grain risk is resolved by (a) a Mix Shader on the water surface that uses Transparent for shadow rays (`Light Path > Is Shadow Ray`) so the sun and sky light the floor and the child's shadow directly (no caustics; camera rays still refract), and (b) OIDN denoise on GPU at 40 spp (about 20 s/frame for the pool-edge shot, 11 s sign close-up, 35 s legs/water close-up at 1080x1920). 128 spp raw cost 54-104 s/frame, so denoise is the cheaper route; temporal flicker of OIDN across consecutive frames is still untested. Rippled water is a bump from a sum of travelling sines with integer cycles per 30 frames (exactly periodic). Oblique pool-edge camera (65-76 deg from vertical): marker error 0.04-0.65 px against the Snell prediction (IOR 1.0 control 0.09-0.23 px).
+- Tooling flake: one of about 12 headless Blender starts crashed inside Cycles Metal kernel compilation (`MetalKernelPipeline::compile`, NSException); re-running the same command worked. Wrap long renders in a retry.
 
 ### Planning impact
 - Film: Blender route stays feasible for refraction beats; budget render time and a denoise/shadow-ray strategy before committing about 1,000 frames. Mark: no change. Follow-up: Boss decides denoise or fake-shadow trick during D2/D3.
 
 ### Revalidation history
 - 2026-10-28 / `59809c8` + working tree: S0/S1/S2 pass at the stated coverage; Film/Mark adoption: pending.
+- 2026-10-28 / `claude/pool-depth-short` working tree (after `148f3bc`): D3 pool set, S3 diagram geometry and S4 loop seam pass at the stated coverage (`scripts/pool-depth/spike-results.md`); Film/Mark adoption of the recorded camera/pose deviations: pending.

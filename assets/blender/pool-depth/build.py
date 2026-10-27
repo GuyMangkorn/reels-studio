@@ -405,6 +405,1288 @@ def s2(o):
     print('S2_RESULT', json.dumps(res))
 
 
+
+
+# ================================================================== D3/S3/S4 (pool set, child, diagram, loop seam)
+# Pure-function design: scene state = f(shot, shot-local frame). Camera, child pose, ripple phase and sun are all derived
+# from (shot, f), so any frame can be rendered directly (seek parity) and SH08 F209 vs SH01 F0 is a real comparison.
+SH_START = {'SH01': 0, 'SH02': 180, 'SH03': 480, 'SH04': 780, 'SH05': 1140, 'SH06': 1240, 'SH07': 1320, 'SH08': 1410}
+SH_LEN = {'SH01': 180, 'SH02': 300, 'SH03': 300, 'SH04': 360, 'SH05': 100, 'SH06': 80, 'SH07': 90, 'SH08': 210}
+POOL = {'x': (-3.0, 3.0), 'y': (0.0, 6.0), 'floor_z': -1.0, 'deck_z': 0.15}      # POOL space, metres (brief: depth 1.0 m, deck +0.15 m)
+CHILD_ROOT = (0.0, -0.03, 0.15)           # toes midpoint (sheet SH01)
+SIGN_POS, SIGN_YAW_DEG = (1.4, -0.5), -40.0
+PLATE_DEPTH_Z, PLATE_PICTO_Z = 1.35, 0.95
+RIPPLE_PERIOD = 30                        # frames; all periodic motion uses this period (or a divisor)
+CAMS = {                                  # sheet camera numbers; vFOV in degrees
+    'A0': {'pos': (-1.0, -3.3, 2.2), 'tgt': (0.21, 0.90, -0.22), 'fov': 45.0},   # sheet target (-0.2,1.6,-0.9) put the head under the label band (Y 194 px): pitch 29 deg, yaw 16 deg keeps Y 320-1071
+    'SIGN0': {'pos': (0.2, -1.7, 1.2), 'tgt': (1.4, -0.5, 1.35), 'fov': 35.0},     # sheet target x 1.2 left the plate cut off at the frame edge; aimed at the plate centre
+    'FEET0': {'pos': (-0.9, 0.9, 0.35), 'tgt': (0.0, 0.0, -0.05), 'fov': 40.0},
+    'NODIVE0': {'pos': (0.5, -1.6, 1.3), 'tgt': (1.4, -0.5, 0.95), 'fov': 35.0},
+    'NODIVE_END': {'pos': (0.55, -1.7, 1.05), 'tgt': (1.4, -0.5, 0.95), 'fov': 35.0},
+}
+PAL = {'shirt': '#FF8FA3', 'skin': '#E4AB86', 'hair': '#2B1F18', 'shorts': '#33507A', 'deck': '#F6E7D0', 'sun': '#FFE2B8',
+       'aqua': '#4CC9D8', 'teal': '#1B6F86', 'wall': '#BDE9EE', 'tile': '#F1F7F8', 'grout': '#BCCDD2', 'lane': '#17324A',
+       'sand': '#FFE2B8', 'metal': '#8A949C', 'navy': '#1B3A57', 'plate': '#F7F7F2', 'hedge': '#5E9C6A', 'ground': '#CFE3C3'}
+
+
+def hexc(h):
+    h = h.lstrip('#')
+    c = [int(h[i:i + 2], 16) / 255 for i in (0, 2, 4)]
+    return tuple(((v + 0.055) / 1.055) ** 2.4 if v > 0.04045 else v / 12.92 for v in c)
+
+
+def lerp(a, b, t):
+    return tuple(x + (y - x) * t for x, y in zip(a, b))
+
+
+def smooth(t):
+    t = min(max(t, 0.0), 1.0)
+    return t * t * (3 - 2 * t)
+
+
+def ease_out(t):
+    t = min(max(t, 0.0), 1.0)
+    return 1 - (1 - t) ** 2
+
+
+def pbr(name, hexcol, rough=0.6, spec=0.3):
+    m = bpy.data.materials.new(name)
+    m.use_nodes = True
+    p = m.node_tree.nodes['Principled BSDF']
+    p.inputs['Base Color'].default_value = (*hexc(hexcol), 1)
+    p.inputs['Roughness'].default_value = rough
+    p.inputs['Specular IOR Level'].default_value = spec
+    return m
+
+
+def emit(name, hexcol, strength=1.0):
+    return material(name, 'emission', hexc(hexcol), strength)
+
+
+def mesh_box(name, x0, x1, y0, y1, z0, z1, mats, face_mat=None):
+    """Axis-aligned box with identity transform (world-space vertices). face_mat: {'+y': material index, ...}."""
+    bm = bmesh.new()
+    bmesh.ops.create_cube(bm, size=1.0)
+    for v in bm.verts:
+        v.co = ((x1 if v.co.x > 0 else x0), (y1 if v.co.y > 0 else y0), (z1 if v.co.z > 0 else z0))
+    for fc in bm.faces:
+        n = fc.normal
+        key = ('+' if max(n, key=abs) > 0 else '-') + 'xyz'[max(range(3), key=lambda i: abs(n[i]))]
+        if face_mat and key in face_mat:
+            fc.material_index = face_mat[key]
+    me = bpy.data.meshes.new(name)
+    bm.to_mesh(me)
+    bm.free()
+    o = bpy.data.objects.new(name, me)
+    for m in mats:
+        me.materials.append(m)
+    bpy.context.scene.collection.objects.link(o)
+    return o
+
+
+def uv_sphere(name, r, scale, mat, seg=40, rings=20):
+    bpy.ops.mesh.primitive_uv_sphere_add(segments=seg, ring_count=rings, radius=r)
+    o = bpy.context.active_object
+    o.name = name
+    o.scale = scale
+    bpy.ops.object.shade_smooth()
+    put(o, mat)
+    return o
+
+
+def limb_obj(name, r0, r1, mat, verts=28):
+    bpy.ops.mesh.primitive_cone_add(vertices=verts, radius1=r0, radius2=r1, depth=1.0, end_fill_type='NGON')
+    o = bpy.context.active_object
+    o.name = name
+    o.data.transform(Matrix.Translation((0, 0, 0.5)))
+    bpy.ops.object.shade_smooth()
+    put(o, mat)
+    return o
+
+
+def place_limb(o, p0, p1):
+    a, b = Vector(p0), Vector(p1)
+    d = b - a
+    o.location = a
+    o.rotation_mode = 'QUATERNION'
+    o.rotation_quaternion = Vector((0, 0, 1)).rotation_difference(d.normalized())
+    o.scale = (1, 1, d.length)
+
+
+def ik2(hip, ankle, a, b):
+    """Planar two-bone IK in the (y, z) plane; knee bends forward/up. hip/ankle: (x, y, z); returns knee (x, y, z)."""
+    dy, dz = ankle[1] - hip[1], ankle[2] - hip[2]
+    d = min(math.hypot(dy, dz), a + b - 1e-4)
+    th = math.atan2(dz, dy)
+    g = math.acos((a * a + d * d - b * b) / (2 * a * d))
+    ang = th + g
+    return (hip[0], hip[1] + a * math.cos(ang), hip[2] + a * math.sin(ang))
+
+
+class Child:
+    """Faceless doll-like child, 1.25 m standing. Parts are posed from joint positions (no armature); the pose is a pure
+    function of (pose name, phase / animation time). Names PD_Child_*."""
+    H = 1.25
+    THIGH, SHIN = 0.27, 0.28
+
+    def __init__(self):
+        sk, sh, hr, st = pbr('PD_skin', PAL['skin'], 0.55, 0.25), pbr('PD_shirt', PAL['shirt'], 0.7, 0.15), pbr('PD_hair', PAL['hair'], 0.6, 0.2), pbr('PD_shorts', PAL['shorts'], 0.75, 0.1)
+        self.parts = {}
+        for s in 'LR':
+            self.parts['thigh' + s] = limb_obj('PD_Child_thigh' + s, 0.052, 0.042, sk)
+            self.parts['shorts' + s] = limb_obj('PD_Child_shorts' + s, 0.064, 0.058, st)
+            self.parts['shin' + s] = limb_obj('PD_Child_shin' + s, 0.041, 0.031, sk)
+            self.parts['uarm' + s] = limb_obj('PD_Child_uarm' + s, 0.036, 0.032, sh)
+            self.parts['farm' + s] = limb_obj('PD_Child_farm' + s, 0.033, 0.027, sk)
+            self.parts['knee' + s] = uv_sphere('PD_Child_knee' + s, 0.0445, (1, 1, 1), sk, 24, 12)
+            self.parts['ankle' + s] = uv_sphere('PD_Child_ankle' + s, 0.0335, (1, 1, 1), sk, 24, 12)
+            self.parts['foot' + s] = uv_sphere('PD_Child_foot' + s, 1.0, (0.036, 0.098, 0.03), sk, 28, 14)
+            self.parts['shoulder' + s] = uv_sphere('PD_Child_shoulder' + s, 0.038, (1, 1, 1), sh, 24, 12)
+            self.parts['elbow' + s] = uv_sphere('PD_Child_elbow' + s, 0.0365, (1, 1, 1), sk, 24, 12)
+            self.parts['hip' + s] = uv_sphere('PD_Child_hip' + s, 0.068, (1, 1, 1), st, 24, 12)
+            self.parts['hand' + s] = uv_sphere('PD_Child_hand' + s, 0.036, (1, 0.85, 1.1), sk, 24, 12)
+        self.parts['pelvis'] = uv_sphere('PD_Child_pelvis', 1.0, (0.118, 0.088, 0.112), st)
+        self.parts['torso'] = uv_sphere('PD_Child_torso', 1.0, (0.118, 0.085, 0.215), sh)
+        self.parts['neck'] = limb_obj('PD_Child_neck', 0.04, 0.036, sk)
+        self.parts['head'] = uv_sphere('PD_Child_head', 1.0, (0.088, 0.094, 0.112), sk, 48, 24)
+        self.parts['hair'] = uv_sphere('PD_Child_hair', 1.0, (0.094, 0.098, 0.108), hr, 48, 24)
+        self.mats = (sk, sh, hr, st)
+        self.joints = {}
+
+    def pose_stand(self, phase):
+        """Standing at the pool lip, facing +y. phase = frame % RIPPLE_PERIOD (idle sway +-1.5 cm of the upper body)."""
+        s = 0.015 * math.sin(2 * math.pi * (phase % RIPPLE_PERIOD) / RIPPLE_PERIOD)
+        rx, ry, rz = CHILD_ROOT
+        ay = ry - 0.145                                       # ankle y (toes at root y)
+
+        def P(x, y, z):                                       # local metres above the sole -> world, sway grows with height
+            k = min(max((z - 0.07) / 1.0, 0.0), 1.0)
+            return (rx + x + s * k, ay + y, rz + z)
+        J = {}
+        for sgn, sd in ((-1, 'L'), (1, 'R')):
+            J['hip' + sd] = P(0.06 * sgn, 0, 0.62)
+            J['knee' + sd] = P(0.063 * sgn, 0, 0.35)
+            J['ankle' + sd] = P(0.065 * sgn, 0, 0.07)
+            J['foot' + sd] = (rx + 0.065 * sgn, ry - 0.047, rz + 0.03)      # ellipsoid radius z 0.03: sole touches the deck (gap 0)
+            J['shoulder' + sd] = P(0.128 * sgn, 0, 0.985)
+            J['elbow' + sd] = P(0.158 * sgn, 0.0, 0.765)
+            J['wrist' + sd] = P(0.160 * sgn, 0.03, 0.56)
+        J['pelvis'] = P(0, 0, 0.655)
+        J['torso'] = P(0, 0, 0.845)
+        J['neck0'] = P(0, 0, 1.03)
+        J['neck1'] = P(0, 0, 1.075)
+        J['head'] = P(0, 0.004, 1.138)
+        J['hair'] = P(0, -0.006, 1.150)
+        J['torso_tilt'] = 0.0
+        self.apply(J)
+        return J
+
+    def pose_seated(self, t, phase):
+        """Seated on the lip (SH06), legs over the water. t in [0,1]: ankle goes from z=+0.02 to z=-0.158 (eased, F10-F55 of the shot)."""
+        e = smooth(t)
+        hy, hz = -0.11, 0.285                                  # hip joint height: pelvis rests on the deck and the thigh clears the deck corner
+        J = {}
+        for sgn, sd in ((-1, 'L'), (1, 'R')):
+            hip = (0.062 * sgn, hy, hz)
+            ank = (0.07 * sgn, 0.30 + (0.106 - 0.30) * e, 0.02 + (-0.158 - 0.02) * e)      # end ankle z -0.158: lowest the shin reaches with the thigh clearing the deck corner (sheet's -0.20 would clip)
+            knee = ik2(hip, ank, self.THIGH, self.SHIN)
+            J['hip' + sd], J['knee' + sd], J['ankle' + sd] = hip, knee, ank
+            J['foot' + sd] = (ank[0], ank[1] + 0.052, ank[2] - 0.035 - 0.012 * (1 - e))
+            sh_ = (0.128 * sgn, hy - 0.015, hz + 0.34)
+            J['shoulder' + sd] = sh_
+            J['elbow' + sd] = (0.17 * sgn, hy - 0.06, hz + 0.12)
+            J['wrist' + sd] = (0.19 * sgn, hy + 0.0, 0.15 + 0.035)
+        J['pelvis'] = (0, hy - 0.01, hz - 0.02)
+        J['torso'] = (0, hy - 0.015, hz + 0.19)
+        J['neck0'] = (0, hy - 0.015, hz + 0.375)
+        J['neck1'] = (0, hy - 0.015, hz + 0.42)
+        J['head'] = (0, hy - 0.011, hz + 0.49)
+        J['hair'] = (0, hy - 0.021, hz + 0.50)
+        self.apply(J)
+        return J
+
+    def apply(self, J):
+        p = self.parts
+        self.joints = J
+        for sd in 'LR':
+            place_limb(p['thigh' + sd], J['hip' + sd], J['knee' + sd])
+            hk = Vector(J['knee' + sd]) - Vector(J['hip' + sd])
+            place_limb(p['shorts' + sd], tuple(Vector(J['hip' + sd]) + Vector((0, 0, 0.05))), tuple(Vector(J['hip' + sd]) + hk * 0.55))
+            place_limb(p['shin' + sd], J['knee' + sd], J['ankle' + sd])
+            place_limb(p['uarm' + sd], J['shoulder' + sd], J['elbow' + sd])
+            place_limb(p['farm' + sd], J['elbow' + sd], J['wrist' + sd])
+            p['knee' + sd].location = J['knee' + sd]
+            p['hip' + sd].location = J['hip' + sd]
+            p['ankle' + sd].location = J['ankle' + sd]
+            p['shoulder' + sd].location = J['shoulder' + sd]
+            p['elbow' + sd].location = J['elbow' + sd]
+            p['hand' + sd].location = J['wrist' + sd]
+            # foot: ellipsoid along the shin-perpendicular, toes toward +y, pitch follows the shin
+            sv = (Vector(J['ankle' + sd]) - Vector(J['knee' + sd])).normalized()
+            fwd = Vector((0, 1, 0)) - sv * Vector((0, 1, 0)).dot(sv)
+            fwd.normalize()
+            up = fwd.cross(Vector((1, 0, 0)))
+            p['foot' + sd].location = J['foot' + sd] if 'foot' + sd in J else J['ankle' + sd]
+            p['foot' + sd].rotation_mode = 'QUATERNION'
+            p['foot' + sd].rotation_quaternion = Vector((0, 1, 0)).rotation_difference(fwd)
+        p['pelvis'].location = J['pelvis']
+        p['torso'].location = J['torso']
+        place_limb(p['neck'], J['neck0'], J['neck1'])
+        p['head'].location = J['head']
+        p['hair'].location = J['hair']
+
+    def verts_world(self):
+        dg = bpy.context.evaluated_depsgraph_get()
+        out = []
+        for o in self.parts.values():
+            e = o.evaluated_get(dg)
+            me = e.to_mesh()
+            mw = e.matrix_world
+            out += [mw @ v.co for v in me.vertices]
+            e.to_mesh_clear()
+        return out
+
+
+def periodic_sines(nt, tex_coord, phase_node):
+    """Sum of travelling sine waves in object space (x, y). Each term advances an integer number of cycles per
+    RIPPLE_PERIOD so the water is exactly periodic. Returns the height socket (metres)."""
+    sep = nt.nodes.new('ShaderNodeSeparateXYZ')
+    nt.links.new(tex_coord.outputs['Object'], sep.inputs[0])
+    waves = [  # wavelength m, dir, amplitude m, cycles/period, phase offset
+        (0.60, (0.8, 0.6), 0.0042, 1, 0.3), (0.35, (-0.5, 0.866), 0.0026, 2, 1.7),
+        (0.22, (0.1, -0.995), 0.0016, 2, 4.1), (0.90, (1.0, 0.0), 0.0032, 1, 2.6)]
+    total = None
+    for i, (lam, dr, amp, cyc, ph0) in enumerate(waves):
+        k = 2 * math.pi / lam
+        mx = nt.nodes.new('ShaderNodeMath'); mx.operation = 'MULTIPLY'; mx.inputs[1].default_value = k * dr[0]
+        my = nt.nodes.new('ShaderNodeMath'); my.operation = 'MULTIPLY'; my.inputs[1].default_value = k * dr[1]
+        nt.links.new(sep.outputs['X'], mx.inputs[0]); nt.links.new(sep.outputs['Y'], my.inputs[0])
+        a = nt.nodes.new('ShaderNodeMath'); a.operation = 'ADD'
+        nt.links.new(mx.outputs[0], a.inputs[0]); nt.links.new(my.outputs[0], a.inputs[1])
+        ph = nt.nodes.new('ShaderNodeMath'); ph.operation = 'MULTIPLY_ADD'
+        nt.links.new(phase_node.outputs[0], ph.inputs[0]); ph.inputs[1].default_value = cyc; ph.inputs[2].default_value = ph0
+        b = nt.nodes.new('ShaderNodeMath'); b.operation = 'SUBTRACT'      # wave travels toward +dir
+        nt.links.new(a.outputs[0], b.inputs[0]); nt.links.new(ph.outputs[0], b.inputs[1])
+        s = nt.nodes.new('ShaderNodeMath'); s.operation = 'SINE'
+        nt.links.new(b.outputs[0], s.inputs[0])
+        am = nt.nodes.new('ShaderNodeMath'); am.operation = 'MULTIPLY'; am.inputs[1].default_value = amp
+        nt.links.new(s.outputs[0], am.inputs[0])
+        if total is None:
+            total = am
+        else:
+            ad = nt.nodes.new('ShaderNodeMath'); ad.operation = 'ADD'
+            nt.links.new(total.outputs[0], ad.inputs[0]); nt.links.new(am.outputs[0], ad.inputs[1])
+            total = ad
+    return total.outputs[0]
+
+
+def water_material(ior, ripple=True, name='PD_water'):
+    m = bpy.data.materials.new(name)
+    m.use_nodes = True
+    nt = m.node_tree
+    nt.nodes.clear()
+    out = nt.nodes.new('ShaderNodeOutputMaterial')
+    glass = nt.nodes.new('ShaderNodeBsdfGlass')
+    glass.inputs['IOR'].default_value = ior
+    glass.inputs['Roughness'].default_value = 0.0
+    glass.inputs['Color'].default_value = (1, 1, 1, 1)
+    phase = nt.nodes.new('ShaderNodeValue'); phase.label = 'PHASE'; phase.name = 'PHASE'
+    ripple_scale = nt.nodes.new('ShaderNodeValue'); ripple_scale.label = 'RIPPLE'; ripple_scale.name = 'RIPPLE'
+    ripple_scale.outputs[0].default_value = 1.0 if ripple else 0.0
+    if ripple:
+        tc = nt.nodes.new('ShaderNodeTexCoord')
+        h = periodic_sines(nt, tc, phase)
+        hs = nt.nodes.new('ShaderNodeMath'); hs.operation = 'MULTIPLY'
+        nt.links.new(h, hs.inputs[0]); nt.links.new(ripple_scale.outputs[0], hs.inputs[1])
+        bump = nt.nodes.new('ShaderNodeBump')
+        bump.inputs['Strength'].default_value = 1.0
+        bump.inputs['Distance'].default_value = 1.0
+        nt.links.new(hs.outputs[0], bump.inputs['Height'])
+        nt.links.new(bump.outputs['Normal'], glass.inputs['Normal'])
+    # shadow rays see through the water (no caustics): the floor and the child's shadow get direct light without noise
+    tr = nt.nodes.new('ShaderNodeBsdfTransparent')
+    lp = nt.nodes.new('ShaderNodeLightPath')
+    mix = nt.nodes.new('ShaderNodeMixShader')
+    nt.links.new(lp.outputs['Is Shadow Ray'], mix.inputs[0])
+    nt.links.new(glass.outputs[0], mix.inputs[1]); nt.links.new(tr.outputs[0], mix.inputs[2])
+    nt.links.new(mix.outputs[0], out.inputs['Surface'])
+    ab = nt.nodes.new('ShaderNodeVolumeAbsorption')
+    ab.inputs['Color'].default_value = (0.5, 0.85, 0.95, 1)
+    ab.inputs['Density'].default_value = 1.5
+    nt.links.new(ab.outputs[0], out.inputs['Volume'])
+    return m
+
+
+def tile_floor_material():
+    m = bpy.data.materials.new('PD_poolfloor')
+    m.use_nodes = True
+    nt = m.node_tree
+    p = nt.nodes['Principled BSDF']
+    p.inputs['Roughness'].default_value = 0.35
+    p.inputs['Specular IOR Level'].default_value = 0.3
+    tc = nt.nodes.new('ShaderNodeTexCoord')
+    br = nt.nodes.new('ShaderNodeTexBrick')
+    br.offset = 0.0
+    br.inputs['Scale'].default_value = 4.0                # 0.25 m tiles
+    br.inputs['Mortar Size'].default_value = 0.02
+    br.inputs['Color1'].default_value = (*hexc(PAL['tile']), 1)
+    br.inputs['Color2'].default_value = (*hexc('#E3EEF0'), 1)
+    br.inputs['Mortar'].default_value = (*hexc(PAL['grout']), 1)
+    nt.links.new(tc.outputs['Object'], br.inputs['Vector'])
+    nt.links.new(br.outputs['Color'], p.inputs['Base Color'])
+    return m
+
+
+def deck_material():
+    m = bpy.data.materials.new('PD_deck')
+    m.use_nodes = True
+    nt = m.node_tree
+    p = nt.nodes['Principled BSDF']
+    p.inputs['Roughness'].default_value = 0.8
+    p.inputs['Specular IOR Level'].default_value = 0.15
+    tc = nt.nodes.new('ShaderNodeTexCoord')
+    br = nt.nodes.new('ShaderNodeTexBrick')
+    br.offset = 0.0
+    br.inputs['Scale'].default_value = 1.6                # 0.625 m paving slabs
+    br.inputs['Mortar Size'].default_value = 0.012
+    br.inputs['Color1'].default_value = (*hexc(PAL['deck']), 1)
+    br.inputs['Color2'].default_value = (*hexc('#F2E0C6'), 1)
+    br.inputs['Mortar'].default_value = (*hexc('#D9C7AA'), 1)
+    nt.links.new(tc.outputs['Object'], br.inputs['Vector'])
+    nt.links.new(br.outputs['Color'], p.inputs['Base Color'])
+    return m
+
+
+def build_pool_set(ior=N_WATER, ripple=True):
+    """Pool, deck, hedge, sign with two plates (blank) and water. Collections: PD_Pool. Returns dict of named objects."""
+    sc = bpy.context.scene
+    x0, x1 = POOL['x']
+    y0, y1 = POOL['y']
+    zf, zd = POOL['floor_z'], POOL['deck_z']
+    deck, wall, floor = deck_material(), pbr('PD_poolwall', PAL['wall'], 0.4, 0.3), tile_floor_material()
+    O = {}
+    ext = 30.0
+    # opaque basin: deck blocks (walls are their basin-facing faces) + floor slab; water sides/bottom get buried in these
+    O['deck_front'] = mesh_box('PD_Pool_deck_front', -ext, ext, -ext, y0, zf - 0.3, zd, [deck, wall], {'+y': 1})
+    O['deck_back'] = mesh_box('PD_Pool_deck_back', -ext, ext, y1, ext, zf - 0.3, zd, [deck, wall], {'-y': 1})
+    O['deck_left'] = mesh_box('PD_Pool_deck_left', -ext, x0, y0, y1, zf - 0.3, zd, [deck, wall], {'+x': 1})
+    O['deck_right'] = mesh_box('PD_Pool_deck_right', x1, ext, y0, y1, zf - 0.3, zd, [deck, wall], {'-x': 1})
+    O['floor'] = mesh_box('PD_Pool_floor', x0 - 0.05, x1 + 0.05, y0 - 0.05, y1 + 0.05, zf - 0.3, zf, [floor])
+    eps = 0.0006
+    chk = bpy.data.materials.new('PD_checker'); chk.use_nodes = True
+    nt = chk.node_tree; pb = nt.nodes['Principled BSDF']; pb.inputs['Roughness'].default_value = 0.35
+    tc = nt.nodes.new('ShaderNodeTexCoord'); ct = nt.nodes.new('ShaderNodeTexChecker')
+    ct.inputs['Scale'].default_value = 1 / 0.35 * 1.0
+    ct.inputs['Color1'].default_value = (*hexc(PAL['teal']), 1); ct.inputs['Color2'].default_value = (*hexc('#EAF6F8'), 1)
+    nt.links.new(tc.outputs['Object'], ct.inputs['Vector']); nt.links.new(ct.outputs['Color'], pb.inputs['Base Color'])
+    O['checker'] = mesh_box('PD_Pool_checker', -1.75, -0.35, 0.5, 4.0, zf, zf + eps, [chk])
+    O['lane'] = mesh_box('PD_Pool_lane', 0.45, 0.60, 0.05, 5.95, zf, zf + 2 * eps, [pbr('PD_lane', PAL['lane'], 0.4, 0.3)])
+    # far hedge + ground beyond the deck so no stage edge shows at the top of SH01
+    O['hedge'] = mesh_box('PD_Pool_hedge', -ext, ext, 11.0, 12.6, zd, zd + 1.3, [pbr('PD_hedge', PAL['hedge'], 0.95, 0.05)])
+    O['wallfar'] = mesh_box('PD_Pool_farwall', -ext, ext, 12.6, 13.0, zd, zd + 3.2, [pbr('PD_farwall', '#F2EEE6', 0.9, 0.05)])
+    # water: closed volume, bottom/sides buried 1 cm inside the opaque basin (DF-20261028-blender-cycles-water-spike)
+    O['water'] = mesh_box('PD_Pool_water', x0 - 0.01, x1 + 0.01, y0 - 0.01, y1 + 0.01, zf - 0.01, 0.0, [water_material(ior, ripple)])
+    # sign: two uprights, two blank plates; yawed so the plates face the SH01/SH05/SH07 cameras
+    yaw = math.radians(SIGN_YAW_DEG)
+    metal, navy, plate = pbr('PD_signmetal', PAL['metal'], 0.45, 0.4), pbr('PD_signborder', PAL['navy'], 0.5, 0.3), pbr('PD_signplate', PAL['plate'], 0.5, 0.2)
+    sx, sy = SIGN_POS
+    parts = []
+
+    def sbox(name, lx0, lx1, ly0, ly1, z0, z1, mat):
+        o = mesh_box(name, lx0, lx1, ly0, ly1, z0, z1, [mat])
+        parts.append(o)
+        return o
+    sbox('PD_Sign_postL', -0.255, -0.205, -0.01, 0.04, zd, 1.62, metal)
+    sbox('PD_Sign_postR', 0.205, 0.255, -0.01, 0.04, zd, 1.62, metal)
+    for z in (PLATE_DEPTH_Z, PLATE_PICTO_Z):
+        sbox('PD_Sign_rail%.2f' % z, -0.255, 0.255, 0.0, 0.025, z - 0.015, z + 0.015, metal)
+    # depth plate 0.30 x 0.20 m, 15 mm thick, in front of the rail (facing local -y); border + face (blank: Remotion draws "1.0 m")
+    sbox('PD_Sign_depth_border', -0.15, 0.15, -0.030, -0.005, PLATE_DEPTH_Z - 0.10, PLATE_DEPTH_Z + 0.10, navy)
+    sbox('PD_Sign_depth_face', -0.135, 0.135, -0.0335, -0.030, PLATE_DEPTH_Z - 0.085, PLATE_DEPTH_Z + 0.085, plate)
+    # no-diving plate: disc 0.28 m (built from a cylinder along y), red ring + slash + black glyph, all geometry
+    def disc(name, r, y0_, y1_, z, mat, verts=64):
+        bpy.ops.mesh.primitive_cylinder_add(vertices=verts, radius=r, depth=(y1_ - y0_), location=(0, (y0_ + y1_) / 2, z))
+        o = bpy.context.active_object; o.name = name
+        o.rotation_euler = (math.pi / 2, 0, 0)
+        put(o, mat); parts.append(o)
+        return o
+    red, blk = pbr('PD_signred', '#D1202A', 0.5, 0.2), pbr('PD_signblack', '#1A1A1A', 0.6, 0.1)
+    disc('PD_Sign_picto_border', 0.14, -0.030, -0.005, PLATE_PICTO_Z, navy)
+    disc('PD_Sign_picto_face', 0.128, -0.0335, -0.030, PLATE_PICTO_Z, plate)
+    disc('PD_Sign_picto_ring', 0.128, -0.0345, -0.0335, PLATE_PICTO_Z, red)
+    disc('PD_Sign_picto_ring_in', 0.108, -0.0350, -0.0344, PLATE_PICTO_Z, plate)
+    zc = PLATE_PICTO_Z
+    # glyph: head-first diver (head circle, torso bar angled down-right, arms, legs) + water line, flat geometry
+    def bar(name, cx, cz, w, h, rot_deg, mat, y=-0.0356):
+        o = mesh_box(name, -w / 2, w / 2, y - 0.0004, y + 0.0004, -h / 2, h / 2, [mat])
+        o.rotation_euler = (0, math.radians(rot_deg), 0)
+        o.location = (cx, 0, zc + cz)
+        parts.append(o)
+    bar('PD_Sign_picto_slash', 0.0, 0.0, 0.236, 0.024, -45, red, y=-0.0355)
+    bar('PD_Sign_g_torso', -0.01, 0.015, 0.09, 0.022, 50, blk)
+    bar('PD_Sign_g_armL', 0.035, -0.035, 0.05, 0.014, 70, blk)
+    bar('PD_Sign_g_armR', 0.015, -0.040, 0.05, 0.014, 40, blk)
+    bar('PD_Sign_g_leg1', -0.065, 0.07, 0.06, 0.016, 62, blk)
+    bar('PD_Sign_g_leg2', -0.045, 0.085, 0.06, 0.016, 40, blk)
+    bar('PD_Sign_g_water', 0.0, -0.075, 0.15, 0.012, 0, blk)
+    disc('PD_Sign_g_head', 0.02, -0.0364, -0.0356, zc - 0.02, blk, 24)
+    parts[-1].location = (0.062, -0.0360, zc - 0.045)
+    # parent all sign parts to an empty at the post base, yawed
+    emp = bpy.data.objects.new('PD_Sign_root', None)
+    sc.collection.objects.link(emp)
+    emp.location = (sx, sy, 0.0)
+    emp.rotation_euler = (0, 0, yaw)
+    for o in parts:
+        o.parent = emp
+    O['sign_root'] = emp
+    O['sign_parts'] = parts
+    return O
+
+
+def build_world_and_sun(sun_boost=1.0):
+    sc = bpy.context.scene
+    w = bpy.data.worlds.new('PD_world')
+    w.use_nodes = True
+    nt = w.node_tree
+    sky = nt.nodes.new('ShaderNodeTexSky')
+    sky.sky_type = 'MULTIPLE_SCATTERING'
+    sky.sun_disc = False
+    sky.sun_elevation = math.radians(50)
+    sky.sun_rotation = math.radians(40)
+    sky.altitude = 5.0
+    bg = nt.nodes['Background']
+    bg.inputs['Strength'].default_value = float(os.environ.get('PD_SKY', 0.07))
+    nt.links.new(sky.outputs[0], bg.inputs['Color'])
+    sc.world = w
+    ld = bpy.data.lights.new('PD_sun', 'SUN')
+    ld.color = hexc(PAL['sun'])
+    ld.energy = float(os.environ.get('PD_SUN', 1.35)) * sun_boost
+    ld.angle = math.radians(1.2)
+    lo = bpy.data.objects.new('PD_sun', ld)
+    sc.collection.objects.link(lo)
+    d = Vector((0.514, 0.386, -0.766))                    # light travels toward +x,+y (sun upper-left rear), elevation 50 deg
+    lo.rotation_euler = d.to_track_quat('-Z', 'Y').to_euler()
+    return lo
+
+
+def cam_path(shot, f):
+    """Returns (pos, target, vfov_deg). All numbers from the sheet; interpolation is explicit and closed-form."""
+    A = CAMS['A0']
+    if shot == 'SH01':
+        t = smooth(f / 179.0)                             # ease-in-out, zero velocity at F0 and F179
+        ax = Vector(A['tgt']) - Vector(A['pos'])
+        ax.normalize()
+        pos = tuple(Vector(A['pos']) + ax * (0.15 * t)) if f > 0 else tuple(A['pos'])
+        return pos, tuple(A['tgt']), A['fov']
+    if shot == 'SH05':
+        c = CAMS['SIGN0']
+        ax = (Vector(c['tgt']) - Vector(c['pos'])).normalized()
+        return tuple(Vector(c['pos']) + ax * (0.2 * ease_out(f / 99.0))), tuple(c['tgt']), c['fov']
+    if shot == 'SH06':
+        c = CAMS['FEET0']
+        ax = (Vector(c['tgt']) - Vector(c['pos'])).normalized()
+        return tuple(Vector(c['pos']) + ax * (0.2 * ease_out(f / 79.0))), tuple(c['tgt']), c['fov']
+    if shot == 'SH07':
+        a, b = CAMS['NODIVE0'], CAMS['NODIVE_END']
+        t = smooth(f / 89.0)
+        return lerp(a['pos'], b['pos'], t), tuple(b['tgt']), a['fov']
+    if shot == 'SH08':
+        a = CAMS['NODIVE_END']
+        if f >= 90:
+            return tuple(A['pos']), tuple(A['tgt']), A['fov']                  # exactly CAM-POOL-A0 (hold F90..F209)
+        t = smooth((f + 1) / 91.0)                                              # F0 = the step after NODIVE_END
+        return lerp(a['pos'], A['pos'], t), lerp(a['tgt'], A['tgt'], t), a['fov'] + (A['fov'] - a['fov']) * t
+    raise KeyError(shot)
+
+
+def phase_of(shot, f):
+    if shot == 'SH08':
+        return (f + 1) % RIPPLE_PERIOD                   # +1 offset: SH08 F209 -> phase 0 == SH01 F0
+    return (SH_START[shot] + f) % RIPPLE_PERIOD
+
+
+def aim_camera(cam, pos, tgt, fov):
+    cam.location = pos
+    cam.rotation_euler = (Vector(tgt) - Vector(pos)).to_track_quat('-Z', 'Y').to_euler()
+    cam.data.angle_y = math.radians(fov)
+
+
+def seated_t(f):                                         # SH06: ankle lowers F10-F55
+    return min(max((f - 10) / 45.0, 0.0), 1.0)
+
+
+def set_pool_state(S, shot, f):
+    ph = phase_of(shot, f)
+    S['water'].data.materials[0].node_tree.nodes['PHASE'].outputs[0].default_value = 2 * math.pi * ph / RIPPLE_PERIOD
+    pos, tgt, fov = cam_path(shot, f)
+    aim_camera(S['cam'], pos, tgt, fov)
+    if shot == 'SH06':
+        S['child'].pose_seated(seated_t(f), ph)
+    else:
+        S['child'].pose_stand(ph)
+    bpy.context.view_layer.update()
+    return {'phase': ph, 'cam_pos': pos, 'cam_tgt': tgt, 'vfov': fov}
+
+
+def pool_scene(samples, scale, ior=N_WATER, ripple=True, denoise=False, child_visible=True):
+    sc, devs = fresh(samples, scale)
+    sc.cycles.use_denoising = denoise
+    if denoise:
+        sc.cycles.denoiser = 'OPENIMAGEDENOISE'
+        sc.cycles.denoising_use_gpu = True
+    sc.cycles.sample_clamp_indirect = 6.0
+    O = build_pool_set(ior, ripple)
+    build_world_and_sun()
+    child = Child()
+    cd = bpy.data.cameras.new('PD_cam')
+    cd.sensor_fit = 'VERTICAL'
+    cam = bpy.data.objects.new('PD_cam', cd)
+    sc.collection.objects.link(cam)
+    sc.camera = cam
+    S = dict(O)
+    S.update({'cam': cam, 'child': child, 'sc': sc, 'devs': devs})
+    return S
+
+
+def proj_px(S, p):
+    from bpy_extras.object_utils import world_to_camera_view
+    v = world_to_camera_view(S['sc'], S['cam'], Vector(p))
+    return (v.x * W, (1 - v.y) * H, v.z)
+
+
+def child_extent_px(S):
+    vs = S['child'].verts_world()
+    pts = [proj_px(S, v) for v in vs]
+    xs, ys = [p[0] for p in pts], [p[1] for p in pts]
+    return {'x': [min(xs), max(xs)], 'y': [min(ys), max(ys)], 'height_px': max(ys) - min(ys), 'width_px': max(xs) - min(xs)}
+
+
+def plate_quad_px(S):
+    """Screen-space corners (px, origin top-left, 1080x1920) of the blank depth plate face: for Remotion text placement."""
+    emp = S['sign_root']
+    mw = emp.matrix_world
+    h = 0.085
+    wdt = 0.135
+    zc = PLATE_DEPTH_Z
+    corners = [(-wdt, -0.0335, zc + h), (wdt, -0.0335, zc + h), (wdt, -0.0335, zc - h), (-wdt, -0.0335, zc - h)]   # TL, TR, BR, BL (local)
+    return [proj_px(S, mw @ Vector(c))[:2] for c in corners]
+
+
+def read_png(path):
+    import numpy as np
+    img = bpy.data.images.load(path)
+    img.colorspace_settings.name = 'Non-Color'
+    iw, ih = img.size
+    a = np.empty(iw * ih * 4, dtype=np.float32)
+    img.pixels.foreach_get(a)
+    a = a.reshape(ih, iw, 4)[::-1, :, :3] * 255.0          # row 0 = top
+    bpy.data.images.remove(img)
+    return a
+
+
+def cmd_stills(o, shots):
+    S = pool_scene(o['samples'], o['scale'], denoise=bool(o.get('denoise', 0)))
+    out = outdir('d3')
+    res = {'samples': o['samples'], 'scale_pct': o['scale'], 'denoise': bool(o.get('denoise', 0)), 'devices': S['devs'], 'stills': {}}
+    for tag in shots:
+        shot, f = tag.split(':')
+        f = int(f)
+        st = set_pool_state(S, shot, f)
+        secs = render_still(S['sc'], os.path.join(out, f'{shot}_F{f:03d}.png'))
+        e = {'seconds': secs, **st}
+        if shot in ('SH01', 'SH08'):
+            e['child_extent_px'] = child_extent_px(S)
+        if shot in ('SH05',):
+            e['plate_quad_px'] = plate_quad_px(S)
+        res['stills'][f'{shot}_F{f:03d}'] = e
+        print('STILL', tag, round(secs, 1), 's', e.get('child_extent_px', {}).get('height_px'))
+    merge_manifest('d3_stills', res)
+    print('D3_STILLS', json.dumps(res))
+
+
+# ================================================================== S3 diagram (SH02 / SH04), DIAG space: XZ plane, surface z = 0, unit u
+DG = {'x': (-1.8, 1.8), 'z': (-3.8, 2.6), 'ppu': 300.0, 'floor_z': -2.0, 'pool_x': (-1.7, 1.7), 'marker_x': -1.2, 'n': N_WATER}
+DG_COL = {'ground': '#F4F7FA', 'ray': '#FF9F5A', 'true': '#1B6F86', 'app': '#FFD166', 'eye': '#2B3A55', 'water': '#BFE8F2',
+          'floor': '#9FB4C2', 'surf': '#5B7C99', 'guide': '#9FB4C2', 'white': '#FFFFFF'}
+SH02_EYE = (1.395, 1.0)
+SH04_EYE_H = 1.6
+SH04_OBL_DEG = 40.0
+Y_LAYER = {'ground': 1.0, 'water': 0.6, 'floor': 0.55, 'surf': 0.5, 'guide': 0.4, 'bar': 0.3, 'ray': 0.2, 'marker': 0.1, 'eye': 0.0}
+
+
+def snell_surface_point(xm, depth, eye, n=N_WATER):
+    """Surface point x_s on z=0 where a ray from the marker (xm, -depth) refracts to the eye (ex, ez>0):
+    (xs - xm)/depth = tan(theta_w), (ex - xs)/ez = tan(theta_a), sin(theta_a) = n sin(theta_w). Bisection."""
+    ex, ez = eye
+
+    def g(xs):
+        tw = math.atan2(xs - xm, depth)
+        ta = math.atan2(ex - xs, ez)
+        return math.sin(ta) - n * math.sin(tw)
+    lo, hi = xm, ex
+    for _ in range(100):
+        mid = (lo + hi) / 2
+        if g(mid) > 0:
+            lo = mid
+        else:
+            hi = mid
+    return (lo + hi) / 2
+
+
+def snell_from_air_angle(xm, depth, alpha, n=N_WATER):
+    """Same, parametrised by the air angle from the vertical (eye above the surface point). Returns (x_s, theta_w)."""
+    tw = math.asin(math.sin(alpha) / n)
+    return xm + depth * math.tan(tw), tw
+
+
+def prog(f, a, b):
+    return min(max((f - a) / float(b - a), 0.0), 1.0)
+
+
+class Diag:
+    def __init__(self):
+        self.mats = {}
+        self.objs = []
+        self.info = {}
+
+    def mat(self, key, alpha=1.0):
+        k = (key, round(alpha, 3))
+        if k not in self.mats:
+            m = bpy.data.materials.new(f'PD_diag_{key}_{alpha:.2f}')
+            m.use_nodes = True
+            nt = m.node_tree
+            nt.nodes.clear()
+            out = nt.nodes.new('ShaderNodeOutputMaterial')
+            em = nt.nodes.new('ShaderNodeEmission')
+            em.inputs['Color'].default_value = (*hexc(DG_COL[key]), 1)
+            em.inputs['Strength'].default_value = 1.0
+            if alpha >= 0.999:
+                nt.links.new(em.outputs[0], out.inputs['Surface'])
+            else:
+                tr = nt.nodes.new('ShaderNodeBsdfTransparent')
+                mx = nt.nodes.new('ShaderNodeMixShader')
+                mx.inputs[0].default_value = alpha
+                nt.links.new(tr.outputs[0], mx.inputs[1]); nt.links.new(em.outputs[0], mx.inputs[2])
+                nt.links.new(mx.outputs[0], out.inputs['Surface'])
+            self.mats[k] = m
+        return self.mats[k]
+
+    def _link(self, o, name):
+        o.name = name
+        bpy.context.scene.collection.objects.link(o)
+        self.objs.append(o)
+        return o
+
+    def box(self, name, x0, x1, z0, z1, layer, key, alpha=1.0, th=0.02):
+        y = Y_LAYER[layer]
+        o = mesh_box(name, x0, x1, y - th / 2, y + th / 2, z0, z1, [self.mat(key, alpha)])
+        self.objs.append(o)
+        return o
+
+    def disc(self, name, cx, cz, r, layer, key, alpha=1.0, verts=64):
+        bm = bmesh.new()
+        bmesh.ops.create_circle(bm, cap_ends=True, radius=r, segments=verts)
+        me = bpy.data.meshes.new(name)
+        bm.to_mesh(me)
+        bm.free()
+        me.materials.append(self.mat(key, alpha))
+        o = bpy.data.objects.new(name, me)
+        o.rotation_euler = (math.pi / 2, 0, 0)
+        o.location = (cx, Y_LAYER[layer], cz)
+        self._link(o, name)
+        return o
+
+    def seg(self, name, p0, p1, r, layer, key, alpha=1.0, caps=True):
+        """Flat 'tube' from p0 to p1 (XZ points): a unit cylinder along local +Z scaled to the length, so the endpoints can be read back
+        from the object (location and matrix @ (0,0,1)). Round caps are separate discs."""
+        y = Y_LAYER[layer]
+        bm = bmesh.new()
+        bmesh.ops.create_cone(bm, cap_ends=False, cap_tris=False, segments=16, radius1=r, radius2=r, depth=1.0)
+        for v in bm.verts:
+            v.co.z += 0.5
+        me = bpy.data.meshes.new(name)
+        bm.to_mesh(me)
+        bm.free()
+        me.materials.append(self.mat(key, alpha))
+        o = bpy.data.objects.new(name, me)
+        a, b = Vector((p0[0], y, p0[1])), Vector((p1[0], y, p1[1]))
+        d = b - a
+        o.location = a
+        o.rotation_mode = 'QUATERNION'
+        o.rotation_quaternion = Vector((0, 0, 1)).rotation_difference(d.normalized())
+        o.scale = (1, 1, d.length)
+        self._link(o, name)
+        if caps:
+            self.disc(name + '_c0', p0[0], p0[1], r, layer, key, alpha, 16)
+            self.disc(name + '_c1', p1[0], p1[1], r, layer, key, alpha, 16)
+        return o
+
+    def dashed(self, name, p0, p1, r, layer, key, alpha=1.0, dash=0.09, gap=0.06):
+        d = Vector(p1) - Vector(p0)
+        L = d.length
+        u = d / L if L > 0 else d
+        s, i = 0.0, 0
+        out = []
+        while s < L - 1e-9:
+            e = min(s + dash, L)
+            out.append(self.seg(f'{name}_{i:02d}', tuple(Vector(p0) + u * s), tuple(Vector(p0) + u * e), r, layer, key, alpha))
+            s += dash + gap
+            i += 1
+        return out
+
+    def clear(self):
+        for o in self.objs:
+            bpy.data.objects.remove(o, do_unlink=True)
+        self.objs = []
+        for m in list(bpy.data.meshes):
+            if m.users == 0:
+                bpy.data.meshes.remove(m)
+
+    def eye(self, name, cx, cz, look, alpha=1.0):
+        """Eye icon: dark disc, white eyeball, pupil offset toward `look` (unit XZ vector)."""
+        self.disc(name + '_rim', cx, cz, 0.17, 'eye', 'eye', alpha)
+        w = self.disc(name + '_white', cx, cz, 0.125, 'eye', 'white', alpha)
+        w.location.y -= 0.01
+        p = self.disc(name + '_pupil', cx + look[0] * 0.05, cz + look[1] * 0.05, 0.055, 'eye', 'eye', alpha)
+        p.location.y -= 0.02
+
+    def static_set(self, floor_alpha=1.0):
+        gx, gz = DG['x'], DG['z']
+        self.box('PD_Diag_ground', gx[0] - 0.5, gx[1] + 0.5, gz[0] - 0.5, gz[1] + 0.5, 'ground', 'ground', th=0.02)
+        px = DG['pool_x']
+        self.box('PD_Diag_water', px[0], px[1], DG['floor_z'], 0.0, 'water', 'water', alpha=0.7, th=0.02)
+        self.box('PD_Diag_floorslab', px[0] - 0.06, px[1] + 0.06, DG['floor_z'] - 0.12, DG['floor_z'], 'floor', 'floor')
+        self.box('PD_Diag_wallL', px[0] - 0.06, px[0], DG['floor_z'], 0.0, 'floor', 'floor')
+        self.box('PD_Diag_wallR', px[1], px[1] + 0.06, DG['floor_z'], 0.0, 'floor', 'floor')
+        self.box('PD_Diag_surface', px[0] - 0.06, px[1] + 0.06, -0.012, 0.012, 'surf', 'surf')
+
+
+def build_diag(D, shot, f):
+    """Rebuild the diagram for (shot, shot-local frame). Returns read-back info used by the S3 checks."""
+    D.clear()
+    D.info = {}
+    D.static_set()
+    xm = DG['marker_x']
+    n = DG['n']
+    depth = -DG['floor_z']
+    rr = 0.012
+    info = D.info
+    if shot == 'SH02':
+        ex, ez = SH02_EYE
+        xs = snell_surface_point(xm, depth, (ex, ez), n)
+        info.update({'x_surface': xs, 'eye': (ex, ez)})
+        m = (xm, -depth)
+        S = (xs, 0.0)
+        p1 = prog(f, 0, 45)
+        p2 = prog(f, 45, 90)
+        if p1 > 0:
+            D.seg('PD_Diag_ray_water', m, tuple(Vector(m) + (Vector(S) - Vector(m)) * p1), rr, 'ray', 'ray')
+        if p2 > 0:
+            D.seg('PD_Diag_ray_air', S, tuple(Vector(S) + (Vector((ex, ez)) - Vector(S)) * p2), rr, 'ray', 'ray')
+        # back-extension: from the surface point down-left along the air-ray direction, to the vertical through the marker
+        ta = math.atan2(ex - xs, ez)
+        zg = -(xs - xm) / math.tan(ta)                                  # intersection with x = xm
+        E = (xm, zg)
+        pe = prog(f, 100, 160)
+        if pe > 0:
+            D.dashed('PD_Diag_ext', S, tuple(Vector(S) + (Vector(E) - Vector(S)) * pe), rr, 'ray', 'ray')
+        pg = prog(f, 150, 170)
+        if pg > 0:
+            D.dashed('PD_Diag_vguide', (xm, 0.0), (xm, -depth + 0.11), 0.008, 'guide', 'guide', alpha=pg, dash=0.07, gap=0.05)
+        D.disc('PD_Diag_true', xm, -depth + 0.0, 0.11, 'marker', 'true')
+        pa = prog(f, 200, 230)
+        if pa > 0:
+            D.disc('PD_Diag_ghost', xm, zg, 0.11 * (0.6 + 0.4 * pa), 'marker', 'app', alpha=pa)
+        look = Vector((xs - ex, -ez)).normalized()
+        D.eye('PD_Diag_eye', ex, ez, (look.x, look.y))
+        info.update({'ghost_expected_z': zg, 'air_angle_deg': math.degrees(ta), 'water_angle_deg': math.degrees(math.atan2(xs - xm, depth))})
+    elif shot == 'SH04':
+        hE = SH04_EYE_H
+        d_true = depth
+        d_app_straight = d_true / n
+        a_obl = math.radians(SH04_OBL_DEG)
+        swing = smooth(prog(f, 288, 330))
+        alpha = a_obl * swing
+        if alpha < 1e-12:
+            xs, tw = xm, 0.0
+            zg = -d_app_straight
+            eye = (xm, hE)
+        else:
+            xs, tw = snell_from_air_angle(xm, d_true, alpha, n)
+            zg = -(xs - xm) / math.tan(alpha)
+            eye = (xs + hE * math.tan(alpha), hE)
+        info.update({'x_surface': xs, 'eye': eye, 'alpha_deg': math.degrees(alpha), 'theta_w_deg': math.degrees(tw), 'ghost_expected_z': zg,
+                     'apparent_depth': -zg, 'swing': swing})
+        # bars: state 1 only. grow F90-F120 (true) and F120-F150 (apparent); dissolve F270-F288 (alpha)
+        a_bar = 1.0 - prog(f, 270, 288)
+        bt, ba = prog(f, 90, 120), prog(f, 120, 150)
+        bw = 0.09
+        if a_bar > 0 and bt > 0:
+            D.box('PD_Diag_bar_true', -0.7 - bw / 2, -0.7 + bw / 2, -d_true * bt, 0.0, 'bar', 'true', alpha=a_bar)
+        if a_bar > 0 and ba > 0:
+            D.box('PD_Diag_bar_app', -0.4 - bw / 2, -0.4 + bw / 2, -d_app_straight * ba, 0.0, 'bar', 'app', alpha=a_bar)
+        # sight line: eye -> surface point -> marker; draws F30-F60 (straight down) from the eye downward
+        ps = prog(f, 30, 60)
+        if ps > 0:
+            P0 = Vector(eye)
+            Ssurf = Vector((xs, 0.0))
+            M = Vector((xm, -d_true))
+            if alpha < 1e-12:
+                D.seg('PD_Diag_sight_air', tuple(P0), tuple(P0 + (Ssurf - P0) * ps), rr, 'ray', 'ray')
+                D.seg('PD_Diag_sight_water', tuple(Ssurf), tuple(Ssurf + (M - Ssurf) * ps), rr, 'ray', 'ray')
+            else:
+                D.seg('PD_Diag_sight_air', tuple(P0), tuple(Ssurf), rr, 'ray', 'ray')
+                D.seg('PD_Diag_sight_water', tuple(Ssurf), tuple(M), rr, 'ray', 'ray')
+                pe = swing
+                E = Vector((xm, zg))
+                D.dashed('PD_Diag_ext', tuple(Ssurf), tuple(Ssurf + (E - Ssurf) * pe), rr, 'ray', 'ray')
+        D.disc('PD_Diag_true', xm, -d_true, 0.11, 'marker', 'true')
+        if f >= 90:
+            D.disc('PD_Diag_ghost', xm, zg, 0.11 * (0.6 + 0.4 * prog(f, 90, 105)), 'marker', 'app', alpha=prog(f, 90, 105))
+        look = (Vector((xs, 0.0)) - Vector(eye)).normalized()
+        D.eye('PD_Diag_eye', eye[0], eye[1], (look.x, look.y))
+    else:
+        raise KeyError(shot)
+    bpy.context.view_layer.update()
+    return info
+
+
+def diag_scene(samples, scale):
+    sc, devs = fresh(samples, scale)
+    sc.cycles.max_bounces = 2
+    sc.cycles.transmission_bounces = 2
+    sc.cycles.transparent_max_bounces = 16
+    cx = 0.0
+    cz = (DG['z'][0] + DG['z'][1]) / 2
+    cd = bpy.data.cameras.new('PD_diagcam')
+    cd.type = 'ORTHO'
+    cd.sensor_fit = 'VERTICAL'
+    cd.ortho_scale = DG['z'][1] - DG['z'][0]                 # 6.4 u -> 1920 px, 300 px per u
+    cd.clip_start, cd.clip_end = 0.1, 40.0
+    cam = bpy.data.objects.new('PD_diagcam', cd)
+    cam.location = (cx, -10.0, cz)
+    cam.rotation_euler = Vector((0, 1, 0)).to_track_quat('-Z', 'Y').to_euler()
+    sc.collection.objects.link(cam)
+    sc.camera = cam
+    w = bpy.data.worlds.new('PD_dw')
+    w.use_nodes = True
+    w.node_tree.nodes['Background'].inputs['Color'].default_value = (0, 0, 0, 1)
+    sc.world = w
+    return sc, devs, cam
+
+
+def diag_px(p):
+    """DIAG (x, z) -> pixel (origin top-left)."""
+    return (W / 2 + p[0] * DG['ppu'], H / 2 - (p[1] - (DG['z'][0] + DG['z'][1]) / 2) * DG['ppu'])
+
+
+def readback_seg(o):
+    mw = o.matrix_world
+    a = mw @ Vector((0, 0, 0))
+    b = mw @ Vector((0, 0, 1))
+    return (a.x, a.z), (b.x, b.z)
+
+
+def exr_mask(sc, D, names_keys, path):
+    """Render white-on-black coverage of the objects whose names start with any prefix in names_keys. Returns float linear (H, W) array."""
+    import numpy as np
+    vis = {}
+    for o in D.objs:
+        vis[o] = o.hide_render
+        o.hide_render = not any(o.name.startswith(k) for k in names_keys)
+    mats = {}
+    white = bpy.data.materials.new('PD_mask_white')
+    white.use_nodes = True
+    nt = white.node_tree
+    nt.nodes.clear()
+    out = nt.nodes.new('ShaderNodeOutputMaterial')
+    em = nt.nodes.new('ShaderNodeEmission')
+    nt.links.new(em.outputs[0], out.inputs['Surface'])
+    vl = bpy.context.view_layer
+    vl.material_override = white
+    ff, cm, cd = sc.render.image_settings.file_format, sc.render.image_settings.color_mode, sc.render.image_settings.color_depth
+    sc.render.image_settings.file_format = 'OPEN_EXR'
+    sc.render.image_settings.color_mode = 'RGB'
+    sc.render.image_settings.color_depth = '32'
+    secs = render_still(sc, path)
+    vl.material_override = None
+    sc.render.image_settings.file_format, sc.render.image_settings.color_mode, sc.render.image_settings.color_depth = ff, cm, cd
+    for o, v in vis.items():
+        o.hide_render = v
+    bpy.data.materials.remove(white)
+    img = bpy.data.images.load(path + '.exr' if not path.endswith('.exr') else path)
+    img.colorspace_settings.name = 'Non-Color'
+    iw, ih = img.size
+    a = np.empty(iw * ih * 4, dtype=np.float32)
+    img.pixels.foreach_get(a)
+    a = a.reshape(ih, iw, 4)[::-1, :, 0].copy()
+    bpy.data.images.remove(img)
+    return a, secs
+
+
+def cmd_s3(o):
+    import numpy as np
+    sc, devs, cam = diag_scene(o['samples'], o['scale'])
+    D = Diag()
+    out = outdir('s3')
+    sc.render.film_transparent = False
+    res = {'ppu': DG['ppu'], 'ortho_scale': cam.data.ortho_scale, 'samples': o['samples'], 'devices': devs, 'checks': {}, 'renders': {}}
+    tol_ratio = 0.002
+    n = DG['n']
+    # ---------------- SH04 state 1 (straight down) at F200: ratio + vertical sight line
+    build_diag(D, 'SH04', 200)
+    objs = {x.name: x for x in D.objs}
+    bt, ba = objs['PD_Diag_bar_true'], objs['PD_Diag_bar_app']
+
+    def bbox_z(o_):
+        zs = [(o_.matrix_world @ Vector(c)).z for c in o_.bound_box]
+        return max(zs) - min(zs)
+    lt, la = bbox_z(bt), bbox_z(ba)
+    res['checks']['bar_ratio_geometry'] = {'true_u': lt, 'apparent_u': la, 'ratio': la / lt, 'target': 0.750, 'tol': tol_ratio, 'pass': abs(la / lt - 0.750) <= tol_ratio}
+    secs = render_still(sc, os.path.join(out, 'SH04_F200_state1.png'))
+    res['renders']['SH04_F200_state1'] = secs
+    mt, s1 = exr_mask(sc, D, ['PD_Diag_bar_true'], os.path.join(out, 'mask_bar_true.exr'))
+    ma, s2 = exr_mask(sc, D, ['PD_Diag_bar_app'], os.path.join(out, 'mask_bar_app.exr'))
+    px_t, px_a = float(mt.sum()), float(ma.sum())
+    res['checks']['bar_ratio_rendered'] = {'coverage_px_true': px_t, 'coverage_px_apparent': px_a, 'ratio': px_a / px_t,
+                                           'expected_length_px': [lt * DG['ppu'], la * DG['ppu']], 'pass': abs(px_a / px_t - 0.750) <= tol_ratio}
+    # vertical sight line: read-back endpoints and rendered centroid per row band
+    sa, sw = readback_seg(objs['PD_Diag_sight_air']), readback_seg(objs['PD_Diag_sight_water'])
+    msl, s3_ = exr_mask(sc, D, ['PD_Diag_sight_air', 'PD_Diag_sight_water'], os.path.join(out, 'mask_sight.exr'))
+    rows = np.arange(0, H)
+    cents = []
+    for r in range(int(diag_px((0, 1.5))[1]), int(diag_px((0, -1.9))[1]), 40):
+        rowv = msl[r]
+        if rowv.sum() > 0:
+            cents.append(float((rowv * (np.arange(W) + 0.5)).sum() / rowv.sum()))
+    res['checks']['sight_line_vertical_state1'] = {
+        'segments_readback': [sa, sw], 'dx_air_u': sa[1][0] - sa[0][0], 'dx_water_u': sw[1][0] - sw[0][0],
+        'centroid_x_px_min': min(cents), 'centroid_x_px_max': max(cents), 'expected_x_px': diag_px((DG['marker_x'], 0))[0],
+        'pass': max(abs(sa[1][0] - sa[0][0]), abs(sw[1][0] - sw[0][0])) < 1e-5 and (max(cents) - min(cents)) < 0.25}
+    # the eye sits directly above the marker (state 1)
+    ghost = objs['PD_Diag_ghost']
+    res['checks']['ghost_state1_at_apparent_depth'] = {'ghost_z_u': ghost.location.z, 'expected_u': -(2.0 / n), 'pass': abs(ghost.location.z + 2.0 / n) < 1e-5}
+    # honesty rule: no frame of SH04 carries bars together with an oblique eye (all 360 frames, geometry only)
+    bad, first_oblique, last_bar = [], None, None
+    for fr_ in range(0, 360):
+        inf = build_diag(D, 'SH04', fr_)
+        has_bar = any('_bar_' in x.name for x in D.objs)
+        if has_bar:
+            last_bar = fr_
+        if inf['alpha_deg'] > 0 and first_oblique is None:
+            first_oblique = fr_
+        if has_bar and inf['alpha_deg'] > 0:
+            bad.append(fr_)
+    res['checks']['sh04_no_frame_with_bars_and_oblique_eye'] = {'last_frame_with_bar_objects': last_bar, 'first_frame_with_oblique_eye': first_oblique, 'frames_violating': bad, 'pass': not bad and last_bar < first_oblique}
+    # ---------------- SH04 oblique (F340): no bars, no ratio, Snell, back-extension
+    info = build_diag(D, 'SH04', 340)
+    secs = render_still(sc, os.path.join(out, 'SH04_F340_oblique.png'))
+    res['renders']['SH04_F340_oblique'] = secs
+    names = [x.name for x in D.objs]
+    bars = [nm for nm in names if '_bar_' in nm]
+    img = read_png(os.path.join(out, 'SH04_F340_oblique.png'))
+    cols = {'true': hexc_srgb255(DG_COL['true']), 'app': hexc_srgb255(DG_COL['app'])}
+    x0p, x1p = int(diag_px((-0.8, 0))[0]), int(diag_px((-0.3, 0))[0])
+    band = img[:, x0p:x1p, :]
+    cnt = {k: int((np.abs(band - np.array(c)).max(axis=2) < 6).sum()) for k, c in cols.items()}
+    res['checks']['oblique_state_no_bars'] = {'bar_objects': bars, 'bar_colour_px_in_bar_columns': cnt, 'pass': (not bars) and cnt['true'] == 0 and cnt['app'] == 0}
+    sa, sw = readback_seg(objs_by_name(D, 'PD_Diag_sight_air')), readback_seg(objs_by_name(D, 'PD_Diag_sight_water'))
+    res['checks']['snell_state2_sight'] = snell_check(sw, sa, n)
+    res['checks']['snell_state2_sight']['apparent_depth_u'] = info['apparent_depth']
+    ghost = objs_by_name(D, 'PD_Diag_ghost')
+    res['checks']['ghost_state2_on_vertical_and_back_extension'] = back_ext_check(D, ghost.location, DG['marker_x'], sa, info)
+    # ---------------- SH02: Snell, flatter in air, back-extension meets the apparent marker (F230)
+    info = build_diag(D, 'SH02', 230)
+    sa, sw = readback_seg(objs_by_name(D, 'PD_Diag_ray_air')), readback_seg(objs_by_name(D, 'PD_Diag_ray_water'))
+    sn = snell_check(sw, sa, n, order='water_first')
+    res['checks']['snell_sh02'] = sn
+    ghost = objs_by_name(D, 'PD_Diag_ghost')
+    res['checks']['sh02_back_extension_meets_marker_vertical'] = back_ext_check(D, ghost.location, DG['marker_x'], sa, info, mode='sh02')
+    secs = render_still(sc, os.path.join(out, 'SH02_F230.png'))
+    res['renders']['SH02_F230'] = secs
+    mg, _ = exr_mask(sc, D, ['PD_Diag_ghost'], os.path.join(out, 'mask_ghost.exr'))
+    ys, xs = np.nonzero(mg > 0.0)
+    wts = mg[ys, xs]
+    cx = float((xs + 0.5) @ wts / wts.sum())
+    cy = float((ys + 0.5) @ wts / wts.sum())
+    exp = diag_px((DG['marker_x'], info['ghost_expected_z']))
+    res['checks']['sh02_ghost_centroid_px'] = {'measured': (cx, cy), 'expected': exp, 'error_px': math.hypot(cx - exp[0], cy - exp[1]), 'pass': math.hypot(cx - exp[0], cy - exp[1]) < 0.5}
+    # ---------------- stills of the set for the eye
+    for shot, fr in (('SH02', 20), ('SH02', 70), ('SH02', 130), ('SH04', 100), ('SH04', 310)):
+        build_diag(D, shot, fr)
+        res['renders'][f'{shot}_F{fr:03d}'] = render_still(sc, os.path.join(out, f'{shot}_F{fr:03d}.png'))
+    res['pass_all'] = all(v.get('pass', True) for v in res['checks'].values())
+    merge_manifest('s3', res)
+    print('S3_RESULT', json.dumps(res, default=str))
+
+
+def hexc_srgb255(h):
+    h = h.lstrip('#')
+    return tuple(int(h[i:i + 2], 16) for i in (0, 2, 4))
+
+
+def objs_by_name(D, name):
+    for o in D.objs:
+        if o.name == name:
+            return o
+    raise KeyError(name)
+
+
+def snell_check(w, a, n, order='air_first'):
+    """w, a: (start, end) XZ read-back segments. For state-2 sight: air seg is (eye -> surface) and water seg (surface -> marker); for SH02 pass
+    (water, air) with order='water_first' where water = marker -> surface and air = surface -> eye."""
+    if order == 'air_first':
+        air = (a[0], a[1])           # eye -> surface
+        wat = (w[0], w[1])           # surface -> marker
+        sa_ = math.atan2(abs(air[0][0] - air[1][0]), abs(air[0][1] - air[1][1]))
+        sw_ = math.atan2(abs(wat[0][0] - wat[1][0]), abs(wat[0][1] - wat[1][1]))
+    else:
+        wat, air = w, a
+        sw_ = math.atan2(abs(wat[0][0] - wat[1][0]), abs(wat[0][1] - wat[1][1]))
+        sa_ = math.atan2(abs(air[0][0] - air[1][0]), abs(air[0][1] - air[1][1]))
+    return {'air_deg': math.degrees(sa_), 'water_deg': math.degrees(sw_), 'n_measured': math.sin(sa_) / math.sin(sw_), 'n_design': n,
+            'air_flatter_than_water': sa_ > sw_, 'pass': sa_ > sw_ and abs(math.sin(sa_) / math.sin(sw_) - n) < 1e-6}
+
+
+def back_ext_check(D, ghost_loc, xm, air_seg, info, mode='sh04'):
+    """Line through the surface point along the air direction (as drawn, read back from the dash objects) crosses x = xm at z_x; compare with
+    the ghost ball's location z."""
+    dashes = [o for o in D.objs if o.name.startswith('PD_Diag_ext_') and '_c' not in o.name]
+    if not dashes:
+        return {'pass': False, 'note': 'no dashes'}
+    segs = [readback_seg(o) for o in dashes]
+    pts = [p for s in segs for p in s]
+    far = min(pts, key=lambda p: p[0])                      # farthest left point of the drawn extension
+    S = (info['x_surface'], 0.0)
+    dx, dz = far[0] - S[0], far[1] - S[1]
+    zx = S[1] + dz * (xm - S[0]) / dx
+    return {'extension_far_end': far, 'line_crosses_marker_vertical_at_z': zx, 'ghost_z': ghost_loc.z, 'error_u': abs(zx - ghost_loc.z),
+            'extension_drawn_to_vertical': abs(far[0] - xm) < 1e-6 or None, 'pass': abs(zx - ghost_loc.z) < 1e-6}
+
+
+# ================================================================== S4 loop seam, D3 checks, image diff
+def diff_stats(pa, pb):
+    import numpy as np
+    a, b = read_png(pa), read_png(pb)
+    d = np.abs(a - b)
+    return {'a': os.path.relpath(pa, HERE), 'b': os.path.relpath(pb, HERE), 'size': [int(a.shape[1]), int(a.shape[0])],
+            'max_abs_diff_of_255': float(d.max()), 'mean_abs_diff_of_255': float(d.mean()), 'px_with_any_diff': int((d.max(axis=2) > 0).sum()),
+            'px_diff_gt_2': int((d.max(axis=2) > 2).sum()), 'px_diff_gt_8': int((d.max(axis=2) > 8).sum()), 'total_px': int(a.shape[0] * a.shape[1])}
+
+
+def cmd_diff(o):
+    r = diff_stats(o['shots'][0], o['shots'][1])
+    print('DIFF', json.dumps(r))
+
+
+def scene_fingerprint(S):
+    """Exact transforms of the camera, camera data and every child part (the seam must agree bit-for-bit)."""
+    fp = {'cam_matrix': [list(r) for r in S['cam'].matrix_world], 'vfov_rad': S['cam'].data.angle_y, 'lens_mm': S['cam'].data.lens,
+          'phase_node': S['water'].data.materials[0].node_tree.nodes['PHASE'].outputs[0].default_value}
+    for k, p in S['child'].parts.items():
+        fp[k] = [list(r) for r in p.matrix_world]
+    return fp
+
+
+def fp_equal(a, b):
+    worst = 0.0
+    for k in a:
+        if isinstance(a[k], list):
+            fa = [x for r in a[k] for x in (r if isinstance(r, list) else [r])]
+            fb = [x for r in b[k] for x in (r if isinstance(r, list) else [r])]
+            worst = max(worst, max(abs(x - y) for x, y in zip(fa, fb)))
+        else:
+            worst = max(worst, abs(a[k] - b[k]))
+    return worst
+
+
+def cmd_s4(o):
+    S = pool_scene(o['samples'], o['scale'], denoise=bool(o.get('denoise', 0)))
+    out = outdir('s4')
+    res = {'samples': o['samples'], 'scale_pct': o['scale'], 'denoise': bool(o.get('denoise', 0)), 'devices': S['devs'], 'renders': {}, 'diffs': {}}
+    fps = {}
+    seq = [('SH01', 0), ('SH08', 209), ('SH08', 208), ('SH08', 90), ('SH01', 1), ('SH08', 0)]
+    for shot, f in seq:
+        st = set_pool_state(S, shot, f)
+        fps[(shot, f)] = scene_fingerprint(S)
+        p = os.path.join(out, f'{shot}_F{f:03d}.png')
+        secs = render_still(S['sc'], p)
+        res['renders'][f'{shot}_F{f:03d}'] = {'seconds': secs, 'phase': st['phase'], 'cam_pos': st['cam_pos'], 'cam_tgt': st['cam_tgt'], 'vfov': st['vfov'], 'path': os.path.relpath(p, HERE)}
+    P = lambda s, f: os.path.join(out, f'{s}_F{f:03d}.png')
+    res['seam_state_max_abs_transform_diff'] = fp_equal(fps[('SH08', 209)], fps[('SH01', 0)])
+    res['diffs']['SH08_F209_vs_SH01_F000 (the seam)'] = diff_stats(P('SH08', 209), P('SH01', 0))
+    res['diffs']['SH08_F208_vs_SH08_F209 (last step: ripple + sway only)'] = diff_stats(P('SH08', 208), P('SH08', 209))
+    res['diffs']['SH08_F090_vs_SH08_F209 (hold start vs end: ripple/sway phase only)'] = diff_stats(P('SH08', 90), P('SH08', 209))
+    res['diffs']['SH01_F000_vs_SH01_F001 (first step after the seam: dolly + ripple)'] = diff_stats(P('SH01', 0), P('SH01', 1))
+    res['diffs']['SH08_F000_vs_SH08_F209 (SH07->SH08 entry, intended pull-back)'] = diff_stats(P('SH08', 0), P('SH08', 209))
+    merge_manifest('s4_' + ('dn' if res['denoise'] else 'raw') + f"_{o['samples']}spp", res)
+    print('S4_RESULT', json.dumps(res))
+
+
+# ================================================================== D3 checks: refraction at the pool-edge camera, framing, contact
+def snell_pixel(S, floor_pt, mz=0.0005, n=N_WATER, d=None):
+    """Predicted screen position of a floor marker seen through flat water from the current camera: solve the surface hit point
+    in the vertical plane through camera and marker; the image position of the marker is the projection of that surface point."""
+    d = (-POOL['floor_z'] - mz) if d is None else d
+    C = S['cam'].matrix_world.translation
+    fx, fy = floor_pt
+    hv = Vector((fx - C.x, fy - C.y))
+    D = hv.length
+    u = hv / D
+    Hh = C.z
+    lo, hi = 0.0, D
+    for _ in range(100):
+        xs = (lo + hi) / 2
+        g = xs / math.hypot(xs, Hh) - n * math.sin(math.atan2(D - xs, d))
+        if g > 0:
+            hi = xs
+        else:
+            lo = xs
+    xs = (lo + hi) / 2
+    surf = Vector((C.x + u.x * xs, C.y + u.y * xs, 0.0))
+    ti, tt = math.atan2(xs, Hh), math.atan2(D - xs, d)
+    return proj_px(S, surf)[:2], {'theta_air_deg': math.degrees(ti), 'theta_water_deg': math.degrees(tt), 'apparent_over_true_depth': math.tan(tt) / math.tan(ti)}
+
+
+def red_centroid(path, near, win=36):
+    import numpy as np
+    a = read_png(path)
+    sc_ = (a[..., 0] - np.maximum(a[..., 1], a[..., 2])) / 255.0
+    sc_ = np.clip(sc_ - 0.6, 0, None)
+    cx, cy = int(near[0]), int(near[1])
+    r0, r1, c0, c1 = max(cy - win, 0), min(cy + win, a.shape[0]), max(cx - win, 0), min(cx + win, a.shape[1])
+    w = sc_[r0:r1, c0:c1]
+    if w.sum() <= 0:
+        return None
+    ys, xs = np.mgrid[r0:r1, c0:c1]
+    return (float((w * (xs + 0.5)).sum() / w.sum()), float((w * (ys + 0.5)).sum() / w.sum()))
+
+
+def cmd_d3(o):
+    out = outdir('d3')
+    res = {'samples': o['samples'], 'scale_pct': o['scale']}
+    # 1) refraction fidelity at the B01 camera (flat water, no ripple), markers on the floor
+    S0 = pool_scene(1, 5, ior=N_WATER, ripple=False)
+    set_pool_state(S0, 'SH01', 0)
+    cb = child_extent_px(S0)
+    cand = []
+    for gx in [x * 0.25 for x in range(-10, 11)]:
+        for gy in [0.4 + 0.2 * k for k in range(0, 25)]:
+            pr, _ = snell_pixel(S0, (gx, gy), mz=0.0012)
+            fl = proj_px(S0, (gx, gy, POOL['floor_z']))
+            ok = 90 < pr[0] < 990 and 330 < pr[1] < 1000 and 90 < fl[0] < 990 and 330 < fl[1] < 1000 and (pr[0] < cb['x'][0] - 70 or pr[0] > cb['x'][1] + 70)
+            ok = ok and (fl[0] < cb['x'][0] - 70 or fl[0] > cb['x'][1] + 70)
+            if ok:
+                cand.append((gx, gy, pr))
+    cand.sort(key=lambda c: (c[2][1], c[2][0]))
+    pts = [(c[0], c[1]) for c in (cand[0], cand[len(cand) // 5], cand[2 * len(cand) // 5], cand[3 * len(cand) // 5], cand[4 * len(cand) // 5], cand[-1])]
+    pts = [tuple(p) for p in pts]
+    mres = {}
+    for tag, ior in (('ior_1.000', 1.0), ('ior_1.333', N_WATER)):
+        S = pool_scene(o['samples'], 100, ior=ior, ripple=False)
+        set_pool_state(S, 'SH01', 0)
+        S['child'].parts['torso'].hide_render = False
+        for k, (fx, fy) in enumerate(pts):
+            bpy.ops.mesh.primitive_circle_add(vertices=48, radius=0.03, fill_type='NGON', location=(fx, fy, POOL['floor_z'] + 0.0012))
+            put(bpy.context.active_object, material('mk%d' % k, 'emission', (1, 0, 0), 4.0))
+        bpy.context.view_layer.update()
+        p = os.path.join(out, f'refr_{tag}.png')
+        secs = render_still(S['sc'], p)
+        rows = []
+        for fx, fy in pts:
+            flat = proj_px(S, (fx, fy, POOL['floor_z']))
+            if ior == 1.0:
+                pred, info = flat[:2], {}
+            else:
+                pred, info = snell_pixel(S, (fx, fy), mz=0.0012)
+            meas = red_centroid(p, pred)
+            rows.append({'floor_xy_m': [fx, fy], 'unrefracted_px': flat[:2], 'predicted_px': pred, 'measured_px': meas,
+                         'error_px': None if meas is None else math.hypot(meas[0] - pred[0], meas[1] - pred[1]),
+                         'lift_vs_unrefracted_px': math.hypot(pred[0] - flat[0], pred[1] - flat[1]), **info})
+        mres[tag] = {'render_seconds': secs, 'markers': rows}
+        print('REFR', tag, json.dumps(rows))
+    res['refraction_B01_camera'] = mres
+    errs = [r['error_px'] for r in mres['ior_1.333']['markers'] if r['error_px'] is not None]
+    res['refraction_B01_camera']['max_error_px'] = max(errs) if errs else None
+    res['refraction_B01_camera']['pass_2px'] = bool(errs) and len(errs) == len(pts) and max(errs) <= 2.0
+    # 2) framing / lead height / contact / plates (projection numbers, no render)
+    S = pool_scene(1, 5)
+    fr = {}
+    heights = []
+    for f in range(0, 180, 10):
+        set_pool_state(S, 'SH01', f)
+        e = child_extent_px(S)
+        heights.append((f, e['height_px'], e['y'][0], e['y'][1], e['x'][0], e['x'][1]))
+    set_pool_state(S, 'SH01', 179)
+    e = child_extent_px(S)
+    heights.append((179, e['height_px'], e['y'][0], e['y'][1], e['x'][0], e['x'][1]))
+    fr['SH01_child_over_motion'] = {'min_height_px': min(h[1] for h in heights), 'max_height_px': max(h[1] for h in heights),
+                                    'top_y_min_px': min(h[2] for h in heights), 'bottom_y_max_px': max(h[3] for h in heights),
+                                    'x_range_px': [min(h[4] for h in heights), max(h[5] for h in heights)],
+                                    'in_content_band_[269,1440]': min(h[2] for h in heights) >= 269 and max(h[3] for h in heights) <= 1440, 'rule_>=480px': min(h[1] for h in heights) >= 480}
+    foot_z = min(v.z for pn in ('footL', 'footR') for v in [S['child'].parts[pn].matrix_world @ Vector(c) for c in S['child'].parts[pn].bound_box])
+    fr['child_contact'] = {'lowest_foot_vertex_z_m': foot_z, 'deck_top_z_m': POOL['deck_z'], 'gap_m': foot_z - POOL['deck_z'], 'toes_y_m': CHILD_ROOT[1], 'lip_y_m': 0.0}
+    for shot, f in (('SH05', 0), ('SH05', 99), ('SH07', 0), ('SH07', 89)):
+        set_pool_state(S, shot, f)
+        q = plate_quad_px(S)
+        fr[f'{shot}_F{f:03d}_depth_plate'] = {'quad_px_TL_TR_BR_BL': q, 'width_frac_of_frame': (math.hypot(q[1][0] - q[0][0], q[1][1] - q[0][1])) / W}
+    # SH06 clearance: thigh lower edge vs deck corner (y=0, z=0.15) over the whole motion
+    worst = 9
+    for f in range(0, 80, 5):
+        set_pool_state(S, 'SH06', f)
+        J = S['child'].joints
+        for sd in 'LR':
+            h, k = Vector(J['hip' + sd]), Vector(J['knee' + sd])
+            for t in [i / 40 for i in range(41)]:
+                p_ = h + (k - h) * t
+                if p_.y <= 0.0:
+                    worst = min(worst, p_.z - 0.052 - POOL['deck_z'])
+    ank = [S['child'].joints['ankleL'][2], S['child'].joints['ankleR'][2]]
+    pel = min((S['child'].parts['pelvis'].matrix_world @ Vector(c)).z for c in S['child'].parts['pelvis'].bound_box)
+    head_in = False
+    for f in (0, 40, 79):
+        set_pool_state(S, 'SH06', f)
+        for pn in ('head', 'hair'):
+            for c in S['child'].parts[pn].data.vertices:
+                px_ = proj_px(S, S['child'].parts[pn].matrix_world @ c.co)
+                if 0 <= px_[0] <= W and 0 <= px_[1] <= H and px_[2] > 0:
+                    head_in = True
+    fr['SH06_seated'] = {'thigh_lower_edge_clearance_over_deck_m_min': worst, 'pelvis_lowest_z_m': pel, 'deck_top_z_m': POOL['deck_z'], 'ankle_z_final_m': ank, 'water_z_m': 0.0,
+                         'head_or_hair_vertex_in_frame_any_of_F0_F40_F79': head_in}
+    # SH05 plate quads for every frame (Remotion text placement; the sheet's text '1.0 m' is a Remotion overlay, VD11)
+    quads = {}
+    for f in range(100):
+        set_pool_state(S, 'SH05', f)
+        quads[f] = [[round(a, 2), round(b, 2)] for a, b in plate_quad_px(S)]
+    wf = {f: math.hypot(q[1][0] - q[0][0], q[1][1] - q[0][1]) / W for f, q in quads.items()}
+    fr['SH05_plate_width_frac'] = {'F0': wf[0], 'F99': wf[99], 'first_frame_ge_50pct': next((f for f in range(100) if wf[f] >= 0.5), None)}
+    json.dump({'space': 'screen px, 1080x1920, origin top-left', 'order': 'TL,TR,BR,BL of the blank depth plate face', 'shot': 'SH05',
+               'camera': 'CAM-SIGN (build.py cam_path)', 'frames': quads}, open(os.path.join(HERE, 'plate-quads-SH05.json'), 'w'))
+    res['framing'] = fr
+    merge_manifest('d3_checks', res)
+    print('D3_RESULT', json.dumps(res, default=str))
+
+
+def parse2():
+    a = sys.argv[sys.argv.index('--') + 1:] if '--' in sys.argv else []
+    o = {'cmd': a[0], 'samples': 64, 'scale': 100, 'denoise': 0, 'shots': []}
+    i = 1
+    while i < len(a):
+        if a[i].startswith('--'):
+            k = a[i][2:]
+            o[k] = type(o.get(k, 1.0))(a[i + 1]) if k in o else a[i + 1]
+            i += 2
+        else:
+            o['shots'].append(a[i])
+            i += 1
+    return o
+
+
 if __name__ == '__main__':
-    o = parse()
-    {'s0': s0, 's1': s1, 's2': s2}[o['spike']](o)
+    _a = sys.argv[sys.argv.index('--') + 1:] if '--' in sys.argv else ['s0']
+    if _a[0] in ('s0', 's1', 's2'):
+        o = parse()
+        {'s0': s0, 's1': s1, 's2': s2}[o['spike']](o)
+    else:
+        o = parse2()
+        {'stills': lambda o: cmd_stills(o, o['shots']), 's3': cmd_s3, 's4': cmd_s4, 'diff': cmd_diff, 'd3': cmd_d3}[o['cmd']](o)
