@@ -1,5 +1,6 @@
 import type {ReactNode} from 'react';
 import {Arrow, CatGlyph, LineText, Paper, Stimulus, Text, colors, ink} from './primitives';
+import {breakLines, firstBaseline, labelHeight} from './textLayout';
 import {shouldRenderVisualDiagram, visualProgressAt, type SceneVisual} from './types';
 
 const statusText = {fiction: 'เรื่องสมมติ', diagram: 'ภาพอธิบาย', research: 'ภาพอธิบายงานวิจัย', hypothesis: 'สมมติฐาน'} as const;
@@ -385,20 +386,24 @@ export const VisualStage = ({visual, frame, fps, width, height, physical = false
         </Paper>
       </g>;
     })()}
-    {!projectedR6 && !!visual.labels.length && <g>
-      {visual.labels.slice(0, 4).map((label, i) => {
-        const labelStartSec = visual.labelsAtSec?.[i] ?? visual.startSec;
-        const labelReveal = labelStartSec === visual.startSec ? 1 : Math.max(0, Math.min(1, (frame / fps - labelStartSec) / 0.2));
-        const column = physical && visual.labels.length === 1 ? 1 : i % 2;
-        const row = Math.floor(i / 2);
-        const pillWidth = width * 0.42;
-        const x = width * (column === 0 ? 0.075 : 0.505);
-        const y = labelTop + row * 106;
-        return <g key={`${visual.shotId}-label-${i}`} opacity={labelReveal} transform={`translate(0 ${8 * (1 - labelReveal)})`}>
-          <rect x={x} y={y} width={pillWidth} height={98} rx={16} fill={visual.status === 'hypothesis' ? '#fff4ce' : visual.status === 'research' ? '#e7f4f5' : colors.cream} stroke={ink} strokeWidth={2}/>
-          <LineText x={x + pillWidth / 2} y={y + 36} text={wrapLabel(label)} size={36}/>
-        </g>;
-      })}
-    </g>}
+    {!projectedR6 && !!visual.labels.length && (() => {
+      const labelSize = 36; const padding = 12; const gap = 10; const minHeight = 88;
+      const pillWidth = width * 0.42;
+      const items = visual.labels.slice(0, 4).map((label, i) => ({label, i, column: physical && visual.labels.length === 1 ? 1 : i % 2, row: Math.floor(i / 2), lines: breakLines(label, pillWidth - 32, labelSize)}));
+      const rowHeights = [0, 1].map(row => Math.max(minHeight, ...items.filter(item => item.row === row).map(item => labelHeight(item.lines.length, labelSize, padding))));
+      const rowTops = [labelTop, labelTop + rowHeights[0] + gap];
+      return <g>
+        {items.map(({i, column, row, lines}) => {
+          const labelStartSec = visual.labelsAtSec?.[i] ?? visual.startSec;
+          const labelReveal = labelStartSec === visual.startSec ? 1 : Math.max(0, Math.min(1, (frame / fps - labelStartSec) / 0.2));
+          const x = width * (column === 0 ? 0.075 : 0.505);
+          const top = rowTops[row]; const boxHeight = rowHeights[row];
+          return <g key={`${visual.shotId}-label-${i}`} opacity={labelReveal} transform={`translate(0 ${8 * (1 - labelReveal)})`}>
+            <rect x={x} y={top} width={pillWidth} height={boxHeight} rx={16} fill={visual.status === 'hypothesis' ? '#fff4ce' : visual.status === 'research' ? '#e7f4f5' : colors.cream} stroke={ink} strokeWidth={2}/>
+            <LineText x={x + pillWidth / 2} y={firstBaseline(top, boxHeight, lines.length, labelSize)} text={lines.join('\n')} size={labelSize}/>
+          </g>;
+        })}
+      </g>;
+    })()}
   </svg>;
 };
