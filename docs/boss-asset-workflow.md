@@ -1,7 +1,7 @@
 <a id="boss-reusable-assets-and-scene-implementation"></a>
 # Boss: reusable assets and shared renderer capabilities
 
-Boss is the team's programmer for shared 2D/3D assets, rigs, props, backgrounds, scene-renderer capabilities and visual bug fixes in their owning modules. Use `.codex/agents/boss.toml`. Preaw owns scripts, Boat owns facts, [Film owns the visual/technical brief](film-visual-brief-workflow.md), Mark owns detailed scene sheets, and [Editor](editor-workflow.md) owns scene/timeline integration and editing. Boss supplies reusable assets, shared capabilities and affected-consumer runtime evidence.
+Boss is the team's programmer for shared 2D/3D assets, rigs, props, backgrounds, scene-renderer capabilities and visual bug fixes in their owning modules. Agent configs: `.claude/agents/boss.md` and `.codex/agents/boss.toml`. Preaw owns scripts, Boat owns facts, [Film owns the visual/technical brief](film-visual-brief-workflow.md), Mark owns detailed scene sheets, and [Editor](editor-workflow.md) owns scene/timeline integration and editing. Boss supplies reusable assets, shared capabilities and affected-consumer runtime evidence.
 
 For Blender creation, editing, import/export or rendered shots, read [blender-mcp-workflow.md](blender-mcp-workflow.md). Boss owns shared sources/scripts/manifests, export contracts and Remotion integration. Verify the actual connection before changing a scene; report source → export → runtime → visual status separately.
 
@@ -29,6 +29,8 @@ This table is the authoritative home for the user's rules, updated 26 October 20
 | **Short lead height is ≥25% of the frame** | Measure visible character artwork after camera/crop/scale, excluding transparent padding, glow and shadow. At 1920px height, the lead must remain ≥480px whenever visible. Check the minimum across motion. Fix framing/camera/staging while preserving physical ratios to sets/props. If a wide/reveal conflicts, return the shot to Film/Mark under the scale guide. |
 | **Every shot has intentional picture/camera motion** | Author frame-driven picture pan/push or spatial movement per brief. Check start/mid/end for actual motion rather than crop-clamped stillness. Strong shaking is not a substitute; subtitles remain readable. |
 | **Before pushing visual work, produce one-second contact sheets and check jumps** | For every affected composition, sample F0, Ffps, F2fps… and the final frame, with time/shot IDs. Add the temporal QA below to detect single-frame discontinuities. |
+
+These rules govern illustrated 2D/3D/hybrid work. For a deliverable whose [style profile](delivery-workflow.md#style-profile) uses footage, stills or typography, the lighting baseline, ground shadows, lead-height and per-shot camera-motion rows apply only to illustrated elements actually present; record `N/A` with the reason for the rest. Texture lifecycle, determinism, scale/contact and contact-sheet QA apply to whatever is rendered.
 
 Existing 2D scene sheets remain valid; converting everything to 3D is unnecessary. When another technique better serves the shot, Boss reports constraints/results to Film and Mark and synchronizes brief/handoff revisions while preserving story, beat and reveal. Permission to use a medium does not establish runtime integration.
 

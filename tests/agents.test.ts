@@ -1,0 +1,26 @@
+import {test} from 'node:test';
+import assert from 'node:assert/strict';
+import {readdirSync, readFileSync} from 'node:fs';
+
+const roles = readdirSync('.claude/agents').filter(file => file.endsWith('.md')).map(file => file.replace(/\.md$/, ''));
+
+const readClaude = (role: string) => {
+  const match = readFileSync(`.claude/agents/${role}.md`, 'utf8').match(/^---\nname: (.+)\ndescription: "(.+)"\n---\n\n([\s\S]+)$/);
+  assert.ok(match, `${role}.md has name/description front matter`);
+  return {name: match[1], description: match[2], instructions: match[3].trim()};
+};
+const readCodex = (role: string) => {
+  const match = readFileSync(`.codex/agents/${role}.toml`, 'utf8').match(/^name = "(.+)"\ndescription = "(.+)"\ndeveloper_instructions = """\n([\s\S]+?)"""\s*$/);
+  assert.ok(match, `${role}.toml has name/description/developer_instructions`);
+  return {name: match[1], description: match[2], instructions: match[3].trim()};
+};
+
+test('every role exists for Claude Code and Codex', () => {
+  const codex = readdirSync('.codex/agents').filter(file => file.endsWith('.toml')).map(file => file.replace(/\.toml$/, ''));
+  assert.deepEqual([...roles].sort(), [...codex].sort());
+  assert.ok(roles.length >= 6);
+});
+
+test('Claude and Codex role instructions are identical', () => {
+  for (const role of roles) assert.deepEqual(readClaude(role), readCodex(role), role);
+});

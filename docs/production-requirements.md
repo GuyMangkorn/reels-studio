@@ -2,6 +2,8 @@
 
 **Status:** Authoritative production requirements unless a passage is explicitly labeled as a default, reference or proposed capability. Applies across editorial, planning, implementation and review. English is the documentation language; viewer-facing content stays Thai.
 
+**Style profiles:** the visual-direction, lighting, rig, label, TTS and ending rules below are the **`channel-default` style profile** ([delivery workflow](delivery-workflow.md#style-profile)). A deliverable with another profile (footage, typography, comedy, ad, etc.) overrides them with a recorded reason; rules on safety, licenses, Thai readability, determinism and the hook/duration targets still apply.
+
 For medium flexibility, demo lighting, texture lifecycle, lead size, shot movement and visual QA, use the authoritative [Boss production rules](boss-asset-workflow.md#latest-production-rules). For sequence assembly and boundaries, read [sequence-workflow.md](sequence-workflow.md).
 
 ## Visual direction and motion

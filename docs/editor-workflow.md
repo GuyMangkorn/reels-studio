@@ -1,6 +1,6 @@
 # Editor: scene integration, editing and samples
 
-**Requirement, added 27 October 2026:** Editor receives Film's brief and Mark's written scene handoff, integrates supported assets into Remotion, and delivers one representative rendered frame per story scene for each selected deliverable. Use `.codex/agents/editor.toml`. Configuration defines a role; it does not install an automatic runner, invoke other agents or authorize messaging other chats.
+**Requirement, added 27 October 2026:** In the Full tier Editor receives Film's brief and Mark's written scene handoff (Light and Edit-only tiers: see [Direct intake](#direct-intake)), integrates supported assets into Remotion, and delivers one representative rendered frame per story scene for each selected deliverable. Agent configs: `.claude/agents/editor.md` and `.codex/agents/editor.toml`. Configuration defines a role; it does not install an automatic runner, invoke other agents or authorize messaging other chats.
 
 ## Ownership
 
@@ -12,6 +12,21 @@
 | Editor | Scene/timeline authoring and assembly, supported asset selection/staging/timing, narration/amplitude/subtitle/SFX integration, supported effects/transitions/endings, rendered samples and sequence/runtime QA |
 
 Editor reads the exported API/source and authors supported values. Missing reusable behavior or asset/contact defects go to Boss with shot/frame evidence and consumers. Keep geometry/SVG/rigs, projection and shared timing/transition algorithms in their owning library modules. Editor may implement a shared change only when explicitly assigned that scope, following Boss's workflow. Preserve unrelated work.
+
+<a id="direct-intake"></a>
+## Direct intake (Light and Edit-only tiers)
+
+The user, or the coordinator for a [Light/Edit-only deliverable](delivery-workflow.md#pipeline-tiers), may brief Editor without Film/Mark handoffs. Editor then works from the user's request and records the missing handoffs as `N/A` instead of inventing them. Resolve gaps with the structured-question tool before editing (see [delivery workflow](delivery-workflow.md#resolve-the-selection-before-writing)); ask only for what the request leaves open.
+
+| Input | Record |
+| --- | --- |
+| Source media: paths, durations, rights/license of every clip, image, music and font | Inventory in `delivery.md`; unlicensed or unknown-rights media is flagged, not shipped silently |
+| Goal and platform: purpose, audience, target length, aspect ratio(s), ending | [Style profile](delivery-workflow.md#style-profile) values |
+| Voice and captions: supplied recording or TTS, transcript/SRT if any, caption style, language | Cue source and revision; do not invent Thai wording the user did not supply (ask Preaw) |
+| Mood and pacing: reference clips, music feel, cut rhythm, must-keep moments | Editing intent for [editing principles](editor-principles.md) |
+| Constraints: things to avoid, mandatory text, logos (original only) | Acceptance criteria |
+
+Editor writes a short edit plan (clip order with source in/out, timings, transitions, audio levels, caption plan, open questions) in `storyboards/<episode>/<deliverable>/edit-plan.md`, builds the timeline from supported runtime fields ([Remotion toolkit 10a](remotion-toolkit.md#10a-footage-stills-music-entry-transitions-and-caption-styles)), and sends missing capabilities to Boss with evidence. Steps 5–7 below apply with these changes: contact sheets and seek checks cover the footage-led timeline; [scene samples](#scene-samples-for-the-user) use one frame per edit segment instead of per story scene; actual audio is listened to or measured because no script timing exists. Claims asserted in supplied narration are the user's; Editor does not fact-check them but flags statements that look like checkable factual claims.
 
 ## Steps and completion criteria
 
