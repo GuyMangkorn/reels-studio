@@ -2,6 +2,8 @@ import type {ReactNode} from 'react';
 import {useCurrentFrame, useVideoConfig} from 'remotion';
 import {Sofa} from './props/Sofa';
 import {Tree, House} from './Props';
+import {CatboxRoom} from './backgrounds/CatboxRoom';
+import type {BoundsMeters} from '../scenes/types';
 export type BackgroundName = 'forest' | 'city' | 'room' | 'sea' | 'nightSky';
 export type TimeOfDay = 'day' | 'night';
 type Palette = {sky: string; far: string; mid: string; near: string; accent: string};
@@ -42,8 +44,13 @@ export const backgroundRegistry: Record<BackgroundName, BackgroundBuilder> = {
     near: <>{hills(w, h, p.near, .91)}<rect x={-100} y={h * .9} width={w + 200} height={h * .2} fill={p.near}/></>,
   }),
 };
-export const Background = ({kind, time = 'day'}: {kind: BackgroundName; time?: TimeOfDay}) => {
+export const Background = ({kind, time = 'day', physicalStage, physicalView}: {kind: BackgroundName; time?: TimeOfDay; physicalStage?: BoundsMeters; physicalView?: BoundsMeters}) => {
   const {width: w, height: h, fps} = useVideoConfig(); const t = useCurrentFrame() / fps;
+  if (physicalStage) {
+    if (kind !== 'room') throw new Error('The CATBOX physical stage currently supports the room background only');
+    if (!physicalView) throw new Error('The CATBOX physical room requires the active orthographic camera bounds');
+    return <CatboxRoom stage={physicalStage} view={physicalView} width={w} height={h} night={time === 'night'}/>;
+  }
   const p = palettes[time]; const layers = backgroundRegistry[kind]({w, h, p, night: time === 'night', t});
   return <svg width={w} height={h} style={{position: 'absolute', inset: 0}}><rect width={w} height={h} fill={p.sky}/>
     <circle cx={w * .81} cy={h * .18} r={Math.min(w, h) * .065} fill={p.accent}/>

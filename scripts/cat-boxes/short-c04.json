@@ -1,0 +1,492 @@
+[
+  {
+    "durationSec": 9,
+    "bg": "room",
+    "actors": [
+      {
+        "id": "owner",
+        "type": "narrator",
+        "pose": "think",
+        "world": {
+          "keys": [
+            {
+              "atSec": 0,
+              "x": -0.9,
+              "y": 0
+            }
+          ]
+        },
+        "poses": [
+          {
+            "atSec": 3.78,
+            "pose": "point"
+          },
+          {
+            "atSec": 6.4799999999999995,
+            "pose": "think"
+          }
+        ],
+        "hairStyle": "short",
+        "skinColor": "#FFD9B8",
+        "shirtColor": "#FF8FA3",
+        "pantsColor": "#7ED6B2"
+      },
+      {
+        "id": "mochi",
+        "type": "cat",
+        "pose": "sit",
+        "color": "#c7b5e7",
+        "world": {
+          "keys": [
+            {
+              "atSec": 0,
+              "x": -1.2,
+              "y": 0
+            }
+          ]
+        }
+      }
+    ],
+    "subtitle": "30–38°C = ต้องอยู่ถึงสบาย?",
+    "subtitleCues": [
+      {
+        "atSec": 0,
+        "text": "30–38°C = ต้องอยู่ถึงสบาย?"
+      },
+      {
+        "atSec": 4.5,
+        "text": "สรุปแบบนี้ไม่ได้ / ไม่ใช่คำแนะนำอุ่นห้อง"
+      }
+    ],
+    "visuals": [
+      {
+        "id": "physiology-definition",
+        "shotId": "CATBOX-C04-SHORT-S01-SH01",
+        "startSec": 0,
+        "endSec": 9,
+        "phase": 0,
+        "heading": "ตรวจข้ออ้างอุณหภูมิ",
+        "labels": [
+          "ตรวจคำอ้าง",
+          "ไม่ใช่คำแนะนำตั้งอุณหภูมิ",
+          "สรุปแบบนี้ไม่ได้"
+        ],
+        "status": "diagram",
+        "sourceBeatId": "CATBOX-C04-S01-B01"
+      }
+    ],
+    "projection": {
+      "unit": "m",
+      "stage": {
+        "left": -3.6,
+        "right": 2.44,
+        "bottom": -0.85,
+        "top": 2.55
+      },
+      "views": {
+        "short": {
+          "bounds": {
+            "left": -1.5234375,
+            "right": -0.8765624999999999,
+            "bottom": -0.45,
+            "top": 0.7
+          },
+          "cameraMoves": [
+            {
+              "atSec": 0,
+              "x": 0,
+              "y": 0,
+              "zoom": 1.12
+            },
+            {
+              "atSec": 4.5,
+              "x": 0.015,
+              "y": 0,
+              "zoom": 1.15
+            },
+            {
+              "atSec": 9,
+              "x": 0,
+              "y": 0,
+              "zoom": 1.12
+            }
+          ]
+        },
+        "long": {
+          "bounds": {
+            "left": -3.6,
+            "right": 2.44,
+            "bottom": -0.85,
+            "top": 2.55
+          }
+        }
+      }
+    }
+  },
+  {
+    "durationSec": 14,
+    "bg": "room",
+    "actors": [
+      {
+        "id": "owner",
+        "type": "narrator",
+        "pose": "think",
+        "world": {
+          "keys": [
+            {
+              "atSec": 0,
+              "x": -0.9,
+              "y": 0
+            }
+          ]
+        },
+        "poses": [
+          {
+            "atSec": 5.88,
+            "pose": "point"
+          },
+          {
+            "atSec": 10.08,
+            "pose": "think"
+          }
+        ],
+        "hairStyle": "short",
+        "skinColor": "#FFD9B8",
+        "shirtColor": "#FF8FA3",
+        "pantsColor": "#7ED6B2"
+      },
+      {
+        "id": "mochi",
+        "type": "cat",
+        "pose": "sit",
+        "color": "#c7b5e7",
+        "world": {
+          "keys": [
+            {
+              "atSec": 0,
+              "x": -1.2,
+              "y": 0
+            }
+          ]
+        }
+      }
+    ],
+    "subtitle": "TNZ เป็นนิยามทางสรีรวิทยา",
+    "subtitleCues": [
+      {
+        "atSec": 0,
+        "text": "TNZ เป็นนิยามทางสรีรวิทยา"
+      },
+      {
+        "atSec": 7,
+        "text": "ไม่ใช่ช่วงที่แมวเลือกอยู่เสมอ"
+      }
+    ],
+    "visuals": [
+      {
+        "id": "physiology-definition",
+        "shotId": "CATBOX-C04-SHORT-S01-SH02",
+        "startSec": 0,
+        "endSec": 14,
+        "phase": 1,
+        "heading": "TNZ บอกการทำงานของร่างกาย",
+        "labels": [
+          "ไม่ต้องเร่งสร้างความร้อนเพิ่ม",
+          "ไม่ต้องเร่งระบายด้วยการระเหย",
+          "ไม่ใช่ความสบายหรือความชอบ"
+        ],
+        "status": "diagram",
+        "sourceBeatId": "CATBOX-C04-S01-B02"
+      }
+    ],
+    "projection": {
+      "unit": "m",
+      "stage": {
+        "left": -3.6,
+        "right": 2.44,
+        "bottom": -0.85,
+        "top": 2.55
+      },
+      "views": {
+        "short": {
+          "bounds": {
+            "left": -1.5234375,
+            "right": -0.8765624999999999,
+            "bottom": -0.45,
+            "top": 0.7
+          },
+          "cameraMoves": [
+            {
+              "atSec": 0,
+              "x": 0,
+              "y": 0,
+              "zoom": 1.12
+            },
+            {
+              "atSec": 7,
+              "x": 0.015,
+              "y": 0,
+              "zoom": 1.15
+            },
+            {
+              "atSec": 14,
+              "x": 0,
+              "y": 0,
+              "zoom": 1.12
+            }
+          ]
+        },
+        "long": {
+          "bounds": {
+            "left": -3.6,
+            "right": 2.44,
+            "bottom": -0.85,
+            "top": 2.55
+          }
+        }
+      }
+    }
+  },
+  {
+    "durationSec": 11,
+    "bg": "room",
+    "actors": [
+      {
+        "id": "owner",
+        "type": "narrator",
+        "pose": "think",
+        "world": {
+          "keys": [
+            {
+              "atSec": 0,
+              "x": -0.9,
+              "y": 0
+            }
+          ]
+        },
+        "poses": [
+          {
+            "atSec": 4.62,
+            "pose": "point"
+          },
+          {
+            "atSec": 7.92,
+            "pose": "think"
+          }
+        ],
+        "hairStyle": "short",
+        "skinColor": "#FFD9B8",
+        "shirtColor": "#FF8FA3",
+        "pantsColor": "#7ED6B2"
+      },
+      {
+        "id": "mochi",
+        "type": "cat",
+        "pose": "sit",
+        "color": "#c7b5e7",
+        "world": {
+          "keys": [
+            {
+              "atSec": 0,
+              "x": -1.2,
+              "y": 0
+            }
+          ]
+        }
+      }
+    ],
+    "subtitle": "EFSA ทักท้วงการตีความช่วงนี้",
+    "subtitleCues": [
+      {
+        "atSec": 0,
+        "text": "EFSA ทักท้วงการตีความช่วงนี้"
+      },
+      {
+        "atSec": 5.5,
+        "text": "ความอุ่น: หนึ่งสมมติฐาน"
+      }
+    ],
+    "visuals": [
+      {
+        "id": "wall-warmth",
+        "shotId": "CATBOX-C04-SHORT-S01-SH03",
+        "startSec": 0,
+        "endSec": 11,
+        "phase": 2,
+        "heading": "เกณฑ์ที่ยังมีข้อโต้แย้ง",
+        "labels": [
+          "ความอุ่นอาจมีส่วน",
+          "ยังไม่มีหลักฐานว่าเป็นเหตุให้เลือกทุกกล่อง"
+        ],
+        "status": "research",
+        "sourceBeatId": "CATBOX-C04-S01-B03"
+      }
+    ],
+    "projection": {
+      "unit": "m",
+      "stage": {
+        "left": -3.6,
+        "right": 2.44,
+        "bottom": -0.85,
+        "top": 2.55
+      },
+      "views": {
+        "short": {
+          "bounds": {
+            "left": -1.5234375,
+            "right": -0.8765624999999999,
+            "bottom": -0.45,
+            "top": 0.7
+          },
+          "cameraMoves": [
+            {
+              "atSec": 0,
+              "x": 0,
+              "y": 0,
+              "zoom": 1.12
+            },
+            {
+              "atSec": 5.5,
+              "x": 0.015,
+              "y": 0,
+              "zoom": 1.15
+            },
+            {
+              "atSec": 11,
+              "x": 0,
+              "y": 0,
+              "zoom": 1.12
+            }
+          ]
+        },
+        "long": {
+          "bounds": {
+            "left": -3.6,
+            "right": 2.44,
+            "bottom": -0.85,
+            "top": 2.55
+          }
+        }
+      }
+    }
+  },
+  {
+    "durationSec": 11,
+    "bg": "room",
+    "actors": [
+      {
+        "id": "owner",
+        "type": "narrator",
+        "pose": "think",
+        "world": {
+          "keys": [
+            {
+              "atSec": 0,
+              "x": -0.9,
+              "y": 0
+            }
+          ]
+        },
+        "poses": [
+          {
+            "atSec": 4.62,
+            "pose": "point"
+          },
+          {
+            "atSec": 7.92,
+            "pose": "think"
+          }
+        ],
+        "hairStyle": "short",
+        "skinColor": "#FFD9B8",
+        "shirtColor": "#FF8FA3",
+        "pantsColor": "#7ED6B2"
+      },
+      {
+        "id": "mochi",
+        "type": "cat",
+        "pose": "sit",
+        "color": "#c7b5e7",
+        "world": {
+          "keys": [
+            {
+              "atSec": 0,
+              "x": -1.2,
+              "y": 0
+            }
+          ]
+        }
+      }
+    ],
+    "subtitle": "ตัวเลขวัดอะไร / ตอบคำถามไหน?",
+    "subtitleCues": [
+      {
+        "atSec": 0,
+        "text": "ตัวเลขวัดอะไร / ตอบคำถามไหน?"
+      }
+    ],
+    "visuals": [
+      {
+        "id": "physiology-definition",
+        "shotId": "CATBOX-C04-SHORT-S01-SH04",
+        "startSec": 0,
+        "endSec": 11,
+        "phase": 3,
+        "heading": "แยกนิยามกับคำถาม",
+        "labels": [
+          "ตอบคำถามไหน?",
+          "ไม่ตอบแทนความรู้สึกของแมวทุกตัว"
+        ],
+        "status": "diagram",
+        "sourceBeatId": "CATBOX-C04-S01-B04"
+      }
+    ],
+    "projection": {
+      "unit": "m",
+      "stage": {
+        "left": -3.6,
+        "right": 2.44,
+        "bottom": -0.85,
+        "top": 2.55
+      },
+      "views": {
+        "short": {
+          "bounds": {
+            "left": -1.5234375,
+            "right": -0.8765624999999999,
+            "bottom": -0.45,
+            "top": 0.7
+          },
+          "cameraMoves": [
+            {
+              "atSec": 0,
+              "x": 0,
+              "y": 0,
+              "zoom": 1.12
+            },
+            {
+              "atSec": 5.5,
+              "x": 0.015,
+              "y": 0,
+              "zoom": 1.15
+            },
+            {
+              "atSec": 11,
+              "x": 0,
+              "y": 0,
+              "zoom": 1.12
+            }
+          ]
+        },
+        "long": {
+          "bounds": {
+            "left": -3.6,
+            "right": 2.44,
+            "bottom": -0.85,
+            "top": 2.55
+          }
+        }
+      }
+    }
+  }
+]

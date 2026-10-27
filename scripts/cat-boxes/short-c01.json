@@ -1,0 +1,494 @@
+[
+  {
+    "durationSec": 7,
+    "bg": "room",
+    "actors": [
+      {
+        "id": "owner",
+        "type": "narrator",
+        "pose": "think",
+        "world": {
+          "keys": [
+            {
+              "atSec": 0,
+              "x": -0.9,
+              "y": 0
+            }
+          ]
+        },
+        "poses": [
+          {
+            "atSec": 2.94,
+            "pose": "point"
+          },
+          {
+            "atSec": 5.04,
+            "pose": "think"
+          }
+        ],
+        "hairStyle": "short",
+        "skinColor": "#FFD9B8",
+        "shirtColor": "#FF8FA3",
+        "pantsColor": "#7ED6B2"
+      },
+      {
+        "id": "mochi",
+        "type": "cat",
+        "pose": "sit",
+        "color": "#c7b5e7",
+        "world": {
+          "keys": [
+            {
+              "atSec": 0,
+              "x": -1.2,
+              "y": 0
+            }
+          ]
+        }
+      }
+    ],
+    "subtitle": "กรอบเปล่า แมวก็นั่งเหรอ?",
+    "subtitleCues": [
+      {
+        "atSec": 0,
+        "text": "กรอบเปล่า แมวก็นั่งเหรอ?"
+      },
+      {
+        "atSec": 3.5,
+        "text": "บางตัวทำ ไม่ใช่ทุกตัว"
+      }
+    ],
+    "visuals": [
+      {
+        "id": "paper-stimuli",
+        "shotId": "CATBOX-C01-SHORT-S01-SH01",
+        "startSec": 0,
+        "endSec": 7,
+        "phase": 0,
+        "heading": "กรอบกระดาษบนพื้น",
+        "labels": [
+          "กรอบกระดาษแบน",
+          "ไม่ใช่กล่องล่องหน"
+        ],
+        "status": "diagram",
+        "sourceBeatId": "CATBOX-C01-S01-B01"
+      }
+    ],
+    "projection": {
+      "unit": "m",
+      "stage": {
+        "left": -3.6,
+        "right": 2.44,
+        "bottom": -0.85,
+        "top": 2.55
+      },
+      "views": {
+        "short": {
+          "bounds": {
+            "left": -1.5234375,
+            "right": -0.8765624999999999,
+            "bottom": -0.45,
+            "top": 0.7
+          },
+          "cameraMoves": [
+            {
+              "atSec": 0,
+              "x": 0,
+              "y": 0,
+              "zoom": 1.12
+            },
+            {
+              "atSec": 3.5,
+              "x": 0.015,
+              "y": 0,
+              "zoom": 1.15
+            },
+            {
+              "atSec": 7,
+              "x": 0,
+              "y": 0,
+              "zoom": 1.12
+            }
+          ]
+        },
+        "long": {
+          "bounds": {
+            "left": -3.6,
+            "right": 2.44,
+            "bottom": -0.85,
+            "top": 2.55
+          }
+        }
+      }
+    }
+  },
+  {
+    "durationSec": 13,
+    "bg": "room",
+    "actors": [
+      {
+        "id": "owner",
+        "type": "narrator",
+        "pose": "think",
+        "world": {
+          "keys": [
+            {
+              "atSec": 0,
+              "x": -0.9,
+              "y": 0
+            }
+          ]
+        },
+        "poses": [
+          {
+            "atSec": 5.46,
+            "pose": "point"
+          },
+          {
+            "atSec": 9.36,
+            "pose": "think"
+          }
+        ],
+        "hairStyle": "short",
+        "skinColor": "#FFD9B8",
+        "shirtColor": "#FF8FA3",
+        "pantsColor": "#7ED6B2"
+      },
+      {
+        "id": "mochi",
+        "type": "cat",
+        "pose": "sit",
+        "color": "#c7b5e7",
+        "world": {
+          "keys": [
+            {
+              "atSec": 0,
+              "x": -1.2,
+              "y": 0
+            }
+          ]
+        }
+      }
+    ],
+    "subtitle": "ศึกษาที่บ้าน / รูปกระดาษ 3 แบบ",
+    "subtitleCues": [
+      {
+        "atSec": 0,
+        "text": "ศึกษาที่บ้าน / รูปกระดาษ 3 แบบ"
+      },
+      {
+        "atSec": 6.5,
+        "text": "ทำครบ 30 ตัว / มีการเลือก 9 ตัว"
+      }
+    ],
+    "visuals": [
+      {
+        "id": "selection-units",
+        "shotId": "CATBOX-C01-SHORT-S01-SH02",
+        "startSec": 0,
+        "endSec": 13,
+        "phase": 1,
+        "heading": "สามชนิดของสิ่งเร้า",
+        "labels": [
+          "ตีพิมพ์ 2021",
+          "ทำครบ 30 ตัว",
+          "เลือกอย่างน้อยหนึ่งแบบ 9 ตัว",
+          "ชนิดสิ่งเร้า • ไม่ใช่ผังทดลอง"
+        ],
+        "status": "research",
+        "sourceBeatId": "CATBOX-C01-S01-B02"
+      }
+    ],
+    "projection": {
+      "unit": "m",
+      "stage": {
+        "left": -3.6,
+        "right": 2.44,
+        "bottom": -0.85,
+        "top": 2.55
+      },
+      "views": {
+        "short": {
+          "bounds": {
+            "left": -1.5234375,
+            "right": -0.8765624999999999,
+            "bottom": -0.45,
+            "top": 0.7
+          },
+          "cameraMoves": [
+            {
+              "atSec": 0,
+              "x": 0,
+              "y": 0,
+              "zoom": 1.12
+            },
+            {
+              "atSec": 6.5,
+              "x": 0.015,
+              "y": 0,
+              "zoom": 1.15
+            },
+            {
+              "atSec": 13,
+              "x": 0,
+              "y": 0,
+              "zoom": 1.12
+            }
+          ]
+        },
+        "long": {
+          "bounds": {
+            "left": -3.6,
+            "right": 2.44,
+            "bottom": -0.85,
+            "top": 2.55
+          }
+        }
+      }
+    }
+  },
+  {
+    "durationSec": 14,
+    "bg": "room",
+    "actors": [
+      {
+        "id": "owner",
+        "type": "narrator",
+        "pose": "think",
+        "world": {
+          "keys": [
+            {
+              "atSec": 0,
+              "x": -0.9,
+              "y": 0
+            }
+          ]
+        },
+        "poses": [
+          {
+            "atSec": 5.88,
+            "pose": "point"
+          },
+          {
+            "atSec": 10.08,
+            "pose": "think"
+          }
+        ],
+        "hairStyle": "short",
+        "skinColor": "#FFD9B8",
+        "shirtColor": "#FF8FA3",
+        "pantsColor": "#7ED6B2"
+      },
+      {
+        "id": "mochi",
+        "type": "cat",
+        "pose": "sit",
+        "color": "#c7b5e7",
+        "world": {
+          "keys": [
+            {
+              "atSec": 0,
+              "x": -1.2,
+              "y": 0
+            }
+          ]
+        }
+      }
+    ],
+    "subtitle": "ผลแต่ละคู่ไม่เหมือนกัน",
+    "subtitleCues": [
+      {
+        "atSec": 0,
+        "text": "ผลแต่ละคู่ไม่เหมือนกัน"
+      },
+      {
+        "atSec": 7,
+        "text": "ไม่พบความต่าง ≠ เท่ากัน"
+      }
+    ],
+    "visuals": [
+      {
+        "id": "paper-stimuli",
+        "shotId": "CATBOX-C01-SHORT-S01-SH03",
+        "startSec": 0,
+        "endSec": 14,
+        "phase": 2,
+        "heading": "ผลทดสอบจับความต่างได้",
+        "labels": [
+          "ชิ้นแหว่งหันเข้า vs แบบเทียบ: พบความต่าง",
+          "กรอบสี่เหลี่ยม vs แบบเทียบ: ไม่พบความต่าง",
+          "ไม่พบความต่าง ≠ เท่ากัน"
+        ],
+        "status": "research",
+        "sourceBeatId": "CATBOX-C01-S01-B03"
+      }
+    ],
+    "projection": {
+      "unit": "m",
+      "stage": {
+        "left": -3.6,
+        "right": 2.44,
+        "bottom": -0.85,
+        "top": 2.55
+      },
+      "views": {
+        "short": {
+          "bounds": {
+            "left": -1.5234375,
+            "right": -0.8765624999999999,
+            "bottom": -0.45,
+            "top": 0.7
+          },
+          "cameraMoves": [
+            {
+              "atSec": 0,
+              "x": 0,
+              "y": 0,
+              "zoom": 1.12
+            },
+            {
+              "atSec": 7,
+              "x": 0.015,
+              "y": 0,
+              "zoom": 1.15
+            },
+            {
+              "atSec": 14,
+              "x": 0,
+              "y": 0,
+              "zoom": 1.12
+            }
+          ]
+        },
+        "long": {
+          "bounds": {
+            "left": -3.6,
+            "right": 2.44,
+            "bottom": -0.85,
+            "top": 2.55
+          }
+        }
+      }
+    }
+  },
+  {
+    "durationSec": 11,
+    "bg": "room",
+    "actors": [
+      {
+        "id": "owner",
+        "type": "narrator",
+        "pose": "think",
+        "world": {
+          "keys": [
+            {
+              "atSec": 0,
+              "x": -0.9,
+              "y": 0
+            }
+          ]
+        },
+        "poses": [
+          {
+            "atSec": 4.62,
+            "pose": "point"
+          },
+          {
+            "atSec": 7.92,
+            "pose": "think"
+          }
+        ],
+        "hairStyle": "short",
+        "skinColor": "#FFD9B8",
+        "shirtColor": "#FF8FA3",
+        "pantsColor": "#7ED6B2"
+      },
+      {
+        "id": "mochi",
+        "type": "cat",
+        "pose": "sit",
+        "color": "#c7b5e7",
+        "world": {
+          "keys": [
+            {
+              "atSec": 0,
+              "x": -1.2,
+              "y": 0
+            }
+          ]
+        }
+      }
+    ],
+    "subtitle": "บางตัวเลือกกรอบ / เหตุผลยังต้องถามต่อ",
+    "subtitleCues": [
+      {
+        "atSec": 0,
+        "text": "บางตัวเลือกกรอบ / เหตุผลยังต้องถามต่อ"
+      }
+    ],
+    "visuals": [
+      {
+        "id": "evidence-sort",
+        "shotId": "CATBOX-C01-SHORT-S01-SH04",
+        "startSec": 0,
+        "endSec": 11,
+        "phase": 3,
+        "heading": "คำอธิบายยังไม่ครบ",
+        "labels": [
+          "บางตัวเลือกกรอบ",
+          "เราอ่านใจแมวไม่ได้",
+          "เหตุผลยังไม่รู้"
+        ],
+        "status": "research",
+        "sourceBeatId": "CATBOX-C01-S01-B04"
+      }
+    ],
+    "projection": {
+      "unit": "m",
+      "stage": {
+        "left": -3.6,
+        "right": 2.44,
+        "bottom": -0.85,
+        "top": 2.55
+      },
+      "views": {
+        "short": {
+          "bounds": {
+            "left": -1.5234375,
+            "right": -0.8765624999999999,
+            "bottom": -0.45,
+            "top": 0.7
+          },
+          "cameraMoves": [
+            {
+              "atSec": 0,
+              "x": 0,
+              "y": 0,
+              "zoom": 1.12
+            },
+            {
+              "atSec": 5.5,
+              "x": 0.015,
+              "y": 0,
+              "zoom": 1.15
+            },
+            {
+              "atSec": 11,
+              "x": 0,
+              "y": 0,
+              "zoom": 1.12
+            }
+          ]
+        },
+        "long": {
+          "bounds": {
+            "left": -3.6,
+            "right": 2.44,
+            "bottom": -0.85,
+            "top": 2.55
+          }
+        }
+      }
+    }
+  }
+]

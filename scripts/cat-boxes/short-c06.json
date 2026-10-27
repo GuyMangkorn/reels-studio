@@ -1,0 +1,574 @@
+[
+  {
+    "durationSec": 8,
+    "bg": "room",
+    "actors": [
+      {
+        "id": "owner",
+        "type": "narrator",
+        "pose": "think",
+        "world": {
+          "keys": [
+            {
+              "atSec": 0,
+              "x": 0.4,
+              "y": 0
+            }
+          ]
+        },
+        "poses": [
+          {
+            "atSec": 3.36,
+            "pose": "point"
+          },
+          {
+            "atSec": 5.76,
+            "pose": "think"
+          }
+        ],
+        "hairStyle": "short",
+        "skinColor": "#FFD9B8",
+        "shirtColor": "#FF8FA3",
+        "pantsColor": "#7ED6B2"
+      },
+      {
+        "id": "mochi",
+        "type": "cat",
+        "pose": "idle",
+        "color": "#c7b5e7",
+        "world": {
+          "keys": [
+            {
+              "atSec": 0,
+              "x": -0.3,
+              "y": 0
+            }
+          ]
+        }
+      }
+    ],
+    "subtitle": "เราเลือกคำตอบเร็วไปไหม?",
+    "subtitleCues": [
+      {
+        "atSec": 0,
+        "text": "เราเลือกคำตอบเร็วไปไหม?"
+      },
+      {
+        "atSec": 4,
+        "text": "เลือกกรอบ ≠ คิดว่ามีกล่องแน่นอน"
+      }
+    ],
+    "visuals": [
+      {
+        "id": "paper-stimuli",
+        "shotId": "CATBOX-C06-SHORT-S01-SH01",
+        "startSec": 0,
+        "endSec": 8,
+        "phase": 0,
+        "heading": "กรอบแบน • คำตอบไม่ชัด",
+        "labels": [
+          "เรื่องสมมติ • กล่องเก่าในห้อง"
+        ],
+        "status": "research",
+        "sourceBeatId": "CATBOX-C06-S01-B01",
+        "showDiagram": false
+      }
+    ],
+    "projection": {
+      "unit": "m",
+      "stage": {
+        "left": -3.6,
+        "right": 2.44,
+        "bottom": -0.85,
+        "top": 2.55
+      },
+      "views": {
+        "short": {
+          "bounds": {
+            "left": -0.43125,
+            "right": 0.43125,
+            "bottom": -0.466,
+            "top": 1.066
+          },
+          "cameraMoves": [
+            {
+              "atSec": 0,
+              "x": -0.14,
+              "y": 0,
+              "zoom": 1.26
+            },
+            {
+              "atSec": 4,
+              "x": -0.14,
+              "y": 0,
+              "zoom": 1.26
+            },
+            {
+              "atSec": 8,
+              "x": -0.14,
+              "y": 0,
+              "zoom": 1.26
+            }
+          ]
+        },
+        "long": {
+          "bounds": {
+            "left": -3.6,
+            "right": 2.44,
+            "bottom": -0.85,
+            "top": 2.55
+          }
+        }
+      }
+    },
+    "props": [
+      {
+        "type": "catbox-old",
+        "space": "world",
+        "layer": "back",
+        "world": {
+          "x": 0,
+          "y": 0
+        }
+      },
+      {
+        "type": "catbox-outline",
+        "space": "screen",
+        "x": 0.72,
+        "y": 0.5,
+        "size": 220,
+        "startSec": 0.5,
+        "endSec": 8
+      }
+    ]
+  },
+  {
+    "durationSec": 14,
+    "bg": "room",
+    "actors": [
+      {
+        "id": "owner",
+        "type": "narrator",
+        "pose": "think",
+        "world": {
+          "keys": [
+            {
+              "atSec": 0,
+              "x": 0.4,
+              "y": 0
+            }
+          ]
+        },
+        "poses": [
+          {
+            "atSec": 5.88,
+            "pose": "point"
+          },
+          {
+            "atSec": 10.08,
+            "pose": "think"
+          }
+        ],
+        "hairStyle": "short",
+        "skinColor": "#FFD9B8",
+        "shirtColor": "#FF8FA3",
+        "pantsColor": "#7ED6B2"
+      },
+      {
+        "id": "mochi",
+        "type": "cat",
+        "pose": "idle",
+        "color": "#c7b5e7",
+        "world": {
+          "keys": [
+            {
+              "atSec": 0,
+              "x": -0.3,
+              "y": 0
+            }
+          ]
+        }
+      }
+    ],
+    "subtitle": "งานต่างกัน วัดคนละอย่าง",
+    "subtitleCues": [
+      {
+        "atSec": 0,
+        "text": "งานต่างกัน วัดคนละอย่าง"
+      },
+      {
+        "atSec": 7,
+        "text": "กล่องที่หลบได้ ต่างจากกรอบแบน"
+      }
+    ],
+    "visuals": [
+      {
+        "id": "evidence-sort",
+        "shotId": "CATBOX-C06-SHORT-S01-SH02",
+        "startSec": 0,
+        "endSec": 14,
+        "phase": 1,
+        "heading": "สองงานคนละคำถาม",
+        "labels": [
+          "งานเรื่องกรอบดูการเลือก",
+          "งานที่ซ่อนในศูนย์พักพิงดูคะแนนความเครียด",
+          "กล่องมีผนัง • กรอบแบนไม่มี"
+        ],
+        "status": "research",
+        "sourceBeatId": "CATBOX-C06-S01-B02"
+      }
+    ],
+    "props": [
+      {
+        "type": "catbox-old",
+        "space": "world",
+        "world": {
+          "x": 0,
+          "y": 0
+        },
+        "layer": "back"
+      }
+    ],
+    "projection": {
+      "unit": "m",
+      "stage": {
+        "left": -3.6,
+        "right": 2.44,
+        "bottom": -0.85,
+        "top": 2.55
+      },
+      "views": {
+        "short": {
+          "bounds": {
+            "left": -0.43125,
+            "right": 0.43125,
+            "bottom": -0.466,
+            "top": 1.066
+          },
+          "cameraMoves": [
+            {
+              "atSec": 0,
+              "x": -0.14,
+              "y": 0,
+              "zoom": 1.26
+            },
+            {
+              "atSec": 7,
+              "x": -0.14,
+              "y": 0,
+              "zoom": 1.26
+            },
+            {
+              "atSec": 14,
+              "x": -0.14,
+              "y": 0,
+              "zoom": 1.26
+            }
+          ]
+        },
+        "long": {
+          "bounds": {
+            "left": -3.6,
+            "right": 2.44,
+            "bottom": -0.85,
+            "top": 2.55
+          }
+        }
+      }
+    }
+  },
+  {
+    "durationSec": 12,
+    "bg": "room",
+    "actors": [
+      {
+        "id": "owner",
+        "type": "narrator",
+        "pose": "think",
+        "world": {
+          "keys": [
+            {
+              "atSec": 0,
+              "x": 0.4,
+              "y": 0
+            }
+          ]
+        },
+        "poses": [
+          {
+            "atSec": 5.04,
+            "pose": "point"
+          },
+          {
+            "atSec": 8.64,
+            "pose": "think"
+          }
+        ],
+        "hairStyle": "short",
+        "skinColor": "#FFD9B8",
+        "shirtColor": "#FF8FA3",
+        "pantsColor": "#7ED6B2"
+      },
+      {
+        "id": "mochi",
+        "type": "cat",
+        "pose": "idle",
+        "color": "#c7b5e7",
+        "world": {
+          "keys": [
+            {
+              "atSec": 0,
+              "x": -0.3,
+              "y": 0
+            }
+          ]
+        }
+      }
+    ],
+    "subtitle": "เหตุเสนอมีหลักฐานไม่เท่ากัน",
+    "subtitleCues": [
+      {
+        "atSec": 0,
+        "text": "เหตุเสนอมีหลักฐานไม่เท่ากัน"
+      },
+      {
+        "atSec": 6,
+        "text": "ยังไม่ยืนยันเหตุเฉพาะครั้ง"
+      }
+    ],
+    "visuals": [
+      {
+        "id": "evidence-sort",
+        "shotId": "CATBOX-C06-SHORT-S01-SH03",
+        "startSec": 0,
+        "endSec": 12,
+        "phase": 2,
+        "heading": "สามข้อเสนอ • เหตุยังไม่ยืนยัน",
+        "labels": [
+          "ความอุ่น • การซุ่ม • สัมผัสด้านข้าง",
+          "ยังไม่รู้ว่าเลือกกล่องเพราะอะไร"
+        ],
+        "status": "hypothesis",
+        "sourceBeatId": "CATBOX-C06-S01-B03"
+      }
+    ],
+    "props": [
+      {
+        "type": "catbox-old",
+        "space": "world",
+        "world": {
+          "x": 0,
+          "y": 0
+        },
+        "layer": "back"
+      }
+    ],
+    "projection": {
+      "unit": "m",
+      "stage": {
+        "left": -3.6,
+        "right": 2.44,
+        "bottom": -0.85,
+        "top": 2.55
+      },
+      "views": {
+        "short": {
+          "bounds": {
+            "left": -0.43125,
+            "right": 0.43125,
+            "bottom": -0.466,
+            "top": 1.066
+          },
+          "cameraMoves": [
+            {
+              "atSec": 0,
+              "x": -0.14,
+              "y": 0,
+              "zoom": 1.26
+            },
+            {
+              "atSec": 6,
+              "x": -0.14,
+              "y": 0,
+              "zoom": 1.26
+            },
+            {
+              "atSec": 12,
+              "x": -0.14,
+              "y": 0,
+              "zoom": 1.26
+            }
+          ]
+        },
+        "long": {
+          "bounds": {
+            "left": -3.6,
+            "right": 2.44,
+            "bottom": -0.85,
+            "top": 2.55
+          }
+        }
+      }
+    }
+  },
+  {
+    "durationSec": 11,
+    "bg": "room",
+    "actors": [
+      {
+        "id": "owner",
+        "type": "narrator",
+        "pose": "think",
+        "world": {
+          "keys": [
+            {
+              "atSec": 0,
+              "x": 0.4,
+              "y": 0
+            }
+          ]
+        },
+        "poses": [
+          {
+            "atSec": 4.62,
+            "pose": "point"
+          },
+          {
+            "atSec": 7.92,
+            "pose": "think"
+          }
+        ],
+        "hairStyle": "short",
+        "skinColor": "#FFD9B8",
+        "shirtColor": "#FF8FA3",
+        "pantsColor": "#7ED6B2"
+      },
+      {
+        "id": "mochi",
+        "type": "cat",
+        "pose": "walk",
+        "color": "#c7b5e7",
+        "world": {
+          "keys": [
+            {
+              "atSec": 0,
+              "x": -0.55,
+              "y": 0
+            },
+            {
+              "atSec": 7.7,
+              "x": -0.025,
+              "y": 0.09191489361702128
+            },
+            {
+              "atSec": 8,
+              "x": 0,
+              "y": 0.09191489361702128
+            },
+            {
+              "atSec": 11,
+              "x": 0,
+              "y": 0.09191489361702128
+            }
+          ]
+        },
+        "poses": [
+          {
+            "atSec": 7.7,
+            "pose": "sit"
+          }
+        ]
+      }
+    ],
+    "subtitle": "เรื่องสมมติ ไม่ใช่ผลทดลอง",
+    "subtitleCues": [
+      {
+        "atSec": 0,
+        "text": "เรื่องสมมติ ไม่ใช่ผลทดลอง"
+      },
+      {
+        "atSec": 5.5,
+        "text": "เหตุที่เลือกใบนี้ ยังไม่รู้"
+      }
+    ],
+    "visuals": [
+      {
+        "id": "evidence-sort",
+        "shotId": "CATBOX-C06-SHORT-S01-SH04",
+        "startSec": 0,
+        "endSec": 11,
+        "phase": 3,
+        "heading": "กลับสู่กล่องเดิม",
+        "labels": [
+          "เรื่องสมมติ • ไม่ใช่ผลทดลอง"
+        ],
+        "status": "fiction",
+        "sourceBeatId": "CATBOX-C06-S01-B04"
+      }
+    ],
+    "projection": {
+      "unit": "m",
+      "stage": {
+        "left": -3.6,
+        "right": 2.44,
+        "bottom": -0.85,
+        "top": 2.55
+      },
+      "views": {
+        "short": {
+          "bounds": {
+            "left": -0.3234375,
+            "right": 0.3234375,
+            "bottom": -0.275,
+            "top": 0.875
+          },
+          "cameraMoves": [
+            {
+              "atSec": 0,
+              "x": -0.45,
+              "y": -0.173,
+              "zoom": 1.58
+            },
+            {
+              "atSec": 3,
+              "x": -0.18,
+              "y": -0.173,
+              "zoom": 1.58
+            },
+            {
+              "atSec": 7.7,
+              "x": 0,
+              "y": -0.173,
+              "zoom": 1.58
+            },
+            {
+              "atSec": 11,
+              "x": 0,
+              "y": -0.173,
+              "zoom": 1.58
+            }
+          ]
+        },
+        "long": {
+          "bounds": {
+            "left": -3.6,
+            "right": 2.44,
+            "bottom": -0.85,
+            "top": 2.55
+          }
+        }
+      }
+    },
+    "props": [
+      {
+        "type": "catbox-old",
+        "space": "world",
+        "layer": "back",
+        "world": {
+          "x": 0,
+          "y": 0
+        }
+      }
+    ]
+  }
+]
