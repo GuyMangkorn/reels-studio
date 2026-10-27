@@ -12,6 +12,8 @@ export const collectEpisodes = (episodes: EpisodeVideos[]): EpisodeVideos[] => {
       owners.set(video.id, episode);
       validateTimeline(video.timeline, FORMATS[video.format].fps);
       validateVideoStyle(video, video.id);
+      const lastSec = video.timeline.at(-1)!.durationSec;
+      if (video.loopBlendFrames !== undefined && video.loopBlendFrames >= Math.round(lastSec * FORMATS[video.format].fps)) throw new Error(`Video ${video.id} loopBlendFrames must be shorter than the last scene`);
     }
   }
   return [...episodes].sort((a, b) => a.episode.localeCompare(b.episode));

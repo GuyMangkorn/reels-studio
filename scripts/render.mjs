@@ -1,4 +1,4 @@
-// Usage: node scripts/render.mjs <CompositionId>... [--stills] [--frames=90,210] [--endings=A_fade,B_loop]
+// Usage: node scripts/render.mjs <CompositionId>... [--stills] [--frames=90,210] [--endings=A_fade,B_loop,C_seamless]
 // Each run bundles into its own temp directory, lets Remotion pick a free port and writes only under
 // out/<CompositionId>/, so renders of different videos can run at the same time.
 // Set BROWSER_EXECUTABLE to use an installed Chromium instead of Remotion's download.

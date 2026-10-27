@@ -8,7 +8,7 @@ import {Subtitles} from './Subtitles';
 import {actorIdentity, actorPoseTrack, actorPosition, layoutActor, layoutSceneProp, pictureMoveAt, poseAt, propVisibleAt, sceneFrames, subtitleAt, validateTimeline} from './timeline';
 import {layoutWorldActor, layoutWorldProp, orthographicViewAt, worldPositionAt, worldPropPositionAt} from './projection';
 import {mouthAt} from '../rig/drivers';
-import {endingState, type Ending} from './endings';
+import {DEFAULT_LOOP_BLEND_FRAMES, endingState, loopBlendOpacity, type Ending} from './endings';
 import type {AudioTrack, CaptionStyle, ChromeStyle, Timeline, Scene} from './types';
 import {defaultChrome, validateVideoStyle} from './media';
 import {AudioTracks, EntryTransition, MediaLayer, SceneSounds} from './MediaLayers';
@@ -16,7 +16,7 @@ import {visualAt} from '../assets/visuals/types';
 import {VisualStage} from '../assets/visuals/VisualStage';
 
 export type Narration = {src: string; amplitude: readonly number[]; fps: number; startFrame?: number};
-export type SceneRendererProps = {timeline: Timeline; narration?: Narration; ending?: Ending; sceneTransitionFrames?: number; loopFadeFrames?: number; audio?: AudioTrack[]; captionStyle?: CaptionStyle; chrome?: ChromeStyle};
+export type SceneRendererProps = {timeline: Timeline; narration?: Narration; ending?: Ending; sceneTransitionFrames?: number; loopFadeFrames?: number; loopBlendFrames?: number; audio?: AudioTrack[]; captionStyle?: CaptionStyle; chrome?: ChromeStyle};
 
 const transitionOpacityAt = (frame: number, timeline: Timeline, fps: number, transitionFrames: number) => {
   if (transitionFrames <= 0 || timeline.length < 2) return 0;
@@ -131,12 +131,13 @@ const SceneView = ({scene, index, total, previous, start, narration, ending, loo
   </AbsoluteFill>;
 };
 /** Scenes are intentionally data-driven: edit JSON, never duplicate layout for aspect ratios. */
-export const SceneRenderer = ({timeline, narration, ending = 'B_loop', sceneTransitionFrames = 0, loopFadeFrames = 0, audio, captionStyle, chrome}: SceneRendererProps) => {
+export const SceneRenderer = ({timeline, narration, ending = 'B_loop', sceneTransitionFrames = 0, loopFadeFrames = 0, loopBlendFrames = DEFAULT_LOOP_BLEND_FRAMES, audio, captionStyle, chrome}: SceneRendererProps) => {
   const {fps, durationInFrames, width, height, id} = useVideoConfig();
   const portraitFormat = height > width;
   const frame = useCurrentFrame();
   validateTimeline(timeline, fps);
-  validateVideoStyle({audio, captionStyle, chrome}, id);
+  validateVideoStyle({audio, captionStyle, chrome, loopBlendFrames}, id);
+  const blendOpacity = ending === 'C_seamless' ? loopBlendOpacity(frame, durationInFrames, loopBlendFrames) : 0;
   const chromeStyle = {...defaultChrome, ...chrome};
   const transitionOpacity = transitionOpacityAt(frame, timeline, fps, sceneTransitionFrames);
   const loopOpacity = loopFadeOpacityAt(frame, durationInFrames, ending, loopFadeFrames);
@@ -146,7 +147,7 @@ export const SceneRenderer = ({timeline, narration, ending = 'B_loop', sceneTran
     const from = start; const duration = sceneFrames(scene.durationSec, fps); start += duration;
     // An entry transition starts the incoming scene early, held on its first frame, so cut frames stay put.
     const lead = index > 0 && scene.transitionIn ? scene.transitionIn.frames : 0;
-    const view = <SceneView scene={scene} index={index} total={timeline.length} previous={timeline[index - 1]} start={from} narration={narration} ending={ending} loopFadeFrames={loopFadeFrames} captionStyle={captionStyle} chrome={chromeStyle} entering={frame < from}/>;
+    const view = <SceneView scene={scene} index={index} total={timeline.length} previous={timeline[index - 1]} start={from} narration={narration} ending={ending} loopFadeFrames={loopFadeFrames} captionStyle={captionStyle} chrome={chromeStyle} entering={frame < from || (blendOpacity > 0 && index === timeline.length - 1)}/>;
     return <Sequence key={index} name={scene.eyebrow ?? scene.bg} from={from - lead} durationInFrames={duration + lead} premountFor={fps}>{lead > 0 ? <EntryTransition entry={scene.transitionIn!}><Freeze frame={lead} active={f => f < lead}><Sequence from={lead} durationInFrames={duration}>{view}</Sequence></Freeze></EntryTransition> : view}</Sequence>;
-  })}</Freeze>{pictureOpacity > 0 && <AbsoluteFill style={{backgroundColor: '#101018', opacity: pictureOpacity, pointerEvents: 'none'}}/>}</AbsoluteFill>;
+  })}</Freeze>{blendOpacity > 0 && <AbsoluteFill style={{opacity: blendOpacity}}><Freeze frame={0}><Sequence durationInFrames={sceneFrames(timeline[0].durationSec, fps)}><SceneView scene={timeline[0]} index={0} total={timeline.length} start={0} narration={narration} ending={ending} loopFadeFrames={loopFadeFrames} captionStyle={captionStyle} chrome={chromeStyle} entering={false}/></Sequence></Freeze></AbsoluteFill>}{pictureOpacity > 0 && <AbsoluteFill style={{backgroundColor: '#101018', opacity: pictureOpacity, pointerEvents: 'none'}}/>}</AbsoluteFill>;
 };
