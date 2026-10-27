@@ -5,7 +5,7 @@ This repository produces Thai Shorts and long-form videos. Remotion owns timelin
 ## Language and rule conventions
 
 - Author agent instructions, workflows, technical notes, briefs, shot sheets and QA reports in **English** with stable English IDs. Preserve Thai narration, dialogue, subtitles, on-screen text and language-specific examples. Reply to the user in their language.
-- Use English role names consistently: Preaw (แพรว), Boat (โบ็ต), Film (ฟิล์ม), Mark (มาร์ค), Boss (บอส), Editor. Agent configuration files live in `.codex/agents/`.
+- Use English role names consistently: Preaw (แพรว), Boat (โบ็ต), Film (ฟิล์ม), Mark (มาร์ค), Boss (บอส), Editor. Agent configuration files live in `.codex/agents/` (Codex) and `.claude/agents/` (Claude Code); keep each role's instructions identical in both.
 - **Requirement:** mandatory within its stated scope. **Default:** a normal choice that a supplied brief/scene handoff may override with a recorded reason. **Reference:** explanatory material or examples. **Design/proposed:** requires implementation and verification before runtime use.
 - Runtime status is separate: `existing-integrated`, `exists-unintegrated`, `missing`, or `unknown`, with checkout/revision and evidence. Readiness is separate from user approval and runtime/visual validation.
 - Keep each rule in its authoritative document below; link to it elsewhere. Update references and preserve old heading anchors when moving or translating sections. Keep historical evidence dated and scoped. Inspect the active checkout before claiming a capability exists.
