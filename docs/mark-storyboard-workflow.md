@@ -64,54 +64,58 @@ A story scene may map to several runtime `Scene` entries. Record that mapping ra
 
 ## Scene-sheet contract
 
-The tables are authoring instructions, not supported runtime JSON fields. Link one shared baseline instead of copying it into every shot. Numeric staging may be an explicit design estimate; label it and validate through blockout. For a fixed 2D shot, write `depth: fixed plane; layer order: ...`; XYZ depth is required only when meaningful to the chosen representation.
+**Requirement:** a scene sheet is read by agents who act on it, so it states each fact once, in the place Editor looks for it. The tables and fields are authoring instructions, not supported runtime JSON fields; numeric staging may be an explicit design estimate. For a fixed 2D shot, write `depth: fixed plane; layer order: ...`; XYZ depth is required only when meaningful to the chosen representation.
+
+- **One home per fact.** Shot data (range, staging, camera, VO, subtitles, entry/exit, acceptance) lives only in that shot's block; the shot map holds IDs, ranges and claims. Do not restate a shot's values in another section.
+- **Link, then state the difference.** Baseline, projection, palette, lighting method and fallback that Film's brief or the sequence index already own are linked, not copied; the sheet adds only values a shot needs or a deviation with its reason. Where a number must be repeated for Editor's convenience, mark the copy `(brief: <decision ID>)` so the owner wins on conflict.
+- **Status once.** The header carries the sheet's status and the evidence line. Mark an individual value only when it differs (`verified`, `measured`); do not repeat "design-only / unrendered / unverified" through the body.
+- **Current values only.** Superseded values, review narrative and migration notes go to the change log at the end, never into the shot blocks.
+- **Language.** Headings, field names and notes are English; Thai VO, subtitles and on-screen text stay Thai and verbatim.
+- **Omit what does not apply** (a fixed-plane shot has no XYZ depth; a shot with no cut has no transition field). Roles skipped by the tier are recorded in the delivery record, not here.
+- **Default size:** about 600–800 words per shot plus one shared section; a longer sheet needs a reason (for example a shot with several numeric paths). Split a scene whose sheet outgrows this.
+
+The header's `Status` and `Evidence` lines must agree with the delivery record's [Stage / Next owner](delivery-workflow.md#delivery-record-and-handoff-checks) cell; Mark updates both in the same change.
 
 ```markdown
 # <scene ID> — <title>
-Deliverable: <ID>; delivery record: <path>; handoff revision: <revision>
-Status: draft / needs-input / ready-for-dev
-Script + fact-check: <paths, exact revisions, beat/claim ranges>
-Film brief: <path/revision, decision IDs>; target checkout: <branch/commit>
-Timing: estimated / checked-with-audio / checked-with-blockout
-FPS: 30; durationFrames: ...; composition offset: ...
+Deliverable: <ID> · Revision: <rev> · Status: draft / needs-input / ready-for-dev · Timing: estimated / checked-with-audio / checked-with-blockout
+Inputs: script + fact-check <paths, exact revisions, beat/claim ranges> · Film brief <path/revision, decision IDs> · delivery record <path>
+Target: <branch/commit> · <fps> fps · durationFrames <n> · <format> · composition offset <n>
+Evidence: runtime <unverified | link> · render/samples <...> · audio/subtitle sync <...> · user approval <...>
 
-## Purpose and continuity
-Audience information/emotion before → after; visible action; concealed information
-Previous/next scene IDs + revisions; intentional cut/time jump/axis crossing + reason
-Entry/exit: actor/prop IDs, positions + space, facing/gaze, pose/contact/held hand,
-set/door/window/light states, audio spanning boundary; unavailable neighbors: unverified
+## Intent and continuity
+Audience information/emotion before → after; visible action; concealed information; things not to show
+Previous/next scene IDs + revisions; intentional cut/time jump/axis crossing + reason (unavailable neighbors: unverified)
 
-## Shared baseline and assets
-Film/library baseline + projection revision; units, origin, axes, floor/surface/layers
-Canonical dimensions/anchors + source/measured/estimated status; camera/projection owner
+## Baseline and assets
+Link Film/library baseline + projection revision; add only scene constants: units, origin, axes, anchors, screen boxes, actor sizes
 | Asset/capability ID | Owner path + commit | Integration status | Gap/dependency/consumer |
-| ... | ... | ... | ... |
 Relevant finding IDs + revalidation; fallback + story/reveal impact
 
-## SH01 — <purpose>
-Scene-local range: [start, endExclusive); shot-local clock offset: ...
-Framing: selected composition/aspect, focal point, view/angle, subtitle-safe region
-| Entity/anchor | Space/unit | Start position | Key/end positions + local frames | Facing/gaze/contact |
-| ... | ... | ... | ... | ... |
-Depth: FG/MG/BG or named layers; surface planes/distances; occlusion and reveal conditions
-Actor paths: separate from camera; start/key/end frames, easing/holds, attach/detach
-Camera: projection/bounds or position/target/FOV; start/key/end frames; transform owner
-Picture move: separate owner/affected layers; subtitles/UI stay in declared screen space
-Art direction: palette/value hierarchy; motivated lights/direction/softness;
-rim/contact/cast shadows and beat-driven changes; verified method or missing capability
-VO/dialogue: full Thai text or exact accessible source range
-Subtitles: Thai text + frame ranges; audio/SFX: asset/onset/clock/license or proposed
-Cut/transition: purpose, type, start/end frames, overlap treatment, active subtitle/audio;
-existing implementation or requirement for Boss; preserve reveal and composition duration
-Runtime mapping: planned/verified timeline path + index/frame range; Editor updates evidence
+## Shot map
+| Shot (+ legacy panels) | Beat | Scene-local range [start, endExclusive) | Claims/clues | Runtime mapping (planned/verified path + index/frame range) |
 
-## Acceptance and review
-| Shot/key state | Frame + named clock | Observable image/sound/contact/reveal | Evidence/status |
-| ... | ... | ... | ... |
-Coverage/dependencies, blockout review revision, open questions + owners
-Element captures: paths + asset/view/pose/source revision or unavailable
-Editor scene sample: representative shot/frame proposal; actual evidence pending implementation
+## SH01 — <purpose>
+Range and clocks: scene-local [start, endExclusive); shot-local offset; composition offset
+Direction: composition, focal point, visible action, hidden/revealed information, subtitle-safe region
+Staging: | Entity/anchor | Space/unit | Start | Key/end + local frames | Facing/gaze/contact |
+  depth/layers; actor paths (separate from camera): start/key/end frames, easing/holds, attach/detach
+Camera: projection/bounds or position/target/FOV; start/key/end frames; transform owner; picture moves and their layers
+Look: only what differs from the brief (palette/value hierarchy, motivated lights, shadows, beat-driven changes)
+VO + subtitles: full Thai VO (or exact accessible source range); subtitle text + frame ranges; SFX asset/onset/clock/license or proposed
+Cut/transition: purpose, type, start/end frames, overlap, active subtitle/audio; existing implementation or Boss requirement
+Entry → exit: state at the first and last frame (actor/prop positions, pose/contact, set/light states, spanning audio)
+Acceptance: | Frame + named clock | Observable image/sound/contact/reveal | Evidence |
+
+## Dependencies and open items
+| Owner | Dependency / acceptance | Status |
+Element captures: paths + asset/view/pose/source revision, or unavailable; Editor scene sample: representative shot/frame proposal
+
+## Change log
+<date> <revision> — what changed and why; superseded values; migration notes
 ```
+
+Sheets written before 27 October 2026 in the earlier eight-section form remain valid for their revision; reformat a sheet to this contract when it is next revised, not as a mass rewrite.
 
 In screen space, state whether positions use pixels or normalized coordinates and whether origin is top-left with Y down. In world space, inherit Film's axis convention and units. Use a named floor/seat/grip anchor rather than an unexplained artwork center. For 3D paths include meaningful XYZ; for screen-space paths use XY with explicit layer/depth. A value such as `x=0.3` without a space/unit is incomplete.
 
