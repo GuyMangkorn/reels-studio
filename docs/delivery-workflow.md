@@ -23,7 +23,7 @@ Selection is complete when the record identifies the selected deliverables and t
 | Music / SFX | none, user-supplied, licensed library (record the license), sparse SFX; ducking under voice |
 | Captions | outline (default), box, none; position; burned-in or SRT only |
 | Chrome | channel label and progress bar on/off |
-| Ending | `A_fade` / `B_loop` (default), hard cut, end card |
+| Ending | `A_fade` / `B_loop` (default), `C_seamless` (seamless Reels loop: the last frame blends into the first, see [production requirements](production-requirements.md#outputs-and-story-timing)), hard cut, end card |
 | Factual claims | none / opinion only, general knowledge, named real case (decides Boat's involvement) |
 
 Record the chosen values in `delivery.md` as a compact block. A profile that needs a missing runtime capability is a Boss dependency, not a reason to change the story. Supported runtime fields are listed in [Remotion toolkit 10a](remotion-toolkit.md#10a-footage-stills-music-entry-transitions-and-caption-styles); inspect the active checkout before promising more.
