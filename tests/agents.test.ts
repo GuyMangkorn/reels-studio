@@ -1,6 +1,6 @@
 import {test} from 'node:test';
 import assert from 'node:assert/strict';
-import {readdirSync, readFileSync} from 'node:fs';
+import {existsSync, readdirSync, readFileSync} from 'node:fs';
 
 const roles = readdirSync('.claude/agents').filter(file => file.endsWith('.md')).map(file => file.replace(/\.md$/, ''));
 
@@ -23,4 +23,10 @@ test('every role exists for Claude Code and Codex', () => {
 
 test('Claude and Codex role instructions are identical', () => {
   for (const role of roles) assert.deepEqual(readClaude(role), readCodex(role), role);
+});
+
+test('every document an agent references exists', () => {
+  for (const role of roles) {
+    for (const doc of new Set(readClaude(role).instructions.match(/docs\/[a-z-]+\.md/g) ?? [])) assert.ok(existsSync(doc), `${role} references missing ${doc}`);
+  }
 });

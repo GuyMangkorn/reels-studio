@@ -36,9 +36,37 @@ Adapted from [andrej-karpathy-skills](https://github.com/multica-ai/andrej-karpa
 - **WP03 — Make surgical changes:** Each edit should serve the requested outcome. Match local style, preserve unrelated work and keep adjacent refactors or formatting out of scope. Remove imports/helpers made unused by your edits; report unrelated cleanup separately. Preserve timing, reveals and stable IDs across production edits.
 - **WP04 — Work toward observable completion:** Define what success looks like; give a short plan for multi-step work. Choose checks that demonstrate the changed behavior or deliverable. Use the [proportionate verification policy](docs/contributing.md#proportionate-verification) to decide coverage, repetition and when to stop; report actual evidence and remaining uncertainty.
 
+## Document index
+
+Reading cost matters: every agent reads AGENTS.md plus its **core** documents, and reads any other document only when its trigger applies, *before* acting on that trigger. A skipped document never waives its requirements: if the trigger applies, read it (a linked section is enough when the trigger is a single rule). Roles: P Preaw, B Boat, F Film, M Mark, S Boss, E Editor.
+
+| Document | Read when | Core for |
+| --- | --- | --- |
+| [delivery-workflow](docs/delivery-workflow.md) | Resolving selection, style profile, tier or delivery records | P B F M E |
+| [editorial-workflow](docs/editorial-workflow.md) | Writing, researching or fact-checking scripts; matching script/review revisions | P B |
+| [scriptwriting-principles](docs/scriptwriting-principles.md) | Hook, causality, educational payoff, twist or loop-friendly writing; Boat only when the profile uses them | P (when it applies) |
+| [film-visual-brief-workflow](docs/film-visual-brief-workflow.md) | Briefing or revising visual approach; disputed approach ownership | F |
+| [cinematography-principles](docs/cinematography-principles.md) | Choosing illustrated/cinematic shot language | on trigger |
+| [mark-storyboard-workflow](docs/mark-storyboard-workflow.md) | Writing, revising or reviewing scene sheets | M |
+| [storyboard-principles](docs/storyboard-principles.md) | Authoring shot direction beyond routine staging | on trigger |
+| [boss-asset-workflow](docs/boss-asset-workflow.md) | Shared assets/capabilities; its [QA section](docs/boss-asset-workflow.md#visual-and-runtime-qa-before-push) before pushing visual/runtime work; its production rules for illustrated medium | S |
+| [asset-engineering-principles](docs/asset-engineering-principles.md) | New Remotion/Three/R3F assets or technical feasibility of 3D/hybrid | on trigger |
+| [character-toolkit](docs/character-toolkit.md) | Changing rigs or pose tracks | on trigger |
+| [remotion-toolkit](docs/remotion-toolkit.md) | Implementing or reviewing scenes, overlays, effects, transitions, sound or captions; proposing renderer features | S E |
+| [runtime-contract](docs/runtime-contract.md) | Claiming a runtime capability, adding timeline fields, module ownership | on trigger |
+| [editor-workflow](docs/editor-workflow.md) | Integrating, editing, producing samples; direct intake | E |
+| [editor-principles](docs/editor-principles.md) | Rhythm, transitions, audio mix, loop seams | E |
+| [sequence-workflow](docs/sequence-workflow.md) | Sequence planning, blockout, boundaries, continuity review | on trigger (M, S, E) |
+| [production-requirements](docs/production-requirements.md) | Formats, duration, Thai text/audio, subtitles, endings, licenses | on trigger |
+| [scale-and-perspective-principles](docs/scale-and-perspective-principles.md) | Physical dimensions, projection, depth, apparent size | on trigger |
+| [blender-mcp-workflow](docs/blender-mcp-workflow.md) | Any Blender asset or shot | on trigger |
+| [dev-findings](docs/dev-findings.md) | Choosing/revising medium, camera, light or technique; recording a blocker (search by relevant finding ID) | on trigger |
+| [planned-visual-components](docs/planned-visual-components.md) | RuleCard, PhoneChat or POV work | on trigger |
+| [contributing](docs/contributing.md) | Committing, pushing, opening a PR | when delivering |
+
 ## Task routing and ownership
 
-Before new scriptwriting or changing delivery scope, resolve the [selected video deliverables](docs/delivery-workflow.md). The production handoff is **Boat research → Preaw script → Boat fact-check → Film visual/technical brief → Mark written scene handoff → Boss shared assets/capabilities → Editor scene integration/editing**. Match the named revisions at each handoff. Configurations describe roles; they do not install an automatic runner or authorize messaging other chats.
+Read only what the [document index](#document-index) says applies. Before new scriptwriting or changing delivery scope, resolve the [selected video deliverables](docs/delivery-workflow.md). The production handoff is **Boat research → Preaw script → Boat fact-check → Film visual/technical brief → Mark written scene handoff → Boss shared assets/capabilities → Editor scene integration/editing**. Match the named revisions at each handoff. Configurations describe roles; they do not install an automatic runner or authorize messaging other chats.
 
 | Task / trigger | Role and required reference |
 | --- | --- |
