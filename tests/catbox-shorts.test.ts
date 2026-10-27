@@ -9,7 +9,7 @@ import c05 from '../scripts/cat-boxes/short-c05.json';
 import c06 from '../scripts/cat-boxes/short-c06.json';
 import {timelineFrames, validateTimeline} from '../src/scenes/timeline';
 import {worldPositionAt, worldPropPositionAt} from '../src/scenes/projection';
-import {visualAt, visualProgressAt} from '../src/assets/visuals/types';
+import {shouldRenderVisualDiagram, visualAt, visualProgressAt} from '../src/assets/visuals/types';
 import type {ScenePropSpec, Timeline} from '../src/scenes/types';
 import type {SceneVisual} from '../src/assets/visuals/types';
 
@@ -116,6 +116,35 @@ test('visual intervals are half-open and progress is stable after out-of-order s
   const middle = visualProgressAt(visual, 195, 30);
   for (const frame of [345, 0, 180, 390, 195]) visualProgressAt(visual, frame, 30);
   assert.equal(visualProgressAt(visual, 195, 30), middle);
+});
+
+test('projected diagrams require opt-in and keep the safe overlay as the default', () => {
+  const timeline = structuredClone(c01) as unknown as Timeline;
+  const visual = timeline[0].visuals![0] as unknown as SceneVisual;
+  assert.equal(shouldRenderVisualDiagram(visual, false), true);
+  assert.equal(shouldRenderVisualDiagram(visual, true), false);
+
+  visual.showProjectedDiagram = true;
+  visual.projectedLayout = 'catbox-short-r6';
+  assert.doesNotThrow(() => validateTimeline(timeline));
+  assert.equal(shouldRenderVisualDiagram(visual, true), true);
+
+  const hidden = structuredClone(timeline) as unknown as Timeline;
+  hidden[0].visuals![0].showDiagram = false;
+  assert.equal(shouldRenderVisualDiagram(hidden[0].visuals![0], true), false);
+  assert.throws(() => validateTimeline(hidden), /cannot opt in to a diagram that is explicitly hidden/);
+
+  const unprojected = structuredClone(timeline) as unknown as Timeline;
+  delete (unprojected[0] as unknown as {projection?: unknown}).projection;
+  assert.throws(() => validateTimeline(unprojected), /projected diagram opt-in requires a projected scene/);
+
+  const invalid = structuredClone(timeline) as unknown as Timeline;
+  (invalid[0].visuals![0] as unknown as {showProjectedDiagram?: unknown}).showProjectedDiagram = 'yes';
+  assert.throws(() => validateTimeline(invalid), /showProjectedDiagram: expected boolean/);
+
+  const layoutWithoutOptIn = structuredClone(c01) as unknown as Timeline;
+  layoutWithoutOptIn[0].visuals![0].projectedLayout = 'catbox-short-r6';
+  assert.throws(() => validateTimeline(layoutWithoutOptIn), /projected layout requires explicit diagram opt-in/);
 });
 
 test('C06 preserves the calibrated short view and holds the return for the final three seconds', () => {
