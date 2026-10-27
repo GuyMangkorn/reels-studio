@@ -61,7 +61,7 @@ Subtitles are visible from frame 0. Hold the closing line, moral when appropriat
 
 - Use large Thai subtitles near the bottom, white with a dark stroke, in Noto Sans Thai or Sarabun. Keep glyphs above platform controls and within the safe region in both formats. Use Thai from the first frame, without a duplicate English subtitle over it.
 - Narration uses Thai **Niwat** (`th-TH`) at **+5%** (`speakingRate: 1.05`). `scripts/narration.py` generates local audio for the existing demo; inspect its inputs when authoring a new episode.
-- Keep narration MP3s local under `public/`; commit their amplitude JSON. At 30 fps, decode mono 48 kHz audio and compute RMS per 1600 samples, normalized to 0..1. The demo uses `src/amplitude.json`.
+- Keep narration MP3s local under `public/`; commit their amplitude JSON. At 30 fps, decode mono 48 kHz audio and compute RMS per 1600 samples, normalized to 0..1. The demo uses `src/amplitude.json`; per-video narration uses `public/narration/<CompositionId>.mp3` with `<CompositionId>.amplitude.json` beside its timeline ([README](../README.md#videos-and-parallel-work)).
 - Audio and its amplitude envelope use the composition clock across scene cuts. Pose and camera motion use the shot-local clock.
 - **Channel default and proposed configuration:** Use a shared channel configuration for the default Thai name **ทำไมล่ะ**. Scene/input props may override it; `null` or `false` hides it once supported by the schema. Keep the label clear of the subtitle band.
 

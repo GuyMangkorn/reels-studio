@@ -1,6 +1,10 @@
 """Generate local Niwat (+5%) audio and a committed 30fps RMS envelope.
 Install edge-tts==7.3.1, then run npm run narration. Each subtitle starts with its scene.
+Per video: npm run narration -- --timeline scripts/<episode>/<variant>/timeline.json --name <CompositionId>
+writes public/narration/<CompositionId>.mp3 and <CompositionId>.amplitude.json beside the timeline,
+so videos never overwrite each other. Without arguments it regenerates the demo files.
 """
+import argparse
 import asyncio
 import array
 import json
@@ -31,8 +35,21 @@ def pcm(path):
     return samples
 
 
+def paths():
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--timeline', default='scripts/demo.json')
+    parser.add_argument('--name', help='composition ID; omit for the demo paths')
+    args = parser.parse_args()
+    timeline = ROOT / args.timeline
+    if not args.name:
+        return timeline, ROOT / 'public/narration.mp3', ROOT / 'src/amplitude.json'
+    return timeline, ROOT / f'public/narration/{args.name}.mp3', timeline.parent / f'{args.name}.amplitude.json'
+
+
 async def main():
-    timeline = json.loads((ROOT / 'scripts/demo.json').read_text())
+    source, target, amplitude = paths()
+    target.parent.mkdir(parents=True, exist_ok=True)
+    timeline = json.loads(source.read_text())
     with tempfile.TemporaryDirectory() as directory:
         combined = array.array('h')
         for index, scene in enumerate(timeline):
@@ -47,14 +64,13 @@ async def main():
             print(f'Scene {index + 1}: {len(samples) / SAMPLE_RATE:.2f}s speech in {count / SAMPLE_RATE:.2f}s slot', flush=True)
         raw = Path(directory) / 'narration.pcm'
         raw.write_bytes(combined.tobytes())
-        target = ROOT / 'public/narration.mp3'
         subprocess.run([FFMPEG, '-v', 'error', '-y', '-f', 's16le', '-ar', str(SAMPLE_RATE), '-ac', '1', '-i', str(raw), '-c:a', 'libmp3lame', '-b:a', '192k', str(target)], check=True, env=FFMPEG_ENV)
         delivered = pcm(target)
         block = SAMPLE_RATE // FPS
         rms = [math.sqrt(sum(v * v for v in delivered[i:i + block]) / len(delivered[i:i + block])) for i in range(0, len(combined), block)]
         peak = max(rms) or 1
-        (ROOT / 'src/amplitude.json').write_text(json.dumps([round(v / peak, 4) for v in rms]) + '\n')
-        print(f'Wrote {target} and {len(rms)} amplitude frames')
+        amplitude.write_text(json.dumps([round(v / peak, 4) for v in rms]) + '\n')
+        print(f'Wrote {target} and {amplitude} ({len(rms)} amplitude frames)')
 
 
 if __name__ == '__main__':

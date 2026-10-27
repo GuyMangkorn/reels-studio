@@ -23,7 +23,7 @@ Written packs stay under `storyboards/<episode>/<selected-variant>/` with scene 
 
 ## Current implementation
 
-The JSON scene pipeline already exists in [SceneRenderer](src/scenes/SceneRenderer.tsx), [scene types](src/scenes/types.ts) and [timeline validation](src/scenes/timeline.ts). [Root.tsx](src/Root.tsx) registers `Short` and `Long` with duration derived from the timeline. `Rig2DDemo` and the original seven-second hand-written rig demo are historical APIs.
+The JSON scene pipeline already exists in [SceneRenderer](src/scenes/SceneRenderer.tsx), [scene types](src/scenes/types.ts) and [timeline validation](src/scenes/timeline.ts). [Root.tsx](src/Root.tsx) registers every composition declared by an episode registry under `src/videos/<episode>/index.ts`, with duration derived from the timeline; see [Videos and parallel work](#videos-and-parallel-work). `Rig2DDemo` and the original seven-second hand-written rig demo are historical APIs.
 
 The historical `main` baseline ships the reusable 2D human/cat/dog library and a five-shot JSON demo. Three.js integration and episode-specific assets are under development on working branches. The intended home for shared 3D staging is `src/three/`, with cameras under `src/camera/`. Check the active branch's source and validator for available sets and camera fields; a requested asset or planned POV example is not automatically implemented.
 
@@ -36,7 +36,7 @@ npm ci
 npm start
 ```
 
-Studio opens the compositions registered in `src/Root.tsx`. The baseline demo expects local `public/narration.mp3` plus the committed amplitude envelope in `src/amplitude.json`. To generate its Niwat Thai narration at +5%, `npm run narration` requires Python with `edge-tts==7.3.1` and sends the demo subtitle text to the TTS provider. For a silent custom preview, pass `narration: null` as an input prop.
+Studio opens the compositions declared under `src/videos/`, grouped in one folder per episode. The baseline demo expects local `public/narration.mp3` plus the committed amplitude envelope in `src/amplitude.json`. To generate its Niwat Thai narration at +5%, `npm run narration` requires Python with `edge-tts==7.3.1` and sends the demo subtitle text to the TTS provider. For a silent custom preview, pass `narration: null` as an input prop.
 
 ## Timeline data
 
@@ -56,14 +56,15 @@ The executable timeline is an array of scenes. This example uses fields supporte
 ]
 ```
 
-The default timeline is selected in `src/Root.tsx`. To preview another timeline, supply input props with a `timeline` array and optional `narration` and `ending`. Keep scene/shot/key-state IDs mapped to timeline indices in the shot sheet. For new 3D camera, lighting or asset options, extend types, validation and scene dispatch together before adding those fields to an episode.
+Each composition's default timeline is selected in its episode registry, `src/videos/<episode>/index.ts`. To preview another timeline, supply input props with a `timeline` array and optional `narration` and `ending`. Keep scene/shot/key-state IDs mapped to timeline indices in the shot sheet. For new 3D camera, lighting or asset options, extend types, validation and scene dispatch together before adding those fields to an episode.
 
 ## Render and verify
 
-The render helper uses the timeline and input props selected in its source. In the baseline, it renders the demo with both `_A_fade` and `_B_loop` endings; working branches may select another episode or a silent showcase. Check `scripts/render.mjs` before exporting.
+`scripts/render.mjs` renders the composition IDs it is given with both `_A_fade` and `_B_loop` endings (or `--endings=`), or `--stills` at `--frames=`. Output goes to `out/<CompositionId>/`. Set `BROWSER_EXECUTABLE` to use an installed Chromium.
 
 ```bash
-npm run render:short
+npm run render -- CATBOX-C01-Short
+npm run render:short          # historical Short
 npm run render:long
 npm run render:stills
 ```
@@ -89,11 +90,23 @@ Also inspect the scene handoff's key action/reveal frames and the start/middle/e
 
 `out/`, generated MP4/MP3 files, dependencies and secrets are gitignored. Commit timeline/amplitude JSON, written scene sheets, reusable assets and their commercial-use license notices.
 
+<a id="videos-and-parallel-work"></a>
+## Videos and parallel work
+
+Each episode owns `src/videos/<episode>/index.ts`, whose default export is `{episode, videos}` (see `src/videos/types.ts`). `Root.tsx` discovers these files automatically, so adding or changing a video edits only that episode's folder and its `scripts/<episode>/` and `storyboards/<episode>/` packs. Composition IDs must be unique across episodes; `npm test` rejects duplicates and validates every registered timeline. Episode-only components may live beside the registry; anything a second episode needs belongs in the shared `src/scenes/`, `src/assets/` or `src/rig/` owners.
+
+Two videos can be produced at the same time without colliding:
+
+- Renders: each `scripts/render.mjs` run bundles into its own temp directory, picks a free port and writes only `out/<CompositionId>/`.
+- Narration: `npm run narration -- --timeline scripts/<episode>/<variant>/timeline.json --name <CompositionId>` writes `public/narration/<CompositionId>.mp3` and `<CompositionId>.amplitude.json` beside the timeline. Reference them from the video's `narration` field. Without arguments it regenerates the demo's `public/narration.mp3` and `src/amplitude.json`.
+- Episode QA scripts keep their own `out/qa/<episode>/...` folders.
+
 ## Code ownership
 
 | Path | Responsibility |
 | --- | --- |
-| `src/Root.tsx`, `src/index.ts` | Composition registration and Remotion entry |
+| `src/Root.tsx`, `src/index.ts` | Generic composition registration (auto-discovers episode registries) and Remotion entry; no per-episode edits |
+| `src/videos/<episode>/` | One episode's composition list (ID, format, timeline, ending, narration) and any episode-only components |
 | `src/scenes/` | Scene contracts, validation, sequencing, subtitles and endings |
 | `src/rig/` | Shared 2D skeletons, poses, appearance and animation drivers |
 | `src/assets/` | Reusable 2D backgrounds, props and screen overlays as implemented |

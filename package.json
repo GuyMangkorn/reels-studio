@@ -7,10 +7,10 @@
     "typecheck": "tsc --noEmit",
     "lint": "eslint src tests",
     "test": "node --import tsx --test tests/*.test.ts",
-    "render:short": "node scripts/render.mjs --short",
-    "render:long": "node scripts/render.mjs --long",
+    "render:short": "node scripts/render.mjs Short",
+    "render:long": "node scripts/render.mjs Long",
     "render": "node scripts/render.mjs",
-    "render:stills": "node scripts/render.mjs --stills",
+    "render:stills": "node scripts/render.mjs Short Long --stills",
     "narration": "python3 scripts/narration.py"
   },
   "dependencies": {

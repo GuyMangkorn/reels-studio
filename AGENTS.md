@@ -35,6 +35,7 @@ Before new scriptwriting or changing delivery scope, resolve the [selected video
 | Medium restrictions, demo lighting, lead size, shot movement, texture lifecycle or visual QA | [Boss production rules](docs/boss-asset-workflow.md#latest-production-rules); these supersede former background-only 3D and mandatory 2D actor/prop restrictions |
 | Sequence planning, scene coding or continuity review | [Sequence workflow](docs/sequence-workflow.md): blockout before polish, shared ownership, deterministic boundaries, dependency order and review across cuts |
 | Scene, overlay, subtitle, camera effect, transition or sound implementation/review | [Remotion toolkit](docs/remotion-toolkit.md): required package/version/API preflight and package-specific checks |
+| Registering a video/composition, rendering or narration output paths, or producing several videos in parallel | [Videos and parallel work](README.md#videos-and-parallel-work): add videos only in `src/videos/<episode>/index.ts`; never edit `src/Root.tsx` per episode; keep composition IDs unique and outputs under per-ID paths |
 | Runtime capability claims, new timeline fields or module ownership | [Runtime contract](docs/runtime-contract.md); inspect types, validator, shared implementation and renderer together |
 | Physical dimensions, projection, depth staging, asset resizing or apparent-size review | [Scale and perspective](docs/scale-and-perspective-principles.md) |
 | Rig or pose-track changes | [Character toolkit](docs/character-toolkit.md); confirm exported APIs in source |

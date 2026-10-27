@@ -38,7 +38,7 @@ npm run render:long
 | File | Responsibility |
 | --- | --- |
 | `src/index.ts` | Remotion entry point |
-| `src/Root.tsx` | Short / Long composition registration and dynamic timeline duration |
+| `src/Root.tsx`, `src/videos/` | Auto-discovered per-episode composition registration and dynamic timeline duration |
 | `src/rig/Character.tsx` | Separate head, torso, arm, hand, leg and foot SVG parts, appearance, expressions, blinking, breathing and talking |
 | `src/rig/Joint.tsx` | Local pivot wrapper using CSS transform-origin; nested joints inherit rotation |
 | `src/rig/poses.ts` | Seven named joint-angle sets, looping walk / wave, delayed pendulum motion and pure interpolation |
@@ -52,11 +52,11 @@ npm run render:long
 | `src/scenes/SceneRenderer.tsx` | Data-driven sequencing and scene staging shared by both formats |
 | `src/scenes/Subtitles.tsx` | Local font loading and large stroked Thai subtitles |
 | `scripts/demo.json` | Five 4-second scenes with all three actors and Thai placeholder text |
-| `scripts/render.mjs` | Shared bundle/browser renderer and optional QA still export |
+| `scripts/render.mjs` | Renders named composition IDs (or QA stills) into `out/<CompositionId>/`; safe to run concurrently |
 | `tests/animation.test.ts` | Timeline, validation, deterministic interpolation, walk loop and layout checks |
 | `public/fonts/NotoSansThai.ttf` | Bundled variable Noto Sans Thai font |
 | `public/fonts/OFL.txt` | Font license |
-| `scripts/narration.py`, `src/amplitude.json`, `src/rig/drivers.ts` | Niwat audio generation, committed 30fps RMS and audio-driven mouth / blink sampling |
+| `scripts/narration.py`, `src/amplitude.json`, `src/rig/drivers.ts` | Niwat audio generation (demo by default, or per video with `--timeline`/`--name`), committed 30fps RMS and audio-driven mouth / blink sampling |
 | `src/scenes/endings.ts` | Shared final-pose hold and fade timing |
 | `package.json`, `package-lock.json`, `tsconfig.json`, `.gitignore` | Reproducible build and project configuration |
 

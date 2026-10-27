@@ -8,7 +8,7 @@ For any capability, record `existing-integrated`, `exists-unintegrated`, `missin
 
 [Delivery selection](delivery-workflow.md) is an authoring contract. Short/Long editorial versions require separate executable timing through the existing scene pipeline; variant folders/IDs add no runtime fields or loading support. Inspect actual composition/input bindings, narration and cue clocks before claiming integration. Shared renderer/assets do not require identical timelines.
 
-**Implemented baseline:** The JSON pipeline exists: `src/scenes/SceneRenderer.tsx`, `types.ts` and `timeline.ts` sequence and validate scenes for both formats. `src/Root.tsx` registers `Short` and `Long`, with duration calculated from scene durations. The historical `Demo.tsx`, `rig/presets.ts`, `rig/types.ts` and `Rig2DDemo` API are no longer the baseline.
+**Implemented baseline:** The JSON pipeline exists: `src/scenes/SceneRenderer.tsx`, `types.ts` and `timeline.ts` sequence and validate scenes for both formats. `src/Root.tsx` registers every composition declared in `src/videos/<episode>/index.ts` (auto-discovered), with duration calculated from scene durations; composition IDs must be unique across episodes. The historical `Demo.tsx`, `rig/presets.ts`, `rig/types.ts` and `Rig2DDemo` API are no longer the baseline.
 
 **Historical baseline / recheck required:** The `main` baseline includes the 2D human/cat/dog library and JSON demo. Three.js integration and episode assets are being developed on working branches. The paths below establish ownership for that work; their presence and supported options must be checked in the active checkout. A design specification or installed dependency alone does not mean a feature is integrated or renderable.
 
@@ -16,6 +16,7 @@ For any capability, record `existing-integrated`, `exists-unintegrated`, `missin
 | --- | --- |
 | `storyboards/` | Written Film briefs, Mark scene sheets and sequence indices per selected deliverable; retained directory name |
 | `scripts/` | Delivery records, per-deliverable timelines/narration/cues and render helpers under [delivery workflow](delivery-workflow.md) |
+| `src/videos/<episode>/` | Per-episode composition registry (`VideoDefinition`: ID, format, timeline, ending, narration) and episode-only components |
 | `src/scenes/` | Scene contracts, validation, sequencing and shared staging |
 | `src/three/` | Shared Remotion/Three.js stage, coordinate conversion and 2D cut-out integration |
 | `src/three/backgrounds/` | Reusable 3D sets and their registry |
