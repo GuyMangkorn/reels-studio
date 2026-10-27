@@ -173,3 +173,79 @@ Notes: a 128 spp raw render cost 54 s (SH01), 26 s (SH05), 104 s (SH06); OIDN at
 4. Look is not final: simple doll child (puffy sleeves, a lighter patch on the shorts in SH06 F0-F40), saturated water, grey deck. Rim light on the dark hair is weak.
 5. Plate width < 50% for SH05 F0-F55 unless Mark/Film accept the camera nudge; the apparent floor ratio at the B01 camera (0.29-0.44) is stronger than the brief's 0.5-0.75 estimate.
 6. Metal kernel-compile crash seen once (retry needed); cold-cache first frame about 135 s.
+
+
+---
+
+# Third pass: SH03 mug demo, look fixes, re-run checks (Boss, 2026-10-28)
+
+Branch `claude/pool-depth-short` (HEAD `d079187` + uncommitted working tree). Same machine (Blender 5.2.3 LTS headless, Cycles Metal, M1 8-core GPU). Source `assets/blender/pool-depth/build.py` (new: `mugstills`, `mugcheck`, `flicker`); numbers in `spike-manifest.json` (keys `sh03_check`, `sh03_stills`, `d3_checks`, `d3_stills`, `s3`, `s4_dn_40spp`, `flicker_SH08_F100`, `flicker_SH03_F200`); contract and deviations in `manifest.md` (M13, deviation 9). Brief, sheet and `src/` not edited; no clip rendered or encoded; Studio not used. Pass is numeric evidence plus stills Boss looked at (`renders/d3/contact_A_pass3.png`, `contact_B_pass3.png`, `renders/sh03/`), not user approval of the look.
+
+## Summary
+
+| ID | Result | Key numbers |
+| --- | --- | --- |
+| SH03 / S2 coin (real scene) | **pass** | coin px F0 / F120 / F149 / F150 / F155 = 0; first px F160 (524); >= 80% of the through-water reference from F205 (series step 5); F225 = 95.4%, F255-F299 = 94.8% of 12,748 px (air reference 12,012); IOR 1.0 control: 0 px at F225 and F299; analytic hidden margin 0.90 mm; every object unkeyed (0 actions in the file) |
+| S1 / D3 refraction at the B01 camera | **pass** | max error 0.21 px (limit 2); errors 0.09, 0.07, 0.21, 0.04, 0.16, 0.12 px; IOR 1.000 control 0.15-0.19 px; lift 174-187 px |
+| S3 diagram geometry | **pass** (all checks) | bar ratio 0.750188 / rendered 0.750068; sight line dx 1.2e-7; Snell n 1.333000 on SH02 and SH04; 0 frames with bars and an oblique eye |
+| S4 loop seam | **pass** on stills | transforms 0.0; SH08 F209 vs SH01 F0: max 1/255, mean 0.0127, 0 px > 2 |
+| OIDN temporal flicker | **pass** (measured) | excess over the 160 spp OIDN reference: 0.002 (deck, static) / 0.11 (water) of 255 (SH08 F100-F105); SH03 F200-F205 table -0.002 / water+coin -0.006 |
+| Look fixes | **done, looked at** | water, deck, child, SH06 hip patch, sleeves (details below); lead height unchanged: SH01 child 756-791 px, Y 290.5-1081.7, feet on the deck (gap 6e-9 m); SH06 thigh clearance +1.5 mm |
+
+## SH03 build (`build.py -- mugcheck | mugstills`)
+
+- Scene `MG_*`: opaque cream ceramic mug, handle on the screen-left/away side, gold coin (d 2.0 cm x 1.5 mm, raised rim ring so the edge catches the light), water = closed Glass volume (top face rewritten per frame, faint aqua absorption, radial ripple bump around the stream impact), stream = closed glass tube on a ballistic centreline (no fluid simulation), small teal kettle at the right edge, wood table, soft 0.55 m window key from the left. Camera `CAM-MUG` locked at the sheet position `(-32.9,0,43.5)` cm, vFOV 28 deg; aim raised to `(0,0,9)` cm (framing). Nothing keyed: `bpy.data.actions` is empty and every object has `animation_data` None; state is a function of the frame (so frames can be rendered in any order).
+- Timeline: jug enters F120-F150, stream F150-F225 (thins F222-F228), water `0.07 * (1-(1-t)^1.5)` m, t = (F-150)/75 (F150 0, F200 5.65 cm, F225 7 cm), jug leaves F225-F255, ripple amplitude fades by about F258, calm to F299.
+- Coin mask (emissive magenta, linear threshold 0.5, water absorption off in the mask pass), 16 spp, 50% scale, counts in full-resolution px:
+
+| Frame | coin px | frame | coin px | frame | coin px |
+| ---: | ---: | ---: | ---: | ---: | ---: |
+| 0 / 120 / 149 / 150 / 155 | 0 | 190 | 7,296 | 225 | 12,164 |
+| 160 | 524 | 200 | 9,376 | 255 | 12,084 |
+| 170 | 2,472 | 210 | 10,900 | 299 | 12,084 |
+
+  Reference with the mug hidden under a wide 7 cm water slab 12,748; in air 12,012. Fractions of the slab reference: F200 73.5%, F205 >= 80%, F215 90.1%, F225 95.4%, F299 94.8% (sheet: first px about F158, >= 80% by about F215, about 94% at F225: all met). IOR 1.0 control (same frames, only IOR changed): 0 px at F225 and F299, so the reveal is refraction, not a lifted coin.
+- Margin note: the analytic minimum margin of the sight ray at the rim plane over the coin's edge points is 0.90 mm for the current camera and coin (`mug_hidden_margin`); recompute whenever the camera, coin position or thickness change. Coin centre `x = 2.3 cm` (sheet 2.4) because a 1.5 mm coin's top far edge would otherwise sit about 0.2 mm into the visible zone.
+- Looked at (`renders/sh03/SH03_F000/F150/F160/F185/F215/F225/F255/F299.png`): the mug reads as opaque ceramic with a soft window gradient, the coin shows a rim and a specular glint, the stream is a thin glass thread that lands at the right of the coin, the water line is readable on the inner wall (faint aqua tint), the kettle only enters at the upper right edge. Limits: the water surface is subtle (clear water in a pale mug); the stream has no splash ring beyond a small radial ripple; the kettle is a simple primitive; no hand (off-frame by construction).
+- Fixes of the S2 look items: exposure (cup no longer clipped: key 9 W area light, world 0.25), glass too bright and coin flat (coin has gloss and rim; water tint), noise (shadow-ray Transparent mix on both water and stream, caustics off, 40 spp + OIDN GPU, clamp indirect 4). Frame time at 1080x1920: 14.4 s (F0), 16-19 s with water and stream.
+
+## Look fixes (pool set and child)
+
+| Item | Before | After |
+| --- | --- | --- |
+| Water | deep blue, absorption (0.50,0.85,0.95) x 1.5 | aqua, absorption (0.40,0.88,0.90) x 1.1 per m |
+| Deck | grey-beige | warm cream (slab colours `#F3DFC0` / `#EBD3AD`, sun 1.45, sky 0.12) |
+| Child, flat doll | single-colour primitives | fabric bump on shirt and shorts, hair gloss (coat), faint skin subsurface, ears, collar, shoulder bar, short sleeves (sleeve = the upper 40% of the arm, forearm skin), knee/ankle/elbow spheres at 48 segments (the serrated seam at the knees is gone) |
+| SH06 hip patch F0-F40 | thigh skin poked through the shorts | thigh starts 3.5 cm inside the shorts, shorts start 4.5 cm behind the hip; no lighter patch in F0/F40/F79 stills |
+| Sleeves from behind | pink tubes with ball shoulders | shorter, joint closer to the body (x 0.118 m, elbow 0.146 m); still reads as a toy figure, not realistic |
+
+Not changed: camera positions, vFOV, timings, M1-M12 contract (only lighting/water numbers above), palette hexes of child, sign and diagram. The sheet's rim-on-shoulders is not achievable with the sun behind the camera side; no kicker light was added (a light-linked kicker is a possible next step).
+
+## Re-run checks (details in the summary table)
+
+- D3 / S1 oblique refraction: the old test threshold lost far markers once the water absorbed red (markers 4-5 not found), so the test marker emission is now 20 (was 4) and the centroid threshold 0.3 (was 0.6); error 0.21 px max against 2 px. SH01 child height 756-791 px, band [269,1440] met, SH05 plate width 45.2% at F0 and 51.3% at F99 (first >= 50% at F56), SH06 clearance +1.5 mm, head never in frame: unchanged from the second pass.
+- S3: unchanged geometry, all checks pass (flat emissive diagram is not affected by the look pass; re-run anyway).
+- S4: transforms identical (0.0); pixels max 1, mean 0.0127/255, 0 pixels > 2 (second pass 0.0099). One-step water motion: mean 2.0/255, max 127-135 (second pass 1.7): the ripple shimmer is a little stronger with the clearer water.
+- OIDN flicker (`build.py -- flicker`): 6 consecutive stills at 40 spp + OIDN vs a 160 spp + OIDN reference at 50% scale, metric = mean |frame n+1 - frame n| per region (production minus reference removes real motion): SH08 F100-F105 deck 0.068 vs 0.070 (excess -0.002/255), water 5.33 vs 5.23 (excess +0.11/255); SH03 F200-F205 table 0.027 vs 0.028, water+coin 0.72 vs 0.73. The fixed Cycles seed keeps static regions identical; the denoiser adds no measurable temporal noise. Production-vs-reference absolute error 0.34/255 (deck), 1.2/255 (water). Not a perceptual test of a played clip.
+
+## Render-time estimates (1080x1920, 40 spp + OIDN, measured stills this pass)
+
+| Shot | Frames | s/frame (measured) | Estimate |
+| --- | ---: | --- | --- |
+| SH01 | 180 | 22.5-24.5 (was 19.8) | 69 min |
+| SH05 | 100 | 12.2-12.6 (11.4) | 21 min |
+| SH06 | 80 | 40.5-41.9 (34.3) | 55 min (SSS and more geometry) |
+| SH07 | 90 | 21.6-23.2 (19.7) | 34 min |
+| SH08 | 210 | 21.9-24.4 (20.3) | 80 min naive; about 46 min if F90-F119 is rendered once and copied |
+| SH02 / SH04 | 300 / 360 | 1.2-2.4 (16 spp, no denoise) | 12 / 14 min |
+| SH03 | 300 | 14.4 (F0), 16-19 with water and stream | 85 min naive; about 31 min if F0-F149 is rendered once and F258-F299 once (state identical) |
+| Total | 1,620 | | about 6.2 h naive; about 4.7 h with both reuse tricks (plus Metal cold-start 135 s per Blender start and retries) |
+
+## Remaining risks
+
+1. No clip was rendered or encoded: encoded-seam parity, Remotion decode of these clips, `B_loop` hold with real B06 frames and Studio remain unverified.
+2. Ripple shimmer at 30 fps is lively (2.0/255 mean per step on the whole SH08 frame, 5.3 in the water region): judge in a short test clip before the full render; period 60 would halve it (a manifest change).
+3. SH03: the water surface is understated, the mug interior is bright cream, the kettle is simple; mug box is 728 x 1002 px against the sheet's design 780 x 870 (perspective from 40 deg above), coin centre 2.3 cm instead of 2.4, no hand, screen right is -y (sheet wrote +y). Mark/Film should accept or revise.
+4. Child remains a stylised toy: sleeves and shoulders are better, but the hair has no strand detail and there is no rim light from the sun.
+5. Plate width < 50% for SH05 F0-F55 and the stronger-than-brief apparent depth ratio at the B01 camera (0.29-0.44) remain open decisions (second pass items 5-6); one Metal kernel-compile crash seen earlier, so keep the retry wrapper.
+6. `d3_stills` in the manifest was rewritten from the batch log after a cross-process re-render overwrote the key; if the key looks short, re-run `stills` last.

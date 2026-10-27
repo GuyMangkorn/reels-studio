@@ -424,7 +424,7 @@ CAMS = {                                  # sheet camera numbers; vFOV in degree
     'NODIVE0': {'pos': (0.5, -1.6, 1.3), 'tgt': (1.4, -0.5, 0.95), 'fov': 35.0},
     'NODIVE_END': {'pos': (0.55, -1.7, 1.05), 'tgt': (1.4, -0.5, 0.95), 'fov': 35.0},
 }
-PAL = {'shirt': '#FF8FA3', 'skin': '#E4AB86', 'hair': '#2B1F18', 'shorts': '#33507A', 'deck': '#F6E7D0', 'sun': '#FFE2B8',
+PAL = {'shirt': '#FF8FA3', 'skin': '#E4AB86', 'hair': '#2B1F18', 'shorts': '#33507A', 'deck': '#F3DFC0', 'sun': '#FFE2B8',
        'aqua': '#4CC9D8', 'teal': '#1B6F86', 'wall': '#BDE9EE', 'tile': '#F1F7F8', 'grout': '#BCCDD2', 'lane': '#17324A',
        'sand': '#FFE2B8', 'metal': '#8A949C', 'navy': '#1B3A57', 'plate': '#F7F7F2', 'hedge': '#5E9C6A', 'ground': '#CFE3C3'}
 
@@ -494,7 +494,7 @@ def uv_sphere(name, r, scale, mat, seg=40, rings=20):
     return o
 
 
-def limb_obj(name, r0, r1, mat, verts=28):
+def limb_obj(name, r0, r1, mat, verts=48):
     bpy.ops.mesh.primitive_cone_add(vertices=verts, radius1=r0, radius2=r1, depth=1.0, end_fill_type='NGON')
     o = bpy.context.active_object
     o.name = name
@@ -530,28 +530,56 @@ class Child:
     THIGH, SHIN = 0.27, 0.28
 
     def __init__(self):
-        sk, sh, hr, st = pbr('PD_skin', PAL['skin'], 0.55, 0.25), pbr('PD_shirt', PAL['shirt'], 0.7, 0.15), pbr('PD_hair', PAL['hair'], 0.6, 0.2), pbr('PD_shorts', PAL['shorts'], 0.75, 0.1)
+        sk, sh, hr, st = pbr('PD_skin', PAL['skin'], 0.5, 0.3), pbr('PD_shirt', PAL['shirt'], 0.75, 0.15), pbr('PD_hair', PAL['hair'], 0.45, 0.35), pbr('PD_shorts', PAL['shorts'], 0.8, 0.1)
+        self.look(sk, sh, hr, st)
+        cl = pbr('PD_collar', '#FFC4CF', 0.75, 0.15)
         self.parts = {}
         for s in 'LR':
             self.parts['thigh' + s] = limb_obj('PD_Child_thigh' + s, 0.052, 0.042, sk)
             self.parts['shorts' + s] = limb_obj('PD_Child_shorts' + s, 0.064, 0.058, st)
             self.parts['shin' + s] = limb_obj('PD_Child_shin' + s, 0.041, 0.031, sk)
-            self.parts['uarm' + s] = limb_obj('PD_Child_uarm' + s, 0.036, 0.032, sh)
+            self.parts['uarm' + s] = limb_obj('PD_Child_uarm' + s, 0.0305, 0.0285, sk)
+            self.parts['sleeve' + s] = limb_obj('PD_Child_sleeve' + s, 0.0345, 0.0325, sh)
+            self.parts['ear' + s] = uv_sphere('PD_Child_ear' + s, 1.0, (0.010, 0.0075, 0.019), sk, 16, 8)
             self.parts['farm' + s] = limb_obj('PD_Child_farm' + s, 0.033, 0.027, sk)
-            self.parts['knee' + s] = uv_sphere('PD_Child_knee' + s, 0.0445, (1, 1, 1), sk, 24, 12)
-            self.parts['ankle' + s] = uv_sphere('PD_Child_ankle' + s, 0.0335, (1, 1, 1), sk, 24, 12)
+            self.parts['knee' + s] = uv_sphere('PD_Child_knee' + s, 0.0428, (1, 1, 1), sk, 48, 24)
+            self.parts['ankle' + s] = uv_sphere('PD_Child_ankle' + s, 0.0318, (1, 1, 1), sk, 48, 24)
             self.parts['foot' + s] = uv_sphere('PD_Child_foot' + s, 1.0, (0.036, 0.098, 0.03), sk, 28, 14)
-            self.parts['shoulder' + s] = uv_sphere('PD_Child_shoulder' + s, 0.038, (1, 1, 1), sh, 24, 12)
-            self.parts['elbow' + s] = uv_sphere('PD_Child_elbow' + s, 0.0365, (1, 1, 1), sk, 24, 12)
-            self.parts['hip' + s] = uv_sphere('PD_Child_hip' + s, 0.068, (1, 1, 1), st, 24, 12)
+            self.parts['shoulder' + s] = uv_sphere('PD_Child_shoulder' + s, 0.0355, (1, 1, 1), sh, 24, 12)
+            self.parts['elbow' + s] = uv_sphere('PD_Child_elbow' + s, 0.0365, (1, 1, 1), sk, 48, 24)
+            self.parts['hip' + s] = uv_sphere('PD_Child_hip' + s, 0.071, (1, 1, 1), st, 24, 12)
             self.parts['hand' + s] = uv_sphere('PD_Child_hand' + s, 0.036, (1, 0.85, 1.1), sk, 24, 12)
         self.parts['pelvis'] = uv_sphere('PD_Child_pelvis', 1.0, (0.118, 0.088, 0.112), st)
         self.parts['torso'] = uv_sphere('PD_Child_torso', 1.0, (0.118, 0.085, 0.215), sh)
+        self.parts['bar'] = uv_sphere('PD_Child_shoulderbar', 1.0, (0.112, 0.062, 0.046), sh)
+        self.parts['collar'] = uv_sphere('PD_Child_collar', 1.0, (0.049, 0.046, 0.017), cl, 32, 12)
         self.parts['neck'] = limb_obj('PD_Child_neck', 0.04, 0.036, sk)
         self.parts['head'] = uv_sphere('PD_Child_head', 1.0, (0.088, 0.094, 0.112), sk, 48, 24)
         self.parts['hair'] = uv_sphere('PD_Child_hair', 1.0, (0.094, 0.098, 0.108), hr, 48, 24)
         self.mats = (sk, sh, hr, st)
         self.joints = {}
+
+    def look(self, sk, sh, hr, st):
+        """Material richness: fabric weave bump on shirt/shorts, hair coat, subtle skin subsurface. (Doll-flat fix.)"""
+        for m, sc_, st_ in ((sh, 220.0, 0.12), (st, 260.0, 0.14)):
+            nt = m.node_tree; p = nt.nodes['Principled BSDF']
+            tc = nt.nodes.new('ShaderNodeTexCoord')
+            wv = nt.nodes.new('ShaderNodeTexWave'); wv.wave_type = 'BANDS'; wv.inputs['Scale'].default_value = sc_ * 0.12
+            wv.inputs['Distortion'].default_value = 1.5
+            nz = nt.nodes.new('ShaderNodeTexNoise'); nz.inputs['Scale'].default_value = sc_; nz.inputs['Detail'].default_value = 3.0
+            nt.links.new(tc.outputs['Object'], nz.inputs['Vector'])
+            nt.links.new(tc.outputs['Object'], wv.inputs['Vector'])
+            mx = nt.nodes.new('ShaderNodeMath'); mx.operation = 'ADD'
+            nt.links.new(nz.outputs['Fac'], mx.inputs[0]); nt.links.new(wv.outputs['Fac'], mx.inputs[1])
+            bp = nt.nodes.new('ShaderNodeBump'); bp.inputs['Strength'].default_value = st_; bp.inputs['Distance'].default_value = 0.003
+            nt.links.new(mx.outputs[0], bp.inputs['Height']); nt.links.new(bp.outputs['Normal'], p.inputs['Normal'])
+        p = sk.node_tree.nodes['Principled BSDF']
+        p.inputs['Subsurface Weight'].default_value = 0.18
+        p.inputs['Subsurface Radius'].default_value = (0.012, 0.004, 0.002)
+        p.inputs['Subsurface Scale'].default_value = 1.0
+        h = hr.node_tree.nodes['Principled BSDF']
+        h.inputs['Coat Weight'].default_value = 0.35
+        h.inputs['Coat Roughness'].default_value = 0.25
 
     def pose_stand(self, phase):
         """Standing at the pool lip, facing +y. phase = frame % RIPPLE_PERIOD (idle sway +-1.5 cm of the upper body)."""
@@ -568,9 +596,9 @@ class Child:
             J['knee' + sd] = P(0.063 * sgn, 0, 0.35)
             J['ankle' + sd] = P(0.065 * sgn, 0, 0.07)
             J['foot' + sd] = (rx + 0.065 * sgn, ry - 0.047, rz + 0.03)      # ellipsoid radius z 0.03: sole touches the deck (gap 0)
-            J['shoulder' + sd] = P(0.128 * sgn, 0, 0.985)
-            J['elbow' + sd] = P(0.158 * sgn, 0.0, 0.765)
-            J['wrist' + sd] = P(0.160 * sgn, 0.03, 0.56)
+            J['shoulder' + sd] = P(0.118 * sgn, 0, 0.972)
+            J['elbow' + sd] = P(0.146 * sgn, 0.0, 0.765)
+            J['wrist' + sd] = P(0.150 * sgn, 0.03, 0.56)
         J['pelvis'] = P(0, 0, 0.655)
         J['torso'] = P(0, 0, 0.845)
         J['neck0'] = P(0, 0, 1.03)
@@ -609,11 +637,14 @@ class Child:
         p = self.parts
         self.joints = J
         for sd in 'LR':
-            place_limb(p['thigh' + sd], J['hip' + sd], J['knee' + sd])
             hk = Vector(J['knee' + sd]) - Vector(J['hip' + sd])
-            place_limb(p['shorts' + sd], tuple(Vector(J['hip' + sd]) + Vector((0, 0, 0.05))), tuple(Vector(J['hip' + sd]) + hk * 0.55))
+            hd_ = hk.normalized()
+            place_limb(p['thigh' + sd], tuple(Vector(J['hip' + sd]) + hd_ * 0.035), J['knee' + sd])     # skin starts inside the shorts (no skin visible at the hip)
+            place_limb(p['shorts' + sd], tuple(Vector(J['hip' + sd]) - hd_ * 0.045), tuple(Vector(J['hip' + sd]) + hk * 0.57))
             place_limb(p['shin' + sd], J['knee' + sd], J['ankle' + sd])
             place_limb(p['uarm' + sd], J['shoulder' + sd], J['elbow' + sd])
+            place_limb(p['sleeve' + sd], J['shoulder' + sd], tuple(Vector(J['shoulder' + sd]) + (Vector(J['elbow' + sd]) - Vector(J['shoulder' + sd])) * 0.40))
+            p['ear' + sd].location = (J['head'][0] + (0.0885 if sd == 'R' else -0.0885), J['head'][1] + 0.002, J['head'][2] - 0.012)
             place_limb(p['farm' + sd], J['elbow' + sd], J['wrist' + sd])
             p['knee' + sd].location = J['knee' + sd]
             p['hip' + sd].location = J['hip' + sd]
@@ -631,6 +662,8 @@ class Child:
             p['foot' + sd].rotation_quaternion = Vector((0, 1, 0)).rotation_difference(fwd)
         p['pelvis'].location = J['pelvis']
         p['torso'].location = J['torso']
+        p['bar'].location = ((J['shoulderL'][0] + J['shoulderR'][0]) / 2, (J['shoulderL'][1] + J['shoulderR'][1]) / 2, J['shoulderL'][2] - 0.03)
+        p['collar'].location = (J['neck0'][0], J['neck0'][1], J['neck0'][2] + 0.004)
         place_limb(p['neck'], J['neck0'], J['neck1'])
         p['head'].location = J['head']
         p['hair'].location = J['hair']
@@ -711,8 +744,8 @@ def water_material(ior, ripple=True, name='PD_water'):
     nt.links.new(glass.outputs[0], mix.inputs[1]); nt.links.new(tr.outputs[0], mix.inputs[2])
     nt.links.new(mix.outputs[0], out.inputs['Surface'])
     ab = nt.nodes.new('ShaderNodeVolumeAbsorption')
-    ab.inputs['Color'].default_value = (0.5, 0.85, 0.95, 1)
-    ab.inputs['Density'].default_value = 1.5
+    ab.inputs['Color'].default_value = (*[float(v) for v in os.environ.get('PD_ABS', '0.4,0.88,0.9').split(',')], 1)
+    ab.inputs['Density'].default_value = float(os.environ.get('PD_ABSD', 1.1))
     nt.links.new(ab.outputs[0], out.inputs['Volume'])
     return m
 
@@ -750,8 +783,8 @@ def deck_material():
     br.inputs['Scale'].default_value = 1.6                # 0.625 m paving slabs
     br.inputs['Mortar Size'].default_value = 0.012
     br.inputs['Color1'].default_value = (*hexc(PAL['deck']), 1)
-    br.inputs['Color2'].default_value = (*hexc('#F2E0C6'), 1)
-    br.inputs['Mortar'].default_value = (*hexc('#D9C7AA'), 1)
+    br.inputs['Color2'].default_value = (*hexc('#EBD3AD'), 1)
+    br.inputs['Mortar'].default_value = (*hexc('#CDB48E'), 1)
     nt.links.new(tc.outputs['Object'], br.inputs['Vector'])
     nt.links.new(br.outputs['Color'], p.inputs['Base Color'])
     return m
@@ -855,12 +888,12 @@ def build_world_and_sun(sun_boost=1.0):
     sky.sun_rotation = math.radians(40)
     sky.altitude = 5.0
     bg = nt.nodes['Background']
-    bg.inputs['Strength'].default_value = float(os.environ.get('PD_SKY', 0.07))
+    bg.inputs['Strength'].default_value = float(os.environ.get('PD_SKY', 0.12))
     nt.links.new(sky.outputs[0], bg.inputs['Color'])
     sc.world = w
     ld = bpy.data.lights.new('PD_sun', 'SUN')
     ld.color = hexc(PAL['sun'])
-    ld.energy = float(os.environ.get('PD_SUN', 1.35)) * sun_boost
+    ld.energy = float(os.environ.get('PD_SUN', 1.45)) * sun_boost
     ld.angle = math.radians(1.2)
     lo = bpy.data.objects.new('PD_sun', ld)
     sc.collection.objects.link(lo)
@@ -1552,7 +1585,7 @@ def red_centroid(path, near, win=36):
     import numpy as np
     a = read_png(path)
     sc_ = (a[..., 0] - np.maximum(a[..., 1], a[..., 2])) / 255.0
-    sc_ = np.clip(sc_ - 0.6, 0, None)
+    sc_ = np.clip(sc_ - 0.3, 0, None)
     cx, cy = int(near[0]), int(near[1])
     r0, r1, c0, c1 = max(cy - win, 0), min(cy + win, a.shape[0]), max(cx - win, 0), min(cx + win, a.shape[1])
     w = sc_[r0:r1, c0:c1]
@@ -1588,7 +1621,7 @@ def cmd_d3(o):
         S['child'].parts['torso'].hide_render = False
         for k, (fx, fy) in enumerate(pts):
             bpy.ops.mesh.primitive_circle_add(vertices=48, radius=0.03, fill_type='NGON', location=(fx, fy, POOL['floor_z'] + 0.0012))
-            put(bpy.context.active_object, material('mk%d' % k, 'emission', (1, 0, 0), 4.0))
+            put(bpy.context.active_object, material('mk%d' % k, 'emission', (1, 0, 0), 20.0))      # strong: the aqua absorption removes red along the oblique path
         bpy.context.view_layer.update()
         p = os.path.join(out, f'refr_{tag}.png')
         secs = render_still(S['sc'], p)
@@ -1667,6 +1700,536 @@ def cmd_d3(o):
     print('D3_RESULT', json.dumps(res, default=str))
 
 
+# ================================================================== SH03 mug demo (B03): opaque mug, locked camera, coin, gentle pour
+# State is a pure function of the shot-local frame f (0..299). Nothing is keyframed: coin, camera, camera data, water, stream and jug carry no animation data.
+MUGD = {'r_in': 0.04, 'wall': 0.005, 'h': 0.09, 'base': 0.01, 'fillet': 0.002}      # sheet MUG space, metres: inner d 8 cm, inner height 9 cm
+COIN = {'d': 0.020, 't': 0.0015, 'x': 0.023}                                          # d 2.0 cm; centre x 2.3 cm (sheet 2.4: a 1.5 mm coin top edge would peek out, see manifest deviation)
+CAM_MUG = {'pos': (-0.329, 0.0, 0.435), 'tgt': (0.0, 0.0, 0.09), 'fov': 28.0}         # sheet CAM-MUG pos/vFOV; aim point (sheet: roughly (0,0,3 cm)) raised to 9 cm so the mug sits lower-middle (framing step)
+WATER_FINAL = 0.07
+POUR_T = {'enter0': 120, 'start': 150, 'end': 225, 'exit1': 255}
+IMPACT_XY = (0.005, -0.020)                                                           # stream lands here (sheet: (0.5, 3.0) cm, mirrored: screen right is -y)
+LIP_NEAR, LIP_AWAY = (0.005, -0.040, 0.150), (0.005, -0.42, 0.150)
+G_ = 9.81
+HANDLE_AZ = 55.0                                                                       # deg from +y (screen left) toward +x (away): away from the jug path (-y), inside the frame
+
+
+def smooth_by_angle(bm, deg=35.0):
+    for e in bm.edges:
+        if len(e.link_faces) == 2 and e.calc_face_angle(0.0) > math.radians(deg):
+            e.smooth = False
+    for f in bm.faces:
+        f.smooth = True
+
+
+def lathe_obj(name, prof, mat, steps=96, deg=35.0, loc=(0, 0, 0)):
+    """Closed lathe around Z through the origin; prof = [(r, z), ...] (a closed loop or a polyline that touches the axis)."""
+    bm = bmesh.new()
+    vs = [bm.verts.new((r, 0, z)) for r, z in prof]
+    es = [bm.edges.new((vs[i], vs[i + 1])) for i in range(len(vs) - 1)]
+    if vs[0].co.x > 1e-9 or vs[-1].co.x > 1e-9 or (vs[0].co - vs[-1].co).length > 1e-9:
+        es.append(bm.edges.new((vs[-1], vs[0])))
+    bmesh.ops.spin(bm, geom=vs + es, cent=(0, 0, 0), axis=(0, 0, 1), angle=2 * math.pi, steps=steps, use_merge=True)
+    bmesh.ops.remove_doubles(bm, verts=bm.verts, dist=1e-7)
+    bmesh.ops.recalc_face_normals(bm, faces=bm.faces)
+    smooth_by_angle(bm, deg)
+    me = bpy.data.meshes.new(name)
+    bm.to_mesh(me)
+    bm.free()
+    o = bpy.data.objects.new(name, me)
+    bpy.context.scene.collection.objects.link(o)
+    me.materials.append(mat)
+    o.location = loc
+    return o
+
+
+class Loft:
+    """Closed tube along a polyline with per-ring radius; vertices are rewritten per frame (stream, spout). Topology fixed."""
+    def __init__(self, name, nr, ns, mat):
+        self.nr, self.ns = nr, ns
+        faces = []
+        for i in range(nr - 1):
+            for j in range(ns):
+                a, b = i * ns + j, i * ns + (j + 1) % ns
+                faces.append((a, b, b + ns, a + ns))
+        c0, c1 = nr * ns, nr * ns + 1
+        for j in range(ns):
+            faces.append((c0, (j + 1) % ns, j))
+            faces.append((c1, (nr - 1) * ns + j, (nr - 1) * ns + (j + 1) % ns))
+        me = bpy.data.meshes.new(name)
+        me.from_pydata([(0, 0, 0)] * (nr * ns + 2), [], faces)
+        me.update()
+        for p in me.polygons:
+            p.use_smooth = True
+        self.me = me
+        self.obj = bpy.data.objects.new(name, me)
+        bpy.context.scene.collection.objects.link(self.obj)
+        me.materials.append(mat)
+
+    def set(self, centers, radii):
+        nr, ns = self.nr, self.ns
+        co = []
+        for i in range(nr):
+            p = Vector(centers[i])
+            t = (Vector(centers[min(i + 1, nr - 1)]) - Vector(centers[max(i - 1, 0)])).normalized()
+            a = Vector((1, 0, 0)) if abs(t.x) < 0.9 else Vector((0, 1, 0))
+            n1 = t.cross(a).normalized()
+            n2 = t.cross(n1).normalized()
+            for j in range(ns):
+                th = 2 * math.pi * j / ns
+                co.append(p + (n1 * math.cos(th) + n2 * math.sin(th)) * radii[i])
+        co.append(Vector(centers[0]))
+        co.append(Vector(centers[-1]))
+        self.me.vertices.foreach_set('co', [c for v in co for c in v])
+        self.me.update()
+
+
+def mug_water_material(ior, name='MG_water', mask=False):
+    """Closed-volume Glass (shadow rays see Transparent), plus a radial ripple bump around the stream impact point. AMP and PHASE are Value nodes."""
+    m = bpy.data.materials.new(name)
+    m.use_nodes = True
+    nt = m.node_tree
+    nt.nodes.clear()
+    out = nt.nodes.new('ShaderNodeOutputMaterial')
+    glass = nt.nodes.new('ShaderNodeBsdfGlass')
+    glass.inputs['IOR'].default_value = ior
+    glass.inputs['Roughness'].default_value = 0.0
+    amp = nt.nodes.new('ShaderNodeValue'); amp.name = amp.label = 'AMP'
+    ph = nt.nodes.new('ShaderNodeValue'); ph.name = ph.label = 'PHASE'
+    imp = nt.nodes.new('ShaderNodeCombineXYZ'); imp.name = 'IMPACT'
+    imp.inputs['X'].default_value, imp.inputs['Y'].default_value = IMPACT_XY
+    tc = nt.nodes.new('ShaderNodeTexCoord')
+    sub = nt.nodes.new('ShaderNodeVectorMath'); sub.operation = 'SUBTRACT'
+    nt.links.new(tc.outputs['Object'], sub.inputs[0]); nt.links.new(imp.outputs[0], sub.inputs[1])
+    ln = nt.nodes.new('ShaderNodeVectorMath'); ln.operation = 'LENGTH'
+    nt.links.new(sub.outputs[0], ln.inputs[0])
+    k = nt.nodes.new('ShaderNodeMath'); k.operation = 'MULTIPLY'; k.inputs[1].default_value = 2 * math.pi / 0.014
+    nt.links.new(ln.outputs['Value'], k.inputs[0])
+    sb = nt.nodes.new('ShaderNodeMath'); sb.operation = 'SUBTRACT'
+    nt.links.new(k.outputs[0], sb.inputs[0]); nt.links.new(ph.outputs[0], sb.inputs[1])
+    sn = nt.nodes.new('ShaderNodeMath'); sn.operation = 'SINE'
+    nt.links.new(sb.outputs[0], sn.inputs[0])
+    en = nt.nodes.new('ShaderNodeMath'); en.operation = 'MULTIPLY'; en.inputs[1].default_value = -38.0
+    nt.links.new(ln.outputs['Value'], en.inputs[0])
+    ex = nt.nodes.new('ShaderNodeMath'); ex.operation = 'EXPONENT'
+    nt.links.new(en.outputs[0], ex.inputs[0])
+    h1 = nt.nodes.new('ShaderNodeMath'); h1.operation = 'MULTIPLY'
+    nt.links.new(sn.outputs[0], h1.inputs[0]); nt.links.new(ex.outputs[0], h1.inputs[1])
+    h2 = nt.nodes.new('ShaderNodeMath'); h2.operation = 'MULTIPLY'; h2.inputs[1].default_value = 0.0004
+    nt.links.new(h1.outputs[0], h2.inputs[0])
+    h3 = nt.nodes.new('ShaderNodeMath'); h3.operation = 'MULTIPLY'
+    nt.links.new(h2.outputs[0], h3.inputs[0]); nt.links.new(amp.outputs[0], h3.inputs[1])
+    bump = nt.nodes.new('ShaderNodeBump'); bump.inputs['Distance'].default_value = 1.0
+    nt.links.new(h3.outputs[0], bump.inputs['Height'])
+    nt.links.new(bump.outputs['Normal'], glass.inputs['Normal'])
+    tr = nt.nodes.new('ShaderNodeBsdfTransparent')
+    lp = nt.nodes.new('ShaderNodeLightPath')
+    mix = nt.nodes.new('ShaderNodeMixShader')
+    nt.links.new(lp.outputs['Is Shadow Ray'], mix.inputs[0])
+    nt.links.new(glass.outputs[0], mix.inputs[1]); nt.links.new(tr.outputs[0], mix.inputs[2])
+    nt.links.new(mix.outputs[0], out.inputs['Surface'])
+    ab = nt.nodes.new('ShaderNodeVolumeAbsorption')                          # faint aqua tint so the surface reads (about 20% red loss over the 7 cm round trip)
+    ab.inputs['Color'].default_value = (0.62, 0.9, 0.94, 1)
+    ab.inputs['Density'].default_value = 0.0 if mask else 8.0
+    nt.links.new(ab.outputs[0], out.inputs['Volume'])
+    return m
+
+
+def stream_material(ior):
+    m = bpy.data.materials.new('MG_stream')
+    m.use_nodes = True
+    nt = m.node_tree
+    nt.nodes.clear()
+    out = nt.nodes.new('ShaderNodeOutputMaterial')
+    glass = nt.nodes.new('ShaderNodeBsdfGlass')
+    glass.inputs['IOR'].default_value = ior
+    glass.inputs['Roughness'].default_value = 0.0
+    tr = nt.nodes.new('ShaderNodeBsdfTransparent')
+    lp = nt.nodes.new('ShaderNodeLightPath')
+    mix = nt.nodes.new('ShaderNodeMixShader')
+    nt.links.new(lp.outputs['Is Shadow Ray'], mix.inputs[0])
+    nt.links.new(glass.outputs[0], mix.inputs[1]); nt.links.new(tr.outputs[0], mix.inputs[2])
+    nt.links.new(mix.outputs[0], out.inputs['Surface'])
+    return m
+
+
+def wood_material():
+    m = bpy.data.materials.new('MG_wood')
+    m.use_nodes = True
+    nt = m.node_tree
+    p = nt.nodes['Principled BSDF']
+    p.inputs['Roughness'].default_value = 0.5
+    p.inputs['Specular IOR Level'].default_value = 0.35
+    tc = nt.nodes.new('ShaderNodeTexCoord')
+    mp = nt.nodes.new('ShaderNodeMapping'); mp.inputs['Scale'].default_value = (1.0, 16.0, 1.0)         # grain along x
+    nt.links.new(tc.outputs['Object'], mp.inputs['Vector'])
+    nz = nt.nodes.new('ShaderNodeTexNoise'); nz.inputs['Scale'].default_value = 7.0; nz.inputs['Detail'].default_value = 5.0
+    nt.links.new(mp.outputs[0], nz.inputs['Vector'])
+    cr = nt.nodes.new('ShaderNodeValToRGB')
+    cr.color_ramp.elements[0].color = (*hexc('#6B4D35'), 1)
+    cr.color_ramp.elements[1].color = (*hexc('#9C7650'), 1)
+    cr.color_ramp.elements[0].position, cr.color_ramp.elements[1].position = 0.38, 0.68
+    nt.links.new(nz.outputs['Fac'], cr.inputs['Fac'])
+    br = nt.nodes.new('ShaderNodeTexBrick')                                                            # plank seams, 7 cm boards
+    br.offset = 0.5
+    br.inputs['Scale'].default_value = 1.0
+    br.inputs['Brick Width'].default_value = 0.55; br.inputs['Row Height'].default_value = 0.07
+    br.inputs['Mortar Size'].default_value = 0.0012; br.inputs['Mortar Smooth'].default_value = 0.0
+    br.inputs['Color1'].default_value = (1, 1, 1, 1); br.inputs['Color2'].default_value = (0.92, 0.92, 0.92, 1)
+    br.inputs['Mortar'].default_value = (0.25, 0.25, 0.25, 1)
+    nt.links.new(tc.outputs['Object'], br.inputs['Vector'])
+    mx = nt.nodes.new('ShaderNodeMix'); mx.data_type = 'RGBA'; mx.blend_type = 'MULTIPLY'; mx.inputs[0].default_value = 1.0
+    nt.links.new(cr.outputs['Color'], mx.inputs[6]); nt.links.new(br.outputs['Color'], mx.inputs[7])
+    nt.links.new(mx.outputs[2], p.inputs['Base Color'])
+    bm_ = nt.nodes.new('ShaderNodeBump'); bm_.inputs['Strength'].default_value = 0.15; bm_.inputs['Distance'].default_value = 0.002
+    nt.links.new(nz.outputs['Fac'], bm_.inputs['Height'])
+    nt.links.new(bm_.outputs['Normal'], p.inputs['Normal'])
+    return m
+
+
+def mug_profile(rin, wall, h, base, fil):
+    ro = rin + wall
+    pr = [(0.0, -base), (ro - 0.003, -base), (ro, -base + 0.003), (ro, h - fil)]
+    for i in range(1, 7):
+        a = math.pi / 2 * i / 6
+        pr.append((ro - fil + fil * math.cos(a), h - fil + fil * math.sin(a)))
+    pr += [(rin, h), (rin, 0.0), (0.0, 0.0)]
+    return pr
+
+
+def coin_profile(d, t):
+    r = d / 2
+    pr = [(0.0, 0.0), (r - 0.0004, 0.0), (r, 0.0004), (r, t - 0.0004), (r - 0.0004, t),            # rounded edge
+          (r - 0.0014, t), (r - 0.0014, t - 0.0002), (r - 0.0022, t - 0.0002),                    # raised rim ring
+          (0.0062, t - 0.0002), (0.0062, t - 0.0001), (0.0056, t - 0.0001), (0.0056, t - 0.0002), (0.0, t - 0.0002)]
+    return pr
+
+
+def mug_scene(samples, scale, ior=N_WATER, denoise=False, mask=False):
+    sc, devs = fresh(samples, scale)
+    sc.cycles.use_denoising = denoise
+    if denoise:
+        sc.cycles.denoiser = 'OPENIMAGEDENOISE'
+        sc.cycles.denoising_use_gpu = True
+    sc.cycles.sample_clamp_indirect = 4.0
+    sc.cycles.caustics_reflective = False
+    sc.cycles.caustics_refractive = False
+    sc.cycles.transmission_bounces = 12
+    sc.cycles.max_bounces = 10
+    M = {'sc': sc, 'devs': devs, 'mask': mask}
+    # world: soft neutral room fill
+    w = bpy.data.worlds.new('MG_world'); w.use_nodes = True
+    bg = w.node_tree.nodes['Background']
+    bg.inputs['Color'].default_value = (*hexc('#EDE6DA'), 1)
+    bg.inputs['Strength'].default_value = float(os.environ.get('MG_WORLD', 0.25))
+    sc.world = w
+    # soft window key from the left (+y): large area light, high so the 9 cm wall still lets light reach the floor
+    for nm, pos, size, en, col, aim in (('MG_key', (0.12, 0.42, 0.62), (0.55, 0.55), float(os.environ.get('MG_KEY', 9.0)), '#FFF3E2', (0, 0, 0.04)),
+                                        ('MG_fill', (-0.30, -0.45, 0.35), (0.5, 0.5), float(os.environ.get('MG_FILL', 1.5)), '#E7EEF5', (0, 0, 0.05))):
+        ld = bpy.data.lights.new(nm, 'AREA'); ld.energy = en; ld.size, ld.size_y = size; ld.shape = 'RECTANGLE'; ld.color = hexc(col)
+        lo = bpy.data.objects.new(nm, ld); sc.collection.objects.link(lo); lo.location = pos
+        lo.rotation_euler = (Vector(aim) - Vector(pos)).to_track_quat('-Z', 'Y').to_euler()
+    ld = bpy.data.lights.new('MG_rim', 'AREA'); ld.energy = float(os.environ.get('MG_RIM', 3.0)); ld.size = 0.3; ld.color = hexc('#FFE9CC')
+    lo = bpy.data.objects.new('MG_rim', ld); sc.collection.objects.link(lo); lo.location = (0.45, 0.20, 0.35)
+    lo.rotation_euler = (Vector((0, 0, 0.06)) - Vector(lo.location)).to_track_quat('-Z', 'Y').to_euler()
+    # table
+    bpy.ops.mesh.primitive_plane_add(size=4.0, location=(0, 0, -MUGD['base']))
+    tbl = bpy.context.active_object; tbl.name = 'MG_table'; put(tbl, wood_material())
+    # mug (opaque ceramic) + handle on the screen-left (+y) side, away from the jug path
+    cer = pbr('MG_ceramic', '#E9E1D1', 0.22, 0.45)
+    M['mug'] = lathe_obj('MG_Mug', mug_profile(MUGD['r_in'], MUGD['wall'], MUGD['h'], MUGD['base'], MUGD['fillet']), cer, steps=128, deg=50)
+    bpy.ops.mesh.primitive_torus_add(major_radius=0.026, minor_radius=0.0065, major_segments=48, minor_segments=18,
+                                     location=(0.0745 * math.sin(math.radians(HANDLE_AZ)), 0.0745 * math.cos(math.radians(HANDLE_AZ)), 0.05))
+    hd = bpy.context.active_object; hd.name = 'MG_Mug_handle'; hd.rotation_euler = (math.pi / 2, 0, math.pi / 2 - math.radians(HANDLE_AZ))
+    hd.scale = (1.0, 0.7, 1.0); bpy.ops.object.shade_smooth(); put(hd, cer)
+    M['handle'] = hd
+    # coin: lies flat on the inner floor, no keyframes
+    coin_mat = material('MG_coin_mask', 'emission', (1, 0, 1), 1.0) if mask else pbr('MG_coin', '#F2C45A', 0.22, 0.6)
+    if not mask:
+        coin_mat.node_tree.nodes['Principled BSDF'].inputs['Metallic'].default_value = 0.9
+    M['coin'] = lathe_obj('MG_Coin', coin_profile(COIN['d'], COIN['t']), coin_mat, steps=96, deg=30, loc=(COIN['x'], 0.0, 0.0))
+    # water: closed volume, bottom 5 mm inside the ceramic floor, side at mid-wall (no air gap), top face moved per frame
+    ns = 96
+    r_w = MUGD['r_in'] + MUGD['wall'] / 2
+    verts = [(r_w * math.cos(2 * math.pi * j / ns), r_w * math.sin(2 * math.pi * j / ns), -0.005) for j in range(ns)]
+    verts += [(v[0], v[1], 0.0) for v in verts[:ns]] + [(0, 0, -0.005), (0, 0, 0.0)]
+    faces = [(j, (j + 1) % ns, ns + (j + 1) % ns, ns + j) for j in range(ns)]
+    faces += [(2 * ns, (j + 1) % ns, j) for j in range(ns)] + [(2 * ns + 1, ns + j, ns + (j + 1) % ns) for j in range(ns)]
+    me = bpy.data.meshes.new('MG_Water'); me.from_pydata(verts, [], faces); me.update()
+    for p in me.polygons:
+        p.use_smooth = False
+    me.materials.append(mug_water_material(ior, mask=mask))
+    M['water'] = bpy.data.objects.new('MG_Water', me); sc.collection.objects.link(M['water']); M['water_ns'] = ns
+    M['stream'] = Loft('MG_Stream', 26, 16, stream_material(ior))
+    # jug: hollow ceramic body + spout loft, pivot P = lowest point of the spout tip
+    teal = pbr('MG_jug', '#6FA7B0', 0.3, 0.45)
+    body = lathe_obj('MG_Jug_body', [(0.0, -0.09), (0.032, -0.09), (0.036, -0.085), (0.036, 0.002), (0.032, 0.011), (0.018, 0.016), (0.0, 0.018)], teal, steps=64, deg=50, loc=(0, -0.052, 0))   # closed kettle-like body, no visible interior
+    spout = Loft('MG_Jug_spout', 14, 28, teal)
+    cen = [(0.0, -0.022 + 0.022 * i / 13, 0.0105 + (0.0028 - 0.0105) * (i / 13) ** 1.3) for i in range(14)]
+    rad = [0.0165 + (0.0026 - 0.0165) * (i / 13) ** 0.8 for i in range(14)]
+    spout.set(cen, rad)
+    jug = bpy.data.objects.new('MG_Jug', None); sc.collection.objects.link(jug)
+    body.parent = jug; spout.obj.parent = jug
+    M['jug'] = jug; M['jug_parts'] = (body, spout.obj)
+    # camera (locked): set once, never keyed
+    cd = bpy.data.cameras.new('MG_cam'); cd.sensor_fit = 'VERTICAL'
+    cam = bpy.data.objects.new('MG_cam', cd); sc.collection.objects.link(cam); sc.camera = cam
+    aim_camera(cam, CAM_MUG['pos'], CAM_MUG['tgt'], CAM_MUG['fov'])
+    M['cam'] = cam
+    bpy.context.view_layer.update()
+    return M
+
+
+def mug_depth(f):
+    t = (f - POUR_T['start']) / (POUR_T['end'] - POUR_T['start'])
+    if t <= 0:
+        return 0.0
+    t = min(t, 1.0)
+    return WATER_FINAL * (1 - (1 - t) ** 1.5)
+
+
+def jug_pose(f):
+    """Lip (pivot) position and tilt (rad). Away off-frame right (-y) until F120, in F120-F150, pours F150-F225, leaves F225-F255."""
+    a, b = Vector(LIP_AWAY), Vector(LIP_NEAR)
+    if f <= POUR_T['enter0']:
+        return tuple(a), 0.0
+    if f < POUR_T['start']:
+        s = smooth((f - POUR_T['enter0']) / (POUR_T['start'] - POUR_T['enter0']))
+        return tuple(a + (b - a) * s), math.radians(46.0) * s
+    if f <= POUR_T['end']:
+        s = smooth((f - POUR_T['start']) / (POUR_T['end'] - POUR_T['start']))
+        return tuple(b), math.radians(46.0 + 30.0 * s)
+    s = smooth((f - POUR_T['end']) / (POUR_T['exit1'] - POUR_T['end']))
+    return tuple(b + (a - b) * s), math.radians(76.0) * (1 - s)
+
+
+def stream_state(f, zs):
+    """Ballistic centreline from the lip to the surface level zs, radius thinning with speed. Returns (centres, radii) or None."""
+    if f < POUR_T['start'] or f > POUR_T['end'] + 3:
+        return None
+    lip, _ = jug_pose(f)
+    grow = smooth((f - POUR_T['start'] + 1) / 20.0)
+    fade = 1.0 - smooth((f - (POUR_T['end'] - 3)) / 6.0)
+    r0 = (0.0009 + 0.0023 * grow) * fade
+    if r0 < 1e-5:
+        return None
+    z0 = lip[2] - 0.0005
+    drop = max(z0 - zs, 0.01)
+    T = math.sqrt(2 * drop / G_)
+    vy = (IMPACT_XY[1] - lip[1]) / T
+    n = 26
+    cs, rs = [], []
+    v0 = abs(vy) + 0.05
+    for i in range(n):
+        t = T * i / (n - 1)
+        cs.append((lip[0], lip[1] + vy * t, z0 - 0.5 * G_ * t * t))
+        v = math.hypot(vy, G_ * t) + 0.05
+        rs.append(r0 * math.sqrt(v0 / v))
+    return cs, rs
+
+
+def set_mug_state(M, f):
+    d = mug_depth(f)
+    me = M['water'].data
+    ns = M['water_ns']
+    for j in range(ns):
+        me.vertices[ns + j].co.z = d
+    me.vertices[2 * ns + 1].co.z = d
+    me.update()
+    M['water'].hide_render = d < 0.0003
+    nt = me.materials[0].node_tree
+    pour = POUR_T['start'] <= f <= POUR_T['end'] + 3
+    amp = smooth((f - POUR_T['start']) / 12.0) * (1 - smooth((f - POUR_T['end'] - 3) / 30.0)) if f >= POUR_T['start'] else 0.0
+    nt.nodes['AMP'].outputs[0].default_value = amp
+    nt.nodes['PHASE'].outputs[0].default_value = 2 * math.pi * f / 22.0
+    st = stream_state(f, d)
+    if st is None:
+        M['stream'].obj.hide_render = True
+    else:
+        M['stream'].obj.hide_render = False
+        M['stream'].set(*st)
+    lip, tilt = jug_pose(f)
+    M['jug'].location = lip
+    M['jug'].rotation_euler = (-tilt, 0, 0)
+    for o in M['jug_parts']:
+        o.hide_render = lip[1] < -0.30                       # off-frame, skip the work
+    bpy.context.view_layer.update()
+    return {'depth_m': d, 'stream': st is not None, 'jug_lip': lip, 'jug_tilt_deg': math.degrees(tilt), 'ripple_amp': amp}
+
+
+def mug_hidden_margin(M, extra_z=0.0):
+    """Analytic: for sample points on the coin's top rim (and floor edge), the margin (mm) by which the sight ray from the camera still lies outside the inner
+    cylinder at the rim plane (z = h). Positive = hidden by the wall (empty mug). Recompute whenever the camera or coin changes."""
+    C = M['cam'].matrix_world.translation
+    h, rin = MUGD['h'], MUGD['r_in']
+    worst = 1e9
+    worst_pt = None
+    for z in (0.0, COIN['t']):
+        for k in range(360):
+            th = math.radians(k)
+            P = Vector((COIN['x'] + COIN['d'] / 2 * math.cos(th), COIN['d'] / 2 * math.sin(th), z))
+            u = (P - C)
+            s = (h - C.z) / u.z
+            q = C + u * s
+            m = (math.hypot(q.x, q.y) - rin) * 1000.0
+            if m < worst:
+                worst, worst_pt = m, (P.x, P.y, P.z)
+    return {'min_margin_mm': worst, 'at_xyz_m': worst_pt}
+
+
+def mug_box_px(M):
+    from bpy_extras.object_utils import world_to_camera_view
+    pts = []
+    ro = MUGD['r_in'] + MUGD['wall']
+    for k in range(180):
+        th = math.radians(2 * k)
+        for z in (-MUGD['base'], MUGD['h']):
+            pts.append((ro * math.cos(th), ro * math.sin(th), z))
+    px = [proj_px(M, p) for p in pts]
+    xs, ys = [p[0] for p in px], [p[1] for p in px]
+    return {'x': [min(xs), max(xs)], 'y': [min(ys), max(ys)]}
+
+
+def count_mask(path, scale):
+    a = read_png(path)
+    import numpy as np
+    s = np.clip(np.minimum(a[..., 0], a[..., 2]) - a[..., 1], 0, 255) / 255.0
+    return float((s > 0.5).sum()) / (scale / 100) ** 2
+
+
+def cmd_mugstills(o, shots):
+    M = mug_scene(o['samples'], o['scale'], denoise=bool(o.get('denoise', 0)))
+    out = outdir(o.get('out', 'sh03') if isinstance(o.get('out'), str) else 'sh03')
+    res = {'samples': o['samples'], 'scale_pct': o['scale'], 'denoise': bool(o.get('denoise', 0)), 'stills': {}}
+    for tag in shots:
+        f = int(tag.split(':')[-1])
+        st = set_mug_state(M, f)
+        secs = render_still(M['sc'], os.path.join(out, f'SH03_F{f:03d}.png'))
+        res['stills'][f'SH03_F{f:03d}'] = {'seconds': secs, **st}
+        print('STILL', tag, round(secs, 1), 's')
+    print('MUG_BOX', json.dumps(mug_box_px(M)))
+    print('MUG_STILLS', json.dumps(res, default=str))
+    return res
+
+
+def cmd_mugcheck(o):
+    """S2 criteria on SH03 with the real scene: coin mask pixels (emissive magenta, linear threshold 0.5) before/after the pour, series over F150-F299,
+    reference (mug hidden, wide water slab), IOR 1.0 control, animation-data audit, analytic hidden margin."""
+    out = outdir('sh03')
+    sc_pct = int(o['scale'])
+    res = {'samples': o['samples'], 'scale_pct': sc_pct, 'mask_threshold': 0.5}
+    M = mug_scene(o['samples'], sc_pct, mask=True)
+    res['hidden_margin'] = mug_hidden_margin(M)
+    res['mug_box_px'] = mug_box_px(M)
+    res['coin_extent_from_near_wall_cm'] = [(COIN['x'] - COIN['d'] / 2 + MUGD['r_in']) * 100, (COIN['x'] + COIN['d'] / 2 + MUGD['r_in']) * 100]
+    cnt = {}
+
+    def run(tag, f, ior=None, ref=False, air=False):
+        st = set_mug_state(M, f)
+        mat = M['water'].data.materials[0]
+        mat.node_tree.nodes['Glass BSDF'].inputs['IOR'].default_value = ior if ior is not None else N_WATER
+        for pn in ('stream', ):
+            pass
+        M['stream'].obj.data.materials[0].node_tree.nodes['Glass BSDF'].inputs['IOR'].default_value = ior if ior is not None else N_WATER
+        for ob in (M['mug'], M['handle']):
+            ob.hide_render = ref or air
+        for ob in M['jug_parts'] + (M['stream'].obj,):
+            if ref or air:
+                ob.hide_render = True
+        M['water'].hide_render = air or (st['depth_m'] < 0.0003 and not ref)
+        if ref:
+            M['water'].hide_render = True
+            M['refslab'].hide_render = False
+            M['refslab'].scale = (1, 1, 1)
+            for j in range(M['refslab'].data.vertices.__len__()):
+                pass
+        else:
+            M['refslab'].hide_render = True
+        bpy.context.view_layer.update()
+        p = os.path.join(out, f'mask_{tag}.png')
+        secs = render_still(M['sc'], p)
+        cnt[tag] = count_mask(p, sc_pct)
+        return secs
+
+    # reference slab: flat wide water, same surface plane as the 7 cm water, mug hidden
+    bm = bmesh.new()
+    bmesh.ops.create_cube(bm, size=1.0)
+    for v in bm.verts:
+        v.co = (v.co.x * 1.6, v.co.y * 1.6, 0.07 if v.co.z > 0 else -0.02)
+    me = bpy.data.meshes.new('MG_ref'); bm.to_mesh(me); bm.free()
+    me.materials.append(M['water'].data.materials[0])
+    M['refslab'] = bpy.data.objects.new('MG_ref', me); M['sc'].collection.objects.link(M['refslab']); M['refslab'].hide_render = True
+    times = {}
+    series_frames = [0, 120, 149] + list(range(150, 300, 5)) + [299]
+    for f in series_frames:
+        times[f] = run(f'F{f:03d}', f)
+    res['coin_px_by_frame'] = {f: cnt[f'F{f:03d}'] for f in series_frames}
+    run('ref_water_F299', 299, ref=True)
+    run('ref_air_F299', 299, air=True)
+    run('ctrl_ior1_F299', 299, ior=1.0)
+    run('ctrl_ior1_F225', 225, ior=1.0)
+    res['reference'] = {'water_slab_px': cnt['ref_water_F299'], 'air_px': cnt['ref_air_F299']}
+    res['control_ior_1.0'] = {'F299_px': cnt['ctrl_ior1_F299'], 'F225_px': cnt['ctrl_ior1_F225']}
+    ref = cnt['ref_water_F299']
+    res['visible_fraction_of_water_reference'] = {f: cnt[f'F{f:03d}'] / ref for f in (200, 215, 225, 255, 299)}
+    first = next((f for f in series_frames if cnt[f'F{f:03d}'] > 0), None)
+    ge80 = next((f for f in series_frames if cnt[f'F{f:03d}'] >= 0.8 * ref), None)
+    res['first_frame_with_coin_px'] = first
+    res['first_series_frame_ge_80pct'] = ge80
+    res['animation_audit'] = {k: {'animation_data': getattr(M[k], 'animation_data', None) is not None, 'data_animation': getattr(getattr(M[k], 'data', None), 'animation_data', None) is not None}
+                              for k in ('coin', 'cam', 'water', 'mug', 'jug')}
+    res['animation_audit']['stream'] = {'animation_data': M['stream'].obj.animation_data is not None}
+    res['animation_audit']['all_objects_unkeyed'] = all(ob.animation_data is None for ob in bpy.data.objects)
+    res['animation_audit']['actions_in_file'] = len(bpy.data.actions)
+    res['pass'] = {'coin_px_F000_is_0': cnt['F000'] == 0, 'coin_px_F149_is_0': cnt['F149'] == 0,
+                   'coin_ge_80pct_at_F225': cnt['F225'] >= 0.8 * ref, 'control_ior1_F299_is_0': cnt['ctrl_ior1_F299'] == 0,
+                   'no_keyframes': res['animation_audit']['all_objects_unkeyed'] and res['animation_audit']['actions_in_file'] == 0}
+    merge_manifest('sh03_check', res)
+    print('MUG_CHECK', json.dumps(res, default=str))
+
+
+def cmd_flicker(o):
+    """OIDN temporal flicker: n consecutive stills at the production setting (40 spp + OIDN) vs a 4x-sample OIDN reference of the same frames.
+    Metric: mean |frame(n+1) - frame(n)| (of 255) per region. Production minus reference = excess flicker caused by noise/denoiser (real motion cancels)."""
+    import numpy as np
+    shot, f0 = o['shots'][0].split(':')
+    f0 = int(f0)
+    n = int(o.get('n', 6))
+    sc_pct = int(o['scale'])
+    regions = {'SH08': {'static_deck': (1300, 1900, 0, 1080), 'water': (450, 1000, 0, 440)},
+               'SH01': {'static_deck': (1300, 1900, 0, 1080), 'water': (450, 1000, 0, 440)},
+               'SH06': {'water': (1200, 1900, 0, 1080), 'deck': (150, 480, 0, 400)},
+               'SH03': {'static_table': (0, 600, 0, 450), 'water_and_coin': (900, 1250, 300, 800)}}[shot]
+    frames = {}
+    times = {}
+    for spp in (int(o['samples']), int(o['samples']) * 4):
+        S = mug_scene(spp, sc_pct, denoise=True) if shot == 'SH03' else pool_scene(spp, sc_pct, denoise=True)
+        arrs = []
+        t0 = time.time()
+        for k in range(n):
+            f = f0 + k
+            set_mug_state(S, f) if shot == 'SH03' else set_pool_state(S, shot, f)
+            p = os.path.join(outdir('flicker'), f'{shot}_F{f:03d}_{spp}spp.png')
+            render_still(S['sc'], p)
+            arrs.append(read_png(p))
+        times[spp] = (time.time() - t0) / n
+        frames[spp] = arrs
+    res = {'shot': shot, 'frames': [f0, f0 + n - 1], 'scale_pct': sc_pct, 'prod_spp': int(o['samples']), 'ref_spp': int(o['samples']) * 4, 'seconds_per_frame': times, 'regions': {}}
+    k = sc_pct / 100.0
+    for name, (r0, r1, c0, c1) in regions.items():
+        r0, r1, c0, c1 = int(r0 * k), int(r1 * k), int(c0 * k), int(c1 * k)
+        m = {}
+        for spp, arrs in frames.items():
+            d = [float(np.abs(arrs[i + 1][r0:r1, c0:c1] - arrs[i][r0:r1, c0:c1]).mean()) for i in range(n - 1)]
+            m[spp] = d
+        prod, ref = m[int(o['samples'])], m[int(o['samples']) * 4]
+        # also: mean abs difference of production vs reference per frame (spatial noise/bias of the denoised image)
+        err = [float(np.abs(frames[int(o['samples'])][i][r0:r1, c0:c1] - frames[int(o['samples']) * 4][i][r0:r1, c0:c1]).mean()) for i in range(n)]
+        res['regions'][name] = {'consecutive_diff_prod': prod, 'consecutive_diff_ref': ref, 'mean_prod': sum(prod) / len(prod), 'mean_ref': sum(ref) / len(ref),
+                                'excess_flicker_of_255': sum(prod) / len(prod) - sum(ref) / len(ref), 'prod_vs_ref_abs_err_per_frame': err}
+    merge_manifest(f'flicker_{shot}_F{f0}', res)
+    print('FLICKER', json.dumps(res))
+
+
 def parse2():
     a = sys.argv[sys.argv.index('--') + 1:] if '--' in sys.argv else []
     o = {'cmd': a[0], 'samples': 64, 'scale': 100, 'denoise': 0, 'shots': []}
@@ -1689,4 +2252,4 @@ if __name__ == '__main__':
         {'s0': s0, 's1': s1, 's2': s2}[o['spike']](o)
     else:
         o = parse2()
-        {'stills': lambda o: cmd_stills(o, o['shots']), 's3': cmd_s3, 's4': cmd_s4, 'diff': cmd_diff, 'd3': cmd_d3}[o['cmd']](o)
+        {'stills': lambda o: cmd_stills(o, o['shots']), 's3': cmd_s3, 's4': cmd_s4, 'diff': cmd_diff, 'd3': cmd_d3, 'mugstills': lambda o: cmd_mugstills(o, o['shots']), 'mugcheck': cmd_mugcheck, 'flicker': cmd_flicker}[o['cmd']](o)

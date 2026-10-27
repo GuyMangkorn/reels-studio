@@ -230,3 +230,4 @@ PYCODE
 ### Revalidation history
 - 2026-10-28 / `59809c8` + working tree: S0/S1/S2 pass at the stated coverage; Film/Mark adoption: pending.
 - 2026-10-28 / `claude/pool-depth-short` working tree (after `148f3bc`): D3 pool set, S3 diagram geometry and S4 loop seam pass at the stated coverage (`scripts/pool-depth/spike-results.md`); Film/Mark adoption of the recorded camera/pose deviations: pending.
+- 2026-10-28 / `claude/pool-depth-short` working tree (after `d079187`): SH03 mug demo with real Cycles refraction passes the S2 criteria (0 coin px before the pour, 95.4% at F225, IOR 1.0 control 0 px, nothing keyed); shadow-ray Transparent mix, caustics off and 40 spp + OIDN solve the S2 grain; OIDN temporal flicker measured negligible (excess <= 0.11/255); D3/S3/S4 re-run after the look pass still pass. Test caveat: with absorbing water the oblique red-marker test needs a strong emitter and a lower centroid threshold. Film/Mark adoption: pending.
