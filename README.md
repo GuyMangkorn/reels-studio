@@ -2,7 +2,7 @@
 
 A Thai YouTube studio that develops videos from storyboards, using Remotion for timing and export, and Three.js for 3D sets, cameras, depth and lighting. Existing 2D cut-out characters and screen overlays can be combined with 3D scenes when the storyboard calls for them.
 
-The same story renders at 30 fps as **Short** (1080×1920) and **Long** (1920×1080). Framing adapts to each aspect ratio while retaining the same action and timing. Production targets are 40–45 seconds for standalone Shorts and 8–10 minute episodes split into 45–60 second chapters, each with a hook in its first 2 seconds. Shorter storyboard fragments and asset demos are development previews.
+Choose Shorts, YouTube Long or both before scriptwriting through the [delivery workflow](docs/delivery-workflow.md). Each selected video has its own script, factual review, visual brief, storyboard set, timeline and audio/subtitle timing, using shared research and reusable assets. [Production requirements](docs/production-requirements.md#outputs-and-story-timing) define duration, dimensions and fps. Both means one Short and one Long by default; extra Shorts require explicit scope. Shorter storyboard fragments and asset demos are development previews.
 
 Agents start at [AGENTS.md](AGENTS.md), the task router for authoritative workflows and requirements. Agent-facing documentation is English; narration, subtitles and other viewer-facing copy remain Thai.
 
@@ -12,13 +12,13 @@ The planning handoff is **Boat research → Preaw script → Boat fact-check →
 
 ## From storyboard to video
 
-1. **Storyboard:** start with an editable board such as `sceneA.excalidraw`. Give each panel a shot id, duration, action, camera direction, lighting, narration/subtitle and framing for both aspect ratios.
+1. **Storyboard:** start with an editable board such as `sceneA.excalidraw`. Give each panel a shot id, duration, action, camera direction, lighting, narration/subtitle and framing for the selected deliverable.
 2. **Shot breakdown:** map each panel to existing character, pose, set, prop and camera ids. List missing assets and record whether the shot needs 2D, 3D or a hybrid.
 3. **Animatic / 3D blockout:** check pacing, camera paths, reveals, silhouettes and framing with simple shared assets before polishing the shot.
 4. **Library and timeline:** add missing assets once, then select them in a JSON timeline under `scripts/`. Remotion sequences the shots; Three.js stages spatial shots. Subtitles and channel graphics remain readable in screen space.
-5. **Review and render:** compare key frames with the board in Short and Long, add narration/sound, then render the delivery endings.
+5. **Review and render:** compare key frames with each selected deliverable's board, add narration/sound, then render the delivery endings.
 
-New boards belong under `storyboards/<episode>/` with a matching `<scene>.md` scene sheet and a shared `index.md`; create the folder on first use. Keep editable sources and shot-to-timeline mapping in Git. Generated exports and animatics belong in `out/`. An Excalidraw board is an authoring reference; its drawing JSON is translated into the project's scene contract.
+New boards belong under `storyboards/<episode>/<short|long>/` with a matching `<scene>.md` scene sheet and a shared `index.md`; create the folder on first use. Keep editable sources and shot-to-timeline mapping in Git. Generated exports and animatics belong in `out/`. An Excalidraw board is an authoring reference; its drawing JSON is translated into the project's scene contract.
 
 ## Current implementation
 
@@ -84,7 +84,7 @@ npx remotion render src/index.ts Short out/short-check.mp4 --frames=0-5
 npx remotion render src/index.ts Long out/long-check.mp4 --frames=0-5
 ```
 
-Also inspect the storyboard's key action/reveal frames and the start/middle/end of camera moves. Check 3D depth ordering, actor contact, clipping and subtitle safety in both formats. Narration uses Niwat (`th-TH`) at +5%; Thai subtitles use Noto Sans Thai or Sarabun from frame 0. Hold the closing line or final beat for about 3 seconds. Use the shared `A_fade` and `B_loop` endings and review the loop seam.
+Also inspect the storyboard's key action/reveal frames and the start/middle/end of camera moves. Check 3D depth ordering, actor contact, clipping and subtitle safety in each selected or affected output. Narration uses Niwat (`th-TH`) at +5%; Thai subtitles use Noto Sans Thai or Sarabun from frame 0. Hold the closing line or final beat for about 3 seconds. Use the shared `A_fade` and `B_loop` endings and review the loop seam.
 
 `out/`, generated MP4/MP3 files, dependencies and secrets are gitignored. Commit timeline/amplitude JSON, editable boards, reusable assets and their commercial-use license notices.
 

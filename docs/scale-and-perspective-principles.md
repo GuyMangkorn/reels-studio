@@ -74,7 +74,7 @@ Use baseline world dimensions for 3D geometry and world-space cut-outs already p
 
 - Picture zoom/crop scales an already projected image. Optical/FOV zoom changes projection at a fixed camera position. Dolly changes camera position and spatial relationships. Record transform owner and order.
 - Camera translation produces depth-dependent parallax: foreground/background move differently on screen. Pure picture zoom or pure rotation does not automatically justify the same added parallax.
-- Short/Long share physical world dimensions; adapt camera/aspect/FOV/crop and staging so each output preserves action/contact/reveal readability.
+- Versions reusing assets share physical world dimensions; adapt camera/aspect/FOV/crop and staging so each output preserves action/contact/reveal readability.
 - The [Boss workflow's Short lead ≥25% frame-height rule](boss-asset-workflow.md#กฎการผลิตล่าสุดของผู้ใช้) concerns projected visibility. Adjust framing/camera/staging while preserving actor–set–prop proportions. If it conflicts with wide/reveal intent, Film/Mark revise the shot with reasons rather than inflating one actor to pass the threshold.
 
 <a id="4-perspective-ในงาน-2d-และ-hybrid"></a>
@@ -105,7 +105,7 @@ The table describes **authoring notes**, not new JSON fields or APIs. Inspect ta
 | Document / owner | Required data | Complete when |
 | --- | --- | --- |
 | Visual brief / Film | Baseline reference, units/spaces, projection, camera intent, hybrid mapping, transform owner, feasibility/fallback | Mark can stage shots without guessing scale conventions; Boss knows shared owners and required proof |
-| Scene sheet / Mark | Baseline revision, shot/decision IDs, ground/surface, FG/MG/BG/depth, camera/key panels for both aspect ratios, projected contact, entry/exit | Every scale/depth-changing beat has inspectable imagery and expected behavior |
+| Scene sheet / Mark | Baseline revision, shot/decision IDs, ground/surface, FG/MG/BG/depth, camera/key panels for each selected output, projected contact, entry/exit | Every scale/depth-changing beat has inspectable imagery and expected behavior |
 | Library + QA / Boss | Actual dimensions/bounds/anchors, conversion/projection owner, consumers, frame mapping and evidence | Scoped checks below are completed or marked unverified with follow-up |
 
 QA must record expected → observed, composition, shot ID, frame/clock and repair owner:
@@ -113,7 +113,7 @@ QA must record expected → observed, composition, shot ID, frame/clock and repa
 - [ ] Calibration view: actor/animal/prop/furniture at the same depth compared to baseline; check logical bounds/padding before storytelling cameras.
 - [ ] Near/far: same-sized objects shrink correctly with perspective depth; same-depth comparisons share orientation; orthographic size follows intent.
 - [ ] Movement start/mid/end and depth extrema: foot/surface, hip/seat, hand/grip and shadows align without double scaling, sliding, clipping or unsupported edge-on cut-outs.
-- [ ] Short and Long: shared baseline, visible action/reveal, compliant projected lead size and readable subtitles/UI without distorted proportions.
+- [ ] Each selected/affected output: shared baseline, visible action/reveal, compliant projected lead size and readable subtitles/UI without distorted proportions.
 - [ ] Cut/event boundaries: `F-1/F/F+1`, attach/detach, sit/stand, reveals and relevant adjacent scenes; distinguish intentional camera/pose changes from scale pops.
 - [ ] Playback and random/backward seek/remount reproduce the same frame: projection, pose and camera derive from frame/fps/seed without accumulated state. Add continuous review to contact sheets under Boss QA.
 

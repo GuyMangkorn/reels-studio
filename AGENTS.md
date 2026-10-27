@@ -21,10 +21,11 @@ Adapted from [andrej-karpathy-skills](https://github.com/multica-ai/andrej-karpa
 
 ## Task routing and ownership
 
-The production handoff is **Boat research → Preaw script → Boat fact-check → Film visual/technical brief → Mark storyboard → Boss implementation**. Match the named revisions at each handoff. Configurations describe roles; they do not install an automatic runner or authorize messaging other chats.
+Before new scriptwriting or changing delivery scope, resolve the [selected video deliverables](docs/delivery-workflow.md). The production handoff is **Boat research → Preaw script → Boat fact-check → Film visual/technical brief → Mark storyboard → Boss implementation**. Match the named revisions at each handoff. Configurations describe roles; they do not install an automatic runner or authorize messaging other chats.
 
 | Task / trigger | Role and required reference |
 | --- | --- |
+| Output selection, Short/Long versions or delivery tracking | [Delivery workflow](docs/delivery-workflow.md): resolve selection before writing and keep independent packs for each selected video |
 | Scriptwriting, source research, factual review | Preaw / Boat: [editorial workflow](docs/editorial-workflow.md); use [scriptwriting principles](docs/scriptwriting-principles.md) for hooks, causal beats, educational payoffs and twists |
 | Medium choice, cinematography, visual/technical brief | Film: [visual brief workflow](docs/film-visual-brief-workflow.md) and [cinematography principles](docs/cinematography-principles.md) |
 | Storyboard creation, revision or review | Mark: [storyboard workflow](docs/mark-storyboard-workflow.md) and [storyboard principles](docs/storyboard-principles.md) |

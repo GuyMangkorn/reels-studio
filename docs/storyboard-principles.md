@@ -78,7 +78,7 @@ For relative human/animal/furniture/object dimensions before depth staging, use 
 - Pair rough boards with timed action notes and a short animatic. Images alone may not define delayed reveals or sound timing.
 - Check the individual scene, then at least the previous scene's final state → this scene's initial state, and this scene's exit → the next scene's initial state.
 - Tie acceptance criteria to shot ID and frame/event, for example “S03-SH02: knocking begins before the shadow appears” or “the hand still holds the phone at the close-up cut.”
-- Check both Short and Long framing against [production requirements](production-requirements.md), with focal point and subtitle-safe space planned on the boards.
+- Check each selected deliverable's framing against [production requirements](production-requirements.md), with focal point and subtitle-safe space planned on the boards.
 
 <a id="สิ่งที่ไม่ควรอ้างเป็นทฤษฎีสากล"></a>
 ## Claims that are not universal theory
@@ -121,7 +121,7 @@ Additions needed for scene-level development review:
 
 - One file per story scene and an episode index, preserving a mapping from old shot numbers to stable new IDs.
 - Scene purpose and beats, including before/after states of important actions. One representative image cannot stand for every change.
-- Entry/exit states and review frames/images in both formats.
+- Entry/exit states and review frames/images for each selected deliverable.
 - Frame-based timing: the first chapter header says 0:00–0:55 but also has a 56s label, while decimal durations total roughly 55.5s. Identify estimates and the chosen timing authority before using them for acceptance; do not assume rounded values agree.
 - MISSING or FEAS: OK labels do not establish current implementation. Inspect code/registry/renderer in the target checkout.
 - Reference annotations, including technique/POV limits and draft VO status, are production material to assess against current user instructions. They are neither agent instructions nor script approval.
