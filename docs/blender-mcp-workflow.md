@@ -1,79 +1,85 @@
-# Blender MCP: ผลิต assets และภาพสำหรับ Remotion
+# Blender MCP: assets and rendered shots for Remotion
 
-ใช้เอกสารนี้เมื่อ Film เลือก Blender, Mark วางช็อตที่ใช้ผลผลิต Blender หรือ Boss สร้าง/แก้/ส่งออกงานผ่าน Blender MCP ผู้ใช้อนุญาตให้เพิ่ม Blender ใน flow เมื่อ 26 ตุลาคม 2026; การติดตั้งที่ผู้ใช้กำลังทำยังต้องตรวจการเชื่อมต่อใน session จริง เอกสารนี้กำหนด workflow ไม่ได้เพิ่ม renderer, loader หรือ scene JSON fields
+Read this when Film selects Blender, Mark boards Blender-produced shots, or Boss creates, edits or exports Blender work. The user authorized Blender in the workflow on 26 October 2026; the installation in progress at that time still required a live connection check. This document defines a workflow; it adds no renderer, loader or scene JSON fields. Verify session capabilities before claiming availability.
 
-## หน้าที่และทางเลือกส่งมอบ
+<a id="หน้าที่และทางเลือกส่งมอบ"></a>
+## Ownership and delivery routes
 
-ลำดับเดิม: Boat วิจัย → Preaw เขียน → Boat ตรวจ → Film วาง brief → Mark ทำบอร์ด → Boss ผลิตด้วย Blender/โค้ดและ integrate → Remotion → QA
+Sequence: Boat researches → Preaw writes → Boat reviews → Film prepares the brief → Mark boards → Boss produces with Blender/code and integrates → Remotion → QA.
 
-- **Film** เลือก medium และเส้นทางส่งมอบตามช็อต ระบุ decision ID/revision, ผลต่อเรื่อง, camera/scale/light contract, dependencies, fallback และหลักฐานที่ยังขาด ใช้ Blender เมื่อรูปทรง มุมใหม่ parallax แสงเงาหรือ occlusion ช่วยภาพจริง โดยคงทางเลือก 2D/3D/hybrid สำหรับทุกองค์ประกอบ
-- **Mark** แตก brief เป็นช็อต ระบุกล้องสองสัดส่วน, action/reveal frames, contact, foreground และรอยต่อ บันทึก Blender source/export revision ที่ใช้ตรวจ การดู viewport เป็น reference ไม่ใช่หลักฐานว่า runtime ผ่าน
-- **Boss** เป็นเจ้าของ Blender sources, scripts, reusable assets, export settings และการเชื่อม scene pipeline แก้ geometry/rig/anchors ที่ shared source แล้วส่งออกใหม่ ตรวจทั้ง Blender และผลที่ Remotion ใช้จริง
-- **Remotion** เป็นเจ้าของ executable timeline, narration/amplitude, ซับไทย, channel label, screen overlays, endings และ final export อ่าน [remotion-toolkit.md](remotion-toolkit.md) ก่อนเพิ่ม capability
+- **Film** selects medium and delivery route per shot. Record decision ID/revision, story value, camera/scale/light contract, dependencies, fallback and missing evidence. Use Blender when geometry, new angles, parallax, lighting/shadows or occlusion serve the image. Keep 2D/3D/hybrid available for every element.
+- **Mark** details shots from the brief: cameras for both aspect ratios, action/reveal frames, contact, foreground and boundaries. Record the Blender source/export revision reviewed. A viewport reference is not runtime proof.
+- **Boss** owns Blender sources, scripts, reusable assets, export settings and scene-pipeline integration. Fix geometry/rig/anchors in the shared source, re-export, and check both Blender and the output actually used by Remotion.
+- **Remotion** owns the executable timeline, narration/amplitude, Thai subtitles, channel label, screen overlays, endings and final export. Read [Remotion toolkit](remotion-toolkit.md) before adding capabilities.
 
-| เส้นทาง | เลือกเมื่อ | งานที่ต้องพิสูจน์ก่อนใช้ใน timeline |
+| Route | Choose when | Required proof before timeline use |
 | --- | --- | --- |
-| Pre-render จาก Blender เป็นภาพ/ลำดับภาพ/วิดีโอ | ต้องรักษาแสง วัสดุ effects หรือ camera animation ที่ทำใน Blender | รองรับ media ชนิดนั้นใน shared renderer, frame mapping, alpha/color, การโหลดและ seeking; ทำ framing ของ Short/Long แยกเมื่อ crop เดียวรักษา action ไม่ได้ |
-| Export GLB/glTF เข้า Three.js | ต้อง reuse โมเดลและปรับ staging/camera/animation ผ่านโค้ด | declared dependencies, loader/stage, materials, animation sampling, anchors, shadows และ type/validator/renderer integration ใน checkout เป้าหมาย |
-| Hybrid / แยก passes | ต้องประกอบหลาย representation | camera/projection ที่ตรงกัน, masks/depth/alpha, light/color และผู้เป็นเจ้าของ transform ของทุก layer |
+| Blender pre-render: stills/image sequence/video | Blender lighting, materials, effects or camera animation must be retained | Shared-renderer media support, frame mapping, alpha/color, loading and seeking; separate Short/Long framing when one crop cannot preserve action |
+| GLB/glTF export to Three.js | Reuse models and adjust staging/camera/animation in code | Declared dependencies, loader/stage, materials, animation sampling, anchors, shadows and type/validator/renderer integration in the target checkout |
+| Hybrid / separate passes | Multiple representations must be composited | Matching cameras/projection, masks/depth/alpha, light/color and one transform owner per layer |
 
-เริ่มทดลองด้วย shared set/prop และกล้องหนึ่งช็อตที่มี contact/reveal ในสองสัดส่วน ก่อนเพิ่มความซับซ้อนของ rig หรือทั้งตอน เส้นทาง pre-render เป็นจุดเริ่มที่แนะนำเมื่อจำเป็นต้องรักษาลุค Blender และ GLB runtime ยังไม่พร้อม แต่ media integration ก็ต้องทำและตรวจจริง ไม่ถือว่า fallback ใช้งานได้อัตโนมัติ
+Start with a shared set/prop and one camera shot demonstrating contact/reveal in both aspect ratios before adding rig or episode complexity. Pre-render is the recommended starting route when Blender's look matters and GLB runtime integration is unavailable. Its media integration still needs implementation and verification; fallback does not imply existing support.
 
-## 1. Preflight ก่อนแก้ฉาก
+<a id="1-preflight-ก่อนแก้ฉาก"></a>
+## 1. Preflight before scene changes
 
-1. อ่าน brief, board/index, [Boss workflow](boss-asset-workflow.md), [scale/perspective](scale-and-perspective-principles.md) และ relevant [dev findings](dev-findings.md) ตรวจ checkout, package manifest, dependency tree, Remotion versions และ runtime contracts ตาม toolkit แยก `existing-integrated`, `exists-unintegrated`, `missing`, `unknown`
-2. ค้น tools ที่เปิดให้ session จริง อ่าน schema ของ tool ก่อนเรียก ตรวจ Blender/addon/server versions เท่าที่อ่านได้ พร้อม active file, scene, objects, cameras และ render settings ด้วย read-only query/viewport ก่อนแก้ ระบุข้อมูลที่ตรวจไม่ได้ หลีกเลี่ยงสมมติชื่อ tool จาก README ของคนละรุ่น
-3. หาก MCP ยังไม่เชื่อมต่อ ให้รายงานขั้นตอนที่ติดและทำ brief/manifest/งานโค้ดที่ไม่พึ่ง Blender ต่อได้ เก็บงาน Blender-dependent เป็น unverified จนเชื่อมและตรวจจริง การติดตั้งหรือเปลี่ยน client configuration เป็นอีก scope เว้นแต่ผู้ใช้สั่งไว้
-4. ตรวจว่าฉากที่เปิดเป็นงานเป้าหมาย เก็บสำเนางานเดิมก่อนแก้ ใช้ collection/object/action/material names คงที่ใต้ asset ID และแก้เฉพาะสิ่งที่งานนี้เป็นเจ้าของ เก็บ scripts ใน repo ให้รันซ้ำแล้วอัปเดต asset เดิมได้โดยไม่เพิ่มสำเนาเรื่อย ๆ
+1. Read the brief, board/index, [Boss workflow](boss-asset-workflow.md), [scale/perspective guide](scale-and-perspective-principles.md) and relevant [dev findings](dev-findings.md). Inspect checkout, manifest, dependency tree, Remotion versions and runtime contracts under the toolkit. Classify capabilities as `existing-integrated`, `exists-unintegrated`, `missing` or `unknown`.
+2. Discover tools actually exposed to the session and read their schemas before calling them. Use read-only queries/viewport inspection to check Blender/addon/server versions where available, active file, scene, objects, cameras and render settings. State inaccessible information. Do not assume tool names from another version's README.
+3. If MCP is disconnected, report the failing stage and continue brief/manifest/code work that does not depend on Blender. Keep Blender-dependent work unverified until connected and inspected. Installation/client configuration is separate scope unless already requested.
+4. Confirm the open scene is the target work and preserve a copy before edits. Use stable collection/object/action/material names under the asset ID and modify only owned work. Keep repeatable repository scripts that update the same asset rather than adding duplicates on each run.
 
-เสร็จ preflight เมื่อบันทึก connection/version evidence, source revision และ route ที่เลือกพร้อม integration gaps ใน handoff ได้ Tool calls ที่รัน Python ให้จำกัดกับงาน Blender ที่ได้รับมอบหมาย ใช้ local connection เป็นค่าเริ่มต้น; การนำเข้า asset ภายนอกต้องมี license และ provenance เช่นเดียวกับ asset อื่นของช่อง
+Preflight is complete when the handoff records connection/version evidence, source revision, selected route and integration gaps. Restrict Python tool calls to the assigned Blender work. Use a local connection by default. External imports require license and provenance like all channel assets.
 
-## 2. Shared source และ export contract
+<a id="2-shared-source-และ-export-contract"></a>
+## 2. Shared source and export contract
 
-ใช้ convention ต่อไปนี้กับงาน Blender ใหม่ สร้าง directories เมื่อมี asset จริงเท่านั้น:
+Use these conventions for new Blender work; create directories only when an actual asset exists:
 
-- `assets/blender/<asset-id>/source.blend`: editable source ของ shared asset/set/rig; episode เลือก asset นี้แทนสำเนา geometry
-- `assets/blender/<asset-id>/build.py`: script สร้าง/แก้ asset ที่รันซ้ำได้ พร้อม settings ที่จำเป็น; dependency ภายนอกต้องประกาศ
-- `assets/blender/<asset-id>/manifest.md`: contract, provenance/license, revision และรายการ exports/consumers
-- `public/assets/blender/<asset-id>/`: runtime exports ที่เลือกใช้จริง เช่น GLB/textures/stills โดย shared module เป็นผู้ resolve path; video/pre-render sequences ต้องมี retrieval/regeneration และ packaging ที่ใช้ได้กับ render worker ตาม Git/media policy ของ repo
-- `out/blender/` และ `out/qa/`: previews, intermediate passes และ review evidence ไม่ commit generated review media
+- `assets/blender/<asset-id>/source.blend`: editable shared asset/set/rig; episodes select it instead of copying geometry.
+- `assets/blender/<asset-id>/build.py`: repeatable construction/update script and required settings; declare external dependencies.
+- `assets/blender/<asset-id>/manifest.md`: contract, provenance/license, revision, exports and consumers.
+- `public/assets/blender/<asset-id>/`: selected runtime exports such as GLB/textures/stills, with paths resolved by a shared module. Video/pre-render sequences need retrieval/regeneration and packaging usable by render workers under repository Git/media policy.
+- `out/blender/` and `out/qa/`: previews, intermediate passes and review evidence. Keep generated review media out of commits.
 
-เก็บ editable source, build scripts, manifest และ license ตาม issue workflow ตรวจขนาด `.blend`/textures/exports ก่อน commit; ถ้าใช้ Git LFS หรือ external storage ให้ตรวจว่าตั้งค่าและ fetch ในเครื่อง/worker ได้จริง บันทึก location/checksum และวิธีสร้างกลับ หลีกเลี่ยง reference ที่มีเฉพาะ absolute path ในเครื่อง แพ็ก dependencies ที่จำเป็นหรือใช้ relative paths และตรวจเปิดจาก checkout ใหม่ ไม่เพิ่ม LFS/storage เป็นผลข้างเคียง
+Store editable source, build scripts, manifest and license under the [issue workflow](contributing.md). Check `.blend`/texture/export sizes before commit. If Git LFS or external storage is used, verify configuration and fetching on machines/workers, and record location/checksum and regeneration instructions. Package dependencies or use relative paths and verify reopening from a fresh checkout. Avoid machine-only absolute references. Adding LFS/storage requires its own authorized scope.
 
-Manifest ต้องระบุอย่างน้อย:
+The manifest must contain at least:
 
-| กลุ่ม | ข้อมูลส่งต่อ |
+| Group | Handoff data |
 | --- | --- |
-| Identity / revisions | asset ID, source/build revision, Blender/exporter versions, brief decision/board shot IDs, consumers, source/export paths และสถานะ integration |
-| Physical contract | หน่วย, axes/up/forward, canonical dimensions/bounds ไม่รวม padding, origin/pivots, named floor/foot/hip/seat/grip anchors พร้อม space/coordinates และ transform ที่ต้องใช้เมื่อ export |
-| Camera / framing | projection, lens/FOV หรือ ortho bounds, aspect, clipping, camera/target/path และ Short/Long framing; specify camera owner เพื่อไม่ให้ Blender และ Remotion ขยับซ้ำ |
-| Motion / clock | actions/clips, duration, fps, source frame range แบบระบุ inclusive/exclusive, mapping เข้า shot-local frame, holds/loop seam, composition audio offsets และ cache/bake locations |
-| Appearance | renderer/settings, materials/textures, color management/view transform/output color space, alpha convention, light/shadow ownership, pass/mask list และ export settings |
-| Delivery / evidence | resolutions, output formats/paths, license/provenance, regeneration command/steps, load readiness/resource owner, QA frames และข้อจำกัด |
+| Identity / revisions | Asset ID, source/build revision, Blender/exporter versions, brief decision/board shot IDs, consumers, source/export paths and integration status |
+| Physical contract | Units, axes/up/forward, canonical dimensions/bounds excluding padding, origin/pivots, named floor/foot/hip/seat/grip anchors with spaces/coordinates and required export transforms |
+| Camera / framing | Projection, lens/FOV or ortho bounds, aspect, clipping, camera/target/path, Short/Long framing and camera owner so Blender and Remotion do not duplicate motion |
+| Motion / clock | Actions/clips, duration, fps, source frame range with inclusive/exclusive bounds, shot-local frame mapping, holds/loop seam, composition audio offsets and cache/bake locations |
+| Appearance | Renderer/settings, materials/textures, color management/view transform/output color space, alpha convention, light/shadow ownership, passes/masks and export settings |
+| Delivery / evidence | Resolutions, output formats/paths, license/provenance, regeneration command/steps, load readiness/resource owner, QA frames and limitations |
 
-ค่ากล้อง แสงและวัสดุของ Blender กับ Three.js ไม่ใช้ตัวเลขแทนกันตรง ๆ เทียบภาพกับ brief และ demo-lighting rules ใน Boss workflow แยกค่าที่เป็นคนละหน่วยและบันทึก mapping/ข้อจำกัด การ bake แสงในภาพกับ runtime lighting ต้องมี owner ชัดเพื่อไม่คูณแสงหรือเงาซ้ำ
+Blender and Three.js camera, light and material numbers are not interchangeable. Compare output against the brief and Boss's demo-lighting rules, distinguish units and document mapping/limitations. Assign ownership for baked and runtime light/shadow to prevent applying either twice.
 
-## 3. ผลิตแบบ deterministic แล้วเชื่อม runtime
+<a id="3-ผลิตแบบ-deterministic-แล้วเชื่อม-runtime"></a>
+## 3. Deterministic production and runtime integration
 
-1. ทำ blockout จากขนาดและ anchors ก่อน polish ตรวจ actor–set–prop บนระนาบเดียวกันและ camera start/mid/end ทั้งสองสัดส่วน รักษา identity และ Short lead-size rule ด้วย framing
-2. กำหนด 30 fps ตาม timeline กลาง บันทึก frame mapping ชัดเจน (รวม Blender start frame ที่อาจเริ่ม 1 ขณะที่ Remotion เริ่ม 0) คุม action/camera ด้วยเวลาแบบ absolute; seed randomness และ bake physics/particles/constraints ที่ต้องอาศัยประวัติก่อนส่งออก ทดสอบ direct seeking และ loop ไม่พึ่ง playback ก่อนหน้า
-3. ตรวจ route: GLB ต้องตรวจวัสดุ/rig/animation/constraints ที่ส่งออกได้จริง bake/convert ตามความจำเป็นแล้วตรวจใน renderer ปลายทาง; pre-render ต้องตรวจ alpha edges, color, frame count และ trim/hold แยกจากเวลาเสียง Motion blur ใช้เมื่อช่วยอ่านการเคลื่อนไหวและไม่กลบ clue/reveal
-4. Export จาก shared source revision เดียวกัน สร้าง Short/Long framing ตามบอร์ด และบันทึก export settings ให้ทำซ้ำได้ หากประกอบ passes ให้ส่งสิ่งที่ต้องบัง/ถูกบังครบ ภาพแบนไม่สามารถแสดงด้านที่ไม่ได้เรนเดอร์หรือรับแสงเชิงปริมาตรอัตโนมัติ
-5. Boss เพิ่ม missing capability ใน shared module และ scene types, validator, renderer dispatch พร้อมกันก่อนเขียน JSON ที่เลือกใช้ asset/media/animation นั้น วาง model loading, animation sampling จาก frame/fps, readiness/error handling และ resource disposal ไว้ใน shared owner ตาม representation ที่ใช้
-6. อัปเดต executable timeline, shot mapping/index และ entry/exit states ตาม sequence rules ของ AGENTS.md ส่งข้อจำกัดที่เปลี่ยน medium/camera/light/interface กลับ Film/Mark เพื่อแก้ revision ให้ตรงกัน
+1. Block out dimensions/anchors before polish. Compare actor–set–prop relationships on a common plane and camera start/mid/end in both aspect ratios. Preserve identity and meet the Short lead-size rule through framing.
+2. Use the shared timeline's 30 fps. Record frame mapping explicitly, including Blender's possible frame-1 start versus Remotion's frame 0. Author action/camera with absolute time, seed randomness and bake history-dependent physics/particles/constraints before export. Verify direct seeking and looping without prior playback.
+3. Check the delivery route. For GLB, verify actual material/rig/animation/constraint export support, bake/convert as needed and inspect the destination renderer. For pre-render, inspect alpha edges, color, frame count and trim/hold independently of audio timing. Use motion blur only when it helps movement readability without concealing clues/reveals.
+4. Export from one shared source revision. Produce storyboard-matching Short/Long framing and record reproducible settings. Include all required occluding/occluded passes. Flat output cannot reveal unrendered sides or automatically receive volumetric lighting.
+5. Before JSON selects the asset/media/animation, Boss adds missing capabilities to the shared module, scene types, validator and renderer dispatch together. The shared representation owner handles model loading, frame/fps animation sampling, readiness/errors and disposal.
+6. Update the executable timeline, shot mapping/index and entry/exit states under [sequence rules](sequence-workflow.md). Return constraints that change medium/camera/light/interfaces to Film/Mark and align revisions.
 
-เสร็จ integration เมื่อ timeline โหลดผลผลิตจริงผ่าน shared pipeline และสุ่ม seek แล้วได้ frame ที่คาดหมายทั้ง Short/Long ไม่ใช่เพียง export ไฟล์สำเร็จ
+Integration is complete when the timeline loads actual output through the shared pipeline and random seeking produces expected frames in both Short and Long. Export success alone is insufficient.
 
-## 4. QA และส่งต่อ
+<a id="4-qa-และส่งต่อ"></a>
+## 4. QA and handoff
 
-ทำ [Boss pre-push QA](boss-asset-workflow.md#qa-ก่อน-push-งานภาพหรือ-runtime) ครบเมื่อแก้ visual/runtime: Studio cold load/play/scrub/random seeking, renders ทั้งสองสัดส่วน, contact sheets ทุกวินาทีและเฟรมสุดท้าย, event/cut `F-1/F/F+1`, continuous sequence และเพื่อนบ้านที่มี
+For visual/runtime changes, complete [Boss's pre-push QA](boss-asset-workflow.md#qa-ก่อน-push-งานภาพหรือ-runtime): Studio cold load/play/scrub/random seeking, renders in both aspect ratios, one-second/final-frame contact sheets, event/cut `F-1/F/F+1`, continuous sequence review and available neighbors.
 
-เพิ่มการเทียบ Blender export กับ Remotion ที่ source/output frames ตรงกัน: scale/contact, foot sliding, grip/seat, clipping, occlusion, alpha halos, color/shadows, texture/model loading, animation start/end, reveal และ subtitle safe regions เทียบไฟล์ผลลัพธ์กับพรีวิวแยกกัน บันทึกเวลาผลิต/เรนเดอร์จากการวัดจริงเมื่อต้องประเมินความคุ้ม ไม่อ้างว่า MCP ทำให้ภาพลื่นหรือ render เร็วขึ้นโดยยังไม่ทดลอง
+Also compare Blender export and Remotion at corresponding source/output frames: scale/contact, foot sliding, grip/seat, clipping, occlusion, alpha halos, color/shadows, texture/model loading, animation starts/ends, reveals and subtitle safe regions. Check rendered files separately from previews. When evaluating cost, measure production/render times; MCP alone does not prove smoother visuals or faster rendering.
 
-ส่ง paths/revisions ของ source, manifest, exports, shared code, timeline/input props และ QA evidence พร้อมสถานะ `source-ready`, `export-ready`, `runtime-integrated`, `visual-verified` ตามหลักฐานแต่ละขั้น ระบุขั้นที่ยัง unverified และ follow-up ใน dev findings เมื่อเป็นข้อจำกัด reusable การมีเอกสาร/ไฟล์ `.blend`/ภาพ viewport ไม่ใช่ visual pass ของ Remotion
+Deliver paths/revisions for source, manifest, exports, shared code, timeline/input props and QA evidence. Assign `source-ready`, `export-ready`, `runtime-integrated` and `visual-verified` only with stage-specific evidence. Identify unverified stages and record reusable limitations/follow-ups in dev findings. Documentation, a `.blend` file or a viewport image is not a Remotion visual pass.
 
-## อ้างอิงสำหรับตรวจรุ่นจริง
+<a id="อ้างอิงสำหรับตรวจรุ่นจริง"></a>
+## References for version checks
 
-- [MCP for Blender — community project](https://github.com/ahujasid/mcp-for-blender): ตรวจ tools, addon/server requirements และข้อจำกัดของรุ่นที่ติดตั้ง ไม่ใช่ Blender Foundation plugin
-- [Blender Manual: glTF export](https://docs.blender.org/manual/en/latest/addons/import_export/scene_gltf2.html): ตรวจ supported materials, animation และ export options ให้ตรง Blender รุ่นที่ใช้งาน
-- [Remotion Three.js integration](https://www.remotion.dev/docs/three): ตรวจ dependencies/API และ implementation ใน checkout เป้าหมายก่อนใช้
+- [MCP for Blender — community project](https://github.com/ahujasid/mcp-for-blender): verify installed tools, addon/server requirements and limitations; this is not a Blender Foundation plugin.
+- [Blender Manual: glTF export](https://docs.blender.org/manual/en/latest/addons/import_export/scene_gltf2.html): match supported materials, animation and export options to the Blender version in use.
+- [Remotion Three.js integration](https://www.remotion.dev/docs/three): verify dependencies/APIs and implementation in the target checkout before use.

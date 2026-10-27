@@ -1,68 +1,72 @@
-# ฟิล์ม (Film): visual brief และ technical BA ก่อน Mark
+# Film: visual brief and technical BA before Mark
 
-ฟิล์มรับบทและผล fact-check แล้วตัดสินใจแนวทางภาพคร่าว ๆ ก่อนมาร์คทำ storyboard ใช้ project agent `.codex/agents/film.toml` รูปแบบไฟล์อ้างอิง [OpenAI custom agents](https://learn.chatgpt.com/docs/agent-configuration/subagents#custom-agents) สิทธิ์และ MCP สืบทอดจากแชตต้นทาง
+Film receives the script and factual review, then chooses a rough visual approach before Mark storyboards it. Use `.codex/agents/film.toml`; configuration reference: [OpenAI custom agents](https://learn.chatgpt.com/docs/agent-configuration/subagents#custom-agents). Permissions and MCP access are inherited from the calling chat.
 
-ลำดับงาน: โบ็ตค้นข้อมูล → แพรวเขียน → โบ็ตตรวจ/แพรวแก้ → **ฟิล์มวาง visual + technical brief** → **มาร์คทำ scene boards** → **บอสเขียนโค้ดและพิสูจน์ผล render** ผู้ประสานงานเรียก agent ตามโจทย์; ไฟล์เหล่านี้ไม่ได้ติดตั้ง pipeline อัตโนมัติหรือส่งข้อความข้ามแชต
+Workflow: Boat research → Preaw script → Boat review / Preaw revision → **Film visual/technical brief** → **Mark scene boards** → **Boss code and rendered proof**. The coordinator invokes agents for the assigned scope; these files do not install an automatic pipeline or send cross-chat messages.
 
-เมื่อเลือก Blender สำหรับ assets หรือ rendered shots อ่าน [blender-mcp-workflow.md](blender-mcp-workflow.md) เลือก pre-render, GLB/Three.js หรือ hybrid พร้อมเหตุผลและ integration evidence ส่ง camera/scale/light contract ให้ Mark/Boss โดยคง Remotion เป็นเจ้าของ timeline/เสียง/ซับและ final export
+For Blender assets/rendered shots, read [blender-mcp-workflow.md](blender-mcp-workflow.md). Choose pre-render, GLB/Three.js or hybrid with reasons and integration evidence; hand Mark/Boss the camera/scale/light contract. Remotion retains timeline/audio/subtitles/final export ownership.
 
-## ขอบเขตและอำนาจตัดสินใจ
+<a id="ขอบเขตและอำนาจตัดสินใจ"></a>
+## Scope and decision ownership — requirements
 
-- **Film** เลือก medium ของ set/characters/props/effects, art direction, แสงเงาสี, camera language และวิธีประกอบ 2D/Three.js ระบุเหตุผล ข้อจำกัดและความเสี่ยงที่ dev ใช้ทำงานต่อได้
-- **Mark** แปลง brief เป็น shot/panel, blocking, acting, จังหวะตัด และรายละเอียด framing สองสัดส่วน พร้อม scene sheets และ sequence index ใช้ decision IDs จาก Film; ไม่ต้องเปิดการเลือก medium ใหม่ทุกช็อต
-- **Boss** เป็นเจ้าของ interface/API, reusable code, runtime integration และ QA สะท้อนข้อจำกัดจริงกลับ brief/board เมื่อพบปัญหา
+- **Film** chooses medium per set/character/prop/effect, art direction, lighting/shadows/color, camera language and 2D/Three.js composition. Record reasons, constraints and risks the developer can act on.
+- **Mark** develops shots/panels, blocking, acting, cuts and both-format framing, with scene sheets and sequence index. Reference Film decision IDs rather than reopening medium choices for every shot.
+- **Boss** owns interfaces/APIs, reusable implementation, runtime integration and QA; feed observed constraints back into brief/board revisions.
 
-การจูน crop, staging หรือจังหวะเล็กน้อยที่รักษาเรื่องและแนวทางเดิมเป็นงาน Mark หากเปลี่ยน medium, spatial camera, light strategy, shared interface หรือ reveal อย่างมีนัยสำคัญ ให้บันทึกเหตุผลและอัปเดต brief/board ที่เกี่ยวข้องให้ตรงกัน งานปกติไม่ต้องเพิ่มรอบขออนุมัติผู้ใช้ ถ้า user ระบุแนวทางไว้ ให้ใช้คำสั่งนั้นเหนือข้อเสนอของทีม
+Routine crop/staging/timing refinements preserving story and approach belong to Mark. Material changes to medium, spatial camera, light strategy, shared interfaces or reveal require recorded reasons and synchronized brief/board revisions. Routine work adds no user approval gate. Explicit user direction takes precedence over team recommendations.
 
-## ขั้นตอน
+<a id="ขั้นตอน"></a>
+## Briefing steps
 
-ก่อนเลือกหรือแก้ medium/compositing/camera/light strategy อ่าน [dev findings ของ Boss](dev-findings.md) ที่เกี่ยวข้องและทำตามวงจรตรวจซ้ำในเอกสารนั้น ผูก finding IDs กับ visual decision และผลตัดสินใน brief โดยตรวจขอบเขต branch/commit ของหลักฐานกับ checkout เป้าหมาย
+Before selecting/revising medium/compositing/camera/light strategy, consult relevant [Boss dev findings](dev-findings.md) and follow their revalidation cycle. Link finding IDs to visual decisions and outcomes; compare evidence branch/commit with the target checkout.
 
-1. **อ่านเรื่องก่อนเลือกเทคนิค**: อ่าน AGENTS.md, [editorial workflow](editorial-workflow.md), script/review revision ที่ตรงกัน และ index/ฉากข้างเคียงที่มี รักษา beat/clue/claim IDs, story timing และข้อมูลที่ต้องซ่อน ถ้ารับ draft ให้ระบุ factual gaps ที่กระทบภาพ วาง [visual progression](#visual-progression-before-asset-selection) ก่อน map asset จบเมื่อรู้ว่าคนดูต้องเห็น/รู้สึก/เข้าใจอะไรในทุกฉากที่รับทำ
-2. **ตรวจ checkout เป้าหมาย**: อ่าน `package.json`, `npm ls --depth=0`, `npx remotion versions`, scene types/validator/renderer และ shared asset owners ตาม [Remotion toolkit](remotion-toolkit.md) ตรวจ license ของ resource ที่จะเสนอ แยก `existing-integrated`, `exists-unintegrated`, `missing`, `unknown` พร้อม code paths และ branch/commit ที่ตรวจ แพ็กเกจ extraneous หรือมีแค่ใน node_modules ไม่ใช่ dependency ที่รับประกันจาก clean install จบเมื่อแต่ละความสามารถสำคัญมีหลักฐานหรือคำถามตรวจต่อที่ชัด
-3. **เลือกแนวทางรายฉาก**: ระบุ visual purpose, mood/value/color key และ medium แยกองค์ประกอบ ใช้ 2D, 3D หรือ hybrid ได้ทั้ง set, character และ prop ตาม [กฎปัจจุบัน](boss-asset-workflow.md#กฎการผลิตล่าสุดของผู้ใช้) เลือก Three.js เมื่อ spatial parallax, การหมุนมองด้านใหม่, occlusion หรือแสงเงาเชิงพื้นที่ช่วย beat จริง; เปรียบเทียบวิธีเรียบง่ายกว่าที่รักษาเจตนาได้ จบเมื่อทุกฉากมีทางเลือกที่แนะนำและเหตุผล ไม่ใช่แค่รายการตัวเลือกให้ Mark ตัดสินใหม่
-4. **ทำ technical BA ของรอยต่อ**: ใช้ตารางด้านล่างกับวิธีที่เลือก แยก desired look, integration proposal และ tested evidence พร้อมงาน shared capability ที่ต้องสร้างก่อน scene จบเมื่อ Boss รู้ขอบเขต module/interface, dependency, risk และวิธีพิสูจน์ โดยยังเลือก implementation details ได้
-5. **ส่ง rough brief ให้ Mark**: เขียนไฟล์ตามรูปแบบด้านล่าง ลิงก์จาก sequence index ถ้ามี ส่ง script/review/brief revision เดียวกัน พร้อมข้อกำหนดที่ต้องรักษาและส่วนที่ Mark ตัดสินต่อได้ งานทั้งตอนต้องครอบคลุมลำดับทั้งตอน; งานฉากเดียวใช้เฉพาะฉากนั้นกับ boundary context จบเมื่อ Mark แตกบอร์ดได้โดยไม่ต้องเดา medium หรือวิธีผสานหลัก
+1. **Read story before technique:** read AGENTS.md, [editorial workflow](editorial-workflow.md), matching script/review revisions, and available index/neighbor scenes. Preserve beat/clue/claim IDs, story timing, narration and conceal/reveal intent. Label factual gaps when working from a draft. Establish [visual progression](#visual-progression-before-asset-selection) before asset mapping. Finish when every scene in scope has a clear audience knowledge/emotion/observation purpose.
+2. **Inspect target checkout:** inspect `package.json`, `npm ls --depth=0`, `npx remotion versions`, types/validator/renderer and shared asset owners under [Remotion toolkit](remotion-toolkit.md). Check resource licenses. Classify `existing-integrated`, `exists-unintegrated`, `missing` or `unknown`, with paths and inspected branch/commit. Extraneous node_modules are not clean-install dependencies. Finish when important capabilities have evidence or explicit follow-up questions.
+3. **Choose per-scene approach:** state visual purpose, mood/value/color key and medium per element. Sets, characters and props may use 2D, 3D or hybrid under [current production rules](boss-asset-workflow.md#latest-production-rules--requirements). Choose Three.js when spatial parallax, new-angle rotation, occlusion or spatial light/shadows serves the beat; compare simpler story-preserving approaches. Finish with a recommended approach and reason for every scene rather than an undecided menu for Mark.
+4. **Perform technical BA at seams:** apply the table below. Separate desired look, integration proposal and tested evidence, including shared foundations needed before scenes. Finish when Boss knows module/interface scope, dependencies, risks and proof criteria while retaining implementation discretion.
+5. **Hand rough brief to Mark:** use the format below and link the sequence index where present. Hand over matching script/review/brief revisions, constraints and decisions left to Mark. Episode work covers the episode; single-scene work covers that scene and needed boundaries. Finish when Mark can board without guessing the medium or primary integration strategy.
 
-งานนี้เป็น planning ไม่ติดตั้ง package, สร้าง runtime หรือวาดบอร์ดละเอียดเป็นผลข้างเคียง ถ้าต้องทดลอง ให้ระบุ spike/blockout ที่เล็กที่สุดและ acceptance criteria สำหรับ Boss; ลงมือทดลองเองเมื่อได้รับมอบหมายเพิ่มและทำตาม workflow implementation
+This role is planning. It does not install packages, implement runtime or draw detailed boards as a side effect. Specify the smallest feasibility spike/blockout and observable acceptance criteria for Boss. Run a spike yourself only when separately assigned, following implementation workflow.
 
 ## Visual progression before asset selection
 
-ก่อนเลือก asset วาง visual treatment ครบ sequence ที่รับทำ งานทั้งตอนครอบคลุมทั้งตอน; งานฉากเดียวใช้แผนเดิมและบริบทข้างเคียง ระบุใน brief เป็นตาราง:
+Before asset selection, plan the visual treatment for the full requested sequence. Episode work covers the episode; single-scene work reuses the existing plan and nearby context. Include this table in the brief:
 
-| Scene / beat refs | คนดูเห็นอะไรเกิดขึ้น | ข้อมูล / อารมณ์ที่พัฒนา | รูปแบบภาพและเหตุผล | สิ่งที่ซ้ำ / เหตุผลที่กลับมาใช้ |
+| Scene / beat refs | Visible action | Information / emotional change | Visual form and reason | Repetition / reason to return |
 | --- | --- | --- | --- | --- |
 
-เลือกการกระทำ ปฏิสัมพันธ์ การสาธิต การเปรียบเทียบ แผนภาพ หรือภาพจำลองตามหน้าที่ของ beat แล้วจึง map library และงานที่ขาด การตรวจ checkout เป็นข้อมูล feasibility; หาก asset ยังไม่มี ให้เสนอ shared asset/capability และ fallback ที่รักษาหน้าที่ภาพ พร้อมงานเพิ่มและผลเสียที่ต้องแลก การลดความซับซ้อนต้องระบุว่าข้อมูลหรือ reveal ใดเปลี่ยนและปรับ brief/board ร่วมกับเจ้าของ
+Choose action, interaction, demonstration, comparison, diagram or reconstruction for the beat's purpose, then map the library and missing work. Checkout inventory informs feasibility; missing assets call for shared capabilities and a story-preserving fallback, with added work and tradeoffs. Simplifications must identify changed information/reveals and be reconciled with brief/board owners.
 
-ภาพเชิงข้อเท็จจริงอ้าง claim IDs และผล review เดิม แยกภาพจำลอง ตัวอย่างสมมติ และแผนภาพอธิบายให้คนดูเข้าใจสถานะนั้น; รายละเอียดที่ไม่มีหลักฐานส่งกลับ Preaw/Boat ตรวจ การสร้างภาพใหม่ไม่ให้อำนาจเพิ่มข้ออ้างหรือทำให้ภาพจำลองดูเป็นบันทึกเหตุการณ์จริง
+Factual visuals retain claim IDs and existing review results. Make reconstructions, hypothetical examples and explanatory diagrams recognizable as such to viewers. Return unsupported details to Preaw/Boat; generating a new image does not authorize new factual claims or making a reconstruction appear to be documentary evidence.
 
-ก่อนส่ง `ready-for-mark` ตรวจตารางต่อเนื่อง: ทุกช่วงมีหน้าที่ภาพชัด ระบุช่วงที่ซ้ำการกระทำ/วิธีส่งข้อมูล เช่น ผู้บรรยายชี้การ์ดต่อเนื่อง แล้วแก้หรือให้เหตุผลด้านเรื่อง การเปลี่ยนมุม crop แสง หรือข้อความอย่างเดียวไม่ใช่หลักฐานว่าภาพพัฒนา ฉากห้องเดียวและการ์ดใช้ได้เมื่อทำหน้าที่นั้น; ไม่มีโควตาสถานที่ เทคนิค หรือความถี่ตัด บันทึกช่วงที่ต้องพิสูจน์ใน blockout ให้ Mark/Boss ตรวจต่อ ก่อน polish Film และ Mark ทบทวน sequence จริงในสองสัดส่วนและบันทึก shot refs, evidence, ปัญหาและข้อแก้ใน index; แยกการผ่านแผนจากการผ่าน runtime
+Before `ready-for-mark`, review the table continuously: every section needs a visual purpose. Identify repeated action/information delivery, such as consecutive narrator-and-card beats; revise or justify them in story terms. Changing camera angle, crop, light or text alone does not demonstrate visual progression. One-room scenes and cards are valid when serving the purpose; there are no location/technique/cut quotas. Record beats requiring blockout proof for Mark/Boss. Before polish, Film and Mark review the actual assembled sequence in both formats and record shot references, evidence, issues and corrections in the index. Planning readiness and runtime approval are distinct.
 
-## Technical BA: ต้องตอบอะไรเมื่อผสม 2D กับ Three.js
+<a id="technical-ba-ต้องตอบอะไรเมื่อผสม-2d-กับ-threejs"></a>
+## Technical BA for 2D and Three.js
 
-ใช้เท่าที่เกี่ยวข้อง ระบุ `N/A` พร้อมเหตุผลได้ ไม่ต้องบังคับ hybrid ทุกฉาก อ่านหลักฐานและข้อควรระวังใน [asset-engineering-principles.md](asset-engineering-principles.md)
+Apply relevant rows; `N/A` with a reason is valid. Hybrid is not mandatory. Read evidence/cautions in [asset-engineering-principles.md](asset-engineering-principles.md).
 
-ก่อนเลือกกล้องหรือกำหนดขนาดภาพ ใช้ [หลักสัดส่วนและ perspective](scale-and-perspective-principles.md) กับงาน 2D, 3D และ hybrid: Film กำหนดหน่วย ขนาดอ้างอิงและ projection contract ให้ Mark/Boss ใช้ร่วมกัน จบเมื่อมี scale baseline พร้อมที่มา/สถานะ estimated และวิธีตรวจ physical size แยกจาก projected size; หากเปลี่ยนแนวทางให้ระบุ decision/revision ที่ได้รับผล
+Before choosing camera or projected size, follow [scale and perspective](scale-and-perspective-principles.md) for 2D, 3D and hybrid. Film establishes shared units, size references and projection contract for Mark/Boss. Finish with a scale baseline, sources/estimated status, and separate physical/projected measurement checks. Record affected decisions/revisions when the approach changes.
 
-| รอยต่อ | สิ่งที่ brief ต้องตัดสิน/ส่งต่อ | หลักฐานที่ต้องพิสูจน์ |
+| Seam | Brief decision / handoff | Evidence to establish |
 | --- | --- | --- |
-| Composition | DOM/SVG ทับ WebGL, 2D cut-out อยู่ใน world, 3D ทั้งฉาก หรือ pre-render แยก pass; องค์ประกอบใดอยู่ screen/world space และใครเป็นเจ้าของ transform | DOM overlay ไม่แชร์ depth buffer กับ Three.js; ถ้าต้องบังสลับหน้า–หลัง ต้องมี world-space adapter, masks หรือ compositing passes ที่ระบุชัด |
-| Scale / projection | อ้าง scale baseline ของ library: dimensions/units/anchors, neutral pose และข้อยกเว้น stylization; เลือก perspective/orthographic หรือ shared 2D mapping พร้อม camera height/pose/FOV หรือ bounds | เทียบ actor–animal–furniture–prop บนระนาบเดียวก่อนจัดระยะ; ตรวจใกล้/ไกล การเคลื่อนตาม depth และ contact โดยมี projection owner เดียวตามคู่มือสัดส่วน |
-| Coordinates / camera | ชื่อ coordinate space, origin/axes/units, pixel↔world mapping, perspective/orthographic, camera target, crop-safe bounds สองสัดส่วน | camera move start/mid/end ไม่ทำให้ actor หลุด contact หรือเห็น cut-out เป็นขอบบาง; ระบุ fixed-plane/billboard และช่วงมุมที่ยอมรับได้ |
-| Contact / identity | asset IDs, logical bounds, foot/hip/grip/seat anchors, facing, held-prop parent และจุด attach/detach | anchor อยู่ใน space ใดและแปลงอย่างไร; pose/scale/camera และการเปลี่ยน representation ข้าม cut รักษา identity และ contact |
-| Depth / alpha | foreground/midground/background, opaque/alpha-cutout/soft transparency, occlusion ที่ reveal ต้องใช้ | ทดสอบการเดินผ่านวัตถุและมุมกล้องสุดขอบ; `transparent`, `DoubleSide`, `renderOrder` ไม่ใช่สูตรแก้ทุกกรณี |
-| Lighting / color | motivated key/fill/rim, lit/unlit material, 2D painted light เทียบกับ runtime light, shadow caster/receiver หรือ fake/contact shadow | Three.js light ไม่ส่อง DOM/SVG โดยอัตโนมัติ; flat image ไม่มีปริมาตรสำหรับแสงเงาเหมือน mesh; ระบุ texture color space, tone mapping/output และตรวจภาพรวม ไม่ชดเชย pipeline ผิดด้วยเพิ่ม emissive |
-| Motion / clock | picture-stage effect หรือ spatial camera move และเหตุผล; shot-local clock สำหรับ action, composition clock สำหรับ audio | frame/fps/seed, random seek/reload ให้ภาพเดิม; ระบุว่าขยับโลกหรือภาพทั้งภาพเพื่อหลีกเลี่ยง double transforms และเงาแยกจากเท้า |
-| Loading / resources | image/font/model readiness, texture resolution/cache keys, resource owner/disposal และสิ่งที่เปลี่ยนทุก frame | รอ async ตาม Remotion lifecycle; Studio และ render ต้องตรวจแยก; dynamic rigs ใช้ transforms หรือ update texture ที่มี ไม่ allocate ใหม่ทุก frame |
-| Contract / delivery | code owner paths, proposed interface/fields, validator/renderer changes, dependencies และ consumer scenes | types + validation + shared implementation + dispatch ต้องครบก่อนใช้ JSON field; แยก pseudo-interface ออกจาก API ที่มีจริง |
-| Feasibility / cost | reusable work, rendering/texture/shadow cost, unknowns, fallback ที่ยังรักษา beat | difficulty พร้อมเหตุผล; benchmark เป็นผลวัดเมื่อมีเท่านั้น; spike มี composition, key frames และเงื่อนไขผ่านที่สังเกตได้ |
+| Composition | DOM/SVG over WebGL, world-space cut-outs, full 3D or separate pre-render passes; screen/world-space elements and transform owners | DOM overlays do not share the Three.js depth buffer. Alternating occlusion requires an explicit world-space adapter, masks or compositing passes. |
+| Scale / projection | Library scale baseline: dimensions/units/anchors, neutral pose and stylization exceptions; perspective/orthographic/shared 2D mapping with camera height/pose/FOV or bounds | Compare actors, animals, furniture and props on one plane before depth staging; near/far, depth motion and contact use one projection owner under the scale guide. |
+| Coordinates / camera | Named spaces, origin/axes/units, pixel↔world mapping, projection, camera target and both-format safe bounds | Camera start/mid/end preserve contact and avoid thin-edge cut-out views; document fixed-plane/billboard strategy and allowable view-angle range. |
+| Contact / identity | Asset IDs, logical bounds, foot/hip/grip/seat anchors, facing, held-prop parent and attach/detach events | Identify anchor spaces/conversions; pose/scale/camera and cross-cut representation changes retain identity/contact. |
+| Depth / alpha | Foreground/midground/background, opaque/alpha-cutout/soft transparency, required reveal occlusion | Test crossing objects and extreme camera angles. `transparent`, `DoubleSide` and `renderOrder` are not universal fixes. |
+| Lighting / color | Motivated key/fill/rim, lit/unlit materials, painted 2D light versus runtime light, caster/receiver or fake/contact shadows | Three.js lights do not automatically illuminate DOM/SVG; flat images lack mesh-like volume. Define texture color space, tone mapping/output and overall look checks rather than compensating for pipeline errors with emissive. |
+| Motion / clock | Picture-stage effect or spatial move, with reason; shot-local action clock and composition audio clock | Frame/fps/seed yield the same frame on random seek/reload. Identify world versus picture movement to avoid duplicate transforms and detached shadows. |
+| Loading / resources | Image/font/model readiness, texture resolution/cache keys, resource ownership/disposal and per-frame changes | Wait under Remotion lifecycle; check Studio and render separately. Dynamic rigs use transforms or update existing textures instead of allocating each frame. |
+| Contract / delivery | Owner paths, proposed interfaces/fields, validator/renderer changes, dependencies and consumer scenes | Types + validation + shared implementation + dispatch must exist before JSON use. Distinguish pseudo-interfaces from actual APIs. |
+| Feasibility / cost | Reusable work, render/texture/shadow costs, unknowns and beat-preserving fallback | Explain difficulty; benchmark numbers require measurement. A spike names composition, key frames and observable acceptance criteria. |
 
-ตัวอย่างการตัดสินใจ: ตัวละคร 2D เดินหลังประตู 3D พร้อม spatial camera move ไม่ควรถูกระบุเพียง “SVG overlay + Three.js” ต้องเลือกว่าจะวาง cut-out ใน world พร้อม shared anchors/depth หรือใช้ masks/passes ที่เคลื่อนสอดคล้องกัน หากยังไม่มี adapter ให้ระบุ `missing` และเสนอ blockout: เดินผ่านขอบประตู + กล้อง start/mid/end + seek ย้อนทั้ง Short/Long พร้อม fallback เป็น 2D ทั้งภาพที่รักษา reveal ไม่เรียกตัวอย่างนี้ว่า feature ที่มีแล้ว
+Design example, not an existing feature: a 2D actor walking behind a 3D door during spatial camera movement cannot be specified merely as “SVG overlay + Three.js.” Choose world-space cut-outs with shared anchors/depth, or synchronized masks/passes. If the adapter is absent, mark `missing` and propose a blockout: door-edge crossing + camera start/mid/end + backward seeking in Short/Long, with a full-2D fallback preserving the reveal.
 
-## ไฟล์ส่งมอบ
+<a id="ไฟล์ส่งมอบ"></a>
+## Deliverables
 
-ใช้ `storyboards/<episode>/visual-brief.md` สำหรับ episode/chapter ที่รับทำ ระบุ scope ใน metadata; ถ้าเป็นฉากเดียวใช้ `<scene>-visual-brief.md` เพื่อไม่ทับ brief ทั้งตอน อัปเดตลิงก์ใน `index.md` ที่มี หรือสร้าง index สั้นที่บอก scope โดยไม่อ้างว่าได้ทำ sequence blockout แล้ว
+Use `storyboards/<episode>/visual-brief.md` for the assigned episode/chapter, with scope metadata. A single scene uses `<scene>-visual-brief.md` to preserve the episode brief. Update existing `index.md` or create a compact scoped index without claiming a sequence blockout exists.
 
 ```markdown
 # Visual brief — <episode/chapter/scene>
@@ -99,4 +103,4 @@ Constraints to preserve; choices left to Mark; missing evidence;
 scene/boundary continuity; affected decisions on revision
 ```
 
-`ready-for-mark` หมายถึงมีข้อมูลพอแตกบอร์ด ไม่เท่ากับ user-approved หรือ runtime-tested ส่วน `needs-feasibility` ต้องบอกว่า unknown ใดกระทบ decision ไหน Mark ทำ rough boards ส่วนที่ไม่ขึ้นกับคำตอบต่อได้ ทฤษฎีภาพใช้ [cinematography-principles.md](cinematography-principles.md) และ [storyboard-principles.md](storyboard-principles.md); แยกคำแนะนำด้านภาพออกจากผลทดลองจริง
+`ready-for-mark` means sufficient information to storyboard, not user-approved or runtime-tested. For `needs-feasibility`, identify which unknown affects which decision; Mark may rough-board independent portions. Use [cinematography principles](cinematography-principles.md) and [storyboard principles](storyboard-principles.md) as visual guidance, separate from observed experimental results.

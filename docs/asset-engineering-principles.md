@@ -1,89 +1,99 @@
-# บอส (Boss): หลักเทคนิคสำหรับ assets 2D/3D ที่นำกลับมาใช้ได้
+# Boss: reusable 2D/3D asset engineering principles
 
-ตรวจแหล่งวันที่ 26 ตุลาคม 2026 — หลักอ้างอิงสำหรับบอสและ technical BA ของฟิล์ม ไม่ใช่หลักฐานว่า runtime ปัจจุบันแก้แล้ว อ่านขั้นตอนและกฎการผลิตใน [boss-asset-workflow.md](boss-asset-workflow.md) และสัญญาส่งต่อใน [film-visual-brief-workflow.md](film-visual-brief-workflow.md)
+Sources inspected on 26 October 2026. This is technical reference for Boss and Film's technical analysis, not evidence that the current runtime has been repaired. Read [Boss's workflow](boss-asset-workflow.md) for production requirements and [Film's workflow](film-visual-brief-workflow.md) for the handoff contract. Recommendations below explain tradeoffs; verify APIs and integration in the target checkout.
 
-## 1. ข้อกำหนดผู้ใช้กับหลักทั่วไป
+<a id="1-ข้อกำหนดผู้ใช้กับหลักทั่วไป"></a>
+## 1. User requirements and general principles
 
-เลือก 2D, 3D หรือ hybrid ได้ตาม brief ของ Film รวมตัวละครและ interaction props กฎเดิมที่จำกัด 3D เฉพาะฉากหลังและหนึ่ง prop หนึ่งภาพ/แผ่นถูกยกเลิก แสงเดโม, emissive/glow cap, ขนาดตัวละคร และ QA ยังเป็นกฎโปรเจกต์ตาม [กฎการผลิตล่าสุด](boss-asset-workflow.md#กฎการผลิตล่าสุดของผู้ใช้) เอกสารด้านล่างอธิบาย tradeoffs ไม่ได้ตัดสินว่าเทคนิคใด integrate แล้ว
+Choose 2D, 3D or hybrid according to Film's brief, including characters and interaction props. The former background-only 3D and one-image/plane-per-prop restrictions were revoked. Demo lighting, the emissive/glow cap, character size and QA remain project requirements in [current production rules](boss-asset-workflow.md#latest-production-rules). This reference does not establish which techniques are integrated.
 
-## การผสาน 2D / Three.js ก่อนเขียนบอร์ด
+<a id="การผสาน-2d--threejs-ก่อนเขียนบอร์ด"></a>
+## 2D / Three.js integration before storyboarding
 
-Film ระบุ strategy ก่อนให้ Mark แตกช็อต: DOM/SVG ซ้อน WebGL เหมาะกับ screen overlays แต่ไม่ได้มี world-depth หรือรับไฟจาก Three.js อัตโนมัติ ถ้า 2D actor ต้องเดินสลับหน้า–หลัง 3D prop ให้เลือก world-space cut-out adapter หรือ masks/render passes ที่มีแผนชัด ระบุ camera, coordinate conversion, anchors และลำดับ compositing ให้ Boss implement การวาง SVG สวยบนภาพนิ่งยังไม่พิสูจน์การผสานระหว่างกล้องเคลื่อน
+Film selects a strategy before Mark details shots. DOM/SVG over WebGL suits screen overlays but does not automatically share world depth or Three.js lighting. When a 2D actor must move in front of and behind a 3D prop, choose a world-space cut-out adapter or an explicit mask/render-pass plan. Specify camera, coordinate conversion, anchors and compositing order for Boss. A convincing static SVG composite does not prove integration under camera motion.
 
-สำหรับ world-space cut-out ให้ระบุ fixed-plane หรือ billboard และช่วงมุมที่ art อ่านออก; billboard หันหากล้องไม่ได้สร้างด้านใหม่ของตัวละคร และอาจเปลี่ยน grip/seat alignment กล้องและ material แบบ lit/unlit จึงต้องเลือกพร้อมแผน contact/shadow ทดสอบ asset ทางเลือกใน blockout ทั้งสองสัดส่วนก่อนอ้างว่ารักษามุมและแสงได้
+For world-space cut-outs, specify fixed-plane or billboard behavior and the viewing angles the artwork supports. Turning a billboard toward the camera does not create unseen character sides and can change grip/seat alignment. Choose camera and lit/unlit materials together with contact/shadow behavior. Test candidate assets in both aspect-ratio blockouts before claiming that angles and lighting are preserved.
 
-หัวข้อนี้เป็นข้อเสนอ architecture สำหรับโปรเจกต์ อ้างข้อจำกัด context/rendering จาก [Remotion — ThreeCanvas](https://www.remotion.dev/docs/three-canvas) และ [R3F — Hooks](https://r3f.docs.pmnd.rs/api/hooks) แยก API จริงใน checkout ออกจาก proposed adapter
+This is proposed project architecture. Context/rendering constraints come from [Remotion — ThreeCanvas](https://www.remotion.dev/docs/three-canvas) and [R3F — Hooks](https://r3f.docs.pmnd.rs/api/hooks). Distinguish APIs present in the checkout from a proposed adapter.
 
-## 2. Frame determinism และการ seek
+<a id="2-frame-determinism-และการ-seek"></a>
+## 2. Frame determinism and seeking
 
-Remotion ระบุให้ใช้ `useCurrentFrame()` สร้าง animation ของ `<ThreeCanvas>` แบบ declarative แทน R3F `useFrame` เพื่อให้ pause และ scrub ย้อนกลับได้ ดังนั้น flicker, shake, image movement, pose และแสงควรคำนวณจาก frame/fps และ seed ที่คงที่ ไม่สะสม `delta` จากเฟรมก่อน ไม่อิง wall-clock และไม่สุ่มใหม่ทุก render
+Remotion directs `<ThreeCanvas>` animations to use declarative `useCurrentFrame()` rather than R3F `useFrame`, allowing pause and backward scrubbing. Calculate flicker, shake, image movement, poses and lighting from frame/fps and stable seeds. Avoid accumulated `delta`, wall-clock timing and fresh randomness on each render.
 
-ข้อเสนอ QA: เปิดเฟรมเดียวกันจากก่อนหน้า หลังจาก seek ย้อน และหลัง reload แล้วเทียบภาพ ความเหมือนนี้คือ contract ที่ควรรักษา ไม่สมมติว่า Remotion จะ render ทุกเฟรมตามลำดับ
+Recommended QA: compare the same frame reached through forward playback, backward seeking and reload. Identical output is the contract; never assume Remotion renders every frame in order.
 
-แหล่ง: [Remotion — ThreeCanvas](https://www.remotion.dev/docs/three-canvas)
+Source: [Remotion — ThreeCanvas](https://www.remotion.dev/docs/three-canvas).
 
-## 3. Async readiness ต้องแยก Studio กับ render
+<a id="3-async-readiness-ต้องแยก-studio-กับ-render"></a>
+## 3. Separate preview and render readiness
 
-Remotion ระบุว่า `delayRender()` หยุด final render จนงาน async เสร็จและ `continueRender(handle)` ถูกเรียก แต่ไม่มีผลใน preview อย่าง Studio/Player; แนะนำ `useDelayRender()` และใช้ `cancelRender()` เมื่อกู้ข้อผิดพลาดไม่ได้ จึงต้องมี loading/error state ที่เหมาะกับ preview และรอ asset readiness ใน render ด้วย
+Remotion states that `delayRender()` pauses final rendering until async work finishes and `continueRender(handle)` is called, but does not affect previews such as Studio/Player. It recommends `useDelayRender()` and `cancelRender()` for unrecoverable errors. Provide suitable preview loading/error states and wait for asset readiness during rendering.
 
-ข้อเสนอ: ปล่อย render หลัง image/font/data ที่ต้องใช้พร้อมและ canvas ได้วาดเนื้อหาที่ต้อง capture แล้ว ไม่ปล่อย handle ทันทีที่เริ่ม request หรือก่อนอัปเดตเนื้อหาเสร็จ
+Recommendation: release rendering only after required images/fonts/data are ready and the canvas has drawn the content to capture. Starting a request or scheduling a content update is insufficient.
 
-`ThreeCanvas` ใช้ `frameloop='never'` ระหว่าง render; เมื่อ texture เปลี่ยนใน async callback เอกสารระบุให้ `advance()` เพื่อวาด sync ก่อน capture แทน `invalidate()` ที่เพียงนัดวาดภายหลัง ใช้ตาม lifecycle จริง อย่าเพิ่ม loop อิสระเพื่อแก้ภาพค้าง
+`ThreeCanvas` uses `frameloop='never'` during rendering. For a texture changed in an async callback, the documentation directs `advance()` to draw synchronously before capture rather than `invalidate()`, which schedules a later draw. Follow the actual lifecycle rather than adding an independent animation loop.
 
-แหล่ง: [Remotion — delayRender / continueRender](https://www.remotion.dev/docs/delay-render), [Remotion — ThreeCanvas](https://www.remotion.dev/docs/three-canvas)
+Sources: [Remotion — delayRender / continueRender](https://www.remotion.dev/docs/delay-render), [Remotion — ThreeCanvas](https://www.remotion.dev/docs/three-canvas).
 
-## 4. Static texture, cache และ ownership
+<a id="4-static-texture-cache-และ-ownership"></a>
+## 4. Static textures, caching and ownership
 
-R3F `useLoader` suspend ระหว่างโหลด และ cache ด้วย URL เป็น key ทำให้ reuse asset ใน component tree ได้ เอกสารเตือนเรื่อง mutate/dispose asset ที่ถูกแชร์
+R3F `useLoader` suspends while loading and caches by URL, enabling component-tree reuse. Its documentation warns about mutating or disposing shared assets.
 
-ข้อเสนอให้บอส:
+Recommendations for Boss:
 
-- static image ใช้ loader/cache ที่มี key คงที่
-- procedural canvas สร้าง canvas/texture แบบ stable ต่อ mounted scene/asset instance ไม่ `new CanvasTexture` ในเส้นทางที่ทำซ้ำทุก frame
-- หากเปลี่ยนเนื้อหา canvas ที่ใช้เป็น texture เดิม ให้ตั้ง `texture.needsUpdate = true` หลังวาดเนื้อหาใหม่
-- แยกเจ้าของ resource: scene-owned resource cleanup เมื่อเลิกใช้; shared cached resource ไม่ dispose จาก consumer เดียวขณะที่อื่นใช้
-- “ครั้งเดียวต่อ scene” ในที่นี้หมายถึง reuse ภายใน lifecycle ไม่ใช่สมมติว่าทุก render worker/tab หรือทุก remount แชร์ object เดียวกัน
+- Use stable loader/cache keys for static images.
+- Create procedural canvases/textures once per mounted scene/asset instance; keep `new CanvasTexture` outside paths repeated every frame.
+- After redrawing an existing texture's canvas, set `texture.needsUpdate = true`.
+- Dispose scene-owned resources when no longer needed. A consumer must not dispose a shared cached resource while other consumers still use it.
+- “Once per scene” means lifecycle reuse, not a single object shared across render workers, tabs or remounts.
 
-แหล่ง: [R3F — Hooks / useLoader](https://r3f.docs.pmnd.rs/api/hooks), [Three.js — Canvas Textures](https://threejs.org/manual/pages/canvas-textures.html)
+Sources: [R3F — Hooks / useLoader](https://r3f.docs.pmnd.rs/api/hooks), [Three.js — Canvas Textures](https://threejs.org/manual/pages/canvas-textures.html).
 
-ข้อควรระวัง: ตัวอย่าง Three.js manual ใช้ `requestAnimationFrame` และสุ่มเพื่อสอน canvas texture โดยทั่วไป อย่านำ loop เหล่านั้นมาใช้เป็น timing model ของ Remotion
+Caution: Three.js manual examples use `requestAnimationFrame` and randomness to teach canvas textures generally. Those loops are not Remotion's timing model.
 
-## 5. Transparency และลำดับภาพ
+<a id="5-transparency-และลำดับภาพ"></a>
+## 5. Transparency and image ordering
 
-Three.js อธิบายว่าการเขียน depth ที่ใช้ได้ดีกับวัตถุทึบทำให้ transparency ซับซ้อน engine เรียง transparent objects ได้ แต่ไม่ได้แก้ลำดับทุก triangle อัตโนมัติ ดังนั้น `transparent=true` หรือ `DoubleSide` อย่างเดียวไม่รับประกันว่า alpha cutout ซ้อนกันถูกต้อง
+Three.js explains that depth writing, which works well for opaque objects, complicates transparency. The engine sorts transparent objects but does not automatically resolve every triangle's order. Neither `transparent=true` nor `DoubleSide` alone guarantees correct alpha-cutout overlap.
 
-ข้อเสนอ: ใช้ planes ไม่ตัดทะลุกัน กำหนด depth/layer ordering ที่คงที่ และพิจารณา alpha cutout กับ soft transparency ตามภาพจริง ตรวจตอนตัวละครเดินผ่าน prop หรือขอบหน้าต่าง อย่าปิด depth test ทั้งฉากเป็นสูตรแก้ทุกปัญหา สิ่งที่ใส่ `depthWrite=false`, `alphaTest` หรือ `renderOrder` ต้องมีเหตุผลและตรวจ occlusion จริง
+Recommendation: avoid intersecting planes, establish stable depth/layer ordering, and choose alpha cutout or soft transparency based on the actual output. Inspect actors crossing props/window edges. Disabling depth testing for the whole scene is not a general remedy. Justify and visually verify `depthWrite=false`, `alphaTest` and `renderOrder` choices.
 
-แหล่ง: [Three.js — Transparency](https://threejs.org/manual/pages/transparency.html)
+Source: [Three.js — Transparency](https://threejs.org/manual/pages/transparency.html).
 
-## 6. สี ความสว่าง และการอ่านตัวละคร
+<a id="6-สี-ความสว่าง-และการอ่านตัวละคร"></a>
+## 6. Color, brightness and character readability
 
-Three.js คำนวณแสงใน Linear-sRGB แต่ texture สีจาก PNG/JPEG อย่าง `map` และ `emissiveMap` ต้องกำกับ `SRGBColorSpace`; non-color maps ใช้ชนิดที่เหมาะสม เอกสารย้ำว่า color-space ผิดทำให้ภาพสว่าง/มืดผิด และการเพิ่ม/ลดแสงไม่แก้ต้นเหตุ
+Three.js computes lighting in Linear-sRGB. Color textures from PNG/JPEG, such as `map` and `emissiveMap`, require `SRGBColorSpace`; non-color maps need their appropriate setting. Incorrect color space can make output too bright or dark; adjusting lights does not fix that cause.
 
-ข้อเสนอ: ตรวจ input color space, output conversion และ tone mapping ก่อนจูน ambient/lantern/emissive จากนั้นทำตามค่าโปรเจกต์และตรวจภาพบน background มืด ค่า intensity ที่ดูดีขึ้นกับ material/pipeline จึงไม่อ้างว่า `2.6` หรือ `0.3` รับประกันลุคเดียวกันในทุกฉาก
+Recommendation: check input color space, output conversion and tone mapping before tuning ambient/lantern/emissive values. Then follow project settings and inspect dark-background output. Intensity depends on materials and pipeline; neither `2.6` nor `0.3` guarantees the same appearance in every scene.
 
-แหล่ง: [Three.js — Color Management](https://threejs.org/manual/pages/color-management.html)
+Source: [Three.js — Color Management](https://threejs.org/manual/pages/color-management.html).
 
-## 7. Contact และเงา
+<a id="7-contact-และเงา"></a>
+## 7. Contact and shadows
 
-ขนาดอ้างอิง, visible bounds, หน่วย, camera projection และความสัมพันธ์ของ foot/seat/grip ขณะเปลี่ยนระยะ ใช้ [หลักสัดส่วนและ perspective](scale-and-perspective-principles.md) ร่วมกับหัวข้อนี้ แยก physical dimensions ใน library ออกจาก projected size ที่กล้องสร้าง
+Use [scale and perspective principles](scale-and-perspective-principles.md) for reference sizes, visible bounds, units, projection and foot/seat/grip relationships as depth changes. Separate library physical dimensions from camera-projected size.
 
-Three.js manual อธิบาย shadow maps มีค่าใช้จ่ายในการ render เพิ่ม และยก fake shadow เป็นทางเลือก โดยผูก shadow กับวัตถุให้เคลื่อนสัมพันธ์กัน เลือกจริงตาม medium, look และ render cost ไม่สมมติว่าเงาของภาพแบนเทียบเท่า mesh ที่มีปริมาตร
+The Three.js manual describes extra render costs for shadow maps and presents fake shadows that move with their objects as an alternative. Choose according to medium, appearance and render cost; a flat image does not cast the same shadow as a volumetric mesh.
 
-ข้อเสนอสำหรับงาน hybrid: เลือก real shadow, fake shadow plane หรือ shared 2D layer ตาม composition strategy ระบุ caster/receiver, material และ coordinate space รักษา anchor ของฝ่าเท้า/สะโพก/มือให้ตรง surface/seat/grip และตรวจเงาเคลื่อนสัมพันธ์กับกล้องและวัตถุ เงาอย่างเดียวไม่แก้ตัวละครลอยเหนือเบาะ
+For hybrid work, choose real shadows, fake shadow planes or shared 2D layers according to the composition strategy. Specify caster/receiver, material and coordinate space. Align foot/hip/hand anchors with the floor/seat/grip and verify shadow relationships under camera/object motion. A shadow alone does not repair an actor floating above a cushion.
 
-แหล่ง: [Three.js — Shadows](https://threejs.org/manual/pages/shadows.html)
+Source: [Three.js — Shadows](https://threejs.org/manual/pages/shadows.html).
 
-## 8. QA ที่จำเป็นเพิ่มเติมจาก contact sheet ทุกวินาที
+<a id="8-qa-ที่จำเป็นเพิ่มเติมจาก-contact-sheet-ทุกวินาที"></a>
+## 8. QA beyond one-second contact sheets
 
-ข้อเสนอ QA ต่อไปนี้เป็นการสังเคราะห์จากข้อจำกัดการสุ่มตัวอย่างและ frame-driven render ไม่ใช่รายการบังคับจาก Three.js:
+The following recommendations synthesize sampling limitations and frame-driven rendering; they are not a Three.js checklist. Project QA requirements remain owned by Boss's workflow.
 
-1. Render contact sheet ทุก 1 วินาทีตามผู้ใช้ พร้อม ID ฉาก ช็อต และเฟรม
-2. เพิ่มภาพ `F-1`, `F`, `F+1` รอบ cut, เปลี่ยน pose/prop parent, attach/detach, reveal, flash, จุดเริ่ม/จบ movement และการเข้า/ออกของ texture
-3. ดู render ต่อเนื่องช่วงสำคัญและ seek สุ่ม/ย้อนหลังใน Studio เพื่อจับ pop, stale texture, layer ordering และการสะสม state
-4. ตรวจ actor projected size, subtitle band, feet/seat/hand contact, shadow, rim readability และ 2D-image movement ใน Short/Long ที่แตะ
-5. บันทึกสิ่งที่ตรวจจริง ไม่เขียนว่า “ไม่มี jumps” จาก contact sheet 1 Hz เพียงอย่างเดียว เพราะภาพตัวอย่างห่าง 30 เฟรมที่ 30 fps อาจพลาด glitch 1 เฟรมระหว่างนั้น
+1. Render the user's one-second contact-sheet samples with scene, shot and frame IDs.
+2. Add `F-1`, `F`, `F+1` around cuts, pose/prop-parent changes, attach/detach, reveals, flashes, movement starts/ends and texture entrances/exits.
+3. Review continuous critical segments and random/backward seeking in Studio for pops, stale textures, layer-order errors and accumulated state.
+4. Inspect projected actor size, subtitle bands, foot/seat/hand contact, shadows, rim readability and 2D-image movement in every affected Short/Long output.
+5. Record actual coverage. A 1 Hz contact sheet samples every 30 frames at 30 fps and can miss a one-frame glitch; it cannot justify a claim of “no jumps.”
 
-## การอ่านตัวอย่างจากแหล่งอ้างอิง
+<a id="การอ่านตัวอย่างจากแหล่งอ้างอิง"></a>
+## Reading source examples
 
-เอกสารอาจใช้ generic real-time loops, 3D shadow planes หรือ API ของเวอร์ชันใหม่กว่า checkout ให้ยึด frame-driven Remotion, กฎผู้ใช้ และ installed types ของ branch เป้าหมาย ไม่มีตัวอย่างใดด้านบนยืนยันว่า asset หรือ scene ของ repo ผ่าน QA แล้ว
+Source examples may use generic real-time loops, 3D shadow planes or APIs newer than the checkout. Follow frame-driven Remotion, user requirements and installed branch types. None of these examples establishes that a repository asset or scene has passed QA.

@@ -4,9 +4,9 @@ A Thai YouTube studio that develops videos from storyboards, using Remotion for 
 
 The same story renders at 30 fps as **Short** (1080×1920) and **Long** (1920×1080). Framing adapts to each aspect ratio while retaining the same action and timing. Production targets are 40–45 seconds for standalone Shorts and 8–10 minute episodes split into 45–60 second chapters, each with a hook in its first 2 seconds. Shorter storyboard fragments and asset demos are development previews.
 
-Agents should read [AGENTS.md](AGENTS.md) for production rules, asset ownership and the issue/branch/PR workflow.
+Agents start at [AGENTS.md](AGENTS.md), the task router for authoritative workflows and requirements. Agent-facing documentation is English; narration, subtitles and other viewer-facing copy remain Thai.
 
-The planning handoff is **Boat research → Preaw script → Boat fact-check → Film visual/technical brief → Mark storyboard → Boss implementation**. [Film](docs/film-visual-brief-workflow.md) uses `gpt-6.1-sol` / `medium` to choose suitable 2D/3D/hybrid techniques, lighting and camera language, and specify how the parts can work together. [Mark](docs/mark-storyboard-workflow.md) uses `gpt-6-luna` / `max` to develop the brief into scene boards. Sets, characters and interaction props may all use 2D or 3D as appropriate; actual capabilities still require checkout verification. Agent files live in `.codex/agents/`; this documents a handoff, not an automatic runner.
+The planning handoff is **Boat research → Preaw script → Boat fact-check → Film visual/technical brief → Mark storyboard → Boss implementation**. [Film](docs/film-visual-brief-workflow.md) chooses suitable 2D/3D/hybrid techniques, lighting and camera language, and specify how the parts can work together. [Mark](docs/mark-storyboard-workflow.md) develops the brief into scene boards. Sets, characters and interaction props may all use 2D or 3D as appropriate; actual capabilities still require checkout verification. Agent files, including configured models and reasoning efforts, live in `.codex/agents/`; this is a handoff convention, not an automatic runner.
 
 [docs/remotion-toolkit.md](docs/remotion-toolkit.md) maps the installed animation, text layout, noise, captions, transitions, sound and SVG tools to reusable scene components, with examples and integration checks. Run `npm run lint` for the Remotion, TypeScript and React Hooks checks.
 
@@ -18,15 +18,15 @@ The planning handoff is **Boat research → Preaw script → Boat fact-check →
 4. **Library and timeline:** add missing assets once, then select them in a JSON timeline under `scripts/`. Remotion sequences the shots; Three.js stages spatial shots. Subtitles and channel graphics remain readable in screen space.
 5. **Review and render:** compare key frames with the board in Short and Long, add narration/sound, then render the delivery endings.
 
-New boards belong under `storyboards/<episode>/` with a companion shot sheet such as `shots.md`; create the folder on first use. Keep editable sources and shot-to-timeline mapping in Git. Generated exports and animatics belong in `out/`. An Excalidraw board is an authoring reference; its drawing JSON is translated into the project's scene contract.
+New boards belong under `storyboards/<episode>/` with a matching `<scene>.md` scene sheet and a shared `index.md`; create the folder on first use. Keep editable sources and shot-to-timeline mapping in Git. Generated exports and animatics belong in `out/`. An Excalidraw board is an authoring reference; its drawing JSON is translated into the project's scene contract.
 
 ## Current implementation
 
 The JSON scene pipeline already exists in [SceneRenderer](src/scenes/SceneRenderer.tsx), [scene types](src/scenes/types.ts) and [timeline validation](src/scenes/timeline.ts). [Root.tsx](src/Root.tsx) registers `Short` and `Long` with duration derived from the timeline. `Rig2DDemo` and the original seven-second hand-written rig demo are historical APIs.
 
-The `main` baseline ships the reusable 2D human/cat/dog library and a five-shot JSON demo. Three.js integration and episode-specific assets are under development on working branches. The intended home for shared 3D staging is `src/three/`, with cameras under `src/camera/`. Check the active branch's source and validator for available sets and camera fields; a requested asset or planned POV example is not automatically implemented.
+The historical `main` baseline ships the reusable 2D human/cat/dog library and a five-shot JSON demo. Three.js integration and episode-specific assets are under development on working branches. The intended home for shared 3D staging is `src/three/`, with cameras under `src/camera/`. Check the active branch's source and validator for available sets and camera fields; a requested asset or planned POV example is not automatically implemented.
 
-[docs/character-toolkit.md](docs/character-toolkit.md) documents the existing rig, pose tracks and JSON layout. [AGENTS.md](AGENTS.md) also contains planned overlay and POV designs, explicitly separate from the current runtime contract.
+[docs/character-toolkit.md](docs/character-toolkit.md) documents the existing rig, pose tracks and JSON layout. [Planned visual components](docs/planned-visual-components.md) contains overlay and POV designs, explicitly separate from the [runtime contract](docs/runtime-contract.md).
 
 ## Setup and preview
 
@@ -74,9 +74,10 @@ npx remotion render src/index.ts Short out/short.mp4
 npx remotion render src/index.ts Long out/long.mp4
 ```
 
-Check contracts and representative frames before a visual PR:
+Check contracts and representative frames before a visual PR (full requirements: [contribution workflow](docs/contributing.md) and [Boss QA](docs/boss-asset-workflow.md#visual-and-runtime-qa-before-push)):
 
 ```bash
+npm run lint
 npm run typecheck
 npm test
 npx remotion render src/index.ts Short out/short-check.mp4 --frames=0-5
@@ -100,3 +101,13 @@ Also inspect the storyboard's key action/reveal frames and the start/middle/end 
 | `storyboards/` | Editable boards and shot sheets; created on first use |
 | `scripts/` | Episode/chapter JSON and narration/render helpers |
 | `public/` | Licensed fonts and local media |
+
+## Documentation map
+
+- [Production requirements](docs/production-requirements.md): output formats, timing, Thai narration/subtitles, reusable assets and licensing.
+- [Sequence workflow](docs/sequence-workflow.md): storyboard-to-runtime authoring, blockout, boundaries and continuity.
+- [Runtime contract](docs/runtime-contract.md): capability evidence and module ownership.
+- [Planned visual components](docs/planned-visual-components.md): overlay and POV design specifications.
+- [Contribution workflow](docs/contributing.md): issues, branches, verification and PR delivery.
+
+The role workflows linked from [AGENTS.md](AGENTS.md) own their detailed handoff and review procedures. Requirements, defaults, reference examples and proposed capabilities are labeled separately.

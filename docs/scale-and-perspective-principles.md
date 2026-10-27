@@ -1,123 +1,133 @@
-# สัดส่วน ขนาดจริง และ perspective สำหรับ Film / Mark / Boss
+# Physical scale, dimensions and perspective for Film / Mark / Boss
 
-อัปเดตและเปิดอ่านแหล่งวันที่ 26 ตุลาคม 2026 ใช้เมื่อสร้าง/แก้ assets, จัด staging, ออกแบบกล้อง หรือรีวิวภาพที่มีระยะลึก ทั้ง 2D, 3D และ hybrid
+Updated and sources inspected on 26 October 2026. Read when creating/resizing assets, staging depth, designing cameras or reviewing apparent size in 2D, 3D or hybrid work. Requirements and project-derived methods below are separate from the primary-source findings in section 7.
 
-## 1. กฎผู้ใช้และเจ้าของงาน
+<a id="1-กฎผู้ใช้และเจ้าของงาน"></a>
+## 1. User requirement and ownership
 
-ผู้ใช้กำหนดให้ **ทำขนาดคน สัตว์ สิ่งของและเฟอร์นิเจอร์ให้สัมพันธ์อย่างสมจริงก่อน แล้วจึงให้มุมกล้องและระยะกำหนดขนาดบนภาพ** งาน stylized ยังใช้ได้ โดยรักษา identity และขนาดอ้างอิงที่เลือกไว้ รายละเอียดวิธีทำและ QA ด้านล่างเป็นการสังเคราะห์สำหรับโปรเจกต์; ข้อค้นพบจากแหล่งต้นทางแยกไว้ท้ายเอกสาร
+The user requires **believable relative dimensions for people, animals, objects and furniture first; camera angle and distance then determine their projected size**. Stylization is allowed while preserving identity and the chosen physical-size references. Implementation methods and QA below are project synthesis; primary-source evidence is listed separately.
 
-| เจ้าของ | สิ่งที่ต้องส่งต่อ |
+| Owner | Required handoff |
 | --- | --- |
-| Film | เลือกหน่วย/ระบบพิกัด, scale baseline, projection และแนวทางกล้อง; ระบุ composition strategy ของ 2D/3D, ข้อจำกัดและหลักฐาน feasibility ใน visual brief |
-| Mark | ใช้ baseline เดียวกันลงรายละเอียดรายช็อต: ตำแหน่งและระยะสัมพันธ์, ground plane, framing, contact, key panels และ boundary states ใน scene sheet |
-| Boss | ทำ dimensions/anchors และ projection ใน shared owners, integrate ตาม runtime contract และพิสูจน์ scale/contact/motion ทั้ง Short และ Long |
+| Film | Units/coordinate system, scale baseline, projection and camera approach; 2D/3D composition strategy, limitations and feasibility evidence in the visual brief |
+| Mark | Shot detail using that baseline: relative positions/distances, ground plane, framing, contact, key panels and boundary states in the scene sheet |
+| Boss | Dimensions/anchors and projection in shared owners, runtime-contract integration and Short/Long scale/contact/motion proof |
 
-Film กับ Mark บันทึกการเปลี่ยนแนวทางใน brief/board revision; Boss ส่งข้อจำกัดจริงกลับตาม [dev findings](dev-findings.md) การเพิ่มคู่มือนี้ยังไม่ได้แก้ asset หรือพิสูจน์ runtime ของฉากใด
+Film and Mark record approach changes in brief/board revisions; Boss returns observed limitations through [dev findings](dev-findings.md). Adding this guide does not repair an asset or establish any scene's runtime behavior.
 
-## 2. ตั้งขนาดอ้างอิงก่อนจัดกล้อง
+<a id="2-ตั้งขนาดอ้างอิงก่อนจัดกล้อง"></a>
+## 2. Establish reference dimensions before camera placement
 
-แยกสามสิ่ง: **canonical physical size** คือขนาด asset ในท่าอ้างอิง; **world placement** คือตำแหน่ง/ทิศทางและ instance size ที่มีเหตุผล; **projected size** คือขนาดพิกเซลหลัง camera/crop ต้องสืบย้อนแต่ละขั้นได้
+Separate three quantities: **canonical physical size**, the asset's size in a reference pose; **world placement**, position/orientation and justified instance size; and **projected size**, pixels after camera/crop. Each stage must be traceable.
 
-1. เลือกหน่วยร่วม เช่นเมตร หรือ normalized units ที่มี conversion ชัดเจน จด origin, axes, handedness และ floor plane ไม่เทียบ SVG pixels กับ Three.js units โดยตรง
-2. วัดมนุษย์จากท่ายืนอ้างอิงที่ระบุ สัตว์ระบุ posture และวิธีวัด เช่น shoulder height กับ body length อย่าเปลี่ยน canonical height ตามท่าก้ม/นั่งหรือหางที่แกว่ง
-3. ใช้ logical solid bounds ของตัว/วัตถุจริง แยก image canvas, transparent padding, glow และเงาออกจากขนาด ตัวละครสองภาพที่ canvas เท่ากันอาจมีขนาดตัวต่างกัน
-4. เลือก reference ให้ตรงอายุ/body type, species/breed และชนิดเฟอร์นิเจอร์ บันทึกแหล่งภาพ/แบบ/measurement และสถานะ measured, estimated หรือ design choice ค่าที่เดาเป็น baseline การผลิต ไม่ใช่สถิติสัดส่วนสากล
-5. เทียบความสัมพันธ์ที่ใช้แสดงจริง: สะโพก–เบาะ, เข่า–ขอบโต๊ะ, มือ–ของถือ, คน–ประตู และสัตว์–คน ให้ placeholder รักษาขนาดและ anchors เหล่านี้ก่อนเพิ่มรายละเอียด
-6. Normalize asset ครั้งเดียวในเจ้าของ library; เปลี่ยน instance size เมื่อเป็นคน/สัตว์/สิ่งของอีกขนาดโดยเจตนา พร้อมเหตุผลและ continuity เดิม ไม่แก้ perspective ด้วยการปรับขนาดเฉพาะช็อตตามความรู้สึก
+1. Choose shared units, such as meters or normalized units with an explicit conversion. Record origin, axes, handedness and floor plane. SVG pixels and Three.js units are not directly comparable.
+2. Measure humans in a named reference standing pose. For animals, specify posture and measurement method, such as shoulder height and body length. Bending/sitting poses or moving tails do not redefine canonical height.
+3. Use the body's/object's logical solid bounds. Exclude image canvas, transparent padding, glow and shadows. Equal image canvases can contain differently sized bodies.
+4. Choose references appropriate to age/body type, species/breed and furniture type. Record image/drawing/measurement sources and `measured`, `estimated` or `design choice` status. Estimates are production baselines, not universal anthropometric statistics.
+5. Compare relationships actually shown: hip–cushion, knee–table edge, hand–held object, person–door and animal–person. Preserve these dimensions and anchors in placeholders before detailing.
+6. Normalize once in the library owner. Change instance size only for an intentionally different person/animal/object size, with reasons and continuity recorded. Avoid shot-specific resizing as an improvised perspective correction.
 
-ตาราง baseline อยู่กับ library/sequence index ที่ใช้งานจริง ลิงก์จาก scene sheets แทนคัดลอกค่าหลายชุด:
+Keep the active baseline table with the library/sequence index and link scene sheets to it instead of maintaining copies:
 
-| Asset ID / revision | หน่วย + ท่าอ้างอิง | Solid dimensions / bounds | Floor / seat / grip anchors + space | Reference / สถานะ | Consumers / ข้อยกเว้น |
+| Asset ID / revision | Units + reference pose | Solid dimensions / bounds | Floor / seat / grip anchors + space | Reference / status | Consumers / exceptions |
 | --- | --- | --- | --- | --- | --- |
-| `<id>` | `<unit; pose>` | `<height/width/depth หรือชนิดการวัด>` | `<named anchors>` | `<path/URL; measured/estimated/design>` | `<shots; intentional stylization>` |
+| `<id>` | `<unit; pose>` | `<height/width/depth or measurement type>` | `<named anchors>` | `<path/URL; measured/estimated/design>` | `<shots; intentional stylization>` |
 
-## 3. กล้องเป็นผู้กำหนดขนาดบนภาพ
+<a id="3-กล้องเป็นผู้กำหนดขนาดบนภาพ"></a>
+## 3. Let the camera determine projected size
 
-### Perspective และ orthographic
+<a id="perspective-และ-orthographic"></a>
+### Perspective and orthographic projection
 
-Perspective ใช้ขนาดจริง ตำแหน่ง ทิศทาง และกล้องร่วมกัน วัตถุขนาดและ orientation เดิมที่ลึกตามแกนมองมากขึ้นจะเล็กลง โดยต้องคง projection เดิมไว้ ส่วน orthographic คงขนาดฉายเมื่อเลื่อนวัตถุเข้า–ออกตามแกนมองภายใต้กล้องเดิม Film เลือก orthographic ได้เมื่อต้องการภาพแบบนั้นและระบุเหตุผล [S1–S2]
+Perspective combines physical dimensions, placement, orientation and camera. An object of unchanged size/orientation becomes smaller as its depth along the viewing direction increases under the same projection. Orthographic projection preserves projected size as the object moves along the viewing direction under the same camera. Film may choose orthographic for that appearance with a recorded reason. [S1–S2]
 
-**ระยะที่ใช้หารคือ camera-space depth** ไม่ใช่ระยะเส้นตรงจากกล้องอย่างเดียว กำหนด `d > 0` ตามทิศ forward; ใน Three.js convention ที่กล้องมอง local `-Z` จะได้ `d = -zCamera` การขยับออกด้านข้างโดย depth เดิมไม่ได้ทำให้เล็กลงตาม radial distance
+**The divisor is camera-space depth**, not merely straight-line camera distance. Define `d > 0` in the forward direction; under Three.js's local `-Z` viewing convention, `d = -zCamera`. Moving sideways at the same depth does not shrink the object according to radial distance.
 
-สูตรตรวจคร่าว ๆ ต่อไปนี้อนุมานจากเรขาคณิต pinhole ใช้กับส่วนสูงที่ขนาน image vertical และอยู่บนระนาบขนาน image plane (frontoparallel) ซึ่งจุดบน–ล่างมี depth เดียวกัน:
+This approximate check follows pinhole geometry. It applies to height parallel to image vertical on a frontoparallel plane, with top and bottom at the same depth:
 
 ```text
 Hpx ≈ Hworld × viewportHeight / (2 × d × tan(vFOV / 2))
 ```
 
-ใช้ `vFOV` ที่มีผลจริงหลัง camera zoom ในหน่วย radians, viewport ก่อน picture crop/scale, square pixels และ centered perspective frustum; จุดต้องอยู่หน้ากล้องและในช่วง clipping ที่ใช้งาน หากมี view offset/film offset, post transform หรือภาพถูก crop ให้นำขั้นนั้นมาคิดด้วย สูตรนี้ไม่แทน projected bounds ของร่างกายเอียง หมุน มีความลึก หรือถูกบัง
+Use effective `vFOV` after camera zoom in radians, the viewport before picture crop/scale, square pixels and a centered perspective frustum. Points must lie in front of the camera and inside usable clipping bounds. Account separately for view/film offsets, post transforms and crop. This formula does not replace projected bounds for tilted, rotated, deep or occluded bodies.
 
-ตัวอย่างเชิงอัตราส่วน: วัตถุแบบเดิมที่ `d` เพิ่มเป็นสองเท่า จะสูงบนภาพครึ่งหนึ่งเมื่อเงื่อนไขข้างต้นคงเดิม ไม่ใช้ข้อสรุปนี้กับการเปลี่ยน FOV, pose หรือการเดินออกด้านข้างเพียงอย่างเดียว
+Ratio example: doubling `d` halves projected height when all these conditions remain unchanged. This inference does not apply when FOV/pose changes or movement is sideways only.
 
-### ฉายตำแหน่งและ anchors ด้วยระบบเดียวกัน
+<a id="ฉายตำแหน่งและ-anchors-ด้วยระบบเดียวกัน"></a>
+### Project positions and anchors through one system
 
-สำหรับ centered pinhole เงื่อนไขเดียวกับสูตรด้านบน ให้ world point ผ่าน world-to-camera transform เป็น `(xc, yc, zc)` ก่อน แล้วใช้:
+For a centered pinhole with the same conditions, transform a world point into camera coordinates `(xc, yc, zc)`, then use:
 
 ```text
-d = -zc                         # Three.js camera convention; ต้อง > 0
+d = -zc                         # Three.js camera convention; must be > 0
 fPx = viewportHeight / (2 × tan(vFOV / 2))
 xPx = viewportWidth / 2 + fPx × xc / d
 yPx = viewportHeight / 2 - fPx × yc / d
 ```
 
-ระบบทั่วไปใช้ camera view/projection matrices และ viewport/crop จริง ฉาย foot/hip/grip anchors กับจุดบน surface เป้าหมายใน pipeline เดียวกัน แล้วจึงจัดภาพ actor ตาม anchor ที่ฉายได้ การย่อภาพอย่างเดียวโดยเก็บเท้าไว้ที่ screen y เดิมไม่ใช่การเดินตาม ground plane
+General systems use the actual camera view/projection matrices and viewport/crop. Project foot/hip/grip anchors and target surface points through the same pipeline, then place actor artwork using projected anchors. Shrinking artwork while keeping its feet at the same screen y is not movement on a ground plane.
 
-3D geometry และ world-space cut-outs ที่ถูก perspective camera ฉายแล้วใช้ world dimensions ตาม baseline ให้กล้องสร้างการย่อด้วยระยะ **เพียงครั้งเดียว**; การคูณ `1/d` ซ้ำที่ object scale ทำให้ perspective ผิด ใน 2D simulated perspective ให้ shared projection/staging owner รับผิดชอบทั้งตำแหน่ง ขนาดและ anchors แทนสูตรเฉพาะฉาก
+Use baseline world dimensions for 3D geometry and world-space cut-outs already projected by a perspective camera. Let the camera supply depth scaling **once**; multiplying object scale by `1/d` again distorts perspective. In simulated 2D perspective, one shared projection/staging owner handles position, size and anchors instead of scene-specific formulas.
 
-### Zoom, dolly และสองสัดส่วน
+<a id="zoom-dolly-และสองสัดส่วน"></a>
+### Zoom, dolly and both aspect ratios
 
-- Picture zoom/crop ขยายภาพที่ฉายแล้ว; optical/FOV zoom เปลี่ยน projection จากตำแหน่งกล้องเดิม; dolly เปลี่ยนตำแหน่งกล้องและความสัมพันธ์เชิงพื้นที่ บันทึก transform owner และลำดับให้ชัด
-- Parallax จากการเลื่อนกล้องสัมพันธ์กับความลึก: foreground/background เคลื่อนบนภาพต่างกัน อย่าเพิ่ม parallax แบบเดียวกันให้ pure picture zoom หรือ pure rotation โดยอัตโนมัติ
-- Short/Long ใช้ขนาด world baseline เดียวกัน แต่จัด camera/aspect/FOV/crop และ staging ให้ action/contact/reveal อ่านได้ในแต่ละภาพ
-- กฎ Short lead ≥25% ของความสูงจอใน [Boss workflow](boss-asset-workflow.md#กฎการผลิตล่าสุดของผู้ใช้) เป็นเกณฑ์ projected visibility ให้แก้ framing/กล้อง/staging โดยรักษาสัดส่วน actor–set–prop หากชนเจตนา wide/reveal ให้ Film/Mark revise shot พร้อมเหตุผล ไม่ขยายตัวละครเดี่ยวเพื่อผ่านตัวเลข
+- Picture zoom/crop scales an already projected image. Optical/FOV zoom changes projection at a fixed camera position. Dolly changes camera position and spatial relationships. Record transform owner and order.
+- Camera translation produces depth-dependent parallax: foreground/background move differently on screen. Pure picture zoom or pure rotation does not automatically justify the same added parallax.
+- Short/Long share physical world dimensions; adapt camera/aspect/FOV/crop and staging so each output preserves action/contact/reveal readability.
+- The [Boss workflow's Short lead ≥25% frame-height rule](boss-asset-workflow.md#กฎการผลิตล่าสุดของผู้ใช้) concerns projected visibility. Adjust framing/camera/staging while preserving actor–set–prop proportions. If it conflicts with wide/reveal intent, Film/Mark revise the shot with reasons rather than inflating one actor to pass the threshold.
 
-## 4. Perspective ในงาน 2D และ hybrid
+<a id="4-perspective-ในงาน-2d-และ-hybrid"></a>
+## 4. Perspective in 2D and hybrid work
 
-1. Mark ระบุ ground plane, eye level/horizon และ vanishing directions ที่สำคัญให้ตรงกล้อง เส้นขนานในโลกแต่ละทิศใช้จุดลู่เข้าร่วมตาม projection; horizon อาจเอียงเมื่อกล้อง roll ไม่ถือว่าทุก shot ต้องมีเส้นขอบฟ้าแนวนอน
-2. ใช้พื้นที่และความลึกร่วมกันสำหรับคน สัตว์ furniture และ props การอยู่สูงขึ้นบนภาพไม่ได้แปลว่าไกลกว่าเสมอ อาจเป็นวัตถุอยู่บนโต๊ะหรือกล้องก้ม; ส่ง projected foot/contact position จาก ground/surface ที่ระบุ
-3. Foreshortening คือรูปร่างฉายที่เปลี่ยนเมื่อส่วนหนึ่งหันเข้าหากล้อง ใช้ pose/view art หรือ geometry ที่รองรับมุมนั้น การยืด/บีบ SVG ทั้งตัวไม่สร้างด้านที่ไม่มีและอาจทำให้แขนขาหรือของถือผิดรูป
-4. Flat cut-out มีข้อจำกัดมุมมอง ระบุ fixed-plane/billboard และช่วงมุมที่อ่านออก พร้อมตรวจ grip/seat/contact ระหว่างกล้องเคลื่อน Billboard ไม่ได้สร้างปริมาตรหรือด้านใหม่
-5. Depth ordering, occlusion และ contact shadows ต้องตรงพื้นที่เดียวกันในจังหวะเดินผ่าน/นั่ง/จับของ DOM overlays ต้องมี mapping/mask/pass ที่พิสูจน์แล้วเมื่อผสาน WebGL; screen-space subtitles/UI คงนอก spatial projection
+1. Mark specifies ground plane, eye level/horizon and relevant vanishing directions consistent with the camera. Parallel world directions share the vanishing points implied by projection. Camera roll can tilt the horizon; not every shot needs a horizontal horizon line.
+2. People, animals, furniture and props share space/depth. Higher image placement does not always mean greater distance: the object may be on a table or the camera tilted down. Derive projected foot/contact position from its named ground/surface.
+3. Foreshortening changes projected shape when a part points toward the camera. Use pose/view artwork or geometry that supports the angle. Stretching/compressing the entire SVG does not create unseen sides and may distort limbs or held props.
+4. Flat cut-outs have viewing-angle limits. Specify fixed-plane/billboard behavior and readable angle range, and check grip/seat/contact during camera movement. Billboarding creates neither volume nor unseen sides.
+5. Depth ordering, occlusion and contact shadows must agree spatially during crossing/sitting/gripping. DOM/WebGL composites need verified mapping/masks/passes. Screen-space subtitles/UI remain outside spatial projection.
 
-## 5. หลัก animation ที่นำมาประยุกต์
+<a id="5-หลัก-animation-ที่นำมาประยุกต์"></a>
+## 5. Applied animation principles
 
-หลักจากผู้สอนอยู่ใน S3–S5; วิธีใช้กับ pipeline ต่อไปนี้เป็นข้อสังเคราะห์ของทีม:
+S3–S5 contain the instructors' principles. These pipeline applications are team synthesis:
 
-- **Solid drawing / solid poses**: รักษาความรู้สึกของ volume, weight และ balance เมื่อเปลี่ยนมุม/ท่า ตรวจเท้าที่รับน้ำหนัก สะโพกบนเบาะ และมือที่จับของ ไม่วัดขนาดจาก silhouette ที่ยุบลงเพราะ pose แล้วเปลี่ยนตัวจริงตาม
-- **Staging**: ใช้ระยะ ขนาดฉาย สิ่งบังและทิศทางนำสายตาให้เรื่องอ่านออก วาง hierarchy ด้วยกล้องและพื้นที่ที่สมเหตุผล พร้อมกันกับการรักษา baseline
-- **Timing / spacing**: author เส้นทางใน world หรือ ground plane แล้วฉายทุกเฟรม การเคลื่อน world ระยะเท่ากันต่อเฟรมอาจมี screen spacing ไม่เท่ากันเมื่อ depth เปลี่ยน แยก easing ของ action ออกจากผล perspective
-- **Volume และ squash/stretch**: deformation ที่จงใจช่วยสื่อ material/แรง แต่ต้องรักษาความรู้สึกของ mass/volume; ระบุ extreme pose, ช่วงเวลาและการคืนรูป แยกจาก unintended scale drift และ canonical size
-- **Parallax / continuity**: ใช้ความลึกชุดเดียวสำหรับ motion, occlusion และ anchors ข้าม cut; การเปลี่ยนเลนส์หรือมุมอาจเปลี่ยน screen size โดย physical size ยังเดิม Mark บันทึก intentional changes เพื่อให้ QA แยกจาก pop
+- **Solid drawing / solid poses:** preserve volume, weight and balance through angle/pose changes. Check weight-bearing feet, hips on cushions and gripping hands. A compressed posed silhouette does not redefine physical size.
+- **Staging:** use depth, projected size, occlusion and direction to guide attention. Build hierarchy with plausible camera/space while preserving the baseline.
+- **Timing / spacing:** author paths in world/ground space and project every frame. Equal world movement per frame can produce unequal screen spacing as depth changes. Separate action easing from perspective effects.
+- **Volume and squash/stretch:** intentional deformation communicates material/force while preserving perceived mass/volume. Specify extremes, duration and recovery; distinguish it from unintended scale drift and canonical size.
+- **Parallax / continuity:** share depth definitions across motion, occlusion and anchors through cuts. Lens/angle changes can alter screen size while physical size remains constant. Mark records intentional changes so QA can distinguish them from pops.
 
-## 6. Authoring handoff และเกณฑ์จบงาน
+<a id="6-authoring-handoff-และเกณฑ์จบงาน"></a>
+## 6. Authoring handoff and completion criteria
 
-ข้อมูลในตารางเป็น **authoring notes** ไม่ใช่ JSON fields หรือ API ใหม่ ตรวจ types, validator, renderer และ shared registries ใน checkout ก่อนใช้ หากต้องเพิ่ม capability ให้ integrate ครบตาม [Remotion toolkit](remotion-toolkit.md)
+The table describes **authoring notes**, not new JSON fields or APIs. Inspect target-checkout types, validator, renderer and shared registries before use. Integrate missing capabilities fully under [Remotion toolkit](remotion-toolkit.md).
 
-| เอกสาร/เจ้าของ | ข้อมูลที่ต้องมี | จบเมื่อ |
+| Document / owner | Required data | Complete when |
 | --- | --- | --- |
-| Visual brief / Film | baseline reference, units/spaces, projection, camera intent, hybrid mapping, transform owner, feasibility/fallback | Mark วางช็อตโดยไม่ต้องเดาระบบขนาด; Boss รู้ shared owner และข้อที่ต้องพิสูจน์ |
-| Scene sheet / Mark | baseline revision, shot/decision IDs, ground/surface, FG/MG/BG และ depth, camera/key panels สองสัดส่วน, projected contact, entry/exit | ทุก beat ที่มี scale/depth change มีภาพและ expected behavior ตรวจได้ |
-| Library + QA / Boss | dimensions/bounds/anchors ที่ใช้จริง, conversion/projection owner, consumers, frame mapping และหลักฐาน | ตรวจรายการด้านล่างครบในขอบเขตงาน หรือระบุข้อค้างเป็น unverified พร้อม follow-up |
+| Visual brief / Film | Baseline reference, units/spaces, projection, camera intent, hybrid mapping, transform owner, feasibility/fallback | Mark can stage shots without guessing scale conventions; Boss knows shared owners and required proof |
+| Scene sheet / Mark | Baseline revision, shot/decision IDs, ground/surface, FG/MG/BG/depth, camera/key panels for both aspect ratios, projected contact, entry/exit | Every scale/depth-changing beat has inspectable imagery and expected behavior |
+| Library + QA / Boss | Actual dimensions/bounds/anchors, conversion/projection owner, consumers, frame mapping and evidence | Scoped checks below are completed or marked unverified with follow-up |
 
-QA ต้องบันทึก expected → observed, composition, shot ID, frame/clock และ owner ที่ต้องแก้:
+QA must record expected → observed, composition, shot ID, frame/clock and repair owner:
 
-- [ ] Calibration view: actor/animal/prop/furniture ในระยะเดียวกันเทียบ baseline; ตรวจ logical bounds และ padding ก่อนใส่กล้องเล่าเรื่อง
-- [ ] Near/far: วัตถุขนาดเดิมที่ depth ต่างกันเล็กลงถูกทิศใน perspective; same-depth comparison ใช้ orientation เดียวกัน; orthographic รักษาขนาดตาม intent
-- [ ] Motion start/mid/end และจุดใกล้–ไกลสุด: foot/surface, hip/seat, hand/grip และเงาตรงกัน ไม่มี double scaling, sliding, clipping หรือ cut-out บางผิดมุม
-- [ ] Short และ Long: baseline ตรงกัน, action/reveal ไม่หลุด, lead projected size ผ่านกฎและซับ/UI ชัด; ไม่แก้ด้วยการยืดสัดส่วน
-- [ ] Cut/event boundaries: ตรวจ `F-1/F/F+1`, attach/detach, sit/stand, reveal และ adjacent scenes ที่เกี่ยวข้อง แยก intentional camera/pose change จาก scale pop
-- [ ] Playback กับ random/backward seek/remount ให้เฟรมเดิม: projection, pose และกล้องคำนวณจาก frame/fps/seed ไม่สะสม state; ดูต่อเนื่องเพิ่มจาก contact sheet ตาม Boss QA
+- [ ] Calibration view: actor/animal/prop/furniture at the same depth compared to baseline; check logical bounds/padding before storytelling cameras.
+- [ ] Near/far: same-sized objects shrink correctly with perspective depth; same-depth comparisons share orientation; orthographic size follows intent.
+- [ ] Movement start/mid/end and depth extrema: foot/surface, hip/seat, hand/grip and shadows align without double scaling, sliding, clipping or unsupported edge-on cut-outs.
+- [ ] Short and Long: shared baseline, visible action/reveal, compliant projected lead size and readable subtitles/UI without distorted proportions.
+- [ ] Cut/event boundaries: `F-1/F/F+1`, attach/detach, sit/stand, reveals and relevant adjacent scenes; distinguish intentional camera/pose changes from scale pops.
+- [ ] Playback and random/backward seek/remount reproduce the same frame: projection, pose and camera derive from frame/fps/seed without accumulated state. Add continuous review to contact sheets under Boss QA.
 
-## 7. ข้อค้นพบจากแหล่งต้นทางและขอบเขตหลักฐาน
+<a id="7-ข้อค้นพบจากแหล่งต้นทางและขอบเขตหลักฐาน"></a>
+## 7. Primary-source findings and evidence limits
 
-เปิดอ่าน body ของแหล่งต่อไปนี้เมื่อ 26 ตุลาคม 2026 สรุปเฉพาะประเด็นที่ใช้ ไม่ใช่หลักฐานว่า installed API หรือ runtime ใน repo รองรับครบ:
+The bodies of these sources were inspected on 26 October 2026. These summaries cover relevant points only and do not establish installed-API or repository-runtime support:
 
-| ID / Primary source | สิ่งที่แหล่งยืนยัน |
+| ID / Primary source | Supported finding |
 | --- | --- |
-| S1 — [Three.js: PerspectiveCamera](https://threejs.org/docs/pages/PerspectiveCamera.html) | กล้องใช้ perspective; `fov` เป็น vertical FOV, `aspect` คืออัตราส่วนภาพ และมี near/far, zoom และ view offset; view size ใช้ระยะตาม viewing direction |
-| S2 — [Three.js: OrthographicCamera](https://threejs.org/docs/pages/OrthographicCamera.html) | ขนาดภาพวัตถุคงเดิมเมื่อระยะจากกล้องเปลี่ยนภายใต้ orthographic projection; มี frustum bounds และ zoom |
-| S3 — [Jay Jackson / Animation Mentor: Solid Drawing](https://www.animationmentor.com/blog/solid-drawing-the-12-basic-principles-of--animation/) | solid drawing สื่อรูปทรงสามมิติผ่านภาพสองมิติพร้อม weight, depth, balance; การวาง pose คำนึงถึง gravity และการพยุงตัว |
-| S4 — [John Nguyen / Animation Mentor: Staging](https://www.animationmentor.com/blog/staging-the-12-basic-principles-of-animation/) | การจัดตัวละคร foreground, composition, camera angles, lines of focus และ screen direction ช่วยนำความสนใจและสื่อเรื่อง |
-| S5 — [Chris Hurtt / Animation Mentor: Squash and Stretch](https://www.animationmentor.com/blog/squash-and-stretch-the-12-basic-principles-of-animation/) | shape deformation สื่อ flexibility/material; volume ควรรู้สึกคงเดิม และการรักษาค่าทางคณิตศาสตร์อาจยังต้องปรับให้ภาพอ่านถูกตาม style |
+| S1 — [Three.js: PerspectiveCamera](https://threejs.org/docs/pages/PerspectiveCamera.html) | Perspective camera with vertical `fov`, image `aspect`, near/far, zoom and view offset; view size uses distance along the viewing direction |
+| S2 — [Three.js: OrthographicCamera](https://threejs.org/docs/pages/OrthographicCamera.html) | Object image size remains constant with camera-distance changes under orthographic projection; frustum bounds and zoom are available |
+| S3 — [Jay Jackson / Animation Mentor: Solid Drawing](https://www.animationmentor.com/blog/solid-drawing-the-12-basic-principles-of--animation/) | Solid drawing conveys 3D form through 2D imagery, including weight, depth and balance; poses consider gravity/support |
+| S4 — [John Nguyen / Animation Mentor: Staging](https://www.animationmentor.com/blog/staging-the-12-basic-principles-of-animation/) | Foreground characters, composition, camera angles, lines of focus and screen direction guide attention and communicate story |
+| S5 — [Chris Hurtt / Animation Mentor: Squash and Stretch](https://www.animationmentor.com/blog/squash-and-stretch-the-12-basic-principles-of-animation/) | Shape deformation conveys flexibility/material; volume should feel consistent, and mathematically preserved volume may still need stylistic visual adjustment |
 
-สูตร pinhole, calibration table, ownership, handoff และ QA เป็นการอนุมาน/สังเคราะห์สำหรับโปรเจกต์ ไม่ใช่ checklist ที่แหล่งใดรับรอง สัดส่วนของ asset ต้องมี reference ของงานนั้น; เอกสารนี้ไม่ได้กำหนดค่ามาตรฐาน anthropometry หรืออ้างผล render ใหม่
+Pinhole formulas, calibration tables, ownership, handoff and QA are project inference/synthesis, not a checklist certified by these sources. Each asset needs its own scale references. This guide defines no universal anthropometric values and claims no new render results.
