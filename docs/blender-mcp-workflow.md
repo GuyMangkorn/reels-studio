@@ -1,15 +1,16 @@
 # Blender MCP: assets and rendered shots for Remotion
 
-Read this when Film selects Blender, Mark boards Blender-produced shots, or Boss creates, edits or exports Blender work. The user authorized Blender in the workflow on 26 October 2026; the installation in progress at that time still required a live connection check. This document defines a workflow; it adds no renderer, loader or scene JSON fields. Verify session capabilities before claiming availability.
+Read this when Film selects Blender, Mark boards Blender-produced shots, Boss creates/edits/exports Blender work, or James assembles its outputs. The user authorized Blender in the workflow on 26 October 2026; the installation in progress at that time still required a live connection check. This document defines a workflow; it adds no renderer, loader or scene JSON fields. Verify session capabilities before claiming availability.
 
 <a id="หน้าที่และทางเลือกส่งมอบ"></a>
 ## Ownership and delivery routes
 
-Sequence: Boat researches → Preaw writes → Boat reviews → Film prepares the brief → Mark boards → Boss produces with Blender/code and integrates → Remotion → QA.
+Sequence: Boat researches → Preaw writes → Boat reviews → Film prepares the brief → Mark boards → James assembles/edits in Remotion → Mark/Film review → James delivers. Boss produces Blender/code assets and shared integration alongside assembly under [the ownership contract](james-editing-workflow.md#decision-and-code-ownership--requirements).
 
 - **Film** selects medium and delivery route per shot. Record decision ID/revision, story value, camera/scale/light contract, dependencies, fallback and missing evidence. Use Blender when geometry, new angles, parallax, lighting/shadows or occlusion serve the image. Keep 2D/3D/hybrid available for every element.
 - **Mark** details shots from the brief: cameras for both aspect ratios, action/reveal frames, contact, foreground and boundaries. Record the Blender source/export revision reviewed. A viewport reference is not runtime proof.
 - **Boss** owns Blender sources, scripts, reusable assets, export settings and scene-pipeline integration. Fix geometry/rig/anchors in the shared source, re-export, and check both Blender and the output actually used by Remotion.
+- **James** selects verified exports through shared APIs, authors scene timing/staging and source-to-output frame mapping, and verifies the combined sequence. Request source/export/shared-API fixes from Boss with shot/frame evidence. Respect the manifest camera/light owner so baked and runtime changes are not applied twice.
 - **Remotion** owns the executable timeline, narration/amplitude, Thai subtitles, channel label, screen overlays, endings and final export. Read [Remotion toolkit](remotion-toolkit.md) before adding capabilities.
 
 | Route | Choose when | Required proof before timeline use |
@@ -64,14 +65,14 @@ Blender and Three.js camera, light and material numbers are not interchangeable.
 3. Check the delivery route. For GLB, verify actual material/rig/animation/constraint export support, bake/convert as needed and inspect the destination renderer. For pre-render, inspect alpha edges, color, frame count and trim/hold independently of audio timing. Use motion blur only when it helps movement readability without concealing clues/reveals.
 4. Export from one shared source revision. Produce storyboard-matching Short/Long framing and record reproducible settings. Include all required occluding/occluded passes. Flat output cannot reveal unrendered sides or automatically receive volumetric lighting.
 5. Before JSON selects the asset/media/animation, Boss adds missing capabilities to the shared module, scene types, validator and renderer dispatch together. The shared representation owner handles model loading, frame/fps animation sampling, readiness/errors and disposal.
-6. Update the executable timeline, shot mapping/index and entry/exit states under [sequence rules](sequence-workflow.md). Return constraints that change medium/camera/light/interfaces to Film/Mark and align revisions.
+6. James updates the executable timeline, shot mapping/index and entry/exit states under [sequence rules](sequence-workflow.md); Boss supplies verified exports/interfaces and demonstration evidence. Return constraints that change medium/camera/light/interfaces to Film/Mark and align revisions.
 
 Integration is complete when the timeline loads actual output through the shared pipeline and random seeking produces expected frames in both Short and Long. Export success alone is insufficient.
 
 <a id="4-qa-และส่งต่อ"></a>
 ## 4. QA and handoff
 
-For visual/runtime changes, complete [Boss's pre-push QA](boss-asset-workflow.md#qa-ก่อน-push-งานภาพหรือ-runtime): Studio cold load/play/scrub/random seeking, renders in both aspect ratios, one-second/final-frame contact sheets, event/cut `F-1/F/F+1`, continuous sequence review and available neighbors.
+For visual/runtime changes, complete [shared pre-push QA](boss-asset-workflow.md#visual-and-runtime-qa-before-push): Boss checks shared changes/demos/consumers and James checks assembled sequences. Cover Studio cold load/play/scrub/random seeking, both-format renders, one-second/final-frame contact sheets, event/cut `F-1/F/F+1`, continuous sequence review and available neighbors.
 
 Also compare Blender export and Remotion at corresponding source/output frames: scale/contact, foot sliding, grip/seat, clipping, occlusion, alpha halos, color/shadows, texture/model loading, animation starts/ends, reveals and subtitle safe regions. Check rendered files separately from previews. When evaluating cost, measure production/render times; MCP alone does not prove smoother visuals or faster rendering.
 

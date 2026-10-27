@@ -4,6 +4,8 @@
 
 For medium flexibility, demo lighting, texture lifecycle, lead size, shot movement and visual QA, use the authoritative [Boss production rules](boss-asset-workflow.md#latest-production-rules). For sequence assembly and boundaries, read [sequence-workflow.md](sequence-workflow.md).
 
+James owns scene assembly/editing and sequence delivery; Boss owns reusable assets/capabilities. Follow [the ownership and review contract](james-editing-workflow.md#decision-and-code-ownership--requirements). [Short-form editing principles](short-form-editing-principles.md) are contextual defaults and preserve the timing, Thai text/audio and visual requirements below.
+
 ## Visual direction and motion
 
 Use original stylized artwork, readable silhouettes, simple forms and a consistent channel palette. Existing 2D characters keep solid fills, rounded shapes and dark outlines. Character representation follows Film's brief; preserve identity and appearance when switching medium. Keep the chosen 2D/3D/hybrid assets visually consistent through shape language, materials, lighting and color. The brief and storyboard determine daylight, dusk, night, moonlight, shadows and atmosphere; bright daytime pastel lighting is not mandatory for every shot. Three.js is an intended production tool, including for actual 3D geometry and spatial camera movement.

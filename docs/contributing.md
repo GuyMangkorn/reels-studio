@@ -1,6 +1,6 @@
 # Contribution and Verification Workflow
 
-**Status:** Required for repository delivery. Keep documentation changes separate from unrelated scene/runtime work. Read [sequence-workflow.md](sequence-workflow.md) for dependency ordering and [Boss’s visual QA](boss-asset-workflow.md#visual-and-runtime-qa-before-push) when compositions are affected.
+**Status:** Required for repository delivery. Keep documentation changes separate from unrelated scene/runtime work. Read [sequence-workflow.md](sequence-workflow.md) for dependency ordering and [shared visual QA](boss-asset-workflow.md#visual-and-runtime-qa-before-push) when compositions are affected. James owns assembled-sequence/edit delivery; Boss owns shared-capability delivery under [the ownership contract](james-editing-workflow.md#decision-and-code-ownership--requirements).
 
 ## Workflow and verification
 

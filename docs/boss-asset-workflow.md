@@ -1,6 +1,7 @@
-# Boss: reusable assets and scene implementation
+<a id="boss-reusable-assets-and-scene-implementation"></a>
+# Boss: reusable assets and shared rendering capabilities
 
-Boss is the team's programmer for shared 2D/3D assets, rigs, props, backgrounds, scene-renderer capabilities and visual bug fixes in their owning modules. Use `.codex/agents/boss.toml`. Preaw owns scripts, Boat owns facts, [Film owns the visual/technical brief](film-visual-brief-workflow.md), and Mark owns detailed boards. Boss makes that plan render and supplies runtime evidence.
+Boss is the team's programmer for shared 2D/3D assets, rigs, props, backgrounds, scene-renderer capabilities and visual bug fixes in their owning modules. Use `.codex/agents/boss.toml`. Preaw owns scripts, Boat owns facts, [Film owns the visual/technical brief](film-visual-brief-workflow.md), Mark owns detailed boards, and [James owns scene assembly/editing](james-editing-workflow.md). Boss supplies reusable implementation, demonstrated interfaces and affected-consumer evidence under [the ownership contract](james-editing-workflow.md#decision-and-code-ownership--requirements).
 
 For Blender creation, editing, import/export or rendered shots, read [blender-mcp-workflow.md](blender-mcp-workflow.md). Boss owns shared sources/scripts/manifests, export contracts and Remotion integration. Verify the actual connection before changing a scene; report source → export → runtime → visual status separately.
 
@@ -8,13 +9,13 @@ Example requests:
 
 > Have Boss build a sofa from this scene pack, with seat/grip anchors, and check contact and lighting in Short and Long.
 
-> Have Boss implement E01-C01-S02 from storyboard revision 3, inspect Studio, and produce one-second contact sheets before the PR.
+> Have Boss build the missing sit/stand and cup-grip capabilities required by E01-C01-S02 revision 3, inspect Studio/render demonstrations, and hand verified APIs to James.
 
 <a id="กฎการผลิตล่าสุดของผู้ใช้"></a>
 <a id="latest-production-rules"></a>
 ## Latest production rules — requirements
 
-This table is the authoritative home for the user's rules, updated 26 October 2026 after the user revoked background-only 3D and mandatory 2D characters/interaction props. Film selects the approach for story value and feasibility. These rules apply to Film, Mark and Boss. They replace earlier medium/prop-plane/effect-stage restrictions; lifecycle, demo lighting, contact/scale and QA requirements remain. Numeric values are project rules, not universal Three.js/Remotion settings.
+This table is the authoritative home for the user's rules, updated 26 October 2026 after the user revoked background-only 3D and mandatory 2D characters/interaction props. Film selects the approach for story value and feasibility. These rules apply to Film, Mark, Boss and James. They replace earlier medium/prop-plane/effect-stage restrictions; lifecycle, demo lighting, contact/scale and QA requirements remain. Numeric values are project rules, not universal Three.js/Remotion settings.
 
 | Requirement | Implementation and evidence |
 | --- | --- |
@@ -38,16 +39,16 @@ Pure 2D creates lighting/look through grading, fills, masks and controlled glow.
 
 Follow [sequence workflow](sequence-workflow.md). Read the episode index, scene sheets and adjacent scenes before splitting work.
 
-| Area | Boss deliverable |
+| Area | Owner and deliverable |
 | --- | --- |
-| Shared elements | One library module/capability per element, stable identity, appearance interface, logical bounds/pivots/anchors and coordinates agreed with Mark; record consumers/status in the index. |
-| Sequence blockout | Executable timeline for the entire requested scope, shared placeholders with representative scale/contact, retained timing/reveal, and continuous playback in Short/Long before polish. |
-| Scene integration | Replace placeholders and author staging/timing with the same library; update the combined timeline and shot mapping in the same PR. |
-| Boundary evidence | Implemented entry/exit states, composition audio offsets and adjacent-cut checks, identifying unverified parts. |
+| Shared elements | Boss: one library module/capability per element, stable identity, appearance interface, logical bounds/pivots/anchors and coordinates; hand usage/status/evidence to James and record consumers in the index. |
+| Sequence blockout | James: executable timeline for the requested scope, shared placeholders supplied by Boss with representative scale/contact, retained timing/reveal, and continuous Short/Long playback before polish. |
+| Scene integration | James: replace placeholders and author staging/timing using verified shared interfaces; update combined timeline and shot mapping together. Boss implements missing shared capabilities. |
+| Boundary evidence | James: authored entry/exit, composition audio offsets and adjacent-cut checks. Boss: deterministic shared behavior and evidence for changed consumers. Identify unverified parts. |
 
 Inspect `Root`, types, validator and renderer before choosing timeline assembly. If the checkout loads a single array, use it. Split sources require one deterministic, tested assembly path. Designed `entry`/`exit`, presets or include/import fields are not automatically usable JSON.
 
-Cross-scene states must be derived directly from authored data and the sought frame: use consistent actor IDs with explicit positions/appearances. Prefer supported fields; extend state resolution through shared types/validation/renderer and regression tests when needed. Playback-dependent mutable inheritance cannot reproduce direct seeks.
+James authors cross-scene states from supported data and the sought frame, with consistent actor IDs and explicit positions/appearances. Boss extends shared state resolution through types/validation/renderer and regression tests when needed. Playback-dependent mutable inheritance cannot reproduce direct seeks.
 
 Before polish, record blockout revision, timeline/input props, scene/shot mapping, placeholders, both-format continuous review and unresolved issues in index/QA notes. Missing neighbors require a labeled boundary placeholder or an explicitly unverified gap. Single-scene work covers needed boundaries only; asset-only/scoped bug fixes cover affected consumers without a new episode blockout.
 
@@ -58,21 +59,21 @@ Merge foundation/capability PRs before starting dependent scene branches from re
 
 When mapping boards to the library, record missing requirements against shot/decision IDs. Propose shared assets/capabilities, dependencies and qualitative costs/risks; label unmeasured costs `estimated`. Include a fallback and its effect on action, information and reveal. Reconcile material changes with Film/Mark and update brief/board before changing the plan. An available asset alone does not justify replacing the required demonstration/event with a narrator pointing at cards.
 
-Blockout placeholders must demonstrate action and information delivery from [visual progression](film-visual-brief-workflow.md#visual-progression-before-asset-selection) well enough for Film/Mark to judge. Before polish, submit both-format sequences and record shot/frame references, review results and unresolved items in the index. If a placeholder cannot demonstrate the purpose, mark it unverified and state the required follow-up. Code/contact/continuity QA and correct total duration do not establish a storytelling pass.
+Boss's placeholders must support action and information delivery from [visual progression](film-visual-brief-workflow.md#visual-progression-before-asset-selection) well enough for James to assemble and Film/Mark to judge. James submits both-format sequences before polish and records shot/frame references, reviews and unresolved items. Boss supplies demonstration evidence and records placeholder limitations. If a placeholder cannot demonstrate the purpose, mark it unverified and state the follow-up. Code/contact/continuity QA and correct duration do not establish a storytelling pass.
 
 <a id="ขั้นตอนทำงาน"></a>
 ## Implementation steps
 
 Read and update [dev findings](dev-findings.md) when blockers, workarounds or reusable lessons affect technique/shot decisions. Record them during dev/blockout/QA, revisit status before the PR, and link finding IDs to affected Film/Mark decisions.
 
-1. **Establish scope:** identify issue, branch, asset/scene/shot IDs and script/brief/board revisions. Read index, brief decisions, scene sheet and adjacent entry/exit states. Classify foundation/blockout versus integration/polish and dependencies. Resolve conflicts before writing; preserve story/facts/timing or record the agreed revision.
+1. **Establish scope:** identify issue, branch, asset/scene/shot IDs and script/brief/board revisions. Read index, brief decisions, scene sheet, James's capability request and relevant boundaries. Classify shared foundation/capability work versus James's scene editing and record dependencies. Resolve conflicts before writing; preserve story/facts/timing or record the agreed revision.
 2. **Inspect checkout:** read AGENTS.md and [remotion-toolkit.md](remotion-toolkit.md); run `npm ls --depth=0` and `npx remotion versions`. Inspect APIs/registries/types/validator/renderer/render helpers; use [character-toolkit.md](character-toolkit.md) for rigs/poses. Finish when every dependency is classified `existing-integrated`, `exists-unintegrated`, `missing` or `unknown`.
 3. **Define ownership/interfaces:** one library owner per asset, with ID, bounds, pivot, seat/grip/floor anchors, appearance parameters and resource ownership. Scenes select IDs and stage/time them. One explicit owner converts logical asset coordinates to stage space.
-4. **Build continuous blockout before polish:** assemble every scene in scope using Film/Mark's representation. Place hips/feet/hands on anchors; review framing, scale, motion, occlusion, timing/reveal and boundaries in both formats, especially hybrid seams. Record evidence before detail. Install/integrate capabilities required by scope only.
+4. **Demonstrate capabilities before polish:** supply shared placeholders and small executable demos of required views/actions/contacts using Film/Mark's representation. Test hips/feet/hands on anchors, scale, motion, occlusion and hybrid seams in both formats. James assembles the continuous blockout; resolve shared failures exposed by its review and record evidence before detail. Install/integrate capabilities required by scope only.
 5. **Implement deterministically:** frame/fps clock, seeded flicker/noise, static-art texture keys independent of frame, loading/error/disposal and readiness consistent in Studio/render. Read [asset-engineering-principles.md](asset-engineering-principles.md) for `ThreeCanvas`, `useLoader`, color space and alpha/depth constraints.
 6. **Integrate the full pipeline:** update types + validator + shared component + renderer dispatch together. Tests should exercise input, timing, contact or actual regressions rather than restating implementation constants. Keep SVG/geometry in shared assets.
 7. **Review picture/time:** complete QA below, fix root causes in shared owners and check affected consumers. Scale/color/lighting changes must preserve their scenes.
-8. **Deliver:** follow [contributing.md](contributing.md) for issue branch/commit/push/PR. Report reusable assets, shot mapping, actual checks, limitations, finding IDs and Film/Mark follow-up. Distinguish asset-ready from scene-integrated and code-pass from visual-pass.
+8. **Deliver:** follow [contributing.md](contributing.md) for issue branch/commit/push/PR. Give James the [asset handoff](james-editing-workflow.md#inputs-and-asset-request-contract): usage, actions/views, dimensions/anchor spaces, revisions/licenses, checks and limitations. Report consumer/shot mapping, findings and Film/Mark/James follow-up. Distinguish asset-ready from scene-integrated and code-pass from visual-pass.
 
 <a id="texture-lighting-และ-contact-ที่ต้องตรวจเป็นพิเศษ"></a>
 ## Texture, lighting and contact checks
@@ -88,6 +89,8 @@ Read and update [dev findings](dev-findings.md) when blockers, workarounds or re
 <a id="qa-ก่อน-push-งานภาพหรือ-runtime"></a>
 <a id="visual-and-runtime-qa-before-push"></a>
 ## QA before pushing visual or runtime work — requirements
+
+This is the shared QA standard: Boss applies it to shared modules/demos and affected consumers; James applies it to assembled scenes/sequences and delivery. Coordinate evidence for shared changes instead of repeating identical checks. Mark verifies shot storytelling and Film overall visual direction; neither replaces runtime QA.
 
 1. Run repository typecheck, lint and relevant tests. For instruction-only changes, use diff/TOML/link checks under [the documentation exception](contributing.md); adding agent rules does not establish scene verification.
 2. Open Studio with `npm run start` or the checkout's command. Check cold load, play/pause, backward scrub and unordered seeks. Compare the same frame after seek/reload with render for stale textures, empty first frames and pops. Record composition, scene/shot, frames and procedure.

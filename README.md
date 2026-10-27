@@ -6,7 +6,7 @@ The same story renders at 30 fps as **Short** (1080×1920) and **Long** (1920×1
 
 Agents start at [AGENTS.md](AGENTS.md), the task router for authoritative workflows and requirements. Agent-facing documentation is English; narration, subtitles and other viewer-facing copy remain Thai.
 
-The planning handoff is **Boat research → Preaw script → Boat fact-check → Film visual/technical brief → Mark storyboard → Boss implementation**. [Film](docs/film-visual-brief-workflow.md) chooses suitable 2D/3D/hybrid techniques, lighting and camera language, and specify how the parts can work together. [Mark](docs/mark-storyboard-workflow.md) develops the brief into scene boards. Sets, characters and interaction props may all use 2D or 3D as appropriate; actual capabilities still require checkout verification. Agent files, including configured models and reasoning efforts, live in `.codex/agents/`; this is a handoff convention, not an automatic runner.
+The production handoff is **Boat research → Preaw script → Boat fact-check → Film visual/technical brief → Mark storyboard → James blockout/edit → Mark shot review + Film overall-look review → James delivery**, supported by **Boss shared assets/capabilities**. [Film](docs/film-visual-brief-workflow.md) owns whole-clip visual direction and [Mark](docs/mark-storyboard-workflow.md) develops shot intent and boards. [Boss](docs/boss-asset-workflow.md) supplies reusable art, rigs, anchors and rendering APIs; [James (เจมส์)](docs/james-editing-workflow.md) stages scenes, authors the timeline/camera/action through those APIs, edits audio/Thai captions and verifies delivery. Sets, characters and props may use 2D/3D/hybrid; actual capabilities require checkout evidence. Agent files live in `.codex/agents/` and inherit unspecified model/effort settings; this is a handoff convention, not an automatic runner.
 
 [docs/remotion-toolkit.md](docs/remotion-toolkit.md) maps the installed animation, text layout, noise, captions, transitions, sound and SVG tools to reusable scene components, with examples and integration checks. Run `npm run lint` for the Remotion, TypeScript and React Hooks checks.
 
@@ -106,6 +106,9 @@ Also inspect the storyboard's key action/reveal frames and the start/middle/end 
 
 - [Production requirements](docs/production-requirements.md): output formats, timing, Thai narration/subtitles, reusable assets and licensing.
 - [Sequence workflow](docs/sequence-workflow.md): storyboard-to-runtime authoring, blockout, boundaries and continuity.
+- [James editing workflow](docs/james-editing-workflow.md): ownership, asset requests, blockout, edit reviews and delivery.
+- [Short-form editing principles](docs/short-form-editing-principles.md): purposeful hooks, pacing, transitions, Thai captions, sound and endings.
+- [Short-form editing research](docs/short-form-editing-research.md): primary sources, platform/ad limitations and observable technique checks.
 - [Runtime contract](docs/runtime-contract.md): capability evidence and module ownership.
 - [Planned visual components](docs/planned-visual-components.md): overlay and POV design specifications.
 - [Contribution workflow](docs/contributing.md): issues, branches, verification and PR delivery.

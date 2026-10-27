@@ -16,7 +16,9 @@ This workflow covers mystery, educational and twist Reels/Shorts, including a wh
 | Revision / recheck | Preaw → Boat | Script changes and review of changed/dependent claims |
 | Visual / technical brief | Film | 2D/3D/hybrid choice, lighting/shadow/color, camera language, 2D/Three.js integration, feasibility and risks |
 | Storyboard | Mark | Shots/panels, staging, timing and scene packs from the brief |
-| Production | Developer / editor | Scenes and audio checked against script and boards |
+| Shared assets / capabilities | Boss | Verified reusable art, rigs, anchors and renderer interfaces |
+| Scene assembly / editing | James | Continuous blockout, timeline, staging, sound, Thai captions and delivery |
+| Production review | Mark / Film | Mark checks shot storytelling; Film checks whole-clip visual consistency in blockout and final edit |
 
 Boat performs two separate passes. Research before writing does not establish that the final wording has been checked. The coordinator supplies files and assignments within the user's requested scope; these configs do not install automatic execution or cross-chat messaging.
 
@@ -97,7 +99,7 @@ After a script revision, assess changes to factual wording and dependent claims.
 <a id="ส่งต่อและตรวจบทก่อนลงทุนทำภาพ"></a>
 ## Handoff and editorial check before visual production
 
-Before handing off to Film, Preaw checks hook/payoff, scene progression, fair twist logic and the knowledge's role in the plot. Boat checks facts in a separate pass. Film receives matching script/review revisions for the visual/technical brief; Mark receives those revisions with the brief revision. Return script issues to Preaw/Boat, approach/integration issues to Film, board details to Mark and code/experimental proof to Boss.
+Before handing off to Film, Preaw checks hook/payoff, scene progression, fair twist logic and the knowledge's role in the plot. Boat checks facts in a separate pass. Film receives matching script/review revisions for the visual/technical brief; Mark receives those revisions with the brief revision. James receives the matched scene pack for assembly/editing under [the ownership contract](james-editing-workflow.md#decision-and-code-ownership--requirements). Return script issues to Preaw/Boat, approach issues to Film, board intent to Mark, shared code/proof to Boss and staging/timeline/editing issues to James.
 
 The user may request rough boards from a draft. Identify the revision and unresolved claims that may require visual changes. A completed script or ready factual review does not imply approval. If an animatic exposes timing problems, revise the script, increment its revision and check factual/continuity impact.
 

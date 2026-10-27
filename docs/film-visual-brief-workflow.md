@@ -2,18 +2,19 @@
 
 Film receives the script and factual review, then chooses a rough visual approach before Mark storyboards it. Use `.codex/agents/film.toml`; configuration reference: [OpenAI custom agents](https://learn.chatgpt.com/docs/agent-configuration/subagents#custom-agents). Permissions and MCP access are inherited from the calling chat.
 
-Workflow: Boat research → Preaw script → Boat review / Preaw revision → **Film visual/technical brief** → **Mark scene boards** → **Boss code and rendered proof**. The coordinator invokes agents for the assigned scope; these files do not install an automatic pipeline or send cross-chat messages.
+Workflow: Boat research → Preaw script → Boat review / Preaw revision → **Film visual/technical brief** → **Mark scene boards** → **James blockout/edit** → **Mark shot review + Film overall-look review** → **James delivery**. Boss supplies shared assets/capabilities and runtime proof alongside assembly. The coordinator invokes assigned scopes; these files do not install an automatic pipeline or send cross-chat messages.
 
 For Blender assets/rendered shots, read [blender-mcp-workflow.md](blender-mcp-workflow.md). Choose pre-render, GLB/Three.js or hybrid with reasons and integration evidence; hand Mark/Boss the camera/scale/light contract. Remotion retains timeline/audio/subtitles/final export ownership.
 
 <a id="ขอบเขตและอำนาจตัดสินใจ"></a>
 ## Scope and decision ownership — requirements
 
-- **Film** chooses medium per set/character/prop/effect, art direction, lighting/shadows/color, camera language and 2D/Three.js composition. Record reasons, constraints and risks the developer can act on.
+- **Film** owns whole-clip visual direction: medium per set/character/prop/effect, character/set look, art direction, lighting/shadows/color, camera language and 2D/Three.js composition. Record reasons, constraints and risks the developer can act on. Review James's continuous blockout and final edit for consistency, in addition to briefing before boards.
 - **Mark** develops shots/panels, blocking, acting, cuts and both-format framing, with scene sheets and sequence index. Reference Film decision IDs rather than reopening medium choices for every shot.
-- **Boss** owns interfaces/APIs, reusable implementation, runtime integration and QA; feed observed constraints back into brief/board revisions.
+- **Boss** owns shared interfaces/APIs, reusable implementation, renderer integration and affected-consumer QA; feed constraints back into brief/board revisions.
+- **James** owns executable scene staging, timeline/camera/action authoring through supported APIs, editing/audio/subtitles, sequence QA and delivery under [the ownership contract](james-editing-workflow.md#decision-and-code-ownership--requirements).
 
-Routine crop/staging/timing refinements preserving story and approach belong to Mark. Material changes to medium, spatial camera, light strategy, shared interfaces or reveal require recorded reasons and synchronized brief/board revisions. Routine work adds no user approval gate. Explicit user direction takes precedence over team recommendations.
+Mark owns routine shot refinements preserving story and approach; James implements the agreed plan and tunes supported staging/timing within its constraints. Material changes to medium, spatial camera, light strategy, shared interfaces or reveal require recorded reasons and synchronized brief/board revisions. Routine work adds no user approval gate. Explicit user direction takes precedence over team recommendations.
 
 <a id="ขั้นตอน"></a>
 ## Briefing steps

@@ -1,13 +1,13 @@
 <a id="มาร์ค-mark-storyboard-รายฉาก"></a>
 # Mark: scene-sized storyboards
 
-Mark receives **the written script + fact-check + Film's visual/technical brief** as storyboard artist, shot director and production planner. Plan the requested sequence, then deliver scene-sized implementation/review packs. Use `.codex/agents/mark.toml`; config reference: [OpenAI custom agents](https://learn.chatgpt.com/docs/agent-configuration/subagents#custom-agents). Permissions inherit from the calling chat.
+Mark receives **the written script + fact-check + Film's visual/technical brief** as storyboard artist, shot director and production planner. Plan the requested sequence, then deliver scene-sized assembly/review packs to James and asset requirements to Boss under [the ownership contract](james-editing-workflow.md#decision-and-code-ownership--requirements). Use `.codex/agents/mark.toml`; config reference: [OpenAI custom agents](https://learn.chatgpt.com/docs/agent-configuration/subagents#custom-agents). Permissions inherit from the calling chat.
 
 Receive Preaw's script and Boat's review through [editorial-workflow.md](editorial-workflow.md), with [Film's brief](film-visual-brief-workflow.md). Track matching script/review/brief revisions and preserve beat, clue, claim and visual decision IDs in shot mappings. For a draft, record factual gaps affecting visuals. Film owns the approach; Mark owns detailed shots/boards. If the brief is missing, route that need to Film through the coordinator. A directly requested rough board may proceed as `provisional`, identifying what must be reconciled.
 
 For MCP-assisted drawing/revisions, read [excalidraw-mcp.md](excalidraw-mcp.md) for actual tools, checkpoints and scene files. Verify that the latest widget edits match the files handed to the developer.
 
-For Blender-produced shots, read [blender-mcp-workflow.md](blender-mcp-workflow.md). Preserve Film's delivery route and record source/export revision, both framings, camera owner, action/reveal frames, contact/occlusion and boundaries in the sheet/index. Separate viewport references from runtime evidence checked by Boss.
+For Blender-produced shots, read [blender-mcp-workflow.md](blender-mcp-workflow.md). Preserve Film's delivery route and record source/export revision, both framings, camera owner, action/reveal frames, contact/occlusion and boundaries in the sheet/index. Separate viewport references from Boss's shared-capability evidence and James's assembled-runtime evidence.
 
 **Requirements:** the workflow and deliverables below define the handoff. **Guidance:** [storyboard-principles.md](storyboard-principles.md) supplies source-backed creative tools. **Capability status:** a named/drawn asset remains a requirement until verified in the target checkout.
 
@@ -41,7 +41,9 @@ Use the story scene as the detailed handoff/review unit. Plan and check continui
 <a id="อำนาจตัดสินใจและการเลือก-2d--3d"></a>
 ## Decision ownership and 2D / 3D choices
 
-Film chooses scene-level medium/integration in the brief. Mark specifies shots/panels, blocking, acting, framing and timing within that approach. [Current rules](boss-asset-workflow.md#latest-production-rules) allow any element to use 2D/3D/hybrid; the former background-only 3D and mandatory 2D actor/contact-prop restrictions are revoked. Boss authors and integrates assets through [Boss's workflow](boss-asset-workflow.md).
+Film chooses scene-level medium/integration in the brief. Mark specifies shots/panels, blocking, acting, framing and timing within that approach. [Current rules](boss-asset-workflow.md#latest-production-rules) allow any element to use 2D/3D/hybrid; the former background-only 3D and mandatory 2D actor/contact-prop restrictions are revoked. Boss authors shared assets/capabilities through [Boss's workflow](boss-asset-workflow.md); [James](james-editing-workflow.md) assembles the executable scenes and edit.
+
+Specify required actions and view angles, before/action/after states, contact surfaces, holding hand and attach/release events with observable key frames. Boss designs joint/pivot topology, anchor coordinates and shared implementation; James stages and times supported actions. Describe palette/value, light direction, shadows and camera targets as desired image results within Film's direction, leaving renderer parameters to verified shared implementation and edit tuning. Review James's assembled picture as the main feedback path; inspect Boss's story-critical asset/action demonstrations when needed.
 
 | Visual need | Available approach, subject to verification | Required checks |
 | --- | --- | --- |
@@ -66,7 +68,7 @@ Remotion documents [@remotion/three](https://www.remotion.dev/docs/three) for Re
 
 For a whole episode, inspect the whole script/brief before mapping shared assets, continuity and dependency order, then detail the requested scene packs. Single-scene work reuses the overview without expanding scope. Identify the smallest blockout for unresolved feasibility and return constraints to Film/Boss. Changes to medium, spatial camera, lighting strategy or shared interfaces that alter the approach require updated brief/board revisions; routine crop/staging/timing refinements belong to Mark.
 
-Before scene polish, provide a sequence blockout brief: every scene in scope, critical timing/reveals, shared elements and placeholder dimensions/anchors, entry/exit states and both-format acceptance criteria. Boss assembles the runtime blockout; Mark reviews continuity before polish. Supply this brief before fully polishing panels. A delivered board/brief does not establish a passing runtime.
+Before scene polish, provide a sequence blockout brief: every scene in scope, critical timing/reveals, shared elements and placeholder dimensions/anchors, entry/exit states and both-format acceptance criteria. James assembles the runtime blockout using Boss's shared assets/placeholders; Mark reviews shot storytelling/continuity and Film the overall look before polish. Supply this brief before fully polishing panels. A delivered board/brief does not establish a passing runtime.
 
 Separate shared foundation/capability work from scene integration/polish. Record dependency issues/PRs and asset consumers. After dependencies merge, start dependent scene branches from refreshed `main` using [contributing rules](contributing.md). Asset-only work and scoped fixes use relevant context without adding episode-wide planning.
 
@@ -84,7 +86,7 @@ Before polish, repeat this review with Film against the assembled Short/Long blo
 
 Before depth staging, apparent-size changes or render review, read [scale and perspective principles](scale-and-perspective-principles.md). Use the scale baseline/projection contract revision from Film/library owner and add shot geography: floor/seat plane, camera height/eye level, relevant horizon/vanishing directions, FG/MG/BG positions/distances, contact anchors and nearest/farthest motion positions. Compare people, animals, furniture and held objects on a common plane before perspective. Label unknown dimensions estimated/missing for Boss to verify.
 
-Show changes caused by camera/position separately from authored deformation, with panels for significant foreshortening, occlusion and parallax. Completion means Boss can stage and check projected size without guessing ratios or masking unclear depth with scale keyframes. Compose both formats using the guide. Return brief-affecting projection/physical-baseline changes to Film/Boss and record revisions.
+Show changes caused by camera/position separately from authored deformation, with panels for significant foreshortening, occlusion and parallax. Completion means James can stage/check projected size using Boss's interfaces without guessing ratios or masking unclear depth with scale keyframes. Compose both formats using the guide. Return brief-affecting projection/physical-baseline changes to Film/Boss and record revisions.
 
 <a id="แสง-เงา-และสีเป็นส่วนหนึ่งของบอร์ด"></a>
 ## Lighting, shadow and color on boards
@@ -136,10 +138,10 @@ storyboards/haunted-episode/
 - Episode/chapter/scene IDs and order; script/review/visual-brief/board revisions; decision IDs; scene-pack/brief links.
 - Shared elements: actor/asset IDs, appearance continuity, path/owner, dimensions/anchors or pending requirements, implementation status and consumers.
 - Development order: foundation/capability → scene integration/polish, dependency issues/PRs and merge status.
-- Blockout brief/review status: timeline path/input props once Boss implements them, shot → timeline index/frame ranges, Short/Long revision/evidence, placeholders and unverified boundaries.
+- Blockout brief/review status: timeline path/input props once James assembles them, shot → timeline index/frame ranges, Short/Long revision/evidence, placeholders and unverified boundaries.
 - Findings affecting the sequence: finding IDs linked to consuming brief decisions/sheets and outstanding dependencies/follow-ups.
 
-Boss updates runtime mappings/evidence; Mark maintains visual plans/revisions. Keep detailed sheet timing consistent with the executable timeline without duplicating the entire shot sheet in the index. If needed, link a separate asset table/development plan. Generated exports, contact sheets and animatics belong in `out/storyboards/<episode>/`, respecting repository ignore rules.
+James updates runtime mappings/edit evidence; Boss updates shared capability status/evidence; Mark maintains visual plans/revisions. Link James's edit note and Film/Mark review outcomes. Keep sheet timing consistent with the executable timeline without duplicating the entire shot sheet in the index. If needed, link a separate asset table/development plan. Generated exports, contact sheets and animatics belong in `out/storyboards/<episode>/`, respecting repository ignore rules.
 
 Each board is editable Excalidraw JSON with only that scene's panels, using a compatible current schema. Verify parsing and inspect an exported image where possible. A static image alone is not an editable-board delivery.
 
@@ -202,7 +204,8 @@ FPS: 30 | scene durationFrames: ... | chapter/composition offset: ...
 - Projection/depth: Film decision/revision, ground/seat plane, eye level/horizon/relevant
   perspective directions, positions/distances and contact; near/far/key motion frames
   in Short/Long:
-- Acting: characters, action, key poses, gaze and motion arrows:
+- Acting: characters, required actions/views, before/action/after poses, gaze,
+  contact surfaces, held-prop hand and attach/release frames; Boss owns rig internals:
 - Events (shot-local frames): sound / action / reveal / hold:
 - VO / dialogue: full wording or exact source range:
 - Thai subtitle: wording and display range:
@@ -214,13 +217,14 @@ FPS: 30 | scene durationFrames: ... | chapter/composition offset: ...
 | ... | ... | ... | ... |
 
 ## Developer handoff
+- Assembly/edit owner: James; shared asset/capability owner: Boss:
 - Scene scope / shared asset dependencies / foundation PRs:
 - Sequence index / blockout brief / runtime blockout revision and pre-polish status:
 - Constraints and proposed fallbacks, separate from user approval:
 - Verified / unverified / open questions:
 ```
 
-Use `ready-for-dev` when coverage, boards, timing confidence, dependencies, entry/exit and acceptance criteria are complete. It permits Boss to begin implementation/blockout; it does not establish user approval or passing runtime renders. Before scene polish, record assembled blockout review evidence per [sequence workflow](sequence-workflow.md). Mark unavailable neighbors/boundaries unverified.
+Use `ready-for-dev` when coverage, boards, timing confidence, dependencies, entry/exit and acceptance criteria are complete. It permits James to begin assembly/blockout and Boss to build missing shared capabilities; it does not establish user approval or passing runtime renders. Before scene polish, record assembled blockout review evidence per [sequence workflow](sequence-workflow.md). Mark unavailable neighbors/boundaries unverified.
 
 <a id="เกณฑ์ภาพและการตรวจ-render"></a>
 ## Visual criteria and render review

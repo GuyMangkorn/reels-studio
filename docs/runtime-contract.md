@@ -4,6 +4,8 @@
 
 For any capability, record `existing-integrated`, `exists-unintegrated`, `missing` or `unknown` with checkout/revision and evidence. A design or installed package alone does not establish runtime support.
 
+**Role ownership:** [James's contract](james-editing-workflow.md#decision-and-code-ownership--requirements) assigns episode-specific timeline/staging/edit helpers and runtime shot mappings to James. Boss owns reusable modules, rig/anchor/projection/camera/light/effect capabilities and shared types/validator/dispatch. James requests shared changes from Boss and verifies their use in the assembled sequence; documentation adds no automatic importer or runtime fields.
+
 ## Architecture and implementation status
 
 **Implemented baseline:** The JSON pipeline exists: `src/scenes/SceneRenderer.tsx`, `types.ts` and `timeline.ts` sequence and validate scenes for both formats. `src/Root.tsx` registers `Short` and `Long`, with duration calculated from scene durations. The historical `Demo.tsx`, `rig/presets.ts`, `rig/types.ts` and `Rig2DDemo` API are no longer the baseline.
