@@ -1,7 +1,7 @@
 <a id="แพรว-preaw--โบ็ต-boat-ก่อนส่งบทให้-film-และ-mark"></a>
 # Preaw and Boat: editorial handoff to Film and Mark
 
-This workflow covers mystery, educational and twist Reels/Shorts, including a whole episode when requested. Preaw and Boat are project agents in `.codex/agents/`, invoked as `preaw` and `boat`. Their models and permissions inherit from the calling chat. Check each agent TOML for Film and Mark's model/effort settings.
+This workflow covers scripts and fact-checks for the channel's mystery, educational and twist Reels/Shorts, including a whole episode when requested, and other genres selected through a [style profile](delivery-workflow.md#style-profile): for those, Preaw applies the profile's genre craft (e.g. comedy timing, tutorial steps, ad promise/proof/call to action) while the packet, claim, revision and readiness contracts below still apply; a twist and a knowledge takeaway are required only when the profile asks for them, and Boat's passes run only for deliverables with factual claims. Preaw and Boat are project agents in `.claude/agents/` (Claude Code) and `.codex/agents/` (Codex), invoked as `preaw` and `boat`. Their models and permissions inherit from the calling chat. Check each agent TOML for Film and Mark's model/effort settings.
 
 **Requirements:** the packets, revision tracking, factual distinctions and completion criteria below are the editorial handoff contract. **Defaults and guidance:** creative techniques and example timings live in [scriptwriting-principles.md](scriptwriting-principles.md); use them selectively. Readiness records evidence and handoff status; user approval is recorded separately.
 
@@ -21,7 +21,7 @@ Before format-dependent research/writing, resolve the [delivery selection and re
 | Shared assets/capabilities | Boss | Verified reusable assets/rigs/renderer APIs and affected-consumer evidence |
 | Scene integration / editing | Editor | Executable scenes/audio/effects/transitions checked against script and handoff; actual scene-frame samples |
 
-Boat performs two separate passes. Research before writing does not establish that the final wording has been checked. The coordinator supplies files and assignments within the user's requested scope; these configs do not install automatic execution or cross-chat messaging.
+Boat performs two separate passes. Research before writing does not establish that the final wording has been checked. The coordinator (see [AGENTS.md](../AGENTS.md#coordinator-and-agent-parity)) supplies files and assignments within the user's requested scope; these configs do not install automatic execution or cross-chat messaging.
 
 Example requests:
 
@@ -102,4 +102,4 @@ The user may request rough scene sheets from a draft. Identify the revision and 
 <a id="หลักการและแหล่งอ้างอิง"></a>
 ## Principles and sources
 
-Use [scriptwriting-principles.md](scriptwriting-principles.md) for hooks, intention/obstacle, causality, fair twists, educational integration and evidence checks. Agent instructions live in `.codex/agents/preaw.toml` and `.codex/agents/boat.toml`. Config reference: [OpenAI custom agents](https://learn.chatgpt.com/docs/agent-configuration/subagents#custom-agents).
+Use [scriptwriting-principles.md](scriptwriting-principles.md) for hooks, intention/obstacle, causality, fair twists, educational integration and evidence checks. Agent instructions live in `.claude/agents/` and `.codex/agents/` (`preaw`, `boat`). Config reference: [OpenAI custom agents](https://learn.chatgpt.com/docs/agent-configuration/subagents#custom-agents).
