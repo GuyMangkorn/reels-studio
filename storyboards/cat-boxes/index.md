@@ -1,3 +1,5 @@
+> **Current selected deliveries (27 October 2026):** one 45-second Short (`CATBOX-SHORT`) and one 9-minute YouTube Long (`CATBOX-LONG`). Use [the delivery record](../../scripts/cat-boxes/delivery.md), [Short board set](short/index.md) and [Long board set](long/index.md). Sections below preserve the previous PR #38 Shorts-first source map and dated QA; do not treat their old active-scope statements as the current selection.
+
 # CATBOX — ทำไมแมวเห็นกล่องแล้วต้องเข้าไปนั่ง?
 
 User-facing title: **ทำไมแมวเห็นกล่องแล้วต้องเข้าไปนั่ง?** (CATBOX). Source script title retained: **CATBOX — แมวกับกล่อง: คดีที่ปิดด้วยคำตอบเดียวไม่ได้**.
@@ -64,14 +66,14 @@ The main Short renders 16,200 frames at 1080×1920 / 30 fps with the requested l
 
 | Cut | One-fps contact sheet | Exact review frames |
 |---|---|---|
-| C01 | [45-frame sheet](../../out/qa/cat-boxes/pr38/pr-assets/C01-one-fps-contact.jpg) | Full A-fade render, frame samples and parity checks in the local shorts-r2 QA output |
-| C02 | [45-frame sheet](../../out/qa/cat-boxes/pr38/pr-assets/C02-one-fps-contact.jpg) | Full A-fade render, frame samples and parity checks in the local shorts-r2 QA output |
-| C03 | [45-frame sheet](../../out/qa/cat-boxes/pr38/pr-assets/C03-one-fps-contact.jpg) | [F120](../../out/qa/cat-boxes/pr38/pr-assets/C03-F120.png) · [F239](../../out/qa/cat-boxes/pr38/pr-assets/C03-F239.png) |
-| C04 | [45-frame sheet](../../out/qa/cat-boxes/pr38/pr-assets/C04-one-fps-contact.jpg) | Full A-fade render, frame samples and parity checks in the local shorts-r2 QA output |
-| C05 | [45-frame sheet](../../out/qa/cat-boxes/pr38/pr-assets/C05-one-fps-contact.jpg) | Full A-fade render, frame samples and parity checks in the local shorts-r2 QA output |
-| C06 | [45-frame sheet](../../out/qa/cat-boxes/pr38/pr-assets/C06-one-fps-contact.jpg) | [F0](../../out/qa/cat-boxes/pr38/pr-assets/C06-F0.png) · [F15](../../out/qa/cat-boxes/pr38/pr-assets/C06-F15.png) · [F1100](../../out/qa/cat-boxes/pr38/pr-assets/C06-F1100.png) |
+| C01 | [45-frame sheet](https://github.com/GuyMangkorn/reels-studio/blob/68ab92fbaa9a32adf054633fd5a44ad732856264/out/qa/cat-boxes/pr38/pr-assets/C01-one-fps-contact.jpg) | Full A-fade render, frame samples and parity checks in the local shorts-r2 QA output |
+| C02 | [45-frame sheet](https://github.com/GuyMangkorn/reels-studio/blob/68ab92fbaa9a32adf054633fd5a44ad732856264/out/qa/cat-boxes/pr38/pr-assets/C02-one-fps-contact.jpg) | Full A-fade render, frame samples and parity checks in the local shorts-r2 QA output |
+| C03 | [45-frame sheet](https://github.com/GuyMangkorn/reels-studio/blob/68ab92fbaa9a32adf054633fd5a44ad732856264/out/qa/cat-boxes/pr38/pr-assets/C03-one-fps-contact.jpg) | [F120](https://github.com/GuyMangkorn/reels-studio/blob/68ab92fbaa9a32adf054633fd5a44ad732856264/out/qa/cat-boxes/pr38/pr-assets/C03-F120.png) · [F239](https://github.com/GuyMangkorn/reels-studio/blob/68ab92fbaa9a32adf054633fd5a44ad732856264/out/qa/cat-boxes/pr38/pr-assets/C03-F239.png) |
+| C04 | [45-frame sheet](https://github.com/GuyMangkorn/reels-studio/blob/68ab92fbaa9a32adf054633fd5a44ad732856264/out/qa/cat-boxes/pr38/pr-assets/C04-one-fps-contact.jpg) | Full A-fade render, frame samples and parity checks in the local shorts-r2 QA output |
+| C05 | [45-frame sheet](https://github.com/GuyMangkorn/reels-studio/blob/68ab92fbaa9a32adf054633fd5a44ad732856264/out/qa/cat-boxes/pr38/pr-assets/C05-one-fps-contact.jpg) | Full A-fade render, frame samples and parity checks in the local shorts-r2 QA output |
+| C06 | [45-frame sheet](https://github.com/GuyMangkorn/reels-studio/blob/68ab92fbaa9a32adf054633fd5a44ad732856264/out/qa/cat-boxes/pr38/pr-assets/C06-one-fps-contact.jpg) | [F0](https://github.com/GuyMangkorn/reels-studio/blob/68ab92fbaa9a32adf054633fd5a44ad732856264/out/qa/cat-boxes/pr38/pr-assets/C06-F0.png) · [F15](https://github.com/GuyMangkorn/reels-studio/blob/68ab92fbaa9a32adf054633fd5a44ad732856264/out/qa/cat-boxes/pr38/pr-assets/C06-F15.png) · [F1100](https://github.com/GuyMangkorn/reels-studio/blob/68ab92fbaa9a32adf054633fd5a44ad732856264/out/qa/cat-boxes/pr38/pr-assets/C06-F1100.png) |
 
-Main Short seam frames: [F16199](../../out/qa/cat-boxes/pr38/pr-assets/Main-F16199.png) · [first frame of the next loop, F0](../../out/qa/cat-boxes/pr38/pr-assets/Main-F0-after-loop.png). The midpoint height and 6:1 physical owner/cat ratio table is in the PR description.
+Main Short seam frames: [F16199](https://github.com/GuyMangkorn/reels-studio/blob/68ab92fbaa9a32adf054633fd5a44ad732856264/out/qa/cat-boxes/pr38/pr-assets/Main-F16199.png) · [first frame of the next loop, F0](https://github.com/GuyMangkorn/reels-studio/blob/68ab92fbaa9a32adf054633fd5a44ad732856264/out/qa/cat-boxes/pr38/pr-assets/Main-F0-after-loop.png). The midpoint height and 6:1 physical owner/cat ratio table is in the PR description.
 
 Script approval is pending, narration is absent, and subtitle timing remains estimated and not audio-synced. Runtime factual-image review remains unverified; FC-VIS-R1 is planning review only. Studio playback/seeking remains unverified separately from the successful CLI renders. Long uses the shared source JSON but was not rendered or QA-reviewed.
 

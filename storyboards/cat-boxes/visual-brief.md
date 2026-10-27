@@ -1,3 +1,5 @@
+> **Historical source brief:** `VB-CATBOX-R5` records the earlier main-portrait-plus-six-Shorts scope and Short-directed visual changes. Current selected variant briefs are [CATBOX-SHORT R1](short/visual-brief.md) and [CATBOX-LONG R1](long/visual-brief.md). Long render/visual QA remains unverified.
+
 # CATBOX — Visual progression brief
 
 Revision: **VB-CATBOX-R5**, 27 October 2026; user-directed corrective visual brief for PR #38.
