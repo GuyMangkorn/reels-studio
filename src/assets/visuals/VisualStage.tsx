@@ -1,6 +1,6 @@
 import type {ReactNode} from 'react';
 import {Arrow, CatGlyph, LineText, Paper, Stimulus, Text, colors, ink} from './primitives';
-import {visualProgressAt, type SceneVisual} from './types';
+import {shouldRenderVisualDiagram, visualProgressAt, type SceneVisual} from './types';
 
 const statusText = {fiction: 'เรื่องสมมติ', diagram: 'ภาพอธิบาย', research: 'ภาพอธิบายงานวิจัย', hypothesis: 'สมมติฐาน'} as const;
 
@@ -268,11 +268,94 @@ const DiagramBody = ({visual, width, height, progress}: {visual: SceneVisual; wi
   return <g>{body}</g>;
 };
 
-/** Shared screen-space explainer. Physical scenes receive only a safe overlay, never an opaque diagram over the room. */
+const ProjectedR6Label = ({x, y, width, height, text, fill, size = 18, maxGraphemes = 36}: {
+  x: number; y: number; width: number; height: number; text: string; fill: string; size?: number; maxGraphemes?: number;
+}) => <g>
+  <rect x={x} y={y} width={width} height={height} rx={8} fill={fill} stroke={ink} strokeWidth={2}/>
+  <LineText x={x + width / 2} y={y + (height + size * 0.58) / 2} text={wrapLabel(text, maxGraphemes)} size={size}/>
+</g>;
+
+/** R6 portrait overlay geometry stays in output-pixel space, outside the moving room stage. */
+const ProjectedR6DiagramBody = ({visual, frame, fps, width, height, progress}: {
+  visual: SceneVisual; frame: number; fps: number; width: number; height: number; progress: number;
+}) => {
+  const sx = width / 1080;
+  const sy = height / 1920;
+  const textScale = Math.min(sx, sy);
+  const pxX = (value: number) => value * sx;
+  const pxY = (value: number) => value * sy;
+  const alpha = (order: number) => reveal(progress, order);
+  const labelFill = visual.status === 'research' ? '#e7f4f5' : visual.status === 'hypothesis' ? '#fff4ce' : colors.cream;
+
+  if (visual.id === 'paper-stimuli' && visual.phase === 0) {
+    const markerStart = Math.round(8 * fps / 30);
+    const markerEnd = Math.round(32 * fps / 30);
+    const travel = Math.max(0, Math.min(1, (frame - markerStart) / Math.max(1, markerEnd - markerStart)));
+    const markerX = 108 + (280 - 108) * travel;
+    return <g>
+      <rect x={pxX(124)} y={pxY(454)} width={pxX(300)} height={pxY(90)} fill="none" stroke={ink} strokeWidth={9 * textScale}/>
+      <path d={`M${pxX(108)} ${pxY(499)} L${pxX(markerX)} ${pxY(499)}`} fill="none" stroke="#9d7751" strokeWidth={5 * textScale} strokeDasharray={`${10 * textScale} ${10 * textScale}`} opacity={travel}/>
+      <circle cx={pxX(markerX)} cy={pxY(499)} r={14 * textScale} fill={colors.amber} stroke={ink} strokeWidth={3 * textScale}/>
+      <ProjectedR6Label x={pxX(86)} y={pxY(552)} width={pxX(382)} height={pxY(36)} text={visual.labels[0] ?? ''} fill={labelFill} size={16 * textScale}/>
+      <ProjectedR6Label x={pxX(86)} y={pxY(590)} width={pxX(382)} height={pxY(36)} text={visual.labels[1] ?? ''} fill={labelFill} size={16 * textScale}/>
+    </g>;
+  }
+
+  if (visual.id === 'paper-stimuli' && visual.phase === 1) {
+    const variants = ['square', 'kanizsa', 'outward-control'] as const;
+    const captions = ['กรอบสี่เหลี่ยม', 'ชิ้นแหว่งหันเข้า', 'ชิ้นแหว่งหันออก'];
+    const iconX = [100, 229, 358];
+    const captionX = [86, 213, 340];
+    return <g>
+      {variants.map((variant, i) => {
+        const opacity = alpha(i);
+        return <g key={variant} opacity={opacity}>
+          <Stimulus x={pxX(iconX[i])} y={pxY(425)} variant={variant} label="" scale={56 / 240 * textScale}/>
+          <LineText x={pxX(captionX[i] + 63.5)} y={pxY(484 + 19)} text={captions[i]} size={14 * textScale}/>
+        </g>;
+      })}
+      {visual.labels.map((label, i) => <ProjectedR6Label key={`${visual.shotId}-r6-label-${i}`} x={pxX(86)} y={pxY(516 + i * 28)} width={pxX(382)} height={pxY(26)} text={label} fill={labelFill} size={15 * textScale} maxGraphemes={48}/>)}
+    </g>;
+  }
+
+  if (visual.id === 'paper-stimuli' && visual.phase === 2) {
+    const rows = [
+      {y: 422, variants: ['kanizsa', 'outward-control'] as const, label: visual.labels[0] ?? '', order: 0},
+      {y: 494, variants: ['square', 'outward-control'] as const, label: visual.labels[1] ?? '', order: 1},
+    ];
+    return <g>
+      {rows.map(row => {
+        const opacity = alpha(row.order);
+        return <g key={row.order} opacity={opacity}>
+          <rect x={pxX(86)} y={pxY(row.y)} width={pxX(382)} height={pxY(66)} rx={10} fill={colors.cream} stroke={ink} strokeWidth={2 * textScale}/>
+          <Stimulus x={pxX(100)} y={pxY(row.y + 13)} variant={row.variants[0]} label="" scale={40 / 240 * textScale}/>
+          <Stimulus x={pxX(148)} y={pxY(row.y + 13)} variant={row.variants[1]} label="" scale={40 / 240 * textScale}/>
+          <LineText x={pxX(328)} y={pxY(row.y + 23)} text={wrapLabel(row.label, 28)} size={14 * textScale}/>
+        </g>;
+      })}
+      {visual.labels[2] && <ProjectedR6Label x={pxX(86)} y={pxY(566)} width={pxX(382)} height={pxY(58)} text={visual.labels[2]} fill="#fff4ce" size={16 * textScale} maxGraphemes={36}/>}
+    </g>;
+  }
+
+  if (visual.id === 'evidence-sort' && visual.phase === 3) {
+    const cards = [
+      {y: 422, label: visual.labels[0] ?? '', fill: colors.blue},
+      {y: 480, label: visual.labels[2] ?? '', fill: colors.amber},
+      {y: 538, label: visual.labels[1] ?? '', fill: colors.cream},
+    ];
+    return <g>{cards.map((card, i) => <ProjectedR6Label key={`${visual.shotId}-r6-card-${i}`} x={pxX(86)} y={pxY(card.y)} width={pxX(382)} height={pxY(52)} text={card.label} fill={card.fill} size={18 * textScale} maxGraphemes={34}/>)}</g>;
+  }
+
+  return null;
+};
+
+/** Shared screen-space explainer. Physical scenes use the safe overlay by default; diagram bodies require explicit opt-in. */
 export const VisualStage = ({visual, frame, fps, width, height, physical = false}: {
   visual: SceneVisual; frame: number; fps: number; width: number; height: number; physical?: boolean;
 }) => {
   const progress = visualProgressAt(visual, frame, fps);
+  const projectedR6 = physical && visual.showProjectedDiagram === true && visual.projectedLayout === 'catbox-short-r6';
+  const shouldRenderDiagram = shouldRenderVisualDiagram(visual, physical);
   const status = statusText[visual.status];
   const headerY = height * 0.092;
   const headingY = height * 0.17;
@@ -282,19 +365,27 @@ export const VisualStage = ({visual, frame, fps, width, height, physical = false
     <rect x={width * 0.075} y={headerY - 36} width={width * 0.52} height={72} rx={18} fill={visual.status === 'hypothesis' ? '#fff0cf' : visual.status === 'research' ? '#e7f4f5' : '#fff9ef'} stroke={ink} strokeWidth={3}/>
     <Text x={width * 0.335} y={headerY + 13} size={36}>{status}</Text>
     <LineText x={width / 2} y={headingY} text={visual.heading} size={60}/>
-    {!physical && visual.showDiagram !== false && <DiagramBody visual={visual} width={width} height={height} progress={progress}/>}
+    {projectedR6
+      ? <ProjectedR6DiagramBody visual={visual} frame={frame} fps={fps} width={width} height={height} progress={progress}/>
+      : shouldRenderDiagram && <DiagramBody visual={visual} width={width} height={height} progress={progress}/>
+    }
     {physical && visual.phase === 3 && (visual.id === 'evidence-sort' || visual.id === 'toy-pursuit') && (() => {
       const holdStartsAt = Math.max(0, visual.endSec - 3);
       const revealProgress = Math.max(0, Math.min(1, (frame / fps - (holdStartsAt - 1)) / 1));
       const message = visual.id === 'evidence-sort' ? 'ครั้งนี้ยังไม่รู้' : 'เห็นการกระทำ\nยังไม่รู้เหตุที่เข้าไป';
       const written = message.slice(0, Math.ceil(message.length * revealProgress));
-      return revealProgress > 0 && written.length > 0 ? <g>
+      if (!revealProgress || written.length === 0) return null;
+      if (projectedR6 && visual.id === 'evidence-sort') {
+        const textScale = Math.min(width / 1080, height / 1920);
+        return <ProjectedR6Label x={width * 86 / 1080} y={height * 590 / 1920} width={width * 382 / 1080} height={height * 36 / 1920} text={written} fill={colors.cream} size={18 * textScale} maxGraphemes={32}/>;
+      }
+      return <g>
         <Paper x={width * 0.62} y={height * 0.71} w={width * 0.32} h={144} fill={colors.cream}>
           <LineText x={width * 0.78} y={height * 0.71 + 83} text={written} size={36}/>
         </Paper>
-      </g> : null;
+      </g>;
     })()}
-    {!!visual.labels.length && <g>
+    {!projectedR6 && !!visual.labels.length && <g>
       {visual.labels.slice(0, 4).map((label, i) => {
         const labelStartSec = visual.labelsAtSec?.[i] ?? visual.startSec;
         const labelReveal = labelStartSec === visual.startSec ? 1 : Math.max(0, Math.min(1, (frame / fps - labelStartSec) / 0.2));

@@ -1,4 +1,4 @@
-import {visualModes} from '../assets/visuals/types';
+import {projectedVisualLayouts, visualModes} from '../assets/visuals/types';
 import {poses, smoothstep, transitionAtTrack, type PoseName, type PoseTrack, type PoseTransition} from '../rig/poses';
 import {HUMAN_HIP_FROM_ANCHOR} from '../rig/geometry';
 import {propNames, propSpecs, type PropName} from '../assets/Props';
@@ -42,6 +42,13 @@ export function validateTimeline(value: unknown): asserts value is Timeline {
         if (typeof visual.heading !== 'string' || !visual.heading.trim()) fail(`${vp}.heading`, 'expected heading');
         if (!Array.isArray(visual.labels) || visual.labels.length > 8 || visual.labels.some(label => typeof label !== 'string')) fail(`${vp}.labels`, 'expected up to eight text labels');
         if (visual.showDiagram !== undefined && typeof visual.showDiagram !== 'boolean') fail(`${vp}.showDiagram`, 'expected boolean');
+        if (visual.showProjectedDiagram !== undefined && typeof visual.showProjectedDiagram !== 'boolean') fail(`${vp}.showProjectedDiagram`, 'expected boolean');
+        if (visual.showProjectedDiagram === true && s.projection === undefined) fail(`${vp}.showProjectedDiagram`, 'projected diagram opt-in requires a projected scene');
+        if (visual.showProjectedDiagram === true && visual.showDiagram === false) fail(`${vp}.showProjectedDiagram`, 'cannot opt in to a diagram that is explicitly hidden');
+        if (visual.projectedLayout !== undefined && !projectedVisualLayouts.includes(String(visual.projectedLayout) as typeof projectedVisualLayouts[number])) fail(`${vp}.projectedLayout`, 'unknown projected visual layout');
+        if (visual.projectedLayout !== undefined && visual.showProjectedDiagram !== true) fail(`${vp}.projectedLayout`, 'projected layout requires explicit diagram opt-in');
+        if (visual.projectedLayout !== undefined && s.projection === undefined) fail(`${vp}.projectedLayout`, 'projected layout requires a projected scene');
+        if (visual.projectedLayout === 'catbox-short-r6' && !((visual.id === 'paper-stimuli' && [0, 1, 2].includes(Number(visual.phase))) || (visual.id === 'evidence-sort' && visual.phase === 3))) fail(`${vp}.projectedLayout`, 'catbox-short-r6 supports paper-stimuli phases 0–2 and evidence-sort phase 3');
         if (visual.labelsAtSec !== undefined) {
           if (!Array.isArray(visual.labelsAtSec) || visual.labelsAtSec.length !== (visual.labels as unknown[]).length) fail(`${vp}.labelsAtSec`, 'expected one reveal time per visual label');
           (visual.labelsAtSec as unknown[]).forEach((atSec, k) => {
