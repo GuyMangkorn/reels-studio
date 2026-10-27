@@ -10,6 +10,15 @@ This repository produces Thai Shorts and long-form videos. Remotion owns timelin
 - Runtime status is separate: `existing-integrated`, `exists-unintegrated`, `missing`, or `unknown`, with checkout/revision and evidence. Readiness is separate from user approval and runtime/visual validation.
 - Keep each rule in its authoritative document below; link to it elsewhere. Update references and preserve old heading anchors when moving or translating sections. Keep historical evidence dated and scoped. Inspect the active checkout before claiming a capability exists.
 
+## Working principles
+
+Adapted from [andrej-karpathy-skills](https://github.com/multica-ai/andrej-karpathy-skills/blob/main/CLAUDE.md), with project-specific scope and proportionate verification.
+
+- **WP01 — Think before changing:** Inspect the relevant source and routed workflow. State assumptions and tradeoffs that affect the result. Resolve routine choices within the brief; ask when an unresolved interpretation materially changes story, scope, interfaces or delivery. Continue independent work while awaiting clarification.
+- **WP02 — Prefer simplicity:** Build the smallest solution that meets the request and production requirements. Reuse the owning library where applicable; introduce shared capabilities when required by actual consumers. Add abstractions, options, dependencies and fallback behavior only for demonstrated needs.
+- **WP03 — Make surgical changes:** Each edit should serve the requested outcome. Match local style, preserve unrelated work and keep adjacent refactors or formatting out of scope. Remove imports/helpers made unused by your edits; report unrelated cleanup separately. Preserve timing, reveals and stable IDs across production edits.
+- **WP04 — Work toward observable completion:** Define what success looks like; give a short plan for multi-step work. Choose checks that demonstrate the changed behavior or deliverable. Use the [proportionate verification policy](docs/contributing.md#proportionate-verification) to decide coverage, repetition and when to stop; report actual evidence and remaining uncertainty.
+
 ## Task routing and ownership
 
 The production handoff is **Boat research → Preaw script → Boat fact-check → Film visual/technical brief → Mark storyboard → Boss implementation**. Match the named revisions at each handoff. Configurations describe roles; they do not install an automatic runner or authorize messaging other chats.

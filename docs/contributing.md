@@ -21,6 +21,12 @@ npx remotion render src/index.ts Long out/long-check.mp4 --frames=0-5
 For visual/runtime changes, complete Boss's pre-push QA: Studio checks, one-second contact sheets plus final frames for every affected composition, critical adjacent-frame boundaries, continuous-sequence review and random seeking. A one-second contact sheet alone cannot establish absence of single-frame jumps. Choose additional shot-local start/mid/end and reveal frames when `0-5` cannot exercise a camera, pose or lighting change. Compare both outputs against the storyboard. Keep generated previews, MP4s and MP3s out of Git; commit editable boards, runtime code, timeline and amplitude JSON. **Documentation-only exception:** Instruction/documentation-only changes need a diff/link check and TOML parsing for changed agent configs. Typecheck, runtime tests and video renders are unnecessary when runtime code and compositions are unaffected. Report the exception explicitly.
 
 
+## Proportionate verification
+
+Choose verification by the changed surface and risk, using the required checks above and the routed production workflow. A small task needs only a brief success criterion and the applicable checks; it does not need a separate verification plan or a new test for every edit. For a bug, reproduce the failure where practical and verify the corrected behavior; add a regression test when it protects meaningful runtime behavior.
+
+Stop when the success criteria and required checks pass. Repeat affected checks after a fix or further edit, or expand coverage when failures or unresolved risks justify it. Reuse still-applicable results from the same revision and inputs; repeated full suites, renders or review loops are unnecessary without a relevant change. Report completed checks and any unverified areas accurately. This policy governs verification effort and repetition; factual evidence, visual quality, continuity and delivery requirements retain their stated scope.
+
 ## Finishing a task
 
 Commit, push the issue branch and open a pull request into `main`. Never push directly to `main`. The PR description includes:
