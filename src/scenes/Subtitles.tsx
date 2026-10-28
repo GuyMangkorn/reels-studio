@@ -11,5 +11,5 @@ export const Subtitles = ({text, style}: {text: string; style?: CaptionStyle}) =
   const look = preset === 'box'
     ? {color, background: 'rgba(16, 16, 24, .72)', borderRadius: 18, padding: portrait ? '10px 28px' : '6px 22px', boxDecorationBreak: 'clone' as const, WebkitBoxDecorationBreak: 'clone' as const}
     : {color, WebkitTextStroke: '7px #3d3c53', paintOrder: 'stroke fill', textShadow: '0 4px 0 #3d3c53'};
-  return <div lang="th" style={{position: 'absolute', ...place, left: '6%', width: '88%', textAlign: 'center', fontFamily: 'Noto Sans Thai', fontWeight: 700, fontSize: (portrait ? 51 : 44) * scale, lineHeight: 1.65, overflowWrap: 'anywhere'}}><span style={look}>{text}</span></div>;
+  return <div lang="th" style={{position: 'absolute', ...place, left: '6%', width: '88%', textAlign: 'center', fontFamily: 'Noto Sans Thai', fontWeight: 700, fontSize: (portrait ? 51 : 44) * scale, lineHeight: 1.65, overflowWrap: 'anywhere', whiteSpace: 'pre-line'}}><span style={look}>{text}</span></div>;
 };
