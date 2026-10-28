@@ -115,3 +115,32 @@ test('Botnoi captions keep the SH04 straight-down constraint', () => {
   assert.equal(botnoiCaptionAt(780 + 288), 'มองเฉียง: ยิ่งดูตื้นขึ้น');
   assert.equal(botnoiCaptionAt(1619), 'แล้วน้ำตรงหน้าคุณตอนนี้...');
 });
+
+test('Botnoi sound design is additive: cues sit in speech gaps, beds cover the loop, Niwat video has none', () => {
+  assert.equal(video.audio, undefined);
+  video.timeline.forEach(scene => assert.equal(scene.sfx, undefined));
+  const amp = botnoi.narration!.amplitude;
+  const cueFrames = botnoi.timeline.flatMap((scene, i) => (scene.sfx ?? []).map(cue => ({src: cue.src, frame: starts[i] + Math.round(cue.atSec * fps)})));
+  assert.deepEqual(cueFrames.map(c => c.frame), [181, 379, 630, 656, 1053, 1140, 1282]);
+  // Accents start on a quiet narration frame (0.03 ~ speech threshold). The pour is anchored to the stream onset (SH03 F150) and the feet file starts
+  // 9 frames (trimmed) before its entry peak, which is the part that must land in the G1289-G1293 gap.
+  for (const cue of cueFrames.filter(c => !/mug-pour|feet-enter/.test(c.src))) assert.ok(amp[cue.frame] <= 0.03, `cue ${cue.src} at ${cue.frame} starts on speech`);
+  assert.ok(amp[1282 + 9] <= 0.03, 'feet entry peak lands in a speech gap');
+  assert.ok(cueFrames.every(c => c.frame < 1619 - 90), 'no cue replays at the loop seam');
+  const audio = botnoi.audio!;
+  assert.equal(audio.length, 3);
+  assert.ok(audio.every(t => t.trimStartSec === (t.startSec ?? 0)), 'file time equals composition time');
+  const music = audio.find(t => t.src.includes('curious-sparse'))!;
+  assert.equal(music.endSec, undefined);
+  assert.equal(music.fadeOutSec, undefined, 'music does not fade out: it wraps at the loop point');
+  const poolEnd = audio.filter(t => t.src.includes('pool-hall') && t.endSec === undefined);
+  assert.equal(poolEnd.length, 1);
+  assert.equal(poolEnd[0].fadeOutSec, undefined);
+});
+
+test('Botnoi B06 speech ends at least 15 frames before the SH08 hold', () => {
+  const amp = botnoi.narration!.amplitude;
+  let last = 0;
+  for (let f = 0; f < amp.length; f++) if (amp[f] > 0.03) last = f;
+  assert.ok(last <= 1410 + 120 - 15, `last speech frame ${last}`);
+});
