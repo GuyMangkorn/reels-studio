@@ -97,7 +97,7 @@ Relevant finding IDs + revalidation; fallback + story/reveal impact
 
 ## SH01 — <purpose>
 Range and clocks: scene-local [start, endExclusive); shot-local offset; composition offset
-Direction: composition, focal point, visible action, hidden/revealed information, subtitle-safe region
+Direction: composition, focal point, visible action, hidden/revealed information, subtitle-safe region (portrait: [caption-safe box](production-requirements.md#vertical-caption-safe-zone))
 Staging: | Entity/anchor | Space/unit | Start | Key/end + local frames | Facing/gaze/contact |
   depth/layers; actor paths (separate from camera): start/key/end frames, easing/holds, attach/detach
 Camera: projection/bounds or position/target/FOV; start/key/end frames; transform owner; picture moves and their layers
