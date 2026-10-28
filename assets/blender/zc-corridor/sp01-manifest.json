@@ -1,0 +1,553 @@
+{
+  "connection": {
+    "blender_mcp": "connected; execute_blender_code returned version 5.2.3 LTS, arm64, empty GUI scene (not modified)",
+    "date": "2026-10-28",
+    "machine": "Apple M1, 8-core GPU, 16 GB",
+    "mcp_tools_exposed": [
+      "execute_blender_code",
+      "execute_blender_code_for_cli",
+      "get_objects_summary",
+      "get_object_detail_summary",
+      "get_blendfile_summary_datablocks",
+      "get_blendfile_summary_missing_files",
+      "get_blendfile_summary_of_linked_libraries",
+      "get_blendfile_summary_path_info",
+      "get_blendfile_summary_usage_guess",
+      "get_python_api_docs",
+      "search_api_docs",
+      "search_manual_docs",
+      "get_screenshot_of_area_as_image",
+      "get_screenshot_of_window_as_image",
+      "get_screenshot_of_window_as_json",
+      "jump_to_tab_by_name",
+      "jump_to_tab_by_space_type",
+      "jump_to_view3d_object_by_name",
+      "jump_to_view3d_object_data_by_name",
+      "render_thumbnail_to_path",
+      "render_viewport_to_path"
+    ],
+    "render_route": "headless /Applications/Blender.app/Contents/MacOS/Blender -b (MCP used only for the connection/version check)"
+  },
+  "encode": {
+    "bytes": 8536032,
+    "command": "npx remotion ffmpeg -y -framerate 30 -i out/blender/zc-corridor/B01-SH01/eevee64/frame_%04d.png -vf \"scale=out_color_matrix=bt709:out_range=tv,format=yuv420p\" -c:v libx264 -crf 12 -g 30 -colorspace bt709 -color_primaries bt709 -color_trc bt709 -color_range tv -movflags +faststart public/assets/blender/zc-corridor/B01-SH01.mp4",
+    "encode_seconds": 8.1,
+    "ffprobe": "h264 High, 1080x1920, yuv420p, 30/1, 150 frames, 5.000 s, range tv, space bt709, primaries bt709, transfer iec61966-2-1 (same as POOLDEPTH)",
+    "sha256": "356b043f04d434b198f61cc945ce336d3d9040b096b4a83ec81ed6874f6e8a32"
+  },
+  "masters": {
+    "dir": "out/blender/zc-corridor/B01-SH01/eevee64",
+    "frames": 150,
+    "sha256_16": {
+      "frame_0000.png": "59236ab47dd8d2d0",
+      "frame_0075.png": "3f51372f465512a1",
+      "frame_0149.png": "609d196cac6715b8"
+    },
+    "sha256_of_sorted_per_file_sha256": "7262120e46066b02778fa85de82727030e3c722fc451f0f6e395913091fd1fe0",
+    "size": "279 MB"
+  },
+  "measure": {
+    "camera": "zc-cam_B01-SH01 vFOV 55 sensor-fit VERTICAL shift_y -0.20, level (no tilt)",
+    "frames": {
+      "clip_F0": {
+        "infected": {
+          "x": [
+            587,
+            657
+          ],
+          "y": [
+            560,
+            795
+          ]
+        },
+        "infected_height_px": 235,
+        "you": {
+          "x": [
+            -232,
+            867
+          ],
+          "y": [
+            317,
+            3039
+          ]
+        },
+        "you_hair": {
+          "x": [
+            65,
+            344
+          ],
+          "y": [
+            317,
+            606
+          ]
+        },
+        "you_head": {
+          "x": [
+            80,
+            339
+          ],
+          "y": [
+            344,
+            688
+          ]
+        },
+        "you_visible_height_px": 1603
+      },
+      "clip_F119": {
+        "infected": {
+          "x": [
+            587,
+            659
+          ],
+          "y": [
+            560,
+            798
+          ]
+        },
+        "infected_height_px": 238,
+        "you": {
+          "x": [
+            -225,
+            982
+          ],
+          "y": [
+            291,
+            3292
+          ]
+        },
+        "you_hair": {
+          "x": [
+            103,
+            407
+          ],
+          "y": [
+            291,
+            609
+          ]
+        },
+        "you_head": {
+          "x": [
+            118,
+            401
+          ],
+          "y": [
+            321,
+            699
+          ]
+        },
+        "you_visible_height_px": 1629
+      },
+      "clip_F149": {
+        "infected": {
+          "x": [
+            587,
+            659
+          ],
+          "y": [
+            559,
+            798
+          ]
+        },
+        "infected_height_px": 239,
+        "you": {
+          "x": [
+            -240,
+            991
+          ],
+          "y": [
+            286,
+            3348
+          ]
+        },
+        "you_hair": {
+          "x": [
+            94,
+            404
+          ],
+          "y": [
+            286,
+            610
+          ]
+        },
+        "you_head": {
+          "x": [
+            110,
+            398
+          ],
+          "y": [
+            316,
+            701
+          ]
+        },
+        "you_visible_height_px": 1634
+      },
+      "clip_F15": {
+        "infected": {
+          "x": [
+            587,
+            657
+          ],
+          "y": [
+            560,
+            795
+          ]
+        },
+        "infected_height_px": 235,
+        "you": {
+          "x": [
+            -202,
+            886
+          ],
+          "y": [
+            320,
+            3011
+          ]
+        },
+        "you_hair": {
+          "x": [
+            93,
+            367
+          ],
+          "y": [
+            320,
+            606
+          ]
+        },
+        "you_head": {
+          "x": [
+            107,
+            363
+          ],
+          "y": [
+            347,
+            687
+          ]
+        },
+        "you_visible_height_px": 1600
+      },
+      "clip_F51": {
+        "infected": {
+          "x": [
+            587,
+            658
+          ],
+          "y": [
+            560,
+            796
+          ]
+        },
+        "infected_height_px": 236,
+        "you": {
+          "x": [
+            -148,
+            938
+          ],
+          "y": [
+            320,
+            3006
+          ]
+        },
+        "you_hair": {
+          "x": [
+            148,
+            420
+          ],
+          "y": [
+            320,
+            606
+          ]
+        },
+        "you_head": {
+          "x": [
+            161,
+            415
+          ],
+          "y": [
+            347,
+            687
+          ]
+        },
+        "you_visible_height_px": 1600
+      },
+      "clip_F75": {
+        "infected": {
+          "x": [
+            587,
+            658
+          ],
+          "y": [
+            560,
+            797
+          ]
+        },
+        "infected_height_px": 237,
+        "you": {
+          "x": [
+            -175,
+            953
+          ],
+          "y": [
+            310,
+            3106
+          ]
+        },
+        "you_hair": {
+          "x": [
+            132,
+            416
+          ],
+          "y": [
+            310,
+            607
+          ]
+        },
+        "you_head": {
+          "x": [
+            146,
+            410
+          ],
+          "y": [
+            338,
+            691
+          ]
+        },
+        "you_visible_height_px": 1610
+      }
+    },
+    "note": "projected geometry bounds (px, origin top-left), not occlusion-aware"
+  },
+  "render/eevee256/60-71": {
+    "blender": "5.2.3 LTS",
+    "build_seconds": 9.46,
+    "date": "2026-10-28 21:10",
+    "first_seconds": 21.23,
+    "frames_rendered": 12,
+    "max_seconds": 23.98,
+    "mean_seconds": 20.51,
+    "median_seconds": 19.93,
+    "outdir": "out/blender/zc-corridor/B01-SH01/eevee256",
+    "settings": {
+      "engine": "BLENDER_EEVEE",
+      "fast_gi": true,
+      "flicker_levels_dips": [
+        12,
+        14,
+        18,
+        37,
+        56,
+        58,
+        60,
+        67,
+        69,
+        71,
+        73,
+        123,
+        125,
+        143,
+        145
+      ],
+      "gi_bake_seconds": 9.12,
+      "gi_probes": [
+        {
+          "centre": [
+            6.1,
+            -0.9,
+            1.3
+          ],
+          "grid": [
+            40,
+            5,
+            6
+          ],
+          "half_extents": [
+            9.15,
+            1.15,
+            1.3800000000000001
+          ],
+          "name": "zc-corr_gi"
+        },
+        {
+          "centre": [
+            0.0,
+            1.6,
+            1.3
+          ],
+          "grid": [
+            6,
+            6,
+            5
+          ],
+          "half_extents": [
+            1.85,
+            1.55,
+            1.3800000000000001
+          ],
+          "name": "zc-unit_gi"
+        }
+      ],
+      "look": "None",
+      "output": "PNG 8-bit RGB sRGB",
+      "raytracing": "SCREEN, res 1/2, denoise",
+      "shadows": "ray 1 / step 6",
+      "taa_render_samples": 256,
+      "view_transform": "AgX"
+    },
+    "total_seconds": 246.1
+  },
+  "render/eevee32/0-149": {
+    "blender": "5.2.3 LTS",
+    "build_seconds": 8.96,
+    "date": "2026-10-28 21:06",
+    "first_seconds": 3.08,
+    "frames_rendered": 150,
+    "max_seconds": 3.52,
+    "mean_seconds": 2.89,
+    "median_seconds": 2.88,
+    "outdir": "out/blender/zc-corridor/B01-SH01/eevee32",
+    "settings": {
+      "engine": "BLENDER_EEVEE",
+      "fast_gi": true,
+      "flicker_levels_dips": [
+        12,
+        14,
+        18,
+        37,
+        56,
+        58,
+        60,
+        67,
+        69,
+        71,
+        73,
+        123,
+        125,
+        143,
+        145
+      ],
+      "gi_bake_seconds": 8.7,
+      "gi_probes": [
+        {
+          "centre": [
+            6.1,
+            -0.9,
+            1.3
+          ],
+          "grid": [
+            40,
+            5,
+            6
+          ],
+          "half_extents": [
+            9.15,
+            1.15,
+            1.3800000000000001
+          ],
+          "name": "zc-corr_gi"
+        },
+        {
+          "centre": [
+            0.0,
+            1.6,
+            1.3
+          ],
+          "grid": [
+            6,
+            6,
+            5
+          ],
+          "half_extents": [
+            1.85,
+            1.55,
+            1.3800000000000001
+          ],
+          "name": "zc-unit_gi"
+        }
+      ],
+      "look": "None",
+      "output": "PNG 8-bit RGB sRGB",
+      "raytracing": "SCREEN, res 1/2, denoise",
+      "shadows": "ray 1 / step 6",
+      "taa_render_samples": 32,
+      "view_transform": "AgX"
+    },
+    "total_seconds": 433.4
+  },
+  "render/eevee64/0-149": {
+    "blender": "5.2.3 LTS",
+    "build_seconds": 8.29,
+    "date": "2026-10-28 20:59",
+    "first_seconds": 5.77,
+    "frames_rendered": 150,
+    "max_seconds": 5.77,
+    "mean_seconds": 5.39,
+    "median_seconds": 5.38,
+    "outdir": "out/blender/zc-corridor/B01-SH01/eevee64",
+    "settings": {
+      "engine": "BLENDER_EEVEE",
+      "fast_gi": true,
+      "flicker_levels_dips": [
+        12,
+        14,
+        18,
+        37,
+        56,
+        58,
+        60,
+        67,
+        69,
+        71,
+        73,
+        123,
+        125,
+        143,
+        145
+      ],
+      "gi_bake_seconds": 7.9,
+      "gi_probes": [
+        {
+          "centre": [
+            6.1,
+            -0.9,
+            1.3
+          ],
+          "grid": [
+            40,
+            5,
+            6
+          ],
+          "half_extents": [
+            9.15,
+            1.15,
+            1.3800000000000001
+          ],
+          "name": "zc-corr_gi"
+        },
+        {
+          "centre": [
+            0.0,
+            1.6,
+            1.3
+          ],
+          "grid": [
+            6,
+            6,
+            5
+          ],
+          "half_extents": [
+            1.85,
+            1.55,
+            1.3800000000000001
+          ],
+          "name": "zc-unit_gi"
+        }
+      ],
+      "look": "None",
+      "output": "PNG 8-bit RGB sRGB",
+      "raytracing": "SCREEN, res 1/2, denoise",
+      "shadows": "ray 1 / step 6",
+      "taa_render_samples": 64,
+      "view_transform": "AgX"
+    },
+    "total_seconds": 809.1
+  }
+}

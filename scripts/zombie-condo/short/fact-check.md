@@ -3,22 +3,24 @@
 | Field | Value |
 | --- | --- |
 | Reviewer / stage | Boat, exact-revision fact-check (separate from the research pass) |
-| Review dates | R1 review and R2 recheck: 28 Oct 2026 (Asia/Bangkok). Sections below keep R1 as dated history; the R2 recheck is in [Recheck: R2](#recheck-r2) |
+| Review dates | R1 review, R2 recheck and R3 recheck: 28 Oct 2026 (Asia/Bangkok). Sections below keep R1 and R2 as dated history; the current result is in [Recheck: R3](#recheck-r3) |
 | Research revision used | [../research.md](../research.md) `ZCONDO-RESEARCH-R1`, plus `SRC022` (added during the R1 review; handling in [SRC022 handling](#src022-handling)) |
-| Scope A | `ZCONDO-SHORT-TH`: [script.md](script.md) R1 (whole revision), then R2 (recheck of changed and dependent wording) and [tts-th.txt](tts-th.txt) |
-| Scope B | `ZCONDO-SHORT-EN`: [script-en.md](script-en.md) R1 (whole revision), then R2 (recheck of changed and dependent wording) and [tts-en.txt](tts-en.txt). Reviewed separately; EN visual intent is inherited from TH by reference |
+| Scope A | `ZCONDO-SHORT-TH`: [script.md](script.md) R1 (whole revision), then R2 and R3 (rechecks of changed and dependent wording) and [tts-th.txt](tts-th.txt) |
+| Scope B | `ZCONDO-SHORT-EN`: [script-en.md](script-en.md) R1 (whole revision), then R2 and R3 (rechecks of changed and dependent wording) and [tts-en.txt](tts-en.txt). Reviewed separately; EN visual intent is inherited from TH by reference |
 | Not covered | Timing (still `estimated`), audio, visuals as rendered, user approval |
 
 ## Overall status
 
 | Revision | Status | Basis |
 | --- | --- | --- |
-| `ZCONDO-SHORT-TH-R2` | **`ready-for-storyboard`** (factual readiness for Film's visual brief; not user approval) | R2 recheck, [below](#recheck-r2): the `FC-TH-06b` correction is applied, every changed and dependent claim is `supported` or `not-factual`, and the TTS text matches |
-| `ZCONDO-SHORT-EN-R2` | **`ready-for-storyboard`** (same meaning) | R2 recheck: the `FC-EN-06b` correction is applied, every changed and dependent claim is `supported` or `not-factual`, and the TTS text matches |
+| `ZCONDO-SHORT-TH-R3` | **`ready-for-storyboard`** (factual readiness for Film's visual brief; not user approval) | R3 recheck, [below](#recheck-r3): the three changed lines are `supported` or `not-factual`, the sound-intent notes assert nothing unsupported, the other beats are word-for-word R2, and the TTS text matches |
+| `ZCONDO-SHORT-EN-R3` | **`ready-for-storyboard`** (same meaning) | R3 recheck: same basis, reviewed separately on the EN wording |
+| `ZCONDO-SHORT-TH-R2` | `ready-for-storyboard` (history, 28 Oct 2026; superseded by R3) | R2 recheck, [below](#recheck-r2) |
+| `ZCONDO-SHORT-EN-R2` | `ready-for-storyboard` (history, 28 Oct 2026; superseded by R3) | R2 recheck |
 | `ZCONDO-SHORT-TH-R1` | `revision-required` (history, 28 Oct 2026) | `FC-TH-06b`, the only blocking item |
 | `ZCONDO-SHORT-EN-R1` | `revision-required` (history, 28 Oct 2026) | `FC-EN-06b`, the only blocking item |
 
-The R1 sections below keep their verdicts as dated history. Only the R2 recheck applies to the current revisions.
+The R1 and R2 sections below keep their verdicts as dated history. Only the R3 recheck applies to the current revisions.
 
 ## Source added during review (R1)
 
@@ -192,7 +194,81 @@ Claim-map rows checked (R2): B02, B04, B06, B10 are accurate. The "B01, B03, B08
 
 Both versions meet the editorial workflow's bar for factual readiness: no premise, reveal or learning-takeaway error remains, the necessary qualifications are in the wording, and the TTS texts carry exactly the reviewed wording. Film and Mark should consume `ZCONDO-SHORT-TH-R2` and `ZCONDO-SHORT-EN-R2` together with this review, and keep these visual constraints: ready-to-eat items only in B06; bucket, pot and bottles all shown in the B04 montage; bucket icons in B09; no peephole; a stove never lit indoors or shown with a pot over the canister; no weapons.
 
+<a id="recheck-r3"></a>
+## Recheck: R3 (28 Oct 2026)
+
+**Scope.** `ZCONDO-SHORT-TH-R3` ([script.md](script.md), [tts-th.txt](tts-th.txt)) and `ZCONDO-SHORT-EN-R3` ([script-en.md](script-en.md), [tts-en.txt](tts-en.txt)), working-tree text compared with the approved R2 at `HEAD` (commit `9670266`). Preaw's R3 is a duration retarget (60–80 s, user decision 28 Oct 2026). Checked: the three changed VO lines per version, the R3-marked claim-mapping rows, takeaway (3), the new sound-intent and pause notes, both TTS files, and a change-impact check of every other beat. Timing, audio and rendered visuals stay out of scope.
+
+**Method.**
+
+- A scripted per-beat diff of every `**VO:**` string (R2 at `HEAD` against the R3 working tree) shows that exactly three beats changed in each version: B04, B06 and B08. In TH B04, the only other edit is an added "..." pause after "หมดแล้วไม่มีใครเติม", which is punctuation. **B01, B02, B03, B05, B07, B09 and B10 are word-for-word identical to R2 in both versions**, so their R2 verdicts carry forward.
+- A scripted VO-to-TTS comparison, ignoring whitespace and `.!?,:“”…'`, found both versions identical: TH 11 VO strings, 901 code points each; EN 11 VO strings, 708 characters (165 words) each. The counts match the script headers.
+- I checked the TH ซับ chunks against the VO for every beat. They are verbatim, and the new B04, B06 and B08 chunks are correct.
+- I re-opened two sources on 28 Oct 2026 to reconfirm locators for the changed claims:
+  - `SRC003` (Ready.gov "Power Outages", last updated 06/04/2026): "about four hours" for the refrigerator and "about 48 hours" for a full freezer, with "Keep freezers and refrigerators closed." in the same paragraph. The page gives no half-full figure and no ambient-temperature condition.
+  - `SRC013` (ACWD water-shutoff postcard): pitchers, bottles or jugs for drinking and cooking; bathtubs or large buckets for flushing; and **"a dish tub, large pot or bowl"** filled with water for rinsing. It also says to store drinking water in sealed containers. It does not mention covering stored water, so covering still rests on ZC-C15 and the `SRC017` lead, as in R1 and R2.
+
+### Scope A: `ZCONDO-SHORT-TH-R3` rechecked items
+
+| Check ID / location | Exact wording checked (R3) | Classification | Verdict | Evidence + locator | Reason / change vs R2 |
+| --- | --- | --- | --- | --- | --- |
+| `FC-TH-04c` / B04 | “รองใส่ทุกอย่าง ถัง หม้อ ขวด แล้วปิดฝา” | fact (advice) | `supported` | ZC-C03 → `SRC013` (buckets; "large pot"; bottles; sealed drinking containers); ZC-C15 → `SRC017` lead (cover) | This is the R1 wording, and its R1 verdict carries over. The re-opened `SRC013` now names a pot directly, so "หม้อ" is no longer only the research packet's illustration. No bathtub and no mosquito figures. Subtitle chunk “รองใส่ทุกอย่าง ถัง หม้อ ขวด แล้วปิดฝา” matches. The added "..." before it is a pause only. |
+| `FC-TH-04a/b` / B04 | “แต่ก๊อกน้ำยังไหล... คอนโดสูงหลายแห่ง ปั๊มน้ำขึ้นไปเก็บในถังบนดาดฟ้า ไฟดับ ปั๊มก็หยุด น้ำที่ยังไหล คือน้ำที่เหลือในถัง หมดแล้วไม่มีใครเติม” | fact | `supported` | ZC-C01/C02 → `SRC008` | Words unchanged from R2 (punctuation only); the Q2 answer stands. |
+| `FC-TH-06a` / B06 | “ตู้เย็นถ้าไม่เปิด จะเย็นได้ราวสี่ชั่วโมง ช่องแช่แข็งที่อัดแน่น อย่างมากราวสองวัน” | fact | `supported` | ZC-C10 → `SRC003` ("about 48 hours", full freezer, doors closed) | “อย่างมาก” is the optional precision I suggested at R1. It frames the source's typical figure as an upper bound, which suits a hot unit with no air-conditioning (ZC-C10 limits). It narrows the claim rather than extending it, and "ราว", "อัดแน่น" and the closed-door condition are kept. Subtitle chunk matches. |
+| `FC-TH-06b` / B06 | “ของในตู้เย็นที่กินได้เลย กินก่อน กระป๋องไว้ท้ายสุด” | advice (inference) | `supported` | ZC-C10 derived order; `SRC022` | Unchanged from R2. |
+| `FC-TH-00` / takeaway (3) | "…a full freezer about 2 days at most, so eat the ready-to-eat fridge food first…" | meta | `supported` | as `FC-TH-06a/b` | Matches B06. Takeaway (1) now adds "(buckets, pots, bottles)", which matches B04 and `SRC013`. Takeaways (2) and (4) are unchanged. |
+| `FC-TH-08` / B08 | “คืนนั้นที่ระเบียง ทั้งเมืองมืดสนิท มีแต่ควันกับเปลวไฟ ไม่มีใครมาช่วยแน่” | fiction / narrator's in-story certainty | `not-factual` | research §1; ZC-C19 | This is the R1 wording, and its R1 verdict carries over. The city is generic and non-identifiable (visual note kept), so the line names no real place or event. Subtitle chunks match. |
+| `FC-TH-SND` / sound intent B01–B10 | the new **Sound intent** lines | fiction / production notes | pass (no unsupported implication) | sound generation workflow, Boat duty | See the sound review below. |
+| `FC-TH-SUB` / subtitles | all ซับ chunks | — | match | scripted check plus a manual check of B09/B10 (B09 spans two VO strings) | Verbatim chunks of the R3 VO. |
+| `FC-TH-TTS` / tts-th.txt | whole file | — | match | scripted VO comparison (901 cp) | Identical apart from dropped punctuation and line breaks used as pauses; “มีแต่ควันกับเปลวไฟ” is its own line. |
+| Carried forward | B01, B02, B03, B05, B07, B09, B10 | mixed | R2 verdicts unchanged | per-beat diff | Word-for-word identical to R2: `FC-TH-01`, `02a–c`, `03`, `05a–c`, `07a–c`, `09a/b`, `10`. |
+
+Claim-map rows checked (R3): the B04 fill row, the B06 hold-time row and the B08 row cite the correct IDs and match the wording. One precision point on the B04 row: its note "(fill buckets, pitchers, bottles)" can also cite `SRC013`'s "large pot". This is optional and non-blocking. The B04 mechanism row's new Q2 note and the B05 bottle/bucket row's Q3 note record my R1 answers accurately.
+
+### Scope B: `ZCONDO-SHORT-EN-R3` rechecked items
+
+| Check ID / location | Exact wording checked (R3) | Classification | Verdict | Evidence + locator | Reason / change vs R2 |
+| --- | --- | --- | --- | --- | --- |
+| `FC-EN-04c` / B04 | "Fill everything: buckets, pots, bottles. And cover it." | fact (advice) | `supported` | ZC-C03 → `SRC013` (large buckets, "large pot", bottles); ZC-C15 → `SRC017` lead | This EN wording is new; I reviewed it on its own text. Every container named appears in `SRC013`. No bathtub is assumed, and "And cover it." keeps ZC-C15 with no numbers. Same claim as TH `FC-TH-04c`. |
+| `FC-EN-04a/b` / B04 | "The tap still runs. But many high-rises pump water to a roof tank. No power, no pump. What's left in the tank is all there is." | fact | `supported` | ZC-C01/C02 → `SRC008` | Unchanged from R2. |
+| `FC-EN-06a` / B06 | "Fridge shut: about four hours cold. Full freezer: about two days, tops." | fact | `supported` | ZC-C10 → `SRC003` | "tops" makes 2 days an upper bound (= TH "อย่างมาก"). Together with "about", it reads as "up to roughly two days", which stays within "about 48 hours" and errs on the safe side. "Full" is kept. |
+| `FC-EN-06b` / B06 | "Ready-to-eat fridge food first, cans last." | advice (inference) | `supported` | ZC-C10; `SRC022` | Unchanged from R2. |
+| `FC-EN-00` / header takeaway | "Learning takeaway (3) now reads 'a full freezer about 2 days at most', as in TH" | meta | `supported` | as above | Consistent with TH takeaway (3). |
+| `FC-EN-08` / B08 | "The city is dark. Only smoke and fire. No one's coming." | fiction | `not-factual` | research §1; ZC-C19 | A generic city in the story world. The sound note excludes sirens, helicopters and voices. |
+| `FC-EN-SND` / sound notes | B02 and B08 "Sound:" lines; everything else "as in the TH pack, beat for beat" | fiction / production notes | pass | as `FC-TH-SND` | Inherits the TH review below. |
+| `FC-EN-TTS` / tts-en.txt | whole file | — | match | scripted VO comparison (708 chars, 165 words) | Identical apart from line breaks. "And cover it." and "Only smoke and fire." are separate caption lines. |
+| Carried forward | B01, B02, B03, B05, B07, B09, B10 | mixed | R2 verdicts unchanged | per-beat diff | Word-for-word identical to R2: `FC-EN-01`, `02a–c`, `03`, `05a/b`, `07a–c`, `09a/b`, `10`. |
+
+Claim-map rows checked (R3): the B04 (**R3**), B06 (**R3**) and fiction (B08 **R3**) rows are accurate. As in TH, the B04 note can add `SRC013`'s "large pot" as the direct locator for "pots"; this is optional.
+
+### Sound-implication review (both versions)
+
+- **B07 (no ignition sound):** pass. "No ignition sound, ever" matches ZC-C13 and the visual note that the stove is never lit indoors. **Non-blocking advisory for Editor/Mark:** the "canister click as the hand reaches" must read as handling (seating or touching the canister), not as a piezo-igniter click. An igniter click would suggest an attempt to light the stove indoors, which the line forbids. Pick or generate a dull plastic/metal handling click, not a sharp spark tick.
+- **B08 (no sirens, helicopters or voices):** pass. The distant fire crackle and wind match "มีแต่ควันกับเปลวไฟ" / "Only smoke and fire." and the fictional burning city. Leaving out sirens, helicopters and voices keeps the audio from implying a rescue or crowd that the line denies. "No traffic" fits the blackout premise.
+- **Other beats:** B02 pounding vs B09 soft knocks (CL01/CL03), the B03 power-down and compressor/AC cut, B04 fill sounds and lid clicks, the B05 pour/flush gurgle, the cistern lid and "aha" chime, the B06 silent fridge, and the B04–B08 clock pulse are all story or music cues. None asserts a real event, place, casualty or duration. The clock pulse adds urgency but no time figure, so GAP01 (no water duration) is respected. The B05 flush gurgle shows the conditional case "ถ้าท่อยังดี" / "if it drains" working in the story, which is acceptable.
+- **Labelling and real recordings:** all sound is fictional or reconstructed for a fiction-with-knowledge story, matching the fictional visuals. No real-world recording of an actual event is called for. If Editor uses library or field recordings (for example fire crackle), they illustrate fiction and need only the licence handling in the sound generation workflow, not a factual source.
+
+### Advisories (non-blocking)
+
+1. **B04 claim-map locator:** optionally add `SRC013`'s "large pot" to the TH and EN B04 fill rows (now inspected; see Method).
+2. **B07 canister click:** handling click, not igniter click (see above).
+3. **B09 story-world frame:** the R2 advisory still applies. With the R3 pauses, the "ในโลกนี้" / "In this world" frame in B02 sits about 43–50 s before "พวกมันไม่เคาะ" / "They don't knock." It still reads as fiction, so this is not required.
+4. **Reserve trims:** the listed trims (pauses, B01 “จะเอาขยะไปทิ้ง”, B08 smoke/fire line, B04 container list) all fall back to wording already checked in R1 or R2, so using any of them needs only a TTS-match check, not a new factual review. Removing "อย่างมาก" / "tops" would also return to checked R2 wording, but Preaw has marked it keep.
+
+### Result
+
+Both versions meet the factual-readiness bar for the named revisions:
+
+- No premise, reveal or learning-takeaway error remains.
+- The three changed lines are `supported` (B04, B06) or `not-factual` (B08).
+- The new freezer qualifier only narrows the claim.
+- The sound-intent notes imply nothing the evidence does not support.
+- The TTS texts carry exactly the reviewed wording.
+
+`ZCONDO-SHORT-TH-R3` and `ZCONDO-SHORT-EN-R3` are `ready-for-storyboard`. This is not user approval, which R3 does not yet have, and timing is still only estimated. Film and Mark keep the R2 visual constraints. Two updates for R3: the B04 montage now cuts to the spoken list, and the B07 canister sound must not read as ignition.
+
 ## History
 
 - 28 Oct 2026: first review of `ZCONDO-SHORT-TH-R1` and `ZCONDO-SHORT-EN-R1`. Both `revision-required` because of B06 only.
 - 28 Oct 2026: recheck of `ZCONDO-SHORT-TH-R2` and `ZCONDO-SHORT-EN-R2`. Both `ready-for-storyboard`.
+- 28 Oct 2026: recheck of `ZCONDO-SHORT-TH-R3` and `ZCONDO-SHORT-EN-R3` (duration retarget). Both `ready-for-storyboard`; four non-blocking advisories.

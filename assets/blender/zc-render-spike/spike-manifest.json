@@ -1,0 +1,290 @@
+{
+  "balcony/cycles40dn": {
+    "blender": "5.2.3 LTS",
+    "build_seconds": 2.31,
+    "command": "Blender -b --python assets/blender/zc-render-spike/build.py -- balcony cycles40dn 0,36,104",
+    "date": "2026-10-28 20:31",
+    "first_frame_seconds": 34.02,
+    "frames": [
+      {
+        "frame": 0,
+        "png": "out/blender/zc-render-spike/balcony/cycles40dn/F000.png",
+        "seconds": 34.02,
+        "sha256_16": "8d54965e5db9656d"
+      },
+      {
+        "frame": 36,
+        "png": "out/blender/zc-render-spike/balcony/cycles40dn/F036.png",
+        "seconds": 29.99,
+        "sha256_16": "b0aed0ee5e63696b"
+      },
+      {
+        "frame": 104,
+        "png": "out/blender/zc-render-spike/balcony/cycles40dn/F104.png",
+        "seconds": 30.12,
+        "sha256_16": "3038613d2b15d569"
+      }
+    ],
+    "objects": 388,
+    "resolution": "1080x1920",
+    "settings": {
+      "adaptive": false,
+      "bounces": "max 6 / diff 3 / gloss 2 / trans 2 / vol 1",
+      "caustics": false,
+      "denoise": "OIDN GPU",
+      "device": "GPU Metal",
+      "devices": [
+        "Apple M1:CPU:False",
+        "Apple M1 (GPU - 8 cores):METAL:True"
+      ],
+      "engine": "CYCLES",
+      "preset": "cycles40dn",
+      "samples": 40
+    },
+    "steady_mean_seconds": 30.05
+  },
+  "balcony/eevee32": {
+    "blender": "5.2.3 LTS",
+    "build_seconds": 3.24,
+    "command": "Blender -b --python assets/blender/zc-render-spike/build.py -- balcony eevee32 0,36,104",
+    "date": "2026-10-28 20:29",
+    "first_frame_seconds": 2.35,
+    "frames": [
+      {
+        "frame": 0,
+        "png": "out/blender/zc-render-spike/balcony/eevee32/F000.png",
+        "seconds": 2.35,
+        "sha256_16": "2a023abd6c4a4084"
+      },
+      {
+        "frame": 36,
+        "png": "out/blender/zc-render-spike/balcony/eevee32/F036.png",
+        "seconds": 2.19,
+        "sha256_16": "5b922f241e827e7f"
+      },
+      {
+        "frame": 104,
+        "png": "out/blender/zc-render-spike/balcony/eevee32/F104.png",
+        "seconds": 2.29,
+        "sha256_16": "9f7f519a202e93c0"
+      }
+    ],
+    "objects": 388,
+    "resolution": "1080x1920",
+    "settings": {
+      "engine": "BLENDER_EEVEE",
+      "fast_gi": true,
+      "preset": "eevee32",
+      "raytracing": "SCREEN, res 1/2, denoise",
+      "shadows": "ray 1 / step 6",
+      "taa_render_samples": 32,
+      "volumetrics": "tile 8, 64 samples, end 400 m, volumetric shadows on"
+    },
+    "steady_mean_seconds": 2.24
+  },
+  "balcony/eevee64": {
+    "blender": "5.2.3 LTS",
+    "build_seconds": 3.27,
+    "command": "Blender -b --python assets/blender/zc-render-spike/build.py -- balcony eevee64 0,36,104",
+    "date": "2026-10-28 20:29",
+    "first_frame_seconds": 4.21,
+    "frames": [
+      {
+        "frame": 0,
+        "png": "out/blender/zc-render-spike/balcony/eevee64/F000.png",
+        "seconds": 4.21,
+        "sha256_16": "651d3187bf0bfd77"
+      },
+      {
+        "frame": 36,
+        "png": "out/blender/zc-render-spike/balcony/eevee64/F036.png",
+        "seconds": 4.14,
+        "sha256_16": "c256c008baeab0d3"
+      },
+      {
+        "frame": 104,
+        "png": "out/blender/zc-render-spike/balcony/eevee64/F104.png",
+        "seconds": 4.18,
+        "sha256_16": "69bbaeeaa4fefaf9"
+      }
+    ],
+    "objects": 388,
+    "resolution": "1080x1920",
+    "settings": {
+      "engine": "BLENDER_EEVEE",
+      "fast_gi": true,
+      "preset": "eevee64",
+      "raytracing": "SCREEN, res 1/2, denoise",
+      "shadows": "ray 1 / step 6",
+      "taa_render_samples": 64,
+      "volumetrics": "tile 8, 64 samples, end 400 m, volumetric shadows on"
+    },
+    "steady_mean_seconds": 4.16
+  },
+  "corridor/cycles40dn": {
+    "blender": "5.2.3 LTS",
+    "build_seconds": 0.14,
+    "command": "Blender -b --python assets/blender/zc-render-spike/build.py -- corridor cycles40dn 0,36,104",
+    "date": "2026-10-28 20:29",
+    "first_frame_seconds": 32.34,
+    "frames": [
+      {
+        "frame": 0,
+        "png": "out/blender/zc-render-spike/corridor/cycles40dn/F000.png",
+        "seconds": 32.34,
+        "sha256_16": "750cf485607e8231"
+      },
+      {
+        "frame": 36,
+        "png": "out/blender/zc-render-spike/corridor/cycles40dn/F036.png",
+        "seconds": 25.78,
+        "sha256_16": "cf8befd5c7c5ab98"
+      },
+      {
+        "frame": 104,
+        "png": "out/blender/zc-render-spike/corridor/cycles40dn/F104.png",
+        "seconds": 25.77,
+        "sha256_16": "acbe148df0a9c831"
+      }
+    ],
+    "objects": 69,
+    "resolution": "1080x1920",
+    "settings": {
+      "adaptive": false,
+      "bounces": "max 6 / diff 3 / gloss 2 / trans 2 / vol 1",
+      "caustics": false,
+      "denoise": "OIDN GPU",
+      "device": "GPU Metal",
+      "devices": [
+        "Apple M1:CPU:False",
+        "Apple M1 (GPU - 8 cores):METAL:True"
+      ],
+      "engine": "CYCLES",
+      "preset": "cycles40dn",
+      "samples": 40
+    },
+    "steady_mean_seconds": 25.77
+  },
+  "corridor/eevee32": {
+    "blender": "5.2.3 LTS",
+    "build_seconds": 0.13,
+    "command": "Blender -b --python assets/blender/zc-render-spike/build.py -- corridor eevee32 0,36,104",
+    "date": "2026-10-28 20:27",
+    "first_frame_seconds": 2.45,
+    "frames": [
+      {
+        "frame": 0,
+        "png": "out/blender/zc-render-spike/corridor/eevee32/F000.png",
+        "seconds": 2.45,
+        "sha256_16": "73b5d807050596fd"
+      },
+      {
+        "frame": 36,
+        "png": "out/blender/zc-render-spike/corridor/eevee32/F036.png",
+        "seconds": 2.35,
+        "sha256_16": "91ef5cf56cb3e6c3"
+      },
+      {
+        "frame": 104,
+        "png": "out/blender/zc-render-spike/corridor/eevee32/F104.png",
+        "seconds": 2.44,
+        "sha256_16": "97211ec2d4ce4f22"
+      }
+    ],
+    "objects": 69,
+    "resolution": "1080x1920",
+    "settings": {
+      "engine": "BLENDER_EEVEE",
+      "fast_gi": true,
+      "preset": "eevee32",
+      "raytracing": "SCREEN, res 1/2, denoise",
+      "shadows": "ray 1 / step 6",
+      "taa_render_samples": 32,
+      "volumetrics": "tile 8, 64 samples, end 400 m, volumetric shadows on"
+    },
+    "steady_mean_seconds": 2.4
+  },
+  "corridor/eevee64": {
+    "blender": "5.2.3 LTS",
+    "build_seconds": 0.14,
+    "command": "Blender -b --python assets/blender/zc-render-spike/build.py -- corridor eevee64 0,36,104",
+    "date": "2026-10-28 20:27",
+    "first_frame_seconds": 5.08,
+    "frames": [
+      {
+        "frame": 0,
+        "png": "out/blender/zc-render-spike/corridor/eevee64/F000.png",
+        "seconds": 5.08,
+        "sha256_16": "b940de4faed6f29a"
+      },
+      {
+        "frame": 36,
+        "png": "out/blender/zc-render-spike/corridor/eevee64/F036.png",
+        "seconds": 4.65,
+        "sha256_16": "463ef32701768bf1"
+      },
+      {
+        "frame": 104,
+        "png": "out/blender/zc-render-spike/corridor/eevee64/F104.png",
+        "seconds": 4.47,
+        "sha256_16": "000551ecf608d7c4"
+      }
+    ],
+    "objects": 69,
+    "resolution": "1080x1920",
+    "settings": {
+      "engine": "BLENDER_EEVEE",
+      "fast_gi": true,
+      "preset": "eevee64",
+      "raytracing": "SCREEN, res 1/2, denoise",
+      "shadows": "ray 1 / step 6",
+      "taa_render_samples": 64,
+      "volumetrics": "tile 8, 64 samples, end 400 m, volumetric shadows on"
+    },
+    "steady_mean_seconds": 4.56
+  },
+  "corridor/eevee64gi": {
+    "blender": "5.2.3 LTS",
+    "build_seconds": 1.09,
+    "command": "Blender -b --python assets/blender/zc-render-spike/build.py -- corridor eevee64gi 0,36,104",
+    "date": "2026-10-28 20:32",
+    "first_frame_seconds": 4.45,
+    "frames": [
+      {
+        "frame": 0,
+        "png": "out/blender/zc-render-spike/corridor/eevee64gi/F000.png",
+        "seconds": 4.45,
+        "sha256_16": "bb8301e13b0ad00b"
+      },
+      {
+        "frame": 36,
+        "png": "out/blender/zc-render-spike/corridor/eevee64gi/F036.png",
+        "seconds": 4.36,
+        "sha256_16": "1ccea3554fe91435"
+      },
+      {
+        "frame": 104,
+        "png": "out/blender/zc-render-spike/corridor/eevee64gi/F104.png",
+        "seconds": 4.39,
+        "sha256_16": "ec8f0a0edac2d22f"
+      }
+    ],
+    "objects": 70,
+    "resolution": "1080x1920",
+    "settings": {
+      "engine": "BLENDER_EEVEE",
+      "fast_gi": true,
+      "gi_bake": {
+        "bake_seconds": 0.97,
+        "baked": true,
+        "probe": "VOLUME grid (4, 32, 6), bounds centre (0.0, 10.5, 1.35) half (1.05, 13.6, 1.45)"
+      },
+      "preset": "eevee64gi",
+      "raytracing": "SCREEN, res 1/2, denoise",
+      "shadows": "ray 1 / step 6",
+      "taa_render_samples": 64,
+      "volumetrics": "tile 8, 64 samples, end 400 m, volumetric shadows on"
+    },
+    "steady_mean_seconds": 4.38
+  }
+}
