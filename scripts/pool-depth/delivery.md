@@ -71,3 +71,10 @@ Cue frames vs audio (composition-global frames):
 | B06 caption | 1410-1619 | "แล้วน้ำตรงหน้าคุณตอนนี้..." | 1470-1513 |
 
 B04 constraint re-checked: the numeric captions exist only between F878 and F1050 (straight-down state), always with "มองตรงลงมา" (test scans all 1620 frames); the oblique caption starts at F1068 after the bars are gone, with no number. Loop restart: about 3.6 s of silence, then "ดูตื้นแค่เข่า" at G1-G3 with no click (silence on both sides). Picture seam unchanged (clips and picture timing untouched).
+
+## Remaining work (dated 28 October 2026, Asia/Bangkok)
+
+- **Open item: audio editing only.** Picture, captions and runtime binding are in place. The user reported on 28 Oct that the Niwat voice is not good enough and that a new audio-editing principle will be supplied; the remaining stage is the audio edit against that principle (voice choice, gap/pause handling, loop-point silence).
+- **Candidate voice route:** the user may generate narration with Botnoi from [short/botnoi-script.md](short/botnoi-script.md) (six per-beat files, exact script R2 wording). Record voice name and license terms in this record before use. Editor places the files, measures gaps/durations and retimes captions.
+- **Not done:** listening review by a human, Studio check (`DF-20261026-studio-emfile`), Boss review of the shared fields, user approval of the handoff and render. Not release-ready.
+- PR is opened as a **draft** to checkpoint the work; the new audio principle will be applied on this branch.
