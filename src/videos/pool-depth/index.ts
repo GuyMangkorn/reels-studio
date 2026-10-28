@@ -35,20 +35,20 @@ export const botnoiSfx: Record<number, SceneSoundCue[]> = {
   4: [{src: 'sfx/ui/ui_pop_01.wav', atSec: 0, volume: 0.1}], // G1140 sign pictogram cut, gap G1133-G1141
   5: [{src: 'sfx/water/water_pool-feet-enter-soft_01.wav', atSec: 1.4, trimStartSec: 0.4, volume: 0.11}], // file starts G1282, entry peak (file 0.7 s) at G1291 in gap G1289-G1293
 };
-/** Wrap-aligned beds: both files are 53.000 s = composition length (1590 frames), file time = composition time (build-sound-beds.py). */
+/** Wrap-aligned beds: both files are 52.000 s = composition length (1560 frames), file time = composition time (build-sound-beds.py). */
 export const botnoiAudio: AudioTrack[] = [
-  {src: 'audio/water/water_pool-hall-bed-53s_01.wav', startSec: 0, endSec: 7, trimStartSec: 0, volume: 0.1, fadeOutSec: 1.2, duckUnderNarration: 0.6}, // pool B01
-  {src: 'audio/water/water_pool-hall-bed-53s_01.wav', startSec: 41, trimStartSec: 41, volume: 0.1, fadeInSec: 1, duckUnderNarration: 0.6}, // pool B05-B06, runs to the loop point
-  {src: 'audio/bed/bed_pool-curious-sparse-53s_01.wav', startSec: 0, trimStartSec: 0, volume: 0.2, duckUnderNarration: 0.4}, // music, no fades: wraps at 54 s
+  {src: 'audio/water/water_pool-hall-bed-52s_01.wav', startSec: 0, endSec: 7, trimStartSec: 0, volume: 0.1, fadeOutSec: 1.2, duckUnderNarration: 0.6}, // pool B01
+  {src: 'audio/water/water_pool-hall-bed-52s_01.wav', startSec: 41, trimStartSec: 41, volume: 0.1, fadeInSec: 1, duckUnderNarration: 0.6}, // pool B05-B06, runs to the loop point
+  {src: 'audio/bed/bed_pool-curious-sparse-52s_01.wav', startSec: 0, trimStartSec: 0, volume: 0.2, duckUnderNarration: 0.4}, // music, no fades: wraps at 54 s
 ];
 
 /**
- * Botnoi B_loop hold: the user approved a shorter hold than the 3 s default (28 Oct 2026, reason: ending silence before the restart is too
- * long; override recorded in delivery.md). SH08 (`scene[7]`) keeps frames F0-F179 of its 210-frame clip: the hold is F120-F179 = 60 frames
- * (2.0 s), total 1590 frames. F179 is the last frame whose ripple phase equals SH01 F0 at or after the hold start (period 30, measured: mse
- * 0.24 against 20 for a normal frame step; F164 would be 74), so 1.5 s (F164) would break the seam.
+ * Botnoi B_loop hold: the user approved shorter holds than the 3 s default (28 Oct 2026, reason: ending silence before the restart is too
+ * long; override recorded in delivery.md). SH08 (`scene[7]`) keeps frames F0-F149 of its 210-frame clip: the hold is F120-F149 = 30 frames
+ * (1.0 s), total 1560 frames. F149 is the first frame at or after the hold start whose ripple phase equals SH01 F0 (period 30, measured: mse
+ * 0.24 against 20 for a normal frame step; F164 would be 74), so only whole periods (1.0 s, 2.0 s) keep the seam.
  */
-export const BOTNOI_SH08_FRAMES = 180;
+export const BOTNOI_SH08_FRAMES = 150;
 const botnoiTimeline = (poolDepthShort as Timeline).map((scene, i) => {
   const cues = (poolDepthBotnoiCaptions as Record<string, NonNullable<Timeline[number]['subtitleCues']>>)[String(i)];
   const sfx = botnoiSfx[i];

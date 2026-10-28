@@ -91,19 +91,19 @@ const botnoiCaptionAt = (globalFrame: number) => {
 test('POOLDEPTH-SHORT-BOTNOI shares the picture and frame windows and has its own narration', () => {
   collectEpisodes([poolDepth]);
   assert.equal(botnoi.id, 'POOLDEPTH-SHORT-BOTNOI');
-  // Botnoi B_loop hold is 2.0 s (user override of the 3 s default): SH08 is 180 frames, total 1590. Niwat stays at 1620.
-  assert.equal(timelineFrames(botnoi.timeline, fps), 1590);
+  // Botnoi B_loop hold is 1.0 s (user override of the 3 s default): SH08 is 150 frames, total 1560. Niwat stays at 1620.
+  assert.equal(timelineFrames(botnoi.timeline, fps), 1560);
   botnoi.timeline.forEach((scene, i) => {
-    assert.equal(scene.durationSec, i === 7 ? 6 : video.timeline[i].durationSec);
+    assert.equal(scene.durationSec, i === 7 ? 5 : video.timeline[i].durationSec);
     assert.deepEqual(scene.media, video.timeline[i].media);
   });
   assert.equal(botnoi.narration?.src, 'narration/POOLDEPTH-SHORT-BOTNOI.mp3');
-  assert.ok((botnoi.narration?.amplitude.length ?? 0) >= 1590, 'amplitude covers the composition');
+  assert.ok((botnoi.narration?.amplitude.length ?? 0) >= 1560, 'amplitude covers the composition');
   assert.equal(video.narration?.src, 'narration/POOLDEPTH-SHORT.mp3');
 });
 
 test('Botnoi captions keep the SH04 straight-down constraint', () => {
-  for (let frame = 0; frame < 1590; frame++) {
+  for (let frame = 0; frame < 1560; frame++) {
     const text = botnoiCaptionAt(frame);
     if (/[¾]|1\.5|2 ม\./.test(text)) {
       assert.ok(frame >= 780 + 90 && frame < 780 + 270, `numeric caption at ${frame}`);
@@ -114,7 +114,7 @@ test('Botnoi captions keep the SH04 straight-down constraint', () => {
   assert.equal(botnoiCaptionAt(780 + 270), '');
   assert.equal(botnoiCaptionAt(780 + 287), '');
   assert.equal(botnoiCaptionAt(780 + 288), 'มองเฉียง: ยิ่งดูตื้นขึ้น');
-  assert.equal(botnoiCaptionAt(1589), 'แล้วน้ำตรงหน้าคุณตอนนี้...');
+  assert.equal(botnoiCaptionAt(1559), 'แล้วน้ำตรงหน้าคุณตอนนี้...');
 });
 
 test('Botnoi sound design is additive: cues sit in speech gaps, beds cover the loop, Niwat video has none', () => {
@@ -127,7 +127,7 @@ test('Botnoi sound design is additive: cues sit in speech gaps, beds cover the l
   // 9 frames (trimmed) before its entry peak, which is the part that must land in the G1289-G1293 gap.
   for (const cue of cueFrames.filter(c => !/mug-pour|feet-enter/.test(c.src))) assert.ok(amp[cue.frame] <= 0.03, `cue ${cue.src} at ${cue.frame} starts on speech`);
   assert.ok(amp[1282 + 9] <= 0.03, 'feet entry peak lands in a speech gap');
-  assert.ok(cueFrames.every(c => c.frame < 1589 - 90), 'no cue replays at the loop seam');
+  assert.ok(cueFrames.every(c => c.frame < 1559 - 90), 'no cue replays at the loop seam');
   const audio = botnoi.audio!;
   assert.equal(audio.length, 3);
   assert.ok(audio.every(t => t.trimStartSec === (t.startSec ?? 0)), 'file time equals composition time');
@@ -149,7 +149,7 @@ test('Botnoi B06 speech ends at least 15 frames before the SH08 hold', () => {
 test('Botnoi SH08 keeps whole ripple periods: the last kept frame has the phase of SH01 F0', () => {
   const sh08 = botnoi.timeline[7];
   const frames = sceneFrames(sh08.durationSec, fps);
-  assert.equal(frames, 180);
-  assert.equal((frames - 1 + 1) % 30, 0, 'last kept frame F179 is phase 0 (period 30, phase offset +1)');
-  assert.ok(frames - 120 >= 45, 'hold is at least the 1.5 s the user approved');
+  assert.equal(frames, 150);
+  assert.equal((frames - 1 + 1) % 30, 0, 'last kept frame F149 is phase 0 (period 30, phase offset +1)');
+  assert.ok(frames - 120 >= 30, 'hold is at least one full ripple period (1.0 s)');
 });
