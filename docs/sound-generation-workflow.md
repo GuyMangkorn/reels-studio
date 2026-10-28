@@ -6,7 +6,7 @@ Source of the prompting rules: the [audio-studio-mcp README](https://github.com/
 
 ## Runtime facts
 
-- Server: `audio-studio` (user-scope MCP). Tools: `generate_audio`, `edit_audio`, `process_audio`, `unload_models`. Model: Stable Audio 3 medium on Apple Silicon (MLX). Runtime status: `existing-integrated` on this machine (2026-10-28, tools listed by a direct stdio check).
+- Server: `audio-studio` (project-scope MCP in `.mcp.json`; `AUDIO_STUDIO_DIR` overrides the install folder). Tools: `generate_audio`, `edit_audio`, `process_audio`, `unload_models`. Model: Stable Audio 3 medium on Apple Silicon (MLX). Runtime status: `existing-integrated` on this machine (2026-10-28, tools listed by a direct stdio check).
 - Instrumental and effects only. It cannot produce intelligible speech, singing or Thai dialogue; narration stays with the [Niwat TTS path](production-requirements.md).
 - `generate_audio` / `edit_audio` write 44.1 kHz 24-bit stereo WAV plus a `<name>.wav.json` sidecar (prompt, seed, settings; the README's `<name>.json` is wrong for this version) to the server's output folder (`/Users/mangkornkatawong/Documents/ChatGPT/audio-studio-mcp/outputs/`). `process_audio` never changes its input; it writes a new file and sidecar to the same folder, with the generation info kept under `source`.
 - `process_audio` needs `ffmpeg` on `PATH` (`brew install ffmpeg`) for resampling to 48 kHz and loudness normalization; it fails with `ffmpeg not found` otherwise. Remotion's bundled ffmpeg is not a substitute (no OGG/FLAC encoders or spectrogram filter).
