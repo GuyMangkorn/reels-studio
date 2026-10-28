@@ -103,6 +103,7 @@ Staging: | Entity/anchor | Space/unit | Start | Key/end + local frames | Facing/
 Camera: projection/bounds or position/target/FOV; start/key/end frames; transform owner; picture moves and their layers
 Look: only what differs from the brief (palette/value hierarchy, motivated lights, shadows, beat-driven changes)
 VO + subtitles: full Thai VO (or exact accessible source range); subtitle text + frame ranges; SFX asset/onset/clock/license or proposed
+Mix intent: hold / lift / drop / hit / release per beat ([EP08a](editor-principles.md#ep08a-shape-audio-emphasis-by-story-beat)); Editor sets levels
 Cut/transition: purpose, type, start/end frames, overlap, active subtitle/audio; existing implementation or Boss requirement
 Entry → exit: state at the first and last frame (actor/prop positions, pose/contact, set/light states, spanning audio)
 Acceptance: | Frame + named clock | Observable image/sound/contact/reveal | Evidence |
