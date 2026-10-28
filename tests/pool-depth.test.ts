@@ -1,0 +1,155 @@
+import {test} from 'node:test';
+import assert from 'node:assert/strict';
+import poolDepth from '../src/videos/pool-depth/index';
+import {collectEpisodes} from '../src/videos/registry';
+import {sceneFrames, subtitleAt, timelineFrames, validateTimeline} from '../src/scenes/timeline';
+import {boxToQuadHomography, quadAt, quadMatrix3d} from '../src/scenes/quadText';
+import type {Scene} from '../src/scenes/types';
+
+const video = poolDepth.videos[0];
+const fps = 30;
+const starts = video.timeline.reduce<number[]>((acc, s, i) => [...acc, i ? acc[i - 1] + sceneFrames(video.timeline[i - 1].durationSec, fps) : 0], []);
+const captionAt = (globalFrame: number) => {
+  const i = starts.filter(start => start <= globalFrame).length - 1;
+  return subtitleAt(video.timeline[i], globalFrame - starts[i], fps);
+};
+
+test('POOLDEPTH-SHORT registers and maps the eight clips onto the BOARD-R2 frame windows', () => {
+  collectEpisodes([poolDepth]);
+  assert.equal(video.id, 'POOLDEPTH-SHORT');
+  assert.equal(video.ending, 'B_loop');
+  assert.equal(video.loopFadeFrames, undefined);
+  assert.equal(video.sceneTransitionFrames, undefined);
+  assert.equal(timelineFrames(video.timeline, fps), 1620);
+  assert.deepEqual(starts, [0, 180, 480, 780, 1140, 1240, 1320, 1410]);
+  video.timeline.forEach((scene, i) => {
+    assert.equal(scene.bg, 'none');
+    assert.deepEqual(scene.actors, []);
+    assert.equal(scene.projection, undefined);
+    assert.equal(scene.media?.[0].src, `pool-depth/shot-0${i + 1}.mp4`);
+  });
+});
+
+test('label is on SH01 only, visible and unfaded at frame 0', () => {
+  assert.equal(video.timeline[0].eyebrow, 'ฉากสมมติ');
+  assert.equal(video.timeline[0].eyebrowStyle?.fade, false);
+  video.timeline.slice(1).forEach(scene => assert.equal(scene.eyebrow, undefined));
+});
+
+test('numeric depth captions exist only in the SH04 straight-down state, always with "มองตรงลงมา"', () => {
+  for (let frame = 0; frame < 1620; frame++) {
+    const text = captionAt(frame);
+    if (/[¾]|1\.5|2 ม\./.test(text)) {
+      assert.ok(frame >= 780 + 90 && frame < 780 + 270, `numeric caption at ${frame}`);
+      assert.ok(text.includes('มองตรงลงมา'), `no straight-down condition at ${frame}`);
+    }
+  }
+  assert.equal(captionAt(780 + 269).includes('¾'), true);
+  assert.equal(captionAt(780 + 270), '');
+  assert.equal(captionAt(780 + 287), '', 'blank until the bars have fully dissolved (F288)');
+  assert.equal(captionAt(780 + 288), 'มองเฉียง: ยิ่งดูตื้นขึ้น');
+  assert.equal(captionAt(780 + 359), 'มองเฉียง: ยิ่งดูตื้นขึ้น');
+  assert.equal(captionAt(1619), 'แล้วน้ำตรงหน้าคุณตอนนี้...');
+  assert.equal(captionAt(0), 'ดูตื้นแค่เข่า... จริงเหรอ?');
+});
+
+test('SH05 plate text tracks all 100 quads', () => {
+  const plate = video.timeline[4].quadTexts![0];
+  assert.equal(plate.text, '1.0 m');
+  assert.equal(plate.quads.length, 100);
+  assert.deepEqual(quadAt(plate, 0)[0], [299.58, 798.02]);
+  assert.deepEqual(quadAt(plate, 99), plate.quads[99]);
+  assert.deepEqual(quadAt(plate, 250), plate.quads[99], 'frames past the last key hold it');
+});
+
+test('quad homography maps the box corners onto the quad and is order independent', () => {
+  const quad = [[299.58, 798.02], [787.61, 804], [789.82, 1110.48], [297.4, 1108.8]] as const;
+  const h = boxToQuadHomography(640, 400, quad);
+  const apply = (x: number, y: number) => {const w = h[6] * x + h[7] * y + 1; return [(h[0] * x + h[1] * y + h[2]) / w, (h[3] * x + h[4] * y + h[5]) / w];};
+  [[0, 0], [640, 0], [640, 400], [0, 400]].forEach(([x, y], i) => {
+    const [u, v] = apply(x, y);
+    assert.ok(Math.abs(u - quad[i][0]) < 1e-6 && Math.abs(v - quad[i][1]) < 1e-6, `corner ${i}`);
+  });
+  assert.equal(quadMatrix3d(640, 400, quad), quadMatrix3d(640, 400, quad));
+});
+
+test('new scene fields are validated', () => {
+  const base = (extra: Partial<Scene>): Scene[] => [{durationSec: 1, bg: 'none', actors: [], subtitle: '', ...extra}];
+  validateTimeline(base({subtitleCues: [{atSec: 0, text: ''}, {atSec: .5, text: 'ก'}]}));
+  assert.throws(() => validateTimeline(base({subtitleCues: [{atSec: 0, text: '  '}]})), /subtitleCues\[0\]\.text/);
+  assert.throws(() => validateTimeline(base({eyebrowStyle: {fade: 'no' as unknown as boolean}})), /eyebrowStyle\.fade/);
+  assert.throws(() => validateTimeline(base({quadTexts: [{text: 'x', quads: [[[0, 0], [1, 0], [1, 1]]]}]})), /quadTexts\[0\]\.quads\[0\]/);
+  assert.throws(() => validateTimeline(base({quadTexts: [{text: '', quads: []}]})), /quadTexts\[0\]\.text/);
+});
+
+const botnoi = poolDepth.videos[1];
+const botnoiCaptionAt = (globalFrame: number) => {
+  const i = starts.filter(start => start <= globalFrame).length - 1;
+  return subtitleAt(botnoi.timeline[i], globalFrame - starts[i], fps);
+};
+
+test('POOLDEPTH-SHORT-BOTNOI shares the picture and frame windows and has its own narration', () => {
+  collectEpisodes([poolDepth]);
+  assert.equal(botnoi.id, 'POOLDEPTH-SHORT-BOTNOI');
+  // Botnoi B_loop hold is 1.0 s (user override of the 3 s default): SH08 is 150 frames, total 1560. Niwat stays at 1620.
+  assert.equal(timelineFrames(botnoi.timeline, fps), 1560);
+  botnoi.timeline.forEach((scene, i) => {
+    assert.equal(scene.durationSec, i === 7 ? 5 : video.timeline[i].durationSec);
+    assert.deepEqual(scene.media, video.timeline[i].media);
+  });
+  assert.equal(botnoi.narration?.src, 'narration/POOLDEPTH-SHORT-BOTNOI.mp3');
+  assert.ok((botnoi.narration?.amplitude.length ?? 0) >= 1560, 'amplitude covers the composition');
+  assert.equal(video.narration?.src, 'narration/POOLDEPTH-SHORT.mp3');
+});
+
+test('Botnoi captions keep the SH04 straight-down constraint', () => {
+  for (let frame = 0; frame < 1560; frame++) {
+    const text = botnoiCaptionAt(frame);
+    if (/[¾]|1\.5|2 ม\./.test(text)) {
+      assert.ok(frame >= 780 + 90 && frame < 780 + 270, `numeric caption at ${frame}`);
+      assert.ok(text.includes('มองตรงลงมา'), `no straight-down condition at ${frame}`);
+    }
+  }
+  assert.equal(botnoiCaptionAt(780 + 269).includes('¾'), true);
+  assert.equal(botnoiCaptionAt(780 + 270), '');
+  assert.equal(botnoiCaptionAt(780 + 287), '');
+  assert.equal(botnoiCaptionAt(780 + 288), 'มองเฉียง: ยิ่งดูตื้นขึ้น');
+  assert.equal(botnoiCaptionAt(1559), 'แล้วน้ำตรงหน้าคุณตอนนี้...');
+});
+
+test('Botnoi sound design is additive: cues sit in speech gaps, beds cover the loop, Niwat video has none', () => {
+  assert.equal(video.audio, undefined);
+  video.timeline.forEach(scene => assert.equal(scene.sfx, undefined));
+  const amp = botnoi.narration!.amplitude;
+  const cueFrames = botnoi.timeline.flatMap((scene, i) => (scene.sfx ?? []).map(cue => ({src: cue.src, frame: starts[i] + Math.round(cue.atSec * fps)})));
+  assert.deepEqual(cueFrames.map(c => c.frame), [181, 379, 630, 656, 1053, 1140, 1282]);
+  // Accents start on a quiet narration frame (0.03 ~ speech threshold). The pour is anchored to the stream onset (SH03 F150) and the feet file starts
+  // 9 frames (trimmed) before its entry peak, which is the part that must land in the G1289-G1293 gap.
+  for (const cue of cueFrames.filter(c => !/mug-pour|feet-enter/.test(c.src))) assert.ok(amp[cue.frame] <= 0.03, `cue ${cue.src} at ${cue.frame} starts on speech`);
+  assert.ok(amp[1282 + 9] <= 0.03, 'feet entry peak lands in a speech gap');
+  assert.ok(cueFrames.every(c => c.frame < 1559 - 90), 'no cue replays at the loop seam');
+  const audio = botnoi.audio!;
+  assert.equal(audio.length, 3);
+  assert.ok(audio.every(t => t.trimStartSec === (t.startSec ?? 0)), 'file time equals composition time');
+  const music = audio.find(t => t.src.includes('curious-sparse'))!;
+  assert.equal(music.endSec, undefined);
+  assert.equal(music.fadeOutSec, undefined, 'music does not fade out: it wraps at the loop point');
+  const poolEnd = audio.filter(t => t.src.includes('pool-hall') && t.endSec === undefined);
+  assert.equal(poolEnd.length, 1);
+  assert.equal(poolEnd[0].fadeOutSec, undefined);
+});
+
+test('Botnoi B06 speech ends at least 15 frames before the SH08 hold', () => {
+  const amp = botnoi.narration!.amplitude;
+  let last = 0;
+  for (let f = 0; f < amp.length; f++) if (amp[f] > 0.03) last = f;
+  assert.ok(last <= 1410 + 120 - 15, `last speech frame ${last}`);
+});
+
+test('Botnoi SH08 keeps whole ripple periods: the last kept frame has the phase of SH01 F0', () => {
+  const sh08 = botnoi.timeline[7];
+  const frames = sceneFrames(sh08.durationSec, fps);
+  assert.equal(frames, 150);
+  assert.equal((frames - 1 + 1) % 30, 0, 'last kept frame F149 is phase 0 (period 30, phase offset +1)');
+  assert.ok(frames - 120 >= 30, 'hold is at least one full ripple period (1.0 s)');
+});

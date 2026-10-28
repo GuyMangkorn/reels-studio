@@ -11,7 +11,7 @@ import {mouthAt} from '../rig/drivers';
 import {DEFAULT_LOOP_BLEND_FRAMES, endingState, loopBlendOpacity, type Ending} from './endings';
 import type {AudioTrack, CaptionStyle, ChromeStyle, Timeline, Scene} from './types';
 import {defaultChrome, validateVideoStyle} from './media';
-import {AudioTracks, EntryTransition, MediaLayer, SceneSounds} from './MediaLayers';
+import {AudioTracks, EntryTransition, MediaLayer, QuadTextLayer, SceneSounds} from './MediaLayers';
 import {visualAt} from '../assets/visuals/types';
 import {VisualStage} from '../assets/visuals/VisualStage';
 
@@ -118,8 +118,9 @@ const SceneView = ({scene, index, total, previous, start, narration, ending, loo
     })}
     {ownerPointOpacity > 0 && <svg opacity={ownerPointOpacity} width={width * .34} height={height * .12} viewBox="0 0 370 230" style={{position: 'absolute', left: -28, top: height * .34, pointerEvents: 'none', zIndex: 2}} aria-label="เจ้าของชี้ไปที่กล่อง"><path d="M-10 58 H142 Q165 58 183 78 L245 139 Q257 151 244 164 L232 176 Q220 188 206 174 L155 126 Q143 114 128 114 H-10Z" fill="#ff8fa3" stroke="#55465a" strokeWidth="7" strokeLinejoin="round"/><path d="M180 81 Q200 66 215 77 L275 127 Q289 139 277 153 L263 167 Q251 179 238 166 L191 126 Q177 114 163 117 L142 120 Q125 123 122 107 Q119 92 136 87Z" fill="#ffd9b8" stroke="#55465a" strokeWidth="7" strokeLinejoin="round"/><path d="M268 132 L330 149 L287 163Z" fill="#ffd9b8" stroke="#55465a" strokeWidth="7" strokeLinejoin="round"/></svg>}
     {visualAt(scene.visuals, sceneFrame, fps) && <VisualStage visual={visualAt(scene.visuals, sceneFrame, fps)!} frame={sceneFrame} fps={fps} width={width} height={height} physical={Boolean(scene.projection)}/>}
-    {(!portrait || scene.eyebrow || scene.title) && <div style={{position: 'absolute', left: width * .075, top: height * (portrait ? .085 : .067), color: ink, opacity: interpolate(frame, [0, 12], [0, 1], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'}), transform: `translateY(${interpolate(frame, [0, 18], [15, 0], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'})}px)`}}>
-      {scene.eyebrow && <div style={{fontSize: portrait ? 24 : 21, fontWeight: 600, letterSpacing: 4}}>{scene.eyebrow}</div>}
+    <QuadTextLayer overlays={scene.quadTexts} frame={frame}/>
+    {(!portrait || scene.eyebrow || scene.title) && <div style={{position: 'absolute', left: width * .075, top: height * (portrait ? .085 : .067), color: ink, opacity: scene.eyebrowStyle?.fade === false ? 1 : interpolate(frame, [0, 12], [0, 1], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'}), transform: `translateY(${scene.eyebrowStyle?.fade === false ? 0 : interpolate(frame, [0, 18], [15, 0], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'})}px)`}}>
+      {scene.eyebrow && <div style={{fontSize: scene.eyebrowStyle?.fontSize ?? (portrait ? 24 : 21), fontWeight: 600, letterSpacing: 4}}>{scene.eyebrow}</div>}
       {scene.title && <div style={{fontFamily: 'Noto Sans Thai, sans-serif', fontSize: portrait ? 105 : 76, lineHeight: 1.13, fontWeight: 800, letterSpacing: -4, whiteSpace: 'pre-line', marginTop: 24}}>{scene.title}</div>}
       <div style={{width: 65, height: 7, borderRadius: 8, background: night ? '#ffdba4' : '#e5a08c', marginTop: 25}}/>
     </div>}

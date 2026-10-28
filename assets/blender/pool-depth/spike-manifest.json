@@ -1,0 +1,1782 @@
+{
+  "s0": {
+    "frames": 60,
+    "devices": [
+      {
+        "name": "Apple M1",
+        "type": "CPU",
+        "use": false
+      },
+      {
+        "name": "Apple M1 (GPU - 8 cores)",
+        "type": "METAL",
+        "use": true
+      }
+    ],
+    "samples": 32,
+    "scale_pct": 100,
+    "seconds_first_frame": 135.40477514266968,
+    "seconds_mean_excl_first": 3.789098125393108,
+    "seconds_max": 135.40477514266968,
+    "seconds_total": 358.96156454086304,
+    "frame_files": "renders/s0/frame_0001..0060.png (local)"
+  },
+  "_meta": {
+    "blender": "5.2.3 LTS",
+    "units": "metre, Z up",
+    "output": "1080x1920@30",
+    "generated_by": "build.py"
+  },
+  "s1": {
+    "camera_height_above_surface_m": 2.0,
+    "depth_m": 1.0,
+    "fov_v_deg": 60.0,
+    "f_px": 1662.7687752661227,
+    "samples": 32,
+    "devices": [
+      {
+        "name": "Apple M1",
+        "type": "CPU",
+        "use": false
+      },
+      {
+        "name": "Apple M1 (GPU - 8 cores)",
+        "type": "METAL",
+        "use": true
+      }
+    ],
+    "cases": {
+      "ior_1.000": {
+        "ior": 1.0,
+        "render_seconds": 15.106409788131714,
+        "markers": [
+          {
+            "axis": "x",
+            "floor_offset_m": 0.3,
+            "found": true,
+            "predicted_px": 166.30459495910543,
+            "measured_px": 166.2959001164112,
+            "error_px": -0.008694842694239924,
+            "flat_px_no_refraction": 166.27687752661225
+          },
+          {
+            "axis": "x",
+            "floor_offset_m": 0.6,
+            "found": true,
+            "predicted_px": 332.60918991821086,
+            "measured_px": 332.55849975242415,
+            "error_px": -0.05069016578670471,
+            "flat_px_no_refraction": 332.5537550532245
+          },
+          {
+            "axis": "x",
+            "floor_offset_m": 0.9,
+            "found": true,
+            "predicted_px": 498.91378487731635,
+            "measured_px": 498.89117582813356,
+            "error_px": -0.022609049182790386,
+            "flat_px_no_refraction": 498.83063257983684
+          },
+          {
+            "axis": "y",
+            "floor_offset_m": 0.3,
+            "found": true,
+            "predicted_px": 166.30459495910543,
+            "measured_px": 166.3086643433578,
+            "error_px": 0.00406938425237513,
+            "flat_px_no_refraction": 166.27687752661225
+          },
+          {
+            "axis": "y",
+            "floor_offset_m": 0.6,
+            "found": true,
+            "predicted_px": 332.60918991821086,
+            "measured_px": 332.59138265227693,
+            "error_px": -0.01780726593392501,
+            "flat_px_no_refraction": 332.5537550532245
+          },
+          {
+            "axis": "y",
+            "floor_offset_m": 0.9,
+            "found": true,
+            "predicted_px": 498.91378487731635,
+            "measured_px": 498.8181755798646,
+            "error_px": -0.09560929745174462,
+            "flat_px_no_refraction": 498.83063257983684
+          }
+        ]
+      },
+      "ior_1.333": {
+        "ior": 1.333,
+        "render_seconds": 13.365854978561401,
+        "markers": [
+          {
+            "axis": "x",
+            "floor_offset_m": 0.3,
+            "found": true,
+            "predicted_px": 181.53380839450364,
+            "measured_px": 181.54931639436404,
+            "error_px": 0.015507999860403743,
+            "flat_px_no_refraction": 166.27687752661225
+          },
+          {
+            "axis": "x",
+            "floor_offset_m": 0.6,
+            "found": true,
+            "predicted_px": 363.8330253190264,
+            "measured_px": 363.80713177828727,
+            "error_px": -0.025893540739104992,
+            "flat_px_no_refraction": 332.5537550532245
+          },
+          {
+            "axis": "x",
+            "floor_offset_m": 0.9,
+            "found": false
+          },
+          {
+            "axis": "y",
+            "floor_offset_m": 0.3,
+            "found": true,
+            "predicted_px": 181.53380839450364,
+            "measured_px": 181.48438775752675,
+            "error_px": -0.049420636976890364,
+            "flat_px_no_refraction": 166.27687752661225
+          },
+          {
+            "axis": "y",
+            "floor_offset_m": 0.6,
+            "found": true,
+            "predicted_px": 363.8330253190264,
+            "measured_px": 363.83551639204666,
+            "error_px": 0.00249107302028051,
+            "flat_px_no_refraction": 332.5537550532245
+          },
+          {
+            "axis": "y",
+            "floor_offset_m": 0.9,
+            "found": true,
+            "predicted_px": 547.6358474894888,
+            "measured_px": 547.5970064256603,
+            "error_px": -0.0388410638284995,
+            "flat_px_no_refraction": 498.83063257983684
+          }
+        ]
+      }
+    },
+    "paraxial_expectation": {
+      "apparent_depth_m": 0.7501875468867217,
+      "ratio": 0.7501875468867217,
+      "note": "brief rounds to 3/4 (0.7502)"
+    }
+  },
+  "s2": {
+    "design": {
+      "eye_angle_from_vertical_deg": 40,
+      "inner_diameter_m": 0.08,
+      "inner_height_m": 0.09,
+      "water_depth_m": 0.07,
+      "hidden_zone_ends_at_x_from_near_wall_m": 0.07551896680595518,
+      "visible_from_with_water_x_from_near_wall_m": 0.05531243828874832,
+      "coin_diameter_m": 0.02,
+      "coin_centre_from_near_wall_m": 0.064,
+      "coin_extent_from_near_wall_m": [
+        0.054,
+        0.074
+      ],
+      "analytic_visible_fraction_after_pour_centre_ray": 0.9343780855625838,
+      "camera_distance_m": 1.0,
+      "camera_vfov_deg": 13.233475795821665,
+      "refraction_angle_deg": 28.829922755731342
+    },
+    "samples": 64,
+    "devices": [
+      {
+        "name": "Apple M1",
+        "type": "CPU",
+        "use": false
+      },
+      {
+        "name": "Apple M1 (GPU - 8 cores)",
+        "type": "METAL",
+        "use": true
+      }
+    ],
+    "renders": {
+      "empty_mask": {
+        "frame": 1,
+        "mug_hidden": false,
+        "seconds": 12.154901027679443,
+        "coin_px": 0.0
+      },
+      "full_mask": {
+        "frame": 31,
+        "mug_hidden": false,
+        "seconds": 13.347343921661377,
+        "coin_px": 13987.0
+      },
+      "full_mask_nomug": {
+        "frame": 31,
+        "mug_hidden": true,
+        "seconds": 21.136965036392212,
+        "coin_px": 14431.0
+      },
+      "empty_mask_nomug": {
+        "frame": 1,
+        "mug_hidden": true,
+        "seconds": 6.036882162094116,
+        "coin_px": 14154.0
+      },
+      "air_ref_mask": {
+        "seconds": 5.881537675857544,
+        "coin_px": 14154.0
+      },
+      "beauty_01": {
+        "seconds": 11.142166137695312
+      },
+      "beauty_12": {
+        "seconds": 11.917731285095215
+      },
+      "beauty_22": {
+        "seconds": 12.589706897735596
+      },
+      "beauty_31": {
+        "seconds": 12.343235969543457
+      }
+    },
+    "results": {
+      "coin_px_before_pour": 0.0,
+      "coin_px_after_pour": 13987.0,
+      "coin_px_after_no_mug_reference": 14431.0,
+      "visible_after_over_water_reference": 0.9692329013928349,
+      "visible_after_over_air_reference": 0.9882012152041826,
+      "coin_has_animation_data": false,
+      "camera_has_animation_data": false,
+      "camera_data_has_animation": false,
+      "water_keyed_only": true
+    },
+    "water_ior": 1.333
+  },
+  "s2_control_ior_1.0": {
+    "design": {
+      "eye_angle_from_vertical_deg": 40,
+      "inner_diameter_m": 0.08,
+      "inner_height_m": 0.09,
+      "water_depth_m": 0.07,
+      "hidden_zone_ends_at_x_from_near_wall_m": 0.07551896680595518,
+      "visible_from_with_water_x_from_near_wall_m": 0.05531243828874832,
+      "coin_diameter_m": 0.02,
+      "coin_centre_from_near_wall_m": 0.064,
+      "coin_extent_from_near_wall_m": [
+        0.054,
+        0.074
+      ],
+      "analytic_visible_fraction_after_pour_centre_ray": 0.9343780855625838,
+      "camera_distance_m": 1.0,
+      "camera_vfov_deg": 13.233475795821665,
+      "refraction_angle_deg": 28.829922755731342
+    },
+    "samples": 64,
+    "devices": [
+      {
+        "name": "Apple M1",
+        "type": "CPU",
+        "use": false
+      },
+      {
+        "name": "Apple M1 (GPU - 8 cores)",
+        "type": "METAL",
+        "use": true
+      }
+    ],
+    "renders": {
+      "empty_mask": {
+        "frame": 1,
+        "mug_hidden": false,
+        "seconds": 11.434420824050903,
+        "coin_px": 0.0
+      },
+      "full_mask": {
+        "frame": 31,
+        "mug_hidden": false,
+        "seconds": 12.842919826507568,
+        "coin_px": 0.0
+      },
+      "full_mask_nomug": {
+        "frame": 31,
+        "mug_hidden": true,
+        "seconds": 19.826477766036987,
+        "coin_px": 14142.0
+      },
+      "empty_mask_nomug": {
+        "frame": 1,
+        "mug_hidden": true,
+        "seconds": 6.0418548583984375,
+        "coin_px": 14154.0
+      },
+      "air_ref_mask": {
+        "seconds": 6.1704421043396,
+        "coin_px": 14154.0
+      },
+      "beauty_01": {
+        "seconds": 10.835817813873291
+      },
+      "beauty_12": {
+        "seconds": 12.487575054168701
+      },
+      "beauty_22": {
+        "seconds": 13.303277015686035
+      },
+      "beauty_31": {
+        "seconds": 12.49622130393982
+      }
+    },
+    "results": {
+      "coin_px_before_pour": 0.0,
+      "coin_px_after_pour": 0.0,
+      "coin_px_after_no_mug_reference": 14142.0,
+      "visible_after_over_water_reference": 0.0,
+      "visible_after_over_air_reference": 0.0,
+      "coin_has_animation_data": false,
+      "camera_has_animation_data": false,
+      "camera_data_has_animation": false,
+      "water_keyed_only": true
+    },
+    "water_ior": 1.0
+  },
+  "d3_stills": {
+    "samples": 40,
+    "scale_pct": 100,
+    "denoise": true,
+    "devices": [
+      {
+        "name": "Apple M1",
+        "type": "CPU",
+        "use": false
+      },
+      {
+        "name": "Apple M1 (GPU - 8 cores)",
+        "type": "METAL",
+        "use": true
+      }
+    ],
+    "stills": {
+      "SH01_F000": {
+        "seconds": 24.503988027572632,
+        "phase": 0,
+        "cam_pos": [
+          -1.0,
+          -3.3,
+          2.2
+        ],
+        "cam_tgt": [
+          0.21,
+          0.9,
+          -0.22
+        ],
+        "vfov": 45.0,
+        "child_extent_px": {
+          "x": [
+            480.2512514591217,
+            719.1569924354553
+          ],
+          "y": [
+            321.05621337890625,
+            1076.9928359985352
+          ],
+          "height_px": 755.9366226196289,
+          "width_px": 238.90574097633362
+        }
+      },
+      "SH01_F090": {
+        "seconds": 23.033832788467407,
+        "phase": 0,
+        "cam_pos": [
+          -0.9816834330558777,
+          -3.236421823501587,
+          2.1633667945861816
+        ],
+        "cam_tgt": [
+          0.21,
+          0.9,
+          -0.22
+        ],
+        "vfov": 45.0,
+        "child_extent_px": {
+          "x": [
+            478.96121621131897,
+            723.0869007110596
+          ],
+          "y": [
+            305.9367370605469,
+            1079.3388175964355
+          ],
+          "height_px": 773.4020805358887,
+          "width_px": 244.1256844997406
+        }
+      },
+      "SH01_F179": {
+        "seconds": 22.45122790336609,
+        "phase": 29,
+        "cam_pos": [
+          -0.9636712670326233,
+          -3.1739003658294678,
+          2.127342700958252
+        ],
+        "cam_tgt": [
+          0.21,
+          0.9,
+          -0.22
+        ],
+        "vfov": 45.0,
+        "child_extent_px": {
+          "x": [
+            476.6374146938324,
+            725.7212376594543
+          ],
+          "y": [
+            290.5031204223633,
+            1081.7399597167969
+          ],
+          "height_px": 791.2368392944336,
+          "width_px": 249.08382296562195
+        }
+      },
+      "SH05_F000": {
+        "seconds": 12.215537786483765,
+        "phase": 0,
+        "cam_pos": [
+          0.20000000298023224,
+          -1.7000000476837158,
+          1.2000000476837158
+        ],
+        "cam_tgt": [
+          1.4,
+          -0.5,
+          1.35
+        ],
+        "vfov": 35.0,
+        "plate_quad_px": [
+          [
+            299.58107471466064,
+            798.0155181884766
+          ],
+          [
+            787.6065587997437,
+            803.9963150024414
+          ],
+          [
+            789.8195743560791,
+            1110.4807090759277
+          ],
+          [
+            297.4017262458801,
+            1108.7965393066406
+          ]
+        ]
+      },
+      "SH05_F099": {
+        "seconds": 12.564369916915894,
+        "phase": 9,
+        "cam_pos": [
+          0.3408721685409546,
+          -1.559127926826477,
+          1.2176090478897095
+        ],
+        "cam_tgt": [
+          1.4,
+          -0.5,
+          1.35
+        ],
+        "vfov": 35.0,
+        "plate_quad_px": [
+          [
+            266.7862093448639,
+            775.9199523925781
+          ],
+          [
+            820.8505868911743,
+            783.0513381958008
+          ],
+          [
+            823.7011528015137,
+            1130.8895874023438
+          ],
+          [
+            263.9683127403259,
+            1129.302978515625
+          ]
+        ]
+      },
+      "SH06_F000": {
+        "seconds": 40.53379487991333,
+        "phase": 10,
+        "cam_pos": [
+          -0.8999999761581421,
+          0.8999999761581421,
+          0.3499999940395355
+        ],
+        "cam_tgt": [
+          0.0,
+          0.0,
+          -0.05
+        ],
+        "vfov": 40.0
+      },
+      "SH06_F040": {
+        "seconds": 41.41206479072571,
+        "phase": 20,
+        "cam_pos": [
+          -0.7979646921157837,
+          0.7979646921157837,
+          0.3046509921550751
+        ],
+        "cam_tgt": [
+          0.0,
+          0.0,
+          -0.05
+        ],
+        "vfov": 40.0
+      },
+      "SH06_F079": {
+        "seconds": 41.88886022567749,
+        "phase": 29,
+        "cam_pos": [
+          -0.7650842666625977,
+          0.7650842666625977,
+          0.29003745317459106
+        ],
+        "cam_tgt": [
+          0.0,
+          0.0,
+          -0.05
+        ],
+        "vfov": 40.0
+      },
+      "SH07_F000": {
+        "seconds": 23.227684020996094,
+        "phase": 0,
+        "cam_pos": [
+          0.5,
+          -1.6,
+          1.3
+        ],
+        "cam_tgt": [
+          1.4,
+          -0.5,
+          0.95
+        ],
+        "vfov": 35.0
+      },
+      "SH07_F089": {
+        "seconds": 21.571295022964478,
+        "phase": 29,
+        "cam_pos": [
+          0.55,
+          -1.7,
+          1.05
+        ],
+        "cam_tgt": [
+          1.4,
+          -0.5,
+          0.95
+        ],
+        "vfov": 35.0
+      },
+      "SH08_F000": {
+        "seconds": 21.924280881881714,
+        "phase": 1,
+        "cam_pos": [
+          0.5494425873607133,
+          -1.700575393692167,
+          1.050413564216245
+        ],
+        "cam_tgt": [
+          1.3995720509414507,
+          -0.49949653051935383,
+          0.9495792433626028
+        ],
+        "vfov": 35.00359621057604,
+        "child_extent_px": {
+          "x": [
+            -4897.670574188232,
+            -2819.538631439209
+          ],
+          "y": [
+            -485.6886291503906,
+            3576.914176940918
+          ],
+          "height_px": 4062.6028060913086,
+          "width_px": 2078.1319427490234
+        }
+      },
+      "SH08_F045": {
+        "seconds": 24.41905927658081,
+        "phase": 16,
+        "cam_pos": [
+          -0.23777421105642338,
+          -2.5131862823808238,
+          1.6344776404612174
+        ],
+        "cam_tgt": [
+          0.795192702479262,
+          0.21153799708322107,
+          0.35535753100902234
+        ],
+        "vfov": 40.08241426488015,
+        "child_extent_px": {
+          "x": [
+            -348.7019991874695,
+            79.02073413133621
+          ],
+          "y": [
+            105.13469696044922,
+            1392.9190063476562
+          ],
+          "height_px": 1287.784309387207,
+          "width_px": 427.7227333188057
+        }
+      },
+      "SH08_F209": {
+        "seconds": 22.271923065185547,
+        "phase": 0,
+        "cam_pos": [
+          -1.0,
+          -3.3,
+          2.2
+        ],
+        "cam_tgt": [
+          0.21,
+          0.9,
+          -0.22
+        ],
+        "vfov": 45.0,
+        "child_extent_px": {
+          "x": [
+            480.2512514591217,
+            719.1569924354553
+          ],
+          "y": [
+            321.05621337890625,
+            1076.9928359985352
+          ],
+          "height_px": 755.9366226196289,
+          "width_px": 238.90574097633362
+        }
+      }
+    }
+  },
+  "d3_checks": {
+    "samples": 32,
+    "scale_pct": 100,
+    "refraction_B01_camera": {
+      "ior_1.000": {
+        "render_seconds": 19.424812078475952,
+        "markers": [
+          {
+            "floor_xy_m": [
+              2.5,
+              5.000000000000001
+            ],
+            "unrefracted_px": [
+              803.3957147598267,
+              581.0174560546875
+            ],
+            "predicted_px": [
+              803.3957147598267,
+              581.0174560546875
+            ],
+            "measured_px": [
+              803.3753461292142,
+              580.8495917362517
+            ],
+            "error_px": 0.1690955662249831,
+            "lift_vs_unrefracted_px": 0.0
+          },
+          {
+            "floor_xy_m": [
+              0.75,
+              4.6000000000000005
+            ],
+            "unrefracted_px": [
+              404.0375590324402,
+              660.7966232299805
+            ],
+            "predicted_px": [
+              404.0375590324402,
+              660.7966232299805
+            ],
+            "measured_px": [
+              403.9871250620479,
+              660.6548425353732
+            ],
+            "error_px": 0.15048372248471914,
+            "lift_vs_unrefracted_px": 0.0
+          },
+          {
+            "floor_xy_m": [
+              0.0,
+              4.2
+            ],
+            "unrefracted_px": [
+              220.75539886951447,
+              723.735466003418
+            ],
+            "predicted_px": [
+              220.75539886951447,
+              723.735466003418
+            ],
+            "measured_px": [
+              220.7596053778087,
+              723.5492269771067
+            ],
+            "error_px": 0.18628652563560122,
+            "lift_vs_unrefracted_px": 0.0
+          },
+          {
+            "floor_xy_m": [
+              2.0,
+              3.0
+            ],
+            "unrefracted_px": [
+              888.494074344635,
+              796.2365341186523
+            ],
+            "predicted_px": [
+              888.494074344635,
+              796.2365341186523
+            ],
+            "measured_px": [
+              888.5236630606457,
+              796.0743180272157
+            ],
+            "error_px": 0.16489254815228954,
+            "lift_vs_unrefracted_px": 0.0
+          },
+          {
+            "floor_xy_m": [
+              0.25,
+              2.8000000000000003
+            ],
+            "unrefracted_px": [
+              378.1319582462311,
+              891.1649322509766
+            ],
+            "predicted_px": [
+              378.1319582462311,
+              891.1649322509766
+            ],
+            "measured_px": [
+              378.1533051969486,
+              890.9814816734565
+            ],
+            "error_px": 0.18468840433923098,
+            "lift_vs_unrefracted_px": 0.0
+          },
+          {
+            "floor_xy_m": [
+              0.0,
+              2.2
+            ],
+            "unrefracted_px": [
+              337.10108041763306,
+              998.0965232849121
+            ],
+            "predicted_px": [
+              337.10108041763306,
+              998.0965232849121
+            ],
+            "measured_px": [
+              337.0856328941936,
+              997.9452657248961
+            ],
+            "error_px": 0.15204432065160337,
+            "lift_vs_unrefracted_px": 0.0
+          }
+        ]
+      },
+      "ior_1.333": {
+        "render_seconds": 19.326194286346436,
+        "markers": [
+          {
+            "floor_xy_m": [
+              2.5,
+              5.000000000000001
+            ],
+            "unrefracted_px": [
+              803.3957147598267,
+              581.0174560546875
+            ],
+            "predicted_px": [
+              813.441960811615,
+              406.9038391113281
+            ],
+            "measured_px": [
+              813.5236782280542,
+              406.93071694572996
+            ],
+            "error_px": 0.08602414853769365,
+            "lift_vs_unrefracted_px": 174.4032071517951,
+            "theta_air_deg": 74.5542443497922,
+            "theta_water_deg": 46.31044186289756,
+            "apparent_over_true_depth": 0.28924245046390357
+          },
+          {
+            "floor_xy_m": [
+              0.75,
+              4.6000000000000005
+            ],
+            "unrefracted_px": [
+              404.0375590324402,
+              660.7966232299805
+            ],
+            "predicted_px": [
+              398.62597703933716,
+              482.2781753540039
+            ],
+            "measured_px": [
+              398.65997884137005,
+              482.34111888059545
+            ],
+            "error_px": 0.07154026894877884,
+            "lift_vs_unrefracted_px": 178.60045199191362,
+            "theta_air_deg": 72.70667942813938,
+            "theta_water_deg": 45.747842247367835,
+            "apparent_over_true_depth": 0.31957273573810513
+          },
+          {
+            "floor_xy_m": [
+              0.0,
+              4.2
+            ],
+            "unrefracted_px": [
+              220.75539886951447,
+              723.735466003418
+            ],
+            "predicted_px": [
+              207.6142430305481,
+              541.7025375366211
+            ],
+            "measured_px": [
+              207.80903040779285,
+              541.7805726439209
+            ],
+            "error_px": 0.20983708038661744,
+            "lift_vs_unrefracted_px": 182.5066492569024,
+            "theta_air_deg": 71.44944695230706,
+            "theta_water_deg": 45.333473736395426,
+            "apparent_over_true_depth": 0.33950587547414446
+          },
+          {
+            "floor_xy_m": [
+              2.0,
+              3.0
+            ],
+            "unrefracted_px": [
+              888.494074344635,
+              796.2365341186523
+            ],
+            "predicted_px": [
+              903.2732176780701,
+              611.77001953125
+            ],
+            "measured_px": [
+              903.2923325863661,
+              611.8065541654113
+            ],
+            "error_px": 0.041232986945711196,
+            "lift_vs_unrefracted_px": 185.0576074677681,
+            "theta_air_deg": 69.82444313307863,
+            "theta_water_deg": 44.76141688763083,
+            "apparent_over_true_depth": 0.3643966251378221
+          },
+          {
+            "floor_xy_m": [
+              0.25,
+              2.8000000000000003
+            ],
+            "unrefracted_px": [
+              378.1319582462311,
+              891.1649322509766
+            ],
+            "predicted_px": [
+              371.1012017726898,
+              706.3573837280273
+            ],
+            "measured_px": [
+              371.20160818148827,
+              706.4761092855264
+            ],
+            "error_px": 0.15549020847390183,
+            "lift_vs_unrefracted_px": 184.94123803968782,
+            "theta_air_deg": 67.33625952786447,
+            "theta_water_deg": 43.80924765227878,
+            "apparent_over_true_depth": 0.40056047746464424
+          },
+          {
+            "floor_xy_m": [
+              0.0,
+              2.2
+            ],
+            "unrefracted_px": [
+              337.10108041763306,
+              998.0965232849121
+            ],
+            "predicted_px": [
+              328.0594074726105,
+              813.2580184936523
+            ],
+            "measured_px": [
+              328.1215542610741,
+              813.3614916312462
+            ],
+            "error_px": 0.12070175441911564,
+            "lift_vs_unrefracted_px": 185.05951665103126,
+            "theta_air_deg": 64.76310722963422,
+            "theta_water_deg": 42.73310432103208,
+            "apparent_over_true_depth": 0.4354546873600724
+          }
+        ]
+      },
+      "max_error_px": 0.20983708038661744,
+      "pass_2px": true
+    },
+    "framing": {
+      "SH01_child_over_motion": {
+        "min_height_px": 755.9366226196289,
+        "max_height_px": 791.2368392944336,
+        "top_y_min_px": 290.5031204223633,
+        "bottom_y_max_px": 1081.7399597167969,
+        "x_range_px": [
+          473.49324345588684,
+          732.6894235610962
+        ],
+        "in_content_band_[269,1440]": true,
+        "rule_>=480px": true
+      },
+      "child_contact": {
+        "lowest_foot_vertex_z_m": 0.15000000596046448,
+        "deck_top_z_m": 0.15,
+        "gap_m": 5.960464483090178e-09,
+        "toes_y_m": -0.03,
+        "lip_y_m": 0.0
+      },
+      "SH05_F000_depth_plate": {
+        "quad_px_TL_TR_BR_BL": [
+          [
+            299.58107471466064,
+            798.0155181884766
+          ],
+          [
+            787.6065587997437,
+            803.9963150024414
+          ],
+          [
+            789.8195743560791,
+            1110.4807090759277
+          ],
+          [
+            297.4017262458801,
+            1108.7965393066406
+          ]
+        ],
+        "width_frac_of_frame": 0.45190937992072094
+      },
+      "SH05_F099_depth_plate": {
+        "quad_px_TL_TR_BR_BL": [
+          [
+            266.7862093448639,
+            775.9199523925781
+          ],
+          [
+            820.8505868911743,
+            783.0513381958008
+          ],
+          [
+            823.7011528015137,
+            1130.8895874023438
+          ],
+          [
+            263.9683127403259,
+            1129.302978515625
+          ]
+        ],
+        "width_frac_of_frame": 0.5130650646558863
+      },
+      "SH07_F000_depth_plate": {
+        "quad_px_TL_TR_BR_BL": [
+          [
+            226.92786991596222,
+            -111.25442504882812
+          ],
+          [
+            851.9218969345093,
+            -112.05024719238281
+          ],
+          [
+            842.5592279434204,
+            291.2468719482422
+          ],
+          [
+            236.3026088476181,
+            291.0526657104492
+          ]
+        ],
+        "width_frac_of_frame": 0.5786986423050844
+      },
+      "SH07_F089_depth_plate": {
+        "quad_px_TL_TR_BR_BL": [
+          [
+            245.37098050117493,
+            -75.20027160644531
+          ],
+          [
+            827.3352670669556,
+            -88.25637817382812
+          ],
+          [
+            824.9819827079773,
+            287.0335006713867
+          ],
+          [
+            247.74690806865692,
+            294.20665740966797
+          ]
+        ],
+        "width_frac_of_frame": 0.5389914093303253
+      },
+      "SH06_seated": {
+        "thigh_lower_edge_clearance_over_deck_m_min": 0.0014994959831237942,
+        "pelvis_lowest_z_m": 0.15299998223781586,
+        "deck_top_z_m": 0.15,
+        "ankle_z_final_m": [
+          -0.158,
+          -0.158
+        ],
+        "water_z_m": 0.0,
+        "head_or_hair_vertex_in_frame_any_of_F0_F40_F79": false
+      },
+      "SH05_plate_width_frac": {
+        "F0": 0.4519135519691358,
+        "F99": 0.5130609951953171,
+        "first_frame_ge_50pct": 56
+      }
+    }
+  },
+  "s3": {
+    "ppu": 300.0,
+    "ortho_scale": 6.400000095367432,
+    "samples": 16,
+    "devices": [
+      {
+        "name": "Apple M1",
+        "type": "CPU",
+        "use": false
+      },
+      {
+        "name": "Apple M1 (GPU - 8 cores)",
+        "type": "METAL",
+        "use": true
+      }
+    ],
+    "checks": {
+      "bar_ratio_geometry": {
+        "true_u": 2.0,
+        "apparent_u": 1.5003751516342163,
+        "ratio": 0.7501875758171082,
+        "target": 0.75,
+        "tol": 0.002,
+        "pass": true
+      },
+      "bar_ratio_rendered": {
+        "coverage_px_true": 16200.125,
+        "coverage_px_apparent": 12151.1875,
+        "ratio": 0.7500675149111504,
+        "expected_length_px": [
+          600.0,
+          450.1125454902649
+        ],
+        "pass": true
+      },
+      "sight_line_vertical_state1": {
+        "segments_readback": [
+          [
+            [
+              -1.2000000476837158,
+              1.600000023841858
+            ],
+            [
+              -1.2000001668930054,
+              -3.5762786865234375e-07
+            ]
+          ],
+          [
+            [
+              -1.2000000476837158,
+              0.0
+            ],
+            [
+              -1.2000001668930054,
+              -2.000000476837158
+            ]
+          ]
+        ],
+        "dx_air_u": -1.1920928955078125e-07,
+        "dx_water_u": -1.1920928955078125e-07,
+        "centroid_x_px_min": 179.96153846153845,
+        "centroid_x_px_max": 180.06896551724137,
+        "expected_x_px": 180.0,
+        "pass": true
+      },
+      "ghost_state1_at_apparent_depth": {
+        "ghost_z_u": -1.5003751516342163,
+        "expected_u": -1.5003750937734435,
+        "pass": true
+      },
+      "sh04_no_frame_with_bars_and_oblique_eye": {
+        "last_frame_with_bar_objects": 287,
+        "first_frame_with_oblique_eye": 289,
+        "frames_violating": [],
+        "pass": true
+      },
+      "oblique_state_no_bars": {
+        "bar_objects": [],
+        "bar_colour_px_in_bar_columns": {
+          "true": 0,
+          "app": 0
+        },
+        "pass": true
+      },
+      "snell_state2_sight": {
+        "air_deg": 40.000000566033705,
+        "water_deg": 28.829923539697162,
+        "n_measured": 1.3329999825582046,
+        "n_design": 1.333,
+        "air_flatter_than_water": true,
+        "pass": true,
+        "apparent_depth_u": 1.3119656298788962
+      },
+      "ghost_state2_on_vertical_and_back_extension": {
+        "extension_far_end": [
+          -1.1999999284744263,
+          -1.3119654655456543
+        ],
+        "line_crosses_marker_vertical_at_z": -1.3119655507865084,
+        "ghost_z": -1.3119655847549438,
+        "error_u": 3.396843539782424e-08,
+        "extension_drawn_to_vertical": true,
+        "pass": true
+      },
+      "snell_sh02": {
+        "air_deg": 49.98384422057048,
+        "water_deg": 35.06749239241733,
+        "n_measured": 1.3330000898108914,
+        "n_design": 1.333,
+        "air_flatter_than_water": true,
+        "pass": true
+      },
+      "sh02_back_extension_meets_marker_vertical": {
+        "extension_far_end": [
+          -1.1999999284744263,
+          -1.1787112951278687
+        ],
+        "line_crosses_marker_vertical_at_z": -1.1787113551793458,
+        "ghost_z": -1.1787112951278687,
+        "error_u": 6.005147712428993e-08,
+        "extension_drawn_to_vertical": true,
+        "pass": true
+      },
+      "sh02_ghost_centroid_px": {
+        "measured": [
+          179.99636037749653,
+          1133.6152059404492
+        ],
+        "expected": [
+          180.0,
+          1133.6133857667664
+        ],
+        "error_px": 0.0040693837620858495,
+        "pass": true
+      }
+    },
+    "renders": {
+      "SH04_F200_state1": 1.293694019317627,
+      "SH04_F340_oblique": 1.2114968299865723,
+      "SH02_F230": 1.2669610977172852,
+      "SH02_F020": 2.33427095413208,
+      "SH02_F070": 1.2816810607910156,
+      "SH02_F130": 2.318575859069824,
+      "SH04_F100": 1.2534968852996826,
+      "SH04_F310": 1.224679946899414
+    },
+    "pass_all": true
+  },
+  "s4_dn_40spp": {
+    "samples": 40,
+    "scale_pct": 100,
+    "denoise": true,
+    "devices": [
+      {
+        "name": "Apple M1",
+        "type": "CPU",
+        "use": false
+      },
+      {
+        "name": "Apple M1 (GPU - 8 cores)",
+        "type": "METAL",
+        "use": true
+      }
+    ],
+    "renders": {
+      "SH01_F000": {
+        "seconds": 22.07344388961792,
+        "phase": 0,
+        "cam_pos": [
+          -1.0,
+          -3.3,
+          2.2
+        ],
+        "cam_tgt": [
+          0.21,
+          0.9,
+          -0.22
+        ],
+        "vfov": 45.0,
+        "path": "renders/s4/SH01_F000.png"
+      },
+      "SH08_F209": {
+        "seconds": 22.423680067062378,
+        "phase": 0,
+        "cam_pos": [
+          -1.0,
+          -3.3,
+          2.2
+        ],
+        "cam_tgt": [
+          0.21,
+          0.9,
+          -0.22
+        ],
+        "vfov": 45.0,
+        "path": "renders/s4/SH08_F209.png"
+      },
+      "SH08_F208": {
+        "seconds": 23.04027509689331,
+        "phase": 29,
+        "cam_pos": [
+          -1.0,
+          -3.3,
+          2.2
+        ],
+        "cam_tgt": [
+          0.21,
+          0.9,
+          -0.22
+        ],
+        "vfov": 45.0,
+        "path": "renders/s4/SH08_F208.png"
+      },
+      "SH08_F090": {
+        "seconds": 22.995466947555542,
+        "phase": 1,
+        "cam_pos": [
+          -1.0,
+          -3.3,
+          2.2
+        ],
+        "cam_tgt": [
+          0.21,
+          0.9,
+          -0.22
+        ],
+        "vfov": 45.0,
+        "path": "renders/s4/SH08_F090.png"
+      },
+      "SH01_F001": {
+        "seconds": 22.73513913154602,
+        "phase": 1,
+        "cam_pos": [
+          -0.9999966025352478,
+          -3.299988269805908,
+          2.199993371963501
+        ],
+        "cam_tgt": [
+          0.21,
+          0.9,
+          -0.22
+        ],
+        "vfov": 45.0,
+        "path": "renders/s4/SH01_F001.png"
+      },
+      "SH08_F000": {
+        "seconds": 22.723572969436646,
+        "phase": 1,
+        "cam_pos": [
+          0.5494425873607133,
+          -1.700575393692167,
+          1.050413564216245
+        ],
+        "cam_tgt": [
+          1.3995720509414507,
+          -0.49949653051935383,
+          0.9495792433626028
+        ],
+        "vfov": 35.00359621057604,
+        "path": "renders/s4/SH08_F000.png"
+      }
+    },
+    "diffs": {
+      "SH08_F209_vs_SH01_F000 (the seam)": {
+        "a": "renders/s4/SH08_F209.png",
+        "b": "renders/s4/SH01_F000.png",
+        "size": [
+          1080,
+          1920
+        ],
+        "max_abs_diff_of_255": 1.0000152587890625,
+        "mean_abs_diff_of_255": 0.012663972564041615,
+        "px_with_any_diff": 76895,
+        "px_diff_gt_2": 0,
+        "px_diff_gt_8": 0,
+        "total_px": 2073600
+      },
+      "SH08_F208_vs_SH08_F209 (last step: ripple + sway only)": {
+        "a": "renders/s4/SH08_F208.png",
+        "b": "renders/s4/SH08_F209.png",
+        "size": [
+          1080,
+          1920
+        ],
+        "max_abs_diff_of_255": 127.00001525878906,
+        "mean_abs_diff_of_255": 2.0451443195343018,
+        "px_with_any_diff": 931575,
+        "px_diff_gt_2": 401358,
+        "px_diff_gt_8": 203316,
+        "total_px": 2073600
+      },
+      "SH08_F090_vs_SH08_F209 (hold start vs end: ripple/sway phase only)": {
+        "a": "renders/s4/SH08_F090.png",
+        "b": "renders/s4/SH08_F209.png",
+        "size": [
+          1080,
+          1920
+        ],
+        "max_abs_diff_of_255": 135.00001525878906,
+        "mean_abs_diff_of_255": 2.0197432041168213,
+        "px_with_any_diff": 990815,
+        "px_diff_gt_2": 402896,
+        "px_diff_gt_8": 200403,
+        "total_px": 2073600
+      },
+      "SH01_F000_vs_SH01_F001 (first step after the seam: dolly + ripple)": {
+        "a": "renders/s4/SH01_F000.png",
+        "b": "renders/s4/SH01_F001.png",
+        "size": [
+          1080,
+          1920
+        ],
+        "max_abs_diff_of_255": 135.00001525878906,
+        "mean_abs_diff_of_255": 2.0238966941833496,
+        "px_with_any_diff": 1012424,
+        "px_diff_gt_2": 402946,
+        "px_diff_gt_8": 200388,
+        "total_px": 2073600
+      },
+      "SH08_F000_vs_SH08_F209 (SH07->SH08 entry, intended pull-back)": {
+        "a": "renders/s4/SH08_F000.png",
+        "b": "renders/s4/SH08_F209.png",
+        "size": [
+          1080,
+          1920
+        ],
+        "max_abs_diff_of_255": 210.00001525878906,
+        "mean_abs_diff_of_255": 51.282962799072266,
+        "px_with_any_diff": 2073436,
+        "px_diff_gt_2": 2053599,
+        "px_diff_gt_8": 1993120,
+        "total_px": 2073600
+      }
+    },
+    "seam_state_max_abs_transform_diff": 0.0
+  },
+  "sh03_check": {
+    "samples": 16,
+    "scale_pct": 50,
+    "mask_threshold": 0.5,
+    "hidden_margin": {
+      "min_margin_mm": 0.9031212329864493,
+      "at_xyz_m": [
+        0.032999999821186066,
+        0.0,
+        0.001500000013038516
+      ]
+    },
+    "mug_box_px": {
+      "x": [
+        175.7791793346405,
+        904.2199516296387
+      ],
+      "y": [
+        713.0620193481445,
+        1714.9910402297974
+      ]
+    },
+    "coin_extent_from_near_wall_cm": [
+      5.3,
+      7.300000000000001
+    ],
+    "coin_px_by_frame": {
+      "0": 0.0,
+      "120": 0.0,
+      "149": 0.0,
+      "150": 0.0,
+      "155": 0.0,
+      "160": 524.0,
+      "165": 1400.0,
+      "170": 2472.0,
+      "175": 3640.0,
+      "180": 4820.0,
+      "185": 6060.0,
+      "190": 7296.0,
+      "195": 8380.0,
+      "200": 9376.0,
+      "205": 10200.0,
+      "210": 10900.0,
+      "215": 11492.0,
+      "220": 11940.0,
+      "225": 12164.0,
+      "230": 12088.0,
+      "235": 11960.0,
+      "240": 12052.0,
+      "245": 12116.0,
+      "250": 12096.0,
+      "255": 12084.0,
+      "260": 12084.0,
+      "265": 12084.0,
+      "270": 12084.0,
+      "275": 12084.0,
+      "280": 12084.0,
+      "285": 12084.0,
+      "290": 12084.0,
+      "295": 12084.0,
+      "299": 12084.0
+    },
+    "reference": {
+      "water_slab_px": 12748.0,
+      "air_px": 12012.0
+    },
+    "control_ior_1.0": {
+      "F299_px": 0.0,
+      "F225_px": 0.0
+    },
+    "visible_fraction_of_water_reference": {
+      "200": 0.7354879196736743,
+      "215": 0.9014747411358645,
+      "225": 0.9541888923752746,
+      "255": 0.9479133981801067,
+      "299": 0.9479133981801067
+    },
+    "first_frame_with_coin_px": 160,
+    "first_series_frame_ge_80pct": 205,
+    "animation_audit": {
+      "coin": {
+        "animation_data": false,
+        "data_animation": false
+      },
+      "cam": {
+        "animation_data": false,
+        "data_animation": false
+      },
+      "water": {
+        "animation_data": false,
+        "data_animation": false
+      },
+      "mug": {
+        "animation_data": false,
+        "data_animation": false
+      },
+      "jug": {
+        "animation_data": false,
+        "data_animation": false
+      },
+      "stream": {
+        "animation_data": false
+      },
+      "all_objects_unkeyed": true,
+      "actions_in_file": 0
+    },
+    "pass": {
+      "coin_px_F000_is_0": true,
+      "coin_px_F149_is_0": true,
+      "coin_ge_80pct_at_F225": true,
+      "control_ior1_F299_is_0": true,
+      "no_keyframes": true
+    }
+  },
+  "flicker_SH08_F100": {
+    "shot": "SH08",
+    "frames": [
+      100,
+      105
+    ],
+    "scale_pct": 50,
+    "prod_spp": 40,
+    "ref_spp": 160,
+    "seconds_per_frame": {
+      "40": 6.668453335762024,
+      "160": 23.25728901227315
+    },
+    "regions": {
+      "static_deck": {
+        "consecutive_diff_prod": [
+          0.08421610295772552,
+          0.07237659394741058,
+          0.062349833548069,
+          0.06908852607011795,
+          0.05134982615709305
+        ],
+        "consecutive_diff_ref": [
+          0.08643627911806107,
+          0.07202062755823135,
+          0.06565848737955093,
+          0.07194449007511139,
+          0.05406588315963745
+        ],
+        "mean_prod": 0.06787617653608322,
+        "mean_ref": 0.07002515345811844,
+        "excess_flicker_of_255": -0.002148976922035223,
+        "prod_vs_ref_abs_err_per_frame": [
+          0.33910512924194336,
+          0.33838289976119995,
+          0.3383396863937378,
+          0.33855780959129333,
+          0.33846315741539,
+          0.33779236674308777
+        ]
+      },
+      "water": {
+        "consecutive_diff_prod": [
+          5.122783660888672,
+          5.127092361450195,
+          5.788326263427734,
+          5.326789379119873,
+          5.30562686920166
+        ],
+        "consecutive_diff_ref": [
+          5.00227689743042,
+          5.024282455444336,
+          5.683229446411133,
+          5.236001491546631,
+          5.19560432434082
+        ],
+        "mean_prod": 5.334123706817627,
+        "mean_ref": 5.228278923034668,
+        "excess_flicker_of_255": 0.1058447837829588,
+        "prod_vs_ref_abs_err_per_frame": [
+          1.1766669750213623,
+          1.1545844078063965,
+          1.182892918586731,
+          1.1887166500091553,
+          1.19938325881958,
+          1.1821435689926147
+        ]
+      }
+    }
+  },
+  "flicker_SH03_F200": {
+    "shot": "SH03",
+    "frames": [
+      200,
+      205
+    ],
+    "scale_pct": 50,
+    "prod_spp": 40,
+    "ref_spp": 160,
+    "seconds_per_frame": {
+      "40": 5.096495509147644,
+      "160": 16.34837516148885
+    },
+    "regions": {
+      "static_table": {
+        "consecutive_diff_prod": [
+          0.024409877136349678,
+          0.026903705671429634,
+          0.03405926004052162,
+          0.024790123105049133,
+          0.024039506912231445
+        ],
+        "consecutive_diff_ref": [
+          0.030400000512599945,
+          0.026602471247315407,
+          0.028696300461888313,
+          0.027407409623265266,
+          0.028656795620918274
+        ],
+        "mean_prod": 0.026840494573116304,
+        "mean_ref": 0.028352595493197442,
+        "excess_flicker_of_255": -0.0015121009200811386,
+        "prod_vs_ref_abs_err_per_frame": [
+          0.4322173297405243,
+          0.4319358468055725,
+          0.43312597274780273,
+          0.43073582649230957,
+          0.4313778281211853,
+          0.4311654567718506
+        ]
+      },
+      "water_and_coin": {
+        "consecutive_diff_prod": [
+          0.7755428552627563,
+          0.7596724033355713,
+          0.732982873916626,
+          0.7094247341156006,
+          0.6374171376228333
+        ],
+        "consecutive_diff_ref": [
+          0.8020952343940735,
+          0.7607923746109009,
+          0.7169371247291565,
+          0.6969143152236938,
+          0.6663162112236023
+        ],
+        "mean_prod": 0.7230080008506775,
+        "mean_ref": 0.7286110520362854,
+        "excess_flicker_of_255": -0.005603051185607888,
+        "prod_vs_ref_abs_err_per_frame": [
+          0.7404038310050964,
+          0.7546437978744507,
+          0.7487542629241943,
+          0.7609447836875916,
+          0.7364419102668762,
+          0.7386590242385864
+        ]
+      }
+    }
+  },
+  "sh03_stills": {
+    "samples": 40,
+    "scale_pct": 100,
+    "denoise": true,
+    "stills": {
+      "SH03_F000": {
+        "seconds": 14.438187837600708,
+        "depth_m": 0.0,
+        "stream": false,
+        "jug_lip": [
+          0.004999999888241291,
+          -0.41999998688697815,
+          0.15000000596046448
+        ],
+        "jug_tilt_deg": 0.0,
+        "ripple_amp": 0.0
+      },
+      "SH03_F150": {
+        "seconds": 19.05617594718933,
+        "depth_m": 0.0,
+        "stream": true,
+        "jug_lip": [
+          0.004999999888241291,
+          -0.03999999910593033,
+          0.15000000596046448
+        ],
+        "jug_tilt_deg": 46.0,
+        "ripple_amp": 0.0
+      },
+      "SH03_F160": {
+        "seconds": 16.035340785980225,
+        "depth_m": 0.013522406934090061,
+        "stream": true,
+        "jug_lip": [
+          0.004999999888241291,
+          -0.03999999910593033,
+          0.15000000596046448
+        ],
+        "jug_tilt_deg": 47.45777777777778,
+        "ripple_amp": 0.925925925925926
+      },
+      "SH03_F170": {
+        "seconds": 16.071687936782837,
+        "depth_m": 0.026040759619679332,
+        "stream": true,
+        "jug_lip": [
+          0.004999999888241291,
+          -0.03999999910593033,
+          0.15000000596046448
+        ],
+        "jug_tilt_deg": 51.26222222222222,
+        "ripple_amp": 1.0
+      },
+      "SH03_F185": {
+        "seconds": 16.77484703063965,
+        "depth_m": 0.04273558824863174,
+        "stream": true,
+        "jug_lip": [
+          0.004999999888241291,
+          -0.03999999910593033,
+          0.15000000596046448
+        ],
+        "jug_tilt_deg": 59.50222222222222,
+        "ripple_amp": 1.0
+      },
+      "SH03_F200": {
+        "seconds": 16.993784189224243,
+        "depth_m": 0.05652849371890873,
+        "stream": true,
+        "jug_lip": [
+          0.004999999888241291,
+          -0.03999999910593033,
+          0.15000000596046448
+        ],
+        "jug_tilt_deg": 68.22222222222223,
+        "ripple_amp": 1.0
+      },
+      "SH03_F215": {
+        "seconds": 17.19868493080139,
+        "depth_m": 0.06659194853107897,
+        "stream": true,
+        "jug_lip": [
+          0.004999999888241291,
+          -0.03999999910593033,
+          0.15000000596046448
+        ],
+        "jug_tilt_deg": 74.54222222222222,
+        "ripple_amp": 1.0
+      },
+      "SH03_F225": {
+        "seconds": 17.299232959747314,
+        "depth_m": 0.07,
+        "stream": true,
+        "jug_lip": [
+          0.004999999888241291,
+          -0.03999999910593033,
+          0.15000000596046448
+        ],
+        "jug_tilt_deg": 76.0,
+        "ripple_amp": 1.0
+      },
+      "SH03_F255": {
+        "seconds": 18.593829870224,
+        "depth_m": 0.07,
+        "stream": false,
+        "jug_lip": [
+          0.004999999888241291,
+          -0.41999998688697815,
+          0.15000000596046448
+        ],
+        "jug_tilt_deg": 0.0,
+        "ripple_amp": 0.028000000000000025
+      },
+      "SH03_F299": {
+        "seconds": 19.030452013015747,
+        "depth_m": 0.07,
+        "stream": false,
+        "jug_lip": [
+          0.004999999888241291,
+          -0.41999998688697815,
+          0.15000000596046448
+        ],
+        "jug_tilt_deg": 0.0,
+        "ripple_amp": 0.0
+      }
+    }
+  }
+}

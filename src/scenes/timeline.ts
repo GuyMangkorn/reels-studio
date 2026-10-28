@@ -24,6 +24,32 @@ export function validateTimeline(value: unknown, fps = 30): asserts value is Tim
     if (s.time !== undefined && !['day', 'night'].includes(String(s.time))) fail(`${path}.time`, 'expected day or night');
     if (typeof s.subtitle !== 'string') fail(`${path}.subtitle`, 'expected text');
     for (const key of ['title', 'eyebrow']) if (s[key] !== undefined && typeof s[key] !== 'string') fail(`${path}.${key}`, 'expected text');
+    if (s.eyebrowStyle !== undefined) {
+      if (!record(s.eyebrowStyle)) fail(`${path}.eyebrowStyle`, 'expected object');
+      const style = s.eyebrowStyle as Record<string, unknown>;
+      if (style.fade !== undefined && typeof style.fade !== 'boolean') fail(`${path}.eyebrowStyle.fade`, 'expected boolean');
+      if (style.fontSize !== undefined && (!finite(style.fontSize) || style.fontSize <= 0)) fail(`${path}.eyebrowStyle.fontSize`, 'expected a positive number');
+    }
+    if (s.quadTexts !== undefined) {
+      if (!Array.isArray(s.quadTexts) || s.quadTexts.length === 0) fail(`${path}.quadTexts`, 'expected a non-empty array');
+      (s.quadTexts as unknown[]).forEach((rawQuad, j) => {
+        const qp = `${path}.quadTexts[${j}]`;
+        if (!record(rawQuad)) fail(qp, 'expected quad text object');
+        const q = rawQuad as Record<string, unknown>;
+        if (typeof q.text !== 'string' || q.text.trim() === '') fail(`${qp}.text`, 'expected non-empty text');
+        if (!Array.isArray(q.quads) || q.quads.length === 0) fail(`${qp}.quads`, 'expected one [TL,TR,BR,BL] quad per frame');
+        (q.quads as unknown[]).forEach((quad, k) => {
+          if (!Array.isArray(quad) || quad.length !== 4 || !quad.every(point => Array.isArray(point) && point.length === 2 && point.every(finite))) fail(`${qp}.quads[${k}]`, 'expected four finite [x, y] points (TL,TR,BR,BL)');
+        });
+        for (const key of ['startFrame', 'endFrame']) if (q[key] !== undefined && (!finite(q[key]) || !Number.isInteger(q[key]) || (q[key] as number) < 0)) fail(`${qp}.${key}`, 'expected a non-negative integer frame');
+        if (q.startFrame !== undefined && q.endFrame !== undefined && (q.endFrame as number) <= (q.startFrame as number)) fail(`${qp}.endFrame`, 'must follow startFrame');
+        if (q.box !== undefined) {
+          const box = q.box as Record<string, unknown>;
+          if (!record(box) || !finite(box.width) || !finite(box.height) || box.width <= 0 || box.height <= 0) fail(`${qp}.box`, 'expected positive {width, height}');
+        }
+        if (q.fontSize !== undefined && (!finite(q.fontSize) || q.fontSize <= 0)) fail(`${qp}.fontSize`, 'expected a positive number');
+      });
+    }
     if (s.visuals !== undefined) {
       if (!Array.isArray(s.visuals) || s.visuals.length === 0) fail(`${path}.visuals`, 'expected non-empty timed visuals');
       let end = 0;
@@ -133,7 +159,8 @@ export function validateTimeline(value: unknown, fps = 30): asserts value is Tim
         if (!record(rawCue)) fail(cp, 'expected cue object');
         const cue = rawCue as Record<string, unknown>;
         if (!finite(cue.atSec) || cue.atSec < 0 || cue.atSec >= (s.durationSec as number) || cue.atSec <= last) fail(`${cp}.atSec`, 'times must increase and fall inside scene');
-        if (typeof cue.text !== 'string' || cue.text.trim().length === 0) fail(`${cp}.text`, 'expected non-empty text');
+        // An empty string is an explicit "no caption" cue; whitespace-only text is still rejected.
+        if (typeof cue.text !== 'string' || (cue.text !== '' && cue.text.trim().length === 0)) fail(`${cp}.text`, 'expected text, or an empty string for no caption');
         if (j === 0 && cue.atSec !== 0) fail(`${cp}.atSec`, 'first cue must start at zero so subtitles are visible from frame 0');
         last = cue.atSec as number;
       });

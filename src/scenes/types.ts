@@ -63,11 +63,27 @@ export type AudioTrack = {
 export type CaptionStyle = {preset?: 'outline' | 'box' | 'none'; position?: 'bottom' | 'middle' | 'top'; color?: string; scale?: number};
 /** Channel label (false hides it) and the scene progress bar. */
 export type ChromeStyle = {channelLabel?: string | false; progressBar?: boolean};
+/**
+ * Text warped onto a screen-space quadrilateral that moves per frame (e.g. a blank sign plate in a pre-rendered clip).
+ * `quads[i]` is the plate's TL,TR,BR,BL in output pixels at scene-local frame `startFrame + i`; frames after the last key hold it.
+ * The text is laid out in a `box` pixel rectangle (default 640x400) and mapped onto the quad with a homography.
+ */
+export type QuadText = {
+  text: string;
+  quads: [number, number][][];
+  startFrame?: number; endFrame?: number;
+  box?: {width: number; height: number};
+  fontSize?: number; fontWeight?: number; color?: string;
+};
+/** Eyebrow presentation. `fade: false` shows the eyebrow from its first frame with no fade or slide. */
+export type EyebrowStyle = {fade?: boolean; fontSize?: number};
 export type Scene = {
   visuals?: SceneVisual[];
   /** `none` renders no illustrated background, for footage/image-led scenes. */
   durationSec: number; bg: BackgroundName | 'none'; time?: TimeOfDay; actors: Actor[]; subtitle: string;
   title?: string; eyebrow?: string;
+  eyebrowStyle?: EyebrowStyle;
+  quadTexts?: QuadText[];
   /** Frame-sampled movement for the complete background + props + actors stage. Values are normalized stage offsets and scale. */
   pictureMove?: PictureMoveKey[];
   /** Scene-local estimates until narration timing is approved; each cue remains until the next cue. */
