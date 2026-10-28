@@ -125,6 +125,8 @@ Treatment palette (Editor picks per beat; each must serve a mix intent):
 | Ambience as the bed | Room tone or location sound instead of music | Realism, tension, a quiet `hold` |
 | Tail ring-out | Let the final note or SFX decay instead of fading early | `release`, ending hold (not `C_seamless`) |
 
+**Scope:** the cue sheet requirement applies to deliverables started on or after 2026-10-28; existing episodes are not remixed (user decision 2026-10-28).
+
 **Runtime gap (2026-10-28, `main` 1dfe58f):** narration has no gain field; `SceneRenderer` plays the narration file at a fixed level and `scripts/narration.py` writes one level for every scene. Until Boss adds a per-scene narration gain (in the narration timeline or the renderer), record the planned voice levels in the cue sheet and mark them as a missing capability; do not fake them by duplicating the narration track.
 - **Ration the accents.** A Short normally has one main `hit` (the reveal/payoff) and at most a few minor ones (hook, key clue). If every cut has a whoosh or every line has a swell, nothing reads as important.
 - **Drop before you hit.** A short `drop` before a `hit` makes the hit land without making it louder. Avoid a hit with no contrast before it.
