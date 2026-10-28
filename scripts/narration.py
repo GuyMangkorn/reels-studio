@@ -3,6 +3,8 @@ Install edge-tts==7.3.1, then run npm run narration. Each subtitle starts with i
 Per video: npm run narration -- --timeline scripts/<episode>/<variant>/timeline.json --name <CompositionId>
 writes public/narration/<CompositionId>.mp3 and <CompositionId>.amplitude.json beside the timeline,
 so videos never overwrite each other. Without arguments it regenerates the demo files.
+Optional per-scene "leadSec" delays that scene's speech inside its slot (to line it up with a fixed picture event);
+the overrun check then uses the end of audible speech (trailing TTS silence ignored) instead of the clip length.
 """
 import argparse
 import asyncio
@@ -57,7 +59,13 @@ async def main():
             await edge_tts.Communicate(scene['subtitle'], 'th-TH-NiwatNeural', rate='+5%').save(str(clip))
             samples = pcm(clip)
             count = round(scene['durationSec'] * FPS) * (SAMPLE_RATE // FPS)
-            if len(samples) > count:
+            lead = round(scene.get('leadSec', 0) * SAMPLE_RATE)
+            if lead:
+                audible = max((i for i, v in enumerate(samples) if abs(v) >= 300), default=-1) + 1
+                if lead + audible > count:
+                    raise ValueError(f'Scene {index + 1}: leadSec pushes narration past the scene duration')
+                samples = array.array('h', [0] * lead) + samples[:count - lead]
+            elif len(samples) > count:
                 raise ValueError(f'Scene {index + 1}: narration exceeds scene duration; shorten the subtitle')
             combined.extend(samples)
             combined.extend([0] * (count - len(samples)))

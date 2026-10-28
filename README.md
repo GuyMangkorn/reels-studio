@@ -98,7 +98,7 @@ Each episode owns `src/videos/<episode>/index.ts`, whose default export is `{epi
 Two videos can be produced at the same time without colliding:
 
 - Renders: each `scripts/render.mjs` run bundles into its own temp directory, picks a free port and writes only `out/<CompositionId>/`.
-- Narration: `npm run narration -- --timeline scripts/<episode>/<variant>/timeline.json --name <CompositionId>` writes `public/narration/<CompositionId>.mp3` and `<CompositionId>.amplitude.json` beside the timeline. Reference them from the video's `narration` field. Without arguments it regenerates the demo's `public/narration.mp3` and `src/amplitude.json`.
+- Narration: `npm run narration -- --timeline scripts/<episode>/<variant>/timeline.json --name <CompositionId>` writes `public/narration/<CompositionId>.mp3` and `<CompositionId>.amplitude.json` beside the timeline. Reference them from the video's `narration` field. Without arguments it regenerates the demo's `public/narration.mp3` and `src/amplitude.json`. A timeline entry may carry `leadSec` to delay its speech inside its slot (the overrun check then ignores trailing TTS silence).
 - Episode QA scripts keep their own `out/qa/<episode>/...` folders.
 
 ## Code ownership

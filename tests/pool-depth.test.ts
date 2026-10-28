@@ -46,8 +46,9 @@ test('numeric depth captions exist only in the SH04 straight-down state, always 
   }
   assert.equal(captionAt(780 + 269).includes('¾'), true);
   assert.equal(captionAt(780 + 270), '');
-  assert.equal(captionAt(780 + 299), '');
-  assert.equal(captionAt(780 + 300), 'มองเฉียง: ยิ่งดูตื้นขึ้น');
+  assert.equal(captionAt(780 + 287), '', 'blank until the bars have fully dissolved (F288)');
+  assert.equal(captionAt(780 + 288), 'มองเฉียง: ยิ่งดูตื้นขึ้น');
+  assert.equal(captionAt(780 + 359), 'มองเฉียง: ยิ่งดูตื้นขึ้น');
   assert.equal(captionAt(1619), 'แล้วน้ำตรงหน้าคุณตอนนี้...');
   assert.equal(captionAt(0), 'ดูตื้นแค่เข่า... จริงเหรอ?');
 });
