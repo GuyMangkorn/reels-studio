@@ -110,7 +110,24 @@ Plan the mix per beat with one label each, recorded in the edit plan:
 | `hit` | The reveal, the key number, the payoff image | One accent (SFX or bed returning) aligned to the picture event or the stressed word; not on top of a word that must be understood. |
 | `release` | Resolution, ending, loop seam | Bed returns to a settled level; for `C_seamless` follow EP08's seam rules. |
 
-- **Voice stays level.** Do not ride narration gain to stress a word; TTS loudness is already consistent, and per-word gain sounds artificial. Stress in the voice comes from script wording, pauses (`leadSec`, `closeGaps` in `scripts/narration.py`) and caption timing. Change voice level only to fix a measured inconsistency between clips.
+- **Requirement — the mix moves with the story.** Every Short and Long carries a **mix cue sheet** in the edit plan: one row per beat with its mix intent and the actual gains for voice, bed and SFX. A flat mix (one bed level, every SFX at the same volume, one voice level throughout) fails review. A Short has at least one `drop` → `hit` and at least two distinct bed levels; an SFX volume is chosen per cue for its role (accent, texture, background), not copied. Why: uploaded Reels sounded flat because voice, music and effects never changed level with the situation (user feedback 2026-10-28).
+- **Voice rides by beat, never by word.** Narration level follows the situation per line or beat within a small range: about −3 dB (`0.7`) for an intimate, uneasy or confiding line; 0 dB for `hold`; up to +2 dB (`1.25`, measured to stay under −1 dBTP) for the hook or the payoff line. Per-word gain sounds artificial; stress inside a line comes from script wording, pauses (`leadSec`, `closeGaps` in `scripts/narration.py`) and caption timing. The bed and SFX carry the larger moves.
+
+Treatment palette (Editor picks per beat; each must serve a mix intent):
+
+| Device | Effect | Typical use |
+| --- | --- | --- |
+| Duck depth by beat | `duckUnderNarration` ≈ `0.35` in `hold`, ≈ `0.15` under a line that must be understood exactly | Clue lines, numbers, Thai words that are easy to mishear |
+| Swell in the gap | Bed rises 3–6 dB in a pause of ≥ 0.5 s, back under before the next word | `lift`, scene changes, after a joke lands |
+| Hard stop | Music and ambience cut to silence on a frame | `drop` right before the reveal; a comic beat |
+| Sting / accent SFX | One SFX louder than the bed, placed in a speech gap | `hit` on the reveal frame or key number |
+| Pre-lap (J cut) | Next scene's ambience or SFX starts 0.3–1 s before the cut | Pull the viewer across a cut; location change |
+| Ambience as the bed | Room tone or location sound instead of music | Realism, tension, a quiet `hold` |
+| Tail ring-out | Let the final note or SFX decay instead of fading early | `release`, ending hold (not `C_seamless`) |
+
+**Scope:** the cue sheet requirement applies to deliverables started on or after 2026-10-28; existing episodes are not remixed (user decision 2026-10-28).
+
+**Runtime gap (2026-10-28, `main` 1dfe58f):** narration has no gain field; `SceneRenderer` plays the narration file at a fixed level and `scripts/narration.py` writes one level for every scene. Until Boss adds a per-scene narration gain (in the narration timeline or the renderer), record the planned voice levels in the cue sheet and mark them as a missing capability; do not fake them by duplicating the narration track.
 - **Ration the accents.** A Short normally has one main `hit` (the reveal/payoff) and at most a few minor ones (hook, key clue). If every cut has a whoosh or every line has a swell, nothing reads as important.
 - **Drop before you hit.** A short `drop` before a `hit` makes the hit land without making it louder. Avoid a hit with no contrast before it.
 - **One foreground sound at a time.** At any moment either the voice, an SFX accent or the music is in front. Never stack an accent on a stressed word; place it in the gap before or after.
