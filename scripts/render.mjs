@@ -1,11 +1,13 @@
 // Usage: node scripts/render.mjs <CompositionId>... [--stills] [--frames=90,210] [--endings=A_fade,B_loop,C_seamless]
 // Each run bundles into its own temp directory, lets Remotion pick a free port and writes only under
 // out/<CompositionId>/, so renders of different videos can run at the same time.
+// Each exported MP4 is loudness-normalized in place (scripts/loudness.mjs) and its before/after levels are logged.
 // Set BROWSER_EXECUTABLE to use an installed Chromium instead of Remotion's download.
 import {bundle} from '@remotion/bundler';
 import {openBrowser, selectComposition, renderStill, renderMedia} from '@remotion/renderer';
 import path from 'node:path';
 import {mkdir, copyFile} from 'node:fs/promises';
+import {describeLoudness, normalizeLoudness} from './loudness.mjs';
 
 const option = (name, fallback) => (process.argv.find(arg => arg.startsWith(`--${name}=`))?.split('=')[1] ?? fallback).split(',');
 const ids = process.argv.slice(2).filter(arg => !arg.startsWith('--'));
@@ -37,6 +39,7 @@ try {
         onProgress: ({progress}) => {const percent = Math.floor(progress * 10) * 10; if (percent !== last) {console.log(`${id} ${ending}: ${percent}%`); last = percent;}}
       });
       console.log(`Exported ${output}: ${composition.width}x${composition.height}, ${composition.fps}fps, ${composition.durationInFrames} frames`);
+      console.log(`Loudness ${output}: ${describeLoudness(await normalizeLoudness(output))}`);
       if (ending === endings.at(-1)) await copyFile(output, `${dir}/${id}.mp4`);
     }
   }
