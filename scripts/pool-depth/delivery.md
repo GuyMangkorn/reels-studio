@@ -134,9 +134,9 @@ Frames are composition-global (30 fps). Levels are the entry `volume` (20 log10:
 
 | Cue | Picture event (frame) | Sound ID (library path) | Level | Notes |
 | --- | --- | --- | ---: | --- |
-| Pool ambience A | SH01 / B01, G0-G210 (fade-out G174-G210) | `water_pool-hall-ambience_01` (`ambience/water/`, derived 54 s `water_pool-hall-bed-54s_01`) | 0.10, duck 0.6 | pool space; no events; gone during the diagrams |
+| Pool ambience A | SH01 / B01, G0-G210 (fade-out G174-G210) | `water_pool-hall-ambience_01` (`ambience/water/`, derived 54 s `water_pool-hall-bed-53s_01`) | 0.10, duck 0.6 | pool space; no events; gone during the diagrams |
 | Pool ambience B | SH06-SH08 / B05-B06, G1230 fade-in 1 s to G1620 | same file, `trimStartSec` 41 (file time = composition time) | 0.10, duck 0.6 | runs to the loop point without a fade |
-| Music bed | whole video G0-G1620 | `bed_pool-curious-sparse_01` (`music/bed/`, derived 54 s `bed_pool-curious-sparse-54s_01`) | 0.20, duck 0.4 | sparse marimba/glass bell/pad, 90 bpm, no vocals; no fades |
+| Music bed | whole video G0-G1620 | `bed_pool-curious-sparse_01` (`music/bed/`, derived 54 s `bed_pool-curious-sparse-53s_01`) | 0.20, duck 0.4 | sparse marimba/glass bell/pad, 90 bpm, no vocals; no fades |
 | Ray draw | SH02 F0, G181 (speech starts G188) | `whoosh_air-swish-rising_01` (`sfx/whoosh/`) | 0.18 | quiet air swish in the gap before B02 |
 | Ghost marker | SH02 F199, G379 (gap G377-G381) | `ui_pop_01` (`sfx/ui/`) | 0.10 | marker pop is inside sentence 3, so very low |
 | Pour | SH03 F150, G630 stream onset | `water_mug-pour-soft_01` (`sfx/water/`, new) | 0.20 | file starts at stream onset; "ค่อยเท" is G626-G632, so the quiet first 0.3 s of the file sits under it; fades out 400 ms |
@@ -191,3 +191,27 @@ Applied: option (a), 6 frames (0.2 s) at the limit of the sheet rule, plus (c): 
 No human listening (cue taste, pour/feet masking of consonants, the doubled-marimba blend at G1560-G1620, whether the pool bed reads as a pool, level of the music); Studio playback not checked (`DF-20261026-studio-emfile`); loudness target of -14 LUFS not reached (see above); no Thai intelligibility test, only a level proxy; library sounds unlistened; license eligibility of the Stability AI Community License is the user's call. No approval and not release-ready.
 
 Reproduce: `python3 scripts/pool-depth/short/build-sound-beds.py` (needs the library masters and ffmpeg), `python3 scripts/narration_files.py --timeline scripts/pool-depth/short/narration-timeline-botnoi.json --name POOLDEPTH-SHORT-BOTNOI --dir public/narration/botnoi`, `node scripts/render.mjs POOLDEPTH-SHORT-BOTNOI --endings=B_loop`. The pre-sound render is kept as `out/POOLDEPTH-SHORT-BOTNOI/POOLDEPTH-SHORT-BOTNOI-voiceonly.mp4` (it still has the old B06 lead, speech ends G1508).
+
+### User override: shorter `B_loop` hold for the Botnoi version (28 October 2026, Asia/Bangkok)
+
+**User approval (chat):** "ลด hold 1.5 วินาที". Reason: the silence before the loop restarts is too long. This is a recorded override of the "hold the closing line for about 3 seconds" default in [production requirements](../../docs/production-requirements.md#outputs-and-story-timing), for `POOLDEPTH-SHORT-BOTNOI` only. The Niwat `POOLDEPTH-SHORT` keeps 1620 frames and its tests. The approval covers the hold length only, not listening, the render or release.
+
+**What could be applied:** exactly 1.5 s (45 frames, last frame SH08 F164) breaks the seam. Measured on the Blender clips (grey, 270x480, mse against `shot-01.mp4` frame 0): `shot-08.mp4` F119, F149, F179 and F209 match (mse 0.24, 0.24, 0.24, 0.28; a normal frame-to-frame step is about 20), F164 gives 74.3 and F194 gives 74.3 (half a ripple period out of phase). Whole ripple periods only: the hold can be 30 frames (1.0 s, last frame F149) or 60 frames (2.0 s, last frame F179). The approval was for 1.5 s, so Editor stayed on the longer side and did not go below the approved length: **hold 60 frames (2.0 s)**. Going to 1.0 s is below the approved value and needs a new approval; an exact 1.5 s would need a mid-hold skip of 15 frames (a visible ripple pop, mse about 74) or a Blender re-render with a 45-frame period, neither done.
+
+| | Before (3 s hold, sound render) | After (2 s hold) |
+| --- | ---: | ---: |
+| Total frames / duration | 1620 / 54.000 s | **1590 / 53.000 s** (video 53.000 s, AAC 53.013 s) |
+| SH08 (`scene[7]`) | 210 frames, clip F0-F209 | 180 frames, clip F0-F179 (`BOTNOI_SH08_FRAMES`, registry only) |
+| Hold | F120-F209 = 90 frames (3.0 s) | F120-F179 = 60 frames (2.0 s); hold start unchanged |
+| Last word ends | G1514 (SH08 F104, 16 frames before the hold) | unchanged |
+| Silence from last word to end of video | 106 frames, 3.53 s | **76 frames, 2.53 s** (voice-only render before this session's changes: 3.76 s) |
+| Picture seam, last kept frame vs SH01 F0 (clip level) | F209: mse 0.28 | F179: mse 0.24 |
+| Rendered frames, crop 1080x1500 mse, last frame vs G0 (includes the caption/label change) | G1619: 85.9 | G1589: 85.8 (same) |
+| Bed files | 54.000 s | 53.000 s (rebuilt: `build-sound-beds.py`, `-53s_01`) |
+| Audio wrap step (rendered) | 0.0044 L / 0.0080 R | 0.0043 L / 0.0080 R (RMS step 0.0094) |
+| Integrated loudness / true peak | -19.5 LUFS / -3.1 dBFS | -19.5 LUFS / -3.1 dBFS (LRA 4.6 LU), no clipping |
+| Margin under speech (all speech frames L/R, weakest cue) | 15.3 / 15.9 dB, feet 11.2 | unchanged: 15.3 / 15.9 dB, feet 11.2 dB |
+
+Unchanged by the trim: all SFX cues (last cue G1282), captions (scene-7 cue runs the whole scene; B04 constraint test now scans 1590 frames), `narration-timeline-botnoi.json` and the amplitude JSON (still 1620 frames long; the last 30 frames are silent and fall past the composition end, so nothing pins 1620 for Botnoi any more: the test asserts amplitude length at least 1590). The `POOLDEPTH-SHORT-BOTNOI.mp3` is still 54.016 s and is cut at the composition end. New tests: Botnoi total 1590 and SH08 6 s, SH08 last frame is whole-period phase, hold at least 45 frames.
+
+Renders in `out/POOLDEPTH-SHORT-BOTNOI/`: `POOLDEPTH-SHORT-BOTNOI_B_loop.mp4` and `POOLDEPTH-SHORT-BOTNOI.mp4` (current, 1590 frames, 2 s hold), `POOLDEPTH-SHORT-BOTNOI-sound-hold3s.mp4` (sound design, 1620 frames, 3 s hold), `POOLDEPTH-SHORT-BOTNOI-voiceonly.mp4` (voice only, 1620 frames, earlier B06 timing). Earlier numbers in the sound-design section above refer to the 1620-frame render. Still not listened to; no approval of the render.
