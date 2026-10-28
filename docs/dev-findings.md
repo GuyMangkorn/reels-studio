@@ -32,6 +32,8 @@ Created 26 October 2026. The first entry records tooling checks while adding thi
 | [DF-20261026-subpixel-stage-projection](#df-20261026-subpixel-stage-projection) | 2D scale / camera / anchors | fixed | 2026-10-26 / `906a85e` + working tree | Use direct output-pixel projection for metre-space DOM/SVG actors/props |
 | [DF-20261027-catbox-short-home-stage](#df-20261027-catbox-short-home-stage) | Short crop / prop contact / overlay ownership | fixed | 2026-10-27 / PR #38 branch | Keep C03 actor/target in portrait crop; draw C06 shared frame once |
 | [DF-20261028-blender-cycles-water-spike](#df-20261028-blender-cycles-water-spike) | Blender Cycles water refraction / MP4 colour tags / M1 render cost | workaround | 2026-10-28 / `claude/pool-depth-short` HEAD `59809c8` + working tree | Cycles Glass refraction is measurably Snell-accurate; follow the modelling rules and encode tags below |
+| [DF-20261028-zcondo-eevee-render-spike](#df-20261028-zcondo-eevee-render-spike) | Blender Eevee vs Cycles render cost and look / M1 / interiors need baked GI | workaround | 2026-10-28 / `main` `9670266` + untracked `assets/blender/zc-render-spike/` | Eevee ≈4.2–4.6 s/frame vs Cycles ≈26–30 s/frame on ZCONDO blockouts (≈6–7×); interiors need a baked volume probe; Eevee smoke is softer |
+| [DF-20261028-zcondo-sp01-corridor-plate](#df-20261028-zcondo-sp01-corridor-plate) | ZCONDO SP01 corridor plate: Eevee + baked GI, bt709 encode, Remotion load / caption middle | workaround | 2026-10-28 / `main` `9670266` + untracked `assets/blender/zc-corridor/` | B01-SH01 blockout plate passes SP01 (a)–(f) at the stated coverage; Eevee 64 ≈5.4 s/frame; ≈−2 level shift after encode; caption-middle fits the box |
 
 <a id="แบบฟอร์มรายการ"></a>
 ## Entry template
@@ -231,3 +233,120 @@ PYCODE
 - 2026-10-28 / `59809c8` + working tree: S0/S1/S2 pass at the stated coverage; Film/Mark adoption: pending.
 - 2026-10-28 / `claude/pool-depth-short` working tree (after `148f3bc`): D3 pool set, S3 diagram geometry and S4 loop seam pass at the stated coverage (`scripts/pool-depth/spike-results.md`); Film/Mark adoption of the recorded camera/pose deviations: pending.
 - 2026-10-28 / `claude/pool-depth-short` working tree (after `d079187`): SH03 mug demo with real Cycles refraction passes the S2 criteria (0 coin px before the pour, 95.4% at F225, IOR 1.0 control 0 px, nothing keyed); shadow-ray Transparent mix, caustics off and 40 spp + OIDN solve the S2 grain; OIDN temporal flicker measured negligible (excess <= 0.11/255); D3/S3/S4 re-run after the look pass still pass. Test caveat: with absorbing water the oblique red-marker test needs a strong emitter and a lower centroid threshold. Film/Mark adoption: pending.
+
+<a id="df-20261028-zcondo-eevee-render-spike"></a>
+## DF-20261028-zcondo-eevee-render-spike — Eevee vs Cycles cost and look on ZCONDO blockouts (M1)
+
+- Owner: Boss; first observed: 2026-10-28; last checked: 2026-10-28; status: `workaround` (Eevee is ≈6–7× cheaper; its interior bounce gap is closed by a baked volume probe); type: `tool-limitation`
+- Tags: 3D / Blender / Eevee / Cycles / lighting / volumetrics / render-cost
+- Scope: `main` `9670266` + untracked `assets/blender/zc-render-spike/` (`build.py`, `run_all.sh`, `spike-manifest.json`); Blender 5.2.3 LTS headless (`BLENDER_EEVEE`, Eevee Next) and Cycles Metal on Apple M1 (8-core GPU, 16 GB); the user's GUI Blender (MCP-connected, empty scene) was open and idle during the runs. Blender MCP connection checked with `execute_blender_code` (version 5.2.3 LTS, arm64).
+- Consumers: ZCONDO-SHORT-TH / ZCONDO-SHORT-EN plates (`VB-ZCONDO-SHORT-R3` `VD-ZC-00`, `SP01` (e), `S-10`, `RK-02`); user request 28 Oct 2026 to try Eevee.
+
+### Symptoms and evidence
+- Question: can Eevee replace Cycles for the ≈2,050–2,260-frame plate set (Cycles estimate ≈7–20 h from `DF-20261028-blender-cycles-water-spike`) without losing the brief's look?
+- Test scenes (throwaway grey blockouts, built from scratch by the script, not production assets): `corridor` = B01-SH01-like OTS, 24 m corridor, 8 emissive ceiling panels each with a 35 W area light, green exit sign, doors, "you" foreground figure and an infected figure walking in, vFOV 55°, camera push (69 objects). `balcony` = B08-like night city, balcony at 60 m, ≈260 box towers, 4 fire clusters (emissive blobs + warm point lights), 4 animated Principled Volume smoke domains, cool moon sun, figure at railing, vFOV 60°, camera push-out/rise (388 objects). Both 1080×1920, AgX, PNG 8-bit.
+- Presets: `eevee64` = 64 TAA render samples, screen ray tracing (1/2 res, denoise), fast GI, shadows ray 1 / step 6, volumetrics tile 8 / 64 samples / volumetric shadows. `eevee32` = same at 32 samples. `eevee64gi` = `eevee64` + one baked VOLUME light probe around the corridor (grid 4×32×6; bake 1–2 s). `cycles40dn` = Cycles GPU Metal, 40 spp, no adaptive, OIDN GPU denoise, bounces max 6 / diffuse 3 / glossy 2 / transmission 2 / volume 1, caustics off.
+- Reproduce: `sh assets/blender/zc-render-spike/run_all.sh` (both scenes × `eevee64`/`eevee32`/`cycles40dn`, frames 0, 36, 104); `Blender -b --python assets/blender/zc-render-spike/build.py -- corridor eevee64gi 0,36,104`.
+- Measured seconds per frame (render call incl. PNG write; first value is the process's first frame):
+
+  | Scene | eevee32 | eevee64 | eevee64gi | cycles40dn |
+  | --- | --- | --- | --- | --- |
+  | corridor | 2.45 / 2.35 / 2.44 | 5.08 / 4.65 / 4.47 | 4.45 / 4.36 / 4.39 | 32.34 / 25.78 / 25.77 |
+  | balcony | 2.35 / 2.19 / 2.29 | 4.21 / 4.14 / 4.18 | not run | 34.02 / 29.99 / 30.12 |
+
+  The very first Eevee render on this machine took 12.7 s for one frame (shader compile); later processes reused the shader cache. Cycles did not show the ≈135 s kernel compile this time (cache warm). Process start + scene build added ≈2–4 s per run. No crash in 8 headless runs.
+- Evidence (local only, Git-ignored): stills `out/blender/zc-render-spike/<scene>/<preset>/F000|F036|F104.png`; side-by-side sheets (eevee64 | eevee32 | cycles40dn) `out/blender/zc-render-spike/compare-corridor-F036.png`, `compare-corridor-F104.png`, `compare-balcony-F036.png`, `compare-balcony-F104.png`; (eevee64 | eevee64gi | cycles40dn) `compare-corridor-gi-F036.png`; smoke crop at full res (eevee64 | eevee32 | cycles40dn) `compare-balcony-smoke-crop-F104.png`. Timings, settings, devices and PNG checksums in `assets/blender/zc-render-spike/spike-manifest.json`.
+- Coverage: CLI stills only, 3 frames per preset; no H.264 encode, no Remotion load, no Studio; temporal flicker across consecutive Eevee frames and full-plate sequential renders `unverified`.
+- Root cause of the look gap (confirmed by the `eevee64gi` comparison): without baked GI, Eevee's screen-space GI cannot see off-screen bounce, so the corridor ceiling renders near black and the back-lit foreground figure is much darker than in Cycles. A volume probe whose bounds enclose all lit surfaces (the first try, with the ceiling just outside the bounds, left the ceiling black) brings the figure close to Cycles; the ceiling stays darker than Cycles.
+
+### Attempts and results
+- Look verdict (Boss, from the stills): the balcony/night-city look (moon shadows of the railing bars, fire-lit tower faces, warm smoke) is close to Cycles in `eevee64` and `eevee32`; Eevee smoke is softer and less detailed (froxel volumes at tile 8) and slightly less warm-lit from below. The corridor is acceptable only with baked GI (`eevee64gi`); emissive panels, exit sign, contact shadows and the figures read correctly. `eevee32` vs `eevee64` showed no visible difference in these stills (no fine texture or hair to expose aliasing).
+- Extrapolation for ≈2,100 plate frames (`estimated`, steady-state means × frames, plus ≈17 plate processes × ≈15 s start/build/compile): `eevee64`/`eevee64gi` 4.2–4.6 s/frame → **≈2.5–2.8 h** (2,050–2,260 frames: 2.4–2.9 h); `eevee32` 2.2–2.4 s/frame → **≈1.3–1.5 h**; `cycles40dn` 25.8–30.1 s/frame → **≈15–17.6 h** (2,050–2,260 frames: 14.7–18.9 h). Eevee is ≈6–7× (64 samples) to ≈11–13× (32 samples) faster.
+- Limits of the estimate (heavy content since measured in `DF-20261028-zcondo-eevee-worstcase`: ≈10 s/frame in Eevee, still ≥3.8× faster than Cycles): blockouts have no textures, rigged face, hair, cloth, blood decals or section caps; production plates will cost more per frame in either engine (unmeasured). Close-up smoke may need volumetric tile 4 or 2, which costs more (unmeasured).
+
+### Planning impact
+- Film: Eevee is a viable default for `VD-ZC-00` plates on this M1; keep Cycles as a per-shot option only where the softer Eevee smoke or the missing interior bounce matters. Interiors (`zc-corridor`, `zc-unit`) must ship a baked volume probe per set (enclosing every lit surface) or explicit fill lights. Fallback (all stills + `pictureMove`) is no longer forced by cost.
+- Mark: no shot change; avoid close-ups that rely on fine smoke detail in B08 unless Boss re-tests tile 4.
+- Follow-up (Boss, `SP01`): production `zc-corridor/build.py` with probe GI, a full 105-frame `B01-SH01` sequential Eevee render (temporal flicker), bt709 encode and Remotion load per `SP01` (b)–(d), (f); re-measure per-frame cost on the textured/rigged assets.
+
+### Revalidation history
+- 2026-10-28 / `main` `9670266` + untracked `assets/blender/zc-render-spike/`: corridor and balcony blockouts, frames 0/36/104, four presets; results above. Film/Mark adoption: pending.
+- 2026-10-28 / same checkout + untracked `assets/blender/zc-corridor/`: on the production-staged corridor blockout, Eevee 64 measured 5.39 s/frame mean over 150 frames (higher than the spike's 4.2–4.6), see `DF-20261028-zcondo-sp01-corridor-plate`.
+
+<a id="df-20261028-zcondo-sp01-corridor-plate"></a>
+## DF-20261028-zcondo-sp01-corridor-plate — SP01: B01-SH01 corridor plate in Eevee + baked GI, encoded and loaded in Remotion
+
+- Owner: Boss; first observed: 2026-10-28; last checked: 2026-10-28; status: `workaround` (pipeline works; residual colour shift and placeholder-level look recorded); type: `tool-limitation`
+- Tags: 3D / Blender / Eevee / lighting / colour / runtime / captions / render-cost
+- Scope: `main` `9670266` + working tree; untracked `assets/blender/zc-corridor/` (`build.py`, `render_sp01.sh`, `sp01_check.py`, `manifest.md`, `sp01-manifest.json`); Blender 5.2.3 LTS headless Eevee on Apple M1; Remotion 4.0.538 via the shared `SceneRenderer` media path, from a scratch entry `out/qa/zombie-condo/sp01/entry.tsx` (nothing registered in `src/`). User approval to continue SP01 in Eevee: 28 Oct 2026 (“ทำ SP01 ต่อ”, relayed by the coordinator).
+- Consumers: ZCONDO-SHORT-TH / -EN `B01-SH01` (`VD-ZC-01`, `PROJ-ZC-R3`, `SP01`, `S-01`/`S-02`/`S-10`); `zc-corridor` is reused by B02 (section, `SP02`). No Mark scene sheet for B01 existed; the staging is Boss's blockout reading of `VD-ZC-01`.
+
+### Symptoms and evidence
+- Plate: 150 frames (5.0 s = 0.5 s head + 3.5 s TH share + 1.0 s tail, R3 plate table), Blender frame 1 = clip frame 0; TH conform `trimStartSec 0.5` (shot frame s = clip frame s + 15). OTS camera vFOV 55°, sensor-fit vertical, shift_y −0.20, level, push +0.2 m along +X. zc-you steps out of the doorway (clip F0–F44) then holds; the infected stands ~12 m away, back to camera, in front of the far window; strip 3 flickers from a seeded pattern, strip 4 (in front of her) is dead. Two baked VOLUME probes (corridor 40×5×6, unit 6×6×5; bake ≈8 s).
+- Reproduce: `sh assets/blender/zc-corridor/render_sp01.sh` (measure + eevee64/eevee32 full plate + eevee256 F60–F71 reference); encode command in `sp01-manifest.json` (`encode`); `npx remotion still|render out/qa/zombie-condo/sp01/entry.tsx ZCONDO-SP01-TEST|ZCONDO-SP01-NOCAP`; checks `Blender's python3.13 -I assets/blender/zc-corridor/sp01_check.py temporal|compare|capbox`.
+- Measurements:
+  - (a) Projected geometry bounds (`sp01-manifest.json` `measure`, clip F0/F15/F51/F75/F119/F149): infected x 587–659, y 559–798, **235–239 px** tall from clip F0 (before shot F0), inside the key action zone; zc-you head+hair y 286–701 (top 286–320, chin 687–701), head x ≈65–420 (left third), visible height ≥1600 px. Visually not occluded in shot F0/F36/F104.
+  - (b) Remotion still (no caption) vs Blender PNG at shot F0/F36/F104 (clip F15/F51/F119): mean abs 2.07–2.11, max 32–36 (edges/chroma), mean signed RGB −2.3/−1.8/−2.0 levels (Remotion darker), uniform across frames. Frame mapping confirmed: F36 vs clip F50/F51/F52 = 2.17/2.07/2.28.
+  - (c) `remotion still` (fresh mount per frame) vs `remotion render --sequence` PNG at F0/F36/F104: **identical** (max diff 0).
+  - (d) Two-line TH caption (`position: 'middle'`, outline preset): pixel bbox x 200–882, y 880–1030, inside x 120–888 / y 288–1248; it sits over his torso and the corridor floor, below every face (his chin ≤701, her figure ≤798); readable on inspection.
+  - (e) Eevee 64: **5.39 s/frame mean** (median 5.38, max 5.77; 809 s for 150 frames) + ≈8 s build/bake per process; Eevee 32: 2.89 s/frame; Eevee 256 reference: 20.5 s/frame. MP4 (CRF 12): 8.54 MB / 150 frames (≈13.7 Mb/s); PNG masters 279 MB. Encode 8 s.
+  - (f) Connection, Blender version, MCP tool list, machine, render route, encode command and checksums are in `assets/blender/zc-corridor/sp01-manifest.json`.
+  - Temporal: excess frame-to-frame change over the 256-sample reference (clip F60–F71) is 0.135/255 mean (max 0.146) at 64 samples and 0.253/255 (max 0.273) at 32; spatial error vs 256 is 0.31 (64) and 0.52 (32). Full 150-frame scan (eevee64): median pair change 0.56; all 28 pairs above 3× median touch the seeded flicker dip frames (clip 12, 14, 18, 37, 56, 58, 60, 67, 69, 71, 73, 123, 125, 143, 145); no other pops.
+- Evidence (local only, Git-ignored): masters `out/blender/zc-corridor/B01-SH01/{eevee64,eevee32,eevee256}/frame_####.png`; plate `public/assets/blender/zc-corridor/B01-SH01.mp4`; Remotion stills `out/qa/zombie-condo/sp01/still-{TEST,NOCAP}-F{0,36,104}.png`, sequence `out/qa/zombie-condo/sp01/seq/element-###.png`, render `out/qa/zombie-condo/sp01/ZCONDO-SP01-TEST.mp4`; sheets `contact-TEST-F0-F36-F104.png`, `contact-1s-ZCONDO-SP01-TEST-F0-30-60-90-104.png`, `crop-TEST-F36-mid.png`, `crop-F64-eevee32-64-256.png`; `temporal.json`.
+- Coverage: CLI stills/sequence renders only; Studio not opened (`DF-20261026-studio-emfile`); TH conform only (EN trim 93 frames not rendered); no narration/audio; one composition, no neighbour shots (B02 absent).
+- Root cause of the colour shift: not isolated; the tagged bt709/tv path still decodes about 2 levels darker, within the 1–3 level range recorded in `DF-20261028-blender-cycles-water-spike`.
+
+### Attempts and results
+- Look (Boss inspection): cool cyan-green corridor, warm-white far window, dead and flickering strips, contact on the floor, matte smear trail; she reads as a backlit figure but her pale shirt is still lit from the front by strip 3, so she is a grey figure on a bright window rather than a hard black silhouette with a rim (`VD-ZC-01` asks for the latter). Eevee shows a soft halo around the window and figure (screen-space effects). 32 samples leave visible grain on the dark ceiling at full resolution; 64 is the baseline.
+- Placeholders: primitive figures without face, hands, rig, flip-flops or blood decals on the infected; the door pull is not visible from this OTS position (the inward leaf is behind him, already open), so the action reads as "steps out with the trash bag".
+
+### Planning impact
+- Film: Eevee + baked volume probes is confirmed for the corridor; budget ≈5.4 s/frame on this set (≈3.2 h for ≈2,100 frames at 64 samples, `estimated`; more with rigged/textured assets). A −2 level encode shift is accepted unless Film wants a compensation grade.
+- Mark: decide whether the door pull must be visible in SH01 (needs a camera nearer the hinge side or a different blocking) and whether the infected should be a pure silhouette (Boss can kill strip 3 near her or add a flag). Caption-middle position fits over this framing.
+- Follow-up (Boss): real `zc-you`/`zc-infected` rigs and blood decals; EN trim check; Studio seek check when `DF-20261026-studio-emfile` allows; SP02.
+
+### Revalidation history
+- 2026-10-28 / `main` `9670266` + untracked `assets/blender/zc-corridor/`: SP01 (a)–(f) pass at the coverage above. Film/Mark adoption: pending.
+
+<a id="df-20261028-zcondo-eevee-worstcase"></a>
+## DF-20261028-zcondo-eevee-worstcase — Worst-case Eevee 64 vs Cycles 40spp + OIDN on B08 and a character-heavy corridor (M1)
+
+- Owner: Boss; first observed: 2026-10-28; last checked: 2026-10-28; status: `workaround` (Eevee stays 3.8× to 18× faster on the heaviest cases; look gaps listed below); type: `tool-limitation`
+- Tags: 3D / Blender / Eevee / Cycles / volumetrics / hair / render-cost
+- Scope: `main` `9670266` + untracked `assets/blender/zc-render-spike/` (`worstcase.py`, `run_worstcase.sh`, `worstcase-manifest.json`) and `assets/blender/zc-corridor/`; Blender 5.2.3 LTS headless, Apple M1 (8-core GPU, 16 GB); the user's GUI Blender was open and idle. Settings identical to `DF-20261028-zcondo-eevee-render-spike` (`eevee64`, `cycles40dn`). User request 28 Oct 2026 (“ทำต่อได้นะ”, relayed by the coordinator). Follow-up to that finding's "Limits of the estimate".
+- Consumers: `VD-ZC-08` / B08 plate (150 frames TH, 135 EN), `zc-infected` hair/blood/shirt (`S-06`, B01 SH01/SH02, B02), `S-10` plate renders.
+- Leftover check before the run: no headless Blender process, no partial frames (`eevee32`/`eevee64` 150 PNG each, `eevee256` 12 = the planned F60–F71 window), no stray files in `assets/blender`; nothing tidied. The only Blender process was the user's GUI instance.
+
+### Symptoms and evidence
+- Scenes (throwaway placeholders, `worstcase.py` layered on the earlier builds): `b08worst` = spike balcony + ~540 more towers (≈800 total), 4 more near fire clusters with warm lights (8 clusters), 4 more smoke domains incl. big near plumes and one ≈35 m from the balcony, 300 emissive embers, moon sun + 8 fire lights, 2,321 objects. `charots` = production-staged corridor (`zc-corridor/build.py`, 2 baked volume probes), OTS `B01-SH01` camera; `charclose` = same set, 18° vFOV long lens on `zc-infected` facing camera (SH02-like) plus a 220 W fill. Character content in both: infected long hair as 8,000 hair-curve strands × 10 points (≈1.2 mm dia), `zc-you` hair 3,000 strands × 5, 2048² procedural weave/stain shirt + bump and striped tee, 15 shrinkwrapped blood decals on the infected plus 10 floor/wall decals (alpha textures, dithered), Principled Hair BSDF in both engines.
+- Measured seconds per frame (render call incl. PNG write; 4 frames per cell; first frame of each process in brackets, then the other three; "steady" = mean of the other three):
+
+  | Case | Eevee 64 | Cycles 40 + OIDN | Cycles / Eevee |
+  | --- | --- | --- | --- |
+  | `b08worst`, tile 8 | [6.15] 5.88 / 5.76 / 5.76 → **5.80** | [94.9] 94.2 / 110.3 / 109.9 → **104.8** | 18× |
+  | `b08worst`, tile 4 | [7.12] 6.94 / 6.45 / 6.33 → **6.57** | same | 16× |
+  | `b08worst`, tile 2 | [13.33] 12.10 / 11.62 / 11.68 → **11.80** | same | 8.9× |
+  | `charots` (OTS, hair + textures + decals) | [10.35] 10.57 / 10.52 / 10.56 → **10.55** | [44.1] 40.2 / 39.9 / 40.0 → **40.0** | **3.8× (worst)** |
+  | `charclose` (long-lens close) | [9.30] 9.24 / 9.06 / 9.24 → **9.18** | [60.8] 57.9 / 56.5 / 55.9 → **56.8** | 6.2× |
+
+  Eevee B08 volumetric tile cost: tile 4 +13 %, tile 2 +103 % over tile 8. Hair and textures roughly doubled Eevee on the corridor (5.4 s/frame blockout in `DF-20261028-zcondo-sp01-corridor-plate` → 10.5 s); the first Eevee frame of a hair process carries ≈2.5 s of shader compile. No crash in 8 runs. Process start + build + probe bake 15–25 s.
+- Extrapolation (`estimated`, steady means × frames, plus ≈17 processes × ≈20 s): B08 TH plate 150 frames: Eevee tile 8 **≈15 min**, tile 4 ≈17 min, tile 2 ≈30 min; Cycles **≈4.4 h**. Pessimistic bound for all ≈2,100 plate frames at the character-heavy cost: Eevee **≈6.2 h** (9.2–10.6 s/frame); Cycles **≈23–33 h** (40–57 s/frame). Real mix (many plates have no hair) lands between this bound and the earlier 2.5–3.2 h estimate.
+- Evidence (local only, Git-ignored): stills `out/blender/zc-render-spike/worst/<case>/<preset>/F###.png` (`b08worst` F000/F036/F070/F104; char cases F001/F050/F100/F150); sheets `out/blender/zc-render-spike/worst/compare-b08-F036.png`, `compare-b08-F104.png` (tile 8 | 4 | 2 | Cycles), `compare-b08-smoke-crop-F104.png` (full-res crop), `compare-charots-F100.png`, `compare-charclose-F100.png` (Eevee | Cycles), `compare-charclose-hair-crop-F100.png`, `compare-charots-youhair-crop-F100.png`. Timings, settings, checksums: `assets/blender/zc-render-spike/worstcase-manifest.json`. Reproduce: `sh assets/blender/zc-render-spike/run_worstcase.sh`.
+- Coverage: CLI stills, 4 frames per cell, blockout geometry; no sequential full-plate render, no encode, no Remotion, no Studio; temporal flicker of hair/decals across consecutive frames `unverified`.
+
+### Attempts and results
+- Look verdict (Boss, from the stills):
+  - Smoke: tile 8, 4 and 2 are visually the same in the stills (all soft, smooth edges); tile 2 doubles the cost for no visible gain, so keep tile 8 (tile 4 optional). Cycles shows more irregular wisps, a ragged plume edge and more warm scattering near the fires and the embers' glow; Eevee smoke is flatter but warm-lit from below and reads as the same plume, so it holds for the brief's wide push-out.
+  - Fire-glow rim: Eevee leaves `zc-you` a near-black silhouette on B08 while Cycles lights him warmly from the fires (no screen-space bounce off the city). `VD-ZC-08` asks for a fire-glow rim, so B08 needs an explicit warm rim/fill light on him in Eevee (the spike's `ZC_FireRim` point light is not enough at this scale). Not yet re-tested.
+  - Hair: Eevee draws 8,000 curve strands as distinct dark-brown strands with clumping, no visible aliasing or noise at 64 samples; the face-over-hair read holds. In Cycles the same Principled Hair settings came out pale grey (shader model/sheen difference, not a speed effect), so hair colour needs per-engine tuning; do not compare hair colour across engines.
+  - Shirt texture and bump read the same in both. Blood decals read in both; some decals show grey patches where overlapping shrinkwrapped decals fight (placeholder-setup artefact, fix with one decal per area).
+  - Embers at emission 80 clip to white hexagons in Eevee and glow softly in Cycles (set lower strength/bloom-like sprites).
+- Verdict: the speed conclusion holds on the heaviest cases (Eevee ≥3.8× faster; ≥16× on B08 with tile ≤4); Eevee remains the plate default. Cycles stays a per-shot option only for B08 smoke detail or fire-lit "you", where it would cost ≈100 s/frame (≈4.4 h per 150-frame plate).
+
+### Planning impact
+- Film: keep Eevee default; budget ≈6 h worst-case total on this M1, ≈15 min for the B08 plate; use volumetric tile 8.
+- Mark: B08 relies on an authored warm rim light on "you", not on bounce.
+- Follow-up (Boss): hair shader tuning, decal clean-up, B08 rim-light test, full-plate sequential render of one hair shot for flicker.
+
+### Revalidation history
+- 2026-10-28 / `main` `9670266` + untracked `assets/blender/zc-render-spike/` and `zc-corridor/`: results above. Film/Mark adoption: pending.

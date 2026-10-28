@@ -89,7 +89,7 @@ Read only what the [document index](#document-index) says applies. Before new sc
 | Runtime capability claims, new timeline fields or module ownership | [Runtime contract](docs/runtime-contract.md); inspect types, validator, shared implementation and renderer together |
 | Physical dimensions, projection, depth staging, asset resizing or apparent-size review | [Scale and perspective](docs/scale-and-perspective-principles.md) |
 | Rig or pose-track changes | [Character toolkit](docs/character-toolkit.md); confirm exported APIs in source |
-| Choosing, planning or producing Blender assets/shots | [Blender MCP workflow](docs/blender-mcp-workflow.md); verify connection, source/export, runtime support and visual results separately |
+| Choosing, planning or producing Blender assets/shots | [Blender MCP workflow](docs/blender-mcp-workflow.md); verify connection, source/export, runtime support and visual results separately; Eevee 64 is the default [render engine](docs/blender-mcp-workflow.md#render-engine-default) |
 | Technique selection or shot revision; development/blockout/QA blockers | [Development findings](docs/dev-findings.md): Boss records evidence; Film and Mark consume and revalidate relevant finding IDs |
 | RuleCard, PhoneChat or POV design/implementation | [Planned visual components](docs/planned-visual-components.md); examples are designs until runtime integration is verified |
 | Issues, branches, checks, commits, pushes and PRs | [Contribution workflow](docs/contributing.md), including the documentation-only verification exception |

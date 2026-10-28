@@ -1,0 +1,491 @@
+{
+  "b08worst/cycles40dn": {
+    "all_mean_seconds": 102.34,
+    "blender": "5.2.3 LTS",
+    "build_seconds": 187.25,
+    "command": "Blender -b --python assets/blender/zc-render-spike/worstcase.py -- b08worst cycles40dn 0,36,70,104",
+    "date": "2026-10-28 22:04",
+    "first_frame_seconds": 94.94,
+    "frames": [
+      {
+        "frame": 0,
+        "png": "out/blender/zc-render-spike/worst/b08worst/cycles40dn/F000.png",
+        "seconds": 94.94,
+        "sha256_16": "beab0be527c09e4b"
+      },
+      {
+        "frame": 36,
+        "png": "out/blender/zc-render-spike/worst/b08worst/cycles40dn/F036.png",
+        "seconds": 94.23,
+        "sha256_16": "09e1b611cefcf9e7"
+      },
+      {
+        "frame": 70,
+        "png": "out/blender/zc-render-spike/worst/b08worst/cycles40dn/F070.png",
+        "seconds": 110.3,
+        "sha256_16": "e875f72d9fbd649e"
+      },
+      {
+        "frame": 104,
+        "png": "out/blender/zc-render-spike/worst/b08worst/cycles40dn/F104.png",
+        "seconds": 109.88,
+        "sha256_16": "8eedfc399e665571"
+      }
+    ],
+    "objects": 2321,
+    "settings": {
+      "adaptive": false,
+      "bounces": "max 6 / diff 3 / gloss 2 / trans 2 / vol 1",
+      "caustics": false,
+      "denoise": "OIDN GPU",
+      "device": "GPU Metal",
+      "devices": [
+        "Apple M1:CPU:False",
+        "Apple M1 (GPU - 8 cores):METAL:True"
+      ],
+      "engine": "CYCLES",
+      "preset": "cycles40dn",
+      "samples": 40
+    },
+    "steady_mean_seconds": 104.8
+  },
+  "b08worst/eevee64t2": {
+    "all_mean_seconds": 12.18,
+    "blender": "5.2.3 LTS",
+    "build_seconds": 235.16,
+    "command": "Blender -b --python assets/blender/zc-render-spike/worstcase.py -- b08worst eevee64t2 0,36,70,104",
+    "date": "2026-10-28 21:54",
+    "first_frame_seconds": 13.33,
+    "frames": [
+      {
+        "frame": 0,
+        "png": "out/blender/zc-render-spike/worst/b08worst/eevee64t2/F000.png",
+        "seconds": 13.33,
+        "sha256_16": "da78812b3d3b9ae5"
+      },
+      {
+        "frame": 36,
+        "png": "out/blender/zc-render-spike/worst/b08worst/eevee64t2/F036.png",
+        "seconds": 12.1,
+        "sha256_16": "43aa919a3472b40c"
+      },
+      {
+        "frame": 70,
+        "png": "out/blender/zc-render-spike/worst/b08worst/eevee64t2/F070.png",
+        "seconds": 11.62,
+        "sha256_16": "394afdc80049cb85"
+      },
+      {
+        "frame": 104,
+        "png": "out/blender/zc-render-spike/worst/b08worst/eevee64t2/F104.png",
+        "seconds": 11.68,
+        "sha256_16": "b882615f6d812ebe"
+      }
+    ],
+    "objects": 2321,
+    "settings": {
+      "engine": "BLENDER_EEVEE",
+      "fast_gi": true,
+      "preset": "eevee64",
+      "raytracing": "SCREEN, res 1/2, denoise",
+      "shadows": "ray 1 / step 6",
+      "taa_render_samples": 64,
+      "volumetrics": "tile 2, 64 samples, end 400 m, volumetric shadows on"
+    },
+    "steady_mean_seconds": 11.8
+  },
+  "b08worst/eevee64t4": {
+    "all_mean_seconds": 6.71,
+    "blender": "5.2.3 LTS",
+    "build_seconds": 180.42,
+    "command": "Blender -b --python assets/blender/zc-render-spike/worstcase.py -- b08worst eevee64t4 0,36,70,104",
+    "date": "2026-10-28 21:49",
+    "first_frame_seconds": 7.12,
+    "frames": [
+      {
+        "frame": 0,
+        "png": "out/blender/zc-render-spike/worst/b08worst/eevee64t4/F000.png",
+        "seconds": 7.12,
+        "sha256_16": "65c21b3b4632276c"
+      },
+      {
+        "frame": 36,
+        "png": "out/blender/zc-render-spike/worst/b08worst/eevee64t4/F036.png",
+        "seconds": 6.94,
+        "sha256_16": "cf9a096afbde65d8"
+      },
+      {
+        "frame": 70,
+        "png": "out/blender/zc-render-spike/worst/b08worst/eevee64t4/F070.png",
+        "seconds": 6.45,
+        "sha256_16": "c091866f04948ea0"
+      },
+      {
+        "frame": 104,
+        "png": "out/blender/zc-render-spike/worst/b08worst/eevee64t4/F104.png",
+        "seconds": 6.33,
+        "sha256_16": "cad640ae008eb48a"
+      }
+    ],
+    "objects": 2321,
+    "settings": {
+      "engine": "BLENDER_EEVEE",
+      "fast_gi": true,
+      "preset": "eevee64",
+      "raytracing": "SCREEN, res 1/2, denoise",
+      "shadows": "ray 1 / step 6",
+      "taa_render_samples": 64,
+      "volumetrics": "tile 4, 64 samples, end 400 m, volumetric shadows on"
+    },
+    "steady_mean_seconds": 6.57
+  },
+  "b08worst/eevee64t8": {
+    "all_mean_seconds": 5.89,
+    "blender": "5.2.3 LTS",
+    "build_seconds": 183.53,
+    "command": "Blender -b --python assets/blender/zc-render-spike/worstcase.py -- b08worst eevee64t8 0,36,70,104",
+    "date": "2026-10-28 21:46",
+    "first_frame_seconds": 6.15,
+    "frames": [
+      {
+        "frame": 0,
+        "png": "out/blender/zc-render-spike/worst/b08worst/eevee64t8/F000.png",
+        "seconds": 6.15,
+        "sha256_16": "58e8a34cebd27fe3"
+      },
+      {
+        "frame": 36,
+        "png": "out/blender/zc-render-spike/worst/b08worst/eevee64t8/F036.png",
+        "seconds": 5.88,
+        "sha256_16": "0c6b1c2857e7da4a"
+      },
+      {
+        "frame": 70,
+        "png": "out/blender/zc-render-spike/worst/b08worst/eevee64t8/F070.png",
+        "seconds": 5.76,
+        "sha256_16": "4200dc03046e3b03"
+      },
+      {
+        "frame": 104,
+        "png": "out/blender/zc-render-spike/worst/b08worst/eevee64t8/F104.png",
+        "seconds": 5.76,
+        "sha256_16": "71011419bafb7a58"
+      }
+    ],
+    "objects": 2321,
+    "settings": {
+      "engine": "BLENDER_EEVEE",
+      "fast_gi": true,
+      "preset": "eevee64",
+      "raytracing": "SCREEN, res 1/2, denoise",
+      "shadows": "ray 1 / step 6",
+      "taa_render_samples": 64,
+      "volumetrics": "tile 8, 64 samples, end 400 m, volumetric shadows on"
+    },
+    "steady_mean_seconds": 5.8
+  },
+  "charclose/cycles40dn": {
+    "all_mean_seconds": 57.75,
+    "blender": "5.2.3 LTS",
+    "build_seconds": 11.6,
+    "command": "Blender -b --python assets/blender/zc-render-spike/worstcase.py -- charclose cycles40dn 1,50,100,150",
+    "date": "2026-10-28 22:13",
+    "first_frame_seconds": 60.76,
+    "frames": [
+      {
+        "frame": 1,
+        "png": "out/blender/zc-render-spike/worst/charclose/cycles40dn/F001.png",
+        "seconds": 60.76,
+        "sha256_16": "64cd32735d042215"
+      },
+      {
+        "frame": 50,
+        "png": "out/blender/zc-render-spike/worst/charclose/cycles40dn/F050.png",
+        "seconds": 57.88,
+        "sha256_16": "a18f36ba5b4f626f"
+      },
+      {
+        "frame": 100,
+        "png": "out/blender/zc-render-spike/worst/charclose/cycles40dn/F100.png",
+        "seconds": 56.5,
+        "sha256_16": "b6dd6c2c6bfe18b6"
+      },
+      {
+        "frame": 150,
+        "png": "out/blender/zc-render-spike/worst/charclose/cycles40dn/F150.png",
+        "seconds": 55.87,
+        "sha256_16": "f1d1fe25a869cc07"
+      }
+    ],
+    "objects": 120,
+    "settings": {
+      "adaptive": false,
+      "bounces": "max 6 / diff 3 / gloss 2 / trans 2 / vol 1",
+      "caustics": false,
+      "denoise": "OIDN GPU",
+      "device": "GPU Metal",
+      "devices": [
+        "Apple M1:CPU:False",
+        "Apple M1 (GPU - 8 cores):METAL:True"
+      ],
+      "engine": "CYCLES",
+      "preset": "cycles40dn",
+      "samples": 40
+    },
+    "steady_mean_seconds": 56.75
+  },
+  "charclose/eevee64": {
+    "all_mean_seconds": 9.21,
+    "blender": "5.2.3 LTS",
+    "build_seconds": 12.05,
+    "command": "Blender -b --python assets/blender/zc-render-spike/worstcase.py -- charclose eevee64 1,50,100,150",
+    "date": "2026-10-28 22:09",
+    "first_frame_seconds": 9.3,
+    "frames": [
+      {
+        "frame": 1,
+        "png": "out/blender/zc-render-spike/worst/charclose/eevee64/F001.png",
+        "seconds": 9.3,
+        "sha256_16": "08bd519446946160"
+      },
+      {
+        "frame": 50,
+        "png": "out/blender/zc-render-spike/worst/charclose/eevee64/F050.png",
+        "seconds": 9.24,
+        "sha256_16": "b74d6da0fd3376c9"
+      },
+      {
+        "frame": 100,
+        "png": "out/blender/zc-render-spike/worst/charclose/eevee64/F100.png",
+        "seconds": 9.06,
+        "sha256_16": "f15d73ac9d423826"
+      },
+      {
+        "frame": 150,
+        "png": "out/blender/zc-render-spike/worst/charclose/eevee64/F150.png",
+        "seconds": 9.24,
+        "sha256_16": "752ea6ec21095f96"
+      }
+    ],
+    "objects": 120,
+    "settings": {
+      "engine": "BLENDER_EEVEE",
+      "fast_gi": true,
+      "flicker_levels_dips": [
+        12,
+        14,
+        18,
+        37,
+        56,
+        58,
+        60,
+        67,
+        69,
+        71,
+        73,
+        123,
+        125,
+        143,
+        145
+      ],
+      "gi_bake_seconds": 10.26,
+      "gi_probes": [
+        {
+          "centre": [
+            6.1,
+            -0.9,
+            1.3
+          ],
+          "grid": [
+            40,
+            5,
+            6
+          ],
+          "half_extents": [
+            9.15,
+            1.15,
+            1.3800000000000001
+          ],
+          "name": "zc-corr_gi"
+        },
+        {
+          "centre": [
+            0.0,
+            1.6,
+            1.3
+          ],
+          "grid": [
+            6,
+            6,
+            5
+          ],
+          "half_extents": [
+            1.85,
+            1.55,
+            1.3800000000000001
+          ],
+          "name": "zc-unit_gi"
+        }
+      ],
+      "look": "None",
+      "output": "PNG 8-bit RGB sRGB",
+      "raytracing": "SCREEN, res 1/2, denoise",
+      "shadows": "ray 1 / step 6",
+      "taa_render_samples": 64,
+      "view_transform": "AgX"
+    },
+    "steady_mean_seconds": 9.18
+  },
+  "charots/cycles40dn": {
+    "all_mean_seconds": 41.02,
+    "blender": "5.2.3 LTS",
+    "build_seconds": 10.54,
+    "command": "Blender -b --python assets/blender/zc-render-spike/worstcase.py -- charots cycles40dn 1,50,100,150",
+    "date": "2026-10-28 22:08",
+    "first_frame_seconds": 44.06,
+    "frames": [
+      {
+        "frame": 1,
+        "png": "out/blender/zc-render-spike/worst/charots/cycles40dn/F001.png",
+        "seconds": 44.06,
+        "sha256_16": "3cc092aa2adc703a"
+      },
+      {
+        "frame": 50,
+        "png": "out/blender/zc-render-spike/worst/charots/cycles40dn/F050.png",
+        "seconds": 40.15,
+        "sha256_16": "acfbcd598fb6cecf"
+      },
+      {
+        "frame": 100,
+        "png": "out/blender/zc-render-spike/worst/charots/cycles40dn/F100.png",
+        "seconds": 39.91,
+        "sha256_16": "adbce93e48759570"
+      },
+      {
+        "frame": 150,
+        "png": "out/blender/zc-render-spike/worst/charots/cycles40dn/F150.png",
+        "seconds": 39.96,
+        "sha256_16": "fd8de791ba3c1192"
+      }
+    ],
+    "objects": 118,
+    "settings": {
+      "adaptive": false,
+      "bounces": "max 6 / diff 3 / gloss 2 / trans 2 / vol 1",
+      "caustics": false,
+      "denoise": "OIDN GPU",
+      "device": "GPU Metal",
+      "devices": [
+        "Apple M1:CPU:False",
+        "Apple M1 (GPU - 8 cores):METAL:True"
+      ],
+      "engine": "CYCLES",
+      "preset": "cycles40dn",
+      "samples": 40
+    },
+    "steady_mean_seconds": 40.01
+  },
+  "charots/eevee64": {
+    "all_mean_seconds": 10.5,
+    "blender": "5.2.3 LTS",
+    "build_seconds": 10.9,
+    "command": "Blender -b --python assets/blender/zc-render-spike/worstcase.py -- charots eevee64 1,50,100,150",
+    "date": "2026-10-28 22:05",
+    "first_frame_seconds": 10.35,
+    "frames": [
+      {
+        "frame": 1,
+        "png": "out/blender/zc-render-spike/worst/charots/eevee64/F001.png",
+        "seconds": 10.35,
+        "sha256_16": "e01943d6728da28f"
+      },
+      {
+        "frame": 50,
+        "png": "out/blender/zc-render-spike/worst/charots/eevee64/F050.png",
+        "seconds": 10.57,
+        "sha256_16": "eb17d6b1623cf677"
+      },
+      {
+        "frame": 100,
+        "png": "out/blender/zc-render-spike/worst/charots/eevee64/F100.png",
+        "seconds": 10.52,
+        "sha256_16": "607bc0eaa98d2584"
+      },
+      {
+        "frame": 150,
+        "png": "out/blender/zc-render-spike/worst/charots/eevee64/F150.png",
+        "seconds": 10.56,
+        "sha256_16": "86650c2222bc53b6"
+      }
+    ],
+    "objects": 118,
+    "settings": {
+      "engine": "BLENDER_EEVEE",
+      "fast_gi": true,
+      "flicker_levels_dips": [
+        12,
+        14,
+        18,
+        37,
+        56,
+        58,
+        60,
+        67,
+        69,
+        71,
+        73,
+        123,
+        125,
+        143,
+        145
+      ],
+      "gi_bake_seconds": 9.13,
+      "gi_probes": [
+        {
+          "centre": [
+            6.1,
+            -0.9,
+            1.3
+          ],
+          "grid": [
+            40,
+            5,
+            6
+          ],
+          "half_extents": [
+            9.15,
+            1.15,
+            1.3800000000000001
+          ],
+          "name": "zc-corr_gi"
+        },
+        {
+          "centre": [
+            0.0,
+            1.6,
+            1.3
+          ],
+          "grid": [
+            6,
+            6,
+            5
+          ],
+          "half_extents": [
+            1.85,
+            1.55,
+            1.3800000000000001
+          ],
+          "name": "zc-unit_gi"
+        }
+      ],
+      "look": "None",
+      "output": "PNG 8-bit RGB sRGB",
+      "raytracing": "SCREEN, res 1/2, denoise",
+      "shadows": "ray 1 / step 6",
+      "taa_render_samples": 64,
+      "view_transform": "AgX"
+    },
+    "steady_mean_seconds": 10.55
+  }
+}
