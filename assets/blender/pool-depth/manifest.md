@@ -1,6 +1,6 @@
 # POOLDEPTH-SHORT Blender manifest (Boss)
 
-Status (updated 2026-10-28, third pass): `source-ready` for D3 (pool set, child, sign), S3 (diagram geometry), S4 (loop seam) and now SH03 (mug demo, `build.py -- mugcheck|mugstills`) at the stated evidence, after a look pass (water, deck, child); **no clip rendered, nothing `export-ready`/`runtime-integrated`/`visual-verified`**. `VD01` route: Blender pre-render to MP4 consumed by `Scene.media`. Results and numbers: `scripts/pool-depth/spike-results.md` (S0-S2 and D3/S3/S4 sections); computed output: `spike-manifest.json` (written by `build.py`); Remotion overlay data: `plate-quads-SH05.json`. Brief `VB-POOLDEPTH-SHORT-R1` and sheet `POOLDEPTH-SHORT-BOARD-R1` were not edited; deviations below are for Mark/Film/Editor.
+Status (updated 2026-10-28, third pass): `source-ready` for D3 (pool set, child, sign), S3 (diagram geometry), S4 (loop seam) and now SH03 (mug demo, `build.py -- mugcheck|mugstills`) at the stated evidence, after a look pass (water, deck, child); **production clips `shot-01..08` rendered and encoded 2026-10-28 (see the clip table); nothing `runtime-integrated`/`visual-verified`**. `VD01` route: Blender pre-render to MP4 consumed by `Scene.media`. Results and numbers: `scripts/pool-depth/spike-results.md` (S0-S2 and D3/S3/S4 sections); computed output: `spike-manifest.json` (written by `build.py`); Remotion overlay data: `plate-quads-SH05.json`. Brief `VB-POOLDEPTH-SHORT-R1` and sheet `POOLDEPTH-SHORT-BOARD-R1` were not edited; deviations below are for Mark/Film/Editor.
 
 Source: `assets/blender/pool-depth/build.py` (Blender 5.2.3 LTS, headless; one run = one command). No `.blend` is committed: scenes are rebuilt from the script (state is a pure function of shot and shot-local frame, so any frame renders directly). Branch `claude/pool-depth-short` after `148f3bc` (uncommitted working tree).
 
@@ -34,17 +34,20 @@ Commands (third pass adds `-- mugstills SH03:F... [--samples --scale --denoise]`
 | Q6 | No pour SFX for now (SH03 `sfx` stays empty; the pour onset F150 keeps its design role for the VO) | Editor |
 | Q7 | If an S1-style EEVEE fallback is ever needed it applies to SH01/SH05-SH08 only; **SH03 stays Cycles**. Not needed: Cycles passed S1 (spikes) and the D3 oblique check | Film |
 
-### Clip packaging table (TEST clips rendered 2026-10-28; production clips `shot-01..08` pending)
+### Clip packaging table (PRODUCTION clips rendered 2026-10-28; TEST rows removed)
 
-All: libx264 High, crf 12, `-g 30`, yuv420p, 1080x1920, 30 fps, tags colorspace bt709 / primaries bt709 / range tv (ffprobe reports trc `iec61966-2-1`, same as the S0 clip), 40 spp + OIDN, `build.py -- seq` + S0 recipe. Files under `public/pool-depth/test/` (ignored). **TEST: not delivery clips.**
+All: libx264 High (profile 100), `-g 30`, yuv420p, 1080x1920, 30 fps, tags colorspace bt709 / primaries bt709 / range tv (ffprobe trc reads `iec61966-2-1`, as in S0), 40 spp + OIDN (diagrams 16 spp, no denoise), S0 encode recipe (`scale=out_color_matrix=bt709:out_range=tv`). Frame counts confirmed with `ffprobe -count_frames`. Files `public/pool-depth/shot-0N.mp4` (ignored; not committed). Frame PNGs: `assets/blender/pool-depth/renders/full/<SH>/F###.png` (ignored).
 
-| Clip | Frames | Codec / tags | Size (bytes) | SHA-256 | Source command |
-| --- | ---: | --- | ---: | --- | --- |
-| `tc_sh08.mp4` TEST (SH08 F90-F119) | 30 | h264 High crf 12, bt709/tv | 2,458,715 | `86996fda144d48217ad5c9a9d96cbfd0fa6abd294d868dee14b2ff79c390fa60` | `-- seq SH08:90-120 --samples 40 --denoise 1` |
-| `tc_sh03.mp4` TEST (SH03 F150-F180) | 31 | same | 657,654 | `7e296d402396a18956fadc232947036b3bb725d650dfe22359e65b179a746fc0` | `-- seq SH03:150-180 --samples 40 --denoise 1` |
-| `tc_seam_sh08_f209.mp4` TEST (SH08 F209) | 1 | same | 172,844 | `1cf64e482abe42e56f5b9ba60fa7580af002a6fa458be062029f787fdce05667` | `-- seq SH08:209 ...` |
-| `tc_seam_sh01_f000.mp4` TEST (SH01 F0) | 1 | same | 172,866 | `5e0fdf00c5e21f1c8a782d9adb496d798f39e9ea30189eefe66cd6e29ae68f48` | `-- seq SH01:0 ...` |
-| `shot-01..08` | 180/300/300/360/100/80/90/210 | libx264 crf 12 yuv420p, bt709/tv | pending | pending | pending |
+| Clip | Shot | Frames | Codec / crf | Size (bytes) | SHA-256 | Source command |
+| --- | --- | ---: | --- | ---: | --- | --- |
+| `shot-01.mp4` PRODUCTION | SH01 | 180 | h264 High, crf 10, forced I at F0, bt709/tv | 21,799,918 | `a307f9f679ec5bcbfc0774943951bee66b07ccafca4b1822cd267bb2bf0d56c3` | `-- seq SH01:0-179 --samples 40 --denoise 1 --root full` (F0 from the test render, same settings) |
+| `shot-02.mp4` PRODUCTION | SH02 | 300 | h264 High, crf 12, bt709/tv | 4,405,867 | `eb30067e6b233cfbe5f60b09cbeff596b3ac6d2e69485816894af248d96ff99d` | `-- seq SH02:0-299 --samples 16 --denoise 0 --root full` (new diagram path in `cmd_seq`) |
+| `shot-03.mp4` PRODUCTION | SH03 | 300 | h264 High, crf 12, bt709/tv | 5,898,580 | `d44ed31aae89cfc504ae070958bbd6210e94e5184f3de40ba5380ff435ef9c0c` | `-- seq SH03:0 120 121-149 150-257 258 --samples 40 --denoise 1 --root full`; F1-F119 = copy of F0, F259-F299 = copy of F258 (see spike-results "Full render") |
+| `shot-04.mp4` PRODUCTION | SH04 | 360 | h264 High, crf 12, bt709/tv | 5,352,466 | `52ff510426ff792e9a3ef955e585ea911ca45e9f3f31b1e732124d297c97a3ab` | `-- seq SH04:0-359 --samples 16 --denoise 0 --root full` |
+| `shot-05.mp4` PRODUCTION | SH05 | 100 | h264 High, crf 12, bt709/tv | 2,943,323 | `75e819bbf31d953619c8535ee255853599541c92f82c9babf9a26b3a6d2d1446` | `-- seq SH05:0-99 --samples 40 --denoise 1 --root full` |
+| `shot-06.mp4` PRODUCTION | SH06 | 80 | h264 High, crf 12, bt709/tv | 4,466,397 | `e0c370b230f46bb24ac68bdbda3a3a69102160ec9ff54a2f1a0d7019fa8ca19e` | `-- seq SH06:0-79 --samples 40 --denoise 1 --root full` |
+| `shot-07.mp4` PRODUCTION | SH07 | 90 | h264 High, crf 12, bt709/tv | 4,880,295 | `f26c6ebf9a7eec4213b88a930f3ce6c15efd45098681f2242905f836a8867cc7` | `-- seq SH07:0-89 --samples 40 --denoise 1 --root full` |
+| `shot-08.mp4` PRODUCTION | SH08 | 210 | h264 High, crf 10, forced I at F0 and F209, bt709/tv | 26,546,075 | `2476910bad1d35d9a669c582fa9947971fa96a52cf106b173f4d5266be7c4daf` | `-- seq SH08:0-89 90-119 209 ... --root full`; F120-F208 = period-30 copy of F90-F119 |
 
 ## Deviations from the sheet numbers (for Mark / Film / Editor)
 

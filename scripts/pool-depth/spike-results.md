@@ -308,3 +308,77 @@ F150: 0 coin px (hidden, as criterion); F180: coin visible at 4,872 px (between 
 2. Encoded seam differs by grain (mean 0.5-1.0, max 21-26); acceptable visually in a loop but not pixel-identical; only one-frame and 30-frame clips tested, not a 210-frame SH08 clip with a long GOP (its tail may be a P-frame like F119 here).
 3. Production clips, Studio, long-clip decode and sync with the narration unverified; SH03 look items (understated water, bright mug interior, simple kettle) unchanged.
 4. ffprobe transfer tag reads iec61966-2-1 instead of bt709 although `-color_trc bt709` is passed (same as S0); colours verified by pixel comparison, so left as is.
+
+
+---
+
+# Full render: shots SH01-SH08 (Boss, 2026-10-28)
+
+Branch `claude/pool-depth-short` HEAD `9cdf09f` + uncommitted tree (`build.py` gained a diagram path in `cmd_seq` for SH02/SH04 and a `--root` option; nothing else changed in the contract). Ripple period 30 kept (user decision). Blender 5.2.3 headless, Cycles Metal M1, 1080x1920, 40 spp + OIDN (SH02/SH04 16 spp, no denoise). One background run (`out/pooldepth-full/render.log`), no Metal crash, 0 retries. Frames in `assets/blender/pool-depth/renders/full/` (ignored); clips in `public/pool-depth/` (ignored); table in `manifest.md`.
+
+## Render times (measured, from the log; wall clock from batch start to each shot's end, whole batch 15,445 s = 4.29 h for the shots, then spot checks)
+
+| Shot | Frames | Newly rendered | Reused / copied | Mean s/frame | Wall |
+| --- | ---: | ---: | --- | ---: | ---: |
+| SH02 | 300 | 300 | none | 1.26 | 381 s (incl. Blender start and cold kernel) |
+| SH04 | 360 | 360 | none | 1.22 | 443 s |
+| SH05 | 100 | 100 | none | 12.30 | 1,231 s |
+| SH01 | 180 | 179 | F0 reused from the test render (same settings) | 22.95 | 4,110 s |
+| SH07 | 90 | 90 | none | 22.77 | 2,050 s |
+| SH06 | 80 | 80 | none | 41.03 | 3,284 s |
+| SH08 | 210 | 90 (F0-F89) + 3 spot | F90-F119 and F209 reused from the test render (same settings); F120-F208 copies of F90-F119 (period 30) | 23.78 | 2,146 s |
+| SH03 | 300 | 109 | F150-F180 reused from the test render; F1-F119 copies of F0; F259-F299 copies of F258 | 16.47 | 1,799 s |
+
+Estimates in the third pass were 69 / 21 / 55 / 34 / 46 (SH08 with trick) / 12 / 14 / 31 min for SH01, SH05, SH06, SH07, SH08, SH02, SH04, SH03; measured 68.5 / 20.5 / 54.7 / 34.1 / 36.9 (only 93 new frames) / 6.3 / 7.3 / 29.9.
+
+## Deviation from the declared SH03 trick
+
+SH03 F0-F149 is **not** one state: the jug enters F120-F150 (`jug_pose`, `POUR_T enter0 = 120`). Identical state holds F0-F120 (jug off-frame at `LIP_AWAY` until F120, water level 0, ripple amplitude 0, stream none), so F0 was rendered once and copied to F1-F119; F120 and F121-F149 were rendered individually (30 frames). F258-F299 is identical (jug back at the away pose from F255, ripple amplitude 0 from F258), so F258 was rendered once and copied to F259-F299.
+
+## Spot checks that the copies equal the would-be renders (PNG, mean abs / max per 0-255, px > 2)
+
+| Pair | Mean | Max | Px > 2 |
+| --- | ---: | ---: | ---: |
+| SH08 F120 render vs copy of F90 | 0.0158 | 1 | 0 |
+| SH08 F150 render vs copy | 0.0135 | 1 | 0 |
+| SH08 F208 render vs copy | 0.0137 | 1 | 0 |
+| SH03 F60 render vs copy of F0 | 0.0168 | 1 | 0 |
+| SH03 F100 render vs copy of F0 | 0.0167 | 1 | 0 |
+| SH03 F299 render vs copy of F258 | 0.0142 | 1 | 0 |
+| SH03 F120 vs F121 (jug starts moving) | 0.0164 | 1 | 0 |
+| SH08 F209 vs SH01 F0 (PNG seam) | 0.0122 | 1 | 0 |
+| SH08 F119 vs F209 (same state) | 0.0139 | 2 | 0 |
+
+Render noise only (OIDN). The F209 frame equals SH01 F0 within the earlier PNG tolerance (max 1/255).
+
+## Encoded seam test (SH08 last frame vs SH01 F0, decoded with the bundled ffmpeg from full-length clips)
+
+Full 210-frame SH08 and 180-frame SH01 clips encoded four ways (`out/pooldepth-full/seamtest/`):
+
+| Variant | SH01 size | SH08 size | Seam mean | Max | Px > 2 |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| crf 12 (baseline) | 16.4 MB | 19.7 MB | 0.7315 | 20 | 358,626 |
+| crf 10 | 21.8 MB | 26.5 MB | 0.6434 | 15 | 290,749 |
+| crf 12 + forced I-frame at start/end | same bytes as baseline for SH01, +4 KB SH08 | | 0.7315 | 20 | 358,626 |
+| crf 10 + forced I-frames | 21.8 MB | 26.5 MB | **0.6434** | 15 | 290,749 |
+
+All four meet the target (mean <= 1/255). The test clip's earlier tail-frame figure (1.00) is not reproduced because in the full clip x264 already codes the last frame (F209) as an I-frame (ffprobe: pts 6.966667 type I), so forcing I-frames changes nothing. crf 10 is lowest by measure (-12%), so SH01 and SH08 use crf 10 with forced I-frames at start (and F209) as insurance; the cost is +33% size (21.8 and 26.5 MB, still small). Decoder: ffmpeg in `npx remotion ffmpeg`, not a Remotion still (earlier test used Remotion stills, giving 0.54-1.0; the method differs, so compare within this table). The remaining difference is H.264 grain noise on the same image, below the frame-to-frame ripple step (about 2/255).
+
+## Clip verification (`npx remotion ffprobe -count_frames`)
+
+All eight: codec h264, profile High, 1080x1920, yuv420p, 30/1 fps, color_space bt709, primaries bt709, range tv (transfer reads iec61966-2-1), frame counts 180/300/300/360/100/80/90/210 equal the windows.
+
+Decoded-frame checks (clip-relative frame = shot frame):
+
+- SH03 coin (Blender coin mask for geometry truth, 16 spp, plus colour test on the decoded clip): mask pixels F150 = 0, F205 = 10,213, F299 = 12,056 (F205 = 84.7% of F299, criterion >= 80%). Decoded F150: 0 coin-like pixels in the mask and 0 in the coin-colour band over the coin box (PNG also 0). Decoded F205: 9,237 coin-like pixels in its mask (90% of the mask; PNG 9,278), band 10,065 (PNG 10,005); decoded F299: 12,047 of 12,056.
+- SH04: palette-run test on the decoded clip (longest vertical run of the true-bar colour `#1B6F86` and apparent-bar colour `#FFD166` per frame; bars are 599 and 450 px, markers 64 px): bars present F134-F272 (bar at F200: 599/450), no bar-length run from F273 on; by the geometry (`a_bar = 0` from F288, swing starts at F288) the oblique state F288-F359 has runs 64/64 only (marker discs), the ratio bars are gone. F273-F274 hold a 447 px apparent run (the dissolve F270-F288 is alpha-blended, so palette matching drops out progressively).
+- SH08 / SH01 seam: table above.
+- Contact sheet of all eight shots (6 frames each, from the PNG frames): `out/pooldepth-full/contact_all.png`. Looked at: SH01 child stable at pool edge; SH02 ray, apparent-depth ghost marker; SH03 empty mug (F0-F120), jug and stream pouring at F180, water level and coin visible at F240-F299; SH04 straight bars then oblique state without bars; SH05 sign plate blank for Remotion text; SH06 legs and water; SH07 pictogram; SH08 sign-to-pool pull-back to A0 and hold.
+
+## Remaining risks
+
+1. Visual judgement of the lively period-30 ripple in playback is still a Mark/Film call (numbers only); nothing was changed.
+2. Clips are not tested in Remotion/Studio with `Scene.media` timing against the narration; the `B_loop` hold on SH08 uses the clip last frame (verified earlier on a test clip, not on this 210-frame clip).
+3. Seam is grain-equal (0.64 mean, max 15), not pixel-identical; SH01 and SH08 are 22-27 MB.
+4. SH03 look limits, SH05 plate width < 50% until F55, deviations 1-9 in this manifest still await Mark/Film/Editor.
+5. `render.log` holds the SEQ lines; the first DONE time for SH08A is the instant skip of already-rendered frames.

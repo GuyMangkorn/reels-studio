@@ -2239,10 +2239,20 @@ def cmd_seq(o):
         shot, rng = tag.split(':')
         a, b = rng.split('-') if '-' in rng else (rng, rng)
         per = int(o['period']) if 'period' in o else 0          # test only: slower ripple (angle = 2 pi (f+1) / period, SH08 phase convention)
-        d = outdir(f'testclips/{shot}' + ('_mask' if mask else '') + (f'_p{per}' if per else ''))
+        d = outdir(f'{o.get("root", "testclips")}/{shot}' + ('_mask' if mask else '') + (f'_p{per}' if per else ''))
         for f in range(int(a), int(b) + 1):
             p = os.path.join(d, f'F{f:03d}.png')
             if os.path.exists(p):
+                continue
+            if shot in ('SH02', 'SH04'):
+                if S is None:
+                    S = diag_scene(o['samples'], o['scale'])[0]
+                    S.render.film_transparent = False
+                    S = (S, Diag())
+                build_diag(S[1], shot, f)
+                secs = render_still(S[0], p)
+                res['seconds'][f'{shot}_F{f:03d}'] = secs
+                print('SEQ', shot, f, round(secs, 1), 's', flush=True)
                 continue
             if S is None:
                 S = mug_scene(o['samples'], o['scale'], denoise=bool(o.get('denoise', 0)), mask=mask) if shot == 'SH03' else pool_scene(o['samples'], o['scale'], denoise=bool(o.get('denoise', 0)))
