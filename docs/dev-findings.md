@@ -34,6 +34,8 @@ Created 26 October 2026. The first entry records tooling checks while adding thi
 | [DF-20261028-blender-cycles-water-spike](#df-20261028-blender-cycles-water-spike) | Blender Cycles water refraction / MP4 colour tags / M1 render cost | workaround | 2026-10-28 / `claude/pool-depth-short` HEAD `59809c8` + working tree | Cycles Glass refraction is measurably Snell-accurate; follow the modelling rules and encode tags below |
 | [DF-20261028-zcondo-eevee-render-spike](#df-20261028-zcondo-eevee-render-spike) | Blender Eevee vs Cycles render cost and look / M1 / interiors need baked GI | workaround | 2026-10-28 / `main` `9670266` + untracked `assets/blender/zc-render-spike/` | Eevee ≈4.2–4.6 s/frame vs Cycles ≈26–30 s/frame on ZCONDO blockouts (≈6–7×); interiors need a baked volume probe; Eevee smoke is softer |
 | [DF-20261028-zcondo-sp01-corridor-plate](#df-20261028-zcondo-sp01-corridor-plate) | ZCONDO SP01 corridor plate: Eevee + baked GI, bt709 encode, Remotion load / caption middle | workaround | 2026-10-28 / `main` `9670266` + untracked `assets/blender/zc-corridor/` | B01-SH01 blockout plate passes SP01 (a)–(f) at the stated coverage; Eevee 64 ≈5.4 s/frame; ≈−2 level shift after encode; caption-middle fits the box |
+| [DF-20261029-zcondo-b01-look-r31](#df-20261029-zcondo-b01-look-r31) | ZCONDO B01 look target (infected darker than the window) reached by lighting / light linking | workaround | 2026-10-29 / `main` `80c73c5` + working tree | `VD-ZC-01` R3.1 look target met on the blockout (0.234 ≤ 0.25); hair rim and production assets still to verify in `S-02` |
+| [DF-20261029-zcondo-sp02-section-spike](#df-20261029-zcondo-sp02-section-spike) | ZCONDO SP02 section cutaway: `CAM-SECTION-LL` seated stills, standing 60-frame truck, caps, door wall 0.18 | workaround | 2026-10-29 / `main` `80c73c5` + working tree | Seated lead ≥480 px passes; poses pass on a placeholder mannequin; cut-plane magnification moves the corridor-cap sliver and the B07-SH02 TH tail frame clips a foot |
 
 <a id="แบบฟอร์มรายการ"></a>
 ## Entry template
@@ -350,3 +352,62 @@ PYCODE
 
 ### Revalidation history
 - 2026-10-28 / `main` `9670266` + untracked `assets/blender/zc-render-spike/` and `zc-corridor/`: results above. Film/Mark adoption: pending.
+
+<a id="df-20261029-zcondo-b01-look-r31"></a>
+## DF-20261029-zcondo-b01-look-r31 — B01 look target: infected darker than the window by lighting, not by darkening her shirt
+
+- Owner: Boss; first observed: 2026-10-28 (`DF-20261028-zcondo-sp01-corridor-plate` open note); last checked: 2026-10-29; status: `workaround` (target met on the blockout); type: `tool-limitation`
+- Tags: 3D / Blender / Eevee / lighting / light-linking / silhouette
+- Scope: `main` `80c73c5` + working tree; `assets/blender/zc-corridor/build.py` (`ZC_LOOK=sp01|r31`, `look` command), Blender 5.2.3 LTS headless Eevee 64 on the M1; user instruction 29 Oct 2026 (“เริ่มเลย”, relayed by the coordinator).
+- Consumers: ZCONDO-SHORT `B01-SH01`/`B01-SH02` (`VD-ZC-01` R3.1 look target); future `S-02`/`S-06` production lighting.
+
+### Symptoms and evidence
+- Target (brief R3.1): at shot F36 (clip F51) infected mean luminance ≤ about ¼ of the window pane's on the plate, with a visible rim on head and shoulders, by lighting, shirt unchanged. SP01 measured nothing; it read grey by eye.
+- Measurement: Eevee 64 beauty PNG plus a Workbench flat-colour mask of the same frame (figure = `zc-inf*`, pane = `zc-corr_window`); Rec.709 luma on the PNG's 8-bit display values (and, separately, linearised). Figure 10,313 px, pane 16,828 px (the pane is clipped to ≈1.0, so "window brighter" cannot raise the denominator).
+  - `sp01` lighting: figure/pane **0.285** display (0.104 linear), clip F51.
+  - `r31` lighting: **0.234** display (0.075 linear) at clip F51; 0.229 at F15; 0.231 at F119. Figure median 0.19, p95 0.54 (bright edge band).
+- What worked: (1) light-link the corridor strip lights so they do not light the infected (`light_linking.receiver_collection` + `collection_objects[].light_linking.link_state = 'EXCLUDE'`); (2) cut the far-window area light from 700 W to 100 W; it was bouncing off the floor into her hem and shirt (700 W gave 0.294 even with linking; 350 W 0.262); (3) a 600 W grazing rim area light at (13.6, −0.95, 2.45) aimed down at her head and shoulders raises the top surfaces without lifting the mean far (0.186 without, 0.234 with). Darkening the floor (×0.4) changed little (0.259 at 350 W).
+- Not met / caveats: the rim reads on the shoulders and arms; the hair is black, so no rim shows on the head (needs a hair spec/shader tuned in `S-03`, see `DF-20261028-zcondo-eevee-worstcase`). The 100 W window leaves the corridor near the window slightly darker than in SP01; the pane stays clipped white with a soft halo. Placeholder primitive figure only: a real shirt texture, hair and skin will move the number. The SP01 plate was **not** re-rendered with `r31`; re-render B01-SH01 before production.
+- Reproduce: `ZC_LOOK=r31 Blender -b --python assets/blender/zc-corridor/build.py -- look 51` (also `ZC_LOOK=sp01`); results merge into `assets/blender/zc-corridor/sp01-manifest.json` keys `look/*`. Evidence (local, Git-ignored): `out/qa/zombie-condo/sp02/look/{sp01,r31}/{beauty,mask}_F51.png` and crops.
+- Coverage: Blender CLI stills at clip F15, F51, F119 only; no full-plate flicker run with the new lights, no Remotion/Studio check.
+
+### Planning impact
+- Film: `VD-ZC-01` R3.1 look target is met on the blockout by lighting alone; keep the measurement method (plate luma, mask) for the production plate.
+- Mark: no sheet change.
+- Follow-up (Boss): hair rim; re-measure on the production `zc-infected` in `S-02`; re-render B01-SH01 with `r31`.
+
+### Revalidation history
+- 2026-10-29 / `main` `80c73c5` + working tree: results above. Film/Mark adoption: pending.
+
+<a id="df-20261029-zcondo-sp02-section-spike"></a>
+## DF-20261029-zcondo-sp02-section-spike — SP02: section cutaway with `CAM-SECTION-LL` seated stills, standing truck, caps and door wall 0.18 m
+
+- Owner: Boss; first observed: 2026-10-29; last checked: 2026-10-29; status: `workaround` (spike passes; framing numbers for Mark and Film below); type: `integration-gap`
+- Tags: 3D / Blender / Eevee / section / camera / caps / poses / captions
+- Scope: `main` `80c73c5` + working tree; new `assets/blender/zc-unit/` (`build_sp02.py`, `sp02_check.py`, `render_sp02.sh`, `sp02-manifest.json`), shared constant `assets/blender/zc_world.py` (`DOOR_WALL = 0.18`) used by `zc-corridor` and `zc-unit`; Blender 5.2.3 LTS headless Eevee 64 on the M1. Blockout only: grey boxes and primitive mannequins, no final `zc-unit`, `zc-you`, `zc-cabinet`, `S-03`–`S-07`.
+- Consumers: ZCONDO-SHORT B02-SH02/SH03, B07-SH02, B09-SH01/SH03 (`PROJ-ZC-R3`, `CAM-SECTION-LL`, `MK-ZC-ST-01/04/05`); sheets `ZCONDO-SHORT-SS-R2.1`, brief `VB-ZCONDO-SHORT-R3.1`.
+
+### Symptoms and evidence
+- Camera: x = 17.0, z = 1.70, looking −X, level, vFOV from coverage C at x = 0 (`2·atan(C/2/17)`), lens shift solved so the floor at x = 0 projects to y = 860 (checked: 860.0 in every shot; shift_y −0.552 at 3.4 m, −0.422 at 4.6 m).
+- (a) lead size, measured on projected mesh bounds: **B09-SH01/SH03 seated 502–506 px** (3.4 m; head top y 317, feet 824; the minimum over the spike), **B07-SH02 seated 552 px** (4.6 m, clip 0/31/95, head y 283, feet 835), **B02 standing 524 px** (6.4 m, head y 341), **60-frame truck standing 574 px** at start/middle/end (6.0 m, head y 306, feet y 880 because he walks at x 0.45, nearer than the floor line plane). All ≥480 and the head is above y 860 in every case. Sheets estimated ≈530 px for both seated shots; measured margin over 480 is 5 % (B09) and 15 % (B07).
+- (a2) seated naturalness (placeholder mannequin, joints by 2-bone IK; vertex-level contact numbers plus visual check of the still): **B09-SH01 pass, B09-SH03 pass** (same pose, F1): hips on floor (lowest z 0.000), feet z 0.000, back wall gap 1.7 mm, no wall/floor/cabinet penetration, hands on knees, head pitched 25°, reads as a person sitting with weight on the floor. **B07-SH02 pass** (clip 0, 31, 95; same pose): hips 2.3 mm over the seat top, seat penetration 2.5 cm (soft-body compression, below the 3 cm threshold), feet z 0.000, back 7 cm off the sofa back (relaxed, not floating), no wall penetration. Judged on a placeholder: the final rig must reproduce the recorded joint targets (`sp02-manifest.json` `still/*/pose_joints`) and Boss re-checks it in `S-03`/`S-04`. No shot falls back to SS-R1 standing.
+- (a3) door wall 0.18 m, one constant (`DOOR_WALL`) for `zc-corridor` and `zc-unit`: door wall y ∈ [0, 0.18], cabinet y ∈ [0.18, 0.58] from the built geometry, gap 0 and overlap 0 (`sp02-manifest.json` `geometry`). SP01 plate not re-rendered (2 cm invisible in that framing; nothing contradicted).
+- (b) caps closed: 9 cut-face caps tile without overlap (geometry), and in every still and all 60 truck frames each cap's projected rectangle (eroded 3 px) is one flat colour, max deviation 1 level (`sp02_check.py caps`); no holes, z-fighting or light leaks seen. Cut faces are unlit flat colour by construction, so this does not test lit-cap leaks of the production set.
+- (c) capped corridor: the corridor cap rectangle is exactly black within 1/255 (max value 1, dither) in the B09-SH03 still and in every truck frame where it is on screen, and nothing from the corridor shows through.
+- (d) caption zone y 860–1248: Rec.709 luma mean 0.16–0.24 and p95 0.24–0.32 over all stills and truck F0/30/59 (Boss thresholds mean ≤0.25, p95 ≤0.40; the brief gives none). First attempt with a light floor failed (mean 0.25–0.30, p95 0.59–0.67): the unit floor in perspective fills y 860–975, so the floor tile must be dark (`#2f2c29`) and neighbour slices dark (`#1c1c1c`). Max pixel 0.87 is the lead's/cabinet's bright edge in the zone.
+- (e) cost: 4.1–5.9 s/frame stills, truck 4.67 s/frame mean (max 5.07) at Eevee 64, plus ≈2–3 s probe bake per process (one volume probe 8×24×6). The section is cheaper than the corridor (5.4 s).
+- Findings that change numbers in the sheets (measured, not estimated):
+  1. **Cut-plane magnification.** The caps sit at x = 1.78, 15.2 m from the camera against 17.0 m at the character plane, so everything on the cut plane is ×1.117 larger than the sheets' px/m at x = 0 (e.g. 631 vs 565 px/m at 3.4 m). B09-SH01 at camera y 0.90: the door-wall cap spans x ≈ −28…86 and the black corridor cap is **off-screen** (no 0–30 px sliver); the cabinet face is x ≈ 125–360 (matches the sheet). A visible black sliver of ≥30 px needs camera y ≤ ≈0.81 (cap x 0–31, door wall 31–145, cabinet ≈145–372 at that y). B09-SH03 at y 0.35: black cap x 0–319, door wall 319–433, cabinet ≈433–672 (sheet: 340/445/670; close).
+  2. **B07-SH02 TH tail.** The sheet's "y 5.70 → 9.00 over clip 0–126" are camera centres; TH ends at clip 95 (y 8.19) and the frame there has his head at x ≈245 (sheet ≈190) and **the left foot cut by the frame edge by ≈11 px** (feet are at y ≈6.93, left of his hips because he faces 40° toward −Y). EN ends at clip 89 (y 8.03): ≈67 px more room, the foot is in frame. Fully in frame from clip 31 as written.
+  3. Truck speed at the cut plane ≈12.2 px/frame for B07-SH02 (0.0262 m/frame × 417 × 1.117); motion blur or judder not rendered or judged in this spike.
+  4. Sheet inconsistency: B09-SH01 "phone … by his left foot" at y 0.62 is on his right side when he faces +X (left is +Y); placed as written.
+- Reproduce: `sh assets/blender/zc-unit/render_sp02.sh`, then Blender's `python3.13 -I assets/blender/zc-unit/sp02_check.py caps|caption`. Evidence (local, Git-ignored): `out/blender/zc-unit/sp02/{B02,B09SH01,B09SH03,B07SH02,B07SH02mid,B07SH02start}/still.png`, `out/blender/zc-unit/sp02/truck/frame_0000–0059.png`, contact sheets `out/qa/zombie-condo/sp02/contact-stills.png`, `contact-truck-every10.png`, crop `crop-B09SH01.png`.
+- Coverage: Blender CLI only. Not done: Remotion load, Studio, EN conform, the 126-frame B07-SH02 LL truck, motion blur/judder, B02 corridor-open 60-frame run (one still), caps under real lighting, production neighbour slices.
+
+### Planning impact
+- Film: `CAM-SECTION-LL` seated lead passes on render (≥502 px); the seated stills are acceptable at 3.4 m and 4.6 m. Record the cut-plane ×1.117 note against `PROJ-ZC-R3` (framing arithmetic should be taken on the cut plane for caps, at x = 0 for the character).
+- Mark: revalidate B09-SH01 camera y (cap sliver), B07-SH02 TH tail trim or camera at clip 95, the phone side, and the lead sizes (502–506 and 552 px measured vs ≈530 estimated).
+- Follow-up (Boss): repeat the pose check on the rigged `zc-you`; add the LL truck with motion blur; replace blockout geometry with `zc-unit` in `S-03`.
+
+### Revalidation history
+- 2026-10-29 / `main` `80c73c5` + working tree: results above. Film adoption: read 2026-10-29 (same revision) → brief `VB-ZCONDO-SHORT-R3.2`: cut-plane ×1.117 rule in `PROJ-ZC-R3`, measured leads recorded (B09 at 3.4 m accepted by the user), B09-SH01 camera y 0.78, B07-SH02 TH trim 9, phone on his right. Mark adoption: pending.

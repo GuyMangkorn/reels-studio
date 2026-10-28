@@ -35,6 +35,113 @@
     "ffprobe": "h264 High, 1080x1920, yuv420p, 30/1, 150 frames, 5.000 s, range tv, space bt709, primaries bt709, transfer iec61966-2-1 (same as POOLDEPTH)",
     "sha256": "356b043f04d434b198f61cc945ce336d3d9040b096b4a83ec81ed6874f6e8a32"
   },
+  "look/r31/F119": {
+    "clip_frame": 119,
+    "figure_bbox": [
+      587,
+      658,
+      560,
+      797
+    ],
+    "figure_mean_display": 0.2304404079914093,
+    "figure_mean_linear": 0.07252411544322968,
+    "figure_p50_display": 0.1922023594379425,
+    "figure_p95_display": 0.5141274333000183,
+    "figure_px": 10473,
+    "look": "r31",
+    "params": {
+      "rim": 600.0,
+      "strip_far": 1.0,
+      "unlink": true,
+      "win_emit": 9.0,
+      "win_power": 100.0
+    },
+    "ratio_display": 0.23116005784160643,
+    "ratio_linear": 0.07302857504001482,
+    "window_mean_display": 0.9968867897987366,
+    "window_mean_linear": 0.9930922985076904,
+    "window_px": 17329
+  },
+  "look/r31/F15": {
+    "clip_frame": 15,
+    "figure_bbox": [
+      587,
+      656,
+      560,
+      794
+    ],
+    "figure_mean_display": 0.22838923335075378,
+    "figure_mean_linear": 0.07292874902486801,
+    "figure_p50_display": 0.1891145259141922,
+    "figure_p95_display": 0.5612213611602783,
+    "figure_px": 10203,
+    "look": "r31",
+    "params": {
+      "rim": 600.0,
+      "strip_far": 1.0,
+      "unlink": true,
+      "win_emit": 9.0,
+      "win_power": 100.0
+    },
+    "ratio_display": 0.2290249444626977,
+    "ratio_linear": 0.07338470198721572,
+    "window_mean_display": 0.9972242712974548,
+    "window_mean_linear": 0.9937868118286133,
+    "window_px": 16820
+  },
+  "look/r31/F51": {
+    "clip_frame": 51,
+    "figure_bbox": [
+      587,
+      657,
+      560,
+      795
+    ],
+    "figure_mean_display": 0.23299746215343475,
+    "figure_mean_linear": 0.07508226484060287,
+    "figure_p50_display": 0.1922023594379425,
+    "figure_p95_display": 0.54151850938797,
+    "figure_px": 10313,
+    "look": "r31",
+    "params": {
+      "rim": 600.0,
+      "strip_far": 1.0,
+      "unlink": true,
+      "win_emit": 9.0,
+      "win_power": 100.0
+    },
+    "ratio_display": 0.23356396964889303,
+    "ratio_linear": 0.07549286930662985,
+    "window_mean_display": 0.997574508190155,
+    "window_mean_linear": 0.9945610165596008,
+    "window_px": 16828
+  },
+  "look/sp01/F51": {
+    "clip_frame": 51,
+    "figure_bbox": [
+      587,
+      657,
+      560,
+      795
+    ],
+    "figure_mean_display": 0.2847435474395752,
+    "figure_mean_linear": 0.10346648097038269,
+    "figure_p50_display": 0.2454007863998413,
+    "figure_p95_display": 0.6495129466056824,
+    "figure_px": 10313,
+    "look": "sp01",
+    "params": {
+      "rim": 0.0,
+      "strip_far": 1.0,
+      "win_emit": 9.0,
+      "win_power": 700.0
+    },
+    "ratio_display": 0.2850449330847257,
+    "ratio_linear": 0.1037139459234035,
+    "window_mean_display": 0.9989426732063293,
+    "window_mean_linear": 0.9976139664649963,
+    "window_px": 16828
+  },
   "masters": {
     "dir": "out/blender/zc-corridor/B01-SH01/eevee64",
     "frames": 150,
