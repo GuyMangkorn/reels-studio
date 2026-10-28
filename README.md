@@ -60,7 +60,7 @@ Each composition's default timeline is selected in its episode registry, `src/vi
 
 ## Render and verify
 
-`scripts/render.mjs` renders the composition IDs it is given with both `_A_fade` and `_B_loop` endings (or `--endings=`, e.g. `C_seamless` for a seamless Reels loop), or `--stills` at `--frames=`. Output goes to `out/<CompositionId>/`. Set `BROWSER_EXECUTABLE` to use an installed Chromium.
+`scripts/render.mjs` renders the composition IDs it is given with both `_A_fade` and `_B_loop` endings (or `--endings=`, e.g. `C_seamless` for a seamless Reels loop), or `--stills` at `--frames=`. Output goes to `out/<CompositionId>/`. Each exported MP4 is loudness-normalized in place to about −14 LUFS / ≤ −1 dBTP and the before/after levels are logged. Set `BROWSER_EXECUTABLE` to use an installed Chromium.
 
 ```bash
 npm run render -- CATBOX-C01-Short
