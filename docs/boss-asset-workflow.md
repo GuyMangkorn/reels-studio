@@ -101,13 +101,23 @@ Read and update [dev findings](dev-findings.md) when blockers, workarounds or re
 1. Run repository typecheck, lint and relevant tests. For instruction-only changes, use diff/TOML/link checks under [the documentation exception](contributing.md); adding agent rules does not establish scene verification.
 2. Open Studio with `npm run start` or the checkout's command. Check cold load, play/pause, backward scrub and unordered seeks. Compare the same frame after seek/reload with render for stale textures, empty first frames and pops. Record composition, scene/shot, frames and procedure.
 3. Render each affected Short/Long composition, including shot start/mid/end and full motion/reveal ranges. Frames 0–5 are only a smoke test; cover later bugs explicitly. Match inputProps/timeline to the reviewed revision.
-4. Generate contact sheets for delivery renders at every second and the final frame in each affected composition. Label composition/shot/time/frame; split sheets to cover the full range. Store under `out/qa/<episode>/<scene>/<composition>/` with frame manifest/QA notes.
+4. Generate contact sheets for delivery renders at every second and the final frame in each affected composition. Label composition/shot/time/frame under [preview labels](#preview-labels); split sheets to cover the full range. Store under `out/qa/<episode>/<scene>/<composition>/` with frame manifest/QA notes.
 5. Add F−1/F/F+1 at cuts, transitions, pose switches, attach/detach, sit/stand, texture readiness/change, reveals, flashes and loop seams. Separate intentional cuts from pops. Compare adjacent positions, sizes, colors, shadows, occlusion and contact.
 6. Review the full affected sequence continuously from the assembled timeline, including previous → changed → next scenes where available. Check authored entry/exit, IDs/appearance, positions/facing/pose/contact, prop states, lighting and composition audio offsets. Mark absent neighbors unverified with follow-up; distinguish intentional cuts/time jumps from defects. Shared assets/interfaces require affected-consumer checks. Inspect adjacent frames at discontinuities/risky ranges. A claim of no jump in any frame requires full sequential coverage, such as every adjacent pair plus outlier/intentional-cut review; 1Hz sampling alone is insufficient. A large image difference is not automatically a bug, especially at hard cuts/flashes.
 7. Measure the minimum visible Short lead height against the table above after transforms/crop. Confirm actual motion every shot without clipping or exposed stage edges; inspect rim/ground shadows and prop contact. Scale/projection changes add calibration and near/far/depth-motion checks from the scale guide, with physical/projected measurements or explicit unverified status. Screen readability is not grounds for inflating one actor relative to its surroundings.
 8. Check Thai subtitles, overlay safe regions, audio/reveal timing and affected endings. Report exactly the evidence observed. If Studio/render/tooling is unavailable, identify limitations/unverified checks rather than claiming visual-pass or jump-free output.
 
 QA notes include commit/revision, executable timeline, composition/inputProps, shot/frame ranges, blockout/placeholders, neighbor IDs and boundary results, contact-sheet paths, Studio/seek results, cut/event coverage, minimum lead height, lighting/material checks and corrected defects. Generated images/audio/video belong in `out/` and are not committed.
+
+<a id="preview-labels"></a>
+### Preview labels — requirement
+
+Every still, contact sheet, clip or spike capture shown to the user, Film or Mark names the shots it shows, so it matches a row of the [user storyboard review page](mark-storyboard-workflow.md#user-storyboard-review-page) without guessing.
+
+- **Shot ID:** the short shot ID exactly as the scene-sheet index and review page write it (`B07-SH02`, never `B07SH02` or the bare beat `B07`). A spike or test capture lists every shot it stands for (`SP02 → B07-SH02, B09-SH01`); a capture that serves no specific shot says so.
+- **Clock:** every frame number names its clock: `F` composition-global (the review page's time), `f` shot-local, `c` plate clip, `b` Blender. A burned-in label shows the shot ID, the deliverable and composition time in the review page's format (`TH 0:46.3`), then any plate or Blender frame in brackets.
+- **Files and manifests:** name files `<shot ID>_<view>_<clock><frame>.<ext>` (`B07-SH02_mid_c40.png`); a multi-shot contact sheet names its composition and frame range instead and labels each tile. Spike folders keep the spike ID (`out/qa/<episode>/sp02/`). Manifests key entries by the same shot ID.
+- **Hand-off:** list previews by shot ID, with the scene-sheet revision they were rendered against, in the index or QA notes so the coordinator can link them from the review page.
 
 <a id="ขอบเขตที่ตรวจในรอบตั้ง-agent"></a>
 ## Historical inspection — not current runtime verification
