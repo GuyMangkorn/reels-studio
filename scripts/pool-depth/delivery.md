@@ -16,36 +16,58 @@
 - **Visual medium:** the user chose Blender-only ("ใช้ Blender ล้วน"). Recorded as the style-profile visual medium; Film must verify Blender-to-runtime support in the active checkout before promising it.
 - **Next stage:** Film visual/technical brief for `POOLDEPTH-SHORT` against script R2 / fact-check R2. Mark, Boss and Editor not started.
 
-## Narration timing (measured, Editor, 2026-10-28)
+## Narration timing (measured, Editor, 2026-10-28, second pass after listening notes)
 
-Source: `scripts/pool-depth/short/narration-timeline.json` (script R2 wording, unchanged), `npm run narration -- --timeline scripts/pool-depth/short/narration-timeline.json --name POOLDEPTH-SHORT`; voice `th-TH-NiwatNeural` rate +5%; `edge-tts==7.3.1` in `build/narration-venv` (gitignored); MP3 54.024 s (ffprobe), rendered AAC 54.016 s; peak -6.3 dBFS, 0 clipped samples. Regenerating gave identical silence boundaries (deterministic). `scripts/narration.py` gained an optional per-beat `leadSec` (additive; default behavior unchanged).
+Source: `scripts/pool-depth/short/narration-timeline.json` (script R2 wording, unchanged), `npm run narration -- --timeline scripts/pool-depth/short/narration-timeline.json --name POOLDEPTH-SHORT`; voice `th-TH-NiwatNeural` +5%; `edge-tts==7.3.1` in `build/narration-venv` (gitignored). `scripts/narration.py` has additive optional per-beat fields `leadSec`, `closeGaps` ([[rawSec, keepSec]], shortens the silent run nearest rawSec with a 10 ms crossfade) and `trimHeadSec`, and prints a gap report (silent runs of 0.15 s or more inside speech). Text is never edited; only silence is removed or shifted. Rendered AAC 54.016 s, peak -6.3 dBFS, 0 clipped samples; not yet reviewed by ear after this pass.
 
-| Beat / shot window | Slot | Clip length incl. TTS tail | Audible speech (slot-local) | Speech ends at frame | Slack in slot | `leadSec` |
-| --- | ---: | ---: | --- | ---: | ---: | ---: |
-| B01 / SH01 | 6 s (180 f) | 4.01 s | 0.18-3.13 s | F94 | 2.9 s | 0 |
-| B02 / SH02 | 10 s (300 f) | 8.11 s | 0.18-7.28 s | F218 | 2.7 s | 0 |
-| B03 / SH03 | 10 s (300 f) | 9.89 s | 0.19-9.02 s | F271 | 1.0 s | 0 |
-| B04 / SH04 | 12 s (360 f) | 10.78 s (11.78 s with lead) | 1.18-10.92 s | F328 | 1.1 s | 1.0 s |
-| B05 / SH05-SH07 | 9 s (270 f) | 8.98 s (9.00 s with lead) | 0.59-8.49 s | F255 | 0.5 s | 0.4 s |
-| B06 / SH08 | 7 s (210 f) | 2.38 s | 0.18-1.54 s | F46 | hold F120-F209 silent | 0 |
+Intra-phrase gaps found (raw TTS clip, 48 kHz, threshold -40 dBFS) and what was done:
 
-Overrun finding: none. The clip lengths of B03 (9.89/10) and B05 (8.98/9) look tight only because of trailing TTS silence; audible speech ends 0.98 s and 0.5 s before the slot end. No word, speed or boundary change was needed. Chosen alignment: B04 delayed 1.0 s inside its slot (the generated "ส่วนถ้ามองเฉียง" would otherwise be spoken at F237, 1.6 s before the fixed eye swing F288-F330 and during the ratio bars) and B05 delayed 0.4 s (puts "และอย่าพุ่งหัวลงน้ำตื้น" at B05 F155, the sheet's est. F156, instead of F143; the no-diving plate still arrives about 25 frames after it, the sheet's accepted error).
+| Beat | Word pair | Gap before | Gap after | Note |
+| --- | --- | ---: | ---: | --- |
+| B02 | "แสงเดิน" / "เป็นเส้นตรง" | 396 ms | 80 ms | hitch inside one clause |
+| B03 | "ถอย" / "จนขอบแก้ว" | 308 ms | 80 ms | hitch |
+| B03 | "แล้ว" / "ค่อยเท" | 514 ms | 100 ms | hitch; pour phrase moves earlier, compensated by `leadSec` |
+| B03 | "เหรียญ" / "ไม่ได้ขยับเลย" | 230 ms | 120 ms | below 0.25 s, listed for completeness |
+| B04 | "มองตรง" / "ลงมา" | 234 ms | 60 ms | inside the key phrase; below 0.25 s but audible |
+| B05 | "ครั้งแรกที่ลงน้ำ" / "ให้ลงเท้าก่อน" | 394 ms | 150 ms | script clause space; shortened, not removed |
 
-Cue frames vs audio (composition-global frames; speech times are from the rendered audio):
+Untouched natural pauses: sentence ends (B01 "เหรอ?" 152 ms, B05 "ก่อน." ~150 ms, all full stops). Remaining silences inside sentences are 80-150 ms.
 
-| Cue | Global frame (old) | Audio anchor | Audio frame |
+| Beat / shot window | Slot | Offsets (`leadSec`, other) | Audible speech in the render (slot-local) | Speech ends at frame | Slack in slot |
+| --- | ---: | --- | --- | ---: | ---: |
+| B01 / SH01 | 6 s | head trimmed to 0.04 s | 0.04-2.99 s | F90 | 3.0 s |
+| B02 / SH02 | 10 s | lead 0.2 | 0.30-7.15 s | F215 | 2.85 s |
+| B03 / SH03 | 10 s | lead 0.4 | 0.57-8.63 s | F259 | 1.4 s |
+| B04 / SH04 | 12 s | lead 1.18 | 1.36-10.92 s | F328 | 1.1 s |
+| B05 / SH05-07 | 9 s | lead 0.55 | 0.74-8.39 s | F252 | 0.6 s |
+| B06 / SH08 | 7 s | lead 1.9 | 2.08-3.45 s (F62-F103) | F103 | hold F120-F209 silent |
+
+B03 and B05 fit with margin; no overrun, no word or speed change. Pour onset: stream F150 (G630); "ค่อย" at B03 F146, "เท" at F152 (offset -4/+2 frames); caption "เทน้ำ แล้วเหรียญโผล่" on at F150.
+
+Ending silence (loop point), measured on the rendered MP4:
+
+| | Before (pass 1) | After |
+| --- | ---: | ---: |
+| Last word ends | 48.54 s (G1456) | 50.44 s (G1513, SH08 F103) |
+| Silence from last word to end of video | 5.47 s | 3.57 s (of which the 3 s hold is G1530-G1619, so only 0.57 s lies before it, and SH08 F103 is 17 frames before the hold) |
+| Head silence of the restarted video | 0.18 s | about 0.04 s |
+| Total silence across the loop restart | about 5.65 s | about 3.6 s (hold floor 3.0 s) |
+
+Trade-off: the B06 line now starts at SH08 F62 (the pull-back eases until F90), so the silence between B05 and B06 grew from 0.66 s to 2.69 s; it lies over the silent camera pull-back. The hold and the loop seam were not changed; the floor of dead air at the loop is the fixed 3 s hold plus the 17-frame speech-free tail the sheet requires.
+
+Cue frames vs audio (composition-global frames):
+
+| Cue | Global frame (pass 1) | Audio anchor in the render | Audio frame |
 | --- | ---: | --- | ---: |
-| B01 caption off | 60 (105) | sentence 1 "จริงเหรอ?" ends 1.37 s | 41 |
-| B02 caption 2 on | 339 (370) | "ภาพของก้นสระ..." 5.31 s | 339 |
-| B03 pour onset (picture, fixed) | 630 | "แล้ว" 4.35 s = F610, "ค่อยเท" 5.11 s = F633 (B03-local F153); "เทน้ำเบา ๆ" F159-F177 | offset: speech +3 f after stream onset, jug enters F120-F150 during "แล้ว" |
-| B03 caption 2 on | 633 (630) | "ค่อยเท" | 633 |
-| B04 unit 1 on | 873 (870) | "ถ้ามองตรงลงมา" 3.09 s | 873 |
-| B04 unit 2 stacked on | 986 (975) | "น้ำลึกสองเมตร" 6.88 s | 986 |
-| B04 ratio captions off | 1050 (unchanged) | "ราวหนึ่งเมตรครึ่ง" ends 8.95 s; bars dissolve F1050-F1068 | 1048 |
-| B04 oblique caption on | 1068 (1080) | "มองเฉียง ยิ่งดูตื้นลงไปอีก" 9.13-10.93 s; swing F1068-F1110 | 1054-1108 |
-| B05 caption 2 on | 1200 (1190) | "ดูป้ายบอกความลึก" 1.96 s | 1199 |
-| B05 SH06 caption off | 1305 (unchanged) | "ให้ลงเท้าก่อน" ends ~5.1 s | 1293 |
-| B05 SH07 caption on | 1320 (unchanged) | "และอย่าพุ่งหัวลงน้ำตื้น" 5.18-6.5 s | 1295-1335 |
-| B06 caption | 1410-1619 (unchanged) | "แล้วน้ำตรงหน้าคุณตอนนี้..." 0.18-1.55 s | 1415-1457 |
+| B01 caption off | 60 (60) | "เหรอ" ends 1.24 s | 37 |
+| B02 caption 2 on | 336 (339) | "ภาพของก้นสระ" | 336 |
+| B03 caption 2 on | 630 (633) | "ค่อยเท" (stream onset 630) | 626-632 |
+| B04 unit 1 on | 878 (873) | "ถ้ามองตรงลงมา" | 878 |
+| B04 unit 2 stacked on | 987 (986) | "น้ำลึกสองเมตร" | 987 |
+| B04 ratio captions off | 1050 | "ราวหนึ่งเมตรครึ่ง" ends | 1048 |
+| B04 oblique caption on | 1068 | "มองเฉียง ยิ่งดูตื้นลงไปอีก"; eye swing F1068-F1110 | 1059-1102 |
+| B05 caption 2 on | 1203 (1200) | "ดูป้ายบอกความลึก" | 1203 |
+| B05 SH06 caption off / SH07 on | 1305 / 1320 | "ก่อน." ends ~1290; "และอย่าพุ่งหัว" 1292-1328 | |
+| B06 caption | 1410-1619 | "แล้วน้ำตรงหน้าคุณตอนนี้..." | 1470-1513 |
 
-Seam and hold with audio: speech ends at 48.54 s (G1456). Audio is silent from there to the end (5.47 s), so the 3 s hold (G1530-G1619) carries no speech and the audio tail does not overlap it; the closing caption stays on screen. On a loop restart the viewer hears about 5.5 s of silence (2.5 s before the hold plus the hold), then 0.18 s of lead-in and "ดูตื้นแค่เข่า" at G3; no click or level step (both sides are digital silence; the AAC adds 16 ms past the picture end). The picture seam is unchanged: this change touches captions and audio only, the clips are the same.
+B04 constraint re-checked: the numeric captions exist only between F878 and F1050 (straight-down state), always with "มองตรงลงมา" (test scans all 1620 frames); the oblique caption starts at F1068 after the bars are gone, with no number. Loop restart: about 3.6 s of silence, then "ดูตื้นแค่เข่า" at G1-G3 with no click (silence on both sides). Picture seam unchanged (clips and picture timing untouched).
