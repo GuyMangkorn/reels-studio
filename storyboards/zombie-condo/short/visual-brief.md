@@ -3,11 +3,11 @@
 | Field | Value |
 | --- | --- |
 | Deliverables | `ZCONDO-SHORT-TH` (primary) and `ZCONDO-SHORT-EN`; delivery record [../../../scripts/zombie-condo/delivery.md](../../../scripts/zombie-condo/delivery.md) |
-| Revision / status | **`VB-ZCONDO-SHORT-R2`** (28 Oct 2026, Film); **`ready-for-mark`**. Spikes `SP01` (corridor plate) and `SP02` (section cutaway) are still required before Boss produces plates; they do not block Mark's scene sheets. Supersedes `VB-ZCONDO-SHORT-R1` (same day) |
+| Revision / status | **`VB-ZCONDO-SHORT-R3`** (28 Oct 2026, Film); **`ready-for-mark`**. Spikes `SP01` (corridor plate + retro pipeline), `SP02` (section cutaway) and `SP03` (face readability) are still required before Boss produces plates; they do not block Mark's scene sheets. Supersedes `VB-ZCONDO-SHORT-R2` and `-R1` (same day) |
 | Scripts | TH [../../../scripts/zombie-condo/short/script.md](../../../scripts/zombie-condo/short/script.md) `ZCONDO-SHORT-TH-R2`; EN [../../../scripts/zombie-condo/short/script-en.md](../../../scripts/zombie-condo/short/script-en.md) `ZCONDO-SHORT-EN-R2`; both user-approved 28 Oct 2026 |
 | Fact-check | [../../../scripts/zombie-condo/short/fact-check.md](../../../scripts/zombie-condo/short/fact-check.md), Boat recheck R2 (28 Oct 2026): both `ready-for-storyboard` |
-| Style profile / tier | Survival drama + light fantasy, second person; illustrated 3D (Blender pre-render); licensed low drone from B03 + sparse SFX; outline captions; chrome hidden; comment-prompt cliffhanger; **Full** tier |
-| User decisions used | 28 Oct 2026 (Asia/Bangkok), relayed by the coordinator. **Q1:** licensed low drone from B03, ducked under the VO. **Q2:** hide the `ทำไมล่ะ` label and the progress bar on TH and EN. **Q4:** plates stay local and are regenerable from build scripts; no LFS. **Q3/Q5:** “เห็นทั้งตัว มีหน้า เลือด มุมมองในห้องอาจ slice ครึ่ง”, i.e. a full-body "you" with a visible face, blood allowed, and interiors may use a half-slice cutaway |
+| Style profile / tier | Survival drama + light fantasy, second person; illustrated 3D in a retro-game style (Blender pre-render, [`VD-ZC-LOOK`](#vd-zc-look--retro-game-look)); narrator-only VO + non-verbal vocal SFX ([`VD-ZC-VOX`](#vd-zc-vox--his-voice)); licensed low drone from B03 + sparse SFX; outline captions; chrome hidden; comment-prompt cliffhanger; **Full** tier |
+| User decisions used | 28 Oct 2026 (Asia/Bangkok), relayed by the coordinator. **Q1:** licensed low drone from B03, ducked under the VO. **Q2:** hide the `ทำไมล่ะ` label and the progress bar on TH and EN. **Q4:** plates stay local and are regenerable from build scripts; no LFS. **Q3/Q5:** “เห็นทั้งตัว มีหน้า เลือด มุมมองในห้องอาจ slice ครึ่ง”, i.e. a full-body "you" with a visible face, blood allowed, and interiors may use a half-slice cutaway. **R2 answers:** “ผู้ชาย / มองกล้อง / ตามนั้น” (Botnoi voice is male; the lens glance and the blood level are confirmed). **Look/voice:** “หน้า ตัวละคร หูตาปากคือไม่ต้องสมจริงก็ได้นะ เป็นแบบ blender อะ เออก็ลองดูให้เหมาะสม แต่มองออกก็พอ อารมณ์เกม retro” (a retro-game look with readable, non-realistic faces; whether he makes sounds is left to Film) |
 | Target / timing | 40–60 s at 30 fps, 1080×1920; both versions ≈58 s, **`estimated`** (TH Botnoi and EN edge-tts not yet generated or measured) |
 | Target checkout | `claude/zombie-condo-reel-script-ade441` @ `f9ee024` (= `main` merge of PR #79) + untracked `scripts/zombie-condo/`, `storyboards/zombie-condo/` |
 | Scope | Whole Short, beats `ZCONDO-SHORT-S01-B01`–`B10`. No Long. One brief file covers both deliverables: the picture plan is shared and each deliverable has its own timing table ([VD-ZC-TL](#vd-zc-tl--one-shot-plan-two-conforms)) |
@@ -16,7 +16,7 @@
 ## Visual intent
 
 - **Audience knowledge and mood:** the viewer is addressed as "you" (คุณ). On screen, "you" is embodied by one recurring character ([VD-ZC-CH](#vd-zc-ch--you-character)). The viewer spots the danger a beat before the VO says it (hook). After that, they watch "you" inside one sealed unit where every tip becomes a physical action. The feeling runs jolt → urgency → small "aha" → grim control → isolation → unease. Only the corridor (B01–B02) and the city (B08) are outward views. Everything else turns inward and quiet.
-- **Look:** stylized 3D illustration, not photoreal: soft, simplified forms, clean materials, readable silhouettes, light film grain. The light fantasy lives in the infected (uncanny posture, faint pale eye-shine) and the city (embers, smoke columns). The survival tips stay grounded and plausible. Blood is allowed within [`VD-ZC-GORE`](#vd-zc-gore--blood-ceiling).
+- **Look (R3):** **retro-game 3D**, a late-PS1 / early-PS2 survival-horror feel: low-poly forms, low-res hand-painted textures with crisp pixels, hard light, colour fog and a light ordered dither ([`VD-ZC-LOOK`](#vd-zc-look--retro-game-look)). Faces are simple and readable, not realistic. The light fantasy lives in the infected (uncanny posture, two-pixel eye-shine) and the city (embers, smoke columns). The survival tips stay grounded and plausible. Blood is allowed within [`VD-ZC-GORE`](#vd-zc-gore--blood-ceiling).
 - **Interior device:** a dollhouse **section cutaway** of the unit ([`VD-ZC-CUT`](#vd-zc-cut--section-cutaway)) is used where it shows a spatial relationship that one room view cannot. Examples: "you" and the threat on either side of the door in B02; the blackout running through the rooms in B03; "you" moving room to room through B04–B07; "you" alone against a black, unknowable outside in B09. Inserts and reactions stay in normal perspective.
 - **Value/colour key (design targets, not renderer settings):**
 
@@ -47,21 +47,75 @@
 
 - **Decision:** one recurring adult **man**, **Thai, about 28**, a condo resident who lives alone.
   - Build and height: slim, average, 1.72 m.
-  - Face and hair: short black hair, soft rounded stylized features, expressive brows.
+  - Face and hair: short black hair as a solid low-poly block; a simple modelled head (nose wedge, brow ridge) with eyes, brows and mouth **painted on a swappable face texture** ([`VD-ZC-LOOK`](#vd-zc-look--retro-game-look)).
   - Clothes: faded dark-teal tee, grey drawstring shorts, barefoot indoors; flip-flops by the door in B01.
   - Day-three variant: the same clothes, now creased and lightly stained; hair messier; light stubble; darker under the eyes.
-  - Expressions: neutral/tired, startle, fear, focused, listening, frozen. Faces are fully visible, including in close-ups.
+  - Expressions (face-texture states): neutral/tired, startle, fear, focused, listening, frozen, plus `lens` (pupils centred toward the camera). Faces are fully visible, including in close-ups.
 - **Relation to "you":** the VO is second-person narration addressed to the viewer. The man is the viewer's on-screen stand-in.
-  - He is never named and never speaks, so no lip-sync is needed.
+  - He is never named and **never says a word**; his only vocal sounds are a few non-verbal breaths ([`VD-ZC-VOX`](#vd-zc-vox--his-voice)), so no lip-sync is needed.
   - The narration is not his voice.
-  - He looks into the lens once, at the end of B10 (Film recommendation, [Q-R2-2](#questions-for-the-user)), which hands the B10 question from "you" on screen to "you" watching.
-- **Why a man:** the EN narration voice is male (edge-tts, delivery record), so the voice and the stand-in do not pull against each other for listeners who hear the VO as an inner voice. This is a casting choice, not a story fact. The TH Botnoi voice gender is unknown ([Q-R2-1](#questions-for-the-user)). If it is female and the user prefers a match, swap the design before Boss builds `zc-you`. No beat or reveal depends on gender.
+  - He looks into the lens once, at the end of B10 (user-confirmed 28 Oct 2026), which hands the B10 question from "you" on screen to "you" watching.
+- **Why a man:** the EN narration voice is male (edge-tts, delivery record), so the voice and the stand-in do not pull against each other for listeners who hear the VO as an inner voice. This is a casting choice, not a story fact. The user confirmed on 28 Oct 2026 that the TH Botnoi voice is also male, so the man stays (RK-12 closed). No beat or reveal depends on gender.
 - **Lead rules now apply in full:**
   - He is the lead, so his visible artwork must be **≥480 px tall whenever he is in frame**, measured as the minimum across any move (Boss production rules).
   - He needs a rim/edge light in dark shots and a real ground shadow (Blender).
   - Hand-only inserts are not lead-visible shots.
   - He is never injured or bloodied ([`VD-ZC-GORE`](#vd-zc-gore--blood-ceiling)).
-- **The infected (`zc-infected`):** an adult **female** neighbour in a long, pale sleep shirt, with long hair partly over her face. The silhouette is deliberately unlike "you". She has a stooped, too-still posture, a slow head turn and faint pale eye-shine. Blood stays within the ceiling.
+- **The infected (`zc-infected`):** an adult **female** neighbour in a long, pale sleep shirt, with long hair partly over her face. The silhouette is deliberately unlike "you". She has a stooped, too-still posture, a slow head turn and two-pixel pale eye-shine. Her face is a painted texture too (slack mouth, pale eyes). Blood stays within the ceiling.
+
+<a id="vd-zc-look--retro-game-look"></a>
+## `VD-ZC-LOOK` — retro-game look (R3)
+
+User direction (28 Oct 2026): faces need not be realistic ("เป็นแบบ blender"), only readable ("มองออกก็พอ"), with a retro-game mood ("อารมณ์เกม retro"). Film's choice is a **late-PS1 / early-PS2 survival-horror** look. It is crisper than true PS1 so that faces and the hook read on a phone. The values below are design targets for Boss; `SP01`/`SP03` confirm them.
+
+| Element | Specification | Reason |
+| --- | --- | --- |
+| **Faces** | Simple modelled head (nose wedge, brow ridge, ear blocks, jaw plane) with eyes, brows and mouth **painted on a face texture**. Expressions are **swappable face-texture states** (an image-sequence/frame switch or a material index), switched with **constant (stepped) interpolation**, never blended. Pupils are a separate small decal so the gaze can move by UV offset (B01 OTS turn, B09 eyes to the door, B10 `lens`). **No face rig, no blendshapes, no jaw animation** | A readable retro read ("มองออกก็พอ") at much lower cost than a rig; stepped swaps are deterministic under seeking |
+| Face states, `zc-you` | `neutral` (tired from B03), `startle` (B01–B02), `fear` (B02), `focused` (B04–B07), `listening` (B09), `frozen` (B02 SH03, B09 SH03), `lens` (B10); day-3 copies with stubble and darker eyes | Covers every scripted reaction |
+| Face states, `zc-infected` | `blank` (pale, unfocused), `turned` (eyes on camera, slack mouth with a dark blood stain) | B01 SH02 turn |
+| **Poly budget** (triangles) | `zc-you` 2,500–3,500; `zc-infected` 2,000–3,000; hero props (bucket, fridge, stove case, cabinet) 100–800; small props 20–200; `zc-unit` set incl. caps ≤ 25k; `zc-corridor` ≤ 15k; `zc-city` ≤ 40k (mostly box towers + cards) | Era-appropriate silhouettes; faceted but not crude |
+| **Texture budget** | Character body 256×256; **face 128×128** (each state); hero props 128×128; small props 64×64; set tiles 128–256; city 256 atlas. Hand-painted, ≤32 colours per texture, AO/dirt painted in. No normal or roughness maps | The low-res pixel crunch is the style; painted shading reads under simple light |
+| **Texture filtering** | Image textures use **Closest** (nearest) interpolation; no mipmap blur | Crisp texels are the retro signature |
+| **Render resolution** | Render at **540×960**, then a **nearest-neighbour ×2 upscale** to 1080×1920 in the Blender compositor (baked into the plate). Remotion captions and overlays stay at native 1080×1920 on top, so text is never pixelated | Retro pixel grain while faces, the hook and captions stay readable |
+| **Colour quantization + dither** | Quantize to 5 bits per channel with a 4×4 ordered (Bayer) dither at **low amplitude**, on the plate only. In the caption band (y ≥1560) the dither amplitude is halved | Era banding without noise behind captions |
+| **Vertex jitter / affine warping** | **Not used** in R3 | The wobble would shimmer the far figure in the hook and the edge-on section lines. Revisit only if `SP01` shows the look is too clean |
+| **Fog** | Colour-matched distance fog. Corridor (B01): starts at 13 m, behind the infected at 12 m, so she stays crisp against a hazy window. City (B08): heavy depth fog in navy/orange. **No fog in section shots** (they are flat by design) or in inserts | Hides the far set the way era games did, and adds depth without hiding the hook |
+| **Lighting** | Few lights per shot (key + one fill + practicals). **Hard shadows** from the key at low shadow resolution. Flat shading on sets, smooth-ish on characters. Painted vertex-colour AO on sets. **Blob contact shadow** decal under each character's feet as well as the key shadow (meets the ground-shadow rule). A rim light on "you" in dark shots. Practicals (fluorescent tubes, fires, fridge LEDs before B03) are emissive flat colour | The period lighting model. The value/colour key above still holds |
+| **Blood** | Flat dark-red (`#5a1414`–`#7a1c1c`) **64×64 pixel decals**: stains, smears, handprints, a drag trail. No gloss, wetness, particles or emission | Reads clearly as blood in the retro grammar while staying stylized, within `VD-ZC-GORE` |
+| **Section caps** | Flat untextured `#1c1f24` with a 1-texel warm-grey edge line | Clean poché in the pixel style |
+| **Overlays** | Retro survival-horror **inventory UI**: chunky pixel-art icons (drawn at 1/2 res, nearest-upscaled), dark bevelled panels; the text stays in **Noto Sans Thai** at native resolution | Matches the look; Thai readability and font licensing are kept (no Thai pixel font) |
+| **Motion** | Character animation keyed at full 30 fps (no stepped animation), so actions read | Stepped motion would hurt the timing-locked actions |
+
+Readability re-check:
+- **Lead ≥480 px:** unchanged. It is measured on the 1080×1920 output after the upscale. In section shots he projects at ≈550 px. The face is too small to read there (about 70 px head), so the body pose carries those shots. Faces are read in closes and OTS shots.
+- **Hook (F45):** the infected silhouette is ≥150 px at output (≥75 px internal), backlit against the window and in front of the fog. It is a pixel-crisp dark shape on a bright field.
+- **B10 lens glance:** frame his head at **≥300 px tall on output** (≥150 px internal). The `lens` state is a ≥30° head turn toward the camera plus centred pupils of ≥6 internal px. The turn carries the read even if the pupils are small.
+- **Captions:** rendered by Remotion over the plate at native resolution, so they are unaffected by the pixel and dither treatment. The dither is halved in the band.
+
+<a id="vd-zc-vox--his-voice"></a>
+## `VD-ZC-VOX` — his voice (R3)
+
+**Decision: option 2. The narrator carries all words; "you" makes only a few non-verbal vocal sounds, with no lip-sync and no words or whispers.**
+
+- **Not option 3 (dialogue):** it would change the approved TH-R2/EN-R2 scripts and need Boat and user rechecks. It would also break the ending: "ส่งเสียงตอบ" / "call out" is a real choice only because he has never spoken.
+- **Why not option 1 (silent):** a full-body, faced character who never breathes reads like a puppet. A handful of breaths gives him a body in the scene.
+- **Why no whisper:** a whisper is speech and would add words.
+- **Silence from the knock onward:** after the knock he makes no sound at all. Any sound there would already be "answering" before the viewer chooses.
+- **Script and review status:** these cues are sound design, not narration. No VO, caption or claim changes, so the approved scripts stand and no Boat recheck is needed. Preaw may list them as `[SFX]` notes in a later script revision if wanted; that is not required.
+- **Shared assets:** one male non-verbal vocal set, licensed with a NOTICE, used identically in TH and EN (there are no words).
+- **Placement:** each cue sits **in a gap in the VO** or ducked at least 12 dB under it; none overlaps a spoken syllable. Positions are per language.
+
+| Beat | Vocal SFX (non-verbal) | Placement |
+| --- | --- | --- |
+| B01 | One short, sharp intake of breath as she turns | Between "มีคนยืนนิ่งอยู่" / "down the hall" and the turn line, or on the turn picture |
+| B02 | A strained exhale during the cabinet drag; a caught breath, then nothing, on the freeze (Mark may stage a hand over his mouth) | In the VO gap before "แต่ต้องรื้อออกได้เร็ว" / "but so it clears"; the caught breath just before the sound-rule line |
+| B03 | None | The silence is the beat |
+| B04 | None | — |
+| B05 | One quiet effort breath on the pour (optional) | Under the pour picture, ducked |
+| B06–B07 | None | — |
+| B08 | One slow, shaky exhale | After "ไม่มีใครมาช่วยแน่" / "No one's coming" (EN gets the ≤0.5 s breath here) |
+| B09 | Before the knock: one tired exhale (optional). **From the first knock: no sound from him** | — |
+| B10 | None | The silence makes "เงียบไว้" / "stay silent" tangible |
 
 <a id="vd-zc-gore--blood-ceiling"></a>
 ## `VD-ZC-GORE` — blood ceiling
@@ -75,6 +129,7 @@ User decision (28 Oct 2026): blood is allowed. Film sets the ceiling below.
 | Brief visibility in medium/long shots and the B01 SH02 close (≤ about 1 s with blood as the main subject) | Lingering close-ups on blood or injury; blood on "you" at any point |
 | | Blood in or near the B10 hold; blood on the thumbnail frame (recommended) |
 
+- **Retro rendering (R3):** blood is drawn as flat 64×64 pixel decals ([`VD-ZC-LOOK`](#vd-zc-look--retro-game-look)); the ceiling is unchanged.
 - **Where it appears:**
   - B01: on the infected; a smear trail on the corridor floor near her.
   - B02: bloody handprints on the corridor face of the door during the pounding, seen in the section.
@@ -101,7 +156,7 @@ The unit is built so one long side can be **cut away**, showing the rooms side b
 - **`ZC-CUT-04` Section light:**
   - Light is motivated by the windows and practicals.
   - A soft "open-side" fill from the camera side lifts the interior. It stays a stylized device, at least 1.5 stops below the window key, so the blackout still reads.
-  - Caps are matte, unlit-looking dark (`#1c1f24`) with a thin warm-grey edge line. They take no window light and no emission.
+  - Caps are flat, untextured, unlit-looking dark (`#1c1f24`) with a 1-texel warm-grey edge line (R3 retro). They take no window light and no emission.
 - **Per-beat evaluation:**
 
 | Beat | Section? | Reason |
@@ -152,7 +207,7 @@ Shot IDs below are **shared by both deliverables**, `ZCONDO-SHORT-S01-Bxx-SHyy`.
 | B08 | `VD-ZC-08` | `zc-unit` balcony + `zc-city` (generic towers, no landmarks/brands, scattered fires, smoke, embers), `zc-you`. 1 video plate | Starts behind him at the railing, then a slow spatial push-out and slight rise past the railing (vFOV ≈60°). He stays in the right-third foreground, ≥480 px tall throughout, face in a fire-lit three-quarter profile at the start | Moon fill from upper left; fire-glow rim on him; smoke lit warm from below; city windows all dark | Parallax is the point. Fallback: single still push |
 | B09 | `VD-ZC-09` (R2) | SH01 section still: day three, `zc-you` day-3 variant, **two buckets**, cans, phone; corridor cap black (`ZC-CUT-02`); Remotion day card + counters. SH02 perspective still or video: close on his face. SH03 section still: the SH01 framing tightened | SH01 `CAM-SECTION` on entry \| bathroom, him sitting against the wall; counters in the upper slice area: bucket icons 4 → 2, cans 6 → 4, battery → 12%. SH02 close on his face on "เสียงเคาะประตู" / "a knock": his eyes go to the door (screen-left). SH03 slow `pictureMove` push on the section during the ≈1 s silence and "พวกมันไม่เคาะ": him, the edge-on door, the cabinet, and to the left nothing but black | Flat overcast; the entry in deep shadow; a rim on him; the cap pure black | The counters carry the exact VO quantities. **Water counter uses bucket icons.** No rationing cue (`ZC-C22`). The black cap makes concealment structural. Fallback: SH02 skipped (section only) |
 | B10 | `VD-ZC-10` (R2) | Perspective interior still/video facing the **door face** (plain, no peephole), cabinet against it, `zc-you` standing in the foreground; Remotion question + three choice labels | Him in the right-third foreground (≥480 px), three-quarter back to camera, looking at the door; very slow push (≤2 % over the hold). On "คอมเมนต์มา" / "Comment below" he turns his head to look into the lens (recommended; [Q-R2-2](#questions-for-the-user)). Choice labels stacked in y 700–1200 | Day-three overcast; the door in the darkest value band; door gap and under-door gap black, no light line or shadow | The face hands the decision over. Without the glance: a still hold. Ending: `A_fade` or hard cut (Editor); not a loop |
-| Overlays | `VD-ZC-OV` | Remotion screen-space overlays: B04 diagram, B05 cross + icons, B06 cold clock / order device, B07 optional icon, B09 day card + counters, B10 choice labels | Screen space outside `pictureMove`, y 260–1450, x 90–990; in section shots, prefer the neighbour slice areas | Style "survival notes": warm-white strokes `#f2ede4`, amber accent `#f2a541`, danger red `#e5484d`, dark panel `#10151a` at ≈70 % | One owner draws each overlay once (lesson from `DF-20261027-catbox-short-home-stage`). Text per deliverable language; icons shared |
+| Overlays | `VD-ZC-OV` | Remotion screen-space overlays: B04 diagram, B05 cross + icons, B06 cold clock / order device, B07 optional icon, B09 day card + counters, B10 choice labels | Screen space outside `pictureMove`, y 260–1450, x 90–990; in section shots, prefer the neighbour slice areas | R3 style: retro survival-horror **inventory UI**: pixel-art icons (half-res, nearest-upscaled), dark bevelled panels `#10151a` at ≈80 %, warm-white `#f2ede4`, amber `#f2a541`, danger red `#e5484d`; text in Noto Sans Thai at native resolution | One owner draws each overlay once (lesson from `DF-20261027-catbox-short-home-stage`). Text per deliverable language; icons shared |
 
 <a id="pov-re-check-r2"></a>
 ### POV re-check (R2)
@@ -242,7 +297,7 @@ Overlays draw original vector icons; counters show numerals beside the icons. B0
 
 | Asset ID | Reference pose | Solid dimensions | Anchors | Status | Notes |
 | --- | --- | --- | --- | --- | --- |
-| `zc-you` | Standing neutral (A-pose for the rig) | 1.72 m tall; eye 1.61 m | Feet, hips (sit on floor/sofa), hands (grip), head | design choice | Thai man about 28, slim; face rig for expressions; day-1 and day-3 variants |
+| `zc-you` | Standing neutral (A-pose for the rig) | 1.72 m tall; eye 1.61 m | Feet, hips (sit on floor/sofa), hands (grip), head | design choice | Thai man about 28, slim; low-poly (2.5–3.5k tris); face-texture states (no face rig); day-1 and day-3 variants |
 | `zc-infected` | Standing, stooped | 1.65 m (≈1.55 m stooped) | Feet, hands (pound contact on the door), head pivot | design choice | Woman, long hair, sleep shirt; blood decals per `VD-ZC-GORE` |
 | Unit door | Closed | 0.90 W × 2.10 H × 0.045 D; inward swing; lever + deadbolt; **no peephole** | Hinge axis, handle | estimated | Seen edge-on in section, face-on in B10 |
 | Corridor | — | 1.8 W × 2.6 H; ≈15 m to the end window | Floor | design choice | The infected stands at ≈12 m in B01 |
@@ -285,11 +340,11 @@ Calibration view (Boss, before any shot): `zc-you`, `zc-infected`, door, cabinet
 | Scale / projection | `SCALE-ZC-R2` + `PROJ-ZC-R2`; one projection owner (the Blender camera). The orthographic `projection` field is not used, and the validator rejects `media` with `projection` (`media.ts`). |
 | Contact / identity | All contact (hand–door, hand–cabinet, bucket pour, hand–food, sitting on the floor/sofa) is solved and baked in Blender. The same `zc-you` rig and clothing appear throughout; the day-3 variant appears only from B09. |
 | Depth / alpha | Opaque full-frame plates; no alpha video (`missing`, not needed). Overlays are vector or PNG with alpha. |
-| Lighting / color | Baked in Blender. Proposal: Eevee, AgX view transform, sRGB output, PNG masters, H.264 yuv420p for runtime; the shift must be checked in `SP01`. Section fill per `ZC-CUT-04`. Channel demo lighting and the emissive cap are **N/A**, with this reason: Three.js/channel-default rules, no runtime 3D, survival profile. Kept: rims and real ground shadows. Blood is matte with no emission. |
+| Lighting / color | Baked in Blender, retro pipeline per `VD-ZC-LOOK`: Eevee, few lights, hard low-res shadows, blob contact shadows, nearest-filtered textures, 540×960 render → nearest ×2 upscale → 5-bit quantize + low ordered dither in the compositor. Proposal: AgX or Standard view transform (Boss picks whichever keeps the painted texture colours truest), sRGB output, PNG masters, H.264 yuv420p for runtime; the PNG → H.264 shift and pixel-edge smearing must be checked in `SP01`. Section fill per `ZC-CUT-04`. Channel demo lighting and the emissive cap are **N/A**, with this reason: Three.js/channel-default rules, no runtime 3D, survival profile. Kept: rims and real ground shadows. Blood is matte with no emission. |
 | Motion / clock | See `PROJ-ZC-R2`. `OffthreadVideo` seeking is deterministic per toolkit 10a; confirm with this codec. |
 | Loading / resources / storage | **User decision Q4 (28 Oct 2026): plates stay local, regenerable from build scripts, no LFS.** Runtime plates go under `public/assets/blender/zc-*/` and masters under `out/blender/`; neither is committed. MP4 is already Git-ignored. PNG stills are **not**, so Boss keeps them out of commits, e.g. with an ignore rule in Boss's scope. Commit only sources, `build.py`, manifests and the render/encode commands. Each manifest records the regeneration steps and output checksums. |
 | Contract / delivery | No new timeline fields are needed for plates, SFX, music, chrome or the blackout cascade. **New shared overlay capability needed** (`S-08`). Composition IDs distinct per deliverable (e.g. `ZCONDO-SHORT-TH`, `ZCONDO-SHORT-EN`) in `src/videos/zombie-condo/index.ts`; narration at `public/narration/<CompositionId>.mp3`. |
-| Feasibility / cost | About 13 short video plates (≈40–45 s of frames incl. handles) + ≈12 stills, plus the section caps and a face rig. Render time, file size and face-rig cost are **unmeasured** (`SP01`, `SP02`). |
+| Feasibility / cost | About 13 short video plates (≈40–45 s of frames incl. handles) + ≈12 stills, plus the section caps and the face-texture sets. The retro look lowers the build cost (no face rig, small textures). Render time and file size are **unmeasured** (`SP01`–`SP03`). |
 
 ### Blender feasibility and runtime status
 
@@ -320,6 +375,8 @@ Inspected 28 Oct 2026 on `claude/zombie-condo-reel-script-ade441` @ `f9ee024`. U
   - (d) The caption band y 1616–1786 stays readable.
   - (e) Render time per frame and file size are measured.
   - (f) The connection, the Blender version and the MCP tool list are recorded in the manifest.
+  - (g) R3 retro pipeline: 540×960 → nearest ×2 upscale, quantize + dither, nearest textures, corridor fog from 13 m. The infected stays crisp in front of the fog.
+  - (h) After H.264 encoding, a 4× zoom crop shows 2×2 pixel blocks without visible chroma smear at the chosen quality. If smear is visible, raise quality or use another codec that Remotion renders, and record the choice.
 - **`SP02` section cutaway.**
   - Scope: `zc-unit` grey blockout with caps and neighbour slices. Render `CAM-SECTION` stills at the B02 framing (corridor open) and the B09 framing (corridor capped), plus a 60-frame truck.
   - (a) "You" ≥480 px at the truck start, middle and end.
@@ -327,6 +384,14 @@ Inspected 28 Oct 2026 on `claude/zombie-condo-reel-script-ade441` @ `f9ee024`. U
   - (c) In the capped state, a frame-step and a luminance check show **nothing rendered** in the corridor zone (pure cap colour).
   - (d) The lower neighbour slice behind the caption band is dark enough for outline captions.
   - (e) Render time is measured.
+  - (f) R3: caps and set read cleanly at the pixel scale, with no single-texel shimmer along cut lines during the truck.
+- **`SP03` face readability (R3).**
+  - Scope: low-poly `zc-you` head and body with all face-texture states, plus `zc-infected` `blank`/`turned`. Render stills in three framings: B02 SH01 close, B10 hold (head ≥300 px output), and a section framing.
+  - (a) Shown at phone size, each `zc-you` state is identifiable as its intended emotion by a reviewer (Film/Mark), and the result is recorded.
+  - (b) The B10 `lens` glance reads as "looking at me".
+  - (c) Swapping a state at a keyed frame changes exactly on that frame (F−1/F/F+1), with no blend, and the same frame comes out after a remount.
+  - (d) The lead is ≥480 px in the section framing.
+  - (e) The blood decals read as blood at the B01 SH02 framing, within `VD-ZC-GORE`.
 - **Studio:** expect `DF-20261026-studio-emfile`; CLI stills/renders are the evidence.
 
 ### Dev findings consulted (28 Oct 2026, against `f9ee024`; unchanged in R2)
@@ -338,7 +403,7 @@ Inspected 28 Oct 2026 on `claude/zombie-condo-reel-script-ade441` @ `f9ee024`. U
 | `DF-20261026-subpixel-stage-projection` | 2026-10-26 / `906a85e`, fixed | Orthographic DOM/SVG stage | Irrelevant: no `projection` stage is used |
 | `DF-20261026-duplicate-types` | 2026-10-26 / `906a85e`, workaround | `node_modules` contains many `* 2` duplicate directories (none under `@types/`) | Boss revalidates `npm run typecheck` before runtime work; not run in this planning pass |
 
-No finding covers Blender, sections or pre-rendered plates yet. Boss records the `SP01`/`SP02` results as new findings.
+No finding covers Blender, sections or pre-rendered plates yet. Boss records the `SP01`–`SP03` results as new findings.
 
 ## Boss asset and capability needs
 
@@ -351,12 +416,13 @@ All are `missing` at `f9ee024`. They are listed in dependency order. Paths follo
 | `S-03` | `zc-unit` set in the linear plan `ZC-CUT-01`: entry (inward door, deadbolt, **no peephole**), shower-only bathroom (toilet + cistern, frosted louvre window), kitchenette (sink, fridge, counter, shelf), living, balcony. **Section kit:** removable near-wall collection; closed **wall-cap meshes** for the external wall, partitions and slabs at the x = +1.78 cut; a corridor-open / corridor-capped switch; `CAM-SECTION` rig with a Y-only truck. Lighting variants: powered morning, blackout day, night, day three; open-side fill per `ZC-CUT-04` | `assets/blender/zc-unit/` | B02–B10 |
 | `S-04` | `zc-unit-stack` neighbour slices above/below (linked, lightly dressed, no people), lit/dark states | `assets/blender/zc-unit/` | B02–B09 section shots |
 | `S-05` | `zc-city` night backdrop: generic towers, dark windows, seeded fires, smoke, embers; no landmarks/brands | `assets/blender/zc-city/` | B08 |
-| `S-06` | `zc-you`: full-body rig + **face rig** (neutral/tired, startle, fear, focused, listening, frozen; eye direction for the B10 lens glance), day-1 and day-3 variants (creased/stained shirt, messier hair, stubble). `zc-infected`: rig for the head turn and pounding hands, blood decals within `VD-ZC-GORE` | `assets/blender/zc-you/`, `assets/blender/zc-infected/` | All |
+| `S-06` | `zc-you` (R3): low-poly body rig (no face rig, no blendshapes, no jaw); simple modelled head; **face-texture states** (`neutral`, `startle`, `fear`, `focused`, `listening`, `frozen`, `lens`) + day-3 copies; pupil decal with UV-offset gaze; stepped state switching; day-1/day-3 body textures. `zc-infected`: low-poly rig for the head turn and pounding hands; face states `blank`/`turned`; 64×64 blood decals within `VD-ZC-GORE`. Budgets per `VD-ZC-LOOK` | `assets/blender/zc-you/`, `assets/blender/zc-infected/` | All |
 | `S-07` | Props: trash bag, `zc-cabinet`, 4 buckets + lids, pot + lid, 6 PET bottles, cistern lid, `zc-fridge`, ready-to-eat foods, 6 pull-tab cans, nuts, `zc-camp-stove` in case, phone, flip-flops. All unbranded | `assets/blender/zc-props/` | B01–B10 |
 | `S-08` | **Shared screen-space overlay capability** (types + validator + renderer together): step diagram, timed icon counter (tick from → to), ordered list/clock device, mark (cross/check), stacked choice labels, with per-deliverable text; frame-driven, outside `pictureMove`. Fallback, existing today: static alpha PNGs as `media` `kind: 'image'` on scenes **without** `pictureMove` | `src/assets/overlays/` + `src/scenes/` | B04–B07, B09–B10 |
 | `S-09` | EN caption check: Latin rendering, `lang` attribute and font in `Subtitles.tsx` | `src/scenes/Subtitles.tsx` | `ZCONDO-SHORT-EN` |
 | `S-10` | Plate renders with handles per this shot plan: PNG masters + H.264 runtime files, manifests (frame ranges, cameras/vFOV, section state, colour settings, regeneration command, checksums); local only, nothing committed | `public/assets/blender/zc-*/`, `out/blender/` | Editor |
-| `S-11` | Licensed drone bed + SFX set with a NOTICE per file | `public/sfx/zcondo/`, `public/music/zcondo/` (proposed) | Both |
+| `S-11` | Licensed drone bed + SFX set + **male non-verbal vocal set** (breath intake, strained exhale, caught breath, effort breath, shaky exhale, tired exhale; no words), each with a NOTICE | `public/sfx/zcondo/`, `public/music/zcondo/` (proposed) | Both (shared; no language) |
+| `S-12` | **Retro kit** (R3), applied to every Blender asset: nearest-filter material template, ≤32-colour palette guide, vertex-colour AO workflow, blob-shadow decal, distance-fog setup, compositor node group (540×960 → nearest ×2 → 5-bit quantize + Bayer dither with a lower-amplitude caption band), and a budget-check script reporting triangle and texture sizes per asset against `VD-ZC-LOOK` | `assets/blender/zc-retro-kit/` | `S-02`–`S-07`, `S-10` |
 
 Editor (after Boss): two timelines, `scripts/zombie-condo/short/timeline.json` (TH) and an EN timeline (path chosen by Editor/coordinator), both registered in `src/videos/zombie-condo/index.ts`, each conformed to its own measured narration, with chrome hidden.
 
@@ -376,7 +442,7 @@ Editor (after Boss): two timelines, `scripts/zombie-condo/short/timeline.json` (
   - The `VD-ZC-GORE` ceiling (blood only in B01–B02, never on "you").
   - "You" ≥480 px whenever visible.
   - Generic city and building, no brands.
-- **Decided here; do not reopen per shot:** `VD-ZC-00` medium, `VD-ZC-CH` character, `VD-ZC-GORE`, `VD-ZC-CUT` (which beats use the section, the layout, the corridor rule), `PROJ-ZC-R2` incl. `CAM-SECTION`, `SCALE-ZC-R2`, no POV, video vs. still per shot, overlay style `VD-ZC-OV`, two conforms `VD-ZC-TL`, music/chrome.
+- **Decided here; do not reopen per shot:** `VD-ZC-00` medium, `VD-ZC-LOOK` retro look, `VD-ZC-VOX` vocal cues (Mark places them per language), `VD-ZC-CH` character, `VD-ZC-GORE`, `VD-ZC-CUT` (which beats use the section, the layout, the corridor rule), `PROJ-ZC-R2` incl. `CAM-SECTION`, `SCALE-ZC-R2`, no POV, video vs. still per shot, overlay style `VD-ZC-OV`, two conforms `VD-ZC-TL`, music/chrome.
 - **Left to Mark:**
   - Exact cameras and key frames, including truck start/end Y values within `CAM-SECTION` limits.
   - Acting and expressions per shot.
@@ -387,7 +453,7 @@ Editor (after Boss): two timelines, `scripts/zombie-condo/short/timeline.json` (
   - The optional B09 eyeline insert.
   - Shot-local sync points per language, marked `estimated`.
 - **Format:** one scene-sheet set covering both deliverables is acceptable because the shot plan is shared, but each sheet needs **separate TH and EN timing columns** and sync anchors.
-- **Missing evidence:** measured TH/EN audio; `SP01`/`SP02` results; the Blender colour pipeline; `S-08`; `S-09`; music and SFX sources; YouTube policy check for the blood ceiling.
+- **Missing evidence:** measured TH/EN audio; `SP01`–`SP03` results; the Blender colour pipeline; `S-08`; `S-09`; music and SFX sources; YouTube policy check for the blood ceiling.
 - **Boundaries:**
   - B02 SH02 (corridor open) → SH03 close → B03 section (corridor out of frame, capped from here on).
   - B07 SH02 truck ends at the balcony door → B08 exterior.
@@ -398,7 +464,7 @@ Editor (after Boss): two timelines, `scripts/zombie-condo/short/timeline.json` (
 | ID | Risk | Affects | Response |
 | --- | --- | --- | --- |
 | `RK-01` | TH/EN timing unmeasured; beats may shift ±1–2 s | `VD-ZC-TL`, all plates | Handles, constant-speed trucks, still-heavy tip beats; lock after measured audio |
-| `RK-02` | Pre-render cost; a face rig and section caps add build time; no Blender sources yet | `VD-ZC-00`, `VD-ZC-CH`, `VD-ZC-CUT` | `SP01`/`SP02` measure; fallback all-stills + `pictureMove` |
+| `RK-02` | Pre-render cost; section caps and face-texture sets add build time; no Blender sources yet (R3: lower than R2, since there is no face rig) | `VD-ZC-00`, `VD-ZC-CH`, `VD-ZC-CUT` | `SP01`–`SP03` measure; fallback all-stills + `pictureMove` |
 | `RK-03` | Local-only plates: other machines/workers must regenerate; PNG stills are not Git-ignored | `S-10` | Manifests + `build.py` + checksums; Boss keeps plates out of commits |
 | `RK-04` | No generic overlay capability; front media moves with `pictureMove` | `VD-ZC-OV` | `S-08`; PNG fallback only without `pictureMove` |
 | `RK-05` | EN caption font/lang hard-coded to Thai | `ZCONDO-SHORT-EN` | `S-09` |
@@ -409,6 +475,10 @@ Editor (after Boss): two timelines, `scripts/zombie-condo/short/timeline.json` (
 | `RK-10` | Blood vs. platform policy (age restriction, limited ads) | B01–B02 | Restrained ceiling `VD-ZC-GORE`; policy `unverified`; coordinator/Boat check before release |
 | `RK-11` | Section caps leak light or reveal geometry behind the corridor cap | B09 concealment | `SP02` (b)(c); nothing modelled behind the cap |
 | `RK-12` | Character gender vs. the TH Botnoi voice | `VD-ZC-CH` | Closed 28 Oct 2026: the Botnoi voice is male (Q-R2-1) |
+| `RK-13` | H.264 smears the 2×2 pixel blocks and dither; retro detail turns to mush | All plates | `SP01` (h); quality/codec choice recorded |
+| `RK-14` | Painted face states are unreadable at section scale | Section shots | By design, faces are read only in closes/OTS; the body pose carries section shots; `SP03` |
+| `RK-15` | Vocal SFX sound cheesy or collide with the VO | B01, B02, B05, B08 | Sparse (≤6 cues), VO gaps only, ducked; Editor may drop any cue; none from the B09 knock onward |
+| `RK-16` | Retro dither/quantize behind the captions or the far figure reduces readability | B01 hook, all captions | Halved dither in the caption band; fog starts behind the figure; `SP01` (d)(g) |
 
 ## Questions for the user
 
@@ -418,7 +488,16 @@ Editor (after Boss): two timelines, `scripts/zombie-condo/short/timeline.json` (
 
 **User answers (28 Oct 2026, Asia/Bangkok, relayed by the coordinator):** “ผู้ชาย / มองกล้อง / ตามนั้น”. Q-R2-1: the Botnoi Thai voice is male, so `zc-you` stays a man. Q-R2-2: he looks into the lens on “คอมเมนต์มา” / “Comment below”. Q-R2-3: the blood level stands as set in `VD-ZC-GORE`. RK-12 is closed. RK-10 (YouTube policy) is still `unverified`. These are creative decisions recorded against `VB-ZCONDO-SHORT-R2`; the brief content is unchanged.
 
+**Questions for the user (R3):** none are blocking.
+- **Q-R3-1 (optional):** the vocal breaths can come from a licensed SFX library (default) or a recording you make yourself. Do you prefer to record them?
+
 ## Change log
+
+- **`VB-ZCONDO-SHORT-R3`** (28 Oct 2026, Film), from the user's look/voice direction relayed by the coordinator the same day (“หน้า ตัวละคร หูตาปากคือไม่ต้องสมจริงก็ได้นะ เป็นแบบ blender อะ เออก็ลองดูให้เหมาะสม แต่มองออกก็พอ อารมณ์เกม retro”) and the R2 answers (“ผู้ชาย / มองกล้อง / ตามนั้น”):
+  - New `VD-ZC-LOOK`: retro late-PS1/early-PS2 survival-horror look; face-texture states instead of a face rig; poly/texture budgets; nearest filtering; 540×960 → ×2 nearest upscale; quantize + low dither (halved in the caption band); no vertex jitter; distance fog in B01/B08 only; hard light + blob shadows; pixel blood decals; pixel-icon inventory overlays with native-res Noto Sans Thai text.
+  - New `VD-ZC-VOX`: option 2, narrator only + non-verbal vocal SFX; no words, no lip-sync, no sound from him after the knock.
+  - Updated: `VD-ZC-CH` (face states, user-confirmed male and lens glance), `VD-ZC-GORE` (pixel decals; ceiling unchanged), `ZC-CUT-04` caps, `VD-ZC-OV`, `SCALE-ZC-R2` `zc-you` row, lighting/colour and feasibility seams, `SP01` (g)(h), `SP02` (f), new `SP03`, `S-06` (face rig removed), `S-11` (vocal set), new `S-12` retro kit, `RK-02`, new `RK-13`–`RK-16`.
+  - Unchanged: beats, shots, cameras (`PROJ-ZC-R2`), section plan, TH/EN conform, music, chrome, storage. Scripts and claims are untouched; no Boat recheck needed.
 
 - **`VB-ZCONDO-SHORT-R2`** (28 Oct 2026, Film), from the user's answers relayed by the coordinator the same day:
   - Q1 music (drone from B03, ducked); Q2 chrome hidden on TH and EN; Q4 local regenerable plates, no LFS.
