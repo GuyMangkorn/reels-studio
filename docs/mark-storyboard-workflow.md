@@ -140,6 +140,17 @@ When available and useful, show captures of the actual selected characters, prop
 
 Mark may capture an existing preview; building a missing asset/preview capability belongs to Boss under assigned production scope. Label missing elements and any placeholders; a viewport/isolated element does not prove final composition, motion, lighting or contact. Captures are illustrative; written scene sheets own shot direction. Drawing or Excalidraw production is not part of this handoff.
 
+<a id="user-storyboard-review-page"></a>
+### User storyboard review page
+
+**Default:** after Mark marks a scene-sheet revision `ready-for-dev`, the coordinator publishes one review page per revision so the user can check the plan before plates are rendered. Adapted from the `code-video` skill in [Kreycin/ton-sea](https://github.com/Kreycin/ton-sea/blob/main/.claude/skills/code-video/references/storyboard.md).
+
+- **Form:** a private HTML artifact (the Artifact tool in Claude Code), written for the user in Thai. Agent-facing sheets stay in English; the page is a reading view and never the source of shot direction.
+- **Content:** one table, one row per shot, with beat-name group rows. Columns: shot ID with Thai start time and length · short Thai title · full Thai VO · what is seen (one or two plain sentences, camera folded in) with any brief deviation or open item flagged · sound (a few words) · review. Keep cells short enough to scan; the scene sheet keeps the detail. The page is text only: no images, panels or drawn storyboard art, because nothing is normally rendered when Mark hands off.
+- **Feedback:** each shot has a pass/change verdict and a free-text note, stored in the artifact's `db` capability (`reviews/<shot ID>`, fields `status`, `note`, `rev`, `updatedAt`) so the coordinator reads them back with `ArtifactData`; a copy-all button covers viewers without `db`. User-owned open questions from the index appear as their own items.
+- **Recording:** add the page URL and its scene-sheet revision to the index items table. The coordinator relays `change` notes to Mark as a new revision request and records each verdict as user feedback with its date; a full set of `ok` verdicts is recorded as user approval of that revision only.
+- **Not a gate:** the page adds no approval gate to `ready-for-dev` unless the delivery record asks for one. Boss and Editor may start blockout while review is open; changes from review follow the normal revision rules.
+
 ### Legacy material
 
 On migration, remove repository drawing files and their live links, retain written scene sheets/briefs/timing/IDs, and preserve dated historical evidence. Previous `BOARD` revision strings and `Pxx` IDs remain provenance only. Audit required coordinate/camera details before reusing old sheets: missing details keep the current handoff `needs-input`; deleting drawings does not certify readiness or create samples. Scene samples follow [Editor workflow](editor-workflow.md#scene-samples-for-the-user).

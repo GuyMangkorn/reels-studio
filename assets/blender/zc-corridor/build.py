@@ -22,12 +22,22 @@ HEAD = 15  # clip frames of head handle
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.abspath(os.path.join(HERE, '..', '..', '..'))
 MANIFEST = os.path.join(HERE, 'sp01-manifest.json')
+sys.path.insert(0, os.path.join(HERE, '..'))
+from zc_world import DOOR_WALL  # shared with the future zc-unit (VB R3.1 / MK-Q4)
 
 # SCALE-ZC-R2 / brief dimensions (metres)
 CW, CH = 1.8, 2.6          # corridor width / height
 X0, X1 = -3.0, 15.0        # corridor extent; far end window wall at x = 15
-WALL = 0.2
+WALL = 0.2             # non-door wall thickness; the door wall uses DOOR_WALL (0.18)
 DOOR_W, DOOR_H = 0.9, 2.05
+
+
+# B01 look (VD-ZC-01 R3.1): 'sp01' = SP01 blockout lighting; 'r31' = window brighter, less corridor fill near the infected,
+# a grazing rim light on her head/shoulders. Select with env ZC_LOOK (default r31). Her materials are identical in both.
+LOOK = os.environ.get('ZC_LOOK', 'r31')
+RIMP = float(os.environ.get('ZC_RIM', '600'))
+LK = {'sp01': dict(win_power=700.0, win_emit=9.0, strip_far=1.0, rim=0.0, unlink=False),
+      'r31': dict(win_power=float(os.environ.get('ZC_WINP','100')), win_emit=9.0, strip_far=1.0, rim=RIMP, unlink=True)}[LOOK]
 
 
 def srgb(h):
@@ -144,14 +154,14 @@ def zc_infected(m):
 def materials():
     return {
         'wall': mat('zc_corr_wall', srgb('#9fbfb8'), 0.75),
-        'floor': mat('zc_corr_floor', srgb('#5d6a66'), 0.35),
+        'floor': mat('zc_corr_floor', tuple(c * float(os.environ.get('ZC_FLOOR', '1')) for c in srgb('#5d6a66')), 0.35),
         'ceiling': mat('zc_corr_ceiling', srgb('#b9c6c2'), 0.9),
         'door': mat('zc_corr_door', srgb('#3c4644'), 0.45, 0.2),
         'frame': mat('zc_corr_doorframe', srgb('#7d8a86'), 0.5, 0.3),
         'handle': mat('zc_corr_handle', (0.6, 0.6, 0.6), 0.25, 1.0),
         'skirting': mat('zc_corr_skirting', srgb('#4a5552'), 0.5),
         'unit': mat('zc_unit_wall', srgb('#d9c7ad'), 0.8),
-        'window': mat('zc_corr_window', (1, 1, 1), 0.5, emit=srgb('#fff1dc'), strength=9.0),
+        'window': mat('zc_corr_window', (1, 1, 1), 0.5, emit=srgb('#fff1dc'), strength=LK['win_emit']),
         'mullion': mat('zc_corr_mullion', (0.08, 0.08, 0.08), 0.5),
         'tube': mat('zc_corr_tube', (1, 1, 1), 0.4, emit=srgb('#e8fff6'), strength=14.0),
         'tube_flicker': mat('zc_corr_tube_flicker', (1, 1, 1), 0.4, emit=srgb('#e8fff6'), strength=14.0),
@@ -174,10 +184,10 @@ def build_set(m):
     box('zc-corr_ceiling', X0, X1 + WALL, yC0 - WALL, 3.2, CH, CH + 0.1, m['ceiling'])
     box('zc-corr_wall_far', X0, X1, yC0 - WALL, yC0, 0, CH, m['wall'])                      # opposite wall
     box('zc-corr_wall_back', X0 - WALL, X0, yC0, 0, 0, CH, m['wall'])
-    # door wall y in [0, WALL], with the zc-you unit door opening at x in [-0.45, 0.45]
-    box('zc-corr_doorwall_a', X0, -DOOR_W / 2, 0, WALL, 0, CH, m['wall'])
-    box('zc-corr_doorwall_b', DOOR_W / 2, X1, 0, WALL, 0, CH, m['wall'])
-    box('zc-corr_doorwall_head', -DOOR_W / 2, DOOR_W / 2, 0, WALL, DOOR_H, CH, m['wall'])
+    # door wall y in [0, DOOR_WALL], with the zc-you unit door opening at x in [-0.45, 0.45]
+    box('zc-corr_doorwall_a', X0, -DOOR_W / 2, 0, DOOR_WALL, 0, CH, m['wall'])
+    box('zc-corr_doorwall_b', DOOR_W / 2, X1, 0, DOOR_WALL, 0, CH, m['wall'])
+    box('zc-corr_doorwall_head', -DOOR_W / 2, DOOR_W / 2, 0, DOOR_WALL, DOOR_H, CH, m['wall'])
     # end wall with the far window (warm-white backlight)
     wy0, wy1, wz0, wz1 = yC0 + 0.35, -0.35, 0.75, 2.3
     box('zc-corr_end_low', X1, X1 + WALL, yC0, 0, 0, wz0, m['wall'])
@@ -186,7 +196,7 @@ def build_set(m):
     box('zc-corr_end_r', X1, X1 + WALL, wy1, 0, wz0, wz1, m['wall'])
     box('zc-corr_window', X1 + 0.15, X1 + 0.17, wy0, wy1, wz0, wz1, m['window'])
     box('zc-corr_mullion', X1 + 0.12, X1 + 0.14, -0.92, -0.88, wz0, wz1, m['mullion'])
-    area('zc-corr_window_light', (X1 + 0.05, -0.9, 1.55), (1.1, 1.5), srgb('#fff1dc'), 700.0,
+    area('zc-corr_window_light', (X1 + 0.05, -0.9, 1.55), (1.1, 1.5), srgb('#fff1dc'), LK['win_power'],
          rot=(0, math.radians(-90), 0))
     # skirting
     box('zc-corr_skirt_far', X0, X1, yC0, yC0 + 0.015, 0, 0.1, m['skirting'])
@@ -201,15 +211,15 @@ def build_set(m):
     # generic exit sign without text
     box('zc-corr_exitsign', X1 - 0.03, X1, -0.15, 0.0 - 0.02, 2.35, 2.5, m['sign'])
     # unit interior stub behind the door (warm) + the open inward door leaf (hinge at -X jamb)
-    box('zc-unit_wall_l', -1.6 - WALL, -1.6, WALL, 3.0, 0, CH, m['unit'])
-    box('zc-unit_wall_r', 1.6, 1.6 + WALL, WALL, 3.0, 0, CH, m['unit'])
+    box('zc-unit_wall_l', -1.6 - WALL, -1.6, DOOR_WALL, 3.0, 0, CH, m['unit'])
+    box('zc-unit_wall_r', 1.6, 1.6 + WALL, DOOR_WALL, 3.0, 0, CH, m['unit'])
     box('zc-unit_wall_back', -1.6, 1.6, 3.0, 3.0 + WALL, 0, CH, m['unit'])
     lu = bpy.data.lights.new('zc-unit_practical', 'POINT')
     lu.color, lu.energy, lu.shadow_soft_size = srgb('#ffd9a8'), 120.0, 0.3
     lo = bpy.data.objects.new('zc-unit_practical', lu)
     link(lo)
     lo.location = (0.4, 1.8, 2.3)
-    hinge = empty('zc-unit_door_hinge', (-DOOR_W / 2, WALL, 0))
+    hinge = empty('zc-unit_door_hinge', (-DOOR_W / 2, DOOR_WALL, 0))
     box('zc-unit_door', 0.0, DOOR_W, 0.0, 0.045, 0, DOOR_H - 0.01, m['door'], parent=hinge)
     box('zc-unit_door_handle', DOOR_W - 0.12, DOOR_W - 0.06, -0.04, 0.0, 1.0, 1.03, m['handle'], parent=hinge)
     hinge.rotation_euler = (0, 0, math.radians(70))      # inward door already open (brief: may be ajar at F0)
@@ -223,8 +233,14 @@ def build_set(m):
             m['housing'] if dead else (m['tube_flicker'] if flick else m['tube']))
         if dead:
             continue
-        L = area(f'zc-corr_strip_light_{i}', (x, -0.9, CH - 0.08), (1.2, 0.12), srgb('#e8fff6'), 38.0)
+        base = 38.0 * (LK['strip_far'] if x >= 6.0 else 1.0)   # r31: less corridor fill near the infected (x = 12)
+        L = area(f'zc-corr_strip_light_{i}', (x, -0.9, CH - 0.08), (1.2, 0.12), srgb('#e8fff6'), base)
+        L['base_energy'] = base
         strips.append((L, flick))
+    if LK['rim']:
+        # grazing rim from the window side: high and behind her, aimed down at head/shoulders (top surfaces the camera sees)
+        rim = area('zc-infected_rim', (13.6, -0.95, 2.45), (0.5, 0.5), srgb('#fff1dc'), LK['rim'],
+                   rot=(0, math.radians(-125), 0))
     # blood smear trail on the floor near her (VD-ZC-GORE: dark matte)
     rnd = random.Random(101)
     for j in range(7):
@@ -254,7 +270,7 @@ def bake_flicker(strips, m):
         if not flick:
             continue
         for i, v in enumerate(lvl):
-            L.data.energy = 38.0 * v
+            L.data.energy = L['base_energy'] * v
             L.data.keyframe_insert('energy', frame=i + 1)
             em.default_value = 14.0 * v
             em.keyframe_insert('default_value', frame=i + 1)
@@ -356,6 +372,17 @@ def build(preset):
     strips = build_set(m)
     lvl = bake_flicker(strips, m)
     you, inf, cam = build_shot(m)
+    if LK['unlink']:
+        # r31: the corridor strip lights do not light the infected (light linking); only the window rim reaches her.
+        # Her materials are unchanged (pale shirt stays pale for SH02).
+        col = bpy.data.collections.new('zc-infected_unlit_by_strips')
+        for o in bpy.data.objects:
+            if o.type == 'MESH' and o.name.startswith('zc-inf'):
+                col.objects.link(o)
+        for co in col.collection_objects:
+            co.light_linking.link_state = 'EXCLUDE'
+        for L, _ in strips:
+            L.light_linking.receiver_collection = col
     probes, bake_s = add_gi_probe()
     info['gi_probes'] = probes
     info['gi_bake_seconds'] = bake_s
@@ -398,6 +425,52 @@ def measure(sc):
     return res
 
 
+# ---------------------------------------------------------------- B01 look measurement (VD-ZC-01 R3.1)
+def render_look(sc, clip_f, outdir):
+    """Beauty (Eevee 64) + Workbench flat-colour mask at one clip frame; luminance of figure vs window pane on the PNG."""
+    import numpy as np
+    os.makedirs(outdir, exist_ok=True)
+    sc.frame_set(clip_f + 1)
+    beauty = os.path.join(outdir, f'beauty_F{clip_f}.png')
+    sc.render.filepath = beauty
+    bpy.ops.render.render(write_still=True)
+    # mask: figure = red, window pane = green, everything else black (flat, no AA bleed from lighting)
+    sc.render.engine = 'BLENDER_WORKBENCH'
+    sc.view_settings.view_transform = 'Standard'
+    sh = sc.display
+    sh.shading.light, sh.shading.color_type = 'FLAT', 'OBJECT'
+    sc.display.render_aa = 'OFF'
+    for o in bpy.data.objects:
+        if o.type == 'MESH':
+            o.color = (1, 0, 0, 1) if o.name.startswith('zc-inf') else (0, 1, 0, 1) if o.name == 'zc-corr_window' else (0, 0, 0, 1)
+    sc.world.node_tree.nodes['Background'].inputs['Color'].default_value = (0, 0, 0, 1)
+    mask = os.path.join(outdir, f'mask_F{clip_f}.png')
+    sc.render.filepath = mask
+    bpy.ops.render.render(write_still=True)
+
+    def px(path):
+        im = bpy.data.images.load(path)
+        im.colorspace_settings.name = 'Non-Color'
+        a = np.array(im.pixels[:], dtype=np.float32).reshape(H, W, 4)[::-1, :, :3]   # top-left origin, raw display values
+        return a
+    B, M = px(beauty), px(mask)
+    fig, win = M[..., 0] > 0.5, M[..., 1] > 0.5
+    lin = lambda v: np.where(v <= 0.04045, v / 12.92, ((v + 0.055) / 1.055) ** 2.4)
+    Y = lambda v: 0.2126 * v[..., 0] + 0.7152 * v[..., 1] + 0.0722 * v[..., 2]
+    Yd, Yl = Y(B), Y(lin(B))
+    out = {'clip_frame': clip_f, 'figure_px': int(fig.sum()), 'window_px': int(win.sum()),
+           'figure_mean_display': float(Yd[fig].mean()), 'window_mean_display': float(Yd[win].mean()),
+           'figure_mean_linear': float(Yl[fig].mean()), 'window_mean_linear': float(Yl[win].mean())}
+    out['ratio_display'] = out['figure_mean_display'] / out['window_mean_display']
+    out['ratio_linear'] = out['figure_mean_linear'] / out['window_mean_linear']
+    # rim: brightest 8% of figure pixels vs figure median (visible rim = a bright edge band)
+    fv = Yd[fig]
+    out['figure_p50_display'], out['figure_p95_display'] = float(np.percentile(fv, 50)), float(np.percentile(fv, 95))
+    ys, xs = np.nonzero(fig)
+    out['figure_bbox'] = [int(xs.min()), int(xs.max()), int(ys.min()), int(ys.max())]
+    return out
+
+
 # ---------------------------------------------------------------- main
 def merge(key, data):
     mf = {}
@@ -422,6 +495,15 @@ def main():
     t0 = time.perf_counter()
     sc, info = build(preset)
     build_s = round(time.perf_counter() - t0, 2)
+    if cmd == 'look':
+        cf = int(a[1]) if len(a) > 1 else 51
+        od = os.path.join(ROOT, 'out', 'qa', 'zombie-condo', 'sp02', 'look', LOOK)
+        r = render_look(sc, cf, od)
+        r['look'] = LOOK
+        r['params'] = LK
+        print('[zc-corridor] LOOK ' + json.dumps(r), flush=True)
+        merge(f'look/{LOOK}/F{cf}', r)
+        return
     if cmd == 'measure':
         merge('measure', {'camera': 'zc-cam_B01-SH01 vFOV 55 sensor-fit VERTICAL shift_y -0.20, level (no tilt)',
                           'note': 'projected geometry bounds (px, origin top-left), not occlusion-aware', 'frames': measure(sc)})
@@ -448,4 +530,5 @@ def main():
                     'total_seconds': round(sum(v), 1), 'outdir': os.path.relpath(outdir, ROOT)})
 
 
-main()
+if __name__ == '__main__':
+    main()

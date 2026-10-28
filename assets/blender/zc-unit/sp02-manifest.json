@@ -1,0 +1,861 @@
+{
+  "connection": {
+    "date": "2026-10-29",
+    "mcp": "Blender MCP execute_blender_code reachable; Blender 5.2.3 LTS, unsaved default scene (3 objects), not used for the renders",
+    "regenerate": "sh assets/blender/zc-unit/render_sp02.sh; then Blender python -I assets/blender/zc-unit/sp02_check.py caps|caption",
+    "render_route": "headless /Applications/Blender.app/Contents/MacOS/Blender -b --python assets/blender/zc-unit/build_sp02.py (Eevee 64, AgX, PNG 8-bit), Apple M1"
+  },
+  "geometry": {
+    "a3": {
+      "cabinet_y_range": [
+        0.18,
+        0.58
+      ],
+      "door_wall_y_range": [
+        0.0,
+        0.18
+      ],
+      "gap_m": -0.0,
+      "overlap_m": 0.0
+    },
+    "cap_count": 9,
+    "cap_overlaps": [],
+    "corridor_constant": 0.18,
+    "door_wall_m": 0.18
+  },
+  "seated_poses": {
+    "method": "primitive mannequin (zc-you placeholder proportions) with joints solved by 2-bone IK; same joint targets must be reproduced on the S-03/S-04 rig",
+    "thresholds": "penetration <= 0.03 m, contact gap <= 0.03 m (vertex-level against floor/wall/seat boxes), plus visual inspection of the still"
+  },
+  "still/B02": {
+    "camera_y": 0.0,
+    "cap_rects_px": {
+      "zc-cap_corr_far": [
+        -123.56,
+        48.38,
+        -63.23,
+        919.72
+      ],
+      "zc-cap_doorwall": [
+        540.0,
+        48.38,
+        600.32,
+        919.72
+      ],
+      "zc-cap_p1": [
+        1042.69,
+        48.38,
+        1076.21,
+        232.7
+      ],
+      "zc-cap_p2": [
+        1645.93,
+        48.38,
+        1679.44,
+        232.7
+      ],
+      "zc-cap_slab-1": [
+        -123.56,
+        1874.84,
+        4125.89,
+        1958.62
+      ],
+      "zc-cap_slab-2": [
+        -123.56,
+        2829.96,
+        4125.89,
+        2913.74
+      ],
+      "zc-cap_slab0": [
+        -123.56,
+        919.72,
+        4125.89,
+        1003.5
+      ],
+      "zc-cap_slab1": [
+        -123.56,
+        -35.4,
+        4125.89,
+        48.38
+      ],
+      "zc-cap_slab2": [
+        -123.56,
+        -990.52,
+        4125.89,
+        -906.74
+      ]
+    },
+    "coverage_m": 6.4,
+    "file": "out/blender/zc-unit/sp02/B02/still.png",
+    "floor_line_px": 860.0,
+    "lead_px": {
+      "height_px": 524,
+      "lowest_world_z": 0.0,
+      "x": [
+        744,
+        836
+      ],
+      "y": [
+        341,
+        865
+      ]
+    },
+    "render_seconds": 5.88,
+    "settings": {
+      "engine": "BLENDER_EEVEE",
+      "fast_gi": true,
+      "gi_bake_seconds": 2.52,
+      "look": "None",
+      "output": "PNG 8-bit RGB sRGB",
+      "raytracing": "SCREEN, res 1/2, denoise",
+      "shadows": "ray 1 / step 6",
+      "taa_render_samples": 64,
+      "view_transform": "AgX"
+    },
+    "shift_y": -0.31771,
+    "shot": "B02",
+    "vfov_deg": 21.32
+  },
+  "still/B07SH02": {
+    "camera_y": 8.19,
+    "cap_rects_px": {
+      "zc-cap_corridor_black": [
+        -4203.18,
+        -385.91,
+        -3279.73,
+        1059.89
+      ],
+      "zc-cap_doorwall": [
+        -3278.73,
+        -269.21,
+        -3194.8,
+        943.09
+      ],
+      "zc-cap_p1": [
+        -2579.33,
+        -269.21,
+        -2532.7,
+        -12.76
+      ],
+      "zc-cap_p2": [
+        -1740.05,
+        -269.21,
+        -1693.42,
+        -12.76
+      ],
+      "zc-cap_slab-1": [
+        -4201.94,
+        2271.95,
+        1710.33,
+        2388.52
+      ],
+      "zc-cap_slab-2": [
+        -4201.94,
+        3600.81,
+        1710.33,
+        3717.38
+      ],
+      "zc-cap_slab0": [
+        -4201.93,
+        943.09,
+        1710.33,
+        1059.66
+      ],
+      "zc-cap_slab1": [
+        -4201.93,
+        -385.77,
+        1710.33,
+        -269.21
+      ],
+      "zc-cap_slab2": [
+        -4201.93,
+        -1714.63,
+        1710.33,
+        -1598.07
+      ]
+    },
+    "contacts": {
+      "feet_gap_to_floor_m": -0.0,
+      "floor_min_z": -0.0,
+      "floor_penetration_m": 0.0,
+      "seat_gap_m": 0.0023,
+      "seat_penetration_m": 0.0245,
+      "sofa_back_min_gap_m": 0.0715,
+      "sofa_back_penetration_m": 0.0,
+      "wall_penetration_m": 0.0
+    },
+    "coverage_m": 4.6,
+    "file": "out/blender/zc-unit/sp02/B07SH02/still.png",
+    "floor_line_px": 860.0,
+    "lead_px": {
+      "height_px": 552,
+      "lowest_world_z": -0.0,
+      "x": [
+        -11,
+        309
+      ],
+      "y": [
+        283,
+        835
+      ]
+    },
+    "pose_joints": {
+      "elbowL": [
+        -0.9303555488586426,
+        7.408810615539551,
+        0.8624074459075928
+      ],
+      "elbowR": [
+        -1.1776989698410034,
+        7.114037990570068,
+        0.8624076843261719
+      ],
+      "head_top": [
+        -1.265599012374878,
+        7.4389543533325195,
+        1.3437731266021729
+      ],
+      "hips": [
+        -1.100000023841858,
+        7.300000190734863,
+        0.5400000214576721
+      ],
+      "kneeL": [
+        -0.7001522183418274,
+        7.093636989593506,
+        0.5098599195480347
+      ],
+      "kneeR": [
+        -0.8273389339447021,
+        6.942061424255371,
+        0.5098599195480347
+      ],
+      "neck": [
+        -1.2396652698516846,
+        7.417193412780762,
+        1.101123332977295
+      ]
+    },
+    "render_seconds": 4.46,
+    "settings": {
+      "engine": "BLENDER_EEVEE",
+      "fast_gi": true,
+      "gi_bake_seconds": 2.07,
+      "look": "None",
+      "output": "PNG 8-bit RGB sRGB",
+      "raytracing": "SCREEN, res 1/2, denoise",
+      "shadows": "ray 1 / step 6",
+      "taa_render_samples": 64,
+      "view_transform": "AgX"
+    },
+    "shift_y": -0.42165,
+    "shot": "B07SH02",
+    "vfov_deg": 15.41
+  },
+  "still/B07SH02mid": {
+    "camera_y": 6.51,
+    "cap_rects_px": {
+      "zc-cap_corridor_black": [
+        -3419.65,
+        -385.91,
+        -2496.2,
+        1059.89
+      ],
+      "zc-cap_doorwall": [
+        -2495.4,
+        -269.21,
+        -2411.47,
+        943.09
+      ],
+      "zc-cap_p1": [
+        -1796.0,
+        -269.21,
+        -1749.37,
+        -12.76
+      ],
+      "zc-cap_p2": [
+        -956.72,
+        -269.21,
+        -910.09,
+        -12.76
+      ],
+      "zc-cap_slab-1": [
+        -3418.61,
+        2271.95,
+        2493.66,
+        2388.52
+      ],
+      "zc-cap_slab-2": [
+        -3418.61,
+        3600.81,
+        2493.66,
+        3717.38
+      ],
+      "zc-cap_slab0": [
+        -3418.61,
+        943.09,
+        2493.66,
+        1059.66
+      ],
+      "zc-cap_slab1": [
+        -3418.61,
+        -385.77,
+        2493.66,
+        -269.21
+      ],
+      "zc-cap_slab2": [
+        -3418.61,
+        -1714.63,
+        2493.66,
+        -1598.07
+      ]
+    },
+    "contacts": {
+      "feet_gap_to_floor_m": -0.0,
+      "floor_min_z": -0.0,
+      "floor_penetration_m": 0.0,
+      "seat_gap_m": 0.0023,
+      "seat_penetration_m": 0.0245,
+      "sofa_back_min_gap_m": 0.0715,
+      "sofa_back_penetration_m": 0.0,
+      "wall_penetration_m": 0.0
+    },
+    "coverage_m": 4.6,
+    "file": "out/blender/zc-unit/sp02/B07SH02mid/still.png",
+    "floor_line_px": 860.0,
+    "lead_px": {
+      "height_px": 552,
+      "lowest_world_z": -0.0,
+      "x": [
+        662,
+        968
+      ],
+      "y": [
+        283,
+        835
+      ]
+    },
+    "pose_joints": {
+      "elbowL": [
+        -0.9303555488586426,
+        7.408810615539551,
+        0.8624074459075928
+      ],
+      "elbowR": [
+        -1.1776989698410034,
+        7.114037990570068,
+        0.8624076843261719
+      ],
+      "head_top": [
+        -1.265599012374878,
+        7.4389543533325195,
+        1.3437731266021729
+      ],
+      "hips": [
+        -1.100000023841858,
+        7.300000190734863,
+        0.5400000214576721
+      ],
+      "kneeL": [
+        -0.7001522183418274,
+        7.093636989593506,
+        0.5098599195480347
+      ],
+      "kneeR": [
+        -0.8273389339447021,
+        6.942061424255371,
+        0.5098599195480347
+      ],
+      "neck": [
+        -1.2396652698516846,
+        7.417193412780762,
+        1.101123332977295
+      ]
+    },
+    "render_seconds": 4.51,
+    "settings": {
+      "engine": "BLENDER_EEVEE",
+      "fast_gi": true,
+      "gi_bake_seconds": 1.97,
+      "look": "None",
+      "output": "PNG 8-bit RGB sRGB",
+      "raytracing": "SCREEN, res 1/2, denoise",
+      "shadows": "ray 1 / step 6",
+      "taa_render_samples": 64,
+      "view_transform": "AgX"
+    },
+    "shift_y": -0.42165,
+    "shot": "B07SH02mid",
+    "vfov_deg": 15.41
+  },
+  "still/B07SH02start": {
+    "camera_y": 5.7,
+    "cap_rects_px": {
+      "zc-cap_corridor_black": [
+        -3041.87,
+        -385.91,
+        -2118.42,
+        1059.89
+      ],
+      "zc-cap_doorwall": [
+        -2117.72,
+        -269.21,
+        -2033.79,
+        943.09
+      ],
+      "zc-cap_p1": [
+        -1418.32,
+        -269.21,
+        -1371.69,
+        -12.76
+      ],
+      "zc-cap_p2": [
+        -579.04,
+        -269.21,
+        -532.41,
+        -12.76
+      ],
+      "zc-cap_slab-1": [
+        -3040.93,
+        2271.95,
+        2871.34,
+        2388.52
+      ],
+      "zc-cap_slab-2": [
+        -3040.93,
+        3600.81,
+        2871.34,
+        3717.38
+      ],
+      "zc-cap_slab0": [
+        -3040.93,
+        943.09,
+        2871.34,
+        1059.66
+      ],
+      "zc-cap_slab1": [
+        -3040.93,
+        -385.77,
+        2871.34,
+        -269.21
+      ],
+      "zc-cap_slab2": [
+        -3040.93,
+        -1714.63,
+        2871.34,
+        -1598.07
+      ]
+    },
+    "contacts": {
+      "feet_gap_to_floor_m": -0.0,
+      "floor_min_z": -0.0,
+      "floor_penetration_m": 0.0,
+      "seat_gap_m": 0.0023,
+      "seat_penetration_m": 0.0245,
+      "sofa_back_min_gap_m": 0.0715,
+      "sofa_back_penetration_m": 0.0,
+      "wall_penetration_m": 0.0
+    },
+    "coverage_m": 4.6,
+    "file": "out/blender/zc-unit/sp02/B07SH02start/still.png",
+    "floor_line_px": 860.0,
+    "lead_px": {
+      "height_px": 552,
+      "lowest_world_z": -0.0,
+      "x": [
+        987,
+        1286
+      ],
+      "y": [
+        283,
+        835
+      ]
+    },
+    "pose_joints": {
+      "elbowL": [
+        -0.9303555488586426,
+        7.408810615539551,
+        0.8624074459075928
+      ],
+      "elbowR": [
+        -1.1776989698410034,
+        7.114037990570068,
+        0.8624076843261719
+      ],
+      "head_top": [
+        -1.265599012374878,
+        7.4389543533325195,
+        1.3437731266021729
+      ],
+      "hips": [
+        -1.100000023841858,
+        7.300000190734863,
+        0.5400000214576721
+      ],
+      "kneeL": [
+        -0.7001522183418274,
+        7.093636989593506,
+        0.5098599195480347
+      ],
+      "kneeR": [
+        -0.8273389339447021,
+        6.942061424255371,
+        0.5098599195480347
+      ],
+      "neck": [
+        -1.2396652698516846,
+        7.417193412780762,
+        1.101123332977295
+      ]
+    },
+    "render_seconds": 4.38,
+    "settings": {
+      "engine": "BLENDER_EEVEE",
+      "fast_gi": true,
+      "gi_bake_seconds": 1.92,
+      "look": "None",
+      "output": "PNG 8-bit RGB sRGB",
+      "raytracing": "SCREEN, res 1/2, denoise",
+      "shadows": "ray 1 / step 6",
+      "taa_render_samples": 64,
+      "view_transform": "AgX"
+    },
+    "shift_y": -0.42165,
+    "shot": "B07SH02start",
+    "vfov_deg": 15.41
+  },
+  "still/B09SH01": {
+    "camera_y": 0.9,
+    "cap_rects_px": {
+      "zc-cap_corridor_black": [
+        -1277.27,
+        -825.65,
+        -27.9,
+        1130.45
+      ],
+      "zc-cap_doorwall": [
+        -27.75,
+        -667.75,
+        85.8,
+        972.41
+      ],
+      "zc-cap_p1": [
+        918.5,
+        -667.75,
+        981.58,
+        -320.79
+      ],
+      "zc-cap_p2": [
+        2054.0,
+        -667.75,
+        2117.08,
+        -320.79
+      ],
+      "zc-cap_slab-1": [
+        -1276.8,
+        2770.29,
+        6722.15,
+        2927.99
+      ],
+      "zc-cap_slab-2": [
+        -1276.8,
+        4568.16,
+        6722.15,
+        4725.86
+      ],
+      "zc-cap_slab0": [
+        -1276.8,
+        972.41,
+        6722.15,
+        1130.12
+      ],
+      "zc-cap_slab1": [
+        -1276.8,
+        -825.46,
+        6722.15,
+        -667.75
+      ],
+      "zc-cap_slab2": [
+        -1276.8,
+        -2623.33,
+        6722.15,
+        -2465.62
+      ]
+    },
+    "contacts": {
+      "cabinet_penetration_pts": 0,
+      "feet_lowest_z": -0.0,
+      "floor_min_z": -0.0,
+      "floor_penetration_m": 0.0,
+      "hips_lowest_z": -0.0,
+      "wall_gap_m": 0.0017,
+      "wall_penetration_m": 0.0
+    },
+    "coverage_m": 3.4,
+    "file": "out/blender/zc-unit/sp02/B09SH01/still.png",
+    "floor_line_px": 860.0,
+    "lead_px": {
+      "height_px": 506,
+      "lowest_world_z": -0.0,
+      "x": [
+        383,
+        645
+      ],
+      "y": [
+        317,
+        824
+      ]
+    },
+    "pose_joints": {
+      "elbowL": [
+        -1.2102223634719849,
+        1.0426404476165771,
+        0.4586920738220215
+      ],
+      "elbowR": [
+        -1.2102223634719849,
+        0.6573596000671387,
+        0.4586920142173767
+      ],
+      "head_top": [
+        -1.4807944297790527,
+        0.8500000238418579,
+        0.8814840316772461
+      ],
+      "hips": [
+        -1.25,
+        0.8500000238418579,
+        0.10000000149011612
+      ],
+      "kneeL": [
+        -0.9781789779663086,
+        0.9541307091712952,
+        0.4458756744861603
+      ],
+      "kneeR": [
+        -0.9781789779663086,
+        0.7458693385124207,
+        0.4458756744861603
+      ],
+      "neck": [
+        -1.494668960571289,
+        0.8500000238418579,
+        0.636877179145813
+      ]
+    },
+    "render_seconds": 4.66,
+    "settings": {
+      "engine": "BLENDER_EEVEE",
+      "fast_gi": true,
+      "gi_bake_seconds": 1.87,
+      "look": "None",
+      "output": "PNG 8-bit RGB sRGB",
+      "raytracing": "SCREEN, res 1/2, denoise",
+      "shadows": "ray 1 / step 6",
+      "taa_render_samples": 64,
+      "view_transform": "AgX"
+    },
+    "shift_y": -0.55208,
+    "shot": "B09SH01",
+    "vfov_deg": 11.42
+  },
+  "still/B09SH03": {
+    "camera_y": 0.35,
+    "cap_rects_px": {
+      "zc-cap_corridor_black": [
+        -930.22,
+        -825.65,
+        319.15,
+        1130.45
+      ],
+      "zc-cap_doorwall": [
+        319.21,
+        -667.75,
+        432.76,
+        972.41
+      ],
+      "zc-cap_p1": [
+        1265.46,
+        -667.75,
+        1328.54,
+        -320.79
+      ],
+      "zc-cap_p2": [
+        2400.95,
+        -667.75,
+        2464.04,
+        -320.79
+      ],
+      "zc-cap_slab-1": [
+        -929.84,
+        2770.29,
+        7069.11,
+        2927.99
+      ],
+      "zc-cap_slab-2": [
+        -929.84,
+        4568.16,
+        7069.11,
+        4725.86
+      ],
+      "zc-cap_slab0": [
+        -929.84,
+        972.41,
+        7069.11,
+        1130.12
+      ],
+      "zc-cap_slab1": [
+        -929.84,
+        -825.46,
+        7069.11,
+        -667.75
+      ],
+      "zc-cap_slab2": [
+        -929.84,
+        -2623.33,
+        7069.11,
+        -2465.62
+      ]
+    },
+    "contacts": {
+      "cabinet_penetration_pts": 0,
+      "feet_lowest_z": -0.0,
+      "floor_min_z": -0.0,
+      "floor_penetration_m": 0.0,
+      "hips_lowest_z": -0.0,
+      "wall_gap_m": 0.0017,
+      "wall_penetration_m": 0.0
+    },
+    "coverage_m": 3.4,
+    "file": "out/blender/zc-unit/sp02/B09SH03/still.png",
+    "floor_line_px": 860.0,
+    "lead_px": {
+      "height_px": 506,
+      "lowest_world_z": -0.0,
+      "x": [
+        669,
+        933
+      ],
+      "y": [
+        317,
+        824
+      ]
+    },
+    "pose_joints": {
+      "elbowL": [
+        -1.2102223634719849,
+        1.0426404476165771,
+        0.4586920738220215
+      ],
+      "elbowR": [
+        -1.2102223634719849,
+        0.6573596000671387,
+        0.4586920142173767
+      ],
+      "head_top": [
+        -1.4807944297790527,
+        0.8500000238418579,
+        0.8814840316772461
+      ],
+      "hips": [
+        -1.25,
+        0.8500000238418579,
+        0.10000000149011612
+      ],
+      "kneeL": [
+        -0.9781789779663086,
+        0.9541307091712952,
+        0.4458756744861603
+      ],
+      "kneeR": [
+        -0.9781789779663086,
+        0.7458693385124207,
+        0.4458756744861603
+      ],
+      "neck": [
+        -1.494668960571289,
+        0.8500000238418579,
+        0.636877179145813
+      ]
+    },
+    "render_seconds": 4.13,
+    "settings": {
+      "engine": "BLENDER_EEVEE",
+      "fast_gi": true,
+      "gi_bake_seconds": 1.87,
+      "look": "None",
+      "output": "PNG 8-bit RGB sRGB",
+      "raytracing": "SCREEN, res 1/2, denoise",
+      "shadows": "ray 1 / step 6",
+      "taa_render_samples": 64,
+      "view_transform": "AgX"
+    },
+    "shift_y": -0.55208,
+    "shot": "B09SH03",
+    "vfov_deg": 11.42
+  },
+  "truck/1-60": {
+    "coverage_m": 6.0,
+    "frames_rendered": 60,
+    "lead_height_px_min_mean_max": [
+      574,
+      574.0,
+      574
+    ],
+    "lead_px_start_mid_end": [
+      {
+        "floor_line_px": 860.0,
+        "height_px": 574,
+        "lowest_world_z": 0.0,
+        "x": [
+          796,
+          898
+        ],
+        "y": [
+          306,
+          880
+        ]
+      },
+      {
+        "floor_line_px": 860.0,
+        "height_px": 574,
+        "lowest_world_z": 0.0,
+        "x": [
+          502,
+          602
+        ],
+        "y": [
+          306,
+          880
+        ]
+      },
+      {
+        "floor_line_px": 860.0,
+        "height_px": 574,
+        "lowest_world_z": 0.0,
+        "x": [
+          196,
+          298
+        ],
+        "y": [
+          306,
+          880
+        ]
+      }
+    ],
+    "max_seconds": 5.07,
+    "mean_seconds": 4.67,
+    "outdir": "out/blender/zc-unit/sp02/truck",
+    "settings": {
+      "engine": "BLENDER_EEVEE",
+      "fast_gi": true,
+      "gi_bake_seconds": 1.87,
+      "look": "None",
+      "output": "PNG 8-bit RGB sRGB",
+      "raytracing": "SCREEN, res 1/2, denoise",
+      "shadows": "ray 1 / step 6",
+      "taa_render_samples": 64,
+      "view_transform": "AgX"
+    }
+  }
+}
