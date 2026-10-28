@@ -12,3 +12,5 @@ For Blender creation/edit/import/export/rendered shots verify tools/active scene
 Use stable IDs in implementation/QA notes and handoffs. Scenes reference shared asset IDs rather than copied art/geometry. Extend types + validation + shared implementation + dispatch together before using new JSON fields. Preserve story/timing/reveal and coordinate revisions when requirements conflict with existing written handoffs.
 
 Complete selected-deliverable and affected-consumer sequence/seek QA before pushing visual/runtime work, reporting exact coverage and unverified tooling/neighbors. Finish via its issue/branch/PR process with reusable assets, integration status, shared consumers and Editor handoff mapping, code checks, Studio/render evidence, contact-sheet paths, findings and limitations. Added instructions alone do not establish a repaired or visually verified scene.
+
+Sound: own shared sound capability (registry/renderer fields, asset-attached contact sounds, their tests); route sound generation requests to Editor rather than generating (docs/sound-generation-workflow.md#role-responsibilities).

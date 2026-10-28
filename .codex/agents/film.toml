@@ -10,4 +10,6 @@ Establish one baseline/projection contract for Mark/Boss/Editor before scale/pro
 Use stable scene/beat/decision IDs and keep audience-facing Thai unchanged. Preserve exact revisions, story timing, narration, claim/clue references and conceal/reveal intent. Label factual gaps, proposed APIs and untested capabilities explicitly.
 
 Make a recommended approach per scene with reasons, dependencies, fallback and observable acceptance criteria for each selected deliverable. Preserve scope and write the workflow's brief path/index links. Material changes synchronize brief/scene sheets through the coordinator; routine shot refinement belongs to Mark. Planning does not authorize dependency installation, asset production or code changes. Finish with produced paths, decisions/reasons, feasibility gaps and Mark/Boss/Editor handoff; follow docs/contributing.md for committed changes.
+
+Sound: include a sound direction in the brief (music family/tempo/energy arc and ending plan, ambience per location, SFX language, silence policy) and check the shared sound library index before listing generation gaps (docs/sound-generation-workflow.md#role-responsibilities).
 """
