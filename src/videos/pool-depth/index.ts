@@ -1,4 +1,6 @@
 import poolDepthAmplitude from '../../../scripts/pool-depth/short/POOLDEPTH-SHORT.amplitude.json';
+import poolDepthBotnoiAmplitude from '../../../scripts/pool-depth/short/POOLDEPTH-SHORT-BOTNOI.amplitude.json';
+import poolDepthBotnoiCaptions from '../../../scripts/pool-depth/short/captions-botnoi.json';
 import poolDepthShort from '../../../scripts/pool-depth/short/timeline.json';
 import type {Timeline} from '../../scenes/types';
 import type {EpisodeVideos} from '../types';
@@ -14,11 +16,23 @@ import type {EpisodeVideos} from '../types';
  * (regenerate with `npm run narration -- --timeline scripts/pool-depth/short/narration-timeline.json --name POOLDEPTH-SHORT`); the
  * amplitude envelope is committed beside the timeline. Caption cues in `timeline.json` are retimed to this audio. No music, no SFX.
  */
+/**
+ * Trial variant `POOLDEPTH-SHORT-BOTNOI` (additive, Niwat video above untouched): same picture and 1620 frames, Botnoi per-beat files
+ * assembled by `scripts/narration_files.py` from `narration-timeline-botnoi.json`; only the caption cue times of scenes 1, 3, 4, 5 differ
+ * (`captions-botnoi.json`, retimed to the Botnoi audio). Botnoi voice name and terms are not verified (delivery.md).
+ */
+const botnoiTimeline = (poolDepthShort as Timeline).map((scene, i) => {
+  const cues = (poolDepthBotnoiCaptions as Record<string, NonNullable<Timeline[number]['subtitleCues']>>)[String(i)];
+  return cues ? {...scene, subtitleCues: cues} : scene;
+});
+
 const poolDepth: EpisodeVideos = {
   episode: 'pool-depth',
   videos: [
     {id: 'POOLDEPTH-SHORT', format: 'short', timeline: poolDepthShort as Timeline, ending: 'B_loop', chrome: {progressBar: false},
       narration: {src: 'narration/POOLDEPTH-SHORT.mp3', amplitude: poolDepthAmplitude, fps: 30}},
+    {id: 'POOLDEPTH-SHORT-BOTNOI', format: 'short', timeline: botnoiTimeline, ending: 'B_loop', chrome: {progressBar: false},
+      narration: {src: 'narration/POOLDEPTH-SHORT-BOTNOI.mp3', amplitude: poolDepthBotnoiAmplitude, fps: 30}},
   ],
 };
 export default poolDepth;

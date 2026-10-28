@@ -81,3 +81,37 @@ test('new scene fields are validated', () => {
   assert.throws(() => validateTimeline(base({quadTexts: [{text: 'x', quads: [[[0, 0], [1, 0], [1, 1]]]}]})), /quadTexts\[0\]\.quads\[0\]/);
   assert.throws(() => validateTimeline(base({quadTexts: [{text: '', quads: []}]})), /quadTexts\[0\]\.text/);
 });
+
+const botnoi = poolDepth.videos[1];
+const botnoiCaptionAt = (globalFrame: number) => {
+  const i = starts.filter(start => start <= globalFrame).length - 1;
+  return subtitleAt(botnoi.timeline[i], globalFrame - starts[i], fps);
+};
+
+test('POOLDEPTH-SHORT-BOTNOI shares the picture and frame windows and has its own narration', () => {
+  collectEpisodes([poolDepth]);
+  assert.equal(botnoi.id, 'POOLDEPTH-SHORT-BOTNOI');
+  assert.equal(timelineFrames(botnoi.timeline, fps), 1620);
+  botnoi.timeline.forEach((scene, i) => {
+    assert.equal(scene.durationSec, video.timeline[i].durationSec);
+    assert.deepEqual(scene.media, video.timeline[i].media);
+  });
+  assert.equal(botnoi.narration?.src, 'narration/POOLDEPTH-SHORT-BOTNOI.mp3');
+  assert.equal(botnoi.narration?.amplitude.length, 1620);
+  assert.equal(video.narration?.src, 'narration/POOLDEPTH-SHORT.mp3');
+});
+
+test('Botnoi captions keep the SH04 straight-down constraint', () => {
+  for (let frame = 0; frame < 1620; frame++) {
+    const text = botnoiCaptionAt(frame);
+    if (/[¾]|1\.5|2 ม\./.test(text)) {
+      assert.ok(frame >= 780 + 90 && frame < 780 + 270, `numeric caption at ${frame}`);
+      assert.ok(text.includes('มองตรงลงมา'), `no straight-down condition at ${frame}`);
+    }
+  }
+  assert.equal(botnoiCaptionAt(780 + 269).includes('¾'), true);
+  assert.equal(botnoiCaptionAt(780 + 270), '');
+  assert.equal(botnoiCaptionAt(780 + 287), '');
+  assert.equal(botnoiCaptionAt(780 + 288), 'มองเฉียง: ยิ่งดูตื้นขึ้น');
+  assert.equal(botnoiCaptionAt(1619), 'แล้วน้ำตรงหน้าคุณตอนนี้...');
+});

@@ -20,7 +20,6 @@ import wave
 from pathlib import Path
 import subprocess
 import tempfile
-import edge_tts
 
 ROOT = Path(__file__).resolve().parent.parent
 FPS = 30
@@ -84,6 +83,7 @@ def paths():
 
 
 async def main():
+    import edge_tts  # imported here so narration_files.py can reuse the helpers without edge-tts installed
     source, target, amplitude = paths()
     target.parent.mkdir(parents=True, exist_ok=True)
     timeline = json.loads(source.read_text())
