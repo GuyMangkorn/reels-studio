@@ -38,6 +38,16 @@ npm start
 
 Studio opens the compositions declared under `src/videos/`, grouped in one folder per episode. The baseline demo expects local `public/narration.mp3` plus the committed amplitude envelope in `src/amplitude.json`. To generate its Niwat Thai narration at +5%, `npm run narration` requires Python with `edge-tts==7.3.1` and sends the demo subtitle text to the TTS provider. For a silent custom preview, pass `narration: null` as an input prop.
 
+### Claude Code / Codex setup
+
+Agent instructions travel with the repository: `CLAUDE.md` → `AGENTS.md`, role agents in `.claude/agents/` and `.codex/agents/`, and `docs/`. A new account or machine needs only the local tools below.
+
+- **audio-studio MCP** (sound generation): declared for Claude Code in `.mcp.json`; approve it on first open. Install [audio-studio-mcp](https://github.com/kanaworksai-hue/audio-studio-mcp) with its `install.sh`; if it is not at `~/Documents/ChatGPT/audio-studio-mcp` of the original machine, set `AUDIO_STUDIO_DIR` to its folder. Codex registers it separately in its own config.
+- **Shared sound library:** `~/Documents/ChatGPT/sound-library/` (outside Git; copy it to the new machine). Paths are in [sound generation workflow](docs/sound-generation-workflow.md).
+- **Blender MCP** (Blender assets/shots only): enable the Blender connector in the Claude desktop app and the MCP add-on in Blender; see [Blender MCP workflow](docs/blender-mcp-workflow.md).
+- **Optional plugins:** `remotion` skills (Remotion docs/best practices) and `superpowers`; install from the plugin marketplace. Nothing in the workflows requires them.
+- **Transcription:** local `.venv-whisper/`; see the faster-whisper notes under [Render and verify](#render-and-verify).
+
 ## Timeline data
 
 The executable timeline is an array of scenes. This example uses fields supported by the baseline renderer:

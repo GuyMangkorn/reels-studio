@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "audio-studio": {
+      "type": "stdio",
+      "command": "${AUDIO_STUDIO_DIR:-/Users/mangkornkatawong/Documents/ChatGPT/audio-studio-mcp}/.venv/bin/audio-studio-mcp",
+      "args": [],
+      "env": {
+        "PYTHONPATH": "${AUDIO_STUDIO_DIR:-/Users/mangkornkatawong/Documents/ChatGPT/audio-studio-mcp}/src"
+      }
+    }
+  }
+}
