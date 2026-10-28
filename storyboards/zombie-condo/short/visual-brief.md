@@ -408,13 +408,15 @@ Editor (after Boss): two timelines, `scripts/zombie-condo/short/timeline.json` (
 | `RK-09` | EN B08 is 2.4 s | B08 EN | ≤0.5 s breath; the push is already moving at F0 |
 | `RK-10` | Blood vs. platform policy (age restriction, limited ads) | B01–B02 | Restrained ceiling `VD-ZC-GORE`; policy `unverified`; coordinator/Boat check before release |
 | `RK-11` | Section caps leak light or reveal geometry behind the corridor cap | B09 concealment | `SP02` (b)(c); nothing modelled behind the cap |
-| `RK-12` | Character gender vs. the TH Botnoi voice | `VD-ZC-CH` | Q-R2-1 before `zc-you` is built |
+| `RK-12` | Character gender vs. the TH Botnoi voice | `VD-ZC-CH` | Closed 28 Oct 2026: the Botnoi voice is male (Q-R2-1) |
 
 ## Questions for the user
 
 - **Q-R2-1 Voice/character:** the stand-in for "you" is designed as a Thai man about 28, to match the male EN voice. Is your Botnoi Thai voice male? If it is female, do you want the character to match (a woman), or keep the man?
 - **Q-R2-2 B10 glance:** should he turn and look into the camera on "คอมเมนต์มา" / "Comment below" (recommended), or keep looking at the door?
 - **Q-R2-3 Blood level:** the brief allows dark blood on the infected and smears/handprints on surfaces in B01–B02 only. There is no dismemberment, no wounds in close-up, no blood on "you" and none in the final hold. Is that the level you want? The YouTube policy has not been checked yet.
+
+**User answers (28 Oct 2026, Asia/Bangkok, relayed by the coordinator):** “ผู้ชาย / มองกล้อง / ตามนั้น”. Q-R2-1: the Botnoi Thai voice is male, so `zc-you` stays a man. Q-R2-2: he looks into the lens on “คอมเมนต์มา” / “Comment below”. Q-R2-3: the blood level stands as set in `VD-ZC-GORE`. RK-12 is closed. RK-10 (YouTube policy) is still `unverified`. These are creative decisions recorded against `VB-ZCONDO-SHORT-R2`; the brief content is unchanged.
 
 ## Change log
 

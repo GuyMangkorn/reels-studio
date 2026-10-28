@@ -8,6 +8,8 @@
 
 **User decisions on the visual brief (28 Oct 2026, Asia/Bangkok, relayed by the coordinator; answers to Film's R1 questions):** (Q1) music: a licensed low drone from B03, ducked under the VO; (Q2) chrome: hide the `ทำไมล่ะ` label and the progress bar on TH and EN; (Q4) storage: Blender plates stay local and regenerable from build scripts, no LFS; (Q3/Q5) look: “เห็นทั้งตัว มีหน้า เลือด มุมมองในห้องอาจ slice ครึ่ง”, i.e. a full-body "you" with a visible face, blood allowed, interiors may use a half-slice cutaway. Applied in `VB-ZCONDO-SHORT-R2`. These are creative decisions, not approval of the brief.
 
+**Film questions answered (28 Oct 2026):** “ผู้ชาย / มองกล้อง / ตามนั้น”: the TH Botnoi voice is male, so the lead stays a man; he glances into the lens on “คอมเมนต์มา”; the blood level stands as in `VD-ZC-GORE`. YouTube graphic-content policy is still unverified (RK-10).
+
 **Script approval:** User approved `ZCONDO-SHORT-TH-R2` and `ZCONDO-SHORT-EN-R2` on 28 Oct 2026 (Asia/Bangkok) in chat: “อนุมัติบท R2 ทั้งไทยและอังกฤษ ให้ Film ทำ visual brief ต่อได้ (พิจารณาใช้ Blender)”. Downstream (Film brief) is authorized by the same message; Mark/Boss/Editor stages are not yet assigned.
 
 **Scope of this assignment:** Boat research → Preaw script → Boat fact-check (done 28 Oct 2026), then Film visual brief (authorized by the user's script approval, 28 Oct 2026). Mark, Boss and Editor stages are not yet assigned.
