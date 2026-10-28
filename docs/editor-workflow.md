@@ -22,7 +22,7 @@ The user, or the coordinator for a [Light/Edit-only deliverable](delivery-workfl
 | --- | --- |
 | Source media: paths, durations, rights/license of every clip, image, music and font | Inventory in `delivery.md`; unlicensed or unknown-rights media is flagged, not shipped silently |
 | Goal and platform: purpose, audience, target length, aspect ratio(s), ending | [Style profile](delivery-workflow.md#style-profile) values |
-| Voice and captions: supplied recording or TTS, transcript/SRT if any, caption style, language | Cue source and revision; do not invent Thai wording the user did not supply (ask Preaw) |
+| Voice and captions: supplied recording or TTS, transcript/SRT if any, caption style, language | Cue source and revision; do not invent Thai wording the user did not supply (ask Preaw). For a supplied recording with no transcript, `scripts/transcribe.py` gives a draft transcript/SRT; record it as machine-drafted and have it reviewed before captions use it |
 | Mood and pacing: reference clips, music feel, cut rhythm, must-keep moments | Editing intent for [editing principles](editor-principles.md) |
 | Constraints: things to avoid, mandatory text, logos (original only) | Acceptance criteria |
 

@@ -99,6 +99,7 @@ Two videos can be produced at the same time without colliding:
 
 - Renders: each `scripts/render.mjs` run bundles into its own temp directory, picks a free port and writes only `out/<CompositionId>/`.
 - Narration: `npm run narration -- --timeline scripts/<episode>/<variant>/timeline.json --name <CompositionId>` writes `public/narration/<CompositionId>.mp3` and `<CompositionId>.amplitude.json` beside the timeline. Reference them from the video's `narration` field. Without arguments it regenerates the demo's `public/narration.mp3` and `src/amplitude.json`. A timeline entry may carry `leadSec` to delay its speech inside its slot (the overrun check then ignores trailing TTS silence).
+- Transcription: `.venv-whisper/bin/python scripts/transcribe.py <audio-or-video> [--timeline scripts/<episode>/<variant>/narration-timeline.json]` runs faster-whisper (`large-v3-turbo`, Thai) locally, writes `out/transcripts/<name>.srt`/`.json` and, with a timeline, reports per slot how closely the audio matches its spoken text and where speech starts. Setup: `python3 -m venv .venv-whisper && .venv-whisper/bin/pip install faster-whisper "av>=14,<17"`; the first run downloads the model (about 1.6 GB). Thai word times are rough: use it to find lines to listen to, not as caption timing.
 - Episode QA scripts keep their own `out/qa/<episode>/...` folders.
 
 ## Code ownership
