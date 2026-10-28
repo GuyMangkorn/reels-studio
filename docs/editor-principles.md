@@ -93,6 +93,35 @@
 
 **Source fact:** Remotion documents frame-based audio start offsets and animatable volume; these are mechanisms, not loudness or mixing targets. Current online examples may use different audio packages from the installed checkout. Follow the toolkit preflight before using them. [Audio timing](https://www.remotion.dev/docs/audio/delaying), [volume](https://www.remotion.dev/docs/audio/volume).
 
+<a id="ep08a-shape-audio-emphasis-by-story-beat"></a>
+## EP08a — Shape audio emphasis by story beat
+
+**Ownership:** Editor decides and executes audio emphasis; no separate audio role is needed. Preaw's script and Mark's handoff state *where* a beat matters (hook, clue, reveal, payoff, quiet hold) through the `mix intent` field; Editor chooses *how* it sounds. A missing level change that needs new runtime behavior goes to Boss.
+
+**Default:** Emphasis comes from **contrast and change**, not absolute loudness. A beat feels important because the sound around it changed: it got quieter, emptier or denser just before, or the bed dropped out. Raising everything raises nothing.
+
+Plan the mix per beat with one label each, recorded in the edit plan:
+
+| Mix intent | Use for | Typical treatment (starting point, judge by ear) |
+| --- | --- | --- |
+| `hold` | Explanation, setup, context | Voice alone or over a low bed; bed steady, ducked under speech. |
+| `lift` | Build-up, rising question, escalating test | Bed rises gradually across the section (fade, not a jump); denser cues allowed between phrases. |
+| `drop` | The moment just before a reveal, a realization, an uneasy silence | Pull the bed and ambience down or out for roughly 0.3–1.5 s; keep the voice. The silence is the emphasis. |
+| `hit` | The reveal, the key number, the payoff image | One accent (SFX or bed returning) aligned to the picture event or the stressed word; not on top of a word that must be understood. |
+| `release` | Resolution, ending, loop seam | Bed returns to a settled level; for `C_seamless` follow EP08's seam rules. |
+
+- **Voice stays level.** Do not ride narration gain to stress a word; TTS loudness is already consistent, and per-word gain sounds artificial. Stress in the voice comes from script wording, pauses (`leadSec`, `closeGaps` in `scripts/narration.py`) and caption timing. Change voice level only to fix a measured inconsistency between clips.
+- **Ration the accents.** A Short normally has one main `hit` (the reveal/payoff) and at most a few minor ones (hook, key clue). If every cut has a whoosh or every line has a swell, nothing reads as important.
+- **Drop before you hit.** A short `drop` before a `hit` makes the hit land without making it louder. Avoid a hit with no contrast before it.
+- **One foreground sound at a time.** At any moment either the voice, an SFX accent or the music is in front. Never stack an accent on a stressed word; place it in the gap before or after.
+- **Change level on a beat, not mid-word.** Start lifts/drops at phrase boundaries, cuts or picture events; ramp over about 0.3–1 s unless an abrupt change is the point (a `drop` or `hit` may be instant).
+- **Match emphasis to the reviewed claim.** An ominous drop or sting must not imply a cause, danger or certainty the script does not support (EP05).
+- **Respect the profile.** A voice-only edit (no music, no SFX) still has `hold`/`drop` through pauses and silence; do not add music just to create emphasis without the user's or delivery record's choice.
+
+**Runtime mapping (current checkout):** `video.audio[]` entries have a static `volume` with `fadeInSec`/`fadeOutSec` and `duckUnderNarration`; `scene.sfx[]` cues have a static `volume` ([toolkit 10a](remotion-toolkit.md#10a-footage-stills-music-entry-transitions-and-caption-styles)). Express a section level change by splitting the bed into consecutive entries of the same file with continuous `trimStartSec` and short overlapping fades; express `drop` as a fade-out/fade-in gap. As a gain reference, `0.5` ≈ −6 dB, `0.25` ≈ −12 dB, `0.1` = −20 dB. If a beat needs a keyframed volume envelope inside one entry, record it as a missing capability for Boss rather than faking it with many tiny entries.
+
+**Verification:** Listen to the full render at least once on ordinary speakers or a phone, focused only on the mix: is each `hit` the most noticeable sound in its section, is every stressed Thai word understandable, and do level changes sound motivated? Measure the master with ffmpeg `ebur128` (or `loudnorm` print mode) and record integrated loudness and true peak. **Default delivery check:** integrated around −14 LUFS with true peak at or below −1 dBTP; this is a project default for mobile-first upload, not a platform specification. Because platforms normalize playback loudness, a louder master does not play louder; it only loses contrast.
+
 ## EP09 — Choose effects and transitions by purpose
 
 **Default:** Start with a hard cut. Add an effect when its meaning or visual connection is clearer than the cut; use a small consistent vocabulary for the episode. Adobe identifies cuts, dissolves, fades and wipes as transition forms; the choices below are this project's synthesis, not a prescribed Adobe formula. [Transition overview](https://www.adobe.com/creativecloud/video/discover/video-transitions.html).
@@ -140,5 +169,7 @@ Deliver scene samples under the authoritative [Editor sample contract](editor-wo
 | [YouTube retention](https://support.google.com/youtube/answer/9314415) | Retention patterns and their possible interpretations. | Observational analytics; does not establish editing causality. |
 | [Remotion transitions](https://www.remotion.dev/docs/transitioning) / [TransitionSeries](https://www.remotion.dev/docs/transitions/transitionseries) | Overlap duration, overlay distinction and transition constraints. | Online API documentation; verify installed version and project integration. |
 | [Remotion audio timing](https://www.remotion.dev/docs/audio/delaying) / [volume](https://www.remotion.dev/docs/audio/volume) / [SFX](https://www.remotion.dev/docs/audio/sfx) | Audio start, volume automation and sound playback mechanisms. | Not a LUFS standard, an approved sound license list or current checkout evidence. |
+
+| [EBU R 128](https://tech.ebu.ch/publications/r128) / [ITU-R BS.1770](https://www.itu.int/rec/R-REC-BS.1770) | How integrated loudness (LUFS) and true peak are measured. | Broadcast standard; its −23 LUFS target is not this project's upload target. The −14 LUFS default in EP08a is a project choice. |
 
 Project-specific defaults above synthesize these tools with the reviewed story and production contract. No platform safe-zone pixel specification, universal loudness target, transition count or retention promise is inferred from the sources.
