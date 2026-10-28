@@ -2230,6 +2230,34 @@ def cmd_flicker(o):
     print('FLICKER', json.dumps(res))
 
 
+def cmd_seq(o):
+    """Test-clip frames: `-- seq SH08:90-119 [SH08:120] --samples 40 --denoise 1 [--mask 1]` -> renders/testclips/<SH>[_mask]/F###.png (existing files are skipped, so a crashed run resumes)."""
+    mask = str(o.get('mask', '0')) == '1'
+    S = None
+    res = {'samples': o['samples'], 'scale_pct': o['scale'], 'denoise': bool(o.get('denoise', 0)), 'mask': mask, 'seconds': {}}
+    for tag in o['shots']:
+        shot, rng = tag.split(':')
+        a, b = rng.split('-') if '-' in rng else (rng, rng)
+        per = int(o['period']) if 'period' in o else 0          # test only: slower ripple (angle = 2 pi (f+1) / period, SH08 phase convention)
+        d = outdir(f'testclips/{shot}' + ('_mask' if mask else '') + (f'_p{per}' if per else ''))
+        for f in range(int(a), int(b) + 1):
+            p = os.path.join(d, f'F{f:03d}.png')
+            if os.path.exists(p):
+                continue
+            if S is None:
+                S = mug_scene(o['samples'], o['scale'], denoise=bool(o.get('denoise', 0)), mask=mask) if shot == 'SH03' else pool_scene(o['samples'], o['scale'], denoise=bool(o.get('denoise', 0)))
+            if shot == 'SH03':
+                set_mug_state(S, f)
+            else:
+                set_pool_state(S, shot, f)
+                if per:
+                    S['water'].data.materials[0].node_tree.nodes['PHASE'].outputs[0].default_value = 2 * math.pi * (f + 1) / per
+            secs = render_still(S['sc'], p)
+            res['seconds'][f'{shot}_F{f:03d}'] = secs
+            print('SEQ', shot, f, round(secs, 1), 's', flush=True)
+    print('SEQ_DONE', json.dumps(res))
+
+
 def parse2():
     a = sys.argv[sys.argv.index('--') + 1:] if '--' in sys.argv else []
     o = {'cmd': a[0], 'samples': 64, 'scale': 100, 'denoise': 0, 'shots': []}
@@ -2252,4 +2280,4 @@ if __name__ == '__main__':
         {'s0': s0, 's1': s1, 's2': s2}[o['spike']](o)
     else:
         o = parse2()
-        {'stills': lambda o: cmd_stills(o, o['shots']), 's3': cmd_s3, 's4': cmd_s4, 'diff': cmd_diff, 'd3': cmd_d3, 'mugstills': lambda o: cmd_mugstills(o, o['shots']), 'mugcheck': cmd_mugcheck, 'flicker': cmd_flicker}[o['cmd']](o)
+        {'stills': lambda o: cmd_stills(o, o['shots']), 's3': cmd_s3, 's4': cmd_s4, 'diff': cmd_diff, 'd3': cmd_d3, 'mugstills': lambda o: cmd_mugstills(o, o['shots']), 'mugcheck': cmd_mugcheck, 'flicker': cmd_flicker, 'seq': cmd_seq}[o['cmd']](o)

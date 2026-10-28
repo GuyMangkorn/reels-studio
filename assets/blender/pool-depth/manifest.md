@@ -34,10 +34,16 @@ Commands (third pass adds `-- mugstills SH03:F... [--samples --scale --denoise]`
 | Q6 | No pour SFX for now (SH03 `sfx` stays empty; the pour onset F150 keeps its design role for the VO) | Editor |
 | Q7 | If an S1-style EEVEE fallback is ever needed it applies to SH01/SH05-SH08 only; **SH03 stays Cycles**. Not needed: Cycles passed S1 (spikes) and the D3 oblique check | Film |
 
-### Clip packaging table (empty: no clip rendered yet)
+### Clip packaging table (TEST clips rendered 2026-10-28; production clips `shot-01..08` pending)
 
-| Clip | Frames | Codec / tags | Size | SHA-256 | Source command |
-| --- | ---: | --- | --- | --- | --- |
+All: libx264 High, crf 12, `-g 30`, yuv420p, 1080x1920, 30 fps, tags colorspace bt709 / primaries bt709 / range tv (ffprobe reports trc `iec61966-2-1`, same as the S0 clip), 40 spp + OIDN, `build.py -- seq` + S0 recipe. Files under `public/pool-depth/test/` (ignored). **TEST: not delivery clips.**
+
+| Clip | Frames | Codec / tags | Size (bytes) | SHA-256 | Source command |
+| --- | ---: | --- | ---: | --- | --- |
+| `tc_sh08.mp4` TEST (SH08 F90-F119) | 30 | h264 High crf 12, bt709/tv | 2,458,715 | `86996fda144d48217ad5c9a9d96cbfd0fa6abd294d868dee14b2ff79c390fa60` | `-- seq SH08:90-120 --samples 40 --denoise 1` |
+| `tc_sh03.mp4` TEST (SH03 F150-F180) | 31 | same | 657,654 | `7e296d402396a18956fadc232947036b3bb725d650dfe22359e65b179a746fc0` | `-- seq SH03:150-180 --samples 40 --denoise 1` |
+| `tc_seam_sh08_f209.mp4` TEST (SH08 F209) | 1 | same | 172,844 | `1cf64e482abe42e56f5b9ba60fa7580af002a6fa458be062029f787fdce05667` | `-- seq SH08:209 ...` |
+| `tc_seam_sh01_f000.mp4` TEST (SH01 F0) | 1 | same | 172,866 | `5e0fdf00c5e21f1c8a782d9adb496d798f39e9ea30189eefe66cd6e29ae68f48` | `-- seq SH01:0 ...` |
 | `shot-01..08` | 180/300/300/360/100/80/90/210 | libx264 crf 12 yuv420p, bt709/tv | pending | pending | pending |
 
 ## Deviations from the sheet numbers (for Mark / Film / Editor)

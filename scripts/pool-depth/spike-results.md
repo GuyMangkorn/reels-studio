@@ -249,3 +249,62 @@ Not changed: camera positions, vFOV, timings, M1-M12 contract (only lighting/wat
 4. Child remains a stylised toy: sleeves and shoulders are better, but the hair has no strand detail and there is no rim light from the sun.
 5. Plate width < 50% for SH05 F0-F55 and the stronger-than-brief apparent depth ratio at the B01 camera (0.29-0.44) remain open decisions (second pass items 5-6); one Metal kernel-compile crash seen earlier, so keep the retry wrapper.
 6. `d3_stills` in the manifest was rewritten from the batch log after a cross-process re-render overwrote the key; if the key looks short, re-run `stills` last.
+
+
+---
+
+# Test clips: ripple motion and encoded seam (Boss, 2026-10-28)
+
+Branch `claude/pool-depth-short` HEAD `3fa48c7` + uncommitted tree. Blender 5.2.3 headless via `build.py -- seq` (new command; PNGs to `renders/testclips/`, existing frames skipped so a crashed run resumes; `--period 60` is a test-only ripple override, `--mask 1` renders the SH03 coin mask), Cycles Metal M1, 1080x1920, 40 spp + OIDN (mask 16 spp). Encode: the S0 recipe unchanged. Decode: Remotion stills of `scripts/pool-depth/spike/entry-testclips.tsx` (scratch entry, not in `src/Root.tsx`; compositions `TC-SH08-Hold`, `TC-SH03-Hold` = clip + `B_loop`, 4 s scene, `TC-Seam-*`). Analysis (Blender python, numpy): `scripts/pool-depth/spike/analyze_testclips.py`, `verify_testclips.py`, `verify_coin.py`. Clip table (codec, size, SHA-256): `manifest.md`. No contract change. No Studio. Nothing committed. One render run, no Metal crash, no retry used. Render time 22 s/frame SH08, about 17 s/frame SH03.
+
+## Results
+
+| Check | Result |
+| --- | --- |
+| Encode | 4 clips, h264 High yuv420p 1080x1920 30/1; SH08 30 frames 2.46 MB (19.7 Mb/s), SH03 31 frames 0.66 MB; one-frame seam clips 173 KB each. ffprobe color_space bt709, primaries bt709, range tv; transfer reads `iec61966-2-1` (also in the S0 clip; matrix and range are what matter, colours verified below) |
+| Colour survival (Remotion decode vs PNG, same frame) | mean abs 2.1-2.15/255 over the frame (S0: 1.9-3.0), max 47-70, 1.0M-1.3M px > 2, 20-27k px > 8 (edges and grain). Known pixels: deck 199,195,189 -> 197,194,187; water 103,189,210 -> 101,188,208; pink 211,95,122 -> 208,94,120; coin region mean 92.7,76.0,32.2 -> 90.2,74.2,30.2. Offsets 1-3 levels, no hue shift |
+| Hold past clip end (`B_loop`, 3 s) | SH08 clip F29 vs held frames 30, 75, 119: max 0, 0 px differ; SH03 frame 30 vs 31 and 119: 0 differ. The held frame equals the clip's last frame exactly (also bit-identical decode) |
+| Frame index | Remotion frame 0 and 29 vs PNG F090 and F119: same error level as any frame (2.1-2.15), so index is exact |
+
+## Ripple judgement (SH08 F90-F119, period 30)
+
+- Loop wrap: F90 vs F120 (same state, period 30) max 1/255, 0 px > 2. Step F119 -> F90 is 2.02/255 mean (max 135); the 29 in-clip steps average 1.95 (1.82-2.08; max 106-133). The wrap is not an outlier, no jump. (Period-30 phases: F119 is phase 0, F90 phase 1.)
+- Motion size: 1.95/255 mean per step over the whole frame, 6.0/255 mean inside the water region (31% of the frame), peak steps up to 133 on refracted tile edges. Bounded and steady (no flicker pulse; OIDN excess 0.002-0.11 earlier).
+- Looked at (`out/pooldepth-test/contact_sh08.png`, F90/96/102/108/114/119 at 1/3 size): water shows a fine shimmering net of refracted tile joints, lane line and checker wobble, child and deck stable. At 30 fps one ripple cycle in 1 s reads as a lively, fast shimmer: a still-contact sheet cannot prove it is not distracting in playback; my read is that it is busy rather than disruptive on an unlit-text hold (SH08 carries the closing hold, no text on the water), and it is the only motion in an otherwise still frame for 3 s plus the child sway.
+- Period 60 (test render F90-F92 with angle 2 pi (f+1)/60): per-step mean 1.365/255 vs 1.948 at period 30 (-30%, not -50%: child sway stays period 30 and the bump is non-linear), peak step max 123-129 (same). It would make the hold calmer, but it costs the seam: SH08 hold repeats every 60 frames (render F90-F149 once, 60 frames) and the phase of F209 must be moved onto the SH01 F0 phase by changing `(f+1)%30` to a shifted `%60` in `phase_of`, SH01 F0 phase 0 unchanged; not applied.
+- Verdict: not defective; **keep period 30 for the full render** (no contract change); period 60 is an optional taste change (about 30% less change per step) that Mark/Film can request before the render, at the cost of rendering 30 more hold frames and a phase offset edit. Whether the 1 s ripple is "distracting" is a playback call for Mark/Film on `public/pool-depth/test/tc_sh08.mp4` (30 frames, loop it).
+
+## Encoded seam (SH08 F209 vs SH01 F0)
+
+| Pair (1080x1920, 0-255) | Mean | Max | Px > 2 | Px > 8 |
+| --- | ---: | ---: | ---: | ---: |
+| PNG F209 vs PNG SH01 F0 (previous result) | 0.012 | 1 | 0 | 0 |
+| Remotion decode of 1-frame clip F209 vs decode of 1-frame clip SH01 F0 | 0.541 | 21 | 223,483 (10.8%) | 649 |
+| Decode vs its own PNG: F209 / SH01 F0 | 2.138 / 2.138 | 65 | 1.30M | 26.8k |
+| Decode of the last frame of the 30-frame SH08 clip (F119 = same state as F209) vs decode of SH01 F0 | 1.000 | 26 | 533,378 (25.7%) | 8,225 |
+| PNG F119 vs PNG F209 (same state) | 0.014 | 2 | 0 | 0 |
+
+- H.264 breaks the seam beyond 2/255 on pixels: each frame is quantised to its own 2/255 noise pattern, so the same content decoded from two clips differs by mean 0.5-1.0 with maxima 21-26 (a one-frame I-frame pair 0.54; a P/B tail frame against an I-frame start 1.0). The proposed threshold (mean <= 1/255) passes for I-frame vs I-frame (0.54) and just meets it for the clip tail (1.00). It is grain-level difference on the same image, not a structural jump (the step between consecutive frames is 2/255 mean, larger than the seam). The seam is not pixel-exact but is below the frame-to-frame ripple change.
+- Mitigation if wanted: lower crf (10) at higher size, or ending SH08 and starting SH01 with I-frames (`-g` aligned, `-force_key_frames`), not needed visually; not tested.
+
+## SH03 coin criteria in the encoded frames (F150, F180)
+
+Coin pixels cannot be thresholded on the beauty by colour (the cream and wood are close), so the Blender mask region is the truth and the check is whether the decoded beauty matches the coin appearance there:
+
+| Check | PNG | Remotion decode |
+| --- | ---: | ---: |
+| Coin mask px (Blender emissive mask, F150 / F180) | 0 / 4,872 | (mask is geometry) |
+| F180: pixels in the mask within 16/255 of the PNG coin colour | 4,872 | 4,863 (99.8%) |
+| F150: same count in the same region | 0 | 0 |
+| Coin-colour band (mean 92.7,76.0,32.2 +-3 sd) in the coin box, F150 / F180 | 0 / 14,226 | 0 / 16,613 |
+| Mean coin colour in the F180 mask | 92.7,76.0,32.2 | 90.2,74.2,30.2 |
+| Region mean difference F150 vs F180 (decode) | | 67.3 (coin vs empty wall) |
+
+F150: 0 coin px (hidden, as criterion); F180: coin visible at 4,872 px (between the series values 2,472 at F170 and 7,296 at F190, consistent), preserved through H.264 within colour error 2-3 levels. Contact sheets: `out/pooldepth-test/contact_sh03.png` (PNG F150-F180, step 6), `contact_sh03_decoded.png` (Remotion decode SH03 F150/F180, SH08 F90/F119). Looked at: the coin appears at the bottom of the water as a small gold disc from about F168; the stream is a thin thread; reads fine at 1/3 scale; water surface understated (known).
+
+## Remaining risks
+
+1. Playback judgement of the ripple (period 30 vs 60) is a human call; numbers only.
+2. Encoded seam differs by grain (mean 0.5-1.0, max 21-26); acceptable visually in a loop but not pixel-identical; only one-frame and 30-frame clips tested, not a 210-frame SH08 clip with a long GOP (its tail may be a P-frame like F119 here).
+3. Production clips, Studio, long-clip decode and sync with the narration unverified; SH03 look items (understated water, bright mug interior, simple kettle) unchanged.
+4. ffprobe transfer tag reads iec61966-2-1 instead of bt709 although `-color_trc bt709` is passed (same as S0); colours verified by pixel comparison, so left as is.
