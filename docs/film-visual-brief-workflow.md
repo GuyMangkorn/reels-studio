@@ -84,6 +84,9 @@ Target checkout: <branch + commit>; scope / adjacent boundaries: ...
 ## Visual intent
 Audience knowledge + mood; color/value key; camera language; conceal/reveal constraints
 
+## Sound direction
+Music family/tempo/energy arc and ending plan; ambience per location; SFX language (transitions, UI, foley); silence policy; library IDs and generation gaps ([checklist](sound-generation-workflow.md#role-responsibilities))
+
 ## Visual progression
 Scene/beat refs; visible action; information/emotional change; visual form/reason;
 repetition/return rationale; missing assets and story-preserving alternatives;

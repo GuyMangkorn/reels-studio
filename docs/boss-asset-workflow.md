@@ -61,6 +61,8 @@ Merge foundation/capability PRs before starting dependent scene branches from re
 <a id="สร้าง-library-ให้รองรับหน้าที่ภาพ"></a>
 ## Build the library to serve the visual purpose
 
+Shared sound capability (registry, renderer fields, asset-attached contact sounds) is Boss's; generating and filing sounds is Editor's ([sound duties](sound-generation-workflow.md#role-responsibilities)).
+
 When mapping scene sheets to the library, record missing requirements against shot/decision IDs. Propose shared assets/capabilities, dependencies and qualitative costs/risks; label unmeasured costs `estimated`. Include a fallback and its effect on action, information and reveal. Reconcile material changes with Film/Mark and update brief/handoff before changing the plan. An available asset alone does not justify replacing the required demonstration/event with a narrator pointing at cards.
 
 Blockout placeholders must demonstrate action and information delivery from [visual progression](film-visual-brief-workflow.md#visual-progression-before-asset-selection) well enough for Film/Mark to judge. Before polish, submit each selected deliverable's sequence and record shot/frame references, review results and unresolved items in the index. If a placeholder cannot demonstrate the purpose, mark it unverified and state the required follow-up. Code/contact/continuity QA and correct total duration do not establish a storytelling pass.

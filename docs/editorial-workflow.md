@@ -66,6 +66,7 @@ The handoff contains:
 - **Truth and ending:** what actually happens within the story, verified facts and remaining uncertainty. Choose the ending before planting clues; for real cases, preserve the evidence rather than bending it to a preferred ending.
 - **Scene / beat list:** IDs, scene purpose, causal links, what changes and estimated timing. Distinguish story-world time from elapsed video time.
 - **Full script:** the actual spoken Thai narration/dialogue, with pauses and necessary sound/story events. Identify subtitles that shorten or change VO wording separately. A synopsis is not a full script.
+- **Sound intent:** per beat, music mood/energy, silence, and any stinger/riser/effect that carries the beat, as English notes ([sound duties](sound-generation-workflow.md#role-responsibilities)). Narration text is unchanged; sound never replaces a clue.
 - **Clue ledger:** `CL01`, plant/beat, observable information, initial interpretation, post-reveal interpretation and payoff. Distinguish fictional clues from real evidence presented to viewers.
 - **Claim mapping:** factual sentence/beat → `F001` → `SRC001` and locator. Mark unsupported new claims `needs-research`.
 - **Film → Mark handoff:** what must be seen/heard, what must stay hidden until which beat, essential continuity and story constraints. Film chooses the approach using the [brief workflow](film-visual-brief-workflow.md); Mark develops the scene sheets. Both receive matching script/review revisions.

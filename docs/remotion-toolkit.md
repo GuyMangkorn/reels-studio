@@ -176,7 +176,7 @@ Keep subtitles legible during a dissolve; fading two complete SceneViews togethe
 
 ## 9. Sound cues: sfx + core Audio
 
-[`@remotion/sfx`](https://www.remotion.dev/docs/sfx/) exports **remote sound URLs**, not bundled local WAV files. Its npm code is MIT; sound licenses are per file. For example, [whoosh](https://www.remotion.dev/docs/sfx/whoosh) is credited to 1bob under CC0. Check each sound's own page and original source; record title, creator, source URL and license beside any imported local sound. Select original/generic commercially usable sounds that fit the channel rather than assuming every meme sound is approved.
+[`@remotion/sfx`](https://www.remotion.dev/docs/sfx/) exports **remote sound URLs**, not bundled local WAV files. Its npm code is MIT; sound licenses are per file. For example, [whoosh](https://www.remotion.dev/docs/sfx/whoosh) is credited to 1bob under CC0. Check each sound's own page and original source; record title, creator, source URL and license beside any imported local sound. Select original/generic commercially usable sounds that fit the channel rather than assuming every meme sound is approved. Locally generated sounds and the shared sound library follow the [sound generation workflow](sound-generation-workflow.md).
 
 ```tsx
 import {whoosh} from '@remotion/sfx';
