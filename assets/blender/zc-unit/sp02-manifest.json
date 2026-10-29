@@ -81,7 +81,7 @@
           412
         ],
         "y": [
-          453,
+          454,
           629
         ]
       },
@@ -89,14 +89,14 @@
       "label_box_gap_to_face_box_x_px": 48,
       "label_box_inside_door_face_x": true,
       "lead_px": {
-        "height_px": 1344,
+        "height_px": 1343,
         "lowest_world_z": -0.0,
         "x": [
           178,
           525
         ],
         "y": [
-          453,
+          454,
           1797
         ]
       },
@@ -195,25 +195,25 @@
       "head_px": {
         "x": [
           247,
-          410
+          407
         ],
         "y": [
-          446,
+          448,
           631
         ]
       },
       "label_box_above_plain_band_px": 14,
-      "label_box_gap_to_face_box_x_px": 50,
+      "label_box_gap_to_face_box_x_px": 53,
       "label_box_inside_door_face_x": true,
       "lead_px": {
-        "height_px": 1373,
+        "height_px": 1371,
         "lowest_world_z": -0.0,
         "x": [
           214,
           470
         ],
         "y": [
-          446,
+          448,
           1819
         ]
       },
@@ -1277,11 +1277,11 @@
         0.4845
       ]
     },
-    "render_seconds": 3.96,
+    "render_seconds": 4.09,
     "settings": {
       "engine": "BLENDER_EEVEE",
       "fast_gi": true,
-      "gi_bake_seconds": 1.75,
+      "gi_bake_seconds": 1.88,
       "look": "None",
       "output": "PNG 8-bit RGB sRGB",
       "raytracing": "SCREEN, res 1/2, denoise",

@@ -36,6 +36,8 @@ for spec_ in names:
     ch.apply_face(ao.pose.bones, 'neutral')
     for suf, ang in (('front', 0), ('q', 35), ('side', 90)):
         shot(f'{nm}_{suf}.png', ang)
+    shot(f'{nm}_ear_front.png', 0, 0.42, (0.075, 0, 0.0))          # ear close-ups: front and 3/4
+    shot(f'{nm}_ear_q.png', 55, 0.36, (0.045, 0, 0.0))
     shot(f'{nm}_eye_side.png', 75, 0.30, (0, -0.075, 0.012))      # close-up of the eye area from the side: shows the socket recess
     if True:
         for ex in ch.FACE_PRESETS:

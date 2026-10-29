@@ -21,7 +21,8 @@ Parameters (all metres unless noted; the defaults are the `zc-you` lead)
   eye_x (half spacing), eye_z (height above the head centre), eye_y (depth), eye_r (radius), iris (0.5..0.8 = iris diameter / eye diameter)
   brow_z, brow_thick, brow_arch, brow_len
   nose_len, nose_w, nose_bridge (multipliers of the sculpted nose); mouth_z, mouth_w, mouth_curve (corner lift, + = slight smile), lip_full
-  ear (scale), cheek (multiplier)
+  ear (scale), ear_tilt (deg, top leans back from vertical), ear_flare (deg, top stands out from the skull), ear_turn (deg, face of the ear turns forward),
+  ear_z / ear_y (centre height / depth; ear spans roughly brow line to nose base), cheek (multiplier)
   skin, skin_shadow (hex), stubble (0..1), lip, hair, hair2, hair_hl, brow_color, iris_color (hex)
   hair_style 'side_sweep' | 'short_crop' | 'bowl'; hair_volume (0.8..1.4); hair_flicks (count of tip strokes); hair_messy (0..1)
 Runtime shape keys on the head mesh (value 0 = parameters as built; slider -1..1.5): nose_size, nose_width, jaw_width, chin, cheek_full.
@@ -34,14 +35,14 @@ PARAMS = dict(
     eye_x=0.0365, eye_z=0.012, eye_y=-0.083, eye_r=0.0215, iris=0.70,
     brow_z=0.045, brow_thick=1.0, brow_arch=0.006, brow_len=1.0,
     nose_len=0.7, nose_w=0.85, nose_bridge=0.7, mouth_z=-0.060, mouth_w=0.016, mouth_curve=0.0022, lip_full=1.0,
-    ear=1.0, cheek=1.2,
+    ear=1.0, ear_tilt=12.0, ear_flare=12.0, ear_turn=20.0, ear_z=0.004, ear_y=0.008, cheek=1.2,
     skin='#b98a6a', stubble=0.0, lip='#a8655a', hair='#17151a', hair2='#241c17', hair_hl='#2b2a34', brow_color='#16110e', iris_color='#6a4326',
     hair_style='side_sweep', hair_volume=1.0, hair_flicks=5, hair_messy=0.0, sideburn=0,
     style='v1', oval=False, socket=1.0, brow_ridge=1.0,     # socket / brow_ridge: depth multipliers of the orbit dip and the brow ridge (v2 sets them high)
 )
-STYLE_V2 = dict(    # v2: round skull, one cut-out hair sheet (no flicks/tufts), no visible eyelids (lids retracted at rest, they only close to blink)
+STYLE_V2 = dict(    # v2: round skull, one cut-out hair sheet (no flicks/tufts), visible but lighter upper lids (about a third less cover than v1), brows slightly lower
     style='v2', oval=True, head=(0.097, 0.104, 0.112), jaw_taper=0.0, chin=0.0, cheek=0.0, lip_full=0.3, hair_style='cutout', hair_flicks=0, hair_messy=0.0, hair_volume=1.0,
-    nose_len=0.1, nose_w=1.3, nose_bridge=0.15, eye_r=0.0195, iris=0.74, eye_y=-0.0715, socket=2.4, brow_ridge=1.1,
+    nose_len=0.1, nose_w=1.3, nose_bridge=0.15, eye_r=0.0195, iris=0.74, eye_y=-0.0715, socket=2.4, brow_ridge=1.1, brow_z=0.041,
 )
 PRESETS = {
     'zc_you': {},
@@ -64,14 +65,14 @@ FACE_PRESETS = {   # lid: upper-lid close angle deg (0 open, + closes, - wide), 
     'frozen': dict(lid=6, brow=(0.005, -4), jaw=0),
 }
 
-FACE_PRESETS_V2 = {  # lid is retracted (-40) except for a blink; the read is carried by brows, jaw and eye squash (eye bone scale z)
-    'neutral': dict(lid=-40, brow=(0.000, 5), jaw=0, squash=0.88),
-    'tired': dict(lid=-40, brow=(-0.003, 9), jaw=0.5, squash=0.7),
-    'startle': dict(lid=-40, brow=(0.012, 0), jaw=4, squash=1.1),
-    'fear': dict(lid=-40, brow=(0.009, -9), jaw=3, squash=1.08),
-    'focused': dict(lid=-40, brow=(-0.004, 12), jaw=0, squash=0.78),
-    'listening': dict(lid=-40, brow=(0.004, -3), jaw=0, squash=0.96),
-    'frozen': dict(lid=-40, brow=(0.005, -5), jaw=0, squash=0.98),
+FACE_PRESETS_V2 = {  # lid: upper-lid close angle (0 = lid edge 18 deg above the eye centre, ~29 % of the iris covered vs 45 % for v1 neutral); squash = eye bone scale z
+    'neutral': dict(lid=0, brow=(-0.001, 5), jaw=0, squash=1.0),
+    'tired': dict(lid=13, brow=(-0.003, 8), jaw=0.5, squash=0.92),
+    'startle': dict(lid=-12, brow=(0.011, 0), jaw=4, squash=1.06),
+    'fear': dict(lid=-10, brow=(0.008, -9), jaw=3, squash=1.04),
+    'focused': dict(lid=6, brow=(-0.004, 11), jaw=0, squash=0.95),
+    'listening': dict(lid=-3, brow=(0.003, -3), jaw=0, squash=1.0),
+    'frozen': dict(lid=-5, brow=(0.004, -5), jaw=0, squash=1.0),
 }
 
 
@@ -334,9 +335,11 @@ def _finish(bm, name, mats, smooth=True):
 
 
 def _ellipsoid(name, c, r, mat, rot=(0, 0, 0), seg=20, rings=12):
+    """rot = Euler tuple or a 3x3 Matrix."""
+    R_ = rot.to_4x4() if isinstance(rot, Matrix) else Euler(rot).to_matrix().to_4x4()
     bm = bmesh.new()
     bmesh.ops.create_uvsphere(bm, u_segments=seg, v_segments=rings, radius=1.0)
-    bmesh.ops.transform(bm, matrix=Matrix.Translation(c) @ Euler(rot).to_matrix().to_4x4() @ Matrix.Diagonal((*r, 1.0)), verts=bm.verts)
+    bmesh.ops.transform(bm, matrix=Matrix.Translation(c) @ R_ @ Matrix.Diagonal((*r, 1.0)), verts=bm.verts)
     return _finish(bm, name, [mat])
 
 
@@ -549,12 +552,17 @@ def build_head(ao, origin, p=None, prefix='ch', scale=1.0, mats=None):
     parts.append(head)
     ec_y = p['eye_y']
     R = p['eye_r']
-    # ---- ears
+    # ---- ears: a thin cupped plate spanning about the brow line to the nose base, leaning back `ear_tilt` deg, top standing out `ear_flare` deg,
+    # its face turned forward `ear_turn` deg; one darker inner plate = the simple cel ear (no helix detail)
     for s, n in ((1, 'L'), (-1, 'R')):
-        ex = p['head'][0] * s
-        e1 = _ellipsoid(f'{prefix}_ear.{n}', Vector((ex * 0.995, 0.006, -0.001)), (0.0085 * p['ear'], 0.0225 * p['ear'], 0.033 * p['ear']), mats['skin'],
-                        rot=(0, math.radians(-12 * s), 0))
-        e2 = _ellipsoid(f'{prefix}_ear_in.{n}', Vector((ex * 0.95, 0.002, 0.002)), (0.0045 * p['ear'], 0.012 * p['ear'], 0.021 * p['ear']), mats['ear_in'])
+        ez_, ey_ = p['ear_z'], p['ear_y']
+        ex = p['head'][0] * math.sqrt(max(0.05, 1 - (ey_ / p['head'][1]) ** 2 - (ez_ / p['head'][2]) ** 2)) * 0.97
+        rot = (Matrix.Rotation(math.radians(-p['ear_turn'] * s), 3, 'Z') @ Matrix.Rotation(math.radians(-p['ear_tilt']), 3, 'X')
+               @ Matrix.Rotation(math.radians(p['ear_flare'] * s), 3, 'Y'))
+        c = Vector((ex * s, ey_, ez_))
+        out_n = rot @ Vector((s, 0, 0))
+        e1 = _ellipsoid(f'{prefix}_ear.{n}', c, (0.0075 * p['ear'], 0.0185 * p['ear'], 0.0345 * p['ear']), mats['skin'], rot=rot, seg=28, rings=16)
+        e2 = _ellipsoid(f'{prefix}_ear_in.{n}', c + out_n * 0.0042 * p['ear'], (0.0030 * p['ear'], 0.0105 * p['ear'], 0.0225 * p['ear']), mats['ear_in'], rot=rot, seg=24, rings=14)
         for e in (e1, e2):
             _xf(e, origin, scale)
             _bind(e, ao, {'head': 1.0})
@@ -589,7 +597,7 @@ def build_head(ao, origin, p=None, prefix='ch', scale=1.0, mats=None):
             bm.to_mesh(lm)
             bm.free()
             lm.materials.append(mats['skin'])
-            lm.materials.append(mats['skin'] if p['style'] == 'v2' else mats['lash'])      # v2: the lid is plain skin (it only closes to blink)
+            lm.materials.append(mats['lash'])
             for pg in lm.polygons:
                 pg.use_smooth = True
                 zc_ = sum((lm.vertices[i].co.z - c.z for i in pg.vertices), 0.0) / len(pg.vertices)
