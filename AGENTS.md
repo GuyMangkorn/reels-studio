@@ -76,7 +76,7 @@ Every agent reads AGENTS.md plus its **core** documents. It reads any other docu
 | [runtime-contract](docs/runtime-contract.md) | Claiming a runtime capability, new timeline fields, module ownership; inspect types, validator, shared implementation and renderer together | on trigger |
 | [editor-workflow](docs/editor-workflow.md) | Integration, editing, scene samples; user-supplied footage/images/audio or an edit without a script ([direct intake](docs/editor-workflow.md#direct-intake)) (Editor) | E |
 | [editor-principles](docs/editor-principles.md) | Rhythm, transitions, audio mix, loop seams | E |
-| [sound-generation-workflow](docs/sound-generation-workflow.md) | Generating SFX, ambience or music with the `audio-studio` MCP; the shared sound library | on trigger (E) |
+| [sound-generation-workflow](docs/sound-generation-workflow.md) | Sound duties per role, the library index and license. Generating, processing or filing sounds with the `audio-studio` MCP uses the [`sound-generation` skill](.agents/skills/sound-generation/SKILL.md) | on trigger (E) |
 | [sequence-workflow](docs/sequence-workflow.md) | Sequence planning, blockout before polish, boundaries, continuity review across cuts | on trigger (M, S, E) |
 | [production-requirements](docs/production-requirements.md) | Any production deliverable or its review: formats, duration, Thai text/audio, subtitles, endings, licenses | on trigger |
 | [scale-and-perspective-principles](docs/scale-and-perspective-principles.md) | Physical dimensions, projection, depth staging, resizing, apparent size | on trigger |
