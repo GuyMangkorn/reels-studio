@@ -84,3 +84,9 @@
 - Still short of the reference: shading is the cel material with weak bands, not real soft 3D shading (no subsurface, no cheek blush, no ambient occlusion in the eye corners and under the brows), so it reads flatter than the reference; the body keeps the cel look, so face and body shading differ in v3; lids are thin shells, not thick rolled lids, and the pink rim is barely visible at shot size; the nose is a ball on the face rather than a sculpted bridge-to-tip form, and the profile nose is short; brows are tubes, not soft sculpted pads; the mouth is still a line, with no smirk asymmetry or lip volume; ears are larger but still plates; no neck/jaw transition sculpt (the rig neck is the body mesh).
 - Proposal (not built): a `shade='soft'` path on true Principled/diffuse shading with a skin SSS term and AO would get closest to the reference; cost not measured.
 
+## 2026-10-29 Boss: v2 brows shortened (user picked v2 = round eyes + line lid)
+
+- Change: only the `straight_soft` brow preset (the v2 default; v1 uses its own brow code, v3 uses `chunky_short*`, other v2 brow presets keep the defaults) now sets `brow_x0` 0.012 (inner end unchanged) and `brow_x1` 0.060 (was the default 0.068): brow length 0.056 to 0.048 m, **14 % shorter, trimmed at the tail**. Thickness, taper, arch, tilt and height unchanged; every other v2 setting unchanged.
+- Evidence (untracked, `out/qa/char-head/`): `v2_brow_before_after.png` (top row before, bottom after; front, 3/4, profile, face close-up), `v2_expressions_shortbrow.png` (neutral, tired, fear), `compare_v1_v2_v3.png` (v2 row updated), `b10_v2b_sheet.png`, `b10_v2b_face.png`.
+- Checks v2: B10-SH01 face box x 220-420, y 420-650 True at c0 and c245 (label gap 52 / 50 px); rig and tracks checks without errors; B09-SH01 floor penetration 0.0, lead 452 px at 3.4 m; B09-SH01 render first frame 8.40 s.
+

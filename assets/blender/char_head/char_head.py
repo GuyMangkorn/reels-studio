@@ -69,7 +69,7 @@ EYE_SHAPES = {
 LID_MODES = ('none', 'line', 'lid', 'thick')     # none: skin edge only; line: thin dark lid line; lid: thick lid line + a faint crease above it;
 # thick (v3): 3D skin lids standing proud of the eye with a soft pink rim, no dark line
 BROW_SHAPES = {
-    'straight_soft': dict(brow_arch=0.0008, brow_thick=1.0, brow_taper=0.35, brow_tilt=0.0, brow_len=1.0),
+    'straight_soft': dict(brow_arch=0.0008, brow_thick=1.0, brow_taper=0.35, brow_tilt=0.0, brow_len=1.0, brow_x0=0.012, brow_x1=0.060),   # v2 default; tail trimmed 14 % (x1 0.068 -> 0.060)
     'gentle_arch': dict(brow_arch=0.0050, brow_thick=0.95, brow_taper=0.5, brow_tilt=2.0, brow_len=1.0),
     'chunky_short': dict(brow_arch=0.0020, brow_thick=1.65, brow_taper=0.12, brow_tilt=3.0, brow_len=1.0, brow_x0=0.017, brow_x1=0.050, brow_round=True),
     'chunky_short_light': dict(brow_arch=0.0018, brow_thick=1.35, brow_taper=0.2, brow_tilt=2.0, brow_len=1.0, brow_x0=0.016, brow_x1=0.054, brow_round=True),
