@@ -29,7 +29,7 @@ npm run render:long
 - `Short`: 1080 × 1920, 30fps, 600 frames / 20 seconds → `out/demo_short.mp4`
 - `Long`: 1920 × 1080, 30fps, 600 frames / 20 seconds → `out/demo_long.mp4`
 - Each render exports `_A_fade.mp4` and `_B_loop.mp4`; the unsuffixed file is a copy of B for review. The final scene holds its actor pose for three seconds. A keeps the Thai closing line readable for three seconds, then fades to black over the last second; B cuts back on its last frame to the exact first timeline frame, including the background, actors, subtitles and progress bar. The next playback cycle begins on the same image. Audio continues on its original clock and is not replayed by this visual cut. Both stay exactly 20 seconds.
-- H.264, yuv420p, CRF 18, with Thai Niwat narration at +5%. Rendering uses port 3101 to avoid Studio's port.
+- H.264, yuv420p, CRF 18, with Thai Niwat narration at the default +5%. Rendering uses port 3101 to avoid Studio's port.
 - The first render may download Remotion's Chrome Headless Shell. The Noto Sans Thai font is bundled and requires no font network requests.
 - Outputs, generated bundles and node_modules are ignored by Git.
 
