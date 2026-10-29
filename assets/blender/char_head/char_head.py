@@ -38,12 +38,27 @@ PARAMS = dict(
     ear=1.0, ear_tilt=12.0, ear_flare=12.0, ear_turn=20.0, ear_z=0.004, ear_y=0.008, cheek=1.2,
     skin='#b98a6a', stubble=0.0, lip='#a8655a', hair='#17151a', hair2='#241c17', hair_hl='#2b2a34', brow_color='#16110e', iris_color='#6a4326',
     hair_style='side_sweep', hair_volume=1.0, hair_flicks=5, hair_messy=0.0, sideburn=0,
+    eye_shape=None, lid_mode='line', brow_taper=0.0, brow_tilt=0.0,
     style='v1', oval=False, socket=1.0, brow_ridge=1.0,     # socket / brow_ridge: depth multipliers of the orbit dip and the brow ridge (v2 sets them high)
 )
 STYLE_V2 = dict(    # v2: round skull, one cut-out hair sheet (no flicks/tufts), visible but lighter upper lids (about a third less cover than v1), brows slightly lower
     style='v2', oval=True, head=(0.097, 0.104, 0.112), jaw_taper=0.0, chin=0.0, cheek=0.0, lip_full=0.3, hair_style='cutout', hair_flicks=0, hair_messy=0.0, hair_volume=1.0,
-    nose_len=0.1, nose_w=1.3, nose_bridge=0.15, eye_r=0.0195, iris=0.74, eye_y=-0.0715, socket=2.4, brow_ridge=1.1, brow_z=0.041,
+    nose_len=0.1, nose_w=1.3, nose_bridge=0.15, eye_r=0.0240, iris=0.74, eye_y=-0.0725, socket=2.4, brow_ridge=1.1, brow_z=0.041,
 )
+# v2 eye opening presets (deg on the eyeball: w = half width, up / down = half height above / below the centre line, k, m = corner/fullness exponents of
+# h(x) = (1 - |x|^k)^m, tilt = outer corner raised, wing = lash line thicker toward the outer corner) and brow presets
+EYE_SHAPES = {
+    'round': dict(eye_w=50, eye_up=34, eye_down=32, eye_k=2.0, eye_m=0.5, eye_tilt=0, eye_wing=0.0, iris=0.78),
+    'oval': dict(eye_w=58, eye_up=26, eye_down=22, eye_k=2.0, eye_m=0.5, eye_tilt=0, eye_wing=0.0, iris=0.72),
+    'almond': dict(eye_w=62, eye_up=26, eye_down=17, eye_k=1.7, eye_m=0.8, eye_tilt=2, eye_wing=0.3, iris=0.70),
+    'cat': dict(eye_w=64, eye_up=27, eye_down=14, eye_k=1.5, eye_m=0.9, eye_tilt=8, eye_wing=0.9, iris=0.68),
+}
+LID_MODES = ('none', 'line', 'lid')     # none: skin edge only; line: thin dark lid line; lid: thick lid line + a faint crease above it
+BROW_SHAPES = {
+    'straight_soft': dict(brow_arch=0.0008, brow_thick=1.0, brow_taper=0.35, brow_tilt=0.0, brow_len=1.0),
+    'gentle_arch': dict(brow_arch=0.0050, brow_thick=0.95, brow_taper=0.5, brow_tilt=2.0, brow_len=1.0),
+    'angled_taper': dict(brow_arch=0.0015, brow_thick=1.1, brow_taper=0.8, brow_tilt=-9.0, brow_len=1.05),   # tilt < 0: inner end lower than the outer end
+}
 PRESETS = {
     'zc_you': {},
     'round_soft': dict(head=(0.094, 0.100, 0.108), jaw_taper=0.14, chin=0.7, eye_x=0.036, eye_z=0.012, eye_r=0.0205, iris=0.72, brow_thick=0.8,
@@ -82,11 +97,14 @@ def params(**kw):
     return p
 
 
-def style(name, base=None, **kw):
-    """Apply a head style ('v1' default look | 'v2' round/cut-out/no-lids) on top of `base` parameters (or the defaults); keywords win."""
+def style(name, base=None, eye='almond', lids='line', brow='straight_soft', **kw):
+    """Apply a head style ('v1' default look | 'v2' oval/cut-out, with eye=EYE_SHAPES key, lids=LID_MODES, brow=BROW_SHAPES key) on top of `base` parameters (or the defaults); keywords win."""
     p = dict(base or PARAMS)
     if name == 'v2':
         p.update(STYLE_V2)
+        p.update(EYE_SHAPES[eye])
+        p.update(BROW_SHAPES[brow])
+        p.update(eye_shape=eye, lid_mode=lids)
     p['style'] = name
     p.update(kw)
     return p
@@ -226,7 +244,7 @@ def make_materials(p, prefix='ch', origin=(0, 0, 0)):
         outn = [n for n in gm.nodes if n.type == 'OUTPUT_MATERIAL'][0]
         em = gm.nodes.new('ShaderNodeEmission')
         em.name = 'zc_glint'
-        em.inputs['Strength'].default_value = 1.0
+        em.inputs['Strength'].default_value = 4.0
         gm.links.new(em.outputs[0], outn.inputs['Surface'])
     return d
 
@@ -351,6 +369,57 @@ def _cap(name, c, r, ang, mat, seg=48, rings=24):
     bmesh.ops.delete(bm, geom=[v for v in bm.verts if math.degrees(math.acos(max(-1, min(1, -v.co.y / r)))) > ang], context='VERTS')
     bmesh.ops.transform(bm, matrix=Matrix.Translation(c), verts=bm.verts)
     return _finish(bm, name, [mat])
+
+
+def _eye_shells(prefix, n, s, c, R, p, mats):
+    """v2 eye opening: skin shells around the eyeball whose edge follows the preset's opening curve exactly (column mesh in azimuth x elevation).
+    Returns (upper shell, lower shell). The upper shell carries the lid line (material 1) and an optional crease (material 2)."""
+    w, up, dn, k, m, tilt, wing = p['eye_w'], p['eye_up'], p['eye_down'], p['eye_k'], p['eye_m'], p['eye_tilt'], p['eye_wing']
+    mode = p['lid_mode']
+    t0 = {'none': 0.0, 'line': 3.0, 'lid': 5.5}[mode]
+    phis = sorted(set([-85.0 + 170.0 * i / 62 for i in range(63)] + [-w, w]))
+
+    def h(x):
+        return (1 - abs(x) ** k) ** m if abs(x) < 1 else 0.0
+
+    def dirv(phi, el):
+        a, e = math.radians(phi * s), math.radians(el)
+        return Vector((math.sin(a) * math.cos(e), -math.cos(math.radians(phi)) * math.cos(e), math.sin(e)))
+    out = []
+    for kind in ('up', 'low'):
+        bm = bmesh.new()
+        cols = []
+        for phi in phis:
+            x = phi / w
+            cl = tilt * x
+            hh = h(x)
+            edge = cl + (up if kind == 'up' else -dn) * hh
+            rr = R * (1.035 if kind == 'up' else 1.02)
+            if kind == 'up':
+                tt = t0 * (1 + wing * max(0.0, x)) * min(1.0, hh * 4.0)
+                tt = max(tt, 0.01)                                  # same row count in every column (collapses to a point at the corners)
+                els = [edge, edge + tt]
+                if mode == 'lid':
+                    els += [edge + tt + 5.0, edge + tt + 6.2]
+                top = els[-1]
+                els += [top + (80.0 - top) * f for f in (0.15, 0.35, 0.6, 0.8, 1.0)]
+            else:
+                els = [edge - (edge + 80.0) * f for f in (0.0, 0.12, 0.3, 0.55, 0.8, 1.0)]
+            cols.append([bm.verts.new(c + dirv(phi, e) * rr) for e in els])
+        for j in range(len(cols) - 1):
+            a, b = cols[j], cols[j + 1]
+            for i in range(min(len(a), len(b)) - 1):
+                fc = bm.faces.new((a[i], b[i], b[i + 1], a[i + 1]))
+                if kind == 'up':
+                    fc.material_index = 1 if i == 0 and t0 > 0 else (2 if (mode == 'lid' and i == 2) else 0)
+        bm.faces.ensure_lookup_table()
+        bm.normal_update()
+        f0 = bm.faces[len(bm.faces) // 2]
+        if f0.normal.dot(f0.calc_center_median() - c) < 0:
+            bmesh.ops.reverse_faces(bm, faces=bm.faces)
+        ob = _finish(bm, f'{prefix}_{"lid" if kind == "up" else "lidlow"}.{n}', [mats['skin'], mats['lash'], mats['ear_in']])
+        out.append(ob)
+    return out
 
 
 def _tube(name, pts, radii, mat, seg=6, cap=True):
@@ -580,12 +649,13 @@ def build_head(ao, origin, p=None, prefix='ch', scale=1.0, mats=None):
         _xf(eye, origin, scale)
         _bind(eye, ao, {f'eye.{n}': 1.0})
         parts.append(eye)
-        gdir = Vector((-0.30 * s, -0.93, 0.32)).normalized()
-        gl = _ellipsoid(f'{prefix}_glint.{n}', c + gdir * R * 1.0, (R * 0.17, R * 0.10, R * 0.17), mats['glint'], seg=12, rings=8)
+        gdir = Vector((-0.30 * s, -0.93, 0.22)).normalized()
+        gl = _ellipsoid(f'{prefix}_glint.{n}', c + gdir * R * 1.0, (R * 0.13, R * 0.08, R * 0.13), mats['glint'], seg=12, rings=8)
         _xf(gl, origin, scale)
         _bind(gl, ao, {f'eye.{n}': 1.0})
         parts.append(gl)
-        for kind, lo, hi in (('lid', 0.0, 72.0), ('lidlow', 118.0, 180.0)):
+        shells = _eye_shells(prefix, n, s, c, R, p, mats) if (p['style'] == 'v2' and p['eye_shape']) else None
+        for kind, lo, hi in (() if shells else (('lid', 0.0, 72.0), ('lidlow', 118.0, 180.0))):
             bm = bmesh.new()
             bmesh.ops.create_uvsphere(bm, u_segments=40, v_segments=26, radius=R * 1.06)
             bm.verts.ensure_lookup_table()
@@ -609,8 +679,26 @@ def build_head(ao, origin, p=None, prefix='ch', scale=1.0, mats=None):
             _xf(lid, origin, scale)
             _bind(lid, ao, {f'lid.{n}': 1.0} if kind == 'lid' else {'head': 1.0})
             parts.append(lid)
+        if shells:
+            for ob, bone in zip(shells, (f'lid.{n}', 'head')):
+                _xf(ob, origin, scale)
+                _bind(ob, ao, {bone: 1.0})
+                parts.append(ob)
         # brows: tapered arched stroke following the forehead
         bp = []
+        if p['style'] == 'v2' and p['eye_shape']:
+            tl = math.tan(math.radians(p['brow_tilt']))
+            xs = [0.012 + 0.056 * i / 6 for i in range(7)]
+            for bx in xs:
+                bxx = bx * p['brow_len']
+                z = p['brow_z'] + p['brow_arch'] * (1 - ((bx - 0.040) / 0.028) ** 2) + tl * (bx - 0.040)
+                bp.append(Vector((bxx * s, front_y(p, bxx, z) - 0.0012, z)))
+            rad = [max(0.0008, 0.0046 * p['brow_thick'] * (1 - p['brow_taper'] * (i / 6) ** 1.5) * (0.6 if i == 0 else 1.0)) for i in range(7)]
+            br = _tube(f'{prefix}_brow.{n}', bp, rad, mats['brow'], seg=6)
+            _xf(br, origin, scale)
+            _bind(br, ao, {f'brow.{n}': 1.0})
+            parts.append(br)
+            continue
         for bx, dz in ((0.014, -0.003), (0.024, 0.0), (0.036, p['brow_arch']), (0.048, p['brow_arch'] * 0.7), (0.058, 0.0), (0.066, -0.008)):
             bxx = bx * p['brow_len']
             z = p['brow_z'] + dz

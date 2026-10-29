@@ -209,7 +209,7 @@ def M_head(M):
 def zc_params(variant='day1'):
     """char_head parameters of the lead (defaults of the shared head = zc-you); day-3: stubble, messier hair, slightly darker skin."""
     p = ch.params(stubble=0.55, hair_messy=1.0, skin='#b08462') if variant == 'day3' else ch.params()
-    return ch.style(os.environ.get('ZC_HEAD_STYLE', 'v1'), p)       # head style v1 (default) | v2 (round, cut-out hair, no visible lids)
+    return ch.style(os.environ.get('ZC_HEAD_STYLE', 'v1'), p, eye=os.environ.get('ZC_EYE', 'almond'), lids=os.environ.get('ZC_LIDS', 'line'), brow=os.environ.get('ZC_BROW', 'straight_soft'))       # head style v1 (default) | v2 (round, cut-out hair, no visible lids)
 
 
 def make_materials(variant):

@@ -27,22 +27,24 @@ def shot(name, ang, dist=0.78, aim=(0, 0, 0)):
     sc.render.filepath = os.path.join(out, name)
     bpy.ops.render.render(write_still=True)
 for spec_ in names:
-    nm0, _, st = spec_.partition(':')
+    nm0, st, *opt = spec_.split(':')       # preset[:style[:eye[:lids[:brow]]]]
     st = st or 'v1'
-    nm = f'{nm0}_{st}'
-    p = ch.style(st, ch.preset(nm0))
+    eye, lids, brow = (opt + ['oval', 'line', 'straight_soft'][len(opt):])[:3]
+    nm = f'{nm0}_{st}' + (f'_{eye}_{lids}_{brow}' if opt else '')
+    p = ch.style(st, ch.preset(nm0), eye=eye, lids=lids, brow=brow)
     ao = ch.add_standalone_armature(p, nm)
     ch.build_head(ao, (0, 0, 0), p, nm)
     ch.apply_face(ao.pose.bones, 'neutral')
     for suf, ang in (('front', 0), ('q', 35), ('side', 90)):
         shot(f'{nm}_{suf}.png', ang)
+    shot(f'{nm}_face.png', 0, 0.40, (0, 0, -0.01))                  # face close-up (front)
     shot(f'{nm}_ear_front.png', 0, 0.42, (0.075, 0, 0.0))          # ear close-ups: front and 3/4
     shot(f'{nm}_ear_q.png', 55, 0.36, (0.045, 0, 0.0))
     shot(f'{nm}_eye_side.png', 75, 0.30, (0, -0.075, 0.012))      # close-up of the eye area from the side: shows the socket recess
     if True:
         for ex in ch.FACE_PRESETS:
             ch.apply_face(ao.pose.bones, ex)
-            shot(f'{nm}_expr_{ex}.png', 15)
+            shot(f'{nm}_expr_{ex}.png', 0, 0.55, (0, 0, -0.01))
     for o in bpy.data.objects:
         if o.type in ('MESH', 'ARMATURE'):
             o.hide_render = True
