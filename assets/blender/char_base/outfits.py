@@ -23,7 +23,7 @@ class Ctx:
         self.name, self.J, self.F, self.M = name, J, F, M
         self.planes, self.bands, self.trims, self.hooks = [], [], [], []
         self.fold, self.drape = {}, None
-        self.body = self.ao = self.bv = None
+        self.body = self.ao = self.bv = self.bdom = None
 
 
 def plan(outfit, name, J, F):
@@ -117,6 +117,7 @@ def apply(body_obj, ao, outfit, M, J, F, table):
         pg.use_smooth = True
     B.vg_bind(body_obj, ao, w)
     ctx.bv = [v.co.copy() for v in me.vertices]
+    ctx.bdom = [max(wv, key=wv.get).split('.')[0] for wv in w]     # dominant bone per vertex (fits pick their own limb / neck)
     for fn in ctx.trims:
         fn()
     _folds(ctx, slots)
@@ -192,11 +193,13 @@ def ellipsoid(name, c, r, mat, rot=(0, 0, 0), seg=24, rings=14):
     return _obj(name, bm, mat)
 
 
+ARM_DOM = ('upper_arm', 'forearm', 'hand', 'fingers', 'fingers_tip', 'thumb')   # section fits never take in a hanging arm (heavy bodies)
 MAX_GROW = 20        # band-growth iterations (x1.5 each) before a missing section is an error, never a hang
 
 
-def _fit_h(ctx, z, xsign=0, band=0.004, xmax=None):
-    """Centre and half-extents (x, y) of the body section at height z (torso, or one leg with xsign; xmax narrows the torso window, e.g. to the neck)."""
+def _fit_h(ctx, z, xsign=0, band=0.004, xmax=None, dom=None):
+    """Centre and half-extents (x, y) of the body section at height z (torso, or one leg with xsign; xmax narrows the torso window, e.g. to the neck;
+    dom keeps only vertices whose dominant bone is dom, so a collar does not take in the shoulder slope)."""
     J, F = ctx.J, ctx.F
     tx, lx0, lx1 = 0.21 * F['rt'], 0.02 * F['gw'], J['HIP'].x + 0.085 * F['rl']
     tx = xmax if xmax else tx
@@ -204,7 +207,8 @@ def _fit_h(ctx, z, xsign=0, band=0.004, xmax=None):
     for _ in range(MAX_GROW):
         if len(pts) >= 8:
             break
-        pts = [p for p in ctx.bv if abs(p.z - z) < band and (xsign == 0 and abs(p.x) < tx or xsign != 0 and lx0 < p.x * xsign < lx1)]
+        pts = [p for p, d in zip(ctx.bv, ctx.bdom) if abs(p.z - z) < band and (dom is None or d == dom) and d not in ARM_DOM
+               and (xsign == 0 and abs(p.x) < tx or xsign != 0 and lx0 < p.x * xsign < lx1)]
         band *= 1.5
     if len(pts) < 8:
         raise ValueError(f'char_base.outfits: no body section found at z={z:.3f}')
@@ -213,8 +217,8 @@ def _fit_h(ctx, z, xsign=0, band=0.004, xmax=None):
     return cx, cy, max(abs(p.x - cx) for p in pts), max(abs(p.y - cy) for p in pts)
 
 
-def _rim(ctx, label, z, r, mat, bone, pad, xsign=0, xmax=None):
-    cx, cy, rx, ry = _fit_h(ctx, z, xsign, xmax=xmax)
+def _rim(ctx, label, z, r, mat, bone, pad, xsign=0, xmax=None, dom=None):
+    cx, cy, rx, ry = _fit_h(ctx, z, xsign, xmax=xmax, dom=dom)
     g = ctx.F['gw']
     ob = torus(f'{ctx.name}_{label}', Vector((cx, cy, z)), 1.0, r * g, ctx.M[mat], scale=(rx + pad * g, ry + pad * g, 1.0))
     B.rigid(ob, ctx.ao, bone)
@@ -275,6 +279,8 @@ def _cuff(ctx, label, c0, ax, bone, color, n, s, bnd=0.004):
         bnd *= 1.5
     if len(near) < 8:
         raise ValueError(f'char_base.outfits: no sleeve opening found near {tuple(round(x, 3) for x in c0)}')
+    d = sorted((p - c0 - ax * (p - c0).dot(ax)).length for p in near)
+    near = [p for p in near if (p - c0 - ax * (p - c0).dot(ax)).length <= 1.2 * d[len(d) // 2]]    # a heavy torso touching the arm: drop its points
     cc = sum(near, Vector()) / len(near)
     rr = max((p - cc).length for p in near)
     q = Vector((0, 0, 1)).rotation_difference(ax).to_euler()
@@ -353,7 +359,7 @@ def tee(ctx, color='tee', fold=0.0, sleeve='short'):
     zn, zh = _top(ctx, 'tee', color, fold, sleeve)
 
     def trims():
-        _rim(ctx, 'collar', zn, 0.0072, color, 'neck', 0.003)
+        _rim(ctx, 'collar', zn, 0.0072, color, 'neck', 0.003, dom='neck')
         _rim(ctx, 'shirt_hem', zh, 0.0065, color, 'spine', 0.002)
     ctx.trims.insert(0, trims)       # collar + hem first, sleeve hems after (the zc-you object order)
 
@@ -367,8 +373,8 @@ def shirt(ctx, color='shirt', fold=0.0, sleeve='long', buttons=5):
 
     def trims():
         nk = 0.075 * F['gw']
-        _rim(ctx, 'collar', zn, 0.0105, color, 'neck', 0.006, xmax=nk)
-        _rim(ctx, 'collar_fold', zn + 0.004 * F['gw'], 0.0070, color, 'neck', 0.010, xmax=nk)
+        _rim(ctx, 'collar', zn, 0.0105, color, 'neck', 0.006, xmax=nk, dom='neck')
+        _rim(ctx, 'collar_fold', zn + 0.004 * F['gw'], 0.0070, color, 'neck', 0.010, xmax=nk, dom='neck')
         _rim(ctx, 'shirt_hem', zh, 0.0070, color, 'pelvis', 0.002)
         z0, z1 = zn - 0.035 * F['gw'], zh + 0.030 * F['gw']
         for i in range(buttons):

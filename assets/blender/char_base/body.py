@@ -31,6 +31,7 @@ WAIST_SEX, NECK_SEX, EXTREM_SEX = 0.85, 0.85, 0.9   # CP-S03, CP-S05, CP-S06 (fe
 STY_HEADS, STY_EXTREM, STY_LIMB_R, STY_LEG = 4.5, 1.3, 1.25, 0.85   # CP-Y01, CP-Y02, CP-Y03, CP-Y04
 BUST_Y, BUST_R = 0.015, 0.25   # CP-S04: fuller, forward chest node with sex (separate L/R bust nodes broke the skin hull; per-preset tuning later)
 MASS_R, BELLY_Y, BELLY_R = 0.6, 0.06, 0.5        # ASSUMPTION (no CP entry): radius gain per unit mass, belly push / growth above REF_MASS
+MASS_SH = 0.12      # ASSUMPTION (no CP entry, proposed CP-M): shoulder half-width gain per unit mass above REF_MASS (keeps the arm root outside the chest)
 STOOP_KNEE, STOOP_SPINE, STOOP_NECK = 12.0, 16.0, 20.0   # CP-A07 ASSUMPTION: degrees at stoop 1
 ARM_A = math.radians(20)                 # CP-L: A-pose arm angle from vertical (zc-you)
 ARM_DIR = Vector((math.sin(ARM_A), 0.0, -math.cos(ARM_A)))
@@ -40,9 +41,11 @@ HAND = (0.045, 0.045, 0.078, 0.040)                # CP-L (zc-you): wrist->palm,
 TH0, TH1 = Vector((-0.010, -0.022, 0.005)), Vector((-0.006, -0.032, -0.024))   # CP-L (zc-you) thumb root / tip offsets
 FOOT = {'ANK': (0.0, 0.085), 'HEEL': (0.048, 0.042), 'BALL': (-0.115, 0.035), 'TOE': (-0.178, 0.026)}   # CP-L05 + zc-you foot (y, z)
 KNEE_Y = -0.005        # CP-L04 (zc-you)
-FINGERS = ((-0.026, 0.044, 0.040, -0.10), (-0.009, 0.047, 0.043, -0.02), (0.009, 0.044, 0.040, 0.04), (0.025, 0.036, 0.033, 0.12))
-# ^ CP-L (zc-you) index..pinky: knuckle-row y, segment lengths, splay
-FINGER_ROOT = 0.006    # CP-L: finger roots 6 mm ahead of the knuckle node (a branch straight across the hand axis gave a non-manifold hull)
+MITT = ((0.034, 0.20, 0.033, 0.017), (0.030, 0.55, 0.025, 0.014))
+# ^ CP-L ASSUMPTION (proposed CP-H01, cartoon mitten): nodes past the knuckle (step along the hand axis, curl toward the palm, rx, ry) x hand size
+THUMB_R = (0.016, 0.013)   # CP-L ASSUMPTION (proposed CP-H01): thumb lump root / tip radius x hand size
+ARMPIT = (0.30, 0.050, 0.90)   # CP-S01 ASSUMPTION (proposed CP-S07): upper-arm node at 30% to the elbow, radius x limb factor; chest node width x0.9 (tight armpit)
+NECK_R = (0.046, 0.037)    # CP-L06 ASSUMPTION (proposed CP-N01): slim neck radius above the shoulder yoke / under the head, tapering
 
 
 def mirror(v, s):
@@ -128,7 +131,7 @@ def joints(bp, head):
     for k, (fy, fz) in FOOT.items():
         J[k] = Vector((hx, fy * fs, fz * fs))
     J['clav'] = Vector((0.03 * gw, 0, z(Z_SH)))
-    J['SH'] = Vector((_lerp(*SH_X, bp['sex']) * gw, 0, z(Z_SH)))
+    J['SH'] = Vector(((_lerp(*SH_X, bp['sex']) + MASS_SH * max(0.0, bp['mass'] - REF_MASS)) * gw, 0, z(Z_SH)))     # heavier: shoulders out of the wider chest
     al = col * bp['arm_len']
     J['EL'] = J['SH'] + ARM_DIR * UPPER_ARM * al + Vector((0, ELBOW_Y * al, 0))
     J['WR'] = J['EL'] + FDIR * FOREARM * al
@@ -209,14 +212,15 @@ def bone_table(J, head_mod, hp, scale):
     return B
 
 
-def finger_points(J, s, hs):
-    """Per finger (base, mid, tip) on side s (index..pinky)."""
-    out = []
-    for fy, l1, l2, spl in FINGERS:
-        fb = mirror(J['KNU'], s) + Vector((0, fy * hs, 0)) + fdir(s) * FINGER_ROOT * hs
-        fm = fb + (fdir(s) + Vector((0, spl, 0))).normalized() * l1 * hs
-        ft = fm + (fdir(s) + Vector((0, spl * 1.5, 0))).normalized() * l2 * hs
-        out.append((fb, fm, ft))
+def mitt_points(J, s, hs):
+    """Mitten nodes past the knuckle on side s: the hand axis curling toward the palm (medial, the side poses.py curls the fingers to)."""
+    f = fdir(s)
+    pn = Vector((-s, 0, 0))
+    pn = (pn - f * f.dot(pn)).normalized()
+    out, p = [], mirror(J['KNU'], s)
+    for step, curl, rx, ry in MITT:
+        p = p + (f + pn * curl).normalized() * step * hs
+        out.append((p, (rx * hs, ry * hs)))
     return out
 
 
@@ -239,25 +243,29 @@ def body_graph(J, bp):
     pel = v('pelvis', J['pelvis'], (0.152 * rt * hipw, 0.104 * rt))
     wai = v('waist', J['waist_n'] + Vector((0, -BELLY_Y * belly * F['gw'], 0)),
             (0.128 * rt * wf * (1 + BELLY_R * belly), 0.090 * rt * (1 + BELLY_R * belly)))
-    che = v('chest', J['chest_n'] + Vector((0, -BUST_Y * sx * F['gw'], 0)), (0.158 * rt * shw, 0.108 * rt * (1 + BUST_R * sx)))   # CP-S04
-    n0 = v('neck0', J['neck0'], (0.062 * rt * nf, 0.062 * rt * nf))
-    n1 = v('neck1', J['neck1'], (0.047 * rt * nf, 0.047 * rt * nf))
-    E += [(pel, wai), (wai, che), (che, n0), (n0, n1)]
+    che = v('chest', J['chest_n'] + Vector((0, -BUST_Y * sx * F['gw'], 0)), (ARMPIT[2] * 0.158 * rt * shw, 0.108 * rt * (1 + BUST_R * sx)))   # CP-S04
+    n0 = v('neck0', J['neck0'], (0.062 * rt * nf, 0.062 * rt * nf))    # shoulder yoke: chest, shoulders and neck meet here
+    up = (J['neck0'] - J['chest_n']).normalized()      # the neck leaves the yoke along the torso axis (a leaning neck edge detached at stoop)
+    # CP-L06 ASSUMPTION (proposed CP-N01): the slim neck starts 35% of the way from the yoke to the head socket
+    nm = v('neckm', J['neck0'] + up * 0.35 * (J['neck1'] - J['neck0']).length, (NECK_R[0] * rt * nf, NECK_R[0] * rt * nf))
+    n1 = v('neck1', J['neck1'], (NECK_R[1] * rt * nf, NECK_R[1] * rt * nf))
+    E += [(pel, wai), (wai, che), (che, n0), (n0, nm), (nm, n1)]     # a tree: a chest-shoulder-neck cycle made the skin modifier emit overlapping shells
     for s, n in ((1, 'L'), (-1, 'R')):
         m = lambda k: mirror(J[k], s)
         sh = v(f'sh.{n}', m('SH'), (0.060 * rl, 0.060 * rl))
         el = v(f'el.{n}', m('EL'), (0.046 * rl, 0.046 * rl))
         wr = v(f'wr.{n}', m('WR'), (0.033 * rl, 0.033 * rl))
         pa = v(f'palm.{n}', m('PALM'), (0.036 * hs, 0.020 * hs))
-        kn = v(f'knu.{n}', m('KNU'), (0.034 * hs, 0.014 * hs))
-        t0 = v(f'th0.{n}', m('TH0'), (0.014 * hs, 0.014 * hs))
-        t1 = v(f'th1.{n}', m('TH1'), (0.011 * hs, 0.011 * hs))
-        E += [(che, sh), (n0, sh), (sh, el), (el, wr), (wr, pa), (pa, kn), (pa, t0), (t0, t1)]
-        for fi, (fb, fm, ft) in enumerate(finger_points(J, s, hs)):
-            a_ = v(f'fb{fi}.{n}', fb, (0.0095 * hs, 0.0095 * hs))
-            b_ = v(f'fm{fi}.{n}', fm, (0.0085 * hs, 0.0085 * hs))
-            c_ = v(f'ft{fi}.{n}', ft, (0.0070 * hs, 0.0070 * hs))
-            E += [(kn, a_), (a_, b_), (b_, c_)]
+        kn = v(f'knu.{n}', m('KNU'), (0.034 * hs, 0.018 * hs))      # CP-L ASSUMPTION (proposed CP-H01): mitten knuckle depth
+        t0 = v(f'th0.{n}', m('TH0'), (THUMB_R[0] * hs, THUMB_R[0] * hs))
+        t1 = v(f'th1.{n}', m('TH1'), (THUMB_R[1] * hs, THUMB_R[1] * hs))
+        a0 = v(f'arm0.{n}', m('SH').lerp(m('EL'), ARMPIT[0]), (ARMPIT[1] * rl, ARMPIT[1] * rl))    # holds the arm tube narrow where it leaves the chest
+        E += [(n0, sh), (sh, a0), (a0, el), (el, wr), (wr, pa), (pa, kn), (pa, t0), (t0, t1)]
+        prev = kn
+        for k, (p, r) in enumerate(mitt_points(J, s, hs)):       # one mitten mass, no separate fingers
+            cur = v(f'mitt{k}.{n}', p, r)
+            E.append((prev, cur))
+            prev = cur
         hp = v(f'hip.{n}', m('HIP'), (0.078 * rl, 0.078 * rl))
         kneev = v(f'knee.{n}', m('KNEE'), (0.058 * rl, 0.058 * rl))
         an = v(f'ank.{n}', m('ANK'), (0.038 * rl, 0.038 * rl))
@@ -312,6 +320,13 @@ def skin_mesh(V, E, name):
     new = bpy.data.meshes.new_from_object(ob.evaluated_get(dg))
     bpy.data.objects.remove(ob, do_unlink=True)
     bpy.data.meshes.remove(me)
+    bm = bmesh.new()                                 # the skin modifier leaves unused branch vertices behind: drop loose vertices
+    bm.from_mesh(new)
+    loose = [v for v in bm.verts if not v.link_edges]
+    if loose:
+        bmesh.ops.delete(bm, geom=loose, context='VERTS')
+        bm.to_mesh(new)
+    bm.free()
     return new
 
 

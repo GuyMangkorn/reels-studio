@@ -13,16 +13,6 @@ import outfits
 import presets
 
 
-def _fingernails(name, ao, J, M, hs):
-    for s, n in ((1, 'L'), (-1, 'R')):
-        for fi, (fb, fm, ft) in enumerate(body.finger_points(J, s, hs)):
-            fd = (ft - fm).normalized()
-            nail = outfits.ellipsoid(f'{name}_nail{fi}.{n}', ft - fd * 0.007 * hs + Vector((-s * 0.0062 * hs, 0, 0)),
-                                     (0.0022 * hs, 0.0042 * hs, 0.0055 * hs), M['nail'], seg=10, rings=6)
-            nail.rotation_mode = 'QUATERNION'
-            body.rigid(nail, ao, f'fingers_tip.{n}')
-
-
 def build(preset, name, variant=None, collection=None):
     """Create character `name` from `preset` (+ variant); returns the armature object."""
     P = presets.resolve(preset, variant)
@@ -46,7 +36,6 @@ def build(preset, name, variant=None, collection=None):
     bpy.context.scene.collection.objects.link(bod)
     outfits.apply(bod, ao, P['outfit'], M, J, F, table)
     hm.build_head(ao, J['head_c'], hp, name, scale, looks.head_mats(M))
-    _fingernails(name, ao, J, M, F['hs'])
     body.add_ik(ao)
     body.calibrate_poles(ao)
     objs = [o for o in bpy.data.objects if o.name.startswith(name + '_') and o.type == 'MESH']
