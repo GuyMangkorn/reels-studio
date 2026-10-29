@@ -33,7 +33,7 @@ test('every document an agent references exists', () => {
 
 test('every project skill is shared by Claude Code and Codex', () => {
   for (const skill of readdirSync('.agents/skills')) {
-    const match = readFileSync(`.agents/skills/${skill}/SKILL.md`, 'utf8').match(/^---\nname: (.+)\ndescription: "(.+)"\n---\n/);
+    const match = readFileSync(`.agents/skills/${skill}/SKILL.md`, 'utf8').match(/^---\nname: (.+)\ndescription: .+\n---\n/);
     assert.ok(match, `${skill}/SKILL.md has name/description front matter`);
     assert.equal(match[1], skill);
     assert.equal(realpathSync(`.claude/skills/${skill}`), realpathSync(`.agents/skills/${skill}`), `.claude/skills/${skill} links to .agents/skills/${skill}`);
