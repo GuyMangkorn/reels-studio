@@ -3,6 +3,10 @@
 build(preset, name, variant=None, collection=None) -> armature object `name`; meshes `<name>_*` carry an Armature modifier
 (no bone parenting, no object transforms). Measured anchors are stored as cb_* custom properties for poses.
 """
+import importlib.util
+import os
+import sys
+
 import bpy
 from mathutils import Vector
 
@@ -13,13 +17,31 @@ import outfits
 import presets
 
 
-def _arm_clearance(bod, ao, J, bp):
-    """(torso half-width, upper-arm surface radius) of the rest body: Actor spreads relaxed arms by them. The half-width is the widest
-    point of the closed trunk (body.trunk_mesh) between the waist node and the shoulder, beside the upper arm; it grows smoothly with
-    mass (the old cut by weight dominance on the full body jumped between neighbouring vertices)."""
-    tm = body.trunk_mesh(J, bp, '_cb_trunk')
-    hx = max(abs(v.co.x) for v in tm.vertices if J['waist_n'].z <= v.co.z <= J['SH'].z)
-    bpy.data.meshes.remove(tm)
+def _poses():
+    """char_base's poses module, loaded by path: a caller's own 'poses' (zc-you's) may shadow the name on sys.path (R15)."""
+    m = sys.modules.get('char_base.poses')
+    if m is None:
+        spec = importlib.util.spec_from_file_location('char_base.poses', os.path.join(os.path.dirname(os.path.abspath(__file__)), 'poses.py'))
+        m = importlib.util.module_from_spec(spec)
+        sys.modules['char_base.poses'] = m
+        spec.loader.exec_module(m)
+    return m
+
+
+def _torso_hx(J, bp):
+    """Widest trunk half-width between the waist and chest nodes: exact sections of body.armless_mesh (no weights, so it grows smoothly
+    with mass; the old cut by weight dominance jumped between neighbouring vertices)."""
+    me = body.armless_mesh(J, bp, '_cb_armless')
+    P = [v.co for v in me.vertices]
+    segs = [(P[e.vertices[0]], P[e.vertices[1]]) for e in me.edges]
+    bpy.data.meshes.remove(me)
+    z0, z1 = J['waist_n'].z, J['chest_n'].z
+    return max(abs(a.x + (b.x - a.x) * (z - a.z) / (b.z - a.z)) for z in (z0 + (z1 - z0) * i / 40 for i in range(41))
+               for a, b in segs if (a.z - z) * (b.z - z) < 0)
+
+
+def _arm_r(bod, ao):
+    """Median upper-arm surface radius of the rest body (vertices dominated by upper_arm.L)."""
     gi = {g.index: g.name for g in bod.vertex_groups if g.name in ao.data.bones}
     ar = []
     b = ao.data.bones['upper_arm.L']
@@ -30,7 +52,43 @@ def _arm_clearance(bod, ao, J, bp):
             k = max(0.0, min(1.0, (v.co - h).dot(t - h) / (t - h).length_squared))
             ar.append((v.co - (h + (t - h) * k)).length)
     ar.sort()
-    return hx, ar[len(ar) // 2]
+    return ar[len(ar) // 2]
+
+
+RELAX_FIT = (0.002, 0.30, 9)      # relaxed-arm spread calibration: clearance kept (m), search ceiling (m), bisection steps
+
+
+def _relax_spread(ao, bod):
+    """Least extra palm spread (m) at which the relaxed arms (poses.Actor default) clear the rest trunk by RELAX_FIT[0] below the armpit
+    zone: arm vertices (upper_arm + forearm weight >= 0.8) against body.TorsoGauge. 0 when the hanging arm already clears (R19, R24)."""
+    poses = _poses()
+    gi = {g.index: g.name for g in bod.vertex_groups}
+    arm = [v.index for v in bod.data.vertices
+           if sum(g.weight for g in v.groups if gi[g.group].startswith(('upper_arm', 'forearm'))) >= 0.8]
+    low = ao['cb_shoulder_z'] - poses.ARMPIT_ZONE * ao['cb_shoulder_z'] / poses.REF_SH_Z
+    gauge = body.TorsoGauge(bod, 0.01)
+    A = poses.Actor(ao)
+    A.keying = False
+
+    def worst(ex):
+        ao['cb_relax_spread'] = ex
+        A.pose(1, root=(0, 0, 0), key=False)
+        me = bod.evaluated_get(bpy.context.evaluated_depsgraph_get()).data
+        return max((gauge.depth(me.vertices[i].co) for i in arm if me.vertices[i].co.z < low), default=-1.0)
+    clear, top, n = RELAX_FIT
+    if worst(0.0) <= -clear:
+        ex = 0.0
+    else:
+        lo, hi = 0.0, top
+        for _ in range(n):
+            mid = (lo + hi) / 2
+            lo, hi = (lo, mid) if worst(mid) <= -clear else (mid, hi)
+        ex = hi
+    ao['cb_relax_spread'] = ex
+    for pb in ao.pose.bones:
+        pb.location, pb.rotation_quaternion, pb.rotation_euler, pb.scale = (0, 0, 0), (1, 0, 0, 0), (0, 0, 0), (1, 1, 1)
+    bpy.context.view_layer.update()
+    return ex
 
 
 def build(preset, name, variant=None, collection=None):
@@ -67,7 +125,9 @@ def build(preset, name, variant=None, collection=None):
     ao['cb_shoulder_z'], ao['cb_hip_z'], ao['cb_ankle_z'] = J['SH'].z, J['pelvis'].z, J['ANK'].z
     ao['cb_palm_off'] = (J['PALM'] - J['WR']).length
     ao['cb_head_c'] = tuple(J['head_c'])
-    ao['cb_torso_hx'], ao['cb_arm_r'] = _arm_clearance(bod, ao, J, bp)
+    ao['cb_torso_hx'] = _torso_hx(J, bp)
+    ao['cb_arm_r'] = _arm_r(bod, ao)
+    ao['cb_relax_spread'] = _relax_spread(ao, bod)
     if collection is not None:
         for o in [ao] + objs:
             for c in list(o.users_collection):

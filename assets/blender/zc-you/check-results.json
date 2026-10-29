@@ -17,7 +17,7 @@
     },
     "lowest_z_m": 0.0,
     "objects": 50,
-    "vertices": 28156
+    "vertices": 28340
   },
   "tracks": {
     "B01-SH01": {
@@ -70,7 +70,7 @@
       "wall_min_x_m": -0.272
     },
     "B02-SH03": {
-      "cabinet_face_y_0.58_back_gap_m": 0.0092,
+      "cabinet_face_y_0.58_back_gap_m": 0.0007,
       "cabinet_top_z": 1.2,
       "contacts": [],
       "floor_min_z_m": -0.0,
@@ -81,7 +81,7 @@
       "wall_min_x_m": -0.272
     },
     "B03-SH01": {
-      "cabinet_face_y_0.58_back_gap_m": 0.0092,
+      "cabinet_face_y_0.58_back_gap_m": 0.0007,
       "cabinet_top_z": 1.2,
       "contacts": [],
       "floor_min_z_m": -0.0,
@@ -107,7 +107,7 @@
         0,
         60
       ],
-      "wall_min_x_m": -0.3978
+      "wall_min_x_m": -0.3995
     },
     "B05-SH02": {
       "contacts": [],
@@ -185,7 +185,7 @@
         0,
         200
       ],
-      "wall_min_x_m": -0.0727
+      "wall_min_x_m": -0.0839
     },
     "B09-SH01": {
       "back_wall_gap_to_build_BACK_X_-1.60_m": 0.1001,

@@ -27,16 +27,16 @@ HEAD_PIVOT_F = 0.095 / REF_HEAD_H   # CP-L06: head bone root (neck tail) below t
 Z_ANK, Z_KNEE, Z_HIP, Z_PELVIS = 0.085, 0.480, 0.925, 0.93   # CP-L05, CP-L04, CP-L03, CP-L01 (x 1.72)
 Z_SPINE, Z_CHEST, Z_SH, Z_NECK, Z_HB = 1.05, 1.22, 1.385, 1.40, 1.50   # CP-L (zc-you trunk), CP-L02, CP-L06, CP-L06 + neck length
 SH_X, HIP_X = (0.195, 0.170), (0.085, 0.098)   # CP-S01, CP-S02 half-widths (male, female) at 1.72 m
-WAIST_SEX, NECK_SEX, EXTREM_SEX = 0.80, 0.85, 0.9   # CP-S03 (ASSUMPTION: x0.80, was x0.85; proposed CP-S03 change), CP-S05, CP-S06 (female factors)
+WAIST_SEX, NECK_SEX, EXTREM_SEX = 0.72, 0.85, 0.9   # CP-S03 (ASSUMPTION: x0.72 of the wider male waist, was x0.85), CP-S05, CP-S06 (female)
 PELVIS_SEX, WAIST_Z = 1.20, (1.07, 1.10)   # CP-S02 ASSUMPTION (proposed CP-S08): female pelvis node width x1.20 beyond the hip-joint ratio;
 # CP-L ASSUMPTION (proposed CP-S09): waist node height in zc column units (male, female; the female natural waist sits higher)
 SEX_LIMB = {'deltoid': 0.86, 'upper_arm': 0.88, 'elbow': 0.84, 'forearm': 0.88, 'wrist': 0.90,
             'hip': 1.20, 'thigh': 1.08, 'knee': 0.97, 'calf': 1.0, 'shin': 0.97, 'ankle': 0.93}
-# ^ CP-S ASSUMPTION (proposed CP-S10): female / male limb radius at equal stature (ANSUR II circumference ratios x stature ratio 1.078);
-#   'hip' (hip joint and upper-thigh nodes) adds the gluteofemoral width of the female hip
+# ^ CP-S ASSUMPTION (proposed CP-S10): female / male limb radius, render-tuned near the raw (not stature-normalised) ANSUR II female /
+#   male circumference ratios, slimmer at the elbow; 'hip' (hip joint and upper-thigh nodes) adds the gluteofemoral width of the female hip
 STY_HEADS, STY_EXTREM, STY_LIMB_R, STY_LEG = 4.5, 1.3, 1.25, 0.85   # CP-Y01, CP-Y02, CP-Y03, CP-Y04
 BUST_Y, BUST_R = 0.015, 0.25   # CP-S04: fuller, forward chest node with sex (the ribcage); the bust itself is the BUST lobe pair (shape())
-BUST = (0.024, 0.006, 0.085, 0.070, 0.100, 0.060)
+BUST = (0.034, 0.006, 0.085, 0.070, 0.100, 0.060)
 # ^ CP-S04 ASSUMPTION (proposed CP-S04 change): bust lobes (amplitude at mass 0, gain per unit mass, x offset, sigma x, sigma up, sigma down)
 #   x gw; broad sigmas keep the torso lump metric under its bound (a bust is a wanted lump)
 GLUTE = ((0.0, 0.016), 0.012, 0.062, 0.055, -0.010, 0.065, 0.040)
@@ -51,8 +51,9 @@ MASS_GAIN = {'pelvis': (0.9, 1.0), 'waist': (1.2, 1.1), 'chest': (1.0, 1.05), 'd
 #   (female), little to the forearms, shins, wrists and ankles; 1.0 everywhere was the uniform 'tube' growth. Below REF_MASS the share
 #   is (1 + share) / 2 capped at 1.0, so a slim body keeps its sex shape instead of a pinched waist, and bony joints barely slim
 STOCKY, LEG_SHORT = (6.0, 0.10), (6.0, 0.10)
-# ^ CP-A ASSUMPTION (proposed CP-A10, CP-A11): below 6 heads tall the body widens 10% per head and the legs' share of the body column
-#   shrinks 10% per head (sitting-height ratio: about 0.52 adult and 8 years, about 0.63 at 1 year, about 4.5 heads)
+# ^ CP-A ASSUMPTION (proposed CP-A10, CP-A11): below 6 canon heads tall (bp['heads_tall'], not stylize) the trunk and limb widths
+#   (joint x and skin radii, not hands, feet or ankle height) grow 10% per head and the legs' share of the body column shrinks 10% per
+#   head (relative slope from sitting-height ratio data: about 0.52 adult and 8 years, about 0.63 at 1 year, about 4.5 heads)
 STOOP_KNEE, STOOP_SPINE, STOOP_NECK = 12.0, 16.0, 20.0   # CP-A07 ASSUMPTION: degrees at stoop 1
 ARM_A = math.radians(20)                 # CP-L: A-pose arm angle from vertical (zc-you)
 ARM_DIR = Vector((math.sin(ARM_A), 0.0, -math.cos(ARM_A)))
@@ -67,12 +68,24 @@ MITT = ((0.034, 0.20, 0.033, 0.017), (0.030, 0.55, 0.025, 0.014))
 THUMB_R = (0.016, 0.013)   # CP-L ASSUMPTION (proposed CP-H01): thumb lump root / tip radius x hand size
 ARMPIT = (0.30, 0.050)   # CP-S01 ASSUMPTION (proposed CP-S07): upper-arm node at 30% to the elbow, radius x limb factor (tight armpit)
 CHEST_MASS_X = 0.0      # ASSUMPTION (no CP entry, proposed CP-M): share of the mass radius gain the chest width takes (depth takes all; arms keep clear of a heavy chest, R17)
-CHEST_R = (1.10, 1.25)   # CP-L (zc-you): chest node radii x, y; keeps the zc chest surface within 5% of its pre-tree-graph width/depth (R17)
+CHEST_R = (1.55, 1.25)   # CP-L ASSUMPTION (proposed CP-L12, R23): chest node radii x, y x the zc-you 0.158 / 0.108: a broad ribcage for the
+#   chest-to-waist V taper of the user's male reference (x was 1.10; y stays 1.25: a deeper back pressed zc into the B02/B03 cabinet)
+TRUNK_R = {'pelvis': (0.124, 0.104), 'waist': (0.142, 0.092)}
+# ^ CP-L ASSUMPTION (proposed CP-L12, R23): male pelvis / waist node radii (x, y) at 1.72 m (zc-you was 0.152, 0.104 / 0.128, 0.090):
+#   narrower hips, a waist that steps in from the broad chest
+DELTOID = (0.064, 0.006, 0.016)   # CP-L ASSUMPTION (proposed CP-L12): deltoid cap node radius, outward and upward offset from the shoulder joint
+PECS = (0.010, 0.030, 0.060, 0.055, 0.050, 0.025)
+BUST_Z, LOBE_XCUT, LOBE_FADE = -0.025, (0.15, 0.14), (0.04, 0.06)
+# ^ CP-S ASSUMPTION (proposed CP-S04/S11/S12): bust lobe centre along the torso axis from the chest node; chest / buttock lobes fade out past
+#   |x| (chest, buttock) and fade in from the body axis plane / out past that |x| over (in, out), all x width factor
+# ^ CP-S ASSUMPTION (proposed CP-S12): male pectoral lobes (amplitude, centre above the chest node, x offset, sigma x, sigma up,
+#   sigma down) x width factor, fading out with sex
+YOKE_R = 0.070   # CP-L06 ASSUMPTION (proposed CP-L12): shoulder yoke node radius (trapezius height; zc-you was 0.062)
 NECK_R = (0.046, 0.037)    # CP-L06 ASSUMPTION (proposed CP-N01): slim neck radius above the shoulder yoke / under the head, tapering
 LIMB = {'arm1': (0.55, 0.049), 'el': (1.0, 0.040), 'fore': (0.25, 0.046), 'wr': (1.0, 0.027),
-        'hip': (0.0, 0.078), 'thu': (0.22, 0.078), 'thm': (0.55, 0.070), 'knee': (1.0, 0.047),
-        'calf': (0.30, 0.054, 0.014), 'shin': (0.72, 0.037, 0.004), 'ank': (1.0, 0.033)}
-# ^ CP-L ASSUMPTION (proposed CP-L11): limb nodes (fraction along the bone, radius at 1.72 m[, backward offset]); the zc-you tubes were
+        'hip': (0.0, 0.068), 'thu': (0.22, 0.068), 'thm': (0.55, 0.066), 'knee': (1.0, 0.042),
+        'calf': (0.30, 0.054, 0.014, 1.04), 'shin': (0.72, 0.037, 0.004), 'ank': (1.0, 0.033)}
+# ^ CP-L ASSUMPTION (proposed CP-L11): limb nodes (fraction along the bone, radius at 1.72 m[, backward offset, depth / width]); zc-you was
 #   sh 0.060, el 0.046, wr 0.033, hip 0.078, thm 0.074 at 50%, knee 0.058, calf 0.052 at 30%, ank 0.038 (circumference ratios: ANSUR II)
 
 
@@ -114,14 +127,14 @@ def head_scale(bp, unit_height):
 
 
 def factors(bp):
-    """Size factors: gw (body column below the head / zc-you's, used for widths), hs/fs (hand, foot size), rt/rl (torso, limb radius)."""
+    """Size factors: gw (body column below the head / zc-you's), gx (trunk and limb widths: gw x CP-A10), hs/fs (hand, foot size),
+    rt/rl (torso, limb radius)."""
     s, y = bp['sex'], bp['stylize']
-    ht = heads_tall(bp)
-    gw = bp['height'] * (1 - (HEAD_TOP_F + HEAD_PIVOT_F) / ht) / Z_HB    # body below the head scales as one (column / reference)
-    gw *= 1 + STOCKY[1] * max(0.0, STOCKY[0] - ht)                    # CP-A10: a big-headed (young / chibi) body is stockier
+    gw = bp['height'] * (1 - (HEAD_TOP_F + HEAD_PIVOT_F) / heads_tall(bp)) / Z_HB    # body below the head scales as one (column / reference)
+    gx = gw * (1 + STOCKY[1] * max(0.0, STOCKY[0] - bp['heads_tall']))     # CP-A10: a big-headed (young / chibi) body is stockier
     ext = gw * _lerp(1, EXTREM_SEX, s) * _lerp(1, STY_EXTREM, y)
     mf = 1 + (bp['mass'] - REF_MASS) * MASS_R
-    return dict(gw=gw, hs=ext, fs=ext, rt=gw * mf, rl=gw * mf * _lerp(1, STY_LIMB_R, y), belly=max(0.0, bp['mass'] - REF_MASS))
+    return dict(gw=gw, gx=gx, hs=ext, fs=ext, rt=gx * mf, rl=gx * mf * _lerp(1, STY_LIMB_R, y), belly=max(0.0, bp['mass'] - REF_MASS))
 
 
 def _rot_x(p, c, a):
@@ -133,7 +146,7 @@ def _rot_x(p, c, a):
 def joints(bp, head):
     """Joint positions (left side) + graph/control points; head = head_metrics(p, scale) of the head style."""
     F = factors(bp)
-    gw, hs, fs = F['gw'], F['hs'], F['fs']
+    gw, gx, hs, fs = F['gw'], F['gx'], F['hs'], F['fs']
     H, h = bp['height'], head['height']
     top = H
     hc = top - HEAD_TOP_F * h
@@ -152,7 +165,7 @@ def joints(bp, head):
         if r <= Z_HB:
             return hip + (r - Z_HIP) * (hb - hip) / (Z_HB - Z_HIP)
         return hb + (r - Z_HB) * hf
-    hx = _lerp(*HIP_X, bp['sex']) * gw
+    hx = _lerp(*HIP_X, bp['sex']) * gx
     J = {'pelvis': Vector((0, 0, z(Z_PELVIS))), 'spine': Vector((0, 0, z(Z_SPINE))), 'chest': Vector((0, 0, z(Z_CHEST))),
          'neck': Vector((0, 0, z(Z_NECK))), 'head_base': Vector((0, 0, hb)), 'head_c': Vector((0, 0, hc)), 'head_top': Vector((0, 0, top)),
          'waist_n': Vector((0, 0, z(_lerp(*WAIST_Z, bp['sex'])))), 'chest_n': Vector((0, 0, z(1.25))),   # CP-L (zc-you graph nodes), CP-S09
@@ -161,8 +174,8 @@ def joints(bp, head):
          'HIP': Vector((hx, 0, hip)), 'KNEE': Vector((hx, KNEE_Y * gw, z(Z_KNEE)))}
     for k, (fy, fz) in FOOT.items():
         J[k] = Vector((hx, fy * fs, fz * fs))
-    J['clav'] = Vector((0.03 * gw, 0, z(Z_SH)))
-    J['SH'] = Vector((_lerp(*SH_X, bp['sex']) * gw, 0, z(Z_SH)))
+    J['clav'] = Vector((0.03 * gx, 0, z(Z_SH)))
+    J['SH'] = Vector((_lerp(*SH_X, bp['sex']) * gx, 0, z(Z_SH)))
     al = (hb - hip0) / (Z_HB - Z_HIP) * bp['arm_len']      # CP-L09: arms follow the trunk, so the hanging wrist stays near the crotch
     J['EL'] = J['SH'] + ARM_DIR * UPPER_ARM * al + Vector((0, ELBOW_Y * al, 0))
     J['WR'] = J['EL'] + FDIR * FOREARM * al
@@ -257,7 +270,6 @@ def mitt_points(J, s, hs):
 
 # ----------------------------------------------------------------------------- body skin graph (verts, edges)
 ARM_NODES = ('sh.', 'arm', 'el.', 'fore.', 'wr.', 'palm.', 'knu.', 'th0.', 'th1.', 'mitt')    # graph node name prefixes of the arms + hands
-TRUNK_NODES = ('pelvis', 'waist', 'chest', 'neck0', 'neckm', 'neck1')
 
 
 def mass_k(bp, region):
@@ -270,7 +282,7 @@ def mass_k(bp, region):
 def body_graph(J, bp):
     """Skin-modifier graph: [(name, pos, (rx, ry))], [(i, j)]. Radii are the zc-you values (CP-L) x size, sex and regional mass factors."""
     F = factors(bp)
-    gw, hs, fs, sx = F['gw'], F['hs'], F['fs'], bp['sex']
+    gw, hs, fs, sx = F['gx'], F['hs'], F['fs'], bp['sex']      # gw here: the width factor (CP-A10 included)
     lw = gw * _lerp(1, STY_LIMB_R, bp['stylize'])          # CP-Y03 limb width
     V, E = [], []
 
@@ -288,12 +300,13 @@ def body_graph(J, bp):
     belly = F['belly'] * _lerp(1, BELLY_SEX, sx)
     rt, mp, mw, mc = F['rt'], mass_k(bp, 'pelvis'), mass_k(bp, 'waist'), mass_k(bp, 'chest')
     # CP-L: every radius below is the zc-you value (rx, ry) at 1.72 m, times the size factors
-    pel = v('pelvis', J['pelvis'], (0.152 * gw * mp * hipw, 0.104 * gw * mp))
+    (prx, pry), (wrx, wry) = TRUNK_R['pelvis'], TRUNK_R['waist']
+    pel = v('pelvis', J['pelvis'], (prx * gw * mp * hipw, pry * gw * mp))
     wai = v('waist', J['waist_n'] + Vector((0, -BELLY_Y * belly * gw, 0)),
-            (0.128 * gw * mw * wf * (1 + BELLY_R * belly), 0.090 * gw * mw * (1 + BELLY_R * belly)))
+            (wrx * gw * mw * wf * (1 + BELLY_R * belly), wry * gw * mw * (1 + BELLY_R * belly)))
     che = v('chest', J['chest_n'] + Vector((0, -BUST_Y * sx * gw, 0)), (CHEST_R[0] * 0.158 * gw * (1 + (mc - 1) * CHEST_MASS_X) * shw,
                                                                       CHEST_R[1] * 0.108 * gw * mc * (1 + BUST_R * sx)))   # CP-S04
-    n0 = v('neck0', J['neck0'], (0.062 * rt * nf, 0.062 * rt * nf))    # shoulder yoke: chest, shoulders and neck meet here
+    n0 = v('neck0', J['neck0'], (YOKE_R * rt * nf, YOKE_R * rt * nf))    # shoulder yoke: chest, shoulders and neck meet here
     up = (J['neck0'] - J['chest_n']).normalized()      # the neck leaves the yoke along the torso axis (a leaning neck edge detached at stoop)
     # CP-L06 ASSUMPTION (proposed CP-N01): the slim neck starts 35% of the way from the yoke to the head socket
     nm = v('neckm', J['neck0'] + up * 0.35 * (J['neck1'] - J['neck0']).length, (NECK_R[0] * rt * nf, NECK_R[0] * rt * nf))
@@ -302,7 +315,7 @@ def body_graph(J, bp):
     for s, n in ((1, 'L'), (-1, 'R')):
         m = lambda k: mirror(J[k], s)
         # CP-L ASSUMPTION (proposed CP-L11, limb taper): deltoid, armpit, biceps belly, narrow elbow, forearm belly at 25%, slim wrist
-        sh = v(f'sh.{n}', m('SH'), lr('deltoid', 0.060))
+        sh = v(f'sh.{n}', m('SH') + Vector((DELTOID[1] * s, 0, DELTOID[2])) * gw, lr('deltoid', DELTOID[0]))     # deltoid cap
         a0 = v(f'arm0.{n}', m('SH').lerp(m('EL'), ARMPIT[0]), lr('upper_arm', ARMPIT[1]))    # holds the arm tube narrow where it leaves the chest
         a1 = v(f'arm1.{n}', m('SH').lerp(m('EL'), LIMB['arm1'][0]), lr('upper_arm', LIMB['arm1'][1]))
         el = v(f'el.{n}', m('EL'), lr('elbow', LIMB['el'][1]))
@@ -327,8 +340,8 @@ def body_graph(J, bp):
         kneev = v(f'knee.{n}', m('KNEE'), lr('knee', LIMB['knee'][1]))
         ka = m('ANK') - m('KNEE')
         cr = lr('calf', LIMB['calf'][1])
-        ca = v(f'calf.{n}', m('KNEE') + ka * LIMB['calf'][0] + Vector((0, LIMB['calf'][2] * gw * mass_k(bp, 'calf'), 0)), (cr[0], cr[1] * 1.04))
-        sl = v(f'shin.{n}', m('KNEE') + ka * LIMB['shin'][0] + Vector((0, LIMB['shin'][2] * gw, 0)), lr('shin', LIMB['shin'][1]))
+        ca = v(f'calf.{n}', m('KNEE') + ka * LIMB['calf'][0] + Vector((0, LIMB['calf'][2] * gw * mass_k(bp, 'calf'), 0)), (cr[0], cr[1] * LIMB['calf'][3]))
+        sl = v(f'shl.{n}', m('KNEE') + ka * LIMB['shin'][0] + Vector((0, LIMB['shin'][2] * gw, 0)), lr('shin', LIMB['shin'][1]))
         an = v(f'ank.{n}', m('ANK'), lr('ankle', LIMB['ank'][1]))
         he = v(f'heel.{n}', m('HEEL'), (0.034 * fs, 0.034 * fs))
         ba = v(f'ball.{n}', m('BALL'), (0.041 * fs, 0.028 * fs))
@@ -337,15 +350,16 @@ def body_graph(J, bp):
     return V, E
 
 
-def _lobes(me, c, up, side, amp, dx, sx_, s_up, s_dn, xcut):
+def _lobes(me, c, up, side, amp, dx, sx_, s_up, s_dn, xcut, k):
     """Push vertices on the `side` half (unit horizontal vector) of the body by two smooth Gaussian lobes at c +- dx (x), along `side`;
-    sigma s_up above the centre (along `up`), s_dn below; fades in over 4 cm from the body axis plane and out over 6 cm past |x| xcut.
+    sigma s_up above the centre (along `up`), s_dn below; fades in over LOBE_FADE[0] x k from the body axis plane and out over
+    LOBE_FADE[1] x k past |x| xcut (k: the width factor).
     A positional, C1-smooth field: no new edges or seams."""
     ramp = lambda t: 0.0 if t <= 0 else 1.0 if t >= 1 else t * t * (3 - 2 * t)
     for vt in me.vertices:
         p = vt.co
         d = p - c
-        w = ramp(d.dot(side) / 0.04) * ramp((xcut - abs(p.x)) / 0.06 + 1)
+        w = ramp(d.dot(side) / (LOBE_FADE[0] * k)) * ramp((xcut - abs(p.x)) / (LOBE_FADE[1] * k) + 1)
         if w <= 0.0:
             continue
         h = d.dot(up)
@@ -357,19 +371,89 @@ def _lobes(me, c, up, side, amp, dx, sx_, s_up, s_dn, xcut):
 
 def shape(me, J, bp):
     """Rest-shape fields on a body skin mesh (any subset of the graph): bust lobes (sex) and buttock lobes, both growing with mass."""
-    gw, sx, ms = factors(bp)['gw'], bp['sex'], bp['mass']
+    gw, sx, ms = factors(bp)['gx'], bp['sex'], bp['mass']
     me.update()
     a, gm, dx, sgx, su, sd = BUST
+    up = (J['neck0'] - J['chest_n']).normalized()
+    pa, pz, pdx, psx, psu, psd = PECS
+    if sx < 1:
+        _lobes(me, J['chest_n'] + up * (pz * gw), up, Vector((0, -1, 0)), (1 - sx) * pa * gw, pdx * gw, psx * gw, psu * gw, psd * gw,
+               LOBE_XCUT[0] * gw, gw)
     if sx > 0:
-        up = (J['neck0'] - J['chest_n']).normalized()
-        _lobes(me, J['chest_n'] + up * (-0.025 * gw), up, Vector((0, -1, 0)), sx * gw * (a + gm * ms), dx * gw, sgx * gw, su * gw, sd * gw,
-               0.15 * gw)
+        _lobes(me, J['chest_n'] + up * (BUST_Z * gw), up, Vector((0, -1, 0)), sx * gw * (a + gm * ms), dx * gw, sgx * gw, su * gw, sd * gw,
+               LOBE_XCUT[0] * gw, gw)
     (am, af), gm, dx, sgx, dz, su, sd = GLUTE
     amp = gw * (_lerp(am, af, sx) + gm * sx * ms)
     if amp > 0:
         up = (J['waist_n'] - J['pelvis']).normalized()
-        _lobes(me, J['HIP'] * Vector((0, 1, 1)) + up * (dz * gw), up, Vector((0, 1, 0)), amp, dx * gw, sgx * gw, su * gw, sd * gw, 0.14 * gw)
+        _lobes(me, J['HIP'] * Vector((0, 1, 1)) + up * (dz * gw), up, Vector((0, 1, 0)), amp, dx * gw, sgx * gw, su * gw, sd * gw,
+               LOBE_XCUT[1] * gw, gw)
     me.update()
+
+
+def _inside(loop, x, y):
+    c = False
+    for (x0, y0), (x1, y1) in zip(loop, loop[1:] + loop[:1]):
+        if (y0 > y) != (y1 > y) and x < x0 + (x1 - x0) * (y - y0) / (y1 - y0):
+            c = not c
+    return c
+
+
+ARM_GROUPS = ('upper_arm', 'forearm', 'hand', 'fingers', 'thumb')
+
+
+class TorsoGauge:
+    """Signed distance (m, + inside) of a point to the rest trunk outline at its height. Outline: the convex hull of the section points
+    of a rest body object's edges whose two vertices carry < 0.5 arm weight (ARM_GROUPS), so an arm fused to a heavy trunk at rest is not
+    taken for trunk. `dz` maps object z to the section height (the floor shift); cached per `step` of height."""
+    def __init__(self, ob, step=0.005, dz=0.0):
+        me = ob.data
+        gi = {g.index: g.name for g in ob.vertex_groups}
+        arm = {v.index for v in me.vertices if sum(g.weight for g in v.groups if gi[g.group].startswith(ARM_GROUPS)) >= 0.5}
+        self.segs = [(me.vertices[e.vertices[0]].co.copy(), me.vertices[e.vertices[1]].co.copy()) for e in me.edges
+                     if e.vertices[0] not in arm and e.vertices[1] not in arm]
+        self.step, self.dz, self.cache = step, dz, {}
+
+    def outline(self, z):
+        z = round((z + self.dz) / self.step) * self.step
+        if z not in self.cache:
+            pts = [(a.x + (b.x - a.x) * (z - a.z) / (b.z - a.z), a.y + (b.y - a.y) * (z - a.z) / (b.z - a.z))
+                   for a, b in self.segs if (a.z - z) * (b.z - z) < 0]
+            self.cache[z] = _hull(pts) if len(pts) > 2 else None
+        return self.cache[z]
+
+    def half_width(self, z):
+        h = self.outline(z)
+        return max(abs(x) for x, _ in h) if h else 0.0
+
+    def depth(self, p):
+        lp = self.outline(p.z)
+        if not lp:
+            return -1.0
+        d = min(_seg2(p.x, p.y, a, b) for a, b in zip(lp, lp[1:] + lp[:1]))
+        return d if _inside(lp, p.x, p.y) else -d
+
+
+def _hull(pts):
+    """2D convex hull (monotone chain), counter-clockwise."""
+    pts = sorted(set(pts))
+    cross = lambda o, a, b: (a[0] - o[0]) * (b[1] - o[1]) - (a[1] - o[1]) * (b[0] - o[0])
+    lo, up = [], []
+    for p in pts:
+        while len(lo) >= 2 and cross(lo[-2], lo[-1], p) <= 0:
+            lo.pop()
+        lo.append(p)
+    for p in reversed(pts):
+        while len(up) >= 2 and cross(up[-2], up[-1], p) <= 0:
+            up.pop()
+        up.append(p)
+    return lo[:-1] + up[:-1]
+
+
+def _seg2(x, y, a, b):
+    dx, dy = b[0] - a[0], b[1] - a[1]
+    t = max(0.0, min(1.0, ((x - a[0]) * dx + (y - a[1]) * dy) / max(dx * dx + dy * dy, 1e-12)))
+    return math.hypot(x - a[0] - dx * t, y - a[1] - dy * t)
 
 
 def body_mesh(J, bp, name):
@@ -379,12 +463,17 @@ def body_mesh(J, bp, name):
     return me
 
 
-def trunk_mesh(J, bp, name):
-    """Closed trunk (pelvis-waist-chest-neck nodes of the same graph, same shape fields): the torso volume the arms must clear."""
-    V, E = body_graph(J, bp)
-    keep = [i for i, (n, _, _) in enumerate(V) if n in TRUNK_NODES]
-    idx = {o: k for k, o in enumerate(keep)}
-    me = skin_mesh([V[i] for i in keep], [(idx[a], idx[b]) for a, b in E if a in idx and b in idx], name)
+def subgraph(V, E, keep):
+    """The part of a body graph whose node names satisfy keep(name): (V, E) re-indexed."""
+    ids = [i for i, (n, _, _) in enumerate(V) if keep(n)]
+    idx = {o: k for k, o in enumerate(ids)}
+    return [V[i] for i in ids], [(idx[a], idx[b]) for a, b in E if a in idx and b in idx]
+
+
+def armless_mesh(J, bp, name):
+    """Trunk and legs without the arm and hand nodes (same graph, same shape fields): front / side silhouettes, a weight-free trunk width."""
+    V, E = subgraph(*body_graph(J, bp), lambda n: not n.startswith(ARM_NODES))
+    me = skin_mesh(V, E, name)
     shape(me, J, bp)
     return me
 
@@ -412,7 +501,8 @@ def skin_mesh(V, E, name):
     cage = bpy.data.meshes.new_from_object(ob.evaluated_get(dg))
     bm = bmesh.new()
     bm.from_mesh(cage)
-    if any(not e.is_manifold for e in bm.edges):     # the skin hull failed at a branch (chest/neck/shoulder cycle): close the cage, then subdivide
+    repaired = any(not e.is_manifold for e in bm.edges)
+    if repaired:                                     # the skin hull failed at a branch (chest/neck/shoulder cycle): close the cage, then subdivide
         _close(bm)
         bm.to_mesh(cage)
         bm.free()
@@ -438,6 +528,7 @@ def skin_mesh(V, E, name):
         bmesh.ops.delete(bm, geom=loose, context='VERTS')
         bm.to_mesh(new)
     bm.free()
+    new['cb_repaired'] = repaired                    # the fallback ran (a crease at the failed branch): tests require it never does
     return new
 
 

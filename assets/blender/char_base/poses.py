@@ -13,10 +13,10 @@ for _p in (_HERE, os.path.join(_HERE, '..', 'char_head')):
     if _p not in sys.path:
         sys.path.insert(0, _p)
 import char_head as ch
-from body import FDIR
+from body import FDIR, REF_ARM
 
-ARM_SPREAD = (0.0, 1.6)       # relaxed arms: margin (m x ARM_K) and gain of the extra palm spread when torso + arm overlap the shoulder width
-# (margin 0.0 since build measures the whole trunk width beside the upper arm; 0.02 went with the narrower weight-dominance cut)
+RELAX_PALM = (0.06, -0.04, -0.60)   # relaxed palm offset from the shoulder (x outward, y, z) x ARM_K, before the spread
+ARMPIT_ZONE = 0.10                  # m x ARM_K below the shoulder where the relaxed arm root joins the trunk (spread calibration skips it)
 REF_HIP_Z, REF_SH_Z = 0.93, 1.385      # zc-you anchors: the reference the zc-sized staging numbers (feet, relaxed hands) were authored for
 
 FACES = ch.FACE_PRESETS      # shared with every char_head consumer
@@ -72,8 +72,10 @@ class Actor:
 
     @property
     def ARM_K(self):
-        """Arm-length ratio to zc-you (shoulder height); scale zc-authored hand offsets by it."""
-        return self.ao['cb_shoulder_z'] / REF_SH_Z
+        """Arm-length ratio to zc-you (upper arm + forearm bones); scale zc-authored hand offsets by it. Shoulder height was the proxy
+        until 6c made arms follow the trunk (CP-L09): long-armed big-head / stylized bodies then bent their relaxed elbows back."""
+        B = self.ao.data.bones
+        return (B['upper_arm.L'].length + B['forearm.L'].length) / REF_ARM
 
     # ------------------------------------------------------------- helpers
     def _calibrate_curl(self, s):
@@ -125,14 +127,10 @@ class Actor:
         bpy.context.view_layer.update()
 
     def relaxed_spread(self):
-        """Extra sideways palm offset (m) for relaxed arms: where the torso half-width plus the upper-arm radius reaches past the
-        shoulder joint (heavy / stylized bodies; joints stay mass-independent, R17), the arms hang out of the torso. zc-you: 0."""
-        ao = self.ao
-        if 'cb_torso_hx' not in ao:
-            return 0.0
-        m, g = ARM_SPREAD
-        over = ao['cb_torso_hx'] + ao['cb_arm_r'] - ao.data.bones['upper_arm.L'].head_local.x + m * self.ARM_K
-        return g * max(0.0, over)
+        """Extra sideways palm offset (m) for relaxed arms, calibrated by build (cb_relax_spread): the least spread that keeps the hanging
+        arm RELAX_FIT clear of the trunk below the armpit zone. Heavy / stylized bodies only (joints stay mass-independent, R17); 0 when
+        the arm already clears (zc-you)."""
+        return self.ao.get('cb_relax_spread', 0.0)
 
     def a(self, p):
         """world -> armature space"""
@@ -189,7 +187,7 @@ class Actor:
             if spec is None:         # relaxed: hanging beside the thigh with a slight forward swing, spread out of a wide torso
                 k = self.ARM_K
                 ex = self.relaxed_spread()
-                spec = dict(palm=self.mw @ (sh + Vector((0.06 * sg, -0.04, -0.60)) * k + Vector((ex * sg, 0, 0))),
+                spec = dict(palm=self.mw @ (sh + Vector((RELAX_PALM[0] * sg, RELAX_PALM[1], RELAX_PALM[2])) * k + Vector((ex * sg, 0, 0))),
                             dir=Rw @ Vector((0.10 * sg + ex * sg / 0.6, -0.10, -1.0)), normal=Rw @ Vector((-sg, 0, 0)))
             d_a = (Rw.inverted() @ Vector(spec['dir'])).normalized() if spec.get('dir') is not None else rest_dir
             n_a = Rw.inverted() @ Vector(spec['normal']) if spec.get('normal') is not None else Vector((-sg, 0, 0))

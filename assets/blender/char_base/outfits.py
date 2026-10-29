@@ -334,7 +334,7 @@ def _neck(ctx):
 
 
 def _neck_r(ctx):
-    return 1.1 * 0.062 * ctx.F['rt']    # 1.1 x the yoke's cage radius (body.body_graph neck0): the neck and its base flare lie inside it
+    return 1.1 * 0.062 * ctx.F['rt']    # collar fit window: 1.1 x the zc-you yoke radius 0.062 (the 6c yoke B.YOKE_R flares wider into the shoulders)
 
 
 def _leg(ctx, s, lower=False):
@@ -607,7 +607,7 @@ def skirt(ctx, color='skirt', length=0.85, flare=1.0, thickness=0.004, nu=40, nv
             cx, cy, rx, ry = _fit_h(ctx, z)
             pts = [(p.x - cx, p.y - cy) for p in ctx.bv if abs(p.z - z) < 1.2 * dz and abs(p.x) < tx]
             polar = [(math.atan2(y, x), math.hypot(x, y)) for x, y in pts]
-            m = (0.028 + 0.080 * flare * v ** 1.4) * g       # 0.028 (was 0.020): clears the fuller female thigh root in a crouch (Task 6c)
+            m = (0.024 + 0.080 * flare * v ** 1.4) * g       # 0.024 (was 0.020): the female thigh root clears the skirt sitting (Task 6c)
             ring = []
             for j in range(nu):
                 th = 2 * math.pi * j / nu

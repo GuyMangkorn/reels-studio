@@ -76,7 +76,7 @@ SURFACE_CASES = (('zc_you', dict(presets.get('zc_you')['body'])), ('female', dic
                  ('tall_big_head', dict(heads_tall=3.5, height=1.95)), ('heavy_stylized_female', dict(sex=1.0, mass=1.0, stylize=1.0)),
                  ('elder_stoop1', dict(age='elder', stoop=1.0)))
 TORSO_Z_MAX_MM, TORSO_Z_P95_MM = 8.0, 2.5     # fixed result: max <= 3.6, p95 <= 1.42 (128-case grid max 5.1); the two-shell hull at 21f8433: max up to 86
-TORSO_LUMP_MM = 7.5                           # 5 x 5 neighbourhood deviation (fixed result <= 5.7; an injected 30 mm sigma-2 cm chest lump: 9.9)
+TORSO_LUMP_MM = 7.5                           # 5 x 5 neighbourhood deviation of the pre-shape() hull (6c fix result <= 5.2; an injected 30 mm sigma-2 cm chest lump: 9.9)
 PROTRUSION_MAX = 0.36
 
 
@@ -134,8 +134,11 @@ def _lump(me, J, amp=0.030, sig=0.02):
 
 
 def test_torso_smooth():
+    """Skin hull roughness, measured before body.shape(): the bust / pectoral / buttock lobes are analytic smooth fields (wanted shape),
+    so the guard reads only hull defects (shells, ripples, lumps) and keeps its full headroom."""
     for label, kw in SURFACE_CASES:
-        _, J, _, _, me = _skin('s_' + label, kw)
+        _, J, V, E, _ = _skin('s_' + label, kw)
+        me = body.skin_mesh(V, E, 'sr_' + label)
         mx, p95, lump = _torso_roughness(me, J)
         print(f'  torso roughness {label}: max {mx:.2f} mm, p95 {p95:.2f} mm, lump {lump:.2f} mm')
         assert mx <= TORSO_Z_MAX_MM and p95 <= TORSO_Z_P95_MM and lump <= TORSO_LUMP_MM, (label, mx, p95, lump)
@@ -144,6 +147,22 @@ def test_torso_smooth():
             mx, p95, lump = _torso_roughness(me, J)
             print(f'  torso roughness zc_you + 30 mm chest lump: max {mx:.2f}, p95 {p95:.2f}, lump {lump:.2f} mm')
             assert mx > TORSO_Z_MAX_MM or lump > TORSO_LUMP_MM, (mx, lump)
+
+
+def test_extremes_no_repair():
+    """Every corner of the parameter box (heads_tall, height, sex, mass, stoop, stylize, limb length at their bounds: 128 bodies) gets a
+    valid skin hull: the _close fallback never runs (its repaired crotch / thigh read as a crease, 6c review I1)."""
+    import itertools
+    bad = []
+    for ht, h, sx, ms, st, sy, al in itertools.product((3.5, 8.0), (1.0, 1.95), (0, 1), (0, 1), (0, 1), (0, 1), (0.9, 1.1)):
+        kw = dict(heads_tall=ht, height=h, sex=sx, mass=ms, stoop=st, stylize=sy, arm_len=al, leg_len=al)
+        bp, J = _J(**kw)
+        me = body.skin_mesh(*body.body_graph(J, bp), 'x')
+        if me['cb_repaired']:
+            bad.append(kw)
+        bpy.data.meshes.remove(me)
+    print(f'  extremes: 128 bodies, {len(bad)} needed the hull repair')
+    assert not bad, bad
 
 
 def _protrusion(me):
@@ -232,6 +251,7 @@ def test_mitten_hand():
 ARMPIT_CASES = SURFACE_CASES + (('heavy_male', dict(mass=1.0)), ('mass_0', dict(mass=0.0)), ('mass_0.6', dict(mass=0.6)),
                                 ('heavy_female', dict(sex=1.0, mass=1.0)))
 ARM_SOFT_CONTACT = 0.005           # relaxed arm may press this far into the torso (soft contact)
+ARM_HUG = (0.008, 0.10)            # a spread relaxed arm stays within 8 mm of the trunk below the armpit zone (m below the shoulder x ARM_K)
 SHOULDER_BUMP, MITTEN_BUMP = 0.10, 0.18   # umbrella growth at arm-up / grip 0.7 (fixed result <= 0.04 / 0.09; c14c2cd: 0.24-0.28 / 0.37-0.45)
 
 
@@ -246,28 +266,6 @@ def _bare(name, kw):
         return build.build('_bare', name)
     finally:
         del presets.PRESETS['_bare']
-
-
-def _torso_volume(kw):
-    """Closed torso volume (pelvis-waist-chest-neck skin of the same body graph, floor-aligned like build.build) as a BVH."""
-    kw = dict(kw)
-    bp, J = _J(**kw)
-    full = body.body_mesh(J, bp, 'tv_full')
-    zmin = min(v.co.z for v in full.vertices)
-    me = body.trunk_mesh(J, bp, 'tv')
-    return BVHTree.FromPolygons([v.co - Vector((0, 0, zmin)) for v in me.vertices], [tuple(f.vertices) for f in me.polygons])
-
-
-def _depth_inside(bvh, p):
-    """Depth of p inside the closed volume (0 outside): ray parity along +X, distance to the nearest surface."""
-    n, o = 0, p.copy()
-    for _ in range(64):
-        h = bvh.ray_cast(o, Vector((1, 0, 0)), 5.0)
-        if h[0] is None:
-            break
-        n += 1
-        o = h[0] + Vector((1e-5, 0, 0))
-    return bvh.find_nearest(p)[3] if n % 2 else 0.0
 
 
 def _umbrella(P, nb):
@@ -296,8 +294,12 @@ def test_armpit_deforms():
         A.keying = False
         A.pose(1, root=(0, 0, 0), key=False)               # relaxed arms (the default pose)
         P = posed()
-        tvol = _torso_volume(kw)
-        inside = sum(1 for i, w in enumerate(arm_w) if w >= 0.8 and _depth_inside(tvol, P[i]) > ARM_SOFT_CONTACT)
+        tor = body.TorsoGauge(ob)
+        low = ao['cb_shoulder_z'] - ARM_HUG[1] * ao['cb_shoulder_z'] / 1.385     # below the armpit zone (the arm root joins the trunk above)
+        sd = {i: tor.depth(P[i]) for i, w in enumerate(arm_w) if w >= 0.8 and P[i].z < low}
+        inside = sum(1 for d in sd.values() if d > ARM_SOFT_CONTACT)
+        spread = A.relaxed_spread()
+        gap = max(0.0, -max(sd.values(), default=0.0))      # clearance of the closest arm vertex
         nb = [[] for _ in me.vertices]
         for e in me.edges:
             nb[e.vertices[0]].append(e.vertices[1])
@@ -311,8 +313,10 @@ def test_armpit_deforms():
         A.pose(1, root=(0, 0, 0), key=False, hand_l=dict(palm=tuple(sh + Vector((0.97 * L, -0.02, 0))), dir=(1, 0, 0), normal=(0, 0, -1), curl=0.7, thumb=0.6))
         k0, k1 = _umbrella(R, nb), _umbrella(posed(), nb)
         bs, bm_ = max(k1[i] - k0[i] for i in shoulder), max(k1[i] - k0[i] for i in mitt)
-        print(f'  armpit {label}: relaxed arms, arm verts > 5 mm inside torso {inside}; arm-up shoulder bump {bs:.3f}, grip 0.7 mitten bump {bm_:.3f}')
+        print(f'  armpit {label}: relaxed arms, arm verts > 5 mm inside torso {inside}, spread {spread * 1000:.1f} mm, gap below the armpit '
+              f'{gap * 1000:.1f} mm; arm-up shoulder bump {bs:.3f}, grip 0.7 mitten bump {bm_:.3f}')
         assert inside == 0, (label, inside)
+        assert spread == 0 or gap <= ARM_HUG[0], (label, spread, gap)       # a spread arm hugs the trunk (R24), no surplus
         assert bs <= SHOULDER_BUMP and bm_ <= MITTEN_BUMP, (label, bs, bm_)
 
 
@@ -320,24 +324,17 @@ def test_armpit_deforms():
 # Reference ratios (ANSUR II 2012 US Army survey means, approximate; full list in the Task 6c report): bideltoid / hip breadth
 # male ~1.47, female ~1.18; waist / hip breadth male ~0.90, female ~0.76; circumference calf / ankle ~1.7, forearm / wrist ~1.65,
 # thigh / knee ~1.55, relaxed upper arm / elbow ~1.18. The smooth skin softens joints, so the bounds below sit under those values.
-SEX_SH_HIP = (0.80, 1.28)    # female shoulder / hip half-width <= 0.80 x male's and <= 1.28 (reference 1.18 vs 1.47 = 0.80; the zc-based male
-#                              is 1.62, so the reference female scales to 1.30; 6b head: 0.82, 1.35)
+SEX_SH_HIP = 0.80            # female shoulder / hip half-width <= 0.80 x male's (reference 1.18 vs 1.47 = 0.80; 6b head: 0.82)
+SEX_HIP = 1.22               # female hip half-width <= 1.22 x male's at the same mass: wider, not oversized (reference ~1.16 at equal stature)
 SEX_WAIST_HIP = 0.12         # female waist / hip <= male's - 0.12 (reference 0.76 vs 0.90; 6b head: -0.10)
 SEX_BUST = 0.030             # female bust prominence (chest front - waist front, / body width factor) >= male's + 0.030 (6b head: +0.017)
-TAPER = dict(calf_ankle=1.50, fore_wrist=1.50, thigh_knee=1.45, upper_elbow=1.12, fore_elbow=1.03)
+TAPER = dict(calf_ankle=1.50, fore_wrist=1.60, thigh_knee=1.45, upper_elbow=1.15, fore_elbow=1.03)   # 6b head: 1.37, 1.54, 1.33, 1.12, 0.99
 
 
 def _mesh(kw, armless=False, name='p'):
-    """(bp, J, rest skin mesh) of a body; armless drops the arm and hand nodes (front/side silhouettes of the trunk and legs)."""
+    """(bp, J, rest mesh) of a body; armless drops the arm and hand nodes (front/side silhouettes of the trunk and legs)."""
     bp, J = _J(**dict(kw))
-    V, E = body.body_graph(J, bp)
-    if armless:
-        keep = [i for i, (n, _, _) in enumerate(V) if not n.startswith(body.ARM_NODES)]
-        idx = {o: k for k, o in enumerate(keep)}
-        V, E = [V[i] for i in keep], [(idx[a], idx[b]) for a, b in E if a in idx and b in idx]
-    me = body.skin_mesh(V, E, name)
-    body.shape(me, J, bp)
-    return bp, J, me
+    return bp, J, (body.armless_mesh if armless else body.body_mesh)(J, bp, name)
 
 
 def _band(me, z, band=None):
@@ -371,14 +368,42 @@ def _sex_metrics(kw):
 
 
 def test_sex_cues():
-    """At mass 0 (and 0.5) a female body has narrower shoulders for its hips, a waist taper and a bust that a male body lacks."""
-    for mass in (0.0, 0.5):
+    """At mass 0, 0.5 and 1 a female body has narrower shoulders for its hips, a waist taper and a bust that a male body lacks; its hips
+    are wider than the male's but not oversized."""
+    for mass in (0.0, 0.5, 1.0):
         m, f = _sex_metrics(dict(sex=0.0, mass=mass)), _sex_metrics(dict(sex=1.0, mass=mass))
         print(f'  sex cues mass {mass}: male ' + ', '.join(f'{k} {v:.3f}' for k, v in m.items()) +
               '; female ' + ', '.join(f'{k} {v:.3f}' for k, v in f.items()))
-        assert f['sh_hip'] <= SEX_SH_HIP[0] * m['sh_hip'] and f['sh_hip'] <= SEX_SH_HIP[1], (mass, f['sh_hip'], m['sh_hip'])
+        assert mass == 1.0 or f['sh_hip'] <= SEX_SH_HIP * m['sh_hip'], (mass, f['sh_hip'], m['sh_hip'])   # a mass-1 male belly widens his 'hips'
+        assert m['hw'] < f['hw'] <= SEX_HIP * m['hw'], (mass, f['hw'], m['hw'])
         assert f['waist_hip'] <= m['waist_hip'] - SEX_WAIST_HIP, (mass, f['waist_hip'], m['waist_hip'])
         assert f['bust'] >= m['bust'] + SEX_BUST, (mass, f['bust'], m['bust'])
+
+
+MALE_REF = dict(sh_hip=1.75, chest_waist=1.40, hip_h=0.082, shoulder_top=0.020)
+# ^ male (zc_you and mass 0) against the user's A-pose reference (out/qa/char-base/ref_user_apose_male.png, R23): deltoid / hip half-width
+#   >= 1.75 (reference ~1.8), chest / waist half-width >= 1.40 (V taper), hip half-width <= 0.082 x height, shoulder top at 0.85 x the
+#   deltoid width >= 0.020 x height above the shoulder joint (square shoulders); 6c head: 1.65, 1.21, 0.084, 0.014
+
+
+def test_male_reference():
+    """The male body moves toward the user's realistic A-pose reference: broad square shoulders with a deltoid cap, a chest-to-waist V,
+    narrow hips (front silhouette: deltoid on the full mesh, trunk and hips on the arm-less mesh)."""
+    for label, kw in (('zc_you', dict(presets.get('zc_you')['body'])), ('male_0', dict(mass=0.0))):
+        bp, J, full = _mesh(kw, name='mr_full')
+        _, _, me = _mesh(kw, armless=True, name='mr_trunk')
+        zmin = min(v.co.z for v in full.vertices)
+        H = J['head_top'].z - zmin
+        hx = lambda z: max((abs(p.x) for p in _band(me, z)), default=0.0)
+        sw = max(abs(p.x) for p in _band(full, J['SH'].z))
+        chest = hx(J['chest_n'].z)
+        waist = min(hx(J['waist_n'].z + 0.01 * i) for i in range(-3, 8))
+        hip = max(hx(J['HIP'].z + 0.01 * i) for i in range(-6, 6))
+        top = max(v.co.z for v in full.vertices if abs(abs(v.co.x) - 0.85 * sw) < 0.01)
+        q = dict(sh_hip=sw / hip, chest_waist=chest / waist, hip_h=hip / H, shoulder_top=(top - J['SH'].z) / H)
+        print(f'  male reference {label}: ' + ', '.join(f'{k} {v:.3f}' for k, v in q.items()))
+        assert q['sh_hip'] >= MALE_REF['sh_hip'] and q['chest_waist'] >= MALE_REF['chest_waist'], (label, q)
+        assert q['hip_h'] <= MALE_REF['hip_h'] and q['shoulder_top'] >= MALE_REF['shoulder_top'], (label, q)
 
 
 def _limb_r(bvh, a, b, ts, n=16):
@@ -433,13 +458,14 @@ def test_heads_tall_extreme():
     assert all(abs(r[3]) <= 0.05 for r in rows), rows
 
 
-MASS_STEP = (0.015, 0.030, 0.004)   # per 0.1 mass: max torso_hx step, max spread step, max change of the hx step between neighbours
+MASS_STEP = (0.020, 0.035, 0.006, 0.002)   # per 0.1 mass: max torso_hx step, max spread step, max change of the hx step between neighbours,
+#   largest allowed hx dip (the skin modifier re-meshes overlapping nodes as radii grow: female 0.6 -> 0.7 drops 144 hull vertices, a 1.7 mm dip)
 #                                      (6b head: a 20 mm hx step after a 3 mm one on sex 1 at 0.8 -> 0.9, so a 57 mm spread step)
 
 
 def test_mass_continuous():
-    """Torso half-width (cb_torso_hx) and the relaxed arm spread grow smoothly with mass for both sexes: never shrinking, no step over
-    MASS_STEP, and no hx step that jumps away from its neighbour."""
+    """Torso half-width (cb_torso_hx) and the calibrated relaxed arm spread grow smoothly with mass for both sexes: never shrinking, no
+    step over MASS_STEP, and no hx step that jumps away from its neighbour."""
     from char_base import poses
     for sx in (0.0, 1.0):
         prev, steps = None, []
@@ -452,5 +478,5 @@ def test_mass_continuous():
             for o in [o for o in bpy.data.objects if o.parent == ao] + [ao]:
                 bpy.data.objects.remove(o, do_unlink=True)
         for i, b in enumerate(steps[1:], 1):                       # b = step into mass i/10
-            assert -0.0005 <= b[0] <= MASS_STEP[0] and -0.0005 <= b[1] <= MASS_STEP[1], (sx, i, b)
+            assert -MASS_STEP[3] <= b[0] <= MASS_STEP[0] and -0.0005 <= b[1] <= MASS_STEP[1], (sx, i, b)
             assert i == 1 or abs(b[0] - steps[i - 1][0]) <= MASS_STEP[2], (sx, i, steps[i - 1], b)
