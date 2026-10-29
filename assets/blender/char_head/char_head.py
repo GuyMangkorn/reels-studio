@@ -37,6 +37,11 @@ PARAMS = dict(
     ear=1.0, cheek=1.2,
     skin='#b98a6a', stubble=0.0, lip='#a8655a', hair='#17151a', hair2='#241c17', hair_hl='#2b2a34', brow_color='#16110e', iris_color='#6a4326',
     hair_style='side_sweep', hair_volume=1.0, hair_flicks=5, hair_messy=0.0, sideburn=0,
+    style='v1',
+)
+STYLE_V2 = dict(    # v2: round skull, one cut-out hair sheet (no flicks/tufts), no visible eyelids (lids retracted at rest, they only close to blink)
+    style='v2', head=(0.098, 0.100, 0.104), jaw_taper=0.04, chin=0.3, cheek=1.3, hair_style='cutout', hair_flicks=0, hair_messy=0.0, hair_volume=1.0,
+    nose_len=0.6, nose_bridge=0.6, eye_r=0.0215, iris=0.80,
 )
 PRESETS = {
     'zc_you': {},
@@ -59,9 +64,29 @@ FACE_PRESETS = {   # lid: upper-lid close angle deg (0 open, + closes, - wide), 
     'frozen': dict(lid=6, brow=(0.005, -4), jaw=0),
 }
 
+FACE_PRESETS_V2 = {  # lid is retracted (-40) except for a blink; the read is carried by brows, jaw and eye squash (eye bone scale z)
+    'neutral': dict(lid=-40, brow=(0.000, 5), jaw=0, squash=0.88),
+    'tired': dict(lid=-40, brow=(-0.003, 9), jaw=0.5, squash=0.7),
+    'startle': dict(lid=-40, brow=(0.012, 0), jaw=4, squash=1.1),
+    'fear': dict(lid=-40, brow=(0.009, -9), jaw=3, squash=1.08),
+    'focused': dict(lid=-40, brow=(-0.004, 12), jaw=0, squash=0.78),
+    'listening': dict(lid=-40, brow=(0.004, -3), jaw=0, squash=0.96),
+    'frozen': dict(lid=-40, brow=(0.005, -5), jaw=0, squash=0.98),
+}
+
 
 def params(**kw):
     p = dict(PARAMS)
+    p.update(kw)
+    return p
+
+
+def style(name, base=None, **kw):
+    """Apply a head style ('v1' default look | 'v2' round/cut-out/no-lids) on top of `base` parameters (or the defaults); keywords win."""
+    p = dict(base or PARAMS)
+    if name == 'v2':
+        p.update(STYLE_V2)
+    p['style'] = name
     p.update(kw)
     return p
 
@@ -378,9 +403,13 @@ def face_bones(origin, p=None, scale=1.0):
 
 def apply_face(pb, preset='neutral', blink=0.0, **over):
     """pb = armature pose bones. preset in FACE_PRESETS; keyword overrides lid, brow=(raise, furrow_deg), jaw."""
-    fp = dict(FACE_PRESETS[preset])
+    v2 = pb['jaw'].id_data.get('head_style') == 'v2'
+    fp = dict((FACE_PRESETS_V2 if v2 else FACE_PRESETS)[preset])
     fp.update({k: v for k, v in over.items() if k in fp})
     lid = fp['lid'] + blink * (80 - fp['lid'])
+    if v2:
+        for s in 'LR':
+            pb[f'eye.{s}'].scale = (1, 1, fp['squash'] * (1.0 - 0.15 * blink))
     for s, sg in (('L', 1), ('R', -1)):
         pb[f'lid.{s}'].rotation_euler = Euler((math.radians(lid), 0, 0), 'XYZ')
         pb[f'brow.{s}'].location = (0, fp['brow'][0], 0)
@@ -392,6 +421,7 @@ def apply_face(pb, preset='neutral', blink=0.0, **over):
 HAIRLINES = {   # (angle from the front in degrees, polar angle limit of the hair mass in degrees)
     'side_sweep': ((0, 60), (35, 60), (70, 68), (105, 84), (140, 104), (180, 114)),
     'short_crop': ((0, 52), (35, 54), (70, 62), (105, 78), (140, 96), (180, 106)),
+    'cutout': ((0, 66), (25, 60), (50, 72), (80, 76), (110, 90), (140, 108), (180, 116)),
     'bowl': ((0, 62), (35, 64), (70, 76), (105, 94), (140, 110), (180, 118)),
 }
 
@@ -407,6 +437,8 @@ def _hair(ao, p, mats, prefix, origin, scale):
         for (x0, y0), (x1, y1) in zip(pts_, pts_[1:]):
             if a <= x1:
                 v = y0 + (y1 - y0) * (a - x0) / (x1 - x0)
+                if p['hair_style'] == 'cutout' and a < 90:
+                    v += 7.0 * math.sin(ph) * (1 - a / 90)          # diagonal fringe edge: lower on the character's left, higher on the right
                 if p['hair_style'] == 'side_sweep' and ph > 0 and a < 60:
                     v -= 4.0                                  # side part: lower on the character's left
                 return math.radians(v)
@@ -443,7 +475,7 @@ def _hair(ao, p, mats, prefix, origin, scale):
     _bind(ob, ao, {'head': 1.0})
     out = [ob]
     # cartoon tip strokes: pointed locks lying on the surface that run past the hairline (fringe tips, a few at the sides/nape)
-    nfl = int(p['hair_flicks'])
+    nfl = 0 if p['style'] == 'v2' else int(p['hair_flicks'])
     spots = [(-0.55, 0.0), (-0.15, 0.10), (0.30, 0.20), (0.75, 0.28), (2.0, 0.10), (-2.0, 0.10), (2.6, 0.06)]
     for i in range(min(nfl, len(spots))):
         ph0, drift = spots[i]
@@ -462,7 +494,7 @@ def _hair(ao, p, mats, prefix, origin, scale):
         _xf(sb, origin, scale)
         _bind(sb, ao, {'head': 1.0})
         out.append(sb)
-    if p['hair_messy'] > 0:
+    if p['hair_messy'] > 0 and p['style'] != 'v2':
         for i in range(3):
             th, ph = math.radians((16, 22, 30)[i]), (0.2, 2.4, -0.9)[i]
             tf = _tube(f'{prefix}_hair_tuft{i}', [pt(th, ph, 1.05), pt(th + 0.14, ph, 1.085) + Vector((0.012, 0, 0.006)), pt(th + 0.21, ph, 1.08) + Vector((0.024, 0, 0.004))],
@@ -478,6 +510,7 @@ def build_head(ao, origin, p=None, prefix='ch', scale=1.0, mats=None):
     """Create the head meshes bound (vertex groups + Armature modifier) to bones head/jaw/eye.*/lid.*/brow.* of armature object `ao`."""
     p = p or params()
     origin = Vector(origin)
+    ao['head_style'] = p['style']
     mats = mats or make_materials(p, prefix, origin)
     parts = []
     # ---- skull with sculpted features + shape keys
@@ -549,7 +582,7 @@ def build_head(ao, origin, p=None, prefix='ch', scale=1.0, mats=None):
             bm.to_mesh(lm)
             bm.free()
             lm.materials.append(mats['skin'])
-            lm.materials.append(mats['lash'])
+            lm.materials.append(mats['skin'] if p['style'] == 'v2' else mats['lash'])      # v2: the lid is plain skin (it only closes to blink)
             for pg in lm.polygons:
                 pg.use_smooth = True
                 zc_ = sum((lm.vertices[i].co.z - c.z for i in pg.vertices), 0.0) / len(pg.vertices)

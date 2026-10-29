@@ -1,5 +1,5 @@
 """Face turnaround + expression/variant sheets for char_head (Eevee 64, headless).
-Blender -b --python assets/blender/char_head/turnaround.py -- <outdir> [preset ...]
+Blender -b --python assets/blender/char_head/turnaround.py -- <outdir> [preset[:v1|v2] ...]
 Writes <preset>_front/q/side.png (close-ups) and <preset>_expr_<name>.png for the 7 face presets of the first preset."""
 import bpy, sys, os, math, importlib.util
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -26,14 +26,17 @@ def shot(name, ang, dist=0.78):
     co.rotation_euler = (math.radians(90), 0, a)
     sc.render.filepath = os.path.join(out, name)
     bpy.ops.render.render(write_still=True)
-for nm in names:
-    p = ch.preset(nm)
+for spec_ in names:
+    nm0, _, st = spec_.partition(':')
+    st = st or 'v1'
+    nm = f'{nm0}_{st}'
+    p = ch.style(st, ch.preset(nm0))
     ao = ch.add_standalone_armature(p, nm)
     ch.build_head(ao, (0, 0, 0), p, nm)
     ch.apply_face(ao.pose.bones, 'neutral')
     for suf, ang in (('front', 0), ('q', 35), ('side', 90)):
         shot(f'{nm}_{suf}.png', ang)
-    if nm == names[0]:
+    if True:
         for ex in ch.FACE_PRESETS:
             ch.apply_face(ao.pose.bones, ex)
             shot(f'{nm}_expr_{ex}.png', 15)
