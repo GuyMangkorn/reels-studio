@@ -30,12 +30,12 @@ import bpy, bmesh, math, random
 from mathutils import Vector, Matrix, Euler
 
 PARAMS = dict(
-    head=(0.088, 0.104, 0.112), jaw_taper=0.24, chin=1.0,
-    eye_x=0.0335, eye_z=0.015, eye_y=-0.083, eye_r=0.0172, iris=0.62,
+    head=(0.094, 0.102, 0.110), jaw_taper=0.16, chin=0.8,
+    eye_x=0.0365, eye_z=0.012, eye_y=-0.083, eye_r=0.0215, iris=0.70,
     brow_z=0.045, brow_thick=1.0, brow_arch=0.006, brow_len=1.0,
-    nose_len=1.0, nose_w=1.0, nose_bridge=1.0, mouth_z=-0.062, mouth_w=0.017, mouth_curve=0.0022, lip_full=1.0,
-    ear=1.0, cheek=1.0,
-    skin='#b98a6a', stubble=0.0, lip='#a8655a', hair='#17151a', hair2='#241c17', hair_hl='#33323d', brow_color='#16110e', iris_color='#6a4326',
+    nose_len=0.7, nose_w=0.85, nose_bridge=0.7, mouth_z=-0.060, mouth_w=0.016, mouth_curve=0.0022, lip_full=1.0,
+    ear=1.0, cheek=1.2,
+    skin='#b98a6a', stubble=0.0, lip='#a8655a', hair='#17151a', hair2='#241c17', hair_hl='#2b2a34', brow_color='#16110e', iris_color='#6a4326',
     hair_style='side_sweep', hair_volume=1.0, hair_flicks=5, hair_messy=0.0, sideburn=0,
 )
 PRESETS = {
@@ -50,7 +50,7 @@ PRESETS = {
                        iris_color='#2a2a2a', hair_style='short_crop', hair_volume=0.9, hair_flicks=2),
 }
 FACE_PRESETS = {   # lid: upper-lid close angle deg (0 open, + closes, - wide), brow: (raise m, furrow deg), jaw deg
-    'neutral': dict(lid=22, brow=(0.000, 5), jaw=0),
+    'neutral': dict(lid=14, brow=(0.000, 5), jaw=0),
     'tired': dict(lid=32, brow=(-0.002, 6), jaw=0.5),
     'startle': dict(lid=-9, brow=(0.011, 0), jaw=4),
     'fear': dict(lid=-8, brow=(0.009, -8), jaw=3),
@@ -192,7 +192,8 @@ def make_materials(p, prefix='ch', origin=(0, 0, 0)):
     d['pupil'] = _mat(f'{prefix}_pupil', srgb('#060606'))
     d['glint'] = _mat(f'{prefix}_glint', srgb('#ffffff'))
     d['ear_in'] = _mat(f'{prefix}_ear_in', tuple(c * 0.78 for c in srgb(p['skin'])))
-    for k in ('skin', 'lips', 'hair', 'hair2', 'hair_hl', 'brow', 'mouth', 'lash', 'sclera', 'iris', 'pupil', 'ear_in'):
+    toon(d['skin'], steps=4.0, amount=0.6)       # fewer, softer bands on the face: no contour lines across the sculpted cheeks
+    for k in ('lips', 'hair', 'hair2', 'hair_hl', 'brow', 'mouth', 'lash', 'sclera', 'iris', 'pupil', 'ear_in'):
         toon(d[k])
     gm = d['glint'].node_tree
     if not gm.nodes.get('zc_glint'):
@@ -307,6 +308,16 @@ def _ellipsoid(name, c, r, mat, rot=(0, 0, 0), seg=20, rings=12):
     return _finish(bm, name, [mat])
 
 
+def _cap(name, c, r, ang, mat, seg=48, rings=24):
+    """Spherical cap of radius r around centre c, facing -Y, half-angle `ang` degrees."""
+    bm = bmesh.new()
+    bmesh.ops.create_uvsphere(bm, u_segments=seg, v_segments=rings * 4, radius=r)
+    bmesh.ops.transform(bm, matrix=Euler((math.radians(90), 0, 0)).to_matrix().to_4x4(), verts=bm.verts)
+    bmesh.ops.delete(bm, geom=[v for v in bm.verts if math.degrees(math.acos(max(-1, min(1, -v.co.y / r)))) > ang], context='VERTS')
+    bmesh.ops.transform(bm, matrix=Matrix.Translation(c), verts=bm.verts)
+    return _finish(bm, name, [mat])
+
+
 def _tube(name, pts, radii, mat, seg=6, cap=True):
     bm = bmesh.new()
     rings = []
@@ -379,9 +390,9 @@ def apply_face(pb, preset='neutral', blink=0.0, **over):
 
 # ----------------------------------------------------------------------------- hair
 HAIRLINES = {   # (angle from the front in degrees, polar angle limit of the hair mass in degrees)
-    'side_sweep': ((0, 60), (35, 60), (70, 68), (105, 76), (140, 88), (180, 94)),
-    'short_crop': ((0, 52), (35, 54), (70, 62), (105, 70), (140, 82), (180, 90)),
-    'bowl': ((0, 62), (35, 64), (70, 76), (105, 88), (140, 98), (180, 102)),
+    'side_sweep': ((0, 60), (35, 60), (70, 68), (105, 84), (140, 104), (180, 114)),
+    'short_crop': ((0, 52), (35, 54), (70, 62), (105, 78), (140, 96), (180, 106)),
+    'bowl': ((0, 62), (35, 64), (70, 76), (105, 94), (140, 110), (180, 118)),
 }
 
 
@@ -431,12 +442,6 @@ def _hair(ao, p, mats, prefix, origin, scale):
     _xf(ob, origin, scale)
     _bind(ob, ao, {'head': 1.0})
     out = [ob]
-    # soft highlight band across the top-left of the mass
-    hl = _tube(f'{prefix}_hair_hl', [pt(math.radians(12 + 8 * j), 0.5 + 0.09 * j, 1.0 + 0.052 * vol) for j in range(6)],
-               [0.0030, 0.0050, 0.0058, 0.0054, 0.0040, 0.0016], mats['hair_hl'], seg=6)
-    _xf(hl, origin, scale)
-    _bind(hl, ao, {'head': 1.0})
-    out.append(hl)
     # cartoon tip strokes: pointed locks lying on the surface that run past the hairline (fringe tips, a few at the sides/nape)
     nfl = int(p['hair_flicks'])
     spots = [(-0.55, 0.0), (-0.15, 0.10), (0.30, 0.20), (0.75, 0.28), (2.0, 0.10), (-2.0, 0.10), (2.6, 0.06)]
@@ -444,8 +449,8 @@ def _hair(ao, p, mats, prefix, origin, scale):
         ph0, drift = spots[i]
         t0 = th_max(ph0)
         n_ = 7
-        pts = [pt(t0 - math.radians(8) + math.radians(14) * (j / (n_ - 1)), ph0 + drift * (j / (n_ - 1)) ** 2, 1.050 - 0.020 * (j / (n_ - 1))) for j in range(n_)]
-        rad = [0.0075 * (1 - (j / (n_ - 1)) ** 1.3) + 0.0003 for j in range(n_)]
+        pts = [pt(t0 - math.radians(14) + math.radians(24) * (j / (n_ - 1)), ph0 + drift * (j / (n_ - 1)) ** 2, 1.040 - 0.026 * (j / (n_ - 1))) for j in range(n_)]
+        rad = [0.0058 * math.sin(math.pi * min(1.0, 0.25 + 0.75 * j / (n_ - 1))) ** 0.8 * (1 - (j / (n_ - 1)) ** 2.2) + 0.0002 for j in range(n_)]
         fl = _tube(f'{prefix}_hair_flick{i}', pts, rad, mats['hair'], seg=5)
         _xf(fl, origin, scale)
         _bind(fl, ao, {'head': 1.0})
@@ -461,7 +466,7 @@ def _hair(ao, p, mats, prefix, origin, scale):
         for i in range(3):
             th, ph = math.radians((16, 22, 30)[i]), (0.2, 2.4, -0.9)[i]
             tf = _tube(f'{prefix}_hair_tuft{i}', [pt(th, ph, 1.05), pt(th + 0.14, ph, 1.085) + Vector((0.012, 0, 0.006)), pt(th + 0.21, ph, 1.08) + Vector((0.024, 0, 0.004))],
-                       [0.008, 0.006, 0.0015], mats['hair'], seg=6)
+                       [0.0055, 0.0042, 0.0008], mats['hair'], seg=6)
             _xf(tf, origin, scale)
             _bind(tf, ao, {'head': 1.0})
             out.append(tf)
@@ -518,14 +523,12 @@ def build_head(ao, origin, p=None, prefix='ch', scale=1.0, mats=None):
     for s, n in ((1, 'L'), (-1, 'R')):
         c = Vector((p['eye_x'] * s, ec_y, p['eye_z']))
         eye = _ellipsoid(f'{prefix}_eye.{n}', c, (R,) * 3, mats['sclera'], seg=48, rings=32)
-        eye.data.materials.append(mats['iris'])
-        eye.data.materials.append(mats['pupil'])
         ir = math.degrees(math.asin(min(0.95, p['iris'] * 0.95)))
-        for pg in eye.data.polygons:
-            cc = sum((eye.data.vertices[i].co for i in pg.vertices), Vector()) / len(pg.vertices)
-            d = (cc - c).normalized()
-            ang = math.degrees(math.acos(max(-1, min(1, -d.y))))
-            pg.material_index = 2 if ang < ir * 0.42 else (1 if ang < ir else 0)
+        for kind, rr, ang_, mk in (('iris', 1.004, ir, 'iris'), ('pupil', 1.009, ir * 0.42, 'pupil')):
+            cap = _cap(f'{prefix}_{kind}.{n}', c, R * rr, ang_, mats[mk])      # smooth caps, not per-polygon materials: round edges at any size
+            _xf(cap, origin, scale)
+            _bind(cap, ao, {f'eye.{n}': 1.0})
+            parts.append(cap)
         _xf(eye, origin, scale)
         _bind(eye, ao, {f'eye.{n}': 1.0})
         parts.append(eye)

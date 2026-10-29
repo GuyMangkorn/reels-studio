@@ -4,20 +4,20 @@
       -0.274,
       0.274,
       -0.206,
-      0.118
+      0.106
     ],
     "bones": 44,
-    "eye_z_m": 1.61,
-    "height_m": 1.7182,
+    "eye_z_m": 1.607,
+    "height_m": 1.7109,
     "joint_limits_used_by_tracks_deg": {
       "eye_yaw_from_head_max": "see tracks",
       "head_yaw_B10": 75.0,
-      "seated_spine_back_lean_total": 24.0,
+      "seated_spine_back_lean_total": 30.7,
       "shoulders_yaw_B10": 50.0
     },
     "lowest_z_m": 0.0,
-    "objects": 71,
-    "vertices": 27671
+    "objects": 63,
+    "vertices": 30631
   },
   "tracks": {
     "B01-SH01": {
@@ -188,8 +188,8 @@
       "wall_min_x_m": -0.0718
     },
     "B09-SH01": {
-      "back_wall_gap_to_build_BACK_X_-1.60_m": 0.096,
-      "back_wall_gap_to_sheet_x_-1.50_m": -0.004,
+      "back_wall_gap_to_build_BACK_X_-1.60_m": 0.1022,
+      "back_wall_gap_to_sheet_x_-1.50_m": 0.0022,
       "contacts": [],
       "floor_min_z_m": -0.0,
       "frames": [
@@ -197,11 +197,11 @@
         45
       ],
       "phone_foot_gap_m": 0.0444,
-      "wall_min_x_m": -1.504
+      "wall_min_x_m": -1.4978
     },
     "B09-SH02": {
-      "back_wall_gap_to_build_BACK_X_-1.60_m": 0.0556,
-      "back_wall_gap_to_sheet_x_-1.50_m": -0.0444,
+      "back_wall_gap_to_build_BACK_X_-1.60_m": 0.0681,
+      "back_wall_gap_to_sheet_x_-1.50_m": -0.0319,
       "contacts": [],
       "floor_min_z_m": -0.0,
       "frames": [
@@ -209,11 +209,11 @@
         128
       ],
       "phone_foot_gap_m": 0.0444,
-      "wall_min_x_m": -1.5444
+      "wall_min_x_m": -1.5319
     },
     "B09-SH03": {
-      "back_wall_gap_to_build_BACK_X_-1.60_m": 0.0532,
-      "back_wall_gap_to_sheet_x_-1.50_m": -0.0468,
+      "back_wall_gap_to_build_BACK_X_-1.60_m": 0.0628,
+      "back_wall_gap_to_sheet_x_-1.50_m": -0.0372,
       "contacts": [],
       "floor_min_z_m": -0.0,
       "frames": [
@@ -221,7 +221,7 @@
         0
       ],
       "phone_foot_gap_m": 0.0444,
-      "wall_min_x_m": -1.5468
+      "wall_min_x_m": -1.5372
     },
     "B10-SH01": {
       "contacts": [],

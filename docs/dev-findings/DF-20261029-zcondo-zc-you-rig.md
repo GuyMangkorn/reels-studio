@@ -25,3 +25,5 @@
 
 ## Revalidation history
 - 2026-10-29 `claude/zcondo-boss-plates` working tree → CLI measurements above → workaround; not merged.
+- 2026-10-29 `claude/char-head-template`: face moved to shared `assets/blender/char_head/` (see `scripts/zombie-condo/build-notes.md`); B10-SH01 face box passes at c0/c245, floor contact 0.0, B09-SH01 lead 455 px at 3.4 m (unchanged conclusion), B09-SH01 render 8.33 s to 8.57 s; workaround, not merged. The face still falls short of the 2D reference (see notes).
+
