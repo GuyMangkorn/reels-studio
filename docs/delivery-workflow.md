@@ -5,7 +5,7 @@
 ## Resolve the selection before writing
 
 1. Read the user's request and the existing episode delivery record. Reuse an explicit selection; do not ask again when the user already chose the formats or supplied a scoped revision request.
-2. If the selection or [style profile](#style-profile) is missing or materially ambiguous, ask with the harness's structured-question tool: `AskUserQuestion` in Claude Code, `request_user_input_async` in Codex; if neither exists, ask in chat. Ask only for what the prompt leaves open, in one call in the user's language: the **selection** with three choices, **both**, **Short only**, **Long only**, showing the duration targets from production requirements (Thai example: “หัวข้อนี้ต้องการทำทั้ง Shorts และ YouTube แบบยาว หรือเลือกแบบใดแบบหนึ่ง?”), and the **style** (genre/medium, voice, music) when none is stated or implied. Do not ask about a choice the prompt or the delivery record already settles. A sent question, preselected option or elapsed wait is not an answer. Continue independent research while waiting; begin format-dependent writing/scene sheets only after the selection is resolved.
+2. If the selection or [style profile](#style-profile) is missing or materially ambiguous, ask with the harness's structured-question tool: `AskUserQuestion` in Claude Code, `request_user_input_async` in Codex; if neither exists, ask in chat. Ask only for what the prompt leaves open, in one call in the user's language: the **selection** with three choices, **both**, **Short only**, **Long only**, showing the duration targets from production requirements (Thai example: “หัวข้อนี้ต้องการทำทั้ง Shorts และ YouTube แบบยาว หรือเลือกแบบใดแบบหนึ่ง?”), and the **style** (genre/medium, voice, music) when none is stated or implied. For an animated or illustrated deliverable, the same call also asks the [visual engine](#visual-engine) unless the prompt or record names one. Do not ask about a choice the prompt or the delivery record already settles. A sent question, preselected option or elapsed wait is not an answer. Continue independent research while waiting; begin format-dependent writing/scene sheets only after the selection is resolved.
 3. Record the answer or existing instruction in `scripts/<episode>/delivery.md`: selection, style profile and pipeline tier, evidence of the user's choice, deliverable IDs, target durations and scope. `short`, `long` and `both` are authoring labels, not runtime fields. Default counts are one standalone Short and one Long when both are selected. A chapter series, multiple Shorts or additional edits require explicit scope; selecting both does not make every Long chapter a Short.
 4. Route each selected deliverable through the [pipeline tier](#pipeline-tiers) in its record; the Full tier is Boat research → Preaw script → Boat fact-check → Film brief → Mark written scene sheets → Boss shared assets/capabilities → Editor integration/editing. Shared research may feed both. A scriptwriting-only assignment ends with editorial handoff; selection does not authorize automatic downstream production, agent execution or cross-chat messaging.
 
@@ -19,6 +19,7 @@ Selection is complete when the record identifies the selected deliverables and t
 | --- | --- |
 | Genre / purpose | mystery-educational (default), comedy, explainer/tutorial, vlog or documentary cut, news/recap, review, ad/promo, music/lyric video, slideshow/photo story, screen recording, motivational |
 | Visual medium | illustrated 2D/3D/hybrid (existing library), user footage, stock/licensed footage, still images, typography/kinetic text, screen recording, mixed |
+| Visual engine | for illustrated/animated media: Blender 3D, painted 2D (p5.brush), Remotion rig 2D, a mix of these, Film's choice, or the user's own answer ([visual engine](#visual-engine)) |
 | Voice | Niwat TTS (default), user-supplied recording, on-camera audio, no voice |
 | Music / SFX | none, user-supplied, licensed library (record the license), shared sound library / locally generated ([sound workflow](sound-generation-workflow.md)), sparse SFX; ducking under voice |
 | Captions | outline (default), box, none; position; burned-in or SRT only |
@@ -27,6 +28,19 @@ Selection is complete when the record identifies the selected deliverables and t
 | Factual claims | none / opinion only, general knowledge, named real case (decides Boat's involvement) |
 
 Record the chosen values in `delivery.md` as a compact block. A profile that needs a missing runtime capability is a Boss dependency, not a reason to change the story. Supported runtime fields are listed in [Remotion toolkit 10a](remotion-toolkit.md#10a-footage-stills-music-entry-transitions-and-caption-styles); inspect the active checkout before promising more.
+
+### Visual engine
+
+**Requirement:** before Film's brief or any scene work on an animated or illustrated deliverable, the record names the visual engine. When neither the prompt nor the record names one, ask in the [selection call](#resolve-the-selection-before-writing) as a multi-select question in the user's language (Thai example: “จะทำภาพด้วยอะไร? เลือกได้หลายแบบเพื่อผสมกัน”):
+
+| Option | Meaning | Runtime status (checkout `733808f`) |
+| --- | --- | --- |
+| Blender 3D | Rendered 3D shots and assets ([Blender workflow](blender-mcp-workflow.md)) | `existing-integrated` |
+| Painted 2D (p5.brush) | Hand-painted watercolour and boiling ink, drawn per frame in `src/painted/BrushCanvas.tsx`; method in the [painted-2d skill](../.claude/skills/painted-2d/SKILL.md) | `exists-unintegrated`: a 5 s spike on its own entry point (`src/painted/spike/`), not wired into the scene renderer or episode registry |
+| Remotion rig 2D | The existing vector character rig and scene library (`src/rig/`, `src/scenes/`) | `existing-integrated` |
+| Let Film choose | Film picks per scene or element and records the reasons in the brief | — |
+
+Selecting several options means a mix; the brief then states which engine owns each set, character, prop and effect. The harness's free-text answer covers any engine the user names themself. An engine marked `exists-unintegrated` makes its integration a Boss dependency, recorded before Editor work. Re-check the runtime status in the active checkout before relying on this table.
 
 ## Pipeline tiers
 
