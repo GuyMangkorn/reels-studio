@@ -13,3 +13,4 @@ build/
 docs/superpowers/
 assets/blender/**/renders/
 .venv-whisper/
+__pycache__/
