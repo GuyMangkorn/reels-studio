@@ -93,7 +93,7 @@ def test_defaults_unchanged():
     want = json.loads(subprocess.check_output(["git", "show", "HEAD:assets/blender/zc-you/check-results.json"], cwd=ROOT))
     saved = open(res, 'rb').read()
     try:
-        subprocess.run([BLENDER, "-b", "--python", os.path.join(ROOT, "assets/blender/zc-you/check.py"), "--", "rig"],
+        subprocess.run([BLENDER, "-b", "--python-exit-code", "1", "--python", os.path.join(ROOT, "assets/blender/zc-you/check.py"), "--", "rig"],
                        cwd=ROOT, check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
         got = json.load(open(res))
     finally:

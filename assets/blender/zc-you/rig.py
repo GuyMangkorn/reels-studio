@@ -20,6 +20,9 @@ for _p in (os.path.join(_HERE, '..', 'char_base'), os.path.join(_HERE, '..', 'ch
     _p = os.path.normpath(_p)
     if _p not in sys.path:
         sys.path.insert(0, _p)
+if _HERE in sys.path:                 # zc-you's own modules win name clashes with char_base (poses: tracks needs the zc-you anchors)
+    sys.path.remove(_HERE)
+sys.path.insert(0, _HERE)
 import char_head as ch      # shared illustrated head (assets/blender/char_head)
 import body as _body
 import build as _build

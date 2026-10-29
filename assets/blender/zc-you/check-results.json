@@ -16,8 +16,8 @@
       "shoulders_yaw_B10": 50.0
     },
     "lowest_z_m": 0.0,
-    "objects": 58,
-    "vertices": 31797
+    "objects": 50,
+    "vertices": 28100
   },
   "tracks": {
     "B01-SH01": {
@@ -27,7 +27,7 @@
         0,
         149
       ],
-      "wall_min_x_m": -0.2762
+      "wall_min_x_m": -0.2765
     },
     "B02-SH01": {
       "contacts": [
@@ -58,7 +58,7 @@
         0,
         89
       ],
-      "wall_min_x_m": -0.2626
+      "wall_min_x_m": -0.2613
     },
     "B02-SH02": {
       "contacts": [],
@@ -67,10 +67,10 @@
         0,
         176
       ],
-      "wall_min_x_m": -0.2735
+      "wall_min_x_m": -0.2741
     },
     "B02-SH03": {
-      "cabinet_face_y_0.58_back_gap_m": 0.0022,
+      "cabinet_face_y_0.58_back_gap_m": 0.0092,
       "cabinet_top_z": 1.2,
       "contacts": [],
       "floor_min_z_m": -0.0,
@@ -78,10 +78,10 @@
         0,
         0
       ],
-      "wall_min_x_m": -0.2735
+      "wall_min_x_m": -0.2741
     },
     "B03-SH01": {
-      "cabinet_face_y_0.58_back_gap_m": 0.0022,
+      "cabinet_face_y_0.58_back_gap_m": 0.0092,
       "cabinet_top_z": 1.2,
       "contacts": [],
       "floor_min_z_m": -0.0,
@@ -89,7 +89,7 @@
         0,
         0
       ],
-      "wall_min_x_m": -0.2735
+      "wall_min_x_m": -0.2741
     },
     "B04-SH01": {
       "contacts": [],
@@ -98,7 +98,7 @@
         0,
         101
       ],
-      "wall_min_x_m": 0.1251
+      "wall_min_x_m": 0.1247
     },
     "B05-SH01": {
       "contacts": [],
@@ -107,7 +107,7 @@
         0,
         60
       ],
-      "wall_min_x_m": -0.3995
+      "wall_min_x_m": -0.3978
     },
     "B05-SH02": {
       "contacts": [],
@@ -116,7 +116,7 @@
         0,
         60
       ],
-      "wall_min_x_m": -0.9729
+      "wall_min_x_m": -0.9734
     },
     "B05-SH03": {
       "contacts": [
@@ -133,7 +133,7 @@
         0,
         60
       ],
-      "wall_min_x_m": -1.3324
+      "wall_min_x_m": -1.3085
     },
     "B06-SH01": {
       "contacts": [
@@ -150,7 +150,7 @@
         0,
         215
       ],
-      "wall_min_x_m": -1.1032
+      "wall_min_x_m": -1.1041
     },
     "B07-SH01": {
       "contacts": [
@@ -167,7 +167,7 @@
         0,
         89
       ],
-      "wall_min_x_m": -1.4757
+      "wall_min_x_m": -1.4376
     },
     "B07-SH02": {
       "contacts": [],
@@ -176,7 +176,7 @@
         0,
         125
       ],
-      "wall_min_x_m": -1.2664
+      "wall_min_x_m": -1.2644
     },
     "B08-SH01": {
       "contacts": [],
@@ -185,7 +185,7 @@
         0,
         200
       ],
-      "wall_min_x_m": -0.0718
+      "wall_min_x_m": -0.0727
     },
     "B09-SH01": {
       "back_wall_gap_to_build_BACK_X_-1.60_m": 0.1001,
