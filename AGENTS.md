@@ -24,9 +24,9 @@ These apply to every role; agent configs link here instead of repeating them.
 <a id="coordinator-and-agent-parity"></a>
 ## Coordinator and agent parity
 
-The **coordinator** is the chat session the user talks to (Claude Code or Codex). It selects deliverables, style profile and tier, invokes role agents for the assigned scope (Claude Code: the `Agent` tool with `subagent_type` set to the role name; Codex: the custom agent of that name) and passes matching revisions. Role configs describe roles; they install no automatic runner and authorize no cross-chat messaging. A role agent never invokes the next role on its own.
+The **coordinator** is the chat session the user talks to (Claude Code or Codex). It selects deliverables, style profile and tier, invokes role agents for the assigned scope (Claude Code: the `Agent` tool with `subagent_type` set to the role name; Codex: the custom agent of that name) and passes matching revisions, following the [agent invocation defaults](docs/delivery-workflow.md#agent-invocation) (whole stage per call, inline mechanical edits, separate checking). Role configs describe roles; they install no automatic runner and authorize no cross-chat messaging. A role agent never invokes the next role on its own.
 
-`.claude/agents/<role>.md` and `.codex/agents/<role>.toml` must carry the same name, description and instructions; `tests/agents.test.ts` enforces this, so edit both in the same change.
+`.claude/agents/<role>.md` and `.codex/agents/<role>.toml` must carry the same name, description and instructions; `tests/agents.test.ts` enforces this, so edit both in the same change. Claude front matter also carries a required `tools:` allowlist (Claude-only) that keeps each role's startup context small; add a tool there before a role depends on it.
 
 ## Working principles
 

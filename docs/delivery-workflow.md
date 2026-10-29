@@ -40,6 +40,19 @@ Choose the lightest tier whose outputs the deliverable needs, record it in `deli
 
 Tier changes after the start require a recorded reason. Handoff checks still apply to the stages that run: matching revisions, deliverable ID, covered beats and timing status. A lighter tier never waives licensing, factual review of asserted claims, Thai readability or the QA the owning workflows require for what is actually produced.
 
+### Agent invocation
+
+**Default** for how the [coordinator](../AGENTS.md#coordinator-and-agent-parity) runs a tier's stages. Every role agent starts cold and rereads AGENTS.md and its core documents, so invocations cost context. A brief may override a rule with a recorded reason.
+
+- **AI01 — One invocation per stage and revision.** Send the whole stage scope in one brief (every beat, shot or asset it covers), not one call per shot or fix. Batch review notes for the same owner into one revision.
+- **AI02 — Coordinator does mechanical edits inline.** Small edits with no judgment call do not need a role agent: a value, typo, link or `Stage / Next owner` update, applying a change the owning role already decided and recorded, or reading status. Name the owning role in the change (e.g. "coordinator for Mark, SS-R2.5"). New or substantially revised scripts, fact-checks, briefs, scene sheets, assets and Blender/render work always go to the owning role.
+- **AI03 — Keep authoring and checking separate.** The role that checks a piece of work never runs in the same invocation as the one that wrote it (Boat's fact-check of Preaw's script). Boss and Editor runtime work (Blender, renders, audio generation) runs in their own agent, so logs and frames stay out of the coordinator's context.
+- **AI04 — Continue instead of re-invoking.** A follow-up for a role whose agent finished minutes ago continues that agent (Claude Code: `SendMessage` to it). After a long gap or a new revision, start a fresh invocation with a short brief.
+- **AI05 — Point, don't paste.** Briefs name file paths, revisions and stable IDs. They do not paste document or handoff content into the brief, and they list only the trigger documents the stage needs beyond the role's core reads.
+- **AI06 — Wait once for long jobs.** Batch renders and Blender jobs into one run and wait for it once (a background job or `Monitor`), not with repeated polling. Prove the shot with sampled frames or a low-resolution pass before a full render.
+
+Independent deliverables (a Short and a Long) may run as parallel invocations. Stages that depend on each other stay in tier order.
+
 ## Separate story versions from frame shapes
 
 Short and Long are separate editorial deliverables. Each needs its own full spoken script, claim mapping, exact-revision factual review, visual brief, scene-handoff set, executable timing, narration/amplitude and subtitle timing. A synopsis, crop, faster VO or a link to the other script is not a second script. Write a compact standalone question/payoff for Short and a developed causal progression for Long; do not pad or mechanically concatenate Shorts to fill Long.
