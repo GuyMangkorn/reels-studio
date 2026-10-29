@@ -1,6 +1,6 @@
 import shipwreckAmplitude from '../../../scripts/oldest-shipwreck/short/SHIPWRECK-SHORT.amplitude.json';
 import slots from '../../../scripts/oldest-shipwreck/short/narration-timeline.json';
-import type {AudioTrack, PaintedShotCue, Scene, SceneSoundCue, SubtitleCue, Timeline} from '../../scenes/types';
+import type {AudioTrack, PaintedShotCue, QuadText, Scene, SceneSoundCue, SubtitleCue, Timeline} from '../../scenes/types';
 import type {EpisodeVideos} from '../types';
 
 /**
@@ -21,6 +21,25 @@ type Slot = {
 const FPS = 30;
 const frames = (sec: number) => Math.round(sec * FPS);
 
+/**
+ * B07 real-photo card (user request, 29 Oct 2026): a dated Early Bronze Age jar from Arad (Israel Museum, CC0, NOTICE
+ * beside the file) over the known-jar half of SH07a on "…กับไหที่รู้อายุแล้ว", inside the caption-safe box and above the
+ * caption band (card x 464–888, y 291–856). It is not a Kekova jar, and the card says so.
+ */
+const rect = (x: number, y: number, width: number, height: number): QuadText['quads'] => [[[x, y], [x + width, y], [x + width, y + height], [x, y + height]]];
+const PHOTO = {startFrame: 60, endFrame: 120};
+const photoText = (text: string, x: number, y: number, width: number, height: number, fontSize: number, color: string): QuadText =>
+  ({text, quads: rect(x, y, width, height), box: {width, height}, fontSize, fontWeight: 700, color, ...PHOTO});
+const photoCard: Pick<Scene, 'media' | 'quadTexts'> = {
+  media: [{kind: 'image', src: 'images/oldest-shipwreck/arad-jar-card.png', layer: 'front', startSec: PHOTO.startFrame / 30, endSec: PHOTO.endFrame / 30,
+    box: {x: 464 / 1080, y: 291 / 1920, width: 424 / 1080, height: 565 / 1920}}],
+  quadTexts: [
+    photoText('ภาพจริง', 464, 293, 424, 44, 30, '#ffffff'),
+    photoText('ไหจากเมืองอารัด ราว 3000–2650 ปีก่อน ค.ศ.', 464, 794, 424, 30, 20, '#ffffff'),
+    photoText('ไม่ใช่ไหจากซากเรือนี้ · ภาพ Gary Todd (CC0)', 464, 824, 424, 28, 18, '#d9d2c4'),
+  ],
+};
+
 export const shipwreckTimeline: Timeline = (() => {
   const scenes: Scene[] = [];
   let beat = '', local = 0;
@@ -28,7 +47,7 @@ export const shipwreckTimeline: Timeline = (() => {
     if (slot.beat !== beat) {
       beat = slot.beat;
       local = 0;
-      scenes.push({durationSec: 0, bg: 'none', actors: [], subtitle: '', subtitleCues: [], sfx: [], painted: {shots: []}});
+      scenes.push({durationSec: 0, bg: 'none', actors: [], subtitle: '', subtitleCues: [], sfx: [], painted: {shots: []}, ...(beat === 'B07' ? photoCard : {})});
     }
     const scene = scenes[scenes.length - 1];
     const at = (sec: number) => frames(local + sec) / FPS;
