@@ -77,8 +77,8 @@
       "head_clear_of_caption_zone_y860": true,
       "head_px": {
         "x": [
-          245,
-          411
+          249,
+          408
         ],
         "y": [
           452,
@@ -86,7 +86,7 @@
         ]
       },
       "label_box_above_plain_band_px": 15,
-      "label_box_gap_to_face_box_x_px": 49,
+      "label_box_gap_to_face_box_x_px": 52,
       "label_box_inside_door_face_x": true,
       "lead_px": {
         "height_px": 1345,
@@ -194,26 +194,26 @@
       "head_clear_of_caption_zone_y860": true,
       "head_px": {
         "x": [
-          252,
-          405
+          245,
+          410
         ],
         "y": [
-          444,
+          450,
           632
         ]
       },
       "label_box_above_plain_band_px": 14,
-      "label_box_gap_to_face_box_x_px": 55,
+      "label_box_gap_to_face_box_x_px": 50,
       "label_box_inside_door_face_x": true,
       "lead_px": {
-        "height_px": 1375,
+        "height_px": 1369,
         "lowest_world_z": -0.0,
         "x": [
           214,
           470
         ],
         "y": [
-          444,
+          450,
           1819
         ]
       },
@@ -1222,21 +1222,21 @@
       "floor_min_z": -0.0,
       "floor_penetration_m": 0.0,
       "hips_lowest_z": -0.0,
-      "wall_gap_m": 0.096,
+      "wall_gap_m": 0.1001,
       "wall_penetration_m": 0.0
     },
     "coverage_m": 3.4,
     "file": "out/blender/zc-unit/sp02/B09SH01/still.png",
     "floor_line_px": 860.0,
     "lead_px": {
-      "height_px": 456,
+      "height_px": 452,
       "lowest_world_z": -0.0,
       "x": [
         395,
         759
       ],
       "y": [
-        371,
+        375,
         828
       ]
     },
@@ -1277,11 +1277,11 @@
         0.4845
       ]
     },
-    "render_seconds": 3.84,
+    "render_seconds": 4.18,
     "settings": {
       "engine": "BLENDER_EEVEE",
       "fast_gi": true,
-      "gi_bake_seconds": 2.02,
+      "gi_bake_seconds": 1.88,
       "look": "None",
       "output": "PNG 8-bit RGB sRGB",
       "raytracing": "SCREEN, res 1/2, denoise",
