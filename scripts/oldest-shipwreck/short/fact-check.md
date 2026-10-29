@@ -48,3 +48,35 @@ All three are supported: a wreck with no hull, an initial misdating to roughly a
 - Every VO line, subtitle cue, the on-screen label and all visual/sound notes in R1 were checked. Preaw's open questions Q1–Q4 are answered above (Q4: F014 added).
 - Remaining gaps, none of which affect the script: the BBC original (SRC011) and the Springer full text are still inaccessible, so the B05–B06 quotes rest on one original via SRC007. The discovery year is disputed (U01) and is deliberately not stated.
 - R2 recheck: confirm the two exact replacements in both the VO and the subtitles. Re-check any other changed wording and anything that depends on it. Recheck B09 against any residue result published before release.
+
+## 2026-10-29 addendum: B07 real-photo card (`photoCard`, `src/videos/oldest-shipwreck/index.ts`; commit ea752b2)
+
+Narrow review of one new on-screen element: the card over the known-jar half of SH07a, F1245–1305, under "…กับไหที่รู้อายุแล้ว". Inspected: the card PNG (`public/images/oldest-shipwreck/arad-jar-card.png`, viewed), `NOTICE`, the edit-plan section and the three `photoText` lines. Script narration is unchanged (R1.1).
+
+Sources (new IDs, research registry not otherwise changed):
+- **SRC-P01** Commons file page, inspected: https://commons.wikimedia.org/wiki/File:Pottery_Abydos_Ware,_Arad,_3000-2650_BC_(43216132551).jpg . Author Gary Todd. Institution field: Israel Museum. Template: CC0 1.0. FlickreviewR 2 confirmed cc-zero on 2019-11-28. The photo was taken 2018-07-05.
+- **SRC-P02** Flickr original, inspected: https://www.flickr.com/photos/101561334@N08/43216132551/ . Same title, marked "Public domain" (CC0).
+- **SRC-P03** Y. Aharoni, *Encyclopaedia Judaica* "Arad", via Jewish Virtual Library, inspected: https://jewishvirtuallibrary.org/israel-wing/geography/geographical-features-of-israel-cities-and-urban-areas/arad . Excavations "uncovered a large city from the Early Bronze Age II (c. 2900–2700 B.C.E.)". It also notes imported Egyptian pottery and "decorated pottery which had previously been known mainly from first dynasty tombs in Egypt (Abydos ware)".
+- **SRC-P04** Wikipedia "Tel Arad", inspected as a lead: https://en.wikipedia.org/wiki/Tel_Arad . EB II c. 3050/3000–2750/2700 BCE, Strata III–II, a "large fortified city". Final sparse occupation ends c. 2650 BCE. It cites Amiran et al., *Early Arad* I–II (1978, 1996) and Regev et al. 2012 (*Radiocarbon*).
+- **SRC-P05** Johns Hopkins Archaeological Museum, "Abydos Ware juglet", search snippet only (a lead, not opened): https://archaeologicalmuseum.jhu.edu/exhibitions/past-exhibitions/levantine-pottery/abydos-ware-juglet . It gives EB II, c. 3000–2700 BCE, made in the southern Levant, not in Egypt.
+- Access gap: no Israel Museum object record was found (imj.org.il search gave no match). The 3000–2650 BC range therefore rests on the photographer's caption, which presumably copies the gallery label. It is consistent with SRC-P03 and SRC-P04: EB II plus the Stratum I tail to c. 2650. The specific jar was not traced to a plate in *Early Arad*. Confidence that it is an EB II Arad jar is moderate to high, from the label-based title and its form (large painted jar with ledge handles, typical of Arad EB II "Abydos-type" painted jars).
+
+| Point | Verdict | Finding |
+| --- | --- | --- |
+| P1 Object, date, "ไห", "เมืองอารัด" | **pass** | The identification and the 3000–2650 BC range match the title (SRC-P01, SRC-P02) and the EB II dating of the Arad city (SRC-P03, SRC-P04). "ไห" fits a large, short-necked, wide-bodied storage jar. "เมือง" is fair, because EB II Arad was a walled, planned city (SRC-P03, SRC-P04). Minor: "เมืองอารัด" can also read as the modern town of Arad, about 8 km away. The fix below drops "เมือง". |
+| P2 Implication under "กับไหที่รู้อายุแล้ว" | **required fix** | (a) The team's actual comparanda are Egyptian (Giza) and Levantine EBA finds (F004, F009). This Arad jar is not documented among them. Shown under "กับไหที่รู้อายุแล้ว" without a qualifier, it reads as *the* jar they compared with. "ไม่ใช่ไหจากซากเรือนี้" only says it is not from the wreck. Mark it as an example. As an example it is fair: Arad EB II pottery is a classic dated assemblage, and Abydos ware is a standard Egypt–Levant typological link (SRC-P03). (b) Unit clash: the card says "3000–2650 ปีก่อน ค.ศ." (a BC date), and about 1 s later the narration and subtitle give "4,400–4,700" *years ago*. Viewers can misread "3000–2650 ปี" as years ago, which would make the "known-age" jar look *younger* than the wreck. Converted from 2026, 3000–2650 BC is about 5,025–4,675 years ago, so "ราว 4,700–5,000 ปี" in the subtitle's own unit is correct. The overlap with the Kekova estimate (~2700–2400 BC, F003) is only at the edge. The jar is somewhat older, which is fine for an example and is not claimed as a match. "5,000" here describes the Arad jar, not the wreck, so U07 is not triggered. |
+| P3 CC0 status | **pass** | CC0 is declared at the Flickr source and was confirmed by FlickreviewR in 2019 (SRC-P01, SRC-P02). Gary Todd releases his museum photo sets as CC0. The object is ~5,000 years old and carries no underlying copyright. A museum visitor photo policy, if any, binds the photographer, not downstream users, and is not a copyright restriction. There are no persons in the frame. The on-screen credit is courtesy, not required. Do not imply Israel Museum endorsement (the card does not). |
+| P4 Thai wording and fit | **pass after the P2 fix** | The original line 1 is grammatical Thai ("ปีก่อน ค.ศ." is common usage), but it is replaced for P2(b). The en dash and the thousands comma match the B07 subtitle style ("4,400–4,700"). Line 2 is natural; keep it. Widths measured with CoreText, `public/fonts/NotoSansThai.ttf` at wght 700: current line 1 = 377 px at 20 px; replacement line 1 = **377 px** at 20 px (equal); line 2 = 339 px at 18 px. All are under 424 px. |
+
+Exact replacement (line 1 only; header and line 2 unchanged):
+
+- Line 1, current: "ไหจากเมืองอารัด ราว 3000–2650 ปีก่อน ค.ศ."
+- Line 1, **replace with**: "ตัวอย่าง: ไหจากอารัด อายุราว 4,700–5,000 ปี"
+- Line 2, keep: "ไม่ใช่ไหจากซากเรือนี้ · ภาพ Gary Todd (CC0)"
+- Header, keep: "ภาพจริง"
+
+Fallback if the BC form must be kept (same meaning, but the unit clash remains, so this is a weaker option): "ตัวอย่าง: ไหจากอารัด ก่อน ค.ศ. 3000–2650". Its width was not measured, so measure it before use.
+
+Records: update the date wording in `NOTICE` and in the edit-plan card note if the line changes (the English "~3000–2650 BC" there is correct as a record). The edit-plan line ending "`NOTICE`" is missing its closing parenthesis (cosmetic). Sound: no SFX or cue sits on the card (B07 SFX none), so there are no sound implications. Premise, reveal and takeaway are unaffected. The card supports the typology takeaway.
+
+Status for the card: **`revision-required`** (one line). After the replacement above is applied verbatim, the card is `ready` for the Editor's B07 output. Recheck only that line's render (fit/clipping frame check is the Editor's visual evidence, not this review).
