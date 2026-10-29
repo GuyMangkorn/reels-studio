@@ -80,6 +80,7 @@ Every agent reads AGENTS.md plus its **core** documents. It reads any other docu
 | [editor-workflow](docs/editor-workflow.md) | Integration, editing, scene samples; user-supplied footage/images/audio or an edit without a script ([direct intake](docs/editor-workflow.md#direct-intake)) (Editor) | E |
 | [editor-principles](docs/editor-principles.md) | Rhythm, transitions, audio mix, loop seams | E |
 | [sound-generation-workflow](docs/sound-generation-workflow.md) | Sound duties per role, the library index and license. Generating, processing or filing sounds with the `audio-studio` MCP uses the [`sound-generation` skill](.agents/skills/sound-generation/SKILL.md) | on trigger (E) |
+| [voice-tuning skill](.agents/skills/voice-tuning/SKILL.md) | A character voice (child, elderly, other adult) from Edge TTS, a per-line rate, or short-line generation | on trigger (E) |
 | [sequence-workflow](docs/sequence-workflow.md) | Sequence planning, blockout before polish, boundaries, continuity review across cuts | on trigger (M, S, E) |
 | [production-requirements](docs/production-requirements.md) | Any production deliverable or its review: formats, duration, Thai text/audio, subtitles, endings, licenses | on trigger |
 | [scale-and-perspective-principles](docs/scale-and-perspective-principles.md) | Physical dimensions, projection, depth staging, resizing, apparent size | on trigger |
