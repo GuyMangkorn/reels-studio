@@ -47,7 +47,7 @@ The **coordinator** is the chat session the user talks to (Claude Code or Codex)
 
 Role configs describe roles. They install no automatic runner and authorize no cross-chat messaging. A role agent never invokes the next role on its own.
 
-`.claude/agents/<role>.md` and `.codex/agents/<role>.toml` must carry the same name, description and instructions. `tests/agents.test.ts` enforces this, so edit both in the same change. Claude front matter also carries a required `tools:` allowlist (Claude-only) that keeps each role's startup context small. Add a tool there before a role depends on it.
+`.claude/agents/<role>.md` and `.codex/agents/<role>.toml` must carry the same name, description and instructions. `tests/agents.test.ts` enforces this, so edit both in the same change. Claude front matter also carries a required `tools:` allowlist (Claude-only) that keeps each role's startup context small. Add a tool there before a role depends on it. An optional Claude-only `model:` line pins a role's model (Boss, Editor and Boat use `sonnet`; measured 30 Oct 2026); the coordinator may still override it per call.
 
 ## Working principles
 
