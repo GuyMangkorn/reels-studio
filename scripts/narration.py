@@ -1,6 +1,7 @@
-"""Generate local Niwat (+5%) audio and a committed 30fps RMS envelope.
+"""Generate local Edge TTS audio (default Niwat +5%) and a committed 30fps RMS envelope.
 Install edge-tts==7.3.1, then run npm run narration. Each subtitle starts with its scene.
 Per video: npm run narration -- --timeline scripts/<episode>/<variant>/timeline.json --name <CompositionId>
+Voice and rate: --voice th-TH-PremwadeeNeural --rate +5% (defaults th-TH-NiwatNeural and +5%; the delivery record names the voice).
 writes public/narration/<CompositionId>.mp3 and <CompositionId>.amplitude.json beside the timeline,
 so videos never overwrite each other. Without arguments it regenerates the demo files.
 Optional per-scene "leadSec" delays that scene's speech inside its slot (to line it up with a fixed picture event);
@@ -75,23 +76,39 @@ def paths():
     parser = argparse.ArgumentParser()
     parser.add_argument('--timeline', default='scripts/demo.json')
     parser.add_argument('--name', help='composition ID; omit for the demo paths')
+    parser.add_argument('--voice', default='th-TH-NiwatNeural', help='Edge TTS voice (default th-TH-NiwatNeural)')
+    parser.add_argument('--rate', default='+5%', help='Edge TTS rate, e.g. +5%% (default +5%%)')
     args = parser.parse_args()
     timeline = ROOT / args.timeline
     if not args.name:
-        return timeline, ROOT / 'public/narration.mp3', ROOT / 'src/amplitude.json'
-    return timeline, ROOT / f'public/narration/{args.name}.mp3', timeline.parent / f'{args.name}.amplitude.json'
+        return timeline, ROOT / 'public/narration.mp3', ROOT / 'src/amplitude.json', args.voice, args.rate
+    return timeline, ROOT / f'public/narration/{args.name}.mp3', timeline.parent / f'{args.name}.amplitude.json', args.voice, args.rate
+
+
+async def synthesize(edge_tts, text, voice, rate, clip, attempts=15):
+    """Edge TTS intermittently returns NoAudioReceived (seen 29 Oct 2026); retry with a short backoff."""
+    for attempt in range(attempts):
+        try:
+            await edge_tts.Communicate(text, voice, rate=rate).save(str(clip))
+            return
+        except edge_tts.exceptions.NoAudioReceived:
+            if attempt == attempts - 1:
+                raise
+            print(f'No audio received, retry {attempt + 1}', flush=True)
+            await asyncio.sleep(min(2 + attempt, 6))
 
 
 async def main():
     import edge_tts  # imported here so narration_files.py can reuse the helpers without edge-tts installed
-    source, target, amplitude = paths()
+    source, target, amplitude, voice, rate = paths()
+    print(f'Voice {voice}, rate {rate}', flush=True)
     target.parent.mkdir(parents=True, exist_ok=True)
     timeline = json.loads(source.read_text())
     with tempfile.TemporaryDirectory() as directory:
         combined = array.array('h')
         for index, scene in enumerate(timeline):
             clip = Path(directory) / f'{index}.mp3'
-            await edge_tts.Communicate(scene['subtitle'], 'th-TH-NiwatNeural', rate='+5%').save(str(clip))
+            await synthesize(edge_tts, scene['subtitle'], voice, rate, clip)
             samples = pcm(clip)
             audible_end = max((i for i, v in enumerate(samples) if abs(v) >= THRESHOLD), default=0)
             for begin, end in silent_runs(samples, SAMPLE_RATE * 15 // 100):
