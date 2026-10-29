@@ -5,6 +5,7 @@ import {propNames, propSpecs, type PropName} from '../assets/Props';
 import {PHYSICAL_ACTOR_SPECS} from '../rig/physicalScale';
 import type {Actor, Scene, ScenePropSpec, Timeline} from './types';
 import {validateSceneMedia} from './media';
+import {validateScenePainted} from './painted';
 const bgNames = ['forest', 'city', 'room', 'sea', 'nightSky'];
 const animalPoses = ['idle', 'walk', 'sit', 'wave'];
 const stimulusVariants = ['square', 'kanizsa', 'outward-control'];
@@ -268,6 +269,7 @@ export function validateTimeline(value: unknown, fps = 30): asserts value is Tim
         }
       });
     }
+    validateScenePainted(s, path, i > 0 ? (value as Record<string, unknown>[])[i - 1] : undefined, fps, fail);
     validateSceneMedia(s, path, i, i > 0 ? ((value as Record<string, unknown>[])[i - 1].durationSec as number) : undefined, fps, fail);
   });
 }

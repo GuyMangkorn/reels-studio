@@ -14,6 +14,7 @@ import {defaultChrome, validateVideoStyle} from './media';
 import {AudioTracks, EntryTransition, MediaLayer, QuadTextLayer, SceneSounds} from './MediaLayers';
 import {visualAt} from '../assets/visuals/types';
 import {VisualStage} from '../assets/visuals/VisualStage';
+import {PaintedStage} from '../painted/PaintedStage';
 
 export type Narration = {src: string; amplitude: readonly number[]; fps: number; startFrame?: number};
 export type SceneRendererProps = {timeline: Timeline; narration?: Narration; ending?: Ending; sceneTransitionFrames?: number; loopFadeFrames?: number; loopBlendFrames?: number; audio?: AudioTrack[]; captionStyle?: CaptionStyle; chrome?: ChromeStyle};
@@ -94,7 +95,7 @@ const SceneView = ({scene, index, total, previous, start, narration, ending, loo
     const placement = layoutSceneProp(p, width, height);
     return <SceneProp key={`${layer}-${i}`} type={p.type} x={placement.x} y={placement.y} size={placement.size} color={p.color} night={night} label={p.label} detail={p.detail} variant={p.variant} tone={p.tone}/>;
   });
-  return <AbsoluteFill style={{backgroundColor: night ? '#424668' : '#f6e8d5', opacity: final ? state.opacity : 1, overflow: 'hidden', fontFamily: 'Noto Sans Thai, sans-serif'}}>
+  return <AbsoluteFill style={{backgroundColor: scene.painted ? 'transparent' : night ? '#424668' : '#f6e8d5', opacity: final ? state.opacity : 1, overflow: 'hidden', fontFamily: 'Noto Sans Thai, sans-serif'}}>
     {scene.projection ? <ProjectedSceneStage scene={scene} previous={previous} poseFrame={poseFrame} width={width} height={height} fps={fps} mouth={mouth}/> : <div style={{position: 'absolute', inset: 0, transform: `translate3d(${pictureMove.x * width}px, ${pictureMove.y * height}px, 0) scale(${pictureMove.scale})`, transformOrigin: '50% 50%', willChange: 'transform'}}>
       {scene.bg !== 'none' && <Background kind={scene.bg} time={scene.time}/>}
       <MediaLayer clips={scene.media} layer="back" frame={sceneFrame}/>
@@ -143,8 +144,10 @@ export const SceneRenderer = ({timeline, narration, ending = 'B_loop', sceneTran
   const transitionOpacity = transitionOpacityAt(frame, timeline, fps, sceneTransitionFrames);
   const loopOpacity = loopFadeOpacityAt(frame, durationInFrames, ending, loopFadeFrames);
   const pictureOpacity = Math.max(transitionOpacity, loopOpacity);
+  // One p5.brush canvas for the whole composition, under the (transparent) painted scenes.
+  const hasPainted = timeline.some(scene => scene.painted);
   let start = 0;
-  return <AbsoluteFill style={{backgroundColor: 'black'}}>{narration && <Sequence from={narration.startFrame ?? 0} premountFor={fps}><Audio src={staticFile(narration.src)}/></Sequence>}<AudioTracks tracks={audio} narration={narration}/>{timeline.map((scene, index) => <SceneSounds key={`sfx-${index}`} cues={scene.sfx} sceneStart={timeline.slice(0, index).reduce((sum, s) => sum + sceneFrames(s.durationSec, fps), 0)}/>)}<Freeze frame={0} active={!portraitFormat && ending === 'B_loop' && frame === durationInFrames - 1}>{timeline.map((scene, index) => {
+  return <AbsoluteFill style={{backgroundColor: 'black'}}>{narration && <Sequence from={narration.startFrame ?? 0} premountFor={fps}><Audio src={staticFile(narration.src)}/></Sequence>}<AudioTracks tracks={audio} narration={narration}/>{timeline.map((scene, index) => <SceneSounds key={`sfx-${index}`} cues={scene.sfx} sceneStart={timeline.slice(0, index).reduce((sum, s) => sum + sceneFrames(s.durationSec, fps), 0)}/>)}<Freeze frame={0} active={!portraitFormat && ending === 'B_loop' && frame === durationInFrames - 1}>{hasPainted && <PaintedStage timeline={timeline} ending={ending} loopBlendFrames={loopBlendFrames}/>}{timeline.map((scene, index) => {
     const from = start; const duration = sceneFrames(scene.durationSec, fps); start += duration;
     // An entry transition starts the incoming scene early, held on its first frame, so cut frames stay put.
     const lead = index > 0 && scene.transitionIn ? scene.transitionIn.frames : 0;

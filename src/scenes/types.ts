@@ -75,6 +75,16 @@ export type QuadText = {
   box?: {width: number; height: number};
   fontSize?: number; fontWeight?: number; color?: string;
 };
+/**
+ * One painted plate inside a painted scene (`src/painted/registry.ts` ID). The plate runs from `atSec` (scene-local)
+ * until the next cue or the scene end, on its own shot clock starting at `fromSec`.
+ * `dissolveSec` paints it over the previous plate in the same canvas, opacity ramping 0 -> 1 from `atSec` (the
+ * previous plate keeps running underneath, across a scene boundary too). `label` is the screen-space
+ * reconstruction label (e.g. "ภาพจำลอง") shown on every frame this plate is visible, dissolves included.
+ */
+export type PaintedShotCue = {shot: string; atSec: number; fromSec?: number; dissolveSec?: number; label?: string};
+/** Painted 2D (p5.brush) picture for a scene: one canvas per composition, plates switched by time. */
+export type PaintedScene = {shots: PaintedShotCue[]};
 /** Eyebrow presentation. `fade: false` shows the eyebrow from its first frame with no fade or slide. */
 export type EyebrowStyle = {fade?: boolean; fontSize?: number};
 export type Scene = {
@@ -94,5 +104,7 @@ export type Scene = {
   media?: MediaClip[];
   sfx?: SceneSoundCue[];
   transitionIn?: SceneTransition;
+  /** Painted plates (requires `bg: 'none'`; captions, chrome, label and audio stay Remotion). */
+  painted?: PaintedScene;
 };
 export type Timeline = Scene[];
