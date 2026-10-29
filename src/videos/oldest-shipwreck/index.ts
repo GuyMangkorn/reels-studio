@@ -61,7 +61,7 @@ export const shipwreckAudio: AudioTrack[] = [
   {src: 'audio/weather/weather_rain-thunder-distant_01.wav', startSec: 13.167, endSec: 16.867, volume: 0.15, fadeInSec: 0.05, fadeOutSec: 0.06, duckUnderNarration: 0.6},
   // Music: very low on the B01 question, out for the storm, a low B04 pulse that thins out before "ร้อยสองร้อยปี",
   // warm B06 entry with the riser, fullest in B07, easing on "แต่ทีมเองบอกว่า", B01 colour in B09, out by 55.0.
-  music(4.3, 13.2, 0.1, 1.5, 0.1, 0.5),
+  music(4.7, 13.2, 0.1, 1.5, 0.1, 0.5),
   music(18.9, 31.6, 0.09, 1.2, 1, 0.5),
   music(33.8, 39.8, 0.13, 0.5, 0.3, 0.45),
   music(39.5, 47.5, 0.2, 0.3, 0.3, 0.4),

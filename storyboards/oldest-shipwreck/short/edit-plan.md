@@ -6,6 +6,8 @@ Deliverable `SHIPWRECK-SHORT`; script `SHIPWRECK-SHORT-R1.1`; brief `VB-SHIPWREC
 
 Edge TTS `th-TH-PremwadeeNeural`, rate +5% (user choice). Generated per narration slot, not per beat: Edge TTS pauses only 80–130 ms on "…", while the script writes 0.3–0.6 s pauses and a held silence after "ร้อยสองร้อยปี". 21 slots (split only where a pause or an exact picture/sound event needs it); per-slot pause after the speech is authored in the slot duration. Measured: per-beat read 46.2 s of speech; per-slot read 49.6 s of speech; pauses 6.2 s; hold 3.0 s. Total 59.17 s (target 45–60 s), so no trim was applied. Cue offsets inside merged slots come from silence gaps in the clip (`scripts/oldest-shipwreck/short/check-cues.py` reports every cue 17–77 ms before its speech onset; the hook cue is shown from frame 0).
 
+User read notes (29 Oct 2026), R2 of the narration: 22 slots. "…เคยพบ." and "แล้วจะรู้อายุมันได้ยังไง?" are separate slots (0.36 s pause, was none; "แล้ว" +3 dB via `gains`; B01 length kept by trimming the hook pause 0.46→0.32 s). "แม้แต่": the drawn-out "แม้" vowel and the stop closure are shortened 0.12 s via `cuts`. The pause after "แค่…" is 0.17 s (was 0.35 s); the time moves to the silence after "ร้อยสองร้อยปี", so B05 and every later time are unchanged. "กับไหที่" is fed to TTS as "กับไห…ที่" (the caption is unchanged), because the run-in read dropped "ที่" (checked with faster-whisper).
+
 Regenerate: `npm run narration -- --timeline scripts/oldest-shipwreck/short/narration-timeline.json --name SHIPWRECK-SHORT --voice th-TH-PremwadeeNeural --rate +5%` (writes local `public/narration/SHIPWRECK-SHORT.mp3` and the committed amplitude JSON beside the timeline).
 
 ## Shot map (composition frames, half-open)
@@ -34,7 +36,7 @@ Composition seconds. Gains are the timeline `volume` (0.1 = −20 dB). Duck = `d
 
 | Beat | Mix intent | Voice | Music (`bed_underwater-mystery-sparse_01`) | Ambience | SFX |
 | --- | --- | --- | --- | --- | --- |
-| B01 | `hold` → `lift` on the question | 0 dB (planned +1 dB hook: missing capability) | in at 4.3 s, 0.10, fade-in 1.5 s, duck 0.5 | seabed 0.20 from frame 0 (cold open), duck 0.7 | none |
+| B01 | `hold` → `lift` on the question | 0 dB (planned +1 dB hook: missing capability) | in at 4.7 s (on the question), 0.10, fade-in 1.5 s, duck 0.5 | seabed 0.20 from frame 0 (cold open), duck 0.7 | none |
 | B02 | `hold` | 0 dB | 0.10 steady | seabed 0.20 | bubbles 0.16 at 8.4 s |
 | B03 | `drop` (music out) then hard `drop` on the doubt | 0 dB | out at 13.2 s | seabed out at 13.17 (hard cut); storm wind/waves 0.30 + rain 0.15, 13.17–16.87, stop dead on "หรืออาจไม่ใช่เลย" | thunder 0.45 on the flash (15.95 s) |
 | B04 | `hold` (clue) | 0 dB | low pulse 0.09 from 18.9 s, duck 0.5 | seabed 0.13 (thinner) from 18.43 s, fade-in 1 s | three ticks 0.12 on ก้นแบน / หูจับสองข้าง / มีลายขีด (23.23, 24.10, 25.33 s) |

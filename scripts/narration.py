@@ -8,6 +8,8 @@ Optional per-scene "leadSec" delays that scene's speech inside its slot (to line
 the overrun check then uses the end of audible speech (trailing TTS silence ignored) instead of the clip length.
 Optional "closeGaps": [[atSec, keepSec], ...] shortens the silent run nearest atSec (raw TTS clip time) to keepSec with a 10 ms
 crossfade, to remove an unnatural pause inside a phrase without touching the text; "trimHeadSec" keeps only that much leading silence.
+Optional "cuts": [[startSec, endSec], ...] removes that span of the raw clip with a 10 ms crossfade (e.g. a drawn-out vowel or a
+stop closure the reader hears as a hitch); "gains": [[startSec, endSec, dB], ...] lifts one word with 20 ms ramps.
 Every run of silence of 0.15 s or more inside the speech is printed as a gap report (raw clip time, before any edit).
 """
 import argparse
@@ -119,6 +121,14 @@ async def main():
                 if not runs:
                     raise ValueError(f'Scene {index + 1}: no silent gap near {at}s to close')
                 samples = shorten(samples, runs[0][0], runs[0][1], round(keep * SAMPLE_RATE))
+            for begin, end, db in scene.get('gains', []):
+                ramp = SAMPLE_RATE // 50
+                begin, end, peak = round(begin * SAMPLE_RATE), round(end * SAMPLE_RATE), 10 ** (db / 20)
+                for i in range(begin, min(end, len(samples))):
+                    w = min(1, (i - begin) / ramp, (end - i) / ramp)
+                    samples[i] = max(-32768, min(32767, round(samples[i] * (1 + (peak - 1) * w))))
+            for begin, end in sorted(scene.get('cuts', []), reverse=True):
+                samples = shorten(samples, round(begin * SAMPLE_RATE), round(end * SAMPLE_RATE), SAMPLE_RATE // 50)
             head = scene.get('trimHeadSec')
             if head is not None:
                 first = next((i for i, v in enumerate(samples) if abs(v) >= THRESHOLD), 0)
