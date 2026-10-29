@@ -19,6 +19,7 @@ These apply to every role; agent configs link here instead of repeating them.
 - **Scope and profile:** deliverable selection, [style profile and pipeline tier](docs/delivery-workflow.md#style-profile) come from the user's request or the delivery record. When the prompt leaves them open, ask with the harness's structured-question tool (`AskUserQuestion` in Claude Code, `request_user_input_async` in Codex) before format- or genre-dependent work. Roles that the tier skips are recorded `N/A`, not silently dropped.
 - **Sound:** every role considers music, ambience and SFX for its own output ([duties](docs/sound-generation-workflow.md#role-responsibilities)). Check the shared sound library before asking for a new sound.
 - **Delivery:** follow [docs/contributing.md](docs/contributing.md); instruction-only changes use its documentation-only verification exception.
+- **Tools and document improvements:** check [scripts/README.md](scripts/README.md) before writing a one-off command. Script a procedure the second time it repeats. Record findings in the episode's `scripts/<episode>/build-notes.md`. Rule documents are not edited during production work: propose the change there, and the user reviews it before it is applied ([TL/DP rules](docs/contributing.md#tools-and-document-improvements)).
 
 <a id="context-budget"></a>
 ### Context budget
@@ -82,7 +83,7 @@ Every agent reads AGENTS.md plus its **core** documents. It reads any other docu
 | [blender-mcp-workflow](docs/blender-mcp-workflow.md) | Any Blender asset or shot; Eevee 64 is the default [render engine](docs/blender-mcp-workflow.md#render-engine-default) | on trigger |
 | [dev-findings](docs/dev-findings.md) | Choosing or revising medium, camera, light or technique; recording a blocker. Read the index, then only the matching entry files (Boss records; Film and Mark revalidate) | on trigger |
 | [planned-visual-components](docs/planned-visual-components.md) | RuleCard, PhoneChat or POV work; examples are designs until runtime integration is verified | on trigger |
-| [contributing](docs/contributing.md) | Issues, branches, checks, commits, pushes and PRs | when delivering |
+| [contributing](docs/contributing.md) | Issues, branches, checks, commits, pushes and PRs; scripting a repeated procedure or proposing a document change ([TL/DP](docs/contributing.md#tools-and-document-improvements)) | when delivering |
 | [README: videos and parallel work](README.md#videos-and-parallel-work) | Registering a video/composition, render or narration output paths, parallel videos: add videos only in `src/videos/<episode>/index.ts`, never edit `src/Root.tsx` per episode, keep composition IDs unique and outputs under per-ID paths | on trigger |
 
 <a id="working-boundaries"></a>
