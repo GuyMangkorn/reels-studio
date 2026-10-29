@@ -1,0 +1,57 @@
+{
+ "_note": "S04-SH02 narrator turns to the entrance | WORLD-SHOP (left-handed) points and camera stored with x negated for this right-handed tool; see index.md#projection-checks",
+ "up": "y",
+ "size": [
+  1080,
+  1920
+ ],
+ "camera": {
+  "position": [
+   -0.85,
+   1.45,
+   -0.1
+  ],
+  "direction": [
+   0,
+   0,
+   -1
+  ],
+  "vfov": 82.224,
+  "shift": [
+   0,
+   -0.10417
+  ]
+ },
+ "points": {
+  "narr_head": [
+   -0.85,
+   1.7,
+   -1.1
+  ],
+  "narr_face": [
+   -0.85,
+   1.49,
+   -1.1
+  ],
+  "narr_waist": [
+   -0.85,
+   0.95,
+   -1.1
+  ],
+  "wk_face": [
+   -0.25,
+   1.49,
+   -1.1
+  ]
+ },
+ "spans": {
+  "narrator_head_to_waist": [
+   "narr_waist",
+   "narr_head"
+  ]
+ },
+ "caption_band": [
+  1000,
+  1248
+ ]
+}

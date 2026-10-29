@@ -1,0 +1,120 @@
+{
+ "_note": "S03-SH07 entry, camera looks -x along the glass front | WORLD-SHOP (left-handed) points and camera stored with x negated for this right-handed tool; see index.md#projection-checks",
+ "up": "y",
+ "size": [
+  1080,
+  1920
+ ],
+ "camera": {
+  "position": [
+   -2.4,
+   1.45,
+   -0.3
+  ],
+  "direction": [
+   1,
+   0,
+   0
+  ],
+  "vfov": 82.224,
+  "shift": [
+   0,
+   -0.13542
+  ]
+ },
+ "points": {
+  "narr_head": [
+   -0.95,
+   1.7,
+   -0.75
+  ],
+  "narr_feet": [
+   -0.95,
+   0,
+   -0.75
+  ],
+  "narr_face": [
+   -0.95,
+   1.49,
+   -0.75
+  ],
+  "occ_head": [
+   0.9,
+   1.6,
+   -0.25
+  ],
+  "occ_feet": [
+   0.9,
+   0,
+   -0.25
+  ],
+  "occ_face": [
+   0.9,
+   1.4,
+   -0.25
+  ],
+  "occ_face_end": [
+   1.4,
+   1.4,
+   -0.25
+  ],
+  "handle_leaf": [
+   0.45,
+   1.0,
+   -0.05
+  ],
+  "door_edge_R": [
+   -0.5,
+   1.0,
+   0
+  ],
+  "door_edge_L": [
+   0.5,
+   1.0,
+   0
+  ],
+  "stack_out_ground": [
+   0.1,
+   0,
+   0.62
+  ],
+  "helmet_out_top": [
+   0.1,
+   1.95,
+   0.62
+  ],
+  "stack_in_ground": [
+   0.1,
+   0,
+   -0.6
+  ],
+  "helmet_in_top": [
+   0.1,
+   1.95,
+   -0.6
+  ],
+  "worker_in_face": [
+   -0.2,
+   1.49,
+   -0.15
+  ]
+ },
+ "spans": {
+  "narrator": [
+   "narr_feet",
+   "narr_head"
+  ],
+  "assembly_in": [
+   "stack_in_ground",
+   "helmet_in_top"
+  ],
+  "assembly_out": [
+   "stack_out_ground",
+   "helmet_out_top"
+  ]
+ },
+ "caption_band": [
+  1000,
+  1248
+ ]
+}

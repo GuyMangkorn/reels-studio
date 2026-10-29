@@ -1,0 +1,101 @@
+{
+ "_note": "S01-SH02: narrator steps out (f48) and walks to the door, exits frame right | WORLD-SHOP (left-handed) points and camera stored with x negated for this right-handed tool; see index.md#projection-checks",
+ "up": "y",
+ "size": [
+  1080,
+  1920
+ ],
+ "camera": {
+  "position": [
+   0.9,
+   1.5,
+   0.8
+  ],
+  "direction": [
+   0,
+   0,
+   1
+  ],
+  "vfov": 71.197,
+  "shift": [
+   0,
+   -0.10417
+  ]
+ },
+ "points": {
+  "narr_feet_out": [
+   0.5,
+   0,
+   3.9
+  ],
+  "narr_head_out": [
+   0.5,
+   1.7,
+   3.9
+  ],
+  "narr_face_out": [
+   0.5,
+   1.49,
+   3.9
+  ],
+  "narr_feet_exit": [
+   -0.3,
+   0,
+   2.0
+  ],
+  "narr_head_exit": [
+   -0.3,
+   1.7,
+   2.0
+  ],
+  "car_roof_door": [
+   0.5,
+   1.45,
+   4.2
+  ],
+  "car_rear_low": [
+   3.6,
+   0.5,
+   4.2
+  ],
+  "lamp_L7": [
+   2.4,
+   4.8,
+   7
+  ],
+  "lamp_R7": [
+   -2.4,
+   4.8,
+   7
+  ],
+  "lamp_L11": [
+   2.4,
+   4.8,
+   11
+  ],
+  "lamp_R11": [
+   -2.4,
+   4.8,
+   11
+  ],
+  "lane_far": [
+   0,
+   0,
+   22
+  ]
+ },
+ "spans": {
+  "narrator_out": [
+   "narr_feet_out",
+   "narr_head_out"
+  ],
+  "narrator_exit": [
+   "narr_feet_exit",
+   "narr_head_exit"
+  ]
+ },
+ "caption_band": [
+  1000,
+  1248
+ ]
+}

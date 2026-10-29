@@ -1,0 +1,121 @@
+{
+ "_note": "S02-SH07/SH09, S03-SH03: assembly at the stop (ASM S=(-0.10,0.62)), camera s=1 before picture push | WORLD-SHOP (left-handed) points and camera stored with x negated for this right-handed tool; see index.md#projection-checks",
+ "up": "y",
+ "size": [
+  1080,
+  1920
+ ],
+ "camera": {
+  "position": [
+   0,
+   1.45,
+   -3.0
+  ],
+  "direction": [
+   0,
+   0,
+   1
+  ],
+  "vfov": 71.197,
+  "shift": [
+   0,
+   -0.13542
+  ]
+ },
+ "points": {
+  "stack_ground": [
+   0.1,
+   0,
+   0.62
+  ],
+  "stack_top": [
+   0.1,
+   1.5,
+   0.62
+  ],
+  "helmet_top": [
+   0.1,
+   1.95,
+   0.62
+  ],
+  "helmet_ctr": [
+   0.1,
+   1.78,
+   0.62
+  ],
+  "hood_top": [
+   -0.2,
+   1.7,
+   1.07
+  ],
+  "worker_face": [
+   -0.2,
+   1.49,
+   1.07
+  ],
+  "worker_feet": [
+   -0.2,
+   0,
+   1.07
+  ],
+  "tap_tip": [
+   -0.36,
+   1.6,
+   0.0
+  ],
+  "umb_hand": [
+   -0.45,
+   1.33,
+   0.85
+  ],
+  "wheel_FR": [
+   -0.1,
+   0.05,
+   0.3
+  ],
+  "catch_helmet": [
+   -0.22,
+   1.38,
+   0.72
+  ],
+  "match_hand": [
+   -0.1,
+   1.55,
+   0.72
+  ],
+  "door_header_ctr": [
+   0,
+   2.1,
+   0
+  ],
+  "jamb_L": [
+   0.5,
+   1.0,
+   0
+  ],
+  "jamb_R": [
+   -0.5,
+   1.0,
+   0
+  ],
+  "glass_ground_x0": [
+   0,
+   0,
+   0
+  ]
+ },
+ "spans": {
+  "assembly": [
+   "stack_ground",
+   "helmet_top"
+  ],
+  "worker": [
+   "worker_feet",
+   "hood_top"
+  ]
+ },
+ "caption_band": [
+  1000,
+  1248
+ ]
+}

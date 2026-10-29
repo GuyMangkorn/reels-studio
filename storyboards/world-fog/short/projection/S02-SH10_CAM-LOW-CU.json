@@ -1,0 +1,72 @@
+{
+ "_note": "S02-SH10 crouched close | WORLD-SHOP (left-handed) points and camera stored with x negated for this right-handed tool; see index.md#projection-checks",
+ "up": "y",
+ "size": [
+  1080,
+  1920
+ ],
+ "camera": {
+  "position": [
+   0.95,
+   0.75,
+   -2.4
+  ],
+  "direction": [
+   0,
+   0,
+   1
+  ],
+  "vfov": 82.224,
+  "shift": [
+   0,
+   -0.10417
+  ]
+ },
+ "points": {
+  "narr_feet": [
+   0.95,
+   0,
+   -1.3
+  ],
+  "narr_headtop": [
+   0.95,
+   1.0,
+   -1.3
+  ],
+  "narr_face": [
+   0.95,
+   0.8,
+   -1.3
+  ],
+  "shelf_top_back": [
+   0.95,
+   1.1,
+   -0.9
+  ],
+  "helmet_ctr": [
+   0.1,
+   1.78,
+   0.62
+  ],
+  "helmet_top": [
+   0.1,
+   1.95,
+   0.62
+  ],
+  "stack_top": [
+   0.1,
+   1.5,
+   0.62
+  ]
+ },
+ "spans": {
+  "narrator_crouched": [
+   "narr_feet",
+   "narr_headtop"
+  ]
+ },
+ "caption_band": [
+  1000,
+  1248
+ ]
+}

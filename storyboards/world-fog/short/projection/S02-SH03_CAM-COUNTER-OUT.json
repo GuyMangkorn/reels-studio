@@ -1,0 +1,52 @@
+{
+ "_note": "S02-SH03 shop worker single | WORLD-SHOP (left-handed) points and camera stored with x negated for this right-handed tool; see index.md#projection-checks",
+ "up": "y",
+ "size": [
+  1080,
+  1920
+ ],
+ "camera": {
+  "position": [
+   2.0,
+   1.45,
+   -1.4
+  ],
+  "direction": [
+   0,
+   0,
+   -1
+  ],
+  "vfov": 71.197,
+  "shift": [
+   0,
+   -0.13542
+  ]
+ },
+ "points": {
+  "sw_head": [
+   2.0,
+   1.7,
+   -3.5
+  ],
+  "sw_face": [
+   2.0,
+   1.49,
+   -3.5
+  ],
+  "counter_back_edge": [
+   2.0,
+   0.9,
+   -3.2
+  ]
+ },
+ "spans": {
+  "shopworker_visible": [
+   "counter_back_edge",
+   "sw_head"
+  ]
+ },
+ "caption_band": [
+  1000,
+  1248
+ ]
+}

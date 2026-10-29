@@ -47,7 +47,7 @@ export const CAST: Cast[] = [
   },
   {
     name: 'ลูกค้าอีกคน', role: 'other occupant', face: 4,
-    head: {skin: '#e6b48c', hair: '#8f8a84', cut: 'bob'},
+    head: {skin: '#e6b48c', hair: '#8f8a84', cut: 'bob', lines: true},
     outfit: {shoulder: 0.37, shirt: '#d8c9b0', sleeve: '#a5735a', longSleeves: true, jacket: '#a5735a', skirt: '#4c4a5e', pants: '#e6b48c', shoes: '#5a4636'},
   },
 ];
