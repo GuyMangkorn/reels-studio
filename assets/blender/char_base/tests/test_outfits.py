@@ -194,3 +194,28 @@ def test_unknown_piece_raises():
         assert 'cape' in str(e)
         return
     raise AssertionError('no ValueError')
+
+
+def test_bad_options_raise():
+    """Every bad option raises ValueError naming its key, fast (a bad sleeve used to hang the band-growth loop)."""
+    import time
+    bad = [('tee', {'sleeve': -1}, 'sleeve'), ('tee', {'sleeve': 9}, 'sleeve'), ('shirt', {'sleeve': True}, 'sleeve'),
+           ('shirt', {'sleeve': 'three-quarter'}, 'sleeve'), ('shirt', {'buttons': True}, 'buttons'), ('shirt', {'buttons': 2.5}, 'buttons'),
+           ('shirt', {'buttons': -1}, 'buttons'), ('skirt', {'length': 2}, 'length'), ('skirt', {'length': -1}, 'length'),
+           ('skirt', {'flare': -5}, 'flare'), ('skirt', {'thickness': 0}, 'thickness'), ('skirt', {'flare': True}, 'flare'),
+           ('tee', {'fold': 'x'}, 'fold'), ('tee', {'color': 'red'}, 'red'), ('tee', {'color': '#12345'}, 'color'),
+           ('tee', {'color': '#gg0000'}, 'color'), ('tee', {'color': 5}, 'color'), ('tee', {'color': True}, 'color'),
+           ('sneaker', {'sole': 'blue'}, 'blue'), ('grime', {'color': 'red'}, 'color'), ('grime', {'on': 'nothing'}, 'nothing')]
+    for i, (piece, opts, key) in enumerate(bad):
+        reset_scene()
+        outfit = [('tee', {}), (piece, opts)] if piece == 'grime' else [(piece, opts)]
+        t0 = time.time()
+        try:
+            _female(f'b{i}', outfit)
+        except ValueError as e:
+            assert key in str(e), (piece, opts, str(e))
+            assert time.time() - t0 < 30, (piece, opts)
+            continue
+        raise AssertionError(f'no ValueError for {piece} {opts}')
+    reset_scene()
+    _female('ok', [('shirt', {'color': '#336699', 'sleeve': 'short', 'buttons': 0}), ('skirt', {'length': 1.0, 'flare': 0.0, 'thickness': 0.002})])

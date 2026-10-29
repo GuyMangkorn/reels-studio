@@ -8,6 +8,7 @@ outfit = [(piece, opts)]; each piece is `piece(ctx, **opts)` in PIECES and regis
   ctx.hooks   fn(M)                 material edits before the look is finished
 """
 import math
+import re
 
 import bmesh
 import bpy
@@ -30,8 +31,50 @@ def plan(outfit, name, J, F):
     for piece, opts in outfit:
         if piece not in PIECES:
             raise ValueError(f'char_base.outfits: unknown piece {piece!r} (one of {sorted(PIECES)})')
+        _check_opts(piece, opts)
         PIECES[piece](ctx, **opts)
     return ctx
+
+
+HEX = re.compile(r'#[0-9a-fA-F]{6}')
+
+
+def _num(piece, k, v, lo, hi):
+    if isinstance(v, bool) or not isinstance(v, (int, float)) or not lo <= v <= hi:
+        raise ValueError(f'char_base.outfits: {piece}.{k}={v!r} must be a number in [{lo}, {hi}]')
+
+
+def _int(piece, k, v, lo, hi):
+    if isinstance(v, bool) or not isinstance(v, int) or not lo <= v <= hi:
+        raise ValueError(f'char_base.outfits: {piece}.{k}={v!r} must be an integer in [{lo}, {hi}]')
+
+
+def _col(piece, k, v):
+    if not isinstance(v, str) or not v or (v.startswith('#') and not HEX.fullmatch(v)):
+        raise ValueError(f"char_base.outfits: {piece}.{k}={v!r} must be a palette key or a '#rrggbb' hex string")
+
+
+def _sleeve(piece, k, v):
+    if not isinstance(v, str) or v not in ('short', 'long'):
+        raise ValueError(f"char_base.outfits: {piece}.{k}={v!r} must be 'short' or 'long'")
+
+
+_COL = ('color', 'sole', 'nail', 'on')
+_NUM = {'fold': (0.0, 0.02), 'length': (0.1, 1.0), 'flare': (0.0, 2.0), 'thickness': (0.001, 0.02)}      # skirt length = fraction hip -> knee
+_INT = {'buttons': (0, 12), 'nu': (8, 128), 'nv': (2, 64)}
+
+
+def _check_opts(piece, opts):
+    """Reject out-of-range or mistyped options with a ValueError naming piece.key (no clamping, no fallback)."""
+    for k, v in opts.items():
+        if k in _COL:
+            _col(piece, k, v)
+        elif k == 'sleeve':
+            _sleeve(piece, k, v)
+        elif k in _NUM:
+            _num(piece, k, v, *_NUM[k])
+        elif k in _INT:
+            _int(piece, k, v, *_INT[k])
 
 
 def dress_materials(outfit, M, name, J, F):
@@ -149,15 +192,22 @@ def ellipsoid(name, c, r, mat, rot=(0, 0, 0), seg=24, rings=14):
     return _obj(name, bm, mat)
 
 
+MAX_GROW = 20        # band-growth iterations (x1.5 each) before a missing section is an error, never a hang
+
+
 def _fit_h(ctx, z, xsign=0, band=0.004, xmax=None):
     """Centre and half-extents (x, y) of the body section at height z (torso, or one leg with xsign; xmax narrows the torso window, e.g. to the neck)."""
     J, F = ctx.J, ctx.F
     tx, lx0, lx1 = 0.21 * F['rt'], 0.02 * F['gw'], J['HIP'].x + 0.085 * F['rl']
     tx = xmax if xmax else tx
     pts = []
-    while len(pts) < 8:
+    for _ in range(MAX_GROW):
+        if len(pts) >= 8:
+            break
         pts = [p for p in ctx.bv if abs(p.z - z) < band and (xsign == 0 and abs(p.x) < tx or xsign != 0 and lx0 < p.x * xsign < lx1)]
         band *= 1.5
+    if len(pts) < 8:
+        raise ValueError(f'char_base.outfits: no body section found at z={z:.3f}')
     cx = sum(p.x for p in pts) / len(pts)
     cy = sum(p.y for p in pts) / len(pts)
     return cx, cy, max(abs(p.x - cx) for p in pts), max(abs(p.y - cy) for p in pts)
@@ -184,12 +234,15 @@ def _fore_axis(s):
 
 
 def _colour(ctx, piece, color, key=None):
-    """Material key of a garment: `color` is a palette key or a '#rrggbb' hex; absent from the palette it is created (default tint per piece)."""
+    """Material key of a garment: `color` is a palette key or a '#rrggbb' hex (created on demand). Only the piece's own default key may
+    be absent from the palette (then its default tint is used); any other unknown key raises ValueError."""
     k = color or key or piece
 
     def hook(M):
         if k in M:
             return
+        if not k.startswith('#') and k != (key or piece):
+            raise ValueError(f'char_base.outfits: {piece} colour {k!r} is neither a palette key ({sorted(x for x in M if x != "_body")}) nor a hex')
         from looks import _mat
         hx = k if k.startswith('#') else DEFAULT_COLOR[key or piece]
         M[k] = _mat(f"{M['skin'].name[:-len('_body_skin')]}_{k}", srgb(hx), 0.85)
@@ -201,9 +254,13 @@ def _colour(ctx, piece, color, key=None):
 def _front_y(ctx, z, band=0.012):
     """Front (min y) of the torso at height z near the centre line."""
     ys = []
-    while len(ys) < 3:
+    for _ in range(MAX_GROW):
+        if len(ys) >= 3:
+            break
         ys = [p.y for p in ctx.bv if abs(p.z - z) < band and abs(p.x) < 0.02 * ctx.F['gw']]
         band *= 1.5
+    if len(ys) < 3:
+        raise ValueError(f'char_base.outfits: no torso front found at z={z:.3f}')
     return min(ys)
 
 
@@ -211,9 +268,13 @@ def _cuff(ctx, label, c0, ax, bone, color, n, s, bnd=0.004):
     """Hem ring around a sleeve opening centred near c0 with axis ax."""
     F = ctx.F
     near = []
-    while len(near) < 8:
+    for _ in range(MAX_GROW):
+        if len(near) >= 8:
+            break
         near = [p for p in ctx.bv if abs((p - c0).dot(ax)) < bnd and (p - c0).length < 0.09 * F['rl'] and p.x * s > 0.1 * F['gw']]
         bnd *= 1.5
+    if len(near) < 8:
+        raise ValueError(f'char_base.outfits: no sleeve opening found near {tuple(round(x, 3) for x in c0)}')
     cc = sum(near, Vector()) / len(near)
     rr = max((p - cc).length for p in near)
     q = Vector((0, 0, 1)).rotation_difference(ax).to_euler()
@@ -222,10 +283,9 @@ def _cuff(ctx, label, c0, ax, bone, color, n, s, bnd=0.004):
 
 
 def _sleeves(ctx, color, sleeve):
-    """Sleeve cut planes + trims; returns band rule for the arm. sleeve: 'short' | 'long' | upper-arm hem distance (zc-you metres)."""
+    """Sleeve cut planes + trims; returns band rule for the arm. sleeve: 'short' (hem 0.155 m down the upper arm, zc-you) | 'long' (to the wrist)."""
     J, F = ctx.J, ctx.F
-    if sleeve not in ('short', 'long') and not isinstance(sleeve, (int, float)):
-        raise ValueError(f"char_base.outfits: sleeve must be 'short', 'long' or a length, got {sleeve!r}")
+    _sleeve('sleeve', 'sleeve', sleeve)
     if sleeve == 'long':
         fl = (J['WR'] - J['EL']).length - 0.012 * F['gw']       # cuff ends just short of the wrist
         for s in (1, -1):
@@ -244,7 +304,7 @@ def _sleeves(ctx, color, sleeve):
                 _cuff(ctx, 'sleeve_hem', B.mirror(J['EL'], s) + _fore_axis(s) * fl, _fore_axis(s), f'forearm.{n}', color, n, s)
         ctx.trims.append(trims)
         return arm
-    sl = 0.155 if sleeve == 'short' else sleeve
+    sl = 0.155
     sd = sl * (J['EL'] - J['SH']).length / (B.UPPER_ARM ** 2 + B.ELBOW_Y ** 2) ** 0.5
     for s in (1, -1):
         ax = _arm_axis(s)
@@ -288,7 +348,7 @@ def _top(ctx, piece, color, fold, sleeve, hem=0.010, neck=0.3):
 
 
 def tee(ctx, color='tee', fold=0.0, sleeve='short'):
-    """T-shirt: neckline, hem over the waistband, short sleeves (sleeve = 'short' | 'long' | hem distance along the upper arm, zc-you metres)."""
+    """T-shirt: neckline, hem over the waistband, short sleeves (sleeve = 'short' | 'long')."""
     color = _colour(ctx, 'tee', color)
     zn, zh = _top(ctx, 'tee', color, fold, sleeve)
 
@@ -604,8 +664,13 @@ def barefoot(ctx, nail='nail'):
 
 
 def grime(ctx, on='tee', color='#1a2b2a'):
-    """Darker sweat/grime patches on material `on` (object-space noise); not blood."""
+    """Darker sweat/grime patches on material `on` (object-space noise); not blood. color is a '#rrggbb' hex."""
+    if not HEX.fullmatch(color):
+        raise ValueError(f"char_base.outfits: grime.color={color!r} must be a '#rrggbb' hex string")
+
     def hook(M):
+        if on not in M:
+            raise ValueError(f'char_base.outfits: grime.on={on!r} is not a material (one of {sorted(x for x in M if x != "_body")})')
         m = M[on]
         nt = m.node_tree
         if nt.nodes.get('cb_grime'):
