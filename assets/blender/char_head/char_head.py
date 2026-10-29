@@ -14,7 +14,8 @@ Public API
   EYE_SHAPES, LID_MODES, BROW_SHAPES   named eye-opening / lid / brow parameter sets
   FACE_PRESETS      the expression presets (neutral, tired, startle, fear, focused, listening, frozen)
   face_bones(origin, p, scale)   [(name, head, tail, parent, deform)] for jaw, eye.L/R, lid.L/R, brow.L/R (parent = 'head')
-  make_materials(p, prefix)      toon-shaded material dict for the face and hair
+  make_materials(p, prefix, origin, look)   toon-shaded material dict for the face and hair; look 'cel' only (anything else: ValueError)
+  head_metrics(p, scale)   dict(height chin-to-hair-top, eye_dz / eye_dy eye centre offset from the head centre, neck socket point), head-local, analytic
   build_head(ao, origin, p, prefix, scale, mats)   build the meshes and bind them to the bones of armature object `ao`
   add_standalone_armature(p, name)  a tiny armature (head + face bones) so a head can be used without a body
   apply_face(pose_bones, preset, blink, **override)   set jaw/lids/brows/eye squash on pose bones
@@ -30,7 +31,7 @@ Parameters (all metres unless noted; the defaults are the `zc-you` lead)
   ear (scale), ear_tilt (deg, top leans back from vertical), ear_flare (deg, top stands out from the skull), ear_turn (deg, face of the ear turns forward),
   ear_z / ear_y (centre height / depth; ear spans roughly brow line to nose base)
   skin (hex), stubble (0..1), lip, hair, brow_color, iris_color (hex)
-  hair_style 'cutout' | 'side_sweep' | 'short_crop' | 'bowl' (hairline of the one-piece hair sheet); hair_volume (0.8..1.4); sideburn (0/1)
+  hair_style 'cutout' | 'side_sweep' | 'short_crop' | 'bowl' | 'bob' (chin-length sheet) | 'ponytail' (cutout cap + tapered tail tube) (hairline of the one-piece hair sheet); hair_volume (0.8..1.4); sideburn (0/1)
 Runtime shape keys on the head mesh (value 0 = parameters as built; slider -1..1.5): nose_size, nose_width, jaw_width, chin, cheek_full.
 """
 import bpy, bmesh, math
@@ -181,8 +182,10 @@ def _stubble(m, amount, oz=0.0):
     L(mix.outputs[2], bsdf.inputs['Base Color'])
 
 
-def make_materials(p, prefix='ch', origin=(0, 0, 0)):
-    """Cel-toon materials for the head. Names are prefixed so several heads with different colours can coexist."""
+def make_materials(p, prefix='ch', origin=(0, 0, 0), look='cel'):
+    """Cel-toon materials for the head. Names are prefixed so several heads with different colours can coexist. look: 'cel' only."""
+    if look != 'cel':
+        raise ValueError(f"char_head: unknown look {look!r} (only 'cel')")
     d = {}
     skin = _mat(f'{prefix}_skin', srgb(p['skin']))
     if p['stubble'] > 0 and not skin.node_tree.nodes.get('zc_toon'):
@@ -427,6 +430,18 @@ def _xf(ob, origin, scale):
     ob.data.transform(M)
 
 
+# ----------------------------------------------------------------------------- metrics
+def head_metrics(p=None, scale=1.0):
+    """Analytic head-local metrics (metres x scale): height = chin bottom to hair top, eye_dz / eye_dy = eye centre offset from the head centre,
+    neck = socket point on the underside of the skull (x = 0, just behind the centre)."""
+    p = p or PARAMS
+    rx, ry, rz = p['head']
+    top = rz * (1.0 + 0.045 * p['hair_volume']) + 0.001
+    ny = 0.012
+    neck = Vector((0.0, ny, -rz * math.sqrt(max(0.0, 1.0 - (ny / ry) ** 2)))) * scale
+    return dict(height=(top + rz) * scale, eye_dz=p['eye_z'] * scale, eye_dy=p['eye_y'] * scale, neck=neck)
+
+
 # ----------------------------------------------------------------------------- bones
 def face_bones(origin, p=None, scale=1.0):
     """Bone table rows for the face; origin = head centre in armature space; all parented to a bone named 'head'."""
@@ -444,6 +459,9 @@ def face_bones(origin, p=None, scale=1.0):
 
 def apply_face(pb, preset='neutral', blink=0.0, **over):
     """pb = armature pose bones. preset in FACE_PRESETS; keyword overrides lid, brow=(raise, furrow_deg), jaw, squash."""
+    if preset not in FACE_PRESETS:
+        print(f'char_head: unknown face preset {preset}, using neutral')
+        preset = 'neutral'
     fp = dict(FACE_PRESETS[preset])
     fp.update({k: v for k, v in over.items() if k in fp})
     lid = fp['lid'] + blink * (80 - fp['lid'])
@@ -462,7 +480,10 @@ HAIRLINES = {   # (angle from the front in degrees, polar angle limit of the hai
     'short_crop': ((0, 52), (35, 54), (70, 62), (105, 78), (140, 96), (180, 106)),
     'cutout': ((0, 66), (25, 60), (50, 72), (80, 76), (110, 90), (140, 108), (180, 116)),
     'bowl': ((0, 62), (35, 64), (70, 76), (105, 94), (140, 110), (180, 118)),
+    'bob': ((0, 66), (25, 60), (50, 72), (80, 104), (110, 135), (140, 148), (180, 150)),   # chin-length: sides and back reach the jaw line
 }
+HAIRLINES['ponytail'] = HAIRLINES['cutout']      # same cap, plus a tail tube
+_FRINGE = ('cutout', 'bob', 'ponytail')
 
 
 def _hair(ao, p, mats, prefix, origin, scale):
@@ -476,7 +497,7 @@ def _hair(ao, p, mats, prefix, origin, scale):
         for (x0, y0), (x1, y1) in zip(pts_, pts_[1:]):
             if a <= x1:
                 v = y0 + (y1 - y0) * (a - x0) / (x1 - x0)
-                if p['hair_style'] == 'cutout' and a < 90:
+                if p['hair_style'] in _FRINGE and a < 90:
                     v += 7.0 * math.sin(ph) * (1 - a / 90)          # diagonal fringe edge: lower on the character's left, higher on the right
                 if p['hair_style'] == 'side_sweep' and ph > 0 and a < 60:
                     v -= 4.0                                  # side part: lower on the character's left
@@ -520,6 +541,12 @@ def _hair(ao, p, mats, prefix, origin, scale):
         _xf(sb, origin, scale)
         _bind(sb, ao, {'head': 1.0})
         out.append(sb)
+    if p['hair_style'] == 'ponytail':       # tapered tail from the back of the head, hanging below the chin line
+        tp = [Vector(v) for v in ((0, ry * 0.90, 0.040), (0, ry + 0.022, 0.012), (0, ry + 0.036, -0.030), (0, ry + 0.034, -0.085), (0, ry + 0.026, -0.140))]
+        tail = _tube(f'{prefix}_ponytail', tp, [0.016 * vol, 0.017 * vol, 0.014 * vol, 0.0095 * vol, 0.0025], mats['hair'], seg=8)
+        _xf(tail, origin, scale)
+        _bind(tail, ao, {'head': 1.0})
+        out.append(tail)
     return out
 
 
