@@ -51,3 +51,10 @@
 - Checks v2: B10-SH01 face box x 220-420, y 420-650 True at c0 and c245 (label gap 50 / 47 px); B09-SH01 floor penetration 0.0, lead 448 px at 3.4 m; rig and tracks checks run without errors. Render time B09-SH01 first frame 8.49 s (v1 8.42 s, previous v2 8.55 s): no change.
 - Still short: the recess is modest because cel shading only has 4 soft skin bands, so the socket reads through the silhouette and a faint tone step, not a drawn shadow line; a dark socket-shadow or ambient-occlusion tint would help (proposal, not built). The eyeball is still a sphere, so strongly turned eyes still show a lot of sclera at the side; the expression presets read subtly at 1x (tired/focused rely on brows and eye squash); eye size is now below the reference's large eyes.
 
+## 2026-10-29 Boss: v2 plain oval head (user: still not round, chin and nose break the outline)
+
+- Change (v2 only; new parameter `oval`, default False so v1 is untouched): the skull is a plain ellipsoid (0.097 x 0.104 x 0.112 m): no jaw taper, no chin bump/dent, no lip or cheek sculpt, and `_shape_pt` / `front_y` skip the lower-face narrowing. Only the orbit sockets, a light brow ridge (1.1) and a very low nose cue (`nose_len` 0.1, `nose_bridge` 0.15, about 1.5 mm) remain. Cut-out hair, hidden lids, recessed eyes, gaze, blink and the 7 presets are unchanged.
+- Evidence (untracked, `out/qa/char-head/`): `compare_v1_v2.png` (v1 row, v2 row; front / 3/4 / profile / eye close-up), `b10_v1_v2_sheet.png`, `b10_face_v1_v2.png`, `expressions_v2.png`.
+- Checks v2: B10-SH01 face box x 220-420, y 420-650 True at c0 and c245 (label gap 52 / 48 px); B09-SH01 floor penetration 0.0, lead 452 px at 3.4 m; rig and tracks checks without errors; B09-SH01 render first frame 8.48 s (v1 8.42 s).
+- Still short: with no chin and a near-flat nose the face reads as a smooth egg with a mouth line, closer to a flat illustrated head than v1 but with less character (the reference has a small nose and a visible chin line); the profile has only a barely visible nose bump and a tiny mouth-patch dot; the eye recess is still shaded by only 4 soft bands.
+
