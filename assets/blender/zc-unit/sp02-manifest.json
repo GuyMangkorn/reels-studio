@@ -870,11 +870,11 @@
         1.101123332977295
       ]
     },
-    "render_seconds": 4.46,
+    "render_seconds": 4.04,
     "settings": {
       "engine": "BLENDER_EEVEE",
       "fast_gi": true,
-      "gi_bake_seconds": 2.07,
+      "gi_bake_seconds": 1.86,
       "look": "None",
       "output": "PNG 8-bit RGB sRGB",
       "raytracing": "SCREEN, res 1/2, denoise",
@@ -1277,11 +1277,11 @@
         0.636877179145813
       ]
     },
-    "render_seconds": 3.96,
+    "render_seconds": 4.01,
     "settings": {
       "engine": "BLENDER_EEVEE",
       "fast_gi": true,
-      "gi_bake_seconds": 1.68,
+      "gi_bake_seconds": 1.7,
       "look": "None",
       "output": "PNG 8-bit RGB sRGB",
       "raytracing": "SCREEN, res 1/2, denoise",
