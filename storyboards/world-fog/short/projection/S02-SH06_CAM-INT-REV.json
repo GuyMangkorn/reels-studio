@@ -1,0 +1,62 @@
+{
+ "_note": "S02-SH06 standing narrator behind the window shelf | WORLD-SHOP (left-handed) points and camera stored with x negated for this right-handed tool; see index.md#projection-checks",
+ "up": "y",
+ "size": [
+  1080,
+  1920
+ ],
+ "camera": {
+  "position": [
+   0.9,
+   1.35,
+   -0.3
+  ],
+  "direction": [
+   0,
+   0,
+   -1
+  ],
+  "vfov": 82.224,
+  "shift": [
+   0,
+   -0.07292
+  ]
+ },
+ "points": {
+  "narr_headtop": [
+   1.0,
+   1.7,
+   -1.3
+  ],
+  "narr_face": [
+   1.0,
+   1.49,
+   -1.3
+  ],
+  "shelf_back_top": [
+   1.0,
+   1.1,
+   -0.9
+  ],
+  "occ_headtop": [
+   1.3,
+   1.6,
+   -1.9
+  ],
+  "occ_face": [
+   1.3,
+   1.4,
+   -1.9
+  ]
+ },
+ "spans": {
+  "narrator_visible": [
+   "narr_headtop",
+   "shelf_back_top"
+  ]
+ },
+ "caption_band": [
+  1000,
+  1248
+ ]
+}

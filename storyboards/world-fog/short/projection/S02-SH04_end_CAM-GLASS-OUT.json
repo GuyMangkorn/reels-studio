@@ -1,0 +1,62 @@
+{
+ "_note": "S02-SH04 approach key (ASM-PATH) | WORLD-SHOP (left-handed) points and camera stored with x negated for this right-handed tool; see index.md#projection-checks",
+ "up": "y",
+ "size": [
+  1080,
+  1920
+ ],
+ "camera": {
+  "position": [
+   0,
+   1.45,
+   -3.0
+  ],
+  "direction": [
+   0,
+   0,
+   1
+  ],
+  "vfov": 71.197,
+  "shift": [
+   0,
+   -0.13542
+  ]
+ },
+ "points": {
+  "stack_ground": [
+   -0.1,
+   0,
+   1.6
+  ],
+  "helmet_top": [
+   -0.1,
+   1.95,
+   1.6
+  ],
+  "helmet_ctr": [
+   -0.1,
+   1.78,
+   1.6
+  ],
+  "hood_top": [
+   -0.4,
+   1.7,
+   2.0500000000000003
+  ],
+  "wheel_FR": [
+   -0.30000000000000004,
+   0.05,
+   1.28
+  ]
+ },
+ "spans": {
+  "assembly": [
+   "stack_ground",
+   "helmet_top"
+  ]
+ },
+ "caption_band": [
+  1000,
+  1248
+ ]
+}

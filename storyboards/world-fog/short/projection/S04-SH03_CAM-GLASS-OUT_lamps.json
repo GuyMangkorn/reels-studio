@@ -1,0 +1,62 @@
+{
+ "_note": "S04-SH03 empty window, canopy lamps | WORLD-SHOP (left-handed) points and camera stored with x negated for this right-handed tool; see index.md#projection-checks",
+ "up": "y",
+ "size": [
+  1080,
+  1920
+ ],
+ "camera": {
+  "position": [
+   0,
+   1.45,
+   -3.0
+  ],
+  "direction": [
+   0,
+   0,
+   1
+  ],
+  "vfov": 71.197,
+  "shift": [
+   0,
+   -0.13542
+  ]
+ },
+ "points": {
+  "lamp_L7": [
+   2.4,
+   4.8,
+   7
+  ],
+  "lamp_R7": [
+   -2.4,
+   4.8,
+   7
+  ],
+  "lamp_L11": [
+   2.4,
+   4.8,
+   11
+  ],
+  "lamp_R11": [
+   -2.4,
+   4.8,
+   11
+  ],
+  "glass_top_x0": [
+   0,
+   2.5,
+   0
+  ],
+  "door_header_ctr": [
+   0,
+   2.1,
+   0
+  ]
+ },
+ "spans": {},
+ "caption_band": [
+  1000,
+  1248
+ ]
+}

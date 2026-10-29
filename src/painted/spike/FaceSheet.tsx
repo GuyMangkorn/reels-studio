@@ -50,7 +50,8 @@ export const CHIN = 1.22;
 export const BROW_Y: Record<Brow, [number, number]> = {flat: [-0.24, -0.24], up: [-0.33, -0.31], worry: [-0.34, -0.2], angry: [-0.16, -0.32], quirk: [-0.24, -0.24]};
 
 /** Per-character look of the head: skin, hair colour and cut. `hood` frames the face in a raincoat hood. */
-export type HeadStyle = {skin: string; hair: string; cut: 'short' | 'tied' | 'bob' | 'hood'; hood?: string};
+/** `lines`: age lines (crow's feet, under-eye, nasolabial and mouth-corner folds), drawn last so no other seed moves. */
+export type HeadStyle = {skin: string; hair: string; cut: 'short' | 'tied' | 'bob' | 'hood'; hood?: string; lines?: boolean};
 const DEFAULT_STYLE: HeadStyle = {skin: SKIN, hair: HAIR, cut: 'short'};
 
 /**
@@ -167,6 +168,21 @@ export const paintHead = ({brush, t, still, boil}: Pick<PaintContext, 'brush' | 
     const pts = face.mouth === 'o' ? ellipse(0, my + 0.03, 0.11, 0.13, 16) : ellipse(0, my + 0.02, 0.15, 0.07, 16);
     fill(MOUTH, pts, 4);
     ink([...pts, pts[0]], 1.0, 0.4);
+  }
+
+  // Age lines (older occupant, user feedback 2026-10-29): thin, in a warm brown so the decal face stays clean.
+  if (style.lines) {
+    const age = (pts: Pt[], curve = 0.5) => {
+      boil(cell * 100 + ++line);
+      brush.set('rotring', '#8a5a43', 0.8);
+      brush.spline(pts.map(P), curve);
+    };
+    for (const side of [-1, 1]) {
+      for (const dy of [-0.06, 0.02, 0.1]) age([[side * 0.64, 0.05 + dy * 0.6], [side * 0.76, 0.05 + dy]], 0);
+      age([[side * 0.24, 0.22], [side * 0.4, 0.27], [side * 0.56, 0.22]]);
+      age([[side * 0.22, 0.3], [side * 0.3, 0.46], [side * 0.3, 0.6]]);
+      age([[side * 0.27, 0.66], [side * 0.29, 0.76]], 0);
+    }
   }
 };
 

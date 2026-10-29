@@ -1,12 +1,13 @@
-# WFOG-SCRIPT-R1 — The person outside
+# WFOG-SCRIPT-R2 — The person outside
 
-- Owner / date: Preaw, 2026-10-28 (Asia/Bangkok).
+- Owner / date: Preaw, 2026-10-28 (R1); R2 2026-10-29 (Asia/Bangkok).
 - Deliverable / episode: `WFOG-EP01-SHORT` / `WFOG-EP01`; Short only. [Delivery record](../delivery.md).
 - Inputs: [WFOG-BRIEF-R1](../topic-brief.md), [WFOG-RESEARCH-R1](../research.md).
 - Story mode: `fiction-with-factual-knowledge`; all people, incidents, global-fog reports and clues are fictional. Factual knowledge is limited to the bounded behavioral implications in the research packet; there is no spoken lesson.
 - Profile / tier: `world-fog-mystery` / Full. First-person limited-perception Thai narration; hard-cut unresolved ending.
+- Narrator (R2): the first-person narrator/main character is an adult woman, the whole character (body, wardrobe, voice), by user decision 2026-10-29 (`เปลี่ยนเป็นผู้หญิงทั้งตัว`). She uses `ฉัน` and female particles. The delivery worker remains male. No other character, beat or clue changes.
 - Target: 60–90 seconds; editorial layout below totals **87 seconds, estimated**. No read-aloud, TTS, animatic or rendered timing test has been performed. Do not lock event frames from this estimate.
-- Writing status: current script-only editorial scope complete; User reads the script. Factual review: [WFOG-FACTCHECK-R1](fact-check.md), `ready-for-storyboard` for this exact `WFOG-SCRIPT-R1`; no factual wording corrections requested. User approval: revised concept approved in chat; this script revision has not been separately reviewed by the user. Runtime/audio/visual validation: not performed. Film is a future role only if visual work is requested.
+- Writing status: R2 narrator-gender revision complete. Factual review: [WFOG-FACTCHECK-R2](fact-check.md), `ready-for-storyboard` for R2 (Boat, 2026-10-29; coordinator for Preaw synced this header). User approval: concept approved in chat and narrator gender changed by user decision; this script revision has not been separately reviewed by the user. Runtime/audio/visual validation: not performed. Film is a future role only if visual work is requested.
 
 ## Story core and underlying truth
 
@@ -29,26 +30,26 @@ Video times below are estimates and contiguous. Story-world action is continuous
 | `WFOG-EP01-SHORT-S02-B02` | 18–30 s | Composite shape approaches; wheel trouble and cargo wobble are present before their meaning is known. Narrator recognizes the apparent follower. | Wheel squeak and metal scrape; sparse human breath, no processed animal rasp. Music lifts gently. |
 | `WFOG-EP01-SHORT-S02-B03` | 30–41 s | Shape stops at glass; apparent long reach knocks three times; occupants crouch without crowd panic. | Three short glass contacts, synchronized to visible handle; brief music drop after third tap. |
 | `WFOG-EP01-SHORT-S02-B04` | 41–51 s | Helmet tilts off the cartons and is caught. Limited view makes this look like an impossible head movement. Narrator's whispered question expresses doubt. | Cardboard slip and small hard-shell contact; subjective score rise, no bone crack. Short silence before next voice. |
-| `WFOG-EP01-SHORT-S03-B01` | 51–60 s | Normal human request interrupts fear; narrator raises a flashlight from inside. Recognition begins, without opening the door to investigate. | Natural muffled male voice; score drops to leave the request readable. |
+| `WFOG-EP01-SHORT-S03-B01` | 51–60 s | Normal human request interrupts fear; narrator raises a flashlight from inside. Recognition begins, without opening the door to investigate. | Worker's natural muffled male voice; score drops to leave the request readable. |
 | `WFOG-EP01-SHORT-S03-B02` | 60–72 s | Light reveals the same worker/cart/cargo. Matching-view visual payoffs identify helmet, umbrella and wheel, then worker is admitted as a character choice. | Natural breath and wheel squeak continue unchanged; quiet release in music, no comic sting or triumphant resolution. |
 | `WFOG-EP01-SHORT-S04-B01` | 72–84 s | Narrator asks about the road; worker reports collision/blockage. Relief becomes the realization that nobody can simply drive away. | Plain dialogue with almost no score; no crash/siren recording or additional incident sounds. |
 | `WFOG-EP01-SHORT-S04-B02` | 84–87 s | Silent final consequence: fog swallows forecourt lights. Hard cut after the intended final beat has room to land. | Shop hum remains, faint unresolved tonal bed; no final monster cue, outro chord or spoken tag. |
 
 ## Full spoken script and required story events
 
-**Only the Thai lines labeled VO/dialogue below are spoken.** English event notes are production directions, not narration. Captions follow the actual spoken Thai verbatim; no shortened or alternative subtitle wording is authorized in R1. Break captions into readable cues during audio timing. From frame 0, show the opening Thai caption plus a discreet original fiction marker `เรื่องสมมติ • EP1`; no real news branding. Do not speak the marker.
+**Only the Thai lines labeled VO/dialogue below are spoken.** English event notes are production directions, not narration. Captions follow the actual spoken Thai verbatim; no shortened or alternative subtitle wording is authorized in R2. Break captions into readable cues during audio timing. From frame 0, show the opening Thai caption plus a discreet original fiction marker `เรื่องสมมติ • EP1`; no real news branding. Do not speak the marker.
 
 ### S01 / B01 — Arrival, 0–8 s estimated
 
 **Narrator VO, immediately:**
 
-> มันตามผมมา
+> มันตามฉันมา
 
 **Event:** Limited recollection of a tall, tilted composite shape beside the still-visible access lane. The narrator turns into the forecourt at a controlled pace and parks clear of the traffic route before the exterior becomes opaque. No blind driving or fueling action is shown. The figure has a credible walking route toward the shop; it does not teleport.
 
 **Narrator VO:**
 
-> ผมเห็นมันตอนเลี้ยวเข้าปั๊ม ตอนนั้นแค่คิดว่าจะเติมน้ำมัน… แล้วกลับบ้าน
+> ฉันเห็นมันตอนเลี้ยวเข้าปั๊ม ตอนนั้นแค่คิดว่าจะเติมน้ำมัน… แล้วกลับบ้าน
 
 ### S02 / B01 — Inside the shop, 8–18 s estimated
 
@@ -72,7 +73,7 @@ Video times below are estimates and contiguous. Story-world action is continuous
 
 **Narrator, whispered:**
 
-> ตัวเดียวกับที่ผมเห็นข้างถนน
+> ตัวเดียวกับที่ฉันเห็นข้างถนน
 
 ### S02 / B03 — At the glass, 30–41 s estimated
 
@@ -106,7 +107,7 @@ Video times below are estimates and contiguous. Story-world action is continuous
 
 **Narrator VO:**
 
-> ผมค่อย ๆ ยกไฟฉายขึ้น
+> ฉันค่อย ๆ ยกไฟฉายขึ้น
 
 **Event:** Flashlight is operated from inside. Recognition precedes door opening; the beam does not establish safe air or explain the fog.
 
@@ -124,7 +125,7 @@ Video times below are estimates and contiguous. Story-world action is continuous
 
 **Narrator, to worker:**
 
-> คุณมาจากถนนใหญ่ใช่ไหม? ข้างนอกเป็นยังไงบ้าง?
+> คุณมาจากถนนใหญ่ใช่ไหมคะ? ข้างนอกเป็นยังไงบ้าง?
 
 **Delivery worker, catching breath:**
 
@@ -154,7 +155,7 @@ All clues below are fictional story construction (`D002`), not real evidence of 
 | --- | --- | --- |
 | S01-B01 controlled arrival and parked car before near-zero visibility; no driving afterward | `F001` → `SRC001`, NWS near-zero-visibility / safe business-parking bullet, via research R1 | Implied behavior only; not a spoken driving tutorial or guarantee that any forecourt is safe |
 | S02-B01 `หมอกหนาปกคลุมทั่วโลก`; VO about phone images | `D001` | Explicit fictional world information on original graphics; no attribution to real authorities |
-| `มันตามผมมา`; `ตัวเดียวกับที่ผมเห็นข้างถนน`; `นั่นหัวมันเหรอ?` and apparent reach | `D001` / `D002`, clues `CL01`–`CL05` | Limited fearful interpretation and a question; objective visuals must retain one physically ordinary source |
+| `มันตามฉันมา`; `ตัวเดียวกับที่ฉันเห็นข้างถนน`; `นั่นหัวมันเหรอ?` and apparent reach | `D001` / `D002`, clues `CL01`–`CL05` | Limited fearful interpretation and a question; objective visuals must retain one physically ordinary source |
 | S03-B02 recognition and entry, with no atmospheric assurance | `F002` → `SRC002`, CDC conditional shelter/evacuation guidance, via research R1; character action otherwise `D001` | Human identity does not establish safe air. No dialogue instructs the audience to open doors or always shelter |
 | S04-B01 `รถชนกันขวางถนนครับ… ผมกลับทางเดิมไม่ได้แล้ว` | `D001` | Fictional character report. No added casualty/causal claim, real recording or real-case attribution |
 | All wheel, knock, breath, sliding-box and engine cues | `D001` / `D002` | Designed fictional sounds with visible physical sources; no actual creature or additional emergency asserted |
@@ -186,4 +187,5 @@ Per-beat sound intent is in the progression table. Natural human breath, wheel s
 - R1: first complete spoken script from brief/research R1. Boat completed the first exact-revision pass over all beats, clues, graphics, implied safety actions and sound cues in `WFOG-FACTCHECK-R1`; no prior script verdict was reused.
 - 2026-10-28 metadata sync: recorded Boat's matching `ready-for-storyboard` verdict. The user then limited the current scope to script only (`ถึงบท ก่อน`); no Film invocation occurred. Narration, dialogue, events, clues and content revision R1 remain unchanged. Retain review dependencies PD01–PD05 as future production references.
 - Open for any later production request: spoken timing; actual silhouette/reveal blockout and implementation feasibility; asset/sound selection, subtitles/audio and final frame checks. The complete Film handoff constraints above remain future reference, not an active assignment.
-- Current scope: **complete — User reads `WFOG-SCRIPT-R1`**. Future next role, only if visual work is requested: Film, using `WFOG-SCRIPT-R1` + `WFOG-FACTCHECK-R1`. Factual readiness applies only to the named review scope; runtime integration and visual success remain unverified.
+- R2 (2026-10-29): narrator/main character changed to a woman (whole character) by user decision. Spoken changes only in narrator lines: S01-B01 `มันตามผมมา` → `มันตามฉันมา`, `ผมเห็นมัน…` → `ฉันเห็นมัน…`; S02-B02 `…ที่ผมเห็นข้างถนน` → `…ที่ฉันเห็นข้างถนน`; S03-B01 `ผมค่อย ๆ ยกไฟฉายขึ้น` → `ฉันค่อย ๆ ยกไฟฉายขึ้น`; S04-B01 `…ใช่ไหม?` → `…ใช่ไหมคะ?` (+1 syllable). Metadata: narrator note, writing status, S03-B01 sound note clarified as the worker's male voice, claim-map quotes. Worker lines (`ครับ`, `ผม`), other characters, events, clues `CL01`–`CL05`, beat IDs and timing estimates unchanged. Nobody addresses the narrator by a gendered term, so no address line changes.
+- Current scope: **R2 reviewed (`WFOG-FACTCHECK-R2`, ready-for-storyboard)**; visual planning in progress (brief VB-R2, scene sheets SS-R2). Factual readiness applies only to the named review scope; runtime integration and visual success remain unverified.

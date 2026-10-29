@@ -1,0 +1,91 @@
+{
+ "_note": "S04-SH01 two-shot at the speaking marks | WORLD-SHOP (left-handed) points and camera stored with x negated for this right-handed tool; see index.md#projection-checks",
+ "up": "y",
+ "size": [
+  1080,
+  1920
+ ],
+ "camera": {
+  "position": [
+   -0.3,
+   1.45,
+   -3.6
+  ],
+  "direction": [
+   0,
+   0,
+   1
+  ],
+  "vfov": 71.197,
+  "shift": [
+   0,
+   -0.1875
+  ]
+ },
+ "points": {
+  "wk_head": [
+   -0.25,
+   1.7,
+   -1.1
+  ],
+  "wk_face": [
+   -0.25,
+   1.49,
+   -1.1
+  ],
+  "wk_feet": [
+   -0.25,
+   0,
+   -1.1
+  ],
+  "narr_head": [
+   -0.85,
+   1.7,
+   -1.1
+  ],
+  "narr_face": [
+   -0.85,
+   1.49,
+   -1.1
+  ],
+  "narr_feet": [
+   -0.85,
+   0,
+   -1.1
+  ],
+  "cart_helmet_top": [
+   0.1,
+   1.95,
+   -0.45
+  ],
+  "cart_ground": [
+   0.1,
+   0,
+   -0.45
+  ],
+  "door_L": [
+   0.5,
+   1.0,
+   0
+  ],
+  "door_R": [
+   -0.5,
+   1.0,
+   0
+  ]
+ },
+ "spans": {
+  "narrator": [
+   "narr_feet",
+   "narr_head"
+  ],
+  "worker": [
+   "wk_feet",
+   "wk_head"
+  ]
+ },
+ "caption_band": [
+  1000,
+  1248
+ ]
+}
