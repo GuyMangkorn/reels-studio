@@ -112,27 +112,33 @@ def area(name, loc, size, color, power, rot=(0, 0, 0)):
 
 
 # ---------------------------------------------------------------- characters (placeholders; rig = S-03/S-04 later)
-def zc_you(m):
-    """zc-you placeholder: 1.72 m, eye 1.61 m. Local frame: front = -Y, feet at origin. Floor anchor = root origin."""
-    r = empty('zc-you')
-    P = lambda *a, **k: prim(*a, parent=r, **k)
-    for s in (-1, 1):
-        P('cyl', f'zc-you_leg{s}', (0.09 * s, 0, 0.30), (0.062, 0.062, 0.30), m['skin'])      # bare shins
-        P('cyl', f'zc-you_shorts{s}', (0.095 * s, 0, 0.72), (0.085, 0.085, 0.14), m['shorts'])
-        P('cyl', f'zc-you_arm{s}', (0.235 * s, 0, 1.22), (0.056, 0.056, 0.14), m['tee'])      # sleeve
-        P('cyl', f'zc-you_fore{s}', (0.245 * s, 0, 0.93), (0.042, 0.042, 0.17), m['skin'])
-        P('sphere', f'zc-you_foot{s}', (0.09 * s, -0.05, 0.03), (0.05, 0.11, 0.03), m['skin'])
-    P('sphere', 'zc-you_hips', (0, 0, 0.88), (0.17, 0.11, 0.10), m['shorts'])
-    P('sphere', 'zc-you_torso', (0, 0, 1.18), (0.20, 0.12, 0.30), m['tee'])
-    P('cyl', 'zc-you_neck', (0, 0, 1.47), (0.048, 0.048, 0.05), m['skin'])
-    P('sphere', 'zc-you_head', (0, -0.005, 1.60), (0.085, 0.10, 0.115), m['skin'])
-    P('sphere', 'zc-you_hair', (0, 0.012, 1.635), (0.09, 0.103, 0.095), m['hair'])
-    P('sphere', 'zc-you_earL', (-0.085, 0.0, 1.60), (0.012, 0.025, 0.03), m['skin'])
-    P('sphere', 'zc-you_earR', (0.085, 0.0, 1.60), (0.012, 0.025, 0.03), m['skin'])
-    # trash bag in the right hand (local -X = his right when facing -Y)
-    bag = P('sphere', 'zc-you_trashbag', (-0.27, -0.02, 0.62), (0.17, 0.15, 0.22), m['bag'])
-    P('cone', 'zc-you_bagknot', (-0.27, -0.02, 0.86), (0.04, 0.04, 0.06), m['bag'])
-    return r
+def zc_you(m, variant='day1'):
+    """Rigged zc-you (assets/blender/zc-you: armature `zc-you`, 1.72 m, eye 1.61 m, floor anchor at the root, front = -Y), relaxed stand,
+    the B01 trash bag hanging from the right hand (rig pose: tracks.B01; bag is not part of the rig). Replaces the SP01 primitive placeholder."""
+    zdir = os.path.join(HERE, '..', 'zc-you')
+    if zdir not in sys.path:
+        sys.path.insert(0, zdir)
+    import rig as zrig, poses as zposes
+    ao = zrig.build(variant)
+    A = zposes.Actor(ao)
+    A.keying = False
+    A.pose(1, root=(0, 0, 0), key=False)
+    bpy.context.view_layer.update()
+    # trash bag in the right hand (local -X = his right when facing -Y): knot gripped in the palm, bag hangs, bottom ~0.40 m (MK-ZC-ST-07)
+    palm = A.mw @ A.P['hand.R'].head
+    bag = prim('sphere', 'zc-you_trashbag', (palm.x, palm.y, palm.z - 0.21), (0.17, 0.15, 0.22), m['bag'])
+    knot = prim('cone', 'zc-you_bagknot', (palm.x, palm.y, palm.z - 0.01), (0.04, 0.04, 0.06), m['bag'])
+    for o in (bag, knot):
+        o.parent = ao
+        o.parent_type = 'BONE'
+        o.parent_bone = 'hand.R'
+        o.matrix_parent_inverse = Matrix_inv(ao, A.P['hand.R'])
+    return ao
+
+
+def Matrix_inv(ao, pb):
+    """Parent-inverse for bone parenting that keeps the child's current world transform."""
+    return (ao.matrix_world @ pb.matrix @ __import__('mathutils').Matrix.Translation((0, pb.length, 0))).inverted()
 
 
 def zc_infected(m):
