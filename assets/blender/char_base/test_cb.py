@@ -24,7 +24,11 @@ if _t not in sys.path:
 
 def reset_scene():
     """Factory-empty scene: no objects, no orphan datablocks."""
-    bpy.ops.object.select_all(action="DESELECT") if bpy.context.object else None
+    try:
+        if bpy.context.object and bpy.context.object.mode != "OBJECT":
+            bpy.ops.object.mode_set(mode="OBJECT")
+    except RuntimeError:
+        pass
     for o in list(bpy.data.objects):
         bpy.data.objects.remove(o, do_unlink=True)
     for coll in (bpy.data.meshes, bpy.data.materials, bpy.data.armatures, bpy.data.actions,
@@ -46,8 +50,8 @@ def run(mod):
     tests.sort(key=lambda nf: nf[1].__code__.co_firstlineno)
     ok = bad = 0
     for name, fn in tests:
-        reset_scene()
         try:
+            reset_scene()
             fn()
             print("PASS " + name)
             ok += 1
