@@ -376,6 +376,12 @@ PYCODE
 - Mark: no sheet change.
 - Follow-up (Boss): hair rim; re-measure on the production `zc-infected` in `S-02`; re-render B01-SH01 with `r31`.
 
+### 2026-10-29 addendum — trash bag `MK-ZC-ST-07` (sheets `ZCONDO-SHORT-SS-R2.3`)
+- Blockout: one `zc-bag` (squashed ellipsoid 0.40 × 0.28 × 0.38 m plus knot to z 0.45) at (−0.75, 0.40, 0) in every `build_sp02.py` shot; the `zc_you` placeholder's hand-held bag is removed in `pose_stand_b02` only (SP01 / `zc-corridor` keep it). New views `B02start` (B02-SH02 clip 39, bag visible) and the `bag` command (`sp02-manifest.json` key `bag`).
+- Measured (ray cast per bag vertex plus projection): bag fully hidden behind `zc-cabinet` (y 0.18–0.58) in B02-SH02 end, B03-SH01 (camera y 2.05; the ray enters through the cabinet's y 0.58 side face) and B09-SH01 / B09-SH03 (camera y 0.90, 0.78, 0.35); 0 of 515 vertices unblocked in each.
+- Phone clearance: bag footprint to phone centre (−0.80, 0.62) 0.083 m; to the phone box edge (y 0.58) **0.041 m**, under the sheet's 0.05 m if the phone's own size counts. Not moved; Mark decides (e.g. bag at y 0.38 gives ≈0.06 m).
+- **B10-SH01 sheet is not self-consistent in `ZC-WORLD`.** With the camera taken literally (vFOV 55°, (0.70, 2.75, 1.50) → (0.49, 0.05, 1.35), shift_y +0.10) screen-right is −X, so the partition jamb (x 0.30) is on the right and he (x 0.80) on the left, the opposite of the sheet's screen estimates; his lead height is ≈1930 px (not ≈480+ in the face box). The bag (x −0.95…−0.55) is behind partition `p1` (solid for x < 0.30) and off-screen (nearest corner x 1313, y 1816): not visible. `out/qa/zombie-condo/sp02/B10-SH01_measure_literal.png`. Film/Mark must fix the camera or mirror before the bag's B10 visibility can be judged.
+
 ### Revalidation history
 - 2026-10-29 / `main` `80c73c5` + working tree: results above. Film/Mark adoption: pending.
 
@@ -408,6 +414,12 @@ PYCODE
 - Film: `CAM-SECTION-LL` seated lead passes on render (≥502 px); the seated stills are acceptable at 3.4 m and 4.6 m. Record the cut-plane ×1.117 note against `PROJ-ZC-R3` (framing arithmetic should be taken on the cut plane for caps, at x = 0 for the character).
 - Mark: revalidate B09-SH01 camera y (cap sliver), B07-SH02 TH tail trim or camera at clip 95, the phone side, and the lead sizes (502–506 and 552 px measured vs ≈530 estimated).
 - Follow-up (Boss): repeat the pose check on the rigged `zc-you`; add the LL truck with motion blur; replace blockout geometry with `zc-unit` in `S-03`.
+
+### 2026-10-29 addendum — trash bag `MK-ZC-ST-07` (sheets `ZCONDO-SHORT-SS-R2.3`)
+- Blockout: one `zc-bag` (squashed ellipsoid 0.40 × 0.28 × 0.38 m plus knot to z 0.45) at (−0.75, 0.40, 0) in every `build_sp02.py` shot; the `zc_you` placeholder's hand-held bag is removed in `pose_stand_b02` only (SP01 / `zc-corridor` keep it). New views `B02start` (B02-SH02 clip 39, bag visible) and the `bag` command (`sp02-manifest.json` key `bag`).
+- Measured (ray cast per bag vertex plus projection): bag fully hidden behind `zc-cabinet` (y 0.18–0.58) in B02-SH02 end, B03-SH01 (camera y 2.05; the ray enters through the cabinet's y 0.58 side face) and B09-SH01 / B09-SH03 (camera y 0.90, 0.78, 0.35); 0 of 515 vertices unblocked in each.
+- Phone clearance: bag footprint to phone centre (−0.80, 0.62) 0.083 m; to the phone box edge (y 0.58) **0.041 m**, under the sheet's 0.05 m if the phone's own size counts. Not moved; Mark decides (e.g. bag at y 0.38 gives ≈0.06 m).
+- **B10-SH01 sheet is not self-consistent in `ZC-WORLD`.** With the camera taken literally (vFOV 55°, (0.70, 2.75, 1.50) → (0.49, 0.05, 1.35), shift_y +0.10) screen-right is −X, so the partition jamb (x 0.30) is on the right and he (x 0.80) on the left, the opposite of the sheet's screen estimates; his lead height is ≈1930 px (not ≈480+ in the face box). The bag (x −0.95…−0.55) is behind partition `p1` (solid for x < 0.30) and off-screen (nearest corner x 1313, y 1816): not visible. `out/qa/zombie-condo/sp02/B10-SH01_measure_literal.png`. Film/Mark must fix the camera or mirror before the bag's B10 visibility can be judged.
 
 ### Revalidation history
 - 2026-10-29 / `main` `80c73c5` + working tree: results above. Film adoption: read 2026-10-29 (same revision) → brief `VB-ZCONDO-SHORT-R3.2`: cut-plane ×1.117 rule in `PROJ-ZC-R3`, measured leads recorded (B09 at 3.4 m accepted by the user), B09-SH01 camera y 0.78, B07-SH02 TH trim 9, phone on his right. Mark adoption: pending.
