@@ -40,7 +40,7 @@ def dress_materials(outfit, M, name, J, F):
         fn(M)
 
 
-def apply(body_obj, ao, outfit, M, J, F=None, table=None):
+def apply(body_obj, ao, outfit, M, J, F, table):
     """Cut, weight, band-assign and bind the body mesh, then add trims and folds. body_obj: unbound baked body mesh at rest."""
     ctx = plan(outfit, body_obj.name[:-len('_body')], J, F)
     ctx.M, ctx.body, ctx.ao = M, body_obj, ao
@@ -149,10 +149,11 @@ def ellipsoid(name, c, r, mat, rot=(0, 0, 0), seg=24, rings=14):
     return _obj(name, bm, mat)
 
 
-def _fit_h(ctx, z, xsign=0, band=0.004):
-    """Centre and half-extents (x, y) of the body section at height z (torso, or one leg with xsign)."""
+def _fit_h(ctx, z, xsign=0, band=0.004, xmax=None):
+    """Centre and half-extents (x, y) of the body section at height z (torso, or one leg with xsign; xmax narrows the torso window, e.g. to the neck)."""
     J, F = ctx.J, ctx.F
     tx, lx0, lx1 = 0.21 * F['rt'], 0.02 * F['gw'], J['HIP'].x + 0.085 * F['rl']
+    tx = xmax if xmax else tx
     pts = []
     while len(pts) < 8:
         pts = [p for p in ctx.bv if abs(p.z - z) < band and (xsign == 0 and abs(p.x) < tx or xsign != 0 and lx0 < p.x * xsign < lx1)]
@@ -162,68 +163,199 @@ def _fit_h(ctx, z, xsign=0, band=0.004):
     return cx, cy, max(abs(p.x - cx) for p in pts), max(abs(p.y - cy) for p in pts)
 
 
-def _rim(ctx, label, z, r, mat, bone, pad, xsign=0):
-    cx, cy, rx, ry = _fit_h(ctx, z, xsign)
+def _rim(ctx, label, z, r, mat, bone, pad, xsign=0, xmax=None):
+    cx, cy, rx, ry = _fit_h(ctx, z, xsign, xmax=xmax)
     g = ctx.F['gw']
     ob = torus(f'{ctx.name}_{label}', Vector((cx, cy, z)), 1.0, r * g, ctx.M[mat], scale=(rx + pad * g, ry + pad * g, 1.0))
     B.rigid(ob, ctx.ao, bone)
 
 
 TORSO = ('pelvis', 'spine', 'chest', 'clavicle')
+DEFAULT_COLOR = {'tee': '#2f5656', 'shirt': '#cfd3d6', 'tank': '#e8e4dc', 'shorts': '#7c7f80', 'trousers': '#3a4458', 'skirt': '#8a3b4a',
+                 'sneaker': '#e9e9e4', 'sandal': '#7a5a3a', 'sole': '#f0eee8', 'button': '#e6e3da'}
 
 
 def _arm_axis(s):
     return Vector((B.ARM_DIR.x * s, B.ARM_DIR.y, B.ARM_DIR.z)).normalized()
 
 
-# ----------------------------------------------------------------------------- pieces
-def tee(ctx, color='tee', fold=0.0, sleeve=0.155):
-    """T-shirt: neckline, hem over the waistband, short sleeves (sleeve = hem distance along the upper arm, zc-you metres)."""
+def _fore_axis(s):
+    return Vector((B.FDIR.x * s, B.FDIR.y, B.FDIR.z)).normalized()
+
+
+def _colour(ctx, piece, color, key=None):
+    """Material key of a garment: `color` is a palette key or a '#rrggbb' hex; absent from the palette it is created (default tint per piece)."""
+    k = color or key or piece
+
+    def hook(M):
+        if k in M:
+            return
+        from looks import _mat
+        hx = k if k.startswith('#') else DEFAULT_COLOR[key or piece]
+        M[k] = _mat(f"{M['skin'].name[:-len('_body_skin')]}_{k}", srgb(hx), 0.85)
+        M['_body'].append(k)
+    ctx.hooks.append(hook)
+    return k
+
+
+def _front_y(ctx, z, band=0.012):
+    """Front (min y) of the torso at height z near the centre line."""
+    ys = []
+    while len(ys) < 3:
+        ys = [p.y for p in ctx.bv if abs(p.z - z) < band and abs(p.x) < 0.02 * ctx.F['gw']]
+        band *= 1.5
+    return min(ys)
+
+
+def _cuff(ctx, label, c0, ax, bone, color, n, s, bnd=0.004):
+    """Hem ring around a sleeve opening centred near c0 with axis ax."""
+    F = ctx.F
+    near = []
+    while len(near) < 8:
+        near = [p for p in ctx.bv if abs((p - c0).dot(ax)) < bnd and (p - c0).length < 0.09 * F['rl'] and p.x * s > 0.1 * F['gw']]
+        bnd *= 1.5
+    cc = sum(near, Vector()) / len(near)
+    rr = max((p - cc).length for p in near)
+    q = Vector((0, 0, 1)).rotation_difference(ax).to_euler()
+    ob = torus(f'{ctx.name}_{label}.{n}', cc, rr + 0.002 * F['gw'], 0.0058 * F['gw'], ctx.M[color], rot=tuple(q))
+    B.rigid(ob, ctx.ao, bone)
+
+
+def _sleeves(ctx, color, sleeve):
+    """Sleeve cut planes + trims; returns band rule for the arm. sleeve: 'short' | 'long' | upper-arm hem distance (zc-you metres)."""
     J, F = ctx.J, ctx.F
-    zn = J['neck'].z + (J['head_base'].z - J['neck'].z) * 0.3
-    zh = J['pelvis'].z - 0.010 * F['gw']
-    sd = sleeve * (J['EL'] - J['SH']).length / (B.UPPER_ARM ** 2 + B.ELBOW_Y ** 2) ** 0.5
-    ctx.planes += [(0, (0, 0, zn), (0, 0, 1)), (1, (0, 0, zh), (0, 0, 1))]
+    if sleeve not in ('short', 'long') and not isinstance(sleeve, (int, float)):
+        raise ValueError(f"char_base.outfits: sleeve must be 'short', 'long' or a length, got {sleeve!r}")
+    if sleeve == 'long':
+        fl = (J['WR'] - J['EL']).length - 0.012 * F['gw']       # cuff ends just short of the wrist
+        for s in (1, -1):
+            ctx.planes.append((4, tuple(B.mirror(J['EL'], s) + _fore_axis(s) * fl), tuple(_fore_axis(s))))
+
+        def arm(dom, c):
+            s = 1 if c.x >= 0 else -1
+            if dom == 'upper_arm':
+                return color
+            if dom == 'forearm':
+                return color if (c - B.mirror(J['EL'], s)).dot(_fore_axis(s)) < fl else None
+            return None
+
+        def trims():
+            for s, n in ((1, 'L'), (-1, 'R')):
+                _cuff(ctx, 'sleeve_hem', B.mirror(J['EL'], s) + _fore_axis(s) * fl, _fore_axis(s), f'forearm.{n}', color, n, s)
+        ctx.trims.append(trims)
+        return arm
+    sl = 0.155 if sleeve == 'short' else sleeve
+    sd = sl * (J['EL'] - J['SH']).length / (B.UPPER_ARM ** 2 + B.ELBOW_Y ** 2) ** 0.5
     for s in (1, -1):
         ax = _arm_axis(s)
         ctx.planes.append((3, tuple(B.mirror(J['SH'], s) + ax * sd), tuple(ax)))
+
+    def arm(dom, c):
+        if dom == 'upper_arm':
+            s = 1 if c.x >= 0 else -1
+            return color if (c - B.mirror(J['SH'], s)).dot(_arm_axis(s)) < sd else None
+        return None
+
+    def trims():
+        for s, n in ((1, 'L'), (-1, 'R')):
+            ax = _arm_axis(s)
+            _cuff(ctx, 'sleeve_hem', B.mirror(J['SH'], s) + ax * sd, ax, f'upper_arm.{n}', color, n, s)
+    ctx.trims.append(trims)
+    return arm
+
+
+def _top(ctx, piece, color, fold, sleeve, hem=0.010, neck=0.3):
+    """Shared body of tee / shirt: neckline, hem, sleeves. hem = metres (x gw) of hem below the pelvis joint; neck = fraction of neck->head_base."""
+    J, F = ctx.J, ctx.F
+    zn = J['neck'].z + (J['head_base'].z - J['neck'].z) * neck
+    zh = J['pelvis'].z - hem * F['gw']
+    ctx.planes += [(0, (0, 0, zn), (0, 0, 1)), (1, (0, 0, zh), (0, 0, 1))]
+    arm = _sleeves(ctx, color, sleeve)
 
     def band(dom, c):
         if dom in TORSO:
             return color if zh <= c.z <= zn else None
         if dom == 'neck':
             return None if c.z > zn else color
-        if dom == 'upper_arm':
-            s = 1 if c.x >= 0 else -1
-            return color if (c - B.mirror(J['SH'], s)).dot(_arm_axis(s)) < sd else None
+        if dom == 'thigh':
+            return color if c.z >= zh else None
+        return arm(dom, c)
+    ctx.bands.append(band)
+    if fold:
+        ctx.fold[color] = fold
+        ctx.drape = (zh, J['spine'].z + 0.13 * F['gw'], J['spine'].z, 0.07 * F['gw'])
+    return zn, zh
+
+
+def tee(ctx, color='tee', fold=0.0, sleeve='short'):
+    """T-shirt: neckline, hem over the waistband, short sleeves (sleeve = 'short' | 'long' | hem distance along the upper arm, zc-you metres)."""
+    color = _colour(ctx, 'tee', color)
+    zn, zh = _top(ctx, 'tee', color, fold, sleeve)
+
+    def trims():
+        _rim(ctx, 'collar', zn, 0.0072, color, 'neck', 0.003)
+        _rim(ctx, 'shirt_hem', zh, 0.0065, color, 'spine', 0.002)
+    ctx.trims.insert(0, trims)       # collar + hem first, sleeve hems after (the zc-you object order)
+
+
+def shirt(ctx, color='shirt', fold=0.0, sleeve='long', buttons=5):
+    """Button shirt: stand collar, longer hem, button placket decal down the front, long sleeves by default."""
+    color = _colour(ctx, 'shirt', color)
+    bcol = _colour(ctx, 'shirt', None, 'button')
+    zn, zh = _top(ctx, 'shirt', color, fold, sleeve, hem=0.060)
+    J, F = ctx.J, ctx.F
+
+    def trims():
+        nk = 0.075 * F['gw']
+        _rim(ctx, 'collar', zn, 0.0105, color, 'neck', 0.006, xmax=nk)
+        _rim(ctx, 'collar_fold', zn + 0.004 * F['gw'], 0.0070, color, 'neck', 0.010, xmax=nk)
+        _rim(ctx, 'shirt_hem', zh, 0.0070, color, 'pelvis', 0.002)
+        z0, z1 = zn - 0.035 * F['gw'], zh + 0.030 * F['gw']
+        for i in range(buttons):
+            z = z0 + (z1 - z0) * i / max(buttons - 1, 1)
+            y = _front_y(ctx, z) + 0.0006
+            b = ellipsoid(f'{ctx.name}_button{i}', Vector((0, y, z)), (0.0062 * F['gw'], 0.0022 * F['gw'], 0.0062 * F['gw']), ctx.M[bcol], seg=12, rings=8)
+            B.rigid(b, ctx.ao, 'chest' if z > J['spine'].z else 'spine' if z > J['pelvis'].z else 'pelvis')
+        zs = [z0 + 0.012 * F['gw'], z1 - 0.012 * F['gw']]
+        pl = ellipsoid(f'{ctx.name}_placket', Vector((0, _front_y(ctx, 0.5 * (z0 + z1)) + 0.0004, 0.5 * (z0 + z1))),
+                       (0.0045 * F['gw'], 0.0014 * F['gw'], 0.5 * (z1 - z0) + 0.012 * F['gw']), ctx.M[color], seg=10, rings=10)
+        B.rigid(pl, ctx.ao, 'spine')
+    ctx.trims.insert(0, trims)
+
+
+def tank(ctx, color='tank', fold=0.0):
+    """Tank top: scoop neckline at armpit height, two shoulder straps, no sleeves."""
+    color = _colour(ctx, 'tank', color)
+    J, F = ctx.J, ctx.F
+    g = F['gw']
+    zn = J['SH'].z - 0.075 * g
+    zh = J['pelvis'].z - 0.010 * g
+    x0, x1, zt = 0.040 * g, 0.080 * g, J['SH'].z + 0.050 * g
+    ctx.planes += [(0, (0, 0, zn), (0, 0, 1)), (1, (0, 0, zh), (0, 0, 1))]
+    for i, x in enumerate((x0, x1)):
+        ctx.planes += [(5 + 2 * i, (x, 0, 0), (1, 0, 0)), (6 + 2 * i, (-x, 0, 0), (1, 0, 0))]
+
+    def band(dom, c):
+        if dom in TORSO or dom == 'neck':
+            if c.z < zn:
+                return color if c.z >= zh and dom != 'clavicle' else None
+            return color if x0 < abs(c.x) < x1 and c.z < zt else None
         if dom == 'thigh':
             return color if c.z >= zh else None
         return None
     ctx.bands.append(band)
 
     def trims():
-        _rim(ctx, 'collar', zn, 0.0072, color, 'neck', 0.003)
         _rim(ctx, 'shirt_hem', zh, 0.0065, color, 'spine', 0.002)
-        for s, n in ((1, 'L'), (-1, 'R')):
-            ax = _arm_axis(s)
-            c0 = B.mirror(J['SH'], s) + ax * sd
-            bnd, near = 0.004, []
-            while len(near) < 8:
-                near = [p for p in ctx.bv if abs((p - c0).dot(ax)) < bnd and (p - c0).length < 0.09 * F['rl'] and p.x * s > 0.1 * F['gw']]
-                bnd *= 1.5
-            cc = sum(near, Vector()) / len(near)
-            rr = max((p - cc).length for p in near)
-            q = Vector((0, 0, 1)).rotation_difference(ax).to_euler()
-            ob = torus(f'{ctx.name}_sleeve_hem.{n}', cc, rr + 0.002 * F['gw'], 0.0058 * F['gw'], ctx.M[color], rot=tuple(q))
-            B.rigid(ob, ctx.ao, f'upper_arm.{n}')
     ctx.trims.append(trims)
     if fold:
         ctx.fold[color] = fold
-        ctx.drape = (zh, J['spine'].z + 0.13 * F['gw'], J['spine'].z, 0.07 * F['gw'])
+        ctx.drape = (zh, J['spine'].z + 0.13 * g, J['spine'].z, 0.07 * g)
 
 
 def shorts(ctx, color='shorts', fold=0.0):
     """Shorts: waistband just above the shirt hem, leg hems at 73% down the thigh (zc-you: 0.60 m)."""
+    color = _colour(ctx, 'shorts', color)
     J, F = ctx.J, ctx.F
     top = J['pelvis'].z - 0.010 * F['gw']
     zb = J['pelvis'].z + 0.005 * F['gw']
@@ -245,6 +377,208 @@ def shorts(ctx, color='shorts', fold=0.0):
     ctx.trims.append(trims)
     if fold:
         ctx.fold[color] = fold
+
+
+def trousers(ctx, color='trousers', fold=0.0):
+    """Long trousers: waistband like the shorts, hems just above the ankle."""
+    color = _colour(ctx, 'trousers', color)
+    J, F = ctx.J, ctx.F
+    top = J['pelvis'].z - 0.010 * F['gw']
+    zb = J['pelvis'].z + 0.005 * F['gw']
+    zl = J['ANK'].z + 0.045 * F['gw']
+    ctx.planes.append((2, (0, 0, zl), (0, 0, 1)))
+
+    def band(dom, c):
+        if dom in TORSO:
+            return color if c.z < top else None
+        if dom == 'thigh':
+            return color if c.z < top else None
+        if dom == 'shin':
+            return color if c.z > zl else None
+        return None
+    ctx.bands.append(band)
+
+    def trims():
+        _rim(ctx, 'trousers_band', zb, 0.0085, color, 'pelvis', 0.001)
+        for s, n in ((1, 'L'), (-1, 'R')):
+            _rim(ctx, f'trousers_hem.{n}', zl, 0.0065, color, f'shin.{n}', 0.003, s)
+    ctx.trims.append(trims)
+    if fold:
+        ctx.fold[color] = fold
+
+
+def _smooth(t):
+    t = min(1.0, max(0.0, t))
+    return t * t * (3 - 2 * t)
+
+
+def skirt(ctx, color='skirt', length=0.85, flare=1.0, thickness=0.004, nu=40, nv=16):
+    """Separate A-line skirt shell (closed thin solid) from just under the shirt hem to `length` of the way hip->knee.
+    Each ring clears the body section plus a margin that grows with the flare; weights blend pelvis and thigh.L/.R
+    (down the hip, toward the front, by side) so the hem follows the legs in sit / stride / crouch."""
+    color = _colour(ctx, 'skirt', color)
+    J, F = ctx.J, ctx.F
+    g = F['gw']
+    zt = J['pelvis'].z - 0.014 * g
+    zb = J['HIP'].z + (J['KNEE'].z - J['HIP'].z) * length
+
+    def trims():
+        bm = bmesh.new()
+        rings = []
+        dz = abs(zb - zt) / nv
+        tx = 0.21 * F['rt']
+        for i in range(nv + 1):
+            v = i / nv
+            z = zt + (zb - zt) * v
+            cx, cy, rx, ry = _fit_h(ctx, z)
+            pts = [(p.x - cx, p.y - cy) for p in ctx.bv if abs(p.z - z) < 1.2 * dz and abs(p.x) < tx]
+            polar = [(math.atan2(y, x), math.hypot(x, y)) for x, y in pts]
+            m = (0.020 + 0.080 * flare * v ** 1.4) * g
+            ring = []
+            for j in range(nu):
+                th = 2 * math.pi * j / nu
+                ell = (math.cos(th) / (rx + 0.002)) ** 2 + (math.sin(th) / (ry + 0.002)) ** 2
+                r = ell ** -0.5          # ellipse through the section extents ...
+                for a, rho in polar:     # ... pushed out to the true section radius within +-20 deg (union-of-legs corners)
+                    da = abs((a - th + math.pi) % (2 * math.pi) - math.pi)
+                    if da < math.radians(20) and rho > r:
+                        r = rho
+                r += m
+                wob = 1 + 0.03 * flare * v * math.sin(7 * th)
+                ring.append(bm.verts.new(Vector((cx + r * math.cos(th) * wob, cy + r * math.sin(th) * wob, z))))
+            rings.append(ring)
+        for i in range(nv):
+            for j in range(nu):
+                bm.faces.new((rings[i][j], rings[i][(j + 1) % nu], rings[i + 1][(j + 1) % nu], rings[i + 1][j]))
+        bmesh.ops.recalc_face_normals(bm, faces=bm.faces[:])
+        bmesh.ops.solidify(bm, geom=bm.faces[:], thickness=thickness * g)
+        bmesh.ops.recalc_face_normals(bm, faces=bm.faces[:])
+        ob = _obj(f'{ctx.name}_skirt', bm, ctx.M[color])
+        hz, hy = J['HIP'].z, 0.0
+        w = []
+        for v in ob.data.vertices:
+            p = v.co
+            td = _smooth((hz + 0.01 * g - p.z) / (0.14 * g))
+            fr = min(1.0, max(0.0, 0.5 - (p.y - hy) / (0.16 * g)))
+            ts = td * (0.4 + 0.6 * fr)
+            sl = _smooth(0.5 + p.x / (0.14 * g))
+            d = {'pelvis': 1 - ts, 'thigh.L': ts * sl, 'thigh.R': ts * (1 - sl)}
+            w.append({k: x for k, x in d.items() if x > 1e-4})
+        B.vg_bind(ob, ctx.ao, w)
+    ctx.trims.append(trims)
+
+
+# ----------------------------------------------------------------------------- shoes
+def _interp(tab, u):
+    for (u0, a), (u1, b) in zip(tab, tab[1:]):
+        if u <= u1:
+            return a + (b - a) * (u - u0) / (u1 - u0)
+    return tab[-1][1]
+
+
+SHOE_H = ((0, .066), (.12, .085), (.25, .108), (.40, .088), (.55, .070), (.75, .058), (1, .040))     # upper height above the floor (fs metres)
+SHOE_W = ((0, .033), (.25, .037), (.60, .0455), (.80, .046), (1, .036))                                  # half width
+
+
+def _foot_span(ctx, s):
+    """Heel-back and toe-tip y of the foot on side s from the body mesh and the TOE joint."""
+    J, fs = ctx.J, ctx.F['fs']
+    hx = J['HIP'].x * s
+    yb = max(p.y for p in ctx.bv if p.z < 0.1 * fs and abs(p.x - hx) < 0.06 * fs) + 0.008 * fs
+    return hx, yb, J['TOE'].y - 0.012 * fs
+
+
+def _shoe_loft(name, hx, yb, yt, fs, mat, zb, ztop, grow=0.0, n=3.0, N=18, M=20, e0=0.12, e1=0.18):
+    """Closed superellipse loft from heel (u=0) to toe (u=1); ztop(u) = height above zb of the rim at u."""
+    bm = bmesh.new()
+    rings = []
+    for k in range(N + 1):
+        u = 0.5 - 0.5 * math.cos(math.pi * k / N)
+        y = yb + (yt - yb) * u
+        c = math.sqrt(max(0.0, 1 - (1 - u / e0) ** 2)) if u < e0 else math.sqrt(max(0.0, 1 - ((u - 1 + e1) / e1) ** 2)) if u > 1 - e1 else 1.0
+        w = (_interp(SHOE_W, u) * fs + grow) * c
+        top = zb + (ztop(u) - zb) * c ** 0.5
+        if k in (0, N):
+            rings.append(bm.verts.new(Vector((hx, y + (-grow if k == 0 else grow) * 0 + (grow if k == 0 else -grow), zb + 0.4 * (ztop(u) - zb)))))
+            continue
+        ring = []
+        for j in range(M):
+            th = 2 * math.pi * j / M
+            cx, sx = math.cos(th), math.sin(th)
+            ex = math.copysign(abs(cx) ** (2 / n), cx)
+            ez = math.copysign(abs(sx) ** (2 / n), sx)
+            ring.append(bm.verts.new(Vector((hx + w * ex, y, zb + (top - zb) * (0.5 + 0.5 * ez)))))
+        rings.append(ring)
+    for k in range(N):
+        a, b = rings[k], rings[k + 1]
+        for j in range(M):
+            j1 = (j + 1) % M
+            if k == 0:
+                bm.faces.new((a, b[j1], b[j]))
+            elif k == N - 1:
+                bm.faces.new((a[j], a[j1], b))
+            else:
+                bm.faces.new((a[j], a[j1], b[j1], b[j]))
+    bmesh.ops.recalc_face_normals(bm, faces=bm.faces[:])
+    return _obj(name, bm, mat)
+
+
+def _strap(name, c, rx, rz, width, thick, mat, M=24):
+    """Flat ribbon ring in the x-z plane around the foot (ellipse radii rx, rz) centred at c."""
+    bm = bmesh.new()
+    rows = []
+    for j in range(M):
+        th = 2 * math.pi * j / M
+        d = Vector((rx * math.cos(th), 0, rz * math.sin(th)))
+        nrm = Vector((math.cos(th) / rx, 0, math.sin(th) / rz)).normalized()
+        row = []
+        for dy, dr in ((-width / 2, 0), (width / 2, 0), (width / 2, thick), (-width / 2, thick)):
+            row.append(bm.verts.new(c + d + Vector((0, dy, 0)) + nrm * dr))
+        rows.append(row)
+    for j in range(M):
+        a, b = rows[j], rows[(j + 1) % M]
+        for q in range(4):
+            bm.faces.new((a[q], a[(q + 1) % 4], b[(q + 1) % 4], b[q]))
+    bmesh.ops.recalc_face_normals(bm, faces=bm.faces[:])
+    return _obj(name, bm, mat)
+
+
+def sneaker(ctx, color='sneaker', sole='sole'):
+    """Sneaker per foot: rubber sole (bottom on the floor) + closed upper + laces, rigid on the foot bone."""
+    color = _colour(ctx, 'sneaker', color)
+    sole = _colour(ctx, 'sneaker', sole if sole != 'sole' else None, 'sole')
+
+    def trims():
+        fs = ctx.F['fs']
+        for s, n in ((1, 'L'), (-1, 'R')):
+            hx, yb, yt = _foot_span(ctx, s)
+            up = _shoe_loft(f'{ctx.name}_sneaker.{n}', hx, yb, yt, fs, ctx.M[color], 0.011 * fs, lambda u: _interp(SHOE_H, u) * fs)
+            so = _shoe_loft(f'{ctx.name}_sneaker_sole.{n}', hx, yb + 0.003 * fs, yt - 0.003 * fs, fs, ctx.M[sole], 0.0, lambda u: 0.016 * fs, grow=0.003 * fs)
+            B.rigid(up, ctx.ao, f'foot.{n}')
+            B.rigid(so, ctx.ao, f'foot.{n}')
+            for i, u in enumerate((0.28, 0.35, 0.42, 0.49)):
+                y = yb + (yt - yb) * u
+                z = _interp(SHOE_H, u) * fs - 0.001 * fs
+                lc = ellipsoid(f'{ctx.name}_sneaker_lace{i}.{n}', Vector((hx, y, z)), (0.016 * fs, 0.0035 * fs, 0.0022 * fs), ctx.M[sole], seg=10, rings=6)
+                B.rigid(lc, ctx.ao, f'foot.{n}')
+    ctx.trims.append(trims)
+
+
+def sandal(ctx, color='sandal', sole='sole'):
+    """Sandal per foot: flat sole + instep strap + ankle strap (toes stay free; add `barefoot` for toes)."""
+    color = _colour(ctx, 'sandal', color)
+    sole = _colour(ctx, 'sandal', sole if sole != 'sole' else None, 'sole')
+
+    def trims():
+        fs = ctx.F['fs']
+        for s, n in ((1, 'L'), (-1, 'R')):
+            hx, yb, yt = _foot_span(ctx, s)
+            so = _shoe_loft(f'{ctx.name}_sandal_sole.{n}', hx, yb, yt, fs, ctx.M[sole], 0.0, lambda u: 0.011 * fs, grow=0.002 * fs)
+            B.rigid(so, ctx.ao, f'foot.{n}')
+            for lab, u, zc, rz in (('instep', 0.45, 0.034, 0.030), ('ankle', 0.12, 0.052, 0.048)):
+                st = _strap(f'{ctx.name}_sandal_{lab}.{n}', Vector((hx, yb + (yt - yb) * u, zc * fs)), 0.037 * fs, rz * fs, 0.012 * fs, 0.0025 * fs, ctx.M[color])
+                B.rigid(st, ctx.ao, f'foot.{n}')
+    ctx.trims.append(trims)
 
 
 TOES = ((-0.027, 0.020, 0.0105), (-0.012, 0.016, 0.0072), (0.001, 0.0145, 0.0068), (0.013, 0.0125, 0.0064), (0.024, 0.0105, 0.0060))
@@ -296,5 +630,6 @@ def grime(ctx, on='tee', color='#1a2b2a'):
     ctx.hooks.append(hook)
 
 
-PIECES = {'tee': tee, 'shorts': shorts, 'barefoot': barefoot, 'grime': grime}
-BAND_PIECES = ('tee', 'shorts')
+PIECES = {'tee': tee, 'shirt': shirt, 'tank': tank, 'shorts': shorts, 'trousers': trousers, 'skirt': skirt,
+          'sneaker': sneaker, 'sandal': sandal, 'barefoot': barefoot, 'grime': grime}
+BAND_PIECES = ('tee', 'shirt', 'tank', 'shorts', 'trousers')
