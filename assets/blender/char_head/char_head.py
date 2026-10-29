@@ -433,8 +433,10 @@ def _xf(ob, origin, scale):
 # ----------------------------------------------------------------------------- metrics
 def head_metrics(p=None, scale=1.0):
     """Analytic head-local metrics (metres x scale): height = chin bottom to hair top, eye_dz / eye_dy = eye centre offset from the head centre,
-    neck = socket point on the underside of the skull (x = 0, just behind the centre)."""
+    neck = socket point on the underside of the skull (x = 0, just behind the centre). oval=False raises ValueError (sculpted chin not modelled)."""
     p = p or PARAMS
+    if not p['oval']:
+        raise ValueError('char_head.head_metrics: only the plain-ellipsoid skull (oval=True) is supported; the chin sculpt of oval=False is not modelled')
     rx, ry, rz = p['head']
     top = rz * (1.0 + 0.045 * p['hair_volume']) + 0.001
     ny = 0.012

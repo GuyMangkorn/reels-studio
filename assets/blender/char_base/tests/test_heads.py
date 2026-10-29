@@ -32,8 +32,25 @@ def test_head_metrics_defaults():
     assert abs(m['height'] - (max(zs) - min(zs))) < 0.003, (m['height'], max(zs) - min(zs))
     assert approx(m['eye_dz'], p['eye_z']) and approx(m['eye_dy'], p['eye_y'])
     assert m['neck'].z < -0.1 and abs(m['neck'].x) < 1e-6
-    m2 = char_head.head_metrics(p, 2.0)
-    assert approx(m2['height'], 2 * m['height'])
+
+
+def test_head_metrics_scaled_nondefault():
+    s = 0.8
+    p = char_head.params(head=(0.105, 0.112, 0.125), hair_volume=1.4)
+    ao = char_head.add_standalone_armature(p, origin=(0, 0, 1.0), scale=s)
+    parts = char_head.build_head(ao, (0, 0, 1.0), p, 'ch', s)
+    m = char_head.head_metrics(p, s)
+    zs = [v.co.z for o in parts if o.name in ('ch_head', 'ch_hair') for v in o.data.vertices]
+    assert abs(m['height'] - (max(zs) - min(zs))) < 0.003, (m['height'], max(zs) - min(zs))
+    assert approx(m['eye_dz'], p['eye_z'] * s) and approx(m['neck'].z, -0.125 * s * (1 - (0.012 / 0.112) ** 2) ** 0.5)
+
+
+def test_head_metrics_rejects_sculpted_skull():
+    try:
+        char_head.head_metrics(char_head.params(oval=False), 1.0)
+    except ValueError:
+        return
+    raise AssertionError('no ValueError')
 
 
 def test_look_rejects_clay():
@@ -74,10 +91,11 @@ def test_unknown_preset_falls_back():
 def test_defaults_unchanged():
     res = os.path.join(ROOT, "assets/blender/zc-you/check-results.json")
     want = json.loads(subprocess.check_output(["git", "show", "HEAD:assets/blender/zc-you/check-results.json"], cwd=ROOT))
+    saved = open(res, 'rb').read()
     try:
         subprocess.run([BLENDER, "-b", "--python", os.path.join(ROOT, "assets/blender/zc-you/check.py"), "--", "rig"],
                        cwd=ROOT, check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
         got = json.load(open(res))
     finally:
-        subprocess.run(["git", "checkout", "--", "assets/blender/zc-you/check-results.json"], cwd=ROOT)
+        open(res, 'wb').write(saved)
     assert got['rig'] == want['rig']
