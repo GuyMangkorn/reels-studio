@@ -113,4 +113,7 @@ Constraints to preserve; choices left to Mark; missing evidence;
 scene/boundary continuity; affected decisions on revision
 ```
 
+<a id="brief-history"></a>
+**Brief history (Default).** The brief holds current decisions plus the latest change-log entry. When a new revision lands, move the earlier change-log entries and earlier "affected decisions" lists unchanged to `visual-brief-history.md` beside the brief, and leave a one-line link in their place. Decision tables that scene sheets cite as their source (for example per-revision Mark handoff verdicts) stay in the brief until no current sheet links them. When a decision table moves, a stub anchor is left in the brief.
+
 `ready-for-mark` means sufficient information to scene handoff, not user-approved or runtime-tested. For `needs-feasibility`, identify which unknown affects which decision; Mark may rough-handoff independent portions. Use [cinematography principles](cinematography-principles.md) and [scene handoff principles](storyboard-principles.md) as visual guidance, separate from observed experimental results.
