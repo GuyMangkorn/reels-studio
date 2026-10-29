@@ -9,8 +9,9 @@
 
 | Deliverable | Stage / Next owner | Script / research / review | Brief / scene handoff | Evidence / open items |
 | --- | --- | --- | --- | --- |
-| BLOOP-EP01-SHORT | Research — Boat | pending | N/A for script-only scope | — |
+| BLOOP-EP01-SHORT | Research done (`BLOOP-RESEARCH-R1`, verification-incomplete) — Preaw: script from `research.md` R1 | Research: [`research.md`](research.md) `BLOOP-RESEARCH-R1`; script pending; fact-check pending | N/A for script-only scope | All sources lead-only: network policy blocked pmel.noaa.gov, Wikipedia, archives. Unverified: 50°S 100°W + Lovecraft link (`F004`/`F013`), exact NOAA wording, audio licence. Creature = imagination framing only |
 
 ## Handoff log
 
 - 2026-10-29: coordinator recorded selection, profile, engine and script-only scope. Boat research is first.
+- 2026-10-29: Boat delivered `BLOOP-RESEARCH-R1` (`scripts/the-bloop/research.md`), status verification-incomplete. No source page could be opened (session network policy). Premise-critical icequake explanation is consistent across leads but primary-unopened. Preaw may draft with the packet's soft wordings. The fact-check cannot reach ready-for-storyboard until `pmel.noaa.gov` (`SRC001`/`SRC002`) is opened.
