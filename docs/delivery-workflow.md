@@ -20,7 +20,7 @@ Selection is complete when the record identifies the selected deliverables and t
 | Genre / purpose | mystery-educational (default), comedy, explainer/tutorial, vlog or documentary cut, news/recap, review, ad/promo, music/lyric video, slideshow/photo story, screen recording, motivational |
 | Visual medium | illustrated 2D/3D/hybrid (existing library), user footage, stock/licensed footage, still images, typography/kinetic text, screen recording, mixed |
 | Visual engine | for illustrated/animated media: Blender 3D, painted 2D (p5.brush), Remotion rig 2D, a mix of these, Film's choice, or the user's own answer ([visual engine](#visual-engine)) |
-| Voice | Niwat TTS (default), user-supplied recording, on-camera audio, no voice |
+| Voice | Niwat TTS (male, default), Premwadee TTS (female), user-supplied recording, on-camera audio, no voice |
 | Music / SFX | none, user-supplied, licensed library (record the license), shared sound library / locally generated ([`sound-generation` skill](../.agents/skills/sound-generation/SKILL.md)), sparse SFX; ducking under voice |
 | Captions | outline (default), box, none; position; burned-in or SRT only |
 | Chrome | channel label and progress bar on/off |
