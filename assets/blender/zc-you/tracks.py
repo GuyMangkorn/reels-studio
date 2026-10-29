@@ -407,9 +407,10 @@ FLOOR_HEAD = (22.7, 28.0)           # neck / head forward pitch (deg) so the hea
 def seated_floor(A, c, head_lift=0.0, yaw_head=0.0, look=None, face='tired', blink=0.0, interp='BEZIER', hands_on_knees=True):
     """B09-SH01/02/03: hips (-1.25, 0.85), shoulder blades on the back wall, knees up, feet at x ~ -0.75, faces +X, head pitched down ~20 deg
     (head_lift deg raises it; yaw_head turns toward -Y/the door), hands resting on the knees, phone at (-0.80, 0.62) by the right foot."""
-    ankL = V((-0.75, 0.85 + 0.12, ANKLE_Z))
-    ankR = V((-0.75, 0.85 - 0.12, ANKLE_Z))
-    common = dict(root=(FLOOR_HIP.x, FLOOR_HIP.y, 90.0), hips=tuple(FLOOR_HIP), pelvis=(-FLOOR_LEAN[0], 0, 0), spine=(-FLOOR_LEAN[1], 0, 0),
+    ankL = V((-0.75, 0.85 + 0.12, A.ANKLE_Z))
+    ankR = V((-0.75, 0.85 - 0.12, A.ANKLE_Z))
+    hip = V((FLOOR_HIP.x, FLOOR_HIP.y, FLOOR_HIP.z * A.HIPS_REST.z / 0.93))      # seated pelvis height scales with the character's hip height (0.93 = zc-you)
+    common = dict(root=(FLOOR_HIP.x, FLOOR_HIP.y, 90.0), hips=tuple(hip), pelvis=(-FLOOR_LEAN[0], 0, 0), spine=(-FLOOR_LEAN[1], 0, 0),
                   chest=(-FLOOR_LEAN[2], 0, 0), neck=(FLOOR_HEAD[0] - head_lift * 0.4, yaw_head * 0.4, 0), head=(FLOOR_HEAD[1] - head_lift * 0.6, yaw_head * 0.6, 0),
                   foot_l=dict(ankle=tuple(ankL), yaw=90.0), foot_r=dict(ankle=tuple(ankR), yaw=90.0), look=look, face=face, blink=blink, interp=interp,
                   pole_kn_l=(-0.9, ankL.y + 0.06, 1.2), pole_kn_r=(-0.9, ankR.y - 0.06, 1.2))
