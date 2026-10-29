@@ -36,7 +36,7 @@ SEX_LIMB = {'deltoid': 0.86, 'upper_arm': 0.88, 'elbow': 0.84, 'forearm': 0.88, 
 #   male circumference ratios, slimmer at the elbow; 'hip' (hip joint and upper-thigh nodes) adds the gluteofemoral width of the female hip
 STY_HEADS, STY_EXTREM, STY_LIMB_R, STY_LEG = 4.5, 1.3, 1.25, 0.85   # CP-Y01, CP-Y02, CP-Y03, CP-Y04
 BUST_Y, BUST_R = 0.015, 0.25   # CP-S04: fuller, forward chest node with sex (the ribcage); the bust itself is the BUST lobe pair (shape())
-BUST = (0.034, 0.006, 0.085, 0.070, 0.100, 0.060)
+BUST = (0.038, 0.006, 0.085, 0.070, 0.100, 0.060)
 # ^ CP-S04 ASSUMPTION (proposed CP-S04 change): bust lobes (amplitude at mass 0, gain per unit mass, x offset, sigma x, sigma up, sigma down)
 #   x gw; broad sigmas keep the torso lump metric under its bound (a bust is a wanted lump)
 GLUTE = ((0.0, 0.016), 0.012, 0.062, 0.055, -0.010, 0.065, 0.040)
@@ -71,16 +71,20 @@ CHEST_MASS_X = 0.0      # ASSUMPTION (no CP entry, proposed CP-M): share of the 
 CHEST_R = (1.55, 1.25)   # CP-L ASSUMPTION (proposed CP-L12, R23): chest node radii x, y x the zc-you 0.158 / 0.108: a broad ribcage for the
 #   chest-to-waist V taper of the user's male reference (x was 1.10; y stays 1.25: a deeper back pressed zc into the B02/B03 cabinet)
 TRUNK_R = {'pelvis': (0.124, 0.104), 'waist': (0.142, 0.092)}
+WAIST_CAP, WAIST_BAND = 1.2, (0.10, 0.75)
+# ^ ASSUMPTION (proposed CP-M02): the waist node is at most 1.2 x the pelvis node width (a wider one made the skin hull fail at the
+#   pelvis -> hip.R branch: 6c review I1); shape() adds the remaining belly width as a smooth sideways scale: sigma in z x width factor,
+#   full up to this fraction of the shoulder-joint x (arms hang outside), fading to 0 at the shoulder-joint x
 # ^ CP-L ASSUMPTION (proposed CP-L12, R23): male pelvis / waist node radii (x, y) at 1.72 m (zc-you was 0.152, 0.104 / 0.128, 0.090):
 #   narrower hips, a waist that steps in from the broad chest
-DELTOID = (0.064, 0.006, 0.016)   # CP-L ASSUMPTION (proposed CP-L12): deltoid cap node radius, outward and upward offset from the shoulder joint
+DELTOID = (0.064, 0.010, -0.016)   # CP-L ASSUMPTION (proposed CP-L12): deltoid cap node radius, outward and vertical offset from the shoulder joint (below it: the trapezius slopes down ~10 deg, U5)
 PECS = (0.010, 0.030, 0.060, 0.055, 0.050, 0.025)
 BUST_Z, LOBE_XCUT, LOBE_FADE = -0.025, (0.15, 0.14), (0.04, 0.06)
 # ^ CP-S ASSUMPTION (proposed CP-S04/S11/S12): bust lobe centre along the torso axis from the chest node; chest / buttock lobes fade out past
 #   |x| (chest, buttock) and fade in from the body axis plane / out past that |x| over (in, out), all x width factor
 # ^ CP-S ASSUMPTION (proposed CP-S12): male pectoral lobes (amplitude, centre above the chest node, x offset, sigma x, sigma up,
 #   sigma down) x width factor, fading out with sex
-YOKE_R = 0.070   # CP-L06 ASSUMPTION (proposed CP-L12): shoulder yoke node radius (trapezius height; zc-you was 0.062)
+YOKE_R = 0.064   # CP-L06 ASSUMPTION (proposed CP-L12): shoulder yoke node radius (trapezius; zc-you was 0.062, 6c fix 1 0.070 read as a shrug)
 NECK_R = (0.046, 0.037)    # CP-L06 ASSUMPTION (proposed CP-N01): slim neck radius above the shoulder yoke / under the head, tapering
 LIMB = {'arm1': (0.55, 0.049), 'el': (1.0, 0.040), 'fore': (0.25, 0.046), 'wr': (1.0, 0.027),
         'hip': (0.0, 0.068), 'thu': (0.22, 0.068), 'thm': (0.55, 0.066), 'knee': (1.0, 0.042),
@@ -279,6 +283,22 @@ def mass_k(bp, region):
     return 1 + d * MASS_R * (g if d > 0 else min(1.0, (1 + g) / 2))
 
 
+def _trunk_r(bp, F):
+    """Pelvis and waist node radii (rx, ry) and the full waist half-width factor: the waist node is held to WAIST_CAP x the pelvis
+    width; the rest of a heavy belly's width is added by shape() (a wider waist node made the skin hull fail, 6c review I1)."""
+    gw, sx = F['gx'], bp['sex']
+    hipw = _lerp(*HIP_X, sx) / HIP_X[0] * _lerp(1, PELVIS_SEX, sx)   # CP-S02, CP-S08: pelvis follows hip width
+    belly = F['belly'] * _lerp(1, BELLY_SEX, sx)
+    mp, mw = mass_k(bp, 'pelvis'), mass_k(bp, 'waist')
+    (prx, pry), (wrx, wry) = TRUNK_R['pelvis'], TRUNK_R['waist']
+    pr = (prx * gw * mp * hipw, pry * gw * mp)
+    wx = wrx * gw * mw * _lerp(1, WAIST_SEX, sx) * (1 + BELLY_R * belly)        # CP-S03
+    c, h = WAIST_CAP * pr[0], 0.02 * gw              # smooth minimum (no kink in the belly growth)
+    t = max(0.0, 1 - abs(wx - c) / h)
+    node = min(wx, c) - h * t * t / 4
+    return pr, (node, wry * gw * mw * (1 + BELLY_R * belly)), wx / node
+
+
 def body_graph(J, bp):
     """Skin-modifier graph: [(name, pos, (rx, ry))], [(i, j)]. Radii are the zc-you values (CP-L) x size, sex and regional mass factors."""
     F = factors(bp)
@@ -293,20 +313,18 @@ def body_graph(J, bp):
     def lr(region, r, w=None):     # limb radius: zc-you value x stylize (w: width factor) x sex x regional mass
         k = r * (w or lw) * _lerp(1, SEX_LIMB[region], sx) * mass_k(bp, region)
         return (k, k)
-    hipw = _lerp(*HIP_X, sx) / HIP_X[0] * _lerp(1, PELVIS_SEX, sx)   # CP-S02, CP-S08: pelvis follows hip width
     shw = _lerp(*SH_X, sx) / SH_X[0]             # CP-S01: chest follows shoulder width
-    wf = _lerp(1, WAIST_SEX, sx)                 # CP-S03
     nf = _lerp(1, NECK_SEX, sx)                  # CP-S05
     belly = F['belly'] * _lerp(1, BELLY_SEX, sx)
-    rt, mp, mw, mc = F['rt'], mass_k(bp, 'pelvis'), mass_k(bp, 'waist'), mass_k(bp, 'chest')
+    rt, mc = F['rt'], mass_k(bp, 'chest')
     # CP-L: every radius below is the zc-you value (rx, ry) at 1.72 m, times the size factors
-    (prx, pry), (wrx, wry) = TRUNK_R['pelvis'], TRUNK_R['waist']
-    pel = v('pelvis', J['pelvis'], (prx * gw * mp * hipw, pry * gw * mp))
-    wai = v('waist', J['waist_n'] + Vector((0, -BELLY_Y * belly * gw, 0)),
-            (wrx * gw * mw * wf * (1 + BELLY_R * belly), wry * gw * mw * (1 + BELLY_R * belly)))
+    pr, wr, _ = _trunk_r(bp, F)
+    pel = v('pelvis', J['pelvis'], pr)
+    wai = v('waist', J['waist_n'] + Vector((0, -BELLY_Y * belly * gw, 0)), wr)
     che = v('chest', J['chest_n'] + Vector((0, -BUST_Y * sx * gw, 0)), (CHEST_R[0] * 0.158 * gw * (1 + (mc - 1) * CHEST_MASS_X) * shw,
                                                                       CHEST_R[1] * 0.108 * gw * mc * (1 + BUST_R * sx)))   # CP-S04
-    n0 = v('neck0', J['neck0'], (YOKE_R * rt * nf, YOKE_R * rt * nf))    # shoulder yoke: chest, shoulders and neck meet here
+    yr = YOKE_R * gw * max(1.0, rt / gw) * nf          # shoulder yoke: chest, shoulders and neck meet here; it does not slim below REF_MASS
+    n0 = v('neck0', J['neck0'], (yr, yr))              # (a slim yoke let the wide chest hull rise above it: a shrug, U5)
     up = (J['neck0'] - J['chest_n']).normalized()      # the neck leaves the yoke along the torso axis (a leaning neck edge detached at stoop)
     # CP-L06 ASSUMPTION (proposed CP-N01): the slim neck starts 35% of the way from the yoke to the head socket
     nm = v('neckm', J['neck0'] + up * 0.35 * (J['neck1'] - J['neck0']).length, (NECK_R[0] * rt * nf, NECK_R[0] * rt * nf))
@@ -335,6 +353,7 @@ def body_graph(J, bp):
         # at 30%, slim lower shin and ankle
         hk = m('KNEE') - m('HIP')
         hp = v(f'hip.{n}', m('HIP'), lr('hip', LIMB['hip'][1], gw))     # the thigh root is part of the trunk: no CP-Y03 limb factor
+
         tu = v(f'thu.{n}', m('HIP') + hk * LIMB['thu'][0], lr('hip', LIMB['thu'][1], (gw + lw) / 2))   # half the CP-Y03 factor (no saddle)
         th_m = v(f'thm.{n}', m('HIP') + hk * LIMB['thm'][0], lr('thigh', LIMB['thm'][1]))
         kneev = v(f'knee.{n}', m('KNEE'), lr('knee', LIMB['knee'][1]))
@@ -388,6 +407,17 @@ def shape(me, J, bp):
         up = (J['waist_n'] - J['pelvis']).normalized()
         _lobes(me, J['HIP'] * Vector((0, 1, 1)) + up * (dz * gw), up, Vector((0, 1, 0)), amp, dx * gw, sgx * gw, su * gw, sd * gw,
                LOBE_XCUT[1] * gw, gw)
+    k = _trunk_r(bp, factors(bp))[2] - 1.0
+    if k > 0:                                        # the heavy belly width the capped waist node leaves out (WAIST_CAP)
+        zw, sg, x1 = J['waist_n'].z, WAIST_BAND[0] * gw, J['SH'].x
+        x0 = WAIST_BAND[1] * x1
+        for vt in me.vertices:
+            p = vt.co
+            ax = abs(p.x)
+            if ax >= x1:
+                continue
+            t = 1.0 if ax <= x0 else 1 - ((ax - x0) / (x1 - x0)) ** 2 * (3 - 2 * (ax - x0) / (x1 - x0))
+            vt.co.x = p.x * (1 + k * t * math.exp(-(p.z - zw) ** 2 / (2 * sg * sg)))
     me.update()
 
 
@@ -400,6 +430,7 @@ def _inside(loop, x, y):
 
 
 ARM_GROUPS = ('upper_arm', 'forearm', 'hand', 'fingers', 'thumb')
+ARM_CUT = 0.5      # arm weight from which a vertex is arm, not trunk, for TorsoGauge
 
 
 class TorsoGauge:
@@ -409,7 +440,7 @@ class TorsoGauge:
     def __init__(self, ob, step=0.005, dz=0.0):
         me = ob.data
         gi = {g.index: g.name for g in ob.vertex_groups}
-        arm = {v.index for v in me.vertices if sum(g.weight for g in v.groups if gi[g.group].startswith(ARM_GROUPS)) >= 0.5}
+        arm = {v.index for v in me.vertices if sum(g.weight for g in v.groups if gi[g.group].startswith(ARM_GROUPS)) >= ARM_CUT}
         self.segs = [(me.vertices[e.vertices[0]].co.copy(), me.vertices[e.vertices[1]].co.copy()) for e in me.edges
                      if e.vertices[0] not in arm and e.vertices[1] not in arm]
         self.step, self.dz, self.cache = step, dz, {}
@@ -478,8 +509,8 @@ def armless_mesh(J, bp, name):
     return me
 
 
-def skin_mesh(V, E, name):
-    """Skin-modifier mesh from a body graph, baked to a plain mesh in rest pose (lowest vertex not yet normalised)."""
+def _skin_cage(V, E, name):
+    """Skin-modifier cage (no subdivision) of a body graph as a bmesh, loose branch vertices dropped."""
     me = bpy.data.meshes.new(name + '_skin')
     me.from_pydata([tuple(p) for _, p, _ in V], E, [])
     ob = bpy.data.objects.new(name + '_skin', me)
@@ -493,42 +524,38 @@ def skin_mesh(V, E, name):
         d.use_root = (i == 0)
     sk = ob.modifiers.new('skin', 'SKIN')
     sk.branch_smoothing = 0.8
-    sk.use_smooth_shade = True
-    ss = ob.modifiers.new('sub', 'SUBSURF')
-    ss.levels = 2
-    ss.show_viewport = False
-    dg = bpy.context.evaluated_depsgraph_get()
-    cage = bpy.data.meshes.new_from_object(ob.evaluated_get(dg))
-    bm = bmesh.new()
-    bm.from_mesh(cage)
-    repaired = any(not e.is_manifold for e in bm.edges)
-    if repaired:                                     # the skin hull failed at a branch (chest/neck/shoulder cycle): close the cage, then subdivide
-        _close(bm)
-        bm.to_mesh(cage)
-        bm.free()
-        bpy.data.objects.remove(ob, do_unlink=True)
-        bpy.data.meshes.remove(me)
-        me = cage
-        ob = bpy.data.objects.new(name + '_skin', me)
-        bpy.context.scene.collection.objects.link(ob)
-        ss = ob.modifiers.new('sub', 'SUBSURF')
-        ss.levels = 2
-    else:
-        bm.free()
-        bpy.data.meshes.remove(cage)
-        ss.show_viewport = True
-    dg = bpy.context.evaluated_depsgraph_get()
-    new = bpy.data.meshes.new_from_object(ob.evaluated_get(dg))
+    cage = bpy.data.meshes.new_from_object(ob.evaluated_get(bpy.context.evaluated_depsgraph_get()))
     bpy.data.objects.remove(ob, do_unlink=True)
     bpy.data.meshes.remove(me)
-    bm = bmesh.new()                                 # the skin modifier leaves unused branch vertices behind: drop loose vertices
-    bm.from_mesh(new)
+    bm = bmesh.new()
+    bm.from_mesh(cage)
+    bpy.data.meshes.remove(cage)
     loose = [v for v in bm.verts if not v.link_edges]
     if loose:
         bmesh.ops.delete(bm, geom=loose, context='VERTS')
-        bm.to_mesh(new)
+    return bm
+
+
+def skin_mesh(V, E, name):
+    """Skin-modifier mesh from a body graph, baked to a plain mesh in rest pose (lowest vertex not yet normalised). If the hull fails at a
+    branch, _close repairs the cage (me['cb_repaired']: a visible crease; tests require it never runs, see WAIST_CAP)."""
+    bm = _skin_cage(V, E, name)
+    repaired = any(not e.is_manifold for e in bm.edges)
+    if repaired:
+        _close(bm)
+    cage = bpy.data.meshes.new(name + '_cage')
+    bm.to_mesh(cage)
     bm.free()
-    new['cb_repaired'] = repaired                    # the fallback ran (a crease at the failed branch): tests require it never does
+    for f in cage.polygons:
+        f.use_smooth = True
+    ob = bpy.data.objects.new(name + '_skin', cage)
+    bpy.context.scene.collection.objects.link(ob)
+    ss = ob.modifiers.new('sub', 'SUBSURF')
+    ss.levels = 2
+    new = bpy.data.meshes.new_from_object(ob.evaluated_get(bpy.context.evaluated_depsgraph_get()))
+    bpy.data.objects.remove(ob, do_unlink=True)
+    bpy.data.meshes.remove(cage)
+    new['cb_repaired'] = repaired
     return new
 
 
@@ -616,7 +643,7 @@ def weights(points, table, k=1.0):
 SMOOTH_BONES = ('chest', 'clavicle', 'upper_arm', 'hand', 'fingers', 'fingers_tip', 'thumb')   # joints that bend far: shoulder, mitten
 
 
-def smooth_weights(me, w, iters=4, bones=SMOOTH_BONES):
+def smooth_weights(me, w, iters=6, bones=SMOOTH_BONES):   # 6 passes (was 4): the lowered deltoid cap (U5) bumped at arm-up
     """Average weights over mesh neighbours (iters passes) on vertices touching `bones`, so a joint blends over a smooth band, not a crease."""
     nb = [[] for _ in me.vertices]
     for e in me.edges:

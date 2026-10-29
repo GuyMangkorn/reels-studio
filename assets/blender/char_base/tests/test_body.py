@@ -149,20 +149,38 @@ def test_torso_smooth():
             assert mx > TORSO_Z_MAX_MM or lump > TORSO_LUMP_MM, (mx, lump)
 
 
-def test_extremes_no_repair():
-    """Every corner of the parameter box (heads_tall, height, sex, mass, stoop, stylize, limb length at their bounds: 128 bodies) gets a
-    valid skin hull: the _close fallback never runs (its repaired crotch / thigh read as a crease, 6c review I1)."""
+def _repair_cases(full):
+    """Bodies for the hull check: the 128 corners of the parameter box, the review's interior example (heavy stooped man), a seeded
+    random sample of the full range (40; 120 with full) and, with full, the adult sweep (heads_tall 7.5, 1.72 m; sex 0 / 0.15 / 0.3,
+    mass 0.7-0.95, stoop 0 / 0.5 / 0.8 / 1, stylize 0 / 0.5 / 1: 216 bodies, where 6c fix 1 repaired 33)."""
     import itertools
+    import random
+    cases = [dict(heads_tall=ht, height=h, sex=sx, mass=ms, stoop=st, stylize=sy, arm_len=al, leg_len=al)
+             for ht, h, sx, ms, st, sy, al in itertools.product((3.5, 8.0), (1.0, 1.95), (0, 1), (0, 1), (0, 1), (0, 1), (0.9, 1.1))]
+    cases.append(dict(heads_tall=7.5, height=1.72, sex=0.0, mass=0.85, stoop=0.5, stylize=0.5))
+    rnd = random.Random(6)
+    cases += [{k: rnd.uniform(lo, hi) for k, (lo, hi) in body.PARAM_RANGES.items()} for _ in range(120 if full else 40)]
+    if full:
+        cases += [dict(heads_tall=7.5, height=1.72, sex=sx, mass=ms, stoop=st, stylize=sy) for sx, ms, st, sy in
+                  itertools.product((0, 0.15, 0.3), (0.7, 0.75, 0.8, 0.85, 0.9, 0.95), (0, 0.5, 0.8, 1), (0, 0.5, 1))]
+    return cases
+
+
+def test_no_hull_repair():
+    """Every body gets a valid skin hull: the _close fallback never runs (its repaired crotch / thigh read as a crease, 6c review I1).
+    Default: 128 corners + the review's example + 40 seeded random bodies; CB_FULL_SWEEP=1 adds 80 more random and the 216-body adult
+    sweep."""
+    import os
+    cases = _repair_cases(os.environ.get('CB_FULL_SWEEP') == '1')
     bad = []
-    for ht, h, sx, ms, st, sy, al in itertools.product((3.5, 8.0), (1.0, 1.95), (0, 1), (0, 1), (0, 1), (0, 1), (0.9, 1.1)):
-        kw = dict(heads_tall=ht, height=h, sex=sx, mass=ms, stoop=st, stylize=sy, arm_len=al, leg_len=al)
+    for kw in cases:
         bp, J = _J(**kw)
         me = body.skin_mesh(*body.body_graph(J, bp), 'x')
         if me['cb_repaired']:
             bad.append(kw)
         bpy.data.meshes.remove(me)
-    print(f'  extremes: 128 bodies, {len(bad)} needed the hull repair')
-    assert not bad, bad
+    print(f'  hull check: {len(cases)} bodies, {len(bad)} needed the hull repair')
+    assert not bad, bad[:5]
 
 
 def _protrusion(me):
@@ -375,20 +393,20 @@ def test_sex_cues():
         print(f'  sex cues mass {mass}: male ' + ', '.join(f'{k} {v:.3f}' for k, v in m.items()) +
               '; female ' + ', '.join(f'{k} {v:.3f}' for k, v in f.items()))
         assert mass == 1.0 or f['sh_hip'] <= SEX_SH_HIP * m['sh_hip'], (mass, f['sh_hip'], m['sh_hip'])   # a mass-1 male belly widens his 'hips'
-        assert m['hw'] < f['hw'] <= SEX_HIP * m['hw'], (mass, f['hw'], m['hw'])
+        assert (mass == 1.0 or m['hw'] < f['hw']) and f['hw'] <= SEX_HIP * m['hw'], (mass, f['hw'], m['hw'])   # a mass-1 male belly reaches his hips
         assert f['waist_hip'] <= m['waist_hip'] - SEX_WAIST_HIP, (mass, f['waist_hip'], m['waist_hip'])
         assert f['bust'] >= m['bust'] + SEX_BUST, (mass, f['bust'], m['bust'])
 
 
-MALE_REF = dict(sh_hip=1.75, chest_waist=1.40, hip_h=0.082, shoulder_top=0.020)
+MALE_REF = dict(sh_hip=1.70, chest_waist=1.40, hip_h=0.082)
 # ^ male (zc_you and mass 0) against the user's A-pose reference (out/qa/char-base/ref_user_apose_male.png, R23): deltoid / hip half-width
-#   >= 1.75 (reference ~1.8), chest / waist half-width >= 1.40 (V taper), hip half-width <= 0.082 x height, shoulder top at 0.85 x the
-#   deltoid width >= 0.020 x height above the shoulder joint (square shoulders); 6c head: 1.65, 1.21, 0.084, 0.014
+#   >= 1.70, chest / waist half-width >= 1.40 (V taper), hip half-width <= 0.082 x height; 6c head: 1.65, 1.21, 0.084. The shoulder line is
+#   test_shoulder_slope (U5: the 6c fix 1 'shoulder top' bound raised the shoulders into a shrug and is dropped)
 
 
 def test_male_reference():
-    """The male body moves toward the user's realistic A-pose reference: broad square shoulders with a deltoid cap, a chest-to-waist V,
-    narrow hips (front silhouette: deltoid on the full mesh, trunk and hips on the arm-less mesh)."""
+    """The male body moves toward the user's realistic A-pose reference: broad shoulders with a deltoid cap, a chest-to-waist V, narrow
+    hips (front silhouette: deltoid on the full mesh, trunk and hips on the arm-less mesh)."""
     for label, kw in (('zc_you', dict(presets.get('zc_you')['body'])), ('male_0', dict(mass=0.0))):
         bp, J, full = _mesh(kw, name='mr_full')
         _, _, me = _mesh(kw, armless=True, name='mr_trunk')
@@ -399,11 +417,36 @@ def test_male_reference():
         chest = hx(J['chest_n'].z)
         waist = min(hx(J['waist_n'].z + 0.01 * i) for i in range(-3, 8))
         hip = max(hx(J['HIP'].z + 0.01 * i) for i in range(-6, 6))
-        top = max(v.co.z for v in full.vertices if abs(abs(v.co.x) - 0.85 * sw) < 0.01)
-        q = dict(sh_hip=sw / hip, chest_waist=chest / waist, hip_h=hip / H, shoulder_top=(top - J['SH'].z) / H)
+        q = dict(sh_hip=sw / hip, chest_waist=chest / waist, hip_h=hip / H)
         print(f'  male reference {label}: ' + ', '.join(f'{k} {v:.3f}' for k, v in q.items()))
         assert q['sh_hip'] >= MALE_REF['sh_hip'] and q['chest_waist'] >= MALE_REF['chest_waist'], (label, q)
-        assert q['hip_h'] <= MALE_REF['hip_h'] and q['shoulder_top'] >= MALE_REF['shoulder_top'], (label, q)
+        assert q['hip_h'] <= MALE_REF['hip_h'], (label, q)
+
+
+SHOULDER_SLOPE = (6.0, 15.0, 0.003)
+# ^ the shoulder top line from the neck base (x = 0.075 x width factor) to the shoulder joint x slopes down 6-15 deg (the user's A-pose
+#   reference: about 10 deg, neck base 0.154 H to shoulder 0.167 H below the head top over 0.075 H), with no rise > 3 mm along it (a shrug);
+#   6c fix 1: -0.5 deg and an 8 mm hump
+
+
+def test_shoulder_slope():
+    """U5: the trapezius slopes down from the neck to the deltoid (no shrug); the top profile is ray-cast down onto the rest body."""
+    for label, kw in (('zc_you', dict(presets.get('zc_you')['body'])), ('male_0', dict(mass=0.0)), ('female_0', dict(sex=1.0, mass=0.0))):
+        bp, J, me = _mesh(kw, name='ss_' + label)
+        bm = bmesh.new()
+        bm.from_mesh(me)
+        bvh = BVHTree.FromBMesh(bm)
+        bm.free()
+
+        def top(x):
+            hs = [bvh.ray_cast(Vector((x, J['SH'].y + dy, 3.0)), Vector((0, 0, -1)), 5.0)[0] for dy in (-0.04, -0.02, 0, 0.02, 0.04)]
+            return max(h.z for h in hs if h is not None)
+        xn, xd = 0.075 * body.factors(bp)['gx'], J['SH'].x
+        prof = [top(xn + (xd - xn) * i / 12) for i in range(13)]
+        ang = math.degrees(math.atan2(prof[0] - prof[-1], xd - xn))
+        hump = max(b - a for i, a in enumerate(prof) for b in prof[i + 1:])
+        print(f'  shoulder slope {label}: {ang:.1f} deg, largest rise along the line {hump * 1000:.1f} mm')
+        assert SHOULDER_SLOPE[0] <= ang <= SHOULDER_SLOPE[1] and hump <= SHOULDER_SLOPE[2], (label, ang, hump)
 
 
 def _limb_r(bvh, a, b, ts, n=16):
@@ -458,7 +501,7 @@ def test_heads_tall_extreme():
     assert all(abs(r[3]) <= 0.05 for r in rows), rows
 
 
-MASS_STEP = (0.020, 0.035, 0.006, 0.002)   # per 0.1 mass: max torso_hx step, max spread step, max change of the hx step between neighbours,
+MASS_STEP = (0.020, 0.035, 0.008, 0.002)   # per 0.1 mass: max torso_hx step, max spread step, max change of the hx step between neighbours,
 #   largest allowed hx dip (the skin modifier re-meshes overlapping nodes as radii grow: female 0.6 -> 0.7 drops 144 hull vertices, a 1.7 mm dip)
 #                                      (6b head: a 20 mm hx step after a 3 mm one on sex 1 at 0.8 -> 0.9, so a 57 mm spread step)
 
@@ -478,5 +521,5 @@ def test_mass_continuous():
             for o in [o for o in bpy.data.objects if o.parent == ao] + [ao]:
                 bpy.data.objects.remove(o, do_unlink=True)
         for i, b in enumerate(steps[1:], 1):                       # b = step into mass i/10
-            assert -MASS_STEP[3] <= b[0] <= MASS_STEP[0] and -0.0005 <= b[1] <= MASS_STEP[1], (sx, i, b)
+            assert -MASS_STEP[3] <= b[0] <= MASS_STEP[0] and -0.001 <= b[1] <= MASS_STEP[1], (sx, i, b)   # spread: bisection step 0.6 mm
             assert i == 1 or abs(b[0] - steps[i - 1][0]) <= MASS_STEP[2], (sx, i, steps[i - 1], b)

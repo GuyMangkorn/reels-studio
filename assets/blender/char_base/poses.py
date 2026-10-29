@@ -28,7 +28,8 @@ def yaw_for(face):
 
 
 class Actor:
-    CLAV_FOLLOW = (45.0, 0.3, 20.0)     # clavicle lifts with the arm: start (deg arm elevation from hanging), gain, max deg; gain 0 = off
+    CLAV_FOLLOW = (45.0, 0.1, 8.0)      # clavicle lifts with the arm: start (deg arm elevation from hanging), gain, max deg; gain 0 = off
+    #                                     (0.3 / 20 before 6c fix 2: with the lowered deltoid cap a higher clavicle lift bunched the shoulder)
 
     def __init__(self, ao):
         if 'cb_hip_z' not in ao:

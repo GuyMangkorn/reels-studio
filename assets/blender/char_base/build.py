@@ -28,13 +28,11 @@ def _poses():
     return m
 
 
-def _torso_hx(J, bp):
-    """Widest trunk half-width between the waist and chest nodes: exact sections of body.armless_mesh (no weights, so it grows smoothly
-    with mass; the old cut by weight dominance jumped between neighbouring vertices)."""
-    me = body.armless_mesh(J, bp, '_cb_armless')
+def _torso_hx(me, J):
+    """Widest trunk half-width between the waist and chest nodes: exact sections of the arm-less body (body.armless_mesh; no weights, so
+    it grows smoothly with mass; the old cut by weight dominance jumped between neighbouring vertices)."""
     P = [v.co for v in me.vertices]
     segs = [(P[e.vertices[0]], P[e.vertices[1]]) for e in me.edges]
-    bpy.data.meshes.remove(me)
     z0, z1 = J['waist_n'].z, J['chest_n'].z
     return max(abs(a.x + (b.x - a.x) * (z - a.z) / (b.z - a.z)) for z in (z0 + (z1 - z0) * i / 40 for i in range(41))
                for a, b in segs if (a.z - z) * (b.z - z) < 0)
@@ -58,15 +56,14 @@ def _arm_r(bod, ao):
 RELAX_FIT = (0.002, 0.30, 9)      # relaxed-arm spread calibration: clearance kept (m), search ceiling (m), bisection steps
 
 
-def _relax_spread(ao, bod):
+def _relax_spread(ao, bod, gauge):
     """Least extra palm spread (m) at which the relaxed arms (poses.Actor default) clear the rest trunk by RELAX_FIT[0] below the armpit
-    zone: arm vertices (upper_arm + forearm weight >= 0.8) against body.TorsoGauge. 0 when the hanging arm already clears (R19, R24)."""
+    zone: arm vertices (upper_arm + forearm weight >= 0.8) against `gauge` (body.TorsoGauge of the rest body). 0 when the hanging arm already clears (R19, R24)."""
     poses = _poses()
     gi = {g.index: g.name for g in bod.vertex_groups}
     arm = [v.index for v in bod.data.vertices
            if sum(g.weight for g in v.groups if gi[g.group].startswith(('upper_arm', 'forearm'))) >= 0.8]
     low = ao['cb_shoulder_z'] - poses.ARMPIT_ZONE * ao['cb_shoulder_z'] / poses.REF_SH_Z
-    gauge = body.TorsoGauge(bod, 0.01)
     A = poses.Actor(ao)
     A.keying = False
 
@@ -125,9 +122,11 @@ def build(preset, name, variant=None, collection=None):
     ao['cb_shoulder_z'], ao['cb_hip_z'], ao['cb_ankle_z'] = J['SH'].z, J['pelvis'].z, J['ANK'].z
     ao['cb_palm_off'] = (J['PALM'] - J['WR']).length
     ao['cb_head_c'] = tuple(J['head_c'])
-    ao['cb_torso_hx'] = _torso_hx(J, bp)
+    armless = body.armless_mesh(J, bp, name + '_armless')
+    ao['cb_torso_hx'] = _torso_hx(armless, J)
     ao['cb_arm_r'] = _arm_r(bod, ao)
-    ao['cb_relax_spread'] = _relax_spread(ao, bod)
+    ao['cb_relax_spread'] = _relax_spread(ao, bod, body.TorsoGauge(bod, 0.01))
+    bpy.data.meshes.remove(armless)
     if collection is not None:
         for o in [ao] + objs:
             for c in list(o.users_collection):

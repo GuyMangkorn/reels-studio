@@ -468,7 +468,7 @@ def tee(ctx, color='tee', fold=0.0, sleeve='short'):
     zn, zh = _top(ctx, 'tee', color, fold, sleeve)
 
     def trims():
-        _rim(ctx, 'collar', zn.z, 0.0072, color, 'neck', 0.003, _neck(ctx), _neck_r(ctx))
+        _rim(ctx, 'collar', zn.z, 0.0072, color, 'neck', 0.004, _neck(ctx), _neck_r(ctx))   # pad 4 mm (was 3): the stooped collar sank 0.1 mm past its bound (6c fix 2)
         _rim(ctx, 'shirt_hem', zh.z, 0.0065, color, 'spine', 0.002, _spine(ctx))
     ctx.trims.insert(0, trims)       # collar + hem first, sleeve hems after (the zc-you object order)
 
@@ -482,7 +482,7 @@ def shirt(ctx, color='shirt', fold=0.0, sleeve='long', buttons=5):
 
     def trims():
         _rim(ctx, 'collar', zn.z, 0.0105, color, 'neck', 0.006, _neck(ctx), _neck_r(ctx))
-        _rim(ctx, 'collar_fold', zn.z + 0.004 * F['gw'], 0.0070, color, 'neck', 0.010, _neck(ctx), _neck_r(ctx))
+        _rim(ctx, 'collar_fold', zn.z + 0.004 * F['gw'], 0.0070, color, 'neck', 0.007, _neck(ctx), _neck_r(ctx))   # pad = tube: rests on the neck (6c fix 2)
         _rim(ctx, 'shirt_hem', zh.z, 0.0070, color, 'pelvis', 0.002, _spine(ctx))
         z0, z1 = zn.z - 0.035 * F['gw'], zh.z + 0.030 * F['gw']
         for i in range(buttons):
