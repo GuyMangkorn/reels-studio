@@ -1,0 +1,8 @@
+Sounds in this folder are local copies of the shared sound library (/Users/mangkornkatawong/Documents/ChatGPT/sound-library),
+copied by scripts/oldest-shipwreck/short/copy-sounds.sh for SHIPWRECK-SHORT. File name = library ID; prompt, seed and
+settings are in the library sidecar <id>.json.
+Generator: audio-studio-mcp (MIT) / Stable Audio 3 medium, generated locally.
+License: Stability AI Community License (https://huggingface.co/stabilityai/stable-audio-3-optimized). As checked on
+2026-10-28, commercial use is allowed for individuals and organizations with less than US$1M total annual revenue;
+commercial-use eligibility is the user's decision (see the library NOTICE.md).
+No file here has been listened to by a person (picked by measurement).

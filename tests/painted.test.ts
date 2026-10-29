@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import {timelineFrames, validateTimeline} from '../src/scenes/timeline';
 import {paintedSpans, paintedStateAt} from '../src/scenes/painted';
 import {cameraAt, paintedShotIds, paintedShots} from '../src/painted/registry';
+import {SH03B} from '../src/painted/shots/shipwreck';
 import {paintedProofTimeline} from '../src/painted/spike/timelineProof';
 import type {Scene, Timeline} from '../src/scenes/types';
 
@@ -72,5 +73,5 @@ test('non-painted scenes paint nothing; shot cameras are finite and respect cloc
     assert.ok(paintedShots[id].serves.length > 0, `${id} names the shots it serves`);
   }
   // SH03b freezes on the doubt line: the camera (and so every glow layer) holds too.
-  assert.deepEqual(cameraAt('SHIPWRECK-SH03b', 2.2), cameraAt('SHIPWRECK-SH03b', 1.5));
+  assert.deepEqual(cameraAt('SHIPWRECK-SH03b', SH03B.freezeAt + 0.7), cameraAt('SHIPWRECK-SH03b', SH03B.freezeAt));
 });
