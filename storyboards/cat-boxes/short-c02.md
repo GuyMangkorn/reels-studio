@@ -51,7 +51,7 @@ Use cream/blue study overlays with amber qualification over the room scene. Shel
 
 ## Current implementation and CLI evidence
 
-CATBOX-C02-Short is registered in Root from short-c02.json. Final CLI QA refresh: 2026-10-26T17:39:08.836Z at 1080×1920 / 30 fps, 1,350 frames. The [Short runtime section](index.md#boss-short-runtime-and-qa-evidence) and [final QA manifest](../../out/qa/cat-boxes/shorts-r1/manifest.json) link the [A-fade preview](../../out/qa/cat-boxes/shorts-r1/C02/CATBOX-C02-Short_A_fade-preview.mp4), [C02 one-second/final sheet](../../out/qa/cat-boxes/shorts-r1/contact-sheets/C02-one-second-01.svg) and [C02 critical-boundary sheet](../../out/qa/cat-boxes/shorts-r1/contact-sheets/C02-critical-01.svg). This is CLI output evidence, not factual-image approval.
+CATBOX-C02-Short is registered in Root from short-c02.json. Final CLI QA refresh: 2026-10-26T17:39:08.836Z at 1080×1920 / 30 fps, 1,350 frames. The [Short runtime section](index.md#boss-short-runtime-and-qa-evidence--r5-review-fixes) and [final QA manifest](../../out/qa/cat-boxes/shorts-r1/manifest.json) link the [A-fade preview](../../out/qa/cat-boxes/shorts-r1/C02/CATBOX-C02-Short_A_fade-preview.mp4), [C02 one-second/final sheet](../../out/qa/cat-boxes/shorts-r1/contact-sheets/C02-one-second-01.svg) and [C02 critical-boundary sheet](../../out/qa/cat-boxes/shorts-r1/contact-sheets/C02-critical-01.svg). This is CLI output evidence, not factual-image approval.
 
 Studio playback/seek remains unverified. Narration/subtitle sync remains unverified because no Short-specific audio exists. Runtime factual-image review by Boat remains unverified; FC-VIS-R1 is planning-only. Short script approval is pending. Long framing and QA are deferred; Long source boards and timeline remain unchanged.
 
