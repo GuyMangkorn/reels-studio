@@ -36,7 +36,7 @@ Record the chosen values in `delivery.md` as a compact block. A profile that nee
 | Option | Meaning | Runtime status (checkout `733808f`) |
 | --- | --- | --- |
 | Blender 3D | Rendered 3D shots and assets ([Blender workflow](blender-mcp-workflow.md)) | `existing-integrated` |
-| Painted 2D (p5.brush) | Hand-painted watercolour and boiling ink, drawn per frame in `src/painted/BrushCanvas.tsx` | `exists-unintegrated`: a 5 s spike on its own entry point (`src/painted/spike/`), not wired into the scene renderer or episode registry |
+| Painted 2D (p5.brush) | Hand-painted watercolour and boiling ink, drawn per frame in `src/painted/BrushCanvas.tsx`; method in the [painted-2d skill](../.claude/skills/painted-2d/SKILL.md) | `exists-unintegrated`: a 5 s spike on its own entry point (`src/painted/spike/`), not wired into the scene renderer or episode registry |
 | Remotion rig 2D | The existing vector character rig and scene library (`src/rig/`, `src/scenes/`) | `existing-integrated` |
 | Let Film choose | Film picks per scene or element and records the reasons in the brief | — |
 

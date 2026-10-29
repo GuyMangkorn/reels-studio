@@ -81,6 +81,7 @@ Every agent reads AGENTS.md plus its **core** documents. It reads any other docu
 | [production-requirements](docs/production-requirements.md) | Any production deliverable or its review: formats, duration, Thai text/audio, subtitles, endings, licenses | on trigger |
 | [scale-and-perspective-principles](docs/scale-and-perspective-principles.md) | Physical dimensions, projection, depth staging, resizing, apparent size | on trigger |
 | [blender-mcp-workflow](docs/blender-mcp-workflow.md) | Any Blender asset or shot; Eevee 64 is the default [render engine](docs/blender-mcp-workflow.md#render-engine-default) | on trigger |
+| [painted-2d skill](.claude/skills/painted-2d/SKILL.md) | Any painted 2D (p5.brush) shot, asset or review: the BrushCanvas contract, seeding, art direction, review loop. The coordinator may load it as the `painted-2d` skill; role agents read the file | on trigger (F, S, E) |
 | [dev-findings](docs/dev-findings.md) | Choosing or revising medium, camera, light or technique; recording a blocker. Read the index, then only the matching entry files (Boss records; Film and Mark revalidate) | on trigger |
 | [planned-visual-components](docs/planned-visual-components.md) | RuleCard, PhoneChat or POV work; examples are designs until runtime integration is verified | on trigger |
 | [contributing](docs/contributing.md) | Issues, branches, checks, commits, pushes and PRs; scripting a repeated procedure or proposing a document change ([TL/DP](docs/contributing.md#tools-and-document-improvements)) | when delivering |
