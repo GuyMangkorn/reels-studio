@@ -5,8 +5,8 @@ import {existsSync, readdirSync, readFileSync, realpathSync} from 'node:fs';
 const roles = readdirSync('.claude/agents').filter(file => file.endsWith('.md')).map(file => file.replace(/\.md$/, ''));
 
 const readClaude = (role: string) => {
-  const match = readFileSync(`.claude/agents/${role}.md`, 'utf8').match(/^---\nname: (.+)\ndescription: "(.+)"\ntools: .+\n(?:model: (?:sonnet|opus|haiku)\n)?---\n\n([\s\S]+)$/);
-  assert.ok(match, `${role}.md has name/description/tools(/model) front matter`);
+  const match = readFileSync(`.claude/agents/${role}.md`, 'utf8').match(/^---\nname: (.+)\ndescription: "(.+)"\ntools: .+\n(?:model: (?:sonnet|opus|haiku|claude-[a-z]+-[\d-]+)\n)?(?:effort: (?:low|medium|high|xhigh|max)\n)?---\n\n([\s\S]+)$/);
+  assert.ok(match, `${role}.md has name/description/tools(/model/effort) front matter`);
   return {name: match[1], description: match[2], instructions: match[3].trim()};
 };
 const readCodex = (role: string) => {
