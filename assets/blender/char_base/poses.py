@@ -15,6 +15,7 @@ for _p in (_HERE, os.path.join(_HERE, '..', 'char_head')):
 import char_head as ch
 from body import FDIR
 
+ARM_SPREAD = (0.02, 2.5)      # relaxed arms: margin (m x ARM_K) and gain of the extra palm spread when torso + arm overlap the shoulder width
 REF_HIP_Z, REF_SH_Z = 0.93, 1.385      # zc-you anchors: the reference the zc-sized staging numbers (feet, relaxed hands) were authored for
 
 FACES = ch.FACE_PRESETS      # shared with every char_head consumer
@@ -122,6 +123,16 @@ class Actor:
         self.P[f'clavicle.{s}'].rotation_euler = Euler(e, 'XYZ')
         bpy.context.view_layer.update()
 
+    def relaxed_spread(self):
+        """Extra sideways palm offset (m) for relaxed arms: where the torso half-width plus the upper-arm radius reaches past the
+        shoulder joint (heavy / stylized bodies; joints stay mass-independent, R17), the arms hang out of the torso. zc-you: 0."""
+        ao = self.ao
+        if 'cb_torso_hx' not in ao:
+            return 0.0
+        m, g = ARM_SPREAD
+        over = ao['cb_torso_hx'] + ao['cb_arm_r'] - ao.data.bones['upper_arm.L'].head_local.x + m * self.ARM_K
+        return g * max(0.0, over)
+
     def a(self, p):
         """world -> armature space"""
         return self.mw.inverted() @ Vector(p)
@@ -174,10 +185,11 @@ class Actor:
                 self._clav_follow(s, self.a(spec['palm']), clav)
             rest_dir = Vector((FDIR.x * sg, FDIR.y, FDIR.z)).normalized()
             sh = P[f'upper_arm.{s}'].head.copy()
-            if spec is None:         # relaxed: hanging beside the thigh with a slight forward swing
+            if spec is None:         # relaxed: hanging beside the thigh with a slight forward swing, spread out of a wide torso
                 k = self.ARM_K
-                spec = dict(palm=self.mw @ (sh + Vector((0.06 * sg, -0.04, -0.60)) * k), dir=Rw @ Vector((0.10 * sg, -0.10, -1.0)),
-                            normal=Rw @ Vector((-sg, 0, 0)))
+                ex = self.relaxed_spread()
+                spec = dict(palm=self.mw @ (sh + Vector((0.06 * sg, -0.04, -0.60)) * k + Vector((ex * sg, 0, 0))),
+                            dir=Rw @ Vector((0.10 * sg + ex * sg / 0.6, -0.10, -1.0)), normal=Rw @ Vector((-sg, 0, 0)))
             d_a = (Rw.inverted() @ Vector(spec['dir'])).normalized() if spec.get('dir') is not None else rest_dir
             n_a = Rw.inverted() @ Vector(spec['normal']) if spec.get('normal') is not None else Vector((-sg, 0, 0))
             R = _frame_rot(rest_dir, Vector((-sg, 0, 0)), d_a, n_a)

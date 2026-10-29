@@ -12,7 +12,7 @@ import re
 
 import bmesh
 import bpy
-from mathutils import Euler, Matrix, Vector, noise
+from mathutils import Euler, Matrix, Quaternion, Vector, noise
 from mathutils.bvhtree import BVHTree
 
 import body as B
@@ -25,6 +25,45 @@ class Ctx:
         self.planes, self.bands, self.trims, self.hooks = [], [], [], []
         self.fold, self.drape = {}, None
         self.body = self.ao = self.bv = self.bdom = None
+        self.levels = []              # (kind, _Z) garment edges settled against the body mesh before cutting (_settle)
+
+
+class _Z:
+    """A garment edge that apply() may move once the body mesh exists (neckline above a heavy yoke, hem above the crotch). Its plane
+    passes through the point at height z on `line` (default: horizontal at z) with normal along that line (a neckline follows a
+    stooped neck)."""
+    def __init__(self, z, line=None):
+        self.z, self.line = z, line
+
+    def plane(self):
+        if self.line is None:
+            return Vector((0, 0, self.z)), Vector((0, 0, 1))
+        return _on_line(*self.line, self.z), (self.line[1] - self.line[0]).normalized()
+
+    def below(self, c):
+        p, n = self.plane()
+        return (c - p).dot(n) <= 0
+
+
+def _settle(ctx, me):
+    """Neckline: up (at most 80% of the neck) until the neck stands clear of the shoulders at its sides, so the collar wraps a neck.
+    Hem: at least 3 cm above the crotch, so a long shirt never spans the gap between the legs."""
+    J, F = ctx.J, ctx.F
+    bvh = BVHTree.FromPolygons([v.co for v in me.vertices], [tuple(pg.vertices) for pg in me.polygons])
+    for kind, lv in ctx.levels:
+        if kind == 'hem':
+            h = bvh.ray_cast(J['pelvis'], Vector((0, 0, -1)), 2.0)    # down from the pelvis: the first surface is the crotch (heavy thighs fuse below it)
+            if h[0] is not None:
+                lv.z = max(lv.z, h[0].z + 0.03)
+        elif kind == 'neck':
+            top, cap = J['neck'].z + 0.8 * (J['head_base'].z - J['neck'].z), _neck_r(ctx)
+
+            def clear(z):
+                c = _on_line(J['neck'], J['head_base'], z)
+                hs = [bvh.ray_cast(c, Vector((sx, 0, 0)), 1.0) for sx in (1, -1)]
+                return all(h[0] is not None and h[3] <= cap for h in hs)     # sideways rays leave through the neck, not along a shoulder
+            while lv.z < top and not clear(lv.z):
+                lv.z += 0.003 * F['gw']
 
 
 def plan(outfit, name, J, F):
@@ -89,7 +128,8 @@ def apply(body_obj, ao, outfit, M, J, F, table):
     ctx = plan(outfit, body_obj.name[:-len('_body')], J, F)
     ctx.M, ctx.body, ctx.ao = M, body_obj, ao
     me = body_obj.data
-    B.bisect(me, [(co, no) for _, co, no in sorted(ctx.planes, key=lambda t: t[0])])
+    _settle(ctx, me)
+    B.bisect(me, [tuple(co.plane()) if isinstance(co, _Z) else (co, no) for _, co, no in sorted(ctx.planes, key=lambda t: t[0])])
     w = B.weights([v.co for v in me.vertices], table, F['gw'])
     w = B.smooth_weights(me, w)
     slots = ['skin']
@@ -146,6 +186,7 @@ def _folds(ctx, slots):
             fold = noise.noise(Vector((p.x * 16, p.y * 16, p.z * 6))) * 0.6 + 0.4 * math.sin(p.z * 70 + p.x * 9)
             if ctx.drape:
                 lo, hi, zm, wd = ctx.drape
+                lo = lo.z if isinstance(lo, _Z) else lo
                 if p.z > lo and p.z < hi:
                     fold += 0.9 * math.sin(p.z * 95 + 2.0 * p.x) * math.exp(-((p.z - zm) / wd) ** 2)   # waist drape
             v.co = p + n * fold * a
@@ -233,7 +274,8 @@ def _section(ctx, c, u, v, n=36, win=math.radians(20), rmax=None, outer=False):
         hits.append((a, _outer_exit(ctx.bvh_torso, c, d) if outer else (lambda h: h[3] if h[0] is not None else None)(ctx.bvh.ray_cast(c, d, 1.0))))
 
     def mean_at(a0):
-        r = [d for a, d in hits if d is not None and abs((a - a0 + math.pi) % (2 * math.pi) - math.pi) <= win and (rmax is None or d <= rmax)]
+        w = 0.0 if outer else win      # torso rings: the axis ray only, so the ring meets a heavy body's back cleft instead of bridging it
+        r = [d for a, d in hits if d is not None and abs((a - a0 + math.pi) % (2 * math.pi) - math.pi) <= w + 1e-9 and (rmax is None or d <= rmax)]
         if not r and rmax is not None:
             return rmax
         if not r and outer:              # a hem below the crotch: front / back rays pass between the legs; use the outline's extent
@@ -269,9 +311,17 @@ def _on_line(a, b, z):
 
 def _rim(ctx, label, z, r, mat, bone, pad, axis, rmax=None):
     """Horizontal hem ring at height z hugging the section around the bone line axis=(a, b) (the spine: the whole torso / hip section)."""
-    c, rx, ry = _section(ctx, _on_line(*axis, z), Vector((1, 0, 0)), Vector((0, 1, 0)), rmax=rmax, outer=axis == _spine(ctx))
+    c0 = _on_line(*axis, z)
+    q = Quaternion()
+    if axis == _neck(ctx):          # collar: a ring across the neck's own axis (a stooped neck leans), in the neckline plane
+        q = Vector((0, 0, 1)).rotation_difference((axis[1] - axis[0]).normalized())
+        u, v, c = q @ Vector((1, 0, 0)), q @ Vector((0, 1, 0)), c0
+        for _ in range(2):              # second pass from the first pass's centre: the neck mesh is not centred on the bone line
+            c, rx, ry = _section(ctx, c, u, v, rmax=rmax)
+    else:
+        c, rx, ry = _section(ctx, c0, Vector((1, 0, 0)), Vector((0, 1, 0)), rmax=rmax, outer=axis == _spine(ctx))
     g = ctx.F['gw']
-    ob = torus(f'{ctx.name}_{label}', c, 1.0, r * g, ctx.M[mat], scale=(rx + pad * g, ry + pad * g, 1.0))
+    ob = torus(f'{ctx.name}_{label}', c, 1.0, r * g, ctx.M[mat], scale=(rx + pad * g, ry + pad * g, 1.0), rot=tuple(q.to_euler()))
     B.rigid(ob, ctx.ao, bone)
 
 
@@ -284,7 +334,7 @@ def _neck(ctx):
 
 
 def _neck_r(ctx):
-    return 0.062 * ctx.F['rt']          # the yoke's cage radius (body.body_graph neck0): the neck surface lies inside it
+    return 1.1 * 0.062 * ctx.F['rt']    # 1.1 x the yoke's cage radius (body.body_graph neck0): the neck and its base flare lie inside it
 
 
 def _leg(ctx, s, lower=False):
@@ -391,18 +441,19 @@ def _sleeves(ctx, color, sleeve):
 def _top(ctx, piece, color, fold, sleeve, hem=0.010, neck=0.3):
     """Shared body of tee / shirt: neckline, hem, sleeves. hem = metres (x gw) of hem below the pelvis joint; neck = fraction of neck->head_base."""
     J, F = ctx.J, ctx.F
-    zn = J['neck'].z + (J['head_base'].z - J['neck'].z) * neck
-    zh = J['pelvis'].z - hem * F['gw']
-    ctx.planes += [(0, (0, 0, zn), (0, 0, 1)), (1, (0, 0, zh), (0, 0, 1))]
+    zn = _Z(J['neck'].z + (J['head_base'].z - J['neck'].z) * neck, (J['neck'], J['head_base']))
+    zh = _Z(J['pelvis'].z - hem * F['gw'])
+    ctx.levels += [('neck', zn), ('hem', zh)]
+    ctx.planes += [(0, zn, (0, 0, 1)), (1, zh, (0, 0, 1))]
     arm = _sleeves(ctx, color, sleeve)
 
     def band(dom, c):
         if dom in TORSO:
-            return color if zh <= c.z <= zn else None
+            return color if zh.z <= c.z and zn.below(c) else None
         if dom == 'neck':
-            return None if c.z > zn else color
+            return color if zn.below(c) else None
         if dom == 'thigh':
-            return color if c.z >= zh else None
+            return color if c.z >= zh.z else None
         return arm(dom, c)
     ctx.bands.append(band)
     if fold:
@@ -417,8 +468,8 @@ def tee(ctx, color='tee', fold=0.0, sleeve='short'):
     zn, zh = _top(ctx, 'tee', color, fold, sleeve)
 
     def trims():
-        _rim(ctx, 'collar', zn, 0.0072, color, 'neck', 0.003, _neck(ctx), _neck_r(ctx))
-        _rim(ctx, 'shirt_hem', zh, 0.0065, color, 'spine', 0.002, _spine(ctx))
+        _rim(ctx, 'collar', zn.z, 0.0072, color, 'neck', 0.003, _neck(ctx), _neck_r(ctx))
+        _rim(ctx, 'shirt_hem', zh.z, 0.0065, color, 'spine', 0.002, _spine(ctx))
     ctx.trims.insert(0, trims)       # collar + hem first, sleeve hems after (the zc-you object order)
 
 
@@ -430,10 +481,10 @@ def shirt(ctx, color='shirt', fold=0.0, sleeve='long', buttons=5):
     J, F = ctx.J, ctx.F
 
     def trims():
-        _rim(ctx, 'collar', zn, 0.0105, color, 'neck', 0.006, _neck(ctx), _neck_r(ctx))
-        _rim(ctx, 'collar_fold', zn + 0.004 * F['gw'], 0.0070, color, 'neck', 0.010, _neck(ctx), _neck_r(ctx))
-        _rim(ctx, 'shirt_hem', zh, 0.0070, color, 'pelvis', 0.002, _spine(ctx))
-        z0, z1 = zn - 0.035 * F['gw'], zh + 0.030 * F['gw']
+        _rim(ctx, 'collar', zn.z, 0.0105, color, 'neck', 0.006, _neck(ctx), _neck_r(ctx))
+        _rim(ctx, 'collar_fold', zn.z + 0.004 * F['gw'], 0.0070, color, 'neck', 0.010, _neck(ctx), _neck_r(ctx))
+        _rim(ctx, 'shirt_hem', zh.z, 0.0070, color, 'pelvis', 0.002, _spine(ctx))
+        z0, z1 = zn.z - 0.035 * F['gw'], zh.z + 0.030 * F['gw']
         for i in range(buttons):
             z = z0 + (z1 - z0) * i / max(buttons - 1, 1)
             y = _front_y(ctx, z) + 0.0006

@@ -13,6 +13,26 @@ import outfits
 import presets
 
 
+def _arm_clearance(bod, ao, J):
+    """(torso half-width between hip and shoulder, upper-arm surface radius) of the rest body: Actor spreads relaxed arms by them."""
+    gi = {g.index: g.name for g in bod.vertex_groups if g.name in ao.data.bones}
+    hx, ar = 0.0, []
+    b = ao.data.bones['upper_arm.L']
+    h, t = b.head_local, b.tail_local
+    for v in bod.data.vertices:
+        gs = [g for g in v.groups if g.group in gi]
+        if not gs:
+            continue
+        d = gi[max(gs, key=lambda g: g.weight).group]
+        if d in ('pelvis', 'spine', 'chest') and J['HIP'].z <= v.co.z <= J['SH'].z:
+            hx = max(hx, abs(v.co.x))
+        elif d == 'upper_arm.L':
+            k = max(0.0, min(1.0, (v.co - h).dot(t - h) / (t - h).length_squared))
+            ar.append((v.co - (h + (t - h) * k)).length)
+    ar.sort()
+    return hx, ar[len(ar) // 2]
+
+
 def build(preset, name, variant=None, collection=None):
     """Create character `name` from `preset` (+ variant); returns the armature object."""
     P = presets.resolve(preset, variant)
@@ -47,6 +67,7 @@ def build(preset, name, variant=None, collection=None):
     ao['cb_shoulder_z'], ao['cb_hip_z'], ao['cb_ankle_z'] = J['SH'].z, J['pelvis'].z, J['ANK'].z
     ao['cb_palm_off'] = (J['PALM'] - J['WR']).length
     ao['cb_head_c'] = tuple(J['head_c'])
+    ao['cb_torso_hx'], ao['cb_arm_r'] = _arm_clearance(bod, ao, J)
     if collection is not None:
         for o in [ao] + objs:
             for c in list(o.users_collection):

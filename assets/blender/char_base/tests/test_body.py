@@ -3,7 +3,7 @@ import math
 
 import bmesh
 import bpy
-from mathutils import Euler, Matrix, Vector
+from mathutils import Euler, Vector
 from mathutils.bvhtree import BVHTree
 
 import body
@@ -229,7 +229,8 @@ def test_mitten_hand():
     assert (p1 - p0).length > 0.008, (p1 - p0).length
 
 
-ARMPIT_CASES = SURFACE_CASES + (('heavy_male', dict(mass=1.0)),)
+ARMPIT_CASES = SURFACE_CASES + (('heavy_male', dict(mass=1.0)), ('mass_0', dict(mass=0.0)), ('mass_0.6', dict(mass=0.6)))
+ARM_SOFT_CONTACT = 0.005           # relaxed arm may press this far into the torso (soft contact)
 SHOULDER_BUMP, MITTEN_BUMP = 0.10, 0.18   # umbrella growth at arm-up / grip 0.7 (fixed result <= 0.04 / 0.09; c14c2cd: 0.24-0.28 / 0.37-0.45)
 
 
@@ -246,17 +247,29 @@ def _bare(name, kw):
         del presets.PRESETS['_bare']
 
 
-def _arm_to(ao, deg):
-    """Both upper arms to deg from vertical in the frontal plane (rest A-pose = 20), IK muted."""
-    for s, sg in (('L', 1), ('R', -1)):
-        ao.pose.bones[f'forearm.{s}'].constraints['IK'].mute = True
-        ao.pose.bones[f'hand.{s}'].constraints['Copy Rotation'].mute = True
-        pb = ao.pose.bones[f'upper_arm.{s}']
-        pb.rotation_euler = (0, 0, 0)
-        bpy.context.view_layer.update()
-        h = pb.bone.head_local
-        pb.matrix = Matrix.Translation(h) @ Matrix.Rotation(math.radians(deg - 20) * -sg, 4, 'Y') @ Matrix.Translation(-h) @ pb.matrix
-    bpy.context.view_layer.update()
+def _torso_volume(kw):
+    """Closed torso volume (pelvis-waist-chest-neck skin of the same body graph, floor-aligned like build.build) as a BVH."""
+    kw = dict(kw)
+    bp, J = _J(**kw)
+    V, E = body.body_graph(J, bp)
+    full = body.skin_mesh(V, E, 'tv_full')
+    zmin = min(v.co.z for v in full.vertices)
+    keep = [i for i, (n, _, _) in enumerate(V) if n in ('pelvis', 'waist', 'chest', 'neck0', 'neckm', 'neck1')]
+    idx = {o: k for k, o in enumerate(keep)}
+    me = body.skin_mesh([V[i] for i in keep], [(idx[a], idx[b]) for a, b in E if a in idx and b in idx], 'tv')
+    return BVHTree.FromPolygons([v.co - Vector((0, 0, zmin)) for v in me.vertices], [tuple(f.vertices) for f in me.polygons])
+
+
+def _depth_inside(bvh, p):
+    """Depth of p inside the closed volume (0 outside): ray parity along +X, distance to the nearest surface."""
+    n, o = 0, p.copy()
+    for _ in range(64):
+        h = bvh.ray_cast(o, Vector((1, 0, 0)), 5.0)
+        if h[0] is None:
+            break
+        n += 1
+        o = h[0] + Vector((1e-5, 0, 0))
+    return bvh.find_nearest(p)[3] if n % 2 else 0.0
 
 
 def _umbrella(P, nb):
@@ -269,9 +282,9 @@ def _umbrella(P, nb):
 
 
 def test_armpit_deforms():
-    """Arm down at the side: no upper-arm vertex (upper_arm weight >= 0.8) > 1 mm inside the torso surface (heavy bodies are skipped:
-    with mass-independent shoulders (R17) a fat arm meets the torso when lowered). Arm raised to shoulder height through the Actor
-    (IK + clavicle follow), grip curl 0.7: the bump metric (umbrella growth over rest) stays low on the shoulder and the mitten."""
+    """Relaxed arms (Actor default pose, every mass): no arm vertex (upper_arm + forearm weight >= 0.8) more than 5 mm inside the torso
+    surface (soft contact allowed; heavy bodies spread their arms, poses.Actor.relaxed_spread). Arm raised to shoulder height through
+    the Actor (IK + clavicle follow), grip curl 0.7: the bump metric (umbrella growth over rest) stays low on the shoulder and the mitten."""
     from char_base import poses
     for label, kw in ARMPIT_CASES:
         ao = _bare('a_' + label, kw)
@@ -279,25 +292,14 @@ def test_armpit_deforms():
         me = ob.data
         gi = {g.index: g.name for g in ob.vertex_groups}
         dom = [gi[max((g for g in v.groups if gi[g.group] in ao.data.bones), key=lambda g: g.weight).group] for v in me.vertices]   # bones only (not cb_csmooth)
-        arm_w = [sum(g.weight for g in v.groups if gi[g.group].startswith('upper_arm')) for v in me.vertices]
+        arm_w = [sum(g.weight for g in v.groups if gi[g.group].startswith(('upper_arm', 'forearm'))) for v in me.vertices]   # the whole arm
         posed = lambda: [v.co.copy() for v in ob.evaluated_get(bpy.context.evaluated_depsgraph_get()).data.vertices]
-        inside = None
-        if kw.get('mass', presets.get('zc_you')['body']['mass']) <= body.REF_MASS:
-            _arm_to(ao, 0)
-            P = posed()
-            tf = [tuple(f.vertices) for f in me.polygons if all(dom[i] in ('pelvis', 'spine', 'chest') for i in f.vertices)]
-            bvh = BVHTree.FromPolygons(P, tf)
-            inside = 0
-            for i, w in enumerate(arm_w):
-                if w >= 0.8:
-                    loc, nrm, _, _ = bvh.find_nearest(P[i], 0.2)
-                    inside += loc is not None and (P[i] - loc).dot(nrm) < -0.001
-            _arm_to(ao, 20)
-            for s in 'LR':
-                ao.pose.bones[f'forearm.{s}'].constraints['IK'].mute = False
-                ao.pose.bones[f'hand.{s}'].constraints['Copy Rotation'].mute = False
-                ao.pose.bones[f'upper_arm.{s}'].matrix_basis = Matrix.Identity(4)
-            bpy.context.view_layer.update()
+        A = poses.Actor(ao)
+        A.keying = False
+        A.pose(1, root=(0, 0, 0), key=False)               # relaxed arms (the default pose)
+        P = posed()
+        tvol = _torso_volume(kw)
+        inside = sum(1 for i, w in enumerate(arm_w) if w >= 0.8 and _depth_inside(tvol, P[i]) > ARM_SOFT_CONTACT)
         nb = [[] for _ in me.vertices]
         for e in me.edges:
             nb[e.vertices[0]].append(e.vertices[1])
@@ -307,12 +309,10 @@ def test_armpit_deforms():
         sh = B['upper_arm.L'].head_local
         shoulder = [i for i, p in enumerate(R) if (p - sh).length < 0.11 * ao['cb_shoulder_z'] / 1.385 and p.x > 0]
         mitt = [i for i, d in enumerate(dom) if d.split('.')[0] in ('hand', 'fingers', 'fingers_tip', 'thumb') and d.endswith('.L')]
-        A = poses.Actor(ao)
-        A.keying = False
         L = B['upper_arm.L'].length + B['forearm.L'].length + ao['cb_palm_off']
         A.pose(1, root=(0, 0, 0), key=False, hand_l=dict(palm=tuple(sh + Vector((0.97 * L, -0.02, 0))), dir=(1, 0, 0), normal=(0, 0, -1), curl=0.7, thumb=0.6))
         k0, k1 = _umbrella(R, nb), _umbrella(posed(), nb)
         bs, bm_ = max(k1[i] - k0[i] for i in shoulder), max(k1[i] - k0[i] for i in mitt)
-        print(f'  armpit {label}: arm-down upper-arm verts inside torso {inside}; arm-up shoulder bump {bs:.3f}, grip 0.7 mitten bump {bm_:.3f}')
-        assert inside in (None, 0), (label, inside)
+        print(f'  armpit {label}: relaxed arms, arm verts > 5 mm inside torso {inside}; arm-up shoulder bump {bs:.3f}, grip 0.7 mitten bump {bm_:.3f}')
+        assert inside == 0, (label, inside)
         assert bs <= SHOULDER_BUMP and bm_ <= MITTEN_BUMP, (label, bs, bm_)

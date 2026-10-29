@@ -224,7 +224,12 @@ def test_bad_options_raise():
 # ----------------------------------------------------------------------------- trim fit (Task 6b fix round)
 TRIM_BODIES = (('zc', {}), ('female', dict(sex=1.0)), ('heavy_female', dict(sex=1.0, mass=1.0, stylize=1.0)), ('heavy_male', dict(mass=1.0)),
                ('elder_stoop1', dict(age='elder', stoop=1.0)))
-HEM_FLOAT, COLLAR_BURIED, HEM_BURIED = 0.006, 0.75, 0.60     # m past the tube's own size; fraction of collar / hem vertices inside the body
+HEM_FLOAT, COLLAR_BURIED, COLLAR_SINK, HEM_BURIED, TORSO_RING_BURIED = 0.006, 0.40, 0.75, 0.60, 0.92
+# ^ COLLAR_SINK: a collar's deepest point may sit 0.75 x its tube thickness under the skin: the centre line is padded outside the
+#   neck, but the tube's lower edge meets the neck-base / throat flare (good cases: zc tee 3.7 of 14.4 mm, heavy_male 8.4 of 14.4,
+#   elder stoop 1 10.2 of 14.4). The stoop-1 collar at b39f47c sank 21.3 of 14.4 mm and was 69% buried.
+# ^ torso rings (bands, shirt hems) are flat ribbons laid on the waist: most of a ribbon sits in the surface (fixed result <= 0.84).
+#   HEM_FLOAT: m past the ring's own thickness; *_BURIED: fraction of ring vertices inside the body
 
 
 def _trim_fit(ob, bvh):
@@ -234,8 +239,12 @@ def _trim_fit(ob, bvh):
         p = ob.matrix_world @ v.co
         loc, nrm, _, _ = bvh.find_nearest(p, 0.5)
         d.append((p - loc).dot(nrm))
-    dims = sorted(ob.dimensions)
-    return min(d), max(d), sum(x < -0.001 for x in d) / len(d), dims[0]
+    P = [ob.matrix_world @ v.co for v in ob.data.vertices]
+    c = sum(P, Vector()) / len(P)
+    q = len(P) // 4                                    # outfits.torus orders vertices around the ring: a quarter turn apart
+    n = sum(((P[i] - c).cross(P[(i + q) % len(P)] - c) for i in range(len(P))), Vector()).normalized()   # ring normal (may tilt)
+    t = [(p - c).dot(n) for p in P]
+    return min(d), max(d), sum(x < -0.001 for x in d) / len(d), max(t) - min(t)
 
 
 def test_trims_sit_on_body():
@@ -260,11 +269,13 @@ def test_trims_sit_on_body():
             for o in sorted(bpy.data.objects, key=lambda o: o.name):
                 if o.name.startswith('tf_') and any(k in o.name for k in ('collar', 'hem', 'band')):
                     lo, hi, bur, tube = _trim_fit(o, bvh)
-                    print(f'  trim {label} {o.name[3:]}: closest {lo * 1000:.1f} mm, farthest {hi * 1000:.1f} mm, buried {bur:.0%}')
+                    print(f'  trim {label} {o.name[3:]}: closest {lo * 1000:.1f} mm, farthest {hi * 1000:.1f} mm, buried {bur:.0%}, tube {tube * 1000:.1f} mm')
                     assert lo <= 0.001, (label, o.name, 'floats clear of the body', lo)
-                    if 'shirt_hem' not in o.name:     # a long shirt's hem can sit below the crotch and span the gap between the legs
-                        assert hi <= tube + HEM_FLOAT, (label, o.name, hi, tube)
+                    assert hi <= tube + HEM_FLOAT, (label, o.name, hi, tube)
                     if 'collar' in o.name:
-                        assert bur <= COLLAR_BURIED, (label, o.name, bur)
-                    elif 'band' not in o.name and 'shirt_hem' not in o.name:
+                        k = 1.0 if label != 'heavy_female' else 1.25   # stylize 1 + mass 1: the collar sits on a steep flare into the yoke (known limit)
+                        assert bur <= COLLAR_BURIED * k and lo >= -COLLAR_SINK * tube, (label, o.name, bur, lo, tube)
+                    elif 'band' in o.name or 'shirt_hem' in o.name:
+                        assert bur <= TORSO_RING_BURIED, (label, o.name, bur)
+                    else:
                         assert bur <= HEM_BURIED, (label, o.name, bur)
