@@ -43,7 +43,7 @@ Studio opens the compositions declared under `src/videos/`, grouped in one folde
 Agent instructions travel with the repository: `CLAUDE.md` → `AGENTS.md`, role agents in `.claude/agents/` and `.codex/agents/`, and `docs/`. A new account or machine needs only the local tools below.
 
 - **audio-studio MCP** (sound generation): declared for Claude Code in `.mcp.json`; approve it on first open. Install [audio-studio-mcp](https://github.com/kanaworksai-hue/audio-studio-mcp) with its `install.sh`; if it is not at `~/Documents/ChatGPT/audio-studio-mcp` of the original machine, set `AUDIO_STUDIO_DIR` to its folder. Codex registers it separately in its own config.
-- **Shared sound library:** `~/Documents/ChatGPT/sound-library/` (outside Git; copy it to the new machine). Paths are in [sound generation workflow](docs/sound-generation-workflow.md).
+- **Shared sound library:** `~/Documents/ChatGPT/sound-library/` (outside Git; copy it to the new machine). Paths are in the [`sound-generation` skill](.agents/skills/sound-generation/library.md).
 - **Blender MCP** (Blender assets/shots only): enable the Blender connector in the Claude desktop app and the MCP add-on in Blender; see [Blender MCP workflow](docs/blender-mcp-workflow.md).
 - **Optional plugins:** `remotion` skills (Remotion docs/best practices) and `superpowers`; install from the plugin marketplace. Nothing in the workflows requires them.
 - **Transcription:** local `.venv-whisper/`; see the faster-whisper notes under [Render and verify](#render-and-verify).

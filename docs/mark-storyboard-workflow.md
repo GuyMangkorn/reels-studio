@@ -51,6 +51,12 @@ A story scene may map to several runtime `Scene` entries. Record that mapping ra
 
 `ready-for-dev` means the written scope, shot direction, timing confidence, dependencies, entry/exit and observable acceptance criteria are complete. It permits implementation/blockout; it does not record user approval, audio sync or runtime/visual validation. Planning adds no blanket approval gate.
 
+<a id="pre-handoff-checks"></a>
+**Requirement — checks before `ready-for-dev`.** Mark runs these on the written numbers, before Boss or Editor builds anything:
+
+- **Projection:** for every world-space shot, run `python3 -I scripts/shot-projection.py` with the shot's camera and the anchors of the lead and key props (feet and head, or bounds), at Film's physical-size baseline rather than stand-in proportions. Record the lead's height in px, its screen side and any overlap with the caption band in the shot block. Fix a result that contradicts the shot's intent (wrong side, lead below the [lead-size rule](boss-asset-workflow.md#latest-production-rules), face or reveal in the caption band) before handoff.
+- **Props and hands:** list each carried or moved prop's state (held in which hand, placed where) at every shot's entry and exit, and confirm each action is possible with that state (a hand holding a bag cannot also drag a cabinet).
+
 ## Authoring steps
 
 1. **Read matching inputs:** AGENTS.md, delivery record, script/review, Film brief, sequence index, neighbors and relevant [dev findings](dev-findings.md). Record paths/revisions, beat/clue/claim/decision IDs and unresolved factual/projection questions. Complete when scope and constraints are explicit.

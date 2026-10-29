@@ -1,4 +1,4 @@
-"""Shared sound library helper (docs/sound-generation-workflow.md#shared-sound-library).
+"""Shared sound library helper (.agents/skills/sound-generation/library.md).
 
 Usage:
   python3 -I scripts/sound-library.py search WORD...            # ID, seconds, loop, description of matching sidecars

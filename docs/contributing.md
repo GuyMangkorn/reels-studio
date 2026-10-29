@@ -51,7 +51,7 @@ Stop when the success criteria and required checks pass. Repeat affected checks 
   - the roles affected;
   - status `proposed`.
 - **DP03 — Review.** When a stage ends, or when the user asks, the coordinator lists the `proposed` entries for the user with the structured-question tool. Approve, reject and edit are per entry. The coordinator records the decision with date and the user's words.
-- **DP04 — Apply.** The coordinator applies approved entries in a documentation-only PR, separate from production work, and marks each entry `applied` with the PR link. The user's merge is the final review. A rejected entry stays as `rejected` with the reason, so it is not proposed again.
+- **DP04 — Apply.** The coordinator applies approved entries in a documentation-only PR, separate from production work, and marks each entry `applied` with the PR link. Apply them in one batch at a deliverable boundary (a delivery, or a stage end the user picks) so an episode in progress keeps one rule set; apply a single entry sooner only when the user asks. The user's merge is the final review. A rejected entry stays as `rejected` with the reason, so it is not proposed again.
 
 Template for `scripts/<episode>/build-notes.md`:
 
@@ -73,7 +73,7 @@ Template for `scripts/<episode>/build-notes.md`:
 
 ## Finishing a task
 
-Commit, push the issue branch and open a pull request into `main`. Never push directly to `main`. The PR description includes:
+Commit, push the issue branch and open a pull request into `main`. Never push directly to `main`. Ask for these once, at the end, in one structured question (commit + push + PR together); verification runs need no approval. Merging stays the user's. The PR description includes:
 
 - `Closes #N`.
 - The resulting behavior and a summary of the change.

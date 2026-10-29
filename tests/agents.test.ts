@@ -1,6 +1,6 @@
 import {test} from 'node:test';
 import assert from 'node:assert/strict';
-import {existsSync, readdirSync, readFileSync} from 'node:fs';
+import {existsSync, readdirSync, readFileSync, realpathSync} from 'node:fs';
 
 const roles = readdirSync('.claude/agents').filter(file => file.endsWith('.md')).map(file => file.replace(/\.md$/, ''));
 
@@ -27,6 +27,15 @@ test('Claude and Codex role instructions are identical', () => {
 
 test('every document an agent references exists', () => {
   for (const role of roles) {
-    for (const doc of new Set(readClaude(role).instructions.match(/docs\/[a-z-]+\.md/g) ?? [])) assert.ok(existsSync(doc), `${role} references missing ${doc}`);
+    for (const doc of new Set(readClaude(role).instructions.match(/docs\/[a-z-]+\.md|\.agents\/skills\/[a-z-]+\/SKILL\.md/g) ?? [])) assert.ok(existsSync(doc), `${role} references missing ${doc}`);
+  }
+});
+
+test('every project skill is shared by Claude Code and Codex', () => {
+  for (const skill of readdirSync('.agents/skills')) {
+    const match = readFileSync(`.agents/skills/${skill}/SKILL.md`, 'utf8').match(/^---\nname: (.+)\ndescription: .+\n---\n/);
+    assert.ok(match, `${skill}/SKILL.md has name/description front matter`);
+    assert.equal(match[1], skill);
+    assert.equal(realpathSync(`.claude/skills/${skill}`), realpathSync(`.agents/skills/${skill}`), `.claude/skills/${skill} links to .agents/skills/${skill}`);
   }
 });
