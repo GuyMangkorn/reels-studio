@@ -12,15 +12,15 @@ loadFont({family: 'Noto Sans Thai', url: staticFile('fonts/NotoSansThai.ttf'), w
 // S02-SH02 phone insert sample for WFOG-EP01-SHORT (scene sheet sc02-b01.md, SS-R1; user request 2026-10-29: the
 // phone screen drawn crisp with React SVG). Painted: soft shop background (L0), hand and handset (L1). SVG: the screen
 // (L2), cut by the painted thumb and fingertips so they read in front of it (an Overlay always sits above the canvas).
-// Spike code (spike entry only). The hand is drawn neutral (slim, short natural nails, knit cuff): the narrator is
-// being changed to a woman (script R2 in progress) and her outfit is not decided.
+// Spike code (spike entry only). The hand is the narrator's (slim, short natural nails); SS-R3 (sc02-b01, VD03 R3):
+// the cuff is her olive jacket sleeve `#6b7a5a` and the article's top-bar pill is neutral grey (VD16, PD06).
 
 const HEADLINE = 'หมอกหนาปกคลุมทั่วโลก';
 // Sheet: screen x 300-760, y 330-960 (aspect 0.73, reads as a tablet). Sample uses a phone proportion (0.61) with the
 // same top, thumb points and caption clearance: deviation recorded for Mark (SS-R2) in build-notes.
 const SCREEN = {x0: 336, y0: 312, x1: 744, y1: 978, r: 46};
 const BODY = {x0: 318, y0: 288, x1: 762, y1: 1000, r: 64};
-const SKIN = '#e9c2a2', SKIN_SHADE = '#d0a283', NAIL = '#f4dccd', CUFF = '#56625e', CUFF_SHADE = '#47514e';
+const SKIN = '#e9c2a2', SKIN_SHADE = '#d0a283', NAIL = '#f4dccd', CUFF = '#6b7a5a', CUFF_SHADE = '#56634a';
 
 const ease = (u: number) => u * u * (3 - 2 * u);
 const seg = (f: number, a: number, b: number) => Math.max(0, Math.min(1, (f - a) / (b - a)));
@@ -129,10 +129,11 @@ const inkLine = (p: Painter, id: number, pts: Pt[], w = 1.1, curve = 0.2) => {
 
 /** L1: the hand behind the phone, the handset, then the thumb and fingertips in front. */
 const paintHand = (p: Painter, f: number) => {
-  // Sleeve (soft knit cuff) and the back of the hand, exiting lower right.
+  // Jacket sleeve (olive, SS-R3) and the back of the hand, exiting lower right.
   const sleeve: Pt[] = [[880, 1250], [990, 1196], [1140, 1520], [1180, 1700], [1010, 1760]];
   solid(p, 4000, CUFF, sleeve);
-  for (let i = 0; i < 5; i++) solid(p, 4010 + i, CUFF_SHADE, [[898 + i * 22, 1244 - i * 11], [906 + i * 22, 1240 - i * 11], [1012 + i * 30, 1720 - i * 6], [1004 + i * 30, 1724 - i * 6]], 3, 0.1); // knit ribs
+  solid(p, 4010, CUFF_SHADE, [[880, 1250], [990, 1196], [1004, 1228], [894, 1284]], 4, 0.08); // hem band at the wrist
+  solid(p, 4011, CUFF_SHADE, [[1060, 1350], [1140, 1520], [1180, 1700], [1120, 1720], [1090, 1520]], 4, 0.08); // fold shade on the outer side
   inkLine(p, 401, sleeve);
   const palm: Pt[] = [[762, 860], [812, 900], [880, 990], [960, 1110], [990, 1210], [905, 1262], [835, 1150], [770, 1060], [720, 1000], [762, 1000]];
   solid(p, 4100, SKIN, palm);
@@ -327,7 +328,7 @@ const Screen = ({f}: {f: number}) => {
             </g>
             <rect x={x0} y={y0} width={W} height={52} fill="#14181a" />
             <rect x={x0} y={y0 + 52} width={W} height={1.5} fill="#2c3335" />
-            <rect x={x1 - 96} y={y0 + 20} width={64} height={16} rx={8} fill="#b8473a" />
+            <rect x={x1 - 96} y={y0 + 20} width={64} height={16} rx={8} fill="#6f777a" />
             <path d={`M${x0 + 36} ${y0 + 19} l -10 9 l 10 9`} stroke="#d9dedd" strokeWidth={3} fill="none" strokeLinecap="round" strokeLinejoin="round" />
           </g>
         )}

@@ -7,7 +7,7 @@ import {lerp, mixColor, type Painter, type Pt} from '../painter';
 import type {PaintedShot} from '../shot';
 import {BROW_Y, INK, headOutline} from './FaceSheet';
 
-// SP01 preview for WFOG-EP01-SHORT (brief VB-WFOG-EP01-SHORT-R1, scene sheets SS-R1): the window plate on
+// SP01/SP04 preview for WFOG-EP01-SHORT (brief VB-WFOG-EP01-SHORT-R3, scene sheets SS-R3): the window plate on
 // CAM-GLASS-OUT with WFOG-ASSEMBLY (worker + cart + cartons + helmet + umbrella) at the stop, FOG-STATE FS2.
 // S02-SH09 (helmet slide, catch, return; match frame f179) and the match frame of S03-SH03 with `light` 0 -> 1.
 // Spike code (spike entry only, not in src/painted/registry.ts); written as PaintedShot objects so the plate,
@@ -44,72 +44,147 @@ const FOG = {top: '#77736a', mid: '#6b706c', low: '#58625f', ground: '#3d4646', 
 type ShotKey = 'S02-SH09' | 'S03-SH03';
 const SHOT_G0: Record<ShotKey, number> = {'S02-SH09': 1230, 'S03-SH03': 1800};
 
-type Pose = {helmet: {c: V3; a: number}; rHand: V3; dip: number; light: number; beam: number; lean: number};
+/**
+ * Assembly pose at one frame. `rHand`/`lHand`/`tip` in WORLD-SHOP metres; `gloveOver` draws the right glove over the
+ * helmet (on the rim); `squint` 0..1 and `gaze` (face-local x shift of the pupils) only show in the lit state; `warp`
+ * is the VD17 amount A (ST-09) and `g` the story-clock frame of the fog-lens phase.
+ */
+type Pose = {
+  helmet: {c: V3; a: number}; rHand: V3; lHand: V3; tip: V3; lower: number; gloveOver: boolean; dip: number;
+  light: number; beam: number; lean: number; squint: number; gaze: number; warp?: number; g?: number;
+};
 
 const ease = (u: number) => u * u * (3 - 2 * u);
 const clamp01 = (u: number) => Math.max(0, Math.min(1, u));
 const seg = (f: number, a: number, b: number) => clamp01((f - a) / (b - a));
 const mix3 = (a: V3, b: V3, u: number): V3 => [lerp(a[0], b[0], u), lerp(a[1], b[1], u), lerp(a[2], b[2], u)];
 const add3 = (a: V3, b: V3): V3 => [a[0] + b[0], a[1] + b[1], a[2] + b[2]];
+const sub3 = (a: V3, b: V3): V3 => [a[0] - b[0], a[1] - b[1], a[2] - b[2]];
 const deg = Math.PI / 180;
+/** sin(pi u) over [a, b], exactly 0 outside (so held frames stay bit-identical). */
+const bump = (f: number, a: number, b: number) => {
+  const u = seg(f, a, b);
+  return u <= 0 || u >= 1 ? 0 : Math.sin(Math.PI * u);
+};
 
+// SS-R3 keys (index ST-03; sc02-b04 S02-SH09; sc03 S03-SH03), WORLD-SHOP metres, S = (-0.10, 0.62).
 const SEAT: V3 = [STOP.xs, 1.725, STOP.zs];
 const MATCH_HELMET = {c: [STOP.xs + 0.01, 1.725, STOP.zs] as V3, a: 12 * deg};
-const MATCH_HAND: V3 = [0.1, 1.55, 0.72];
+const MATCH_HAND: V3 = [STOP.xs + 0.2, 1.55, STOP.zs + 0.18]; // R3: z 0.80 (rear-right rim)
 const BRACE: V3 = [0.15, 1.3, 0.85];
-const CATCH_HAND: V3 = [0.2, 1.28, 0.75];
-const PALM_HELMET: V3 = [0.22, 1.38, 0.72];
+const CATCH_HAND: V3 = [STOP.xs + 0.38, 0.91, STOP.zs + 0.18]; // (0.28, 0.91, 0.80)
+const CATCH_HELMET: V3 = [STOP.xs + 0.5, 1.03, STOP.zs + 0.16]; // (0.40, 1.03, 0.78), tilted 22 deg toward +x
+const REGRIP: V3 = [0, -0.15, 0.18]; // helmet's rear lower rim, offset from the helmet centre
+const L_HAND_UP: V3 = [STOP.xs + 0.55, 1.33, STOP.zs + 0.23];
+const TIP_REST: V3 = [STOP.xs + 0.46, 1.6, 0.05];
+const L_HAND_LOW: V3 = [STOP.xs + 0.55, 0.95, STOP.zs + 0.28]; // LIT-LOWER
+const TIP_GROUND: V3 = [STOP.xs + 0.6, 0.02, STOP.zs + 0.2];
 
-/** S02-SH09 pose at shot-local frame f (sheet table: slide f24-36, fall f36-45, catch f45, hold, lift f84-117, MATCH). */
+/** Rotate a helmet-attached world offset from tilt a0 to a1 (helmetPts convention: top toward +x when a > 0). */
+const turnOffset = ([dx, dy, dz]: V3, a0: number, a1: number): V3 => {
+  const u = dx * Math.cos(a0) - dy * Math.sin(a0), v = dx * Math.sin(a0) + dy * Math.cos(a0);
+  return [u * Math.cos(a1) + v * Math.sin(a1), -u * Math.sin(a1) + v * Math.cos(a1), dz];
+};
+
+/**
+ * Cubic Hermite through timed keys with Catmull-Rom tangents inside and zero velocity at both ends: the lift eases in
+ * and out but does not stop at its through-points (f100, f110).
+ */
+const hermite = (keys: [number, V3][], f: number): V3 => {
+  const n = keys.length;
+  let i = 0;
+  while (i < n - 2 && f > keys[i + 1][0]) i++;
+  const [f0, p0] = keys[i], [f1, p1] = keys[i + 1];
+  const tan = (k: number): V3 => (k === 0 || k === n - 1 ? [0, 0, 0] : sub3(keys[k + 1][1], keys[k - 1][1]).map((d) => (d / (keys[k + 1][0] - keys[k - 1][0])) * (f1 - f0)) as V3);
+  const m0 = tan(i), m1 = tan(i + 1), u = clamp01((f - f0) / (f1 - f0));
+  const h00 = 2 * u ** 3 - 3 * u ** 2 + 1, h10 = u ** 3 - 2 * u ** 2 + u, h01 = -2 * u ** 3 + 3 * u ** 2, h11 = u ** 3 - u ** 2;
+  return [0, 1, 2].map((j) => h00 * p0[j] + h10 * m0[j] + h01 * p1[j] + h11 * m1[j]) as V3;
+};
+const LIFT: [number, V3][] = [[84, CATCH_HELMET], [100, [0.34, 1.62, 0.72]], [110, [0.1, 1.78, 0.66]], [117, MATCH_HELMET.c]];
+
+const RAISED = {lHand: L_HAND_UP, tip: TIP_REST, lower: 0};
+
+/** S02-SH09 pose at shot-local frame f (sc02-b04 SS-R3: slide f24-32, tip f32-35, fall f35-45, catch f45, lift f84-117). */
 const poseSH09 = (f: number): Pose => {
   let c: V3 = SEAT, a = 0;
-  // Catch impact: the hand gives 3 cm and springs back.
-  const give = f >= 45 ? -0.03 * Math.sin(Math.PI * seg(f, 45, 58)) : 0;
-  if (f >= 24 && f < 36) {
-    const u = seg(f, 24, 36) ** 1.6;
-    c = [lerp(SEAT[0], 0.1, u), lerp(SEAT[1], 1.66, u), SEAT[2]];
+  // Catch impact: hand and helmet give 3 cm and spring back (f45-f58).
+  const give = f >= 45 ? -0.03 * bump(f, 45, 58) : 0;
+  if (f >= 24 && f < 32) {
+    const u = seg(f, 24, 32) ** 1.6; // slides +x along the carton top, accelerating
+    c = mix3(SEAT, [0.1, 1.66, STOP.zs], u);
     a = 35 * deg * u;
-  } else if (f >= 36 && f < 45) {
-    const u = seg(f, 36, 45) ** 2;
-    c = [lerp(0.1, PALM_HELMET[0], Math.sqrt(u)), lerp(1.66, PALM_HELMET[1], u), lerp(SEAT[2], PALM_HELMET[2], u)];
-    a = lerp(35, 22, u) * deg;
+  } else if (f >= 32 && f < 35) {
+    const u = seg(f, 32, 35); // tips over the carton's right corner
+    c = mix3([0.1, 1.66, STOP.zs], [0.33, 1.56, 0.68], u);
+    a = lerp(35, 50, u) * deg;
+  } else if (f >= 35 && f < 45) {
+    const u = seg(f, 35, 45); // falls, about free fall: y with u^2, x/z with u
+    c = [lerp(0.33, CATCH_HELMET[0], u), lerp(1.56, CATCH_HELMET[1], u * u), lerp(0.68, CATCH_HELMET[2], u)];
+    a = lerp(50, 22, ease(u)) * deg;
   } else if (f >= 45 && f < 84) {
-    c = add3(PALM_HELMET, [0, give, 0]);
-    a = lerp(22, 16, seg(f, 45, 70)) * deg;
+    c = add3(CATCH_HELMET, [0, give, 0]);
+    a = lerp(22, 16, ease(seg(f, 45, 70))) * deg;
   } else if (f >= 84 && f < 117) {
-    const u = ease(seg(f, 84, 117));
-    // Arc up and over the top carton (quadratic Bezier through a raised control point).
-    const ctrl: V3 = [0.14, 1.86, 0.68];
-    const p0 = mix3(PALM_HELMET, ctrl, u), p1 = mix3(ctrl, MATCH_HELMET.c, u);
-    c = mix3(p0, p1, u);
-    a = lerp(16, 12, u) * deg;
+    c = hermite(LIFT, f);
+    a = lerp(16, 12, ease(seg(f, 84, 117))) * deg;
   } else if (f >= 117) {
-    const settle = f < 121 ? 0.006 * Math.sin(Math.PI * seg(f, 117, 121)) : 0;
-    c = add3(MATCH_HELMET.c, [0, settle, 0]);
+    c = add3(MATCH_HELMET.c, [0, 0.006 * bump(f, 117, 121), 0]); // 6 mm settle
     a = MATCH_HELMET.a;
   }
-  // Right hand: brace -> catch point -> under the helmet -> along the lift -> on the rim.
+  // Right hand: brace -> catch point by f44 -> gives with the helmet -> regrips the rear lower rim f84-f88 and carries
+  // it (rear lower rim to f110, the sheet's reach basis) -> slides to the rear-right rim f110-f117.
   let rHand: V3 = BRACE;
   if (f >= 30 && f < 45) rHand = mix3(BRACE, CATCH_HAND, ease(seg(f, 30, 44)));
   else if (f >= 45 && f < 84) rHand = add3(CATCH_HAND, [0, give, 0]);
   else if (f >= 84 && f < 117) {
-    const u = ease(seg(f, 84, 117));
-    const off = mix3([CATCH_HAND[0] - PALM_HELMET[0], CATCH_HAND[1] - PALM_HELMET[1], CATCH_HAND[2] - PALM_HELMET[2]], [MATCH_HAND[0] - MATCH_HELMET.c[0], MATCH_HAND[1] - MATCH_HELMET.c[1], MATCH_HAND[2] - MATCH_HELMET.c[2]], u);
-    rHand = add3(c, off);
-  } else if (f >= 117) rHand = MATCH_HAND;
-  // Hood dips 3 cm with the effort of the catch, breath rise at f150.
-  const dip = -0.03 * Math.sin(Math.PI * seg(f, 45, 60)) + 0.015 * Math.sin(Math.PI * seg(f, 140, 165));
-  return {helmet: {c, a}, rHand, dip, light: 0, beam: 0, lean: LEAN};
+    const regrip = mix3(sub3(CATCH_HAND, CATCH_HELMET), REGRIP, ease(seg(f, 84, 88)));
+    const onRim = turnOffset(sub3(MATCH_HAND, MATCH_HELMET.c), MATCH_HELMET.a, a);
+    rHand = add3(c, mix3(regrip, onRim, ease(seg(f, 110, 117)))); // carried on the rear lower rim, onto the rim at the seat
+  } else if (f >= 117) rHand = add3(MATCH_HAND, [0, 0.006 * bump(f, 117, 121), 0]);
+  // Hood dips 3 cm with the effort of the catch, breath rise 1.5 cm f140-f165.
+  const dip = -0.03 * bump(f, 45, 60) + 0.015 * bump(f, 140, 165);
+  return {helmet: {c, a}, rHand, ...RAISED, gloveOver: f >= 117, dip, light: 0, beam: 0, lean: LEAN, squint: 0, gaze: 0};
 };
 
 /**
- * S03-SH03: MATCH pose held f0-f35 (no pose change before the light is full), light 0 -> 1 over f6-f30. Preview
- * only beyond f35: the worker straightens out of the lean f36-f54 so the face reads (the sheet's later helmet press,
- * brace and umbrella lowering are not built here).
+ * S03-SH03 (sc03 SS-R3): MATCH held f0-f35 while the light comes up (f6-f30); f36-f54 one action, the lean eases
+ * 9 -> 0 deg while the hand on the rim presses the helmet level (12 -> 0 deg); right hand to the stack brace f54-f66;
+ * umbrella lowered to LIT-LOWER f66-f96; shoulders drop f96-f110; squint f44-f56; gaze at the torch from f96.
  */
-const poseSH03 = (f: number): Pose => ({helmet: MATCH_HELMET, rHand: MATCH_HAND, dip: 0, light: ease(seg(f, 6, 30)), beam: ease(seg(f, 0, 30)), lean: LEAN * (1 - ease(seg(f, 36, 54)))});
+const poseSH03 = (f: number): Pose => {
+  const press = ease(seg(f, 36, 54));
+  const a = lerp(MATCH_HELMET.a, 0, press);
+  const c = mix3(MATCH_HELMET.c, SEAT, press);
+  const onRim = add3(c, turnOffset(sub3(MATCH_HAND, MATCH_HELMET.c), MATCH_HELMET.a, a));
+  const rHand = mix3(onRim, BRACE, ease(seg(f, 54, 66)));
+  const lower = ease(seg(f, 66, 96));
+  const lHand = mix3(L_HAND_UP, L_HAND_LOW, lower);
+  // Umbrella swings about the hand (direction nlerp, length 0.90 -> 0.935 m), so it never shrinks mid-swing.
+  const d0 = sub3(TIP_REST, L_HAND_UP), d1 = sub3(TIP_GROUND, L_HAND_LOW);
+  const l0 = Math.hypot(...d0), l1 = Math.hypot(...d1);
+  const dir = mix3(d0.map((x) => x / l0) as V3, d1.map((x) => x / l1) as V3, lower);
+  const len = lerp(l0, l1, lower) / Math.hypot(...dir);
+  const tip = f <= 66 ? TIP_REST : add3(lHand, dir.map((x) => x * len) as V3);
+  const dip = f < 96 ? 0 : -0.015 * ease(seg(f, 96, 110));
+  return {
+    helmet: {c: f < 36 ? MATCH_HELMET.c : c, a: f < 36 ? MATCH_HELMET.a : a}, rHand: f < 36 ? MATCH_HAND : rHand, lHand, tip, lower,
+    gloveOver: true, dip, light: ease(seg(f, 6, 30)), beam: ease(seg(f, 0, 30)), lean: LEAN * (1 - press),
+    squint: bump(f, 44, 56) * 0.8, gaze: ease(seg(f, 96, 104)),
+  };
+};
 
-const poseAt = (shot: ShotKey, f: number) => (shot === 'S02-SH09' ? poseSH09(f) : poseSH03(f));
+/**
+ * VD17 fog-lens amount A per shot (index ST-09). SH09: 1, eased to 0.7 over f18-f26, back to 1 over f56-f64 so the
+ * slide, fall and catch read (CL04). SH03: 1 -> 0 over f2-f22 as the beam lands; exactly 0 from f22, so every lit
+ * frame shows the honest geometry.
+ */
+const warpAt = (shot: ShotKey, f: number) =>
+  shot === 'S02-SH09' ? 1 - 0.3 * (ease(seg(f, 18, 26)) - ease(seg(f, 56, 64))) : f >= 22 ? 0 : 1 - ease(seg(f, 2, 22));
+export const poseAt = (shot: ShotKey, f: number, warpOn = true): Pose => ({
+  ...(shot === 'S02-SH09' ? poseSH09(f) : poseSH03(f)),
+  warp: warpOn ? warpAt(shot, f) : 0,
+  g: SHOT_G0[shot] + f,
+});
 
 /** Picture push (sheets): SH09 s 1.22 -> 1.30 about (560, 650) eased over [0, 179]; SH03 1.30 -> 1.34 over [0, 119]. */
 const cameraFor = (shot: ShotKey) => (tl: number): Camera =>
@@ -187,7 +262,46 @@ const boxPts = (cx: number, y0: number, w: number, h: number, tiltDeg: number, z
  * WFOG-ASSEMBLY at the stop, back to front. Silhouette parts (no `inner`) define the outline and are identical at
  * every `light`; inner parts are drawn at light > 0 only and stay inside the outline (SP01 b).
  */
-const assemblyParts = (pose: Pose): Part[] => {
+/** VD17: resample a closed polygon so no edge is longer than `step` px (the warp bends edges, not only corners). */
+const resample = (pts: Pt[], step: number): Pt[] =>
+  pts.flatMap((a, i) => {
+    const b = pts[(i + 1) % pts.length];
+    const m = Math.max(1, Math.ceil(Math.hypot(b[0] - a[0], b[1] - a[1]) / step));
+    return Array.from({length: m}, (_, j): Pt => [lerp(a[0], b[0], j / m), lerp(a[1], b[1], j / m)]);
+  });
+const smoothstep = (a: number, b: number, x: number) => ease(clamp01((x - a) / (b - a)));
+/** VD17 FW-A field constants (brief R3), PLATE px at camera scale 1 (CAM-GLASS-OUT, stack at zs 0.62: k 370 px/m). */
+const FW01 = {ax: 14, ay: 5, stretch: 0.03, narrow: 0.035, breathe: 0.25, breathePeriod: 3.4, l1: 230, l2: 90, h0: 0.3, h1: 0.75, pinIn: 15, pinOut: 70};
+/**
+ * Fog-lens warp of every assembly part (outline and inner): a pure function of the plate point, the story clock G and
+ * the amount. Height-weighted (nothing below about 0.6 m moves: wheels, deck, boots stay honest for CL02), pinned at
+ * the umbrella tip (glass contact, CL03); contacts inside the mass survive because the field is continuous.
+ */
+export const fogWarp = (parts: Part[], G: number, amp: number, tip3: V3 = TIP_REST): Part[] => {
+  if (amp <= 0) return parts;
+  const t = G / 30;
+  const yG = P([STOP.xs, 0, STOP.zs])[1], H = yG - P([STOP.xs, 1.95, STOP.zs])[1], xc = P([STOP.xs + 0.1, 0, STOP.zs])[0];
+  const tip = P(tip3);
+  const br = 1 + FW01.breathe * Math.sin((2 * Math.PI * t) / FW01.breathePeriod);
+  const weight = ([x, y]: Pt) => amp * smoothstep(FW01.h0, FW01.h1, (yG - y) / H) * smoothstep(FW01.pinIn, FW01.pinOut, Math.hypot(x - tip[0], y - tip[1]));
+  const warp = ([x, y]: Pt): Pt => {
+    const h = (yG - y) / H;
+    const w = weight([x, y]);
+    const dx = FW01.ax * (0.65 * Math.sin((2 * Math.PI * y) / FW01.l1 + t * 1.3 + 0.7) + 0.35 * Math.sin((2 * Math.PI * y) / FW01.l2 - t * 2.1 + 2.1)) - FW01.narrow * h * h * (x - xc);
+    const dy = -FW01.stretch * br * h * h * H + FW01.ay * Math.sin((2 * Math.PI * x) / FW01.l1 + t * 0.9);
+    return [x + w * dx, y + w * dy];
+  };
+  // Parts the field does not reach (wheels, casters, deck, boots: w = 0 at every point) are returned untouched, not
+  // resampled, so their brush fills stay identical to the VD17-off render (CL02).
+  return parts.map((part) => {
+    const pts = resample(part.pts, 10);
+    return pts.some((q) => weight(q) > 0) ? {...part, pts: pts.map(warp)} : part;
+  });
+};
+
+const assemblyParts = (pose: Pose): Part[] => fogWarp(assemblyPartsRaw(pose), pose.g ?? 0, pose.warp ?? 0, pose.tip);
+
+export const assemblyPartsRaw = (pose: Pose): Part[] => {
   const {xs, zs} = STOP;
   const dy = pose.dip;
   // Upper body leans into the stack it braces (LEAN about the hips), so the hood sits behind the stack edge as a
@@ -221,8 +335,10 @@ const assemblyParts = (pose: Pose): Part[] => {
   add([[0.55, -0.2], [0.82, -0.3], [0.86, 0.5], [0.6, 0.8], [0.35, 0.86]].map((q) => FP(q as Pt)), LIT.skinShade, {inner: true, ink: false});
   for (const s of [-1, 1]) {
     const ex = s * 0.38, ey = 0.08;
-    add(Array.from({length: 9}, (_, i): Pt => FP([ex + 0.19 * Math.cos(Math.PI * (i / 8)), ey + 0.1 * Math.sin(Math.PI * (i / 8))])), LIT.white, {inner: true, passes: 4});
-    add(Array.from({length: 10}, (_, i): Pt => FP([ex - 0.02 + 0.06 * Math.cos((i / 10) * 6.283), ey + 0.06 + 0.055 * Math.sin((i / 10) * 6.283)])), INK, {inner: true, ink: false, passes: 6});
+    // Squint (S03-SH03 f44-f56) closes the half-lidded eye from above; gaze shifts the pupil toward the torch (-x).
+    const sq = 1 - 0.6 * pose.squint, gx = -0.07 * pose.gaze;
+    add(Array.from({length: 9}, (_, i): Pt => FP([ex + 0.19 * Math.cos(Math.PI * (i / 8)), ey + 0.1 * sq * Math.sin(Math.PI * (i / 8))])), LIT.white, {inner: true, passes: 4});
+    add(Array.from({length: 10}, (_, i): Pt => FP([ex - 0.02 + gx + 0.06 * Math.cos((i / 10) * 6.283), ey + 0.06 * sq + 0.055 * sq * Math.sin((i / 10) * 6.283)])), INK, {inner: true, ink: false, passes: 6});
     const [inner, outer] = BROW_Y.worry;
     add([FP([s * 0.2, inner - 0.03]), FP([s * 0.58, outer - 0.03]), FP([s * 0.58, outer + 0.03]), FP([s * 0.2, inner + 0.03])], LIT.hair, {inner: true, ink: false, passes: 6});
   }
@@ -233,7 +349,7 @@ const assemblyParts = (pose: Pose): Part[] => {
   const rE = elbow3(rS, pose.rHand, 0.27, -1);
   add(limb3(rS, rE, 0.12, 0.105), LIT.coat);
   add(limb3(rE, pose.rHand, 0.105, 0.095), LIT.coat);
-  const L_HAND: V3 = [xs + 0.55, 1.33, zs + 0.23];
+  const L_HAND = pose.lHand;
   const lE = elbow3(lS, L_HAND, 0.27, 1);
   add(limb3(lS, lE, 0.12, 0.105), LIT.coat);
   add(limb3(lE, L_HAND, 0.105, 0.095), LIT.coat);
@@ -261,7 +377,7 @@ const assemblyParts = (pose: Pose): Part[] => {
   // Helmet, then the right glove over or under it (palm under the shell while caught, on the rim at MATCH).
   const {c, a} = pose.helmet;
   const glove = ellipse3(pose.rHand, 0.065, 0.06, 14);
-  const onRim = pose.rHand === MATCH_HAND || Math.abs(pose.rHand[1] - 1.55) < 0.02;
+  const onRim = pose.gloveOver;
   if (!onRim) add(glove, LIT.glove);
   add(helmetPts(c, a, HELMET_SHELL), LIT.helmet);
   add(helmetPts(c, a, HELMET_SHADE), LIT.helmetShade, {inner: true, ink: false});
@@ -270,11 +386,17 @@ const assemblyParts = (pose: Pose): Part[] => {
   if (onRim) add(glove, LIT.glove);
 
   // Closed umbrella in the left hand, raised: tip toward the glass at (0.36, 1.60, 0.05); handle hook below the hand.
-  const tip: V3 = [xs + 0.46, 1.6, 0.05];
+  // Lowered (S03-SH03 f66-f96): the handle end moves to the side away from the tip, so the hook ends above the hand.
+  const tip = pose.tip;
   const along = (u: number): V3 => mix3(L_HAND, tip, u);
-  add(limb3(add3(L_HAND, [0.01, -0.08, 0.01]), tip, 0.014, 0.01), LIT.umbrella);
+  const back = (k: number): V3 => {
+    const d = sub3(tip, L_HAND), l = Math.hypot(...d);
+    return d.map((x) => (-k * x) / l) as V3;
+  };
+  const hookAt = (raised: V3, k: number): V3 => (pose.lower > 0 ? mix3(raised, back(k), pose.lower) : raised);
+  add(limb3(add3(L_HAND, hookAt([0.01, -0.08, 0.01], 0.08)), tip, 0.014, 0.01), LIT.umbrella);
   add(spindle(along(0.12), along(0.9), (u) => 0.022 + 0.022 * Math.sin(Math.PI * u ** 0.7)), LIT.umbrella); // furled canopy, slim
-  add(ellipse3(add3(L_HAND, [0.01, -0.1, 0.01]), 0.03, 0.035, 10), LIT.umbrella); // hook
+  add(ellipse3(add3(L_HAND, hookAt([0.01, -0.1, 0.01], 0.1)), 0.03, 0.035, 10), LIT.umbrella); // hook
   add(ellipse3(L_HAND, 0.065, 0.06, 14), LIT.glove);
   return parts;
 };
@@ -493,6 +615,92 @@ const Rim = ({parts}: {parts: Part[]}) => {
   );
 };
 
+/**
+ * VD17 FW-B veil (brief fog-lens illusion; production form of Film's FW02 test). A soft fog-coloured band straddling
+ * the merged outline (dilate 9 / erode 7 px, blur 5), shown through two masks that multiply:
+ * - patches: 6 blurred ellipses (r 55-105 px, ry 0.7 r, blur 22) drifting up 14-32 px/s through a box fixed per camera
+ *   setup (`VEIL_BOX`), so the field does not move with the pose. Each patch's cycle is one pass up through the box;
+ *   it fades in over the first 18 % and out over the last 18 % of the pass, its x and sideways drift (+-20 px/s,
+ *   folding back at the box sides) are re-seeded per pass, so nothing appears or vanishes between frames (no wrap pop);
+ * - weight: the FW-A weight w without A, smoothstep(0.30, 0.75, h) by height and smoothstep(15, 70 px) from the
+ *   current umbrella tip, so no veil on wheels, deck, boots or the pinned tip.
+ * Opacity 0.75 A. Overlay above the canvas: window plates with no inside actor in front only (VD07).
+ */
+/** Fixed veil-patch field per camera setup, PLATE px at camera scale 1 (CAM-GLASS-OUT at the stop). */
+const VEIL_BOX = {'CAM-GLASS-OUT': {x0: 330, y0: 380, x1: 850, y1: 1060}};
+const VEIL = {n: 6, fadeIn: 0.18, fadeOut: 0.18, rMin: 55, rMax: 105, vyMin: 14, vyMax: 32, vx: 20};
+
+/** Veil patches at story frame G: centre, radius, envelope (0..1) and cycle index; pure function of G. */
+export const veilPatches = (G: number, box = VEIL_BOX['CAM-GLASS-OUT']) => {
+  const t = G / 30, w = box.x1 - box.x0, h = box.y1 - box.y0;
+  return Array.from({length: VEIL.n}, (_, i) => {
+    const vy = VEIL.vyMin + (VEIL.vyMax - VEIL.vyMin) * hash(i + 910);
+    const T = h / vy; // seconds per pass
+    const pos = t / T + hash(i + 930); // cycles elapsed, phase-offset per patch
+    const n = Math.floor(pos), u = pos - n; // u: progress through this pass, bottom (0) to top (1)
+    const vx = (hash(i * 31 + n * 7 + 900) - 0.5) * 2 * VEIL.vx;
+    // Sideways drift folds back at the box sides (ping-pong: continuous, no jump); x re-seeded per pass.
+    const sx = (((w * hash(i * 31 + n * 7 + 920) + vx * u * T) % (2 * w)) + 2 * w) % (2 * w);
+    const px = box.x0 + (sx <= w ? sx : 2 * w - sx);
+    const py = box.y1 - u * h;
+    const env = smoothstep(0, VEIL.fadeIn, u) * (1 - smoothstep(1 - VEIL.fadeOut, 1, u));
+    return {px, py, r: VEIL.rMin + (VEIL.rMax - VEIL.rMin) * hash(i * 31 + n * 7 + 940), env, cycle: n, u};
+  });
+};
+
+const FogVeil = ({parts, G, amp, tip}: {parts: Part[]; G: number; amp: number; tip: V3}) => {
+  const id = useId();
+  if (amp <= 0) return null;
+  const outline = parts.filter((x) => !x.inner);
+  const patches = veilPatches(G);
+  // Height weight in plate px (same yG and H as fogWarp): h = (yG - y) / H.
+  const yG = P([STOP.xs, 0, STOP.zs])[1], H = yG - P([STOP.xs, 1.95, STOP.zs])[1];
+  const yAt = (h: number) => yG - h * H;
+  const hs = [0, 0.125, 0.25, 0.375, 0.5, 0.625, 0.75, 0.875, 1];
+  const [tx, ty] = P(tip);
+  const ds = [0, 0.2, 0.4, 0.6, 0.8, 1];
+  return (
+    <>
+      <defs>
+        <filter id={`${id}v`} x="-10%" y="-10%" width="120%" height="120%" colorInterpolationFilters="sRGB">
+          <feMorphology in="SourceAlpha" operator="dilate" radius={9} result="d" />
+          <feMorphology in="SourceAlpha" operator="erode" radius={7} result="e" />
+          <feComposite in="d" in2="e" operator="out" result="band" />
+          <feGaussianBlur in="band" stdDeviation={5} result="soft" />
+          <feFlood floodColor={FOG.veil} result="c" />
+          <feComposite in="c" in2="soft" operator="in" />
+        </filter>
+        <filter id={`${id}b`} x="-50%" y="-50%" width="200%" height="200%">
+          <feGaussianBlur stdDeviation={22} />
+        </filter>
+        <linearGradient id={`${id}h`} gradientUnits="userSpaceOnUse" x1="0" y1={yAt(0.3)} x2="0" y2={yAt(0.75)}>
+          {hs.map((u) => <stop key={u} offset={u} stopColor="#fff" stopOpacity={ease(u)} />)}
+        </linearGradient>
+        <radialGradient id={`${id}t`} gradientUnits="userSpaceOnUse" cx={tx} cy={ty} r={70}>
+          <stop offset={0} stopColor="#000" stopOpacity={1} />
+          {ds.map((u) => <stop key={u} offset={(15 + 55 * u) / 70} stopColor="#000" stopOpacity={1 - ease(u)} />)}
+        </radialGradient>
+        <mask id={`${id}w`} maskUnits="userSpaceOnUse" x={-200} y={-300} width={1500} height={2600}>
+          <rect x={-200} y={-300} width={1500} height={2600} fill={`url(#${id}h)`} />
+          <circle cx={tx} cy={ty} r={70} fill={`url(#${id}t)`} />
+        </mask>
+        <mask id={`${id}m`} maskUnits="userSpaceOnUse" x={-200} y={-300} width={1500} height={2600}>
+          <g filter={`url(#${id}b)`}>
+            {patches.map((q, i) => (q.env > 0 ? <ellipse key={i} cx={q.px} cy={q.py} rx={q.r} ry={q.r * 0.7} fill="#fff" fillOpacity={q.env} /> : null))}
+          </g>
+        </mask>
+      </defs>
+      <g mask={`url(#${id}w)`}>
+        <g mask={`url(#${id}m)`} opacity={0.75 * amp}>
+          <g filter={`url(#${id}v)`}>
+            {outline.map((x, i) => <polygon key={i} points={x.pts.map((q) => q.join(',')).join(' ')} fill="#000" />)}
+          </g>
+        </g>
+      </g>
+    </>
+  );
+};
+
 /** Torch beam (S03-SH03): from the narrator's torch off-frame low-left to the assembly; warm, <= GLOW_PEAK. */
 const Beam = ({beam, camera}: {beam: number; camera: Camera}) => {
   const id = useId();
@@ -654,10 +862,11 @@ export const Grain = ({opacity = 0.09}: {opacity?: number}) => {
 
 // ------------------------------------------------------------------ plates
 
-export type WindowOpts = {shot: ShotKey; bare?: boolean};
+/** `warp` (default on): VD17 per ST-09; `warp: false` renders the VD17-off reference for SP01 (b) / SP04 (c, d). */
+export type WindowOpts = {shot: ShotKey; bare?: boolean; warp?: boolean};
 
 /** SP01 window plate for one shot. `bare` paints only the assembly on white paper (SP01 b mask comparison). */
-export const windowShot = ({shot, bare = false}: WindowOpts): PaintedShot => {
+export const windowShot = ({shot, bare = false, warp = true}: WindowOpts): PaintedShot => {
   const camera = cameraFor(shot);
   const frameOf = (tl: number) => Math.round(tl * 30);
   return {
@@ -665,10 +874,10 @@ export const windowShot = ({shot, bare = false}: WindowOpts): PaintedShot => {
     serves: [shot],
     paper: bare ? '#ffffff' : '#7c8380',
     camera,
-    paint: (p, {tl}) => paintWindow(p, SHOT_G0[shot] + frameOf(tl), poseAt(shot, frameOf(tl)), bare),
+    paint: (p, {tl}) => paintWindow(p, SHOT_G0[shot] + frameOf(tl), poseAt(shot, frameOf(tl), warp), bare),
     Overlay: ({tl, width, height, camera: cam}) => {
       if (bare) return null;
-      const f = frameOf(tl), pose = poseAt(shot, f);
+      const f = frameOf(tl), pose = poseAt(shot, f, warp);
       return (
         <>
           <CameraLayer camera={cam} width={width} height={height}>
@@ -676,6 +885,9 @@ export const windowShot = ({shot, bare = false}: WindowOpts): PaintedShot => {
           </CameraLayer>
           <CameraLayer camera={cam} width={width} height={height} opacity={GLOW_PEAK}>
             <Rim parts={assemblyParts(pose)} />
+          </CameraLayer>
+          <CameraLayer camera={cam} width={width} height={height} blend="normal">
+            <FogVeil parts={assemblyParts(pose)} G={SHOT_G0[shot] + f} amp={pose.warp ?? 0} tip={pose.tip} />
           </CameraLayer>
           <CameraLayer camera={cam} width={width} height={height}>
             <Beam beam={pose.beam} camera={cam} />
@@ -693,13 +905,17 @@ export const windowShot = ({shot, bare = false}: WindowOpts): PaintedShot => {
 };
 
 /** Measured anchors for QA (plate px after the camera): helmet top, stack ground, hood/face, umbrella tip. */
-export const sp01Anchors = (shot: ShotKey, f: number) => {
-  const cam = cameraFor(shot)(f / 30), pose = poseAt(shot, f);
+export const sp01Anchors = (shot: ShotKey, f: number, warp = false) => {
+  const cam = cameraFor(shot)(f / 30), pose = poseAt(shot, f, warp);
   const parts = assemblyParts(pose).filter((x) => !x.inner);
   const ys = parts.flatMap((x) => x.pts.map((q) => toScreen(cam, q)[1]));
   return {
     top: Math.min(...ys), bottom: Math.max(...ys),
     helmet: toScreen(cam, P(pose.helmet.c)), hand: toScreen(cam, P(pose.rHand)), face: toScreen(cam, P(workerPt(0, 1.47, pose.lean))),
-    tip: toScreen(cam, P([STOP.xs + 0.46, 1.6, 0.05])), camera: cam,
+    tip: toScreen(cam, P(pose.tip)), warp: pose.warp ?? 0, camera: cam,
+    helmetBox: (() => {
+      const pts = helmetPts(pose.helmet.c, pose.helmet.a, HELMET_SHELL).map((q) => toScreen(cam, q));
+      return {x0: Math.min(...pts.map((q) => q[0])), x1: Math.max(...pts.map((q) => q[0])), y0: Math.min(...pts.map((q) => q[1])), y1: Math.max(...pts.map((q) => q[1]))};
+    })(),
   };
 };

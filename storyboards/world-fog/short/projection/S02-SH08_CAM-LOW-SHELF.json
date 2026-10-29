@@ -1,5 +1,5 @@
 {
- "_note": "S02-SH08 and S03-SH01 (assembly at the stop); S02-SH05 uses this camera without actors | WORLD-SHOP (left-handed) points and camera stored with x negated for this right-handed tool; see index.md#projection-checks",
+ "_note": "S02-SH08 and S03-SH01 (assembly at the stop); S02-SH05 uses this camera without actors | WORLD-SHOP (left-handed) points and camera stored with x negated for this right-handed tool; see index.md#projection-checks | SS-R3: cart flat card (brief R3 scale table): wheel and deck edge on the stack plane z = zs",
  "up": "y",
  "size": [
   1080,
@@ -66,12 +66,12 @@
   "wheel_FR": [
    -0.1,
    0.05,
-   0.3
+   0.62
   ],
   "deck_front_L": [
    0.35,
    0.17,
-   0.25
+   0.62
   ],
   "helmet_ctr": [
    0.1,

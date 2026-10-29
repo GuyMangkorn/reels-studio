@@ -234,3 +234,130 @@ at `e1fe80e` + uncommitted spike files. Spike entry only (`src/painted/spike/ind
   (preview beyond the sheet), `WFOG-SP01-S03-SH03_f0-f60_sheet.png`, `S03-SH03_sp01-lit_f0-f59.mp4`,
   `S03-SH03_sp01-lit_f30_capzone.png`; pair `S02-SH09_f179-vs-S03-SH03_f30_match-pair.png`.
 - Cast (no shot): `CAST-SHEET_occupant-age-lines_before-after.png`.
+
+## 2026-10-29 — Film brief R3: fog-lens illusion (VD17), PHONE-SVG, SP01 look calls
+
+Scope: Film stage `VB-WFOG-EP01-SHORT-R3` from the user's SS-R2 verdicts (delivery record) and Boss's previews. Brief:
+[visual-brief.md](../../storyboards/world-fog/short/visual-brief.md#fog-lens-illusion-vd17). Not committed.
+
+- Test (spike only): opt-in `warp` option in `src/painted/spike/WfogShop.tsx` (`fogWarp`, `FogVeil`, `warpAt`; default
+  off) and a `warp` prop in `src/painted/spike/index.ts`. Frames: `out/handoffs/world-fog/WFOG-EP01-SHORT/previews/film-r3-fogwarp/`
+  (`WFOG-FILM-R3-FW02_sheet.png`, two MP4s, FW01 first-pass sheet). Logs `out/logs/wfog-film-r3-*.log`.
+- Finding (technique): a per-vertex warp of the assembly polygons, after resampling edges to <= 10 px, is deterministic
+  (`cmp` identical twice with `--gl=angle`) and keeps the SVG rim and ground reflection aligned because they take the
+  same parts. A displacement filter over the canvas would bend the whole plate and separate from the polygon-based
+  overlays. Candidate painted-2d skill note (proposed, not applied; user review): "distort a painted shape by warping
+  its polygons before `brush.polygon`, not by filtering the canvas".
+- Finding (relax to honest): returning the parts unchanged at amount 0 (no resampling) keeps the lit frames byte-identical
+  to the no-warp render (S03-SH03 f22, f30); warp-off f30 is byte-identical to Boss's preview.
+- Measured at G1409 (bare): top 473 -> 449 px, height 939 -> 963 px, mask XOR 6.6 %. The test read: helmet becomes a
+  taller hooded dome, umbrella arm slightly sinuous, edges dissolve in patches; still a figure, now a strange one.
+  The user's motion read is the open check (SP04 a).
+- Known test limitation: the veil patches wrap inside the outline's bounding box, which moves with the pose; the brief
+  asks Boss for a fixed per-setup box with fade envelopes (SP04 f). Not rendered: SH04, SH07, SH08, S01.
+- Finding (colour key): the PHONE-SVG sample's article top bar has a small red pill (`#b8473a`); VD16 withholds red
+  until the beam and PD06 rules out live-news cues, so R3 asks for neutral grey.
+- Film calls on Boss's SP01 proposals: lean (hood as a shoulder hump) and straighten after full light accepted as look
+  (values Mark's); catch must break the dome out of the coat outline (Boss's lower/wider catch is a candidate);
+  cart as a flat card on the stack plane accepted as a scale exception; no darkening of the reveal for captions.
+- Possible fact-check touch: VD17 is optical, unchanged geometry; Film reads it as outside the fact-check's
+  "anatomy deformation" exclusion. Boat confirmation recommended (coordinator's call).
+
+## 2026-10-30 — Boss: SS-R3 re-render (VD17 productionized), S02-SH09, S03-SH03, S02-SH02
+
+Scope: Boss limited stage. Rendered against `WFOG-EP01-SHORT-SS-R3` / `VB-WFOG-EP01-SHORT-R3` at `67b9f85` + uncommitted
+spike files (open PR #115; not committed). Spike entry only (`src/painted/spike/index.ts`); no registry, Root, video
+index or timeline change. Logs and scratch tools under `out/logs/wfog-ssr3*`.
+
+### Code (spike)
+
+- `src/painted/spike/WfogShop.tsx`
+  - **VD17 on by default** (`windowShot({warp})` default true; composition prop `warp: false` renders the VD17-off
+    reference). `warpAt` per ST-09: SH09 1 → 0.7 f18–f26, 0.7 to f56, → 1 f56–f64; SH03 1 → 0 f2–f22 (smoothstep),
+    exactly 0 from f22.
+  - **FW-A** as Film's spec, with the tip pin now taken from the pose's current umbrella tip. Parts that the field
+    does not reach (w = 0 at every resampled point: wheels, casters, deck, boots) are returned unresampled, so their
+    fills stay byte-identical to the VD17-off render (resampling alone changes p5.brush fill/edge noise, see below).
+  - **FW-B veil (production fixes):** patch field anchored to a fixed per-setup box (`VEIL_BOX['CAM-GLASS-OUT']`
+    plate x 330–850 × y 380–1060 at s 1), 6 patches, each pass up through the box is one cycle with an 18 % fade-in /
+    18 % fade-out envelope (fill-opacity) and x re-seeded per pass; sideways ±20 px/s folds back at the box sides
+    (continuous). A second mask multiplies the veil by the FW-A weight without `A` (height smoothstep 0.30–0.75 as a
+    gradient, tip exclusion smoothstep 15–70 px as a radial gradient), opacity 0.75·`A`. `veilPatches(G)` exported for QA.
+  - **SH09 poses (SS-R3):** slide f24–f32 → (0.10, 1.66), tip f32–f35 → (0.33, 1.56, 0.68), fall f35–f45 (y ∝ u²) to the
+    catch (0.40, 1.03, 0.78) 22°; hand at (0.28, 0.91, 0.80) by f44, 3 cm give f45–f58, tilt 22 → 16 f45–f70; lift
+    f84–f117 as a timed Hermite through (0.34, 1.62, 0.72) f100 and (0.10, 1.78, 0.66) f110 (eased ends, no stops at
+    through-points); regrip to helmet + (0, −0.15, 0.18) f84–f88, carried there to f110, onto the rear-right rim
+    (0.10, 1.55, 0.80) f110–f117; seated `MATCH` + 6 mm settle f117–f121. Glove layering is an explicit pose flag.
+  - **SH03 poses (SS-R3):** `MATCH` f0–f35; f36–f54 lean 9° → 0 with the helmet pressed 12° → 0 (hand rides the rim);
+    hand to the brace f54–f66; umbrella lowered to `LIT-LOWER` f66–f96 (direction nlerp about the hand, hook moves to
+    the far end); shoulders drop f96–f110; squint f44–f56; gaze toward the torch from f96.
+- `src/painted/spike/WfogPhone.tsx`: article top-bar pill `#6f777a` (was red `#b8473a`); sleeve olive `#6b7a5a` with a
+  hem band and fold shade (knit ribs removed).
+- Checks: `npx tsc --noEmit -p . --typeRoots ./node_modules/@types` 0; eslint on `src/painted/spike/` 0; `npm test`
+  0 failures (`out/logs/wfog-ssr3-test.log`).
+
+### Measurements (geometry via `sp01Anchors`; pixels via bare renders, dark-mask lum < 128)
+
+- S02-SH09 f45 (s 1.2318): helmet centre (710, 895), bbox x 602–810 × y 796–1003, catch hand (657, 946) — sheet values.
+  f179: helmet centre (491, 583), top 474, hand on rim (580, 669), face (569, 710), tip (740, 629), ground 1412/1413.
+- Lead: bare VD17-off f179 940 px; VD17-on f179 964 px (top 449). Minimum over SH09 (VD17 on) 766 px at f52;
+  SH03 942 px (f21). Top of the assembly over SH09 413–609, SH03 445–474 (inside 300–950).
+- Item 12 (clue-safe): during f45–f84 the caught helmet's lower rim reaches y 1003 (f45) to **1016 (f51, impact
+  give)**, 1006 at f84; the catch hand y 946 (f45) to **960 (f52)**, 952 at f84. Past 950 by ≤ 66 px (rim) / 10 px
+  (hand) in this caption-free shot; helmet top and face stay inside.
+- Item 14 (lift): reach from the leaned right shoulder (−0.02, 1.15, 1.07) peaks at **0.545 m at f110** (> 0.54 m bone
+  sum on f106–f110, 5 frames). First pass blended the regrip→rim offset over the whole lift and peaked at 0.59 m; holding
+  the rear-lower-rim grip to f110 (the sheet's basis) fixes it. Read (dense sheet): the helmet swings out at the side,
+  rises over the corner (f96–f102) and drops onto the stack; at full extension the arm is hidden behind the helmet/hood
+  mass, so no stiff straight arm reads. Looks right to me; user/reviewer read pending.
+- VD17 strength (bare, on vs off): mask XOR 7.4 % (f0), 3.7 % (f45, A 0.7), 4.0 % (f84), 5.5 % (f100), 6.1 % (f179).
+- Caption zone (band 1000–1248): S02-SH02 f63 mean 0.337 / p95 0.786; S03-SH03 f30 0.433 / 0.667, f80 0.432 / 0.669;
+  S02-SH09 f179 0.287 / 0.436 (no captions). Unchanged by this pass; scrim is Editor's (MK-WF-DEP-10).
+
+### SP01 / SP04 rows
+
+- SP01 (b) R3: bare VD17-off SH09 f179 vs SH03 f0 **byte-identical** (`cmp`). From SH03 f22 the full frame VD17-on
+  equals VD17-off **byte for byte** on stills (f22, f30, f60, f119). f21 (A 0.007) differs (expected); no f21→f22 pop:
+  frame-to-frame change in the helmet/carton box is 199.9k px at f21→22 vs 197–199k for f20→21 and f22→23 (light lerp).
+- SP01 (c): hand touches the helmet at the catch (palm under the inner lower rim; glove drawn behind the shell). The
+  sheet's "fog ≥ 25 px between the dome and the umbrella hand" **fails as drawn**: the drawn left glove is 9 px from
+  the dome at f45 and the umbrella handle/hook below the glove touches it (0.3 px; shaft root 1.8 px). The sheet's 35 px
+  is to the hand point, not the glove edge. Dome share outside the coat outline not pixel-measured (visually clear).
+- SP01 (e) pass; SP01 (f) pass except item 12; SP01 (g) / SP04 (g): SH09 f45, f87, f100, f105, f179 and SH03 f12, f22
+  rendered twice as stills with `--gl=angle`, `cmp` identical.
+- SP04 (c): geometric check over every SH09 frame and SH03 f0–f21: max displacement 0 for points below the 0.30 ramp
+  and within the 15 px tip pin (overall max 33 px). Pixels below the ramp: wheels, deck, casters, boots byte-identical
+  to VD17-off; differences only in a band just under the ramp line (coat hem and lower cartons, which straddle it).
+- SP04 (d) pass (above). SP04 (e) pass. SP04 (f): one patch wrap falls in the rendered ranges (SH09 f87, patch 2,
+  envelope 1e-4 → 0); F−1/F/F+1 crop shows nothing appearing or vanishing; dense sheets (SH09 f18–f66 and f84–f120
+  every 6; SH03 f0–f36 every 3) and the MP4 show no veil pop. Three wrap points as the SP asks are not available inside
+  these shots (passes last 21–48 s); the envelope makes any wrap zero-opacity by construction. No inside actor in
+  these plates. SP04 (a), (b) and SP01 (a): need the user / a reviewer without the script.
+
+### Findings
+
+- **Seek vs sequence render (spike, painted window plate).** Stills rendered twice are byte-identical, but a PNG
+  sequence render (`--sequence`, any concurrency) differs from the direct still of the same frame by ≤ 13 levels on
+  ≤ ~900 px, along the architecture/foreground SVG edges (feTurbulence displacement) and floor, never in the assembly.
+  Byte-equality checks (SP01 b, SP04 d) are therefore judged on stills; the sequence on/off comparison shows the same
+  sparse edge noise. Candidate finding for dev-findings (proposed, not applied).
+- **Resampling changes p5.brush fills.** Resampling a polygon (same outline) changes the seeded fill mottling and edge
+  noise; hence the "untouched part" rule above. Candidate painted-2d note together with Film's warp note.
+- **S03-SH03 brace covers the mouth (for Mark).** Upright, the face (≈ 621, 708) sits right above the stack's right
+  edge, so the brace point (0.15, 1.30, 0.85) projects the glove (603, 787) over his chin/mouth from f60 to the end
+  ("hand over mouth" read in the reveal). Proposal: brace lower, about y 1.05 (forearm 0.26 m from the upright
+  shoulder), or keep the right hand on the helmet rim. Not changed here (Mark's value).
+- **Wedge under the tilted helmet.** At `MATCH` (12°) the helmet's lower-left rim lifts off the carton; the fog wedge
+  between them catches the rim light and, with VD17, reads as a narrow neck. Honest geometry (VD17-off shows it too).
+
+### Previews (out/handoffs/world-fog/WFOG-EP01-SHORT/previews/ss-r3/, rendered against SS-R3)
+
+- S02-SH09: `S02-SH09_ss-r3_f{0,24,32,35,40,45,70,84,100,110,117,179}.png`, `S02-SH09_ss-r3_f0-f179_sheet.png`,
+  `S02-SH09_ss-r3_f18-f66_every6_crop-sheet.png`, `S02-SH09_ss-r3_f84-f120_every6_crop-sheet.png`,
+  `S02-SH09_ss-r3_veil-wrap_f86-f88_crop.png`, `S02-SH09_ss-r3_f179_bare-vd17-off.png`, `S02-SH09_ss-r3_f0-f179.mp4`.
+- S03-SH03: `S03-SH03_ss-r3_f{0,12,22,30,45,54,60,80,96,119}.png`, `S03-SH03_ss-r3_f0-f119_sheet.png`,
+  `S03-SH03_ss-r3_f0-f36_every3_crop-sheet.png`, `S03-SH03_ss-r3_f0_bare-vd17-off.png`, `S03-SH03_ss-r3_f0-f119.mp4`.
+- S02-SH02: `S02-SH02_ss-r3_f{0,18,30,63,89}.png`, `S02-SH02_ss-r3_f0-f89_sheet.png`,
+  `S02-SH02_ss-r3_f63_pill-cuff_crop.png`, `S02-SH02_ss-r3_f0-f89.mp4`.
+- MP4s are encoded from the PNG sequences (ffmpeg h264 crf 18, no audio). Not checked: Studio seek/scrub; SH04/SH07
+  (VD17 with the approach and the moving tip pin), S01 car plate; timeline integration (none).

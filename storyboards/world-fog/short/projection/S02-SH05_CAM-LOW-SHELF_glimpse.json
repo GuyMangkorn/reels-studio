@@ -1,5 +1,5 @@
 {
- "_note": "S02-SH05 low glimpse, ASM-PATH end state S=(0.00,1.35) at G792 (start G738 S=(0.10,1.60)); picture push s 1.12-1.18 about (760,640) applied after the tool | WORLD-SHOP (left-handed) points and camera stored with x negated for this right-handed tool; see index.md#projection-checks",
+ "_note": "S02-SH05 low glimpse, ASM-PATH end state S=(0.00,1.35) at G792 (start G738 S=(0.10,1.60)); picture push s 1.12-1.18 about (760,640) applied after the tool | WORLD-SHOP (left-handed) points and camera stored with x negated for this right-handed tool; see index.md#projection-checks | SS-R3: cart flat card (brief R3 scale table): wheel and deck edge on the stack plane z = zs",
  "up": "y",
  "size": [
   1080,
@@ -26,12 +26,12 @@
   "wheel_FR": [
    -0.2,
    0.05,
-   1.03
+   1.35
   ],
   "deck_front_L": [
    0.25,
    0.17,
-   0.98
+   1.35
   ],
   "helmet_top": [
    -0.0,
