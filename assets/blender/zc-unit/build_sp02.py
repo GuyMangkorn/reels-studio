@@ -12,7 +12,9 @@ vFOV from coverage C at x = 0; lens shift solved so the floor at x = 0 projects 
 Usage (headless, repo root):
   Blender -b --python assets/blender/zc-unit/build_sp02.py -- <cmd> [args]
     geometry                      contact / door-wall / cap numeric checks (no render)
-    still <shot> [outdir]         shot in B02 | B09SH01 | B09SH03 | B07SH02 | B07SH02mid  (Eevee 64, 1080x1920 PNG)
+    bag                           zc-bag visibility / phone gap (B02-SH02, B03, B09-SH01/SH03, B10-SH01 at the R3.3 camera)
+    b10                           B10-SH01 at the R3.3 camera: stills c0 / c245 + lead, face box, door face, cabinet and sight-line measurements
+    still <shot> [outdir]         shot in B02 | B02start | B09SH01 | B09SH03 | B07SH02 | B07SH02mid  (Eevee 64, 1080x1920 PNG)
     truck [first-last] [outdir]   60-frame CAM-SECTION truck, corridor capped
     project                       projected sizes (lead height, floor line) per shot
 Results merge into sp02-manifest.json (next to this file); PNGs go to out/blender/zc-unit/sp02/ (Git-ignored).
@@ -37,6 +39,7 @@ CORR_W = 1.8
 CAM_X, CAM_Z = 17.0, 1.70
 FLOOR_PX = 860
 SLAB = 0.25
+CAB_H = 1.20              # zc-cabinet height, SCALE-ZC-R2 (the SP02 blockout used 1.75 m until SS-R2.4)
 CH = 2.6
 STEP = CH + SLAB          # vertical period of the stacked units
 SEAT_Z = 0.45
@@ -45,9 +48,13 @@ UP = Vector((0, 0, 1))
 # ------------------------------------------------------------------ shots (values copied from sheets ZCONDO-SHORT-SS-R2.1)
 SHOTS = {
     # name: coverage m, camera y, corridor state, lead pose
-    'B02': dict(cov=6.4, cam_y=0.0, corridor='open', pose='stand_b02'),
-    'B09SH01': dict(cov=3.4, cam_y=0.90, corridor='capped', pose='floor'),
+    'B02': dict(cov=6.4, cam_y=0.0, corridor='open', pose='stand_b02'),       # B02-SH02 end state (clip >= 125): cabinet flush, bag hidden behind it
+    'B02start': dict(cov=6.4, cam_y=0.0, corridor='open', pose='stand_b02_c39', cabinet='parked'),  # B02-SH02 clip 39: cabinet parked, bag visible, both hands free
+    # measurement-only cameras for the bag report (sheet values: B03-SH01 / B09-SH01 SS-R2.3; B10-SH01 is a perspective camera, see cmd_bag)
+    'B03': dict(cov=6.6, cam_y=2.05, corridor='capped', pose='stand_b02'),
+    'B09SH01': dict(cov=3.4, cam_y=0.78, corridor='capped', pose='floor'),     # SS-R2.4 / brief R3.2 camera y (the stale y 0.90 entry was removed)
     'B09SH03': dict(cov=3.4, cam_y=0.35, corridor='capped', pose='floor'),
+    'B10SH01': dict(cov=3.4, cam_y=0.0, corridor='capped', pose='none'),     # perspective camera, set by setup_b10; cov/cam_y unused
     'B07SH02': dict(cov=4.6, cam_y=8.19, corridor='capped', pose='sofa'),     # truck clip 95 = last TH frame (5.70 + 95 * 0.0262)
     'B07SH02mid': dict(cov=4.6, cam_y=6.51, corridor='capped', pose='sofa'),  # clip 31, he is fully in frame from here
     'B07SH02start': dict(cov=4.6, cam_y=5.70, corridor='capped', pose='sofa'),  # clip 0
@@ -142,9 +149,24 @@ def build_unit(m, corridor):
     return
 
 
+BAG_POS = (-0.75, 0.38, 0.0)      # MK-ZC-ST-07 rest position (SS-R2.4: y 0.38, was 0.40)
+BAG_FOOT = (0.40, 0.28)           # slumped footprint x, y (estimate from the sheet)
+BAG_H = 0.45
+
+
+def add_bag(m):
+    """zc-bag (MK-ZC-ST-07): slumped primitive bag, one instance, static from B02-SH01 f 14 (rest pose only; the drop is B02-SH01)."""
+    x, y, _ = BAG_POS
+    rx, ry = BAG_FOOT[0] / 2, BAG_FOOT[1] / 2
+    root = cb.empty('zc-bag')
+    cb.prim('sphere', 'zc-bag_body', (x, y, 0.19), (rx, ry, 0.19), m['bag'], parent=root)       # squashed body, z 0 .. 0.38
+    cb.prim('cone', 'zc-bag_knot', (x + 0.02, y, BAG_H - 0.04), (0.04, 0.04, 0.05), m['bag'], parent=root)   # knot to z 0.45
+    return root
+
+
 def add_cabinet(m, flush):
     y0 = DOOR_WALL if flush else 1.05
-    return B('zc-cabinet', -0.4, 0.4, y0, y0 + 0.40, 0, 1.75, m['wood'])
+    return B('zc-cabinet', -0.4, 0.4, y0, y0 + 0.40, 0, CAB_H, m['wood'])
 
 
 def add_b09_props(m):
@@ -254,6 +276,10 @@ def pose_sofa(m):
 def pose_stand_b02(m):
     """B02-SH02 end state: he stands with his back to the cabinet at (0.0, 0.80), facing +Y."""
     r = cb.zc_you(m)
+    # both hands free (MK-ZC-ST-07): drop the bag the shared zc_you placeholder carries in its right hand (zc-corridor/SP01 keep it)
+    for o in list(r.children):
+        if o.name.startswith(('zc-you_trashbag', 'zc-you_bagknot')):
+            bpy.data.objects.remove(o, do_unlink=True)
     r.location = (0.0, 0.80, 0)
     r.rotation_euler = (0, 0, math.radians(180))   # local front -Y -> +Y
     return r, {}
@@ -317,7 +343,8 @@ def build_shot(shot, truck=False):
     m = sp02_materials()
     S = SHOTS[shot] if not truck else dict(cov=6.0, cam_y=0.0, corridor='capped', pose='none')
     build_unit(m, S['corridor'])
-    add_cabinet(m, flush=True)     # barricade state y [0.18, 0.58] (B02-SH02 clip 84 onward, B09)
+    add_cabinet(m, flush=S.get('cabinet', 'flush') == 'flush')     # barricade state y [0.18, 0.58] (B02-SH02 clip 84 onward, B09)
+    add_bag(m)
     pose = {}
     if S['pose'] == 'floor':
         add_b09_props(m)
@@ -326,6 +353,13 @@ def build_shot(shot, truck=False):
         _, pose = pose_sofa(m)
     elif S['pose'] == 'stand_b02':
         pose_stand_b02(m)
+        inf = cb.zc_infected(m)
+        inf.location = (0.0, -0.40, 0.0)
+        inf.rotation_euler = (0, 0, math.radians(180))
+    elif S['pose'] == 'stand_b02_c39':
+        lead, _ = pose_stand_b02(m)
+        lead.location = (0.65, 1.25, 0)       # clip 39: at the cabinet's +X side, about to drag; faces -Y
+        lead.rotation_euler = (0, 0, 0)
         inf = cb.zc_infected(m)
         inf.location = (0.0, -0.40, 0.0)
         inf.rotation_euler = (0, 0, math.radians(180))
@@ -507,6 +541,158 @@ def cmd_truck(rng=None, outdir=None):
                              'max_seconds': v[-1], 'settings': info, 'outdir': os.path.relpath(outdir, ROOT)})
 
 
+def bag_report(cam, label):
+    """zc-bag measurement from `cam`: screen bbox, bbox of the cabinet, occlusion by anything but the bag (ray per bag vertex), gaps to the phone."""
+    bpy.context.view_layer.update()
+    dg = bpy.context.evaluated_depsgraph_get()
+    sc = bpy.context.scene
+    pts = mesh_points('zc-bag')
+    xy = [project(cam, p) for p in pts]
+    org = cam.matrix_world.translation
+    blockers, vis = {}, 0
+    for p in pts:
+        d = p - org
+        hit, loc, n, idx, obj, mw = sc.ray_cast(dg, org, d.normalized(), distance=d.length - 1e-3)
+        if hit and not obj.name.startswith('zc-bag'):
+            blockers[obj.name] = blockers.get(obj.name, 0) + 1
+        elif not hit:
+            vis += 1
+    res = {'view': label, 'bag_px_x': [round(min(q[0] for q in xy)), round(max(q[0] for q in xy))],
+           'bag_px_y': [round(min(q[1] for q in xy)), round(max(q[1] for q in xy))],
+           'bag_vertices': len(pts), 'vertices_unblocked_by_other_objects': vis, 'blocked_by': blockers,
+           'bag_footprint_x': [round(min(p.x for p in pts), 3), round(max(p.x for p in pts), 3)],
+           'bag_footprint_y': [round(min(p.y for p in pts), 3), round(max(p.y for p in pts), 3)],
+           'bag_z': [round(min(p.z for p in pts), 3), round(max(p.z for p in pts), 3)]}
+    cab = [o for o in bpy.data.objects if o.name == 'zc-cabinet']
+    if cab:
+        cp = mesh_points('zc-cabinet')
+        cxy = [project(cam, p) for p in cp]
+        res['cabinet_px_x'] = [round(min(q[0] for q in cxy)), round(max(q[0] for q in cxy))]
+        res['cabinet_px_y'] = [round(min(q[1] for q in cxy)), round(max(q[1] for q in cxy))]
+        res['cabinet_y'] = [round(min(p.y for p in cp), 3), round(max(p.y for p in cp), 3)]
+    ph = [o for o in bpy.data.objects if o.name == 'zc-phone']
+    if ph:
+        # gap in the floor plane between the bag's footprint (vertex hull, ellipse-accurate to the mesh) and the phone box / phone centre
+        fp = [(p.x, p.y) for p in pts if p.z < 0.2]
+        box = (-0.84, -0.76, 0.58, 0.66)
+        def dbox(x, y):
+            dx = max(box[0] - x, 0, x - box[1])
+            dy = max(box[2] - y, 0, y - box[3])
+            return math.hypot(dx, dy)
+        res['gap_bag_to_phone_box_m'] = round(min(dbox(x, y) for x, y in fp), 4)
+        res['gap_bag_to_phone_centre_m'] = round(min(math.hypot(x + 0.80, y - 0.62) for x, y in fp), 4)
+    return res
+
+
+# B10-SH01 (SS-R2.4 / brief R3.3): perspective camera, bathroom side, him left of centre, door face right
+B10_CAM0 = Vector((1.300, 3.250, 1.580))
+B10_CAM1 = Vector((1.287, 3.212, 1.580))     # baked dolly end (+0.04 m along the view axis)
+B10_AIM = Vector((0.25, 0.18, 1.58))
+B10_LEAD = (0.80, 0.92)
+B10_FACE_TO = (0.0, 0.35)
+B10_HEAD_TURN_DEG, B10_SHOULDER_TURN_DEG = 75.0, 50.0      # toward his right (the lens), complete by clip 117
+
+
+def setup_b10(cam, lead, end):
+    """Camera (start or dolly end), lead facing and, at `end`, the head 75 deg + shoulders 50 deg turn toward the lens (placeholder parts)."""
+    cam.data.angle_y = math.radians(55)
+    cam.data.shift_x, cam.data.shift_y = 0.0, -0.211
+    cam.rotation_euler = (B10_AIM - B10_CAM0).to_track_quat('-Z', 'Y').to_euler()
+    cam.location = B10_CAM1 if end else B10_CAM0
+    lead.location = (B10_LEAD[0], B10_LEAD[1], 0)
+    dx, dy = B10_FACE_TO[0] - B10_LEAD[0], B10_FACE_TO[1] - B10_LEAD[1]
+    lead.rotation_euler = (0, 0, math.atan2(dx, -dy))       # local front is -Y
+    if end:
+        for o in lead.children:
+            n = o.name
+            if n.endswith(('_head', '_hair', '_earL', '_earR')):
+                o.matrix_basis = Matrix.Rotation(-math.radians(B10_HEAD_TURN_DEG), 4, 'Z') @ o.matrix_basis
+            elif n.endswith(('_torso', '_neck')) or '_arm' in n or '_fore' in n:
+                o.matrix_basis = Matrix.Rotation(-math.radians(B10_SHOULDER_TURN_DEG), 4, 'Z') @ o.matrix_basis
+    bpy.context.view_layer.update()
+
+
+def build_b10(end):
+    sc, cam, info, pose, m = build_shot('B10SH01')
+    lead, _ = pose_stand_b02(m)
+    # blockout-only visual aid: dark door leaf on the door face (plain, no peephole), so the door reads in the still; 1.5 mm proud of the door wall
+    B('zc-door_leaf_aid', -cb.DOOR_W / 2, cb.DOOR_W / 2, DOOR_WALL, DOOR_WALL + 0.0015, 0, cb.DOOR_H, cb.mat('sp02_door_leaf', cb.srgb('#2b2823'), 0.6))
+    cam = bpy.data.objects['zc-cam_sp02']
+    setup_b10(cam, lead, end)
+    return sc, cam, info, lead
+
+
+def b10_measure(cam, lead, label):
+    dg = bpy.context.evaluated_depsgraph_get()
+    sc = bpy.context.scene
+    r = {'view': label, 'camera': [round(v, 3) for v in cam.location], 'lead_px': lead_px(cam), 'bag': bag_report(cam, label)}
+    head = [project(cam, p) for o in lead.children if o.name.endswith(('_head', '_hair', '_earL', '_earR')) for p in mesh_points(o.name)]
+    r['head_px'] = {'x': [round(min(q[0] for q in head)), round(max(q[0] for q in head))], 'y': [round(min(q[1] for q in head)), round(max(q[1] for q in head))]}
+    face = r['head_px']
+    r['face_box_ok_x220_420_y420_650'] = bool(face['x'][0] >= 220 and face['x'][1] <= 420 and face['y'][0] >= 420 and face['y'][1] <= 650)
+    r['head_clear_of_caption_zone_y860'] = bool(face['y'][1] < 860)
+    corners = [project(cam, (x, DOOR_WALL, z)) for x, z in ((-cb.DOOR_W / 2, 0.0), (cb.DOOR_W / 2, 0.0), (-cb.DOOR_W / 2, cb.DOOR_H), (cb.DOOR_W / 2, cb.DOOR_H))]
+    r['door_face_px'] = {'x': [round(min(c[0] for c in corners)), round(max(c[0] for c in corners))],
+                         'y_top': [round(corners[2][1]), round(corners[3][1])], 'y_threshold': [round(corners[0][1]), round(corners[1][1])]}
+    band = [project(cam, (x, DOOR_WALL, z)) for x in (-cb.DOOR_W / 2, cb.DOOR_W / 2) for z in (1.45, 1.70)]
+    r['plain_band_z1.45_1.70_px'] = {'x': [round(min(c[0] for c in band)), round(max(c[0] for c in band))], 'y': [round(min(c[1] for c in band)), round(max(c[1] for c in band))]}
+    cp = [project(cam, p) for p in mesh_points('zc-cabinet')]
+    r['cabinet_px'] = {'x': [round(min(q[0] for q in cp)), round(max(q[0] for q in cp))], 'y_top': round(min(q[1] for q in cp))}
+    label_box = (460, 295, 880, 470)
+    r['label_box_inside_door_face_x'] = bool(label_box[0] >= r['door_face_px']['x'][0] and label_box[2] <= r['door_face_px']['x'][1])
+    r['label_box_gap_to_face_box_x_px'] = label_box[0] - face['x'][1]
+    r['label_box_above_plain_band_px'] = r['plain_band_z1.45_1.70_px']['y'][0] - label_box[3]
+    # sight lines from the lens to a grid on the door face: plain band (z 1.45-1.70) and the door-centre line x = 0 above the cabinet (z 1.25-2.00); expected first hit = the door face itself
+    org = cam.matrix_world.translation
+    def first_hits(pts):
+        blk, ok = {}, 0
+        for p in pts:
+            p = Vector(p)
+            d = p - org
+            hit, loc, n, idx, obj, mw = sc.ray_cast(dg, org, d.normalized(), distance=d.length + 1e-3)
+            if hit and (loc - p).length < 3e-3:
+                ok += 1
+            else:
+                key = obj.name if hit else 'none'
+                blk[key] = blk.get(key, 0) + 1
+        return ok, len(pts), blk
+    band_pts = [(x, DOOR_WALL, z) for x in [-0.43 + 0.86 * i / 8 for i in range(9)] for z in (1.46, 1.55, 1.64, 1.69)]
+    cent_pts = [(0.0, DOOR_WALL, 1.25 + 0.75 * i / 15) for i in range(16)]      # above the 1.20 m cabinet (below it the door is hidden by design)
+    for k, pts in (('plain_band', band_pts), ('door_centre_line', cent_pts)):
+        ok, n, blk = first_hits(pts)
+        r[f'rays_{k}'] = {'visible': ok, 'of': n, 'blocked_by': blk}
+    return r
+
+
+def cmd_b10(outdir=None):
+    outdir = outdir or os.path.join(ROOT, 'out', 'blender', 'zc-unit', 'sp02', 'B10-SH01')
+    os.makedirs(outdir, exist_ok=True)
+    res = {'mannequin': 'placeholder zc_you primitives (rigged zc-you does not exist yet; head/shoulder turn imitated by rotating placeholder parts)',
+           'cabinet_h_m': CAB_H, 'bag_pos': BAG_POS}
+    for key, end in (('c0', False), ('c245', True)):
+        sc, cam, info, lead = build_b10(end)
+        res[key] = b10_measure(cam, lead, 'B10-SH01 ' + key)
+        sc.render.filepath = os.path.join(outdir, f'{key}.png')
+        bpy.ops.render.render(write_still=True)
+        res[key]['file'] = os.path.relpath(sc.render.filepath, ROOT)
+        print('[zc-unit] B10 ' + json.dumps(res[key]), flush=True)
+    merge('B10-SH01', res)
+
+
+def cmd_bag():
+    out = {'zc-bag': {'rest_pos': BAG_POS, 'footprint_xy_m': BAG_FOOT, 'height_m': BAG_H, 'cabinet_h_m': CAB_H}}
+    for key in ('B03', 'B09SH01', 'B09SH03', 'B02', 'B02start'):
+        sc, cam, info, pose, m = build_shot(key)
+        out[key] = bag_report(cam, key)
+        out[key]['camera_y'] = SHOTS[key]['cam_y']
+    # B09-SH01 / B09-SH03 phone gap is in their reports; B10-SH01 at the R3.3 camera, start and baked-dolly end (placeholder turn at the end)
+    for key, end in (('B10-SH01_c0', False), ('B10-SH01_c245', True)):
+        sc, cam, info, lead = build_b10(end)
+        out[key] = bag_report(cam, key)
+    merge('bag', out)
+    print('[zc-unit] BAG ' + json.dumps(out), flush=True)
+
+
 def main():
     a = sys.argv[sys.argv.index('--') + 1:] if '--' in sys.argv else []
     cmd = a[0] if a else 'geometry'
@@ -516,6 +702,10 @@ def main():
         print('[zc-unit] GEOMETRY ' + json.dumps(r), flush=True)
     elif cmd == 'still':
         cmd_still(a[1], a[2] if len(a) > 2 else None)
+    elif cmd == 'bag':
+        cmd_bag()
+    elif cmd == 'b10':
+        cmd_b10()
     elif cmd == 'truck':
         cmd_truck(a[1] if len(a) > 1 else None, a[2] if len(a) > 2 else None)
 
