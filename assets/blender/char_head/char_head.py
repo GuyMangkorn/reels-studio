@@ -38,25 +38,41 @@ PARAMS = dict(
     ear=1.0, ear_tilt=12.0, ear_flare=12.0, ear_turn=20.0, ear_z=0.004, ear_y=0.008, cheek=1.2,
     skin='#b98a6a', stubble=0.0, lip='#a8655a', hair='#17151a', hair2='#241c17', hair_hl='#2b2a34', brow_color='#16110e', iris_color='#6a4326',
     hair_style='side_sweep', hair_volume=1.0, hair_flicks=5, hair_messy=0.0, sideburn=0,
-    eye_shape=None, lid_mode='line', brow_taper=0.0, brow_tilt=0.0,
+    eye_shape=None, lid_mode='line', brow_taper=0.0, brow_tilt=0.0, brow_x0=0.012, brow_x1=0.068, brow_round=False, shade='cel', nose_ball=0.0,
     style='v1', oval=False, socket=1.0, brow_ridge=1.0,     # socket / brow_ridge: depth multipliers of the orbit dip and the brow ridge (v2 sets them high)
 )
 STYLE_V2 = dict(    # v2: round skull, one cut-out hair sheet (no flicks/tufts), visible but lighter upper lids (about a third less cover than v1), brows slightly lower
     style='v2', oval=True, head=(0.097, 0.104, 0.112), jaw_taper=0.0, chin=0.0, cheek=0.0, lip_full=0.3, hair_style='cutout', hair_flicks=0, hair_messy=0.0, hair_volume=1.0,
     nose_len=0.1, nose_w=1.3, nose_bridge=0.15, eye_r=0.0240, iris=0.74, eye_y=-0.0725, socket=2.4, brow_ridge=1.1, brow_z=0.041,
 )
+V3 = {   # v3: stylised soft-shaded 3D cartoon (user reference, 29 Oct): defined jaw and chin, rounded nose, big ears, heavy thick lids, short thick brows.
+    # Built on STYLE_V2 (cut-out hair, recessed sockets, ear rebuild); 'ref' = reference strength, 'restrained' = toned down for an adult lead.
+    'ref': dict(style='v3', oval=False, head=(0.095, 0.104, 0.114), jaw_taper=0.15, chin=0.75, cheek=1.0, lip_full=0.6, nose_len=0.55, nose_w=1.15,
+                nose_bridge=0.90, nose_ball=1.0, ear_flare=18.0, ear_turn=14.0, socket=1.8, brow_ridge=1.3, brow_z=0.044, ear=1.22, ear_z=-0.004, mouth_curve=0.0026, shade='soft'),
+    'restrained': dict(style='v3', oval=False, head=(0.095, 0.104, 0.113), jaw_taper=0.12, chin=0.55, cheek=0.8, lip_full=0.5, nose_len=0.40,
+                       nose_w=1.05, nose_bridge=0.6, nose_ball=0.8, ear_flare=15.0, socket=2.0, brow_ridge=1.2, brow_z=0.043, ear=1.10, ear_z=-0.002, mouth_curve=0.0018, shade='soft'),
+}
+V3_PARTS = {   # strength -> (eye shape, lid mode, brow shape)
+    'ref': ('heavy_round', 'thick', 'chunky_short'),
+    'restrained': ('heavy_round_open', 'thick', 'chunky_short_light'),
+}
 # v2 eye opening presets (deg on the eyeball: w = half width, up / down = half height above / below the centre line, k, m = corner/fullness exponents of
 # h(x) = (1 - |x|^k)^m, tilt = outer corner raised, wing = lash line thicker toward the outer corner) and brow presets
 EYE_SHAPES = {
     'round': dict(eye_w=50, eye_up=34, eye_down=32, eye_k=2.0, eye_m=0.5, eye_tilt=0, eye_wing=0.0, iris=0.78),
     'oval': dict(eye_w=58, eye_up=26, eye_down=22, eye_k=2.0, eye_m=0.5, eye_tilt=0, eye_wing=0.0, iris=0.72),
     'almond': dict(eye_w=62, eye_up=26, eye_down=17, eye_k=1.7, eye_m=0.8, eye_tilt=2, eye_wing=0.3, iris=0.70),
+    'heavy_round': dict(eye_w=56, eye_up=14, eye_down=30, eye_k=2.0, eye_m=0.5, eye_tilt=-2, eye_wing=0.0, iris=0.40),       # v3: lid over the top third
+    'heavy_round_open': dict(eye_w=55, eye_up=20, eye_down=29, eye_k=2.0, eye_m=0.5, eye_tilt=-1, eye_wing=0.0, iris=0.42),
     'cat': dict(eye_w=64, eye_up=27, eye_down=14, eye_k=1.5, eye_m=0.9, eye_tilt=8, eye_wing=0.9, iris=0.68),
 }
-LID_MODES = ('none', 'line', 'lid')     # none: skin edge only; line: thin dark lid line; lid: thick lid line + a faint crease above it
+LID_MODES = ('none', 'line', 'lid', 'thick')     # none: skin edge only; line: thin dark lid line; lid: thick lid line + a faint crease above it;
+# thick (v3): 3D skin lids standing proud of the eye with a soft pink rim, no dark line
 BROW_SHAPES = {
     'straight_soft': dict(brow_arch=0.0008, brow_thick=1.0, brow_taper=0.35, brow_tilt=0.0, brow_len=1.0),
     'gentle_arch': dict(brow_arch=0.0050, brow_thick=0.95, brow_taper=0.5, brow_tilt=2.0, brow_len=1.0),
+    'chunky_short': dict(brow_arch=0.0020, brow_thick=1.65, brow_taper=0.12, brow_tilt=3.0, brow_len=1.0, brow_x0=0.017, brow_x1=0.050, brow_round=True),
+    'chunky_short_light': dict(brow_arch=0.0018, brow_thick=1.35, brow_taper=0.2, brow_tilt=2.0, brow_len=1.0, brow_x0=0.016, brow_x1=0.054, brow_round=True),
     'angled_taper': dict(brow_arch=0.0015, brow_thick=1.1, brow_taper=0.8, brow_tilt=-9.0, brow_len=1.05),   # tilt < 0: inner end lower than the outer end
 }
 PRESETS = {
@@ -97,11 +113,17 @@ def params(**kw):
     return p
 
 
-def style(name, base=None, eye='almond', lids='line', brow='straight_soft', **kw):
-    """Apply a head style ('v1' default look | 'v2' oval/cut-out, with eye=EYE_SHAPES key, lids=LID_MODES, brow=BROW_SHAPES key) on top of `base` parameters (or the defaults); keywords win."""
+def style(name, base=None, eye=None, lids=None, brow=None, strength='restrained', **kw):
+    """Apply a head style on top of `base` parameters (or the defaults); keywords win.
+    'v1' default look | 'v2' oval/cut-out (eye=EYE_SHAPES key, lids=LID_MODES, brow=BROW_SHAPES key; defaults round / line / straight_soft, the user's pick) |
+    'v3' soft-shaded 3D cartoon on the v2 base (strength 'restrained' | 'ref' picks V3 and V3_PARTS; eye / lids / brow still override)."""
     p = dict(base or PARAMS)
-    if name == 'v2':
+    if name in ('v2', 'v3'):
         p.update(STYLE_V2)
+        de, dl, db = V3_PARTS[strength] if name == 'v3' else ('round', 'line', 'straight_soft')
+        eye, lids, brow = eye or de, lids or dl, brow or db
+        if name == 'v3':
+            p.update(V3[strength])
         p.update(EYE_SHAPES[eye])
         p.update(BROW_SHAPES[brow])
         p.update(eye_shape=eye, lid_mode=lids)
@@ -236,9 +258,10 @@ def make_materials(p, prefix='ch', origin=(0, 0, 0)):
     d['pupil'] = _mat(f'{prefix}_pupil', srgb('#060606'))
     d['glint'] = _mat(f'{prefix}_glint', srgb('#ffffff'))
     d['ear_in'] = _mat(f'{prefix}_ear_in', tuple(c * 0.78 for c in srgb(p['skin'])))
-    toon(d['skin'], steps=4.0, amount=0.6)       # fewer, softer bands on the face: no contour lines across the sculpted cheeks
+    soft = p.get('shade') == 'soft'           # v3: almost continuous shading (soft 3D cartoon) instead of cel bands
+    toon(d['skin'], steps=8.0 if soft else 4.0, amount=0.12 if soft else 0.6)       # fewer, softer bands on the face: no contour lines across the sculpted cheeks
     for k in ('lips', 'hair', 'hair2', 'hair_hl', 'brow', 'mouth', 'lash', 'sclera', 'iris', 'pupil', 'ear_in'):
-        toon(d[k])
+        toon(d[k], amount=0.3 if soft else 0.8)
     gm = d['glint'].node_tree
     if not gm.nodes.get('zc_glint'):
         outn = [n for n in gm.nodes if n.type == 'OUTPUT_MATERIAL'][0]
@@ -376,7 +399,8 @@ def _eye_shells(prefix, n, s, c, R, p, mats):
     Returns (upper shell, lower shell). The upper shell carries the lid line (material 1) and an optional crease (material 2)."""
     w, up, dn, k, m, tilt, wing = p['eye_w'], p['eye_up'], p['eye_down'], p['eye_k'], p['eye_m'], p['eye_tilt'], p['eye_wing']
     mode = p['lid_mode']
-    t0 = {'none': 0.0, 'line': 3.0, 'lid': 5.5}[mode]
+    t0 = {'none': 0.0, 'line': 3.0, 'lid': 5.5, 'thick': 4.0}[mode]
+    thick = mode == 'thick'
     phis = sorted(set([-85.0 + 170.0 * i / 62 for i in range(63)] + [-w, w]))
 
     def h(x):
@@ -394,7 +418,7 @@ def _eye_shells(prefix, n, s, c, R, p, mats):
             cl = tilt * x
             hh = h(x)
             edge = cl + (up if kind == 'up' else -dn) * hh
-            rr = R * (1.035 if kind == 'up' else 1.02)
+            rr = R * ((1.075 if thick else 1.035) if kind == 'up' else (1.05 if thick else 1.02))
             if kind == 'up':
                 tt = t0 * (1 + wing * max(0.0, x)) * min(1.0, hh * 4.0)
                 tt = max(tt, 0.01)                                  # same row count in every column (collapses to a point at the corners)
@@ -404,14 +428,16 @@ def _eye_shells(prefix, n, s, c, R, p, mats):
                 top = els[-1]
                 els += [top + (80.0 - top) * f for f in (0.15, 0.35, 0.6, 0.8, 1.0)]
             else:
-                els = [edge - (edge + 80.0) * f for f in (0.0, 0.12, 0.3, 0.55, 0.8, 1.0)]
+                els = [edge] + [edge - 2.5 - (edge - 2.5 + 80.0) * f for f in (0.0, 0.12, 0.3, 0.55, 0.8, 1.0)]     # first band = lower rim
             cols.append([bm.verts.new(c + dirv(phi, e) * rr) for e in els])
         for j in range(len(cols) - 1):
             a, b = cols[j], cols[j + 1]
             for i in range(min(len(a), len(b)) - 1):
                 fc = bm.faces.new((a[i], b[i], b[i + 1], a[i + 1]))
                 if kind == 'up':
-                    fc.material_index = 1 if i == 0 and t0 > 0 else (2 if (mode == 'lid' and i == 2) else 0)
+                    fc.material_index = (2 if thick else 1) if i == 0 and t0 > 0 else (2 if (mode == 'lid' and i == 2) else 0)
+                elif thick and i == 0:
+                    fc.material_index = 2                       # v3: soft pink lower-lid rim
         bm.faces.ensure_lookup_table()
         bm.normal_update()
         f0 = bm.faces[len(bm.faces) // 2]
@@ -482,7 +508,7 @@ def face_bones(origin, p=None, scale=1.0):
 
 def apply_face(pb, preset='neutral', blink=0.0, **over):
     """pb = armature pose bones. preset in FACE_PRESETS; keyword overrides lid, brow=(raise, furrow_deg), jaw."""
-    v2 = pb['jaw'].id_data.get('head_style') == 'v2'
+    v2 = pb['jaw'].id_data.get('head_style') in ('v2', 'v3')
     fp = dict((FACE_PRESETS_V2 if v2 else FACE_PRESETS)[preset])
     fp.update({k: v for k, v in over.items() if k in fp})
     lid = fp['lid'] + blink * (80 - fp['lid'])
@@ -554,7 +580,7 @@ def _hair(ao, p, mats, prefix, origin, scale):
     _bind(ob, ao, {'head': 1.0})
     out = [ob]
     # cartoon tip strokes: pointed locks lying on the surface that run past the hairline (fringe tips, a few at the sides/nape)
-    nfl = 0 if p['style'] == 'v2' else int(p['hair_flicks'])
+    nfl = 0 if p['style'] in ('v2', 'v3') else int(p['hair_flicks'])
     spots = [(-0.55, 0.0), (-0.15, 0.10), (0.30, 0.20), (0.75, 0.28), (2.0, 0.10), (-2.0, 0.10), (2.6, 0.06)]
     for i in range(min(nfl, len(spots))):
         ph0, drift = spots[i]
@@ -573,7 +599,7 @@ def _hair(ao, p, mats, prefix, origin, scale):
         _xf(sb, origin, scale)
         _bind(sb, ao, {'head': 1.0})
         out.append(sb)
-    if p['hair_messy'] > 0 and p['style'] != 'v2':
+    if p['hair_messy'] > 0 and p['style'] not in ('v2', 'v3'):
         for i in range(3):
             th, ph = math.radians((16, 22, 30)[i]), (0.2, 2.4, -0.9)[i]
             tf = _tube(f'{prefix}_hair_tuft{i}', [pt(th, ph, 1.05), pt(th + 0.14, ph, 1.085) + Vector((0.012, 0, 0.006)), pt(th + 0.21, ph, 1.08) + Vector((0.024, 0, 0.004))],
@@ -619,6 +645,13 @@ def build_head(ao, origin, p=None, prefix='ch', scale=1.0, mats=None):
     head.data.transform(Matrix.Translation(origin) @ Matrix.Scale(scale, 4), shape_keys=True)
     _bind(head, ao, wts)
     parts.append(head)
+    if p['nose_ball'] > 0:      # v3: rounded cartoon nose tip (a ball sitting on the sculpted bridge)
+        nb, nz = p['nose_ball'], -0.025
+        nr = (0.0125 * nb * p['nose_w'], 0.0105 * nb, 0.0105 * nb)
+        nose = _ellipsoid(f'{prefix}_nose', Vector((0, front_y(p, 0, nz) + nr[1] * 0.25, nz)), nr, mats['skin'], seg=32, rings=20)
+        _xf(nose, origin, scale)
+        _bind(nose, ao, {'head': 1.0})
+        parts.append(nose)
     ec_y = p['eye_y']
     R = p['eye_r']
     # ---- ears: a thin cupped plate spanning about the brow line to the nose base, leaning back `ear_tilt` deg, top standing out `ear_flare` deg,
@@ -641,7 +674,10 @@ def build_head(ao, origin, p=None, prefix='ch', scale=1.0, mats=None):
         c = Vector((p['eye_x'] * s, ec_y, p['eye_z']))
         eye = _ellipsoid(f'{prefix}_eye.{n}', c, (R,) * 3, mats['sclera'], seg=48, rings=32)
         ir = math.degrees(math.asin(min(0.95, p['iris'] * 0.95)))
-        for kind, rr, ang_, mk in (('iris', 1.004, ir, 'iris'), ('pupil', 1.009, ir * 0.42, 'pupil')):
+        caps = (('iris', 1.004, ir, 'iris'), ('pupil', 1.009, ir * 0.42, 'pupil'))
+        if p['style'] == 'v3':                                   # v3: dark limbal ring around a smaller iris (reference eye)
+            caps = (('limbal', 1.002, ir * 1.10, 'pupil'),) + caps
+        for kind, rr, ang_, mk in caps:
             cap = _cap(f'{prefix}_{kind}.{n}', c, R * rr, ang_, mats[mk])      # smooth caps, not per-polygon materials: round edges at any size
             _xf(cap, origin, scale)
             _bind(cap, ao, {f'eye.{n}': 1.0})
@@ -654,7 +690,7 @@ def build_head(ao, origin, p=None, prefix='ch', scale=1.0, mats=None):
         _xf(gl, origin, scale)
         _bind(gl, ao, {f'eye.{n}': 1.0})
         parts.append(gl)
-        shells = _eye_shells(prefix, n, s, c, R, p, mats) if (p['style'] == 'v2' and p['eye_shape']) else None
+        shells = _eye_shells(prefix, n, s, c, R, p, mats) if (p['style'] in ('v2', 'v3') and p['eye_shape']) else None
         for kind, lo, hi in (() if shells else (('lid', 0.0, 72.0), ('lidlow', 118.0, 180.0))):
             bm = bmesh.new()
             bmesh.ops.create_uvsphere(bm, u_segments=40, v_segments=26, radius=R * 1.06)
@@ -686,15 +722,28 @@ def build_head(ao, origin, p=None, prefix='ch', scale=1.0, mats=None):
                 parts.append(ob)
         # brows: tapered arched stroke following the forehead
         bp = []
-        if p['style'] == 'v2' and p['eye_shape']:
+        if p['style'] in ('v2', 'v3') and p['eye_shape']:
             tl = math.tan(math.radians(p['brow_tilt']))
-            xs = [0.012 + 0.056 * i / 6 for i in range(7)]
+            x0, x1 = p['brow_x0'], p['brow_x1']
+            xm, xh = (x0 + x1) / 2, (x1 - x0) / 2
+            xs = [x0 + (x1 - x0) * i / 6 for i in range(7)]
             for bx in xs:
                 bxx = bx * p['brow_len']
-                z = p['brow_z'] + p['brow_arch'] * (1 - ((bx - 0.040) / 0.028) ** 2) + tl * (bx - 0.040)
+                z = p['brow_z'] + p['brow_arch'] * (1 - ((bx - xm) / xh) ** 2) + tl * (bx - xm)
                 bp.append(Vector((bxx * s, front_y(p, bxx, z) - 0.0012, z)))
-            rad = [max(0.0008, 0.0046 * p['brow_thick'] * (1 - p['brow_taper'] * (i / 6) ** 1.5) * (0.6 if i == 0 else 1.0)) for i in range(7)]
-            br = _tube(f'{prefix}_brow.{n}', bp, rad, mats['brow'], seg=6)
+            rad = [max(0.0008, 0.0046 * p['brow_thick'] * (1 - p['brow_taper'] * (i / 6) ** 1.5) * (1.0 if p['brow_round'] else (0.6 if i == 0 else 1.0))) for i in range(7)]
+            if p['brow_round']:                         # rounded ends (v3 short thick brows): two shrinking rings past each end
+                for end in (0, -1):
+                    d = (bp[end] - bp[1 if end == 0 else -2]).normalized()
+                    r0 = rad[end]
+                    ext = [(bp[end] + d * r0 * 0.55, r0 * 0.8), (bp[end] + d * r0 * 0.9, r0 * 0.35)]
+                    if end == 0:
+                        bp[:0] = [q for q, _ in ext[::-1]]
+                        rad[:0] = [r for _, r in ext[::-1]]
+                    else:
+                        bp += [q for q, _ in ext]
+                        rad += [r for _, r in ext]
+            br = _tube(f'{prefix}_brow.{n}', bp, rad, mats['brow'], seg=12 if p['brow_round'] else 6)
             _xf(br, origin, scale)
             _bind(br, ao, {f'brow.{n}': 1.0})
             parts.append(br)

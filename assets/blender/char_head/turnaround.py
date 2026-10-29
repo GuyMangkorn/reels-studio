@@ -1,5 +1,5 @@
 """Face turnaround + expression/variant sheets for char_head (Eevee 64, headless).
-Blender -b --python assets/blender/char_head/turnaround.py -- <outdir> [preset[:v1|v2] ...]
+Blender -b --python assets/blender/char_head/turnaround.py -- <outdir> [preset[:v1|v2|v3|v3ref[:eye[:lids[:brow]]]] ...]
 Writes <preset>_front/q/side.png (close-ups) and <preset>_expr_<name>.png for the 7 face presets of the first preset."""
 import bpy, sys, os, math, importlib.util
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -29,9 +29,9 @@ def shot(name, ang, dist=0.78, aim=(0, 0, 0)):
 for spec_ in names:
     nm0, st, *opt = spec_.split(':')       # preset[:style[:eye[:lids[:brow]]]]
     st = st or 'v1'
-    eye, lids, brow = (opt + ['oval', 'line', 'straight_soft'][len(opt):])[:3]
+    eye, lids, brow = (opt + [None] * 3)[:3]           # None = the style's default parts
     nm = f'{nm0}_{st}' + (f'_{eye}_{lids}_{brow}' if opt else '')
-    p = ch.style(st, ch.preset(nm0), eye=eye, lids=lids, brow=brow)
+    p = ch.style(st[:2], ch.preset(nm0), eye=eye, lids=lids, brow=brow, strength='ref' if st == 'v3ref' else 'restrained')   # style v3ref = v3 at reference strength
     ao = ch.add_standalone_armature(p, nm)
     ch.build_head(ao, (0, 0, 0), p, nm)
     ch.apply_face(ao.pose.bones, 'neutral')
