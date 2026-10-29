@@ -51,7 +51,7 @@ Use existing CATBOX paper-stimulus and outline assets. The relevant explanatory 
 
 ## Current implementation and CLI evidence
 
-CATBOX-C01-Short is registered in Root from short-c01.json. Final CLI QA refresh: 2026-10-26T17:37:26.635Z at 1080×1920 / 30 fps, 1,350 frames. The [Short runtime section](index.md#boss-short-runtime-and-qa-evidence) and [final QA manifest](../../out/qa/cat-boxes/shorts-r1/manifest.json) link the [A-fade preview](../../out/qa/cat-boxes/shorts-r1/C01/CATBOX-C01-Short_A_fade-preview.mp4), [C01 one-second/final sheet](../../out/qa/cat-boxes/shorts-r1/contact-sheets/C01-one-second-01.svg) and [C01 critical-boundary sheet](../../out/qa/cat-boxes/shorts-r1/contact-sheets/C01-critical-01.svg). This is CLI output evidence, not factual-image approval.
+CATBOX-C01-Short is registered in Root from short-c01.json. Final CLI QA refresh: 2026-10-26T17:37:26.635Z at 1080×1920 / 30 fps, 1,350 frames. The [Short runtime section](index.md#boss-short-runtime-and-qa-evidence--r5-review-fixes) and [final QA manifest](../../out/qa/cat-boxes/shorts-r1/manifest.json) link the [A-fade preview](../../out/qa/cat-boxes/shorts-r1/C01/CATBOX-C01-Short_A_fade-preview.mp4), [C01 one-second/final sheet](../../out/qa/cat-boxes/shorts-r1/contact-sheets/C01-one-second-01.svg) and [C01 critical-boundary sheet](../../out/qa/cat-boxes/shorts-r1/contact-sheets/C01-critical-01.svg). This is CLI output evidence, not factual-image approval.
 
 Studio playback/seek remains unverified. Narration/subtitle sync remains unverified because no Short-specific audio exists. Runtime factual-image review by Boat remains unverified; FC-VIS-R1 is planning-only. Short script approval is pending. Long framing and QA are deferred; Long source boards and timeline remain unchanged.
 
