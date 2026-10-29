@@ -77,27 +77,27 @@
       "head_clear_of_caption_zone_y860": true,
       "head_px": {
         "x": [
-          238,
-          395
+          245,
+          411
         ],
         "y": [
-          438,
-          629
+          452,
+          630
         ]
       },
       "label_box_above_plain_band_px": 15,
-      "label_box_gap_to_face_box_x_px": 65,
+      "label_box_gap_to_face_box_x_px": 49,
       "label_box_inside_door_face_x": true,
       "lead_px": {
-        "height_px": 1411,
-        "lowest_world_z": 0.0,
+        "height_px": 1345,
+        "lowest_world_z": -0.0,
         "x": [
-          150,
-          512
+          178,
+          525
         ],
         "y": [
-          438,
-          1849
+          452,
+          1797
         ]
       },
       "plain_band_z1.45_1.70_px": {
@@ -194,27 +194,27 @@
       "head_clear_of_caption_zone_y860": true,
       "head_px": {
         "x": [
-          229,
-          398
+          252,
+          405
         ],
         "y": [
-          436,
-          630
+          444,
+          632
         ]
       },
       "label_box_above_plain_band_px": 14,
-      "label_box_gap_to_face_box_x_px": 62,
+      "label_box_gap_to_face_box_x_px": 55,
       "label_box_inside_door_face_x": true,
       "lead_px": {
-        "height_px": 1436,
-        "lowest_world_z": 0.0,
+        "height_px": 1375,
+        "lowest_world_z": -0.0,
         "x": [
-          196,
-          460
+          214,
+          470
         ],
         "y": [
-          436,
-          1872
+          444,
+          1819
         ]
       },
       "plain_band_z1.45_1.70_px": {
@@ -240,7 +240,7 @@
       "view": "B10-SH01 c245"
     },
     "cabinet_h_m": 1.2,
-    "mannequin": "placeholder zc_you primitives (rigged zc-you does not exist yet; head/shoulder turn imitated by rotating placeholder parts)"
+    "lead": "rigged zc-you day-3 (assets/blender/zc-you, tracks.b10_pose)"
   },
   "bag": {
     "B02": {
@@ -634,22 +634,22 @@
     "file": "out/blender/zc-unit/sp02/B02/still.png",
     "floor_line_px": 860.0,
     "lead_px": {
-      "height_px": 524,
-      "lowest_world_z": 0.0,
+      "height_px": 512,
+      "lowest_world_z": -0.0,
       "x": [
-        744,
-        830
+        671,
+        841
       ],
       "y": [
-        341,
-        865
+        350,
+        863
       ]
     },
-    "render_seconds": 5.11,
+    "render_seconds": 5.12,
     "settings": {
       "engine": "BLENDER_EEVEE",
       "fast_gi": true,
-      "gi_bake_seconds": 2.06,
+      "gi_bake_seconds": 1.8,
       "look": "None",
       "output": "PNG 8-bit RGB sRGB",
       "raytracing": "SCREEN, res 1/2, denoise",
@@ -723,22 +723,22 @@
     "file": "out/blender/zc-unit/sp02/B02start/still.png",
     "floor_line_px": 860.0,
     "lead_px": {
-      "height_px": 545,
+      "height_px": 535,
       "lowest_world_z": 0.0,
       "x": [
-        878,
-        968
+        867,
+        987
       ],
       "y": [
-        341,
-        885
+        348,
+        883
       ]
     },
-    "render_seconds": 5.22,
+    "render_seconds": 5.09,
     "settings": {
       "engine": "BLENDER_EEVEE",
       "fast_gi": true,
-      "gi_bake_seconds": 1.78,
+      "gi_bake_seconds": 1.95,
       "look": "None",
       "output": "PNG 8-bit RGB sRGB",
       "raytracing": "SCREEN, res 1/2, denoise",
@@ -812,9 +812,9 @@
       "feet_gap_to_floor_m": -0.0,
       "floor_min_z": -0.0,
       "floor_penetration_m": 0.0,
-      "seat_gap_m": 0.0023,
-      "seat_penetration_m": 0.0245,
-      "sofa_back_min_gap_m": 0.0715,
+      "seat_gap_m": 0.0001,
+      "seat_penetration_m": 0.0334,
+      "sofa_back_min_gap_m": 0.1719,
       "sofa_back_penetration_m": 0.0,
       "wall_penetration_m": 0.0
     },
@@ -822,59 +822,59 @@
     "file": "out/blender/zc-unit/sp02/B07SH02/still.png",
     "floor_line_px": 860.0,
     "lead_px": {
-      "height_px": 552,
+      "height_px": 545,
       "lowest_world_z": -0.0,
       "x": [
-        -11,
-        309
+        -18,
+        241
       ],
       "y": [
-        283,
-        835
+        292,
+        837
       ]
     },
     "pose_joints": {
       "elbowL": [
-        -0.9303555488586426,
-        7.408810615539551,
-        0.8624074459075928
+        -0.9939,
+        7.3024,
+        0.7733
       ],
       "elbowR": [
-        -1.1776989698410034,
-        7.114037990570068,
-        0.8624076843261719
+        -1.084,
+        7.1951,
+        0.7733
       ],
       "head_top": [
-        -1.265599012374878,
-        7.4389543533325195,
-        1.3437731266021729
+        -0.929,
+        7.1565,
+        1.3351
       ],
       "hips": [
-        -1.100000023841858,
-        7.300000190734863,
-        0.5400000214576721
+        -1.1,
+        7.3,
+        0.59
       ],
       "kneeL": [
-        -0.7001522183418274,
-        7.093636989593506,
-        0.5098599195480347
+        -0.7065,
+        7.0968,
+        0.479
       ],
       "kneeR": [
-        -0.8273389339447021,
-        6.942061424255371,
-        0.5098599195480347
+        -0.8316,
+        6.9478,
+        0.479
       ],
       "neck": [
-        -1.2396652698516846,
-        7.417193412780762,
-        1.101123332977295
+        -1.0393,
+        7.249,
+        1.0495
       ]
     },
-    "render_seconds": 4.04,
+    "render_seconds": 3.76,
     "settings": {
       "engine": "BLENDER_EEVEE",
       "fast_gi": true,
-      "gi_bake_seconds": 1.86,
+      "gi_bake_seconds": 1.68,
       "look": "None",
       "output": "PNG 8-bit RGB sRGB",
       "raytracing": "SCREEN, res 1/2, denoise",
@@ -948,9 +948,9 @@
       "feet_gap_to_floor_m": -0.0,
       "floor_min_z": -0.0,
       "floor_penetration_m": 0.0,
-      "seat_gap_m": 0.0023,
-      "seat_penetration_m": 0.0245,
-      "sofa_back_min_gap_m": 0.0715,
+      "seat_gap_m": 0.0001,
+      "seat_penetration_m": 0.0334,
+      "sofa_back_min_gap_m": 0.1719,
       "sofa_back_penetration_m": 0.0,
       "wall_penetration_m": 0.0
     },
@@ -958,59 +958,59 @@
     "file": "out/blender/zc-unit/sp02/B07SH02mid/still.png",
     "floor_line_px": 860.0,
     "lead_px": {
-      "height_px": 552,
+      "height_px": 545,
       "lowest_world_z": -0.0,
       "x": [
-        662,
-        968
+        656,
+        902
       ],
       "y": [
-        283,
-        835
+        292,
+        837
       ]
     },
     "pose_joints": {
       "elbowL": [
-        -0.9303555488586426,
-        7.408810615539551,
-        0.8624074459075928
+        -0.9939,
+        7.3024,
+        0.7733
       ],
       "elbowR": [
-        -1.1776989698410034,
-        7.114037990570068,
-        0.8624076843261719
+        -1.084,
+        7.1951,
+        0.7733
       ],
       "head_top": [
-        -1.265599012374878,
-        7.4389543533325195,
-        1.3437731266021729
+        -0.929,
+        7.1565,
+        1.3351
       ],
       "hips": [
-        -1.100000023841858,
-        7.300000190734863,
-        0.5400000214576721
+        -1.1,
+        7.3,
+        0.59
       ],
       "kneeL": [
-        -0.7001522183418274,
-        7.093636989593506,
-        0.5098599195480347
+        -0.7065,
+        7.0968,
+        0.479
       ],
       "kneeR": [
-        -0.8273389339447021,
-        6.942061424255371,
-        0.5098599195480347
+        -0.8316,
+        6.9478,
+        0.479
       ],
       "neck": [
-        -1.2396652698516846,
-        7.417193412780762,
-        1.101123332977295
+        -1.0393,
+        7.249,
+        1.0495
       ]
     },
-    "render_seconds": 4.51,
+    "render_seconds": 3.73,
     "settings": {
       "engine": "BLENDER_EEVEE",
       "fast_gi": true,
-      "gi_bake_seconds": 1.97,
+      "gi_bake_seconds": 1.77,
       "look": "None",
       "output": "PNG 8-bit RGB sRGB",
       "raytracing": "SCREEN, res 1/2, denoise",
@@ -1084,9 +1084,9 @@
       "feet_gap_to_floor_m": -0.0,
       "floor_min_z": -0.0,
       "floor_penetration_m": 0.0,
-      "seat_gap_m": 0.0023,
-      "seat_penetration_m": 0.0245,
-      "sofa_back_min_gap_m": 0.0715,
+      "seat_gap_m": 0.0002,
+      "seat_penetration_m": 0.03,
+      "sofa_back_min_gap_m": 0.1722,
       "sofa_back_penetration_m": 0.0,
       "wall_penetration_m": 0.0
     },
@@ -1094,59 +1094,59 @@
     "file": "out/blender/zc-unit/sp02/B07SH02start/still.png",
     "floor_line_px": 860.0,
     "lead_px": {
-      "height_px": 552,
+      "height_px": 533,
       "lowest_world_z": -0.0,
       "x": [
-        987,
-        1286
+        980,
+        1222
       ],
       "y": [
-        283,
-        835
+        304,
+        837
       ]
     },
     "pose_joints": {
       "elbowL": [
-        -0.9303555488586426,
-        7.408810615539551,
-        0.8624074459075928
+        -0.9939,
+        7.3024,
+        0.7433
       ],
       "elbowR": [
-        -1.1776989698410034,
-        7.114037990570068,
-        0.8624076843261719
+        -1.084,
+        7.1951,
+        0.7433
       ],
       "head_top": [
-        -1.265599012374878,
-        7.4389543533325195,
-        1.3437731266021729
+        -0.929,
+        7.1565,
+        1.3051
       ],
       "hips": [
-        -1.100000023841858,
-        7.300000190734863,
-        0.5400000214576721
+        -1.1,
+        7.3,
+        0.56
       ],
       "kneeL": [
-        -0.7001522183418274,
-        7.093636989593506,
-        0.5098599195480347
+        -0.7016,
+        7.0928,
+        0.4794
       ],
       "kneeR": [
-        -0.8273389339447021,
-        6.942061424255371,
-        0.5098599195480347
+        -0.8268,
+        6.9436,
+        0.4794
       ],
       "neck": [
-        -1.2396652698516846,
-        7.417193412780762,
-        1.101123332977295
+        -1.0393,
+        7.249,
+        1.0195
       ]
     },
-    "render_seconds": 4.38,
+    "render_seconds": 3.77,
     "settings": {
       "engine": "BLENDER_EEVEE",
       "fast_gi": true,
-      "gi_bake_seconds": 1.92,
+      "gi_bake_seconds": 1.78,
       "look": "None",
       "output": "PNG 8-bit RGB sRGB",
       "raytracing": "SCREEN, res 1/2, denoise",
@@ -1222,66 +1222,66 @@
       "floor_min_z": -0.0,
       "floor_penetration_m": 0.0,
       "hips_lowest_z": -0.0,
-      "wall_gap_m": 0.0017,
+      "wall_gap_m": 0.096,
       "wall_penetration_m": 0.0
     },
     "coverage_m": 3.4,
     "file": "out/blender/zc-unit/sp02/B09SH01/still.png",
     "floor_line_px": 860.0,
     "lead_px": {
-      "height_px": 506,
+      "height_px": 456,
       "lowest_world_z": -0.0,
       "x": [
-        445,
-        707
+        395,
+        759
       ],
       "y": [
-        317,
-        824
+        371,
+        828
       ]
     },
     "pose_joints": {
       "elbowL": [
-        -1.2102223634719849,
-        1.0426404476165771,
-        0.4586920738220215
+        -1.1632,
+        1.1575,
+        0.3519
       ],
       "elbowR": [
-        -1.2102223634719849,
-        0.6573596000671387,
-        0.4586920142173767
+        -1.1632,
+        0.5425,
+        0.3519
       ],
       "head_top": [
-        -1.4807944297790527,
-        0.8500000238418579,
-        0.8814840316772461
+        -1.3489,
+        0.85,
+        0.7902
       ],
       "hips": [
         -1.25,
-        0.8500000238418579,
-        0.10000000149011612
+        0.85,
+        0.049
       ],
       "kneeL": [
-        -0.9781789779663086,
-        0.9541307091712952,
-        0.4458756744861603
+        -0.9867,
+        0.9744,
+        0.4012
       ],
       "kneeR": [
-        -0.9781789779663086,
-        0.7458693385124207,
-        0.4458756744861603
+        -0.9867,
+        0.7256,
+        0.4012
       ],
       "neck": [
-        -1.494668960571289,
-        0.8500000238418579,
-        0.636877179145813
+        -1.4102,
+        0.85,
+        0.4845
       ]
     },
-    "render_seconds": 4.01,
+    "render_seconds": 3.84,
     "settings": {
       "engine": "BLENDER_EEVEE",
       "fast_gi": true,
-      "gi_bake_seconds": 1.7,
+      "gi_bake_seconds": 2.02,
       "look": "None",
       "output": "PNG 8-bit RGB sRGB",
       "raytracing": "SCREEN, res 1/2, denoise",
@@ -1292,6 +1292,276 @@
     "shift_y": -0.55208,
     "shot": "B09SH01",
     "vfov_deg": 11.42
+  },
+  "still/B09SH01c31": {
+    "camera_y": 0.76,
+    "cap_rects_px": {
+      "zc-cap_corridor_black": [
+        -1356.25,
+        -988.77,
+        14.03,
+        1156.62
+      ],
+      "zc-cap_doorwall": [
+        14.17,
+        -815.6,
+        138.71,
+        983.29
+      ],
+      "zc-cap_p1": [
+        1051.99,
+        -815.6,
+        1121.18,
+        -435.06
+      ],
+      "zc-cap_p2": [
+        2297.38,
+        -815.6,
+        2366.56,
+        -435.06
+      ],
+      "zc-cap_slab-1": [
+        -1355.75,
+        2955.15,
+        7417.29,
+        3128.12
+      ],
+      "zc-cap_slab-2": [
+        -1355.75,
+        4927.01,
+        7417.29,
+        5099.98
+      ],
+      "zc-cap_slab0": [
+        -1355.75,
+        983.29,
+        7417.29,
+        1156.26
+      ],
+      "zc-cap_slab1": [
+        -1355.75,
+        -988.57,
+        7417.29,
+        -815.6
+      ],
+      "zc-cap_slab2": [
+        -1355.75,
+        -2960.42,
+        7417.29,
+        -2787.45
+      ]
+    },
+    "contacts": {
+      "cabinet_penetration_pts": 0,
+      "feet_lowest_z": -0.0,
+      "floor_min_z": -0.0,
+      "floor_penetration_m": 0.0,
+      "hips_lowest_z": -0.0,
+      "wall_gap_m": 0.096,
+      "wall_penetration_m": 0.0
+    },
+    "coverage_m": 3.1,
+    "file": "out/blender/zc-unit/sp02/B09SH01c31/still.png",
+    "floor_line_px": 860.0,
+    "lead_px": {
+      "height_px": 500,
+      "lowest_world_z": -0.0,
+      "x": [
+        392,
+        792
+      ],
+      "y": [
+        324,
+        824
+      ]
+    },
+    "pose_joints": {
+      "elbowL": [
+        -1.1632,
+        1.1575,
+        0.3519
+      ],
+      "elbowR": [
+        -1.1632,
+        0.5425,
+        0.3519
+      ],
+      "head_top": [
+        -1.3489,
+        0.85,
+        0.7902
+      ],
+      "hips": [
+        -1.25,
+        0.85,
+        0.049
+      ],
+      "kneeL": [
+        -0.9867,
+        0.9744,
+        0.4012
+      ],
+      "kneeR": [
+        -0.9867,
+        0.7256,
+        0.4012
+      ],
+      "neck": [
+        -1.4102,
+        0.85,
+        0.4845
+      ]
+    },
+    "render_seconds": 3.82,
+    "settings": {
+      "engine": "BLENDER_EEVEE",
+      "fast_gi": true,
+      "gi_bake_seconds": 1.72,
+      "look": "None",
+      "output": "PNG 8-bit RGB sRGB",
+      "raytracing": "SCREEN, res 1/2, denoise",
+      "shadows": "ray 1 / step 6",
+      "taa_render_samples": 64,
+      "view_transform": "AgX"
+    },
+    "shift_y": -0.60047,
+    "shot": "B09SH01c31",
+    "vfov_deg": 10.42
+  },
+  "still/B09SH01c32": {
+    "camera_y": 0.76,
+    "cap_rects_px": {
+      "zc-cap_corridor_black": [
+        -1296.99,
+        -931.0,
+        30.47,
+        1147.35
+      ],
+      "zc-cap_doorwall": [
+        30.6,
+        -763.23,
+        151.25,
+        979.44
+      ],
+      "zc-cap_p1": [
+        1035.99,
+        -763.23,
+        1103.02,
+        -394.59
+      ],
+      "zc-cap_p2": [
+        2242.46,
+        -763.23,
+        2309.48,
+        -394.59
+      ],
+      "zc-cap_slab-1": [
+        -1296.51,
+        2889.68,
+        7202.37,
+        3057.24
+      ],
+      "zc-cap_slab-2": [
+        -1296.51,
+        4799.92,
+        7202.37,
+        4967.48
+      ],
+      "zc-cap_slab0": [
+        -1296.51,
+        979.44,
+        7202.37,
+        1147.0
+      ],
+      "zc-cap_slab1": [
+        -1296.51,
+        -930.8,
+        7202.37,
+        -763.23
+      ],
+      "zc-cap_slab2": [
+        -1296.51,
+        -2841.04,
+        7202.37,
+        -2673.47
+      ]
+    },
+    "contacts": {
+      "cabinet_penetration_pts": 0,
+      "feet_lowest_z": -0.0,
+      "floor_min_z": -0.0,
+      "floor_penetration_m": 0.0,
+      "hips_lowest_z": -0.0,
+      "wall_gap_m": 0.096,
+      "wall_penetration_m": 0.0
+    },
+    "coverage_m": 3.2,
+    "file": "out/blender/zc-unit/sp02/B09SH01c32/still.png",
+    "floor_line_px": 860.0,
+    "lead_px": {
+      "height_px": 485,
+      "lowest_world_z": -0.0,
+      "x": [
+        397,
+        784
+      ],
+      "y": [
+        341,
+        826
+      ]
+    },
+    "pose_joints": {
+      "elbowL": [
+        -1.1632,
+        1.1575,
+        0.3519
+      ],
+      "elbowR": [
+        -1.1632,
+        0.5425,
+        0.3519
+      ],
+      "head_top": [
+        -1.3489,
+        0.85,
+        0.7902
+      ],
+      "hips": [
+        -1.25,
+        0.85,
+        0.049
+      ],
+      "kneeL": [
+        -0.9867,
+        0.9744,
+        0.4012
+      ],
+      "kneeR": [
+        -0.9867,
+        0.7256,
+        0.4012
+      ],
+      "neck": [
+        -1.4102,
+        0.85,
+        0.4845
+      ]
+    },
+    "render_seconds": 3.85,
+    "settings": {
+      "engine": "BLENDER_EEVEE",
+      "fast_gi": true,
+      "gi_bake_seconds": 1.71,
+      "look": "None",
+      "output": "PNG 8-bit RGB sRGB",
+      "raytracing": "SCREEN, res 1/2, denoise",
+      "shadows": "ray 1 / step 6",
+      "taa_render_samples": 64,
+      "view_transform": "AgX"
+    },
+    "shift_y": -0.58333,
+    "shot": "B09SH01c32",
+    "vfov_deg": 10.75
   },
   "still/B09SH03": {
     "camera_y": 0.35,
@@ -1357,66 +1627,66 @@
       "floor_min_z": -0.0,
       "floor_penetration_m": 0.0,
       "hips_lowest_z": -0.0,
-      "wall_gap_m": 0.0017,
+      "wall_gap_m": 0.096,
       "wall_penetration_m": 0.0
     },
     "coverage_m": 3.4,
     "file": "out/blender/zc-unit/sp02/B09SH03/still.png",
     "floor_line_px": 860.0,
     "lead_px": {
-      "height_px": 506,
+      "height_px": 456,
       "lowest_world_z": -0.0,
       "x": [
-        669,
-        933
+        622,
+        986
       ],
       "y": [
-        317,
-        824
+        371,
+        828
       ]
     },
     "pose_joints": {
       "elbowL": [
-        -1.2102223634719849,
-        1.0426404476165771,
-        0.4586920738220215
+        -1.1632,
+        1.1575,
+        0.3519
       ],
       "elbowR": [
-        -1.2102223634719849,
-        0.6573596000671387,
-        0.4586920142173767
+        -1.1632,
+        0.5425,
+        0.3519
       ],
       "head_top": [
-        -1.4807944297790527,
-        0.8500000238418579,
-        0.8814840316772461
+        -1.3489,
+        0.85,
+        0.7902
       ],
       "hips": [
         -1.25,
-        0.8500000238418579,
-        0.10000000149011612
+        0.85,
+        0.049
       ],
       "kneeL": [
-        -0.9781789779663086,
-        0.9541307091712952,
-        0.4458756744861603
+        -0.9867,
+        0.9744,
+        0.4012
       ],
       "kneeR": [
-        -0.9781789779663086,
-        0.7458693385124207,
-        0.4458756744861603
+        -0.9867,
+        0.7256,
+        0.4012
       ],
       "neck": [
-        -1.494668960571289,
-        0.8500000238418579,
-        0.636877179145813
+        -1.4102,
+        0.85,
+        0.4845
       ]
     },
-    "render_seconds": 3.63,
+    "render_seconds": 3.46,
     "settings": {
       "engine": "BLENDER_EEVEE",
       "fast_gi": true,
-      "gi_bake_seconds": 1.69,
+      "gi_bake_seconds": 1.77,
       "look": "None",
       "output": "PNG 8-bit RGB sRGB",
       "raytracing": "SCREEN, res 1/2, denoise",

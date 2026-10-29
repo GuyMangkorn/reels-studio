@@ -27,6 +27,8 @@ ROOT = os.path.abspath(os.path.join(HERE, '..', '..', '..'))
 MANIFEST = os.path.join(HERE, 'sp02-manifest.json')
 sys.path.insert(0, os.path.join(HERE, '..'))
 from zc_world import DOOR_WALL
+sys.path.insert(0, os.path.join(HERE, '..', 'zc-you'))
+import rig as zrig, poses as zposes, tracks as ztracks   # rigged zc-you (assets/blender/zc-you)
 
 _spec = importlib.util.spec_from_file_location('zc_corridor_build', os.path.join(HERE, '..', 'zc-corridor', 'build.py'))
 cb = importlib.util.module_from_spec(_spec)
@@ -54,6 +56,8 @@ SHOTS = {
     'B03': dict(cov=6.6, cam_y=2.05, corridor='capped', pose='stand_b02'),
     'B09SH01': dict(cov=3.4, cam_y=0.78, corridor='capped', pose='floor'),     # SS-R2.4 / brief R3.2 camera y (the stale y 0.90 entry was removed)
     'B09SH03': dict(cov=3.4, cam_y=0.35, corridor='capped', pose='floor'),
+    'B09SH01c32': dict(cov=3.2, cam_y=0.76, corridor='capped', pose='floor'),   # sheet fallback (tighten to 3.2 m, camera y <= 0.76) if the rigged pose is under 480 px
+    'B09SH01c31': dict(cov=3.1, cam_y=0.76, corridor='capped', pose='floor'),
     'B10SH01': dict(cov=3.4, cam_y=0.0, corridor='capped', pose='none'),     # perspective camera, set by setup_b10; cov/cam_y unused
     'B07SH02': dict(cov=4.6, cam_y=8.19, corridor='capped', pose='sofa'),     # truck clip 95 = last TH frame (5.70 + 95 * 0.0262)
     'B07SH02mid': dict(cov=4.6, cam_y=6.51, corridor='capped', pose='sofa'),  # clip 31, he is fully in frame from here
@@ -249,40 +253,45 @@ def mannequin(root_name, hips, face, lean_deg, head_pitch_deg, ankles, hands, m,
     return r, out
 
 
+def add_you(variant):
+    """Rigged zc-you (assets/blender/zc-you) + a static (un-keyed) Actor for stills and measurements."""
+    ao = zrig.build(variant)
+    A = zposes.Actor(ao)
+    A.keying = False
+    return ao, A
+
+
+def _joints(A):
+    P = A.P
+    w = lambda n, tail=False: tuple(round(x, 4) for x in (A.mw @ (P[n].tail if tail else P[n].head)))
+    return {'hips': w('pelvis'), 'neck': w('neck'), 'head_top': w('head', True), 'kneeL': w('thigh.L', True), 'kneeR': w('thigh.R', True),
+            'elbowL': w('upper_arm.L', True), 'elbowR': w('upper_arm.R', True)}
+
+
 def pose_floor(m):
-    """B09: seated on the floor against the back wall, knees up, feet x ~ -0.75, facing +X, head pitched down 25 deg (sheet: 20; a little more reads slumped), hands on the knees."""
-    H = Vector((-1.25, 0.85, 0.10))
-    f = Vector((1, 0, 0))
-    ank = ((-0.75, 0.85 + 0.12, 0.07), (-0.75, 0.85 - 0.12, 0.07))
-    # forearms rest on the knees: hands on the knee tops (knee z ~0.45 + thigh radius 0.07)
-    hands = ((-0.97, 0.85 + 0.10, 0.54), (-0.97, 0.85 - 0.10, 0.54))
-    return mannequin('zc-you', H, f, 24.5, 25, ank, hands, m)
+    """B09: seated on the floor against the back wall (rigged zc-you day-3, tracks.seated_floor)."""
+    ao, A = add_you('day3')
+    ztracks.seated_floor(A, 0)
+    bpy.context.view_layer.update()
+    return ao, _joints(A)
 
 
 def pose_sofa(m):
-    """B07-SH02: seated on the sofa seat (z 0.45), hips (-1.10, 7.30), feet on the floor, faces +X rotated 40 deg toward -Y, bread in hands."""
-    f = Vector((math.cos(math.radians(40)), -math.sin(math.radians(40)), 0))
-    lat = Vector((-f.y, f.x, 0))
-    H = Vector((-1.10, 7.30, SEAT_Z + 0.09))
-    base = H + f * 0.45
-    ank = ((base.x + lat.x * 0.10, base.y + lat.y * 0.10, 0.07), (base.x - lat.x * 0.10, base.y - lat.y * 0.10, 0.07))
-    chest = H + Vector((0, 0, 0.42)) + f * 0.28
-    hands = (tuple(chest + lat * 0.07), tuple(chest - lat * 0.07))
-    r, info = mannequin('zc-you', H, f, 18, 10, ank, hands, m)
-    cb.prim('sphere', 'zc-bread', tuple(chest), (0.07, 0.04, 0.035), m['bread'], parent=r)
-    return r, info
+    """B07-SH02: seated on the sofa (rigged zc-you day-1, tracks.seated_sofa), bread between the hands."""
+    ao, A = add_you('day1')
+    ztracks.seated_sofa(A, 0)
+    bpy.context.view_layer.update()
+    hl, hr = A.mw @ A.P['hand.L'].tail, A.mw @ A.P['hand.R'].tail
+    cb.prim('sphere', 'zc-bread', tuple((hl + hr) / 2), (0.07, 0.04, 0.035), m['bread'], parent=None)
+    return ao, _joints(A)
 
 
 def pose_stand_b02(m):
-    """B02-SH02 end state: he stands with his back to the cabinet at (0.0, 0.80), facing +Y."""
-    r = cb.zc_you(m)
-    # both hands free (MK-ZC-ST-07): drop the bag the shared zc_you placeholder carries in its right hand (zc-corridor/SP01 keep it)
-    for o in list(r.children):
-        if o.name.startswith(('zc-you_trashbag', 'zc-you_bagknot')):
-            bpy.data.objects.remove(o, do_unlink=True)
-    r.location = (0.0, 0.80, 0)
-    r.rotation_euler = (0, 0, math.radians(180))   # local front -Y -> +Y
-    return r, {}
+    """B02-SH02 end state / B03: back to the cabinet at (0.0, 0.80) facing +Y, both hands free (rigged zc-you day-1)."""
+    ao, A = add_you('day1')
+    ztracks.stand_back_cabinet(A, 0)
+    bpy.context.view_layer.update()
+    return ao, _joints(A)
 
 
 # ------------------------------------------------------------------ camera / light / render
@@ -357,9 +366,8 @@ def build_shot(shot, truck=False):
         inf.location = (0.0, -0.40, 0.0)
         inf.rotation_euler = (0, 0, math.radians(180))
     elif S['pose'] == 'stand_b02_c39':
-        lead, _ = pose_stand_b02(m)
-        lead.location = (0.65, 1.25, 0)       # clip 39: at the cabinet's +X side, about to drag; faces -Y
-        lead.rotation_euler = (0, 0, 0)
+        lead, A = add_you('day1')
+        A.pose(0, root=(0.65, 1.25, 0.0), key=False, hand_r=dict(palm=(0.41, 1.27, 0.95), normal=Vector((-1, 0, 0)), dir=Vector((0, -0.5, -0.8)), curl=0.25), face='fear', spine=(8, 0, 0))
         inf = cb.zc_infected(m)
         inf.location = (0.0, -0.40, 0.0)
         inf.rotation_euler = (0, 0, math.radians(180))
@@ -373,6 +381,9 @@ def build_shot(shot, truck=False):
 
 
 # ------------------------------------------------------------------ measurement
+HEAD_PREFIXES = ('zc-you_head', 'zc-you_hair', 'zc-you_ear', 'zc-you_brow', 'zc-you_eye', 'zc-you_lid', 'zc-you_lash', 'zc-you_nose', 'zc-you_side')
+
+
 def mesh_points(prefix):
     dg = bpy.context.evaluated_depsgraph_get()
     pts = []
@@ -504,8 +515,8 @@ def cmd_still(shot, outdir=None):
 def cmd_truck(rng=None, outdir=None):
     sc, cam, info, pose, m = build_shot('B09SH01', truck=True)
     # standing lead walks along +Y (x 0.45) while the camera trucks and drifts: lead starts left of centre, ends right
-    lead, _ = pose_stand_b02(m)
-    lead.rotation_euler = (0, 0, math.radians(180))
+    lead, A0 = add_you('day1')
+    A0.pose(0, root=(0.45, 1.2, 180.0), key=False)      # relaxed stand (the truck only moves the root; no gait)
     N = 60
     for i in range(N):
         t = i / (N - 1)
@@ -593,32 +604,24 @@ B10_FACE_TO = (0.0, 0.35)
 B10_HEAD_TURN_DEG, B10_SHOULDER_TURN_DEG = 75.0, 50.0      # toward his right (the lens), complete by clip 117
 
 
-def setup_b10(cam, lead, end):
-    """Camera (start or dolly end), lead facing and, at `end`, the head 75 deg + shoulders 50 deg turn toward the lens (placeholder parts)."""
+def setup_b10(cam, A, end):
+    """Camera (start or dolly end) and the rigged lead (tracks.b10_pose): facing the door; at `end` the head 75 deg + shoulders 50 deg turn
+    toward the lens with the eyes on the lens (the lens is the camera position)."""
     cam.data.angle_y = math.radians(55)
     cam.data.shift_x, cam.data.shift_y = 0.0, -0.211
     cam.rotation_euler = (B10_AIM - B10_CAM0).to_track_quat('-Z', 'Y').to_euler()
     cam.location = B10_CAM1 if end else B10_CAM0
-    lead.location = (B10_LEAD[0], B10_LEAD[1], 0)
-    dx, dy = B10_FACE_TO[0] - B10_LEAD[0], B10_FACE_TO[1] - B10_LEAD[1]
-    lead.rotation_euler = (0, 0, math.atan2(dx, -dy))       # local front is -Y
-    if end:
-        for o in lead.children:
-            n = o.name
-            if n.endswith(('_head', '_hair', '_earL', '_earR')):
-                o.matrix_basis = Matrix.Rotation(-math.radians(B10_HEAD_TURN_DEG), 4, 'Z') @ o.matrix_basis
-            elif n.endswith(('_torso', '_neck')) or '_arm' in n or '_fore' in n:
-                o.matrix_basis = Matrix.Rotation(-math.radians(B10_SHOULDER_TURN_DEG), 4, 'Z') @ o.matrix_basis
+    ztracks.b10_pose(A, 245 if end else 0, 1.0 if end else 0.0, cam=cam.location.copy())
     bpy.context.view_layer.update()
 
 
 def build_b10(end):
     sc, cam, info, pose, m = build_shot('B10SH01')
-    lead, _ = pose_stand_b02(m)
+    lead, A = add_you('day3')
     # blockout-only visual aid: dark door leaf on the door face (plain, no peephole), so the door reads in the still; 1.5 mm proud of the door wall
     B('zc-door_leaf_aid', -cb.DOOR_W / 2, cb.DOOR_W / 2, DOOR_WALL, DOOR_WALL + 0.0015, 0, cb.DOOR_H, cb.mat('sp02_door_leaf', cb.srgb('#2b2823'), 0.6))
     cam = bpy.data.objects['zc-cam_sp02']
-    setup_b10(cam, lead, end)
+    setup_b10(cam, A, end)
     return sc, cam, info, lead
 
 
@@ -626,7 +629,7 @@ def b10_measure(cam, lead, label):
     dg = bpy.context.evaluated_depsgraph_get()
     sc = bpy.context.scene
     r = {'view': label, 'camera': [round(v, 3) for v in cam.location], 'lead_px': lead_px(cam), 'bag': bag_report(cam, label)}
-    head = [project(cam, p) for o in lead.children if o.name.endswith(('_head', '_hair', '_earL', '_earR')) for p in mesh_points(o.name)]
+    head = [project(cam, p) for p in mesh_points(HEAD_PREFIXES)]
     r['head_px'] = {'x': [round(min(q[0] for q in head)), round(max(q[0] for q in head))], 'y': [round(min(q[1] for q in head)), round(max(q[1] for q in head))]}
     face = r['head_px']
     r['face_box_ok_x220_420_y420_650'] = bool(face['x'][0] >= 220 and face['x'][1] <= 420 and face['y'][0] >= 420 and face['y'][1] <= 650)
@@ -667,7 +670,7 @@ def b10_measure(cam, lead, label):
 def cmd_b10(outdir=None):
     outdir = outdir or os.path.join(ROOT, 'out', 'blender', 'zc-unit', 'sp02', 'B10-SH01')
     os.makedirs(outdir, exist_ok=True)
-    res = {'mannequin': 'placeholder zc_you primitives (rigged zc-you does not exist yet; head/shoulder turn imitated by rotating placeholder parts)',
+    res = {'lead': 'rigged zc-you day-3 (assets/blender/zc-you, tracks.b10_pose)',
            'cabinet_h_m': CAB_H, 'bag_pos': BAG_POS}
     for key, end in (('c0', False), ('c245', True)):
         sc, cam, info, lead = build_b10(end)
