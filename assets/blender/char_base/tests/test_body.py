@@ -84,7 +84,7 @@ def _skin(name, kw):
     kw = dict(kw)
     bp, J = _J(**kw)
     V, E = body.body_graph(J, bp)
-    me = body.skin_mesh(V, E, name)
+    me = body.body_mesh(J, bp, name)
     return bp, J, V, E, me
 
 
@@ -229,7 +229,8 @@ def test_mitten_hand():
     assert (p1 - p0).length > 0.008, (p1 - p0).length
 
 
-ARMPIT_CASES = SURFACE_CASES + (('heavy_male', dict(mass=1.0)), ('mass_0', dict(mass=0.0)), ('mass_0.6', dict(mass=0.6)))
+ARMPIT_CASES = SURFACE_CASES + (('heavy_male', dict(mass=1.0)), ('mass_0', dict(mass=0.0)), ('mass_0.6', dict(mass=0.6)),
+                                ('heavy_female', dict(sex=1.0, mass=1.0)))
 ARM_SOFT_CONTACT = 0.005           # relaxed arm may press this far into the torso (soft contact)
 SHOULDER_BUMP, MITTEN_BUMP = 0.10, 0.18   # umbrella growth at arm-up / grip 0.7 (fixed result <= 0.04 / 0.09; c14c2cd: 0.24-0.28 / 0.37-0.45)
 
@@ -251,12 +252,9 @@ def _torso_volume(kw):
     """Closed torso volume (pelvis-waist-chest-neck skin of the same body graph, floor-aligned like build.build) as a BVH."""
     kw = dict(kw)
     bp, J = _J(**kw)
-    V, E = body.body_graph(J, bp)
-    full = body.skin_mesh(V, E, 'tv_full')
+    full = body.body_mesh(J, bp, 'tv_full')
     zmin = min(v.co.z for v in full.vertices)
-    keep = [i for i, (n, _, _) in enumerate(V) if n in ('pelvis', 'waist', 'chest', 'neck0', 'neckm', 'neck1')]
-    idx = {o: k for k, o in enumerate(keep)}
-    me = body.skin_mesh([V[i] for i in keep], [(idx[a], idx[b]) for a, b in E if a in idx and b in idx], 'tv')
+    me = body.trunk_mesh(J, bp, 'tv')
     return BVHTree.FromPolygons([v.co - Vector((0, 0, zmin)) for v in me.vertices], [tuple(f.vertices) for f in me.polygons])
 
 
@@ -316,3 +314,143 @@ def test_armpit_deforms():
         print(f'  armpit {label}: relaxed arms, arm verts > 5 mm inside torso {inside}; arm-up shoulder bump {bs:.3f}, grip 0.7 mitten bump {bm_:.3f}')
         assert inside == 0, (label, inside)
         assert bs <= SHOULDER_BUMP and bm_ <= MITTEN_BUMP, (label, bs, bm_)
+
+
+# ----------------------------------------------------------------------------- proportions (Task 6c)
+# Reference ratios (ANSUR II 2012 US Army survey means, approximate; full list in the Task 6c report): bideltoid / hip breadth
+# male ~1.47, female ~1.18; waist / hip breadth male ~0.90, female ~0.76; circumference calf / ankle ~1.7, forearm / wrist ~1.65,
+# thigh / knee ~1.55, relaxed upper arm / elbow ~1.18. The smooth skin softens joints, so the bounds below sit under those values.
+SEX_SH_HIP = (0.80, 1.28)    # female shoulder / hip half-width <= 0.80 x male's and <= 1.28 (reference 1.18 vs 1.47 = 0.80; the zc-based male
+#                              is 1.62, so the reference female scales to 1.30; 6b head: 0.82, 1.35)
+SEX_WAIST_HIP = 0.12         # female waist / hip <= male's - 0.12 (reference 0.76 vs 0.90; 6b head: -0.10)
+SEX_BUST = 0.030             # female bust prominence (chest front - waist front, / body width factor) >= male's + 0.030 (6b head: +0.017)
+TAPER = dict(calf_ankle=1.50, fore_wrist=1.50, thigh_knee=1.45, upper_elbow=1.12, fore_elbow=1.03)
+
+
+def _mesh(kw, armless=False, name='p'):
+    """(bp, J, rest skin mesh) of a body; armless drops the arm and hand nodes (front/side silhouettes of the trunk and legs)."""
+    bp, J = _J(**dict(kw))
+    V, E = body.body_graph(J, bp)
+    if armless:
+        keep = [i for i, (n, _, _) in enumerate(V) if not n.startswith(body.ARM_NODES)]
+        idx = {o: k for k, o in enumerate(keep)}
+        V, E = [V[i] for i in keep], [(idx[a], idx[b]) for a, b in E if a in idx and b in idx]
+    me = body.skin_mesh(V, E, name)
+    body.shape(me, J, bp)
+    return bp, J, me
+
+
+def _band(me, z, band=None):
+    """Points where mesh edges cross the horizontal plane at z (the exact cross-section outline)."""
+    out = []
+    for e in me.edges:
+        a, b = me.vertices[e.vertices[0]].co, me.vertices[e.vertices[1]].co
+        if (a.z - z) * (b.z - z) < 0:
+            out.append(a + (b - a) * ((z - a.z) / (b.z - a.z)))
+    return out
+
+
+def _zs(a, b, step=0.005):
+    return [a + step * i for i in range(int((b - a) / step) + 1)]
+
+
+def _sex_metrics(kw):
+    """Front: shoulder half-width (deltoid, full mesh at the shoulder joint height), hip half-width (trunk + legs silhouette from the
+    crotch to 10 cm above the hip joint), waist half-width (narrowest between). Side: bust = chest front - waist front."""
+    bp, J, full = _mesh(kw, name='sx_full')
+    _, _, me = _mesh(kw, armless=True, name='sx_trunk')
+    gw = body.factors(bp)['gw']
+    sw = max(abs(p.x) for p in _band(full, J['SH'].z))
+    prof = lambda f, a, b: [x for x in (f(z) for z in _zs(a, b)) if x is not None]     # bands without vertices are skipped
+    hx = lambda z: max((abs(p.x) for p in _band(me, z)), default=None)
+    hw = max(prof(hx, J['HIP'].z - 0.12 * gw, J['HIP'].z + 0.10 * gw))
+    ww = min(prof(hx, J['HIP'].z + 0.10 * gw, J['chest_n'].z - 0.04 * gw))
+    front = lambda z: max((-p.y for p in _band(me, z) if abs(p.x) < 0.14 * gw), default=None)
+    bust = max(prof(front, J['chest_n'].z - 0.10 * gw, J['chest_n'].z + 0.04 * gw)) - min(prof(front, J['waist_n'].z, J['chest_n'].z - 0.12 * gw))
+    return dict(sh_hip=sw / hw, waist_hip=ww / hw, bust=bust / gw, sw=sw, hw=hw, ww=ww)
+
+
+def test_sex_cues():
+    """At mass 0 (and 0.5) a female body has narrower shoulders for its hips, a waist taper and a bust that a male body lacks."""
+    for mass in (0.0, 0.5):
+        m, f = _sex_metrics(dict(sex=0.0, mass=mass)), _sex_metrics(dict(sex=1.0, mass=mass))
+        print(f'  sex cues mass {mass}: male ' + ', '.join(f'{k} {v:.3f}' for k, v in m.items()) +
+              '; female ' + ', '.join(f'{k} {v:.3f}' for k, v in f.items()))
+        assert f['sh_hip'] <= SEX_SH_HIP[0] * m['sh_hip'] and f['sh_hip'] <= SEX_SH_HIP[1], (mass, f['sh_hip'], m['sh_hip'])
+        assert f['waist_hip'] <= m['waist_hip'] - SEX_WAIST_HIP, (mass, f['waist_hip'], m['waist_hip'])
+        assert f['bust'] >= m['bust'] + SEX_BUST, (mass, f['bust'], m['bust'])
+
+
+def _limb_r(bvh, a, b, ts, n=16):
+    """Mean surface radius (m) around the bone a->b at fractions ts (rays from the axis)."""
+    ax = (b - a).normalized()
+    u = ax.orthogonal().normalized()
+    v = ax.cross(u)
+    out = []
+    for t in ts:
+        c = a + (b - a) * t
+        rs = [h[3] for h in (bvh.ray_cast(c, u * math.cos(2 * math.pi * k / n) + v * math.sin(2 * math.pi * k / n), 0.5) for k in range(n))
+              if h[0] is not None]
+        out.append(sum(rs) / len(rs))
+    return out
+
+
+def test_limb_taper():
+    """Limbs are not uniform tubes: calf over ankle, forearm belly over wrist and elbow, thigh over knee, upper arm over elbow."""
+    for label, kw in (('zc_you', dict(presets.get('zc_you')['body'])), ('male_0', dict(mass=0.0)), ('female_0', dict(sex=1.0, mass=0.0)),
+                      ('female_1', dict(sex=1.0, mass=1.0))):
+        _, J, me = _mesh(kw, name='lt_' + label)
+        bm = bmesh.new()
+        bm.from_mesh(me)
+        bvh = BVHTree.FromBMesh(bm)
+        bm.free()
+        T = lambda a, b: [a + (b - a) * i / 10 for i in range(11)]
+        r = lambda j0, j1, a, b: _limb_r(bvh, J[j0], J[j1], T(a, b))
+        calf, ankle = max(r('KNEE', 'ANK', 0.15, 0.45)), min(r('KNEE', 'ANK', 0.80, 0.95))
+        thigh, knee = max(r('HIP', 'KNEE', 0.15, 0.50)), min(r('HIP', 'KNEE', 0.85, 1.0) + r('KNEE', 'ANK', 0.0, 0.10))
+        upper, elbow = max(r('SH', 'EL', 0.30, 0.70)), min(r('SH', 'EL', 0.85, 1.0) + r('EL', 'WR', 0.0, 0.08))
+        fore, wrist = max(r('EL', 'WR', 0.10, 0.40)), min(r('EL', 'WR', 0.85, 0.97))
+        q = dict(calf_ankle=calf / ankle, fore_wrist=fore / wrist, thigh_knee=thigh / knee, upper_elbow=upper / elbow, fore_elbow=fore / elbow)
+        print(f'  limb taper {label}: ' + ', '.join(f'{k} {v:.3f}' for k, v in q.items()))
+        for k, lo in TAPER.items():
+            assert q[k] >= lo, (label, k, q[k], lo)
+
+
+def test_heads_tall_extreme():
+    """Fewer heads tall = a younger / chibi build, not an adult column under a big head: the legs take a smaller share of the body
+    below the head, the body is wider for its length, and the hanging wrist stays near the hip joint (CP-L09)."""
+    rows = []
+    for ht in (7.5, 6.0, 5.0, 4.0, 3.5):
+        bp, J = _J(heads_tall=ht, height=1.72)
+        hb = J['head_base'].z
+        rows.append((ht, J['HIP'].z / hb, J['SH'].x / hb, (J['WR'].z - J['HIP'].z) / bp['height']))
+        print(f'  heads_tall {ht}: leg share {rows[-1][1]:.3f}, shoulder half-width / column {rows[-1][2]:.4f}, (wrist - hip) / H {rows[-1][3]:+.3f}')
+    for a, b in zip(rows, rows[1:]):
+        assert b[1] <= a[1] + 1e-6 and b[2] >= a[2] - 1e-6, (a, b)
+    assert rows[2][1] < rows[1][1], rows                      # 5 heads already shorter-legged than 6
+    assert rows[-1][1] <= 0.85 * rows[0][1], rows
+    assert rows[-1][2] >= 1.15 * rows[0][2], rows
+    assert all(abs(r[3]) <= 0.05 for r in rows), rows
+
+
+MASS_STEP = (0.015, 0.030, 0.004)   # per 0.1 mass: max torso_hx step, max spread step, max change of the hx step between neighbours
+#                                      (6b head: a 20 mm hx step after a 3 mm one on sex 1 at 0.8 -> 0.9, so a 57 mm spread step)
+
+
+def test_mass_continuous():
+    """Torso half-width (cb_torso_hx) and the relaxed arm spread grow smoothly with mass for both sexes: never shrinking, no step over
+    MASS_STEP, and no hx step that jumps away from its neighbour."""
+    from char_base import poses
+    for sx in (0.0, 1.0):
+        prev, steps = None, []
+        for i in range(11):
+            ao = _bare(f'mc{int(sx)}_{i}', dict(sex=sx, mass=i / 10))
+            cur = (ao['cb_torso_hx'], poses.Actor(ao).relaxed_spread())
+            print(f'  mass continuity sex {sx} mass {i / 10:.1f}: torso_hx {cur[0]:.4f}, spread {cur[1]:.4f}')
+            steps.append((cur[0] - prev[0], cur[1] - prev[1]) if prev else None)
+            prev = cur
+            for o in [o for o in bpy.data.objects if o.parent == ao] + [ao]:
+                bpy.data.objects.remove(o, do_unlink=True)
+        for i, b in enumerate(steps[1:], 1):                       # b = step into mass i/10
+            assert -0.0005 <= b[0] <= MASS_STEP[0] and -0.0005 <= b[1] <= MASS_STEP[1], (sx, i, b)
+            assert i == 1 or abs(b[0] - steps[i - 1][0]) <= MASS_STEP[2], (sx, i, steps[i - 1], b)

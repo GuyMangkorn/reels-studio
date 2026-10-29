@@ -13,20 +13,20 @@ import outfits
 import presets
 
 
-def _arm_clearance(bod, ao, J):
-    """(torso half-width between hip and shoulder, upper-arm surface radius) of the rest body: Actor spreads relaxed arms by them."""
+def _arm_clearance(bod, ao, J, bp):
+    """(torso half-width, upper-arm surface radius) of the rest body: Actor spreads relaxed arms by them. The half-width is the widest
+    point of the closed trunk (body.trunk_mesh) between the waist node and the shoulder, beside the upper arm; it grows smoothly with
+    mass (the old cut by weight dominance on the full body jumped between neighbouring vertices)."""
+    tm = body.trunk_mesh(J, bp, '_cb_trunk')
+    hx = max(abs(v.co.x) for v in tm.vertices if J['waist_n'].z <= v.co.z <= J['SH'].z)
+    bpy.data.meshes.remove(tm)
     gi = {g.index: g.name for g in bod.vertex_groups if g.name in ao.data.bones}
-    hx, ar = 0.0, []
+    ar = []
     b = ao.data.bones['upper_arm.L']
     h, t = b.head_local, b.tail_local
     for v in bod.data.vertices:
         gs = [g for g in v.groups if g.group in gi]
-        if not gs:
-            continue
-        d = gi[max(gs, key=lambda g: g.weight).group]
-        if d in ('pelvis', 'spine', 'chest') and J['HIP'].z <= v.co.z <= J['SH'].z:
-            hx = max(hx, abs(v.co.x))
-        elif d == 'upper_arm.L':
+        if gs and gi[max(gs, key=lambda g: g.weight).group] == 'upper_arm.L':
             k = max(0.0, min(1.0, (v.co - h).dot(t - h) / (t - h).length_squared))
             ar.append((v.co - (h + (t - h) * k)).length)
     ar.sort()
@@ -48,7 +48,7 @@ def build(preset, name, variant=None, collection=None):
     looks.finish(P['look'], M)
     table = body.bone_table(J, hm, hp, scale)
     ao = body.armature(name, table)
-    me = body.skin_mesh(*body.body_graph(J, bp), name + '_body')
+    me = body.body_mesh(J, bp, name + '_body')
     zmin = min(v.co.z for v in me.vertices)       # skin radius / subsurf shrink: the sole is put on the floor
     for v in me.vertices:
         v.co.z -= zmin
@@ -67,7 +67,7 @@ def build(preset, name, variant=None, collection=None):
     ao['cb_shoulder_z'], ao['cb_hip_z'], ao['cb_ankle_z'] = J['SH'].z, J['pelvis'].z, J['ANK'].z
     ao['cb_palm_off'] = (J['PALM'] - J['WR']).length
     ao['cb_head_c'] = tuple(J['head_c'])
-    ao['cb_torso_hx'], ao['cb_arm_r'] = _arm_clearance(bod, ao, J)
+    ao['cb_torso_hx'], ao['cb_arm_r'] = _arm_clearance(bod, ao, J, bp)
     if collection is not None:
         for o in [ao] + objs:
             for c in list(o.users_collection):

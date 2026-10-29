@@ -607,7 +607,7 @@ def skirt(ctx, color='skirt', length=0.85, flare=1.0, thickness=0.004, nu=40, nv
             cx, cy, rx, ry = _fit_h(ctx, z)
             pts = [(p.x - cx, p.y - cy) for p in ctx.bv if abs(p.z - z) < 1.2 * dz and abs(p.x) < tx]
             polar = [(math.atan2(y, x), math.hypot(x, y)) for x, y in pts]
-            m = (0.020 + 0.080 * flare * v ** 1.4) * g
+            m = (0.028 + 0.080 * flare * v ** 1.4) * g       # 0.028 (was 0.020): clears the fuller female thigh root in a crouch (Task 6c)
             ring = []
             for j in range(nu):
                 th = 2 * math.pi * j / nu

@@ -15,7 +15,8 @@ for _p in (_HERE, os.path.join(_HERE, '..', 'char_head')):
 import char_head as ch
 from body import FDIR
 
-ARM_SPREAD = (0.02, 2.5)      # relaxed arms: margin (m x ARM_K) and gain of the extra palm spread when torso + arm overlap the shoulder width
+ARM_SPREAD = (0.0, 1.6)       # relaxed arms: margin (m x ARM_K) and gain of the extra palm spread when torso + arm overlap the shoulder width
+# (margin 0.0 since build measures the whole trunk width beside the upper arm; 0.02 went with the narrower weight-dominance cut)
 REF_HIP_Z, REF_SH_Z = 0.93, 1.385      # zc-you anchors: the reference the zc-sized staging numbers (feet, relaxed hands) were authored for
 
 FACES = ch.FACE_PRESETS      # shared with every char_head consumer

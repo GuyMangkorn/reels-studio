@@ -1,8 +1,8 @@
 {
   "rig": {
     "bbox_xy_m": [
-      -0.274,
-      0.274,
+      -0.272,
+      0.272,
       -0.206,
       0.108
     ],
@@ -17,7 +17,7 @@
     },
     "lowest_z_m": 0.0,
     "objects": 50,
-    "vertices": 28100
+    "vertices": 28156
   },
   "tracks": {
     "B01-SH01": {
@@ -58,7 +58,7 @@
         0,
         89
       ],
-      "wall_min_x_m": -0.2613
+      "wall_min_x_m": -0.2583
     },
     "B02-SH02": {
       "contacts": [],
@@ -67,7 +67,7 @@
         0,
         176
       ],
-      "wall_min_x_m": -0.2741
+      "wall_min_x_m": -0.272
     },
     "B02-SH03": {
       "cabinet_face_y_0.58_back_gap_m": 0.0092,
@@ -78,7 +78,7 @@
         0,
         0
       ],
-      "wall_min_x_m": -0.2741
+      "wall_min_x_m": -0.272
     },
     "B03-SH01": {
       "cabinet_face_y_0.58_back_gap_m": 0.0092,
@@ -89,7 +89,7 @@
         0,
         0
       ],
-      "wall_min_x_m": -0.2741
+      "wall_min_x_m": -0.272
     },
     "B04-SH01": {
       "contacts": [],
@@ -98,7 +98,7 @@
         0,
         101
       ],
-      "wall_min_x_m": 0.1247
+      "wall_min_x_m": 0.1245
     },
     "B05-SH01": {
       "contacts": [],
@@ -107,7 +107,7 @@
         0,
         60
       ],
-      "wall_min_x_m": -0.3979
+      "wall_min_x_m": -0.3978
     },
     "B05-SH02": {
       "contacts": [],
@@ -116,7 +116,7 @@
         0,
         60
       ],
-      "wall_min_x_m": -0.9734
+      "wall_min_x_m": -0.9704
     },
     "B05-SH03": {
       "contacts": [
@@ -176,7 +176,7 @@
         0,
         125
       ],
-      "wall_min_x_m": -1.2644
+      "wall_min_x_m": -1.2626
     },
     "B08-SH01": {
       "contacts": [],
@@ -196,7 +196,7 @@
         0,
         45
       ],
-      "phone_foot_gap_m": 0.0444,
+      "phone_foot_gap_m": 0.0449,
       "wall_min_x_m": -1.4999
     },
     "B09-SH02": {
@@ -208,7 +208,7 @@
         0,
         128
       ],
-      "phone_foot_gap_m": 0.0444,
+      "phone_foot_gap_m": 0.0449,
       "wall_min_x_m": -1.534
     },
     "B09-SH03": {
@@ -220,7 +220,7 @@
         0,
         0
       ],
-      "phone_foot_gap_m": 0.0444,
+      "phone_foot_gap_m": 0.0449,
       "wall_min_x_m": -1.5397
     },
     "B10-SH01": {
