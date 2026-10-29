@@ -1,0 +1,90 @@
+<a id="character-proportion-principles"></a>
+# Character proportion principles for Boss / Film / Mark
+
+Updated and sources inspected on 29 October 2026. Rule level: **Reference**. Read when building or changing a character body or head, proportion work or face-expression work. Body code in `assets/blender/char_base/` cites these IDs in `# CP-xx` comments; a brief may override a **Default** with a recorded reason. For physical dimensions of scene objects see [scale-and-perspective-principles](scale-and-perspective-principles.md).
+
+Conventions: metres, Z-up, front = -Y, body-left = +X, armature origin on the floor between the feet. Fractions below are of standing height (floor to head top) unless stated.
+
+<a id="cp-a-age-canon"></a>
+## CP-A. Age canon (heads tall)
+
+| ID | Age | Heads tall | Status |
+| --- | --- | --- | --- |
+| CP-A01 | Toddler | 3.75 | sourced (RTB anatomy PDF) |
+| CP-A02 | 5 years | 4.5 | sourced (RTB anatomy PDF) |
+| CP-A03 | 8 years | 6.0 | sourced (RTB anatomy PDF) |
+| CP-A04 | Young teen | 6.5 | sourced (RTB anatomy PDF) |
+| CP-A05 | Adult, realistic | 7.5 | sourced (Loomis via Wikipedia) |
+| CP-A06 | Adult, ideal | 8.0 | sourced (Loomis via Wikipedia) |
+| CP-A07 | Elder | adult canon plus a forward stoop (lower effective height, same bone lengths) | ASSUMPTION: no source found; verify by render before relying on it |
+
+- **CP-A08 (source disagreement).** Sources differ on the adult figure: the aesthetic canon gives 8 heads as ideal and 7.5 as realistic. Use 7.5 for believable characters and 8 only for heroic or idealised ones. Record which was used in the character preset.
+- **CP-A09.** Loomis's canon also splits the adult body into roughly a 3-head torso and 4-head legs (chin to crotch about 3, crotch to floor about 4, head 1). Treat as a cross-check, not a constraint.
+
+<a id="cp-l-landmarks"></a>
+## CP-L. Landmarks as fractions of height
+
+Adult-male reference: `zc-you` joint heights divided by its height of 1.72 m.
+
+| ID | Landmark | Fraction |
+| --- | --- | --- |
+| CP-L01 | Pelvis | 0.541 |
+| CP-L02 | Shoulder | 0.805 |
+| CP-L03 | Hip joint | 0.538 |
+| CP-L04 | Knee | 0.279 |
+| CP-L05 | Ankle | 0.049 |
+| CP-L06 | Neck base | 0.814 |
+| CP-L07 | Head top | 1.000 |
+
+Loomis cross-checks (approximate, use to sanity-check a result, not to set it):
+
+- **CP-L08.** Crotch is near 0.5 of height.
+- **CP-L09.** Wrist with arms hanging sits near crotch height.
+- **CP-L10.** Elbow sits near waist height.
+
+Younger ages scale these through CP-A: a larger head fraction shrinks the legs and torso fractions, so derive child landmarks from the head count rather than reusing the adult table.
+
+<a id="cp-s-sex"></a>
+## CP-S. Sex differences (Default)
+
+Values given at a 1.72 m equivalent height; scale with height.
+
+| ID | Parameter | Male | Female |
+| --- | --- | --- | --- |
+| CP-S01 | Shoulder half-width | 0.195 m | 0.170 m |
+| CP-S02 | Hip half-width | 0.085 m | 0.098 m |
+| CP-S03 | Waist radius | 1.0 | x0.85 |
+| CP-S04 | Chest left/right node radii | reference | set per preset (narrower shoulders, fuller chest nodes) |
+| CP-S05 | Neck radius | 1.0 | x0.85 |
+| CP-S06 | Hands and feet | 1.0 | x0.9 |
+
+<a id="cp-y-stylize"></a>
+## CP-Y. Stylization level 1 (Default)
+
+Level 1 keeps a human-readable body while pushing it toward a cartoon read.
+
+- **CP-Y01.** Adult height of 4.5 heads.
+- **CP-Y02.** Hands and feet x1.3.
+- **CP-Y03.** Limb radius x1.25.
+- **CP-Y04.** Legs x0.85 of the canon fraction for the age in use.
+
+<a id="cp-f-face"></a>
+## CP-F. Face readability
+
+| ID | Rule |
+| --- | --- |
+| CP-F01 | Eyes, brows and mouth must stay readable in a thumbnail silhouette: check at small size before adding detail. |
+| CP-F02 | Add slight asymmetry (brow height, mouth corner) so expressions do not look mechanical. |
+| CP-F03 | Brows carry anger and sadness. Give them a strong structure and heavy lids where the style needs expressiveness (the Aardman approach). |
+| CP-F04 | Use a fixed set of 16 mouth shapes per character (replacement mouths), not a muscle system. Aardman characters use roughly 16 replacement mouths. |
+
+<a id="cp-sources"></a>
+## Sources
+
+Paraphrased; consulted 29 October 2026.
+
+- Aesthetic canon (Loomis: 8 heads ideal, 7.5 realistic, 3-head torso, 4-head legs): https://en.wikipedia.org/wiki/Aesthetic_canon
+- Anatomy for plasticine artists, RTB course PDF (toddler 3.75, age 5 4.5, age 8 6, young teen 6.5): https://www.elearning.rtb.gov.rw/pluginfile.php/6709/mod_resource/content/1/ARCCSC%205001-CSCAD501%20%20APPLY%20ANATOMY%20FOR%20PLASTOCIAN%20ARTIST%20%20L5SCE.pdf
+- Creative Bloq, Aardman interview (about 16 replacement mouth shapes per character): https://www.creativebloq.com/3d/aardman-speaks-5059870
+- VFX Voice, Early Man (big brow structure and heavy lids for expressiveness): https://www.vfxvoice.com/aardman-goes-back-to-stop-motion-basics-with-early-man/
+- CGW, Flushed Away (replacement mouths chosen over a muscle system): https://www.cgw.com/Publications/CGW/2006/Volume-29-Issue-10-Oct-2006-/Flushed-with-Success.aspx

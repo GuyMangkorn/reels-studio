@@ -80,6 +80,7 @@ Every agent reads AGENTS.md plus its **core** documents. It reads any other docu
 | [sequence-workflow](docs/sequence-workflow.md) | Sequence planning, blockout before polish, boundaries, continuity review across cuts | on trigger (M, S, E) |
 | [production-requirements](docs/production-requirements.md) | Any production deliverable or its review: formats, duration, Thai text/audio, subtitles, endings, licenses | on trigger |
 | [scale-and-perspective-principles](docs/scale-and-perspective-principles.md) | Physical dimensions, projection, depth staging, resizing, apparent size | on trigger |
+| [character-proportion-principles](docs/character-proportion-principles.md) | Building or changing a character body/head, proportion or face expression work | on trigger |
 | [blender-mcp-workflow](docs/blender-mcp-workflow.md) | Any Blender asset or shot; Eevee 64 is the default [render engine](docs/blender-mcp-workflow.md#render-engine-default) | on trigger |
 | [dev-findings](docs/dev-findings.md) | Choosing or revising medium, camera, light or technique; recording a blocker. Read the index, then only the matching entry files (Boss records; Film and Mark revalidate) | on trigger |
 | [planned-visual-components](docs/planned-visual-components.md) | RuleCard, PhoneChat or POV work; examples are designs until runtime integration is verified | on trigger |
