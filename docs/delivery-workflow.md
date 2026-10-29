@@ -50,6 +50,7 @@ Tier changes after the start require a recorded reason. Handoff checks still app
 - **AI04 — Continue instead of re-invoking.** A follow-up for a role whose agent finished minutes ago continues that agent (Claude Code: `SendMessage` to it). After a long gap or a new revision, start a fresh invocation with a short brief.
 - **AI05 — Point, don't paste.** Briefs name file paths, revisions and stable IDs. They do not paste document or handoff content into the brief, and they list only the trigger documents the stage needs beyond the role's core reads.
 - **AI06 — Wait once for long jobs.** Batch renders and Blender jobs into one run and wait for it once (a background job or `Monitor`), not with repeated polling. Prove the shot with sampled frames or a low-resolution pass before a full render.
+- **AI07 — Short sessions, handoff through the record.** A coordinator session covers one stage, or one review-and-fix round, for one deliverable. Before the session ends, the delivery record's `Stage / Next owner` cell and the handoff files carry everything the next step needs (revisions, open items, evidence paths). The next session starts from `delivery.md` and the named revisions, not from chat history. Start a new session rather than continuing one whose context is already long. Keep the model fixed within a session, because switching models restarts the prompt cache.
 
 Independent deliverables (a Short and a Long) may run as parallel invocations. Stages that depend on each other stay in tier order.
 

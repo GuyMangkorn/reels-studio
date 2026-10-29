@@ -595,7 +595,7 @@ Editor (after Boss): two timelines, `scripts/zombie-condo/short/timeline.json` (
 | B09-SH03 screen values (optional, routine) | **measured values supersede the sheet's estimates** | `SP02` measured at camera y 0.35 | Cap x 0–319, door wall 319–433, cabinet ≈433–672 (sheet 340/445/670); the `pictureMove` centre on the door wall moves to x ≈376 (sheet 400) if Mark wants it exact |
 
 <a id="mark-handoff-r33"></a>
-- **R3.3 B10-SH01 camera reconciliation (Film, 29 Oct 2026; sheets `ZCONDO-SHORT-SS-R2.3`; trigger: [`DF-20261029-zcondo-sp02-section-spike`](../../../docs/dev-findings.md#df-20261029-zcondo-sp02-section-spike) addendum; values below are **measured** by Film on Boss's `SP02` blockout with a placeholder mannequin, Blender 5.2.3 CLI, branch `claude/zcondo-ss-r23-trash-bag` @ `40321f8`; Boss re-measures them on the rigged `zc-you` in the plate):**
+- **R3.3 B10-SH01 camera reconciliation (Film, 29 Oct 2026; sheets `ZCONDO-SHORT-SS-R2.3`; trigger: [`DF-20261029-zcondo-sp02-section-spike`](../../../docs/dev-findings/DF-20261029-zcondo-sp02-section-spike.md) addendum; values below are **measured** by Film on Boss's `SP02` blockout with a placeholder mannequin, Blender 5.2.3 CLI, branch `claude/zcondo-ss-r23-trash-bag` @ `40321f8`; Boss re-measures them on the rigged `zc-you` in the plate):**
   - **Problem.** Taken literally, the SS-R2.3 camera ((0.70, 2.75, 1.50) → (0.49, 0.05, 1.35), vFOV 55°, shift_y +0.10) looks −Y, so screen-right is −X: the jamb (x 0.30) lands at x ≈994–1039, he lands screen-left at 1.71 m from the lens (head y 793–1066, **inside the caption zone**; full height ≈1930 px) and the bag is hidden by partition `p1`. The sheet's screen estimates ("jamb frames the left edge", "him right of centre", face x 750–845, y 450–570) cannot all hold at any camera: the partition `p1` is solid for x < 0.30, so from the bathroom only the +X (latch-side) half of the entry is visible, and the door must be seen past him from that side. Keeping him right of the door on screen would need him on the hinge side (x < 0), which `p1` hides (computed for the R3.3 camera: at his depth y ≈1.0 a head is visible through the doorway only for x ≳ −0.06, which still overlaps the door on screen), or him in line with the door, where his head covers the door centre at peephole height and loses the no-peephole read (`VD-ZC-10`'s reason for the shot).
   - **Decision: correct the camera and mirror the screen layout (him left, door right).** It delivers every element the brief asks of this shot: the whole plain door face, including the centre line at peephole height, seen face-on and unobstructed; the cabinet against it; him standing between, three-quarter back, looking at it; a large, high face for the glance (head at y ≈440–630, ≈230 px above the caption zone); the labels on the upper door face; the jamb filling the right rail (x ≥888) where platform buttons sit. Lens class OTS/medium 55° kept; camera at his eye line (1.58 m) so the lens glance reads as direct address.
   - **Screen direction (recorded exception to `MK-Q2`'s "door screen-left … B09–B10").** B10 puts the door screen-right of him. Accepted because B10 is not cut from a lateral eyeline: it follows the B09-SH03 section (a diagram view from outside the building) on the main hit and a beat change, and his gaze in B10 runs mainly into depth (body ≈137° from the lens axis, ≈43° off the into-screen axis). B02-SH01, B02-SH02, B09-SH02 (eyes to screen-left) and every section shot keep the door screen-left. Mark keeps the B09-SH03 → B10 cut a hard cut (no match-move that would stress the flip).
@@ -615,9 +615,6 @@ Editor (after Boss): two timelines, `scripts/zombie-condo/short/timeline.json` (
   - **Fallback:** if the rigged turn pushes the face box past x 420, move him ≤0.10 m toward +X (screen-left) rather than changing the camera; if the dolly reads as a zoom, use the brief's cost option (static camera, still + short video), which removes it.
   - Evidence (local, Git-ignored): `out/qa/zombie-condo/sp02/B10-SH01_R33_f0.png`, `B10-SH01_R33_end.png` (zones drawn: caption zone red, labels blue, plain band yellow, face box green, right rail white); the probe script imports `build_sp02.py` unchanged and adds a scratch door-leaf panel; it is not committed.
 - **Affected decisions in R3.3:** `VD-ZC-10` (camera, layout, labels, bag out of frame), `SCALE-ZC-R2` cabinet height held against the blockout, `MK-Q2` screen-direction note (B10 exception). No timing, beat, VO, claim or reveal change.
-- **Affected decisions in R3.2:** `PROJ-ZC-R3` (`CAM-SECTION-LL` measured note and the cut-plane rule; contract ID kept), `VD-ZC-07` (TH trim), `VD-ZC-09` (SH01 sliver, phone side). No timing, beat, VO, claim or reveal change.
-- **Affected decisions in R3.1:** `VD-ZC-01` (door opening, B01 look target), `VD-ZC-02` (SH01 latch side), `VD-ZC-07`/`VD-ZC-09` (`CAM-SECTION-LL`), `PROJ-ZC-R3` (amended), `SCALE-ZC-R2` (door-wall value fixed), `VD-ZC-TL` (EN B05-SH03 bowl part), `SP02` criteria. Sheet values already match except the items in [Mark handoff (R3.1)](#mark-handoff-r31).
-- **Affected decisions in R3:** `VD-ZC-01`, `VD-ZC-03`–`VD-ZC-10`, `VD-ZC-OV`, `VD-ZC-TL`, `VD-ZC-AU`, `VD-ZC-CAP`, `ZC-CUT-03`, `PROJ-ZC-R2` → `PROJ-ZC-R3`, `S-03`–`S-05`, `S-08`–`S-11`, `SP01`/`SP02` criteria. `VD-ZC-02` is re-timed only.
 
 ## Open risks
 
@@ -655,50 +652,4 @@ History (R2, answered 28 Oct 2026, relayed by the coordinator: “ผู้ช�
   - `VD-ZC-10`: camera (1.300, 3.250, 1.580) → aim (0.25, 0.18, 1.58), vFOV 55°, shift_y −0.211, dolly +0.04 m; him at (0.80, 0.92) left of centre, door face right; labels x 460–880, y 295–470; measured head x 238–395, y 438–630, lead 1412 px.
   - Trash bag out of frame in B10 (behind `p1`); cabinet height 1.20 m (`SCALE-ZC-R2`) held against the 1.75 m blockout; clearance convention edge to edge (B09 bag–phone 0.041 m fails 0.05 m; Mark fixes).
   - Evidence: Film's Blender CLI probe on Boss's `SP02` blockout (`build_sp02.py` unchanged); stills `out/qa/zombie-condo/sp02/B10-SH01_R33_{f0,end}.png` (local). No install, asset or runtime code change.
-- **`VB-ZCONDO-SHORT-R3.2`** (29 Oct 2026, Film): adopts Boss's `SP02` results (`DF-20261029-zcondo-sp02-section-spike`) and the user's acceptance of the B09 seated lead (“Accept + commit”, relayed by the coordinator). No re-timing, no shot or beat change, no VO or claim change; scripts R3, Boat recheck R3 and the conceal/reveal intent unchanged. [Mark handoff R3.2](#mark-handoff-r32).
-  - `PROJ-ZC-R3`: `CAM-SECTION-LL` gains the measured leads (502–506 / 552 px), the user's acceptance and the 3.2 m condition; new cut-plane ×1.117 rule with the sliver formula.
-  - `VD-ZC-09`: B09-SH01 keeps the black corridor sliver; camera y 0.90 → 0.78; counter column x 140–360 → 180–375; phone stays at (−0.80, 0.62), described as his right (door side).
-  - `VD-ZC-07`: B07-SH02 TH trim 15 → 9 (clip 9–89), EN unchanged; plate path unchanged.
-  - Evidence: `SP02` measurements (Boss, blockout, CLI renders `out/blender/zc-unit/sp02/`, `out/qa/zombie-condo/sp02/`); screen values derived by Film from them are `estimated`. No render, install or code change.
-- **`VB-ZCONDO-SHORT-R3.1`** (29 Oct 2026, Film): verdicts on Mark's open items from `ZCONDO-SHORT-SS-R2`, requested by the user (“Film ตรวจ MK-Q2–Q5”, relayed by the coordinator). No re-timing, no shot or beat change, no new claim; scripts R3 and Boat recheck R3 unchanged. [Verdict table](#mark-handoff-r31).
-  - `MK-Q2` accepted: `VD-ZC-02` SH01 "hinge side" → latch side.
-  - `MK-Q3` accepted: `VD-ZC-01` door opening carried by sound/step; leaf out of frame; latch + hinge cue load-bearing.
-  - `MK-Q4` decided: door wall 0.18 m for both sets (`SCALE-ZC-R2` value unchanged; `zc-corridor` blockout to align); `SP02` (a3).
-  - `MK-Q5` accepted: `PROJ-ZC-R3` amended with `CAM-SECTION-LL` (seated-lead shots B07-SH02, B09-SH01/SH03; 3.2–4.6 m; user's naturalness condition and SS-R1 standing fallback kept); `VD-ZC-07`, `VD-ZC-09`, `SP02` (a)/(a2), Mark boundaries updated.
-  - Also: B01 look target for the SP01 grey-figure note; EN B05-SH03 bowl part and anchor moved to Mark's values; Q-R3-1 moved to history.
-  - Evidence: reasoning from the sheets' coordinates, `assets/blender/zc-corridor/manifest.md` (`707bb32`) and the SP01 contact sheet `out/qa/zombie-condo/sp01/contact-TEST-F0-F36-F104.png`; seated sizes are Film's projection arithmetic (`estimated`), not renders. No render, install or code change. Dev findings: the three `DF-20261028-zcondo-*` entries re-checked by Film in `docs/dev-findings.md` on `e44adb4` (same scope: `zc-corridor`, Eevee 64 + baked probes); none covers the section, long-lens section or seated poses, so `SP02` remains the evidence gate for `CAM-SECTION-LL`.
-- **`VB-ZCONDO-SHORT-R3`** (28 Oct 2026, Film): re-timed from scripts R2 (≈58 s) to the user-approved `ZCONDO-SHORT-TH-R3` / `ZCONDO-SHORT-EN-R3` (≈70.8 s / ≈70.1 s) and Boat recheck R3. Authorized by the user's “อนุมัติ R3”. Shot IDs are unchanged; no shot was added or removed.
-  - **Timing:** new beat table (`VD-ZC-TL`), a per-shot TH/EN timing table, a per-language sync-anchor table and an R3 plate-length table.
-  - **Where the time went:**
-    - B01 turn-landing hold.
-    - B02 freeze hold.
-    - B03 held dark state.
-    - B04 spoken list: inserts cut in spoken order, plus an EN lids-on hold.
-    - B05 lid lift in the pause, with a return to the cistern for the conditions.
-    - B06 shut-fridge hold through both hold times; labels add "อย่างมาก" / "tops" and the conditions.
-    - B07 his face on the CO line.
-    - B08 ambience lead-in, with the fire cluster anchored to the restored line.
-    - B09 count ticks; silence 1.0 → 1.5 s with the cut inside it.
-    - B10 held lens look.
-  - **Figure target:** F45 → F36, so the figure reads before the EN VO names it.
-  - **Sound:** the section is renamed "Sound direction" (anchor `vd-zc-au--music-and-sfx` kept) and expanded per the sound-workflow checklist. It now includes the music arc with the clock-pulse layer, ambience per location, SFX language, the silence policy, shared-library IDs and `NEEDS-GEN` gaps, the B07 handling-click rule (Boat advisory), the B08 exclusions (no sirens/voices; dog bark dropped) and the B01–B02 music conflict resolved in favour of user decision Q1.
-  - **Caption-safe box (requirement found on `main`, not in the assignment):** `production-requirements.md#vertical-caption-safe-zone` (added 28 Oct 2026, applies to portrait deliverables started on or after that date) withdraws R2's bottom caption band. As a result:
-    - `VD-ZC-CAP` moves captions to `position: 'middle'`.
-    - `PROJ-ZC-R2` → `PROJ-ZC-R3` with `ZC-SCREEN` zones and the `CAM-SECTION` floor line at y ≈860.
-    - `ZC-CUT-03` puts the neighbour slices below.
-    - Overlay and framing positions move in B01, B04–B10.
-    - `S-09` is extended; `RK-13` is added.
-  - **Evidence refresh:**
-    - Runtime re-inspected on `main` @ `9670266`.
-    - POOLDEPTH Blender clips are now precedent for `kind: 'video'` plates.
-    - `DF-20261028-blender-cycles-water-spike` consulted (bt709 encode tags, cost bound, retry).
-    - `quadTexts` noted.
-    - `RK-09` closed; `RK-14` and `RK-15` added.
-  - **Unchanged:** medium and verdict, character, blood ceiling, section layout and corridor rule, scale baseline, POV decision, overlay style, the conform method. Spikes `SP01`/`SP02` are still pending; only their frame and caption criteria were updated.
-- `VB-ZCONDO-SHORT-R2` (28 Oct 2026, Film), from the user's answers relayed by the coordinator the same day:
-  - Q1 music (drone from B03, ducked); Q2 chrome hidden on TH and EN; Q4 local regenerable plates, no LFS.
-  - Q3/Q5 "เห็นทั้งตัว มีหน้า เลือด มุมมองในห้องอาจ slice ครึ่ง" → new `VD-ZC-CH` (full-body man with a face), `VD-ZC-GORE` (blood ceiling), `VD-ZC-CUT` (section cutaway, per-beat evaluation, corridor rule).
-  - Changed: `VD-ZC-01` (POV → OTS), `VD-ZC-02` (section SH02 with the corridor open, blood handprints), `VD-ZC-03` (section cascade + neighbours), `VD-ZC-04`, `VD-ZC-06`, `VD-ZC-07` (section trucks), `VD-ZC-09` (POV push → section + face close + black corridor cap), `VD-ZC-10` (door-face hold + lens glance).
-  - Also changed: `SCALE-ZC-R1` → `SCALE-ZC-R2` (character, section, caps); `PROJ-ZC-R1` → `PROJ-ZC-R2` (`CAM-SECTION`, cut plane); spike `SP02` added; Boss needs `S-03`/`S-04`/`S-06` extended; `S-10`/`S-11` renumbered.
-  - Unchanged: B05 and B08 decisions (except the character), feasibility verdict, overlays, captions, the TH/EN conform method.
-- `VB-ZCONDO-SHORT-R1` (28 Oct 2026, Film): first brief. Medium: Blender pre-render hybrid; faceless "you"; POV at B01 and B09–B10. Superseded by R2.
+- Earlier revisions (`VB-ZCONDO-SHORT-R1` – `R3.2`) and their affected-decision lists: [visual-brief-history.md](visual-brief-history.md).
