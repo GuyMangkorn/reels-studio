@@ -15,6 +15,8 @@ for _p in (_HERE, os.path.join(_HERE, '..', 'char_head')):
 import char_head as ch
 from body import FDIR
 
+REF_HIP_Z, REF_SH_Z = 0.93, 1.385      # zc-you anchors: the reference the zc-sized staging numbers (feet, relaxed hands) were authored for
+
 FACES = ch.FACE_PRESETS      # shared with every char_head consumer
 
 
@@ -57,6 +59,16 @@ class Actor:
     @property
     def EYE_Z_REST(self):
         return self.ao['cb_eye_z']
+
+    @property
+    def LEG_K(self):
+        """Leg-length ratio to zc-you (hip height); scale zc-authored foot offsets by it."""
+        return self.ao['cb_hip_z'] / REF_HIP_Z
+
+    @property
+    def ARM_K(self):
+        """Arm-length ratio to zc-you (shoulder height); scale zc-authored hand offsets by it."""
+        return self.ao['cb_shoulder_z'] / REF_SH_Z
 
     # ------------------------------------------------------------- helpers
     def _calibrate_curl(self, s):
@@ -128,19 +140,20 @@ class Actor:
             rest_dir = Vector((FDIR.x * sg, FDIR.y, FDIR.z)).normalized()
             sh = P[f'upper_arm.{s}'].head.copy()
             if spec is None:         # relaxed: hanging beside the thigh with a slight forward swing
-                spec = dict(palm=self.mw @ (sh + Vector((0.06 * sg, -0.04, -0.60))), dir=Rw @ Vector((0.10 * sg, -0.10, -1.0)),
+                k = self.ARM_K
+                spec = dict(palm=self.mw @ (sh + Vector((0.06 * sg, -0.04, -0.60)) * k), dir=Rw @ Vector((0.10 * sg, -0.10, -1.0)),
                             normal=Rw @ Vector((-sg, 0, 0)))
             d_a = (Rw.inverted() @ Vector(spec['dir'])).normalized() if spec.get('dir') is not None else rest_dir
             n_a = Rw.inverted() @ Vector(spec['normal']) if spec.get('normal') is not None else Vector((-sg, 0, 0))
             R = _frame_rot(rest_dir, Vector((-sg, 0, 0)), d_a, n_a)
             self._set_ctrl(f'ik_hand.{s}', self.a(spec['palm']) - d_a * self.PALM_OFF, R)
-            self._set_ctrl(f'pole_elbow.{s}', self.a(pole) if pole is not None else sh + Vector((0.45 * sg, 0.55, -0.15)))
+            self._set_ctrl(f'pole_elbow.{s}', self.a(pole) if pole is not None else sh + Vector((0.45 * sg, 0.55, -0.15)) * self.ARM_K)
             self._curl(s, spec.get('curl', 0.18), spec.get('thumb', 0.15))
         # ---- feet (IK on shin.<s>; foot follows the control's rotation)
         for s, spec, pole in (('L', foot_l, pole_kn_l), ('R', foot_r, pole_kn_r)):
             sg = 1 if s == 'L' else -1
             if spec is None:
-                spec = dict(ankle=self.mw @ Vector((0.085 * sg, 0.0, self.ANKLE_Z)), yaw=psi)
+                spec = dict(ankle=self.mw @ Vector((0.085 * sg * self.LEG_K, 0.0, self.ANKLE_Z)), yaw=psi)
             an = Vector(spec['ankle']) if 'ankle' in spec else Vector((spec['sole'][0], spec['sole'][1], self.ANKLE_Z))
             yaw = spec.get('yaw', psi)
             Rz = Matrix.Rotation(math.radians(yaw - psi), 3, 'Z')
