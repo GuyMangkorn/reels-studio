@@ -7,21 +7,15 @@ bone-local euler on FK bones = (pitch forward +, yaw/twist toward body-LEFT +, s
 import bpy, math
 from mathutils import Vector, Matrix, Euler, Quaternion
 from rig import FDIR
+import rig as _rig
+ch = _rig.ch
 
 SH_Z = 1.385
 HIPS_REST = Vector((0.0, 0.0, 0.93))
 PALM_OFF = 0.045               # wrist -> palm centre along the hand axis
 ANKLE_Z = 0.085                # ankle height with a flat foot
 
-FACES = {   # lid: upper-lid close angle deg (0 = rest open, + closes, - wide), brow: (raise m, furrow deg: + = inner ends down), jaw deg
-    'neutral': dict(lid=22, brow=(0.000, 5), jaw=0),
-    'tired': dict(lid=32, brow=(-0.002, 6), jaw=1),
-    'startle': dict(lid=-9, brow=(0.011, 0), jaw=7),
-    'fear': dict(lid=-8, brow=(0.009, -8), jaw=4),
-    'focused': dict(lid=22, brow=(-0.003, 10), jaw=0),
-    'listening': dict(lid=8, brow=(0.004, -3), jaw=0),
-    'frozen': dict(lid=4, brow=(0.005, -4), jaw=0),
-}
+FACES = ch.FACE_PRESETS      # shared with every char_head consumer
 
 
 def yaw_for(face):
@@ -128,16 +122,8 @@ class Actor:
             self._set_ctrl(f'ik_foot.{s}', self.a(an), Rp @ Rz)
             fwd = Rw @ (Rz @ Vector((0, -1, 0)))
             self._set_ctrl(f'pole_knee.{s}', self.a(pole) if pole is not None else self.a(an + fwd * 0.6 + Vector((0, 0, 0.35))))
-        # ---- face
-        fp = dict(FACES[face])
-        fp.update({k: v for k, v in face_over.items() if k in fp})
-        lid = fp['lid'] + blink * (80 - fp['lid'])
-        for s in 'LR':
-            sg = 1 if s == 'L' else -1
-            self._fk(f'lid.{s}', (lid, 0, 0))
-            P[f'brow.{s}'].location = (0, fp['brow'][0], 0)
-            P[f'brow.{s}'].rotation_euler = Euler((0, 0, math.radians(fp['brow'][1] * sg)), 'XYZ')
-        self._fk('jaw', (fp['jaw'], 0, 0))
+        # ---- face (shared char_head presets: lids, brows, jaw)
+        ch.apply_face(P, face, blink, **face_over)
         bpy.context.view_layer.update()
         if look is None:
             eye, fwd = self.head_eye_world()
@@ -172,8 +158,8 @@ class Actor:
             pb.keyframe_insert('rotation_quaternion' if pb.rotation_mode == 'QUATERNION' else 'rotation_euler', frame=f)
 
 
-EYE_Y_REST = -0.078
-EYE_Z_REST = 1.61
+EYE_Y_REST = ch.PARAMS['eye_y']
+EYE_Z_REST = _rig.HEAD_C.z + ch.PARAMS['eye_z']
 
 
 def _frame_rot(a0, n0, a1, n1):

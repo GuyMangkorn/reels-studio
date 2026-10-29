@@ -77,26 +77,26 @@
       "head_clear_of_caption_zone_y860": true,
       "head_px": {
         "x": [
-          245,
-          411
+          253,
+          408
         ],
         "y": [
-          452,
+          451,
           630
         ]
       },
       "label_box_above_plain_band_px": 15,
-      "label_box_gap_to_face_box_x_px": 49,
+      "label_box_gap_to_face_box_x_px": 52,
       "label_box_inside_door_face_x": true,
       "lead_px": {
-        "height_px": 1345,
+        "height_px": 1346,
         "lowest_world_z": -0.0,
         "x": [
           178,
           525
         ],
         "y": [
-          452,
+          451,
           1797
         ]
       },
@@ -198,7 +198,7 @@
           405
         ],
         "y": [
-          444,
+          445,
           632
         ]
       },
@@ -206,14 +206,14 @@
       "label_box_gap_to_face_box_x_px": 55,
       "label_box_inside_door_face_x": true,
       "lead_px": {
-        "height_px": 1375,
+        "height_px": 1374,
         "lowest_world_z": -0.0,
         "x": [
           214,
           470
         ],
         "y": [
-          444,
+          445,
           1819
         ]
       },

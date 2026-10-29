@@ -12,8 +12,10 @@ Contract (ZC-WORLD / SCALE-ZC-R2, brief VB-ZCONDO-SHORT-R3.3 S-06):
     shirt (grime, not blood), messier hair, stubble.
 Run from Blender: sys.path.insert(0, <this dir>); import rig; rig.build(variant='day1'|'day3').
 """
-import bpy, bmesh, math
+import bpy, bmesh, math, os, sys
 from mathutils import Vector, Matrix, Euler
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'char_head'))
+import char_head as ch      # shared illustrated head (assets/blender/char_head)
 
 NAME = 'zc-you'
 HEIGHT, EYE_Z = 1.72, 1.61
@@ -57,14 +59,11 @@ def bone_table():
         ('chest', Vector((0, 0, 1.22)), Vector((0, 0, 1.40)), 'spine', True),
         ('neck', Vector((0, 0, 1.40)), Vector((0, 0, 1.50)), 'chest', True),
         ('head', Vector((0, 0, 1.50)), Vector((0, 0, 1.72)), 'neck', True),
-        ('jaw', Vector((0, 0.035, 1.545)), Vector((0, -0.05, 1.50)), 'head', True),
         ('look_target', Vector((0, -1.0, EYE_Z)), Vector((0, -1.0, EYE_Z + 0.05)), 'root', False),
     ]
+    B += ch.face_bones(HEAD_C, zc_params(), 1.0)
     for s, n in ((1, 'L'), (-1, 'R')):
         B += [
-            (f'eye.{n}', Vector((EYE_X * s, EYE_Y, EYE_Z)), Vector((EYE_X * s, EYE_Y - 0.03, EYE_Z)), 'head', True),
-            (f'lid.{n}', Vector((EYE_X * s, EYE_Y, EYE_Z)), Vector((EYE_X * s, EYE_Y, EYE_Z + 0.03)), 'head', True),
-            (f'brow.{n}', Vector((0.034 * s, -0.088, 1.628)), Vector((0.034 * s, -0.088, 1.658)), 'head', True),
             (f'clavicle.{n}', Vector((0.03 * s, 0, 1.385)), mirror(SH, s), 'chest', True),
             (f'upper_arm.{n}', mirror(SH, s), mirror(EL, s), f'clavicle.{n}', True),
             (f'forearm.{n}', mirror(EL, s), mirror(WR, s), f'upper_arm.{n}', True),
@@ -197,126 +196,38 @@ def _skin_sss(m, weight=0.12):
     b.inputs['Specular IOR Level'].default_value = 0.45
 
 
-def toon(m, steps=6.0, amount=0.8):
-    """Cel-like shading (VD-ZC-01 'soft, simplified forms'): the scene's diffuse lighting on a white surface is read with Shader-to-RGB,
-    its luminance is quantised to `steps` bands (blended `amount` toward the bands) with hue/exposure kept, and multiplied by the albedo.
-    Emission output: no extra lights, no specular, no SSS. Shadows and light colours still come from the scene lights."""
-    nt = m.node_tree
-    if nt.nodes.get('zc_toon'):
-        return
-    bsdf = nt.nodes['Principled BSDF']
-    outn = [n for n in nt.nodes if n.type == 'OUTPUT_MATERIAL'][0]
-    lk = bsdf.inputs['Base Color'].links
-    if lk:
-        alb = lk[0].from_socket
-    else:
-        rgb = nt.nodes.new('ShaderNodeRGB')
-        rgb.outputs[0].default_value = bsdf.inputs['Base Color'].default_value
-        alb = rgb.outputs[0]
-    dif = nt.nodes.new('ShaderNodeBsdfDiffuse')
-    dif.inputs['Color'].default_value = (1, 1, 1, 1)
-    s2r = nt.nodes.new('ShaderNodeShaderToRGB')
-    s2r.name = 'zc_toon'
-    bw = nt.nodes.new('ShaderNodeRGBToBW')
-    def math(op, a_=None, b_=None):
-        n = nt.nodes.new('ShaderNodeMath')
-        n.operation = op
-        if a_ is not None:
-            n.inputs[0].default_value = a_
-        if b_ is not None:
-            n.inputs[1].default_value = b_
-        return n
-    m1, m2, m3, m4 = math('MULTIPLY', None, steps), math('ADD', None, 0.5), math('FLOOR'), math('DIVIDE', None, steps)
-    mixf = nt.nodes.new('ShaderNodeMix')
-    mixf.data_type = 'FLOAT'
-    mixf.inputs[0].default_value = amount
-    mx = math('MAXIMUM', None, 0.02)
-    dv = math('DIVIDE')
-    v1 = nt.nodes.new('ShaderNodeVectorMath')
-    v1.operation = 'MULTIPLY'
-    v2 = nt.nodes.new('ShaderNodeVectorMath')
-    v2.operation = 'SCALE'
-    em = nt.nodes.new('ShaderNodeEmission')
-    L = nt.links.new
-    L(dif.outputs[0], s2r.inputs['Shader'])
-    L(s2r.outputs['Color'], bw.inputs['Color'])
-    L(bw.outputs['Val'], m1.inputs[0]); L(m1.outputs[0], m2.inputs[0]); L(m2.outputs[0], m3.inputs[0]); L(m3.outputs[0], m4.inputs[0])
-    L(bw.outputs['Val'], mixf.inputs[2]); L(m4.outputs[0], mixf.inputs[3])
-    L(bw.outputs['Val'], mx.inputs[0])
-    L(mixf.outputs[0], dv.inputs[0]); L(mx.outputs[0], dv.inputs[1])
-    L(alb, v1.inputs[0]); L(s2r.outputs['Color'], v1.inputs[1])
-    L(v1.outputs[0], v2.inputs[0]); L(dv.outputs[0], v2.inputs['Scale'])
-    L(v2.outputs[0], em.inputs['Color'])
-    L(em.outputs[0], outn.inputs['Surface'])
+toon = ch.toon
+
+
+def M_head(M):
+    """Head materials dict for char_head.build_head (the head skin keeps the stubble material)."""
+    d = dict(M)
+    d['skin'] = M['skin_head']
+    return d
+
+
+def zc_params(variant='day1'):
+    """char_head parameters of the lead (defaults of the shared head = zc-you); day-3: stubble, messier hair, slightly darker skin."""
+    if variant == 'day3':
+        return ch.params(stubble=0.55, hair_messy=1.0, skin='#b08462')
+    return ch.params()
 
 
 def make_materials(variant):
+    """Body materials (tee, shorts, body skin, nails) + the shared head materials (char_head, prefix zc_you[_d3])."""
     d3 = variant == 'day3'
-    M = {
-        'skin': _mat('zc_you_skin', srgb('#b98a6a'), 0.55),
-        'tee': _mat('zc_you_tee' + ('_d3' if d3 else ''), srgb('#27474a' if d3 else '#2f5656'), 0.85),
-        'shorts': _mat('zc_you_shorts', srgb('#7c7f80'), 0.85),
-        'hair': _mat('zc_hair', srgb('#17151a'), 0.6),
-        'lips': _mat('zc_you_lips', srgb('#a8655a'), 0.45),
-        'mouth': _mat('zc_you_mouth', srgb('#3a1a18'), 0.6),
-        'sclera': _mat('zc_you_sclera', srgb('#e6e1d8'), 0.35),
-        'iris': _mat('zc_you_iris', srgb('#6a4326'), 0.3),
-        'limbal': _mat('zc_you_limbal', srgb('#1c120c'), 0.3),
-        'lash': _mat('zc_you_lash', srgb('#0b0908'), 0.7),
-        'brow': _mat('zc_you_brow', srgb('#16110e'), 0.75),
-        'hair2': _mat('zc_hair2', srgb('#241c17'), 0.5),
-        'hair_hl': _mat('zc_hair_hl', srgb('#33323d'), 0.5),
-        'teeth': _mat('zc_you_teeth', srgb('#ddd5c4'), 0.35),
-        'nail': _mat('zc_you_nail', srgb('#cfa58a'), 0.35),
-        'cornea': _cornea(),
-        'pupil': _mat('zc_you_pupil', srgb('#050505'), 0.2),
-    }
+    zp = zc_params(variant)
+    M = ch.make_materials(zp, 'zc_you' + ('_d3' if d3 else ''), HEAD_C)
+    M['skin_head'] = M['skin']
+    M['skin'] = _mat('zc_you_body_skin' + ('_d3' if d3 else ''), srgb(zp['skin']), 0.8)
+    M['tee'] = _mat('zc_you_tee' + ('_d3' if d3 else ''), srgb('#27474a' if d3 else '#2f5656'), 0.85)
+    M['shorts'] = _mat('zc_you_shorts', srgb('#7c7f80'), 0.85)
+    M['nail'] = _mat('zc_you_nail', srgb('#cfa58a'), 0.8)
     if d3:
-        # day-3 stubble on the head skin and shirt grime (not blood): node mixes keyed off object-space coordinates
-        sk = _mat('zc_you_skin_d3', srgb('#b08462'), 0.58)
-        _stubble(sk)
-        M['skin_head'] = sk
-        _grime(M['tee'])
-    else:
-        M['skin_head'] = M['skin']
-    for k in ('skin', 'skin_head', 'tee', 'shorts', 'hair', 'hair2', 'hair_hl', 'lips', 'brow', 'nail', 'teeth'):
+        _grime(M['tee'])                       # shirt grime/sweat patches, not blood (VD-ZC-GORE)
+    for k in ('skin', 'tee', 'shorts', 'nail'):
         toon(M[k])
     return M
-
-
-def _stubble(m):
-    nt = m.node_tree
-    if nt.nodes.get('zc_stubble'):
-        return
-    bsdf = nt.nodes['Principled BSDF']
-    tc = nt.nodes.new('ShaderNodeTexCoord')
-    sep = nt.nodes.new('ShaderNodeSeparateXYZ')
-    nz = nt.nodes.new('ShaderNodeTexNoise')
-    nz.inputs['Scale'].default_value = 900.0
-    nz.inputs['Detail'].default_value = 1.0
-    zr = nt.nodes.new('ShaderNodeMapRange')       # lower face band: z below the nose, y in front
-    zr.inputs['From Min'].default_value = 1.575
-    zr.inputs['From Max'].default_value = 1.545
-    zr.inputs['To Min'].default_value = 0.0
-    zr.inputs['To Max'].default_value = 1.0
-    thr = nt.nodes.new('ShaderNodeMath')
-    thr.operation = 'GREATER_THAN'
-    thr.inputs[1].default_value = 0.52
-    mul = nt.nodes.new('ShaderNodeMath')
-    mul.operation = 'MULTIPLY'
-    mix = nt.nodes.new('ShaderNodeMix')
-    mix.data_type = 'RGBA'
-    mix.inputs[7].default_value = (*srgb('#4a382c'), 1)
-    mix.name = 'zc_stubble'
-    nt.links.new(tc.outputs['Object'], sep.inputs[0])
-    nt.links.new(tc.outputs['Object'], nz.inputs['Vector'])
-    nt.links.new(sep.outputs['Z'], zr.inputs['Value'])
-    nt.links.new(nz.outputs['Fac'], thr.inputs[0])
-    nt.links.new(thr.outputs[0], mul.inputs[0])
-    nt.links.new(zr.outputs['Result'], mul.inputs[1])
-    nt.links.new(mul.outputs[0], mix.inputs['Factor'])
-    mix.inputs[6].default_value = bsdf.inputs['Base Color'].default_value
-    nt.links.new(mix.outputs[2], bsdf.inputs['Base Color'])
 
 
 def _grime(m):
@@ -428,75 +339,6 @@ def _weights(points, bones, only=None):
 
 BODY_BONES = {'pelvis', 'spine', 'chest', 'neck'} | {f'{b}.{s}' for s in 'LR' for b in
               ('clavicle', 'upper_arm', 'forearm', 'hand', 'fingers', 'fingers_tip', 'thumb', 'thigh', 'shin', 'foot', 'toe')}
-
-
-FEATURES = [   # (cx, cz, sx, sz, amp) displacement along the outward direction on the front of the face (metres); x mirrored
-    (0.030, 1.637, 0.022, 0.007, 0.0060),    # brow ridge
-    (0.032, 1.612, 0.017, 0.013, -0.0055),   # eye socket
-    (0.000, 1.603, 0.008, 0.024, 0.0075),    # nose bridge
-    (0.000, 1.568, 0.010, 0.009, 0.0135),    # nose tip
-    (0.014, 1.563, 0.006, 0.006, 0.0055),    # nose wing
-    (0.009, 1.553, 0.0045, 0.0035, -0.0040), # nostril
-    (0.048, 1.585, 0.020, 0.016, 0.0050),    # cheekbone
-    (0.046, 1.545, 0.020, 0.018, -0.0035),   # cheek hollow
-    (0.000, 1.546, 0.004, 0.006, -0.0020),   # philtrum
-    (0.000, 1.5385, 0.015, 0.0040, 0.0040),  # upper lip
-    (0.000, 1.5265, 0.015, 0.0050, 0.0045),  # lower lip
-    (0.020, 1.5335, 0.004, 0.004, -0.0020),  # mouth corner
-    (0.000, 1.5155, 0.012, 0.004, -0.0030),  # mentolabial dent
-    (0.000, 1.533, 0.016, 0.0020, -0.0004),  # mouth crease
-    (0.000, 1.4985, 0.016, 0.010, 0.0075),   # chin
-]
-ZM = 1.533     # mouth line height
-
-
-def _face_disp(px, py, pz):
-    """Sum of feature displacement at an ellipsoid point (front only)."""
-    if py > -0.02:
-        return 0.0
-    d = 0.0
-    for cx, cz, sx, sz, amp in FEATURES:
-        for sg in ((1, -1) if cx else (1,)):
-            d += amp * math.exp(-(((px - sg * cx) / sx) ** 2 + ((pz - cz) / sz) ** 2))
-    return d
-
-
-def front_y(x, z):
-    """Approximate face surface y (front, negative) at (x, z), including the features."""
-    zz = z - HEAD_C.z
-    s = max(0.0, min(1.0, (HEAD_C.z - 0.012 - z) / 0.095))
-    rx = HEAD_R[0] * (1.0 - 0.24 * s ** 1.4)
-    q = 1.0 - (x / rx) ** 2 - (zz / HEAD_R[2]) ** 2
-    y = -HEAD_R[1] * (1 - 0.10 * s) * math.sqrt(max(q, 0.0)) - 0.006 * s
-    return y - _face_disp(x, y, z)
-
-
-def _head_mesh():
-    bm = bmesh.new()
-    bmesh.ops.create_uvsphere(bm, u_segments=96, v_segments=72, radius=1.0)
-    for v in bm.verts:
-        x, y, z = v.co.x, v.co.y, v.co.z
-        px, py, pz = x * HEAD_R[0], y * HEAD_R[1], z * HEAD_R[2]
-        zz = HEAD_C.z + pz
-        s = max(0.0, min(1.0, (HEAD_C.z - 0.012 - zz) / 0.095))
-        px *= 1.0 - 0.24 * s ** 1.4
-        py *= 1.0 - 0.10 * s
-        if py < 0:
-            py -= 0.006 * s
-        d = _face_disp(px, py, zz)
-        if d:
-            n = Vector((px / HEAD_R[0], py / HEAD_R[1], pz / HEAD_R[2])).normalized()
-            n.x *= 0.3
-            n = n.normalized()
-            px, py, zz = px + n.x * d, py + n.y * d, zz + n.z * d
-        v.co = Vector((px, py, zz))
-    bm.normal_update()
-    me = bpy.data.meshes.new('zc-you_head')
-    bm.to_mesh(me)
-    bm.free()
-    for p in me.polygons:
-        p.use_smooth = True
-    return me
 
 
 def _tube(name, pts, radii, mat, seg=6, cap=True):
@@ -682,64 +524,6 @@ def calibrate_poles(ao):
     bpy.context.view_layer.update()
 
 
-def _build_hair(ao, M, variant):
-    """Clean illustrated hair (reference level): one smooth cap with a side-swept hairline, a thick swept fringe (3 flat locks), a soft
-    highlight band, sideburns. Day-3: three loose tufts."""
-    ctr = Vector((0.0, 0.004, 1.592))
-    rx, ry, rz = 0.0965, 0.1095, 0.1135
-    def sphere_pt(th, ph, k=1.0):
-        return ctr + Vector((rx * k * math.sin(th) * math.sin(ph), -ry * k * math.sin(th) * math.cos(ph), rz * k * math.cos(th)))
-    def th_max(ph):
-        a_ = abs(math.degrees(ph))
-        a_ = a_ if a_ <= 180 else 360 - a_
-        pts_ = ((0, 50), (35, 52), (70, 64), (105, 72), (140, 84), (180, 92))
-        for (x0, y0), (x1, y1) in zip(pts_, pts_[1:]):
-            if a_ <= x1:
-                return math.radians(y0 + (y1 - y0) * (a_ - x0) / (x1 - x0) - (4 if ph > 0 and a_ < 60 else 0))
-        return math.radians(92)
-    bm = bmesh.new()
-    bmesh.ops.create_uvsphere(bm, u_segments=96, v_segments=64, radius=1.0)
-    for v in bm.verts:
-        v.co = ctr + Vector((rx * 1.045 * v.co.x, ry * 1.045 * v.co.y, rz * 1.045 * v.co.z))
-    kill = [v for v in bm.verts if math.acos(max(-1, min(1, (v.co.z - ctr.z) / (rz * 1.045)))) > th_max(math.atan2(v.co.x - ctr.x, -(v.co.y - ctr.y)))]
-    bmesh.ops.delete(bm, geom=kill, context='VERTS')
-    me = bpy.data.meshes.new('zc-you_hair_cap')
-    bm.to_mesh(me)
-    bm.free()
-    for pg in me.polygons:
-        pg.use_smooth = True
-    cap = bpy.data.objects.new('zc-you_hair_cap', me)
-    me.materials.append(M['hair'])
-    _link(cap)
-    _rigid(cap, ao, 'head')
-    # fringe: 3 broad locks from the crown sweeping forward and toward body-left, ending just above the brows
-    for i, (ph0, ph1, th_e, r0) in enumerate(((-0.35, 0.50, 49, 0.020), (0.10, 0.95, 52, 0.022))):
-        pts = []
-        for j in range(8):
-            t = j / 7
-            th = math.radians(26) + (math.radians(th_e) - math.radians(26)) * t
-            ph = ph0 + (ph1 - ph0) * t * t
-            pts.append(sphere_pt(th, ph, 1.050 - 0.008 * t))
-        pts[-1] += Vector((0.010, -0.004, 0.0))
-        rad = [r0 * (1 - 0.55 * (j / 7) ** 1.5) for j in range(7)] + [0.0035]
-        lock = _tube(f'zc-you_hair_fringe{i}', pts, rad, M['hair'], seg=8)
-        lock.scale = (1.0, 1.0, 1.0)
-        _rigid(lock, ao, 'head')
-    # soft highlight band along the top-left of the hair mass
-    hp = [sphere_pt(math.radians(14 + 7 * j), 0.55 + 0.08 * j, 1.068) for j in range(6)]
-    hl = _tube('zc-you_hair_hl', hp, [0.0035, 0.0055, 0.0065, 0.0060, 0.0045, 0.0020], M['hair_hl'], seg=6)
-    _rigid(hl, ao, 'head')
-    for sg in (1, -1):
-        sb = _tube(f'zc-you_sideburn.{"L" if sg > 0 else "R"}', [Vector((0.0845 * sg, -0.020, 1.622)), Vector((0.0860 * sg, -0.022, 1.600)), Vector((0.0850 * sg, -0.020, 1.585))],
-                   [0.0035, 0.0030, 0.0010], M['hair'], seg=6)
-        _rigid(sb, ao, 'head')
-    if variant == 'day3':
-        for i, (th, ph, dx) in enumerate(((16, 0.2, 0.012), (22, 2.4, -0.012), (30, -0.9, 0.008))):
-            pts = [sphere_pt(math.radians(th), ph, 1.05), sphere_pt(math.radians(th + 8), ph, 1.075) + Vector((dx, 0, 0.006)), sphere_pt(math.radians(th + 12), ph, 1.07) + Vector((dx * 2, 0, 0.004))]
-            t_ = _tube(f'zc-you_hair_tuft{i}', pts, [0.008, 0.006, 0.0015], M['hair'], seg=6)
-            _rigid(t_, ao, 'head')
-
-
 def detail_body(ao, M, variant):
     """Garment geometry (collar rib, sleeve hems, shirt hem, shorts waistband/hems), toes/nails, procedural folds."""
     d3 = variant == 'day3'
@@ -869,98 +653,8 @@ def build(variant='day1', collection=None):
         pg.material_index = mat
         pg.use_smooth = True
     _vg_bind(body, ao, w)
-    # ---- head (sculpted features in the mesh: brow ridge, sockets, nose, lips, chin, cheeks)
-    hm = _head_mesh()
-    head = bpy.data.objects.new('zc-you_head', hm)
-    _link(head)
-    for mk in ('skin_head', 'lips', 'mouth'):
-        hm.materials.append(M[mk])
-    row = 0.224 / 72
-    wts = []
-    for v in hm.vertices:
-        jaw = max(0.0, min(1.0, (ZM + row * 0.8 - v.co.z) / (row * 1.6)))
-        jaw = jaw * jaw * (3 - 2 * jaw)
-        if v.co.y > 0.04:
-            jaw = 0.0
-        wts.append({'jaw': jaw, 'head': 1.0 - jaw} if jaw > 0 else {'head': 1.0})
-    for pg in hm.polygons:
-        c = sum((hm.vertices[i].co for i in pg.vertices), Vector()) / len(pg.vertices)
-        if c.y < -0.03:
-            dz = c.z - ZM
-            if abs(dz) < row * 0.55 and abs(c.x) < 0.0185:
-                pg.material_index = 2                                    # mouth line
-            elif abs(c.x) < 0.0200 * (1 - (dz / 0.0105) ** 2) and abs(dz) < 0.0105:
-                pg.material_index = 1                                    # lips
-            elif abs(c.x - 0.0) < 0.0 and False:
-                pass
-            for sg in (1, -1):                                          # nostrils
-                if abs(c.x - sg * 0.009) < 0.0042 and abs(c.z - 1.5535) < 0.0030 and c.y < -0.07:
-                    pg.material_index = 2
-    _vg_bind(head, ao, wts)
-    sk = M['skin_head']
-    # ears: helix + lobe + inner dark concha
-    for s_, n in ((1, 'L'), (-1, 'R')):
-        e1 = _ellipsoid(f'zc-you_ear.{n}', Vector((0.0875 * s_, 0.006, 1.594)), (0.0085, 0.0225, 0.033), sk, 'head', rot=(0, math.radians(-12 * s_), 0), seg=20, rings=12)
-        e2 = _ellipsoid(f'zc-you_ear_in.{n}', Vector((0.0835 * s_, 0.002, 1.597)), (0.0045, 0.012, 0.021), M['mouth'], 'head', seg=14, rings=8)
-        e3 = _ellipsoid(f'zc-you_ear_lobe.{n}', Vector((0.0865 * s_, 0.0045, 1.5665)), (0.0070, 0.009, 0.0095), sk, 'head', seg=12, rings=8)
-        for e in (e1, e2, e3):
-            _rigid(e, ao, 'head')
-    for s_, n in ((1, 'L'), (-1, 'R')):
-        # eyeball: sclera + limbal ring + iris + pupil (rings by angle from the front axis), cornea shell with a specular highlight
-        eye = _ellipsoid(f'zc-you_eye.{n}', Vector((EYE_X * s_, EYE_Y, EYE_Z)), (EYE_R,) * 3, M['sclera'], f'eye.{n}', seg=48, rings=32)
-        for mk in ('iris', 'limbal', 'pupil'):
-            eye.data.materials.append(M[mk])
-        for pg in eye.data.polygons:
-            c = sum((eye.data.vertices[i].co for i in pg.vertices), Vector()) / len(pg.vertices)
-            d = Vector((c.x - EYE_X * s_, c.y - EYE_Y, c.z - EYE_Z)).normalized()
-            ang = math.degrees(math.acos(max(-1, min(1, -d.y))))
-            pg.material_index = 3 if ang < 10.5 else (1 if ang < 25 else (2 if ang < 30 else 0))
-        _rigid(eye, ao, f'eye.{n}')
-        cor = _ellipsoid(f'zc-you_cornea.{n}', Vector((EYE_X * s_, EYE_Y, EYE_Z)), (EYE_R * 1.035,) * 3, M['cornea'], f'eye.{n}', seg=32, rings=20)
-        _rigid(cor, ao, f'eye.{n}')
-        # upper lid (moves with lid.<s>) and fixed lower lid; dark lash edge on the free rim
-        for kind, lo, hi in (('lid', 0.0, 70.0), ('lidlow', 112.0, 180.0)):
-            bm = bmesh.new()
-            bmesh.ops.create_uvsphere(bm, u_segments=40, v_segments=24, radius=EYE_R * 1.045)
-            bm.verts.ensure_lookup_table()
-            R_ = EYE_R * 1.045
-            kill = [v for v in bm.verts if (math.degrees(math.acos(max(-1, min(1, v.co.z / R_)))) > hi or math.degrees(math.acos(max(-1, min(1, v.co.z / R_)))) < lo)]
-            bmesh.ops.delete(bm, geom=kill, context='VERTS')
-            bmesh.ops.transform(bm, matrix=Matrix.Translation(Vector((EYE_X * s_, EYE_Y, EYE_Z))), verts=bm.verts)
-            lm = bpy.data.meshes.new(f'zc-you_{kind}.{n}')
-            bm.to_mesh(lm)
-            bm.free()
-            lm.materials.append(sk)
-            lm.materials.append(M['lash'])
-            for pg in lm.polygons:
-                pg.use_smooth = True
-                zc_ = sum((lm.vertices[i].co.z - EYE_Z for i in pg.vertices), 0.0) / len(pg.vertices)
-                th = math.degrees(math.acos(max(-1, min(1, zc_ / R_))))
-                edge = (th > hi - 5.5) if kind == 'lid' else (th < lo + 5.5)
-                pg.material_index = 1 if edge else 0
-            lid = bpy.data.objects.new(f'zc-you_{kind}.{n}', lm)
-            _link(lid)
-            _rigid(lid, ao, f'lid.{n}' if kind == 'lid' else 'head')
-        # brows: tapered, arched, following the forehead surface (hair material), weighted to brow.<s>
-        pts = []
-        for i, (bx, dz) in enumerate(((0.014, -0.003), (0.024, 0.003), (0.036, 0.006), (0.048, 0.004), (0.058, -0.002), (0.066, -0.008))):
-            z = 1.640 + dz
-            pts.append(Vector((bx * s_, front_y(bx, z) - 0.0012, z)))
-        br = _tube(f'zc-you_brow.{n}', pts, [0.0030, 0.0036, 0.0036, 0.0032, 0.0024, 0.0013], M['brow'], seg=6)
-        _rigid(br, ao, f'brow.{n}')
-        # eyelashes: short tapered tufts on the upper lid rim (outer half)
-        for i in range(5):
-            ang = math.radians(-35 + i * 17) 
-            base = Vector((EYE_X * s_ + math.sin(ang) * EYE_R * 1.1 * s_, EYE_Y - math.cos(ang) * EYE_R * 1.06, EYE_Z + EYE_R * 0.42))
-            tip = base + Vector((math.sin(ang) * 0.004 * s_, -0.003, 0.0045))
-            lash = _tube(f'zc-you_lash{i}.{n}', [base, tip], [0.0010, 0.0003], M['lash'], seg=4)
-            _rigid(lash, ao, f'lid.{n}')
-    # teeth behind the lips (only seen when the jaw drops: startle / fear)
-    up = _ellipsoid('zc-you_teeth_up', Vector((0, -0.076, ZM + 0.0026)), (0.012, 0.0035, 0.0035), M['teeth'], 'head', seg=20, rings=8)
-    lo_ = _ellipsoid('zc-you_teeth_lo', Vector((0, -0.076, ZM - 0.0036)), (0.011, 0.0035, 0.0033), M['teeth'], 'jaw', seg=20, rings=8)
-    _rigid(up, ao, 'head')
-    _rigid(lo_, ao, 'jaw')
-    _build_hair(ao, M, variant)
+    # ---- head: the shared illustrated head (assets/blender/char_head), parameters = the lead's
+    ch.build_head(ao, HEAD_C, zc_params(variant), 'zc-you', 1.0, M_head(M))
     detail_body(ao, M, variant)
     add_ik(ao)
     calibrate_poles(ao)
