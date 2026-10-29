@@ -28,6 +28,9 @@ Before selecting/revising medium/compositing/camera/light strategy, consult rele
 4. **Perform technical BA at seams:** apply the table below. Separate desired look, integration proposal and tested evidence, including shared foundations needed before scenes. Finish when Boss knows module/interface scope, dependencies, risks and proof criteria while retaining implementation discretion.
 5. **Hand rough brief to Mark:** use the format below and link the sequence index where present. Hand over matching script/review/brief revisions, constraints and decisions left to Mark. Episode work covers the episode; single-scene work covers that scene and needed boundaries. Finish when Mark can write shot direction without guessing the medium or primary integration strategy.
 
+<a id="look-check"></a>
+**Requirement — look check for new looks.** When a look-defining element has no approved precedent (a new character, a new medium or style, a new key set mood), the user picks its look before Boss builds it. Film shows up to three options as reference images or links, or the coordinator assigns one low-resolution still of one shot in the proposed look to Film or Boss. Record the pick and the user's words in the brief. An approved precedent (an accepted character template, an earlier episode's accepted set) skips the check. Budget: one reference set or one still per element, never a pass over every scene.
+
 This role is planning. It does not install packages, implement runtime or author detailed scene sheets as a side effect. Specify the smallest feasibility spike/blockout and observable acceptance criteria for Boss. Run a spike yourself only when separately assigned, following implementation workflow.
 
 ## Light tier brief

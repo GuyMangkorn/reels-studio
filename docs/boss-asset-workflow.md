@@ -117,6 +117,7 @@ Every still, contact sheet, clip or spike capture shown to the user, Film or Mar
 - **Shot ID:** the short shot ID exactly as the scene-sheet index and review page write it (`B07-SH02`, never `B07SH02` or the bare beat `B07`). A spike or test capture lists every shot it stands for (`SP02 → B07-SH02, B09-SH01`); a capture that serves no specific shot says so.
 - **Clock:** every frame number names its clock: `F` composition-global (the review page's time), `f` shot-local, `c` plate clip, `b` Blender. A burned-in label shows the shot ID, the deliverable and composition time in the review page's format (`TH 0:46.3`), then any plate or Blender frame in brackets.
 - **Files and manifests:** name files `<shot ID>_<view>_<clock><frame>.<ext>` (`B07-SH02_mid_c40.png`); a multi-shot contact sheet names its composition and frame range instead and labels each tile. Spike folders keep the spike ID (`out/qa/<episode>/sp02/`). Manifests key entries by the same shot ID.
+- **Blockout:** a preview built with stand-ins, placeholder materials or untextured geometry says `BLOCKOUT — not the final look` in its burned-in label and in the message that shows it, so a reviewer judges staging, not taste.
 - **Hand-off:** list previews by shot ID, with the scene-sheet revision they were rendered against, in the index or QA notes so the coordinator can link them from the review page.
 
 <a id="ขอบเขตที่ตรวจในรอบตั้ง-agent"></a>
