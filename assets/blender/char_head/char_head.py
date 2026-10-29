@@ -37,11 +37,11 @@ PARAMS = dict(
     ear=1.0, cheek=1.2,
     skin='#b98a6a', stubble=0.0, lip='#a8655a', hair='#17151a', hair2='#241c17', hair_hl='#2b2a34', brow_color='#16110e', iris_color='#6a4326',
     hair_style='side_sweep', hair_volume=1.0, hair_flicks=5, hair_messy=0.0, sideburn=0,
-    style='v1',
+    style='v1', socket=1.0, brow_ridge=1.0,     # socket / brow_ridge: depth multipliers of the orbit dip and the brow ridge (v2 sets them high)
 )
 STYLE_V2 = dict(    # v2: round skull, one cut-out hair sheet (no flicks/tufts), no visible eyelids (lids retracted at rest, they only close to blink)
     style='v2', head=(0.098, 0.100, 0.104), jaw_taper=0.04, chin=0.3, cheek=1.3, hair_style='cutout', hair_flicks=0, hair_messy=0.0, hair_volume=1.0,
-    nose_len=0.6, nose_bridge=0.6, eye_r=0.0215, iris=0.80,
+    nose_len=0.6, nose_bridge=0.6, eye_r=0.0195, iris=0.74, eye_y=-0.0715, socket=2.4, brow_ridge=1.9,
 )
 PRESETS = {
     'zc_you': {},
@@ -240,9 +240,12 @@ def _features(p, k=None):
     mz, mw, lf = p['mouth_z'], p['mouth_w'], p['lip_full']
     bz = p['brow_z'] - 0.005
     ez, ex = p['eye_z'], p['eye_x']
+    so, br = p['socket'], p['brow_ridge']
+    sk = 1.0 + 0.25 * (so - 1.0)
     return [
-        (ex * 0.95, bz, 0.022, 0.007, 0.0055),                                   # brow ridge
-        (ex, ez, ex * 0.52, 0.0125, -0.0050),                                    # eye socket
+        (ex * 0.95, bz, 0.022, 0.007 * (1 + 0.15 * (br - 1)), 0.0055 * br),     # brow ridge
+        (ex, ez, ex * 0.52 * sk, 0.0125 * sk, -0.0050 * so),                    # eye socket (orbit dip)
+        (ex, ez - 0.017, ex * 0.55, 0.006, 0.0030 * (so - 1.0)),                 # lower orbit rim / cheekbone edge (v2)
         (0.0, ez - 0.008, 0.008 * nw, 0.024, 0.0070 * nb),                       # nose bridge
         (0.0, -0.027, 0.010 * nw, 0.009, 0.0150 * nl),                           # nose tip
         (0.013 * nw, -0.031, 0.006, 0.0055, 0.0045 * nl),                        # nose wing

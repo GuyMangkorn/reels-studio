@@ -20,9 +20,9 @@ cb.area('key', (0.9, -2.2, 1.4), (1.2, 1.2), (1, 0.95, 0.9), 220, rot=(math.radi
 cb.area('fill', (-2.0, -1.5, 0.6), (3, 3), (0.8, 0.9, 1), 80, rot=(math.radians(82), 0, math.radians(-50)))
 cd = bpy.data.cameras.new('c'); cd.lens = 85; cd.sensor_fit = 'HORIZONTAL'
 co = bpy.data.objects.new('c', cd); sc.collection.objects.link(co); sc.camera = co
-def shot(name, ang, dist=0.78):
+def shot(name, ang, dist=0.78, aim=(0, 0, 0)):
     a = math.radians(ang)
-    co.location = Vector((math.sin(a) * dist, -math.cos(a) * dist, 0.0))
+    co.location = Vector((math.sin(a) * dist, -math.cos(a) * dist, 0.0)) + Vector(aim)
     co.rotation_euler = (math.radians(90), 0, a)
     sc.render.filepath = os.path.join(out, name)
     bpy.ops.render.render(write_still=True)
@@ -36,6 +36,7 @@ for spec_ in names:
     ch.apply_face(ao.pose.bones, 'neutral')
     for suf, ang in (('front', 0), ('q', 35), ('side', 90)):
         shot(f'{nm}_{suf}.png', ang)
+    shot(f'{nm}_eye_side.png', 75, 0.30, (0, -0.075, 0.012))      # close-up of the eye area from the side: shows the socket recess
     if True:
         for ex in ch.FACE_PRESETS:
             ch.apply_face(ao.pose.bones, ex)
