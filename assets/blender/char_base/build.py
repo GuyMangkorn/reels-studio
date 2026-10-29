@@ -1,0 +1,89 @@
+"""char_base build: preset -> rigged character (armature + skinned meshes) in the current scene.
+
+build(preset, name, variant=None, collection=None) -> armature object `name`; meshes `<name>_*` carry an Armature modifier
+(no bone parenting, no object transforms). Measured anchors are stored as cb_* custom properties for poses.
+"""
+import bpy
+from mathutils import Vector
+
+import body
+import heads
+import looks
+import outfits
+import presets
+
+
+def _fingernails(name, ao, J, M, hs):
+    for s, n in ((1, 'L'), (-1, 'R')):
+        for fi, (fb, fm, ft) in enumerate(body.finger_points(J, s, hs)):
+            fd = (ft - fm).normalized()
+            nail = outfits.ellipsoid(f'{name}_nail{fi}.{n}', ft - fd * 0.007 * hs + Vector((-s * 0.0062 * hs, 0, 0)),
+                                     (0.0022 * hs, 0.0042 * hs, 0.0055 * hs), M['nail'], seg=10, rings=6)
+            nail.rotation_mode = 'QUATERNION'
+            body.rigid(nail, ao, f'fingers_tip.{n}')
+
+
+def build(preset, name, variant=None, collection=None):
+    """Create character `name` from `preset` (+ variant); returns the armature object."""
+    P = presets.resolve(preset, variant)
+    hm = heads.get(P['head'][0])
+    hp = hm.params(**P['head'][1])
+    bp = body.body_params(P['age'], **P['body'])
+    scale = body.head_scale(bp, hm.head_metrics(hp, 1.0)['height'])
+    J = body.joints(bp, hm.head_metrics(hp, scale))
+    F = body.factors(bp)
+    prefix = name.replace('-', '_') + P.get('mat_suffix', '')
+    M = looks.materials(P['look'], prefix, P['palette'], hm, hp, J['head_c'])
+    outfits.dress_materials(P['outfit'], M, name, J, F)
+    looks.finish(P['look'], M)
+    table = body.bone_table(J, hm, hp, scale)
+    ao = body.armature(name, table)
+    me = body.skin_mesh(*body.body_graph(J, bp), name + '_body')
+    zmin = min(v.co.z for v in me.vertices)       # skin radius / subsurf shrink: the sole is put on the floor
+    for v in me.vertices:
+        v.co.z -= zmin
+    bod = bpy.data.objects.new(name + '_body', me)
+    bpy.context.scene.collection.objects.link(bod)
+    outfits.apply(bod, ao, P['outfit'], M, J, F, table)
+    hm.build_head(ao, J['head_c'], hp, name, scale, looks.head_mats(M))
+    _fingernails(name, ao, J, M, F['hs'])
+    body.add_ik(ao)
+    body.calibrate_poles(ao)
+    objs = [o for o in bpy.data.objects if o.name.startswith(name + '_') and o.type == 'MESH']
+    for o in objs:
+        o.visible_shadow = True
+    m = measure(ao)
+    ao['cb_preset'], ao['cb_variant'] = preset, variant or ''
+    ao['cb_height_m'], ao['cb_eye_z'] = m['height'], m['eye_z']
+    ao['cb_shoulder_z'], ao['cb_hip_z'], ao['cb_ankle_z'] = J['SH'].z, J['pelvis'].z, J['ANK'].z
+    ao['cb_palm_off'] = (J['PALM'] - J['WR']).length
+    ao['cb_head_c'] = tuple(J['head_c'])
+    if collection is not None:
+        for o in [ao] + objs:
+            for c in list(o.users_collection):
+                c.objects.unlink(o)
+            collection.objects.link(o)
+    return ao
+
+
+def rest_bounds(ao):
+    """World-space (min, max) over the evaluated meshes parented to `ao`."""
+    bpy.context.view_layer.update()
+    dg = bpy.context.evaluated_depsgraph_get()
+    mn = Vector((1e9,) * 3)
+    mx = Vector((-1e9,) * 3)
+    for o in bpy.data.objects:
+        if o.type == 'MESH' and o.parent == ao:
+            oe = o.evaluated_get(dg)
+            for v in oe.data.vertices:
+                p = oe.matrix_world @ v.co
+                mn = Vector((min(mn.x, p.x), min(mn.y, p.y), min(mn.z, p.z)))
+                mx = Vector((max(mx.x, p.x), max(mx.y, p.y), max(mx.z, p.z)))
+    return mn, mx
+
+
+def measure(ao):
+    """Current-pose height (top), eye height (eye.L head), lowest point and mesh object count."""
+    mn, mx = rest_bounds(ao)
+    eye = ao.matrix_world @ ao.pose.bones['eye.L'].head
+    return dict(height=mx.z, eye_z=eye.z, zmin=mn.z, objects=sum(1 for o in bpy.data.objects if o.type == 'MESH' and o.parent == ao))

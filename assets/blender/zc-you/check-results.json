@@ -17,7 +17,7 @@
     },
     "lowest_z_m": 0.0,
     "objects": 58,
-    "vertices": 31812
+    "vertices": 31797
   },
   "tracks": {
     "B01-SH01": {
@@ -133,7 +133,7 @@
         0,
         60
       ],
-      "wall_min_x_m": -1.3291
+      "wall_min_x_m": -1.3324
     },
     "B06-SH01": {
       "contacts": [
@@ -167,7 +167,7 @@
         0,
         89
       ],
-      "wall_min_x_m": -1.4718
+      "wall_min_x_m": -1.4757
     },
     "B07-SH02": {
       "contacts": [],
@@ -230,7 +230,7 @@
         0,
         245
       ],
-      "wall_min_x_m": 0.5773
+      "wall_min_x_m": 0.5749
     }
   }
 }
