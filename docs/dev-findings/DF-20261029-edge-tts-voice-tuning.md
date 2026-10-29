@@ -94,6 +94,16 @@ Reference values for the unprocessed voices: Premwadee 189 Hz (152–262), 2.81 
 
 **Samples (local, ignored `out/`):** script outputs `out/voice-tests/r2/preset_<name>.wav` (measurements `preset_measurements.txt`). The exploration grid is `out/voice-tests/r2/*_{praat,world}_*.wav` plus `base_premwadee.wav` and `base_niwat.wav` (`measurements.json`, log `out/logs/voice-r2.log`). Reproduce one clip with `out/voice-venv/bin/python -I scripts/voice-preset.py --preset child-girl --text "วันนี้ฉันจะไปตลาดกับยายนะ" out.wav`.
 
+## Round 3 (user listening 2026-10-29)
+
+- User verdict on round 2: child girl and boy "sound like a small adult" (too little formant shift); elderly man "still not old enough"; elderly woman passed.
+- Grid (Praat `Change gender`, WORLD for the man) in `out/voice-tests/r3/`; the user picked by ear, in each case the strongest child option:
+  - `child-girl`: Premwadee, f0 300, formant 1.26, range 1.2, dur 1.12 (`girl_f1.26_p300.wav`; rejected 1.18 and 1.22).
+  - `child-boy`: **Niwat**, f0 265, formant 1.32, range 1.2, dur 1.12 (`boy_niwat_f1.32_p265.wav`; rejected Premwadee 1.15 and 1.19).
+  - `elder-man`: Niwat rate −20%, WORLD f0 150, formant 0.94, range 0.5, dur 1.18, tremor 9 % at 5 Hz, jitter 0.045, shimmer 2.2, amplitude tremor 0.22, breath 0.85 (`elderman_x1.wav`; rejected stronger x2 and muffled-EQ x3).
+- Implication: the Peterson & Barney ratios (≈1.12–1.23 × female) were too timid for this voice; the formant scale that reads as a child here is at the top of that range or above. Both child picks were the strongest offered, so a further step (girl 1.3) is untested.
+- `scripts/voice-preset.py` presets now hold these values; `child-girl-lively`, `child-boy-niwat` and `elder-man-strong` were removed.
+
 ## Samples (local only, ignored `out/`)
 
 Regenerate by applying the recipes above to the test line (the experiment script was a scratch file and is not committed). Measurements: `out/voice-tests/measurements.json`; log `out/logs/voice-tests.log`.

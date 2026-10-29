@@ -5,7 +5,7 @@ description: "Thai character voices from the two Edge TTS voices (Premwadee, Niw
 
 # Voice tuning
 
-**Status:** Design/proposed. Recipes are measured (F0, duration, loudness) but **not yet approved by ear**; play the result to the user before it goes into a deliverable. Owner: **Editor**. Evidence and sources: [DF-20261029-edge-tts-voice-tuning](../../../docs/dev-findings/DF-20261029-edge-tts-voice-tuning.md).
+**Status:** `child-girl`, `child-boy`, `elder-man` picked by the user by ear on 2026-10-29 (round 3); `elder-woman` passed round 2 by ear (normal vs strong not chosen); adult presets are measured only. Still play each new line to the user before it goes into a deliverable. Owner: **Editor**. Evidence and sources: [DF-20261029-edge-tts-voice-tuning](../../../docs/dev-findings/DF-20261029-edge-tts-voice-tuning.md).
 
 ## What is possible
 
@@ -18,7 +18,7 @@ description: "Thai character voices from the two Edge TTS voices (Premwadee, Niw
 ## Steps
 
 1. Record the character, voice and preset per line in the edit plan.
-2. Generate each line: `python3 -I scripts/voice-preset.py --preset <name> --text "<Thai line>" <out.wav> [--rate +5%]` (child/elderly: `out/voice-venv/bin/python -I scripts/voice-preset.py …`). `--list` shows presets: `child-girl`, `child-girl-lively`, `child-boy`, `child-boy-niwat`, `elder-woman(-strong)`, `elder-man(-strong)`, `woman-younger`, `woman-lower`, `man-bigger`, `man-younger`, `woman-base`, `man-base`.
+2. Generate each line: `python3 -I scripts/voice-preset.py --preset <name> --text "<Thai line>" <out.wav> [--rate +5%]` (child/elderly: `out/voice-venv/bin/python -I scripts/voice-preset.py …`). `--list` shows presets: `child-girl`, `child-boy` (from Niwat), `elder-woman(-strong)`, `elder-man`, `woman-younger`, `woman-lower`, `man-bigger`, `man-younger`, `woman-base`, `man-base`.
 3. Rate: the narration default is +5%; set another rate per line when the moment needs it and record why ([production requirements](../../../docs/production-requirements.md)). Elderly presets fix −20% and stretch a further ×1.1.
 4. Short lines: generate per sentence or per speaker. **Do not split inside one sentence**: each call is spoken as a complete utterance with its own falling end, so the join sounds wrong.
 5. Mix the clips in at their cue times; output is already loudness-normalized (−16 LUFS target), re-check in the final mix. `scripts/narration.py` uses one voice for the whole timeline, so character lines are mixed separately until per-scene voice fields exist (Boss runtime change).

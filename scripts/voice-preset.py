@@ -25,14 +25,12 @@ ELDER_STRONG = dict(ELDER, formant=0.96, rng=0.6, dur=1.12, tremor=0.07, trem_hz
 
 # name: (voice, edge pitch, edge rate or None for --rate, ffmpeg chain or resynthesis dict)
 PRESETS = {
-    'child-girl': (P, '+0Hz', None, dict(m='praat', f0=275, formant=1.12, rng=1.15, dur=1.1)),
-    'child-girl-lively': (P, '+0Hz', None, dict(m='praat', f0=280, formant=1.12, rng=1.3, dur=1.08)),
-    'child-boy': (P, '+0Hz', None, dict(m='praat', f0=250, formant=1.08, rng=1.15, dur=1.12)),
-    'child-boy-niwat': (N, '+0Hz', None, dict(m='praat', f0=250, formant=1.25, rng=1.2, dur=1.12)),
+    'child-girl': (P, '+0Hz', None, dict(m='praat', f0=300, formant=1.26, rng=1.2, dur=1.12)),
+    'child-boy': (N, '+0Hz', None, dict(m='praat', f0=265, formant=1.32, rng=1.2, dur=1.12)),
     'elder-woman': (P, '+0Hz', '-20%', dict(ELDER, f0=162)),
     'elder-woman-strong': (P, '+0Hz', '-20%', dict(ELDER_STRONG, f0=165)),
-    'elder-man': (N, '+0Hz', '-20%', dict(ELDER, f0=150)),
-    'elder-man-strong': (N, '+0Hz', '-20%', dict(ELDER_STRONG, f0=142)),
+    'elder-man': (N, '+0Hz', '-20%', dict(ELDER_STRONG, f0=150, formant=0.94, rng=0.5, dur=1.18, tremor=0.09, trem_hz=5,
+                                         jitter=0.045, shimmer=2.2, amp_trem=0.22, breath=0.85)),
     'woman-younger': (P, '+15Hz', None, shift(1.06)),
     'woman-lower': (P, '-20Hz', None, shift(0.93)),
     'man-bigger': (N, '-10Hz', None, f'{shift(0.9)},equalizer=f=150:t=q:w=1:g=2'),
