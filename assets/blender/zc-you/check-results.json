@@ -4,11 +4,11 @@
       -0.274,
       0.274,
       -0.206,
-      0.106
+      0.108
     ],
     "bones": 44,
     "eye_z_m": 1.607,
-    "height_m": 1.7109,
+    "height_m": 1.713,
     "joint_limits_used_by_tracks_deg": {
       "eye_yaw_from_head_max": "see tracks",
       "head_yaw_B10": 75.0,
@@ -16,8 +16,8 @@
       "shoulders_yaw_B10": 50.0
     },
     "lowest_z_m": 0.0,
-    "objects": 63,
-    "vertices": 31215
+    "objects": 58,
+    "vertices": 31812
   },
   "tracks": {
     "B01-SH01": {
@@ -188,8 +188,8 @@
       "wall_min_x_m": -0.0718
     },
     "B09-SH01": {
-      "back_wall_gap_to_build_BACK_X_-1.60_m": 0.1022,
-      "back_wall_gap_to_sheet_x_-1.50_m": 0.0022,
+      "back_wall_gap_to_build_BACK_X_-1.60_m": 0.1001,
+      "back_wall_gap_to_sheet_x_-1.50_m": 0.0001,
       "contacts": [],
       "floor_min_z_m": -0.0,
       "frames": [
@@ -197,11 +197,11 @@
         45
       ],
       "phone_foot_gap_m": 0.0444,
-      "wall_min_x_m": -1.4978
+      "wall_min_x_m": -1.4999
     },
     "B09-SH02": {
-      "back_wall_gap_to_build_BACK_X_-1.60_m": 0.0681,
-      "back_wall_gap_to_sheet_x_-1.50_m": -0.0319,
+      "back_wall_gap_to_build_BACK_X_-1.60_m": 0.066,
+      "back_wall_gap_to_sheet_x_-1.50_m": -0.034,
       "contacts": [],
       "floor_min_z_m": -0.0,
       "frames": [
@@ -209,11 +209,11 @@
         128
       ],
       "phone_foot_gap_m": 0.0444,
-      "wall_min_x_m": -1.5319
+      "wall_min_x_m": -1.534
     },
     "B09-SH03": {
-      "back_wall_gap_to_build_BACK_X_-1.60_m": 0.0628,
-      "back_wall_gap_to_sheet_x_-1.50_m": -0.0372,
+      "back_wall_gap_to_build_BACK_X_-1.60_m": 0.0603,
+      "back_wall_gap_to_sheet_x_-1.50_m": -0.0397,
       "contacts": [],
       "floor_min_z_m": -0.0,
       "frames": [
@@ -221,7 +221,7 @@
         0
       ],
       "phone_foot_gap_m": 0.0444,
-      "wall_min_x_m": -1.5372
+      "wall_min_x_m": -1.5397
     },
     "B10-SH01": {
       "contacts": [],

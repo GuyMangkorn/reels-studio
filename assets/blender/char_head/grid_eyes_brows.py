@@ -1,4 +1,4 @@
-"""Labelled comparison grid of the v2 eye shapes x lid modes (rows 1-4) and the brow presets (last row) on the same head, front view, orthographic.
+"""Labelled comparison grid of the eye shapes x lid modes (rows 1-4) and the brow presets (last row) on the same head, front view, orthographic.
 Blender -b --python assets/blender/char_head/grid_eyes_brows.py -- <out.png> [brow_eye=almond] [brow_lids=line] [expression=neutral] [only=eyes|brows]"""
 import bpy, sys, os, math, importlib.util
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -27,7 +27,7 @@ for i, (e, l, b) in enumerate(cells):
     r, c = divmod(i, cols)
     o = ((c - 1) * S, 0, -r * S)
     nm = f'h{i}'
-    p = ch.style('v2', ch.preset('zc_you'), eye=e, lids=l, brow=b)
+    p = ch.params(eye=e, brow=b, lid_mode=l)
     ao = ch.add_standalone_armature(p, nm, o)
     ch.build_head(ao, o, p, nm)
     ch.apply_face(ao.pose.bones, kv.get('expression', 'neutral'))
