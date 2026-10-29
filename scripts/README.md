@@ -6,7 +6,7 @@ Shared tools any role may run. Check here before writing a one-off command. A pr
 | --- | --- | --- |
 | `render.mjs` | Renders compositions, stills or frame lists into `out/<CompositionId>/`; parallel-safe | `npm run render -- <CompositionId> [--stills] [--frames=90,210]` |
 | `narration.py` | Local Edge TTS narration (default Niwat +5%; female: `--voice th-TH-PremwadeeNeural`; `--rate`) plus the committed 30 fps RMS envelope | `npm run narration -- …` |
-| `voice-preset.py` | One Thai line in a character register (child, elderly, alternate adult) from Edge TTS + ffmpeg ([voice-tuning skill](../.agents/skills/voice-tuning/SKILL.md)) | `python3 -I scripts/voice-preset.py --preset child-girl-a --text "…" out.wav` |
+| `voice-preset.py` | One Thai line in a character register (child, elderly, alternate adult) from Edge TTS + ffmpeg; child/elderly via Praat/WORLD in the `out/voice-venv` venv ([voice-tuning skill](../.agents/skills/voice-tuning/SKILL.md)) | `out/voice-venv/bin/python -I scripts/voice-preset.py --preset child-girl --text "…" out.wav` |
 | `narration_files.py` | Narration from supplied per-beat audio files (e.g. Botnoi) plus the envelope | `python3 scripts/narration_files.py …` |
 | `transcribe.py` | Thai speech to text (faster-whisper), for intake or caption QA | `python3 scripts/transcribe.py …` |
 | `loudness.mjs` | Two-pass loudnorm on a finished MP4 (≈ −14 LUFS, ≤ −1 dBTP), video copied | `node scripts/loudness.mjs …` |

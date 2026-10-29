@@ -28,6 +28,8 @@
 
 ## Verdicts and recipes
 
+Round 1 (below) is kept as history. Its child and elderly rows are **superseded** by [Round 2](#round-2-user-listening-2026-10-29) after the user listened; the alternate-adult rows are unchanged.
+
 `SHIFT(k)` = `aresample=48000,asetrate=<48000*k>,aresample=48000,atempo=<1/k>`; `NORM` = `loudnorm=I=-16:TP=-1.5:LRA=11,aresample=48000` (single-pass; short clips landed −15.0 to −20.4 LUFS, so re-measure or normalize in the final mix).
 
 | Character | Verdict | Recipe (edge-tts args → ffmpeg `-af`) | Measured F0 / duration |
@@ -50,6 +52,48 @@
 - Each call is phrased as a complete utterance: splitting the line into `วันนี้ฉันจะไปตลาด` + `กับยายนะ` gave phrase F0 205 Hz then 163 Hz (separate declination and final fall) and a 2.54 s splice vs 2.81 s whole (`P_spliced_2phrases.wav`, 60 ms gap). Splice at a real sentence or speaker change; inside one sentence the join is likely audible (unverified by ear).
 - The service intermittently returns `NoAudioReceived` (Premwadee failed many retries in this run, then succeeded); keep the retry loop (`narration.py` uses 15 attempts) and lower concurrency to 2.
 
+## Round 2 (user listening 2026-10-29)
+
+**User verdict on round 1:** the child presets (`child-girl-a`, `child-boy-a`) "sound like a chipmunk"; the elderly presets "don't sound old at all". Round-1 child/elderly presets were removed from `scripts/voice-preset.py`.
+
+**Diagnosis.** `SHIFT(k)` scales F0 **and** formants by the same `k`, and its F0 rise came mostly from the speed trick. Adult→child needs a large F0 rise with only a modest formant rise. Peterson & Barney (1952) averages put child formants about 1.12–1.23× adult-female values (/i/ F2 3200 vs 2790 Hz, /a/ F2 1370 vs 1220, /u/ F3 3260 vs 2670) and about 1.3–1.4× adult-male values ([table reproduced at CCRMA](https://ccrma.stanford.edu/~kglee/m220c/formant.html); dataset: [Praat manual](https://www.fon.hum.uva.nl/praat/manual/Create_formant_table__Peterson___Barney_1952_.html)). Children also show longer, more variable segment durations ([Lee, Potamianos & Narayanan 1999](https://pubmed.ncbi.nlm.nih.gov/10089598/)). The elderly change of round 1 (−8 Hz, k 0.97, light vibrato) was below the cues listeners use:
+- speaking rate and F0 ([Harnsberger et al. 2008, J Voice 22(1) 58–69](https://www.frontiersin.org/articles/10.3389/fpsyg.2016.01814/pdf), cited there; speakers imitating old age lowered F0 and rate);
+- noise and vocal tremor, which are perceptually relevant for aged male voices ([Harnsberger et al. 2010, J Voice 24, 523–530](https://biecoll.ub.uni-bielefeld.de/index.php/pundp2022/article/download/1047/1061/1066), cited there);
+- breathiness (glottal open quotient) in male voices ([ZASPiL study](https://zaspil.leibniz-zas.de/article/download/267/267));
+- frequency tremor intensity, a better age indicator than F0 or perturbation in female voices ([Brückl & Sendlmeier, VOQUAL 2003](https://www.isca-archive.org/voqual_2003/bruckl03_voqual.pdf)).
+
+F0 falls with age in women. Men's F0 falls to middle age, then rises: 107 Hz at 40–49 years to 146 Hz at 80–89 years ([Hollien & Shipp 1972, JSHR 15, 155–159](https://labs.sonicfield.org/library/speech-frequency-and-duration-measures-as-a-function-of-chronologic-age)). Shimmer rises in old age, while jitter findings conflict across studies ([integrative review, Rev. CEFAC 2019](https://doaj.org/article/6c461bc46cb34007b4025dc1a4b2c613); [Graczi et al., Hungarian lifespan poster](https://conference.unisalento.it/ocs/public/conferences/27/fmgr_upload/Abstracts/poster_5_Graczi-etal.pdf)).
+
+**Method (decoupled resynthesis, local venv `out/voice-venv`: praat-parselmouth 0.4.7, pyworld 0.3.5 + `setuptools<81` for its `pkg_resources` import, numpy 2.5.4):**
+- **Child:** Praat `Change gender`. Its formant shift ratio works by resampling; new pitch median, pitch range factor and duration factor are applied by overlap-add, so F0, formants and length are set separately ([Praat manual](https://www.fon.hum.uva.nl/praat/manual/Sound__Change_gender___.html); 1.1 ≈ male→female). Edge pitch is left at +0Hz.
+- **Elderly:** WORLD (`harvest`/`cheaptrick`/`d4c`/`synthesize`, [pyworld](https://github.com/JeremyCCHsu/Python-Wrapper-for-World-Vocoder)), with these edits:
+  - log-F0 moved to the target median and its range narrowed;
+  - frames stretched for duration and the envelope frequency-warped for formants;
+  - ~5 Hz F0 tremor (wandering rate), per-frame jitter, amplitude tremor plus shimmer;
+  - aperiodicity raised above ~0.6–3 kHz on voiced frames (breath).
+  
+  The method follows the WORLD whisper/breathiness approach of driving more noise through the aperiodicity ([Voice conversion for whispered speech synthesis, arXiv:1912.05289](https://arxiv.org/pdf/1912.05289)). Edge rate −20%.
+- Output: two-pass `loudnorm` (linear) to −16 LUFS, 48 kHz mono. The script also highpasses at 70 Hz after resynthesis and gates WORLD silence.
+
+| Preset (`scripts/voice-preset.py`) | Source | Parameters | F0 median (p10–p90) | Dur | Jitter / HNR |
+| --- | --- | --- | --- | --- | --- |
+| `child-girl` (best guess) | Premwadee, rate +5% | Praat f0 275, formant 1.12, range 1.15, dur 1.1 | 269 (214–391) | 2.93 s | 1.5% / 14.8 dB |
+| `child-girl-lively` | Premwadee | Praat f0 280, formant 1.12, range 1.3, dur 1.08 | 273 (210–415) | 2.88 s | 1.6% / 14.2 dB |
+| `child-boy` (best guess) | Premwadee | Praat f0 250, formant 1.08, range 1.15, dur 1.12 | 247 (196–357) | 2.98 s | 1.7% / 14.8 dB |
+| `child-boy-niwat` | Niwat | Praat f0 250, formant 1.25, range 1.2, dur 1.12 | 248 (193–331) | 3.01 s | 2.1% / 13.4 dB |
+| `elder-woman` (best guess) | Premwadee, rate −20% | WORLD f0 162, formant 0.95, range 0.7, dur 1.1, tremor 5% @ 5.5 Hz, jitter 3%, shimmer 1.5 dB, amp tremor 15%, breath 0.6 | 163 (140–211) | 3.84 s | 2.5% / 11.7 dB |
+| `elder-woman-strong` | Premwadee, rate −20% | WORLD f0 165, formant 0.96, range 0.6, dur 1.12, tremor 7% @ 5 Hz, jitter 3.5%, shimmer 1.8 dB, breath 0.75 | 164 (141–202) | 3.91 s | 2.9% / 11.1 dB |
+| `elder-man` (best guess) | Niwat, rate −20% | as `elder-woman`, f0 150 | 147 (126–185) | 3.86 s | 2.6% / 10.7 dB |
+| `elder-man-strong` | Niwat, rate −20% | as `elder-woman-strong`, f0 142 | 143 (121–166) | 3.93 s | 2.9% / 10.4 dB |
+
+Reference values for the unprocessed voices: Premwadee 189 Hz (152–262), 2.81 s, jitter 2.2%, HNR 13.9 dB; Niwat 128 Hz (103–163), jitter 2.8%, HNR 11.1 dB. Edge-TTS output already measures high jitter, so Praat jitter is a weak proxy for the added roughness. The tremor, breath and HNR drop are the intended cues.
+
+- **Picks are acoustic best guesses, not listening verdicts.** The agent could not listen. Child picks follow the Peterson & Barney formant ratios with a moderate range, because a 1.3 range pushes Thai high tones past 400 Hz. Elderly picks are about 2.5× stronger than round 1 on tremor, with breath added; the `-strong` variants are the fallback if they still sound too young. Expected failure modes: a "small adult" for the child (too little formant shift), and a goat-like bleat or a hoarse/robotic WORLD timbre for the elderly.
+- Elderly men land at −16.5 to −16.8 LUFS, because linear loudnorm stops at the −1.5 dBTP limit. Re-check in the mix.
+- Still not reachable: child articulation and mispronunciation, real pause lengthening between phrases, and creak.
+
+**Samples (local, ignored `out/`):** script outputs `out/voice-tests/r2/preset_<name>.wav` (measurements `preset_measurements.txt`). The exploration grid is `out/voice-tests/r2/*_{praat,world}_*.wav` plus `base_premwadee.wav` and `base_niwat.wav` (`measurements.json`, log `out/logs/voice-r2.log`). Reproduce one clip with `out/voice-venv/bin/python -I scripts/voice-preset.py --preset child-girl --text "วันนี้ฉันจะไปตลาดกับยายนะ" out.wav`.
+
 ## Samples (local only, ignored `out/`)
 
 Regenerate by applying the recipes above to the test line (the experiment script was a scratch file and is not committed). Measurements: `out/voice-tests/measurements.json`; log `out/logs/voice-tests.log`.
@@ -59,6 +103,6 @@ Regenerate by applying the recipes above to the test line (the experiment script
 
 ## Planning impact
 
-- Film/Mark: child, elderly or extra adult characters may be planned with these voices only as **short lines or minor roles**, after the user approves a listened sample per character. Record the chosen recipe ID (e.g. `P_child_A`) in the delivery record.
+- Film/Mark: child, elderly or extra adult characters may be planned with these voices only as **short lines or minor roles**, after the user approves a listened sample per character. Record the chosen preset name (e.g. `child-girl`) in the delivery record.
 - Editor: until `narration.py` supports per-scene voice/pitch/filter, generate character lines separately and mix them as audio sequences; normalize each to the narration loudness.
-- History: 2026-10-29 / `f830580` → edge-tts 7.3.1 param, SSML and role checks; F0/duration/LUFS sweeps and 18 processed presets → `workaround`; perceptual check pending (user).
+- History: 2026-10-29 / `f830580` → edge-tts 7.3.1 param, SSML and role checks; F0/duration/LUFS sweeps and 18 processed presets → `workaround`; perceptual check pending (user). 2026-10-29 / `419c75a` → user: round-1 child = chipmunk, elderly = not old; round 2 decoupled Praat/WORLD presets, perceptual check pending (user).
