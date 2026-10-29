@@ -26,6 +26,8 @@ def yaw_for(face):
 
 
 class Actor:
+    CLAV_FOLLOW = (45.0, 0.3, 20.0)     # clavicle lifts with the arm: start (deg arm elevation from hanging), gain, max deg; gain 0 = off
+
     def __init__(self, ao):
         if 'cb_hip_z' not in ao:
             raise ValueError(f'poses.Actor: {ao.name!r} has no cb_* anchors (build it with char_base.build.build)')
@@ -33,6 +35,7 @@ class Actor:
         self.P = ao.pose.bones
         self.mw = Matrix.Identity(4)
         self.curl = {s: self._calibrate_curl(s) for s in 'LR'}
+        self.clav_up = {s: self._calibrate_clav(s) for s in 'LR'}
         self.keying = True              # False: pose without keyframes (static stills / checks)
 
     # ------------------------------------------------------------- measured anchors (armature custom props, metres)
@@ -89,6 +92,36 @@ class Actor:
         bpy.context.view_layer.update()
         return best[1], best[2]
 
+    def _calibrate_clav(self, s):
+        """Which local axis/sign of clavicle.<s> lifts the shoulder (tail up)."""
+        pb = self.P[f'clavicle.{s}']
+        best = None
+        for ax in (0, 1, 2):
+            for sgn in (1.0, -1.0):
+                e = [0.0, 0.0, 0.0]
+                e[ax] = math.radians(20) * sgn
+                pb.rotation_euler = Euler(e, 'XYZ')
+                bpy.context.view_layer.update()
+                dz = pb.tail.z - pb.bone.tail_local.z
+                if best is None or dz > best[0]:
+                    best = (dz, ax, sgn)
+        pb.rotation_euler = Euler((0, 0, 0), 'XYZ')
+        bpy.context.view_layer.update()
+        return best[1], best[2]
+
+    def _clav_follow(self, s, palm_arm, clav):
+        """Lift clavicle.<s> by CLAV_FOLLOW for a raised palm target unless the caller set the clavicle explicitly."""
+        a0, gain, mx = self.CLAV_FOLLOW
+        if not gain or any(clav):
+            return
+        v = palm_arm - self.P[f'upper_arm.{s}'].head
+        el = math.degrees(math.acos(max(-1.0, min(1.0, -v.z / max(v.length, 1e-9)))))
+        ax, sgn = self.clav_up[s]
+        e = list(self.P[f'clavicle.{s}'].rotation_euler)
+        e[ax] = math.radians(min(mx, max(0.0, el - a0) * gain)) * sgn
+        self.P[f'clavicle.{s}'].rotation_euler = Euler(e, 'XYZ')
+        bpy.context.view_layer.update()
+
     def a(self, p):
         """world -> armature space"""
         return self.mw.inverted() @ Vector(p)
@@ -135,8 +168,10 @@ class Actor:
             self._fk(n, v)
         bpy.context.view_layer.update()
         # ---- hands (IK on forearm.<s>; hand follows the control's rotation)
-        for s, spec, pole in (('L', hand_l, pole_el_l), ('R', hand_r, pole_el_r)):
+        for s, spec, pole, clav in (('L', hand_l, pole_el_l, clav_l), ('R', hand_r, pole_el_r, clav_r)):
             sg = 1 if s == 'L' else -1
+            if spec is not None:
+                self._clav_follow(s, self.a(spec['palm']), clav)
             rest_dir = Vector((FDIR.x * sg, FDIR.y, FDIR.z)).normalized()
             sh = P[f'upper_arm.{s}'].head.copy()
             if spec is None:         # relaxed: hanging beside the thigh with a slight forward swing

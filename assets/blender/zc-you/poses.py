@@ -8,6 +8,11 @@ if _BLENDER not in sys.path:
     sys.path.insert(0, _BLENDER)
 from char_base.poses import *
 from char_base.poses import ch, _frame_rot
+from char_base.poses import Actor as _Actor
+
+
+class Actor(_Actor):
+    CLAV_FOLLOW = (45.0, 0.0, 0.0)      # zc-you tracks were authored and checked without clavicle follow: keep them unchanged
 
 SH_Z = 1.385
 HIPS_REST = Vector((0.0, 0.0, 0.93))

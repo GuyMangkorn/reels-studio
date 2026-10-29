@@ -31,7 +31,6 @@ WAIST_SEX, NECK_SEX, EXTREM_SEX = 0.85, 0.85, 0.9   # CP-S03, CP-S05, CP-S06 (fe
 STY_HEADS, STY_EXTREM, STY_LIMB_R, STY_LEG = 4.5, 1.3, 1.25, 0.85   # CP-Y01, CP-Y02, CP-Y03, CP-Y04
 BUST_Y, BUST_R = 0.015, 0.25   # CP-S04: fuller, forward chest node with sex (separate L/R bust nodes broke the skin hull; per-preset tuning later)
 MASS_R, BELLY_Y, BELLY_R = 0.6, 0.06, 0.5        # ASSUMPTION (no CP entry): radius gain per unit mass, belly push / growth above REF_MASS
-MASS_SH = 0.12      # ASSUMPTION (no CP entry, proposed CP-M): shoulder half-width gain per unit mass above REF_MASS (keeps the arm root outside the chest)
 STOOP_KNEE, STOOP_SPINE, STOOP_NECK = 12.0, 16.0, 20.0   # CP-A07 ASSUMPTION: degrees at stoop 1
 ARM_A = math.radians(20)                 # CP-L: A-pose arm angle from vertical (zc-you)
 ARM_DIR = Vector((math.sin(ARM_A), 0.0, -math.cos(ARM_A)))
@@ -44,7 +43,9 @@ KNEE_Y = -0.005        # CP-L04 (zc-you)
 MITT = ((0.034, 0.20, 0.033, 0.017), (0.030, 0.55, 0.025, 0.014))
 # ^ CP-L ASSUMPTION (proposed CP-H01, cartoon mitten): nodes past the knuckle (step along the hand axis, curl toward the palm, rx, ry) x hand size
 THUMB_R = (0.016, 0.013)   # CP-L ASSUMPTION (proposed CP-H01): thumb lump root / tip radius x hand size
-ARMPIT = (0.30, 0.050, 0.90)   # CP-S01 ASSUMPTION (proposed CP-S07): upper-arm node at 30% to the elbow, radius x limb factor; chest node width x0.9 (tight armpit)
+ARMPIT = (0.30, 0.050)   # CP-S01 ASSUMPTION (proposed CP-S07): upper-arm node at 30% to the elbow, radius x limb factor (tight armpit)
+CHEST_MASS_X = 0.0      # ASSUMPTION (no CP entry, proposed CP-M): share of the mass radius gain the chest width takes (depth takes all; arms keep clear of a heavy chest, R17)
+CHEST_R = (1.10, 1.25)   # CP-L (zc-you): chest node radii x, y; keeps the zc chest surface within 5% of its pre-tree-graph width/depth (R17)
 NECK_R = (0.046, 0.037)    # CP-L06 ASSUMPTION (proposed CP-N01): slim neck radius above the shoulder yoke / under the head, tapering
 
 
@@ -131,7 +132,7 @@ def joints(bp, head):
     for k, (fy, fz) in FOOT.items():
         J[k] = Vector((hx, fy * fs, fz * fs))
     J['clav'] = Vector((0.03 * gw, 0, z(Z_SH)))
-    J['SH'] = Vector(((_lerp(*SH_X, bp['sex']) + MASS_SH * max(0.0, bp['mass'] - REF_MASS)) * gw, 0, z(Z_SH)))     # heavier: shoulders out of the wider chest
+    J['SH'] = Vector((_lerp(*SH_X, bp['sex']) * gw, 0, z(Z_SH)))
     al = col * bp['arm_len']
     J['EL'] = J['SH'] + ARM_DIR * UPPER_ARM * al + Vector((0, ELBOW_Y * al, 0))
     J['WR'] = J['EL'] + FDIR * FOREARM * al
@@ -243,7 +244,7 @@ def body_graph(J, bp):
     pel = v('pelvis', J['pelvis'], (0.152 * rt * hipw, 0.104 * rt))
     wai = v('waist', J['waist_n'] + Vector((0, -BELLY_Y * belly * F['gw'], 0)),
             (0.128 * rt * wf * (1 + BELLY_R * belly), 0.090 * rt * (1 + BELLY_R * belly)))
-    che = v('chest', J['chest_n'] + Vector((0, -BUST_Y * sx * F['gw'], 0)), (ARMPIT[2] * 0.158 * rt * shw, 0.108 * rt * (1 + BUST_R * sx)))   # CP-S04
+    che = v('chest', J['chest_n'] + Vector((0, -BUST_Y * sx * F['gw'], 0)), (CHEST_R[0] * 0.158 * F['gw'] * (1 + (rt / F['gw'] - 1) * CHEST_MASS_X) * shw, CHEST_R[1] * 0.108 * rt * (1 + BUST_R * sx)))   # CP-S04
     n0 = v('neck0', J['neck0'], (0.062 * rt * nf, 0.062 * rt * nf))    # shoulder yoke: chest, shoulders and neck meet here
     up = (J['neck0'] - J['chest_n']).normalized()      # the neck leaves the yoke along the torso axis (a leaning neck edge detached at stoop)
     # CP-L06 ASSUMPTION (proposed CP-N01): the slim neck starts 35% of the way from the yoke to the head socket
@@ -409,6 +410,42 @@ def weights(points, table, k=1.0):
         tot = sum(v for _, v in top)
         out.append({k_: v / tot for k_, v in top})
     return out
+
+
+SMOOTH_BONES = ('chest', 'clavicle', 'upper_arm', 'hand', 'fingers', 'fingers_tip', 'thumb')   # joints that bend far: shoulder, mitten
+
+
+def smooth_weights(me, w, iters=4, bones=SMOOTH_BONES):
+    """Average weights over mesh neighbours (iters passes) on vertices touching `bones`, so a joint blends over a smooth band, not a crease."""
+    nb = [[] for _ in me.vertices]
+    for e in me.edges:
+        a, b = e.vertices
+        nb[a].append(b)
+        nb[b].append(a)
+    sel = [i for i, wv in enumerate(w) if any(k.split('.')[0] in bones for k in wv)]
+    for _ in range(iters):
+        new = list(w)
+        for i in sel:
+            acc = dict(w[i])
+            for j in nb[i]:
+                for k, v in w[j].items():
+                    acc[k] = acc.get(k, 0.0) + v
+            top = sorted(acc.items(), key=lambda kv: -kv[1])[:4]
+            tot = sum(v for _, v in top)
+            new[i] = {k: v / tot for k, v in top}
+        w = new
+    return w
+
+
+def corrective_smooth(ob, w):
+    """Rest-bound Corrective Smooth after the Armature modifier on the shoulders, arms and mitten (vertices touching SMOOTH_BONES, w per
+    vertex): removes skinning bumps at the bent joints, exact at rest; legs and hips deform as before."""
+    vg = ob.vertex_groups.new(name='cb_csmooth')
+    for i, wv in enumerate(w):
+        if any(k.split('.')[0] in SMOOTH_BONES + ('forearm',) for k in wv):
+            vg.add([i], 1.0, 'REPLACE')
+    c = ob.modifiers.new('cb_csmooth', 'CORRECTIVE_SMOOTH')
+    c.rest_source, c.smooth_type, c.iterations, c.factor, c.vertex_group = 'ORCO', 'LENGTH_WEIGHTED', 6, 0.5, 'cb_csmooth'
 
 
 def vg_bind(ob, ao, weights_by_vertex):

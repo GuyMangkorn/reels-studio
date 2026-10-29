@@ -219,3 +219,52 @@ def test_bad_options_raise():
         raise AssertionError(f'no ValueError for {piece} {opts}')
     reset_scene()
     _female('ok', [('shirt', {'color': '#336699', 'sleeve': 'short', 'buttons': 0}), ('skirt', {'length': 1.0, 'flare': 0.0, 'thickness': 0.002})])
+
+
+# ----------------------------------------------------------------------------- trim fit (Task 6b fix round)
+TRIM_BODIES = (('zc', {}), ('female', dict(sex=1.0)), ('heavy_female', dict(sex=1.0, mass=1.0, stylize=1.0)), ('heavy_male', dict(mass=1.0)),
+               ('elder_stoop1', dict(age='elder', stoop=1.0)))
+HEM_FLOAT, COLLAR_BURIED, HEM_BURIED = 0.006, 0.75, 0.60     # m past the tube's own size; fraction of collar / hem vertices inside the body
+
+
+def _trim_fit(ob, bvh):
+    """(closest signed distance, farthest signed distance, buried fraction, tube size) of a trim ring against the body surface."""
+    d = []
+    for v in ob.data.vertices:
+        p = ob.matrix_world @ v.co
+        loc, nrm, _, _ = bvh.find_nearest(p, 0.5)
+        d.append((p - loc).dot(nrm))
+    dims = sorted(ob.dimensions)
+    return min(d), max(d), sum(x < -0.001 for x in d) / len(d), dims[0]
+
+
+def test_trims_sit_on_body():
+    """zc outfit (tee, shorts) + a shirt collar: every hem, band and collar ring touches the body (no floating hoop, defect 5),
+    floats no more than its own tube size + 6 mm, and hems / collars are not swallowed (stooped and heavy bodies included)."""
+    for label, kw in TRIM_BODIES:
+        for outfit in (None, [('shirt', {}), ('trousers', {})]):
+            reset_scene()
+            kw2 = dict(kw)
+            P = presets.get('zc_you')
+            P['age'] = kw2.pop('age', 'adult')
+            P['body'].update(kw2)
+            if outfit:
+                P['outfit'] = outfit
+            presets.PRESETS['_tf'] = P
+            try:
+                build.build('_tf', 'tf')
+            finally:
+                del presets.PRESETS['_tf']
+            dg = bpy.context.evaluated_depsgraph_get()
+            bvh = BVHTree.FromObject(bpy.data.objects['tf_body'].evaluated_get(dg), dg)
+            for o in sorted(bpy.data.objects, key=lambda o: o.name):
+                if o.name.startswith('tf_') and any(k in o.name for k in ('collar', 'hem', 'band')):
+                    lo, hi, bur, tube = _trim_fit(o, bvh)
+                    print(f'  trim {label} {o.name[3:]}: closest {lo * 1000:.1f} mm, farthest {hi * 1000:.1f} mm, buried {bur:.0%}')
+                    assert lo <= 0.001, (label, o.name, 'floats clear of the body', lo)
+                    if 'shirt_hem' not in o.name:     # a long shirt's hem can sit below the crotch and span the gap between the legs
+                        assert hi <= tube + HEM_FLOAT, (label, o.name, hi, tube)
+                    if 'collar' in o.name:
+                        assert bur <= COLLAR_BURIED, (label, o.name, bur)
+                    elif 'band' not in o.name and 'shirt_hem' not in o.name:
+                        assert bur <= HEM_BURIED, (label, o.name, bur)

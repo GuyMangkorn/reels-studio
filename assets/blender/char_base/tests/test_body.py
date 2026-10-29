@@ -76,7 +76,8 @@ SURFACE_CASES = (('zc_you', dict(presets.get('zc_you')['body'])), ('female', dic
                  ('tall_big_head', dict(heads_tall=3.5, height=1.95)), ('heavy_stylized_female', dict(sex=1.0, mass=1.0, stylize=1.0)),
                  ('elder_stoop1', dict(age='elder', stoop=1.0)))
 TORSO_Z_MAX_MM, TORSO_Z_P95_MM = 8.0, 2.5     # fixed result: max <= 3.6, p95 <= 1.42 (128-case grid max 5.1); the two-shell hull at 21f8433: max up to 86
-ENVELOPE_SLACK = 0.5                          # vertex distance past the graph radius, in local radii (fixed result max 0.24)
+TORSO_LUMP_MM = 7.5                           # 5 x 5 neighbourhood deviation (fixed result <= 5.7; an injected 30 mm sigma-2 cm chest lump: 9.9)
+PROTRUSION_MAX = 0.36
 
 
 def _skin(name, kw):
@@ -87,9 +88,9 @@ def _skin(name, kw):
     return bp, J, V, E, me
 
 
-def _torso_roughness(me, J):
-    """Second difference (mm) of the torso radius along z on a 1 cm x 7.5 deg ray grid from the spine axis, hip+3 cm to shoulder-5 cm;
-    front/back sectors only (|dir.y| >= 0.6, the arms hang at the sides). Overlapping shells, ripples and steps show as large jumps."""
+def _torso_grid(me, J):
+    """Torso radius (m) on a 1 cm x 7.5 deg ray grid from the spine axis, hip+3 cm to shoulder-5 cm; front/back sectors only
+    (|dir.y| >= 0.6, the arms hang at the sides); None where not sampled."""
     bm = bmesh.new()
     bm.from_mesh(me)
     bvh = BVHTree.FromBMesh(bm)
@@ -106,36 +107,58 @@ def _torso_roughness(me, J):
             hit = bvh.ray_cast(Vector((0, cy, z)), d, 1.0) if abs(d.y) >= 0.6 else (None,)
             row.append(hit[3] if hit[0] is not None else None)
         grid.append(row)
+    return grid
+
+
+def _torso_roughness(me, J):
+    """(max, p95 of |second difference along z| in mm, lump mm). Shells, ripples and steps show as second-difference jumps;
+    a smooth local lump shows as the largest deviation of the radius from its 5 x 5 cell (5 cm x 37.5 deg) neighbourhood mean."""
+    grid = _torso_grid(me, J)
     dz = sorted(abs(a - 2 * b + c) * 1000 for r0, r1, r2 in zip(grid, grid[1:], grid[2:]) for a, b, c in zip(r0, r1, r2) if None not in (a, b, c))
-    return dz[-1], dz[int(0.95 * (len(dz) - 1))]
+    lump = 0.0
+    for i in range(2, len(grid) - 2):
+        for k in range(48):
+            win = [grid[i + di][(k + dk) % 48] for di in range(-2, 3) for dk in range(-2, 3)]
+            if None not in win:
+                lump = max(lump, abs(grid[i][k] - sum(win) / 25) * 1000)
+    return dz[-1], dz[int(0.95 * (len(dz) - 1))], lump
+
+
+def _lump(me, J, amp=0.030, sig=0.02):
+    """Inject a smooth Gaussian bump (amp m, sigma m) on the chest front (test of the test)."""
+    c = Vector((0, 0, J['chest_n'].z))
+    for v in me.vertices:
+        if v.co.y < 0:
+            v.co.y -= amp * math.exp(-((v.co.x - c.x) ** 2 + (v.co.z - c.z) ** 2) / (2 * sig * sig))
+    me.update()
 
 
 def test_torso_smooth():
     for label, kw in SURFACE_CASES:
         _, J, _, _, me = _skin('s_' + label, kw)
-        mx, p95 = _torso_roughness(me, J)
-        print(f'  torso roughness {label}: max {mx:.2f} mm, p95 {p95:.2f} mm')
-        assert mx <= TORSO_Z_MAX_MM and p95 <= TORSO_Z_P95_MM, (label, mx, p95)
+        mx, p95, lump = _torso_roughness(me, J)
+        print(f'  torso roughness {label}: max {mx:.2f} mm, p95 {p95:.2f} mm, lump {lump:.2f} mm')
+        assert mx <= TORSO_Z_MAX_MM and p95 <= TORSO_Z_P95_MM and lump <= TORSO_LUMP_MM, (label, mx, p95, lump)
+        if label == 'zc_you':                    # the metric must see a 30 mm smooth chest lump
+            _lump(me, J)
+            mx, p95, lump = _torso_roughness(me, J)
+            print(f'  torso roughness zc_you + 30 mm chest lump: max {mx:.2f}, p95 {p95:.2f}, lump {lump:.2f} mm')
+            assert mx > TORSO_Z_MAX_MM or lump > TORSO_LUMP_MM, (mx, lump)
 
 
-def _envelope_excess(me, V, E):
-    """Worst vertex distance beyond the skin graph's interpolated radius, in units of that radius."""
-    segs = [(V[i][1], V[j][1], max(V[i][2]), max(V[j][2])) for i, j in E]
-    worst = 0.0
-    for v in me.vertices:
-        best = 1e9
-        for a, b, ra, rb in segs:
-            ab = b - a
-            t = max(0.0, min(1.0, (v.co - a).dot(ab) / max(ab.length_squared, 1e-12)))
-            r = ra + (rb - ra) * t
-            best = min(best, ((v.co - (a + ab * t)).length - r) / r)
-        worst = max(worst, best)
-    return worst
+def _protrusion(me):
+    """Worst umbrella ratio |p - mean(neighbours)| / mean edge length over the mesh: a spike, fin or sliver vertex stands out of its ring."""
+    nb = [[] for _ in me.vertices]
+    for e in me.edges:
+        nb[e.vertices[0]].append(e.vertices[1])
+        nb[e.vertices[1]].append(e.vertices[0])
+    return max(_umbrella([v.co for v in me.vertices], nb))
 
 
 def test_no_stray_parts():
+    """One connected manifold piece with no protruding spike; the check must catch an injected 2 cm spike on the chest and the shoulder."""
     for label, kw in SURFACE_CASES:
-        _, _, V, E, me = _skin('n_' + label, kw)
+        _, J, V, E, me = _skin('n_' + label, kw)
         bm = bmesh.new()
         bm.from_mesh(me)
         bm.verts.ensure_lookup_table()
@@ -150,10 +173,20 @@ def test_no_stray_parts():
         pieces_ok = len(seen) == len(bm.verts)
         nm = sum(1 for e in bm.edges if not e.is_manifold)
         bm.free()
-        ex = _envelope_excess(me, V, E)
-        print(f'  stray parts {label}: one piece {pieces_ok}, non-manifold {nm}, envelope excess {ex:.2f} radii')
+        pr = _protrusion(me)
+        print(f'  stray parts {label}: one piece {pieces_ok}, non-manifold {nm}, protrusion {pr:.3f}')
         assert pieces_ok and nm == 0, (label, len(seen), nm)
-        assert ex <= ENVELOPE_SLACK, (label, ex)
+        assert pr <= PROTRUSION_MAX, (label, pr)
+        if label == 'zc_you':
+            for name, t in (('chest front', Vector((0, -0.2, J['chest_n'].z))), ('shoulder top', J['SH'] + Vector((0, 0, 0.2)))):
+                i = min(range(len(me.vertices)), key=lambda k: (me.vertices[k].co - t).length)
+                base, nrm = me.vertices[i].co.copy(), me.vertices[i].normal.copy()
+                for L in (0.02, 0.08):
+                    me.vertices[i].co = base + nrm * L
+                    pr = _protrusion(me)
+                    print(f'  stray parts zc_you + {L * 100:.0f} cm spike at {name}: protrusion {pr:.3f}')
+                    assert pr > PROTRUSION_MAX, (name, L, pr)
+                me.vertices[i].co = base
 
 
 def test_mitten_hand():
@@ -197,7 +230,7 @@ def test_mitten_hand():
 
 
 ARMPIT_CASES = SURFACE_CASES + (('heavy_male', dict(mass=1.0)),)
-ARM_UP_STRETCH = (0.45, 3.2)      # edge length posed / rest around the shoulder at arm-up (fixed result 0.63 .. 2.79; 21f8433: 0.26 .. 10.9)
+SHOULDER_BUMP, MITTEN_BUMP = 0.10, 0.18   # umbrella growth at arm-up / grip 0.7 (fixed result <= 0.04 / 0.09; c14c2cd: 0.24-0.28 / 0.37-0.45)
 
 
 def _bare(name, kw):
@@ -226,28 +259,60 @@ def _arm_to(ao, deg):
     bpy.context.view_layer.update()
 
 
+def _umbrella(P, nb):
+    """Per vertex |p - mean(neighbours)| / mean neighbour edge length: grows at bumps, kinks and creases."""
+    out = []
+    for i, ns in enumerate(nb):
+        c = sum((P[j] for j in ns), Vector()) / len(ns)
+        out.append((P[i] - c).length / (sum((P[j] - P[i]).length for j in ns) / len(ns)))
+    return out
+
+
 def test_armpit_deforms():
-    """Arm down at the side: no upper-arm vertex > 1 mm inside the torso surface. Arm raised 90 deg: no torn / collapsed edges near the shoulder."""
+    """Arm down at the side: no upper-arm vertex (upper_arm weight >= 0.8) > 1 mm inside the torso surface (heavy bodies are skipped:
+    with mass-independent shoulders (R17) a fat arm meets the torso when lowered). Arm raised to shoulder height through the Actor
+    (IK + clavicle follow), grip curl 0.7: the bump metric (umbrella growth over rest) stays low on the shoulder and the mitten."""
+    from char_base import poses
     for label, kw in ARMPIT_CASES:
         ao = _bare('a_' + label, kw)
         ob = bpy.data.objects['a_' + label + '_body']
+        me = ob.data
         gi = {g.index: g.name for g in ob.vertex_groups}
-        dom = [gi[max(v.groups, key=lambda g: g.weight).group] for v in ob.data.vertices]
+        dom = [gi[max((g for g in v.groups if gi[g.group] in ao.data.bones), key=lambda g: g.weight).group] for v in me.vertices]   # bones only (not cb_csmooth)
+        arm_w = [sum(g.weight for g in v.groups if gi[g.group].startswith('upper_arm')) for v in me.vertices]
         posed = lambda: [v.co.copy() for v in ob.evaluated_get(bpy.context.evaluated_depsgraph_get()).data.vertices]
-        _arm_to(ao, 0)
-        P = posed()
-        tf = [tuple(f.vertices) for f in ob.data.polygons if all(dom[i] in ('pelvis', 'spine', 'chest') for i in f.vertices)]
-        bvh = BVHTree.FromPolygons(P, tf)
-        inside = 0
-        for i, d in enumerate(dom):
-            if d.startswith('upper_arm'):
-                loc, nrm, _, _ = bvh.find_nearest(P[i], 0.2)
-                inside += loc is not None and (P[i] - loc).dot(nrm) < -0.001
-        _arm_to(ao, 90)
-        Q = posed()
-        R = [v.co for v in ob.data.vertices]
-        near = {i for i, d in enumerate(dom) if d.split('.')[0] in ('upper_arm', 'chest', 'clavicle', 'spine')}
-        st = [(Q[a] - Q[b]).length / (R[a] - R[b]).length for a, b in (e.vertices for e in ob.data.edges) if a in near]
-        print(f'  armpit {label} (height {ao["cb_height_m"]:.3f}): arm-down upper-arm verts inside torso {inside}; arm-up edge stretch {min(st):.2f} .. {max(st):.2f}')
-        assert inside == 0, (label, inside)
-        assert ARM_UP_STRETCH[0] <= min(st) and max(st) <= ARM_UP_STRETCH[1], (label, min(st), max(st))
+        inside = None
+        if kw.get('mass', presets.get('zc_you')['body']['mass']) <= body.REF_MASS:
+            _arm_to(ao, 0)
+            P = posed()
+            tf = [tuple(f.vertices) for f in me.polygons if all(dom[i] in ('pelvis', 'spine', 'chest') for i in f.vertices)]
+            bvh = BVHTree.FromPolygons(P, tf)
+            inside = 0
+            for i, w in enumerate(arm_w):
+                if w >= 0.8:
+                    loc, nrm, _, _ = bvh.find_nearest(P[i], 0.2)
+                    inside += loc is not None and (P[i] - loc).dot(nrm) < -0.001
+            _arm_to(ao, 20)
+            for s in 'LR':
+                ao.pose.bones[f'forearm.{s}'].constraints['IK'].mute = False
+                ao.pose.bones[f'hand.{s}'].constraints['Copy Rotation'].mute = False
+                ao.pose.bones[f'upper_arm.{s}'].matrix_basis = Matrix.Identity(4)
+            bpy.context.view_layer.update()
+        nb = [[] for _ in me.vertices]
+        for e in me.edges:
+            nb[e.vertices[0]].append(e.vertices[1])
+            nb[e.vertices[1]].append(e.vertices[0])
+        R = [v.co.copy() for v in me.vertices]
+        B = ao.data.bones
+        sh = B['upper_arm.L'].head_local
+        shoulder = [i for i, p in enumerate(R) if (p - sh).length < 0.11 * ao['cb_shoulder_z'] / 1.385 and p.x > 0]
+        mitt = [i for i, d in enumerate(dom) if d.split('.')[0] in ('hand', 'fingers', 'fingers_tip', 'thumb') and d.endswith('.L')]
+        A = poses.Actor(ao)
+        A.keying = False
+        L = B['upper_arm.L'].length + B['forearm.L'].length + ao['cb_palm_off']
+        A.pose(1, root=(0, 0, 0), key=False, hand_l=dict(palm=tuple(sh + Vector((0.97 * L, -0.02, 0))), dir=(1, 0, 0), normal=(0, 0, -1), curl=0.7, thumb=0.6))
+        k0, k1 = _umbrella(R, nb), _umbrella(posed(), nb)
+        bs, bm_ = max(k1[i] - k0[i] for i in shoulder), max(k1[i] - k0[i] for i in mitt)
+        print(f'  armpit {label}: arm-down upper-arm verts inside torso {inside}; arm-up shoulder bump {bs:.3f}, grip 0.7 mitten bump {bm_:.3f}')
+        assert inside in (None, 0), (label, inside)
+        assert bs <= SHOULDER_BUMP and bm_ <= MITTEN_BUMP, (label, bs, bm_)

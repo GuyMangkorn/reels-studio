@@ -13,6 +13,7 @@ import re
 import bmesh
 import bpy
 from mathutils import Euler, Matrix, Vector, noise
+from mathutils.bvhtree import BVHTree
 
 import body as B
 from looks import srgb
@@ -90,6 +91,7 @@ def apply(body_obj, ao, outfit, M, J, F, table):
     me = body_obj.data
     B.bisect(me, [(co, no) for _, co, no in sorted(ctx.planes, key=lambda t: t[0])])
     w = B.weights([v.co for v in me.vertices], table, F['gw'])
+    w = B.smooth_weights(me, w)
     slots = ['skin']
     for piece, opts in outfit:
         k = opts.get('color', piece)
@@ -116,8 +118,11 @@ def apply(body_obj, ao, outfit, M, J, F, table):
         pg.material_index = slots.index(key)
         pg.use_smooth = True
     B.vg_bind(body_obj, ao, w)
+    B.corrective_smooth(body_obj, w)
     ctx.bv = [v.co.copy() for v in me.vertices]
-    ctx.bdom = [max(wv, key=wv.get).split('.')[0] for wv in w]     # dominant bone per vertex (fits pick their own limb / neck)
+    ctx.bdom = [max(wv, key=wv.get).split('.')[0] for wv in w]     # dominant bone per vertex (torso section fits skip the arms)
+    ctx.bvh = BVHTree.FromPolygons(ctx.bv, [tuple(pg.vertices) for pg in me.polygons])   # ring fits cast rays at the rest body
+    ctx.bvh_torso = BVHTree.FromPolygons(ctx.bv, [tuple(pg.vertices) for pg in me.polygons if not any(ctx.bdom[i] in ARM_DOM for i in pg.vertices)])
     for fn in ctx.trims:
         fn()
     _folds(ctx, slots)
@@ -197,9 +202,8 @@ ARM_DOM = ('upper_arm', 'forearm', 'hand', 'fingers', 'fingers_tip', 'thumb')   
 MAX_GROW = 20        # band-growth iterations (x1.5 each) before a missing section is an error, never a hang
 
 
-def _fit_h(ctx, z, xsign=0, band=0.004, xmax=None, dom=None):
-    """Centre and half-extents (x, y) of the body section at height z (torso, or one leg with xsign; xmax narrows the torso window, e.g. to the neck;
-    dom keeps only vertices whose dominant bone is dom, so a collar does not take in the shoulder slope)."""
+def _fit_h(ctx, z, xsign=0, band=0.004, xmax=None):
+    """Centre and half-extents (x, y) of the body section at height z (torso, or one leg with xsign; xmax narrows the torso window)."""
     J, F = ctx.J, ctx.F
     tx, lx0, lx1 = 0.21 * F['rt'], 0.02 * F['gw'], J['HIP'].x + 0.085 * F['rl']
     tx = xmax if xmax else tx
@@ -207,7 +211,7 @@ def _fit_h(ctx, z, xsign=0, band=0.004, xmax=None, dom=None):
     for _ in range(MAX_GROW):
         if len(pts) >= 8:
             break
-        pts = [p for p, d in zip(ctx.bv, ctx.bdom) if abs(p.z - z) < band and (dom is None or d == dom) and d not in ARM_DOM
+        pts = [p for p, d in zip(ctx.bv, ctx.bdom) if abs(p.z - z) < band and d not in ARM_DOM
                and (xsign == 0 and abs(p.x) < tx or xsign != 0 and lx0 < p.x * xsign < lx1)]
         band *= 1.5
     if len(pts) < 8:
@@ -217,11 +221,75 @@ def _fit_h(ctx, z, xsign=0, band=0.004, xmax=None, dom=None):
     return cx, cy, max(abs(p.x - cx) for p in pts), max(abs(p.y - cy) for p in pts)
 
 
-def _rim(ctx, label, z, r, mat, bone, pad, xsign=0, xmax=None, dom=None):
-    cx, cy, rx, ry = _fit_h(ctx, z, xsign, xmax=xmax, dom=dom)
+def _section(ctx, c, u, v, n=36, win=math.radians(20), rmax=None, outer=False):
+    """Ring fit by rays from c (a point on the limb / neck / spine line) outward in the plane (u, v): the first hit is that part's
+    own surface, even where it runs into a neighbour (arm into a heavy chest, thigh into thigh). rmax drops longer hits (a ray running
+    along a heavy shoulder from the neck) and stands in where a direction has none. outer: torso rings (centre may sit between the
+    legs) take the outermost body exit before a 2 cm gap, cast at the body without its arms. Returns centre, half-extents along u, v."""
+    hits = []
+    for k in range(n):
+        a = 2 * math.pi * k / n
+        d = u * math.cos(a) + v * math.sin(a)
+        hits.append((a, _outer_exit(ctx.bvh_torso, c, d) if outer else (lambda h: h[3] if h[0] is not None else None)(ctx.bvh.ray_cast(c, d, 1.0))))
+
+    def mean_at(a0):
+        r = [d for a, d in hits if d is not None and abs((a - a0 + math.pi) % (2 * math.pi) - math.pi) <= win and (rmax is None or d <= rmax)]
+        if not r and rmax is not None:
+            return rmax
+        if not r and outer:              # a hem below the crotch: front / back rays pass between the legs; use the outline's extent
+            r = [max(t * math.cos(a - a0) for a, t in hits if t is not None)] if any(t is not None for _, t in hits) else []
+        if not r:
+            raise ValueError(f'char_base.outfits: no body section around {tuple(round(x, 3) for x in c)}')
+        return sum(r) / len(r)
+    u0, u1, v0, v1 = mean_at(0.0), mean_at(math.pi), mean_at(math.pi / 2), mean_at(1.5 * math.pi)
+    return c + u * (u0 - u1) / 2 + v * (v0 - v1) / 2, (u0 + u1) / 2, (v0 + v1) / 2
+
+
+def _outer_exit(bvh, o, d, gap=0.02, far=1.0):
+    """Distance along d to the first exit from the body that is not followed by another surface within gap."""
+    hs, t = [], 0.0
+    while t < far:
+        h = bvh.ray_cast(o + d * (t + 1e-5), d, far - t)
+        if h[0] is None:
+            break
+        t += 1e-5 + h[3]
+        hs.append((t, h[1].dot(d) > 0))
+    for i, (t, ex) in enumerate(hs):
+        if ex and (i + 1 == len(hs) or hs[i + 1][0] - t > gap):
+            return t
+    return None
+
+
+def _on_line(a, b, z):
+    """Point at height z on the bone line a-b (clamped to the segment, then set to z)."""
+    t = (z - a.z) / (b.z - a.z) if abs(b.z - a.z) > 1e-9 else 0.0
+    p = a + (b - a) * max(0.0, min(1.0, t))
+    return Vector((p.x, p.y, z))
+
+
+def _rim(ctx, label, z, r, mat, bone, pad, axis, rmax=None):
+    """Horizontal hem ring at height z hugging the section around the bone line axis=(a, b) (the spine: the whole torso / hip section)."""
+    c, rx, ry = _section(ctx, _on_line(*axis, z), Vector((1, 0, 0)), Vector((0, 1, 0)), rmax=rmax, outer=axis == _spine(ctx))
     g = ctx.F['gw']
-    ob = torus(f'{ctx.name}_{label}', Vector((cx, cy, z)), 1.0, r * g, ctx.M[mat], scale=(rx + pad * g, ry + pad * g, 1.0))
+    ob = torus(f'{ctx.name}_{label}', c, 1.0, r * g, ctx.M[mat], scale=(rx + pad * g, ry + pad * g, 1.0))
     B.rigid(ob, ctx.ao, bone)
+
+
+def _spine(ctx):
+    return ctx.J['pelvis'], ctx.J['chest']
+
+
+def _neck(ctx):
+    return ctx.J['neck'], ctx.J['head_base']
+
+
+def _neck_r(ctx):
+    return 0.062 * ctx.F['rt']          # the yoke's cage radius (body.body_graph neck0): the neck surface lies inside it
+
+
+def _leg(ctx, s, lower=False):
+    J = ctx.J
+    return (B.mirror(J['KNEE'], s), B.mirror(J['ANK'], s)) if lower else (B.mirror(J['HIP'], s), B.mirror(J['KNEE'], s))
 
 
 TORSO = ('pelvis', 'spine', 'chest', 'clavicle')
@@ -268,23 +336,13 @@ def _front_y(ctx, z, band=0.012):
     return min(ys)
 
 
-def _cuff(ctx, label, c0, ax, bone, color, n, s, bnd=0.004):
-    """Hem ring around a sleeve opening centred near c0 with axis ax."""
+def _cuff(ctx, label, c0, ax, bone, color, n, s):
+    """Hem ring around a sleeve opening: c0 on the limb axis ax, fitted by rays in the plane across the limb."""
     F = ctx.F
-    near = []
-    for _ in range(MAX_GROW):
-        if len(near) >= 8:
-            break
-        near = [p for p in ctx.bv if abs((p - c0).dot(ax)) < bnd and (p - c0).length < 0.09 * F['rl'] and p.x * s > 0.1 * F['gw']]
-        bnd *= 1.5
-    if len(near) < 8:
-        raise ValueError(f'char_base.outfits: no sleeve opening found near {tuple(round(x, 3) for x in c0)}')
-    d = sorted((p - c0 - ax * (p - c0).dot(ax)).length for p in near)
-    near = [p for p in near if (p - c0 - ax * (p - c0).dot(ax)).length <= 1.2 * d[len(d) // 2]]    # a heavy torso touching the arm: drop its points
-    cc = sum(near, Vector()) / len(near)
-    rr = max((p - cc).length for p in near)
-    q = Vector((0, 0, 1)).rotation_difference(ax).to_euler()
-    ob = torus(f'{ctx.name}_{label}.{n}', cc, rr + 0.002 * F['gw'], 0.0058 * F['gw'], ctx.M[color], rot=tuple(q))
+    q = Vector((0, 0, 1)).rotation_difference(ax)
+    c, ru, rv = _section(ctx, c0, q @ Vector((1, 0, 0)), q @ Vector((0, 1, 0)))
+    pad = 0.002 * F['gw']
+    ob = torus(f'{ctx.name}_{label}.{n}', c, (ru + rv) / 2 + pad, 0.0058 * F['gw'], ctx.M[color], rot=tuple(q.to_euler()))      # round tube
     B.rigid(ob, ctx.ao, bone)
 
 
@@ -359,8 +417,8 @@ def tee(ctx, color='tee', fold=0.0, sleeve='short'):
     zn, zh = _top(ctx, 'tee', color, fold, sleeve)
 
     def trims():
-        _rim(ctx, 'collar', zn, 0.0072, color, 'neck', 0.003, dom='neck')
-        _rim(ctx, 'shirt_hem', zh, 0.0065, color, 'spine', 0.002)
+        _rim(ctx, 'collar', zn, 0.0072, color, 'neck', 0.003, _neck(ctx), _neck_r(ctx))
+        _rim(ctx, 'shirt_hem', zh, 0.0065, color, 'spine', 0.002, _spine(ctx))
     ctx.trims.insert(0, trims)       # collar + hem first, sleeve hems after (the zc-you object order)
 
 
@@ -372,10 +430,9 @@ def shirt(ctx, color='shirt', fold=0.0, sleeve='long', buttons=5):
     J, F = ctx.J, ctx.F
 
     def trims():
-        nk = 0.075 * F['gw']
-        _rim(ctx, 'collar', zn, 0.0105, color, 'neck', 0.006, xmax=nk, dom='neck')
-        _rim(ctx, 'collar_fold', zn + 0.004 * F['gw'], 0.0070, color, 'neck', 0.010, xmax=nk, dom='neck')
-        _rim(ctx, 'shirt_hem', zh, 0.0070, color, 'pelvis', 0.002)
+        _rim(ctx, 'collar', zn, 0.0105, color, 'neck', 0.006, _neck(ctx), _neck_r(ctx))
+        _rim(ctx, 'collar_fold', zn + 0.004 * F['gw'], 0.0070, color, 'neck', 0.010, _neck(ctx), _neck_r(ctx))
+        _rim(ctx, 'shirt_hem', zh, 0.0070, color, 'pelvis', 0.002, _spine(ctx))
         z0, z1 = zn - 0.035 * F['gw'], zh + 0.030 * F['gw']
         for i in range(buttons):
             z = z0 + (z1 - z0) * i / max(buttons - 1, 1)
@@ -412,7 +469,7 @@ def tank(ctx, color='tank', fold=0.0):
     ctx.bands.append(band)
 
     def trims():
-        _rim(ctx, 'shirt_hem', zh, 0.0065, color, 'spine', 0.002)
+        _rim(ctx, 'shirt_hem', zh, 0.0065, color, 'spine', 0.002, _spine(ctx))
     ctx.trims.append(trims)
     if fold:
         ctx.fold[color] = fold
@@ -437,9 +494,9 @@ def shorts(ctx, color='shorts', fold=0.0):
     ctx.bands.append(band)
 
     def trims():
-        _rim(ctx, 'shorts_band', zb, 0.0085, color, 'pelvis', 0.001)
+        _rim(ctx, 'shorts_band', zb, 0.0085, color, 'pelvis', 0.001, _spine(ctx))
         for s, n in ((1, 'L'), (-1, 'R')):
-            _rim(ctx, f'shorts_hem.{n}', zl, 0.0060, color, f'thigh.{n}', 0.002, s)
+            _rim(ctx, f'shorts_hem.{n}', zl, 0.0060, color, f'thigh.{n}', 0.002, _leg(ctx, s))
     ctx.trims.append(trims)
     if fold:
         ctx.fold[color] = fold
@@ -465,9 +522,9 @@ def trousers(ctx, color='trousers', fold=0.0):
     ctx.bands.append(band)
 
     def trims():
-        _rim(ctx, 'trousers_band', zb, 0.0085, color, 'pelvis', 0.001)
+        _rim(ctx, 'trousers_band', zb, 0.0085, color, 'pelvis', 0.001, _spine(ctx))
         for s, n in ((1, 'L'), (-1, 'R')):
-            _rim(ctx, f'trousers_hem.{n}', zl, 0.0065, color, f'shin.{n}', 0.003, s)
+            _rim(ctx, f'trousers_hem.{n}', zl, 0.0065, color, f'shin.{n}', 0.003, _leg(ctx, s, lower=True))
     ctx.trims.append(trims)
     if fold:
         ctx.fold[color] = fold
