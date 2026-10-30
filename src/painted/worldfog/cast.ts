@@ -1,4 +1,4 @@
-import {lerp, mixColor, type Painter, type Pt} from '../painter';
+import {lerp, mixColor, type Painter, type Pt} from '../kit/painter';
 import {INK, VD18, capsule, ell, glaze, inkLine, limb, lineOf, modelPart, solid, toneOf, washAt, type InteriorLight} from './draw';
 import {CHIN, HEAD_SPAN, paintHeadFront, paintHeadSide, type FaceState, type HeadStyle} from './head';
 import {clamp01} from './space';

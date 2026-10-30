@@ -1,7 +1,7 @@
 import type {ReactNode} from 'react';
 import {AbsoluteFill} from 'remotion';
-import {CameraLayer, pushCamera, type Camera} from '../camera';
-import {clamp01, lerp, ramp, tintPainter, type Painter, type Pt} from '../painter';
+import {CameraLayer, pushCamera, type Camera} from '../kit/camera';
+import {clamp01, lerp, ramp, tintPainter, type Painter, type Pt} from '../kit/painter';
 import {envAt} from '../bloop/envelope';
 import {DOTS, FPS, HYD, hydParts, L, mapXY, ringRadius, SECTION, W, WF0, frontCrossing} from '../bloop/geometry';
 import {crRealGum, crRealHeadWidth, crRealPlace, crRealThroatCentre, crRealUpperLipWorld, paintCrReal, paintCrSilhouette, paintDreamCreature, paintFarProfile, paintTurnBody} from '../bloop/creatures';

@@ -1,6 +1,6 @@
 import type {Brush} from '../BrushCanvas';
-import {pushCamera, STILL_CAMERA, type Camera} from '../camera';
-import type {Painter, Pt} from '../painter';
+import {pushCamera, STILL_CAMERA, type Camera} from '../kit/camera';
+import type {Painter, Pt} from '../kit/painter';
 import type {PaintedShot} from '../shot';
 import {CHIN, HEAD_SPAN, type Face} from './FaceSheet';
 import {bustFig, keyTravel} from '../zcpaint/bust';

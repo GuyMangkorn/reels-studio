@@ -1,8 +1,9 @@
 import type {ReactNode} from 'react';
 import {AbsoluteFill} from 'remotion';
 import {BrushCanvas, type Brush, type PaintContext} from '../BrushCanvas';
-import {paintPovHand, ring, ZC_HAND} from '../hands';
-import {makePainter, type Pt} from '../painter';
+import {paintPovHand, ring} from '../kit/hands';
+import {ZC_HAND} from '../zcpaint/hand';
+import {makePainter, type Pt} from '../kit/painter';
 import {INFECTED, INFECTED_LEAN, INFECTED_SCALE, INFECTED_STOOP, YOU, YOU_DAY3, ZC_FACES, paintDay3Face, paintDay3Shirt, paintInfectedSide, paintRageFront} from '../zcpaint/cast';
 import {paintBodyBack, paintSeatedFloor, paintSeatedSofa} from '../zcpaint/figure';
 import {paintBodyFront} from './CastSheet';

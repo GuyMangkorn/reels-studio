@@ -1,5 +1,5 @@
 import type {PaintContext} from '../BrushCanvas';
-import {ramp, type Pt} from '../painter';
+import {ramp, type Pt} from '../kit/painter';
 import {FACES, type Face} from '../spike/FaceSheet';
 import {drawFig, H6, TEX_B, type Fig} from './body6';
 import {bustFig, keyTravel, placeClose} from './bust';

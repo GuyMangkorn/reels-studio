@@ -1,9 +1,9 @@
-import {CameraLayer, easeOver, pushCamera, type Camera} from '../camera';
+import {CameraLayer, easeOver, pushCamera, type Camera} from '../kit/camera';
 import {drawDiver} from '../diver';
-import {Bubbles, Flash, Shafts, Spot, Vignette} from '../glow';
-import {hash} from '../hash';
+import {Bubbles, Flash, Shafts, Spot, Vignette} from '../kit/glow';
+import {hash} from '../kit/hash';
 import {drawJar, type JarLook} from '../jar';
-import {lerp, ramp, range, ring, rot, type Painter, type Pt} from '../painter';
+import {lerp, ramp, range, ring, rot, type Painter, type Pt} from '../kit/painter';
 import {
   SAND, SITE_LAYOUT, bands, hazeAt, paintCaustics, paintParticles, paintRain, paintRockShelves, paintSeabed, paintStormFarSea,
   paintStormNearSea, paintStormSky, paintWater, span, type SeabedLayout,

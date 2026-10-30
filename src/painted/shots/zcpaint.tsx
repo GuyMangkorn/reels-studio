@@ -1,6 +1,6 @@
 import type {ReactNode} from 'react';
-import {easeOver, pushCamera, STILL_CAMERA, type Camera} from '../camera';
-import type {Painter} from '../painter';
+import {easeOver, pushCamera, STILL_CAMERA, type Camera} from '../kit/camera';
+import type {Painter} from '../kit/painter';
 import type {PaintedShot, ShotContext} from '../shot';
 import {ctxOf} from '../zcpaint/ctx';
 import {CREAM, dim, flatKit, paintCaps, LIT_DAY, type Lights} from '../zcpaint/sets';
@@ -9,7 +9,7 @@ import {NIGHT, paintBalcony} from '../zcpaint/balcony';
 import {paintInterior} from '../zcpaint/interior';
 import {DIAGRAM_PAPER, paintDiagram} from '../zcpaint/diagram';
 import {drawFig, figFront, figSeatSofa, figSide, gaitPhase, H6, MITTEN_6H, sectionCast, TEX_B, type Fig, type HU} from '../zcpaint/body6';
-import {ramp} from '../painter';
+import {ramp} from '../kit/painter';
 import {YOU} from '../zcpaint/cast';
 import {section, SEC_2D, SEC_2D_LL_B07, truckYc, truckYcHold} from '../zcpaint/space';
 import {paintB02Sh01, paintB02Sh02, paintB03Sh01, paintB09Sh02b} from '../zcpaint/povshots';

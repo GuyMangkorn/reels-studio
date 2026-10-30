@@ -1,5 +1,5 @@
-import {STILL_CAMERA} from '../camera';
-import type {Pt} from '../painter';
+import {STILL_CAMERA} from '../kit/camera';
+import type {Pt} from '../kit/painter';
 import type {PaintedShot} from '../shot';
 import {VD18_LIGHT} from '../shots/worldfog';
 import {drawFigure, type Arm} from '../worldfog/cast';

@@ -1,4 +1,4 @@
-import type {Pt} from '../painter';
+import type {Pt} from '../kit/painter';
 import type {Cast} from '../spike/CastSheet';
 import {CHIN, FACES, type Face} from '../spike/FaceSheet';
 import {ellipse} from '../spike/ProportionSheet';

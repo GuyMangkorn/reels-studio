@@ -1,8 +1,8 @@
 import {AbsoluteFill} from 'remotion';
 import {BrushCanvas, hash, type Brush, type PaintContext} from '../BrushCanvas';
-import {applyCamera, pushCamera} from '../camera';
-import {ramp} from '../painter';
-import {makePainter, type Painter, type Pt} from '../painter';
+import {applyCamera, pushCamera} from '../kit/camera';
+import {ramp} from '../kit/painter';
+import {makePainter, type Painter, type Pt} from '../kit/painter';
 import type {Cast} from './CastSheet';
 import {paintHead, type Face} from './FaceSheet';
 import {makePaint, paintBodySide} from './SideSheet';

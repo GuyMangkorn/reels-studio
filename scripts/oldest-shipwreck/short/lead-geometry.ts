@@ -2,10 +2,10 @@
 // Usage: npx tsx scripts/oldest-shipwreck/short/lead-geometry.ts   Prints one line per shot: lead, top, bottom, height.
 // Jar outlines come from jarHalf (outline only, handles excluded), clipped at each jar's sand line; cameras from the registry.
 import {cameraAt} from '../../../src/painted/registry';
-import {toScreen, type Camera} from '../../../src/painted/camera';
+import {toScreen, type Camera} from '../../../src/painted/kit/camera';
 import {jarHalf} from '../../../src/painted/jar';
-import {range, rot, type Pt} from '../../../src/painted/painter';
-import {hash} from '../../../src/painted/hash';
+import {range, rot, type Pt} from '../../../src/painted/kit/painter';
+import {hash} from '../../../src/painted/kit/hash';
 import {diverBounds} from '../../../src/painted/diver';
 import {HERO_JAR, SITE_JARS} from '../../../src/painted/shots/shipwreck';
 

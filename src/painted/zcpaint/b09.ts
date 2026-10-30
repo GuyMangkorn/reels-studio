@@ -1,4 +1,4 @@
-import type {Painter} from '../painter';
+import type {Painter} from '../kit/painter';
 import {drawFig, figSeatFloor, sectionCast, TEX_B} from './body6';
 import {ZC_FACES, YOU_DAY3} from './cast';
 import {ctxOf} from './ctx';

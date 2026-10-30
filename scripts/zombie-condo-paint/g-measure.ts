@@ -7,7 +7,7 @@ import {figFront, figSeatSofa, figSide, H6, handParts, MITTEN_6H, skullTopPx, to
 import {section, SEC_2D, SEC_2D_LL_B07} from '../../src/painted/zcpaint/space';
 import {figSeatFloor, figFront as figFrontG} from '../../src/painted/zcpaint/body6';
 import {SEAT_D} from '../../src/painted/zcpaint/b09';
-import {toScreen, type Camera} from '../../src/painted/camera';
+import {toScreen, type Camera} from '../../src/painted/kit/camera';
 
 const FRAME_BOTTOM = 1920;
 const cam = (s: number, fx: number, fy: number): Camera => ({s, fx, fy, dx: 0, dy: 0});

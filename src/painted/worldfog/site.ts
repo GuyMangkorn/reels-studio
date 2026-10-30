@@ -1,4 +1,4 @@
-import {type Painter, type Pt} from '../painter';
+import {type Painter, type Pt} from '../kit/painter';
 import {blob, projectPoly, quadX, quadY, quadZ, rectPts} from './draw';
 import {ease, seg, smoothstep, type Proj} from './space';
 

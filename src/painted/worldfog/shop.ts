@@ -1,5 +1,5 @@
-import {hash} from '../hash';
-import {mixColor, type Painter, type Pt} from '../painter';
+import {hash} from '../kit/hash';
+import {mixColor, type Painter, type Pt} from '../kit/painter';
 import {drawTorch} from './cast';
 import {VD18, blob, glaze, hardFill, planeBand, projectPoly, quadX, quadY, quadZ, solid, washAt, type InteriorLight} from './draw';
 import {paintLampGlowCanvas, paintOutside, type OutsideOpts} from './outside';

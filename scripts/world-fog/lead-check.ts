@@ -3,8 +3,8 @@
 // Figure heads and feet come from the cast rig (drawFigure anchors, no-op painter), projected with the plate camera.
 // Lead rows without a rig pose use the sheet's design heights, as in the 30 Oct checkpoint (out/tmp/lead.ts).
 import {cameraAt} from '../../src/painted/registry';
-import {toScreen} from '../../src/painted/camera';
-import type {Painter, Pt} from '../../src/painted/painter';
+import {toScreen} from '../../src/painted/kit/camera';
+import type {Painter, Pt} from '../../src/painted/kit/painter';
 import {drawFigure, type FigPose} from '../../src/painted/worldfog/cast';
 import {LIT, asmPoseAt, assemblyParts, casterHubs} from '../../src/painted/worldfog/assembly';
 import {farShapeAt} from '../../src/painted/worldfog/car';

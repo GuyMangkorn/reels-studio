@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import {INFECTED, INFECTED_SCALE, YOU, YOU_DAY3} from '../src/painted/zcpaint/cast';
 import {figFront, figSeatFloor, figSeatSofa, figSlack, handParts, H6, PX_M, skullTopPx, topPx, type Fig} from '../src/painted/zcpaint/body6';
 import {cel, castTone, floorCast, KEY_SEC_DAY, localTravel} from '../src/painted/zcpaint/light';
-import type {Pt} from '../src/painted/painter';
+import type {Pt} from '../src/painted/kit/painter';
 import {SEAT_D} from '../src/painted/zcpaint/b09';
 
 // BODY-ZCP-6H (S-P12, Boss pass 7): geometry checks on the 6-head figures. Pixel checks are on the model sheet stills.

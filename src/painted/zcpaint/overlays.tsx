@@ -1,10 +1,10 @@
 import {useId, type ReactNode} from 'react';
 import {AbsoluteFill} from 'remotion';
-import {CameraLayer, type Camera} from '../camera';
-import {Spot, GLOW_PEAK} from '../glow';
-import {hash} from '../hash';
-import {ramp} from '../painter';
-import {Grade, Grain} from '../screen';
+import {CameraLayer, type Camera} from '../kit/camera';
+import {Spot, GLOW_PEAK} from '../kit/glow';
+import {hash} from '../kit/hash';
+import {ramp} from '../kit/painter';
+import {Grade, Grain} from '../kit/screen';
 import type {ShotContext} from '../shot';
 import {INK} from './ctx';
 import {flare, layers, MAIN, SECOND, svgTransform, type Layer} from './balcony';

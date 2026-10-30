@@ -64,4 +64,4 @@ export const BrushCanvas = ({paint, paper = '#efe6d2', boilEvery = 2, brushScale
   return <AbsoluteFill ref={host} />;
 };
 
-export {hash} from './hash';
+export {hash} from './kit/hash';

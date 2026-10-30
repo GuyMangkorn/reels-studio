@@ -1,9 +1,9 @@
 import type {ReactNode} from 'react';
-import {CameraLayer, easeOver, pushCamera, type Camera} from '../camera';
-import {GLOW_PEAK} from '../glow';
-import {lerp, type Painter, type Pt} from '../painter';
+import {CameraLayer, easeOver, pushCamera, type Camera} from '../kit/camera';
+import {GLOW_PEAK} from '../kit/glow';
+import {lerp, type Painter, type Pt} from '../kit/painter';
 import type {PaintedShot, ShotContext} from '../shot';
-import {STILL_CAMERA} from '../camera';
+import {STILL_CAMERA} from '../kit/camera';
 import {asmPoseAt, assemblyParts, cartOnlyPose, paintAssembly, paintCartSide, paintHubs, type AsmPose} from '../worldfog/assembly';
 import {doorPt, paintCarExterior, paintCarInterior, paintFarShape, paintSedanBody, paintSedanDoor, rimAt, SEDAN_DOOR} from '../worldfog/car';
 import {drawFigure, shoulderHeight, type Arm, type FigAnchors, type FigPose, type Who} from '../worldfog/cast';

@@ -1,6 +1,6 @@
 import type {PaintContext} from '../BrushCanvas';
-import {hash} from '../hash';
-import {mixColor, type Pt} from '../painter';
+import {hash} from '../kit/hash';
+import {mixColor, type Pt} from '../kit/painter';
 import {ell, layerAt} from './ctx';
 import {flatKit, type Flat} from './sets';
 

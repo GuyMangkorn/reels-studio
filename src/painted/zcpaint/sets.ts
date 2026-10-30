@@ -1,5 +1,5 @@
 import type {PaintContext} from '../BrushCanvas';
-import {mixColor, type Pt} from '../painter';
+import {mixColor, type Pt} from '../kit/painter';
 import {ell, INK} from './ctx';
 import {boxFloorCast, castTone, clipConvex, KEY_SEC_DAY, roomFloorQuad, SEC_BACK, type Caster} from './light';
 import type {Section} from './space';

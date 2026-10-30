@@ -1,6 +1,6 @@
 import type {ReactNode} from 'react';
 import {AbsoluteFill, Easing, interpolate} from 'remotion';
-import type {Brush} from './BrushCanvas';
+import type {Brush} from '../BrushCanvas';
 import type {Pt} from './painter';
 
 /**

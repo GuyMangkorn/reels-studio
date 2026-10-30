@@ -1,5 +1,5 @@
-import {hash} from '../hash';
-import {mixColor, range, ring, type Painter, type Pt} from '../painter';
+import {hash} from '../kit/hash';
+import {mixColor, range, ring, type Painter, type Pt} from '../kit/painter';
 import {bands, span} from '../sea';
 import {H, hydParts, SECTION, W} from './geometry';
 

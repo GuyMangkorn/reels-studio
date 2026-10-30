@@ -1,10 +1,10 @@
 import {useId} from 'react';
 import {AbsoluteFill} from 'remotion';
-import {Grade, Grain} from '../screen';
+import {Grade, Grain} from '../kit/screen';
 import {bez} from './creatures';
 import {hydParts, PAT_BLOOP, PAT_ICE} from './geometry';
 import {AMBER, ICE} from './sets';
-import type {Pt} from '../painter';
+import type {Pt} from '../kit/painter';
 
 // Thai text uses the Noto Sans Thai face that `scenes/Subtitles` loads for every captioned composition (no load here, so
 // importing the plates in tests has no side effect).

@@ -2,7 +2,7 @@
 // variants A, B, C with a burned-in label. Kept out of src/Root.tsx and the episode registry, like the other ZCPAINT spike entries.
 import {createElement, Fragment} from 'react';
 import {AbsoluteFill, Composition, registerRoot, useCurrentFrame} from 'remotion';
-import {STILL_CAMERA} from '../camera';
+import {STILL_CAMERA} from '../kit/camera';
 import type {PaintedShot} from '../shot';
 import {FORMATS} from '../../videos/types';
 import {ctxOf} from '../zcpaint/ctx';

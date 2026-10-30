@@ -1,4 +1,4 @@
-import type {Brush} from './BrushCanvas';
+import type {Brush} from '../BrushCanvas';
 
 /** A point in composition pixels (top-left origin, 1080x1920 for a Short). */
 export type Pt = [number, number];

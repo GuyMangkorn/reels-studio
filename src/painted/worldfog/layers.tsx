@@ -1,8 +1,8 @@
 import {useId} from 'react';
 import {AbsoluteFill} from 'remotion';
-import {GLOW_PEAK} from '../glow';
-import {hash} from '../hash';
-import {lerp, type Pt} from '../painter';
+import {GLOW_PEAK} from '../kit/glow';
+import {hash} from '../kit/hash';
+import {lerp, type Pt} from '../kit/painter';
 import {fieldFrame, type AsmPose, type Part} from './assembly';
 import {FOG, LAMPS} from './outside';
 import {ease, lampAt, smoothstep, type Proj, type V3} from './space';

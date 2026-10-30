@@ -1,6 +1,6 @@
 import type {Brush} from './BrushCanvas';
-import {applyCamera} from './camera';
-import {makePainter} from './painter';
+import {applyCamera} from './kit/camera';
+import {makePainter} from './kit/painter';
 import {span} from './sea';
 import type {PaintedShot} from './shot';
 

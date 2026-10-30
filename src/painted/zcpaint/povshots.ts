@@ -1,5 +1,5 @@
 import type {PaintContext} from '../BrushCanvas';
-import {clamp01, lerp, mixColor, ramp, type Pt} from '../painter';
+import {clamp01, lerp, mixColor, ramp, type Pt} from '../kit/painter';
 import {INK} from './ctx';
 import {flatKit, CREAM, type Flat} from './sets';
 import {castTone} from './light';

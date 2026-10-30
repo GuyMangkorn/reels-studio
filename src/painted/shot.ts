@@ -1,6 +1,6 @@
 import type {ReactNode} from 'react';
-import type {Camera} from './camera';
-import type {Painter} from './painter';
+import type {Camera} from './kit/camera';
+import type {Painter} from './kit/painter';
 
 export type ShotContext = {
   /** Shot-local seconds after `clock` (the plate clock). */

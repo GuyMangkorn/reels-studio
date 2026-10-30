@@ -1,7 +1,7 @@
 import type {PaintContext} from '../BrushCanvas';
 import {ell, INK} from './ctx';
 import {CREAM, dim, flatKit} from './sets';
-import {mixColor} from '../painter';
+import {mixColor} from '../kit/painter';
 import {persp} from './space';
 import {drawFig, figCast, figFront, figSide, MITTEN_6H, TEX_B} from './body6';
 import {castTone, KEY_B10} from './light';

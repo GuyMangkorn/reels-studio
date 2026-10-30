@@ -1,11 +1,11 @@
 import {AbsoluteFill, useCurrentFrame} from 'remotion';
 import {BrushCanvas, type PaintContext} from '../BrushCanvas';
-import {hash} from '../hash';
-import {mixColor, type Pt} from '../painter';
+import {hash} from '../kit/hash';
+import {mixColor, type Pt} from '../kit/painter';
 import {ell} from '../zcpaint/ctx';
 import {flatKit, type Flat} from '../zcpaint/sets';
-import {GLOW_PEAK} from '../glow';
-import {CaptionShade, Grade, Grain} from '../screen';
+import {GLOW_PEAK} from '../kit/glow';
+import {CaptionShade, Grade, Grain} from '../kit/screen';
 import {Subtitles} from '../../scenes/Subtitles';
 
 // Film key-art spike for B08-SH01 (brief VB-ZCPAINT-SHORT-R2.4, `VD-ZC-08`, 30 Oct 2026). Not a production plate:

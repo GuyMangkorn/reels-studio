@@ -6,7 +6,7 @@ import {writeFileSync} from 'node:fs';
 import {hazeRing, keelRing} from '../../src/painted/bloop/sets';
 import {FAR_ICE, ICE_SH11, ICE_SH12, sh13Camera} from '../../src/painted/shots/bloop';
 import {paintedShots} from '../../src/painted/registry';
-import {toScreen, type Camera} from '../../src/painted/camera';
+import {toScreen, type Camera} from '../../src/painted/kit/camera';
 
 type Pt = [number, number];
 const round = (v: number, d = 1) => Math.round(v * 10 ** d) / 10 ** d;

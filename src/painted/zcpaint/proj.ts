@@ -1,4 +1,4 @@
-import type {Pt} from '../painter';
+import type {Pt} from '../kit/painter';
 import {foldTone, prt, strokes, tub, unitHU, type HU, type Part} from './body6';
 import {hull} from './light';
 

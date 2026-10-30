@@ -1,5 +1,5 @@
 import type {PaintContext} from '../BrushCanvas';
-import type {Pt} from '../painter';
+import type {Pt} from '../kit/painter';
 import {drawFig, H6, TEX_B, type Fig, type HU} from './body6';
 import {bustFig, keyTravel, placeClose} from './bust';
 import {YOU} from './cast';

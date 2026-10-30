@@ -1,5 +1,5 @@
 import type {PaintContext} from '../BrushCanvas';
-import type {Pt} from '../painter';
+import type {Pt} from '../kit/painter';
 import {drawFig, foldTone, strokes, H6, prt, TEX_B, tub, unitHU, type Fig, type HU, type Part} from '../zcpaint/body6';
 import {bustFig, keyTravel, placeClose} from '../zcpaint/bust';
 import {YOU} from '../zcpaint/cast';

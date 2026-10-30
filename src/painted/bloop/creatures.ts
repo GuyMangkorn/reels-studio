@@ -1,5 +1,5 @@
-import {hash} from '../hash';
-import {makePainter, mixColor, range, ring, type Painter, type Pt} from '../painter';
+import {hash} from '../kit/hash';
+import {makePainter, mixColor, range, ring, type Painter, type Pt} from '../kit/painter';
 import {DREAM_INK, INK_D} from './sets';
 
 // BLOOP creatures (DEP02): CR-DREAM (CRD-2 four-eyed armoured fish, L-B2, boiling ink) and CR-REAL (CRD-2 made solid,
