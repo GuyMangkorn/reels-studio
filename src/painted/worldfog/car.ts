@@ -160,7 +160,8 @@ export const doorPt = (dx: number, th: number, s: number, y: number, z = SIDE_Z)
 
 /**
  * The cabin seen through the opening (behind the body plane, z 4.5-5.0): far door panel, seat cushion and seatback,
- * headrest, steering-wheel rim, dash line, and the courtesy (dome) light glaze on the headliner and seat tops.
+ * headrest, steering-wheel rim, dash line, the far-door armrest/trim line at 0.70 m (SS-R3.5) and the courtesy (dome) light glaze
+ * on the far-door upper third and the seat tops.
  */
 const paintCabin = (p: Painter, proj: Proj, dx: number, seed: number, courtesy: number) => {
   const open = projectPoly(proj, onSide(OPENING, dx));
@@ -189,10 +190,15 @@ const paintCabin = (p: Painter, proj: Proj, dx: number, seed: number, courtesy: 
   }
   const dash = projectPoly(proj, [[dx - 1.90, 1.0, 4.6], [dx - 0.95, 1.0, 4.6]] as V3[]);
   if (dash.length > 1) inkLine(p, seed + 336, dash, {closed: false, weight: 1.5, color: '#3a4144'});
-  // Courtesy light (dome, warm #d8b878 at most 0.30): headliner band and seat tops, while the door is open.
+  // Far-door armrest / trim line at 0.70 m (SS-R3.5), across the inner panel from the B-pillar side to the free edge. A 2-point
+  // line: `projectPoly` needs 3 vertices and would drop it, so the points are projected one by one.
+  const trim = onSide([[-1.88, 0.70], [-0.93, 0.70]], dx).map((q): Pt => proj.P(q));
+  inkLine(p, seed + 337, trim, {closed: false, weight: 1.0, color: '#23292b'});
+  // Courtesy light (dome, warm #d8b878 at most 0.30) while the door is open: the far-door upper third (1.07-1.40 m, which holds
+  // the headliner band; SS-R3.5 widens the 1.20-1.40 m wash to one band so the glaze never stacks above 0.30) and the seat tops.
   if (courtesy > 0) {
-    const roof = projectPoly(proj, onSide(bandY(OPENING, 1.2, 1.4), dx));
-    if (roof.length) washAt(p, seed + 340, '#d8b878', 77 * courtesy, roof, 0.2, 0.2);
+    const upper = projectPoly(proj, onSide(bandY(OPENING, 1.07, 1.4), dx));
+    if (upper.length) washAt(p, seed + 340, '#d8b878', 77 * courtesy, upper, 0.2, 0.2);
     if (cushion.length) washAt(p, seed + 341, '#d8b878', 77 * courtesy, cushion, 0.2, 0.2);
   }
 };
