@@ -1094,3 +1094,298 @@ Per-frame exceptions (background band 1000:1248, mean/p95; must be ≤ 0.25 / �
 - Loudness (scripts/loudness.mjs, the render.mjs step): as rendered −18.1 LUFS integrated, true peak −3.5 dBTP, LRA 10.8 LU; after the project step **−14.1 LUFS integrated, −1.4 dBTP**, LRA 10.3 LU (dynamic loudnorm). Meets the project default (≈ −14 LUFS, ≤ −1 dBTP).
 - Frames: 30 frames extracted from the final MP4 (`out/qa/world-fog/WFOG-EP01-SHORT/editor-r2/mp4-frames/`), labelled copies in `mp4-frames-labelled/`, sheets `sheet_mp4_frames_A.png` (G0–G1530) and `sheet_mp4_frames_B.png` (G1869–G2999); both viewed. Scene samples G60 (S01), G1275 (S02), G2262 (S03), G2600 (S04); cut frames G126, G240, G354, G540, G738, G1530, G2070, G2190, G2340, G2670, G2790; hold and hard-cut G2998/G2999 (no fade, no caption).
 - Not checked in this pass: motion and seek (Studio), every-frame continuity, and listening by a person to the final mix (levels are from measurements, not by ear).
+
+## 2026-10-30 — Boss r9: SS-R5 fog swallow (WFOG-EP01-SHORT, VB R6.1, SS-R5 Boss list B5-1…B5-10)
+
+Scope: coordinator authorization for B5-1…B5-10 (index `ss-r5-boss-list`); user decisions FP-A + FP-B, S01-SH02A at low detail, S02-SH02 135 f, no duration cap. Narration not retimed (Gemini pending). Read: index SS-R5 list and sheet blocks (sc01 S01-SH02/S01-SH02A, sc02-b01 S02-SH00A/S02-SH01/S02-SH02), brief R6.1 VD06/VD08/VD09/VD19/VD20/SP05/SP06, `fog-proposals.md` (FP-A/FP-B), `boss-asset-workflow.md`, `painted-2d` skill, `remotion-toolkit.md` §1 preflight (`npm ls --depth=0`: all pinned; `npx remotion versions`: consistent; `out/logs/b5-npm-ls.log`, `b5-remotion-versions.log`), `sequence-workflow.md`, scale guide §3 (one projector owner; no double scaling). Scene sheets, brief, index and fact-check were not edited (uncommitted Film/Mark docs kept).
+
+### What changed (owner files)
+- **B5-1 shot list** (`src/painted/worldfog/space.ts`): `SHOT_ROWS` 25 rows (S01-SH02A g0 240/120 f, S02-SH00A 360/150 f, S02-SH01 510/96 f, S02-SH02 606/135 f, S02-SH03 741 … S04-SH03 3087); `TOTAL_FRAMES` 3297; `CAM-GLASS-SWALLOW` (−0.3, 1.75, −2.0; f 850; y_h 595) and `CAM-HIGH-WIDE` (−3.5, 20, −20; f 900; y_h 330) in `SETUPS`.
+- **B5-2 story key (RK-1)**: `storyG(G)` = G − 297 from G741, identity below; `storyAt(id, f)` for SHOT_G0 reads. Plates read clocks at `storyG`; `fogAt`, `lampAt`, `asmAt`, `t = G/30` drifts and `riseAt` therefore see the SS-R4.1 values for S02-SH03 onward. Check: the picture band (y 300–1920) of 13 old/new pairs is identical (`out/logs/b5-parity-psnr.tsv`, PSNR inf); the full frames differ only in the burned-in label.
+- **B5-3 `fogAt`**: 0 before G360; G360–G494 = 2·(14 − F)/12.2 from `frontAt` (14.0 held to G390, 1.8 from G494); 2 to G2802. `fogAt(239)` 0, `fogAt(494)` 2, `fogAt(600)` 2.
+- **B5-4 `paintOutside` `front`** (`outside.ts`, MK-WF-DEP-11): `vis(z)` keeps a layer nearer than F; `zc(z)` clips ground planes at F; `clear` 1 and veil 0 with `front`; high banks and the forecourt low bank off; walkway, puddle and lamp-reflection washes gated by z. `paintFront`: 4 m bank (15 m for F ≥ 60) with crest, two lower banks and tendrils 0.5–1.5 m nearer the glass. `sedan: true` paints the parked car's side profile (`paintSedanBody`) gated at its near flank (z 4.2). Without `front` the call order is unchanged (the parity pairs above are the proof).
+- **B5-5 S01-SH02** (`forecourtPlate`): `front: 60`, forecourt low bank dropped; staging, car, door, narrator and timing unchanged. Assembly not drawn (no cart in the plate).
+- **B5-6 S02-SH00A** (`swallowPlate`): `paintShop` on CAM-GLASS-SWALLOW; narrator `view: 'left'` (profile facing screen-left) at (0.5, 0, −0.45), phone at her near side (dark), mouth closed, eyes on the car to f88 then to the kerb (f88–f134), blink f140–f143; `frontAt(G)`; `sedan: true`; push 1.00 → 1.03 about (560, 640) over [0, 150); no assembly (VD17 0). VD18 row `CAM-GLASS-SWALLOW` (key [0.2, 1], rim [0.3, 1]); AIR entry for the interior air.
+- **B5-7 S01-SH02A** (`sitePlate`, new `src/painted/worldfog/site.ts`, MK-WF-DEP-12): `paintSite` on CAM-HIGH-WIDE at low detail: night backdrop, far fields and five tree clumps, main road with dashes, access lane, fog body above the ground line of zF(x) = 14 + B·smoothstep(2.5, 20, |x|) (B 46 → 0 at f114), crest and two lower banks, then the forecourt slab, pool, kerb, canopy roof, pumps, parked car and the shop box last. Push 1.00 → 1.03 about (600, 900) over [0, 120). No figure, no glow layer (warm washes ≤ 0.3 by alpha).
+- **B5-8 S02-SH01** (`counterInPlate`): every SS-R4.1 local event −18 (occupant weight f22–f42, glance f36–f54, step f60–f68, reach f68–f78, torch lifted off f78 = G588, lowered f78–f86); `torchOnHook` G < 588; push over [0, 96); window `front: 1.8` (the S02-SH00A end state; the car ghost and the front are both gone).
+- **B5-9 S02-SH02** (`phone.tsx`): thumb flick (735, 900) → (735, 760) f48–f66 → (735, 900) f78; list moves −360 px eased f48–f108 (6 cards); L0 drift −20 px over 135 f; thumb mask follows (`thumbShape`).
+- **B5-10 clean-ups**: `src/videos/world-fog/index.ts` (comment: 25 shots, 3297 frames); `src/painted/worldfog/qa.tsx` note "Boss SS-R5 fog swallow pass (r9)". Tests in `tests/world-fog.test.ts`: 36 of 36 (was 29; new: 25 shots/3297 frames and the R6 plate starts, RK-1 key and + 297 starts, the B5-3 ramp and front, the WORLD-SITE wall profile, the depth gate with a recording painter, the far wall, the hard-cut ending at G3296, and the VO-03/ding/caption mapping).
+
+### Composition cues (`src/videos/world-fog/index.ts`)
+- SFX: entries from the S02-SH03 story point move +297 (`fromStory`); phone ding G612 and pop G628 per sheet sc02-b01; the S02 cues that were ding/pop on G360/G376 are gone.
+- AUDIO: drone bed boundaries +297 from the S02-SH04 story point (G837, G1285, G1344, G2127, G2367, G2571, G3087, G3258); forecourt hush now G156–G494 (the open air is eaten by the wall and the front); fridge hum from G360 (sheet: fades in under the swallow, alone from G494).
+- Captions: S02 cues from captions.json (seconds from G240) are mapped to composition frames: VO-03a `แต่พอเข้าร้าน` G416, `หมอกก็กลืนลานจอดจนหมด` G442 (closed by a blank at G482), VO-03b `ข่าวในมือถือ…` G624, `ก็มีแต่ภาพเดียวกัน` G654 (closed at G690); later S02 cues +297 (`ใครอยู่ตรงนั้น?` G765). S01, S03 and S04 are unchanged (they move with their scene start).
+- Narration: the single Edge r1 file stays at G0 (not retimed; Gemini TTS pending). After G240 its words are out of step with the new shots until Editor retimes or splits it (index open items 25 and 28).
+
+### Checks (logs in out/logs/)
+- `npm run typecheck`: exit 0 (`b5-typecheck-final.log`).
+- `npm run lint`: exit 0; one warning in `src/painted/spike/BloopLook.tsx` (not touched; pre-existing).
+- `node --import tsx --test tests/world-fog.test.ts`: 36 of 36 (`b5-test-wf2.log`). `npm test`: **150 of 150** (`b5-test-all.log`).
+- Parity: `out/tmp/b5-base/` (old timeline, before any source edit) vs `out/tmp/b5-new2/` (new): 13 pairs, picture band identical (`b5-parity-psnr.tsv`). Parity sheet: `out/qa/world-fog/r9/parity_window_pairs.png` (S02-SH04 G640 ↔ G937, S04-SH03 G2940 ↔ G3237).
+- Determinism: G300 and G453 each rendered twice; PNGs byte-identical.
+- Stills: `scripts/world-fog/stills.mjs --entry=src/painted/worldfog/qa.tsx --id=WFOG-QA --gl=angle`, one bundle per run (`b5-new-stills.log`, `b5-new2-stills.log`); unordered frames 156 … 3237 in one bundle.
+- Lead (projection tool, `scripts/shot-projection.py` on `projection/S02-SH00A_CAM-GLASS-SWALLOW.json`, `b5-proj-S02-SH00A.log`): narrator span **933 px** (≥ 480), head (979, 622), feet (979, 1555); car headlamp (622, 746) = FA01 point. S01-SH02A: no figure (lead N/A).
+- Caption zone (`scripts/caption-zone.py`, `b5-caption-zone*.json`, `b5-caption-zone-block.json`): raw QA frames (no scrim) fail (G452 mean 0.278, p95 0.484). With the production scrim PNG overlaid at its box (approximation: library WAVs are absent here, so the production entry cannot render with audio): default band 860–1248 G452 mean 0.244 pass, p95 0.477 fail; caption block 1020–1248 G452 mean 0.153, p95 0.433 (fail by 0.03); G624 and G654 pass (mean 0.14, p95 0.32).
+
+### Visual review (sheets in out/qa/world-fog/r9/, labelled with shot, TH time, G and f)
+- `S01-SH02_clear.png` (G156, 186, 206, 239), `S01-SH02_base_vs_new_G239.png`: clear FS0, pale wall at the back, no cart, no fog on the forecourt.
+- `S01-SH02A_fb.png` (G240, 280, 300, 320, 359): FB01–FB02 order holds (fields → road → forecourt edge), lane covered, no figure, no dark mark on the lane, station lit.
+- `S02-SH00A_early_mid.png` (G360–G459), `S02-SH00A_late.png` (G465–G509, with S01-SH02A G359): pumps and far cores go first, the car goes at the flank gate G465 (sheet G453 far face is not drawn separately), kerb gone by G487, panes grey at G509.
+- `S02-SH01_SH02.png` (G510, 552, 588, 605, then G606, 624, 654, 740): FS2 through the glass, torch off the hook at G588, banner, press, flick.
+- `parity_window_pairs.png` (see above).
+- Film's pump-top condition at 270 px and full resolution: the right island and the left tops above the car roof both read; no contrast change needed (`b5-*`, scratch crop).
+
+### Deviations and decisions for the owners
+- **VD07 foreground (S02-SH00A)**: the painted interior frame (`paintShop` boxes 20–33, hard fills) replaces the SVG `Architecture` foreground, the same recorded route as S02-SH05 (index open item 15). Film to confirm.
+- **VD18 row `CAM-GLASS-SWALLOW`** (key [0.2, 1], rim [0.3, 1]): not in the brief's table; the glass is ahead of this eye, so rimScale 1. Film to confirm.
+- **Car at S02-SH00A**: side profile (`paintSedanBody`) because the ghost blob has no roof line or headlamp. The whole car drops at the near flank (G465) with no partial clip between z 4.2 and 6.0 (the far face is not drawn separately).
+- **S02-SH01 window `front: 1.8`** (not in the sheet): keeps the car ghost out so the G510 panes equal the S02-SH00A end state.
+- **VO-03 captions** are moved from their old G293–G376 positions to the sheet windows (open item 25). At the old positions they would fall on the wordless S01-SH02A and S02-SH01. Editor to confirm.
+- **Hush and hum**: hush extended to G494, hum from G360 (sheet sc02-b01 sound lines); levels remain Editor's mix.
+
+### Open items and limitations
+- **S01-SH02 lane (sheet acceptance G239, lane centre (597, 855) ± 20, road dashes readable)**: this point is behind the parked car's bonnet and body in the unchanged SS-R3.5 framing (before and after this change). The road dashes are under the car. Mark/Film: choose a different acceptance point or change the car's staging.
+- **Lower-pane dark band (G420–G487; FS2 windows)**: a hard-edged band from the sky-ramp and walkway bands below the front's ground line; the same band is in the SS-R4.1 window baseline (`S02-SH04_G640`). Look item for Film; DF-20261030-painted-fog-front-depth-gate.
+- **Caption zone** at G452 with the production scrim: p95 0.433 in the block (threshold 0.40); the phone insert passes. Editor's scrim (MK-WF-DEP-10).
+- **Narration** single file not retimed; VO-03 placement pending Editor/Gemini (index open items 25 and 28).
+- **Studio** not run (no interactive session): cold load, play/pause, backward scrub and unordered seeks not verified; stills at unordered frames and identical re-renders are the evidence here.
+- **Production MP4 and sound** not rendered: library WAVs under `public/audio` and `public/sfx` are absent from this worktree and from `shipwreck-short-82a71a` (only NOTICE files).
+- **FA07** (viewer without sound says the fog covered the station) and user checks SP05/SP06 approval: not done here.
+- Labels: the burned-in QA label is `WFOG-QA`; the production entry was not captured with captions (see above).
+
+## 2026-10-30 — Editor r3: Gemini TTS samples for narrator and worker (WFOG-EP01-SHORT, samples only, uncommitted)
+
+Scope: user request 30 Oct (via coordinator): narrator and worker to Gemini TTS with per-line emotion; samples first (2–3 voices per character, 2–3 lines each). No full 16-line run, no change to `narration-lines.json`, timeline, captions or mix, no commit. Edge production path unchanged.
+
+### Status: samples generated, not yet heard by a person
+- Run 1 (free-tier key): blocked. HTTP 429, "10 requests per day on Free Tier" for `gemini-3.8-flash-tts`. The google-genai SDK retries 429 silently, so `say` looked hung. No clip from this run.
+- Run 2 (billing enabled on the key; coordinator tested one call): 15 of 15 Gemini calls succeeded on the first attempt; no 429 in the log. The key is loaded per run through `zsh -lic`; each call is guarded by `perl -e 'alarm 90; exec @ARGV'`; Gemini calls are not retried (a retry spends quota).
+- Cost, from the pricing page rate ($9.00 per 1M output audio tokens, 25 tokens per second, until 31 Dec 2026): about $0.0135 per audio minute; 15 clips (about 1 min) ≈ $0.02. Estimate, not a billing statement.
+- Data use: paid tier content is not used to improve Google products (pricing page). Terms unchanged from below.
+
+### Casting candidates (prebuilt voices; gender and pitch from `gemini-tts.py voices --search`)
+| Character | Candidate | Gender, pitch | Docs descriptor | Heard before |
+| --- | --- | --- | --- | --- |
+| narrator | Kore | female, medium | Firm, direct, authoritative | accent and emotion approved by ear 30 Oct (gemini-tts test) |
+| narrator | Achernar | female, high | Soft, calm, soothing; recommended for quiet | no |
+| narrator | Sulafat | female, medium | Warm, inviting, comforting | no |
+| worker | Charon | male, low | Informative, steady | accent and emotion approved by ear 30 Oct (gemini-tts test) |
+| worker | Enceladus | male, low | Breathy, intimate, soft-spoken | no |
+| worker | Orus | male, low | Firm, serious, no-nonsense | no |
+
+### Styles (same style per line for every candidate; Thai verbatim; no inline tags)
+Inline tags would change the text that `narration.py verify` compares with `script.md`, so tags need a rule decision first.
+
+| Line | Speaker | `--style` |
+| --- | --- | --- |
+| VO-01 | narrator | tense and quiet, low and controlled, slow |
+| VO-09 | narrator | frightened, shaky tense whisper, breathless |
+| VO-16 | narrator | relieved but uneasy, low and quiet, almost to herself, trailing off |
+| VO-10 | worker | panicked and desperate, shouting for help, loud and strained |
+| VO-15 | worker | tired and apologetic, out of breath, slow and flat, explaining |
+
+### Durations and loudness vs Edge
+Speech = first to last sample at or above the narration.py threshold (300 of 32768, about −40 dBFS), the same method as the r1 table. Edge references (`voice-preset.py` woman-base / man-base, +5%) reproduce r1 within 0.02 s. Loudness and true peak from ffmpeg `ebur128`. Speech in seconds; planned = sheet window (first cue to last cue end).
+
+Narrator:
+| ID | Planned | Edge Premwadee | Achernar | Kore | Sulafat |
+| --- | --- | --- | --- | --- | --- |
+| VO-01 | 1.33 | 0.95 | 1.10 (+15%) | 1.69 (+77%) | 1.45 (+52%) |
+| VO-09 | 1.80 | 1.11 | 3.72 (+235%) | 2.78 (+150%) | 2.42 (+117%) |
+| VO-16 | 5.10 | 5.38 | 11.18 (+108%) | 9.24 (+72%) | 8.56 (+59%) |
+
+Worker:
+| ID | Planned | Edge Niwat | Charon | Enceladus | Orus |
+| --- | --- | --- | --- | --- | --- |
+| VO-10 | 4.00 | 2.97 | 3.68 (+24%) | 3.52 (+19%) | 3.80 (+28%) |
+| VO-15 | 6.40 | 6.94 | 13.85 (+100%) | 10.60 (+53%) | 12.06 (+74%) |
+
+- Loudness: Edge −16.0 to −16.3 LUFS, true peak −1.5 to −3.0 dBTP. Gemini clips −15.8 to −16.7 LUFS, true peak −1.5 to −4.0 dBTP, except three narrator clips that land short of the −16 target: Kore VO-01 −20.1, Sulafat VO-01 −19.6, Sulafat VO-09 −20.9 LUFS. Re-normalize these before any mix.
+- Envelope check (0.1 s RMS): the long spans are real word bursts with pauses between them (gaps around −50 to −75 dBFS), not breath or noise tails. The length comes from the pace the styles produce.
+- Retime read against the planned window: VO-01, Achernar fits (1.10 s); Kore and Sulafat exceed by 0.1–0.4 s. VO-09: all three exceed by 0.6–1.9 s. VO-16: all three exceed by 3.5–6.1 s (Edge already exceeds by 0.28 s). VO-10: all three fit (3.5–3.8 s). VO-15: all three exceed by 4.2–7.5 s (Edge exceeds by 0.54 s).
+- Voice choice does not fix the timing. The pace words ("slow", "trailing off", "slow and flat") drive the overrun for every candidate. The next test is a restyle of VO-09, VO-15 and VO-16 without pace words, before any retime decision.
+
+### Reels (listening reels; 0.6 s gaps; fixed order)
+- `out/gemini-tts/wfog-samples/reel-narrator.wav`, 63.22 s, integrated −16.1 LUFS, true peak −1.5 dBTP. Order: Edge Premwadee (VO-01, VO-09, VO-16) → Kore → Achernar → Sulafat, each block in the same line order.
+- `out/gemini-tts/wfog-samples/reel-worker.wav`, 66.62 s, integrated −16.2 LUFS, true peak −1.5 dBTP. Order: Edge Niwat (VO-10, VO-15) → Charon → Enceladus → Orus.
+- `reel-<character>.json` lists each clip's start and duration in seconds.
+- Levels and timing were measured, not listened to. A person must listen before any voice is chosen.
+
+### Provisional recommendation (not heard yet)
+- Narrator: Achernar first. It matches the soft, calm descriptor and has the shortest VO-01 that fits the window. Sulafat has the shortest VO-09 and VO-16, but two of its clips need re-normalizing. Kore is the user-approved accent fallback.
+- Worker: Enceladus first. It fits VO-10 (3.52 s) and is the shortest VO-15 (10.60 s), and the breathy descriptor suits the tired line. Orus is the firm alternative. Charon has the approved accent but the longest VO-15 (13.85 s).
+- Blocker for the full run is pace, not voice. Restyle VO-09, VO-15 and VO-16 without pace words (keep the emotion), then retest the chosen voices (9 calls). The planned windows belong to Film and Mark: if pace cannot be fixed, they decide the retime. No call was made for the restyle; it needs the user's go-ahead.
+
+### Commercial-use and SynthID terms (checked 30 Oct 2026; partial)
+- Pages read: ai.google.dev gemini-api/terms, docs/pricing, docs/speech-generation.
+- Terms, "Use of Generated Content": Google claims no ownership; the user is responsible for use of generated content, including use by anyone it is shared with. No explicit commercial-use grant for TTS audio on these pages.
+- SynthID: not mentioned on the three pages (searched "SynthID" and "watermark"). **Unchecked.** The Additional Terms and the Generative AI Prohibited Use Policy were not read. Keep the gemini-tts skill's "unchecked" flag until checked before first delivery.
+
+### Files and reproduction
+- Driver (kept with outputs): `out/gemini-tts/wfog-samples/make-samples.py`. Run through a login shell: `zsh -lic 'python3 -I "<dir>/make-samples.py" "<dir>" gen|measure|reel'`. The Gemini calls use `perl -e 'alarm 90; exec @ARGV'` and are never retried; existing clips are skipped.
+- Outputs: `out/gemini-tts/wfog-samples/` (5 Edge references, 15 Gemini clips with `.json` sidecars, `durations.json`, `reel-narrator.wav/.json`, `reel-worker.wav/.json`). Log: `out/logs/gemini-tts-wfog-samples.log` (includes the run 1 429 lines).
+- Edit scope: this note is the only change to tracked files. `narration-lines.json`, `captions.json`, timeline and mix are unchanged.
+
+### Next steps
+1. User listens to the two reels and picks a voice per character (or asks for the restyle test).
+2. If the restyle test is approved: VO-09, VO-15, VO-16 without pace words, chosen voices only (9 calls).
+3. Re-normalize Kore VO-01, Sulafat VO-01 and Sulafat VO-09 before any mix.
+4. Keep the Edge path in production until the user approves a voice (voice-tuning step 6).
+
+## 2026-10-30 — Editor r3 continued: Sulafat and Orus on Gemini, pace wording, full narration pass (WFOG-EP01-SHORT, uncommitted; no retime, no captions)
+
+Scope: user decisions 30 Oct 2026 after the r3 reels: narrator = Sulafat, worker = Orus; Gemini reads about 1.6–2× Edge, so brisker pace by style direction while keeping the emotion. Steps: pace test (VO-09, VO-15, VO-16); all narrator and worker lines with per-line style plus the chosen pace; 2 takes for VO-01, VO-09, VO-10, VO-15, VO-16; VO-03 split (Mark SS-R5 item 25); measured table vs SS-R5 windows; story-order listening reel. Shop-worker VO-04 and occupant VO-07 stay Edge. Not done: retime of shots or event frames (Mark first), captions, compose/mix.
+
+### Key and run
+- Each Gemini call ran under `zsh -lic` (key read fresh) with `perl -e 'alarm 90; exec @ARGV'`. No Gemini retry. No 429 in this run (the pace test and the full pass: 9 + 20 calls, all on the first attempt).
+- Edge: VO-04 (`woman-younger`, +5%) and VO-07 (`elder-woman`, needs `out/voice-venv`, created locally with the docstring's packages). No Edge clip existed on disk, so both were generated.
+
+### 1. Pace test (3 variants, same emotion words; the slow words of the first samples removed)
+Speech s; SS-R5 window in brackets; "vs window" = speech over window.
+
+| Line | Base (first samples, slow words) | pA "brisk natural pace, no long pauses" | pB "quick and steady, short pauses only" | pC "fast conversational pace, minimal pauses" |
+| --- | --- | --- | --- | --- |
+| VO-09 Sulafat (1.80) | 2.42 | **2.20 (+22%)** | 2.79 (+55%) | 2.56 (+42%) |
+| VO-16 Sulafat (5.10) | 8.56 | **7.05 (+38%)** | 8.14 (+60%) | 6.94 (+36%) |
+| VO-15 Orus (6.40) | 12.06 | **9.10 (+42%)** | 8.99 (+40%) | 8.70 (+36%) |
+| mean overrun | | **+34%** | +52% | +38% |
+
+- Pick: **pA** (lowest mean overrun, the user's own wording, closest on VO-09). pC is closer on VO-15 and VO-16 by 2–6 points. Emotion words are unchanged from the base, so the emotion is kept by construction; **not heard**.
+- Pace words alone do not reach the windows. The remaining overrun goes to Mark (section 3).
+
+### 2. Manifest and pipeline
+- `narration-lines.json`: `voices.narrator` = `{engine: gemini, voice: Sulafat, pace: "brisk natural pace, no long pauses"}`; `voices.worker` = `{engine: gemini, voice: Orus, pace: same}`; `shop-worker` and `occupant` unchanged (Edge). A `style` field on the 14 Gemini lines (12 narrator, 2 worker). `VO-03` gets `tts_split`: VO-03a `แต่พอเข้าร้าน หมอกก็กลืนลานจอดจนหมด`, VO-03b `ข่าวในมือถือ… ก็มีแต่ภาพเดียวกัน`; both are exact substrings of the script.md VO-03 blockquote and join with a space to the full line. `verify` still passes 16/16. `planned`, `startG`, `gain`, `mix` untouched.
+- `narration.py` (minimal): `tts` branches on `engine: gemini` (style = line style + speaker pace; per-piece `tts_split`); `tts --take K` writes `lines/takes/<id>.t<K>.wav`; new `pick --take K --only ID` copies the take to `lines/<id>.wav` and records `lines/takes/picks.json` (ignored); `measure` measures split pieces. The Edge path is unchanged. `compose` and `captions` untouched (not run).
+- Styles used (narrator Sulafat): VO-01 tense and quiet, low and controlled; VO-02 calm, matter-of-fact retelling, slightly uneasy; VO-03a uneasy and low, describing the fog closing over the car park; VO-03b flat and weary, slightly disbelieving, looking at the phone; VO-05 tense, hushed, dread rising; VO-06 whispered, intimate, horrified recognition; VO-08 whispered, urgent but controlled, telling herself to keep still; VO-09 frightened, shaky tense whisper, breathless; VO-11 tense and careful, steady low voice; VO-12 dawning realization, quiet and clear, deliberate; VO-13 private, reflective, quieter than the reveal; VO-14 gentle and anxious, asking politely; VO-16 relieved but uneasy, low and quiet, almost to herself. Worker Orus: VO-10 panicked and desperate, shouting for help, loud and strained; VO-15 tired and apologetic, out of breath, explaining. Each + ", brisk natural pace, no long pauses".
+
+### 3. Measured table vs SS-R5 planned windows (for Mark's retime)
+Speech = first to last sample at or above the narration.py threshold; onset = clip start to first audible sample; window = SS-R5 first cue start to last cue end, in composition frames (30 fps). Delta = speech − window. Edge VO-04 and VO-07 measured the same way. "pick" = the take in `picks.json` (single take otherwise).
+
+| ID | Speaker (engine) | Pick | Onset s | Speech s | SS-R5 window f (s) | Delta s | LUFS | TP dBTP |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| VO-01 | narrator (Gemini) | t1 | 0.26 | 0.93 | 0–40 (1.33) | −0.40 | −17.1 | −1.5 |
+| VO-02 | narrator | 1 | 0.19 | 4.42 | 48–234 (6.20) | −1.78 | −16.0 | −1.5 |
+| VO-03a | narrator | 1 | 0.08 | 3.79 | 416–482 (2.20) | +1.59 | −16.0 | −1.5 |
+| VO-03b | narrator | 1 | 0.20 | 3.32 | 624–690 (2.20) | +1.12 | −15.9 | −1.5 |
+| VO-04 | shop-worker (Edge) | — | 0.21 | 0.87 | 765–807 (1.40) | −0.53 | −16.0 | −2.7 |
+| VO-05 | narrator | 1 | 0.33 | 7.25 | 867–1071 (6.80) | +0.45 | −16.6 | −1.7 |
+| VO-06 | narrator | 1 | 0.12 | 1.90 | 1107–1167 (2.00) | −0.10 | −16.9 | −1.5 |
+| VO-07 | occupant (Edge) | — | 0.33 | 1.03 | 1344–1374 (1.00) | +0.03 | −18.9 | −1.5 |
+| VO-08 | narrator | 1 | 0.15 | 2.57 | 1392–1482 (3.00) | −0.43 | −19.2 | −1.5 |
+| VO-09 | narrator | t1 | 0.20 | 2.27 | 1743–1797 (1.80) | +0.47 | −17.3 | −1.5 |
+| VO-10 | worker | t2 | 0.24 | 3.72 | 1827–1947 (4.00) | −0.28 | −16.2 | −5.3 |
+| VO-11 | narrator | 1 | 0.25 | 1.88 | 1977–2031 (1.80) | +0.08 | −20.8 | −1.5 |
+| VO-12 | narrator | 1 | 0.27 | 8.96 | 2127–2331 (6.80) | +2.16 | −16.0 | −1.5 |
+| VO-13 | narrator | 1 | 0.17 | 10.88 | 2379–2559 (6.00) | +4.88 | −16.1 | −1.5 |
+| VO-14 | narrator | 1 | 0.24 | 3.33 | 2655–2751 (3.20) | +0.13 | −16.0 | −1.5 |
+| VO-15 | worker | t2 | 0.17 | 9.54 | 2775–2967 (6.40) | +3.14 | −16.4 | −1.5 |
+| VO-16 | narrator | t1 | 0.11 | 8.25 | 3093–3246 (5.10) | +3.15 | −15.9 | −1.5 |
+
+- Take choice (key lines, ear-proxy): no clipping (TP ≤ −1), onset ≤ 0.4 s, no silent run > 1.2 s inside the speech, loudness within 2 LU of −16, then the speech closest to the window. VO-01 take 2 fails loudness (−18.3); VO-09 take 2 fails onset (0.46 s). The rest of the pair pass; VO-10 take 2 (−0.28) and VO-15 take 2 (+3.14, vs +3.23 for take 1) are closest. Picks in `out/editor/world-fog/WFOG-EP01-SHORT/lines/takes/picks.json`.
+- Measured, not heard. Pace words did not bring the long lines inside the windows.
+- For Mark (retime, not done here): VO-13 +4.9 s and VO-16 +3.2 s and VO-15 +3.1 s and VO-12 +2.2 s are the big overruns; VO-03a +1.6 s is over index item 28's ≈2.3 s threshold (lengthen the swallow, never move the car loss ahead of the words). VO-02 has room. VO-10 (worker) fits its window.
+- Sheet windows: the R5 sheets sc02-b02-b03, sc03 and sc04 still show SS-R4.1 cue numbers ("stale pending TTS"). The table applies the index RK-1 shift (+297 frames from S02-SH03 on): S03-SH03 starts at 2097 (1800+297), S04-SH03 at 3087 (2790+297). Mark to confirm.
+- Loudness: Gemini clips land at −15.9 to −16.9 LUFS for most lines, but VO-11 (−20.8), VO-08 (−19.2) and VO-07 (Edge occupant, −18.9) are quieter. The mix needs a per-line level correction before any listening verdict on balance.
+
+### 4. Listening reel (story order, 17 clips, 0.6 s gaps)
+- `out/gemini-tts/wfog-r3/reel-all-story-order.wav`, 93.53 s, −16.4 LUFS, TP −1.5 dBTP. Order: VO-01, VO-02, VO-03a, VO-03b, VO-04 (Edge), VO-05, VO-06, VO-07 (Edge), VO-08, VO-09, VO-10, VO-11, VO-12, VO-13, VO-14, VO-15, VO-16. `reel-all-story-order.json` has each clip's start, duration and take.
+
+### Files
+- Tracked: `scripts/world-fog/short/narration-lines.json`, `scripts/world-fog/narration.py`, `scripts/world-fog/build-notes.md`.
+- Ignored outputs: `out/editor/world-fog/WFOG-EP01-SHORT/lines/` (17 clips, takes, picks), `timing/tts-measure.json`, `out/voice-venv/` (new), `out/gemini-tts/wfog-pace-test/` (9 clips, `pace-test.json`, `make-pace-test.py`), `out/gemini-tts/wfog-r3/` (reel, JSON, `r3-table.json`, `make-r3-table.py`), `out/logs/gemini-tts-wfog-pace.log`, `out/logs/gemini-r3-measure.log`.
+- Not changed: shots, sheets, index, captions, timeline, mix, script.md, the Edge path of the other two speakers.
+
+## 2026-10-30 — Boss r10: SS-R5.1 Boss list C-1…C-12 (WFOG-EP01-SHORT r10, picture only, uncommitted)
+
+Scope: lengths, holds, story keys and push lengths of the SS-R5.1 Boss list (index `#ss-r51-boss-list`), mouth windows (C-12) and checks. Not changed: captions, caption scrim, narration, mix, cue tables (Editor's next pass).
+
+### What changed (owner files)
+- `src/painted/worldfog/space.ts`: `SHOT_ROWS` (25 shots, 3766 f) and `TOTAL_FRAMES` 3766 (C-1); `STORY_CLOCK` per shot (RK-2 shift, holds, S04-SH01 stretch); `storyAt` (event key) and `ambientAt` (continuous clock). `storyG`, `STORY_SHIFT`, `STORY_FROM` removed. `pchip` (monotone, flat at both ends) and `frontAt` on the S02-SH00A keys (C-3); `fogAt` derived from the front to G516, FS2→FS3 G2802–G3068; `lampAt` S04-SH03 thresholds (far pair f12–f120, near-left f100–f220, near-right 0.35 held to f260, out f278).
+- `src/painted/shots/worldfog.tsx`: each plate reads `G` (event), `A` (ambient) and `f`; `windowPlate` passes `A` to the outside, halos and pose. S02-SH00A push 174, look on the car to f120, drift to the kerb f156, blink f164–f167 (C-3). S03-SH03 push over 160 with the f120–f159 hold (C-6). S03-SH04 fixed 46, S03-SH05 fixed 100 (C-7). S03-SH06A push 216 (C-8). S03-SH07 push 206; occupant nod, glance, look and brows on the event frame `e` = G − 2190, held at e71 over f72–f127 (C-9). S04-SH01 push 434; worker cue windows [138,148) [151,344) [350,377) [388,424), narrator [18,72) [77,109) (C-10, VO-14/VO-15). S04-SH03 push 306 (C-11). Mouth windows: S02-SH06 [18,75), S02-SH08 narrator [72,107) [117,150), S02-SH10 [28,89) (C-12).
+- `src/painted/worldfog/phone.tsx`: list scroll f48–f114, held to f155; L0 drift `f / 156` (C-5). S02-SH02 is 156 f; S02-SH01 keeps its story key (510 + f, C-4), so the torch leaves the hook at f78 = G612.
+- `src/painted/worldfog/outside.ts`, `shop.ts`, `layers.tsx`, `assembly.ts`: ambient clock for fog drift `t`, halo shimmer, lens-ripple phase (`fogWarp`), veil patches and held breath. `asmPoseAt(G, A = G)` sets `pose.g` = A (fog only); `heldLook(G, A)` breath and the extra blink f170–f174 on A; event blink, gaze and bow on G.
+- `src/videos/world-fog/index.ts`: header comment only. Scene starts, durations and painted shot starts follow `SHOT_ROWS`. `fromStory` (+297) and the cue tables are unchanged, so the SFX, music and S02 captions after S02-SH03 are not yet re-keyed (Editor).
+- `src/painted/worldfog/qa.tsx`: label note r10; the WFOG-QA entry draws a copy of the timeline without `media` (caption scrims). Before, it drew the scrims over the picture where caption windows fell.
+- `tests/world-fog.test.ts`: 3766 frames, RK-2 keys (`storyAt`, `ambientAt`), PCHIP front, S04-SH03 lamps, FS3 at G3068, hard cut at G3765 = f305, pushes; S03-SH06A camera checked at f215; S03-SH07 torch checked at shot f0 and f205.
+- `scripts/world-fog/lead-check.ts`: S03-SH07 rows re-keyed to shot frames (story G2320 = f186, G2339 = f205).
+- `scripts/world-fog/parity-psnr.py` (new; TL02, episode-only): luma PSNR of y 300–1920 between two stills folders, caption-scrim band masked.
+- `docs/dev-findings/DF-20261030-painted-story-hold-ambient-clock.md` (new) and its row in `docs/dev-findings.md`; a Boss r10 note in `DF-20261030-painted-fog-front-depth-gate.md`.
+
+### Decisions (for the owners to confirm)
+- Lens-ripple phase runs on the ambient clock (it is fog movement; the lens amount stays on the event clock). RK-2 names the amount, not the phase.
+- S04-SH01 event logic (slump, turn, glance f190–f214) stays on the shot-local frame as built; only the story key is stretched, so the eyes glance at f190–f214 and the body turn at f140 are unchanged.
+- S02-SH00A keeps its look keys on the shot-local frame (no hold in that shot).
+
+### Checks (logs in out/logs/r10-*)
+- Typecheck `r10-typecheck3.log` exit 0. Lint `r10-lint3.log`: 0 errors; 1 warning in `src/painted/spike/BloopLook.tsx` (not touched, pre-existing).
+- Tests: world-fog 37/37 (`r10-test-wf2.log`); full `npm test` 151/151 (`r10-test-all.log`).
+- Lead height: `r10-lead-check.log` (S04-SH01 worker 795–922 px over f56–f130 and f40; S03-SH07 worker profile 904 px at f205; S03-SH06A worker 676 px). `r10-proj-S02-SH00A.log`: narrator 933 px at s 1.00 (push to 1.03 keeps it above 480). Not measured: S03-SH03/04/05 window inserts (no figure lead).
+
+### Parity with r9b (C-2): picture band, chrome off, scrim band masked
+- 154 pairs of unchanged-length shots at the same story key (`out/tmp/r10-ref/pairs.json`; r9b frames `out/tmp/r10-ref/r9b/`, r10 frames `out/tmp/r10/render/`): 146 byte-identical in luma (inf dB). Table: `out/logs/r10-parity-picture.tsv`.
+- Non-identical, all explained: S02-SH01 f0 (53.6 dB; story key 510 falls in the S02-SH00A fog ramp, fog level 1.967 instead of 2.0 for f0–f5); S02-SH06 f60 (52.5 dB); S02-SH08 f75, f90, f105, f120, f135 (53–67 dB); S02-SH10 f75 (41.4 dB). The last three shots changed narrator windows (C-12).
+- Story-key check: G1751 (S02-SH09 f179) equals the r9b frame at story G1409, as C-2 asks.
+- Determinism: S03-SH07 G2800 two renders, luma 111.3 dB (1-byte PNG size difference, render noise); S04-SH01 G3200 byte-identical.
+
+### QA sheets (viewed; labels burned in by the QA entry; `out/qa/world-fog/WFOG-EP01-SHORT/r10/`)
+- `sheet-S02-SH00A-front-hold.png` (G360, 390, 420, 454, 490, 510, 516, 533): car far face and flank go under the bank; grey from G516.
+- `strip-car-loss-G454-G490.png` (13 frames, every 3 f): the car loss strip.
+- `sheet-checkpoints-listed-numbers.png` (G400, 434, 470, 612, 2172, 2858, 3330, 3714): the other numbers in the list.
+- `sheet-S02-SH02-list-hold.png` (G744, 765, 785): list at 360 px, L0 drift.
+- `sheet-S03-SH03-lit-hold.png` (G2262, 2282, 2301): lit pose held, fog moving.
+- `sheet-S03-SH04-S03-SH05-holds.png` (G2344, 2346, 2347, 2420, 2435, 2447): insert holds.
+- `sheet-S03-SH06A-hold.png` (G2604, 2654 blink f170, 2699): hold, extra blink, push.
+- `sheet-S03-SH07-hold-push.png` (G2772, 2800, 2827, 2852, 2905): glance held through the hold, cart through the door at G2905.
+- `sheet-S04-SH01-talk-span.png` (G3044, 3200, 3339): talk span.
+- `sheet-S04-SH03-close.png` (G3560, 3680, 3720, 3738, 3765): lamps out by f278, last frame f305.
+
+### Deviations and open items
+- Not verified: Studio cold load and scrub (no interactive session); the production `src/index.ts` render (blocked: `audio/room/room_shop-fridge-hum_01.wav` returns 404 in this worktree; the QA entry validates the same timeline with media removed).
+- Cue frames not re-keyed (Editor): `fromStory` is still +297, so the SFX, music and S02 captions after S02-SH03 sit at the r9b positions (45 f early for S02-SH03…S03-SH02; later after the holds).
+- Framing (Mark or Film): in S02-SH00A the narrator's head is cut by the right frame edge (also in r9b at G390, not changed here).
+- Build notes: the working copy has no Boss r9 / r9b entries (their text survives in `out/tmp/build-notes.r9.md`); not reconstructed here.
+- The r9b reference was rendered from the r9b tree before any r10 source edit (`out/logs/r10-ref-r9b-stills.log`).
+- Scripts: `out/logs/r10-parity-picture.tsv` is the parity table; `scripts/world-fog/parity-psnr.py` reproduces it: `python3 -I scripts/world-fog/parity-psnr.py --old out/tmp/r10-ref/r9b --new out/tmp/r10/render --pairs out/tmp/r10-ref/pairs.json --tsv out/logs/r10-parity-picture.tsv`.
+
+## 2026-10-30 — Editor r4: full integration of WFOG-EP01-SHORT (SS-R5.1 cue table, Gemini narration, scrim fit, mix, render)
+
+Scope: coordinator message 30 Oct 2026 (approved inputs: Sulafat/Orus Gemini lines with VO-03a/b split, Mark SS-R5.1 with RK-2 and the cue table at `index.md#ss-r51-cue-table`, Boss r10 picture; open item 30 accepted: VO-02 as two parts of the one approved take). Picture code (`src/painted/*`) untouched. No commit.
+
+### Placement and captions
+- `scripts/world-fog/short/placement.json` (new, Editor): 18 clip placements (file frame `from` → composition frame `at`, the cue table's clip start) and 39 caption cues in G (half-open windows from the cue table). VO-02 is one take: part a = file f0–f63 at G42, part b = file f63 at G125 (the cut sits in the silence f60–f68 of the approved take).
+- Caption splits from the audio (energy, 100 ms smoothing, midpoint of the pause run): VO-02b at G187 (`ตอนนั้นแค่คิดว่าจะเติมน้ำมัน…` G132–187, `แล้วกลับบ้าน` G187–207); VO-10 at G1901 and G1934; VO-15 at G3110, G3170, G3253. VO-13-3 has an authored break (`แล้วความกลัว` / `ก็ชวนให้ฉันมองว่ามันเป็นอันตราย`); the measured width (font advance sum, no shaping, 954 px regular) is over the 950 px line, so it is a two-line caption. All other captions are one line (widths 170–700 px).
+- `narration.py compose` now places clips from `placement.json` (speech G measured: VO-01 7.8–36.5, VO-02b 132–200.5, VO-03a 382.5–496, VO-05 900–1119, VO-10 1872–1984, VO-12 2172–2441, VO-13 2495–2822, VO-15 3044–3330, VO-16 3466–3714; all within 0–4 f of the cue table; VO-03a onset is the first sample above −40 dBFS (2.4 f into the file), so the table's 386 is an energy start, 3 f later). `captions` writes `scripts/world-fog/short/captions.json` in G frames; `verify` checks that caption texts join back to each script line (16/16 lines, 39 cues, 18 clips).
+- Level correction (`levelDb` per clip to −16 LUFS before the EP08a gains; alimiter at −1.5 dBTP): VO-11 +4.8, VO-08 +3.2, VO-07 +2.9 (Edge occupant), VO-09 +1.3, VO-01 +1.1, VO-06 +0.9, VO-05 +0.6.
+
+### Sound, music, ambience (SS-R5.1)
+- `src/videos/world-fog/index.ts`: `fromStory` (+297) replaced by `storyToG`, a piecewise map from RK-2 (story key Gk → G; the S04-SH01 talking span has slope 296/192). Shot-local cues use `shotG(id, f)` (phone ding f6 → G636, press f22 → G652; shop door f12 → G2918; torch S04-SH02 f10 → G3350). Sheet-driven checks: umbrella taps G1292/1310/1328 (f51/69/87 of S02-SH07), torch S03-SH02 G2103 (f108), S03-SH06 scrape G2454 (f6).
+- Outside layer (sheet R6 sound direction): library hush dry from S01-SH02 f30 (G156) to the glass (G360); then `outdoor_fog-forecourt-hush_glass_01.wav` (lowpass 900 Hz, derived copy) at −12 dB, fading to silence at S02-SH00A f156 (G516); shop hum from G360 (library); drone swell from S01-SH02A (fades in over 9.2 s, 0.10, holds to the cut G534). No whoosh or fog SFX.
+- Bed S04-SH03: from f0 with a 15-frame fade-in; sheet sc04 says fades out f159–f171, but that is R4.1 timing and the R5.1 line ends at f254, so the fade is placed f255–f267 (after the line). Mark to confirm.
+- Library copies (gitignored): 16 files from the shared library (`/Users/mangkornkatawong/Documents/ChatGPT/sound-library/` INDEX IDs) copied to `public/audio/<cat>/` and `public/sfx/<cat>/` at the timeline paths. Derived file: `public/audio/outdoor/outdoor_fog-forecourt-hush_glass_01.wav` (not a library entry; file it with `sound-library.py` if kept).
+
+### Caption scrim (user complaint: plate much taller than text)
+- The fixed 960×260 plate (tracked in git) is removed from disk. Two plates generated with the r2 profile (colour 16,16,24; core alpha 158; 40 px smoothstep feather): `WFOG-caption-scrim-1line-960x180.png` (block + 8 px margin) and `…-2line-960x264.png`. Box y 1108 (1-line) and 1024 (2-line), block bottom y 1240. `index.ts` chooses the plate from the caption's line count.
+
+### Mix and render
+- Render: `npx remotion render src/index.ts WFOG-EP01-SHORT out/WFOG-EP01-SHORT/WFOG-EP01-SHORT_C_seamless_r4.mp4 --gl=angle --codec=h264 --crf=18 --pixel-format=yuv420p --concurrency=4 --overwrite` (log `out/logs/editor-r4-render.log`, 3766/3766 encoded, about 60 min on this machine).
+- Project loudness step (`scripts/loudness.mjs` `normalizeLoudness`, log `out/logs/editor-r4-loudness.log`): as rendered −18.2 LUFS, TP −1.73 dBTP → after **−14.14 LUFS integrated, −1.46 dBTP**, LRA 9.3. As-rendered copy kept beside it (`…_r4_asrendered.mp4`).
+- Streams: H.264 1080×1920 30 fps 3766 frames; AAC 48 kHz stereo; container 125.547 s.
+
+### QA (measured; not heard by a person)
+- Sheets (viewed): `out/qa/world-fog/WFOG-EP01-SHORT/editor-r4/sheet_caption_scrim_r4.png` (39 caption midpoints), `sheet_story_r4.png` (every 60 f and G3765), `scene-samples-sheet.png` (one production still per scene).
+- Scene samples (production stills, `stills.mjs`, unordered run): S01 `scene-samples/S01-SH01_G120.png`, S02 `S02-SH02_G700.png`, S03 `S03-SH06A_G2600.png`, S04 `S04-SH03_G3500.png`.
+- Seek parity (7 unordered stills vs exact MP4 frames, luma PSNR after encode): G30 49.1, G120 49.4, G700 49.0, G1900 41.2, G2600 48.4, G3500 41.6, G3765 49.7 dB; each still matches its own frame best (G1900 vs frames 1899/1900/1901: 36.3 / 41.2 / 26.9). Not run: interactive Studio scrub.
+- caption-zone (`scripts/caption-zone.py`, band 1140:1248 for 1-line captions, 1070:1248 for VO-13-3; picture-only background frames from the QA entry, captions and scrim off): 2 of 39 pass at mean ≤ 0.25, p95 ≤ 0.40. Failing frames have bright fog or white shelves behind the caption line (mean 0.20–0.49). On production frames (captions on) the band includes glyphs, so the number is reference only. r2 had 14 of 44 with the band 1000:1248; this run used different midpoints and a shorter plate, so the figures are not directly comparable. **Open: the default threshold is not met on most frames; Film/Boss/user decision (stronger or taller plate on bright backgrounds, or accept).**
+- Tests: `node --import tsx --test tests/world-fog.test.ts` 37/37 (updated the three SS-R5 caption/ding assertions to the R5.1 cue table: VO-03a G386, VO-03b G648, ding G636, `ใครอยู่ตรงนั้น?` G810; log `out/logs/editor-r4-tests-node.log`). `tsc --noEmit` clean.
+
+### Open items
+1. caption-zone on bright backgrounds (above): decision needed (plate alpha/height, or accept with per-frame exceptions as r2).
+2. S04-SH03 bed fade: sheet timing f159–f171 (R4.1) vs R5.1 line end f254. Mark to confirm the f255–f267 placement.
+3. S04-SH01 outside hush muffles again once the leaf is shut (sheet sc04, story G2376 → R5.1 G2942): not implemented in this pass.
+4. The sheets have no lamp sound cue; lamp timing is picture only (nothing re-timed for lamps in audio).
+5. Picture: no picture change requested by Editor r4 (shot ranges and Boss r10 code used as is). QA frames show no defect that needs a change; a person has not reviewed motion or continuity.
+6. Gemini commercial-use and SynthID terms: still unchecked (from r3).
+
+### Files changed (Editor r4)
+- Tracked: `src/videos/world-fog/index.ts` (rewritten: RK-2, shot-local cues, scrim by line count, caption feed), `scripts/world-fog/narration.py` (compose/captions/verify on placement.json), `scripts/world-fog/short/placement.json` (new), `scripts/world-fog/short/captions.json` (regenerated, G frames), `scripts/world-fog/short/WFOG-EP01-SHORT.amplitude.json` (3766 frames), `public/scrim/WFOG-caption-scrim-1line-960x180.png` and `…-2line-960x264.png` (new), `public/scrim/WFOG-caption-scrim-960x260.png` (deleted from disk), `tests/world-fog.test.ts` (three R5.1 assertions), `scripts/world-fog/build-notes.md` (this note).
+- Ignored: `public/narration/WFOG-EP01-SHORT.mp3`, `public/audio/…`, `public/sfx/…`, `out/WFOG-EP01-SHORT/…`, `out/qa/world-fog/WFOG-EP01-SHORT/editor-r4/…`, `out/logs/editor-r4-*`, `out/editor/world-fog/WFOG-EP01-SHORT/lines/…` (placed clips, takes, picks), `out/voice-venv/` (from r3).

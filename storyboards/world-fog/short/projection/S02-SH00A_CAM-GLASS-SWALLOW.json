@@ -1,0 +1,187 @@
+{
+ "_note": "S02-SH00A glass swallow (SS-R5, VD20): CAM-GLASS-SWALLOW (-0.3, 1.75, -2.0) +z f 850 y_h 595; narrator profile facing -x at (0.5, 0, -0.45) | WORLD-SHOP points stored with x negated (see index.md#projection-checks)",
+ "up": "y",
+ "size": [
+  1080,
+  1920
+ ],
+ "camera": {
+  "position": [
+   0.3,
+   1.75,
+   -2.0
+  ],
+  "direction": [
+   0,
+   0,
+   1
+  ],
+  "vfov": 96.956,
+  "shift": [
+   0,
+   -0.1901
+  ]
+ },
+ "points": {
+  "lamp_near_L": [
+   2.4,
+   4.8,
+   7
+  ],
+  "lamp_near_R": [
+   -2.4,
+   4.8,
+   7
+  ],
+  "lamp_far_L": [
+   2.4,
+   4.8,
+   11
+  ],
+  "lamp_far_R": [
+   -2.4,
+   4.8,
+   11
+  ],
+  "pumpR_in_top": [
+   -3.05,
+   1.75,
+   9.3
+  ],
+  "pumpR_out_base": [
+   -3.95,
+   0.18,
+   9.3
+  ],
+  "pumpL_in_top": [
+   3.05,
+   1.75,
+   9.3
+  ],
+  "col_L_top": [
+   3.5,
+   4.8,
+   9.5
+  ],
+  "col_L_base": [
+   3.5,
+   0,
+   9.5
+  ],
+  "col_R_base": [
+   -3.5,
+   0,
+   9.5
+  ],
+  "car_tail_ground": [
+   4.15,
+   0,
+   4.2
+  ],
+  "car_nose_ground": [
+   -0.35,
+   0,
+   4.2
+  ],
+  "car_roof_front": [
+   1.6,
+   1.45,
+   4.2
+  ],
+  "car_roof_rear": [
+   2.8,
+   1.45,
+   4.2
+  ],
+  "car_headlamp": [
+   -0.3,
+   0.65,
+   4.2
+  ],
+  "kerb_top_C": [
+   0.3,
+   0.12,
+   2.0
+  ],
+  "kerb_ground_C": [
+   0.3,
+   0,
+   2.0
+  ],
+  "glass_top": [
+   0.3,
+   2.5,
+   0
+  ],
+  "transom_low": [
+   0.3,
+   2.08,
+   0
+  ],
+  "transom_high": [
+   0.3,
+   2.16,
+   0
+  ],
+  "mullion_+0.5": [
+   -0.5,
+   1.0,
+   0
+  ],
+  "mullion_-0.5": [
+   0.5,
+   1.0,
+   0
+  ],
+  "mullion_-1.75": [
+   1.75,
+   1.0,
+   0
+  ],
+  "shelf_far_edge_end": [
+   0.7,
+   1.1,
+   -0.5
+  ],
+  "narr_head": [
+   -0.5,
+   1.7,
+   -0.45
+  ],
+  "narr_feet": [
+   -0.5,
+   0,
+   -0.45
+  ],
+  "narr_eye": [
+   -0.42,
+   1.58,
+   -0.45
+  ],
+  "narr_nose": [
+   -0.39,
+   1.5,
+   -0.45
+  ],
+  "narr_chin": [
+   -0.42,
+   1.3,
+   -0.45
+  ],
+  "narr_head_back": [
+   -0.61,
+   1.55,
+   -0.45
+  ]
+ },
+ "spans": {
+  "narrator": [
+   "narr_feet",
+   "narr_head"
+  ]
+ },
+ "caption_band": [
+  1000,
+  1248
+ ]
+}

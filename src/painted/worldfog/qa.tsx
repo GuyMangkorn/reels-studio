@@ -21,11 +21,18 @@ const Label = ({note}: {note: string}) => {
   }, createElement('b', null, row.id), ` · WFOG-EP01-SHORT · TH ${reviewTime(G)} · G${G} [f${G - row.g0}]`, createElement('br'), createElement('span', {style: {fontSize: 20}}, note));
 };
 
+// Picture only: the caption scrims (`media`) are dropped from a copy of the timeline, so a QA frame never carries a caption box (Boss r10).
+const qaTimeline = worldFogTimeline.map((scene) => {
+  const copy = {...scene};
+  delete copy.media;
+  return copy;
+});
+
 const Qa = (props: Record<string, unknown>) =>
   createElement(AbsoluteFill, null,
-    createElement(SceneRenderer, {timeline: worldFogTimeline, ending: 'C_seamless', loopBlendFrames: 0, captionStyle: {preset: 'none'}, chrome: {channelLabel: false, progressBar: false}}),
+    createElement(SceneRenderer, {timeline: qaTimeline, ending: 'C_seamless', loopBlendFrames: 0, captionStyle: {preset: 'none'}, chrome: {channelLabel: false, progressBar: false}}),
     createElement(Label, {note: String(props.note ?? '')}));
 
 const {width, height, fps} = FORMATS.short;
 registerRoot(() => createElement(Fragment, null,
-  createElement(Composition, {id: 'WFOG-QA', component: Qa, width, height, fps, durationInFrames: TOTAL_FRAMES, defaultProps: {note: 'BLOCKOUT — not the final look · Boss SS-R4.1 fix pass (r8) · S03-SH06A held look · picture only (no VO/captions/sound)'}})));
+  createElement(Composition, {id: 'WFOG-QA', component: Qa, width, height, fps, durationInFrames: TOTAL_FRAMES, defaultProps: {note: 'BLOCKOUT — not the final look · Boss SS-R5.1 hold pass (r10) · picture only (no VO/captions/sound)'}})));

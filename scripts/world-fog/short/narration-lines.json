@@ -1,19 +1,19 @@
 {
   "episode": "WFOG-EP01-SHORT",
-  "revision": "Editor r1 (30 Oct 2026): TTS, placement and captions from WFOG-SCRIPT-R5 / sheets SS-R4.1; planned windows are the sheets' estimates (composition frames, half-open)",
+  "revision": "Editor r1 (30 Oct 2026): TTS, placement and captions from WFOG-SCRIPT-R5 / sheets SS-R4.1; planned windows are the sheets' estimates (composition frames, half-open); Editor r3 continued (30 Oct 2026): narrator Gemini Sulafat and worker Gemini Orus with pace wording and per-line style (tts engine gemini); VO-03 split into TTS pieces VO-03a/VO-03b (Mark SS-R5 item 25); shop-worker and occupant unchanged (Edge)",
   "fps": 30,
   "voices": {
     "narrator": {
-      "preset": "woman-base",
-      "voice": "th-TH-PremwadeeNeural",
-      "rate": "+5%",
-      "note": "female narrator, default Premwadee +5%"
+      "engine": "gemini",
+      "voice": "Sulafat",
+      "pace": "brisk natural pace, no long pauses",
+      "note": "female narrator, Gemini Sulafat (warm, medium); user chose 30 Oct 2026 after the r3 reels; pace wording from the r3 pace test"
     },
     "worker": {
-      "preset": "man-base",
-      "voice": "th-TH-NiwatNeural",
-      "rate": "+5%",
-      "note": "delivery worker, Niwat +5% (coordinator default 2026-10-29)"
+      "engine": "gemini",
+      "voice": "Orus",
+      "pace": "brisk natural pace, no long pauses",
+      "note": "delivery worker, Gemini Orus (firm, low); user chose 30 Oct 2026 after the r3 reels; pace wording from the r3 pace test"
     },
     "shop-worker": {
       "preset": "woman-younger",
@@ -45,7 +45,8 @@
         ]
       ],
       "mix": "hook (EP08a hook up to +1 dB)",
-      "startG": 0
+      "startG": 0,
+      "style": "tense and quiet, low and controlled"
     },
     {
       "id": "VO-02",
@@ -73,7 +74,8 @@
         ]
       ],
       "mix": "hold",
-      "startG": 83
+      "startG": 83,
+      "style": "calm, matter-of-fact retelling, slightly uneasy"
     },
     {
       "id": "VO-03",
@@ -106,7 +108,20 @@
         ]
       ],
       "mix": "hold; bed ducked",
-      "startG": 293
+      "startG": 293,
+      "style": "uneasy and low, describing the fog closing over the car park",
+      "tts_split": [
+        {
+          "id": "VO-03a",
+          "text": "แต่พอเข้าร้าน หมอกก็กลืนลานจอดจนหมด",
+          "style": "uneasy and low, describing the fog closing over the car park"
+        },
+        {
+          "id": "VO-03b",
+          "text": "ข่าวในมือถือ… ก็มีแต่ภาพเดียวกัน",
+          "style": "flat and weary, slightly disbelieving, looking at the phone"
+        }
+      ]
     },
     {
       "id": "VO-04",
@@ -152,7 +167,8 @@
         ]
       ],
       "mix": "hold; bed lift",
-      "startG": 583
+      "startG": 583,
+      "style": "tense, hushed, dread rising"
     },
     {
       "id": "VO-06",
@@ -170,7 +186,8 @@
         ]
       ],
       "mix": "whispered, intimate (EP08a -3 dB)",
-      "startG": 810
+      "startG": 810,
+      "style": "whispered, intimate, horrified recognition"
     },
     {
       "id": "VO-07",
@@ -211,7 +228,8 @@
         ]
       ],
       "mix": "whispered; drop before reveal",
-      "startG": 1101
+      "startG": 1101,
+      "style": "whispered, urgent but controlled, telling herself to keep still"
     },
     {
       "id": "VO-09",
@@ -229,7 +247,8 @@
         ]
       ],
       "mix": "whispered; the line that names the apparent head",
-      "startG": 1446
+      "startG": 1446,
+      "style": "frightened, shaky tense whisper, breathless"
     },
     {
       "id": "VO-10",
@@ -258,7 +277,8 @@
         ]
       ],
       "mix": "through glass: mild low-pass (sheet: natural, muffled, never comic)",
-      "startG": 1544
+      "startG": 1544,
+      "style": "panicked and desperate, shouting for help, loud and strained"
     },
     {
       "id": "VO-11",
@@ -276,7 +296,8 @@
         ]
       ],
       "mix": "hold",
-      "startG": 1680
+      "startG": 1680,
+      "style": "tense and careful, steady low voice"
     },
     {
       "id": "VO-12",
@@ -314,7 +335,8 @@
         ]
       ],
       "mix": "clue payoff; hold",
-      "startG": 1866
+      "startG": 1866,
+      "style": "dawning realization, quiet and clear, deliberate"
     },
     {
       "id": "VO-13",
@@ -342,7 +364,8 @@
         ]
       ],
       "mix": "perception line (K001): private thought, quieter than the reveal; PD12",
-      "startG": 2089
+      "startG": 2089,
+      "style": "private, reflective, quieter than the reveal"
     },
     {
       "id": "VO-14",
@@ -365,7 +388,8 @@
         ]
       ],
       "mix": "question to worker; hold",
-      "startG": 2357
+      "startG": 2357,
+      "style": "gentle and anxious, asking politely"
     },
     {
       "id": "VO-15",
@@ -398,7 +422,8 @@
         ]
       ],
       "mix": "catching breath; hold; no road side named (PD09)",
-      "startG": 2462
+      "startG": 2462,
+      "style": "tired and apologetic, out of breath, explaining"
     },
     {
       "id": "VO-16",
@@ -431,7 +456,8 @@
         ]
       ],
       "mix": "closing reaction, low, almost to herself; then 1.5-2 s held silence; hard cut",
-      "startG": 2790
+      "startG": 2790,
+      "style": "relieved but uneasy, low and quiet, almost to herself"
     }
   ],
   "placement": "Editor r1: startG = first audible sample (composition frame); continuous TTS clip per line; piece boundaries from proportional split (snapped later to lulls); pieces scored against their planned shot (tolerance 6 f); VO-12 overrun 3 f (see build-notes)"

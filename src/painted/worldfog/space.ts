@@ -45,10 +45,14 @@ export const hermite = (keys: [number, V3][], f: number): V3 => {
 
 export type SetupId =
   | 'CAM-GLASS-OUT' | 'CAM-LOW-SHELF' | 'CAM-LOW-CU' | 'CAM-INT-REV' | 'CAM-FORECOURT' | 'CAM-COUNTER-IN'
-  | 'CAM-COUNTER-OUT' | 'CAM-INT-SIDE' | 'CAM-INT-2S' | 'CAM-INT-DOOR-REV';
+  | 'CAM-COUNTER-OUT' | 'CAM-INT-SIDE' | 'CAM-INT-2S' | 'CAM-INT-DOOR-REV' | 'CAM-GLASS-SWALLOW' | 'CAM-HIGH-WIDE';
 export type Setup = {id: SetupId; pos: V3; look: '+z' | '-z' | '-x'; f: number; yh: number};
 
 export const SETUPS: Record<SetupId, Setup> = {
+  // SS-R5 (ST-02, WFOG-EP01-SHORT R6): the glass swallow eye inside the glass, and the high wide over the site (level pinhole,
+  // horizon shifted to the top of frame by `yh`; no pitch, so the projector below is unchanged).
+  'CAM-GLASS-SWALLOW': {id: 'CAM-GLASS-SWALLOW', pos: [-0.3, 1.75, -2.0], look: '+z', f: 850, yh: 595},
+  'CAM-HIGH-WIDE': {id: 'CAM-HIGH-WIDE', pos: [-3.5, 20.0, -20.0], look: '+z', f: 900, yh: 330},
   'CAM-GLASS-OUT': {id: 'CAM-GLASS-OUT', pos: [0, 1.45, -3.0], look: '+z', f: 1341, yh: 700},
   'CAM-LOW-SHELF': {id: 'CAM-LOW-SHELF', pos: [-0.9, 0.6, -2.5], look: '+z', f: 920, yh: 700},
   'CAM-LOW-CU': {id: 'CAM-LOW-CU', pos: [-0.95, 0.75, -2.4], look: '+z', f: 1100, yh: 760},
@@ -121,35 +125,68 @@ export const cardProjector = (g: Pt, k: number, x0: number): Proj => ({
 // ------------------------------------------------------------------ shot table (index timeline mapping, G ranges)
 
 export type ShotRow = {id: string; g0: number; len: number; setup: SetupId | 'CAM-CAR' | 'CAM-PHONE'};
+/** SS-R5.1 (Mark, 30 Oct 2026, on the measured narration): 25 shots, 3766 frames. Lengths and starts per the index shot table. */
 export const SHOT_ROWS: ShotRow[] = [
   {id: 'S01-SH01', g0: 0, len: 126, setup: 'CAM-CAR'},
   {id: 'S01-SH02', g0: 126, len: 114, setup: 'CAM-FORECOURT'},
-  {id: 'S02-SH01', g0: 240, len: 114, setup: 'CAM-COUNTER-IN'},
-  {id: 'S02-SH02', g0: 354, len: 90, setup: 'CAM-PHONE'},
-  {id: 'S02-SH03', g0: 444, len: 96, setup: 'CAM-COUNTER-OUT'},
-  {id: 'S02-SH04', g0: 540, len: 198, setup: 'CAM-GLASS-OUT'},
-  {id: 'S02-SH05', g0: 738, len: 54, setup: 'CAM-LOW-SHELF'},
-  {id: 'S02-SH06', g0: 792, len: 108, setup: 'CAM-INT-REV'},
-  {id: 'S02-SH07', g0: 900, len: 129, setup: 'CAM-GLASS-OUT'},
-  {id: 'S02-SH08', g0: 1029, len: 201, setup: 'CAM-LOW-SHELF'},
-  {id: 'S02-SH09', g0: 1230, len: 180, setup: 'CAM-GLASS-OUT'},
-  {id: 'S02-SH10', g0: 1410, len: 120, setup: 'CAM-LOW-CU'},
-  {id: 'S03-SH01', g0: 1530, len: 126, setup: 'CAM-LOW-SHELF'},
-  {id: 'S03-SH02', g0: 1656, len: 144, setup: 'CAM-INT-REV'},
-  {id: 'S03-SH03', g0: 1800, len: 120, setup: 'CAM-GLASS-OUT'},
-  {id: 'S03-SH04', g0: 1920, len: 42, setup: 'CAM-GLASS-OUT'},
-  {id: 'S03-SH05', g0: 1962, len: 72, setup: 'CAM-GLASS-OUT'},
-  {id: 'S03-SH06', g0: 2034, len: 36, setup: 'CAM-GLASS-OUT'},
-  // SS-R4 (WFOG-SCRIPT-R5): S03-SH06A is the held look at the lit window plate (new); old starts move +120 (S03-SH07), +180 (S04-SH01), +270 (S04-SH02, S04-SH03).
-  {id: 'S03-SH06A', g0: 2070, len: 120, setup: 'CAM-GLASS-OUT'},
-  {id: 'S03-SH07', g0: 2190, len: 150, setup: 'CAM-INT-SIDE'},
-  {id: 'S04-SH01', g0: 2340, len: 330, setup: 'CAM-INT-2S'},
-  {id: 'S04-SH02', g0: 2670, len: 120, setup: 'CAM-INT-DOOR-REV'},
-  {id: 'S04-SH03', g0: 2790, len: 210, setup: 'CAM-GLASS-OUT'},
+  {id: 'S01-SH02A', g0: 240, len: 120, setup: 'CAM-HIGH-WIDE'},
+  // SS-R5.1: the glass swallow 174 f, the counter shot at G534 (+24), the phone 156 f (its list holds from f114).
+  {id: 'S02-SH00A', g0: 360, len: 174, setup: 'CAM-GLASS-SWALLOW'},
+  {id: 'S02-SH01', g0: 534, len: 96, setup: 'CAM-COUNTER-IN'},
+  {id: 'S02-SH02', g0: 630, len: 156, setup: 'CAM-PHONE'},
+  {id: 'S02-SH03', g0: 786, len: 96, setup: 'CAM-COUNTER-OUT'},
+  {id: 'S02-SH04', g0: 882, len: 198, setup: 'CAM-GLASS-OUT'},
+  {id: 'S02-SH05', g0: 1080, len: 54, setup: 'CAM-LOW-SHELF'},
+  {id: 'S02-SH06', g0: 1134, len: 108, setup: 'CAM-INT-REV'},
+  {id: 'S02-SH07', g0: 1242, len: 129, setup: 'CAM-GLASS-OUT'},
+  {id: 'S02-SH08', g0: 1371, len: 201, setup: 'CAM-LOW-SHELF'},
+  {id: 'S02-SH09', g0: 1572, len: 180, setup: 'CAM-GLASS-OUT'},
+  {id: 'S02-SH10', g0: 1752, len: 120, setup: 'CAM-LOW-CU'},
+  {id: 'S03-SH01', g0: 1872, len: 126, setup: 'CAM-LOW-SHELF'},
+  {id: 'S03-SH02', g0: 1998, len: 144, setup: 'CAM-INT-REV'},
+  {id: 'S03-SH03', g0: 2142, len: 160, setup: 'CAM-GLASS-OUT'},
+  {id: 'S03-SH04', g0: 2302, len: 46, setup: 'CAM-GLASS-OUT'},
+  {id: 'S03-SH05', g0: 2348, len: 100, setup: 'CAM-GLASS-OUT'},
+  {id: 'S03-SH06', g0: 2448, len: 36, setup: 'CAM-GLASS-OUT'},
+  // SS-R4 (WFOG-SCRIPT-R5): S03-SH06A is the held look at the lit window plate; SS-R5.1 holds it to 216 f.
+  {id: 'S03-SH06A', g0: 2484, len: 216, setup: 'CAM-GLASS-OUT'},
+  {id: 'S03-SH07', g0: 2700, len: 206, setup: 'CAM-INT-SIDE'},
+  {id: 'S04-SH01', g0: 2906, len: 434, setup: 'CAM-INT-2S'},
+  {id: 'S04-SH02', g0: 3340, len: 120, setup: 'CAM-INT-DOOR-REV'},
+  {id: 'S04-SH03', g0: 3460, len: 306, setup: 'CAM-GLASS-OUT'},
 ];
 export const SHOT_G0: Record<string, number> = Object.fromEntries(SHOT_ROWS.map((r) => [r.id, r.g0]));
-/** Composition length (SS-R4): last painted frame G2999, hard cut (MK-WF-DEP-07). */
-export const TOTAL_FRAMES = 3000;
+/** Composition length (SS-R5.1): last painted frame G3765 = S04-SH03 f305, hard cut (MK-WF-DEP-07). */
+export const TOTAL_FRAMES = 3766;
+
+/**
+ * RK-2 story keys (SS-R5.1; supersedes the RK-1 single +297 offset). A shot's story key at shot-local f is its start
+ * minus `shift` plus `event(f)`: `event` holds or stretches the event clock where the sheets say so (S03-SH03…S03-SH07 holds,
+ * the S04-SH01 talk span). Event clocks (ASM-PATH, FOG-STATE, lamps, `light`, torch, rise, door, FOG-LENS amount, pose, beam)
+ * read `storyAt`; ambient motion (fog and halo drift, lens ripple, breath) reads `ambientAt`, which runs straight through holds.
+ * Shots without an entry keep G = story key (S01, S02-SH00A, S02-SH02).
+ */
+const STORY_CLOCK: Record<string, {shift: number; event?: (f: number) => number}> = {
+  'S02-SH01': {shift: 24},
+  'S02-SH03': {shift: 342}, 'S02-SH04': {shift: 342}, 'S02-SH05': {shift: 342}, 'S02-SH06': {shift: 342}, 'S02-SH07': {shift: 342},
+  'S02-SH08': {shift: 342}, 'S02-SH09': {shift: 342}, 'S02-SH10': {shift: 342}, 'S03-SH01': {shift: 342}, 'S03-SH02': {shift: 342},
+  'S03-SH03': {shift: 342, event: (f) => Math.min(f, 119)},
+  'S03-SH04': {shift: 382, event: (f) => Math.min(f, 41)},
+  'S03-SH05': {shift: 386, event: (f) => Math.min(f, 71)},
+  'S03-SH06': {shift: 414},
+  'S03-SH06A': {shift: 414, event: (f) => Math.min(f, 119)},
+  // S03-SH07: held at 2261 (f72–f127: glance, brows and occupant held), then the r9b story from 2262 (leaf f128, push f152).
+  'S03-SH07': {shift: 510, event: (f) => (f < 72 ? f : f < 128 ? 71 : f - 56)},
+  // S04-SH01: the talk span f138–f433 stretched over the story 2478–2670 (only the mouth windows and the push move there).
+  'S04-SH01': {shift: 566, event: (f) => (f < 138 ? f : 138 + ((f - 138) * 192) / 296)},
+  'S04-SH02': {shift: 670},
+  'S04-SH03': {shift: 670},
+};
+const storyBase = (id: string) => SHOT_G0[id] - (STORY_CLOCK[id]?.shift ?? 0);
+/** Event story key of shot `id` at shot-local frame f (SHOT_G0 holds composition starts). */
+export const storyAt = (id: string, f: number) => storyBase(id) + (STORY_CLOCK[id]?.event ? STORY_CLOCK[id].event!(f) : f);
+/** Ambient clock of shot `id` at shot-local frame f: continuous through holds (fog drift, lens ripple, breathing). */
+export const ambientAt = (id: string, f: number) => storyBase(id) + f;
 
 // ------------------------------------------------------------------ ST-04 ASM-PATH (story clock)
 
@@ -202,19 +239,53 @@ export const asmAt = (G: number): AsmState => {
 
 // ------------------------------------------------------------------ ST-05 FOG-STATE, ST-06 light, ST-07, ST-09
 
-/** FOG-STATE as a continuous level: 0 FS0, 1 FS1, 2 FS2, 3 FS3 (eased transitions). FS2→FS3 G2802-G2973 (SS-R4 RT-5). */
+/**
+ * Monotone cubic (PCHIP, Fritsch–Carlson interior slopes) through sorted [x, y] keys, zero slope at both ends: the value is
+ * flat before the first key and after the last, and does not overshoot between keys.
+ */
+export const pchip = (keys: [number, number][], x: number): number => {
+  const n = keys.length;
+  if (x <= keys[0][0]) return keys[0][1];
+  if (x >= keys[n - 1][0]) return keys[n - 1][1];
+  const h = keys.slice(1).map((k, i) => k[0] - keys[i][0]);
+  const d = keys.slice(1).map((k, i) => (k[1] - keys[i][1]) / h[i]);
+  const m = keys.map(() => 0);
+  for (let i = 1; i < n - 1; i++) {
+    if (d[i - 1] * d[i] > 0) {
+      const w1 = 2 * h[i] + h[i - 1], w2 = h[i] + 2 * h[i - 1];
+      m[i] = (w1 + w2) / (w1 / d[i - 1] + w2 / d[i]);
+    }
+  }
+  let k = 0;
+  while (k < n - 2 && x > keys[k + 1][0]) k++;
+  const t = (x - keys[k][0]) / h[k], t2 = t * t, t3 = t2 * t;
+  return (2 * t3 - 3 * t2 + 1) * keys[k][1] + (t3 - 2 * t2 + t) * h[k] * m[k] + (-2 * t3 + 3 * t2) * keys[k + 1][1] + (t3 - t2) * h[k] * m[k + 1];
+};
+
+/**
+ * S02-SH00A fog front keys (ST-05, SS-R5.1): F (m from the glass along +z, WORLD-SHOP) at story frame G, PCHIP through the
+ * keys (flat before G390, held at 1.8 from G516). The car far face (z 6.0) goes at G454, its flank (z 4.2) at G490.
+ */
+const FRONT_KEYS: [number, number][] = [[390, 14.0], [420, 11.0], [434, 9.3], [446, 7.0], [454, 6.0], [490, 4.2], [510, 2.0], [516, 1.8]];
+export const frontAt = (G: number) => pchip(FRONT_KEYS, G);
+
+/**
+ * FOG-STATE as a continuous level: 0 FS0, 1 FS1, 2 FS2, 3 FS3. S02-SH00A (ST-05, SS-R5.1): G360–G516 is the front, level
+ * 2·(14.0 − F)/12.2 (2 once F is 1.8 at G516); FS2 from G516; FS2→FS3 G2802–G3068 (S04-SH03 f12–f278). The level drives only
+ * the veil and haze of the outside plate (never a global fade).
+ */
 export const fogAt = (G: number) =>
-  G < 186 ? 0 : G < 240 ? ease(seg(G, 186, 240)) : G < 246 ? 1 : G < 348 ? 1 + ease(seg(G, 246, 348)) : G < 2802 ? 2 : 2 + ease(seg(G, 2802, 2973));
+  G < 360 ? 0 : G < 516 ? 2 * (14 - frontAt(G)) / 12.2 : G < 2802 ? 2 : 2 + ease(seg(G, 2802, 3068));
 
 /**
  * Canopy lamp level 0..1 per lamp index (LAMPS in outside.ts: 0 near-left and 1 near-right at z 7; 2, 3 far at z 11).
- * SS-R4 RT-5 (S04-SH03): far pair dims to nothing G2802-G2874; near-left to nothing G2862-G2940; near-right to 0.35 over
- * G2862-G2940, holds to G2955, then out G2955-G2973 (the last light, after the line).
+ * S04-SH03 on the story key 2790 + f (SS-R5.1, sheet sc04): far pair dims f12–f120; near-left to nothing f100–f220;
+ * near-right to 0.35 over f100–f220, held to f260, out f260–f278 (the last light, after the line ends at f254).
  */
 export const lampAt = (G: number, i: number) => {
-  if (i >= 2) return 1 - ease(seg(G, 2802, 2874));
-  if (i === 0) return 1 - ease(seg(G, 2862, 2940));
-  return (1 - 0.65 * ease(seg(G, 2862, 2940))) * (1 - ease(seg(G, 2955, 2973)));
+  if (i >= 2) return 1 - ease(seg(G, 2802, 2910));
+  if (i === 0) return 1 - ease(seg(G, 2890, 3010));
+  return (1 - 0.65 * ease(seg(G, 2890, 3010))) * (1 - ease(seg(G, 3050, 3068)));
 };
 
 /** Assembly `light` (VD04): 0 until G1806, eased to 1 by G1830. */

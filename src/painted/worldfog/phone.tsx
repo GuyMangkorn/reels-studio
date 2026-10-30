@@ -20,8 +20,8 @@ const SKIN = '#e9c2a2', SKIN_SHADE = '#d0a283', NAIL = '#f4dccd', CUFF = '#6b7a5
 const ease = (u: number) => u * u * (3 - 2 * u);
 const seg = (f: number, a: number, b: number) => Math.max(0, Math.min(1, (f - a) / (b - a)));
 
-/** Thumb tip (sheet): (735, 900) until f48, slides to (735, 760) over f48-f78 with the scroll. */
-const thumbTip = (f: number): Pt => [735, lerp(900, 760, ease(seg(f, 48, 78)))];
+/** Thumb tip (SS-R5, B5-9): (735, 900) until f48, flicks up to (735, 760) over f48-f66, lifts back to (735, 900) over f66-f78. */
+const thumbTip = (f: number): Pt => [735, f < 66 ? lerp(900, 760, ease(seg(f, 48, 66))) : lerp(760, 900, ease(seg(f, 66, 78)))];
 const THUMB_BASE: Pt = [880, 1110];
 const BONE = [190, 182];
 
@@ -60,7 +60,7 @@ const roundRect = ({x0, y0, x1, y1, r}: {x0: number; y0: number; x1: number; y1:
 const paintShop = (p: Painter, f: number) => {
   const {brush} = p;
   brush.push();
-  brush.translate(-20 * (f / 89), 0);
+  brush.translate(-20 * (f / 156), 0);
   p.group(10);
   p.wash('#7a8582', 250, [[-100, -100], [1200, -100], [1200, 2100], [-100, 2100]], 0.2, 0.45);
   // Ceiling and fluorescent tubes in perspective, each with a soft cool bloom.
@@ -211,8 +211,10 @@ const Screen = ({f}: {f: number}) => {
   const ex = ease(seg(f, 26, 32));
   const banner = {x: lerp(x0 + 12, x0, ex), y: lerp(bTop, y0, ex), w: lerp(W - 24, W, ex), h: lerp(104, y1 - y0, ex), r: lerp(24, r, ex)};
   const article = seg(f, 28, 33);
-  const scroll = -180 * ease(seg(f, 48, 78));
-  const cards = [0, 1, 2, 3];
+  // SS-R5 (B5-9): one flick, the list moves up 360 px in total, eased f48-f108, then rests; two more identical photos enter.
+  // SS-R5.1 (C-5): the list scrolls f48–f114 and holds to the shot end (f155); the L0 drift runs over the 156 f shot.
+  const scroll = -360 * ease(seg(f, 48, 114));
+  const cards = [0, 1, 2, 3, 4, 5];
   return (
     <svg width={1080} height={1920} viewBox="0 0 1080 1920" style={{position: 'absolute', inset: 0}}>
       <defs>
