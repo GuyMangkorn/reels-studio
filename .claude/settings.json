@@ -1,0 +1,16 @@
+{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Agent|Task",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 -I \"$CLAUDE_PROJECT_DIR/scripts/hooks/agent-run-log.py\"",
+            "timeout": 10
+          }
+        ]
+      }
+    ]
+  }
+}
