@@ -986,3 +986,41 @@ Every new plate is `ZCPAINT`-registered in `src/painted/shots/zcpaint.tsx` with 
 - `scripts/zombie-condo-paint/delivery.md` (stage cells), `scripts/zombie-condo-paint/build-notes.md` (this section).
 - `docs/dev-findings.md` and `docs/dev-findings/` (see the pass 10 finding row).
 - Stills and logs: `out/painted/zcpaint/p10/`, `out/logs/zcp-p10-*`, `out/qa/zcp-p10/wfog/`.
+
+## 2026-10-30 — Film SPK-ZCP-06: the "puppet" look (costume and paint texture comparison)
+
+**Trigger:** user “ตัวละครมันดูเป็นหุ่นกระบอกอยู่”, then after the WORLD FOG r6 comparison “6 หัวต่อ แต่เปลี่ยนชุด+เนื้อสี” and “ทำเทียบ” (delivery record, “Puppet look”). Spike only: no production plate, `src/Root.tsx`, `body6.ts`, `bust.ts` or WORLD FOG file changed. The stopped Boss pass 11 patch was read as reference (its B02-SH03 waist framing and `zoomAt` are copied into the spike), not applied.
+
+**Diagnosis (pass 10 frames, `out/painted/zcpaint/p10/overview/`):** the puppet read comes from bare skin tubes: tee + shorts leave the forearms, shins and knees as one skin-coloured tapered tube each, with a hard hem line at the shorts and sleeves. That is where the eye sees the joints. The 6-head proportion itself is not the problem. WORLD FOG r6 covers the limbs (jacket, long sleeves, long trousers), so the joints sit inside cloth, and its cloth carries a glaze ring plus 2B hatch in the shade (VD18).
+
+**Files (new, spike only):** `src/painted/spike/ZcSpk06Figs.ts` (variant figures `sideWalkV`, `seatFloorV`, `bustFrontV`, texture painter, `drawFigV`), `src/painted/spike/ZcSpk06.tsx` (B04-SH01, B09-SH01, B02-SH03 plates with the production sets, light, cameras and overlays; staging values copied), `src/painted/spike/zcpaint-spk06-index.ts` (compositions `ZCPAINT-SPK06-<B04|B09|B02>-<P10|P10W|A|B|C>`, labels burned in).
+
+**Variants:**
+- `P10`: the production plate as pass 10 ships it. `P10W` (B02 only): the pass 10 bust at the pass 11 waist/chest close framing (head 587 px, chin y 1002), so that framing and costume can be judged separately.
+- `A`: 6 heads, costume over the limbs: open overshirt (teal `#2f5a5c`, his established colour) over a warm grey tee (`#cdc6b6`), sleeves to the wrist with a cuff line, long charcoal trousers (`#474d55`) to the ankle with knee and instep folds, overshirt hem over the hip joint, collar band/points, chest pocket on the close. Limb masses thicker (sleeve radius 0.215 → 0.17 head, trousers 0.30 → 0.20, vs skin arm 0.16 → 0.10). B04 walk: CP-P03, near arm swung back with the hand past the hip, far arm forward. Flat cel two tones (`paintPart`), decal heads, mittens/fists, B09 pitch 0.35 rad (20°) unchanged. Day 3 uses `COSTUME_DAY3` (slightly darker).
+- `B`: A plus brush texture in the cloth only: after each flat cloth wash, one seeded glaze (18–26 % darker, opacity 150, `fillTexture(0.7, 0.6)`, no bleed), and in the cel tone a WORLD FOG VD18 2B hatch (7 px at 40°, weight 1.0, normalised to screen scale) that survives only in the shade band. Skin, hands, heads and sets stay flat.
+- `C`: B on a 5.5-head build (heights below the chin × 0.9, widths × 1.08, the head unchanged).
+
+**Iterations:** r1: costume works, texture invisible at sheet scale, and the profile collar cel block reads as a hood. r2: collar becomes a thin band, glaze stronger, hatch added, but hatch is invisible on dark teal. r3: hatch weight 1.0 and 0.6 mix are visible, but the close (≈4.6× scale) throws dark specks past the silhouette. r4/final: bleed 0, hatch spacing and weight divided by the screen scale, seated collar removed. No specks remain.
+
+**Evidence (viewed):** `out/painted/zcpaint/spk06/final/SPK06-sheet-B04-SH01.png`, `SPK06-sheet-B09-SH01.png`, `SPK06-sheet-B02-SH03.png` (labelled, order P10 | (P10W) | A | B | C), full-resolution figure crops `SPK06-crops-P10-A-B-C.png` (B04 left four, B09 right four). Rounds r1–r4 kept under `out/painted/zcpaint/spk06/`.
+
+**Measured:**
+- Lead height (geometry `topPx × k`): B04 f45 P10 586 / A, B 586 / C 539 px; B09 P10 489 / A, B 489 / C 447 px. **C fails the 480 px seated rule (RK-28)**: it would need d ≈ 0.45 or a larger section scale.
+- Caption zone (`scripts/caption-zone.py`, default thresholds): every frame fails as the shipped P10 frames do (B02 mean 0.66–0.68 vs P10W 0.68, B04-B 0.52, B09-B 0.21). This is the accepted cream-condo condition with the thick-outline captions (pass 8/9 decision), not a regression.
+- Determinism: B02-B f50 decoded-RGB md5 identical across two separate bundles/runs (r4 and final). B09-B f60 and the untouched production B04-P10 f45 differ by 2 px at 1 level between runs (the known `DF-20261030-zcpaint-figure-texture-residual` class).
+- Hold: B09-B f60 → f61 differs on the ink outlines (boil) and as sub-pixel resampling of the hatch under the B09 push. Texture seeds come from the part order and do not reseed per frame.
+- `npx tsc --noEmit`: 0 errors; `npx eslint` on the three spike files: 0 problems. Tests not run (spike files only).
+- Dev-findings consulted: `DF-20261030-painted-glaze-pickup` (the B glaze sits over the part's own opaque wash, so granulation shows only the cloth base, never the set), `DF-20261030-zcpaint-figure-texture-residual` (same class as above), `DF-20261030-painted-arm-depth` (CP-P03 used in profile; no front-view `behind` arm in these three frames).
+
+**Read:** A already removes the puppet read in all three frames: no bare tubes, the joints are inside cloth, the hem breaks the hip. B adds the WORLD FOG hand-made surface without blotching the sets. C reads chunkiest and closest to WORLD FOG, but it reverses the user's 6-head choice and fails the B09 lead rule. In the close it differs from B only slightly.
+
+**Film recommendation:** B. Open: the stubble still reads as a cluster of blobs (`DF-20261030-zcpaint-day3-stubble-spots`, unchanged), and the bare neck looks long in the close because the collar sits low. A taller collar stand is a Boss detail if the user wants it.
+
+### Proposed brief change `VB-ZCPAINT-SHORT-R2.6` (proposal only; not applied; needs the user's choice)
+- `BODY-ZCP-6H` → **R2.6 costume**: `zc-you` wears an open overshirt over a tee, sleeves to the wrist (cuff line) and long trousers to the ankle (knee/instep folds); bare skin only at hands, feet, neck and face. Landmarks and 6-head proportions unchanged. Limb masses: sleeve radius 0.215 → 0.17 head, trousers 0.30 → 0.20 head. Day-3 colours slightly darker. Overshirt teal `#2f5a5c`, tee `#cdc6b6`, trousers `#474d55` (Design; Boss may tune values within the read). Infected unchanged: dirty khaki shirt and grey-green trousers (approved 7b), with sleeves taken to the wrist to match.
+- `VD-ZCP-LOOK` / `LT-04` → **R2.6 cloth texture**: figure cloth gets one seeded glaze (ring and granulation over its own opaque wash, no bleed) and a VD18 2B hatch in the cel band, normalised to screen scale. Skin, hands, decal heads, sets, plates and POV backgrounds keep the clean “สะอาดแบบตัวละคร” fills. This relaxes the clean-paint decision for figure cloth only.
+- `VD-ZCP-LIGHT`: unchanged (cel two tones, cast shadows from the same parts).
+- Arms: CP-P03 swing in profile walks. Front-view bent arms follow `Arm.behind`-style depth (pass 11 design), still Boss's.
+- Boss work (S-P12 rev): port `sideWalkV` / `seatFloorV` / `bustFrontV` costume geometry into `body6.ts` / `bust.ts` for every view (front, back, profile, walk, floor-seated, sofa-seated, bust front/back/side, infected), add the texture painter to `washPaint` behind an option, re-run the model sheet and B1–B5, then the plates. Mark re-checks closes for collar/neck framing.
+- Acceptance: no bare forearm or shin in any plate; lead ≥ 480 px; WORLD FOG 21-frame md5 unchanged; the texture holds still across adjacent frames apart from ink and camera resampling; no specks outside the silhouette at the close scale.
