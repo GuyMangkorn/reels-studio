@@ -1,5 +1,5 @@
 {
- "_note": "S04-SH01 two-shot at the speaking marks | WORLD-SHOP (left-handed) points and camera stored with x negated for this right-handed tool; see index.md#projection-checks",
+ "_note": "S04-SH01 two-shot at the speaking marks | SS-R3.3 worker slump f48-f138 facing the camera (crouch 0.30, hands on thighs, elbows out) | SS-R3.2 adds the gondola A front-left edge at z -2.0 (old) and -2.8 (new) | WORLD-SHOP (left-handed) points and camera stored with x negated for this right-handed tool; see index.md#projection-checks",
  "up": "y",
  "size": [
   1080,
@@ -72,6 +72,76 @@
    -0.5,
    1.0,
    0
+  ],
+  "gondA_end_old_floor": [
+   -0.6,
+   0,
+   -2.0
+  ],
+  "gondA_end_old_top": [
+   -0.6,
+   1.6,
+   -2.0
+  ],
+  "gondA_end_new_floor": [
+   -0.6,
+   0,
+   -2.8
+  ],
+  "gondA_end_new_top": [
+   -0.6,
+   1.6,
+   -2.8
+  ],
+  "narr_back_shoulder": [
+   -1.05,
+   1.4,
+   -1.1
+  ],
+  "narr_f0_face": [
+   -0.95,
+   1.49,
+   -0.75
+  ],
+  "narr_f0_back": [
+   -1.15,
+   1.4,
+   -0.75
+  ],
+  "wk_slump_headtop_est": [
+   -0.25,
+   1.5,
+   -1.1
+  ],
+  "wk_slump_face_est": [
+   -0.25,
+   1.29,
+   -1.1
+  ],
+  "wk_hand_R": [
+   -0.12,
+   0.5,
+   -1.22
+  ],
+  "wk_hand_L": [
+   -0.38,
+   0.5,
+   -1.22
+  ],
+  "wk_elbow_R": [
+   0.02,
+   0.8,
+   -1.16
+  ],
+  "wk_elbow_L": [
+   -0.52,
+   0.8,
+   -1.16
+  ],
+  "narr_front_edge": [
+   -0.72,
+   1.2,
+   -1.1
   ]
  },
  "spans": {
@@ -82,6 +152,10 @@
   "worker": [
    "wk_feet",
    "wk_head"
+  ],
+  "worker_slump_est": [
+   "wk_feet",
+   "wk_slump_headtop_est"
   ]
  },
  "caption_band": [
