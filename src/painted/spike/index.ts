@@ -17,6 +17,7 @@ import {HeadSideSheet} from './HeadSideSheet';
 import {PlatePreview} from './PlatePreview';
 import {Grade, Grain, windowShot} from './WfogShop';
 import {phoneShot} from './WfogPhone';
+import {ArmBackSheet} from './ArmBackSheet';
 
 const {width, height, fps} = FORMATS.short;
 const shot = {width, height, fps, durationInFrames: 5 * fps};
@@ -59,6 +60,7 @@ registerRoot(() =>
     // caption-zone measurement. Kept out of the episode registry: SHIPWRECK-SHORT assembly is Editor's.
     createElement(Composition, {id: 'PAINTED-TIMELINE-Shipwreck', component: ProofWithCaptions, ...proof}),
     createElement(Composition, {id: 'PAINTED-PLATES-Shipwreck', component: ProofPlates, ...proof}),
+    createElement(Composition, {id: 'WFOG-ARMBACK-SAMPLE', component: ArmBackSheet, ...shot, durationInFrames: 1}),
     createElement(Composition, {id: 'WFOG-PREVIEW-S02-SH02', component: PhoneSample, ...shot, durationInFrames: 90, defaultProps: {label: true}}),
     createElement(Composition, {id: 'WFOG-SP01-S02-SH09', component: Sp01Sh09, ...shot, durationInFrames: 180, defaultProps: {label: true, bare: false, warp: true}}),
     createElement(Composition, {id: 'WFOG-SP01-S03-SH03', component: Sp01Sh03, ...shot, durationInFrames: 120, defaultProps: {label: true, bare: false, warp: true}}),

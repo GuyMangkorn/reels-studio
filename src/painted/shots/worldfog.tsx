@@ -6,7 +6,7 @@ import type {PaintedShot, ShotContext} from '../shot';
 import {STILL_CAMERA} from '../camera';
 import {asmPoseAt, assemblyParts, cartOnlyPose, paintAssembly, paintCartSide, paintHubs, type AsmPose} from '../worldfog/assembly';
 import {doorPt, paintCarExterior, paintCarInterior, paintFarShape, paintSedanBody, paintSedanDoor, rimAt, SEDAN_DOOR} from '../worldfog/car';
-import {drawFigure, type Arm, type FigAnchors, type FigPose, type Who} from '../worldfog/cast';
+import {drawFigure, shoulderHeight, type Arm, type FigAnchors, type FigPose, type Who} from '../worldfog/cast';
 import type {FaceState} from '../worldfog/head';
 import {Architecture, Beam, FogVeil, Glass, Grade, Grain, Halos, InteriorAir, LensGlow, Rim} from '../worldfog/layers';
 import type {InteriorLight} from '../worldfog/draw';
@@ -127,6 +127,8 @@ const actor = (p: Painter, proj: Proj, who: Who, x: number, z: number, pose: Fig
 };
 const P3 = (proj: Proj, v: V3): Pt => proj.P(v);
 const arm = (proj: Proj, v: V3, out?: number): Arm => ({to: proj.P(v), out});
+/** An authored elbow (SS-R3.4 rows): hand and elbow in world metres; `behind: 'upper'` puts the upper arm under the torso. */
+const armVia = (proj: Proj, hand: V3, elbow: V3, behind?: 'upper'): Arm => ({to: proj.P(hand), via: proj.P(elbow), behind});
 
 // ------------------------------------------------------------------ S01
 
@@ -173,7 +175,8 @@ const forecourtPlate = plate('S01-SH02', {
     const pose: FigPose = {
       view: 'front', light: VD18_LIGHT['CAM-FORECOURT'], walk: f >= 74 ? (f - 74) / 18 : undefined,
       face: face({look: [0.6, 0], brow: 'worry'}),
-      lArm: phone > 0 ? arm(proj, [x + 0.12, lerp(0.9, 1.15, phone), z - 0.12], 1) : undefined, lHold: phone > 0.5 ? {kind: 'phone'} : undefined,
+      // SS-R3.4 AB1: the phone hand as before; the elbow goes back into depth (upper arm behind the torso), fixed on her.
+      lArm: phone > 0 ? armVia(proj, [x + 0.12, lerp(0.9, 1.15, phone), z - 0.12], [x + 0.15, 0.93, z + 0.04], 'upper') : undefined, lHold: phone > 0.5 ? {kind: 'phone'} : undefined,
       rArm: f >= 72 && f < 81 ? arm(proj, edge, -1) : undefined,
     };
     const narrator = () => drawFigure(p, 'narrator', her.g, her.unit, pose, tl);
@@ -209,14 +212,15 @@ const counterInPlate = plate('S02-SH01', {
     const x = lerp(-0.3, -0.45, step), z = lerp(-2.1, -2.3, step);
     const head = f >= 54 && f < 72 ? 'right' : 'front';
     const look: Pt = f < 54 ? [0.3, 0.9] : f < 80 ? [0, 0] : f < 96 ? [-0.9, 0.3] : [-0.3, 0.2];
-    // Torch: off the hook (reach f86-f96), then lowered to the right hip at the sheet's hand point (SS-R3.2), lens down.
-    const reach = ease(seg(f, 86, 96)), hip = ease(seg(f, 96, 106));
-    const rArm: Arm | undefined = f < 86 ? undefined : f < 96 ? {to: ptLerp(P3(proj, [x - 0.2, 0.9, z]), P3(proj, [-0.73, 1.33, -2.7]), reach), out: -1} : {to: ptLerp(P3(proj, [-0.73, 1.33, -2.7]), P3(proj, [-0.65, 0.95, -2.25]), hip), out: -1};
+    // Torch: off the hook (reach f86-f96), then lowered f96-f104 to the rig's default hang on her right side (x-0.17, 0.64, z),
+    // lens down (SS-R3.4 AB0 hang: a straight arm; the r4 point (-0.65, 0.95, -2.25) bent it and splayed the elbow).
+    const reach = ease(seg(f, 86, 96)), hip = ease(seg(f, 96, 104));
+    const rArm: Arm | undefined = f < 86 ? undefined : f < 96 ? {to: ptLerp(P3(proj, [x - 0.2, 0.9, z]), P3(proj, [-0.73, 1.33, -2.7]), reach), out: -1} : {to: ptLerp(P3(proj, [-0.73, 1.33, -2.7]), P3(proj, [x - 0.17, 0.64, z]), hip), out: -1};
     paintShop(p, proj, G, {torchOnHook: G < 336, light: L, actors: [
       actor(p, proj, 'occupant', -1.6, -1.0, {view: 'right', light: L, lean: 0.03 * bump(f, 40, 60), face: face({look: [1, -0.1]})}, tl),
       actor(p, proj, 'narrator', x, z, {
         view: 'front', light: L, head, face: face({look, brow: f >= 54 ? 'worry' : 'flat'}),
-        lArm: arm(proj, [x + 0.06, 1.12, z - 0.2], 0), lHold: {kind: 'phone'},
+        lArm: armVia(proj, [x + 0.06, 1.12, z - 0.2], [x + 0.15, 0.95, z + 0.04], 'upper'), lHold: {kind: 'phone'},
         rArm, rHold: f >= 96 ? {kind: 'torch', angle: Math.PI / 2, on: 0} : undefined,
       }, tl),
     ]});
@@ -245,7 +249,8 @@ const counterOutPlate = plate('S02-SH03', {
     paintShop(p, proj, G, {light: L, dress: COUNTER_OUT_DRESS, actors: [
       actor(p, proj, 'shopworker', -2.0, -3.5, {
         view: 'front', light: L, face: face({look, brow: f >= 30 ? 'worry' : 'flat', open: talk(f, [[24, 66]], 0.6)}),
-        rArm: arm(proj, [-1.78, 0.93, -3.22], -1), lArm: arm(proj, [-2.22, 0.93, -3.22], 1),
+        // SS-R3.4 AB1: hands on the far counter edge (±0.08 m, inside her shoulders), elbows back into depth.
+        rArm: armVia(proj, [-1.92, 0.93, -3.22], [-1.85, 0.94, -3.56], 'upper'), lArm: armVia(proj, [-2.08, 0.93, -3.22], [-2.15, 0.94, -3.56], 'upper'),
       }, tl),
     ]});
   },
@@ -399,23 +404,33 @@ const intRevPlate = (id: string, len: number, camera: (tl: number) => Camera, ca
   });
 };
 
+/** S02-SH06 occupant clutching her cardigan (SS-R3.4 AB0-F rows): the hands as before, the elbows move forward with the hands' ease f30-f50; no behind. */
+const clutch = (proj: Proj, f: number): {rArm?: Arm; lArm?: Arm} => {
+  if (f < 30) return {};
+  const u = ease(seg(f, 30, 50));
+  return {
+    rArm: armVia(proj, [-1.24, lerp(0.9, 1.2, u), -1.75], mix3([-1.16, 0.86, -1.97], [-1.18, 0.90, -1.72], u)),
+    lArm: armVia(proj, [-1.36, lerp(0.9, 1.15, u), -1.75], mix3([-1.44, 0.86, -1.97], [-1.42, 0.90, -1.72], u)),
+  };
+};
 const sh06 = intRevPlate('S02-SH06', 108, push(108, 1.0, 1.05, 620, 660), (p, proj, G, f, tl, light) => [
   actor(p, proj, 'occupant', -1.3, -1.9, {
     view: 'front', light, face: face({look: [-0.35, -0.1], brow: 'worry'}),
-    rArm: f >= 30 ? arm(proj, [-1.24, lerp(0.9, 1.2, ease(seg(f, 30, 50))), -1.75], -1) : undefined,
-    lArm: f >= 30 ? arm(proj, [-1.36, lerp(0.9, 1.15, ease(seg(f, 30, 50))), -1.75], 1) : undefined,
+    ...clutch(proj, f),
   }, tl),
   actor(p, proj, 'narrator', -1.0, -1.3, {
     view: 'front', light, face: face({look: [-0.35, -0.15], brow: 'worry', open: talk(f, [[18, 78]], 0.45)}),
-    rArm: arm(proj, [-0.8, 0.98, -1.2], -1), rHold: {kind: 'torch', angle: Math.PI / 2 + 0.25 - 0.1 * ease(seg(f, 60, 72)), on: 0},
+    // SS-R3.4 AB1: the torch hand as before; the upper arm goes behind the torso (elbow z -1.36, plane z -1.22).
+    rArm: armVia(proj, [-0.8, 0.98, -1.2], [-0.85, 0.93, -1.36], 'upper'), rHold: {kind: 'torch', angle: Math.PI / 2 + 0.25 - 0.1 * ease(seg(f, 60, 72)), on: 0},
   }, tl),
 ]);
 
 /**
- * S03-SH02 torch (SS-R3.2, ST-07): the right hand swings forward from the hip (f36-f96) to (−0.80, 1.16, −0.88): 0.49 m
- * from the shoulder (reach 0.52 m), below the chin line (1.275 m) and 0.52 m from the mouth. The sheet's former hand
- * (1.30 m) sat at the chin and read as a microphone beside the jaw (Boss r3). The torch points toward the lower left of
- * the frame, the assembly side (screen angle 2.92 rad).
+ * S03-SH02 torch (SS-R3.2, ST-07): the right hand swings forward from the hip (f36-f96) to (−0.80, 1.16, −0.88): 0.42 m
+ * from the rig shoulder anchor (−0.814, 1.18, −1.30; SS-R3.4 corrected the r3 reference, which was (−0.77, 1.40, −1.3)),
+ * below the chin line (1.275 m) and 0.50 m from the mouth. The sheet's former hand (1.30 m) sat at the chin and read as a
+ * microphone beside the jaw (Boss r3). The torch points toward the lower left of the frame, the assembly side (screen
+ * angle 2.92 rad).
  */
 /** The S03-SH02 hand at the end of the raise (WORLD-SHOP m), exported for the ST-07 geometry test. */
 export const SH02_TORCH_HAND: V3 = [-0.80, 1.16, -0.88];
@@ -424,12 +439,31 @@ const torchSH02 = (proj: Proj, f: number) => {
   const hand = ptLerp(proj.P([-0.75, 0.95, -1.25]), proj.P(SH02_TORCH_HAND), u);
   return {hand, angle: lerp(Math.PI / 2, 2.92, u)};
 };
+/** The narrator's torso front plane (actor z -1.30 + 0.08; the camera looks -z, so nearer is the larger z). */
+const SH02_TORSO_FRONT = -1.22;
+/**
+ * S03-SH02 arms (SS-R3.4 rows). The elbows sit 0.25 m below the rig shoulder anchors (y 0.93 m at the upright 1.18 m
+ * shoulder; x −0.80 right, −1.10 left; z −1.36) and follow the crouched shoulder through the rise (f0–f12). The right
+ * elbow then travels with the hand to (−0.80, 1.00, −1.10) (f36–f96). The upper arm is behind the torso while its elbow
+ * is behind the torso front plane (about f68 on the right); the left upper arm stays behind.
+ */
+export const sh02Arms = (proj: Proj, f: number) => {
+  const crouch = 1 - riseAt(SHOT_G0['S03-SH02'] + f);
+  const rise = shoulderHeight('narrator', crouch) - shoulderHeight('narrator');
+  const u = ease(seg(f, 36, 96));
+  const elbowR = mix3([-0.80, 0.93 + rise, -1.36], [-0.80, 1.00, -1.10], u);
+  const elbowL: V3 = [-1.10, 0.93 + rise, -1.36];
+  const r: Arm = {to: torchSH02(proj, f).hand, via: proj.P(elbowR), behind: elbowR[2] < SH02_TORSO_FRONT ? 'upper' : undefined};
+  const l: Arm = {to: proj.P([-1.05, 1.05, -1.2]), via: proj.P(elbowL), behind: 'upper'};
+  return {crouch, elbowR, elbowL, r, l};
+};
 const s3sh02 = intRevPlate('S03-SH02', 144, push(144, 1.0, 1.06, 480, 700), (p, proj, G, f, tl, light) => {
-  const {hand, angle} = torchSH02(proj, f);
+  const {angle} = torchSH02(proj, f);
+  const {crouch, r, l} = sh02Arms(proj, f);
   return [actor(p, proj, 'narrator', -0.95, -1.3, {
-    view: 'front', light, crouch: 1 - riseAt(G), warm: torchOnAt(G), face: face({look: [-0.35, 0], brow: 'worry', eyes: 'wide'}),
-    rArm: {to: hand, out: -1}, rHold: {kind: 'torch', angle, on: torchOnAt(G)},
-    lArm: arm(proj, [-1.05, 1.05, -1.2], 1),
+    view: 'front', light, crouch, warm: torchOnAt(G), face: face({look: [-0.35, 0], brow: 'worry', eyes: 'wide'}),
+    rArm: r, rHold: {kind: 'torch', angle, on: torchOnAt(G)},
+    lArm: l,
   }, tl)];
 }, (proj, G, f) => {
   const on = torchOnAt(G);
@@ -566,11 +600,15 @@ const s4sh02 = plate('S04-SH02', {
     const L = VD18_LIGHT['CAM-INT-DOOR-REV'];
     const on = torchOnAt(G);
     const front = f >= 36;
+    // SS-R3.4 AB0 hang: profile f24-f36 the hand lowers to her side with the torch lens going down; front from f36 the rig's
+    // straight hang on her right side (screen-left). The r4 point crossed her body to her left hip.
+    const lower = ease(seg(f, 24, 36));
     paintShop(p, proj, G, {light: L, actors: [
       actor(p, proj, 'narrator', 0.85, -1.1, {
         view: front ? 'front' : 'right', light: L, head: f >= 30 ? 'front' : 'right', warm: on,
         face: face({look: f >= 48 ? [0.25, 0] : f >= 30 ? [0.1, 0] : [1, 0], brow: f >= 48 ? 'worry' : 'flat', eyes: f >= 60 ? 'wide' : 'dot'}),
-        rArm: front ? arm(proj, [0.62, 0.9, -1.05], -1) : arm(proj, [0.6, 1.0, -1.0], 1), rHold: {kind: 'torch', angle: front ? Math.PI / 2 + 0.2 : 0.6, on},
+        rArm: front ? arm(proj, [1.02, 0.66, -1.10], -1) : arm(proj, mix3([0.60, 1.00, -1.00], [0.86, 0.66, -1.10], lower), 1),
+        rHold: {kind: 'torch', angle: front ? Math.PI / 2 + 0.2 : lerp(0.6, Math.PI / 2 + 0.2, lower), on},
       }, tl),
     ]});
   },

@@ -74,6 +74,8 @@ The planned rig follows ton-sea's model, implemented in TypeScript under `src/pa
   anticipation, nods and impact springs on top.
 - **Lip-sync:** open the mouth from the narration amplitude, as `mouthAt()` does in `src/rig/drivers.ts`.
   Reuse that data rather than adding a second envelope.
+- **Front-view arm depth:** bent elbows go back behind the torso, not out to the side; pick the pose type per
+  action ([CP-P](../../../docs/character-proportion-principles.md#cp-p-arm-depth)).
 - Approve a model sheet of every control before any acting shot.
 
 ## Role mapping

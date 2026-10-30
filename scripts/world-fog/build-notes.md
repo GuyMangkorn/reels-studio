@@ -627,6 +627,65 @@ Scope: user decision 30 Oct "แก้อีกรอบก่อน (Mark+Boss)
 - `1s/` (88 frames, production entry), `sheet_1s_A.png` and `sheet_1s_B.png` (viewed; tiles 1–44 and 45–88), `labelled/` (24 frames, `WFOG-QA` entry), `sheet_labelled_r4.png` (viewed), `gap/` (91 frames G2208–G2298), `gap-s04sh01.txt`, `lead-check.txt`, `capzone-1s.json`, `det-a/`, `det-b/`, `crops/` (S01-SH02 car at rest and door, 540 px; S02-SH03 frame at 540 px; S04-SH01 frame at 540 px and gondola edge at full resolution; S03-SH06 caster 4× and a 2× three-frame strip). `dev1/`, `dev2/`, `dev3/`, `measures-first.txt` are development renders and first measurements, superseded by the final tree.
 - Logs: `out/logs/r4-*` (tsc-final, lint-final, test-all, 1s-stills-final, pass-sheets-final, labelled-final, det-a-final, det-b-final, gap-stills, gap-all, lead-check-2, capzone-1s).
 
+## 2026-10-30 — Boss: fix pass five (r5) against SS-R3.4 (WFOG-EP01-SHORT r5)
+
+Scope: user decision 30 Oct (front-view elbow goes back into depth; pick the pose per situation) and the sheet `WFOG-EP01-SHORT-SS-R3.4` (index "SS-R3.4 fix list (Boss)", arm rows in sc01, sc02-b01, sc02-b02-b03, sc03, sc04). Brief `VB-WFOG-EP01-SHORT-R4`, script, fact-check, timing, cues, Sound and IDs unchanged. Worktree `claude/worldfog-editor-adjust-5fd1ad`: nothing committed or pushed; no other role invoked; no rule document edited. Picture only (no VO, captions, music or SFX). IDs: R5-1 to R5-8 (per change), Q1–Q6 (questions for Mark and Film), DF-20261030-painted-arm-depth (new entry, workaround).
+
+### What changed (owner files)
+- **R5-1 rig** (`worldfog/cast.ts`): `shoulderHeight(who, crouch)` exported: the front-view shoulder anchor height from the same levels `drawFigure` uses (cast test: equal to the painted anchor at crouch 0, 0.3 and 1). `Arm.via` and `Arm.behind` kept as the coordinator wrote them; draw order unchanged.
+- **R5-2 S01-SH02 phone (L)**: AB1. Hand unchanged (x+0.12, 0.90→1.15, z−0.12); `via` (x+0.15, 0.93, z+0.04) moves with her; `behind 'upper'`. The r4 gate `phone > 0` (first arm frame f85) is kept; the sheet's "from f84" is the same first frame.
+- **R5-3 S02-SH01 phone (L)**: AB1. Hand unchanged (x+0.06, 1.12, z−0.20); `via` (x+0.15, 0.95, z+0.04); `behind 'upper'` f0–f113.
+- **R5-4 S02-SH01 torch (R)**: lowering f96–f104 (sheet timing; the r4 code ran f96–f106) to the rig hang (x−0.17, 0.64, z) = (−0.62, 0.64, −2.30), lens down. The target is beyond the arm's reach (0.541 m against 2L = 0.52 m), so the IK clamp makes the arm straight. The r4 point (−0.65, 0.95, −2.25) is removed.
+- **R5-5 S02-SH03 shop worker**: hands moved in to ±0.08 m on the far counter edge (r4 ±0.22 m); elbows (−1.85, 0.94, −3.56) and (−2.15, 0.94, −3.56) with `behind 'upper'` on both arms.
+- **R5-6 S02-SH06**: narrator R torch arm AB1 (`via` (−0.85, 0.93, −1.36), `behind 'upper'`). Occupant R/L AB0-F (helper `clutch`): hands unchanged; elbows lerp with the hands' ease f30–f50, R (−1.16, 0.86, −1.97) → (−1.18, 0.90, −1.72), L (−1.44, 0.86, −1.97) → (−1.42, 0.90, −1.72); no behind.
+- **R5-7 S03-SH02**: R elbow (−0.80, 0.93 → 1.00, −1.36 → −1.10) with the hand's ease f36–f96. Through the rise (f0–f12) the elbow keeps its 0.25 m offset from the crouched shoulder (`shoulderHeight`). `behind 'upper'` while the elbow is behind the torso front plane (z −1.22); first frame without behind: f68. L hand (−1.05, 1.05, −1.20) unchanged; L elbow (−1.10, 0.93, −1.36) with `behind 'upper'`. New export `sh02Arms(proj, f)` (also the test hook). Comment corrected: the torch hand is 0.42 m from the rig shoulder (−0.814, 1.18, −1.30); the r3 reference (−0.77, 1.40, −1.3) was wrong.
+- **R5-8 S04-SH02 torch (R)**: profile f24–f36 the hand lowers from (0.60, 1.00, −1.00) to (0.86, 0.66, −1.10) and the torch lens turns from 0.6 rad to π/2 + 0.2 (the same lens-down angle as the front). Front from f36: the rig hang (1.02, 0.66, −1.10), no behind. The r4 point (0.62, 0.90, −1.05) is removed.
+- **Label** (`worldfog/qa.tsx`): WFOG-QA note → fix pass five (r5).
+- **Tests** (`tests/world-fog.test.ts`): ST-07 shoulder reference → rig anchor (reach band still 0.40–0.52 m; now 0.42 m). Three new tests: `behind` draw order (upper arm before the shirt; behind all: hand before the shirt; no behind: no far tint, hand after the torso); `shoulderHeight` equals the painted anchor at crouch 0, 0.3 and 1 for narrator and occupant; S03-SH02 rows (rig shoulder against the sheet, elbow offset through the rise, behind switch at f67/f68, G1680 and G1764 within 15 px, right elbow x ≥ 380 at every frame).
+
+### Checks
+- `npm run typecheck` exit 0 (`out/logs/r5-typecheck.log`); `npm run lint` exit 0 (`r5-lint.log`); `npm test` 118 pass, 0 fail, exit 0 (`r5-test-all.log`; world-fog file 20 of 20 including the 3 new: `r5-test-world-fog.log`).
+- Lead check (`scripts/world-fog/lead-check.ts`, exit 0): head tops and leads unchanged (`r5-lead-check.log`).
+- Determinism: labelled G474, G1723 and G1764 re-rendered in a second browser run in reverse order → byte-identical (`r5/det-b/`). Production: S04-SH01 G2340 re-rendered in a new session → byte-identical to the 1 s tile (`r5/det-c-prod/`). S03-SH07 G2100 and G2130 are not byte-stable across sessions (see Regression).
+- r4 reproduction: the r4 commit `e96a4e1` (src, scripts and tests identical to the r4 worktree at `94fd2f3`) rendered with the same stills script → byte-identical to the r4 folders for labelled G474, G500 and G1764 and production G300 (`r4/1s`, `r4/det-a`). The before/after pairs therefore come from the same pipeline.
+- Studio not run. Seek parity covered only by CLI stills in separate browser runs (above).
+
+### Regression vs r4 (`pass-sheets.py --prev r4/1s`, byte-level per tile; `r5/1s/`)
+- Identical 68, changed 20, new 0 (88 tiles).
+- Expected changes (17): S02-SH01 G240, G270, G300, G330; S02-SH03 G450, G480, G510; S02-SH06 G810, G840, G870; S03-SH02 G1680, G1710, G1740, G1770; S04-SH02 G2430, G2460, G2490.
+- Unexpected at byte level (3): S03-SH07 G2100 and G2130, S04-SH01 G2340. PSNR 95–111 dB against r4 (SSIM 1.000 for G2100 and G2340): about one LSB in a few pixels, no visible change. S04-SH01 G2340: the r5 render is byte-identical to the r4 code re-rendered in the same session, so the difference is in the stored r4 tile, not the code. S03-SH07 G2130: the same r5 code differs between two sessions (95.3 dB) and the stored r4 tile differs from the r4 code re-render (103.8 dB). Treated as session render noise, not an r5 change; root cause not established (no `Math.random` or `Date.now` in `src/painted` or `src/scenes`).
+- No change expected and none seen: S01-SH01; S01-SH02 (G150, G180, G210 identical; the phone arm first appears at f85); S02-SH02; S02-SH04; S02-SH05; S02-SH07–S02-SH10; S03-SH01; S03-SH03–S03-SH06; S04-SH03.
+- Sheets viewed: `r5/sheet_1s_A.png` (tiles 1–44) and `r5/sheet_1s_B.png` (tiles 45–88); no change beyond the expected tiles.
+
+### Acceptance numbers (`r5/labelled/`, `r5/pops/`, `r5/1s/`)
+- Plate px at s 1.0 from `PROJ` against the sheet (scratch projection check, not committed): S01-SH02 G222 L shoulder (756.4, 988.3) vs sheet (756, 989); L elbow (761.7, 1160.0) vs (762, 1160); L hand (759.0, 1028.1) vs (759, 1028). S02-SH01 G300 L elbow (797.9, 986.5) vs (797, 985); L hand (769.9, 910.7) vs (770, 911). S02-SH03 G474 elbows (446.9, 879.3) / (633.1, 879.3) vs (447, 879) / (633, 879); hands (481.1, 905.3) / (598.9, 905.3) vs (481, 905) / (599, 905). S02-SH06 G830 narrator elbow (488.1, 1255.8) vs (488, 1256), hand (417.8, 1272.2) vs (418, 1272), shoulder (500.4, 1005.4) vs (500, 1007); G850 occupant L elbow (942.8, 1168.6) vs (943, 1169). S04-SH02 G2470 hand (353.0, 1629.0) vs (353, 1629). All within 2 px. These check the arithmetic of the sheet numbers against the code constants, not the render.
+- S03-SH02 (test): G1680 elbow (436, 1256) and hand (366, 1283); G1764 right elbow (403, 1301) and hand (350, 1180), left elbow (748, 1256) and hand (723, 1187): all within 15 px. Rig right shoulder at the narrator's ground point: (445, 1005) against the sheet (445, 1007).
+- Measured on the frames: none (the frames were inspected by eye; no pixel measure of arm positions).
+
+### Sheet and brief questions (not edited; for Mark and Film)
+- **Q1 S03-SH02 f68 layer switch**: the right upper arm turns from behind the jacket to in front at f68, the frame the elbow crosses the torso front plane. The sleeve and its outline appear over the jacket in one frame (`pops/S03-SH02_switch_G1722-G1725_f66-f69_crop540.png`). Mark: keep the sheet's crossing rule, or move the switch to a frame where the upper arm is outside the torso silhouette (a tone-only change; the sheet's "never while outside" line would then need revising).
+- **Q2 S04-SH02 f36 view switch**: the body flips from profile to front at f36 (already in r4). The hand moves about 176 px at s 1.0 (0.16 m) to her right side on the same frame (`pops/S04-SH02_switch_G2434-G2437_f34-f37_crop540.png`). Mark: accept the pose switch as written, or allow an 8-frame glide from the profile hand to the front hang (Boss; the end state is unchanged).
+- **Q3 AB0-F reading (S03-SH02 from f68; S02-SH06 occupant)**: at G1764 the forward elbow lies over the jacket and reads as a sleeve panel on the chest (`crops/S03-SH02_G1764_frame_540.png`). The occupant's elbows at S02-SH06 are mostly behind the narrator (G850). Film/Mark: does the forward-elbow read hold, or should the hand or forearm move?
+- **Q4 S02-SH01 lowering timing**: the sheet says f96–f104; the r4 code ran to f106. r5 follows the sheet (8 frames).
+- **Q5 occupant clutch arms appear at f30** (sheet timing kept): the arms appear at the hip level at f30, as in r4, and the hands' ease then moves the elbows forward.
+- **Q6 S01-SH02 phone arm appears at f85** (`phone > 0` gate, as in r4): the hand enters from the hip. Timing unchanged; flagged only.
+
+### Remaining issues (not fixed)
+- S03-SH02 f0–f12 rise: the right elbow hangs from the crouched shoulder by construction, but it sits behind the counter edge, so the attachment is not visible. The visible hand and forearm stay continuous in the checked frames (`pops/S03-SH02_rise_G1656_f0_G1668_f12_crop540.png`). The 1 s pass has no frame in that range.
+- S02-SH06 occupant arms are mostly behind the narrator; the clutch read is weak in the stills.
+- S03-SH07 G2100 and G2130 are not byte-stable across browser sessions (≈ one LSB); the stored r4 tiles have the same property. Not caused by the arm rows; root cause open.
+- Long not rendered (no Long composition for this deliverable); Studio not run; captions and sound out of scope.
+
+### Artifacts (`out/qa/world-fog/WFOG-EP01-SHORT/r5/`)
+- `labelled/` (WFOG-QA, 23 frames: G222, G300, G350, G474, G500, G830, G850, G1680, G1764, G2470; neighbours G210, G211, G1656, G1662, G1668, G1722, G1723, G1724, G1725, G2434, G2435, G2436, G2437).
+- `sheet_before_after_r4_r5.png` (viewed; nine pairs, r4 left and r5 right, labelled).
+- `crops/S02-SH03_G500_frame_540.png` and `crops/S03-SH02_G1764_frame_540.png` (viewed).
+- `pops/` (switch strips, rise strip, phone and occupant r4/r5 crops; viewed).
+- `ba/r4-labelled/` and `ba/r4-prod/` (r4 re-renders from the r4 commit; byte-identity above).
+- `det-b/` (reverse-order determinism run, labelled); `det-c-prod/` and `det-c-r4-prod/` (production re-renders, new session).
+- `1s/` (88 production frames), `1s/manifest.txt`, `sheet_1s_A.png`, `sheet_1s_B.png` (both viewed).
+- Logs: `out/logs/r5-*`.
+
 ## 2026-10-29 — Shared profile head changed (`HEAD-SIDE-R2`, Boss, ZCPAINT pass)
 
 - User (29 Oct 2026): front decal head stays; the profile was a draft. `src/painted/spike/SideSheet.tsx`

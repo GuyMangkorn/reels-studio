@@ -48,6 +48,7 @@ Created 26 October 2026. The first entry records tooling checks while adding thi
 | <a id="df-20261030-b08-far-fires-occluded"></a>[DF-20261030-b08-far-fires-occluded](dev-findings/DF-20261030-b08-far-fires-occluded.md) | B08 layers / far fires / occlusion by the near towers | open | 2026-10-30 / uncommitted pass 6 | Film: acceptance item 2 "four sources visible" does not hold for the approved layers; keep two visible or move the far pair (decision) |
 | <a id="df-20261030-scenerenderer-default-chrome"></a>[DF-20261030-scenerenderer-default-chrome](dev-findings/DF-20261030-scenerenderer-default-chrome.md) | SceneRenderer chrome / painted scenes / composition default | workaround | 2026-10-30 / uncommitted pass 6 | Editor: pass `chrome` off for ZCPAINT scene renders (the record's rule) |
 | <a id="df-20261030-p5brush-large-fill-mottle"></a>[DF-20261030-p5brush-large-fill-mottle](dev-findings/DF-20261030-p5brush-large-fill-mottle.md) | p5.brush fills / flatness / large areas | workaround | 2026-10-30 / uncommitted pass 5 | Backgrounds and sets are wash-flat by rule; textures on large areas cost mottle |
+| <a id="df-20261030-painted-arm-depth"></a>[DF-20261030-painted-arm-depth](dev-findings/DF-20261030-painted-arm-depth.md) | Painted 2D rig / arms / depth / pose switch | workaround | 2026-10-30 / uncommitted r5 (base e96a4e1) | Front-view elbows: `via` + `behind` (SS-R3.4 rows); the one-frame layer switch (S03-SH02 f68) and the view-switch hand jump (S04-SH02 f36) need a Mark frame choice |
 
 <a id="แบบฟอร์มรายการ"></a>
 ## Entry template

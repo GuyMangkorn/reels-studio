@@ -6,12 +6,12 @@ import {timelineFrames} from '../src/scenes/timeline';
 import {paintedSpans, paintedStateAt} from '../src/scenes/painted';
 import {cameraAt, paintedShots} from '../src/painted/registry';
 import {toScreen} from '../src/painted/camera';
-import type {Painter} from '../src/painted/painter';
+import {mixColor, type Painter, type Pt} from '../src/painted/painter';
 import {asmPoseAt, assemblyParts, assemblyRaw, JAM_JUDDER, LIT, SIL, TAP_FRAMES} from '../src/painted/worldfog/assembly';
 import {doorPt, farShapeAt, SEDAN_DOOR} from '../src/painted/worldfog/car';
-import {drawFigure} from '../src/painted/worldfog/cast';
+import {CAST, drawFigure, shoulderHeight, type Arm} from '../src/painted/worldfog/cast';
 import {PROJ, SHOT_ROWS, TOTAL_FRAMES, asmAt, fogAt, lampAt, lensAt, lightAt, type V3} from '../src/painted/worldfog/space';
-import {SH02_TORCH_HAND, VD18_LIGHT} from '../src/painted/shots/worldfog';
+import {SH02_TORCH_HAND, VD18_LIGHT, sh02Arms} from '../src/painted/shots/worldfog';
 
 const video = worldFog.videos[0];
 const fps = 30;
@@ -155,12 +155,73 @@ test('VD18 light (brief VD18 table): every interior setup has a key and a rim; g
 
 test('S03-SH02 torch hand (ST-07): below the chin line, clear of the mouth, 0.40-0.52 m from the right shoulder', () => {
   // Standing narrator: chin 1.275 m (1.70 m less one 0.425 m head), mouth about 0.11 m below the head centre (1.39 m).
-  const mouth: V3 = [-0.95, 1.39, -1.3], shoulder: V3 = [-0.77, 1.40, -1.3];
+  // Right shoulder: the rig anchor (SS-R3.4; r3 used (-0.77, 1.40, -1.3)).
+  const mouth: V3 = [-0.95, 1.39, -1.3], shoulder: V3 = [-0.814, 1.18, -1.3];
   const dist = (a: V3, b: V3) => Math.hypot(a[0] - b[0], a[1] - b[1], a[2] - b[2]);
   assert.ok(SH02_TORCH_HAND[1] < 1.275, `hand height ${SH02_TORCH_HAND[1]} above the chin line`);
   assert.ok(dist(SH02_TORCH_HAND, mouth) >= 0.25, `hand ${dist(SH02_TORCH_HAND, mouth).toFixed(3)} m from the mouth`);
   const reach = dist(SH02_TORCH_HAND, shoulder);
   assert.ok(reach >= 0.40 && reach <= 0.52, `arm length ${reach.toFixed(3)} m`);
+});
+
+/** A painter that accepts every call and records each brush fill colour in order (SS-R3.4 draw-order checks). */
+const fillOrder = () => {
+  const seen: string[] = [];
+  const brush: unknown = new Proxy(() => undefined, {get: (_t, k) => (k === 'fill' ? (c: string) => seen.push(c) : brush), apply: () => undefined});
+  const p: unknown = new Proxy(() => undefined, {get: (_t, k) => (k === 'brush' ? brush : k === 'alpha' ? 1 : p), apply: () => undefined});
+  return {p: p as Painter, seen};
+};
+const plainFace = () => ({brow: 'flat' as const, eyes: 'dot' as const, look: [0, 0] as [number, number], mouth: 'flat' as const});
+
+test('SS-R3.4 behind (front view): an upper arm behind the torso is painted before the shirt, behind all before it too, no behind after it', () => {
+  const n = CAST.narrator;
+  const far = mixColor(n.outfit.sleeve, '#000000', 0.15), skin = n.head.skin;
+  const hand = {to: [470, 1150] as Pt, via: [440, 1290] as Pt};
+  const order = (rArm: Arm) => {
+    const {p, seen} = fillOrder();
+    drawFigure(p, 'narrator', [540, 1500], 800, {view: 'front', face: plainFace(), rArm}, 0);
+    return seen;
+  };
+  const upper = order({...hand, behind: 'upper'}), whole = order({...hand, behind: 'all'}), front = order(hand);
+  assert.ok(upper.indexOf(far) >= 0 && upper.indexOf(far) < upper.indexOf(n.outfit.shirt), "'upper': the far-tint upper arm comes before the shirt");
+  assert.ok(whole.indexOf(skin) >= 0 && whole.indexOf(skin) < whole.indexOf(n.outfit.shirt), "'all': the hand comes before the shirt");
+  assert.equal(front.indexOf(far), -1, 'no behind: no far-tint sleeve');
+  assert.ok(front.indexOf(skin) > front.indexOf(n.outfit.shirt), 'no behind: the hand comes after the torso');
+});
+
+test('shoulderHeight (SS-R3.4) is the front-view shoulder anchor drawFigure paints, at any crouch', () => {
+  const {p} = fillOrder();
+  for (const who of ['narrator', 'occupant'] as const) {
+    for (const crouch of [0, 0.3, 1]) {
+      const a = drawFigure(p, who, [540, 1500], 800, {view: 'front', crouch, face: plainFace()}, 0);
+      assert.ok(Math.abs((1500 - a.rShoulder[1]) / 800 - shoulderHeight(who, crouch)) < 1e-9, `${who} crouch ${crouch}`);
+    }
+  }
+});
+
+test('S03-SH02 arms (SS-R3.4): elbows keep their offset through the rise, the right upper arm goes behind at f68, sheet points G1680 and G1764 within 15 px', () => {
+  const proj = PROJ['CAM-INT-REV'];
+  const near = (a: Pt, b: Pt) => Math.hypot(a[0] - b[0], a[1] - b[1]) <= 15;
+  // The rig's right shoulder at the narrator's ground point (-0.95, -1.3) against the sheet reference (-0.814, 1.18, -1.30).
+  const {p} = fillOrder();
+  const shoulder = drawFigure(p, 'narrator', proj.P([-0.95, 0, -1.3]), proj.k([-0.95, 0, -1.3]), {view: 'front', face: plainFace()}, 0).rShoulder;
+  assert.ok(near(shoulder, proj.P([-0.814, 1.18, -1.3])), `rig shoulder ${shoulder}`);
+  // Upright, the elbow is 0.25 m below the shoulder anchor; during the rise (f0-f12) it moves with the crouched anchor.
+  const offset = 0.93 - shoulderHeight('narrator', 0);
+  for (const f of [0, 6, 12]) {
+    const a = sh02Arms(proj, f);
+    assert.ok(Math.abs(a.elbowR[1] - shoulderHeight('narrator', a.crouch) - offset) < 1e-9, `f${f} elbow offset`);
+  }
+  assert.equal(sh02Arms(proj, 24).elbowR[1], 0.93);
+  // The right upper arm is behind the torso front plane (z -1.22) until f68.
+  assert.equal(sh02Arms(proj, 67).r.behind, 'upper');
+  assert.equal(sh02Arms(proj, 68).r.behind, undefined);
+  // Sheet rows: G1680 (f24) elbow (436, 1256), hand (366, 1283); G1764 (f108) elbow (403, 1301), hand (350, 1180), left elbow (748, 1256), left hand (723, 1187).
+  const at24 = sh02Arms(proj, 24), at108 = sh02Arms(proj, 108);
+  assert.ok(near(at24.r.via!, [436, 1256]) && near(at24.r.to, [366, 1283]), `G1680 right arm ${at24.r.via} ${at24.r.to}`);
+  assert.ok(near(at108.r.via!, [403, 1301]) && near(at108.r.to, [350, 1180]), `G1764 right arm ${at108.r.via} ${at108.r.to}`);
+  assert.ok(near(at108.l.via!, [748, 1256]) && near(at108.l.to, [723, 1187]), `G1764 left arm ${at108.l.via} ${at108.l.to}`);
+  for (let f = 0; f <= 143; f++) assert.ok(sh02Arms(proj, f).r.via![0] >= 380, `f${f} right elbow x ${sh02Arms(proj, f).r.via![0]}`);
 });
 
 test('caster tyres: darker than the cart silhouette unlit (S02-SH05), near-black rubber when lit (S03-SH06 core luma <= 0.12)', () => {
