@@ -6,13 +6,26 @@ Needs GEMINI_API_KEY in the environment and the local venv (not a project requir
   python3 -m venv out/gemini-venv && out/gemini-venv/bin/pip install 'google-genai>=2.25'
 say: 48 kHz mono WAV, two-pass loudnorm to -16 LUFS (same as voice-preset.py), plus OUT.json with model, voice, style, text.
 design: creates a stored prompted voice (voice_... ID, 1-year TTL from last use, 200 per project) and saves its preview.
+Every call makes one attempt with no SDK retries and a --timeout (seconds, default 180). HTTP 429 / quota errors exit 3
+at once with the server message (free tier: 10 requests a day for gemini-3.8-flash-tts); a timeout exits 4.
 """
 import argparse, base64, json, subprocess, sys, tempfile
 from pathlib import Path
 from google import genai
+from google.genai import types
 
 MODEL = 'gemini-3.8-flash-tts'  # Flash-Lite has no Thai
 LN = 'loudnorm=I=-16:TP=-1.5:LRA=11'
+
+def status(e):
+    return getattr(e, 'status_code', None) or getattr(e, 'code', None)
+
+def is_quota(e):
+    text = f'{e} {getattr(e, "body", "")}'
+    return status(e) == 429 or 'RESOURCE_EXHAUSTED' in text or 'quota' in text.lower()
+
+def is_timeout(e):
+    return 'timeout' in type(e).__name__.lower() or isinstance(e, TimeoutError)
 
 def normalize(src, out):
     probe = subprocess.run(['ffmpeg', '-hide_banner', '-i', src, '-af', LN + ':print_format=json', '-f', 'null', '-'],
@@ -57,5 +70,17 @@ s = sub.add_parser('design'); s.add_argument('out'); s.add_argument('--name', re
 s.add_argument('--gender', required=True); s.add_argument('--text', required=True, help='voice description: age, gender, timbre, accent, baseline delivery')
 for s in sub.choices.values():
     s.add_argument('--model', default=MODEL)
+    s.add_argument('--timeout', type=float, default=180, help='seconds per request, no retries (default 180)')
 a = p.parse_args()
-{'say': say, 'voices': voices, 'design': design}[a.cmd](genai.Client(), a)
+# google-genai 2.34 raises attempts=0 to 1 and its interactions/voices layer counts that as one retry, so retries are
+# limited to a status the API never sends (599): 429 and 5xx fail on the first response.
+client = genai.Client(http_options=types.HttpOptions(timeout=int(a.timeout * 1000),
+                                                     retry_options=types.HttpRetryOptions(attempts=1, http_status_codes=[599])))
+try:
+    {'say': say, 'voices': voices, 'design': design}[a.cmd](client, a)
+except Exception as e:
+    if is_quota(e):
+        print(f'gemini-tts: quota or rate limit (HTTP {status(e) or 429}); not retrying. Wait for the quota reset or use a paid key.\n{e}'[:1200], file=sys.stderr); sys.exit(3)
+    if is_timeout(e):
+        print(f'gemini-tts: no response within {a.timeout:g} s; not retrying.\n{e}', file=sys.stderr); sys.exit(4)
+    raise

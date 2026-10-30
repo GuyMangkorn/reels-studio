@@ -32,7 +32,7 @@ These apply to every role; agent configs link here instead of repeating them.
 - **CB01 — Locate, then read.** Find the section first with `grep -n` on headings or IDs, bounded with `-m`, `-c` or `-l` and `| cut -c1-200` for long-line Markdown. Then read that range with `sed -n`. Read a whole file only when it is short (about 8 KB or less) or the task edits most of it. Briefs, scene sheets, research and the [dev-findings](docs/dev-findings.md) entries are read by section.
 - **CB02 — Logs to files.** Send long command output (Blender, renders, installs, test suites, `tsc`) to a file under `out/logs/`. Print only a summary line, the errors or the tail. Every other command prints under about 40 lines or pipes through `head`, `tail` or `grep -m`. Measured: a Mark run reached 412k context with no images from unbounded output and whole-file reads (ZCPAINT, 30 Oct 2026).
 - **CB03 — Small images.** View frames through `scripts/qa-sheet.sh`, which tiles frames at 270 px or downscales a single frame with `--width 540`. Use full resolution only for a pixel-level judgment that measured numbers cannot settle. Boss's labelled review contact sheets are unchanged.
-- **CB04 — Invocations and sessions** follow [AI01–AI09](docs/delivery-workflow.md#agent-invocation).
+- **CB04 — Invocations and sessions** follow [AI01–AI11](docs/delivery-workflow.md#agent-invocation): a fresh invocation per pass instead of one agent resumed across passes (AI04), no return while the agent's own background job runs ([AI10](docs/delivery-workflow.md#ai10)), and inputs read from files by path and revision (AI11).
 - **CB05 — Measure workflow changes** with `python3 -I scripts/usage-report.py [--since YYYY-MM-DD]`, before and after.
 
 <a id="coordinator-and-agent-parity"></a>
@@ -47,7 +47,7 @@ The **coordinator** is the chat session the user talks to (Claude Code or Codex)
 
 Role configs describe roles. They install no automatic runner and authorize no cross-chat messaging. A role agent never invokes the next role on its own.
 
-`.claude/agents/<role>.md` and `.codex/agents/<role>.toml` must carry the same name, description and instructions. `tests/agents.test.ts` enforces this, so edit both in the same change. Claude front matter also carries a required `tools:` allowlist (Claude-only) that keeps each role's startup context small. Add a tool there before a role depends on it. Optional Claude-only `model:` and `effort:` lines pin a role's model and reasoning effort (Boss, Editor and Boat use `claude-haiku-5-5` at `xhigh`; set 30 Oct 2026); the coordinator may still override them per call.
+`.claude/agents/<role>.md` and `.codex/agents/<role>.toml` must carry the same name, description and instructions. `tests/agents.test.ts` enforces this, so edit both in the same change. Claude front matter also carries a required `tools:` allowlist (Claude-only) that keeps each role's startup context small. Add a tool there before a role depends on it. Optional Claude-only `model:` and `effort:` lines pin a role's model and reasoning effort (set 30 Oct 2026: Boss and Editor `claude-haiku-5-5` at `xhigh`; Film `claude-sonnet-5-5` at `medium`; Boat, Mark and Preaw `claude-opus-5-5` at `medium`, pinned so a Sonnet coordinator is not inherited); the coordinator may still override them per call.
 
 ## Working principles
 
@@ -96,6 +96,6 @@ Every agent reads AGENTS.md plus its **core** documents. It reads any other docu
 <a id="working-boundaries"></a>
 ## Handoff and working boundaries
 
-The production handoff is **Boat research → Preaw script → Boat fact-check → Film visual/technical brief → Mark written scene handoff → Boss shared assets/capabilities → Editor scene integration/editing**, trimmed by the [pipeline tier](docs/delivery-workflow.md#pipeline-tiers). Resolve the [selected deliverables](docs/delivery-workflow.md) before new scriptwriting or a scope change, and match the named revisions at each handoff.
+The production handoff is **Boat research → Preaw script → Boat fact-check → Film visual/technical brief → Mark written scene handoff (timed after the Editor [voice lock](docs/delivery-workflow.md#voice-lock)) → Boss shared assets/capabilities → Editor scene integration/editing**, trimmed by the [pipeline tier](docs/delivery-workflow.md#pipeline-tiers). Resolve the [selected deliverables](docs/delivery-workflow.md) before new scriptwriting or a scope change, and match the named revisions at each handoff.
 
 Preserve the requested scope, story timing, reveals and stable IDs, as well as unrelated checkout changes. Record material brief/handoff revisions with their owners before changing the visual plan. Fix reusable art, geometry, dimensions, contact and camera behavior in the owning library module; scenes select IDs and author staging/timing.

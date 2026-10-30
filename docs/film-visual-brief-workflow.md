@@ -11,7 +11,7 @@ For Blender assets/rendered shots, read [blender-mcp-workflow.md](blender-mcp-wo
 
 - **Film** chooses medium per set/character/prop/effect, art direction, lighting/shadows/color, camera language and 2D/Three.js composition. Record reasons, constraints and risks the developer can act on.
 - **Mark** develops shots/key states, blocking, acting, cuts and selected-deliverable framing, with scene sheets and sequence index. Reference Film decision IDs rather than reopening medium choices for every shot.
-- **Boss** owns shared interfaces/APIs, assets/renderer capabilities and affected-consumer proof. **Editor** owns scene/timeline integration, editing and runtime QA; both feed observed constraints back into brief/handoff revisions.
+- **Boss** owns shared interfaces/APIs, assets/renderer capabilities and affected-consumer proof; Film writes look-defining assets under [Film and Boss by kind of work](#look-assets). **Editor** owns scene/timeline integration, editing and runtime QA; both feed observed constraints back into brief/handoff revisions.
 
 Routine crop/staging/timing refinements preserving story and approach belong to Mark. Material changes to medium, spatial camera, light strategy, shared interfaces or reveal require recorded reasons and synchronized brief/handoff revisions. Routine work adds no user approval gate. Explicit user direction takes precedence over team recommendations.
 
@@ -40,7 +40,16 @@ Before selecting/revising medium/compositing/camera/light strategy, consult rele
 
 Boss then builds every shot of that family to its look frame and compares each plate with it before reporting. Fix passes batch every known defect into one round instead of one defect per round. A look family with an approved precedent (an earlier episode's accepted look) reuses that frame instead. Evidence: on WORLD FOG EP01 (30 Oct 2026) 22 plates built before the interior/character look was locked needed two fix passes, a late look-dev pass (VD18) and a re-apply pass. Boss runs were about half of that session's usage.
 
-This role is planning. It does not install packages, implement runtime or author detailed scene sheets as a side effect. Specify the smallest feasibility spike/blockout and observable acceptance criteria for Boss. Run a spike yourself only when separately assigned, following implementation workflow.
+<a id="look-assets"></a>
+**Requirement — Film and Boss split by kind of work, not by person.** BLOOP-EP01-SHORT had Film write spike code in `src/painted/spike/BloopLook.tsx` and Boss re-port it into `src/painted/bloop/`; the duplicate drifted (lip-line frame, a 186 px hydrophone pop, a shadow value) and cost extra rounds, while Film's output was often usable as-is (30 Oct 2026).
+- **Film writes look-defining assets** (a new creature, a new look or ending) directly in the production owner module, `src/painted/<episode>/` or the shared library, with stills for [user approval](#look-change). No throwaway spike unless the work is genuinely exploratory. Film does not change the shared renderer or runtime contracts.
+- **Boss** owns runtime/renderer integration and shared capabilities, re-keying plates to Mark's timed sheets, measured QA ([caption zone](boss-asset-workflow.md#visual-and-runtime-qa-before-push), repeatability, RGB 0, anchors) and hardening Film's code.
+- **Cross-check stays:** Boss checks Film's work with measured numbers; Film checks the look on rendered frames. The roles are not merged: Boss's high-volume work stays on the cheaper model.
+
+<a id="look-change"></a>
+**Requirement — key-pose stills for look changes.** Any user-visible look change after the brief (a new ending, a creature or character redesign, a changed key set or medium) is approved before Boss builds or rebuilds plates for it. Film paints spike stills of the changed element in its key poses, normally 3–6 low-resolution stills (the poses the scene sheets actually use), with the caption band shown. The user picks or approves them; record their words as a `VD` decision and link the stills in the brief. Boss then builds to those stills. A change that only fixes a defect against an already approved look needs no stills. BLOOP-EP01-SHORT rebuilt plates after look changes made once Boss had built them (30 Oct 2026).
+
+This role is planning. It does not install packages, implement runtime or author detailed scene sheets as a side effect. Specify the smallest feasibility spike/blockout and observable acceptance criteria for Boss. Run an exploratory spike yourself only when separately assigned, following implementation workflow.
 
 ## Light tier brief
 
