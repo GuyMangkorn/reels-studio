@@ -4,10 +4,10 @@ Shared tools any role may run. Check here before writing a one-off command. A pr
 
 | Script | Does | Run |
 | --- | --- | --- |
-| `render.mjs` | Renders compositions, stills or frame lists into `out/<CompositionId>/`; parallel-safe | `npm run render -- <CompositionId> [--stills] [--frames=90,210]` |
+| `render.mjs` | Renders compositions, stills or frame lists into `out/<CompositionId>/`; parallel-safe. Renders only the registry's selected ending unless `--endings` is given, then normalizes loudness in place. Painted/WebGL episodes: `--gl=angle --timeout=180000` (per-frame ms) so a slow frame does not stall; `--concurrency` defaults to 4 | `npm run render -- <CompositionId> [--stills] [--frames=90,210] [--endings=A_fade,B_loop] [--gl=angle] [--timeout=180000] [--concurrency=4]` |
 | `narration.py` | Local Edge TTS narration (default Niwat +5%; female: `--voice th-TH-PremwadeeNeural`; `--rate`) plus the committed 30 fps RMS envelope | `npm run narration -- …` |
 | `voice-preset.py` | One Thai line in a character register (child, elderly, alternate adult) from Edge TTS + ffmpeg; child/elderly via Praat/WORLD in the `out/voice-venv` venv ([voice-tuning skill](../.agents/skills/voice-tuning/SKILL.md)) | `out/voice-venv/bin/python -I scripts/voice-preset.py --preset child-girl --text "…" out.wav` |
-| `gemini-tts.py` | Thai line with emotion/style and inline tags, voice listing and voice design from Gemini TTS, in the `out/gemini-venv` venv ([gemini-tts skill](../.agents/skills/gemini-tts/SKILL.md)) | `out/gemini-venv/bin/python -I scripts/gemini-tts.py say --voice Kore --style "sad, slow" --text "…" out.wav` |
+| `gemini-tts.py` | Thai line with emotion/style and inline tags, voice listing and voice design from Gemini TTS, in the `out/gemini-venv` venv ([gemini-tts skill](../.agents/skills/gemini-tts/SKILL.md)). One attempt per call, no retries: quota/429 exits 3, `--timeout` (default 180 s) exits 4 | `out/gemini-venv/bin/python -I scripts/gemini-tts.py say --voice Kore --style "sad, slow" --text "…" out.wav` |
 | `narration_files.py` | Narration from supplied per-beat audio files (e.g. Botnoi) plus the envelope | `python3 scripts/narration_files.py …` |
 | `transcribe.py` | Thai speech to text (faster-whisper), for intake or caption QA | `python3 scripts/transcribe.py …` |
 | `loudness.mjs` | Two-pass loudnorm on a finished MP4 (≈ −14 LUFS, ≤ −1 dBTP), video copied | `node scripts/loudness.mjs …` |

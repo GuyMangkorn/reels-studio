@@ -73,7 +73,11 @@ Template for `scripts/<episode>/build-notes.md`:
 
 ## Finishing a task
 
-Commit, push the issue branch and open a pull request into `main`. Never push directly to `main`. Ask for these once, at the end, in one structured question (commit + push + PR together); verification runs need no approval. Merging stays the user's. The PR description includes:
+Commit, push the issue branch and open a pull request into `main`. Never push directly to `main`. Ask for these once, at the end, in one structured question (commit + push + PR together); verification runs need no approval. Merging stays the user's.
+
+<a id="merged-pr-check"></a>**Requirement — no pushes to a merged PR.** A PR stays unmerged while its branch is still in use. Before pushing more commits to a branch that has a PR, the coordinator runs `gh pr view <branch> --json state -q .state`. If it prints `MERGED` (or `CLOSED`), rebase or branch the new commits onto `origin/main` and open a new PR; commits pushed to a merged branch never reach `main`. In BLOOP-EP01-SHORT, PR #132 was merged after its first commit, and two later commits never reached `main` (30 Oct 2026).
+
+The PR description includes:
 
 - `Closes #N`.
 - The resulting behavior and a summary of the change.

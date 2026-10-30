@@ -40,6 +40,9 @@ Before selecting/revising medium/compositing/camera/light strategy, consult rele
 
 Boss then builds every shot of that family to its look frame and compares each plate with it before reporting. Fix passes batch every known defect into one round instead of one defect per round. A look family with an approved precedent (an earlier episode's accepted look) reuses that frame instead. Evidence: on WORLD FOG EP01 (30 Oct 2026) 22 plates built before the interior/character look was locked needed two fix passes, a late look-dev pass (VD18) and a re-apply pass. Boss runs were about half of that session's usage.
 
+<a id="look-change"></a>
+**Requirement — key-pose stills for look changes.** Any user-visible look change after the brief (a new ending, a creature or character redesign, a changed key set or medium) is approved before Boss builds or rebuilds plates for it. Film paints spike stills of the changed element in its key poses, normally 3–6 low-resolution stills (the poses the scene sheets actually use), with the caption band shown. The user picks or approves them; record their words as a `VD` decision and link the stills in the brief. Boss then builds to those stills. A change that only fixes a defect against an already approved look needs no stills. BLOOP-EP01-SHORT rebuilt plates after look changes made once Boss had built them (30 Oct 2026).
+
 This role is planning. It does not install packages, implement runtime or author detailed scene sheets as a side effect. Specify the smallest feasibility spike/blockout and observable acceptance criteria for Boss. Run a spike yourself only when separately assigned, following implementation workflow.
 
 ## Light tier brief

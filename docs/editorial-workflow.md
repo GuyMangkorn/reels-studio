@@ -93,6 +93,9 @@ Conclude for the named revision only: `revision-required`, `verification-incompl
 
 After a script revision, assess changes to factual wording and dependent claims. Recheck affected items and record coverage of the new revision. Synchronize the script header and delivery record with the resulting factual status while preserving dated history and separate user-approval/timing status. Reuse earlier results only after checking that the wording is unchanged and no new contrary evidence applies.
 
+<a id="inline-fact-fixes"></a>
+**Default — small fixes inline.** When a finding's correction is one exact number or one wording change that Boat has already written (no change to the beat, clue, twist or story timing), the coordinator applies it mechanically to the script ([AI02](delivery-workflow.md#agent-invocation)) with a change-log line naming Boat's finding ID. Boat rechecks that item at the next scheduled recheck instead of in a separate round-trip, and the factual status shows `correction applied, recheck pending` until then. A finding that needs rewording judgment, touches the reveal or changes timing goes back to Preaw and Boat as usual.
+
 <a id="ส่งต่อและตรวจบทก่อนลงทุนทำภาพ"></a>
 ## Handoff and editorial check before visual production
 

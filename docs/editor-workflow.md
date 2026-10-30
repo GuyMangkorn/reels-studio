@@ -11,6 +11,10 @@
 | Boss | Reusable assets/rigs/props/sets, coordinate conversion, shared renderer/camera/effect/transition capabilities, contracts/validators and fixes in their owning modules |
 | Editor | Scene/timeline authoring and assembly, supported asset selection/staging/timing, narration/amplitude/subtitle/SFX integration, supported effects/transitions/endings, rendered samples and sequence/runtime QA |
 
+**Voice lock.** For timed deliverables Editor generates the final narration and its measure file before Mark writes timed sheets ([voice lock](delivery-workflow.md#voice-lock)). Later script or voice changes re-open the lock for the affected beats only.
+
+**Long jobs.** Renders, TTS, alignment and loudness passes finish inside the Editor invocation that started them ([AI10](delivery-workflow.md#ai10)): run them in the foreground or wait on their log's completion line, then report. A report written while a job is still running names the job, its `out/logs/` path and the completion line to wait for. Painted or WebGL renders use `scripts/render.mjs --gl=angle --timeout=180000` ([scripts](../scripts/README.md)); a job that prints nothing for several minutes is a hang to report, not a job to wait out.
+
 Editor reads the exported API/source and authors supported values. Missing reusable behavior or asset/contact defects go to Boss with shot/frame evidence and consumers. Keep geometry/SVG/rigs, projection and shared timing/transition algorithms in their owning library modules. Editor may implement a shared change only when explicitly assigned that scope, following Boss's workflow. Preserve unrelated work.
 
 <a id="direct-intake"></a>
