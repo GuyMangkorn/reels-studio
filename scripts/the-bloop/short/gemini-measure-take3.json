@@ -1,0 +1,552 @@
+{
+ "method": "one continuous Gemini read (take 2), faster-whisper large-v3-turbo word timestamps aligned to the R5 VO with difflib; estimates, not WordBoundary; cut at real energy gaps (cut-take2.py)",
+ "take": "take2",
+ "full": "out/BLOOP-EP01-SHORT/gemini-vo/take3/FULL-take3.wav",
+ "matchRatio": 0.921,
+ "beats": {
+  "B01": {
+   "vo": "เสียงนี้… ไมค์ใต้ทะเลจับได้ปี 1997 มันดังมาก จนนักวิจัยไม่เคยได้ยินอะไรแบบนี้",
+   "tts": "เสียงนี้, ไมค์ใต้ทะเลจับได้ปี 1997 มันดังมาก จนนักวิจัยไม่เคยได้ยินอะไรแบบนี้",
+   "segment": "out/BLOOP-EP01-SHORT/gemini-vo/take3/segments/B01.wav",
+   "segStart": 0.0,
+   "segEnd": 6.375,
+   "speechOnRaw": 0.1372,
+   "speechOffRaw": 6.092,
+   "edgeMarginSec": 0.137
+  },
+  "B02": {
+   "vo": "ไมค์พวกนี้ โนอาหย่อนไว้ลึกใต้แปซิฟิก เพื่อฟังแผ่นดินไหวใต้ทะเล แต่ปีนั้น มันได้ยินเสียงนี้ซ้ำหลายครั้ง",
+   "tts": "ไมค์พวกนี้ โนอาหย่อนไว้ลึกใต้แปซิฟิก เพื่อฟังแผ่นดินไหวใต้ทะเล แต่ปีนั้น มันได้ยินเสียงนี้ซ้ำหลายครั้ง",
+   "segment": "out/BLOOP-EP01-SHORT/gemini-vo/take3/segments/B02.wav",
+   "segStart": 6.375,
+   "segEnd": 13.22,
+   "speechOnRaw": 0.2789,
+   "speechOffRaw": 6.6006,
+   "edgeMarginSec": 0.244
+  },
+  "B03": {
+   "vo": "เสียงบลูปของจริงต่ำมาก ที่ได้ยินนี่ถูกเร่ง 16 เท่า… เสียงจริงไต่สูงขึ้นอย่างรวดเร็ว ตลอดราวหนึ่งนาที ฟังคล้ายเสียงสัตว์ร้อง",
+   "tts": "เสียงบลูปของจริงต่ำมาก ที่ได้ยินนี่ถูกเร่ง 16 เท่า, เสียงจริงไต่สูงขึ้นอย่างรวดเร็ว ตลอดราวหนึ่งนาที ฟังคล้ายเสียงสัตว์ร้อง",
+   "segment": "out/BLOOP-EP01-SHORT/gemini-vo/take3/segments/B03.wav",
+   "segStart": 13.22,
+   "segEnd": 22.715,
+   "speechOnRaw": 0.242,
+   "speechOffRaw": 9.3703,
+   "edgeMarginSec": 0.125
+  },
+  "B04": {
+   "vo": "มันดังจนไมค์หลายตัวได้ยิน จากไกลกว่าห้าพันกิโลเมตร นักวิทยาศาสตร์บางคนก็สงสัยว่าเป็นสัตว์ ส่วนชาวเน็ต… จินตนาการไปถึงสัตว์ยักษ์",
+   "tts": "มันดังจนไมค์หลายตัวได้ยิน จากไกลกว่าห้าพันกิโลเมตร นักวิทยาศาสตร์บางคนก็สงสัยว่าเป็นสัตว์ ส่วนชาวเน็ต, จินตนาการไปถึงสัตว์ยักษ์",
+   "segment": "out/BLOOP-EP01-SHORT/gemini-vo/take3/segments/B04.wav",
+   "segStart": 22.715,
+   "segEnd": 30.47,
+   "speechOnRaw": 0.1182,
+   "speechOffRaw": 7.4441,
+   "edgeMarginSec": 0.118
+  },
+  "B05": {
+   "vo": "แต่ทิศของเสียง ชี้ไกลลงไปทางใต้… ทางขั้วโลกใต้",
+   "tts": "แต่ทิศของเสียง ชี้ไกลลงไปทางใต้, ทางขั้วโลกใต้",
+   "segment": "out/BLOOP-EP01-SHORT/gemini-vo/take3/segments/B05.wav",
+   "segStart": 30.47,
+   "segEnd": 34.58,
+   "speechOnRaw": 0.3187,
+   "speechOffRaw": 3.8685,
+   "edgeMarginSec": 0.241
+  },
+  "B06": {
+   "vo": "เพราะทะเลลึกมี \"ช่องเสียง\" ที่พาเสียงต่ำไปได้ไกลมาก ไมค์พวกนี้ถูกหย่อนไว้ในช่องนั้นพอดี",
+   "tts": "เพราะทะเลลึกมี \"ช่องเสียง\" ที่พาเสียงต่ำไปได้ไกลมาก ไมค์พวกนี้ถูกหย่อนไว้ในช่องนั้นพอดี",
+   "segment": "out/BLOOP-EP01-SHORT/gemini-vo/take3/segments/B06.wav",
+   "segStart": 34.58,
+   "segEnd": 40.34,
+   "speechOnRaw": 0.2435,
+   "speechOffRaw": 5.5757,
+   "edgeMarginSec": 0.184
+  },
+  "B07": {
+   "vo": "หลายปีต่อมา ไมค์ใกล้แอนตาร์กติกา… เจอเสียงที่ลายคลื่นคล้ายกันมาก จากภูเขาน้ำแข็งยักษ์ที่กำลังแตกร้าว",
+   "tts": "หลายปีต่อมา ไมค์ใกล้แอนตาร์กติกา, เจอเสียงที่ลายคลื่นคล้ายกันมาก จากภูเขาน้ำแข็งยักษ์ที่กำลังแตกร้าว",
+   "segment": "out/BLOOP-EP01-SHORT/gemini-vo/take3/segments/B07.wav",
+   "segStart": 40.34,
+   "segEnd": 46.805,
+   "speechOnRaw": 0.185,
+   "speechOffRaw": 6.4046,
+   "edgeMarginSec": 0.06
+  },
+  "B08": {
+   "vo": "ราวปี 2012 โนอาประกาศว่า บลูปสอดคล้องกับเสียง \"แผ่นดินไหวน้ำแข็ง\" ไมค์ที่ฟังแผ่นดินไหว ก็น่าจะได้ยินแผ่นดินไหวจริง ๆ… ของน้ำแข็ง",
+   "tts": "ราวปี 2012 โนอาประกาศว่า บลูปสอดคล้องกับเสียง \"แผ่นดินไหวน้ำแข็ง\" ไมค์ที่ฟังแผ่นดินไหว ก็น่าจะได้ยินแผ่นดินไหวจริง ๆ, ของน้ำแข็ง",
+   "segment": "out/BLOOP-EP01-SHORT/gemini-vo/take3/segments/B08.wav",
+   "segStart": 46.805,
+   "segEnd": 56.315,
+   "speechOnRaw": 0.0233,
+   "speechOffRaw": 9.4322,
+   "edgeMarginSec": 0.023
+  },
+  "B09": {
+   "vo": "สัตว์ยักษ์ตัวนั้นมีแค่ในจินตนาการ เสียงที่ไต่สูงเหมือนสัตว์ร้อง สอดคล้องกับเสียงน้ำแข็งแตกร้าว…",
+   "tts": "สัตว์ยักษ์ตัวนั้นมีแค่ในจินตนาการ เสียงที่ไต่สูงเหมือนสัตว์ร้อง สอดคล้องกับเสียงน้ำแข็งแตกร้าว,",
+   "segment": "out/BLOOP-EP01-SHORT/gemini-vo/take3/segments/B09.wav",
+   "segStart": 56.315,
+   "segEnd": 62.99,
+   "speechOnRaw": 0.023,
+   "speechOffRaw": 6.3033,
+   "edgeMarginSec": 0.023
+  },
+  "B10": {
+   "vo": "คุณคิดว่ามันคืออะไรกันแน่?",
+   "tts": "คุณคิดว่ามันคืออะไรกันแน่?",
+   "segment": "out/BLOOP-EP01-SHORT/gemini-vo/take3/segments/B10.wav",
+   "segStart": 62.99,
+   "segEnd": 65.4436,
+   "speechOnRaw": 0.3781,
+   "speechOffRaw": 2.287,
+   "edgeMarginSec": 0.167
+  }
+ },
+ "anchors": [
+  {
+   "id": "B01-a1",
+   "beat": "B01",
+   "text": "เสียงนี้…",
+   "estOn": 9,
+   "estEnd": 20,
+   "onRaw": 0.1372,
+   "endRaw": 0.68,
+   "firstWord": "เส"
+  },
+  {
+   "id": "B01-a2",
+   "beat": "B01",
+   "text": "ไมค์ใต้ทะเลจับได้ปี 1997",
+   "estOn": 30,
+   "estEnd": 106,
+   "onRaw": 1.0,
+   "endRaw": 2.54,
+   "firstWord": "ม"
+  },
+  {
+   "id": "B01-a3",
+   "beat": "B01",
+   "text": "มันดังมาก",
+   "estOn": 108,
+   "estEnd": 124,
+   "onRaw": 2.54,
+   "endRaw": 4.26,
+   "firstWord": " ม"
+  },
+  {
+   "id": "B01-a4",
+   "beat": "B01",
+   "text": "จนนักวิจัยไม่เคยได้ยินอะไรแบบนี้",
+   "estOn": 124,
+   "estEnd": 190,
+   "onRaw": 4.48,
+   "endRaw": 6.06,
+   "firstWord": " จ"
+  },
+  {
+   "id": "B02-a1",
+   "beat": "B02",
+   "text": "ไมค์พวกนี้",
+   "estOn": 198,
+   "estEnd": 214,
+   "onRaw": 0.365,
+   "endRaw": 0.925,
+   "firstWord": "ม"
+  },
+  {
+   "id": "B02-a2",
+   "beat": "B02",
+   "text": "โนอาหย่อนไว้ลึกใต้แปซิฟิก",
+   "estOn": 216,
+   "estEnd": 265,
+   "onRaw": 1.025,
+   "endRaw": 2.165,
+   "firstWord": " น"
+  },
+  {
+   "id": "B02-a3",
+   "beat": "B02",
+   "text": "เพื่อฟังแผ่นดินไหวใต้ทะเล",
+   "estOn": 267,
+   "estEnd": 311,
+   "onRaw": 2.465,
+   "endRaw": 3.985,
+   "firstWord": " เพ"
+  },
+  {
+   "id": "B02-a4",
+   "beat": "B02",
+   "text": "แต่ปีนั้น",
+   "estOn": 313,
+   "estEnd": 329,
+   "onRaw": 4.325,
+   "endRaw": 4.925,
+   "firstWord": "แต"
+  },
+  {
+   "id": "B02-a5",
+   "beat": "B02",
+   "text": "มันได้ยินเสียงนี้ซ้ำหลายครั้ง",
+   "estOn": 330,
+   "estEnd": 370,
+   "onRaw": 4.925,
+   "endRaw": 6.585,
+   "firstWord": "ม"
+  },
+  {
+   "id": "B03-a1",
+   "beat": "B03",
+   "text": "เสียงบลูปของจริงต่ำมาก",
+   "estOn": 374,
+   "estEnd": 407,
+   "onRaw": 0.242,
+   "endRaw": 1.92,
+   "firstWord": "เส"
+  },
+  {
+   "id": "B03-a2",
+   "beat": "B03",
+   "text": "ที่ได้ยินนี่ถูกเร่ง 16 เท่า…",
+   "estOn": 407,
+   "estEnd": 456,
+   "onRaw": 2.3,
+   "endRaw": 3.68,
+   "firstWord": " ท"
+  },
+  {
+   "id": "B03-a3",
+   "beat": "B03",
+   "text": "เสียงจริงไต่สูงขึ้นอย่างรวดเร็ว",
+   "estOn": 468,
+   "estEnd": 512,
+   "onRaw": 4.08,
+   "endRaw": 6.0,
+   "firstWord": "เส"
+  },
+  {
+   "id": "B03-a4",
+   "beat": "B03",
+   "text": "ตลอดราวหนึ่งนาที",
+   "estOn": 514,
+   "estEnd": 546,
+   "onRaw": 6.0,
+   "endRaw": 7.36,
+   "firstWord": "ต"
+  },
+  {
+   "id": "B03-a5",
+   "beat": "B03",
+   "text": "ฟังคล้ายเสียงสัตว์ร้อง",
+   "estOn": 547,
+   "estEnd": 572,
+   "onRaw": 7.82,
+   "endRaw": 9.22,
+   "firstWord": "ฟ"
+  },
+  {
+   "id": "B04-a1",
+   "beat": "B04",
+   "text": "มันดังจนไมค์หลายตัวได้ยิน",
+   "estOn": 575,
+   "estEnd": 617,
+   "onRaw": 0.1182,
+   "endRaw": 1.545,
+   "firstWord": " ม"
+  },
+  {
+   "id": "B04-a2",
+   "beat": "B04",
+   "text": "จากไกลกว่าห้าพันกิโลเมตร",
+   "estOn": 619,
+   "estEnd": 663,
+   "onRaw": 1.545,
+   "endRaw": 3.085,
+   "firstWord": "จ"
+  },
+  {
+   "id": "B04-a3",
+   "beat": "B04",
+   "text": "นักวิทยาศาสตร์บางคนก็สงสัยว่าเป็นสัตว์",
+   "estOn": 665,
+   "estEnd": 736,
+   "onRaw": 3.445,
+   "endRaw": 5.305,
+   "firstWord": "น"
+  },
+  {
+   "id": "B04-a4",
+   "beat": "B04",
+   "text": "ส่วนชาวเน็ต…",
+   "estOn": 738,
+   "estEnd": 754,
+   "onRaw": 5.505,
+   "endRaw": 6.085,
+   "firstWord": " ส"
+  },
+  {
+   "id": "B04-a5",
+   "beat": "B04",
+   "text": "จินตนาการไปถึงสัตว์ยักษ์",
+   "estOn": 766,
+   "estEnd": 800,
+   "onRaw": 6.285,
+   "endRaw": 7.4441,
+   "firstWord": " จ"
+  },
+  {
+   "id": "B05-a1",
+   "beat": "B05",
+   "text": "แต่",
+   "estOn": 801,
+   "estEnd": 807,
+   "onRaw": 0.3187,
+   "endRaw": 0.49,
+   "firstWord": "แต"
+  },
+  {
+   "id": "B05-a2",
+   "beat": "B05",
+   "text": "ทิศของเสียง",
+   "estOn": 808,
+   "estEnd": 824,
+   "onRaw": 0.49,
+   "endRaw": 1.25,
+   "firstWord": "ท"
+  },
+  {
+   "id": "B05-a3",
+   "beat": "B05",
+   "text": "ชี้ไกลลงไปทางใต้…",
+   "estOn": 828,
+   "estEnd": 861,
+   "onRaw": 1.25,
+   "endRaw": 2.83,
+   "firstWord": "ช"
+  },
+  {
+   "id": "B05-a4",
+   "beat": "B05",
+   "text": "ทางขั้วโลกใต้",
+   "estOn": 876,
+   "estEnd": 898,
+   "onRaw": 2.95,
+   "endRaw": 3.8685,
+   "firstWord": " ท"
+  },
+  {
+   "id": "B06-a1",
+   "beat": "B06",
+   "text": "เพราะทะเลลึกมี",
+   "estOn": 905,
+   "estEnd": 927,
+   "onRaw": 0.2435,
+   "endRaw": 1.0,
+   "firstWord": "เพ"
+  },
+  {
+   "id": "B06-a2",
+   "beat": "B06",
+   "text": "\"ช่องเสียง\"",
+   "estOn": 927,
+   "estEnd": 938,
+   "onRaw": 1.0,
+   "endRaw": 1.68,
+   "firstWord": "ช"
+  },
+  {
+   "id": "B06-a3",
+   "beat": "B06",
+   "text": "ที่พาเสียงต่ำไปได้ไกลมาก",
+   "estOn": 940,
+   "estEnd": 984,
+   "onRaw": 1.68,
+   "endRaw": 3.2,
+   "firstWord": "ท"
+  },
+  {
+   "id": "B06-a4",
+   "beat": "B06",
+   "text": "ไมค์พวกนี้ถูกหย่อนไว้ในช่องนั้นพอดี",
+   "estOn": 988,
+   "estEnd": 1048,
+   "onRaw": 3.6,
+   "endRaw": 5.52,
+   "firstWord": " ไม"
+  },
+  {
+   "id": "B07-a1",
+   "beat": "B07",
+   "text": "หลายปีต่อมา",
+   "estOn": 1055,
+   "estEnd": 1077,
+   "onRaw": 0.185,
+   "endRaw": 0.92,
+   "firstWord": "ห"
+  },
+  {
+   "id": "B07-a2",
+   "beat": "B07",
+   "text": "ไมค์ใกล้แอนตาร์กติกา…",
+   "estOn": 1079,
+   "estEnd": 1112,
+   "onRaw": 1.18,
+   "endRaw": 2.18,
+   "firstWord": " ไม"
+  },
+  {
+   "id": "B07-a3",
+   "beat": "B07",
+   "text": "เจอเสียงที่ลายคลื่นคล้ายกันมาก",
+   "estOn": 1127,
+   "estEnd": 1171,
+   "onRaw": 2.18,
+   "endRaw": 4.04,
+   "firstWord": " เจ"
+  },
+  {
+   "id": "B07-a4",
+   "beat": "B07",
+   "text": "จากภูเขาน้ำแข็งยักษ์ที่กำลัง",
+   "estOn": 1173,
+   "estEnd": 1222,
+   "onRaw": 4.22,
+   "endRaw": 5.56,
+   "firstWord": "จ"
+  },
+  {
+   "id": "B07-a5",
+   "beat": "B07",
+   "text": "แตกร้าว",
+   "estOn": 1222,
+   "estEnd": 1233,
+   "onRaw": 5.56,
+   "endRaw": 6.18,
+   "firstWord": "แต"
+  },
+  {
+   "id": "B08-a1",
+   "beat": "B08",
+   "text": "ราวปี 2012",
+   "estOn": 1238,
+   "estEnd": 1271,
+   "onRaw": 0.075,
+   "endRaw": 0.635,
+   "firstWord": " ร"
+  },
+  {
+   "id": "B08-a2",
+   "beat": "B08",
+   "text": "โนอาประกาศว่า",
+   "estOn": 1271,
+   "estEnd": 1298,
+   "onRaw": 1.375,
+   "endRaw": 2.315,
+   "firstWord": " โ"
+  },
+  {
+   "id": "B08-a3",
+   "beat": "B08",
+   "text": "บลูปสอดคล้องกับเสียง",
+   "estOn": 1298,
+   "estEnd": 1325,
+   "onRaw": 3.075,
+   "endRaw": 3.955,
+   "firstWord": " ส"
+  },
+  {
+   "id": "B08-a4",
+   "beat": "B08",
+   "text": "\"แผ่นดินไหวน้ำแข็ง\"",
+   "estOn": 1325,
+   "estEnd": 1352,
+   "onRaw": 3.955,
+   "endRaw": 5.195,
+   "firstWord": "แ"
+  },
+  {
+   "id": "B08-a5",
+   "beat": "B08",
+   "text": "ไมค์ที่ฟังแผ่นดินไหว",
+   "estOn": 1356,
+   "estEnd": 1389,
+   "onRaw": 5.895,
+   "endRaw": 7.055,
+   "firstWord": "ไม"
+  },
+  {
+   "id": "B08-a6",
+   "beat": "B08",
+   "text": "ก็น่าจะได้ยินแผ่นดินไหวจริง ๆ…",
+   "estOn": 1389,
+   "estEnd": 1444,
+   "onRaw": 7.055,
+   "endRaw": 8.435,
+   "firstWord": " ก"
+  },
+  {
+   "id": "B08-a7",
+   "beat": "B08",
+   "text": "ของน้ำแข็ง",
+   "estOn": 1452,
+   "estEnd": 1467,
+   "onRaw": 8.535,
+   "endRaw": 9.135,
+   "firstWord": " ข"
+  },
+  {
+   "id": "B09-a1",
+   "beat": "B09",
+   "text": "สัตว์ยักษ์ตัวนั้นมีแค่ในจินตนาการ",
+   "estOn": 1469,
+   "estEnd": 1529,
+   "onRaw": 0.023,
+   "endRaw": 2.105,
+   "firstWord": "ส"
+  },
+  {
+   "id": "B09-a2",
+   "beat": "B09",
+   "text": "เสียงที่ไต่สูงเหมือนสัตว์ร้อง",
+   "estOn": 1531,
+   "estEnd": 1569,
+   "onRaw": 2.485,
+   "endRaw": 4.005,
+   "firstWord": "เส"
+  },
+  {
+   "id": "B09-a3",
+   "beat": "B09",
+   "text": "สอดคล้องกับเสียงน้ำแข็งแตกร้าว…",
+   "estOn": 1569,
+   "estEnd": 1609,
+   "onRaw": 4.105,
+   "endRaw": 6.3033,
+   "firstWord": " ส"
+  },
+  {
+   "id": "B10-a1",
+   "beat": "B10",
+   "text": "คุณคิดว่ามันคืออะไรกันแน่?",
+   "estOn": 1629,
+   "estEnd": 1678,
+   "onRaw": 0.3781,
+   "endRaw": 2.09,
+   "firstWord": "ค"
+  }
+ ],
+ "cutRule": [
+  "B01|B02: whisper mid 6.400 s -> cut 6.375 s (gap 0.550 s centre)",
+  "B02|B03: whisper mid 13.210 s -> cut 13.220 s (gap 0.480 s centre)",
+  "B03|B04: whisper mid 22.500 s -> cut 22.715 s (gap 0.230 s centre)",
+  "B04|B05: whisper mid 30.780 s -> cut 30.470 s (gap 0.620 s centre)",
+  "B05|B06: whisper mid 34.530 s -> cut 34.580 s (gap 0.480 s centre)",
+  "B06|B07: whisper mid 40.290 s -> cut 40.340 s (gap 0.360 s centre)",
+  "B07|B08: whisper mid 46.700 s -> cut 46.805 s (quietest 10 ms (rms 15.9))",
+  "B08|B09: whisper mid 56.120 s -> cut 56.315 s (quietest 10 ms (rms 18.1))",
+  "B09|B10: whisper mid 62.990 s -> cut 62.990 s (gap 0.740 s centre)"
+ ],
+ "clampedAnchors": 11
+}

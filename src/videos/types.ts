@@ -16,6 +16,10 @@ export type VideoDefinition = {
   format: VideoFormat;
   timeline: Timeline;
   ending?: Ending;
+  /** `A_fade` only: seconds the final scene holds before fading (default 3; 0 = no freeze, the last scene runs to its end). */
+  endHoldSec?: number;
+  /** `A_fade` only: seconds of composition fade at the end (default 1; 0 = none, a plate's own black owns the fade). */
+  endFadeSec?: number;
   narration?: Narration;
   sceneTransitionFrames?: number;
   loopFadeFrames?: number;

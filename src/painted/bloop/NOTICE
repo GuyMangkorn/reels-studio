@@ -1,0 +1,24 @@
+NOTICE — BLOOP-EP01-SHORT derived data (src/painted/bloop/)
+
+1. coast.json — map coastline (DEP02 MAP, VD06, M01)
+   Source: Natural Earth 1:110m coastline (ne_110m_coastline), public domain (Natural Earth terms of use:
+   https://www.naturalearthdata.com/about/terms-of-use/). Retrieved 2026-10-30 from
+   https://raw.githubusercontent.com/nvkelso/natural-earth-vector/master/geojson/ne_110m_coastline.geojson
+   (139,907 bytes; SHA-256 851f581ff5ffb844deed8ae1a9ce22e3c4bb3d74fa342cadb5d8e39b41ae7c3c).
+   Derived by scripts/the-bloop/bake-map.py: longitudes wrapped to 145-340 E, projected to plate world px
+   (mapXY, 9.4 px/deg), simplified at 0.6 px, rounded to 0.1 px. No Natural Earth attribution is required; kept for the record.
+
+1b. land.json — land fill (FR05, pass 2)
+   Source: Natural Earth 1:110m land (ne_110m_land), public domain (same terms as above). Retrieved 2026-10-30 from
+   https://raw.githubusercontent.com/nvkelso/natural-earth-vector/master/geojson/ne_110m_land.geojson
+   (138,160 bytes; SHA-256 9e0729ee253ca7d7a5c4ae9395fb1902264c5377c52e224d13dd85010e2835d9).
+   Derived by scripts/the-bloop/bake-land.py: rings unwrapped across the antimeridian, clipped to longitudes 145-340 E,
+   projected with the same mapXY, simplified at 0.6 px. Drawn as a cream fill at 14 % opacity under the coastline.
+
+2. bloop-envelope.json — 30 fps RMS envelope (DEP05, VD15, AUD-1)
+   Derived from NOAA PMEL bloop.wav (https://www.pmel.noaa.gov/acoustics/sounds/bloop.wav; SHA-256
+   ecc057a98dfcb0e2a35affc54e906d9a0ee8870bc9592c8fffce873bad5b374f), the NOAA file labelled "Recorded signal sped up 16 times".
+   Only the amplitude shape is kept (peak-normalised); no audio is copied into this repository. The audio copy used by the
+   Editor must carry its own NOTICE with the licence basis recorded in scripts/the-bloop/research.md (AUD-1: federal work,
+   17 U.S.C. 105; the 1997 recording's author is not stated; stop and return to Boat if a contractor or third party is found).
+   Credit on screen when the clip plays: "Audio: NOAA PMEL" (script / AUD-1). Derived by scripts/the-bloop/bake-envelope.py.

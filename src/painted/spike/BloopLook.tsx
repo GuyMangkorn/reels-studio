@@ -551,7 +551,7 @@ const scaleAbout = (poly: Pt[], cx: number, cy: number, sx: number, sy: number):
  * Painted CR-REAL: layered washes over a flat underlayer (no large textured fills), still ink for plates and teeth
  * (no boil: a realistic creature must not shimmer through the rush), one boiling contour only.
  */
-const paintCrReal = (p: Painter, mx: number, my: number, k: number, detail: 2 | 3, o: {aperture?: number} = {}) => {
+const paintCrReal = (p: Painter, mx: number, my: number, k: number, detail: 2 | 3, o: {aperture?: number; inside?: () => void; shadow?: number} = {}) => {
   const g = crGeom(mx, my, k, detail);
   const {brush} = p;
   p.group(600);
@@ -574,10 +574,11 @@ const paintCrReal = (p: Painter, mx: number, my: number, k: number, detail: 2 | 
   }
   if (detail === 3) {
     brush.hatchStyle('HB', '#071017', 1.2);
-    brush.hatch(9, 0.62, {rand: 0.35, continuous: false, gradient: 0.4});
+    const hd = Math.max(3, (9 * k) / 0.86); // hatch spacing scales with the creature (no mesh read at small k)
+    brush.hatch(hd, 0.62, {rand: 0.35, continuous: false, gradient: 0.4});
     brush.noStroke();
     brush.polygon(scaleAbout(g.head, hx, top, 0.9, 0.52));
-    brush.hatch(13, -0.43, {rand: 0.35, continuous: false, gradient: 0.4});
+    brush.hatch(hd * 1.45, -0.43, {rand: 0.35, continuous: false, gradient: 0.4});
     brush.polygon(scaleAbout(g.head, hx, top, 0.9, 0.52));
     brush.noHatch();
   }
@@ -600,6 +601,8 @@ const paintCrReal = (p: Painter, mx: number, my: number, k: number, detail: 2 | 
   // B10 rush: the throat's black opens out to the lip line as the camera pushes in (aperture 0..1)
   const ap = o.aperture ?? 0;
   if (ap > 0) p.flat('#000000', scaleAbout(g.mouth, mx + 40 * k, my + 90 * k, 0.45 + 0.55 * ap, 0.4 + 0.58 * ap));
+  // B10 hero (R5): whatever is being swallowed is painted inside the mouth, behind the teeth
+  o.inside?.();
   // teeth: pale wash, darker root wash, still pen outline
   [...g.inner, ...g.teeth].forEach((t) => {
     p.flat('#b9bcb0', t);
@@ -635,6 +638,18 @@ const paintCrReal = (p: Painter, mx: number, my: number, k: number, detail: 2 | 
   // contour in still ink too: the B10 creature does not boil (BLOOP-BRIEF-R2 VD11)
   p.inkStill(630, '2B', '#010407', 2.2);
   brush.spline(g.head, 0.5);
+  const sh = o.shadow ?? 0;
+  if (sh >= 0.99) {
+    p.flat('#08111a', g.head);
+    g.spines.forEach((sp) => p.flat('#08111a', sp));
+  } else if (sh > 0) {
+    p.wash('#070e15', Math.round(255 * sh), g.head, 0.06, 0.2);
+    p.wash('#070e15', Math.round(235 * sh), g.mouth, 0.06, 0.2);
+  }
+  if (sh > 0) {
+    // the four eyes stay as cold glints: the silhouette's signature from far away
+    g.eyes.forEach(({c: [x, y], r, sx}) => p.flat('#a9d8d2', ring(x, y, Math.max(2.5, r * 0.45 * sx), Math.max(2.5, r * 0.4), 10)));
+  }
 };
 
 // ---------------------------------------------------------------- look stills
@@ -773,9 +788,9 @@ export const CP3Rush = () => {
   const frame = useCurrentFrame();
   const {fps} = useVideoConfig();
   const r = rushAt(frame);
-  const cam: Camera = {s: r.s, fx: 534, fy: 650, dx: 0, dy: r.dy};
   const paint = useCallback(({brush}: PaintContext) => {
     if (r.alpha <= 0) return;
+    const cam: Camera = {s: r.s, fx: 534, fy: 650, dx: 0, dy: r.dy};
     const p = makePainter(brush, {t: frame / fps, frame});
     brush.push();
     applyCamera(brush, cam);
@@ -792,6 +807,430 @@ export const CP3Rush = () => {
       <AbsoluteFill style={{backgroundColor: '#000', opacity: 1 - r.alpha}} />
       {r.alpha > 0 && <PaintedLabel text={LABEL_IMAG} />}
       <Tag id={`L-CP3 rush f${frame}`} title={`s ${r.s.toFixed(2)} · aperture ${r.ap.toFixed(2)} · plate alpha ${r.alpha.toFixed(2)}`} />
+    </AbsoluteFill>
+  );
+};
+
+// ---------------------------------------------------------------- ICE keel reference (BLOOP-BRIEF-R4 FR04/FR09), Film only
+/**
+ * FR04 keel silhouette (R4): the union of a wide top shelf, a body ellipse and 5 hanging lobes of unequal size, read
+ * radially from the centroid (120 rays), low-pass filtered (window 7) so the joins between lobes become soft waists, not
+ * cusps; then the top is cut at the waterline row with a gentle irregular dome. `w` = bounding width, depth ~ w / 1.6.
+ */
+export const keelOutline = (cx: number, cy: number, w: number, seed = 1): Pt[] => {
+  const D = w / 1.6, j = (i: number, amp: number) => (hash(seed * 17 + i) - 0.5) * 2 * amp;
+  // [centre x, centre y, rx, ry] in units of w (x) and D (y); y down from the waterline row
+  const lobes: [number, number, number, number][] = [
+    [0, 0.08, 0.5, 0.14],                                  // top shelf: widest part, at the waterline
+    [0.02, 0.28, 0.43, 0.3],                               // body
+    [-0.13 + j(1, 0.03), 0.62 + j(2, 0.04), 0.2, 0.36],    // main keel bulge, off-centre (deepest point)
+    [0.2 + j(3, 0.03), 0.5 + j(4, 0.04), 0.15, 0.22],     // secondary bulge
+    [0.37 + j(5, 0.02), 0.27, 0.11, 0.16],                 // right shoulder knob
+    [-0.37 + j(6, 0.02), 0.3, 0.12, 0.19],                 // left shoulder knob
+    [0.06 + j(7, 0.03), 0.7, 0.09, 0.14],                  // small low knob next to the keel
+  ];
+  const ox = 0.02 * w, oy = 0.33 * D; // ray origin (inside the body)
+  const inside = (x: number, y: number) => lobes.some(([lx, ly, rx, ry]) => ((x - lx * w) / (rx * w)) ** 2 + ((y - ly * D) / (ry * D)) ** 2 <= 1);
+  const n = 120;
+  const rr = Array.from({length: n}, (_, i) => {
+    const t = (i / n) * 6.283, c = Math.cos(t), sn = Math.sin(t);
+    let r = 0;
+    for (let d = 2; d < w; d += 2) if (inside(ox + c * d, oy + sn * d)) r = d;
+    return r;
+  });
+  const sm = rr.map((_, i) => {
+    let acc = 0;
+    for (let k = -3; k <= 3; k++) acc += rr[(i + k + n) % n];
+    return acc / 7;
+  });
+  return sm.map((r, i) => {
+    const t = (i / n) * 6.283;
+    const x = ox + Math.cos(t) * r;
+    let y = oy + Math.sin(t) * r;
+    const top = -0.02 * D - 0.035 * D * Math.cos((x / w) * 2.6) + j(20 + Math.round(x / 40), 0.006 * D);
+    if (y < top) y = top;
+    return [cx + x, cy + y] as Pt;
+  });
+};
+
+/** Clip a closed polygon to y <= yc ('above') or y >= yc ('below') (Sutherland-Hodgman against one row). */
+const clipY = (poly: Pt[], yc: number, keep: 'above' | 'below'): Pt[] => {
+  const ins = ([, y]: Pt) => (keep === 'above' ? y <= yc : y >= yc);
+  const out: Pt[] = [];
+  poly.forEach((cur, i) => {
+    const prev = poly[(i + poly.length - 1) % poly.length];
+    const cross = (): Pt => {
+      const u = (yc - prev[1]) / (cur[1] - prev[1]);
+      return [prev[0] + (cur[0] - prev[0]) * u, yc];
+    };
+    if (ins(cur)) {
+      if (!ins(prev)) out.push(cross());
+      out.push(cur);
+    } else if (ins(prev)) out.push(cross());
+  });
+  return out;
+};
+
+/** Painted keel: value bands follow depth inside the outline (clipped rows, soft bleed), no box, no outline ink. */
+const paintKeel = (p: Painter, pts: Pt[], glowFar = false) => {
+  const sm = closed(pts, 120);
+  const ys = sm.map((q) => q[1]), xs = sm.map((q) => q[0]);
+  const y0 = Math.min(...ys), y1 = Math.max(...ys), x0 = Math.min(...xs), x1 = Math.max(...xs), h = y1 - y0;
+  if (glowFar) {
+    // FR09: shape-following haze, the outline grown ~16 px with a high bleed; never a disc or an ellipse primitive
+    p.wash('#5e8798', 60, scaleAbout(sm, (x0 + x1) / 2, (y0 + y1) / 2, 1 + 32 / (x1 - x0), 1 + 32 / h), 0.5, 0.4);
+  }
+  p.flat('#2f5a6b', sm);                                               // underside value everywhere first
+  p.wash('#5e91a3', 230, clipY(sm, y0 + 0.72 * h, 'above'), 0.18, 0.5); // body band
+  p.wash('#6f9fb0', 170, clipY(sm, y0 + 0.45 * h, 'above'), 0.2, 0.5);
+  p.wash('#b8dbe6', 220, clipY(sm, y0 + 0.17 * h, 'above'), 0.15, 0.45); // top face
+  p.wash('#24495a', 170, clipY(sm, y0 + 0.86 * h, 'below'), 0.2, 0.5);  // underside deepening
+};
+
+const SET_COLD = ['#16343d', '#132e37', '#112931', '#0f252c', '#0d2027', '#0b1c22', '#0a181d'];
+
+export const IceRef = ({scale}: {scale: 'sh11' | 'sh12' | 'sh13'}) => {
+  const frame = useCurrentFrame();
+  const paint = useCallback(({brush}: PaintContext) => {
+    const p = makePainter(brush, {t: 0, frame});
+    if (scale === 'sh11') {
+      bands(p, W, '#112931', SET_COLD, -260, H + 260, {opacity: 200, bleed: 0.04, texture: 0.35});
+      paintKeel(p, keelOutline(700, 470, 680, 3));
+    } else if (scale === 'sh12') {
+      // section: surface line y 300; ~1/9 of the berg above it
+      bands(p, W, '#132538', DEEP, 300, H + 260, {opacity: 200, bleed: 0.04, texture: 0.35});
+      p.flat('#0b1622', span(W, -300, 300));
+      const k = keelOutline(205, 309, 250, 3);
+      paintKeel(p, k);
+      // the ~1/9 above water: a low, irregular tabular cap, 60 % of the keel width, brightest value
+      const cap: Pt[] = [[132, 301], [136, 284], [160, 279], [196, 281], [228, 277], [262, 283], [276, 301]];
+      p.flat('#b8dbe6', closed(cap, 30));
+      p.wash('#e3f3f7', 200, closed(cap.map(([x, y]) => [x, y - 2] as Pt).slice(1, -1).concat([[262, 292], [140, 292]]), 20), 0.1, 0.4);
+      p.inkStill(700, 'HB', '#9fb7c4', 1.6);
+      brush.line(-20, 300, W + 20, 300);
+    } else {
+      paintDeep(p, {haze: 0.6});
+      paintKeel(p, keelOutline(920, 470, 260, 3), true);
+      paintHydrophone(p, 380, 560);
+    }
+  }, [frame, scale]);
+  const title = {sh11: 'FR04 keel at SH11 scale (680 px wide), SET-COLD', sh12: 'FR04 keel at SH12 scale (250 px), surface line y 300, ~1/9 above', sh13: 'FR09 far ice (260 px) with shape-following haze, no disc'}[scale];
+  return (
+    <AbsoluteFill style={{backgroundColor: '#0b1622'}}>
+      <BrushCanvas paint={paint} paper="#0b1622" />
+      <Grain />
+      <Tag id={`ICE-REF ${scale.toUpperCase()}`} title={title} />
+    </AbsoluteFill>
+  );
+};
+
+// ---------------------------------------------------------------- B10 hero ending look stills (BLOOP-BRIEF-R5), Film only
+// SH13 screen layout (s 1): hydrophone centre (380, 560), far ice centre (760, 470). The creature approaches from beyond
+// the ice: its own scale k grows (world motion, not camera), mouth centre = (mx + 40k, my + 80k).
+type HeroBeat = 'far' | 'approach' | 'ice' | 'hyd' | 'cover';
+const HERO: Record<HeroBeat, {k: number; mouth: Pt; shadow: number; behindIce: boolean; title: string}> = {
+  far: {k: 0.17, mouth: [800, 380], shadow: 1, behindIce: true, title: 'H1 far silhouette beyond the ice (k 0.17): four cold eye glints, no detail'},
+  approach: {k: 0.3, mouth: [780, 430], shadow: 0.6, behindIce: true, title: 'H2 approach (k 0.30): detail resolving out of the dark, mouth opening'},
+  ice: {k: 0.52, mouth: [760, 480], shadow: 0.25, behindIce: false, title: 'H3 swallows the far ice (k 0.52): ice inside the mouth, darkening'},
+  hyd: {k: 1.0, mouth: [400, 610], shadow: 0, behindIce: false, title: 'H4 swallows the hydrophone (k 1.0 = CP3 L249 size): post inside the mouth'},
+  cover: {k: 1.0, mouth: [400, 610], shadow: 0, behindIce: false, title: 'H5 mouth covers the screen: camera s 3, aperture 1 (then black hold)'},
+};
+export const HeroStill = ({beat}: {beat: HeroBeat}) => {
+  const frame = useCurrentFrame();
+  const h = HERO[beat];
+  const paint = useCallback(({brush}: PaintContext) => {
+    const p = makePainter(brush, {t: 0, frame});
+    const cam: Camera = beat === 'cover' ? {s: 3, fx: h.mouth[0], fy: h.mouth[1], dx: 140, dy: 300} : STILL_CAMERA_B10;
+    brush.push();
+    applyCamera(brush, cam);
+    paintDeep(p, {haze: 0.6});
+    const mx = h.mouth[0] - 40 * h.k, my = h.mouth[1] - 80 * h.k;
+    const ice = () => paintKeel(p, keelOutline(760, 450, 260, 3), true);
+    const iceInside = () => {
+      // the berg, shrunk toward the throat and darkened: it is going in
+      const pts = keelOutline(760, 470, 170, 3).map(([x, y]) => [x, y] as Pt);
+      paintKeel(p, pts);
+      p.wash('#02070b', 150, closed(pts, 60), 0.2, 0.3);
+    };
+    const hydInside = () => {
+      paintHydrophone(p, 380, 600, 0.9);
+      p.wash('#02070b', 120, [[320, 420], [440, 420], [440, 780], [320, 780]], 0.3, 0.3);
+    };
+    if (h.behindIce) {
+      paintCrReal(p, mx, my, h.k, 3, {shadow: h.shadow, aperture: 0});
+      ice();
+      paintHydrophone(p, 380, 560);
+    } else if (beat === 'ice') {
+      paintCrReal(p, mx, my, h.k, 3, {shadow: h.shadow, inside: iceInside});
+      paintHydrophone(p, 380, 560);
+    } else {
+      paintCrReal(p, mx, my, h.k, 3, {inside: beat === 'cover' ? undefined : hydInside, aperture: beat === 'cover' ? 1 : 0.3});
+    }
+    brush.pop();
+    paintSnow(p, 0, 60);
+  }, [frame, beat, h]);
+  return (
+    <AbsoluteFill style={{backgroundColor: '#0b1622'}}>
+      <BrushCanvas paint={paint} paper="#0b1622" />
+      <Grade />
+      <Grain />
+      <PaintedLabel text={LABEL_IMAG} />
+      <Tag id={`B10-HERO ${beat}`} title={h.title} />
+    </AbsoluteFill>
+  );
+};
+const STILL_CAMERA_B10: Camera = {s: 1, fx: 540, fy: 960, dx: 0, dy: 0};
+
+// ---------------------------------------------------------------- B10 far silhouette fix (BLOOP-BRIEF-R7 H09), Film only
+/**
+ * CRD-2 in profile (the L-B2 drawing: head left), as one soft dark silhouette for P1. Built in L-B2 drawing units
+ * (snout x −40 … tail fin x 1560, head centre (300, 560)), scaled so the full length is `len` px, centred on the head at
+ * (hx, hy). `bend` = tail undulation phase (radians): spine y offset 0.07·len·sin(bend − 3.2·u) over the body (u 0..1 from
+ * the gills to the tail), head fixed.
+ */
+const profileSilhouette = (hx: number, hy: number, len: number, bend: number) => {
+  const sc = len / 1600;
+  const spineRaw: Pt[] = [[420, 560], [700, 565], [920, 590], [1130, 575], [1380, 540]];
+  const spine = bez(spineRaw, 40).map(([x, y], i, a) => {
+    const u = i / (a.length - 1);
+    return [x, y + (0.07 * 1600) * u * Math.sin(bend - 3.2 * u)] as Pt;
+  });
+  const {top, bot} = tube(spine, (u) => 470 - u * 360);
+  const end = spine[spine.length - 1], endTop = top[top.length - 1], endBot = bot[bot.length - 1];
+  const fin: Pt[] = [endTop, [end[0] + 120, end[1] - 170], [end[0] + 180, end[1] - 150], [end[0] + 90, end[1]], [end[0] + 180, end[1] + 150], [end[0] + 120, end[1] + 170], endBot];
+  const head: Pt[] = [[560, 290], [330, 250], [130, 320], [-20, 470], [-40, 640], [60, 790], [280, 860], [520, 830], [640, 700]];
+  const dorsal: Pt[] = [[700, 380], [780, 250], [900, 270], [950, 400]];
+  const pect: Pt[] = [[600, 760], [700, 930], [840, 950], [780, 790]];
+  const T = ([x, y]: Pt): Pt => [hx + (x - 300) * sc, hy + (y - 560) * sc];
+  return {
+    body: [...top, ...fin.slice(1, -1), ...bot.slice().reverse()].map(T),
+    head: closed(head, 40).map(T),
+    fins: [closed(dorsal, 16).map(T), closed(pect, 16).map(T)],
+    eyes: ([[160, 470, 30], [250, 380, 22]] as [number, number, number][]).map(([x, y, r]) => ({c: T([x, y]), r: Math.max(2.5, r * sc * 0.6)})),
+  };
+};
+
+/** Soft far silhouette: water-tinted dark (a few levels under the water, not black), bleeding edges, two cold glints. */
+const paintFarProfile = (p: Painter, hx: number, hy: number, len: number, bend: number, tone = '#0d1b2a', sx = 1) => {
+  const s0 = profileSilhouette(hx, hy, len, bend);
+  const fx = (pts: Pt[]) => pts.map(([x, y]) => [hx + (x - hx) * sx, y] as Pt);
+  const s = {body: fx(s0.body), head: fx(s0.head), fins: s0.fins.map(fx), eyes: s0.eyes.map(({c, r}) => ({c: [hx + (c[0] - hx) * sx, c[1]] as Pt, r}))};
+  s.fins.forEach((f) => p.wash(tone, 230, f, 0.12, 0.2));
+  p.wash(tone, 245, s.body, 0.1, 0.2);
+  p.wash(tone, 250, s.head, 0.1, 0.2);
+  p.wash('#09141f', 150, scaleAbout(s.head, s.head[0][0], s.head[0][1], 0.8, 0.8), 0.2, 0.2);
+  s.eyes.forEach(({c: [x, y], r}) => p.flat('#a9d8d2', ring(x, y, r, r * 0.85, 10)));
+};
+
+/** P2 turn: the front-3/4 head (CP3, shadowed) with the foreshortened body and tail trailing up-right behind it. */
+const paintTurnBody = (p: Painter, mouth: Pt, k: number, tone = '#0d1b2a') => {
+  const headW = 1100 * k, [mx, my] = mouth;
+  const base: Pt = [mx + 0.1 * headW, my - 0.25 * headW];
+  const ang = -0.55, L = 1.25 * headW;
+  const dir: Pt = [Math.cos(ang), Math.sin(ang)], nrm: Pt = [-dir[1], dir[0]];
+  const w = (u: number) => headW * (0.42 - 0.34 * u);
+  const sp = range(16, (u) => [base[0] + dir[0] * L * u + nrm[0] * 0.08 * headW * Math.sin(u * 3), base[1] + dir[1] * L * u + nrm[1] * 0.08 * headW * Math.sin(u * 3)] as Pt);
+  const side = (sg: number) => sp.map(([x, y], i) => [x + nrm[0] * sg * w(i / 16), y + nrm[1] * sg * w(i / 16)] as Pt);
+  const tip = sp[16];
+  const fin: Pt[] = [[tip[0] + dir[0] * 0.25 * headW + nrm[0] * 0.22 * headW, tip[1] + dir[1] * 0.25 * headW + nrm[1] * 0.22 * headW], [tip[0] + dir[0] * 0.12 * headW, tip[1] + dir[1] * 0.12 * headW], [tip[0] + dir[0] * 0.25 * headW - nrm[0] * 0.22 * headW, tip[1] + dir[1] * 0.25 * headW - nrm[1] * 0.22 * headW]];
+  p.wash(tone, 245, [...side(1), ...fin, ...side(-1).reverse()], 0.12, 0.2);
+};
+
+type FarBeat = 'p1a' | 'p1b' | 'p2a' | 'p2b';
+const FAR: Record<FarBeat, string> = {
+  p1a: 'P1 start: profile silhouette, 230 px long, head left, swimming left beyond the ice',
+  p1b: 'P1 end: profile 380 px, tail bent, two glints; still beyond and above the ice',
+  p2a: 'P2 turn (f14-24): profile foreshortens (x 0.45) as the 3/4 head fades in at shadow 0.6, jaw opening; body trails up-right',
+  p2b: 'P2 late: k 0.40, shadow 0.4, body behind the head, jaw opening',
+};
+export const FarStill = ({beat}: {beat: FarBeat}) => {
+  const frame = useCurrentFrame();
+  const paint = useCallback(({brush}: PaintContext) => {
+    const p = makePainter(brush, {t: 0, frame});
+    paintDeep(p, {haze: 0.6});
+    if (beat === 'p1a') paintFarProfile(p, 960, 320, 230, 0.4);
+    if (beat === 'p1b') paintFarProfile(p, 820, 350, 380, 1.9);
+    if (beat === 'p2a') {
+      const k = 0.3, m: Pt = [790, 410];
+      paintFarProfile(p, 800, 360, 460, 1.2, '#0d1b2a', 0.45);
+      paintTurnBody(p, m, k);
+      paintCrReal(p, m[0] - 40 * k, m[1] - 80 * k, k, 3, {shadow: 0.6, aperture: 0.4});
+    }
+    if (beat === 'p2b') {
+      const k = 0.4, m: Pt = [775, 440];
+      paintTurnBody(p, m, k, '#101f2e');
+      paintCrReal(p, m[0] - 40 * k, m[1] - 80 * k, k, 3, {shadow: 0.4, aperture: 0});
+    }
+    paintKeel(p, keelOutline(760, 450, 260, 3), true);
+    paintHydrophone(p, 380, 560);
+    paintSnow(p, 0, 60);
+  }, [frame, beat]);
+  return (
+    <AbsoluteFill style={{backgroundColor: '#0b1622'}}>
+      <BrushCanvas paint={paint} paper="#0b1622" />
+      <Grade />
+      <Grain />
+      <PaintedLabel text={LABEL_IMAG} />
+      <Tag id={`B10-FAR ${beat}`} title={FAR[beat]} />
+    </AbsoluteFill>
+  );
+};
+
+// ---------------------------------------------------------------- B04 hero dream creature (BLOOP-BRIEF-R8 H11), Film only
+// Richer CR-DREAM (CRD-2, L-B2) in the same local coordinates as `paintDreamCreature` (src/painted/bloop/creatures.ts).
+// Palette rule: the dream stays grey-violet; glows and specks are pale lilac-white, never cyan (ice colour is withheld
+// until B05, VD02).
+const DREAM_GLOW = '#efe9ff', DREAM_SPECK = '#e3dcff', PLATE_LIGHT = '#cfc8e0';
+export type DreamRich = {eyes: number; gape: number; glow: number; phase: number; specks: boolean; rich: boolean};
+const lerpPt = (a: Pt, b: Pt, u: number): Pt => [a[0] + (b[0] - a[0]) * u, a[1] + (b[1] - a[1]) * u];
+export const paintDreamRich = (p: Painter, place: {s: number; tx: number; ty: number}, o: DreamRich) => {
+  const {brush} = p;
+  brush.push();
+  brush.translate(place.tx, place.ty);
+  brush.scale(place.s);
+  // body: spine undulation (tail end ±22 local, head fixed), period set by `phase`
+  const spine = bez([[420, 560], [700, 560], [920, 600], [1130, 560], [1400, 470]], 40).map(([x, y], i, a) => {
+    const u = i / (a.length - 1);
+    return [x, y + 22 * u * u * Math.sin(o.phase - 2.6 * u)] as Pt;
+  });
+  const {top, bot} = tube(spine, (u) => 470 - u * 320);
+  blotch(p, '#b9b2ca', 140, [...top, ...bot.slice().reverse()]);
+  const head: Pt[] = [[560, 290], [330, 250], [130, 320], [-20, 470], [-40, 640], [60, 790], [280, 860], [520, 830], [640, 700]];
+  blotch(p, '#a59ebd', 175, closed(head, 50), 3);
+  // armour plates: each a tone wash, a lit top edge, cross-contour hatching (rich only)
+  const plates: {pts: Pt[]; ang: number}[] = [
+    {pts: [[130, 320], [330, 250], [360, 420], [300, 560], [140, 620], [60, 470]], ang: 0.9},     // cheek / eye plate
+    {pts: [[330, 250], [560, 290], [600, 480], [360, 420]], ang: -0.4},                         // crown plate
+    {pts: [[560, 290], [640, 700], [580, 700], [600, 480]], ang: 1.3},                          // operculum
+    {pts: [[-20, 470], [60, 470], [140, 620], [-30, 600]], ang: 0.2},                          // snout
+  ];
+  if (o.rich) {
+    plates.forEach(({pts, ang}, k) => {
+      const c = closed(pts, 30);
+      p.wash(k % 2 ? '#8a82a8' : '#7d7599', 170, scaleAbout(c, c[0][0], c[0][1], 0.95, 0.95), 0.12, 0.6);
+      hatchIn(p, 600 + k, scaleAbout(c, pts[0][0], pts[0][1], 0.88, 0.88), 6, ang, INK_D);
+      sketch(p, 610 + k, bez(pts.slice(0, 3), 12).map(([x, y]) => [x, y + 6] as Pt), {w: 1.6, color: PLATE_LIGHT, passes: 1, jit: 3});
+    });
+    // pits and scars on the plates (layered ink dots), fixed by hash
+    p.ink(620, 'HB', INK_D, 1.4);
+    for (let i = 0; i < 26; i++) {
+      const pl = plates[i % 3].pts, a = pl[Math.floor(hash(i + 900) * pl.length)], b = pl[Math.floor(hash(i + 901) * pl.length)];
+      const [x, y] = lerpPt(a, b, 0.3 + 0.4 * hash(i + 902));
+      brush.spline([[x - 6, y], [x, y - 4], [x + 6, y + 1]], 0.4);
+    }
+  }
+  hatchIn(p, 300, closed([[-30, 620], [200, 700], [520, 720], [560, 830], [280, 860], [60, 790]], 30), 8, -0.6);
+  hatchIn(p, 301, [...bot.slice(0, 32), ...top.slice(0, 32).reverse().map(([x, y]) => [x, y + 220] as Pt)], 10, 0.5);
+  sketch(p, 302, closed(head, 50), {w: o.rich ? 3.4 : 2.8});
+  sketch(p, 303, top.slice(3), {w: 2.3});
+  sketch(p, 304, bot.slice(3), {w: 2.3});
+  plates.forEach(({pts}, k) => sketch(p, 310 + k, bez(pts as Pt[], 16), {w: o.rich ? 2.4 : 1.8, jit: 5}));
+  // crown spines: rich = longer, with membrane washes between them (washes first: a wash resets the stroke state)
+  const crown = bez([[130, 320], [330, 250], [560, 290], [720, 340]], 10);
+  const spineLen = (i: number) => (o.rich ? 70 : 50) + 40 * hash(i + 70);
+  if (o.rich) crown.slice(0, -1).forEach(([x, y], i) => {
+    const [x2, y2] = crown[i + 1];
+    p.wash('#a39bbd', 140, [[x + 4, y - spineLen(i) * 0.85], [x2 + 4, y2 - spineLen(i + 1) * 0.85], [x2, y2], [x, y]], 0.15, 0.6);
+  });
+  p.ink(318, 'HB', INK_D, o.rich ? 2.2 : 1.8);
+  crown.forEach(([x, y], i) => brush.spline([[x - 14, y + 4], [x + 4, y - spineLen(i)], [x + 18, y + 4]], 0.3));
+  // core shadow on the lower head (rich): form, not just outline
+  if (o.rich) p.wash('#6b6488', 120, closed([[-30, 640], [200, 720], [520, 730], [600, 800], [280, 850], [60, 780]], 30), 0.2, 0.5);
+  // mouth: lip line splits into a gape (head silhouette unchanged), dark interior, underbite blades on the lower lip
+  const g = o.gape;
+  const lipU = bez([[-30, 600], [120, 640 - 46 * g], [320, 650 - 40 * g], [520, 610]], 20);
+  const lipL = bez([[-30, 600], [120, 640 + 58 * g], [320, 650 + 50 * g], [520, 610]], 20);
+  if (g > 0.02) {
+    p.wash('#2e2a40', 230, [...lipU, ...lipL.slice().reverse()], 0.08, 0.4);
+    hatchIn(p, 625, [...lipU, ...lipL.slice().reverse()], 5, 0.9, '#1d1a2a');
+  }
+  sketch(p, 320, lipU, {w: 2.8, brush: '2B'});
+  if (g > 0.02) sketch(p, 326, lipL, {w: 2.6, brush: '2B'});
+  p.ink(321, 'HB', INK_D, 1.8);
+  lipL.slice(1, 15).forEach(([x, y], i) => {
+    if (i % 2) return;
+    const l = (40 + 40 * hash(i + 400)) * (1 + 0.5 * g);
+    if (o.rich) p.wash('#ece6f6', 220, [[x - 12, y + 4], [x + 2, y - l], [x + 12, y + 4]], 0.02, 0.2);
+    brush.polygon([[x - 12, y + 4], [x + 2, y - l], [x + 12, y + 4]]);
+  });
+  if (o.rich && g > 0.02) {
+    p.ink(327, 'HB', INK_D, 1.4);
+    lipU.slice(2, 16).forEach(([x, y], i) => { if (i % 3 === 0) brush.polygon([[x - 7, y - 2], [x + 1, y + 26 + 14 * hash(i + 430)], [x + 7, y - 2]]); });
+  }
+  // eyes: closed = a lid line; open = iris, slit, highlight and a pale lilac glow (never cyan)
+  ([[160, 470, 34], [250, 380, 24]] as [number, number, number][]).forEach(([x, y, r], k) => {
+    if (o.eyes < 0.5) {
+      sketch(p, 330 + k * 4, bez([[x - r, y], [x, y + r * 0.35], [x + r, y]], 10), {w: 2.4, jit: 3});
+      sketch(p, 331 + k * 4, bez([[x - r * 1.4, y - r * 0.6], [x, y - r * 1.4], [x + r * 1.3, y - r * 0.9]], 10), {w: 2.4, jit: 4});
+      return;
+    }
+    if (o.glow > 0) {
+      p.wash(DREAM_GLOW, Math.round(120 * o.glow), ring(x, y, r * 2.2, r * 1.9, 20), 0.35, 0.3);
+      p.wash(DREAM_GLOW, Math.round(170 * o.glow), ring(x, y, r * 1.4, r * 1.2, 18), 0.3, 0.3);
+    }
+    p.flat('#f4f0ff', ring(x, y, r, r * 0.8, 18));
+    p.wash('#a79fc4', 200, ring(x + r * 0.1, y, r * 0.7, r * 0.6, 16), 0.1, 0.3);
+    p.flat('#1d1a2a', ring(x + r * 0.15, y, r * 0.16, r * 0.62, 12));
+    p.flat('#ffffff', ring(x - r * 0.35, y - r * 0.3, r * 0.17, r * 0.15, 10));
+    sketch(p, 330 + k * 4, closed([[x - r, y], [x, y - r * 0.8], [x + r, y], [x, y + r * 0.8]], 20), {w: 2.4, jit: 3});
+    sketch(p, 331 + k * 4, bez([[x - r * 1.4, y - r * 0.6], [x, y - r * 1.4], [x + r * 1.3, y - r * 0.9]], 10), {w: 2.6, jit: 4});
+  });
+  // gills: slits plus feathery filaments (rich)
+  [0, 1, 2, 3].forEach((k) => {
+    const sl = bez([[660 + k * 28, 420], [645 + k * 28, 560], [660 + k * 28, 700]], 10);
+    sketch(p, 340 + k, sl, {w: 1.8, jit: 4});
+    if (o.rich) {
+      p.wash('#6e6790', 140, [...sl, ...sl.slice().reverse().map(([x, y]) => [x + 12, y] as Pt)], 0.1, 0.4);
+      p.ink(350 + k, 'HB', INK_D, 1.1);
+      sl.forEach(([x, y], i) => { if (i % 2 === 0) brush.line(x + 2, y, x + 16 + 4 * Math.sin(o.phase + i), y + 6); });
+    }
+  });
+  // fins: membrane wash and rays (rich)
+  const pect = bez([[600, 790], [700, 960], [860, 990], [800, 800]], 16);
+  const dors = bez([[780, 380], [860, 230], [1000, 270], [1010, 400]], 14);
+  [pect, dors].forEach((f, k) => {
+    if (o.rich) {
+      p.wash('#b3abc8', 130, f, 0.15, 0.6);
+      p.ink(360 + k, 'HB', INK_D, 1.2);
+      const root = k ? ([890, 400] as Pt) : ([640, 800] as Pt);
+      f.slice(2, -2).forEach(([x, y], i) => { if (i % 2 === 0) brush.line(root[0], root[1], x, y); });
+    }
+    sketch(p, 345 + k, f, {w: 2.2});
+  });
+  sketch(p, 347, bez([[720, 560], [900, 590], [1100, 560], [1300, 490]], 16), {w: 1.2, passes: 1});
+  // bioluminescent specks along the lateral line and the jaw: pale lilac points with a faint halo
+  if (o.specks) {
+    const line = [...bez([[720, 560], [900, 590], [1100, 560], [1300, 490]], 9), ...bez([[40, 700], [200, 760], [420, 770]], 5)];
+    line.forEach(([x, y], i) => {
+      const tw = 0.6 + 0.4 * Math.sin(o.phase * 1.7 + i * 1.3);
+      p.wash(DREAM_SPECK, Math.round(90 * tw), ring(x, y + 8, 14, 12, 10), 0.3, 0.3);
+      p.flat('#fbf9ff', ring(x, y + 8, 4, 4, 8));
+    });
+  }
+  brush.pop();
+};
+
+type B04Beat = 'rest' | 'reveal';
+export const B04Still = ({beat}: {beat: B04Beat}) => {
+  const frame = useCurrentFrame();
+  const paint = useCallback(({brush}: PaintContext) => {
+    const cam: Camera = {s: 1.02, fx: 380, fy: 440, dx: 0, dy: 0};
+    const p = makePainter(brush, {t: 0, frame});
+    brush.push();
+    applyCamera(brush, cam);
+    paintDreamWater(p, 520);
+    const o: DreamRich = beat === 'rest'
+      ? {eyes: 0, gape: 0, glow: 0, phase: 0.6, specks: true, rich: true}
+      : {eyes: 1, gape: 1, glow: 1, phase: 1.8, specks: true, rich: true};
+    paintDreamRich(p, {s: 0.79, tx: 53.6, ty: 148.7}, o);
+    brush.pop();
+  }, [frame, beat]);
+  return (
+    <AbsoluteFill style={{backgroundColor: DREAM_PAPER}}>
+      <BrushCanvas paint={paint} paper={DREAM_PAPER} />
+      <Grain />
+      <PaintedLabel text={LABEL_IMAG} />
+      <Tag id={`B04-HERO ${beat}`} title={beat === 'rest' ? 'R8 rich CR-DREAM, formed, eyes shut (before the reveal word)' : 'R8 reveal: four eyes open with a pale glow, jaw gapes, specks pulse'} />
     </AbsoluteFill>
   );
 };

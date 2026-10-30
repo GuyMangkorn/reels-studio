@@ -1,11 +1,28 @@
 import {paintedShots} from '../painted/registry';
-import {endingState, loopBlendOpacity, type Ending} from './endings';
-import type {Timeline} from './types';
+import {endingState, loopBlendOpacity, type Ending, type EndingOptions} from './endings';
+import type {PaintedLabel, Timeline} from './types';
 
 type Fail = (path: string, message: string) => never;
 const finite = (v: unknown): v is number => typeof v === 'number' && Number.isFinite(v);
 const record = (v: unknown): v is Record<string, unknown> => v !== null && typeof v === 'object' && !Array.isArray(v);
 const frames = (seconds: number, fps: number) => Math.max(1, Math.round(seconds * fps));
+
+/**
+ * A cue label: one text (slot 1), or up to two slots (`[slot1, slot2]`, DEP03) where `null` leaves a slot empty so a
+ * label keeps its slot while it stays on. Slot 2 sits below slot 1 (y 360-410 in Short).
+ */
+const validateLabel = (label: unknown, path: string, fail: Fail) => {
+  if (typeof label === 'string') {
+    if (label.trim() === '') fail(path, 'expected non-empty text');
+    return;
+  }
+  if (!Array.isArray(label) || label.length === 0 || label.length > 2) fail(path, 'expected text or one to two slots');
+  const slots = label as unknown[];
+  slots.forEach((text, i) => {
+    if (text !== null && (typeof text !== 'string' || text.trim() === '')) fail(`${path}[${i}]`, 'expected non-empty text or null');
+  });
+  if (slots.every((text) => text === null)) fail(path, 'expected at least one slot with text');
+};
 
 /** `scene.painted`; called from validateTimeline. */
 export function validateScenePainted(s: Record<string, unknown>, path: string, previous: Record<string, unknown> | undefined, fps: number, fail: Fail) {
@@ -27,7 +44,7 @@ export function validateScenePainted(s: Record<string, unknown>, path: string, p
     if (!finite(cue.atSec) || cue.atSec < 0 || cue.atSec >= duration || cue.atSec <= last) fail(`${cp}.atSec`, 'times must increase and fall inside scene');
     if (j === 0 && cue.atSec !== 0) fail(`${cp}.atSec`, 'first painted shot must start at zero');
     if (cue.fromSec !== undefined && (!finite(cue.fromSec) || cue.fromSec < 0)) fail(`${cp}.fromSec`, 'expected non-negative seconds');
-    if (cue.label !== undefined && (typeof cue.label !== 'string' || cue.label.trim() === '')) fail(`${cp}.label`, 'expected non-empty text');
+    if (cue.label !== undefined) validateLabel(cue.label, `${cp}.label`, fail);
     if (cue.dissolveSec !== undefined) {
       if (!finite(cue.dissolveSec) || cue.dissolveSec <= 0) fail(`${cp}.dissolveSec`, 'expected positive seconds');
       const next = (shots as Record<string, unknown>[])[j + 1]?.atSec;
@@ -41,7 +58,7 @@ export function validateScenePainted(s: Record<string, unknown>, path: string, p
 }
 
 /** One painted cue on the composition clock. */
-export type PaintedSpan = {shot: string; startFrame: number; endFrame: number; fromFrame: number; dissolveFrames: number; label?: string; scene: number};
+export type PaintedSpan = {shot: string; startFrame: number; endFrame: number; fromFrame: number; dissolveFrames: number; label?: PaintedLabel; scene: number};
 
 /** Flatten every painted cue into composition frames; a cue ends at the next cue or its scene end. */
 export const paintedSpans = (timeline: Timeline, fps: number): PaintedSpan[] => {
@@ -68,7 +85,7 @@ export const paintedSpans = (timeline: Timeline, fps: number): PaintedSpan[] => 
 };
 
 /** A plate to paint this frame: `tl` on its shot clock (before the shot's own clock remap), plate and glow opacity. */
-export type PaintedPlate = {shot: string; tl: number; frame: number; alpha: number; overlayOpacity: number; label?: string};
+export type PaintedPlate = {shot: string; tl: number; frame: number; alpha: number; overlayOpacity: number; label?: PaintedLabel};
 export type PaintedState = {plates: PaintedPlate[]; opacity: number};
 
 const platesAt = (spans: PaintedSpan[], frame: number, fps: number): PaintedPlate[] => {
@@ -92,14 +109,14 @@ const platesAt = (spans: PaintedSpan[], frame: number, fps: number): PaintedPlat
  * follows the renderer's ending (B_loop/A_fade hold the last three seconds; A_fade fades); C_seamless blends frame 0's
  * plates over the last `loopBlendFrames`. Returns null when no painted plate is visible.
  */
-export const paintedStateAt = (timeline: Timeline, frame: number, fps: number, o: {ending: Ending; durationInFrames: number; loopBlendFrames: number}): PaintedState | null => {
+export const paintedStateAt = (timeline: Timeline, frame: number, fps: number, o: {ending: Ending; durationInFrames: number; loopBlendFrames: number; endingOptions?: EndingOptions}): PaintedState | null => {
   const spans = paintedSpans(timeline, fps);
   if (spans.length === 0) return null;
   const lastStart = timeline.slice(0, -1).reduce((sum, s) => sum + frames(s.durationSec, fps), 0);
   const lastDuration = frames(timeline[timeline.length - 1].durationSec, fps);
   let stageFrame = frame, opacity = 1;
   if (frame >= lastStart) {
-    const state = endingState(frame - lastStart, lastDuration, fps, o.ending);
+    const state = endingState(frame - lastStart, lastDuration, fps, o.ending, o.endingOptions);
     stageFrame = lastStart + state.poseFrame;
     opacity = state.opacity;
   }
