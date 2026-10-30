@@ -8,8 +8,9 @@
 
 | Deliverable | Stage / Next owner | Script | Evidence / open items |
 | --- | --- | --- | --- |
-| KSO-EP01-SHORT | Script (Preaw) | [brief](topic-brief.md); script: `short/script.md` (pending) | timing estimated only; no TTS |
+| KSO-EP01-SHORT | Script written R1 → coordinator/user review | [brief](topic-brief.md); [KSO-SCRIPT-R1](short/script.md) | timing estimated ~50 s (`C_seamless`) / ~52 s (`B_loop`), no read-aloud or TTS; Boat N/A; open: ending pick, invented pass-on twist, Japanese first line |
 
 ## Handoff log
 
 - 2026-10-30: coordinator recorded selection (Short only, ~50 s), fictional horror profile, project defaults, Light tier, script-only scope. Next owner: Preaw.
+- 2026-10-30: Preaw wrote KSO-SCRIPT-R1 (`short/script.md`): 7 beats S01-B01–S03-B02, NARR/WOMAN Gemini TTS marks, per-beat sound and visual notes, ending proposal `C_seamless` (plus `B_loop`), timing estimated only. Next owner: coordinator (user questions in script open items).
