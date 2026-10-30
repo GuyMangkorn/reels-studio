@@ -58,7 +58,14 @@ const DEFAULT_STYLE: HeadStyle = {skin: SKIN, hair: HAIR, cut: 'short'};
  * One decal head centred on (cx, cy), `K` px per head unit (half the face width). `cell` keeps its seeds apart from
  * other heads on the same canvas.
  */
-export const paintHead = ({brush, t, still, boil}: Pick<PaintContext, 'brush' | 't' | 'still' | 'boil'>, cell: number, cx: number, cy: number, K: number, face: Face, style: HeadStyle = DEFAULT_STYLE) => {
+export type HeadOpts = {
+  /** Automatic blink (default on: WORLD FOG sheets). A shot that must not blink passes `false` (ZC `MK-ZCP-B1`). */
+  blink?: boolean;
+  /** Blink start (s) instead of the seeded 0.4–2.6 s phase, to place or avoid the 0.13 s shut window in a shot. */
+  blinkAt?: number;
+};
+
+export const paintHead = ({brush, t, still, boil}: Pick<PaintContext, 'brush' | 't' | 'still' | 'boil'>, cell: number, cx: number, cy: number, K: number, face: Face, style: HeadStyle = DEFAULT_STYLE, opts: HeadOpts = {}) => {
   const P = ([u, v]: Pt): Pt => [cx + u * K, cy + v * K];
   // Opaque watercolour: three seeded passes, low bleed. (brush.wash() is avoided: not deterministic after fills.)
   let part = 0;
@@ -82,8 +89,8 @@ export const paintHead = ({brush, t, still, boil}: Pick<PaintContext, 'brush' | 
   };
 
   // Blink: once per 3 s at a per-cell phase, 4 frames shut.
-  const blinkAt = 0.4 + hash(cell + 7) * 2.2;
-  const eyes: Eyes = t > blinkAt && t < blinkAt + 0.13 ? 'shut' : face.eyes;
+  const blinkAt = opts.blinkAt ?? 0.4 + hash(cell + 7) * 2.2;
+  const eyes: Eyes = (opts.blink ?? true) && t > blinkAt && t < blinkAt + 0.13 ? 'shut' : face.eyes;
   const [lx, ly] = face.look;
 
   const {cut} = style;

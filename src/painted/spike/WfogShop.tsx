@@ -1,5 +1,4 @@
 import {useId} from 'react';
-import {AbsoluteFill} from 'remotion';
 import {CameraLayer, pushCamera, toScreen, type Camera} from '../camera';
 import {GLOW_PEAK} from '../glow';
 import {hash} from '../hash';
@@ -839,26 +838,8 @@ const Architecture = () => {
   );
 };
 
-/** Screen-space grade: cool, darker corners (vignette) so the eye stays on the door. */
-export const Grade = () => (
-  <AbsoluteFill style={{pointerEvents: 'none', background: 'radial-gradient(ellipse 75% 60% at 52% 40%, rgba(8,12,14,0) 55%, rgba(8,12,14,0.38) 100%)'}} />
-);
-
-/** Paper grain over the whole picture so painted and SVG layers share one surface. */
-export const Grain = ({opacity = 0.09}: {opacity?: number}) => {
-  const id = useId();
-  return (
-    <AbsoluteFill style={{mixBlendMode: 'overlay', opacity, pointerEvents: 'none'}}>
-      <svg width="100%" height="100%" viewBox="0 0 1080 1920">
-        <filter id={id}>
-          <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves={2} seed={3} />
-          <feColorMatrix type="saturate" values="0" />
-        </filter>
-        <rect width={1080} height={1920} filter={`url(#${id})`} />
-      </svg>
-    </AbsoluteFill>
-  );
-};
+// Grade and Grain moved to the shared module src/painted/screen.tsx (S-P06); re-exported for the WORLD FOG consumers.
+export {Grade, Grain} from '../screen';
 
 // ------------------------------------------------------------------ plates
 

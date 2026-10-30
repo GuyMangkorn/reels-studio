@@ -626,3 +626,12 @@ Scope: user decision 30 Oct "แก้อีกรอบก่อน (Mark+Boss)
 ### Artifacts (`out/qa/world-fog/WFOG-EP01-SHORT/r4/`)
 - `1s/` (88 frames, production entry), `sheet_1s_A.png` and `sheet_1s_B.png` (viewed; tiles 1–44 and 45–88), `labelled/` (24 frames, `WFOG-QA` entry), `sheet_labelled_r4.png` (viewed), `gap/` (91 frames G2208–G2298), `gap-s04sh01.txt`, `lead-check.txt`, `capzone-1s.json`, `det-a/`, `det-b/`, `crops/` (S01-SH02 car at rest and door, 540 px; S02-SH03 frame at 540 px; S04-SH01 frame at 540 px and gondola edge at full resolution; S03-SH06 caster 4× and a 2× three-frame strip). `dev1/`, `dev2/`, `dev3/`, `measures-first.txt` are development renders and first measurements, superseded by the final tree.
 - Logs: `out/logs/r4-*` (tsc-final, lint-final, test-all, 1s-stills-final, pass-sheets-final, labelled-final, det-a-final, det-b-final, gap-stills, gap-all, lead-check-2, capzone-1s).
+
+## 2026-10-29 — Shared profile head changed (`HEAD-SIDE-R2`, Boss, ZCPAINT pass)
+
+- User (29 Oct 2026): front decal head stays; the profile was a draft. `src/painted/spike/SideSheet.tsx`
+  `paintHeadSide` is rebuilt and exported (nose bump, C ear, short men's cut with sideburn and crown tufts, tied/bob/hood
+  kept, profile face controls and blink); `paintBodySide` moves the neck under the back half of the head and returns
+  the head anchor. Front `FaceSheet.paintHead` untouched: FaceSheet/Cast/Proportions re-render pixel-identical.
+  `PAINTED-SPIKE-CastSide` changes. Details, evidence and review sheet `PAINTED-SPIKE-HeadSide`:
+  [ZCPAINT build notes](../zombie-condo-paint/build-notes.md).

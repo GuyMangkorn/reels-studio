@@ -28,5 +28,5 @@ declare module 'p5.brush/standalone' {
   export function push(): void;
   export function pop(): void;
   export function translate(x: number, y: number): void;
-  export function scale(s: number): void;
+  export function scale(x: number, y?: number): void;
 }

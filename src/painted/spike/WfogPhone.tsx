@@ -3,6 +3,7 @@ import {useId} from 'react';
 import {AbsoluteFill, staticFile} from 'remotion';
 import {STILL_CAMERA} from '../camera';
 import {hash} from '../hash';
+import {inkLine, ring, solid, thumbShape as sharedThumb, twoBone, WFOG_HAND} from '../hands';
 import {lerp, type Painter, type Pt} from '../painter';
 import type {PaintedShot} from '../shot';
 import {INK} from './FaceSheet';
@@ -20,7 +21,7 @@ const HEADLINE = 'หมอกหนาปกคลุมทั่วโลก';
 // same top, thumb points and caption clearance: deviation recorded for Mark (SS-R2) in build-notes.
 const SCREEN = {x0: 336, y0: 312, x1: 744, y1: 978, r: 46};
 const BODY = {x0: 318, y0: 288, x1: 762, y1: 1000, r: 64};
-const SKIN = '#e9c2a2', SKIN_SHADE = '#d0a283', NAIL = '#f4dccd', CUFF = '#6b7a5a', CUFF_SHADE = '#56634a';
+const SKIN = WFOG_HAND.skin, SKIN_SHADE = WFOG_HAND.shade, NAIL = WFOG_HAND.nail, CUFF = '#6b7a5a', CUFF_SHADE = '#56634a';
 
 const ease = (u: number) => u * u * (3 - 2 * u);
 const seg = (f: number, a: number, b: number) => Math.max(0, Math.min(1, (f - a) / (b - a)));
@@ -31,26 +32,9 @@ const THUMB_BASE: Pt = [880, 1110];
 const BONE = [190, 182];
 
 /** Two-bone thumb from the base at the heel of the hand to the tip; the knuckle bulges outward (right, down). */
-const thumbJoints = (f: number) => {
-  const T = thumbTip(f), B = THUMB_BASE;
-  const dx = T[0] - B[0], dy = T[1] - B[1], d = Math.min(Math.hypot(dx, dy), BONE[0] + BONE[1] - 1);
-  const a = Math.atan2(dy, dx) + Math.acos((BONE[0] ** 2 + d * d - BONE[1] ** 2) / (2 * BONE[0] * d));
-  const K: Pt = [B[0] + BONE[0] * Math.cos(a), B[1] + BONE[0] * Math.sin(a)];
-  return {B, K, T};
-};
-/** A rounded segment a-b, width w0 at a and w1 at b. */
-const capsule = (a: Pt, b: Pt, w0: number, w1: number): Pt[] => {
-  const ang = Math.atan2(b[1] - a[1], b[0] - a[0]);
-  const arc = (c: Pt, r: number, from: number): Pt[] =>
-    Array.from({length: 9}, (_, i): Pt => [c[0] + r * Math.cos(from + (Math.PI * i) / 8), c[1] + r * Math.sin(from + (Math.PI * i) / 8)]);
-  return [...arc(b, w1 / 2, ang - Math.PI / 2), ...arc(a, w0 / 2, ang + Math.PI / 2)];
-};
+const thumbJoints = (f: number) => twoBone(THUMB_BASE, thumbTip(f), BONE as unknown as [number, number]);
 /** The thumb outline (proximal + distal segments with a round tip), shared by the paint and the screen mask. */
-const thumbShape = (f: number) => {
-  const {B, K, T} = thumbJoints(f);
-  return {prox: capsule(B, K, 84, 64), dist: capsule(K, T, 64, 56), tip: ring(T[0], T[1], 28), K, T};
-};
-const ring = (cx: number, cy: number, rx: number, ry = rx, n = 18): Pt[] => Array.from({length: n}, (_, i) => [cx + rx * Math.cos((i / n) * 6.283), cy + ry * Math.sin((i / n) * 6.283)]);
+const thumbShape = (f: number) => sharedThumb(THUMB_BASE, thumbTip(f), [190, 182], [84, 64, 64, 56], 28);
 /** Fingertips curling round the phone's left edge from behind (static grip). */
 const FINGERTIPS: [number, number, number, number][] = [[318, 575, 21, 31], [314, 650, 22, 32], [316, 726, 21, 31], [321, 800, 19, 27]];
 
@@ -106,25 +90,6 @@ const paintShop = (p: Painter, f: number) => {
   p.wash('#2a302f', 120, [[-100, 900], [1200, 860], [1200, 2100], [-100, 2100]], 0.12, 0.45);
   p.wash('#262c2b', 150, [[-100, 990], [1200, 960], [1200, 1330], [-100, 1360]], 0.12, 0.45);
   brush.pop();
-};
-
-/** Solid seeded fill (no watercolour border), `n` passes. */
-const solid = (p: Painter, seed: number, color: string, pts: Pt[], n = 6, texture = 0.06) => {
-  const {brush} = p;
-  for (let k = 0; k < n; k++) {
-    brush.seed(seed * 16 + k);
-    brush.noiseSeed(seed * 16 + k);
-    brush.noStroke();
-    brush.fill(color, 255);
-    brush.fillBleed(0);
-    brush.fillTexture(texture, 0.15);
-    brush.polygon(pts);
-    brush.noFill();
-  }
-};
-const inkLine = (p: Painter, id: number, pts: Pt[], w = 1.1, curve = 0.2) => {
-  p.ink(id, 'rotring', INK, w);
-  p.brush.spline([...pts, pts[0]], curve);
 };
 
 /** L1: the hand behind the phone, the handset, then the thumb and fingertips in front. */

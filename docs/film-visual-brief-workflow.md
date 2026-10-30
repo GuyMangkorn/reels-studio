@@ -29,7 +29,16 @@ Before selecting/revising medium/compositing/camera/light strategy, consult rele
 5. **Hand rough brief to Mark:** use the format below and link the sequence index where present. Hand over matching script/review/brief revisions, constraints and decisions left to Mark. Episode work covers the episode; single-scene work covers that scene and needed boundaries. Finish when Mark can write shot direction without guessing the medium or primary integration strategy.
 
 <a id="look-check"></a>
-**Requirement — look check for new looks.** When a look-defining element has no approved precedent (a new character, a new medium or style, a new key set mood), the user picks its look before Boss builds it. Film shows up to three options as reference images or links, or the coordinator assigns one low-resolution still of one shot in the proposed look to Film or Boss. Record the pick and the user's words in the brief. An approved precedent (an accepted character template, an earlier episode's accepted set) skips the check. Budget: one reference set or one still per element, never a pass over every scene.
+**Requirement — look check for new looks.** When a look-defining element has no approved precedent (a new character, a new medium or style, a new key set mood), the user picks its look before Boss builds it. Film shows up to three options as reference images or links, or the coordinator assigns one low-resolution still of one shot in the proposed look to Film or Boss. Record the pick and the user's words in the brief. An approved precedent (an accepted character template, an earlier episode's accepted set) skips the check. Budget: one reference set or one still per element, never a pass over every scene. Outside the look check and the look lock, the brief cites existing frames (an accepted precedent, a reference plate) and paints no key art, unless the user asks or the brief changes medium, light or projection and only a picture can settle it.
+
+<a id="look-lock"></a>
+**Requirement — look lock before the full build.** Before Boss builds more than a few shots of a deliverable, Film locks a finished-grade **look frame** for each look family the deliverable uses (for example exterior, interior, character close-up). Each look frame:
+- is one real shot from the scene sheets;
+- is rendered through the production library, not a spike, at final light, texture, line and face detail;
+- passes the caption-zone and lead-size checks;
+- is approved by the user (record their words in the brief as a `VD` decision).
+
+Boss then builds every shot of that family to its look frame and compares each plate with it before reporting. Fix passes batch every known defect into one round instead of one defect per round. A look family with an approved precedent (an earlier episode's accepted look) reuses that frame instead. Evidence: on WORLD FOG EP01 (30 Oct 2026) 22 plates built before the interior/character look was locked needed two fix passes, a late look-dev pass (VD18) and a re-apply pass. Boss runs were about half of that session's usage.
 
 This role is planning. It does not install packages, implement runtime or author detailed scene sheets as a side effect. Specify the smallest feasibility spike/blockout and observable acceptance criteria for Boss. Run a spike yourself only when separately assigned, following implementation workflow.
 

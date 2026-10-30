@@ -13,6 +13,7 @@ import {FaceSheet} from './FaceSheet';
 import {ProportionSheet} from './ProportionSheet';
 import {CastSheet} from './CastSheet';
 import {SideSheet} from './SideSheet';
+import {HeadSideSheet} from './HeadSideSheet';
 import {PlatePreview} from './PlatePreview';
 import {Grade, Grain, windowShot} from './WfogShop';
 import {phoneShot} from './WfogPhone';
@@ -52,6 +53,8 @@ registerRoot(() =>
     createElement(Composition, {id: 'PAINTED-SPIKE-Cast', component: CastSheet, ...shot, durationInFrames: 3 * fps}),
     // WORLD FOG cast side views, worker + cart lit and as a fog silhouette.
     createElement(Composition, {id: 'PAINTED-SPIKE-CastSide', component: SideSheet, ...shot, durationInFrames: 3 * fps}),
+    // HEAD-SIDE-R2 profile decal head review: front vs profile with guides, expressions, cuts, side cast, ZC lead.
+    createElement(Composition, {id: 'PAINTED-SPIKE-HeadSide', component: HeadSideSheet, ...shot, durationInFrames: 3 * fps}),
     // Painted scene type proof through SceneRenderer (captions + chrome), and the same timeline as bare plates for
     // caption-zone measurement. Kept out of the episode registry: SHIPWRECK-SHORT assembly is Editor's.
     createElement(Composition, {id: 'PAINTED-TIMELINE-Shipwreck', component: ProofWithCaptions, ...proof}),
