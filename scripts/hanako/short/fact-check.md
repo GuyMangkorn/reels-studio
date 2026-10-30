@@ -98,3 +98,30 @@ SRC006 (nippon.com g02322) gains a fuller search summary: Tsunemitsu collected r
   - the trims, if used (trims 1 and 2 are already given above in corrected form);
   - the delivery-record sync.
 - If the coordinator applies FC01, FC02, FC04, FC05, FC06, FC07 or FC09 inline under the [inline fact fixes default](../../../docs/editorial-workflow.md#inline-fact-fixes), the status reads `correction applied, recheck pending`. FC03 changes the twist line and the sound-cue position, so it goes to Preaw.
+
+## R2 recheck (`HANAKO-SHORT-SCRIPT-R2`)
+
+- **Script rechecked:** [script.md](script.md) **`HANAKO-SHORT-SCRIPT-R2`** (Preaw, 2026-10-30). The recheck compared the exact R2 wording in the full spoken script, on-screen notes, sound intent, title candidates, H1, timing trims, optional line, story core and truth section.
+- **Recheck pass:** Boat, 2026-10-30. This is a separate review from the R1 pass. Scope is the changed beats Preaw listed: `B02`, `B04`, `B05`, `B06` (twist-hit placement, visual note, `B06-OPT` removal), `B07`, `B08`, H1/titles, optional F011 line and trims 1–2. `B01`, `B03` and `B09` are unchanged from R1 and keep their R1 verdicts.
+- **Access:** unchanged. Every source is `lead-only`. Page fetch was not retried, as the user decided on 30 Oct 2026. No new sources.
+
+| Finding | Beat | R2 wording checked (exact) | Recheck verdict |
+| --- | --- | --- | --- |
+| FC01 | `B05` | แต่ยังไม่พบหลักฐานเลย ว่ามีเด็กผู้หญิงจริง ๆ ที่เป็นต้นเรื่อง; riser under "แต่ยังไม่พบหลักฐานเลย", stop on "ต้นเรื่อง" | **Resolved.** Matches the replacement exactly. The absence of evidence is scoped, so it no longer clashes with B06's "บันทึกนั้น". The claim is `unverified`, safe on leads. |
+| FC02 | `B06` | เรื่องฮานาโกะที่เก่าที่สุดเท่าที่รู้กัน มาจากอิวาเตะ ราวปี 1948… | **Resolved.** No village is named, and 1948 is not given as a publication date (on-screen card has no year). It is still premise-critical and uninspected (SRC001). |
+| FC03 | `B06` | บันทึกนั้นไม่ใช่ข่าว… แต่เป็นเรื่องผีที่มีคนเล่าไว้ แล้วถูกเก็บลงหนังสือ หลายสิบปีต่อมา | **Resolved.** The subject is now the record, not an event. The twist hit is a single low impact on "ไม่ใช่ข่าว", followed by a warm tone. The impact asserts no event, place or casualty. The reveal and learning goal are intact. |
+| FC04 | `B04` | บางคนเล่าว่า เธอตายตอนระเบิดลงสมัยสงคราม บ้างก็ว่า ถูกฆ่าในห้องน้ำ + tag "เรื่องเล่า" | **Resolved.** "หนี" is removed. The sound note keeps out real air-raid recordings, sirens, realistic explosions and screams. The fictional cues stay inside the "เรื่องเล่า" framing. |
+| FC05 | `B07` | ยุค 80 ครูคนหนึ่งเก็บเรื่องผีที่นักเรียนเล่าให้ฟัง | **Resolved.** "เริ่ม" is removed. The rest of B07 and its on-screen cards are unchanged and keep R1 `unverified`, safe on leads. |
+| FC06 | `B08` | ฮานาโกะซังอาจไม่เคยมีตัวตนจริง… แต่เธอก็ไม่เคยหายไป เพราะเด็กรุ่นแล้วรุ่นเล่า เล่าเรื่องเธอต่อกันมา | **Resolved.** It makes no present-day claim about how widely children tell the story. The whisper callback is fictional sound and asserts nothing. |
+| FC07 | `B02` | ตามที่เล่ากันบ่อย ๆ… จะมีเสียงตอบกลับมาว่า… “ค่ะ” | **Resolved.** The superlative is gone, and CL02 is still planted. |
+| FC08 | `B06-OPT` | Removed and marked rejected. Visual: "No hand, no girl" on B06 | **Resolved.** F002 does not appear in VO, on screen or in the visuals. The note against reinstating it is correct. |
+| FC09 | H1 / titles | H1 and title 1: ฮานาโกะซัง ผีที่ยังไม่พบว่าเคยมีตัวตนจริง; title 2: ยังไม่พบว่าเคยมีตัวตน แต่ชื่อนี้ดังไปทั่วญี่ปุ่น; both R1 titles are listed as rejected | **Resolved.** Both match the cleared wording. |
+| FC10 | Optional line | นักคติชนวิทยาบางคนมองว่า ห้องน้ำคือที่ที่เด็กต้องอยู่คนเดียว ไม่มีใครเห็น… เรื่องผีเลยชอบมารวมกันตรงนั้น | **Resolved.** The line is HY and `unverified`, safe on leads only with "บางคน". It is not in the default read. |
+| Visual note | `B06` | Reconstruction page: no legible fabricated Japanese text presented as the 1948/Matsutani entry; use illegible or stylized handwriting or the cover only; no hand, no girl. This is repeated in the Film → Mark constraints. | **Resolved.** It matches the R1 visual implication. |
+| Trim 1 | `B06` | เรื่องที่เก่าที่สุดเท่าที่รู้กัน… | **Cleared.** It is the corrected form, and B05 keeps Hanako as the referent. |
+| Trim 2 | `B07` | ครูคนหนึ่งเก็บเรื่องผีของนักเรียน (after "ยุค 80") | **Cleared.** It is the corrected form and has no "เริ่ม". Trim 3 is unchanged from R1 and removes only reasoning, not a claim. |
+| Story core / truth | English planning text | Learning takeaway, truth section, remaining uncertainty | Consistent with the corrected VO, and the uncertainty is kept visible. Research SRC001 URL is corrected (research.md line 26). |
+
+**Remaining wording issues:** none.
+
+**R2 status:** **`verification-incomplete`**. All findings FC01–FC10 are resolved for the R2 wording. The script wording is safe on leads throughout. The premise-critical claims F001, F004 and F008 still rest on uninspected leads, so `ready-for-storyboard` is not supported. Film, Mark, Boss and Editor stay `N/A` for this script-only assignment, and this record shows no user approval. The status would rise only with inspected SRC001 and SRC004, or with access to the blocked sites. Any later wording change, any use of a trim or the optional line beyond the forms cleared here, or a reinstatement of `B06-OPT` needs a new recheck.
