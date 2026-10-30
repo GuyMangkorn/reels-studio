@@ -17,5 +17,6 @@ Shared tools any role may run. Check here before writing a one-off command. A pr
 | `check-links.py` | Relative Markdown links and `#anchors`; changed files by default | `python3 -I scripts/check-links.py [--all \| FILE.md …]` |
 | `sound-library.py` | Shared sound library: search sidecars, file a processed sound (copy + `library` block + INDEX row), check INDEX drift | `python3 -I scripts/sound-library.py search zombie` |
 | `usage-report.py` | Token usage of this project's Claude Code sessions and role agents ([CB05](../AGENTS.md#context-budget)) | `python3 -I scripts/usage-report.py [--since YYYY-MM-DD]` |
+| `git-hooks/post-checkout` | Moves every new `git worktree add` onto freshly fetched `origin/main` (only when the start point has no commits of its own) | Install once per clone: `ln -s ../../scripts/git-hooks/post-checkout .git/hooks/post-checkout` |
 
 Each script's header comment is its full usage.
