@@ -68,6 +68,9 @@ When mapping scene sheets to the library, record missing requirements against sh
 Blockout placeholders must demonstrate action and information delivery from [visual progression](film-visual-brief-workflow.md#visual-progression-before-asset-selection) well enough for Film/Mark to judge. Before polish, submit each selected deliverable's sequence and record shot/frame references, review results and unresolved items in the index. If a placeholder cannot demonstrate the purpose, mark it unverified and state the required follow-up. Code/contact/continuity QA and correct total duration do not establish a storytelling pass.
 
 <a id="ขั้นตอนทำงาน"></a>
+<a id="look-assets"></a>
+**Requirement — hardening Film's look assets.** Film writes look-defining assets directly in their production module ([split by kind of work](film-visual-brief-workflow.md#look-assets)). Boss does not re-port them into a second copy: Boss integrates them with the runtime and shared renderer, re-keys plates to Mark's timed sheets, and hardens the code in place. Boss then reports measured QA (caption zone, repeatability, RGB 0, anchors) and returns look questions to Film with the rendered frame.
+
 ## Implementation steps
 
 Read and update [dev findings](dev-findings.md) when blockers, workarounds or reusable lessons affect technique/shot decisions. Record them during dev/blockout/QA, revisit status before the PR, and link finding IDs to affected Film/Mark decisions.
