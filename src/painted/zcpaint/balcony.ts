@@ -314,7 +314,11 @@ export const silhouetteParts = (pf: number, ox = 0, oy = 0): Pt[][] => {
   }
   const ear = (sgn: number): Pt[] => ell(hx + sgn * 168, hy + 34, 22, 42, 14);
   const body: Pt[] = [[hx - 62, hy + 140], [hx + 62, hy + 140], [hx + 70, hy + 236], [hx + 170, hy + 262], [hx + 300, hy + 300], [hx + 360, hy + 420], [hx - 400, hy + 420], [hx - 330, hy + 318], [hx - 210, hy + 262], [hx - 72, hy + 236]];
-  return [body, ear(-1), ear(1), head];
+  // R2.6 costume cue (Boss pass 15, sheet SS-R1.5 `sc01-b06-b08.md` costume note: "B08 reads as a dark silhouette: collar stand and sleeve
+  // shape only"): the raised collar stand round the nape shows past the head's jaw, and the overshirt's sleeve caps bulge over each shoulder.
+  const collar: Pt[] = [[hx - 104, hy + 196], [hx - 100, hy + 150], [hx - 64, hy + 126], [hx + 64, hy + 126], [hx + 100, hy + 150], [hx + 104, hy + 196], [hx + 60, hy + 214], [hx - 60, hy + 214]];
+  const capR = ell(hx + 236, hy + 300, 84, 46, 16), capL = ell(hx - 236, hy + 300, 84, 46, 16);
+  return [body, ear(-1), ear(1), head, collar, capR, capL];
 };
 
 /** Foreground (L4): the railing, then his head and shoulder as a silhouette with a fire rim on the fire-facing edge. */

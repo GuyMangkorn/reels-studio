@@ -2,11 +2,12 @@ import type {PaintContext} from '../BrushCanvas';
 import {ramp, type Pt} from '../painter';
 import {capsule} from '../hands';
 import {ell, placeAt} from './ctx';
-import {handParts, paintPart, washPaint, type HandKind, type HU} from './body6';
+import {COSTUME, foldTone, H6, handParts, paintPart, TEX_B, washPaint, type HandKind, type HU} from './body6';
 import {YOU} from './cast';
 import {keyTravel} from './bust';
 import {castTone, cel} from './light';
 import {flatKit, type Flat} from './sets';
+import {paintToilet, toiletWater} from './toilet';
 
 // ZCPAINT insert plates (Boss pass 10; sheets `sc01-b04-b05.md` and `sc01-b06-b08.md`, SS-R1.3). Painted close inserts with no full figure;
 // the hands are the WORLD FOG mitten, fist or pinch (`HD-03`, `HD-04`), drawn by `handParts`. Flat washes, one ink line per object, the cel
@@ -53,16 +54,32 @@ const stream = (f: Flat, a: Pt, b: Pt, w0: number, w1: number, col: string) => {
   f.fill(col, capsule(a, b, w0, w1));
   f.fill('#eaf6f7', capsule(a, b, w0 * 0.3, w1 * 0.3));
 };
-/** One hand (mitten, fist or pinch) at scale `k` with its wrist at `at` (screen px) and its fingers toward `dir` (head units, y up). */
-const hand = (ctx: PaintContext, base: number, at: Pt, kind: HandKind, dir: HU, thumb: 1 | -1, k: number) => {
+/** One hand (mitten, fist or pinch) at scale `k` with its wrist at `at` (screen px) and its fingers toward `dir` (head units, y up).
+ *  `sil`: paint its silhouette in that colour instead (a flat cast shadow). */
+const hand = (ctx: PaintContext, base: number, at: Pt, kind: HandKind, dir: HU, thumb: 1 | -1, k: number, sil?: string) => {
   placeAt(ctx.brush, at[0], at[1], k, 1, () => {
     const p = washPaint(ctx, base);
     const light = keyTravel(1, [0, 1]);
-    for (const part of handParts({kind, w: [0, 0], dir, thumb}, SKIN)) paintPart(p, part, light);
+    for (const part of handParts({kind, w: [0, 0], dir, thumb}, SKIN)) paintPart(p, part, light, sil);
   });
 };
-/** Forearm from a frame edge to the wrist (skin, flat). */
-const forearm = (f: Flat, from: Pt, to: Pt, w = 66) => f.fill(SKIN, capsule(from, to, w, w * 0.84));
+/** The overshirt sleeve to the wrist (`CS-ZCP-R26`; the WORLD FOG phone-insert sleeve with a cuff), in place of a bare forearm: a cloth tube
+ *  from `from` (off the frame) to the wrist `to`, full width `w` px. The cel tone sits on the side away from the key (the right edge, `LT-02`),
+ *  one cuff line across the end 0.12 head back from the wrist (`k`: the plate's hand scale), glaze and hatch on cloth only (`TX-ZCP-CLOTH`). */
+const sleeve = (ctx: PaintContext, base: number, from: Pt, to: Pt, w: number, k: number) => {
+  const col = COSTUME.over, shade = cel(col);
+  const p = washPaint(ctx, base, {cloth: new Set([col, shade]), tex: TEX_B, scale: k});
+  const full = capsule(from, to, w, w * 0.84);
+  // The lit tube moves toward the key by s and loses 2s of width: a 2s band of the cel tone on the right, the left edge unchanged.
+  const s = 0.2 * w;
+  p.part(shade, full, false);
+  p.part(col, capsule([from[0] - s, from[1]], [to[0] - s, to[1]], w - 2 * s, (w - 2 * s) * 0.84), false);
+  p.ink([...full, full[0]]);
+  const len = Math.hypot(to[0] - from[0], to[1] - from[1]);
+  const u: Pt = [(to[0] - from[0]) / len, (to[1] - from[1]) / len], n: Pt = [-u[1], u[0]];
+  const a: Pt = [to[0] - u[0] * 0.12 * H6 * k, to[1] - u[1] * 0.12 * H6 * k];
+  p.ink([[a[0] + (n[0] * w) / 2, a[1] + (n[1] * w) / 2], [a[0] - (n[0] * w) / 2, a[1] - (n[1] * w) / 2]], 1.0, 0.5, foldTone(col));
+};
 
 // ---------------------------------------------------------------- B04-SH03: three fill inserts
 
@@ -77,7 +94,7 @@ export const paintB04Sh03a = (ctx: PaintContext, pf: number) => {
   const yW = BUCKET_A.yBot - (BUCKET_A.yBot - 650) * clamp01(pf / 39);
   cylBody(f, BUCKET_A, BUCKET);
   water(f, BUCKET_A, yW, WATER_AQUA);
-  stream(f, [540, 300], [540, yW], 26, 34, WATER_DEEP);
+  stream(f, [540, 300], [540, yW], 26, 34, WATER_AQUA);
   f.fill(FLOOR_SHADOW, [[300, 960], [800, 960], [820, 1010], [280, 1010]]);
 };
 
@@ -91,7 +108,7 @@ export const paintB04Sh03b = (ctx: PaintContext, pf: number) => {
   const yW = POT_B.yBot - (POT_B.yBot - 740) * clamp01(pf / 12);
   cylBody(f, POT_B, POT);
   water(f, POT_B, yW, WATER_AQUA);
-  stream(f, [560, 370], [560, yW], 24, 32, WATER_DEEP);
+  stream(f, [560, 370], [560, yW], 24, 32, WATER_AQUA);
   f.fill(FLOOR_SHADOW, [[290, 960], [800, 960], [820, 1010], [270, 1010]]);
 };
 
@@ -152,6 +169,11 @@ export const paintB04Sh04 = (ctx: PaintContext, pf: number, lang: 'TH' | 'EN') =
   for (let y = 300; y < 1100; y += 90) f.line([[-100, y], [1200, y]], 0.5, '#a9c4bf', false);
   for (let x = 0; x < 1200; x += 150) f.line([[x, 300], [x, 1100]], 0.5, '#a9c4bf', false);
   f.fill('#cfe0dc', [[180, 340], [740, 340], [740, 540], [180, 540]]);
+  // Cast shadows (LT-03) toward the camera under each container and the bottle row, drawn before them (the sheet's per-object shadows).
+  const shadow = castTone('#bfd9d4');
+  for (const x of [240, 390, 540, 690]) f.fill(shadow, [[x - 66, 748], [x + 100, 748], [x + 114, 772], [x - 52, 772]]);
+  f.fill(shadow, [[806, 752], [936, 752], [948, 774], [818, 774]]);
+  f.fill(shadow, [[196, 486], [718, 486], [728, 500], [206, 500]]);
   for (let i = 0; i < 6; i++) topBottle(f, 230 + i * 92, 430, i % 2 ? '#2f6fb0' : '#d9463a');
   const keys = LIDS[lang];
   [240, 390, 540, 690].forEach((x, i) => topBucket(f, x, 600, i === 0 || pf >= keys[i - 1]));
@@ -159,7 +181,6 @@ export const paintB04Sh04 = (ctx: PaintContext, pf: number, lang: 'TH' | 'EN') =
   f.fill(cel(POT), ell(870, 720, 50, 42, 16));
   f.line(ell(856, 700, 62, 56, 18), 0.9);
   f.fill('#e8e3d6', ell(856, 700, 56, 20, 16));
-  f.fill(FLOOR_SHADOW, [[160, 820], [900, 820], [900, 850], [160, 850]]);
 };
 
 // ---------------------------------------------------------------- B05-SH02: one hard pour (insert)
@@ -169,15 +190,14 @@ const LIP: Pt = [600, 360];
 const arcPts = (cx: number, cy: number, rx: number, ry: number, a0: number, a1: number, n = 12): Pt[] =>
   Array.from({length: n + 1}, (_, i): Pt => { const a = a0 + ((a1 - a0) * i) / n; return [cx + rx * Math.cos(a), cy + ry * Math.sin(a)]; });
 
+/** B05-SH02 toilet staging (plate px): the bowl base at y 1320, scale 1.45 (tank top y 383, ring width 487). */
+const TOILET_02 = {x: 540, floorY: 1320, s: 1.45};
+const W02 = toiletWater(TOILET_02);
 export const paintB05Sh02 = (ctx: PaintContext, pf: number) => {
   const f = flatKit(ctx, 33000);
   tileWall(f, -100, 1300);
-  // The bowl: white rim and body (cel on the far right), the water surface.
-  f.fill('#e6e3da', [[330, 750], [750, 750], [700, 1000], [380, 1000]]);
-  f.fill(cel('#e6e3da'), [[600, 750], [750, 750], [700, 1000], [560, 1000]]);
-  f.fill('#e6e3da', ell(540, 750, 210, 50, 24));
-  f.line(ell(540, 750, 210, 50, 24), 1.0);
-  f.fill('#cfe9ec', ell(540, 915, 190, 35, 24));
+  // The toilet (`toilet.ts`, the B05-SH01 fixture): seat ring and bowl in front, the tank behind; the water is the pour target.
+  paintToilet(f, {x: TOILET_02.x, floorY: TOILET_02.floorY, s: TOILET_02.s});
   // The bucket, lidless: the pivot at the lip; it rises from pf 15 and tips by pf 36, then drains (the tilt eases back by pf 60-90).
   const tilt = -70 * ramp(pf, 15, 36) * (1 - 0.35 * ramp(pf, 60, 90));
   const th = (tilt * Math.PI) / 180;
@@ -187,58 +207,48 @@ export const paintB05Sh02 = (ctx: PaintContext, pf: number) => {
   f.fill(cel(BUCKET), [R([760, 355]), R([900, 355]), R([870, 60]), R([760, 60])]);
   f.line(body, 1.1);
   f.line([R([600, 60]), R([640, 10]), R([820, 10]), R([870, 60])], 1.4, undefined, false);
-  // Hands: the right wraps the handle, the left sits under the base; mittens with the forearms from the frame edge.
+  // Hands: both BODY-ZCP-6H mittens (round or oval masses, user Q-G4-1 at the R2.6 overview; no pinch). The right grips the rim, the left
+  // holds the lip under the base. The overshirt sleeves to the wrist with a cuff come from the frame edge (no bare forearm, CS-ZCP-R26).
   const rWrist = R([842, 40]), lWrist = R([640, 360]);
-  forearm(f, [1080, 300], rWrist, 66);
-  forearm(f, [1080, 470], lWrist, 62);
+  sleeve(ctx, 33400, [1080, 300], rWrist, 66, 1.9);
+  sleeve(ctx, 33600, [1080, 470], lWrist, 62, 1.9);
   hand(ctx, 33500, rWrist, 'mitten', [-0.3, 1], 1, 1.9);
   hand(ctx, 33700, lWrist, 'mitten', [-1, 0.2], 1, 1.9);
   // The stream from the lip after pf 36 to the bowl water; the siphon swirl from pf 72 (ink arcs in the water).
-  if (pf >= 36 && pf < 64) stream(f, LIP, [520, 900], 22, 40, WATER_DEEP);
-  if (pf >= 72) for (const r of [120, 80, 40]) f.line(arcPts(540, 915, r, r * 0.18, 0.2, 1.8), 0.7, '#8fb7b8', false);
-  f.fill(FLOOR_SHADOW, [[280, 1000], [800, 1000], [820, 1040], [260, 1040]]);
+  if (pf >= 36 && pf < 64) stream(f, LIP, W02.c, 22, 40, WATER_DEEP);
+  if (pf >= 72) for (const r of [0.9, 0.6, 0.3]) f.line(arcPts(W02.c[0], W02.c[1], W02.rx * r, W02.ry * r, 0.2, 1.8), 0.7, '#8fb7b8', false);
+  f.fill(FLOOR_SHADOW, ell(TOILET_02.x, TOILET_02.floorY + 6, 150 * TOILET_02.s, 18 * TOILET_02.s, 20));
 };
 
 // ---------------------------------------------------------------- B05-SH03: cistern reveal, conditions (three cue parts)
 
-const CIST = {x0: 300, x1: 780, yTop: 520, yBot: 900};
-const LID = {x0: 300, x1: 780, yTop: 470, yBot: 560};
-/** The lid's offset for part 1 (plate clock from the cut): lifted 180 px over pf 21-33, set aside to the right edge by pf 60. */
+/** B05-SH03 toilet staging (plate px): the same toilet at scale 1.7, the bowl base at y 1600 (tank top y 503, the lid slab 530-554). */
+const TOILET_03 = {x: 540, floorY: 1600, s: 1.7};
+/** The tank lid's offset for part 1 (plate clock from the cut): lifted 180 px over pf 21-33, set aside to the right edge by pf 60. */
 const lidOffset = (pf: number): Pt => [1200 * ramp(pf, 33, 60), -180 * ramp(pf, 21, 33)];
 
-/** Part 1 (`ZCP-B05-SH03`, TH fromSec 0.7 = pf f + 21; EN fromSec 0): the pinch grips the lid's right edge, the lid lifts and is set aside,
- *  the clear water shows from pf 33. Part 3 holds this function at its end state (pf 60 or later). */
+/** Part 1 (`ZCP-B05-SH03`, TH fromSec 0.7 = pf f + 21; EN fromSec 0): the mitten grips the tank lid's right edge, the lid (with its flush button)
+ *  lifts and is set aside, the clear water shows in the tank from pf 33. Part 3 holds this function at its end state (pf 60 or later). */
 export const paintB05Sh03 = (ctx: PaintContext, pf: number) => {
   const f = flatKit(ctx, 34000);
   tileWall(f, -100, 1300);
-  f.fill('#e6e3da', [[CIST.x0, CIST.yTop], [CIST.x1, CIST.yTop], [CIST.x1, CIST.yBot], [CIST.x0, CIST.yBot]]);
-  f.fill(cel('#e6e3da'), [[CIST.x0 + 0.62 * (CIST.x1 - CIST.x0), CIST.yTop], [CIST.x1, CIST.yTop], [CIST.x1, CIST.yBot], [CIST.x0 + 0.62 * (CIST.x1 - CIST.x0), CIST.yBot]]);
-  f.line([[CIST.x0, CIST.yTop], [CIST.x1, CIST.yTop], [CIST.x1, CIST.yBot], [CIST.x0, CIST.yBot]], 1.0);
-  if (pf >= 33) {
-    f.fill('#cfe9ec', [[330, 560], [750, 560], [750, 700], [330, 700]]);
-    f.fill('#e4f5f6', ell(540, 560, 210, 26, 20));
-  }
   const [dx, dy] = lidOffset(pf);
-  const L = {x0: LID.x0 + dx, x1: LID.x1 + dx, yTop: LID.yTop + dy, yBot: LID.yBot + dy};
-  f.fill('#f2efe6', [[L.x0, L.yTop], [L.x1, L.yTop], [L.x1, L.yBot], [L.x0, L.yBot]]);
-  f.fill(cel('#f2efe6'), [[L.x0, L.yBot - 14], [L.x1, L.yBot - 14], [L.x1, L.yBot], [L.x0, L.yBot]]);
-  f.line([[L.x0, L.yTop], [L.x1, L.yTop], [L.x1, L.yBot], [L.x0, L.yBot]], 1.0);
-  // The pinch on the lid's right edge (index and thumb, a visible gap), the forearm from the right frame edge; it closes on the lid from pf 15.
-  const grip: Pt = [L.x1 - 30, L.yTop + 40];
-  const wrist: Pt = [grip[0] + 120 + 10 * (1 - ramp(pf, 0, 15)), grip[1] + 60];
+  paintToilet(f, {...TOILET_03, open: pf >= 33, lid: [dx, dy]});
+  // The mitten on the lid's right edge (cuff and sleeve from the right frame edge); it closes on the lid from pf 15.
+  const {x, floorY, s} = TOILET_03;
+  const grip: Pt = [x + 128 * s + dx, floorY - 618 * s + dy];
+  const wrist: Pt = [grip[0] + 70 + 10 * (1 - ramp(pf, 0, 15)), grip[1] - 10];
   if (pf < 60) {
-    forearm(f, [1080, wrist[1] + 160], wrist, 70);
-    hand(ctx, 34500, wrist, 'pinch', [-0.9, 0.4], -1, 2.2);
+    sleeve(ctx, 34400, [1160, wrist[1] + 120], wrist, 70, 2.2);
+    hand(ctx, 34500, wrist, 'mitten', [-1, -0.1], 1, 2.2);
   }
 };
 
 /** Part 2 (`ZCP-B05-SH03-BOWL`, held, fromSec 0): the bowl water close, the red cross painted on in 6 f from part-f 3 (never over the cistern). */
 export const paintB05Sh03Bowl = (ctx: PaintContext, pf: number) => {
   const f = flatKit(ctx, 34700);
-  f.fill('#e6e3da', [[380, 380], [700, 380], [700, 700], [380, 700]]);
-  f.fill('#cfe9ec', ell(540, 540, 150, 140, 28));
-  f.fill('#e4f5f6', ell(540, 500, 110, 70, 24));
-  f.line(ell(540, 540, 150, 140, 28), 1.0);
+  // The same toilet close: the water ellipse centred on (540, 540), scale 3.2 (the seat ring 1075 wide).
+  paintToilet(f, {x: 540, floorY: 540 + 243 * 3.2, s: 3.2});
   const a = ramp(pf, 3, 9);
   if (a > 0) {
     const w = 320 * a;
@@ -305,7 +315,9 @@ export const paintB06Sh03 = (ctx: PaintContext, pf: number) => {
   // His right mitten with the third can, from the bottom-right: at the can until f 3, then it leaves by f 12.
   const leave = ramp(pf, 3, 12);
   const wrist: Pt = [1090 - 180 * leave, 1040 - 260 * leave];
-  forearm(f, [1100, 1120 - 100 * leave], wrist, 66);
+  // The mitten casts onto the counter (sheet light row): its silhouette offset screen-left, the window being screen-right.
+  hand(ctx, 36450, [wrist[0] - 26, wrist[1] + 12], 'mitten', [-0.6, 0.8], 1, 2.0, castTone('#b99c72'));
+  sleeve(ctx, 36400, [1100, 1120 - 100 * leave], wrist, 66, 2.0);
   if (pf < 3) f.fill('#9aa3a8', ell(cx, cy, 24, 22, 14));
   hand(ctx, 36500, wrist, 'mitten', [-0.6, 0.8], 1, 2.0);
 };

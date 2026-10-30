@@ -1,8 +1,8 @@
 import type {PaintContext} from '../BrushCanvas';
 import {hash} from '../hash';
 import {ramp, type Pt} from '../painter';
-import {drawFig, figSlack, H6, K6, toPx, type Fig, type Part} from './body6';
-import {bustFig, keyTravel} from './bust';
+import {drawFig, figSlack, H6, HAIR_STRAND, rotPt, TEX_B, toPx, type Fig, type Part, type Place} from './body6';
+import {bustFig, keyTravel, placeClose} from './bust';
 import {INFECTED, INFECTED_SCALE, YOU} from './cast';
 import {layerAt} from './ctx';
 import {flatKit, type Flat} from './sets';
@@ -43,9 +43,6 @@ const veil = (ctx: PaintContext, color: string, alpha: number, pts: Pt[]) => {
   brush.noWash();
 };
 
-/** Place a figure so its head centre lands on (cx, cy) at scale `k` (head units of the fig's local px), facing `dir`. */
-const placeHead = (fig: Fig, cx: number, cy: number, k: number, dir: 1 | -1) => ({gx: cx - dir * k * fig.head.x, gy: cy - k * fig.head.y, k, dir});
-
 /** The corridor shell (far to near): ceiling, walls, floor and the far window; the doors (no peepholes, CL05); the four strips. */
 const shell = (f: Flat, strip2Off: boolean) => {
   const near = 0.6;
@@ -76,8 +73,9 @@ const bagPart = (): Part => ({col: BAG, cel: 0.12 * H6, pts: toPx([[0.8, 2.4], [
 
 // ---------------------------------------------------------------- B01-SH01: OTS down the corridor
 
-/** His back view: head centre (250, 440) at pf 0, (290, 420) by pf 29 (eased, one shoulder bob), head ~280 px (K ~ 123). */
-const OTS = {x0: 250, y0: 440, x1: 290, y1: 420, head: 280};
+/** His back view, R1.4 waist cut (`FR-ZCP-CLOSE`): back-of-head centre (230, 700) at pf 0, (260, 690) by pf 29 (eased, one shoulder bob);
+ *  head 600 px, chin 300 px below the centre (chin y 1000 -> 990); the frame bottom cuts at ≈3.47 heads. */
+const OTS = {x0: 230, y0: 700, x1: 260, y1: 690, head: 600};
 const otsCentre = (pf: number): Pt => {
   const t = ramp(pf, 0, 29), s = t * t * (3 - 2 * t);
   return [OTS.x0 + (OTS.x1 - OTS.x0) * s, OTS.y0 + (OTS.y1 - OTS.y0) * s - 4 * Math.sin(Math.PI * t)];
@@ -97,20 +95,30 @@ export const paintB01Sh01 = (ctx: PaintContext, pf: number) => {
   drawFig(ctx, 21400, her, {gx: hx, gy: hy, k: kHer, dir: -1}, {sil: SILHOUETTE});
   // Her shadow (estimate, ~3 m toward the camera along the floor): one flat tone over the drag trail.
   veil(ctx, '#1f1c22', 0.35, [[hx - 22, hy], [hx + 24, hy], [hx + 30, hy + 70], [hx - 4, hy + 82], [hx - 26, hy + 40]]);
-  // His back view, 6 heads, foreground left third; the right arm (screen-right) carries the bag; the head and shoulders are ink-lined.
+  // His back bust (waist cut, `FR-ZCP-CLOSE`), foreground left third; the right arm (screen-right) carries the bag below the frame;
+  // the overshirt is cloth (`TX-ZCP-CLOTH`). The chin row is the head centre + 300 px.
   const [cx, cy] = otsCentre(pf);
   const back = bustFig(YOU, {view: 'back', inserts: [bagPart()]});
-  const kOts = OTS.head / H6;
-  drawFig(ctx, 21700, back, placeHead(back, cx, cy, kOts, 1), {light: keyTravel(1, [0.15, 1])});
+  drawFig(ctx, 21700, back, placeClose(back, cx, OTS.head, cy + 300, 1), {light: keyTravel(1, [0.15, 1]), tex: TEX_B});
 };
 
 // ---------------------------------------------------------------- B01-SH02: the long-lens turn and the charge
 
-/** Head size of the long-lens figure: K 220 (the decal K at 6 heads is K6 = 55.8 px at scale 1; the head is ~500 px). */
-const LENS_K = 220;
+/** Long-lens figure (R1.4 waist cut, `FR-ZCP-CLOSE`): head 600 px, chin y 860 (head centre column 540, the charge scales about y 560). */
 const LENS_HEAD = {x: 540, y: 560};
+const LENS_HEAD_PX = 600;
+const LENS_CHIN_Y = 860;
 /** The stride bob (plate frames): a 6 px drop on each footstep frame of the charge. */
 const STEPS = [33, 38, 42, 46];
+
+/** B01-SH02 turn (pf 19-22): the bob mass (`silHair`, the 7b shaped hair mass) fades in over the profile head in the hair tone, in place.
+ *  The pass 12 swing rotated the mass and read as a moving block (`Q-G12-2`: the user asked for a fade). `at` is the silhouette's placement. */
+const hairFade = (ctx: PaintContext, fig: Fig, at: Place, pf: number) => {
+  const t = ramp(pf, 19, 22), a = t * t * (3 - 2 * t);
+  const h = fig.head, turn = (q: Pt): Pt => (h.tilt && h.pivot ? rotPt(q, h.pivot, h.tilt) : q);
+  const pts = (h.silHair ?? []).map(turn);
+  veil(ctx, HAIR_STRAND, 0.9 * a, pts.map(([x, y]): Pt => [at.gx + at.dir * at.k * x, at.gy + at.k * y]));
+};
 
 /** B01-SH02 (TH [105,153), EN [93,141), both pf = f). Profile silhouette to f 23, the rage front from f 23 (a hair smear f 19-23), the
  *  charge from f 33: scale 1.00 -> 1.12 about the head centre, eased, with the stride bob. The settle tilt (4 deg -> 0) is not painted. */
@@ -125,12 +133,12 @@ export const paintB01Sh02 = (ctx: PaintContext, pf: number) => {
   layerAt(ctx.brush, LENS_HEAD.x, LENS_HEAD.y, s, bob, () => {
     if (pf < 23) {
       const side = bustFig(INFECTED, {view: 'side', slump: 1});
-      const k = LENS_K / K6;
-      drawFig(ctx, 22400, side, placeHead(side, LENS_HEAD.x, LENS_HEAD.y, k, -1), {sil: SILHOUETTE});
+      const at = placeClose(side, LENS_HEAD.x, LENS_HEAD_PX, LENS_CHIN_Y, -1);
+      drawFig(ctx, 22400, side, at, {sil: SILHOUETTE});
+      if (pf >= 19) hairFade(ctx, side, at, pf);
     } else {
       const front = bustFig(INFECTED, {view: 'front', slump: 1, overlay: 'rage', blood: true, dirt: true});
-      drawFig(ctx, 22500, front, placeHead(front, LENS_HEAD.x, LENS_HEAD.y, LENS_K / K6, 1), {light: keyTravel(1, [0.1, 1])});
+      drawFig(ctx, 22500, front, placeClose(front, LENS_HEAD.x, LENS_HEAD_PX, LENS_CHIN_Y, 1), {light: keyTravel(1, [0.1, 1]), tex: TEX_B});
     }
   });
-  if (pf >= 19 && pf < 23) veil(ctx, '#14110f', 0.85, [[400, 470], [700, 420], [712, 540], [410, 600]]);
 };

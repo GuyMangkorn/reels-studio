@@ -60,7 +60,7 @@ export type AudioTrack = {
   /** Gain multiplier while narration is speaking, e.g. 0.25. Omit for no ducking. */
   duckUnderNarration?: number;
 };
-export type CaptionStyle = {preset?: 'outline' | 'box' | 'none'; position?: 'bottom' | 'middle' | 'top'; color?: string; scale?: number};
+export type CaptionStyle = {preset?: 'outline' | 'box' | 'none'; position?: 'bottom' | 'middle' | 'top'; /** Composition y (px from the top) of the caption block's bottom edge; overrides `position` when set. */ bottomEdgeY?: number; color?: string; scale?: number};
 /** Channel label (false hides it) and the scene progress bar. */
 export type ChromeStyle = {channelLabel?: string | false; progressBar?: boolean};
 /**

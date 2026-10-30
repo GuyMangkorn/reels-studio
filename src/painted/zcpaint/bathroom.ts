@@ -1,11 +1,11 @@
 import type {PaintContext} from '../BrushCanvas';
 import {ramp, type Pt} from '../painter';
-import {drawFig, figFront, H6, type Part} from './body6';
+import {drawFig, figFront, H6, MITTEN_6H, TEX_B, type Part} from './body6';
 import {keyTravel} from './bust';
 import {YOU} from './cast';
-import {ell} from './ctx';
 import {cel} from './light';
 import {CREAM, dim, flatKit, type Flat} from './sets';
+import {paintToilet} from './toilet';
 
 // ZCPAINT B05-SH01 (Boss pass 10; sheet `sc01-b04-b05.md`, SS-R1.3): the bathroom medium, the six capped bottles on the basin counter, the
 // cistern, the bucket lift. Per-language keys: TH lift f 20-36 (51 f), EN lift f 36-46 (48 f). The figure is the full 6-head front view
@@ -52,11 +52,8 @@ const room = (f: Flat) => {
   // Towel rail behind the torso (mustard towel).
   f.fill('#cfcac0', [[590, 630], [900, 630], [900, 642], [590, 642]]);
   f.fill(dim('#c9a04a', 0.9), [[600, 642], [640, 642], [640, 700], [600, 700]]);
-  // Cistern (top y 862, x 470-670) and bowl.
-  f.fill(dim('#e6e3da', 0.9), [[470, 862], [670, 862], [670, 1060], [470, 1060]]);
-  f.fill(cel(dim('#e6e3da', 0.9)), [[600, 862], [670, 862], [670, 1060], [600, 1060]]);
-  f.line([[470, 862], [670, 862], [670, 1060], [470, 1060]], 1.0);
-  f.fill(dim('#e6e3da', 0.9), ell(560, 1060, 110, 36, 18));
+  // The toilet (`toilet.ts`, shared with B05-SH02/SH03): behind his legs at x 560, the bowl base on the floor line (y 1090).
+  paintToilet(f, {x: 560, floorY: 1090, s: 0.5, tone: (c) => dim(c, 0.9)});
   // Basin counter: top lit, the front in cel; the six bottles stand on the top (x 140-450).
   f.fill(dim('#e6e3da', 0.9), [[140, 826], [450, 826], [450, 846], [140, 846]]);
   f.fill(dim('#e6e3da', 0.9), [[140, 846], [450, 846], [450, 1010], [140, 1010]]);
@@ -75,9 +72,9 @@ export const paintB05Sh01 = (ctx: PaintContext, pf: number, lang: 'TH' | 'EN') =
   const [a, b] = LIFT[lang];
   const lift = ramp(pf, a, b);
   const lifted = lift >= 0.5;
-  const fig = figFront(YOU, {arms: lifted ? 'bucket' : 'hang', inserts: lifted ? [bucketPart()] : []});
+  const fig = figFront(YOU, {arms: lifted ? 'bucket' : 'hang', inserts: lifted ? [bucketPart()] : [], mitten: MITTEN_6H});
   const k = 186 / H6;
-  drawFig(ctx, 37400, fig, {gx: 738, gy: FLOOR_Y, k, dir: 1}, {floor: dim(CREAM.tile, 0.9), light: keyTravel(1, [0.1, 1])});
+  drawFig(ctx, 37400, fig, {gx: 738, gy: FLOOR_Y, k, dir: 1}, {floor: dim(CREAM.tile, 0.9), light: keyTravel(1, [0.1, 1]), tex: TEX_B});
   if (!lifted) {
     // The bucket on the floor at his right (screen-left), lidded, in front of the leg.
     const f2 = flatKit(ctx, 37500);

@@ -18,3 +18,4 @@
 
 ## Revalidation history
 - 2026-10-30, worktree `claude/world-fog-next-steps-2817bc`: reinstalled with `npm ci`; stills, typecheck, lint and tests run.
+- 2026-10-30, worktree `usage-check-agent-tuning-16bd9b` (Boss pass 11): the untracked `node_modules` symlink pointed to the main checkout's partial install (no `p5.brush`). Re-pointed the symlink to the sibling `world-frog-main-6920cb/node_modules` (contains `p5.brush`; `node_modules/.bin/remotion versions` 4.0.538), not `npm ci`. The main checkout's install is unchanged; the symlink is never committed. Stills render with `--gl=angle`.

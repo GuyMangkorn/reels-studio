@@ -1,5 +1,5 @@
 import type {Painter} from '../painter';
-import {drawFig, figSeatFloor, sectionCast} from './body6';
+import {drawFig, figSeatFloor, sectionCast, TEX_B} from './body6';
 import {ZC_FACES, YOU_DAY3} from './cast';
 import {ctxOf} from './ctx';
 import {keyFaces, type Caster} from './light';
@@ -43,8 +43,9 @@ const props = (f: Flat, S: Section) => {
   }
 };
 
-/** Him at depth d 0.60 m (pass 8, RK-28): the seated lead at a 20 deg pitch is 484 px artwork (d 0.75 gave 474 px, under the 480 px rule). */
-export const SEAT_D = 0.6;
+/** Him at depth d 0.55 m (sheet SS-R1.5 B09-SH01, `RK-28`; pass 8 used 0.60, 484 px at a 20 deg pitch; d 0.75 gave 474 px, under the 480 px
+ *  rule). Boss pass 15 aligns the code to the sheet: the seated lead is re-measured in `tests/zcpaint-body6.test.ts`. */
+export const SEAT_D = 0.55;
 
 /** Him seated on the floor at the section (hips at Y `yHip`, d `SEAT_D`), profile, mirrored to face screen-left (the door): the figure,
  *  its place and its section floor cast (`sectionCast`, clipped to the entry floor). */
@@ -69,7 +70,7 @@ export const paintB09Sh01 = (p: Painter) => {
   // Counter board on the back wall above him (painted; the icons and numerals sit on it, `ZC-TEXT`).
   f.fill('#e9e4d6', [[410, 350], [890, 350], [890, 470], [410, 470]]);
   f.line([[410, 350], [890, 350], [890, 470], [410, 470]], 1.0);
-  drawFig(c, 15100, sit.fig, sit.place, {floor: FLOOR_B09, screenCast: []}); // contact patches only; the cast is in the unit pass
+  drawFig(c, 15100, sit.fig, sit.place, {floor: FLOOR_B09, screenCast: [], tex: TEX_B}); // contact patches only; the cast is in the unit pass
   paintCaps(flatKit(c, 3000), S, [[1.5, 1.6], [3.3, 3.4]]);
 };
 
@@ -80,6 +81,6 @@ export const paintB09Sh03 = (p: Painter) => {
   const sit = seatedFigure(S, {yHip: 1.2, pitch: -0.26, face: {...ZC_FACES.listening, look: [1, -0.2]}, blink: false});
   paintUnit(c, S, B09_LIGHT, 1000, {casters: PROP_CASTERS, casts: [{polys: sit.cast, floor: FLOOR_B09}]});
   props(flatKit(c, 14000), S);
-  drawFig(c, 15600, sit.fig, sit.place, {floor: FLOOR_B09, screenCast: []});
+  drawFig(c, 15600, sit.fig, sit.place, {floor: FLOOR_B09, screenCast: [], tex: TEX_B});
   paintCaps(flatKit(c, 3000), S, [[1.5, 1.6], [3.3, 3.4]]);
 };
