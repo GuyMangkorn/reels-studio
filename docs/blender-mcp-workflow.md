@@ -1,5 +1,7 @@
 # Blender MCP: assets and rendered shots for Remotion
 
+> **Status: deactivated (user decision, 30 Oct 2026).** Blender used too many resources. The project's visual stack is painted 2D (p5.brush) + Remotion SVG (and Rive if its [feasibility spike](dev-findings.md) passes). Film does not select Blender, Mark does not plan Blender shots and Boss does not build Blender assets unless the user reactivates it. This document and `assets/blender/` stay as they are. The Blender MCP tools are removed from the Film and Boss tool lists; reactivating means restoring them in `.claude/agents/film.md` and `boss.md`, connecting the Blender MCP server in the user's own settings (it is not in the project's `.mcp.json`), and rechecking this workflow.
+
 Read this when Film selects Blender, Mark plans Blender-produced shots, or Boss creates, edits or exports Blender work. The user authorized Blender in the workflow on 26 October 2026; the installation in progress at that time still required a live connection check. This document defines a workflow; it adds no renderer, loader or scene JSON fields. Verify session capabilities before claiming availability.
 
 <a id="หน้าที่และทางเลือกส่งมอบ"></a>
