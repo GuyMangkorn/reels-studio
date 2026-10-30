@@ -14,3 +14,4 @@
 
 - 2026-10-30: coordinator recorded selection (Short only, ~50 s), fictional horror profile, project defaults, Light tier, script-only scope. Next owner: Preaw.
 - 2026-10-30: Preaw wrote KSO-SCRIPT-R1 (`short/script.md`): 7 beats S01-B01–S03-B02, NARR/WOMAN Gemini TTS marks, per-beat sound and visual notes, ending proposal `C_seamless` (plus `B_loop`), timing estimated only. Next owner: coordinator (user questions in script open items).
+- 2026-10-30: User answers on KSO-SCRIPT-R1 open questions: keep the "passes to whoever hears the story" twist; first question in Japanese, then Thai; endings: both `C_seamless` and `B_loop`. Script R1 stands unchanged. Next: Film brief when the user authorizes production.
