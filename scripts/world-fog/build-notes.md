@@ -865,3 +865,232 @@ Scope: user authorization in chat 30 Oct ("Boss can update the build") for the i
 - Caption and scrim checks not done (Editor). Sound, narration and TTS not touched.
 - Long: none registered in this checkout.
 - Not committed or pushed. Scratch scripts and the HEAD baseline copy live in the session scratchpad (outside the repository).
+
+## 2026-10-30 — Boss: fix pass r8 (WFOG-EP01-SHORT r8, SS-R4.1 fix list)
+
+Scope: index "SS-R4.1 fix list (Boss)" (`storyboards/world-fog/short/index.md`, anchor `ss-r41-fix-list-boss`): R8-1, R8-2, R8-3 (label only), R8-4, R8-5, R8-8; R8-6 and R8-7 accepted as built (no change). Every change is at G2070 or later (S03-SH06A, S03-SH07, S04-SH01). Narration, TTS, captions, scrim and sound not touched (Editor). Storyboards, `visual-brief.md` and `fact-check.md` not edited (Mark/Film/Boat working-tree changes preserved). Not committed or pushed.
+
+### What changed (owner files)
+- **R8-1 torch** (`src/painted/shots/worldfog.tsx`, `SH07_TORCH`, `s3sh07`): hand (1.05, 0.95, −0.60) at her right hip, lens (0.951, 0.839, −0.542) = hand + 0.16 m along the aim (measured 0.1596 m), pool target (0.20, 0, −0.10) on the floor before the threshold; narrator `rArm` to the hand; torch angle = `torchAngle(hand, lens)` (0.908 rad, was a static 0.95); overlay beam from the lens to the pool (was (0.9, 1.05, −0.3) → (0.6, 0, 0.05)).
+- **R8-2 beam hold** (`beamSH06A`): f0–f30 at `BEAM_END` (583, 689), eased to (588, 820) at f66, held (was (590, 700)). SH03–SH06 `beamAt` untouched.
+- **R8-3 lead-check wording** (`scripts/world-fog/lead-check.ts`): "sheet <= 40" replaced by the purpose rule (report width, no px limit). Camera and jamb geometry unchanged.
+- **R8-4 nod** (`s4sh01`): worker `nod` dx 0 (was −0.12 × glance); the nod y term for the slump stays; the eyes-only look toward the door stays. DF entry updated.
+- **R8-5 bow** (`src/painted/worldfog/assembly.ts`, `heldLook`): `bow` 0 for f0–f119 (was 5° ease f54–f66). The `AsmPose.bow` tilt helper stays (identity at 0; the test still exercises it with an explicit bow).
+- **R8-8 pole** (`s3sh07`, `paintShop` option `omit: [27, 28]`, this shot only): the reading was the glass-front **top rail (shop.ts box 27)** and **sill (box 28)**, both x-parallel members spanning x −3…3 at z −0.06…0. Their image lines meet at (540, 700), the principal point, so they read as one dark pole through the frame. Checked and ruled out: umbrella (worker's left hand (1030, 1121) to tip (969, 1467) at the right edge, not the diagonal), torch body (≈171 px drawn, not 600 px), cart handle, beam (light polygon, `Beam` in `layers.tsx`). The sheet's allowed-darks list did not name the rail or sill.
+- **Label** (`src/painted/worldfog/qa.tsx`): burned-in note now "Boss SS-R4.1 fix pass (r8)" (text only; picture unchanged).
+- **Tests** (`tests/world-fog.test.ts`, 29 of 29 in the file): bow assertions → 0 across f0–f119; head-tilt helper test uses an explicit bow; new test G2136/G2189 hood and face equal the f30 points (≤ 1 px, same breath, gaze and blink); beam f0–f30 = (583, 689) and f66 = (588, 820); new SH07 torch test (lens 0.16 m, pool on the aim line, projection at s 1.00 and 1.05 within ±2 px).
+
+### Checks
+- `npm run typecheck` exit 0 (`out/logs/r8-typecheck.log`); `npm run lint` exit 0 (`r8-lint.log`); `npm test` **143 of 143** (`r8-test-final.log`); world-fog file **29 of 29** (`r8-test-world-fog.log`). The count differs from r7's 125 because this checkout is `claude/world-fog-ep01-script-dba9ff`, not the r7 checkout; not compared like-for-like.
+- Lead check (`out/logs/r8-lead-check.log`, no render; run twice, stable).
+
+### Regression: frames before G2070 (picture below the label band, chrome off)
+- Baseline = r7 source, rendered before any source edit (`out/tmp/r8-ref-r7/`, `r8-baseline-stills.log`, 93 frames, `WFOG-QA`). r8 = `out/tmp/r8-new/` (`r8-render-labelled-stills.log`, same 93 frames).
+- Full-frame `cmp` differs on every frame, including G0, because the label text changed (r7 → r8); full-frame PSNR is about 30 dB for that reason (`r8-parity-psnr.tsv`).
+- **Picture band (y 300–1920), ffmpeg PSNR** (`r8-parity-crop-psnr.tsv`): G0–G2069 sampled every 30 frames plus G2069: 69 of 70 identical (inf dB); G270 110.6 dB (render-noise band, same as r7's G270 106 dB). G2069 identical.
+- Changed frames, picture band: S03-SH06A G2070 49.2 dB, G2100 49.2, G2136 46.9, G2189 46.9; S03-SH07 G2190 27.1, G2230 27.1, G2262 27.0, G2270 26.8, G2292 26.4, G2310 26.3, G2320 25.5, G2330 26.1, G2339 26.9; S04-SH01 G2538 35.7, G2546 33.2.
+- Identical (inf dB): S04-SH01 G2340, G2380, G2420, G2520, G2530, G2554; S04-SH02 G2669, G2670. Matches the expected-change list in the fix list.
+- Production entry (`src/index.ts`, WFOG-EP01-SHORT, `r8-prod-stills.log`): G2070, G2320, G2538 picture band identical (inf) to the QA entry frames.
+- S04-SH01 head crop G2520 vs G2538 (x 340–600, y 430–730): r7 21.4 dB, r8 28.0 dB (residual = eye look, allowed).
+
+### Sheet numbers (labelled frames, chrome off; `lead-check.ts` and `caption-zone.py`)
+- **G2070** beam glow at (583, 689) plate px at s 1 (was (590, 700)); image PSNR vs r7 49 dB.
+- **G2100** worker 679 px (sheet 674 ± 15), face (615, 709) (sheet 615, 705 ± 15); beam screen (589, 699) (r7 ≈ (590, 700) before the bow/beam change).
+- **G2136** beam centre (595, 865) screen (sheet 595, 861 ± 20), unchanged from r7; face and hood equal the f30 points (test, ≤ 1 px).
+- **G2189** no bow: hood/face at the f30 positions ± 1 px (test).
+- **G2230** (f40, s 1.008): torch hand (540, 1111) (sheet ± 15 of (540, 1107)–(540, 1127): inside), lens (584, 1168), pool (792, 1431) (sheet ± 25 of (790, 1425)–(802, 1461): inside).
+- **G2320** (f130, s 1.048): hand (540, 1127), lens (586, 1186), pool (802, 1460). Jamb bar 51 px (x 861–912); rig head centre (hood) x 855, 6 px clear of the jamb's left edge (861). Native crop of r8 G2339: eye at x ≈ 810, nose ≈ 775, jamb covers the back of the hood only. Rail/sill lines meet at (540, 700).
+- **G2339** (f149, s 1.050): hand (540, 1128), lens (586, 1187), pool (803, 1461). Worker profile lead 904 px (≥ 480). Narrator and other leads unchanged (no change to their geometry).
+- **G2538** head crop residual vs G2520 (above). Head position by construction unchanged (nod dx 0).
+- **Caption zone** (raw background, no scrim; band 860–1248; `caption-zone.py`, `out/logs/r8-caption-zone-r8.log` and `-r7.log`): G2100 mean 0.411 / p95 0.660 (r7 0.414 / 0.663); G2230 0.381 / 0.716 (0.382 / 0.714); G2320 0.401 / 0.713 (0.394 / 0.713); G2339 0.400 / 0.712 (0.403 / 0.710); G2538 0.337 / 0.598 (same). All fail 0.25 / 0.40 raw; the scrim is Editor's (MK-WF-DEP-10); not evaluated with a scrim.
+
+### Artifacts (`out/qa/world-fog/WFOG-EP01-SHORT/r8/`)
+- `sheet_A_S03-SH06A-SH07.png`: G2070, G2100, G2136, G2189 (S03-SH06A); G2190, G2230, G2262, G2320, G2339 (S03-SH07). Viewed.
+- `sheet_B_S04-SH01.png`: G2538, G2546. Viewed.
+- `compare/S03-SH07_G2320_G2339_r7-vs-r8.png`: r7 left, r8 right, G2320 and G2339. Viewed: rail and sill diagonals gone; torch low at the hip with its pool on the threshold floor; jamb unchanged.
+- `labelled/`: 11 labelled `WFOG-QA` frames (every frame named above).
+
+### Questions for Mark / Film (sheets not edited)
+- **Q-R8-1 R8-8 source** (Mark, sc03 S03-SH07 acceptance): the pole was the glass-front rail and sill, not one of the sheet's listed darks. They are omitted in S03-SH07 only. Confirm that omission is acceptable, or say whether the sill edge is needed for the threshold read (the render shows the floor edge reads cleanly without it).
+- **Q-R8-2 frame-bar wording** (Film VB-R5 / Mark R8-3): the vertical glass mullions (shop.ts boxes 20–22, 24–25) are still visible as thin dark verticals in S03-SH07. They are not diagonals and the R8-3 rule is about the jamb, but "the door jamb is the only frame bar" is not literally true of this frame. Film to confirm the intent (keep the mullions, or omit them too).
+- **Q-R8-3 torch lens convention**: the drawn torch ends 0.13 m past the grip, plus the 0.03 m grip offset along the forearm, which lands close to the sheet's 0.16 m lens. Same convention as S03-SH02. No change made; Mark may want the sheet to state the grip offset.
+
+### Limitations and not done
+- Studio not run (no browser session); seek/scrub parity in Studio unverified. Renders are per-frame `renderStill` calls.
+- No 1 s production pass against r7 (`pass-sheets.py --prev`); the chrome-off 93-frame pass above is the comparison instead.
+- Continuity at boundaries (G2069/G2070, G2189/G2190, G2339/G2340) checked by eye on sheets only; no every-frame pass.
+- Caption/scrim checks not done (Editor). Sound, narration and TTS not touched.
+- `scripts/world-fog/delivery.md`, `research.md` and `short/script.md` show uncommitted changes that were not made in this pass (another role's work in this checkout); preserved and not read.
+
+### r8b — S03-SH07 narrator glance, eyes only (R8-9; coordinator decision from the user's review of r8, chat 30 Oct)
+- **Decision (user):** the r8 whole-head flip to screen-left while the torso faces the door reads as a twisted neck. Fix: eyes only. The narrator's head stays in profile toward the door for the whole shot (no flip or switch at any frame); pupils go back toward screen-left and the brow lifts f6–f78; eyes and brow return f78–f84. Occupant unchanged. Mullions kept (user). The R8-8 rail/sill omission stands. Mark records R8-9 and the R8-8 omission in the sheets (storyboards not edited here).
+- **Change** (`src/painted/shots/worldfog.tsx`): `sh07NarratorGlance(f)` returns `head` 'right' (constant), `look` [lerp(1, −1, back), 0.2] and brow 'up' with `browTo` 'worry' and `browMix` 1 − back during f78–f84 (`back` = 1 from f6 to f78, eased to 0 over f78–f84). The brow return is eased with the eyes (the brief says eyes return f78–f84; a hard brow snap at f78 would pop). `s3sh07` uses it for the narrator; the r8 `glance` flag and head flip are gone. The occupant code is untouched.
+- **Tests** (`tests/world-fog.test.ts`, 30 of 30 in the file): new test "S03-SH07 narrator glance is eyes only" (head 'right' at every f0–f149; pupils forward at f0, f5, f84+; back at f6, f40, f77, f78; monotone return f78–f84; brow up f6–f77; brow worry at f0, f5, f84+; `browMix` 0 at f78; no blend from f84).
+- **Checks:** typecheck exit 0 (`out/logs/r8b-typecheck.log`); lint exit 0 (`r8b-lint.log`); world-fog file 30 of 30 (`r8b-test-world-fog.log`); `npm test` **144 of 144** (`r8b-test-final.log`).
+- **Pupil travel (rig limit, measured):** the pupil sits at +0.05 head units right of the eye-white centre on a `right` head (`head.ts` `ell(0.67 + 0.03 * lx, ...)` against the white at 0.62). `look` −1 therefore brings the pupil to the white's centre, not to the screen-left side; the forward-to-back travel is about 9 px at 1080 px width (native crop `out/qa/world-fog/WFOG-EP01-SHORT/r8b/eyes_narrator_G2190-2230-2262-2280_x6.png`, ×6 nearest). The pupil reads as a glance back, not as a pupil on the screen-left side. A true screen-left pupil needs a shared head-rig change (all profile heads, consumer checks). Not made; recorded in DF-20261030-painted-profile-head-turn.
+- **Frames changed vs r8** (`out/logs/r8b-vs-r8.tsv`, full frame, `cmp` then ffmpeg PSNR; `out/tmp/r8b-new/` vs `out/tmp/r8-new/`): G2196 23.8 dB, G2230 23.8, G2262 23.6, G2270 23.6. All other sampled frames are identical or in the render-noise band: G2380, G2538 and G2554 (S04-SH01, outside the glance window) are not byte-identical but measure 111 dB full frame (render noise, same class as r7's G270); no change was made to S04-SH01 in r8b.
+- **Frames outside the changed range identical:** G0–G2189 (every 30 frames, G2069, G2070, G2100, G2136, G2189), G2190 (f0), G2274 (f84), G2280 (f90) against r8 renders (G2274/G2280/G2196 r8 references rendered from the r8 narrator lines, `out/tmp/r8-ref3/`, source restored byte-identical after; `r8b-render-r8-reference3.log`); G2292, G2310, G2320, G2330, G2339 (SH07 f102+); S04-SH01 G2340, G2420, G2520, G2530; S04-SH02 G2669, G2670. The changed range is G2196–G2270 (f6–f80) only.
+- **Artifacts:** `out/qa/world-fog/WFOG-EP01-SHORT/r8b/sheet_C_S03-SH07-narrator-glance.png` (G2190, G2196, G2230, G2262, G2274, G2280; viewed: head in profile toward the door in all six; pupils back at G2196–G2262, forward at G2190, G2274 and G2280; brow lifted at G2196 and G2230); `.../r8b/eyes_narrator_G2190-2230-2262-2280_x6.png` (native crops, ×6); `.../r8b/labelled/` (the six labelled frames).
+- **Logs:** `out/logs/r8b-*.log`, `r8b-vs-r8.tsv`.
+- **Limitations:** Studio not run; no 1 s production pass; the r8b QA frames are the `WFOG-QA` chrome-off entry, and the production-entry picture check from r8 still stands for the r8 changes (not re-run for r8b). No commit.
+
+### Coordinator decisions on r8/r8b (30 Oct 2026, user via structured questions)
+- R8-9 eyes-only glance accepted as built: the pupil reaches only the eye-white centre (~9 px travel, profile head-rig limit); no shared head-rig change. Mullions in S03-SH07 kept. Editor authorized next: TTS → retime → captions/scrim/sound.
+
+## 2026-10-30 — Editor r1: TTS, retime, captions and scrim, sound (WFOG-EP01-SHORT, uncommitted)
+
+Scope: coordinator authorization in chat 30 Oct ("Editor: TTS → retime → captions/scrim/sound") on SS-R4.1 / r8b (`src/painted/worldfog/*`, `shots/worldfog.tsx` talk windows). Files: `scripts/world-fog/narration.py` (new: verify, tts, measure, compose, captions), `scripts/world-fog/short/narration-lines.json` (16 lines, startG, planned windows, gains), `scripts/world-fog/short/captions.json` (39 cues, scene-local timeline), `scripts/world-fog/short/WFOG-EP01-SHORT.amplitude.json` (3000 frames), `src/videos/world-fog/index.ts` (narration, captions, scrim, audio, SFX), `src/painted/shots/worldfog.tsx` (7 talk-window arrays only), `public/narration|sfx|audio|scrim/` (ignored MP3; WAV copies with NOTICE entries). Storyboards, script and brief not edited. Nothing committed or pushed.
+
+### 1. Verbatim and timing (TTS → measured)
+- `narration.py verify`: 16/16 lines equal a `script.md` blockquote; caption pieces join back to each line.
+- Voices (voice-tuning skill): narrator `woman-base` = Premwadee +5%; delivery worker `man-base` = Niwat +5%; shop worker `woman-younger` (adult preset, distinct female); occupant `elder-woman` (WORLD elderly, −20% preset; `out/voice-venv` installed). **User listening not done** (voice-tuning step 6: clips in `out/editor/world-fog/WFOG-EP01-SHORT/lines/`).
+- Per-line gains (EP08a, baked into the narration file; runtime has no per-scene narration gain): VO-01 1.12 (hook), whispers VO-06/07/08/09 and VO-13 0.7, VO-16 0.75, shop worker VO-04 0.8, VO-10 0.85 with `lowpass=3800` (through glass), others 1.0.
+- Measured speech (frames at 30 fps) against the sheet's planned span (first cue to last cue end):
+
+| ID | Speaker | Planned span | Measured speech | New startG → speech end | Shot(s) |
+| --- | --- | --- | --- | --- | --- |
+| VO-01 | narrator | 0–40 | 29 | 0 → 29 | S01-SH01 |
+| VO-02 | narrator | 48–234 | 107 | 83 → 190 | S01-SH01/SH02 |
+| VO-03 | narrator | 246–444 | 115 | 293 → 408 | S02-SH01/SH02 |
+| VO-04 | shop worker | 468–510 | 26 | 468 → 494 | S02-SH03 |
+| VO-05 | narrator | 570–774 | 155 | 583 → 738 | S02-SH04/SH05 |
+| VO-06 | narrator | 810–870 | 47 | 810 → 857 | S02-SH06 |
+| VO-07 | occupant | 1047–1077 | 31 | 1047 → 1078 | S02-SH08 |
+| VO-08 | narrator | 1095–1185 | 57 | 1101 → 1158 | S02-SH08 |
+| VO-09 | narrator | 1446–1500 | 33 | 1446 → 1479 | S02-SH10 |
+| VO-10 | worker (off screen) | 1530–1650 | 89 | 1544 → 1633 | S03-SH01 |
+| VO-11 | narrator | 1680–1734 | 43 | 1680 → 1723 | S03-SH02 |
+| VO-12 | narrator | 1830–2034 | 143 | 1866 → 2009 | S03-SH03/SH04/SH05 |
+| VO-13 | narrator (mouth closed) | 2082–2262 | 176 | 2089 → 2265 | S03-SH06A/SH07 |
+| VO-14 | narrator | 2358–2454 | 90 | 2357 → 2447 | S04-SH01 |
+| VO-15 | worker | 2478–2670 | 208 | 2462 → 2670 | S04-SH01 |
+| VO-16 | narrator (mouth closed) | 2796–2949 | 161 | 2790 → 2951 | S04-SH03 |
+
+- Estimate vs measured: most planned spans were 1.3–2.0× the measured speech; the sheets' cue windows were generous, not tight.
+- Method: one clip per speaker turn (no splitting inside a sentence). Piece boundaries inside one continuous clip are proportional to Thai characters; where the clip has the same number of silent runs (≥0.12 s) as caption pieces, the measured runs are used (VO-10, VO-14, VO-15). Start frames were chosen to keep each caption piece inside its planned shot (objective: no piece crosses its shot end; nearest planned piece starts; 6-frame tolerance).
+
+### 2. Retime proposal (Mark) — no shot boundary or length changed
+- Composition stays 3000 frames = 100.00 s (no total change). **Frames before G2070 keep their picture timing;** shot boundaries unchanged.
+- **One overrun to decide:** VO-12 (speech 143 f) cannot fit its five planned pieces into SH03 (1830–1920), SH04 helmet insert (1920–1962) and SH05 (1962–2034) without a pause at each insert cut (the TTS has no pause there; splitting a sentence is not allowed). Chosen start 1866: caption `กำลังประคองกล่องบนรถเข็น` ends 2 f past the cut at 1920; `ที่เคาะกระจกเมื่อกี้…` ends 3 f past 1962. **Proposal A (recommended, no picture change):** accept the 2–3 f caption overlap. Proposal B (not recommended): Mark lengthens S03-SH04 by 4 f; this moves every frame from G1962 on, including G1962–G2069, so it breaks the G2070 rule.
+- **Sync shift for Mark:** VO-12's first cue `คนส่งของ…` moves from 1830 to 1866 (+36 f). The sheet said the words name what the light has just shown; the cue now lags the light by about 1.2 s. Accept, or Mark chooses a different planned shot for the cue.
+- VO-16 ends 2951, so the held silence to G2999 is 48 f (1.6 s), within the script's 1.5–2 s (open item 6 satisfied; S04-SH03 not extended).
+- Picture change before G2070 from Editor: only the talk windows below (mouth open/closed; no camera, pose or timing). Scrim pixels before G2070 change on caption spans (interim MK-WF-DEP-10, see 4).
+
+### 3. Talk windows (Boss-owned `shots/worldfog.tsx`, changed as Editor's timed cues per index R8-7; Boss to review)
+- S02-SH03 shop worker `[24,50)` (was `[24,66)`); S02-SH08 occupant `[18,49)` (was `[18,48)`), narrator `[72,91) [95,129)` (was `[66,96) [102,156)`); S02-SH06 narrator `[18,65)` (was `[18,78)`); S02-SH10 narrator `[36,69)` (was `[36,90)`); S04-SH01 worker `[122,190) [199,216) [225,269) [282,330)` (was `[138,180) [186,228) [234,282) [288,330)`), narrator `[17,62) [73,107)` (was `[18,66) [72,114)`). VO lines (narrator VO in S01, S02-SH01/SH04/SH05, S03-SH02/SH03/SH06A/SH07, S04-SH03; worker in S03-SH01 off screen) keep closed mouths per the sheets.
+
+### 4. Captions and scrim (MK-WF-DEP-08, MK-WF-DEP-10)
+- Captions: `video.captionStyle {preset: 'outline', position: 'middle'}` (production-requirements vertical caption rule for new portrait deliverables; the outline look is the profile's). 39 cues, verbatim, from `captions.json`; blank cues between lines. `caption-breaks.mjs` on the derived timeline: 0 BREAK-MID-WORD, 0 MORE-THAN-2-LINES, 1 MAY-WRAP (`แล้วความกลัว ก็ชวนให้ฉันมองว่ามันเป็นอันตราย`, cue 2190–2265): frame checked (G2262), wrap falls between two whole words (`เป็น | อันตราย`), no word split; no authored `\n`.
+- **MK-WF-DEP-08 not met as written:** the sheet asks for the block bottom near y 1240 (band 1000–1248); `middle` centres the block at y 960 (≈ 876–1044). Boss/Film to decide; I followed the channel rule.
+- **Scrim (interim MK-WF-DEP-10):** `public/scrim/WFOG-caption-scrim-960x230.png` (RGB 16,16,24, 62 % core alpha, 40 px feather, box x 60–1020, y 840–1070) as one `scene.media` image clip per caption span (front layer). Not a shared renderer change; Boss's reusable scrim remains open.
+- caption-zone.py results (0.25 mean / 0.40 p95, `scripts/caption-zone.py`, band default 860:1248; block band 840:1070 for the scrim rows). Frames: 44 (mid-cue frame of each of the 39 cues + G60, G420, G1275, G2262, G2600), `out/qa/world-fog/WFOG-EP01-SHORT/editor-r1/`.
+
+| Frames | Pass default band | Pass block 840–1070 | Mean range | p95 range |
+| --- | --- | --- | --- | --- |
+| Production, captions on, no scrim (`raw/`) | 0 / 44 | — | 0.27–0.52 | 0.40–0.82 (includes glyphs) |
+| Production, captions on, scrim 62 % (`scrim/`) | 1 / 44 | 6 / 44 | — | (glyph-contaminated; not the rule) |
+| Background only, captions off, scrim 62 % (`bg-scrim/`) | 1 / 44 | 6 / 44 | 0.19–0.40 | 0.31–0.79 |
+| Background only, scrim 80 % (test, not used; `bg-scrim80/`) | 4 / 44 | 8 / 44 | 0.17–0.36 | 0.37–0.81 |
+
+- Reading: captions alone add glyph pixels to the band, so the background-only rows are the rule's measure. The picture itself is bright behind the caption block in most frames (fog lamps, shelves, windows, the torch beam), so a block-only plate does not reach p95 ≤ 0.40. Passing the full band would need a grade on the picture outside the block, which the sheet forbids. **Not met. Decision needed (user / Film / Boss):** (a) accept block-level measurement for this deliverable and record the exception; (b) widen the plate (grade on the picture); (c) Film lowers highlights in the caption zone (VD09/VD18 look rows).
+- Legibility: viewed `sheet_caps_A.png` and `sheet_caps_B.png` (16 production frames, 270 px): all captions readable, inside the block, no caption crosses a face or the torch hand in the sampled frames; S02-SH04 and S04-SH01 captions over the picture read clearly.
+
+### 5. Sound (library-first; 11 generated, 5 existing)
+- Existing library IDs used: `tension_drone-sparse-piano_01` (music, loop), `bed_dark-drone-sub_01` (ambience bed, loop), `reveal_riser-tension_01`, `ui_notification-ding_01`, `ui_pop_01`.
+- Generated (audio-studio, 3 candidates each, picked by measured peak/onset/tail; filed with `sound-library.py file`, index 0 mismatches): `vehicle_car-engine-decel-stop_01` (v1), `foley_car-door-open-close_01` (v3, latch onset 0.77 s), `foley_footsteps-wet-concrete_01` (v3), `foley_cart-wheel-squeak-scrape_01` (v2), `foley_umbrella-tap-glass_01` (v2), `foley_carton-slide-helmet-catch_01` (v2), `foley_flashlight-click_01` (v1), `foley_glass-door-push_01` (v2), `room_shop-fridge-hum_01` (v2, loop 1 s crossfade, −14 LUFS), `outdoor_fog-forecourt-hush_01` (v2, −14 LUFS), `tone_soft-sustain-reflective_01` (v1, −14 LUFS, 400 ms fade). Candidate choice is a measured pick, not an audio approval (`listened: no`).
+- Mix plan (EP08a, `video.audio[]`): bed S01–S02-B02 0.16 then 0.22 to G988; silence G988–G1047 (tap-3 drop); very low re-entry 0.10 (S02-SH08–SH09); none in S02-SH10 and S03-SH01; quiet release 0.10 G1830–G2070; tone 0.12 G2070–G2274 under the perception line; thinned release 0.05 to G2340; forecourt hush 0.22 (G156–G240); shop hum 0.14 G240 to the hard cut (duck 0.6); sub bed 0.10 G2790–G2961 (fade out f159–171 of S04-SH03). Duck under narration 0.35 (beds) to 0.5–0.6 (sub, hum).
+- SFX (`scene.sfx[]`, cue frame = sheet event frame minus measured onset): engine G0; door latch G145 (open at G168); steps G209; phone ding G360 and press G376; squeak G521 (S02-SH03), move windows G540…720 every 30 f (per sheet's `f0, f30, f60 …`, not otherwise confirmed); S02-SH05 G750, G780; S02-SH06 G810/840/870; S02-SH07 scrape G900, three taps G950/968/986 (umbrella file); riser G1164–1275 (`ends dead at G1275`); helmet slide G1253 (catch at G1275); torch click G1761 (f108 exact); S03-SH06 scrape G2040; S03-SH07 door slide G2258, scrape G2286; S04-SH01 door close G2348; S04-SH02 torch click G2677.
+- Measured (ffmpeg ebur128): narration MP3 −17.2 LUFS integrated, −1.6 dBFS true peak (render.mjs normalizes the MP4 to −14 LUFS afterwards); drone bed (normalized) −14.0 LUFS; the mix levels are as set above.
+- **Not done / gaps:** human exertion breath (S02-SH02/SH04/SH06/SH08/SH09/SH10, S03-SH01/SH03/SH07, S04-SH01) — no library source; Stable Audio is instrumental; not generated (needs a recorded or licensed breath source). The release drone keeps its piano layer (no stem separation; sheet asks for the family's drone without piano). Outside muffling through the glass is approximated by the shop hum only. S02-SH09 brush at f100 and seat knock at f117 not placed. Car-door close thud (f80) not separately placed (one file, latch at G145).
+
+### 6. Checks run (logs in out/logs/editor-*.log)
+- `npm run typecheck` exit 0 (`editor-typecheck-final.log`); `npm run lint` exit 0 (`editor-lint-final.log`); `npm test` 144/144 (`editor-test-final.log`). Verify: 16/16 verbatim.
+- Stills: `node scripts/world-fog/stills.mjs --out=<dir> --frames=<list> --gl=angle` (44 frames in 80–90 s). **Finding:** `scripts/render.mjs --stills` (no `--gl`) fails on this composition at G304 with a 28 s `delayRender` timeout on `Html5Audio` (tension drone and shop hum); the same frame renders with `--gl=angle` in 3.4 s. Recorded as a dev finding candidate. The 16-bit conversion of the two beds did not fix it.
+- Not run: full MP4 render (audio mix and motion not verified in an export), Studio playback, random/backward seek, every-frame continuity, user listening (voice clips, SFX candidates, mix).
+
+### 7. Samples and reproduction (ignored `out/`)
+- Scene samples (one per story scene, production frames with captions and scrim, native 1080×1920): `out/samples/world-fog/WFOG-EP01-SHORT/editor-r1/` (`S01-SH01_G60_hook-marker.png`, `S02-SH09_G1275_catch.png`, `S03-SH07_G2262_door-perception.png`, `S04-SH01_G2600_worker-line.png`, `manifest.json`). Integration samples only, not approval.
+- Reproduce: `python3 -I scripts/world-fog/narration.py tts|measure|compose|captions` (voices need `out/voice-venv` for `elder-woman`); `node scripts/caption-breaks.mjs out/editor/world-fog/WFOG-EP01-SHORT/timing/caption-timeline.json`; `node scripts/world-fog/stills.mjs --out=… --frames=$(cat out/editor/world-fog/WFOG-EP01-SHORT/timing/raw-frames.txt) --gl=angle`; `--entry=src/painted/worldfog/qa.tsx --id=WFOG-QA` for captions-off backgrounds; `python3 -I scripts/caption-zone.py [--band 840:1070] <frames>`.
+
+### 8. Open items for coordinator / owners
+- User: listen to the four new voice clips (shop worker, occupant, worker, narrator) and the sound candidates; decide the caption-zone exception (section 4); confirm VO-12 acceptance (section 2); authorize a full MP4 render if wanted (about 30–60 min).
+- Mark: VO-12 proposal A and the +36 f sync shift; SS-R4 talk windows now measured (section 3); S02-SH04 move-window squeak pattern (f0…f180, every 30 f) is the sheet's wording, not a timed event.
+- Boss: MK-WF-DEP-08 (placement; `middle` now), MK-WF-DEP-10 (reusable scrim; interim plate here), EP08a per-scene narration gain (missing; levels baked into the MP3), review of talk-window edits in `worldfog.tsx`, `render.mjs --stills` GL default (finding above).
+- Film: caption-zone highlights (VD09/VD18), breath source for the exertion breath cues.
+- Housekeeping: while debugging the still renders, `public/audio/tension/tension_drone-sparse-piano_01.wav` and `public/audio/room/room_shop-fridge-hum_01.wav` were re-encoded from 24-bit to 16-bit PCM (same rate and channels, no gain change). The library originals are unchanged. The bit-depth change did not fix the render error (section 6); keep or revert before export.
+
+## 2026-10-30 — Editor r2: caption block to y 1240 (MK-WF-DEP-08), VO-12 accepted, voices approved, full MP4 render
+
+Scope: coordinator decisions in chat 30 Oct (structured questions): (1) captions move down per MK-WF-DEP-08 (block bottom near y 1240, not `middle`), scrim moved with it, caption-zone re-measured on the same 44 frames in the new block band, per-frame exception only for remaining failures; (2) VO-12 Proposal A accepted; (3) voices VO-04 and VO-07 approved by the user (below); (4) full MP4 render authorized after the caption checks passed. No commit.
+
+### Voices (voice-tuning step 6 done)
+- User listened to and approved in chat (30 Oct, via the coordinator): VO-04 shop worker `woman-younger` and VO-07 occupant `elder-woman`. Narrator (`woman-base`) and worker (`man-base`) were not separately approved; the coordinator decided the voice defaults (2026-10-29). No voice change in r2.
+
+### VO-12 (Proposal A, accepted by user)
+- Accepted: VO-12 caption `กำลังประคองกล่องบนรถเข็น` ends 2 f past the cut at G1920; `ที่เคาะกระจกเมื่อกี้…` ends 3 f past the cut at G1962. No picture change at these cuts (shots unchanged).
+- Accepted: VO-12 first cue `คนส่งของ…` starts G1866 (sheet 1830, +36 f), so it lags the torch light by about 1.2 s. No shot or picture change.
+
+### Caption block to y 1240 (shared-module change, for Boss review)
+- New `captionStyle.position: 'lower'`: block bottom edge at y 1240 of 1920 (`bottom = height × (1 − 1240/1920)`, 680 px at 1080×1920). Files: `src/scenes/types.ts` (union), `src/scenes/media.ts` (`captionPositions`, validator message), `src/scenes/Subtitles.tsx` (placement). Existing `bottom`, `middle`, `top` unchanged; `tests/media.test.ts` gained a `lower` accept and an invalid-position assertion (144/144 still).
+- Episode: `src/videos/world-fog/index.ts` uses `captionStyle: {preset: 'outline', position: 'lower'}`.
+- Scrim moved with the block: `public/scrim/WFOG-caption-scrim-960x260.png` (replaces 960×230), box x 60–1020, y 1020–1280, 62 % core alpha, 40 px feather. The 230-px file was removed. Caption spans and cues unchanged; caption-breaks unchanged (cue text unchanged).
+
+### Caption-zone re-measure (same 44 frames; sheet caption band 1000:1248)
+- Frames: `out/qa/world-fog/WFOG-EP01-SHORT/editor-r2/bg-lower/` (background: captions off, scrim on, `WFOG-QA` entry) and `scrim-lower/` (production, captions on and scrim on). Measured: `out/logs/editor-caption-zone-r2-bg-1000.json` (rule measure), `…-scrim-1000.json` (captions on, reference only: glyphs contaminate the band), `…-bg-860.json` (default band, reference).
+- Result on background frames, band 1000:1248: **14 of 44 pass**; 30 fail (table below). Default band 860:1248: 1 of 44 pass.
+- Reading: the picture itself is bright behind the block in these frames (fog lamps, shelves, windows, the torch beam). The scrim lowers the mean but not the p95 highlights. Per coordinator decision, the remaining failures are recorded as per-frame exceptions (not fixed by grading the picture).
+
+Per-frame exceptions (background band 1000:1248, mean/p95; must be ≤ 0.25 / ≤ 0.40):
+
+| Frame | mean/p95 |
+| --- | --- |
+| S01-SH01_G14 | 0.18/0.43 |
+| S01-SH01_G60 | 0.28/0.49 |
+| S01-SH01_G104 | 0.19/0.44 |
+| S01-SH02_G148 | 0.23/0.41 |
+| S02-SH01_G304 | 0.24/0.56 |
+| S02-SH01_G335 | 0.25/0.58 |
+| S02-SH02_G420 | 0.32/0.75 |
+| S02-SH06_G833 | 0.32/0.69 |
+| S02-SH09_G1275 | 0.27/0.38 |
+| S02-SH10_G1462 | 0.24/0.56 |
+| S03-SH01_G1616 | 0.19/0.42 |
+| S03-SH02_G1701 | 0.31/0.71 |
+| S03-SH03_G1873 | 0.25/0.53 |
+| S03-SH03_G1901 | 0.25/0.54 |
+| S03-SH04_G1940 | 0.31/0.58 |
+| S03-SH05_G1976 | 0.25/0.43 |
+| S03-SH05_G2001 | 0.25/0.43 |
+| S03-SH06A_G2113 | 0.24/0.52 |
+| S03-SH06A_G2163 | 0.26/0.54 |
+| S03-SH07_G2227 | 0.21/0.44 |
+| S03-SH07_G2262 | 0.21/0.43 |
+| S04-SH01_G2379 | 0.20/0.53 |
+| S04-SH01_G2430 | 0.20/0.46 |
+| S04-SH01_G2496 | 0.20/0.51 |
+| S04-SH01_G2547 | 0.20/0.48 |
+| S04-SH01_G2587 | 0.20/0.45 |
+| S04-SH01_G2600 | 0.20/0.45 |
+| S04-SH01_G2646 | 0.20/0.44 |
+| S04-SH03_G2889 | 0.23/0.41 |
+| S04-SH03_G2931 | 0.24/0.43 |
+
+### Face and clue check on the labelled caption frames
+- `out/qa/world-fog/WFOG-EP01-SHORT/editor-r2/labelled-caption/` (44 production frames, captions and scrim on, labelled `G#### shot`). Sheets viewed: `sheet_caps_r2_A.png` (G14–G1581) and `sheet_caps_r2_B.png` (G1616–G2931).
+- No caption covers a face in the 44 frames (narrator, occupant, shop worker, worker): all faces sit above the block; captions cover torsos, cartons, legs and counter.
+- **Finding (Mark/Film):** the lowered torch hand and lens of S03-SH07 (sheet R8-1: hand near (540, 1107), lens near (584, 1168)) sit behind the caption VO-13-3 `แล้วความกลัว ก็ชวนให้ฉันมองว่ามันเป็นอันตราย` (G2190–2265, shot-local f0–f75). The sheet calls the hand "not a clue"; crop `out/qa/world-fog/WFOG-EP01-SHORT/editor-r2/crop_S03-SH07_G2227_torch_view.png` shows the hand under the text. Not changed in r2; Mark to accept or re-stage.
+- caption-breaks: unchanged (cue text unchanged); the MAY-WRAP cue `แล้วความกลัว ก็ชวนให้ฉันมองว่ามันเป็นอันตราย` wraps between two whole words (`เป็น | อันตราย`) at the lower position too (sheet A/B).
+
+### Checks (logs in out/logs/)
+- `npm run typecheck` 0 (`editor-typecheck-r2.log`); `npm run lint` 0 (`editor-lint-r2.log`); `npm test` 144/144 (`editor-test-r2.log`).
+
+### Full MP4 render (authorized; --gl=angle)
+- Command: `npx remotion render src/index.ts WFOG-EP01-SHORT out/WFOG-EP01-SHORT/WFOG-EP01-SHORT_C_seamless.mp4 --gl=angle --codec=h264 --crf=18 --pixel-format=yuv420p --concurrency=4 --overwrite` (run in the background; log `out/logs/editor-r2-render.log`). `scripts/render.mjs` has no `--gl` option, so the CLI was used; the composition's defaultProps carry `ending: C_seamless` and `loopBlendFrames: 0`.
+- Results: see the "Render result" entry below (filled when the render exits).
+
+### Render result (Editor r2, 30 Oct 2026)
+- Output: `out/WFOG-EP01-SHORT/WFOG-EP01-SHORT_C_seamless.mp4` (per-ID path; same file copied to `out/WFOG-EP01-SHORT/WFOG-EP01-SHORT.mp4`); log `out/logs/editor-r2-render.log` (render exit 0, 3000/3000 encoded). Loudness step log `out/logs/editor-r2-loudness.log`.
+- Streams: H.264 1080×1920, 30 fps, 3000 video frames = 100.000 s; AAC 48 kHz stereo, trimmed by the project loudness step to 99.993 s (container 100.000 s). 55.1 MB before normalisation.
+- Loudness (scripts/loudness.mjs, the render.mjs step): as rendered −18.1 LUFS integrated, true peak −3.5 dBTP, LRA 10.8 LU; after the project step **−14.1 LUFS integrated, −1.4 dBTP**, LRA 10.3 LU (dynamic loudnorm). Meets the project default (≈ −14 LUFS, ≤ −1 dBTP).
+- Frames: 30 frames extracted from the final MP4 (`out/qa/world-fog/WFOG-EP01-SHORT/editor-r2/mp4-frames/`), labelled copies in `mp4-frames-labelled/`, sheets `sheet_mp4_frames_A.png` (G0–G1530) and `sheet_mp4_frames_B.png` (G1869–G2999); both viewed. Scene samples G60 (S01), G1275 (S02), G2262 (S03), G2600 (S04); cut frames G126, G240, G354, G540, G738, G1530, G2070, G2190, G2340, G2670, G2790; hold and hard-cut G2998/G2999 (no fade, no caption).
+- Not checked in this pass: motion and seek (Studio), every-frame continuity, and listening by a person to the final mix (levels are from measurements, not by ear).

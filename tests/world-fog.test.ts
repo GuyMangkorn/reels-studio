@@ -11,7 +11,7 @@ import {asmPoseAt, assemblyParts, assemblyRaw, JAM_JUDDER, LIT, SIL, TAP_FRAMES}
 import {doorPt, farShapeAt, SEDAN_DOOR} from '../src/painted/worldfog/car';
 import {CAST, drawFigure, shoulderHeight, type Arm} from '../src/painted/worldfog/cast';
 import {DEG, PROJ, SHOT_ROWS, TOTAL_FRAMES, asmAt, doorAt, fogAt, lampAt, lensAt, lightAt, torchOnAt, type V3} from '../src/painted/worldfog/space';
-import {SH02_TORCH_HAND, VD18_LIGHT, beamSH06A, clutch, counterWorkerArms, sh02Arms} from '../src/painted/shots/worldfog';
+import {SH02_TORCH_HAND, SH07_TORCH, VD18_LIGHT, beamSH06A, clutch, counterWorkerArms, sh02Arms, sh07NarratorGlance} from '../src/painted/shots/worldfog';
 
 const video = worldFog.videos[0];
 const fps = 30;
@@ -148,9 +148,8 @@ test('S03-SH06A held look (SS-R4 RT-1): LIT-LOWER at S (-0.10, 0.74), fog lens A
   // Breath: shoulders rise 0.012 m per 20-frame period above the dip.
   assert.equal(asmPoseAt(f(0)).dip, -0.015);
   assert.ok(Math.abs(asmPoseAt(f(10)).dip - (-0.003)) < 1e-9);
-  // Head bow 5 deg from f54 (held), blink f84-f88 (peak f86), pupils down from f48.
-  assert.equal(asmPoseAt(f(40)).bow, 0);
-  assert.ok(Math.abs((asmPoseAt(f(66)).bow ?? 0) - 5 * DEG) < 1e-9 && Math.abs((asmPoseAt(f(119)).bow ?? 0) - 5 * DEG) < 1e-9);
+  // No head bow in the held look (SS-R4.1 R8-5); blink f84-f88 (peak f86), pupils down from f48.
+  for (const k of [0, 40, 66, 119]) assert.equal(asmPoseAt(f(k)).bow, 0, `f${k} bow`);
   assert.equal(asmPoseAt(f(80)).blink ?? 0, 0);
   assert.ok(Math.abs((asmPoseAt(f(86)).blink ?? 0) - 1) < 1e-9);
   assert.ok((asmPoseAt(f(60)).gazeDown ?? 0) > 0.99 && (asmPoseAt(f(47)).gazeDown ?? 0) === 0);
@@ -160,10 +159,11 @@ test('S03-SH06A held look (SS-R4 RT-1): LIT-LOWER at S (-0.10, 0.74), fog lens A
   assert.equal(asmPoseAt(2190).blink ?? 0, 0);
 });
 
-test('S03-SH06A head bow is a forward tilt of the hood and face only: the helmet and cartons do not move', () => {
+test('S03-SH06A has no head bow (SS-R4.1 R8-5); the tilt helper, given a bow, moves only the hood and face', () => {
   const pose = asmPoseAt(2136);
-  const flat = assemblyRaw(GLASS, {...pose, bow: 0});
-  const bowed = assemblyRaw(GLASS, pose);
+  assert.equal(pose.bow, 0, 'R8-5: no bow in the held look');
+  const flat = assemblyRaw(GLASS, pose);
+  const bowed = assemblyRaw(GLASS, {...pose, bow: 5 * DEG});
   assert.equal(flat.length, bowed.length);
   const pts = (parts: typeof flat, lit: string) => parts.filter((p) => p.lit === lit).flatMap((p) => p.pts);
   for (const lit of [LIT.helmet, LIT.kraft, LIT.cart]) assert.deepEqual(pts(bowed, lit), pts(flat, lit), `${lit} unmoved`);
@@ -171,6 +171,51 @@ test('S03-SH06A head bow is a forward tilt of the hood and face only: the helmet
   const meanY = (ps: Pt[]) => ps.reduce((s, q) => s + q[1], 0) / ps.length;
   const dy = meanY(pts(bowed, LIT.skin)) - meanY(pts(flat, LIT.skin));
   assert.ok(dy > 0 && dy < 3, `face centre moved ${dy.toFixed(2)} px at s 1.0 (front-view foreshortening)`);
+});
+
+test('S03-SH06A hood and face hold the f30 positions at G2136 and G2189 apart from the breath (SS-R4.1 R8-5)', () => {
+  const h30 = asmPoseAt(2100);
+  for (const G of [2136, 2189]) {
+    // Same breath (shoulder dip), gaze and blink as f30: any remaining difference would be a head tilt.
+    const pk = {...asmPoseAt(G), dip: h30.dip, gazeDown: h30.gazeDown, blink: h30.blink};
+    const a = assemblyRaw(GLASS, h30), b = assemblyRaw(GLASS, pk);
+    for (const lit of [LIT.coat, LIT.skin]) {
+      const pa = a.filter((p) => p.lit === lit).flatMap((p) => p.pts), pb = b.filter((p) => p.lit === lit).flatMap((p) => p.pts);
+      assert.equal(pa.length, pb.length, `${lit} point count G${G}`);
+      const maxD = Math.max(...pa.map((q, i) => Math.hypot(q[0] - pb[i][0], q[1] - pb[i][1])));
+      assert.ok(maxD <= 1, `${lit} at G${G}: max move ${maxD.toFixed(3)} px`);
+    }
+  }
+});
+
+test('S03-SH07 torch (SS-R4.1 R8-1): hand, lens 0.16 m along the aim, pool on the floor before the threshold; sheet projection', () => {
+  const {hand, lens, target} = SH07_TORCH;
+  const dist = (p: V3, q: V3) => Math.hypot(p[0] - q[0], p[1] - q[1], p[2] - q[2]);
+  assert.ok(Math.abs(dist(hand, lens) - 0.16) < 0.001, `lens ${dist(hand, lens).toFixed(4)} m from the hand`);
+  // The pool lies on the aim line: target - hand is parallel to lens - hand.
+  const aim = lens.map((v, i) => v - hand[i]), toT = target.map((v, i) => v - hand[i]), k = toT[0] / aim[0];
+  assert.ok(aim.every((v, i) => Math.abs(v * k - toT[i]) < 0.01), 'pool on the aim line');
+  // Pool on the floor, just inside the threshold (x 0.20, z -0.10 is behind the leaf line -0.05), off the faces.
+  assert.equal(target[1], 0);
+  assert.ok(target[0] >= 0 && target[0] <= 0.4 && target[2] <= -0.05 && target[2] >= -0.2, `pool ${target}`);
+  // Projection at s 1.00 (G2190) and s 1.05 (G2339): hand, lens and pool (sheet values, +-2 px).
+  const at = (G: number, p: V3) => toScreen(cameraAt('WFOG-S03-SH07', (G - 2190) / fps), PROJ['CAM-INT-SIDE'].P(p));
+  const near = (got: Pt, want: Pt) => Math.abs(got[0] - want[0]) <= 2 && Math.abs(got[1] - want[1]) <= 2;
+  assert.ok(near(at(2190, hand), [540, 1107]) && near(at(2190, lens), [584, 1164]) && near(at(2190, target), [790, 1425]), 'G2190 torch');
+  assert.ok(near(at(2339, hand), [540, 1127]) && near(at(2339, lens), [586, 1187]) && near(at(2339, target), [802, 1461]), 'G2339 torch');
+});
+
+test('S03-SH07 narrator glance is eyes only (SS-R4.1 R8-9): head profile toward the door at every frame; pupils back f6-f78, eyes return f78-f84', () => {
+  const g = sh07NarratorGlance;
+  for (let f = 0; f <= 149; f++) assert.equal(g(f).head, 'right', `f${f} head stays in profile`);
+  for (const f of [0, 5, 84, 100, 149]) assert.equal(g(f).look[0], 1, `f${f} pupils forward`);
+  for (const f of [6, 40, 77, 78]) assert.equal(g(f).look[0], -1, `f${f} pupils back toward screen-left`);
+  assert.ok(g(81).look[0] > -1 && g(81).look[0] < 1, 'f81 eyes returning');
+  for (let f = 78; f < 84; f++) assert.ok(g(f + 1).look[0] >= g(f).look[0], `return monotone f${f}`);
+  for (const f of [6, 40, 77]) assert.equal(g(f).brow, 'up', `f${f} brow up`);
+  for (const f of [0, 5, 84, 149]) assert.equal(g(f).brow, 'worry', `f${f} brow worry`);
+  assert.equal(g(78).browMix, 0, 'f78 brow still up (blend starts at 0)');
+  assert.equal(g(84).browTo, undefined, 'f84 no brow blend: SS-R4 face');
 });
 
 test('S03-SH06A sheet numbers (SS-R4 RT-1): worker 674 +-15 px and face (615, 705) +-15 at G2100; beam centre (595, 861) +-20 at G2136', () => {
@@ -188,7 +233,11 @@ test('S03-SH06A sheet numbers (SS-R4 RT-1): worker 674 +-15 px and face (615, 70
   assert.ok(Math.abs(faceAt[0] - 615) <= 15 && Math.abs(faceAt[1] - 705) <= 15, `face ${faceAt.map((v) => v.toFixed(1))}`);
   const beam = toScreen(cameraAt('WFOG-S03-SH06A', 66 / fps), beamSH06A(2136));
   assert.ok(Math.abs(beam[0] - 595) <= 20 && Math.abs(beam[1] - 861) <= 20, `beam centre ${beam.map((v) => v.toFixed(1))}`);
-  assert.deepEqual(beamSH06A(2100), [590, 700]);
+  // SS-R4.1 R8-2: the hold is BEAM_END (583, 689) from f0 to f30, the S03-SH03 exit value.
+  assert.deepEqual(beamSH06A(2070), [583, 689]);
+  assert.deepEqual(beamSH06A(2100), [583, 689]);
+  const end = beamSH06A(2136);
+  assert.ok(Math.abs(end[0] - 588) < 1e-9 && Math.abs(end[1] - 820) < 1e-9, `f66 end ${end}`);
 });
 
 test('SS-R4 picture pushes: S03-SH07 s 1.00-1.05 over 150 frames, S04-SH01 s 1.00-1.04 over 330, S04-SH03 s 1.00-1.06 over 210', () => {

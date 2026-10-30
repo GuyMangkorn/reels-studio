@@ -55,10 +55,10 @@ const GLASS = PROJ['CAM-GLASS-OUT'];
 /** S03-SH03 beam (sheet: glow centre (300, 1150) -> (590, 700) over f0-f30 at the match framing), in plate px. */
 const BEAM_FROM: Pt = [6, 1058], BEAM_START: Pt = [360, 1035], BEAM_END: Pt = [583, 689];
 const beamAt = (G: number) => (G < 1800 ? 0 : ease(seg(G, 1800, 1830)));
-/** S03-SH06A beam glow centre (SS-R4 RT-1, plate px at s 1): (590, 700) held f0-f30, eased to (588, 820) at f66, held. */
+/** S03-SH06A beam glow centre (SS-R4 RT-1, plate px at s 1; SS-R4.1 R8-2): BEAM_END (583, 689), the S03-SH03 exit value, held f0-f30, eased to (588, 820) at f66, held. */
 export const beamSH06A = (G: number): Pt => {
   const u = ease(seg(G - 2070, 30, 66));
-  return [lerp(590, 588, u), lerp(700, 820, u)];
+  return [lerp(BEAM_END[0], 588, u), lerp(BEAM_END[1], 820, u)];
 };
 
 type WindowOpts = {assembly: boolean; veil: boolean; jam?: boolean; lowBank?: number; sheen?: number;
@@ -266,7 +266,7 @@ const counterOutPlate = plate('S02-SH03', {
     const look = ptLerp([-0.8, 0.1], [-0.25, -0.05], shift);
     paintShop(p, proj, G, {light: L, dress: COUNTER_OUT_DRESS, actors: [
       actor(p, proj, 'shopworker', -2.0, -3.5, {
-        view: 'front', light: L, face: face({look, brow: f >= 30 ? 'worry' : 'flat', open: talk(f, [[24, 66]], 0.6)}),
+        view: 'front', light: L, face: face({look, brow: f >= 30 ? 'worry' : 'flat', open: talk(f, [[24, 50]], 0.6)}),
         ...counterWorkerArms(proj),
       }, tl),
     ]});
@@ -374,9 +374,9 @@ const sh08 = lowShelfPlate('S02-SH08', 201, push(201, 1.0, 1.04, 500, 700), (p, 
   // Right hand from her hip onto the right knee (f0-f12) with the torch across it; left hand to the floor by f12.
   const settle = ease(seg(f, 0, 12));
   return crouchedPair(p, proj, tl,
-    {crouch: lerp(0.81, 1, settle), head, look: f < 18 ? [0.4, -0.3] : [0.2, 0], brow: 'worry', open: talk(f, [[66, 96], [102, 156]], 0.5),
+    {crouch: lerp(0.81, 1, settle), head, look: f < 18 ? [0.4, -0.3] : [0.2, 0], brow: 'worry', open: talk(f, [[72, 91], [95, 129]], 0.5),
       arms: {r: armBetween(proj, KEY.hipR, KEY.kneeR, settle), l: armBetween(proj, KEY.kneeL, KEY.floorL, settle), torch: torchAngle(proj, KEY.kneeR.hand, TORCH_KNEE_LENS)}},
-    {crouch: lerp(0.8, 1, ease(seg(f, 0, 18))), look: f < 50 ? [0.8, -0.2] : [0.8, 0], open: talk(f, [[18, 48]], 0.5), hold: f >= 50}, light);
+    {crouch: lerp(0.8, 1, ease(seg(f, 0, 18))), look: f < 50 ? [0.8, -0.2] : [0.8, 0], open: talk(f, [[18, 49]], 0.5), hold: f >= 50}, light);
 }, undefined, VD18_LIGHT['CAM-LOW-SHELF']);
 /** S03-SH01 camera: the picture push plus the tilt-follow `dy` 0 -> +130 px over f110-f125, so her head stays in frame. */
 const s3sh01Camera = (tl: number): Camera => ({...push(126, 1.0, 1.04, 500, 700)(tl), dy: 130 * ease(seg(frameOf(tl), 110, 125))});
@@ -400,7 +400,7 @@ const sh10 = plate('S02-SH10', {
     paintShop(p, proj, G, {outside: {asm: {pose, parts: assemblyParts(proj, pose)}}, light: L, actors: [
       actor(p, proj, 'occupant', -1.5, -1.1, {view: 'front', light: L, crouch: 1, face: face({look: [0.8, 0], brow: 'worry'}), lArm: arm(proj, [-1.1, 0.42, -1.32], 1)}, tl),
       actor(p, proj, 'narrator', -0.95, -1.3, {
-        view: 'front', light: L, crouch: 1, rise, face: face({look: ptLerp([0, 0], [0.7, -0.8], ease(seg(f, 0, 30))), brow: 'worry', eyes: f >= 96 ? 'wide' : 'dot', open: talk(f, [[36, 90]], 0.45)}),
+        view: 'front', light: L, crouch: 1, rise, face: face({look: ptLerp([0, 0], [0.7, -0.8], ease(seg(f, 0, 30))), brow: 'worry', eyes: f >= 96 ? 'wide' : 'dot', open: talk(f, [[36, 69]], 0.45)}),
         // Arms tucked, hands on the knees, torch across the right knee (SS-R3.2); the held breath lifts elbows 2 cm.
         rArm: armBetween(proj, KEY.kneeR, KEY.kneeR, 0, 0.02 * ease(seg(f, 96, 104))), rHold: {kind: 'torch', angle: torchAngle(proj, KEY.kneeR.hand, TORCH_KNEE_LENS), on: 0},
         lArm: armBetween(proj, KEY.kneeL, KEY.kneeL, 0, 0.02 * ease(seg(f, 96, 104))),
@@ -440,7 +440,7 @@ const sh06 = intRevPlate('S02-SH06', 108, push(108, 1.0, 1.05, 620, 660), (p, pr
     ...clutch(proj, f),
   }, tl),
   actor(p, proj, 'narrator', -1.0, -1.3, {
-    view: 'front', light, face: face({look: [-0.35, -0.15], brow: 'worry', open: talk(f, [[18, 78]], 0.45)}),
+    view: 'front', light, face: face({look: [-0.35, -0.15], brow: 'worry', open: talk(f, [[18, 65]], 0.45)}),
     // SS-R3.4 AB1: the torch hand as before; the upper arm goes behind the torso (elbow z -1.36, plane z -1.22).
     rArm: armVia(proj, [-0.8, 0.98, -1.2], [-0.85, 0.93, -1.36], 'upper'), rHold: {kind: 'torch', angle: Math.PI / 2 + 0.25 - 0.1 * ease(seg(f, 60, 72)), on: 0},
   }, tl),
@@ -502,6 +502,27 @@ const s3sh02 = intRevPlate('S03-SH02', 144, push(144, 1.0, 1.06, 480, 700), (p, 
 
 // ------------------------------------------------------------------ S03-SH07, S04 interiors
 
+/** S03-SH07 torch (SS-R4.1 R8-1; WORLD-SHOP m): lowered and held f0-f149 at her right hip; the lens 0.16 m along the aim, the
+ * pool on the floor just before the threshold, off every face. At s 1.00: hand (540, 1107), lens (584, 1164), target (790, 1425). */
+export const SH07_TORCH: {hand: V3; lens: V3; target: V3} = {hand: [1.05, 0.95, -0.6], lens: [0.951, 0.839, -0.542], target: [0.2, 0, -0.1]};
+
+/**
+ * S03-SH07 narrator held glance (SS-R4.1 R8-9, eyes only; f = shot-local). The head stays in profile toward the door
+ * (`head` right, no flip). The pupils go back toward screen-left and the brow lifts from f6 to f78; the eyes and brow
+ * return f78-f84. Before f6 and from f84 the face is the SS-R4 face (forward look, brow worry).
+ */
+export const sh07NarratorGlance = (f: number) => {
+  const back = f >= 6 && f < 78 ? 1 : f >= 78 && f < 84 ? 1 - ease(seg(f, 78, 84)) : 0;
+  const returning = f >= 78 && f < 84;
+  return {
+    head: 'right' as const,
+    look: [lerp(1, -1, back), 0.2] as Pt,
+    brow: back > 0 ? ('up' as const) : ('worry' as const),
+    browTo: returning ? ('worry' as const) : undefined,
+    browMix: returning ? 1 - back : undefined,
+  };
+};
+
 const s3sh07 = plate('S03-SH07', {
   paper: '#8d918a',
   camera: push(150, 1.0, 1.05, 540, 700),
@@ -510,13 +531,15 @@ const s3sh07 = plate('S03-SH07', {
     const L = VD18_LIGHT['CAM-INT-SIDE'];
     const door = doorAt(G);
     const a = asmAt(G);
-    // SS-R4 RT-2: held glance f6-f81 (narrator turns back to the door f78-f84), occupant nod f72-f84, leaf slide f72-f102.
-    const glance = f >= 6 && f < 81;
+    // SS-R4 RT-2 occupant nod f72-f84, leaf slide f72-f102. The narrator's held glance is eyes only (SS-R4.1 R8-9): sh07NarratorGlance.
+    const narrator = sh07NarratorGlance(f);
     const ox = lerp(-0.9, -1.4, ease(seg(f, 72, 102)));
     const handle: V3 = [-0.45 - door, 1.0, -0.12];
     const walking = a.moving ? a.travel / 0.7 : undefined;
     const cart: Drawable = {depth: proj.depth([a.xs, 0, a.zs]), draw: () => paintCartSide(p, proj, a, a.travel)};
-    paintShop(p, proj, G, {light: L, actors: [
+    // SS-R4.1 R8-8: the glass-front top rail (shop.ts box 27) and sill (box 28) run along the view axis and meet at the principal
+    // point (540, 700), so they read as one dark pole through the frame. The sheet allows no such bar here: omitted in this shot.
+    paintShop(p, proj, G, {light: L, omit: [27, 28], actors: [
       cart,
       actor(p, proj, 'worker', a.xs + 0.3, a.zs + 0.45, {
         view: 'left', light: L, walk: walking, wet: true, face: face({look: [-1, 0.1], brow: 'worry', eyes: 'half', mouth: 'o'}),
@@ -529,19 +552,19 @@ const s3sh07 = plate('S03-SH07', {
         lArm: f < 104 ? arm(proj, handle, 1) : undefined,
       }, tl),
       actor(p, proj, 'narrator', 0.95, -0.75, {
-        view: 'right', light: L, head: glance ? 'left' : 'right', warm: 1, rise: -0.012 * bump(f, 30, 48),
-        face: face({look: [1, 0.2], brow: glance ? 'up' : 'worry'}),
-        rArm: arm(proj, [0.9, 1.05, -0.45], 1), rHold: {kind: 'torch', angle: 0.95, on: 1},
+        view: 'right', light: L, head: narrator.head, warm: 1, rise: -0.012 * bump(f, 30, 48),
+        face: face({look: narrator.look, brow: narrator.brow, browTo: narrator.browTo, browMix: narrator.browMix}),
+        rArm: arm(proj, SH07_TORCH.hand, 1), rHold: {kind: 'torch', angle: torchAngle(proj, SH07_TORCH.hand, SH07_TORCH.lens), on: 1},
       }, tl),
     ]});
   },
   Overlay: ({camera: cam, width, height}) => {
     const proj = PROJ['CAM-INT-SIDE'];
-    const lens = proj.P([0.9, 1.05, -0.3]);
+    const lens = proj.P(SH07_TORCH.lens);
     return (
       <>
         <CameraLayer camera={cam} width={width} height={height}>
-          <Beam from={lens} to={proj.P([0.6, 0, 0.05])} level={1} r={170} w0={16} w1={160} reach={1.2} />
+          <Beam from={lens} to={proj.P(SH07_TORCH.target)} level={1} r={170} w0={16} w1={160} reach={1.2} />
           <LensGlow at={lens} r={60} level={1} />
         </CameraLayer>
         {interiorOverlay('S03-SH07')}
@@ -571,8 +594,8 @@ const s4sh01 = plate('S04-SH01', {
     const wx = lerp(0.2, 0.25, walkU), wz = lerp(0.0, -1.1, walkU);
     const slump = ease(seg(f, 48, 56)) * (1 - ease(seg(f, 130, 138)));
     const turn = seg(f, 132, 140);
-    // SS-R4 RT-3 glance back toward the door glass (0, 1.5, 0): turn-in f190-f206, back to her by f214. The profile rig cannot
-    // turn the head away from the lens, so it is approximated by the eye look and a small backward head shift (dev-findings).
+    // SS-R4 RT-3 eye look toward the door glass (0, 1.5, 0): turn-in f190-f206, back to her by f214. SS-R4.1 R8-4: no backward
+    // head nod (the profile rig cannot turn the head away from the lens; DF-20261030-painted-profile-head-turn); the eyes-only look stays.
     const glance = ease(seg(f, 190, 206)) * (1 - ease(seg(f, 206, 214)));
     const look = ptLerp(ptLerp([0, -0.6], [1, 0], turn), [-1, 0], glance);
     const armsOn = slump > 0;
@@ -593,14 +616,14 @@ const s4sh01 = plate('S04-SH01', {
       actor(p, proj, 'worker', wx, wz, {
         view: f >= 140 ? 'right' : 'front', head: f >= 132 ? 'right' : undefined, light, walk: f >= 12 && f < 42 ? (f - 12) / 16 : undefined,
         // Talk windows = the SS-R4 worker cue windows (WFOG-SCRIPT-R5, S04-B01/B02 split): f138-f180, f186-f228, f234-f282, f288-f330.
-        crouch: 0.30 * slump, nod: [-0.12 * glance, 0.04 * slump], rise: 0.012 * slump * Math.sin(f * 0.45), wet: true,
-        face: face({look, brow: 'worry', eyes: f < 138 ? 'half' : 'dot', mouth: f >= 48 && f < 138 ? 'o' : 'flat', open: talk(f, [[138, 180], [186, 228], [234, 282], [288, 330]], 0.8)}),
+        crouch: 0.30 * slump, nod: [0, 0.04 * slump], rise: 0.012 * slump * Math.sin(f * 0.45), wet: true,
+        face: face({look, brow: 'worry', eyes: f < 138 ? 'half' : 'dot', mouth: f >= 48 && f < 138 ? 'o' : 'flat', open: talk(f, [[122, 190], [199, 216], [225, 269], [282, 330]], 0.8)}),
         rArm: armsOn ? via(cw, ce) : undefined,
         lArm: armsOn ? via(cl, cle) : f < 18 ? arm(proj, [wx + 0.15, 0.9, wz - 0.1], 1) : undefined,
         lHold: f < 12 ? {kind: 'umbrella', tip: proj.P([wx + 0.25, 0.02, wz - 0.15])} : undefined,
       }, tl),
       actor(p, proj, 'narrator', nx, nz, {
-        view: 'left', light, warm: 0.6, face: face({look: [1, 0], brow: 'worry', open: talk(f, [[18, 66], [72, 114]], 0.8)}),
+        view: 'left', light, warm: 0.6, face: face({look: [1, 0], brow: 'worry', open: talk(f, [[17, 62], [73, 107]], 0.8)}),
         rArm: arm(proj, [nx - 0.05, 0.78, nz - 0.1], 1), rHold: {kind: 'torch', angle: Math.PI / 2 - 0.4, on: 1},
       }, tl),
     ]});

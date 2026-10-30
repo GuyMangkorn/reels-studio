@@ -219,14 +219,15 @@ const poseSH03 = (G: number): AsmPose => {
 
 /**
  * S03-SH06A held look (SS-R4 RT-1, f = G - 2070; zero outside the shot): shoulders rise 0.012 m per breath (period 20 frames),
- * the head tilts forward 5 deg f54-f66 and stays, eyelids close f84-f88, pupils go down f48-f60 (to the ground outside the door).
+ * eyelids close f84-f88, pupils go down f48-f60 (to the ground outside the door). No head bow (SS-R4.1 R8-5): the 5 deg forward
+ * tilt was sub-pixel in this view and read as a sideways tilt; the `bow` pose field stays available with identity at 0.
  */
 const heldLook = (G: number) => {
   const f = G - 2070;
   if (f < 0 || f >= 120) return {breath: 0, bow: 0, blink: 0, gazeDown: 0};
   return {
     breath: 0.5 - 0.5 * Math.cos((2 * Math.PI * f) / 20),
-    bow: 5 * DEG * ease(seg(f, 54, 66)),
+    bow: 0,
     blink: bump(f, 84, 88),
     gazeDown: ease(seg(f, 48, 60)),
   };
