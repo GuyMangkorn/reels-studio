@@ -7,7 +7,7 @@
 - Story mode: **named real case** (Lake Nyos limnic gas disaster, Cameroon, 21 Aug 1986). The "beast / something from the lake" is **the viewer's guess** (`F025`: no source), shown only inside a "จินตนาการ" frame in `B05`–`B07` and explicitly replaced by the CO2 cloud in `B09`.
 - Target: user's 50–80 s (delivery record); coordinator aim ≈65–70 s narration. **Estimate: ≈70 s VO** (355 syllables at ≈5.5 syll/s ≈ 64.5 s + ≈5.5 s written pauses) **+ ≈2–3 s `B_loop` closing hold ≈ 72–73 s total**. See [Timing note](#timing-note-estimated).
 - Timing status: **estimated** (Thai syllable count). No read-aloud or TTS test. Gemini TTS pace for this channel is unmeasured.
-- Factual review: none yet (next: Boat fact-check of `NYOS-SCRIPT-R1`). User approval: none. User choice pending: main hook vs `ALT-A` / `ALT-B`.
+- Factual review: none yet (next: Boat fact-check of `NYOS-SCRIPT-R1`). User approval: none. User choice: `ALT-B` prepended as `B00` (user, 2026-10-30; total ≈77 s est., inside 80 s; trims 1–2 in the timing note stay available).
 
 ## Story core
 
@@ -57,6 +57,16 @@ Story-world time runs from the night of 21 Aug 1986 to the morning after, then t
 ## Full spoken script
 
 VO is the exact narration text for TTS. Subtitles split the VO into cues without changing words; numbers are written as digits ("1,700", "1986", "2001"). "…" marks a short pause (≈0.3–0.6 s). On-screen labels are not spoken.
+
+### NYOS-EP01-SHORT-B00 · 0.0–4.5 s (est.) — imagined hook (`ALT-B`, user choice 2026-10-30)
+
+**VO:**
+> ถ้าคืนนี้… อะไรบางอย่างขึ้นมาจากทะเลสาบหลังหมู่บ้านคุณ… คุณจะรู้ตัวไหม?
+
+- On-screen: label **"จินตนาการ"** (visible for the whole beat; fiction, not the 1986 event).
+- Visual intent: a calm night lake behind a painted village; a slow ripple spreads from the centre. No creature shown, no people.
+- **Sound intent:** quiet night ambience; one soft low swell on "อะไรบางอย่าง", cut to near-silence on "คุณจะรู้ตัวไหม?". Fiction sound only (see sound summary). Loop pair: `B13` "…มันหายใจออกล่ะ?" → `B00` "ถ้าคืนนี้…".
+- Claim: hypothetical question to the viewer (F025, fiction); no factual claim.
 
 ### NYOS-EP01-SHORT-B01 · 0.0–4.6 s (est.) — hook
 
@@ -268,5 +278,5 @@ Constraints any later visual pass must keep:
   1. **`F015` is medium-low but carries the `B08`–`B09` clue.** If R2 cannot confirm the red-brown water or its deep-water cause, fallback: `B08` "เบาะแสอยู่ที่ทะเลสาบ… คืนนั้น บางคนเล่าว่าได้ยินเสียงครืนจากมัน" (reuse `CL01`) and `B09` "เพราะน้ำก้นทะเลสาบถูกพลิกขึ้นมา…"; Preaw to rewrite on request.
   2. `B11` "ทำให้คนและสัตว์ขาดอากาศหายใจ" + visual of the haze: confirm no primary report of a visible white cloud that would contradict "มองไม่เห็น" (if one exists, say "แม่น้ำที่แทบมองไม่เห็น").
   3. `B04` "คนที่รอดก็ไม่รู้ว่าเกิดอะไรขึ้น": Boat to confirm the generalisation is fair.
-  4. **User choice:** main hook vs `ALT-A` / `ALT-B` (coordinator to ask with the structured-question tool).
+  4. **User choice (resolved 2026-10-30):** `ALT-B` taken as `B00`; total ≈77 s est. Boat recheck covers FC01–FC03 and the `B00` hypothetical (F025, fiction).
   5. Voice is the project default (Gemini TTS), not a user choice yet; timing depends on it.
