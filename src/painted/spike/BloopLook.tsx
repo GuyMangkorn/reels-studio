@@ -795,3 +795,116 @@ export const CP3Rush = () => {
     </AbsoluteFill>
   );
 };
+
+// ---------------------------------------------------------------- ICE keel reference (BLOOP-BRIEF-R4 FR04/FR09), Film only
+/**
+ * FR04 keel silhouette (R4): the union of a wide top shelf, a body ellipse and 5 hanging lobes of unequal size, read
+ * radially from the centroid (120 rays), low-pass filtered (window 7) so the joins between lobes become soft waists, not
+ * cusps; then the top is cut at the waterline row with a gentle irregular dome. `w` = bounding width, depth ~ w / 1.6.
+ */
+export const keelOutline = (cx: number, cy: number, w: number, seed = 1): Pt[] => {
+  const D = w / 1.6, j = (i: number, amp: number) => (hash(seed * 17 + i) - 0.5) * 2 * amp;
+  // [centre x, centre y, rx, ry] in units of w (x) and D (y); y down from the waterline row
+  const lobes: [number, number, number, number][] = [
+    [0, 0.08, 0.5, 0.14],                                  // top shelf: widest part, at the waterline
+    [0.02, 0.28, 0.43, 0.3],                               // body
+    [-0.13 + j(1, 0.03), 0.62 + j(2, 0.04), 0.2, 0.36],    // main keel bulge, off-centre (deepest point)
+    [0.2 + j(3, 0.03), 0.5 + j(4, 0.04), 0.15, 0.22],     // secondary bulge
+    [0.37 + j(5, 0.02), 0.27, 0.11, 0.16],                 // right shoulder knob
+    [-0.37 + j(6, 0.02), 0.3, 0.12, 0.19],                 // left shoulder knob
+    [0.06 + j(7, 0.03), 0.7, 0.09, 0.14],                  // small low knob next to the keel
+  ];
+  const ox = 0.02 * w, oy = 0.33 * D; // ray origin (inside the body)
+  const inside = (x: number, y: number) => lobes.some(([lx, ly, rx, ry]) => ((x - lx * w) / (rx * w)) ** 2 + ((y - ly * D) / (ry * D)) ** 2 <= 1);
+  const n = 120;
+  const rr = Array.from({length: n}, (_, i) => {
+    const t = (i / n) * 6.283, c = Math.cos(t), sn = Math.sin(t);
+    let r = 0;
+    for (let d = 2; d < w; d += 2) if (inside(ox + c * d, oy + sn * d)) r = d;
+    return r;
+  });
+  const sm = rr.map((_, i) => {
+    let acc = 0;
+    for (let k = -3; k <= 3; k++) acc += rr[(i + k + n) % n];
+    return acc / 7;
+  });
+  return sm.map((r, i) => {
+    const t = (i / n) * 6.283;
+    const x = ox + Math.cos(t) * r;
+    let y = oy + Math.sin(t) * r;
+    const top = -0.02 * D - 0.035 * D * Math.cos((x / w) * 2.6) + j(20 + Math.round(x / 40), 0.006 * D);
+    if (y < top) y = top;
+    return [cx + x, cy + y] as Pt;
+  });
+};
+
+/** Clip a closed polygon to y <= yc ('above') or y >= yc ('below') (Sutherland-Hodgman against one row). */
+const clipY = (poly: Pt[], yc: number, keep: 'above' | 'below'): Pt[] => {
+  const ins = ([, y]: Pt) => (keep === 'above' ? y <= yc : y >= yc);
+  const out: Pt[] = [];
+  poly.forEach((cur, i) => {
+    const prev = poly[(i + poly.length - 1) % poly.length];
+    const cross = (): Pt => {
+      const u = (yc - prev[1]) / (cur[1] - prev[1]);
+      return [prev[0] + (cur[0] - prev[0]) * u, yc];
+    };
+    if (ins(cur)) {
+      if (!ins(prev)) out.push(cross());
+      out.push(cur);
+    } else if (ins(prev)) out.push(cross());
+  });
+  return out;
+};
+
+/** Painted keel: value bands follow depth inside the outline (clipped rows, soft bleed), no box, no outline ink. */
+const paintKeel = (p: Painter, pts: Pt[], glowFar = false) => {
+  const sm = closed(pts, 120);
+  const ys = sm.map((q) => q[1]), xs = sm.map((q) => q[0]);
+  const y0 = Math.min(...ys), y1 = Math.max(...ys), x0 = Math.min(...xs), x1 = Math.max(...xs), h = y1 - y0;
+  if (glowFar) {
+    // FR09: shape-following haze, the outline grown ~16 px with a high bleed; never a disc or an ellipse primitive
+    p.wash('#5e8798', 60, scaleAbout(sm, (x0 + x1) / 2, (y0 + y1) / 2, 1 + 32 / (x1 - x0), 1 + 32 / h), 0.5, 0.4);
+  }
+  p.flat('#2f5a6b', sm);                                               // underside value everywhere first
+  p.wash('#5e91a3', 230, clipY(sm, y0 + 0.72 * h, 'above'), 0.18, 0.5); // body band
+  p.wash('#6f9fb0', 170, clipY(sm, y0 + 0.45 * h, 'above'), 0.2, 0.5);
+  p.wash('#b8dbe6', 220, clipY(sm, y0 + 0.17 * h, 'above'), 0.15, 0.45); // top face
+  p.wash('#24495a', 170, clipY(sm, y0 + 0.86 * h, 'below'), 0.2, 0.5);  // underside deepening
+};
+
+const SET_COLD = ['#16343d', '#132e37', '#112931', '#0f252c', '#0d2027', '#0b1c22', '#0a181d'];
+
+export const IceRef = ({scale}: {scale: 'sh11' | 'sh12' | 'sh13'}) => {
+  const frame = useCurrentFrame();
+  const paint = useCallback(({brush}: PaintContext) => {
+    const p = makePainter(brush, {t: 0, frame});
+    if (scale === 'sh11') {
+      bands(p, W, '#112931', SET_COLD, -260, H + 260, {opacity: 200, bleed: 0.04, texture: 0.35});
+      paintKeel(p, keelOutline(700, 470, 680, 3));
+    } else if (scale === 'sh12') {
+      // section: surface line y 300; ~1/9 of the berg above it
+      bands(p, W, '#132538', DEEP, 300, H + 260, {opacity: 200, bleed: 0.04, texture: 0.35});
+      p.flat('#0b1622', span(W, -300, 300));
+      const k = keelOutline(205, 309, 250, 3);
+      paintKeel(p, k);
+      // the ~1/9 above water: a low, irregular tabular cap, 60 % of the keel width, brightest value
+      const cap: Pt[] = [[132, 301], [136, 284], [160, 279], [196, 281], [228, 277], [262, 283], [276, 301]];
+      p.flat('#b8dbe6', closed(cap, 30));
+      p.wash('#e3f3f7', 200, closed(cap.map(([x, y]) => [x, y - 2] as Pt).slice(1, -1).concat([[262, 292], [140, 292]]), 20), 0.1, 0.4);
+      p.inkStill(700, 'HB', '#9fb7c4', 1.6);
+      brush.line(-20, 300, W + 20, 300);
+    } else {
+      paintDeep(p, {haze: 0.6});
+      paintKeel(p, keelOutline(920, 470, 260, 3), true);
+      paintHydrophone(p, 380, 560);
+    }
+  }, [frame, scale]);
+  const title = {sh11: 'FR04 keel at SH11 scale (680 px wide), SET-COLD', sh12: 'FR04 keel at SH12 scale (250 px), surface line y 300, ~1/9 above', sh13: 'FR09 far ice (260 px) with shape-following haze, no disc'}[scale];
+  return (
+    <AbsoluteFill style={{backgroundColor: '#0b1622'}}>
+      <BrushCanvas paint={paint} paper="#0b1622" />
+      <Grain />
+      <Tag id={`ICE-REF ${scale.toUpperCase()}`} title={title} />
+    </AbsoluteFill>
+  );
+};

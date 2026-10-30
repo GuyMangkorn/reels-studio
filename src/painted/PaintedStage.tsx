@@ -1,11 +1,23 @@
 import {AbsoluteFill, useCurrentFrame, useVideoConfig} from 'remotion';
-import type {Ending} from '../scenes/endings';
+import type {Ending, EndingOptions} from '../scenes/endings';
 import {paintedStateAt} from '../scenes/painted';
-import type {Timeline} from '../scenes/types';
+import type {PaintedLabel, Timeline} from '../scenes/types';
 import {BrushCanvas, type PaintContext} from './BrushCanvas';
-import {PaintedLabel} from './Label';
+import {PaintedLabel as LabelText} from './Label';
 import {paintedShots} from './registry';
 import {drawPlate} from './plate';
+
+/** Fact-label slots of one frame: slot 0 (y 300) and slot 1 (y 360, DEP03). Texts are merged per slot, first come first kept. */
+const labelSlots = (labels: PaintedLabel[]): string[][] => {
+  const slots: string[][] = [[], []];
+  for (const label of labels) {
+    const texts = typeof label === 'string' ? [label] : label;
+    texts.forEach((text, i) => {
+      if (text && i < slots.length && !slots[i].includes(text)) slots[i].push(text);
+    });
+  }
+  return slots;
+};
 
 /**
  * The one p5.brush canvas of a composition (p5.brush has a single global WebGL runtime, and premounted scene
@@ -13,10 +25,10 @@ import {drawPlate} from './plate';
  * `paintedStateAt`, then their glow layers and labels. Painted scenes render transparent above it, so captions and
  * chrome stay Remotion. Nothing here keeps state between frames.
  */
-export const PaintedStage = ({timeline, ending, loopBlendFrames}: {timeline: Timeline; ending: Ending; loopBlendFrames: number}) => {
+export const PaintedStage = ({timeline, ending, loopBlendFrames, endingOptions}: {timeline: Timeline; ending: Ending; loopBlendFrames: number; endingOptions?: EndingOptions}) => {
   const frame = useCurrentFrame();
   const {fps, width, height, durationInFrames} = useVideoConfig();
-  const state = paintedStateAt(timeline, frame, fps, {ending, durationInFrames, loopBlendFrames});
+  const state = paintedStateAt(timeline, frame, fps, {ending, durationInFrames, loopBlendFrames, endingOptions});
   if (!state) return null;
   const plates = state.plates.map((plate) => {
     const shot = paintedShots[plate.shot];
@@ -27,7 +39,8 @@ export const PaintedStage = ({timeline, ending, loopBlendFrames}: {timeline: Tim
   const paint = ({brush}: PaintContext) => {
     state.plates.forEach((plate, i) => drawPlate(brush, paintedShots[plate.shot], {tl: plate.tl, fps, width, height, alpha: plate.alpha, paper: i > 0, fade: plates[0].shot.paper}));
   };
-  const labels = [...new Set(plates.filter((x) => x.alpha > 0 || x.plate.overlayOpacity > 0).map((x) => x.plate.label).filter((l): l is string => Boolean(l)))];
+  const visible = plates.filter((x) => x.alpha > 0 || x.plate.overlayOpacity > 0);
+  const slots = labelSlots(visible.map((x) => x.plate.label).filter((l): l is PaintedLabel => l !== undefined));
   return (
     <AbsoluteFill style={{opacity: state.opacity}}>
       <BrushCanvas paint={paint} paper={plates[0].shot.paper} />
@@ -37,7 +50,7 @@ export const PaintedStage = ({timeline, ending, loopBlendFrames}: {timeline: Tim
         const Overlay = shot.Overlay;
         return <Overlay key={`${shot.id}-${i}`} tl={tl} width={width} height={height} camera={camera} opacity={opacity} />;
       })}
-      {labels.map((text) => <PaintedLabel key={text} text={text} />)}
+      {slots.map((texts, slot) => texts.map((text) => <LabelText key={`${slot}-${text}`} text={text} slot={slot} />))}
     </AbsoluteFill>
   );
 };

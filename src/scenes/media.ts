@@ -81,7 +81,7 @@ export function validateSceneMedia(s: Record<string, unknown>, path: string, ind
 }
 
 /** Video-level audio tracks, caption style and chrome; validated with each registered video. */
-export function validateVideoStyle(video: {audio?: unknown; captionStyle?: unknown; chrome?: unknown; loopBlendFrames?: unknown}, label: string) {
+export function validateVideoStyle(video: {audio?: unknown; captionStyle?: unknown; chrome?: unknown; loopBlendFrames?: unknown; ending?: unknown; endHoldSec?: unknown; endFadeSec?: unknown}, label: string) {
   const fail = (path: string, message: string): never => {throw new Error(`Video ${label} ${path}: ${message}`);};
   if (video.audio !== undefined) {
     if (!Array.isArray(video.audio)) fail('audio', 'expected an array of tracks');
@@ -106,6 +106,12 @@ export function validateVideoStyle(video: {audio?: unknown; captionStyle?: unkno
     if (style.scale !== undefined && (!finite(style.scale) || style.scale < 0.5 || style.scale > 2)) fail('captionStyle.scale', 'expected 0.5 to 2');
   }
   if (video.loopBlendFrames !== undefined && (!finite(video.loopBlendFrames) || !Number.isInteger(video.loopBlendFrames) || video.loopBlendFrames < 0)) fail('loopBlendFrames', 'expected a non-negative integer frame count');
+  for (const key of ['endHoldSec', 'endFadeSec'] as const) {
+    const value = video[key];
+    if (value === undefined) continue;
+    if (video.ending !== 'A_fade') fail(key, "only applies to ending 'A_fade'");
+    if (!finite(value) || value < 0) fail(key, 'expected non-negative seconds');
+  }
   if (video.chrome !== undefined) {
     if (!record(video.chrome)) fail('chrome', 'expected object');
     const chrome = video.chrome as Record<string, unknown>;

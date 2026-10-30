@@ -4,7 +4,7 @@
 import {createElement, Fragment} from 'react';
 import {Composition, registerRoot} from 'remotion';
 import {FORMATS} from '../../videos/types';
-import {CP3Rush, LookStill, LOOKS} from './BloopLook';
+import {CP3Rush, IceRef, LookStill, LOOKS} from './BloopLook';
 
 const {width, height, fps} = FORMATS.short;
 
@@ -15,6 +15,7 @@ registerRoot(() =>
     ...Object.keys(LOOKS).map((k) =>
       createElement(Composition, {key: k, id: `BLOOP-LOOK-${k.replace('L-', '')}`, width, height, fps, durationInFrames: 30, component: () => createElement(LookStill, {look: LOOKS[k]})}),
     ),
+    ...(['sh11', 'sh12', 'sh13'] as const).map((s) => createElement(Composition, {key: s, id: `BLOOP-ICE-REF-${s.toUpperCase()}`, width, height, fps, durationInFrames: 1, component: () => createElement(IceRef, {scale: s})})),
     createElement(Composition, {key: 'rush', id: 'BLOOP-LOOK-CP3-RUSH', width, height, fps, durationInFrames: 66, component: CP3Rush}),
   ),
 );

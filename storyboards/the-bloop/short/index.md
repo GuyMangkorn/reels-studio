@@ -1,16 +1,16 @@
 # BLOOP-EP01-SHORT — storyboard index
 
-Deliverable `BLOOP-EP01-SHORT`, Full tier. Handoff revision **`BLOOP-SHEETS-R3`** (Mark, 2026-10-30). Status: **ready-for-dev** (blockout; timing estimated). Evidence: runtime none · renders/samples none · audio/subtitle sync none (no TTS, `O-1`) · user approval none.
-Inputs: script [short/script.md](../../../scripts/the-bloop/short/script.md) `BLOOP-SCRIPT-R5` (user-approved 2026-10-30) · fact-check [short/fact-check.md](../../../scripts/the-bloop/short/fact-check.md) `BLOOP-FACTCHECK-R6` (`ready-for-storyboard`) · brief [visual-brief.md](visual-brief.md) `BLOOP-BRIEF-R2` (`ready-for-mark`) · delivery record [scripts/the-bloop/delivery.md](../../../scripts/the-bloop/delivery.md).
+Deliverable `BLOOP-EP01-SHORT`, Full tier. Handoff revision **`BLOOP-SHEETS-R4`** (Mark, 2026-10-30). Status: **ready-for-dev** (blockout; timing estimated). Evidence: runtime none · renders/samples none · audio/subtitle sync none (no TTS, `O-1`) · user approval none.
+Inputs: script [short/script.md](../../../scripts/the-bloop/short/script.md) `BLOOP-SCRIPT-R5` (user-approved 2026-10-30) · fact-check [short/fact-check.md](../../../scripts/the-bloop/short/fact-check.md) `BLOOP-FACTCHECK-R6` (`ready-for-storyboard`) · brief [visual-brief.md](visual-brief.md) `BLOOP-BRIEF-R3` (`ready-for-mark`) · delivery record [scripts/the-bloop/delivery.md](../../../scripts/the-bloop/delivery.md).
 Target: `claude/bloop-p5-svg-viz-c10597` @ `cab9833` · 30 fps · 1080×1920 · durationFrames **1782 (estimated)** · composition offset 0.
 
 | Document | Revision | Status |
 | --- | --- | --- |
-| [visual-brief.md](visual-brief.md) | `BLOOP-BRIEF-R2` (Film, 2026-10-30) | ready-for-mark; look check closed (VD16): L-A1, L-B2 (CRD-2), L-CP3 (painted); SP03 and DEP07 revised in R2 |
-| [sc01-b01-b03.md](sc01-b01-b03.md) | `BLOOP-SHEETS-R2` | ready-for-dev · SH01–SH04 |
-| [sc01-b04-b06.md](sc01-b04-b06.md) | `BLOOP-SHEETS-R2` | ready-for-dev · SH05–SH08 |
-| [sc01-b07-b08.md](sc01-b07-b08.md) | `BLOOP-SHEETS-R2` | ready-for-dev · SH09–SH12 |
-| [sc01-b09-b10.md](sc01-b09-b10.md) | `BLOOP-SHEETS-R3` | ready-for-dev · SH13 |
+| [visual-brief.md](visual-brief.md) | `BLOOP-BRIEF-R3` (Film, 2026-10-30) | ready-for-mark; looks L-A1, L-B2 (CRD-2), L-CP3; blockout pass 1 review FR01–FR11 |
+| [sc01-b01-b03.md](sc01-b01-b03.md) | `BLOOP-SHEETS-R4` | ready-for-dev · SH01–SH04 |
+| [sc01-b04-b06.md](sc01-b04-b06.md) | `BLOOP-SHEETS-R4` | ready-for-dev · SH05–SH08 |
+| [sc01-b07-b08.md](sc01-b07-b08.md) | `BLOOP-SHEETS-R4` | ready-for-dev · SH09–SH12 |
+| [sc01-b09-b10.md](sc01-b09-b10.md) | `BLOOP-SHEETS-R4` | ready-for-dev · SH13 |
 
 **Readiness scope.** `ready-for-dev` permits Boss's plate scaffolding and Editor's blockout with placeholder art. It does not cover finished art. Look picks (user, 2026-10-30): **L-A1** (deep water, also `SET-COLD` and the diagram washes) and **L-B2 / CRD-2** (`CR-DREAM`); Film's look frames own their detail. **L-CP3** (`CR-REAL`, all painted, user 2026-10-30). The sheets fix bounds, anchors, paths and timing only, so every shot holds for any look the user picks. A look pick that moves an anchor beyond its stated tolerance, or that changes a medium, comes back to Mark (and Film, under brief "On revision").
 
@@ -151,11 +151,13 @@ None available. Every BLOOP element (`PROP-HYD`, `CR-DREAM`, `CR-REAL`, `ICE`, m
 | MK-O2 | User | SH09 Antarctic dot placement | **closed 2026-10-30**: user chose a south-east pan to the Scotia Sea / Atlantic sector with dots at the real array regions (`SRC014`); SH09 revised in R2. Optional Boat check of the approximate region centres against `SRC014` Fig. 1 (non-blocking) |
 | MK-O3 | Film | SH10 has no text tags on the two pattern lines; they are told apart by colour (amber = the `B03` line returning, cyan = ice) to avoid adding unscripted on-screen text. | open (non-blocking) |
 | MK-O4 | — | Dropped in R3 (the depth seam is resolved by draw order) | closed |
-| MK-O5 | Editor | Measured `bloop.wav` length: SH01 assumes the clip covers at least 6.2 s from G0 | open |
+| MK-O5 | Editor | `bloop.wav` length | **closed 2026-10-30**: 10.342 s (Boss DEP05); SH01 needs 6.2 s |
 | O-1 | Editor | Niwat read; re-time by anchor | open |
+| MK-O6 | Film | SH06 camera: FR03's s 1.04 about (380, 760) puts the head top at y 336, inside label slot 1. R4 uses s 1.02 about (380, 440). Accept, or let the head outline pass behind the slot | open |
+| MK-O7 | Film | FR10 says the hydrophone leaves the frame left during the rush. At s 3 (R3 rush) it stays at x −85…125, y 320…1100 (`toScreen`), in front of the mouth until the black fade. Confirm that this is the intended read, or change the rush | open |
 | VD16 | User/Film | Look pick: L-A1, L-B2 (CRD-2), L-CP3 picked 2026-10-30 | closed |
 
-No user storyboard review page exists yet for `BLOOP-SHEETS-R3`; the coordinator publishes it.
+No user storyboard review page exists yet for `BLOOP-SHEETS-R4`; the coordinator publishes it.
 
 ## Change log
 
@@ -168,3 +170,10 @@ No user storyboard review page exists yet for `BLOOP-SHEETS-R3`; the coordinator
   - **Rush:** `s` 1 → 3 (was 1 → 7, then 7 → 10), quadratic ease-in about `cr.mouthCenter`, plus `dy` 0 → +270, so the mouth goes from screen (560, 620) to (560, 890). Hold at s 3; DEP07 screen-space black over L291–L312.
   - **Depth and checks:** `PROP-HYD` is painted after `CR-REAL`; M03 and MK-O4 dropped; DEP07 added. G1740 check moves to s ≈ 1.65 ("no breakup at phone size"); new G1758 coverage check.
   - **Coverage re-check with Mark's anchor (720, 620):** at L291 the mouth black covers 90.8 % of CAP-ZONE at full width (99.5 % of the caption-safe width) with the hydrophone subtracted. Film's figures came from the spike mouth at world ≈ (534, 650). The +270 drift therefore holds. New finding: the hydrophone stays in frame at the left edge (x ≤ 125) at s 3.
+- 2026-10-30 `BLOOP-SHEETS-R4` (Mark), from `BLOOP-BRIEF-R3` (FR01–FR03) and Boss's blockout pass 1 returns (`scripts/the-bloop/build-notes.md`, Boss entry); all four sheets moved to R4:
+  - **SH13:** four CP3 eye anchors replace `cr.eyeL`/`cr.eyeR`; head 960 ± 30, top ≈ y −116; `jawOpen` keys. Eye rings are inside the frame (top y 98) and outside slot 1 (13 px margin).
+  - **SH06/SH07/SH11:** head left, drift −40/−10. The SH06 camera was cut to s 1.02 about (380, 440), keeping the head in y 350–840 (MK-O6). The SH07 ghost is drawn 60 px lower. The SH11 creature box is covered 88–89 % by the ice keel.
+  - **SH01 (Boss item 3):** rings keyed by arrival, with a base train every 15 f plus a burst at G93/97/101; the L192 spike falls after the clip's fade-out and is ignored.
+  - **SH03 (Boss item 4):** fixed 6 f train, in-point 2.20 s, spacing test G410 vs G440.
+  - **Boss items 5 and 6** are covered by FR02 and the existing G1779 label end.
+  - **Closed:** MK-O5. **Opened:** MK-O6 and MK-O7 (both to Film).
