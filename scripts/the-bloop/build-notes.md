@@ -1,0 +1,3 @@
+# THE BLOOP build notes
+
+- 2026-10-30 (Mark, `BLOOP-SHEETS-R1`): `scripts/shot-projection.py` only models a pinhole camera, so it cannot run the [pre-handoff projection check](../../docs/mark-storyboard-workflow.md#pre-handoff-checks) on painted plates (2D picture-stage `Camera {s, fx, fy, dx, dy}`, no projection). Mark ran the equivalent check with a one-off script that applies `toScreen` (`src/painted/camera.tsx` line 23) to each shot's anchors at the start and end camera, and recorded the results in the shot blocks. **Proposal (TL, not applied):** add a `"camera": {"type": "picture-stage", "s", "fx", "fy", "dx", "dy"}` mode to `shot-projection.py`, which reports the same fields (pixel x/y, side, caption-band overlap, span heights). Script it on the second use.
