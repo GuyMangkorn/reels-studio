@@ -7,7 +7,7 @@ export const Subtitles = ({text, style}: {text: string; style?: CaptionStyle}) =
   const {width, height} = useVideoConfig(); const portrait = height > width;
   const {preset, position, color, scale} = {...defaultCaptionStyle, ...style};
   if (preset === 'none' || !text) return null;
-  const place = position === 'top' ? {top: height * (portrait ? .2 : .1)} : position === 'middle' ? {top: '50%', transform: 'translateY(-50%)'} : {bottom: portrait ? 134 : 58};
+  const place = position === 'top' ? {top: height * (portrait ? .2 : .1)} : position === 'middle' ? {top: '50%', transform: 'translateY(-50%)'} : position === 'lower' ? {bottom: height * (1 - 1240 / 1920)} : {bottom: portrait ? 134 : 58};
   const look = preset === 'box'
     ? {color, background: 'rgba(16, 16, 24, .72)', borderRadius: 18, padding: portrait ? '10px 28px' : '6px 22px', boxDecorationBreak: 'clone' as const, WebkitBoxDecorationBreak: 'clone' as const}
     : {color, WebkitTextStroke: '7px #3d3c53', paintOrder: 'stroke fill', textShadow: '0 4px 0 #3d3c53'};

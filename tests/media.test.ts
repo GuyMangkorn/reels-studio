@@ -28,6 +28,8 @@ test('video style validates tracks, captions and chrome', () => {
   validateVideoStyle({audio: [{src: 'music/bed.mp3', volume: .4, duckUnderNarration: .25, loop: true, fadeOutSec: 2}], captionStyle: {preset: 'box', position: 'top'}, chrome: {channelLabel: false, progressBar: false}}, 'X');
   assert.throws(() => validateVideoStyle({audio: [{src: 'a.mp3', duckUnderNarration: 2}]}, 'X'), /duckUnderNarration/);
   assert.throws(() => validateVideoStyle({captionStyle: {preset: 'karaoke'}}, 'X'), /captionStyle\.preset/);
+  validateVideoStyle({captionStyle: {position: 'lower'}}, 'X');
+  assert.throws(() => validateVideoStyle({captionStyle: {position: 'left'}}, 'X'), /captionStyle\.position/);
   assert.throws(() => validateVideoStyle({chrome: {channelLabel: 3}}, 'X'), /chrome\.channelLabel/);
 });
 

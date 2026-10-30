@@ -266,7 +266,7 @@ const counterOutPlate = plate('S02-SH03', {
     const look = ptLerp([-0.8, 0.1], [-0.25, -0.05], shift);
     paintShop(p, proj, G, {light: L, dress: COUNTER_OUT_DRESS, actors: [
       actor(p, proj, 'shopworker', -2.0, -3.5, {
-        view: 'front', light: L, face: face({look, brow: f >= 30 ? 'worry' : 'flat', open: talk(f, [[24, 66]], 0.6)}),
+        view: 'front', light: L, face: face({look, brow: f >= 30 ? 'worry' : 'flat', open: talk(f, [[24, 50]], 0.6)}),
         ...counterWorkerArms(proj),
       }, tl),
     ]});
@@ -374,9 +374,9 @@ const sh08 = lowShelfPlate('S02-SH08', 201, push(201, 1.0, 1.04, 500, 700), (p, 
   // Right hand from her hip onto the right knee (f0-f12) with the torch across it; left hand to the floor by f12.
   const settle = ease(seg(f, 0, 12));
   return crouchedPair(p, proj, tl,
-    {crouch: lerp(0.81, 1, settle), head, look: f < 18 ? [0.4, -0.3] : [0.2, 0], brow: 'worry', open: talk(f, [[66, 96], [102, 156]], 0.5),
+    {crouch: lerp(0.81, 1, settle), head, look: f < 18 ? [0.4, -0.3] : [0.2, 0], brow: 'worry', open: talk(f, [[72, 91], [95, 129]], 0.5),
       arms: {r: armBetween(proj, KEY.hipR, KEY.kneeR, settle), l: armBetween(proj, KEY.kneeL, KEY.floorL, settle), torch: torchAngle(proj, KEY.kneeR.hand, TORCH_KNEE_LENS)}},
-    {crouch: lerp(0.8, 1, ease(seg(f, 0, 18))), look: f < 50 ? [0.8, -0.2] : [0.8, 0], open: talk(f, [[18, 48]], 0.5), hold: f >= 50}, light);
+    {crouch: lerp(0.8, 1, ease(seg(f, 0, 18))), look: f < 50 ? [0.8, -0.2] : [0.8, 0], open: talk(f, [[18, 49]], 0.5), hold: f >= 50}, light);
 }, undefined, VD18_LIGHT['CAM-LOW-SHELF']);
 /** S03-SH01 camera: the picture push plus the tilt-follow `dy` 0 -> +130 px over f110-f125, so her head stays in frame. */
 const s3sh01Camera = (tl: number): Camera => ({...push(126, 1.0, 1.04, 500, 700)(tl), dy: 130 * ease(seg(frameOf(tl), 110, 125))});
@@ -400,7 +400,7 @@ const sh10 = plate('S02-SH10', {
     paintShop(p, proj, G, {outside: {asm: {pose, parts: assemblyParts(proj, pose)}}, light: L, actors: [
       actor(p, proj, 'occupant', -1.5, -1.1, {view: 'front', light: L, crouch: 1, face: face({look: [0.8, 0], brow: 'worry'}), lArm: arm(proj, [-1.1, 0.42, -1.32], 1)}, tl),
       actor(p, proj, 'narrator', -0.95, -1.3, {
-        view: 'front', light: L, crouch: 1, rise, face: face({look: ptLerp([0, 0], [0.7, -0.8], ease(seg(f, 0, 30))), brow: 'worry', eyes: f >= 96 ? 'wide' : 'dot', open: talk(f, [[36, 90]], 0.45)}),
+        view: 'front', light: L, crouch: 1, rise, face: face({look: ptLerp([0, 0], [0.7, -0.8], ease(seg(f, 0, 30))), brow: 'worry', eyes: f >= 96 ? 'wide' : 'dot', open: talk(f, [[36, 69]], 0.45)}),
         // Arms tucked, hands on the knees, torch across the right knee (SS-R3.2); the held breath lifts elbows 2 cm.
         rArm: armBetween(proj, KEY.kneeR, KEY.kneeR, 0, 0.02 * ease(seg(f, 96, 104))), rHold: {kind: 'torch', angle: torchAngle(proj, KEY.kneeR.hand, TORCH_KNEE_LENS), on: 0},
         lArm: armBetween(proj, KEY.kneeL, KEY.kneeL, 0, 0.02 * ease(seg(f, 96, 104))),
@@ -440,7 +440,7 @@ const sh06 = intRevPlate('S02-SH06', 108, push(108, 1.0, 1.05, 620, 660), (p, pr
     ...clutch(proj, f),
   }, tl),
   actor(p, proj, 'narrator', -1.0, -1.3, {
-    view: 'front', light, face: face({look: [-0.35, -0.15], brow: 'worry', open: talk(f, [[18, 78]], 0.45)}),
+    view: 'front', light, face: face({look: [-0.35, -0.15], brow: 'worry', open: talk(f, [[18, 65]], 0.45)}),
     // SS-R3.4 AB1: the torch hand as before; the upper arm goes behind the torso (elbow z -1.36, plane z -1.22).
     rArm: armVia(proj, [-0.8, 0.98, -1.2], [-0.85, 0.93, -1.36], 'upper'), rHold: {kind: 'torch', angle: Math.PI / 2 + 0.25 - 0.1 * ease(seg(f, 60, 72)), on: 0},
   }, tl),
@@ -617,13 +617,13 @@ const s4sh01 = plate('S04-SH01', {
         view: f >= 140 ? 'right' : 'front', head: f >= 132 ? 'right' : undefined, light, walk: f >= 12 && f < 42 ? (f - 12) / 16 : undefined,
         // Talk windows = the SS-R4 worker cue windows (WFOG-SCRIPT-R5, S04-B01/B02 split): f138-f180, f186-f228, f234-f282, f288-f330.
         crouch: 0.30 * slump, nod: [0, 0.04 * slump], rise: 0.012 * slump * Math.sin(f * 0.45), wet: true,
-        face: face({look, brow: 'worry', eyes: f < 138 ? 'half' : 'dot', mouth: f >= 48 && f < 138 ? 'o' : 'flat', open: talk(f, [[138, 180], [186, 228], [234, 282], [288, 330]], 0.8)}),
+        face: face({look, brow: 'worry', eyes: f < 138 ? 'half' : 'dot', mouth: f >= 48 && f < 138 ? 'o' : 'flat', open: talk(f, [[122, 190], [199, 216], [225, 269], [282, 330]], 0.8)}),
         rArm: armsOn ? via(cw, ce) : undefined,
         lArm: armsOn ? via(cl, cle) : f < 18 ? arm(proj, [wx + 0.15, 0.9, wz - 0.1], 1) : undefined,
         lHold: f < 12 ? {kind: 'umbrella', tip: proj.P([wx + 0.25, 0.02, wz - 0.15])} : undefined,
       }, tl),
       actor(p, proj, 'narrator', nx, nz, {
-        view: 'left', light, warm: 0.6, face: face({look: [1, 0], brow: 'worry', open: talk(f, [[18, 66], [72, 114]], 0.8)}),
+        view: 'left', light, warm: 0.6, face: face({look: [1, 0], brow: 'worry', open: talk(f, [[17, 62], [73, 107]], 0.8)}),
         rArm: arm(proj, [nx - 0.05, 0.78, nz - 0.1], 1), rHold: {kind: 'torch', angle: Math.PI / 2 - 0.4, on: 1},
       }, tl),
     ]});
