@@ -43,6 +43,7 @@ The **coordinator** is the chat session the user talks to (Claude Code or Codex)
 - selects deliverables, style profile and tier;
 - invokes role agents for the assigned scope (Claude Code: the `Agent` tool with `subagent_type` set to the role name; Codex: the custom agent of that name);
 - passes matching revisions;
+- publishes the [user storyboard review page](docs/mark-storyboard-workflow.md#user-storyboard-review-page) whenever Mark returns a `ready-for-dev` scene-sheet revision, built with `scripts/storyboard-page/build.py` from Mark's `review-rows.json`, and relays the verdicts back;
 - follows the [agent invocation defaults](docs/delivery-workflow.md#agent-invocation): whole stage per call (shot groups for painting and rendering), inline mechanical edits, separate checking.
 
 Role configs describe roles. They install no automatic runner and authorize no cross-chat messaging. A role agent never invokes the next role on its own.
@@ -70,7 +71,7 @@ Every agent reads AGENTS.md plus its **core** documents. It reads any other docu
 | [scriptwriting-principles](docs/scriptwriting-principles.md) | Hooks, causal beats, educational payoff, twists, loop-friendly writing; Boat only when the profile uses them | P (when it applies) |
 | [film-visual-brief-workflow](docs/film-visual-brief-workflow.md) | Medium choice, visual/technical brief or its revision; disputed approach ownership (Film) | F |
 | [cinematography-principles](docs/cinematography-principles.md) | Illustrated/cinematic shot language | on trigger |
-| [mark-storyboard-workflow](docs/mark-storyboard-workflow.md) | Writing, revising or reviewing scene sheets (Mark) | M |
+| [mark-storyboard-workflow](docs/mark-storyboard-workflow.md) | Writing, revising or reviewing scene sheets (Mark); publishing the [user storyboard review page](docs/mark-storyboard-workflow.md#user-storyboard-review-page) (coordinator) | M |
 | [storyboard-principles](docs/storyboard-principles.md) | Shot direction beyond routine staging | on trigger |
 | [boss-asset-workflow](docs/boss-asset-workflow.md) | Shared assets, rigs, renderer capabilities, asset/contact bugs (Boss). Its [QA section](docs/boss-asset-workflow.md#visual-and-runtime-qa-before-push) before pushing visual/runtime work. Its [production rules](docs/boss-asset-workflow.md#latest-production-rules) for medium restrictions, demo lighting, lead size, shot movement, texture lifecycle and visual QA | S |
 | [asset-engineering-principles](docs/asset-engineering-principles.md) | New Remotion/Three/R3F assets; technical feasibility of 3D/hybrid | on trigger |

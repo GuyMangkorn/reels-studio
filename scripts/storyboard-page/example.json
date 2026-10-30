@@ -1,0 +1,39 @@
+{
+  "deliverable": "EXAMPLE-SHORT",
+  "revision": "SS-R1",
+  "eyebrow": "EXAMPLE-SHORT · scene sheets SS-R1 · brief VB-R1 · script R1",
+  "title": "ตัวอย่าง — สตอรีบอร์ด",
+  "pageTitle": "Example Storyboard",
+  "lede": "รอบที่ 1: ยังไม่มีภาพของช็อตจริง เวลายังเป็นค่าประมาณจนกว่าจะล็อกเสียง",
+  "fps": 30,
+  "timingEstimated": true,
+  "facts": [["เฟรม", "1080×1920 · 30 fps"], ["ภาพ", "Painted 2D (p5.brush)"]],
+  "source": "storyboards/example/short/",
+  "previousRevision": "SS-R0",
+  "previousVerdicts": { "B01-SH01": ["change", "อยากให้เห็นไหชัดกว่านี้"] },
+  "questions": [
+    { "id": "Q1", "question": "ไหใบนี้ใช้เป็นภาพเปิดได้ไหม?", "detail": "ถ้าไม่ได้ Film จะเปลี่ยนเป็นภาพมุมกว้าง เวลาในชีตไม่เปลี่ยน",
+      "images": [{ "src": "public/images/oldest-shipwreck/arad-jar-card.png", "caption": "การ์ดไหที่มีอยู่" }] }
+  ],
+  "beats": [
+    { "id": "B01", "name": "เปิดเรื่องด้วยไห" },
+    { "id": "B02", "name": "เฉลย" }
+  ],
+  "shots": [
+    { "id": "B01-SH01", "beat": "B01", "start": 0, "end": 90, "title": "ไหใต้ทะเล",
+      "vo": [["ผู้บรรยาย (หญิง)", "ไหใบนี้อยู่ใต้ทะเลมาสามพันปี"]],
+      "seen": "ภาพใกล้ไหดินเผาบนพื้นทราย แสงจากผิวน้ำส่องลงมา กล้องดันเข้าช้า ๆ",
+      "sound": "น้ำใต้ทะเลเบา ๆ",
+      "previews": [{ "src": "public/images/oldest-shipwreck/arad-jar-card.png", "caption": "f0 ไห" }],
+      "previewLabel": "preview จากการ์ดเดิม (ยังไม่ใช่ plate จริง)" },
+    { "id": "B01-SH02", "beat": "B01", "start": 90, "end": 150, "title": "นักดำน้ำ",
+      "vo": [],
+      "seen": "นักดำน้ำว่ายเข้ามาจากขวา ยื่นมือแตะไห",
+      "sound": "ฟองอากาศ",
+      "flag": "ทิศที่ว่ายเข้ามาเป็นข้อเสนอของ Mark รอ Film ยืนยัน" },
+    { "id": "B02-SH01", "beat": "B02", "start": 150, "end": 240, "title": "ป้ายเฉลย",
+      "vo": [["", "มันคือไหที่เก่าที่สุดที่เคยพบ"]],
+      "seen": "การ์ดเต็มจอ ตัวเลขปีขึ้นทีละหลัก",
+      "sound": "ดนตรีคลายลง" }
+  ]
+}
