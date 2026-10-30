@@ -1,5 +1,5 @@
 {
- "_note": "S02-SH07/SH09, S03-SH03: assembly at the stop (ASM S=(-0.10,0.62)), camera s=1 before picture push | WORLD-SHOP (left-handed) points and camera stored with x negated for this right-handed tool; see index.md#projection-checks | SS-R3: ST-03 lean 9 deg toward -x about hip 0.71 (hood_top, worker_face), catch R3, MATCH hand z 0.80, umbrella tip at rest z 0.05 (tap contact = tap_tip z 0), wheel on the stack plane (flat card), helmet_bbox_ctr = Boss bbox convention",
+ "_note": "S02-SH07/SH09, S03-SH03: assembly at the stop (ASM S=(-0.10,0.62)), camera s=1 before picture push | WORLD-SHOP (left-handed) points and camera stored with x negated for this right-handed tool; see index.md#projection-checks | SS-R3: ST-03 lean 9 deg toward -x about hip 0.71 (hood_top, worker_face), catch R3, MATCH hand z 0.80, umbrella tip at rest z 0.05 (tap contact = tap_tip z 0), wheel on the stack plane (flat card), helmet_bbox_ctr = Boss bbox convention | SS-R3.1: catch 5 cm lower (catch_helmet y 0.98, catch_hand y 0.86); umb_handle_end = umbrella handle on the shaft axis 0.10 m beyond the left hand (ST-03); lit_brace = LIT-LOWER right-hand brace (0.15, 1.05, 0.85) and face_upright for S03-SH03 from f66",
  "up": "y",
  "size": [
   1080,
@@ -75,7 +75,7 @@
   ],
   "catch_helmet": [
    -0.4,
-   1.03,
+   0.98,
    0.78
   ],
   "match_hand": [
@@ -115,8 +115,23 @@
   ],
   "catch_hand": [
    -0.28,
-   0.91,
+   0.86,
    0.8
+  ],
+  "umb_handle_end": [
+   -0.461,
+   1.298,
+   0.944
+  ],
+  "lit_brace": [
+   -0.15,
+   1.05,
+   0.85
+  ],
+  "face_upright": [
+   -0.2,
+   1.47,
+   1.07
   ]
  },
  "spans": {

@@ -1,5 +1,5 @@
 {
- "_note": "S02-SH03 shop worker single | WORLD-SHOP (left-handed) points and camera stored with x negated for this right-handed tool; see index.md#projection-checks",
+ "_note": "S02-SH03 single on the shop worker | SS-R3.3 camera lowered to eye 1.10 m, y_h 780: counter top a sliver (far edge y 929, near edge y 1003), counter front fills the caption band; register moved to the counter's -x end | WORLD-SHOP (left-handed) points and camera stored with x negated for this right-handed tool; see index.md#projection-checks",
  "up": "y",
  "size": [
   1080,
@@ -8,7 +8,7 @@
  "camera": {
   "position": [
    2.0,
-   1.45,
+   1.1,
    -1.4
   ],
   "direction": [
@@ -19,7 +19,7 @@
   "vfov": 71.197,
   "shift": [
    0,
-   -0.13542
+   -0.09375
   ]
  },
  "points": {
@@ -33,16 +33,56 @@
    1.49,
    -3.5
   ],
-  "counter_back_edge": [
+  "counter_far_top": [
    2.0,
    0.9,
    -3.2
+  ],
+  "counter_near_top": [
+   2.0,
+   0.9,
+   -2.6
+  ],
+  "counter_near_floor": [
+   2.0,
+   0.0,
+   -2.6
+  ],
+  "sw_hand_R": [
+   1.78,
+   0.93,
+   -3.22
+  ],
+  "sw_hand_L": [
+   2.22,
+   0.93,
+   -3.22
+  ],
+  "register_top_inner": [
+   2.42,
+   1.2,
+   -2.95
+  ],
+  "register_base_inner": [
+   2.42,
+   0.9,
+   -2.95
+  ],
+  "register_top_outer": [
+   2.78,
+   1.2,
+   -2.95
+  ],
+  "counter_end_neg_x_near": [
+   2.9,
+   0.9,
+   -2.6
   ]
  },
  "spans": {
   "shopworker_visible": [
-   "counter_back_edge",
-   "sw_head"
+   "sw_head",
+   "counter_far_top"
   ]
  },
  "caption_band": [
