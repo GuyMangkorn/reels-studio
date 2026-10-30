@@ -72,6 +72,11 @@ export const ik2 = (s: HU, t: HU, l1: number, l2: number, bend: 1 | -1): HU => {
   const ux = dx / len, uy = dy / len;
   return [s[0] + ux * a - uy * h * bend, s[1] + uy * a + ux * h * bend];
 };
+/** The elbow of the two-bone solve that hangs lower (the elbow under the grip, not up and over it). */
+export const lowElbow = (s: HU, t: HU, l1: number, l2: number): HU => {
+  const a = ik2(s, t, l1, l2, 1), b = ik2(s, t, l1, l2, -1);
+  return a[1] < b[1] ? a : b;
+};
 /** Rotation about `about` by `th` (head units; positive moves the top forward, the SideSheet `rotated` convention). */
 const rotHU = (p: HU, about: HU, th: number): HU => {
   const dx = p[0] - about[0], dy = p[1] - about[1];
@@ -117,6 +122,10 @@ export type Part = {
   far?: boolean;
   ink?: boolean;
   up?: boolean;
+  /** Cloth part: the `washPaint` texture applies (`TX-ZCP-CLOTH`, off by default). */
+  cloth?: boolean;
+  /** Collar stand: the bust neck measure reads its top edge (`CS-ZCP-R26`). */
+  collar?: boolean;
   draw?: (p: Paint) => void;
   tube?: {c: HU[]; r: number[]; celH: number};
 };
@@ -166,7 +175,12 @@ export const tubeOutline = (c: HU[], r: number[]): HU[] => {
 
 /** Hand: wrist `w` and direction `dir` (head units; `dir` points from the wrist to the fingers); `thumb` is the thumb side. */
 export type HandKind = 'mitten' | 'fist' | 'pinch';
-export type Hand = {kind: HandKind; w: HU; dir: HU; thumb: 1 | -1; forceCel?: boolean};
+/** `across` (default 1) scales a mitten's width (thumb side and palm); `along` (default 1) scales its length. Both are opt-in: the shared
+ *  mitten is unchanged for every shot that does not pass them. */
+export type Hand = {kind: HandKind; w: HU; dir: HU; thumb: 1 | -1; forceCel?: boolean; across?: number; along?: number};
+/** Mitten size (BODY-ZCP-6H): 0.26 across, 0.40 long from the wrist cap to the fingertips (the shared default measures 0.37 × 0.52). */
+export type MittenSize = {across: number; along: number};
+export const MITTEN_6H: MittenSize = {across: 0.7, along: 0.84};
 
 /**
  * Third-person hands (accepted at the user's look check, 30 Oct 2026). `mitten` (HD-03): WORLD FOG mitten with a thumb lobe, about
@@ -194,9 +208,12 @@ export const handParts = (h: Hand, skin: string): Part[] => {
       P(capHU(at(0.04, 0.26), at(0.5, 0.19), 0.13, 0.11), 0.06), // thumb: tip 0.08 head from the index tip
     ];
   }
+  const a = h.across ?? 1, l = h.along ?? 1, ap = (u: number, v: number): HU => at(u * l, v * a);
+  // A scaled mitten is one hull: the thumb lobe merges into the palm (two capsules read as a second finger at 270 px).
+  if (h.across !== undefined || h.along !== undefined) return [P(hull([...capHU(ap(0.02, 0), ap(0.3, 0), 0.26 * a, 0.22 * a), ...capHU(ap(0.06, 0.1), ap(0.22, 0.18), 0.14 * a, 0.12 * a)]) as HU[], 0.09)];
   return [
-    P(capHU(at(0.02, 0), at(0.3, 0), 0.26, 0.22), 0.09),
-    P(capHU(at(0.06, 0.1), at(0.22, 0.18), 0.14, 0.12), 0.07), // thumb lobe
+    P(capHU(ap(0.02, 0), ap(0.3, 0), 0.26 * a, 0.22 * a), 0.09),
+    P(capHU(ap(0.06, 0.1), ap(0.22, 0.18), 0.14 * a, 0.12 * a), 0.07), // thumb lobe
   ];
 };
 
@@ -231,6 +248,63 @@ export type Fig = {
   anchors: {hips: Pt; knees: Pt[]; feet: Pt[]; hands: Pt[]; head: Pt};
 };
 
+// --- costume (CS-ZCP-R26, Boss pass 11; ported from the SPK-ZCP-06 variant B spike, `src/painted/spike/ZcSpk06Figs.ts`) -------------------
+
+/** Costume colours (`CS-ZCP-R26`): the open overshirt over a warm-grey tee, charcoal trousers. Day 3 is slightly darker. */
+export type Costume = {over: string; tee: string; pants: string};
+export const COSTUME: Costume = {over: '#2f5a5c', tee: '#cdc6b6', pants: '#474d55'};
+export const COSTUME_DAY3: Costume = {over: '#2a5254', tee: '#c1b9a8', pants: '#444a51'};
+/** The costume of a ZCPAINT figure by role: `zc-you` (day 3 darker); the infected keeps its approved 7b khaki shirt (no tee) and grey-green trousers. */
+export const costumeOf = (c: Cast): Costume =>
+  c.role === 'zc-infected' ? {over: c.outfit.shirt, tee: c.outfit.shirt, pants: c.outfit.pants}
+    : c.role.includes('day 3') ? COSTUME_DAY3 : COSTUME;
+/** Cloth parts carry `cloth` (the texture applies to them only, `TX-ZCP-CLOTH`); collar parts carry `collar` (the bust neck measure). */
+export const CL = {cloth: true} as const;
+export const COL = {cloth: true, collar: true} as const;
+/** Cel-tone fold ink for a cloth colour. */
+export const foldTone = (col: string) => mixColor(celTone(col), '#1d1a18', 0.25);
+/** Open ink strokes (folds, seams, drapes) over the parts, in one colour. */
+export const strokes = (segs: HU[][], color: string, w = 0.8): Part => ({
+  col: '', pts: [], cel: 0, draw: (p) => { for (const s of segs) p.ink(toPx(s), w, 0.5, color); },
+});
+/** Cuff line across a sleeve end: `r` head either side of the arm, 0.12 head back from the wrist `w` along the unit arm direction `d`. */
+export const cuffLine = (w: HU, d: HU, r: number, col: string): Part => {
+  const n: HU = [-d[1], d[0]];
+  const a: HU = [w[0] - d[0] * 0.12, w[1] - d[1] * 0.12];
+  return strokes([[[a[0] + n[0] * r, a[1] + n[1] * r], [a[0] - n[0] * r, a[1] - n[1] * r]]], foldTone(col), 0.8);
+};
+/** Trousers from the hip to the ankle on side `s` (±1): thigh radius 0.27 → ankle 0.20 head (`CS-ZCP-R26`). */
+export const trouserLeg = (col: string, s: number, hipY = 3.0): Part =>
+  tub(col, [[s * 0.3, hipY], [s * 0.29, 2.5], [s * 0.27, 1.6], [s * 0.25, 0.22]], [0.27, 0.25, 0.22, 0.2], 0.14, CL);
+/** The open front of the overshirt: placket lines at the edges of the tee strip, and the armpit drapes, in the cel tone. */
+export const placket = (col: string): Part => ({
+  col: '', pts: [], cel: 0,
+  draw: (p) => {
+    const f = foldTone(col);
+    p.ink(toPx([[-0.24, 4.42], [-0.26, 3.6], [-0.3, 2.74]]), 0.9, 0.5, INK);
+    p.ink(toPx([[0.24, 4.42], [0.26, 3.6], [0.3, 2.74]]), 0.9, 0.5, INK);
+    p.ink(toPx([[-0.66, 4.0], [-0.56, 3.7], [-0.62, 3.36]]), 0.8, 0.5, f);
+    p.ink(toPx([[0.66, 3.9], [0.58, 3.6], [0.64, 3.3]]), 0.8, 0.5, f);
+  },
+});
+/** Collar stand of the overshirt (`CS-ZCP-R26`): a thin band about 0.12 head tall around the neck, its top at `top` heads (≈4.91 at the
+ *  front opening, ≈4.95 at the sides and nape). `points` adds two collar points falling to ≈4.4 in front. A band, never a hood (RK-30). */
+export const collarStand = (col: string, top: number, points: boolean): Part[] => {
+  const stand = convexOf(col, [[-0.27, 4.7], [-0.25, top - 0.03], [0, top], [0.25, top - 0.03], [0.27, 4.7]], 0.05, COL);
+  if (!points) return [stand];
+  return [stand, ...([-1, 1] as const).map((s) => convexOf(col, [[s * 0.16, top - 0.02], [s * 0.42, 4.8], [s * 0.36, 4.56], [s * 0.24, 4.4]], 0.08, COL))];
+};
+/** Profile collar stand (zc-you): the top at the nape 4.95, at the front opening 4.91. */
+export const collarSide = (col: string): Part => convexOf(col, [[-0.3, 4.72], [-0.3, 4.93], [0.0, 4.95], [0.2, 4.91], [0.26, 4.7]], 0.05, COL);
+/** Seated collar stand in the torso frame `T(x, u)` (x forward, u up the torso from the hip): top `frontU` at the front, `backU` at the nape. */
+export const collarSeat = (col: string, T: (x: number, u: number) => HU, frontU: number, backU: number): Part =>
+  convexOf(col, [T(-0.3, frontU - 0.34), T(-0.3, backU), T(0, backU + 0.04), T(0.2, frontU), T(0.26, frontU - 0.34)], 0.05, COL);
+/** Front-view torso outlines (head units): the tee block, the open overshirt (before the tee strip is laid on it). */
+const TEE_BODY: HU[] = [[-0.24, 4.82], [0.24, 4.82], [0.46, 4.79], [0.6, 4.7], [0.68, 4.5], [0.7, 4.2], [0.66, 3.7], [0.62, 3.3], [0.62, 2.96], [-0.62, 2.96], [-0.62, 3.3], [-0.66, 3.7], [-0.7, 4.2], [-0.68, 4.5], [-0.6, 4.7], [-0.46, 4.79]];
+const OVER_FRONT: HU[] = [[-0.22, 4.84], [0.22, 4.84], [0.46, 4.78], [0.66, 4.54], [0.72, 4.14], [0.7, 3.62], [0.68, 3.2], [0.7, 2.7], [-0.7, 2.7], [-0.68, 3.2], [-0.7, 3.62], [-0.72, 4.14], [-0.66, 4.54], [-0.46, 4.78]];
+/** The tee strip between the open fronts of the overshirt (hem over the hip joint, 2.7 heads). */
+const TEE_STRIP: HU[] = [[-0.22, 4.8], [0.22, 4.8], [0.26, 3.6], [0.32, 2.72], [-0.32, 2.72], [-0.26, 3.6]];
+
 // --- shared marks ------------------------------------------------------------------------------------------------------
 
 /** Crew neck and three shirt folds on the front, or the spine crease on the back; `blood` adds the dried patch on the collar,
@@ -244,7 +318,8 @@ const torsoMarks = (front: boolean, shirt: string, blood: boolean, dirt: boolean
       for (const f of [[[-0.42, 4.1], [-0.32, 3.85], [-0.4, 3.6]], [[0.1, 4.0], [0.2, 3.7], [0.12, 3.45]], [[-0.1, 3.6], [0.02, 3.4], [-0.06, 3.2]]] as HU[][]) {
         p.ink(toPx(f), 0.8, 0.5, fold);
       }
-      if (blood) p.part(BLOOD, toPx(ellHU(0.12, 4.64, 0.12, 0.05, 12)), false);
+      // Dried blood on the band's lower edge: a streak that runs down with one drip, not a round disc (pass 12 look check).
+      if (blood) p.part(BLOOD, toPx([[0.02, 4.7], [0.12, 4.72], [0.2, 4.69], [0.27, 4.66], [0.26, 4.6], [0.28, 4.5], [0.25, 4.45], [0.23, 4.56], [0.18, 4.6], [0.1, 4.6], [0.02, 4.62]]), false);
     } else {
       p.ink(toPx([[0, 4.5], [0.03, 3.9], [-0.02, 3.2]]), 0.9, 0.5, fold);
     }
@@ -319,41 +394,49 @@ const FOOT_R = [0.1, 0.065];
 
 // --- standing, front and back (zc-you) ---------------------------------------------------------------------------------
 
-export type FrontOpts = {face?: Face; blink?: boolean; back?: boolean; arms?: 'hang' | 'bucket'; overlay?: 'rage' | 'day3'; blood?: boolean; dirt?: boolean; inserts?: Part[]; cell?: number};
+export type FrontOpts = {face?: Face; blink?: boolean; back?: boolean; arms?: 'hang' | 'bucket'; overlay?: 'rage' | 'day3'; blood?: boolean; dirt?: boolean; inserts?: Part[]; cell?: number; mitten?: MittenSize};
 
 /**
  * Standing, front or back view, 6 heads. Arms hang with mitten hands, or hold a bucket handle (`bucket`, B05-SH01). `inserts` are drawn
  * after the torso and before the hands (a prop in front of the body).
  */
 export const figFront = (c: Cast, o: FrontOpts = {}): Fig => {
-  const out = c.outfit, sk = c.head.skin, back = !!o.back, cell = o.cell ?? 0;
-  const parts: Part[] = [], hands: Hand[] = [], contact: Pt[][] = [];
-  for (const s of [-1, 1]) {
-    parts.push(tub(out.pants, [[s * 0.3, 3.0], [s * 0.29, 2.5], [s * 0.28, 2.1]], [0.25, 0.23, 0.21], 0.14));
-    parts.push(tub(sk, [[s * 0.28, 2.16], [s * 0.27, 1.78], [s * 0.26, 1.1], [s * 0.25, 0.24]], [0.2, 0.18, 0.165, 0.12], 0.11));
+  const k = costumeOf(c), sk = c.head.skin, back = !!o.back, cell = o.cell ?? 0;
+  const parts: Part[] = [], armBack: Part[] = [], armFront: Part[] = [], hands: Hand[] = [], contact: Pt[][] = [];
+  for (const s of [-1, 1] as const) {
+    parts.push(trouserLeg(k.pants, s));
     parts.push(tub(sk, [[s * 0.2, 0.1], [s * 0.33, 0.085]], [0.09, 0.07], 0.06));
     contact.push(footContact(s * 0.27));
   }
-  parts.push(convexOf(out.pants, [[-0.56, 3.36], [0.56, 3.36], [0.64, 3.02], [0.6, 2.7], [-0.6, 2.7], [-0.64, 3.02]], 0.34));
+  parts.push(convexOf(k.pants, [[-0.56, 3.36], [0.56, 3.36], [0.64, 3.02], [0.6, 2.7], [-0.6, 2.7], [-0.64, 3.02]], 0.34, CL));
   for (const s of [-1, 1] as const) {
     const S: HU = [s * 0.72, 4.44];
     let E: HU = [s * 0.9, 3.56], W: HU = [s * 0.94, 2.68];
     let dir: HU = [s * 0.05, -1], thumb: 1 | -1 = s === 1 ? -1 : 1;
     if (o.arms === 'bucket') {
+      // CP-P02 (elbows back, hands in front): the elbow sits just inside the torso edge and a little below the hand. The upper arm is
+      // behind the torso in the cel tone; the forearm and hand are in front, foreshortened by the depth (no outward splay).
+      E = [s * 0.58, 3.72];
       W = [s * 0.36, 3.9];
-      E = ik2(S, W, 0.9, 0.88, s);
       dir = [-s * 0.2, -1];
       thumb = s === 1 ? -1 : 1;
+      armBack.push(tub(k.over, [S, mid(S, E, 0.5), E], [0.215, 0.2, 0.19], 0, {far: true, up: true, ...CL}));
+      armFront.push(tub(k.over, [E, mid(E, W, 0.5), W], [0.19, 0.18, 0.17], 0.13, {up: true, ...CL}), cuffLine(W, unitHU([W[0] - E[0], W[1] - E[1]]), 0.17, k.over));
+    } else {
+      armBack.push(tub(k.over, [S, mid(S, E, 0.5), E, W], [0.215, 0.205, 0.19, 0.17], 0.13, {up: true, ...CL}));
+      armBack.push(cuffLine(W, unitHU([W[0] - E[0], W[1] - E[1]]), 0.17, k.over));
     }
-    parts.push(tub(sk, [S, E, W], [0.16, 0.125, 0.1], 0.11, {up: true}));
-    hands.push({kind: 'mitten', w: W, dir, thumb});
+    hands.push({kind: 'mitten', w: W, dir, thumb, ...o.mitten});
   }
-  // Pass 8 (user 7b look check): the neck is drawn before the collar, so the tee hides its foot, and it is thicker (0.36 head wide).
+  // Arms behind the torso edge, the approved full-figure neck, the tee block and the open overshirt; the tee strip, placket and collar on the front.
+  parts.push(...armBack);
   parts.push(tub(sk, [[0, 4.66], [0, 5.02]], [0.18, 0.17], 0.12, {far: true, ink: false, up: true}));
-  parts.push(convexOf(out.shirt, [[-0.24, 4.82], [0.24, 4.82], [0.46, 4.79], [0.6, 4.7], [0.68, 4.5], [0.7, 4.2], [0.66, 3.7], [0.62, 3.3], [0.62, 2.96], [-0.62, 2.96], [-0.62, 3.3], [-0.66, 3.7], [-0.7, 4.2], [-0.68, 4.5], [-0.6, 4.7], [-0.46, 4.79]], 0.4, {up: true}));
-  for (const s of [-1, 1]) parts.push(tub(out.sleeve, [[s * 0.6, 4.58], [s * 0.74, 4.28], [s * 0.8, 4.02]], [0.15, 0.15, 0.145], 0.12, {up: true}));
-  parts.push(torsoMarks(!back, out.shirt, !!o.blood, !!o.dirt));
-  parts.push(...(o.inserts ?? []));
+  parts.push(convexOf(k.tee, TEE_BODY, 0.4, {up: true, ...CL}));
+  parts.push(convexOf(k.over, OVER_FRONT, 0.4, {up: true, ...CL}));
+  if (!back) parts.push(convexOf(k.tee, TEE_STRIP, 0.12, {up: true, ...CL}), placket(k.over));
+  parts.push(...collarStand(k.over, back ? 4.95 : 4.91, !back));
+  parts.push(torsoMarks(!back, k.over, !!o.blood, !!o.dirt));
+  parts.push(...(o.inserts ?? []), ...armFront);
   for (const h of hands) parts.push(...handParts(h, sk));
   const hy = -5.0 * H6 - CHIN * K6;
   const over: HeadMark['over'] = back || !o.overlay ? undefined
@@ -368,41 +451,140 @@ export const figFront = (c: Cast, o: FrontOpts = {}): Fig => {
 
 // --- profile, standing and walking (facing +x) -------------------------------------------------------------------------
 
-export type SideOpts = {face?: Face; blink?: boolean; stride?: number; overlay?: 'day3'; cell?: number};
+export type SideOpts = {
+  face?: Face; blink?: boolean; stride?: number; overlay?: 'day3'; cell?: number;
+  /** Plate mitten size (`MITTEN_6H`); the shared mitten when unset. */
+  mitten?: MittenSize;
+  /** Walk cycle (Boss pass 19): the gait phase in strides (0..1 is one two-step cycle), driven by the distance walked (`gaitPhase`), so a planted
+   *  foot is fixed in the world (no sliding). Overrides `stride` poses for legs and arm swing; `stride` > 0 is still required for the walk arms' look. */
+  gait?: number;
+  /** 0 stands, 1 walks: blends the gait pose to the standing pose (the first and the closing step). Default 1. */
+  gaitBlend?: number;
+  /** The far arm reaches forward to `grip` (head units, facing +x) with blend `e` (0 hangs, 1 holds the grip): the B06-SH01 fridge hover. */
+  hover?: {grip: HU; e: number};
+};
+
+/** Gait constants (Boss pass 19): stride (one two-step cycle) in heads, the stance share, the leg bone length. A planted foot moves back
+ *  relative to the hip by exactly the distance the body advances, so the foot is fixed in the world (checked by `tests/zcpaint-gait.test.ts`). */
+export const GAIT_STRIDE = 2.6, GAIT_STANCE = 0.6, GAIT_LEG = 1.44;
+/** Gait phase (strides) for a body that has walked `heads` head units (0.2833 m each, `H6` px at 447 px/m) from a foot strike. */
+export const gaitPhase = (heads: number) => heads / GAIT_STRIDE;
+const sm = (t: number) => t * t * (3 - 2 * t);
+const clamp01 = (v: number) => Math.max(0, Math.min(1, v));
+/** One leg at its phase `u` (0..1): the ankle's x offset from the hip (heads, + forward), lift (heads), the forward share `fwd` (-1 rear .. 1 front)
+ *  and the foot tilt (heel up, toe up, heads). Stance: the foot runs back at the body's speed; swing: it lifts and returns forward. */
+export const gaitLeg = (u0: number) => {
+  const u = ((u0 % 1) + 1) % 1, b = GAIT_STANCE, half = (b * GAIT_STRIDE) / 2;
+  let off: number, lift = 0, heel = 0, toe = 0;
+  if (u < b) {
+    off = half - GAIT_STRIDE * u;
+    const f = off / half;
+    toe = 0.14 * Math.max(0, (f - 0.45) / 0.55);
+    heel = 0.2 * Math.max(0, (-f - 0.35) / 0.65);
+  } else {
+    const t = (u - b) / (1 - b);
+    off = -half + 2 * half * sm(t);
+    lift = 0.34 * Math.sin(Math.PI * t) ** 0.8;
+    heel = 0.2 * (1 - sm(Math.min(1, t * 1.6)));
+    toe = 0.14 * sm(Math.max(0, (t - 0.55) / 0.45));
+  }
+  return {off, lift, fwd: off / half, heel, toe};
+};
+/** Ankle position for a gait leg: the ankle must stay within the leg's reach (`2 * GAIT_LEG`), so it rises where the leg is nearly straight. */
+const gaitAnkle = (hip: HU, off: number, lift: number, base: number): HU => {
+  const x = -0.12 + off, reach = 2 * GAIT_LEG - 0.03;
+  let y = base + lift;
+  const dy = hip[1] - y;
+  if (Math.hypot(x, dy) > reach) y = hip[1] - Math.sqrt(Math.max(0, reach * reach - x * x));
+  return [x, y];
+};
+const footCtrlGait = (a: HU, heel: number, toe: number): HU[] => [[a[0] - 0.12, 0.09 + heel + (a[1] - 0.16) * 0.5], [a[0] + 0.36, 0.06 + toe + (a[1] - 0.16) * 0.5]];
 
 /**
  * Profile, 6 heads, facing +x (the mirror for facing left is `dir` -1 in `drawFig`). `stride` 0 stands; 1 is the B04-SH01 walk (near
  * leg forward, far leg back, arms swinging, the far heel lifted).
  */
 export const figSide = (c: Cast, o: SideOpts = {}): Fig => {
-  const out = c.outfit, sk = c.head.skin, a = 0.34 * (o.stride ?? 0), cell = o.cell ?? 0;
+  const k = costumeOf(c), sk = c.head.skin, cell = o.cell ?? 0;
+  // Walking (stride > 0) swings the arms (CP-P03: the near arm back, the far arm forward); standing, they hang straight (CP-P05).
+  const walk = (o.stride ?? 0) > 0, a = 0.34 * (o.stride ?? 0);
   const hip: HU = [0, 3.0];
-  const kneeN: HU = [Math.sin(a) * 1.4, 3.0 - Math.cos(a) * 1.4], ankN: HU = [kneeN[0] - 0.12, 0.16];
-  const kneeF: HU = [-Math.sin(a * 0.7) * 1.4, 3.0 - Math.cos(a * 0.7) * 1.4], ankF: HU = [kneeF[0] - 0.4, 0.24];
-  const hemOn = (k: HU): HU => [hip[0] + (k[0] - hip[0]) * ((3.0 - 2.12) / (3.0 - k[1])), 2.12];
-  const hemN = hemOn(kneeN), hemF = hemOn(kneeF);
+  const gl = o.gait !== undefined ? {n: gaitLeg(o.gait), f: gaitLeg(o.gait + 0.5)} : undefined;
+  let kneeN: HU = [Math.sin(a) * 1.4, 3.0 - Math.cos(a) * 1.4], ankN: HU = [kneeN[0] - 0.12, 0.16];
+  let kneeF: HU = [-Math.sin(a * 0.7) * 1.4, 3.0 - Math.cos(a * 0.7) * 1.4], ankF: HU = [kneeF[0] - 0.4, 0.24];
+  if (gl) {
+    const bl = clamp01(o.gaitBlend ?? 1);
+    const gaN = gaitAnkle(hip, gl.n.off, gl.n.lift, 0.16), gaF = gaitAnkle(hip, gl.f.off, gl.f.lift, 0.22);
+    ankN = lerpHU([-0.12, 0.16], gaN, bl);
+    ankF = lerpHU([-0.4, 0.24], gaF, bl);
+    kneeN = lerpHU([0, 1.6], ik2(hip, gaN, GAIT_LEG, GAIT_LEG, 1), bl);
+    kneeF = lerpHU([0, 1.6], ik2(hip, gaF, GAIT_LEG, GAIT_LEG, 1), bl);
+  }
+  const footN = (lift: number) => (gl ? footCtrlGait(ankN, gl.n.heel, gl.n.toe) : footCtrl(ankN, lift));
+  const footF = (lift: number) => (gl ? footCtrlGait(ankF, gl.f.heel, gl.f.toe) : footCtrl(ankF, lift));
+  const hemAt = (kn: HU, an: HU): HU => [an[0] + (kn[0] - an[0]) * 0.1, an[1] + (kn[1] - an[1]) * 0.1];
   const parts: Part[] = [];
-  // Far side, turned from the light: all cel.
-  const shF: HU = [0.02, 4.45], elF: HU = [0.26, 3.6], wrF: HU = [0.42, 2.78];
-  parts.push(tub(sk, [shF, elF, wrF], [0.16, 0.125, 0.1], 0, {far: true, up: true}));
-  parts.push(...handParts({kind: 'mitten', w: wrF, dir: [0.35, -1], thumb: 1, forceCel: true}, sk));
-  parts.push(tub(out.pants, [hip, mid(hip, kneeF, 0.5), hemF], [0.25, 0.23, 0.21], 0, {far: true}));
-  parts.push(tub(sk, [hemF, kneeF, ankF], [0.2, 0.17, 0.12], 0, {far: true}));
-  parts.push(tub(sk, footCtrl(ankF, 0.1), FOOT_R, 0, {far: true}));
-  // Seat (convex), near trouser leg, near shin, foot; the tee and the near arm.
-  parts.push(convexOf(out.pants, [[-0.42, 3.3], [0.3, 3.32], [0.38, 2.9], [0.4, 2.66], [-0.42, 2.64], [-0.46, 2.96]], 0.26));
-  parts.push(tub(out.pants, [hip, mid(hip, kneeN, 0.5), hemN], [0.26, 0.24, 0.21], 0.16));
-  parts.push(tub(sk, [hemN, kneeN, ankN], [0.2, 0.17, 0.12], 0.12));
-  parts.push(tub(sk, footCtrl(ankN, 0), FOOT_R, 0.05));
-  // Pass 8: the neck sits behind the collar (drawn before the tee), thicker and shorter than the spike's.
-  parts.push(tub(sk, [[0.02, 4.6], [0.08, 4.96]], [0.18, 0.17], 0.14, {far: true, ink: false, up: true}));
-  parts.push(convexOf(out.shirt, [[-0.3, 4.78], [0.02, 4.8], [0.24, 4.74], [0.36, 4.44], [0.36, 3.9], [0.34, 3.4], [0.34, 2.98], [-0.4, 2.98], [-0.42, 3.5], [-0.44, 3.9], [-0.44, 4.5], [-0.4, 4.66]], 0.34, {up: true}));
-  const shN: HU = [-0.04, 4.44], elN: HU = [-0.22, 3.56], wrN: HU = [-0.36, 2.76];
-  parts.push(tub(sk, [shN, elN, wrN], [0.16, 0.125, 0.1], 0.11, {up: true}));
-  parts.push(tub(out.sleeve, [[shN[0] - 0.02, shN[1] + 0.02], mid(shN, elN, 0.45)], [0.165, 0.155], 0.13, {up: true}));
-  parts.push(...handParts({kind: 'mitten', w: wrN, dir: [-0.15, -1], thumb: 1}, sk));
-  parts.push(profileFolds([0, 3.2], [0, 4.5], out.shirt));
+  // Far arm, all cel: a full sleeve to the wrist.
+  const sz: Partial<MittenSize> = o.mitten ?? {};
+  const SF: HU = walk ? [0.04, 4.42] : [0.02, 4.45];
+  let EF: HU = walk ? [0.3, 3.64] : [0.26, 3.6], WF: HU = walk ? [0.5, 2.9] : [0.42, 2.78], farDir: HU = walk ? [0.4, -1] : [0.35, -1];
+  if (gl) {
+    // Arm swing in the gait (CP-P03): each arm swings against its own-side leg; the forearm bends forward a little.
+    const swing = (sh: HU, th: number, bl: number): {E: HU; W: HU} => {
+      const E: HU = [sh[0] + 0.9 * Math.sin(th * 0.85), sh[1] - 0.9 * Math.cos(th * 0.85)];
+      return {E, W: [E[0] + 0.88 * Math.sin(th + 0.16 * bl), E[1] - 0.88 * Math.cos(th + 0.16 * bl)]};
+    };
+    const bl = clamp01(o.gaitBlend ?? 1);
+    const sf = swing(SF, 0.275 + bl * (-0.075 - 0.3 * gl.f.fwd), bl);
+    EF = sf.E; WF = sf.W; farDir = unitHU([WF[0] - EF[0], WF[1] - EF[1]]);
+  }
+  if (o.hover && o.hover.e > 0) {
+    // Hover (B06-SH01): the hang blends into the reach. The elbow takes the lower of the two IK solutions, so it hangs under the grip.
+    const G = o.hover.grip, e = o.hover.e;
+    const Eh = lowElbow(SF, G, 0.9, 0.88);
+    const dh = unitHU([G[0] - Eh[0], G[1] - Eh[1]]), Wh: HU = [G[0] - dh[0] * 0.17, G[1] - dh[1] * 0.17];
+    EF = lerpHU(EF, Eh, e);
+    WF = lerpHU(WF, Wh, e);
+    farDir = lerpHU(farDir, dh, e);
+  }
+  parts.push(tub(k.over, [SF, mid(SF, EF, 0.5), EF, WF], [0.2, 0.195, 0.18, 0.16], 0, {far: true, up: true, ...CL}));
+  parts.push(...handParts({kind: 'mitten', w: WF, dir: farDir, thumb: 1, forceCel: true, ...sz}, sk));
+  // Far trousers to the ankle, far foot.
+  parts.push(tub(k.pants, [hip, mid(hip, kneeF, 0.5), kneeF, mid(kneeF, ankF, 0.5), hemAt(kneeF, ankF)], [0.29, 0.27, 0.235, 0.215, 0.2], 0, {far: true, ...CL}));
+  parts.push(tub(sk, footF(0.1), FOOT_R, 0, {far: true}));
+  // Seat block, near trousers to the ankle, near foot, and the knee and instep folds.
+  parts.push(convexOf(k.pants, [[-0.44, 3.24], [0.32, 3.24], [0.4, 2.9], [0.34, 2.62], [-0.44, 2.6], [-0.48, 2.94]], 0.26, CL));
+  parts.push(tub(k.pants, [hip, mid(hip, kneeN, 0.5), kneeN, mid(kneeN, ankN, 0.5), hemAt(kneeN, ankN)], [0.3, 0.28, 0.245, 0.22, 0.205], 0.16, CL));
+  parts.push(tub(sk, footN(0), FOOT_R, 0.05));
+  parts.push(strokes([
+    [[kneeN[0] - 0.16, kneeN[1] + 0.1], [kneeN[0] - 0.06, kneeN[1] + 0.02]],
+    [[kneeN[0] - 0.18, kneeN[1] - 0.06], [kneeN[0] - 0.06, kneeN[1] - 0.1]],
+    [[ankN[0] + 0.02, 0.42], [ankN[0] + 0.12, 0.34], [ankN[0] + 0.2, 0.36]],
+  ], foldTone(k.pants)));
   parts.push(toeLines(ankN));
+  // Neck behind the collar (the approved full-figure neck), the tee, the open overshirt, its collar and the front edge and waist drag.
+  parts.push(tub(sk, [[0.02, 4.6], [0.08, 4.96]], [0.18, 0.17], 0.14, {far: true, ink: false, up: true}));
+  parts.push(convexOf(k.tee, [[-0.3, 4.78], [0.02, 4.8], [0.24, 4.74], [0.36, 4.44], [0.36, 3.9], [0.34, 3.4], [0.34, 2.98], [-0.4, 2.98], [-0.42, 3.5], [-0.44, 3.9], [-0.44, 4.5], [-0.4, 4.66]], 0.34, {up: true, ...CL}));
+  parts.push(convexOf(k.over, [[-0.36, 4.8], [0.0, 4.84], [0.2, 4.76], [0.3, 4.46], [0.28, 3.9], [0.28, 3.3], [0.33, 2.7], [-0.52, 2.68], [-0.56, 3.3], [-0.56, 3.9], [-0.54, 4.5], [-0.46, 4.7]], 0.36, {up: true, ...CL}));
+  parts.push(collarSide(k.over));
+  parts.push(strokes([
+    [[0.22, 4.74], [0.28, 4.3], [0.28, 3.6], [0.3, 3.0], [0.33, 2.72]],
+    [[-0.5, 3.5], [-0.3, 3.4], [-0.1, 3.44]],
+    [[-0.14, 4.3], [-0.06, 3.9], [-0.12, 3.5]],
+  ], foldTone(k.over)));
+  // Near arm: a full sleeve to the wrist, the cuff, the elbow crease and the mitten.
+  const SN: HU = walk ? [-0.06, 4.44] : [-0.04, 4.44];
+  let EN: HU = walk ? [-0.32, 3.66] : [-0.22, 3.56], WN: HU = walk ? [-0.5, 2.9] : [-0.36, 2.76];
+  if (gl) {
+    const bl = clamp01(o.gaitBlend ?? 1), th = -0.2 + bl * (0.12 - 0.3 * gl.n.fwd);
+    EN = [SN[0] + 0.9 * Math.sin(th * 0.85), SN[1] - 0.9 * Math.cos(th * 0.85)];
+    WN = [EN[0] + 0.88 * Math.sin(th + 0.16 * bl), EN[1] - 0.88 * Math.cos(th + 0.16 * bl)];
+  }
+  parts.push(tub(k.over, [SN, mid(SN, EN, 0.5), EN, WN], [0.215, 0.205, 0.19, 0.17], 0.14, {up: true, ...CL}));
+  parts.push(cuffLine(WN, unitHU([WN[0] - EN[0], WN[1] - EN[1]]), 0.16, k.over));
+  parts.push(strokes([[[EN[0] + 0.1, EN[1] + 0.04], [EN[0] + 0.02, EN[1] - 0.02]]], foldTone(k.over)));
+  parts.push(...handParts({kind: 'mitten', w: WN, dir: gl ? unitHU([WN[0] - EN[0], WN[1] - EN[1]]) : walk ? [-0.3, -1] : [-0.15, -1], thumb: 1, ...sz}, sk));
+  parts.push(profileFolds([0, 3.2], [0, 4.5], k.over));
   const hx = 0.1 * H6, hy = -5.0 * H6 - CHIN * K6;
   const over: HeadMark['over'] = (ctx, p) => {
     hairStrands(p, hx, hy);
@@ -411,8 +593,8 @@ export const figSide = (c: Cast, o: SideOpts = {}): Fig => {
   };
   const head = headMark('side', hx, hy, o.face ?? FACES[0], c.head, cell + 90, {blink: o.blink, over});
   return {
-    view: 'profile', parts, head, contact: [footContact(ankN[0]), footContact(ankF[0])],
-    anchors: {hips: [0, -3.0 * H6], knees: [[kneeN[0] * H6, -kneeN[1] * H6], [kneeF[0] * H6, -kneeF[1] * H6]], feet: [[ankN[0] * H6, 0], [ankF[0] * H6, 0]], hands: [[wrN[0] * H6, -wrN[1] * H6]], head: [hx, hy]},
+    view: 'profile', parts, head, contact: [...(!gl || ankN[1] < 0.24 ? [footContact(ankN[0])] : []), ...(!gl || ankF[1] < 0.3 ? [footContact(ankF[0])] : [])],
+    anchors: {hips: [0, -3.0 * H6], knees: [[kneeN[0] * H6, -kneeN[1] * H6], [kneeF[0] * H6, -kneeF[1] * H6]], feet: [[ankN[0] * H6, 0], [ankF[0] * H6, 0]], hands: [[WN[0] * H6, -WN[1] * H6]], head: [hx, hy]},
   };
 };
 
@@ -436,23 +618,24 @@ const slackFront = (c: Cast, o: SlackOpts, s: number): Fig => {
   // Pass 8 (user 7b look check): the shoulders and arms keep the approved drop (`sd`); the head drops less (`hd`), so the face is higher.
   const hipY = 3.0 - 0.08 * s, sd = 0.22 * s, hd = 0.12 * s, chin = 5.0 - hd;
   const parts: Part[] = [], hands: Hand[] = [], contact: Pt[][] = [];
-  for (const sg of [-1, 1]) {
-    parts.push(tub(out.pants, [[sg * 0.3, hipY], [sg * 0.29, 2.5], [sg * 0.27, 1.6], [sg * 0.25, 0.22]], [0.25, 0.23, 0.2, 0.16], 0.14));
+  for (const sg of [-1, 1] as const) {
+    parts.push(trouserLeg(out.pants, sg, hipY));
     parts.push(tub(sk, [[sg * 0.2, 0.1], [sg * 0.33, 0.085]], [0.09, 0.07], 0.06));
     contact.push(footContact(sg * 0.25));
   }
-  parts.push(convexOf(out.pants, [[-0.56, hipY + 0.34], [0.56, hipY + 0.34], [0.62, hipY], [0.58, 2.7], [-0.58, 2.7], [-0.62, hipY]], 0.34));
+  parts.push(convexOf(out.pants, [[-0.56, hipY + 0.34], [0.56, hipY + 0.34], [0.62, hipY], [0.58, 2.7], [-0.58, 2.7], [-0.62, hipY]], 0.34, CL));
+  const top = 4.82 - sd;
+  parts.push(tub(sk, [[0, 4.66 - sd], [0, chin + 0.02]], [0.19, 0.18], 0.12, {far: true, ink: false, up: true}));
+  parts.push(convexOf(out.shirt, [[-0.24, top], [0.24, top], [0.46, top - 0.03], [0.6, top - 0.12], [0.68, 4.5 - sd * 0.9], [0.7, 4.2 - sd * 0.6], [0.66, 3.7], [0.62, 3.3], [0.62, 2.96], [-0.62, 2.96], [-0.62, 3.3], [-0.66, 3.7], [-0.7, 4.2 - sd * 0.6], [-0.68, 4.5 - sd * 0.9], [-0.6, top - 0.12], [-0.46, top - 0.03]], 0.4, {up: true, ...CL}));
+  // Sleeves to the wrist (CS-ZCP-R26) in the khaki of the shirt, the cuff at the wrist, the mitten.
   for (const sg of [-1, 1] as const) {
     const S = lerpHU([sg * 0.72, 4.44], [sg * 0.68, 4.2], s);
     const E = lerpHU([sg * 0.9, 3.56], [sg * 0.84, 3.36], s);
     const W = lerpHU([sg * 0.94, 2.68], [sg * 0.86, 2.44], s);
-    parts.push(tub(sk, [S, E, W], [0.16, 0.125, 0.1], 0.11, {up: true}));
+    parts.push(tub(out.sleeve, [S, mid(S, E, 0.5), E, W], [0.215, 0.2, 0.18, 0.16], 0.13, {up: true, ...CL}));
+    parts.push(cuffLine(W, unitHU([W[0] - E[0], W[1] - E[1]]), 0.16, out.sleeve));
     hands.push({kind: 'mitten', w: W, dir: [sg * 0.05 * (1 + s), -1], thumb: sg === 1 ? -1 : 1});
   }
-  const top = 4.82 - sd;
-  parts.push(tub(sk, [[0, 4.66 - sd], [0, chin + 0.02]], [0.19, 0.18], 0.12, {far: true, ink: false, up: true}));
-  parts.push(convexOf(out.shirt, [[-0.24, top], [0.24, top], [0.46, top - 0.03], [0.6, top - 0.12], [0.68, 4.5 - sd * 0.9], [0.7, 4.2 - sd * 0.6], [0.66, 3.7], [0.62, 3.3], [0.62, 2.96], [-0.62, 2.96], [-0.62, 3.3], [-0.66, 3.7], [-0.7, 4.2 - sd * 0.6], [-0.68, 4.5 - sd * 0.9], [-0.6, top - 0.12], [-0.46, top - 0.03]], 0.4, {up: true}));
-  for (const sg of [-1, 1]) parts.push(tub(out.sleeve, [[sg * 0.6, 4.56 - sd], [sg * 0.74, 4.28 - sd * 0.8], [sg * 0.8, 4.02 - sd * 0.6]], [0.15, 0.15, 0.145], 0.12, {up: true}));
   parts.push(torsoMarks(true, out.shirt, !!o.blood, !!o.dirt));
   for (const h of hands) parts.push(...handParts(h, sk));
   const hy = -chin * H6 - CHIN * K6;
@@ -477,23 +660,23 @@ const slackSide = (c: Cast, o: SlackOpts, s: number): Fig => {
   const kneeN: HU = L([0, 1.6], [0.1, 1.52]), ankN: HU = [-0.12, 0.16];
   const kneeF: HU = L([-0.14, 1.64], [-0.12, 1.58]), ankF: HU = L([-0.5, 0.24], [-0.22, 0.2]);
   const parts: Part[] = [];
-  // Far side: cel throughout.
-  parts.push(tub(out.pants, [H, mid(H, kneeF, 0.5), kneeF, mid(kneeF, ankF, 0.6)], [0.25, 0.23, 0.2, 0.16], 0, {far: true}));
+  // Far side: cel throughout. Far trousers to the ankle and the far sleeve to the wrist.
+  parts.push(tub(out.pants, [H, mid(H, kneeF, 0.5), kneeF, mid(kneeF, ankF, 0.6)], [0.27, 0.25, 0.22, 0.2], 0, {far: true, ...CL}));
   parts.push(tub(sk, footCtrl(ankF, 0), FOOT_R, 0, {far: true}));
   const EF = L([0.26, 3.6], [0.42, 3.38]), WF = L([0.42, 2.78], [0.5, 2.52]), SF = L([0.02, 4.45], [0.24, 4.2]);
-  parts.push(tub(sk, [SF, EF, WF], [0.16, 0.125, 0.1], 0, {far: true, up: true}));
+  parts.push(tub(out.sleeve, [SF, EF, WF], [0.2, 0.19, 0.17], 0, {far: true, up: true, ...CL}));
   parts.push(...handParts({kind: 'mitten', w: WF, dir: [0.2, -1], thumb: 1, forceCel: true}, sk));
   // Neck from the shoulders to the chin, behind the torso (pass 8: thicker; the head pitches about the neck pivot).
   parts.push(tub(sk, [S, P, chinU], [0.2, 0.19, 0.18], 0.12, {far: true, ink: false, up: true}));
   // Torso: the back of the spine rounds as the shoulders come forward.
-  parts.push(convexOf(out.shirt, [[H[0] - 0.4, H[1] - 0.04], [H[0] + 0.34, H[1] - 0.04], [H[0] + 0.38, H[1] + 0.5], [S[0] + 0.3, S[1] - 0.1], [S[0] + 0.18, S[1] + 0.12], [P[0] - 0.08, P[1] - 0.02], [S[0] - 0.26, S[1] + 0.04], [H[0] - 0.42, H[1] + 0.56]], 0.34, {up: true}));
-  // Near trousers and shin, feet.
-  parts.push(tub(out.pants, [H, mid(H, kneeN, 0.5), kneeN, mid(kneeN, ankN, 0.6)], [0.26, 0.24, 0.2, 0.16], 0.16));
+  parts.push(convexOf(out.shirt, [[H[0] - 0.4, H[1] - 0.04], [H[0] + 0.34, H[1] - 0.04], [H[0] + 0.38, H[1] + 0.5], [S[0] + 0.3, S[1] - 0.1], [S[0] + 0.18, S[1] + 0.12], [P[0] - 0.08, P[1] - 0.02], [S[0] - 0.26, S[1] + 0.04], [H[0] - 0.42, H[1] + 0.56]], 0.34, {up: true, ...CL}));
+  // Near trousers to the ankle, bare foot.
+  parts.push(tub(out.pants, [H, mid(H, kneeN, 0.5), kneeN, mid(kneeN, ankN, 0.6)], [0.27, 0.25, 0.22, 0.2], 0.16, CL));
   parts.push(tub(sk, footCtrl(ankN, 0), FOOT_R, 0.05));
-  // Near arm: hangs under gravity, elbow barely bent; sleeve over the upper arm.
+  // Near arm: a sleeve to the wrist (hangs under gravity, the elbow barely bent), cuff, mitten.
   const EN = L([-0.22, 3.56], [0.32, 3.34]), WN = L([-0.36, 2.76], [0.38, 2.48]), SN = S;
-  parts.push(tub(sk, [SN, EN, WN], [0.16, 0.125, 0.1], 0.11, {up: true}));
-  parts.push(tub(out.sleeve, [[SN[0] - 0.02, SN[1] + 0.02], mid(SN, EN, 0.45)], [0.165, 0.155], 0.13, {up: true}));
+  parts.push(tub(out.sleeve, [SN, mid(SN, EN, 0.5), EN, WN], [0.215, 0.2, 0.18, 0.16], 0.13, {up: true, ...CL}));
+  parts.push(cuffLine(WN, unitHU([WN[0] - EN[0], WN[1] - EN[1]]), 0.16, out.sleeve));
   parts.push(...handParts({kind: 'mitten', w: WN, dir: [0.1 + 0.1 * s, -1], thumb: 1}, sk));
   parts.push(profileFolds(H, S, out.shirt));
   parts.push(toeLines(ankN));
@@ -516,7 +699,16 @@ const slackSide = (c: Cast, o: SlackOpts, s: number): Fig => {
 
 // --- seated ------------------------------------------------------------------------------------------------------------
 
-export type SeatOpts = {face?: Face; blink?: boolean; pitch?: number; overlay?: 'day3'; cell?: number};
+export type SeatOpts = {
+  face?: Face; blink?: boolean; pitch?: number; overlay?: 'day3'; cell?: number;
+  /** Plate mitten size (`MITTEN_6H`); the shared mitten when unset. */
+  mitten?: MittenSize;
+  /** `bread` (B07-SH02): the far sleeve reaches to the bread and a loaf sits between both mittens. Unset keeps the near hand only. */
+  hold?: 'bread';
+};
+/** Bread (B07-SH02): a loaf between both mittens at the chest, flat cel with the ink outline (not cloth, so never textured). */
+const BREAD = '#d9a25c';
+const breadPart = (c: HU): Part => convexOf(BREAD, ellHU(c[0], c[1], 0.26, 0.11, 14), 0.1);
 
 /** Seated head: upright centre `unrot` (head units), pitched by `pitch` about the neck pivot `piv` (head units). */
 const seatHead = (c: Cast, face: Face, unrot: HU, piv: HU, pitch: number, o: SeatOpts, cell: number): HeadMark => {
@@ -539,40 +731,59 @@ const seatHead = (c: Cast, face: Face, unrot: HU, piv: HU, pitch: number, o: Sea
  * Hip joint 0.34 head up so the thigh (radius 0.32) rests on the floor; thigh 1.42 and shin 1.48 heads (two-bone knee); feet 1.22 heads
  * ahead; torso 1.8 heads (the standing torso, pass 9) with a 0.13 rad lean; the chin sits 0.27 head above the shoulder line (the standing
  * neck, pass 9: was 0.55, a long neck), so the head centre is 0.73 head above it and the crown height is unchanged.
- * Forearms cross in front of the shins just below the knees, hands as closed fists (`HD-04`). `pitch` nods the head forward (rad).
+ * Forearms cross in front of the shins just below the knees, hands as BODY-ZCP-6H mittens (Boss pass 18: the closed fists with finger blocks read
+ * as fingers, user "มือตอนนั่งกอดเข่าไม่ต้องมีนิ้วก็ได้"). `pitch` nods the head forward (rad).
  */
 export const figSeatFloor = (c: Cast, o: SeatOpts = {}): Fig => {
-  const out = c.outfit, sk = c.head.skin, cell = o.cell ?? 0;
+  const k = costumeOf(c), sk = c.head.skin, cell = o.cell ?? 0;
   const hip: HU = [0, 0.34], ank: HU = [1.22, 0.16];
   const knee = ik2(hip, ank, 1.42, 1.48, 1);
   const lean = 0.13, N: HU = [Math.sin(lean), Math.cos(lean)];
   const S: HU = [hip[0] + 1.8 * N[0], hip[1] + 1.8 * N[1]];
+  /** Torso frame: x forward, u up the torso from the hip. */
+  const T = (x: number, u: number): HU => [hip[0] + x * N[1] + u * N[0], hip[1] - x * N[0] + u * N[1]];
   const kneeF: HU = [knee[0] - 0.06, knee[1] + 0.02], ankF: HU = [ank[0] - 0.08, ank[1]];
+  const hemOf = (kn: HU, an: HU): HU => [an[0] + (kn[0] - an[0]) * 0.1, an[1] + (kn[1] - an[1]) * 0.1];
   const parts: Part[] = [], hands: Hand[] = [];
-  parts.push(tub(out.pants, [hip, mid(hip, kneeF, 0.5), kneeF], [0.31, 0.29, 0.23], 0, {far: true}));
-  parts.push(tub(sk, [kneeF, ankF], [0.17, 0.11], 0, {far: true}));
+  // Far leg (cel): trousers to the ankle, bare foot. Far forearm (cel): a sleeve to the mitten.
+  parts.push(tub(k.pants, [hip, mid(hip, kneeF, 0.5), kneeF, mid(kneeF, ankF, 0.5), hemOf(kneeF, ankF)], [0.32, 0.3, 0.25, 0.22, 0.2], 0, {far: true, ...CL}));
   parts.push(tub(sk, footCtrl(ankF, 0), FOOT_R, 0, {far: true}));
   const Sf: HU = [S[0] - 0.04, S[1] - 0.05], Tf: HU = [1.02, 1.2];
   const Ef = ik2(Sf, Tf, 0.9, 0.88, -1), df = unitHU([Tf[0] - Ef[0], Tf[1] - Ef[1]]);
   const Wf: HU = [Tf[0] - df[0] * 0.17, Tf[1] - df[1] * 0.17];
-  parts.push(tub(sk, [Sf, Ef, Wf], [0.16, 0.125, 0.1], 0, {far: true, up: true}));
-  hands.push({kind: 'fist', w: Wf, dir: df, thumb: 1, forceCel: true});
-  parts.push(convexOf(out.pants, [[-0.46, 0.74], [0.3, 0.52], [0.36, 0.04], [-0.42, 0.02]], 0.24));
-  parts.push(tub(out.pants, [hip, mid(hip, knee, 0.5), knee], [0.3, 0.27, 0.23], 0.2));
-  parts.push(tub(sk, [knee, ank], [0.17, 0.105], 0.12));
+  parts.push(tub(k.over, [Sf, mid(Sf, Ef, 0.5), Ef, Wf], [0.215, 0.2, 0.18, 0.16], 0, {far: true, up: true, ...CL}));
+  hands.push({kind: 'mitten', w: Wf, dir: df, thumb: 1, forceCel: true, ...MITTEN_6H});
+  // The overshirt's back hem lies on the floor behind the hips; the seat block of the trousers.
+  parts.push(convexOf(k.over, [[-0.6, 0.04], [0.1, 0.04], [0.2, 0.5], [-0.52, 0.86]], 0.2, CL));
+  parts.push(convexOf(k.pants, [[-0.46, 0.74], [0.3, 0.52], [0.36, 0.04], [-0.42, 0.02]], 0.24, CL));
+  // Near leg: trousers to the ankle, bare foot; the knee folds.
+  parts.push(tub(k.pants, [hip, mid(hip, knee, 0.5), knee, mid(knee, ank, 0.5), hemOf(knee, ank)], [0.31, 0.28, 0.24, 0.215, 0.2], 0.2, CL));
   parts.push(tub(sk, footCtrl(ank, 0), FOOT_R, 0.05));
-  parts.push(convexOf(out.shirt, [[hip[0] - 0.42, hip[1] - 0.08], [hip[0] + 0.36, hip[1] - 0.08], [S[0] + 0.36, S[1]], [S[0] - 0.42, S[1]]], 0.34, {up: true}));
+  parts.push(strokes([
+    [[knee[0] - 0.2, knee[1] - 0.18], [knee[0] - 0.06, knee[1] - 0.26]],
+    [[knee[0] - 0.3, knee[1] - 0.3], [knee[0] - 0.14, knee[1] - 0.4]],
+    [[ank[0] - 0.02, 0.44], [ank[0] + 0.08, 0.36], [ank[0] + 0.18, 0.38]],
+  ], foldTone(k.pants)));
+  // Neck (bare, from the shoulder point to the chin), then the tee and the open overshirt over the back and side (the front stops short,
+  // so the tee shows at the chest), its folds, the near sleeve to the mitten, and the collar.
+  const chin: HU = [S[0] + 0.27 * N[0], S[1] + 0.27 * N[1]];
+  parts.push(tub(sk, [S, chin], [0.15, 0.13], 0.12, {ink: false, up: true}));
+  parts.push(convexOf(k.tee, [[hip[0] - 0.42, hip[1] - 0.08], [hip[0] + 0.38, hip[1] - 0.08], [S[0] + 0.38, S[1]], [S[0] - 0.42, S[1]]], 0.34, {up: true, ...CL}));
+  parts.push(convexOf(k.over, [[hip[0] - 0.52, hip[1] - 0.2], [hip[0] + 0.3, hip[1] - 0.12], [S[0] + 0.26, S[1] + 0.04], [S[0] - 0.2, S[1] + 0.12], [S[0] - 0.5, S[1] + 0.02]], 0.34, {up: true, ...CL}));
+  parts.push(strokes([
+    [[S[0] + 0.2, S[1]], [S[0] + 0.1, S[1] - 0.6], [hip[0] + 0.3, hip[1] - 0.1]],
+    [[hip[0] - 0.4, hip[1] + 0.5], [hip[0] - 0.2, hip[1] + 0.4], [hip[0] - 0.02, hip[1] + 0.46]],
+  ], foldTone(k.over)));
   const Sa: HU = [S[0] + 0.02, S[1] - 0.05], Tn: HU = [1.12, 1.12];
   const En = ik2(Sa, Tn, 0.9, 0.88, -1), dn = unitHU([Tn[0] - En[0], Tn[1] - En[1]]);
   const Wn: HU = [Tn[0] - dn[0] * 0.17, Tn[1] - dn[1] * 0.17];
-  parts.push(tub(sk, [Sa, En, Wn], [0.16, 0.125, 0.1], 0.11, {up: true}));
-  parts.push(tub(out.sleeve, [Sa, mid(Sa, En, 0.5)], [0.165, 0.155], 0.13, {up: true}));
-  hands.push({kind: 'fist', w: Wn, dir: dn, thumb: 1});
+  parts.push(tub(k.over, [Sa, mid(Sa, En, 0.5), En, Wn], [0.215, 0.205, 0.19, 0.17], 0.13, {up: true, ...CL}));
+  parts.push(cuffLine(Wn, dn, 0.16, k.over));
+  hands.push({kind: 'mitten', w: Wn, dir: dn, thumb: 1, ...MITTEN_6H});
   for (const h of hands) parts.push(...handParts(h, sk));
-  parts.push(profileFolds(hip, S, out.shirt));
+  parts.push(profileFolds(hip, S, k.over));
   parts.push(toeLines(ank));
-  const chin: HU = [S[0] + 0.27 * N[0], S[1] + 0.27 * N[1]];
-  parts.push(tub(sk, [S, chin], [0.15, 0.13], 0.12, {ink: false, up: true}));
+  parts.push(collarSeat(k.over, T, 1.98, 2.0));
   const unrot: HU = [S[0] + 0.73 * N[0], S[1] + 0.73 * N[1]];
   const piv: HU = [S[0] + 0.3 * N[0], S[1] + 0.3 * N[1]];
   const head = seatHead(c, o.face ?? FACES[0], unrot, piv, o.pitch ?? 0, o, cell + 90);
@@ -591,29 +802,43 @@ export const figSeatFloor = (c: Cast, o: SeatOpts = {}): Fig => {
  * 0.27 head above the shoulders, the standing neck, and the crown height is unchanged for the floor figure.
  */
 export const figSeatSofa = (c: Cast, o: SeatOpts = {}): Fig => {
-  const out = c.outfit, sk = c.head.skin, cell = o.cell ?? 0;
+  const k = costumeOf(c), sk = c.head.skin, cell = o.cell ?? 0;
   const hip: HU = [0, 1.85], knee: HU = [1.404, 1.64], ank: HU = [1.404, 0.16];
   const lean = -0.17, N: HU = [Math.sin(lean), Math.cos(lean)];
   const S: HU = [hip[0] + 1.8 * N[0], hip[1] + 1.8 * N[1]];
+  const T = (x: number, u: number): HU => [hip[0] + x * N[1] + u * N[0], hip[1] - x * N[0] + u * N[1]];
   const kneeF: HU = [knee[0] - 0.04, knee[1]], ankF: HU = [ank[0] - 0.04, ank[1]];
+  const hemOf = (kn: HU, an: HU): HU => [an[0] + (kn[0] - an[0]) * 0.1, an[1] + (kn[1] - an[1]) * 0.1];
   const parts: Part[] = [], hands: Hand[] = [];
-  parts.push(tub(out.pants, [hip, mid(hip, kneeF, 0.5), kneeF], [0.25, 0.23, 0.21], 0, {far: true}));
-  parts.push(tub(sk, [kneeF, ankF], [0.18, 0.11], 0, {far: true}));
+  // Far leg (cel) and foot; near leg: trousers to the ankle, bare foot on the floor.
+  parts.push(tub(k.pants, [hip, mid(hip, kneeF, 0.5), kneeF, mid(kneeF, ankF, 0.5), hemOf(kneeF, ankF)], [0.25, 0.23, 0.21, 0.19, 0.18], 0, {far: true, ...CL}));
   parts.push(tub(sk, footCtrl(ankF, 0), FOOT_R, 0, {far: true}));
-  parts.push(tub(out.pants, [hip, mid(hip, knee, 0.5), knee], [0.25, 0.23, 0.21], 0.18));
-  parts.push(tub(sk, [knee, ank], [0.18, 0.11], 0.12));
+  parts.push(tub(k.pants, [hip, mid(hip, knee, 0.5), knee, mid(knee, ank, 0.5), hemOf(knee, ank)], [0.25, 0.23, 0.21, 0.19, 0.18], 0.18, CL));
   parts.push(tub(sk, footCtrl(ank, 0), FOOT_R, 0.05));
-  parts.push(convexOf(out.shirt, [[hip[0] - 0.42, hip[1] - 0.1], [hip[0] + 0.36, hip[1] - 0.1], [S[0] + 0.36, S[1]], [S[0] - 0.42, S[1]]], 0.34, {up: true}));
+  const sz: Partial<MittenSize> = o.mitten ?? {};
+  // Far sleeve (cel, behind the torso) to the bread when the B07 hold is on: the far mitten reaches forward under the near one.
+  if (o.hold === 'bread') {
+    const Sf: HU = [S[0] - 0.12, S[1] - 0.1], Tf: HU = [0.6, 2.78];
+    const Ef = lowElbow(Sf, Tf, 0.9, 0.88), df = unitHU([Tf[0] - Ef[0], Tf[1] - Ef[1]]), Wf: HU = [Tf[0] - df[0] * 0.17, Tf[1] - df[1] * 0.17];
+    parts.push(tub(k.over, [Sf, mid(Sf, Ef, 0.5), Ef, Wf], [0.215, 0.205, 0.19, 0.17], 0, {far: true, up: true, ...CL}));
+    parts.push(...handParts({kind: 'mitten', w: Wf, dir: df, thumb: 1, forceCel: true, ...sz}, sk));
+  }
+  // Neck (bare, shoulder point to the chin), the tee and the open overshirt over the torso.
+  const chin: HU = [S[0] + 0.27 * N[0], S[1] + 0.27 * N[1]];
+  parts.push(tub(sk, [S, chin], [0.15, 0.13], 0.12, {ink: false, up: true}));
+  parts.push(convexOf(k.tee, [[hip[0] - 0.42, hip[1] - 0.1], [hip[0] + 0.36, hip[1] - 0.1], [S[0] + 0.36, S[1]], [S[0] - 0.42, S[1]]], 0.34, {up: true, ...CL}));
+  parts.push(convexOf(k.over, [[hip[0] - 0.5, hip[1] - 0.2], [hip[0] + 0.3, hip[1] - 0.14], [S[0] + 0.3, S[1] + 0.04], [S[0] - 0.4, S[1] + 0.06]], 0.34, {up: true, ...CL}));
+  // Near sleeve to the wrist, cuff, mitten on the bread at the chest.
   const Sa: HU = [S[0] + 0.03, S[1] - 0.06], Tn: HU = [0.52, 2.92];
   const En = ik2(Sa, Tn, 0.9, 0.88, -1), dn = unitHU([Tn[0] - En[0], Tn[1] - En[1]]);
   const Wn: HU = [Tn[0] - dn[0] * 0.17, Tn[1] - dn[1] * 0.17];
-  parts.push(tub(sk, [Sa, En, Wn], [0.16, 0.125, 0.1], 0.11, {up: true}));
-  parts.push(tub(out.sleeve, [Sa, mid(Sa, En, 0.5)], [0.165, 0.155], 0.13, {up: true}));
-  hands.push({kind: 'mitten', w: Wn, dir: dn, thumb: 1});
+  parts.push(tub(k.over, [Sa, mid(Sa, En, 0.5), En, Wn], [0.215, 0.205, 0.19, 0.17], 0.13, {up: true, ...CL}));
+  parts.push(cuffLine(Wn, dn, 0.16, k.over));
+  hands.push({kind: 'mitten', w: Wn, dir: dn, thumb: 1, ...sz});
+  if (o.hold === 'bread') parts.push(breadPart([0.58, 2.97]));
   for (const h of hands) parts.push(...handParts(h, sk));
-  parts.push(profileFolds(hip, S, out.shirt));
-  const chin: HU = [S[0] + 0.27 * N[0], S[1] + 0.27 * N[1]];
-  parts.push(tub(sk, [S, chin], [0.15, 0.13], 0.12, {ink: false, up: true}));
+  parts.push(profileFolds(hip, S, k.over));
+  parts.push(collarSeat(k.over, T, 1.98, 2.0));
   const unrot: HU = [S[0] + 0.73 * N[0], S[1] + 0.73 * N[1]];
   const piv: HU = [S[0] + 0.3 * N[0], S[1] + 0.3 * N[1]];
   const head = seatHead(c, o.face ?? FACES[0], unrot, piv, o.pitch ?? 0.25, o, cell + 90);
@@ -636,30 +861,44 @@ const inPoly = (poly: Pt[], [x, y]: Pt): boolean => {
   }
   return c;
 };
+/** Stubble grid pitch in decal units (K): one dot per cell of the jaw box, jittered inside its cell (B09/B10 R2.6 fix). */
+const STUBBLE_PITCH = 0.03;
 /**
- * Day-3 stubble (user, 30 Oct 2026: "หนวดเป็นจุดเล็กๆ"; pass 7b: sparse, not a blob): about 40 fine dots on the jaw and upper lip,
- * a brown mixed 50 % toward the skin tone (low contrast), seeded so they hold still.
+ * Day-3 stubble (user, 30 Oct 2026: "หนวดเป็นจุดเล็กๆ", S-P01): fine dots on the jaw and upper lip, a brown mixed 50 % toward the skin tone
+ * (low contrast), seeded so they hold still. R2.6 overview fix: one jittered dot per grid cell, radius 0.0045-0.006 K (about 1.2-1.6 px at
+ * the bust close, 0.5 px on a full figure). The earlier 40 random dots of 0.03-0.042 K clumped into blobs (DF-20261030-zcpaint-day3-stubble-spots).
  */
 export const stubble = (p: Paint, cx: number, cy: number, K: number, view: 'front' | 'side', skin: string) => {
   const col = mixColor(skin, '#2a1f1a', 0.5);
   const jaw = view === 'front' ? JAW_FRONT : JAW_SIDE;
-  let n = 0;
-  for (let i = 0; i < 400 && n < 40; i++) {
-    const u = view === 'front' ? -0.7 + 1.4 * hash(i * 2 + 5) : 0.05 + 0.8 * hash(i * 2 + 5);
-    const v = 0.5 + 0.65 * hash(i * 2 + 6);
-    if (!inPoly(jaw, [u, v])) continue;
-    n++;
-    const r = (0.03 + 0.012 * hash(i + 90)) * K;
-    p.part(col, ellipse(cx + u * K, cy + v * K, r, r, 6), false);
+  const [u0, u1, v0, v1] = view === 'front' ? [-0.66, 0.66, 0.5, 1.15] : [0.14, 0.8, 0.58, 1.12];
+  const nu = Math.ceil((u1 - u0) / STUBBLE_PITCH), nv = Math.ceil((v1 - v0) / STUBBLE_PITCH);
+  for (let j = 0; j < nv; j++) {
+    for (let i = 0; i < nu; i++) {
+      const s = 3 * (j * nu + i) + 1;
+      const u = u0 + (i + 0.2 + 0.6 * hash(s)) * STUBBLE_PITCH, v = v0 + (j + 0.2 + 0.6 * hash(s + 1)) * STUBBLE_PITCH;
+      if (!inPoly(jaw, [u, v])) continue;
+      const r = (0.0045 + 0.0015 * hash(s + 2)) * K;
+      p.part(col, ellipse(cx + u * K, cy + v * K, r, r, 6), false);
+    }
   }
 };
 
 // --- drawing, shadows and measures -------------------------------------------------------------------------------------
 
+/** TX-ZCP-CLOTH (R2.6): the cloth texture, off by default. `dark` darkens the glaze; `hatch` lays a 2B pencil hatch in the cel band. */
+export type Tex = {opacity: number; texture: number; border: number; dark: number; hatch?: {dist: number; angle: number; weight: number; mix: number}};
+/** Variant B (SPK-ZCP-06): glaze 150 at 26 % darker, `fillTexture(0.7, 0.6)`, bleed 0; 2B hatch 7 px at 40 deg, weight 1.0, mix 0.6. */
+export const TEX_B: Tex = {opacity: 150, texture: 0.7, border: 0.6, dark: 0.26, hatch: {dist: 7, angle: 40, weight: 1.0, mix: 0.6}};
+/** `cloth`: the colours of cloth washes (lit and cel tones); `tex` on: each cloth wash takes one seeded glaze over its own opaque wash, the
+ *  cel tones take the hatch. `scale`: the screen scale of the figure (the hatch keeps its screen spacing at a close). Seeds count per part. */
+export type WashOpts = {cloth?: ReadonlySet<string>; tex?: Tex; scale?: number};
 /** Flat wash painter with rotring outlines (the spike's `flatPaint`): washes hold still, outlines boil every two frames. */
-export const washPaint = (ctx: PaintContext, base: number): Paint => {
+export const washPaint = (ctx: PaintContext, base: number, opt: WashOpts = {}): Paint => {
   const {brush} = ctx;
-  let seed = base, line = base + 900;
+  let seed = base, line = base + 900, tseed = base + 5000;
+  const {cloth, tex} = opt, sk = opt.scale ?? 1;
+  const shade = new Set([...(cloth ?? [])].filter((col) => [...(cloth ?? [])].some((b) => celTone(b) === col)));
   const ink = (pts: Pt[], weight = 1.0, curve = 0.15, color = INK) => {
     ctx.boil(++line);
     brush.set('rotring', color, weight);
@@ -667,7 +906,7 @@ export const washPaint = (ctx: PaintContext, base: number): Paint => {
   };
   return {
     sil: false, t: ctx.t, id: base,
-    fork: (o) => washPaint(ctx, base + o),
+    fork: (o) => washPaint(ctx, base + o, opt),
     ink,
     part: (color, pts, outline = true) => {
       brush.seed(++seed);
@@ -677,6 +916,24 @@ export const washPaint = (ctx: PaintContext, base: number): Paint => {
       brush.wash(color, 255);
       brush.polygon(pts);
       brush.noWash();
+      if (tex && cloth?.has(color) && pts.length > 2) {
+        brush.seed(++tseed);
+        brush.noiseSeed(tseed);
+        brush.noStroke();
+        brush.fill(mixColor(color, '#141012', tex.dark), tex.opacity);
+        brush.fillBleed(0);
+        brush.fillTexture(tex.texture, tex.border, false, 0.2);
+        brush.polygon(pts);
+        brush.noFill();
+        if (tex.hatch && shade.has(color)) {
+          brush.seed(++tseed);
+          brush.noiseSeed(tseed);
+          brush.hatch(tex.hatch.dist / sk, tex.hatch.angle, {rand: 0.25, continuous: false, gradient: 0.15});
+          brush.hatchStyle('2B', mixColor(color, '#1a1720', tex.hatch.mix), tex.hatch.weight / Math.sqrt(sk));
+          brush.polygon(pts);
+          brush.noHatch();
+        }
+      }
       if (outline) ink([...pts, pts[0]]);
     },
   };
@@ -751,12 +1008,15 @@ export const figCast = (fig: Fig, proj: Proj, at: CastAt, clip: Pt[], key: reado
 export const sectionCast = (fig: Fig, S: Section, at: {Y: number; d: number; dir: 1 | -1}, room: readonly [number, number], key: readonly number[] = KEY_SEC_DAY): Pt[][] =>
   figCast(fig, S.P, {...at, lat: 'Y'}, roomFloorQuad(S, room), key);
 
+/** The cloth colours of a figure, lit and cel: the texture's targets (`TX-ZCP-CLOTH`). */
+export const clothTones = (fig: Fig): Set<string> => new Set(fig.parts.filter((p) => p.cloth).flatMap((p) => [p.col, celTone(p.col)]));
+
 /**
  * Paint one figure. `floor` is the receiving floor colour: its cast tone is painted first (LT-03), then the contact patches (the
  * darkest tone where the feet or seat touch) unless the figure is measured bare. `screenCast` (section plates, `sectionCast`) replaces the
- * sheet's local cast, painted in screen space. `sil` paints one colour without cel, ink or face.
+ * sheet's local cast, painted in screen space. `sil` paints one colour without cel, ink or face. `tex` adds the cloth texture (off by default).
  */
-export const drawFig = (ctx: PaintContext, base: number, fig: Fig, at: Place, o: {floor?: string; sil?: string; screenCast?: Pt[][]; light?: Pt} = {}) => {
+export const drawFig = (ctx: PaintContext, base: number, fig: Fig, at: Place, o: {floor?: string; sil?: string; screenCast?: Pt[][]; light?: Pt; tex?: Tex} = {}) => {
   if (o.floor && o.screenCast) {
     const s = washPaint(ctx, base + 700);
     for (const poly of o.screenCast) s.part(castTone(o.floor), poly, false);
@@ -767,7 +1027,7 @@ export const drawFig = (ctx: PaintContext, base: number, fig: Fig, at: Place, o:
       if (!o.screenCast) for (const poly of castPolys(fig, at.dir)) s.part(castTone(o.floor), poly, false);
       for (const poly of fig.contact) s.part(castTone(o.floor), poly, false);
     }
-    const p = washPaint(ctx, base);
+    const p = o.tex ? washPaint(ctx, base, {cloth: clothTones(fig), tex: o.tex, scale: at.k}) : washPaint(ctx, base);
     const light = o.light ?? localTravel(at.dir);
     for (const part of fig.parts) paintPart(p, part, light, o.sil);
     const h = fig.head;

@@ -8,7 +8,8 @@ import {paintBathTap, paintUnit} from '../zcpaint/rooms';
 import {NIGHT, paintBalcony} from '../zcpaint/balcony';
 import {paintInterior} from '../zcpaint/interior';
 import {DIAGRAM_PAPER, paintDiagram} from '../zcpaint/diagram';
-import {drawFig, figSeatSofa, figSide, sectionCast, type Fig} from '../zcpaint/body6';
+import {drawFig, figFront, figSeatSofa, figSide, gaitPhase, H6, MITTEN_6H, sectionCast, TEX_B, type Fig, type HU} from '../zcpaint/body6';
+import {ramp} from '../painter';
 import {YOU} from '../zcpaint/cast';
 import {section, SEC_2D, SEC_2D_LL_B07, truckYc, truckYcHold} from '../zcpaint/space';
 import {paintB02Sh01, paintB02Sh02, paintB03Sh01, paintB09Sh02b} from '../zcpaint/povshots';
@@ -62,33 +63,64 @@ const truck = (p: Painter, yc: number, sec: typeof SEC_2D, L: Lights, figs: FigS
   extra?.(c, S);
   for (const g of figs) {
     const [gx, gy] = S.P(g.Y, 0, g.d);
-    drawFig(c, g.base, g.fig, {gx, gy, k: S.pxPerM(g.d) / 447, dir: g.dir}, {floor: g.floor, screenCast: []});
+    drawFig(c, g.base, g.fig, {gx, gy, k: S.pxPerM(g.d) / 447, dir: g.dir}, {floor: g.floor, screenCast: [], tex: TEX_B});
   }
   paintCaps(flatKit(c, 3000), S, [[1.5, 1.6], [3.3, 3.4]]);
 };
 
-/** B04-SH01: section truck into the bathroom, tap running; Yc holds 1.30 to pf 14, to 2.40 by pf 57; him walks Y 0.70 -> 2.40. */
+/** Walk (Boss pass 19, user: "เท้าไม่ขยับเลย"): world metres per head unit of the 6-head figure (`H6` px at 447 px/m). The gait phase follows the
+ *  distance walked, so a planted foot stays fixed in the world; `blend` is the first and the closing step (0 stands, 1 walks). */
+const M_PER_HU = H6 / 447;
+const walkFig = (dist: number, phase0: number, blend: number) => figSide(YOU, {stride: 1, mitten: MITTEN_6H, gait: gaitPhase(dist / M_PER_HU) + phase0, gaitBlend: blend});
+/** Distance walked (m) at plate frame `pf`: constant speed `v` to frame `end - ease`, then a linear slow-down to a stop at `end`. */
+const walkDist = (pf: number, v: number, end: number, ease: number) => {
+  const c = Math.min(Math.max(pf, 0), end), t = Math.max(0, c - (end - ease));
+  return v * (Math.min(c, end - ease) + t - (t * t) / (2 * ease));
+};
+/** Turn on the spot: a front stand for a few frames between the two profile facings (feet apart, arms down, the body's own turn). */
+const turnFig = () => figFront(YOU, {mitten: MITTEN_6H});
+
+/** B04-SH01: section truck into the bathroom, tap running; Yc holds 1.30 to pf 14, to 2.40 by pf 57; him walks Y 0.70 -> 2.40.
+ *  Boss pass 19: he stands facing the door (pf 0-5), turns (pf 5-10), then walks from pf 10 with a real gait (first step pf 10-18, closing step pf 67-75). */
+const B04_TURN = [5, 10] as const, B04_WALK = [10, 75] as const;
 const b04 = (p: Painter, tl: number) => {
   const pf = pfOf(tl);
   // Brief R2.3 (30 Oct 2026): Yc holds 1.30 for pf 0-14, then trucks to 2.40 by pf 57; him walks on to 2.40 by pf 75.
   const yc = truckYcHold(pf, 1.3, 2.4, 14, 57);
-  const Y = 0.7 + (2.4 - 0.7) * Math.min(1, pf / 75);
-  truck(p, yc, SEC_2D, UNIT_LIGHT, [figIn(figSide(YOU, {stride: 1}), UNIT_LIGHT, Y, 0.75, 1, 2100)], (c, S) => paintBathTap(c, S, UNIT_LIGHT));
+  const D = 2.4 - 0.7, ease = 8, len = B04_WALK[1] - B04_WALK[0];
+  const v = D / (len - ease / 2);
+  const Y = 0.7 + walkDist(pf - B04_WALK[0], v, len, ease);
+  const blend = Math.min(ramp(pf, B04_WALK[0], B04_WALK[0] + 8), 1 - ramp(pf, B04_WALK[1] - 8, B04_WALK[1]));
+  const walking = pf >= B04_TURN[1] && pf < B04_WALK[1];
+  const fig = pf < B04_TURN[0] ? figSide(YOU, {stride: 0, mitten: MITTEN_6H}) : pf < B04_TURN[1] ? turnFig() : walking ? walkFig(Y - 0.7, 0.65, blend) : figSide(YOU, {stride: 0, mitten: MITTEN_6H});
+  truck(p, yc, SEC_2D, UNIT_LIGHT, [figIn(fig, UNIT_LIGHT, Y, 0.75, pf < B04_TURN[0] ? -1 : 1, 2100)], (c, S) => paintBathTap(c, S, UNIT_LIGHT));
 };
 
-/** B06-SH01: truck from the bathroom into the kitchenette; Yc 2.80 -> 4.20 by pf 80; him walks to Y 4.45, turns to the fridge. */
+/** B06-SH01 hover grip (head units, facing the fridge): 5 cm short of the handle, screen (517, 851) on the sheet (his right hand, the far arm). */
+const B06_HOVER_GRIP: HU = [1.13, 3.56];
+const smooth = (t: number) => t * t * (3 - 2 * t);
+/** The hover blend: rises pf 100-110, withdraws pf 177-190 (sheet `B06-SH01`, right hand row). */
+const b06HoverEase = (pf: number) => smooth(ramp(pf, 100, 110)) - smooth(ramp(pf, 177, 190));
+
+/** B06-SH01: truck from the bathroom into the kitchenette; Yc 2.80 -> 4.20 by pf 80; him walks to Y 4.45, turns to the fridge.
+ *  Boss pass 19: a real gait to pf 75 (slowing over the last 8 frames), a front-stand turn pf 75-80, then the profile facing the fridge. */
 const b06 = (p: Painter, tl: number) => {
   const pf = pfOf(tl);
   const yc = truckYc(pf, 2.8, 4.2, 80);
-  const Y = 2.7 + (4.45 - 2.7) * Math.min(1, pf / 75);
-  truck(p, yc, SEC_2D, UNIT_LIGHT, [figIn(figSide(YOU, {stride: pf < 75 ? 1 : 0}), UNIT_LIGHT, Y, 0.75, pf < 77 ? 1 : -1, 2200)]);
+  const D = 4.45 - 2.7, ease = 8, end = 75;
+  const v = D / (end - ease / 2);
+  const Y = 2.7 + walkDist(pf, v, end, ease);
+  const hover = {grip: B06_HOVER_GRIP, e: b06HoverEase(pf)};
+  const blend = 1 - ramp(pf, end - 8, end);
+  const fig = pf < end ? walkFig(Y - 2.7, 0.1, blend) : pf < 80 ? turnFig() : figSide(YOU, {stride: 0, mitten: MITTEN_6H, hover});
+  truck(p, yc, SEC_2D, UNIT_LIGHT, [figIn(fig, UNIT_LIGHT, Y, 0.75, pf < 80 ? 1 : -1, 2200)]);
 };
 
 /** B07-SH02: truck to the living room; Yc 5.40 -> 8.20 by pf 89; seated on the sofa (SEC-2D-LL B07: 480 px/m, floor 1230). */
 const b07 = (p: Painter, tl: number) => {
   const pf = pfOf(tl);
   const yc = truckYc(pf, 5.4, 8.2, 89);
-  truck(p, yc, SEC_2D_LL_B07, UNIT_LIGHT, [figIn(figSeatSofa(YOU), UNIT_LIGHT, 7.65, 0.75, 1, 2300)]);
+  truck(p, yc, SEC_2D_LL_B07, UNIT_LIGHT, [figIn(figSeatSofa(YOU, {mitten: MITTEN_6H, hold: 'bread'}), UNIT_LIGHT, 7.65, 0.75, 1, 2300)]);
 };
 
 /** B10-SH01: interior from the bathroom (camera at Y 3.25), the turn on pf 108-116; still camera. */
@@ -125,12 +157,12 @@ const CAM_B02_SH02 = (tl: number): Camera => {
 const camB01Sh01 = (tl: number) => pushCamera(tl, 3.5, {s0: 1, s1: 1.035, fx: 640, fy: 690});
 /** B01-SH02: the long-lens push (s 1.00 -> 1.02 about (540, 560)) over the 48-frame shot. */
 const camB01Sh02 = (tl: number) => pushCamera(tl, 48 / FPS, {s0: 1, s1: 1.02, fx: 540, fy: 560});
-/** B02-SH03: the close push (s 1.00 -> 1.02 about his eyes (515, 430)) over the 84-frame plate. */
-const camB02Sh03 = (tl: number) => pushCamera(tl, 84 / FPS, {s0: 1, s1: 1.02, fx: 515, fy: 430});
-/** B07-SH01: the push about his eye (s 1.00 -> 1.02) over the 141-frame plate. */
-const camB07Sh01 = (tl: number) => pushCamera(tl, 141 / FPS, {s0: 1, s1: 1.02, fx: 600, fy: 400});
-/** B09-SH02: the push about his eye (s 1.00 -> 1.02) over the 45-frame shot. */
-const camB09Sh02 = (tl: number) => pushCamera(tl, 45 / FPS, {s0: 1, s1: 1.02, fx: 450, fy: 600});
+/** B02-SH03: the close push (s 1.00 -> 1.02 about his eyes (515, 690), R1.4) over the 84-frame plate. */
+const camB02Sh03 = (tl: number) => pushCamera(tl, 84 / FPS, {s0: 1, s1: 1.02, fx: 515, fy: 690});
+/** B07-SH01: the push about his eye (560, 430; s 1.00 -> 1.02, R1.4) over the 141-frame plate. */
+const camB07Sh01 = (tl: number) => pushCamera(tl, 141 / FPS, {s0: 1, s1: 1.02, fx: 560, fy: 430});
+/** B09-SH02: the push about his eye (R1.4, about (470, 690); s 1.00 -> 1.02) over the 45-frame shot. */
+const camB09Sh02 = (tl: number) => pushCamera(tl, 45 / FPS, {s0: 1, s1: 1.02, fx: 470, fy: 690});
 /** B09-SH01: the held plate's slow push about his head (s 1.000 -> 1.015). */
 const camB09Sh01 = (len: number) => (tl: number) => pushCamera(tl, len, {s0: 1, s1: 1.015, fx: 648, fy: 590});
 /** B09-SH02B: the tilt (dy -1100 -> 0 over 18 f, eased): from the knees up to the still door. */

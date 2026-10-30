@@ -1,0 +1,290 @@
+[
+ {
+  "id": "EN-01",
+  "beat": "B01",
+  "text": "You open your door.",
+  "caption": "You open your door.",
+  "onsetSec": 0.0,
+  "speechEndSec": 1.097
+ },
+ {
+  "id": "EN-02",
+  "beat": "B01",
+  "text": "Someone's standing down the hall.",
+  "caption": "Someone's standing down the hall.",
+  "onsetSec": 1.3,
+  "speechEndSec": 2.863
+ },
+ {
+  "id": "EN-03",
+  "beat": "B01",
+  "text": "Then it turns.",
+  "caption": "Then it turns.",
+  "onsetSec": 3.33,
+  "speechEndSec": 4.172
+ },
+ {
+  "id": "EN-04a",
+  "beat": "B02",
+  "text": "Shut it.",
+  "caption": "Shut it. Lock it.",
+  "onsetSec": 4.7,
+  "speechEndSec": 5.211
+ },
+ {
+  "id": "EN-04b",
+  "beat": "B02",
+  "text": "Lock it.",
+  "caption": null,
+  "onsetSec": 5.4,
+  "speechEndSec": 5.957
+ },
+ {
+  "id": "EN-05",
+  "beat": "B02",
+  "text": "It's pounding.",
+  "caption": "It's pounding.",
+  "onsetSec": 6.2,
+  "speechEndSec": 6.973
+ },
+ {
+  "id": "EN-06",
+  "beat": "B02",
+  "text": "Barricade it, but so it clears fast in a fire.",
+  "caption": "Barricade it, but so it clears\nfast in a fire.",
+  "onsetSec": 7.2,
+  "speechEndSec": 9.558
+ },
+ {
+  "id": "EN-07",
+  "beat": "B02",
+  "text": "In this world, they follow sound.",
+  "caption": "In this world, they\nfollow sound.",
+  "onsetSec": 11.9,
+  "speechEndSec": 13.627
+ },
+ {
+  "id": "EN-08",
+  "beat": "B03",
+  "text": "Then the power dies.",
+  "caption": "Then the power dies.",
+  "onsetSec": 14.0,
+  "speechEndSec": 15.042
+ },
+ {
+  "id": "EN-09",
+  "beat": "B04",
+  "text": "The tap still runs.",
+  "caption": "The tap still runs.",
+  "onsetSec": 15.5,
+  "speechEndSec": 16.661
+ },
+ {
+  "id": "EN-10",
+  "beat": "B04",
+  "text": "But many high-rises pump water to a roof tank.",
+  "caption": "But many high-rises pump water\nto a roof tank.",
+  "onsetSec": 16.9,
+  "speechEndSec": 19.279
+ },
+ {
+  "id": "EN-11",
+  "beat": "B04",
+  "text": "No power, no pump.",
+  "caption": "No power, no pump.",
+  "onsetSec": 20.3,
+  "speechEndSec": 21.541
+ },
+ {
+  "id": "EN-12",
+  "beat": "B04",
+  "text": "What's left in the tank is all there is.",
+  "caption": "What's left in the tank is all there is.",
+  "onsetSec": 21.8,
+  "speechEndSec": 23.599
+ },
+ {
+  "id": "EN-13",
+  "beat": "B04",
+  "text": "Fill everything: buckets, pots, bottles.",
+  "caption": "Fill everything: buckets,\npots, bottles.",
+  "onsetSec": 25.4,
+  "speechEndSec": 27.75
+ },
+ {
+  "id": "EN-14",
+  "beat": "B04",
+  "text": "And cover it.",
+  "caption": "And cover it.",
+  "onsetSec": 27.95,
+  "speechEndSec": 28.643
+ },
+ {
+  "id": "EN-15",
+  "beat": "B05",
+  "text": "Bottles to drink.",
+  "caption": "Bottles to drink.",
+  "onsetSec": 28.9,
+  "speechEndSec": 29.887
+ },
+ {
+  "id": "EN-16",
+  "beat": "B05",
+  "text": "Buckets to flush: one hard pour, if it drains.",
+  "caption": "Buckets to flush: one hard pour,\nif it drains.",
+  "onsetSec": 30.2,
+  "speechEndSec": 32.871
+ },
+ {
+  "id": "EN-17",
+  "beat": "B05",
+  "text": "Spare clean water?",
+  "caption": "Spare clean water?",
+  "onsetSec": 33.1,
+  "speechEndSec": 34.07
+ },
+ {
+  "id": "EN-18",
+  "beat": "B05",
+  "text": "The toilet tank, not the bowl, if it's clear and cleaner-free.",
+  "caption": "The toilet tank, not the bowl,\nif it's clear and cleaner-free.",
+  "onsetSec": 34.3,
+  "speechEndSec": 37.445
+ },
+ {
+  "id": "EN-19",
+  "beat": "B06",
+  "text": "Fridge shut: about four hours cold.",
+  "caption": "Fridge shut: about four hours cold.",
+  "onsetSec": 38.3,
+  "speechEndSec": 40.211
+ },
+ {
+  "id": "EN-20",
+  "beat": "B06",
+  "text": "Full freezer: about two days, tops.",
+  "caption": "Full freezer: about two days, tops.",
+  "onsetSec": 40.7,
+  "speechEndSec": 42.781
+ },
+ {
+  "id": "EN-21",
+  "beat": "B06",
+  "text": "Ready-to-eat fridge food first, cans last.",
+  "caption": "Ready-to-eat fridge food first,\ncans last.",
+  "onsetSec": 43.0,
+  "speechEndSec": 45.317
+ },
+ {
+  "id": "EN-22",
+  "beat": "B07",
+  "text": "Camp stove? Never indoors.",
+  "caption": "Camp stove? Never indoors.",
+  "onsetSec": 45.6,
+  "speechEndSec": 48.132
+ },
+ {
+  "id": "EN-23",
+  "beat": "B07",
+  "text": "Carbon monoxide can kill you first.",
+  "caption": "Carbon monoxide can kill\nyou first.",
+  "onsetSec": 48.33,
+  "speechEndSec": 50.233
+ },
+ {
+  "id": "EN-24",
+  "beat": "B07",
+  "text": "Eat no-cook food.",
+  "caption": "Eat no-cook food.",
+  "onsetSec": 50.43,
+  "speechEndSec": 51.499
+ },
+ {
+  "id": "EN-25",
+  "beat": "B08",
+  "text": "The city is dark.",
+  "caption": "The city is dark.",
+  "onsetSec": 51.7,
+  "speechEndSec": 52.7
+ },
+ {
+  "id": "EN-26",
+  "beat": "B08",
+  "text": "Only smoke and fire.",
+  "caption": "Only smoke and fire.",
+  "onsetSec": 52.9,
+  "speechEndSec": 54.117
+ },
+ {
+  "id": "EN-27",
+  "beat": "B08",
+  "text": "No one's coming.",
+  "caption": "No one's coming.",
+  "onsetSec": 54.32,
+  "speechEndSec": 55.244
+ },
+ {
+  "id": "EN-28",
+  "beat": "B09",
+  "text": "Day three.",
+  "caption": "Day three.",
+  "onsetSec": 55.44,
+  "speechEndSec": 56.125
+ },
+ {
+  "id": "EN-29",
+  "beat": "B09",
+  "text": "Two buckets.",
+  "caption": "Two buckets.",
+  "onsetSec": 56.33,
+  "speechEndSec": 57.022
+ },
+ {
+  "id": "EN-30",
+  "beat": "B09",
+  "text": "Four cans.",
+  "caption": "Four cans.",
+  "onsetSec": 57.22,
+  "speechEndSec": 58.04
+ },
+ {
+  "id": "EN-31",
+  "beat": "B09",
+  "text": "Twelve percent battery.",
+  "caption": "Twelve percent battery.",
+  "onsetSec": 58.24,
+  "speechEndSec": 59.491
+ },
+ {
+  "id": "EN-32",
+  "beat": "B09",
+  "text": "Then, a knock.",
+  "caption": "Then, a knock.",
+  "onsetSec": 59.69,
+  "speechEndSec": 60.527
+ },
+ {
+  "id": "EN-33",
+  "beat": "B09",
+  "text": "They don't knock.",
+  "caption": "They don't knock.",
+  "onsetSec": 63.3,
+  "speechEndSec": 64.017
+ },
+ {
+  "id": "EN-34",
+  "beat": "B10",
+  "text": "Open the door, call out, or stay silent?",
+  "caption": "Open the door, call out,\nor stay silent?",
+  "onsetSec": 64.2,
+  "speechEndSec": 66.566
+ },
+ {
+  "id": "EN-35",
+  "beat": "B10",
+  "text": "Comment below.",
+  "caption": "Comment below.",
+  "onsetSec": 66.77,
+  "speechEndSec": 67.681
+ }
+]

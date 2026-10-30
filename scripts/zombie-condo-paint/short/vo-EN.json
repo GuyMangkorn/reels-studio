@@ -1,0 +1,239 @@
+{
+  "deliverable": "ZCPAINT-SHORT-EN",
+  "script": "ZCONDO-SHORT-EN-R3 (tts-en.txt; one caption per line)",
+  "voice": "en-US-GuyNeural",
+  "voiceNote": "Q-EN1 (voice name and rate) was open in script-en.md; Editor picked en-US-GuyNeural (male neural, Edge TTS) for measurement. The user has not approved the voice.",
+  "rate": "+5%",
+  "lines": [
+    {
+      "id": "EN-01",
+      "beat": "B01",
+      "text": "You open your door.",
+      "atSec": 0.0
+    },
+    {
+      "id": "EN-02",
+      "beat": "B01",
+      "text": "Someone's standing down the hall.",
+      "atSec": 1.3
+    },
+    {
+      "id": "EN-03",
+      "beat": "B01",
+      "text": "Then it turns.",
+      "atSec": 3.33
+    },
+    {
+      "id": "EN-04a",
+      "beat": "B02",
+      "text": "Shut it.",
+      "atSec": 4.7,
+      "caption": "Shut it. Lock it."
+    },
+    {
+      "id": "EN-04b",
+      "beat": "B02",
+      "text": "Lock it.",
+      "atSec": 5.4,
+      "caption": null
+    },
+    {
+      "id": "EN-05",
+      "beat": "B02",
+      "text": "It's pounding.",
+      "atSec": 6.2
+    },
+    {
+      "id": "EN-06",
+      "beat": "B02",
+      "text": "Barricade it, but so it clears fast in a fire.",
+      "atSec": 7.2,
+      "caption": "Barricade it, but so it clears\nfast in a fire."
+    },
+    {
+      "id": "EN-07",
+      "beat": "B02",
+      "text": "In this world, they follow sound.",
+      "atSec": 11.9,
+      "caption": "In this world, they\nfollow sound."
+    },
+    {
+      "id": "EN-08",
+      "beat": "B03",
+      "text": "Then the power dies.",
+      "atSec": 14.0
+    },
+    {
+      "id": "EN-09",
+      "beat": "B04",
+      "text": "The tap still runs.",
+      "atSec": 15.5
+    },
+    {
+      "id": "EN-10",
+      "beat": "B04",
+      "text": "But many high-rises pump water to a roof tank.",
+      "atSec": 16.9,
+      "caption": "But many high-rises pump water\nto a roof tank."
+    },
+    {
+      "id": "EN-11",
+      "beat": "B04",
+      "text": "No power, no pump.",
+      "atSec": 20.3
+    },
+    {
+      "id": "EN-12",
+      "beat": "B04",
+      "text": "What's left in the tank is all there is.",
+      "atSec": 21.8
+    },
+    {
+      "id": "EN-13",
+      "beat": "B04",
+      "text": "Fill everything: buckets, pots, bottles.",
+      "atSec": 25.4,
+      "caption": "Fill everything: buckets,\npots, bottles."
+    },
+    {
+      "id": "EN-14",
+      "beat": "B04",
+      "text": "And cover it.",
+      "atSec": 27.95
+    },
+    {
+      "id": "EN-15",
+      "beat": "B05",
+      "text": "Bottles to drink.",
+      "atSec": 28.9
+    },
+    {
+      "id": "EN-16",
+      "beat": "B05",
+      "text": "Buckets to flush: one hard pour, if it drains.",
+      "atSec": 30.2,
+      "caption": "Buckets to flush: one hard pour,\nif it drains."
+    },
+    {
+      "id": "EN-17",
+      "beat": "B05",
+      "text": "Spare clean water?",
+      "atSec": 33.1
+    },
+    {
+      "id": "EN-18",
+      "beat": "B05",
+      "text": "The toilet tank, not the bowl, if it's clear and cleaner-free.",
+      "atSec": 34.3,
+      "caption": "The toilet tank, not the bowl,\nif it's clear and cleaner-free."
+    },
+    {
+      "id": "EN-19",
+      "beat": "B06",
+      "text": "Fridge shut: about four hours cold.",
+      "atSec": 38.3
+    },
+    {
+      "id": "EN-20",
+      "beat": "B06",
+      "text": "Full freezer: about two days, tops.",
+      "atSec": 40.7
+    },
+    {
+      "id": "EN-21",
+      "beat": "B06",
+      "text": "Ready-to-eat fridge food first, cans last.",
+      "atSec": 43.0,
+      "caption": "Ready-to-eat fridge food first,\ncans last."
+    },
+    {
+      "id": "EN-22",
+      "beat": "B07",
+      "text": "Camp stove? Never indoors.",
+      "atSec": 45.6
+    },
+    {
+      "id": "EN-23",
+      "beat": "B07",
+      "text": "Carbon monoxide can kill you first.",
+      "atSec": 48.33,
+      "caption": "Carbon monoxide can kill\nyou first."
+    },
+    {
+      "id": "EN-24",
+      "beat": "B07",
+      "text": "Eat no-cook food.",
+      "atSec": 50.43
+    },
+    {
+      "id": "EN-25",
+      "beat": "B08",
+      "text": "The city is dark.",
+      "atSec": 51.7
+    },
+    {
+      "id": "EN-26",
+      "beat": "B08",
+      "text": "Only smoke and fire.",
+      "atSec": 52.9
+    },
+    {
+      "id": "EN-27",
+      "beat": "B08",
+      "text": "No one's coming.",
+      "atSec": 54.32
+    },
+    {
+      "id": "EN-28",
+      "beat": "B09",
+      "text": "Day three.",
+      "atSec": 55.44
+    },
+    {
+      "id": "EN-29",
+      "beat": "B09",
+      "text": "Two buckets.",
+      "atSec": 56.33
+    },
+    {
+      "id": "EN-30",
+      "beat": "B09",
+      "text": "Four cans.",
+      "atSec": 57.22
+    },
+    {
+      "id": "EN-31",
+      "beat": "B09",
+      "text": "Twelve percent battery.",
+      "atSec": 58.24
+    },
+    {
+      "id": "EN-32",
+      "beat": "B09",
+      "text": "Then, a knock.",
+      "atSec": 59.69
+    },
+    {
+      "id": "EN-33",
+      "beat": "B09",
+      "text": "They don't knock.",
+      "atSec": 63.3
+    },
+    {
+      "id": "EN-34",
+      "beat": "B10",
+      "text": "Open the door, call out, or stay silent?",
+      "atSec": 64.2,
+      "caption": "Open the door, call out,\nor stay silent?"
+    },
+    {
+      "id": "EN-35",
+      "beat": "B10",
+      "text": "Comment below.",
+      "atSec": 66.77
+    }
+  ],
+  "splitNote": "EN-04 \"Shut it. Lock it.\" (one caption, one tts-en line) is two utterances with the same words so the two anchors (4.7 / 5.4) can be locked.",
+  "relock": "2026-10-30 Editor pass 1: measured en-US-GuyNeural +5% clip lengths. B01-B06 minimal nudges; B07-B09 overflow (EN lines longer than R3 estimate) is absorbed by held plates (SH01 face, night, counters); knocks after \"Then, a knock.\" at 60.9 so the 1.5 s silence follows them (EN-33 at 63.3). Total ~71.7 s incl. hold.",
+  "captionNote": "\"caption\" overrides the on-screen text (script ซับ chunk, merged utterance, or an authored \"\\n\" at a word boundary for the caption-breaks check); null = no new caption cue. Absent = the VO text."
+}
