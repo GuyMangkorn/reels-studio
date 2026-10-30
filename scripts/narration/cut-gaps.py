@@ -1,25 +1,20 @@
-"""BLOOP-EP01-SHORT take 2: cut the continuous Gemini read at the real energy gaps between beats (Editor, 2026-10-30).
+"""Re-cut a continuous TTS read at the real energy gaps between beats (follows align-full.py).
 
-Fixes the first align-full.py cut (Whisper midpoints clipped B01's last word and B02's first word).
-Rule (coordinator, 2026-10-30): find the audible runs of the full take (10 ms blocks, peak >= 300 of 32767). Each beat
-boundary takes the gap between audible runs nearest the Whisper midpoint (within 0.6 s). A gap of at least 0.1 s is cut
-at its centre; a shorter one is cut at the quietest 10 ms within +-0.3 s of the Whisper midpoint. Every segment is then
-checked: audible speech must keep at least 0.02 s clear of both segment edges.
-Re-measures each anchor against the new segment start and writes the measure JSON used by plan-timing.py.
+Whisper midpoints can clip a beat's first or last word. Rule: find the audible runs of the full read (10 ms blocks,
+peak >= 300 of 32767). Each beat boundary takes the gap between audible runs nearest the Whisper midpoint (within
+0.6 s). A gap of at least 0.1 s is cut at its centre; a shorter one at the quietest 10 ms within +-0.3 s of the
+midpoint. Every segment is then checked: audible speech must keep at least 0.02 s clear of both segment edges.
+Re-measures each anchor against its new segment start and rewrites the measure JSON in place (the previous one is
+kept as `--prev`).
 
-Run (worktree root): python3 -I scripts/the-bloop/short/cut-take2.py
-Reads: out/BLOOP-EP01-SHORT/gemini-vo/take2/FULL-take2.wav, scripts/the-bloop/short/gemini-measure-take2.json (previous cut,
-kept as gemini-measure-take2-v1cut.json). Writes: take2/segments/B0N.wav and the new gemini-measure-take2.json.
+Run (repo root): python3 -I scripts/narration/cut-gaps.py --full out/EP/vo/FULL.wav \
+    --measure scripts/EP/short/measure-take1.json --segments out/EP/vo/segments
+First used for BLOOP-EP01-SHORT (2026-10-30).
 """
 import array, json, shutil, subprocess
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parents[3]
-TAKE = ROOT / 'out/BLOOP-EP01-SHORT/gemini-vo/take2'
-FULL = TAKE / 'FULL-take2.wav'
-SEG = TAKE / 'segments'
-MEASURE = ROOT / 'scripts/the-bloop/short/gemini-measure-take2.json'
-PREV = ROOT / 'scripts/the-bloop/short/gemini-measure-take2-v1cut.json'
+FULL = SEG = MEASURE = PREV = None
 RATE, THRESHOLD, BLOCK = 48000, 300, 480  # 10 ms
 
 
@@ -57,19 +52,16 @@ def audible_runs(blk):
 
 
 def main():
-    global TAKE, FULL, SEG, MEASURE, PREV
+    global FULL, SEG, MEASURE, PREV
     import argparse
-    ap = argparse.ArgumentParser()
-    ap.add_argument('--take-dir', default=str(TAKE.relative_to(ROOT)))
-    ap.add_argument('--full', default='FULL-take2.wav')
-    ap.add_argument('--measure', default='gemini-measure-take2.json', help='file in scripts/the-bloop/short/')
-    ap.add_argument('--prev', default='gemini-measure-take2-v1cut.json', help='copy of the uncut measure, kept for the record')
+    ap = argparse.ArgumentParser(description=__doc__.split('\n')[0])
+    ap.add_argument('--full', required=True, help='the continuous TTS read (WAV)')
+    ap.add_argument('--measure', required=True, help='measure JSON from align-full.py; rewritten in place')
+    ap.add_argument('--segments', required=True, help='output folder for <BEAT>.wav')
+    ap.add_argument('--prev', help='where to keep the uncut measure (default: <measure>-v1cut.json)')
     args = ap.parse_args()
-    TAKE = ROOT / args.take_dir
-    FULL = TAKE / args.full
-    SEG = TAKE / 'segments'
-    MEASURE = ROOT / 'scripts/the-bloop/short' / args.measure
-    PREV = ROOT / 'scripts/the-bloop/short' / args.prev
+    FULL, SEG, MEASURE = Path(args.full), Path(args.segments), Path(args.measure)
+    PREV = Path(args.prev) if args.prev else MEASURE.with_name(MEASURE.stem + '-v1cut.json')
     prev = json.loads(MEASURE.read_text(encoding='utf-8'))
     if not PREV.exists():
         shutil.copy(MEASURE, PREV)

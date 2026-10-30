@@ -1,20 +1,22 @@
-"""BLOOP-EP01-SHORT take 3: pick the B07–B10 variation that best matches the take 2 narrator (Editor, 2026-10-30).
+"""Pick the TTS variation whose narrator best matches a reference span (e.g. regenerating a drifting tail).
 
-Metrics, measured the same way for the reference (take 2, B01–B06 span) and each candidate (B07–B10 chunk):
-- F0 median and F0 spread (10th–90th percentile) of voiced 40 ms frames, autocorrelation 70–320 Hz;
+Metrics, measured the same way for the reference span and each candidate:
+- F0 median and F0 spread (10th-90th percentile) of voiced 40 ms frames, autocorrelation 70-320 Hz;
 - spectral centroid (Hann 40 ms rfft), mean over active frames;
 - speech rate in TTS characters per active second (active = 10 ms blocks with peak >= 300 of 32767).
-Rule (coordinator): reject any candidate whose rate is more than 10 % faster than the reference. Among the rest, the pick
-has the smallest sum of relative differences in F0 median, F0 spread and centroid. If none passes, the script says so
-and the caller falls back to two chunks (B07–B08, B09–B10).
+Rule: reject any candidate more than 10 % faster than the reference; among the rest, pick the smallest sum of
+relative differences in F0 median, F0 spread and centroid. If none passes, say so (fall back to smaller chunks).
 
-Run with the Whisper venv (numpy): "<main>/.venv-whisper/bin/python" -I scripts/the-bloop/short/voice-match.py
+Config JSON: {"refWav": path, "refEnd": seconds, "refText": text, "chunkText": text,
+              "candidates": [{"name": ..., "wav": path}, ...]}
+Run with the Whisper venv (numpy): "<main>/.venv-whisper/bin/python" -I scripts/narration/voice-match.py \
+    --config out/EP/vo/match-config.json --out out/EP/vo/voice-match.json
+First used for BLOOP-EP01-SHORT (2026-10-30). Always let the user pick by ear; the score only orders the candidates.
 """
 import array, json, re, subprocess, sys, unicodedata
 from pathlib import Path
 import numpy as np
 
-ROOT = Path(__file__).resolve().parents[3]
 RATE = 48000
 THRESHOLD = 300
 
@@ -90,10 +92,13 @@ def metrics(x, text):
 
 
 def main():
-    take = ROOT / 'out/BLOOP-EP01-SHORT/gemini-vo/take3'
-    take2 = ROOT / 'out/BLOOP-EP01-SHORT/gemini-vo/take2'
-    cfg = json.loads((take / 'match-config.json').read_text(encoding='utf-8'))
-    ref_x = decode(take2 / 'FULL-take2.wav', 0.0, cfg['refEnd'])
+    import argparse
+    ap = argparse.ArgumentParser(description=__doc__.split('\n')[0])
+    ap.add_argument('--config', required=True)
+    ap.add_argument('--out', required=True)
+    args = ap.parse_args()
+    cfg = json.loads(Path(args.config).read_text(encoding='utf-8'))
+    ref_x = decode(Path(cfg['refWav']), 0.0, cfg['refEnd'])
     ref = metrics(ref_x, cfg['refText'])
     cands = []
     for c in cfg['candidates']:
@@ -111,10 +116,10 @@ def main():
         cands.append(m)
     passing = [m for m in cands if m['passRate'] and m['score'] is not None]
     pick = min(passing, key=lambda m: m['score'])['name'] if passing else None
-    out = {'reference': {'name': 'take2 B01-B06', 'span_s': [0.0, cfg['refEnd']], **ref}, 'candidates': cands,
+    out = {'reference': {'wav': cfg['refWav'], 'span_s': [0.0, cfg['refEnd']], **ref}, 'candidates': cands,
            'rule': 'reject rate > 1.10 x reference; pick min sum of relative differences (F0 median, F0 spread, centroid)',
            'pick': pick, 'fallbackNeeded': pick is None}
-    (take / 'voice-match.json').write_text(json.dumps(out, ensure_ascii=False, indent=1) + '\n', encoding='utf-8')
+    Path(args.out).write_text(json.dumps(out, ensure_ascii=False, indent=1) + '\n', encoding='utf-8')
     print(json.dumps({'reference': ref}, ensure_ascii=False))
     for m in cands:
         print(json.dumps({k: m[k] for k in ['name', 'f0_median_hz', 'f0_spread_hz', 'centroid_hz', 'chars_per_active_s', 'rateRatioVsRef', 'passRate', 'score']}, ensure_ascii=False))

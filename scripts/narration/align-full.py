@@ -1,26 +1,22 @@
-"""BLOOP-EP01-SHORT take 2: align one continuous Gemini read to the R5 VO and cut it into beat segments (Editor, 2026-10-30).
+"""Align one continuous TTS read (e.g. a Gemini take, which has no word timings) to the script and cut it into beats.
 
-The whole VO is one TTS call (one speaker, one style), so the audio has no per-beat clips. This script:
-1. transcribes the full WAV with faster-whisper (large-v3-turbo, th, word timestamps; estimates, not boundary-accurate);
-2. aligns the joined TTS text (per-beat texts in out/.../take2/tts-beats.json) to the Whisper characters with difflib;
-3. maps every index.md anchor phrase to its first and last Whisper word;
-4. cuts the file at the midpoint between each beat's last anchor end and the next beat's first anchor onset, writing
-   out/BLOOP-EP01-SHORT/gemini-vo/take2/segments/B0N.wav, and measures speech inside each segment (narration.py rule).
-Output: scripts/the-bloop/short/gemini-measure-take2.json (schema of tts-measure.json; times relative to each segment).
+1. Transcribes the full WAV with faster-whisper (large-v3-turbo, Thai, word timestamps; estimates, about +-0.1-0.2 s).
+2. Aligns the joined per-beat TTS text (`--tts-beats`, {beat: text}) to the Whisper characters with difflib.
+3. Maps every phrase anchor in the storyboard index (rows "| `B01-a1` | phrase | estOn | estEnd |") to its first and
+   last matched Whisper word inside the phrase.
+4. Cuts the file at the midpoint between beats into `--segments/<BEAT>.wav` and writes a measure JSON (schema of
+   tts-measure.json, times relative to each segment) for `plan-timing.py --measure`. Refine the cuts with cut-gaps.py.
 
-Run with the Whisper venv of the main checkout (from the worktree root):
-  "/Users/mangkornkatawong/Documents/ChatGPT/Reels Creator/.venv-whisper/bin/python" -I scripts/the-bloop/short/align-full.py
+Run with the Whisper venv of the main checkout (from the repo root), for example:
+  "<main>/.venv-whisper/bin/python" -I scripts/narration/align-full.py --full out/EP/vo/FULL.wav \
+      --tts-beats out/EP/vo/tts-beats.json --timeline scripts/EP/short/narration-timeline.json \
+      --index storyboards/EP/short/index.md --segments out/EP/vo/segments --out scripts/EP/short/measure-take1.json
+First used for BLOOP-EP01-SHORT (2026-10-30).
 """
 import array, difflib, json, re, subprocess, unicodedata
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parents[3]
-TAKE = ROOT / 'out/BLOOP-EP01-SHORT/gemini-vo/take2'
-FULL = TAKE / 'FULL-take2.wav'
-SEG = TAKE / 'segments'
-INDEX = ROOT / 'storyboards/the-bloop/short/index.md'
-TIMELINE = ROOT / 'scripts/the-bloop/short/narration-timeline.json'
-RESULT = ROOT / 'scripts/the-bloop/short/gemini-measure-take2.json'
+INDEX = FULL = SEG = TIMELINE = RESULT = TTS_BEATS = None
 RATE, THRESHOLD = 48000, 300
 
 
@@ -31,7 +27,8 @@ def norm(text):
 def anchors():
     rows = []
     for line in INDEX.read_text(encoding='utf-8').splitlines():
-        m = re.match(r'^\| `(B\d\d-a\d)` \| (.+?) \| (\d+) \| (\d+) \|$', line)
+        # | `B01-a1` | phrase | onset | end | ...extra columns are ignored
+        m = re.match(r'^\| `(B\d\d-a\d)` \| ([^|]+?) \| (\d+) \| (\d+) \|(?: [^|]*\|)*\s*$', line)
         if m:
             rows.append({'id': m.group(1), 'beat': m.group(1)[:3], 'text': re.sub(r'\s*\(.*?\)', '', m.group(2)).strip(),
                          'estOn': int(m.group(3)), 'estEnd': int(m.group(4))})
@@ -52,22 +49,22 @@ def speech_window(samples):
 
 
 def main():
-    global TAKE, FULL, SEG, RESULT
+    global INDEX, FULL, SEG, TIMELINE, RESULT, TTS_BEATS
     import argparse
-    ap = argparse.ArgumentParser()
-    ap.add_argument('--take-dir', default=str(TAKE.relative_to(ROOT)), help='folder with the full WAV and tts-beats.json')
-    ap.add_argument('--full', default='FULL-take2.wav')
-    ap.add_argument('--measure', default='gemini-measure-take2.json', help='file in scripts/the-bloop/short/')
+    ap = argparse.ArgumentParser(description=__doc__.split('\n')[0])
+    ap.add_argument('--full', required=True, help='the continuous TTS read (WAV)')
+    ap.add_argument('--tts-beats', required=True, help='JSON {beat: TTS text} as sent to the TTS')
+    ap.add_argument('--timeline', required=True, help='narration-timeline JSON (beat order and subtitles)')
+    ap.add_argument('--index', required=True, help='storyboard index.md with the phrase-anchor table')
+    ap.add_argument('--segments', required=True, help='output folder for <BEAT>.wav')
+    ap.add_argument('--out', required=True, help='output measure JSON')
     args = ap.parse_args()
-    TAKE = ROOT / args.take_dir
-    FULL = TAKE / args.full
-    SEG = TAKE / 'segments'
-    RESULT = ROOT / 'scripts/the-bloop/short' / args.measure
+    FULL, SEG, TIMELINE, INDEX, RESULT, TTS_BEATS = (Path(x) for x in (args.full, args.segments, args.timeline, args.index, args.out, args.tts_beats))
     from faster_whisper import WhisperModel
     slots = json.loads(TIMELINE.read_text(encoding='utf-8'))
     beats = [s['beat'] for s in slots]
     vo = {s['beat']: s['subtitle'] for s in slots}
-    tts = json.loads((TAKE / 'tts-beats.json').read_text(encoding='utf-8'))
+    tts = json.loads(TTS_BEATS.read_text(encoding='utf-8'))
     anc = anchors()
 
     # joined TTS text with each beat's character offset
@@ -126,7 +123,8 @@ def main():
             found.append({'a': a, 'on': words[owner[s_asr]]['on'], 'end': words[owner[e_asr]]['end'], 'firstWord': words[owner[s_asr]]['text'], 'how': how})
     fallbacks = [f['a']['id'] for f in found if f['how'] != 'inside']
     print('anchors matched inside the phrase:', len(found) - len(fallbacks), 'fallback:', fallbacks, flush=True)
-    (TAKE / 'whisper-words.json').write_text(json.dumps(words, ensure_ascii=False, indent=1) + '\n', encoding='utf-8')
+    SEG.mkdir(parents=True, exist_ok=True)
+    (SEG / 'whisper-words.json').write_text(json.dumps(words, ensure_ascii=False, indent=1) + '\n', encoding='utf-8')
 
     first_on, last_end = {}, {}
     for f in found:
@@ -141,14 +139,14 @@ def main():
                                  capture_output=True, text=True, check=True).stdout.strip())
     bounds = [0.0] + cuts + [total]
     SEG.mkdir(parents=True, exist_ok=True)
-    report = {'method': 'one continuous Gemini read (take 2), faster-whisper large-v3-turbo word timestamps aligned to the R5 VO with difflib; estimates, not WordBoundary',
-              'take': 'take2', 'full': str(FULL.relative_to(ROOT)), 'matchRatio': round(matched / len(joined), 3), 'beats': {}, 'anchors': []}
+    report = {'method': 'one continuous TTS read, faster-whisper large-v3-turbo word timestamps aligned to the script with difflib; estimates, not WordBoundary',
+              'full': str(FULL), 'matchRatio': round(matched / len(joined), 3), 'beats': {}, 'anchors': []}
     for i, b in enumerate(beats):
         start, end = bounds[i], bounds[i + 1]
         seg = SEG / f'{b}.wav'
         subprocess.run(['ffmpeg', '-v', 'error', '-y', '-i', str(FULL), '-ss', f'{start:.4f}', '-to', f'{end:.4f}', '-ac', '1', '-ar', str(RATE), '-c:a', 'pcm_s16le', str(seg)], check=True)
         on, off = speech_window(decode(seg))
-        report['beats'][b] = {'vo': vo[b], 'tts': tts[b], 'segment': str(seg.relative_to(ROOT)), 'segStart': round(start, 4), 'segEnd': round(end, 4),
+        report['beats'][b] = {'vo': vo[b], 'tts': tts[b], 'segment': str(seg), 'segStart': round(start, 4), 'segEnd': round(end, 4),
                               'speechOnRaw': round(on, 4), 'speechOffRaw': round(off, 4)}
         for f in [x for x in found if x['a']['beat'] == b]:
             report['anchors'].append({'id': f['a']['id'], 'beat': b, 'text': f['a']['text'], 'estOn': f['a']['estOn'], 'estEnd': f['a']['estEnd'],

@@ -191,3 +191,5 @@
     3. The R8 crack label (1369–1447, 78 f) is the sheet value; the earlier −30 dB measure was 62 f and −40 dB 76 f. Ear check needed.
     4. Captions: the Subtitles component is 88 % wide (x 65–1015), wider than the caption-safe x 120–888; frames show all lines inside the band with line breaks authored. Not measured on every line.
     5. Hum pan (SD04) is not implemented; the whoosh and gulp processing are offline copies (no runtime filter).
+
+- 2026-10-30 (coordinator): the four narration helpers used above moved to `scripts/narration/` as general tools (`cut-take2.py` → `cut-gaps.py`) and take explicit path arguments instead of Bloop paths. Re-run on the committed take 3 data: `cut-gaps.py` and `align-full.py` reproduce all 43 anchors and segment cuts (0 differences over 0.02 s); `voice-match.py` reproduces the three scores; `assemble-narration.py` reproduces the 65.97 s track. `align-full.py` now tolerates extra columns in the index anchor table (R8 added one). The `--take-dir` / `--measure` commands in the entries above are the old CLI.

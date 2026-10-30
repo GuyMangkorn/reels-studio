@@ -1,4 +1,4 @@
-"""BLOOP-EP01-SHORT: assemble a narration track from per-beat clips and a slot plan (Editor, 2026-10-30).
+"""Assemble a narration track from per-beat clips and a slot plan (first used for BLOOP-EP01-SHORT, 2026-10-30).
 
 Same rules as scripts/narration.py, for clips that are not Edge output: each clip is decoded (48 kHz mono), its audible
 start (first sample >= 300 of 32767) is kept with `trimHeadSec` of room, `leadSec` of silence is added before it, and
@@ -6,8 +6,8 @@ the slot is padded to `durationSec` at 30 fps. The result is one MP3 (192k) plus
 normalized), written beside the outputs. It is a listening/QA track, not a composition asset.
 
 Run (worktree root):
-  python3 -I scripts/the-bloop/short/assemble-narration.py --clips out/BLOOP-EP01-SHORT/gemini-vo/take2/segments \
-      --timeline scripts/the-bloop/short/narration-timeline-gemini-take2.json --out out/BLOOP-EP01-SHORT/gemini-vo/BLOOP-gemini-take2-listen.mp3
+  python3 -I scripts/narration/assemble-narration.py --clips out/EP/vo/segments \
+      --timeline scripts/EP/short/narration-timeline-take1.json --out public/narration/EP.mp3
 """
 import argparse, array, json, math, subprocess, tempfile
 from pathlib import Path
