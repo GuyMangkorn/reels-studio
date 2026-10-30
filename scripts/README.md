@@ -16,7 +16,8 @@ Shared tools any role may run. Check here before writing a one-off command. A pr
 | `shot-projection.py` | Projects scene-sheet anchors through the shot camera to pixels: lead height, screen side, caption-band overlap ([Mark pre-handoff checks](../docs/mark-storyboard-workflow.md#pre-handoff-checks)) | `python3 -I scripts/shot-projection.py shot.json [--min-height 480]` |
 | `check-links.py` | Relative Markdown links and `#anchors`; changed files by default | `python3 -I scripts/check-links.py [--all \| FILE.md …]` |
 | `sound-library.py` | Shared sound library: search sidecars, file a processed sound (copy + `library` block + INDEX row), check INDEX drift | `python3 -I scripts/sound-library.py search zombie` |
-| `usage-report.py` | Token usage of this project's Claude Code sessions and role agents ([CB05](../AGENTS.md#context-budget)) | `python3 -I scripts/usage-report.py [--since YYYY-MM-DD]` |
+| `usage-report.py` | Token usage of this project's Claude Code sessions and role agents ([CB05](../AGENTS.md#context-budget)); `--by-model` adds API dollars per role, model and effort, `--rework` repeat runs per role and branch | `python3 -I scripts/usage-report.py [--since YYYY-MM-DD] [--by-model] [--rework]` |
+| `hooks/agent-run-log.py` | PreToolUse hook (`.claude/settings.json`): logs each role agent's starting model and effort to `out/logs/agent-runs.jsonl` in the main checkout, for `usage-report.py --by-model` | Runs automatically in Claude Code sessions |
 | `git-hooks/post-checkout` | Moves every new `git worktree add` onto freshly fetched `origin/main` (only when the start point has no commits of its own) | Install once per clone: `ln -s ../../scripts/git-hooks/post-checkout .git/hooks/post-checkout` |
 
 Each script's header comment is its full usage.
