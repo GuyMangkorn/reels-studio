@@ -1,7 +1,7 @@
 import {AbsoluteFill} from 'remotion';
 import {BrushCanvas, hash, type PaintContext} from '../BrushCanvas';
 import {CAST, type Cast} from './CastSheet';
-import {BROW_Y, CHIN, FACES, HEAD_SPAN, INK, headOutline, type Face, type HeadStyle} from './FaceSheet';
+import {BROW_Y, CHIN, FACES, HEAD_SPAN, INK, type Face, type HeadStyle} from './FaceSheet';
 import {ellipse, limb, skeleton} from './ProportionSheet';
 
 type Pt = [number, number];
@@ -17,25 +17,46 @@ const M = (N * UNIT) / 1.7; // px per metre
 const ROW1 = 900, ROW2 = 1810;
 const FOG_PANEL = '#c3cbc9', SIL = '#3a4246';
 
-type Paint = {
+export type Paint = {
   /** Fill polygon (opaque decal block); `passes` > 4 for light over dark. */
   part: (color: string, pts: Pt[], outline?: boolean, passes?: number) => void;
-  /** Ink line or open curve. */
-  ink: (pts: Pt[], weight?: number, curve?: number) => void;
+  /** Ink line or open curve (INK unless `color` is given). */
+  ink: (pts: Pt[], weight?: number, curve?: number, color?: string) => void;
   /** Silhouette mode: everything one colour, no features or ink. */
   sil: boolean;
+  /** Composition time (s) and the seed base: drive the profile blink. */
+  t: number;
+  id: number;
+  /** A painter with its own seed counters, so marks drawn through it never shift this painter's later seeds. */
+  fork: (offset: number) => Paint;
 };
 
-const makePaint = ({brush, still, boil}: PaintContext, base: number, sil?: string): Paint => {
+/** Wrap a `Paint` so every point is rotated by `angle` about `about` (a pitched head, a stooped torso); forks stay wrapped. */
+export const rotated = (p: Paint, about: Pt, angle: number): Paint => {
+  const c = Math.cos(angle), s = Math.sin(angle);
+  const R = ([x, y]: Pt): Pt => [about[0] + (x - about[0]) * c - (y - about[1]) * s, about[1] + (x - about[0]) * s + (y - about[1]) * c];
+  return {
+    ...p,
+    part: (color, pts, outline, passes) => p.part(color, pts.map(R), outline, passes),
+    ink: (pts, weight, curve, color) => p.ink(pts.map(R), weight, curve, color),
+    fork: (offset) => rotated(p.fork(offset), about, angle),
+  };
+};
+
+export const makePaint = (ctx: PaintContext, base: number, sil?: string): Paint => {
+  const {brush, still, boil} = ctx;
   let seed = base, line = base + 900;
-  const ink = (pts: Pt[], weight = 1.0, curve = 0.15) => {
+  const ink = (pts: Pt[], weight = 1.0, curve = 0.15, color = INK) => {
     if (sil) return;
     boil(++line);
-    brush.set('rotring', INK, weight);
+    brush.set('rotring', color, weight);
     brush.spline(pts, curve);
   };
   return {
     sil: !!sil,
+    t: ctx.t,
+    id: base,
+    fork: (offset) => makePaint(ctx, base + offset, sil),
     ink,
     part: (color, pts, outline = true, passes = 4) => {
       // A silhouette is one merged mass, as fog makes it: no texture, so no inner edges show.
@@ -54,61 +75,155 @@ const makePaint = ({brush, still, boil}: PaintContext, base: number, sil?: strin
   };
 };
 
-/** Profile head facing +x, centred on (cx, cy), `K` px per head unit; same egg, eye and brows as the front head. */
-const paintHeadSide = (p: Paint, cx: number, cy: number, K: number, face: Face, style: HeadStyle) => {
+// --- Profile decal head (HEAD-SIDE-R2, user side-view reference 29 Oct 2026) ---------------------------------------
+// Head units as the front decal (FaceSheet paintHead): K = half the face width, centre (0, 0), y down, facing +x.
+// Shared lines with the front: crown -1.05, brow BROW_Y (-0.24 flat), eye 0.05, mouth 0.6, chin CHIN 1.22.
+// Profile-only: nose tip 0.33 protruding to x 1.13; face line ~0.95; back of skull -1.07; ear centred x -0.12.
+
+/** Closed Catmull-Rom loop through control points `c`, `n` samples per span (soft decal curves). */
+const smooth = (c: Pt[], n = 5): Pt[] => {
+  const out: Pt[] = [];
+  for (let i = 0; i < c.length; i++) {
+    const [p0, p1, p2, p3] = [c[(i - 1 + c.length) % c.length], c[i], c[(i + 1) % c.length], c[(i + 2) % c.length]];
+    for (let j = 0; j < n; j++) {
+      const t = j / n, t2 = t * t, t3 = t2 * t;
+      const f = (k: 0 | 1) => 0.5 * (2 * p1[k] + (-p0[k] + p2[k]) * t + (2 * p0[k] - 5 * p1[k] + 4 * p2[k] - p3[k]) * t2 + (-p0[k] + 3 * p1[k] - 3 * p2[k] + p3[k]) * t3);
+      out.push([f(0), f(1)]);
+    }
+  }
+  return out;
+};
+
+/** Profile skull + face line: upright face, nose bump below the eye, receding to the mouth, rounded chin, full back. */
+const SIDE_SKULL: Pt[] = [
+  [-0.05, -1.05], [0.45, -0.96], [0.8, -0.68], [0.95, -0.3], [0.97, 0.02], [0.96, 0.17], // crown, forehead, eye
+  [1.05, 0.24], [1.13, 0.33], [1.1, 0.41], [1.0, 0.45], [0.93, 0.47], // nose
+  [0.9, 0.55], [0.89, 0.66], [0.88, 0.8], [0.84, 0.98], [0.68, 1.15], [0.45, 1.22], // mouth, jaw, chin
+  [0.2, 1.17], [-0.02, 1.05], [-0.3, 0.98], [-0.62, 0.86], [-0.92, 0.55], [-1.07, 0.1], [-1.04, -0.38], [-0.82, -0.8], [-0.47, -1.0],
+];
+/** Hair caps per cut (closed loops, clockwise from the fringe tip over the crown, back up the inner edge). */
+const SIDE_HAIR: Record<'short' | 'tied' | 'bob', Pt[]> = {
+  // Men's short cut: two crown tufts; cap down the whole back to the nape; edge in front of the ear (sideburn).
+  short: [
+    [0.93, -0.46], [1.0, -0.63], [0.88, -0.87], [0.6, -1.08], [0.26, -1.17], [0.15, -1.31], [0.04, -1.18],
+    [-0.1, -1.3], [-0.2, -1.17], [-0.55, -1.1], [-0.92, -0.85], [-1.13, -0.38], [-1.14, 0.12], [-1.02, 0.56],
+    [-0.78, 0.85], [-0.5, 0.98], [-0.38, 0.86], [-0.3, 0.6], [-0.14, 0.45], [0.03, 0.33], [0.08, 0.08], [0.15, -0.18],
+    [0.32, -0.38], [0.56, -0.48], [0.8, -0.49],
+  ],
+  // Swept back to a bun; edge behind the ear.
+  tied: [
+    [0.9, -0.5], [0.99, -0.66], [0.86, -0.9], [0.5, -1.1], [0.0, -1.16], [-0.5, -1.1], [-0.9, -0.82], [-1.12, -0.35],
+    [-1.12, 0.15], [-1.0, 0.55], [-0.78, 0.83], [-0.5, 0.96], [-0.4, 0.84], [-0.34, 0.55], [-0.3, 0.2], [-0.2, -0.12],
+    [0.02, -0.32], [0.3, -0.46], [0.6, -0.56],
+  ],
+  // Jaw-length bob over the ear, straight bangs.
+  bob: [
+    [0.9, -0.42], [0.99, -0.62], [0.87, -0.9], [0.5, -1.13], [0.0, -1.19], [-0.55, -1.13], [-0.95, -0.86],
+    [-1.16, -0.35], [-1.19, 0.2], [-1.15, 0.62], [-1.03, 0.83], [-0.4, 0.85], [0.12, 0.83], [0.2, 0.5], [0.24, 0.0],
+    [0.3, -0.3], [0.5, -0.42],
+  ],
+};
+const SIDE_HOOD: Pt[] = [
+  [0.78, -0.95], [0.4, -1.28], [-0.2, -1.38], [-0.75, -1.22], [-1.15, -0.8], [-1.3, -0.15], [-1.25, 0.55], [-1.0, 1.05],
+  [-0.5, 1.3], [0.1, 1.32], [0.42, 1.08], [0.5, 0.6], [0.5, 0.0], [0.58, -0.6],
+];
+/** Ear (centre x -0.12, between eye line and nose): skin oval, the C rim round the back (open toward the face), inner line. */
+const arcPts = (cx: number, cy: number, rx: number, ry: number, a0: number, a1: number, n = 14): Pt[] =>
+  Array.from({length: n + 1}, (_, i): Pt => {
+    const a = a0 + ((a1 - a0) * i) / n;
+    return [cx + rx * Math.cos(a), cy + ry * Math.sin(a)];
+  });
+const SIDE_EAR = arcPts(-0.12, 0.18, 0.15, 0.24, 0, 2 * Math.PI, 20);
+const EAR_RIM = arcPts(-0.12, 0.18, 0.15, 0.24, 1.15, 2 * Math.PI - 1.15);
+const EAR_IN = arcPts(-0.1, 0.2, 0.07, 0.13, 1.5, 2 * Math.PI - 1.3, 10);
+
+/** Profile eye: centre x and line (the front eye line). */
+const SE: Pt = [0.72, 0.05];
+const MOUTH_Y = 0.6;
+
+/**
+ * Profile decal head facing +x, centred on (cx, cy), `K` px per head unit: the front decal's egg, eye line, brow,
+ * mouth and chin in profile (HEAD-SIDE-R2). Face controls: `eyes` dot/wide/half/shut, `look` [forward, down]
+ * (forward = toward the nose; for a mirrored figure it stays toward the nose), `brow`, `mouth`, and an automatic blink
+ * from `p.id` and `p.t` only when `blink` is set (default off; a shot switches it on: user, 29 Oct 2026). Features are
+ * drawn through a forked painter, eyes last, so a blink moves no other seed.
+ */
+export const paintHeadSide = (p: Paint, cx: number, cy: number, K: number, face: Face, style: HeadStyle, {blink = false, blinkAt: at}: {blink?: boolean; blinkAt?: number} = {}) => {
   const P = (pts: Pt[]): Pt[] => pts.map(([u, v]) => [cx + u * K, cy + v * K]);
   const {cut} = style;
-  if (cut === 'tied') p.part(style.hair, P(ellipse(-0.74, -0.9, 0.3, 0.22, 16)), true, 6); // bun at the back
-  const head = headOutline();
-  p.part(style.skin, P(head), true, cut === 'tied' ? 8 : 4);
-  p.part(style.skin, P([[0.9, 0.1], [1.13, 0.34], [0.95, 0.43]]), true); // nose
-  // Hair (or hood) over the skull: front hairline, over the top, down the back to the nape, back up past the ear.
-  const arc = (r: number, a0: number, a1: number, n = 20): Pt[] =>
-    Array.from({length: n + 1}, (_, i): Pt => {
-      const a = a0 + ((a1 - a0) * i) / n;
-      return [r * Math.cos(a), r * 1.05 * Math.sin(a) - 0.02];
-    });
+  if (cut === 'tied') p.part(style.hair, P(smooth(ellipse(-0.6, -1.02, 0.3, 0.24, 8), 3)), true, 6); // bun at the back
+  const skull = smooth(SIDE_SKULL);
+  p.part(style.skin, P(skull), false, cut === 'tied' ? 8 : 4);
+  // Outline only the face side (forehead to nape, 5 samples per control point); hair or hood owns the back's edge,
+  // so no skull line shows through the cap.
+  p.ink(P(skull.slice(2 * 5, (cut === 'hood' ? 17 : 19) * 5 + 1)));
   if (cut === 'hood') {
-    const hood: Pt[] = [...Array.from({length: 25}, (_, i): Pt => {
-      const a = 1.25 + ((5.08 - 1.25) * i) / 24;
-      return [-0.12 + 1.14 * Math.cos(a), 1.3 * Math.sin(a)];
-    }), [0.5, -1.0], [0.66, -0.55], [0.62, 0.25], [0.45, 0.95]];
-    p.part(style.hood ?? style.hair, P(hood), true, 6);
-    p.part(style.hair, P([[0.58, -0.78], [0.88, -0.5], [0.72, -0.42], [0.6, -0.42]]), true, 6); // fringe under the hood
-  } else if (cut === 'bob') {
-    p.part(style.hair, P([[0.8, -0.42], ...arc(1.12, -1.0, -Math.PI), [-1.14, 0.6], [-1.0, 0.8], [0.1, 0.8], [0.22, 0.3], [0.3, -0.3]]), true, 6);
+    p.part(style.hood ?? style.hair, P(smooth(SIDE_HOOD)), true, 6);
+    p.part(style.hair, P(smooth([[0.6, -0.84], [0.92, -0.62], [0.84, -0.46], [0.64, -0.5]], 3)), true, 6); // fringe under the hood
   } else {
-    const fringe = Array.from({length: 9}, (_, i): Pt => [0.2 + (0.62 * i) / 8, -0.4 - 0.08 * i / 8 + 0.05 * Math.abs(Math.sin((i / 8) * 2 * Math.PI))]);
-    p.part(style.hair, P([...arc(1.08, -1.0, -Math.PI - 0.55), [-0.62, 0.5], [-0.36, 0.06], [-0.12, -0.14], [0.18, -0.34], ...fringe]), true, 6);
-    // Ear over the hair's lower edge, mid-head.
-    p.part(style.skin, P(ellipse(-0.12, 0.12, 0.15, 0.22, 16)), true, 8);
-    p.ink(P([[-0.08, 0.0], [-0.17, 0.1], [-0.08, 0.22]]), 0.9, 0.6);
+    p.part(style.hair, P(smooth(SIDE_HAIR[cut])), true, 6);
+    if (cut !== 'bob') {
+      // Ear over the hair edge (sideburn in front of it for the short cut).
+      p.part(style.skin, P(SIDE_EAR), false, 8);
+      p.ink(P(EAR_RIM), 1.0, 0.5);
+      p.ink(P(EAR_IN), 0.9, 0.5);
+    }
   }
   if (p.sil) return;
-  // Face features near the front edge: one eye, one brow, mouth.
+
+  const q = p.fork(700);
+  const [ex, ey] = SE;
+  // Brow: one short thick bar; front end at BROW_Y inner, back end at outer, slanted slightly down to the back.
+  let [inner, outer] = BROW_Y[face.brow];
+  if (face.brow === 'quirk') [inner, outer] = [-0.34, -0.36];
+  outer += 0.03;
+  q.part(style.hair, P([[0.56, outer - 0.04], [0.87, inner - 0.04], [0.88, inner + 0.035], [0.56, outer + 0.035]]), false, 6);
+  // Mouth just behind the face line.
+  const my = MOUTH_Y, MOUTH = '#3b2a24';
+  if (face.mouth === 'flat') q.ink(P([[0.7, my], [0.86, my]]), 1.3, 0);
+  else if (face.mouth === 'tilt') q.ink(P([[0.7, my + 0.03], [0.86, my - 0.03]]), 1.3, 0);
+  else if (face.mouth === 'frown') q.ink(P([[0.68, my + 0.05], [0.77, my - 0.01], [0.86, my + 0.01]]), 1.4, 0.6);
+  else if (face.mouth === 'wavy') q.ink(P([[0.68, my], [0.72, my - 0.03], [0.76, my + 0.01], [0.8, my - 0.03], [0.84, my + 0.01], [0.87, my - 0.01]]), 1.2, 0.5);
+  else if (face.mouth === 'smile') q.part(MOUTH, P(smooth([[0.66, my - 0.05], [0.87, my - 0.06], [0.85, my + 0.04], [0.76, my + 0.1], [0.69, my + 0.03]], 3)), true, 4);
+  else q.part(MOUTH, P(face.mouth === 'o' ? ellipse(0.8, my + 0.02, 0.06, 0.1, 14) : ellipse(0.79, my + 0.02, 0.08, 0.06, 14)), true, 4);
+  // Age lines in warm brown, as the front: crow's feet, under-eye, nasolabial fold, mouth corner.
+  if (style.lines) {
+    const age = (pts: Pt[], curve = 0.5) => q.ink(P(pts), 0.8, curve, '#8a5a43');
+    for (const dy of [-0.06, 0.02, 0.1]) age([[0.58, ey + dy * 0.6], [0.48, ey + dy]], 0);
+    age([[0.62, 0.2], [0.72, 0.23], [0.82, 0.2]]);
+    age([[0.9, 0.44], [0.8, 0.52], [0.76, 0.66]]);
+    age([[0.67, 0.66], [0.66, 0.74]], 0);
+  }
+  // Eye last: white oval + pupil near the front edge. Blink as the front head: once in 0.4-2.6 s, 4 frames shut.
+  const blinkAt = at ?? 0.4 + hash(p.id + 7) * 2.2;
+  const eyes = blink && p.t > blinkAt && p.t < blinkAt + 0.13 ? 'shut' : face.eyes;
+  if (eyes === 'shut') {
+    q.ink(P([[ex - 0.11, ey], [ex, ey + 0.05], [ex + 0.1, ey]]), 1.5, 0.5);
+    return;
+  }
+  const ry = eyes === 'wide' ? 0.15 : 0.12, rx = eyes === 'wide' ? 0.11 : 0.1;
+  const white = eyes === 'half'
+    ? Array.from({length: 13}, (_, i): Pt => [ex + rx * Math.cos((i / 12) * Math.PI), ey + ry * Math.sin((i / 12) * Math.PI)])
+    : ellipse(ex, ey, rx, ry, 16);
   const [lx, ly] = face.look;
-  const white = P(ellipse(0.62, 0.05, 0.13, face.eyes === 'wide' ? 0.15 : 0.12, 16));
-  p.part('#fbf7ee', white, true, 3);
-  p.part(INK, P(ellipse(0.67 + 0.03 * lx, 0.05 + 0.05 * ly, 0.055, 0.065, 12)), false, 6);
-  const [inner, outer] = BROW_Y[face.brow];
-  p.part(style.hair, P([[0.46, outer - 0.03], [0.8, inner - 0.03], [0.8, inner + 0.03], [0.46, outer + 0.03]]), false, 6);
-  if (face.mouth === 'smile') {
-    const m = P([[0.66, 0.56], [0.95, 0.54], [0.9, 0.66], [0.78, 0.7], [0.7, 0.64]]);
-    p.part('#3b2a24', m, true, 4);
-  } else if (face.mouth === 'wavy') p.ink(P([[0.7, 0.62], [0.76, 0.59], [0.82, 0.63], [0.88, 0.59], [0.93, 0.62]]), 1.1, 0.5);
-  else p.ink(P([[0.72, 0.62], [0.93, 0.62]]), 1.2, 0);
+  q.part('#fbf7ee', P(white), true, 3);
+  const pr = eyes === 'wide' ? 0.05 : 0.058;
+  q.part(INK, P(ellipse(ex + 0.045 + 0.025 * lx, ey + 0.05 * ly + (eyes === 'half' ? 0.05 : 0), pr, pr * 1.1, 12)), false, 6);
 };
 
 /** Two-bone reach from shoulder S to target T (each bone `len`), elbow bending down and back. */
-const reach = (S: Pt, T: Pt, len: number): Pt => {
+export const reach = (S: Pt, T: Pt, len: number): Pt => {
   const dx = T[0] - S[0], dy = T[1] - S[1];
   const d = Math.min(Math.hypot(dx, dy), 2 * len - 1);
   const a = Math.atan2(dy, dx) + Math.acos(d / (2 * len));
   return [S[0] + len * Math.cos(a), S[1] + len * Math.sin(a)];
 };
 
-/** One cast member in profile, ground point (cx, ground), facing +x. `grip` puts the near hand on a cart handle. */
-const paintBodySide = (p: Paint, c: Cast, cx: number, ground: number, grip?: Pt) => {
+/**
+ * One cast member in profile, ground point (cx, ground), facing +x. `grip` puts the near hand on a cart handle.
+ * `opts.blink` switches the profile blink on (default off). Returns the head anchor (centre, px per head unit).
+ */
+export const paintBodySide = (p: Paint, c: Cast, cx: number, ground: number, grip?: Pt, opts: {blink?: boolean; blinkAt?: number; stoop?: number} = {}) => {
   const h = UNIT, o = c.outfit;
   const k = skeleton(cx, N, ground, h, o.shoulder);
   const {shoulderY: sY, hipY, crotchY} = k;
@@ -125,31 +240,40 @@ const paintBodySide = (p: Paint, c: Cast, cx: number, ground: number, grip?: Pt)
   if (!o.skirt && !o.coat) p.part(o.pants, [[X(-0.21), hipY - 0.06 * h], [X(0.18), hipY - 0.06 * h], [X(0.17), crotchY], [X(-0.24), crotchY - 0.02 * h]], false);
   if (o.skirt) p.part(o.skirt, [[X(-0.24), hipY - 0.08 * h], [X(0.2), hipY - 0.08 * h], [X(0.3), kneeY + 0.45 * h], [X(-0.32), kneeY + 0.45 * h]], true, 8);
 
+  // Stoop (ZCPAINT infected): everything above the hips leans forward `opts.stoop` radians about the hip point.
+  const q = opts.stoop ? rotated(p, [X(0), hipY], opts.stoop) : p;
   // Torso and outer layers, front to the right.
   if (o.coat) {
-    p.part(o.coat, [[X(-0.19), sY], [X(0.14), sY], [X(0.24), sY + 0.22 * h], [X(0.3), kneeY + 0.12 * h], [X(-0.32), kneeY + 0.12 * h], [X(-0.24), sY + 0.15 * h]]);
+    q.part(o.coat, [[X(-0.19), sY], [X(0.14), sY], [X(0.24), sY + 0.22 * h], [X(0.3), kneeY + 0.12 * h], [X(-0.32), kneeY + 0.12 * h], [X(-0.24), sY + 0.15 * h]]);
   } else {
-    p.part(o.shirt, [[X(-0.18), sY], [X(0.14), sY], [X(0.22), sY + 0.2 * h], [X(0.18), hipY], [X(-0.2), hipY], [X(-0.21), sY + 0.15 * h]]);
-    if (o.jacket) p.part(o.jacket, [[X(-0.19), sY], [X(0.12), sY], [X(0.16), sY + 0.2 * h], [X(0.12), hipY + 0.06 * h], [X(-0.23), hipY + 0.06 * h], [X(-0.23), sY + 0.15 * h]]);
+    q.part(o.shirt, [[X(-0.18), sY], [X(0.14), sY], [X(0.22), sY + 0.2 * h], [X(0.18), hipY], [X(-0.2), hipY], [X(-0.21), sY + 0.15 * h]]);
+    if (o.jacket) q.part(o.jacket, [[X(-0.19), sY], [X(0.12), sY], [X(0.16), sY + 0.2 * h], [X(0.12), hipY + 0.06 * h], [X(-0.23), hipY + 0.06 * h], [X(-0.23), sY + 0.15 * h]]);
     if (o.apron) {
-      p.part(o.apron, [[X(0.18), sY + 0.22 * h], [X(0.24), sY + 0.2 * h], [X(0.26), hipY + 0.32 * h], [X(0.18), hipY + 0.32 * h]], true, 8);
-      p.ink([[X(0.2), sY + 0.22 * h], [X(-0.05), sY - 0.02 * h]], 1.0, 0); // neck strap
-      p.part(o.apron, ellipse(X(-0.24), hipY - 0.1 * h, 0.06 * h, 0.04 * h, 12), true, 8); // tie at the back
+      q.part(o.apron, [[X(0.18), sY + 0.22 * h], [X(0.24), sY + 0.2 * h], [X(0.26), hipY + 0.32 * h], [X(0.18), hipY + 0.32 * h]], true, 8);
+      q.ink([[X(0.2), sY + 0.22 * h], [X(-0.05), sY - 0.02 * h]], 1.0, 0); // neck strap
+      q.part(o.apron, ellipse(X(-0.24), hipY - 0.1 * h, 0.06 * h, 0.04 * h, 12), true, 8); // tie at the back
     }
   }
-  const nw = o.coat ? 0.16 * h : 0.08 * h;
-  p.part(o.coat ?? c.head.skin, [[X(-nw / h), k.chin - 0.12 * h], [X(nw / h), k.chin - 0.12 * h], [X(nw / h + 0.01), sY + 0.03 * h], [X(-nw / h - 0.01), sY + 0.03 * h]], false);
+  // Neck under the back half of the profile head (HEAD-SIDE-R2): neck centre X(-0.04), head centre X(0.03).
+  const nw = o.coat ? 0.16 : 0.08, nx = -0.04;
+  q.part(o.coat ?? c.head.skin, [[X(nx - nw), k.chin - 0.12 * h], [X(nx + nw), k.chin - 0.12 * h], [X(nx + nw + 0.01), sY + 0.03 * h], [X(nx - nw - 0.01), sY + 0.03 * h]], false);
   const K = h / HEAD_SPAN;
-  paintHeadSide(p, X(-0.08), k.chin - CHIN * K, K, FACES[c.face], c.head);
+  const head = {x: X(0.03), y: k.chin - CHIN * K, K};
+  paintHeadSide(q, head.x, head.y, K, FACES[c.face], c.head, opts);
 
   // Near arm: hanging, or reaching to the cart grip.
   const shoulder: Pt = [X(-0.01), sY + 0.07 * h];
   const armLen = k.arms[0].wrist[1] - k.arms[0].shoulder[1];
   const wrist: Pt = grip ?? [X(0.02), shoulder[1] + armLen];
   const elbow: Pt = grip ? reach(shoulder, grip, armLen / 2) : [X(-0.04), shoulder[1] + armLen / 2];
-  p.part(o.sleeve, limb(shoulder, elbow, 0.19 * h, 0.16 * h));
-  p.part(o.longSleeves ? o.sleeve : c.head.skin, limb(elbow, wrist, 0.15 * h, 0.13 * h));
-  p.part(c.head.skin, ellipse(wrist[0] + (grip ? 0.03 * h : 0), wrist[1] + (grip ? 0 : 0.07 * h), 0.1 * h, 0.12 * h));
+  q.part(o.sleeve, limb(shoulder, elbow, 0.19 * h, 0.16 * h));
+  q.part(o.longSleeves ? o.sleeve : c.head.skin, limb(elbow, wrist, 0.15 * h, 0.13 * h));
+  q.part(c.head.skin, ellipse(wrist[0] + (grip ? 0.03 * h : 0), wrist[1] + (grip ? 0 : 0.07 * h), 0.1 * h, 0.12 * h));
+  if (opts.stoop) {
+    const c = Math.cos(opts.stoop), sn = Math.sin(opts.stoop), dx = head.x - X(0), dy = head.y - hipY;
+    return {head: {...head, x: X(0) + dx * c - dy * sn, y: hipY + dx * sn + dy * c}, tilt: opts.stoop};
+  }
+  return {head, tilt: 0};
 };
 
 // Darken a #rrggbb colour by factor f (far-side limbs).
