@@ -234,3 +234,12 @@ at `e1fe80e` + uncommitted spike files. Spike entry only (`src/painted/spike/ind
   (preview beyond the sheet), `WFOG-SP01-S03-SH03_f0-f60_sheet.png`, `S03-SH03_sp01-lit_f0-f59.mp4`,
   `S03-SH03_sp01-lit_f30_capzone.png`; pair `S02-SH09_f179-vs-S03-SH03_f30_match-pair.png`.
 - Cast (no shot): `CAST-SHEET_occupant-age-lines_before-after.png`.
+
+## 2026-10-29 — Shared profile head changed (`HEAD-SIDE-R2`, Boss, ZCPAINT pass)
+
+- User (29 Oct 2026): front decal head stays; the profile was a draft. `src/painted/spike/SideSheet.tsx`
+  `paintHeadSide` is rebuilt and exported (nose bump, C ear, short men's cut with sideburn and crown tufts, tied/bob/hood
+  kept, profile face controls and blink); `paintBodySide` moves the neck under the back half of the head and returns
+  the head anchor. Front `FaceSheet.paintHead` untouched: FaceSheet/Cast/Proportions re-render pixel-identical.
+  `PAINTED-SPIKE-CastSide` changes. Details, evidence and review sheet `PAINTED-SPIKE-HeadSide`:
+  [ZCPAINT build notes](../zombie-condo-paint/build-notes.md).
