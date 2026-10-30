@@ -15,6 +15,12 @@
 - Risks: duplicate names with different signatures in `kit/hands.ts` vs `painter.ts`/`draw.ts` (`ring`, `capsule`, `solid`, `inkLine`); `public/audio` WAVs are gitignored and absent in worktrees, so stills need stub audio; `kit/painter.ts` and `kit/camera.tsx` import the type `Brush` from `../BrushCanvas` (type-only, BrushCanvas stays outside the kit for now).
 - Deferred to phase 2: 4-head cast (`worldfog/cast.ts`, `head.ts`), phone SVG (`worldfog/phone.tsx`), car, shop, room sets, ZC/BLOOP set code, `BrushCanvas`/`plate`/`shot`/`registry`, reconciling the duplicate helpers.
 
+## Phase 2a record (31 Oct 2026, Boss)
+- `worldfog/cast.ts` and `head.ts` -> `kit/cast.ts`, `kit/head.ts`; the interior-light model (`VD18`, `modelPart`, ...) moved into `kit/draw.ts` because heads and figures need it. `worldfog/cast.ts` keeps `Who`, `CAST` (4 entries) and thin by-role `drawFigure`/`shoulderHeight`; `worldfog/draw.ts` is a re-export.
+- Kit `drawFigure`/`shoulderHeight` take a `CastDef` instead of a role id. The one hard-coded `who === 'worker'` in the hand colour was redundant (`o.coat` already true for the worker) and became `o.coat`.
+- Regression (`regress.mjs` now adds 12 WFOG frames every 300 f, 36 total; `out/kit-base2a` vs `out/kit-after2a`): 29/36 byte-identical, others 85-106 dB; same frames differ by the same size in a baseline-vs-repeat render (30/36 identical): renderer noise.
+- Not moved: phone SVG, car, shop, rooms, torch/umbrella props beyond what the rig already draws.
+
 ## Document proposals (DP)
 ### DP01 — AGENTS.md#document-index: kit and catalog have no home in the index
 - Seen: 30 Oct 2026, Boss; `src/painted/kit/README.md`, `out/kit-catalog/KIT-CATALOG.png`.
@@ -38,4 +44,10 @@
 - Seen: 30 Oct 2026, Boss.
 - Proposed: list `scripts/painted-kit/{regress.mjs,compare.py,catalog.mjs}` (TL01-TL03 above) if a second episode uses them.
 - Affects: all
+- Status: proposed
+
+### DP05 — docs/character-proportion-principles.md and docs/delivery-workflow.md: recurring cast rule
+- Seen: 31 Oct 2026, Boss; user decision relayed 30 Oct 2026 (recurring character keeps head and body in every video, only outfit/accessories/props change).
+- Proposed: add "A recurring character is a kit `CastDef` (src/painted/kit/README.md#recurring-cast). Per video change `outfit` and props only; changing `head`, `height` or body proportions is a look change that needs user approval."
+- Affects: Film, Mark, Boss
 - Status: proposed

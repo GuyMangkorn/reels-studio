@@ -1,4 +1,4 @@
-// Render the kit catalog still. Usage: node scripts/painted-kit/catalog.mjs --out=DIR  -> DIR/KIT-CATALOG.png (1600x2470)
+// Render the kit catalog still. Usage: node scripts/painted-kit/catalog.mjs --out=DIR  -> DIR/KIT-CATALOG.png (1600x2870)
 import {bundle} from '@remotion/bundler';
 import {openBrowser, renderStill, selectComposition} from '@remotion/renderer';
 import {mkdir} from 'node:fs/promises';

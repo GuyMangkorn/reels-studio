@@ -7,17 +7,25 @@ import {BrushCanvas, type Brush} from '../BrushCanvas';
 import {CameraLayer, STILL_CAMERA, pushCamera} from './camera';
 import {INK, band, bbox, blob, capsule, clipHalf, ell, formDir, glaze, hardFill, inkLine, limb, planeBand, projectPoly, quadX, quadY, quadZ, rectPts, solid, washAt} from './draw';
 import {Bubbles, Flash, Shafts, Spot, Vignette} from './glow';
+import {drawFigure, type CastDef, type FigPose} from './cast';
+import {paintHeadFront, paintHeadSide, type FaceState} from './head';
+import {CAST, type Who} from '../worldfog/cast';
 import {paintEdgeGrip, paintPovHand, thumbShape, type HandTone} from './hands';
 import {hash} from './hash';
 import {makePainter, mixColor, ramp, range, ring, rot, tintPainter, type Painter, type Pt} from './painter';
 import {CaptionShade, Grade, Grain} from './screen';
 import {bump, cardProjector, ease, hermite, pchip, smoothstep} from './space';
 
-const W = 1600, H = 2470, COLS = 4, CW = 400, CH = 400, TOP = 120;
+const W = 1600, COLS = 4, CW = 400, CH = 400, TOP = 120, ROWS = 4, H = 2470 + CH;
 const TONE: HandTone = {skin: '#d9a77c', shade: '#c08a60', deep: '#b07c55', nail: '#efd2bd', crease: '#9c6f52', sleeve: '#4f6f8a', sleeveShade: '#3f5a72'};
 const h = createElement;
 
 type Cell = {title: string; note: string; paint?: (p: Painter, brush: Brush) => void; dom?: ReactNode};
+
+const FACE: FaceState = {brow: 'flat', eyes: 'dot', look: [0, 0], mouth: 'smile'};
+const FRONT: FigPose = {view: 'front', face: FACE};
+const narrator = CAST.narrator;
+const withOutfit = (def: CastDef, outfit: Partial<CastDef['outfit']>): CastDef => ({...def, outfit: {...def.outfit, ...outfit}});
 
 const CELLS: Cell[] = [
   {title: 'painter · makePainter', note: 'wash(color,op,pts,bleed,texture) · flat(color,pts) · ink / inkStill(id,name,color,w) · group(base) · layer(alpha,seedBase)', paint: (p) => {
@@ -92,6 +100,22 @@ const CELLS: Cell[] = [
     inkLine(p, 101, spiral, {closed: false, weight: 1.2});
     washAt(p, 102, '#6d8fa8', 180, ring(200, 150, 26, 26), 0.2, 0.4);
   }},
+  {title: 'cast · CastDef / drawFigure', note: 'CastDef {height, head, outfit, seed}; drawFigure(p,def,g,unit,pose,t) flat card at depth. Shown: the four WFOG CAST entries', paint: (p) => {
+    (['narrator', 'worker', 'shopworker', 'occupant'] as Who[]).forEach((w, i) => drawFigure(p, CAST[w], [55 + i * 97, 285], 135, FRONT, 0));
+  }},
+  {title: 'cast · outfit swap, same character', note: 'Same head, height, seed; only `outfit` changes (original · red jacket · apron). Changing head/body = look change, needs user approval', paint: (p) => {
+    const outfits: CastDef[] = [narrator, withOutfit(narrator, {jacket: '#a2402f', sleeve: '#a2402f', pants: '#2c3034'}), withOutfit(narrator, {jacket: undefined, sleeve: '#e9e6dc', longSleeves: false, apron: '#e8dcc2'})];
+    outfits.forEach((d, i) => drawFigure(p, d, [75 + i * 125, 285], 150, FRONT, 0));
+  }},
+  {title: 'cast · FigPose, Arm via / behind', note: 'FigPose {view,crouch,bend,walk,lean,face,rArm,lArm} · Arm {to,out,via,behind}: via = authored elbow, behind = arm behind torso · flat card: no turning round', paint: (p) => {
+    drawFigure(p, narrator, [120, 285], 150, {...FRONT, rArm: {to: [45, 120], via: [60, 175]}, lArm: {to: [175, 150], behind: 'upper'}}, 0);
+    drawFigure(p, CAST.worker, [300, 285], 150, {view: 'left', face: FACE, bend: 0.5, walk: 0.25, rArm: {to: [270, 215]}}, 0);
+  }},
+  {title: 'head · paintHeadFront / paintHeadSide', note: 'paintHeadFront(p,seed,cx,cy,K,face,style,t) · paintHeadSide(…,dir) · HeadStyle {skin,hair,cut,lines} · FaceState {brow,eyes,mouth,look}', paint: (p) => {
+    (['narrator', 'worker', 'shopworker', 'occupant'] as Who[]).forEach((w, i) => paintHeadFront(p, 500 + i * 10, 55 + i * 97, 100, 38, {...FACE, brow: (['flat', 'up', 'worry', 'angry'] as const)[i], mouth: (['smile', 'o', 'frown', 'flat'] as const)[i]}, CAST[w].head, 0));
+    paintHeadSide(p, 600, 110, 215, 38, FACE, CAST.occupant.head, 1, 0);
+    paintHeadSide(p, 610, 290, 215, 38, {...FACE, eyes: 'wide', mouth: 'gasp'}, CAST.worker.head, -1, 0);
+  }},
   {title: 'space · ease / pchip / hermite / bump', note: 'ease · smoothstep(a,b,x) · seg · bump(f,a,b) · pchip(keys,x) · hermite(keys,f) V3 path · add3/sub3/scale3/len3/mix2/mix3', dom: (() => {
     const pts = (f: (u: number) => number, c: string) => <polyline fill="none" stroke={c} strokeWidth={2.4} points={Array.from({length: 41}, (_, i) => `${20 + (i / 40) * 330},${230 - f(i / 40) * 170}`).join(' ')} />;
     return <svg width={400} height={280} viewBox="0 0 400 280"><rect x={20} y={60} width={330} height={170} fill="none" stroke="#999" />
@@ -132,7 +156,7 @@ const Labels = ({x, y, w, title, note}: {x: number; y: number; w: number; title:
 );
 
 const TILE_W = 200, TILE_H = 356, TILE_COLS = 6, TILE_CELL = W / TILE_COLS;
-const TILES_TOP = TOP + 3 * CH + 70;
+const TILES_TOP = TOP + ROWS * CH + 70;
 
 const Catalog = () => (
   <AbsoluteFill>
