@@ -128,8 +128,10 @@ const SceneView = ({scene, index, total, previous, start, narration, ending, end
     {!entering && <Subtitles text={subtitleAt(scene, sceneFrame, fps)} style={captionStyle}/>}
     {!entering && <div style={{position: 'absolute', bottom: portrait ? 53 : 24, left: width * .075, right: width * .075, display: 'flex', alignItems: 'center', gap: 12}}>
       {chrome.progressBar && Array.from({length: total}, (_, i) => <div key={i} style={{height: 4, flex: 1, borderRadius: 8, background: night ? '#ffffff25' : '#49445c20', overflow: 'hidden'}}><div style={{height: '100%', width: `${i < index ? 100 : i === index ? (frame + 1) / duration * 100 : 0}%`, background: night ? '#ffe0a8' : '#77718f'}}/></div>)}
-      {chrome.channelLabel !== false && <span lang="th" style={{fontSize: 19, color: ink, marginLeft: chrome.progressBar ? 12 : 'auto'}}>{chrome.channelLabel}</span>}
+      {!portrait && chrome.channelLabel !== false && <span lang="th" style={{fontSize: 19, color: ink, marginLeft: chrome.progressBar ? 12 : 'auto'}}>{chrome.channelLabel}</span>}
     </div>}
+    {/* Portrait: top-left corner, outside the caption-safe box by choice (user 2026-10-30), clear of the platform's bottom UI. */}
+    {!entering && portrait && chrome.channelLabel !== false && <span lang="th" style={{position: 'absolute', top: 60, left: 60, fontSize: 30, color: ink}}>{chrome.channelLabel}</span>}
   </AbsoluteFill>;
 };
 /** Scenes are intentionally data-driven: edit JSON, never duplicate layout for aspect ratios. */
