@@ -9,4 +9,4 @@
 
 | Deliverable | Stage / Next owner | Script / research / review | Brief / scene handoff | Evidence / open items |
 | --- | --- | --- | --- | --- |
-| NYOS-EP01-SHORT | Research → **Boat** | — | N/A (scope: script only) | — |
+| NYOS-EP01-SHORT | Script → **Preaw** | Research `NYOS-RESEARCH-R1` (`research.md`, 2026-10-30, Boat; lead-only snippets) / script — / review — | N/A (scope: script only) | All sources lead-only (fetch hosts blocked: pubs.usgs.gov, pmc.ncbi.nlm.nih.gov, volcano.si.edu); fact-check must open SRC001–SRC003. No source for a monster/animal theory (F025): misdirection must be the viewer's guess. |
