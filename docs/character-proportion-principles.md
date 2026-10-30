@@ -1,7 +1,7 @@
 <a id="character-proportion-principles"></a>
 # Character proportion principles for Boss / Film / Mark
 
-Updated and sources inspected on 29 October 2026. Rule level: **Reference**. Read when building or changing a character body or head, proportion work or face-expression work. Body code in `assets/blender/char_base/` cites these IDs in `# CP-xx` comments; a brief may override a **Default** with a recorded reason. For physical dimensions of scene objects see [scale-and-perspective-principles](scale-and-perspective-principles.md).
+Updated and sources inspected on 29 October 2026. Rule level: **Reference**. Read when building or changing a character body or head, proportion work, face-expression work or front-view arm poses. Body code in `assets/blender/char_base/` cites these IDs in `# CP-xx` comments; a brief may override a **Default** with a recorded reason. For physical dimensions of scene objects see [scale-and-perspective-principles](scale-and-perspective-principles.md).
 
 Conventions: metres, Z-up, front = -Y, body-left = +X, armature origin on the floor between the feet. Fractions below are of standing height (floor to head top) unless stated.
 
@@ -77,6 +77,29 @@ Level 1 keeps a human-readable body while pushing it toward a cartoon read.
 | CP-F02 | Add slight asymmetry (brow height, mouth corner) so expressions do not look mechanical. |
 | CP-F03 | Brows carry anger and sadness. Give them a strong structure and heavy lids where the style needs expressiveness (the Aardman approach). |
 | CP-F04 | Use a fixed set of 16 mouth shapes per character (replacement mouths), not a muscle system. Aardman characters use roughly 16 replacement mouths. |
+
+<a id="cp-p-arm-depth"></a>
+## CP-P. Front-view arm depth (Default)
+
+Decided by the user on 30 October 2026 (WORLD FOG r5). In a front view, a bent arm's elbow goes back into depth, behind the torso. It does not splay out to the side at right angles to the body. Mark picks the pose type that fits what the character is doing at that moment and writes it in the scene sheet. Any of the four types is valid when it matches the action.
+
+| ID | Pose type | When | How it draws |
+| --- | --- | --- | --- |
+| CP-P01 (AB0) | Reach to the side | The hand goes to a real target out to the side (a door edge, a shelf), or a pose that really spreads the elbows (hands on the thighs in a slump, elbows outside the knees in a crouch) | Arm in front of the torso; the elbow may splay |
+| CP-P02 (AB1) | Elbows back, hands in front | Holding something at the chest or belly (a phone, a torch), hands on a counter | The upper arm is shortened and behind the torso, a shade darker. The elbow sits just inside the torso edge, a little below the hand. The forearm and hand are in front |
+| CP-P03 (AB2) | One arm swung back | Walking, recoiling, pulling | The whole arm is behind the torso, with the hand showing past the hip |
+| CP-P04 (AB3) | Hands behind the back | Waiting, hesitating, hiding something | Both arms are behind the torso, with the elbows just past the torso edge |
+
+- **CP-P05.** An arm carrying something while walking or standing hangs straight at the side (the rig's hang). Do not hold it bent across the body.
+- **CP-P06.** Switching between behind and in front is an instant layer change. Mark names the switch frame in the scene sheet. Choose a frame where the upper arm lies outside the torso silhouette so no sleeve pops in.
+- **CP-P07.** A hand that sits closer than the shoulder width gets an authored elbow. Two-bone IK with a fixed bone length splays the elbow outward when the hand is near the shoulder.
+
+Runtime (30 Oct 2026, commit `f6e4bd2`):
+
+- WORLD FOG rig: `existing-integrated`. `Arm.via` and `Arm.behind: 'upper' | 'all'` in `src/painted/worldfog/cast.ts`.
+- Approved sample: composition `WFOG-ARMBACK-SAMPLE` (`src/painted/spike/ArmBackSheet.tsx`).
+- Other rigs (`src/painted/spike/CastSheet.tsx`, Blender `char_base`): `missing`. Port the option into the owning rig before relying on it.
+- Known costs: [DF-20261030-painted-arm-depth](dev-findings/DF-20261030-painted-arm-depth.md).
 
 <a id="cp-sources"></a>
 ## Sources
