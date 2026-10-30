@@ -85,6 +85,34 @@ export const paintCabinet = (ctx: PaintContext, f: Flat, dx = 0, dy = 0) => {
   f.fill(C.knob, ell(500 + dx, 1380 + dy, 10, 10, 10));
 };
 
+/**
+ * The R2.5 cabinet (`VD-ZCP-HANDS`, B02-SH02 table; B03-SH01 View A; B09-SH02B): a lit top from the far edge (against the door) to the
+ * near edge, a lit lip with the overhang's hard shadow under it, a cel front from the lip to the frame bottom with two doors split at
+ * x 540, round knobs with small shadows and vertical grain one step darker. `dx`/`dy` move it (drag, wobble, jolt).
+ */
+export type CabinetR25 = {far: number; near: number; lip: number; fx0: number; fx1: number; x0: number; x1: number; knobY: number};
+export const paintCabinetR25 = (f: Flat, c: CabinetR25, dx = 0, dy = 0) => {
+  const T = (pts: Pt[]): Pt[] => pts.map(([x, y]): Pt => [x + dx, y + dy]);
+  const top: Pt[] = [[c.fx0, c.far], [c.fx1, c.far], [c.x1, c.near], [c.x0, c.near]];
+  const lipY = c.near + c.lip, front = 2100;
+  f.fill(C.cabTop, T(top));
+  for (const t of [0.3, 0.6]) {
+    const y = c.far + (c.near - c.far) * t;
+    f.line(T([[c.fx0 + 30, y], [(c.fx0 + c.fx1) / 2, y + 2], [c.fx1 - 40, y]]), 0.4, grainOf(C.cabTop), false);
+  }
+  f.line(T(top), 1.0);
+  f.fill(C.cabTop, T([[c.x0, c.near], [c.x1, c.near], [c.x1, lipY], [c.x0, lipY]]));
+  f.fill(C.cabBase, T([[c.x0, lipY], [c.x1, lipY], [c.x1, lipY + 8], [c.x0, lipY + 8]]));
+  f.fill(C.cabFront, T([[c.x0, lipY + 8], [c.x1, lipY + 8], [c.x1, front], [c.x0, front]]));
+  f.line(T([[c.x0, lipY], [c.x1, lipY]]), 0.9);
+  f.line(T([[540, lipY + 8], [540, front]]), 1.0);
+  for (const x of [c.x0 + 60, c.x0 + 200, 640, c.x1 - 80]) f.line(T([[x, lipY + 40], [x + 2, front]]), 0.4, grainOf(C.cabFront), false);
+  for (const kx of [506, 574]) {
+    f.fill(mixColor(C.cabFront, INK, 0.45), ell(kx + dx + 3, c.knobY + dy + 9, 9, 4, 8));
+    f.fill(C.knob, ell(kx + dx, c.knobY + dy, 10, 10, 10));
+  }
+};
+
 /** Palm hand on the cabinet top, fingers toward the door (the B02-SH02 shove pose and the B02-SH01 door hand). */
 export const palmHand = (ctx: PaintContext, side: -1 | 1, o: {x: number; y: number; press?: number; base: number; elbow?: Pt; sleeveFrom?: Pt}) => {
   const p = makePainter(ctx.brush, {t: ctx.t, frame: ctx.frame, fade: C.wall});

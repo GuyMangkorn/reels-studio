@@ -1,17 +1,14 @@
 import type {PaintContext} from '../BrushCanvas';
 import {clamp01, lerp, mixColor, ramp, type Pt} from '../painter';
-import {ZC_HAND, type PovHand} from '../hands';
-import {ell, INK} from './ctx';
+import {INK} from './ctx';
 import {flatKit, CREAM, type Flat} from './sets';
 import {joltAt, poundJoltPlateFrames, type Lang} from './jolts';
-import {trackHand, type Key} from './pose';
-import {CORRIDOR_LIGHT, paintCabinet, paintDoorScene, palmHand, hookHand, pinchHand, povHand} from './pov';
+import {CORRIDOR_LIGHT, paintCabinetR25, paintDoorScene, type CabinetR25} from './pov';
 
 // ZCPAINT first-person plates (S-P10, Boss pass 5): B02-SH01, B02-SH02, B03-SH01 and B09-SH02B, each a pure function of
 // its plate clock (plate frame pf = tl x 30; per-language keys where the sheets lock words to the picture). The SVG
 // parts (corridor light line, thumb-turn, lamp glows) are in `overlays.tsx`; they read the same state functions here.
 
-const BAG = '#3f4a45';
 const squeezeOf = (age: number) => (age < 6 ? 0.5 * Math.exp(-0.8 * age) : 0);
 
 /** Pound jolt state of one shot at its plate frame (from the seeded list in `jolts.ts`): kick px, shudder and press 0..1. */
@@ -22,40 +19,21 @@ export const poundState = (lang: Lang, shot: 'SH01' | 'SH02', pf: number) => {
 
 // ---------------------------------------------------------------- B02-SH01: shut and lock
 
-/** B02-SH01 keys per language (plate frames): the right hand reaches the thumb-turn and the bolt turns (sheet, f 3-5 /
- *  f 14-17 for the rise; bolt 4-7 TH / 17-21 EN). The slam lands at f 2 in both. */
-export const B02_SH01_KEYS: Record<Lang, {rise: number; bolt: [number, number]}> = {
-  TH: {rise: 5, bolt: [4, 7]},
-  EN: {rise: 17, bolt: [17, 21]},
+/** B02-SH01 bolt keys per language (plate frames, sheet: bolt 4-7 TH / 17-21 EN). Pass 9 (user, 30 Oct 2026): no hand; the thumb-turn
+ *  turns by itself on these keys. The slam lands at f 2 in both. */
+export const B02_SH01_KEYS: Record<Lang, {bolt: [number, number]}> = {
+  TH: {bolt: [4, 7]},
+  EN: {bolt: [17, 21]},
 };
-const GRIP_WRIST: Pt = [820, 1300];
-// Every key carries the pinch fields: the pose track copies non-animated fields from the first key only.
-const bagHand = (base: number, curl: number, dir: number): PovHand => ({
-  side: 1, base, wrist: GRIP_WRIST, dir, size: 1.1, curl, spread: 0.2, elbow: [1080, 1640], sleeveFrom: [1160, 1960], tone: ZC_HAND,
-  pinchGap: 49, fingerCurl: [0.35, 1, 1, 1],
-});
-const turnHand = (base: number): PovHand => pinchHand(base, [1068, 855], {curl: 1, elbow: [1100, 1560], sleeveFrom: [1160, 1960]});
 
-/** Right-hand track: holds the bag, lets go by f 2, rises to the thumb-turn at `rise`, then holds on it. */
-const rightHandKeys = (lang: Lang, base = 7400): Key<PovHand>[] => {
-  const {rise} = B02_SH01_KEYS[lang];
-  const keys: Key<PovHand>[] = [[0, bagHand(base, 0.45, -2.0)], [2, bagHand(base, 0.1, -2.0)]];
-  if (rise - 3 > 2) keys.push([rise - 3, bagHand(base, 0.1, -2.0)]);
-  keys.push([rise, turnHand(base)]);
-  return keys;
-};
+/** B02-SH02 cabinet (R2.5 table, spike `paintB02Sh02`): top from the far edge y 830 (against the door) to the near edge y 1000, the lip
+ *  1000-1022, the front from 1022 to the frame bottom, the doors split at x 540, knobs at y 1150. */
+const B02_CABINET: CabinetR25 = {far: 830, near: 1000, lip: 22, fx0: 230, fx1: 850, x0: 164, x1: 916, knobY: 1150};
 
 /** Thumb-turn angle (deg) of one language: 0 open (bar vertical), 90 locked (bar horizontal). */
 export const boltAngle = (lang: Lang, pf: number) => 90 * ramp(pf, B02_SH01_KEYS[lang].bolt[0], B02_SH01_KEYS[lang].bolt[1]);
 /** Latch edge x of B02-SH01 at pf: ajar 900, shut 950 at f 2. */
 export const sh01Edge = (pf: number) => lerp(900, 950, ramp(pf, 0, 2));
-
-const paintBag = (f: Flat, x: number, y: number) => {
-  const pts: Pt[] = [[x - 120, y - 60], [x - 70, y - 150], [x - 30, y - 175], [x + 30, y - 175], [x + 70, y - 150], [x + 120, y - 60], [x + 112, y + 90], [x + 60, y + 150], [x - 60, y + 150], [x - 112, y + 90]];
-  f.fill(BAG, pts);
-  f.line(pts, 1.0);
-  f.fill(BAG, ell(x, y - 186, 26, 22, 12));
-};
 
 /** Pound shudder strokes on both leaf edges for the 5 frames after a blow (sheet: "shudder strokes at both edges"). */
 const shudder = (f: Flat, kick: number, on: boolean) => {
@@ -72,39 +50,24 @@ export const paintB02Sh01 = (ctx: PaintContext, pf: number, lang: Lang) => {
   const shut = ramp(pf, 0, 2);
   paintDoorScene(ctx, f, {jolt: j.kick, edge: sh01Edge(pf), gap: shut < 1, line: CORRIDOR_LIGHT});
   shudder(f, j.kick, j.shudder);
-  // Left palm: the slam at f 2, then flat on the leaf and squeezed on each pound.
-  palmHand(ctx, -1, {x: 330, y: 842, press: (pf >= 2 ? 0.3 : 0) + j.press, base: 7200, elbow: [40, 1400], sleeveFrom: [-60, 1900]});
-  // The bag falls out of the bottom of the frame from f 2 (fingers open by f 2).
-  if (pf < 7) paintBag(f, 760, 1180 + Math.max(0, pf - 2) * 200);
-  povHand(ctx, trackHand(rightHandKeys(lang), pf));
+  // Pass 9 (user, 30 Oct 2026): no hand at any frame. The camera pushes in on the thumb-turn and the bolt turns by itself (SVG-ZCP-2).
 };
 
-// ---------------------------------------------------------------- B02-SH02: drag and shove the cabinet
 
-/** Cabinet x offset (drag from the right, +420 to flush) and the bob of the three strides, then the lift at the shove. */
-export const sh02Slide = (pf: number) => 420 * (1 - ramp(pf, 9, 39));
-export const sh02Bob = (pf: number) => (pf > 9 && pf < 39 ? 8 * Math.sin((2 * Math.PI * 3 * (pf - 9)) / 30) : 0) - 20 * ramp(pf, 39, 54);
-/** Door layer scale: 0.92 until the shove, then 1.00 at flush (about (540, 640)). */
-export const sh02DoorScale = (pf: number) => 0.92 + 0.08 * ramp(pf, 39, 54);
-/** Hooked over the lip while dragging; regrip to palms flat on the top from f 47 (shove pose). */
-export const sh02Hooked = (pf: number) => pf < 47;
+// ---------------------------------------------------------------- B02-SH02: the barricade already pushed (R2.5: no hands)
+
+/** R2.5 staging: the last 24 px of the shove over pf 0-6, from the right; the flush thud is at pf 6 (TH f 3 / EN f 6, sound only). */
+export const sh02Slide = (pf: number) => 24 * (1 - ramp(pf, 0, 6));
+/** The wobble after the flush: ±3 px, decaying over pf 6-20 (R2.5 table). */
+export const sh02Bob = (pf: number) => (pf > 6 && pf < 20 ? 3 * Math.sin((2 * Math.PI * (pf - 6)) / 7) * (1 - ramp(pf, 6, 20)) : 0);
 
 export const paintB02Sh02 = (ctx: PaintContext, pf: number, lang: Lang) => {
   const f = flatKit(ctx, 11500);
   const j = poundState(lang, 'SH02', pf);
-  const slide = sh02Slide(pf), bob = sh02Bob(pf);
-  paintDoorScene(ctx, f, {jolt: j.kick, scale: sh02DoorScale(pf), line: CORRIDOR_LIGHT});
+  paintDoorScene(ctx, f, {jolt: j.kick, panel: [230, 150, 860, 560], line: CORRIDOR_LIGHT});
   shudder(f, j.kick, j.shudder);
-  paintCabinet(ctx, f, slide, bob);
-  const press = pf >= 54 ? 0.25 + j.press : 0;
-  if (sh02Hooked(pf)) {
-    hookHand(ctx, -1, slide, bob, 7600);
-    hookHand(ctx, 1, slide, bob, 7700);
-  } else {
-    for (const side of [-1, 1] as const) {
-      palmHand(ctx, side, {x: 540 + side * 215 + slide, y: 1040 + bob, press, base: side < 0 ? 7200 : 7300, elbow: [540 + side * 300 + slide, 1480 + bob], sleeveFrom: [540 + side * 300 + slide, 1960]});
-    }
-  }
+  // The cabinet jolts at a quarter of the door's kick (R2.5 table). No hand or forearm at any frame.
+  paintCabinetR25(f, B02_CABINET, sh02Slide(pf) + 0.25 * j.kick, sh02Bob(pf));
 };
 
 // ---------------------------------------------------------------- B03-SH01: the blackout from inside (POV, whip, room)
@@ -141,20 +104,34 @@ const mixDark = (c: string, level: number) => mixColor('#1d1915', c, 0.12 + 0.88
 const paintViewA = (ctx: PaintContext, f: Flat, pf: number, lang: Lang) => {
   const L = b03Lights(pf, lang);
   paintDoorScene(ctx, f, {line: mixColor('#1d1915', CORRIDOR_LIGHT, L.corridor)});
-  paintCabinet(ctx, f, 0, 0);
+  paintCabinetR25(f, B02_CABINET); // the barricade; no hand on its edge (R2.5 HD-02)
   // Entry fixture on the top edge (lit until key 1; its glow is an SVG layer).
   f.fill(mixDark('#f6eed8', L.corridor), [[480, -20], [600, -20], [600, 40], [480, 40]]);
   f.line([[480, -20], [600, -20], [600, 40], [480, 40]], 0.8);
-  if (pf < B03_KEYS[lang].whip) hookHand(ctx, -1, 0, 0, 7600); // left hand on the cabinet edge until the whip starts
+  // Key 1 (pass 9): View A drops to its blackout tones with the entry key (LT-07): a flat veil over the set.
+  shadeRegion(ctx, '#1d1915', 0.8 * (1 - L.corridor), [[-100, -100], [1200, -100], [1200, 2100], [-100, 2100]]);
 };
 
+/** Flat translucent veil over a region (one wash): the blackout tone over View A at key 1 (KEY-ENT-PWR goes out). */
+const shadeRegion = (ctx: PaintContext, color: string, alpha: number, pts: Pt[]) => {
+  if (alpha <= 0) return;
+  ctx.brush.noStroke();
+  ctx.brush.noFill();
+  ctx.brush.wash(color, Math.round(255 * Math.min(1, alpha)));
+  ctx.brush.polygon(pts);
+  ctx.brush.noWash();
+};
+
+/** View B (KEY-B03-B, pass 9): each wall takes its own lamp (bath on the left wall, living on the right, the ceiling and floor the mean), so a
+ *  room drops to its blackout tones on its key frame. The dressing (MK-ZC-ST-12) and its floor shadows from the far window point toward the
+ *  camera and stay after the lamps die. Glazing and neighbour are daylight and the building beat as before. */
 const paintViewB = (ctx: PaintContext, f: Flat, pf: number, lang: Lang) => {
   const L = b03Lights(pf, lang);
   const avg = (L.bath + L.kitchen + L.living) / 3;
   const ceil = mixDark(CREAM.ceiling, avg), floor = mixDark(CREAM.tile, avg * 0.8);
   f.fill(ceil, [[-100, -100], [1200, -100], [800, 380], [400, 380]]);
-  f.fill(mixDark(CREAM.wallShade, avg), [[-100, -100], [400, 380], [400, 800], [-100, 1500]]);
-  f.fill(mixDark(CREAM.wallShade, avg), [[1200, -100], [800, 380], [800, 800], [1200, 1500]]);
+  f.fill(mixDark(CREAM.wallShade, L.bath), [[-100, -100], [400, 380], [400, 800], [-100, 1500]]);
+  f.fill(mixDark(CREAM.wallShade, L.living), [[1200, -100], [800, 380], [800, 800], [1200, 1500]]);
   f.fill(floor, [[-100, 1500], [400, 800], [800, 800], [1200, 1500], [1200, 2100], [-100, 2100]]);
   // Balcony glazing at the far end (daylight, the brightest value) and the neighbour's block beyond the divider x 680.
   f.fill('#dfe8ea', [[400, 380], [800, 380], [800, 800], [400, 800]]);
@@ -164,6 +141,21 @@ const paintViewB = (ctx: PaintContext, f: Flat, pf: number, lang: Lang) => {
   // Doorways P1 and P2 as wide openings framing the line of sight (composed; `MK-ZCP-F9`).
   f.fill(mixDark('#2a2420', Math.min(1, avg + 0.2)), [[120, 560], [240, 480], [240, 1010], [120, 1140]]);
   f.fill(mixDark('#2a2420', Math.min(1, avg + 0.2)), [[860, 470], [960, 500], [960, 1100], [860, 1020]]);
+  // Dressing (pass 9, MK-ZC-ST-12): the pale aqua bathroom wainscot on the left wall (lit by the bath lamp), the warm wood counter edge, two
+  // cream curtains framing the glazing, one mustard cushion by the glazing on the right. Thin outlines, flat fills only.
+  f.fill(mixDark('#a9cfc8', L.bath), [[-100, 1300], [400, 690], [400, 800], [-100, 1500]]);
+  f.line([[-100, 1300], [400, 690]], 0.7, mixDark('#4a433b', L.bath));
+  f.fill(mixDark('#b07d4f', avg), [[-100, 1240], [360, 730], [380, 752], [-100, 1262]]);
+  f.fill(mixDark('#e6dcc2', avg), [[400, 380], [446, 380], [466, 800], [400, 800]]);
+  f.fill(mixDark('#e6dcc2', avg), [[754, 380], [800, 380], [800, 800], [734, 800]]);
+  f.line([[422, 400], [436, 790]], 0.5, mixDark('#b9aa8c', avg), false);
+  f.line([[772, 400], [770, 790]], 0.5, mixDark('#b9aa8c', avg), false);
+  f.fill(mixDark('#c9a040', L.living), [[700, 762], [756, 742], [776, 792], [720, 812]]);
+  // Floor shadows from the far window (KEY-B03-B): toward the camera along the floor; not lamp-dependent, so they stay after the lamps die.
+  const shadow = mixDark(CREAM.tile, 0.12);
+  f.fill(shadow, [[400, 800], [446, 800], [500, 1100], [360, 1100]]);
+  f.fill(shadow, [[734, 800], [800, 800], [840, 1060], [700, 1060]]);
+  f.fill(shadow, [[700, 812], [776, 792], [820, 880], [740, 900]]);
   // Ceiling lamp fixtures (their glow is an SVG layer): a small flat shape each.
   for (const [k, [x, y]] of Object.entries(B03_LAMPS) as [keyof typeof B03_LAMPS, readonly [number, number]][]) {
     const lit = L[k];
@@ -203,36 +195,32 @@ export const paintB03Sh01 = (ctx: PaintContext, pf: number, lang: Lang) => {
   if (pf >= w && pf < w + WHIP_FRAMES) whip(ctx, f, pf - w);
 };
 
-// ---------------------------------------------------------------- B09-SH02B: the look up at the door
 
-const day3Cabinet = (f: Flat) => {
-  f.fill('#7d6a4e', [[90, 900], [1000, 900], [1000, 1920], [90, 1920]]);
-  f.line([[90, 900], [1000, 900]], 1.1);
-  for (const y of [1230, 1420]) f.line([[120, y], [520, y + 3], [960, y - 2]], 0.4, mixColor('#7d6a4e', INK, 0.25), false);
-};
+// ---------------------------------------------------------------- B09-SH02B: the look up at the door (R2.5: no body part)
 
-/** Knees, shins, clasped hands, phone and cans, in world px (the camera tilt moves them up into view). */
-const kneesAndHands = (ctx: PaintContext, f: Flat) => {
-  f.fill('#666a6c', ell(310, 2150, 170, 92, 18));
-  f.fill('#666a6c', ell(770, 2150, 170, 92, 18));
-  f.fill(ZC_HAND.skin, [[170, 2200], [460, 2200], [440, 2640], [190, 2640]]);
-  f.fill(ZC_HAND.skin, [[620, 2200], [910, 2200], [890, 2640], [640, 2640]]);
-  f.line([[170, 2200], [460, 2200], [440, 2640]], 0.7);
-  f.line([[620, 2200], [910, 2200], [890, 2640]], 0.7);
-  // Phone face-up (dark screen) and two can stacks on the floor, in front of the cabinet base.
+/** The cabinet at the end frame (R2.5 table, B09-SH02B): the lit top lip y 900-922 (his eye line; the only highlight), the front to the bottom. */
+const B09_CABINET: CabinetR25 = {far: 900, near: 900, lip: 22, fx0: 150, fx1: 930, x0: 150, x1: 930, knobY: 1150};
+
+/** Floor props of the first frame (`Q-ZCP-13` B, user: floor props only): the phone face-up with a dark screen and four pull-tab cans. */
+const floorProps = (f: Flat) => {
   f.fill('#2a2c30', [[860, 2010], [940, 2010], [940, 2100], [860, 2100]]);
   f.line([[860, 2010], [940, 2010], [940, 2100], [860, 2100]], 0.6);
-  for (const x of [150, 190]) f.fill('#b8c0c4', [[x, 1960], [x + 34, 1960], [x + 34, 2030], [x, 2030]]);
-  f.line([[150, 1960], [184, 1960], [184, 2030], [150, 2030]], 0.6);
+  for (const x of [150, 196, 242, 288]) {
+    f.fill('#b8c0c4', [[x, 1960], [x + 40, 1960], [x + 40, 2030], [x, 2030]]);
+    f.line([[x, 1960], [x + 40, 1960], [x + 40, 2030], [x, 2030]], 0.6);
+  }
 };
 
-/** B09-SH02B: the door and cabinet, the floor and his knees in world px. The picture is static; the camera tilt (dy
- *  -1100 -> 0 over 18 f, `drawPlate`) lifts the view from the knees to the door. Hands clasped round the knees. */
+/**
+ * B09-SH02B: the door (panel x 230-860, y 150-560, the darkest value; latch line pure black, no light line; static on every knock), the
+ * cabinet, then the floor props. The camera tilt (`CAM_B09_SH02B`, dy -1100 -> 0 over 18 f, `drawPlate`) lifts the view from the floor to the
+ * still door. No hand, knee or foot in any frame (R2.5 `Q-ZCP-13` B).
+ */
 export const paintB09Sh02b = (ctx: PaintContext) => {
   const f = flatKit(ctx, 12000);
-  paintDoorScene(ctx, f, {lock: false, latchBlack: true, panel: [260, 140, 820, 600]});
-  day3Cabinet(f);
-  kneesAndHands(ctx, f);
-  povHand(ctx, {side: -1, base: 7500, wrist: [470, 2060], dir: 0.35, size: 1.0, curl: 0.5, spread: 0.2, elbow: [300, 2480], sleeveFrom: [250, 2700], tone: ZC_HAND});
-  povHand(ctx, {side: 1, base: 7560, wrist: [610, 2060], dir: Math.PI - 0.35, size: 1.0, curl: 0.5, spread: 0.2, elbow: [780, 2480], sleeveFrom: [830, 2700], tone: ZC_HAND});
+  paintDoorScene(ctx, f, {lock: false, latchBlack: true, panel: [230, 150, 860, 560]});
+  // Defocus veil (pass 9, sheet L0): the door and jamb above the cabinet are soft under #d6c9ad at 60/255; the latch line stays black under it.
+  shadeRegion(ctx, '#d6c9ad', 60 / 255, [[-100, -100], [1200, -100], [1200, 900], [-100, 900]]);
+  paintCabinetR25(f, B09_CABINET);
+  floorProps(f);
 };

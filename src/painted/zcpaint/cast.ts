@@ -22,11 +22,14 @@ export const YOU_DAY3: Cast = {
   ...YOU, role: 'zc-you (day 3)',
   outfit: {...YOU.outfit, shirt: '#2a5254', sleeve: '#2a5254', pants: '#666a6c'},
 };
-/** `zc-infected`: adult woman, 1.60-1.65 m (draw at 0.95 x), pale sleep shirt (the coat path), dark bob, grey-green skin. */
+/**
+ * `zc-infected`: adult woman, 1.60-1.65 m (draw at 0.95 x), dark bob, grey-green skin. Pass 8 (user 7b look check, 30 Oct 2026):
+ * dirty khaki `#7a7460` shirt and grey-green `#4f514b` trousers (were the white sleep shirt, which read as a mannequin).
+ */
 export const INFECTED: Cast = {
   name: 'ผู้ติดเชื้อ', role: 'zc-infected', face: 0,
   head: {skin: '#bdb9a6', hair: '#151314', cut: 'bob'},
-  outfit: {shoulder: 0.37, shirt: '#c9c5b8', sleeve: '#c9c5b8', longSleeves: false, pants: '#bdb9a6', shoes: '#bdb9a6', coat: '#c9c5b8'},
+  outfit: {shoulder: 0.37, shirt: '#7a7460', sleeve: '#7a7460', longSleeves: false, pants: '#4f514b', shoes: '#b3b09a', coat: '#7a7460'},
 };
 /** Height of the infected relative to `zc-you` (1.62 / 1.70). */
 export const INFECTED_SCALE = 0.95;
@@ -83,13 +86,24 @@ export const paintRageFront = (ctx: PaintContext, p: Paint, cx: number, cy: numb
 };
 
 /**
- * Profile overlay for the infected (facing +x): bloody mouth corner and a hair curtain over the face; `lit` shows the
- * mouth and a faint eye-shine through the hair (the B01 silhouette uses `lit` false).
+ * Bob hair of the infected in profile (facing +x), in head units about the head centre (y down; the decal head spans u ±1 and
+ * v −1.05 to 1.22). Pass 8 (user 7b look check): one shaped mass over the crown and the back, a fringe over the brow and
+ * ragged ends at the nape and jaw, not a box. The same outline is the B01 silhouette's hair (body6 `silHair`).
+ */
+export const BOB_SIDE: [number, number][] = [
+  [0.62, -0.42], [0.66, -0.8], [0.45, -1.04], [0.05, -1.2], [-0.45, -1.16], [-0.85, -0.9], [-1.12, -0.45], [-1.22, 0.05], [-1.18, 0.5], [-1.0, 0.78],
+  [-0.84, 0.6], [-0.6, 0.86], [-0.38, 0.66], [-0.14, 0.9], [0.1, 0.7], [0.3, 0.84], [0.46, 0.56], [0.42, 0.2], [0.34, -0.14], [0.4, -0.3],
+];
+
+/**
+ * Profile overlay for the infected (facing +x): the bob mass (`BOB_SIDE`), a bloody mouth corner and an eye-shine through the
+ * hair; `lit` shows the mouth and the shine (the B01 silhouette uses `lit` false and paints its own hair from `BOB_SIDE`).
  */
 export const paintInfectedSide = (p: Paint, cx: number, cy: number, K: number, lit: boolean) => {
   const L = unit(cx, cy, K);
   if (lit) p.part(BLOOD, ellipse(cx + 0.8 * K, cy + 0.95 * K, 0.22 * K, 0.12 * K, 12), false, 6);
-  p.part(HAIR_INF, [L(-0.9, -1.15), L(0.6, -1.2), L(1.25, -0.6), L(1.3, 0.6), L(1.05, 1.5), L(0.7, 1.1), L(0.55, 0.2), L(0.2, -0.5), L(-1.0, 0.2)], false, 6);
+  p.part(HAIR_INF, BOB_SIDE.map(([u, v]) => L(u, v)), true, 6);
+  p.ink([L(-0.9, -0.95), L(-0.3, -1.08), L(0.25, -0.98)], 0.7, 0.5, '#4a4048'); // a sheen stroke along the crown, so the mass reads as hair
   if (lit) p.part('#e9e6d6', ellipse(cx + 0.95 * K, cy - 0.05 * K, 0.06 * K, 0.04 * K, 8), false, 6);
 };
 

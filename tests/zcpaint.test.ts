@@ -91,7 +91,7 @@ test('ZCPAINT plates are registered by ID; B03 is the first-person POV plate, no
   assert.ok(!paintedShotIds.includes('ZCP-B03-SH01'), 'per-language IDs only');
 });
 
-import {B03_KEYS, WHIP_FRAMES, b03Offset, b03Lights, boltAngle, sh01Edge, sh02Slide, sh02DoorScale, sh02Hooked, poundState} from '../src/painted/zcpaint/povshots';
+import {B03_KEYS, WHIP_FRAMES, b03Offset, b03Lights, boltAngle, sh01Edge, sh02Slide, sh02Bob, poundState} from '../src/painted/zcpaint/povshots';
 import {CAM_B09_SH02B} from '../src/painted/shots/zcpaint';
 
 test('B03 whip: 7 frames, View A to View B, then the lamps go out near -> far, neighbour last (per language)', () => {
@@ -117,11 +117,11 @@ test('B02 keys: latch shut at f 2, bolt turns 90 degrees per language, drag from
   assert.equal(boltAngle('TH', 7), 90);
   assert.equal(boltAngle('EN', 16), 0);
   assert.equal(boltAngle('EN', 21), 90);
-  assert.equal(sh02Slide(0), 420);
-  assert.equal(sh02Slide(39), 0);
-  assert.equal(sh02DoorScale(0), 0.92);
-  assert.equal(sh02DoorScale(54), 1);
-  assert.ok(sh02Hooked(0) && !sh02Hooked(60), 'hooked while dragging, palms after the regrip');
+  // R2.5 (pass 8): no drag; the last 24 px of the shove over pf 0-6, then a ±3 px wobble that decays by pf 20.
+  assert.equal(sh02Slide(0), 24);
+  assert.equal(sh02Slide(6), 0);
+  assert.equal(sh02Bob(6), 0);
+  assert.ok(Math.abs(sh02Bob(9)) <= 3 && Math.abs(sh02Bob(19)) < Math.abs(sh02Bob(9)) + 1e-9, 'the wobble is within 3 px and decays');
   assert.ok(poundState('TH', 'SH01', 2).press > 0, 'the slam squeezes the palm');
 });
 
