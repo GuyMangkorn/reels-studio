@@ -865,3 +865,74 @@ Scope: user authorization in chat 30 Oct ("Boss can update the build") for the i
 - Caption and scrim checks not done (Editor). Sound, narration and TTS not touched.
 - Long: none registered in this checkout.
 - Not committed or pushed. Scratch scripts and the HEAD baseline copy live in the session scratchpad (outside the repository).
+
+## 2026-10-30 — Boss: fix pass r8 (WFOG-EP01-SHORT r8, SS-R4.1 fix list)
+
+Scope: index "SS-R4.1 fix list (Boss)" (`storyboards/world-fog/short/index.md`, anchor `ss-r41-fix-list-boss`): R8-1, R8-2, R8-3 (label only), R8-4, R8-5, R8-8; R8-6 and R8-7 accepted as built (no change). Every change is at G2070 or later (S03-SH06A, S03-SH07, S04-SH01). Narration, TTS, captions, scrim and sound not touched (Editor). Storyboards, `visual-brief.md` and `fact-check.md` not edited (Mark/Film/Boat working-tree changes preserved). Not committed or pushed.
+
+### What changed (owner files)
+- **R8-1 torch** (`src/painted/shots/worldfog.tsx`, `SH07_TORCH`, `s3sh07`): hand (1.05, 0.95, −0.60) at her right hip, lens (0.951, 0.839, −0.542) = hand + 0.16 m along the aim (measured 0.1596 m), pool target (0.20, 0, −0.10) on the floor before the threshold; narrator `rArm` to the hand; torch angle = `torchAngle(hand, lens)` (0.908 rad, was a static 0.95); overlay beam from the lens to the pool (was (0.9, 1.05, −0.3) → (0.6, 0, 0.05)).
+- **R8-2 beam hold** (`beamSH06A`): f0–f30 at `BEAM_END` (583, 689), eased to (588, 820) at f66, held (was (590, 700)). SH03–SH06 `beamAt` untouched.
+- **R8-3 lead-check wording** (`scripts/world-fog/lead-check.ts`): "sheet <= 40" replaced by the purpose rule (report width, no px limit). Camera and jamb geometry unchanged.
+- **R8-4 nod** (`s4sh01`): worker `nod` dx 0 (was −0.12 × glance); the nod y term for the slump stays; the eyes-only look toward the door stays. DF entry updated.
+- **R8-5 bow** (`src/painted/worldfog/assembly.ts`, `heldLook`): `bow` 0 for f0–f119 (was 5° ease f54–f66). The `AsmPose.bow` tilt helper stays (identity at 0; the test still exercises it with an explicit bow).
+- **R8-8 pole** (`s3sh07`, `paintShop` option `omit: [27, 28]`, this shot only): the reading was the glass-front **top rail (shop.ts box 27)** and **sill (box 28)**, both x-parallel members spanning x −3…3 at z −0.06…0. Their image lines meet at (540, 700), the principal point, so they read as one dark pole through the frame. Checked and ruled out: umbrella (worker's left hand (1030, 1121) to tip (969, 1467) at the right edge, not the diagonal), torch body (≈171 px drawn, not 600 px), cart handle, beam (light polygon, `Beam` in `layers.tsx`). The sheet's allowed-darks list did not name the rail or sill.
+- **Label** (`src/painted/worldfog/qa.tsx`): burned-in note now "Boss SS-R4.1 fix pass (r8)" (text only; picture unchanged).
+- **Tests** (`tests/world-fog.test.ts`, 29 of 29 in the file): bow assertions → 0 across f0–f119; head-tilt helper test uses an explicit bow; new test G2136/G2189 hood and face equal the f30 points (≤ 1 px, same breath, gaze and blink); beam f0–f30 = (583, 689) and f66 = (588, 820); new SH07 torch test (lens 0.16 m, pool on the aim line, projection at s 1.00 and 1.05 within ±2 px).
+
+### Checks
+- `npm run typecheck` exit 0 (`out/logs/r8-typecheck.log`); `npm run lint` exit 0 (`r8-lint.log`); `npm test` **143 of 143** (`r8-test-final.log`); world-fog file **29 of 29** (`r8-test-world-fog.log`). The count differs from r7's 125 because this checkout is `claude/world-fog-ep01-script-dba9ff`, not the r7 checkout; not compared like-for-like.
+- Lead check (`out/logs/r8-lead-check.log`, no render; run twice, stable).
+
+### Regression: frames before G2070 (picture below the label band, chrome off)
+- Baseline = r7 source, rendered before any source edit (`out/tmp/r8-ref-r7/`, `r8-baseline-stills.log`, 93 frames, `WFOG-QA`). r8 = `out/tmp/r8-new/` (`r8-render-labelled-stills.log`, same 93 frames).
+- Full-frame `cmp` differs on every frame, including G0, because the label text changed (r7 → r8); full-frame PSNR is about 30 dB for that reason (`r8-parity-psnr.tsv`).
+- **Picture band (y 300–1920), ffmpeg PSNR** (`r8-parity-crop-psnr.tsv`): G0–G2069 sampled every 30 frames plus G2069: 69 of 70 identical (inf dB); G270 110.6 dB (render-noise band, same as r7's G270 106 dB). G2069 identical.
+- Changed frames, picture band: S03-SH06A G2070 49.2 dB, G2100 49.2, G2136 46.9, G2189 46.9; S03-SH07 G2190 27.1, G2230 27.1, G2262 27.0, G2270 26.8, G2292 26.4, G2310 26.3, G2320 25.5, G2330 26.1, G2339 26.9; S04-SH01 G2538 35.7, G2546 33.2.
+- Identical (inf dB): S04-SH01 G2340, G2380, G2420, G2520, G2530, G2554; S04-SH02 G2669, G2670. Matches the expected-change list in the fix list.
+- Production entry (`src/index.ts`, WFOG-EP01-SHORT, `r8-prod-stills.log`): G2070, G2320, G2538 picture band identical (inf) to the QA entry frames.
+- S04-SH01 head crop G2520 vs G2538 (x 340–600, y 430–730): r7 21.4 dB, r8 28.0 dB (residual = eye look, allowed).
+
+### Sheet numbers (labelled frames, chrome off; `lead-check.ts` and `caption-zone.py`)
+- **G2070** beam glow at (583, 689) plate px at s 1 (was (590, 700)); image PSNR vs r7 49 dB.
+- **G2100** worker 679 px (sheet 674 ± 15), face (615, 709) (sheet 615, 705 ± 15); beam screen (589, 699) (r7 ≈ (590, 700) before the bow/beam change).
+- **G2136** beam centre (595, 865) screen (sheet 595, 861 ± 20), unchanged from r7; face and hood equal the f30 points (test, ≤ 1 px).
+- **G2189** no bow: hood/face at the f30 positions ± 1 px (test).
+- **G2230** (f40, s 1.008): torch hand (540, 1111) (sheet ± 15 of (540, 1107)–(540, 1127): inside), lens (584, 1168), pool (792, 1431) (sheet ± 25 of (790, 1425)–(802, 1461): inside).
+- **G2320** (f130, s 1.048): hand (540, 1127), lens (586, 1186), pool (802, 1460). Jamb bar 51 px (x 861–912); rig head centre (hood) x 855, 6 px clear of the jamb's left edge (861). Native crop of r8 G2339: eye at x ≈ 810, nose ≈ 775, jamb covers the back of the hood only. Rail/sill lines meet at (540, 700).
+- **G2339** (f149, s 1.050): hand (540, 1128), lens (586, 1187), pool (803, 1461). Worker profile lead 904 px (≥ 480). Narrator and other leads unchanged (no change to their geometry).
+- **G2538** head crop residual vs G2520 (above). Head position by construction unchanged (nod dx 0).
+- **Caption zone** (raw background, no scrim; band 860–1248; `caption-zone.py`, `out/logs/r8-caption-zone-r8.log` and `-r7.log`): G2100 mean 0.411 / p95 0.660 (r7 0.414 / 0.663); G2230 0.381 / 0.716 (0.382 / 0.714); G2320 0.401 / 0.713 (0.394 / 0.713); G2339 0.400 / 0.712 (0.403 / 0.710); G2538 0.337 / 0.598 (same). All fail 0.25 / 0.40 raw; the scrim is Editor's (MK-WF-DEP-10); not evaluated with a scrim.
+
+### Artifacts (`out/qa/world-fog/WFOG-EP01-SHORT/r8/`)
+- `sheet_A_S03-SH06A-SH07.png`: G2070, G2100, G2136, G2189 (S03-SH06A); G2190, G2230, G2262, G2320, G2339 (S03-SH07). Viewed.
+- `sheet_B_S04-SH01.png`: G2538, G2546. Viewed.
+- `compare/S03-SH07_G2320_G2339_r7-vs-r8.png`: r7 left, r8 right, G2320 and G2339. Viewed: rail and sill diagonals gone; torch low at the hip with its pool on the threshold floor; jamb unchanged.
+- `labelled/`: 11 labelled `WFOG-QA` frames (every frame named above).
+
+### Questions for Mark / Film (sheets not edited)
+- **Q-R8-1 R8-8 source** (Mark, sc03 S03-SH07 acceptance): the pole was the glass-front rail and sill, not one of the sheet's listed darks. They are omitted in S03-SH07 only. Confirm that omission is acceptable, or say whether the sill edge is needed for the threshold read (the render shows the floor edge reads cleanly without it).
+- **Q-R8-2 frame-bar wording** (Film VB-R5 / Mark R8-3): the vertical glass mullions (shop.ts boxes 20–22, 24–25) are still visible as thin dark verticals in S03-SH07. They are not diagonals and the R8-3 rule is about the jamb, but "the door jamb is the only frame bar" is not literally true of this frame. Film to confirm the intent (keep the mullions, or omit them too).
+- **Q-R8-3 torch lens convention**: the drawn torch ends 0.13 m past the grip, plus the 0.03 m grip offset along the forearm, which lands close to the sheet's 0.16 m lens. Same convention as S03-SH02. No change made; Mark may want the sheet to state the grip offset.
+
+### Limitations and not done
+- Studio not run (no browser session); seek/scrub parity in Studio unverified. Renders are per-frame `renderStill` calls.
+- No 1 s production pass against r7 (`pass-sheets.py --prev`); the chrome-off 93-frame pass above is the comparison instead.
+- Continuity at boundaries (G2069/G2070, G2189/G2190, G2339/G2340) checked by eye on sheets only; no every-frame pass.
+- Caption/scrim checks not done (Editor). Sound, narration and TTS not touched.
+- `scripts/world-fog/delivery.md`, `research.md` and `short/script.md` show uncommitted changes that were not made in this pass (another role's work in this checkout); preserved and not read.
+
+### r8b — S03-SH07 narrator glance, eyes only (R8-9; coordinator decision from the user's review of r8, chat 30 Oct)
+- **Decision (user):** the r8 whole-head flip to screen-left while the torso faces the door reads as a twisted neck. Fix: eyes only. The narrator's head stays in profile toward the door for the whole shot (no flip or switch at any frame); pupils go back toward screen-left and the brow lifts f6–f78; eyes and brow return f78–f84. Occupant unchanged. Mullions kept (user). The R8-8 rail/sill omission stands. Mark records R8-9 and the R8-8 omission in the sheets (storyboards not edited here).
+- **Change** (`src/painted/shots/worldfog.tsx`): `sh07NarratorGlance(f)` returns `head` 'right' (constant), `look` [lerp(1, −1, back), 0.2] and brow 'up' with `browTo` 'worry' and `browMix` 1 − back during f78–f84 (`back` = 1 from f6 to f78, eased to 0 over f78–f84). The brow return is eased with the eyes (the brief says eyes return f78–f84; a hard brow snap at f78 would pop). `s3sh07` uses it for the narrator; the r8 `glance` flag and head flip are gone. The occupant code is untouched.
+- **Tests** (`tests/world-fog.test.ts`, 30 of 30 in the file): new test "S03-SH07 narrator glance is eyes only" (head 'right' at every f0–f149; pupils forward at f0, f5, f84+; back at f6, f40, f77, f78; monotone return f78–f84; brow up f6–f77; brow worry at f0, f5, f84+; `browMix` 0 at f78; no blend from f84).
+- **Checks:** typecheck exit 0 (`out/logs/r8b-typecheck.log`); lint exit 0 (`r8b-lint.log`); world-fog file 30 of 30 (`r8b-test-world-fog.log`); `npm test` **144 of 144** (`r8b-test-final.log`).
+- **Pupil travel (rig limit, measured):** the pupil sits at +0.05 head units right of the eye-white centre on a `right` head (`head.ts` `ell(0.67 + 0.03 * lx, ...)` against the white at 0.62). `look` −1 therefore brings the pupil to the white's centre, not to the screen-left side; the forward-to-back travel is about 9 px at 1080 px width (native crop `out/qa/world-fog/WFOG-EP01-SHORT/r8b/eyes_narrator_G2190-2230-2262-2280_x6.png`, ×6 nearest). The pupil reads as a glance back, not as a pupil on the screen-left side. A true screen-left pupil needs a shared head-rig change (all profile heads, consumer checks). Not made; recorded in DF-20261030-painted-profile-head-turn.
+- **Frames changed vs r8** (`out/logs/r8b-vs-r8.tsv`, full frame, `cmp` then ffmpeg PSNR; `out/tmp/r8b-new/` vs `out/tmp/r8-new/`): G2196 23.8 dB, G2230 23.8, G2262 23.6, G2270 23.6. All other sampled frames are identical or in the render-noise band: G2380, G2538 and G2554 (S04-SH01, outside the glance window) are not byte-identical but measure 111 dB full frame (render noise, same class as r7's G270); no change was made to S04-SH01 in r8b.
+- **Frames outside the changed range identical:** G0–G2189 (every 30 frames, G2069, G2070, G2100, G2136, G2189), G2190 (f0), G2274 (f84), G2280 (f90) against r8 renders (G2274/G2280/G2196 r8 references rendered from the r8 narrator lines, `out/tmp/r8-ref3/`, source restored byte-identical after; `r8b-render-r8-reference3.log`); G2292, G2310, G2320, G2330, G2339 (SH07 f102+); S04-SH01 G2340, G2420, G2520, G2530; S04-SH02 G2669, G2670. The changed range is G2196–G2270 (f6–f80) only.
+- **Artifacts:** `out/qa/world-fog/WFOG-EP01-SHORT/r8b/sheet_C_S03-SH07-narrator-glance.png` (G2190, G2196, G2230, G2262, G2274, G2280; viewed: head in profile toward the door in all six; pupils back at G2196–G2262, forward at G2190, G2274 and G2280; brow lifted at G2196 and G2230); `.../r8b/eyes_narrator_G2190-2230-2262-2280_x6.png` (native crops, ×6); `.../r8b/labelled/` (the six labelled frames).
+- **Logs:** `out/logs/r8b-*.log`, `r8b-vs-r8.tsv`.
+- **Limitations:** Studio not run; no 1 s production pass; the r8b QA frames are the `WFOG-QA` chrome-off entry, and the production-entry picture check from r8 still stands for the r8 changes (not re-run for r8b). No commit.
+
+### Coordinator decisions on r8/r8b (30 Oct 2026, user via structured questions)
+- R8-9 eyes-only glance accepted as built: the pupil reaches only the eye-white centre (~9 px travel, profile head-rig limit); no shared head-rig change. Mullions in S03-SH07 kept. Editor authorized next: TTS → retime → captions/scrim/sound.

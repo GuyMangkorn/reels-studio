@@ -79,6 +79,7 @@
 - **Access gaps:** `SRC005`, `SRC006`, `SRC007`, `SRC008`–`SRC011`, `SRC013` and `SRC014` were inspected from abstracts, PubMed records or summaries only; full texts not accessed. `SRC004` is an author reprint, not the publisher page. `SRC012` was read in part. Publisher Nature pages redirect to sign-in and PubMed web pages require cookies, so E-utilities records were used. `SRC016` and `SRC017` are not relied on.
 - **Missing evidence:** no inspected source tests a fear-induced misreading of a human-with-cart silhouette in fog or dim light. The `K001c` evidence concerns faces, sentences, attention and labels, not shapes in fog.
 - **Confidence (qualitative):** high for `K001a` and for the completion phenomenon; moderate for trait or clinical anxiety effects on interpretation; low for acute fear effects on visual shapes.
+- **Update (2026-10-30, Boat, `WFOG-FACTCHECK-R5` S-5):** the R-1 wording above is superseded for the script. `WFOG-SCRIPT-R5` line 126 uses the R-3 fear clause `แล้วความกลัว ก็ชวนให้ฉันมองว่ามันเป็นอันตราย` (`ชวนให้` = tendency; `มองว่า` = regards as, the same appraisal as `ตีความมันว่า`). The user confirmed R-3 in chat on 2026-10-30 (coordinator report). The `K001c` boundary is unchanged: a tendency only, with no shape-in-fog test; the "Missing evidence", "Avoid" and "Confidence" bullets above still apply.
 
 ## Change log
 
