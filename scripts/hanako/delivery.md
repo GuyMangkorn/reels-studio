@@ -19,8 +19,10 @@ Factual claims: folklore / urban legend with documented origins (Boat research +
 
 ## Tier
 
+Source access: page fetch is blocked by the network policy; the user chose on 30 Oct 2026 to proceed on search leads, with the fact-check recording sources as uninspected.
+
 Scriptwriting-only assignment (user choice, 30 Oct 2026): Boat research → Preaw script → Boat fact-check. Film, Mark, Boss and Editor `N/A` for this assignment; the downstream tier is chosen with the user later.
 
 | Deliverable ID | Stage / Next owner | Target / timing | Script + factual review | Visual brief | Runtime binding | Readiness, approval and gaps |
 | --- | --- | --- | --- | --- | --- | --- |
-| `HANAKO-SHORT` | research — Next: Boat | 45–60 s | — | N/A | not implemented | Visual engine, voice and downstream tier open |
+| `HANAKO-SHORT` | research r1 done (verification-incomplete: sources are search leads only, page fetch blocked) — Next: Preaw script | 45–60 s | — | N/A | not implemented | Visual engine, voice and downstream tier open |
