@@ -25,4 +25,4 @@ Scriptwriting-only assignment (user choice, 30 Oct 2026): Boat research → Prea
 
 | Deliverable ID | Stage / Next owner | Target / timing | Script + factual review | Visual brief | Runtime binding | Readiness, approval and gaps |
 | --- | --- | --- | --- | --- | --- | --- |
-| `HANAKO-SHORT` | research r1 done (verification-incomplete: sources are search leads only, page fetch blocked) — Next: Preaw script | 45–60 s | — | N/A | not implemented | Visual engine, voice and downstream tier open |
+| `HANAKO-SHORT` | script R1 written — Next: Boat fact-check | 45–60 s; est. ≈55.8 s VO + 3 s hold (syllable estimate) | Script [short/script.md](short/script.md) `HANAKO-SHORT-SCRIPT-R1` (Preaw, 30 Oct 2026) from research r1 (leads only) | N/A | not implemented | Visual engine, voice and downstream tier open |
