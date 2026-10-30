@@ -1,0 +1,566 @@
+{
+ "method": "one continuous TTS read, faster-whisper large-v3-turbo word timestamps aligned to the script with difflib; estimates, not WordBoundary; cut at real energy gaps (cut-take2.py)",
+ "take": "take2",
+ "full": "out/lake-nyos/vo/vo-full-prompt.wav",
+ "matchRatio": 0.925,
+ "beats": {
+  "B00": {
+   "vo": "ถ้าคืนนี้… อะไรบางอย่างขึ้นมาจากทะเลสาบหลังหมู่บ้านคุณ… คุณจะรู้ตัวไหม?",
+   "tts": "ถ้าคืนนี้, อะไรบางอย่างขึ้นมาจากทะเลสาบหลังหมู่บ้านคุณ, คุณจะรู้ตัวไหม?",
+   "segment": "out/lake-nyos/vo/segments-vs-r3/B00.wav",
+   "segStart": 0.0,
+   "segEnd": 6.215,
+   "speechOnRaw": 0.0827,
+   "speechOffRaw": 5.7504,
+   "edgeMarginSec": 0.083
+  },
+  "B01": {
+   "vo": "คนราว 1,700 คน… ตายในคืนเดียว หลายคนหลับไปแล้ว… ไม่ตื่นอีกเลย",
+   "tts": "คนราว 1,700 คน, ตายในคืนเดียว หลายคนหลับไปแล้ว, ไม่ตื่นอีกเลย",
+   "segment": "out/lake-nyos/vo/segments-vs-r3/B01.wav",
+   "segStart": 6.215,
+   "segEnd": 13.965,
+   "speechOnRaw": 0.4594,
+   "speechOffRaw": 7.2455,
+   "edgeMarginSec": 0.459
+  },
+  "B02": {
+   "vo": "ปี 1986 ที่แคเมอรูน… คืนนั้น บางคนเล่าว่า ได้ยินเสียงครืน ดังมาจากทะเลสาบนีออส",
+   "tts": "ปี 1986 ที่แคเมอรูน, คืนนั้น บางคนเล่าว่า ได้ยินเสียงครืน ดังมาจากทะเลสาบนีออส",
+   "segment": "out/lake-nyos/vo/segments-vs-r3/B02.wav",
+   "segStart": 13.965,
+   "segEnd": 23.42,
+   "speechOnRaw": 0.4993,
+   "speechOffRaw": 8.9878,
+   "edgeMarginSec": 0.467
+  },
+  "B03": {
+   "vo": "เช้ามา… วัวล้มตายหลายพันตัว แม้แต่นกกับแมลงก็ตาย",
+   "tts": "เช้ามา, วัวล้มตายหลายพันตัว แม้แต่นกกับแมลงก็ตาย",
+   "segment": "out/lake-nyos/vo/segments-vs-r3/B03.wav",
+   "segStart": 23.42,
+   "segEnd": 30.29,
+   "speechOnRaw": 0.4679,
+   "speechOffRaw": 6.4117,
+   "edgeMarginSec": 0.458
+  },
+  "B04": {
+   "vo": "แต่บ้านไม่พัง ต้นไม้ไม่เป็นอะไร… คนที่รอดก็ไม่รู้ว่าเกิดอะไรขึ้น",
+   "tts": "แต่บ้านไม่พัง ต้นไม้ไม่เป็นอะไร, คนที่รอดก็ไม่รู้ว่าเกิดอะไรขึ้น",
+   "segment": "out/lake-nyos/vo/segments-vs-r3/B04.wav",
+   "segStart": 30.29,
+   "segEnd": 36.59,
+   "speechOnRaw": 0.4501,
+   "speechOffRaw": 5.8228,
+   "edgeMarginSec": 0.45
+  },
+  "B05": {
+   "vo": "ถ้าให้เดา… อะไรฆ่าพวกเขา? สัตว์ร้าย? สิ่งที่มองไม่เห็น? หรือ… อะไรบางอย่าง ที่ขึ้นมาจากทะเลสาบ?",
+   "tts": "ถ้าให้เดา, อะไรฆ่าพวกเขา? สัตว์ร้าย? สิ่งที่มองไม่เห็น? หรือ, อะไรบางอย่าง ที่ขึ้นมาจากทะเลสาบ?",
+   "segment": "out/lake-nyos/vo/segments-vs-r3/B05.wav",
+   "segStart": 36.59,
+   "segEnd": 47.305,
+   "speechOnRaw": 0.4743,
+   "speechOffRaw": 10.2119,
+   "edgeMarginSec": 0.474
+  },
+  "B06": {
+   "vo": "ตอนนั้นมีทั้งข่าวลือเรื่องระเบิด อาวุธลับ และความเชื่อเรื่องวิญญาณ",
+   "tts": "ตอนนั้นมีทั้งข่าวลือเรื่องระเบิด อาวุธลับ และความเชื่อเรื่องวิญญาณ",
+   "segment": "out/lake-nyos/vo/segments-vs-r3/B06.wav",
+   "segStart": 47.305,
+   "segEnd": 53.185,
+   "speechOnRaw": 0.4966,
+   "speechOffRaw": 5.386,
+   "edgeMarginSec": 0.494
+  },
+  "B07": {
+   "vo": "แต่ถ้าเป็นสัตว์ร้าย… ทำไมนกกับแมลงถึงตายด้วย? ถ้าเป็นระเบิด… ทำไมบ้านถึงไม่พัง?",
+   "tts": "แต่ถ้าเป็นสัตว์ร้าย, ทำไมนกกับแมลงถึงตายด้วย? ถ้าเป็นระเบิด, ทำไมบ้านถึงไม่พัง?",
+   "segment": "out/lake-nyos/vo/segments-vs-r3/B07.wav",
+   "segStart": 53.185,
+   "segEnd": 60.68,
+   "speechOnRaw": 0.4858,
+   "speechOffRaw": 7.1794,
+   "edgeMarginSec": 0.316
+  },
+  "B08": {
+   "vo": "เบาะแสอยู่ที่ทะเลสาบ… หลังคืนนั้น น้ำเปลี่ยนเป็นสีแดงอมน้ำตาล",
+   "tts": "เบาะแสอยู่ที่ทะเลสาบ, หลังคืนนั้น น้ำเปลี่ยนเป็นสีแดงอมน้ำตาล",
+   "segment": "out/lake-nyos/vo/segments-vs-r3/B08.wav",
+   "segStart": 60.68,
+   "segEnd": 65.865,
+   "speechOnRaw": 0.3137,
+   "speechOffRaw": 5.102,
+   "edgeMarginSec": 0.083
+  },
+  "B09": {
+   "vo": "สีนั้นมาจากน้ำก้นทะเลสาบ ที่ถูกพลิกขึ้นมา… และมันพาฆาตกรตัวจริงขึ้นมาด้วย ไม่ใช่สัตว์ร้าย… แต่คือก๊าซคาร์บอนไดออกไซด์",
+   "tts": "สีนั้นมาจากน้ำก้นทะเลสาบ ที่ถูกพลิกขึ้นมา, และมันพาฆาตกรตัวจริงขึ้นมาด้วย ไม่ใช่สัตว์ร้าย, แต่คือก๊าซคาร์บอนไดออกไซด์",
+   "segment": "out/lake-nyos/vo/segments-vs-r3/B09.wav",
+   "segStart": 65.865,
+   "segEnd": 75.62,
+   "speechOnRaw": 0.0827,
+   "speechOffRaw": 9.665,
+   "edgeMarginSec": 0.083
+  },
+  "B10": {
+   "vo": "ก๊าซนี้ซึมมาจากแมกมาใต้ดิน สะสมในน้ำก้นทะเลสาบ เหมือนน้ำอัดลมที่ปิดฝาไว้ ส่วนอะไรทำให้น้ำพลิกคืนนั้น… ยังไม่มีใครรู้แน่",
+   "tts": "ก๊าซนี้ซึมมาจากแมกมาใต้ดิน สะสมในน้ำก้นทะเลสาบ เหมือนน้ำอัดลมที่ปิดฝาไว้ ส่วนอะไรทำให้น้ำพลิกคืนนั้น, ยังไม่มีใครรู้แน่",
+   "segment": "out/lake-nyos/vo/segments-vs-r3/B10.wav",
+   "segStart": 75.62,
+   "segEnd": 86.235,
+   "speechOnRaw": 0.0856,
+   "speechOffRaw": 10.4887,
+   "edgeMarginSec": 0.086
+  },
+  "B11": {
+   "vo": "ก๊าซนี้หนักกว่าอากาศ มันจึงไหลลงหุบเขา เหมือนแม่น้ำที่มองไม่เห็น ไปไกลหลายกิโลเมตร… ทำให้คนและสัตว์ขาดอากาศหายใจ",
+   "tts": "ก๊าซนี้หนักกว่าอากาศ มันจึงไหลลงหุบเขา เหมือนแม่น้ำที่มองไม่เห็น ไปไกลหลายกิโลเมตร, ทำให้คนและสัตว์ขาดอากาศหายใจ",
+   "segment": "out/lake-nyos/vo/segments-vs-r3/B11.wav",
+   "segStart": 86.235,
+   "segEnd": 96.15,
+   "speechOnRaw": 0.1303,
+   "speechOffRaw": 9.8133,
+   "edgeMarginSec": 0.102
+  },
+  "B12": {
+   "vo": "ตั้งแต่ปี 2001 ทะเลสาบนีออสมีท่อคอยดึงก๊าซขึ้นมา ให้มันค่อย ๆ หายใจออกทีละนิด",
+   "tts": "ตั้งแต่ปี 2001 ทะเลสาบนีออสมีท่อคอยดึงก๊าซขึ้นมา ให้มันค่อย ๆ หายใจออกทีละนิด",
+   "segment": "out/lake-nyos/vo/segments-vs-r3/B12.wav",
+   "segStart": 96.15,
+   "segEnd": 103.0,
+   "speechOnRaw": 0.1008,
+   "speechOffRaw": 6.7289,
+   "edgeMarginSec": 0.101
+  },
+  "B13": {
+   "vo": "แต่ยังมีอีกทะเลสาบ ที่ใหญ่กว่ามาก มีคนอยู่รอบ ๆ นับล้าน ก้นของมันก็มีก๊าซอัดอยู่… แล้วถ้าวันหนึ่ง มันหายใจออกล่ะ?",
+   "tts": "แต่ยังมีอีกทะเลสาบ ที่ใหญ่กว่ามาก มีคนอยู่รอบ ๆ นับล้าน ก้นของมันก็มีก๊าซอัดอยู่, แล้วถ้าวันหนึ่ง มันหายใจออกล่ะ?",
+   "segment": "out/lake-nyos/vo/segments-vs-r3/B13.wav",
+   "segStart": 103.0,
+   "segEnd": 113.24,
+   "speechOnRaw": 0.1286,
+   "speechOffRaw": 10.0353,
+   "edgeMarginSec": 0.129
+  }
+ },
+ "anchors": [
+  {
+   "id": "B00-a1",
+   "beat": "B00",
+   "text": "ถ้าคืนนี้",
+   "estOn": 0,
+   "estEnd": 0,
+   "onRaw": 0.2,
+   "endRaw": 1.2,
+   "firstWord": "ถ"
+  },
+  {
+   "id": "B00-a2",
+   "beat": "B00",
+   "text": "อะไรบางอย่างขึ้นมาจากทะเลสาบ",
+   "estOn": 0,
+   "estEnd": 0,
+   "onRaw": 1.28,
+   "endRaw": 3.18,
+   "firstWord": " อะไร"
+  },
+  {
+   "id": "B00-a3",
+   "beat": "B00",
+   "text": "คุณจะรู้ตัวไหม",
+   "estOn": 0,
+   "estEnd": 0,
+   "onRaw": 4.64,
+   "endRaw": 5.64,
+   "firstWord": "ค"
+  },
+  {
+   "id": "B01-a1",
+   "beat": "B01",
+   "text": "คนราว 1,700 คน",
+   "estOn": 0,
+   "estEnd": 0,
+   "onRaw": 0.545,
+   "endRaw": 2.145,
+   "firstWord": "คน"
+  },
+  {
+   "id": "B01-a2",
+   "beat": "B01",
+   "text": "ตายในคืนเดียว",
+   "estOn": 0,
+   "estEnd": 0,
+   "onRaw": 2.285,
+   "endRaw": 3.485,
+   "firstWord": " ต"
+  },
+  {
+   "id": "B01-a3",
+   "beat": "B01",
+   "text": "ไม่ตื่นอีกเลย",
+   "estOn": 0,
+   "estEnd": 0,
+   "onRaw": 5.865,
+   "endRaw": 7.165,
+   "firstWord": " ไม"
+  },
+  {
+   "id": "B02-a1",
+   "beat": "B02",
+   "text": "ปี 1986 ที่แคเมอรูน",
+   "estOn": 0,
+   "estEnd": 0,
+   "onRaw": 0.4993,
+   "endRaw": 3.135,
+   "firstWord": "ป"
+  },
+  {
+   "id": "B02-a2",
+   "beat": "B02",
+   "text": "เสียงครืน",
+   "estOn": 0,
+   "estEnd": 0,
+   "onRaw": 6.095,
+   "endRaw": 6.835,
+   "firstWord": "เส"
+  },
+  {
+   "id": "B02-a3",
+   "beat": "B02",
+   "text": "ทะเลสาบนีออส",
+   "estOn": 0,
+   "estEnd": 0,
+   "onRaw": 7.835,
+   "endRaw": 8.915,
+   "firstWord": "ท"
+  },
+  {
+   "id": "B03-a1",
+   "beat": "B03",
+   "text": "เช้ามา",
+   "estOn": 0,
+   "estEnd": 0,
+   "onRaw": 0.4679,
+   "endRaw": 1.04,
+   "firstWord": "เช"
+  },
+  {
+   "id": "B03-a2",
+   "beat": "B03",
+   "text": "วัวล้มตายหลายพันตัว",
+   "estOn": 0,
+   "estEnd": 0,
+   "onRaw": 1.52,
+   "endRaw": 3.1,
+   "firstWord": " ว"
+  },
+  {
+   "id": "B03-a3",
+   "beat": "B03",
+   "text": "นกกับแมลงก็ตาย",
+   "estOn": 0,
+   "estEnd": 0,
+   "onRaw": 4.3,
+   "endRaw": 6.32,
+   "firstWord": "น"
+  },
+  {
+   "id": "B04-a1",
+   "beat": "B04",
+   "text": "แต่บ้านไม่พัง",
+   "estOn": 0,
+   "estEnd": 0,
+   "onRaw": 0.4501,
+   "endRaw": 1.27,
+   "firstWord": "แต"
+  },
+  {
+   "id": "B04-a2",
+   "beat": "B04",
+   "text": "ต้นไม้ไม่เป็นอะไร",
+   "estOn": 0,
+   "estEnd": 0,
+   "onRaw": 1.97,
+   "endRaw": 2.89,
+   "firstWord": " ต"
+  },
+  {
+   "id": "B04-a3",
+   "beat": "B04",
+   "text": "ไม่รู้ว่าเกิดอะไรขึ้น",
+   "estOn": 0,
+   "estEnd": 0,
+   "onRaw": 4.63,
+   "endRaw": 5.75,
+   "firstWord": "ไม"
+  },
+  {
+   "id": "B05-a1",
+   "beat": "B05",
+   "text": "ถ้าให้เดา",
+   "estOn": 0,
+   "estEnd": 0,
+   "onRaw": 0.4743,
+   "endRaw": 1.13,
+   "firstWord": "ถ"
+  },
+  {
+   "id": "B05-a2",
+   "beat": "B05",
+   "text": "สัตว์ร้าย",
+   "estOn": 0,
+   "estEnd": 0,
+   "onRaw": 3.37,
+   "endRaw": 3.99,
+   "firstWord": "ส"
+  },
+  {
+   "id": "B05-a3",
+   "beat": "B05",
+   "text": "สิ่งที่มองไม่เห็น",
+   "estOn": 0,
+   "estEnd": 0,
+   "onRaw": 4.93,
+   "endRaw": 5.89,
+   "firstWord": " ส"
+  },
+  {
+   "id": "B05-a4",
+   "beat": "B05",
+   "text": "อะไรบางอย่าง ที่ขึ้นมาจากทะเลสาบ",
+   "estOn": 0,
+   "estEnd": 0,
+   "onRaw": 7.27,
+   "endRaw": 10.17,
+   "firstWord": "อะไร"
+  },
+  {
+   "id": "B06-a1",
+   "beat": "B06",
+   "text": "ตอนนั้นมีทั้งข่าวลือ",
+   "estOn": 0,
+   "estEnd": 0,
+   "onRaw": 0.4966,
+   "endRaw": 1.635,
+   "firstWord": "ต"
+  },
+  {
+   "id": "B06-a2",
+   "beat": "B06",
+   "text": "ความเชื่อเรื่องวิญญาณ",
+   "estOn": 0,
+   "estEnd": 0,
+   "onRaw": 4.275,
+   "endRaw": 5.295,
+   "firstWord": "ค"
+  },
+  {
+   "id": "B07-a1",
+   "beat": "B07",
+   "text": "แต่ถ้าเป็นสัตว์ร้าย",
+   "estOn": 0,
+   "estEnd": 0,
+   "onRaw": 0.4858,
+   "endRaw": 1.455,
+   "firstWord": "แต"
+  },
+  {
+   "id": "B07-a2",
+   "beat": "B07",
+   "text": "ทำไมบ้านถึงไม่พัง",
+   "estOn": 0,
+   "estEnd": 0,
+   "onRaw": 5.555,
+   "endRaw": 7.135,
+   "firstWord": " ทำ"
+  },
+  {
+   "id": "B08-a1",
+   "beat": "B08",
+   "text": "เบาะแสอยู่ที่ทะเลสาบ",
+   "estOn": 0,
+   "estEnd": 0,
+   "onRaw": 0.9,
+   "endRaw": 1.76,
+   "firstWord": " อย"
+  },
+  {
+   "id": "B08-a2",
+   "beat": "B08",
+   "text": "น้ำเปลี่ยนเป็นสีแดงอมน้ำตาล",
+   "estOn": 0,
+   "estEnd": 0,
+   "onRaw": 3.3,
+   "endRaw": 5.04,
+   "firstWord": " น"
+  },
+  {
+   "id": "B09-a1",
+   "beat": "B09",
+   "text": "สีนั้นมาจากน้ำก้นทะเลสาบ",
+   "estOn": 0,
+   "estEnd": 0,
+   "onRaw": 0.355,
+   "endRaw": 2.295,
+   "firstWord": "ส"
+  },
+  {
+   "id": "B09-a2",
+   "beat": "B09",
+   "text": "ฆาตกรตัวจริง",
+   "estOn": 0,
+   "estEnd": 0,
+   "onRaw": 4.975,
+   "endRaw": 5.655,
+   "firstWord": "า"
+  },
+  {
+   "id": "B09-a3",
+   "beat": "B09",
+   "text": "ก๊าซคาร์บอนไดออกไซด์",
+   "estOn": 0,
+   "estEnd": 0,
+   "onRaw": 8.475,
+   "endRaw": 9.455,
+   "firstWord": " ก"
+  },
+  {
+   "id": "B10-a1",
+   "beat": "B10",
+   "text": "ก๊าซนี้ซึมมาจากแมกมาใต้ดิน",
+   "estOn": 0,
+   "estEnd": 0,
+   "onRaw": 0.42,
+   "endRaw": 2.46,
+   "firstWord": "ก"
+  },
+  {
+   "id": "B10-a2",
+   "beat": "B10",
+   "text": "น้ำอัดลม",
+   "estOn": 0,
+   "estEnd": 0,
+   "onRaw": 5.1,
+   "endRaw": 5.58,
+   "firstWord": "น"
+  },
+  {
+   "id": "B10-a3",
+   "beat": "B10",
+   "text": "ยังไม่มีใครรู้แน่",
+   "estOn": 0,
+   "estEnd": 0,
+   "onRaw": 8.9,
+   "endRaw": 10.32,
+   "firstWord": " ย"
+  },
+  {
+   "id": "B11-a1",
+   "beat": "B11",
+   "text": "ก๊าซนี้หนักกว่าอากาศ",
+   "estOn": 0,
+   "estEnd": 0,
+   "onRaw": 0.445,
+   "endRaw": 1.925,
+   "firstWord": "ก"
+  },
+  {
+   "id": "B11-a2",
+   "beat": "B11",
+   "text": "ไปไกลหลายกิโลเมตร",
+   "estOn": 0,
+   "estEnd": 0,
+   "onRaw": 5.845,
+   "endRaw": 7.125,
+   "firstWord": "ไป"
+  },
+  {
+   "id": "B11-a3",
+   "beat": "B11",
+   "text": "ขาดอากาศหายใจ",
+   "estOn": 0,
+   "estEnd": 0,
+   "onRaw": 8.485,
+   "endRaw": 9.8133,
+   "firstWord": "ข"
+  },
+  {
+   "id": "B12-a1",
+   "beat": "B12",
+   "text": "ตั้งแต่ปี 2001",
+   "estOn": 0,
+   "estEnd": 0,
+   "onRaw": 0.33,
+   "endRaw": 1.37,
+   "firstWord": "ต"
+  },
+  {
+   "id": "B12-a2",
+   "beat": "B12",
+   "text": "ท่อคอยดึงก๊าซขึ้นมา",
+   "estOn": 0,
+   "estEnd": 0,
+   "onRaw": 3.15,
+   "endRaw": 4.51,
+   "firstWord": "ท"
+  },
+  {
+   "id": "B12-a3",
+   "beat": "B12",
+   "text": "หายใจออกทีละนิด",
+   "estOn": 0,
+   "estEnd": 0,
+   "onRaw": 5.59,
+   "endRaw": 6.7289,
+   "firstWord": "ห"
+  },
+  {
+   "id": "B13-a1",
+   "beat": "B13",
+   "text": "แต่ยังมีอีกทะเลสาบ",
+   "estOn": 0,
+   "estEnd": 0,
+   "onRaw": 0.1286,
+   "endRaw": 1.7,
+   "firstWord": "แต"
+  },
+  {
+   "id": "B13-a2",
+   "beat": "B13",
+   "text": "มีคนอยู่รอบ ๆ นับล้าน",
+   "estOn": 0,
+   "estEnd": 0,
+   "onRaw": 3.04,
+   "endRaw": 4.72,
+   "firstWord": " ม"
+  },
+  {
+   "id": "B13-a3",
+   "beat": "B13",
+   "text": "มันหายใจออกล่ะ",
+   "estOn": 0,
+   "estEnd": 0,
+   "onRaw": 8.46,
+   "endRaw": 9.72,
+   "firstWord": " ม"
+  }
+ ],
+ "cutRule": [
+  "B00|B01: whisper mid 6.200 s -> cut 6.215 s (gap 0.910 s centre)",
+  "B01|B02: whisper mid 13.840 s -> cut 13.965 s (gap 0.990 s centre)",
+  "B02|B03: whisper mid 23.380 s -> cut 23.420 s (gap 0.920 s centre)",
+  "B03|B04: whisper mid 30.160 s -> cut 30.290 s (gap 0.900 s centre)",
+  "B04|B05: whisper mid 36.490 s -> cut 36.590 s (gap 0.940 s centre)",
+  "B05|B06: whisper mid 47.200 s -> cut 47.305 s (gap 0.990 s centre)",
+  "B06|B07: whisper mid 53.050 s -> cut 53.185 s (gap 0.970 s centre)",
+  "B07|B08: whisper mid 60.950 s -> cut 60.680 s (gap 0.620 s centre)",
+  "B08|B09: whisper mid 65.970 s -> cut 65.865 s (gap 0.150 s centre)",
+  "B09|B10: whisper mid 75.680 s -> cut 75.620 s (gap 0.160 s centre)",
+  "B10|B11: whisper mid 86.310 s -> cut 86.235 s (gap 0.250 s centre)",
+  "B11|B12: whisper mid 96.340 s -> cut 96.150 s (gap 0.200 s centre)",
+  "B12|B13: whisper mid 102.960 s -> cut 103.000 s (gap 0.240 s centre)"
+ ],
+ "clampedAnchors": 9
+}
