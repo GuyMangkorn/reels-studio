@@ -7,7 +7,7 @@ import {STILL_CAMERA} from '../kit/camera';
 import {asmPoseAt, assemblyParts, cartOnlyPose, paintAssembly, paintCartSide, paintHubs, type AsmPose} from '../worldfog/assembly';
 import {doorPt, paintCarExterior, paintCarInterior, paintFarShape, paintSedanBody, paintSedanDoor, rimAt, SEDAN_DOOR} from '../worldfog/car';
 import {drawFigure, shoulderHeight, type Arm, type FigAnchors, type FigPose, type Who} from '../worldfog/cast';
-import type {FaceState} from '../worldfog/head';
+import type {FaceState} from '../kit/head';
 import {Architecture, Beam, FogVeil, Glass, Grade, Grain, Halos, InteriorAir, LensGlow, Rim} from '../worldfog/layers';
 import type {InteriorLight} from '../worldfog/draw';
 import {paintOutside} from '../worldfog/outside';
