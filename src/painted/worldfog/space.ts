@@ -140,13 +140,16 @@ export const SHOT_ROWS: ShotRow[] = [
   {id: 'S03-SH04', g0: 1920, len: 42, setup: 'CAM-GLASS-OUT'},
   {id: 'S03-SH05', g0: 1962, len: 72, setup: 'CAM-GLASS-OUT'},
   {id: 'S03-SH06', g0: 2034, len: 36, setup: 'CAM-GLASS-OUT'},
-  {id: 'S03-SH07', g0: 2070, len: 90, setup: 'CAM-INT-SIDE'},
-  {id: 'S04-SH01', g0: 2160, len: 240, setup: 'CAM-INT-2S'},
-  {id: 'S04-SH02', g0: 2400, len: 120, setup: 'CAM-INT-DOOR-REV'},
-  {id: 'S04-SH03', g0: 2520, len: 90, setup: 'CAM-GLASS-OUT'},
+  // SS-R4 (WFOG-SCRIPT-R5): S03-SH06A is the held look at the lit window plate (new); old starts move +120 (S03-SH07), +180 (S04-SH01), +270 (S04-SH02, S04-SH03).
+  {id: 'S03-SH06A', g0: 2070, len: 120, setup: 'CAM-GLASS-OUT'},
+  {id: 'S03-SH07', g0: 2190, len: 150, setup: 'CAM-INT-SIDE'},
+  {id: 'S04-SH01', g0: 2340, len: 330, setup: 'CAM-INT-2S'},
+  {id: 'S04-SH02', g0: 2670, len: 120, setup: 'CAM-INT-DOOR-REV'},
+  {id: 'S04-SH03', g0: 2790, len: 210, setup: 'CAM-GLASS-OUT'},
 ];
 export const SHOT_G0: Record<string, number> = Object.fromEntries(SHOT_ROWS.map((r) => [r.id, r.g0]));
-export const TOTAL_FRAMES = 2610;
+/** Composition length (SS-R4): last painted frame G2999, hard cut (MK-WF-DEP-07). */
+export const TOTAL_FRAMES = 3000;
 
 // ------------------------------------------------------------------ ST-04 ASM-PATH (story clock)
 
@@ -188,34 +191,43 @@ export const asmAt = (G: number): AsmState => {
     const m = G - 920;
     return {...STOP, moving: false, sway: 3 * DEG * (1 - ease(m / 10)), travel: 2.4 - STOP.zs};
   }
-  // S03-SH06 f6-f30: pulled back 12 cm, the jammed wheel dragging; S03-SH07 f36-f89: pushed in through the door.
+  // S03-SH06 f6-f30: pulled back 12 cm, the jammed wheel dragging; held at 0.74 through S03-SH06A; S03-SH07 f96-f149 (SS-R4):
+  // pushed in through the door, G2286-G2339.
   const back = ease(seg(G, 2040, 2064));
-  const push = ease(seg(G, 2106, 2159));
+  const push = ease(seg(G, 2286, 2339));
   const zs = lerp(lerp(STOP.zs, 0.74, back), -0.45, push);
-  const moving = (G >= 2040 && G < 2064) || (G >= 2106 && G < 2159);
+  const moving = (G >= 2040 && G < 2064) || (G >= 2286 && G < 2339);
   return {xs: STOP.xs, zs, moving, sway: 0, travel: 2.4 - STOP.zs + 0.12 * back + 1.19 * push};
 };
 
 // ------------------------------------------------------------------ ST-05 FOG-STATE, ST-06 light, ST-07, ST-09
 
-/** FOG-STATE as a continuous level: 0 FS0, 1 FS1, 2 FS2, 3 FS3 (eased transitions). */
+/** FOG-STATE as a continuous level: 0 FS0, 1 FS1, 2 FS2, 3 FS3 (eased transitions). FS2→FS3 G2802-G2973 (SS-R4 RT-5). */
 export const fogAt = (G: number) =>
-  G < 186 ? 0 : G < 240 ? ease(seg(G, 186, 240)) : G < 246 ? 1 : G < 348 ? 1 + ease(seg(G, 246, 348)) : G < 2526 ? 2 : 2 + ease(seg(G, 2526, 2598));
+  G < 186 ? 0 : G < 240 ? ease(seg(G, 186, 240)) : G < 246 ? 1 : G < 348 ? 1 + ease(seg(G, 246, 348)) : G < 2802 ? 2 : 2 + ease(seg(G, 2802, 2973));
 
-/** Canopy lamp level 0..1 per lamp index (0, 1 near z 7; 2, 3 far z 11): S04-SH03 dims far f6-f48, near f30-f78. */
-export const lampAt = (G: number, i: number) => (i >= 2 ? 1 - ease(seg(G, 2526, 2568)) : 1 - ease(seg(G, 2550, 2598)));
+/**
+ * Canopy lamp level 0..1 per lamp index (LAMPS in outside.ts: 0 near-left and 1 near-right at z 7; 2, 3 far at z 11).
+ * SS-R4 RT-5 (S04-SH03): far pair dims to nothing G2802-G2874; near-left to nothing G2862-G2940; near-right to 0.35 over
+ * G2862-G2940, holds to G2955, then out G2955-G2973 (the last light, after the line).
+ */
+export const lampAt = (G: number, i: number) => {
+  if (i >= 2) return 1 - ease(seg(G, 2802, 2874));
+  if (i === 0) return 1 - ease(seg(G, 2862, 2940));
+  return (1 - 0.65 * ease(seg(G, 2862, 2940))) * (1 - ease(seg(G, 2955, 2973)));
+};
 
 /** Assembly `light` (VD04): 0 until G1806, eased to 1 by G1830. */
 export const lightAt = (G: number) => ease(seg(G, 1806, 1830));
 
-/** Torch on (ST-07): G1764-G2410. */
-export const torchOnAt = (G: number) => (G >= 1764 && G < 2410 ? 1 : 0);
+/** Torch on (ST-07): G1764-G2680 (SS-R4: off at S04-SH02 f10). */
+export const torchOnAt = (G: number) => (G >= 1764 && G < 2680 ? 1 : 0);
 
 /** Crouch-to-stand rise on G1640-G1668 (S03-SH01 f110-f138, finished in S03-SH02 f12): 0 crouched, 1 standing. */
 export const riseAt = (G: number) => ease(seg(G, 1640, 1668));
 
-/** Door leaf open fraction (ST-07): opening G2082-G2112, closing G2172-G2196. */
-export const doorAt = (G: number) => (G < 2172 ? ease(seg(G, 2082, 2112)) : 1 - ease(seg(G, 2172, 2196)));
+/** Door leaf open fraction (ST-07, SS-R4): opening G2262-G2292 (S03-SH07 f72-f102), closing G2352-G2376 (S04-SH01 f12-f36). */
+export const doorAt = (G: number) => (G < 2352 ? ease(seg(G, 2262, 2292)) : 1 - ease(seg(G, 2352, 2376)));
 
 /** VD17 fog-lens amount A (ST-09). `zs` is the current ASM-PATH depth (S02-SH04 depends on it). */
 export const lensAt = (G: number, zs = asmAt(G).zs) => {

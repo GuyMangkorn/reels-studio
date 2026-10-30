@@ -9,8 +9,11 @@ import {INK, VD18, ell, glaze, inkLine, lineOf, modelPart, planeBand, rimScaleOf
 export type Brow = 'flat' | 'up' | 'worry' | 'angry' | 'quirk';
 export type Eyes = 'dot' | 'wide' | 'half' | 'shut';
 export type Mouth = 'flat' | 'smile' | 'o' | 'wavy' | 'frown' | 'gasp' | 'talk';
-/** `open` 0..1 opens a `talk` mouth (pose tracks drive it; TTS amplitude can replace it later); `squint` closes the lids. */
-export type FaceState = {brow: Brow; eyes: Eyes; look: Pt; mouth: Mouth; open?: number; squint?: number};
+/**
+ * `open` 0..1 opens a `talk` mouth (pose tracks drive it; TTS amplitude can replace it later); `squint` closes the lids.
+ * `browTo` with `browMix` 0..1 moves the brow line continuously from `brow` toward `browTo` (SS-R4 RT-2 occupant relax).
+ */
+export type FaceState = {brow: Brow; eyes: Eyes; look: Pt; mouth: Mouth; open?: number; squint?: number; browTo?: Brow; browMix?: number};
 /** `long`: loose shoulder-length hair (the narrator, brief VD03 R2). `lines`: age lines (older occupant, user Q3). */
 export type HeadStyle = {skin: string; hair: string; cut: 'short' | 'tied' | 'bob' | 'hood' | 'long'; hood?: string; lines?: boolean};
 
@@ -18,6 +21,13 @@ export type HeadStyle = {skin: string; hair: string; cut: 'short' | 'tied' | 'bo
 export const HEAD_SPAN = 2.27;
 export const CHIN = 1.22;
 export const BROW_Y: Record<Brow, [number, number]> = {flat: [-0.24, -0.24], up: [-0.33, -0.31], worry: [-0.34, -0.2], angry: [-0.16, -0.32], quirk: [-0.24, -0.24]};
+/** Brow line heights of a face: the `brow` table entry, blended toward `browTo` by `browMix` when both are set. */
+const browY = (face: FaceState): [number, number] => {
+  const a = BROW_Y[face.brow];
+  if (!face.browTo || !face.browMix) return a;
+  const b = BROW_Y[face.browTo], u = face.browMix;
+  return [a[0] + (b[0] - a[0]) * u, a[1] + (b[1] - a[1]) * u];
+};
 const WHITE = '#fbf7ee', MOUTH = '#3b2a24', AGE = '#8a5a43';
 
 export const headOutline = (n = 40): Pt[] =>
@@ -150,7 +160,7 @@ export const paintHeadFront = (p: Painter, seed: number, cx: number, cy: number,
   part = 50;
   line = 50;
   for (const side of [-1, 1]) {
-    let [inner, outer] = BROW_Y[face.brow];
+    let [inner, outer] = browY(face);
     if (face.brow === 'quirk' && side === 1) [inner, outer] = [-0.34, -0.36];
     fill(style.hair === '#8f8a84' ? '#6f6a64' : style.hair, [[side * 0.22, inner - 0.03], [side * 0.6, outer - 0.03], [side * 0.6, outer + 0.03], [side * 0.22, inner + 0.03]], 6);
   }
@@ -261,7 +271,7 @@ export const paintHeadSide = (p: Painter, seed: number, cx: number, cy: number, 
   }
   part = 50;
   line = 50;
-  const [inner, outer] = BROW_Y[face.brow];
+  const [inner, outer] = browY(face);
   fill(style.hair === '#8f8a84' ? '#6f6a64' : style.hair, [[0.46, outer - 0.03], [0.8, inner - 0.03], [0.8, inner + 0.03], [0.46, outer + 0.03]], 6);
   const m = face.mouth, o = face.open ?? 0;
   if (m === 'smile') fill(MOUTH, [[0.66, 0.56], [0.95, 0.54], [0.9, 0.66], [0.78, 0.7], [0.7, 0.64]], 4);

@@ -3,11 +3,11 @@ import type {Scene, Timeline} from '../../scenes/types';
 import type {EpisodeVideos} from '../types';
 
 /**
- * WFOG-EP01-SHORT (script WFOG-SCRIPT-R2, brief VB-WFOG-EP01-SHORT-R3, scene sheets WFOG-EP01-SHORT-SS-R3.2, Full tier):
- * painted 2D plates (`src/painted/shots/worldfog.tsx`) on the SS-R3.1 global ranges, one scene per story scene S01-S04.
+ * WFOG-EP01-SHORT (script WFOG-SCRIPT-R5, brief VB-WFOG-EP01-SHORT-R4, scene sheets WFOG-EP01-SHORT-SS-R4, Full tier):
+ * painted 2D plates (`src/painted/shots/worldfog.tsx`) on the SS-R4 global ranges (23 shots, 3000 frames), one scene per story scene S01-S04.
  * Boss placeholder timeline: picture only (no narration, captions, music or SFX; Editor owns them and re-times after
  * TTS, PD04). Each plate samples the story clocks at its own shot start, so moving a cue never changes its picture.
- * Ending: hard cut on G2609 (MK-WF-DEP-07): `C_seamless` with `loopBlendFrames: 0` has no hold, no fade and no blend.
+ * Ending: hard cut on G2999 (MK-WF-DEP-07): `C_seamless` with `loopBlendFrames: 0` has no hold, no fade and no blend.
  * Fiction marker `เรื่องสมมติ • EP1` on S01-SH01 only (ST-08). Render with `--gl=angle`.
  */
 const FPS = 30;
