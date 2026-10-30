@@ -116,3 +116,13 @@ export const makePainter = (brush: Brush, {t, frame, alpha = 1, boilEvery = 2, s
     layer: (a, base) => makePainter(brush, {t, frame, alpha: alpha * a, boilEvery, seedBase: base, fade}),
   };
 };
+
+/** A painter whose wash, flat and ink colours are mixed `u` toward `toward` (the alpha is unchanged): a colour-mix fade (BLOOP-SHEETS-R8 SH07). Colours given straight to `brush` (hatch) stay unmixed. */
+export const tintPainter = (q: Painter, toward: string, u: number): Painter => ({
+  ...q,
+  wash: (c, o, pts, bleed, texture) => q.wash(mixColor(c, toward, u), o, pts, bleed, texture),
+  flat: (c, pts) => q.flat(mixColor(c, toward, u), pts),
+  ink: (id, name, c, w) => q.ink(id, name, mixColor(c, toward, u), w),
+  inkStill: (id, name, c, w) => q.inkStill(id, name, mixColor(c, toward, u), w),
+  layer: (a, base) => tintPainter(q.layer(a, base), toward, u),
+});

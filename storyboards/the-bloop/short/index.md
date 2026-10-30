@@ -1,16 +1,16 @@
 # BLOOP-EP01-SHORT — storyboard index
 
-Deliverable `BLOOP-EP01-SHORT`, Full tier. Handoff revision **`BLOOP-SHEETS-R4`** (Mark, 2026-10-30). Status: **ready-for-dev** (blockout; timing estimated). Evidence: runtime none · renders/samples none · audio/subtitle sync none (no TTS, `O-1`) · user approval none.
-Inputs: script [short/script.md](../../../scripts/the-bloop/short/script.md) `BLOOP-SCRIPT-R5` (user-approved 2026-10-30) · fact-check [short/fact-check.md](../../../scripts/the-bloop/short/fact-check.md) `BLOOP-FACTCHECK-R6` (`ready-for-storyboard`) · brief [visual-brief.md](visual-brief.md) `BLOOP-BRIEF-R3` (`ready-for-mark`) · delivery record [scripts/the-bloop/delivery.md](../../../scripts/the-bloop/delivery.md).
-Target: `claude/bloop-p5-svg-viz-c10597` @ `cab9833` · 30 fps · 1080×1920 · durationFrames **1782 (estimated)** · composition offset 0.
+Deliverable `BLOOP-EP01-SHORT`, Full tier. Handoff revision **`BLOOP-SHEETS-R8`** (Mark, 2026-10-30). Status: **ready-for-dev**. Timing: checked-with-audio (frames on Editor's measured take 3 knots). Evidence: runtime/render of the re-time none yet · voice picked by the user (Gemini Charon take 3) · user accepted ≈ 67 s (`delivery.md`) · sheet approval none.
+Inputs: script [short/script.md](../../../scripts/the-bloop/short/script.md) `BLOOP-SCRIPT-R5` (user-approved 2026-10-30) · fact-check [short/fact-check.md](../../../scripts/the-bloop/short/fact-check.md) `BLOOP-FACTCHECK-R6` (`ready-for-storyboard`) · brief [visual-brief.md](visual-brief.md) `BLOOP-BRIEF-R8` (`ready-for-mark`; B10 hero ending H01–H10, B04 hero dream creature H11–H13) · delivery record [scripts/the-bloop/delivery.md](../../../scripts/the-bloop/delivery.md).
+Target: `claude/bloop-p5-svg-viz-c10597` @ `cab9833` · 30 fps · 1080×1920 · durationFrames **2127 (70.9 s: take 3 VO + the R7 B10 ending at H03 defaults; see Slack options)** · composition offset 0.
 
 | Document | Revision | Status |
 | --- | --- | --- |
-| [visual-brief.md](visual-brief.md) | `BLOOP-BRIEF-R3` (Film, 2026-10-30) | ready-for-mark; looks L-A1, L-B2 (CRD-2), L-CP3; blockout pass 1 review FR01–FR11 |
-| [sc01-b01-b03.md](sc01-b01-b03.md) | `BLOOP-SHEETS-R4` | ready-for-dev · SH01–SH04 |
-| [sc01-b04-b06.md](sc01-b04-b06.md) | `BLOOP-SHEETS-R4` | ready-for-dev · SH05–SH08 |
-| [sc01-b07-b08.md](sc01-b07-b08.md) | `BLOOP-SHEETS-R4` | ready-for-dev · SH09–SH12 |
-| [sc01-b09-b10.md](sc01-b09-b10.md) | `BLOOP-SHEETS-R4` | ready-for-dev · SH13 |
+| [visual-brief.md](visual-brief.md) | `BLOOP-BRIEF-R8` (Film, 2026-10-30) | ready-for-mark; looks L-A1, L-B2 (CRD-2), L-CP3; FR01–FR11; B10 hero ending H01–H10; B04 hero dream creature H11–H13 (R8, staging pending to Mark) |
+| [sc01-b01-b03.md](sc01-b01-b03.md) | `BLOOP-SHEETS-R8` | ready-for-dev · SH01–SH04 |
+| [sc01-b04-b06.md](sc01-b04-b06.md) | `BLOOP-SHEETS-R8` | ready-for-dev · SH05–SH08 |
+| [sc01-b07-b08.md](sc01-b07-b08.md) | `BLOOP-SHEETS-R8` | ready-for-dev · SH09–SH12 |
+| [sc01-b09-b10.md](sc01-b09-b10.md) | `BLOOP-SHEETS-R8` | ready-for-dev · SH13 |
 
 **Readiness scope.** `ready-for-dev` permits Boss's plate scaffolding and Editor's blockout with placeholder art. It does not cover finished art. Look picks (user, 2026-10-30): **L-A1** (deep water, also `SET-COLD` and the diagram washes) and **L-B2 / CRD-2** (`CR-DREAM`); Film's look frames own their detail. **L-CP3** (`CR-REAL`, all painted, user 2026-10-30). The sheets fix bounds, anchors, paths and timing only, so every shot holds for any look the user picks. A look pick that moves an anchor beyond its stated tolerance, or that changes a medium, comes back to Mark (and Film, under brief "On revision").
 
@@ -20,66 +20,66 @@ One story scene, `BLOOP-EP01-SHORT-S01` (the script's single scene), split into 
 
 | Sheet | Beats | Scene-local range [start, endEx) | Shots |
 | --- | --- | --- | --- |
-| [sc01-b01-b03](sc01-b01-b03.md) | `B01`–`B03` | [0, 573) | SH01 [0,216) · SH02 [216,372) · SH03 [372,468) · SH04 [468,573) |
-| [sc01-b04-b06](sc01-b04-b06.md) | `B04`–`B06` | [573, 1053) | SH05 [573,738) · SH06 [738,801) · SH07 [801,903) · SH08 [903,1053) |
-| [sc01-b07-b08](sc01-b07-b08.md) | `B07`–`B08` | [1053, 1467) | SH09 [1053,1127) · SH10 [1127,1173) · SH11 [1173,1271) · SH12 [1271,1467) |
-| [sc01-b09-b10](sc01-b09-b10.md) | `B09`–`B10` | [1467, 1782) | SH13 [1467,1782) |
+| [sc01-b01-b03](sc01-b01-b03.md) | `B01`–`B03` | [0, 684) | SH01 [0,224) · SH02 [224,399) · SH03 [399,518) · SH04 [518,684) |
+| [sc01-b04-b06](sc01-b04-b06.md) | `B04`–`B06` | [684, 1204) | SH05 [684,849) · SH06 [849,919) · SH07 [919,1033) · SH08 [1033,1204) |
+| [sc01-b07-b08](sc01-b07-b08.md) | `B07`–`B08` | [1204, 1696) | SH09 [1204,1267) · SH10 [1267,1329) · SH11 [1329,1446) · SH12 [1446,1696) |
+| [sc01-b09-b10](sc01-b09-b10.md) | `B09`–`B10` | [1696, 2127) | SH13 [1696,2127) (B10 phases VO-relative) |
 
 Shots per beat: `B01` 1 (SH01, which also carries the first `B02` phrase) · `B02` 1 · `B03` 2 · `B04` 2 · `B05` 1 · `B06` 1 · `B07` 3 (SH11 runs into `B08` until the second phrase) · `B08` 1 · `B09`+`B10` 1 (one continuous camera view, no cut: the brief's "the `B09` frame is `B10`'s start frame"). 13 shots in all.
 
 Clocks: one scene from frame 0, so scene-local = composition-global. Shot-local `tl` = frame − shot start. Sheets write `G<frame>` for composition frames and `L<frame>` for shot-local frames. Ranges are half-open.
 
-## Phrase anchors (timing, estimated)
+## Phrase anchors (timing, measured: Gemini Charon take 3)
 
-**Every event frame in the sheets is tied to one of these anchors.** They come from the script's syllable estimate (≈5.5 syll/s, 5.45 frames per syllable, written pauses), not from a read. When Niwat's read exists (`O-1`), Editor replaces each onset with the measured one and shifts every event by the same delta as its anchor; offsets inside a phrase scale with the phrase length. If a beat moves by more than ±10 frames or the total leaves 1,740–1,800 frames, return to Mark.
+**Every event frame in the sheets is tied to one of these anchors.** Since `BLOOP-SHEETS-R8` they are Editor's measured knots for the user-picked voice (Gemini Charon, take 2 B01–B06 + var1 B07–B10; `scripts/the-bloop/short/timing-gemini-take3.json`, `narration-timeline-gemini-take3.json`, `gemini-measure-take3.json`; whisper word times aligned to the R5 VO, so about ±2 f). Beat starts (Editor): B01 0, B02 198, B03 399, B04 684, B05 915, B06 1033, B07 1204, B08 1402, B09 1696, B10 1910. Shot cuts sit on Editor's beat starts or on phrase onsets as each shot block states. If the read changes again, Editor sends new knots and Mark re-times.
 
-| Anchor | Thai phrase (VO, verbatim) | Onset G | End G |
-| --- | --- | --- | --- |
-| `B01-a1` | เสียงนี้… | 9 | 20 |
-| `B01-a2` | ไมค์ใต้ทะเลจับได้ปี 1997 | 30 | 106 |
-| `B01-a3` | มันดังมาก | 108 | 124 |
-| `B01-a4` | จนนักวิจัยไม่เคยได้ยินอะไรแบบนี้ | 124 | 190 |
-| `B02-a1` | ไมค์พวกนี้ | 198 | 214 |
-| `B02-a2` | โนอาหย่อนไว้ลึกใต้แปซิฟิก | 216 | 265 |
-| `B02-a3` | เพื่อฟังแผ่นดินไหวใต้ทะเล ("แผ่นดินไหว" ≈ G278) | 267 | 311 |
-| `B02-a4` | แต่ปีนั้น | 313 | 329 |
-| `B02-a5` | มันได้ยินเสียงนี้ซ้ำหลายครั้ง ("ซ้ำ" ≈ G352) | 330 | 370 |
-| `B03-a1` | เสียงบลูปของจริงต่ำมาก | 374 | 407 |
-| `B03-a2` | ที่ได้ยินนี่ถูกเร่ง 16 เท่า… | 407 | 456 |
-| `B03-a3` | เสียงจริงไต่สูงขึ้นอย่างรวดเร็ว | 468 | 512 |
-| `B03-a4` | ตลอดราวหนึ่งนาที | 514 | 546 |
-| `B03-a5` | ฟังคล้ายเสียงสัตว์ร้อง | 547 | 572 |
-| `B04-a1` | มันดังจนไมค์หลายตัวได้ยิน | 575 | 617 |
-| `B04-a2` | จากไกลกว่าห้าพันกิโลเมตร | 619 | 663 |
-| `B04-a3` | นักวิทยาศาสตร์บางคนก็สงสัยว่าเป็นสัตว์ | 665 | 736 |
-| `B04-a4` | ส่วนชาวเน็ต… | 738 | 754 |
-| `B04-a5` | จินตนาการไปถึงสัตว์ยักษ์ | 766 | 800 |
-| `B05-a1` | แต่ | 801 | 807 |
-| `B05-a2` | ทิศของเสียง | 808 | 824 |
-| `B05-a3` | ชี้ไกลลงไปทางใต้… | 828 | 861 |
-| `B05-a4` | ทางขั้วโลกใต้ | 876 | 898 |
-| `B06-a1` | เพราะทะเลลึกมี | 905 | 927 |
-| `B06-a2` | "ช่องเสียง" | 927 | 938 |
-| `B06-a3` | ที่พาเสียงต่ำไปได้ไกลมาก | 940 | 984 |
-| `B06-a4` | ไมค์พวกนี้ถูกหย่อนไว้ในช่องนั้นพอดี | 988 | 1048 |
-| `B07-a1` | หลายปีต่อมา | 1055 | 1077 |
-| `B07-a2` | ไมค์ใกล้แอนตาร์กติกา… | 1079 | 1112 |
-| `B07-a3` | เจอเสียงที่ลายคลื่นคล้ายกันมาก | 1127 | 1171 |
-| `B07-a4` | จากภูเขาน้ำแข็งยักษ์ที่กำลัง | 1173 | 1222 |
-| `B07-a5` | แตกร้าว | 1222 | 1233 |
-| `B08-a1` | ราวปี 2012 | 1238 | 1271 |
-| `B08-a2` | โนอาประกาศว่า | 1271 | 1298 |
-| `B08-a3` | บลูปสอดคล้องกับเสียง | 1298 | 1325 |
-| `B08-a4` | "แผ่นดินไหวน้ำแข็ง" | 1325 | 1352 |
-| `B08-a5` | ไมค์ที่ฟังแผ่นดินไหว | 1356 | 1389 |
-| `B08-a6` | ก็น่าจะได้ยินแผ่นดินไหวจริง ๆ… | 1389 | 1444 |
-| `B08-a7` | ของน้ำแข็ง | 1452 | 1467 |
-| `B09-a1` | สัตว์ยักษ์ตัวนั้นมีแค่ในจินตนาการ | 1469 | 1529 |
-| `B09-a2` | เสียงที่ไต่สูงเหมือนสัตว์ร้อง | 1531 | 1569 |
-| `B09-a3` | สอดคล้องกับเสียงน้ำแข็งแตกร้าว… | 1569 | 1609 |
-| `B10-a1` | คุณคิดว่ามันคืออะไรกันแน่? | 1629 | 1678 |
+| Anchor | Thai phrase (VO, verbatim) | Onset G (measured) | End G (measured) | R7 estimate onset |
+| --- | --- | --- | --- | --- |
+| `B01-a1` | เสียงนี้… | 12 | 28 | 9 |
+| `B01-a2` | ไมค์ใต้ทะเลจับได้ปี 1997 | 38 | 84 | 30 |
+| `B01-a3` | มันดังมาก | 84 | 135 | 108 |
+| `B01-a4` | จนนักวิจัยไม่เคยได้ยินอะไรแบบนี้ | 142 | 189 | 124 |
+| `B02-a1` | ไมค์พวกนี้ | 204 | 221 | 198 |
+| `B02-a2` | โนอาหย่อนไว้ลึกใต้แปซิฟิก | 224 | 258 | 216 |
+| `B02-a3` | เพื่อฟังแผ่นดินไหวใต้ทะเล ("แผ่นดินไหว" ≈ G278) | 267 | 313 | 267 |
+| `B02-a4` | แต่ปีนั้น | 323 | 341 | 313 |
+| `B02-a5` | มันได้ยินเสียงนี้ซ้ำหลายครั้ง ("ซ้ำ" ≈ G352) | 341 | 391 | 330 |
+| `B03-a1` | เสียงบลูปของจริงต่ำมาก | 403 | 453 | 374 |
+| `B03-a2` | ที่ได้ยินนี่ถูกเร่ง 16 เท่า… | 464 | 506 | 407 |
+| `B03-a3` | เสียงจริงไต่สูงขึ้นอย่างรวดเร็ว | 518 | 575 | 468 |
+| `B03-a4` | ตลอดราวหนึ่งนาที | 575 | 616 | 514 |
+| `B03-a5` | ฟังคล้ายเสียงสัตว์ร้อง | 630 | 672 | 547 |
+| `B04-a1` | มันดังจนไมค์หลายตัวได้ยิน | 688 | 730 | 575 |
+| `B04-a2` | จากไกลกว่าห้าพันกิโลเมตร | 730 | 777 | 619 |
+| `B04-a3` | นักวิทยาศาสตร์บางคนก็สงสัยว่าเป็นสัตว์ | 787 | 843 | 665 |
+| `B04-a4` | ส่วนชาวเน็ต… | 849 | 867 | 738 |
+| `B04-a5` | จินตนาการไปถึงสัตว์ยักษ์ | 873 | 907 | 766 |
+| `B05-a1` | แต่ | 919 | 924 | 801 |
+| `B05-a2` | ทิศของเสียง | 924 | 947 | 808 |
+| `B05-a3` | ชี้ไกลลงไปทางใต้… | 947 | 994 | 828 |
+| `B05-a4` | ทางขั้วโลกใต้ | 998 | 1025 | 876 |
+| `B06-a1` | เพราะทะเลลึกมี | 1037 | 1059 | 905 |
+| `B06-a2` | "ช่องเสียง" | 1059 | 1080 | 927 |
+| `B06-a3` | ที่พาเสียงต่ำไปได้ไกลมาก | 1080 | 1125 | 940 |
+| `B06-a4` | ไมค์พวกนี้ถูกหย่อนไว้ในช่องนั้นพอดี | 1137 | 1195 | 988 |
+| `B07-a1` | หลายปีต่อมา | 1208 | 1230 | 1055 |
+| `B07-a2` | ไมค์ใกล้แอนตาร์กติกา… | 1237 | 1267 | 1079 |
+| `B07-a3` | เจอเสียงที่ลายคลื่นคล้ายกันมาก | 1267 | 1323 | 1127 |
+| `B07-a4` | จากภูเขาน้ำแข็งยักษ์ที่กำลัง | 1329 | 1369 | 1173 |
+| `B07-a5` | แตกร้าว | 1369 | 1387 | 1222 |
+| `B08-a1` | ราวปี 2012 | 1407 | 1424 | 1238 |
+| `B08-a2` | โนอาประกาศว่า | 1446 | 1474 | 1271 |
+| `B08-a3` | บลูปสอดคล้องกับเสียง | 1497 | 1524 | 1298 |
+| `B08-a4` | "แผ่นดินไหวน้ำแข็ง" | 1524 | 1561 | 1325 |
+| `B08-a5` | ไมค์ที่ฟังแผ่นดินไหว | 1582 | 1617 | 1356 |
+| `B08-a6` | ก็น่าจะได้ยินแผ่นดินไหวจริง ๆ… | 1617 | 1658 | 1389 |
+| `B08-a7` | ของน้ำแข็ง | 1661 | 1679 | 1452 |
+| `B09-a1` | สัตว์ยักษ์ตัวนั้นมีแค่ในจินตนาการ | 1700 | 1762 | 1469 |
+| `B09-a2` | เสียงที่ไต่สูงเหมือนสัตว์ร้อง | 1773 | 1819 | 1531 |
+| `B09-a3` | สอดคล้องกับเสียงน้ำแข็งแตกร้าว… | 1822 | 1888 | 1569 |
+| `B10-a1` | คุณคิดว่ามันคืออะไรกันแน่? | 1914 | 1965 | 1629 |
 
-Non-VO anchors: `B09` pause [1609,1629) (0.67 s); `B10` silence [1678,1692) (0.47 s), rise [1692,1716) (0.8 s), rush [1716,1758) (1.4 s), fade [1758,1779) to the first full-black frame G1779; G1779–1781 black. If the read runs long, the script's trim order applies (step 2 shortens the tease to rise 21 / rush 36 / fade 18 frames, never less).
+Non-VO anchors: `B09` pause K02 = [`B09-a3` end, Qs) = [1888,1914) (26 f). `B10` (brief H03, `BLOOP-FACTCHECK-R7` `R7-R2`) stays **VO-relative**: P1 = [Qs, Qe + 9) with the first creature frame at Qs + 2, then P2 36 f (27–60), P3 21 f (15–30), P4 30 f (24–42), P5 36 f (30–42; the black reaches RGB 0 at its end), P6 30 f. Resolved on take 3 (Qs 1914, Qe 1965): P1 [1914,1974), P2 [1974,2010), P3 [2010,2031), P4 [2031,2061), P5 [2061,2097), P6 [2097,2127). Stretch/shrink rules: [sc01-b09-b10](sc01-b09-b10.md).
 
 ## Shared constants (all S01 sheets)
 
@@ -110,7 +110,7 @@ The asset rows and DEP01–DEP07 are Film's ([runtime inventory](visual-brief.md
 | **M02** | Boss | Map wavefront generator: arcs about a hidden centre (`WF0`), front position as a function of `tl`; dots light amber for 10 frames when a front crosses them. South-arriving fronts confirmed by the user (MK-O1) | SH02, SH05 | new, design (part of DEP02 `FX-RING`) |
 | ~~M03~~ | — | Dropped in R3: `PROP-HYD` is painted after `CR-REAL` in the same canvas (brief VD11 R2) | — | closed |
 | **M04** | Boss | Cold variant of `SET-DEEP` for SH11 (`SET-COLD`: same bands, cyan-shifted, value 10–30 %); `CR-DREAM` faded state and morph to `ICE` per SP02 | SH11 | brief names `SET-COLD`; not yet in the asset table |
-| Editor | Editor | Niwat read and re-time by anchor (`O-1`); `bloop.wav` copy with NOTICE (`AUD-1`); `captionStyle.position: 'middle'`; measure the audible windows of the crack, tick and clip, which set the label windows | all | not started |
+| Editor | Editor | Gemini Charon take 3 knots delivered (O-1 closed); Mark re-timed in R8; `bloop.wav` copy with NOTICE (`AUD-1`); `captionStyle.position: 'middle'`; measure the audible windows of the crack, tick and clip, which set the label windows | all | not started |
 | Sound gaps | Editor | `NEEDS-GEN` cues, specified in the first shot that uses each: `water_deep-ocean-roomtone_01` (SH01), `quake_seafloor-rumble-muffled_01`, `pulse_underwater-soft-thump_01` (SH02), `hum_low-travelling-flat_01` (SH08), `ice_iceberg-crack-groan-underwater_01` (SH11), `creature_deep-swallow-gulp_01` (SH13). Library IDs used are present in `sound-library/INDEX.md` (checked 2026-10-30) | — | gaps confirmed (0 matches in INDEX) |
 
 **Findings revalidated (2026-10-30, against brief Dev findings):** DF-20261029-painted-timeline-dissolve → dissolves in SH02 and SH06 use `dissolveSec`, ghost/creature fades by colour mix (SH07, SH11); DF-20261030-p5brush-large-fill-mottle → `SET-*` flat underlayers (all water plates); DF-20261030-painted-screen-layers-overlay → plate-owned Grain/Grade (all); DF-20261030-painted-straight-bars → map/section lines stay SVG (SH02, SH05, SH07–SH10, SH12); DF-20261030-render-run-noise → dissolve and morph acceptance by PSNR (SH02, SH06, SH11). Added: **DF-20261030-painted-glaze-pickup** applies to SH11, where `ICE` is painted over the area the creature occupied; the ice base needs opaque, texture-0 passes or the creature's ink will show through (SH11 acceptance).
@@ -121,19 +121,19 @@ Painted cues split wherever the fact label changes; a split keeps the same plate
 
 | Shot | Plate key | Cues [G start, G endEx) → label |
 | --- | --- | --- |
-| SH01 | `bloop-sh01` | [0,186) เสียงจริง เร่ง 16 เท่า · [186,216) none |
-| SH02 | `bloop-sh02` | [216,372) none, `dissolveSec` 0.6 |
-| SH03 | `bloop-sh03` | [372,404) none · [404,460) เสียงจริง เร่ง 16 เท่า · [460,468) none |
-| SH04 | `bloop-sh04` | [468,573) ภาพประกอบ |
-| SH05 | `bloop-sh05` | [573,738) none |
-| SH06 | `bloop-sh06` | [738,764) none, `dissolveSec` 0.6 · [764,801) จินตนาการ |
-| SH07 | `bloop-sh07` | [801,903) จินตนาการ |
-| SH08 | `bloop-sh08` | [903,1053) none |
-| SH09 | `bloop-sh09` | [1053,1127) none |
-| SH10 | `bloop-sh10` | [1127,1173) ภาพประกอบ |
-| SH11 | `bloop-sh11` | [1173,1222) จินตนาการ · [1222,1240) จินตนาการ + เสียงจำลอง (DEP03) · [1240,1271) เสียงจำลอง |
-| SH12 | `bloop-sh12` | [1271,1300) เสียงจำลอง · [1300,1450) none · [1450,1467) เสียงจำลอง |
-| SH13 | `bloop-sh13` | [1467,1690) none · [1690,1779) จินตนาการ · [1779,1782) none (black) |
+| SH01 | `bloop-sh01` | [0,186) เสียงจริง เร่ง 16 เท่า · [186,224) none |
+| SH02 | `bloop-sh02` | [224,399) none, `dissolveSec` 0.6 |
+| SH03 | `bloop-sh03` | [399,461) none · [461,510) เสียงจริง เร่ง 16 เท่า · [510,518) none |
+| SH04 | `bloop-sh04` | [518,684) ภาพประกอบ |
+| SH05 | `bloop-sh05` | [684,849) none |
+| SH06 | `bloop-sh06` | [849,871) none, `dissolveSec` 0.6 · [871,919) จินตนาการ |
+| SH07 | `bloop-sh07` | [919,1033) จินตนาการ |
+| SH08 | `bloop-sh08` | [1033,1204) none |
+| SH09 | `bloop-sh09` | [1204,1267) none |
+| SH10 | `bloop-sh10` | [1267,1329) ภาพประกอบ |
+| SH11 | `bloop-sh11` | [1329,1369) จินตนาการ · [1369,1387) จินตนาการ + เสียงจำลอง (DEP03) · [1387,1446) เสียงจำลอง |
+| SH12 | `bloop-sh12` | [1446,≈1447) เสียงจำลอง (crack tail, measured) · [≈1447,1659) none · [1659,1679) เสียงจำลอง · [1679,1696) none |
+| SH13 | `bloop-sh13` | [1696, Qs) none · [Qs, P5 end) จินตนาการ · [P5 end, end) none (black, silent). Take 3: [1696,1914) · [1914,2097) · [2097,2127) |
 
 ## Blockout brief
 
@@ -142,6 +142,20 @@ Editor assembles all 13 shots at the anchor timings with placeholder art (flat w
 ## Element captures
 
 None available. Every BLOOP element (`PROP-HYD`, `CR-DREAM`, `CR-REAL`, `ICE`, map, section, panel, sets) is `missing` at `cab9833`, and no preview exists to capture. Look stills come from DEP06 after the user's look pick.
+
+## Slack options (not applied)
+
+The take 3 total is **2,127 f = 70.9 s**. Editor's 2,069 f assumed the R1 tease (≈ 104 f after the last VO); the R7 hero ending needs 162 f after Qe (9 + 36 + 21 + 30 + 36 + 30), so the user-accepted ≈ 67 s (≈ 2,010 f) is about 117 f away. Nothing below is free enough to apply without a decision:
+
+| Option | Saves | Cost / owner |
+| --- | --- | --- |
+| S1 H03 minimums: P2 36 → 27, P4 30 → 24 | 15 f | Allowed by H03's shrink rule; tighter approach and swallow. Film confirms the read |
+| S2 B09 pause K02 26 → 20 f (script asks 0.6–0.7 s) | 6 f | Within the script's range; Editor moves Qs |
+| S3 Inter-beat gaps: Editor's 0.2 s tail + 0.12 s head at 9 boundaries (gaps now 12–21 f) trimmed by ≈ 3 f each | ≈ 27 f | Editor; slightly less air between beats |
+| S4 B01 lead 12 → 9 f before "เสียงนี้…" | 3 f | Editor; the clip still leads |
+| Total S1–S4 | ≈ 51 f → ≈ 2,076 f (69.2 s) | Still ≈ 2 s over 67 s |
+| S5 Trim pauses inside the read (B08 a1→a2 22 f, a2→a3 23 f; B09 a1→a2 11 f) | up to ≈ 45 f | Changes the user-picked performance; user decision |
+| S6 P6 black 30 → 21 f | 9 f | Reverses the user's H04 pick; user decision |
 
 ## Open items
 
@@ -152,12 +166,12 @@ None available. Every BLOOP element (`PROP-HYD`, `CR-DREAM`, `CR-REAL`, `ICE`, m
 | MK-O3 | Film | SH10 has no text tags on the two pattern lines; they are told apart by colour (amber = the `B03` line returning, cyan = ice) to avoid adding unscripted on-screen text. | open (non-blocking) |
 | MK-O4 | — | Dropped in R3 (the depth seam is resolved by draw order) | closed |
 | MK-O5 | Editor | `bloop.wav` length | **closed 2026-10-30**: 10.342 s (Boss DEP05); SH01 needs 6.2 s |
-| O-1 | Editor | Niwat read; re-time by anchor | open |
+| O-1 | Editor | Voice read and re-time | **closed 2026-10-30**: Gemini Charon take 3 picked by the user; sheets re-timed in R8 |
 | MK-O6 | Film | SH06 camera: FR03's s 1.04 about (380, 760) puts the head top at y 336, inside label slot 1. R4 uses s 1.02 about (380, 440). Accept, or let the head outline pass behind the slot | open |
-| MK-O7 | Film | FR10 says the hydrophone leaves the frame left during the rush. At s 3 (R3 rush) it stays at x −85…125, y 320…1100 (`toScreen`), in front of the mouth until the black fade. Confirm that this is the intended read, or change the rush | open |
+| MK-O7 | — | Hydrophone in the rush | **superseded 2026-10-30 by R5** (brief H01: the hydrophone is swallowed in P4, before the push) |
 | VD16 | User/Film | Look pick: L-A1, L-B2 (CRD-2), L-CP3 picked 2026-10-30 | closed |
 
-No user storyboard review page exists yet for `BLOOP-SHEETS-R4`; the coordinator publishes it.
+No user storyboard review page exists yet for `BLOOP-SHEETS-R8`; the coordinator publishes it.
 
 ## Change log
 
@@ -177,3 +191,21 @@ No user storyboard review page exists yet for `BLOOP-SHEETS-R4`; the coordinator
   - **SH03 (Boss item 4):** fixed 6 f train, in-point 2.20 s, spacing test G410 vs G440.
   - **Boss items 5 and 6** are covered by FR02 and the existing G1779 label end.
   - **Closed:** MK-O5. **Opened:** MK-O6 and MK-O7 (both to Film).
+- 2026-10-30 `BLOOP-SHEETS-R5` (Mark), from `BLOOP-BRIEF-R5` B10 hero ending (H01–H08, user-approved; the user picked the 1.0 s black, H04). SH13 only (`sc01-b09-b10.md` → R5; the other sheets stay R4 and are not yet re-timed to the Gemini read):
+  - **Phases:** K03–K06 → P1–P6, VO-relative. The rise is removed; the creature table runs `k` 0.12 → 1.0 with Film's mouth centres. Eye anchors are at the P4 end: all in frame (top y 88) and none in slot 1. Ice goes inside the mouth in P3; the hydrophone at the lip-line frame (≈ P4 + 19).
+  - **P5:** s 1 → 3 / dy +270 about (400, 610). CAP-ZONE coverage is 87.4 % at s 3 and 85.0 % at s 2.89, which meets ≥ 85 % with no margin; optional `dx` +100 → 96.5 % (to Film).
+  - **Label and black:** label [P1 − 2, P5 end); P6 is 30 f of black.
+  - **Duration:** est. 1,840 f.
+  - **Closed:** MK-O7 (superseded).
+- 2026-10-30 `BLOOP-SHEETS-R6` (Mark), from `BLOOP-FACTCHECK-R7` and `BLOOP-BRIEF-R6`. SH13 only (`sc01-b09-b10.md` → R6):
+  - **`R7-R2`:** P1 = [Qs, Qe + 9); first creature frame Qs + 2 (G1631); label [Qs, P5 end) = G[1629,1810). This index and the sheet now agree.
+  - **`R7-R1`:** the close gulp runs G1785–G1809.4 (R8-1); drone, whoosh and room tone are at 0 by G1810; the P6 hold is silent.
+  - **`R7-C1`–`C3`:** written into the sheet.
+  - **Brief R6:** P5 `dx` +100 (coverage 96.5 % / 93.2 %); `shadow` 0.3 → 0 over P3–P4.
+- 2026-10-30 `BLOOP-SHEETS-R7` (Mark), from `BLOOP-BRIEF-R7` H09/H10 and Boss pass 4. SH13 only (`sc01-b09-b10.md` → R7):
+  - **P1:** profile silhouette swimming left, 230 → 380 px, head (960, 320) → (820, 350).
+  - **P2:** turn at f14–24 with the ¾ head at `k` 0.30, then `k` 0.45 at (770, 450).
+  - **H10 swallow reads:** the ice is held to ≤ 0.8 × the gum, the hydrophone cable fades, and nothing is painted after P4 end.
+  - **Lip-line frame:** P4 + 13.5 (Boss pass 4) → G1758.
+  - **Kept:** gulp G1785–G1809.4 (`R8-1`, coordinator). Timing is unchanged.
+- 2026-10-30 `BLOOP-SHEETS-R8` (Mark): all four sheets re-timed to Editor's Gemini Charon take 3 knots. The phrase-anchor table now holds the measured onsets (with the R7 estimates kept as a column), and the shot ranges, runtime cues and label windows are moved to match. SH13 is resolved from Qs 1914 / Qe 1965, with the lip-line frame at P4 + 16 (G2047; Boss L293, coordinator call). SH06 gets the R8 H12 reveal at `Lr` = G894 (whisper onset of "สัตว์ยักษ์"). Total 2,127 f; slack options listed, none applied. Superseded: every R7 estimate frame and the ±10 f / 1,740–1,800 return rule.

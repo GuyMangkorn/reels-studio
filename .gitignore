@@ -14,3 +14,6 @@ docs/superpowers/
 assets/blender/**/renders/
 .venv-whisper/
 __pycache__/
+
+# Bloop audio copies (kept local and in the sound library; user decision 2026-10-30)
+public/audio/bloop/*.wav

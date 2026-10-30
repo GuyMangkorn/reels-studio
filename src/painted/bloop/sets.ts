@@ -79,11 +79,16 @@ export const paintSection = (p: Painter) => {
  * shade `#2a394b` on the left, cool rim `#86aac2` on the right, cap `#566d82`, one thin ink line that boils. An opaque
  * flat underlayer under the body and cap, so nothing behind (the mouth) shows through it.
  */
-export const paintHydrophone = (p: Painter, cx: number, cy: number, k = 1) => {
+export const paintHydrophone = (p: Painter, cx: number, cy: number, k = 1, o: {cableAlpha?: number} = {}) => {
   const {brush} = p;
   const hp = hydParts(cx, cy, k);
-  p.inkStill(60, '2B', '#050a10', 2.2);
-  brush.spline(range(6, (u) => [hp.top[0] + 18 * Math.sin(u * 2.2), hp.top[1] - u * (hp.top[1] + 260)] as Pt), 0.6);
+  // the cable (BLOOP-BRIEF-R7 H10): it fades to the water colour over the frames after the lip line passes (cableAlpha 1 -> 0)
+  const cableA = o.cableAlpha ?? 1;
+  if (cableA > 0) {
+    const cp = cableA < 1 ? p.layer(cableA, 9300) : p;
+    cp.inkStill(60, '2B', '#050a10', 2.2);
+    cp.brush.spline(range(6, (u) => [hp.top[0] + 18 * Math.sin(u * 2.2), hp.top[1] - u * (hp.top[1] + 260)] as Pt), 0.6);
+  }
   p.flat('#4d6379', hp.body);
   p.flat('#566d82', hp.cap);
   p.wash('#4d6379', 245, hp.body, 0.04, 0.2);
@@ -191,11 +196,11 @@ export const hazeRing = (pts: Pt[]): Pt[] => {
   const cx = (x0 + x1) / 2, cy = (y0 + y1) / 2;
   return sm.map(([x, y]) => [cx + (x - cx) * (1 + 32 / (x1 - x0)), cy + (y - cy) * (1 + 32 / (y1 - y0))] as Pt);
 };
-export const paintKeel = (p: Painter, pts: Pt[], o: {haze?: boolean} = {}) => {
+export const paintKeel = (p: Painter, pts: Pt[], o: {haze?: boolean; hazeAlpha?: number} = {}) => {
   const sm = keelRing(pts);
   const ys = sm.map((q) => q[1]);
   const y0 = Math.min(...ys), y1 = Math.max(...ys), h = y1 - y0;
-  if (o.haze) p.wash('#5e8798', 24, hazeRing(pts), 0.5, 0.4);
+  if (o.haze) p.wash('#5e8798', 24 * (o.hazeAlpha ?? 1), hazeRing(pts), 0.5, 0.4);
   p.flat('#2f5a6b', sm);
   p.wash('#5e91a3', 230, clipY(sm, y0 + 0.72 * h, 'above'), 0.18, 0.5);
   p.wash('#6f9fb0', 170, clipY(sm, y0 + 0.45 * h, 'above'), 0.2, 0.5);
@@ -208,9 +213,22 @@ export const paintKeel = (p: Painter, pts: Pt[], o: {haze?: boolean} = {}) => {
  * a wash over the opaque underside), so nothing beneath shows through (DF-20261030-painted-glaze-pickup). The outline ink
  * is drawn only when `ink` is set (morph >= 0.85, kept). `haze` (FR09) adds the shape-following haze under the berg.
  */
-export const paintIce = (p: Painter, outline: Pt[], o: {id: number; haze?: boolean; ink?: boolean} = {id: 0}) => {
-  paintKeel(p, outline, {haze: o.haze});
+export const paintIce = (p: Painter, outline: Pt[], o: {id: number; haze?: boolean; hazeAlpha?: number; ink?: boolean} = {id: 0}) => {
+  paintKeel(p, outline, {haze: o.haze, hazeAlpha: o.hazeAlpha});
   if (o.ink === false) return;
   p.inkStill(o.id, 'HB', '#1e4656', 2);
   p.brush.spline([...outline, outline[0]], 0.4);
+};
+
+/** Wet-in-wet blooms (BLOOP-SHEETS-R8: SH11 fissures, SH12 section ice): soft watercolour patches spreading from each origin to `reach` px. */
+export const paintBlooms = (p: Painter, origins: Pt[], reach: number, progress: number, color: string, opacity: number) => {
+  if (progress <= 0) return;
+  origins.forEach(([x, y], i) => {
+    const r = reach * progress;
+    const poly = range(16, (u) => {
+      const a = u * 2 * Math.PI, w = 0.8 + 0.2 * hash(i * 97 + Math.round(u * 16));
+      return [x + r * w * Math.cos(a), y + r * w * Math.sin(a) * 0.7] as Pt;
+    });
+    p.wash(color, Math.round(opacity * Math.min(1, 2 * progress)), poly, 0.6, 0.3);
+  });
 };

@@ -7,8 +7,7 @@ import {toScreen, type Camera} from '../../src/painted/camera';
 import {envAt} from '../../src/painted/bloop/envelope';
 import {crRealAnchors, crRealPlace, dreamPoint} from '../../src/painted/bloop/creatures';
 import {DOTS, FPS, HYD, hydParts, mapXY, WF0} from '../../src/painted/bloop/geometry';
-import {iceKeel} from '../../src/painted/bloop/sets';
-import {DREAM_AT_SH06_END, DREAM_PLACE, RISE_FROM, RISE_TO, sh01Rings, sh03Rings, sh05Scale, sh09Camera, sh13Camera, CLIP_IN_SH03} from '../../src/painted/shots/bloop';
+import {DREAM_AT_SH06_END, DREAM_PLACE, ICE_SH11, sh01Rings, sh03Rings, sh05Scale, sh09Camera, sh13Camera, SH13_LIP_FRAME, CLIP_IN_SH03} from '../../src/painted/shots/bloop';
 import {paintedShots} from '../../src/painted/registry';
 
 const round = (v: number, d = 1) => Math.round(v * 10 ** d) / 10 ** d;
@@ -27,9 +26,10 @@ const screenOf = (cam: Camera, p: [number, number]) => toScreen(cam, p).map((v) 
 
 // ---- SH13 at L249 (static camera, mouth on RISE_TO): the four eyes against R4 (screen, +/-20 px)
 const sh13Eyes = (() => {
-  const a = crRealAnchors(crRealPlace(RISE_FROM[0], RISE_TO[1]));
-  const cam = sh13Camera(249 / FPS);
-  const r4 = [[924, 263], [820, 117], [237, 263], [297, 125]];
+  // BLOOP-SHEETS-R5: the four eyes at the P4 end (mouth world (560, 610), k 1.0 = CP3 scale 0.86)
+  const a = crRealAnchors(crRealPlace(560, 610, 0.86));
+  const cam = sh13Camera(0);
+  const r4 = [[764, 253], [660, 107], [77, 253], [137, 115]];
   const near = [a.eyeNear[0], a.eyeNear[1], a.eyeFar[0], a.eyeFar[1]].map((p) => screenOf(cam, p));
   const rings = a.eyeRings.map((e) => {
     const [cx, cy] = screenOf(cam, e.c);
@@ -40,6 +40,8 @@ const sh13Eyes = (() => {
     r4Anchors: r4,
     deltaPx: near.map((p, i) => round(Math.hypot(p[0] - r4[i][0], p[1] - r4[i][1]))),
     rings,
+    irisRings: a.irisRings.map((e) => ({cx: round(toScreen(cam, e.c)[0]), cy: round(toScreen(cam, e.c)[1]), rx: round(e.rx), ry: round(e.ry), top: round(toScreen(cam, e.c)[1] - e.ry)})),
+    lipFrameShotLocal: SH13_LIP_FRAME,
     mouthScreen: screenOf(cam, a.mouth),
     headWidthWorld: round(a.head[2] - a.head[0]),
     headTopScreen: round(toScreen(cam, [a.head[0], a.head[1]])[1]),
@@ -86,7 +88,7 @@ const sh11 = (() => {
   const keelBox = [360, 335, 1040, 790];
   const ix = Math.max(0, Math.min(head[2], keelBox[2]) - Math.max(head[0], keelBox[0]));
   const iy = Math.max(0, Math.min(head[3], keelBox[3]) - Math.max(head[1], keelBox[1]));
-  const keel = iceKeel(360, 335, 1040, 790, 3);
+  const keel = ICE_SH11;
   const xs = keel.map((p) => p[0]), ys = keel.map((p) => p[1]);
   return {
     creatureHeadBox: head,

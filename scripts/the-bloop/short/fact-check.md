@@ -1,9 +1,101 @@
-# BLOOP-EP01-SHORT — Fact-check `BLOOP-FACTCHECK-R6` (current), `BLOOP-FACTCHECK-R5`, `BLOOP-FACTCHECK-R4`, `BLOOP-FACTCHECK-R3`, `BLOOP-FACTCHECK-R2` and `BLOOP-FACTCHECK-R1` (history)
+# BLOOP-EP01-SHORT — Fact-check `BLOOP-FACTCHECK-R8` (current addendum, B10 brief R6 and sheets R6), `BLOOP-FACTCHECK-R7` (addendum, B10 picture; gulp bound corrected in R8), `BLOOP-FACTCHECK-R6` (current for the script), `BLOOP-FACTCHECK-R5`, `BLOOP-FACTCHECK-R4`, `BLOOP-FACTCHECK-R3`, `BLOOP-FACTCHECK-R2` and `BLOOP-FACTCHECK-R1` (history)
 
 - **Deliverable:** `BLOOP-EP01-SHORT` (Short only). Delivery record: [../delivery.md](../delivery.md).
+- **Addendum (B10 picture):** `BLOOP-FACTCHECK-R8` (below): `revision-required`, one number (`R8-1`), for `BLOOP-BRIEF-R6` H06 P5 and `BLOOP-SHEETS-R6`. `R7-R2`, `R7-R1` (silence and label clear), `R7-C1`–`R7-C3` pass. `BLOOP-FACTCHECK-R7` (below) stays as history. The script result is unchanged.
 - **Current review:** `BLOOP-FACTCHECK-R6` of [`script.md`](script.md) **`BLOOP-SCRIPT-R5`** (Boat, 2026-10-30), a one-line recheck of `R5-R1`–`R5-R3` and their dependent claims, checked against [`../research.md`](../research.md) **`BLOOP-RESEARCH-R2`** (unchanged). Result `ready-for-storyboard` (factual only; user approval none). One optional, non-blocking date-precision item (`R6-N1`, script line 49). The R5 review of `BLOOP-SCRIPT-R4` (`revision-required`), the R4 review of `BLOOP-SCRIPT-R3`, the R3 review of `BLOOP-SCRIPT-R2`, the R2 review (2026-10-29, sources unopened) and the R1 review of `BLOOP-SCRIPT-R1` are kept unchanged below as history.
 
-## `BLOOP-FACTCHECK-R6` — one-line recheck of `BLOOP-SCRIPT-R5` against `BLOOP-RESEARCH-R2` (current)
+## `BLOOP-FACTCHECK-R8` — changed-line recheck of `BLOOP-BRIEF-R6` and `BLOOP-SHEETS-R6` against `BLOOP-FACTCHECK-R7` (current for the B10 picture and sound)
+
+- **Scope:** only the lines that R6 changed for R7: brief H01 P1/P3, H03 P1, H04, H05, H06 P5/P6 and the R6 change-log entry (line 290); sheet SH13 rows (lines 18, 19, 24, 29, 35, 48, 50, 53–57, 69, 75, 93); `index.md` lines 136, 187–188. Not current: `index.md` line 183 and sheet line 92 (R5 history, superseded by lines 187–188). Visual-only R6 changes (`dx` +100, `shadow`) and Boss's pass 4 (runtime) are not factual and are not checked here. Script and research unchanged.
+- **Result: `revision-required`, one number (`R8-1`).** `R7-R2` (onset), `R7-R1` (silence and label clear), and `R7-C1`–`R7-C3` (facts) pass. Layout notes are not factual.
+- **Correction to Boat's R7 wording.** `R7-R1` says "no later than 24 f". 0.813 s at 30 fps is 24.39 f. A gulp starting 24 f before the first full-black frame ends 0.39 f (≈ 13 ms) after it. The 3 f fade-out leaves gain ≈ 13 % at that frame, so the sheet's QA claim "all at 0 on G1810" is not met. The bound is 25 f. The same 24 f appears in brief H06 P5 and in the sheet (copied from R7).
+
+| ID | Changed line (R6) | Check | Verdict |
+| --- | --- | --- | --- |
+| `R8-1` (`R7-R1` gulp bound) | Brief H06 P5 ("starts no later than 24 f before the first full-black frame"); sheet line 55 (`starts at P5 end − 24 (G1786)`); sheet line 93 and `index.md` line 188 ("G1786–G1810") | Gulp 0.813 s = 24.39 f. Start G1786 → end G1810.39, overrun 0.39 f. Sheet line 75 QA ("all at 0 on G1810") is not met with the 3 f fade. Fix: start at P5 end − 25 (G1785) → end G1809.39, fade complete before G1810 | **revision-required** |
+| `R8-2` (`R7-R1` silence and clear) | Brief H04 ("1.0 s (30 f) of silence"); H06 P6; sheet lines 55–57 ("P6: silence"); `index.md` line 188 | Drone, whoosh and room tone reach 0 by G1810 (sheet 55–57). The 1.0 s hold is silent. The label clears at P5 end = first full-black frame (G1810). "All `B10` sounds … inside [Qs, P5 end)" holds | **pass** |
+| `R8-3` (`R7-R2` onset) | Brief H01 P1 ("onset + 2 f"); H03 P1 ("from the question's first frame (0 f)"); H05 (label from 0 f, ≥ 2 f before the creature); sheet 18 (K02 [1609, 1629), creature-free), 19 (P1 [Qs, Qe + 9), creature Qs + 2), 29 (Qs G1629, creature G1631), 48 (label [Qs, P5 end)); `index.md` 136, 187 | Label lead is exactly 2 f at the boundary (label 0 f, creature +2 f), which meets "at least 2 f". No creature and no label before Qs. The B09 answer pause stays creature-free. Sheet and index agree | **pass** |
+| `R8-4` (`R7-C1` no crack, flash or pulse) | Brief H01 P3 ("fissure glow and haze only fade out with the ice"; "No `FX-RING` or envelope pulse in B10"); sheet 35 (ICE: "only fade out"; "no crack, split, fracture flash or pulse"); sheet 50 ("none in `B10`"); sheet 69 | Glow is static until P3, then fades with the ice. No ring, pulse or flash in B10 | **pass** |
+| `R8-5` (`R7-C2` naming, "เสียงจริง", recording origin) | Brief H05; sheet 48 ("'เสียงจริง' never appears"); sheet 53–57 ("No sound or caption says …"); sheet 8 (prohibition list) | Captions carry only the question. "เสียงจริง" appears in the sheet only as a prohibition (lines 8, 48). No caption or sound names the ice, the recording or a measurement | **pass** |
+| `R8-6` (`R7-C3` slot, not on ice, clears at black) | Brief H05 (measured fill x 121–296, y 308–335 on the R5 spike still); sheet 48 (slot y 300–350, "never on the ice") | Fill inside y 300–350. The ice is centred at (760, 470), ≈ 260 px wide, so x ≈ 630–890 at s 1. No overlap. Clears at P5 end | **pass (fact)** |
+| Layout note (`R7-1`, cond. 1) | Brief H05 (outline ≈ x 115); Boss pass 4 keeps `PaintedLabel` left at 120 (stroke overhang) | Outline sits ≈ 5 px outside the x 120 caption-safe edge. This is layout, not a factual or label-meaning point. Measured on the R5 spike still, not a render. Moving the label to x 126 is a shared-component decision (Boss or Editor) | open (layout); render check |
+| `R8-7` (`R7-C3` "same style as B04–B07") | Brief H05 | Film states this. Boat has not inspected the B04–B07 render | unverified; render check |
+
+### Required changes (exact; Film, Mark, Editor)
+
+- **`R8-1`** Brief H06 P5: replace "that starts no later than 24 f before the first full-black frame" with:
+  > "that starts no later than 25 f (0.813 s = 24.4 f at 30 fps) before the first full-black frame"
+- **`R8-1`** Sheet line 55: "starts at P5 end − 24 (G1786) and ends on P5 end (G1810)" → "starts at P5 end − 25 (G1785) and ends before P5 end (≈ G1809.4)", keeping the 3 f fade-out and "(0.813 s ≈ 24.4 f)". Sheet line 93 and `index.md` line 188: "G1786–G1810" → "G1785–G1809.4".
+- No change to sheet line 75 (QA). It holds after `R8-1`.
+
+### Next owner and readiness
+
+- Film: the H06 P5 number (brief R6 patch or R7, Film's call). Mark: the sheet line 55, 93 and index line 188 numbers. Editor: runtime gulp placement, returned by Boss's pass 4 (delivery record).
+- Boat: one-line recheck of H06 P5, sheet line 55 and index line 188 after `R8-1`. After that the B10 picture and sound are factually and label-wise `ready` for Film, Mark and Editor. This is not user approval and not a runtime or visual check.
+
+---
+
+## `BLOOP-FACTCHECK-R7` — addendum: B10 picture in `BLOOP-BRIEF-R5` (H01–H08) and `BLOOP-SHEETS-R5` (SH13) against `BLOOP-SCRIPT-R5` (history; gulp bound corrected in R8)
+
+- **Scope:** `LBL-B10` conditions 1–4, `B10-2`, `B10-S`/`AUD-6` and the factual status of the new picture. Checked on: the brief's "B10 hero ending" section (`BLOOP-BRIEF-R5`); the SH13 timing and sound rows of `storyboards/the-bloop/short/sc01-b09-b10.md` (`BLOOP-SHEETS-R5`, read for onset and sound only); the five stills `out/bloop-look/sheet-B10-hero.png` (viewed by eye); and the runtime cues in `src/videos/the-bloop/index.ts` (lines 72, 84, 99–102, 110). No script or brief edit. The script result of `BLOOP-FACTCHECK-R6` is unchanged.
+- **Research:** `BLOOP-RESEARCH-R2` unchanged. No new source research: the new picture adds fiction only. B01–B09 claims are unchanged.
+- **Result for the B10 picture and sound as briefed: `revision-required` (narrow).** Two required changes, `R7-R1` and `R7-R2`. Three label conditions (`R7-C1`–`R7-C3`) must be written into the brief. With those in place the B10 factual and label status is `ready` for Film, on factual grounds only (not user approval, not a runtime or visual check).
+- **User approval** (2026-10-30: ending and 1.0 s hold, `delivery.md`) does not waive `LBL-B10`. The 1.0 s length stays. Only the sound at the black hold changes.
+- **Short answers.** (a) `LBL-B10`: conditions 1, 2 (clearing) and 4 hold on the picture. Condition 3 (creature sound only inside the label window) fails in `H06` P6. Condition 2 (onset) fails in `H03` P1 and the SH13 label range. The label text `จินตนาการ`, its slot and the clear-at-black rule are unchanged. (b) New factual claim: none. The creature is fiction under the label, and no narration asserts a source or a cause. The creature swallowing the far iceberg and the hydrophone does not say it made the 1997 sound or caused the icequake, provided no crack, sound or pulse links the creature to the recording (`R7-C1`, `R7-C2`). "Eats the iceberg" is a labelled what-if, not a causal claim.
+
+### Claim-by-claim (R7)
+
+| ID | Location | Wording or picture checked | Class | Verdict | Evidence + locator | Reason / condition |
+| --- | --- | --- | --- | --- | --- | --- |
+| `R7-1` | `LBL-B10` cond. 1; `H05`; stills | "จินตนาการ" in the upper-left fact-label slot on all five stills | label presentation | **OK with condition** | `LBL-B10` cond. 1; `sheet-B10-hero.png` | By eye the label sits roughly x 115–300, y 305–345 of 1080×1920, so its left edge is at the caption-safe edge (x 120). Not measured. Film measures the render frame before claiming it is inside the caption-safe box. Temporal overlap with the question caption is allowed; spatial clearance is required (`R7-C3`). |
+| `R7-2` | `LBL-B10` cond. 2 (clearing and lead) | label stays to the first full-black frame; at least 2 f before the first discernible frame (>2 levels from the water) | label timing | **OK** | `LBL-B10` cond. 2; `H05` | Matches as briefed. The onset of the question's first frame is in `R7-R2`. |
+| `R7-R1` | `H06` P6; `SHEETS-R5` lines 53–57 | "the gulp tail and the drone decay to silence (≈ 0.7 s) … except the decaying tail over black (picture is black, no creature)" | creature sound outside the label window | **revision-required** | `LBL-B10` cond. 3; `B10-S`; R2 ruling | About 0.7 s of creature sound plays with the label off. The library gulp is 0.813 s (`SHEETS-R5` line 53) and starts at P5 end − 4 f, so it runs to about 20 f after the first black frame (`SHEETS-R5`: "to ≈ G1831"). Compliant versions already exist: the current blockout stops the drone at the swallow (`index.ts:99–102`), and script R5 has "hard silence through the fade to black". |
+| `R7-R2` | `H03` P1; `H05` lead; `H08`(4); SH13 P1 row and label range | silhouette from "6 f before the question onset"; label from P1 − 2 (`index.md` line 183: label [P1 − 2, P5 end); `sc01-b09-b10.md` line 74 checks the label from Qs, so Mark's two files disagree) | premise and label timing | **revision-required** | `H08`(4) "The far silhouette must not appear before the question"; script B09 pause 0.6–0.7 s "so that the explanation lands before the question"; `B09-P` | The first creature frame is G1623 and the question onset is G1629 (`SHEETS-R5`). The creature starts about 0.2 s before the question and the label about 0.3 s before it, in the silence the explanation needs. Factual risk is low, because the label matches B09's "มีแค่ในจินตนาการ". It still breaks the brief's own rule and the B09 pause. |
+| `R7-3` | `H01` P3; `H06` P3 | far iceberg (the B09 answer image) swallowed under the label; "its haze and fissure glow go off" | fiction | **not-factual OK with conditions** | `B10-2`; research fiction boundary (`research.md` l. 157–158) | No narration accompanies it. No creature-caused fracture is shown. The glow may only fade with the ice (`R7-C1`). |
+| `R7-4` | `H01` P4; `H06` P4 | hydrophone swallowed; "we hear from the microphone inside" (low-pass ≈ 400 Hz, mono) | fiction point of view | **not-factual OK with condition** | research fiction boundary; `B10-S` | A point of view that places the recorder inside the creature is labelled fiction, so it asserts nothing. No caption or sound may say the 1997 recording came from there (`R7-C2`). |
+| `R7-5` | `H01` P5 "swallow the screen" | "the screen" is the picture frame (camera rush into the throat, black fade), not a data screen | presentation | **OK** | `H01` P5; brief line 72 ("the screen holds black") | No real clip, spectrogram or data graphic in B10 (`research.md` l. 290). |
+| `R7-6` | `H06` sound cues | `bed_dark-drone-sub_01` (`index.ts:102`), `creature_deep-swallow-gulp_01` (`index.ts:84`), `whoosh_heavy-cinematic_01`; no ice-crack ID in B10 | sound IDs | **OK by ID; by-ear check open** | `index.ts:72` (B02 rumble = `quake_seafloor-rumble-muffled_01`, not the drone) | No reuse of the B02 rumble, the real clip or the B07–B08 crack ID. Not auditioned. Editor confirms by ear that the drone and the P4 low-pass/mono mix do not resemble the B02 rumble, the B07–B08 crack or the real sweep (`B10-S`). |
+| `R7-7` | script R5 B10 story events 1–4 and picture intent | script: "The ice image dims, and the creature is not visible yet"; "After the question lands … a realistic Bloop creature rises" | script and brief sync (not factual) | **sync needed** | brief `H01`, `H07`; `SHEETS-R5` line 35 ("stays lit") | The brief and sheet keep the ice lit and start the creature under the question. This is not a factual change. Preaw or the coordinator syncs the script's story-event lines when the brief changes. |
+| `R7-8` | final black; B01 seam | 1.0 s hold; no loop; `A_fade` with `endHoldSec: 0`, `endFadeSec: 0` (`index.ts:110`) | seam | **OK** | `LBL-B10` cond. 4; `H05`; `SHEETS-R5` line 59 | No creature frame or creature sound sits next to B01 in the file. Platform auto-replay is outside the file. The last 30 f need a frame check (Film or Boss). |
+| `B10-1` | script B10 VO | "คุณคิดว่ามันคืออะไรกันแน่?" | question | **not-factual OK** | `research.md` l. 41 | Wording unchanged. The Gemini read changes audio only. |
+
+### Required changes (exact wording; Film, then Mark)
+
+- **`R7-R1`** Replace the H06 P6 text with:
+  > **P6:** every creature sound (gulp, its tail, drone, whoosh) ends by the first full-black frame; the 1.0 s hold is silence with no creature or ambient cue. No music sting.
+  - The library gulp is 0.813 s (≈ 24 f). Start it no later than 24 f before that frame, or trim or fade it to end there. The drone reaches 0 by that frame. The label still clears at that frame.
+  - H04's reason, "carried by sound", no longer holds. Film restates H04's reason. The hold length stays 1.0 s.
+- **`R7-R2`** Replace H03 P1 "from 6 f before the question onset to 9 f after its end" with: "from the question's first frame (0 f) to 9 f after its end; first discernible creature frame at question onset + 2 f." Replace the H05 onset with: "'จินตนาการ' from the question's first frame (0 f), at least 2 f before the creature's first discernible frame." Mark resets the SH13 P1 row and the label range to G1629 (question onset), creature at G1631, label from G1629 to P5 end; `index.md` line 183 and `sc01-b09-b10.md` line 74 must then agree. Line 75 of `sc01-b09-b10.md` ("gulp tail then silence") also needs the `R7-R1` change. H08(4) stays as written.
+
+### Carried conditions (write into H01 and H05; `R7-C1`–`R7-C3`)
+
+- **`R7-C1`** No crack, split, fracture flash or pulse on the far ice or anywhere in B10. The fissure glow and haze only fade out with the ice. No `FX-RING` or envelope pulse in B10 (the brief's B10 row already says "none").
+- **`R7-C2`** No caption, label or on-screen text in B10 names the ice, the recording or any measurement. "เสียงจริง" never appears in B10. No sound or caption says the 1997 recording came from the creature or from inside its mouth.
+- **`R7-C3`** The "จินตนาการ" label stays in the fact-label slot (y 300–350; second slot y 360–410), not on the ice, in the same style as the B04–B07 label, and clears at the first full-black frame.
+
+### Premise, reveal and learning impact
+
+- No factual change. B07–B09 still give the ice explanation before B10. B10 asserts nothing. The learning takeaways are unchanged.
+- For the user and Preaw (creative, not a factual error): the creature now appears under the question, not after it, and the B09 answer image is swallowed inside the labelled frame. Under L1 this is a what-if. If the label clears before the creature is gone, is dropped, or runs over the black hold, the picture becomes an unsupported claim that the creature is the source. Keep the label across the whole sequence.
+
+### Sound implications (R7)
+
+- After `R7-R1`, every creature sound stays inside the label window. None is the real Bloop, the B02 rumble or the B07–B08 ice crack (`B10-S`, `AUD-6`), subject to the by-ear check in `R7-6`.
+- No real recording, no "เสียงจริง" and no NOAA audio in B10. `AUD-1` stays limited to B01 and B03.
+
+### Access and coverage (R7)
+
+- Inspected: `script.md` B09–B10 (`BLOOP-SCRIPT-R5`, lines 168–200); `fact-check.md` R2 `LBL-B10` ruling (lines 567–584), R3 rows (lines 426–431, 561–562) and the R6 header; `research.md` fiction boundary and sound notes (lines 155–171); `visual-brief.md` B10 section (lines 173–189) and rows (lines 72, 93); `delivery.md` (lines 1–13, 23–48); `sc01-b09-b10.md` (B10 onset and sound lines only); `src/videos/the-bloop/index.ts` (lines 72, 84, 99–102, 110); `out/bloop-look/sheet-B10-hero.png` (five stills, 1516×532, viewed by eye).
+- Not inspected: rendered frames or audio (no render, no audition); the library sound files (IDs and durations come from the runtime and Mark's sheet only); the label's pixel position (by eye).
+- No network access and no new source research. Confidence on the picture is qualitative: the stills are a Film spike, not a render.
+
+### Change log (R7)
+
+- `BLOOP-FACTCHECK-R7` (2026-10-30, Boat): addendum on the B10 picture (`BLOOP-BRIEF-R5` H01–H08; `BLOOP-SHEETS-R5` SH13). Result `revision-required`: `R7-R1` (creature sound over the black hold) and `R7-R2` (creature and label before the question). `R7-C1`–`R7-C3` are conditions for the brief. The script and research are unchanged, and `BLOOP-FACTCHECK-R6` stays current for the script. Next: Film (`BLOOP-BRIEF-R6`), then Mark (`BLOOP-SHEETS-R6`), then Boss for SH13, then a Boat one-line recheck of H03, H05, H06 and the SH13 label and sound rows.
+
+---
+
+## `BLOOP-FACTCHECK-R6` — one-line recheck of `BLOOP-SCRIPT-R5` against `BLOOP-RESEARCH-R2` (current for the script)
 
 - **Script reviewed:** `BLOOP-SCRIPT-R5` (coordinator mechanical edit of `BLOOP-SCRIPT-R4`, 2026-10-30). Scope: the `FACTCHECK-R5` "Recheck scope" (`R5-R1`–`R5-R3`, header sync, Truth bullet, old-phrase search), the dependent claims below and the sound summary. Other lines keep their R5 verdicts; the footprint check shows they did not change.
 - **Research:** `BLOOP-RESEARCH-R2` (unchanged). `O-2` stays open; no research edit in this pass.

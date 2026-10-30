@@ -1,0 +1,42 @@
+NOTICE — BLOOP-EP01-SHORT audio (public/audio/bloop/), Editor, 2026-10-30
+
+Copied by scripts/the-bloop/short/copy-sounds.sh. Listened by a human: no (agents cannot listen; the user must
+listen before the upload). Commercial-use eligibility of generated audio is the user's decision (sound-library
+NOTICE.md). Speed and pitch are unchanged in every file. "Trim, fade, level only" applies to the NOAA excerpts.
+
+1. NOAA PMEL 1997 Bloop recording (AUD-1; BLOOP-FACTCHECK-R6 ruling)
+   - noaa-bloop-source.wav: NOAA PMEL's own file, unchanged (8 kHz mono PCM, 165,520 bytes, 10.342 s).
+     SHA-256 ecc057a98dfcb0e2a35affc54e906d9a0ee8870bc9592c8fffce873bad5b374f (checked on copy).
+   - noaa-bloop-b01-clip.wav: 0.00–6.20 s of the source, 10 ms fade-in, 600 ms fade-out, resampled to 48 kHz mono.
+     Used for B01 from frame 0 ("เสียงจริง เร่ง 16 เท่า").
+   - noaa-bloop-b03-clip.wav: 2.20–4.067 s of the source, 10 ms fade-in, 400 ms fade-out, 48 kHz mono.
+     Used for B03 at its label window ("เสียงจริง เร่ง 16 เท่า").
+   - Source URL: https://www.pmel.noaa.gov/acoustics/sounds/bloop.html (file …/sounds/bloop.wav), accessed 2026-10-30;
+     page Last-Modified 2026-06-02; file Last-Modified 2013-07-17. On-screen text "เสียงจริง เร่ง 16 เท่า" while it plays.
+   - Credit line: "Audio: NOAA PMEL".
+   - Licence line: US federal government work, public domain (17 U.S.C. §105(a)); no separate licence on the source
+     page; authorship not independently confirmed (the 1997 recording's author is not stated; stop and return to Boat
+     if a contractor or third-party origin turns up).
+   - Not used: NOAA's logo, page screenshots and the spectrogram image.
+
+2. Stable Audio 3 generated sounds (audio-studio-mcp, local). Generator: audio-studio-mcp / Stable Audio 3 medium.
+   Licence: Stability AI Community License (model weights; https://huggingface.co/stabilityai/stable-audio-3-optimized),
+   as checked 2026-10-28. Server code MIT. Library IDs and sidecars are in the shared sound library (INDEX.md rows added
+   2026-10-30, first used by BLOOP-EP01-SHORT).
+   - ice_iceberg-crack-groan-underwater_01 (required; reconstruction, "เสียงจำลอง"; not the 1997 recording)
+   - quake_seafloor-rumble-muffled_01 (illustrative, generic)
+   - pulse_underwater-soft-thump_01 (design pulse)
+   - hum_low-travelling-flat_01 (illustrative, generic; panning not implemented)
+   - creature_deep-swallow-gulp_01 (fiction, "จินตนาการ" window)
+   - water_deep-ocean-roomtone_01 (ambience, 14.0 s loop with 1 s crossfade, loudness −14 LUFS)
+
+3. Shared sound library picks (sidecar generator audio-studio-mcp / Stable Audio 3; Stability AI Community License)
+   - bed_underwater-mystery-sparse_01 (music bed)
+   - bed_dark-drone-sub_01 (B10 sub drone, loop)
+   - reveal_riser-tension_01 (B04 riser, cut on "แต่")
+   - reveal_glass-shimmer-soft_01 (B05 shimmer)
+   - ui_click-tick_01 (B08 accents)
+   - whoosh_heavy-cinematic_01 (B10 rush, cut at G1758)
+
+Narration: Edge TTS, th-TH-NiwatNeural at +5% (narration.py), from BLOOP-SCRIPT-R5 VO. The MP3 is local under
+public/narration/ (ignored by Git) and its amplitude JSON is committed under scripts/the-bloop/short/.
