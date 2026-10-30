@@ -55,8 +55,15 @@ const GLASS = PROJ['CAM-GLASS-OUT'];
 /** S03-SH03 beam (sheet: glow centre (300, 1150) -> (590, 700) over f0-f30 at the match framing), in plate px. */
 const BEAM_FROM: Pt = [6, 1058], BEAM_START: Pt = [360, 1035], BEAM_END: Pt = [583, 689];
 const beamAt = (G: number) => (G < 1800 ? 0 : ease(seg(G, 1800, 1830)));
+/** S03-SH06A beam glow centre (SS-R4 RT-1, plate px at s 1): (590, 700) held f0-f30, eased to (588, 820) at f66, held. */
+export const beamSH06A = (G: number): Pt => {
+  const u = ease(seg(G - 2070, 30, 66));
+  return [lerp(590, 588, u), lerp(700, 820, u)];
+};
 
-type WindowOpts = {assembly: boolean; veil: boolean; jam?: boolean; lowBank?: number; sheen?: number};
+type WindowOpts = {assembly: boolean; veil: boolean; jam?: boolean; lowBank?: number; sheen?: number;
+  /** Beam glow track in plate px (default: the S03-SH03 sweep). Beam level and fog follow `beamAt` in every case. */
+  beamTo?: (G: number) => Pt};
 /** The window plate: fog outside, the assembly on its story pose, halos, rim, veil, beam, glass and architecture. */
 const windowPlate = (id: string, camera: (tl: number) => Camera, o: WindowOpts): PaintedShot => {
   const poseOf = (G: number): AsmPose | null => (o.assembly ? asmPoseAt(G) : null);
@@ -88,7 +95,7 @@ const windowPlate = (id: string, camera: (tl: number) => Camera, o: WindowOpts):
           )}
           {beam > 0 && (
             <CameraLayer camera={cam} width={width} height={height}>
-              <Beam from={BEAM_FROM} to={[lerp(BEAM_START[0], BEAM_END[0], beam), lerp(BEAM_START[1], BEAM_END[1], beam)]} level={beam} />
+              <Beam from={BEAM_FROM} to={o.beamTo ? o.beamTo(G) : [lerp(BEAM_START[0], BEAM_END[0], beam), lerp(BEAM_START[1], BEAM_END[1], beam)]} level={beam} />
             </CameraLayer>
           )}
           <CameraLayer camera={cam} width={width} height={height} blend="normal">
@@ -497,13 +504,15 @@ const s3sh02 = intRevPlate('S03-SH02', 144, push(144, 1.0, 1.06, 480, 700), (p, 
 
 const s3sh07 = plate('S03-SH07', {
   paper: '#8d918a',
-  camera: push(90, 1.0, 1.05, 540, 700),
+  camera: push(150, 1.0, 1.05, 540, 700),
   paint: (p, {G, f, tl}) => {
     const proj = PROJ['CAM-INT-SIDE'];
     const L = VD18_LIGHT['CAM-INT-SIDE'];
     const door = doorAt(G);
     const a = asmAt(G);
-    const ox = lerp(-0.9, -1.4, ease(seg(f, 12, 42)));
+    // SS-R4 RT-2: held glance f6-f81 (narrator turns back to the door f78-f84), occupant nod f72-f84, leaf slide f72-f102.
+    const glance = f >= 6 && f < 81;
+    const ox = lerp(-0.9, -1.4, ease(seg(f, 72, 102)));
     const handle: V3 = [-0.45 - door, 1.0, -0.12];
     const walking = a.moving ? a.travel / 0.7 : undefined;
     const cart: Drawable = {depth: proj.depth([a.xs, 0, a.zs]), draw: () => paintCartSide(p, proj, a, a.travel)};
@@ -515,11 +524,13 @@ const s3sh07 = plate('S03-SH07', {
         lHold: {kind: 'umbrella', tip: proj.P([a.xs + 0.35, 0.02, a.zs + 0.3])},
       }, tl),
       actor(p, proj, 'occupant', ox, -0.25, {
-        view: 'front', light: L, nod: [0, 0.06 * bump(f, 12, 24)], face: face({look: f >= 6 && f < 24 ? [-0.8, 0] : [0.6, 0], brow: 'worry'}),
-        lArm: f < 44 ? arm(proj, handle, 1) : undefined,
+        view: 'front', light: L, nod: [0, 0.06 * bump(f, 72, 84)],
+        face: face({look: f >= 6 && f < 84 ? [-0.8, 0] : [0.6, 0], brow: 'worry', browTo: 'flat', browMix: ease(seg(f, 24, 48))}),
+        lArm: f < 104 ? arm(proj, handle, 1) : undefined,
       }, tl),
       actor(p, proj, 'narrator', 0.95, -0.75, {
-        view: 'right', light: L, head: f >= 6 && f < 21 ? 'left' : 'right', warm: 1, face: face({look: [1, 0.2], brow: f >= 6 && f < 21 ? 'up' : 'worry'}),
+        view: 'right', light: L, head: glance ? 'left' : 'right', warm: 1, rise: -0.012 * bump(f, 30, 48),
+        face: face({look: [1, 0.2], brow: glance ? 'up' : 'worry'}),
         rArm: arm(proj, [0.9, 1.05, -0.45], 1), rHold: {kind: 'torch', angle: 0.95, on: 1},
       }, tl),
     ]});
@@ -552,7 +563,7 @@ const SLUMP = {
 };
 const s4sh01 = plate('S04-SH01', {
   paper: '#8d918a',
-  camera: push(240, 1.0, 1.04, 660, 600),
+  camera: push(330, 1.0, 1.04, 660, 600),
   paint: (p, {G, f, tl}) => {
     const proj = PROJ['CAM-INT-2S'];
     const light = VD18_LIGHT['CAM-INT-2S'];
@@ -560,6 +571,10 @@ const s4sh01 = plate('S04-SH01', {
     const wx = lerp(0.2, 0.25, walkU), wz = lerp(0.0, -1.1, walkU);
     const slump = ease(seg(f, 48, 56)) * (1 - ease(seg(f, 130, 138)));
     const turn = seg(f, 132, 140);
+    // SS-R4 RT-3 glance back toward the door glass (0, 1.5, 0): turn-in f190-f206, back to her by f214. The profile rig cannot
+    // turn the head away from the lens, so it is approximated by the eye look and a small backward head shift (dev-findings).
+    const glance = ease(seg(f, 190, 206)) * (1 - ease(seg(f, 206, 214)));
+    const look = ptLerp(ptLerp([0, -0.6], [1, 0], turn), [-1, 0], glance);
     const armsOn = slump > 0;
     const via = (hand: V3, elbow: V3): Arm => ({to: proj.P(hand), via: proj.P(elbow)});
     const cw = mix3(SLUMP.hangHandR, SLUMP.handR, slump), ce = mix3(SLUMP.hangElbowR, SLUMP.elbowR, slump);
@@ -577,8 +592,9 @@ const s4sh01 = plate('S04-SH01', {
       cart,
       actor(p, proj, 'worker', wx, wz, {
         view: f >= 140 ? 'right' : 'front', head: f >= 132 ? 'right' : undefined, light, walk: f >= 12 && f < 42 ? (f - 12) / 16 : undefined,
-        crouch: 0.30 * slump, nod: [0, 0.04 * slump], rise: 0.012 * slump * Math.sin(f * 0.45), wet: true,
-        face: face({look: ptLerp([0, -0.6], [1, 0], turn), brow: 'worry', eyes: f < 138 ? 'half' : 'dot', mouth: f >= 48 && f < 138 ? 'o' : 'flat', open: talk(f, [[138, 186], [192, 240]], 0.8)}),
+        // Talk windows = the SS-R4 worker cue windows (WFOG-SCRIPT-R5, S04-B01/B02 split): f138-f180, f186-f228, f234-f282, f288-f330.
+        crouch: 0.30 * slump, nod: [-0.12 * glance, 0.04 * slump], rise: 0.012 * slump * Math.sin(f * 0.45), wet: true,
+        face: face({look, brow: 'worry', eyes: f < 138 ? 'half' : 'dot', mouth: f >= 48 && f < 138 ? 'o' : 'flat', open: talk(f, [[138, 180], [186, 228], [234, 282], [288, 330]], 0.8)}),
         rArm: armsOn ? via(cw, ce) : undefined,
         lArm: armsOn ? via(cl, cle) : f < 18 ? arm(proj, [wx + 0.15, 0.9, wz - 0.1], 1) : undefined,
         lHold: f < 12 ? {kind: 'umbrella', tip: proj.P([wx + 0.25, 0.02, wz - 0.15])} : undefined,
@@ -647,10 +663,12 @@ export const worldfogShots: PaintedShot[] = [
   windowPlate('S03-SH04', fixedCam(42, {s0: 2.2, s1: 2.3, fx: 503, fy: 598, dx: 37, dy: -38}), {assembly: true, veil: false}),
   windowPlate('S03-SH05', fixedCam(72, {s0: 1.8, s1: 1.9, fx: 695, fy: 872, dx: -135, dy: -232}), {assembly: true, veil: false}),
   windowPlate('S03-SH06', () => ({s: 3.0, fx: 577, fy: 1219, dx: -37, dy: -499}), {assembly: true, veil: false, jam: true, lowBank: 0.2, sheen: 0}),
+  // SS-R4 RT-1 (new): the S03-SH03 lit window plate, held, at the S03-SH06 pull-back; A 0 and veil off (PD12), its own beam track.
+  windowPlate('S03-SH06A', push(120, 1.24, 1.28, 560, 650), {assembly: true, veil: false, beamTo: beamSH06A}),
   s3sh07,
   s4sh01,
   s4sh02,
-  windowPlate('S04-SH03', push(90, 1.0, 1.06, 540, 700), {assembly: false, veil: false}),
+  windowPlate('S04-SH03', push(210, 1.0, 1.06, 540, 700), {assembly: false, veil: false}),
 ];
 
 export type {Proj};

@@ -17,7 +17,7 @@ const frames = opt('frames', '0').split(',').flatMap((s) => {
   const [a, b, step] = [Number(m[1]), Number(m[2]), Number(m[3] ?? 1)];
   return Array.from({length: Math.floor((b - a) / step) + 1}, (_, i) => a + i * step);
 });
-const rows = [...(await readFile('src/painted/worldfog/space.ts', 'utf8')).matchAll(/\{id: '(S\d\d-SH\d\d)', g0: (\d+)/g)].map((m) => ({id: m[1], g0: Number(m[2])}));
+const rows = [...(await readFile('src/painted/worldfog/space.ts', 'utf8')).matchAll(/\{id: '(S\d\d-SH\d\d[A-Z]?)', g0: (\d+)/g)].map((m) => ({id: m[1], g0: Number(m[2])}));
 const shotOf = (G) => [...rows].reverse().find((r) => G >= r.g0)?.id ?? 'S00';
 await mkdir(out, {recursive: true});
 const t0 = Date.now();

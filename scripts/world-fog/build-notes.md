@@ -800,3 +800,68 @@ Outputs: `r6/1s/` (r6), `r6/baseline-1s/` (pre-change, this checkout), sheets `r
 - `far-door/far-door_base-G180_r6-G180_r6-G186_crop260.png`.
 - `1s/`, `baseline-1s/`, `pass-vs-baseline/`, `pass-vs-r5/`, `determinism/a/`, `determinism/b/`.
 - Logs: `out/logs/r6-*.log`.
+
+## 2026-10-30 — Boss: SS-R4 retime on the runtime build (WFOG-EP01-SHORT r7)
+
+Scope: user authorization in chat 30 Oct ("Boss can update the build") for the index "SS-R4 retime list (Boss)" RT-1…RT-5 (`storyboards/world-fog/short/index.md`) with the S03-SH06, S03-SH06A, S03-SH07 and S04-SH01–SH03 blocks of `sc03.md` / `sc04.md` (SS-R4, uncommitted in this checkout) and script `WFOG-SCRIPT-R5`. Narration, TTS, captions, sound and the caption scrim (MK-WF-DEP-10) are not integrated (Editor). Worktree `claude/world-fog-next-steps-2817bc`: nothing committed or pushed.
+
+### What changed (owner files)
+- **T-1 composition** (`src/painted/worldfog/space.ts`): `TOTAL_FRAMES` 2610 → 3000 (last painted frame G2999, hard cut). `SHOT_ROWS` 23 rows: new `S03-SH06A` G2070 len 120; `S03-SH07` G2190/150; `S04-SH01` G2340/330; `S04-SH02` G2670/120; `S04-SH03` G2790/210. Composition length follows the scene durations (`src/Root.tsx`, `timelineFrames`); no separate duration edit.
+- **T-2 clocks** (`space.ts`): ASM-PATH push G2286–G2339 (was G2106–G2159), held at (−0.10, 0.74) G2064–G2286; pull-back G2040–G2064 unchanged. FOG-STATE FS2→FS3 G2802–G2973. Torch on G1764–G2680. Door leaf open G2262–G2292, closed G2352–G2376.
+- **T-3 lamps per lamp** (`space.ts` `lampAt`, RT-5): far pair (index 2, 3) out G2802–G2874; near-left (index 0) out G2862–G2940; near-right (index 1) to 0.35 over G2862–G2940, held to G2955, out G2955–G2973. `LAMPS` in `outside.ts` keep this index order.
+- **P-1 S03-SH06A** (`src/painted/shots/worldfog.tsx`): `windowPlate('S03-SH06A', push(120, 1.24→1.28, fx 560, fy 650), {assembly: true, veil: false, beamTo: beamSH06A})`: the S03-SH03 lit window plate at LIT-LOWER, `S` (−0.10, 0.74), `light` 1, `A` 0, veil off (PD12). `beamSH06A`: glow centre (590, 700) held f0–f30, eased to (588, 820) at f66, held. The beam option defaults to the S03-SH03 sweep, so S03-SH03–SH06 are unchanged.
+- **A-1/A-2 held look** (`src/painted/worldfog/assembly.ts`, `heldLook(G)`, zero outside G2070–G2189): shoulders rise 0.012 m per breath (period 20 frames, added to `dip`); head tilts forward 5° f54–f66 and holds (`H()` rotates hood and face about the neck y 1.17; identity without a bow); eyelids close f84–f88 (`blink`); pupils go down f48–f60 (`gazeDown`). `AsmPose` gains optional `bow`, `blink`, `gazeDown`; absent fields are the old values.
+- **H-1 brow relax** (`src/painted/worldfog/head.ts`): `FaceState.browTo` + `browMix` (0..1) blend the brow table; without them `browY` returns the table entry exactly. Used by the S03-SH07 occupant.
+- **P-2 S03-SH07**: picture push (150, 1.00→1.05). Held glance: narrator head left and brow up f6–f81 (turn back to the door f78–f84, switch at the midpoint), occupant looks at narrator f6–f84. Occupant nod f72–f84; occupant brows relax f24–f48; leaf slide f72–f102 (`doorAt`) with the occupant's left hand released at f104 (was f44); narrator exhale `rise` −0.012 m f30–f48; cart push f96–f149 through `asmAt`.
+- **P-3 S04-SH01**: picture push (330). Worker talk windows = the four SS-R4 worker cues, f138–f180, f186–f228, f234–f282, f288–f330 (SS-R3.5 windows were f138–f186, f192–f240 and matched the cue windows of that revision). Glance f190–f214: eye look toward the door side and `nod` dx −0.12 head units (approximation; `DF-20261030-painted-profile-head-turn`).
+- **P-4 S04-SH02**: no edit (offset only; torch off and door follow the G clocks). **S04-SH03**: window plate push (210).
+- **Tools and labels**: `scripts/world-fog/stills.mjs` regex accepts the `A` suffix (the old pattern would have labelled S03-SH06A frames as S03-SH06); `pass-sheets.py` ROWS and the G0–G2999 range; `lead-check.ts` frames moved to the SS-R4 acceptance frames, S03-SH06A numbers and the S03-SH07 worker lead added; `src/painted/worldfog/qa.tsx` note r7; `src/videos/world-fog/index.ts` comment (G2999, 23 shots).
+- **Tests** (`tests/world-fog.test.ts`): 3000 frames and 23 plates; hard cut G2790–G2999 (last frame shot-local f209); lamp, fog, torch and door clocks; ASM-PATH push; S03-SH06A held look (LIT-LOWER values, `warp` 0, `assemblyParts` = `assemblyRaw`, breath, bow, blink, gaze, outside-the-shot zeros); head bow moves only the hood and face (helmet, cartons and cart unchanged); SH06A sheet numbers; camera push lengths.
+
+### Checks
+- Environment (`out/logs/r7-npm-ls.log`, `r7-remotion-versions.log`): `npm ls --depth=0` clean; `remotion` 4.0.538. The HEAD typecheck failed before any edit with TS2688 on an empty `node_modules/@types/react 2` (no `index.d.ts`, no `package.json`); `rmdir` of that empty directory → typecheck exit 0 (`r7-typecheck-baseline2.log`). Logged in `DF-20261026-duplicate-types`.
+- `npm run typecheck` exit 0 (`r7-typecheck-final.log`); `npm run lint` exit 0, no messages (`r7-lint.log`); `npm test` **125 of 125** (HEAD baseline 120 of 120; `r7-test-final.log`); world-fog file 27 of 27 (`r7-test-world-fog-1.log`).
+- Lead check (`out/logs/r7-lead-check.log`, no render): diff against the r6 lead check (`r6-lead-check.log`) changes only the S04-SH01 rows (the push length moves them by 1 px) and the new and moved SS-R4 rows; all other rows are identical.
+
+### Regression: frames before G2070 and the moved shots
+- **Picture parity, chrome off** (labelled entry `WFOG-QA`, below the label band; HEAD and r7 rendered in the same session): G0–G2040 every 30 frames 68 of 69 identical (inf dB); S02-SH01 G270 106 dB (render-noise band). G2069 identical. S04-SH02 offset: HEAD G2400/2430/2460/2490 vs r7 G2670/2700/2730/2760 identical; HEAD G2470 vs r7 G2740 (RT-4, f70) identical.
+- **Production 1 s pass by bytes** (`pass-sheets.py --prev r6/1s`, `out/logs/r7-pass-sheets.log`): identical 50, changed 21, new 30 (101 tiles). Changed: S02-SH01 G270/G300 (noise, 108–111 dB); S03-SH01 ×4, S03-SH02 ×4, S03-SH03 ×4, S03-SH04 ×2, S03-SH05 ×2, S03-SH06 ×1 (G1560–G2040). These are the progress-bar fill only: picture identical with chrome off; bar pixels G2040 144 px, bbox x 634–669, y 1851–1854. S04-SH01 G2340/G2370 changed (picture push 240 → 330 and the fog phase).
+- **Why the bar changes**: `SceneRenderer`'s progress bar fills each scene segment by `(frame + 1) / duration`; S03 went 630 → 810 frames and S04 450 → 660. The HEAD control in the same session matches r6 within noise (113 dB at G1650), so the difference is the code, and the bisect (`head.ts`, `assembly.ts`, `shots/worldfog.tsx`, `index.ts` alone: noise-level) puts it in the scene durations. `DF-20261030-retime-picture-parity`.
+- **Outside fog drift follows absolute G**: `outside.ts` `t = G / 30`. S04-SH01 f0 (HEAD G2160 vs r7 G2340) differs at 46.7 dB and S04-SH03 f0 (G2520 vs G2790) at 42.6 dB, over the window area (labelled pairs, below the label: bbox y 420–1219 for S04-SH01 and y 420–1325 for S04-SH03). The drift is continuous across the cuts (G2339/2340 and G2789/2790 are the same clock). Expected from the story clock; not a regression.
+
+### Sheet numbers (labelled QA frames, chrome off; `lead-check.ts`, `qa-measure.py`, `caption-zone.py`)
+- **SH06A G2100 (f30)**: worker 679 px (sheet 674 ±15); face (615, 709) (sheet 615, 705 ±15). **G2136 (f66)** beam centre (595, 865) (sheet 595, 861 ±20), from `beamSH06A` and the plate camera.
+- **SH06A G2070–G2189**: `A` 0 and veil off by construction (`lensAt` is 0 from G1822; `windowPlate` veil false); `assemblyParts` equals `assemblyRaw` (no warp). No lens-on pixel render was made, so "cmp against the VD17-off render" is met by construction, not by a pixel comparison.
+- **Head bow (f54–f66, 5°)** at s 1.0: face centre +0.38 px x, +0.25 px y (down); hood top −0.23 px (up). Below the visible threshold in this front view (Q3).
+- **SH07 G2339**: worker lead 904 px (rig, profile; sheet ≥ 480 ✓). Face (eye, nose, mouth) clear of the jamb; the jamb covers the back of the hood (rig hood centre x 855, jamb 861–912). Acceptance met by eye on the crop.
+- **SH07 G2320**: door jamb bar 51 px wide (x 861–912; sheet ≤ 40 px): **not met** (Q1). The same bar is 51 px at G2140 in r6 (`r6-lead-check.log`); the camera and jamb are unchanged.
+- **S04-SH01 G2380 (f40)**: lead 923 px, narrator 925 px (sheet ≥ 480 ✓). Slumped worker G2396/G2440/G2470 (f56/f100/f130): head top 584 vs sheet ~573, lead 796–804 vs ~805: unchanged from r6 (584, 798–812).
+- **S04-SH03 lamps (RT-5)** by eye on the crops (`lamp band` at G2802, G2874, G2940, G2973): all four halos at G2802; far pair gone by G2874; only the near-right ember at the upper right of the window at G2940 (sheet point (881, 224)); no lamp at G2973. Lamp luma in ±8 px boxes was dominated by the fog and is not used as evidence.
+- **S04-SH03 end**: G2999 is the painted FS3 view with the empty walkway, hard cut; `plateAt(2999)` is shot-local f209 (test).
+- **Caption zone** (`caption-zone.py`, default band 860–1248, raw background, no scrim): mean / p95 at G2100 0.414/0.663; G2136 0.440/0.693; G2189 0.443/0.693; G2230 0.382/0.714; G2380 0.326/0.591; G2420 0.322/0.583; G2538 0.337/0.598; G2802 0.361/0.505; G2940 0.391/0.549. All fail the 0.25 / 0.40 rule without the Editor scrim (MK-WF-DEP-10); not evaluated with a scrim.
+
+### Sheets and artifacts (`out/qa/world-fog/WFOG-EP01-SHORT/r7/`)
+- `sheet_A_S03-SH06-SH07.png` (13 labelled frames: G2040, G2069, G2070, G2100, G2136, G2189, G2190, G2230, G2262, G2270, G2292, G2320, G2339) and `sheet_B_S04.png` (17 labelled frames: G2340, G2380, G2420, G2538, G2554, G2669, G2670, G2740, G2790, G2802, G2862, G2874, G2940, G2955, G2964, G2973, G2999). Both viewed; labels burned in (`WFOG-QA`, BLOCKOUT note).
+- `labelled/` (30 frames, `WFOG-QA`), `1s/` (101 production frames, `manifest.txt`), `sheet_1s_A.png` / `sheet_1s_B.png` (generated by `pass-sheets.py`; not viewed in full).
+- Logs: `out/logs/r7-*.log`; parity table `out/logs/r7-picture-parity-0-2040.tsv` (chrome off); production PSNR table `out/logs/r7-parity-psnr-1s.tsv` (chrome on: the progress-bar row lowers the S03/S04 values; S04-SH02 at 54–59 dB is that bar, identical with chrome off).
+
+### Questions for Mark (sheets not edited)
+- **Q1 SH07 jamb bar** (G2320): 51 px at s 1.04 against the sheet's ≤ 40 px. The SS-R3.2 projection's 21 px (x 859–880) does not match this plate's geometry (lead-check: x 861–912). Options: accept 51 px, move the camera (sheet-owned, ST-02), or re-state the rule. Not changed here.
+- **Q2 glance** (RT-3, f190–f214): the profile rig cannot turn the head away from the lens (`DF-20261030-painted-profile-head-turn`). Built as eye look plus a small backward nod. Accept, restage (head stays forward; the line carries the beat), or approve a back-of-head view as new painted rig work.
+- **Q3 head bow** (RT-1, 5° f54–f66): sub-pixel in this front view (above). Accept as a held tilt that does not read, or ask Film for a view where it reads (profile or three-quarter).
+- **Q4 torch "lowered on the threshold"** (RT-2): no value in the sheet. The narrator's torch hand is unchanged (1.05 m). Give the hand and beam numbers.
+- **Q5 beam hold value**: the sheet calls (590, 700) "SH03 hold value", but the build's S03-SH03 end and S03-SH04–SH06 beam use (583, 689) (`BEAM_END`). S03-SH06A follows the RT-1 values; SH03–SH06 keep `BEAM_END` because frames before G2070 must not change. Confirm which value the sheet means.
+- **Q6 occupant brow relax** uses a continuous blend (`browTo`/`browMix`, f24–f48), a new optional rig field. Confirm it is acceptable for the occupant.
+- **Q7 talk windows** follow the R5 cue windows (estimates pending TTS, PD04). Editor re-times them; the mouth moves with the windows.
+
+### For Film / Editor
+- **Progress bar** (production chrome, `SceneRenderer`): S03 and S04 segments change with their durations; picture before G2070 is unchanged with chrome off. Decide whether the episode keeps the default bar (Editor; the `chrome` setting; not changed here).
+- **Window fog phase**: `outside.ts` drift follows absolute G, so the S03-SH07, S04-SH01 and S04-SH03 window views show a different fog phase than HEAD at the same local frame, continuous in G.
+
+### Limitations and not done
+- Studio not run; stills are per-frame `renderStill` calls (random access), not Studio playback. Seek parity in Studio is unverified.
+- Continuity checks at the boundaries (F−1/F/F+1) were done only by eye on the labelled frames: G2069/2070 (SH06→SH06A) and G2189/2190 (SH06A→SH07) in sheet A; G2339/2340 (SH07→S04-SH01) in the sheets; G2789 (S04-SH02 end) was not rendered. No every-frame continuity pass.
+- The production PSNR table (`r7-parity-psnr-1s.tsv`, scratch script, mapped old tiles) mixes the chrome bar with real changes: S03-SH07 and S04 rows are content changes (14–59 dB, expected). The chrome-off parity above is the picture-parity evidence; the byte table is the production-level one.
+- Caption and scrim checks not done (Editor). Sound, narration and TTS not touched.
+- Long: none registered in this checkout.
+- Not committed or pushed. Scratch scripts and the HEAD baseline copy live in the session scratchpad (outside the repository).

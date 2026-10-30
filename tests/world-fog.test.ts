@@ -10,8 +10,8 @@ import {mixColor, type Painter, type Pt} from '../src/painted/painter';
 import {asmPoseAt, assemblyParts, assemblyRaw, JAM_JUDDER, LIT, SIL, TAP_FRAMES} from '../src/painted/worldfog/assembly';
 import {doorPt, farShapeAt, SEDAN_DOOR} from '../src/painted/worldfog/car';
 import {CAST, drawFigure, shoulderHeight, type Arm} from '../src/painted/worldfog/cast';
-import {PROJ, SHOT_ROWS, TOTAL_FRAMES, asmAt, fogAt, lampAt, lensAt, lightAt, type V3} from '../src/painted/worldfog/space';
-import {SH02_TORCH_HAND, VD18_LIGHT, clutch, counterWorkerArms, sh02Arms} from '../src/painted/shots/worldfog';
+import {DEG, PROJ, SHOT_ROWS, TOTAL_FRAMES, asmAt, doorAt, fogAt, lampAt, lensAt, lightAt, torchOnAt, type V3} from '../src/painted/worldfog/space';
+import {SH02_TORCH_HAND, VD18_LIGHT, beamSH06A, clutch, counterWorkerArms, sh02Arms} from '../src/painted/shots/worldfog';
 
 const video = worldFog.videos[0];
 const fps = 30;
@@ -23,7 +23,7 @@ const plateAt = (G: number) => {
   return s;
 };
 
-test('WFOG-EP01-SHORT registers 22 plates on the SS-R3.1 G ranges, 2610 frames, four story scenes', () => {
+test('WFOG-EP01-SHORT registers 23 plates on the SS-R4 G ranges, 3000 frames, four story scenes', () => {
   collectEpisodes([worldFog]);
   assert.equal(video.id, 'WFOG-EP01-SHORT');
   assert.equal(total, TOTAL_FRAMES);
@@ -39,23 +39,37 @@ test('WFOG-EP01-SHORT registers 22 plates on the SS-R3.1 G ranges, 2610 frames, 
 test('hard-cut ending (MK-WF-DEP-07): C_seamless with loopBlendFrames 0 has no hold, fade or blend', () => {
   assert.equal(video.ending, 'C_seamless');
   assert.equal(video.loopBlendFrames, 0);
-  for (const G of [2520, 2580, 2598, 2608, 2609]) {
+  for (const G of [2790, 2940, 2973, 2998, 2999]) {
     const s = plateAt(G);
     assert.equal(s.opacity, 1);
     assert.equal(s.plates.length, 1, `G${G} paints one plate (no frame-0 blend)`);
     assert.equal(s.plates[0].shot, 'WFOG-S04-SH03');
-    assert.equal(s.plates[0].frame, G - 2520, `G${G} is not held`);
+    assert.equal(s.plates[0].frame, G - 2790, `G${G} is not held`);
   }
+  assert.equal(plateAt(2999).plates[0].frame, 209); // last painted frame G2999 (shot-local f209)
 });
 
-test('S04-SH03 lamps fade to nothing and FOG-STATE reaches FS3 by G2598 (VD14)', () => {
-  for (let i = 0; i < 4; i++) {
-    assert.equal(lampAt(2525, i), 1);
-    assert.equal(lampAt(2598, i), 0);
-  }
+test('S04-SH03 lamps: far pair out by G2874, near-left out by G2940, near-right holds 0.35 to G2955 and is out by G2973 (RT-5)', () => {
+  for (const i of [0, 1, 2, 3]) assert.equal(lampAt(2801, i), 1, `lamp ${i} lit before the shot's dimming`);
+  for (const i of [2, 3]) assert.equal(lampAt(2874, i), 0, `far lamp ${i} out by G2874`);
+  assert.equal(lampAt(2940, 0), 0, 'near-left out by G2940');
+  assert.ok(Math.abs(lampAt(2940, 1) - 0.35) < 1e-9, 'near-right at 0.35 at G2940');
+  assert.ok(Math.abs(lampAt(2955, 1) - 0.35) < 1e-9, 'near-right still 0.35 at G2955 (held)');
+  assert.ok(lampAt(2964, 1) > 0 && lampAt(2964, 1) < 0.35, 'near-right fading G2955-G2973');
+  for (const i of [0, 1, 2, 3]) assert.equal(lampAt(2973, i), 0, `lamp ${i} out by G2973`);
+});
+
+test('FOG-STATE reaches FS3 at G2973 (SS-R4 RT-5); torch off G2680; door leaf G2262-G2292 open and G2352-G2376 shut (RT-2, RT-3)', () => {
   assert.equal(fogAt(2526), 2);
-  assert.equal(fogAt(2598), 3);
+  assert.equal(fogAt(2801), 2);
+  assert.equal(fogAt(2973), 3);
   assert.equal(fogAt(156), 0); // car parked before the fog bank (PD02 order)
+  assert.equal(torchOnAt(2679), 1);
+  assert.equal(torchOnAt(2680), 0);
+  assert.equal(doorAt(2261), 0);
+  assert.equal(doorAt(2292), 1);
+  assert.equal(doorAt(2351), 1);
+  assert.equal(doorAt(2376), 0);
 });
 
 test('match frame: G1409 and S03-SH03 f0 share the camera and the warp-off silhouette (SP01 b)', () => {
@@ -106,10 +120,81 @@ test('ASM-PATH keys and the S03 pull-back / push-in (ST-04)', () => {
   const stop = asmAt(930);
   assert.deepEqual([stop.xs, stop.zs, stop.sway], [-0.1, 0.62, 0]);
   assert.ok(Math.abs(asmAt(2064).zs - 0.74) < 1e-9);
-  assert.ok(Math.abs(asmAt(2159).zs + 0.45) < 1e-9);
+  // SS-R4 RT-1/RT-2: the stack holds at (-0.10, 0.74) through S03-SH06A and the S03-SH07 glance, then pushes in G2286-G2339.
+  assert.ok(Math.abs(asmAt(2286).zs - 0.74) < 1e-9);
+  assert.equal(asmAt(2200).zs, asmAt(2280).zs);
+  assert.ok(Math.abs(asmAt(2339).zs + 0.45) < 1e-9);
+  assert.ok(!asmAt(2280).moving && asmAt(2300).moving && !asmAt(2339).moving);
   // Lurch: hold frames do not move.
   assert.deepEqual(asmAt(565), asmAt(565));
   assert.equal(asmAt(562).zs, asmAt(565).zs);
+});
+
+test('S03-SH06A held look (SS-R4 RT-1): LIT-LOWER at S (-0.10, 0.74), fog lens A 0 and the lit window camera; breath, bow, blink, gaze', () => {
+  const f = (k: number) => 2070 + k;
+  const cam = (k: number) => cameraAt('WFOG-S03-SH06A', k / fps);
+  assert.deepEqual(cam(0), {s: 1.24, fx: 560, fy: 650, dx: 0, dy: 0});
+  assert.ok(Math.abs(cam(119).s - 1.28) < 1e-9);
+  const pose = asmPoseAt(f(30));
+  assert.equal(pose.warp, 0, 'PD12: no fog-lens amount in the held look');
+  assert.equal(pose.light, 1);
+  assert.deepEqual([pose.S.xs, pose.S.zs], [-0.1, 0.74]);
+  // Hand, umbrella and helmet anchors: the LIT-LOWER values of the sheet (no movement of hand, umbrella or helmet).
+  const near = (a: V3, b: V3) => a.every((v, i) => Math.abs(v - b[i]) < 1e-9);
+  assert.ok(near(pose.rHand, [0.15, 1.05, 0.97]) && near(pose.lHand, [0.45, 0.95, 1.02]) && near(pose.umbrella.tip, [0.5, 0.02, 0.94]));
+  for (const k of [0, 30, 66, 100, 119]) assert.ok(near(asmPoseAt(f(k)).rHand, pose.rHand) && near(asmPoseAt(f(k)).helmet.c, asmPoseAt(f(0)).helmet.c));
+  // Fog lens off: the drawn parts are the honest geometry (no warp).
+  assert.deepEqual(assemblyParts(GLASS, pose), assemblyRaw(GLASS, pose));
+  // Breath: shoulders rise 0.012 m per 20-frame period above the dip.
+  assert.equal(asmPoseAt(f(0)).dip, -0.015);
+  assert.ok(Math.abs(asmPoseAt(f(10)).dip - (-0.003)) < 1e-9);
+  // Head bow 5 deg from f54 (held), blink f84-f88 (peak f86), pupils down from f48.
+  assert.equal(asmPoseAt(f(40)).bow, 0);
+  assert.ok(Math.abs((asmPoseAt(f(66)).bow ?? 0) - 5 * DEG) < 1e-9 && Math.abs((asmPoseAt(f(119)).bow ?? 0) - 5 * DEG) < 1e-9);
+  assert.equal(asmPoseAt(f(80)).blink ?? 0, 0);
+  assert.ok(Math.abs((asmPoseAt(f(86)).blink ?? 0) - 1) < 1e-9);
+  assert.ok((asmPoseAt(f(60)).gazeDown ?? 0) > 0.99 && (asmPoseAt(f(47)).gazeDown ?? 0) === 0);
+  // Outside the shot the held-look fields are zero and the breath dip is the old constant.
+  assert.equal(asmPoseAt(2069).dip, -0.015);
+  assert.equal(asmPoseAt(2069).bow ?? 0, 0);
+  assert.equal(asmPoseAt(2190).blink ?? 0, 0);
+});
+
+test('S03-SH06A head bow is a forward tilt of the hood and face only: the helmet and cartons do not move', () => {
+  const pose = asmPoseAt(2136);
+  const flat = assemblyRaw(GLASS, {...pose, bow: 0});
+  const bowed = assemblyRaw(GLASS, pose);
+  assert.equal(flat.length, bowed.length);
+  const pts = (parts: typeof flat, lit: string) => parts.filter((p) => p.lit === lit).flatMap((p) => p.pts);
+  for (const lit of [LIT.helmet, LIT.kraft, LIT.cart]) assert.deepEqual(pts(bowed, lit), pts(flat, lit), `${lit} unmoved`);
+  // The face (skin) moves: the tilt is about the neck, so the centre of the face drops and moves toward the lens.
+  const meanY = (ps: Pt[]) => ps.reduce((s, q) => s + q[1], 0) / ps.length;
+  const dy = meanY(pts(bowed, LIT.skin)) - meanY(pts(flat, LIT.skin));
+  assert.ok(dy > 0 && dy < 3, `face centre moved ${dy.toFixed(2)} px at s 1.0 (front-view foreshortening)`);
+});
+
+test('S03-SH06A sheet numbers (SS-R4 RT-1): worker 674 +-15 px and face (615, 705) +-15 at G2100; beam centre (595, 861) +-20 at G2136', () => {
+  const cam = cameraAt('WFOG-S03-SH06A', 30 / fps);
+  const pose = asmPoseAt(2100);
+  const parts = assemblyRaw(GLASS, pose);
+  const pts = (lit: string) => parts.filter((p) => p.lit === lit).flatMap((p) => p.pts);
+  const skin = pts(LIT.skin);
+  const faceAt = toScreen(cam, [skin.reduce((s, q) => s + q[0], 0) / skin.length, skin.reduce((s, q) => s + q[1], 0) / skin.length]);
+  // Worker height on screen: feet (ground at the worker's plate point) to the top of the hood, both at camera scale s.
+  const feet = toScreen(cam, GLASS.P([pose.S.xs + 0.3, 0, pose.S.zs + 0.45]));
+  const hoodTop = toScreen(cam, [0, Math.min(...pts(LIT.coat).map((q) => q[1]))]);
+  const height = feet[1] - hoodTop[1];
+  assert.ok(Math.abs(height - 674) <= 15, `worker ${height.toFixed(1)} px`);
+  assert.ok(Math.abs(faceAt[0] - 615) <= 15 && Math.abs(faceAt[1] - 705) <= 15, `face ${faceAt.map((v) => v.toFixed(1))}`);
+  const beam = toScreen(cameraAt('WFOG-S03-SH06A', 66 / fps), beamSH06A(2136));
+  assert.ok(Math.abs(beam[0] - 595) <= 20 && Math.abs(beam[1] - 861) <= 20, `beam centre ${beam.map((v) => v.toFixed(1))}`);
+  assert.deepEqual(beamSH06A(2100), [590, 700]);
+});
+
+test('SS-R4 picture pushes: S03-SH07 s 1.00-1.05 over 150 frames, S04-SH01 s 1.00-1.04 over 330, S04-SH03 s 1.00-1.06 over 210', () => {
+  assert.ok(Math.abs(cameraAt('WFOG-S03-SH07', 0).s - 1) < 1e-9 && Math.abs(cameraAt('WFOG-S03-SH07', 149 / fps).s - 1.05) < 1e-9);
+  assert.ok(Math.abs(cameraAt('WFOG-S04-SH01', 329 / fps).s - 1.04) < 1e-9);
+  assert.ok(Math.abs(cameraAt('WFOG-S04-SH03', 209 / fps).s - 1.06) < 1e-9);
 });
 
 test('SS-R3.2 camera and rise staging: CAM-INT-SIDE at z -0.6, S03-SH04 pivot, S03-SH01 tilt-follow and rise clock', () => {

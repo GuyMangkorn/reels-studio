@@ -1,4 +1,138 @@
-# WFOG-FACTCHECK-R2 — Exact-revision review
+# WFOG-FACTCHECK-R4 — Exact-revision review
+
+- Owner / reviewed: Boat, 2026-10-30 (Asia/Bangkok). Supersedes `WFOG-FACTCHECK-R3` for the `WFOG-SCRIPT-R4` scope only. R3 is kept under History, dated 2026-10-30.
+- Deliverable: `WFOG-EP01-SHORT`.
+- Exact input: [WFOG-SCRIPT-R4](script.md) (Preaw, 2026-10-30), an uncommitted working-tree revision on top of R2 `67b9f85`. Read as its own revision. R3 text is not kept as a separate file, so R3→R4 was judged from the R4 change log, the R3 quotes and the `git diff -U0 67b9f85` hunk map. Every R3-touched section was re-read in full; no hunk touches the reused R2 rows or the clue ledger.
+- Research: [WFOG-RESEARCH-R1 + K001 addendum (2026-10-30)](../research.md#k001-addendum-2026-10-30), unchanged in R4. No new web research: the inspected sources `SRC003`–`SRC014` cover the one changed clause. The addendum's access gaps still apply.
+- Checkout: `67b9f85` plus working-tree changes to `scripts/world-fog/` and untracked `storyboards/world-fog/`. No runtime, audio, visual or Blender output reviewed.
+- Coverage: header (lines 1–10); story core (12–21); progression rows 34–36 with sound notes; S03-B02 to S04-B02 (114–151); claim map and sound handoff (164–184); Film → Mark items 7–8 (193–194); self-check (200); change log (205–208); intro line 40 and its on-screen fiction marker. Copies of the Thai line were searched in `scripts/`, `storyboards/world-fog/`, `docs/`, `src/`, `.claude/` and `.codex/`.
+- Request premise: the user chose `แล้วความกลัว ก็ทำให้ฉันมองมันเป็นอันตราย` over the R-1 wording. This review checks the factual boundary only and does not override the story choice. Learning takeaway: kept, but the fear clause must be narrowed to a tendency (R-3). No premise, reveal, clue, ending, beat-order or timing-structure change.
+- **Verdict: `revise`** (editorial vocabulary: `revision-required`) for `WFOG-SCRIPT-R4`. R-3: the fear clause is not within K001c as written. R-4: the R-2 sync is incomplete. PD09 is non-blocking and unchanged. This verdict is not user approval, visual, audio or runtime proof.
+
+## Required changes (WFOG-SCRIPT-R4)
+
+| ID | Location | Current (R4) | Required | Reason |
+| --- | --- | --- | --- | --- |
+| R-3 | S03-B02 narrator VO, line 126 (`K001c`) | `ในหมอกแบบนี้ ตาเห็นแค่บางส่วน… สมองเราก็มักจะเติมส่วนที่ขาดเอง แล้วความกลัว ก็ทำให้ฉันมองมันเป็นอันตราย` | `ในหมอกแบบนี้ ตาเห็นแค่บางส่วน… สมองเราก็มักจะเติมส่วนที่ขาดเอง แล้วความกลัว ก็ชวนให้ฉันมองว่ามันเป็นอันตราย` | `ทำให้` ("makes") states a cause in this case with no tendency marker. K001c supports only a documented tendency, and the addendum says the fear clause is "not a demonstrated cause in this case". `ชวนให้` ("invites toward") restores the tendency that R-1 used. `มองมัน…เป็นอันตราย` without `ว่า` can be heard as a changed percept, the least supported reading (no shape-in-fog test; `SRC012` d′ found no context × emotion interaction). `มองว่า` ("regards as") keeps it an appraisal of an ambiguous cue, as K001c's `ตีความมันว่า` does. Only these two edits; the rest is the user's wording. Also within K001c: R-1 `…แล้วความกลัวก็ชวนให้ฉันตีความมันว่าเป็นอันตราย`. Adds one word (`ว่า`), unmeasured (PD10). |
+| R-4 | Residual R-2 sync (Preaw; Boat did not edit) | (a) line 6 Story mode: "research **missing**, Boat to source"; (b) line 173 claim row: "**New `K001`, research missing**", "Boat to source and check", scope "ambiguous shapes"; (c) line 10 Writing status: "R3 needs a Boat recheck"; line 208: "Current scope: **R3 written, Boat recheck pending**"; (d) line 3 owner/date has no R4; (e) line 205: "same claim as Boat's required wording"; (f) optional: line 40 "authorized in R3". | (a) `K001`, sourced (K001 addendum, 2026-10-30); tendency-framed. (b) status "sourced (K001 addendum)"; check "WFOG-FACTCHECK-R4 `revise` (R-3); recheck at R5"; scope "ambiguous cues (sentences, faces, labels; no shape-in-fog test)"; quote = the R-3 line verbatim. (c) lines 10 and 208: "R4 `revise` (R-3, R-4); R5 needs a Boat recheck". (d) add "R4 2026-10-30". (e) "fear clause changed from tendency (`ชวนให้`) to cause (`ทำให้`) by user choice; R5 applies R-3 (WFOG-FACTCHECK-R4)". (f) "in this revision". | R-2 (R3) asked for the claim-map status and the header to be synced. The quote and the takeaway were synced (lines 16 and 173 match), but the status, scope, header and current-scope lines were not. The line 205 sentence is inaccurate because the claim strength changed. |
+
+## R4 change review (WFOG-SCRIPT-R4)
+
+| Change ID | Location | R3 state (WFOG-FACTCHECK-R3) | R4 state checked | Claim-map row | Factual impact | Thai naturalness |
+| --- | --- | --- | --- | --- | --- | --- |
+| `R4-C01` | S03-B02 narrator VO, line 126 | `…แล้วฉันก็เติมมันด้วยความกลัว` (`R3-C01`) | User wording `…แล้วความกลัว ก็ทำให้ฉันมองมันเป็นอันตราย` (exact match) | `K001` (`K001c`) | Causal overstatement → R-3 | Natural |
+| `R4-C02` | Learning takeaway, story core, line 16 | "the narrator filled it with fear" (R-2 target) | R-2 text verbatim: "in fog the eye gets incomplete shapes, the brain tends to fill the gap, and fear pulls the narrator's reading of it toward danger" | — | Synced and tendency-framed. It matches R-3, not the R4 spoken line; resolved by R-3 | Natural |
+| `R4-C03` | Claim-map row, line 173 | Old line quoted; "research missing" | Quote = R4 line (synced); status and scope not synced | `K001` | R-4(b) | N/A |
+| `R4-C04` | Header lines 3, 6, 10; line 208 | R3 pending | Not synced ("research missing"; "R3 needs a Boat recheck") | — | R-4(a), (c), (d) | N/A |
+| `R4-C05` | Change log, line 205 | — | "same claim as Boat's required wording" is inaccurate: the verb changed the claim strength | — | Record accuracy → R-4(e) | N/A |
+| `R4-C06` | Hunk map (`git diff -U0 67b9f85`) | — | Hunks fall only in R3-touched areas (header, story core, progression table, S03-B02 to S04-B02, claim map, Film → Mark 7–8, self-check, change log, intro line 40) plus the R4 clause. None touch S01-B01, S02-B01 to S02-B04, S03-B01, the existing S03-B02 lines or the clue ledger | — | Reused rows valid | N/A |
+
+## Claim-by-claim review (WFOG-SCRIPT-R4)
+
+Source and locator IDs are in [research](../research.md). Rows marked "reused" were confirmed unchanged by the hunk map and checked against the research before reuse.
+
+| Claim / location | Exact wording or event checked (R4) | Classification | Verdict | Evidence / locator | Reason, boundary and impact |
+| --- | --- | --- | --- | --- | --- |
+| `K001a` / S03-B02 narrator VO | `ในหมอกแบบนี้ ตาเห็นแค่บางส่วน…` | Fact (general visibility), narrator voice | `supported` (reused) | `SRC003`; `SRC001` | Unchanged. A partial view only; no fog cause, toxicity or duration. |
+| `K001b` / S03-B02 narrator VO | `สมองเราก็มักจะเติมส่วนที่ขาดเอง` | Fact, general, hedged | `supported` (hedged; reused) | `SRC004`, `SRC005`, `SRC006`, `SRC007`; contrary: `SRC004` (no fill-in of a dynamic pattern in patients) | Keep `มักจะ`. No "always". "Fill in" means completion, not a literal picture. |
+| `K001c` / S03-B02 narrator VO, fear clause as R4 | `แล้วความกลัว ก็ทำให้ฉันมองมันเป็นอันตราย` | First-person takeaway, narrator-level because it is the designed learning payoff; causal attribution | `needs-qualification` (R-3) | `SRC008` (currently anxious read more ambiguous sentences as threatening); `SRC010` (socially anxious read neutral faces negatively); `SRC013` (trait anxiety: facing-the-viewer bias for ambiguous biological motion); `SRC009` (induced interpretive bias, partial abstract; induction by exemplar training, not fear); `SRC012` (instructed acoustic threat; clear faces labelled; d′ no context × emotion interaction). Limits: `SRC011` (d = 0.45, attention), `SRC014` (null, n = 200) | `ทำให้` asserts a cause in this case. The inspected evidence supports a modest, paradigm-dependent tendency. `มองมัน…เป็นอันตราย` without `ว่า` can be read as a change in what is seen; the K001c evidence concerns sentences, faces, labels and attention, and no inspected source tests shapes in fog (addendum, "Missing evidence"). `มัน` refers to the partly seen figure, not the fog or the air, so no fog-safety claim arises. First person is acceptable, but the qualifier must be in the words, not left to the frame. |
+| `K001c` / proposed R-3 wording | `แล้วความกลัว ก็ชวนให้ฉันมองว่ามันเป็นอันตราย` | Same claim, tendency-framed | `supported` expected on this exact text; confirm at R5 | as above | `ชวนให้` = tendency; `มองว่า` = appraisal; first person; no universal marker. Not verified until it appears in a revision. |
+| `K001d` / fear generates the gap's content | Not asserted by R4 or by R-3 | Mechanism check | Not asserted (pass) | `SRC004`, `SRC005` (completion from surround or learned pattern); `SRC008`–`SRC010` (cues already present) | The completion clause credits the brain (`สมองเราก็มักจะเติมส่วนที่ขาดเอง`) before fear acts. Neither version says fear makes the shape. See PD12. |
+| Learning takeaway, story core (line 16) | "in fog the eye gets incomplete shapes, the brain tends to fill the gap, and fear pulls the narrator's reading of it toward danger" | Narrator summary (`K001a`–`K001c`) | `supported` (tendency wording) | as above | Within K001c. Its spoken counterpart needs R-3 to match. |
+| Claim-map row S03-B02 (line 173) | "New `K001`, research missing"; scope "ambiguous shapes" | Mapping metadata | `revise` (R-4(b)) | research K001 addendum | Stale status. Scope overstated: K001c covers sentences, faces and labels, not fog shapes. No spoken-line error. |
+| S04-B01 worker motive and collision line (line 138) | `รถชนกันขวางถนนครับ รถผมติดอยู่ข้างหลังนั่น เลยต้องเข็นของมาส่งร้านนี้เอง… แต่ตอนนี้ กลับทางเดิมไม่ได้แล้ว` | Fiction, character report and motive | `not-factual` (pass) | `D001`; `CL01`–`CL05`; S01-B01 approach | Matches the R3 quote (`R3-C03`). No casualty, count, real place or real incident. PD09 non-blocking. |
+| S04-B02 narrator VO (line 148) | `สิ่งที่ฉันกลัวเมื่อกี้… เป็นแค่คนคนหนึ่ง แต่หมอกนี่ยังไม่ไปไหน… แล้วเราก็ไปไหนไม่ได้` | Character reflection; fiction predicament | `not-factual` (pass) | research items 4–5; `F002` / `SRC002` (shelter versus evacuation depends on the hazard) | Matches `R3-C04`. Not a "fear is the monster" slogan; no harmlessness claim; a predicament, not a shelter instruction. |
+| S04-B02 event note (line 150) | About 1.5–2 s of held silence after the last light | Production direction | `not-factual` | none | No factual content. |
+| On-screen fiction marker `เรื่องสมมติ • EP1` (line 40) | Frame-0 label, "no real news branding" | Labelling of fiction | `not-factual` (pass) | `D001` (fiction label) | True labelling of the story as fiction; no real-outlet attribution. Unchanged. |
+| Sound notes: S03-B02 "single soft sustained tone"; S04-B02 "faint unresolved low tonal bed"; S04-B01 no crash or siren | Designed fictional sound | `not-factual`, labelled as designed | Pass | [Sound duties](../../../docs/sound-generation-workflow.md#role-responsibilities) | No siren, gunshot, crowd or event asserted. No real recording requested. No library file auditioned (PD05 open). |
+| Reused rows: S01-B01; S02-B01 to S02-B04; S03-B01; existing S03-B02 VO and event; clue ledger; `D001`, `D002`, `F001`, `F002` | Unchanged | as R2 and R3 | `reused` | hunk map: no hunk in these ranges | Reuse valid for R4; no new contrary evidence. |
+
+## Production dependencies and limitations (WFOG-SCRIPT-R4)
+
+- **PD08 — R-3 propagation:** after R-3 the same sentence must be verbatim in the spoken line (line 126), the claim-map quote (line 173) and every future caption cue (captions follow the spoken Thai; not yet timed). Checked: no caption, SRT, timeline or downstream sheet quotes the line (search of `scripts/`, `storyboards/world-fog/`, `docs/`, `src/`, `.claude/`, `.codex/`). Mark's sheets describe fear only as emotional arc (`storyboards/world-fog/short/sc03.md`, `visual-brief.md`), so no downstream text changes for R-3.
+- **PD09 — collision approach side (non-blocking, Preaw):** still open; R4 did not decide it. Not a factual error; this review requires no change.
+- **PD10 — Timing:** R-3 adds one word (`ว่า`). Estimates are unchanged and unmeasured. The 100 s target (user decision 2026-10-30) stands. Mark and Boss retime only after Boat's R5 recheck.
+- **PD11 — Downstream status (carry; coordinator and Preaw; Boat did not edit):** header lines 3 and 10, line 208 and the `delivery.md` stage cell (line 14) still describe R3 pending and R2 timing. Line 208 says the SS-R3.5 visual build is timed to R2 and that Mark and Boss must retime S03-B02 to S04-B02 after the R3 verdict. Sync after R5.
+- **PD12 — Visual and sound boundary (new; Film, Mark, Boss, Editor):** the R-3 line states an appraisal of an ambiguous cue. No visual or sound may show fear changing the shape, add a fear-made creature, or use a sound that identifies a nonhuman body. The reveal stays one physically ordinary assembly (research handoff items 1–2).
+- **Access and confidence (inherited, unchanged):** `SRC005`–`SRC011`, `SRC013`, `SRC014` inspected from abstracts, records or summaries; `SRC012` in part; `SRC004` is an author reprint. Qualitative confidence: moderate for trait or clinical anxiety; low to moderate for acute fear in nonclinical adults; low for fear-driven misreading of shapes in fog.
+
+## Handoff and change log (WFOG-SCRIPT-R4)
+
+- R4 (2026-10-30): exact-revision review of `WFOG-SCRIPT-R4`. Verdict `revise`: R-3 (fear clause, K001c) and R-4 (residual R-2 sync). The only claim-strength change is the fear clause; no other claim, beat, clue, sound or timing change was found. No new sources, no script edit, no delivery-record edit.
+- Readiness: `WFOG-SCRIPT-R4` is not `ready-for-storyboard`. Film and Mark do not take R4 as a matching revision.
+- Question for the coordinator (structured-question tool, in the user's language): accept the R-3 wording (recommended), or choose another wording that keeps a tendency marker and stays within K001c. Keeping `ทำให้` as a flat cause is not a factual pass.
+- Next owner: **Preaw**, to write R5 with R-3 and R-4 and to decide PD09 or leave it open. Then **Boat**, to recheck R5 (changed sentence, claim-map quote, header, takeaway match, change log). Then **Film**, **Mark** (SS-R3.5 retime of S03-B02 to S04-B02), **Boss**.
+- Limits: no user approval recorded; runtime, audio and visual status unverified; no new source access.
+
+---
+
+# History (dated)
+
+## WFOG-FACTCHECK-R3 — Exact-revision review (2026-10-30)
+
+- Owner / reviewed: Boat, 2026-10-30 (Asia/Bangkok). Supersedes `WFOG-FACTCHECK-R2` for the `WFOG-SCRIPT-R3` scope only. R2 history is kept below, dated 2026-10-29.
+- Deliverable: `WFOG-EP01-SHORT`.
+- Exact input: [WFOG-SCRIPT-R3](script.md) (Preaw, 2026-10-30), an uncommitted working-tree revision on top of R2 committed at `67b9f85`. The R3 text was read as its own revision; the R2→R3 diff (`git diff HEAD -- scripts/world-fog/short/script.md`, 60 changed lines) was used only to locate changes.
+- Research: [WFOG-RESEARCH-R1 + K001 addendum (2026-10-30)](../research.md#k001-addendum-2026-10-30). R1 sources and claims are unchanged; `SRC003`–`SRC017` and `K001a`–`K001e` were added. Brief: [WFOG-BRIEF-R1](../topic-brief.md), with the 2026-10-30 EP1-only pointer. Delivery record: [delivery.md](../delivery.md), 2026-10-30 entries.
+- Checkout: `67b9f85` plus working-tree changes to `scripts/world-fog/`. No runtime, audio, visual or Blender output was reviewed.
+- Coverage: complete R3 read of the title, header and story core, beat table, every spoken Thai line (S01-B01 to S04-B02), event notes, phone graphic and fiction marker, clue ledger, claim map, sound handoff, Film → Mark items 1–8, self-check and change log. R2 rows are reused only where the diff shows unchanged wording (S01-B01, S02-B01 to S02-B04, S03-B01 and the existing S03-B02 lines).
+- Request premise: the R3 change is not three lines. It touches 60 script lines. Three spoken lines changed (S03-B02 new narrator VO, S04-B01 worker line extended, S04-B02 new narrator VO replacing "No speech"); the rest are the S03-B02 event note, timing, header, story core, Film → Mark items 7–8, claim map and sound notes. All were checked.
+- **Verdict: `revise`** (editorial vocabulary: `revision-required`) for `WFOG-SCRIPT-R3`. One required wording change (R-1, S03-B02), with its sync (R-2). The S04-B01 motive and the S04-B02 closing line pass as written. Learning-takeaway impact: narrowed, not removed. No premise, reveal, clue or ending change. This verdict is not user approval, visual, audio or runtime proof.
+
+### Required changes (exact wording)
+
+| ID | Location | Current (R3) | Required | Reason |
+| --- | --- | --- | --- | --- |
+| R-1 | S03-B02 narrator VO (`K001c`) | `…แล้วฉันก็เติมมันด้วยความกลัว` | `…แล้วความกลัวก็ชวนให้ฉันตีความมันว่าเป็นอันตราย` | Full line: `ในหมอกแบบนี้ ตาเห็นแค่บางส่วน… สมองเราก็มักจะเติมส่วนที่ขาดเอง แล้วความกลัวก็ชวนให้ฉันตีความมันว่าเป็นอันตราย`. "Fear fills the gap" implies that fear supplies the content, which no inspected source supports (`K001d`). The evidence supports a threat-biased reading of ambiguous cues (`K001c`). "ชวนให้" (leads toward) keeps it a tendency and first-person belief. "เติมส่วนที่ขาดเอง" and "มักจะ" are kept. |
+| R-2 | Sync of R-1 (Preaw: script claim map and header) | Claim-map row S03-B02 quotes the old line and says "research missing". Header "Learning takeaway (R3)" says "the narrator filled it with fear". | Claim-map quote = R-1 line verbatim, status "sourced (K001 addendum)". Takeaway: "in fog the eye gets incomplete shapes, the brain tends to fill the gap, and fear pulls the narrator's reading of it toward danger." | Keeps the script's own quotes and takeaway consistent with the checked wording. Boat did not edit the script. |
+
+### R3 change review
+
+| Change ID | Location | R2 wording | R3 wording checked | Claim-map row | Factual impact | Thai naturalness |
+| --- | --- | --- | --- | --- | --- | --- |
+| `R3-C01` | S03-B02 narrator VO (new) | none | `ในหมอกแบบนี้ ตาเห็นแค่บางส่วน… สมองเราก็มักจะเติมส่วนที่ขาดเอง แล้วฉันก็เติมมันด้วยความกลัว` | `K001` (`K001a`–`K001c`) | Needs qualification; R-1 | Natural; first person `ฉัน` matches the female narrator (R2) |
+| `R3-C02` | S03-B02 event note (new): held look, flashlight lowered | none | Production direction; no new prop, flashback or claim | none | None | N/A |
+| `R3-C03` | S04-B01 worker line (extended) | `รถชนกันขวางถนนครับ… ผมกลับทางเดิมไม่ได้แล้ว` | `รถชนกันขวางถนนครับ รถผมติดอยู่ข้างหลังนั่น เลยต้องเข็นของมาส่งร้านนี้เอง… แต่ตอนนี้ กลับทางเดิมไม่ได้แล้ว` | `D001` motive | None after checks; non-blocking note PD09 | Natural; male worker's `ครับ` and `รถผม` kept |
+| `R3-C04` | S04-B02 narrator VO (new; R2 had "No speech") | none | `สิ่งที่ฉันกลัวเมื่อกี้… เป็นแค่คนคนหนึ่ง แต่หมอกนี่ยังไม่ไปไหน… แล้วเราก็ไปไหนไม่ได้` | `D001` reaction | None after checks | Natural; no sentence-final particle |
+| `R3-C05` | S04-B02 event note: last light out after the line; about 1.5–2 s silence | "No speech… Hard cut" | Production direction | none | None | N/A |
+| `R3-C06` | Timing estimates: S03-B02 60–78 s, S04-B01 78–93 s, S04-B02 93–100 s | 60–72, 72–84, 84–87 s | Estimates | none | Not measured; PD10 | N/A |
+| `R3-C07` | Header, story core ("Learning takeaway", "Ending"), Film → Mark items 7–8, self-check, change log | R2 text | Metadata | none | Quote sync only (R-2) | N/A |
+
+### Claim-by-claim review (WFOG-SCRIPT-R3)
+
+Source and locator IDs are in [research](../research.md). Rows marked "R2 reused" were confirmed unchanged against the diff.
+
+| Claim / location | Exact wording or event checked (R3) | Classification | Verdict | Evidence / locator | Reason, boundary and impact |
+| --- | --- | --- | --- | --- | --- |
+| `K001a` / S03-B02 narrator VO | `ในหมอกแบบนี้ ตาเห็นแค่บางส่วน…` | Fact (general visibility), narrator voice | `supported` | `SRC003` (NWS visibility definition); `SRC001` (near-zero visibility) | Seeing distance shrinks in fog; "partial" is plain language for a degraded view. No fog cause, toxicity or duration is claimed. |
+| `K001b` / S03-B02 narrator VO | `สมองเราก็มักจะเติมส่วนที่ขาดเอง` | Fact, general, hedged | `supported` (hedged) | `SRC004` (artificial blind patches fill in; mechanism hedged); `SRC005` (degraded images recognized after exposure); `SRC006` (completion is several phenomena); `SRC007` (top-down facilitation model) | Keep "มักจะ". Not universal: `SRC004` reports no fill-in of a dynamic pattern in patients. "Fill in" is the literature's word for completion, not a literal picture. |
+| `K001c` / S03-B02 narrator VO | `แล้วฉันก็เติมมันด้วยความกลัว` | Character belief plus general tendency; first-person causal attribution | `needs-qualification` (R-1) | `SRC008`, `SRC010`, `SRC013` (threat-reading tendency); `SRC009` (interpretive bias and state anxiety); `SRC012` (acute threat, label shift, d′ caveat); limits `SRC011`, `SRC014` | Evidence supports a tendency to read ambiguous cues as threatening: modest, mostly for anxious people, mixed for visual shapes (`SRC013` positive, `SRC014` null), and no direct test in fog. The current wording implies fear supplies content (`K001d`), so R-1. |
+| `K001d` (mechanism implied, not a script row) | Fear generates the content of the gap | Mechanism implied by the current wording | `unverified` (no inspected support) | `SRC004`, `SRC005` (completion from surround or learned pattern); `SRC008`–`SRC010` (reading of available cues) | Recorded so that no later rewording slides back to fear-made content. |
+| S04-B01 motive: `รถผมติดอยู่ข้างหลังนั่น เลยต้องเข็นของมาส่งร้านนี้เอง` | Fiction, character report and motive (`D001`) | `not-factual` | Pass (PD09 non-blocking) | S01-B01 (approach along the access lane; no teleport); `CL01`–`CL05` (same assembly and cart); S04-B01 collision line | Consistent with the ordinary approach, the cart's load and the collision line. No casualty, count, real place, real business or real-incident claim. |
+| S04-B01 collision line: `รถชนกันขวางถนนครับ` | Fiction report (`D001`); R2 reused | `not-factual` | `not-factual` (R2 reused) | R2 review; research `D001` | Unchanged. The collision stays offscreen; no siren, body or fire; no crash recording (sound notes). |
+| S04-B02 narrator VO: `สิ่งที่ฉันกลัวเมื่อกี้… เป็นแค่คนคนหนึ่ง` | Character reflection | `not-factual` | Pass | Research item 5 (no "fear is the real monster" slogan) | Contrasts the human reveal with the unresolved fog; does not say fear is the monster. Keep "แต่หมอกนี่ยังไม่ไปไหน" as the point of the line. |
+| S04-B02 narrator VO: `หมอกนี่ยังไม่ไปไหน` | Fiction; persistence inside the story | `not-factual` | Pass | `D001`; script: fog cause, toxicity and duration unknown | States that the fog persists in the story. Says nothing about harmlessness, toxicity or duration. |
+| S04-B02 narrator VO: `แล้วเราก็ไปไหนไม่ได้` | Fiction predicament | `not-factual` | Pass (safety check) | `F002` / `SRC002` (shelter versus evacuation depends on the hazard); PD03 | A practical constraint, not a shelter instruction. No "the building is safe", "stay inside" or "outside is dangerous" claim. |
+| S04-B02 event note: last light out after the line; about 1.5–2 s silence | Production direction | `not-factual` | Pass | none | No factual content. |
+| Sound: S03-B02 "single soft sustained tone" under the perception line; S04-B02 "faint unresolved low tonal bed"; S04-B01 "no crash/siren recording" | Designed fictional sound | `not-factual`, labelled as designed | Pass | [Sound duties](../../../docs/sound-generation-workflow.md#role-responsibilities) | No siren, gunshot, crowd or event is asserted. No real recording is requested. No library file was auditioned in R3; the R2 candidates (PD05) stay open. |
+| Reused R2 rows: S01-B01 hook and opening VO; S02-B01 to S02-B04; S03-B01; existing S03-B02 lines; `D001`, `D002`, `F001`, `F002` | As R2 | as R2 | Reused (R2 reused) | diff hunks do not touch these lines | Reused after confirming the wording is unchanged. |
+
+### Production dependencies and limitations (WFOG-SCRIPT-R3)
+
+- **PD08 — R-1 propagation (new):** after R-1 is applied, the same sentence must appear verbatim in the S03-B02 spoken line, the claim-map quote, every caption cue for that line (captions follow the spoken Thai verbatim) and any Film or Mark text that quotes it. The header takeaway must be synced (R-2). Captions are not yet timed.
+- **PD09 — Collision approach side (non-blocking question for Preaw):** the script does not say which side of the collision the narrator approached from. The worker walks from the collision area along the access lane (S01-B01). If she drove the same road past the collision, a viewer may ask why she did not see it. Options: leave it implicit (no crash visible on her approach), or state that she came from the other side. This is not a factual error, and no change is required by this review.
+- **PD10 — Timing (R3 estimates):** S03-B02 60–78 s, S04-B01 78–93 s, S04-B02 93–100 s; total about 100 s, estimated. No read-aloud, TTS or animatic exists. R-1 adds about three words (roughly 1–2 s, unmeasured). The 100 s target is a user decision recorded in `delivery.md` (2026-10-30). Mark and Boss retime only after Boat's recheck of the next revision.
+- **PD11 — Downstream status (carry; coordinator and Preaw; Boat did not edit):** the script header still says R3 needs a Boat recheck; `delivery.md` still shows the SS-R3.5 and R2 timing in its stage cell; the script states that SS-R3.5 is timed to R2 and that Mark and Boss must retime S03-B02 to S04-B02 after the Boat verdict. PD07 (male-narrator references downstream) stays open from R2. PD05 (sound candidates not auditioned) is unchanged.
+
+### Handoff and change log (WFOG-SCRIPT-R3)
+
+- R3 (2026-10-30): exact-revision review of `WFOG-SCRIPT-R3`. Verdict `revise`: R-1 (S03-B02 fear clause) and R-2 (sync). Research addendum added (`SRC003`–`SRC017`, `K001a`–`K001e`); R1 claims unchanged. The S04-B01 motive and S04-B02 closing line pass; sound notes pass. Boat did not edit the script, the delivery record or the script header.
+- Readiness: `WFOG-SCRIPT-R3` is not `ready-for-storyboard`. Film and Mark do not take R3 as a matching revision.
+- Next owner: **Preaw**, to write the next script revision (`WFOG-SCRIPT-R4`) with R-1 and R-2, and to decide PD09. Then **Boat**, to recheck the changed sentence and the sync items as `WFOG-FACTCHECK-R4`, reusing R3 rows only where the diff shows unchanged wording. Only then do the matching script and review go to **Film**, then **Mark** (SS-R3.5 retime for S03-B02 to S04-B02), then Boss.
+- Coordinator: update the script header and the `delivery.md` stage cell with this verdict, following the R2 precedent.
+- Limits: this review adds no user approval. Runtime, audio and visual status are unverified. Most sources are checked at abstract or record level (see the K001 addendum's access gaps).
+
+## WFOG-FACTCHECK-R2 — Exact-revision review (2026-10-29)
 
 - Owner / reviewed: Boat, 2026-10-29 (Asia/Bangkok). Supersedes `WFOG-FACTCHECK-R1` (Boat, 2026-10-28, scope `WFOG-SCRIPT-R1` only; recoverable in git at `e1fe80e`).
 - Deliverable: `WFOG-EP01-SHORT`.

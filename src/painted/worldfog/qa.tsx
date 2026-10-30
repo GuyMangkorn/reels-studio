@@ -28,4 +28,4 @@ const Qa = (props: Record<string, unknown>) =>
 
 const {width, height, fps} = FORMATS.short;
 registerRoot(() => createElement(Fragment, null,
-  createElement(Composition, {id: 'WFOG-QA', component: Qa, width, height, fps, durationInFrames: TOTAL_FRAMES, defaultProps: {note: 'BLOCKOUT — not the final look · Boss fix pass six (r6) · SS-R3.5 arm placement + far-door trim · picture only (no VO/captions/sound)'}})));
+  createElement(Composition, {id: 'WFOG-QA', component: Qa, width, height, fps, durationInFrames: TOTAL_FRAMES, defaultProps: {note: 'BLOCKOUT — not the final look · Boss SS-R4 retime (r7) · S03-SH06A held look · picture only (no VO/captions/sound)'}})));
