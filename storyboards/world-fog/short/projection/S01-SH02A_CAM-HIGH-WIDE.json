@@ -1,0 +1,226 @@
+{
+ "_note": "S01-SH02A high wide (SS-R5, VD19): CAM-HIGH-WIDE (-3.5, 20, -20) +z level, f 900, y_h 330 (lens shift); WORLD-SITE = WORLD-SHOP extended | x negated (see index.md#projection-checks)",
+ "up": "y",
+ "size": [
+  1080,
+  1920
+ ],
+ "camera": {
+  "position": [
+   3.5,
+   20.0,
+   -20.0
+  ],
+  "direction": [
+   0,
+   0,
+   1
+  ],
+  "vfov": 93.695,
+  "shift": [
+   0,
+   -0.32812
+  ]
+ },
+ "points": {
+  "shop_roof_back_L": [
+   3.2,
+   3.3,
+   -6.2
+  ],
+  "shop_roof_back_R": [
+   -3.2,
+   3.3,
+   -6.2
+  ],
+  "shop_roof_front_L": [
+   3.2,
+   3.3,
+   0
+  ],
+  "shop_roof_front_R": [
+   -3.2,
+   3.3,
+   0
+  ],
+  "walkway_L": [
+   8,
+   0,
+   0
+  ],
+  "walkway_R": [
+   -8,
+   0,
+   0
+  ],
+  "kerb_L": [
+   8,
+   0,
+   2
+  ],
+  "kerb_R": [
+   -8,
+   0,
+   2
+  ],
+  "slab_far_L": [
+   8,
+   0,
+   14
+  ],
+  "slab_far_R": [
+   -8,
+   0,
+   14
+  ],
+  "canopy_near_L": [
+   6,
+   5.2,
+   3.5
+  ],
+  "canopy_near_R": [
+   -6,
+   5.2,
+   3.5
+  ],
+  "canopy_far_L": [
+   6,
+   5.2,
+   13
+  ],
+  "canopy_far_R": [
+   -6,
+   5.2,
+   13
+  ],
+  "car_tail": [
+   4.15,
+   0,
+   5.1
+  ],
+  "car_nose": [
+   -0.35,
+   0,
+   5.1
+  ],
+  "car_roof": [
+   2.2,
+   1.45,
+   5.1
+  ],
+  "pumpR_top": [
+   -3.5,
+   1.75,
+   9.3
+  ],
+  "pumpR_base": [
+   -3.5,
+   0,
+   9.3
+  ],
+  "lane_inner_C": [
+   0,
+   0,
+   14
+  ],
+  "lane_mouth_C": [
+   0,
+   0,
+   23
+  ],
+  "road_near_C": [
+   0,
+   0,
+   24
+  ],
+  "road_far_C": [
+   0,
+   0,
+   32
+  ],
+  "road_near_x-30": [
+   30,
+   0,
+   24
+  ],
+  "road_near_x+30": [
+   -30,
+   0,
+   24
+  ],
+  "road_near_x-10": [
+   10,
+   0,
+   24
+  ],
+  "road_near_x+10": [
+   -10,
+   0,
+   24
+  ],
+  "field60_C": [
+   0,
+   0,
+   60
+  ],
+  "field60_x-40": [
+   40,
+   0,
+   60
+  ],
+  "field60_x+40": [
+   -40,
+   0,
+   60
+  ],
+  "far300_C": [
+   0,
+   0,
+   300
+  ],
+  "wall_f0_x40_top": [
+   -40,
+   15,
+   60
+  ],
+  "wall_f0_x40_base": [
+   -40,
+   0,
+   60
+  ],
+  "wall_axis_top": [
+   0,
+   15,
+   14
+  ],
+  "wall_axis_base": [
+   0,
+   0,
+   14
+  ],
+  "wall_end_x-20_top": [
+   20,
+   15,
+   14
+  ],
+  "asm_hidden": [
+   -1.0,
+   1.95,
+   21
+  ]
+ },
+ "spans": {
+  "shop_front_depth": [
+   "shop_roof_front_L",
+   "shop_roof_back_L"
+  ],
+  "wall_axis_end": [
+   "wall_axis_base",
+   "wall_axis_top"
+  ]
+ },
+ "caption_band": [
+  1000,
+  1248
+ ]
+}

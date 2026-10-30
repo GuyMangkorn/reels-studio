@@ -3,12 +3,17 @@
 Usage (run from the repository root):
   python3 -I scripts/world-fog/narration.py verify
   python3 -I scripts/world-fog/narration.py tts [--only VO-01,VO-02] [--force]
+  python3 -I scripts/world-fog/narration.py tts --take 2 --only VO-01        (Gemini take -> lines/takes/)
+  python3 -I scripts/world-fog/narration.py pick --take 2 --only VO-01      (take -> lines/<id>.wav)
   python3 -I scripts/world-fog/narration.py measure
   python3 -I scripts/world-fog/narration.py compose
+Gemini run: zsh -lic 'python3 -I scripts/world-fog/narration.py tts ...' (loads GEMINI_API_KEY per run; needs out/gemini-venv).
 
 Manifest: scripts/world-fog/short/narration-lines.json (one entry per spoken line; text verbatim from WFOG-SCRIPT-R5).
-- tts: each line goes through scripts/voice-preset.py (edge-tts + ffmpeg loudnorm to -16 LUFS; elder-woman needs
-  out/voice-venv). Clips land in out/editor/world-fog/WFOG-EP01-SHORT/lines/<id>.wav (ignored).
+- tts: voices with `engine: gemini` (narrator Sulafat, worker Orus) get the line's `style` plus the speaker's `pace`;
+  `tts_split` gives the TTS pieces of a line (VO-03a/VO-03b). Other voices go through scripts/voice-preset.py (edge-tts
+  + ffmpeg loudnorm to -16 LUFS; elder-woman needs out/voice-venv). Clips land in
+  out/editor/world-fog/WFOG-EP01-SHORT/lines/<id>.wav (ignored).
 - measure: onset/offset, speech length and silent runs >= 0.12 s inside speech, per clip -> timing/tts-measure.json.
 - compose: places each clip so its first audible sample sits on `startG` (composition frame), applies the per-line
   gain (EP08a voice level, baked into the narration file; the runtime has no per-scene narration gain) and the
@@ -37,7 +42,8 @@ FFMPEG = shutil.which('ffmpeg') or '/opt/homebrew/bin/ffmpeg'
 FFPROBE = shutil.which('ffprobe') or '/opt/homebrew/bin/ffprobe'
 VENV_PY = ROOT / 'out/voice-venv/bin/python'
 SR, FPS, BLOCK, THRESH = 48000, 30, 1600, 300
-TOTAL_FRAMES = 3000
+PLACEMENT = ROOT / 'scripts/world-fog/short/placement.json'
+CAPTIONS = ROOT / 'scripts/world-fog/short/captions.json'
 
 
 def load_manifest():
@@ -54,15 +60,54 @@ def cmd_verify(m):
             bad += 1
             print(f"MISMATCH {line['id']}: in script={ok_text} pieces-join={ok_pieces}")
     print(f"verify: {len(m['lines']) - bad}/{len(m['lines'])} lines verbatim in {SCRIPT_MD.name} blockquotes; caption pieces join to the text")
+    P = load_placement()
+    by_line = {}
+    for c in P['captions']:
+        by_line.setdefault(c['line'], []).append(c['text'].replace('\n', ' '))
+    for line in m['lines']:
+        if ' '.join(by_line.get(line['id'], [])) != line['text']:
+            bad += 1
+            print(f"CAPTION MISMATCH {line['id']}: caption text does not join to the line")
+    for c in P['clips']:
+        if not (OUT / 'lines' / c['file']).exists():
+            bad += 1
+            print(f"MISSING CLIP {c['file']}")
+    print(f"placement: {len(P['clips'])} clips, {len(P['captions'])} caption cues, {P['frames']} frames")
     return 1 if bad else 0
 
 
-def cmd_tts(m, only, force):
+GEMINI_PY = ROOT / 'out/gemini-venv/bin/python'
+TAKES = OUT / 'lines' / 'takes'
+
+
+def gemini_say(voice, style, text, clip):
+    # Callers run this module under `zsh -lic` so GEMINI_API_KEY is read per run; the perl alarm stops the SDK's
+    # silent 429 retry loop, and nothing is retried here (a retry spends the daily quota).
+    cmd = ['perl', '-e', 'alarm 90; exec @ARGV', str(GEMINI_PY), '-I', 'scripts/gemini-tts.py', 'say',
+           '--voice', voice, '--style', style, '--text', text, str(clip)]
+    result = subprocess.run(cmd, cwd=ROOT, capture_output=True, text=True)
+    if result.returncode != 0 or not clip.exists():
+        raise SystemExit(f"{clip.name}: Gemini failed (rc {result.returncode}); 429 = quota, stop and report. {result.stderr.strip()[-200:]}")
+
+
+def cmd_tts(m, only, force, take=0):
     (OUT / 'lines').mkdir(parents=True, exist_ok=True)
     for line in m['lines']:
         if only and line['id'] not in only:
             continue
         voice = m['voices'][line['speaker']]
+        if voice.get('engine') == 'gemini':
+            TAKES.mkdir(parents=True, exist_ok=True)
+            for piece in line.get('tts_split') or [dict(id=line['id'], text=line['text'], style=line['style'])]:
+                clip = TAKES / f"{piece['id']}.t{take}.wav" if take else OUT / 'lines' / f"{piece['id']}.wav"
+                if clip.exists() and not force:
+                    print(f"{piece['id']}: exists (use --force to regenerate)")
+                    continue
+                gemini_say(voice['voice'], f"{piece['style']}, {voice['pace']}", piece['text'], clip)
+                print(f"{piece['id']}: gemini {voice['voice']} -> {clip.relative_to(ROOT)}", flush=True)
+            continue
+        if take:
+            continue  # takes are Gemini-only
         clip = OUT / 'lines' / f"{line['id']}.wav"
         if clip.exists() and not force:
             print(f"{line['id']}: exists (use --force to regenerate)")
@@ -80,6 +125,25 @@ def cmd_tts(m, only, force):
         else:
             raise SystemExit(f"{line['id']}: TTS failed")
         print(f"{line['id']}: {voice['preset']} -> {clip.relative_to(ROOT)}", flush=True)
+
+
+def cmd_pick(m, only, take):
+    # Copies the chosen take to lines/<id>.wav (what compose reads) and records it in lines/takes/picks.json (ignored).
+    if not take:
+        raise SystemExit('pick needs --take K')
+    picks_file = TAKES / 'picks.json'
+    picks = json.loads(picks_file.read_text()) if picks_file.exists() else {}
+    for line in m['lines']:
+        if line['id'] not in only:
+            continue
+        for cid in [p['id'] for p in line['tts_split']] if line.get('tts_split') else [line['id']]:
+            src = TAKES / f"{cid}.t{take}.wav"
+            if not src.exists():
+                raise SystemExit(f"{src.name} missing: run tts --take {take} --only {line['id']} first")
+            shutil.copyfile(src, OUT / 'lines' / f"{cid}.wav")
+            picks[cid] = take
+            print(f"{cid}: take {take} -> {(OUT / 'lines' / f'{cid}.wav').relative_to(ROOT)}")
+    picks_file.write_text(json.dumps(picks, indent=1) + '\n')
 
 
 def decode(path):
@@ -125,15 +189,21 @@ def cmd_measure(m):
     results = {}
     print(f"{'id':6} {'speaker':12} {'clip':>6} {'speech':>6} {'onset':>6} {'plan_span':>13} {'plan_len':>8} {'segs':>4}  segments(s)")
     for line in m['lines']:
-        clip = OUT / 'lines' / f"{line['id']}.wav"
-        if not clip.exists():
-            print(f"{line['id']}: missing clip, run tts first")
-            continue
-        r = measure_clip(decode(clip))
-        results[line['id']] = r
-        p0, p1 = planned_span(line)
-        segs = ' '.join(f"{a:.2f}-{b:.2f}" for a, b in r['speech_segments'])
-        print(f"{line['id']:6} {line['speaker']:12} {r['clip_sec']:6.2f} {r['speech']:6.2f} {r['onset']:6.2f} {p0:>6}-{p1:<6} {p1 - p0:8d} {len(r['speech_segments']):4d}  {segs}")
+        for cid in [p['id'] for p in line['tts_split']] if line.get('tts_split') else [line['id']]:
+            clip = OUT / 'lines' / f"{cid}.wav"
+            if not clip.exists():
+                print(f"{cid}: missing clip, run tts first")
+                continue
+            r = measure_clip(decode(clip))
+            results[cid] = r
+            if cid == line['id']:
+                p0, p1 = planned_span(line)
+                plan = f"{p0:>6}-{p1:<6}"
+                plen = f"{p1 - p0:8d}"
+            else:  # VO-03 TTS piece: the SS-R4.1 span covers both pieces; SS-R5 windows are in the Editor r3 notes
+                plan, plen = f"{'split':>13}", f"{'-':>8}"
+            segs = ' '.join(f"{a:.2f}-{b:.2f}" for a, b in r['speech_segments'])
+            print(f"{cid:6} {line['speaker']:12} {r['clip_sec']:6.2f} {r['speech']:6.2f} {r['onset']:6.2f} {plan} {plen} {len(r['speech_segments']):4d}  {segs}")
     (OUT / 'timing').mkdir(parents=True, exist_ok=True)
     (OUT / 'timing/tts-measure.json').write_text(json.dumps(results, ensure_ascii=False, indent=1) + '\n')
     print(f"wrote {(OUT / 'timing/tts-measure.json').relative_to(ROOT)}")
@@ -146,130 +216,84 @@ def filtered(clip, af, dest):
     return dest
 
 
+def load_placement():
+    return json.loads(PLACEMENT.read_text(encoding='utf-8'))
+
+
 def cmd_compose(m):
-    total = TOTAL_FRAMES * SR // FPS
+    """Places every clip of placement.json: file frame `from` (default 0) goes to composition frame `at` (the cue table's
+    clip start G), with the line gain (manifest) and the clip's level correction (`levelDb`, alimiter at -1.5 dBTP)."""
+    P = load_placement()
+    total = P['frames'] * SR // FPS
     buf = array.array('h', [0]) * total
-    placed, ends = {}, []
+    gains = {l['id']: l.get('gain', 1.0) for l in m['lines']}
     tmp = OUT / 'timing' / 'filtered'
     tmp.mkdir(parents=True, exist_ok=True)
-    for line in sorted(m['lines'], key=lambda x: x['startG']):
-        if 'startG' not in line:
-            raise SystemExit(f"{line['id']}: no startG in manifest")
-        raw = decode(OUT / 'lines' / f"{line['id']}.wav")
-        clip = filtered(OUT / 'lines' / f"{line['id']}.wav", line.get('af'), tmp / f"{line['id']}.wav")
-        samples = decode(clip) if clip != OUT / 'lines' / f"{line['id']}.wav" else raw
-        onset = next((i for i, v in enumerate(samples) if abs(v) >= THRESH), 0)
-        pre = min(onset, SR * 3 // 100)  # keep 30 ms before the first audible sample; startG is that sample
-        clip_samples = samples[onset - pre:]
-        ramp = SR // 100
-        gain = line.get('gain', 1.0)
-        start = line['startG'] * SR // FPS - pre
-        end = start + len(clip_samples)
-        if end > total:
-            raise SystemExit(f"{line['id']}: runs past the composition end")
+    ramp = SR // 100
+    placed = {}
+    for c in P['clips']:
+        src = OUT / 'lines' / c['file']
+        af = f"volume={c['levelDb']}dB,alimiter=limit=0.84:level=disabled" if c.get('levelDb') else None
+        samples = decode(filtered(src, af, tmp / f"{c['id']}.wav"))
+        a = c.get('from', 0) * SR // FPS
+        b = c['to'] * SR // FPS if 'to' in c else len(samples)
+        clip_samples = samples[a:b]
+        start = c['at'] * SR // FPS
+        if start + len(clip_samples) > total:
+            raise SystemExit(f"{c['id']}: runs past the composition end")
+        gain = gains[c['line']]
+        n = len(clip_samples)
         for i, v in enumerate(clip_samples):
-            w = min(1.0, i / ramp, (len(clip_samples) - 1 - i) / ramp)
+            w = min(1.0, i / ramp, (n - 1 - i) / ramp)
             buf[start + i] = max(-32768, min(32767, buf[start + i] + round(v * gain * w)))
-        last = max(i for i, v in enumerate(samples) if abs(v) >= THRESH)
-        ends.append((line['id'], start, start + (last - (onset - pre)) + 1))
-        placed[line['id']] = {'startG': line['startG'], 'speechStartG': round((start) * FPS / SR, 2),
-                              'endG': round(end * FPS / SR, 2), 'gain': gain, 'af': line.get('af')}
-    for (a, s0, e0), (b, s1, e1) in zip(sorted(ends, key=lambda x: x[1]), sorted(ends, key=lambda x: x[1])[1:]):
-        if e0 > s1:
-            print(f"speech overlap {a} into {b} by {(e0 - s1) * FPS / SR:.1f} frames", flush=True)
-        else:
-            print(f"ok {a} speech ends {e0 * FPS / SR:.1f}G, {b} starts {s1 * FPS / SR:.1f}G", flush=True)
+        audible = [i for i, v in enumerate(clip_samples) if abs(v) >= THRESH]
+        on = round(c['at'] + audible[0] * FPS / SR, 1) if audible else None
+        off = round(c['at'] + (audible[-1] + 1) * FPS / SR, 1) if audible else None
+        placed[c['id']] = {'at': c['at'], 'speechStartG': on, 'speechEndG': off, 'gain': gain, 'levelDb': c.get('levelDb', 0)}
+        print(f"{c['id']:7} at {c['at']:5d}  speech {on}-{off} G  level {c.get('levelDb', 0):+.1f} dB  gain {gain}", flush=True)
     NARRATION_MP3.parent.mkdir(parents=True, exist_ok=True)
     raw_path = OUT / 'timing/narration.s16le'
     raw_path.write_bytes(buf.tobytes())
     subprocess.run([FFMPEG, '-v', 'error', '-y', '-f', 's16le', '-ar', str(SR), '-ac', '1', '-i', str(raw_path), '-c:a', 'libmp3lame', '-b:a', '192k', str(NARRATION_MP3)], check=True)
     delivered = decode(NARRATION_MP3)
     rms = []
-    for i in range(0, TOTAL_FRAMES * BLOCK, BLOCK):
+    for i in range(0, P['frames'] * BLOCK, BLOCK):
         chunk = delivered[i:i + BLOCK]
         rms.append(math.sqrt(sum(v * v for v in chunk) / max(1, len(chunk))) if len(chunk) else 0.0)
     peak = max(rms) or 1
     AMPLITUDE.write_text(json.dumps([round(v / peak, 4) for v in rms]) + '\n')
+    (OUT / 'timing').mkdir(parents=True, exist_ok=True)
     (OUT / 'timing/placement.json').write_text(json.dumps(placed, ensure_ascii=False, indent=1) + '\n')
-    print(f"wrote {NARRATION_MP3.relative_to(ROOT)} ({len(delivered) / SR:.2f} s), {AMPLITUDE.relative_to(ROOT)} ({len(rms)} frames), placement.json")
-
-
-SHOT_STARTS = [('S01-SH01', 0), ('S01-SH02', 126), ('S02-SH01', 240), ('S02-SH02', 354), ('S02-SH03', 444), ('S02-SH04', 540), ('S02-SH05', 738), ('S02-SH06', 792), ('S02-SH07', 900), ('S02-SH08', 1029), ('S02-SH09', 1230), ('S02-SH10', 1410), ('S03-SH01', 1530), ('S03-SH02', 1656), ('S03-SH03', 1800), ('S03-SH04', 1920), ('S03-SH05', 1962), ('S03-SH06', 2034), ('S03-SH06A', 2070), ('S03-SH07', 2190), ('S04-SH01', 2340), ('S04-SH02', 2670), ('S04-SH03', 2790)]
-SCENE_STARTS = {'S01': 0, 'S02': 240, 'S03': 1530, 'S04': 2340}
-
-
-def piece_intervals(line, measured):
-    """Caption piece intervals [a, b) in composition frames, from the placement. Measured speech segments map 1:1 onto
-    pieces when counts match; otherwise each piece takes a share of the speech in proportion to its Thai characters."""
-    onset, speech = measured['onset'], measured['speech']
-    L = round(speech * FPS)
-    start = line['startG']
-    segs = measured['speech_segments']
-    if len(segs) == len(line['pieces']):
-        return [(start + round((a - onset) * FPS), start + round((b - onset) * FPS)) for a, b in segs]
-    weights = [len([c for c in piece if c not in ' …?!,.']) for piece in line['pieces']]
-    total, t, out = sum(weights), 0, []
-    for w in weights:
-        d = round(L * w / total)
-        out.append((start + t, start + t + d))
-        t += d
-    out[-1] = (out[-1][0], start + L)
-    return out
-
-
-def shot_of(g):
-    name = None
-    for sid, g0 in SHOT_STARTS:
-        if g >= g0:
-            name = (sid, g0)
-    return name
+    print(f"wrote {NARRATION_MP3.relative_to(ROOT)} ({len(delivered) / SR:.2f} s), {AMPLITUDE.relative_to(ROOT)} ({len(rms)} frames), timing/placement.json")
 
 
 def cmd_captions(m):
-    measures = json.loads((OUT / 'timing/tts-measure.json').read_text())
-    cues, talk = [], {}
-    for line in m['lines']:
-        ivs = piece_intervals(line, measures[line['id']])
-        for k, (text, (a, b)) in enumerate(zip(line['pieces'], ivs)):
-            cues.append({'id': f"{line['id']}-{k + 1}", 'line': line['id'], 'startG': a, 'endG': b, 'text': text})
-        if line.get('camera'):
-            talk.setdefault(line['camera'], []).extend([(a, b) for a, b in ivs])
-    cues.sort(key=lambda c: c['startG'])
-    scenes = []
-    for scene in ['S01', 'S02', 'S03', 'S04']:
-        g0 = SCENE_STARTS[scene]
-        g1 = {'S01': 240, 'S02': 1530, 'S03': 2340, 'S04': 3000}[scene]
-        rows = [c for c in cues if g0 <= c['startG'] < g1]
-        sub, t = [], g0
-        for c in rows:
-            if c['startG'] > t:
-                sub.append({'atSec': round((t - g0) / FPS, 4), 'text': ''})
-            sub.append({'atSec': round((c['startG'] - g0) / FPS, 4), 'text': c['text']})
-            t = c['endG']
-        if t < g1:
-            sub.append({'atSec': round((t - g0) / FPS, 4), 'text': ''})
-        if not sub or sub[0]['atSec'] != 0:
-            sub.insert(0, {'atSec': 0, 'text': ''})
-        scenes.append({'scene': scene, 'durationSec': (g1 - g0) / FPS, 'subtitleCues': sub})
-    out = {'episode': EP, 'fps': FPS, 'cues': cues, 'scenes': scenes}
-    (ROOT / 'scripts/world-fog/short/captions.json').write_text(json.dumps(out, ensure_ascii=False, indent=1) + '\n')
-    (OUT / 'timing/caption-timeline.json').write_text(json.dumps([{'durationSec': s['durationSec'], 'subtitleCues': s['subtitleCues']} for s in scenes], ensure_ascii=False, indent=1) + '\n')
-    print(f"captions: {len(cues)} cues; wrote scripts/world-fog/short/captions.json and {(OUT / 'timing/caption-timeline.json').relative_to(ROOT)}")
+    """captions.json: every caption cue in composition frames (g0, g1; half-open), text as displayed. A '\\n' in the text is an
+    authored line break (the plate height follows the line count in the episode file)."""
+    P = load_placement()
+    cues = [dict(id=c['id'], line=c['line'], g0=c['g0'], g1=c['g1'], text=c['text']) for c in P['captions']]
+    out = {'episode': EP, 'fps': FPS, 'frames': P['frames'], 'cues': cues}
+    CAPTIONS.write_text(json.dumps(out, ensure_ascii=False, indent=1) + '\n', encoding='utf-8')
+    print(f"captions: {len(cues)} cues -> {CAPTIONS.relative_to(ROOT)}")
     for c in cues:
-        print(f"{c['id']:7} {c['startG']:5d}-{c['endG']:5d} {(c['endG'] - c['startG']):3d}f {shot_of(c['startG'])[0]:10} {c['text']}")
+        print(f"{c['id']:8} {c['g0']:5d}-{c['g1']:5d} {c['g1'] - c['g0']:4d}f {c['text'].replace(chr(10), ' / ')}")
 
 
 def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument('cmd', choices=['verify', 'tts', 'measure', 'compose', 'captions'])
+    ap.add_argument('cmd', choices=['verify', 'tts', 'pick', 'measure', 'compose', 'captions'])
     ap.add_argument('--only', default='')
     ap.add_argument('--force', action='store_true')
+    ap.add_argument('--take', type=int, default=0, help='Gemini take number (tts writes lines/takes/<id>.t<K>.wav; pick copies one)')
     a = ap.parse_args()
     m = load_manifest()
+    only = {x for x in a.only.split(',') if x}
     if a.cmd == 'verify':
         sys.exit(cmd_verify(m))
     if a.cmd == 'tts':
-        cmd_tts(m, {x for x in a.only.split(',') if x}, a.force)
+        cmd_tts(m, only, a.force, a.take)
+    elif a.cmd == 'pick':
+        cmd_pick(m, only, a.take)
     elif a.cmd == 'measure':
         cmd_measure(m)
     elif a.cmd == 'compose':

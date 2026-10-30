@@ -15,7 +15,9 @@ import {ease, lampAt, smoothstep, type Proj, type V3} from './space';
 const pts = (q: Pt[]) => q.map((v) => v.join(',')).join(' ');
 
 /** Canopy lamp halos (screen blend), each scaled by its S04-SH03 level. */
-export const Halos = ({proj, G}: {proj: Proj; G: number}) => {
+/** Lamp halos. `haze` (default on) is the broad warm haze over the sky; the clear front-mode plates turn it off. */
+/** Lamp halos at story frame G; `ambient` is the continuous clock of the shimmer (SS-R5.1: G when unheld). */
+export const Halos = ({proj, G, haze = true, ambient = G}: {proj: Proj; G: number; haze?: boolean; ambient?: number}) => {
   const id = useId();
   return (
     <>
@@ -34,11 +36,11 @@ export const Halos = ({proj, G}: {proj: Proj; G: number}) => {
           <stop offset="1" stopColor="#ffcf90" stopOpacity={0} />
         </radialGradient>
       </defs>
-      <ellipse cx={540} cy={260 + ((proj.setup?.yh ?? 700) - 700)} rx={760} ry={420} fill={`url(#${id}s)`} opacity={Math.max(...LAMPS.map((_, i) => lampAt(G, i)))} />
+      {haze && <ellipse cx={540} cy={260 + ((proj.setup?.yh ?? 700) - 700)} rx={760} ry={420} fill={`url(#${id}s)`} opacity={Math.max(...LAMPS.map((_, i) => lampAt(G, i)))} />}
       {LAMPS.map((l, i) => {
         const lv = lampAt(G, i);
         if (lv <= 0 || proj.rawDepth(l) < 0.5) return null;
-        const [x, y] = proj.P(l), r = (i < 2 ? 2.4 : 2.0) * proj.k(l) * (1 + 0.04 * Math.sin((G / 30) * 0.6 + i));
+        const [x, y] = proj.P(l), r = (i < 2 ? 2.4 : 2.0) * proj.k(l) * (1 + 0.04 * Math.sin((ambient / 30) * 0.6 + i));
         return <ellipse key={i} cx={x} cy={y} rx={r} ry={r * 0.78} fill={`url(#${id}h)`} opacity={lv} />;
       })}
       {LAMPS.slice(2).map((l, i) => {

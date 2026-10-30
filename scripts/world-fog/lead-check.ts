@@ -114,11 +114,11 @@ for (const [id, setup, f] of [['S02-SH08', 'CAM-LOW-SHELF', 11], ['S02-SH08', 'C
   log(`${id} f${f} (G${G}) crouched narrator rig: head top ${r.headTop}, feet ${r.feet}, lead ${r.lead}`);
 }
 
-// 9. S03-SH07 bar width and face (SS-R4 RT-2): door jamb (x 0.46-0.54, z -0.06..0, the only frame bar in view) at G2320 (f130)
-// and the worker's face centre (rig head at (0.20, 1.49, 0.00), G2339 = f149), against the jamb's left edge.
+// 9. S03-SH07 bar width and face (SS-R4 RT-2): door jamb (x 0.46-0.54, z -0.06..0, the only frame bar in view) at G2320 (f186, SS-R5.1)
+// and the worker's face centre (rig head at (0.20, 1.49, 0.00), G2339 = f205), against the jamb's left edge.
 {
   const proj = PROJ['CAM-INT-SIDE'];
-  const cam320 = camOf('S03-SH07', 130), cam339 = camOf('S03-SH07', 149);
+  const cam320 = camOf('S03-SH07', 186), cam339 = camOf('S03-SH07', 205);
   const jambL = toScreen(cam320, proj.P([0.46, 1.0, -0.06]))[0], jambR = toScreen(cam320, proj.P([0.54, 1.0, 0]))[0];
   const faceX = toScreen(cam339, proj.P([0.2, 1.49, 0]))[0];
   const jambL339 = toScreen(cam339, proj.P([0.46, 1.0, -0.06]))[0];
@@ -126,22 +126,24 @@ for (const [id, setup, f] of [['S02-SH08', 'CAM-LOW-SHELF', 11], ['S02-SH08', 'C
   log(`S03-SH07 G2320 jamb bar ${Math.round(jambR - jambL)} px wide (x ${Math.round(jambL)}..${Math.round(jambR)}; purpose rule R8-3, no px limit); G2339 worker rig head centre (hood) x ${Math.round(faceX)}, jamb left edge ${Math.round(jambL339)}: clear by ${Math.round(jambL339 - faceX)} px (eye at x ~810 and nose at x ~775 by the native crop of r8 G2339; the jamb covers the back of the hood only)`);
   log(`S03-SH07 mullion at x 1.75 projects at x ${Math.round(toScreen(cam320, proj.P([1.75, 1.0, -0.03]))[0])} (off frame if >= 1080)`);
   // Worker lead at G2339 (profile, left; rig at the cart's stop-side offset (0.3, 0.45) from S = (-0.10, -0.45)): sheet lead >= 480 px.
-  const w339 = rigFigure('S03-SH07', 'CAM-INT-SIDE', 'worker', -0.1 + 0.3, -0.45 + 0.45, 149, {view: 'left'});
+  const w339 = rigFigure('S03-SH07', 'CAM-INT-SIDE', 'worker', -0.1 + 0.3, -0.45 + 0.45, 205, {view: 'left'});
   log(`S03-SH07 G2339 worker (profile, rig) ${JSON.stringify(w339)} (sheet: lead >= 480 px)`);
 }
 
-// 9a. S03-SH07 torch (SS-R4.1 R8-1): hand, lens and pool at G2230 (f40) and G2320 (f130), s from the plate camera.
+// 9a. S03-SH07 torch (SS-R4.1 R8-1): hand, lens and pool at G2230 (f40) and G2320 (f186, SS-R5.1), s from the plate camera.
 // Sheet: hand (540, 1107)-(540, 1127) +-15, lens (584, 1164)-(586, 1187) +-15, pool (790, 1425)-(802, 1461) +-25.
+// Shot-local frame of a story key in S03-SH07 (SS-R5.1): e = G − 2190 up to the hold at e71, then f = G − 2134.
 for (const G of [2230, 2320]) {
-  const cam = camOf('S03-SH07', G - 2190), proj = PROJ['CAM-INT-SIDE'];
+  const f = G <= 2261 ? G - 2190 : G - 2134;
+  const cam = camOf('S03-SH07', f), proj = PROJ['CAM-INT-SIDE'];
   const at = (p: typeof SH07_TORCH.hand) => toScreen(cam, proj.P(p)).map((v) => Math.round(v));
-  log(`S03-SH07 G${G} (f${G - 2190}, s ${cam.s.toFixed(3)}) torch hand ${at(SH07_TORCH.hand)} lens ${at(SH07_TORCH.lens)} pool ${at(SH07_TORCH.target)}`);
+  log(`S03-SH07 G${G} (f${f}, s ${cam.s.toFixed(3)}) torch hand ${at(SH07_TORCH.hand)} lens ${at(SH07_TORCH.lens)} pool ${at(SH07_TORCH.target)}`);
 }
 
 // 9b'. S03-SH07 "pole" (SS-R4.1 R8-8): the glass-front top rail (shop.ts box 27, y 2.16) and sill (box 28, y 0.05) run along the view
 // axis; their image lines meet at the principal point (540, 700), so they read as one dark diagonal. Omitted in S03-SH07 (paintShop omit).
 {
-  const cam = camOf('S03-SH07', 130), proj = PROJ['CAM-INT-SIDE'];
+  const cam = camOf('S03-SH07', 186), proj = PROJ['CAM-INT-SIDE'];
   const s = (p: [number, number, number]): Pt => toScreen(cam, proj.P(p));
   const meet = (p1: Pt, p2: Pt, p3: Pt, p4: Pt): Pt => {
     const d = (p1[0] - p2[0]) * (p3[1] - p4[1]) - (p1[1] - p2[1]) * (p3[0] - p4[0]);

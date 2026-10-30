@@ -11,9 +11,10 @@ import type {FaceState} from '../worldfog/head';
 import {Architecture, Beam, FogVeil, Glass, Grade, Grain, Halos, InteriorAir, LensGlow, Rim} from '../worldfog/layers';
 import type {InteriorLight} from '../worldfog/draw';
 import {paintOutside} from '../worldfog/outside';
+import {paintSite} from '../worldfog/site';
 import {PhoneOverlay, paintPhone} from '../worldfog/phone';
 import {groundAt, paintShop, VD18_SET, type Drawable, type ShopDress} from '../worldfog/shop';
-import {PROJ, SHOT_G0, asmAt, bump, doorAt, ease, mix3, ptLerp, riseAt, seg, torchOnAt, type Proj, type V3} from '../worldfog/space';
+import {PROJ, ambientAt, asmAt, bump, doorAt, ease, frontAt, mix3, ptLerp, riseAt, seg, storyAt, torchOnAt, type Proj, type V3} from '../worldfog/space';
 
 // WFOG-EP01-SHORT painted plates (brief VB-WFOG-EP01-SHORT-R3, scene sheets WFOG-EP01-SHORT-SS-R3.1). One plate per
 // shot, ID `WFOG-<shot ID>`; each samples the story clocks of `src/painted/worldfog/space.ts` at G = shot start + its
@@ -22,13 +23,21 @@ import {PROJ, SHOT_G0, asmAt, bump, doorAt, ease, mix3, ptLerp, riseAt, seg, tor
 
 const FPS = 30;
 const frameOf = (tl: number) => Math.round(tl * FPS);
-const Gat = (id: string, tl: number) => SHOT_G0[id] + frameOf(tl);
+/**
+ * Clocks of a plate at shot clock tl (RK-2, SS-R5.1): `G` the event story key (held or stretched where the sheet holds), `A` the
+ * ambient clock (continuous through holds: fog drift, lens ripple, breath), `f` the shot-local frame.
+ */
+type Clocks = {G: number; A: number; f: number};
+const clocksAt = (id: string, tl: number): Clocks => {
+  const f = frameOf(tl);
+  return {G: storyAt(id, f), A: ambientAt(id, f), f};
+};
 
 type PlateDef = {
   paper: string;
   camera: (tl: number) => Camera;
-  paint: (p: Painter, ctx: ShotContext & {G: number; f: number}) => void;
-  Overlay?: (props: ShotContext & {camera: Camera; G: number; f: number}) => ReactNode;
+  paint: (p: Painter, ctx: ShotContext & Clocks) => void;
+  Overlay?: (props: ShotContext & {camera: Camera} & Clocks) => ReactNode;
 };
 
 const plate = (id: string, d: PlateDef): PaintedShot => ({
@@ -36,9 +45,9 @@ const plate = (id: string, d: PlateDef): PaintedShot => ({
   serves: [id],
   paper: d.paper,
   camera: d.camera,
-  paint: (p, ctx) => d.paint(p, {...ctx, G: Gat(id, ctx.tl), f: frameOf(ctx.tl)}),
+  paint: (p, ctx) => d.paint(p, {...ctx, ...clocksAt(id, ctx.tl)}),
   Overlay: d.Overlay ? ({camera, opacity, ...ctx}) => (
-    <div style={{position: 'absolute', inset: 0, opacity}}>{d.Overlay!({...ctx, camera, G: Gat(id, ctx.tl), f: frameOf(ctx.tl)})}</div>
+    <div style={{position: 'absolute', inset: 0, opacity}}>{d.Overlay!({...ctx, camera, ...clocksAt(id, ctx.tl)})}</div>
   ) : undefined,
 });
 
@@ -66,22 +75,22 @@ type WindowOpts = {assembly: boolean; veil: boolean; jam?: boolean; lowBank?: nu
   beamTo?: (G: number) => Pt};
 /** The window plate: fog outside, the assembly on its story pose, halos, rim, veil, beam, glass and architecture. */
 const windowPlate = (id: string, camera: (tl: number) => Camera, o: WindowOpts): PaintedShot => {
-  const poseOf = (G: number): AsmPose | null => (o.assembly ? asmPoseAt(G) : null);
+  const poseOf = (G: number, A: number): AsmPose | null => (o.assembly ? asmPoseAt(G, A) : null);
   return plate(id, {
     paper: '#7c8380',
     camera,
-    paint: (p, {G}) => {
-      const pose = poseOf(G);
-      paintOutside(p, GLASS, G, {asm: pose ? {pose, parts: assemblyParts(GLASS, pose)} : undefined, beam: beamAt(G), jam: o.jam, lowBank: o.lowBank});
+    paint: (p, {G, A}) => {
+      const pose = poseOf(G, A);
+      paintOutside(p, GLASS, G, {asm: pose ? {pose, parts: assemblyParts(GLASS, pose)} : undefined, beam: beamAt(G), jam: o.jam, lowBank: o.lowBank, ambient: A});
     },
-    Overlay: ({camera: cam, width, height, G}) => {
-      const pose = poseOf(G);
+    Overlay: ({camera: cam, width, height, G, A}) => {
+      const pose = poseOf(G, A);
       const parts = pose ? assemblyParts(GLASS, pose) : null;
       const beam = beamAt(G);
       return (
         <>
           <CameraLayer camera={cam} width={width} height={height}>
-            <Halos proj={GLASS} G={G} />
+            <Halos proj={GLASS} G={G} ambient={A} />
           </CameraLayer>
           {parts && (
             <CameraLayer camera={cam} width={width} height={height} opacity={GLOW_PEAK}>
@@ -163,7 +172,9 @@ const forecourtPlate = plate('S01-SH02', {
   camera: push(114, 1.0, 1.05, 600, 760),
   paint: (p, {G, f, tl}) => {
     const proj = PROJ['CAM-FORECOURT'];
-    paintOutside(p, proj, G, {noCarGhost: true, lowBank: 0.6});
+    // SS-R5 (VD08 R6, MK-WF-DEP-11 `front` 60): clear FS0 for the whole shot; the pale far wall stands beyond the main road.
+    // The forecourt low bank is dropped (no bank or veil over road, lane, pumps, canopy or car).
+    paintOutside(p, proj, G, {noCarGhost: true, front: 60});
     const roll = 1 - (1 - seg(f, 0, 30)) ** 2;
     const dx = -3.0 * (1 - roll);
     // Driver door (SS-R3.3): opens f42-f54 to 55 deg, shuts f72-f80 (contact f80). Dome light on while it is open (f44-f80).
@@ -201,9 +212,50 @@ const forecourtPlate = plate('S01-SH02', {
   },
   Overlay: ({camera: cam, width, height, G}) => (
     <>
-      <CameraLayer camera={cam} width={width} height={height}><Halos proj={PROJ['CAM-FORECOURT']} G={G} /></CameraLayer>
-      <Grade strength={0.3} />
-      <Grain />
+      <CameraLayer camera={cam} width={width} height={height}><Halos proj={PROJ['CAM-FORECOURT']} G={G} haze={false} /></CameraLayer>
+      {/* SS-R5 r9b: a light grade and grain so the clear forecourt keeps its contrast (the grade greyed it). */}
+      <Grade strength={0.12} />
+      <Grain opacity={0.04} />
+    </>
+  ),
+});
+
+// ------------------------------------------------------------------ S01-SH02A the wall takes the world, S02-SH00A the glass swallow (SS-R5)
+
+/** S01-SH02A high wide over the site (MK-WF-DEP-12, VD19 / FP-B): no figure, no assembly; low detail (`site.ts`). */
+const sitePlate = plate('S01-SH02A', {
+  paper: '#1f2625',
+  camera: push(120, 1.0, 1.03, 600, 900),
+  paint: (p, {G, f}) => paintSite(p, PROJ['CAM-HIGH-WIDE'], f, G / 30),
+  Overlay: () => <><Grade strength={0.3} /><Grain /></>,
+});
+
+/**
+ * S02-SH00A the glass swallow (MK-WF-DEP-11, VD20 / FP-A): the shop interior seen from the glass, the narrator in profile
+ * facing screen-left at (0.5, 0, −0.45), no assembly (VD17 amount 0). The fog front F = `frontAt` takes the outside layers
+ * in depth order (far lamps, pumps and columns, near lamps, car, kerb); the front bank and its tendrils are in `paintOutside`.
+ */
+const SWALLOW = PROJ['CAM-GLASS-SWALLOW'];
+const swallowPlate = plate('S02-SH00A', {
+  paper: '#2a3134',
+  camera: push(174, 1.0, 1.03, 560, 640),
+  paint: (p, {G, f, tl}) => {
+    const L = VD18_LIGHT['CAM-GLASS-SWALLOW'];
+    // SS-R5.1 (C-3): eyes on the car to f120, drifting down toward the kerb to f156 and held; one blink f164–f167; mouth closed (VO).
+    const look: Pt = [0.8, f < 120 ? 0.05 : lerp(0.05, -0.55, ease(seg(f, 120, 156)))];
+    paintShop(p, SWALLOW, G, {light: L, outside: {front: frontAt(G), sedan: true}, actors: [
+      actor(p, SWALLOW, 'narrator', 0.5, -0.45, {
+        view: 'left', light: L, face: face({look, brow: 'flat', eyes: f >= 164 && f < 168 ? 'shut' : 'dot'}),
+        // Phone in her near hand at her side, screen dark (below the caption band), elbow in the jacket.
+        lArm: arm(SWALLOW, [0.5, 0.88, -0.45], 1), lHold: {kind: 'phone'},
+      }, tl),
+    ]});
+  },
+  Overlay: ({camera: cam, width, height, G}) => (
+    <>
+      <CameraLayer camera={cam} width={width} height={height}><Halos proj={SWALLOW} G={G} haze={false} /></CameraLayer>
+      <Grade strength={0.2} />
+      <Grain opacity={0.06} />
     </>
   ),
 });
@@ -212,25 +264,28 @@ const forecourtPlate = plate('S01-SH02', {
 
 const counterInPlate = plate('S02-SH01', {
   paper: '#8d918a',
-  camera: push(114, 1.0, 1.05, 620, 700),
+  camera: push(96, 1.0, 1.05, 620, 700),
   paint: (p, {G, f, tl}) => {
     const proj = PROJ['CAM-COUNTER-IN'];
     const L = VD18_LIGHT['CAM-COUNTER-IN'];
-    const step = ease(seg(f, 78, 86));
+    // SS-R5 (B5-8, VB R6): the shot is 96 f and every SS-R4.1 local event moved −18 f (occupant weight f22–f42, glance f36–f54
+    // and back f54–f62, step f60–f68, reach f68–f78, torch off the hook f78 = G588, lowered f78–f86).
+    const step = ease(seg(f, 60, 68));
     const x = lerp(-0.3, -0.45, step), z = lerp(-2.1, -2.3, step);
-    const head = f >= 54 && f < 72 ? 'right' : 'front';
-    const look: Pt = f < 54 ? [0.3, 0.9] : f < 80 ? [0, 0] : f < 96 ? [-0.9, 0.3] : [-0.3, 0.2];
-    // Torch: off the hook (reach f86-f96), then lowered f96-f104 to the rig's default hang on her right side (x-0.17, 0.64, z),
+    const head = f >= 36 && f < 54 ? 'right' : 'front';
+    const look: Pt = f < 36 ? [0.3, 0.9] : f < 62 ? [0, 0] : f < 78 ? [-0.9, 0.3] : [-0.3, 0.2];
+    // Torch: off the hook (reach f68-f78), then lowered f78-f86 to the rig's default hang on her right side (x-0.17, 0.64, z),
     // lens down (SS-R3.4 AB0 hang: a straight arm; the r4 point (-0.65, 0.95, -2.25) bent it and splayed the elbow).
-    const reach = ease(seg(f, 86, 96)), hip = ease(seg(f, 96, 104));
-    const rArm: Arm | undefined = f < 86 ? undefined : f < 96 ? {to: ptLerp(P3(proj, [x - 0.2, 0.9, z]), P3(proj, [-0.73, 1.33, -2.7]), reach), out: -1} : {to: ptLerp(P3(proj, [-0.73, 1.33, -2.7]), P3(proj, [x - 0.17, 0.64, z]), hip), out: -1};
-    paintShop(p, proj, G, {torchOnHook: G < 336, light: L, actors: [
-      actor(p, proj, 'occupant', -1.6, -1.0, {view: 'right', light: L, lean: 0.03 * bump(f, 40, 60), face: face({look: [1, -0.1]})}, tl),
+    const reach = ease(seg(f, 68, 78)), hip = ease(seg(f, 78, 86));
+    const rArm: Arm | undefined = f < 68 ? undefined : f < 78 ? {to: ptLerp(P3(proj, [x - 0.2, 0.9, z]), P3(proj, [-0.73, 1.33, -2.7]), reach), out: -1} : {to: ptLerp(P3(proj, [-0.73, 1.33, -2.7]), P3(proj, [x - 0.17, 0.64, z]), hip), out: -1};
+    // Through the glass: FS2 for the whole shot, the same outside as the S02-SH00A end state (the front held at 1.8 m, no car).
+    paintShop(p, proj, G, {torchOnHook: G < 588, outside: {front: 1.8}, light: L, actors: [
+      actor(p, proj, 'occupant', -1.6, -1.0, {view: 'right', light: L, lean: 0.03 * bump(f, 22, 42), face: face({look: [1, -0.1]})}, tl),
       actor(p, proj, 'narrator', x, z, {
-        view: 'front', light: L, head, face: face({look, brow: f >= 54 ? 'worry' : 'flat'}),
+        view: 'front', light: L, head, face: face({look, brow: f >= 36 ? 'worry' : 'flat'}),
         // SS-R3.5 AB1: phone elbow x+0.185 (was +0.15), on the jacket edge (CP-P02 sleeve sliver).
         lArm: armVia(proj, [x + 0.06, 1.12, z - 0.2], [x + 0.185, 0.95, z + 0.04], 'upper'), lHold: {kind: 'phone'},
-        rArm, rHold: f >= 96 ? {kind: 'torch', angle: Math.PI / 2, on: 0} : undefined,
+        rArm, rHold: f >= 78 ? {kind: 'torch', angle: Math.PI / 2, on: 0} : undefined,
       }, tl),
     ]});
   },
@@ -281,7 +336,9 @@ const counterOutPlate = plate('S02-SH03', {
  * tube lights, rim from the fog glass. The glass-behind-camera setups halve the rim (`rimScale`). CAM-FORECOURT is not a
  * row of the brief: its narrator takes the glass-behind-camera row (proposal for Film to confirm, S01-SH02 cast only).
  */
-export const VD18_LIGHT: Record<'CAM-COUNTER-IN' | 'CAM-COUNTER-OUT' | 'CAM-LOW-SHELF' | 'CAM-LOW-CU' | 'CAM-INT-REV' | 'CAM-INT-SIDE' | 'CAM-INT-2S' | 'CAM-INT-DOOR-REV' | 'CAM-FORECOURT', InteriorLight> = {
+export const VD18_LIGHT: Record<'CAM-COUNTER-IN' | 'CAM-COUNTER-OUT' | 'CAM-LOW-SHELF' | 'CAM-LOW-CU' | 'CAM-INT-REV' | 'CAM-INT-SIDE' | 'CAM-INT-2S' | 'CAM-INT-DOOR-REV' | 'CAM-FORECOURT' | 'CAM-GLASS-SWALLOW', InteriorLight> = {
+  // SS-R5 (VD18, Film to confirm): the glass is ahead of this eye, so the rim is the full fog rim from the panes (rimScale 1).
+  'CAM-GLASS-SWALLOW': {key: [0.2, 1], rim: [0.3, 1]},
   'CAM-COUNTER-IN': {key: [0.2, 1], rim: [0, 1]},
   'CAM-COUNTER-OUT': {key: [0.2, 1], rim: [0.8, 0.6], rimScale: 0.5},
   'CAM-LOW-SHELF': {key: [0.3, 1], rim: [-0.6, 1]},
@@ -296,6 +353,7 @@ export const VD18_LIGHT: Record<'CAM-COUNTER-IN' | 'CAM-COUNTER-OUT' | 'CAM-LOW-
 /** VD18 screen-space air per plate (brief VD18 "What Boss applies" step 2): floor falloff from `floorFrom`, tube pool on the upper bodies. */
 type Air = {floorFrom: number; floor: number; pool: {x: number; y: number; rx: number; ry: number; a: number}};
 const AIR: Record<string, Air> = {
+  'S02-SH00A': {floorFrom: 0.5, floor: 0.55, pool: {x: 560, y: 900, rx: 520, ry: 360, a: 0.14}},
   'S02-SH01': {floorFrom: 0.5, floor: 0.55, pool: {x: 430, y: 820, rx: 560, ry: 380, a: 0.14}},
   'S02-SH03': {floorFrom: 0.52, floor: 0.6, pool: {x: 540, y: 560, rx: 460, ry: 300, a: 0.14}},
   'S02-SH05': {floorFrom: 0.5, floor: 0.55, pool: {x: 400, y: 760, rx: 520, ry: 380, a: 0.14}},
@@ -374,7 +432,7 @@ const sh08 = lowShelfPlate('S02-SH08', 201, push(201, 1.0, 1.04, 500, 700), (p, 
   // Right hand from her hip onto the right knee (f0-f12) with the torch across it; left hand to the floor by f12.
   const settle = ease(seg(f, 0, 12));
   return crouchedPair(p, proj, tl,
-    {crouch: lerp(0.81, 1, settle), head, look: f < 18 ? [0.4, -0.3] : [0.2, 0], brow: 'worry', open: talk(f, [[72, 91], [95, 129]], 0.5),
+    {crouch: lerp(0.81, 1, settle), head, look: f < 18 ? [0.4, -0.3] : [0.2, 0], brow: 'worry', open: talk(f, [[72, 107], [117, 150]], 0.5),
       arms: {r: armBetween(proj, KEY.hipR, KEY.kneeR, settle), l: armBetween(proj, KEY.kneeL, KEY.floorL, settle), torch: torchAngle(proj, KEY.kneeR.hand, TORCH_KNEE_LENS)}},
     {crouch: lerp(0.8, 1, ease(seg(f, 0, 18))), look: f < 50 ? [0.8, -0.2] : [0.8, 0], open: talk(f, [[18, 49]], 0.5), hold: f >= 50}, light);
 }, undefined, VD18_LIGHT['CAM-LOW-SHELF']);
@@ -385,7 +443,7 @@ const s3sh01 = lowShelfPlate('S03-SH01', 126, s3sh01Camera, (p, proj, f, tl, lig
   // the right knee until f110, then to her right side with the lens down; the left hand pushes off the floor at f110.
   const pushOff = ease(seg(f, 110, 125));
   return crouchedPair(p, proj, tl,
-    {crouch: 1 - riseAt(SHOT_G0['S03-SH01'] + f), head: f >= 60 && f < 84 ? 'left' : 'front', look: f < 60 ? [0.6, -0.4] : [0, 0], brow: f >= 45 ? 'quirk' : 'worry', open: 0,
+    {crouch: 1 - riseAt(storyAt('S03-SH01', f)), head: f >= 60 && f < 84 ? 'left' : 'front', look: f < 60 ? [0.6, -0.4] : [0, 0], brow: f >= 45 ? 'quirk' : 'worry', open: 0,
       arms: {r: armBetween(proj, KEY.kneeR, KEY.hangR, pushOff), l: armBetween(proj, KEY.floorL, KEY.kneeL, pushOff), torch: lerp(torchAngle(proj, KEY.kneeR.hand, TORCH_KNEE_LENS), Math.PI / 2, pushOff)}},
     {crouch: 1, look: [0.8, 0], open: 0, hold: f < 112, nod: [0.12 * Math.sin((f - 72) * 0.7) * bump(f, 72, 90), 0]}, light);
 }, undefined, VD18_LIGHT['CAM-LOW-SHELF']);
@@ -400,7 +458,7 @@ const sh10 = plate('S02-SH10', {
     paintShop(p, proj, G, {outside: {asm: {pose, parts: assemblyParts(proj, pose)}}, light: L, actors: [
       actor(p, proj, 'occupant', -1.5, -1.1, {view: 'front', light: L, crouch: 1, face: face({look: [0.8, 0], brow: 'worry'}), lArm: arm(proj, [-1.1, 0.42, -1.32], 1)}, tl),
       actor(p, proj, 'narrator', -0.95, -1.3, {
-        view: 'front', light: L, crouch: 1, rise, face: face({look: ptLerp([0, 0], [0.7, -0.8], ease(seg(f, 0, 30))), brow: 'worry', eyes: f >= 96 ? 'wide' : 'dot', open: talk(f, [[36, 69]], 0.45)}),
+        view: 'front', light: L, crouch: 1, rise, face: face({look: ptLerp([0, 0], [0.7, -0.8], ease(seg(f, 0, 30))), brow: 'worry', eyes: f >= 96 ? 'wide' : 'dot', open: talk(f, [[28, 89]], 0.45)}),
         // Arms tucked, hands on the knees, torch across the right knee (SS-R3.2); the held breath lifts elbows 2 cm.
         rArm: armBetween(proj, KEY.kneeR, KEY.kneeR, 0, 0.02 * ease(seg(f, 96, 104))), rHold: {kind: 'torch', angle: torchAngle(proj, KEY.kneeR.hand, TORCH_KNEE_LENS), on: 0},
         lArm: armBetween(proj, KEY.kneeL, KEY.kneeL, 0, 0.02 * ease(seg(f, 96, 104))),
@@ -440,7 +498,7 @@ const sh06 = intRevPlate('S02-SH06', 108, push(108, 1.0, 1.05, 620, 660), (p, pr
     ...clutch(proj, f),
   }, tl),
   actor(p, proj, 'narrator', -1.0, -1.3, {
-    view: 'front', light, face: face({look: [-0.35, -0.15], brow: 'worry', open: talk(f, [[18, 65]], 0.45)}),
+    view: 'front', light, face: face({look: [-0.35, -0.15], brow: 'worry', open: talk(f, [[18, 75]], 0.45)}),
     // SS-R3.4 AB1: the torch hand as before; the upper arm goes behind the torso (elbow z -1.36, plane z -1.22).
     rArm: armVia(proj, [-0.8, 0.98, -1.2], [-0.85, 0.93, -1.36], 'upper'), rHold: {kind: 'torch', angle: Math.PI / 2 + 0.25 - 0.1 * ease(seg(f, 60, 72)), on: 0},
   }, tl),
@@ -468,7 +526,7 @@ const torchSH02 = (proj: Proj, f: number) => {
  * which popped a sleeve onto the jacket.
  */
 export const sh02Arms = (proj: Proj, f: number) => {
-  const crouch = 1 - riseAt(SHOT_G0['S03-SH02'] + f);
+  const crouch = 1 - riseAt(storyAt('S03-SH02', f));
   const rise = shoulderHeight('narrator', crouch) - shoulderHeight('narrator');
   const u = ease(seg(f, 36, 96));
   const elbowR = mix3([-0.80, 0.93 + rise, -1.36], [-0.80, 1.00, -1.10], u);
@@ -525,21 +583,23 @@ export const sh07NarratorGlance = (f: number) => {
 
 const s3sh07 = plate('S03-SH07', {
   paper: '#8d918a',
-  camera: push(150, 1.0, 1.05, 540, 700),
-  paint: (p, {G, f, tl}) => {
+  camera: push(206, 1.0, 1.05, 540, 700),
+  paint: (p, {G, A, tl}) => {
     const proj = PROJ['CAM-INT-SIDE'];
     const L = VD18_LIGHT['CAM-INT-SIDE'];
     const door = doorAt(G);
     const a = asmAt(G);
-    // SS-R4 RT-2 occupant nod f72-f84, leaf slide f72-f102. The narrator's held glance is eyes only (SS-R4.1 R8-9): sh07NarratorGlance.
-    const narrator = sh07NarratorGlance(f);
-    const ox = lerp(-0.9, -1.4, ease(seg(f, 72, 102)));
+    // SS-R5.1 (C-9): the event frame e is the story key minus the shot start; held at e71 over f72–f127, then e = f − 56.
+    // SS-R4 RT-2 occupant nod e72-e84, leaf slide e72-e102 (f128–f158). The narrator's held glance is eyes only (SS-R4.1 R8-9).
+    const e = G - storyAt('S03-SH07', 0);
+    const narrator = sh07NarratorGlance(e);
+    const ox = lerp(-0.9, -1.4, ease(seg(e, 72, 102)));
     const handle: V3 = [-0.45 - door, 1.0, -0.12];
     const walking = a.moving ? a.travel / 0.7 : undefined;
     const cart: Drawable = {depth: proj.depth([a.xs, 0, a.zs]), draw: () => paintCartSide(p, proj, a, a.travel)};
     // SS-R4.1 R8-8: the glass-front top rail (shop.ts box 27) and sill (box 28) run along the view axis and meet at the principal
     // point (540, 700), so they read as one dark pole through the frame. The sheet allows no such bar here: omitted in this shot.
-    paintShop(p, proj, G, {light: L, omit: [27, 28], actors: [
+    paintShop(p, proj, G, {light: L, omit: [27, 28], ambient: A, actors: [
       cart,
       actor(p, proj, 'worker', a.xs + 0.3, a.zs + 0.45, {
         view: 'left', light: L, walk: walking, wet: true, face: face({look: [-1, 0.1], brow: 'worry', eyes: 'half', mouth: 'o'}),
@@ -547,12 +607,12 @@ const s3sh07 = plate('S03-SH07', {
         lHold: {kind: 'umbrella', tip: proj.P([a.xs + 0.35, 0.02, a.zs + 0.3])},
       }, tl),
       actor(p, proj, 'occupant', ox, -0.25, {
-        view: 'front', light: L, nod: [0, 0.06 * bump(f, 72, 84)],
-        face: face({look: f >= 6 && f < 84 ? [-0.8, 0] : [0.6, 0], brow: 'worry', browTo: 'flat', browMix: ease(seg(f, 24, 48))}),
-        lArm: f < 104 ? arm(proj, handle, 1) : undefined,
+        view: 'front', light: L, nod: [0, 0.06 * bump(e, 72, 84)],
+        face: face({look: e >= 6 && e < 84 ? [-0.8, 0] : [0.6, 0], brow: 'worry', browTo: 'flat', browMix: ease(seg(e, 24, 48))}),
+        lArm: e < 104 ? arm(proj, handle, 1) : undefined,
       }, tl),
       actor(p, proj, 'narrator', 0.95, -0.75, {
-        view: 'right', light: L, head: narrator.head, warm: 1, rise: -0.012 * bump(f, 30, 48),
+        view: 'right', light: L, head: narrator.head, warm: 1, rise: -0.012 * bump(e, 30, 48),
         face: face({look: narrator.look, brow: narrator.brow, browTo: narrator.browTo, browMix: narrator.browMix}),
         rArm: arm(proj, SH07_TORCH.hand, 1), rHold: {kind: 'torch', angle: torchAngle(proj, SH07_TORCH.hand, SH07_TORCH.lens), on: 1},
       }, tl),
@@ -586,8 +646,8 @@ const SLUMP = {
 };
 const s4sh01 = plate('S04-SH01', {
   paper: '#8d918a',
-  camera: push(330, 1.0, 1.04, 660, 600),
-  paint: (p, {G, f, tl}) => {
+  camera: push(434, 1.0, 1.04, 660, 600),
+  paint: (p, {G, A, f, tl}) => {
     const proj = PROJ['CAM-INT-2S'];
     const light = VD18_LIGHT['CAM-INT-2S'];
     const walkU = ease(seg(f, 12, 42));
@@ -611,19 +671,19 @@ const s4sh01 = plate('S04-SH01', {
       paintHubs(p, proj, cartPose);
     }};
     // Both aisle gondolas are drawn: SS-R3.2 ST-01 moved their front ends to z -2.8, clear of the two-shot.
-    paintShop(p, proj, G, {light, actors: [
+    paintShop(p, proj, G, {light, ambient: A, actors: [
       cart,
       actor(p, proj, 'worker', wx, wz, {
         view: f >= 140 ? 'right' : 'front', head: f >= 132 ? 'right' : undefined, light, walk: f >= 12 && f < 42 ? (f - 12) / 16 : undefined,
-        // Talk windows = the SS-R4 worker cue windows (WFOG-SCRIPT-R5, S04-B01/B02 split): f138-f180, f186-f228, f234-f282, f288-f330.
+        // Talk windows = the VO-15 cue windows (SS-R5.1 cue table, shot-local): f138–f148, f151–f344, f350–f377, f388–f424.
         crouch: 0.30 * slump, nod: [0, 0.04 * slump], rise: 0.012 * slump * Math.sin(f * 0.45), wet: true,
-        face: face({look, brow: 'worry', eyes: f < 138 ? 'half' : 'dot', mouth: f >= 48 && f < 138 ? 'o' : 'flat', open: talk(f, [[122, 190], [199, 216], [225, 269], [282, 330]], 0.8)}),
+        face: face({look, brow: 'worry', eyes: f < 138 ? 'half' : 'dot', mouth: f >= 48 && f < 138 ? 'o' : 'flat', open: talk(f, [[138, 148], [151, 344], [350, 377], [388, 424]], 0.8)}),
         rArm: armsOn ? via(cw, ce) : undefined,
         lArm: armsOn ? via(cl, cle) : f < 18 ? arm(proj, [wx + 0.15, 0.9, wz - 0.1], 1) : undefined,
         lHold: f < 12 ? {kind: 'umbrella', tip: proj.P([wx + 0.25, 0.02, wz - 0.15])} : undefined,
       }, tl),
       actor(p, proj, 'narrator', nx, nz, {
-        view: 'left', light, warm: 0.6, face: face({look: [1, 0], brow: 'worry', open: talk(f, [[17, 62], [73, 107]], 0.8)}),
+        view: 'left', light, warm: 0.6, face: face({look: [1, 0], brow: 'worry', open: talk(f, [[18, 72], [77, 109]], 0.8)}),
         rArm: arm(proj, [nx - 0.05, 0.78, nz - 0.1], 1), rHold: {kind: 'torch', angle: Math.PI / 2 - 0.4, on: 1},
       }, tl),
     ]});
@@ -670,6 +730,8 @@ const s4sh02 = plate('S04-SH02', {
 export const worldfogShots: PaintedShot[] = [
   carPlate,
   forecourtPlate,
+  sitePlate,
+  swallowPlate,
   counterInPlate,
   phonePlate,
   counterOutPlate,
@@ -682,16 +744,16 @@ export const worldfogShots: PaintedShot[] = [
   sh10,
   s3sh01,
   s3sh02,
-  windowPlate('S03-SH03', (tl) => pushCamera(tl, 119 / FPS, {s0: 1.3, s1: 1.34, fx: 560, fy: 650}), {assembly: true, veil: true}),
-  windowPlate('S03-SH04', fixedCam(42, {s0: 2.2, s1: 2.3, fx: 503, fy: 598, dx: 37, dy: -38}), {assembly: true, veil: false}),
-  windowPlate('S03-SH05', fixedCam(72, {s0: 1.8, s1: 1.9, fx: 695, fy: 872, dx: -135, dy: -232}), {assembly: true, veil: false}),
+  windowPlate('S03-SH03', (tl) => pushCamera(tl, 159 / FPS, {s0: 1.3, s1: 1.34, fx: 560, fy: 650}), {assembly: true, veil: true}),
+  windowPlate('S03-SH04', fixedCam(46, {s0: 2.2, s1: 2.3, fx: 503, fy: 598, dx: 37, dy: -38}), {assembly: true, veil: false}),
+  windowPlate('S03-SH05', fixedCam(100, {s0: 1.8, s1: 1.9, fx: 695, fy: 872, dx: -135, dy: -232}), {assembly: true, veil: false}),
   windowPlate('S03-SH06', () => ({s: 3.0, fx: 577, fy: 1219, dx: -37, dy: -499}), {assembly: true, veil: false, jam: true, lowBank: 0.2, sheen: 0}),
   // SS-R4 RT-1 (new): the S03-SH03 lit window plate, held, at the S03-SH06 pull-back; A 0 and veil off (PD12), its own beam track.
-  windowPlate('S03-SH06A', push(120, 1.24, 1.28, 560, 650), {assembly: true, veil: false, beamTo: beamSH06A}),
+  windowPlate('S03-SH06A', push(216, 1.24, 1.28, 560, 650), {assembly: true, veil: false, beamTo: beamSH06A}),
   s3sh07,
   s4sh01,
   s4sh02,
-  windowPlate('S04-SH03', push(210, 1.0, 1.06, 540, 700), {assembly: false, veil: false}),
+  windowPlate('S04-SH03', push(306, 1.0, 1.06, 540, 700), {assembly: false, veil: false}),
 ];
 
 export type {Proj};

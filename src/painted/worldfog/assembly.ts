@@ -42,7 +42,7 @@ export type AsmPose = {
   /** Right glove layer: behind the stack (brace from S03-SH03 f56), under the helmet (catch) or over it (rim). */
   glove: 'under-stack' | 'under-helmet' | 'over-helmet';
   dip: number; light: number; lean: number; squint: number; gaze: number;
-  /** VD17 amount A and the story frame of its phase. */
+  /** VD17 amount A, and `g`: the ambient clock (story frame, continuous) of the lens ripple phase and the veil (= G unless held). */
   warp: number; g: number;
   /** Draw the worker (false: the cart, cargo, helmet and umbrella only, S04). */
   worker: boolean;
@@ -222,20 +222,18 @@ const poseSH03 = (G: number): AsmPose => {
  * eyelids close f84-f88, pupils go down f48-f60 (to the ground outside the door). No head bow (SS-R4.1 R8-5): the 5 deg forward
  * tilt was sub-pixel in this view and read as a sideways tilt; the `bow` pose field stays available with identity at 0.
  */
-const heldLook = (G: number) => {
-  const f = G - 2070;
-  if (f < 0 || f >= 120) return {breath: 0, bow: 0, blink: 0, gazeDown: 0};
-  return {
-    breath: 0.5 - 0.5 * Math.cos((2 * Math.PI * f) / 20),
-    bow: 0,
-    blink: bump(f, 84, 88),
-    gazeDown: ease(seg(f, 48, 60)),
-  };
+const heldLook = (G: number, A: number) => {
+  const f = G - 2070, fa = A - 2070;
+  // SS-R5.1 (C-8): breath and the extra eyes-only blink f170–f174 run on the ambient clock A through the held look.
+  const breath = fa < 0 || fa >= 216 ? 0 : 0.5 - 0.5 * Math.cos((2 * Math.PI * fa) / 20);
+  const extraBlink = bump(fa, 170, 174);
+  if (f < 0 || f >= 120) return {breath, bow: 0, blink: extraBlink, gazeDown: 0};
+  return {breath, bow: 0, blink: bump(f, 84, 88) + extraBlink, gazeDown: ease(seg(f, 48, 60))};
 };
 
 /** LIT-LOWER at the current S (inserts, pull-back). S03-SH05: the hand shifts its grip f20-f30 (G1982-G1992). */
-const litLower = (G: number): AsmPose => {
-  const a = asmAt(G), hold = heldLook(G);
+const litLower = (G: number, A: number): AsmPose => {
+  const a = asmAt(G), hold = heldLook(G, A);
   const grip = 0.02 * bump(G, 1982, 1992);
   const lHand = add3(LIT_LHAND(a.xs, a.zs), [0, grip, 0]);
   return {
@@ -245,21 +243,25 @@ const litLower = (G: number): AsmPose => {
   };
 };
 
-/** The assembly's story pose at composition frame G (front views). */
-const poseAt = (G: number): AsmPose => {
+/** The assembly's story pose at story frame G (front views); `A` is the ambient clock (breath only, see `heldLook`). */
+const poseAt = (G: number, A: number): AsmPose => {
   if (G < 900) return pushPose(G);
   if (G < 1029) return poseSH07(G);
   if (G < 1230) return rested(G, 0.02 * (bump(G, 1124, 1144) + bump(G, 1184, 1204)));
   if (G < 1410) return poseSH09(G);
   if (G < 1800) return matchPose(G, 0.02 * (bump(G, 1530, 1548) + bump(G, 1578, 1596) + bump(G, 1608, 1626)));
   if (G < 1920) return poseSH03(G);
-  return litLower(G);
+  return litLower(G, A);
 };
 
 /** S03-SH06 caster judder (SS-R3.3 Q4): 2 px on screen at s 3.0 (0.67 plate px), jammed caster and deck, on alternate 5-frame blocks f6-f30. */
 export const JAM_JUDDER = 0.0018;
 const judderAt = (G: number) => (G >= 2040 && G <= 2064 && Math.floor((G - 2040) / 5) % 2 === 0 ? JAM_JUDDER : 0);
-export const asmPoseAt = (G: number): AsmPose => ({...poseAt(G), judder: judderAt(G)});
+/**
+ * The pose at story frame G. `A` is the ambient clock (SS-R5.1; default G): the fog-lens ripple phase and veil (`pose.g`) and
+ * the held breath run on it, so a held event clock never freezes them.
+ */
+export const asmPoseAt = (G: number, A = G): AsmPose => ({...poseAt(G, A), judder: judderAt(G), g: A});
 
 /** S04: the cart inside at S (-0.10, -0.45), lit, no worker; umbrella leaning on the handle from S04-SH01 f18. */
 export const cartOnlyPose = (G: number, umbrellaOn: boolean): AsmPose => {

@@ -10,7 +10,9 @@ import {mixColor, type Painter, type Pt} from '../src/painted/painter';
 import {asmPoseAt, assemblyParts, assemblyRaw, JAM_JUDDER, LIT, SIL, TAP_FRAMES} from '../src/painted/worldfog/assembly';
 import {doorPt, farShapeAt, SEDAN_DOOR} from '../src/painted/worldfog/car';
 import {CAST, drawFigure, shoulderHeight, type Arm} from '../src/painted/worldfog/cast';
-import {DEG, PROJ, SHOT_ROWS, TOTAL_FRAMES, asmAt, doorAt, fogAt, lampAt, lensAt, lightAt, torchOnAt, type V3} from '../src/painted/worldfog/space';
+import {DEG, PROJ, SHOT_ROWS, TOTAL_FRAMES, ambientAt, asmAt, doorAt, fogAt, frontAt, lampAt, lensAt, lightAt, pchip, storyAt, torchOnAt, type V3} from '../src/painted/worldfog/space';
+import {siteB, siteFront} from '../src/painted/worldfog/site';
+import {CLEAR, FRONT_FADE_M, carCoverAt, headlampAt, paintOutside} from '../src/painted/worldfog/outside';
 import {SH02_TORCH_HAND, SH07_TORCH, VD18_LIGHT, beamSH06A, clutch, counterWorkerArms, sh02Arms, sh07NarratorGlance} from '../src/painted/shots/worldfog';
 
 const video = worldFog.videos[0];
@@ -23,46 +25,187 @@ const plateAt = (G: number) => {
   return s;
 };
 
-test('WFOG-EP01-SHORT registers 23 plates on the SS-R4 G ranges, 3000 frames, four story scenes', () => {
+test('WFOG-EP01-SHORT registers 25 plates on the SS-R5.1 G ranges, 3766 frames, four story scenes', () => {
   collectEpisodes([worldFog]);
   assert.equal(video.id, 'WFOG-EP01-SHORT');
   assert.equal(total, TOTAL_FRAMES);
+  assert.equal(TOTAL_FRAMES, 3766);
   assert.equal(video.timeline.length, 4);
+  assert.equal(SHOT_ROWS.length, 25);
+  assert.equal(SHOT_ROWS.reduce((n, r) => n + r.len, 0), 3766);
   const spans = paintedSpans(video.timeline, fps);
   assert.deepEqual(spans.map((s) => [s.shot, s.startFrame, s.endFrame]), SHOT_ROWS.map((r) => [`WFOG-${r.id}`, r.g0, r.g0 + r.len]));
   for (const r of SHOT_ROWS) assert.deepEqual(paintedShots[`WFOG-${r.id}`].serves, [r.id]);
   // Fiction marker on the opening shot only (ST-08).
   assert.ok(plateAt(125).plates[0].label);
   assert.equal(plateAt(126).plates[0].label, undefined);
+  // SS-R5.1 starts: S01-SH02A G240, S02-SH00A G360 (174 f), S02-SH01 G534, S02-SH02 G630 (156 f), S02-SH03 G786.
+  assert.deepEqual([plateAt(240), plateAt(360), plateAt(534), plateAt(630), plateAt(786)].map((s) => [s.plates[0].shot, s.plates[0].frame]),
+    [['WFOG-S01-SH02A', 0], ['WFOG-S02-SH00A', 0], ['WFOG-S02-SH01', 0], ['WFOG-S02-SH02', 0], ['WFOG-S02-SH03', 0]]);
+  assert.equal(plateAt(629).plates[0].shot, 'WFOG-S02-SH01');
+  assert.equal(plateAt(629).plates[0].frame, 95);
+  assert.equal(plateAt(785).plates[0].shot, 'WFOG-S02-SH02');
+  assert.equal(plateAt(785).plates[0].frame, 155);
+});
+
+/**
+ * RK-2 (SS-R5.1): from the S02-SH03 start the story key is G − 342; holds and the S04-SH01 stretch are per shot; ambient
+ * clocks run straight through the holds.
+ */
+test('RK-2 story key: G786 reads story frame 444; offset-only shots keep G − 342; holds and the stretch are per shot', () => {
+  assert.equal(storyAt('S02-SH03', 0), 444);
+  assert.equal(storyAt('S03-SH02', 143), 1799);
+  assert.equal(storyAt('S03-SH03', 0), 1800);
+  assert.equal(storyAt('S03-SH03', 119), 1919);
+  assert.equal(storyAt('S03-SH03', 159), 1919, 'S03-SH03 holds 1919 f120-f159');
+  assert.equal(storyAt('S03-SH04', 45), 1961, 'S03-SH04 holds 1961 f42-f45');
+  assert.equal(storyAt('S03-SH05', 99), 2033, 'S03-SH05 holds 2033 f72-f99');
+  assert.equal(storyAt('S03-SH06', 0), 2034);
+  assert.equal(storyAt('S03-SH06A', 215), 2189, 'S03-SH06A holds 2189 f120-f215');
+  assert.equal(storyAt('S03-SH07', 71), 2261);
+  assert.equal(storyAt('S03-SH07', 127), 2261, 'S03-SH07 holds 2261 f72-f127');
+  assert.equal(storyAt('S03-SH07', 128), 2262);
+  assert.equal(storyAt('S03-SH07', 205), 2339);
+  assert.equal(storyAt('S04-SH01', 137), 2477);
+  assert.ok(Math.abs(storyAt('S04-SH01', 433) - (2478 + 295 * 192 / 296)) < 1e-9, 'talk span stretched over 2478-2670');
+  assert.equal(storyAt('S04-SH02', 0), 2670);
+  assert.equal(storyAt('S04-SH03', 305), 3095);
+  assert.equal(storyAt('S02-SH00A', 0), 360);
+  assert.equal(storyAt('S02-SH01', 78), 588, 'torch off the hook at S02-SH01 f78 = G612');
+  assert.equal(storyAt('S01-SH02A', 0), 240);
+  // Ambient clocks: continuous through every hold.
+  assert.equal(ambientAt('S03-SH03', 159), 1959);
+  assert.equal(ambientAt('S03-SH06A', 215), 2285);
+  assert.equal(ambientAt('S04-SH01', 433), 2773);
+});
+
+test('SS-R5.1 fog level (B5-3, ST-05): FS0 before G360, the S02-SH00A front G390-G516 (PCHIP keys), FS2 from G516', () => {
+  assert.equal(fogAt(156), 0);
+  assert.equal(fogAt(239), 0);
+  assert.equal(fogAt(359), 0);
+  assert.equal(fogAt(390), 0);
+  assert.equal(fogAt(516), 2);
+  assert.equal(fogAt(600), 2);
+  // The front: 14.0 m until G390, 1.8 m from G516 (the glass); PCHIP keys between (no overshoot).
+  assert.equal(frontAt(360), 14);
+  assert.equal(frontAt(390), 14);
+  for (const [G, F] of [[420, 11.0], [434, 9.3], [446, 7.0], [454, 6.0], [490, 4.2], [510, 2.0], [516, 1.8], [533, 1.8]] as const) {
+    assert.ok(Math.abs(frontAt(G) - F) < 1e-9, `front at G${G} is ${F}`);
+  }
+  for (let G = 390; G < 516; G++) assert.ok(frontAt(G + 1) <= frontAt(G) + 1e-12, `front does not rise at G${G + 1}`);
+  assert.ok(Math.abs(pchip([[0, 0], [1, 1]], 0.5) - 0.5) < 1e-9, 'PCHIP is linear on two keys');
+  for (const G of [400, 430, 460, 480]) assert.ok(Math.abs(fogAt(G) - 2 * (14 - frontAt(G)) / 12.2) < 1e-9, `G${G} level follows the front`);
+});
+
+test('WORLD-SITE fog wall (ST-05, MK-WF-DEP-12): zF(x) = 14 + B · smoothstep(2.5, 20, |x|), B 46 easing to 0 at f114', () => {
+  assert.equal(siteB(0), 46);
+  assert.ok(Math.abs(siteB(60) - 21.2) < 0.1, 'f60 B 21.2');
+  assert.ok(Math.abs(siteB(80) - 9.8) < 0.1, 'f80 B 9.8');
+  assert.equal(siteB(114), 0);
+  assert.equal(siteFront(0, 0), 14);
+  assert.equal(siteFront(0, 2), 14, 'the lane mouth is under the wall from f0');
+  assert.ok(Math.abs(siteFront(0, 10) - 14 - 46 * 0.394) < 0.1, 'x 10 m at f0 is the road edge (about z 32)');
+  assert.equal(siteFront(119, 40), 14, 'one straight wall at z 14 from f114');
+});
+
+/** A recording Painter: the wash calls of `paintOutside` in order (colour, opacity, polygon). */
+const recorder = () => {
+  const calls: {color: string; opacity: number; pts: Pt[]}[] = [];
+  const p = {
+    brush: null, t: 0, frame: 0, alpha: 1,
+    wash: (color: string, opacity: number, pts: Pt[]) => { calls.push({color, opacity, pts}); },
+    flat: () => {}, ink: () => {}, inkStill: () => {}, group: () => {},
+    layer: () => p,
+  } as unknown as Painter;
+  return {p, calls};
+};
+const washed = (color: string, front?: number) => {
+  const {p, calls} = recorder();
+  paintOutside(p, PROJ['CAM-GLASS-SWALLOW'], 400, front === undefined ? {} : {front});
+  return calls.some((c) => c.color === color);
+};
+
+test('depth gate (MK-WF-DEP-11): with no front every layer is painted; a front removes layers beyond it in depth order', () => {
+  // Pump island (z 9.1) and the road (z 24) go first, then the car flank (z 4.2) and the kerb (z 2) last (front palette: CLEAR).
+  assert.ok(washed('#77796f') && washed('#3a403f') && washed('#3f4746') && washed('#8c8f88'), 'no front: all layers');
+  assert.ok(!washed(CLEAR.road, 14) && washed(CLEAR.road, 25), 'road (z 24) gone at F 14, back at F 25');
+  assert.ok(!washed(CLEAR.lane, 14) && washed(CLEAR.lane, 15), 'lane (z 14) is gone at 14 and back at 15');
+  assert.ok(!washed(CLEAR.island, 9) && washed(CLEAR.island, 10), 'pump islands (z 9.1) gone at F 9, present at F 10');
+  assert.ok(!washed('#3f4746', 4) && washed('#3f4746', 5), 'car flank (z 4.2) gone at F 4, present at F 5');
+  assert.ok(washed(CLEAR.kerb, 2.5) && !washed(CLEAR.kerb, 2), 'kerb (z 2) gone at F 2');
+});
+
+test('r9b: a layer the front reaches fades over FRONT_FADE_M (no pop); without front the window opacities are unchanged', () => {
+  const opacityOf = (color: string, G: number, front?: number) => {
+    const {p, calls} = recorder();
+    paintOutside(p, PROJ['CAM-GLASS-SWALLOW'], G, front === undefined ? {} : {front});
+    return calls.filter((c) => c.color === color).map((c) => c.opacity);
+  };
+  // Pump tops at z 9.3 with the front 0.4 m short of the next fade step: half of their clear-palette opacity (240).
+  const half = opacityOf(CLEAR.pump, 239, 9.3 + FRONT_FADE_M / 2);
+  assert.ok(half.length > 0 && Math.abs(half[0] - 240 / 2) < 1e-9, `half-faded pump top (${half[0]})`);
+  // Without front the pump tops keep the SS-R4.1 opacity 220 at FS0.
+  const window = opacityOf('#d9d6c8', 239);
+  assert.ok(window.length === 4 && window.every((o) => o === 220), `window pump tops keep opacity 220 (${window})`);
+  // The car flank cover (S02-SH00A): taken from the far face at F 6.0 to the flank at F 4.2, the headlamp last.
+  assert.equal(carCoverAt(6), 0);
+  assert.equal(carCoverAt(4.2), 1);
+  assert.ok(Math.abs(carCoverAt(5.1) - 0.5) < 1e-9);
+  assert.equal(headlampAt(4.2), 1);
+  assert.ok(Math.abs(headlampAt(3.6) - 0.5) < 1e-9);
+  assert.equal(headlampAt(3.0), 0);
+});
+
+test('the far wall (F ≥ 60) is painted at z 60 with the road and forecourt in front of it (S01-SH02 clear FS0)', () => {
+  const {p, calls} = recorder();
+  paintOutside(p, PROJ['CAM-FORECOURT'], 239, {noCarGhost: true, front: 60});
+  const wall = calls.find((c) => c.color === CLEAR.wallFar);
+  assert.ok(wall, 'pale wall painted');
+  const ys = wall!.pts.map((q) => q[1]);
+  assert.ok(Math.min(...ys) > 430 && Math.max(...ys) < 820, 'wall between about y 454 and 794 at the back of frame');
+  assert.ok(calls.some((c) => c.color === CLEAR.road), 'road kept in front of the wall');
 });
 
 test('hard-cut ending (MK-WF-DEP-07): C_seamless with loopBlendFrames 0 has no hold, fade or blend', () => {
   assert.equal(video.ending, 'C_seamless');
   assert.equal(video.loopBlendFrames, 0);
-  for (const G of [2790, 2940, 2973, 2998, 2999]) {
+  for (const G of [3460, 3610, 3720, 3750, 3765]) {
     const s = plateAt(G);
     assert.equal(s.opacity, 1);
     assert.equal(s.plates.length, 1, `G${G} paints one plate (no frame-0 blend)`);
     assert.equal(s.plates[0].shot, 'WFOG-S04-SH03');
-    assert.equal(s.plates[0].frame, G - 2790, `G${G} is not held`);
+    assert.equal(s.plates[0].frame, G - 3460, `G${G} is not held`);
   }
-  assert.equal(plateAt(2999).plates[0].frame, 209); // last painted frame G2999 (shot-local f209)
+  assert.equal(plateAt(3765).plates[0].frame, 305); // last painted frame G3765 (shot-local f305)
 });
 
-test('S04-SH03 lamps: far pair out by G2874, near-left out by G2940, near-right holds 0.35 to G2955 and is out by G2973 (RT-5)', () => {
+test('SS-R5.1 captions and sound on the fog beat: VO-03a on the swallow (G386), VO-03b on the phone (G648), the phone ding at G636 (S02-SH02 f6)', () => {
+  const s02 = worldFog.videos[0].timeline[1];
+  const at = (text: string) => Math.round(((s02.subtitleCues ?? []).find((c) => c.text === text)?.atSec ?? -1) * 30) + 360;
+  assert.equal(at('แต่พอเข้าร้าน'), 386);
+  assert.equal(at('หมอกก็กลืนลานจอดจนหมด'), 439);
+  assert.equal(at('ข่าวในมือถือ…'), 648);
+  assert.equal(at('ก็มีแต่ภาพเดียวกัน'), 708);
+  assert.ok((s02.subtitleCues ?? []).some((c) => c.text === '' && Math.round(c.atSec * 30) + 360 === 502), 'VO-03a closes at G502');
+  assert.ok(s02.sfx?.some((c) => Math.abs(c.atSec * 30 + 360 - 636) < 0.5 && c.src.includes('ui_notification-ding')), 'ding at G636');
+  // Cues after the fog beat move with their shot: the S02-SH03 line `ใครอยู่ตรงนั้น?` (SS-R5.1 cue G810).
+  assert.equal(at('ใครอยู่ตรงนั้น?'), 810);
+});
+
+test('S04-SH03 lamps on the story key 2790 + f (SS-R5.1): far pair out by G2910 (f120), near-left out by G3010 (f220), near-right 0.35 held to G3050 (f260), out by G3068 (f278)', () => {
   for (const i of [0, 1, 2, 3]) assert.equal(lampAt(2801, i), 1, `lamp ${i} lit before the shot's dimming`);
-  for (const i of [2, 3]) assert.equal(lampAt(2874, i), 0, `far lamp ${i} out by G2874`);
-  assert.equal(lampAt(2940, 0), 0, 'near-left out by G2940');
-  assert.ok(Math.abs(lampAt(2940, 1) - 0.35) < 1e-9, 'near-right at 0.35 at G2940');
-  assert.ok(Math.abs(lampAt(2955, 1) - 0.35) < 1e-9, 'near-right still 0.35 at G2955 (held)');
-  assert.ok(lampAt(2964, 1) > 0 && lampAt(2964, 1) < 0.35, 'near-right fading G2955-G2973');
-  for (const i of [0, 1, 2, 3]) assert.equal(lampAt(2973, i), 0, `lamp ${i} out by G2973`);
+  for (const i of [2, 3]) assert.equal(lampAt(2910, i), 0, `far lamp ${i} out by G2910`);
+  assert.equal(lampAt(3010, 0), 0, 'near-left out by G3010');
+  assert.ok(Math.abs(lampAt(3010, 1) - 0.35) < 1e-9, 'near-right at 0.35 at G3010');
+  assert.ok(Math.abs(lampAt(3050, 1) - 0.35) < 1e-9, 'near-right still 0.35 at G3050 (held)');
+  assert.ok(lampAt(3059, 1) > 0 && lampAt(3059, 1) < 0.35, 'near-right fading G3050-G3068');
+  for (const i of [0, 1, 2, 3]) assert.equal(lampAt(3068, i), 0, `lamp ${i} out by G3068`);
 });
 
-test('FOG-STATE reaches FS3 at G2973 (SS-R4 RT-5); torch off G2680; door leaf G2262-G2292 open and G2352-G2376 shut (RT-2, RT-3)', () => {
+test('FOG-STATE reaches FS3 at G3068 (S04-SH03 f278, SS-R5.1); torch off G2680; door leaf G2262-G2292 open and G2352-G2376 shut (RT-2, RT-3)', () => {
   assert.equal(fogAt(2526), 2);
   assert.equal(fogAt(2801), 2);
-  assert.equal(fogAt(2973), 3);
+  assert.equal(fogAt(3068), 3);
   assert.equal(fogAt(156), 0); // car parked before the fog bank (PD02 order)
   assert.equal(torchOnAt(2679), 1);
   assert.equal(torchOnAt(2680), 0);
@@ -134,7 +277,7 @@ test('S03-SH06A held look (SS-R4 RT-1): LIT-LOWER at S (-0.10, 0.74), fog lens A
   const f = (k: number) => 2070 + k;
   const cam = (k: number) => cameraAt('WFOG-S03-SH06A', k / fps);
   assert.deepEqual(cam(0), {s: 1.24, fx: 560, fy: 650, dx: 0, dy: 0});
-  assert.ok(Math.abs(cam(119).s - 1.28) < 1e-9);
+  assert.ok(Math.abs(cam(215).s - 1.28) < 1e-9, 'push over the 216 f hold ends at s 1.28');
   const pose = asmPoseAt(f(30));
   assert.equal(pose.warp, 0, 'PD12: no fog-lens amount in the held look');
   assert.equal(pose.light, 1);
@@ -198,11 +341,11 @@ test('S03-SH07 torch (SS-R4.1 R8-1): hand, lens 0.16 m along the aim, pool on th
   // Pool on the floor, just inside the threshold (x 0.20, z -0.10 is behind the leaf line -0.05), off the faces.
   assert.equal(target[1], 0);
   assert.ok(target[0] >= 0 && target[0] <= 0.4 && target[2] <= -0.05 && target[2] >= -0.2, `pool ${target}`);
-  // Projection at s 1.00 (G2190) and s 1.05 (G2339): hand, lens and pool (sheet values, +-2 px).
-  const at = (G: number, p: V3) => toScreen(cameraAt('WFOG-S03-SH07', (G - 2190) / fps), PROJ['CAM-INT-SIDE'].P(p));
+  // Projection at s 1.00 (shot f0, story G2190) and s 1.05 (shot f205, story G2339): hand, lens and pool (sheet values, +-2 px).
+  const at = (f: number, p: V3) => toScreen(cameraAt('WFOG-S03-SH07', f / fps), PROJ['CAM-INT-SIDE'].P(p));
   const near = (got: Pt, want: Pt) => Math.abs(got[0] - want[0]) <= 2 && Math.abs(got[1] - want[1]) <= 2;
-  assert.ok(near(at(2190, hand), [540, 1107]) && near(at(2190, lens), [584, 1164]) && near(at(2190, target), [790, 1425]), 'G2190 torch');
-  assert.ok(near(at(2339, hand), [540, 1127]) && near(at(2339, lens), [586, 1187]) && near(at(2339, target), [802, 1461]), 'G2339 torch');
+  assert.ok(near(at(0, hand), [540, 1107]) && near(at(0, lens), [584, 1164]) && near(at(0, target), [790, 1425]), 'G2190 torch');
+  assert.ok(near(at(205, hand), [540, 1127]) && near(at(205, lens), [586, 1187]) && near(at(205, target), [802, 1461]), 'G2339 torch');
 });
 
 test('S03-SH07 narrator glance is eyes only (SS-R4.1 R8-9): head profile toward the door at every frame; pupils back f6-f78, eyes return f78-f84', () => {
@@ -240,10 +383,10 @@ test('S03-SH06A sheet numbers (SS-R4 RT-1): worker 674 +-15 px and face (615, 70
   assert.ok(Math.abs(end[0] - 588) < 1e-9 && Math.abs(end[1] - 820) < 1e-9, `f66 end ${end}`);
 });
 
-test('SS-R4 picture pushes: S03-SH07 s 1.00-1.05 over 150 frames, S04-SH01 s 1.00-1.04 over 330, S04-SH03 s 1.00-1.06 over 210', () => {
-  assert.ok(Math.abs(cameraAt('WFOG-S03-SH07', 0).s - 1) < 1e-9 && Math.abs(cameraAt('WFOG-S03-SH07', 149 / fps).s - 1.05) < 1e-9);
-  assert.ok(Math.abs(cameraAt('WFOG-S04-SH01', 329 / fps).s - 1.04) < 1e-9);
-  assert.ok(Math.abs(cameraAt('WFOG-S04-SH03', 209 / fps).s - 1.06) < 1e-9);
+test('SS-R5.1 picture pushes: S03-SH07 s 1.00-1.05 over 206 frames, S04-SH01 s 1.00-1.04 over 434, S04-SH03 s 1.00-1.06 over 306', () => {
+  assert.ok(Math.abs(cameraAt('WFOG-S03-SH07', 0).s - 1) < 1e-9 && Math.abs(cameraAt('WFOG-S03-SH07', 205 / fps).s - 1.05) < 1e-9);
+  assert.ok(Math.abs(cameraAt('WFOG-S04-SH01', 433 / fps).s - 1.04) < 1e-9);
+  assert.ok(Math.abs(cameraAt('WFOG-S04-SH03', 305 / fps).s - 1.06) < 1e-9);
 });
 
 test('SS-R3.2 camera and rise staging: CAM-INT-SIDE at z -0.6, S03-SH04 pivot, S03-SH01 tilt-follow and rise clock', () => {

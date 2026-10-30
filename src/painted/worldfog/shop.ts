@@ -259,16 +259,17 @@ const paintPaneSheen = (p: Painter, proj: Proj) => {
 
 /**
  * Paint the shop for one interior camera at story frame G: outside through the panes (when the camera faces the
- * glass), the shell, then boxes and `actors` far to near. `outside` carries the assembly when it is in view.
+ * glass), the shell, then boxes and `actors` far to near. `outside` carries the assembly when it is in view. `ambient` is the
+ * continuous clock of the fog drift (default G; SS-R5.1 holds pass their ambient clock).
  */
-export const paintShop = (p: Painter, proj: Proj, G: number, o: {actors?: Drawable[]; outside?: OutsideOpts; torchOnHook?: boolean; omit?: number[]; light?: InteriorLight; dress?: ShopDress} = {}) => {
+export const paintShop = (p: Painter, proj: Proj, G: number, o: {actors?: Drawable[]; outside?: OutsideOpts; torchOnHook?: boolean; omit?: number[]; light?: InteriorLight; dress?: ShopDress; ambient?: number} = {}) => {
   const look = proj.setup?.look;
   const L = o.light;
   stockDim = L ? VD18_SET.stockDim : 0;
   const seesGlass = look === '+z' || look === '-x';
   if (seesGlass) {
-    paintOutside(p, proj, G, o.outside ?? {});
-    paintLampGlowCanvas(p, proj, G);
+    paintOutside(p, proj, G, {...(o.outside ?? {}), ambient: o.ambient ?? o.outside?.ambient});
+    paintLampGlowCanvas(p, proj, G, o.ambient ?? G);
   }
   // Shell: front wall above the glass, side walls, back wall with the fridges, ceiling with tubes, floor.
   const shell: [V3[], string, number][] = [
