@@ -40,9 +40,10 @@ export const CAST: Record<Who, CastDef> = {
  * An arm target in plate px and the side the elbow bends toward (-1 screen-left, +1 screen-right). With `via` (an
  * authored elbow point, plate px) the arm is drawn shoulder -> via -> to exactly as given: no reach clamp, no IK
  * choice. Two-bone IK with a fixed bone length splays the elbow outward when the hand is close to the shoulder (crouched
- * hands on knees), so authored crouch poses use `via` (SS-R3.2 elbow rows).
+ * hands on knees), so authored crouch poses use `via` (SS-R3.2 elbow rows). `behind` (front view): the elbow goes back
+ * into depth, so the upper arm ('upper') or the whole arm ('all') is painted behind the torso, a shade darker.
  */
-export type Arm = {to: Pt; out?: number; via?: Pt};
+export type Arm = {to: Pt; out?: number; via?: Pt; behind?: 'upper' | 'all'};
 export type Prop =
   | {kind: 'torch'; angle: number; on: number}
   | {kind: 'phone'}
@@ -102,6 +103,22 @@ export const ikElbow = (S: Pt, T: Pt, L: number, out: number): Pt => {
 const reachTo = (S: Pt, T: Pt, L: number): Pt => {
   const d = Math.hypot(T[0] - S[0], T[1] - S[1]), m = 2 * L - 0.5;
   return d <= m ? T : [S[0] + ((T[0] - S[0]) * m) / d, S[1] + ((T[1] - S[1]) * m) / d];
+};
+
+/**
+ * Front-view shoulder anchor height (m above the ground point) at a crouch, upright and without lean or rise: the levels
+ * drawFigure uses (hip drop, torso scale about the hip). A shot hangs its elbows from this anchor through a rise (SS-R3.4
+ * S03-SH02); the cast test checks it against the anchor drawFigure paints.
+ */
+export const shoulderHeight = (who: Who, crouch = 0): number => {
+  const def = CAST[who];
+  const Ht = def.height;
+  const chin = Ht - H, shV = chin - 0.16 * H;
+  const torso = (chin - 0.068) * 0.44;
+  const hip0 = shV - torso + 0.034;
+  const c = clamp01(crouch);
+  const hipV = hip0 - 0.47 * c * (Ht / 1.7);
+  return hipV + (shV - 0.0255 - hip0) * (1 - 0.4 * c);
 };
 
 /**
@@ -244,11 +261,12 @@ export const drawFigure = (p: Painter, who: Who, g: Pt, unit: number, pose: FigP
     return {Sh, E, T};
   };
   const R = arm('r'), Lm = arm('l');
-  const drawArm = (A: {Sh: Pt; E: Pt; T: Pt}, hold: Prop | undefined, k: number, far: boolean) => {
+  const drawArm = (A: {Sh: Pt; E: Pt; T: Pt}, hold: Prop | undefined, k: number, far: boolean, only?: 'upper' | 'lower') => {
     part = 70 + k * 10;
     line = 70 + k * 10;
     const sl = far ? mixColor(sleeve, '#000000', 0.15) : sleeve;
-    fill(sl, capsule(A.Sh, A.E, 0.08 * unit, 0.068 * unit), true);
+    if (only !== 'lower') fill(sl, capsule(A.Sh, A.E, 0.08 * unit, 0.068 * unit), true);
+    if (only === 'upper') return A.T;
     fill(o.longSleeves ? sl : skinHand, capsule(A.E, A.T, 0.066 * unit, 0.056 * unit), true);
     if (o.longSleeves && L) {
       // Elbow crease: two short strokes where the sleeve bunches, on the inside of the bend.
@@ -272,6 +290,9 @@ export const drawFigure = (p: Painter, who: Who, g: Pt, unit: number, pose: FigP
     // The far arm is painted over the torso but is hidden behind it when it hangs; draw it slightly darker.
     if (nearSide === 'r') lHand = drawArm(Lm, pose.lHold, 1, true);
     else rHand = drawArm(R, pose.rHold, 0, true);
+  } else {
+    if (pose.rArm?.behind) rHand = drawArm(R, pose.rHold, 0, true, pose.rArm.behind === 'upper' ? 'upper' : undefined);
+    if (pose.lArm?.behind) lHand = drawArm(Lm, pose.lHold, 1, true, pose.lArm.behind === 'upper' ? 'upper' : undefined);
   }
 
   // ----------------------------------------------------------------- torso layers
@@ -347,8 +368,10 @@ export const drawFigure = (p: Painter, who: Who, g: Pt, unit: number, pose: FigP
     }
   };
   if (!profile) {
-    rHand = drawArm(R, pose.rHold, 0, false);
-    lHand = drawArm(Lm, pose.lHold, 1, false);
+    // A `behind: 'all'` arm is already painted under the torso; 'upper' adds its forearm and hand here, over the torso.
+    const front = (a?: Arm) => (a?.behind === 'all' ? null : a?.behind === 'upper' ? ('lower' as const) : undefined);
+    if (front(pose.rArm) !== null) rHand = drawArm(R, pose.rHold, 0, false, front(pose.rArm) ?? undefined);
+    if (front(pose.lArm) !== null) lHand = drawArm(Lm, pose.lHold, 1, false, front(pose.lArm) ?? undefined);
     torchOf(pose.rHold, rHand);
     torchOf(pose.lHold, lHand);
   } else if (nearSide === 'r') {
