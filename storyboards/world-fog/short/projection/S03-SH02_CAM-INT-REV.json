@@ -1,5 +1,5 @@
 {
- "_note": "S03-SH02 risen narrator raising the torch | WORLD-SHOP (left-handed) points and camera stored with x negated for this right-handed tool; see index.md#projection-checks",
+ "_note": "S03-SH02 reverse | SS-R3.3 torch at Boss r3 hand (-0.80, 1.16, -0.88) below the chin, 0.50 m from the mouth; lens/tail along the aim to (-0.10, 1.2, 0.62); lens accepted in the caption band (Q2) | SS-R3.2 torch raised forward at arm length | WORLD-SHOP (left-handed) points and camera stored with x negated for this right-handed tool; see index.md#projection-checks",
  "up": "y",
  "size": [
   1080,
@@ -38,15 +38,30 @@
    1.1,
    -0.9
   ],
-  "torch_aimed": [
-   0.8,
-   1.35,
-   -0.95
-  ],
   "torch_low": [
    0.75,
    0.95,
    -1.25
+  ],
+  "r_shoulder": [
+   0.77,
+   1.4,
+   -1.3
+  ],
+  "torch_hand_r3": [
+   0.8,
+   1.16,
+   -0.88
+  ],
+  "torch_lens_r3": [
+   0.749,
+   1.163,
+   -0.771
+  ],
+  "torch_tail_r3": [
+   0.842,
+   1.158,
+   -0.971
   ]
  },
  "spans": {

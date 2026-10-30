@@ -1,5 +1,5 @@
 {
- "_note": "S02-SH04 approach key (ASM-PATH) | WORLD-SHOP (left-handed) points and camera stored with x negated for this right-handed tool; see index.md#projection-checks",
+ "_note": "S02-SH04 approach key (ASM-PATH) | WORLD-SHOP (left-handed) points and camera stored with x negated for this right-handed tool; see index.md#projection-checks | SS-R3: hood_top with the ST-03 9 deg lean; wheel on the stack plane (flat card)",
  "up": "y",
  "size": [
   1080,
@@ -39,14 +39,14 @@
    1.6
   ],
   "hood_top": [
-   -0.4,
-   1.7,
+   -0.244,
+   1.693,
    2.0500000000000003
   ],
   "wheel_FR": [
    -0.30000000000000004,
    0.05,
-   1.28
+   1.6
   ]
  },
  "spans": {

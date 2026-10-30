@@ -1,0 +1,23 @@
+#!/bin/sh
+# Move every brand-new worktree onto freshly fetched origin/main.
+# Git runs post-checkout after `git worktree add` with an all-zero previous HEAD.
+# Install: ln -s ../../scripts/git-hooks/post-checkout .git/hooks/post-checkout
+# Skip once: SKIP_FRESH_MAIN=1 git worktree add ...
+
+[ "$1" = 0000000000000000000000000000000000000000 ] || exit 0
+[ -z "$SKIP_FRESH_MAIN" ] || exit 0
+
+if ! git fetch --quiet origin main; then
+  echo "post-checkout: fetch failed; worktree stays on $(git rev-parse --short HEAD)" >&2
+  exit 0
+fi
+
+[ "$(git rev-parse HEAD)" = "$(git rev-parse origin/main)" ] && exit 0
+
+# Only fast-forward: a start point with its own commits is left alone.
+if git merge-base --is-ancestor HEAD origin/main; then
+  git reset --quiet --hard origin/main
+  echo "post-checkout: worktree moved to fresh origin/main ($(git rev-parse --short HEAD))" >&2
+else
+  echo "post-checkout: HEAD has commits not on origin/main; left as is" >&2
+fi
