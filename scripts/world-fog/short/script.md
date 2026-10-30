@@ -1,23 +1,23 @@
-# WFOG-SCRIPT-R2 — The person outside
+# WFOG-SCRIPT-R5 — The person outside
 
-- Owner / date: Preaw, 2026-10-28 (R1); R2 2026-10-29 (Asia/Bangkok).
+- Owner / date: Preaw, 2026-10-28 (R1); R2 2026-10-29; R3 2026-10-30; R4/R5 2026-10-30, coordinator wording edits from Boat review (Asia/Bangkok).
 - Deliverable / episode: `WFOG-EP01-SHORT` / `WFOG-EP01`; Short only. [Delivery record](../delivery.md).
 - Inputs: [WFOG-BRIEF-R1](../topic-brief.md), [WFOG-RESEARCH-R1](../research.md).
-- Story mode: `fiction-with-factual-knowledge`; all people, incidents, global-fog reports and clues are fictional. Factual knowledge is limited to the bounded behavioral implications in the research packet; there is no spoken lesson.
+- Story mode: `fiction-with-factual-knowledge`; all people, incidents, global-fog reports and clues are fictional. Factual knowledge is the bounded behavioral implications in the research packet plus, from R3, one first-person perception insight line (S03-B02, `K001`, sourced in research.md K001a–K001e). There is no lesson, card or safety tutorial.
 - Profile / tier: `world-fog-mystery` / Full. First-person limited-perception Thai narration; hard-cut unresolved ending.
 - Narrator (R2): the first-person narrator/main character is an adult woman, the whole character (body, wardrobe, voice), by user decision 2026-10-29 (`เปลี่ยนเป็นผู้หญิงทั้งตัว`). She uses `ฉัน` and female particles. The delivery worker remains male. No other character, beat or clue changes.
-- Target: 60–90 seconds; editorial layout below totals **87 seconds, estimated**. No read-aloud, TTS, animatic or rendered timing test has been performed. Do not lock event frames from this estimate.
-- Writing status: R2 narrator-gender revision complete. Factual review: [WFOG-FACTCHECK-R2](fact-check.md), `ready-for-storyboard` for R2 (Boat, 2026-10-29; coordinator for Preaw synced this header). User approval: concept approved in chat and narrator gender changed by user decision; this script revision has not been separately reviewed by the user. Runtime/audio/visual validation: not performed. Film is a future role only if visual work is requested.
+- Target (R3): about 100 seconds, by user decision 2026-10-30 (was 60–90 s); editorial layout below totals **100 seconds, estimated** (R2: 87 s; +13 s, all in S03-B02, S04-B01 and S04-B02; beats S01-B01 to S03-B01, 0–60 s, unchanged). No read-aloud, TTS, animatic or rendered timing test has been performed. Do not lock event frames from this estimate.
+- Writing status: R5 (user decisions 2026-10-30: perception insight line, ending narrator reaction, delivery-logic half sentence, ~100 s). Factual review: [WFOG-FACTCHECK-R4](fact-check.md) required R-3/R-4; R5 applies R-3 wording verbatim; R-4 (a), (c), (d), (e) applied; R-4 (b) claim-map scope/check applied per R5-1 ; [WFOG-FACTCHECK-R5](fact-check.md): first pass `revise` (R5-1–R5-3), Boat targeted recheck 2026-10-30: pass → `ready-for-storyboard`. User approval: R3 changes requested by the user; final clause chosen by the user in R4; R-3 narrowing confirmed by the user in chat 2026-10-30 (structured question). Runtime/audio/visual validation: not performed.
 
 ## Story core and underlying truth
 
 **Logline:** While worldwide fog traps a driver in a petrol-station supermarket, an approaching shape seems inhuman until light exposes an ordinary delivery worker struggling with an overloaded cart. The visitor brings news that leaves the occupants stranded.
 
-**Central question:** What followed the narrator to the shop? **Intention / obstacle:** the narrator wants to refuel and continue home, then seeks immediate shelter and tries to understand the apparent pursuer; near-zero exterior visibility and incomplete views prevent a reliable interpretation. **Feeling:** dread → peak uncertainty → brief relief → unresolved confinement. **Learning takeaway:** N/A for EP1 by explicit user direction; do not append a moral or safety summary.
+**Central question:** What followed the narrator to the shop? **Intention / obstacle:** the narrator wants to refuel and continue home, then seeks immediate shelter and tries to understand the apparent pursuer; near-zero exterior visibility and incomplete views prevent a reliable interpretation. **Feeling:** dread → peak uncertainty → brief relief → unresolved confinement. **Learning takeaway (R3):** one short first-person perception insight, by user decision 2026-10-30 overriding the brief's no-takeaway constraint for EP1 only: in fog the eye gets incomplete shapes, the brain tends to fill the gap, and fear pulls the narrator's reading of it toward danger. Spoken once inside the story (S03-B02); no moral, card, slogan or safety summary.
 
 **Truth:** The worker and loaded cart are one continuous physical assembly throughout. Stacked cartons and a helmet create the high apparent head; the worker's raincoat/body overlaps that stack from the concealed view; an umbrella handle supplies the apparent long reach; a jammed cart wheel scrapes. A slipping helmet is caught before falling. No real head detaches, limb elongates or nonhuman creature exists. The worker's report of a blocked road is fictional testimony, not a claim of a real incident. The fog's cause, toxicity and duration remain unknown.
 
-**Ending:** The worker is unequivocally human. The practical problem remains after the creature question is answered. End on the disappearing forecourt lights; no extra shadow, creature sound, secret identity or paranormal sting.
+**Ending:** The worker is unequivocally human. The practical problem remains after the creature question is answered. The narrator's one reaction line (R3) turns relief into the stranded predicament over the disappearing forecourt lights; no extra shadow, creature sound, secret identity, paranormal sting, EP2 synopsis, call to action or fog explanation. Hard cut.
 
 ## Scene and beat progression
 
@@ -31,13 +31,13 @@ Video times below are estimates and contiguous. Story-world action is continuous
 | `WFOG-EP01-SHORT-S02-B03` | 30–41 s | Shape stops at glass; apparent long reach knocks three times; occupants crouch without crowd panic. | Three short glass contacts, synchronized to visible handle; brief music drop after third tap. |
 | `WFOG-EP01-SHORT-S02-B04` | 41–51 s | Helmet tilts off the cartons and is caught. Limited view makes this look like an impossible head movement. Narrator's whispered question expresses doubt. | Cardboard slip and small hard-shell contact; subjective score rise, no bone crack. Short silence before next voice. |
 | `WFOG-EP01-SHORT-S03-B01` | 51–60 s | Normal human request interrupts fear; narrator raises a flashlight from inside. Recognition begins, without opening the door to investigate. | Worker's natural muffled male voice; score drops to leave the request readable. |
-| `WFOG-EP01-SHORT-S03-B02` | 60–72 s | Light reveals the same worker/cart/cargo. Matching-view visual payoffs identify helmet, umbrella and wheel, then worker is admitted as a character choice. | Natural breath and wheel squeak continue unchanged; quiet release in music, no comic sting or triumphant resolution. |
-| `WFOG-EP01-SHORT-S04-B01` | 72–84 s | Narrator asks about the road; worker reports collision/blockage. Relief becomes the realization that nobody can simply drive away. | Plain dialogue with almost no score; no crash/siren recording or additional incident sounds. |
-| `WFOG-EP01-SHORT-S04-B02` | 84–87 s | Silent final consequence: fog swallows forecourt lights. Hard cut after the intended final beat has room to land. | Shop hum remains, faint unresolved tonal bed; no final monster cue, outro chord or spoken tag. |
+| `WFOG-EP01-SHORT-S03-B02` | 60–78 s | Light reveals the same worker/cart/cargo. Matching-view visual payoffs identify helmet, umbrella and wheel; R3 narrator perception line reframes the misreading, then worker is admitted as a character choice. | Natural breath and wheel squeak continue unchanged; quiet release in music, no comic sting or triumphant resolution. Under the perception line: bed thins to a single soft sustained tone, no stinger or riser, so the line reads as a private thought. |
+| `WFOG-EP01-SHORT-S04-B01` | 78–93 s | Narrator asks about the road; worker reports collision/blockage and (R3) why he pushed the cart here: his vehicle is stuck behind the collision and he was delivering to this shop. Relief becomes the realization that nobody can simply drive away. | Plain dialogue with almost no score; no crash/siren recording or additional incident sounds. |
+| `WFOG-EP01-SHORT-S04-B02` | 93–100 s | Final consequence: fog swallows forecourt lights while the narrator's reaction line (R3) turns relief into confinement; the last light goes out in silence after the line. Hard cut after about 1.5–2 s of held silence. | Shop hum remains, faint unresolved low tonal bed under the line, dropping to hum only for the final held lights; no final monster cue, stinger, outro chord or spoken tag. |
 
 ## Full spoken script and required story events
 
-**Only the Thai lines labeled VO/dialogue below are spoken.** English event notes are production directions, not narration. Captions follow the actual spoken Thai verbatim; no shortened or alternative subtitle wording is authorized in R2. Break captions into readable cues during audio timing. From frame 0, show the opening Thai caption plus a discreet original fiction marker `เรื่องสมมติ • EP1`; no real news branding. Do not speak the marker.
+**Only the Thai lines labeled VO/dialogue below are spoken.** English event notes are production directions, not narration. Captions follow the actual spoken Thai verbatim; no shortened or alternative subtitle wording is authorized in R3. Break captions into readable cues during audio timing. From frame 0, show the opening Thai caption plus a discreet original fiction marker `เรื่องสมมติ • EP1`; no real news branding. Do not speak the marker.
 
 ### S01 / B01 — Arrival, 0–8 s estimated
 
@@ -111,7 +111,7 @@ Video times below are estimates and contiguous. Story-world action is continuous
 
 **Event:** Flashlight is operated from inside. Recognition precedes door opening; the beam does not establish safe air or explain the fog.
 
-### S03 / B02 — The ordinary person, 60–72 s estimated
+### S03 / B02 — The ordinary person, 60–78 s estimated
 
 **Event:** Reveal the worker's ordinary face and continuous body beside the cart. Match the earlier silhouette view with illumination sufficient to read the exact assembly. The hand replaces the helmet onto the same carton, then lowers the umbrella. A visible jammed wheel explains the unchanged scrape. Brief matching inserts pay off the clues rather than introducing new props.
 
@@ -119,9 +119,15 @@ Video times below are estimates and contiguous. Story-world action is continuous
 
 > คนส่งของ… กำลังประคองกล่องบนรถเข็น ข้างบนเป็นหมวกกันน็อก ที่เคาะกระจกเมื่อกี้… ก็ด้ามร่ม
 
+**Event (R3):** After the clue inserts, a short held look at the plainly lit worker and cart; the narrator lowers the flashlight a little. No new prop, flashback or diagram.
+
+**Narrator VO (R3, quiet, reflective):**
+
+> ในหมอกแบบนี้ ตาเห็นแค่บางส่วน… สมองเราก็มักจะเติมส่วนที่ขาดเอง แล้วความกลัว ก็ชวนให้ฉันมองว่ามันเป็นอันตราย
+
 **Event:** Occupants exchange a relieved glance and the worker enters with their help. The story depicts their decision under uncertainty, without presenting door opening as a safety protocol. No statement that the fog is harmless.
 
-### S04 / B01 — Still stranded, 72–84 s estimated
+### S04 / B01 — Still stranded, 78–93 s estimated
 
 **Narrator, to worker:**
 
@@ -129,13 +135,19 @@ Video times below are estimates and contiguous. Story-world action is continuous
 
 **Delivery worker, catching breath:**
 
-> รถชนกันขวางถนนครับ… ผมกลับทางเดิมไม่ได้แล้ว
+> รถชนกันขวางถนนครับ รถผมติดอยู่ข้างหลังนั่น เลยต้องเข็นของมาส่งร้านนี้เอง… แต่ตอนนี้ กลับทางเดิมไม่ได้แล้ว
 
 **Event:** The narrator turns from the ordinary human toward the shop entrance. No casualty count or additional disaster is supplied.
 
-### S04 / B02 — Final beat, 84–87 s estimated
+### S04 / B02 — Final beat, 93–100 s estimated
 
-**No speech.** Forecourt light points diminish into fog while the shop remains readable. Preserve an unresolved practical predicament. Hard cut; no moral, question card, call to action, EP2 synopsis or supernatural addition.
+**Event:** Forecourt light points diminish into fog while the shop remains readable. The narrator's line plays over the dimming; the last light point goes out after the line, in silence.
+
+**Narrator VO (R3, low, almost to herself):**
+
+> สิ่งที่ฉันกลัวเมื่อกี้… เป็นแค่คนคนหนึ่ง แต่หมอกนี่ยังไม่ไปไหน… แล้วเราก็ไปไหนไม่ได้
+
+**Event:** Hold about 1.5–2 s of silence on the final light going out, then hard cut. Preserve an unresolved practical predicament; no moral, question card, call to action, EP2 synopsis, fog explanation or supernatural addition.
 
 ## Clue ledger
 
@@ -157,10 +169,12 @@ All clues below are fictional story construction (`D002`), not real evidence of 
 | S02-B01 `หมอกหนาปกคลุมทั่วโลก`; VO about phone images | `D001` | Explicit fictional world information on original graphics; no attribution to real authorities |
 | `มันตามฉันมา`; `ตัวเดียวกับที่ฉันเห็นข้างถนน`; `นั่นหัวมันเหรอ?` and apparent reach | `D001` / `D002`, clues `CL01`–`CL05` | Limited fearful interpretation and a question; objective visuals must retain one physically ordinary source |
 | S03-B02 recognition and entry, with no atmospheric assurance | `F002` → `SRC002`, CDC conditional shelter/evacuation guidance, via research R1; character action otherwise `D001` | Human identity does not establish safe air. No dialogue instructs the audience to open doors or always shelter |
-| S04-B01 `รถชนกันขวางถนนครับ… ผมกลับทางเดิมไม่ได้แล้ว` | `D001` | Fictional character report. No added casualty/causal claim, real recording or real-case attribution |
+| S04-B01 `รถชนกันขวางถนนครับ รถผมติดอยู่ข้างหลังนั่น เลยต้องเข็นของมาส่งร้านนี้เอง… แต่ตอนนี้ กลับทางเดิมไม่ได้แล้ว` (R3) | `D001` | Fictional character report and motive (delivering to this shop; vehicle stuck behind the collision). No added casualty/causal claim, real recording or real-case attribution. Recheck: consistent with S01-B01 roadside glimpse, CL01–CL05 and the cart walking route |
+| S03-B02 `ในหมอกแบบนี้ ตาเห็นแค่บางส่วน… สมองเราก็มักจะเติมส่วนที่ขาดเอง แล้วความกลัว ก็ชวนให้ฉันมองว่ามันเป็นอันตราย` (R5) | **`K001`, sourced (research.md K001a–K001e; FACTCHECK-R3/R4)**: perception claim (degraded/incomplete visual input; top-down perceptual completion; fear/anxiety biasing the reading of ambiguous cues toward threat (sentences, faces, labels, attention; no shape-in-fog test)). Research R1 item 6 said no psychology claim was needed; the 2026-10-30 user decision supersedes that for this line only; fear clause bounded to interpretation bias (K001c), not fear supplying content (K001d) | WFOG-FACTCHECK-R5 `supported` as tendency wording (`R5-C01`). Scope: ambiguous cues (sentences, faces, labels; no shape-in-fog test). Not a claim that fear makes or changes a shape, that the fog or outside air is safe, that pareidolia occurs, or a diagnosis. Wording is hedged: the general clause says the brain *tends to* (`มักจะ`) fill missing parts; the fear clause is first-person (`ฉัน`), not a universal claim. Must not be read as "the brain always invents monsters", a safety rule or a diagnosis. |
+| S04-B02 `สิ่งที่ฉันกลัวเมื่อกี้… เป็นแค่คนคนหนึ่ง แต่หมอกนี่ยังไม่ไปไหน… แล้วเราก็ไปไหนไม่ได้` (R3) | `D001` | Character reaction, not a claim. Check it does not read as a "fear is the real monster" slogan (research item 5), state that the fog is harmless, explain the fog or set up an EP2 plot |
 | All wheel, knock, breath, sliding-box and engine cues | `D001` / `D002` | Designed fictional sounds with visible physical sources; no actual creature or additional emergency asserted |
 
-No new scientific, psychological, toxicological or universal crisis-response claim is introduced. Boat must check the whole revision independently, including title/marker/graphic, event notes and sound implications.
+R3 introduces exactly one new psychological claim (`K001`, S03-B02); no new scientific, toxicological or universal crisis-response claim. Boat must check the whole revision independently, including title/marker/graphic, event notes and sound implications.
 
 ## Sound handoff and library check
 
@@ -176,16 +190,20 @@ Per-beat sound intent is in the progression table. Natural human breath, wheel s
 4. Before S03-B01, conceal face/body arrangement while keeping tangible wheel/load clues visible. After S03-B02, show enough uninterrupted normal identity/body to make the answer unequivocal. The voice stays natural throughout.
 5. No rain simulation is required by the raincoat. No worldwide city montage is needed: the original phone insert communicates the fictional scale. No crowd simulation, crash shot, fire or broken glass is requested.
 6. Stage helmet, upper cartons and knocking handle outside the portrait caption band. Apply the current caption-safe box from production requirements; Thai captions start at frame 0. The fiction marker must remain readable without hiding the hook/reveal. Film/Mark determine actual placements.
-7. Estimated sequence: arrival → shop/approach → voice/reveal → blocked-road report/fog. Event frames are not locked until measured audio and blockout agree. Preserve pauses for the helmet action, human plea, visual match and final consequence before cutting words or rushing VO.
-8. Hard cut is the recorded profile ending; do not add the channel default A/B pair, a loop, end-card moral or EP2 production. Final intended beat has an estimated 3 s of space.
+7. Estimated sequence: arrival → shop/approach → voice/reveal → perception line → blocked-road report/fog → closing reaction line. Event frames are not locked until measured audio and blockout agree. Preserve pauses for the helmet action, human plea, visual match and final consequence before cutting words or rushing VO.
+8. Hard cut is the recorded profile ending; do not add the channel default A/B pair, a loop, end-card moral or EP2 production. Final intended beat (R3) has an estimated 7 s: about 5 s of narrator line over the dimming lights, then 1.5–2 s of held silence before the cut.
 
 ## Editorial self-check, change log and open items
 
 - Hook arrives immediately; the opening pursuer question pays off with a human before the ending. Causal progression: poor view → apparent approach → taps → cargo slip → plea → light → recognition → blocked route. No detached unrelated scare.
 - Clues have two readings; no real nonhuman behavior must be rendered. The human reveal answers EP1's central question while the fog/escape problem remains unresolved.
-- Educational payoff is deliberately N/A in this profile. Sensible behavior remains background action, not an inserted lesson.
+- Educational payoff (R3): one first-person perception line by user decision, placed after the reveal so it reframes the misreading the viewer just shared; not a lecture, card or safety tip. Sensible behavior remains background action, not an inserted lesson.
 - R1: first complete spoken script from brief/research R1. Boat completed the first exact-revision pass over all beats, clues, graphics, implied safety actions and sound cues in `WFOG-FACTCHECK-R1`; no prior script verdict was reused.
 - 2026-10-28 metadata sync: recorded Boat's matching `ready-for-storyboard` verdict. The user then limited the current scope to script only (`ถึงบท ก่อน`); no Film invocation occurred. Narration, dialogue, events, clues and content revision R1 remain unchanged. Retain review dependencies PD01–PD05 as future production references.
 - Open for any later production request: spoken timing; actual silhouette/reveal blockout and implementation feasibility; asset/sound selection, subtitles/audio and final frame checks. The complete Film handoff constraints above remain future reference, not an active assignment.
 - R2 (2026-10-29): narrator/main character changed to a woman (whole character) by user decision. Spoken changes only in narrator lines: S01-B01 `มันตามผมมา` → `มันตามฉันมา`, `ผมเห็นมัน…` → `ฉันเห็นมัน…`; S02-B02 `…ที่ผมเห็นข้างถนน` → `…ที่ฉันเห็นข้างถนน`; S03-B01 `ผมค่อย ๆ ยกไฟฉายขึ้น` → `ฉันค่อย ๆ ยกไฟฉายขึ้น`; S04-B01 `…ใช่ไหม?` → `…ใช่ไหมคะ?` (+1 syllable). Metadata: narrator note, writing status, S03-B01 sound note clarified as the worker's male voice, claim-map quotes. Worker lines (`ครับ`, `ผม`), other characters, events, clues `CL01`–`CL05`, beat IDs and timing estimates unchanged. Nobody addresses the narrator by a gendered term, so no address line changes.
-- Current scope: **R2 reviewed (`WFOG-FACTCHECK-R2`, ready-for-storyboard)**; visual planning in progress (brief VB-R2, scene sheets SS-R2). Factual readiness applies only to the named review scope; runtime integration and visual success remain unverified.
+- R5 (2026-10-30): Boat FACTCHECK-R4 R-3 wording applied verbatim (`แล้วความกลัว ก็ชวนให้ฉันมองว่ามันเป็นอันตราย`); R-4 (a), (c), (d), (e) applied; (b) applied with R5-1 (FACTCHECK-R5 R5-1–R5-3 record edits by the coordinator, 2026-10-30; user confirmed R-3 wording). PD09 (approach side of collision) and PD12 (no visual/sound showing fear changing the shape) carried as open, non-blocking.
+- R4 (2026-10-30): Boat FACTCHECK-R3 R-1 superseded by the user's R4 final-clause wording (`ทำให้ฉันมองมันเป็นอันตราย`); R-2 sync partly applied (line 173 quote and takeaway synced; status and scope not); Boat FACTCHECK-R4 rejected `ทำให้` as a flat cause.
+- R3 (2026-10-30): user decisions in chat (perception insight, ending reaction, delivery logic, ~100 s); they override the brief's no-takeaway/no-closing-reflection constraint for EP1 only, scoped to these lines. Spoken additions: S03-B02 new narrator VO `…แล้วฉันก็เติมมันด้วยความกลัว` (`R3-C01`; later R4 `…แล้วความกลัว ก็ทำให้ฉันมองมันเป็นอันตราย`; R5 wording in the R5 entry above) (+~6 s); S04-B01 worker line `รถชนกันขวางถนนครับ… ผมกลับทางเดิมไม่ได้แล้ว` → `รถชนกันขวางถนนครับ รถผมติดอยู่ข้างหลังนั่น เลยต้องเข็นของมาส่งร้านนี้เอง… แต่ตอนนี้ กลับทางเดิมไม่ได้แล้ว` (+~3 s); S04-B02 was silent, now narrator VO `สิ่งที่ฉันกลัวเมื่อกี้… เป็นแค่คนคนหนึ่ง แต่หมอกนี่ยังไม่ไปไหน… แล้วเราก็ไปไหนไม่ได้` plus held silence (+~4 s). Timing: S03-B02 60–72 → 60–78; S04-B01 72–84 → 78–93; S04-B02 84–87 → 93–100; total 87 → 100 s, estimated. Unchanged: beat IDs, S01-B01 to S03-B01 lines and times, clues `CL01`–`CL05`, reveal order, hard cut. Metadata: header, story core takeaway/ending, beat table, event notes, claim map (new `K001`), Film → Mark items 7–8, self-check.
+- Boat R3 recheck targets (reviewed in FACTCHECK-R3): `K001` perception claim (new at R3); S04-B01 motive half sentence against `D001`, S01-B01 roadside glimpse, the walking route and CL01–CL05; S04-B02 reaction line against research items 5 (no slogan) and 4 (no outside-is-safe implication); the S04-B02 event change from silent to spoken; sound notes for S03-B02 and S04-B02. Scenes affected: S03-B02, S04-B01, S04-B02 only.
+- Current scope: **R5 written**; R-3/R-4 from WFOG-FACTCHECK-R4 applied, FACTCHECK-R5 `revise` on record items R5-1–R5-3 (applied; Boat targeted recheck 2026-10-30: pass, `ready-for-storyboard`). Scene sheets SS-R4/SS-R4.1 retimed to R5 (3000 frames, estimated); Boss r7 built the retime, r8 fix pass in progress. Factual readiness applies only to the named review scope; runtime integration and visual success remain unverified.

@@ -986,3 +986,1034 @@ Every new plate is `ZCPAINT`-registered in `src/painted/shots/zcpaint.tsx` with 
 - `scripts/zombie-condo-paint/delivery.md` (stage cells), `scripts/zombie-condo-paint/build-notes.md` (this section).
 - `docs/dev-findings.md` and `docs/dev-findings/` (see the pass 10 finding row).
 - Stills and logs: `out/painted/zcpaint/p10/`, `out/logs/zcp-p10-*`, `out/qa/zcp-p10/wfog/`.
+
+## 2026-10-30 — Film SPK-ZCP-06: the "puppet" look (costume and paint texture comparison)
+
+**Trigger:** user “ตัวละครมันดูเป็นหุ่นกระบอกอยู่”, then after the WORLD FOG r6 comparison “6 หัวต่อ แต่เปลี่ยนชุด+เนื้อสี” and “ทำเทียบ” (delivery record, “Puppet look”). Spike only: no production plate, `src/Root.tsx`, `body6.ts`, `bust.ts` or WORLD FOG file changed. The stopped Boss pass 11 patch was read as reference (its B02-SH03 waist framing and `zoomAt` are copied into the spike), not applied.
+
+**Diagnosis (pass 10 frames, `out/painted/zcpaint/p10/overview/`):** the puppet read comes from bare skin tubes: tee + shorts leave the forearms, shins and knees as one skin-coloured tapered tube each, with a hard hem line at the shorts and sleeves. That is where the eye sees the joints. The 6-head proportion itself is not the problem. WORLD FOG r6 covers the limbs (jacket, long sleeves, long trousers), so the joints sit inside cloth, and its cloth carries a glaze ring plus 2B hatch in the shade (VD18).
+
+**Files (new, spike only):** `src/painted/spike/ZcSpk06Figs.ts` (variant figures `sideWalkV`, `seatFloorV`, `bustFrontV`, texture painter, `drawFigV`), `src/painted/spike/ZcSpk06.tsx` (B04-SH01, B09-SH01, B02-SH03 plates with the production sets, light, cameras and overlays; staging values copied), `src/painted/spike/zcpaint-spk06-index.ts` (compositions `ZCPAINT-SPK06-<B04|B09|B02>-<P10|P10W|A|B|C>`, labels burned in).
+
+**Variants:**
+- `P10`: the production plate as pass 10 ships it. `P10W` (B02 only): the pass 10 bust at the pass 11 waist/chest close framing (head 587 px, chin y 1002), so that framing and costume can be judged separately.
+- `A`: 6 heads, costume over the limbs: open overshirt (teal `#2f5a5c`, his established colour) over a warm grey tee (`#cdc6b6`), sleeves to the wrist with a cuff line, long charcoal trousers (`#474d55`) to the ankle with knee and instep folds, overshirt hem over the hip joint, collar band/points, chest pocket on the close. Limb masses thicker (sleeve radius 0.215 → 0.17 head, trousers 0.30 → 0.20, vs skin arm 0.16 → 0.10). B04 walk: CP-P03, near arm swung back with the hand past the hip, far arm forward. Flat cel two tones (`paintPart`), decal heads, mittens/fists, B09 pitch 0.35 rad (20°) unchanged. Day 3 uses `COSTUME_DAY3` (slightly darker).
+- `B`: A plus brush texture in the cloth only: after each flat cloth wash, one seeded glaze (18–26 % darker, opacity 150, `fillTexture(0.7, 0.6)`, no bleed), and in the cel tone a WORLD FOG VD18 2B hatch (7 px at 40°, weight 1.0, normalised to screen scale) that survives only in the shade band. Skin, hands, heads and sets stay flat.
+- `C`: B on a 5.5-head build (heights below the chin × 0.9, widths × 1.08, the head unchanged).
+
+**Iterations:** r1: costume works, texture invisible at sheet scale, and the profile collar cel block reads as a hood. r2: collar becomes a thin band, glaze stronger, hatch added, but hatch is invisible on dark teal. r3: hatch weight 1.0 and 0.6 mix are visible, but the close (≈4.6× scale) throws dark specks past the silhouette. r4/final: bleed 0, hatch spacing and weight divided by the screen scale, seated collar removed. No specks remain.
+
+**Evidence (viewed):** `out/painted/zcpaint/spk06/final/SPK06-sheet-B04-SH01.png`, `SPK06-sheet-B09-SH01.png`, `SPK06-sheet-B02-SH03.png` (labelled, order P10 | (P10W) | A | B | C), full-resolution figure crops `SPK06-crops-P10-A-B-C.png` (B04 left four, B09 right four). Rounds r1–r4 kept under `out/painted/zcpaint/spk06/`.
+
+**Measured:**
+- Lead height (geometry `topPx × k`): B04 f45 P10 586 / A, B 586 / C 539 px; B09 P10 489 / A, B 489 / C 447 px. **C fails the 480 px seated rule (RK-28)**: it would need d ≈ 0.45 or a larger section scale.
+- Caption zone (`scripts/caption-zone.py`, default thresholds): every frame fails as the shipped P10 frames do (B02 mean 0.66–0.68 vs P10W 0.68, B04-B 0.52, B09-B 0.21). This is the accepted cream-condo condition with the thick-outline captions (pass 8/9 decision), not a regression.
+- Determinism: B02-B f50 decoded-RGB md5 identical across two separate bundles/runs (r4 and final). B09-B f60 and the untouched production B04-P10 f45 differ by 2 px at 1 level between runs (the known `DF-20261030-zcpaint-figure-texture-residual` class).
+- Hold: B09-B f60 → f61 differs on the ink outlines (boil) and as sub-pixel resampling of the hatch under the B09 push. Texture seeds come from the part order and do not reseed per frame.
+- `npx tsc --noEmit`: 0 errors; `npx eslint` on the three spike files: 0 problems. Tests not run (spike files only).
+- Dev-findings consulted: `DF-20261030-painted-glaze-pickup` (the B glaze sits over the part's own opaque wash, so granulation shows only the cloth base, never the set), `DF-20261030-zcpaint-figure-texture-residual` (same class as above), `DF-20261030-painted-arm-depth` (CP-P03 used in profile; no front-view `behind` arm in these three frames).
+
+**Read:** A already removes the puppet read in all three frames: no bare tubes, the joints are inside cloth, the hem breaks the hip. B adds the WORLD FOG hand-made surface without blotching the sets. C reads chunkiest and closest to WORLD FOG, but it reverses the user's 6-head choice and fails the B09 lead rule. In the close it differs from B only slightly.
+
+**Film recommendation:** B. Open: the stubble still reads as a cluster of blobs (`DF-20261030-zcpaint-day3-stubble-spots`, unchanged), and the bare neck looks long in the close because the collar sits low. A taller collar stand is a Boss detail if the user wants it.
+
+### Proposed brief change `VB-ZCPAINT-SHORT-R2.6` (proposal only; not applied; needs the user's choice)
+- `BODY-ZCP-6H` → **R2.6 costume**: `zc-you` wears an open overshirt over a tee, sleeves to the wrist (cuff line) and long trousers to the ankle (knee/instep folds); bare skin only at hands, feet, neck and face. Landmarks and 6-head proportions unchanged. Limb masses: sleeve radius 0.215 → 0.17 head, trousers 0.30 → 0.20 head. Day-3 colours slightly darker. Overshirt teal `#2f5a5c`, tee `#cdc6b6`, trousers `#474d55` (Design; Boss may tune values within the read). Infected unchanged: dirty khaki shirt and grey-green trousers (approved 7b), with sleeves taken to the wrist to match.
+- `VD-ZCP-LOOK` / `LT-04` → **R2.6 cloth texture**: figure cloth gets one seeded glaze (ring and granulation over its own opaque wash, no bleed) and a VD18 2B hatch in the cel band, normalised to screen scale. Skin, hands, decal heads, sets, plates and POV backgrounds keep the clean “สะอาดแบบตัวละคร” fills. This relaxes the clean-paint decision for figure cloth only.
+- `VD-ZCP-LIGHT`: unchanged (cel two tones, cast shadows from the same parts).
+- Arms: CP-P03 swing in profile walks. Front-view bent arms follow `Arm.behind`-style depth (pass 11 design), still Boss's.
+- Boss work (S-P12 rev): port `sideWalkV` / `seatFloorV` / `bustFrontV` costume geometry into `body6.ts` / `bust.ts` for every view (front, back, profile, walk, floor-seated, sofa-seated, bust front/back/side, infected), add the texture painter to `washPaint` behind an option, re-run the model sheet and B1–B5, then the plates. Mark re-checks closes for collar/neck framing.
+- Acceptance: no bare forearm or shin in any plate; lead ≥ 480 px; WORLD FOG 21-frame md5 unchanged; the texture holds still across adjacent frames apart from ink and camera resampling; no specks outside the silhouette at the close scale.
+
+## 2026-10-30 — Boss pass 11 (R2.6 costume)
+
+- Scope: brief `VB-ZCPAINT-SHORT-R2.6`, Boss needs `S-P12` rev (items 1–5, acceptance `B6`–`B11`), asset family only: the costume port into `body6.ts` and `bust.ts`, collar stand and bust neck (`FR-ZCP-CLOSE`, RK-30), CP-P arm depth, the `washPaint` cloth texture (off by default), the waist-cut bust placement and the R2.6 model sheet. **Plates are not rebuilt in this pass** (B7: the user's look check of the sheet comes first; all 24 shots follow it). Worktree `usage-check-agent-tuning-16bd9b` at `541385d`, uncommitted, not pushed.
+- Start state: `body6.ts`, `bust.ts`, `ZcSpk06Figs.ts` identical to the sibling worktree's committed HEAD (`e9a542e`, source `d13446a`); no uncommitted source there. The stopped pass 11 patch exists only as frames (`out/painted/zcpaint/p11/before`, `spk06/final`), so the waist-cut framing was rebuilt from the sheet values (B02-SH03 head ≈587 px, chin y 1002; B01-SH01 head ≈600 px, chin y 1000).
+- Environment: this worktree's `node_modules` symlink pointed to the main checkout's partial install (no `p5.brush`; `DF-20261030-worktree-node-modules`). The untracked symlink now points to the sibling `world-frog-main-6920cb/node_modules` (has `p5.brush`; `remotion versions` 4.0.538). Never committed.
+
+### Status by item (stable IDs)
+
+| # | Item | Status | Evidence |
+| --- | --- | --- | --- |
+| S-P12 rev 1 | Costume port: front, back, profile, walk, floor-seated, sofa-seated, busts front/back/profile/seated, infected, day 3 | built (geometry and sheet; look check pending) | `out/painted/zcpaint/r26/review-A.png`, `review-B.png`, `review-C.png`, `review-E.png` |
+| S-P12 rev 2 | Collar stand (`CS-ZCP-R26`) and shorter bust neck; `RK-30` read | built; read at full resolution (stand reads as a band with points, not a hood) | `crop-B02-SH03-collar.png`, `crop-B01-SH01-nape.png`, `review-E.png` |
+| S-P12 rev 2 | Waist-cut bust placement (`placeClose`, `waistCutHeads`) | built (shared helper; no plate changed) | `review-F.png`, `review-G.png` |
+| S-P12 rev 3 | CP-P arm depth: CP-P05 hang, CP-P03 walk, CP-P02 bucket grip (upper arm behind); back-view `depth: 'behind'` reach option | built; the back-view reach option is not on a plate yet | `review-A.png` row 2 |
+| S-P12 rev 4 | `washPaint` cloth texture, glaze + hatch, cloth only, off by default | built | `review-D.png`; `tests/zcpaint-costume.test.ts` texture test |
+| S-P12 rev 5 | R2.6 model sheet, pages A–G | built | `out/painted/zcpaint/r26/review-A.png` … `review-G.png`; overview `model-sheet-overview-A-G.png` |
+| B6 | No bare forearm, knee or shin; bare skin only at hands, feet, neck, face | pass (geometry, all views and poses listed above) | test `costume: bare skin …` |
+| B7 | Model sheet viewed, then the user's look check before any plate | sheet viewed by Boss; **user look check pending** | `Q-R26-1` |
+| B8 | Closes: cut 3.0–3.6 heads, face above y 1040, visible neck ≤ 0.10, collar reads | measured (below); crops viewed; Film/Mark and user check pending | test `collar: …`, `waist-cut close …` |
+| B9 | Cloth texture holds still across adjacent frames; no specks outside the silhouette at the close scale | **not verified**: no multi-frame render of a textured figure in this pass; specks not seen on `review-D.png` and `crop-B02-SH03-collar.png` | plate pass |
+| B10 | Each pose names its CP-P row on the sheet; front-view bent arms behind | pass (page A labels name CP-P05 / CP-P03 / CP-P02) | `review-A.png` |
+| B11 | Determinism recorded per plate; WORLD FOG 21-frame md5 re-run | WORLD FOG re-run on the final code: see *Checks*; per-plate determinism not applicable (no plate rendered) | `out/qa/zcp-r26/wfog-final/md5.txt` |
+
+### Measurements (geometry at the stated scale; `out/logs/r26-measure-3.log`, `r26-head-measure.log`, `r26-neck-default.log`)
+
+- **Bare limb tubes (HEAD → now):** front 4 → 0, walk 4 → 0, bust front 4 → 0, bust profile 3 → 0, bust seated 4 → 0, infected front 2 → 0. (The remaining skin tubes are necks, which `B6` exempts.)
+- **Bucket grip, widest arm part:** HEAD 1.33 heads (the elbow splayed outward) → now 0.93 heads.
+- **Visible bare neck (chin to collar top, at the chin's column):** bust front zc-you 0.090 head (≈53 px at a 587 px head); bust front infected 0.090; bust profile zc-you 0.054; bust profile infected slump 1 0.029 (pitched chin). All ≤ 0.10.
+- **Collar stand top:** 4.91 heads at the front opening (0.09 under the decal chin at 5.00), 4.95 at the sides and nape.
+- **Waist cut:** B02-SH03 chin y 1002, head 587 px (k 4.635), crown y 415, cut **3.44 heads**, lead 1505 px; B01-SH01 chin y 1000, head 600 px (k 4.738), crown y 400, cut **3.47 heads**, lead 1520 px. Both inside 3.0–3.6 and above the 1040 face line.
+- **Lead heights:** B09 seated (`K_B09` 517.6 px/m) 504 px upright, 492.5 px at the 20° pitch (≥ 480); unchanged from HEAD. B04 walk at `SEC-2D` 586 px, unchanged. Infected full figure 737 px at 447 px/m (geometry).
+- Crown heights unchanged: 6.00 heads (zc-you), 5.88 (infected, 0.95 scale).
+
+### Deviations (for Film and Mark to revalidate)
+
+- D-R26-1 Collar front top 4.91 (brief: ≈4.88) so the visible neck meets ≤ 0.10 against the decal chin at 5.00 (`Boss may tune values within the read`).
+- D-R26-2 Bust neck: the capsule runs from 4.80 (less the slump) to the chin, 0.34 head wide; the full-figure neck is the approved 4.66 → 5.02.
+- D-R26-3 Infected profile close: the khaki band follows the pitched chin (`DF-20261030-zcpaint-collar-neck-close`); in profile it reads as a short flat shelf under the chin (`review-E.png`). Fallback in `CS-ZCP-R26`: band on front busts only.
+- D-R26-4 Bucket grip: CP-P02 is drawn as an explicit elbow at the torso edge (not IK); the bucket insert belongs to the plate and is not in the sheet.
+- D-R26-5 Standing figures: the stride sets the arm swing (CP-P03 for walk stride > 0); standing arms hang (CP-P05). The R2.5 walk and standing poses changed accordingly.
+- D-R26-6 Texture scope: `cloth` parts only (overshirt, tee, trousers, sleeves; infected shirt, trousers, sleeves). Skin, hands, hair, decal faces, props and sets stay flat. Hatch only in the cel tones.
+- D-R26-7 The seated bust (B09-SH02) keeps the pass 10 head placement (`T(0.73, 1.8)`); it was not re-reviewed at full resolution in this pass.
+- D-R26-8 `ZcS12Sheet` and `ZcBustSheet` now draw the costume (their spike pages changed); their measure values in pass 7b / pass 10 notes are superseded by this pass.
+
+### Checks
+
+- `npx tsc --noEmit`: 0 errors (`out/logs/r26-tsc-4.log`).
+- `npx eslint` on `src/painted/zcpaint`, the R2.6 spike files and the three bust/body6/costume tests: 0 problems (`out/logs/r26-eslint-4.log`).
+- `npm test`: 142 of 142 (136 before, plus the 6 costume tests in `tests/zcpaint-costume.test.ts`; `out/logs/r26-npmtest-2.log`).
+- Sheet renders: `scripts/zombie-condo-paint/r26-sheet.sh` (`--gl=angle`, pages A–G, `out/logs/r26-sheet-run3.log`).
+- WORLD FOG 21-frame identity (`render-frames.sh src/painted/spike/index.ts`), final code: `out/qa/zcp-r26/wfog-final/md5.txt`. The eight composition frames (`WFOG-PREVIEW-S02-SH02`, `WFOG-SP01-S02-SH09`, `WFOG-SP01-S03-SH03`) match the HEAD render (`541385d`, git archive in scratch; `out/logs/r26-wfog-final-vs-head8.log`, empty). The 13 spike-sheet frames match the pass 10 list (`out/qa/zcp-r26/wfog/baseline-pass10-md5.txt`) and the first run of this pass (`out/logs/r26-wfog-final-vs-pass10-13.log`, `out/logs/r26-wfog-final-vs-first13.log`, both empty). The pass 10 list differs from HEAD on the eight composition frames; the sibling checkout's source under `src/painted`, `src/scenes`, `src/videos` matches HEAD, so HEAD is the gate. Result: **21 of 21 identical to HEAD** (13 frames: `out/qa/zcp-r26/wfog-final/head-13.txt`, `out/logs/r26-wfog-final-vs-head13.log` empty; 8 frames: `out/qa/zcp-r26/wfog-final/final-8.sorted.txt` against `out/qa/zcp-r26/wfog/head-baseline-8.txt`, empty). The 13 also match the pass 10 list and the first run of this pass.
+- Lint and typecheck were run on the final code (after the last `bust.ts` and sheet edits): `out/logs/r26-tsc-4.log`, `out/logs/r26-eslint-4.log`.
+- `scripts/zombie-condo-paint/delivery.md` shows a one-line change in this checkout (14:28, not made by this pass; not edited, not committed).
+- Not run: Studio, seek parity, plate renders (no plate is rebuilt in this pass), the adjacent-frame texture check (`B9`).
+
+### Scripting and tool lessons (this pass)
+
+- zsh does not split an unquoted `$SPECS`: the first HEAD baseline passed one spec string and failed with `Frame NaN is not finite` (repeat of the pass 10 lesson). Pass literal arguments or arrays to `render-frames.sh`.
+- The WORLD FOG spike entry reaches ZCPAINT modules through `src/painted/registry.ts` (module walk: 95 files, `zcpaint/sets.ts`, `balcony.ts`, `shots/zcpaint.tsx`). A shared ZCPAINT change therefore needs the 21-frame check even when WORLD FOG code is unchanged.
+- `visibleNeckHU` must rotate the chin with the head pitch. The first version (un-pitched chin) read 0.093 on the infected profile while the pitched chin left about 0.15 bare neck in front of the band.
+
+### Proposed document changes (TL/DP; not applied)
+
+1. `docs/boss-asset-workflow.md` QA (figure plates): name the entry reach (a shared ZCPAINT change re-runs the WORLD FOG 21-frame check, even when WORLD FOG code is unchanged).
+2. `.claude/skills/painted-2d/SKILL.md` gotchas: "render-frames specs: pass literal arguments (zsh does not split `$SPECS`)"; "a close's neck is measured at the pitched chin".
+3. `storyboards/zombie-condo-paint/short/sc01-b01-b03.md`, `sc01-b09-b10.md` (Mark): the infected profile close (B01-SH02) and the seated bust close (B09-SH02) need a look at the collar and neck read after the plate pass.
+
+### Questions for the user (relay through the coordinator; not asked here)
+
+- Q-R26-1 (B7 look check, before any plate): `out/painted/zcpaint/r26/model-sheet-overview-A-G.png` and the labelled pages `review-A.png` (standing, walk, CP-P rows), `review-B.png` (infected), `review-C.png` (seated, sofa), `review-D.png` (texture off and on), `review-E.png` (busts), `review-F.png` and `review-G.png` (waist-cut closes).
+- Q-R26-2 Collar on busts: keep the stand with points (as built), or band only on busts (the `CS-ZCP-R26` fallback)?
+- Q-R26-3 Infected profile close: accept the short collar shelf under the pitched chin (`review-E.png`), or the front-only band?
+
+### Files changed (uncommitted)
+
+- `src/painted/zcpaint/body6.ts`: costume (`Costume`, `costumeOf`, `trouserLeg`, `collarStand`, `collarSide`, `collarSeat`, `placket`, `cuffLine`, `strokes`, `foldTone`), cloth and collar flags on `Part`, `figFront`, `figSide`, `figSlack` (sleeves, trousers), `figSeatFloor`, `figSeatSofa`, `washPaint(ctx, base, {cloth, tex, scale})`, `drawFig(…, {tex})`, `clothTones`.
+- `src/painted/zcpaint/bust.ts`: rewritten for the costume, the collar stand, the shorter neck, `ArmPose.depth`, and the new `placeClose`, `waistCutHeads`, `visibleNeckHU`.
+- New: `src/painted/spike/ZcR26Sheet.tsx`, `src/painted/spike/zcpaint-r26-index.ts`, `scripts/zombie-condo-paint/r26-sheet.sh`, `tests/zcpaint-costume.test.ts`, `docs/dev-findings/DF-20261030-zcpaint-collar-neck-close.md`.
+- Edited: `docs/dev-findings.md` (index row), `docs/dev-findings/DF-20261030-worktree-node-modules.md` (revalidation), this file.
+- Outputs (not committed): `out/painted/zcpaint/r26/`, `out/logs/r26-*`, `out/qa/zcp-r26/`.
+
+## 2026-10-30 — Boss pass 12 G1 (R2.6 plates)
+
+- Scope: brief `VB-ZCPAINT-SHORT-R2.6` (`CS-ZCP-R26`, `TX-ZCP-CLOTH`, `FR-ZCP-CLOSE`, acceptance `B6`–`B11`), sheets `ZCPAINT-SHORT-SS-R1.4`, **group G1 of 5**: `ZCP-B01-SH01`, `ZCP-B01-SH02`, `ZCP-B02-SH03`, `ZCP-B06-SH02`, `ZCP-B07-SH01`. Each shot has one plate ID (the TH and EN keys share it; no `-TH`/`-EN` plate). User decisions in force: model sheet approved (`Q-R26-1`), collar stand with points on busts (`Q-R26-2`), infected busts front view only (`Q-R26-3`), `Q-ZCP-15` B (trash bag below the frame). Worktree `usage-check-agent-tuning-16bd9b` at `541385d`, uncommitted, not pushed, not committed; `delivery.md` not edited.
+- Start state: pass 11 source (`body6.ts`, `bust.ts`) as it was; the five closes still at pass 10 sizes (B01-SH01 head 280 px, B01-SH02 K 220, B02-SH03 322 px, B06-SH02 250 px, B07-SH01 260 px) and no cloth texture on any plate.
+- Environment: unchanged from pass 11 (untracked `node_modules` symlink to the sibling `world-frog-main-6920cb/node_modules`; never committed).
+
+### Status by item (stable IDs)
+
+| # | Item | Status | Evidence |
+| --- | --- | --- | --- |
+| P12-1 | Waist-cut placement on the five closes through the shared `placeClose` (head px, chin row, `waistCutHeads`) | built (plate pass; look check pending) | table *Measurements*; `tests/zcpaint-costume.test.ts` "waist-cut closes (G1, R1.4)" |
+| P12-2 | Shared fix: `placeClose` pitches the chin with `head.tilt` (as `visibleNeckHU` does), so a tilted head lands its chin on the row | built | same test (pitched chin 860); B01-SH02 silhouette |
+| P12-3 | `TX-ZCP-CLOTH` on the five plates: `drawFig(…, {tex: TEX_B})` on the cloth parts only; the B01-SH02 silhouette (`sil`) stays flat | built | `out/painted/zcpaint/g1/crops-4shots-540.png`, `crop-B02-SH03-f60-collar.png` |
+| P12-4 | R1.4 camera pivots: B02-SH03 about (515, 690); B07-SH01 about (560, 430) (`shots/zcpaint.tsx`); B01-SH01, B01-SH02, B06-SH02 unchanged (already the sheet values) | built | `shots/zcpaint.tsx` |
+| P12-5 | R1.4 sets: B02-SH03 door to y 1455, cabinet top 1455 (spans the frame, lip at the edges); B06-SH02 fridge x 400–960, interior x 450–920, y 280–860, handle x 400–412; B07-SH01 case x 30–400, y 830–1030 on the shelf edge y 1030, clasp at (384, 921) | built | plate frames |
+| P12-6 | `Q-ZCP-15` B: trash bag below the frame (`bagPart` top at plate y 2548) | built | pixel count: 0 bag-coloured px in B01-SH01 f0 and f104, 1 px (tolerance 2) at f36 |
+| P12-7 | `B9` adjacent-frame texture on a textured close (B02-SH03 f60 / f61) | pass with limits (see *Checks*) | `out/qa/zcp-g1/tools/box-diff.py` output in *Checks*; `out/painted/zcpaint/g1/B02-SH03_diff-tile-540.png` |
+| P12-8 | `B11` determinism: same-plate re-render | B02-SH03 f60 identical; B01-SH01 f36 within the residual class (max 8 levels, 24 px over 3) | `out/painted/zcpaint/g1/det/`; `DF-20261030-zcpaint-figure-texture-residual` |
+| P12-9 | `B8` closes: cut 3.0–3.6, faces above y 1040, visible neck ≤ 0.10, collar reads as a stand with points | measured; crop viewed (B02-SH03); look check pending | *Measurements* |
+| P12-10 | Caption band 1060–1248 (`caption-zone.py`, information only) | measured; default thresholds do not apply to outline captions | `out/logs/g1-caption-zone-plates.json` |
+
+### Measurements (plate px at scale 1; `out/logs/g1-measure-2.log` from `out/qa/zcp-g1/tools/g1-measure2.ts`; rendered frames for B9/B11)
+
+- Art top = highest artwork point incl. hair tufts (the lead measure); skull crown = crown without tufts (the sheets' "head top y"). Lead = 1920 − art top.
+
+| Shot (plate) | Head px | Chin y | Skull crown y | Art top y | Lead px (≥ 480) | Cut heads (3.0–3.6) | Visible neck HU (≤ 0.10) | Camera end |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| B01-SH01 back, pf 0 | 600 | 1000 | 400 | 323 | 1597 | 3.47 | 0.049 (nape) | pf 29 centre (260, 690), s 1.035: chin 1000.5, lead 1620, cut 3.47 |
+| B01-SH02 silhouette, pf 0–7 | 600 | 860 (pitched, rotated) | 279 | 204 | 1716 | 3.23 | 0.029 | — |
+| B01-SH02 rage front, pf 23–33 | 600 | 860 | 260 | 183 | 1737 | 3.23 | 0.090 | — |
+| B01-SH02 charge, pf 47 | 672 (×1.12) | 896 pre-push, 902.8 after 1.02 | 217 | 130 | 1790 | 3.49 | 0.090 | see D-G1-2 |
+| B02-SH03 front, pf 0 | 587 | 1002 (heave 991–1013) | 415 | 340 | 1580 | 3.44 (3.42–3.46) | 0.090 | pf 83, s 1.02: chin 1008.3, lead 1587, cut 3.45 |
+| B06-SH02 back, pf 0 | 560 | 900 | 340 | 268 | 1652 | 3.18 | 0.049 (nape) | pf 62, s 1.01: chin 903.4, lead 1654 |
+| B07-SH01 profile, pf 0 | 600 | 760 | 160 | 83 | 1837 | 3.07 | 0.054 | pf 140, s 1.02: chin 766.6, lead 1844 |
+
+- Sheet agreement: the skull crowns match the R1.4 head boxes (B01-SH01 y 400, B02-SH03 y 415, B06-SH02 y 340); the chins are the R1.4 values.
+- Collar and neck: the visible bare neck on the front busts is 0.09 head (B02-SH03, B01-SH02 rage); the collar stand with points reads as a stand at full resolution (B02-SH03 crop, neck band about 0.07 head by eye).
+
+### Deviations (for Film and Mark to revalidate)
+
+- D-G1-1 B07-SH01 eye: R1.4 gives the eye at (560, 430) and the chin at 760 with a 600 px head; the profile geometry (eye 0.72 K in front of the head centre, 0.05 K below it) puts the eye at (560, 451). The explicit chin (760) is kept; the push pivot stays (560, 430) as the sheet says.
+- D-G1-2 B01-SH02 charge: the chin is 896 before the 1.02 push (the sheet's ≤ 900 holds for the charge itself) and 902.8 after it. Not moved; Mark to decide if the push should not be included in the ≤ 900 line.
+- D-G1-3 B01-SH02 pf 0–23: the turn starts from a texture-free profile silhouette of the infected bust (`MK-ZCP-F8`, no features, no collar read). Q-R26-3 asked for front-only infected busts; see the question below.
+- D-G1-4 B02-SH03 cabinet: the R1.4 sheet gives the top edge (y 1455) only. The cabinet spans the frame (x −100 → 1200) so its lip shows beside the shoulders (torso covers x 15–1015); knobs at y 1600 sit behind the torso.
+- D-G1-5 B06-SH02 fridge: the R1.4 interior (x 450–920, y 280–860) and body (x 400–960) are used; the body continues below y 860 as the lower door (the sheet's caption sits over it); the device overlay strip (x 420–880, y 300–420) is an Editor overlay, not painted in the plate.
+- D-G1-6 B07-SH01 hand: the rest point is the hanging near wrist from the figure's anchors (below the frame), so the arm enters from the bottom edge; the sheet gives no rest coordinates.
+- D-G1-7 Stale sheet lines: `ZC-CAPSHADE band 0.62` still appears in the B02-SH03, B06-SH02 and B07-SH01 captions of `ZCPAINT-SHORT-SS-R1.4`. The user dropped the caption shade in pass 8; no shade is painted here. Mark to revalidate those lines.
+- D-G1-8 Visual note for Film (look, not a deviation): at the charge scale (B01-SH02 c47) the infected's dried-blood collar band reads as a flat disc above the shoulders, with no points.
+
+### Checks
+
+- `npx tsc --noEmit`: 0 errors (`out/logs/g1-tsc-2.log`).
+- `npx eslint src tests`: 0 problems (`out/logs/g1-eslint-full.log`).
+- `npm test`: 143 of 143 (142 + the new G1 test) (`out/logs/g1-npmtest-1.log`); costume file 7 of 7 (`out/logs/g1-costume-test.log`).
+- WORLD FOG 21-frame identity (`scripts/zombie-condo-paint/render-frames.sh src/painted/spike/index.ts out/qa/zcp-g1/wfog …`): **21 of 21 identical** to the pass 11 final baseline `out/qa/zcp-r26/wfog-final/md5.txt` (empty diff in `out/logs/g1-wfog-vs-r26final.log`).
+- `B9` (B02-SH03 f60 against f61, the textured overshirt and tee): inside two flat cloth boxes (x 110–300, y 1420–1800 and x 600–700, y 1420–1800) the largest change is 19 levels with 478 px over 3 levels of 72 200 px in the first box; the same-frame control is 0. The difference image (`out/painted/zcpaint/g1/B02-SH03_diff-tile-540.png`) shows changes on outlines and the silhouette edge only, no speckle inside the glaze or outside the silhouette. The f60 against f62 pair changes more (max 39), which fits camera resampling (the push is still moving), not a re-seeded glaze. This is indirect: no fixed-camera render was available, so the claim is "no reseed seen", not bit-exact stability.
+- `B11`: B02-SH03 f60 re-rendered from the same bundle is identical; B01-SH01 f36 differs by max 8 levels in 24 px over 3 (inside `DF-20261030-zcpaint-figure-texture-residual`).
+- Frames viewed through `scripts/qa-sheet.sh`: `out/painted/zcpaint/g1/first-look-270.png` (five shots), `B07-SH01-f0-f40-270.png` (rest, clasp, stop, withdrawn). Full-resolution crops: `out/painted/zcpaint/g1/crop-B02-SH03-f60-collar-540.png`, `out/painted/zcpaint/g1/crops-4shots-540.png`.
+- Caption band (`scripts/caption-zone.py --band 1060:1248`, information only): B01-SH01 f36 mean 0.311 / p95 0.608; B01-SH02 f23 0.484 / 0.600; B02-SH03 f60 0.518 / 0.807; B06-SH02 f24 0.369 / 0.894; B07-SH01 f48 0.426 / 0.768. The default thresholds (mean ≤ 0.25, p95 ≤ 0.40) fail on cream backgrounds for all five; they were set for the shaded ZCONDO captions, and outline captions carry the legibility here (user, pass 8).
+- Labelled user sheet: `out/qa/zcp-g1/G1-R26-plates-sheet.png` (HTML source `G1-R26-plates-sheet.html`), six 540 px tiles (five outline-caption checks at the sheet's Thai lines, plus B01-SH02 c47 charge) and the measured legend.
+- Not run: Studio, seek parity (cold load, unordered seeks), the Editor timeline and boundary neighbours, the other 19 shots, Long composition (none selected).
+
+### Scripting and tool lessons (this pass)
+
+- zsh does not split an unquoted `$spec` in a `for` loop (the caption-still loop failed with an empty plate ID; literal arguments worked). Repeat of the pass 11 lesson.
+- This environment's ffmpeg has no `drawtext` (no text filter; ImageMagick and PIL are absent). Labelled sheets were built as HTML and screenshot with Google Chrome headless: recorded as `DF-20261030-zcpaint-qa-label-sheet`. The grid needed a window wider than its tiles (1704 px for three 540 px tiles plus gaps) and a height of about 2880 px for the legend.
+- The geometry measure (`placeClose` plus `topPx`/`skullTopPx`, run with `node --import tsx`) and the ink-free box diff are repeated per group now; script them as repo tools before G2 (`scripts/zombie-condo-paint/`). Copies: `out/qa/zcp-g1/tools/`.
+- `placeClose` ignored head pitch before this pass: a pitched chin would have landed about 20 px off the row on a tilted profile (fixed, shared).
+
+### Proposed document changes (TL/DP; not applied)
+
+1. `docs/boss-asset-workflow.md` QA step 5 (adjacent frames): use ink-free boxes and a same-frame re-render control; the outline boil is not a clean two-frame cycle here (f60/f62 differ more than f60/f61).
+2. `storyboards/zombie-condo-paint/short/sc01-b01-b03.md`, `sc01-b06-b08.md` (Mark): drop the `ZC-CAPSHADE band 0.62` lines (pass 8 decision, D-G1-7); record the B07 eye (D-G1-1) and the B01-SH02 charge push (D-G1-2).
+3. `scripts/caption-zone.py`: its default thresholds assume a shaded caption; outline captions need their own thresholds or an information-only flag.
+
+### Questions for the user (relay through the coordinator; not asked here)
+
+- Q-G1-1 (B01-SH02 turn): the first 23 frames are a profile silhouette of the infected bust (`MK-ZCP-F8`), which is texture-free and has no features. Your pass 11 answer (`Q-R26-3`) asked for front-only infected busts. Keep the silhouette start, or start the turn from a front silhouette? The second option changes the reveal, so Film must agree first.
+
+### Files changed (uncommitted)
+
+- `src/painted/zcpaint/bust.ts`: `placeClose` pitches the chin with `head.tilt`.
+- `src/painted/zcpaint/corridor.ts`: B01-SH01 back bust (waist cut, bag below frame, texture); B01-SH02 silhouette and rage front (chin row 860, texture on the front).
+- `src/painted/zcpaint/closeups.ts`: B02-SH03 (chin row 1002, heave ±11, cabinet and door to 1455, texture); B07-SH01 (chin 760, case and shelf, clasp, stop +40, rest from anchors, texture). `placeHead` stays exported for the spike.
+- `src/painted/zcpaint/fridge.ts`: B06-SH02 (back bust chin 900, fridge geometry, handle, texture).
+- `src/painted/shots/zcpaint.tsx`: B02-SH03 and B07-SH01 camera pivots.
+- `tests/zcpaint-costume.test.ts`: one new test (G1 closes and pitched chin).
+- `scripts/zombie-condo-paint/build-notes.md` (this section); `docs/dev-findings.md` and the DF entries (see below).
+- Outputs (not committed): `out/painted/zcpaint/g1/`, `out/qa/zcp-g1/`, `out/logs/g1-*`.
+
+## 2026-10-30 — Boss pass 12 G1 fixes (look check of the R2.6 plates)
+
+- Scope: the top entry of `delivery.md` "Boss pass 12 G1 look check" (binding): fixes 1–3 on B01-SH02 and B06-SH02; B01-SH01, B02-SH03 and B07-SH01 kept. Uncommitted in worktree `usage-check-agent-tuning-16bd9b`; `delivery.md` not edited; nothing committed or pushed.
+- Start state: pass 12 G1 code as reviewed (files at 14:59–15:00; sheet at 15:10); before frames rendered from it in `out/painted/zcpaint/g1fix/before/`.
+
+### Status by item (stable IDs)
+
+| # | Item | Status | Evidence |
+| --- | --- | --- | --- |
+| G12-1 | B01-SH02 silhouette (pf 0–22): no black bar across the face, no spike, shaped hair mass, profile kept (Q-G1-1 “เงาข้างเดิม”) | built (look check pending) | `corridor.ts` `hairSweep` (BOB_SIDE `silHair` rotated about the crown, 0 → 1.2 rad, pf 19–23; the rectangle wash removed); `bust.ts` profile band back edge at x 0.12; frames c7, c19, c21 |
+| G12-2 | B01-SH02 rage front and charge: no grey box neck, blood not a flat disc, collar and neck as the approved model sheet | built (look check pending) | `bust.ts` standing infected neck = taper (jaw 0.26 → band 0.38, cel 0.07; YOU unchanged); `body6.ts` `torsoMarks` blood = streak with one drip on the band's lower edge; frames c23, c33, c47 |
+| G12-3 | B06-SH02 fridge arm: elbow bent like a person, not round the neck; hand at mitten scale (BODY-ZCP-6H); held box clear | built (look check pending); pose switches pf 6 and pf 41 unverified | `fridge.ts` (his left door hand = `R` with `depth: 'behind'`; his right box hand = `L`, `lowBend`; box on the bottom shelf; crisp box); `bust.ts` `ArmPose.across`; `body6.ts` `Hand.across` (opt-in, mitten one hull); frames f0, f6, f24, f41 |
+| G12-4 | B01-SH01, B02-SH03, B07-SH01 unchanged | verified by pixel diff (see *Checks*) | decoded-RGB diff against the pass 12 frames |
+
+### Root causes (for the record; DF `DF-20261030-zcpaint-back-view-arm-sides`)
+
+- B06 door arm: in a back view the bust's `L` is screen-left = his RIGHT arm. Pass 10 put his left (door) hand on `L`, so it crossed the back of the neck. Fixed by the sheet's own sides (left door, right box).
+- B06 box arm at head height: the shoulder-to-box distance (1.07 heads) against a 1.78-head arm solves the elbow onto the neck. Fixed by the lower elbow and a bottom-shelf box (plate y 800) instead of y 640.
+- Mitten: the shared mitten is 0.52 long and 0.37 across including the wrist cap (`handParts`, measured with `node --import tsx`); BODY-ZCP-6H says 0.40 × 0.26. Added opt-in `across` (default 1); B06 uses 0.7 with one merged hull.
+- B01 spike: `profile()` infected collar band had its back edge at x −0.28, 0.41 head behind the neck's back edge (x 0.13). The sliver was the spike in the silhouette. Now x 0.12.
+- B01 bar: the pass 12 flat wash at pf 19–23 read as a censor bar. Replaced by the 7b bob mass (`BOB_SIDE`), rotated about the crown, in the hair tone at 0.9.
+- B01 disc: `torsoMarks` blood was an ellipse (0.12 × 0.05 head). Now a streak with a drip.
+- B01 grey box neck: the infected neck was a straight `tub` with `far` (whole cel tone). Now a taper from the jaw to the band (infected only).
+
+### Measurements (`out/logs/g1fix-measure.log`, g1-measure2; unchanged by these fixes)
+
+- B01-SH02 pf0 silhouette: head 600 px, chin 840.3 (pitched), lead 1716 px, visible neck 0.03 HU, cut 3.20.
+- B01-SH02 pf23 rage: lead 1737 px, visible neck 0.09 HU, cut 3.23.
+- B01-SH02 pf47 charge: lead 1790 px, visible neck 0.09 HU, cut 3.49 (chin 902.8 after the 1.02 push, D-G1-2 unchanged).
+- B06-SH02 pf0 back: head 560 px, chin 900, lead 1652 px, visible neck 0.049 HU (nape), cut 3.18; pf62: lead 1654 px.
+- The lead and the visible neck are set by the head top and the collar top, which these fixes do not move. The neck taper and the mitten width were judged at 540 px, not measured.
+
+### Deviations (for Film and Mark to revalidate)
+
+- D-G12-1 B06-SH02 sides: his left hand (door) is on the screen-right side and his right hand (box) on the screen-left side (back view). SS-R1.4 names the hands, not the screen sides; Mark should name them with the anatomy.
+- D-G12-2 B06-SH02 staging: the box sits on the bottom shelf (plate y 800; was y 640 at head height) and the door handle on the lower door (plate y 930; was y 600). Reason: a head-height cross-body reach puts the elbow on the neck. The sheet's "over his shoulder line into the interior" still holds (the hand is above the shoulder line, inside the interior).
+- D-G12-3 R2.6 model sheet page E (infected profile): the collar band no longer protrudes behind the neck (the spike is gone). The model sheet image is not regenerated.
+- D-G12-4 B01-SH02 pf 21: the rotated bob mass overhangs the crown for about one frame (transitional, pf 19–22). Look check: keep, or fade instead.
+- D-G12-5 B06-SH02 pose switches: the box arm changes from hang to reach at pf 6 and the door arm from reach to hang at pf 41 (not interpolated; the same switches existed in pass 12). Mark names the switch frames (CP-P06).
+
+### Checks
+
+- `npx tsc --noEmit`: exit 0 (`out/logs/g1fix-tsc.log`). `npx eslint src tests`: exit 0 (`out/logs/g1fix-eslint.log`). `npm test`: 143 pass, 0 fail of 143 (`out/logs/g1fix-npmtest.log`).
+- WORLD FOG 21-frame identity: `scripts/zombie-condo-paint/render-frames.sh src/painted/spike/index.ts out/qa/zcp-g1fix/wfog …`; `diff` against `out/qa/zcp-r26/wfog-final/md5.txt` is empty (exit 0, `out/logs/g1fix-wfog-vs-r26final.log`).
+- Unchanged shots (decoded RGB, `rgb-diff.py`, against the pass 12 G1 frames in `out/painted/zcpaint/g1/`): B02-SH03 f0 and f60 identical. B01-SH01 f0 differs by 283 px (max 6 levels), f36 by 516 px (max 4). B07-SH01 f0 by 3 px (max 1), f40 by 12 px (max 3). A same-code re-render of B01-SH01 f0 (`out/painted/zcpaint/g1fix/after2/`) differs from the first after render by 314 px (max 6): these are the render-run noise class (`DF-20261030-render-run-noise`, `DF-20261030-zcpaint-figure-texture-residual`). The changed code paths are not used by B01-SH01 (YOU back, infected figSlack) or B07-SH01 (YOU profile): the infected branches and the `across` option are the only edits.
+- Frames viewed through `scripts/qa-sheet.sh`: `out/qa/zcp-g1-fix/qa-B01-SH02-before-270.png`, `qa-B01-SH02-after-270.png`, `qa-B06-SH02-before-540.png`, `qa-B06-SH02-after-270.png`. Labelled user sheet (540 px tiles, Chrome headless from `G1-fix-B01-B06-sheet.html`): `out/qa/zcp-g1-fix/G1-fix-B01-B06-sheet.png`.
+- Not run: Studio, seek parity (cold load, unordered seeks), neighbour boundaries (B01-SH01 → B01-SH02 → B02-SH01; B06-SH02 → B06-SH03), the other 19 shots, Long composition (none selected).
+
+### Scripting and tool lessons (this pass)
+
+- The background `plate-stills.sh` run reported completion before its stills existed (the `echo` marker was not written). Check the output files, not the notification, before reading them.
+- `timeout` is not on this macOS shell; use the tool's own timeout.
+- Remaining chrome headless processes from another worktree (`wordfog-post-merge-main-959703`) are running; left alone (not this session's).
+
+### Proposed document changes (TL/DP; not applied)
+
+1. `storyboards/zombie-condo-paint/short/sc01-b06-b08.md` (Mark): name the screen side of each back-view hand, and the reach target height.
+2. `docs/character-proportion-principles.md` CP-P02 / CP-P01: add a cross-body reach row (target at head height forces the elbow to the neck; move the target or use a low elbow).
+3. `docs/boss-asset-workflow.md` QA step 5: the pose-switch frames (F−1/F/F+1) for hang↔reach switches.
+
+### Questions for the user (relay through the coordinator; not asked here)
+
+- Q-G12-1: B06-SH02 box on the bottom shelf and the handle on the lower door (D-G12-2): accept?
+- Q-G12-2: B01-SH02 turn (pf 19–22): keep the rotating bob mass (overhang at pf 21, D-G12-4), or fade the hair in instead?
+
+### Files changed (uncommitted, this pass)
+
+- `src/painted/zcpaint/corridor.ts`: `hairSweep`; the bar wash removed; the silhouette placement held for the sweep.
+- `src/painted/zcpaint/bust.ts`: `ArmPose.across`; the standing hand carries `across`; the infected neck taper; the profile band back edge.
+- `src/painted/zcpaint/body6.ts`: `Hand.across` and the one-hull mitten; `torsoMarks` blood streak.
+- `src/painted/zcpaint/fridge.ts`: sides, depth, lower bend, box drawn in plate px, handle and box positions.
+- `docs/dev-findings/DF-20261030-zcpaint-back-view-arm-sides.md` (new), `docs/dev-findings.md` (index row), `docs/dev-findings/DF-20261030-zcpaint-collar-neck-close.md` (revalidation line).
+- Outputs (not committed): `out/painted/zcpaint/g1fix/`, `out/qa/zcp-g1-fix/`, `out/qa/zcp-g1fix/wfog/`, `out/logs/g1fix-*`.
+
+## 2026-10-30 — Boss pass 13 G2 (R2.6 plates, group G2): checkpoint
+
+- Scope: brief `VB-ZCPAINT-SHORT-R2.6` (`CS-ZCP-R26`, `TX-ZCP-CLOTH`, `BODY-ZCP-6H`, `VD-ZCP-HANDS`), sheets `ZCPAINT-SHORT-SS-R1.4`, group **G2** of 5: `ZCP-B04-SH01` (shared TH/EN), `ZCP-B05-SH01-TH`/`-EN`, `ZCP-B06-SH01`, `ZCP-B07-SH02`; plus the two G1 leftovers from `delivery.md` "Boss pass 12 G1 fixes look check": B01-SH02 charge neck and collar (`Q-G1-…` item), B01-SH02 turn hair (`Q-G12-2`). User binding (G2 message): no caption shade, cloth texture on cloth only, sets clean, CP-P arm depth, elbows bend like a person (never across the neck), mitten size per `BODY-ZCP-6H`, B07-SH02 bread in both sleeved mitten hands.
+- **Status: checkpoint at the AI09 turn cap, not a look-check pass.** Code is in and gated (results below); the look check of G2 and the B01-SH02 charge neck are open. Uncommitted; `delivery.md` not edited; Film's spike files (`ZcSpk07*`) not touched; B06-SH02 staging (`fridge.ts`) not touched.
+- Start state: pass 12 G1 fixes (`out/qa/zcp-g2/before/` = plate renders of that state; `out/qa/zcp-g1fix/after/` for the guard shots).
+
+### Status by item (stable IDs)
+
+| # | Item | Status | Evidence |
+| --- | --- | --- | --- |
+| G2-1 | Costume `CS-ZCP-R26` on B04-SH01, B05-SH01, B06-SH01, B07-SH02; no bare forearm, knee or shin | built (costume unchanged); bare-skin test now includes the four G2 variants | `tests/zcpaint-costume.test.ts` "costume: bare skin …" (10 of 10 in `out/logs/g2-costume-test-1.log`) |
+| G2-2 | `TX-ZCP-CLOTH` on cloth parts of the four plates (`truck()` frame and the B05 figure); sets, bucket and bread flat | built | `out/qa/zcp-g2/after1/ZCP-B06-SH01_f150.png`, `cmp-b07-f60-2.png` (hatch on overshirt and trousers only) |
+| G2-3 | Mitten `BODY-ZCP-6H` (0.26 across × 0.40 long), opt-in `MITTEN_6H` (`across` 0.7, `along` 0.84); shared default unchanged | built; measured **0.399 × 0.259** (default 0.514 × 0.370) | `scripts/zombie-condo-paint/g-measure.ts` (`mitten` rows) |
+| G2-4 | CP-P arm depth: B05 bucket lift stays CP-P02 (upper arm behind, forearm and mitten in front); B04 walk CP-P03 unchanged | built; sheet names CP-P05 for the bucket, see Q-G2-2 | `bathroom.ts`, `body6.ts` `figFront` |
+| G2-5 | B06-SH01 right hand hovers 5 cm short of the fridge handle (grip (1.13, 3.56) head units, sheet screen (517, 851)), rises pf 100–110, withdraws pf 177–190. **Not in pass 10 or 12**: `figSide` had no reach, so the sheet's right-hand row was unbuilt | built as opt-in `figSide` `hover` (far arm, IK elbow the lower solution); pose switches not frame-checked | `out/qa/zcp-g2/after1/ZCP-B06-SH01_f150.png`; crop `cmp-b06-f150.png` |
+| G2-6 | B07-SH02 bread in both sleeved mitten hands: far sleeve to the bread (opt-in `figSeatSofa` `hold: 'bread'`), loaf between the mittens; far target lowered to (0.60, 2.78) after the first look | built; frame check after the move | `out/qa/zcp-g2/after2/ZCP-B07-SH02_f60.png`, `cmp-b07-f60-2.png` |
+| G2-7 | B07 sofa reads as a thin chair: the back and seat are edge-on in the section (sheet geometry, stand-in) | **not changed**; user question Q-G2-1 | `cmp-b07-f60-2.png` |
+| G2-8 | B01-SH02 charge: infected neck returns to the page E straight tube (`bust.ts`; the pass 12 taper removed) and the tube is non-far for the infected (the far cel tone read as a grey box at 1:1) | **open**: neck is pale in the centre with cel side bands; the band still reads as a wide flat ring at charge scale. Not accepted against review-E | `out/qa/zcp-g2/after2/ZCP-B01-SH02_f47.png`, `cmp-b01-f47-neck2.png`; DF `DF-20261030-zcpaint-g2-far-tube-neck` |
+| G2-9 | B01-SH02 turn pf 19–22: hair fades in place (`hairFade`, alpha 0 → 0.9 over pf 19–22, no rotation) instead of the rotating `silHair` (`hairSweep`) | built; frames rendered (pf 19–23), not yet viewed | `out/qa/zcp-g2/after1/ZCP-B01-SH02_f19.png` … `_f23.png` |
+
+### Measurements (`scripts/zombie-condo-paint/g-measure.ts`; `out/logs/g2-measure-1.log`, mitten rerun after `along` 0.84)
+
+- Section lead (full figure top to floor, projected at the sheet's scale): B04-SH01 586 px (sheet 574), B06-SH01 586 px (574), B07-SH02 seated 595 px (594), B05-SH01 bucket lift 1,140 px (1,120). All ≥ 480 px.
+- Close visible neck (HU, `visibleNeckHU`): B01-SH02 charge 0.09, rage 0.09, silhouette 0.03; B01-SH01, B02-SH03, B06-SH02, B07-SH01 unchanged (`g-measure.ts` rows).
+- Lead heights and neck values are geometry, not frame measures; the frame check is the QA sheet below.
+
+### Checks (gate batch, `out/logs/g2-gate-summary.log`)
+
+- `npx tsc --noEmit`, `npx eslint src tests`, `npm test` (`out/logs/g2-tsc-2.log`, `g2-eslint-1.log`, `g2-npmtest-1.log`); the costume file on its own passed 10 of 10 (`out/logs/g2-costume-test-1.log`).
+- WORLD FOG 21-frame identity (`render-frames.sh src/painted/spike/index.ts out/qa/zcp-g2/wfog …`) against `out/qa/zcp-r26/wfog-final/md5.txt` (`out/logs/g2-wfog-vs-r26final.log`). Shared `body6.ts` changed, so this check is required (see the pass 11 lesson).
+- Guard shots (decoded RGB against the pass 12 G1 fixes frames, `out/qa/zcp-g2/guard/`): B01-SH01 f0/f36, B02-SH03 f0/f60, B07-SH01 f0/f40 (G1 passed) and B06-SH02 f0/f24/f41 (staging frozen by Film's spike rule). Results in the summary log.
+- Not run: Studio and seek parity, neighbour boundaries (B04 → B05, B05 → B06, B06 → B07, B07 → B08, B01-SH01 → B01-SH02), the Editor timeline, the other 16 plates, the 540 px labelled sheet (only the G2 crops above were viewed through `qa-sheet.sh`).
+
+### Deviations (for Film and Mark to revalidate)
+
+- D-G2-1 B06-SH01 hover is the far arm (his right, facing the fridge). In profile the upper arm sits behind the torso, so the visible forearm reads close to straight; the elbow is the lower IK solution (inside the torso edge), not across the neck.
+- D-G2-2 B05-SH01 bucket: CP-P02 (elbows back, mittens at the belly) is kept because a lift to chest height needs bent arms. The sheet's "hang straight (CP-P05)" line conflicts; Mark to choose (Q-G2-2).
+- D-G2-3 B07-SH02 bread is a flat cel loaf (0.52 head long, 0.22 tall) at (0.58, 2.97); the far mitten is lower (0.60, 2.78) so both hands read. The sheet's "unwrap and bite pf 51/45" is not built in this pass.
+- D-G2-4 G2 mitten size is opt-in (`MITTEN_6H`); the shared default still measures 0.514 × 0.370. The B06-SH02 `across` 0.7 path is unchanged (`along` defaults to 1).
+
+### Scripting and tool lessons (this pass)
+
+- The close and section measures are now the repo tool `scripts/zombie-condo-paint/g-measure.ts` (`node --import tsx`), replacing the G1 copy in `out/qa/zcp-g1/tools/`.
+- The bare-skin test (`figures()`) now takes the G2 variants, so a new opt-in pose is covered by B6 without a new test.
+- A `far: true` tube takes the cel tone for its whole length; on a bust that reads as a grey box (B01-SH02 charge). Use `far: false` for a neck that must stay skin-toned.
+
+### Proposed document changes (TL/DP; not applied)
+
+1. `storyboards/zombie-condo-paint/short/sc01-b04-b05.md` (Mark): the B05-SH01 bucket row says "bucket-carrying arms hang straight (CP-P05)" while the lift is at chest height; name the CP row (Q-G2-2).
+2. `storyboards/zombie-condo-paint/short/sc01-b06-b08.md` (Mark): name the B06-SH01 hover arm as his right (far) arm, and the CP-P06 switch frames at pf 100 and pf 177.
+3. `docs/character-proportion-principles.md` (CP-P): a profile reach to a front target (fridge handle) has no front-view depth rule; say so.
+
+### Questions for the user (relay through the coordinator)
+
+- Q-G2-1 B07-SH02 sofa: the sofa reads as a thin chair (the section geometry of the sheet). Keep the stand-in and accept the chair read, or ask Film/Boss to build a fuller sofa (seat cushion, back cushion, arm) in this pass?
+- Q-G2-2 B05-SH01 bucket: keep the lift (bent arms, elbows behind, bucket at the belly, as built), or straight hanging arms with the bucket low (the sheet's CP-P05 line; the bucket then sits in the caption band)?
+- Q-G2-3 B06-SH01 hover: accept the far-arm reach (forearm straight-looking in profile), or use the near arm for the hover?
+- Q-G2-4 B01-SH02 charge neck: pale centre with cel side bands (as now), or plain skin tone with no side bands (page E read at a small scale)?
+
+### Files changed (uncommitted)
+
+- `src/painted/zcpaint/body6.ts`: `MittenSize`, `MITTEN_6H`, `Hand.along`, `handParts` (`along`), `figFront` (`mitten`), `figSide` (`mitten`, `hover`), `lowElbow`, `SeatOpts` (`mitten`, `hold`), `breadPart`, the far sleeve of the bread hold.
+- `src/painted/zcpaint/bust.ts`: infected neck is the page E tube (`far: !inf`), no taper.
+- `src/painted/zcpaint/corridor.ts`: `hairSweep` → `hairFade` (in place, pf 19–22); `K6` import removed.
+- `src/painted/zcpaint/bathroom.ts`: B05-SH01 mitten `MITTEN_6H` and `TEX_B` on the figure.
+- `src/painted/shots/zcpaint.tsx`: `truck()` figures take `TEX_B`; B04 mitten; B06 hover (`b06HoverEase`, `B06_HOVER_GRIP`); B07 hold.
+- `tests/zcpaint-costume.test.ts`: four G2 fixtures in `figures()`; three new tests (mitten size, bread hold, hover at blend 0).
+- `scripts/zombie-condo-paint/g-measure.ts` (new, repo tool).
+- `scripts/zombie-condo-paint/build-notes.md` (this section); `docs/dev-findings.md` index row and `docs/dev-findings/DF-20261030-zcpaint-g2-far-tube-neck.md` (new).
+- Outputs (not committed): `out/qa/zcp-g2/{before,after1,after2,guard,wfog}/`, `out/logs/g2-*`.
+
+### Gate results (addendum, pass 13 G2 checkpoint, `out/logs/g2-gate-summary.log`)
+
+- `tsc --noEmit` exit 0 (`g2-tsc-2.log`); `eslint src tests` exit 0 (`g2-eslint-1.log`); `npm test` 146 of 146 pass, 0 fail (`g2-npmtest-1.log`).
+- WORLD FOG 21-frame identity: **21 of 21 identical** to `out/qa/zcp-r26/wfog-final/md5.txt` (`g2-wfog-vs-r26final.log` empty diff).
+- Guard shots against `out/painted/zcpaint/g1fix/after/` (decoded RGB, `out/qa/zcp-g2/guard/`): B02-SH03 f0 and f60 identical. B01-SH01 f0 339 px (max 6 levels), f36 538 px (max 8); B07-SH01 f0 3 px (max 1), f40 27 px (max 2); B06-SH02 f0 6 px (max 2), f24 8 px (max 1), f41 9 px (max 1). The deltas are in the render-run noise class (`DF-20261030-render-run-noise`); a same-code re-render was not run in this checkpoint, so the cause is not proven. The changed code paths are not used by B07-SH01 or B06-SH02 (B06-SH02 keeps `across` 0.7 with `along` unset). **Unverified:** B01-SH01 at 8 levels is inside the noise class but not bit-identical.
+- Not viewed at 540 px in this checkpoint: B01-SH02 turn pf 19–23 (`after1`), B07-SH02 after the far-hand move (`after2/ZCP-B07-SH02_f60.png`, crop `cmp-b07-f60-2.png`). The labelled G2 contact sheet was not produced (turn cap). Studio and seek parity not run.
+
+## 2026-10-30 — Film SPK-ZCP-07: B06-SH02 reach into the fridge (projected arm, R2.6 paint)
+
+- Scope: `delivery.md` top entry, `Q-G12-1` (binding): research how a person reaches out to take something, and show it with a 3D-like perspective (foreshortening, overlap of upper arm / forearm / hand toward the shelf) in the same painted look. Boss's bottom-shelf staging (D-G12-2) was not accepted as the answer. Spike only: no production file edited (`src/painted/zcpaint/*` untouched, Boss works there in parallel); `delivery.md` not edited; nothing committed.
+- Files (new, uncommitted): `src/painted/spike/ZcSpk07.ts`, `src/painted/spike/zcpaint-spk07-index.ts` (compositions `ZCPAINT-SPK07-A|B|C`, 63 f). Frames `out/painted/zcpaint/spk07/r7/` (f0, 8, 13, 24 per variant). Labelled user sheet (540 px tiles, Chrome headless): `out/qa/zcp-spk07/SPK-ZCP-07-sheet.png` (HTML next to it).
+
+### Research (sources from knowledge, not re-fetched in this pass)
+
+- Two components (Jeannerod 1984, *J. Motor Behavior* 16): the transport (arm carries the hand) and the grasp (the hand opens and turns to the object during the transport, max aperture at about 70 % of the movement); the hand arrives already oriented to the object. → the hand turns from palm-in (hanging) to palm-down-in over f7–14, before contact.
+- Smooth bell-shaped speed, curved path (Flash & Hogan 1985, *J. Neurosci.* 5; Williams 2001, *The Animator's Survival Kit*, arcs; Thomas & Johnston 1981, *The Illusion of Life*). → minimum-jerk timing f6–15, the hand arcs out and up, never a straight slide.
+- Shoulder leads (scapulohumeral rhythm, Inman et al. 1944; overlapping action, Williams): the scapula protracts and lifts first, the elbow opens, the wrist arrives last. Beyond about 90 % of arm length the trunk joins in (Kaminski, Bock & Gentile 1995, *Exp. Brain Res.* 106). → shoulder joint forward 0.2 head (A, C) / 0.35 (B, the longer reach); B is at 103 % of the arm (a lean is needed, see gaps).
+- Elbow drop: a forward reach opens the elbow to the side and down; it does not hang under the shoulder and never rises toward the head. On the draw-back the elbow drops and comes back. → IK pole out-and-down, blending to down-and-back during the lift.
+- Drawing foreshortening (Loomis 1943, *Figure Drawing for All It's Worth*; Hampton 2009, *Figure Drawing: Design and Invention*): overlap of near over far forms, taper with distance, cross-contour arcs (rings on the sleeve bowed toward the near end). → depth-ordered draw, radii × perspective scale, two fold rings on the sleeve.
+- The other hand: on a right-hinged door with the handle on the left edge, the left hand pulls, lets the door swing, and the right hand reaches in. Seen from behind, the left hand works in front of his torso and is hidden.
+
+### Findings
+
+- F7-1 Back-view sides (Film; contradicts `DF-20261030-zcpaint-back-view-arm-sides` *Cause*): seen from behind, his RIGHT hand is on screen-right. The bust's back view reuses the front geometry with the viewer behind, so `R` (screen-right) is his right. The fridge interior is on his right, so the sheet's "right hand takes the box" is a same-side forward reach: no cross-body path, the elbow cannot reach the neck. The pass 12 "fix" made the box arm a cross-body arm, which is what forced the elbow toward the neck. SS-R1.4 also names the screen-right shoulder "left" ("left shoulder across x ≈−300–620"). Needs Boss revalidation of the DF and a Mark sheet correction.
+- F7-2 Draw order: an arm that reaches forward goes away from the camera, so in a back view it is drawn BEFORE the torso (the back occludes the arm root, the hand appears over or beside the shoulder). Pass 10/12 drew reaching arms after the torso (`overArms`), which reads as an arm pasted on the back.
+- F7-3 Reach geometry against the plate: at the sheet camera (F 1844, head 560 px → camera 0.93 m behind his head) the R1.4 fridge (interior 470 px wide) is about 2.2 m from the camera, 1.2 m in front of him: out of reach. A reachable fridge (front 0.38 m ahead of his shoulder plane, interior 0.51 m wide) draws much larger (interior ≈ x 330–960, y 150–1300 in A/B). The fridge plate must be redrawn in the same projection.
+- F7-4 A hand that points into depth hides behind its own cuff (renders 1–4). The grasp turns the hand across the view (palm down on the box top, fingers toward his midline), and the sleeve stops at the cuff instead of a round cap past the wrist; then the mitten reads at 270 px.
+
+### Projection contract PJ-ZCP-07 (spike; proposed for Mark/Boss/Editor)
+
+- The back bust stays a flat card on his body plane z = 0 at the sheet placement (head 560 px, chin y 900, head x 135; unchanged). Everything in front of it is 3D in the bust's head units (x = his right = screen right, y up from the floor, z forward) and projected by one pinhole: s = D / (D + z), x′ = ax + (x − ax)·s, y′ = ay + (y − ay)·s. Sheet camera D 3.29 heads (0.93 m), axis (0.723, 5.607) heads = VP (540, 560). C: D 2.4, axis (1.15, 6.3).
+- Draw order by depth: fridge interior → food → leftovers box → upper door → hand → forearm (+ rings) → upper arm (+ ring) → torso card → head.
+- Limit: the card does not turn with the camera, so C's higher camera shows only in the fridge and arm (a true 3/4 back torso is not built).
+
+### Variants (stable IDs; all: R2.6 costume, cel two tones, `TEX_B` cloth texture, sleeve to the wrist, mitten 0.40 × 0.25 head projected)
+
+| ID | Camera | Box (bottom-centre, heads) | Read |
+| --- | --- | --- | --- |
+| SPK07-A | sheet | (0.75, 4.1, 2.0): shoulder-height shelf, front half | bent-elbow reach; hand appears over the right shoulder line (the sheet's wording) |
+| SPK07-B | sheet | (1.1, 4.1, 2.15): same shelf, deeper and right | near-straight reach, the longest tapering diagonal; clearest depth read at contact |
+| SPK07-C | 0.25 m closer, 0.2 m higher, further right | as A | stronger convergence, but depth reads as "up" on screen: at f24 the forearm stands upright (reads like a raised arm) |
+
+Measured (`spk07Measure`, `node --import tsx`): f15 elbow plate (633, 1119) A, (643, 1042) B, (697, 957) C; the elbow's minimum x over f0–62 is 633 / 642 / 668 px, far right of the neck (x ≈ 40–230): it never crosses the neck. Wrist perspective scale at contact 0.63 / 0.62 / 0.56. Shoulder-to-wrist at contact 0.97 / 1.03 / 0.97 of the arm length (1.78).
+
+### Recommendation (Film)
+
+- SPK07-B geometry at the sheet camera: his right arm (screen right) reaches forward to the box on the shoulder-height shelf, drawn behind the torso, perspective taper and cross-contour rings, hand turned across the view on the box top. A is the fallback if the user prefers the box nearer (bent elbow). C is not recommended (the high camera turns the held forearm upright and needs a 3/4 torso that does not exist).
+- Door hand: his left hand stays hidden in front of the torso; the door's swing (0→95° f0–6, shut f32–41) carries the open and the seal. This deviates from SS-R1.4 "left hand on the door edge" (visible).
+
+### Feasibility for Boss (what goes into `bust.ts` / `body6.ts` / `fridge.ts`; not done here)
+
+1. `bust.ts`: an opt-in arm pose `{kind: 'reach3'; to: V3; hand frame {F, N}; pole: V3}` plus a bust-level `proj?: {D; ax; ay}`; solve with a 3D two-bone IK with a pole (`ik3` in the spike), radii × s at each joint, upper arm and forearm as separate tubes (the elbow overlap), the forearm tube stopping one cuff radius short of the wrist. Back view with z > 0: push into `armBack` (before the torso); front view: `overArms`. Default arms unchanged.
+2. `body6.ts`: a projected mitten (3D paddle 0.40 × 0.25 × 0.12 with the thumb lobe, projected and hulled; spike `mitten`) as an opt-in `Hand` variant; cross-contour ring strokes in `foldTone` (spike `ring`).
+3. `fridge.ts`: redraw the fridge, shelves, food, box and the hinged door in PJ-ZCP-07 (spike `fridge`, `box3`, `leftovers`); the box rides with the hand from contact (f15–17) and comes 0.3 head back and 0.08 up by f24.
+4. Sides: `R` = his right in the back view; revalidate DF `DF-20261030-zcpaint-back-view-arm-sides`.
+5. Risks: one pose path (no hang↔reach switch: the spike interpolates from the hang at f6, which also removes D-G12-5); B at 103 % of the arm needs a small torso lean or the box 0.1 head nearer; caption zone and overlay strip to recheck against the bigger fridge (`scripts/caption-zone.py`).
+
+### Sound
+
+- No new sound. Move the packaging rustle onset from f6 to the contact (f15–17); the transport is silent. Seal pop f0 and seal thump f41 unchanged (`NEEDS-GEN` as in the sheet).
+
+### Checks
+
+- `npx tsc --noEmit` exit 0 (`out/logs/spk07-tsc.log`); `npx eslint` on the two spike files exit 0 (`out/logs/spk07-eslint.log`); `npm test` 146 pass, 0 fail (`out/logs/spk07-npmtest.log`, with Boss's parallel uncommitted changes in the tree).
+- Frames viewed through `scripts/qa-sheet.sh` (270 px: `out/painted/zcpaint/spk07/r7/qa.png`; 540 px: `out/painted/zcpaint/spk07/qa-B15-A24-540.png`) and crops at contact. Not run: Studio, seek parity, caption-zone measure, the production plate.
+
+### Material change (for the coordinator; Mark sheet owner, Boss DF owner)
+
+- If the user picks B or A: SS-R1.4 B06-SH02 staging changes (fridge size and position under PJ-ZCP-07, box on the shoulder-height shelf, his right arm screen-right, left hand hidden). Brief note to `VB-ZCPAINT-SHORT-R2.6` through the coordinator; Mark revises the sheet row; Boss implements items 1–4.
+
+## 2026-10-30 — Mark: sheets ZCPAINT-SHORT-SS-R1.5
+
+- Scope: coordinator task; documentation only (`storyboards/zombie-condo-paint/short/index.md`, `sc01-*.md`; dated note in `visual-brief.md`). No code, `delivery.md` or commit.
+- B06-SH02 restaged to Film `SPK-ZCP-07` variant B (`Q-SPK07-1`) under `PJ-ZCP-07`. Screen values recomputed from the spike's formula (plate px = (135 + 560·x′, 3700 − 560·y′), D 3.29, axis (0.723, 5.607)); one inline `python3 -I` calculation, not kept (it may be scripted if a second projected shot appears). Box moved 0.1 head nearer than spike B (z 2.05) so the wrist reaches without a torso lean; Boss item `MK-ZCP-B5`.
+- Deviations decided: `D-G1-1` accepted (B07-SH01 eye (560, 451), pivot kept); `D-G1-2` accepted (B01-SH02 face line ≤ y 905 with the 1.02 push). B06-SH01 CP-P06 switch reach → hang at pf 190 (end of the withdraw), not Boss's proposed pf 177.
+- For Boss: `DF-20261030-zcpaint-back-view-arm-sides` *Cause* (back-view screen-left = his right) conflicts with Film `F7-1` and with B01-SH01 (his right arm at screen right); revalidate when building `MK-ZCP-B5`.
+- Not done: no production frame of the new B06-SH02 exists; caption-zone at f 15 / f 24 is Boss's check (box bottom edge y ≈1101 may sit behind the caption block).
+
+## 2026-10-30 — Boss pass 14 (B06-SH02 reach, Film SPK-ZCP-07 variant B): Task A checkpoint
+
+- Scope: Film SPK-ZCP-07 feasibility items 1–5 (`bust.ts` reach3, projected mitten and rings, `fridge.ts` in PJ-ZCP-07, sides, reach risk); Mark sheet `ZCPAINT-SHORT-SS-R1.5` MK-ZCP-B5 (box bottom-centre (1.10, 4.10, 2.05), transport f6–15, contact f15–17, lift f17–24, arm before torso) as the target.
+- **Status: Task A code built and gated; look check of the new B06-SH02 pending the user. Task B (G3: B08-SH01, B09-SH01, B09-SH02, B09-SH03, B10-SH01) not started: AI09 turn cap reached after Task A.** Uncommitted; `delivery.md` and `storyboards/` not edited; no push.
+
+### Status by item (stable IDs)
+
+| # | Item | Status | Evidence |
+| --- | --- | --- | --- |
+| A1 | `ArmPose` kind `reach3` and `BustOpts.proj` in `bust.ts` (standing front and back; back view draws the arm in `armBack`, front in `overArms`); default arms unchanged; `anchors.hands` now built in arm order (same values for 2D hands) | built | `tests/zcpaint-proj.test.ts` (reach3 order, anchors, throw without proj) |
+| A2 | Projected mitten (BODY-ZCP-6H 0.40 × 0.25) and cross-contour rings, in new `src/painted/zcpaint/proj.ts` (PJ-ZCP-07 module). Deviation: not a `Hand` option in `body6.ts`, because `Hand` is 2D; `body6.ts` unchanged | built | `proj.ts` `mittenPJ`, `reachArm` |
+| A3 | `fridge.ts` redrawn in PJ-ZCP-07 (fridge, shelves, food, box, hinged door; box rides from contact f15–17); 2D `BOX`/`HANDLE`/`lowBend` removed | built; spike-port check below | `out/qa/zcp-g3/after3/` frames; `out/qa/zcp-g3/check/B06-SH02-port-270.png` (viewed) |
+| A4 | Sides: his right = screen right = `R` in the back view (Film F7-1). Box arm is `R`; his left hangs off frame left (hidden, per variant B) | built | `fridge.ts` comment; DF `DF-20261030-zcpaint-back-view-arm-sides` revalidated (below) |
+| A5 | Reach risk: box z 2.15 → 2.05 (Mark MK-ZCP-B5). Wrist/shoulder distance over pf 6–24: **0.98 of the arm length at pf 15** (was ~1.03 for the spike B box) | built | `out/logs/g3-after3.log`; `tests/zcpaint-proj.test.ts` (≤ 1) |
+| A6 | Caption band vs the bigger fridge: box bottom-centre plate y **1080**, box front-bottom edge y **1101** (Mark's note), box top y 997. TH caption block y 1060–1248 therefore **overlaps the box**. Not applied: the fallback (shelf 4.25) needs Film/Mark sign-off | **open, report** | numbers from `reachPose(0)` through `placeClose` (measured by a stdout script, `node --import tsx` over `reachPose` and `placeClose`; not saved as a log); `scripts/caption-zone.py` not run in this checkpoint |
+| A7 | `legs: false` for the waist cut (spike and sheet: no trouser leg in frame; the default legs showed a trouser top at plate y ≈1830) | built | frames after3 |
+| A8 | Overlay strip (x 420–880, y 300–420) against the bigger fridge: not measured (Editor's text overlay) | unverified | — |
+
+### Measurements
+
+- Box bottom-centre pf 0: plate (670, 1080); top (670, 997); bottom front edge (z − 0.21) ≈ y 1101.
+- Reach ratio pf 6–24: max 0.98 (pf 15); contact pf 15 0.98.
+- Fridge bbox in plate px and sheet numbers: not measured in this checkpoint (sheet R1.5 targets: fridge x 173–1007, interior x 233–948 y 305–1595, shelf y 1152). Unverified.
+- Lead: close bust, no section lead applies (waist cut, head 560 px).
+
+### Spike identity (variant B port vs `out/painted/zcpaint/spk07/r7/ZCPAINT-SPK07-B_F{0,8,13,24}.png`)
+
+- Measured with the spike label band cropped (top 120 px). Band mean luma (320 px bands) equal within 1 level at every band.
+- **Not bit-identical.** The difference is in outlines, cloth hatching and the head (amplified diff: `out/qa/zcp-g3/check/diff-B06-f13.png`). Two causes are plausible and not separated: (a) draw order changed (the spike drew the arm first, the port draws it after the L sleeve), which shifts the seeds of later parts; (b) the spike frames were rendered before the pass 13 shared-code changes. Not proven. Logged as a residual, see DF below.
+- Legs differ by design (A7).
+
+### Guard shots (pass 13 state → pass 14, `out/qa/zcp-g3/before` vs `after3`, decoded RGB)
+
+| Shot | Result | Note |
+| --- | --- | --- |
+| B02-SH03 f0, f60 | identical | flat and bust-front default path |
+| B09-SH02B f0, f18 | identical | flat POV, no figure |
+| B01-SH01 f0 | 394 px, max 7 levels | textured figure; `bust.ts` default path has the same parts order |
+| B01-SH01 f36 | differs (not sized) | textured |
+| B07-SH01 f0 | 10 px, max 1 | |
+| B07-SH01 f40 | differs (not sized) | |
+| B07-SH02 f60 | diff_px=6 max_channel=1 bbox=(660,657)-(677,679) | textured |
+| B05-SH01-TH f40 | diff_px=2 max_channel=1 bbox=(597,549)-(834,765) | textured |
+| B04-SH01 f40 | 7 px, max 2 | |
+| B06-SH01 f150 | 9 px, max 3 | |
+
+- All differences are in the textured-pass residual class (≤ 9 levels, edge pixels; `DF-20261030-zcpaint-figure-texture-residual`). No same-code re-render was run to prove it, so the cause is not isolated: **unverified**.
+- WORLD FOG 21-frame md5 against `out/qa/zcp-r26/wfog-final/md5.txt`: **not run in this checkpoint** (required by the workflow when shared code changes; `bust.ts` changed). Open for the next pass.
+
+### Checks
+
+- `npx tsc --noEmit` exit 0 (`out/logs/g3-tsc-2.log`).
+- `npx eslint` on `proj.ts`, `fridge.ts`, `bust.ts`, `tests/zcpaint-proj.test.ts` exit 0 (`out/logs/g3-eslint-2.log`).
+- `npm test` exit 0; totals in `out/logs/g3-npmtest-1.log` (the four new PJ-ZCP-07 tests pass).
+- Frames viewed through `scripts/qa-sheet.sh` (270 px, 5 tiles, pf 0/13/24/41/62): `out/qa/zcp-g3/check/B06-SH02-port-270.png`. The door is shut at pf 0 and 41–62, open at 13–24, the arm reaches into depth and the box lifts with the hand.
+- Not run: Studio and seek parity, neighbour boundaries (B06-SH01 → B06-SH02 → B06-SH03), labelled 540 px sheet, caption-zone measure, WORLD FOG identity.
+
+### Deviations (for Film and Mark to revalidate)
+
+- D-P14-1 Box z 2.05 (Mark R1.5 MK-ZCP-B5, 0.1 head nearer than spike B). Reach 0.98 instead of ~1.03.
+- D-P14-2 `proj.ts` is a new PJ-ZCP-07 module (the projected mitten is not a `Hand` option).
+- D-P14-3 `legs: false` on B06-SH02 (trouser top was in frame).
+- D-P14-4 Box bottom front edge y 1101 falls inside the TH caption block (1060–1248). Fallback shelf 4.25 needs Film/Mark sign-off.
+
+### Files changed (uncommitted)
+
+- `src/painted/zcpaint/proj.ts` (new), `src/painted/zcpaint/bust.ts` (reach3, proj, anchors), `src/painted/zcpaint/fridge.ts` (PJ-ZCP-07 port), `tests/zcpaint-proj.test.ts` (new).
+- `scripts/zombie-condo-paint/build-notes.md` (this section); `docs/dev-findings.md` index row and `docs/dev-findings/DF-20261030-zcpaint-pj07-reach3.md` (new); `docs/dev-findings/DF-20261030-zcpaint-back-view-arm-sides.md` (revalidation line).
+- Outputs (not committed): `out/qa/zcp-g3/{before,after1,after2,after3,check}/`, `out/logs/g3-*`.
+
+### Next (pass 14 continuation or a fresh invocation)
+
+1. Film/Mark: decide D-P14-4 (caption block vs box bottom); revalidate variant B on the port.
+2. Boss: WORLD FOG identity and Studio seek parity for B06-SH02; labelled 540 px sheet.
+3. Boss Task B (G3) as scoped by the coordinator: cloth texture (`tex: TEX_B`) on B09-SH01/SH03 (`b09.ts`), B09-SH02 (`closeups.ts`) and B10 (`interior.ts`); B10 mitten `MITTEN_6H`; B09 seated distance d 0.55 per sheet R1.4 (code is 0.60, lead 484 px); B08 silhouette costume check (no collar stand or sleeve shape in the flat silhouette; the sheet's R2.6 cue needs Mark's word).
+
+## 2026-10-30 — Boss pass 15 (B06 fix + G3)
+
+- Scope: coordinator task. Start state: pass 14 checkpoint (`out/qa/zcp-g3/after3/`). Brief `VB-ZCPAINT-SHORT-R2.6`, sheets `ZCPAINT-SHORT-SS-R1.5`; costume `CS-ZCP-R26`; body `BODY-ZCP-6H`; `TX-ZCP-CLOTH` (`TEX_B`); projection `PJ-ZCP-07` (B06-SH02 only). User binding: no caption shade, texture on cloth only, CP-P arm depth, mitten per `BODY-ZCP-6H`, B08 hero look (R2.4) unchanged apart from the costume.
+- Part 1 (B06-SH02): after the lift the box is drawn in to the chest before the door shuts (user look check, `delivery.md` "Boss pass 14 B06-SH02 port look check"); the caption overlap with the box accepted; shelf stays 4.10.
+- Part 2 (G3): B08-SH01, B09-SH01, B09-SH02, B09-SH03, B10-SH01. B09-SH01 and B10-SH01 have TH and EN plate IDs over one paint function; only the TH frames were rendered and viewed (the EN IDs use the same code, not separately checked).
+- **Status: built and frame-checked by Boss; not a user look-check pass.** Uncommitted; `delivery.md` and `storyboards/` not edited; no push. Studio and seek parity not run (limitations below).
+
+### Status by item (stable IDs)
+
+| # | Item | Status | Evidence |
+| --- | --- | --- | --- |
+| P15-1 | B06-SH02 draw-in: lift 17–24 (unchanged), **draw in 24–32** (`DRAW` (−0.02, 0.16, −1.25) from the lift pose), box held to the last frame; arm bends, elbow down-and-back (pole unchanged) | built | `src/painted/zcpaint/fridge.ts` `reachPose`; `tests/zcpaint-proj.test.ts` "B06-SH02 draw-in" (reach ≤ 1 over pf 6–62; box holds from 32; z 0.5, y 4.34) |
+| P15-2 | B06-SH02 box vs shut door depth: the box is painted before the door while the door is nearer, after it once the box front (z 0.29) is nearer than the door's free edge; without this the box was hidden at f 41–62 | built; new DF | `fridge()` `boxFirst`; `docs/dev-findings/DF-20261030-zcpaint-b06-box-door-depth.md`; `out/qa/zcp-p15/after2-f41-62-crop.png` |
+| P15-3 | Fridge edges vs R1.5 targets (shut door f 0; open door f 24) | built; measured, see Measurements (stdlib decoded-RGB scan, not saved as a log) | `out/qa/zcp-p15/after2/ZCP-B06-SH02_f0.png`, `_f24.png` |
+| P15-4 | WORLD FOG 21-frame identity (shared `body6.ts` path was not changed this pass; required check outstanding from pass 14) | **21 of 21 identical** | `out/logs/p15-wfog-vs-r26final.log` (diff exit 0); `out/qa/zcp-p15/wfog/md5.txt` |
+| P15-5 | G3-B08: silhouette costume cue (raised collar stand round the nape; overshirt sleeve caps over both shoulders); colour `#06080a`, rim, head, slump and flare unchanged | built (deviation D-P15-4) | `src/painted/zcpaint/balcony.ts` `silhouetteParts`; `out/qa/zcp-p15/b08-f40-cmp-540.png` |
+| P15-6 | G3-B09-SH01 and B09-SH03: seated depth `SEAT_D` 0.60 → **0.55** (sheet RK-28); `TEX_B` on the figure (both draws) | built | `b09.ts`; seated leads 493 px (SH01, sheet 491) and 501 px (SH03, sheet 496), `out/logs/g3-measure-1.log` |
+| P15-7 | G3-B09-SH02: `TEX_B` on the bust; framing moved from R1.3 (540, 610; 360 px; floor at y 1290) to **R1.4** (560, 720; 600 px; floor below the frame; camera about (470, 690)) | built; **foot at the frame bottom: open** (D-P15-3, `Q-P15-1`) | `closeups.ts` `B09_HEAD`, `B09_FLOOR_Y`; `shots/zcpaint.tsx` `camB09Sh02`; `out/qa/zcp-p15/b09sh02-bottom-540.png` |
+| P15-8 | G3-B10-SH01: `TEX_B` on the figure; `MITTEN_6H` on the back, side (turn) and front views | built; standing lead 1374 px (sheet 1345; +2 %, D-P15-5) | `interior.ts`; `out/logs/g3-measure-1.log` |
+| P15-9 | Hands: B09 keeps the fist kit (HD-04, no mitten); B08 shows no hands | N/A for mitten | — |
+
+### Measurements
+
+- Fridge (R1.5 target → measured, `out/qa/zcp-p15/after2/` frames, decoded RGB): front panel right edge x 1007 → **1007**; front panel top y 225 → **226**; interior top y 305 → **304**; interior right x 948 → **948**; shelf 4.10 front edge y 1152 → **1153–1154**; front panel left edge x 173: occluded by the head and torso (formula 174), not measured.
+- B06-SH02 box (projected with `PJ-ZCP-07`, computed not sampled): bottom-centre (1.00, 4.34, 0.50) → plate (≈674, 1176); lid top ≈ y 1060 (the caption block's top edge). Wrist at pf 41 ≈ (791, 1029). Reach (wrist to shoulder) ≤ 1 arm length (test).
+- Caption band (`scripts/caption-zone.py --band 1060:1248`, default thresholds mean ≤ 0.25, p95 ≤ 0.40): **B06-SH02 f 24 mean 0.354 / p95 0.84, f 41 0.403 / 0.871, f 62 0.403 / 0.871: fail** (the sheet's fallback to shelf 4.25 not applied; the user accepted the overlap in pass 14). B09-SH01 0.119 / 0.131 pass; B09-SH03 0.119 / 0.131 pass; **B09-SH02 f 0 0.447 / 0.724 fail; B10-SH01 f 100 0.452 / 0.62 fail** (B10 before this pass: 0.465 / 0.631, so this is not caused by the pass).
+- Leads (`scripts/zombie-condo-paint/g-measure.ts`, rows added this pass): seated B09-SH01 **493 px**, B09-SH03 **501 px** (both ≥ 480); standing B10-SH01 **1374 px** (sheet 1345). B06-SH02 and B09-SH02 are close busts (no section lead; B09-SH02 face y 420–1020 per R1.4 but feet in frame, see Q-P15-1).
+- Silhouette diff B08-SH01 f 40 (pass 14 state → now): 8,180 px, all but ≈ 66 px in y 1600–1919 (the silhouette band); max 168 levels at the collar and cap rim edges. Dark-mass top unchanged (y 1360).
+- Determinism (same code, two runs, `out/logs/p15-det-stills.log`): B06 f 0 4 px and f 24 8 px differ at max 1 level. Pass 14 → now (decoded RGB): f 0 2 px, f 24 11 px, max 1 level. These are render-run noise (the same class as `DF-20261030-render-run-noise`), not a change.
+
+### Checks
+
+- `npx tsc --noEmit` exit 0 (`out/logs/p15-tsc-2.log`).
+- `npx eslint` on the changed src/test files exit 0 (`out/logs/p15-eslint-1.log`); `tests/zcpaint-proj.test.ts` and `scripts/zombie-condo-paint/g-measure.ts` exit 0 (`out/logs/p15-eslint-2.log`).
+- `npm test` 152 of 152 pass (`out/logs/p15-npmtest-2.log`; the new draw-in test and the existing B08 silhouette, B09 seated-lead and B10 perspective tests included).
+- WORLD FOG 21-frame identity: 21 of 21 identical (P15-4).
+- Final re-run after a behaviour-neutral cleanup of the box/door depth check (`boxFirst` reuses the door's free-edge depth): `tsc` exit 0 (`out/logs/p15-tsc-3.log`), `eslint` exit 0 (`p15-eslint-3.log`), `npm test` 152 of 152 (`p15-npmtest-3.log`); B06-SH02 f 41 against the verified frame: 7 px, max 1 level (`out/qa/zcp-p15/final/`).
+- Frames viewed through `scripts/qa-sheet.sh` (270 px) and at 1:1 crops: `out/qa/zcp-p15/b06-seq-270.png` (f 0, 24, 32, 35, 38, 41, 62), `out/qa/zcp-p15/g3-after-270.png` (B08 f 127 and f 40, B09 SH01/02/03, B10 f 30/100/130), `out/qa/zcp-p15/b09sh02-bottom-540.png` (foot), `out/qa/zcp-p15/b08-f40-cmp-540.png` (silhouette).
+- **Labelled 540 px sheet for the user:** `out/qa/zcp-p15/pass15-labelled-540.png` (12 tiles, shot ID, TH composition time and plate frame per tile; viewed at 900 px in `out/qa/zcp-p15/pass15-labelled-view.png`).
+- Not run: Studio cold load and seek parity (`npm run start`), neighbour boundaries (B06-SH01 → B06-SH02, the EN cut at f 45 as its own render, B06-SH02 → B06-SH03, B08 → B09, B09-SH01 → B09-SH02 → B09-SH02B → B09-SH03, B09-SH03 → B10), the Editor timeline, and the sheet's 20 other plates (not in this pass).
+
+### Deviations (for Film and Mark to revalidate)
+
+- D-P15-1 B06-SH02 box: draw-in 24–32 to bottom-centre (1.00, 4.34, 0.50). The sheet says "box + cup in his right hand at about shoulder height" and "draws in toward the chest" (user). The box's lid sits at the caption block's top edge (≈ y 1060) and the box and hand lie in the caption band (overlap accepted in pass 14). From the back view the forearm and upper arm cover most of the box; the cup and lid show above the wrist. Film to confirm the read.
+- D-P15-2 Depth order in `fridge()` (box vs shut door, by the box front z against the door's free edge). A painter rule, not in the sheet. See the DF.
+- D-P15-3 B09-SH02 framing moved from R1.3 to the R1.4 numbers (head 600 px at (560, 720), camera about (470, 690), floor below the frame). **The bare foot stays visible at the bottom edge** (top ≈ y 1820, to the frame bottom): the seated bust's feet sit 1.83–1.99 head units below the head centre, and the sheet's chin (≤ 1020) and foot (≥ 1920) numbers cannot both hold at 600 px. Shared bust not changed (WORLD FOG uses `seated: true` too). DF `DF-20261030-zcpaint-b09-sh02-feet-frame`.
+- D-P15-4 B08 costume: the sheet's costume note says the silhouette shows "collar stand and sleeve shape only". The sheet row gives no explicit cue, so Boss used the note: a raised collar stand (reads at the nape below the jaw) and overshirt sleeve caps (bulge over both shoulders). No texture (dark silhouette). The cue is small (≈ 8k px); a frame check at 540 px shows it. If the user wants it stronger, Mark names the cue.
+- D-P15-5 B10 standing lead 1374 px, sheet 1345 (+2 %): the sheet value was an estimate; the figure is unchanged in height.
+
+### Scripting and tool lessons (this pass)
+
+- The Bash tool's shell is zsh: an unquoted `$SPECS` is one argument, not a word list, so `render-frames.sh` rendered nothing and failed with `Frame NaN`. Pass the ID:frames specs explicitly (or use `${=SPECS}` in zsh). Lost one WORLD FOG run to this.
+- ffmpeg here has no `drawtext`; the system `python3 -I` has no PIL (the existing finding `DF-20261030-zcpaint-qa-label-sheet` records the same gap). The labelled sheet was drawn with a small Swift AppKit helper kept outside the repo (scratchpad `labelsheet.swift`, `swiftc`). A repeated labelled sheet needs a repo helper (see proposed changes).
+- `g-measure.ts` gained seated (B09 at `SEAT_D`) and standing (B10 back view) rows; `rgb-diff.py` and the stdlib fridge scan (decoded RGB) were used for the edge and diff checks.
+
+### Proposed document changes (TL/DP; not applied)
+
+1. `.claude/skills/painted-2d/SKILL.md` gotchas: "A prop moved across a plane (door, wall) needs its draw order checked against that plane; a fixed painter order that was right behind the plane is wrong in front of it (DF-20261030-zcpaint-b06-box-door-depth)."
+2. `scripts/README.md`: a labelled review-sheet helper (label text per tile, 540 px) for the shot-ID preview rule; the Swift helper is a candidate. Needs the user's or the TL's decision on language/tooling.
+3. `storyboards/zombie-condo-paint/short/sc01-b09-b10.md` (Mark): B09-SH02 numbers (head centre and foot acceptance) conflict at 600 px; Mark chooses (see Q-P15-1). Not edited by Boss.
+
+### Questions for the user (relay through the coordinator; not asked here)
+
+- `Q-P15-1` B09-SH02 close (R1.4 framing): the bare foot stays at the bottom edge (y ≈ 1820 to the frame edge). Options: (a) accept the foot tips at the edge (current build); (b) lower the head about 100 px (chin ≈ 1120, the sheet's chin rule changes); (c) smaller head (≈ 660 px, chin ≈ 1050, the same rule shifts); (d) back to the R1.3 framing (360 px, floor visible). Boss default: (a) until Mark chooses numbers.
+- `Q-P15-2` Captions over cream and the teal costume: B06-SH02 (f 24–62), B09-SH02 and B10-SH01 fail the default caption-zone thresholds for outline captions (band mean 0.35–0.45). The user accepted the B06 overlap in pass 14. Keep the outline-caption band as it is (no shade, per pass 8), or ask Film for a band threshold for this look?
+- `Q-P15-3` B06-SH02 read from the back: the box is mostly behind the forearm and upper arm; the cup and lid show above the wrist (`out/qa/zcp-p15/pass15-labelled-540.png`, tile 4–5). Is this the box-in-hand read the user wants, or should the box move further right to clear the arm?
+
+### Files changed (uncommitted)
+
+- `src/painted/zcpaint/fridge.ts` (LIFT/DRAW, draw-in 24–32, box/door depth order, `reachPose` comments)
+- `src/painted/zcpaint/balcony.ts` (`silhouetteParts`: collar and sleeve caps)
+- `src/painted/zcpaint/b09.ts` (`SEAT_D` 0.55; `TEX_B` on two draws)
+- `src/painted/zcpaint/closeups.ts` (B09-SH02 `B09_HEAD` R1.4, `B09_FLOOR_Y`, `TEX_B`)
+- `src/painted/zcpaint/interior.ts` (`MITTEN_6H`, `TEX_B`)
+- `src/painted/shots/zcpaint.tsx` (`camB09Sh02` about (470, 690))
+- `tests/zcpaint-proj.test.ts` (draw-in test)
+- `scripts/zombie-condo-paint/g-measure.ts` (seated and standing rows)
+- `scripts/zombie-condo-paint/build-notes.md` (this section)
+- `docs/dev-findings.md` (two index rows); `docs/dev-findings/DF-20261030-zcpaint-b06-box-door-depth.md` (new); `docs/dev-findings/DF-20261030-zcpaint-b09-sh02-feet-frame.md` (new)
+- Outputs (not committed): `out/qa/zcp-p15/{before,after1,after2,wfog,det}/`, `out/qa/zcp-p15/*.png` (sheets and crops), `out/logs/p15-*`, `out/logs/zcp-p15-*`, `out/logs/g3-measure-1.log`.
+
+### Next
+
+1. Film/Mark: D-P15-1 (box read), D-P15-3 / `Q-P15-1` (B09-SH02 numbers), D-P15-4 (B08 cue).
+2. User: look check of `out/qa/zcp-p15/pass15-labelled-540.png`; answers to `Q-P15-1`–`3`.
+3. Boss: Studio cold load and seek parity for the B06-SH02 and B09 plates; neighbour boundary frames; the EN f 45 render; the other plates in the registry (not in this pass).
+
+## 2026-10-30 — Boss pass 16 G5 (R2.6 plates, group G5)
+
+- Scope: coordinator task. Brief `VB-ZCPAINT-SHORT-R2.6`, sheets `ZCPAINT-SHORT-SS-R1.5`. G5 = `ZCP-B03-SH01-TH/EN`, `ZCP-B04-SH02-TH/EN`, `ZCP-B04-SH03a`, `-b`, `-c-TH/-c-EN`, `ZCP-B04-SH04-TH/-EN`, `ZCP-B09-SH02B`. None of these plates has a figure in frame (lead rule N/A). Not in scope: G4 shots (B02-SH01, B02-SH02, B05-SH02, B05-SH03, B06-SH03), `body6.ts`, `bust.ts`, `hands.ts`, `proj.ts`. `delivery.md` and `storyboards/` not edited; no commit, no push.
+- Coexistence: G4 had edits in flight in this checkout. `povshots.ts` and `inserts.ts` are shared files; my hunks are in the B03, B09 and B04 functions only. `WATER_DEEP` is kept because the B05-SH02 stream (G4's shot) uses it. tsc, eslint and npm test below ran on the checkout state at the time, including G4's uncommitted edits; re-run after G4 settles.
+- **Status: built and frame-checked by Boss; not a user look-check pass.** Studio and cold-load seek not run (limitation). Coordinator defaults applied: B04-SH02 keeps the pass 9 Grade vignette; B03 View B keeps the new cast tone.
+
+### Status by item (stable IDs)
+
+| # | Item | Status | Evidence |
+| --- | --- | --- | --- |
+| P16G5-1 | B03-SH01 View B: far-window floor shadows (the two curtain shadows) drawn in the LT-03 cast tone of the floor, not a near-black mix (they read as two dark legs) | built; partly addressed (D-P16G5-3) | `povshots.ts` `paintViewB` (`castTone(floor)`); `out/qa/zcp-g5/after/sheet-B03.png` |
+| P16G5-2 | B03 keys, whip, lamps and blackout: unchanged | checked against R1.5 | `out/qa/zcp-g5/before/sheet-B03.png`, `after/sheet-B03.png` |
+| P16G5-3 | B04-SH02 power-out painted crossed-bolt icon (`#e5484d`, x 160-200, y 722-790) from the power key (TH 75, EN 87); Remotion label stays Editor's | built | `diagram.ts` `powerIcon`; `after/sheet-B04-SH02.png` |
+| P16G5-4 | B04-SH02 refill path dashed (14 px on, 12 px off) and struck out; appears f168-180 (TH), f196-208 (EN) | built | `diagram.ts` `dashRun`; `after/ZCP-B04-SH02-TH_f180.png`, `after/ZCP-B04-SH02-EN_f220.png` |
+| P16G5-5 | B04-SH03 a/b and the c streams: lighter than the wall (`WATER_AQUA`), per R1.5 "water strands lighter than the wall" | built (D-P16G5-5) | `inserts.ts` `stream(..., WATER_AQUA)`; `after/sheet-B04-SH03-04.png` |
+| P16G5-6 | B04-SH04 per-object flat cast shadows (under each bucket, the pot and the bottle row) replace one detached grey bar below the row | built; lid-snap shadow not built (D-P16G5-4) | `inserts.ts` `paintB04Sh04`; `after/sheet-B04-SH03-04.png` |
+| P16G5-7 | B04-SH04 lid keys TH 0/4/8, EN 3/12/21; count 4 / 1 / 6 on the last frame | checked, unchanged | `inserts.ts` `LIDS`; `out/qa/zcp-g5/after/sheet-B04-SH03-04.png` |
+| P16G5-8 | B09-SH02B floor props were drawn on the cabinet face at f0 (plate y 860-930). Now a tile floor below the cabinet base (plate y 2100, grout one step darker: grout lines drawn, not confirmed at full resolution), two stacks of two cans and the phone at plate y ≈2230-2400, short shadows toward the cabinet, cabinet base line | built | `povshots.ts` `floorTiles`, `floorProps`, `paintB09Sh02b`; `after/sheet-B09-SH02B.png`; `zcp-g5-labelled-540.png` tiles c0, c9 |
+| P16G5-9 | B09-SH02B prop exit | measured: props still in frame at the bottom edge at f9, gone by f13 (sheet "by ≈f9"); D-P16G5-1 | `after/sheet-B09-SH02B.png` |
+
+### Measurements
+
+- Caption band (`scripts/caption-zone.py --band 1060:1248`, default thresholds mean ≤ 0.25 / p95 ≤ 0.40). The plates carry no caption text, so these are the paper and set values under the band. Logs `out/logs/zcp-g5-caption-before.log`, `zcp-g5-caption-after.log`:
+  - B09-SH02B f0: before mean 0.785 / p95 0.810; after 0.439 / 0.456. B09-SH02B f9 after 0.464 / 0.801.
+  - B04-SH04 TH f8: 0.809 / 0.833 (unchanged). B04-SH02 TH f75 after 0.844 / 0.869.
+  - B03-SH01 TH f18: 0.428 / 0.714 (unchanged; the POV limits of ≤ 0.45 / ≤ 0.60 are exceeded on p95).
+  - All fail the default thresholds. The user chose outline captions with no shade (pass 8, `delivery.md`); the same class of result was recorded as `Q-P15-2`. Not changed here.
+- Determinism and seek: re-rendered single frames with the same bundle, decoded RGB md5 identical to the in-order frames: `ZCP-B09-SH02B` f9 (`4ae28727…`) and `ZCP-B04-SH02-TH` f180 (`53c41373…`). Not an unordered sweep (limitation).
+- Lead heights: N/A (no figure in frame in any G5 plate).
+
+### Checks
+
+- `npx tsc --noEmit`: exit 0, 0 `error TS` lines (`out/logs/zcp-g5-tsc-1.log`).
+- `npx eslint` on `diagram.ts`, `inserts.ts`, `povshots.ts`: exit 0 (`out/logs/zcp-g5-eslint-1.log`).
+- `npm test`: 152 of 152 pass, exit 0 (`out/logs/zcp-g5-npmtest-1.log`).
+- Frames viewed through `scripts/qa-sheet.sh` (270 px): before and after sheets (`out/qa/zcp-g5/before/sheet-*.png`, `out/qa/zcp-g5/after/sheet-*.png`); 540 px zooms `out/qa/zcp-g5/before/zoom-*.png`.
+- **Labelled 540 px sheet for the user:** `out/qa/zcp-g5/zcp-g5-labelled-540.png` (13 tiles, shot ID, lang, plate clock `c` and frame); ~900 px view copy `out/qa/zcp-g5/zcp-g5-labelled-540-view.png`. Built with the new `scripts/zombie-condo-paint/label-sheet.sh` (see proposed changes).
+- Not run: Studio cold load and play/pause/scrub (`npm run start`); unordered seek sweep; neighbour boundaries (B03 → B04-SH01, B04-SH02 → B04-SH03, B04-SH04 → B05-SH01, B09-SH02 → B09-SH02B → B09-SH03); the Editor timeline; the EN f 45 render.
+
+### Deviations (for Film and Mark to revalidate)
+
+- D-P16G5-1 B09-SH02B prop exit: sheet "by ≈f9"; measured in frame at f9, gone by f13. The sheet's own f0 numbers (cans ≈ y 1130) give about f10-12 with the current ease. Timing left as built; Mark or Film to choose.
+- D-P16G5-2 B09 floor: the sheet gives no tile size; tile grout uses 110 px rows and 180 px columns (plate px), one step darker (22 % mix). Design value; Film may revise.
+- D-P16G5-3 B03 View B: the two curtain shadows are unchanged in geometry (tapered, about 300 px long). The tone is lighter, but at f14-23 they still read as two dark trousers. Options for Film: shorter shadows or a softer edge. Not changed by Boss without Film.
+- D-P16G5-4 B04-SH04: the sheet's "lid's shadow appears with its snap" is not built; the per-object base shadows are (P16G5-6).
+- D-P16G5-5 B04-SH03 streams: lighter than the wall now, but still a plain rod in the frame (no splash or taper). Film may ask for a more water-like stream.
+- D-P16G5-6 B04-SH02 Grade vignette kept (coordinator default; pass 9). The sheet says "plain paper" and pass 3 recorded "no vignette". Film/Mark to decide.
+- D-P16G5-7 B04-SH03 insert objects end at plate y 960-1000: meets the acceptance "above y 1040", not the "target ≤ 800" (unchanged from pass 10).
+
+### Scripting and tool lessons (this pass)
+
+- `scripts/zombie-condo-paint/label-sheet.sh` (new): labelled 540 px tiles as an HTML page captured by Chrome headless, then `sips -Z 900` for the view copy. It replaces the Swift helper of pass 15. Labels are ASCII only; Thai text stays on the page, not in the helper.
+- The background render chain stalls when other worktrees' Chrome processes load the machine (the after set ran at about 15 stills per 10 minutes). Use a completion marker in the log (`stills exit`) and wait on it, not on elapsed time.
+- `WATER_DEEP` looked unused after the edit; it was still used by a G4 shot. Grep the whole file before removing a constant in a shared module.
+
+### Proposed document changes (TL/DP; not applied)
+
+1. `docs/dev-findings/DF-20261030-zcpaint-qa-label-sheet.md`: the labelled sheet is scripted (`label-sheet.sh`, Chrome headless). Update the "Planning impact" line.
+2. `scripts/README.md`: a row for `label-sheet.sh` (labelled review sheet, 540 px, ASCII labels; Chrome headless).
+3. `storyboards/zombie-condo-paint/short/sc01-b09-b10.md` (Mark): B09-SH02B prop exit timing (D-P16G5-1) and the floor layout numbers. Not edited by Boss.
+
+### Questions for the user (relay through the coordinator; not asked here)
+
+- `Q-P16G5-1` Coordinator defaults applied (B04-SH02 Grade kept; B03 cast tone kept); confirm at the overview.
+- `Q-P16G5-2` Caption band on the POV and insert plates (B03 p95 0.714; B04-SH02 mean 0.844; B09-SH02B f9 p95 0.801) under the outline-caption decision: keep as is, or ask Film for a band threshold for this look (same as `Q-P15-2`)?
+
+### Files changed (uncommitted, this pass)
+
+- `src/painted/zcpaint/diagram.ts` (`dashRun`, `powerIcon`, dashed refill path; a dead loop removed in the same block)
+- `src/painted/zcpaint/inserts.ts` (B04-SH03 stream colour, B04-SH04 shadows; B05 untouched)
+- `src/painted/zcpaint/povshots.ts` (B03 `paintViewB` shadow tone; B09 `floorTiles`, `floorProps`, cabinet base line; `castTone` import)
+- `scripts/zombie-condo-paint/label-sheet.sh` (new)
+- `scripts/zombie-condo-paint/build-notes.md` (this section)
+- Outputs (not committed): `out/qa/zcp-g5/{before,after,det}/`, `out/qa/zcp-g5/zcp-g5-labelled-540*.png`, `out/logs/zcp-g5-*`.
+
+## 2026-10-30 — Boss pass 16 G4 (R2.6 plates, group G4): checkpoint
+
+- Scope: brief `VB-ZCPAINT-SHORT-R2.6` (`CS-ZCP-R26`, `TX-ZCP-CLOTH`, `BODY-ZCP-6H`, `VD-ZCP-HANDS`), sheets `ZCPAINT-SHORT-SS-R1.5`, group **G4**: `ZCP-B02-SH01-TH`/`-EN`, `ZCP-B02-SH02-TH`/`-EN`, `ZCP-B05-SH02`, `ZCP-B05-SH03` (+ `-BOWL`, `-TH`, `-EN`), `ZCP-B06-SH03`. User binding (coordinator): no caption shade, texture on cloth only, sets clean, mitten per `BODY-ZCP-6H` except the two pinch inserts (B05-SH02, B05-SH03), B02-SH01 no hand (pass 8), POV hands per the WORLD FOG phone-insert model where applicable.
+- Start state: `out/qa/zcp-g4/before/` (38 plate frames, rendered before any G4 edit; `before.md5`).
+- **Status: built and frame-checked by Boss; not a user look-check pass.** Uncommitted; `delivery.md`, `storyboards/` and G5 scene code not edited. Studio cold load and seek parity not run (limitations).
+- Shared-file note: `src/painted/zcpaint/inserts.ts` was also edited in flight by the G5 agent (B04-SH03 water colour and cast shadows, 16:55–16:58; `WATER_DEEP` removed then restored). Only the G4 functions (`sleeve()`, `hand()` signature, B05-SH02, B05-SH03 forearm, B06-SH03) are G4 edits. `povshots.ts` G5 hunks are at lines 156 (B03) and 204+ (B09-SH02B); none in the B02 code (lines 1–76).
+
+### Status by item (stable IDs)
+
+| # | Item | Status | Evidence |
+| --- | --- | --- | --- |
+| G4-1 | B02-SH01 (TH/EN): no hand, forearm or sleeve at any frame; bolt turns by itself (pass 8); camera push 1.00 → 1.03 unchanged | verified, **no code change** | `out/qa/zcp-g4/final/ZCP-B02-SH01-*`; `zcp-g4-labelled-540.png` tiles 1–2 |
+| G4-2 | B02-SH02 (TH/EN): no hands or arms; cabinet, flush and wobble unchanged | verified, **no code change** | `final/ZCP-B02-SH02-*`; tiles 3–4 |
+| G4-3 | B05-SH02 pour insert: bare SKIN forearms → overshirt sleeves to the wrist with a cuff (`sleeve()`, `COSTUME.over`, `TX-ZCP-CLOTH`); both hands **pinch** (`hand(..., 'pinch')`, was mitten) | built; cuff and pinch frame-checked at full resolution | `inserts.ts` B05-SH02; `out/qa/zcp-g4/after1-crops-hands.png`; tiles 5–7 |
+| G4-4 | B05-SH03 cistern insert: bare forearm → sleeve with cuff (16:58 fix: cuff ink curve 0.5); visible pinch kept (lid grip, pf < 60); part 2 (BOWL) and part 3 (TH/EN) hold unchanged (no hand) | built; `md5` of BOWL and part 3 frames unchanged | `out/qa/zcp-g4/after2b-cuff-zoom.png`; tiles 8–11 |
+| G4-5 | B06-SH03 counter top-down: bare forearm → sleeve with cuff, mitten kept (`BODY-ZCP-6H`); mitten cast onto the counter (sheet light row; silhouette offset screen-left, `castTone`) | built (cast is new) | `inserts.ts` B06-SH03; tiles 12–13 |
+| G4-6 | Sleeve and cuff geometry on the three inserts: width = the old forearm width (66–70 px), cel band on the right (2s = 0.4 w), cuff 0.12 head back from the wrist at the hand scale (1.9 / 2.2 / 2.0) | built; see D-G4-3 | `inserts.ts` `sleeve()` |
+| G4-7 | Bare forearm removed from the plates: `forearm()` deleted (its only callers were these three plates) | done | `grep forearm(` in `src/painted/zcpaint/` → none |
+| G4-8 | Caption band `--band 1060:1248` measured for all 38 frames (before and final); no shade added | **fails the default thresholds on every frame** (Q-G4-3); B02 also above the POV limit (mean ≤0.45, p95 ≤0.60) | see Measurements |
+
+### Measurements
+
+- Decoded-RGB md5 (38 plate frames, `before.md5` vs `final.md5`): **20 identical**. The 17 changed frames are the expected set: B05-SH02 (f 0, 15, 36, 50, 72, 100), B05-SH03 (f 15, 21, 33, 45, 59), B06-SH03 (f 0, 2, 3, 6, 12, 24). The B05-SH03 BOWL (f 0, 6) and part 3 (TH f 19, 30; EN f 30, 60) frames are identical, so the parts without a hand are unchanged. The B02 frames are identical except `ZCP-B02-SH02-TH_f9` (9–77 px, max 1–3 levels, x 974: the latch edge).
+- Render-run noise on the B02 code (no edit): the same code rendered twice differs by 6–144 px at max 2 levels (`out/qa/zcp-g4/after1` vs `after2`; `DF-20261030-render-run-noise` class). So the B02 f9 difference is noise.
+- Caption band, full-width `--band 1060:1248` (mean / p95, before → final, same for all frames of a plate unless noted): B02-SH01 0.62–0.63 / 0.79–0.81; B02-SH02 0.53 / 0.80; B05-SH02 and B05-SH03 (incl. part 3) 0.81 / 0.83; B05-SH03-BOWL 0.87 / 0.89; B06-SH03 0.61 → 0.61 / 0.64 (mean moves 0.615 → 0.612 at f 0–6 from the cast). Default thresholds (mean ≤ 0.25, p95 ≤ 0.40) fail on all; the B02 POV limit (≤ 0.45 / ≤ 0.60) fails. The sheet's under-text box (x 150–930) was **not** measured (the script has no x range): unverified.
+- Leads: N/A (no full figure in these plates; the lead rule is exempt for inserts per the sheet, and B02 is POV).
+- WORLD FOG 21-frame md5 (`out/qa/zcp-g4/wfog/md5.txt` vs `out/qa/zcp-r26/wfog-final/md5.txt`): **21 of 21 identical** (`out/logs/zcp-g4-wfog-diff.log` empty). Measured on the current tree, including the G5 in-flight edits to `body6.ts`/`bust.ts`, which the WORLD FOG path also uses.
+
+### Checks
+
+- `npx tsc --noEmit` exit 0 (`out/logs/zcp-g4-tsc.log`).
+- `npx eslint src/painted/zcpaint/inserts.ts src/painted/zcpaint/povshots.ts` exit 0 (`out/logs/zcp-g4-eslint.log`).
+- `npm test` 152 of 152 (`out/logs/zcp-g4-npmtest.log`). No new automated test: the insert sleeve and pinch are checked by frame and md5, not a unit test (a pixel test would need a recording PaintContext).
+- Frames viewed through `scripts/qa-sheet.sh` (270 px) and at full resolution (crops `after1-crops-hands.png`, zooms `after2b-cuff-zoom.png`).
+- **Labelled 540 px sheet for the user:** `out/qa/zcp-g4/zcp-g4-labelled-540.png` (1684 × 5308, 13 tiles, shot ID, TH/EN composition time and plate frame per tile), view copy `out/qa/zcp-g4/zcp-g4-labelled-900.png`. Rendered by the new `scripts/zombie-condo-paint/label-sheet.py` from `label-manifest.tsv` (registered in `scripts/README.md`; the third labelled sheet, so scripted per the TL rule).
+- Not run: Studio cold load, play/pause, backward scrub and unordered seeks (`npm run start`); neighbour boundaries (B02-SH01 → SH02 → SH03, B04-SH04 → B05-SH02 → B05-SH03 → B06-SH01, B06-SH03 → B07-SH01). The plates are pure functions of the plate frame, so seek parity follows from the code, but it is not observed.
+
+### Deviations (for Film and Mark to revalidate; Boss does not edit the sheets)
+
+- D-G4-1 **Pinch on B05-SH02, both hands** (the coordinator's binding). The R1.5 row says "mitten with a thumb lobe" and `HD-03` says "no finger articulation, except the B02-SH01 bolt pinch". The pinch is the body6 `pinch` kind, the same one B05-SH03 already used. Film to record the HD-03 exception for the two pinch inserts; Mark to change the B05-SH02 hands row.
+- D-G4-2 **POV hands:** the sleeve and cuff follow the WORLD FOG phone-insert construction (teal `#2f5a5c`, cuff, sleeve off-frame to the wrist). The hand shape stays the BODY-ZCP-6H mitten or pinch from `body6.ts`, not `hands.ts` `paintPovHand` (that hand is not BODY-ZCP-6H). See Q-G4-2.
+- D-G4-3 **Sleeve width kept at the old forearm width** (66–70 px full width). At the hand scale of 2.0 a figure sleeve (radius 0.215 head) would be about 120 px wide, so these sleeves read thinner than the figures. Not changed; Film to say whether the inserts should match the figure width.
+- D-G4-4 **Cast added** on the B06-SH03 mitten (sheet light row); was missing.
+- D-G4-5 **Cuff is a fold-tone line** (the figure `cuffLine` convention, weight 1.0). Visible at full resolution (zoom), faint at tile scale.
+
+### Questions (relay through the coordinator; not asked here)
+
+- `Q-G4-1` B05-SH02: both hands pinch (as built), or only the right hand pinches on the rim and the left stays a mitten under the base?
+- `Q-G4-2` "POV hands follow the WORLD FOG phone-insert model where applicable": confirm this means the sleeve and cuff construction (as built), not the `hands.ts` hand shape for B05/B06.
+- `Q-G4-3` Captions: every G4 band fails the default thresholds and the B02 POV limit (full-width measure), as with Q-P15-2 for B06-SH02 and B09. Keep the outline captions with no shade, and ask Film for a band threshold for the cream and tan sets?
+
+### Files changed (uncommitted)
+
+- `src/painted/zcpaint/inserts.ts` (`sleeve()` added, `forearm()` removed, `hand()` takes an optional `sil`, B05-SH02 hands and sleeves, B05-SH03 sleeve, B06-SH03 sleeve and cast). The G5 hunks in the B04 region are not G4's.
+- `scripts/zombie-condo-paint/label-sheet.py` (new), `scripts/README.md` (one row).
+- `scripts/zombie-condo-paint/build-notes.md` (this section only).
+- Outputs (not committed): `out/qa/zcp-g4/{before,after1,after2,after2b,final,wfog}/`, `out/qa/zcp-g4/*.png|html|tsv|md5|json`, `out/logs/zcp-g4-*`.
+
+### Next
+
+1. Film and Mark: D-G4-1 to D-G4-5 and the HD-03 exception.
+2. User: look check of `out/qa/zcp-g4/zcp-g4-labelled-540.png`; answers to `Q-G4-1` to `Q-G4-3`.
+3. Boss: Studio cold load and seek; neighbour boundaries; the under-text caption box (x 150–930) measure.
+
+## 2026-10-30 — Boss pass 17 (overview fixes)
+
+- Scope: 24-plate R2.6 overview fix list (delivery record "24-plate R2.6 overview", `out/painted/zcpaint/r26-overview/overview-24-270.png`): O17-1 B07-SH01 hand/arm path, O17-2 day-3 stubble (all day-3 plates), O17-3 B05-SH02 hands. Brief `VB-ZCPAINT-SHORT-R2.6`, sheets `ZCPAINT-SHORT-SS-R1.5` (no sheet edits; storyboards/ and delivery.md not edited; Editor files not touched).
+- Status: **built and frame-checked by Boss; not a user look-check pass.** Uncommitted.
+
+### Status by item (stable IDs)
+
+| # | Item | Status | Evidence |
+| --- | --- | --- | --- |
+| O17-1 | B07-SH01 pinch reach: fingers pointed up the forearm, index and thumb stood upright at chin height (two raised hands read as a wai). Fix: optional `dir` on the side-view reach (`ArmPose`, `reachPts()` in `bust.ts`); the fingertip contact is `to`, the wrist sits 0.5 head behind it along the fingers; `B07_FINGERS = [1, 0]` (forward, at the case). Front/back reach throws if `dir` is set. | built; key frames pf 36/45/48/60 viewed; pf 0–30 and 66–140 rendered (md5 changed) but **not viewed at sheet scale** | `out/qa/zcp-r26-fix/before/ZCP-B07-SH01_f*.png` vs `after/`; crops `out/qa/zcp-r26-fix/crops/B07-SH01_*`; DF-20261030-zcpaint-reach-finger-dir |
+| O17-2 | Day-3 stubble: 40 random dots, radius 0.03–0.042 K (clumped blobs, hexagons ~15–20 px at the bust close). Fix in `body6.ts` `stubble()` (shared by every day-3 overlay: front, side, seated, bust): one jittered dot per 0.03 K grid cell over the jaw box, radius 0.0045–0.006 K (about 1.2–1.6 px at the bust close). Mix 50 % unchanged. | built; viewed at bust close (B09-SH02), full figure (B09-SH01-TH, B09-SH03, B10-SH01) at full res and 270 px | `crops/B09-SH02_*`, `crops/B09-SH01-TH_*`, `crops/B10-SH01_*`; DF-20261030-zcpaint-day3-stubble-spots (status updated) |
+| O17-3 | B05-SH02 pour: both hands pinch → BODY-ZCP-6H mitten (round/oval mass, user "กลม หรือเป็นรีทั้งก้อนได้"; sleeves and cuffs kept). Supersedes D-G4-1 (pass 16 G4) and the HD-03 pinch exception for B05-SH02. B05-SH03 pinch kept. | built; viewed at full frame and crop | `crops/B05-SH02_*`; `out/painted/zcpaint/r26-overview2/ZCP-B05-SH02_f50.png` |
+
+### Measurements and checks
+
+- Overview re-render: `out/painted/zcpaint/r26-overview2/` (24 frames, same plate:frame list as r26-overview) and `overview-24-270.png` (`scripts/qa-sheet.sh --cols 6`, 270 px, 6×4). Viewed: B07-SH01 pf45 one forward pinch, no upright pair; B05-SH02 oval mittens; B09-SH02 fine jaw stubble.
+- Decoded-RGB md5, 49 pre-edit (`out/qa/zcp-r26-fix/before/`) vs post-edit (`after/`) frames: **the changed set is exactly the edit scope**: B05-SH02 f0/15/36/50/72/100; B07-SH01 (all 20 sweep frames); B09-SH01-TH f57; B09-SH01-EN f57; B09-SH02 f30; B09-SH03 f40; B10-SH01 f112. B09-SH02B f0 unchanged (no face).
+- Eight other plates changed by 1–7 levels on a few to a few hundred pixels (B01-SH01 f36 649 px max 7; B01-SH02, B04-SH01, B04-SH04, B06-SH01, B06-SH02, B07-SH02, B08-SH01). Not edit leaks: the pre-edit overview render (17:07, same source) vs the pre-edit baseline gives the same magnitude (B01-SH01 f36 549 px, max 6; B08 f96 124 px, max 2). This is the run-to-run render noise class (DF-20261030-zcpaint-figure-texture-residual). So "untouched plates unchanged" holds within that noise, not bit-identical.
+- WORLD FOG 21-frame md5 (`render-frames.sh src/painted/spike/index.ts out/qa/zcp-r26-fix/wfog-after`): **21 of 21 identical** to `out/qa/zcp-r26/wfog-final/md5.txt` (`out/logs/zcp-r26-fix-wfog-vs-final.log` empty). Pre-edit run also 21 of 21 (`wfog-before`).
+- `npx tsc --noEmit` exit 0 (`out/logs/zcp-r26-fix-tsc.log`, empty); `npx eslint` on bust/body6/closeups/inserts exit 0 (`out/logs/zcp-r26-fix-eslint.log`); `npm test` 152 of 152 (`out/logs/zcp-r26-fix-npmtest.log`). No new automated test: the arm direction and stubble density are frame-checked.
+- Labelled before/after sheet: `out/qa/zcp-r26-fix/before-after-crops-labelled.png` (`label-sheet.py`, manifest `out/qa/zcp-r26-fix/crops/manifest.tsv`).
+
+### Deviations and questions (for Film and Mark to revalidate; Boss does not edit the sheets)
+
+- `Q-R26-O17-1` B07-SH01: the pinch now points forward at the case from a forearm that runs near horizontal at chin-to-collar height. The user's look check decides whether that reads as a reach (accepted here as the Boss reading; the earlier look had the fingers up).
+- `Q-R26-O17-2` Stubble density is Boss's choice within the S-P01 decision ("หนวดเป็นจุดเล็กๆ"). At full figure the dots are sub-pixel at 270 px, so they read as a grain rather than individual dots; confirm the density.
+- B05-SH02 both mittens: Film/Mark record HD-03 (pinch exceptions now only B05-SH03 and B07-SH01).
+
+### Not run / limitations
+
+- Studio cold load, play/pause, backward scrub and unordered seeks (`npm run start`): not run. The plates are pure functions of plate frame, so seek parity follows from the code, not observed.
+- Neighbour boundaries for B07-SH01 (B06-SH03 → B07-SH01 → B07-SH02) and B09-SH02 → B09-SH02B not checked.
+- Caption bands were not re-measured (no caption changed in this pass).
+- Visual evidence: frames viewed as listed above; the B07-SH01 pf 0–30 and 66–140 sweep frames are rendered but not yet viewed.
+
+### Files changed (uncommitted, this pass)
+
+- `src/painted/zcpaint/bust.ts` (`ArmPose.dir`, `reachPts()`, side-view near-arm reach routed through it; standing reach throws on `dir`).
+- `src/painted/zcpaint/closeups.ts` (`B07_FINGERS`, B07-SH01 reach arm).
+- `src/painted/zcpaint/body6.ts` (`stubble()` grid, `STUBBLE_PITCH`).
+- `src/painted/zcpaint/inserts.ts` (B05-SH02 hands `mitten`).
+- `docs/dev-findings/DF-20261030-zcpaint-reach-finger-dir.md` (new), `docs/dev-findings/DF-20261030-zcpaint-day3-stubble-spots.md` (status), `docs/dev-findings.md` (index), this section.
+- Outputs (not committed): `out/painted/zcpaint/r26-overview2/`, `out/qa/zcp-r26-fix/`, `out/logs/zcp-r26-fix-*`, `out/logs/zcp-r26-overview2-stills.log`.
+
+### Next
+
+1. Boss or the next invocation: view the B07-SH01 sweep at 270 px (pf 0–30, 66–140) for any raised-hand frame; Studio cold load and seek; neighbour boundaries.
+2. User: look check of `out/painted/zcpaint/r26-overview2/overview-24-270.png` and the labelled crop sheet; answers to `Q-R26-O17-1` and `Q-R26-O17-2`.
+3. Film and Mark: HD-03 exception update for B05-SH02 (mitten) and B07-SH01 (pinch forward).
+
+## 2026-10-30 — Boss pass 18 (fix round: B06-SH02 shoulder, B09 seated mittens)
+
+- Scope: delivery record top entry "Boss pass 17 look check" (`scripts/zombie-condo-paint/delivery.md`, not edited) and this file's "Boss pass 17" section. Two items, stable IDs `P18-1` (knee-hug hands) and `P18-2` (B06-SH02 reach read). Brief, sheets and `delivery.md` not edited; Editor files not touched; no commit.
+- Status: **built and frame-checked by Boss; not a user look-check pass.** Uncommitted.
+
+### Status by item (stable IDs)
+
+| # | Item | Status | Evidence |
+| --- | --- | --- | --- |
+| P18-1 | Knee-hug seated hands (B09-SH01 TH/EN, B09-SH02 bust, B09-SH03; `figSeatFloor` and `bust.ts` `seatFloor`): the closed `fist` (finger blocks) replaced by the BODY-ZCP-6H mitten (`MITTEN_6H`), far and near hand | built; viewed at 540 px (three plates) and the B09-SH02 close | `out/qa/zcp-b18/before-B09-seated-540.png`, `out/qa/zcp-b18/after-B09-seated-540.png`; DF-20261030-zcpaint-seated-knee-mitten |
+| P18-2 | B06-SH02 reach sleeve: the shoulder root (reach3 `S`) moved to the back's outer edge (`SHOULDER_LEAD = (0.14, −0.10, 0.35)` in `fridge.ts`); the rest pose (pf 0–5) unchanged; the reach, elbow pole and draw-in unchanged | built; viewed at 270 px (f0–62, eight frames) and labelled 540 px (f8/f15/f24/f41); masks at f8/f41/f62 | `out/qa/zcp-b18/before-after-B06-labelled.png` (`-view.png` 900 px), `out/qa/zcp-b18/before-B06-sh02-seq-270.png`, `out/qa/zcp-b18/after-B06-sh02-seq-270.png`, `out/qa/zcp-b18/mask-B06-SH02-sheet.png`; DF-20261030-zcpaint-b06-shoulder-cap |
+
+### Diagnosis (P18-2, from the picture and the geometry)
+
+- The reach arm is drawn before the torso in the back view, so only the parts beyond the torso edge show. The problem was not the draw order: the shoulder root projects toward the vanishing point at head height (y 5.6), so the joint at lead 1 sat at about (0.63, 4.57), and the 0.19-head sleeve cap there rose 0.14 head above the back's shoulder slope beside the neck (pf 18).
+- Fix: the root moves to the outer edge of the back (projects to about (0.74, 4.46); the torso edge at that height is 0.73). The lead still ramps with the existing minimum-jerk segment, so the rest pose is unchanged.
+
+### Measurements and checks
+
+- Geometry (`scratchpad/arm-geom.ts`, scratch, not in the repo; same modules; the real function was verified against the scan): highest reach-arm point between x 0.2 and 0.62 minus the back's top edge, pf 0–62: **+0.139 at pf 18 before → −0.027 (hidden) at pf 25 after**. Max reach ratio (|W−S| / 1.78): 0.980 at pf 15 before → **0.959 after** (pf 0 rest is the maximum; grasp pf 15 is inside).
+- Scan of the offset (for the record): (0.02, 0.06) +0.139; (0.10, 0.00) +0.059; (0.12, −0.04) +0.010; (0.14, −0.06) +0.007; **(0.14, −0.10) −0.027**; (0.16, −0.08) −0.020; (0.18, −0.12) −0.042. The chosen offset is the first one with a clear margin.
+- Decoded-RGB diff, 32 frames, pass 17 (`out/qa/zcp-b18/before/`) vs pass 18 (`out/qa/zcp-b18/after/`) (`out/logs/zcp-b18-rgbdiff.log`): changed = B06-SH02 f8/f15/f24/f32/f41/f50/f62 (arm outline only, masks checked) and B09-SH01-TH f57, B09-SH01-EN f57, B09-SH02 f30, B09-SH03 f40 (hands). Identical: B02-SH01-TH f7, B02-SH02-TH f20, B02-SH03 f39, B03-SH01-TH f14, B04-SH02-TH f180, B04-SH04-TH f11, B05-SH01-TH f40, B05-SH02 f50, B05-SH03 f40, B06-SH03 f5, B09-SH02B f0. Render-noise class (≤ 6 levels, ≤ 534 px; same class as pass 17 DF-20261030-zcpaint-figure-texture-residual): B01-SH01 f36 (534 px, max 6), B01-SH02 f33, B04-SH01 f30, B04-SH03a f20, B06-SH01 f150, B06-SH02 f0 (4 px, max 1: the rest pose is unchanged), B07-SH01 f45 (11 px, max 4), B07-SH02 f60, B08-SH01 f96, B10-SH01 f112.
+- `npx tsc --noEmit` exit 0 (`out/logs/zcp-b18-tsc.log`, empty); `npx eslint src/painted/zcpaint/{fridge,body6,bust}.ts` exit 0 (`out/logs/zcp-b18-eslint.log`); `node --import tsx --test tests/zcpaint-proj.test.ts` 7 of 7 (new test "B06-SH02 shoulder cap (pass 18)": worst −0.027 ≤ 0); `npm test` 158 of 158 (`out/logs/zcp-b18-npmtest.log`).
+- WORLD FOG 21-frame md5 (`render-frames.sh src/painted/spike/index.ts out/qa/zcp-b18/wfog-after`) vs `out/qa/zcp-r26/wfog-final/md5.txt`: **21 of 21 identical** to `out/qa/zcp-r26/wfog-final/md5.txt` (`out/logs/zcp-b18-wfog-vs-ref.log` empty; run `out/logs/zcp-b18-wfog.log`, frames `out/qa/zcp-b18/wfog-after/`).
+
+### Deviations and questions (for Film and Mark to revalidate; Boss does not edit the sheets)
+
+- `Q-P18-1` B06-SH02: the elbow flares further out during the draw-in (projected x 1.48 → 1.63 at pf 48–62, the box held at the chest). The pole is unchanged; the user's look check decides whether the flare reads. Options if not: a pole with less outward component for the draw-in (Boss), or a Film/Mark note.
+- `Q-P18-2` B09 seated: the mitten is BODY-ZCP-6H (0.26 across); the sheet still says "closed fist" (HD-04) for the knee hug. Film and Mark revalidate the wording in the next revision; Boss did not edit the sheets.
+- The `fist` branch of `handParts` stays (no other fist use found in `src/painted/zcpaint/`; POV uses its own palm/fist code in `pov.ts`); removing it is outside this fix.
+
+### Not run / limitations
+
+- Studio cold load, play/pause, backward scrub and unordered seeks (`npm run start`): not run. The plates are pure functions of the plate frame; seek parity is not observed.
+- Neighbour boundaries B06-SH01 → B06-SH02 → B06-SH03 and B09-SH02 → B09-SH02B not checked in a sequence.
+- Visual evidence: frames above viewed; the B09 mitten crops at full resolution not checked (540 px tiles only).
+- The geometry check uses the reach-arm vertices against the `BUST_TEE` top edge, not the rendered pixels; the pixel evidence is the sheets and masks.
+
+### Scripting and tool lessons (this pass)
+
+- The Bash tool runs zsh: an unquoted `$SPEC` does not word-split, so `plate-stills.sh OUT $SPEC` passed one long argument and failed with `Frame NaN is not finite`. Use `${=SPEC}` (zsh) or pass the words explicitly. The first baseline attempt failed for this reason; the rerun is the one used.
+- `timeout` is not installed on macOS; a `sed -i` replacement with `\n` broke the scratch file (line 2 read as a `sed` command). Use a heredoc or a short Python edit for multi-line changes.
+- Foreground `sleep` is blocked by the harness; wait on background-task completion instead.
+
+### Proposed document changes (TL/DP; not applied)
+
+- `scripts/zombie-condo-paint/` `plate-stills.sh`: document that the spec list must be split (`${=SPEC}` in zsh, or quoted words).
+- `docs/boss-asset-workflow.md` projection note: a 3D joint projected toward the vanishing point moves up/inward; check the sleeve cap against the silhouette, not only the joint.
+
+### Files changed (uncommitted, this pass)
+
+- `src/painted/zcpaint/fridge.ts` (`SHOULDER_LEAD`, reach root).
+- `src/painted/zcpaint/body6.ts` (`figSeatFloor`: two `mitten` hands, doc and comments).
+- `src/painted/zcpaint/bust.ts` (`seatFloor`: two `mitten` hands, `MITTEN_6H` import, doc and comments).
+- `tests/zcpaint-proj.test.ts` (import `H6`, `reachArm`; new test "B06-SH02 shoulder cap (pass 18)").
+- `docs/dev-findings/DF-20261030-zcpaint-b06-shoulder-cap.md` (new), `docs/dev-findings/DF-20261030-zcpaint-seated-knee-mitten.md` (new), `docs/dev-findings.md` (two index rows), this section.
+- Outputs (not committed): `out/qa/zcp-b18/` (`before/`, `after/`, `wfog-after/`, sheets, masks, `spec.txt`, `overview-spec.txt`), `out/painted/zcpaint/r26-overview3/` (24 frames, `overview-24-270.png`, `manifest.tsv`), `out/logs/zcp-b18-*`.
+
+### Next
+
+1. User look check of `out/painted/zcpaint/r26-overview3/overview-24-270.png` (B06-SH02 and B09 seated) and `out/qa/zcp-b18/before-after-B06-labelled-view.png`; answer `Q-P18-1`.
+2. Film and Mark: B06-SH02 reach note (outer-edge shoulder; elbow flare at the draw-in) and the B09 seated hand wording (`Q-P18-2`).
+3. Boss or the next invocation: Studio cold load and seek for B06-SH02 and B09; neighbour boundaries.
+
+## 2026-10-30 — Editor pass 1 (R2.6): ZCPAINT-SHORT-TH and -EN, first assembled timeline
+
+- Scope: Editor stage for `ZCPAINT-SHORT-TH` and `ZCPAINT-SHORT-EN` (Full tier). Inputs: brief `VB-ZCPAINT-SHORT-R2.6` (`VD-ZC-TL`, `VD-ZC-AU`, `VD-ZC-CAP`), sheets `ZCPAINT-SHORT-SS-R1.5`, scripts `ZCONDO-SHORT-{TH,EN}-R3` (`tts-th.txt`, `tts-en.txt`, ซับ chunks). Plates: the working tree as Boss left it (uncommitted; G4/G5 built, pass 16). Nothing committed; `delivery.md` not edited; no plate code touched.
+- Runtime status: `existing-integrated` for the registry (`src/videos/zombie-condo-paint/index.ts`, two compositions), the narration/caption/sfx/audio/quadText fields and the painted plate IDs. Captions use the shared outline preset at `middle` (`S-09` (c) missing, see ED-5).
+
+| ID | Item | Status | Evidence |
+| --- | --- | --- | --- |
+| ED-1 | Registration: `ZCPAINT-SHORT-TH` / `-EN` in `src/videos/zombie-condo-paint/index.ts`; one scene per beat B01–B10 (the shipwreck convention); `ending: 'A_fade'`; chrome off; outline captions, middle | built | `tests/zombie-condo-paint.test.ts` 5 of 5 pass; `out/logs/zcp-e4-test.log` |
+| ED-2 | TH narration: Niwat +5% **stand-in** (`scripts/zombie-condo-paint/short/vo-TH.json`); the user's Botnoi render is not in the repo (`index.md` "Measured audio" open) | built as stand-in; replace with `narration_files.py` Botnoi files | `public/narration/ZCPAINT-SHORT-TH.mp3` 71.20 s |
+| ED-3 | EN narration: `en-US-GuyNeural` +5% (Q-EN1 open: voice and rate were never fixed; Editor's pick, not user-approved) | built | `public/narration/ZCPAINT-SHORT-EN.mp3` 71.00 s |
+| ED-4 | Timing re-lock: `place-narration.py` pins each speech onset to its anchor and reports overlaps; TH B05 SH03 holds +0.4 s and B06 onward +0.4 s; EN: "Shut it. Lock it." split into two utterances with the same words (anchors 4.7 / 5.4); EN B07–B09 overflow absorbed by held plates; EN knocks after "Then, a knock." (60.9) so the 1.5 s silence follows them | built; `measure.json` per language | TH totals 71.2 s, EN 71.0 s (R3 estimate ≈70.8 / ≈70.1) |
+| ED-5 | Captions: TH = script ซับ chunks (verbatim; "ปิด! ล็อก!" merged; "ในโลกนี้... พวกมันตามเสียง" with the script's ellipsis); EN = one per `tts-en.txt` line; authored `\n` at word boundaries on 14 long lines (`caption` key in `vo-*.json`; VO words unchanged). Placement `middle` (fallback: `Subtitles.tsx` has top/middle/bottom only; block bottom at y 1248 needs `S-09` (c)) | built; `middle` open | `caption-breaks.mjs`: TH 0 flags; EN 4 `BREAK-MID-WORD` and 7 `MAY-WRAP` flags, all on English word boundaries (the tool segments Thai, so it joins English words at the authored `\n`); EN frames viewed, no split word |
+| ED-6 | Screen-space text (S-08 fallback `quadTexts`, positions from the sheets): B04 roof tank / pump / power out (red); B06 cold-clock device lines (SH01 box, then SH02+ strip); B09 day card and numerals 2 / 4 / 12%; B10 choice labels in order | built; numeral x positions approximate | 10 TH + 14 EN overlay entries in `cues-*.json` `overlays` |
+| ED-7 | Sound: 24 generated cues (Stable Audio 3, measured picks, filed to the shared library with `--picked`, not listened) + 9 library reuses; full list below | built; **no human listening yet** | `scripts/sound-library.py index`: 90 sidecars, 90 rows, 0 mismatches |
+| ED-8 | B02 pound blows from `poundJoltFrames(lang)` (one fist blow per jolt after the slam; hold blows every 0.45 s until 0.8 s before the power cut) | built | `tests/zombie-condo-paint.test.ts` (blow at each jolt frame ±1) |
+| ED-9 | Render and QA: 20 stills (`editor-stills.sh`, `--gl=angle`), 2 contact sheets, caption-zone numbers, seek check (reverse order), 15 s audio check, full MP4 per language with the repo loudness step | done; Studio not run | see Checks |
+
+Story scenes: `S01` is the only story scene in the ID plan; beats B01–B10 are used as the user-facing scene samples (one still per beat per language), following the shipwreck precedent.
+
+### Timing decisions (for Mark and Film to revalidate)
+
+- TH: B01–B04 keep the R3 anchors. TH-08 at 7.75 (was 7.6), TH-12 at 14.8, B05 SH03 cistern hold +0.4 s (34.5), B06 onward +0.4 s (B06 34.5, B07 43.5, B08 49.4, B09 54.4, B10 65.0; end 71.2). Knocks 61.1 / 61.55 / 62.0 (three copies of one knuckle rap at 0.45 s).
+- EN: B01–B06 near anchors (EN-02 1.3, EN-06 7.2, EN-13 25.4, EN-14 27.95, EN-15 28.9, EN-16 30.2, EN-22 45.6); B07 SH01 45.3 and SH02 47.6; B08 51.4 (so the flare pf 84 lands on "Only smoke and fire." at 52.9); B09 55.4 / 59.3 / 60.9 (SH02B tilt on knock 1) / 62.2; B10 64.0 (end 71.0).
+- Plate `fromSec` per language from the sheet index (B02-SH02 TH 0.1, B02-SH03 TH 0.7, B04-SH01 TH 0.3, B05-SH02 TH 1.2 / EN 0.5, B06-SH01 TH 1.5 / EN 2.5, B07-SH01 TH 0.5 / EN 0.9, B07-SH02 TH 0.3 / EN 0.5, B08 TH 0.5 / EN 1.3, B10 TH 1.0 / EN 0.5).
+- Known sync gaps: the EN gurgle (`water_bucket-pour-gurgle_01`) peaks about 1.2 s after "มันลงเอง" / "if it drains" (TH 26.2 pour, EN 29.97); the library candidate `v2` has its peak nearer 1.6 s and may fit better. Cabinet thud placed so the thud lands on B02-SH02 f 3 / f 6 (TH 6.7 / EN 6.8).
+
+### Sound cues (`cues-*.json`; library IDs; listened: no)
+
+- Generated and filed (`sfx/...`, `music/tone/...`, `ambience/city/...`): `foley_door-latch-hinge_01`, `foley_footsteps-run-slam_01` (trimmed 0.58 s, hit at file 1.15 s), `creature_neck-creak-wet_01`, `impact_door-slam-body_01`, `foley_deadbolt-clack_01`, `foley_bag-drop-tile_01` (very low), `foley_cabinet-scrape-thud_01`, `impact_power-cut-whoomp_01`, `water_tap-fill-containers_01`, `foley_lid-snaps-three_01`, `tension_clock-pulse_01` (loop), `water_bucket-pour-gurgle_01`, `foley_cistern-lid-tap_01`, `foley_fridge-seal-pop_01`, `foley_fridge-seal-thump_01`, `foley_packaging-rustle_01` (also the TH/EN wrapper rustle), `foley_can-setdown-laminate_01`, `mechanical_canister-handling_01`, `stinger_low-muted-hit_01`, `impact_knuckle-rap_01`, `impact_sub-hit-short_01`, `foley_fist-blow-door_01`, `tone_thin-unresolved_01` (B10; loudnorm dynamic, about -24 LUFS; leveled on the timeline), `city_distant-fire-crackle_01` (loop).
+- Library reused: `room_shop-fridge-hum_01` (unit tone, not looped), `electric_light-flicker-buzz_01`, `reveal_riser-tension_01`, `tension_heartbeat-slow_01`, `bed_dark-drone-sub_01` (drone; the B03 fade-in at the end of the held silence), `room_dark-empty-building_01` (room tone; creaks or drips not heard, "with care" unverified), `nature_wind-eerie-street_01` (B08), `reveal_glass-shimmer-soft_01` (B05 chime), `ui_click-tick_01` (B09 counters).
+- Not used: `whoosh_air-swish-rising_01` (optional, B03 whip; omitted for restraint), `creature_zombie-snarl-lunge_01` (optional layer; not found in the index), `foley_door-pound-wood_01` (replaced by the single fist blow so each jolt is one hit).
+- Licence: generated audio falls under the Stability AI Community License (commercial-use eligibility is the user's decision). `public/sfx/NOTICE` and `public/audio/NOTICE` have a ZCPAINT block (`copy-sounds.sh`).
+- Loudness: `public/sfx` masters were processed at peak ceilings -1 to -9 dBFS (library rule is -1 for sfx; levels set on the timeline instead; deviation noted).
+
+### Checks (this pass)
+
+- `npx tsc --noEmit` exit 0; `npx eslint` on the new files exit 0; `npm test` (full) and the ZCPAINT test file (5 of 5) pass (`out/logs/zcp-e4-test.log`).
+- Stills: 20 frames (`out/samples/zombie-condo-paint/<ID>/editor-pass1/`, manifest.tsv with composition and plate frames), contact sheets `TH-sheet-editor-pass1.png`, `EN-sheet-editor-pass1.png`. Viewed; captions read with the outline, the overlays appear in place, the B08 flare and the B10 labels are right.
+- Caption zone (band y 860–1060, middle placement, `caption-zone.py`): 18 of 20 frames fail the default thresholds (mean ≤ 0.25, p95 ≤ 0.40; means 0.10–0.86). Expected without shade (user, Boss pass 8/9); judged on the outlined text. Full-resolution crops (`out/samples/zombie-condo-paint/crops/caption-crops-TH-EN.png`) read clearly. Two TH lines previously crossed x 888 (safe box); fixed with authored breaks.
+- Seek parity: 5 stills re-rendered in reverse order (`seekcheck-reverse/`): 2 identical, 3 differ by PSNR 81–107 dB (a few levels on a few pixels, the documented render-run noise class). Not a state difference. Studio cold load, play/pause and unordered seeks in Studio: not run.
+- Audio: 15 s check (B01–B03): -15.5 LUFS integrated, -2.3 dBTP. Full MP4 after `scripts/loudness.mjs`: TH -14.0 LUFS, -1.5 dBTP (was -15.7 / 0.1, dynamic); EN -14.0 / -1.5 (was -15.7 / 0.1, dynamic). Narration tracks: TH -15.8 LUFS / -1.7 dBFS, EN -15.8 / -1.8 (`loudnorm` to -14 / -1.5 at 48 kHz). Found and fixed: the first loudnorm pass returned 4x the samples (192 kHz internal rate) and would have slowed the narration; output rate is now forced to 48 kHz and the duration is checked (71.20 / 71.00 s).
+- Full renders: `out/ZCPAINT-SHORT-TH/ZCPAINT-SHORT-TH_A_fade.mp4` (2136 frames, 1080×1920, 30 fps, AAC 48 kHz stereo) and `out/ZCPAINT-SHORT-EN/ZCPAINT-SHORT-EN_A_fade.mp4` (2130 frames). MP4 frames at 12.5 / 40.0 / 56.0 / 66.5 s tiled in `out/samples/zombie-condo-paint/mp4-check-TH-EN.png` (viewed).
+
+### Open items and deviations (route as noted)
+
+- ED-5 / `S-09` (c): caption block bottom at y 1248 needs a shared position (Boss). Until then `middle` (centre y 960) covers faces in some frames (B01-SH01 TH f 45 on the back of his head; B06 captions over the arm). Also `S-09` (b): TH long lines still reach x 950 without the authored breaks; the breaks fix the line lengths only.
+- Plate/staging notes for Film and Mark (no plate change made): EN B06-SH02 device lines at 44 s sit over the dark open-fridge interior (low contrast); B09 numerals need a check of their x positions against the painted icons; B04 labels are small at 216 px (check at full size).
+- Narration: TH stand-in (ED-2). EN voice (ED-3). Thai narration unchanged.
+
+### Questions for the user (relay through the coordinator)
+
+- Q-ED-1 TH narration: send the Botnoi render (per-beat MP3s for `narration_files.py`, or one file plus cut points). Until then the TH timing is the stand-in's.
+- Q-ED-2 EN voice (Q-EN1): accept `en-US-GuyNeural` +5%, or name another.
+- Q-ED-3 Caption placement: keep `middle` until `S-09` (c), or ask Boss now for a bottom placement at y 1248.
+- Q-ED-4 Listening: the prominent cues need a human ear before approval: footsteps + slam + bolt (B01–B02), fist pounds, pour and gurgle, power-cut whoomp, knocks + sub hit (B09), the B10 tone, the drone bed and its licence.
+- Q-ED-5 Ending: `A_fade` (fade over the last second after a 3 s hold) as set, or a hard cut to black (brief allowed either).
+- Q-ED-6 Export loudness: the repo target is -14 LUFS; the mix now needs dynamic loudnorm on the loudest moments. Keep -14 or accept -16 for the Short?
+
+### Files changed (uncommitted)
+
+- `src/videos/zombie-condo-paint/index.ts` (new), `tests/zombie-condo-paint.test.ts` (new).
+- `scripts/zombie-condo-paint/place-narration.py`, `measure-sfx.py`, `copy-sounds.sh`, `editor-stills.sh` (new); `scripts/README.md` (4 rows).
+- `scripts/zombie-condo-paint/short/vo-TH.json`, `vo-EN.json`, `cues-TH.json`, `cues-EN.json`, `ZCPAINT-SHORT-{TH,EN}.lines.json`, `ZCPAINT-SHORT-{TH,EN}.amplitude.json` (new).
+- `public/narration/ZCPAINT-SHORT-{TH,EN}.mp3`, `public/sfx/**` and `public/audio/**` (copies, git-ignored MP3 only where applicable; WAV copies are not ignored, so commit only what the episode needs), `NOTICE` blocks.
+- `out/` (ignored): stills, sheets, MP4s, logs, the library processing outputs.
+
+### Next
+
+1. Boss: `S-09` (c) placement; S-09 (b) width check on the TH lines after the breaks; look check of the overlays at full size.
+2. User: Q-ED-1 to Q-ED-6, and a listen to the prominent cues.
+3. Film/Mark: the EN device contrast and the sync gaps above; Mark to note the TH/EN timing re-lock in the sheets (`timing estimated` → measured).
+
+## 2026-10-30 — Boss pass 19 (TH fixes after the Editor pass 1 review)
+
+- Scope: delivery record "Editor pass 1 review" (not edited), Thai only (EN parked; no EN plate rebuilt or rendered). Stable IDs `P19-1` B07-SH01 hand, `P19-2` toilet B05-SH01/02/03, `P19-3` walk cycle B04-SH01/B06-SH01, `P19-4` captions at y 1248. Uncommitted. **Built and frame-checked by Boss; not a user look check.**
+
+| # | Item | Result | Evidence |
+| --- | --- | --- | --- |
+| P19-1 | B07-SH01 hand | the `pinch` (two sticks) replaced by a BODY-ZCP-6H-style mitten (thumb lobe, cuff, sleeve) resting on the case front at the clasp. The reach arm keeps the elbow low and the forearm rising (the case sits at chest height 0.4 head in front of him, so a straight arm is impossible); new `lay` field on the side-view `reach` pose (`bust.ts`) folds the hand forward at the wrist (`B07_LAY` 1.15 rad) so the fingers lie on the case, not up the forearm (no wai: a test render at `lay` 0.3 read as a prayer hand and was rejected). Rest pose pf 0-15 and 75+ unchanged. | `out/qa/zcp-b19/before-after-b19-view.png`, `out/qa/zcp-b19/t1.png` |
+| P19-2 | Toilet | new `src/painted/zcpaint/toilet.ts` (`paintToilet`, `toiletWater`): ONE front, slightly raised toilet: oval seat ring with bowl opening and water, raised seat lid with hinges, tank with lid slab, chrome flush button on the lid top and a side lever. Used by B05-SH01 (background, scale 0.5, dimmed), B05-SH02 (scale 1.45, the pour lands on `toiletWater`, siphon swirl follows it), B05-SH03 (scale 1.7, the tank lid with its button lifts off, the mitten holds the lid edge, clear water in a cutaway tank window; part 3 and the icons unchanged) and `ZCP-B05-SH03-BOWL` (scale 3.2, red cross on the bowl water). Shot IDs, frame counts, keys and cues unchanged. The section-plate bathroom fixtures in `rooms.ts` (B04/B06 cut view) are the old boxes and were not changed (not in the user report). | same sheet, `out/qa/zcp-b19/t2.png` |
+| P19-3 | Walk cycle | `figSide` option `gait` (phase in strides) and `gaitBlend`: hip-driven two-bone legs (`GAIT_LEG` 1.44), stance 60 %, stride 2.6 heads, swing lift 0.34 head, heel and toe tilt, arm swing against the own-side leg (CP-P03). Phase follows the distance walked (`gaitPhase`, 0.2833 m per head), so a planted foot is fixed in the world. B04-SH01: stands facing the door pf 0-5, front-stand turn pf 5-10, first step pf 10-18, walks to Y 2.40, closing step pf 67-75 (travel same endpoints 0.70 to 2.40, speed now trapezoid). B06-SH01: walking from pf 0 (Y 2.70 to 4.45), slows pf 67-75, front-stand turn pf 75-80, then the profile facing the fridge as before (the hover pf 100-190 unchanged). Section feet: no cast or contact change except the lifted foot drops its contact ellipse. | `out/qa/zcp-b19/t3.png`, `t4.png`, test `tests/zcpaint-gait.test.ts` (3 tests) |
+| P19-4 | Captions | `CaptionStyle.bottomEdgeY` (composition y of the block's bottom edge; overrides `position`): `types.ts`, validator in `media.ts` (finite, 0-4320), `Subtitles.tsx` (`bottom: height - bottomEdgeY`), row in `docs/remotion-toolkit.md` 10a. Default path unchanged (no other video sets it). `ZCPAINT-SHORT-TH` is `{preset: 'outline', position: 'bottom', bottomEdgeY: 1248}`; EN stays `middle` (parked). Test updated. | TH comp stills `out/samples/zombie-condo-paint/ZCPAINT-SHORT-TH/boss19-cap/` (23 frames), `out/qa/zcp-b19/cap-1.png` |
+
+### Caption crossing check (TH, section plates)
+
+- Captions are drawn above the plate, so no column hides glyphs; the issue is contrast where a light wall edge or the fridge passes behind the text block (y about 1070-1248, which is the floor band of the wide section plates). Measured on caption-less plate stills with `capzone-undertext.sh` (x 150-930, y 1140-1248; limits mean 0.45, p95 0.60): B04-SH01 (pf 9-37) mean 0.35, p95 0.43-0.58 pass; B07-SH02 (pf 9-69) mean 0.34-0.43, p95 0.57 pass; **B06-SH01 (pf 45-159, comp 34.5-39.95 s) p95 0.65 on every frame (mean 0.39-0.41): fails the p95 limit by 0.05**, cause: the grey fridge (luma about 0.6) and the cream partition-edge wedge at the floor line. Viewed at 900 px with captions on (B04 f412-455, B06 f1040-1190, B07 f1405-1480): the white 51 px outline glyphs stay legible; the cream wedge at the floor line crosses the first line only at B04 comp f455 (the 2-line caption) and B06 comp f1040-1060.
+- Not changed: a jamb tone test (`rooms.ts`) moved p95 only 0.58 to 0.55 and was reverted. Options if the user still sees a column over the captions: (a) the soft elliptical caption shade (`ZC-CAPSHADE`), which the user rejected for ZC plates in pass 9; (b) darken the partition wedge and the fridge face in `rooms.ts` for the three section plates (set art change, Film/Mark to revalidate); (c) move the fridge in B06-SH01. `Q-P19-1` below.
+
+### Checks
+
+- `npx tsc --noEmit` exit 0; `npx eslint` on the changed files exit 0 (`out/logs/zcp-b19-eslint.log`; one unused import removed); `npm test` 161 of 161 (`out/logs/zcp-b19-npmtest.log`; 3 new tests).
+- WORLD FOG 21-frame md5 vs `out/qa/zcp-r26/wfog-final/md5.txt`: identical (`out/qa/zcp-b19/wfog/md5.txt`, `out/logs/zcp-b19-wfog.log`).
+- Not run: Studio cold load, play/pause and unordered seek (plates are pure functions of the plate frame); neighbour cuts B03 to B04, B04-SH01 to SH02, B06-SH01 to SH02 checked only as stills; no MP4 re-render; no foot-slide pixel measurement (the world-fixed stance is asserted in the geometry test and viewed in 14-frame strips only).
+- Walk limits: no hip bob; the leg stays within reach by lifting the ankle at the extremes (heel-strike toe up, push-off heel up); the first and closing steps blend feet from the stand pose (a short, slow slide at speed near zero). Turns are a 4 to 5 frame front stand, not a pivot step.
+
+### Questions
+
+- `Q-P19-1` B06-SH01 caption contrast p95 0.65 (limit 0.60): accept as is (legible in stills), or pick option (b) or (c) above?
+- `Q-P19-2` The 10a row of `docs/remotion-toolkit.md` was edited for `bottomEdgeY` (runtime-contract requires the field documented with the code); revert it if rule documents must stay user-reviewed first.
+
+### Files changed (uncommitted)
+
+`src/painted/zcpaint/{toilet(new),inserts,bathroom,body6,bust,closeups}.ts`, `src/painted/shots/zcpaint.tsx`, `src/scenes/{types,media}.ts`, `src/scenes/Subtitles.tsx`, `src/videos/zombie-condo-paint/index.ts`, `tests/{zcpaint-gait(new),zombie-condo-paint}.test.ts`, `docs/remotion-toolkit.md`, this section. Outputs (not committed): `out/qa/zcp-b19/`, `out/samples/zombie-condo-paint/ZCPAINT-SHORT-TH/boss19-cap/`, `out/logs/zcp-b19-*`.
+
+## 2026-10-30 — Editor pass 2 (TH): re-render after Boss pass 19
+
+- Scope: `ZCPAINT-SHORT-TH` (A_fade) only. EN not rendered (parked by the user, delivery record). Inputs: Boss pass 19 (P19-1 to P19-4, uncommitted working tree, user look check approved, "re-render the TH MP4"). TTS lock held: Niwat +5 % stand-in, `public/narration/ZCPAINT-SHORT-TH.mp3` not regenerated (Q-ED-1 still open). No source, plate, cue, narration or timing change in this pass; `delivery.md` not edited; no plate code touched; nothing committed.
+- Runtime status: `existing-integrated` for the TH composition in the working tree (`src/videos/zombie-condo-paint/index.ts`, `captionStyle` `bottomEdgeY` 1248). Bundle rebuilt from that tree (checkout `541385d` + uncommitted changes).
+
+| ID | Item | Status | Evidence |
+| --- | --- | --- | --- |
+| E2-1 | Re-render TH MP4 after Boss pass 19 | done | `out/ZCPAINT-SHORT-TH/ZCPAINT-SHORT-TH_A_fade.mp4`; progress `out/logs/ZCPAINT-SHORT-TH-chunks.log`; chunks `out/ZCPAINT-SHORT-TH/chunks-pass2/c01.mov` to `c04.mov` (PCM audio) |
+| E2-2 | Duration | done | video 2136 frames, 71.201 s, start 0; AAC 48 kHz stereo 71.193 s, start 0 (pass 1: 2136 frames, 71.200 / 71.193 s) |
+| E2-3 | Loudness (`scripts/loudness.mjs`) | done | -14.0 LUFS, -1.4 dBTP, LRA 4.4 (before: -15.7 LUFS, -0.4 dBTP, LRA 4.1; dynamic). Pass 1 was -14.0 / -1.5. Within the -1 dBTP ceiling |
+| E2-4 | Captions at bottom edge 1248 | checked | 10 beat stills and sheet (below); caption-breaks: 0 flags, 0 MAY-WRAP; caption-zone numbers below |
+| E2-5 | Walk timing against the new frames | checked, no change | see Timing decisions |
+| E2-6 | Footstep/foley sync | N/A: no cue references the walk | `cues-TH.json` has footsteps only at 4.6 s (B02 run); nothing changed |
+| E2-7 | Chunk seams and frame mapping | checked | MP4 frames 533, 534, 1067, 1068 vs composition stills: each matches its own still at 41 dB and the neighbour at 24.4 dB or less (`out/samples/zombie-condo-paint/ZCPAINT-SHORT-TH/seam-pass2/`) |
+
+### Timing decisions (for Mark and Film to revalidate; no change made)
+
+Plate clock: pf = composition frame − beat start frame + `fromSec` × 30 (TH values from Mark's index).
+
+- **B04-SH01** (beat start 13.700 s, `fromSec` 0.3 → pf 9 at the cut, window to 15.300 s = pf 56). Turn pf 5–10: only pf 9 is on screen (the turn ends at the cut). First step pf 10–18 = 13.733–14.000 s, under TH-11 (13.70–14.63 s). Closing step pf 67–75 falls after the B04-SH02 cut: not visible in TH or EN.
+- **B06-SH01** (beat start 34.500 s, `fromSec` 1.5 → pf 45 at the cut, ends 40.200 s = pf 215). The cut lands mid-walk: pf 45–67 is the walk (34.500–35.233 s), slow pf 67–75 (35.233–35.500 s), turn pf 75–80 (35.500–35.667 s), fridge hover pf 100–190 (36.333–39.000 s). The walk and turn sit under TH-22 (34.50–36.47 s); the hover runs under the end of TH-22 and TH-23 (37.80–39.95 s). The walk from pf 0 is not in the TH cut.
+- The index composition frames (`B04-SH01 [411, 459)`, `B06-SH01 [1023, 1194)`) predate the TH re-lock (+0.4 s from B05 SH03 on): B06 now starts at 1035. The `fromSec` values match Mark's TH conform (0.3 and 1.5) and are kept.
+- Decision for the user: whether the TH B06 entry should show the full walk (`fromSec` 0 moves the hover to 37.83–40.20 s). That changes Mark's conform, so it is routed as Q-E2-1, not applied.
+
+### Sound (no cue change; listened: no)
+
+- `cues-TH.json`, the narration file and the amplitude envelope are unchanged. The walks are silent by design: both walk windows sit under narration (TH-11, TH-22), and there is no speech gap during either walk (B04 walk ends 14.00 s, next gap starts 14.63 s; B06 walk ends 35.67 s, next gap starts 36.47 s). EP08: one foreground sound at a time, so no footstep cue was added.
+- Listen for: whether the two walks feel silent. If the ear wants them, add soft footsteps in the gaps only (none exists inside either walk window), with a sound-generation search first.
+
+### Checks (this pass)
+
+- Bundle: `out/zcpaint-editor/bundle` rebuilt from the current tree (`out/logs/ZCPAINT-SHORT-TH-bundle.log`). The pass 1 bundle predates Boss pass 19 and was deleted before rendering.
+- Tests: `node --import tsx --test tests/zombie-condo-paint.test.ts` exit 0 (`out/logs/zcp-p2-test.log`). No source changed, so `tsc` and the full suite were not rerun.
+- Caption breaks: `node scripts/caption-breaks.mjs out/zcpaint-editor/timeline-TH-pass2.json` → 0 bad breaks, 0 MAY-WRAP.
+- Caption zone (`caption-zone.py --band 860:1248`, mean / p95 by beat): B01 0.42 / 0.73; B02 0.63 / 0.83; B03 0.37 / 0.66; B04 0.50 / 0.77; B05 0.82 / 0.94; B06 0.53 / 0.81; B07 0.45 / 0.81; B08 0.11 / 0.19 (pass); B09 0.24 / 0.65; B10 0.45 / 0.64. Nine of ten fail the default thresholds (mean ≤ 0.25, p95 ≤ 0.40): cream or white plates with outline captions and no shade (user's pass 8/9 decision). Judged by eye on the outlined glyphs in the sheet; captions read at the new position, none crosses a face.
+- Walk check at 540 px (`walk-B04-B06-540.png`): B04 f430 mid-stride with both feet on the floor; B06 f1060 at the fridge, caption legible. Foot slide is not measured (stills only).
+- Not run: Studio cold load, play/pause, unordered seeks, a human listen, the EN render (parked).
+
+### Scene samples (integration samples, TH, one per beat; S01 with beats as scene samples, shipwreck precedent)
+
+| Beat | Composition frame | Beat-local frame | Still | Image |
+| --- | --- | --- | --- | --- |
+| B01 | 45 | 45 | `B01_f45.png` | corridor, the door |
+| B02 | 180 | 27 | `B02_f180.png` | door pound, cabinet |
+| B03 | 370 | 19 | `B03_f370.png` | POV corridor lights |
+| B04 | 430 | 19 | `B04_f430.png` | walk, first steps (B04-SH01) |
+| B05 | 880 | 139 | `B05_f880.png` | toilet, cistern lid (B05-SH03) |
+| B06 | 1060 | 25 | `B06_f1060.png` | walk to the fridge (B06-SH01) |
+| B07 | 1350 | 45 | `B07_f1350.png` | hand at the stove case (B07-SH01) |
+| B08 | 1575 | 93 | `B08_f1575.png` | fire flare on the line |
+| B09 | 1740 | 108 | `B09_f1740.png` | day card |
+| B10 | 2010 | 60 | `B10_f2010.png` | choice labels |
+
+- Location: `out/samples/zombie-condo-paint/ZCPAINT-SHORT-TH/editor-pass2/` (manifest.tsv, `TH-sheet-editor-pass2.png` 5 × 2, `walk-B04-B06-540.png`). Revision: source `541385d` + uncommitted Boss pass 19 and Editor pass 2 scripts. Label: integration sample, not a look approval.
+- Reproduce: `sh scripts/zombie-condo-paint/render-chunks.sh ZCPAINT-SHORT-TH 534`; `sh scripts/zombie-condo-paint/editor-stills.sh editor-pass2 ZCPAINT-SHORT-TH B01:45,B02:180,B03:370,B04:430,B05:880,B06:1060,B07:1350,B08:1575,B09:1740,B10:2010`; `sh scripts/qa-sheet.sh <OUT.png> --cols 5 --width 270 <10 stills in beat order>`.
+
+### Scripting and tool lessons (this pass)
+
+- AAC chunks do not join cleanly. Each chunk's AAC decodes about 13 ms off its frames, so the first join drifted about 60 ms, and `-shortest` then dropped two video frames (2134). Fix in `render-chunks.sh`: chunks as `.mov` with `pcm-16` audio (exact samples), a video-only join, one AAC encode with an explicit `-t`, and a frame-count guard before and after the loudness pass.
+- `scripts/loudness.mjs` uses `-shortest`, which can cost a video frame when the container duration runs past the audio end. It did not here (2136 frames), because the join now ends both streams at 71.2 s. Proposed for Boss/TL review (not applied): replace `-shortest` with an explicit duration.
+- `editor-stills.sh` bundles only when the bundle folder is missing, so a stale bundle would render old plates. This pass deleted the bundle first and `render-chunks.sh` rebuilds it on every run. Proposed (not applied): make the stills script rebuild too.
+- `timeout` is not available in this shell (macOS); the probe was rerun without it.
+
+### Questions (relay through the coordinator; not asked here)
+
+- `Q-E2-1` B06-SH01 entry: keep the mid-walk cut at pf 45 (the walk is seen from 34.5 s, about 0.7 s before the slow), or show the walk from pf 0 (`fromSec` 0; Mark's conform changes, the hover moves to 37.83–40.20 s)? Route to Mark if changed.
+- `Q-E2-2` Walk sound: keep both walks silent (current), or add soft footsteps in the gaps? None fits inside the walk windows.
+- Still open from pass 1: `Q-ED-1` (Botnoi render), `Q-ED-4` (a listen to the prominent cues), `Q-ED-5` (ending `A_fade`), `Q-ED-6` (loudness -14 or -16 LUFS). `Q-P19-1` accepted by the user (delivery record).
+
+### Files changed (uncommitted, this pass)
+
+- `scripts/zombie-condo-paint/render-chunks.sh` (new), `scripts/README.md` (1 row), this section.
+- Outputs (ignored, under `out/`): `ZCPAINT-SHORT-TH/ZCPAINT-SHORT-TH_A_fade.mp4`; the pass 1 MP4 kept at `ZCPAINT-SHORT-TH/pass1/ZCPAINT-SHORT-TH_A_fade.mp4`; `ZCPAINT-SHORT-TH/chunks-pass2/`; `samples/zombie-condo-paint/ZCPAINT-SHORT-TH/editor-pass2/` and `seam-pass2/`; `logs/ZCPAINT-SHORT-TH-chunks.log` and `zcp-p2-*.log`; `zcpaint-editor/timeline-TH-pass2.json`.
+
+### Next
+
+1. User: watch the B04 and B06 walks in the MP4 (`out/ZCPAINT-SHORT-TH/ZCPAINT-SHORT-TH_A_fade.mp4`) and listen to the TH mix once; decide `Q-E2-1` and `Q-E2-2`.
+2. Mark (only if `Q-E2-1` changes): TH `fromSec` for B06-SH01 and the index frames after the re-lock.

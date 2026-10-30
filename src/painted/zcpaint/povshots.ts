@@ -2,6 +2,7 @@ import type {PaintContext} from '../BrushCanvas';
 import {clamp01, lerp, mixColor, ramp, type Pt} from '../painter';
 import {INK} from './ctx';
 import {flatKit, CREAM, type Flat} from './sets';
+import {castTone} from './light';
 import {joltAt, poundJoltPlateFrames, type Lang} from './jolts';
 import {CORRIDOR_LIGHT, paintCabinetR25, paintDoorScene, type CabinetR25} from './pov';
 
@@ -152,7 +153,7 @@ const paintViewB = (ctx: PaintContext, f: Flat, pf: number, lang: Lang) => {
   f.line([[772, 400], [770, 790]], 0.5, mixDark('#b9aa8c', avg), false);
   f.fill(mixDark('#c9a040', L.living), [[700, 762], [756, 742], [776, 792], [720, 812]]);
   // Floor shadows from the far window (KEY-B03-B): toward the camera along the floor; not lamp-dependent, so they stay after the lamps die.
-  const shadow = mixDark(CREAM.tile, 0.12);
+  const shadow = castTone(floor); // LT-03 cast tone of the floor (was a near-black mix that read as legs)
   f.fill(shadow, [[400, 800], [446, 800], [500, 1100], [360, 1100]]);
   f.fill(shadow, [[734, 800], [800, 800], [840, 1060], [700, 1060]]);
   f.fill(shadow, [[700, 812], [776, 792], [820, 880], [740, 900]]);
@@ -201,14 +202,31 @@ export const paintB03Sh01 = (ctx: PaintContext, pf: number, lang: Lang) => {
 /** The cabinet at the end frame (R2.5 table, B09-SH02B): the lit top lip y 900-922 (his eye line; the only highlight), the front to the bottom. */
 const B09_CABINET: CabinetR25 = {far: 900, near: 900, lip: 22, fx0: 150, fx1: 930, x0: 150, x1: 930, knobY: 1150};
 
-/** Floor props of the first frame (`Q-ZCP-13` B, user: floor props only): the phone face-up with a dark screen and four pull-tab cans. */
+/** The tiled floor below the cabinet base (plate y 2100 down): flat tiles, grout lines one step darker (sheet B09-SH02B staging). */
+const floorTiles = (f: Flat) => {
+  f.fill(CREAM.tile, [[-100, 2100], [1200, 2100], [1200, 2900], [-100, 2900]]);
+  const grout = mixColor(CREAM.tile, '#4a4036', 0.22);
+  for (let y = 2210; y < 2900; y += 110) f.line([[-100, y], [1200, y]], 0.6, grout, false);
+  for (let r = 0, y = 2100; y < 2900; r++, y += 110) for (let x = (r % 2) * 90; x < 1200; x += 180) f.line([[x, y], [x, y + 110]], 0.6, grout, false);
+};
+
+/**
+ * Floor props of the first frame (`Q-ZCP-13` B, user: floor props only), on the floor below the cabinet base: two stacks of two pull-tab cans
+ * and the phone face-up with a dark screen (sheet f 0 at dy +1100: cans ≈ y 1130-1230, phone ≈ 1255 on screen). Each casts a short flat
+ * shadow toward the cabinet.
+ */
 const floorProps = (f: Flat) => {
-  f.fill('#2a2c30', [[860, 2010], [940, 2010], [940, 2100], [860, 2100]]);
-  f.line([[860, 2010], [940, 2010], [940, 2100], [860, 2100]], 0.6);
-  for (const x of [150, 196, 242, 288]) {
-    f.fill('#b8c0c4', [[x, 1960], [x + 40, 1960], [x + 40, 2030], [x, 2030]]);
-    f.line([[x, 1960], [x + 40, 1960], [x + 40, 2030], [x, 2030]], 0.6);
+  const shadow = castTone(CREAM.tile);
+  for (const x of [165, 231]) {
+    f.fill(shadow, [[x - 10, 2232], [x + 46, 2232], [x + 40, 2214], [x - 16, 2214]]);
+    for (const y of [2232, 2290]) {
+      f.fill('#b8c0c4', [[x, y], [x + 44, y], [x + 44, y + 58], [x, y + 58]]);
+      f.line([[x, y], [x + 44, y], [x + 44, y + 58], [x, y + 58]], 0.6);
+    }
   }
+  f.fill(shadow, [[836, 2312], [906, 2312], [900, 2292], [830, 2292]]);
+  f.fill('#2a2c30', [[846, 2310], [906, 2310], [906, 2400], [846, 2400]]);
+  f.line([[846, 2310], [906, 2310], [906, 2400], [846, 2400]], 0.6);
 };
 
 /**
@@ -221,6 +239,8 @@ export const paintB09Sh02b = (ctx: PaintContext) => {
   paintDoorScene(ctx, f, {lock: false, latchBlack: true, panel: [230, 150, 860, 560]});
   // Defocus veil (pass 9, sheet L0): the door and jamb above the cabinet are soft under #d6c9ad at 60/255; the latch line stays black under it.
   shadeRegion(ctx, '#d6c9ad', 60 / 255, [[-100, -100], [1200, -100], [1200, 900], [-100, 900]]);
+  floorTiles(f);
   paintCabinetR25(f, B09_CABINET);
+  f.line([[150, 2100], [930, 2100]], 1.0);
   floorProps(f);
 };

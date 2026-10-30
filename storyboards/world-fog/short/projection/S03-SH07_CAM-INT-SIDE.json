@@ -1,5 +1,5 @@
 {
- "_note": "S03-SH07 side view | SS-R3.2 camera z -0.3 -> -0.6 (near mullion x 1.75 off frame, worker face clear of the jamb at the end) | WORLD-SHOP (left-handed) points and camera stored with x negated for this right-handed tool; see index.md#projection-checks",
+ "_note": "S03-SH07 side view | SS-R3.2 camera z -0.3 -> -0.6 (near mullion x 1.75 off frame, worker face clear of the jamb at the end) | WORLD-SHOP (left-handed) points and camera stored with x negated for this right-handed tool; see index.md#projection-checks | SS-R4.1: jamb silhouette corners (x 0.46-0.54, z -0.06..0) and the lowered torch (hand, lens, threshold beam target)",
  "up": "y",
  "size": [
   1080,
@@ -172,6 +172,36 @@
    1.4,
    1.4,
    -0.25
+  ],
+  "jamb_LB": [
+   -0.46,
+   1.0,
+   -0.06
+  ],
+  "jamb_RF": [
+   -0.54,
+   1.0,
+   0
+  ],
+  "torch_hand": [
+   -1.05,
+   0.95,
+   -0.6
+  ],
+  "torch_lens": [
+   -0.951,
+   0.839,
+   -0.542
+  ],
+  "beam_target": [
+   -0.2,
+   0,
+   -0.1
+  ],
+  "narr_mouth": [
+   -1.05,
+   1.45,
+   -0.7
   ]
  },
  "spans": {

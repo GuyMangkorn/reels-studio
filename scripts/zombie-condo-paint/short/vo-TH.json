@@ -1,0 +1,259 @@
+{
+  "deliverable": "ZCPAINT-SHORT-TH",
+  "script": "ZCONDO-SHORT-TH-R3 (tts-th.txt; captions = script ซับ chunks)",
+  "voice": "th-TH-NiwatNeural",
+  "voiceNote": "STAND-IN. The delivery record names the user's Botnoi TH render; it is not in the repo (index.md Measured audio, open). Replace with narration_files.py per-beat Botnoi files when supplied.",
+  "rate": "+5%",
+  "lines": [
+    {
+      "id": "TH-01",
+      "beat": "B01",
+      "text": "คุณเปิดประตูห้อง จะเอาขยะไปทิ้ง",
+      "atSec": 0.0
+    },
+    {
+      "id": "TH-02",
+      "beat": "B01",
+      "text": "ปลายทางเดิน มีคนยืนนิ่งอยู่",
+      "atSec": 1.9
+    },
+    {
+      "id": "TH-03",
+      "beat": "B01",
+      "text": "แล้วมันก็หันมา",
+      "atSec": 3.73
+    },
+    {
+      "id": "TH-04",
+      "beat": "B02",
+      "text": "ปิด",
+      "atSec": 5.1,
+      "caption": "ปิด! ล็อก!"
+    },
+    {
+      "id": "TH-05",
+      "beat": "B02",
+      "text": "ล็อก",
+      "atSec": 5.3,
+      "caption": null
+    },
+    {
+      "id": "TH-06",
+      "beat": "B02",
+      "text": "มันทุบประตูไม่หยุด",
+      "atSec": 5.6
+    },
+    {
+      "id": "TH-07",
+      "beat": "B02",
+      "text": "ลากตู้มาดัน",
+      "atSec": 6.8
+    },
+    {
+      "id": "TH-08",
+      "beat": "B02",
+      "text": "แต่ต้องรื้อออกได้เร็ว เผื่อไฟไหม้",
+      "atSec": 7.75
+    },
+    {
+      "id": "TH-09",
+      "beat": "B02",
+      "text": "ในโลกนี้ พวกมันตามเสียง",
+      "atSec": 10.2,
+      "caption": "ในโลกนี้... พวกมันตามเสียง"
+    },
+    {
+      "id": "TH-10",
+      "beat": "B03",
+      "text": "แล้วไฟก็ดับทั้งตึก",
+      "atSec": 12.0
+    },
+    {
+      "id": "TH-11",
+      "beat": "B04",
+      "text": "แต่ก๊อกน้ำยังไหล",
+      "atSec": 13.7
+    },
+    {
+      "id": "TH-12",
+      "beat": "B04",
+      "text": "คอนโดสูงหลายแห่ง ปั๊มน้ำขึ้นไปเก็บในถังบนดาดฟ้า",
+      "atSec": 14.8,
+      "caption": "คอนโดสูงหลายแห่ง ปั๊มน้ำขึ้นไป\nเก็บในถังบนดาดฟ้า"
+    },
+    {
+      "id": "TH-13",
+      "beat": "B04",
+      "text": "ไฟดับ ปั๊มก็หยุด",
+      "atSec": 17.8
+    },
+    {
+      "id": "TH-14",
+      "beat": "B04",
+      "text": "น้ำที่ยังไหล คือน้ำที่เหลือในถัง",
+      "atSec": 18.8
+    },
+    {
+      "id": "TH-15",
+      "beat": "B04",
+      "text": "หมดแล้วไม่มีใครเติม",
+      "atSec": 20.9
+    },
+    {
+      "id": "TH-16",
+      "beat": "B04",
+      "text": "รองใส่ทุกอย่าง ถัง หม้อ ขวด แล้วปิดฝา",
+      "atSec": 22.4
+    },
+    {
+      "id": "TH-17",
+      "beat": "B05",
+      "text": "ขวดไว้ดื่ม ถังไว้ราดชักโครก",
+      "atSec": 24.9
+    },
+    {
+      "id": "TH-18",
+      "beat": "B05",
+      "text": "เทแรงทีเดียว ถ้าท่อยังดี มันลงเอง",
+      "atSec": 26.4
+    },
+    {
+      "id": "TH-19",
+      "beat": "B05",
+      "text": "ส่วนน้ำสะอาดสำรอง อยู่ในถังพักน้ำหลังชักโครก",
+      "atSec": 28.9,
+      "caption": "ส่วนน้ำสะอาดสำรอง อยู่ในถังพัก\nน้ำหลังชักโครก"
+    },
+    {
+      "id": "TH-20",
+      "beat": "B05",
+      "text": "ไม่ใช่ในโถ",
+      "atSec": 31.8
+    },
+    {
+      "id": "TH-21",
+      "beat": "B05",
+      "text": "ถ้าน้ำใส และไม่ได้ใส่น้ำยา",
+      "atSec": 32.7
+    },
+    {
+      "id": "TH-22",
+      "beat": "B06",
+      "text": "ตู้เย็นถ้าไม่เปิด จะเย็นได้ราวสี่ชั่วโมง",
+      "atSec": 34.5,
+      "caption": "ตู้เย็นถ้าไม่เปิด\nจะเย็นได้ราวสี่ชั่วโมง"
+    },
+    {
+      "id": "TH-23",
+      "beat": "B06",
+      "text": "ช่องแช่แข็งที่อัดแน่น อย่างมากราวสองวัน",
+      "atSec": 37.8,
+      "caption": "ช่องแช่แข็งที่อัดแน่น\nอย่างมากราวสองวัน"
+    },
+    {
+      "id": "TH-24",
+      "beat": "B06",
+      "text": "ของในตู้เย็นที่กินได้เลย กินก่อน",
+      "atSec": 40.2
+    },
+    {
+      "id": "TH-25",
+      "beat": "B06",
+      "text": "กระป๋องไว้ท้ายสุด",
+      "atSec": 42.3
+    },
+    {
+      "id": "TH-26",
+      "beat": "B07",
+      "text": "เตาแก๊สปิกนิก ห้ามจุดในห้อง",
+      "atSec": 43.5
+    },
+    {
+      "id": "TH-27",
+      "beat": "B07",
+      "text": "คาร์บอนมอนอกไซด์ ฆ่าคุณได้ก่อนซอมบี้",
+      "atSec": 45.6,
+      "caption": "คาร์บอนมอนอกไซด์\nฆ่าคุณได้ก่อนซอมบี้"
+    },
+    {
+      "id": "TH-28",
+      "beat": "B07",
+      "text": "กินของที่ไม่ต้องปรุงแทน",
+      "atSec": 47.8
+    },
+    {
+      "id": "TH-29",
+      "beat": "B08",
+      "text": "คืนนั้นที่ระเบียง ทั้งเมืองมืดสนิท",
+      "atSec": 49.9
+    },
+    {
+      "id": "TH-30",
+      "beat": "B08",
+      "text": "มีแต่ควันกับเปลวไฟ",
+      "atSec": 52.1
+    },
+    {
+      "id": "TH-31",
+      "beat": "B08",
+      "text": "ไม่มีใครมาช่วยแน่",
+      "atSec": 53.4
+    },
+    {
+      "id": "TH-32",
+      "beat": "B09",
+      "text": "วันที่สาม",
+      "atSec": 54.6
+    },
+    {
+      "id": "TH-33",
+      "beat": "B09",
+      "text": "น้ำเหลือสองถัง",
+      "atSec": 55.4
+    },
+    {
+      "id": "TH-34",
+      "beat": "B09",
+      "text": "ปลากระป๋องสี่กระป๋อง",
+      "atSec": 56.5
+    },
+    {
+      "id": "TH-35",
+      "beat": "B09",
+      "text": "แบตเตอรี่สิบสองเปอร์เซ็นต์",
+      "atSec": 57.9
+    },
+    {
+      "id": "TH-36",
+      "beat": "B09",
+      "text": "แล้วก็มีเสียงเคาะประตู",
+      "atSec": 59.2
+    },
+    {
+      "id": "TH-37",
+      "beat": "B09",
+      "text": "พวกมันไม่เคาะ",
+      "atSec": 63.8
+    },
+    {
+      "id": "TH-38",
+      "beat": "B10",
+      "text": "คุณจะเปิดประตู ส่งเสียงตอบ",
+      "atSec": 65.0
+    },
+    {
+      "id": "TH-39",
+      "beat": "B10",
+      "text": "หรือเงียบไว้?",
+      "atSec": 66.5
+    },
+    {
+      "id": "TH-40",
+      "beat": "B10",
+      "text": "คอมเมนต์มา",
+      "atSec": 67.5
+    }
+  ],
+  "relock": "2026-10-30 Editor pass 1: measured Niwat +5% clip lengths (place-narration.py). B05 SH03 holds +0.4 s; B06 onward +0.4 s; TH-08, TH-12, TH-31, TH-33, TH-34, TH-36, TH-39 nudged for no overlap. Total ~71.2 s.",
+  "captionNote": "\"caption\" overrides the on-screen text (script ซับ chunk, merged utterance, or an authored \"\\n\" at a word boundary for the caption-breaks check); null = no new caption cue. Absent = the VO text."
+}

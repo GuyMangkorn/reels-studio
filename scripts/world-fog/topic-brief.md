@@ -14,6 +14,7 @@ Once inside, the worker reports a road collision blocking their return. End on t
 
 ## User constraints
 
+- 2026-10-30 pointer: the user scoped an EP1-only exception to the first constraint below (one perception insight line, an ending narrator reaction, about 100 s); see [delivery](delivery.md) handoff log and WFOG-SCRIPT-R3.
 - No closing moral, narrated crisis lesson, explanatory safety card or mandatory educational payoff in EP1; leave room for EP2.
 - Sensible crisis actions may be dramatized without becoming a tutorial. Verify safety implications; do not teach that every unknown atmospheric hazard is safe or every building always protects occupants.
 - No scientific explanation of the worldwide fog is required or approved. Do not present the premise as a documented real event.

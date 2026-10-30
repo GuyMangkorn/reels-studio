@@ -84,7 +84,8 @@ The planned rig follows ton-sea's model, implemented in TypeScript under `src/pa
 | --- | --- |
 | Storyboard, one acted beat per line | Preaw script, then Mark's scene sheets ([mark-storyboard-workflow](../../../docs/mark-storyboard-workflow.md)). Each narration line gets a visible action, and something in the world answers it. |
 | Style tests, palette, light | Film's brief records the painted look and its decisions. Keep rejected tests. |
-| Rig, sets, `BrushCanvas` features | Boss, in `src/painted/` |
+| Look-defining assets (new creature, look, ending) | Film, directly in `src/painted/<episode>/` with stills for approval, no throwaway spike ([split](../../../docs/film-visual-brief-workflow.md#look-assets)) |
+| Rig, shared sets, `BrushCanvas` features, hardening, measured QA | Boss, in `src/painted/` |
 | Shots and cuts | Editor, through the timeline once integration exists |
 | Voice / lip-sync | Niwat TTS by default; amplitude as above |
 | Subtitles | Remotion captions ([remotion-toolkit](../../../docs/remotion-toolkit.md)), not ton-sea's `subs.js` |

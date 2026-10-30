@@ -9,7 +9,7 @@ export const mediaKinds = ['video', 'image'] as const;
 export const transitionTypes = ['fade', 'slide', 'wipe'] as const;
 export const transitionDirections = ['left', 'right', 'up', 'down'] as const;
 export const captionPresets = ['outline', 'box', 'none'] as const;
-export const captionPositions = ['bottom', 'middle', 'top'] as const;
+export const captionPositions = ['bottom', 'middle', 'top', 'lower'] as const;
 
 /** A public/ path (no leading slash, no `..`) or an http(s) URL. */
 const validSrc = (v: unknown) => typeof v === 'string' && v.trim() !== '' && (/^https?:\/\//.test(v) || (!v.startsWith('/') && !v.split('/').includes('..')));
@@ -101,7 +101,9 @@ export function validateVideoStyle(video: {audio?: unknown; captionStyle?: unkno
     if (!record(video.captionStyle)) fail('captionStyle', 'expected object');
     const style = video.captionStyle as Record<string, unknown>;
     if (style.preset !== undefined && !(captionPresets as readonly string[]).includes(String(style.preset))) fail('captionStyle.preset', 'expected outline, box or none');
-    if (style.position !== undefined && !(captionPositions as readonly string[]).includes(String(style.position))) fail('captionStyle.position', 'expected bottom, middle or top');
+    if (style.position !== undefined && !(captionPositions as readonly string[]).includes(String(style.position))) fail('captionStyle.position', 'expected bottom, middle, top or lower');
+    if (style.bottomEdgeY !== undefined && (!finite(style.bottomEdgeY) || style.bottomEdgeY < 0 || style.bottomEdgeY > 4320)) fail('captionStyle.bottomEdgeY', 'expected a composition y in px, 0 to 4320');
+
     if (style.color !== undefined && typeof style.color !== 'string') fail('captionStyle.color', 'expected CSS color text');
     if (style.scale !== undefined && (!finite(style.scale) || style.scale < 0.5 || style.scale > 2)) fail('captionStyle.scale', 'expected 0.5 to 2');
   }
@@ -163,5 +165,5 @@ export function entryTransitionStyle(transition: SceneTransition, frame: number)
 export const clipVisibleAt = (clip: Pick<MediaClip, 'startSec' | 'endSec'>, frame: number, fps: number) =>
   frame >= Math.round((clip.startSec ?? 0) * fps) && (clip.endSec === undefined || frame < Math.round(clip.endSec * fps));
 
-export const defaultCaptionStyle: Required<Omit<CaptionStyle, 'color'>> & {color: string} = {preset: 'outline', position: 'bottom', color: '#fff', scale: 1};
+export const defaultCaptionStyle: Required<Omit<CaptionStyle, 'color' | 'bottomEdgeY'>> & {color: string; bottomEdgeY?: number} = {preset: 'outline', position: 'bottom', color: '#fff', scale: 1};
 export const defaultChrome: Required<ChromeStyle> = {channelLabel: 'ทำไมล่ะ', progressBar: true};

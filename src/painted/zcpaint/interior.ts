@@ -3,7 +3,7 @@ import {ell, INK} from './ctx';
 import {CREAM, dim, flatKit} from './sets';
 import {mixColor} from '../painter';
 import {persp} from './space';
-import {drawFig, figCast, figFront, figSide} from './body6';
+import {drawFig, figCast, figFront, figSide, MITTEN_6H, TEX_B} from './body6';
 import {castTone, KEY_B10} from './light';
 import {YOU_DAY3, ZC_FACES} from './cast';
 
@@ -28,7 +28,7 @@ export const paintInterior = (ctx: PaintContext, pf: number) => {
   const back = 3.2;
   // Him: the figure for this view, its place on the feet line, and its floor cast clipped to the entry and bathroom floor.
   const view = b10View(pf);
-  const fig = view === 'back' ? figFront(YOU_DAY3, {back: true, overlay: 'day3'}) : view === 'side' ? figSide(YOU_DAY3, {overlay: 'day3'}) : figFront(YOU_DAY3, {face: ZC_FACES.neutral, overlay: 'day3'});
+  const fig = view === 'back' ? figFront(YOU_DAY3, {back: true, overlay: 'day3', mitten: MITTEN_6H}) : view === 'side' ? figSide(YOU_DAY3, {overlay: 'day3', mitten: MITTEN_6H}) : figFront(YOU_DAY3, {face: ZC_FACES.neutral, overlay: 'day3', mitten: MITTEN_6H});
   const g = P(FEET.Y, 0, FEET.d);
   const place = {gx: g[0], gy: 1775, k: (1844 / (3.25 - FEET.Y)) / 447, dir: 1 as const};
   // The entry floor (Y 0.18-1.5): the camera is at Y 3.25, so the floor quad stays in front of it (the bathroom is not clipped to).
@@ -55,7 +55,7 @@ export const paintInterior = (ctx: PaintContext, pf: number) => {
   f.fill(L('#e2cfa8'), [P(0.18, 1.2, 0.35), P(0.58, 1.2, 0.35), P(0.58, 1.2, 1.15), P(0.18, 1.2, 1.15)]);
   f.line([P(0.58, 1.2, 0.35), P(0.58, 1.2, 1.15), P(0.58, 0, 1.15), P(0.58, 0, 0.35)], 1.1);
   // Him, drawn on the feet line: the contact patches only (the cast is above, in the floor pass).
-  drawFig(ctx, 10000, fig, place, {floor: L(CREAM.tile), screenCast: []});
+  drawFig(ctx, 10000, fig, place, {floor: L(CREAM.tile), screenCast: [], tex: TEX_B});
   // P1 partition: the wall face on the bathroom side d 0.9-3.2 and the lintel over the doorway; the jamb at d 0.9.
   f.fill(L(CREAM.partition), [P(1.6, 2.6, 0.9), P(1.6, 2.6, back), P(1.6, 0, back), P(1.6, 0, 0.9)]);
   f.fill(L(CREAM.partition), [P(1.6, 2.6, 0), P(1.6, 2.6, 0.9), P(1.6, 2.05, 0.9), P(1.6, 2.05, 0)]);

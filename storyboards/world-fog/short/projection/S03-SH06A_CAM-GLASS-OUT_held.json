@@ -1,0 +1,106 @@
+{
+ "_note": "SS-R4 S03-SH06A: held lit view after the S03-SH06 pull-back, ASM S=(-0.10,0.74), worker upright (LIT-LOWER), camera s=1 before picture push | WORLD-SHOP points stored with x negated (see index.md#projection-checks) | hood_top_upright y 1.70 is an estimate (rig hood top upright not measured); flat card: wheel on the stack plane z=zs",
+ "up": "y",
+ "size": [
+  1080,
+  1920
+ ],
+ "camera": {
+  "position": [
+   0,
+   1.45,
+   -3.0
+  ],
+  "direction": [
+   0,
+   0,
+   1
+  ],
+  "vfov": 71.197,
+  "shift": [
+   0,
+   -0.13542
+  ]
+ },
+ "points": {
+  "stack_ground": [
+   0.1,
+   0,
+   0.74
+  ],
+  "helmet_top": [
+   0.1,
+   1.95,
+   0.74
+  ],
+  "helmet_bbox_ctr": [
+   0.1,
+   1.725,
+   0.74
+  ],
+  "face_upright": [
+   -0.2,
+   1.47,
+   1.19
+  ],
+  "hood_top_upright": [
+   -0.2,
+   1.7,
+   1.19
+  ],
+  "worker_feet": [
+   -0.2,
+   0,
+   1.19
+  ],
+  "lit_brace": [
+   -0.15,
+   1.05,
+   0.97
+  ],
+  "umb_hand_lit": [
+   -0.45,
+   0.95,
+   1.02
+  ],
+  "umb_tip_ground": [
+   -0.5,
+   0.02,
+   0.94
+  ],
+  "wheel_FR": [
+   -0.1,
+   0.05,
+   0.74
+  ],
+  "door_header_ctr": [
+   0,
+   2.1,
+   0
+  ],
+  "jamb_L": [
+   0.5,
+   1.0,
+   0
+  ],
+  "jamb_R": [
+   -0.5,
+   1.0,
+   0
+  ]
+ },
+ "spans": {
+  "assembly": [
+   "stack_ground",
+   "helmet_top"
+  ],
+  "worker": [
+   "worker_feet",
+   "hood_top_upright"
+  ]
+ },
+ "caption_band": [
+  1000,
+  1248
+ ]
+}

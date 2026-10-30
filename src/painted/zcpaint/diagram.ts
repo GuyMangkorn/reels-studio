@@ -1,6 +1,6 @@
 import type {PaintContext} from '../BrushCanvas';
 import {ramp} from '../painter';
-import {flatKit} from './sets';
+import {flatKit, type Flat} from './sets';
 import type {Pt} from '../painter';
 
 // ZCPAINT B04-SH02 tank diagram (painted schematic plate, lighter paper `#e6dcc6`, no figures, generic tower only).
@@ -35,6 +35,21 @@ const reveal = (pts: Pt[], u: number): Pt[] => {
   return out;
 };
 
+/** Straight dashes from `a` to `b` (`on` px drawn, `off` px gap): the sheet's dashed refill path, drawn as short flat strokes. */
+const dashRun = (a: Pt, b: Pt, on = 14, off = 12): Pt[][] => {
+  const len = Math.hypot(b[0] - a[0], b[1] - a[1]);
+  const at = (s: number): Pt => [a[0] + ((b[0] - a[0]) * s) / len, a[1] + ((b[1] - a[1]) * s) / len];
+  const out: Pt[][] = [];
+  for (let s = 0; s < len; s += on + off) out.push([at(s), at(Math.min(len, s + on))]);
+  return out;
+};
+
+/** The painted crossed-bolt icon of the power-out label (`ไฟดับ` / `Power out`, sheet box x 140-370, y 720-790; the label text is Editor's). */
+const powerIcon = (f: Flat) => {
+  f.fill('#e5484d', [[178, 722], [160, 756], [171, 756], [162, 790], [190, 752], [178, 752], [186, 722]]);
+  f.line([[146, 724], [200, 790]], 3, '#e5484d', false);
+};
+
 export const paintDiagram = (ctx: PaintContext, pf: number, lang: 'TH' | 'EN') => {
   const K = DIAGRAM_KEYS[lang];
   const f = flatKit(ctx, 9000);
@@ -61,15 +76,12 @@ export const paintDiagram = (ctx: PaintContext, pf: number, lang: 'TH' | 'EN') =
     const top = LEVEL_TOP(level);
     f.fill('#7aa4b4', [[TANK.x0 + 2, top], [TANK.x1 - 2, top], [TANK.x1 - 2, TANK.y1 - 2], [TANK.x0 + 2, TANK.y1 - 2]], 2);
   }
-  // Step 4: power out: the pump greys and the arrow stops (drawn above in pumpOn).
-  // Step 6: dashed refill arrow, struck out (no refill).
+  // Step 4: power out: the pump greys and the arrow stops (drawn above in pumpOn); the crossed-bolt icon appears with the label.
+  if (pf >= K.power) powerIcon(f);
+  // Step 6: the dashed refill path appears and is struck out (no refill).
   if (pf >= K.strike) {
     const s = ramp(pf, K.strike, K.strike + 12);
-    for (let i = 0; i < 4; i++) {
-      const y = 1000 - i * 0;
-      void y;
-    }
-    line([[300, 760], [300, 430], [420, 430]], 1.6, '#6d6a62', s);
+    for (const seg of [...dashRun([300, 760], [300, 430]), ...dashRun([300, 430], [420, 430])]) line(seg, 1.6, '#6d6a62', s);
     line([[330, 470], [260, 500]], 3, '#9a3f2e', s);
   }
 };

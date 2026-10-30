@@ -26,3 +26,4 @@
 
 ## Revalidation history
 - 30 Oct 2026, pass 9 → measured as above → open.
+- 2026-10-30, pass 12 (uncommitted, G1 plates, B11 same-plate re-render from one bundle): `ZCP-B02-SH03` f60 identical; `ZCP-B01-SH01` f36 differs by max 8 levels in 24 px over 3 (inside this class). Adjacent frames f60/f61 inside flat cloth boxes: max 19 levels, a camera-resampling pattern rather than this residual (`build-notes` "Boss pass 12 G1", *Checks*).
