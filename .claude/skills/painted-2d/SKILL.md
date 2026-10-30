@@ -87,7 +87,7 @@ The planned rig follows ton-sea's model, implemented in TypeScript under `src/pa
 | Look-defining assets (new creature, look, ending) | Film, directly in `src/painted/<episode>/` with stills for approval, no throwaway spike ([split](../../../docs/film-visual-brief-workflow.md#look-assets)) |
 | Rig, shared sets, `BrushCanvas` features, hardening, measured QA | Boss, in `src/painted/` |
 | Shots and cuts | Editor, through the timeline once integration exists |
-| Voice / lip-sync | Niwat TTS by default; amplitude as above |
+| Voice / lip-sync | Gemini TTS by default ([project defaults](../../../docs/delivery-workflow.md#project-defaults)); amplitude as above |
 | Subtitles | Remotion captions ([remotion-toolkit](../../../docs/remotion-toolkit.md)), not ton-sea's `subs.js` |
 | SFX and music | [sound-generation-workflow](../../../docs/sound-generation-workflow.md) and the shared library |
 

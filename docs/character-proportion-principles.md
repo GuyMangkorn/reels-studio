@@ -61,6 +61,8 @@ Values given at a 1.72 m equivalent height; scale with height.
 <a id="cp-y-stylize"></a>
 ## CP-Y. Stylization level 1 (Default)
 
+**Project default (30 Oct 2026):** a new deliverable uses the WORLD FOG painted cast (adult 4 heads tall, mitten hands, decal heads; [project defaults](delivery-workflow.md#project-defaults)) unless the brief picks another body. CP-Y applies when a brief picks the Blender `char_base` body.
+
 Level 1 keeps a human-readable body while pushing it toward a cartoon read.
 
 - **CP-Y01.** Adult height of 4.5 heads.

@@ -13,14 +13,14 @@ Selection is complete when the record identifies the selected deliverables and t
 
 ## Style profile
 
-**Requirement:** every deliverable record names one style profile. Rules written for the channel's illustrated mystery/educational format are the **`channel-default`** profile; they bind a deliverable only through its profile, so a different profile overrides them with a recorded reason. Production requirements marked as the channel default (reference palette, demo lighting, rig contact, lead height, `ทำไมล่ะ` label, Niwat TTS, A/B endings) belong to that profile. Safety, licensing, Thai readability, deterministic frame-driven output, selected-deliverable independence, factual honesty and the hook/duration targets apply to every profile unless the user explicitly overrides them.
+**Requirement:** every deliverable record names one style profile. Rules written for the channel's illustrated mystery/educational format are the **`channel-default`** profile; they bind a deliverable only through its profile, so a different profile overrides them with a recorded reason. Production requirements marked as the channel default (reference palette, demo lighting, rig contact, lead height, `ทำไมล่ะ` label, the [project defaults](#project-defaults), A/B endings) belong to that profile. Safety, licensing, Thai readability, deterministic frame-driven output, selected-deliverable independence, factual honesty and the hook/duration targets apply to every profile unless the user explicitly overrides them.
 
 | Field | Choices (extend as needed) |
 | --- | --- |
 | Genre / purpose | mystery-educational (default), comedy, explainer/tutorial, vlog or documentary cut, news/recap, review, ad/promo, music/lyric video, slideshow/photo story, screen recording, motivational |
 | Visual medium | illustrated 2D/3D/hybrid (existing library), user footage, stock/licensed footage, still images, typography/kinetic text, screen recording, mixed |
-| Visual engine | for illustrated/animated media: Blender 3D, painted 2D (p5.brush), Remotion rig 2D, a mix of these, Film's choice, or the user's own answer ([visual engine](#visual-engine)) |
-| Voice | Niwat TTS (male, default), Premwadee TTS (female), user-supplied recording, on-camera audio, no voice |
+| Visual engine | for illustrated/animated media: painted 2D (p5.brush) + Remotion SVG (project default), Remotion rig 2D, Blender 3D (deactivated), Remotion rig 2D, a mix of these, Film's choice, or the user's own answer ([visual engine](#visual-engine)) |
+| Voice | Gemini TTS ([project default](#project-defaults)), Niwat TTS (male, Edge), Premwadee TTS (female, Edge), user-supplied recording, on-camera audio, no voice |
 | Music / SFX | none, user-supplied, licensed library (record the license), shared sound library / locally generated ([`sound-generation` skill](../.agents/skills/sound-generation/SKILL.md)), sparse SFX; ducking under voice |
 | Captions | outline (default), box, none; position; burned-in or SRT only |
 | Chrome | channel label and progress bar on/off |
@@ -29,16 +29,30 @@ Selection is complete when the record identifies the selected deliverables and t
 
 Record the chosen values in `delivery.md` as a compact block.
 
+<a id="project-defaults"></a>
+**Default — project defaults when the prompt does not say** (user decision, 30 Oct 2026, from WORLD FOG EP01). An illustrated story whose prompt leaves these open uses the values below without asking; record each in `delivery.md` as `default`. A prompt, brief or the user's answer overrides any of them, with the reason recorded.
+
+| Field | Default | Reference |
+| --- | --- | --- |
+| Visual engine | Painted 2D (p5.brush) for sets, characters and wide-to-medium shots, mixed with crisp Remotion SVG for close-ups and first-person (FPOV) inserts such as a phone screen or an object in the narrator's hands | WORLD FOG VD01, VD09 (PHONE-SVG) in [the brief](../storyboards/world-fog/short/visual-brief.md) |
+| Character proportions | The WORLD FOG cast: adult 4 heads tall (1.70 m; 1.60 m for a shorter adult with the same head), mitten hands, flat-face decal heads with face controls, drawn as a flat card at the character's depth | `src/painted/worldfog/cast.ts`, `head.ts`; brief VD03 |
+| Arm poses | Bent arms go back into depth with perspective (elbow behind the torso, a shade darker), never splayed out to the side | [CP-P](character-proportion-principles.md#cp-p-arm-depth); `Arm.via` / `Arm.behind` in `cast.ts` |
+| Camera | Mostly eye level and observational; slow drift or push on every shot; repeated fixed vantages where the repetition carries the story; the torch reveal is the quality reference | WORLD FOG brief "Camera language", VD10, VD12 |
+| Voice | Gemini TTS with per-line emotion ([gemini-tts skill](../.agents/skills/gemini-tts/SKILL.md)); narrator Sulafat (female) or Orus (male), "brisk natural pace, no long pauses". Minor characters may stay on Edge TTS ([voice-tuning](../.agents/skills/voice-tuning/SKILL.md)) | WORLD FOG delivery record, 30 Oct 2026 casting |
+| Thumbnails | Reuse an earlier thumbnail when it already shows the beat's framing; draw a new one only where none fits | Applies once the Film thumbnail sheet is adopted |
+
+The [voice sample](#style-profile) requirement still applies: a default voice is not a user choice. Gemini's free tier allows about 10 requests a day; plan generation in batches or fall back to Edge TTS for drafts.
+
 **Requirement — hear the voice before integration.** When the voice is TTS or new to the channel, the user hears a sample of about 10 s (the opening lines in the chosen voice, over the planned music bed if there is one) before Editor integrates the full narration. Record the user's choice in `delivery.md`; a default voice is not a user choice. A profile that needs a missing runtime capability is a Boss dependency, not a reason to change the story. Supported runtime fields are listed in [Remotion toolkit 10a](remotion-toolkit.md#10a-footage-stills-music-entry-transitions-and-caption-styles); inspect the active checkout before promising more.
 
 ### Visual engine
 
-**Requirement:** before Film's brief or any scene work on an animated or illustrated deliverable, the record names the visual engine. When neither the prompt nor the record names one, ask in the [selection call](#resolve-the-selection-before-writing) as a multi-select question in the user's language (Thai example: “จะทำภาพด้วยอะไร? เลือกได้หลายแบบเพื่อผสมกัน”):
+**Requirement:** before Film's brief or any scene work on an animated or illustrated deliverable, the record names the visual engine. When neither the prompt nor the record names one, use the [project default](#project-defaults) (painted 2D + SVG inserts) and record it as `default`; ask in the [selection call](#resolve-the-selection-before-writing) only when the request does not fit an illustrated story as a multi-select question in the user's language (Thai example: “จะทำภาพด้วยอะไร? เลือกได้หลายแบบเพื่อผสมกัน”):
 
 | Option | Meaning | Runtime status (checkout `733808f`) |
 | --- | --- | --- |
-| Blender 3D | Rendered 3D shots and assets ([Blender workflow](blender-mcp-workflow.md)) | `existing-integrated` |
-| Painted 2D (p5.brush) | Hand-painted watercolour and boiling ink, drawn per frame in `src/painted/BrushCanvas.tsx`; method in the [painted-2d skill](../.claude/skills/painted-2d/SKILL.md) | `exists-unintegrated`: a 5 s spike on its own entry point (`src/painted/spike/`), not wired into the scene renderer or episode registry |
+| Blender 3D | Rendered 3D shots and assets ([Blender workflow](blender-mcp-workflow.md)) | `deactivated` (user decision, 30 Oct 2026): not offered; code and assets are kept |
+| Painted 2D (p5.brush) | Hand-painted watercolour and boiling ink, drawn per frame in `src/painted/BrushCanvas.tsx`; method in the [painted-2d skill](../.claude/skills/painted-2d/SKILL.md) | `existing-integrated` (30 Oct 2026, `main` 59f8cee): painted scene type `src/scenes/painted.ts` with plates by ID in `src/painted/registry.ts`; shipped in WORLD FOG EP01 |
 | Remotion rig 2D | The existing vector character rig and scene library (`src/rig/`, `src/scenes/`) | `existing-integrated` |
 | Let Film choose | Film picks per scene or element and records the reasons in the brief | — |
 
