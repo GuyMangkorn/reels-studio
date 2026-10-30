@@ -47,7 +47,7 @@ The **coordinator** is the chat session the user talks to (Claude Code or Codex)
 
 Role configs describe roles. They install no automatic runner and authorize no cross-chat messaging. A role agent never invokes the next role on its own.
 
-`.claude/agents/<role>.md` and `.codex/agents/<role>.toml` must carry the same name, description and instructions. `tests/agents.test.ts` enforces this, so edit both in the same change. Claude front matter also carries a required `tools:` allowlist (Claude-only) that keeps each role's startup context small. Add a tool there before a role depends on it. Optional Claude-only `model:` and `effort:` lines pin a role's model and reasoning effort (set 30 Oct 2026: Boss and Editor `claude-haiku-5-5` at `xhigh`; Film `claude-sonnet-5-5` at `medium`; Boat, Mark and Preaw `claude-opus-5-5` at `high`, pinned so a Sonnet coordinator is not inherited); the coordinator may still override them per call.
+`.claude/agents/<role>.md` and `.codex/agents/<role>.toml` must carry the same name, description and instructions. `tests/agents.test.ts` enforces this, so edit both in the same change. Claude front matter also carries a required `tools:` allowlist (Claude-only) that keeps each role's startup context small. Add a tool there before a role depends on it. Optional Claude-only `model:` and `effort:` lines pin a role's model and reasoning effort (set 30 Oct 2026: Boss and Editor `claude-haiku-5-5` at `xhigh`; Film `claude-sonnet-5-5` at `medium`; Boat, Mark and Preaw `claude-opus-5-5` at `medium`, pinned so a Sonnet coordinator is not inherited); the coordinator may still override them per call.
 
 ## Working principles
 
