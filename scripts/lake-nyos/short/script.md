@@ -56,7 +56,7 @@ Story-world time runs from the night of 21 Aug 1986 to the morning after, then t
 
 ## Full spoken script
 
-VO is the exact narration text for TTS. Subtitles split the VO into cues without changing words; numbers are written as digits ("1,700", "1986", "25 กิโลเมตร", "2001"). "…" marks a short pause (≈0.3–0.6 s). On-screen labels are not spoken.
+VO is the exact narration text for TTS. Subtitles split the VO into cues without changing words; numbers are written as digits ("1,700", "1986", "2001"). "…" marks a short pause (≈0.3–0.6 s). On-screen labels are not spoken.
 
 ### NYOS-EP01-SHORT-B01 · 0.0–4.6 s (est.) — hook
 
@@ -79,7 +79,7 @@ VO is the exact narration text for TTS. Subtitles split the VO into cues without
 ### NYOS-EP01-SHORT-B03 · 10.6–14.3 s (est.) — morning, everything that breathes
 
 **VO:**
-> เช้ามา… วัวควายล้มตายหลายพันตัว แม้แต่นกกับแมลงก็ตาย
+> เช้ามา… วัวล้มตายหลายพันตัว แม้แต่นกกับแมลงก็ตาย
 
 - Visual intent: grey dawn over a pasture; cattle shown only as distant still silhouettes in a wide shot; a few fallen birds as small shapes in the grass. No close-ups of bodies.
 - **Sound intent:** drone thins; ambience drops to a cold, airless room tone (no birdsong). Do not state or imply measured silence beyond this mood.
@@ -148,9 +148,9 @@ VO is the exact narration text for TTS. Subtitles split the VO into cues without
 ### NYOS-EP01-SHORT-B11 · 52.2–59.5 s (est.) — the invisible river
 
 **VO:**
-> ก๊าซนี้หนักกว่าอากาศ มันจึงไหลลงหุบเขา เหมือนแม่น้ำที่มองไม่เห็น ไปไกลถึงราว 25 กิโลเมตร… ทำให้คนและสัตว์ขาดอากาศหายใจ
+> ก๊าซนี้หนักกว่าอากาศ มันจึงไหลลงหุบเขา เหมือนแม่น้ำที่มองไม่เห็น ไปไกลหลายกิโลเมตร… ทำให้คนและสัตว์ขาดอากาศหายใจ
 
-- On-screen: **"หนักกว่าอากาศ"**; distance marker **"~25 กม."** along a valley line.
+- On-screen: **"หนักกว่าอากาศ"**; distance marker **"หลาย กม."** along a valley line.
 - Visual intent: night map/terrain view: the pale haze pours off the crater rim and runs down valleys toward the villages, hugging the ground, house roofs above it untouched. Lamps in windows dim as it passes (mood, not a claim that flames went out: no flame-going-out moment). End on the village from `B01` under the haze.
 - **Sound intent:** low rushing/flowing air texture (reconstructed, under the voice); music low and sorrowful on "ขาดอากาศหายใจ", then a short silence (≈0.5 s).
 
@@ -177,7 +177,7 @@ VO is the exact narration text for TTS. Subtitles split the VO into cues without
 Each replaces or precedes `B01` only; the rest of the script is unchanged unless noted. Timing deltas are estimates.
 
 - **`ALT-A` — invisible killer (replaces `B01`):**
-  > ฆาตกรรายนี้… มองไม่เห็น ไม่มีกลิ่น แต่ในคืนเดียว มันคร่าชีวิตคนไปราว 1,700 คน
+  > ฆาตกรรายนี้… มองไม่เห็น ไม่พังบ้านสักหลัง แต่ในคืนเดียว มันคร่าชีวิตคนไปราว 1,700 คน
 
   ≈27 syllables (+7 vs `B01`, ≈+1.3 s). Misdirection leans on "invisible" and a personified killer; viewers may still guess a creature in `B05`. "ไม่มีกลิ่น" is true of CO2 but survivors reported smells (`F016`); Boat to rule whether this line needs qualification. If chosen, `B05` "สิ่งที่มองไม่เห็น?" becomes a callback.
 - **`ALT-B` — the lake behind your village (prepended to `B01`, labelled "จินตนาการ"):**
@@ -215,7 +215,7 @@ Status for every row: **awaiting Boat fact-check** of `NYOS-SCRIPT-R1`. All sour
 | B01 | "หลายคนหลับไปแล้ว… ไม่ตื่นอีกเลย" | F018 | SRC012 (and night timing F001/F002) | "หลายคน", not all (F018 note). |
 | B02 | "ปี 1986 ที่แคเมอรูน" + label "21 ส.ค. 1986", "แอฟริกาตะวันตก" | F001 | SRC001, SRC002, SRC011 | high |
 | B02 | "คืนนั้น บางคนเล่าว่า ได้ยินเสียงครืน ดังมาจากทะเลสาบนีออส" | F002 | SRC011, SRC006 | Framed as report; no time ("ราวสามทุ่มครึ่ง") spoken. |
-| B03 | "วัวควายล้มตายหลายพันตัว" | F004 | SRC011, SRC012 | No exact number. |
+| B03 | "วัวล้มตายหลายพันตัว" | F004 | SRC011, SRC012 | No exact number. |
 | B03 | "แม้แต่นกกับแมลงก็ตาย" | F005 | SRC011 | Medium (tertiary); R2 to check SRC002. |
 | B04 | "แต่บ้านไม่พัง ต้นไม้ไม่เป็นอะไร" | F005 | SRC011 | Medium; Britannica "vegetation unaffected". |
 | B04 | "คนที่รอดก็ไม่รู้ว่าเกิดอะไรขึ้น" | Key conclusion 4; F023 | SRC009, SRC010 | Fair per misdirection table ("Nobody knew… survivors woke not knowing"). |
@@ -229,12 +229,12 @@ Status for every row: **awaiting Boat fact-check** of `NYOS-SCRIPT-R1`. All sour
 | B10 | "เหมือนน้ำอัดลมที่ปิดฝาไว้" | F010 | — | **Analogy**, labelled "เปรียบเทียบ" on screen. |
 | B10 | "อะไรทำให้น้ำพลิกคืนนั้น… ยังไม่มีใครรู้แน่" | F011 | SRC008 | high that it is unresolved; "น้ำพลิก" = overturn per research takeaway. |
 | B11 | "ก๊าซนี้หนักกว่าอากาศ มันจึงไหลลงหุบเขา เหมือนแม่น้ำที่มองไม่เห็น" | F013 | SRC012; basic physics | high (heavier; valleys). No speed figure. "มองไม่เห็น" = CO2 is colourless; Boat to confirm no visible-cloud report contradicts the image. |
-| B11 | "ไปไกลถึงราว 25 กิโลเมตร" | F007 | SRC012, SRC011 | medium; "ราว" kept. |
+| B11 | "ไปไกลหลายกิโลเมตร" | F007 | SRC012, SRC011 | medium; "ราว" kept. |
 | B11 | "ทำให้คนและสัตว์ขาดอากาศหายใจ" | F008 | SRC001 | high (CO2 asphyxiation). |
 | B12 | "ตั้งแต่ปี 2001 ทะเลสาบนีออสมีท่อคอยดึงก๊าซขึ้นมา ให้มันค่อย ๆ หายใจออกทีละนิด" | F021 | SRC004, SRC005 | medium-high (2001). "หายใจออก" is metaphor. No "safe forever" claim; present-tense "มีท่อ" assumes pipes still operate (status after 2020 not inspected). |
 | B13 | "อีกทะเลสาบ ที่ใหญ่กว่ามาก มีคนอยู่รอบ ๆ นับล้าน ก้นของมันก็มีก๊าซอัดอยู่" + label "ทะเลสาบคิวู" | F022 | SRC013 | medium (journalism only). "นับล้าน" is softer than "~2 million". "ใหญ่กว่ามาก" per Boat's suggested wording. |
 | B13 | "แล้วถ้าวันหนึ่ง มันหายใจออกล่ะ?" | — | — | Hypothetical question, no risk claim. Boat to rule whether it overstates Kivu's risk (research: risk size disputed). |
-| ALT-A | "มองไม่เห็น ไม่มีกลิ่น… ราว 1,700 คน" | F003, F013, F016 | SRC001 | Only if chosen; "ไม่มีกลิ่น" vs smell reports needs a ruling. |
+| ALT-A | "มองไม่เห็น ไม่พังบ้านสักหลัง… ราว 1,700 คน" | F003, F013, F016 | SRC001 | Only if chosen; "ไม่มีกลิ่น" vs smell reports needs a ruling. |
 | ALT-B | hypothetical question to the viewer | F025 (fiction) | none | Only if chosen; "จินตนาการ" label. |
 
 ## Film → Mark handoff (this pass: script-only scope; Film/Mark not invoked)
