@@ -50,6 +50,10 @@ export type AsmPose = {
   travel: number;
   /** Vertical judder (m) of the jammed caster and the deck only (S03-SH06 squeak peaks; 0 elsewhere). */
   judder?: number;
+  /** Held look (S03-SH06A, SS-R4 RT-1; undefined = 0): forward head tilt about the neck (rad), eyelids closed 0..1, pupils down 0..1. */
+  bow?: number;
+  blink?: number;
+  gazeDown?: number;
 };
 
 /** Worker upper-body lean toward the stack (-x) about the hip pivot y 0.71 (ST-03 R3: 9 deg). */
@@ -213,14 +217,31 @@ const poseSH03 = (G: number): AsmPose => {
   };
 };
 
+/**
+ * S03-SH06A held look (SS-R4 RT-1, f = G - 2070; zero outside the shot): shoulders rise 0.012 m per breath (period 20 frames),
+ * eyelids close f84-f88, pupils go down f48-f60 (to the ground outside the door). No head bow (SS-R4.1 R8-5): the 5 deg forward
+ * tilt was sub-pixel in this view and read as a sideways tilt; the `bow` pose field stays available with identity at 0.
+ */
+const heldLook = (G: number) => {
+  const f = G - 2070;
+  if (f < 0 || f >= 120) return {breath: 0, bow: 0, blink: 0, gazeDown: 0};
+  return {
+    breath: 0.5 - 0.5 * Math.cos((2 * Math.PI * f) / 20),
+    bow: 0,
+    blink: bump(f, 84, 88),
+    gazeDown: ease(seg(f, 48, 60)),
+  };
+};
+
 /** LIT-LOWER at the current S (inserts, pull-back). S03-SH05: the hand shifts its grip f20-f30 (G1982-G1992). */
 const litLower = (G: number): AsmPose => {
-  const a = asmAt(G);
+  const a = asmAt(G), hold = heldLook(G);
   const grip = 0.02 * bump(G, 1982, 1992);
   const lHand = add3(LIT_LHAND(a.xs, a.zs), [0, grip, 0]);
   return {
     ...base(G, a, a.travel), helmet: {c: seatOf(a.xs, a.zs), a: 0}, rHand: add3(LIT_BRACE(a.xs, a.zs), [0, 0.008 * bump(G, 1932, 1940), 0]), lHand,
-    umbrella: {hand: lHand, tip: LIT_TIP(a.xs, a.zs)}, glove: 'under-stack', lean: 0, gaze: 1, dip: -0.015,
+    umbrella: {hand: lHand, tip: LIT_TIP(a.xs, a.zs)}, glove: 'under-stack', lean: 0, gaze: 1, dip: -0.015 + 0.012 * hold.breath,
+    bow: hold.bow, blink: hold.blink, gazeDown: hold.gazeDown,
   };
 };
 
@@ -323,6 +344,14 @@ export const assemblyRaw = (proj: Proj, pose: AsmPose): Part[] => {
     const r = y - HIP, l = pose.lean;
     return [wx + x * Math.cos(l) - r * Math.sin(l), HIP + x * Math.sin(l) + r * Math.cos(l), wz];
   };
+  // Head points (hood, face): W tilted forward about the neck (y 1.17) by the S03-SH06A bow; W itself when there is no bow.
+  const bowT = pose.bow ?? 0, cbow = Math.cos(bowT), sbow = Math.sin(bowT);
+  const H = (x: number, y: number): V3 => {
+    const p = W(x, y);
+    if (!bowT) return p;
+    const r = p[1] - 1.17;
+    return [p[0], 1.17 + r * cbow, p[2] - r * sbow];
+  };
   const parts: Part[] = [];
   const add = (pts: Pt[], lit: string, o: Partial<Part> = {}) => parts.push({pts, lit, ink: true, ...o});
   const deg = DEG;
@@ -344,21 +373,21 @@ export const assemblyRaw = (proj: Proj, pose: AsmPose): Part[] => {
     add([
       ...Array.from({length: 21}, (_, i): Pt => {
         const a = (-25 + (230 * i) / 20) * deg;
-        return P(W(0.235 * Math.cos(a), 1.49 + dy + 0.215 * Math.sin(a)));
+        return P(H(0.235 * Math.cos(a), 1.49 + dy + 0.215 * Math.sin(a)));
       }),
       P(W(-0.215, 1.17 + dy)), P(W(0.215, 1.17 + dy)),
     ], LIT.coat);
     // Face in the hood opening (decal head, exhausted): half-lidded eyes, worry brows, open mouth. Lit only.
     const Kh = 0.165, fcy = 1.47 + dy;
-    const FP = ([u, v]: Pt): Pt => P(W(u * Kh, fcy - v * Kh));
+    const FP = ([u, v]: Pt): Pt => P(H(u * Kh, fcy - v * Kh));
     add(headOutline(28).map(([u, v]) => FP([u * 0.92, v * 0.86])), LIT.skin, {inner: true, passes: 8});
     add([[-0.9, -0.62], [-0.6, -0.86], [0, -0.92], [0.6, -0.86], [0.9, -0.62], [0.86, -0.42], [0.3, -0.52], [-0.3, -0.5], [-0.86, -0.42]].map((q) => FP(q as Pt)), LIT.hair, {inner: true, passes: 6});
     add([[0.55, -0.2], [0.82, -0.3], [0.86, 0.5], [0.6, 0.8], [0.35, 0.86]].map((q) => FP(q as Pt)), LIT.skinShade, {inner: true, ink: false});
     for (const s of [-1, 1]) {
       const ex = s * 0.38, ey = 0.08;
-      const sq = 1 - 0.6 * pose.squint, gx = -0.07 * pose.gaze;
+      const sq = (1 - 0.6 * pose.squint) * (1 - (pose.blink ?? 0)), gx = -0.07 * pose.gaze, gy = -0.12 * (pose.gazeDown ?? 0);
       add(Array.from({length: 9}, (_, i): Pt => FP([ex + 0.19 * Math.cos(Math.PI * (i / 8)), ey + 0.1 * sq * Math.sin(Math.PI * (i / 8))])), LIT.white, {inner: true, passes: 4});
-      add(Array.from({length: 10}, (_, i): Pt => FP([ex - 0.02 + gx + 0.06 * Math.cos((i / 10) * 6.283), ey + 0.06 * sq + 0.055 * sq * Math.sin((i / 10) * 6.283)])), INK, {inner: true, ink: false, passes: 6});
+      add(Array.from({length: 10}, (_, i): Pt => FP([ex - 0.02 + gx + 0.06 * Math.cos((i / 10) * 6.283), ey + 0.06 * sq + gy + 0.055 * sq * Math.sin((i / 10) * 6.283)])), INK, {inner: true, ink: false, passes: 6});
       const [inner, outer] = BROW_Y.worry;
       add([FP([s * 0.2, inner - 0.03]), FP([s * 0.58, outer - 0.03]), FP([s * 0.58, outer + 0.03]), FP([s * 0.2, inner + 0.03])], LIT.hair, {inner: true, ink: false, passes: 6});
     }

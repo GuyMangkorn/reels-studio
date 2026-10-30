@@ -6,10 +6,10 @@ import {cameraAt} from '../../src/painted/registry';
 import {toScreen} from '../../src/painted/camera';
 import type {Painter, Pt} from '../../src/painted/painter';
 import {drawFigure, type FigPose} from '../../src/painted/worldfog/cast';
-import {asmPoseAt, assemblyParts, casterHubs} from '../../src/painted/worldfog/assembly';
+import {LIT, asmPoseAt, assemblyParts, casterHubs} from '../../src/painted/worldfog/assembly';
 import {farShapeAt} from '../../src/painted/worldfog/car';
 import {PROJ, SHOT_ROWS, asmAt, riseAt, type SetupId} from '../../src/painted/worldfog/space';
-import {SH02_TORCH_HAND} from '../../src/painted/shots/worldfog';
+import {SH02_TORCH_HAND, SH07_TORCH, beamSH06A} from '../../src/painted/shots/worldfog';
 
 // A painter that accepts every call and draws nothing: drawFigure then returns its anchors only.
 const noop: unknown = new Proxy(() => undefined, {get: (_t, k) => (k === 'alpha' ? 1 : noop), apply: () => undefined});
@@ -64,18 +64,18 @@ for (const f of [0, 16, 30]) {
   log(`S02-SH05 G760 cart lowest part y ${Math.round(Math.max(...ys))}; caster hubs ${hubs.join(', ')}`);
 }
 
-// 6. S04-SH01 G2200 (f40): both faces inside y 300-950 and both leads >= 480 px.
+// 6. S04-SH01 G2380 (f40, SS-R4; was G2200): both faces inside y 300-950 and both leads >= 480 px.
 {
   const worker = rigFigure('S04-SH01', 'CAM-INT-2S', 'worker', 0.2497, -1.093, 40, {view: 'front'});
   const narrator = rigFigure('S04-SH01', 'CAM-INT-2S', 'narrator', 0.85, -1.1, 40, {view: 'front'});
-  log(`S04-SH01 G2200 worker ${JSON.stringify(worker)}; narrator ${JSON.stringify(narrator)}`);
+  log(`S04-SH01 G2380 worker ${JSON.stringify(worker)}; narrator ${JSON.stringify(narrator)}`);
 }
 
-// 6b. S04-SH01 slumped worker (SS-R3.3): crouch 0.30 with the head bowed (nod 0.04 head units, calibrated to head top ~573);
-// f56 (G2216) and f100 (G2260) hold the slump, f130 (G2290) still bent. Sheet: head top ~573, feet 1378, visible ~805 px.
+// 6b. S04-SH01 slumped worker (SS-R3.3, frames unchanged by SS-R4): crouch 0.30 with the head bowed (nod 0.04 head units,
+// calibrated to head top ~573); f56 (G2396), f100 (G2440) hold the slump, f130 (G2470) still bent. Sheet: head top ~573, feet 1378, visible ~805 px.
 for (const f of [56, 100, 130]) {
   const r = rigFigure('S04-SH01', 'CAM-INT-2S', 'worker', 0.25, -1.1, f, {view: 'front', crouch: 0.3, nod: [0, 0.04]});
-  log(`S04-SH01 G${2160 + f} (f${f}) slumped worker ${JSON.stringify(r)} (sheet head top ~573, lead ~805)`);
+  log(`S04-SH01 G${rowOf('S04-SH01').g0 + f} (f${f}) slumped worker ${JSON.stringify(r)} (sheet head top ~573, lead ~805)`);
 }
 
 // 6c. S01-SH02 narrator step-out (SS-R3.3 marks): standing lead at f48 (G174, z 4.15 in the door's V) and at f62 (z 3.80).
@@ -114,23 +114,69 @@ for (const [id, setup, f] of [['S02-SH08', 'CAM-LOW-SHELF', 11], ['S02-SH08', 'C
   log(`${id} f${f} (G${G}) crouched narrator rig: head top ${r.headTop}, feet ${r.feet}, lead ${r.lead}`);
 }
 
-// 9. S03-SH07 bar width and face: door jamb (x 0.46-0.54, z -0.06..0, the only frame bar in view) at G2140 and the
-// worker's face centre (rig head at (0.20, 1.49, 0.00), G2159), against the jamb's left edge.
+// 9. S03-SH07 bar width and face (SS-R4 RT-2): door jamb (x 0.46-0.54, z -0.06..0, the only frame bar in view) at G2320 (f130)
+// and the worker's face centre (rig head at (0.20, 1.49, 0.00), G2339 = f149), against the jamb's left edge.
 {
   const proj = PROJ['CAM-INT-SIDE'];
-  const cam140 = camOf('S03-SH07', 70), cam159 = camOf('S03-SH07', 89);
-  const jambL = toScreen(cam140, proj.P([0.46, 1.0, -0.06]))[0], jambR = toScreen(cam140, proj.P([0.54, 1.0, 0]))[0];
-  const faceX = toScreen(cam159, proj.P([0.2, 1.49, 0]))[0];
-  const jambL159 = toScreen(cam159, proj.P([0.46, 1.0, -0.06]))[0];
-  log(`S03-SH07 G2140 jamb bar ${Math.round(jambR - jambL)} px wide (x ${Math.round(jambL)}..${Math.round(jambR)}); G2159 worker face centre x ${Math.round(faceX)}, jamb edge ${Math.round(jambL159)}`);
-  log(`S03-SH07 mullion at x 1.75 projects at x ${Math.round(toScreen(cam140, proj.P([1.75, 1.0, -0.03]))[0])} (off frame if >= 1080)`);
+  const cam320 = camOf('S03-SH07', 130), cam339 = camOf('S03-SH07', 149);
+  const jambL = toScreen(cam320, proj.P([0.46, 1.0, -0.06]))[0], jambR = toScreen(cam320, proj.P([0.54, 1.0, 0]))[0];
+  const faceX = toScreen(cam339, proj.P([0.2, 1.49, 0]))[0];
+  const jambL339 = toScreen(cam339, proj.P([0.46, 1.0, -0.06]))[0];
+  // SS-R4.1 R8-3: purpose rule (the jamb is the only frame bar; it covers no eye, nose or mouth at G2320-G2339). No px limit.
+  log(`S03-SH07 G2320 jamb bar ${Math.round(jambR - jambL)} px wide (x ${Math.round(jambL)}..${Math.round(jambR)}; purpose rule R8-3, no px limit); G2339 worker rig head centre (hood) x ${Math.round(faceX)}, jamb left edge ${Math.round(jambL339)}: clear by ${Math.round(jambL339 - faceX)} px (eye at x ~810 and nose at x ~775 by the native crop of r8 G2339; the jamb covers the back of the hood only)`);
+  log(`S03-SH07 mullion at x 1.75 projects at x ${Math.round(toScreen(cam320, proj.P([1.75, 1.0, -0.03]))[0])} (off frame if >= 1080)`);
+  // Worker lead at G2339 (profile, left; rig at the cart's stop-side offset (0.3, 0.45) from S = (-0.10, -0.45)): sheet lead >= 480 px.
+  const w339 = rigFigure('S03-SH07', 'CAM-INT-SIDE', 'worker', -0.1 + 0.3, -0.45 + 0.45, 149, {view: 'left'});
+  log(`S03-SH07 G2339 worker (profile, rig) ${JSON.stringify(w339)} (sheet: lead >= 480 px)`);
+}
+
+// 9a. S03-SH07 torch (SS-R4.1 R8-1): hand, lens and pool at G2230 (f40) and G2320 (f130), s from the plate camera.
+// Sheet: hand (540, 1107)-(540, 1127) +-15, lens (584, 1164)-(586, 1187) +-15, pool (790, 1425)-(802, 1461) +-25.
+for (const G of [2230, 2320]) {
+  const cam = camOf('S03-SH07', G - 2190), proj = PROJ['CAM-INT-SIDE'];
+  const at = (p: typeof SH07_TORCH.hand) => toScreen(cam, proj.P(p)).map((v) => Math.round(v));
+  log(`S03-SH07 G${G} (f${G - 2190}, s ${cam.s.toFixed(3)}) torch hand ${at(SH07_TORCH.hand)} lens ${at(SH07_TORCH.lens)} pool ${at(SH07_TORCH.target)}`);
+}
+
+// 9b'. S03-SH07 "pole" (SS-R4.1 R8-8): the glass-front top rail (shop.ts box 27, y 2.16) and sill (box 28, y 0.05) run along the view
+// axis; their image lines meet at the principal point (540, 700), so they read as one dark diagonal. Omitted in S03-SH07 (paintShop omit).
+{
+  const cam = camOf('S03-SH07', 130), proj = PROJ['CAM-INT-SIDE'];
+  const s = (p: [number, number, number]): Pt => toScreen(cam, proj.P(p));
+  const meet = (p1: Pt, p2: Pt, p3: Pt, p4: Pt): Pt => {
+    const d = (p1[0] - p2[0]) * (p3[1] - p4[1]) - (p1[1] - p2[1]) * (p3[0] - p4[0]);
+    const a = p1[0] * p2[1] - p1[1] * p2[0], b = p3[0] * p4[1] - p3[1] * p4[0];
+    return [(a * (p3[0] - p4[0]) - (p1[0] - p2[0]) * b) / d, (a * (p3[1] - p4[1]) - (p1[1] - p2[1]) * b) / d];
+  };
+  const rail = [s([-3, 2.16, 0]), s([0, 2.16, 0])] as const, sill = [s([-3, 0.05, 0]), s([0, 0.05, 0])] as const;
+  const x = meet(rail[0], rail[1], sill[0], sill[1]);
+  log(`S03-SH07 G2320 glass-front rail (box 27) and sill (box 28) image lines meet at (${Math.round(x[0])}, ${Math.round(x[1])}) (principal point 540, 700): the pole of R8-8; both omitted in S03-SH07`);
+}
+
+// 9b. S03-SH06A beam hold (SS-R4.1 R8-2): BEAM_END (583, 689) at f0-f30 (G2070-G2100), eased to (588, 820) at f66 (G2136).
+{
+  const b100 = toScreen(camOf('S03-SH06A', 30), beamSH06A(2100));
+  log(`S03-SH06A G2100 beam centre (plate px at s 1: 583, 689) screen (${b100[0].toFixed(0)}, ${b100[1].toFixed(0)}); G2136 screen unchanged (sheet 595, 861)`);
+}
+
+// 9b. S03-SH06A held look (SS-R4 RT-1): worker height and face at G2100 (f30), beam centre at G2136 (f66); sheet 674 +-15, (615, 705) +-15, (595, 861) +-20.
+{
+  const pose = asmPoseAt(2100), cam = camOf('S03-SH06A', 30);
+  const parts = assemblyParts(PROJ['CAM-GLASS-OUT'], pose, 1);
+  const hood = Math.min(...parts.filter((q) => q.lit === LIT.coat).flatMap((q) => q.pts.map((pt) => pt[1])));
+  const skin = parts.filter((q) => q.lit === LIT.skin).flatMap((q) => q.pts);
+  const face = toScreen(cam, [skin.reduce((s, q) => s + q[0], 0) / skin.length, skin.reduce((s, q) => s + q[1], 0) / skin.length]);
+  const feet = toScreen(cam, PROJ['CAM-GLASS-OUT'].P([pose.S.xs + 0.3, 0, pose.S.zs + 0.45]));
+  const height = feet[1] - toScreen(cam, [0, hood])[1];
+  const beam = toScreen(camOf('S03-SH06A', 66), beamSH06A(2136));
+  log(`S03-SH06A G2100 worker ${height.toFixed(0)} px (sheet 674), face (${face[0].toFixed(0)}, ${face[1].toFixed(0)}) (sheet 615, 705); G2136 beam centre (${beam[0].toFixed(0)}, ${beam[1].toFixed(0)}) (sheet 595, 861)`);
 }
 
 // 10. Assembly position check for the S04-SH01 gondola edge (front end z -2.8): front-left edge x at the two-shot.
 {
   const cam = camOf('S04-SH01', 0);
   log(`S04-SH01 gondola A front-left edge x ${Math.round(toScreen(cam, PROJ['CAM-INT-2S'].P([0.6, 1.6, -2.8]))[0])} (sheet 1043 at s 1.0)`);
-  log(`S04-SH01 stop reference: stack centre z ${asmAt(2160).zs.toFixed(2)}`);
+  log(`S04-SH01 stop reference: stack centre z ${asmAt(2340).zs.toFixed(2)} (SS-R4 push ends G2339)`);
 }
 
 console.log(out.join('\n'));

@@ -44,3 +44,10 @@ Status: picked by measurement (scripts/zombie-condo-paint/measure-sfx.py); NOT l
   sfx/tension/tension_heartbeat-slow_01
   sfx/reveal/reveal_glass-shimmer-soft_01
   sfx/ui/ui_click-tick_01
+## WFOG-EP01-SHORT (Editor, 30 Oct 2026)
+Files copied from the shared library for WORLD FOG EP01: generated and processed 2026-10-30 (audio-studio, Stable Audio 3; same license as above): room/room_shop-fridge-hum_01 (ambience loop), outdoor/outdoor_fog-forecourt-hush_01, tone/tone_soft-sustain-reflective_01. Existing library files: tension/tension_drone-sparse-piano_01 (music loop) and bed/bed_dark-drone-sub_01 (ambience loop) (library NOTICE.md). The drone bed keeps its piano layer (no stem separation). No file here has been listened to by a human yet.
+
+## WFOG-EP01-SHORT caption scrim (Editor, 30 Oct 2026)
+`public/scrim/WFOG-caption-scrim-960x260.png`: generated plate (no library sound or photo), RGB 16,16,24 at up to 62 
+## WFOG-EP01-SHORT caption scrim (Editor, 30 Oct 2026)
+`public/scrim/WFOG-caption-scrim-960x260.png` is a generated plate (no library sound or photo): RGB 16,16,24 at up to 62 % alpha with a 40 px feather, behind the caption block only. It is the interim for MK-WF-DEP-10 (see build-notes).

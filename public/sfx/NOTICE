@@ -44,3 +44,5 @@ Status: picked by measurement (scripts/zombie-condo-paint/measure-sfx.py); NOT l
   sfx/tension/tension_heartbeat-slow_01
   sfx/reveal/reveal_glass-shimmer-soft_01
   sfx/ui/ui_click-tick_01
+## WFOG-EP01-SHORT (Editor, 30 Oct 2026)
+Files copied from the shared library for WORLD FOG EP01 (`src/videos/world-fog/index.ts`): generated and processed 2026-10-30 (audio-studio, Stable Audio 3; under the same license as above): vehicle/vehicle_car-engine-decel-stop_01, foley/foley_car-door-open-close_01, foley/foley_footsteps-wet-concrete_01, foley/foley_cart-wheel-squeak-scrape_01, foley/foley_umbrella-tap-glass_01, foley/foley_carton-slide-helmet-catch_01, foley/foley_flashlight-click_01, foley/foley_glass-door-push_01. Existing library files: reveal/reveal_riser-tension_01, ui/ui_notification-ding_01, ui/ui_pop_01 (library NOTICE.md). No file here has been listened to by a human yet.
