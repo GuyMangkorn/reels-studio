@@ -11,7 +11,7 @@ import {asmPoseAt, assemblyParts, assemblyRaw, JAM_JUDDER, LIT, SIL, TAP_FRAMES}
 import {doorPt, farShapeAt, SEDAN_DOOR} from '../src/painted/worldfog/car';
 import {CAST, drawFigure, shoulderHeight, type Arm} from '../src/painted/worldfog/cast';
 import {PROJ, SHOT_ROWS, TOTAL_FRAMES, asmAt, fogAt, lampAt, lensAt, lightAt, type V3} from '../src/painted/worldfog/space';
-import {SH02_TORCH_HAND, VD18_LIGHT, sh02Arms} from '../src/painted/shots/worldfog';
+import {SH02_TORCH_HAND, VD18_LIGHT, clutch, counterWorkerArms, sh02Arms} from '../src/painted/shots/worldfog';
 
 const video = worldFog.videos[0];
 const fps = 30;
@@ -199,7 +199,7 @@ test('shoulderHeight (SS-R3.4) is the front-view shoulder anchor drawFigure pain
   }
 });
 
-test('S03-SH02 arms (SS-R3.4): elbows keep their offset through the rise, the right upper arm goes behind at f68, sheet points G1680 and G1764 within 15 px', () => {
+test('S03-SH02 arms (SS-R3.5): elbows keep their offset through the rise, both upper arms stay behind f0-f143 (no switch), sheet points G1680 and G1764 within 15 px', () => {
   const proj = PROJ['CAM-INT-REV'];
   const near = (a: Pt, b: Pt) => Math.hypot(a[0] - b[0], a[1] - b[1]) <= 15;
   // The rig's right shoulder at the narrator's ground point (-0.95, -1.3) against the sheet reference (-0.814, 1.18, -1.30).
@@ -213,15 +213,42 @@ test('S03-SH02 arms (SS-R3.4): elbows keep their offset through the rise, the ri
     assert.ok(Math.abs(a.elbowR[1] - shoulderHeight('narrator', a.crouch) - offset) < 1e-9, `f${f} elbow offset`);
   }
   assert.equal(sh02Arms(proj, 24).elbowR[1], 0.93);
-  // The right upper arm is behind the torso front plane (z -1.22) until f68.
-  assert.equal(sh02Arms(proj, 67).r.behind, 'upper');
-  assert.equal(sh02Arms(proj, 68).r.behind, undefined);
-  // Sheet rows: G1680 (f24) elbow (436, 1256), hand (366, 1283); G1764 (f108) elbow (403, 1301), hand (350, 1180), left elbow (748, 1256), left hand (723, 1187).
+  // SS-R3.5: both upper arms stay behind the torso for the whole shot; the r5 layer switch at f68 is gone (CP-P06).
+  for (let f = 0; f <= 143; f++) {
+    assert.equal(sh02Arms(proj, f).r.behind, 'upper', `f${f} right upper arm`);
+    assert.equal(sh02Arms(proj, f).l.behind, 'upper', `f${f} left upper arm`);
+  }
+  // Sheet rows: G1680 (f24) elbow (436, 1256), hand (366, 1283); G1764 (f108) elbow (403, 1301), hand (350, 1180), left elbow (784, 1256), left hand (723, 1187).
   const at24 = sh02Arms(proj, 24), at108 = sh02Arms(proj, 108);
   assert.ok(near(at24.r.via!, [436, 1256]) && near(at24.r.to, [366, 1283]), `G1680 right arm ${at24.r.via} ${at24.r.to}`);
   assert.ok(near(at108.r.via!, [403, 1301]) && near(at108.r.to, [350, 1180]), `G1764 right arm ${at108.r.via} ${at108.r.to}`);
-  assert.ok(near(at108.l.via!, [748, 1256]) && near(at108.l.to, [723, 1187]), `G1764 left arm ${at108.l.via} ${at108.l.to}`);
+  assert.ok(near(at108.l.via!, [784, 1256]) && near(at108.l.to, [723, 1187]), `G1764 left arm ${at108.l.via} ${at108.l.to}`);
   for (let f = 0; f <= 143; f++) assert.ok(sh02Arms(proj, f).r.via![0] >= 380, `f${f} right elbow x ${sh02Arms(proj, f).r.via![0]}`);
+});
+
+test('S02-SH03 shop worker arms (SS-R3.5 AB1): elbows at the torso edge and hands on the counter at the G474 plate points, upper arms behind', () => {
+  const a = counterWorkerArms(PROJ['CAM-COUNTER-OUT']);
+  const dist = (p: Pt, q: Pt) => Math.hypot(p[0] - q[0], p[1] - q[1]);
+  assert.equal(a.rArm.behind, 'upper');
+  assert.equal(a.lArm.behind, 'upper');
+  // Sheet row G474 (f30, constant arms): elbows (428, 830) and (652, 830) +-10; hands (444, 905) and (636, 905) +-15.
+  assert.ok(dist(a.rArm.via!, [428, 830]) <= 10 && dist(a.lArm.via!, [652, 830]) <= 10, `G474 elbows ${a.rArm.via} ${a.lArm.via}`);
+  assert.ok(dist(a.rArm.to, [444, 905]) <= 15 && dist(a.lArm.to, [636, 905]) <= 15, `G474 hands ${a.rArm.to} ${a.lArm.to}`);
+});
+
+test('S02-SH06 occupant clutch (SS-R3.5 AB1): upper arms behind f30-f107, elbows at her sides; G850 left elbow and hand within 10/15 px', () => {
+  const proj = PROJ['CAM-INT-REV'];
+  const dist = (p: Pt, q: Pt) => Math.hypot(p[0] - q[0], p[1] - q[1]);
+  assert.deepEqual(clutch(proj, 29), {}, 'no arms before f30');
+  for (let f = 30; f <= 107; f++) {
+    assert.equal(clutch(proj, f).rArm?.behind, 'upper', `f${f} right upper arm`);
+    assert.equal(clutch(proj, f).lArm?.behind, 'upper', `f${f} left upper arm`);
+  }
+  // Sheet row G850 (f58, the ease is complete): left elbow (922, 1077), left hand (889, 934); right elbow (685, 1077).
+  const at58 = clutch(proj, 58);
+  assert.ok(dist(at58.lArm!.via!, [922, 1077]) <= 10, `G850 left elbow ${at58.lArm!.via}`);
+  assert.ok(dist(at58.lArm!.to, [889, 934]) <= 15, `G850 left hand ${at58.lArm!.to}`);
+  assert.ok(dist(at58.rArm!.via!, [685, 1077]) <= 10, `G850 right elbow ${at58.rArm!.via}`);
 });
 
 test('caster tyres: darker than the cart silhouette unlit (S02-SH05), near-black rubber when lit (S03-SH06 core luma <= 0.12)', () => {

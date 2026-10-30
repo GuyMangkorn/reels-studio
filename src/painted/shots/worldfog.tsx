@@ -176,7 +176,8 @@ const forecourtPlate = plate('S01-SH02', {
       view: 'front', light: VD18_LIGHT['CAM-FORECOURT'], walk: f >= 74 ? (f - 74) / 18 : undefined,
       face: face({look: [0.6, 0], brow: 'worry'}),
       // SS-R3.4 AB1: the phone hand as before; the elbow goes back into depth (upper arm behind the torso), fixed on her.
-      lArm: phone > 0 ? armVia(proj, [x + 0.12, lerp(0.9, 1.15, phone), z - 0.12], [x + 0.15, 0.93, z + 0.04], 'upper') : undefined, lHold: phone > 0.5 ? {kind: 'phone'} : undefined,
+      // SS-R3.5: elbow x+0.185 (was +0.15) on the jacket edge, so the upper arm shows as a sleeve sliver (CP-P02).
+      lArm: phone > 0 ? armVia(proj, [x + 0.12, lerp(0.9, 1.15, phone), z - 0.12], [x + 0.185, 0.93, z + 0.04], 'upper') : undefined, lHold: phone > 0.5 ? {kind: 'phone'} : undefined,
       rArm: f >= 72 && f < 81 ? arm(proj, edge, -1) : undefined,
     };
     const narrator = () => drawFigure(p, 'narrator', her.g, her.unit, pose, tl);
@@ -220,7 +221,8 @@ const counterInPlate = plate('S02-SH01', {
       actor(p, proj, 'occupant', -1.6, -1.0, {view: 'right', light: L, lean: 0.03 * bump(f, 40, 60), face: face({look: [1, -0.1]})}, tl),
       actor(p, proj, 'narrator', x, z, {
         view: 'front', light: L, head, face: face({look, brow: f >= 54 ? 'worry' : 'flat'}),
-        lArm: armVia(proj, [x + 0.06, 1.12, z - 0.2], [x + 0.15, 0.95, z + 0.04], 'upper'), lHold: {kind: 'phone'},
+        // SS-R3.5 AB1: phone elbow x+0.185 (was +0.15), on the jacket edge (CP-P02 sleeve sliver).
+        lArm: armVia(proj, [x + 0.06, 1.12, z - 0.2], [x + 0.185, 0.95, z + 0.04], 'upper'), lHold: {kind: 'phone'},
         rArm, rHold: f >= 96 ? {kind: 'torch', angle: Math.PI / 2, on: 0} : undefined,
       }, tl),
     ]});
@@ -238,6 +240,15 @@ const phonePlate = plate('S02-SH02', {
 /** S02-SH03 set dressing (SS-R3.3; index open item 17 c): register at the counter's -x end, dark counter front and top (top lift x0.15), hard nosing, lit back-shelf tops on the top row. */
 const COUNTER_OUT_DRESS: ShopDress = {register: [-2.78, -2.42], counterFront: '#2e3335', counterTop: '#4a5150', counterTopLift: 0.15, nosing: '#8f9794', backShelfTopLitOnly: true,
   backShelf: {color: VD18_SET.shelf, front: VD18_SET.shelfSide}};
+/**
+ * S02-SH03 shop worker arms (SS-R3.5 rows, WORLD-SHOP m): hands on the far counter edge at ±0.13 m (R −1.87, L −2.13, on the
+ * blue shirt beside the apron), elbows at the torso edge (±0.18 m, y 1.02, z −3.56) with the upper arms behind the torso (CP-P02).
+ * `via` is a screen point; the bone length is not enforced.
+ */
+export const counterWorkerArms = (proj: Proj) => ({
+  rArm: armVia(proj, [-1.87, 0.93, -3.22], [-1.82, 1.02, -3.56], 'upper'),
+  lArm: armVia(proj, [-2.13, 0.93, -3.22], [-2.18, 1.02, -3.56], 'upper'),
+});
 const counterOutPlate = plate('S02-SH03', {
   paper: '#8d918a',
   camera: push(96, 1.0, 1.06, 540, 530),
@@ -249,8 +260,7 @@ const counterOutPlate = plate('S02-SH03', {
     paintShop(p, proj, G, {light: L, dress: COUNTER_OUT_DRESS, actors: [
       actor(p, proj, 'shopworker', -2.0, -3.5, {
         view: 'front', light: L, face: face({look, brow: f >= 30 ? 'worry' : 'flat', open: talk(f, [[24, 66]], 0.6)}),
-        // SS-R3.4 AB1: hands on the far counter edge (±0.08 m, inside her shoulders), elbows back into depth.
-        rArm: armVia(proj, [-1.92, 0.93, -3.22], [-1.85, 0.94, -3.56], 'upper'), lArm: armVia(proj, [-2.08, 0.93, -3.22], [-2.15, 0.94, -3.56], 'upper'),
+        ...counterWorkerArms(proj),
       }, tl),
     ]});
   },
@@ -404,13 +414,17 @@ const intRevPlate = (id: string, len: number, camera: (tl: number) => Camera, ca
   });
 };
 
-/** S02-SH06 occupant clutching her cardigan (SS-R3.4 AB0-F rows): the hands as before, the elbows move forward with the hands' ease f30-f50; no behind. */
-const clutch = (proj: Proj, f: number): {rArm?: Arm; lArm?: Arm} => {
+/**
+ * S02-SH06 occupant clutching her cardigan (SS-R3.5 AB1 rows, replacing the r5 AB0-F): hands (−1.24 / −1.36, 0.90 → 1.20, z −1.75)
+ * and elbows at her sides (x −1.12 / −1.48, z −1.97, y 0.86 → 0.96) move with the same ease f30–f50; `behind: 'upper'` f30–f107
+ * (CP-P02 "holding something at the chest"). Exported for the S02-SH06 test.
+ */
+export const clutch = (proj: Proj, f: number): {rArm?: Arm; lArm?: Arm} => {
   if (f < 30) return {};
   const u = ease(seg(f, 30, 50));
   return {
-    rArm: armVia(proj, [-1.24, lerp(0.9, 1.2, u), -1.75], mix3([-1.16, 0.86, -1.97], [-1.18, 0.90, -1.72], u)),
-    lArm: armVia(proj, [-1.36, lerp(0.9, 1.15, u), -1.75], mix3([-1.44, 0.86, -1.97], [-1.42, 0.90, -1.72], u)),
+    rArm: armVia(proj, [-1.24, lerp(0.9, 1.2, u), -1.75], [-1.12, lerp(0.86, 0.96, u), -1.97], 'upper'),
+    lArm: armVia(proj, [-1.36, lerp(0.9, 1.2, u), -1.75], [-1.48, lerp(0.86, 0.96, u), -1.97], 'upper'),
   };
 };
 const sh06 = intRevPlate('S02-SH06', 108, push(108, 1.0, 1.05, 620, 660), (p, proj, G, f, tl, light) => [
@@ -439,21 +453,20 @@ const torchSH02 = (proj: Proj, f: number) => {
   const hand = ptLerp(proj.P([-0.75, 0.95, -1.25]), proj.P(SH02_TORCH_HAND), u);
   return {hand, angle: lerp(Math.PI / 2, 2.92, u)};
 };
-/** The narrator's torso front plane (actor z -1.30 + 0.08; the camera looks -z, so nearer is the larger z). */
-const SH02_TORSO_FRONT = -1.22;
 /**
- * S03-SH02 arms (SS-R3.4 rows). The elbows sit 0.25 m below the rig shoulder anchors (y 0.93 m at the upright 1.18 m
- * shoulder; x −0.80 right, −1.10 left; z −1.36) and follow the crouched shoulder through the rise (f0–f12). The right
- * elbow then travels with the hand to (−0.80, 1.00, −1.10) (f36–f96). The upper arm is behind the torso while its elbow
- * is behind the torso front plane (about f68 on the right); the left upper arm stays behind.
+ * S03-SH02 arms (SS-R3.4 rows; SS-R3.5 right upper arm and left elbow). The elbows sit 0.25 m below the rig shoulder anchors
+ * (y 0.93 m at the upright 1.18 m shoulder; x −0.80 right, −1.135 left (SS-R3.5, on the jacket edge); z −1.36) and follow the
+ * crouched shoulder through the rise (f0–f12). The right elbow then travels with the hand to (−0.80, 1.00, −1.10) (f36–f96).
+ * Both upper arms are `behind: 'upper'` for the whole shot (f0–f143): SS-R3.5 removed the r5 layer switch at f68 (CP-P06),
+ * which popped a sleeve onto the jacket.
  */
 export const sh02Arms = (proj: Proj, f: number) => {
   const crouch = 1 - riseAt(SHOT_G0['S03-SH02'] + f);
   const rise = shoulderHeight('narrator', crouch) - shoulderHeight('narrator');
   const u = ease(seg(f, 36, 96));
   const elbowR = mix3([-0.80, 0.93 + rise, -1.36], [-0.80, 1.00, -1.10], u);
-  const elbowL: V3 = [-1.10, 0.93 + rise, -1.36];
-  const r: Arm = {to: torchSH02(proj, f).hand, via: proj.P(elbowR), behind: elbowR[2] < SH02_TORSO_FRONT ? 'upper' : undefined};
+  const elbowL: V3 = [-1.135, 0.93 + rise, -1.36];
+  const r: Arm = {to: torchSH02(proj, f).hand, via: proj.P(elbowR), behind: 'upper'};
   const l: Arm = {to: proj.P([-1.05, 1.05, -1.2]), via: proj.P(elbowL), behind: 'upper'};
   return {crouch, elbowR, elbowL, r, l};
 };

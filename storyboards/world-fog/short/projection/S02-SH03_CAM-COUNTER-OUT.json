@@ -1,5 +1,5 @@
 {
- "_note": "S02-SH03 single on the shop worker | SS-R3.3 camera lowered to eye 1.10 m, y_h 780: counter top a sliver (far edge y 929, near edge y 1003), counter front fills the caption band; register moved to the counter's -x end | WORLD-SHOP (left-handed) points and camera stored with x negated for this right-handed tool; see index.md#projection-checks",
+ "_note": "S02-SH03 single on the shop worker | SS-R3.3 camera lowered to eye 1.10 m, y_h 780: counter top a sliver (far edge y 929, near edge y 1003), counter front fills the caption band; register moved to the counter's -x end | WORLD-SHOP (left-handed) points and camera stored with x negated for this right-handed tool; see index.md#projection-checks | SS-R3.5 arms: hands +-0.13 m, elbows (+-0.18, 1.02, -3.56) on the torso edge",
  "up": "y",
  "size": [
   1080,
@@ -49,12 +49,12 @@
    -2.6
   ],
   "sw_hand_R": [
-   1.78,
+   1.87,
    0.93,
    -3.22
   ],
   "sw_hand_L": [
-   2.22,
+   2.13,
    0.93,
    -3.22
   ],
@@ -77,6 +77,26 @@
    2.9,
    0.9,
    -2.6
+  ],
+  "sw_elbow_R": [
+   1.82,
+   1.02,
+   -3.56
+  ],
+  "sw_elbow_L": [
+   2.18,
+   1.02,
+   -3.56
+  ],
+  "sw_shoulder_R": [
+   1.872,
+   1.18,
+   -3.5
+  ],
+  "sw_shoulder_L": [
+   2.128,
+   1.18,
+   -3.5
   ]
  },
  "spans": {

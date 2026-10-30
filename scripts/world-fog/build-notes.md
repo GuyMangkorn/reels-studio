@@ -686,6 +686,14 @@ Scope: user decision 30 Oct (front-view elbow goes back into depth; pick the pos
 - `1s/` (88 production frames), `1s/manifest.txt`, `sheet_1s_A.png`, `sheet_1s_B.png` (both viewed).
 - Logs: `out/logs/r5-*`.
 
+## 2026-10-30 — Mark: SS-R3.5 arm read check (r5) and a proposed CP-P02 wording
+
+Scope: Mark closing Boss r4 Q1–Q7 and r5 Q1–Q6 (decisions in `storyboards/world-fog/short/index.md` "SS-R3.5 fix list (Boss)"). Measured on r5 labelled frames with ffmpeg row scans (scratch, not committed; jacket/shirt colour runs per row):
+- S02-SH03 G474: shirt edge x 424 / 652 at y 760–840; elbows (447, 879) / (633, 879) 20+ px inside; hands' skin x 447–524 / 553–611 at y 905 on the cream apron; forearm past the hand ≈ 8 px → "no arms". S03-SH02 G1764 left elbow 748 vs jacket edge 788 (40 px inside), forearm under the hand. S01-SH02 G222 and S02-SH01 G300 elbows 20–25 px inside the jacket edge (forearm visible but no upper-arm sliver). S02-SH06 G830 and S03-SH02 G1680 right arms pass (hand and forearm outside the torso).
+- Rig numbers used (`src/painted/worldfog/cast.ts` at `bf0dd6e`): head H 0.425 m; torso shape half-width `outfit.shoulder·H` at the shoulder to `0.3·H + 0.013` (+0.021 with a jacket) at the hip; upper-arm capsule 0.08 → 0.068 m wide, forearm 0.066 → 0.056 m, hand ellipse 0.045 × 0.052 m centred 0.03 m past the target. Painted brush edge ≈ +0.01–0.02 m beyond the shape.
+
+**Proposed rule change (not applied; for the user's review, [TL/DP](../../docs/contributing.md#tools-and-document-improvements)):** CP-P02 "The elbow sits just inside the torso edge, a little below the hand" → "The elbow centre sits on the torso's painted edge (not more than about a sleeve's half-width inside it), so the darker upper arm shows as a sliver down the torso side; the forearm stays visible between that sliver and the hand. With a low camera and hands on a surface the elbow may project above the hand." Reason: r5 measured every elbow placed "just inside" hiding the upper arm completely; with the hand also over the torso the arm read as missing (user, 30 Oct: "the worker's arms still look strange").
+
 ## 2026-10-29 — Shared profile head changed (`HEAD-SIDE-R2`, Boss, ZCPAINT pass)
 
 - User (29 Oct 2026): front decal head stays; the profile was a draft. `src/painted/spike/SideSheet.tsx`
@@ -694,3 +702,101 @@ Scope: user decision 30 Oct (front-view elbow goes back into depth; pick the pos
   the head anchor. Front `FaceSheet.paintHead` untouched: FaceSheet/Cast/Proportions re-render pixel-identical.
   `PAINTED-SPIKE-CastSide` changes. Details, evidence and review sheet `PAINTED-SPIKE-HeadSide`:
   [ZCPAINT build notes](../zombie-condo-paint/build-notes.md).
+
+## 2026-10-30 — Boss: fix pass six (r6) against SS-R3.5 (WFOG-EP01-SHORT r6)
+
+- Scope: index "SS-R3.5 fix list (Boss)" R6-1 to R6-5 and the sheet blocks it points to (sc01, sc02-b01, sc02-b02-b03, sc03). Mark's uncommitted SS-R3.5 sheet edits are kept and not changed. Brief VB-WFOG-EP01-SHORT-R4 unchanged; timing, cues, Sound, reveals, cameras and stable IDs unchanged. Worktree `claude/world-fog-next-steps-2817bc`, base `bf0dd6e`. No commit, no push, no other role invoked.
+
+### What changed (owner files)
+
+- `src/painted/shots/worldfog.tsx`
+  - R6-2: S01-SH02 phone elbow x+0.15 → x+0.185 (y 0.93, z+0.04), f85–f113 (`phone > 0` gate unchanged).
+  - R6-3: S02-SH01 phone elbow x+0.15 → x+0.185 (y 0.95, z+0.04), f0–f113.
+  - R6-1: `counterWorkerArms(proj)` (new export) for S02-SH03: hands R (−1.87, 0.93, −3.22), L (−2.13, 0.93, −3.22); elbows R (−1.82, 1.02, −3.56), L (−2.18, 1.02, −3.56); `behind 'upper'` on both, whole shot.
+  - R6-4: `clutch` (now exported) for S02-SH06: `behind 'upper'` f30–f107; elbows R (−1.12, 0.86→0.96, −1.97), L (−1.48, 0.86→0.96, −1.97) with the hands' ease f30–f50; hands R (−1.24, 0.90→1.20, −1.75), L (−1.36, 0.90→1.20, −1.75). The L hand end height is corrected (C1).
+  - R6-5: `sh02Arms`: right upper arm `behind 'upper'` on every frame (the r5 `SH02_TORSO_FRONT` switch and constant are removed); left elbow x −1.10 → −1.135 (y 0.93, z −1.36).
+- `src/painted/worldfog/car.ts` (`paintCabin`, S01-SH02 only): far-door armrest/trim line at 0.70 m (x −1.88…−0.93 on the body plane, colour `#23292b`, seed +337, projected point by point, C3). Courtesy glaze is now one wash over the far-door upper third 1.07–1.40 m (was the 1.20–1.40 headliner band); alpha 77·courtesy, so ≤ 0.30 as before. Body `#5f676b` and far-door `#353d40` were already built in r4.
+- `src/painted/worldfog/qa.tsx`: preview note → "Boss fix pass six (r6)".
+- `tests/world-fog.test.ts`: S03-SH02 switch assertion replaced (both upper arms `behind 'upper'` f0–f143); G1764 left elbow 748 → 784 px; new tests for the S02-SH03 worker points (G474) and the S02-SH06 occupant (no arms before f30, `behind` f30–f107, G850 points). Suite 120/120 (the r5 record shows 118).
+- Docs: `DF-20261030-painted-arm-depth` revalidated (r6 bullet, status base); new `DF-20261030-projectpoly-two-point-line`, `DF-20261030-render-run-noise`, `DF-20261030-worktree-node-modules`; `docs/dev-findings.md` index rows updated.
+
+### Corrections and deviations (read first)
+
+- C1, occupant L hand (outside the fix list, which says "hands unchanged"): r5 code ended the L hand at y 1.15. The sheet says 0.90 → 1.20 for both hands, and the G850 sheet point (889, 934) is reached only at y 1.20; y 1.15 projects to (889, 972), 38 px off. Implemented 1.20 per the sheet. Question Q1.
+- C2, timing of the far-door change: the fix list expects the S01-SH02 changes "from f84". The trim and glaze are drawn while the door is open: door > 0 from about f43, glaze ramp f44–f48, door shut again at f80. The first changed frame is therefore about G169, and G210 (f84) is unchanged. The phone elbow (f85–f113) is not sampled by the 1 s pass (G210 → G240); its check is the labelled G222.
+- C3, trim line: the first version drew nothing, because `projectPoly` drops two-point input (`DF-20261030-projectpoly-two-point-line`). Fixed in this pass; all numbers below are after the fix. Six existing two-point lines in `car.ts` (dash, head top, seams, crease, chrome) were never drawn in r5 and are left as built.
+
+### Checks
+
+- Dependencies: the worktree `node_modules` was partial (p5.brush missing), so the first still failed at bundle time. `npm ci` (exit 0), then `npm ls --depth=0` exit 0 with no extraneous, invalid or missing entries (`out/logs/r6-npm-ci.log`, `r6-npm-ls.log`). `node_modules/.bin/remotion versions` → 4.0.538 (`npx` exited 127 on the first attempt).
+- Typecheck `npm run typecheck`: exit 0, 0 errors, run after C3 (`out/logs/r6-typecheck2.log`).
+- Lint `npm run lint`: exit 0 (`out/logs/r6-lint2.log`).
+- Tests `npm test`: 120 pass, 0 fail (`out/logs/r6-test2.log`).
+- Renders: production entry `src/index.ts` for the 1 s pass; QA entry `src/painted/worldfog/qa.tsx` (WFOG-QA, burned-in labels) for the labelled frames. Both after C3.
+- Studio: not run. Long: no WORLD FOG Long composition is registered in this checkout (`src/videos/world-fog/index.ts` only).
+- Shared consumers: `paintSedanBody` and `paintSedanDoor` (car.ts), and `clutch`, `sh02Arms`, `counterWorkerArms` (worldfog.tsx), are used only by the Short plates (grep, 2026-10-30).
+
+### Sheet numbers
+
+Plate px at s 1.0 are the runtime projection of the authored points (same `PROJ` the rig uses); pixel values come from the labelled r6 frames. Sources: `out/logs/r6-proj-final.log`, `r6-proj-s03.log`, `r6-g474-pixels.log`, `r6-far-door-luma.log`, `r6-switch-pop.log`.
+
+| Frame (shot, f) | Sheet point or check | Runtime | Δ | Pixel check |
+| --- | --- | --- | --- | --- |
+| G186 (S01-SH02 f60) | band x 146–242 mean luma 0.15–0.28 | 0.2763 | — | trim band p05 0.2306 (base 0.2370); upper third 0.2972 at G180 (base 0.2878); free edge test x 242 ±15 passes |
+| G222 (S01-SH02 f96) | L elbow (789, 1160) ±10 | (787, 1160) | 2 px | phone hand (762, 1028) → (759, 1028), 3 px (±15); r5 elbow (762, 1160); sleeve sliver visual only (C-Q3) |
+| G300 (S02-SH01 f60) | elbow (818, 987) ±10; phone hand (770, 911) | (818, 987); (770, 911) | 0; 0 | visual only |
+| G474 (S02-SH03 f30) | elbows (428, 830) / (652, 830) ±10 | (428, 830) / (652, 830) | 0 / 0 | sliver outward 16 px left, 17 px right (≥12; torso edges 424/652 from r5); forearm skin 53/78 px left (≥35), 28/78 px right (pale forearm, outside the skin class; visually about 70 px; Q2) |
+| G474 | hands (444, 905) / (636, 905) ±15; elbow→hand ≈ 77 px | (444, 905) / (636, 905) | 0 / 0 | elbow→hand 77 px right |
+| G850 (S02-SH06 f58) | L elbow (922, 1077) ±10; L hand (889, 934) ±15; R elbow (685, 1077) | same | 0; 0; 0 | at hand y 1.15 the L hand would be (889, 972) (C1) |
+| G1722–G1725 (S03-SH02 f66–f69) | no sleeve pop; right upper arm stays behind | R elbow (422, 1275) → (419, 1279); L elbow (784, 1256) | — | consecutive mean abs RGB difference, right-arm box x 360–460 y 1200–1340: r6 1.28 / 1.39 / 1.02; r5 1.28 / 3.79 (f67→f68 switch) / 1.46 |
+| G1764 (S03-SH02 f108) | R elbow (402, 1301) ±10; L elbow (784, 1256) ±10; L hand (723, 1187) ±15 | (403, 1301); (784, 1256); (723, 1187) | 1; 0; 0 | left forearm sleeve ≥30 px: visual only (Q3) |
+
+### Lead height (camera unchanged; `scripts/world-fog/lead-check.ts`, no render)
+
+- S02-SH03 G474: rig head top → counter far top 553 px (sheet 532; rig head top 381 vs sheet 397; counter far top 934 vs 929). ≥480 ✓.
+- S01-SH02 G174 703 px, G188 792 px (unchanged).
+
+### 1 s pass (88 frames: G0–G2580 step 30, plus G2609; production entry)
+
+Outputs: `r6/1s/` (r6), `r6/baseline-1s/` (pre-change, this checkout), sheets `r6/pass-vs-baseline/sheet_1s_A.png` and `_B.png`, `r6/pass-vs-r5/sheet_1s_A.png` and `_B.png`.
+
+- vs r5 (other worktree, `r5/1s`): identical 71, changed 17.
+  - Intended: S01-SH02 G180 (door open; 51 dB); S02-SH01 G240, G270, G300, G330 (43–45 dB); S02-SH03 G450, G480, G510 (33–34 dB); S02-SH06 G840, G870 (43 dB); S03-SH02 G1680, G1710, G1740, G1770 (37–41 dB).
+  - Noise: S03-SH07 G2100, G2130 and S04-SH01 G2160 (95–113 dB).
+- vs pre-change baseline: identical 70, changed 18: the 14 intended tiles, plus noise tiles S03-SH01 G1650, S03-SH07 G2100, G2130 and S04-SH01 G2160.
+- Pre-change baseline vs r5 (before any R6 edit): identical 82, changed 6 (S02-SH01 G240/270/300 at 107–111 dB; S03-SH01 G1650 111 dB; S03-SH07 G2100 109 dB, G2130 95 dB). The same noise class, so the r5 reference is reproducible.
+- Noise check: two consecutive re-renders of the identical r6 code (`r6/determinism/a`, `b`) differ byte-wise on all four noise frames, 105–116 dB PSNR (DF-20261030-render-run-noise). These shots carry no changed code.
+- Viewed: sheets A and B, and the labelled sheet. No visible discontinuity; the changed tiles are the door, shop, phone, occupant and torch-arm shots.
+
+### Far-door (S01-SH02, G186 = f60)
+
+- Band x 146–242, y 800–1190: mean 0.2763 (sheet 0.15–0.28 ✓, 0.004 under the ceiling). G180: base 0.2726 → r6 0.2760.
+- Upper third (y 800–930): G180 base 0.2878 → r6 0.2972 (glaze +0.009).
+- Trim band (y 1066–1086): p05 0.2370 (base) → 0.2306 (r6). The line is visible in `r6/far-door/far-door_base-G180_r6-G180_r6-G186_crop260.png`.
+
+### Questions for Mark (sheets not edited)
+
+- Q1: occupant L hand end height. Confirm y 1.20 (sheet, implemented) over the r5 y 1.15 (C1).
+- Q2: S02-SH03 G474 "bare forearm ≥35 px". Pixel skin class gives 28/78 right and 53/78 left; the right forearm is a pale tone outside the class. Accept a visual read (about 70 px), or define the criterion for a pale tone?
+- Q3: sleeve slivers at G222, G850 and G1764. Narrator and occupant sleeves share the background tone, so they cannot be pixel-checked here; needs a Film/Mark picture read.
+- Q4: the fix list's expected change for S01-SH02 ("from f84"). The door-open changes start about f43 (trim, glaze) and the phone from f85; G210 is unchanged (C2). Correct the expectation list?
+- Q5: G186 band mean 0.2763 is close to the 0.28 ceiling, and the glaze alpha is at its cap (77/255 ≈ 0.30). If more margin is wanted, a lower glaze alpha is a sheet decision.
+- Q6: G222 hand target: sheet (762, 1028), runtime (759, 1028); both within ±15. Keep the sheet value or update to 759?
+
+### Limitations and not done
+
+- Studio seeking not run. Stills are per-frame `renderStill` calls (random access), not Studio playback.
+- Pixel checks not possible for narrator and occupant sleeve slivers (G222, G850, G1764); visual only.
+- Six existing two-point lines in `car.ts` remain undrawn (a look change to S01-SH02; DF-20261030-projectpoly-two-point-line).
+- Long: none registered in this checkout.
+- Not committed or pushed. Scratch measurement scripts live in the session scratchpad; their outputs are in `out/logs/r6-*.log`.
+
+### Artifacts (`out/qa/world-fog/WFOG-EP01-SHORT/r6/`)
+
+- `labelled/`: S01-SH02_G174, _G186, _G222; S02-SH01_G300; S02-SH03_G474; S02-SH06_G850; S03-SH02_G1722, _G1723, _G1724, _G1725, _G1764 (WFOG-QA, burned-in labels).
+- `labelled-sheet_G174-G1764.png` (qa-sheet, 270 px tiles).
+- `crops/S02-SH03_G474_crop540.png` and `crops/S03-SH02_G1764_crop540.png` (540 px wide, 1:1 from the labelled frames; boxes x 300–840 × y 700–1060 and y 1100–1460).
+- `arm-crops/arm-crops_r5-left_r6-right.png` (1080 px, one row per changed shot: G222, G300, G474, G850, G1764, then the r5 and r6 G1723|G1724 pairs) and `arm-crops/arm-crops_r5-left_r6-right_w540.png`.
+- `far-door/far-door_base-G180_r6-G180_r6-G186_crop260.png`.
+- `1s/`, `baseline-1s/`, `pass-vs-baseline/`, `pass-vs-r5/`, `determinism/a/`, `determinism/b/`.
+- Logs: `out/logs/r6-*.log`.

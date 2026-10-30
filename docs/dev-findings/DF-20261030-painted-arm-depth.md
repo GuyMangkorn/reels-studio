@@ -1,7 +1,7 @@
 # DF-20261030-painted-arm-depth — front-view elbows splay sideways; depth needs `via` + `behind` and an instant layer switch
 
 - Owner: Boss; first observed: 2026-10-30 (r4 labelled frames, user decision 30 Oct: front-view elbows go back into depth); last checked: 2026-10-30
-- Status: workaround (rig option `Arm.behind` with an authored `via` elbow; uncommitted in the worktree on top of e96a4e1)
+- Status: workaround (rig option `Arm.behind` with an authored `via` elbow; uncommitted in the worktree `claude/world-fog-next-steps-2817bc` on top of bf0dd6e, r6)
 - Type: tool-limitation (front view is a flat card with no depth; two-bone IK with a fixed bone length; the layer switch and the view switch are instant)
 - Tags: 2D / painted / p5.brush / character rig / arms / depth / pose switch
 - Scope: uncommitted worktree `claude/worldfog-editor-adjust-5fd1ad` (base `e96a4e1`); `src/painted/worldfog/cast.ts` (`Arm.via`, `Arm.behind`, draw order in `drawFigure`, `shoulderHeight`); `src/painted/shots/worldfog.tsx` (SS-R3.4 arm rows); `remotion` and `@remotion/renderer` 4.0.538, `p5.brush` 3.0.0 (package.json), CLI stills with `--gl=angle`
@@ -24,9 +24,10 @@
 
 ## Planning impact
 - Film: depth in front view is a layer order on flat cards. AB1 and AB0-F arms are available for any arm with `via`; `behind` switches are one-frame layer changes, so the switch frame belongs in the scene sheet.
-- Mark: SS-R3.4 rows as written. Open for Mark: (a) S03-SH02 f68 one-frame sleeve change; (b) S04-SH02 f36 hand jump (an 8-frame in-view glide is a Boss option if wanted); (c) whether the AB0-F forward elbow reads at S03-SH02 f68 onward (sleeve panel over the jacket at G1764); S02-SH06 occupant elbows are mostly hidden behind the narrator.
+- Mark: SS-R3.4 rows as written. Open for Mark: (a) S03-SH02 f68 one-frame sleeve change (removed in r6 by SS-R3.5 R6-5: `behind 'upper'` f0–f143, no switch); (b) S04-SH02 f36 hand jump (an 8-frame in-view glide is a Boss option if wanted); (c) whether the AB0-F forward elbow reads at S03-SH02 f68 onward (sleeve panel over the jacket at G1764); S02-SH06 occupant elbows are mostly hidden behind the narrator.
 - Follow-up: Boss commits and opens the PR after the user reviews r5; `Arm.behind` stays `exists-unintegrated` until committed.
 
 ## Revalidation history
 - 2026-10-30, worktree `claude/worldfog-editor-adjust-5fd1ad` (uncommitted, base `e96a4e1`): labelled frames, crops, 1 s pass and switch strips rendered; `npm run typecheck`, `npm run lint` and `npm test` exit 0 (world-fog 20/20; full suite 118/118) → workaround.
 - Film/Mark adoption: pending SS-R3.4 review (r5).
+- 2026-10-30, worktree `claude/world-fog-next-steps-2817bc` (uncommitted r6, base `bf0dd6e`, SS-R3.5 rows R6-1 to R6-5): the arm points match the sheet within 3 px at s 1.0 (G222 Δ2/3 px, G300 Δ0, G474 Δ0, G850 Δ0, G1764 Δ1/0; numbers in `scripts/world-fog/build-notes.md`). The S03-SH02 switch frame no longer pops: consecutive-frame difference in the right-arm box is 3.79 at G1723→G1724 in r5 and 1.39 in r6 (neighbours 1.28 and 1.02 in r6). The r5 failure was elbow placement inside the torso edge (sheet), not the rig option, so the workaround holds. Typecheck 0 errors, lint 0, tests 120/120. Studio not run; no Long composition registered in this checkout.
