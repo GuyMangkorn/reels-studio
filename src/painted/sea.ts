@@ -1,5 +1,5 @@
-import {hash} from './hash';
-import {range, type Painter, type Pt} from './painter';
+import {hash} from './kit/hash';
+import {range, type Painter, type Pt} from './kit/painter';
 
 // Sea, storm and seabed sets. Lesson from the spike (scripts/oldest-shipwreck/p5-feasibility.md): bleed scales with
 // polygon size, so large areas are horizontal bands with bleed 0.03-0.06 over a flat underlayer of the same hue.

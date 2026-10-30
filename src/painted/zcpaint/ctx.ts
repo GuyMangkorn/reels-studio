@@ -1,5 +1,5 @@
 import type {Brush, PaintContext} from '../BrushCanvas';
-import type {Painter, Pt} from '../painter';
+import type {Painter, Pt} from '../kit/painter';
 
 // ZCPAINT plate helpers (S-P05): the plate context and figure placement shared by the set, figure and plate modules.
 // No import of the spike sheets here, so the production registry does not pull the WORLD FOG sheet code into plates.

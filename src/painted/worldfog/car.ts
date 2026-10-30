@@ -1,4 +1,4 @@
-import {lerp, mixColor, type Painter, type Pt} from '../painter';
+import {lerp, mixColor, type Painter, type Pt} from '../kit/painter';
 import {asmPoseAt, assemblyParts, paintAssembly, type AsmPose} from './assembly';
 import {blob, clipHalf, ell, inkLine, projectPoly, rectPts, solid, washAt} from './draw';
 import {cardProjector, ease, seg, type Proj, type V3} from './space';

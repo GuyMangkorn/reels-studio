@@ -1,4 +1,4 @@
-import {mixColor, type Pt} from '../painter';
+import {mixColor, type Pt} from '../kit/painter';
 import type {Section} from './space';
 
 // ZCPAINT light kit, figure part (S-P11 partial; Boss pass 7 for the S-P12 look check). Owns the key vector, the two-tone

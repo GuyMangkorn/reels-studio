@@ -1,12 +1,13 @@
 import {AbsoluteFill, useCurrentFrame} from 'remotion';
 import {BrushCanvas, type PaintContext} from '../BrushCanvas';
-import {makePainter} from '../painter';
-import {paintEdgeGrip, paintPovHand, ZC_HAND} from '../hands';
+import {makePainter} from '../kit/painter';
+import {paintEdgeGrip, paintPovHand} from '../kit/hands';
+import {ZC_HAND} from '../zcpaint/hand';
 import {ell} from '../zcpaint/ctx';
 import {paintPovBackdrop} from '../zcpaint/pov';
 import {flatKit} from '../zcpaint/sets';
 import {Subtitles} from '../../scenes/Subtitles';
-import {CaptionShade, Grade, Grain} from '../screen';
+import {CaptionShade, Grade, Grain} from '../kit/screen';
 import {PlatePreview} from './PlatePreview';
 import {zcpaintShots} from '../shots/zcpaint';
 

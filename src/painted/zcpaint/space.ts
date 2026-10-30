@@ -1,4 +1,4 @@
-import type {Pt} from '../painter';
+import type {Pt} from '../kit/painter';
 
 // ZCPAINT projection helper (S-P05 part, `PROJ-ZCP-R1` / `MK-ZC-ST-04`): the one place that maps ZC-UNIT metres to PLATE
 // pixels for section shots. Y runs along the section from the door-wall corridor face (Y 0) toward the balcony, z up from

@@ -1,4 +1,4 @@
-import {range, rot, type Painter, type Pt} from './painter';
+import {range, rot, type Painter, type Pt} from './kit/painter';
 
 /** Local extents of the diver silhouette (units of `s`): fin tip at u -1.7, head top at u 0.94. */
 export const DIVER_EXTENT = {back: 1.7, front: 0.94, up: 0.34, down: 0.56};

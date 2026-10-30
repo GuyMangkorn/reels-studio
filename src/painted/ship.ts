@@ -1,4 +1,4 @@
-import {lerp, range, rot, type Painter, type Pt} from './painter';
+import {lerp, range, rot, type Painter, type Pt} from './kit/painter';
 
 export type ShipLook = {hull: string; sail: string; sailShade: string; ink: string; rim?: string};
 

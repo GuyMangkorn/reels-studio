@@ -1,4 +1,4 @@
-import type {Camera} from './camera';
+import type {Camera} from './kit/camera';
 import type {PaintedShot} from './shot';
 import {bloopShots} from './shots/bloop';
 import {shipwreckShots} from './shots/shipwreck';

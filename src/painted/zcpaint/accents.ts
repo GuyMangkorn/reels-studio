@@ -1,4 +1,4 @@
-import {mixColor} from '../painter';
+import {mixColor} from '../kit/painter';
 import {ell, INK} from './ctx';
 import {dim, type Flat, type Lights} from './sets';
 import type {Section} from './space';

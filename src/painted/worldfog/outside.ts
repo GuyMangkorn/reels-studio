@@ -1,5 +1,5 @@
-import {hash} from '../hash';
-import {mixColor, type Painter, type Pt} from '../painter';
+import {hash} from '../kit/hash';
+import {mixColor, type Painter, type Pt} from '../kit/painter';
 import {paintAssembly, paintHubs, paintJamGround, paintJamTyre, type AsmPose, type Part} from './assembly';
 import {paintSedanBody} from './car';
 import {band, blob, projectPoly, quadX, quadY, quadZ, rectPts} from './draw';

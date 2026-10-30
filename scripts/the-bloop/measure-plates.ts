@@ -3,7 +3,7 @@
 // functions the plates draw with. Prints one JSON object.
 // Usage: node --import tsx scripts/the-bloop/measure-plates.ts > out/qa/the-bloop/measure-plates.json
 // Pixel measurements (mask coverage, PSNR) come from scripts/the-bloop/frame-metrics.py on rendered frames.
-import {toScreen, type Camera} from '../../src/painted/camera';
+import {toScreen, type Camera} from '../../src/painted/kit/camera';
 import {envAt} from '../../src/painted/bloop/envelope';
 import {crRealAnchors, crRealPlace, dreamPoint} from '../../src/painted/bloop/creatures';
 import {DOTS, FPS, HYD, hydParts, mapXY, WF0} from '../../src/painted/bloop/geometry';

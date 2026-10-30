@@ -1,14 +1,14 @@
 import {test} from 'node:test';
 import assert from 'node:assert/strict';
 import {poundJoltFrames, poundJoltPlateFrames, joltAt, B02_TIMING} from '../src/painted/zcpaint/jolts';
-import {shadeGate} from '../src/painted/screen';
+import {shadeGate} from '../src/painted/kit/screen';
 import {paintedStateAt} from '../src/scenes/painted';
 import {timelineFrames} from '../src/scenes/timeline';
 import type {Timeline} from '../src/scenes/types';
 import {flare, layers, layerPoint, silhouetteParts, slump} from '../src/painted/zcpaint/balcony';
 import {b08Bloom} from '../src/painted/zcpaint/overlays';
-import {GLOW_PEAK} from '../src/painted/glow';
-import type {Pt} from '../src/painted/painter';
+import {GLOW_PEAK} from '../src/painted/kit/glow';
+import type {Pt} from '../src/painted/kit/painter';
 
 test('B02 pound jolts: slam first, seeded spacing 0.30-0.55 s, inside B02-SH01..SH02, same list for plates and Editor', () => {
   for (const lang of ['TH', 'EN'] as const) {

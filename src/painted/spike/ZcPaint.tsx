@@ -1,7 +1,7 @@
 import {AbsoluteFill} from 'remotion';
 import {BrushCanvas, hash, type Brush, type PaintContext} from '../BrushCanvas';
-import {applyCamera, pushCamera} from '../camera';
-import {ramp, type Pt} from '../painter';
+import {applyCamera, pushCamera} from '../kit/camera';
+import {ramp, type Pt} from '../kit/painter';
 import type {Cast} from './CastSheet';
 import {headOutline} from './FaceSheet';
 import {ellipse} from './ProportionSheet';

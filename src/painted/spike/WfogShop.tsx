@@ -1,8 +1,8 @@
 import {useId} from 'react';
-import {CameraLayer, pushCamera, toScreen, type Camera} from '../camera';
-import {GLOW_PEAK} from '../glow';
-import {hash} from '../hash';
-import {lerp, mixColor, type Painter, type Pt} from '../painter';
+import {CameraLayer, pushCamera, toScreen, type Camera} from '../kit/camera';
+import {GLOW_PEAK} from '../kit/glow';
+import {hash} from '../kit/hash';
+import {lerp, mixColor, type Painter, type Pt} from '../kit/painter';
 import type {PaintedShot} from '../shot';
 import {BROW_Y, INK, headOutline} from './FaceSheet';
 
@@ -839,7 +839,7 @@ const Architecture = () => {
 };
 
 // Grade and Grain moved to the shared module src/painted/screen.tsx (S-P06); re-exported for the WORLD FOG consumers.
-export {Grade, Grain} from '../screen';
+export {Grade, Grain} from '../kit/screen';
 
 // ------------------------------------------------------------------ plates
 

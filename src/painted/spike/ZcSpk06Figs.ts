@@ -1,5 +1,5 @@
 import type {PaintContext} from '../BrushCanvas';
-import {mixColor, type Pt} from '../painter';
+import {mixColor, type Pt} from '../kit/painter';
 import type {Cast} from './CastSheet';
 import {CHIN, FACES, headOutline, paintHead, type Face} from './FaceSheet';
 import {ellipse} from './ProportionSheet';

@@ -1,5 +1,5 @@
-import {lerp, type Pt} from '../painter';
-import type {PovHand} from '../hands';
+import {lerp, type Pt} from '../kit/painter';
+import type {PovHand} from '../kit/hands';
 
 // Pose tracks (S-P02): eased keys on the plate clock. A track is a sorted list of [plateFrame, value, ease?]; the value
 // at plate frame `pf` is a pure function of the keys, so any frame renders alone (seek-safe) and a track holds its last

@@ -1,4 +1,4 @@
-import {hash} from '../hash';
+import {hash} from '../kit/hash';
 
 // B02 pound jolts (MK-ZCP-B2, S-P10): one seeded list per language, continuing across B02-SH01 and B02-SH02, read by
 // the plates (door leaf kick, shudder strokes, hand squeeze) and exported for Editor, who places one pound hit per

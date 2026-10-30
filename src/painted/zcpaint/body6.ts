@@ -1,6 +1,6 @@
 import type {PaintContext} from '../BrushCanvas';
-import {hash} from '../hash';
-import {mixColor, type Pt} from '../painter';
+import {hash} from '../kit/hash';
+import {mixColor, type Pt} from '../kit/painter';
 import type {Cast} from '../spike/CastSheet';
 import {CHIN, FACES, HEAD_SPAN, headOutline, paintHead, type Face, type HeadStyle} from '../spike/FaceSheet';
 import {ellipse} from '../spike/ProportionSheet';

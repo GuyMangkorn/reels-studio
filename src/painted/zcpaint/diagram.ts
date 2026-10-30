@@ -1,7 +1,7 @@
 import type {PaintContext} from '../BrushCanvas';
-import {ramp} from '../painter';
+import {ramp} from '../kit/painter';
 import {flatKit, type Flat} from './sets';
-import type {Pt} from '../painter';
+import type {Pt} from '../kit/painter';
 
 // ZCPAINT B04-SH02 tank diagram (painted schematic plate, lighter paper `#e6dcc6`, no figures, generic tower only).
 // Built step by step on the mechanism lines; the labels are Remotion text (S-08, not built here). Steps per language

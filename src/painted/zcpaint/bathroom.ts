@@ -1,5 +1,5 @@
 import type {PaintContext} from '../BrushCanvas';
-import {ramp, type Pt} from '../painter';
+import {ramp, type Pt} from '../kit/painter';
 import {drawFig, figFront, H6, MITTEN_6H, TEX_B, type Part} from './body6';
 import {keyTravel} from './bust';
 import {YOU} from './cast';

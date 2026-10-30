@@ -1,6 +1,7 @@
 import type {PaintContext} from '../BrushCanvas';
-import {makePainter, mixColor, type Pt} from '../painter';
-import {paintEdgeGrip, paintPovHand, ZC_HAND, type EdgeGrip, type PovHand} from '../hands';
+import {makePainter, mixColor, type Pt} from '../kit/painter';
+import {paintEdgeGrip, paintPovHand, type EdgeGrip, type PovHand} from '../kit/hands';
+import {ZC_HAND} from './hand';
 import {ell, INK} from './ctx';
 import {flatKit, type Flat} from './sets';
 

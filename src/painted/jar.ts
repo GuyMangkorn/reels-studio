@@ -1,4 +1,4 @@
-import {range, rot, type Painter, type Pt} from './painter';
+import {range, rot, type Painter, type Pt} from './kit/painter';
 
 // EBA storage jar profile: half-width along the axis from mouth (u 0) to flat base (u 1), as fractions of length.
 const JAR: [number, number][] = [

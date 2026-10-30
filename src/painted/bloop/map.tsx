@@ -1,7 +1,7 @@
 import {useId, type ReactNode} from 'react';
 import {AbsoluteFill} from 'remotion';
-import {cameraTransform, type Camera} from '../camera';
-import type {Pt} from '../painter';
+import {cameraTransform, type Camera} from '../kit/camera';
+import type {Pt} from '../kit/painter';
 import coast from './coast.json';
 import land from './land.json';
 import {EQUATOR_Y, frontRadius, MAP_WIN, WF0} from './geometry';

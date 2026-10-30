@@ -1,4 +1,4 @@
-import type {Pt} from '../painter';
+import type {Pt} from '../kit/painter';
 import {CHIN, HEAD_SPAN} from '../spike/FaceSheet';
 import {skeleton} from '../spike/ProportionSheet';
 import type {Paint} from '../spike/SideSheet';

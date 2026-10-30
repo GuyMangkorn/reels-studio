@@ -1,7 +1,7 @@
 import {useId} from 'react';
 import {AbsoluteFill} from 'remotion';
-import {hash} from '../hash';
-import {lerp, type Painter, type Pt} from '../painter';
+import {hash} from '../kit/hash';
+import {lerp, type Painter, type Pt} from '../kit/painter';
 import {INK} from './draw';
 
 // S02-SH02 phone insert (MK-WF-DEP-09; brief VD09 R3 PHONE-SVG, adopted by the user SS-R2 Q4; sheet sc02-b01 SS-R3).

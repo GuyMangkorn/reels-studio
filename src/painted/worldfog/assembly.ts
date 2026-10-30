@@ -1,5 +1,5 @@
-import {hash} from '../hash';
-import {lerp, mixColor, type Painter, type Pt} from '../painter';
+import {hash} from '../kit/hash';
+import {lerp, mixColor, type Painter, type Pt} from '../kit/painter';
 import {INK, ell, inkLine, limb, solid, washAt} from './draw';
 import {BROW_Y, headOutline} from './head';
 import {

@@ -1,6 +1,6 @@
 import type {PaintContext} from '../BrushCanvas';
-import {ramp, type Pt} from '../painter';
-import {capsule} from '../hands';
+import {ramp, type Pt} from '../kit/painter';
+import {capsule} from '../kit/hands';
 import {ell, placeAt} from './ctx';
 import {COSTUME, foldTone, H6, handParts, paintPart, TEX_B, washPaint, type HandKind, type HU} from './body6';
 import {YOU} from './cast';

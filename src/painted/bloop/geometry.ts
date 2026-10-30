@@ -1,5 +1,5 @@
-import type {Pt} from '../painter';
-import {range} from '../painter';
+import type {Pt} from '../kit/painter';
+import {range} from '../kit/painter';
 
 // BLOOP-EP01-SHORT shared geometry (DEP02/M01/M02). Anchors, spaces and timing come from Mark's sheets
 // (BLOOP-SHEETS-R3, index "Shared constants") and Film's brief (BLOOP-BRIEF-R2). Plate world px at camera s = 1,

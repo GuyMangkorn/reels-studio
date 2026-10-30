@@ -2,11 +2,11 @@ import {loadFont} from '@remotion/fonts';
 import {useCallback, useId, type ReactNode} from 'react';
 import {AbsoluteFill, staticFile, useCurrentFrame, useVideoConfig} from 'remotion';
 import {BrushCanvas, type PaintContext} from '../BrushCanvas';
-import {applyCamera, CameraLayer, type Camera} from '../camera';
-import {hash} from '../hash';
+import {applyCamera, CameraLayer, type Camera} from '../kit/camera';
+import {hash} from '../kit/hash';
 import {PaintedLabel} from '../Label';
-import {makePainter, mixColor, ramp, range, ring, type Painter, type Pt} from '../painter';
-import {Grade, Grain} from '../screen';
+import {makePainter, mixColor, ramp, range, ring, type Painter, type Pt} from '../kit/painter';
+import {Grade, Grain} from '../kit/screen';
 import {bands, span} from '../sea';
 
 loadFont({family: 'Noto Sans Thai', url: staticFile('fonts/NotoSansThai.ttf'), weight: '100 900'});

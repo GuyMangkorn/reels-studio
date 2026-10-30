@@ -5,7 +5,7 @@ import {castTone, keyFaces, type Caster} from './light';
 import {roomAccents, wainscot} from './accents';
 import {bathWall, cabinetGrain, ceilingSeams, entryWall, floorGrout, kitchenItems, livingCurtains, livingFloorWall} from './detail';
 import type {Section} from './space';
-import type {Pt} from '../painter';
+import type {Pt} from '../kit/painter';
 
 // ZCPAINT unit strip (S-P03): the whole cream unit along the section, painted once per frame by every section plate
 // (the truck moves Yc over it, `S-P04` a). Entry (door wall, door, flush cabinet), bathroom (basin, toilet, louvre window

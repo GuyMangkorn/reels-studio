@@ -12,12 +12,10 @@ const INK = '#2b211c';
 
 export type {Pt};
 
-/** Skin and sleeve colours of one hand. */
+/** Skin and sleeve colours of one hand. Episodes keep their own tones (WFOG_HAND in worldfog/hand.ts, ZC_HAND in zcpaint/hand.ts) and pass them in. */
 export type HandTone = {skin: string; shade: string; deep: string; nail: string; crease: string; sleeve: string; sleeveShade: string};
-/** WORLD FOG phone hand (slim, neutral skin, knit cuff). */
-export const WFOG_HAND: HandTone = {skin: '#e9c2a2', shade: '#d0a283', deep: '#d0a283', nail: '#f4dccd', crease: '#9c6f52', sleeve: '#56625e', sleeveShade: '#47514e'};
-/** ZCPAINT `zc-you`: Thai man, skin `#e2b084`, teal tee sleeve (`VD-ZC-CH`). */
-export const ZC_HAND: HandTone = {skin: '#e2b084', shade: '#c99468', deep: '#b98257', nail: '#f1d6c2', crease: '#9c6f52', sleeve: '#2f5a5c', sleeveShade: '#24484a'};
+/** Fallback tone when a hand gets none: medium skin, teal sleeve (the values ZCPAINT used as its default, so pixels are unchanged). */
+export const DEFAULT_HAND_TONE: HandTone = {skin: '#e2b084', shade: '#c99468', deep: '#b98257', nail: '#f1d6c2', crease: '#9c6f52', sleeve: '#2f5a5c', sleeveShade: '#24484a'};
 
 /** A closed polygon approximating an ellipse (small p5.brush circles render as squares). */
 export const ring = (cx: number, cy: number, rx: number, ry = rx, n = 18): Pt[] => Array.from({length: n}, (_, i) => [cx + rx * Math.cos((i / n) * 6.283), cy + ry * Math.sin((i / n) * 6.283)]);
@@ -117,7 +115,7 @@ const frame = (wrist: Pt, dir: number, side: -1 | 1, s: number) => {
 
 /** Paint one hand (and forearm, sleeve) with the WfogPhone construction. Returns anchor points for props. */
 export const paintPovHand = (p: Painter, h: PovHand) => {
-  const s = h.size ?? 1, curl = h.curl ?? 0, spread = h.spread ?? 0.2, press = h.press ?? 0, tone = h.tone ?? ZC_HAND;
+  const s = h.size ?? 1, curl = h.curl ?? 0, spread = h.spread ?? 0.2, press = h.press ?? 0, tone = h.tone ?? DEFAULT_HAND_TONE;
   const {side, base, wrist, dir} = h;
   const P = frame(wrist, dir, side, s);
   const Lp = 150, Wp = 190 * (1 + 0.03 * press);

@@ -1,10 +1,11 @@
 import {loadFont} from '@remotion/fonts';
 import {useId} from 'react';
 import {AbsoluteFill, staticFile} from 'remotion';
-import {STILL_CAMERA} from '../camera';
-import {hash} from '../hash';
-import {inkLine, ring, solid, thumbShape as sharedThumb, twoBone, WFOG_HAND} from '../hands';
-import {lerp, type Painter, type Pt} from '../painter';
+import {STILL_CAMERA} from '../kit/camera';
+import {hash} from '../kit/hash';
+import {inkLine, ring, solid, thumbShape as sharedThumb, twoBone} from '../kit/hands';
+import {WFOG_HAND} from '../worldfog/hand';
+import {lerp, type Painter, type Pt} from '../kit/painter';
 import type {PaintedShot} from '../shot';
 import {INK} from './FaceSheet';
 

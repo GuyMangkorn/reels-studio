@@ -1,4 +1,4 @@
-import type {Pt} from '../painter';
+import type {Pt} from '../kit/painter';
 import {ell} from './ctx';
 import {cel} from './light';
 import type {Flat} from './sets';

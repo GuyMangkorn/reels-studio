@@ -1,8 +1,8 @@
 import {AbsoluteFill, useCurrentFrame, useVideoConfig} from 'remotion';
 import {BrushCanvas, type PaintContext} from '../BrushCanvas';
-import {pushCamera, toScreen} from '../camera';
-import {hash} from '../hash';
-import {range, ring, type Painter, type Pt} from '../painter';
+import {pushCamera, toScreen} from '../kit/camera';
+import {hash} from '../kit/hash';
+import {range, ring, type Painter, type Pt} from '../kit/painter';
 import {drawPlate} from '../plate';
 import {paintedShots} from '../registry';
 import {bands, paintParticles, span, waveY} from '../sea';

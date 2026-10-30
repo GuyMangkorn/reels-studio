@@ -1,6 +1,6 @@
 import type {PaintContext} from '../BrushCanvas';
-import {hash} from '../hash';
-import {ramp, type Pt} from '../painter';
+import {hash} from '../kit/hash';
+import {ramp, type Pt} from '../kit/painter';
 import {drawFig, figSlack, H6, HAIR_STRAND, rotPt, TEX_B, toPx, type Fig, type Part, type Place} from './body6';
 import {bustFig, keyTravel, placeClose} from './bust';
 import {INFECTED, INFECTED_SCALE, YOU} from './cast';

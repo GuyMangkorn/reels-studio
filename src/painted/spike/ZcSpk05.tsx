@@ -1,13 +1,13 @@
 import {AbsoluteFill, useCurrentFrame} from 'remotion';
 import {BrushCanvas, type PaintContext} from '../BrushCanvas';
-import {hash} from '../hash';
-import {mixColor, type Pt} from '../painter';
+import {hash} from '../kit/hash';
+import {mixColor, type Pt} from '../kit/painter';
 import {ell, INK, placeAt} from '../zcpaint/ctx';
 import {flatKit, type Flat} from '../zcpaint/sets';
 import {section, SEC_2D, type Section} from '../zcpaint/space';
 import {YOU, ZC_FACES} from '../zcpaint/cast';
 import {paintSeatedFloor} from '../zcpaint/figure';
-import {CaptionShade, Grade, Grain} from '../screen';
+import {CaptionShade, Grade, Grain} from '../kit/screen';
 import {Subtitles} from '../../scenes/Subtitles';
 import {CHIN, FACES, HEAD_SPAN, paintHead, type Face} from './FaceSheet';
 import {ellipse} from './ProportionSheet';
