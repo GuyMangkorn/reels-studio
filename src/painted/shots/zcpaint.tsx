@@ -1,59 +1,70 @@
 import type {ReactNode} from 'react';
 import {easeOver, pushCamera, STILL_CAMERA, type Camera} from '../camera';
-import {mixColor} from '../painter';
 import type {Painter} from '../painter';
 import type {PaintedShot, ShotContext} from '../shot';
-import {ctxOf, INK, placeAt} from '../zcpaint/ctx';
-import {flatKit, paintCaps, LIT_DAY, type Lights} from '../zcpaint/sets';
+import {ctxOf} from '../zcpaint/ctx';
+import {CREAM, dim, flatKit, paintCaps, LIT_DAY, type Lights} from '../zcpaint/sets';
 import {paintBathTap, paintUnit} from '../zcpaint/rooms';
 import {NIGHT, paintBalcony} from '../zcpaint/balcony';
 import {paintInterior} from '../zcpaint/interior';
 import {DIAGRAM_PAPER, paintDiagram} from '../zcpaint/diagram';
-import {makePaint, paintBodySide} from '../spike/SideSheet';
-import {paintSeatedSofa} from '../zcpaint/figure';
+import {drawFig, figSeatSofa, figSide, sectionCast, type Fig} from '../zcpaint/body6';
 import {YOU} from '../zcpaint/cast';
-import {bodyDetail, contactShadow, standingSideAnchors, toeLines} from '../zcpaint/figdetail';
 import {section, SEC_2D, SEC_2D_LL_B07, truckYc, truckYcHold} from '../zcpaint/space';
 import {paintB02Sh01, paintB02Sh02, paintB03Sh01, paintB09Sh02b} from '../zcpaint/povshots';
+import {paintB01Sh01, paintB01Sh02} from '../zcpaint/corridor';
+import {paintB02Sh03, paintB07Sh01, paintB09Sh02} from '../zcpaint/closeups';
+import {paintB05Sh01} from '../zcpaint/bathroom';
+import {paintB06Sh02} from '../zcpaint/fridge';
+import {paintB04Sh03a, paintB04Sh03b, paintB04Sh03c, paintB04Sh04, paintB05Sh02, paintB05Sh03, paintB05Sh03Bowl, paintB05Sh03Part3, paintB06Sh03} from '../zcpaint/inserts';
 import {paintB09Sh01, paintB09Sh03} from '../zcpaint/b09';
-import {b02Sh01Overlay, b02Sh02Overlay, b03Overlay, b08Overlay, b09Sh01Overlay, screenOnly} from '../zcpaint/overlays';
+import {b02Sh01Overlay, b03Overlay, b08Overlay, b09Sh01Overlay, screenOnly} from '../zcpaint/overlays';
 
 // ZCPAINT episode plates (S-P05, Boss): the plate IDs the Editor's timeline selects (`scene.painted.shots[].shot`).
 // Each plate is a pure function of its own clock (plate frame = tl x 30). `drawPlate` applies the plate camera, so no
 // paint function here transforms the picture. Per-language keys are separate plate IDs over one paint function
 // (`-TH` / `-EN`); the fromSec conform is the timeline's (Editor). Sets live in src/painted/zcpaint/.
-// Status: pass 5 (30 Oct 2026). Plates are look-check drafts until the user approves the look; no Editor integration yet.
-// B08 (`ZCP-B08-SH01`) is the production port of Film's key art (pass 6: balcony.ts, overlays.tsx `b08Overlay`).
+// Status: pass 5 (30 Oct 2026); pass 8 (S-P11/S-P13): section figures are the 6-head body (`BODY-ZCP-6H`) with cast shadows from
+// the key (`LT-03`), and the room light follows `LT-06`. Plates are look-check drafts until the user approves the look; no Editor
+// integration yet. B08 (`ZCP-B08-SH01`) is the production port of Film's key art (pass 6: balcony.ts, overlays.tsx `b08Overlay`).
+// Pass 9 (30 Oct 2026): no ZC plate carries `ZC-CAPSHADE` (Grade and Grain only). New plates: B01-SH01 and B01-SH02 (`corridor.ts`), B02-SH03
+// (`closeups.ts`); B03 View B relight and dressing, B09-SH02B door veil, B04-SH02 Grade and Grain, RM-06 caps (`sets.ts`), the B02-SH01 hand removed.
+// Not built in pass 9: B04-SH03, B04-SH04, B05-SH01..03, B06-SH02..03, B07-SH01, B09-SH02 (see build-notes "Boss pass 9").
 
 const FPS = 30;
 const pfOf = (tl: number) => Math.round(tl * FPS);
-const cue = (from: number, to: number) => [from / FPS, to / FPS] as const;
-const UNIT_LIGHT: Lights = {...LIT_DAY, entry: 0.8, bath: 0.8, kitchen: 0.8, living: 0.8, neighbours: 0.5};
-/** Shadow under a figure: the tile tone of the room at light `L` mixed toward the ink. */
-const shadowOn = (light: number) => mixColor(mixColor('#14110e', '#7d6c58', 0.1 + 0.9 * light), INK, 0.45);
-const SHIRT_FOLD = mixColor(YOU.outfit.shirt, INK, 0.5);
+/** Room light multipliers (`LT-06`): entry 0.75, bath 0.9, kitchenette and living room 1.0; the neighbour bands stay dark. */
+const UNIT_LIGHT: Lights = {...LIT_DAY, entry: 0.75, bath: 0.9, kitchen: 1.0, living: 1.0, neighbours: 0.5};
 
-/** The shared truck frame: the unit strip, then the caps (opaque, last), with the figures drawn in between. */
-const truck = (p: Painter, yc: number, sec: typeof SEC_2D, L: Lights, extra?: (c: ReturnType<typeof ctxOf>, S: ReturnType<typeof section>) => void, figures?: (c: ReturnType<typeof ctxOf>, S: ReturnType<typeof section>) => void) => {
-  const c = ctxOf(p);
-  const S = section(sec, yc);
-  paintUnit(c, S, L);
-  extra?.(c, S);
-  figures?.(c, S);
-  paintCaps(flatKit(c, 3000), S, [[1.5, 1.6], [3.3, 3.4]]);
+/**
+ * A figure on a section plate (`BODY-ZCP-6H`): the body, its place (Y along the section, depth d, facing `dir`), the room and floor it
+ * stands on, and its draw id. The cast is painted in the unit's shadow pass (`LT-03`), before every box, clipped to the figure's room
+ * (`RK-26`: floor-only fallback, partitions are not receivers).
+ */
+type FigSpec = {fig: Fig; Y: number; d: number; dir: 1 | -1; room: readonly [number, number]; floor: string; base: number};
+const ROOMS: [readonly [number, number], (L: Lights) => number][] = [
+  [[0.18, 1.5], (L) => L.entry],
+  [[1.6, 3.3], (L) => L.bath],
+  [[3.4, 5.7], (L) => L.kitchen],
+  [[5.7, 9.2], (L) => L.living],
+];
+/** A figure spec at section coordinate Y in the room that holds Y (the entry room for Y on its partition's near side). */
+const figIn = (fig: Fig, L: Lights, Y: number, d: number, dir: 1 | -1, base: number): FigSpec => {
+  const [room, light] = ROOMS.find(([r]) => Y >= r[0] && Y <= r[1]) ?? ROOMS[0];
+  return {fig, Y, d, dir, base, room, floor: dim(CREAM.tile, light(L))};
 };
 
-/** A standing figure at (Y, d) on the section, mirrored for dir -1, scale from the depth (447 px/m calibration), with the
- *  ZC detail pass: contact shadow under the feet, shirt collar and folds, hair strands, toes (`figdetail.ts`). */
-const stand = (p: Painter, S: ReturnType<typeof section>, Y: number, d: number, dir: 1 | -1, id: number, light: number) => {
-  const [gx, gy] = S.P(Y, 0, d);
+/** The shared truck frame: the unit strip (with its shadow pass), the figures' contact and body, then the caps (opaque, last). */
+const truck = (p: Painter, yc: number, sec: typeof SEC_2D, L: Lights, figs: FigSpec[] = [], extra?: (c: ReturnType<typeof ctxOf>, S: ReturnType<typeof section>) => void) => {
   const c = ctxOf(p);
-  placeAt(p.brush, gx, gy, S.pxPerM(d) / 447, dir, () => {
-    contactShadow(flatKit(c, id + 60), 0.06 * 190, 0, 0.42 * 190, 0.06 * 190, shadowOn(light));
-    paintBodySide(makePaint(c, id), YOU, 0, 0);
-    bodyDetail(makePaint(c, id + 300), standingSideAnchors(YOU.outfit.shoulder), SHIRT_FOLD);
-    toeLines(makePaint(c, id + 400), 0, 0, 190);
-  });
+  const S = section(sec, yc);
+  paintUnit(c, S, L, 1000, {casts: figs.map((g) => ({polys: sectionCast(g.fig, S, g, g.room), floor: g.floor}))});
+  extra?.(c, S);
+  for (const g of figs) {
+    const [gx, gy] = S.P(g.Y, 0, g.d);
+    drawFig(c, g.base, g.fig, {gx, gy, k: S.pxPerM(g.d) / 447, dir: g.dir}, {floor: g.floor, screenCast: []});
+  }
+  paintCaps(flatKit(c, 3000), S, [[1.5, 1.6], [3.3, 3.4]]);
 };
 
 /** B04-SH01: section truck into the bathroom, tap running; Yc holds 1.30 to pf 14, to 2.40 by pf 57; him walks Y 0.70 -> 2.40. */
@@ -61,32 +72,23 @@ const b04 = (p: Painter, tl: number) => {
   const pf = pfOf(tl);
   // Brief R2.3 (30 Oct 2026): Yc holds 1.30 for pf 0-14, then trucks to 2.40 by pf 57; him walks on to 2.40 by pf 75.
   const yc = truckYcHold(pf, 1.3, 2.4, 14, 57);
-  const L = {...UNIT_LIGHT, entry: 0.7, bath: 0.7};
-  truck(p, yc, SEC_2D, L, (c, S) => paintBathTap(c, S, {...UNIT_LIGHT, bath: 0.7}), (_c, S) => {
-    stand(p, S, 0.70 + (2.40 - 0.70) * Math.min(1, pf / 75), 0.75, 1, 2100, 0.7);
-  });
+  const Y = 0.7 + (2.4 - 0.7) * Math.min(1, pf / 75);
+  truck(p, yc, SEC_2D, UNIT_LIGHT, [figIn(figSide(YOU, {stride: 1}), UNIT_LIGHT, Y, 0.75, 1, 2100)], (c, S) => paintBathTap(c, S, UNIT_LIGHT));
 };
 
 /** B06-SH01: truck from the bathroom into the kitchenette; Yc 2.80 -> 4.20 by pf 80; him walks to Y 4.45, turns to the fridge. */
 const b06 = (p: Painter, tl: number) => {
   const pf = pfOf(tl);
   const yc = truckYc(pf, 2.8, 4.2, 80);
-  truck(p, yc, SEC_2D, UNIT_LIGHT, undefined, (_c, S) => stand(p, S, 2.70 + (4.45 - 2.70) * Math.min(1, pf / 75), 0.75, pf < 77 ? 1 : -1, 2200, 0.8));
+  const Y = 2.7 + (4.45 - 2.7) * Math.min(1, pf / 75);
+  truck(p, yc, SEC_2D, UNIT_LIGHT, [figIn(figSide(YOU, {stride: pf < 75 ? 1 : 0}), UNIT_LIGHT, Y, 0.75, pf < 77 ? 1 : -1, 2200)]);
 };
 
 /** B07-SH02: truck to the living room; Yc 5.40 -> 8.20 by pf 89; seated on the sofa (SEC-2D-LL B07: 480 px/m, floor 1230). */
 const b07 = (p: Painter, tl: number) => {
   const pf = pfOf(tl);
   const yc = truckYc(pf, 5.4, 8.2, 89);
-  const sec = SEC_2D_LL_B07;
-  truck(p, yc, sec, {...UNIT_LIGHT, living: 0.9}, undefined, (c, S) => {
-    const [gx, gy] = S.P(7.65, 0, 0.75);
-    placeAt(p.brush, gx, gy, S.pxPerM(0.75) / 447, 1, () => {
-      contactShadow(flatKit(c, 2600), 120, 0, 110, 13, shadowOn(0.9)); // hips to the bare feet (ankle near x 164)
-      const s = paintSeatedSofa(makePaint(c, 2300), YOU, 0, 0, {face: undefined});
-      bodyDetail(makePaint(c, 2400), {shoulder: s.shoulder, hip: s.hip, head: s.head, w: 0.6 * 190}, SHIRT_FOLD);
-    });
-  });
+  truck(p, yc, SEC_2D_LL_B07, UNIT_LIGHT, [figIn(figSeatSofa(YOU), UNIT_LIGHT, 7.65, 0.75, 1, 2300)]);
 };
 
 /** B10-SH01: interior from the bathroom (camera at Y 3.25), the turn on pf 108-116; still camera. */
@@ -107,12 +109,28 @@ const plate = (id: string, serves: string[], paper: string, camera: (tl: number)
 });
 
 const CAM_STILL = (): Camera => STILL_CAMERA;
+/** A slow push about (fx, fy) over `len` seconds (the sheet's insert and medium pushes, Boss pass 10). */
+const CAM_PUSH = (len: number, fx: number, fy: number, s1 = 1.02) => (tl: number) => pushCamera(tl, len, {s0: 1, s1, fx, fy});
 const CAM_DIAGRAM = (tl: number) => pushCamera(tl, 6.8, {s0: 1, s1: 1.01, fx: 500, fy: 580});
 const CAM_B10 = (tl: number) => pushCamera(tl, 4.3, {s0: 1, s1: 1.015, fx: 420, fy: 560});
 /** B02-SH01: the push toward the bolt (s 1.00 -> 1.03 about (800, 680)) over the shot. */
 const camB02Sh01 = (len: number) => (tl: number) => pushCamera(tl, len, {s0: 1, s1: 1.03, fx: 800, fy: 680});
-/** B02-SH02: the push over the drag (s 1.00 -> 1.02 about (540, 800)), then held. */
-const CAM_B02_SH02 = (tl: number) => pushCamera(tl, 39 / FPS, {s0: 1, s1: 1.02, fx: 540, fy: 800});
+/** B02-SH02 (R2.5): a 1.5 % lurch about (540, 760) over pf 0-6, easing back to rest by pf 20 (the flush and its wobble). No drag. */
+const CAM_B02_SH02 = (tl: number): Camera => {
+  const pf = tl * FPS;
+  const lurch = pf <= 6 ? pf / 6 : Math.max(0, 1 - (pf - 6) / 14);
+  return {s: 1 + 0.015 * lurch, fx: 540, fy: 760, dx: 0, dy: 0};
+};
+/** B01-SH01: the OTS push (s 1.000 -> 1.035 about (640, 690)) over 3.5 s, the plate's own camera (`PERSP-2D`). */
+const camB01Sh01 = (tl: number) => pushCamera(tl, 3.5, {s0: 1, s1: 1.035, fx: 640, fy: 690});
+/** B01-SH02: the long-lens push (s 1.00 -> 1.02 about (540, 560)) over the 48-frame shot. */
+const camB01Sh02 = (tl: number) => pushCamera(tl, 48 / FPS, {s0: 1, s1: 1.02, fx: 540, fy: 560});
+/** B02-SH03: the close push (s 1.00 -> 1.02 about his eyes (515, 430)) over the 84-frame plate. */
+const camB02Sh03 = (tl: number) => pushCamera(tl, 84 / FPS, {s0: 1, s1: 1.02, fx: 515, fy: 430});
+/** B07-SH01: the push about his eye (s 1.00 -> 1.02) over the 141-frame plate. */
+const camB07Sh01 = (tl: number) => pushCamera(tl, 141 / FPS, {s0: 1, s1: 1.02, fx: 600, fy: 400});
+/** B09-SH02: the push about his eye (s 1.00 -> 1.02) over the 45-frame shot. */
+const camB09Sh02 = (tl: number) => pushCamera(tl, 45 / FPS, {s0: 1, s1: 1.02, fx: 450, fy: 600});
 /** B09-SH01: the held plate's slow push about his head (s 1.000 -> 1.015). */
 const camB09Sh01 = (len: number) => (tl: number) => pushCamera(tl, len, {s0: 1, s1: 1.015, fx: 648, fy: 590});
 /** B09-SH02B: the tilt (dy -1100 -> 0 over 18 f, eased): from the knees up to the still door. */
@@ -120,28 +138,43 @@ export const CAM_B09_SH02B = (tl: number): Camera => ({s: 1, fx: 540, fy: 960, d
 /** B09-SH03: linear slow push s 1.00 -> 1.04 about (450, 600) over the 84-frame shot. */
 const CAM_B09_SH03 = (tl: number): Camera => ({s: 1 + 0.04 * Math.min(1, tl / 2.8), fx: 450, fy: 600, dx: 0, dy: 0});
 
-/** Caption cue windows (plate clock, seconds) for the cue-gated shade. Shared B04 uses the union of the two languages. */
-const CUE_B02_SH01 = {TH: [cue(0, 45)], EN: [cue(0, 57)]} as const;
-const CUE_B02_SH02 = {TH: [cue(3, 93)], EN: [cue(0, 120)]} as const;
-const CUE_B03 = {TH: [cue(0, 36)], EN: [cue(0, 45)]} as const;
-const CUE_B04 = [cue(0, 57)] as const;
-
 export const zcpaintShots: PaintedShot[] = [
-  plate('ZCP-B02-SH01-TH', ['B02-SH01'], '#d9ccb0', camB02Sh01(45 / FPS), pov((c, pf) => paintB02Sh01(c, pf, 'TH')), b02Sh01Overlay('TH', CUE_B02_SH01.TH)),
-  plate('ZCP-B02-SH01-EN', ['B02-SH01'], '#d9ccb0', camB02Sh01(57 / FPS), pov((c, pf) => paintB02Sh01(c, pf, 'EN')), b02Sh01Overlay('EN', CUE_B02_SH01.EN)),
-  plate('ZCP-B02-SH02-TH', ['B02-SH02'], '#d9ccb0', CAM_B02_SH02, pov((c, pf) => paintB02Sh02(c, pf, 'TH')), b02Sh02Overlay('TH', CUE_B02_SH02.TH)),
-  plate('ZCP-B02-SH02-EN', ['B02-SH02'], '#d9ccb0', CAM_B02_SH02, pov((c, pf) => paintB02Sh02(c, pf, 'EN')), b02Sh02Overlay('EN', CUE_B02_SH02.EN)),
-  plate('ZCP-B03-SH01-TH', ['B03-SH01'], '#1d1915', CAM_STILL, pov((c, pf) => paintB03Sh01(c, pf, 'TH')), b03Overlay('TH', CUE_B03.TH)),
-  plate('ZCP-B03-SH01-EN', ['B03-SH01'], '#1d1915', CAM_STILL, pov((c, pf) => paintB03Sh01(c, pf, 'EN')), b03Overlay('EN', CUE_B03.EN)),
-  plate('ZCP-B04-SH01', ['B04-SH01'], '#d9ccb0', CAM_STILL, b04, screenOnly(CUE_B04, 'band')),
-  plate('ZCP-B04-SH02-TH', ['B04-SH02'], DIAGRAM_PAPER, CAM_DIAGRAM, diagram('TH')),
-  plate('ZCP-B04-SH02-EN', ['B04-SH02'], DIAGRAM_PAPER, CAM_DIAGRAM, diagram('EN')),
+  plate('ZCP-B01-SH01', ['B01-SH01'], '#b9b19b', camB01Sh01, pov((c, pf) => paintB01Sh01(c, pf)), screenOnly()),
+  plate('ZCP-B01-SH02', ['B01-SH02'], '#b9b19b', camB01Sh02, pov((c, pf) => paintB01Sh02(c, pf)), screenOnly()),
+  plate('ZCP-B02-SH01-TH', ['B02-SH01'], '#d9ccb0', camB02Sh01(45 / FPS), pov((c, pf) => paintB02Sh01(c, pf, 'TH')), b02Sh01Overlay('TH')),
+  plate('ZCP-B02-SH01-EN', ['B02-SH01'], '#d9ccb0', camB02Sh01(57 / FPS), pov((c, pf) => paintB02Sh01(c, pf, 'EN')), b02Sh01Overlay('EN')),
+  plate('ZCP-B02-SH02-TH', ['B02-SH02'], '#d9ccb0', CAM_B02_SH02, pov((c, pf) => paintB02Sh02(c, pf, 'TH')), screenOnly()),
+  plate('ZCP-B02-SH02-EN', ['B02-SH02'], '#d9ccb0', CAM_B02_SH02, pov((c, pf) => paintB02Sh02(c, pf, 'EN')), screenOnly()),
+  plate('ZCP-B02-SH03', ['B02-SH03'], '#d9ccb0', camB02Sh03, pov((c, pf) => paintB02Sh03(c, pf)), screenOnly()),
+  plate('ZCP-B03-SH01-TH', ['B03-SH01'], '#1d1915', CAM_STILL, pov((c, pf) => paintB03Sh01(c, pf, 'TH')), b03Overlay('TH')),
+  plate('ZCP-B03-SH01-EN', ['B03-SH01'], '#1d1915', CAM_STILL, pov((c, pf) => paintB03Sh01(c, pf, 'EN')), b03Overlay('EN')),
+  plate('ZCP-B04-SH01', ['B04-SH01'], '#d9ccb0', CAM_STILL, b04, screenOnly()),
+  plate('ZCP-B04-SH02-TH', ['B04-SH02'], DIAGRAM_PAPER, CAM_DIAGRAM, diagram('TH'), screenOnly()),
+  plate('ZCP-B04-SH02-EN', ['B04-SH02'], DIAGRAM_PAPER, CAM_DIAGRAM, diagram('EN'), screenOnly()),
   plate('ZCP-B06-SH01', ['B06-SH01'], '#d9ccb0', CAM_STILL, b06, screenOnly()),
   plate('ZCP-B07-SH02', ['B07-SH02'], '#d9ccb0', CAM_STILL, b07, screenOnly()),
+  plate('ZCP-B07-SH01', ['B07-SH01'], '#d9ccb0', camB07Sh01, pov((c, pf) => paintB07Sh01(c, pf)), screenOnly()),
   plate('ZCP-B08-SH01', ['B08-SH01'], NIGHT, CAM_STILL, b08, b08Overlay),
   plate('ZCP-B09-SH01-TH', ['B09-SH01'], '#d9ccb0', camB09Sh01(156 / FPS), (p) => paintB09Sh01(p), b09Sh01Overlay('TH')),
   plate('ZCP-B09-SH01-EN', ['B09-SH01'], '#d9ccb0', camB09Sh01(102 / FPS), (p) => paintB09Sh01(p), b09Sh01Overlay('EN')),
   plate('ZCP-B09-SH02B', ['B09-SH02B'], '#d9ccb0', CAM_B09_SH02B, pov((c) => paintB09Sh02b(c)), screenOnly()),
+  plate('ZCP-B09-SH02', ['B09-SH02'], '#d9ccb0', camB09Sh02, (p) => paintB09Sh02(ctxOf(p)), screenOnly()),
   plate('ZCP-B09-SH03', ['B09-SH03'], '#d9ccb0', CAM_B09_SH03, (p) => paintB09Sh03(p), screenOnly()),
   plate('ZCP-B10-SH01', ['B10-SH01'], '#c9bfa6', CAM_B10, b10, screenOnly()),
+  // Pass 10 (Part B): the inserts, the bathroom medium and the fridge, per the sheets' keys (SS-R1.3).
+  plate('ZCP-B04-SH03a', ['B04-SH03'], '#bfd9d4', CAM_PUSH(39 / FPS, 540, 700), pov((c, pf) => paintB04Sh03a(c, pf)), screenOnly()),
+  plate('ZCP-B04-SH03b', ['B04-SH03'], '#bfd9d4', CAM_PUSH(12 / FPS, 540, 700), pov((c, pf) => paintB04Sh03b(c, pf)), screenOnly()),
+  plate('ZCP-B04-SH03c-TH', ['B04-SH03'], '#bfd9d4', CAM_PUSH(12 / FPS, 540, 700), pov((c, pf) => paintB04Sh03c(c, pf, 12)), screenOnly()),
+  plate('ZCP-B04-SH03c-EN', ['B04-SH03'], '#bfd9d4', CAM_PUSH(15 / FPS, 540, 700), pov((c, pf) => paintB04Sh03c(c, pf, 15)), screenOnly()),
+  plate('ZCP-B04-SH04-TH', ['B04-SH04'], '#bfd9d4', CAM_PUSH(12 / FPS, 540, 600), pov((c, pf) => paintB04Sh04(c, pf, 'TH')), screenOnly()),
+  plate('ZCP-B04-SH04-EN', ['B04-SH04'], '#bfd9d4', CAM_PUSH(33 / FPS, 540, 600), pov((c, pf) => paintB04Sh04(c, pf, 'EN')), screenOnly()),
+  plate('ZCP-B05-SH01-TH', ['B05-SH01'], '#d9ccb0', CAM_PUSH(51 / FPS, 700, 600, 1.03), pov((c, pf) => paintB05Sh01(c, pf, 'TH')), screenOnly()),
+  plate('ZCP-B05-SH01-EN', ['B05-SH01'], '#d9ccb0', CAM_PUSH(48 / FPS, 700, 600, 1.03), pov((c, pf) => paintB05Sh01(c, pf, 'EN')), screenOnly()),
+  plate('ZCP-B05-SH02', ['B05-SH02'], '#e6e3da', CAM_PUSH(3, 540, 640, 1.01), pov((c, pf) => paintB05Sh02(c, pf)), screenOnly()),
+  plate('ZCP-B05-SH03', ['B05-SH03'], '#e6e3da', CAM_PUSH(3.2, 540, 640), pov((c, pf) => paintB05Sh03(c, pf)), screenOnly()),
+  plate('ZCP-B05-SH03-BOWL', ['B05-SH03'], '#e6e3da', CAM_STILL, pov((c, pf) => paintB05Sh03Bowl(c, pf)), screenOnly()),
+  plate('ZCP-B05-SH03-TH', ['B05-SH03'], '#e6e3da', CAM_STILL, pov((c, pf) => paintB05Sh03Part3(c, pf, 'TH')), screenOnly()),
+  plate('ZCP-B05-SH03-EN', ['B05-SH03'], '#e6e3da', CAM_STILL, pov((c, pf) => paintB05Sh03Part3(c, pf, 'EN')), screenOnly()),
+  plate('ZCP-B06-SH02', ['B06-SH02'], '#d9ccb0', CAM_PUSH(63 / FPS, 540, 560, 1.01), pov((c, pf) => paintB06Sh02(c, pf)), screenOnly()),
+  plate('ZCP-B06-SH03', ['B06-SH03'], '#b99c72', CAM_STILL, pov((c, pf) => paintB06Sh03(c, pf)), screenOnly()),
 ];

@@ -4,7 +4,7 @@ import {CameraLayer, type Camera} from '../camera';
 import {Spot, GLOW_PEAK} from '../glow';
 import {hash} from '../hash';
 import {ramp} from '../painter';
-import {CaptionShade, Grade, Grain, type CaptionCue} from '../screen';
+import {Grade, Grain} from '../screen';
 import type {ShotContext} from '../shot';
 import {INK} from './ctx';
 import {flare, layers, MAIN, SECOND, svgTransform, type Layer} from './balcony';
@@ -22,12 +22,14 @@ type Overlay = (props: OverlayProps) => ReactNode;
 /** Plate frame of the overlay clock (the plate clock x 30; the plates use no remap). */
 const pfOf = (tl: number) => Math.round(tl * 30);
 
-/** Shared picture screen layers in the order Grade -> Grain -> CaptionShade (`screen.tsx`). */
-export const ScreenLayers = ({tl, grain = 0.09, shade}: {tl: number; grain?: number | false; shade?: {mode: 'band' | 'soft'; cues: readonly CaptionCue[]; strength?: number}}) => (
+/**
+ * The picture's screen layers: Grade, then Grain (`screen.tsx`). Pass 9 (user, 30 Oct 2026): no ZC plate carries `ZC-CAPSHADE`; captions are
+ * white with the outline style (`src/scenes/Subtitles.tsx`), so the plate layers stop at the paper grain and the vignette.
+ */
+export const ScreenLayers = ({grain = 0.09}: {grain?: number | false}) => (
   <>
     <Grade />
     {grain !== false && <Grain opacity={grain} />}
-    {shade && <CaptionShade tl={tl} cues={shade.cues} mode={shade.mode} strength={shade.strength} />}
   </>
 );
 
@@ -52,26 +54,23 @@ const EntryGlow = ({level, dx}: {level: number; dx: number}) => <Spot x={540 + d
 
 // ---------------------------------------------------------------- B02 overlays
 
-/** B02-SH01: corridor line on the closing leaf, the thumb-turn, ScreenLayers with the soft shade on the captions. */
-export const b02Sh01Overlay = (lang: Lang, cues: readonly CaptionCue[]): Overlay => ({tl, camera, width, height}) => {
+/** B02-SH01: the thumb-turn (SVG-ZCP-2) turns on its own at the per-language bolt keys, in the camera; ScreenLayers. */
+export const b02Sh01Overlay = (lang: Lang): Overlay => ({tl, camera, width, height}) => {
   const pf = pfOf(tl);
   return (
     <>
       <CameraLayer camera={camera} width={width} height={height} blend="normal">
         <Bolt deg={boltAngle(lang, pf)} />
       </CameraLayer>
-      <ScreenLayers tl={tl} shade={{mode: 'soft', cues}} />
+      <ScreenLayers />
     </>
   );
 };
 
-/** B02-SH02: corridor line on the door (scaled with the door layer), ScreenLayers with the soft shade. */
-export const b02Sh02Overlay = (_lang: Lang, cues: readonly CaptionCue[]): Overlay => ({tl}) => <ScreenLayers tl={tl} shade={{mode: 'soft', cues}} />;
-
 // ---------------------------------------------------------------- B03 overlay
 
-/** B03-SH01: View A's corridor line and entry glow (they slide with the view), View B's lamp glows, the soft shade. */
-export const b03Overlay = (lang: Lang, cues: readonly CaptionCue[]): Overlay => ({tl, camera, width, height}) => {
+/** B03-SH01: View A's corridor line and entry glow (they slide with the view), View B's lamp glows, ScreenLayers. */
+export const b03Overlay = (lang: Lang): Overlay => ({tl, camera, width, height}) => {
   const pf = pfOf(tl), L = b03Lights(pf, lang), oA = b03Offset(pf, lang), oB = oA - 1080;
   return (
     <>
@@ -83,7 +82,7 @@ export const b03Overlay = (lang: Lang, cues: readonly CaptionCue[]): Overlay => 
           <LampGlows levels={{bath: L.bath, kitchen: L.kitchen, living: L.living}} dx={0} />
         </g>
       </CameraLayer>
-      <ScreenLayers tl={tl} shade={{mode: 'soft', cues}} />
+      <ScreenLayers />
     </>
   );
 };
@@ -130,15 +129,13 @@ export const b09Sh01Overlay = (lang: Lang): Overlay => ({tl, camera, width, heig
       <CameraLayer camera={camera} width={width} height={height} blend="normal">
         <B09Counter tl={tl} keys={keys} />
       </CameraLayer>
-      <ScreenLayers tl={tl} />
+      <ScreenLayers />
     </>
   );
 };
 
-/** Plain Grade and Grain (and an optional cue-gated shade) for a plate without SVG parts. */
-export const screenOnly = (cues?: readonly CaptionCue[], mode: 'band' | 'soft' = 'band'): Overlay => ({tl}) => (
-  <ScreenLayers tl={tl} shade={cues ? {mode, cues} : undefined} />
-);
+/** Plain Grade and Grain for a plate without SVG parts (pass 9: no caption shade on any ZC plate). */
+export const screenOnly = (): Overlay => () => <ScreenLayers />;
 
 // ---------------------------------------------------------------- B08 hero plate (Boss pass 6)
 
@@ -195,11 +192,10 @@ const B08Light = ({pf, opacity}: {pf: number; opacity: number}) => {
   );
 };
 
-/** `ZCP-B08-SH01` overlay: the SVG bloom and embers over the canvas, then Grade and Grain. No caption shade: the brief
- *  sets `ZC-CAPSHADE` to none on B08 (`VD-ZC-08`, measured on the key art). */
+/** `ZCP-B08-SH01` overlay: the SVG bloom and embers over the canvas, then Grade and Grain (no caption shade on any ZC plate, pass 9). */
 export const b08Overlay: Overlay = ({tl, opacity}) => (
   <>
     <B08Light pf={pfOf(tl)} opacity={opacity} />
-    <ScreenLayers tl={tl} />
+    <ScreenLayers />
   </>
 );

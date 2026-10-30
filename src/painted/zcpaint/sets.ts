@@ -1,6 +1,7 @@
 import type {PaintContext} from '../BrushCanvas';
 import {mixColor, type Pt} from '../painter';
 import {ell, INK} from './ctx';
+import {boxFloorCast, castTone, clipConvex, KEY_SEC_DAY, roomFloorQuad, SEC_BACK, type Caster} from './light';
 import type {Section} from './space';
 
 // ZCPAINT section set kit (S-P03): the cream unit cut open along the section (`SEC-2D`, `MK-ZC-ST-01..03`). Rooms are
@@ -8,11 +9,12 @@ import type {Section} from './space';
 // (no texture on large areas, so no cloudy blotches), and light only at the ceiling lamp (no wall pools). Light levels
 // are value lerps per zone on full-alpha fills (`ZC-LIGHT-STATE`), never an alpha cross-fade.
 
-export const CAP = '#1c1f24';
+/** RM-06 (pass 9): caps a step warmer than the old #1c1f24, so they read as building, not black bars. */
+export const CAP = '#22201f';
 export const CREAM = {
   wall: '#d9ccb0', wallShade: '#b9aa8c', partition: '#cfc6b2', door: '#c4b392', cab: '#cdb48c', cabTop: '#e2cfa8', cabShade: '#9c8664',
   tile: '#7d6c58', base: '#6d5f4c', ceiling: '#c9bb9d', white: '#e6e3da', whiteTop: '#f2efe6', whiteSide: '#cfcac0',
-  neighbour: '#2a2622', lampCore: '#fbf4dc', dark: '#14110e',
+  neighbour: '#2b2724', lampCore: '#fbf4dc', dark: '#14110e',
 };
 /** Light level 0 (blackout) .. 1 (powered) per zone. */
 export type Lights = {entry: number; bath: number; kitchen: number; living: number; neighbours: number};
@@ -50,6 +52,18 @@ export const flatKit = (ctx: PaintContext, base: number): Flat => {
       brush.spline(closed ? [...pts, pts[0]] : pts, 0.1);
     },
   };
+};
+
+/**
+ * Cast shadows of the room's boxes on its floor (`LT-03`, `RK-26` floor-only fallback: partitions and the back wall are not receivers in
+ * the plates built so far, measured per plate). Paint this pass after the room floor and before the boxes, so no shadow lies over a box.
+ */
+export const castFloor = (f: Flat, S: Section, casters: readonly Caster[], floor: string, room: readonly [number, number], key = KEY_SEC_DAY, back = SEC_BACK) => {
+  const quad = roomFloorQuad(S, room, back), tone = castTone(floor);
+  for (const c of casters) {
+    const poly = clipConvex(boxFloorCast(S, c, key), quad);
+    if (poly.length > 2) f.fill(tone, poly);
+  }
 };
 
 /** A box as a section camera sees it: the +Y side, the top and the near end (d0). `outline` inks the near end. */
@@ -110,4 +124,5 @@ export const paintCaps = (f: Flat, S: Section, partitions: readonly [number, num
   }
   f.fill(CAP, [[-100, top], [1200, top], [1200, P(0, 2.6, 0)[1]], [-100, P(0, 2.6, 0)[1]]], 4); // ceiling slab
   f.fill(CAP, [[-100, sec.floorY], [1200, sec.floorY], [1200, bot], [-100, bot]], 4); // floor slab
+  f.line([[x(0), top], [x(0), bot]], 1, '#4a433b', false); // RM-06 thin edge line on the door-wall cap
 };

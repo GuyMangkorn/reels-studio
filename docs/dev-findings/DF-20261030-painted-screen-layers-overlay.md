@@ -22,4 +22,5 @@
 - Follow-up: TL/Editor decision on a shared mount in `PaintedStage` (consumers: shipwreck, ZCPAINT, B08 when integrated); PS-1 in `scripts/zombie-condo-paint/build-notes.md`.
 
 ## Revalidation history
+- 30 Oct 2026, pass 9 → the ZC plate Overlays carry Grade and Grain only (no `CaptionShade` on any ZC plate, `ScreenLayers` in `src/painted/zcpaint/overlays.tsx`); `PaintedStage` still mounts none of them → workaround unchanged; the screen-layer capability in `screen.tsx` is kept.
 - 30 Oct 2026, uncommitted pass 5 → plate-level layers in the ZC `Overlay`, spike and plate frames checked → workaround → fix PR: none.
