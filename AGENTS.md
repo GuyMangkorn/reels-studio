@@ -30,9 +30,9 @@ These apply to every role; agent configs link here instead of repeating them.
 **Default.** Everything read stays in context and is paid for again on every later call (measured 27–29 Oct 2026).
 
 - **CB01 — Locate, then read.** Find the section first with `grep -n` on headings or IDs, bounded with `-m`, `-c` or `-l` and `| cut -c1-200` for long-line Markdown. Then read that range with `sed -n`. Read a whole file only when it is short (about 8 KB or less) or the task edits most of it. Briefs, scene sheets, research and the [dev-findings](docs/dev-findings.md) entries are read by section.
-- **CB02 — Logs to files.** Send long command output (Blender, renders, installs, test suites) to a file under `out/logs/`. Print only a summary line, the errors or the tail.
+- **CB02 — Logs to files.** Send long command output (Blender, renders, installs, test suites, `tsc`) to a file under `out/logs/`. Print only a summary line, the errors or the tail. Every other command prints under about 40 lines or pipes through `head`, `tail` or `grep -m`. Measured: a Mark run reached 412k context with no images from unbounded output and whole-file reads (ZCPAINT, 30 Oct 2026).
 - **CB03 — Small images.** View frames through `scripts/qa-sheet.sh`, which tiles frames at 270 px or downscales a single frame with `--width 540`. Use full resolution only for a pixel-level judgment that measured numbers cannot settle. Boss's labelled review contact sheets are unchanged.
-- **CB04 — Invocations and sessions** follow [AI01–AI07](docs/delivery-workflow.md#agent-invocation).
+- **CB04 — Invocations and sessions** follow [AI01–AI09](docs/delivery-workflow.md#agent-invocation).
 - **CB05 — Measure workflow changes** with `python3 -I scripts/usage-report.py [--since YYYY-MM-DD]`, before and after.
 
 <a id="coordinator-and-agent-parity"></a>
@@ -43,7 +43,7 @@ The **coordinator** is the chat session the user talks to (Claude Code or Codex)
 - selects deliverables, style profile and tier;
 - invokes role agents for the assigned scope (Claude Code: the `Agent` tool with `subagent_type` set to the role name; Codex: the custom agent of that name);
 - passes matching revisions;
-- follows the [agent invocation defaults](docs/delivery-workflow.md#agent-invocation): whole stage per call, inline mechanical edits, separate checking.
+- follows the [agent invocation defaults](docs/delivery-workflow.md#agent-invocation): whole stage per call (shot groups for painting and rendering), inline mechanical edits, separate checking.
 
 Role configs describe roles. They install no automatic runner and authorize no cross-chat messaging. A role agent never invokes the next role on its own.
 
