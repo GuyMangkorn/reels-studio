@@ -1,6 +1,6 @@
 # Shot-by-shot painted workflow: look frame, blocking reel, pinned finals
 
-**Status:** E1–E7 `applied` (1 Nov 2026, documentation-only PR `claude/docs-shot-by-shot-workflow`; user: "Apply in docs PR"). Tools T1–T4 are built in `claude/scene-brush-architecture-da189e` and land in their own PR. Applying it changes rule documents, so it follows [DP03–DP04](../contributing.md#tools-and-document-improvements): user review per entry, then a documentation-only PR, plus separate tool PRs for T1–T4.
+**Status:** E1–E7 `applied` (1 Nov 2026, documentation-only PR [GuyMangkorn/reels-studio#173](https://github.com/GuyMangkorn/reels-studio/pull/173); user: "Apply in docs PR"). Tools T1–T4 are built in `claude/scene-brush-architecture-da189e` and land in their own PR. Applying it changes rule documents, so it follows [DP03–DP04](../contributing.md#tools-and-document-improvements): user review per entry, then a documentation-only PR, plus separate tool PRs for T1–T4.
 
 **Goal (user, 31 Oct – 1 Nov 2026):** after the voice is generated, render real shots one at a time following the storyboard page, review and fix each shot there, so fewer fixes are needed overall and the video finishes sooner. Constraint from the user: no throwaway work ("animatic … วาดแล้วทิ้ง").
 
@@ -68,7 +68,7 @@
 
 ### E1 — AGENTS.md, "Review renders use `--preview` and `--range`"
 
-- Status: `applied` (1 Nov 2026, docs PR `claude/docs-shot-by-shot-workflow`)
+- Status: `applied` (1 Nov 2026, [GuyMangkorn/reels-studio#173](https://github.com/GuyMangkorn/reels-studio/pull/173))
 
 - Roles: all (coordinator, Editor, Boss)
 - Evidence: §1, first two bullets.
@@ -78,7 +78,7 @@
 
 ### E2 — docs/sequence-workflow.md, new section `<a id="painted-shot-by-shot"></a>` after "Shared sequence and continuity"
 
-- Status: `applied` (1 Nov 2026, docs PR `claude/docs-shot-by-shot-workflow`)
+- Status: `applied` (1 Nov 2026, [GuyMangkorn/reels-studio#173](https://github.com/GuyMangkorn/reels-studio/pull/173))
 
 - Roles: Mark, Boss, Editor, coordinator
 - Evidence: §1; studio practice in the research note.
@@ -86,7 +86,7 @@
 
 ### E3 — docs/sequence-workflow.md §3 and §5
 
-- Status: `applied` (1 Nov 2026, docs PR `claude/docs-shot-by-shot-workflow`)
+- Status: `applied` (1 Nov 2026, [GuyMangkorn/reels-studio#173](https://github.com/GuyMangkorn/reels-studio/pull/173))
 
 - Roles: Editor, Boss
 - Append to §3: "For painted deliverables the blockout is the W5 blocking reel: real shot code in draft mode, not placeholders, wherever the shot's layers exist."
@@ -94,7 +94,7 @@
 
 ### E4 — docs/mark-storyboard-workflow.md, "User storyboard review page", Previews bullet
 
-- Status: `applied` (1 Nov 2026, docs PR `claude/docs-shot-by-shot-workflow`)
+- Status: `applied` (1 Nov 2026, [GuyMangkorn/reels-studio#173](https://github.com/GuyMangkorn/reels-studio/pull/173))
 
 - Roles: coordinator, Mark
 - Append: "For painted shot-by-shot work, the preview column shows the row's draft or final clip with about 1 s of each neighbour (T4), and a stage status `blocking` / `final` beside the verdict."
@@ -103,14 +103,14 @@
 
 ### E5 — docs/boss-asset-workflow.md, latest production rules
 
-- Status: `applied` (1 Nov 2026, docs PR `claude/docs-shot-by-shot-workflow`)
+- Status: `applied` (1 Nov 2026, [GuyMangkorn/reels-studio#173](https://github.com/GuyMangkorn/reels-studio/pull/173))
 
 - Roles: Boss
 - Add: "After the look lock (W2), shared painted code changes only with the list of pinned finals it would repaint (T3), shown to the user first."
 
 ### E6 — docs/film-visual-brief-workflow.md, "Deliverables"
 
-- Status: `applied` (1 Nov 2026, docs PR `claude/docs-shot-by-shot-workflow`)
+- Status: `applied` (1 Nov 2026, [GuyMangkorn/reels-studio#173](https://github.com/GuyMangkorn/reels-studio/pull/173))
 
 - Roles: Film, Boss, coordinator
 - Evidence: the user's decision to move the look before the storyboard (§5).
@@ -118,7 +118,7 @@
 
 ### E7 — AGENTS.md, "Render by scene, keep the scenes": one mechanism for review and re-edit
 
-- Status: `applied` (1 Nov 2026, docs PR `claude/docs-shot-by-shot-workflow`)
+- Status: `applied` (1 Nov 2026, [GuyMangkorn/reels-studio#173](https://github.com/GuyMangkorn/reels-studio/pull/173))
 
 - Roles: all (coordinator, Mark, Boss, Editor)
 - Evidence:
