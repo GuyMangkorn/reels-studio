@@ -5,11 +5,14 @@
 // Each run bundles into its own temp directory, lets Remotion pick a free port and writes only under
 // out/<CompositionId>/, so renders of different videos can run at the same time.
 // Each exported MP4 is loudness-normalized in place (scripts/loudness.mjs) and its before/after levels are logged.
+// After the MP4s are exported, out/<CompositionId>/ is copied into the permanent render folder ($REELS_RENDER_DIR, default
+// ~/Movies/ReelsCreator/renders/<PROJECT>/...) by scripts/archive-renders.py, outside every worktree.
 // Set BROWSER_EXECUTABLE to use an installed Chromium instead of Remotion's download.
 import {bundle} from '@remotion/bundler';
 import {openBrowser, selectComposition, renderStill, renderMedia} from '@remotion/renderer';
 import path from 'node:path';
 import {mkdir, copyFile} from 'node:fs/promises';
+import {spawnSync} from 'node:child_process';
 import {describeLoudness, normalizeLoudness} from './loudness.mjs';
 import {endingsFor, parseRenderArgs} from './render-options.mjs';
 
@@ -47,5 +50,7 @@ try {
       console.log(`Loudness ${output}: ${describeLoudness(await normalizeLoudness(output))}`);
       if (ending === endings.at(-1)) await copyFile(output, `${dir}/${id}.mp4`);
     }
+    const archived = spawnSync('python3', ['-I', 'scripts/archive-renders.py', '--only', id], {encoding: 'utf8'});
+    console.log(archived.status === 0 ? `Archive ${id}: ${archived.stdout.trim()}` : `WARNING archive failed for ${id}: ${archived.stderr.trim()}`);
   }
 } finally {await browser.close({silent: true});}
