@@ -1,15 +1,15 @@
 import {loadFont} from '@remotion/fonts';
 import {useCallback} from 'react';
 import {AbsoluteFill, staticFile} from 'remotion';
-import {BrushCanvas, hash, type PaintContext} from '../BrushCanvas';
+import {BrushCanvas, type PaintContext} from '../BrushCanvas';
 import {solid, hardFill, washAt, rectPts} from '../kit/draw';
-import {makePainter, range, type Pt} from '../kit/painter';
+import {makePainter, range, type Painter, type Pt} from '../kit/painter';
 import {Grade, Grain} from '../kit/screen';
 import {PaintedLabel} from '../Label';
 import japan from './japan.json';
 import {HK} from './look';
 
-loadFont({family: 'Noto Sans Thai', url: staticFile('fonts/NotoSansThai.ttf'), weight: '100 900'});
+if (typeof document !== 'undefined') loadFont({family: 'Noto Sans Thai', url: staticFile('fonts/NotoSansThai.ttf'), weight: '100 900'});
 
 // Film look stills for HANAKO-SHORT, brief HANAKO-SHORT-FILM-R3 (31 Oct 2026, VD17-VD19).
 // LF04 B05-SH02 dead stop (third blank page, s 1.18, vignette 0.5); LF05 B06-SH01 enlarged real-coastline map
@@ -22,34 +22,42 @@ const CAM = ({s, fx, fy, dy = 0, children}: {s: number; fx: number; fy: number; 
 );
 
 // ------------------------------------------------------------------ LF04 B05-SH02: blank folder pages, dead stop
-const paintFolder = ({brush, frame}: PaintContext) => {
-  const p = makePainter(brush, {t: 0, frame, fade: HK.ink});
-  solid(p, 1, '#18242a', rectPts(-400, -400, W + 400, H + 400), 3);
-  // desk: dark cold wood, bands only (wash-flat, no mottle)
-  [[-400, 500, '#223034'], [480, 1100, '#1d2a2e'], [1080, 2300, '#162024']].forEach(([y0, y1, c], i) => hardFill(p, 2 + i, c as string, rectPts(-400, y0 as number, W + 400, y1 as number)));
-  // folder: cold grey-green manila, a little larger than the page; blank tab on top (as in B05-SH01)
-  washAt(p, 10, '#0c1416', 150, rectPts(206, 336, 884, 872), 0.2, 0.2);
-  solid(p, 11, '#8a9a8c', rectPts(196, 330, 876, 850), 4);
-  solid(p, 12, '#8a9a8c', rectPts(300, 304, 430, 340), 4);          // blank tab
-  p.ink(13, 'rotring', HK.ink, 1.2); brush.spline([[196, 330], [300, 330], [300, 304], [430, 304], [430, 330], [876, 330], [876, 850], [196, 850], [196, 330]] as Pt[], 0.1);
-  // pages already turned: sliver edges stacked at the hinge side
-  [214, 221, 228, 234].forEach((x, i) => hardFill(p, 20 + i, i % 2 ? '#b9c3b8' : '#a3afa6', rectPts(x, 352, x + 8, 836)));
-  // the third page, pale and cold: the brightest value of B01-B05
-  solid(p, 30, '#cfd8cb', rectPts(240, 356, 846, 826), 3, 0.02, 0.1);
-  hardFill(p, 31, '#c3ccbf', rectPts(240, 356, 270, 826));            // hinge gutter
-  // stack thickness on the right and bottom edges (flipped pages beneath)
-  hardFill(p, 34, '#aab6ac', rectPts(846, 360, 853, 830));
-  hardFill(p, 35, '#8e9b92', rectPts(244, 826, 853, 834));
-  // faint ruled lines only: paper, never a record (no columns, no heading, no marks)
-  p.inkStill(40, 'cpencil', '#a9b6ae', 0.8);
-  for (let y = 420; y <= 790; y += 38) brush.line(272, y, 826, y + (hash(y) - 0.5) * 1.2);
+/** LF04 owner. Blank means only even rules: hard fills prevent the old lower-right bleed smudge. */
+export const paintFolderPlate = (p: Painter, f = 155) => {
+  const {brush} = p;
+  hardFill(p, 1, '#18242a', rectPts(-400, -400, 1480, 2320));
+  [[-400, 500, '#223034'], [500, 1100, '#1d2a2e'], [1100, 2320, '#162024']].forEach(([y0, y1, c], i) => hardFill(p, 2+i, c as string, rectPts(-400, y0 as number, 1480, y1 as number)));
+  hardFill(p, 10, '#101a1d', rectPts(248, 282, 854, 805));
+  hardFill(p, 11, '#8a9a8c', rectPts(240, 270, 840, 790));
+  hardFill(p, 12, '#8a9a8c', rectPts(300, 226, 430, 280));
+  hardFill(p, 13, '#64786d', rectPts(240, 270, 253, 790));
+  [0, 1, 2, 3].forEach((i) => hardFill(p, 20+i, i % 2 ? '#b9c3b8' : '#a3afa6', rectPts(253+i*3, 290+i*2, 825-i*2, 777-i*2)));
+  hardFill(p, 30, '#cfd8cb', rectPts(262, 296, 818, 766));
+  hardFill(p, 31, '#c3ccbf', rectPts(262, 296, 277, 766));
+  p.inkStill(40, 'cpencil', '#a9b6ae', .65);
+  for (let y = 334; y <= 744; y += 38) brush.line(281, y, 804, y);
+  // Turns use a projected sheet about hinge x240. A thin turned edge remains at the hinge.
+  for (const [i, on] of [62, 84].entries()) {
+    if (f < on) continue;
+    const u = Math.max(0, Math.min(1, (f-on)/10)), edge = 240 + 578 * Math.cos(Math.PI*u);
+    if (u < 1) {
+      hardFill(p, 50+i, '#bfcbbb', [[240,296], [edge,296+24*Math.sin(Math.PI*u)], [edge,766-18*Math.sin(Math.PI*u)], [240,766]]);
+      p.inkStill(52+i, 'cpencil', '#9fab9f', .65);
+      for (let y=334;y<=744;y+=38) brush.line(240,y,edge,y);
+    } else hardFill(p, 54+i, '#b0beb0', rectPts(253+i*5, 298, 257+i*5, 770));
+  }
+  if (f < 25) {
+    const u = Math.max(0, Math.min(1, (f-11)/14)), edge = 240 + 600*Math.cos(Math.PI*u);
+    if (edge > -330) hardFill(p, 60, '#8a9a8c', [[240,270], [edge,270+20*Math.sin(Math.PI*u)], [edge,790-20*Math.sin(Math.PI*u)], [240,790]]);
+  }
 };
+const paintFolder = ({brush, frame}: PaintContext) => paintFolderPlate(makePainter(brush, {t: 0, frame, fade: HK.ink}));
 
 export const LF04 = () => {
   const paint = useCallback(paintFolder, []);
   return (
     <AbsoluteFill style={{background: HK.ink}}>
-      <CAM s={1.18} fx={540} fy={590} dy={-70}><BrushCanvas paint={paint} paper={HK.ink} /></CAM>
+      <CAM s={1.18} fx={540} fy={590}><BrushCanvas paint={paint} paper={HK.ink} /></CAM>
       <Grade />
       <svg width={W} height={H} viewBox={`0 0 ${W} ${H}`} style={{position: 'absolute', inset: 0}}>
         <defs>
@@ -77,8 +85,8 @@ const RINGS: Pt[][] = (japan.rings as number[][]).map((r) => {
 export const PIN: Pt = japan.iwatePin as Pt;
 const SEA = '#1d2a2c';
 
-const paintMapR3 = (pin: boolean) => ({brush, frame}: PaintContext) => {
-  const p = makePainter(brush, {t: 0, frame, fade: HK.ink});
+export const paintMapPlate = (p: Painter, pin: boolean, pinDy = 0) => {
+  const {brush} = p;
   solid(p, 1, SEA, rectPts(-400, -400, W + 400, H + 400), 3);
   solid(p, 2, '#243638', rectPts(-400, -400, W + 400, 1000), 3, 0.02, 0.1);
   // graticule (paper-map rhythm), 5 degrees, no numbers: lon x = 170 + (lon-129.5)*42.8, lat y = 150 + (45.6-lat)*54
@@ -96,12 +104,14 @@ const paintMapR3 = (pin: boolean) => ({brush, frame}: PaintContext) => {
   // an inland wash of value so the island reads as a form, light from the north-west
   RINGS.slice(0, 1).forEach((px) => washAt(p, 80, '#4f6f6c', 90, px.map(([x, y]) => [x + 18, y + 14] as Pt), 0.4, 0.6));
   if (!pin) return;
-  const [x, y] = PIN;
+  const [x, py] = PIN, y = py + pinDy;
   washAt(p, 90, '#e0a95a', 90, range(14, (u) => [x + 38 * Math.cos(u * 6.283), y - 20 + 38 * Math.sin(u * 6.283)] as Pt), 0.5, 0.2);
   solid(p, 91, '#e0a95a', [[x, y], [x - 16, y - 32], [x - 8, y - 48], [x + 8, y - 48], [x + 16, y - 32]] as Pt[], 4);
   p.ink(92, 'rotring', HK.ink, 1.0); brush.spline([[x, y], [x - 16, y - 32], [x - 8, y - 48], [x + 8, y - 48], [x + 16, y - 32], [x, y]] as Pt[], 0.3);
   solid(p, 93, '#1d2a2c', range(10, (u) => [x + 5 * Math.cos(u * 6.283), y - 33 + 5 * Math.sin(u * 6.283)] as Pt), 3);
 };
+
+const paintMapR3 = (pin: boolean) => ({brush, frame}: PaintContext) => paintMapPlate(makePainter(brush, {t: 0, frame, fade: HK.ink}), pin);
 
 /** `stage`: 'start' = empty map s 1.00 (F1146); 'pulse' = pin landed + ring ~F1254 (s 1.04 + a bit); 'end' = s 1.30 callout + date (F1349). */
 export const LF05 = ({stage = 'end'}: {stage?: 'start' | 'pulse' | 'end'}) => {

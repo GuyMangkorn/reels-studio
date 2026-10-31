@@ -3,13 +3,14 @@ import {useCallback} from 'react';
 import {AbsoluteFill, staticFile} from 'remotion';
 import {BrushCanvas, hash, type PaintContext} from '../BrushCanvas';
 import {Spot, Vignette} from '../kit/glow';
-import {paintPovHand, type HandTone} from '../kit/hands';
-import {solid, hardFill, washAt, rectPts} from '../kit/draw';
-import {makePainter, range, type Pt} from '../kit/painter';
+import {paintPovHand, wristAtKnuckles, type HandTone} from '../kit/hands';
+import {solid, hardFill, washAt, rectPts, inkLine} from '../kit/draw';
+import {makePainter, range, type Painter, type Pt} from '../kit/painter';
 import {Grade, Grain} from '../kit/screen';
 import {PaintedLabel} from '../Label';
 
-loadFont({family: 'Noto Sans Thai', url: staticFile('fonts/NotoSansThai.ttf'), weight: '100 900'});
+if (typeof document !== 'undefined') loadFont({family: 'Noto Sans JP', url: staticFile('fonts/NotoSansJP.ttf'), weight: '100 900'});
+if (typeof document !== 'undefined') loadFont({family: 'Noto Sans Thai', url: staticFile('fonts/NotoSansThai.ttf'), weight: '100 900'});
 
 // Film look stills for HANAKO-SHORT (brief HANAKO-SHORT-FILM-R2, VD02/VD03/VD07/VD09; 31 Oct 2026).
 // LF01 restroom door 3 (RR-KNOCK, B01 f0 / B09 last frame), LF02 storybook legend panel (B04), LF03 map + date card
@@ -26,6 +27,12 @@ export const HANAKO_HAND: HandTone = {skin: '#e9c2a2', shade: '#d0a283', deep: '
 // ------------------------------------------------------------------ LF01 restroom door 3 (RR-KNOCK)
 export const makeDoorPaint = (withHand: boolean) => ({brush, frame}: PaintContext) => {
   const p = makePainter(brush, {t: 0, frame, fade: HK.ink});
+  paintDoorFace(p, withHand);
+};
+
+/** Approved LF01 door artwork; the production plate supplies the clock and moving hand. */
+export const paintDoorFace = (p: import('../kit/painter').Painter, withHand = false) => {
+  const {brush} = p;
   const bg = rectPts(-20, -20, W + 20, H + 20);
   // base door slab, then value strata: light from the fluorescent above, dark lower third for the captions.
   solid(p, 1, '#2c3d3e', bg, 3);
@@ -69,7 +76,7 @@ export const makeDoorPaint = (withHand: boolean) => ({brush, frame}: PaintContex
   // shadow of the raised hand/forearm cast on the door, then the POV right hand: fist raised, about to knock
   if (!withHand) return;
   washAt(p, 130, '#14201f', 70, [[640, 560], [900, 600], [960, 900], [660, 860]] as Pt[], 0.3, 0.2);
-  paintPovHand(p, {side: 1, base: 200, wrist: [790, 740], dir: -2.0, size: 0.98, curl: 1, thumb: [95, 70], elbow: [1120, 800], sleeveFrom: [1280, 830], tone: HANAKO_HAND});
+  paintPovHand(p, {side: 1, base: 200, wrist: wristAtKnuckles([733, 715], -2.2, 0.66), dir: -2.2, size: 0.66, curl: 1, thumb: [95, 70], elbow: [1424, 986], sleeveFrom: [1600, 1060], tone: HANAKO_HAND});
 };
 
 const paintDoor = makeDoorPaint(true);
@@ -89,9 +96,9 @@ export const LF01 = ({jp = true}: {jp?: boolean}) => {
       <Cool />
       <Grade />
       <svg width={W} height={H} viewBox={`0 0 ${W} ${H}`} style={{position: 'absolute', inset: 0}}>
-        <text x={540} y={514} textAnchor="middle" fontFamily="Noto Sans Thai, sans-serif" fontWeight={800} fontSize={92} fill="#1d2a2c">3</text>
+        <text x={540} y={514} textAnchor="middle" fontFamily="Noto Sans JP" fontWeight={800} fontSize={92} fill="#1d2a2c">3</text>
         {jp && (
-          <text x={540} y={330} textAnchor="middle" fontFamily="Hiragino Sans, Noto Sans JP, sans-serif" fontWeight={600} fontSize={34} fill="#eef3ee" stroke="#1d2129" strokeWidth={6} paintOrder="stroke">花子さん、いらっしゃいますか</text>
+          <text x={540} y={330} textAnchor="middle" fontFamily="Noto Sans JP" fontWeight={600} fontSize={34} fill="#eef3ee" stroke="#1d2129" strokeWidth={6} paintOrder="stroke">花子さん、いらっしゃいますか</text>
         )}
       </svg>
       <Grain />
@@ -113,46 +120,49 @@ const tornRect = (x0: number, y0: number, x1: number, y1: number, seed: number, 
   return pts;
 };
 
+/** LF02 owner: paper-cut panels, reused by the timed SCENE-R3 plate. */
+export const paintStoryPanel = (p: Painter, panel: 'A' | 'B', drift = 0) => {
+  const {brush} = p;
+  const edge = tornRect(110, 390, 970, 840, panel === 'A' ? 500 : 560, 10);
+  hardFill(p, 10, '#10171b', edge.map(([x, y]) => [x + 7, Math.min(852, y + 9)] as Pt));
+  hardFill(p, 11, panel === 'A' ? '#e2d6b8' : '#cfc4a8', edge);
+  if (panel === 'B') {
+    // Hard paper cuts: the torn left seam leaves the first panel visible, never wet bleed.
+    hardFill(p, 100, '#33484b', tornRect(125, 405, 955, 827, 580, 4));
+    hardFill(p, 101, '#26383a', rectPts(415, 420, 665, 824));
+    hardFill(p, 102, '#111e21', rectPts(430, 430, 650, 820));
+    hardFill(p, 103, '#567268', [[430, 430], [620, 444], [620, 806], [430, 820]]);
+    hardFill(p, 104, '#344e47', [[450, 454], [603, 465], [603, 786], [450, 798]]);
+    hardFill(p, 105, '#a0ab90', rectPts(590, 610, 601, 627));
+    inkLine(p, 106, [[432, 432], [619, 445], [619, 804]], {color: '#8b9b86', weight: .8, closed: false, still: true});
+    return;
+  }
+  hardFill(p, 12, '#22304a', tornRect(125, 405, 955, 827, 520, 4));
+  [[408, 520, '#2c3d5c'], [520, 640, '#34466a'], [640, 738, '#3d4f6e'], [738, 827, '#46566f']].forEach(([y0, y1, c], i) =>
+    washAt(p, 20 + i, c as string, 170, rectPts(130, y0 as number, 950, y1 as number), 0, .6));
+  p.inkStill(30, 'charcoal', '#53668b', 1.2);
+  for (let i = 0; i < 20; i++) {
+    const y = 420 + i * 19;
+    brush.spline(range(6, (u) => [140 + u * 800, y + Math.sin(u * 6 + i) * 3] as Pt), .5);
+  }
+  // Blunt, asymmetric masonry fragments: no gem facets or missile trails.
+  for (let i = 0; i < 13; i++) {
+    const x = 175 + hash(i * 5 + 1) * 710, y = 438 + hash(i * 5 + 2) * 190 + drift;
+    const w = 15 + hash(i + 30) * 28, h = 10 + hash(i + 40) * 17;
+    const q: Pt[] = [[x-w, y-h*.5], [x-w*.3, y-h], [x+w*.8, y-h*.6], [x+w, y+h*.5], [x+w*.1, y+h], [x-w*.8, y+h*.6]];
+    hardFill(p, 40+i, i % 3 ? '#a59e88' : '#c5b99a', q);
+    inkLine(p, 60+i, q, {color: '#77796f', weight: .5, still: true});
+  }
+  hardFill(p, 90, '#172127', [[125, 788], [300, 774], [520, 790], [760, 768], [955, 788], [955, 827], [125, 827]]);
+  const house: Pt[] = [[465, 800], [465, 742], [512, 705], [560, 742], [560, 800]];
+  hardFill(p, 91, '#10171d', house);
+  hardFill(p, 92, '#a49f8a', rectPts(500, 757, 521, 778));
+  inkLine(p, 93, house, {color: '#5b6e92', weight: .9, still: true});
+};
 const paintStory = ({brush, frame}: PaintContext) => {
   const p = makePainter(brush, {t: 0, frame, fade: '#1b2326'});
-  solid(p, 1, '#1b2326', rectPts(-20, -20, W + 20, H + 20), 3);              // dark table paper (quiet under the captions)
-  washAt(p, 2, '#243036', 120, rectPts(-20, 860, W + 20, H + 20), 0.1, 0.6);
-  // panel A: cut paper, slightly rotated feel via torn edge, drop shadow first
-  const A = tornRect(104, 388, 976, 846, 500, 10);
-  washAt(p, 10, '#0c1214', 200, A.map(([x, y]) => [x + 12, y + 14] as Pt), 0.3, 0.2);
-  solid(p, 11, '#e2d6b8', A.map(([x, y]) => [x - 6 * Math.sign(x - 540), y - 6 * Math.sign(y - 617)] as Pt), 3);  // pale paper rim
-  const sky = tornRect(122, 404, 958, 830, 520, 4);
-  solid(p, 12, '#22304a', sky, 3);
-  // crayon sky: layered bands of scribble in dusk blues and a dull violet (no red)
-  [[404, 520, '#2c3d5c'], [520, 640, '#34466a'], [640, 740, '#3d4f6e'], [740, 830, '#46566f']].forEach(([y0, y1, c], i) =>
-    washAt(p, 20 + i, c as string, 190, rectPts(124, y0 as number, 956, y1 as number), 0.15, 0.8));
-  p.inkStill(30, 'charcoal', '#53668b', 1.2);
-  for (let i = 0; i < 22; i++) {
-    const y = 420 + i * 19, x0 = 130 + hash(i + 3) * 40;
-    brush.spline(range(6, (u) => [x0 + u * 780, y + Math.sin(u * 6 + i) * 4] as Pt), 0.5);
-  }
-  // falling shapes: pale ochre shards and streaks, abstract (no bombs, no figures)
-  const shards = 15;
-  for (let i = 0; i < shards; i++) {
-    const cx = 170 + hash(i * 5 + 1) * 720, cy = 440 + hash(i * 5 + 2) * 250, s = 16 + hash(i * 5 + 3) * 24, a = hash(i * 5 + 4) * 3;
-    const tail: Pt = [cx - 30 + hash(i) * 10, cy - 70 - hash(i + 9) * 60];
-    const poly: Pt[] = [[cx, cy - s], [cx + s * 0.7, cy + s * 0.4], [cx - s * 0.2, cy + s], [cx - s * 0.8, cy + s * 0.1]].map(([x, y]) => [x + Math.cos(a) * 3, y] as Pt);
-    washAt(p, 40 + i, i % 3 === 0 ? '#e8d9a8' : '#c9b98f', 230, poly, 0.1, 0.5);
-    p.inkStill(70 + i, 'cpencil', '#d8c995', 1.0); brush.line(tail[0], tail[1], cx, cy - s);
-  }
-  // ground: dark hill strip and a small house silhouette with a pale window, no person
-  solid(p, 90, '#10171d', [[122, 760], [300, 735], [520, 750], [760, 728], [958, 748], [958, 830], [122, 830]] as Pt[], 4);
-  const house: Pt[] = [[460, 748], [460, 690], [510, 650], [560, 690], [560, 748]];
-  solid(p, 91, '#080d11', house, 5);
-  washAt(p, 92, '#e8d9a8', 220, rectPts(500, 705, 522, 730), 0.1, 0.3);
-  p.ink(93, 'cpencil', '#5b6e92', 1.0); brush.spline([...house, house[0]], 0.1);
-  // panel B peeking under the band: torn edge, a stall door ajar (dark), no person
-  const B = tornRect(104, 1330, 976, 1900, 560, 10);
-  washAt(p, 100, '#0c1214', 200, B.map(([x, y]) => [x + 12, y + 14] as Pt), 0.3, 0.2);
-  solid(p, 101, '#cfc4a8', B, 3);
-  solid(p, 102, '#33484b', tornRect(122, 1348, 958, 1890, 580, 4), 3);
-  solid(p, 103, '#4a625b', [[420, 1400], [640, 1400], [640, 1880], [420, 1880]] as Pt[], 3);
-  solid(p, 104, '#05090b', [[560, 1410], [640, 1400], [640, 1870], [560, 1880]] as Pt[], 3);
+  hardFill(p, 1, '#1b2326', rectPts(-400, -400, 1480, 2320));
+  paintStoryPanel(p, 'A');
 };
 
 export const LF02 = () => {

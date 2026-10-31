@@ -14,25 +14,25 @@ const W = 1080, H = 1920;
 const IVORY = '#efe3c4';
 
 /** Latch-side seam glow (VD13 hue). Strip hugs the right post, spills onto the door face, fades out by y 860. */
-const SeamGlow = ({level}: {level: number}) => (
+export const SeamGlow = ({level}: {level: number}) => (
   <svg width={W} height={H} viewBox={`0 0 ${W} ${H}`} style={{position: 'absolute', inset: 0}}>
     <defs>
-      <linearGradient id="sgx" gradientUnits="userSpaceOnUse" x1={1080} y1={0} x2={920} y2={0}>
+      <linearGradient id="sgx" gradientUnits="userSpaceOnUse" x1={1050} y1={0} x2={890} y2={0}>
         <stop offset="0" stopColor={IVORY} stopOpacity={level * 1.8} />
         <stop offset="0.25" stopColor={IVORY} stopOpacity={level * 1.2} />
         <stop offset="1" stopColor={IVORY} stopOpacity={0} />
       </linearGradient>
-      <linearGradient id="sgy" gradientUnits="userSpaceOnUse" x1={0} y1={130} x2={0} y2={860}>
+      <linearGradient id="sgy" gradientUnits="userSpaceOnUse" x1={0} y1={130} x2={0} y2={855}>
         <stop offset="0" stopColor="#fff" stopOpacity={0} />
         <stop offset="0.12" stopColor="#fff" stopOpacity={1} />
         <stop offset="0.7" stopColor="#fff" stopOpacity={0.8} />
         <stop offset="1" stopColor="#fff" stopOpacity={0} />
       </linearGradient>
-      <mask id="sgm"><rect x={0} y={130} width={W} height={730} fill="url(#sgy)" /></mask>
+      <mask id="sgm"><rect x={0} y={130} width={W} height={725} fill="url(#sgy)" /></mask>
     </defs>
     <g mask="url(#sgm)" style={{mixBlendMode: 'screen'}}>
-      <rect x={920} y={130} width={160} height={730} fill="url(#sgx)" />
-      <rect x={1050} y={130} width={16} height={730} fill={IVORY} opacity={Math.min(1, level * 3.5)} />
+      <rect x={890} y={130} width={160} height={725} fill="url(#sgx)" />
+      <rect x={1050} y={130} width={16} height={725} fill={IVORY} opacity={Math.min(1, level * 3.5)} />
     </g>
   </svg>
 );
@@ -58,7 +58,7 @@ export const LF06 = ({eye = false, level = 0.2, dim = 0.4}: {eye?: boolean; leve
       <AbsoluteFill style={{transform: 'scale(1.011)', transformOrigin: '660px 740px'}}>
         <BrushCanvas paint={paint} paper={HK.ink} />
         <svg width={W} height={H} viewBox={`0 0 ${W} ${H}`} style={{position: 'absolute', inset: 0}}>
-          <text x={540} y={514} textAnchor="middle" fontFamily="Noto Sans Thai, sans-serif" fontWeight={800} fontSize={92} fill="#1d2a2c">3</text>
+          <text x={540} y={514} textAnchor="middle" fontFamily="Noto Sans JP" fontWeight={800} fontSize={92} fill="#1d2a2c">3</text>
         </svg>
         <div style={{position: 'absolute', inset: 0, background: `rgba(6,12,13,${dim})`}} />
         <SeamGlow level={level} />

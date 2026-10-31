@@ -72,3 +72,79 @@ Findings from production work, newest first. Rule documents are not edited here 
 - **align-full anchors:** fallbacks (no exact character match) on `B01-a1`, `B06-a2`, `B07-a3`; cut-gaps clamped 6 anchor times to segment edges. Anchor onsets are estimates (about ±0.2 s).
 - **Assembler gaps:** with `trimHeadSec` of one frame and slot length = audible length + 8 frames, the onsets and ends fall on integer frames and each written gap is exactly 8 frames in the measure.
 - **Not covered by a recipe:** a distance effect for a voice (quiet, low-pass, reverb) has no documented recipe; the reply is raw.
+
+## 2026-10-31: Boss Group 1 production plates (SCENE-R3)
+
+- Added the four G1 plate IDs and owning restroom/CH-KID/notebook assets; no video registration or Root edit. Report: [short/boss-g1-report.md](short/boss-g1-report.md).
+- Repeatable standalone capture: `node scripts/hanako/render-g1.mjs [B01-SH01 B01-SH02 B02-SH01 B03-SH01]`; lead raster measurement: `python3 -I scripts/hanako/measure-g1.py`. Initial sandbox Chrome connection failed; renderer ran with approved external Chrome launch. Fonts are browser-gated so registry imports in Node tests do not fetch `/fonts/` URLs.
+- Caption fix: first-pass close-door F31 p95 .411 and whole-door mean .480 failed; plate-owned lower light falloff now passes all 56 sampled frames. CH-KID head/torso hard underlayers prevent background pickup. See measured results and sheet paths in the report.
+- Strict repeatability remains open: B03 f100 repeat has 2 color-channel differences, max 1/255; no cause established. No shared runtime workaround or rule-document change applied. LF04 lower-right paint bleed belongs to B05, not G1.
+
+## 2026-10-31: Boss Group 2 production plates (SCENE-R3)
+
+- Extended G1 modules/helpers for B04-SH01, both B05 shots and both B06 shots; report: [short/boss-g2-report.md](short/boss-g2-report.md). CH-KID untouched; Root/video registration unchanged.
+- LF02 now owns hard paper cuts and blunt rubble; LF04 owns hard blank ruled pages in final plate coordinates. No duplicated look implementation. Pin leader is screen-projected, sea dim/vignette stay screen-space.
+- QA exposed a POV entry/sleeve gap: the kit's short-sleeve construction ends at its midpoint. The episode owner now draws a continuous long cardigan behind the unchanged kit hand, with elbow/cuff following the wrist. G1 consumers are unaffected.
+- Extended existing `render-g1.mjs` / `measure-g1.py` with `--g2`, motion and sheet modes rather than writing another one-off renderer. Reused the generic manifest-driven Chrome sheet label helper. Measured default chrome font bounds against projected Hokkaido; actual timeline chrome remains Editor QA.
+- No rule-document changes. Plates/QA do not establish audio, Studio, continuous sequence or visual approval.
+
+## Finding: G1–G3 plates paint with flat fills (coordinator, 31 Oct 2026)
+
+- Codex-built plates render through `BrushCanvas` (via `PaintedShot.paint`), but `src/painted/hanako/assets.ts` uses `hardFill` 66× against `washAt` 4× and `inkLine` 13×. `hardFill` (`kit/draw.ts:30`) is a flat, no-bleed, no-texture underlayer meant for straight architecture, so kids, hands, drawer and book read as geometric. `generations.tsx` draws `KidSilhouette`/`TeacherIcon` as SVG (22 elements) inside wide shots.
+- Polish pass fix: washes + one ink line + one cel shade for cast and props; move in-set characters from SVG into brush. FPOV inserts (e.g. the WORLD FOG phone swipe) stay SVG (user, 31 Oct 2026; `docs/delivery-workflow.md` visual engine row).
+- **Rule change (DP, user approved 31 Oct 2026, applied):** added to `.claude/skills/painted-2d/SKILL.md` "Art direction defaults", after the backgrounds/characters bullet:
+  > - `hardFill` (`kit/draw.ts`) is only for straight architecture edges (frames, mullions, lockers). Cast, props, paper and hands use `washAt` plus `inkLine`. Characters inside a painted set are brush-painted, never SVG; crisp SVG is for close-up and FPOV inserts such as a phone screen.
+
+## 2026-10-31: Boss Group 3 production plates (SCENE-R3)
+
+- Extended G1/G2 owners for B07-SH01/02/03, B08-SH01 and B09-SH01; full handoff and limitations: `short/boss-g3-report.md`. No episode registration or Root change. Existing CH-KID polish stays deferred.
+- Review caught reversed poster entrance and bright poster passage through the caption band; corrected the entrance and added lower-band light falloff. B08 silhouette derivative separates trouser legs; no cast redesign. Isolated-mask `inputProps` must be supplied to `selectComposition` as well as `renderStill` so metadata/default props do not hide the selected group/member.
+- Extended existing `render-g1.mjs` / `measure-g1.py` with `--g3`, isolated masks, loop/layers-off repeats, 12-frame sheet parts and labelled sheets. Loop endpoints are byte-identical, full alpha; post-glow F2383 still has a single 1/255 channel difference. Evidence and hashes: `out/qa/hanako/g3/`. Do not interpret these plate checks as Studio, audio, assembled continuity or visual-done approval.
+
+- **Rule revised (user, 31 Oct 2026):** the POV/close-up plates (B01-SH01 door and hand, B05-SH01 drawer, B05-SH02 page, B06-SH02 book, B09-SH01) look right with `hardFill`; Codex's group B edge-wobble pass made them no better. `.claude/skills/painted-2d/SKILL.md` now allows `hardFill` for architecture and for close-up/FPOV shots; the wash + ink rule applies to wide/medium shots (cast, in-set props). Polish scope shrinks to P01, P02, P09 and the wide-shot light pass.
+- Rule refined (user, 31 Oct 2026): `hardFill` is for the foreground subject of POV/close-up shots only; their backgrounds stay painted washes. Added brief item P12 (audit those five plates' backgrounds).
+
+## 2026-10-31: Boss polish pass, Group A (P01 cast, P02 brush ports, P09 classroom) (Boss, HANAKO-SHORT)
+
+- Report: `scripts/hanako/short/boss-polish-A-report.md`. Affected shots: B03-SH01, B07-SH01, B07-SH03, B08-SH01 (B07-SH02 unchanged: byte-identical, its map and pin are group C). Story, timing, camera, caption zone, audio and `src/Root.tsx` untouched.
+- **Rule gap (proposal for `.claude/skills/painted-2d/SKILL.md`, not applied):** the skill says cast uses `washAt` + `inkLine`. One p5.brush wash at full opacity is translucent: on a dark figure over the light locker, the locker divider showed through the hair (four passes still showed it). Proposed wording: "A dark cast figure needs an opaque base: `solid()` with 8 low-texture passes (6–8 over wet light), then one textured `washAt` glaze for the paper grain. A single `washAt` is not opaque." Recorded in `docs/dev-findings/DF-20261031-painted-opaque-cast.md`.
+- **Repeatability (open, recorded again, not isolated):** untouched B09 frames differ from the pre-edit render by 0–3 channels at 1/255 across render sessions (`B09-SH01-f293`, `loop-landing-f0`, `layers-off-f204`); within one session, the repeat frames are byte-identical. The G3 record of a byte-identical loop did not reproduce on the pre-edit tree in this session (3 channels, 1/255). Recorded in `docs/dev-findings/DF-20261031-render-session-drift.md`.
+- B08 silhouettes moved from the SVG overlay (above the amber spot) into the plate (under it). The silhouettes take the same overlay glow as the set; geometry and group opacity unchanged. Feet line 838 (was 840) so the painted spread stays ≤858 px at the 1.08 push (caption band starts 860).
+- Kid hands: `paintNotebook` mittens replaced by `kidHand`, a skin palm with thumb; the notebook paper and the doodle drawing on the page are unchanged (not in a P-row). Kid arms now world-space ribbons with cuffs (a first draft applied the pivot twice; caught by the bounds dump, fixed).
+- Flagged, not changed: `B07-SH03` room background still uses `hardFill` (frames at 140–940 × 180–850). The 31 Oct refinement keeps washes for backgrounds of POV/close-up plates; B07-SH03 is a wide plate, so this is a question for the next pass, not an error.
+- Tool change: `render-g1.mjs` and `measure-g1.py` accept `HANAKO_OUT` to write a before/after pair into a separate folder. Defaults are unchanged.
+
+## 2026-10-31: Film R5 proposals (rule documents are not edited; user reviews)
+
+- painted-2d skill, "Art direction defaults": word the exception that the wall/floor strata of an FPOV plate whose subject is the door (`RR-KNOCK`, `RR-DOOR`: `hardFill` at `assets.ts` lines 18-19) may stay `hardFill` when the user approved the look; today the rule reads "backgrounds never `hardFill`" and the approved plates break it.
+- `docs/dev-findings`: no new entry; `DF-20261030-painted-screen-layers-overlay` revalidated 31 Oct 2026 (plate `Overlay` still receives `camera`; workaround holds for the `B03` name tag).
+- Tooling idea (untested): subset `public/fonts/NotoSansJP.ttf` (9.6 MB) to the glyphs used on screen; needs `fontTools` (not installed here). Decision details in `short/film-r5.md` VD26.
+
+## 2026-10-31: Boss S1-R4 (`B02-SH01` fist, `B03-SH01` FPOV-CHEST)
+
+Evidence and per-item status: [boss-s1r4-report.md](short/boss-s1r4-report.md). Rule documents are not edited; these are proposals for the user and the owners.
+
+- **Film (VD29):** the fist's bottom is at y ~892 at F421 (x ~979), not ≤ 850. It is right of the caption-safe box, so the caption rule holds. Decide: accept, or dir ≈ −2.9 rad (keeps the corner at ~847 at this anchor, fingers point toward the seam). Recorded in `docs/dev-findings/DF-20261031-povhand-wrist-corner.md`.
+- **Film/Mark (VD26):** the main name line is 40 px at s 1.00 (not the estimated 34 px); the Film acceptance "cap height ≥ 36 px on screen" needs it (measured 40 px ink at s 1.14).
+- **Mark (sheet):** the B03 staging shoulders at y 40–120 cannot hang an upper arm of ~450 px with the elbow at y ~700–770. The plate puts the shoulder joints at (150, 340) / (930, 340), the elbows at (128, 770) / (952, 770) (CP-P02: elbow a little below the hand, outside the torso edge). Request a sheet correction.
+- **Tooling:** `scripts/hanako/render-g1.mjs` takes `HANAKO_FRAMES=f,f,…` (adds shot-local frames to one selected shot). Default unchanged.
+- **Dead code after S1-R4:** `paintCorridor` and `paintNotebook` (`assets.ts`) have no production consumer; kept (the corridor look is not touched in this pass). Remove later with the user's go-ahead.
+- **Font gate:** `FpovTag` calls `loadFont` inside a component with `delayRender`/`continueRender` (not at import). `look.tsx` still registers the same face at import, as before.
+- **Not in this checkout:** `public/fonts/NotoSansJP.ttf` and its notices are untracked; commit them with the code that uses them (delivery step).
+
+
+### S1-R4 painted fix, 31 Oct 2026
+
+See `short/boss-s1r4-fix-report.md` for the WORLD FOG comparison, rendered checks and unresolved arm and fist readability. Final B03 f100 repeat differs slightly (116 dB PSNR); exact still determinism remains unverified.
+
+### POV forearm taper (31 Oct 2026)
+
+See `short/boss-taper-report.md` for the opt-in kit taper, projection estimates, viewed before/after sheets and limits. B02 still reads as a narrow vertical sleeve at 270 px; B01/B05/B09 have only a subtle depth read. A sampled loop pair matches, while one repeat showed one-level render drift. No rule-document change proposed in this pass.
+
+### Raised forearm direction (31 Oct 2026)
+
+See `short/boss-armdir-report.md` for projected elbows, the opt-in cuff and viewed before/after sheets. B01/B09 now angle up from the lower right but still read as long, narrow sleeves; B02 is mostly cropped. A newly rendered ZCPAINT pre-edit baseline remains open; no visual-done claim.
+
+### 31 Oct 2026 — POV arm restore
+
+Restored the user's preferred taper-pass B01/B02/B09 arms. All seven requested reference renders and two B05 controls are byte-identical to the stored pre-armdir frames; WORLD FOG default is byte-identical. See `short/boss-armrevert-report.md` and the viewed `out/qa/hanako/armrevert/before-restored.png`. Full playback and final visual acceptance remain unverified.

@@ -52,6 +52,10 @@ export const Shot = () => <BrushCanvas paint={paint} paper="#e8dfcc" />;
 These are **Defaults**: Film's brief can override them with a recorded reason.
 
 - Backgrounds are washes with no outlines. Characters and key props get one thin ink line and one cel shade.
+- `hardFill` (`kit/draw.ts`) gives crisp flat shapes. Use it for straight architecture edges (frames, mullions, lockers)
+  and for the foreground subject of close-up and first-person (FPOV) shots, where hands, doors, drawers, paper and books
+  read well as clean flat art (user, 31 Oct 2026). Backgrounds behind them stay painted washes, never `hardFill`. In wide and medium shots, cast and in-set props use `washAt` plus `inkLine`, and characters
+  inside a painted set are brush-painted, never SVG. Crisp SVG stays for close-up and FPOV inserts such as a phone screen.
 - One warm light source in a cool world carries the mood. Keep its glow off faces.
 - Paint back to front in a fixed depth order: sky strata, far land/sea, haze, set, floor, cast, weather, foreground frame.
 - Fills drawn in the same frame are "wet": a fill touching a recent one feathers into it. Order and overlap are part of
