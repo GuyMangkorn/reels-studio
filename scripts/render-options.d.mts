@@ -7,6 +7,9 @@ export type RenderArgs = {
   timeoutInMilliseconds: number | undefined;
   concurrency: number;
   preview: boolean;
+  draft: boolean;
+  keepPinned: boolean;
+  repaint: string[];
   noCache: boolean;
   range: [number, number] | undefined;
 };

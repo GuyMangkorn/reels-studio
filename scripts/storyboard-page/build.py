@@ -1,8 +1,14 @@
 """Build the user storyboard review page from Mark's review rows (docs/mark-storyboard-workflow.md#user-storyboard-review-page).
 
 Usage: python3 -I scripts/storyboard-page/build.py storyboards/<episode>/<variant>/review-rows.json [--out DIR]
-Default DIR: out/review-pages/<deliverable>/<revision>/. Writes DIR/index.html from template.html and copies every
-preview, question image and element capture into DIR/pv/, downscaled to 540 px wide JPEG (videos copied as is).
+Default DIR: out/review-pages/<deliverable>/ (one page per deliverable, republished to the same URL for every revision,
+draft and final). Writes DIR/index.html from template.html and copies every preview, question image, element capture
+and shot clip into DIR/pv/, downscaled to 540 px wide JPEG (videos copied as is).
+Shot-by-shot fields per shot (optional): "clips": {"draft"|"final": {"src", "in", "out"}} (360x640 proxies from
+scripts/storyboard-page/clips.mjs; in/out are the shot's seconds inside the padded clip) and "pinned": true once
+scripts/pin.mjs pinned it. The page has three tabs (storyboard, draft, final); verdicts are stored per shot and tab.
+Look frames (Film, W2): top-level "looks": {"<lookId>": {"src", "caption"}} and "look": "<lookId>" on each beat that
+uses it; the storyboard tab is text only and shows each location's look frame in its beat header.
 DIR/preview.html is a local check copy (open it through a local HTTP server); publish index.html, never preview.html.
 Image and video paths in the JSON are repository-relative. Exits 1 on schema errors; prints the publish call.
 """
@@ -12,6 +18,7 @@ ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)
 TEMPLATE = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'template.html')
 REQUIRED = ['deliverable', 'revision', 'title', 'source', 'beats', 'shots']
 SHOT_REQUIRED = ['id', 'beat', 'start', 'end', 'title', 'seen']
+CLIP_KINDS = ('draft', 'final')
 
 
 def errors(d):
@@ -19,6 +26,9 @@ def errors(d):
     if out:
         return out
     beats = {b.get('id') for b in d['beats']}
+    looks = d.get('looks') or {}
+    out += [f'beat {b.get("id")}: look "{b["look"]}" is not in looks' for b in d['beats'] if b.get('look') and b['look'] not in looks]
+    out += [f'look {k}: needs "src"' for k, v in looks.items() if not isinstance(v, dict) or not v.get('src')]
     seen, prev_end = set(), None
     untimed = d.get('untimed') is True
     for s in d['shots']:
@@ -27,6 +37,9 @@ def errors(d):
         if sid in seen:
             out.append(f'{sid}: duplicate shot ID')
         seen.add(sid)
+        for kind, c in (s.get('clips') or {}).items():
+            if kind not in CLIP_KINDS or not isinstance(c, dict) or not c.get('src'):
+                out.append(f'{sid}: clips.{kind} must be one of {", ".join(CLIP_KINDS)} with a "src"')
         if s.get('beat') not in beats:
             out.append(f'{sid}: beat "{s.get("beat")}" is not in beats')
         if untimed:
@@ -77,7 +90,7 @@ def main():
     if errs:
         print('\n'.join(errs), file=sys.stderr)
         sys.exit(1)
-    out = args[args.index('--out') + 1] if '--out' in args else os.path.join(ROOT, 'out', 'review-pages', d['deliverable'], d['revision'])
+    out = args[args.index('--out') + 1] if '--out' in args else os.path.join(ROOT, 'out', 'review-pages', d['deliverable'])
     pv = os.path.join(out, 'pv')
     shutil.rmtree(pv, ignore_errors=True)
     os.makedirs(pv)
@@ -87,9 +100,13 @@ def main():
             p['src'] = copy_media(p['src'], pv, used)
         if s.get('video'):
             s['video'] = copy_media(s['video'], pv, used)
+        for c in (s.get('clips') or {}).values():
+            c['src'] = copy_media(c['src'], pv, used)
     for q in d.get('questions', []):
         for i in q.get('images', []):
             i['src'] = copy_media(i['src'], pv, used)
+    for v in (d.get('looks') or {}).values():
+        v['src'] = copy_media(v['src'], pv, used)
     for e in d.get('elements', []):
         e['src'] = copy_media(e['src'], pv, used)
 

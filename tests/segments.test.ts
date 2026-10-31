@@ -4,7 +4,7 @@ import {mkdirSync, mkdtempSync, rmSync, writeFileSync} from 'node:fs';
 import {tmpdir} from 'node:os';
 import path from 'node:path';
 import {sceneFrames as runtimeSceneFrames} from '../src/scenes/timeline';
-import {sceneFrames, sceneRanges, segmentKeys, sourceHash} from '../scripts/segments.mjs';
+import {applyPins, sceneFrames, sceneRanges, scenesInRange, segmentKeys, sourceHash, variantOf} from '../scripts/segments.mjs';
 
 type Scene = {durationSec: number; subtitle?: string; sfx?: unknown[]; actors?: unknown[];
   painted?: {shots: {shot: string; atSec: number; dissolveSec?: number}[]}; transitionIn?: {frames: number}};
@@ -84,6 +84,42 @@ test('a scene split that keeps the total re-keys scenes it does not touch only w
 test('props and options change every key', () => {
   assert.equal(changed(keys(), keys(scenes, {captionStyle: {bottomEdgeY: 1200}})).length, 5);
   assert.notDeepEqual(segmentKeys(composition(scenes), {}, {gl: 'egl'}, 'src'), keys());
+});
+
+test('scenesInRange picks every scene a frame range touches', () => {
+  const ranges = [[0, 29], [30, 104], [105, 116], [117, 206]];
+  assert.deepEqual(scenesInRange(ranges, [0, 0]), [0]);
+  assert.deepEqual(scenesInRange(ranges, [29, 30]), [0, 1]);
+  assert.deepEqual(scenesInRange(ranges, [40, 120]), [1, 2, 3]);
+  assert.deepEqual(scenesInRange(ranges, [300, 400]), []);
+});
+
+test('--draft changes every segment key', () => {
+  const plain = segmentKeys(composition(scenes), {}, {scale: 1}, 'src');
+  const draft = segmentKeys(composition(scenes), {paintDraft: true}, {scale: 1}, 'src');
+  assert.ok(plain.every((key, i) => key !== draft[i]));
+});
+
+test('applyPins keeps unchanged pins and stops on changed ones', () => {
+  const pins = {1: {key: 'old1', shots: ['B01-SH02'], range: [30, 104]}, 2: {key: 'k2', shots: ['B02-SH01'], range: [105, 116]}};
+  const picked = [0, 1, 2], keys = ['k0', 'new1', 'k2'];
+  const plain = applyPins(pins, picked, keys);
+  assert.deepEqual(plain.changed, [{scene: 1, shots: ['B01-SH02'], range: [30, 104]}]);
+  assert.deepEqual(plain.use, keys);
+  const keep = applyPins(pins, picked, keys, {keep: true});
+  assert.deepEqual([keep.use, keep.kept, keep.changed], [['k0', 'old1', 'k2'], [1], []]);
+  const repaint = applyPins(pins, picked, keys, {repaint: ['B01-SH02']});
+  assert.deepEqual([repaint.use, repaint.unpin, repaint.changed], [keys, [1], []]);
+  assert.deepEqual(applyPins(pins, picked, keys, {repaint: ['all']}).unpin, [1]);
+  assert.deepEqual(applyPins(undefined, picked, keys).changed, []);
+});
+
+test('variantOf separates finals from draft and preview renders', () => {
+  const c = composition(scenes);
+  assert.equal(variantOf(c, {}), 'A_fade');
+  assert.equal(variantOf(c, {ending: 'B_loop'}), 'B_loop');
+  assert.equal(variantOf(c, {paintDraft: true}), 'A_fade|draft');
+  assert.equal(variantOf(c, {paintScale: 0.5}), 'A_fade|scale0.5');
 });
 
 test('sourceHash: sound lock entries stay out; picture lock entries, src files and the episode lock file go in', () => {
