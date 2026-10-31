@@ -1,6 +1,8 @@
 import japan from './japan.json';
+import {Img, staticFile} from 'remotion';
 import {hash} from '../kit/hash';
-import {ell, inkLine, rectPts, washAt} from '../kit/draw';
+import {ell, inkLine, washAt} from '../kit/draw';
+import {toScreen, type Camera} from '../kit/camera';
 import type {Painter, Pt} from '../kit/painter';
 import {HK} from './look';
 import {cast, ribbon} from './assets';
@@ -51,29 +53,34 @@ export const paintTeacher = (p:Painter, F:number) => {
   washAt(p, 7012, '#c2c3a3', 255, ell(573+pen, 628, 15, 10, 18), .05, .15);
   inkLine(p, 7013, [[580+pen,611],[565+pen,653]], {color:'#223b39', weight:2.5, closed:false, still:true});
 };
-/** Doodle: the stationary popular-image figure on the poster, paper-cut wash with one edge line. No face, no body in the room (VD06). */
-export const paintDoodle = (p:Painter, ox:number, oy:number, seed:number) => {
-  const q = (pts:Pt[]):Pt[] => pts.map(([x,y])=>[ox+x,oy+y]);
-  cast(p, seed, HK.ink, q([[65,44],[72,14],[100,5],[140,6],[190,4],[216,40],[216,74],[215,117],[63,117]]));
-  washAt(p, seed+1, '#2b3c3a', 150, q([[168,24],[206,32],[216,74],[215,117],[186,117],[192,60]]), .05, .15);
-  cast(p, seed+2, '#cfd3bb', q(rectPts(111,71,170,127)));
-  cast(p, seed+3, '#dedfc6', q([[94,127],[183,127],[190,202],[84,202]]));
-  cast(p, seed+4, HK.red, q([[87,198],[187,198],[215,264],[59,264]]));
-  washAt(p, seed+5, '#9e3836', 150, q([[168,200],[187,198],[215,264],[186,264]]), .04, .12);
-  cast(p, seed+6, '#cbd0b8', q(ribbon([[87,142],[54,191]], 16, 16)));
-  cast(p, seed+7, '#cbd0b8', q(ribbon([[188,142],[224,191]], 16, 16)));
-  inkLine(p, seed+8, q([[100,264],[100,295]]), {color:'#283b36', weight:2.2, closed:false, still:true});
-  inkLine(p, seed+9, q([[174,264],[174,295]]), {color:'#283b36', weight:2.2, closed:false, still:true});
-  inkLine(p, seed+10, q([[59,264],[215,264],[187,198],[87,198]]), {color:'#283b36', weight:1.4, closed:false, still:true});
+/**
+ * FILM-CARD box (B07-SH03), stage px: the 1995 Shochiku flyer (2:3, r3), a store copy redacted by scripts/hanako/short/poster-redact.py (preset 1995-r3).
+ * 540 × 810 at x 270–810, y 30–840. The largest 2:3 card whose 1.5 px ink outline clears caption band y 860 at the end of the push
+ * (s 1.05, focus y 585) with the top in frame: ink bottom at screen y 854.3, ink top at screen y 0.7 (31 Oct 2026). With its top at y 30 the ceiling is 543 px wide.
+ */
+export const FILM_CARD = {box: {x: 270, y: 30, width: 540, height: 810}, src: 'images/hanako/film-card-poster-1995-redacted.png', ratio: 2 / 3} as const;
+/** Stage-space rectangle of the flyer at `posterY` (the card's slide offset). */
+export const filmPosterBox = (posterY: number) => {
+  const {box, ratio} = FILM_CARD;
+  const width = Math.min(box.width, box.height * ratio), height = width / ratio;
+  return {x: box.x + (box.width - width) / 2, y: box.y + posterY + (box.height - height) / 2, width, height};
 };
-/** B07-SH03 poster (paper, picture panel and doodle), brush-painted; it slides with `posterY` in the plate. Its caption stays SVG. */
+/**
+ * The real FILM-CARD flyer: a store copy with the title lockup, tagline and credits blurred and the child actor's face softened (scripts/hanako/short/poster-redact.py).
+ * A DOM image, not brush paint: it sits under the shot's CameraLayer so the SetLight glow still falls on it, and its box is mapped
+ * through the same camera as the plate.
+ */
+export const FilmPoster = ({posterY, camera}: {posterY: number; camera: Camera}) => {
+  const b = filmPosterBox(posterY);
+  const [x0, y0] = toScreen(camera, [b.x, b.y]), [x1, y1] = toScreen(camera, [b.x + b.width, b.y + b.height]);
+  return <Img src={staticFile(FILM_CARD.src)} style={{position: 'absolute', left: x0, top: y0, width: x1 - x0, height: y1 - y0}}/>;
+};
+/** B07-SH03 card, brush-painted: a dark shadow and one static ink edge around the flyer box; it slides with `posterY`. The flyer itself is `FilmPoster`. */
 export const paintPoster = (p:Painter, posterY:number) => {
+  const b = filmPosterBox(0), m = 1.5;
   p.brush.push(); p.brush.translate(0, posterY);
-  washAt(p, 7100, '#101c20', 255, [[270,340],[828,328],[818,846],[250,854]], .05, .2);
-  cast(p, 7101, '#b7bc9f', [[260,330],[820,330],[820,840],[260,840]]);
-  cast(p, 7102, '#71847a', [[278,348],[802,348],[802,821],[278,821]]);
-  inkLine(p, 7103, [[260,330],[820,330],[820,840],[260,840]], {color:'#30413a', weight:2.4, still:true});   // a static paper edge does not boil
-  paintDoodle(p, 400, 420, 7110);
+  washAt(p, 7100, '#101c20', 255, [[b.x+10,b.y+10],[b.x+b.width+8,b.y-2],[b.x+b.width-2,b.y+b.height+6],[b.x-10,b.y+b.height+14]], .05, .2);
+  inkLine(p, 7103, [[b.x-m,b.y-m],[b.x+b.width+m,b.y-m],[b.x+b.width+m,b.y+b.height+m],[b.x-m,b.y+b.height+m]], {color:'#30413a', weight:2.4, still:true});   // a static card edge does not boil
   p.brush.pop();
 };
 /**

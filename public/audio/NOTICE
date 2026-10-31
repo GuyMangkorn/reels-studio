@@ -51,3 +51,18 @@ Files copied from the shared library for WORLD FOG EP01: generated and processed
 `public/scrim/WFOG-caption-scrim-960x260.png`: generated plate (no library sound or photo), RGB 16,16,24 at up to 62 
 ## WFOG-EP01-SHORT caption scrim (Editor, 30 Oct 2026)
 `public/scrim/WFOG-caption-scrim-960x260.png` is a generated plate (no library sound or photo): RGB 16,16,24 at up to 62 % alpha with a 40 px feather, behind the caption block only. It is the interim for MK-WF-DEP-10 (see build-notes).
+
+HANAKO-SHORT (Editor E3, 31 Oct 2026): library copies used by src/videos/hanako/index.ts (`audio`); the lock is src/videos/hanako/assets.lock.json.
+Generator: audio-studio-mcp (MIT) / Stable Audio 3 medium, generated locally (generated: hanako-*; reused: shared library IDs). Sidecars hold prompt, seed and settings.
+Licence: Stability AI Community License (generated audio; commercial-use eligibility is the user's decision, see the library NOTICE.md).
+Status: picked by measurement (scripts/zombie-condo-paint/measure-sfx.py, ffmpeg); NOT listened to by a person.
+Generated, filed 31 Oct 2026 (library ID / source take): bed_sub-drone-fade-in_01 (hanako-sub-drone-b01_v3); reveal_reverse-swell-airy_01 (hanako-reverse-swell-b02-08s_v1);
+  tension_whispers-children-murmur_01 (hanako-whispers-children-b03_v2); tension_music-box-motif-minor_01 (hanako-music-box-motif-b03_v1, loudnorm dynamic);
+  tension_music-box-motif-slow_01 (hanako-music-box-motif-b08-slow_v3, loudnorm dynamic); bed_warm-pad-felt-third_01 (hanako-warm-pad-b06_v2);
+  tension_rumble-distant-muffled_01 (hanako-muffled-rumble-b04_v2); impact_door-slam-wood-muffled_01 (hanako-wood-door-slam-muffled-b04_v2);
+  foley_drawer-filing-open_01 (hanako-drawer-filing-open-b05_v1); foley_paper-tab-flick_01 (hanako-paper-tab-flick-b05_v1, first event);
+  whoosh_page-flip-paper_01 (hanako-page-flip-whoosh-b07_v1); foley_notebook-paper-rustle_01 (hanako-notebook-rustle-b03_v3);
+  mechanical_projector-shutter-click_01 (hanako-projector-click-b07_v1, first event).
+Reused from the library (generated earlier by other episodes): room_dark-empty-building_01, impact_knuckle-rap_01, whoosh_fast-slide_01,
+  ui_click-tick_01, impact_sub-hit-short_01, reveal_riser-tension_01, tension_drone-sparse-piano_01, bed_mystery-investigation_01, tone_soft-sustain-reflective_01.
+E-R5 (Editor, 31 Oct 2026): electric_light-flicker-buzz_01 reused from the library (sfx/electric; generated 2026-10-28, audio-studio-mcp, Stable Audio 3, sidecar `electric_light-flicker-buzz_01.json`) for BZ1/BZ2 in B08-SH01. bed_warm-pad-felt-third_01 and bed_mystery-investigation_01 are no longer used by this timeline. NOT listened to.

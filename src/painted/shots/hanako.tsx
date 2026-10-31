@@ -1,6 +1,7 @@
+import {SetLight, SetVignette} from '../hanako/lighting';
 import {SeamGlow} from '../hanako/look-r4';
 import {mapDots} from '../hanako/generations';
-import {paintTeacher, paintPoster, paintKidSilhouette, DateCard, generationGroups} from '../hanako/generations';
+import {paintTeacher, paintPoster, FilmPoster, paintKidSilhouette, DateCard, generationGroups} from '../hanako/generations';
 import {CameraLayer, toScreen, type Camera} from '../kit/camera';
 import {Spot} from '../kit/glow';
 import {lerp} from '../kit/painter';
@@ -81,7 +82,7 @@ const g1Shots: PaintedShot[] = HANAKO_G1.map(({id, start}) => {
       return <div style={{position: 'absolute', inset: 0, opacity}}>
         <CameraLayer camera={camera} width={width} height={height} blend="normal">
           {!kids && <DoorNumbers view={view} />}
-          {!kids && <Spot x={540} y={140} r={900} level={.20 + flicker} color="#dff3ee" />}
+          {!kids && <SetLight shot={id} level={.22+flicker} />}
           {kids && <FpovTag />}
           {id === 'B02-SH01' && <>
             <rect x={810} y={320} width={8} height={540} fill="#efe3c4" opacity={glow} />
@@ -89,7 +90,7 @@ const g1Shots: PaintedShot[] = HANAKO_G1.map(({id, start}) => {
             <Spot x={814} y={1490} r={110} level={glow * .3} color="#efe3c4" />
           </>}
         </CameraLayer>
-        <Grade /><Grain />
+        {!kids && <SetVignette shot={id}/>}<Grade /><Grain />
         {/* LF01's quiet lower panel and RR-DOOR falloff: screen light control, outside the picture push. */}
         {!kids && id !== 'B01-SH02' && <svg width={width} height={height} style={{position: 'absolute', inset: 0}}>
           <defs><linearGradient id="hk-caption-falloff" x1="0" x2="0" y1="0" y2="1">
@@ -134,6 +135,7 @@ const g2Shots: PaintedShot[] = HANAKO_G2.map(({id,start}) => ({
     const f=Math.round(tl*30),F=start+f,e=mapEvents(F),pinHead=toScreen(camera,[PIN[0],PIN[1]-33]);
     return <div style={{position:'absolute',inset:0,opacity}}>
       <CameraLayer camera={camera} width={width} height={height} blend="normal">
+        {(id==='B04-SH01'||id==='B06-SH01') && <SetLight shot={id} level={.18}/>}
         {id==='B04-SH01' && <>
           <g transform={`translate(${-1010*(1-ramp(F,707,719))} 0)`}><Tag opacity={progress(F-711,6)*(1-progress(F-820,12))}/></g>
           <g transform={`translate(${1080*(1-ramp(F,820,832))} 0)`}><Tag opacity={progress(F-836,6)}/></g>
@@ -141,6 +143,7 @@ const g2Shots: PaintedShot[] = HANAKO_G2.map(({id,start}) => ({
         {id==='B06-SH01' && <circle cx={PIN[0]} cy={PIN[1]} r={e.ringRadius} fill="none" stroke={HK.amber} strokeWidth={3} opacity={e.ringOpacity}/>}
         {id==='B06-SH02' && <Spot x={220} y={340} r={520} level={lampLevel(F)} color={HK.amber}/>}
       </CameraLayer>
+      {(id==='B04-SH01'||id==='B06-SH01') && <SetVignette shot={id}/>}
       <Grade/>
       <svg width={width} height={height} style={{position:'absolute',inset:0}}>
         {id==='B05-SH02' && <>
@@ -174,6 +177,8 @@ export const endingLight = (F: number) => {
   const pulse=F<=2347 ? sine(progress(F-2323,24)) : 1-sine(progress(F-2347,36));
   return {glow:.2*pulse,dip:.4*pulse,amber:.25*(1-progress(F-2581,14))};
 };
+/** R5 (I4, `SCENE-R5` B08-SH01): two hard-keyed room-light dips in the empty row, step changes, no easing. */
+export const b08LightDip = (F: number) => (F>=2129 && F<2132) || (F>=2136 && F<2139) ? .45 : 0;
 /** Shared B01/B09 overlay owner. Final endpoint samples the wrap phase, hook is a separate overlay. */
 export const KnockOverlay = ({f,F,camera,width,height,opacity,hook=false,effects=true}: {
   f:number; F:number; camera:Camera; width:number; height:number; opacity:number; hook?:boolean; effects?:boolean;
@@ -232,8 +237,9 @@ const g3Shots: PaintedShot[]=HANAKO_G3.map(({id,start})=>({
     const cardX=-300+420*(1-(1-progress(F-1782,10))**3);
     const posterY=400*(1-progress(f,12))**3;
     return <div style={{position:'absolute',inset:0,opacity}}>
+      {id==='B07-SH03' && <FilmPoster posterY={posterY} camera={camera}/>}
       <CameraLayer camera={camera} width={width} height={height} blend="normal">
-        {id==='B07-SH01' && <Spot x={240} y={280} r={650} level={.25} color={HK.amber}/>}
+        {id==='B07-SH01' && <SetLight shot={id} level={.25}/>}
         {id==='B07-SH02' && <>
           <Spot x={300} y={240} r={850} level={.16} color={HK.amber}/>
           <path d={`M${PIN[0]} ${PIN[1]} l-16 -32 8 -16 h16 l8 16 Z`} fill={HK.amber} stroke={HK.ink} strokeWidth={3} opacity={.5}/>
@@ -242,16 +248,15 @@ const g3Shots: PaintedShot[]=HANAKO_G3.map(({id,start})=>({
             return F<on ? null : <circle key={i} cx={x} cy={y} r={r} fill="#e0a95a" stroke="#303d36" strokeWidth={1}/>;
           })}
         </>}
-        {id==='B07-SH03' && <g transform={`translate(0 ${posterY})`}>
-          <text x={540} y={800} textAnchor="middle" fontFamily="Noto Sans Thai" fontSize={24} fill="#253936">ภาพประกอบ · ไม่ใช่โปสเตอร์จริง</text>
-        </g>}
+        {id==='B07-SH03' && <SetLight shot={id} level={.18}/>}
         {id==='B08-SH01' && <>
           <DoorNumbers view="RR-WIDE"/>
-          <Spot x={540} y={140} r={900} level={.20+.015*(1+Math.sin(2*Math.PI*F/118))} color="#dff3ee"/>
-          <Spot x={-40} y={420} r={700} level={.25} color={HK.amber}/>
+          <SetLight shot={id} level={.22+.015*(1+Math.sin(2*Math.PI*F/118))}/>
         </>}
       </CameraLayer>
-      <Grade/>
+      {/* R5 (I4): full-frame dip in the plate Overlay (screen-layer workaround, DF-20261030-painted-screen-layers-overlay). Not camera-tracked; the subtitle layer sits above the plate, so captions are not dimmed. */}
+      {id==='B08-SH01' && b08LightDip(F)>0 && <svg width={width} height={height} style={{position:'absolute',inset:0}}><rect width={width} height={height} fill="#060c0d" opacity={b08LightDip(F)}/></svg>}
+      <SetVignette shot={id}/><Grade/>
       <svg width={width} height={height} style={{position:'absolute',inset:0}}>
         {id==='B07-SH01' && <>
           <DateCard text="ยุค 80" x={-300+420*(1-(1-progress(F-1653,10))**3)} y={430}/>
@@ -272,10 +277,9 @@ const g3Shots: PaintedShot[]=HANAKO_G3.map(({id,start})=>({
           </g>
         </>}
         {id==='B07-SH03' && <>
-          <DateCard text="ยุค 90" opacity={F>=1941 ? 1 : 0}/>
-          <g opacity={F>=1994 ? 1 : 0} transform={`translate(540 750) scale(${1+.15*(1-progress(F-1994,6))}) translate(-540 -750)`}>
-            <text x={540} y={752} textAnchor="middle" fontFamily="Noto Sans JP" fontWeight={800} fontSize={39} fill="#f0ead0" stroke="#243632" strokeWidth={7} paintOrder="stroke">『トイレの花子さん』 1995</text>
-          </g>
+          {/* DATE at x 40 (r2 move, kept for r3): over the backdrop and the 1995 flyer's black left margin (card x 270–340, flyer x 0–70 of 540); clear of the triangle (x ≥ 415), the boy (x ≥ 505) and the door edge (x ≥ 562). */}
+          <DateCard text="ยุค 90" x={40} opacity={F>=1941 ? 1 : 0}/>
+          {/* No title stamp and no release year on the card (VD10, F012): the label is only «ยุค 90». */}
           {F>=2022 && F<2025 && <rect width={width} height={height} fill="#efe3c4" opacity={.15}/>}
         </>}
         {id==='B07-SH03' && <>

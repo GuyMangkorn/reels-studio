@@ -1,10 +1,13 @@
 // Scene-segment render cache for scripts/render.mjs. The picture is rendered one scene at a time into
 // $REELS_STORE/cache/segments/<CompositionId>/<key>.mp4 (muted; outside every worktree, so other checkouts reuse it); the sound is rendered once for the whole video; both are joined.
-// A segment is re-rendered only when its key changes. The key covers what that scene's frames can show: the scene and
-// its neighbours (entry transitions, loop blend), its start and the video length, every non-timeline prop except the
-// sound beds, the shared source code under src/ (episode folders excluded: their output reaches the frames as props),
-// the asset locks and the render options. Editing a caption, overlay or SFX cue re-renders only that scene; changing a
-// duration, the narration or shared code re-renders every scene after it, or all.
+// A segment is re-rendered only when its key changes. The key covers what that scene's frames can show: the scene, its
+// range, the neighbours the renderer reads (actor poses and dissolves from the previous scene, the entry transition of
+// the next one, the C_seamless/B_loop wrap to the first scene; see segmentKeys), the scene count and total length, every
+// non-timeline prop except the sound beds, the shared source code under src/ (episode folders excluded: their output
+// reaches the frames as props), the picture asset locks (sound entries under public/audio/ left out) and the render
+// options. Editing a caption, overlay or SFX cue re-renders only that scene (plus a neighbour that reads it). A duration
+// change re-renders every scene, because the total length is in every key; narration timing or shared code does too.
+// Evidence: docs/dev-findings/DF-20261101-segment-cache-key.md.
 import {renderMedia} from '@remotion/renderer';
 import {createHash} from 'node:crypto';
 import {existsSync, globSync, readdirSync, readFileSync, statSync} from 'node:fs';
@@ -31,29 +34,58 @@ export const sceneRanges = (timeline, fps) => {
 
 const filesUnder = (p) => (statSync(p).isDirectory() ? readdirSync(p).sort().flatMap((name) => filesUnder(path.join(p, name))) : [p]);
 
-/** Hash of the code and assets every frame may depend on. Episode folders under src/videos/ only build props. */
+/**
+ * Hash of the code and assets every frame may depend on. Episode folders under src/videos/ only build props. Each episode's
+ * asset lock enters by its picture entries only: sound files under public/audio/ are rendered in the sound pass and no
+ * picture code reads them (checked: no file under src/ outside episode folders names public/audio).
+ */
 export const sourceHash = (root = '.') => {
   const hash = createHash('sha256');
   const files = [
     ...filesUnder(path.join(root, 'src')).filter((f) => !/^src\/videos\/[^/]+\//.test(path.relative(root, f))),
     path.join(root, 'package-lock.json'),
-    ...globSync('src/videos/*/assets.lock.json', {cwd: root}).sort().map((f) => path.join(root, f)),
   ];
   for (const file of files) hash.update(path.relative(root, file)).update(readFileSync(file));
+  for (const rel of globSync('src/videos/*/assets.lock.json', {cwd: root}).sort()) {
+    const lock = JSON.parse(readFileSync(path.join(root, rel), 'utf8'));
+    const picture = Object.fromEntries(Object.entries(lock).filter(([asset]) => !asset.startsWith('public/audio/')));
+    hash.update(rel).update(JSON.stringify(picture));
+  }
   return hash.digest('hex');
 };
 
-/** One key per scene, in timeline order. `options` are the render settings that change pixels. */
+/**
+ * One key per scene, in timeline order. `options` are the render settings that change pixels. A neighbour enters a
+ * scene's key only where the renderer reads it (src/scenes/SceneRenderer.tsx, painted.ts, endings.ts; evidence in
+ * DF-20261101-segment-cache-key):
+ *  - previous scene: actor poses carry over from it (SceneView `previous`, inside the actor maps), or the scene's first
+ *    painted cue dissolves from its last painted plate (`platesAt`);
+ *  - next scene: its entry transition (`transitionIn`) starts in this scene's last frames;
+ *  - first scene: the last scene blends from it (C_seamless) or freezes on frame 0 (B_loop, landscape). A_fade does neither;
+ *  - every scene: a global sceneTransitionFrames fades at every boundary (`transitionOpacityAt` reads the frame counts of
+ *    all scenes, so they are hashed), and its neighbours are included as for a transition.
+ * The scene count is hashed only while the progress bar (`chrome.progressBar`) is on: it is the one place SceneView reads it.
+ */
 export const segmentKeys = (composition, inputProps, options, source) => {
   const {timeline, narration, audio: _audio, ...rest} = {...composition.props, ...inputProps};
   const {src: _src, ...narrationPicture} = narration ?? {};
+  const globalTransitions = (rest.sceneTransitionFrames ?? 0) > 0;
+  const sceneCount = rest.chrome?.progressBar ? timeline.length : undefined;
+  const frameCounts = globalTransitions ? timeline.map((s) => sceneFrames(s.durationSec, composition.fps)) : undefined;
   const shared = JSON.stringify({rest, narration: narrationPicture, options, source,
-    size: [composition.width, composition.height, composition.fps, composition.durationInFrames]});
+    size: [composition.width, composition.height, composition.fps, composition.durationInFrames, sceneCount], frameCounts});
   const ranges = sceneRanges(timeline, composition.fps);
+  const sounds = (s) => s && {...s, sfx: undefined};
   return timeline.map((scene, i) => {
-    const sounds = (s) => s && {...s, sfx: undefined};
-    // The last scene also shows the first one (B_loop freeze, C_seamless blend).
-    const near = [timeline[i - 1], scene, timeline[i + 1], i === timeline.length - 1 ? timeline[0] : undefined].map(sounds);
+    const last = i === timeline.length - 1;
+    const readsPrev = globalTransitions || (i > 0 && (Boolean(scene.actors?.length) || scene.painted?.shots?.[0]?.dissolveSec !== undefined));
+    const readsNext = !last && (globalTransitions || Boolean(timeline[i + 1].transitionIn));
+    const near = [
+      readsPrev ? timeline[i - 1] : undefined,
+      scene,
+      readsNext ? timeline[i + 1] : undefined,
+      last && rest.ending !== 'A_fade' ? timeline[0] : undefined,
+    ].map(sounds);
     return createHash('sha256').update(shared).update(JSON.stringify({i, range: ranges[i], near})).digest('hex').slice(0, 16);
   });
 };
