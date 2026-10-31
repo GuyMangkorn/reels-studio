@@ -2,6 +2,7 @@ import type {PaintContext} from '../BrushCanvas';
 import {hash} from '../kit/hash';
 import {mixColor, type Pt} from '../kit/painter';
 import {ell, layerAt} from './ctx';
+import type {Lang} from './jolts';
 import {flatKit, type Flat} from './sets';
 
 // ZCPAINT B08-SH01 balcony plate (`ZCP-B08-SH01`), Boss pass 6: the production port of Film's key art
@@ -10,8 +11,8 @@ import {flatKit, type Flat} from './sets';
 // the rest. Four fires at three distances (main blaze, second blaze, two far fires; no near fire). Flat washes and thin ink
 // only, six layers each with its own push. The SVG glow bloom and embers are not painted here: `overlays.tsx` (`b08Overlay`)
 // draws them from `layers`, `flare` and `MAIN` / `SECOND`, in the same layer transforms.
-// Every value is a pure function of the plate frame `pf` (plate clock x 30). TH pf = f + 15 and EN pf = f + 39 come from the
-// timeline's `fromSec`, so one shared plate lands the flare on the line in both languages (`tests/zcpaint.test.ts`).
+// Every value is a pure function of the plate frame `pf` (plate clock x 30) and the language's key table `B08_KEYS` (SS-R1.6 retime).
+// TH is its own plate `ZCP-B08-SH01-TH` (fromSec 0, pf = f); EN keeps the shared pass 6 plate `ZCP-B08-SH01` (fromSec 1.3, pf = f + 39).
 
 /** Plate paper and firelight-free night slate (the sky covers the frame). */
 export const NIGHT = '#0c1014';
@@ -32,18 +33,24 @@ const smooth = (a: number, b: number, v: number) => {
   const x = clamp01((v - a) / (b - a));
   return x * x * (3 - 2 * x);
 };
-/** Push progress over the plate (pf 0-204), sine in-out. */
-const push = (pf: number) => 0.5 - 0.5 * Math.cos(Math.PI * clamp01(pf / 204));
-/** Main blaze flare-up: 0.35 until pf 84, full by pf 110; its 50 % point is pf 97, on the line at pf 96 (+/- 2). */
-export const flare = (pf: number) => 0.35 + 0.65 * smooth(84, 110, pf);
-/** His slump on “ไม่มีใครมาช่วยแน่” (pf 127): the silhouette drops 16 px over 10 f, no rotation. */
-export const slump = (pf: number) => 16 * smooth(127, 137, pf);
+/** Per-language plate keys (plate frames). EN: the pass 6 plate (flare pf 84-110, his slump pf 127-137, push over pf 0-204). TH: the SS-R1.6
+ *  retime on the measured read (flare pf 98-124, slump pf 166-176, push over pf 0-245; `ZCP-B08-SH01-TH`). */
+export const B08_KEYS: Record<Lang, {flare: [number, number]; slump: [number, number]; push: number}> = {
+  EN: {flare: [84, 110], slump: [127, 137], push: 204},
+  TH: {flare: [98, 124], slump: [166, 176], push: 245},
+};
+/** Push progress over the plate (pf 0 to the language's push length), sine in-out. */
+const push = (pf: number, lang: Lang) => 0.5 - 0.5 * Math.cos(Math.PI * clamp01(pf / B08_KEYS[lang].push));
+/** Main blaze flare-up: 0.35 until its first key, full at its second (EN pf 84-110: the 50 % point is pf 97, on the line at pf 96 (+/- 2)). */
+export const flare = (pf: number, lang: Lang = 'EN') => 0.35 + 0.65 * smooth(B08_KEYS[lang].flare[0], B08_KEYS[lang].flare[1], pf);
+/** His slump on “ไม่มีใครมาช่วยแน่” (EN pf 127; TH pf 166): the silhouette drops 16 px over 10 f, no rotation. */
+export const slump = (pf: number, lang: Lang = 'EN') => 16 * smooth(B08_KEYS[lang].slump[0], B08_KEYS[lang].slump[1], pf);
 
 /** One layer's transform: scale `s` about the focus (fx, fy), then a drop of `dy` px (the multiplane push). */
 export type Layer = {s: number; fx: number; fy: number; dy: number};
 /** The six layers at plate frame `pf`: city layers about (420, 760), the rail about (960, 1920). */
-export const layers = (pf: number) => {
-  const k = push(pf);
+export const layers = (pf: number, lang: Lang = 'EN') => {
+  const k = push(pf, lang);
   const city = (s: number, dy: number): Layer => ({s: 1 + s * k, fx: 420, fy: 760, dy: dy * k});
   return {
     sky: city(0.006, 0),
@@ -128,11 +135,11 @@ const column = (f: Flat, c: Column, pf: number) => {
 
 /** A tower seen nearly head-on in one-point (VP x 540): front face, the receding side face toward the VP, windows. */
 type Tower = {x0: number; x1: number; top: number; base: number; body: string; seed: number; win?: number; depth?: number};
-const fireLight = (x: number, y: number, pf: number) => {
+const fireLight = (x: number, y: number, pf: number, lang: Lang) => {
   const d = Math.hypot(x - MAIN[0], (y - MAIN[1] - 220) * 0.8);
-  return clamp01(1 - d / 560) * (0.55 + 0.45 * flare(pf));
+  return clamp01(1 - d / 560) * (0.55 + 0.45 * flare(pf, lang));
 };
-const tower = (f: Flat, t: Tower, pf: number, ink = true) => {
+const tower = (f: Flat, t: Tower, pf: number, lang: Lang, ink = true) => {
   const {x0, x1, top, base, body, seed} = t;
   const sideW = Math.min(46, Math.abs((x0 + x1) / 2 - 540) * 0.09) * (t.depth ?? 1);
   const right = (x0 + x1) / 2 < 540; // left of the VP: the right side face shows
@@ -140,7 +147,7 @@ const tower = (f: Flat, t: Tower, pf: number, ink = true) => {
   // Side face: faces the main blaze when the tower and the fire are on opposite sides of it.
   const facesFire = right ? sx < MAIN[0] : sx > MAIN[0];
   const sideCol = (y: number) => {
-    const b = facesFire ? fireLight(sx, Math.floor(y / 110) * 110 + 55, pf) : 0;
+    const b = facesFire ? fireLight(sx, Math.floor(y / 110) * 110 + 55, pf, lang) : 0;
     return mixColor(mixColor(body, NIGHT, 0.3), EMBER, Math.min(1, 0.9 * b * b + 0.25 * b));
   };
   // Stepped vertically: the bounce is strongest at the fire's height and falls into cool shadow below.
@@ -153,7 +160,7 @@ const tower = (f: Flat, t: Tower, pf: number, ink = true) => {
     // Side-face glass: foreshortened slits that mirror the fire, flickering (the only warm "windows" in the city).
     if (facesFire && sideW > 12) {
       for (let wy = top + 20; wy < Math.min(base, 1900); wy += t.win ?? 30) {
-        const lb = fireLight(sx, wy, pf);
+        const lb = fireLight(sx, wy, pf, lang);
         for (let c = 0; c < 2; c++) {
           const u0 = 0.18 + c * 0.42, wa = sx + (sx2 - sx) * u0, wb = sx + (sx2 - sx) * (u0 + 0.24);
           const on = hash(seed * 17 + wy * 0.13 + c * 5 + Math.floor(pf / 3) * 0.71) < 0.25 + 0.6 * lb;
@@ -165,7 +172,7 @@ const tower = (f: Flat, t: Tower, pf: number, ink = true) => {
   }
   f.fill(body, rect(x0, top, x1, base));
   // Fire-facing edge of the front face and the roof lip catch a thin warm line.
-  const fb = fireLight(right ? x1 : x0, top, pf);
+  const fb = fireLight(right ? x1 : x0, top, pf, lang);
   if (fb > 0.05) {
     const ex = x1 < MAIN[0] ? x1 - 5 : x0;
     if (Math.abs((x0 + x1) / 2 - MAIN[0]) > 60) f.fill(mixColor(body, EMBER, 0.8 * fb), rect(ex, top, ex + 5, base));
@@ -179,7 +186,7 @@ const tower = (f: Flat, t: Tower, pf: number, ink = true) => {
     if (wy > 1920) break;
     for (let c = 0; c < cols; c++) {
       const wx = x0 + 8 + c * cw;
-      const lb = fireLight(wx, wy, pf);
+      const lb = fireLight(wx, wy, pf, lang);
       // Front faces look at us, not at the fire: only glass close to the blaze catches it, and only now and then.
       const refl = lb > 0.3 && hash(seed * 31 + r * 7 + c * 3 + Math.floor(pf / 3) * 0.37) < 0.5 * (lb - 0.3);
       const glass = refl ? mixColor('#3a2216', FIRE[2], 0.25 + 0.45 * lb * hash(seed + r + c * 5 + Math.floor(pf / 3))) : mixColor(body, '#000000', 0.35);
@@ -190,7 +197,7 @@ const tower = (f: Flat, t: Tower, pf: number, ink = true) => {
 };
 
 /** Sky, warm underlit pall, moon (L0). */
-const paintSky = (ctx: PaintContext, pf: number) => {
+const paintSky = (ctx: PaintContext, pf: number, lang: Lang) => {
   const f = flatKit(ctx, 20000);
   for (let i = 0; i < 20; i++) {
     const u = i / 19;
@@ -198,7 +205,7 @@ const paintSky = (ctx: PaintContext, pf: number) => {
     f.fill(c, rect(-150, -150 + i * 55, W + 150, -90 + i * 55));
   }
   // The smoke ceiling glows warm over the fires: stepped rings, widest and faintest first.
-  const g = 0.75 + 0.25 * flare(pf);
+  const g = 0.75 + 0.25 * flare(pf, lang);
   for (let k = 0; k < 7; k++) {
     const u = k / 6;
     f.fill(mixColor('#2a2226', '#6a3524', (0.2 + 0.8 * u) * g * 0.85), ell(MAIN[0] + 40, 700 - 40 * u, 640 - 420 * u, 360 - 220 * u, 28));
@@ -234,7 +241,7 @@ const paintFar = (ctx: PaintContext, pf: number) => {
 };
 
 /** Mid city (L2): towers with bounce and reflections, the second blaze on a low block with its column. */
-const paintMid = (ctx: PaintContext, pf: number) => {
+const paintMid = (ctx: PaintContext, pf: number, lang: Lang) => {
   const f = flatKit(ctx, 22000);
   column(f, {x: SECOND[0], y: SECOND[1], h: 900, w0: 40, w1: 210, bend: 330, ph: 0.7, heat: 1, haze: 0}, pf);
   const towers: Tower[] = [
@@ -244,17 +251,17 @@ const paintMid = (ctx: PaintContext, pf: number) => {
     {x0: 830, x1: 936, top: 596, base: 1100, body: '#181d24', seed: 4},
     {x0: 950, x1: 1040, top: 676, base: 1100, body: '#1a1f26', seed: 5},
   ];
-  for (const t of towers) tower(f, t, pf);
+  for (const t of towers) tower(f, t, pf, lang);
   // Second blaze: a low block whose roof burns, flames above y 860 (RK-06).
-  tower(f, {x0: 690, x1: 826, top: SECOND[1], base: 1100, body: '#1d1b1f', seed: 6, win: 28}, pf);
+  tower(f, {x0: 690, x1: 826, top: SECOND[1], base: 1100, body: '#1d1b1f', seed: 6, win: 28}, pf, lang);
   f.fill(mixColor('#1d1b1f', FIRE[0], 0.7), rect(690, SECOND[1], 826, SECOND[1] + 8));
   flameRow(f, 694, 822, SECOND[1] + 4, 96, pf, 300, 5, 0.15);
 };
 
 /** Main blaze (L2.5): a mid-near tower burning on its upper floors and roof; the flare-up is `flare(pf)`. */
-const paintBlaze = (ctx: PaintContext, pf: number) => {
+const paintBlaze = (ctx: PaintContext, pf: number, lang: Lang) => {
   const f = flatKit(ctx, 23000);
-  const F = flare(pf);
+  const F = flare(pf, lang);
   column(f, {x: MAIN[0], y: MAIN[1] + 6, h: 620, w0: 64 + 20 * F, w1: 300, bend: 430, ph: 0, heat: 0.7 + 0.3 * F, haze: 0}, pf);
   const x0 = 250, x1 = 470, top = MAIN[1];
   // Side face toward the VP (right), lit by its own fire from within: warm.
@@ -285,25 +292,25 @@ const paintBlaze = (ctx: PaintContext, pf: number) => {
 };
 
 /** Near layer (L3): framing towers and the low-rise roofs under the caption (no fire in the near layer). */
-const paintNear = (ctx: PaintContext, pf: number) => {
+const paintNear = (ctx: PaintContext, pf: number, lang: Lang) => {
   const f = flatKit(ctx, 24000);
   // Left framing tower: its right side face takes the strongest bounce in frame.
-  tower(f, {x0: -60, x1: 196, top: 318, base: 2000, body: '#11151a', seed: 11, win: 40, depth: 1.7}, pf);
-  tower(f, {x0: 900, x1: 1140, top: 400, base: 2000, body: '#10141a', seed: 12, win: 40, depth: 1.4}, pf);
+  tower(f, {x0: -60, x1: 196, top: 318, base: 2000, body: '#11151a', seed: 11, win: 40, depth: 1.7}, pf, lang);
+  tower(f, {x0: 900, x1: 1140, top: 400, base: 2000, body: '#10141a', seed: 12, win: 40, depth: 1.4}, pf, lang);
   // Low-rise roofs, stepping down toward us (dark; warm lips on the fire side).
   const roofs: [number, number, number][] = [[180, 470, 1150], [440, 700, 1210], [660, 920, 1130], [150, 420, 1330], [700, 980, 1360]];
-  roofs.forEach(([a, b, y], i) => tower(f, {x0: a, x1: b, top: y, base: 2000, body: mixColor('#0d1014', '#141820', i % 2 ? 0 : 1), seed: 20 + i, win: 34}, pf));
+  roofs.forEach(([a, b, y], i) => tower(f, {x0: a, x1: b, top: y, base: 2000, body: mixColor('#0d1014', '#141820', i % 2 ? 0 : 1), seed: 20 + i, win: 34}, pf, lang));
   // The street below: a dark, unlit gap (user Q-ZCP-9 B, 30 Oct 2026: no near street fire).
   f.fill('#0f0d10', [[300, 1470], [800, 1440], [800, 1580], [300, 1580]]);
-  tower(f, {x0: 340, x1: 620, top: 1560, base: 2000, body: '#0b0e12', seed: 30}, pf);
+  tower(f, {x0: 340, x1: 620, top: 1560, base: 2000, body: '#0b0e12', seed: 30}, pf, lang);
 };
 
 /**
  * His head and shoulders from behind (`B08-OTS`): the body, two ears and the head (the WORLD FOG egg from behind), at
  * offset (ox, oy) and dropped by the slump. The dark mass is (0, 0); the warm rim is (-7, -6). Head centre (884, 1556).
  */
-export const silhouetteParts = (pf: number, ox = 0, oy = 0): Pt[][] => {
-  const hx = 884 + ox, hy = 1556 + slump(pf) + oy;
+export const silhouetteParts = (pf: number, ox = 0, oy = 0, lang: Lang = 'EN'): Pt[][] => {
+  const hx = 884 + ox, hy = 1556 + slump(pf, lang) + oy;
   const head: Pt[] = [];
   for (let i = 0; i < 40; i++) {
     const a = (i / 40) * Math.PI * 2;
@@ -322,7 +329,7 @@ export const silhouetteParts = (pf: number, ox = 0, oy = 0): Pt[][] => {
 };
 
 /** Foreground (L4): the railing, then his head and shoulder as a silhouette with a fire rim on the fire-facing edge. */
-const paintFore = (ctx: PaintContext, pf: number) => {
+const paintFore = (ctx: PaintContext, pf: number, lang: Lang) => {
   const f = flatKit(ctx, 25000);
   // Railing: a metal top rail with a warm highlight (stronger on the fire side) and balusters with a warm fire-side edge.
   for (let i = 0; i < 18; i++) {
@@ -335,17 +342,17 @@ const paintFore = (ctx: PaintContext, pf: number) => {
   f.fill(mixColor('#07090c', RIM, 0.4), rect(560, 1713, W + 150, 1718));
   // His rim is motivated by the main blaze glow (upper left): the same shape offset up-left in the rim colour, drawn
   // first, so the rim shows only on the fire-facing edge. A silhouette has no inner marks.
-  for (const pts of silhouetteParts(pf, -7, -6)) f.fill(RIM, pts);
-  for (const pts of silhouetteParts(pf)) f.fill(SIL, pts);
+  for (const pts of silhouetteParts(pf, -7, -6, lang)) f.fill(RIM, pts);
+  for (const pts of silhouetteParts(pf, 0, 0, lang)) f.fill(SIL, pts);
 };
 
 /** The plate: six layers, far to near, each in its own push (`layers`). A pure function of `pf`. */
-export const paintBalcony = (ctx: PaintContext, pf: number) => {
-  const L = layers(pf);
-  inLayer(ctx, L.sky, () => paintSky(ctx, pf));
+export const paintBalcony = (ctx: PaintContext, pf: number, lang: Lang) => {
+  const L = layers(pf, lang);
+  inLayer(ctx, L.sky, () => paintSky(ctx, pf, lang));
   inLayer(ctx, L.far, () => paintFar(ctx, pf));
-  inLayer(ctx, L.mid, () => paintMid(ctx, pf));
-  inLayer(ctx, L.blaze, () => paintBlaze(ctx, pf));
-  inLayer(ctx, L.near, () => paintNear(ctx, pf));
-  inLayer(ctx, L.fore, () => paintFore(ctx, pf));
+  inLayer(ctx, L.mid, () => paintMid(ctx, pf, lang));
+  inLayer(ctx, L.blaze, () => paintBlaze(ctx, pf, lang));
+  inLayer(ctx, L.near, () => paintNear(ctx, pf, lang));
+  inLayer(ctx, L.fore, () => paintFore(ctx, pf, lang));
 };

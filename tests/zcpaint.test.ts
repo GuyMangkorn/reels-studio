@@ -10,17 +10,19 @@ import {b08Bloom} from '../src/painted/zcpaint/overlays';
 import {GLOW_PEAK} from '../src/painted/kit/glow';
 import type {Pt} from '../src/painted/kit/painter';
 
-test('B02 pound jolts: slam first, seeded spacing 0.30-0.55 s, inside B02-SH01..SH02, same list for plates and Editor', () => {
+test('B02 pound jolts: slam first, seeded spacing 0.30-0.55 s, inside B02-SH01..SH03 (TH to the B03 fade), same list for plates and Editor', () => {
   for (const lang of ['TH', 'EN'] as const) {
     const t = B02_TIMING[lang];
     const f = poundJoltFrames(lang);
     assert.equal(f[0], t.sh01[0] + 2);
     assert.equal(f[1], t.sh01[0] + t.firstRegular);
     for (let i = 2; i < f.length; i++) assert.ok(f[i] - f[i - 1] >= 9 && f[i] - f[i - 1] <= 17, `${lang} spacing at ${i}`);
-    assert.ok(f.every((x) => x >= t.sh01[0] && x < t.sh02[1]));
-    // Plate lists are the same frames in each shot's plate clock.
+    // SS-R1.6/SS-R1.7 retime (Boss): TH blows run through B02-SH03 to the end of the B03 fade (blowsTo 551, list 218-535); EN stays at 318.
+    assert.equal(t.blowsTo, lang === 'TH' ? 551 : 318, `${lang} blowsTo`);
+    assert.ok(f.every((x) => x >= t.sh01[0] && x < t.blowsTo));
+    // Plate lists are the same frames in each shot's plate clock; plates read the SH01/SH02 jolts only (SH03 blows are Editor-only).
     const plate = [...poundJoltPlateFrames(lang, 'SH01').map((x) => x + t.sh01[0]), ...poundJoltPlateFrames(lang, 'SH02').map((x) => x - t.sh02FromFrames + t.sh02[0])];
-    assert.deepEqual(plate, f);
+    assert.deepEqual(plate, f.filter((x) => x < t.sh02[1]));
   }
   assert.deepEqual(poundJoltFrames('TH'), poundJoltFrames('TH'));
   const frames = poundJoltPlateFrames('TH', 'SH01');
@@ -114,7 +116,10 @@ test('B02 keys: latch shut at f 2, bolt turns 90 degrees per language, drag from
   assert.equal(sh01Edge(0), 900);
   assert.equal(sh01Edge(2), 950);
   assert.equal(boltAngle('TH', 3), 0);
-  assert.equal(boltAngle('TH', 7), 90);
+  // SS-R1.7 (Boss retime, SS-R1.6 keys): TH bolt re-keyed to plate frames 22-26 (word "ล็อก!" at f 26); f 7 is before the turn.
+  assert.equal(boltAngle('TH', 7), 0);
+  assert.equal(boltAngle('TH', 22), 0);
+  assert.equal(boltAngle('TH', 26), 90);
   assert.equal(boltAngle('EN', 16), 0);
   assert.equal(boltAngle('EN', 21), 90);
   // R2.5 (pass 8): no drag; the last 24 px of the shove over pf 0-6, then a ±3 px wobble that decays by pf 20.

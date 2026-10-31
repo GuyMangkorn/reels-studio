@@ -1,8 +1,8 @@
 {
   "deliverable": "ZCPAINT-SHORT-TH",
-  "durationSec": 71.2,
-  "scriptRevision": "ZCONDO-SHORT-TH-R3 (VO lines in vo-TH.json; captions = script ซับ chunks)",
-  "sheetRevision": "ZCPAINT-SHORT-SS-R1.5 (timing re-locked by Editor pass 1, 30 Oct 2026)",
+  "durationSec": 95.9,
+  "scriptRevision": "ZCONDO-SHORT-TH-R5 (R4 B09 call, R5 B10 caption removed); VO and captions from ZCPAINT-SHORT-TH.lines.json",
+  "sheetRevision": "ZCPAINT-SHORT-SS-R1.7 (Editor re-lock to the measured Gemini read + B09 call, 31 Oct 2026; TH 2877 frames)",
   "beats": [
     {
       "beat": "B01",
@@ -13,176 +13,170 @@
           "atSec": 0.0
         },
         {
-          "shot": "ZCP-B01-SH02",
-          "atSec": 3.5
+          "shot": "ZCP-B01-SH02-TH",
+          "atSec": 5.433
         }
       ]
     },
     {
       "beat": "B02",
-      "startSec": 5.1,
+      "startSec": 7.2,
       "shots": [
         {
           "shot": "ZCP-B02-SH01-TH",
-          "atSec": 5.1
+          "atSec": 7.2
         },
         {
           "shot": "ZCP-B02-SH02-TH",
-          "atSec": 6.6,
+          "atSec": 10.233,
           "fromSec": 0.1
         },
         {
           "shot": "ZCP-B02-SH03",
-          "atSec": 9.6,
-          "fromSec": 0.7
+          "atSec": 14.3
         }
       ]
     },
     {
       "beat": "B03",
-      "startSec": 11.7,
+      "startSec": 17.267,
       "shots": [
         {
           "shot": "ZCP-B03-SH01-TH",
-          "atSec": 11.7
+          "atSec": 17.267
         }
       ]
     },
     {
       "beat": "B04",
-      "startSec": 13.7,
+      "startSec": 19.333,
       "shots": [
         {
           "shot": "ZCP-B04-SH01",
-          "atSec": 13.7,
-          "fromSec": 0.3
+          "atSec": 19.333
         },
         {
           "shot": "ZCP-B04-SH02-TH",
-          "atSec": 15.3
+          "atSec": 21.467
         },
         {
-          "shot": "ZCP-B04-SH03a",
-          "atSec": 22.2
+          "shot": "ZCP-B04-SH03a-TH",
+          "atSec": 30.4
         },
         {
-          "shot": "ZCP-B04-SH03b",
-          "atSec": 23.5
+          "shot": "ZCP-B04-SH03b-TH",
+          "atSec": 33.0
         },
         {
           "shot": "ZCP-B04-SH03c-TH",
-          "atSec": 23.9
+          "atSec": 33.733
         },
         {
           "shot": "ZCP-B04-SH04-TH",
-          "atSec": 24.3
+          "atSec": 34.367
         }
       ]
     },
     {
       "beat": "B05",
-      "startSec": 24.7,
+      "startSec": 35.733,
       "shots": [
         {
           "shot": "ZCP-B05-SH01-TH",
-          "atSec": 24.7
+          "atSec": 35.733
         },
         {
           "shot": "ZCP-B05-SH02",
-          "atSec": 26.4,
+          "atSec": 38.433,
           "fromSec": 1.2
         },
         {
-          "shot": "ZCP-B05-SH03",
-          "atSec": 28.5,
+          "shot": "ZCP-B05-SH03-P1-TH",
+          "atSec": 40.733,
           "fromSec": 0.7
         },
         {
           "shot": "ZCP-B05-SH03-BOWL",
-          "atSec": 31.7
+          "atSec": 45.133
         },
         {
           "shot": "ZCP-B05-SH03-TH",
-          "atSec": 32.4
+          "atSec": 46.167
         }
       ]
     },
     {
       "beat": "B06",
-      "startSec": 34.5,
+      "startSec": 48.933,
       "shots": [
         {
           "shot": "ZCP-B06-SH01",
-          "atSec": 34.5,
-          "fromSec": 1.5
+          "atSec": 48.933
         },
         {
-          "shot": "ZCP-B06-SH02",
-          "atSec": 40.2
+          "shot": "ZCP-B06-SH02-TH",
+          "atSec": 56.033
         },
         {
           "shot": "ZCP-B06-SH03",
-          "atSec": 42.3
+          "atSec": 58.567
         }
       ]
     },
     {
       "beat": "B07",
-      "startSec": 43.5,
+      "startSec": 60.333,
       "shots": [
         {
           "shot": "ZCP-B07-SH01",
-          "atSec": 43.5,
-          "fromSec": 0.5
+          "atSec": 60.333,
+          "fromSec": 0.267
         },
         {
           "shot": "ZCP-B07-SH02",
-          "atSec": 46.7,
-          "fromSec": 0.3
+          "atSec": 64.367
         }
       ]
     },
     {
       "beat": "B08",
-      "startSec": 49.4,
+      "startSec": 68.133,
       "shots": [
         {
-          "shot": "ZCP-B08-SH01",
-          "atSec": 49.4,
-          "fromSec": 0.5
+          "shot": "ZCP-B08-SH01-TH",
+          "atSec": 68.133
         }
       ]
     },
     {
       "beat": "B09",
-      "startSec": 54.4,
+      "startSec": 76.333,
       "shots": [
         {
           "shot": "ZCP-B09-SH01-TH",
-          "atSec": 54.4
+          "atSec": 76.333
         },
         {
-          "shot": "ZCP-B09-SH02",
-          "atSec": 59.6
+          "shot": "ZCP-B09-SH02-TH",
+          "atSec": 82.933
         },
         {
           "shot": "ZCP-B09-SH02B",
-          "atSec": 61.1
+          "atSec": 85.0
         },
         {
-          "shot": "ZCP-B09-SH03",
-          "atSec": 62.4
+          "shot": "ZCP-B09-SH03-TH",
+          "atSec": 86.333
         }
       ]
     },
     {
       "beat": "B10",
-      "startSec": 65.0,
+      "startSec": 89.533,
       "shots": [
         {
-          "shot": "ZCP-B10-SH01",
-          "atSec": 65.0,
-          "fromSec": 1.0
+          "shot": "ZCP-B10-SH01-TH",
+          "atSec": 89.533
         }
       ]
     }
@@ -195,181 +189,208 @@
     },
     {
       "src": "sfx/reveal/reveal_riser-tension_01.wav",
-      "atSec": 0.9,
+      "atSec": 2.667,
       "volume": 0.25,
-      "durationSec": 3.69
+      "durationSec": 3.867
     },
     {
       "src": "sfx/creature/creature_neck-creak-wet_01.wav",
-      "atSec": 3.73,
+      "atSec": 5.667,
       "volume": 0.5
     },
     {
       "src": "sfx/foley/foley_footsteps-run-slam_01.wav",
-      "atSec": 4.6,
+      "atSec": 6.533,
       "volume": 0.45,
       "trimStartSec": 0.58
     },
     {
       "src": "sfx/impact/impact_door-slam-body_01.wav",
-      "atSec": 5.07,
+      "atSec": 7.267,
       "volume": 0.6
     },
     {
-      "src": "sfx/foley/foley_deadbolt-clack_01.wav",
-      "atSec": 5.28,
-      "volume": 0.5
-    },
-    {
       "src": "sfx/foley/foley_bag-drop-tile_01.wav",
-      "atSec": 5.3,
+      "atSec": 7.4,
       "volume": 0.25
     },
     {
+      "src": "sfx/foley/foley_deadbolt-clack_01.wav",
+      "atSec": 8.067,
+      "volume": 0.5
+    },
+    {
       "src": "sfx/foley/foley_cabinet-scrape-thud_01.wav",
-      "atSec": 5.54,
+      "atSec": 10.333,
       "volume": 0.6
     },
     {
       "src": "sfx/impact/impact_power-cut-whoomp_01.wav",
-      "atSec": 12.0,
+      "atSec": 17.567,
       "volume": 0.5
     },
     {
       "src": "sfx/water/water_tap-fill-containers_01.wav",
-      "atSec": 13.7,
+      "atSec": 19.333,
       "volume": 0.12,
       "durationSec": 6.0
     },
     {
       "src": "sfx/water/water_tap-fill-containers_01.wav",
-      "atSec": 22.2,
+      "atSec": 30.4,
       "volume": 0.22,
       "durationSec": 5.0
     },
     {
       "src": "sfx/foley/foley_lid-snaps-three_01.wav",
-      "atSec": 24.1,
-      "volume": 0.6
+      "atSec": 34.467,
+      "volume": 0.6,
+      "trimStartSec": 0.08,
+      "durationSec": 0.12
     },
     {
-      "src": "sfx/water/water_bucket-pour-gurgle_01.wav",
-      "atSec": 26.2,
-      "volume": 0.7
+      "src": "sfx/foley/foley_lid-snaps-three_01.wav",
+      "atSec": 34.6,
+      "volume": 0.6,
+      "trimStartSec": 0.08,
+      "durationSec": 0.12
+    },
+    {
+      "src": "sfx/foley/foley_lid-snaps-three_01.wav",
+      "atSec": 34.733,
+      "volume": 0.6,
+      "trimStartSec": 0.08,
+      "durationSec": 0.12
     },
     {
       "src": "sfx/foley/foley_cistern-lid-tap_01.wav",
-      "atSec": 28.45,
-      "volume": 0.6
+      "atSec": 36.967,
+      "volume": 0.6,
+      "trimStartSec": 0.7
+    },
+    {
+      "src": "sfx/water/water_bucket-pour-gurgle_01.wav",
+      "atSec": 39.633,
+      "volume": 0.7
     },
     {
       "src": "sfx/reveal/reveal_glass-shimmer-soft_01.wav",
-      "atSec": 28.9,
+      "atSec": 41.133,
+      "volume": 0.5
+    },
+    {
+      "src": "sfx/ui/ui_click-tick_01.wav",
+      "atSec": 52.2,
+      "volume": 0.5
+    },
+    {
+      "src": "sfx/ui/ui_click-tick_01.wav",
+      "atSec": 55.267,
       "volume": 0.5
     },
     {
       "src": "sfx/foley/foley_fridge-seal-pop_01.wav",
-      "atSec": 40.2,
+      "atSec": 56.033,
       "volume": 0.6
     },
     {
       "src": "sfx/foley/foley_packaging-rustle_01.wav",
-      "atSec": 40.7,
+      "atSec": 56.533,
       "volume": 0.6
     },
     {
       "src": "sfx/foley/foley_fridge-seal-thump_01.wav",
-      "atSec": 41.57,
+      "atSec": 57.4,
       "volume": 0.6
     },
     {
       "src": "sfx/foley/foley_can-setdown-laminate_01.wav",
-      "atSec": 42.4,
+      "atSec": 58.667,
       "volume": 0.6
     },
     {
       "src": "sfx/mechanical/mechanical_canister-handling_01.wav",
-      "atSec": 44.0,
+      "atSec": 61.4,
       "volume": 0.6
     },
     {
       "src": "sfx/stinger/stinger_low-muted-hit_01.wav",
-      "atSec": 44.2,
+      "atSec": 61.667,
       "volume": 0.5
     },
     {
       "src": "sfx/foley/foley_packaging-rustle_01.wav",
-      "atSec": 47.8,
+      "atSec": 66.367,
       "volume": 0.35
     },
     {
       "src": "sfx/ui/ui_click-tick_01.wav",
-      "atSec": 54.6,
+      "atSec": 76.333,
       "volume": 0.5
     },
     {
       "src": "sfx/ui/ui_click-tick_01.wav",
-      "atSec": 55.4,
+      "atSec": 77.533,
       "volume": 0.5
     },
     {
       "src": "sfx/ui/ui_click-tick_01.wav",
-      "atSec": 56.5,
+      "atSec": 79.133,
       "volume": 0.5
     },
     {
       "src": "sfx/ui/ui_click-tick_01.wav",
-      "atSec": 57.9,
+      "atSec": 80.867,
       "volume": 0.5
-    },
-    {
-      "src": "sfx/impact/impact_knuckle-rap_01.wav",
-      "atSec": 61.1,
-      "volume": 0.6
-    },
-    {
-      "src": "sfx/impact/impact_knuckle-rap_01.wav",
-      "atSec": 61.55,
-      "volume": 0.6
-    },
-    {
-      "src": "sfx/impact/impact_knuckle-rap_01.wav",
-      "atSec": 62.0,
-      "volume": 0.6
     },
     {
       "src": "sfx/impact/impact_sub-hit-short_01.wav",
-      "atSec": 63.8,
+      "atSec": 87.733,
       "volume": 0.5
+    },
+    {
+      "src": "sfx/impact/impact_knuckle-rap_01.wav",
+      "atSec": 93.6,
+      "volume": 0.6
+    },
+    {
+      "src": "sfx/impact/impact_knuckle-rap_01.wav",
+      "atSec": 94.05,
+      "volume": 0.6
+    },
+    {
+      "src": "sfx/impact/impact_knuckle-rap_01.wav",
+      "atSec": 94.5,
+      "volume": 0.6
     }
   ],
   "audio": [
     {
       "src": "sfx/electric/electric_light-flicker-buzz_01.wav",
       "startSec": 0.0,
-      "endSec": 12.0,
+      "endSec": 17.567,
       "volume": 0.08,
       "loop": true,
       "fadeOutSec": 0.05
     },
     {
       "src": "audio/room/room_shop-fridge-hum_01.wav",
-      "startSec": 5.1,
-      "endSec": 12.0,
+      "startSec": 7.2,
+      "endSec": 17.567,
       "volume": 0.18,
       "fadeOutSec": 0.05
     },
     {
       "src": "sfx/tension/tension_heartbeat-slow_01.wav",
-      "startSec": 5.2,
-      "endSec": 10.2,
+      "startSec": 7.3,
+      "endSec": 15.6,
       "volume": 0.18,
       "loop": true
     },
     {
       "src": "audio/room/room_dark-empty-building_01.wav",
-      "startSec": 13.4,
-      "endSec": 49.4,
+      "startSec": 19.0,
+      "endSec": 68.133,
       "volume": 0.1,
       "loop": true,
       "fadeInSec": 0.5,
@@ -377,8 +398,8 @@
     },
     {
       "src": "audio/bed/bed_dark-drone-sub_01.wav",
-      "startSec": 13.4,
-      "endSec": 60.8,
+      "startSec": 19.0,
+      "endSec": 85.0,
       "volume": 0.12,
       "loop": true,
       "fadeInSec": 0.6,
@@ -387,8 +408,8 @@
     },
     {
       "src": "sfx/tension/tension_clock-pulse_01.wav",
-      "startSec": 20.9,
-      "endSec": 45.6,
+      "startSec": 29.133,
+      "endSec": 63.067,
       "volume": 0.15,
       "loop": true,
       "fadeInSec": 1.0,
@@ -396,66 +417,44 @@
     },
     {
       "src": "sfx/tension/tension_clock-pulse_01.wav",
-      "startSec": 45.6,
-      "endSec": 49.4,
+      "startSec": 63.067,
+      "endSec": 68.133,
       "volume": 0.06,
       "loop": true
     },
     {
       "src": "audio/city/city_distant-fire-crackle_01.wav",
-      "startSec": 49.4,
-      "endSec": 54.4,
+      "startSec": 68.133,
+      "endSec": 76.333,
       "volume": 0.25,
       "loop": true,
       "fadeInSec": 0.5
     },
     {
       "src": "audio/nature/nature_wind-eerie-street_01.wav",
-      "startSec": 49.4,
-      "endSec": 54.4,
+      "startSec": 68.133,
+      "endSec": 76.333,
       "volume": 0.2,
       "loop": true,
       "fadeInSec": 0.5
     },
     {
       "src": "audio/room/room_dark-empty-building_01.wav",
-      "startSec": 54.4,
-      "endSec": 61.1,
+      "startSec": 76.333,
+      "endSec": 86.333,
       "volume": 0.1,
       "loop": true
     },
     {
       "src": "audio/room/room_dark-empty-building_01.wav",
-      "startSec": 62.4,
-      "endSec": 71.2,
+      "startSec": 87.733,
+      "endSec": 95.9,
       "volume": 0.08,
       "loop": true,
       "fadeOutSec": 0.5
-    },
-    {
-      "src": "audio/tone/tone_thin-unresolved_01.wav",
-      "startSec": 65.0,
-      "endSec": 71.2,
-      "volume": 1.0,
-      "fadeInSec": 1.0,
-      "fadeOutSec": 1.0
     }
   ],
   "overlays": [
-    {
-      "text": "ถังบนดาดฟ้า",
-      "box": [
-        590,
-        300,
-        298,
-        40
-      ],
-      "startSec": 15.3,
-      "endSec": 22.2,
-      "fontSize": 30,
-      "color": "#2a2633",
-      "note": "S-08 B04 roof tank label (sheet sc01-b04-b05 Overlays)"
-    },
     {
       "text": "ปั๊ม",
       "box": [
@@ -464,10 +463,25 @@
         220,
         50
       ],
-      "startSec": 17.8,
-      "endSec": 22.2,
+      "startSec": 22.233,
+      "endSec": 30.4,
       "fontSize": 30,
-      "color": "#2a2633"
+      "color": "#2a2633",
+      "note": "B04-SH02 diagram label, key TH f 23 (sheet sc01-b04-b05 step 2); holds to the end of SH02"
+    },
+    {
+      "text": "ถังบนดาดฟ้า",
+      "box": [
+        590,
+        300,
+        298,
+        40
+      ],
+      "startSec": 23.167,
+      "endSec": 30.4,
+      "fontSize": 30,
+      "color": "#2a2633",
+      "note": "B04-SH02 label, key TH f 51 (step 3)"
     },
     {
       "text": "ไฟดับ",
@@ -477,62 +491,64 @@
         230,
         70
       ],
-      "startSec": 17.8,
-      "endSec": 22.2,
+      "startSec": 24.633,
+      "endSec": 30.4,
       "fontSize": 34,
-      "color": "#e5484d"
+      "color": "#e5484d",
+      "note": "B04-SH02 label, key TH f 95 (step 4)"
     },
     {
       "text": "ตู้เย็น (ไม่เปิด) ราว 4 ชม.",
       "box": [
-        120,
+        343,
         296,
-        320,
+        420,
         72
       ],
-      "startSec": 36.0,
-      "endSec": 40.2,
-      "fontSize": 24,
+      "startSec": 51.2,
+      "endSec": 56.033,
+      "fontSize": 32,
       "color": "#2a2633",
-      "note": "B06 cold clock device; SH01 box then SH02+ strip"
+      "note": "B06 cold clock device line 1 (key TH f 68, tick f 98); SH01 box, then the SH02+ strip; text pending-label-check (Preaw/Boat) | x 120→310 (31 Oct 2026, user: dark text hidden by the black pillar at x≈252-292)"
     },
     {
       "text": "ตู้เย็น (ไม่เปิด) ราว 4 ชม.",
       "box": [
         420,
         296,
-        460,
-        36
+        560,
+        44
       ],
-      "startSec": 40.2,
-      "endSec": 43.5,
-      "fontSize": 24,
+      "startSec": 56.033,
+      "endSec": 60.333,
+      "fontSize": 32,
       "color": "#2a2633"
     },
     {
       "text": "ช่องแช่แข็งอัดแน่น อย่างมากราว 2 วัน",
       "box": [
-        120,
-        380,
-        320,
+        343,
+        344,
+        420,
         72
       ],
-      "startSec": 38.6,
-      "endSec": 40.2,
-      "fontSize": 24,
-      "color": "#2a2633"
+      "startSec": 54.267,
+      "endSec": 56.033,
+      "fontSize": 32,
+      "color": "#2a2633",
+      "note": "B06 device line 2 (key TH f 160, tick f 190); SH01 box, then the strip | x 120→310 (31 Oct 2026, user: dark text hidden by the black pillar at x≈252-292) | y 380→344 (user: line 2 closer to line 1)"
     },
     {
       "text": "ช่องแช่แข็งอัดแน่น อย่างมากราว 2 วัน",
       "box": [
         420,
         340,
-        460,
-        36
+        560,
+        44
       ],
-      "startSec": 40.2,
-      "endSec": 43.5,
-      "fontSize": 24,
+      "startSec": 56.033,
+      "endSec": 60.333,
+      "fontSize": 32,
       "color": "#2a2633"
     },
     {
@@ -540,13 +556,14 @@
       "box": [
         420,
         380,
-        460,
-        36
+        560,
+        44
       ],
-      "startSec": 41.9,
-      "endSec": 43.5,
-      "fontSize": 24,
-      "color": "#2a2633"
+      "startSec": 58.667,
+      "endSec": 60.333,
+      "fontSize": 32,
+      "color": "#2a2633",
+      "note": "B06-SH03 line 3 (sheet sc01-b06-b08 SH03, TH f 3)"
     },
     {
       "text": "วันที่ 3",
@@ -556,11 +573,11 @@
         180,
         60
       ],
-      "startSec": 54.4,
-      "endSec": 65.0,
+      "startSec": 76.333,
+      "endSec": 82.933,
       "fontSize": 34,
       "color": "#2a2633",
-      "note": "B09 day card and numerals (numeral x positions approximate: check the frame)"
+      "note": "B09 day card and counters: owned by B09-SH01 (painted icons on its plate); end at the SH01 cut (2488), not carried over the door shots"
     },
     {
       "text": "2",
@@ -570,8 +587,8 @@
         60,
         80
       ],
-      "startSec": 55.4,
-      "endSec": 65.0,
+      "startSec": 77.533,
+      "endSec": 82.933,
       "fontSize": 56,
       "color": "#2a2633"
     },
@@ -583,8 +600,8 @@
         60,
         80
       ],
-      "startSec": 56.5,
-      "endSec": 65.0,
+      "startSec": 79.133,
+      "endSec": 82.933,
       "fontSize": 56,
       "color": "#2a2633"
     },
@@ -596,51 +613,54 @@
         80,
         80
       ],
-      "startSec": 57.9,
-      "endSec": 65.0,
+      "startSec": 80.867,
+      "endSec": 82.933,
       "fontSize": 44,
       "color": "#2a2633"
     },
     {
       "text": "เปิดประตู",
       "box": [
-        480,
+        460,
         250,
-        400,
+        460,
         55
       ],
-      "startSec": 65.0,
-      "endSec": 71.2,
-      "fontSize": 36,
+      "startSec": 89.867,
+      "endSec": 95.9,
+      "fontSize": 56,
       "color": "#2a2633",
-      "note": "B10 choice labels in order (sheet sc01-b09-b10, x 480-880 y 250-438)"
+      "note": "B10 choice labels in order (sheet sc01-b09-b10, x 480-880 y 250-438), TH f 10 / 42 / 86, held to the last frame",
+      "enterFrames": 8
     },
     {
       "text": "ส่งเสียงตอบ",
       "box": [
-        480,
+        460,
         318,
-        400,
+        460,
         55
       ],
-      "startSec": 65.7,
-      "endSec": 71.2,
-      "fontSize": 36,
-      "color": "#2a2633"
+      "startSec": 90.933,
+      "endSec": 95.9,
+      "fontSize": 56,
+      "color": "#2a2633",
+      "enterFrames": 8
     },
     {
       "text": "เงียบไว้",
       "box": [
-        480,
+        460,
         386,
-        400,
+        460,
         52
       ],
-      "startSec": 66.5,
-      "endSec": 71.2,
-      "fontSize": 36,
-      "color": "#2a2633"
+      "startSec": 92.4,
+      "endSec": 95.9,
+      "fontSize": 56,
+      "color": "#2a2633",
+      "enterFrames": 8
     }
   ],
-  "overlayNote": "Screen-space text (Editor, S-08 fallback quadTexts): static quads per box; each shows from startSec to endSec (clipped to its beat). Positions from sc01-b04-b05 / sc01-b06-b08 / sc01-b09-b10 overlay rules; the painted icons are the plate. Check every frame with overlay text."
+  "overlayNote": "Screen-space text (Editor, S-08 fallback quadTexts): static quads per box; each shows from startSec to endSec (clipped to its beat). Times are TH composition frames / 30 from the sheets. The painted icons and counters are in the plates (Boss). Check every frame with overlay text."
 }

@@ -14,18 +14,21 @@ export type B02Timing = {
   sh01: [number, number]; sh02: [number, number]; sh02FromFrames: number;
   /** Slam (first blow) and first regular blow, shot-local frames of SH01. */
   slam: number; firstRegular: number;
+  /** End (exclusive, composition frames) of the exported blow list. TH runs the blows through B02-SH03 to the end of the B03 fade (551,
+   *  SS-R1.6 retime); EN stops at the end of SH02 as before. The plates read only the SH01/SH02 jolts (`poundJoltPlateFrames`). */
+  blowsTo: number;
 };
 export const B02_TIMING: Record<Lang, B02Timing> = {
-  TH: {sh01: [153, 198], sh02: [198, 288], sh02FromFrames: 3, slam: 2, firstRegular: 12},
-  EN: {sh01: [141, 198], sh02: [198, 318], sh02FromFrames: 0, slam: 2, firstRegular: 39},
+  TH: {sh01: [216, 307], sh02: [307, 429], sh02FromFrames: 3, slam: 2, firstRegular: 47, blowsTo: 551},
+  EN: {sh01: [141, 198], sh02: [198, 318], sh02FromFrames: 0, slam: 2, firstRegular: 39, blowsTo: 318},
 };
 
-/** Composition frames of every pound jolt of B02 (slam, then the seeded rhythm to the end of SH02). */
+/** Composition frames of every pound jolt of B02 (slam, then the seeded rhythm to `blowsTo`). */
 export const poundJoltFrames = (lang: Lang): number[] => {
   const t = B02_TIMING[lang];
   const out = [t.sh01[0] + t.slam];
   let f = t.sh01[0] + t.firstRegular;
-  for (let i = 0; f < t.sh02[1]; i++) {
+  for (let i = 0; f < t.blowsTo; i++) {
     out.push(f);
     f += Math.round(30 * (POUND_MIN_SEC + (POUND_MAX_SEC - POUND_MIN_SEC) * hash(POUND_SEED + i)));
   }

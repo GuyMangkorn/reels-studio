@@ -48,6 +48,7 @@ export function validateTimeline(value: unknown, fps = 30): asserts value is Tim
           const box = q.box as Record<string, unknown>;
           if (!record(box) || !finite(box.width) || !finite(box.height) || box.width <= 0 || box.height <= 0) fail(`${qp}.box`, 'expected positive {width, height}');
         }
+        if (q.enterFrames !== undefined && (!finite(q.enterFrames) || !Number.isInteger(q.enterFrames) || (q.enterFrames as number) <= 0)) fail(`${qp}.enterFrames`, 'expected a positive integer');
         if (q.fontSize !== undefined && (!finite(q.fontSize) || q.fontSize <= 0)) fail(`${qp}.fontSize`, 'expected a positive number');
       });
     }

@@ -20,10 +20,10 @@ export const poundState = (lang: Lang, shot: 'SH01' | 'SH02', pf: number) => {
 
 // ---------------------------------------------------------------- B02-SH01: shut and lock
 
-/** B02-SH01 bolt keys per language (plate frames, sheet: bolt 4-7 TH / 17-21 EN). Pass 9 (user, 30 Oct 2026): no hand; the thumb-turn
- *  turns by itself on these keys. The slam lands at f 2 in both. */
+/** B02-SH01 bolt keys per language (plate frames, sheet: bolt 22-26 TH / 17-21 EN; TH re-keyed in SS-R1.6, word “ล็อก!” at f 26). Pass 9
+ *  (user, 30 Oct 2026): no hand; the thumb-turn turns by itself on these keys. The slam lands at f 2 in both. */
 export const B02_SH01_KEYS: Record<Lang, {bolt: [number, number]}> = {
-  TH: {bolt: [4, 7]},
+  TH: {bolt: [22, 26]},
   EN: {bolt: [17, 21]},
 };
 
@@ -76,7 +76,7 @@ export const paintB02Sh02 = (ctx: PaintContext, pf: number, lang: Lang) => {
 /** B03 keys per language (plate frames): key 1 (corridor light and entry lamp out), whip start (7 frames), lamps out
  *  near -> far and the neighbour window (`VD-ZC-03`, word-locked). */
 export const B03_KEYS: Record<Lang, {key1: number; whip: number; lamps: {bath: number; kitchen: number; living: number}; neighbour: number}> = {
-  TH: {key1: 9, whip: 11, lamps: {bath: 18, kitchen: 20, living: 23}, neighbour: 24},
+  TH: {key1: 9, whip: 11, lamps: {bath: 18, kitchen: 20, living: 22}, neighbour: 23},
   EN: {key1: 18, whip: 20, lamps: {bath: 27, kitchen: 30, living: 33}, neighbour: 36},
 };
 export const WHIP_FRAMES = 7;
@@ -230,7 +230,8 @@ const floorProps = (f: Flat) => {
 };
 
 /**
- * B09-SH02B: the door (panel x 230-860, y 150-560, the darkest value; latch line pure black, no light line; static on every knock), the
+ * B09-SH02B: the door (panel x 230-860, y 150-560, the darkest value; latch line pure black, no light line; static through the knocks (EN)
+ * or the call (TH, SS-R1.7), no picture key), the
  * cabinet, then the floor props. The camera tilt (`CAM_B09_SH02B`, dy -1100 -> 0 over 18 f, `drawPlate`) lifts the view from the floor to the
  * still door. No hand, knee or foot in any frame (R2.5 `Q-ZCP-13` B).
  */

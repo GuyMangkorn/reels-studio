@@ -10,7 +10,7 @@ import {castTone, cel} from './light';
 
 // ZCPAINT close plates. Boss pass 10 (user 30 Oct 2026: "วาดตัวช็อตใกล้แยก"): the close shots use the half-body bust (`bust.ts`) instead of
 // the full 6-head body scaled up. B02-SH03 (his face close), B07-SH01 (the profile reach and the pinch on the stove case) and B09-SH02 (the
-// seated profile before the knock). Sheet values from `sc01-b01-b03.md`, `sc01-b06-b08.md` and `sc01-b09-b10.md` (SS-R1.3). Flat fills.
+// seated profile before the knocks (EN) or the call (TH)). Sheet values from `sc01-b01-b03.md`, `sc01-b06-b08.md` and `sc01-b09-b10.md` (SS-R1.3). Flat fills.
 
 const FPS = 30;
 
@@ -111,7 +111,7 @@ export const paintB07Sh01 = (ctx: PaintContext, pf: number) => {
   drawFig(ctx, 26400, fig, B07_PLACE, {light: keyTravel(B07_DIR, [-1, 0.25]), floor: dim(CREAM.tile, 1.0), tex: TEX_B});
 };
 
-// ---------------------------------------------------------------- B09-SH02: the face close before the knock (seated profile)
+// ---------------------------------------------------------------- B09-SH02: the face close before the knocks (EN) or the call (TH) (seated profile)
 
 /** B09-SH02 (held plate, fromSec 0; sheet SS-R1.4 FR-ZCP-CLOSE, carried by R1.5): head centre (560, 720) at a 600 px head (face y 420-1020);
  *  the knees, crossed forearms and fists in the lower frame. Boss pass 15 moves the R1.3 framing (540, 610; 360 px) to this one: the R1.3
