@@ -84,7 +84,7 @@ const sleeve = (ctx: PaintContext, base: number, from: Pt, to: Pt, w: number, k:
 // ---------------------------------------------------------------- B04-SH03: three fill inserts
 
 const BUCKET = '#7aa0be', POT = '#b9c0c6', WATER_AQUA = '#cfe9ef', WATER_DEEP = '#9fd0da';
-/** Insert a (TH and EN [0, 39)): the bucket under the shower tap; the water rises over the insert. */
+/** Insert a (EN [0, 39) on `ZCP-B04-SH03a`; TH [0, 78) on `ZCP-B04-SH03a-TH`, whose fill holds its level after f 39): the bucket under the shower tap. */
 const BUCKET_A: Cyl = {cx: 540, yTop: 560, yBot: 960, rTop: 230, rBot: 200};
 export const paintB04Sh03a = (ctx: PaintContext, pf: number) => {
   const f = flatKit(ctx, 31000);
@@ -98,7 +98,7 @@ export const paintB04Sh03a = (ctx: PaintContext, pf: number) => {
   f.fill(FLOOR_SHADOW, [[300, 960], [800, 960], [820, 1010], [280, 1010]]);
 };
 
-/** Insert b (TH and EN [39, 51)): the pot under the basin tap; the water rises over its 12 frames. */
+/** Insert b (EN [39, 51) on `ZCP-B04-SH03b`; TH [78, 100) on `ZCP-B04-SH03b-TH`): the pot under the basin tap; the water rises over its 12 frames. */
 const POT_B: Cyl = {cx: 540, yTop: 640, yBot: 960, rTop: 220, rBot: 190};
 export const paintB04Sh03b = (ctx: PaintContext, pf: number) => {
   const f = flatKit(ctx, 31500);
@@ -127,7 +127,7 @@ const bottle = (f: Flat, cx: number, yBase: number, level: number, cap: string) 
   f.line([[cx - 24, capY], [cx + 24, capY], [cx + 24, neck + 2], [cx - 24, neck + 2]], 0.8);
 };
 
-/** Insert c: two PET bottles at the basin; the first fills over the insert (TH 12 f, EN 15 f), the second stays capped. */
+/** Insert c: two PET bottles at the basin; the first fills over the insert (TH 19 f, EN 15 f), the second stays capped. */
 export const paintB04Sh03c = (ctx: PaintContext, pf: number, len: number) => {
   const f = flatKit(ctx, 31800);
   tileWall(f);
@@ -140,8 +140,8 @@ export const paintB04Sh03c = (ctx: PaintContext, pf: number, len: number) => {
 
 // ---------------------------------------------------------------- B04-SH04: lids on (per-language keys)
 
-/** The lid-on frame of buckets 2-4 (TH 0, 4, 8; EN 3, 12, 21); bucket 1 and the pot and bottles are capped from f 0. */
-export const LIDS = {TH: [0, 4, 8], EN: [3, 12, 21]} as const;
+/** The lid-on frame of buckets 2-4 (TH 3, 7, 11; EN 3, 12, 21); bucket 1 and the pot and bottles are capped from f 0. */
+export const LIDS = {TH: [3, 7, 11], EN: [3, 12, 21]} as const;
 
 /** A bucket seen from above (high angle, horizon above the frame): rim ellipse, body, bottom ellipse; `lid` adds the flat lid. */
 const topBucket = (f: Flat, cx: number, yRim: number, lid: boolean) => {
@@ -162,7 +162,7 @@ const topBottle = (f: Flat, cx: number, cy: number, cap: string) => {
   f.fill('#d6e6e4', ell(cx, cy, 34, 58, 16));
   f.fill(cap, ell(cx, cy - 58, 16, 10, 12));
 };
-/** B04-SH04 (TH 12 f, EN 33 f; per-language keys): four buckets, one pot, six capped bottles on the basin ledge and the tiles. */
+/** B04-SH04 (TH 41 f, EN 33 f; per-language keys): four buckets, one pot, six capped bottles on the basin ledge and the tiles. */
 export const paintB04Sh04 = (ctx: PaintContext, pf: number, lang: 'TH' | 'EN') => {
   const f = flatKit(ctx, 32000);
   f.fill('#bfd9d4', [[-100, -100], [1200, -100], [1200, 2000], [-100, 2000]]);
@@ -270,7 +270,7 @@ const iconBottle = (f: Flat, cx: number, cy: number) => {
   f.line([[cx + 40, cy - 50], [cx - 40, cy + 50]], 3.5, '#e5484d', false);
 };
 /** Part 3 (`ZCP-B05-SH03-TH` / `-EN`): the cistern with its lid aside (part 1 at its end state, no hand), the icons on per-language keys. */
-export const B05_ICON_KEYS = {TH: [0, 19], EN: [11, 55]} as const;
+export const B05_ICON_KEYS = {TH: [0, 39], EN: [11, 55]} as const;
 export const paintB05Sh03Part3 = (ctx: PaintContext, pf: number, lang: 'TH' | 'EN') => {
   paintB05Sh03(ctx, 60);
   const f = flatKit(ctx, 35000);

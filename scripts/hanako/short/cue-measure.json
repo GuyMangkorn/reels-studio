@@ -1,0 +1,1036 @@
+{
+ "deliverable": "HANAKO-SHORT",
+ "scriptRevision": "HANAKO-SHORT-SCRIPT-R2",
+ "voiceLock": "v3",
+ "scene_sheet": "HANAKO-SHORT-SCENE-R4",
+ "fps": 30,
+ "preroll": 45,
+ "totalFrames": 2596,
+ "threshold": 0.04,
+ "tolerance": 3,
+ "cues": [
+  {
+   "id": "KN-1",
+   "beat": "B01",
+   "text": "ก๊อก",
+   "kind": "event",
+   "g0": 4,
+   "g1": 18,
+   "shot": "B01-SH01",
+   "rule": "event: scene-sheet knock frame (no measured line; not compared)",
+   "endRule": "event: scene-sheet knock frame (no measured line; not compared)",
+   "sheet": {
+    "g0": 4,
+    "g1": 18
+   },
+   "anchor": null,
+   "measured": null,
+   "anchorOnF": null,
+   "diffMeasured": null,
+   "builtVsMeasured": null,
+   "anchorVsBuilt": null
+  },
+  {
+   "id": "KN-2",
+   "beat": "B01",
+   "text": "ก๊อก ก๊อก",
+   "kind": "event",
+   "g0": 18,
+   "g1": 31,
+   "shot": "B01-SH01",
+   "rule": "event: scene-sheet knock frame (no measured line; not compared)",
+   "endRule": "event: scene-sheet knock frame (no measured line; not compared)",
+   "sheet": {
+    "g0": 18,
+    "g1": 31
+   },
+   "anchor": null,
+   "measured": null,
+   "anchorOnF": null,
+   "diffMeasured": null,
+   "builtVsMeasured": null,
+   "anchorVsBuilt": null
+  },
+  {
+   "id": "KN-3",
+   "beat": "B01",
+   "text": "ก๊อก ก๊อก ก๊อก",
+   "kind": "event",
+   "g0": 31,
+   "g1": 46,
+   "shot": "B01-SH01",
+   "rule": "event: scene-sheet knock frame (no measured line; not compared)",
+   "endRule": "event: scene-sheet knock frame (no measured line; not compared)",
+   "sheet": {
+    "g0": 31,
+    "g1": 46
+   },
+   "anchor": null,
+   "measured": null,
+   "anchorOnF": null,
+   "diffMeasured": null,
+   "builtVsMeasured": null,
+   "anchorVsBuilt": null
+  },
+  {
+   "id": "B01-01",
+   "beat": "B01",
+   "text": "ชั้นสาม… ห้องน้ำหญิง",
+   "kind": "speech",
+   "g0": 46,
+   "g1": 105,
+   "shot": "B01-SH01",
+   "rule": "word onset: gap end 46 (4 % envelope; sheet split 46)",
+   "endRule": "last speech frame before B01-02 onset (4 % envelope)",
+   "sheet": {
+    "g0": 46,
+    "g1": 117
+   },
+   "anchor": null,
+   "measured": {
+    "g0": 46,
+    "g1": 105
+   },
+   "anchorOnF": null,
+   "diffMeasured": {
+    "g0": 0,
+    "g1": 12
+   },
+   "builtVsMeasured": {
+    "g0": 0,
+    "g1": 0
+   },
+   "anchorVsBuilt": null
+  },
+  {
+   "id": "B01-02",
+   "beat": "B01",
+   "text": "ห้องที่สาม เคาะสามครั้ง แล้วถามว่า…",
+   "kind": "speech",
+   "g0": 117,
+   "g1": 224,
+   "shot": "B01-SH02",
+   "rule": "word onset: gap end 117 (4 % envelope; sheet split 117)",
+   "endRule": "last speech frame before B01-03 onset (4 % envelope)",
+   "sheet": {
+    "g0": 117,
+    "g1": 251
+   },
+   "anchor": "B01-a2",
+   "measured": {
+    "g0": 117,
+    "g1": 224
+   },
+   "anchorOnF": 107,
+   "diffMeasured": {
+    "g0": 0,
+    "g1": 27
+   },
+   "builtVsMeasured": {
+    "g0": 0,
+    "g1": 0
+   },
+   "anchorVsBuilt": -10
+  },
+  {
+   "id": "B01-03",
+   "beat": "B01",
+   "text": "“ฮานาโกะซัง อยู่ไหมคะ?”",
+   "kind": "speech",
+   "g0": 251,
+   "g1": 297,
+   "shot": "B01-SH02",
+   "rule": "word onset: gap end 251 (4 % envelope; sheet split 251)",
+   "endRule": "beat off (voice lock 300-sample rule)",
+   "sheet": {
+    "g0": 251,
+    "g1": 304
+   },
+   "anchor": null,
+   "measured": {
+    "g0": 251,
+    "g1": 297
+   },
+   "anchorOnF": null,
+   "diffMeasured": {
+    "g0": 0,
+    "g1": 7
+   },
+   "builtVsMeasured": {
+    "g0": 0,
+    "g1": 0
+   },
+   "anchorVsBuilt": null
+  },
+  {
+   "id": "B02-01",
+   "beat": "B02",
+   "text": "ตามที่เล่ากันบ่อย ๆ…",
+   "kind": "speech",
+   "g0": 305,
+   "g1": 337,
+   "shot": "B02-SH01",
+   "rule": "beat on (voice lock 300-sample rule)",
+   "endRule": "last speech frame before B02-02 onset (4 % envelope)",
+   "sheet": {
+    "g0": 305,
+    "g1": 349
+   },
+   "anchor": null,
+   "measured": {
+    "g0": 305,
+    "g1": 337
+   },
+   "anchorOnF": null,
+   "diffMeasured": {
+    "g0": 0,
+    "g1": 12
+   },
+   "builtVsMeasured": {
+    "g0": 0,
+    "g1": 0
+   },
+   "anchorVsBuilt": null
+  },
+  {
+   "id": "B02-02",
+   "beat": "B02",
+   "text": "จะมีเสียงตอบกลับมาว่า…",
+   "kind": "speech",
+   "g0": 349,
+   "g1": 409,
+   "shot": "B02-SH01",
+   "rule": "word onset: gap end 349 (4 % envelope; sheet split 349)",
+   "endRule": "beat off (voice lock 300-sample rule)",
+   "sheet": {
+    "g0": 349,
+    "g1": 417
+   },
+   "anchor": "B02-a2",
+   "measured": {
+    "g0": 349,
+    "g1": 409
+   },
+   "anchorOnF": 340,
+   "diffMeasured": {
+    "g0": 0,
+    "g1": 8
+   },
+   "builtVsMeasured": {
+    "g0": 0,
+    "g1": 0
+   },
+   "anchorVsBuilt": -9
+  },
+  {
+   "id": "KA-01",
+   "beat": "KA",
+   "text": "“ค่ะ”",
+   "kind": "speech",
+   "g0": 417,
+   "g1": 436,
+   "shot": "B02-SH01",
+   "rule": "beat on (voice lock, reply clip)",
+   "endRule": "beat off (voice lock, reply clip)",
+   "sheet": {
+    "g0": 417,
+    "g1": 443
+   },
+   "anchor": null,
+   "measured": {
+    "g0": 417,
+    "g1": 436
+   },
+   "anchorOnF": null,
+   "diffMeasured": {
+    "g0": 0,
+    "g1": 7
+   },
+   "builtVsMeasured": {
+    "g0": 0,
+    "g1": 0
+   },
+   "anchorVsBuilt": null
+  },
+  {
+   "id": "B03-01",
+   "beat": "B03",
+   "text": "เธอคือฮานาโกะซัง",
+   "kind": "speech",
+   "g0": 444,
+   "g1": 495,
+   "shot": "B03-SH01",
+   "rule": "beat on (voice lock 300-sample rule)",
+   "endRule": "last speech frame before B03-02 onset (4 % envelope)",
+   "sheet": {
+    "g0": 444,
+    "g1": 513
+   },
+   "anchor": "B03-a1",
+   "measured": {
+    "g0": 444,
+    "g1": 495
+   },
+   "anchorOnF": 444,
+   "diffMeasured": {
+    "g0": 0,
+    "g1": 18
+   },
+   "builtVsMeasured": {
+    "g0": 0,
+    "g1": 0
+   },
+   "anchorVsBuilt": 0
+  },
+  {
+   "id": "B03-02",
+   "beat": "B03",
+   "text": "ผีห้องน้ำโรงเรียน",
+   "kind": "speech",
+   "g0": 513,
+   "g1": 545,
+   "shot": "B03-SH01",
+   "rule": "word onset: gap end 513 (4 % envelope; sheet split 513)",
+   "endRule": "last speech frame before B03-03 onset (4 % envelope)",
+   "sheet": {
+    "g0": 513,
+    "g1": 557
+   },
+   "anchor": null,
+   "measured": {
+    "g0": 513,
+    "g1": 545
+   },
+   "anchorOnF": null,
+   "diffMeasured": {
+    "g0": 0,
+    "g1": 12
+   },
+   "builtVsMeasured": {
+    "g0": 0,
+    "g1": 0
+   },
+   "anchorVsBuilt": null
+  },
+  {
+   "id": "B03-03",
+   "beat": "B03",
+   "text": "ที่เด็กญี่ปุ่นเล่าต่อกันมาหลายรุ่น",
+   "kind": "speech",
+   "g0": 557,
+   "g1": 638,
+   "shot": "B03-SH01",
+   "rule": "word onset: gap end 557 (4 % envelope; sheet split 557)",
+   "endRule": "beat off (voice lock 300-sample rule)",
+   "sheet": {
+    "g0": 557,
+    "g1": 645
+   },
+   "anchor": null,
+   "measured": {
+    "g0": 557,
+    "g1": 638
+   },
+   "anchorOnF": null,
+   "diffMeasured": {
+    "g0": 0,
+    "g1": 7
+   },
+   "builtVsMeasured": {
+    "g0": 0,
+    "g1": 0
+   },
+   "anchorVsBuilt": null
+  },
+  {
+   "id": "B04-01",
+   "beat": "B04",
+   "text": "แต่เธอเป็นใคร?",
+   "kind": "speech",
+   "g0": 646,
+   "g1": 681,
+   "shot": "B04-SH01",
+   "rule": "beat on (voice lock 300-sample rule)",
+   "endRule": "last speech frame before B04-02 onset (4 % envelope)",
+   "sheet": {
+    "g0": 646,
+    "g1": 707
+   },
+   "anchor": "B04-a1",
+   "measured": {
+    "g0": 646,
+    "g1": 681
+   },
+   "anchorOnF": 646,
+   "diffMeasured": {
+    "g0": 0,
+    "g1": 26
+   },
+   "builtVsMeasured": {
+    "g0": 0,
+    "g1": 0
+   },
+   "anchorVsBuilt": 0
+  },
+  {
+   "id": "B04-02",
+   "beat": "B04",
+   "text": "บางคนเล่าว่า\nเธอตายตอนระเบิดลงสมัยสงคราม",
+   "kind": "speech",
+   "g0": 707,
+   "g1": 800,
+   "shot": "B04-SH01",
+   "rule": "word onset: gap end 707 (4 % envelope; sheet split 707)",
+   "endRule": "last speech frame before B04-03 onset (4 % envelope)",
+   "sheet": {
+    "g0": 707,
+    "g1": 820
+   },
+   "anchor": "B04-a2",
+   "measured": {
+    "g0": 707,
+    "g1": 800
+   },
+   "anchorOnF": 698,
+   "diffMeasured": {
+    "g0": 0,
+    "g1": 20
+   },
+   "builtVsMeasured": {
+    "g0": 0,
+    "g1": 0
+   },
+   "anchorVsBuilt": -9
+  },
+  {
+   "id": "B04-03",
+   "beat": "B04",
+   "text": "บ้างก็ว่า ถูกฆ่าในห้องน้ำ",
+   "kind": "speech",
+   "g0": 820,
+   "g1": 893,
+   "shot": "B04-SH01",
+   "rule": "word onset: gap end 820 (4 % envelope; sheet split 820)",
+   "endRule": "beat off (voice lock 300-sample rule)",
+   "sheet": {
+    "g0": 820,
+    "g1": 900
+   },
+   "anchor": "B04-a3",
+   "measured": {
+    "g0": 820,
+    "g1": 893
+   },
+   "anchorOnF": 817,
+   "diffMeasured": {
+    "g0": 0,
+    "g1": 7
+   },
+   "builtVsMeasured": {
+    "g0": 0,
+    "g1": 0
+   },
+   "anchorVsBuilt": -3
+  },
+  {
+   "id": "B05-01",
+   "beat": "B05",
+   "text": "ถ้าเรื่องพวกนี้จริง\nก็น่าจะมีร่องรอยของเธอสักที่…",
+   "kind": "speech",
+   "g0": 903,
+   "g1": 1002,
+   "shot": "B05-SH01",
+   "rule": "beat on (voice lock 300-sample rule)",
+   "endRule": "last speech frame before B05-02 onset (4 % envelope)",
+   "sheet": {
+    "g0": 903,
+    "g1": 1027
+   },
+   "anchor": "B05-a1",
+   "measured": {
+    "g0": 903,
+    "g1": 1002
+   },
+   "anchorOnF": 903,
+   "diffMeasured": {
+    "g0": 0,
+    "g1": 25
+   },
+   "builtVsMeasured": {
+    "g0": 0,
+    "g1": 0
+   },
+   "anchorVsBuilt": 0
+  },
+  {
+   "id": "B05-02",
+   "beat": "B05",
+   "text": "แต่ยังไม่พบหลักฐานเลย",
+   "kind": "speech",
+   "g0": 1027,
+   "g1": 1068,
+   "shot": "B05-SH02",
+   "rule": "word onset: gap end 1027 (4 % envelope; sheet split 1027)",
+   "endRule": "last speech frame before B05-03 onset (4 % envelope)",
+   "sheet": {
+    "g0": 1027,
+    "g1": 1078
+   },
+   "anchor": "B05-a2",
+   "measured": {
+    "g0": 1027,
+    "g1": 1068
+   },
+   "anchorOnF": 1000,
+   "diffMeasured": {
+    "g0": 0,
+    "g1": 10
+   },
+   "builtVsMeasured": {
+    "g0": 0,
+    "g1": 0
+   },
+   "anchorVsBuilt": -27
+  },
+  {
+   "id": "B05-03",
+   "beat": "B05",
+   "text": "ว่ามีเด็กผู้หญิงจริง ๆ ที่เป็นต้นเรื่อง",
+   "kind": "speech",
+   "g0": 1078,
+   "g1": 1170,
+   "shot": "B05-SH02",
+   "rule": "word onset: gap end 1078 (4 % envelope; sheet split 1078)",
+   "endRule": "beat off (voice lock 300-sample rule)",
+   "sheet": {
+    "g0": 1078,
+    "g1": 1172
+   },
+   "anchor": null,
+   "measured": {
+    "g0": 1078,
+    "g1": 1170
+   },
+   "anchorOnF": null,
+   "diffMeasured": {
+    "g0": 0,
+    "g1": 2
+   },
+   "builtVsMeasured": {
+    "g0": 0,
+    "g1": 0
+   },
+   "anchorVsBuilt": null
+  },
+  {
+   "id": "B06-01",
+   "beat": "B06",
+   "text": "เรื่องฮานาโกะที่เก่าที่สุดเท่าที่รู้กัน",
+   "kind": "speech",
+   "g0": 1173,
+   "g1": 1244,
+   "shot": "B06-SH01",
+   "rule": "beat on (voice lock 300-sample rule)",
+   "endRule": "last speech frame before B06-02 onset (4 % envelope)",
+   "sheet": {
+    "g0": 1173,
+    "g1": 1256
+   },
+   "anchor": "B06-a0",
+   "measured": {
+    "g0": 1173,
+    "g1": 1244
+   },
+   "anchorOnF": 1173,
+   "diffMeasured": {
+    "g0": 0,
+    "g1": 12
+   },
+   "builtVsMeasured": {
+    "g0": 0,
+    "g1": 0
+   },
+   "anchorVsBuilt": 0
+  },
+  {
+   "id": "B06-02",
+   "beat": "B06",
+   "text": "มาจากอิวาเตะ ราวปี 1948…",
+   "kind": "speech",
+   "g0": 1256,
+   "g1": 1349,
+   "shot": "B06-SH01",
+   "rule": "word onset: gap end 1256 (4 % envelope; sheet split 1256)",
+   "endRule": "last speech frame before B06-03 onset (4 % envelope)",
+   "sheet": {
+    "g0": 1256,
+    "g1": 1372
+   },
+   "anchor": "B06-a1",
+   "measured": {
+    "g0": 1256,
+    "g1": 1349
+   },
+   "anchorOnF": 1246,
+   "diffMeasured": {
+    "g0": 0,
+    "g1": 23
+   },
+   "builtVsMeasured": {
+    "g0": 0,
+    "g1": 0
+   },
+   "anchorVsBuilt": -10
+  },
+  {
+   "id": "B06-03",
+   "beat": "B06",
+   "text": "บันทึกนั้นไม่ใช่ข่าว…",
+   "kind": "speech",
+   "g0": 1372,
+   "g1": 1413,
+   "shot": "B06-SH02",
+   "rule": "word onset: gap end 1372 (4 % envelope; sheet split 1372)",
+   "endRule": "last speech frame before B06-04 onset (4 % envelope)",
+   "sheet": {
+    "g0": 1372,
+    "g1": 1430
+   },
+   "anchor": null,
+   "measured": {
+    "g0": 1372,
+    "g1": 1413
+   },
+   "anchorOnF": null,
+   "diffMeasured": {
+    "g0": 0,
+    "g1": 17
+   },
+   "builtVsMeasured": {
+    "g0": 0,
+    "g1": 0
+   },
+   "anchorVsBuilt": null
+  },
+  {
+   "id": "B06-04",
+   "beat": "B06",
+   "text": "แต่เป็นเรื่องผีที่มีคนเล่าไว้",
+   "kind": "speech",
+   "g0": 1430,
+   "g1": 1486,
+   "shot": "B06-SH02",
+   "rule": "word onset: gap end 1430 (4 % envelope; sheet split 1430)",
+   "endRule": "last speech frame before B06-05 onset (4 % envelope)",
+   "sheet": {
+    "g0": 1430,
+    "g1": 1502
+   },
+   "anchor": "B06-a4",
+   "measured": {
+    "g0": 1430,
+    "g1": 1486
+   },
+   "anchorOnF": 1430,
+   "diffMeasured": {
+    "g0": 0,
+    "g1": 16
+   },
+   "builtVsMeasured": {
+    "g0": 0,
+    "g1": 0
+   },
+   "anchorVsBuilt": 0
+  },
+  {
+   "id": "B06-05",
+   "beat": "B06",
+   "text": "แล้วถูกเก็บลงหนังสือ หลายสิบปีต่อมา",
+   "kind": "speech",
+   "g0": 1502,
+   "g1": 1581,
+   "shot": "B06-SH02",
+   "rule": "word onset: gap end 1502 (4 % envelope; sheet split 1502)",
+   "endRule": "beat off (voice lock 300-sample rule)",
+   "sheet": {
+    "g0": 1502,
+    "g1": 1588
+   },
+   "anchor": null,
+   "measured": {
+    "g0": 1502,
+    "g1": 1581
+   },
+   "anchorOnF": null,
+   "diffMeasured": {
+    "g0": 0,
+    "g1": 7
+   },
+   "builtVsMeasured": {
+    "g0": 0,
+    "g1": 0
+   },
+   "anchorVsBuilt": null
+  },
+  {
+   "id": "B07-01",
+   "beat": "B07",
+   "text": "แล้วเธอดังได้ยังไง?",
+   "kind": "speech",
+   "g0": 1589,
+   "g1": 1625,
+   "shot": "B07-SH01",
+   "rule": "beat on (voice lock 300-sample rule)",
+   "endRule": "last speech frame before B07-02 onset (4 % envelope)",
+   "sheet": {
+    "g0": 1589,
+    "g1": 1653
+   },
+   "anchor": "B07-a1",
+   "measured": {
+    "g0": 1589,
+    "g1": 1625
+   },
+   "anchorOnF": 1592,
+   "diffMeasured": {
+    "g0": 0,
+    "g1": 28
+   },
+   "builtVsMeasured": {
+    "g0": 0,
+    "g1": 0
+   },
+   "anchorVsBuilt": 3
+  },
+  {
+   "id": "B07-02",
+   "beat": "B07",
+   "text": "ยุค 80 ครูคนหนึ่ง\nเก็บเรื่องผีที่นักเรียนเล่าให้ฟัง",
+   "kind": "speech",
+   "g0": 1653,
+   "g1": 1759,
+   "shot": "B07-SH01",
+   "rule": "word onset: gap end 1653 (4 % envelope; sheet split 1653)",
+   "endRule": "last speech frame before B07-03 onset (4 % envelope)",
+   "sheet": {
+    "g0": 1653,
+    "g1": 1782
+   },
+   "anchor": "B07-a2",
+   "measured": {
+    "g0": 1653,
+    "g1": 1759
+   },
+   "anchorOnF": 1656,
+   "diffMeasured": {
+    "g0": 0,
+    "g1": 23
+   },
+   "builtVsMeasured": {
+    "g0": 0,
+    "g1": 0
+   },
+   "anchorVsBuilt": 3
+  },
+  {
+   "id": "B07-03",
+   "beat": "B07",
+   "text": "หนังสือของเขาปี 1990",
+   "kind": "speech",
+   "g0": 1782,
+   "g1": 1842,
+   "shot": "B07-SH02",
+   "rule": "word onset: gap end 1782 (4 % envelope; sheet split 1782)",
+   "endRule": "last speech frame before B07-04 onset (4 % envelope)",
+   "sheet": {
+    "g0": 1782,
+    "g1": 1860
+   },
+   "anchor": null,
+   "measured": {
+    "g0": 1782,
+    "g1": 1842
+   },
+   "anchorOnF": null,
+   "diffMeasured": {
+    "g0": 0,
+    "g1": 18
+   },
+   "builtVsMeasured": {
+    "g0": 0,
+    "g1": 0
+   },
+   "anchorVsBuilt": null
+  },
+  {
+   "id": "B07-04",
+   "beat": "B07",
+   "text": "ช่วยพาเรื่องพวกนี้ไปทั่วญี่ปุ่น",
+   "kind": "speech",
+   "g0": 1860,
+   "g1": 1913,
+   "shot": "B07-SH02",
+   "rule": "word onset: gap end 1860 (4 % envelope; sheet split 1860)",
+   "endRule": "last speech frame before B07-05 onset (4 % envelope)",
+   "sheet": {
+    "g0": 1860,
+    "g1": 1941
+   },
+   "anchor": null,
+   "measured": {
+    "g0": 1860,
+    "g1": 1913
+   },
+   "anchorOnF": null,
+   "diffMeasured": {
+    "g0": 0,
+    "g1": 28
+   },
+   "builtVsMeasured": {
+    "g0": 0,
+    "g1": 0
+   },
+   "anchorVsBuilt": null
+  },
+  {
+   "id": "B07-05",
+   "beat": "B07",
+   "text": "พอกลางยุค 90…",
+   "kind": "speech",
+   "g0": 1941,
+   "g1": 1981,
+   "shot": "B07-SH03",
+   "rule": "word onset: gap end 1941 (4 % envelope; sheet split 1941)",
+   "endRule": "last speech frame before B07-06 onset (4 % envelope)",
+   "sheet": {
+    "g0": 1941,
+    "g1": 1994
+   },
+   "anchor": "B07-a5",
+   "measured": {
+    "g0": 1941,
+    "g1": 1981
+   },
+   "anchorOnF": 1937,
+   "diffMeasured": {
+    "g0": 0,
+    "g1": 13
+   },
+   "builtVsMeasured": {
+    "g0": 0,
+    "g1": 0
+   },
+   "anchorVsBuilt": -4
+  },
+  {
+   "id": "B07-06",
+   "beat": "B07",
+   "text": "ฮานาโกะซังก็มีหนังของตัวเอง",
+   "kind": "speech",
+   "g0": 1994,
+   "g1": 2047,
+   "shot": "B07-SH03",
+   "rule": "word onset: gap end 1994 (4 % envelope; sheet split 1994)",
+   "endRule": "beat off (voice lock 300-sample rule)",
+   "sheet": {
+    "g0": 1994,
+    "g1": 2066
+   },
+   "anchor": null,
+   "measured": {
+    "g0": 1994,
+    "g1": 2047
+   },
+   "anchorOnF": null,
+   "diffMeasured": {
+    "g0": 0,
+    "g1": 19
+   },
+   "builtVsMeasured": {
+    "g0": 0,
+    "g1": 0
+   },
+   "anchorVsBuilt": null
+  },
+  {
+   "id": "B08-01",
+   "beat": "B08",
+   "text": "ฮานาโกะซังอาจไม่เคยมีตัวตนจริง…",
+   "kind": "speech",
+   "g0": 2055,
+   "g1": 2127,
+   "shot": "B08-SH01",
+   "rule": "beat on (voice lock 300-sample rule)",
+   "endRule": "last speech frame before B08-02 onset (4 % envelope)",
+   "sheet": {
+    "g0": 2066,
+    "g1": 2147
+   },
+   "anchor": "B08-a1",
+   "measured": {
+    "g0": 2055,
+    "g1": 2127
+   },
+   "anchorOnF": 2068,
+   "diffMeasured": {
+    "g0": 11,
+    "g1": 20
+   },
+   "builtVsMeasured": {
+    "g0": 0,
+    "g1": 0
+   },
+   "anchorVsBuilt": 13
+  },
+  {
+   "id": "B08-02",
+   "beat": "B08",
+   "text": "แต่เธอก็ไม่เคยหายไป",
+   "kind": "speech",
+   "g0": 2147,
+   "g1": 2192,
+   "shot": "B08-SH01",
+   "rule": "word onset: gap end 2147 (4 % envelope; sheet split 2147)",
+   "endRule": "last speech frame before B08-03 onset (4 % envelope)",
+   "sheet": {
+    "g0": 2147,
+    "g1": 2217
+   },
+   "anchor": "B08-a2",
+   "measured": {
+    "g0": 2147,
+    "g1": 2192
+   },
+   "anchorOnF": 2137,
+   "diffMeasured": {
+    "g0": 0,
+    "g1": 25
+   },
+   "builtVsMeasured": {
+    "g0": 0,
+    "g1": 0
+   },
+   "anchorVsBuilt": -10
+  },
+  {
+   "id": "B08-03",
+   "beat": "B08",
+   "text": "เพราะเด็กรุ่นแล้วรุ่นเล่า",
+   "kind": "speech",
+   "g0": 2217,
+   "g1": 2260,
+   "shot": "B08-SH01",
+   "rule": "word onset: gap end 2217 (4 % envelope; sheet split 2217)",
+   "endRule": "last speech frame before B08-04 onset (4 % envelope)",
+   "sheet": {
+    "g0": 2217,
+    "g1": 2273
+   },
+   "anchor": "B08-a3",
+   "measured": {
+    "g0": 2217,
+    "g1": 2260
+   },
+   "anchorOnF": 2222,
+   "diffMeasured": {
+    "g0": 0,
+    "g1": 13
+   },
+   "builtVsMeasured": {
+    "g0": 0,
+    "g1": 0
+   },
+   "anchorVsBuilt": 5
+  },
+  {
+   "id": "B08-04",
+   "beat": "B08",
+   "text": "เล่าเรื่องเธอต่อกันมา",
+   "kind": "speech",
+   "g0": 2273,
+   "g1": 2295,
+   "shot": "B08-SH01",
+   "rule": "word onset: gap end 2273 (4 % envelope; sheet split 2273)",
+   "endRule": "beat off (voice lock 300-sample rule)",
+   "sheet": {
+    "g0": 2273,
+    "g1": 2303
+   },
+   "anchor": null,
+   "measured": {
+    "g0": 2273,
+    "g1": 2295
+   },
+   "anchorOnF": null,
+   "diffMeasured": {
+    "g0": 0,
+    "g1": 8
+   },
+   "builtVsMeasured": {
+    "g0": 0,
+    "g1": 0
+   },
+   "anchorVsBuilt": null
+  },
+  {
+   "id": "B09-01",
+   "beat": "B09",
+   "text": "และเธอจะกลับมาอีกครั้ง…",
+   "kind": "speech",
+   "g0": 2303,
+   "g1": 2392,
+   "shot": "B09-SH01",
+   "rule": "beat on (voice lock 300-sample rule)",
+   "endRule": "last speech frame before B09-02 onset (4 % envelope)",
+   "sheet": {
+    "g0": 2303,
+    "g1": 2416
+   },
+   "anchor": null,
+   "measured": {
+    "g0": 2303,
+    "g1": 2392
+   },
+   "anchorOnF": null,
+   "diffMeasured": {
+    "g0": 0,
+    "g1": 24
+   },
+   "builtVsMeasured": {
+    "g0": 0,
+    "g1": 0
+   },
+   "anchorVsBuilt": null
+  },
+  {
+   "id": "B09-02",
+   "beat": "B09",
+   "text": "ทุกครั้งที่ใครสักคน ยกมือขึ้นเคาะ",
+   "kind": "speech",
+   "g0": 2416,
+   "g1": 2596,
+   "shot": "B09-SH01",
+   "rule": "word onset: gap end 2416 (4 % envelope; sheet split 2416)",
+   "endRule": "held to composition end: loop hold: scene sheet B09 \"F2595 shows the line\" (held to the composition end)",
+   "sheet": {
+    "g0": 2416,
+    "g1": 2596
+   },
+   "anchor": "B09-a2",
+   "measured": {
+    "g0": 2416,
+    "g1": 2505
+   },
+   "anchorOnF": 2411,
+   "diffMeasured": {
+    "g0": 0,
+    "g1": 91
+   },
+   "builtVsMeasured": {
+    "g0": 0,
+    "g1": 91
+   },
+   "anchorVsBuilt": -5
+  }
+ ]
+}

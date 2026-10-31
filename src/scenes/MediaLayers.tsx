@@ -1,7 +1,7 @@
 import type {ReactNode} from 'react';
 import {AbsoluteFill, Audio, Img, OffthreadVideo, Sequence, staticFile, useCurrentFrame, useVideoConfig} from 'remotion';
 import {clipVisibleAt, duckGainAt, entryTransitionStyle, resolveSrc, trackFadeAt} from './media';
-import {quadAt, quadMatrix3d, quadTextVisibleAt} from './quadText';
+import {quadAt, quadMatrix3d, quadTextEnterAt, quadTextVisibleAt} from './quadText';
 import type {AudioTrack, MediaClip, QuadText, SceneSoundCue, SceneTransition} from './types';
 
 type NarrationClock = {amplitude: readonly number[]; fps: number; startFrame?: number};
@@ -57,5 +57,6 @@ export const EntryTransition = ({entry, children}: {entry: SceneTransition; chil
 export const QuadTextLayer = ({overlays, frame}: {overlays?: QuadText[]; frame: number}) => <>{overlays?.map((overlay, i) => {
   if (!quadTextVisibleAt(overlay, frame)) return null;
   const {width, height} = overlay.box ?? {width: 640, height: 400};
-  return <div key={i} lang="th" style={{position: 'absolute', left: 0, top: 0, width, height, display: 'flex', alignItems: 'center', justifyContent: 'center', transformOrigin: '0 0', transform: quadMatrix3d(width, height, quadAt(overlay, frame - (overlay.startFrame ?? 0))), color: overlay.color ?? '#1B3A57', fontFamily: 'Noto Sans Thai, sans-serif', fontWeight: overlay.fontWeight ?? 800, fontSize: overlay.fontSize ?? 180, lineHeight: 1, whiteSpace: 'nowrap', pointerEvents: 'none'}}>{overlay.text}</div>;
+  const enter = quadTextEnterAt(overlay, frame);
+  return <div key={i} lang="th" style={{position: 'absolute', left: 0, top: 0, width, height, display: 'flex', alignItems: 'center', justifyContent: 'center', transformOrigin: '0 0', transform: quadMatrix3d(width, height, quadAt(overlay, frame - (overlay.startFrame ?? 0))), color: overlay.color ?? '#1B3A57', fontFamily: 'Noto Sans Thai, sans-serif', fontWeight: overlay.fontWeight ?? 800, fontSize: overlay.fontSize ?? 180, lineHeight: 1, whiteSpace: 'nowrap', pointerEvents: 'none', ...(enter < 1 ? {opacity: enter} : {})}}>{enter < 1 ? <span style={{display: 'inline-block', transform: `scale(${0.88 + 0.12 * enter})`}}>{overlay.text}</span> : overlay.text}</div>;
 })}</>;
