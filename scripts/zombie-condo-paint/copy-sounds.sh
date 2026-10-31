@@ -3,7 +3,7 @@
 # and add a NOTICE block (library ID, generator, licence, listened status) to the folder NOTICE files. Idempotent.
 # Usage: bash scripts/zombie-condo-paint/copy-sounds.sh   (run from the repository root)
 set -euo pipefail
-LIB="${SOUND_LIBRARY:-/Users/mangkornkatawong/Documents/ChatGPT/sound-library}"
+LIB="${SOUND_LIBRARY:-${REELS_STORE:-$HOME/ReelsStore}/library/sound}"
 ROOT="$(cd "$(dirname "$0")/../.." && pwd)"
 
 # Library IDs as <type>/<category>/<id>. Generated IDs were filed by the Editor (Stable Audio 3, not listened);

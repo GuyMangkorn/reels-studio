@@ -4,8 +4,8 @@
 #   bash scripts/the-bloop/short/copy-sounds.sh
 # Library paths come from sound-library/INDEX.md; the NOAA source copy is the SHA-256-checked file in out/logs/sources.
 set -euo pipefail
-LIB="${SOUND_LIBRARY:-/Users/mangkornkatawong/Documents/ChatGPT/sound-library}"
-OUT="${AUDIO_STUDIO_OUT:-/Users/mangkornkatawong/Documents/ChatGPT/audio-studio-mcp/outputs}"
+LIB="${SOUND_LIBRARY:-${REELS_STORE:-$HOME/ReelsStore}/library/sound}"
+OUT="${AUDIO_STUDIO_OUT:-${REELS_STORE:-$HOME/ReelsStore}/library/sound/_raw}"
 DEST="public/audio/bloop"
 mkdir -p "$DEST"
 for id in bed_underwater-mystery-sparse_01 bed_dark-drone-sub_01 water_deep-ocean-roomtone_01 \

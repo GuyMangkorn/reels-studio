@@ -4,7 +4,7 @@
 # Inputs: library IDs below. Outputs: public/audio/<category>/<id>.wav (beds), public/sfx/<category>/<id>.wav (one-shots).
 # The NOTICE files beside them are committed; the WAVs are local copies (reproducible from the library).
 set -e
-lib=${1:-/Users/mangkornkatawong/Documents/ChatGPT/sound-library}
+lib=${1:-${REELS_STORE:-$HOME/ReelsStore}/library/sound}
 cd "$(dirname "$0")/../../.."
 copy() { mkdir -p "public/$2"; cp "$lib/$1.wav" "public/$2/$(basename "$1").wav"; }
 copy music/bed/bed_underwater-mystery-sparse_01 audio/bed

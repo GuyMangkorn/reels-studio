@@ -1,4 +1,4 @@
-Sounds in this folder are local copies of the shared sound library (/Users/mangkornkatawong/Documents/ChatGPT/sound-library),
+Sounds in this folder are local copies of the shared sound library ($REELS_STORE/library/sound, default ~/ReelsStore),
 copied by scripts/oldest-shipwreck/short/copy-sounds.sh for SHIPWRECK-SHORT. File name = library ID; prompt, seed and
 settings are in the library sidecar <id>.json.
 Generator: audio-studio-mcp (MIT) / Stable Audio 3 medium, generated locally.
