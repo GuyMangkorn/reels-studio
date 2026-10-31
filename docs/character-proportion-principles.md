@@ -96,6 +96,15 @@ Decided by the user on 30 October 2026 (WORLD FOG r5). In a front view, a bent a
 - **CP-P06.** Switching between behind and in front is an instant layer change. Mark names the switch frame in the scene sheet. Choose a frame where the upper arm lies outside the torso silhouette so no sleeve pops in.
 - **CP-P07.** A hand that sits closer than the shoulder width gets an authored elbow. Two-bone IK with a fixed bone length splays the elbow outward when the hand is near the shoulder.
 
+<a id="cp-p-pose-sheet"></a>
+**Pose sheet P01–P30 (Default, user decision 31 Oct 2026).** The project's standard set of thirty front-view arm poses. The poses and their IDs are the norm; the joint angles are read by eye, not measured (Reference). Owner of the library: Boss (`src/painted/kit/pose-sheet.json`, converted to hand targets in the rig). Film and Mark cite pose IDs; they do not hold the numbers. Picture: asset store `library/image/pose-sheet/2026-10-31_pose_sheet_ALL_P01-P30.webp`.
+
+- **CP-P12 — Look here first.** Any agent that devises a body pose or gesture for a character (Film's brief, Mark's scene sheets, Boss's rig work, Editor's edits) first checks P01–P30 in `src/painted/kit/poses.ts` and the catalog sheet (`WFOG-POSE-SHEET`). If a pose fits, cite its ID (e.g. `P14`). If none fits, pick the nearest ID, state what differs, and record the new pose as a proposed addition to Boss, not as a one-off. A brief or scene handoff may override with a recorded reason. Applies to front-view arm poses on the painted rig; other rigs port the set first (runtime `missing` until verified).
+- **CP-P08.** The elbow stays outside the neck and head silhouette. A hand may touch the face or chin; the forearm never crosses the neck.
+- **CP-P09.** A hand foreshortened toward the camera is at most about 1.3x normal size and never larger than the face. Shorten the arm instead of growing the hand.
+- **CP-P10.** CP-P02 wins over the sheet for poses that hold something at the chest (P10, P17, P25, P26, P28): the elbows go back behind the torso (decided by the user, 31 Oct 2026). The sheet is read for hand placement only. Poses that really spread the elbows (P06, P09, P22) follow CP-P01.
+- **CP-P11.** The sheet's `shoulder_deg` and `elbow_bend_deg` are not rig inputs. The rig takes hand targets (`Arm.to`, `via`, `behind`); Boss converts each pose and records the result.
+
 Runtime (30 Oct 2026, commit `f6e4bd2`):
 
 - WORLD FOG rig: `existing-integrated`. `Arm.via` and `Arm.behind: 'upper' | 'all'` in `src/painted/worldfog/cast.ts`.

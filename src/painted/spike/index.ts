@@ -18,6 +18,7 @@ import {PlatePreview} from './PlatePreview';
 import {Grade, Grain, windowShot} from './WfogShop';
 import {phoneShot} from './WfogPhone';
 import {ArmBackSheet} from './ArmBackSheet';
+import {PoseSheet, POSE_SHEET_SIZE} from './PoseSheet';
 
 const {width, height, fps} = FORMATS.short;
 const shot = {width, height, fps, durationInFrames: 5 * fps};
@@ -61,6 +62,8 @@ registerRoot(() =>
     createElement(Composition, {id: 'PAINTED-TIMELINE-Shipwreck', component: ProofWithCaptions, ...proof}),
     createElement(Composition, {id: 'PAINTED-PLATES-Shipwreck', component: ProofPlates, ...proof}),
     createElement(Composition, {id: 'WFOG-ARMBACK-SAMPLE', component: ArmBackSheet, ...shot, durationInFrames: 1}),
+    // Pose sheet P01-P30 from the shared pose library (src/painted/kit/poses.ts): 6 x 5 labelled cells, a spike sheet.
+    createElement(Composition, {id: 'WFOG-POSE-SHEET', component: PoseSheet, ...shot, ...POSE_SHEET_SIZE, durationInFrames: 1}),
     createElement(Composition, {id: 'WFOG-PREVIEW-S02-SH02', component: PhoneSample, ...shot, durationInFrames: 90, defaultProps: {label: true}}),
     createElement(Composition, {id: 'WFOG-SP01-S02-SH09', component: Sp01Sh09, ...shot, durationInFrames: 180, defaultProps: {label: true, bare: false, warp: true}}),
     createElement(Composition, {id: 'WFOG-SP01-S03-SH03', component: Sp01Sh03, ...shot, durationInFrames: 120, defaultProps: {label: true, bare: false, warp: true}}),
