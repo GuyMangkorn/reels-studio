@@ -167,11 +167,11 @@ function previewCell(s) {
 }
 
 function render() {
-  const total = D.shots.length ? D.shots[D.shots.length - 1].end - D.shots[0].start : 0;
+  const total = D.shots.length && !D.untimed ? D.shots[D.shots.length - 1].end - D.shots[0].start : 0;
   document.getElementById("eyebrow").textContent = D.eyebrow || `${D.deliverable} · ${REV}`;
   document.getElementById("h1").textContent = D.title;
   document.getElementById("lede").textContent = D.lede || "";
-  const facts = [["ช็อต", String(D.shots.length)], ["ความยาว", (total / FPS).toFixed(1) + " วิ" + (D.timingEstimated ? " (ประมาณ)" : "")], ...(D.facts || [])];
+  const facts = [["ช็อต", String(D.shots.length)], ...(D.untimed ? [] : [["ความยาว", (total / FPS).toFixed(1) + " วิ" + (D.timingEstimated ? " (ประมาณ)" : "")]]), ...(D.facts || [])];
   document.getElementById("facts").innerHTML = facts.map(([k, v]) => `<span>${esc(k)} <b>${esc(v)}</b></span>`).join("");
   document.getElementById("source").textContent = `หน้านี้เป็นมุมมองสำหรับอ่าน ต้นฉบับของการกำหนดช็อตอยู่ใน ${D.source} (${REV})`;
 
@@ -185,7 +185,7 @@ function render() {
   document.getElementById("beats").innerHTML = D.beats.map(b => {
     const rows = D.shots.filter(s => s.beat === b.id).map(s => `
       <div class="shot" id="${esc(s.id)}">
-        <div><div class="sid">${esc(s.id)}</div><div class="time">${fmt(s.start)} · ${len(s.start, s.end)}</div></div>
+        <div><div class="sid">${esc(s.id)}</div>${D.untimed ? "" : `<div class="time">${fmt(s.start)} · ${len(s.start, s.end)}</div>`}</div>
         <div><div class="title">${esc(s.title)}</div>${(s.vo || []).length
           ? `<ul class="vo">${s.vo.map(([w, l]) => `<li>${w ? `<span class="who">${esc(w)}</span><br>` : ""}${esc(l)}</li>`).join("")}</ul>`
           : `<div class="vo none">ไม่มีเสียงพากย์</div>`}</div>

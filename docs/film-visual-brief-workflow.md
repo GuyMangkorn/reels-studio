@@ -53,7 +53,7 @@ This role is planning. It does not install packages, implement runtime or author
 
 ## Light tier brief
 
-For a [Light-tier](delivery-workflow.md#pipeline-tiers) deliverable the brief is one page and replaces Mark's scene sheet: style profile, per-scene medium and look, a **timed shot list** (scene/beat ID, start–end seconds, visible content or source clip with in/out, caption, transition, audio/music note), music and caption plan, capability gaps, acceptance criteria. Numeric XYZ staging is needed only where world-space staging exists. The visual-progression table below still applies.
+For a [Light-tier](delivery-workflow.md#pipeline-tiers) deliverable the brief is one page and replaces Mark's scene sheet: style profile, per-scene medium and look, a **timed shot list** (scene/beat ID, start–end seconds, visible content or source clip with in/out, caption, transition, audio/music note), music and caption plan, capability gaps, acceptance criteria. With the brief Film writes `review-rows.json` from the shot list for the [first storyboard page](mark-storyboard-workflow.md#user-storyboard-review-page). Numeric XYZ staging is needed only where world-space staging exists. The visual-progression table below still applies.
 
 ## Visual progression before asset selection
 
