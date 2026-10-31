@@ -116,7 +116,7 @@ test('B08 silhouettes stand on plate y 838 within their measured heights', () =>
 });
 
 // S1-R4 (Boss): B02 viewer's fist (VD29) and B03 FPOV-CHEST camera, tilt and arm/hand geometry (VD24–VD27).
-import {fistKnuckles, paintFistB02, HANAKO_HAND_B02, handPolygons, cuffAt, ARM, TORSO, fpovCamera, notebookTilt} from '../src/painted/hanako/plates-r4';
+import {fistKnuckles, paintFistB02, HANAKO_HAND_B02, handPolygons, cuffAt, ARM, TORSO, B03_TORSO_SCALE, B03_HEM_Y, paintFpovChest, fpovCamera, notebookTilt} from '../src/painted/hanako/plates-r4';
 import {HANAKO_HAND} from '../src/painted/hanako/look';
 import {capsule} from '../src/painted/kit/draw';
 const capturePoints = (run: (p: ReturnType<typeof makePainter>) => void) => {
@@ -155,13 +155,13 @@ test('B02 dimmed hand tone is HANAKO_HAND blended 50% toward the dip colour (VD2
   assert.equal(HANAKO_HAND_B02.skin, '#786758');
   assert.notEqual(HANAKO_HAND_B02.skin, HANAKO_HAND.skin);
 });
-test('B03 camera uses the VD27 push steps with no jump, focus (560, 640), and replaces the R3 default', () => {
+test('B03 camera uses the VD27 push steps with no jump, focus (540, 620), and replaces the R3 default', () => {
   assert.ok(Math.abs(fpovCamera(0).s - 1) < 1e-9);
   assert.ok(Math.abs(fpovCamera(70).s - 1.04) < 1e-9);
   assert.ok(Math.abs(fpovCamera(85).s - 1.12) < 1e-9);
   assert.ok(Math.abs(fpovCamera(201).s - 1.14) < 0.002);
   for (let f = 1; f < 202; f++) assert.ok(Math.abs(fpovCamera(f).s - fpovCamera(f - 1).s) < 0.009, `f${f}`);
-  for (const f of [0, 70, 85, 201]) assert.deepEqual([fpovCamera(f).fx, fpovCamera(f).fy], [560, 640]);
+  for (const f of [0, 70, 85, 201]) assert.deepEqual([fpovCamera(f).fx, fpovCamera(f).fy], [540, 620]);
   assert.deepEqual(hanakoCamera('B03-SH01', 24), fpovCamera(24));
 });
 test('B03 notebook tilts 70 to 8 degrees over F467–F479 (f24–f36), monotonic', () => {
@@ -169,17 +169,68 @@ test('B03 notebook tilts 70 to 8 degrees over F467–F479 (f24–f36), monotonic
   assert.ok(Math.abs(notebookTilt(36) - (8 * Math.PI) / 180) < 1e-12);
   for (let f = 1; f <= 36; f++) assert.ok(notebookTilt(f) <= notebookTilt(f - 1) + 1e-12);
 });
-test('B03 crop reaches frame top and arms, cuffs and hands stay above y 849 at s 1.14', () => {
+test('B03 crop reaches frame top and hands and cuffs stay above the caption band at s 1.14', () => {
   assert.ok(Math.min(...TORSO.map(([, y]) => y)) < 0);
-  const bottomAt114 = (y: number) => (y - 640) * 1.14 + 640;
-  for (const side of [0, 1] as const) for (const poly of handPolygons(side)) for (const [, y] of poly) assert.ok(bottomAt114(y) <= 849);
+  const bottomAt114 = (y: number) => (y - 620) * 1.14 + 620;
+  for (const side of [0, 1] as const) for (const poly of handPolygons(side)) for (const [, y] of poly) assert.ok(bottomAt114(y) < 860);
   const forearm = capsule(ARM.elbow, ARM.wrist, ARM.foreWidth[0], ARM.foreWidth[1]);
-  for (const [, y] of [...forearm, ...cuffAt(ARM.elbow, ARM.wrist)]) assert.ok(bottomAt114(y) <= 849);
-  // Anatomy in depth (CP-P02): the forearm is foreshortened (much shorter than the upper arm), the wrist is the widest
-  // part (nearest the viewer), the elbow sits a little below the hand and the upper arm meets the elbow.
+  for (const [, y] of [...forearm, ...cuffAt(ARM.elbow, ARM.wrist)]) assert.ok(bottomAt114(y) < 860);
+  // User reference overrides CP-P02 for B03: arms are in front, with low outside elbows and a broad near cuff.
+  for (const side of [0, 1] as const) assert.equal(handPolygons(side).length, 5); // palm plus four fingers
   const len = (a: number[], b: number[]) => Math.hypot(b[0] - a[0], b[1] - a[1]);
-  assert.ok(len(ARM.elbow, ARM.wrist) < len(ARM.shoulder, ARM.elbow) / 3);
+  assert.ok(len(ARM.elbow, ARM.wrist) < len(ARM.shoulder, ARM.elbow) / 2);
   assert.ok(ARM.foreWidth[1] > ARM.foreWidth[0]);
-  assert.ok(ARM.elbow[1] > ARM.heel[1] && ARM.elbow[1] - ARM.heel[1] < 60);
+  assert.ok(ARM.elbow[1] - ARM.heel[1] >= 250);
+  assert.ok(ARM.elbow[1] - ARM.wrist[1] >= 200);
+  assert.deepEqual(ARM.shoulder, [110, 235]);
+  assert.equal(B03_HEM_Y, 1180);
+  assert.equal(Math.max(...TORSO.map(([, y]) => y)), B03_HEM_Y);
+  const torsoUpperRatio = (B03_HEM_Y - ARM.shoulder[1]) / len(ARM.shoulder, ARM.elbow);
+  assert.ok(torsoUpperRatio >= 1.6 && torsoUpperRatio <= 1.8);
+  assert.ok(ARM.elbow[0] < 540 + (118 - 540) * B03_TORSO_SCALE && ARM.elbow[0] > ARM.shoulder[0]); // beside ribs, inside shoulder width
   assert.ok(len(ARM.heel, ARM.wrist) < ARM.heelRadius[0] + ARM.foreWidth[1]);
+});
+
+// Capture the actual sleeve polygons, including animated cuff/depth positions.
+test('B03 sleeves stay inside shoulder width and the locked push crop', () => {
+  const sleeveColors = new Set(['#1a232b', '#303b42', '#34434b', '#29363d', '#596e70', '#14232b', '#71817f']);
+  for (let f = 0; f < 202; f++) {
+    let color = '';
+    const pts: Array<[number, number]> = [];
+    const brush = new Proxy({}, {get: (_t, name) => (...args: unknown[]) => {
+      if (name === 'fill') color = args[0] as string;
+      if (name === 'polygon' && sleeveColors.has(color)) pts.push(...(args[0] as Array<[number, number]>));
+    }}) as Brush;
+    paintFpovChest(makePainter(brush, {t: f / 30, frame: f}), f);
+    assert.ok(pts.length > 0);
+    for (const [x] of pts) {
+      assert.ok(x >= ARM.shoulder[0] - 15 && x <= 1080 - ARM.shoulder[0] + 15, `shoulder limit f${f} x${x}`);
+      const screenX = (x - 540) * fpovCamera(f).s + 540;
+      assert.ok(screenX >= 10 && screenX <= 1070, `frame-side clearance f${f} x${screenX}`);
+    }
+  }
+});
+
+
+test('B03 pass 7 narrows torso 14% and the actual upper sleeve 27%, with fixed grip anchors', () => {
+  for (const [y, oldLeft] of [[450, 95], [818, 118], [930, 135]]) {
+    const left = TORSO.find(([, py]) => py === y)![0];
+    assert.ok(Math.abs((1080 - 2 * left) / (1080 - 2 * oldLeft) - 0.86) < 1e-9);
+  }
+  let color = '';
+  const upper: Array<Array<[number, number]>> = [];
+  const brush = new Proxy({}, {get: (_t, name) => (...args: unknown[]) => {
+    if (name === 'fill') color = args[0] as string;
+    if (name === 'polygon' && color === '#1a232b') upper.push(args[0] as Array<[number, number]>);
+  }}) as Brush;
+  paintFpovChest(makePainter(brush, {t: 85 / 30, frame: 85}), 85);
+  const left = upper[0];
+  const cross = (y: number) => left.flatMap(([x, py], i) => {
+    const [bx, by] = left[(i + 1) % left.length];
+    return py !== by && y >= Math.min(py, by) && y < Math.max(py, by) ? [x + (bx - x) * (y - py) / (by - py)] : [];
+  });
+  const xs = cross(450), oldWidth = 167 + (172 - 167) * 15 / 205 - 82;
+  assert.ok(Math.abs((Math.max(...xs) - Math.min(...xs)) / oldWidth - 0.73) < 1e-9);
+  assert.deepEqual(ARM.wrist, [195, 607]);
+  assert.deepEqual(handPolygons(0)[0][0], [184, 600]);
 });

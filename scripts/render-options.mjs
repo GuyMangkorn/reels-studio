@@ -1,6 +1,13 @@
 // Command-line options for scripts/render.mjs, kept apart so tests can check them without starting a render.
 const GL = ['angle', 'egl', 'swiftshader', 'swangle', 'vulkan', 'angle-egl'];
 
+const parseRange = raw => {
+  if (raw === undefined) return undefined;
+  const match = /^(\d+)-(\d+)$/.exec(raw);
+  if (!match || Number(match[1]) > Number(match[2])) throw new Error(`--range needs <from>-<to> frames with from <= to, got "${raw}"`);
+  return [Number(match[1]), Number(match[2])];
+};
+
 export const parseRenderArgs = argv => {
   const value = name => argv.find(arg => arg.startsWith(`--${name}=`))?.slice(name.length + 3);
   const positive = name => {
@@ -20,6 +27,12 @@ export const parseRenderArgs = argv => {
     gl,
     timeoutInMilliseconds: positive('timeout'),
     concurrency: positive('concurrency') ?? 4,
+    // Draft: half-size output and p5.brush canvas, written to out/<id>/preview/ and not archived.
+    preview: argv.includes('--preview'),
+    // Render every scene again instead of reusing cached scene segments (scripts/segments.mjs).
+    noCache: argv.includes('--no-cache'),
+    // Video frame range [from, to] (inclusive), e.g. --range=300-599; written to out/<id>/range/, not archived.
+    range: parseRange(value('range')),
   };
 };
 

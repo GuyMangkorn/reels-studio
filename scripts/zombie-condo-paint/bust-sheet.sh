@@ -6,9 +6,7 @@ set -e
 D=${1:-out/painted/zcpaint/p10/bust}
 mkdir -p "$D" out/logs
 npx remotion bundle src/painted/spike/zcpaint-p10-bust-index.ts --out-dir "$D/bundle" > out/logs/zcp-p10-bust-bundle.log 2>&1
-for pg in A B C D E; do
-  npx remotion still "$D/bundle" "ZCPAINT-P10-BUST-$pg" "$D/page-$pg.png" --frame=0 --gl=angle >> out/logs/zcp-p10-bust-still.log 2>&1
-done
+for pg in A B C D E; do echo "ZCPAINT-P10-BUST-$pg 0 $D/page-$pg.png"; done | node scripts/stills.mjs "$D/bundle" > out/logs/zcp-p10-bust-still.log 2>&1
 set --
 for pg in A B C D E; do set -- "$@" "$D/page-$pg.png"; done
 sh scripts/qa-sheet.sh "$D/bust-model-sheet.png" --cols 5 --width 330 "$@" > /dev/null

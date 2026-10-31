@@ -170,9 +170,9 @@ for (const short of specs) {
     await mkdir(focusDir, {recursive: true});
     const browser = await openBrowser('chrome', {chromiumOptions: {gl: 'swangle'}});
     try {
-      const composition = await selectComposition({serveUrl, id: short.id, browserInstance: browser, inputProps: propsFor('A_fade')});
+      const composition = await selectComposition({serveUrl, id: short.id, puppeteerInstance: browser, inputProps: propsFor('A_fade')});
       for (const frame of focusFrames) {
-        await renderStill({serveUrl, composition, browserInstance: browser, inputProps: propsFor('A_fade'), frame, output: path.join(focusDir, frameName(frame)), imageFormat: 'png'});
+        await renderStill({serveUrl, composition, puppeteerInstance: browser, inputProps: propsFor('A_fade'), frame, output: path.join(focusDir, frameName(frame)), imageFormat: 'png'});
       }
     } finally {
       await browser.close({silent: true});
@@ -192,21 +192,21 @@ for (const short of specs) {
   let composition;
   let loop;
   try {
-    composition = await selectComposition({serveUrl, id: short.id, browserInstance: browser, inputProps});
+    composition = await selectComposition({serveUrl, id: short.id, puppeteerInstance: browser, inputProps});
     if (composition.width !== width || composition.height !== height || composition.fps !== fps || composition.durationInFrames !== 1350) {
       throw new Error(short.id + ' composition metadata mismatch: ' + composition.width + 'x' + composition.height + '@' + composition.fps + ', ' + composition.durationInFrames + ' frames');
     }
     for (const frame of coverage.oneSecond) {
-      await renderStill({serveUrl, composition, browserInstance: browser, inputProps, frame, output: path.join(sampleDir, frameName(frame)), imageFormat: 'png'});
+      await renderStill({serveUrl, composition, puppeteerInstance: browser, inputProps, frame, output: path.join(sampleDir, frameName(frame)), imageFormat: 'png'});
     }
     for (const frame of coverage.random) {
-      if (!coverage.oneSecond.includes(frame)) await renderStill({serveUrl, composition, browserInstance: browser, inputProps, frame, output: path.join(sampleDir, frameName(frame)), imageFormat: 'png'});
+      if (!coverage.oneSecond.includes(frame)) await renderStill({serveUrl, composition, puppeteerInstance: browser, inputProps, frame, output: path.join(sampleDir, frameName(frame)), imageFormat: 'png'});
     }
     for (const frame of coverage.critical) {
-      await renderStill({serveUrl, composition, browserInstance: browser, inputProps, frame, output: path.join(criticalDir, frameName(frame)), imageFormat: 'png'});
+      await renderStill({serveUrl, composition, puppeteerInstance: browser, inputProps, frame, output: path.join(criticalDir, frameName(frame)), imageFormat: 'png'});
     }
     const videoPath = path.join(shortDir, short.id + '_A_fade-preview.mp4');
-    await renderMedia({serveUrl, composition, browserInstance: browser, inputProps, frameRange: [0, 1349], scale: 1, concurrency: 1, codec: 'h264', crf: 20, pixelFormat: 'yuv420p', outputLocation: videoPath});
+    await renderMedia({serveUrl, composition, puppeteerInstance: browser, inputProps, frameRange: [0, 1349], scale: 1, concurrency: 1, codec: 'h264', crf: 20, pixelFormat: 'yuv420p', outputLocation: videoPath});
     if (short.chapter === 'C03') {
       const compositorDir = path.resolve('node_modules/@remotion/compositor-darwin-arm64');
       const ffmpegPath = path.join(compositorDir, 'ffmpeg');
@@ -224,14 +224,14 @@ for (const short of specs) {
 
     for (const frame of [...coverage.random].reverse()) {
       const output = path.join(seekDir, 'same-browser-' + frame + '.png');
-      await renderStill({serveUrl, composition, browserInstance: browser, inputProps, frame, output, imageFormat: 'png'});
+      await renderStill({serveUrl, composition, puppeteerInstance: browser, inputProps, frame, output, imageFormat: 'png'});
       sameBrowserParity.push({frame, matchesDirect: await hash(output) === await hash(path.join(sampleDir, frameName(frame)))});
     }
 
     const loopProps = propsFor('B_loop');
-    const loopComposition = await selectComposition({serveUrl, id: short.id, browserInstance: browser, inputProps: loopProps});
+    const loopComposition = await selectComposition({serveUrl, id: short.id, puppeteerInstance: browser, inputProps: loopProps});
     for (const frame of [0, 1348, 1349]) {
-      await renderStill({serveUrl, composition: loopComposition, browserInstance: browser, inputProps: loopProps, frame, output: path.join(loopDir, frameName(frame)), imageFormat: 'png'});
+      await renderStill({serveUrl, composition: loopComposition, puppeteerInstance: browser, inputProps: loopProps, frame, output: path.join(loopDir, frameName(frame)), imageFormat: 'png'});
     }
     loop = {
       lastMatchesFirst: await hash(path.join(loopDir, frameName(1349))) === await hash(path.join(loopDir, frameName(0))),
@@ -245,10 +245,10 @@ for (const short of specs) {
   browser = await openBrowser('chrome', {chromiumOptions: {gl: 'swangle'}});
   const remountParity = [];
   try {
-    composition = await selectComposition({serveUrl, id: short.id, browserInstance: browser, inputProps});
+    composition = await selectComposition({serveUrl, id: short.id, puppeteerInstance: browser, inputProps});
     for (const frame of coverage.random) {
       const output = path.join(seekDir, 'remount-' + frame + '.png');
-      await renderStill({serveUrl, composition, browserInstance: browser, inputProps, frame, output, imageFormat: 'png'});
+      await renderStill({serveUrl, composition, puppeteerInstance: browser, inputProps, frame, output, imageFormat: 'png'});
       remountParity.push({frame, matchesDirect: await hash(output) === await hash(path.join(sampleDir, frameName(frame)))});
     }
   } finally {

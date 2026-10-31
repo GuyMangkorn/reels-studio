@@ -1,0 +1,409 @@
+{
+ "view": "front",
+ "level": "Reference",
+ "convention": "Approx. values read by eye from the sheets, not measured. right/left = character's own side. shoulder_deg: upper arm direction, 0=down, 90=horizontal outward, 180=up, negative=across body. elbow_bend_deg: 0=straight. Rules: docs/character-proportion-principles.md#cp-p-pose-sheet.",
+ "sheet_all": "library/image/pose-sheet/2026-10-31_pose_sheet_ALL_P01-P30.webp",
+ "poses": [
+  {
+   "id": "P01",
+   "name": "idle_arms_down",
+   "sheet": "pose_sheet_P01-P06.png",
+   "right_arm": {
+    "shoulder_deg": 5,
+    "elbow_bend_deg": 0
+   },
+   "left_arm": {
+    "shoulder_deg": 5,
+    "elbow_bend_deg": 0
+   }
+  },
+  {
+   "id": "P02",
+   "name": "thinking_hand_chin",
+   "sheet": "pose_sheet_P01-P06.png",
+   "right_arm": {
+    "shoulder_deg": -20,
+    "elbow_bend_deg": 150
+   },
+   "left_arm": {
+    "shoulder_deg": -30,
+    "elbow_bend_deg": 100
+   }
+  },
+  {
+   "id": "P03",
+   "name": "arms_crossed",
+   "sheet": "pose_sheet_P01-P06.png",
+   "right_arm": {
+    "shoulder_deg": -15,
+    "elbow_bend_deg": 110
+   },
+   "left_arm": {
+    "shoulder_deg": -15,
+    "elbow_bend_deg": 110
+   }
+  },
+  {
+   "id": "P04",
+   "name": "scratch_head",
+   "sheet": "pose_sheet_P01-P06.png",
+   "right_arm": {
+    "shoulder_deg": 140,
+    "elbow_bend_deg": 120
+   },
+   "left_arm": {
+    "shoulder_deg": 5,
+    "elbow_bend_deg": 0
+   }
+  },
+  {
+   "id": "P05",
+   "name": "point_side",
+   "sheet": "pose_sheet_P01-P06.png",
+   "right_arm": {
+    "shoulder_deg": 5,
+    "elbow_bend_deg": 0
+   },
+   "left_arm": {
+    "shoulder_deg": 90,
+    "elbow_bend_deg": 0
+   }
+  },
+  {
+   "id": "P06",
+   "name": "shrug_palms_up",
+   "sheet": "pose_sheet_P01-P06.png",
+   "right_arm": {
+    "shoulder_deg": 30,
+    "elbow_bend_deg": 90
+   },
+   "left_arm": {
+    "shoulder_deg": 30,
+    "elbow_bend_deg": 90
+   }
+  },
+  {
+   "id": "P07",
+   "name": "wave",
+   "sheet": "pose_sheet_P07-P12.png",
+   "right_arm": {
+    "shoulder_deg": 135,
+    "elbow_bend_deg": 40
+   },
+   "left_arm": {
+    "shoulder_deg": 10,
+    "elbow_bend_deg": 0
+   }
+  },
+  {
+   "id": "P08",
+   "name": "celebrate_V",
+   "sheet": "pose_sheet_P07-P12.png",
+   "right_arm": {
+    "shoulder_deg": 160,
+    "elbow_bend_deg": 10
+   },
+   "left_arm": {
+    "shoulder_deg": 160,
+    "elbow_bend_deg": 10
+   }
+  },
+  {
+   "id": "P09",
+   "name": "hands_on_hips",
+   "sheet": "pose_sheet_P07-P12.png",
+   "right_arm": {
+    "shoulder_deg": 45,
+    "elbow_bend_deg": 100
+   },
+   "left_arm": {
+    "shoulder_deg": 45,
+    "elbow_bend_deg": 100
+   }
+  },
+  {
+   "id": "P10",
+   "name": "hold_phone_chest",
+   "sheet": "pose_sheet_P07-P12.png",
+   "right_arm": {
+    "shoulder_deg": 15,
+    "elbow_bend_deg": 120
+   },
+   "left_arm": {
+    "shoulder_deg": 15,
+    "elbow_bend_deg": 120
+   }
+  },
+  {
+   "id": "P11",
+   "name": "offer_toward_camera",
+   "sheet": "pose_sheet_P07-P12.png",
+   "right_arm": {
+    "shoulder_deg": 10,
+    "elbow_bend_deg": 90,
+    "depth": "forearm_toward_camera"
+   },
+   "left_arm": {
+    "shoulder_deg": 5,
+    "elbow_bend_deg": 0
+   }
+  },
+  {
+   "id": "P12",
+   "name": "surprise_cover_mouth",
+   "sheet": "pose_sheet_P07-P12.png",
+   "right_arm": {
+    "shoulder_deg": 25,
+    "elbow_bend_deg": 150
+   },
+   "left_arm": {
+    "shoulder_deg": 25,
+    "elbow_bend_deg": 150
+   }
+  },
+  {
+   "id": "P13",
+   "name": "punch_toward_camera",
+   "sheet": "pose_sheet_P13-P18.png",
+   "right_arm": {
+    "shoulder_deg": 10,
+    "elbow_bend_deg": 20,
+    "depth": "forearm+fist toward camera, fist ~1.3x scale"
+   },
+   "left_arm": {
+    "shoulder_deg": 5,
+    "elbow_bend_deg": 0
+   }
+  },
+  {
+   "id": "P14",
+   "name": "point_at_viewer",
+   "sheet": "pose_sheet_P13-P18.png",
+   "right_arm": {
+    "shoulder_deg": 10,
+    "elbow_bend_deg": 30,
+    "depth": "forearm toward camera, hand ~1.3x scale"
+   },
+   "left_arm": {
+    "shoulder_deg": 5,
+    "elbow_bend_deg": 0
+   }
+  },
+  {
+   "id": "P15",
+   "name": "stop_both_palms",
+   "sheet": "pose_sheet_P13-P18.png",
+   "right_arm": {
+    "shoulder_deg": 30,
+    "elbow_bend_deg": 60,
+    "depth": "palms toward camera"
+   },
+   "left_arm": {
+    "shoulder_deg": 30,
+    "elbow_bend_deg": 60,
+    "depth": "palms toward camera"
+   }
+  },
+  {
+   "id": "P16",
+   "name": "reach_grab_camera",
+   "sheet": "pose_sheet_P13-P18.png",
+   "right_arm": {
+    "shoulder_deg": 20,
+    "elbow_bend_deg": 20,
+    "depth": "arm toward camera, hand ~1.3x scale"
+   },
+   "left_arm": {
+    "shoulder_deg": 5,
+    "elbow_bend_deg": 0
+   }
+  },
+  {
+   "id": "P17",
+   "name": "show_notebook_upright",
+   "sheet": "pose_sheet_P13-P18.png",
+   "right_arm": {
+    "shoulder_deg": 15,
+    "elbow_bend_deg": 110,
+    "depth": "notebook vertical, pages face camera"
+   },
+   "left_arm": {
+    "shoulder_deg": 15,
+    "elbow_bend_deg": 110,
+    "depth": "notebook vertical, pages face camera"
+   }
+  },
+  {
+   "id": "P18",
+   "name": "offer_cup_toward_camera",
+   "sheet": "pose_sheet_P13-P18.png",
+   "right_arm": {
+    "shoulder_deg": 20,
+    "elbow_bend_deg": 100,
+    "depth": "forearm toward camera, hand ~1.3x scale"
+   },
+   "left_arm": {
+    "shoulder_deg": 5,
+    "elbow_bend_deg": 0
+   }
+  },
+  {
+   "id": "P19",
+   "name": "drink_cup",
+   "sheet": "pose_sheet_P19-P24.png",
+   "right_arm": {
+    "shoulder_deg": 60,
+    "elbow_bend_deg": 150
+   },
+   "left_arm": {
+    "shoulder_deg": 5,
+    "elbow_bend_deg": 0
+   }
+  },
+  {
+   "id": "P20",
+   "name": "phone_at_ear",
+   "sheet": "pose_sheet_P19-P24.png",
+   "right_arm": {
+    "shoulder_deg": 50,
+    "elbow_bend_deg": 150
+   },
+   "left_arm": {
+    "shoulder_deg": 5,
+    "elbow_bend_deg": 0
+   }
+  },
+  {
+   "id": "P21",
+   "name": "salute",
+   "sheet": "pose_sheet_P19-P24.png",
+   "right_arm": {
+    "shoulder_deg": 90,
+    "elbow_bend_deg": 140
+   },
+   "left_arm": {
+    "shoulder_deg": 5,
+    "elbow_bend_deg": 0
+   }
+  },
+  {
+   "id": "P22",
+   "name": "flex_biceps",
+   "sheet": "pose_sheet_P19-P24.png",
+   "right_arm": {
+    "shoulder_deg": 90,
+    "elbow_bend_deg": 100
+   },
+   "left_arm": {
+    "shoulder_deg": 90,
+    "elbow_bend_deg": 100
+   }
+  },
+  {
+   "id": "P23",
+   "name": "hands_behind_head",
+   "sheet": "pose_sheet_P19-P24.png",
+   "right_arm": {
+    "shoulder_deg": 130,
+    "elbow_bend_deg": 150
+   },
+   "left_arm": {
+    "shoulder_deg": 130,
+    "elbow_bend_deg": 150
+   }
+  },
+  {
+   "id": "P24",
+   "name": "facepalm",
+   "sheet": "pose_sheet_P19-P24.png",
+   "right_arm": {
+    "shoulder_deg": 40,
+    "elbow_bend_deg": 150
+   },
+   "left_arm": {
+    "shoulder_deg": 5,
+    "elbow_bend_deg": 0
+   }
+  },
+  {
+   "id": "P25",
+   "name": "laptop_typing",
+   "sheet": "pose_sheet_P25-P30.png",
+   "right_arm": {
+    "shoulder_deg": 20,
+    "elbow_bend_deg": 100
+   },
+   "left_arm": {
+    "shoulder_deg": 20,
+    "elbow_bend_deg": 110,
+    "depth": "laptop on forearm"
+   }
+  },
+  {
+   "id": "P26",
+   "name": "carry_box",
+   "sheet": "pose_sheet_P25-P30.png",
+   "right_arm": {
+    "shoulder_deg": 20,
+    "elbow_bend_deg": 80
+   },
+   "left_arm": {
+    "shoulder_deg": 20,
+    "elbow_bend_deg": 80
+   }
+  },
+  {
+   "id": "P27",
+   "name": "count_fingers",
+   "sheet": "pose_sheet_P25-P30.png",
+   "right_arm": {
+    "shoulder_deg": -10,
+    "elbow_bend_deg": 110
+   },
+   "left_arm": {
+    "shoulder_deg": 20,
+    "elbow_bend_deg": 140
+   }
+  },
+  {
+   "id": "P28",
+   "name": "write_notebook",
+   "sheet": "pose_sheet_P25-P30.png",
+   "right_arm": {
+    "shoulder_deg": 20,
+    "elbow_bend_deg": 110
+   },
+   "left_arm": {
+    "shoulder_deg": 20,
+    "elbow_bend_deg": 120
+   }
+  },
+  {
+   "id": "P29",
+   "name": "thumbs_up",
+   "sheet": "pose_sheet_P25-P30.png",
+   "right_arm": {
+    "shoulder_deg": 30,
+    "elbow_bend_deg": 110,
+    "depth": "forearm angled slightly toward camera"
+   },
+   "left_arm": {
+    "shoulder_deg": 5,
+    "elbow_bend_deg": 0
+   }
+  },
+  {
+   "id": "P30",
+   "name": "visor_look_far",
+   "sheet": "pose_sheet_P25-P30.png",
+   "right_arm": {
+    "shoulder_deg": 5,
+    "elbow_bend_deg": 0
+   },
+   "left_arm": {
+    "shoulder_deg": 130,
+    "elbow_bend_deg": 140
+   }
+  }
+ ]
+}

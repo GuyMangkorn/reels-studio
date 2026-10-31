@@ -24,16 +24,16 @@ try {
   if (seq) {
     const [id, range] = seq.split('@');
     const [start, end] = range.split('-').map(Number);
-    const composition = await selectComposition({serveUrl, id, browserInstance: browser, browserExecutable});
-    await renderFrames({serveUrl, composition, browserInstance: browser, browserExecutable, chromiumOptions, imageFormat: 'png', frameRange: [start, end], outputDir: outDir});
+    const composition = await selectComposition({serveUrl, id, puppeteerInstance: browser, browserExecutable});
+    await renderFrames({serveUrl, composition, puppeteerInstance: browser, browserExecutable, chromiumOptions, imageFormat: 'png', frameRange: [start, end], outputDir: outDir});
     console.log(`sequence ${id} frames ${start}-${end} -> ${outDir}`);
   } else {
     for (const task of tasks) {
       const [id, list] = task.split('@');
-      const composition = await selectComposition({serveUrl, id, browserInstance: browser, browserExecutable});
+      const composition = await selectComposition({serveUrl, id, puppeteerInstance: browser, browserExecutable});
       for (const frame of list.split(',').map(Number)) {
         const output = path.join(outDir, `${id}_f${frame}.png`);
-        await renderStill({serveUrl, composition, browserInstance: browser, browserExecutable, chromiumOptions, frame, output, imageFormat: 'png'});
+        await renderStill({serveUrl, composition, puppeteerInstance: browser, browserExecutable, chromiumOptions, frame, output, imageFormat: 'png'});
         console.log(`still ${output}`);
       }
     }

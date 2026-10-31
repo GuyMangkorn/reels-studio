@@ -38,30 +38,30 @@ try {
   for (const [shot, start, len, keys] of specs) {
     if (process.argv.includes('--qa-only') || (selected.length && !selected.includes(shot))) continue;
     const id = `HANAKO-${shot}`;
-    const composition = await selectComposition({serveUrl, id, browserInstance: browser, chromiumOptions});
+    const composition = await selectComposition({serveUrl, id, puppeteerInstance: browser, chromiumOptions});
     const frames = [...new Set([...keys, ...extra.filter((f) => f >= 0 && f < len), ...Array.from({length: Math.ceil(len / 30)}, (_, i) => i * 30), len - 1])].sort((a,b) => a-b);
     if (motion) {
-      await renderMedia({serveUrl, composition, browserInstance: browser, chromiumOptions, codec: 'h264', concurrency: 2, outputLocation: `${dir}/${shot}-motion.mp4`, timeoutInMilliseconds: 180000});
+      await renderMedia({serveUrl, composition, puppeteerInstance: browser, chromiumOptions, codec: 'h264', concurrency: 2, outputLocation: `${dir}/${shot}-motion.mp4`, timeoutInMilliseconds: 180000});
       console.log(`${shot} motion: ${len} frames`);
       continue;
     }
     for (const frame of frames) {
       const output = `${dir}/${shot}-f${String(frame).padStart(3, '0')}.png`;
-      await renderStill({serveUrl, composition, browserInstance: browser, chromiumOptions, frame, output, imageFormat: 'png', timeoutInMilliseconds: 180000});
+      await renderStill({serveUrl, composition, puppeteerInstance: browser, chromiumOptions, frame, output, imageFormat: 'png', timeoutInMilliseconds: 180000});
       rows.push({shot, F: start + frame, f: frame, output});
       console.log(`${shot} F${start + frame} [f${frame}]`);
     }
-    if (shot === 'B03-SH01' || shot === 'B05-SH02') await renderStill({serveUrl, composition, browserInstance: browser, chromiumOptions, frame: shot === 'B05-SH02' ? 111 : 100, output: `${dir}/repeat-f${shot === 'B05-SH02' ? 111 : 100}.png`, imageFormat: 'png', timeoutInMilliseconds: 180000});
+    if (shot === 'B03-SH01' || shot === 'B05-SH02') await renderStill({serveUrl, composition, puppeteerInstance: browser, chromiumOptions, frame: shot === 'B05-SH02' ? 111 : 100, output: `${dir}/repeat-f${shot === 'B05-SH02' ? 111 : 100}.png`, imageFormat: 'png', timeoutInMilliseconds: 180000});
   }
   if (!motion && !group3 && !group2 && (!selected.length || selected.includes('B03-SH01'))) {
-    const composition = await selectComposition({serveUrl, id: 'HANAKO-LEAD-MASK', browserInstance: browser, chromiumOptions});
-    for (const frame of [0, 100, 201]) await renderStill({serveUrl, composition, browserInstance: browser, chromiumOptions, frame, output: `${dir}/lead-f${frame}.png`, imageFormat: 'png', timeoutInMilliseconds: 180000});
+    const composition = await selectComposition({serveUrl, id: 'HANAKO-LEAD-MASK', puppeteerInstance: browser, chromiumOptions});
+    for (const frame of [0, 100, 201]) await renderStill({serveUrl, composition, puppeteerInstance: browser, chromiumOptions, frame, output: `${dir}/lead-f${frame}.png`, imageFormat: 'png', timeoutInMilliseconds: 180000});
   }
   if (!motion && group3) {
     if(!selected.length || selected.includes('B08-SH01')) {
       for(const [g,m,frame] of [[0,0,113],[1,0,183],[1,1,183],[2,0,206],[2,1,206],[3,0,239]]) {
-        const composition=await selectComposition({serveUrl,id:'HANAKO-SILHOUETTE-MASK',browserInstance:browser,chromiumOptions,inputProps:{g,m}});
-        await renderStill({serveUrl,composition,browserInstance:browser,chromiumOptions,frame,inputProps:{g,m},output:`${dir}/silhouette-g${g}-m${m}.png`,imageFormat:'png',timeoutInMilliseconds:180000});
+        const composition=await selectComposition({serveUrl,id:'HANAKO-SILHOUETTE-MASK',puppeteerInstance:browser,chromiumOptions,inputProps:{g,m}});
+        await renderStill({serveUrl,composition,puppeteerInstance:browser,chromiumOptions,frame,inputProps:{g,m},output:`${dir}/silhouette-g${g}-m${m}.png`,imageFormat:'png',timeoutInMilliseconds:180000});
       }
     }
     for(const [id,frames,prefix] of [
@@ -70,8 +70,8 @@ try {
       ['HANAKO-LAYERS-OFF',[45,81,204,293],'layers-off'],
       ['HANAKO-B09-SH01',[293],'repeat'],
     ]) {
-      const composition=await selectComposition({serveUrl,id,browserInstance:browser,chromiumOptions});
-      for(const frame of frames) await renderStill({serveUrl,composition,browserInstance:browser,chromiumOptions,frame,
+      const composition=await selectComposition({serveUrl,id,puppeteerInstance:browser,chromiumOptions});
+      for(const frame of frames) await renderStill({serveUrl,composition,puppeteerInstance:browser,chromiumOptions,frame,
         output:`${dir}/${prefix}-f${frame}.png`,imageFormat:'png',timeoutInMilliseconds:180000});
     }
   }

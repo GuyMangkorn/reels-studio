@@ -11,7 +11,6 @@ if [ "$mode" = bare ]; then
 else
   props='{"narration":null,"audio":[]}'
 fi
-for f in "$@"; do
-  npx remotion still out/bundle-shipwreck SHIPWRECK-SHORT "$out/f$(printf %04d "$f").png" --frame="$f" --gl=angle --props="$props" >> "out/logs/stills-$mode.log" 2>&1
-done
+for f in "$@"; do echo "SHIPWRECK-SHORT $f $out/f$(printf %04d "$f").png"; done |
+  node scripts/stills.mjs out/bundle-shipwreck --props="$props" >> "out/logs/stills-$mode.log" 2>&1
 echo "rendered $# $mode stills to $out"

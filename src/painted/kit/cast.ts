@@ -66,8 +66,9 @@ export type FigAnchors = {
   top: number; bottom: number;
 };
 
-const H = 0.425; // one head, m
-const BONE = 0.26;
+export const H = 0.425; // one head, m
+/** Upper-arm and forearm length, m (both bones; the pose library and its test use it). */
+export const BONE = 0.26;
 
 /** Two-bone IK in px: elbow for shoulder S, hand target T, bone L; picks the solution bending down and toward `out`. */
 export const ikElbow = (S: Pt, T: Pt, L: number, out: number): Pt => {

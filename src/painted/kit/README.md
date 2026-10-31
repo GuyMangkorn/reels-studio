@@ -13,7 +13,8 @@ view with `scripts/qa-sheet.sh`). Source of the catalog: [catalog.tsx](catalog.t
 | `camera.tsx` | `Camera`, `STILL_CAMERA`, `pushCamera`, `easeOver`, `toScreen`, `applyCamera`, `cameraTransform`, `CameraLayer` | Shot camera for brush and SVG layers |
 | `glow.tsx` | `GLOW_PEAK`, `Shafts`, `Flash`, `Spot`, `Bubbles`, `Vignette` | Light overlays (<= 0.3 peak) |
 | `screen.tsx` | `Grade`, `Grain`, `CaptionShade`, `shadeGate`, `CaptionCue` | Screen-space grade, grain, caption shade |
-| `cast.ts` | `CastDef`, `Outfit`, `FigPose`, `Arm`, `Prop`, `FigAnchors`, `drawFigure(p, def, g, unit, pose, t)`, `shoulderHeight(def, crouch)`, `ikElbow`, `drawTorch`, `drawUmbrella` | Recurring 4-head cast rig (front and profile flat cards) |
+| `cast.ts` | `CastDef`, `Outfit`, `FigPose`, `Arm`, `Prop`, `FigAnchors`, `drawFigure(p, def, g, unit, pose, t)`, `shoulderHeight(def, crouch)`, `ikElbow`, `H`, `BONE`, `drawTorch`, `drawUmbrella` | Recurring 4-head cast rig (front and profile flat cards) |
+| `poses.ts` | `POSE_IDS`, `PoseId`, `POSES`, `poseArms(id, def, g, unit)`, `shoulderAnchors(def)` | Pose sheet P01-P30 as shoulder-relative hand targets for the cast rig (front, standing; [CP-P11](../../../docs/character-proportion-principles.md#cp-p-pose-sheet)) |
 | `head.ts` | `paintHeadFront`, `paintHeadSide`, `HeadStyle`, `FaceState`, `Brow`/`Eyes`/`Mouth`, `headOutline`, `BROW_Y`, `blinking`, `HEAD_SPAN`, `CHIN` | Decal heads with face controls |
 | `hash.ts` | `hash` | Deterministic 0..1 noise |
 
