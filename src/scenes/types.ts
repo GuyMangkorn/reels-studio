@@ -73,6 +73,8 @@ export type QuadText = {
   text: string;
   quads: [number, number][][];
   startFrame?: number; endFrame?: number;
+  /** Optional entrance: fade 0 -> 1 with a small scale pop over this many frames from `startFrame`; absent = appears at once. */
+  enterFrames?: number;
   box?: {width: number; height: number};
   fontSize?: number; fontWeight?: number; color?: string;
 };

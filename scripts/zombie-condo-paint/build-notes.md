@@ -2028,3 +2028,31 @@ Source: index "SS-R1.6 retime list" (SS-R1.7 call +59 f). Painted code only; EN 
 - **Comments:** "knock" removed where TH is now the call (`b09.ts`, `povshots.ts`, `closeups.ts`). Also corrected: `diagram.ts`, `inserts.ts`, `bathroom.ts`, `fridge.ts` header lengths.
 - **Not applied / open:** (1) the B06-SH01 device overlay (clock and tick icons, TH f 68 / 98 / 160 / 190) is not in the checkout (no clock/tick code under `src/painted`), so its keys cannot be re-keyed; (2) B04-SH03a/b fill keeps its EN rise (39 f / 12 f) and holds, as the sheet allows; (3) EN pounds in B02-SH03 / B03 are not extended (EN frozen); the EN sheet also describes pounding there, so this needs a Mark decision.
 - **Tests (not edited, Editor-owned):** `tests/zcpaint.test.ts` line 20 (blows inside `sh02[1]`; TH now uses `blowsTo`) and line 117 (`boltAngle('TH', 7) === 90`; TH bolt is now 22-26) fail by design. The B08 mapping test still passes but its comments describe the old TH clock.
+
+## 2026-10-31 — Editor pass 3 (TH, SS-R1.7: Gemini read + B09 call)
+
+Inputs: index `ZCPAINT-SHORT-SS-R1.7` (TH frames) and its "SS-R1.6 retime list" (Editor part); Boss retime report ("Boss retime pass" above; TH-only IDs). Narration: candidate `projects/ZCONDO/audio/gemini-tts/zcpaint-th-call/candidate/ZCPAINT-SHORT-TH.candidate-call.mp3` (sha256 e979a731…, 93.15 s), locked with `store.py use` to `public/narration/ZCPAINT-SHORT-TH.mp3` (Git-tracked; the lock entry is in `assets.lock.json`). Amplitude `ZCPAINT-SHORT-TH.amplitude.json` already from the candidate: 2795 f; call 2550–2587 active, 2590–2626 silent, TH-37 2632 active (checked). `ZCPAINT-SHORT-TH.lines.json` unchanged. `store.py fetch zombie-condo-paint` restored the 33 locked `public/` audio/sfx files (missing in this checkout).
+
+Changes (uncommitted):
+- `scripts/zombie-condo-paint/short/cues-TH.json` regenerated: `durationSec` 95.9 (2877 f); beats at 0 / 216 / 518 / 580 / 1072 / 1468 / 1810 / 2044 / 2290 / 2686 f; shot IDs and `fromSec` per the index TH map and Boss's TH-only IDs; `sheetRevision` SS-R1.7.
+- `src/videos/zombie-condo-paint/index.ts`: `captionsFor` clamps a caption onset at 0. TH-11 (“แต่ก๊อกน้ำยังไหล”) is measured at 19.318 s, 0.5 f before B04 (580 f). EN is unaffected: the resolved EN episode object is byte-identical before and after (JSON snapshot compare).
+- Tests: `tests/zombie-condo-paint.test.ts` (TH 2877 f; amplitude 93.15 s; new test "TH cue events (SS-R1.7)"); `tests/zcpaint.test.ts` (blow range to TH `blowsTo` 551; TH bolt 22–26; plate comparison limited to SH01/SH02).
+
+Editor decisions not in the index (Mark to confirm):
+1. B09 day card and counters (`วันที่ 3`, `2`, `4`, `12%`) end at the B09-SH01 cut (2488). The cue file carried them over the B09-SH02/SH02B/SH03 shots; the sheet places them in B09-SH01 with the painted icons on that plate.
+2. B04 diagram labels: `ปั๊ม` from 667, `ถังบนดาดฟ้า` from 695, `ไฟดับ` from 739 (sheet keys 23 / 51 / 95), held to the SH02 cut (912).
+3. B06 device text (`ตู้เย็น…`, `ช่องแช่แข็ง…`, `กระป๋อง ท้ายสุด`): lines at 1536 / 1628 / 1760, the pass-1 box layout (SH01 box to 1681, strip after), held to the B07 cut (1810). Text still `pending-label-check` (Preaw/Boat). The painted clock/tick icons (TH f 68/98/160/190) are not in the checkout (Boss).
+4. B10 labels at 2696 / 2728 / 2772, held to the last frame (sheet TH f 10 / 42 / 86).
+5. Beds: drone out at 2550 (sheet: drone out by the last frame before the call); clock pulse enters at 874 (sheet step 6) and thins at TH-27 onset 1892 (±0.3 s, the word time is not measured), out at the B08 cut; heartbeat ends at the B02-SH03 freeze word (468); B09-SH03 room tone starts after the true-silence section (2632); fridge hum and the electric buzz end at the power cut (527).
+6. SFX not in the index kept from pass 2 at their shot-relative offsets: bag thump 222 (sheet B02-SH01 f 6), creature neck creak 170 (sheet B01-SH02 f 7; library stand-in, sheet says NEEDS-GEN), tap-fill 912 (library placeholder for the per-container fills, NEEDS-GEN). `foley_cistern-lid-tap_01` now sits at the lift start 1109 (sheet B05-SH01 f 37, lid tap) with `trimStartSec` 0.7; the bucket creak is not placed.
+7. Lid snaps: `foley_lid-snaps-three_01` (1.25 s; transients at ~0.09 s and ~0.98 s, not the sheet's 4-frame spacing) is used once per snap at 1034 / 1038 / 1042 with `trimStartSec` 0.08 and `durationSec` 0.12. Listen before approving.
+8. Riser `reveal_riser-tension_01` runs 80 → 196 (`durationSec` 3.867; the sheet stops it at SH02 f 33).
+
+Checks (this pass):
+- `tsc --noEmit`: clean. `npm test`: 248 pass, 0 fail (before: 247 tests, 7 fail: registry, CATBOX, the two Boss-retime asserts, and the three cue-driven ZCPAINT tests). Logs: `out/logs/zcp-th-after-test.log`, baseline `out/logs/zcp-th-baseline-test.log`. eslint on the three changed files: clean.
+- `scripts/caption-breaks.mjs` on the TH timeline (cues as scenes): 0 bad breaks, 0 MAY-WRAP.
+- Stills (`render.mjs --stills`, one Chrome, `--gl=angle`): 38 frames in `out/ZCPAINT-SHORT-TH/stills/`. Sheets: `out/qa/zcp-th-ss17/B09-B10-sheet-v2.png` (2290–2876, cut and event frames), `out/qa/zcp-th-ss17/B04-B06-overlay-sheet.png`.
+- `scripts/caption-zone.py` (B10 and the sub-hit caption): mean 0.21–0.46, p95 0.55–0.65; every B10 caption frame fails the default (mean ≤ 0.25, p95 ≤ 0.40) because the caption sits over the cream door. The outlined white captions over cream were the approved basis (delivery record, Boss pass 8/9 and P15-2). Recorded as a fail on the numbers, not a pass.
+- Preview: `render.mjs ZCPAINT-SHORT-TH --preview --range=2490-2876` (`out/ZCPAINT-SHORT-TH/range/`). `--range` is inclusive; `2877` is out of range.
+
+Not verified: no audio listening (the call, the sub hit, the B09 knocks removal and the bed levels are unheard); Studio and random/backward seek not run; no full-length render (not requested); the final −14 LUFS check is on the full export only.

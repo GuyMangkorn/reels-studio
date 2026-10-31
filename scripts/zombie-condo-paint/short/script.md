@@ -158,7 +158,7 @@ Visual intent: supply countdown as on-screen counters ticking down (fictional qu
 
 **ซับ:** “คุณจะเปิดประตู ส่งเสียงตอบ” / “หรือเงียบไว้?”
 
-**Sound intent:** a thin, unresolved high tone under the question; the 3.0 s hold stays near-silent (room tone, no music resolve), so the ending feels open. Hard cut to black, or `A_fade`, per Editor.
+**Sound intent:** TH (user, 1 Nov 2026): no high tone; the 3.0 s hold stays near-silent (room tone, no music resolve), then three soft knuckle knocks after the last line (≈93.6 / 94.05 / 94.5 s), so the ending feels open. EN keeps the thin, unresolved high tone under the question. Hard cut to black, or `A_fade`, per Editor.
 
 Visual intent: hold on the peephole-less door and the barricade for ≈3 s with the question on screen (optionally three choice labels: เปิดประตู / ส่งเสียงตอบ / เงียบไว้, same wording). Ending: hard cut or `A_fade` (Editor's call). Not a seamless loop.
 
