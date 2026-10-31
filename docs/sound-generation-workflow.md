@@ -37,7 +37,7 @@ The core set below comes from generic editing and sound-design guides (whoosh, r
 <a id="library-index"></a>
 ### Library index
 
-`/Users/mangkornkatawong/Documents/ChatGPT/sound-library/INDEX.md` lists every file with ID, path, length, loop flag, use and tags. The first batch (2026-10-28, 39 files, **none listened to by a human yet**) covers transitions, UI, impacts, risers and stingers, zombie/horror creatures and foley, ambience beds and music for tension, chase, mystery/explainer and endings. Regenerate the index whenever a sound is added. Loop-flagged beds were crossfaded automatically; listen for a seam before relying on one.
+`$REELS_STORE/library/sound/INDEX.md` (default `~/ReelsStore/library/sound/INDEX.md`, see the [asset store](../README.md#asset-store)) lists every file with ID, path, length, loop flag, use and tags. The first batch (2026-10-28, 39 files, **none listened to by a human yet**) covers transitions, UI, impacts, risers and stingers, zombie/horror creatures and foley, ambience beds and music for tension, chase, mystery/explainer and endings. Regenerate the index whenever a sound is added. Loop-flagged beds were crossfaded automatically; listen for a seam before relying on one.
 
 ## License
 

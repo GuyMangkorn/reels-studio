@@ -1,9 +1,10 @@
 # Shared sound library
 
-The library lives **outside this repository** so other projects can use it:
+The library lives **outside this repository**, in the [asset store](../../../README.md#asset-store), so other projects can use it:
 
 ```
-/Users/mangkornkatawong/Documents/ChatGPT/sound-library/
+$REELS_STORE/library/sound/        (default ~/ReelsStore/library/sound/)
+  _raw/                   every audio-studio generation and processed take, kept
   README.md               layout, naming and license (for any project's agent)
   NOTICE.md               license of generated audio
   INDEX.md                every file with ID, path, length, loop flag, use and tags
