@@ -12,6 +12,8 @@ import argparse, hashlib, os, shutil, subprocess, sys, time
 
 MEDIA = {'.mp4', '.mov', '.mp3', '.wav', '.m4a', '.ogg', '.flac'}
 SKIP_PARTS = ('bundle', 'venv', 'node_modules', 'logs', 'tmp', 'qa')
+KEEP_DIRS = ('logs/sources',)  # source recordings kept although under a skipped dir
+SOUND_LIBRARY = os.environ.get('SOUND_LIBRARY') or os.path.expanduser('~/Documents/ChatGPT/sound-library')
 
 
 # (prefix of the path under out/ or _public-ignored/, destination prefix); first match wins, unmatched -> _misc/
@@ -33,7 +35,8 @@ ROUTES = [
     ('_public-ignored/public/narration/SHIPWRECK', 'SHIPWRECK/audio/narration/SHIPWRECK'),
     ('lake-nyos/', 'LAKENYOS/'), ('hanako-voice/', 'HANAKO/audio/'),
     ('catboxes', 'CATBOX/audio/catboxes'), ('haunted', 'HAUNTED/haunted'), ('bedroom-pov', 'HAUNTED/bedroom-pov'),
-    ('gemini-tts-test/', '_shared/voice-tests/gemini-tts-test/'), ('painted/face/', '_shared/painted-spikes/face/'),
+    ('logs/sources/bloop', 'BLOOP/audio/sources/bloop'), ('_untracked/claude/pool-depth-short/', 'POOLDEPTH/audio/untracked/'),
+    ('gemini-tts-test/', 'WFOG/audio/gemini-tts-test/'), ('painted/face/', '_shared/painted-spikes/face/'),
 ]
 
 
@@ -56,11 +59,21 @@ def worktrees(cwd):
     return paths, branch
 
 
-def candidates(w):
-    """(source path, destination relative path) for ignored media in one worktree."""
+def library_names():
+    names = set()
+    for r, ds, fs in os.walk(SOUND_LIBRARY):
+        names.update(fs)
+    return names
+
+
+def candidates(w, branch, library):
+    """(source path, destination relative path) for ignored media in one worktree, plus untracked public/ media
+    that the shared sound library does not already hold."""
     o = os.path.join(w, 'out')
     for r, ds, fs in os.walk(o):
-        ds[:] = [d for d in ds if not any(s in d for s in SKIP_PARTS)]
+        ds[:] = [d for d in ds if not any(s in d for s in SKIP_PARTS)
+                 or any(os.path.relpath(os.path.join(r, d), o).startswith(k) or k.startswith(os.path.relpath(os.path.join(r, d), o))
+                        for k in KEEP_DIRS)]
         for f in fs:
             if os.path.splitext(f)[1].lower() in MEDIA:
                 p = os.path.join(r, f)
@@ -70,6 +83,10 @@ def candidates(w):
         if rel.startswith('out/') or 'node_modules' in rel or os.path.splitext(rel)[1].lower() not in MEDIA:
             continue
         yield os.path.join(w, rel), os.path.join('_public-ignored', rel)
+    new = subprocess.run(['git', 'ls-files', '-o', '--exclude-standard', 'public'], cwd=w, capture_output=True, text=True).stdout
+    for rel in new.splitlines():
+        if os.path.splitext(rel)[1].lower() in MEDIA and os.path.basename(rel) not in library:
+            yield os.path.join(w, rel), os.path.join('_untracked', branch, rel)
 
 
 def sha(p):
@@ -116,7 +133,7 @@ def main():
     paths, branch = worktrees(os.getcwd())
     if a.only:
         paths = [os.getcwd()]
-    seen, rows, size = {}, [], 0
+    seen, rows, size, library = {}, [], 0, library_names()
     mp = os.path.join(a.dest, 'manifest.tsv')
     old_rows = []
     if os.path.exists(mp):  # already-archived content (by hash) is skipped; its rows are kept
@@ -125,7 +142,7 @@ def main():
     for w in paths:
         if not os.path.isdir(w):
             continue
-        for src, rel in candidates(w):
+        for src, rel in candidates(w, branch.get(w, 'detached'), library):
             if not os.path.isfile(src) or os.path.islink(src):
                 continue
             if a.only and not rel.startswith(a.only + os.sep):
