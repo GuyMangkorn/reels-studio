@@ -85,6 +85,19 @@ test('Hanako spread is scattered, separated and safe throughout the map push',()
   assert.equal(generationGroups.at(-1)!.end,2301);
 });
 
+// R5 (I4, SCENE-R5 B08-SH01): exactly two 3-frame light dips, step changes, before the next line.
+import {b08LightDip} from '../src/painted/shots/hanako';
+test('B08 light dips are two 3-frame steps at 0.45 in the empty row, before the next line',()=>{
+  const dipped:number[]=[];
+  for(let F=2046;F<2302;F++) {
+    const level=b08LightDip(F);
+    assert.ok(level===0 || level===.45);
+    if(level>0) dipped.push(F);
+  }
+  assert.deepEqual(dipped,[2129,2130,2131,2136,2137,2138]);
+  assert.ok(dipped.every(F=>F>=2127 && F<2147));
+});
+
 // Polish A (P01/P02): the brush-painted CH-KID and B08 silhouettes keep the measured envelopes (lead height, feet line).
 import {paintKid, KIDS} from '../src/painted/hanako/assets';
 import {paintKidSilhouette, SILHOUETTE_FEET_Y} from '../src/painted/hanako/generations';

@@ -1,0 +1,98 @@
+{
+  "public/audio/bed/bed_sub-drone-fade-in_01.wav": {
+    "store": "library/sound/ambience/bed/bed_sub-drone-fade-in_01.wav",
+    "sha256": "8ea4bed3f715cd929dcc64cd4df288d704f38fdad83df4623c9837babd346653"
+  },
+  "public/audio/electric/electric_light-flicker-buzz_01.wav": {
+    "store": "library/sound/sfx/electric/electric_light-flicker-buzz_01.wav",
+    "sha256": "f123f9a58b103d3c5bbf02800e027a00dd22ce4105a1d098229aa3e4a977982c"
+  },
+  "public/audio/foley/foley_drawer-filing-open_01.wav": {
+    "store": "library/sound/sfx/foley/foley_drawer-filing-open_01.wav",
+    "sha256": "2a19c4f90fd18b55b47bd00262de9fe49616a2ccb1130e407e687d9b61df195b"
+  },
+  "public/audio/foley/foley_notebook-paper-rustle_01.wav": {
+    "store": "library/sound/sfx/foley/foley_notebook-paper-rustle_01.wav",
+    "sha256": "6d484b7f60c0f3587dfd9671c5be74fc399e8b8ecd1c58c6d8cd4afb1c18e8d1"
+  },
+  "public/audio/foley/foley_paper-tab-flick_01.wav": {
+    "store": "library/sound/sfx/foley/foley_paper-tab-flick_01.wav",
+    "sha256": "079ce0e11454a48ea8a3ca89bf6e6421b798e495fc58c50c212c58502eff417b"
+  },
+  "public/audio/impact/impact_door-slam-wood-muffled_01.wav": {
+    "store": "library/sound/sfx/impact/impact_door-slam-wood-muffled_01.wav",
+    "sha256": "53743ace2fe03b474d48e0d80bbd9ce91fed7e4395dd84a0ce157496e0418c19"
+  },
+  "public/audio/impact/impact_knuckle-rap_01.wav": {
+    "store": "library/sound/sfx/impact/impact_knuckle-rap_01.wav",
+    "sha256": "7c31f64c65f823f2b97491f9a72987a1c797e58d15f796a46a96734811ab786c"
+  },
+  "public/audio/impact/impact_sub-hit-short_01.wav": {
+    "store": "library/sound/sfx/impact/impact_sub-hit-short_01.wav",
+    "sha256": "d250ecf6bc280a93b9b781d3bc26677bd054fd27bcc9dc1956c3253e3b4adec8"
+  },
+  "public/audio/mechanical/mechanical_projector-shutter-click_01.wav": {
+    "store": "library/sound/sfx/mechanical/mechanical_projector-shutter-click_01.wav",
+    "sha256": "119d5f27aebd20b2435cd232293d81d14d49a870547d460e6175bd1aa450248a"
+  },
+  "public/audio/reveal/reveal_reverse-swell-airy_01.wav": {
+    "store": "library/sound/sfx/reveal/reveal_reverse-swell-airy_01.wav",
+    "sha256": "998141680beb56b2ccf9606a83be35673b5ed27b777d46392fd0a6a17500e892"
+  },
+  "public/audio/reveal/reveal_riser-tension_01.wav": {
+    "store": "library/sound/sfx/reveal/reveal_riser-tension_01.wav",
+    "sha256": "571acff153c2e6694fe4ab965b5c5389808ca9cfc51a3452660431b569bba300"
+  },
+  "public/audio/room/room_dark-empty-building_01.wav": {
+    "store": "library/sound/ambience/room/room_dark-empty-building_01.wav",
+    "sha256": "182e07d714ac291dfc72cb1789d4cf1df3b287733ab5c0af1715441587ead4c2"
+  },
+  "public/audio/tension/tension_drone-sparse-piano_01.wav": {
+    "store": "library/sound/music/tension/tension_drone-sparse-piano_01.wav",
+    "sha256": "952e6e50ad21904e6078aa56f5e46771afed2e74c1ca61743f98f74dd19d7ce4"
+  },
+  "public/audio/tension/tension_music-box-motif-minor_01.wav": {
+    "store": "library/sound/instrument/tension/tension_music-box-motif-minor_01.wav",
+    "sha256": "5061278fc108011b51a8d5a43583890fa6517ae0f6f859430a1dbf2caa57a36c"
+  },
+  "public/audio/tension/tension_music-box-motif-slow_01.wav": {
+    "store": "library/sound/instrument/tension/tension_music-box-motif-slow_01.wav",
+    "sha256": "b06c10d1502d7ca77a1fa7a1305a25ab1c5a7953e5aeef669317e99e697b4d87"
+  },
+  "public/audio/tension/tension_rumble-distant-muffled_01.wav": {
+    "store": "library/sound/sfx/tension/tension_rumble-distant-muffled_01.wav",
+    "sha256": "4491e1c988047178330f302118b1c2b5add9e1a67030859fbc9e0842e3f91dd3"
+  },
+  "public/audio/tension/tension_whispers-children-murmur_01.wav": {
+    "store": "library/sound/sfx/tension/tension_whispers-children-murmur_01.wav",
+    "sha256": "94a7aea26e02a3c41fd2b1a9f8ec820bdff19c6ca6922973cd9be51d93be2875"
+  },
+  "public/audio/tone/tone_soft-sustain-reflective_01.wav": {
+    "store": "library/sound/music/tone/tone_soft-sustain-reflective_01.wav",
+    "sha256": "98961e8e011f34fb71d225ce1a98788918f074337916e6c6648c965b20ccb2c7"
+  },
+  "public/audio/ui/ui_click-tick_01.wav": {
+    "store": "library/sound/sfx/ui/ui_click-tick_01.wav",
+    "sha256": "edfafbe6bfb91e1c01aa9b3e13ca051dcf257406ae63d3ac54178aaf3991babb"
+  },
+  "public/audio/whoosh/whoosh_fast-slide_01.wav": {
+    "store": "library/sound/sfx/whoosh/whoosh_fast-slide_01.wav",
+    "sha256": "08c11e905c504a34de88b161a52d1cecb1f461503af25a588e0718db10af0986"
+  },
+  "public/audio/whoosh/whoosh_page-flip-paper_01.wav": {
+    "store": "library/sound/sfx/whoosh/whoosh_page-flip-paper_01.wav",
+    "sha256": "c8e201e30f6ac1588df54c5bbc27695893cde40cb4350735cc73fa80be2884e2"
+  },
+  "public/images/hanako/film-card-poster-1995-redacted.png": {
+    "store": "projects/HANAKO/reference/2026-10-31_b07-film-card-poster-1995-redacted.png",
+    "sha256": "75809926fcc26ca495cb23ed8c05c9ba26aa592bcdc9cfdcc4a60a00c5e6581b"
+  },
+  "public/narration/HANAKO-SHORT.amplitude.json": {
+    "store": "projects/HANAKO/audio/final/lock-v3/HANAKO-SHORT.amplitude.json",
+    "sha256": "fdfe80f92780b1056f62deb079e41edd3ff59af757db459575507a5093bd3fa3"
+  },
+  "public/narration/HANAKO-SHORT.mp3": {
+    "store": "projects/HANAKO/audio/final/s3-tail-reread/HANAKO-SHORT-tail.mp3",
+    "sha256": "ed3a339f124a8f7125afc4b5d9101a1d56d9d320b0fa83ea25a7067acd2c50f7"
+  }
+}

@@ -24,3 +24,4 @@
 ## Revalidation history
 - 30 Oct 2026, pass 9 → the ZC plate Overlays carry Grade and Grain only (no `CaptionShade` on any ZC plate, `ScreenLayers` in `src/painted/zcpaint/overlays.tsx`); `PaintedStage` still mounts none of them → workaround unchanged; the screen-layer capability in `screen.tsx` is kept.
 - 30 Oct 2026, uncommitted pass 5 → plate-level layers in the ZC `Overlay`, spike and plate frames checked → workaround → fix PR: none.
+- 31 Oct 2026, S-R5 (Boss, HANAKO `B08-SH01`): the R5 light dip (`b08LightDip`, `#060c0d` at 0.45 on F2129–F2131 and F2136–F2138) is a full-frame rect in the plate `Overlay`; `PaintedStage.tsx` is unchanged from HEAD and still mounts canvas + `Overlay` + labels only → workaround unchanged. Mechanism check: on HANAKO `B09-SH01` F2347 (the existing `KnockOverlay` dip at 0.4) caption ink stays at luma 255 while the plate dims → captions sit above a plate-Overlay dip. Evidence: `scripts/hanako/short/boss-s-r5-report.md`.
