@@ -5,6 +5,8 @@ out/
 build/
 *.mp4
 *.mp3
+# Final narration tracks are committed: Gemini TTS reads are not reproducible (user decision, 31 Oct 2026)
+!public/narration/*.mp3
 .env
 .env.*
 !.env.example

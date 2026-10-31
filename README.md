@@ -98,7 +98,7 @@ npx remotion render src/index.ts Long out/long-check.mp4 --frames=0-5
 
 Also inspect the scene handoff's key action/reveal frames and the start/middle/end of camera moves. Check 3D depth ordering, actor contact, clipping and subtitle safety in each selected or affected output. Narration uses Niwat (`th-TH`) at +5%; Thai subtitles use Noto Sans Thai or Sarabun from frame 0. Hold the closing line or final beat for about 3 seconds. Use the shared `A_fade` and `B_loop` endings and review the loop seam.
 
-`out/`, generated MP4/MP3 files, dependencies and secrets are gitignored. Commit timeline/amplitude JSON, written scene sheets, reusable assets and their commercial-use license notices.
+`out/`, generated MP4 files, other MP3 files, dependencies and secrets are gitignored. Commit the final narration track `public/narration/<CompositionId>.mp3` (exception, 31 Oct 2026: Gemini TTS reads cannot be regenerated identically), timeline/amplitude JSON, written scene sheets, reusable assets and their commercial-use license notices.
 
 <a id="videos-and-parallel-work"></a>
 ## Videos and parallel work
