@@ -214,12 +214,14 @@ test('prune deletes only stored copies and scratch, and refuses tracked folders'
   write('repo/out/X-SHORT/r.mp4', 'render');
   write('repo/out/X-SHORT/unique.mp4', 'only-here');
   write('repo/out/qa/sheet.png', 'scratch');
+  write('repo/out/gemini-venv/bin/python', 'tool');
   assert.match(run('prune', 'out').out, /would delete 1 stored copies .* and 1 scratch files .*kept 1 files/);
   assert.ok(existsSync(path.join(repo, 'out/X-SHORT/r.mp4')));
   assert.equal(run('prune', 'out', '--delete').code, 0);
   assert.ok(!existsSync(path.join(repo, 'out/X-SHORT/r.mp4')));
   assert.ok(!existsSync(path.join(repo, 'out/qa')));
   assert.equal(readFileSync(path.join(repo, 'out/X-SHORT/unique.mp4'), 'utf8'), 'only-here');
+  assert.equal(readFileSync(path.join(repo, 'out/gemini-venv/bin/python'), 'utf8'), 'tool');
   mkdirSync(path.join(repo, 'src'), {recursive: true});
   assert.equal(run('prune', 'src').code, 2);
 });

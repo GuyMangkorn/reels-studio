@@ -278,7 +278,7 @@ def archive(a):
 
 def prune(a):
     """Free space in gitignored folders: delete files whose bytes are already stored (any store path) and everything
-    under scratch folders (SKIP_PARTS). Files that are neither, and iCloud-only files outside scratch, are kept.
+    under scratch folders (SKIP_PARTS, except *venv* tool environments, which are kept). Files that are neither, and iCloud-only files outside scratch, are kept.
     Dry run unless --delete."""
     known = stored_hashes(); freed = {'stored': 0, 'scratch': 0}; n = {'stored': 0, 'scratch': 0}; kept = cloud = 0
     for top in a.paths:
@@ -286,7 +286,9 @@ def prune(a):
         if subprocess.run(['git', 'check-ignore', '-q', top], cwd=os.path.dirname(os.path.abspath(top)) or '.').returncode:
             sys.exit(f'bad path (not gitignored, refusing): {top}')
         for root, dirs, files in os.walk(top, topdown=True):
-            scratch = any(part in seg for seg in os.path.relpath(root, top).split(os.sep) for part in SKIP_PARTS)
+            segs = os.path.relpath(root, top).split(os.sep)
+            if any('venv' in seg for seg in segs): continue  # tool environments (gemini-venv, voice-venv): never pruned
+            scratch = any(part in seg for seg in segs for part in SKIP_PARTS)
             for name in files:
                 path = os.path.join(root, name)
                 try: st = os.lstat(path)
