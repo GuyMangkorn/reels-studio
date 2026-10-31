@@ -205,3 +205,21 @@ test('sound-library file records the filed master in the store manifest', () => 
   assert.match(readFileSync(path.join(store, 'library/sound/INDEX.md'), 'utf8'), /ui_click-soft_01/);
   assert.equal(run('verify').code, 0);
 });
+
+test('prune deletes only stored copies and scratch, and refuses tracked folders', () => {
+  const {repo, run, write} = setup();
+  spawnSync('git', ['init', '-q'], {cwd: repo});
+  writeFileSync(path.join(repo, '.gitignore'), 'out/\n');
+  run('put', write('in/r.mp4', 'render'), 'projects/X/renders/r.mp4');
+  write('repo/out/X-SHORT/r.mp4', 'render');
+  write('repo/out/X-SHORT/unique.mp4', 'only-here');
+  write('repo/out/qa/sheet.png', 'scratch');
+  assert.match(run('prune', 'out').out, /would delete 1 stored copies .* and 1 scratch files .*kept 1 files/);
+  assert.ok(existsSync(path.join(repo, 'out/X-SHORT/r.mp4')));
+  assert.equal(run('prune', 'out', '--delete').code, 0);
+  assert.ok(!existsSync(path.join(repo, 'out/X-SHORT/r.mp4')));
+  assert.ok(!existsSync(path.join(repo, 'out/qa')));
+  assert.equal(readFileSync(path.join(repo, 'out/X-SHORT/unique.mp4'), 'utf8'), 'only-here');
+  mkdirSync(path.join(repo, 'src'), {recursive: true});
+  assert.equal(run('prune', 'src').code, 2);
+});

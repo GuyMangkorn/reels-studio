@@ -13,6 +13,7 @@ Usage:
   python3 -I scripts/store.py backfill-chat GLOB...          # store images the user attached in past chat transcripts
   python3 -I scripts/store.py archive ID... | --all-worktrees # out/<ID>/ -> projects/<PROJECT>/renders/<ID>/<commit>/
   python3 -I scripts/store.py archive --path DIR --project P --kind K   # takes, previews, samples -> projects/P/K/
+  python3 -I scripts/store.py prune PATH... [--delete]       # free gitignored folders: drop stored copies and scratch
 
 $REELS_STORE sets the store root (default ~/ReelsStore). STORE_PATH is relative to it, for example
 library/sound/sfx/water/water_pool-splash-small_01.wav or projects/WFOG/renders/... . A sidecar FILE.json or
@@ -275,6 +276,36 @@ def archive(a):
     return 0
 
 
+def prune(a):
+    """Free space in gitignored folders: delete files whose bytes are already stored (any store path) and everything
+    under scratch folders (SKIP_PARTS). Files that are neither, and iCloud-only files outside scratch, are kept.
+    Dry run unless --delete."""
+    known = stored_hashes(); freed = {'stored': 0, 'scratch': 0}; n = {'stored': 0, 'scratch': 0}; kept = cloud = 0
+    for top in a.paths:
+        if not os.path.exists(top): continue
+        if subprocess.run(['git', 'check-ignore', '-q', top], cwd=os.path.dirname(os.path.abspath(top)) or '.').returncode:
+            sys.exit(f'bad path (not gitignored, refusing): {top}')
+        for root, dirs, files in os.walk(top, topdown=True):
+            scratch = any(part in seg for seg in os.path.relpath(root, top).split(os.sep) for part in SKIP_PARTS)
+            for name in files:
+                path = os.path.join(root, name)
+                try: st = os.lstat(path)
+                except OSError: continue
+                if scratch: kind = 'scratch'
+                elif os.path.islink(path) or dataless(path): cloud += dataless(path); kept += 1; continue
+                elif sha256(path) in known: kind = 'stored'
+                else: kept += 1; continue
+                n[kind] += 1; freed[kind] += st.st_size
+                if a.delete: os.remove(path)
+        if a.delete:
+            for root, dirs, files in os.walk(top, topdown=False):
+                if root != top and not os.listdir(root): os.rmdir(root)
+    verb = 'deleted' if a.delete else 'would delete'
+    print(f"{verb} {n['stored']} stored copies ({freed['stored'] / 1e9:.2f} GB) and {n['scratch']} scratch files "
+          f"({freed['scratch'] / 1e9:.2f} GB); kept {kept} files ({cloud} iCloud-only)")
+    return 0
+
+
 def lock_file(episode):
     folder = os.path.join('src', 'videos', episode)
     if not os.path.isdir(folder): sys.exit(f'no episode folder: {folder}')
@@ -372,6 +403,8 @@ def main():
     p.add_argument('--path', help='archive media under this folder instead'); p.add_argument('--project'); p.add_argument('--kind')
     p.add_argument('--all-worktrees', action='store_true', help='every out/<ID>/ in every worktree; lists the rest')
     p.set_defaults(fn=archive)
+    p = sub.add_parser('prune'); p.add_argument('paths', nargs='+', help='gitignored folders, e.g. out/')
+    p.add_argument('--delete', action='store_true', help='actually delete (default: dry run)'); p.set_defaults(fn=prune)
     p = sub.add_parser('backfill-chat'); p.add_argument('transcripts', nargs='+', help='transcript globs (Claude Code / Codex .jsonl)')
     p.set_defaults(fn=backfill_chat)
     a = ap.parse_args()
