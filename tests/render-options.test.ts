@@ -24,3 +24,17 @@ test('endings default to the registry ending; --endings overrides', () => {
   assert.deepEqual(endingsFor(undefined, {}), ['A_fade']);
   assert.deepEqual(endingsFor(['A_fade', 'B_loop'], {ending: 'C_seamless'}), ['A_fade', 'B_loop']);
 });
+
+test('--preview and --no-cache are off by default', () => {
+  const off = parseRenderArgs(['ZCPAINT-SHORT-TH']);
+  assert.deepEqual([off.preview, off.noCache], [false, false]);
+  const on = parseRenderArgs(['ZCPAINT-SHORT-TH', '--preview', '--no-cache']);
+  assert.deepEqual([on.preview, on.noCache], [true, true]);
+});
+
+test('--range parses <from>-<to> and rejects bad ranges', () => {
+  assert.deepEqual(parseRenderArgs(['Short', '--range=198-497']).range, [198, 497]);
+  assert.equal(parseRenderArgs(['Short']).range, undefined);
+  assert.throws(() => parseRenderArgs(['Short', '--range=500-100']), /--range needs/);
+  assert.throws(() => parseRenderArgs(['Short', '--range=10']), /--range needs/);
+});
