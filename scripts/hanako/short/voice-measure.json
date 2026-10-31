@@ -1,0 +1,473 @@
+{
+ "deliverable": "HANAKO-SHORT",
+ "script_revision": "HANAKO-SHORT-SCRIPT-R2",
+ "voice_lock": "v3 (S3, B05-B09 tail re-read)",
+ "timing_status": "audio-measured",
+ "lock_basis": "user instruction 31 Oct 2026 ('use it as the new lock') on the S3 tail re-read sample; Editor proxy QA only, not heard",
+ "measure_by": "Editor (voice lock v3), 31 Oct 2026",
+ "fps": 30,
+ "measure_basis": "installed MP3: first and last decoded 48 kHz sample with |x| >= 300 of 32767 inside each slot; frame = round(sample / 1600); end exclusive",
+ "frame_origin": "track frame 0 = public/narration/HANAKO-SHORT.mp3 start; timeline frame = track frame + preroll_frames",
+ "preroll_frames": 45,
+ "hold_frames": 90,
+ "track_frames": 2461,
+ "track_s": 82.033,
+ "timeline_total_frames": 2596,
+ "timeline_total_s": 86.533,
+ "speech_frames_narrator": 2371,
+ "speech_frames_reply": 19,
+ "written_pause_gaps_frames": {
+  "B01|B02": 8,
+  "B02|KA": 8,
+  "KA|B03": 8,
+  "B03|B04": 8,
+  "B04|B05": 10,
+  "B05|B06": 3,
+  "B06|B07": 8,
+  "B07|B08": 8,
+  "B08|B09": 8
+ },
+ "written_pause_total_frames": 69,
+ "beats": {
+  "B01": {
+   "slotStartF": 0,
+   "slotFrames": 259,
+   "speechOnF": 1,
+   "speechOffF": 252,
+   "speechFrames": 251,
+   "timelineOnF": 46,
+   "timelineOffF": 297
+  },
+  "B02": {
+   "slotStartF": 259,
+   "slotFrames": 112,
+   "speechOnF": 260,
+   "speechOffF": 364,
+   "speechFrames": 104,
+   "timelineOnF": 305,
+   "timelineOffF": 409
+  },
+  "KA": {
+   "slotStartF": 371,
+   "slotFrames": 27,
+   "speechOnF": 372,
+   "speechOffF": 391,
+   "speechFrames": 19,
+   "timelineOnF": 417,
+   "timelineOffF": 436
+  },
+  "B03": {
+   "slotStartF": 398,
+   "slotFrames": 202,
+   "speechOnF": 399,
+   "speechOffF": 593,
+   "speechFrames": 194,
+   "timelineOnF": 444,
+   "timelineOffF": 638
+  },
+  "B04": {
+   "slotStartF": 600,
+   "slotFrames": 255,
+   "speechOnF": 601,
+   "speechOffF": 848,
+   "speechFrames": 247,
+   "timelineOnF": 646,
+   "timelineOffF": 893
+  },
+  "B05": {
+   "slotStartF": 855,
+   "slotFrames": 272,
+   "speechOnF": 858,
+   "speechOffF": 1125,
+   "speechFrames": 267,
+   "timelineOnF": 903,
+   "timelineOffF": 1170
+  },
+  "B06": {
+   "slotStartF": 1127,
+   "slotFrames": 416,
+   "speechOnF": 1128,
+   "speechOffF": 1536,
+   "speechFrames": 408,
+   "timelineOnF": 1173,
+   "timelineOffF": 1581
+  },
+  "B07": {
+   "slotStartF": 1543,
+   "slotFrames": 466,
+   "speechOnF": 1544,
+   "speechOffF": 2002,
+   "speechFrames": 458,
+   "timelineOnF": 1589,
+   "timelineOffF": 2047
+  },
+  "B08": {
+   "slotStartF": 2009,
+   "slotFrames": 248,
+   "speechOnF": 2010,
+   "speechOffF": 2250,
+   "speechFrames": 240,
+   "timelineOnF": 2055,
+   "timelineOffF": 2295
+  },
+  "B09": {
+   "slotStartF": 2257,
+   "slotFrames": 204,
+   "speechOnF": 2258,
+   "speechOffF": 2460,
+   "speechFrames": 202,
+   "timelineOnF": 2303,
+   "timelineOffF": 2505
+  }
+ },
+ "anchors": [
+  {
+   "id": "B01-a1",
+   "phrase": "ชั้นสาม",
+   "onF": 4,
+   "endF": 7,
+   "timelineOnF": 49
+  },
+  {
+   "id": "B01-a2",
+   "phrase": "ห้องที่สาม",
+   "onF": 62,
+   "endF": 84,
+   "timelineOnF": 107
+  },
+  {
+   "id": "B01-a3",
+   "phrase": "อยู่ไหมคะ",
+   "onF": 228,
+   "endF": 251,
+   "timelineOnF": 273
+  },
+  {
+   "id": "B02-a1",
+   "phrase": "ตามที่เล่ากันบ่อย",
+   "onF": 260,
+   "endF": 290,
+   "timelineOnF": 305
+  },
+  {
+   "id": "B02-a2",
+   "phrase": "จะมีเสียงตอบกลับมาว่า",
+   "onF": 295,
+   "endF": 364,
+   "timelineOnF": 340
+  },
+  {
+   "id": "B03-a1",
+   "phrase": "เธอคือฮานาโกะซัง",
+   "onF": 399,
+   "endF": 426,
+   "timelineOnF": 444
+  },
+  {
+   "id": "B03-a2",
+   "phrase": "เล่าต่อกันมาหลายรุ่น",
+   "onF": 538,
+   "endF": 592,
+   "timelineOnF": 583
+  },
+  {
+   "id": "B04-a1",
+   "phrase": "แต่เธอเป็นใคร",
+   "onF": 601,
+   "endF": 635,
+   "timelineOnF": 646
+  },
+  {
+   "id": "B04-a2",
+   "phrase": "บางคนเล่าว่า",
+   "onF": 653,
+   "endF": 686,
+   "timelineOnF": 698
+  },
+  {
+   "id": "B04-a3",
+   "phrase": "บ้างก็ว่า",
+   "onF": 772,
+   "endF": 803,
+   "timelineOnF": 817
+  },
+  {
+   "id": "B04-a4",
+   "phrase": "ถูกฆ่าในห้องน้ำ",
+   "onF": 803,
+   "endF": 837,
+   "timelineOnF": 848
+  },
+  {
+   "id": "B05-a1",
+   "phrase": "ถ้าเรื่องพวกนี้จริง",
+   "onF": 858,
+   "endF": 888,
+   "timelineOnF": 903
+  },
+  {
+   "id": "B05-a2",
+   "phrase": "แต่ยังไม่พบหลักฐานเลย",
+   "onF": 955,
+   "endF": 1020,
+   "timelineOnF": 1000
+  },
+  {
+   "id": "B05-a3",
+   "phrase": "ต้นเรื่อง",
+   "onF": 1082,
+   "endF": 1115,
+   "timelineOnF": 1127
+  },
+  {
+   "id": "B06-a0",
+   "phrase": "เรื่องฮานาโกะที่เก่าที่สุด",
+   "onF": 1128,
+   "endF": 1173,
+   "timelineOnF": 1173
+  },
+  {
+   "id": "B06-a1",
+   "phrase": "มาจากอิวาเตะ",
+   "onF": 1201,
+   "endF": 1234,
+   "timelineOnF": 1246
+  },
+  {
+   "id": "B06-a2",
+   "phrase": "หนึ่งพันเก้าร้อยสี่สิบแปด",
+   "onF": 1261,
+   "endF": 1330,
+   "timelineOnF": 1306
+  },
+  {
+   "id": "B06-a3",
+   "phrase": "ไม่ใช่ข่าว",
+   "onF": 1346,
+   "endF": 1368,
+   "timelineOnF": 1391
+  },
+  {
+   "id": "B06-a4",
+   "phrase": "แต่เป็นเรื่องผีที่มีคนเล่าไว้",
+   "onF": 1385,
+   "endF": 1451,
+   "timelineOnF": 1430
+  },
+  {
+   "id": "B06-a5",
+   "phrase": "หลายสิบปีต่อมา",
+   "onF": 1495,
+   "endF": 1533,
+   "timelineOnF": 1540
+  },
+  {
+   "id": "B07-a1",
+   "phrase": "แล้วเธอดังได้ยังไง",
+   "onF": 1547,
+   "endF": 1581,
+   "timelineOnF": 1592
+  },
+  {
+   "id": "B07-a2",
+   "phrase": "ยุคแปดสิบ",
+   "onF": 1611,
+   "endF": 1619,
+   "timelineOnF": 1656
+  },
+  {
+   "id": "B07-a3",
+   "phrase": "หนึ่งพันเก้าร้อยเก้าสิบ",
+   "onF": 1764,
+   "endF": 1816,
+   "timelineOnF": 1809
+  },
+  {
+   "id": "B07-a4",
+   "phrase": "ไปทั่วญี่ปุ่น",
+   "onF": 1840,
+   "endF": 1868,
+   "timelineOnF": 1885
+  },
+  {
+   "id": "B07-a5",
+   "phrase": "พอกลางยุคเก้าสิบ",
+   "onF": 1892,
+   "endF": 1928,
+   "timelineOnF": 1937
+  },
+  {
+   "id": "B07-a6",
+   "phrase": "หนังของตัวเอง",
+   "onF": 1977,
+   "endF": 2001,
+   "timelineOnF": 2022
+  },
+  {
+   "id": "B08-a1",
+   "phrase": "ฮานาโกะซังอาจไม่เคยมีตัวตนจริง",
+   "onF": 2023,
+   "endF": 2080,
+   "timelineOnF": 2068
+  },
+  {
+   "id": "B08-a2",
+   "phrase": "แต่เธอก็ไม่เคยหายไป",
+   "onF": 2092,
+   "endF": 2146,
+   "timelineOnF": 2137
+  },
+  {
+   "id": "B08-a3",
+   "phrase": "เด็กรุ่นแล้วรุ่นเล่า",
+   "onF": 2177,
+   "endF": 2212,
+   "timelineOnF": 2222
+  },
+  {
+   "id": "B09-a1",
+   "phrase": "และเธอจะกลับมาอีกครั้ง",
+   "onF": 2302,
+   "endF": 2348,
+   "timelineOnF": 2347
+  },
+  {
+   "id": "B09-a2",
+   "phrase": "ทุกครั้งที่ใครสักคน",
+   "onF": 2366,
+   "endF": 2420,
+   "timelineOnF": 2411
+  },
+  {
+   "id": "B09-a3",
+   "phrase": "ยกมือขึ้นเคาะ",
+   "onF": 2436,
+   "endF": 2458,
+   "timelineOnF": 2481
+  }
+ ],
+ "anchor_precision": "Whisper (large-v3-turbo) word estimates, about +-0.2 s; beat onsets and ends are energy measures (+-1 frame; a soft onset can cross the 300 threshold up to ~2 frames late)",
+ "anchor_fallbacks": [
+  "B06-a2",
+  "B07-a3"
+ ],
+ "anchor_shift_frames": {
+  "B05": 2.361
+ },
+ "measure_vs_build": [
+  {
+   "beat": "B05",
+   "build_on_off": [
+    856,
+    1120
+   ],
+   "installed_on_off": [
+    858,
+    1125
+   ]
+  }
+ ],
+ "sources": {
+  "files": {
+   "narrator_read_raw_take1": "out/hanako-voice/final/HANAKO-NARR-raw.wav",
+   "narrator_read_x105_take1": "out/hanako-voice/final/HANAKO-NARR-x105.wav",
+   "narrator_tail_raw": "out/hanako-voice/final/s3-tail-reread/tail-raw.wav",
+   "narrator_tail_x105": "out/hanako-voice/final/s3-tail-reread/tail-x105.wav",
+   "narrator_tail_text": "out/hanako-voice/final/s3-tail-reread/tail-text.txt",
+   "tts_input": "out/hanako-voice/final/tts-input.txt",
+   "reply_clip": "out/hanako-voice/KA-T1.wav"
+  },
+  "sha256_16": {
+   "narrator_read_raw_take1": "fa24b0859b760e34",
+   "narrator_read_x105_take1": "ee90af5ed76d76f0",
+   "narrator_tail_raw": "b4e3c16e104429fb",
+   "narrator_tail_x105": "4100ab1cad45c436",
+   "narrator_tail_text": "7cad8221ec29a011",
+   "tts_input": "743066655166dc4a",
+   "reply_clip": "287f4ff5591ff11c"
+  },
+  "narrator_voice": "Charon",
+  "narrator_model": "gemini-3.8-flash-tts",
+  "narrator_read_style": "calm documentary mystery narrator, crisp clear articulation of every word, brisk steady pace, low resonant voice, not whispered",
+  "narrator_read_take": "B01-B04 and KA: take 1 (unchanged clips). B05-B09: tail re-read, one Gemini request (Charon, B05-B09 of the same tts-beats, joined with one space).",
+  "track": "public/narration/HANAKO-SHORT.mp3 (gitignored), public/narration/HANAKO-SHORT.amplitude.json (2461 frames, per-frame RMS of the delivered MP3, peak = 1.0)",
+  "track_sha256_16": "ed3a339f124a8f71",
+  "slot_plan": "out/hanako-voice/final/s3-tail-reread/build-tail/track/slots.json (sample build, slots recomputed from the audible edges)",
+  "builder": "out/hanako-voice/final/s3-tail-reread/build-tail-track.py; gain: finish-tail.py (+1.20 dB, clipping refused)",
+  "superseded_lock": "out/hanako-voice/final/lock-v2-s3take1/ (manifest.sha256; restore by copying its HANAKO-SHORT.mp3, HANAKO-SHORT.amplitude.json, voice-measure.json, voice-measure.md, delivery.md, build-notes.md); older lock-v1-hushed/ stays"
+ },
+ "qa": {
+  "align_match_ratio": {
+   "B01-B04 and KA (take 1, full read)": 0.833,
+   "B05-B09 (tail read, 21 anchors)": 0.862
+  },
+  "align_anchor_inside_phrase": "tail read B05-B09: 19 of 21 (fallback B06-a2, B07-a3); take 1 B01-B04 and KA: no fallback (the take-1 fallback B07-a3 is superseded)",
+  "per_beat_isolated_clip_asr_ratio": {
+   "B01": 0.81,
+   "B02": 1.0,
+   "B03": 0.96,
+   "B04": 0.91,
+   "B05": 0.99,
+   "B06": 0.88,
+   "B07": 0.84,
+   "B08": 0.89,
+   "B09": 0.87
+  },
+  "per_beat_isolated_clip_asr_mean": 0.906,
+  "name_checks_fuzzy": {
+   "ฮานาโกะซัง": {
+    "B01": {
+     "best_ratio": 0.67,
+     "best_window": "าฮนโกสัง"
+    },
+    "B03": {
+     "best_ratio": 0.67,
+     "best_window": "อฮนโกสัง"
+    },
+    "B08": {
+     "best_ratio": 0.67,
+     "best_window": "ฮนโกสังอ"
+    }
+   },
+   "อิวาเตะ": {
+    "B06": {
+     "best_ratio": 0.92,
+     "best_window": "อิวาเต"
+    }
+   }
+  },
+  "reply_clip_asr": {
+   "KA-T1": "ข้า",
+   "KA-T2": "ข้า"
+  },
+  "f0_median_hz_per_beat": {
+   "B01": 105.7,
+   "B02": 107.4,
+   "B03": 100.0,
+   "B04": 96.2,
+   "B05": 117.1,
+   "B06": 113.2,
+   "B07": 122.8,
+   "B08": 107.6,
+   "B09": 95.6
+  },
+  "f0_opening_B01_B04_mean_hz": 102.3,
+  "f0_late_B07_B09_mean_hz": 108.7,
+  "f0_late_vs_opening_pct": 6.2,
+  "f0_late_B05_B09_mean_hz": 111.3,
+  "f0_late_B05_B09_vs_opening_pct": 8.7,
+  "f0_windows_10s": "not carried: the tail windows are on the read time base, not the track",
+  "track_loudness_lufs_integrated": -16.0,
+  "track_lra_lu": 4.2,
+  "track_sample_peak_dbfs": -0.5,
+  "method": "proxies: align-full (difflib on Whisper words), clip-asr.py (Whisper isolated clips), beat-drift.py (voice-match metrics), ffmpeg ebur128"
+ },
+ "open_for_ear": [
+  "B05 is measured on the installed audio: the +1.20 dB gain moved its clip head by 2.36 frames (anchors shifted, edges re-measured); the B05|B06 written pause is 3 frames (8 designed on the un-gained clips)",
+  "late pitch: F0 medians B07-B09 +6.2 % over B01-B04 (superseded lock +24.2 %); B05 and B07 sit above the opening; the user decides by ear",
+  "B09: 0.5 s pause before the final clause «ยกมือขึ้นเคาะ», the speech ends at the track end (frame 2460)",
+  "name «ฮานาโกะซัง» in B01, B03, B08 and «อิวาเตะ» in B06 (see qa.name_checks_fuzzy)",
+  "reply «ค่ะ» (KA-T1, unchanged): no take passes the ASR proxy"
+ ],
+ "not_verified_by_ear": true
+}
