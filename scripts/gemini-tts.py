@@ -7,7 +7,7 @@ Needs GEMINI_API_KEY in the environment and the local venv (not a project requir
 say: 48 kHz mono WAV, two-pass loudnorm to -16 LUFS (same as voice-preset.py), plus OUT.json with model, voice, style, text.
 design: creates a stored prompted voice (voice_... ID, 1-year TTL from last use, 200 per project) and saves its preview.
 Every call makes one attempt with no SDK retries and a --timeout (seconds, default 180). HTTP 429 / quota errors exit 3
-at once with the server message (free tier: 10 requests a day for gemini-3.8-flash-tts); a timeout exits 4.
+at once with the server message (paid-tier rate limit); a timeout exits 4. Callers must not loop on either.
 """
 import argparse, base64, json, subprocess, sys, tempfile
 from pathlib import Path
@@ -80,7 +80,7 @@ try:
     {'say': say, 'voices': voices, 'design': design}[a.cmd](client, a)
 except Exception as e:
     if is_quota(e):
-        print(f'gemini-tts: quota or rate limit (HTTP {status(e) or 429}); not retrying. Wait for the quota reset or use a paid key.\n{e}'[:1200], file=sys.stderr); sys.exit(3)
+        print(f'gemini-tts: quota or rate limit (HTTP {status(e) or 429}); not retrying. Wait for the rate limit to reset, then rerun once by hand; do not loop.\n{e}'[:1200], file=sys.stderr); sys.exit(3)
     if is_timeout(e):
         print(f'gemini-tts: no response within {a.timeout:g} s; not retrying.\n{e}', file=sys.stderr); sys.exit(4)
     raise
