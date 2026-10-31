@@ -125,3 +125,14 @@ SRC006 (nippon.com g02322) gains a fuller search summary: Tsunemitsu collected r
 **Remaining wording issues:** none.
 
 **R2 status:** **`verification-incomplete`**. All findings FC01–FC10 are resolved for the R2 wording. The script wording is safe on leads throughout. The premise-critical claims F001, F004 and F008 still rest on uninspected leads, so `ready-for-storyboard` is not supported. Film, Mark, Boss and Editor stay `N/A` for this script-only assignment, and this record shows no user approval. The status would rise only with inspected SRC001 and SRC004, or with access to the blocked sites. Any later wording change, any use of a trim or the optional line beyond the forms cleared here, or a reinstatement of `B06-OPT` needs a new recheck.
+
+## Source registry additions (accessed 1 Nov 2026, `B-R5-S` follow-up)
+
+SRC015–SRC018 are registered in [signoff-boat-r5.md](signoff-boat-r5.md#source-registry-additions-accessed-31-oct-2026).
+
+| ID | Source | What it supports | Limits |
+| --- | --- | --- | --- |
+| SRC019 | Poster 『トイレの花子さん』 (Shochiku, 1995), user-supplied scan, store `projects/HANAKO/references/user/2026-10-31_b07-film-poster-toire-no-hanako-san-1995.jpg` | F012 / `B07-SH03`: title without 新生; credits 松岡錠司監督作品, 河野由佳, 井上孝幸, 前田愛, 大塚寧々, 豊川悦司, 音楽 矢倉邦晃, 松竹株式会社, 百年松竹. Identified as the 1995 film, high confidence | Inspected unblurred by Boat. No year printed (year from SRC015/SRC020). Provenance user-only (IMDb-style download); rights the user's |
+| SRC020 | Jorudan movie database, https://movie.jorudan.co.jp/film/27930/ | F012: 公開日 1995年7月1日, 監督 松岡錠司, 配給 松竹, 音楽 矢倉邦晃, cast matching SRC019 | Fetch-tool summary; database, not a studio record |
+
+F012 status unchanged in the R2 table (`unverified` — safe on leads); the claim now has a primary artifact plus two independent databases and no contrary evidence. Overall status stays **`verification-incomplete`** (F001/F004/F008).
