@@ -1,5 +1,5 @@
-import {hash} from '../kit/hash';
-import {mixColor, type Painter, type Pt} from '../kit/painter';
+import {hash} from './hash';
+import {mixColor, type Painter, type Pt} from './painter';
 import {INK, VD18, ell, glaze, inkLine, lineOf, modelPart, planeBand, rimScaleOf, solid, toneOf, type InteriorLight} from './draw';
 
 // Flat-face decal heads (front and profile) for the WFOG cast (brief VD03; user-approved look 29 Oct 2026), ported

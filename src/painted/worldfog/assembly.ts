@@ -1,7 +1,7 @@
 import {hash} from '../kit/hash';
 import {lerp, mixColor, type Painter, type Pt} from '../kit/painter';
 import {INK, ell, inkLine, limb, solid, washAt} from './draw';
-import {BROW_Y, headOutline} from './head';
+import {BROW_Y, headOutline} from '../kit/head';
 import {
   DEG, STOP, add3, asmAt, bump, clamp01, ease, hermite, len3, lensAt, lightAt, mix3, scale3, seg, smoothstep, sub3,
   type Proj, type V3,
