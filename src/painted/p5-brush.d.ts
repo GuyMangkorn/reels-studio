@@ -19,6 +19,7 @@ declare module 'p5.brush/standalone' {
   export function noWash(): void;
   export function hatch(dist: number, angle: number, options?: Record<string, unknown>): void;
   export function noHatch(): void;
+  export function noMass(): void;
   export function hatchStyle(name: string, color: string, weight: number): void;
   export function line(x1: number, y1: number, x2: number, y2: number): void;
   export function rect(x: number, y: number, w: number, h: number, mode?: 'center' | 'corner'): void;
