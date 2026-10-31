@@ -1,4 +1,5 @@
 import type {Painter, Pt} from './painter';
+import {hardFill} from './draw';
 
 /** Ink colour of the outlines (same value as WORLD FOG FaceSheet INK; kept local so plates do not import the sheets). */
 const INK = '#2b211c';
@@ -100,6 +101,12 @@ export type PovHand = {
   elbow?: Pt;
   /** Sleeve start (plate px, past the elbow, usually off-frame): teal tee sleeve capsule elbow side. */
   sleeveFrom?: Pt;
+  /** Opt in to perspective: scale the near elbow width, retaining the existing wrist width. */
+  forearmElbowScale?: number;
+  /** Fraction from wrist to elbow at which the long-sleeve cuff begins; default .32. */
+  sleeveCuffFraction?: number;
+  /** Use crisp opaque foreground fills for this hand only. */
+  crispFill?: boolean;
   tone?: HandTone;
 };
 
@@ -113,31 +120,49 @@ const frame = (wrist: Pt, dir: number, side: -1 | 1, s: number) => {
   return (u: number, v: number): Pt => [wrist[0] + (fx * u + side * fy * v) * s, wrist[1] + (fy * u - side * fx * v) * s];
 };
 
+/** Wrist solving the same knuckle-centre anchor returned by paintPovHand. */
+export const wristAtKnuckles = (knuckles: Pt, dir: number, size: number): Pt =>
+  [knuckles[0] - Math.cos(dir) * 150 * size, knuckles[1] - Math.sin(dir) * 150 * size];
+
 /** Paint one hand (and forearm, sleeve) with the WfogPhone construction. Returns anchor points for props. */
 export const paintPovHand = (p: Painter, h: PovHand) => {
   const s = h.size ?? 1, curl = h.curl ?? 0, spread = h.spread ?? 0.2, press = h.press ?? 0, tone = h.tone ?? DEFAULT_HAND_TONE;
   const {side, base, wrist, dir} = h;
+  const fillHand: typeof solid = h.crispFill ? (painter, seed, color, points) => hardFill(painter, seed, color, points) : solid;
   const P = frame(wrist, dir, side, s);
   const Lp = 150, Wp = 190 * (1 + 0.03 * press);
 
   // Sleeve, forearm.
   if (h.elbow) {
-    if (h.sleeveFrom) {
+    if (h.sleeveFrom && h.forearmElbowScale === undefined) {
       const mid: Pt = [h.elbow[0] * 0.5 + h.sleeveFrom[0] * 0.5, h.elbow[1] * 0.5 + h.sleeveFrom[1] * 0.5];
-      solid(p, base + 1, tone.sleeve, capsule(h.sleeveFrom, mid, 330 * s, 300 * s));
+      fillHand(p, base + 1, tone.sleeve, capsule(h.sleeveFrom, mid, 330 * s, 300 * s));
       const a = Math.atan2(h.sleeveFrom[1] - h.elbow[1], h.sleeveFrom[0] - h.elbow[0]);
       const nx = -Math.sin(a), ny = Math.cos(a);
-      solid(p, base + 2, tone.sleeveShade, [[mid[0] + nx * 40, mid[1] + ny * 40], [h.sleeveFrom[0] + nx * 150 * s, h.sleeveFrom[1] + ny * 150 * s], [h.sleeveFrom[0] + nx * 180 * s, h.sleeveFrom[1] + ny * 180 * s], [mid[0] + nx * 150 * s, mid[1] + ny * 150 * s]], 4);
+      fillHand(p, base + 2, tone.sleeveShade, [[mid[0] + nx * 40, mid[1] + ny * 40], [h.sleeveFrom[0] + nx * 150 * s, h.sleeveFrom[1] + ny * 150 * s], [h.sleeveFrom[0] + nx * 180 * s, h.sleeveFrom[1] + ny * 180 * s], [mid[0] + nx * 150 * s, mid[1] + ny * 150 * s]], 4);
     }
-    const arm = capsule(h.elbow, wrist, 150 * s, 128 * s);
-    solid(p, base + 3, tone.skin, arm);
+    const cuffFraction = h.sleeveCuffFraction ?? .32;
+    const armEnd: Pt = h.forearmElbowScale === undefined ? h.elbow : [wrist[0] + (h.elbow[0] - wrist[0]) * cuffFraction, wrist[1] + (h.elbow[1] - wrist[1]) * cuffFraction];
+    const armWidth = h.forearmElbowScale === undefined ? 150 * s : (128 + (150 * h.forearmElbowScale - 128) * cuffFraction) * s;
+    const arm = capsule(armEnd, wrist, armWidth, 128 * s);
+    fillHand(p, base + 3, tone.skin, arm);
     inkLine(p, base + 1, arm, 1.1, 0.2);
+    if (h.sleeveFrom && h.forearmElbowScale !== undefined) {
+      // Long sleeve overlaps the arm: the cuff is nearer the wrist than the elbow.
+      const t = cuffFraction, scale = h.forearmElbowScale;
+      const cuff: Pt = [wrist[0] + (h.elbow[0] - wrist[0]) * t, wrist[1] + (h.elbow[1] - wrist[1]) * t];
+      const cuffWidth = (128 + (150 * scale - 128) * t) * s * 1.12;
+      fillHand(p, base + 1, tone.sleeve, capsule(h.sleeveFrom, cuff, 180 * s * scale, cuffWidth));
+      const a = Math.atan2(h.sleeveFrom[1] - cuff[1], h.sleeveFrom[0] - cuff[0]);
+      const nx = -Math.sin(a), ny = Math.cos(a);
+      inkLine(p, base + 3, [[cuff[0] - nx * cuffWidth / 2, cuff[1] - ny * cuffWidth / 2], [cuff[0] + nx * cuffWidth / 2, cuff[1] + ny * cuffWidth / 2]], 1.1, .2, false, tone.sleeveShade);
+    }
   }
 
   // Back of the hand: tapered palm, one cel shade along the pinky side.
   const palm: Pt[] = [P(0, -Wp * 0.34), P(0, Wp * 0.34), P(Lp * 0.35, Wp * 0.5), P(Lp, Wp * 0.5), P(Lp, -Wp * 0.5), P(Lp * 0.35, -Wp * 0.5)];
-  solid(p, base + 5, tone.skin, palm);
-  solid(p, base + 6, tone.shade, [P(0, -Wp * 0.34), P(Lp * 0.35, -Wp * 0.5), P(Lp, -Wp * 0.5), P(Lp, -Wp * 0.3), P(Lp * 0.4, -Wp * 0.3), P(0, -Wp * 0.1)], 4);
+  fillHand(p, base + 5, tone.skin, palm);
+  fillHand(p, base + 6, tone.shade, [P(0, -Wp * 0.34), P(Lp * 0.35, -Wp * 0.5), P(Lp, -Wp * 0.5), P(Lp, -Wp * 0.3), P(Lp * 0.4, -Wp * 0.3), P(0, -Wp * 0.1)], 4);
   inkLine(p, base + 2, palm, 1.1, 0.3);
 
   // Fingers, pinky first so the index overlaps: projected length shrinks with curl (foreshortening); a fist shows
@@ -158,27 +183,27 @@ export const paintPovHand = (p: Painter, h: PovHand) => {
       const target = P(h.pinch[0], h.pinch[1]);
       const mid: Pt = [k0[0] + Math.cos(dir) * total * 0.5 * s + (target[0] - k0[0]) * 0.25, k0[1] + Math.sin(dir) * total * 0.5 * s + (target[1] - k0[1]) * 0.25];
       const a1s = capsule(k0, mid, w * s, w * 0.92 * s), a2s = capsule(mid, target, w * 0.92 * s, w * 0.8 * s);
-      solid(p, base + 10, tone.skin, a1s);
-      solid(p, base + 11, tone.skin, a2s);
-      solid(p, base + 14, tone.shade, ring(mid[0], mid[1], w * 0.3 * s, w * 0.3 * s, 10), 3);
+      fillHand(p, base + 10, tone.skin, a1s);
+      fillHand(p, base + 11, tone.skin, a2s);
+      fillHand(p, base + 14, tone.shade, ring(mid[0], mid[1], w * 0.3 * s, w * 0.3 * s, 10), 3);
       inkLine(p, base + 10, a1s, 1.0, 0.3);
       inkLine(p, base + 11, a2s, 1.0, 0.3);
       inkLine(p, base + 20, [[mid[0] - w * 0.2 * s, mid[1]], [mid[0] + w * 0.2 * s, mid[1]]], 0.8, 0.4, false, tone.crease);
       continue;
     }
     const shape = capsule(k0, tip, w * s, w * 0.9 * s);
-    solid(p, base + 10 + i, tone.skin, shape);
+    fillHand(p, base + 10 + i, tone.skin, shape);
     if (c > 0.5) {
       // Curled over an edge or into the palm: the last part turns away, so it takes the cel shade and loses the nail.
       const t0: Pt = [k0[0] + (tip[0] - k0[0]) * 0.5, k0[1] + (tip[1] - k0[1]) * 0.5];
-      solid(p, base + 40 + i, tone.shade, capsule(t0, tip, w * 0.86 * s, w * 0.8 * s), 4);
+      fillHand(p, base + 40 + i, tone.shade, capsule(t0, tip, w * 0.86 * s, w * 0.8 * s), 4);
     }
     if (c > 0.35) {
       const kn = ring(k0[0], k0[1], w * 0.52 * s, w * 0.46 * s, 12);
-      solid(p, base + 14 + i, tone.skin, kn, 3);
+      fillHand(p, base + 14 + i, tone.skin, kn, 3);
       inkLine(p, base + 14 + i, kn, 0.9, 0.4);
     }
-    if (c < 0.6) solid(p, base + 20 + i, tone.nail, ring(tip[0] - Math.cos(a) * w * 0.22 * s, tip[1] - Math.sin(a) * w * 0.22 * s, w * 0.3 * s, w * 0.36 * s, 12), 4, 0.02);
+    if (c < 0.6) fillHand(p, base + 20 + i, tone.nail, ring(tip[0] - Math.cos(a) * w * 0.22 * s, tip[1] - Math.sin(a) * w * 0.22 * s, w * 0.3 * s, w * 0.36 * s, 12), 4, 0.02);
     inkLine(p, base + 10 + i, shape, 1.0, 0.3);
     if (c <= 0.5) inkLine(p, base + 20 + i, [P(Lp - 24, Wp * 0.5 * FINGER_V[i] - w * 0.24), P(Lp - 24, Wp * 0.5 * FINGER_V[i] + w * 0.24)], 0.8, 0.4, false, tone.crease);
   }
@@ -188,9 +213,9 @@ export const paintPovHand = (p: Painter, h: PovHand) => {
   const B = P(Lp * 0.18, Wp * 0.42), T = P(tu[0], tu[1]);
   const {K} = twoBone(B, T, [64 * s, 58 * s], side === 1 ? -1 : 1);
   const thumb = [capsule(B, K, 62 * s, 52 * s), capsule(K, T, 52 * s, 46 * s)];
-  thumb.forEach((sh, i) => solid(p, base + 30 + i, tone.skin, sh));
-  solid(p, base + 32, tone.deep, [[K[0], K[1] + 18 * s], [T[0], T[1] + 16 * s], [T[0], T[1] + 6 * s], [K[0], K[1] + 8 * s]], 3);
-  solid(p, base + 33, tone.nail, ring(T[0] + side * 4, T[1] - 4 * s, 15 * s, 12 * s, 12), 4, 0.02);
+  thumb.forEach((sh, i) => fillHand(p, base + 30 + i, tone.skin, sh));
+  fillHand(p, base + 32, tone.deep, [[K[0], K[1] + 18 * s], [T[0], T[1] + 16 * s], [T[0], T[1] + 6 * s], [K[0], K[1] + 8 * s]], 3);
+  fillHand(p, base + 33, tone.nail, ring(T[0] + side * 4, T[1] - 4 * s, 15 * s, 12 * s, 12), 4, 0.02);
   thumb.forEach((sh, i) => inkLine(p, base + 34 + i, sh, 1.0, 0.3));
 
   const mid = P(Lp, 0);

@@ -1,0 +1,6 @@
+Noto Sans JP variable font, weights 100-900.
+Source: https://raw.githubusercontent.com/google/fonts/main/ofl/notosansjp/NotoSansJP%5Bwght%5D.ttf
+Retrieved: 2026-10-31
+SHA-256: c2f3b4d463500a2ddcd3849cded1fceeb9fd6d1c32e6cbecd568453ba50fc68f
+License: SIL OFL 1.1, OFL-NotoSansJP.txt in this directory.
+Used by HANAKO plate digits and Japanese text.
