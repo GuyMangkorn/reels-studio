@@ -1,0 +1,38 @@
+{
+  "public/audio/bed/bed_underwater-mystery-sparse_01.wav": {
+    "store": "library/sound/music/bed/bed_underwater-mystery-sparse_01.wav",
+    "sha256": "c0cfe3ac495158af0969ff205bfb86c507a6cd41703cc3aaa52df63f5d398e8b"
+  },
+  "public/audio/water/water_underwater-shallow-ambience_01.wav": {
+    "store": "library/sound/ambience/water/water_underwater-shallow-ambience_01.wav",
+    "sha256": "7a2a5607801c3d6f73d87e2ac991a16ff810c586319e494baec64d6947ab3256"
+  },
+  "public/audio/weather/weather_rain-thunder-distant_01.wav": {
+    "store": "library/sound/ambience/weather/weather_rain-thunder-distant_01.wav",
+    "sha256": "6a8cdbc86868fca6d053547a7fa31f2799f985a9332cbcdf6975a011423db2e7"
+  },
+  "public/audio/weather/weather_sea-storm-wind-waves_01.wav": {
+    "store": "library/sound/ambience/weather/weather_sea-storm-wind-waves_01.wav",
+    "sha256": "e9d9efc47066db54c8cbf460ff3d386e6ae26dc1edefc51e3b5e5d0cd7fb5342"
+  },
+  "public/sfx/impact/impact_cinematic-boom_01.wav": {
+    "store": "library/sound/sfx/impact/impact_cinematic-boom_01.wav",
+    "sha256": "ee167c208cbabde21de7403f42259d51da6699c1c49c6ad4773d6077c0fad69a"
+  },
+  "public/sfx/reveal/reveal_riser-tension_01.wav": {
+    "store": "library/sound/sfx/reveal/reveal_riser-tension_01.wav",
+    "sha256": "571acff153c2e6694fe4ab965b5c5389808ca9cfc51a3452660431b569bba300"
+  },
+  "public/sfx/ui/ui_click-tick_01.wav": {
+    "store": "library/sound/sfx/ui/ui_click-tick_01.wav",
+    "sha256": "edfafbe6bfb91e1c01aa9b3e13ca051dcf257406ae63d3ac54178aaf3991babb"
+  },
+  "public/sfx/water/water_diver-regulator-bubbles_01.wav": {
+    "store": "library/sound/sfx/water/water_diver-regulator-bubbles_01.wav",
+    "sha256": "ae3e6aa32c278730cf96783c8f57c537e42ccd9f3459699e9ced57452ff3ba5f"
+  },
+  "public/sfx/weather/weather_thunder-roll-distant_01.wav": {
+    "store": "library/sound/sfx/weather/weather_thunder-roll-distant_01.wav",
+    "sha256": "0969d71ed49c35430ade15e4f4aa6248281431a16f20350a717f96dac650b745"
+  }
+}
