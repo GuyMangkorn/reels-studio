@@ -5,6 +5,7 @@ import {drawFig, figSlack, H6, HAIR_STRAND, rotPt, TEX_B, toPx, type Fig, type P
 import {bustFig, keyTravel, placeClose} from './bust';
 import {INFECTED, INFECTED_SCALE, YOU} from './cast';
 import {layerAt} from './ctx';
+import type {Lang} from './jolts';
 import {flatKit, type Flat} from './sets';
 
 // ZCPAINT corridor plates (Boss pass 9): B01-SH01 (over his right shoulder down the powered corridor) and B01-SH02 (the long-lens turn,
@@ -108,8 +109,10 @@ export const paintB01Sh01 = (ctx: PaintContext, pf: number) => {
 const LENS_HEAD = {x: 540, y: 560};
 const LENS_HEAD_PX = 600;
 const LENS_CHIN_Y = 860;
-/** The stride bob (plate frames): a 6 px drop on each footstep frame of the charge. */
-const STEPS = [33, 38, 42, 46];
+/** The stride bob (plate frames): a 6 px drop on each footstep frame of the charge. TH re-keyed in the SS-R1.6 retime (33/38/43/48). */
+const STEPS: Record<Lang, number[]> = {TH: [33, 38, 43, 48], EN: [33, 38, 42, 46]};
+/** The charge ramp (plate frames): the scale eases 1.00 -> 1.12 from the first to the last. TH 33-52, EN 33-47 (SS-R1.6 retime). */
+const CHARGE: Record<Lang, [number, number]> = {TH: [33, 52], EN: [33, 47]};
 
 /** B01-SH02 turn (pf 19-22): the bob mass (`silHair`, the 7b shaped hair mass) fades in over the profile head in the hair tone, in place.
  *  The pass 12 swing rotated the mass and read as a moving block (`Q-G12-2`: the user asked for a fade). `at` is the silhouette's placement. */
@@ -120,16 +123,17 @@ const hairFade = (ctx: PaintContext, fig: Fig, at: Place, pf: number) => {
   veil(ctx, HAIR_STRAND, 0.9 * a, pts.map(([x, y]): Pt => [at.gx + at.dir * at.k * x, at.gy + at.k * y]));
 };
 
-/** B01-SH02 (TH [105,153), EN [93,141), both pf = f). Profile silhouette to f 23, the rage front from f 23 (a hair smear f 19-23), the
- *  charge from f 33: scale 1.00 -> 1.12 about the head centre, eased, with the stride bob. The settle tilt (4 deg -> 0) is not painted. */
-export const paintB01Sh02 = (ctx: PaintContext, pf: number) => {
+/** B01-SH02 (TH [163,216) and its own plate `ZCP-B01-SH02-TH`; EN [93,141) on `ZCP-B01-SH02`; both pf = f). Profile silhouette to f 23, the
+ *  rage front from f 23 (a hair smear f 19-23), the charge from f 33 (TH to f 52, EN to f 47): scale 1.00 -> 1.12 about the head centre, eased,
+ *  with the stride bob. The settle tilt (4 deg -> 0) is not painted. */
+export const paintB01Sh02 = (ctx: PaintContext, pf: number, lang: Lang) => {
   const f = flatKit(ctx, 22000);
   // Far end of the corridor behind her: cream wall, the far window at x 60-250, y 160-620, under the veil.
   f.fill(KEY.wall, [[-100, -100], [1200, -100], [1200, 2100], [-100, 2100]]);
   f.fill(KEY.window, [[60, 160], [250, 160], [250, 620], [60, 620]]);
   veil(ctx, KEY.veil, 0.5, [[-100, -100], [1200, -100], [1200, 2100], [-100, 2100]]);
-  const e = ramp(pf, 33, 47), s = 1 + 0.12 * e * e * (3 - 2 * e);
-  const bob = STEPS.some((x) => pf >= x && pf < x + 2) ? -6 : 0;
+  const e = ramp(pf, CHARGE[lang][0], CHARGE[lang][1]), s = 1 + 0.12 * e * e * (3 - 2 * e);
+  const bob = STEPS[lang].some((x) => pf >= x && pf < x + 2) ? -6 : 0;
   layerAt(ctx.brush, LENS_HEAD.x, LENS_HEAD.y, s, bob, () => {
     if (pf < 23) {
       const side = bustFig(INFECTED, {view: 'side', slump: 1});

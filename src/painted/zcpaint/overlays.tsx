@@ -123,7 +123,7 @@ export const B09Counter = ({tl, keys}: {tl: number; keys: {bucket: number; can: 
 
 /** B09-SH01 overlay: the counter icons inside the camera (they stay on the painted board), ScreenLayers. */
 export const b09Sh01Overlay = (lang: Lang): Overlay => ({tl, camera, width, height}) => {
-  const keys = lang === 'TH' ? {bucket: 24, can: 57, battery: 105} : {bucket: 21, can: 45, battery: 66};
+  const keys = lang === 'TH' ? {bucket: 36, can: 84, battery: 136} : {bucket: 21, can: 45, battery: 66};
   return (
     <>
       <CameraLayer camera={camera} width={width} height={height} blend="normal">
@@ -141,11 +141,11 @@ export const screenOnly = (): Overlay => () => <ScreenLayers />;
 
 /** B08 glow bloom (SVG-ZCP-6): radial light over the main and second blazes, each in its plate layer's transform, flicker
  *  stepped per 2 f. Peak <= GLOW_PEAK; the spots stay above the caption band (y 1040-1270). */
-export const b08Bloom = (pf: number) => {
-  const L = layers(pf);
+export const b08Bloom = (pf: number, lang: Lang = 'EN') => {
+  const L = layers(pf, lang);
   const fl = (s: number) => 0.86 + 0.14 * hash(s + Math.floor(pf / 2) * 17);
   return [
-    {id: 1, layer: L.blaze, x: MAIN[0] + 10, y: MAIN[1] + 90, r: 300, opacity: GLOW_PEAK * (0.55 + 0.45 * flare(pf)) * fl(1)},
+    {id: 1, layer: L.blaze, x: MAIN[0] + 10, y: MAIN[1] + 90, r: 300, opacity: GLOW_PEAK * (0.55 + 0.45 * flare(pf, lang)) * fl(1)},
     {id: 2, layer: L.mid, x: SECOND[0], y: SECOND[1] - 20, r: 170, opacity: GLOW_PEAK * 0.75 * fl(2)},
   ];
 };
@@ -165,10 +165,10 @@ const B08Embers = ({pf, L}: {pf: number; L: Layer}) => (
 );
 
 /** The B08 light layer: bloom and embers in screen blend, each in the transform of the plate layer it lights. */
-const B08Light = ({pf, opacity}: {pf: number; opacity: number}) => {
+const B08Light = ({pf, opacity, lang}: {pf: number; opacity: number; lang: Lang}) => {
   const id = useId();
-  const L = layers(pf);
-  const spots = b08Bloom(pf);
+  const L = layers(pf, lang);
+  const spots = b08Bloom(pf, lang);
   return (
     <AbsoluteFill style={{mixBlendMode: 'screen', pointerEvents: 'none', opacity}}>
       <svg width="100%" height="100%" viewBox="0 0 1080 1920">
@@ -192,10 +192,11 @@ const B08Light = ({pf, opacity}: {pf: number; opacity: number}) => {
   );
 };
 
-/** `ZCP-B08-SH01` overlay: the SVG bloom and embers over the canvas, then Grade and Grain (no caption shade on any ZC plate, pass 9). */
-export const b08Overlay: Overlay = ({tl, opacity}) => (
+/** `ZCP-B08-SH01` (EN) and `ZCP-B08-SH01-TH` overlay: the SVG bloom and embers over the canvas, then Grade and Grain (no caption shade on
+ *  any ZC plate, pass 9). The flare keys are per language (`B08_KEYS` in balcony.ts). */
+export const b08Overlay = (lang: Lang): Overlay => ({tl, opacity}) => (
   <>
-    <B08Light pf={pfOf(tl)} opacity={opacity} />
+    <B08Light pf={pfOf(tl)} opacity={opacity} lang={lang} />
     <ScreenLayers />
   </>
 );

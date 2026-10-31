@@ -6,10 +6,12 @@ import {persp} from './space';
 import {drawFig, figCast, figFront, figSide, MITTEN_6H, TEX_B} from './body6';
 import {castTone, KEY_B10} from './light';
 import {YOU_DAY3, ZC_FACES} from './cast';
+import type {Lang} from './jolts';
 
 // ZCPAINT B10-SH01 interior (`PERSP-2D` medium F 1844, 55 deg): camera at (Y 3.25, d 0.52), eye 1.58 m, VP (540, 525),
-// looking toward the plain door through the P1 doorway. Day-three overcast: values lowered. The turn (brief pf):
-// back view to 107, profile 109-115 (screen-right), front decal from 117 (the lens). Blink on, once in the window.
+// looking toward the plain door through the P1 doorway. Day-three overcast: values lowered. The turn (brief pf, EN `ZCP-B10-SH01`):
+// back view to 107, profile 109-115 (screen-right), front decal from 117 (the lens). Blink on, once in the window. TH
+// (`ZCP-B10-SH01-TH`, SS-R1.6): no turn, the back view on every frame.
 // Pass 8 (S-P13): the 6-head figure (BODY-ZCP-6H, day-three overlay) with its floor cast from KEY-B10 (LT-03), projected by the
 // same perspective and clipped to the entry and bathroom floor; the cast is painted after the floor, before the cabinet and door.
 
@@ -21,13 +23,13 @@ const FEET = {Y: 0.92, d: 0.2} as const;
 /** The head pose of him at plate frame pf: 'back' | 'side' | 'front' (the brief's turn keys). */
 export const b10View = (pf: number): 'back' | 'side' | 'front' => (pf < 108 ? 'back' : pf < 116 ? 'side' : 'front');
 
-export const paintInterior = (ctx: PaintContext, pf: number) => {
+export const paintInterior = (ctx: PaintContext, pf: number, lang: Lang) => {
   const P = B10_PERSP;
   const f = flatKit(ctx, 7000);
   const L = (c: string) => dim(c, OVERCAST);
   const back = 3.2;
   // Him: the figure for this view, its place on the feet line, and its floor cast clipped to the entry and bathroom floor.
-  const view = b10View(pf);
+  const view = lang === 'TH' ? 'back' : b10View(pf);
   const fig = view === 'back' ? figFront(YOU_DAY3, {back: true, overlay: 'day3', mitten: MITTEN_6H}) : view === 'side' ? figSide(YOU_DAY3, {overlay: 'day3', mitten: MITTEN_6H}) : figFront(YOU_DAY3, {face: ZC_FACES.neutral, overlay: 'day3', mitten: MITTEN_6H});
   const g = P(FEET.Y, 0, FEET.d);
   const place = {gx: g[0], gy: 1775, k: (1844 / (3.25 - FEET.Y)) / 447, dir: 1 as const};

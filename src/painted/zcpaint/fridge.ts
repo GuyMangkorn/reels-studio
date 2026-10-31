@@ -158,7 +158,7 @@ const figure = (q: Reach3): Fig => bustFig(YOU, {
   arms: {L: {kind: 'hang', hand: 'mitten', across: ACROSS}, R: {kind: 'reach3', pose: q}},
 });
 
-/** B06-SH02 (shared plate, TH 63 f, EN cuts at f 45): the fridge open, the arm into depth to the box. */
+/** B06-SH02 (TH 76 f on `ZCP-B06-SH02-TH`; shared `ZCP-B06-SH02` for EN, cuts at f 45): the fridge open, the arm into depth to the box. */
 export const paintB06Sh02 = (ctx: PaintContext, pf: number) => {
   const f = flatKit(ctx, 38000);
   const {pose, box} = reachPose(pf);

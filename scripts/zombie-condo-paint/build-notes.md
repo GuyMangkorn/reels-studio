@@ -2017,3 +2017,14 @@ Plate clock: pf = composition frame − beat start frame + `fromSec` × 30 (TH v
 
 1. User: watch the B04 and B06 walks in the MP4 (`out/ZCPAINT-SHORT-TH/ZCPAINT-SHORT-TH_A_fade.mp4`) and listen to the TH mix once; decide `Q-E2-1` and `Q-E2-2`.
 2. Mark (only if `Q-E2-1` changes): TH `fromSec` for B06-SH01 and the index frames after the re-lock.
+
+## Boss retime pass: painted TH keys (SS-R1.6 / SS-R1.7, 31 Oct 2026)
+
+Source: index "SS-R1.6 retime list" (SS-R1.7 call +59 f). Painted code only; EN plates, EN IDs and EN timing unchanged (EN frame check below). Not committed.
+
+- **TH-only plate IDs (Editor repoints `cues-TH.json`; EN cues keep the old IDs):** `ZCP-B01-SH02-TH` (push 53 f; charge pf 33-52, bob 33/38/43/48), `ZCP-B04-SH03a-TH` (push 78 f), `ZCP-B04-SH03b-TH` (push 22 f), `ZCP-B05-SH03-P1-TH` (push 132 f from its fromSec 0.7), `ZCP-B06-SH02-TH` (push 76 f), `ZCP-B08-SH01-TH` (B08_KEYS TH: flare 98-124, slump 166-176, push 245), `ZCP-B09-SH02-TH` (push 62 f), `ZCP-B09-SH03-TH` (push 96 f), `ZCP-B10-SH01-TH` (back view every frame, push 191 f). The retime list named three; the other six exist because the shared plate's TH push length differs from its EN one.
+- **Re-keyed TH in place:** B02-SH01 bolt 22-26; B03 living 22 / neighbour 23; diagram 23 / 51 / 95 / drain 155-230 / strike 230; LIDS 3 / 7 / 11; B05 icons 0 / 39; LIFT 37-53; `ZCP-B02-SH01-TH` push 91 f; `ZCP-B04-SH03c-TH` 19 f (fill and push); `ZCP-B04-SH04-TH` push 41 f; `ZCP-B05-SH01-TH` push 81 f; `ZCP-B09-SH01-TH` push 198 f and counter keys 36 / 84 / 136.
+- **Blow export:** `B02_TIMING.TH.blowsTo` = 551 (B02-SH03 pounds and the B03 fade), so the TH list runs 218 to 535. The plates still read only the SH01/SH02 jolts. EN `blowsTo` = 318, unchanged.
+- **Comments:** "knock" removed where TH is now the call (`b09.ts`, `povshots.ts`, `closeups.ts`). Also corrected: `diagram.ts`, `inserts.ts`, `bathroom.ts`, `fridge.ts` header lengths.
+- **Not applied / open:** (1) the B06-SH01 device overlay (clock and tick icons, TH f 68 / 98 / 160 / 190) is not in the checkout (no clock/tick code under `src/painted`), so its keys cannot be re-keyed; (2) B04-SH03a/b fill keeps its EN rise (39 f / 12 f) and holds, as the sheet allows; (3) EN pounds in B02-SH03 / B03 are not extended (EN frozen); the EN sheet also describes pounding there, so this needs a Mark decision.
+- **Tests (not edited, Editor-owned):** `tests/zcpaint.test.ts` line 20 (blows inside `sh02[1]`; TH now uses `blowsTo`) and line 117 (`boltAngle('TH', 7) === 90`; TH bolt is now 22-26) fail by design. The B08 mapping test still passes but its comments describe the old TH clock.

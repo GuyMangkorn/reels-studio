@@ -509,39 +509,39 @@ Estimated beat durations (s), from the R3 scripts (R2 values for reference):
 | B08 | 5.0 (3.1) | 4.5 (2.4) | −0.5 | Ambience lead-in + the restored smoke/fire line. The plate is trimmed per language so the fire cluster lands on that line. `RK-09` (EN too short) is closed |
 | B09 | 10.6 (7.5) | 8.8 (6.2) | −1.8 | Count rests (TH), knock silence 1.0 → **1.5 s**, a short hold after "พวกมันไม่เคาะ". SH01 counter hold absorbs the difference; knock and silence timing is identical in both |
 | B10 | 3.2 + 3.0 hold (3.0 + 3) | 3.7 + 3.0 hold (3.4 + 3) | +0.5 | The head turn is anchored to the last spoken line per language; the 3.0 s hold follows |
-| **Total** | **≈70.8 s** (≈58 s) | **≈70.1 s** (≈58 s) | −0.7 | |
+| **Total** | **≈70.8 s** (≈58 s); **SS-R1.7 measured TH: 95.90 s (2877 f)** | **≈70.1 s** (≈58 s) | −0.7 (R3 estimate) | TH from the measured Gemini read (31 Oct 2026) + the measured B09 call gap (+59 f; Enceladus take 3, 1.222 s); per-beat TH frames in the [index](index.md#scene--shot-order-and-timeline-mapping) |
 
 #### Per-shot timing (composition seconds and frames, `estimated`)
 
-Mark refines these within each beat (routine); beat boundaries come from the scripts and change only when Preaw re-times or measured audio arrives. **R2.1:** B02 is re-cut inside the same beat: `SH01` POV shut + lock ends after “มันทุบประตูไม่หยุด” / "It's pounding." has started; `SH02` POV drag starts on a cut ≈0.2 s before the drag word (“ลากตู้มาดัน” ≈6.8 / "Barricade it" ≈6.9) and holds under "clears fast"; `SH03` is unchanged. `B09-SH02B` splits the time of B09's SH02 (unchanged from R2). Beat lengths, the sync anchors and every other shot are unchanged.
+Mark refines these within each beat (routine); beat boundaries come from the scripts and change only when Preaw re-times or measured audio arrives. **SS-R1.6 (31 Oct 2026, Mark for Film):** the TH column below is the measured Gemini TTS timing (scene sheets `ZCPAINT-SHORT-SS-R1.6`; B09-SH02B onward re-locked to the measured call in `SS-R1.7`); the EN column is the R3 estimate (EN paused). **R2.1:** B02 is re-cut inside the same beat: `SH01` POV shut + lock ends after “มันทุบประตูไม่หยุด” / "It's pounding." has started; `SH02` POV drag starts on a cut ≈0.2 s before the drag word (“ลากตู้มาดัน” ≈6.8 / "Barricade it" ≈6.9) and holds under "clears fast"; `SH03` is unchanged. `B09-SH02B` splits the time of B09's SH02 (unchanged from R2). Beat lengths, the sync anchors and every other shot are unchanged.
 
 | Shot | TH s (frames) | TH dur | EN s (frames) | EN dur |
 | --- | --- | --- | --- | --- |
-| B01-SH01 | 0.0–3.5 (0–105) | 3.5 | 0.0–3.1 (0–93) | 3.1 |
-| B01-SH02 | 3.5–5.1 (105–153) | 1.6 | 3.1–4.7 (93–141) | 1.6 |
-| B02-SH01 (R2.1 POV: shut + lock) | 5.1–6.6 (153–198) | 1.5 | 4.7–6.6 (141–198) | 1.9 |
-| B02-SH02 (R2.1 POV: drag) | 6.6–9.6 (198–288) | 3.0 | 6.6–10.6 (198–318) | 4.0 |
+| B01-SH01 | 0.00–5.43 (0–163) | 5.43 | 0.0–3.1 (0–93) | 3.1 |
+| B01-SH02 | 5.43–7.20 (163–216) | 1.77 | 3.1–4.7 (93–141) | 1.6 |
+| B02-SH01 (R2.1 POV: shut + lock) | 7.20–10.23 (216–307) | 3.03 | 4.7–6.6 (141–198) | 1.9 |
+| B02-SH02 (R2.1 POV: drag) | 10.23–14.30 (307–429) | 4.07 | 6.6–10.6 (198–318) | 4.0 |
 | ~~B02-SH02B~~ | withdrawn in R2.1 (merged into the POV `SH02`) | — | — | — |
-| B02-SH03 | 9.6–11.7 (288–351) | 2.1 | 10.6–13.4 (318–402) | 2.8 |
-| B03-SH01 | 11.7–13.7 (351–411) | 2.0 | 13.4–15.5 (402–465) | 2.1 |
-| B04-SH01 | 13.7–15.3 (411–459) | 1.6 | 15.5–17.4 (465–522) | 1.9 |
-| B04-SH02 | 15.3–22.2 (459–666) | 6.9 | 17.4–25.1 (522–753) | 7.7 |
-| B04-SH03 | 22.2–24.3 (666–729): bucket 22.2–23.5, pot 23.5–23.9, bottles 23.9–24.3 | 2.1 | 25.1–27.3 (753–819): bucket 25.1–26.4, pot 26.4–26.8, bottles 26.8–27.3 | 2.2 |
-| B04-SH04 | 24.3–24.7 (729–741) | 0.4 | 27.3–28.4 (819–852) | 1.1 |
-| B05-SH01 | 24.7–26.4 (741–792) | 1.7 | 28.4–30.0 (852–900) | 1.6 |
-| B05-SH02 | 26.4–28.5 (792–855) | 2.1 | 30.0–33.1 (900–993) | 3.1 |
-| B05-SH03 | 28.5–34.1 (855–1023): cistern 28.5–31.7, bowl 31.7–32.4, cistern 32.4–34.1 | 5.6 | 33.1–38.3 (993–1149): cistern 33.1–35.3, bowl 35.3–36.1 (1059–1083), cistern 36.1–38.3 (R3.1: Mark's SS-R1 word-share refinement accepted; R3 had 35.0–35.8) | 5.2 |
-| B06-SH01 | 34.1–39.8 (1023–1194) | 5.7 | 38.3–43.0 (1149–1290) | 4.7 |
-| B06-SH02 | 39.8–41.9 (1194–1257) | 2.1 | 43.0–44.5 (1290–1335) | 1.5 |
-| B06-SH03 | 41.9–43.1 (1257–1293) | 1.2 | 44.5–45.3 (1335–1359) | 0.8 |
-| B07-SH01 | 43.1–46.3 (1293–1389) | 3.2 | 45.3–47.6 (1359–1428) | 2.3 |
-| B07-SH02 | 46.3–49.0 (1389–1470) | 2.7 | 47.6–50.1 (1428–1503) | 2.5 |
-| B08-SH01 | 49.0–54.0 (1470–1620) | 5.0 | 50.1–54.6 (1503–1638) | 4.5 |
-| B09-SH01 | 54.0–59.2 (1620–1776) | 5.2 | 54.6–58.0 (1638–1740) | 3.4 |
-| B09-SH02 | 59.2–60.7 (1776–1821) | 1.5 | 58.0–59.3 (1740–1779) | 1.3 |
-| B09-SH02B (R2 POV) | 60.7–62.0 (1821–1860); tilt-up from knock 1 | 1.3 | 59.3–60.6 (1779–1818); tilt-up from knock 1 | 1.3 |
-| B09-SH03 | 62.0–64.6 (1860–1938) | 2.6 | 60.6–63.4 (1818–1902) | 2.8 |
-| B10-SH01 | 64.6–70.8 (1938–2124); VO to 67.8, hold 67.8–70.8 | 6.2 | 63.4–70.1 (1902–2103); VO to 67.1, hold 67.1–70.1 | 6.7 |
+| B02-SH03 | 14.30–17.27 (429–518) | 2.97 | 10.6–13.4 (318–402) | 2.8 |
+| B03-SH01 | 17.27–19.33 (518–580) | 2.07 | 13.4–15.5 (402–465) | 2.1 |
+| B04-SH01 | 19.33–21.47 (580–644) | 2.13 | 15.5–17.4 (465–522) | 1.9 |
+| B04-SH02 | 21.47–30.40 (644–912) | 8.93 | 17.4–25.1 (522–753) | 7.7 |
+| B04-SH03 | 30.40–34.37 (912–1031): bucket 30.4–33.0, pot 33.0–33.73, bottles 33.73–34.37 | 3.97 | 25.1–27.3 (753–819): bucket 25.1–26.4, pot 26.4–26.8, bottles 26.8–27.3 | 2.2 |
+| B04-SH04 | 34.37–35.73 (1031–1072) | 1.37 | 27.3–28.4 (819–852) | 1.1 |
+| B05-SH01 | 35.73–38.43 (1072–1153) | 2.70 | 28.4–30.0 (852–900) | 1.6 |
+| B05-SH02 | 38.43–40.73 (1153–1222) | 2.30 | 30.0–33.1 (900–993) | 3.1 |
+| B05-SH03 | 40.73–48.93 (1222–1468): cistern 40.73–45.13, bowl 45.13–46.17, cistern 46.17–48.93 | 8.20 | 33.1–38.3 (993–1149): cistern 33.1–35.3, bowl 35.3–36.1 (1059–1083), cistern 36.1–38.3 (R3.1: Mark's SS-R1 word-share refinement accepted; R3 had 35.0–35.8) | 5.2 |
+| B06-SH01 | 48.93–56.03 (1468–1681) | 7.10 | 38.3–43.0 (1149–1290) | 4.7 |
+| B06-SH02 | 56.03–58.57 (1681–1757) | 2.53 | 43.0–44.5 (1290–1335) | 1.5 |
+| B06-SH03 | 58.57–60.33 (1757–1810) | 1.77 | 44.5–45.3 (1335–1359) | 0.8 |
+| B07-SH01 | 60.33–64.37 (1810–1931) | 4.03 | 45.3–47.6 (1359–1428) | 2.3 |
+| B07-SH02 | 64.37–68.13 (1931–2044) | 3.77 | 47.6–50.1 (1428–1503) | 2.5 |
+| B08-SH01 | 68.13–76.33 (2044–2290) | 8.20 | 50.1–54.6 (1503–1638) | 4.5 |
+| B09-SH01 | 76.33–82.93 (2290–2488) | 6.60 | 54.6–58.0 (1638–1740) | 3.4 |
+| B09-SH02 | 82.93–85.00 (2488–2550) | 2.07 | 58.0–59.3 (1740–1779) | 1.3 |
+| B09-SH02B (R2 POV) | 85.00–86.33 (2550–2590); tilt-up from the call onset (TH, SS-R1.7: call 85.000–86.222) | 1.33 | 59.3–60.6 (1779–1818); tilt-up from knock 1 | 1.3 |
+| B09-SH03 | 86.33–89.53 (2590–2686) | 3.20 | 60.6–63.4 (1818–1902) | 2.8 |
+| B10-SH01 | 89.53–95.90 (2686–2877); VO to 92.90, hold 92.90–95.90, no glance | 6.37 | 63.4–70.1 (1902–2103); VO to 67.1, hold 67.1–70.1 | 6.7 |
 
 Basis: per-line estimates at ≈15 Thai code points/s and ≈2.7 words/s from [tts-th.txt](../../../scripts/zombie-condo-paint/short/tts-th.txt) and [tts-en.txt](../../../scripts/zombie-condo-paint/short/tts-en.txt), plus each script's listed pauses, placed inside the script's beat boundaries. Short words inside a line (list items, "ปิด", "ล็อก") are interpolated by character/word share and are the least reliable numbers here.
 
@@ -551,34 +551,34 @@ Basis: per-line estimates at ≈15 Thai code points/s and ≈2.7 words/s from [t
 | --- | --- | --- | --- |
 | Door open | 0.0 | 0.0 | F0, picture-locked; corridor hum from F0 |
 | Figure readable | ≤1.2 (F36) | ≤1.2 (F36) | Picture-locked, same in both; hard limit 2.0 s |
-| Turn starts | 3.73 “แล้วมันก็หันมา” | 3.33 "Then it turns." | SH02 head turn; the sub riser ends when the turn completes (≈4.6 / ≈4.3) |
-| Running footsteps (R2.1) | ≈4.6 → 5.15 (pre-lap under the B01-SH02 hold, rising, ending in the hit) | ≈4.3 → 4.75 | Sound only: fast, heavy, uneven steps on corridor tile approaching from far to near; they end in one body hit on the door at the slam |
-| Slam / bolt | 5.1 “ปิด!” (door shut at ≈5.15, the hit lands with it) / ≈5.3 “ล็อก!” (bolt turn) | 4.7 "Shut it." (shut ≈4.75) / ≈5.4 "Lock it." | Slam accent + body hit on the door in the same instant; deadbolt clack on the lock word; POV SH01 |
-| Pounding starts | ≈5.6 “มันทุบประตูไม่หยุด” | ≈6.2 "It's pounding." | The hit at the slam is the first blow; regular pounding starts up to ≈0.2 s before the word; the door jolts on each blow in SH01 and SH02 |
-| Cabinet scrape | ≈6.8 “ลากตู้มาดัน” | ≈6.9 "Barricade it" | POV SH02 drag starts (cut ≈0.2 s before); scrape under the drag; flush thud at its end |
-| Freeze | ≈10.2 “พวกมันตามเสียง” | ≈11.9 "they follow sound" | SH03 freeze; the B02 pulse layer cuts; only the pounding remains for 0.6 / 0.5 s |
-| Light cascade | ≈12.0 “ไฟก็ดับ” → ≈12.5 “ทั้งตึก” (neighbours) | ≈14.0 "power dies" → ≈14.6 (neighbours) | **R2.3 POV:** first key on the door view (corridor gap line + entry lamp out) = power-down whoomp, compressor/AC hum and corridor buzz cut together; whip; lamps near → far; neighbour window on the building word; pounding fades over ≈0.8 s from the whoomp |
-| Tap running | 13.7 | 15.5 | First sound after the silence |
-| Pump stops | 17.8 “ไฟดับ ปั๊มก็หยุด” | 20.3 "No power, no pump." | Diagram step 3 |
-| Tank drains | 18.8 “น้ำที่ยังไหล…” | 21.8 "What's left in the tank" | Diagram step 4 |
-| Clock pulse enters | 20.9 “หมดแล้วไม่มีใครเติม” | ≈24.0 "all there is" | Pulse layer starts |
-| Container list | ≈23.4 ถัง / ≈23.6 หม้อ / ≈23.9 ขวด | ≈26.2 buckets / ≈26.5 pots / ≈26.9 bottles | Insert cuts on or just before each word |
-| Lid clicks | ≈24.1–24.7 “แล้วปิดฝา” | 27.3–28.4 "And cover it." | Three lid clicks; SH04 |
-| Pour / gurgle | 26.4 “เทแรงทีเดียว” / ≈28.0 “มันลงเอง” | ≈30.6 "one hard pour" / ≈32.3 "if it drains" | SH02 |
-| Cistern reveal | lid lift 28.5–28.9 (pause), reveal + chime 28.9 | lid lift 33.1 "Spare clean water?", reveal + chime ≈34.3 "The toilet tank" | SH03 |
-| Bowl cross | 31.8 “ไม่ใช่ในโถ” | ≈35.4 "not the bowl" (R3.1, sheet word-share estimate; R3 ≈35.0) | Red cross |
-| Hold-time ticks | ≈36.0 “ราวสี่ชั่วโมง”; ≈38.6 “อย่างมากราวสองวัน” | ≈39.4 "about four hours"; ≈41.6 "about two days, tops" | Clock device lines 1–2; hand withdraws on the freezer line |
-| Quick open / can down | 39.8 “ของในตู้เย็นที่กินได้เลย” / 41.9 “กระป๋องไว้ท้ายสุด” | 43.0 "Ready-to-eat" / ≈44.6 "cans last" | SH02 / SH03 |
-| Hand stops | ≈44.2 “ห้ามจุดในห้อง” | ≈46.0 "Never indoors." | Low stinger; no ignition sound |
-| Night lead-in | 49.0–49.5 | 50.1–50.5 | Wind only, picture moving |
-| Fire cluster | 51.7 “มีแต่ควันกับเปลวไฟ” | 52.0 "Only smoke and fire." | Fixed plate time, trimmed per language |
-| Counters | 54.0 day / 54.8 buckets / 55.9 cans / 57.5 battery | 54.6 / 55.3 / 56.1 / 56.8 | One dry tick per step |
-| Knocks | 60.7–61.9 | ≈59.3–60.5 | Three knocks ≈0.45 s apart, identical in both |
-| Silence | 61.9–63.4 (1.5 s) | ≈60.5–62.0 (1.5 s) | Cut to SH03 ≈0.1 s into it; all music out |
-| Story rule | 63.4 “พวกมันไม่เคาะ” | ≈62.0 "They don't knock." | Low sub hit (the Short's one main hit) |
-| Choice labels | as spoken, 64.6–67.1 | as spoken, 63.4–66.4 | Labels appear in order |
-| Lens glance | 67.1 “คอมเมนต์มา” | 66.4 "Comment below." | Head turn to the lens, held |
-| Closing hold | 67.8–70.8 | 67.1–70.1 | Near-silent; ending per Editor |
+| Turn starts | 5.67 “แล้วมันก็หันมา” | 3.33 "Then it turns." | SH02 head turn; the sub riser ends when the turn completes (≈4.6 / ≈4.3) |
+| Running footsteps (R2.1) | 6.53 → 7.27 (pre-lap under the B01-SH02 charge, rising, ending in the hit) | ≈4.3 → 4.75 | Sound only: fast, heavy, uneven steps on corridor tile approaching from far to near; they end in one body hit on the door at the slam |
+| Slam / bolt | 7.23 “ปิด!” (door shut at 7.27, the hit lands with it) / 8.07 “ล็อก!” (bolt clack) | 4.7 "Shut it." (shut ≈4.75) / ≈5.4 "Lock it." | Slam accent + body hit on the door in the same instant; deadbolt clack on the lock word; POV SH01 |
+| Pounding starts | 8.97 “มันทุบประตูไม่หยุด” (regular blows from 8.77) | ≈6.2 "It's pounding." | The hit at the slam is the first blow; regular pounding starts up to ≈0.2 s before the word; the door jolts on each blow in SH01 and SH02 |
+| Cabinet scrape | 10.43 “ลากตู้มาดัน” (cut 10.23, thud 10.33) | ≈6.9 "Barricade it" | POV SH02 drag starts (cut ≈0.2 s before); scrape under the drag; flush thud at its end |
+| Freeze | 15.60 “พวกมันตามเสียง” | ≈11.9 "they follow sound" | SH03 freeze; the B02 pulse layer cuts; only the pounding remains for 0.6 / 0.5 s |
+| Light cascade | ≈17.57 “ไฟก็ดับ” → ≈18.03 “ทั้งตึก” (neighbours) | ≈14.0 "power dies" → ≈14.6 (neighbours) | **R2.3 POV:** first key on the door view (corridor gap line + entry lamp out) = power-down whoomp, compressor/AC hum and corridor buzz cut together; whip; lamps near → far; neighbour window on the building word; pounding fades over ≈0.8 s from the whoomp |
+| Tap running | 19.33 | 15.5 | First sound after the silence |
+| Pump stops | 24.63 “ไฟดับ ปั๊มก็หยุด” | 20.3 "No power, no pump." | Diagram step 3 |
+| Tank drains | 26.63 “น้ำที่ยังไหล…” | 21.8 "What's left in the tank" | Diagram step 4 |
+| Clock pulse enters | 29.13 “หมดแล้วไม่มีใครเติม” | ≈24.0 "all there is" | Pulse layer starts |
+| Container list | 32.37 ถัง / 33.10 หม้อ / 33.73 ขวด | ≈26.2 buckets / ≈26.5 pots / ≈26.9 bottles | Insert cuts on or just before each word |
+| Lid clicks | 34.47 / 34.60 / 34.73 “แล้วปิดฝา” | 27.3–28.4 "And cover it." | Three lid clicks; SH04 |
+| Pour / gurgle | 38.43 “เทแรงทีเดียว” / 39.63 “ถ้าท่อยังดี” (gurgle) | ≈30.6 "one hard pour" / ≈32.3 "if it drains" | SH02 |
+| Cistern reveal | lid lift 40.73–41.13, reveal + chime 41.13 “ส่วนน้ำสะอาดสำรอง” | lid lift 33.1 "Spare clean water?", reveal + chime ≈34.3 "The toilet tank" | SH03 |
+| Bowl cross | 45.23 “ไม่ใช่ในโถ” | ≈35.4 "not the bowl" (R3.1, sheet word-share estimate; R3 ≈35.0) | Red cross |
+| Hold-time ticks | ≈51.20 “ราวสี่ชั่วโมง”; 54.27 “อย่างมากราวสองวัน” | ≈39.4 "about four hours"; ≈41.6 "about two days, tops" | Clock device lines 1–2; hand withdraws on the freezer line |
+| Quick open / can down | 56.03 “ของในตู้เย็นที่กินได้เลย” / 58.67 “กระป๋องไว้ท้ายสุด” | 43.0 "Ready-to-eat" / ≈44.6 "cans last" | SH02 / SH03 |
+| Hand stops | 61.67 “ห้ามจุดในห้อง” | ≈46.0 "Never indoors." | Low stinger; no ignition sound |
+| Night lead-in | 68.13–68.63 | 50.1–50.5 | Wind only, picture moving |
+| Fire cluster | 71.80 “มีแต่ควันกับเปลวไฟ” (TH key table, slump 73.67) | 52.0 "Only smoke and fire." | Fixed plate time, trimmed per language |
+| Counters | 76.33 day / 77.53 buckets / 79.13 cans / 80.87 battery | 54.6 / 55.3 / 56.1 / 56.8 | One dry tick per step |
+| Knocks (TH: **the call**, SS-R1.7) | call “มีใครอยู่ไหม” 85.000–86.222 (measured; Gemini Enceladus take 3, muffled, no caption) | ≈59.3–60.5 | EN: three knocks ≈0.45 s apart; TH: one muffled human call (script R4) |
+| Silence | 86.22–87.73 (1.5 s) | ≈60.5–62.0 (1.5 s) | Cut to SH03 ≈0.1 s into it; all music out |
+| Story rule | 87.73 “พวกมันไม่พูด” (+59 f narration gap) | ≈62.0 "They don't knock." | Low sub hit (the Short's one main hit) |
+| Choice labels | as spoken, 89.87 / 90.93 / 92.40 | as spoken, 63.4–66.4 | Labels appear in order |
+| Lens glance | **none in TH** (script R5) | 66.4 "Comment below." | Head turn to the lens, held |
+| Closing hold | 92.90–95.90 | 67.1–70.1 | Near-silent; ending per Editor |
 
 
 Rules:
@@ -1133,6 +1133,8 @@ History (R2.1, answered 29 Oct 2026): `Q-ZCP-3` approved as the direction (“�
 
 ## Change log
 
+- **Note, 31 Oct 2026 (Mark for Film; no brief revision bump):** `VD-ZC-TL` TH columns (per-shot timing and sync anchors) replaced with the measured Gemini TTS timing applied in scene sheets `ZCPAINT-SHORT-SS-R1.6`; the TH B09 knocks become the script R4 human call (“มีใครอยู่ไหม”, +52 f narration gap, 1.5 s silence, “พวกมันไม่พูด”) and the TH B10 lens glance is dropped with “คอมเมนต์มา” (script R5). New TH per-language keys on B01-SH02 (charge), B08 (flare/slump, `ZCP-B08-SH01-TH`) and B10 (no turn). EN columns, the R3 beat-duration table and the rest of the brief unchanged. Film to confirm or fold into the next brief revision; `VD-ZC-09`/`VD-ZC-10` prose still describes the knock and the glance (EN).
+- **Note, 31 Oct 2026 (Mark for Film; no brief revision bump):** scene sheets `ZCPAINT-SHORT-SS-R1.7` re-lock the TH B09/B10 rows of `VD-ZC-TL` and the TH sync anchors to the generated call (user pick: Gemini Enceladus take 3, muffled, 1.222 s; was planned 1.0 s): gap +59 f (was +52 f), B09-SH02B 2550–2590, SH03 2590–2686, B10 2686–2877, TH total 95.90 s (2877 f). No staging, medium, camera or light change.
 - **Note, 30 Oct 2026 (coordinator/Mark for Film; no brief revision bump):** `SPK-ZCP-07` B chosen by the user (`Q-SPK07-1`, delivery record "Film SPK-ZCP-07 look check"); `VD-ZC-06` row annotated; Mark applied it in `ZCPAINT-SHORT-SS-R1.5` (B06-SH02). Film to confirm or fold into the next brief revision.
 - **`VB-ZCPAINT-SHORT-R2.6`** (30 Oct 2026, Film): applies the user's variant B choice of [`SPK-ZCP-06`](#feasibility-spike-spk-zcp-06) and the closes' collar/neck addition (delivery record, "Puppet look" and "Film SPK-ZCP-06 look check"), plus the pass 10 waist/chest answer. New: [`CS-ZCP-R26`](#cs-zcp-r26) (costume, collar stand, bust neck), [`TX-ZCP-CLOTH`](#tx-zcp-cloth) (cloth glaze + hatch, figure cloth only), [`FR-ZCP-CLOSE`](#fr-zcp-close) (waist cut on the six bust closes), Boss acceptance `B6`–`B11`, spike section, [Mark handoff R2.6](#mark-handoff-r26), `RK-29`–`RK-31`, `Q-ZCP-15`. Changed: header (revision, checkout, index), `VD-ZCP-LOOK` fills/POV-hands rows, `LT-04` exception, `BODY-ZCP-6H` table/construction/consequence notes, `VD-ZC-CH` clothes and the infected's costume, scale table rows, dev-findings rows, `S-P12` rev in Boss needs. Sheets moved to `ZCPAINT-SHORT-SS-R1.4` in the same pass (AI08). No timing, VO, anchor, claim, clue or reveal change.
 - **`VB-ZCPAINT-SHORT-R2.5`** (30 Oct 2026, Film): the user rejected the Boss pass 5 look check and answered the follow-ups (delivery record, 30 Oct 2026). New: [`VD-ZCP-LIGHT`](#vd-zcp-light--cel-light-and-cast-shadows-r25) (cel 2 tones + cast shadows, key per set/shot, `LT-01`–`07`, acceptance `L1`–`L8`), [`VD-ZCP-ROOM`](#vd-zcp-room--what-makes-the-rooms-attractive-r25) (`RM-01`–`06`), [`BODY-ZCP-6H`](#body-zcp-6h--zcpaint-6-head-body-r25) (6-head spec, acceptance `B1`–`B5`), [`VD-ZCP-HANDS`](#vd-zcp-hands--hands-r25) (`HD-01`–`04`), [B02 and B09 POV staging R2.5](#b02-and-b09-pov-r25) (acceptance `P1`–`P7`), spike [`SPK-ZCP-05`](#feasibility-spike-spk-zcp-05). Changed: header, visual intent, `VD-ZCP-LOOK` (flat figure fills; POV hands), `VD-ZC-CH` (size, POV hands, contact), `VD-ZCP-00` (SVG-ZCP list recorded), `VD-ZC-02`, `VD-ZC-08` (two visible fires; acceptance items 1, 2, 5 restated; Boss Q2 decided: wash-only boxes), `VD-ZC-09`, `VD-ZCP-POV`, POV re-check, visual progression (B02, B09), `VD-ZC-CAP` (POV numbers), sound (B02 scrape and bag rows), `SCALE-ZCP-R1` figure rows and reach, `PROJ-ZCP-R1` lead note, dev findings, Boss needs (`S-P07`, new `S-P11`–`S-P13`), handoff constraints, [Mark handoff R2.5](#mark-handoff-r25), risks `RK-21`, `RK-25`–`RK-28`, questions `Q-ZCP-12`–`14`. Timing: no beat length, VO, sync-anchor, claim or reveal change; the B02-SH02 flush thud moves from TH f 51 / EN f 54 to TH f 3 / EN f 6 because the drag left the picture (user).

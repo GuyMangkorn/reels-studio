@@ -9,7 +9,7 @@ import {section, SEC_2D_LL_B09, type Section} from './space';
 
 // ZCPAINT B09 section plates (S-P03/S-P04 b, Boss pass 5; pass 8 S-P13): `SEC-2D-LL` 565 px/m, floor 1020, VP (540, 700) (`MK-ZCP-F2`).
 // Day three: overcast values, the entry cabinet, two buckets, four cans and the phone on the floor, him seated on the floor. B09-SH01
-// holds him hugging his knees, facing the door (`Q-MK-ZCP-2`); B09-SH03 is the held frame after the knock with his head lifted toward
+// holds him hugging his knees, facing the door (`Q-MK-ZCP-2`); B09-SH03 is the held frame after the knock (EN) or the call (TH) with his head lifted toward
 // the door. The trash bag is not painted (it projects inside the cabinet outline, `MK-ZC-ST-07`).
 // Pass 8: the 6-head seated figure (`figSeatFloor`, BODY-ZCP-6H) with its section cast (LT-03); the props take the day-three cel step
 // (`LT-02`, half) and cast their own floor shadows, painted before the boxes and the figure. The figure's cast is in the same pass.

@@ -5,12 +5,12 @@ import type {Pt} from '../kit/painter';
 
 // ZCPAINT B04-SH02 tank diagram (painted schematic plate, lighter paper `#e6dcc6`, no figures, generic tower only).
 // Built step by step on the mechanism lines; the labels are Remotion text (S-08, not built here). Steps per language
-// (pf = plate frame): TH 0 / 16 / 50 / 75 / drain 105-168 / refill strike 168; EN 0 / 19 / 64 / 87 / drain 132-196 / 196.
+// (pf = plate frame): TH 0 / 23 / 51 / 95 / drain 155-230 / refill strike 230 (SS-R1.6 retime); EN 0 / 19 / 64 / 87 / drain 132-196 / 196.
 
 export const DIAGRAM_PAPER = '#e6dcc6';
 type Keys = {pump: number; tank: number; power: number; drain: [number, number]; strike: number};
 export const DIAGRAM_KEYS: Record<'TH' | 'EN', Keys> = {
-  TH: {pump: 16, tank: 50, power: 75, drain: [105, 168], strike: 168},
+  TH: {pump: 23, tank: 51, power: 95, drain: [155, 230], strike: 230},
   EN: {pump: 19, tank: 64, power: 87, drain: [132, 196], strike: 196},
 };
 const TANK = {x0: 432, x1: 568, y0: 330, y1: 405};
