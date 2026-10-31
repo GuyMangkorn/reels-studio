@@ -11,14 +11,18 @@ Usage:
   python3 -I scripts/store.py adopt EP --project P [PUBLIC_PATH...] [--source CHECKOUT]
                                                              # lock media already in public/ (paths also from stdin)
   python3 -I scripts/store.py backfill-chat GLOB...          # store images the user attached in past chat transcripts
+  python3 -I scripts/store.py archive ID... | --all-worktrees # out/<ID>/ -> projects/<PROJECT>/renders/<ID>/<commit>/
+  python3 -I scripts/store.py archive --path DIR --project P --kind K   # takes, previews, samples -> projects/P/K/
+  python3 -I scripts/store.py prune PATH... [--delete]       # free gitignored folders: drop stored copies and scratch
 
 $REELS_STORE sets the store root (default ~/ReelsStore). STORE_PATH is relative to it, for example
 library/sound/sfx/water/water_pool-splash-small_01.wav or projects/WFOG/renders/... . A sidecar FILE.json or
 FILE-without-extension.json is stored next to the file as <name>.json. Stored files are never overwritten: putting
-the same content again is a no-op, different content at an existing path is refused. Exit 0 ok, 1 problems found,
+the same content again is a no-op, different content at an existing path is refused. Metadata (.json sidecars, .md
+indexes) may be replaced and is not hash-checked by verify. PROJECT is the composition ID's first segment (ALIASES). Exit 0 ok, 1 problems found,
 2 bad arguments. Prints one summary line plus any problems.
 """
-import argparse, base64, datetime, fnmatch, glob, hashlib, json, os, shutil, subprocess, sys
+import argparse, base64, datetime, fnmatch, glob, hashlib, json, os, re, shutil, subprocess, sys
 
 STORE = os.path.expanduser(os.environ.get('REELS_STORE') or '~/ReelsStore')
 MANIFEST = 'manifest.tsv'
@@ -40,38 +44,59 @@ def store_path(rel):
     return norm, os.path.join(STORE, norm)
 
 
-def git(*args):
-    r = subprocess.run(['git', *args], capture_output=True, text=True)
+def git(*args, cwd=None):
+    r = subprocess.run(['git', *args], cwd=cwd, capture_output=True, text=True)
     return r.stdout.strip() if r.returncode == 0 else ''
 
 
 GIT = [git('branch', '--show-current'), git('rev-parse', '--short=12', 'HEAD')]
+METADATA = ('.json', '.md')  # sidecars and indexes: edited in place (selection notes, INDEX rows), so not hash-checked
+MEDIA = {'.mp4', '.mov', '.webm', '.mp3', '.wav', '.m4a', '.ogg', '.flac', '.png', '.jpg', '.jpeg', '.webp', '.gif'}
+SKIP_PARTS = ('bundle', 'venv', 'node_modules', 'logs', 'tmp', 'qa')  # scratch under out/ that is never archived
+ALIASES = {'ZCPAINT': 'ZCONDO'}  # composition ID prefix -> project folder, only where they differ
+_rows = None
 
 
 def manifest():
-    path = os.path.join(STORE, MANIFEST)
-    if not os.path.exists(path): return {}
-    rows = [line.rstrip('\n').split('\t') for line in open(path, encoding='utf-8')][1:]
-    return {r[2]: dict(zip(HEADER, r)) for r in rows if len(r) >= 3}
+    global _rows
+    if _rows is None:
+        path = os.path.join(STORE, MANIFEST); _rows = {}
+        if os.path.exists(path):
+            for line in list(open(path, encoding='utf-8'))[1:]:
+                r = line.rstrip('\n').split('\t')
+                if len(r) >= 3: _rows[r[2]] = dict(zip(HEADER, r))
+    return _rows
 
 
-def store_file(src, rel, sidecar=True):
-    """Copy src to the store path rel. Returns 'stored', 'already' (same bytes there) or 'conflict' (other bytes)."""
+def record(rel, digest, src, commit=None):
+    path = os.path.join(STORE, MANIFEST); new = not os.path.exists(path)
+    row = [digest, str(os.path.getsize(os.path.join(STORE, rel))), rel, os.path.abspath(src), GIT[0], commit or GIT[1],
+           datetime.datetime.now().isoformat(timespec='seconds')]
+    with open(path, 'a', encoding='utf-8') as f:
+        if new: f.write('\t'.join(HEADER) + '\n')
+        f.write('\t'.join(row) + '\n')
+    manifest()[rel] = dict(zip(HEADER, row))
+
+
+def store_file(src, rel, sidecar=True, commit=None):
+    """Copy src to the store path rel. Returns 'stored', 'already' (same bytes there; recorded if the manifest lacked
+    it), 'updated' (a metadata file replaced) or 'conflict' (media with other bytes: stored files are immutable)."""
     rel, dest = store_path(rel)
-    digest = sha256(src)
-    if os.path.exists(dest): return 'already' if sha256(dest) == digest else 'conflict'
+    digest = sha256(src); status = 'stored'
+    if os.path.exists(dest):
+        if sha256(dest) == digest:
+            if rel not in manifest(): record(rel, digest, src, commit)
+            return 'already'
+        if not rel.endswith(METADATA): return 'conflict'
+        status = 'updated'
     os.makedirs(os.path.dirname(dest), exist_ok=True)
     shutil.copy2(src, dest)
     if sidecar:
         for side in (src + '.json', os.path.splitext(src)[0] + '.json'):
             if os.path.isfile(side) and side != src:
                 shutil.copy2(side, os.path.splitext(dest)[0] + '.json'); break
-    path = os.path.join(STORE, MANIFEST); new = not os.path.exists(path)
-    with open(path, 'a', encoding='utf-8') as f:
-        if new: f.write('\t'.join(HEADER) + '\n')
-        f.write('\t'.join([digest, str(os.path.getsize(dest)), rel, os.path.abspath(src), *GIT,
-                           datetime.datetime.now().isoformat(timespec='seconds')]) + '\n')
-    return 'stored'
+    record(rel, digest, src, commit)
+    return status
 
 
 def put(a):
@@ -85,7 +110,7 @@ def put(a):
 
 def import_dir(a):
     """Copy every file under SRC_DIR to PREFIX/<same relative path>, verbatim (sidecars are ordinary files here)."""
-    counts = {'stored': 0, 'already': 0, 'conflict': 0}; conflicts = []
+    counts = {'stored': 0, 'already': 0, 'updated': 0, 'conflict': 0}; conflicts = []
     for root, dirs, files in os.walk(a.src_dir):
         dirs[:] = sorted(d for d in dirs if not any(fnmatch.fnmatch(os.path.relpath(os.path.join(root, d), a.src_dir), g) for g in a.skip))
         for name in sorted(files):
@@ -93,7 +118,8 @@ def import_dir(a):
             if name == '.DS_Store' or any(fnmatch.fnmatch(rel, g) for g in a.skip): continue
             status = store_file(src, os.path.join(a.prefix, rel), sidecar=False); counts[status] += 1
             if status == 'conflict': conflicts.append(rel)
-    print(f"{a.src_dir} -> {a.prefix}: stored {counts['stored']}, already {counts['already']}, conflicts {counts['conflict']}")
+    print(f"{a.src_dir} -> {a.prefix}: stored {counts['stored']}, already {counts['already']}, updated {counts['updated']}, "
+          f"conflicts {counts['conflict']}")
     for c in conflicts: print(f'  conflict: {c}')
     return 1 if conflicts else 0
 
@@ -134,7 +160,7 @@ def backfill_chat(a):
     for pattern in a.transcripts:
         for t in sorted(glob.glob(os.path.expanduser(pattern), recursive=True)):
             found += chat_images(t)
-    counts = {'stored': 0, 'already': 0, 'conflict': 0}
+    counts = {'stored': 0, 'already': 0, 'updated': 0, 'conflict': 0}
     tmp = os.path.join(STORE, '.tmp'); os.makedirs(tmp, exist_ok=True)
     for t, stamp, session, harness, ext, data, text in found:
         name = f"{stamp[:10]}_{session[:8]}_{hashlib.sha256(data).hexdigest()[:8]}.{ext}"
@@ -172,6 +198,112 @@ def chat_images(t):
                     out.append((t, d.get('timestamp', ''), session, 'codex', head[len('data:image/'):].replace('jpeg', 'jpg'),
                                 base64.b64decode(data), text))
     return out
+
+
+COMPOSITION_ID = re.compile(r'^[A-Z][A-Z0-9]*(-[A-Za-z0-9]+)+$')
+
+
+def project_of(composition_id):
+    head = composition_id.split('-')[0]
+    return ALIASES.get(head, head)
+
+
+def version_of(worktree):
+    """<commit>, or <commit>-dirty-<time> when tracked files differ from it, so re-renders never collide."""
+    head = git('rev-parse', '--short=12', 'HEAD', cwd=worktree) or 'unknown'
+    dirty = git('status', '--porcelain', '--untracked-files=no', cwd=worktree)
+    return head + (datetime.datetime.now().strftime('-dirty-%Y%m%d%H%M') if dirty else '')
+
+
+def media_files(folder):
+    for root, dirs, files in os.walk(folder):
+        dirs[:] = sorted(d for d in dirs if not any(part in d for part in SKIP_PARTS))
+        for name in sorted(files):
+            if os.path.splitext(name)[1].lower() in MEDIA: yield os.path.join(root, name)
+
+
+def dataless(path):
+    """True for an iCloud Drive file evicted to the cloud (macOS SF_DATALESS): reading it starts a download."""
+    return bool(getattr(os.stat(path), 'st_flags', 0) & 0x40000000)
+
+
+def stored_hashes():
+    return {row['sha256'] for row in manifest().values()}
+
+
+def archive_folder(folder, prefix, dedupe_prefix, commit, counts):
+    """Store media under folder at prefix/<rel>. Bytes already stored under dedupe_prefix are skipped; a name taken
+    by other bytes gets the sha prefix appended (<stem>.<sha8><ext>) instead of failing."""
+    known = {row['sha256'] for rel, row in manifest().items() if rel.startswith(dedupe_prefix)}
+    for src in media_files(folder):
+        if dataless(src): counts['cloud'] += 1; continue  # never block on an iCloud download; rerun once it is local
+        digest = sha256(src)
+        if digest in known: counts['already'] += 1; continue
+        rel = os.path.join(prefix, os.path.relpath(src, folder))
+        if store_file(src, rel, sidecar=False, commit=commit) == 'conflict':
+            stem, ext = os.path.splitext(rel); store_file(src, f'{stem}.{digest[:8]}{ext}', sidecar=False, commit=commit)
+        known.add(digest); counts['stored'] += 1
+
+
+def archive(a):
+    counts = {'stored': 0, 'already': 0, 'cloud': 0}; skipped = []; known = None
+    if a.path:
+        if not (a.project and a.kind): sys.exit('bad arguments: --path needs --project and --kind')
+        archive_folder(a.path, f'projects/{a.project}/{a.kind}', f'projects/{a.project}/', GIT[1], counts)
+    trees = [l[9:] for l in git('worktree', 'list', '--porcelain').splitlines() if l.startswith('worktree ')] if a.all_worktrees else ['.']
+    for tree in trees:
+        out = os.path.join(tree, 'out')
+        names = a.ids if a.ids or not a.all_worktrees else sorted(os.listdir(out)) if os.path.isdir(out) else []
+        version = version_of(tree) if names else ''
+        for name in names:
+            folder = os.path.join(out, name)
+            if not os.path.exists(folder): skipped.append(f'{folder} (missing)'); continue
+            if not os.path.isdir(folder) or not COMPOSITION_ID.match(name):
+                if any(part in name for part in SKIP_PARTS): continue
+                files = list(media_files(folder)) if os.path.isdir(folder) else [folder] if os.path.splitext(name)[1].lower() in MEDIA else []
+                cloud = [f for f in files if dataless(f)]  # reading would download them from iCloud; report instead
+                known = known if known is not None else stored_hashes()
+                new = sum(1 for f in files if f not in cloud and sha256(f) not in known)
+                if new or cloud:
+                    skipped.append(f'{folder} ({new} of {len(files)} media files not in the store' + (f', {len(cloud)} iCloud-only not checked' if cloud else '')
+                                   + '; archive with --path DIR --project P --kind K)')
+                continue
+            base = f'projects/{project_of(name)}/renders/{name}'
+            archive_folder(folder, f'{base}/{version}', base + '/', version.split('-dirty')[0], counts)
+    print(f"archived {counts['stored']}, already stored {counts['already']}, not archived {len(skipped)}"
+          + (f", iCloud-only skipped {counts['cloud']} (download with `brctl download <folder>`, then rerun)" if counts['cloud'] else ''))
+    for s_ in skipped: print(f'  {s_}')
+    return 0
+
+
+def prune(a):
+    """Free space in gitignored folders: delete files whose bytes are already stored (any store path) and everything
+    under scratch folders (SKIP_PARTS). Files that are neither, and iCloud-only files outside scratch, are kept.
+    Dry run unless --delete."""
+    known = stored_hashes(); freed = {'stored': 0, 'scratch': 0}; n = {'stored': 0, 'scratch': 0}; kept = cloud = 0
+    for top in a.paths:
+        if not os.path.exists(top): continue
+        if subprocess.run(['git', 'check-ignore', '-q', top], cwd=os.path.dirname(os.path.abspath(top)) or '.').returncode:
+            sys.exit(f'bad path (not gitignored, refusing): {top}')
+        for root, dirs, files in os.walk(top, topdown=True):
+            scratch = any(part in seg for seg in os.path.relpath(root, top).split(os.sep) for part in SKIP_PARTS)
+            for name in files:
+                path = os.path.join(root, name)
+                try: st = os.lstat(path)
+                except OSError: continue
+                if scratch: kind = 'scratch'
+                elif os.path.islink(path) or dataless(path): cloud += dataless(path); kept += 1; continue
+                elif sha256(path) in known: kind = 'stored'
+                else: kept += 1; continue
+                n[kind] += 1; freed[kind] += st.st_size
+                if a.delete: os.remove(path)
+        if a.delete:
+            for root, dirs, files in os.walk(top, topdown=False):
+                if root != top and not os.listdir(root): os.rmdir(root)
+    verb = 'deleted' if a.delete else 'would delete'
+    print(f"{verb} {n['stored']} stored copies ({freed['stored'] / 1e9:.2f} GB) and {n['scratch']} scratch files "
+          f"({freed['scratch'] / 1e9:.2f} GB); kept {kept} files ({cloud} iCloud-only)")
+    return 0
 
 
 def lock_file(episode):
@@ -236,7 +368,7 @@ def verify(a):
     for rel, row in rows.items():
         path = os.path.join(STORE, rel)
         if not os.path.isfile(path): problems.append(f'missing: {rel}')
-        elif sha256(path) != row['sha256']: problems.append(f'hash mismatch: {rel}')
+        elif not rel.endswith(METADATA) and sha256(path) != row['sha256']: problems.append(f'hash mismatch: {rel}')
     locked = 0
     if os.path.isdir(os.path.join('src', 'videos')):
         for ep in episodes([]):
@@ -267,6 +399,12 @@ def main():
     p = sub.add_parser('adopt'); p.add_argument('episode'); p.add_argument('paths', nargs='*')
     p.add_argument('--project', required=True); p.add_argument('--source', default='.', help='checkout whose public/ holds the files')
     p.set_defaults(fn=adopt)
+    p = sub.add_parser('archive'); p.add_argument('ids', nargs='*', help='composition IDs: archive out/<ID>/')
+    p.add_argument('--path', help='archive media under this folder instead'); p.add_argument('--project'); p.add_argument('--kind')
+    p.add_argument('--all-worktrees', action='store_true', help='every out/<ID>/ in every worktree; lists the rest')
+    p.set_defaults(fn=archive)
+    p = sub.add_parser('prune'); p.add_argument('paths', nargs='+', help='gitignored folders, e.g. out/')
+    p.add_argument('--delete', action='store_true', help='actually delete (default: dry run)'); p.set_defaults(fn=prune)
     p = sub.add_parser('backfill-chat'); p.add_argument('transcripts', nargs='+', help='transcript globs (Claude Code / Codex .jsonl)')
     p.set_defaults(fn=backfill_chat)
     a = ap.parse_args()
