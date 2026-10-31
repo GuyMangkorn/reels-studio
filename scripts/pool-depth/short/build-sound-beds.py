@@ -12,7 +12,7 @@ Length stays exactly N = 52 s = 1620 frames at 30 fps, so file time equals compo
 import array, math, os, subprocess, sys
 
 SR, CH, N_SEC, C_SEC = 48000, 2, 52.0, 2.0
-LIB = '/Users/mangkornkatawong/Documents/ChatGPT/sound-library'
+LIB = os.path.join(os.path.expanduser(os.environ.get('REELS_STORE') or '~/ReelsStore'), 'library', 'sound')
 if '--lib' in sys.argv: LIB = sys.argv[sys.argv.index('--lib') + 1]
 
 def load(path):
