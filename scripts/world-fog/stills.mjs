@@ -25,10 +25,10 @@ const serveUrl = await bundle({entryPoint: path.resolve(entry)});
 const chromiumOptions = {gl: 'angle'};
 const browser = await openBrowser('chrome', {chromiumOptions});
 try {
-  const composition = await selectComposition({serveUrl, id, browserInstance: browser, chromiumOptions});
+  const composition = await selectComposition({serveUrl, id, puppeteerInstance: browser, chromiumOptions});
   for (const frame of frames) {
     const file = `${out}/${shotOf(frame)}_G${frame}.png`;
-    await renderStill({serveUrl, composition, browserInstance: browser, chromiumOptions, frame, output: file, imageFormat: 'png'});
+    await renderStill({serveUrl, composition, puppeteerInstance: browser, chromiumOptions, frame, output: file, imageFormat: 'png'});
     console.log(file);
   }
 } finally {

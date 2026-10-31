@@ -15,7 +15,8 @@
 // ~/ReelsStore/projects/<PROJECT>/renders/<CompositionId>/<commit>/) by scripts/store.py archive, outside every worktree.
 // Set BROWSER_EXECUTABLE to use an installed Chromium instead of Remotion's download.
 import {bundle} from '@remotion/bundler';
-import {openBrowser, selectComposition, renderStill, renderMedia} from '@remotion/renderer';
+import {openBrowser, selectComposition, renderMedia} from '@remotion/renderer';
+import {renderStills} from './stills.mjs';
 import path from 'node:path';
 import {mkdir, copyFile} from 'node:fs/promises';
 import {spawnSync} from 'node:child_process';
@@ -38,22 +39,19 @@ try {
     const dir = `out/${id}`;
     await mkdir(dir, {recursive: true});
     if (stills) {
-      const composition = await selectComposition({serveUrl, id, browserInstance: browser, ...shared});
+      const composition = await selectComposition({serveUrl, id, puppeteerInstance: browser, ...shared});
       await mkdir(`${dir}/stills`, {recursive: true});
-      for (const frame of frames) {
-        await renderStill({serveUrl, composition, browserInstance: browser, ...shared, frame, output: `${dir}/stills/${frame}.png`, imageFormat: 'png'});
-        console.log(`Checked ${id} frame ${frame}`);
-      }
+      await renderStills({serveUrl, composition, puppeteerInstance: browser, ...shared, frames, outputFor: (frame) => `${dir}/stills/${frame}.png`, onStill: (frame) => console.log(`Checked ${id} frame ${frame}`)});
       continue;
     }
-    const endings = endingsFor(requestedEndings, (await selectComposition({serveUrl, id, browserInstance: browser, ...shared})).props);
+    const endings = endingsFor(requestedEndings, (await selectComposition({serveUrl, id, puppeteerInstance: browser, ...shared})).props);
     const outDir = range ? `${dir}/range` : preview ? `${dir}/preview` : dir;
     await mkdir(outDir, {recursive: true});
     for (const ending of endings) {
       const inputProps = {ending, ...renderProps};
-      const composition = await selectComposition({serveUrl, id, browserInstance: browser, ...shared, inputProps});
+      const composition = await selectComposition({serveUrl, id, puppeteerInstance: browser, ...shared, inputProps});
       const output = `${outDir}/${id}_${ending}${range ? `_f${range[0]}-${range[1]}` : ''}.mp4`;
-      const render = {serveUrl, composition, browserInstance: browser, ...shared, scale, concurrency, inputProps};
+      const render = {serveUrl, composition, puppeteerInstance: browser, ...shared, scale, concurrency, inputProps};
       if (range || noCache) {
         let last = -1;
         await renderMedia({...render, codec: 'h264', pixelFormat: 'yuv420p', crf: 18, ...(range ? {frameRange: range} : {}), outputLocation: output,

@@ -35,6 +35,9 @@ export const Shot = () => <BrushCanvas paint={paint} paper="#e8dfcc" />;
 - **Every frame is a pure function of `t`.** Draw from nothing each frame and carry no state between frames.
   Never call `Math.random()`. Per-element randomness that must not boil (rain lanes, wave phases) comes from
   `hash(n)`. Brush texture randomness comes from `still(id)` or `boil(id)`.
+- **Draw only through `ctx.brush` (Requirement).** Shots, kits and rigs take the brush from `PaintContext` (or a `Painter`
+  built from it) and never import `p5.brush` themselves; only `BrushCanvas.tsx` does. That brush defers `seed`/`noiseSeed`
+  until a call reads them, so a direct import would draw with the wrong seed ([DF-20261031-paint-seed-defer](../../../docs/dev-findings/DF-20261031-paint-seed-defer.md)).
 - **Seed per element.** Call `still(id)` before each wash and `boil(id)` before each group of ink lines. One seed for
   the whole frame makes every wash re-randomise on each boil step, so the sky flickers.
 - **Coordinates are top-left pixels** in the composition size (1080×1920 Short, 1920×1080 Long). `BrushCanvas`
@@ -101,7 +104,7 @@ Logs go to `out/logs/`; images are viewed through `scripts/qa-sheet.sh` ([CB02/C
 
 ```bash
 E=src/painted/spike/index.ts; ID=PAINTED-SPIKE-Short          # swap for the real entry and composition
-npx remotion still $E $ID out/painted/f75.png --frame=75 --gl=angle > out/logs/painted-still.log 2>&1
+for f in 0 40 75 120; do echo "$ID $f out/painted/f$f.png"; done | node scripts/stills.mjs $E > out/logs/painted-still.log 2>&1   # one Chrome for all frames (AGENTS.md: Stills on one Chrome)
 sh scripts/qa-sheet.sh out/painted/sheet.png --cols 4 out/painted/f*.png            # one frame per beat
 ffmpeg -loglevel error -y -i out/painted/f75.png -vf crop=540:600:200:1000 out/painted/crop.png   # faces/hands/lines at full res
 npx remotion render $E $ID out/painted/$ID.mp4 --gl=angle > out/logs/painted-render.log 2>&1      # timing and motion
@@ -115,7 +118,7 @@ Questions for each sheet:
 - Does a glow wash out a face?
 - Do washes hold still between two adjacent frames, while only ink, weather and motion change?
 
-**Determinism check** before handing off: render one frame twice and `cmp` the PNGs. They must be identical.
+**Determinism check** before handing off: render one frame twice and compare with `node scripts/paint-bench-compare.mjs`. Separate sessions may differ by a few 1/255 steps ([DF-20261030-render-run-noise](../../../docs/dev-findings/DF-20261030-render-run-noise.md)); anything larger is a determinism bug.
 
 ## Gotchas
 
