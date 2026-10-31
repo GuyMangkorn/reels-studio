@@ -95,6 +95,8 @@ Design example, not an existing feature: a 2D actor walking behind a 3D door dur
 
 Use `storyboards/<episode>/<short|long>/visual-brief.md` for each selected deliverable, with its ID and scope metadata; follow [delivery paths](delivery-workflow.md#files-and-stable-ids). Preserve legacy paths until an explicit migration. A single scene uses `<scene>-visual-brief.md` to preserve the episode brief. Update existing `index.md` or create a compact scoped index without claiming a sequence blockout exists.
 
+**Look frame — Default for painted deliverables (user, 1 Nov 2026):** the brief ends with a look frame per location or look: a finished-grade painted still of the set with its characters, which Boss paints from the brief, and Film publishes it for the user before Mark's first storyboard pass. On the [storyboard review page](mark-storyboard-workflow.md#user-storyboard-review-page) each look frame appears in the header of the beats at that location. The user's approval is the look lock ([W2](sequence-workflow.md#painted-shot-by-shot)): shared painted code is frozen for the episode. A location that reuses an approved look with no new set or character records `look frame: reused (<episode>)` instead.
+
 ```markdown
 # Visual brief — <episode/chapter/scene>
 Deliverable: <ID>; delivery record: <path>; target duration / timing status: ...
