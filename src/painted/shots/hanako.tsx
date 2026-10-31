@@ -12,7 +12,7 @@ import {hardFill, rectPts} from '../kit/draw';
 import {ramp} from '../kit/painter';
 import {paintClassroom, paintClassKid, paintEndingHand, paintBook, paintCabinet, paintFolderHand} from '../hanako/assets';
 import {paintKnockHand, paintRestroom, RESTROOM, type RestroomView} from '../hanako/assets';
-import {FpovTag, fpovCamera, paintFistB02, paintFpovChest} from '../hanako/plates-r4';
+import {B03_GROUP_RISE, FpovTag, fpovCamera, paintFistB02, paintFpovChest} from '../hanako/plates-r4';
 
 // HANAKO-SHORT-SCENE-R3, FILM-R4; plate-local frames at 30 fps. No audio, caption cues or video registration here.
 export const HANAKO_G1 = [
@@ -101,7 +101,7 @@ const g1Shots: PaintedShot[] = HANAKO_G1.map(({id, start}) => {
         </svg>}
         <svg width={width} height={height} style={{position: 'absolute', inset: 0}}>
           {id === 'B01-SH02' && <text x={540} y={833} textAnchor="middle" fontFamily="Noto Sans JP" fontWeight={600} fontSize={30} fill="#eef3ee" stroke="#1d2129" strokeWidth={5} paintOrder="stroke" opacity={jp}>花子さん、いらっしゃいますか</text>}
-          {kids && <text x={120} y={375} fontFamily="Noto Sans Thai, Noto Sans JP" fontWeight={700} fontSize={40} fill="#eef3ee" stroke="#1d2129" strokeWidth={6} paintOrder="stroke" opacity={label}>ฮานาโกะซัง (トイレの花子さん)</text>}
+          {kids && <text x={120} y={395 - B03_GROUP_RISE} fontFamily="Noto Sans Thai, Noto Sans JP" fontWeight={700} fontSize={40} fill="#eef3ee" stroke="#1d2129" strokeWidth={6} paintOrder="stroke" opacity={label}>ฮานาโกะซัง (トイレの花子さん)</text>}
         </svg>
       </div>;
     },
