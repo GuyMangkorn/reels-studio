@@ -2,7 +2,8 @@
 """Copy gitignored render/audio media from every git worktree into one permanent folder.
 
 Default destination: $REELS_RENDER_DIR or ~/Movies/ReelsCreator/renders. Copies (never moves), de-duplicates by
-SHA-256 and writes manifest.tsv. Scratch (qa frames, bundles, venvs, logs, tmp) is skipped.
+SHA-256 and writes manifest.tsv (with the producing commit; '~' marks a backfilled estimate, '+dirty' uncommitted
+changes). A full run also mirrors the shared sound library into <dest>/_sound-library. Scratch (qa frames, bundles, venvs, logs, tmp) is skipped.
 
   python3 -I scripts/archive-renders.py [--dest DIR] [--dry-run] [--regroup] [--only COMPOSITION_ID]
 
@@ -89,6 +90,45 @@ def candidates(w, branch, library):
             yield os.path.join(w, rel), os.path.join('_untracked', branch, rel)
 
 
+def git(cwd, *args):
+    r = subprocess.run(['git', *args], cwd=cwd, capture_output=True, text=True)
+    return r.stdout.strip() if r.returncode == 0 else ''
+
+
+def commit_of(w):
+    """HEAD of the worktree that produced a file; '+dirty' when tracked files differ from it."""
+    head = git(w, 'rev-parse', '--short=12', 'HEAD')
+    return head + ('+dirty' if git(w, 'status', '--porcelain', '--untracked-files=no') else '') if head else 'unknown'
+
+
+def approx_commit(cwd, paths, branch, mtime, src):
+    """Backfill for rows archived before the commit column: last commit on the source branch (or the source
+    worktree's HEAD) before the file's mtime, prefixed '~'."""
+    w = next((p for p in sorted(paths, key=len, reverse=True) if src.startswith(p + os.sep)), None)
+    for ref in ([branch] if branch not in ('?', 'detached') else []) + ([git(w, 'rev-parse', 'HEAD')] if w else []):
+        c = git(cwd, 'rev-list', '-1', f'--before={mtime}', ref) if ref else ''
+        if c:
+            return '~' + c[:12]
+    return 'unknown'
+
+
+def backup_library(dest):
+    """Mirror the shared sound library into <dest>/_sound-library (new or changed files only; nothing deleted)."""
+    out, n = os.path.join(dest, '_sound-library'), 0
+    for r, ds, fs in os.walk(SOUND_LIBRARY):
+        ds[:] = [d for d in ds if not d.startswith('.')]
+        for f in fs:
+            src = os.path.join(r, f)
+            dst = os.path.join(out, os.path.relpath(src, SOUND_LIBRARY))
+            st = os.stat(src)
+            if os.path.exists(dst) and os.stat(dst).st_size == st.st_size and int(os.stat(dst).st_mtime) == int(st.st_mtime):
+                continue
+            os.makedirs(os.path.dirname(dst), exist_ok=True)
+            shutil.copy2(src, dst)
+            n += 1
+    return n
+
+
 def sha(p):
     h = hashlib.sha256()
     with open(p, 'rb') as f:
@@ -139,6 +179,10 @@ def main():
     if os.path.exists(mp):  # already-archived content (by hash) is skipped; its rows are kept
         old_rows = open(mp).read().splitlines()[1:]
         seen = {r.split('\t')[0]: r.split('\t')[5] for r in old_rows}
+        for i, r in enumerate(old_rows):
+            c = r.split('\t')
+            if len(c) == 6:
+                old_rows[i] = r + '\t' + approx_commit(os.getcwd(), paths, c[3], c[2], c[4])
     for w in paths:
         if not os.path.isdir(w):
             continue
@@ -157,7 +201,7 @@ def main():
             seen[h] = dest
             st = os.stat(src)
             size += st.st_size
-            rows.append((h, st.st_size, time.strftime('%Y-%m-%d %H:%M', time.localtime(st.st_mtime)), branch.get(w, '?'), src, dest))
+            rows.append((h, st.st_size, time.strftime('%Y-%m-%d %H:%M', time.localtime(st.st_mtime)), branch.get(w, '?'), src, dest, commit_of(w)))
             if not a.dry_run:
                 os.makedirs(os.path.dirname(dest), exist_ok=True)
                 shutil.copy2(src, dest)
@@ -165,11 +209,13 @@ def main():
     if not a.dry_run:
         os.makedirs(a.dest, exist_ok=True)
         with open(os.path.join(a.dest, 'manifest.tsv'), 'w') as m:
-            m.write('sha256\tbytes\tmtime\tbranch\tsource\tdest\n')
+            m.write('sha256\tbytes\tmtime\tbranch\tsource\tdest\tcommit\n')
             for r in old_rows:
                 m.write(r + '\n')
             for r in rows:
                 m.write('\t'.join(str(x) for x in r) + '\n')
+        if not a.only:
+            print(f'sound library: {backup_library(a.dest)} new/changed files -> {a.dest}/_sound-library')
 
 
 if __name__ == '__main__':
