@@ -1,0 +1,20 @@
+# Boss S1-R4 fix pass — HANAKO-SHORT, 31 Oct 2026
+
+Scope: B02-SH01 and B03-SH01 standalone plates; user's painted-figure update overrides VD24's flat-fill choice. Existing checkout work preserved. **Visual done is not claimed.**
+
+## Implementation and judgement
+
+- The WORLD FOG actor rig accepts front poses and authored `via` elbows with `behind: 'upper'`, but its fixed adult CAST, fixed head size, always-painted head and preset outfits do not offer the 1.25–1.30 m school uniform or this cropped headless costume. I used the requested fallback: seeded `washAt` pigment, ink and a cel shade in the same language, with no `hardFill` or SVG for the figure or the doodle. Notebook remains crisp and the tag remains SVG. No head is drawn. The wash uses VD25 colours.
+- Both elbows are explicitly authored inside the torso edge, below the hands. The darker upper sleeves are painted behind the torso and short angled near sleeves in front, with cuffs over wrist and fingers behind the notebook. Compared against the rendered WORLD FOG S02-SH03 shop worker, **the elbow bend still does not read as clearly**: the raised page hides much of both forearms and elbows, and the exposed upper sleeve slivers read as long vertical tubes. The shallow hand slivers do not convincingly establish grip. This is not a visual acceptance; more art direction and a further construction pass are required. The skirt still reads as a long dark mass.
+- The page illustration is now painted in seeded wash and ink; it is recognisable at F479. Label stays at y375 with its existing fade and the tag remains crisp. On the viewed sheet the label is clear of the tag and shoulder/collar outlines.
+- B02 retains size 0.80 and anchor and direction −2.9 rad; the cuff was moved toward the wrist and a thumb-contour stroke added alongside the thin cool rim. At 270 px the knuckle divisions are visible, but the thumb and cuff remain crowded at the frame edge and the fist is not yet convincing. The direction was chosen to lift the previously low wrist corner.
+
+## Evidence and checks
+
+- WORLD FOG reference: `out/qa/hanako/s1r4-painted/reference/S02-SH03_G816.png`; viewed side-by-side at 270 px in `out/qa/hanako/s1r4-painted/sheets/final-comparison.png` (G816 is S02-SH03 f30 in this checkout; the older G474 is now a different shot).
+- B03 before and after, F443, F467, F479, F513, F528, F543, F644: `out/qa/hanako/s1r4-painted/sheets/B03-final.png`; previous before/after comparison is `out/qa/hanako/s1r4-painted/sheets/B03-before-after.png` (current image there is intermediate). B02 after F304, F417, F418, F442: `out/qa/hanako/s1r4-painted/sheets/B02-final.png`. Prior B02 before/after: `out/qa/hanako/s1r4-fix/sheets/B02-before-after.png`. All three sheets viewed. All plate stills use ANGLE.
+- Caption band y860–1248: all 28 sampled B02/B03 frames pass; maximum mean 0.208, p95 0.280 (`out/logs/s1r4-painted-caption-final.json`). This is sampled coverage, not every frame.
+- F644 tag main text ink height 40 px; body screen box x721–945, y339–415, measured by `measure-s1r4.py` functions (minimum 36 px). The chest crop has no measurable full-figure lead height; the nominal 4-head child proportions outside this crop are not proven by this isolated render.
+- `npm run typecheck` passed; `npm run lint` passed with 3 existing hook warnings; `npm test` passed 218/218. Logs: `out/logs/s1r4-painted-{typecheck,lint,test}.log`. Tests capture B02 x >= 892 and the wrist-side y <= 850 across all local frames.
+- Full assembled sequence, audio, subtitle timing and Studio playback not reviewed. Loop check recorded separately below. No release or visual completion claim.
+- Final-tree loop render: F2595 and F0 PNGs byte-identical (`out/qa/hanako/s1r4-painted/loop-final/`; `out/logs/s1r4-painted-loop-final.log`); final B03 f100 repeat differs by a tiny amount (PSNR 116 dB; `out/logs/s1r4-painted-repeat.log`), so exact still determinism is not established; `git diff --check` passes. Loop check is isolated plate evidence, not an assembled playback review.
