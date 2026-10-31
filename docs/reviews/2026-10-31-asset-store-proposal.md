@@ -207,6 +207,14 @@ Still open:
 
 Rename `node_modules`, `out`, `.venv-whisper`, `.claude/worktrees` to `<name>.nosync` with a symlink under the old name. iCloud skips `.nosync`, which removes about 14 GB of the 16 GB without moving anything. It leaves `.git` (2 GB) and `public/` (255 MB) syncing, repeats for every new worktree, and `git worktree` folders named `.nosync` confuse some tools. Use it only if moving is not acceptable.
 
+### 7.4a Done 31 Oct 2026
+
+- Copied with `rsync -a` to `~/Developer/reels-creator` (3.4 GB in 24 s), without `node_modules`, the venvs and the 479 iCloud-only `… 2.png` files, which are iCloud's own duplicate copies. `git status` matches the original.
+- `git worktree repair` for 33 worktrees (14 inside the folder, 18 outside, the main one): none still names the old path, none are prunable.
+- Claude Code state copied, not moved: 18 `~/.claude/projects/` folders (memory identical) and 22 `~/.claude.json` project entries. Codex trust and opener entries were added for the new path. `~/.claude.json` and `~/.codex/config.toml` were backed up as `*.bak-20261031-164507`.
+- New `scripts/setup.sh` in the new folder: npm, `.venv-whisper`, `gemini-venv`, `voice-venv`, `fetch` and `verify` all ok in 78 s. `npm test` 235 pass.
+- The old folder is kept until the user has worked in the new one, then deleted (iCloud keeps it 30 days). iCloud showed 17 MB of free quota after the deletions, most likely because iCloud Drive's Recently Deleted still counts them.
+
 ### 7.5 Decisions needed
 
 1. Target folder: `~/Developer/reels-creator` (default) or another path.

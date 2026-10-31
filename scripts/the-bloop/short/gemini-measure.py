@@ -7,7 +7,7 @@ times are rough (scripts/transcribe.py notes), so the result is an estimate of o
 The speech window (first and last sample above 300 of 32767, as in narration.py) is measured from the audio itself.
 
 Run with the Whisper venv (main checkout):
-  /Users/mangkornkatawong/Documents/ChatGPT/Reels\\ Creator/.venv-whisper/bin/python -I scripts/the-bloop/short/gemini-measure.py --take 1
+  .venv-whisper/bin/python -I scripts/the-bloop/short/gemini-measure.py --take 1
 Input: out/BLOOP-EP01-SHORT/gemini-vo/B??-take<N>.wav and the R5 VO (narration-timeline.json).
 Output: scripts/the-bloop/short/gemini-measure-take<N>.json (same schema as tts-measure.json).
 """

@@ -4,6 +4,7 @@ Shared tools any role may run. Check here before writing a one-off command. A pr
 
 | Script | Does | Run |
 | --- | --- | --- |
+| `setup.sh` | Prepares a checkout after a clone, a folder move or a new machine (safe to re-run): `npm ci` when needed, the three local venvs (`.venv-whisper`, `out/gemini-venv`, `out/voice-venv`) rebuilt only when they do not run, `store.py fetch` + `verify`, and `--repair-worktrees` | `bash scripts/setup.sh [--no-venvs] [--repair-worktrees]` |
 | `render.mjs` | Renders compositions, stills or frame lists into `out/<CompositionId>/`; parallel-safe. Renders only the registry's selected ending unless `--endings` is given, then normalizes loudness in place. Painted/WebGL episodes: `--gl=angle --timeout=180000` (per-frame ms) so a slow frame does not stall; `--concurrency` defaults to 4 | `npm run render -- <CompositionId> [--stills] [--frames=90,210] [--endings=A_fade,B_loop] [--gl=angle] [--timeout=180000] [--concurrency=4]` |
 | `reference-frames.py` | Reference stills of a composition (PNG every 5 s at the current commit, `--gl=angle`) into the asset store (`projects/<PROJECT>/reference/<ID>/<commit>/`) with SHA-256, PSNR against the delivered MP4 (`--mp4 ID=path`) and a byte-identical count against the previous set | `python3 -I scripts/reference-frames.py <ID> [--mp4 <ID>=<mp4>]` |
 | `narration.py` | Local Edge TTS narration (default Niwat +5%; female: `--voice th-TH-PremwadeeNeural`; `--rate`) plus the committed 30 fps RMS envelope | `npm run narration -- …` |

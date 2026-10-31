@@ -13,7 +13,7 @@ import argparse, hashlib, json, shlex, subprocess, sys, time
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[3]
-GEMINI = Path('/Users/mangkornkatawong/Documents/ChatGPT/Reels Creator/scripts/gemini-tts.py')  # official script, main checkout
+GEMINI = ROOT / 'scripts/gemini-tts.py'
 VENV_PY = ROOT / 'out/gemini-venv/bin/python'
 OUT = ROOT / 'out/BLOOP-EP01-SHORT/gemini-vo'
 VOICE = 'Charon'
