@@ -1,0 +1,9 @@
+NOTICE — HANAKO-SHORT derived data (src/painted/hanako/)
+
+1. japan.json — map outline (HANAKO-SHORT-FILM-R3, VD17)
+   Source: Natural Earth 1:50m land (ne_50m_land), public domain (Natural Earth terms of use:
+   https://www.naturalearthdata.com/about/terms-of-use/). Retrieved 2026-10-31 from
+   https://raw.githubusercontent.com/nvkelso/natural-earth-vector/master/geojson/ne_50m_land.geojson
+   (1,636,166 bytes; SHA-256 e874b27a51d146452be360cafb3cc50c86001074a67d534113e6534682f9826b).
+   Derived by scripts/hanako/bake-map.py: Japanese main and minor islands only (continent, Sakhalin and Kurils dropped),
+   equirectangular with cos 37.5 deg, simplified at 1.1 px. No attribution is required; kept for the record.
