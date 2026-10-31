@@ -1,6 +1,6 @@
 # Boss cache diagnosis: HANAKO-SHORT segment cache (1 Nov 2026)
 
-- Owner: Boss. Status: diagnosis and proposal. No code, plate, cue, sound, lock or production output changed; nothing committed or pushed.
+- Owner: Boss. Status: diagnosis; the section 7 proposal was applied in the working tree on 1 Nov 2026 (approval relayed by the coordinator, Boss could not verify it directly). Fix and evidence: `docs/dev-findings/DF-20261101-segment-cache-key.md` and section 10. No plate, cue, sound, lock or production output changed; nothing committed or pushed by Boss.
 - Tree: HEAD `7ccacff` (HANAKO registration, committed during this run). `src/` has no diff against HEAD. The key logic last changed in `1d97835` (scene cache), before the observed runs; `bb0346c` only changed a comment in `segments.mjs`.
 - Evidence: scratch probes (not in the repo): `/private/tmp/claude-501/-Users-mangkornkatawong-Developer-reels-creator--claude-worktrees-hanako-next-437b9b/df63fb10-edc9-41c3-a783-f8e0bbf38709/scratchpad/cache-key-probe.mts` (log `.../scratchpad/probe.log`), `.../scratchpad/readers-probe.mts`, `.../scratchpad/other-lock-probe.mts`. The probe imports the real `segmentKeys` and `sourceHash`, asserts that its reimplementation equals the real key on the baseline, and perturbs in memory or in a scratch copy of `src/`. The real cache directory was not listed or touched.
 
@@ -9,7 +9,7 @@
 - No crash or wrong-pixel bug found. Each observed re-render is what `segmentKeys` computes, and the behaviour is documented (README "Render and verify", DF-20261031-render-speed, `tests/segments.test.ts`).
 - It is coarser than the AGENTS.md promise ("after an edit only the touched scenes are painted") for three classes: any `src/` change or any lock change (including other episodes' locks), neighbour terms the renderer never reads, and a total-duration change.
 - The audio array is not in the key. The lock file is. The sound re-wire re-renders every picture only because `store.py use` writes `src/videos/hanako/assets.lock.json`, which is hashed whole.
-- Proposal (not applied): read neighbours only where the renderer reads them, and leave `public/audio` lock entries out of the picture key. It flips two existing assertions, so it needs owner sign-off. Per-shot and per-episode keys are a larger design step.
+- Proposal, now applied in the working tree (section 10): read neighbours only where the renderer reads them, and leave `public/audio` lock entries out of the picture key. Per-shot and per-episode keys remain open design steps.
 
 ## 1. What the key contains (`scripts/segments.mjs`)
 
@@ -99,9 +99,9 @@ Measured on 31 Oct (`scripts/hanako/short/render-report.md`): full miss 691 s fo
 | Shared kit edit (`src/painted`, `src/scenes`) | 9/9 ≈ 691 s | 9/9 (correct without dependency analysis) |
 | Scene 3 duration +0.1 s | 9/9 ≈ 691 s | 9/9 with `size` term; 3 to 9 ≈ 573 s if the size term is dropped for `A_fade` (not proposed yet) |
 
-## 7. Proposed fix (proposal only; not applied)
+## 7. Proposed fix (applied as described in section 10)
 
-Smallest change, all in `scripts/segments.mjs`:
+Smallest change, all in `scripts/segments.mjs` (the applied version differs in the details listed in section 10):
 
 (a) Neighbours only where the renderer reads them:
 
@@ -128,7 +128,7 @@ Verification if approved: rerun the probe (expect C1 `[1]`, C5 `[8]`, C6 `[9]`, 
 
 ## 8. Limits
 
-- No render was run, because `--range` renders and has no dry-run. The worktree was not edited. The real cache directory was not listed or touched.
+- Section 2 is the pre-change probe. The post-change results are in section 10. The real cache directory was not listed or touched. Boundary renders used scratch copies and `render.mjs --range` only; no full-video render.
 - The per-frame cost comes from one 31 Oct full miss (tree `f8788d1`), not from the current tree.
 - The proposal's safety (that the dropped terms never change pixels) rests on reading `SceneRenderer.tsx`, `painted.ts` and `endings.ts`, not on renders.
 - HEAD moved from `f8788d1` to `7ccacff` during this run (another session committed the HANAKO registration). `src/` is identical to HEAD.
@@ -136,5 +136,44 @@ Verification if approved: rerun the probe (expect C1 `[1]`, C5 `[8]`, C6 `[9]`, 
 
 ## 9. Records
 
-- No `docs/dev-findings.md` entry written (scope). Suggested ID: `DF-20261101-segment-cache-key`, pointing to this file.
-- AGENTS.md line 25, README "Render and verify" and the DF wording need updating only if the owner accepts the proposal. Rule documents were not edited.
+- Written: `docs/dev-findings/DF-20261101-segment-cache-key.md` and its index row in `docs/dev-findings.md`.
+- README "Render and verify" reuse sentence corrected to match the code. AGENTS.md line 25 is not edited; its "only the touched scenes are painted" wording still overstates shared-code, lock and duration edits (open, proposal in section 10).
+
+## 10. Applied change, checks and risks (1 Nov 2026, working tree)
+
+Applied, all in `scripts/segments.mjs` (uncommitted):
+- (a) Neighbours as approved: previous scene only for actor poses, a first-cue `dissolveSec`, or a global `sceneTransitionFrames`; next scene only for `transitionIn` or a global transition; `timeline[0]` only when `ending !== 'A_fade'`. Detail kept on purpose: under a global transition the neighbours stay in the key, and the frame counts of all scenes are hashed, because `transitionOpacityAt` reads every boundary.
+- (b) `sourceHash`: `public/audio/` entries are left out of each lock's JSON. Picture entries, `src/` and the episode `index.ts` behaviour are unchanged.
+- (c) Not in the approval, added as a correctness fix: the scene count is hashed only while `chrome.progressBar` is on (`SceneView` draws one segment per scene). Without it, a scene split that keeps the total left untouched scenes with the old bar.
+- `scripts/segments.d.mts` unchanged (no new exports). README reuse sentence corrected. New DF `DF-20261101-segment-cache-key` and its index row. AGENTS.md not edited.
+
+Tests (`tests/segments.test.ts`): 12 tests (was 4). Two existing assertions flipped as approved: the caption test `[1,2,3]` → `[2]`; the loop test `[0,1,4]` → `[0]` for A_fade, with `[0,4]` kept for C_seamless, B_loop and an undefined ending. The duration assertion (5 keys for a total change) still holds; a held-total case is added. New tests cover each rule and each kept neighbour read (actors, first-cue dissolve, `transitionIn`, global transitions, C_seamless, B_loop), the progress-bar count, and the sound-lock exclusion in `sourceHash`. The old code fails 7 of the 12 (run after the last change).
+
+Before → after, HANAKO-SHORT (scenes re-rendered, from the probe logs `out/logs/boss-cache-probe-oldcode-rerun.log` and `boss-cache-probe-after.log`):
+
+| Case | Before | After |
+| --- | --- | --- |
+| C1 / C2 knock caption, scene 1 | 1, 2, 9 (737 f) | 1 (304 f) |
+| C5 caption, scene 8 | 7, 8, 9 (1,008 f) | 8 (256 f) |
+| C6 caption, scene 9 | 8, 9 (550 f) | 9 (294 f) |
+| C10 scene 3 +0.1 s, total held | 2–9 (2,292 f) | 3–9 (2,153 f) |
+| C11 knock caption under C_seamless | 1, 2, 9 | 1, 9 |
+| E1 last scene split, total held, progress bar off | 8, 9 | 9 |
+| E2 global `sceneTransitionFrames`, scene 9 caption | 8, 9 | 8, 9 (unchanged) |
+| C3 SFX, C4 `audio[]`, S4 episode `index.ts` | none | none |
+| S5 new sound lock entry | 1–9 | none |
+| C7 captionStyle, C8 narration startFrame, C9 total change | 1–9 | 1–9 (correct, global) |
+| S1 B08 overlay, S2 poster kit, S3 unrelated `src/`, S6 picture lock | 1–9 | 1–9 (correct at file granularity) |
+
+Render checks: see DF-20261101 "Boundary render checks". Summary: the scene 2 cache hit (scene 1 caption changed), the scene 9 A_fade cache hit (scene 1 plate changed) and the harness-versus-`render.mjs --range` check are byte-identical (139/139, 294/294, 139/139). The scene 8 hit (scene 9 caption changed) shows no change above repeat noise. The scene 8 dissolve reads scene 7's last plate (mean 11.07 when that plate is swapped), so the kept term is needed. The C_seamless render could not run because the registry's `endHoldSec` blocks non-A_fade endings.
+
+Verification: `scripts/segments.mjs` tests 12/12 (`out/logs/boss-cache-segments-test.log`); typecheck exit 0 (`boss-cache-typecheck.log`); lint 0 errors, 3 warnings in `src/painted/hanako/look*.tsx`, none in the changed files (`boss-cache-lint.log`); full `npm test` 256/256 (`boss-cache-npm-test.log`); range renders in `out/logs/boss-cache-range-*.log`.
+
+Risks left:
+- The first HANAKO render on this key version re-renders all 9 scenes once (every key changes). Expected cost about 691 s on the 31 Oct measure. No full render was run here.
+- C_seamless and B_loop renders are not verified by render; the rule is only unit-tested and reads from `SceneRenderer.tsx` and `painted.ts`.
+- Repeat noise is larger than the documented 1/255 for HANAKO scene 8 frames 0–92 (up to 48/255 between identical renders). Owner: Boss; flagged in the DF.
+- Open keys: B08 or B07 plate edits still re-render all 9 (per-shot keys needed); other episodes' locks are still in every key; unlocked fonts; `scripts/` and codec constants not in the key; lock `sha256` text trusted; old keys not pruned.
+- `global sceneTransitionFrames` keeps neighbours more than the renderer reads (it reads durations); conservative, no current episode uses it.
+- Proposed AGENTS.md line 25 wording (not applied): "an edited scene re-renders, with the neighbours the renderer reads; shared-code, lock and duration edits re-render every scene (DF-20261101-segment-cache-key)."
+- Coordination: the coordinator relayed the user's approval; Boss could not verify it directly. HEAD moved to `1628128` during this work (another session committed HANAKO docs, including this diagnosis in its earlier state). The changes listed here are uncommitted on top of it.
