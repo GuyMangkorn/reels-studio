@@ -3,7 +3,8 @@
 
 Default destination: $REELS_RENDER_DIR or ~/Movies/ReelsCreator/renders. Copies (never moves), de-duplicates by
 SHA-256 and writes manifest.tsv (with the producing commit; '~' marks a backfilled estimate, '+dirty' uncommitted
-changes). A full run also mirrors the shared sound library into <dest>/_sound-library. Scratch (qa frames, bundles, venvs, logs, tmp) is skipped.
+changes). A full run also mirrors the shared sound library into <dest>/_sound-library and the audio-studio
+outputs into <dest>/_sound-generations. Scratch (qa frames, bundles, venvs, logs, tmp) is skipped.
 
   python3 -I scripts/archive-renders.py [--dest DIR] [--dry-run] [--regroup] [--only COMPOSITION_ID]
 
@@ -15,6 +16,7 @@ MEDIA = {'.mp4', '.mov', '.mp3', '.wav', '.m4a', '.ogg', '.flac'}
 SKIP_PARTS = ('bundle', 'venv', 'node_modules', 'logs', 'tmp', 'qa')
 KEEP_DIRS = ('logs/sources',)  # source recordings kept although under a skipped dir
 SOUND_LIBRARY = os.environ.get('SOUND_LIBRARY') or os.path.expanduser('~/Documents/ChatGPT/sound-library')
+SOUND_GENERATIONS = os.environ.get('AUDIO_STUDIO_OUTPUTS') or os.path.expanduser('~/Documents/ChatGPT/audio-studio-mcp/outputs')
 
 
 # (prefix of the path under out/ or _public-ignored/, destination prefix); first match wins, unmatched -> _misc/
@@ -112,14 +114,14 @@ def approx_commit(cwd, paths, branch, mtime, src):
     return 'unknown'
 
 
-def backup_library(dest):
-    """Mirror the shared sound library into <dest>/_sound-library (new or changed files only; nothing deleted)."""
-    out, n = os.path.join(dest, '_sound-library'), 0
-    for r, ds, fs in os.walk(SOUND_LIBRARY):
+def mirror(source, out):
+    """Copy new or changed files of source into out (nothing deleted)."""
+    n = 0
+    for r, ds, fs in os.walk(source):
         ds[:] = [d for d in ds if not d.startswith('.')]
         for f in fs:
             src = os.path.join(r, f)
-            dst = os.path.join(out, os.path.relpath(src, SOUND_LIBRARY))
+            dst = os.path.join(out, os.path.relpath(src, source))
             st = os.stat(src)
             if os.path.exists(dst) and os.stat(dst).st_size == st.st_size and int(os.stat(dst).st_mtime) == int(st.st_mtime):
                 continue
@@ -215,7 +217,9 @@ def main():
             for r in rows:
                 m.write('\t'.join(str(x) for x in r) + '\n')
         if not a.only:
-            print(f'sound library: {backup_library(a.dest)} new/changed files -> {a.dest}/_sound-library')
+            # the shared sound library, and every audio-studio generation incl. unpicked variations (user, 31 Oct 2026)
+            for source, name in ((SOUND_LIBRARY, '_sound-library'), (SOUND_GENERATIONS, '_sound-generations')):
+                print(f'{name}: {mirror(source, os.path.join(a.dest, name))} new/changed files')
 
 
 if __name__ == '__main__':
