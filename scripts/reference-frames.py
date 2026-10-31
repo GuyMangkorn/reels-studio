@@ -2,7 +2,7 @@
 """Reference stills per composition, so a later re-render can be checked against the delivered picture.
 
 Renders one PNG every 5 s plus the last frame (`render.mjs --stills --gl=angle`) at the current commit and files them
-in the permanent render folder as <PROJECT>/reference/<ID>/<commit>/ with hashes.tsv (frame, sha256, PSNR in dB
+in the asset store ($REELS_STORE, scripts/store.py) as projects/<PROJECT>/reference/<ID>/<commit>/ with hashes.tsv (frame, sha256, PSNR in dB
 against the delivered MP4 when --mp4 is given). When an earlier reference set exists, prints how many frames are
 byte-identical to it.
 
@@ -11,9 +11,9 @@ byte-identical to it.
 import argparse, glob, hashlib, importlib.util, os, re, shutil, subprocess, sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-spec = importlib.util.spec_from_file_location('archive', os.path.join(HERE, 'archive-renders.py'))
-archive = importlib.util.module_from_spec(spec)
-spec.loader.exec_module(archive)
+spec = importlib.util.spec_from_file_location('store', os.path.join(HERE, 'store.py'))
+store = importlib.util.module_from_spec(spec)
+spec.loader.exec_module(store)
 
 
 def durations():
@@ -38,11 +38,10 @@ def main():
     ap.add_argument('ids', nargs='+')
     ap.add_argument('--mp4', action='append', default=[], help='ID=path of the delivered MP4 to compare with')
     ap.add_argument('--every', type=int, default=150)
-    ap.add_argument('--dest', default=os.environ.get('REELS_RENDER_DIR') or os.path.expanduser('~/Movies/ReelsCreator/renders'))
     a = ap.parse_args()
     mp4s = dict(x.split('=', 1) for x in a.mp4)
     total = durations()
-    commit = archive.commit_of(os.getcwd())
+    commit = store.version_of('.')
     os.makedirs('out/logs', exist_ok=True)
     for cid in a.ids:
         n = total[cid]
@@ -54,10 +53,9 @@ def main():
         if r.returncode != 0:
             print(f'{cid}: render failed, see {log}')
             continue
-        project = archive.route(f'{cid}/x').split('/')[0]
-        base = os.path.join(a.dest, project, 'reference', cid)
-        earlier = sorted(glob.glob(os.path.join(base, '*', 'hashes.tsv')), key=os.path.getmtime)
-        dest = os.path.join(base, commit)
+        rel_base = f'projects/{store.project_of(cid)}/reference/{cid}'
+        earlier = sorted(glob.glob(os.path.join(store.STORE, rel_base, '*', 'hashes.tsv')), key=os.path.getmtime)
+        dest = os.path.join('out', 'reference', cid, commit)  # staged here, then filed into the store
         os.makedirs(dest, exist_ok=True)
         rows = []
         for fr in frames:
@@ -67,11 +65,14 @@ def main():
         with open(os.path.join(dest, 'hashes.tsv'), 'w') as f:
             f.write(f'# {cid} commit {commit} gl=angle; psnr vs {mp4s.get(cid, "-")}\nframe\tsha256\tpsnr_db\n')
             f.writelines(f'{fr}\t{h}\t{p}\n' for fr, h, p in rows)
-        msg = f'{cid}: {len(rows)} frames -> {dest}'
+        clashes = [name for name in sorted(os.listdir(dest))
+                   if store.store_file(os.path.join(dest, name), f'{rel_base}/{commit}/{name}', sidecar=False) == 'conflict']
+        msg = f'{cid}: {len(rows)} frames -> {os.path.join(store.STORE, rel_base, commit)}'
+        if clashes: msg += f'; {len(clashes)} files differ from the set already stored for this commit (kept the stored ones)'
         if cid in mp4s:
             vals = [float(p) for _, _, p in rows if p not in ('', 'n/a', 'inf')]
             msg += f'; PSNR vs MP4 min {min(vals):.1f} dB' if vals else '; PSNR n/a'
-        prev = [e for e in earlier if os.path.dirname(e) != dest]
+        prev = [e for e in earlier if os.path.basename(os.path.dirname(e)) != commit]
         if prev:
             old = {l.split('\t')[0]: l.split('\t')[1] for l in open(prev[-1]) if l[0].isdigit()}
             same = sum(old.get(str(fr)) == h for fr, h, _ in rows)

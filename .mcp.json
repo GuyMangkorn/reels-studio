@@ -5,7 +5,8 @@
       "command": "${AUDIO_STUDIO_DIR:-/Users/mangkornkatawong/Documents/ChatGPT/audio-studio-mcp}/.venv/bin/audio-studio-mcp",
       "args": [],
       "env": {
-        "PYTHONPATH": "${AUDIO_STUDIO_DIR:-/Users/mangkornkatawong/Documents/ChatGPT/audio-studio-mcp}/src"
+        "PYTHONPATH": "${AUDIO_STUDIO_DIR:-/Users/mangkornkatawong/Documents/ChatGPT/audio-studio-mcp}/src",
+        "AUDIO_STUDIO_OUTPUT_DIR": "${REELS_STORE:-~/ReelsStore}/library/sound/_raw"
       }
     }
   }

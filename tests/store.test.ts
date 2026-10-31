@@ -115,7 +115,7 @@ test('import copies a folder verbatim and is safe to re-run', () => {
   const lib = path.join(path.dirname(store), 'lib');
   const r = run('import', lib, 'library/sound', '--skip', '_mirror');
   assert.equal(r.code, 0, r.out);
-  assert.match(r.out, /stored 2, already 0, conflicts 0/);
+  assert.match(r.out, /stored 2, already 0, updated 0, conflicts 0/);
   assert.match(run('import', lib, 'library/sound', '--skip', '_mirror').out, /stored 0, already 2/);
   assert.ok(!existsSync(path.join(store, 'library/sound/.DS_Store')));
   assert.ok(!existsSync(path.join(store, 'library/sound/_mirror')));
@@ -154,4 +154,54 @@ test('backfill-chat stores user-attached images with the user text, not tool scr
   const side = JSON.parse(readFileSync(path.join(dir, readdirSync(dir).find((f) => f.endsWith('.json'))!), 'utf8'));
   assert.equal(side.user_text, 'ทำแบบนี้');
   assert.match(run('backfill-chat', t).out, /stored 0, already 1/);
+});
+
+test('archive files out/<ID>/ by project and commit, skips scratch and repeats, and lists folders without an ID', () => {
+  const {store, run, write} = setup();
+  write('repo/out/ZCPAINT-SHORT/ZCPAINT-SHORT.mp4', 'mp4-a');
+  write('repo/out/ZCPAINT-SHORT/stills/0.png', 'png');
+  write('repo/out/ZCPAINT-SHORT/qa/sheet.png', 'scratch');
+  write('repo/out/gemini-tts/take.wav', 'take');
+  write('repo/out/loose.mp4', 'loose');
+  write('repo/out/bundle/x.png', 'scratch');
+  const r = run('archive', 'ZCPAINT-SHORT', 'gemini-tts', 'loose.mp4', 'bundle');
+  assert.equal(r.code, 0, r.out);
+  assert.match(r.out, /archived 2, already stored 0, not archived 2/);
+  assert.match(r.out, /gemini-tts \(1 of 1 media files not in the store/);
+  const base = path.join(store, 'projects/ZCONDO/renders/ZCPAINT-SHORT');
+  const [version] = readdirSync(base);
+  assert.equal(readFileSync(path.join(base, version, 'ZCPAINT-SHORT.mp4'), 'utf8'), 'mp4-a');
+  assert.ok(!existsSync(path.join(base, version, 'qa')));
+  assert.match(run('archive', 'ZCPAINT-SHORT').out, /archived 0, already stored 2/);
+
+  // A re-render with new bytes at the same version keeps both instead of failing.
+  write('repo/out/ZCPAINT-SHORT/ZCPAINT-SHORT.mp4', 'mp4-b');
+  assert.match(run('archive', 'ZCPAINT-SHORT').out, /archived 1/);
+  assert.equal(readdirSync(path.join(base, version)).filter((f) => f.endsWith('.mp4')).length, 2);
+
+  const takes = run('archive', '--path', path.join(path.dirname(store), 'repo/out/gemini-tts'), '--project', 'WFOG', '--kind', 'audio/gemini-tts');
+  assert.match(takes.out, /archived 1/);
+  assert.ok(existsSync(path.join(store, 'projects/WFOG/audio/gemini-tts/take.wav')));
+  assert.equal(run('archive', '--path', 'x').code, 2);
+  assert.equal(run('verify').code, 0);
+});
+
+test('metadata files may be replaced; media may not', () => {
+  const {run, write} = setup();
+  run('put', write('in/a.json', '{"v": 1}'), 'library/sound/INDEX.json');
+  assert.match(run('put', write('in/b.json', '{"v": 2}'), 'library/sound/INDEX.json').out, /updated/);
+  assert.equal(run('verify').code, 0);
+});
+
+test('sound-library file records the filed master in the store manifest', () => {
+  const {store, run, write} = setup();
+  write('store/library/sound/INDEX.md', '# Index\n');
+  const wav = write('in/proc.wav', 'RIFF');
+  write('in/proc.wav.json', '{"seconds": 1.2}');
+  const r = spawnSync('python3', ['-I', path.resolve('scripts/sound-library.py'), 'file', wav, 'sfx/ui/ui_click-soft_01', '--description', 'soft click', '--tags', 'ui click'],
+    {env: {...process.env, REELS_STORE: store, SOUND_LIBRARY: ''}, encoding: 'utf8'});
+  assert.equal(r.status, 0, r.stdout + r.stderr);
+  assert.match(readFileSync(path.join(store, 'manifest.tsv'), 'utf8'), /library\/sound\/sfx\/ui\/ui_click-soft_01\.wav/);
+  assert.match(readFileSync(path.join(store, 'library/sound/INDEX.md'), 'utf8'), /ui_click-soft_01/);
+  assert.equal(run('verify').code, 0);
 });

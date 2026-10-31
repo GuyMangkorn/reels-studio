@@ -7,11 +7,13 @@ Usage:
   python3 -I scripts/sound-library.py index                     # report INDEX.md rows and sidecars that do not match
 
 `file` copies the processed WAV and its `.wav.json` sidecar to TYPE/CATEGORY/ID.{wav,json}, adds the `library`
-block and appends its INDEX.md row. It never overwrites an existing ID. SOUND_LIBRARY overrides the library folder.
+block, appends its INDEX.md row and records the WAV in the asset store manifest (scripts/store.py). It never overwrites an
+existing ID. The library is $REELS_STORE/library/sound (default ~/ReelsStore); SOUND_LIBRARY overrides it.
 """
-import argparse, datetime, glob, json, os, re, shutil, sys
+import argparse, datetime, glob, json, os, re, shutil, subprocess, sys
 
-LIB = os.environ.get('SOUND_LIBRARY', '/Users/mangkornkatawong/Documents/ChatGPT/sound-library')
+STORE = os.path.expanduser(os.environ.get('REELS_STORE') or '~/ReelsStore')
+LIB = os.environ.get('SOUND_LIBRARY') or os.path.join(STORE, 'library', 'sound')
 TYPES = ['sfx', 'ambience', 'music', 'instrument']
 
 
@@ -74,6 +76,10 @@ def file(a):
     shutil.copyfile(a.wav, dest + '.wav')
     json.dump(meta, open(dest + '.json', 'w', encoding='utf-8'), ensure_ascii=False, indent=2)
     add_row(dest + '.json', meta)
+    # Record the master in the asset store manifest (a no-op copy when LIB is the store's library/sound).
+    put = subprocess.run([sys.executable, '-I', os.path.join(os.path.dirname(os.path.abspath(__file__)), 'store.py'), 'put',
+                          dest + '.wav', f'library/sound/{kind}/{category}/{sid}.wav'], capture_output=True, text=True)
+    if put.returncode: sys.exit(f'filed, but store.py put failed: {put.stderr.strip()}')
     print(f'filed {kind}/{category}/{sid}.wav and added its INDEX.md row')
 
 
