@@ -20,15 +20,18 @@ def errors(d):
         return out
     beats = {b.get('id') for b in d['beats']}
     seen, prev_end = set(), None
+    untimed = d.get('untimed') is True
     for s in d['shots']:
         sid = s.get('id', '?')
-        out += [f'{sid}: missing "{k}"' for k in SHOT_REQUIRED if k not in s]
+        out += [f'{sid}: missing "{k}"' for k in SHOT_REQUIRED if k not in s and not (untimed and k in ('start', 'end'))]
         if sid in seen:
             out.append(f'{sid}: duplicate shot ID')
         seen.add(sid)
         if s.get('beat') not in beats:
             out.append(f'{sid}: beat "{s.get("beat")}" is not in beats')
-        if isinstance(s.get('start'), int) and isinstance(s.get('end'), int):
+        if untimed:
+            pass
+        elif isinstance(s.get('start'), int) and isinstance(s.get('end'), int):
             if s['end'] <= s['start']:
                 out.append(f'{sid}: end {s["end"]} <= start {s["start"]}')
             if prev_end is not None and s['start'] != prev_end:

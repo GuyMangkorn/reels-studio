@@ -66,8 +66,8 @@ Choose the lightest tier whose outputs the deliverable needs, record it in `deli
 
 | Tier | Use when | Stages |
 | --- | --- | --- |
-| **Full** | New illustrated story with staging, factual claims or twists | Boat research → Preaw script → Boat fact-check → Film brief → Mark staging (VO-relative timing) → Editor [voice lock](#voice-lock) → Mark timed scene sheets → Boss assets → Editor |
-| **Light** | Short or simple video from a brief, footage-led or typographic edit with a script | Preaw script (Boat fact-check only when the profile has factual claims) → Film brief (medium, look, music, caption plan; one page) → Editor. Mark's scene sheet is replaced by a timed shot list inside the Film brief, timed after the [voice lock](#voice-lock); Boss only for named capability gaps |
+| **Full** | New illustrated story with staging, factual claims or twists | Boat research → Preaw script → Boat fact-check → Film brief → Mark staging (VO-relative timing) + first [storyboard page](mark-storyboard-workflow.md#user-storyboard-review-page) → Editor [voice lock](#voice-lock) → Mark timed scene sheets → Boss assets → Editor |
+| **Light** | Short or simple video from a brief, footage-led or typographic edit with a script | Preaw script (Boat fact-check only when the profile has factual claims) → Film brief (medium, look, music, caption plan; one page) + first [storyboard page](mark-storyboard-workflow.md#user-storyboard-review-page) → Editor. Mark's scene sheet is replaced by a timed shot list inside the Film brief, timed after the [voice lock](#voice-lock); Boss only for named capability gaps |
 | **Edit-only** | The user supplies footage/images/audio and an edit brief | Editor directly ([direct intake](editor-workflow.md#direct-intake)); Boss only for named capability gaps. A script, if wanted, is Preaw's |
 
 Tier changes after the start require a recorded reason. Handoff checks still apply to the stages that run: matching revisions, deliverable ID, covered beats and timing status. A lighter tier never waives licensing, factual review of asserted claims, Thai readability or the QA the owning workflows require for what is actually produced.
