@@ -67,7 +67,7 @@ const ffmpeg = (args) => {
 
 /**
  * Renders `output` from cached scene segments plus one sound render. `render` holds the renderMedia options shared with
- * a plain render (serveUrl, composition, browserInstance, inputProps, ...). Returns how many segments were rendered.
+ * a plain render (serveUrl, composition, puppeteerInstance, inputProps, ...). Returns how many segments were rendered.
  */
 export const renderSegmented = async ({render, options, workDir, output, log}) => {
   const {composition, inputProps} = render;

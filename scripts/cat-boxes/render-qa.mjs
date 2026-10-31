@@ -20,13 +20,13 @@ for (const id of ['Short', 'Long']) {
   const dir = path.join(root, id);
   await mkdir(dir, {recursive: true});
   try {
-    const composition = await selectComposition({serveUrl, id, browserInstance: browser, inputProps});
+    const composition = await selectComposition({serveUrl, id, puppeteerInstance: browser, inputProps});
     for (const frame of frames) {
-      await renderStill({serveUrl, composition, browserInstance: browser, inputProps, frame, output: path.join(dir, `${frame}.png`), imageFormat: 'png'});
+      await renderStill({serveUrl, composition, puppeteerInstance: browser, inputProps, frame, output: path.join(dir, `${frame}.png`), imageFormat: 'png'});
     }
     console.log(`${id}: rendered ${frames.length} full-resolution checks`);
     if (process.argv.includes('--video')) {
-      await renderMedia({serveUrl, composition, browserInstance: browser, inputProps, frameRange: [14820, 16199], scale: 0.5, concurrency: 1, codec: 'h264', crf: 22, pixelFormat: 'yuv420p', outputLocation: path.join(root, `${id}-c06-preview.mp4`)});
+      await renderMedia({serveUrl, composition, puppeteerInstance: browser, inputProps, frameRange: [14820, 16199], scale: 0.5, concurrency: 1, codec: 'h264', crf: 22, pixelFormat: 'yuv420p', outputLocation: path.join(root, `${id}-c06-preview.mp4`)});
       console.log(`${id}: rendered 46-second sequence preview`);
     }
   } finally {
@@ -34,21 +34,21 @@ for (const id of ['Short', 'Long']) {
   }
   browser = await openBrowser('chrome');
   try {
-    const composition = await selectComposition({serveUrl, id, browserInstance: browser, inputProps});
+    const composition = await selectComposition({serveUrl, id, puppeteerInstance: browser, inputProps});
     const results = [];
     for (const frame of [16050, 15000, 15750]) {
       const output = path.join(dir, `random-${frame}.png`);
-      await renderStill({serveUrl, composition, browserInstance: browser, inputProps, frame, output, imageFormat: 'png'});
+      await renderStill({serveUrl, composition, puppeteerInstance: browser, inputProps, frame, output, imageFormat: 'png'});
       results.push({frame, matches: await sha(output) === await sha(path.join(dir, `${frame}.png`))});
     }
     manifest.randomSeek[id] = results;
     console.log(`${id} random/remount parity: ${JSON.stringify(results)}`);
     const loopProps = {ending: 'B_loop'};
-    const loopComposition = await selectComposition({serveUrl, id, browserInstance: browser, inputProps: loopProps});
+    const loopComposition = await selectComposition({serveUrl, id, puppeteerInstance: browser, inputProps: loopProps});
     const loopFiles = [];
     for (const frame of [0, 16198, 16199]) {
       const output = path.join(dir, `loop-${frame}.png`);
-      await renderStill({serveUrl, composition: loopComposition, browserInstance: browser, inputProps: loopProps, frame, output, imageFormat: 'png'});
+      await renderStill({serveUrl, composition: loopComposition, puppeteerInstance: browser, inputProps: loopProps, frame, output, imageFormat: 'png'});
       loopFiles.push(output);
     }
     manifest.loop[id] = {lastMatchesFirst: await sha(loopFiles[0]) === await sha(loopFiles[2]), penultimateMatchesFirst: await sha(loopFiles[0]) === await sha(loopFiles[1])};

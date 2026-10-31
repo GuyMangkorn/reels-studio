@@ -9,9 +9,12 @@ npx remotion bundle "$entry" --out-dir "$out/bundle" > "$out/bundle.log" 2>&1
 : > "$out/md5.txt"
 for spec in "$@"; do
   id=${spec%%:*}; frames=${spec#*:}
+  for f in $(echo "$frames" | tr ',' ' '); do echo "$id $f $out/${id}_F${f}.png"; done
+done | node scripts/stills.mjs "$out/bundle" > "$out/still.log" 2>&1
+for spec in "$@"; do
+  id=${spec%%:*}; frames=${spec#*:}
   for f in $(echo "$frames" | tr ',' ' '); do
     png="$out/${id}_F${f}.png"
-    npx remotion still "$out/bundle" "$id" "$png" --frame="$f" --gl=angle >> "$out/still.log" 2>&1
     sum=$(ffmpeg -v error -i "$png" -f rawvideo -pix_fmt rgb24 - | md5 -q)
     echo "$id F$f $sum" >> "$out/md5.txt"
   done
