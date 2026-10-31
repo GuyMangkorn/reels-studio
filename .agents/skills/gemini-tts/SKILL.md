@@ -5,7 +5,7 @@ description: "Thai speech with real emotion and character voices from Gemini TTS
 
 # Gemini TTS
 
-**Status:** live-tested on the free tier on 2026-10-30 (samples in `out/gemini-tts-test/`): Thai lines generate with style (excited lines ~35% shorter, sad ~20% longer than neutral) and inline tags; an elderly designed voice works; a **child voice design is refused** (`Voice prompt was blocked by safety policies`). The user approved the Thai accent and emotion by ear for Kore and Charon (neutral, excited, sad, whisper, tags) on 2026-10-30; the designed elderly voice speaking Thai is not yet heard. Still play each new character voice to the user before it goes into a deliverable. Owner: **Editor**. Edge narration and the [voice-tuning skill](../voice-tuning/SKILL.md) stay the default narrator path; this skill is for acted lines.
+**Status:** live-tested on the free tier on 2026-10-30; the project key is on the **paid tier** since 2026-10-31 (samples in `out/gemini-tts-test/`): Thai lines generate with style (excited lines ~35% shorter, sad ~20% longer than neutral) and inline tags; an elderly designed voice works; a **child voice design is refused** (`Voice prompt was blocked by safety policies`). The user approved the Thai accent and emotion by ear for Kore and Charon (neutral, excited, sad, whisper, tags) on 2026-10-30; the designed elderly voice speaking Thai is not yet heard. Still play each new character voice to the user before it goes into a deliverable. Owner: **Editor**. Edge narration and the [voice-tuning skill](../voice-tuning/SKILL.md) stay the default narrator path; this skill is for acted lines.
 
 ## What is possible
 
@@ -41,7 +41,10 @@ Tools for splitting one read (all local, no API calls; Whisper venv for the firs
 
 ## Limits and costs
 
-- Paid audio ≈ 1,500 tokens per minute → about $0.014/min until 31 Dec 2026, double from 1 Jan 2027. The free tier exists, and Google uses free-tier data to improve its products: use the paid tier for unreleased scripts.
-- **Quota and hangs.** The free tier allows 10 requests a day for `gemini-3.8-flash-tts`. The script makes one attempt per call with no SDK retries: HTTP 429 or a quota error exits 3 with the server message, and no answer within `--timeout` (default 180 s) exits 4. Do not loop on exit 3; report it, or switch to a paid key. Plan the calls: a whole-narration read plus 2–3 tail variations fits in one day.
+- **Billing.** The project key is on the paid tier (since 31 Oct 2026). Billing is per token, not per request: text in plus audio out (≈ 1,500 tokens per minute of audio → about $0.014/min until 31 Dec 2026, double from 1 Jan 2027). Several calls per line (takes, tail variations) are fine; cost follows the length of what is generated. Paid-tier data is not used to improve Google's products, so unreleased scripts may go through it.
+- **No loops.** Paid keys still have per-minute and per-day rate limits. The script makes one attempt per call with no SDK retries: HTTP 429 or a quota error exits 3 with the server message, and no answer within `--timeout` (default 180 s) exits 4. Rules for any wrapper or batch script:
+  - Every loop over calls has a fixed bound (the list of lines × a fixed take count, 2–3 for a key line). No `while` until a take "sounds right" and no retry-until-success.
+  - Stop the whole batch on the first exit 3 or 4 and report it; do not retry 429s automatically. A rerun after a pause is a single manual call.
+  - A batch skips clips whose `.wav` and `.json` already exist, so a rerun never pays twice for a finished line.
 - Prebuilt-voice dialogue can go in one request (2 speakers max); the script makes single-speaker calls, which also works for designed voices.
 - Commercial-use terms and SynthID watermarking are **unchecked**; check before the first delivery that uses this voice.
