@@ -17,5 +17,7 @@ assets/blender/**/renders/
 .venv-whisper/
 __pycache__/
 
-# Bloop audio copies (kept local and in the sound library; user decision 2026-10-30)
-public/audio/bloop/*.wav
+# Asset store cache: rebuilt by `python3 -I scripts/store.py fetch` from src/videos/<episode>/assets.lock.json
+public/audio/**/*.*
+public/sfx/**/*.*
+public/pool-depth/

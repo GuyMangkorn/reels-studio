@@ -113,6 +113,16 @@ Each phase is one PR. Each is checked on a copied store first ([TL03](../contrib
 
 1. **Tooling.** `store.py` with `put`, `use`, `fetch`, `verify` on a copy of S1 and S3. Tests for hash checks. **Done 31 Oct 2026** (`scripts/store.py`, `tests/store.test.ts`, 5 tests): checked on a scratch copy of the whole sound library (90 files) and `renders/POOLDEPTH` (52 files). All 142 were stored and verified clean, and a scratch episode locked 2 sounds, rebuilt `public/` after it was deleted, and matched the library byte for byte. The episode-to-project mapping moves to phase 3 with `archive`, its only user.
 2. **Move data.** S1 → `library/sound/`. S3 project folders → `projects/` (drop the `_sound-library/` mirror and file `_misc/` by hand). S5 files → stored, plus lock entries; then untrack and gitignore all `public/` media except Git-kept files. S2 → `inbox/` (or file picks and drop the rest after your review). S7 plans and specs → `projects/_shared/notes/` or commit them. S9 → `store.py backfill-chat` (§2.2a), then you sort `_unsorted/`.
+   **Copied 31 Oct 2026 into `~/ReelsStore` (3,474 files, 3.7 GB). `store.py verify` reports 0 problems, and nothing was deleted from the old locations.**
+   - S1 → `library/sound/` (183). The render folder's `_sound-library/` mirror matched it byte for byte (0 new).
+   - S2 → `library/sound/_raw/` (602), flat with the server's own unique names. The per-date subfolders were dropped as unneeded.
+   - S3 → `projects/<PROJECT>/` (721). The existing project names are kept (ZCONDO, not ZCPAINT). `_misc/` went to `projects/_unsorted/misc/`, and the old `manifest.tsv` to `projects/_legacy/render-manifest.tsv`.
+   - S5 → `src/videos/<ep>/assets.lock.json` for 5 episodes (92 entries, 85 unique files), written by `store.py adopt` with media lists from `scripts/episode-media.ts`. All 92 already had a stored copy. `public/audio`, `public/sfx` and `public/pool-depth` media are now gitignored cache. `cat-boxes` has no lock yet because its timelines are not on `main`.
+   - S6 → `projects/POOLDEPTH/blender/renders/` (1,881 frames) and `projects/ZCONDO/blender/zc-corridor/` (1).
+   - S7 → `projects/_shared/notes/superpowers/` (68).
+   - S9 → `projects/_unsorted/references/user/` (6 images from 29 Oct, each with the user's words in its sidecar). One sidecar's text is a side-session notice rather than the user's words. Codex transcripts held no user-attached images.
+   - Fresh-checkout check: a detached worktree with an empty media cache ran `fetch` (85 fetched, 0 problems; a second run fetched 0). Then `remotion render` of POOLDEPTH-SHORT and WFOG-EP01-SHORT frames 0–30 both succeeded with non-silent audio.
+   - **Still to do before any cleanup:** one final `archive-renders.py` run once the run already in progress finishes, then rerun the S3 imports (re-runs only add new files).
 3. **Switch callers.** `render.mjs`, `reference-frames.py`, audio-studio output folder, and the sound and painted workflows use `store.py`. Retire `archive-renders.py`, `fetch-sounds.ts` and `sound-library.py` after a release with them as thin wrappers.
 4. **Rule documents (DP).** Update the sections in §4 in one documentation-only PR.
 5. **Verify.** In a fresh worktree: `store.py fetch` then render one composition per series, compare against `reference/` stills (PSNR), and run `store.py verify` clean.

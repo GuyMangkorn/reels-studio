@@ -1,0 +1,70 @@
+{
+  "public/audio/bed/bed_dark-drone-sub_01.wav": {
+    "store": "library/sound/ambience/bed/bed_dark-drone-sub_01.wav",
+    "sha256": "c20f82a3f9ece1e12890b8017689d06822563777404eec4b1153b5756a19ad24"
+  },
+  "public/audio/outdoor/outdoor_fog-forecourt-hush_01.wav": {
+    "store": "library/sound/ambience/outdoor/outdoor_fog-forecourt-hush_01.wav",
+    "sha256": "d1281dbff844e860009d8d77cf38831728b183953a857e90e26464a873112fd8"
+  },
+  "public/audio/outdoor/outdoor_fog-forecourt-hush_glass_01.wav": {
+    "store": "projects/WFOG/audio/derived/outdoor_fog-forecourt-hush_glass_01.wav",
+    "sha256": "959f774b00bd4336d7ecff5e9e700289133606029607454c72cfc0be263cb866"
+  },
+  "public/audio/room/room_shop-fridge-hum_01.wav": {
+    "store": "library/sound/ambience/room/room_shop-fridge-hum_01.wav",
+    "sha256": "d4ef096df21c9db1a22ee6240a50ec92e0921170a3305db1ce9fa7e0a5acf1c9"
+  },
+  "public/audio/tension/tension_drone-sparse-piano_01.wav": {
+    "store": "library/sound/music/tension/tension_drone-sparse-piano_01.wav",
+    "sha256": "952e6e50ad21904e6078aa56f5e46771afed2e74c1ca61743f98f74dd19d7ce4"
+  },
+  "public/audio/tone/tone_soft-sustain-reflective_01.wav": {
+    "store": "library/sound/music/tone/tone_soft-sustain-reflective_01.wav",
+    "sha256": "98961e8e011f34fb71d225ce1a98788918f074337916e6c6648c965b20ccb2c7"
+  },
+  "public/sfx/foley/foley_car-door-open-close_01.wav": {
+    "store": "library/sound/sfx/foley/foley_car-door-open-close_01.wav",
+    "sha256": "8b88109bdb85ff09446b084accc988ec524feefffc0cfc0926c35142775efb10"
+  },
+  "public/sfx/foley/foley_cart-wheel-squeak-scrape_01.wav": {
+    "store": "library/sound/sfx/foley/foley_cart-wheel-squeak-scrape_01.wav",
+    "sha256": "44100f8949e26c91cd0a26b44b5d72986cfa2f0ec27be92d42d3a821816e33b6"
+  },
+  "public/sfx/foley/foley_carton-slide-helmet-catch_01.wav": {
+    "store": "library/sound/sfx/foley/foley_carton-slide-helmet-catch_01.wav",
+    "sha256": "9149762b773181739fbabcf9f2e0a64a614b1c2eda5814d88fb163b46d425daf"
+  },
+  "public/sfx/foley/foley_flashlight-click_01.wav": {
+    "store": "library/sound/sfx/foley/foley_flashlight-click_01.wav",
+    "sha256": "56518caae87cfb3d975d3c34ee39372b5fef667c8b3d469ea6e8b3a773f90c1c"
+  },
+  "public/sfx/foley/foley_footsteps-wet-concrete_01.wav": {
+    "store": "library/sound/sfx/foley/foley_footsteps-wet-concrete_01.wav",
+    "sha256": "65d4cbfd0dd7b0a942483e416194238fb4503ead9d533e8063adebbfca032a33"
+  },
+  "public/sfx/foley/foley_glass-door-push_01.wav": {
+    "store": "library/sound/sfx/foley/foley_glass-door-push_01.wav",
+    "sha256": "7fcaf713da8faa82fd21831fc765b1fe711fc15122bada64a6f72be2037c3ec0"
+  },
+  "public/sfx/foley/foley_umbrella-tap-glass_01.wav": {
+    "store": "library/sound/sfx/foley/foley_umbrella-tap-glass_01.wav",
+    "sha256": "24198de263129d2e9815eee78dd11c2efc772be26d8148fad457ea412e4bd31d"
+  },
+  "public/sfx/reveal/reveal_riser-tension_01.wav": {
+    "store": "library/sound/sfx/reveal/reveal_riser-tension_01.wav",
+    "sha256": "571acff153c2e6694fe4ab965b5c5389808ca9cfc51a3452660431b569bba300"
+  },
+  "public/sfx/ui/ui_notification-ding_01.wav": {
+    "store": "library/sound/sfx/ui/ui_notification-ding_01.wav",
+    "sha256": "b52e825f1dbe5a8d2cb3cb68ae9839c1d38a9a656aeeffc9a70ceffabde035b9"
+  },
+  "public/sfx/ui/ui_pop_01.wav": {
+    "store": "library/sound/sfx/ui/ui_pop_01.wav",
+    "sha256": "d598317eb71eb636cab3e6d45f234ecb060b23ecb9c4d8dd826a9c3c7bd43b57"
+  },
+  "public/sfx/vehicle/vehicle_car-engine-decel-stop_01.wav": {
+    "store": "library/sound/sfx/vehicle/vehicle_car-engine-decel-stop_01.wav",
+    "sha256": "f49fbb19b02769ea7b5bb804dd74b717adea9c8939b97098e137a8564530edcd"
+  }
+}

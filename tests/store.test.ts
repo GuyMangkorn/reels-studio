@@ -1,7 +1,7 @@
 import {test} from 'node:test';
 import assert from 'node:assert/strict';
 import {spawnSync} from 'node:child_process';
-import {existsSync, mkdirSync, mkdtempSync, readFileSync, writeFileSync} from 'node:fs';
+import {existsSync, mkdirSync, mkdtempSync, readdirSync, readFileSync, writeFileSync} from 'node:fs';
 import {tmpdir} from 'node:os';
 import path from 'node:path';
 
@@ -104,4 +104,54 @@ test('use refuses to repoint a locked public path unless asked', () => {
   assert.equal(run('use', 'library/sound/sfx/ui/ui_b_01.wav', 'public/sfx/ui/click.wav', '--episode', 'demo', '--replace').code, 0);
   assert.equal(run('use', 'library/sound/sfx/ui/missing.wav', 'public/sfx/ui/x.wav', '--episode', 'demo').code, 1);
   assert.equal(run('use', 'library/sound/sfx/ui/ui_a_01.wav', 'public/sfx/ui/y.wav', '--episode', 'nope').code, 1);
+});
+
+test('import copies a folder verbatim and is safe to re-run', () => {
+  const {store, run, write} = setup();
+  write('lib/sfx/water/a.wav', 'a');
+  write('lib/sfx/water/a.json', '{}');
+  write('lib/.DS_Store', 'x');
+  write('lib/_mirror/a.wav', 'a');
+  const lib = path.join(path.dirname(store), 'lib');
+  const r = run('import', lib, 'library/sound', '--skip', '_mirror');
+  assert.equal(r.code, 0, r.out);
+  assert.match(r.out, /stored 2, already 0, conflicts 0/);
+  assert.match(run('import', lib, 'library/sound', '--skip', '_mirror').out, /stored 0, already 2/);
+  assert.ok(!existsSync(path.join(store, 'library/sound/.DS_Store')));
+  assert.ok(!existsSync(path.join(store, 'library/sound/_mirror')));
+});
+
+test('adopt reuses stored bytes, stores the rest under the project and reports missing files', () => {
+  const {store, repo, run, write} = setup();
+  run('put', write('in/hit.wav', 'hit'), 'library/sound/_raw/impact_hit_01_v2.wav');
+  run('put', write('in/hit.wav', 'hit'), 'library/sound/sfx/impact/impact_hit_01.wav');
+  write('repo/public/sfx/impact/hit.wav', 'hit');
+  write('repo/public/pool-depth/shot.png', 'png');
+  const r = run('adopt', 'demo', '--project', 'DEMO', 'public/sfx/impact/hit.wav', 'pool-depth/shot.png', 'public/sfx/gone.wav');
+  assert.equal(r.code, 1);
+  assert.match(r.out, /reused 1, stored 1, missing 1/);
+  const lock = JSON.parse(readFileSync(path.join(repo, 'src/videos/demo/assets.lock.json'), 'utf8'));
+  assert.equal(lock['public/sfx/impact/hit.wav'].store, 'library/sound/sfx/impact/impact_hit_01.wav');
+  assert.equal(lock['public/pool-depth/shot.png'].store, 'projects/DEMO/public/pool-depth/shot.png');
+  assert.ok(existsSync(path.join(store, 'projects/DEMO/public/pool-depth/shot.png')));
+  assert.equal(run('verify').code, 0);
+});
+
+test('backfill-chat stores user-attached images with the user text, not tool screenshots', () => {
+  const {store, run, write} = setup();
+  const png = Buffer.from('fake-png').toString('base64');
+  const lines = [
+    {type: 'user', sessionId: 'abcdef1234', timestamp: '2026-10-29T13:59:27Z', message: {content: [
+      {type: 'image', source: {type: 'base64', media_type: 'image/png', data: png}}, {type: 'text', text: 'ทำแบบนี้'}]}},
+    {type: 'user', sessionId: 'abcdef1234', timestamp: '2026-10-29T14:00:00Z', message: {content: [
+      {type: 'tool_result', content: [{type: 'image', source: {type: 'base64', media_type: 'image/png', data: png}}]}]}},
+  ];
+  const t = write('transcripts/s.jsonl', lines.map((l) => JSON.stringify(l)).join('\n'));
+  const r = run('backfill-chat', t);
+  assert.equal(r.code, 0, r.out);
+  assert.match(r.out, /chat images 1: stored 1/);
+  const dir = path.join(store, 'projects/_unsorted/references/user');
+  const side = JSON.parse(readFileSync(path.join(dir, readdirSync(dir).find((f) => f.endsWith('.json'))!), 'utf8'));
+  assert.equal(side.user_text, 'ทำแบบนี้');
+  assert.match(run('backfill-chat', t).out, /stored 0, already 1/);
 });
