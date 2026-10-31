@@ -35,7 +35,7 @@ ROUTES = [
     ('painted-boss/', 'SHIPWRECK/painted/'), ('voice-samples/oldest-shipwreck/', 'SHIPWRECK/audio/'),
     ('_public-ignored/public/narration/SHIPWRECK', 'SHIPWRECK/audio/narration/SHIPWRECK'),
     ('lake-nyos/', 'LAKENYOS/'), ('hanako-voice/', 'HANAKO/audio/'),
-    ('catboxes', 'CATBOX/audio/catboxes'), ('haunted', 'HAUNTED/haunted'), ('bedroom-pov', 'HAUNTED/bedroom-pov'),
+    ('CATBOX-', 'CATBOX/renders/CATBOX-'), ('catboxes', 'CATBOX/audio/catboxes'), ('haunted', 'HAUNTED/haunted'), ('bedroom-pov', 'HAUNTED/bedroom-pov'),
     ('logs/sources/bloop', 'BLOOP/audio/sources/bloop'), ('_untracked/claude/pool-depth-short/', 'POOLDEPTH/audio/untracked/'),
     ('gemini-tts-test/', 'WFOG/audio/gemini-tts-test/'), ('painted/face/', '_shared/painted-spikes/face/'),
 ]
