@@ -22,6 +22,14 @@
 - The cache key covers a scene, its neighbours (transitions, loop blend), its range, the non-sound props, `src/` outside the episode folders, asset locks and render options. SFX and `audio` beds are excluded from the picture key: sound renders once for the whole video with `soundOnly` (no p5 painting).
 - A miss costs about 10 s more than a direct render (per-scene browser frames and joining); a hit or a one-scene edit saves most of the time.
 
+## Study: p5.Framebuffer / cached background (31 Oct 2026, `p5.brush` 3.0.0)
+- **Not available in our build.** We use `p5.brush/standalone` (no p5). `node_modules/p5.brush/src/adapters/standalone/target.js` states the standalone build "does not yet support framebuffer targets". `p5.Framebuffer` exists only in the p5 build (p5 2.3.4 is installed): it needs a p5 WEBGL canvas, p5 instance mode and a rewrite of `BrushCanvas`.
+- **Standalone alternative:** `brush.load(canvas | OffscreenCanvas)` with a WebGL2 context paints a layer once. Putting it back needs a textured quad in the main GL context (custom code) or a DOM layer under a transparent brush canvas, which loses the pigment mixing between background and figure (look change).
+- **Measured where a frame goes** (ZCPAINT-SHORT-TH, every 30th frame, 72 frames, concurrency 1, `out/bench/probe.mjs`, temporary `console.log` timing, reverted): mean p5 paint 90 ms of 186 ms per frame; median 71, p90 179, max 416 ms. Most shots paint in 2–20 ms; the heavy ones are B08 (~410 ms), B10 (~180), B09-SH01 (~130), B06 (~85). `render()` and `gl.finish()` cost 0: all the work is in the paint calls.
+- **B08 f1500 by layer** (order inferred from the layer scales): sky ≈21 ms, far ≈46, mid ≈81, blaze ≈28, near ≈285, fore ≈9 (≈470 ms with logging). The expensive layer is `near` (60%), not the background (sky + far ≈ 14%).
+- **Camera:** every plate is drawn through `applyCamera` and `layerAt` parallax (`s`, `dy`), so a cached background texture would be resampled each frame (blur) except on static-camera spans.
+- **Verdict:** a cached background would save at most about 10–15% of paint time on the heaviest shot and under 10% of the frame; not worth a build switch. The scene cache already covers re-edits. If painting itself must get faster, profile the heavy layers (B08 `paintNear`, B10, B09-SH01) first.
+
 ## Planning impact
 - Editor/Boss: re-edit renders go through `render.mjs` and reuse unchanged scenes; do not call `npx remotion render` for a deliverable. A change to shared code under `src/` (outside `src/videos/<episode>/`) invalidates every cached scene, by design.
 - Not measured: a full-episode cache hit, `C_seamless` loop blend keys, concurrency on a long episode (WFOG, 3,766 frames).
