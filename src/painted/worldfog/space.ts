@@ -61,7 +61,7 @@ export const PROJ: Record<SetupId, Proj> = Object.fromEntries(Object.values(SETU
 // ------------------------------------------------------------------ shot table (index timeline mapping, G ranges)
 
 export type ShotRow = {id: string; g0: number; len: number; setup: SetupId | 'CAM-CAR' | 'CAM-PHONE'};
-/** SS-R5.1 (Mark, 30 Oct 2026, on the measured narration): 25 shots, 3766 frames. Lengths and starts per the index shot table. */
+/** SS-R6 (Mark, 31 Oct 2026, ending point revision): 26 shots, 4005 frames. Lengths and starts per the index shot table. */
 export const SHOT_ROWS: ShotRow[] = [
   {id: 'S01-SH01', g0: 0, len: 126, setup: 'CAM-CAR'},
   {id: 'S01-SH02', g0: 126, len: 114, setup: 'CAM-FORECOURT'},
@@ -87,13 +87,15 @@ export const SHOT_ROWS: ShotRow[] = [
   // SS-R4 (WFOG-SCRIPT-R5): S03-SH06A is the held look at the lit window plate; SS-R5.1 holds it to 216 f.
   {id: 'S03-SH06A', g0: 2484, len: 216, setup: 'CAM-GLASS-OUT'},
   {id: 'S03-SH07', g0: 2700, len: 206, setup: 'CAM-INT-SIDE'},
-  {id: 'S04-SH01', g0: 2906, len: 434, setup: 'CAM-INT-2S'},
-  {id: 'S04-SH02', g0: 3340, len: 120, setup: 'CAM-INT-DOOR-REV'},
-  {id: 'S04-SH03', g0: 3460, len: 306, setup: 'CAM-GLASS-OUT'},
+  // SS-R6: S04-SH01 434 → 595 (f434–f594: stack pat, glance, held push); S04-SH03 306 → 279 (ends on the last light); new S04-SH04.
+  {id: 'S04-SH01', g0: 2906, len: 595, setup: 'CAM-INT-2S'},
+  {id: 'S04-SH02', g0: 3501, len: 120, setup: 'CAM-INT-DOOR-REV'},
+  {id: 'S04-SH03', g0: 3621, len: 279, setup: 'CAM-GLASS-OUT'},
+  {id: 'S04-SH04', g0: 3900, len: 105, setup: 'CAM-GLASS-OUT'},
 ];
 export const SHOT_G0: Record<string, number> = Object.fromEntries(SHOT_ROWS.map((r) => [r.id, r.g0]));
-/** Composition length (SS-R5.1): last painted frame G3765 = S04-SH03 f305, hard cut (MK-WF-DEP-07). */
-export const TOTAL_FRAMES = 3766;
+/** Composition length (SS-R6): last painted frame G4004 = S04-SH04 f104, hard cut (MK-WF-DEP-07); 4005 frames = 133.5 s. */
+export const TOTAL_FRAMES = 4005;
 
 /**
  * RK-2 story keys (SS-R5.1; supersedes the RK-1 single +297 offset). A shot's story key at shot-local f is its start
@@ -113,10 +115,13 @@ const STORY_CLOCK: Record<string, {shift: number; event?: (f: number) => number}
   'S03-SH06A': {shift: 414, event: (f) => Math.min(f, 119)},
   // S03-SH07: held at 2261 (f72–f127: glance, brows and occupant held), then the r9b story from 2262 (leaf f128, push f152).
   'S03-SH07': {shift: 510, event: (f) => (f < 72 ? f : f < 128 ? 71 : f - 56)},
-  // S04-SH01: the talk span f138–f433 stretched over the story 2478–2670 (only the mouth windows and the push move there).
-  'S04-SH01': {shift: 566, event: (f) => (f < 138 ? f : 138 + ((f - 138) * 192) / 296)},
-  'S04-SH02': {shift: 670},
-  'S04-SH03': {shift: 670},
+  // S04-SH01: the talk span f138–f433 stretched over the story 2478–2670 (only the mouth windows and the push move there); SS-R6
+  // f434–f594 holds the event clocks at the f433 value (door shut, torch on, cart at rest); the ambient clock runs on.
+  'S04-SH01': {shift: 566, event: (f) => (f < 138 ? f : 138 + ((Math.min(f, 433) - 138) * 192) / 296)},
+  // SS-R6: S04-SH02 to S04-SH04 keep the SS-R5.1 story keys (G − 831): the lamps, FS2→FS3 and ambient clock are unchanged.
+  'S04-SH02': {shift: 831},
+  'S04-SH03': {shift: 831},
+  'S04-SH04': {shift: 831},
 };
 const storyBase = (id: string) => SHOT_G0[id] - (STORY_CLOCK[id]?.shift ?? 0);
 /** Event story key of shot `id` at shot-local frame f (SHOT_G0 holds composition starts). */

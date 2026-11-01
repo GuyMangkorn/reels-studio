@@ -1,464 +1,488 @@
 {
-  "episode": "WFOG-EP01-SHORT",
-  "revision": "Editor r1 (30 Oct 2026): TTS, placement and captions from WFOG-SCRIPT-R5 / sheets SS-R4.1; planned windows are the sheets' estimates (composition frames, half-open); Editor r3 continued (30 Oct 2026): narrator Gemini Sulafat and worker Gemini Orus with pace wording and per-line style (tts engine gemini); VO-03 split into TTS pieces VO-03a/VO-03b (Mark SS-R5 item 25); shop-worker and occupant unchanged (Edge)",
-  "fps": 30,
-  "voices": {
-    "narrator": {
-      "engine": "gemini",
-      "voice": "Sulafat",
-      "pace": "brisk natural pace, no long pauses",
-      "note": "female narrator, Gemini Sulafat (warm, medium); user chose 30 Oct 2026 after the r3 reels; pace wording from the r3 pace test"
-    },
-    "worker": {
-      "engine": "gemini",
-      "voice": "Orus",
-      "pace": "brisk natural pace, no long pauses",
-      "note": "delivery worker, Gemini Orus (firm, low); user chose 30 Oct 2026 after the r3 reels; pace wording from the r3 pace test"
-    },
-    "shop-worker": {
-      "preset": "woman-younger",
-      "voice": "th-TH-PremwadeeNeural",
-      "rate": "+5%",
-      "note": "female shop worker, distinct from the narrator (voice-tuning adult preset, unlistened by user)"
-    },
-    "occupant": {
-      "preset": "elder-woman",
-      "voice": "th-TH-PremwadeeNeural",
-      "rate": "-20% (preset)",
-      "note": "older female occupant, grey bob (voice-tuning elderly preset; needs out/voice-venv)"
-    }
+ "episode": "WFOG-EP01-SHORT",
+ "revision": "Editor r1 (30 Oct 2026): TTS, placement and captions from WFOG-SCRIPT-R5 / sheets SS-R4.1; planned windows are the sheets' estimates (composition frames, half-open); Editor r3 continued (30 Oct 2026): narrator Gemini Sulafat and worker Gemini Orus with pace wording and per-line style (tts engine gemini); VO-03 split into TTS pieces VO-03a/VO-03b (Mark SS-R5 item 25); shop-worker and occupant unchanged (Edge); Editor r5 (31 Oct 2026): VO-17 (worker, WFOG-SCRIPT-R6 S04-B01 `เคาะ + เงา` ending) added between VO-15 and VO-16 on Gemini Orus, take pending the user's ear; placement and level pending Mark retime",
+ "fps": 30,
+ "voices": {
+  "narrator": {
+   "engine": "gemini",
+   "voice": "Sulafat",
+   "pace": "brisk natural pace, no long pauses",
+   "note": "female narrator, Gemini Sulafat (warm, medium); user chose 30 Oct 2026 after the r3 reels; pace wording from the r3 pace test"
   },
-  "lines": [
+  "worker": {
+   "engine": "gemini",
+   "voice": "Orus",
+   "pace": "brisk natural pace, no long pauses",
+   "note": "delivery worker, Gemini Orus (firm, low); user chose 30 Oct 2026 after the r3 reels; pace wording from the r3 pace test"
+  },
+  "shop-worker": {
+   "preset": "woman-younger",
+   "voice": "th-TH-PremwadeeNeural",
+   "rate": "+5%",
+   "note": "female shop worker, distinct from the narrator (voice-tuning adult preset, unlistened by user)"
+  },
+  "occupant": {
+   "preset": "elder-woman",
+   "voice": "th-TH-PremwadeeNeural",
+   "rate": "-20% (preset)",
+   "note": "older female occupant, grey bob (voice-tuning elderly preset; needs out/voice-venv)"
+  }
+ },
+ "lines": [
+  {
+   "id": "VO-01",
+   "shot": "S01-SH01",
+   "speaker": "narrator",
+   "gain": 1.12,
+   "text": "มันตามฉันมา",
+   "pieces": [
+    "มันตามฉันมา"
+   ],
+   "planned": [
+    [
+     0,
+     40
+    ]
+   ],
+   "mix": "hook (EP08a hook up to +1 dB)",
+   "startG": 0,
+   "style": "tense and quiet, low and controlled"
+  },
+  {
+   "id": "VO-02",
+   "shot": "S01-SH01/SH02",
+   "speaker": "narrator",
+   "gain": 1.0,
+   "text": "ฉันเห็นมันตอนเลี้ยวเข้าปั๊ม ตอนนั้นแค่คิดว่าจะเติมน้ำมัน… แล้วกลับบ้าน",
+   "pieces": [
+    "ฉันเห็นมันตอนเลี้ยวเข้าปั๊ม",
+    "ตอนนั้นแค่คิดว่าจะเติมน้ำมัน…",
+    "แล้วกลับบ้าน"
+   ],
+   "planned": [
+    [
+     48,
+     108
+    ],
+    [
+     126,
+     192
+    ],
+    [
+     198,
+     234
+    ]
+   ],
+   "mix": "hold",
+   "startG": 83,
+   "style": "calm, matter-of-fact retelling, slightly uneasy"
+  },
+  {
+   "id": "VO-03",
+   "shot": "S02-SH01/SH02",
+   "speaker": "narrator",
+   "gain": 1.0,
+   "text": "แต่พอเข้าร้าน หมอกก็กลืนลานจอดจนหมด ข่าวในมือถือ… ก็มีแต่ภาพเดียวกัน",
+   "pieces": [
+    "แต่พอเข้าร้าน",
+    "หมอกก็กลืนลานจอดจนหมด",
+    "ข่าวในมือถือ…",
+    "ก็มีแต่ภาพเดียวกัน"
+   ],
+   "planned": [
+    [
+     246,
+     282
+    ],
+    [
+     282,
+     348
+    ],
+    [
+     372,
+     408
+    ],
+    [
+     408,
+     444
+    ]
+   ],
+   "mix": "hold; bed ducked",
+   "startG": 293,
+   "style": "uneasy and low, describing the fog closing over the car park",
+   "tts_split": [
     {
-      "id": "VO-01",
-      "shot": "S01-SH01",
-      "speaker": "narrator",
-      "gain": 1.12,
-      "text": "มันตามฉันมา",
-      "pieces": [
-        "มันตามฉันมา"
-      ],
-      "planned": [
-        [
-          0,
-          40
-        ]
-      ],
-      "mix": "hook (EP08a hook up to +1 dB)",
-      "startG": 0,
-      "style": "tense and quiet, low and controlled"
+     "id": "VO-03a",
+     "text": "แต่พอเข้าร้าน หมอกก็กลืนลานจอดจนหมด",
+     "style": "uneasy and low, describing the fog closing over the car park"
     },
     {
-      "id": "VO-02",
-      "shot": "S01-SH01/SH02",
-      "speaker": "narrator",
-      "gain": 1.0,
-      "text": "ฉันเห็นมันตอนเลี้ยวเข้าปั๊ม ตอนนั้นแค่คิดว่าจะเติมน้ำมัน… แล้วกลับบ้าน",
-      "pieces": [
-        "ฉันเห็นมันตอนเลี้ยวเข้าปั๊ม",
-        "ตอนนั้นแค่คิดว่าจะเติมน้ำมัน…",
-        "แล้วกลับบ้าน"
-      ],
-      "planned": [
-        [
-          48,
-          108
-        ],
-        [
-          126,
-          192
-        ],
-        [
-          198,
-          234
-        ]
-      ],
-      "mix": "hold",
-      "startG": 83,
-      "style": "calm, matter-of-fact retelling, slightly uneasy"
-    },
-    {
-      "id": "VO-03",
-      "shot": "S02-SH01/SH02",
-      "speaker": "narrator",
-      "gain": 1.0,
-      "text": "แต่พอเข้าร้าน หมอกก็กลืนลานจอดจนหมด ข่าวในมือถือ… ก็มีแต่ภาพเดียวกัน",
-      "pieces": [
-        "แต่พอเข้าร้าน",
-        "หมอกก็กลืนลานจอดจนหมด",
-        "ข่าวในมือถือ…",
-        "ก็มีแต่ภาพเดียวกัน"
-      ],
-      "planned": [
-        [
-          246,
-          282
-        ],
-        [
-          282,
-          348
-        ],
-        [
-          372,
-          408
-        ],
-        [
-          408,
-          444
-        ]
-      ],
-      "mix": "hold; bed ducked",
-      "startG": 293,
-      "style": "uneasy and low, describing the fog closing over the car park",
-      "tts_split": [
-        {
-          "id": "VO-03a",
-          "text": "แต่พอเข้าร้าน หมอกก็กลืนลานจอดจนหมด",
-          "style": "uneasy and low, describing the fog closing over the car park"
-        },
-        {
-          "id": "VO-03b",
-          "text": "ข่าวในมือถือ… ก็มีแต่ภาพเดียวกัน",
-          "style": "flat and weary, slightly disbelieving, looking at the phone"
-        }
-      ]
-    },
-    {
-      "id": "VO-04",
-      "shot": "S02-SH03",
-      "speaker": "shop-worker",
-      "gain": 0.8,
-      "text": "ใครอยู่ตรงนั้น?",
-      "pieces": [
-        "ใครอยู่ตรงนั้น?"
-      ],
-      "planned": [
-        [
-          468,
-          510
-        ]
-      ],
-      "mix": "quiet, looking past narrator",
-      "startG": 468
-    },
-    {
-      "id": "VO-05",
-      "shot": "S02-SH04/SH05",
-      "speaker": "narrator",
-      "gain": 1.0,
-      "text": "เงานั้นกำลังมาทางเรา สูงเกือบถึงขอบประตู… แล้วมีเสียงอะไรครูดพื้นตามมาด้วย",
-      "pieces": [
-        "เงานั้นกำลังมาทางเรา",
-        "สูงเกือบถึงขอบประตู…",
-        "แล้วมีเสียงอะไรครูดพื้นตามมาด้วย"
-      ],
-      "planned": [
-        [
-          570,
-          624
-        ],
-        [
-          630,
-          690
-        ],
-        [
-          696,
-          774
-        ]
-      ],
-      "mix": "hold; bed lift",
-      "startG": 583,
-      "style": "tense, hushed, dread rising"
-    },
-    {
-      "id": "VO-06",
-      "shot": "S02-SH06",
-      "speaker": "narrator",
-      "gain": 0.7,
-      "text": "ตัวเดียวกับที่ฉันเห็นข้างถนน",
-      "pieces": [
-        "ตัวเดียวกับที่ฉันเห็นข้างถนน"
-      ],
-      "planned": [
-        [
-          810,
-          870
-        ]
-      ],
-      "mix": "whispered, intimate (EP08a -3 dB)",
-      "startG": 810,
-      "style": "whispered, intimate, horrified recognition"
-    },
-    {
-      "id": "VO-07",
-      "shot": "S02-SH08",
-      "speaker": "occupant",
-      "gain": 0.7,
-      "text": "อย่าเปิดนะ",
-      "pieces": [
-        "อย่าเปิดนะ"
-      ],
-      "planned": [
-        [
-          1047,
-          1077
-        ]
-      ],
-      "mix": "whispered (EP08a -3 dB)",
-      "startG": 1047
-    },
-    {
-      "id": "VO-08",
-      "shot": "S02-SH08",
-      "speaker": "narrator",
-      "gain": 0.7,
-      "text": "เงียบก่อน… มันอาจยังไม่เห็นเรา",
-      "pieces": [
-        "เงียบก่อน…",
-        "มันอาจยังไม่เห็นเรา"
-      ],
-      "planned": [
-        [
-          1095,
-          1125
-        ],
-        [
-          1131,
-          1185
-        ]
-      ],
-      "mix": "whispered; drop before reveal",
-      "startG": 1101,
-      "style": "whispered, urgent but controlled, telling herself to keep still"
-    },
-    {
-      "id": "VO-09",
-      "shot": "S02-SH10",
-      "speaker": "narrator",
-      "gain": 0.7,
-      "text": "เดี๋ยว… นั่นหัวมันเหรอ?",
-      "pieces": [
-        "เดี๋ยว… นั่นหัวมันเหรอ?"
-      ],
-      "planned": [
-        [
-          1446,
-          1500
-        ]
-      ],
-      "mix": "whispered; the line that names the apparent head",
-      "startG": 1446,
-      "style": "frightened, shaky tense whisper, breathless"
-    },
-    {
-      "id": "VO-10",
-      "shot": "S03-SH01",
-      "speaker": "worker",
-      "gain": 0.85,
-      "text": "มีใครอยู่ไหมครับ? ช่วยหน่อย! ผมจับไว้ไม่ไหวแล้ว!",
-      "af": "lowpass=f=3800,volume=-1dB",
-      "pieces": [
-        "มีใครอยู่ไหมครับ?",
-        "ช่วยหน่อย!",
-        "ผมจับไว้ไม่ไหวแล้ว!"
-      ],
-      "planned": [
-        [
-          1530,
-          1572
-        ],
-        [
-          1578,
-          1602
-        ],
-        [
-          1608,
-          1650
-        ]
-      ],
-      "mix": "through glass: mild low-pass (sheet: natural, muffled, never comic)",
-      "startG": 1544,
-      "style": "panicked and desperate, shouting for help, loud and strained"
-    },
-    {
-      "id": "VO-11",
-      "shot": "S03-SH02",
-      "speaker": "narrator",
-      "gain": 1.0,
-      "text": "ฉันค่อย ๆ ยกไฟฉายขึ้น",
-      "pieces": [
-        "ฉันค่อย ๆ ยกไฟฉายขึ้น"
-      ],
-      "planned": [
-        [
-          1680,
-          1734
-        ]
-      ],
-      "mix": "hold",
-      "startG": 1680,
-      "style": "tense and careful, steady low voice"
-    },
-    {
-      "id": "VO-12",
-      "shot": "S03-SH03/SH04/SH05",
-      "speaker": "narrator",
-      "gain": 1.0,
-      "text": "คนส่งของ… กำลังประคองกล่องบนรถเข็น ข้างบนเป็นหมวกกันน็อก ที่เคาะกระจกเมื่อกี้… ก็ด้ามร่ม",
-      "pieces": [
-        "คนส่งของ…",
-        "กำลังประคองกล่องบนรถเข็น",
-        "ข้างบนเป็นหมวกกันน็อก",
-        "ที่เคาะกระจกเมื่อกี้…",
-        "ก็ด้ามร่ม"
-      ],
-      "planned": [
-        [
-          1830,
-          1860
-        ],
-        [
-          1866,
-          1920
-        ],
-        [
-          1926,
-          1962
-        ],
-        [
-          1968,
-          2004
-        ],
-        [
-          2010,
-          2034
-        ]
-      ],
-      "mix": "clue payoff; hold",
-      "startG": 1866,
-      "style": "dawning realization, quiet and clear, deliberate"
-    },
-    {
-      "id": "VO-13",
-      "shot": "S03-SH06A/SH07",
-      "speaker": "narrator",
-      "gain": 0.7,
-      "text": "ในหมอกแบบนี้ ตาเห็นแค่บางส่วน… สมองเราก็มักจะเติมส่วนที่ขาดเอง แล้วความกลัว ก็ชวนให้ฉันมองว่ามันเป็นอันตราย",
-      "pieces": [
-        "ในหมอกแบบนี้ ตาเห็นแค่บางส่วน…",
-        "สมองเราก็มักจะเติมส่วนที่ขาดเอง",
-        "แล้วความกลัว ก็ชวนให้ฉันมองว่ามันเป็นอันตราย"
-      ],
-      "planned": [
-        [
-          2082,
-          2136
-        ],
-        [
-          2142,
-          2190
-        ],
-        [
-          2196,
-          2262
-        ]
-      ],
-      "mix": "perception line (K001): private thought, quieter than the reveal; PD12",
-      "startG": 2089,
-      "style": "private, reflective, quieter than the reveal"
-    },
-    {
-      "id": "VO-14",
-      "shot": "S04-SH01",
-      "speaker": "narrator",
-      "gain": 1.0,
-      "text": "คุณมาจากถนนใหญ่ใช่ไหมคะ? ข้างนอกเป็นยังไงบ้าง?",
-      "pieces": [
-        "คุณมาจากถนนใหญ่ใช่ไหมคะ?",
-        "ข้างนอกเป็นยังไงบ้าง?"
-      ],
-      "planned": [
-        [
-          2358,
-          2406
-        ],
-        [
-          2412,
-          2454
-        ]
-      ],
-      "mix": "question to worker; hold",
-      "startG": 2357,
-      "style": "gentle and anxious, asking politely"
-    },
-    {
-      "id": "VO-15",
-      "shot": "S04-SH01",
-      "speaker": "worker",
-      "gain": 1.0,
-      "text": "รถชนกันขวางถนนครับ รถผมติดอยู่ข้างหลังนั่น เลยต้องเข็นของมาส่งร้านนี้เอง… แต่ตอนนี้ กลับทางเดิมไม่ได้แล้ว",
-      "pieces": [
-        "รถชนกันขวางถนนครับ",
-        "รถผมติดอยู่ข้างหลังนั่น",
-        "เลยต้องเข็นของมาส่งร้านนี้เอง…",
-        "แต่ตอนนี้ กลับทางเดิมไม่ได้แล้ว"
-      ],
-      "planned": [
-        [
-          2478,
-          2520
-        ],
-        [
-          2526,
-          2568
-        ],
-        [
-          2574,
-          2622
-        ],
-        [
-          2628,
-          2670
-        ]
-      ],
-      "mix": "catching breath; hold; no road side named (PD09)",
-      "startG": 2462,
-      "style": "tired and apologetic, out of breath, explaining"
-    },
-    {
-      "id": "VO-16",
-      "shot": "S04-SH03",
-      "speaker": "narrator",
-      "gain": 0.75,
-      "text": "สิ่งที่ฉันกลัวเมื่อกี้… เป็นแค่คนคนหนึ่ง แต่หมอกนี่ยังไม่ไปไหน… แล้วเราก็ไปไหนไม่ได้",
-      "pieces": [
-        "สิ่งที่ฉันกลัวเมื่อกี้…",
-        "เป็นแค่คนคนหนึ่ง",
-        "แต่หมอกนี่ยังไม่ไปไหน…",
-        "แล้วเราก็ไปไหนไม่ได้"
-      ],
-      "planned": [
-        [
-          2796,
-          2832
-        ],
-        [
-          2838,
-          2871
-        ],
-        [
-          2880,
-          2913
-        ],
-        [
-          2919,
-          2949
-        ]
-      ],
-      "mix": "closing reaction, low, almost to herself; then 1.5-2 s held silence; hard cut",
-      "startG": 2790,
-      "style": "relieved but uneasy, low and quiet, almost to herself"
+     "id": "VO-03b",
+     "text": "ข่าวในมือถือ… ก็มีแต่ภาพเดียวกัน",
+     "style": "flat and weary, slightly disbelieving, looking at the phone"
     }
-  ],
-  "placement": "Editor r1: startG = first audible sample (composition frame); continuous TTS clip per line; piece boundaries from proportional split (snapped later to lulls); pieces scored against their planned shot (tolerance 6 f); VO-12 overrun 3 f (see build-notes)"
+   ]
+  },
+  {
+   "id": "VO-04",
+   "shot": "S02-SH03",
+   "speaker": "shop-worker",
+   "gain": 0.8,
+   "text": "ใครอยู่ตรงนั้น?",
+   "pieces": [
+    "ใครอยู่ตรงนั้น?"
+   ],
+   "planned": [
+    [
+     468,
+     510
+    ]
+   ],
+   "mix": "quiet, looking past narrator",
+   "startG": 468
+  },
+  {
+   "id": "VO-05",
+   "shot": "S02-SH04/SH05",
+   "speaker": "narrator",
+   "gain": 1.0,
+   "text": "เงานั้นกำลังมาทางเรา สูงเกือบถึงขอบประตู… แล้วมีเสียงอะไรครูดพื้นตามมาด้วย",
+   "pieces": [
+    "เงานั้นกำลังมาทางเรา",
+    "สูงเกือบถึงขอบประตู…",
+    "แล้วมีเสียงอะไรครูดพื้นตามมาด้วย"
+   ],
+   "planned": [
+    [
+     570,
+     624
+    ],
+    [
+     630,
+     690
+    ],
+    [
+     696,
+     774
+    ]
+   ],
+   "mix": "hold; bed lift",
+   "startG": 583,
+   "style": "tense, hushed, dread rising"
+  },
+  {
+   "id": "VO-06",
+   "shot": "S02-SH06",
+   "speaker": "narrator",
+   "gain": 0.7,
+   "text": "ตัวเดียวกับที่ฉันเห็นข้างถนน",
+   "pieces": [
+    "ตัวเดียวกับที่ฉันเห็นข้างถนน"
+   ],
+   "planned": [
+    [
+     810,
+     870
+    ]
+   ],
+   "mix": "whispered, intimate (EP08a -3 dB)",
+   "startG": 810,
+   "style": "whispered, intimate, horrified recognition"
+  },
+  {
+   "id": "VO-07",
+   "shot": "S02-SH08",
+   "speaker": "occupant",
+   "gain": 0.7,
+   "text": "อย่าเปิดนะ",
+   "pieces": [
+    "อย่าเปิดนะ"
+   ],
+   "planned": [
+    [
+     1047,
+     1077
+    ]
+   ],
+   "mix": "whispered (EP08a -3 dB)",
+   "startG": 1047
+  },
+  {
+   "id": "VO-08",
+   "shot": "S02-SH08",
+   "speaker": "narrator",
+   "gain": 0.7,
+   "text": "เงียบก่อน… มันอาจยังไม่เห็นเรา",
+   "pieces": [
+    "เงียบก่อน…",
+    "มันอาจยังไม่เห็นเรา"
+   ],
+   "planned": [
+    [
+     1095,
+     1125
+    ],
+    [
+     1131,
+     1185
+    ]
+   ],
+   "mix": "whispered; drop before reveal",
+   "startG": 1101,
+   "style": "whispered, urgent but controlled, telling herself to keep still"
+  },
+  {
+   "id": "VO-09",
+   "shot": "S02-SH10",
+   "speaker": "narrator",
+   "gain": 0.7,
+   "text": "เดี๋ยว… นั่นหัวมันเหรอ?",
+   "pieces": [
+    "เดี๋ยว… นั่นหัวมันเหรอ?"
+   ],
+   "planned": [
+    [
+     1446,
+     1500
+    ]
+   ],
+   "mix": "whispered; the line that names the apparent head",
+   "startG": 1446,
+   "style": "frightened, shaky tense whisper, breathless"
+  },
+  {
+   "id": "VO-10",
+   "shot": "S03-SH01",
+   "speaker": "worker",
+   "gain": 0.85,
+   "text": "มีใครอยู่ไหมครับ? ช่วยหน่อย! ผมจับไว้ไม่ไหวแล้ว!",
+   "af": "lowpass=f=3800,volume=-1dB",
+   "pieces": [
+    "มีใครอยู่ไหมครับ?",
+    "ช่วยหน่อย!",
+    "ผมจับไว้ไม่ไหวแล้ว!"
+   ],
+   "planned": [
+    [
+     1530,
+     1572
+    ],
+    [
+     1578,
+     1602
+    ],
+    [
+     1608,
+     1650
+    ]
+   ],
+   "mix": "through glass: mild low-pass (sheet: natural, muffled, never comic)",
+   "startG": 1544,
+   "style": "panicked and desperate, shouting for help, loud and strained"
+  },
+  {
+   "id": "VO-11",
+   "shot": "S03-SH02",
+   "speaker": "narrator",
+   "gain": 1.0,
+   "text": "ฉันค่อย ๆ ยกไฟฉายขึ้น",
+   "pieces": [
+    "ฉันค่อย ๆ ยกไฟฉายขึ้น"
+   ],
+   "planned": [
+    [
+     1680,
+     1734
+    ]
+   ],
+   "mix": "hold",
+   "startG": 1680,
+   "style": "tense and careful, steady low voice"
+  },
+  {
+   "id": "VO-12",
+   "shot": "S03-SH03/SH04/SH05",
+   "speaker": "narrator",
+   "gain": 1.0,
+   "text": "คนส่งของ… กำลังประคองกล่องบนรถเข็น ข้างบนเป็นหมวกกันน็อก ที่เคาะกระจกเมื่อกี้… ก็ด้ามร่ม",
+   "pieces": [
+    "คนส่งของ…",
+    "กำลังประคองกล่องบนรถเข็น",
+    "ข้างบนเป็นหมวกกันน็อก",
+    "ที่เคาะกระจกเมื่อกี้…",
+    "ก็ด้ามร่ม"
+   ],
+   "planned": [
+    [
+     1830,
+     1860
+    ],
+    [
+     1866,
+     1920
+    ],
+    [
+     1926,
+     1962
+    ],
+    [
+     1968,
+     2004
+    ],
+    [
+     2010,
+     2034
+    ]
+   ],
+   "mix": "clue payoff; hold",
+   "startG": 1866,
+   "style": "dawning realization, quiet and clear, deliberate"
+  },
+  {
+   "id": "VO-13",
+   "shot": "S03-SH06A/SH07",
+   "speaker": "narrator",
+   "gain": 0.7,
+   "text": "ในหมอกแบบนี้ ตาเห็นแค่บางส่วน… สมองเราก็มักจะเติมส่วนที่ขาดเอง แล้วความกลัว ก็ชวนให้ฉันมองว่ามันเป็นอันตราย",
+   "pieces": [
+    "ในหมอกแบบนี้ ตาเห็นแค่บางส่วน…",
+    "สมองเราก็มักจะเติมส่วนที่ขาดเอง",
+    "แล้วความกลัว ก็ชวนให้ฉันมองว่ามันเป็นอันตราย"
+   ],
+   "planned": [
+    [
+     2082,
+     2136
+    ],
+    [
+     2142,
+     2190
+    ],
+    [
+     2196,
+     2262
+    ]
+   ],
+   "mix": "perception line (K001): private thought, quieter than the reveal; PD12",
+   "startG": 2089,
+   "style": "private, reflective, quieter than the reveal"
+  },
+  {
+   "id": "VO-14",
+   "shot": "S04-SH01",
+   "speaker": "narrator",
+   "gain": 1.0,
+   "text": "คุณมาจากถนนใหญ่ใช่ไหมคะ? ข้างนอกเป็นยังไงบ้าง?",
+   "pieces": [
+    "คุณมาจากถนนใหญ่ใช่ไหมคะ?",
+    "ข้างนอกเป็นยังไงบ้าง?"
+   ],
+   "planned": [
+    [
+     2358,
+     2406
+    ],
+    [
+     2412,
+     2454
+    ]
+   ],
+   "mix": "question to worker; hold",
+   "startG": 2357,
+   "style": "gentle and anxious, asking politely"
+  },
+  {
+   "id": "VO-15",
+   "shot": "S04-SH01",
+   "speaker": "worker",
+   "gain": 1.0,
+   "text": "รถชนกันขวางถนนครับ รถผมติดอยู่ข้างหลังนั่น เลยต้องเข็นของมาส่งร้านนี้เอง… แต่ตอนนี้ กลับทางเดิมไม่ได้แล้ว",
+   "pieces": [
+    "รถชนกันขวางถนนครับ",
+    "รถผมติดอยู่ข้างหลังนั่น",
+    "เลยต้องเข็นของมาส่งร้านนี้เอง…",
+    "แต่ตอนนี้ กลับทางเดิมไม่ได้แล้ว"
+   ],
+   "planned": [
+    [
+     2478,
+     2520
+    ],
+    [
+     2526,
+     2568
+    ],
+    [
+     2574,
+     2622
+    ],
+    [
+     2628,
+     2670
+    ]
+   ],
+   "mix": "catching breath; hold; no road side named (PD09)",
+   "startG": 2462,
+   "style": "tired and apologetic, out of breath, explaining"
+  },
+  {
+   "id": "VO-17",
+   "shot": "S04-SH01",
+   "speaker": "worker",
+   "gain": 0.8,
+   "text": "ของพวกนี้ลูกค้าสั่งไว้ครับ… เขาบอกว่าจะมารับเองที่นี่",
+   "pieces": [
+    "ของพวกนี้ลูกค้าสั่งไว้ครับ…",
+    "เขาบอกว่าจะมารับเองที่นี่"
+   ],
+   "planned": [
+    [
+     3368,
+     3424
+    ],
+    [
+     3424,
+     3493
+    ]
+   ],
+   "mix": "SS-R6 t1 locked; offhand worker, gain 1.0; measured -16.2 LUFS",
+   "startG": 3365,
+   "style": "offhand, tired, still catching breath, casual and matter-of-fact, explaining"
+  },
+  {
+   "id": "VO-16",
+   "shot": "S04-SH03",
+   "speaker": "narrator",
+   "gain": 0.75,
+   "text": "สิ่งที่ฉันกลัวเมื่อกี้… เป็นแค่คนคนหนึ่ง แต่หมอกนี่ยังไม่ไปไหน… แล้วเราก็ไปไหนไม่ได้",
+   "pieces": [
+    "สิ่งที่ฉันกลัวเมื่อกี้…",
+    "เป็นแค่คนคนหนึ่ง",
+    "แต่หมอกนี่ยังไม่ไปไหน…",
+    "แล้วเราก็ไปไหนไม่ได้"
+   ],
+   "planned": [
+    [
+     3627,
+     3717
+    ],
+    [
+     3721,
+     3765
+    ],
+    [
+     3774,
+     3829
+    ],
+    [
+     3834,
+     3875
+    ]
+   ],
+   "mix": "closing reaction, low, almost to herself; then 1.5-2 s held silence; hard cut",
+   "startG": 3624,
+   "style": "relieved but uneasy, low and quiet, almost to herself"
+  }
+ ],
+ "placement": "Editor r1: startG = first audible sample (composition frame); continuous TTS clip per line; piece boundaries from proportional split (snapped later to lulls); pieces scored against their planned shot (tolerance 6 f); VO-12 overrun 3 f (see build-notes)"
 }

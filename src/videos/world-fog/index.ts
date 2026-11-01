@@ -6,7 +6,7 @@ import type {EpisodeVideos} from '../types';
 
 /**
  * WFOG-EP01-SHORT (script WFOG-SCRIPT-R5, brief VB-WFOG-EP01-SHORT-R6.1, scene sheets WFOG-EP01-SHORT-SS-R5.1 with RK-2,
- * Full tier). Picture: `src/painted/worldfog/*` (Boss r10; `SHOT_ROWS`, 25 shots, 3766 frames = 125.5 s, hard cut on G3765).
+ * Full tier). Picture: `src/painted/worldfog/*` (Boss SS-R6; `SHOT_ROWS`, 26 shots, 4005 frames = 133.5 s, hard cut on G4004; S04-SH04 `FIG-KNOCK`).
  * Narration: the approved takes (Sulafat narrator, Orus worker; Edge for VO-04 and VO-07) placed per the SS-R5.1 cue table in
  * `scripts/world-fog/short/placement.json` (`narration.py compose`); captions come from the same placement (`captions.json`).
  * Sound: story-keyed cues map from the SS-R4.1 story key with RK-2 (`storyToG`); phone, door and torch cues use shot-local
@@ -38,7 +38,8 @@ const shotEnd = (id: string) => {
  */
 const RK2: [number, number, number][] = [
   [0, 0, 1], [444, 786, 1], [1800, 2142, 1], [1920, 2302, 1], [1962, 2348, 1], [2034, 2448, 1], [2070, 2484, 1],
-  [2190, 2700, 1], [2262, 2828, 1], [2340, 2906, 1], [2478, 3044, 296 / 192], [2670, 3340, 1],
+  // SS-R6: story key 2670 (S04-SH02 f0) is G3501; no cue uses a key ≥ 2670 (the S04 cues use shot-local frames).
+  [2190, 2700, 1], [2262, 2828, 1], [2340, 2906, 1], [2478, 3044, 296 / 192], [2670, 3501, 1],
 ];
 const storyToG = (gk: number): number => {
   const [gk0, g0, slope] = [...RK2].reverse().find(([k]) => gk >= k) ?? RK2[0];
@@ -78,6 +79,8 @@ const SFX: Sfx[] = [
   {g: storyToG(2286), src: CART, volume: 0.1, durationSec: 2},
   // S04-SH01 shop door closes f12-36 (sheet sc04, same door-slide file); S04-SH02 torch click at f10
   {g: shotG('S04-SH01', 12), src: 'sfx/foley/foley_glass-door-push_01.wav', volume: 0.3, durationSec: 1},
+  ...[3366, 3378].map((g) => ({g, src: 'sfx/foley/foley_hand-pat-carton_01.wav', volume: 0.20, durationSec: 0.23})),
+  ...[3939, 3957, 3975].map((g) => ({g, src: 'sfx/foley/foley_knuckle-knock-glass_01.wav', volume: 0.45, durationSec: 0.3})),
   {g: shotG('S04-SH02', 10), src: 'sfx/foley/foley_flashlight-click_01.wav', volume: 0.35, durationSec: 0.3},
 ];
 
@@ -97,12 +100,14 @@ const AUDIO: AudioTrack[] = [
   {src: 'audio/tone/tone_soft-sustain-reflective_01.wav', startSec: sec(storyToG(2070)), endSec: sec(shotG('S03-SH07', 84)), volume: 0.12, fadeInSec: 0.4, fadeOutSec: 0.4, duckUnderNarration: 0.4},
   // thinned release until the music out at S04-SH01
   {src: DRONE, startSec: sec(shotG('S03-SH07', 84)), endSec: sec(storyToG(2340)), volume: 0.05, fadeInSec: 0.2, fadeOutSec: 0.3, loop: true},
-  // low unresolved bed from S04-SH03 f0 (15-frame fade-in); fades out after the closing line (line ends f254 in SS-R5.1)
-  {src: 'audio/bed/bed_dark-drone-sub_01.wav', startSec: sec(shotG('S04-SH03')), endSec: sec(shotG('S04-SH03', 267)), volume: 0.1, fadeInSec: 0.5, fadeOutSec: 0.4, loop: true, duckUnderNarration: 0.5},
+  // low unresolved bed from S04-SH03 f0 (15-frame fade-in); fades with the last light G3881–G3899 (SS-R6)
+  {src: 'audio/bed/bed_dark-drone-sub_01.wav', startSec: sec(shotG('S04-SH03')), endSec: sec(3900), volume: 0.1, fadeInSec: 0.5, fadeOutSec: sec(18), loop: true, duckUnderNarration: 0.5},
   // open-air layer: forecourt hush from S01-SH02 f30 through the wall, dry until the glass (S02-SH00A start)
   {src: 'audio/outdoor/outdoor_fog-forecourt-hush_01.wav', startSec: sec(156), endSec: sec(shotG('S02-SH00A')), volume: 0.22, fadeInSec: 0.8, fadeOutSec: 0.5},
   // through the glass: low-passed, about -12 dB at G360, muffled to silence at f156 of S02-SH00A (G516); no whoosh, no fog SFX
   {src: 'audio/outdoor/outdoor_fog-forecourt-hush_glass_01.wav', startSec: sec(shotG('S02-SH00A')), endSec: sec(shotG('S02-SH00A', 156)), volume: 0.22 * 10 ** (-12 / 20), fadeInSec: 0.2, fadeOutSec: 156 / FPS},
+  // SS-R6 ending: muffled outside hush beside the unchanged shop hum, hard stop at G4005.
+  {src: 'audio/outdoor/outdoor_fog-forecourt-hush_glass_01.wav', startSec: sec(3900), endSec: sec(4005), volume: 0.22 * 10 ** (-12 / 20), loop: true},
   // shop hum from the glass under the swallow (S02-SH00A start) to the hard cut; alone once the hush is gone
   {src: 'audio/room/room_shop-fridge-hum_01.wav', startSec: sec(shotG('S02-SH00A')), volume: 0.14, fadeInSec: 1, loop: true, duckUnderNarration: 0.6},
 ];

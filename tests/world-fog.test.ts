@@ -13,7 +13,10 @@ import {CAST, drawFigure, shoulderHeight, type Arm} from '../src/painted/worldfo
 import {DEG, PROJ, SHOT_ROWS, TOTAL_FRAMES, ambientAt, asmAt, doorAt, fogAt, frontAt, lampAt, lensAt, lightAt, pchip, storyAt, torchOnAt, type V3} from '../src/painted/worldfog/space';
 import {siteB, siteFront} from '../src/painted/worldfog/site';
 import {CLEAR, FRONT_FADE_M, carCoverAt, headlampAt, paintOutside} from '../src/painted/worldfog/outside';
-import {SH02_TORCH_HAND, SH07_TORCH, VD18_LIGHT, beamSH06A, clutch, counterWorkerArms, sh02Arms, sh07NarratorGlance} from '../src/painted/shots/worldfog';
+import {SH02_TORCH_HAND, SH07_TORCH, VD18_LIGHT, beamAt, beamSH06A, clutch, counterWorkerArms, s4sh01Body, s4sh01PatArm, sh02Arms, sh07NarratorGlance} from '../src/painted/shots/worldfog';
+import {KNOCK_CAST, KNOCK_CONTACTS, KNOCK_X, knockArm, knockBodyZ, knockHandAt, knockVeil} from '../src/painted/worldfog/knock';
+import {drawFigure as kitDrawFigure} from '../src/painted/kit/cast';
+import {groundAt} from '../src/painted/worldfog/shop';
 
 const video = worldFog.videos[0];
 const fps = 30;
@@ -25,14 +28,16 @@ const plateAt = (G: number) => {
   return s;
 };
 
-test('WFOG-EP01-SHORT registers 25 plates on the SS-R5.1 G ranges, 3766 frames, four story scenes', () => {
+test('WFOG-EP01-SHORT registers 26 plates on the SS-R6 G ranges, 4005 frames, four story scenes', () => {
   collectEpisodes([worldFog]);
   assert.equal(video.id, 'WFOG-EP01-SHORT');
   assert.equal(total, TOTAL_FRAMES);
-  assert.equal(TOTAL_FRAMES, 3766);
+  assert.equal(TOTAL_FRAMES, 4005);
   assert.equal(video.timeline.length, 4);
-  assert.equal(SHOT_ROWS.length, 25);
-  assert.equal(SHOT_ROWS.reduce((n, r) => n + r.len, 0), 3766);
+  assert.equal(SHOT_ROWS.length, 26);
+  assert.equal(SHOT_ROWS.reduce((n, r) => n + r.len, 0), 4005);
+  // SS-R6 starts (index shot table): S04-SH02 G3501, S04-SH03 G3621 (279 f), S04-SH04 G3900 (105 f), last painted frame G4004.
+  assert.deepEqual(SHOT_ROWS.slice(-4).map((r) => [r.id, r.g0, r.len]), [['S04-SH01', 2906, 595], ['S04-SH02', 3501, 120], ['S04-SH03', 3621, 279], ['S04-SH04', 3900, 105]]);
   const spans = paintedSpans(video.timeline, fps);
   assert.deepEqual(spans.map((s) => [s.shot, s.startFrame, s.endFrame]), SHOT_ROWS.map((r) => [`WFOG-${r.id}`, r.g0, r.g0 + r.len]));
   for (const r of SHOT_ROWS) assert.deepEqual(paintedShots[`WFOG-${r.id}`].serves, [r.id]);
@@ -70,6 +75,12 @@ test('RK-2 story key: G786 reads story frame 444; offset-only shots keep G − 3
   assert.ok(Math.abs(storyAt('S04-SH01', 433) - (2478 + 295 * 192 / 296)) < 1e-9, 'talk span stretched over 2478-2670');
   assert.equal(storyAt('S04-SH02', 0), 2670);
   assert.equal(storyAt('S04-SH03', 305), 3095);
+  // SS-R6: S04-SH01 holds its event clocks at the f433 value over f434–f594; the ambient clock runs on; SH04 continues FS3 at 3069.
+  assert.equal(storyAt('S04-SH01', 594), storyAt('S04-SH01', 433), 'event clocks hold from f434');
+  assert.equal(ambientAt('S04-SH01', 594), 2934);
+  assert.equal(storyAt('S04-SH03', 278), 3068, 'last light at story 3068 (f278)');
+  assert.equal(storyAt('S04-SH04', 0), 3069, 'SH04 continues the story after SH03 f278');
+  assert.equal(ambientAt('S04-SH04', 0), ambientAt('S04-SH03', 278) + 1, 'ambient drift continuous from SH03');
   assert.equal(storyAt('S02-SH00A', 0), 360);
   assert.equal(storyAt('S02-SH01', 78), 588, 'torch off the hook at S02-SH01 f78 = G612');
   assert.equal(storyAt('S01-SH02A', 0), 240);
@@ -169,14 +180,17 @@ test('the far wall (F ≥ 60) is painted at z 60 with the road and forecourt in 
 test('hard-cut ending (MK-WF-DEP-07): C_seamless with loopBlendFrames 0 has no hold, fade or blend', () => {
   assert.equal(video.ending, 'C_seamless');
   assert.equal(video.loopBlendFrames, 0);
-  for (const G of [3460, 3610, 3720, 3750, 3765]) {
+  for (const G of [3621, 3760, 3899, 3900, 3950, 4004]) {
     const s = plateAt(G);
     assert.equal(s.opacity, 1);
     assert.equal(s.plates.length, 1, `G${G} paints one plate (no frame-0 blend)`);
-    assert.equal(s.plates[0].shot, 'WFOG-S04-SH03');
-    assert.equal(s.plates[0].frame, G - 3460, `G${G} is not held`);
+    const shot = G < 3900 ? 'WFOG-S04-SH03' : 'WFOG-S04-SH04';
+    assert.equal(s.plates[0].shot, shot);
+    assert.equal(s.plates[0].frame, G - (G < 3900 ? 3621 : 3900), `G${G} is not held`);
   }
-  assert.equal(plateAt(3765).plates[0].frame, 305); // last painted frame G3765 (shot-local f305)
+  // SS-R6: last painted frame G4004 = S04-SH04 f104, the composition ends at 4005 (no hold, fade or blend after it).
+  assert.equal(plateAt(4004).plates[0].frame, 104);
+  assert.equal(plateAt(4004).plates[0].shot, 'WFOG-S04-SH04');
 });
 
 test('SS-R5.1 captions and sound on the fog beat: VO-03a on the swallow (G386), VO-03b on the phone (G648), the phone ding at G636 (S02-SH02 f6)', () => {
@@ -383,10 +397,92 @@ test('S03-SH06A sheet numbers (SS-R4 RT-1): worker 674 +-15 px and face (615, 70
   assert.ok(Math.abs(end[0] - 588) < 1e-9 && Math.abs(end[1] - 820) < 1e-9, `f66 end ${end}`);
 });
 
-test('SS-R5.1 picture pushes: S03-SH07 s 1.00-1.05 over 206 frames, S04-SH01 s 1.00-1.04 over 434, S04-SH03 s 1.00-1.06 over 306', () => {
+test('SS-R6 picture pushes: S03-SH07 s 1.00-1.05 over 206 frames; S04-SH01 s 1.00-1.04 over f0-f433, held to f594; S04-SH03 and S04-SH04 one curve 1.00 → 1.10 over G3621–G4004', () => {
   assert.ok(Math.abs(cameraAt('WFOG-S03-SH07', 0).s - 1) < 1e-9 && Math.abs(cameraAt('WFOG-S03-SH07', 205 / fps).s - 1.05) < 1e-9);
   assert.ok(Math.abs(cameraAt('WFOG-S04-SH01', 433 / fps).s - 1.04) < 1e-9);
-  assert.ok(Math.abs(cameraAt('WFOG-S04-SH03', 305 / fps).s - 1.06) < 1e-9);
+  assert.ok(Math.abs(cameraAt('WFOG-S04-SH01', 594 / fps).s - 1.04) < 1e-9, 'held at 1.04 from f434');
+  assert.ok(Math.abs(cameraAt('WFOG-S04-SH03', 0).s - 1) < 1e-9, 'S04-SH03 f0 (G3621) at s 1.000');
+  // Sheet sc04: s(G) = 1 + 0.10 (1 − cos(π (G − 3621)/383))/2; ≈ 1.083 at SH03 f278 (G3899) and SH04 f0 (G3900); 1.10 at G4004.
+  assert.ok(Math.abs(cameraAt('WFOG-S04-SH03', 278 / fps).s - 1.083) < 1e-3, 'S04-SH03 f278 (G3899) ≈ 1.083');
+  assert.ok(Math.abs(cameraAt('WFOG-S04-SH04', 0).s - 1.083) < 1e-3, 'S04-SH04 f0 (G3900) ≈ 1.083 (no pop from G3899)');
+  assert.ok(Math.abs(cameraAt('WFOG-S04-SH04', 104 / fps).s - 1.1) < 1e-9, 'S04-SH04 f104 (G4004) lands on 1.10');
+});
+
+test('SS-R6 S04-SH04 FIG-KNOCK path and veil (sheet D-4): 0.04 m/f walk-up, eased stop at z 0.40 on f34, veil 100 % → 10 % (z 1.20 → 0.70)', () => {
+  assert.equal(knockBodyZ(0), 1.6);
+  for (let f = 0; f <= 26; f++) assert.ok(Math.abs(knockBodyZ(f) - (1.6 - 0.04 * f)) < 1e-12, `linear walk f${f}`);
+  assert.ok(Math.abs(knockBodyZ(34) - 0.4) < 1e-12 && knockBodyZ(60) === 0.4, 'stands at 0.40 from f34');
+  // The ease-out starts at the walking speed: the slope either side of f26 is 0.04 m/f (no velocity step at the joint).
+  assert.ok(Math.abs((knockBodyZ(25.9999) - knockBodyZ(26.0001)) / 0.0002 - 0.04) < 1e-6, 'speed continuous at f26');
+  // Glass reads empty f0–f10: the body is fully fog-coloured while z ≥ 1.20.
+  for (let f = 0; f <= 10; f++) assert.equal(knockVeil(knockBodyZ(f)), 1, `veil 100 % at f${f}`);
+  assert.ok(Math.abs(knockVeil(0.7) - 0.1) < 1e-12 && Math.abs(knockVeil(0.4) - 0.1) < 1e-12, '10 % at z ≤ 0.70');
+  assert.ok(Math.abs(knockVeil(0.95) - 0.55) < 1e-12, 'linear between 1.20 and 0.70');
+});
+
+test('SS-R6 FIG-KNOCK knocks (sheet D-4/D-5): knuckles on the glass (z 0) at f39, f57, f75 with 18 f spacing; palm flat f83–f104', () => {
+  assert.deepEqual([...KNOCK_CONTACTS], [39, 57, 75]);
+  for (const f of KNOCK_CONTACTS) assert.equal(knockHandAt(f).z, 0, `knuckles on the glass at f${f}`);
+  for (const f of [45, 53, 63, 71]) assert.ok(Math.abs(knockHandAt(f).z - 0.06) < 1e-12, `off the glass at f${f}`);
+  assert.equal(knockHandAt(35).z, 0.06);
+  // After the third knock the fist opens and the palm settles on the glass; it does not retract.
+  assert.equal(knockHandAt(75).z, 0);
+  for (const f of [83, 90, 104]) assert.equal(knockHandAt(f).z, 0, `palm on the glass at f${f}`);
+  assert.ok(Math.abs(knockHandAt(83).y - 1.42) < 1e-12 && Math.abs(knockHandAt(104).y - 1.42) < 1e-12, 'palm centre height 1.42');
+  assert.equal(knockHandAt(39).x, 0.3);
+  // Depth-only targets were static in the front projection: assert visible anticipation and rebound.
+  for (const f of KNOCK_CONTACTS) {
+    const ready = knockArm(PROJ['CAM-GLASS-OUT'], f - 4)!.to;
+    const hit = knockArm(PROJ['CAM-GLASS-OUT'], f)!.to;
+    const travel = Math.hypot(ready[0] - hit[0], ready[1] - hit[1]);
+    assert.ok(travel >= 10 && travel <= 14, `visible knock travel ${travel}px at f${f} (before push)`);
+    assert.ok(knockHandAt(f + 2).x < knockHandAt(f).x, `rebound at f${f + 2}`);
+  }
+  for (const f of [83, 90, 104]) assert.equal(knockHandAt(f).x, 0.3, 'palm remains at the glass mark');
+});
+
+test('SS-R6 FIG-KNOCK arm and the rig hang agree at the switch (rig anchors within 0.5 px)', () => {
+  const noop: unknown = new Proxy(() => undefined, {get: (_t, k) => (k === 'alpha' ? 1 : noop), apply: () => undefined});
+  const face = {brow: 'flat' as const, eyes: 'dot' as const, look: [0, 0] as [number, number], mouth: 'flat' as const};
+  const f = 28;
+  const {g, unit} = groundAt(PROJ['CAM-GLASS-OUT'], KNOCK_X, knockBodyZ(f));
+  const plain = kitDrawFigure(noop as Painter, KNOCK_CAST, g, unit, {view: 'front', face, walk: f / 34}, 0);
+  const authored = kitDrawFigure(noop as Painter, KNOCK_CAST, g, unit, {view: 'front', face, walk: f / 34, lArm: knockArm(PROJ['CAM-GLASS-OUT'], f)}, 0);
+  assert.ok(Math.hypot(plain.lHand[0] - authored.lHand[0], plain.lHand[1] - authored.lHand[1]) < 0.5, 'left hand at the hang');
+  assert.ok(Math.hypot(plain.lUpper[0] - authored.lUpper[0], plain.lUpper[1] - authored.lUpper[1]) < 0.5, 'left elbow at the hang');
+});
+
+test('SS-R6 S04-SH01 stack pat (sheet D-2, P16 placement): pat 1 on the top carton f462, pat 2 f474, lift f466; hang at f450 and f494 ends', () => {
+  const proj = PROJ['CAM-INT-2S'];
+  const near = (a: Pt, b: Pt) => Math.hypot(a[0] - b[0], a[1] - b[1]) < 1e-6;
+  assert.equal(s4sh01PatArm(proj, 449), undefined, 'plain hang before the pat');
+  assert.equal(s4sh01PatArm(proj, 494), undefined, 'plain hang from f494');
+  assert.ok(near(s4sh01PatArm(proj, 462)!.to, proj.P([0.08, 1.33, -0.50])), 'pat 1 on the top carton');
+  assert.ok(near(s4sh01PatArm(proj, 474)!.to, proj.P([0.08, 1.00, -0.50])), 'pat 2 on the carton below');
+  assert.ok(near(s4sh01PatArm(proj, 466)!.to, proj.P([0.08, 1.33, -0.53])), 'lift 0.03 m off the face at f466');
+  // The contact hand stays inside the stack's right edge (x 0.15 m, projection JSON) and the worker stands at the stack mark.
+  assert.ok(s4sh01PatArm(proj, 462)!.to[0] < proj.P([0.15, 1.33, -0.5])[0]);
+  assert.ok(Math.abs(s4sh01Body(454).x - 0.4) < 1e-9 && Math.abs(s4sh01Body(454).z + 0.62) < 1e-9, 'worker at the stack mark (0.40, −0.62) from f454');
+  // Hand-over at f450: the pat arm starts exactly at the plain hang of the worker at that ground point (rig anchors within 0.5 px).
+  const noop: unknown = new Proxy(() => undefined, {get: (_t, k) => (k === 'alpha' ? 1 : noop), apply: () => undefined});
+  const face = {brow: 'worry' as const, eyes: 'dot' as const, look: [0, 0] as [number, number], mouth: 'flat' as const};
+  const b = s4sh01Body(450);
+  const {g, unit} = groundAt(proj, b.x, b.z);
+  // Both at the paint's walk phase for f450 (the back step, (450 − 432) / 22): the walk bob moves the whole upper body.
+  const walk = (450 - 432) / 22;
+  const plain = drawFigure(noop as Painter, 'worker', g, unit, {view: 'front', face, wet: true, walk}, 0);
+  const authored = drawFigure(noop as Painter, 'worker', g, unit, {view: 'front', face, wet: true, walk, rArm: s4sh01PatArm(proj, 450)}, 0);
+  assert.ok(Math.hypot(plain.rHand[0] - authored.rHand[0], plain.rHand[1] - authored.rHand[1]) < 0.5, 'right hand at the hang');
+  assert.ok(Math.hypot(plain.rUpper[0] - authored.rUpper[0], plain.rUpper[1] - authored.rUpper[1]) < 0.5, 'right elbow at the hang');
+});
+
+test('SS-R6 torch beam follows the last lamps (sheet sc04): on until G2802, out by G3068, no warm light in S04-SH04', () => {
+  assert.equal(beamAt(2802), 1);
+  assert.ok(beamAt(2900) > 0 && beamAt(2900) < 1);
+  assert.equal(beamAt(3068), 0);
+  assert.equal(beamAt(3899), 0);
+  assert.equal(beamAt(4004), 0);
+  assert.equal(beamAt(2000), 1, 'S03 window beam unchanged');
 });
 
 test('SS-R3.2 camera and rise staging: CAM-INT-SIDE at z -0.6, S03-SH04 pivot, S03-SH01 tilt-follow and rise clock', () => {

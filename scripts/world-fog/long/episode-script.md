@@ -1,13 +1,13 @@
-# WFOG-LONG-SCRIPT-R2 — The second knock (เสียงเคาะครั้งที่สอง)
+# WFOG-LONG-SCRIPT-R3 — The second knock (เสียงเคาะครั้งที่สอง)
 
-- Owner / date: Preaw, 2026-10-31 (Asia/Bangkok). Revision: **R2** (answers Boat's [WFOG-LONG-REVIEW-R1](fact-check.md); R1 was the first complete script pack). See [change log](#change-log).
-- Deliverable / episode: `WFOG-EP01-LONG` / `WFOG-EP01`; chapters `C00`–`C08`. [Delivery record](../delivery.md). Separate editorial version; `WFOG-EP01-SHORT` and its [script R5](../short/script.md) stay as delivered.
-- Inputs: [WFOG-LONG-BRIEF-R1](topic-brief.md) (binding scope); [WFOG-SCRIPT-R5](../short/script.md) (EP1 events, characters, objects, clue facts CL01–CL05). Research: `N/A` (pure fiction, brief and delivery record).
+- Owner / date: Preaw, 2026-10-31 (Asia/Bangkok). Revision: **R3** (continuity revision: the Long follows straight on from the Short's R6 ending, user decision 2026-10-31 `ปรับ Long ให้ต่อกัน`; R2 answered Boat's [WFOG-LONG-REVIEW-R1](fact-check.md) and was rechecked `ready-for-film` in WFOG-LONG-REVIEW-R2; R1 was the first complete script pack). See [change log](#change-log).
+- Deliverable / episode: `WFOG-EP01-LONG` / `WFOG-EP01`; chapters `C00`–`C08`. [Delivery record](../delivery.md). Separate editorial version that continues straight on from the Short's ending; `WFOG-EP01-SHORT` and its [script R6](../short/script.md) are not changed by this file.
+- Inputs: [WFOG-LONG-BRIEF-R1](topic-brief.md) (binding scope); [WFOG-SCRIPT-R6](../short/script.md) (EP1 events, characters, objects, clue facts CL01–CL05; R6 ending: worker line `VO-17`, last light out, three glass knocks and a person-shaped silhouette, Short `CL06`). R3 was written against the uncommitted R6 file of 2026-10-31 while Boat's WFOG-FACTCHECK-R6 was running; if that recheck changes `VO-17`, the Long's C03-B03 copy follows it. Research: `N/A` (pure fiction, brief and delivery record).
 - Story mode: **pure fiction, supernatural horror** (user, 2026-10-31). No true-story basis, no real case, no factual claim beyond ordinary physical plausibility. The Short's sourced perception line `K001` is deliberately **not** reused (see claim mapping). The worldwide fog stays unexplained.
 - Profile / tier: `world-fog-mystery` world, Long horror variant per brief / Full adjusted (Boat research `N/A`; Boat review scoped to fiction consistency, on-screen safety implications and originality versus *Smile*).
 - Format: YouTube long-form, 16:9 1920×1080, 30 fps. Target about 10 min; longer welcome when earned.
-- Target / timing status: **estimated ≈ 12 min 05 s (≈ 725 s)** at the Short's measured Gemini pace (R1 ≈ 11:50; user kept the length, small R2 growth); **≈ 13 min 35 s (≈ 815 s)** if the Long is read about 12 % slower for horror. See [timing basis](#timing-basis). Timing status: `estimated` (no read-aloud, TTS or animatic test of this text). Do not lock event frames from this estimate.
-- Writing status: R2 complete (full spoken Thai, all chapters). Fiction review: WFOG-LONG-REVIEW-R1 (`revision-required`) answered by this revision; Boat targeted recheck of R2 pending. User decisions on R1 open items recorded (2026-10-31: keep length, narrator's-own-voice plea, curved smear, Gemini voices, hard cut); no user approval of this text. Runtime/audio/visual validation: not performed.
+- Target / timing status: **estimated ≈ 12 min 18 s (≈ 738 s)** at the Short's measured Gemini pace (R1 ≈ 11:50; user kept the length; R2 ≈ 12:05; R3 adds ≈ 13 s for the EP1-continuity lines); **≈ 13 min 50 s (≈ 830 s)** if the Long is read about 12 % slower for horror. See [timing basis](#timing-basis). Timing status: `estimated` (no read-aloud, TTS or animatic test of this text). Do not lock event frames from this estimate.
+- Writing status: R3 complete (full spoken Thai, all chapters). Fiction review: WFOG-LONG-REVIEW-R1 (`revision-required`) answered in R2; WFOG-LONG-REVIEW-R2 `ready-for-film` for R2; **Boat targeted recheck of R3 pending** (scope in the [change log](#change-log)); R2's `ready-for-film` does not carry over to the changed beats. User decisions on R1 open items recorded (2026-10-31: keep length, narrator's-own-voice plea, curved smear, Gemini voices, hard cut); no user approval of this text. Runtime/audio/visual validation: not performed.
 - Rating: pressure horror, no blood, wounds, gore or self-harm; the impossibly wide smile is a smooth stretched shape, not an injury.
 
 ## Story core
@@ -27,7 +27,7 @@
 **Underlying truth (within the story):**
 
 1. EP1 is unchanged: the roadside shape and the follower at the glass were always the ordinary delivery worker with his overloaded cart (cartons + helmet = high tilted "head"; umbrella handle = long reach; jammed front caster = squeak/scrape; helmet slips and is caught). He is human and stays human for the whole episode.
-2. Something walked out of the fog near the road collision. It heard the worker shout and copied his voice back to him; it followed him toward the shop at a distance in the dark fog, unseen, and did not approach the lit shop until C04. It is the **imposter** (demon rules below). It never gets inside.
+2. Something walked out of the fog near the road collision. It heard the worker shout and copied his voice back to him; it followed him toward the shop at a distance in the fog, unseen. (R3) While the canopy lights were still on, their light let it come closer under cover of the fog; when the last canopy light went out (C03-B03) it already stood in the glow spilling from the shop, and that light brought it to the glass. It is the **imposter** (demon rules below). Its first appearance is the C04-B01 knock at the front glass, as a bare person-shaped outline, face unreadable, carrying nothing: it looks in at the worker in the lit shop, withdraws out of the light before the torch reaches it, and reappears at the dark pumps wearing his complete copy (C04-B02). It never gets inside. The customer the worker mentions (C03-B03, Short `VO-17`) never appears in this episode; the knock the worker takes for the customer is the imposter.
 3. Its copy is a disguise: the body and face are its own (solid, it can knock and smear misted glass), but what it "carries" — cart, cartons, helmet, umbrella — is part of the disguise: it copies the outline whole but never damage, wear or weight, so the copy is too perfect, weightless and silent. Its cart wheels are all straight (the real bent caster is not copied), glide silently, leave no track on the wet forecourt, its cartons never sway, and its feet leave no prints.
 4. The power failure is not explained and not caused by the imposter on screen; it is circumstance.
 5. Layout: the storeroom is a small room behind the counter; the shop's exterior back door (knob + deadbolt) is inside it. The worker went into the dark storeroom only to lock that back door. He opened nothing. Every voice and knock "at the back" is outside the back door, heard through the storeroom.
@@ -43,13 +43,13 @@ Each rule is set up (seen or stated) before any beat depends on it, and no later
 
 | ID | Rule (story truth) | Set-up | Reinforced | Pays off | Never-broken check |
 | --- | --- | --- | --- | --- | --- |
-| `DR01` | **Imitation.** It copies a person it has seen/heard: body, clothes, face, voice, and the outline of what they carry. It copies the outline whole but **never copies damage, wear or weight**: its copy is too perfect (no bent caster, no sway, no drips). While disguised its face looks human and calm. Its speech escalates: first it repeats what it heard word for word; later it speaks freely, in new sentences, in a borrowed voice. | C03-B03 worker's road story (his own voice shouted back at him) | C04-B02 identical figure at the pumps, but four straight wheels; C04-B03 repeats the worker's EP1 line word for word (repeat stage); C06-B01 speaks new, manipulative sentences as "the real worker" and C06-B02 narrator names it `มันพูดเองได้` (free-speech stage) | C07-B02 it speaks in the narrator's voice | It never copies someone it has not seen and heard; the narrator's voice comes only after it has seen her face-to-face in her torch beam since C04 and heard her speak out through the open door gap (C06-B03 `อย่า!`, `อย่าส่องหน้ามัน!`; C06-B04 `รถเข็นของแก… ไม่มีเสียง`). Its copied cart is never bent. |
-| `DR02` | **Weightless disguise.** What it carries has no weight and no sound: straight silent wheels, no track, rigid cartons, a helmet that never slips. Its own body is solid (knuckles knock; face smears glass) but its steps make no sound and leave no prints. | C04-B02/B03 visible and audible: silent glide, straight wheels, no wet track, rigid boxes, knocks with knuckles not the umbrella. Not pointed out (fair clue). | C04-B03 `ผมจับไว้ไม่ไหวแล้ว` while the boxes stand perfectly still | C06-B04 low beam reading; narrator states it (`ไม่มีอะไรพังเลยสักอย่าง`, `ไม่มีเสียง`) | The imposter never squeaks, never makes a carton, helmet or footstep sound, never leaves a wheel track or footprint; every imposter knock is bare knuckles on glass/metal (never the EP1 umbrella-tap sound). |
+| `DR01` | **Imitation.** It copies a person it has seen/heard: body, clothes, face, voice, and the outline of what they carry. It copies the outline whole but **never copies damage, wear or weight**: its copy is too perfect (no bent caster, no sway, no drips). While disguised its face looks human and calm. Its speech escalates: first it repeats what it heard word for word; later it speaks freely, in new sentences, in a borrowed voice. | C03-B03 worker's road story (his own voice shouted back at him) | (R3) C04-B01 a bare person-shaped outline at the glass carrying nothing, then C04-B02 the identical figure at the pumps with the complete copy (`เงาที่เคาะกระจกเมื่อกี้… ไม่มีรถเข็น ไม่มีกล่องสักใบ`), but four straight wheels; C04-B03 repeats the worker's EP1 line word for word (repeat stage); C06-B01 speaks new, manipulative sentences as "the real worker" and C06-B02 narrator names it `มันพูดเองได้` (free-speech stage) | C07-B02 it speaks in the narrator's voice | It never copies someone it has not seen and heard; the narrator's voice comes only after it has seen her face-to-face in her torch beam since C04 and heard her speak out through the open door gap (C06-B03 `อย่า!`, `อย่าส่องหน้ามัน!`; C06-B04 `รถเข็นของแก… ไม่มีเสียง`). Its copied cart is never bent. (R3) The copy is never assembled or changed on camera: at C04-B01 it is an outline only, and the cart, cartons and helmet are first seen complete at the pumps after it has left the light. |
+| `DR02` | **Weightless disguise.** What it carries has no weight and no sound: straight silent wheels, no track, rigid cartons, a helmet that never slips. Its own body is solid (knuckles knock; face smears glass) but its steps make no sound and leave no prints. | (R3) C04-B01 bare-knuckle knocks on the front glass (same three-knock spacing as the EP1 umbrella taps, different timbre); C04-B02/B03 visible and audible: silent glide, straight wheels, no wet track, rigid boxes, knocks with knuckles not the umbrella. Not pointed out (fair clue). | C04-B03 `ผมจับไว้ไม่ไหวแล้ว` while the boxes stand perfectly still | C06-B04 low beam reading; narrator states it (`ไม่มีอะไรพังเลยสักอย่าง`, `ไม่มีเสียง`) | The imposter never squeaks, never makes a carton, helmet or footstep sound, never leaves a wheel track or footprint; every imposter knock is bare knuckles on glass/metal (never the EP1 umbrella-tap sound). |
 | `DR03` | **No entry uninvited.** It cannot come in by itself; someone must open the door for it or invite it in. A closed but unlocked door stops it. | C00-B01 narrator's first lesson (stated as hindsight); C04-B04 Aunt's grandmother's saying (stated, doubted) | C05-B03 the exterior back door inside the storeroom found unlocked: it knocked there from outside and waited, never turned the knob | C06-B03 shop worker slides the front door open → only distance and darkness remain; C07-B01 it reaches the gap lit, the torch goes off at that instant so it cannot come nearer (cannot step in), and the door is slammed in front of it; C07-B02 nobody answers its plea | It never opens a door, a window or the back-door knob; it never enters. Every "back" voice/knock (C05-B01, C06-B01, C07-B02, C08-B01) is outside the exterior back door, heard through the storeroom. Nobody says "come in". |
-| `DR04` | **Light rule.** Each time light falls on its face, it can come closer to the people. In darkness it can move sideways or away, but never nearer. | C03-B03 canopy lights go out one by one (from here the forecourt and pumps are dark; only the shop and hand lights remain); C04-B02/B03 at the dark pumps: it walks only while the torch is on its face; the beam slips, it stays "where the light left it"; lit again, it walks to the glass | C05-B02 side window: lit face moves from an arm's length to almost touching the glass; Aunt names the pattern; narrator recalls the pumps | C06-B02 it calls from far away **asking for light**; C06-B04 narrator lights only the ground; C07-B01 it puts its own face into the low beam (C00's second lesson, named in C07-B03) and lunges along the beam to the door gap; the torch goes off as it reaches the gap and it advances no further | No unlit approach: in the dark it circles the shop at the walls (C05-B01) or withdraws (C06-B02, C07-B02). It never arrives at the glass after the torch is off (C07-B01 order: lit lunge → reaches gap → torch off → frozen → slam in front of it → knocks where it stands). The shop lights were on when it was already at the front glass (C04-B03); the backup light shows an empty glass (C07-B03). |
-| `DR05` | **The smile.** When recognized it gives up the disguise: the mouth slowly stretches wider into an impossibly wide smile to the ears; the eyes become empty black hollows. No blood, no wound, no torn skin, no flesh detail. | Cold open C00 tease (corner of the smile only) | — | C07-B01 full reveal | Appears only after recognition (narrator's spoken line C06-B04). Before that, the imposter's face is the worker's calm face, never smiling. |
+| `DR04` | **Light rule.** Each time light falls on its face, it can come closer to the people. In darkness it can move sideways or away, but never nearer. | C03-B03 canopy lights go out one by one (from here the forecourt and pumps are dark; only the shop and hand lights remain); (R3) C04-B01 it is already at the glass, inside the shop's glow, when the last canopy light dies, and it withdraws out of that light before the torch reaches it (moving away in the dark is allowed); C04-B02/B03 at the dark pumps: it walks only while the torch is on its face; the beam slips, it stays "where the light left it"; lit again, it walks to the glass | C05-B02 side window: lit face moves from an arm's length to almost touching the glass; Aunt names the pattern; narrator recalls the pumps | C06-B02 it calls from far away **asking for light**; C06-B04 narrator lights only the ground; C07-B01 it puts its own face into the low beam (C00's second lesson, named in C07-B03) and lunges along the beam to the door gap; the torch goes off as it reaches the gap and it advances no further | No unlit approach: in the dark it circles the shop at the walls (C05-B01) or withdraws (C06-B02, C07-B02). It never arrives at the glass after the torch is off (C07-B01 order: lit lunge → reaches gap → torch off → frozen → slam in front of it → knocks where it stands). (R3) It reached the C04-B01 glass under light only: canopy light while the canopy was lit (C01–C03, unseen in the fog), then the shop's own glow; it was never in darkness while closing in. C03-B02's open door was opened for the worker, not for it, and it was not yet at the glass. The shop lights were on when it was at the front glass (C04-B01, C04-B03); the backup light shows an empty glass (C07-B03). |
+| `DR05` | **The smile.** When recognized it gives up the disguise: the mouth slowly stretches wider into an impossibly wide smile to the ears; the eyes become empty black hollows. No blood, no wound, no torn skin, no flesh detail. | Cold open C00 tease (corner of the smile only) | — | C07-B01 full reveal | Appears only after recognition (narrator's spoken line C06-B04). Before that, whenever its face is seen, it is the worker's calm face, never smiling (R3: at C04-B01 its face is unreadable, an outline only). |
 
-Not a rule (kept deliberately open): what it wants once inside; how fast it moves when lit (rendered as a lunge within about one second); whether being recognized ends it.
+Not a rule (kept deliberately open): what it wants once inside; (R3) why it withdrew from the glass to the pumps before showing itself as the worker (it reads as replaying his arrival across the forecourt; nobody says so); whether the worker's customer exists or ever comes; how fast it moves when lit (rendered as a lunge within about one second); whether being recognized ends it.
 
 ## Timing basis
 
@@ -58,20 +58,20 @@ Not a rule (kept deliberately open): what it wants once inside; how fast it move
 - **Measured reference:** the approved WFOG-EP01-SHORT Gemini r3 takes (narrator Sulafat, worker Orus, style "brisk natural pace, no long pauses"), speech-only durations from `r3-table.json` in the `world-fog-next-steps` worktree's `out/gemini-tts/wfog-r3/`, against the Thai text in [narration-lines.json](../short/narration-lines.json): **10.3 Thai characters per second** of speech (≈ 617 characters/min; characters counted without spaces and punctuation). Word counts are not used: Thai word segmentation is unreliable for timing.
 - **Primary estimate (used for all beat times below):** the measured 10.3 characters/s for every voice, with the narrator's +5 % atempo applied (user, 2026-10-31) → narrator `NARR` lines ≈ 10.8 characters/s; plus 0.35 s between consecutive lines and the explicit `[HOLD]` times written into the beats (silences, knocks, reveals, title card).
 - **Slower-read bound:** if the Long is directed slower than the Short's brisk read (9.0 characters/s raw, narrator 9.45 after atempo), the same text runs ≈ 815 s (13:35).
-- **Totals (estimated, R2):** ≈ 6,950 spoken Thai characters in 26 beats → **≈ 725 s (12:05)** primary (R1: ≈ 6,790 characters, ≈ 710 s; R2 adds ≈ 16 s net from the LR-S01/S02/S03 lines and the LR-M01 wording); ≈ 815 s slower-read bound. Gemini lengths vary per take and with style wording (the Short measured ≈ 1.6–2× Edge length); not audio-tested.
+- **Totals (estimated, R3):** ≈ 7,070 spoken Thai characters in 26 beats → **≈ 738 s (12:18)** primary (R1: ≈ 6,790 characters, ≈ 710 s; R2 ≈ 6,950 characters, ≈ 725 s; R3 adds ≈ +120 characters net: `VO-17` 51 in C03-B03, +19 net in C04-B01, 49 in C04-B02 → worker ≈ 7.6 s + narrator ≈ 3.8 s + 4 line gaps ≈ 1.4 s + ≈ 0.5 s carton-pat pause, holds net ≈ 0; ≈ +13 s); ≈ 830 s slower-read bound. Gemini lengths vary per take and with style wording (the Short measured ≈ 1.6–2× Edge length); not audio-tested.
 
 | Chapter | Title (on-screen, Thai) | Est. start | Est. length |
 | --- | --- | --- | --- |
 | `C00` | Cold open + title card | 0:00 | 0:18 |
 | `C01` | ปั๊มสุดท้าย | 0:18 | 1:24 |
 | `C02` | สิ่งที่ตามมา | 1:42 | 1:01 |
-| `C03` | คนส่งของ | 2:43 | 1:51 |
-| `C04` | เสียงเคาะครั้งที่สอง | 4:34 | 1:41 |
-| `C05` | ไฟดับ | 6:15 | 1:53 |
-| `C06` | ตัวจริง | 8:08 | 1:55 |
-| `C07` | รอยยิ้ม | 10:03 | 1:33 |
-| `C08` | จากทุกทิศ | 11:36 | 0:29 |
-| | **Total** | | **≈ 12:05** |
+| `C03` | คนส่งของ | 2:43 | 1:56 |
+| `C04` | เสียงเคาะครั้งที่สอง | 4:39 | 1:49 |
+| `C05` | ไฟดับ | 6:28 | 1:53 |
+| `C06` | ตัวจริง | 8:21 | 1:55 |
+| `C07` | รอยยิ้ม | 10:16 | 1:33 |
+| `C08` | จากทุกทิศ | 11:49 | 0:29 |
+| | **Total** | | **≈ 12:18** |
 
 The per-chapter figures are computed from the spoken text below at the primary rate (Thai characters counted with spaces and punctuation removed) and rounded; YouTube chapter timestamps must come from the measured cut, not from this table.
 
@@ -90,27 +90,27 @@ Story-world time is one continuous night, apart from C00 (a flash-forward to C07
 | `C02-B03` | 2:27–2:43 | Top of the shape tilts, falls, is caught; "is that its head?"; then the human plea. | Cardboard slide + hollow helmet catch; subjective swell cut dead into silence; plea dry and clear. |
 | `C03-B01` | 2:43–3:20 | Torch reveal: the delivery worker; clue payoffs (helmet, umbrella, crooked wheel); narrator's own fear admitted. | Score releases to a single soft sustained tone; squeak continues unchanged under the reveal. |
 | `C03-B02` | 3:20–3:34 | Door opened, cart pulled in: loud squeak inside, black rubber scuff line on white tiles, raincoat dripping (DR02 contrast plants). | Squeak loud and close in the room tone; drip ticks on tile; no music. |
-| `C03-B03` | 3:34–4:34 | Worker's report: collision, he pushed here to deliver, can't go back; people at the crash stood unmoving; his own voice shouted behind him (DR01 set-up, C seed). Canopy lights go out one by one (pumps dark from here, DR04 precondition); the EP1 closing line. | Plain dialogue, almost no score; one cold tone enters on `เสียงผมเองครับ`; the faint canopy-light hum thins out with each light going dark, one soft distant relay click per light at most (no crash, siren or crowd sound); 1.5 s silence after the closing line. |
-| `C04-B01` | 4:34–4:53 | Silence broken: three metallic knocks far out in the fog, same rhythm as the worker's taps. She raises the torch, as before. | Three dull knuckle knocks on painted steel, distant and wet; nothing else. |
-| `C04-B02` | 4:53–5:39 | At the pumps: a second delivery worker, lit face = worker's face; the real worker stands beside her dripping. It walks in the beam, silently; the beam slips; it waits "where the light left it" (DR04 set-up; DR02 visible/audible, unflagged). | Deliberate absence: no wheel sound, no footsteps, the room tone dips; heartbeat-slow layer very low. A thin riser while it walks, cut on the beam slip. |
-| `C04-B03` | 5:39–5:50 | Lit again, it walks to the glass, knocks three times with its knuckles (not the umbrella), repeats the EP1 plea word for word, while its boxes stand perfectly still. | Knuckle taps on glass (drier than C02 umbrella taps); imposter voice = worker voice, no breath, even, slightly too clean; silence after `คำต่อคำ`. |
-| `C04-B04` | 5:50–6:15 | Aunt: never invite it; the grandmother's rule (DR03 set-up); doubted, no one moves; the shop lights die. | Hum and fridge compressor cut together on the blackout: a hard silence cut, no stinger. |
-| `C05-B01` | 6:15–6:41 | Darkness; torch is the only light; knocks move: side window, then the exterior back door inside the storeroom. It is circling. | Total silence beds; bare-knuckle knocks positioned left then rear (stereo placement; rear set slightly muffled, through the storeroom), each set of three. |
-| `C05-B02` | 6:41–7:22 | Side-window knock; she shines the torch: lit face an arm's length away, then nearly touching glass; Aunt: lower it; the light rule named; narrator recalls the pumps (DR04 reinforced). | Low riser while the face comes forward, cut dead when the torch drops; then near silence for the recollection lines. |
-| `C05-B03` | 7:22–7:38 | The back door inside the storeroom was never locked; it knocked from outside and waited (DR03 proven). | No music; one held breath-length silence after `แล้วรอ`. |
-| `C05-B04` | 7:38–8:08 | Worker goes into the dark storeroom to lock it; the lock clacks; silence too long; footsteps return; "same voice… and so is the one outside." | Deadbolt clack off-screen, then long silence (about 3 s), single footsteps on tile returning; low drone creeps back. |
-| `C06-B01` | 8:08–8:32 | Voice from outside the back door, heard through the dark storeroom: "the one with you isn't me; I opened the door for it". Suspicion turns inward. | Imposter voice muffled, outside the back door through the storeroom; the real worker's denial raw and breathy; bed tense, pulse. |
-| `C06-B02` | 8:32–8:52 | The voice moves far out to the forecourt and asks for light; narrator notes it no longer just repeats (CL10 escalation). Shop worker believes it, runs to the door with her phone light. | Voice now distant and wet; footsteps run on tile; pulse speeds slightly. |
-| `C06-B03` | 8:52–9:09 | She unbolts and slides the door open a gap; fog flows in; narrator stops the phone light. Only distance and darkness protect them now. | Bolt + sliding door on track; outside hush opens up in the mix; music drops out. |
-| `C06-B04` | 9:09–10:03 | The test: real cart squeaks along the black line; low beam outside finds four straight wheels, nothing damaged, no track, rigid boxes; she remembers the silent approach; says it aloud. | Real squeak loud and welcome; then silence during the low-beam reading; no sting on the realization; her line spoken into silence. |
-| `C07-B01` | 10:03–10:38 | The reveal: it bends its face into the low beam; worker's face → mouth stretches into an impossibly wide smile to the ears → eyes black hollows; fully lit, it lunges along the beam to the gap; torch off as it arrives (frozen at the threshold); door slammed in front of it; it knocks where it stands, a hand's width from the shop worker. | Total silence through the smile's growth (no music, no creature sound); one stinger at the lunge (low muted hit or a short dissonant hit, not a screech); then slam + bolt + three close bare-knuckle knocks. |
-| `C07-B02` | 10:38–11:01 | In the dark, its plea in the narrator's own voice (DR01 payoff); she covers her mouth; knocks circle, fade, stop. | Imposter-as-narrator voice through glass, intimate and calm; knocks progressively quieter and further around the room; then silence. |
-| `C07-B03` | 11:01–11:36 | Time unknown; backup light comes on; glass empty; long curved smear on the condensation; the second lesson named (pays off C00); the worker sits on his cart: the squeak, welcome. | Backup light buzz/click; room tone returns; the squeak; a soft warm tone, brief. |
-| `C08-B01` | 11:36–12:05 | Backup light dies; knocks from front, side and back door (outside, through the storeroom) at once; two voices: crash on the main road, plea to open; worker: nobody there moved; final torch line; hard cut. | Hard silence on the light death; overlapping knocks from three positions (knock timbre unspecified: neither the imposter's knuckle sample nor clearly different); two calm outside voices; final line into silence, ≈ 1.5 s hold, hard cut. No outro music. |
+| `C03-B03` | 3:34–4:39 | Worker's report: collision, he pushed here to deliver, can't go back; (R3) the customer will come to collect the goods in person (Short `VO-17`, plants `CL11`); people at the crash stood unmoving; his own voice shouted behind him (DR01 set-up, C seed). Canopy lights go out one by one (pumps dark from here, DR04 precondition); the EP1 closing line; (R3) the last light goes out after it, then ≈ 1.5 s silence (as Short R6 S04-B02/B03). | Plain dialogue, almost no score; no sound accent on `VO-17` (offhand); one cold tone enters on `เสียงผมเองครับ`; the faint canopy-light hum thins out with each light going dark, one soft distant relay click per light at most (no crash, siren or crowd sound); 1.5 s silence after the closing line. |
+| `C04-B01` | 4:39–5:01 | (R3) Silence broken exactly as the Short ends: three knocks on the front glass in the C02-B02 rhythm, a person-shaped silhouette in the fog behind the glass, carrying nothing. The worker takes it for his customer (`CL11`) and steps toward the door; she raises the torch, as before: the glass is empty. | Hum only, then three dry bare-knuckle knocks on glass with the C02-B02 spacing and level (DR02: not the umbrella-tap sample); no music, stinger, riser, breath or creature sound on the knocks; silence on the empty glass. |
+| `C04-B02` | 5:01–5:52 | At the pumps: a second delivery worker, lit face = worker's face; (R3) the knocker at the glass had no cart, this one has everything; the real worker stands beside her dripping. It walks in the beam, silently; the beam slips; it waits "where the light left it" (DR04 set-up; DR02 visible/audible, unflagged). | Deliberate absence: no wheel sound, no footsteps, the room tone dips; heartbeat-slow layer very low. A thin riser while it walks, cut on the beam slip. |
+| `C04-B03` | 5:52–6:03 | Lit again, it walks to the glass, knocks three times with its knuckles (not the umbrella), repeats the EP1 plea word for word, while its boxes stand perfectly still. | Knuckle taps on glass (drier than C02 umbrella taps); imposter voice = worker voice, no breath, even, slightly too clean; silence after `คำต่อคำ`. |
+| `C04-B04` | 6:03–6:28 | Aunt: never invite it; the grandmother's rule (DR03 set-up); doubted, no one moves; the shop lights die. | Hum and fridge compressor cut together on the blackout: a hard silence cut, no stinger. |
+| `C05-B01` | 6:28–6:54 | Darkness; torch is the only light; knocks move: side window, then the exterior back door inside the storeroom. It is circling. | Total silence beds; bare-knuckle knocks positioned left then rear (stereo placement; rear set slightly muffled, through the storeroom), each set of three. |
+| `C05-B02` | 6:54–7:35 | Side-window knock; she shines the torch: lit face an arm's length away, then nearly touching glass; Aunt: lower it; the light rule named; narrator recalls the pumps (DR04 reinforced). | Low riser while the face comes forward, cut dead when the torch drops; then near silence for the recollection lines. |
+| `C05-B03` | 7:35–7:51 | The back door inside the storeroom was never locked; it knocked from outside and waited (DR03 proven). | No music; one held breath-length silence after `แล้วรอ`. |
+| `C05-B04` | 7:51–8:21 | Worker goes into the dark storeroom to lock it; the lock clacks; silence too long; footsteps return; "same voice… and so is the one outside." | Deadbolt clack off-screen, then long silence (about 3 s), single footsteps on tile returning; low drone creeps back. |
+| `C06-B01` | 8:21–8:45 | Voice from outside the back door, heard through the dark storeroom: "the one with you isn't me; I opened the door for it". Suspicion turns inward. | Imposter voice muffled, outside the back door through the storeroom; the real worker's denial raw and breathy; bed tense, pulse. |
+| `C06-B02` | 8:45–9:05 | The voice moves far out to the forecourt and asks for light; narrator notes it no longer just repeats (CL10 escalation). Shop worker believes it, runs to the door with her phone light. | Voice now distant and wet; footsteps run on tile; pulse speeds slightly. |
+| `C06-B03` | 9:05–9:22 | She unbolts and slides the door open a gap; fog flows in; narrator stops the phone light. Only distance and darkness protect them now. | Bolt + sliding door on track; outside hush opens up in the mix; music drops out. |
+| `C06-B04` | 9:22–10:16 | The test: real cart squeaks along the black line; low beam outside finds four straight wheels, nothing damaged, no track, rigid boxes; she remembers the silent approach; says it aloud. | Real squeak loud and welcome; then silence during the low-beam reading; no sting on the realization; her line spoken into silence. |
+| `C07-B01` | 10:16–10:51 | The reveal: it bends its face into the low beam; worker's face → mouth stretches into an impossibly wide smile to the ears → eyes black hollows; fully lit, it lunges along the beam to the gap; torch off as it arrives (frozen at the threshold); door slammed in front of it; it knocks where it stands, a hand's width from the shop worker. | Total silence through the smile's growth (no music, no creature sound); one stinger at the lunge (low muted hit or a short dissonant hit, not a screech); then slam + bolt + three close bare-knuckle knocks. |
+| `C07-B02` | 10:51–11:14 | In the dark, its plea in the narrator's own voice (DR01 payoff); she covers her mouth; knocks circle, fade, stop. | Imposter-as-narrator voice through glass, intimate and calm; knocks progressively quieter and further around the room; then silence. |
+| `C07-B03` | 11:14–11:49 | Time unknown; backup light comes on; glass empty; long curved smear on the condensation; the second lesson named (pays off C00); the worker sits on his cart: the squeak, welcome. | Backup light buzz/click; room tone returns; the squeak; a soft warm tone, brief. |
+| `C08-B01` | 11:49–12:18 | Backup light dies; knocks from front, side and back door (outside, through the storeroom) at once; two voices: crash on the main road, plea to open; worker: nobody there moved; final torch line; hard cut. | Hard silence on the light death; overlapping knocks from three positions (knock timbre unspecified: neither the imposter's knuckle sample nor clearly different); two calm outside voices; final line into silence, ≈ 1.5 s hold, hard cut. No outro music. |
 
 ## Full spoken script
 
-**Only Thai lines in `>` blocks are spoken.** Everything else is production direction. Captions follow the spoken Thai verbatim (cue splitting at audio timing only); no shortened subtitle wording is authorized in R2. From frame 0 show the opening Thai caption plus a discreet original fiction marker `เรื่องสมมติ`; do not speak it. Chapter titles appear as on-screen Thai cards (not spoken).
+**Only Thai lines in `>` blocks are spoken.** Everything else is production direction. Captions follow the spoken Thai verbatim (cue splitting at audio timing only); no shortened subtitle wording is authorized in R3. From frame 0 show the opening Thai caption plus a discreet original fiction marker `เรื่องสมมติ`; do not speak it. Chapter titles appear as on-screen Thai cards (not spoken).
 
 **Speaker key:** `NARR` narrator voice-over (adult woman, first person `ฉัน`; Gemini Sulafat) · `NARR-D` narrator speaking inside the scene (same voice, in-scene acoustics) · `WORKER` delivery worker (man; Gemini Orus) · `SHOP` shop worker (younger woman) · `AUNT` older woman occupant with the grey bob, called ป้า · `IMP` the imposter (worker's voice = Orus processed "slightly wrong": no breaths, even pitch, a touch too clean; in C07-B02 the narrator's voice processed the same way) · `V-WOMAN`, `V-MAN` outside voices in C08.
 
@@ -269,13 +269,18 @@ Story-world time is one continuous night, apart from C00 (a flash-forward to C07
 **WORKER** (catching breath):
 > ขอบคุณครับ… ขอบคุณจริง ๆ
 
-#### `C03-B03` — The road behind him (3:34–4:34 est.)
+#### `C03-B03` — The road behind him (3:34–4:39 est.)
 
 **NARR-D**:
 > คุณมาจากถนนใหญ่ใช่ไหมคะ? ข้างนอกเป็นยังไงบ้าง?
 
 **WORKER**:
 > รถชนกันขวางถนนครับ รถผมติดอยู่ข้างหลังนั่น เลยต้องเข็นของมาส่งร้านนี้เอง… แต่ตอนนี้ กลับทางเดิมไม่ได้แล้ว
+
+- Event (R3, EP1 retell of Short R6 S04-B01): a short breath; the worker pats the stack (a gesture that takes in the whole load, per Boat R6-N02, since `ของพวกนี้` is plural) and glances out at the glass, offhand, not ominous.
+
+**WORKER** (R3, offhand, still catching breath; Short `VO-17` verbatim):
+> ของพวกนี้ลูกค้าสั่งไว้ครับ… เขาบอกว่าจะมารับเองที่นี่
 
 **AUNT**:
 > แล้วคนในรถล่ะ… เป็นยังไงบ้าง
@@ -293,31 +298,42 @@ Story-world time is one continuous night, apart from C00 (a flash-forward to C07
 
 > ผมคิดว่าเป็นเสียงสะท้อนในหมอก… ก็เลยไม่ได้หันกลับไปดู
 
-- Event: `[HOLD 1.0 s]`. Outside, the canopy lights switch off one by one, each blurred point in the fog going dark (as in EP1, the last point goes out), leaving only the lit shop. From here the pumps and forecourt are dark.
+- Event: `[HOLD 1.0 s]`. Outside, the canopy lights switch off one by one, each blurred point in the fog going dark, leaving only the lit shop. (R3) As in EP1 (Short R6 S04-B02), the **last** point goes out after the closing line below, in silence. From then on the pumps and forecourt are dark. The worker stays clearly inside, beside the narrator, so the figure in C04-B01 cannot be read as him.
 
 **NARR**:
 > ข้างนอก ไฟใต้หลังคาปั๊มดับลงทีละดวง… ทีละดวง จนเหลือแค่ร้านเรา ที่ยังสว่างอยู่
 
 > สิ่งที่ฉันกลัวเมื่อกี้… เป็นแค่คนคนหนึ่ง แต่หมอกนี่ยังไม่ไปไหน… แล้วเราก็ไปไหนไม่ได้
 
-- Event: `[HOLD 2.0 s]` silence on the white glass.
+- Event: the last canopy light goes out. `[HOLD 1.5 s]` silence on the white glass (R3: matches the Short R6 S04-B03 pre-knock silence, ≈ 1–1.5 s).
 
 ### C04 — เสียงเคาะครั้งที่สอง
 
-#### `C04-B01` — Three knocks, far away (4:34–4:53 est.)
+#### `C04-B01` — Three knocks at the glass (4:39–5:01 est.)
 
-- Event: three dull knocks, far outside, on metal (knuckles on a pump casing; not shown yet). `[HOLD 1.5 s]`
+- Event (R3, continues straight on from the Short R6 S04-B03 image): three short knocks on the front glass, with the same spacing and level as the C02-B02 taps, but bare knuckles (DR02). On the knocks a person-shaped silhouette is readable in the fog just behind the glass, at the edge of the shop's own light, from the same glass-facing view as the C02-B02 silhouette: ordinary human height and outline, face unreadable, one hand at the glass on each knock; **no cart, cartons, helmet or umbrella**. The real worker stands inside beside the narrator, raincoat dripping. `[HOLD 1.0 s]` on the silhouette. (Truth: this is the imposter, not yet showing the worker's copy; it reached the glass by light, see DR04.)
 
 **NARR**:
 > แล้วก็มีเสียงเคาะ
 
-> ไม่ใช่ที่กระจก เสียงมันดังมาจากข้างนอก ไกลออกไป เหมือนใครเคาะเหล็ก… สามครั้ง
+> ที่กระจกหน้าร้าน… สามครั้ง เหมือนตอนที่คนส่งของเคาะเมื่อกี้ไม่มีผิด
 
-> สามครั้ง… เหมือนตอนที่คนส่งของเคาะกระจกเมื่อกี้ไม่มีผิด
+- Event: the worker relaxes and takes one step toward the sliding door (still bolted since C03-B02).
 
+**WORKER** (relieved, offhand):
+> สงสัยลูกค้ามารับของแล้วครับ
+
+**NARR**:
 > ฉันทำแบบเดียวกับเมื่อกี้… ยกไฟฉายขึ้น
 
-#### `C04-B02` — The one at the pumps (4:53–5:39 est.)
+- Event: the beam hits the glass and passes into empty fog: nobody is there. The worker stops short of the floor bolt, beside her. (Truth: the figure withdrew out of the shop's light before the beam reached it; moving away in the dark is allowed, DR04. The beam never lands on it at the glass.)
+
+**NARR**:
+> แต่ตรงกระจก… ไม่มีใครอยู่แล้ว
+
+> ฉันส่องไฟออกไปไกลกว่านั้น
+
+#### `C04-B02` — The one at the pumps (5:01–5:52 est.)
 
 - Event: the beam pierces the fog to the dark pump island (canopy lights off since C03-B03); the narrator's parked car edges into the beam beside it. A figure stands there: same raincoat, same stacked cartons on the same-looking cart, the helmet on top. The beam lands on its face: the worker's face, calm, dry-eyed, mouth closed, looking straight into the light. (DR02 visible but unflagged: all four wheels straight; the cartons do not sway; its feet stay behind the cart.)
 
@@ -326,7 +342,9 @@ Story-world time is one continuous night, apart from C00 (a flash-forward to C07
 
 > เสื้อกันฝนตัวเดียวกัน กล่องซ้อนสูงบนรถเข็นแบบเดียวกัน หมวกกันน็อกใบเดียวกันวางอยู่ข้างบน แสงไฟฉายตกลงบนหน้าเขาพอดี… หน้าของคนส่งของ
 
-- Event: she snaps her head round. The real worker is right beside her, raincoat still dripping onto the tile, staring out.
+> เงาที่เคาะกระจกเมื่อกี้… ไม่มีรถเข็น ไม่มีกล่องสักใบ
+
+- Event: she snaps her head round. The real worker is right beside her (where he stopped at the door in C04-B01), raincoat still dripping onto the tile, staring out.
 
 **NARR**:
 > ฉันหันขวับไปข้างตัว คนส่งของยืนอยู่ข้างฉัน เสื้อกันฝนยังมีน้ำหยดลงพื้นอยู่เลย
@@ -346,7 +364,7 @@ Story-world time is one continuous night, apart from C00 (a flash-forward to C07
 **NARR**:
 > พอยกไฟขึ้นอีกครั้ง มันยังยืนอยู่ตรงนั้น ตรงที่แสงทิ้งมันไว้ ไม่ขยับเลยสักก้าว
 
-#### `C04-B03` — Word for word (5:39–5:50 est.)
+#### `C04-B03` — Word for word (5:52–6:03 est.)
 
 **NARR**:
 > แต่พอแสงโดนหน้ามัน… มันก็ก้าวต่อ
@@ -361,7 +379,7 @@ Story-world time is one continuous night, apart from C00 (a flash-forward to C07
 
 - Event: `[HOLD 1.0 s]`
 
-#### `C04-B04` — The grandmother's rule (5:50–6:15 est.)
+#### `C04-B04` — The grandmother's rule (6:03–6:28 est.)
 
 **SHOP** (to the real worker, backing off):
 > พี่… พี่ก็ยืนอยู่ตรงนี้นี่
@@ -388,7 +406,7 @@ Story-world time is one continuous night, apart from C00 (a flash-forward to C07
 
 ### C05 — ไฟดับ
 
-#### `C05-B01` — Circling (6:15–6:41 est.)
+#### `C05-B01` — Circling (6:28–6:54 est.)
 
 - Event: near-black interior; the torch is the only light, held low.
 
@@ -405,7 +423,7 @@ Story-world time is one continuous night, apart from C00 (a flash-forward to C07
 **NARR**:
 > แล้วก็ย้ายไปอีก ข้างหลังร้าน… ที่ประตูหลังในห้องเก็บของ มันกำลังเดินวนรอบร้าน… หาทางเข้า
 
-#### `C05-B02` — The light rule (6:41–7:22 est.)
+#### `C05-B02` — The light rule (6:54–7:35 est.)
 
 - Event: knocks at the side window again. She points the torch there. Behind the fogged glass, an arm's length back, the worker's calm face; lit, it moves forward until it almost touches the glass.
 
@@ -429,7 +447,7 @@ Story-world time is one continuous night, apart from C00 (a flash-forward to C07
 
 > แต่ถ้าไม่มีไฟ… เราก็มองอะไรไม่เห็นเลย
 
-#### `C05-B03` — The unlocked door (7:22–7:38 est.)
+#### `C05-B03` — The unlocked door (7:35–7:51 est.)
 
 **SHOP** (whispered, realizing):
 > ประตูหลัง… ในห้องเก็บของ… หนูยังไม่ได้ล็อก
@@ -442,7 +460,7 @@ Story-world time is one continuous night, apart from C00 (a flash-forward to C07
 **AUNT** (barely audible):
 > เห็นไหม… มันเข้ามาเองไม่ได้
 
-#### `C05-B04` — Gone too long (7:38–8:08 est.)
+#### `C05-B04` — Gone too long (7:51–8:21 est.)
 
 **WORKER**:
 > เดี๋ยวผมไปล็อกเองครับ
@@ -463,7 +481,7 @@ Story-world time is one continuous night, apart from C00 (a flash-forward to C07
 
 ### C06 — ตัวจริง
 
-#### `C06-B01` — "That isn't me" (8:08–8:32 est.)
+#### `C06-B01` — "That isn't me" (8:21–8:45 est.)
 
 - Event: the worker's voice, from outside the now-locked back door, heard through the dark storeroom.
 
@@ -478,7 +496,7 @@ Story-world time is one continuous night, apart from C00 (a flash-forward to C07
 **NARR**:
 > ในความมืด ฉันมองไม่เห็นแม้แต่หน้าคนที่ยืนห่างไปแค่สองก้าว เขาคือคนที่เราช่วยเข้ามา… หรือเป็นอะไรที่เดินกลับออกมาจากห้องมืดนั่น
 
-#### `C06-B02` — It asks for light (8:32–8:52 est.)
+#### `C06-B02` — It asks for light (8:45–9:05 est.)
 
 - Event: the voice is suddenly far away, out on the forecourt.
 
@@ -495,7 +513,7 @@ Story-world time is one continuous night, apart from C00 (a flash-forward to C07
 
 - Event: she switches on her phone light (pointed at the floor) and runs to the front door.
 
-#### `C06-B03` — The door opens (8:52–9:09 est.)
+#### `C06-B03` — The door opens (9:05–9:22 est.)
 
 - Event: she pulls the floor bolt and slides the door open a gap. Fog flows in along the floor.
 
@@ -512,7 +530,7 @@ Story-world time is one continuous night, apart from C00 (a flash-forward to C07
 **NARR-D**:
 > อย่าส่องหน้ามัน!
 
-#### `C06-B04` — The squeak (9:09–10:03 est.)
+#### `C06-B04` — The squeak (9:22–10:16 est.)
 
 **NARR**:
 > ฉันต้องรู้ให้ได้ ว่าตัวไหนคือตัวจริง แล้วฉันก็นึกถึงเสียงแรกที่ได้ยินคืนนั้น ก่อนจะเห็นอะไรเลย
@@ -546,7 +564,7 @@ Story-world time is one continuous night, apart from C00 (a flash-forward to C07
 
 ### C07 — รอยยิ้ม
 
-#### `C07-B01` — The smile (10:03–10:38 est.)
+#### `C07-B01` — The smile (10:16–10:51 est.)
 
 **NARR**:
 > เสียงที่ขอให้ส่องไฟ… เงียบไป
@@ -572,7 +590,7 @@ Story-world time is one continuous night, apart from C00 (a flash-forward to C07
 **NARR**:
 > ฉันปิดไฟฉาย น้องพนักงานกระแทกประตูปิด ลงกลอน แล้วเสียงเคาะก็ดังขึ้นตรงกระจกบานนั้นพอดี ห่างหน้าเธอไม่ถึงคืบ
 
-#### `C07-B02` — Her own voice (10:38–11:01 est.)
+#### `C07-B02` — Her own voice (10:51–11:14 est.)
 
 **NARR**:
 > ไม่มีใครขยับ ไม่มีใครพูด ไม่มีใครเปิดไฟ
@@ -592,7 +610,7 @@ Story-world time is one continuous night, apart from C00 (a flash-forward to C07
 **NARR**:
 > เสียงเคาะดังขึ้นอีกหลายครั้ง ที่ประตูหน้า ที่กระจกข้าง ที่ประตูหลัง แต่ละครั้งเบาลง… ห่างออกไป… จนเงียบ
 
-#### `C07-B03` — Morning that isn't (11:01–11:36 est.)
+#### `C07-B03` — Morning that isn't (11:14–11:49 est.)
 
 - Event: `[HOLD 2.0 s]` black. Then the shop's backup lighting clicks on, dim. The front glass is empty. On the misted outside of the glass, at face height, a long curved wiped line through the condensation.
 
@@ -610,7 +628,7 @@ Story-world time is one continuous night, apart from C00 (a flash-forward to C07
 
 ### C08 — จากทุกทิศ
 
-#### `C08-B01` — More than one direction (11:36–12:05 est.)
+#### `C08-B01` — More than one direction (11:49–12:18 est.)
 
 - Event: the backup light flickers and dies. Black. `[HOLD 1.0 s]` Three knocks at the front door. Then, overlapping, three at the side window, and three at the back door (outside, heard through the storeroom). Knock sound unspecified: neither identical to nor clearly different from the imposter's knuckles.
 
@@ -649,8 +667,9 @@ All clues are fictional story construction, not evidence of any real event.
 | `CL08` (**fair imposter clue**) | C00 straight still wheel, no wet track; C04-B02 silent glide in the beam, no wet track, four straight wheels (shown), `ทั้งลานจอดเงียบ…` (heard as atmosphere) | Just a scary quiet approach | C06-B04 narrator recalls "no sound at all", sees four straight wheels, no track, and states `ไม่มีอะไรพังเลยสักอย่าง` (DR01: the copy is too perfect) |
 | `CL09` | C04-B03 the imposter shouts `ผมจับไว้ไม่ไหวแล้ว` while its cartons stand perfectly still; knocks with bare knuckles, umbrella unused | Same plea, same man | Supports DR02; viewers who compare C02-B03/C03-B01 (wobble, umbrella taps) can solve it early |
 | `CL10` | C04-B03 the plea repeated word for word, no breath | Recording-like eeriness | DR01 escalation: first it repeats what it heard word for word (set up by the road echo C03-B03; C04-B03); later it speaks freely in a borrowed voice (C06-B01, C06-B02 `มันพูดเองได้`, C07-B02 narrator's voice) |
+| `CL11` (R3; = Short R6 `CL06`) | C03-B03 `VO-17` `ของพวกนี้ลูกค้าสั่งไว้ครับ… เขาบอกว่าจะมารับเองที่นี่` (offhand); C02-B02 three taps establish the knock rhythm and the glass-facing silhouette view | C04-B01 the worker's ordinary reading: `สงสัยลูกค้ามารับของแล้วครับ` | C04-B01 the torch finds the glass empty; C04-B02 the figure at the pumps wears his complete copy, and the narrator notes the knocker had no cart (`เงาที่เคาะกระจกเมื่อกี้… ไม่มีรถเข็น ไม่มีกล่องสักใบ`). The customer reading is a fair red herring that dies in C04; the customer is never seen or confirmed. Long `CL06` (scuff line) keeps its ID; the Short's `CL06` is renumbered `CL11` here to avoid a clash |
 
-The viewer can solve the imposter in C04 (silence + straight wheels + rigid cartons + word-for-word line), about four minutes before the narrator says it in C06-B04.
+The viewer can solve the imposter in C04 (R3: a knocker with no cart that is gone from the glass + silence + straight wheels + rigid cartons + word-for-word line), about four minutes before the narrator says it in C06-B04.
 
 ## Claim and fiction mapping (for Boat)
 
@@ -661,6 +680,8 @@ The viewer can solve the imposter in C04 (silence + straight wheels + rigid cart
 | C01-B01 `ไฟหน้ารถส่องไปได้ไม่กี่เมตร` | `D-FICTION` (character impression) | No visibility number or statistic |
 | C04-B04 Aunt's grandmother's saying | `D-FICTION` | A character's family saying inside fiction, not a claim about any real belief system; Boat to check it does not read as attributing a rule to a named real tradition (none named) |
 | C03-B01 `ฉันกลัวจนมองคนเหนื่อย ๆ คนหนึ่ง… กลายเป็นปีศาจไปได้` | `D-FICTION` (personal reaction) | Replaces the Short's sourced `K001` perception line on purpose: no general claim about eyes/brain/fear |
+| C03-B03 `ของพวกนี้ลูกค้าสั่งไว้ครับ… เขาบอกว่าจะมารับเองที่นี่` (R3, Short `VO-17` verbatim) and C04-B01 `สงสัยลูกค้ามารับของแล้วครับ` | `D-FICTION` (dialogue) | Fictional character remarks; no real company, platform or delivery practice named |
+| C04-B01 knocks on the glass + silhouette, `แต่ตรงกระจก… ไม่มีใครอยู่แล้ว`; C04-B02 `เงาที่เคาะกระจกเมื่อกี้… ไม่มีรถเข็น ไม่มีกล่องสักใบ` (R3) | `D-FICTION` | Story-world events; check against DR01–DR04 (lit approach only, withdrawal allowed, no on-camera transformation) and that the worker's step toward the door reads as no audience instruction (he does not unbolt) |
 | C01-B02 refuelling, C02-B02 hiding, C06-B03 opening the door | `D-FICTION` character actions | Not instructions; on-screen safety passed in WFOG-LONG-REVIEW-R1; staging limits carried as Film → Mark item 12 (LR-O03) |
 
 **Factual claims requiring sources: none.** No `F` or `SRC` entries; nothing `needs-research`.
@@ -670,15 +691,16 @@ The viewer can solve the imposter in C04 (silence + straight wheels + rigid cart
 Per-beat intent is in the beat table. Overall: long-form horror is carried by **silence and absence**: the real worker's world is noisy (squeak, drips, breath, cartons), the imposter's is silent. That contrast is the clue, so the mix must never add a squeak, footstep, carton or breath sound to the imposter, and must never remove the squeak from the real cart.
 
 - Library candidates (by metadata, from `/Users/mangkornkatawong/Documents/ChatGPT/sound-library/INDEX.md`, not listened to for this episode): `foley_cart-wheel-squeak-scrape_01` (real cart), `foley_umbrella-tap-glass_01` (EP1 taps only), `foley_glass-door-push_01` (manual sliding door), `foley_deadbolt-clack_01` (bolts/locks), `foley_carton-slide-helmet-catch_01`, `foley_footsteps-wet-concrete_01`, `tension_heartbeat-slow_01`, `reveal_riser-tension_01`, `stinger_low-muted-hit_01`, `hum_low-travelling-flat_01`, `ui_notification-ding_01`. Avoid `stinger_horror-screech_01`, `creature_neck-creak-wet_01`, `foley_glass-break_01`, `foley_door-pound-wood_01` (wrong events or gore implication).
-- New sounds Editor may need (requests, not generated here): bare knuckle knocks on glass (drier than the umbrella), distant knuckle knocks on a steel pump casing, minimart fluorescent/fridge hum with a hard power-cut stop, backup-light click/buzz, rain-coat drips on tile, a fog-exterior hush bed for the door-open moment, and a slow dark ambient bed for ≈ 12 min in sparse sections (not continuous wall-to-wall).
+- New sounds Editor may need (requests, not generated here): bare knuckle knocks on glass (drier than the umbrella; R3: the C04-B01 set must match the EP1 tap spacing and level so the rhyme with the Short's ending is heard), knuckle knocks on the exterior back door (C05-B01; R3 removed the pump-casing request), minimart fluorescent/fridge hum with a hard power-cut stop, backup-light click/buzz, rain-coat drips on tile, a fog-exterior hush bed for the door-open moment, and a slow dark ambient bed for ≈ 12 min in sparse sections (not continuous wall-to-wall).
 - Voice processing: `IMP` uses the worker's (or in C07-B02 the narrator's) generated voice with breaths removed and a slightly flattened, too-clean delivery; do not pitch-shift into a monster voice. It must remain intelligible and convincing, because the clue is the cart, not the voice.
 - The smile reveal (C07-B01) plays in silence; the single stinger lands on the lunge, not on the smile.
-- **Knock sounds (LR-O06):** every imposter knock (C04-B01 on the pump casing, C04-B03, C05-B01, C05-B02, C07-B01, C07-B02) is bare knuckles, never the EP1 `foley_umbrella-tap-glass_01` sample (EP1 taps in C02-B02 only). C08-B01 knocks stay unspecified: neither identical to the imposter's knuckle sound nor clearly different, so sound does not confirm who they are. Back-door knocks/voices (C05-B01, C06-B01, C07-B02, C08-B01) are placed outside the exterior back door and muffled through the storeroom.
+- **Knock sounds (LR-O06):** every imposter knock (C04-B01 on the front glass (R3), C04-B03, C05-B01, C05-B02, C07-B01, C07-B02) is bare knuckles, never the EP1 `foley_umbrella-tap-glass_01` sample (EP1 taps in C02-B02 only). C08-B01 knocks stay unspecified: neither identical to the imposter's knuckle sound nor clearly different, so sound does not confirm who they are. Back-door knocks/voices (C05-B01, C06-B01, C07-B02, C08-B01) are placed outside the exterior back door and muffled through the storeroom.
+- **C04-B01 versus the Short (R3):** the Short R6 S04-B03 reuses the EP1 `foley_umbrella-tap-glass_01` sound for its closing knocks; the Long cannot (DR02, `CL09`: the imposter never makes the umbrella sound). The Long keeps the rhyme through the identical three-knock spacing, level and dry space with a bare-knuckle-on-glass timbre. Boat's WFOG-FACTCHECK-R6 note `R6-N01` already flags the umbrella sample under a bare hand as physically off for the Short too, so the same knuckle-on-glass sound in both versions is the consistent choice. Editor confirms by ear; if the coordinator keeps the Short's exact umbrella sound here instead, DR02's never-broken check needs a recorded exception (open item 9).
 - **No outcome sounds (LR-O06):** no siren, crash, crowd or casualty sound anywhere (C03-B03 canopy lights, C08-B01 voices); the collision's outcome is never asserted by sound.
 
 ## Film → Mark handoff constraints
 
-1. Use this exact R2 plus Boat's matching recheck of R2. Film owns medium, light and feasibility; Mark owns shots, timing and event frames. Nothing here establishes a runtime capability.
+1. Use this exact R3 plus Boat's matching recheck of R3. Film owns medium, light and feasibility; Mark owns shots, timing and event frames. Nothing here establishes a runtime capability.
 2. **Continuity from EP1:** same narrator (woman), shop worker (younger woman), Aunt (older woman, grey bob), delivery worker, raincoat, cartons, helmet, umbrella, cart with one bent front caster, minimart with a manual sliding glass front door with a floor bolt. New layout facts used by this script: drinks fridges along a side wall with a side window; counter at the back; behind the counter an inner doorway into a **small storeroom room**, which contains the shop's **exterior back door (knob + deadbolt)**; the imposter, all back knocks and all back voices (C05-B01, C06-B01, C07-B02, C08-B01) are outside that back door, heard through the storeroom, never inside the building; pump island visible from the front glass in torchlight; canopy lights **off** from C03-B03 onward (pumps and forecourt dark; torch, phone and shop/backup light only).
 3. **Two carts must read identical at a glance and different on inspection:** real = one caster bent sideways, black scuff line on interior tiles, swaying cartons, slipping helmet, dripping raincoat; imposter = four straight wheels, no wet track, rigid cartons, helmet never moves, umbrella never used. Show the imposter's wheels clearly at least in C04-B02 and C06-B04 (fair clue must be visible, not sound-only), without a pointing insert before C06-B04. Its feet stay behind the cart or outside the low beam; any visible ground near them is unmarked (no prints, LR-O01).
 4. **Light rule staging:** the imposter advances only while light is on its face; in every unlit moment it holds position or withdraws. Its face is human, calm, unsmiling and never brightly lit at the front glass after the blackout until C07-B01. **C07-B01 order (LR-S04):** lit, it lunges along the beam and reaches the door gap; the torch goes off at that instant; it does not advance in the dark (it cannot step in); the slam closes the gap in front of it; it knocks where it stands. Never show it arriving at the glass after the torch is off.
@@ -691,6 +713,7 @@ Per-beat intent is in the beat table. Overall: long-form horror is carried by **
 11. **Bent caster must read in a still frame (LR-S06, Film/Boss dependency):** the delivered Short cart (`src/painted/worldfog/assembly.ts`) draws a front-right caster that does not turn and judders, not one visibly bent sideways. For the Long, the real cart's front caster must read as bent/skewed at a glance (asset revision or Long-only variant, Film/Boss decide), so C04-B02 and C06-B04 are visibly solvable without sound. The Thai `บิดเบี้ยว ติดจนหมุนไม่ได้` covers both looks; no text change.
 12. **On-screen safety (LR-O03):** at the pump the engine is off and there is no phone or torch in hand at the nozzle; no smoking; no lighter, candle or flame anywhere, including the blackout (torch, phone light and backup light only); fog driving with headlights on, both hands on the wheel, no phone while driving. No warning card needed.
 13. **Narrator's car (LR-O02, optional):** she parked at the pump island (C01-B02), so when the beam reaches the pumps in C04-B02 her car is there beside the imposter (written into the C04-B02 Event; Film/Mark may instead park it at a different island and keep that consistent).
+14. **Short → Long seam (R3):** C03-B03 end and C04-B01 restage the Short R6 S04-B02/B03 ending (last canopy light out after the closing line, ≈ 1.5 s silence, three glass knocks, silhouette from the C02-B02 glass-facing view: ordinary human height, face unreadable, one hand at the glass, no cart, cartons, helmet or umbrella; Mark picks framing and pose ID per CP-P12). Keep the real worker visibly inside beside the narrator before and during the knocks. The torch beam must never land on the figure at the glass: the beam reaches an empty glass. No hard cut here (the Long continues); the C04 chapter card is Mark's placement, but not over the silhouette.
 
 ## Originality check versus *Smile* (for Boat)
 
@@ -703,7 +726,7 @@ Per-beat intent is in the beat table. Overall: long-form horror is carried by **
 - Hook in the first 2 s (C00 line 1 over the wheel image); turns about every 1–1.5 min: C01 shape → C02 knocks/head → C03 human reveal + road echo → C04 second figure → C04 end blackout → C05 light rule + unlocked door → C05 end gone-too-long → C06 suspicion + open door → C06 end recognition → C07 smile + own voice → C08 many knocks.
 - Causal chain: fuel stop → fog traps her → worker arrives (EP1) → his road story plants the copier → it copies him → no one opens → blackout → light rule learned → door found unlocked proves the entry rule → worker's absence breeds suspicion → imposter exploits it and asks for light → door opened → squeak test + low beam → recognition → smile, lunge, torch off, door shut → it leaves → others knock.
 - Rules: every DR set up before its payoff; no unlit approach (canopy dark from C03-B03; C07-B01 torch off at the gap); no entry (every back voice/knock outside the exterior back door); no imposter sound from carried objects or steps; the copy is never damaged (ledger above). C00's two lessons are both paid (DR03 in C04-B04/C05-B03, the second lesson named in C07-B03). The narrator solves it with clues the viewer already had.
-- EP1 facts preserved: shape, squeak/scrape, three umbrella taps, helmet caught, plea line verbatim, torch reveal, worker's road line verbatim, EP1 closing line verbatim (C03-B03). Changed for long form: added refuelling action (brief), added names-free side characters' lines, dropped `K001`.
+- EP1 facts preserved (R3: Short R6): shape, squeak/scrape, three umbrella taps, helmet caught, plea line verbatim, torch reveal, worker's road line verbatim, `VO-17` verbatim, EP1 closing line verbatim with the last light after it (C03-B03), three knocks on the glass and the person-shaped silhouette (C04-B01). Changed for long form: added refuelling action (brief), added names-free side characters' lines, dropped `K001`.
 - No moral or lesson; no blood/wound; no instruction to the audience.
 - Timing check: per-chapter estimates computed from this text's Thai character counts (spaces and punctuation removed) at the rates in [timing basis](#timing-basis), plus 0.35 s line gaps and written holds.
 
@@ -728,17 +751,28 @@ Per-beat intent is in the beat table. Overall: long-form horror is carried by **
   - `LR-O05` truth item 7 aligned to the dialogue (only V-WOMAN mentions the crash; V-MAN asks to be let in).
   - `LR-O06` sound handoff: knuckle-only imposter knocks, C08 knocks unspecified, no siren/crash/crowd; beat table C05-B01, C07-B01, C08-B01 sound notes.
 
+- R3 (2026-10-31, Preaw): continuity revision so the Long follows straight on from the Short's R6 ending (user decision 2026-10-31 `ปรับ Long ให้ต่อกัน`; Short R6 open item on Long C04-B01). Beat IDs, story, reveal order, EP2 hook and user decisions (11:50-class length kept, C07 plea in the narrator's own voice, curved smear, Gemini voices, hard-cut ending) unchanged. Estimated length ≈ 725 s → ≈ 738 s (+≈ 13 s); later beat times shifted +13 s.
+  - C03-B03: new Event (pat on the stack per Boat R6-N02, glance at the glass) and new WORKER line, Short `VO-17` verbatim, directly after the road line (Short order `VO-15` → `VO-17`): `ของพวกนี้ลูกค้าสั่งไว้ครับ… เขาบอกว่าจะมารับเองที่นี่`. Canopy Event: the last light now goes out after the closing line, in silence (answers `LR2-O01`, mirrors Short S04-B02); end hold 2.0 s → 1.5 s. Thai of `LR-M02` NARR line and the EP1 closing line unchanged.
+  - C04-B01 rewritten (title "Three knocks, far away" → "Three knocks at the glass"): knocks on the front glass with a person-shaped silhouette carrying nothing (Short S04-B03 image). Removed NARR `ไม่ใช่ที่กระจก เสียงมันดังมาจากข้างนอก ไกลออกไป เหมือนใครเคาะเหล็ก… สามครั้ง` and `สามครั้ง… เหมือนตอนที่คนส่งของเคาะกระจกเมื่อกี้ไม่มีผิด`. New NARR `ที่กระจกหน้าร้าน… สามครั้ง เหมือนตอนที่คนส่งของเคาะเมื่อกี้ไม่มีผิด`; new WORKER `สงสัยลูกค้ามารับของแล้วครับ`; kept NARR `แล้วก็มีเสียงเคาะ` and `ฉันทำแบบเดียวกับเมื่อกี้… ยกไฟฉายขึ้น`; new NARR `แต่ตรงกระจก… ไม่มีใครอยู่แล้ว` and `ฉันส่องไฟออกไปไกลกว่านั้น`. Events: worker steps toward the bolted door and stops; the beam finds an empty glass.
+  - C04-B02: new NARR after the face line `เงาที่เคาะกระจกเมื่อกี้… ไม่มีรถเข็น ไม่มีกล่องสักใบ`; Event notes the worker stopped beside her at the door.
+  - Metadata: title/header (revision, Short R6 input, timing, status); truth item 2 (lit approach under canopy then shop glow; first appearance at the glass as an outline; withdrawal; customer never appears; replaces the R2 `LR-S08` wording "did not approach the lit shop until C04", which still holds in substance); DR01, DR02, DR04, DR05 rows and "not a rule" list; timing totals and chapter table; beat table C03-B03, C04-B01, C04-B02; new clue `CL11` (= Short `CL06`; Long `CL06` unchanged); claim map rows; sound handoff (C04-B01 knuckle-on-glass, pump-casing request removed, Short sound-reuse difference); Film → Mark items 1 and 14; self-check EP1 facts.
+
+**Boat recheck scope for R3 (changed beats and dependent rules only):** C03-B03 new Event + `VO-17` line and the moved last-light timing (against `LR-M02`/`LR2-O01`); C04-B01 (all Thai + Events); C04-B02 new NARR line + Event; truth item 2 (against `LR-S08`); DR01, DR02, DR04, DR05 rows (lit-only approach to the glass via canopy and shop glow, withdrawal in the dark, no on-camera transformation; the C03-B02 open door was for the worker, not for it); `CL11` fairness (setup before payoff, red herring honest, customer left unconfirmed); claim rows for the new lines (incl. the worker's step toward the door: he never unbolts); sound handoff C04-B01 knock timbre versus the Short's umbrella-tap reuse; Film → Mark item 14. Also confirm `VO-17` wording matches the outcome of WFOG-FACTCHECK-R6. Factual claims: still none.
+
 **Boat recheck scope for R2 (changed beats and dependent rules only):** C00-B01 Event; C01-B03 Event (layout); C03-B03 Event + NARR line 1; C04-B02 Event; C05-B01, C05-B03, C05-B04 (Thai + Events); C06-B01 Event/direction; C06-B02 new NARR line; C06-B04 new NARR line + Event; C07-B01 Events; C07-B03 new NARR line; C08-B01 Event/direction; truth items 2, 3, 5, 6, 7; DR01–DR05 rows; CL08, CL10; sound handoff knock/outcome notes; Film → Mark items 2–6, 11–13. Factual claims: still none.
 
 **Boat review scope for R1 (whole revision):** fiction consistency of DR01–DR05 against every beat; EP1 continuity against Short R5 (`CL01`–`CL05`); fair-clue visibility (`CL06`–`CL10`); on-screen safety implications (refuelling, hiding, opening the door, darkness); the smile wording `ปากมันก็เริ่มฉีกยิ้ม…จนถึงใบหู` and `หลุมดำ` for gore implication; originality versus *Smile*; C08 not confirming concept C.
 
 ## Open items
 
-1. **Duration (resolved by user, 2026-10-31):** keep the length, no trim. R2 estimate ≈ 12:05 (primary) to ≈ 13:35 (slower read). Cheapest cuts if ever needed are unchanged from R1 (C01-B03 Aunt/narrator exchange ≈ 6 s, C05-B01 one knock set ≈ 8 s, C06-B01 narrator line ≈ 8 s, C07-B03 squeak line ≈ 8 s); do not cut the new C07-B03 second-lesson line (it pays off C00).
+1. **Duration (resolved by user, 2026-10-31):** keep the length, no trim. R3 estimate ≈ 12:18 (primary) to ≈ 13:50 (slower read). Cheapest cuts if ever needed are unchanged from R1 (C01-B03 Aunt/narrator exchange ≈ 6 s, C05-B01 one knock set ≈ 8 s, C06-B01 narrator line ≈ 8 s, C07-B03 squeak line ≈ 8 s); do not cut the new C07-B03 second-lesson line (it pays off C00).
 2. **Voices (resolved by user):** all supporting voices Gemini TTS, including C08 `V-WOMAN`/`V-MAN`; Editor casts.
 3. **Imposter in the narrator's voice (resolved by user):** kept.
 4. **Ending (resolved):** hard cut, no `_A_fade`/`_B_loop` pair.
 5. **Smear (resolved by user):** curved line in the condensation kept.
 6. **Title** `เสียงเคาะครั้งที่สอง` and chapter card titles: proposals, not objected to.
 7. **Film/Boss dependency:** a visibly bent real front caster (Film → Mark item 11, LR-S06) before C04-B02/C06-B04 frames are locked.
-8. **Boat recheck of R2** pending (scope in the change log). Timing not read-aloud or audio-tested; event frames unlocked.
+8. **Boat recheck of R3** pending (scope in the change log; R2 was `ready-for-film` in WFOG-LONG-REVIEW-R2). Timing not read-aloud or audio-tested; event frames unlocked.
+9. **C04-B01 knock sound (R3, coordinator/Editor):** the Short R6 closing knocks reuse the EP1 umbrella-tap sample; the Long uses bare knuckles on glass with the same spacing and level, because DR02/`CL09` say the imposter never makes the umbrella sound. Keep (recommended; matches Boat R6-N01, which suggests the Short move off the umbrella source too, so one knuckle-on-glass sound could serve both), or record a DR02 exception for this one set.
+10. **Customer thread (R3, coordinator):** the Long resolves the Short's ambiguous knocker as the imposter and drops the customer after C04-B01 (never seen). If the user wants the customer to return (e.g. as one of the C08 voices), that is a story change for a later revision; not written.
+11. **`VO-17` dependency:** C03-B03 copies the Short's `VO-17` from the uncommitted R6 file as of 2026-10-31; if WFOG-FACTCHECK-R6 changes it, update C03-B03 and the claim row to match.

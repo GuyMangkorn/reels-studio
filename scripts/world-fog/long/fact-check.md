@@ -177,3 +177,62 @@ Factual claims requiring sources: none.
 ## Handoff (R2)
 
 `ready-for-film` (legacy `ready-for-storyboard`) for WFOG-LONG-SCRIPT-R2 + WFOG-LONG-REVIEW-R2 → Film (visual/technical brief), then Mark. Film carries `LR-S06` (bent caster readable in a still, Film/Boss) and the optional staging notes `LR2-O01`, `LR2-O02`. Any later script revision that touches the changed beats, DR rows or the storeroom/canopy layout needs a fresh Boat recheck. Not user approval; timing still estimated, not audio-tested; no runtime, audio or visual validation.
+
+# WFOG-LONG-REVIEW-R3 — targeted recheck of WFOG-LONG-SCRIPT-R3
+
+- Reviewer / date: Boat, 2026-10-31 (Asia/Bangkok). Review revision: **R3** (R1 and R2 above kept as history).
+- Deliverable: `WFOG-EP01-LONG`. Script rechecked: [WFOG-LONG-SCRIPT-R3](episode-script.md), uncommitted working-tree edit by Preaw (file as of 2026-10-31 18:29, 91,093 bytes, 778 lines, sha256 prefix `64b91765ea5e`). Short reference: [WFOG-SCRIPT-R6](../short/script.md) (sha256 prefix `3de47356dfc0`, 234 lines, the same file WFOG-FACTCHECK-R6 reviewed) and WFOG-FACTCHECK-R6 at the top of [../short/fact-check.md](../short/fact-check.md). Research revision: `N/A` (pure fiction).
+- **Scope:** the "Boat recheck scope for R3" in the script's change log only. Read by range: header (lines 1–11); truth items 1–7 and DR01–DR05 + "not a rule" (25–53); beat table rows C03-B03–C04-B02 and totals; C03-B01–C04-B04 in full (244–406, changed beats plus neighbours for context); C05-B02 (light-rule naming, context); clue ledger incl. `CL11`; claim mapping; sound handoff; Film → Mark items 1–14; self-check; R3 change log and open items 8–11. Short: S04-B01–S04-B03 (140–168) and the R6 fact-check findings/notes. Unchanged beats outside that range were not re-read; R1/R2 coverage stands for them.
+- Same limits as R1/R2: pure fiction, no sources, no web research; user decisions not reopened. `LR-S06` remains a Film/Boss dependency.
+
+## Verdict
+
+**`ready-for-film`** for WFOG-LONG-SCRIPT-R3. No must-fix or should-fix finding. `VO-17` is verbatim with the Short R6 text that WFOG-FACTCHECK-R6 passed (R6-C01; the Short file is unchanged since that review). DR01–DR05 still hold across the changed beats; no factual claim, blood or on-camera transformation is added. Four optional notes (`LR3-O01`–`LR3-O04`) are staging/sound/wording items for Film, Mark, Editor or Preaw; no script change is required. Readiness is fiction-consistency readiness only; it is not user approval and not runtime, audio or visual validation.
+
+## Scope item results
+
+| Item | Exact wording / location checked | Result |
+| --- | --- | --- |
+| C03-B03 `VO-17` line | `ของพวกนี้ลูกค้าสั่งไว้ครับ… เขาบอกว่าจะมารับเองที่นี่` | **pass.** Byte-identical to Short R6 `VO-17` (exact-string match in both files); placed directly after the road line, as Short `VO-15` → `VO-17`. Fiction dialogue, no real company/platform/practice. |
+| C03-B03 new Event | Pat on the stack + offhand glance at the glass | **pass.** Follows Boat R6-N02 (plural `ของพวกนี้`). Differs from the Short's "pats the top carton" (`LR3-O04`). Glance is "not ominous"; nothing is shown at the glass. |
+| C03-B03 last-light timing | Event: last point goes out after `สิ่งที่ฉันกลัวเมื่อกี้… เป็นแค่คนคนหนึ่ง แต่หมอกนี่ยังไม่ไปไหน… แล้วเราก็ไปไหนไม่ได้`, then `[HOLD 1.5 s]` silence | **pass.** Matches Short R6 S04-B02 (last light after the line) and S04-B03 (≈ 1–1.5 s silence). `LR2-O01` closed. `LR-M02` holds: pumps and forecourt dark from the end of C03-B03; the `LR-M02` NARR line and EP1 closing line are unchanged. |
+| C04-B01 Thai | `แล้วก็มีเสียงเคาะ` / `ที่กระจกหน้าร้าน… สามครั้ง เหมือนตอนที่คนส่งของเคาะเมื่อกี้ไม่มีผิด` / WORKER `สงสัยลูกค้ามารับของแล้วครับ` / `ฉันทำแบบเดียวกับเมื่อกี้… ยกไฟฉายขึ้น` / `แต่ตรงกระจก… ไม่มีใครอยู่แล้ว` / `ฉันส่องไฟออกไปไกลกว่านั้น` | **pass.** Old `ไม่ใช่ที่กระจก…` line is gone (no match in file), so the Short R6 S04-B03 contradiction carried in R6 notes is closed. `ไม่มีใครอยู่แล้ว` ("no longer") correctly implies someone was there. Knock wording vs timbre: `LR3-O02`. |
+| C04-B01 Events | Glass knocks, ordinary-height silhouette, face unreadable, nothing carried; real worker inside beside narrator; worker steps toward the bolted door and stops short of the floor bolt; beam reaches an empty glass | **pass.** Consistent with Short S04-B03 image and R6-C02 (not confusable with the worker assembly; ordinary height vs CL01 tall tilted shape). |
+| C04-B02 new NARR + Event | `เงาที่เคาะกระจกเมื่อกี้… ไม่มีรถเข็น ไม่มีกล่องสักใบ`; worker "where he stopped at the door in C04-B01" | **pass.** She saw the silhouette before raising the torch (C04-B01), so the line is her observation, not new knowledge. Blocking continuity with C04-B01 holds. Pump-island darkness: `LR3-O01`. |
+| Truth item 2 vs `LR-S08` | Lit approach under canopy light, then shop glow; first appearance at the glass as an outline; withdrawal; customer never appears | **pass.** The R2 wording "did not approach the lit shop until C04" is replaced, but the substance of `LR-S08` holds: the DR04 check states it was not yet at the glass when the C03-B02 door was opened for the worker, so no lit approach happens around an open door and nothing on screen shows it before C04-B01. The road leg is truth-only (`LR3-O03`). |
+| `DR01` | Outline only at C04-B01; complete copy first seen at the pumps after it left the light | **holds.** No assembly or change on camera; the object question is a stated "not a rule" open item and is surfaced by the narrator's own C04-B02 line, so it reads as deliberate mystery, not an error. Repeat → free speech → narrator's voice escalation unchanged. |
+| `DR02` | C04-B01 bare knuckles on glass, same spacing/level as C02-B02, not the umbrella sample; beat table and sound handoff agree | **holds.** No squeak, carton, helmet, footstep, track or print added. |
+| `DR04` | Approach to the glass under canopy light then shop glow; withdrawal out of the shop's light before the torch arrives; at the dark pumps walk-on-beam / stop-on-slip; C04-B03 lit walk to the door | **holds.** It is never in darkness while closing in; withdrawal (away) is allowed; the beam never lands on it at the glass. R3 makes ambient shop glow count as light on its face, which creates a staging dependency at the pumps (`LR3-O01`). C05-B02 naming (`ทุกครั้งที่ไฟโดนหน้า มันเข้ามาใกล้ขึ้น`) and recall of the pumps still match. |
+| `DR05` | C04-B01 face unreadable; C04-B02 calm worker's face | **holds.** No smile or face change before the C06-B04 recognition. |
+| `DR03` (dependent) | Worker steps toward the door, stops short of the floor bolt; C03-B02 door opened for the worker only | **holds.** Nobody unbolts, opens or says "come in". |
+| `CL11` fairness | Plant C03-B03 `VO-17` (+ C02-B02 rhythm/view) → C04-B01 `สงสัยลูกค้ามารับของแล้วครับ` → C04-B01 empty glass, C04-B02 no-cart line | **pass.** Setup precedes payoff; the worker's customer reading is natural and honestly offered; the customer is never seen or confirmed (open item 10). Viewers may still read the knocker and the pump figure as two beings (customer vs imposter); the truth says one, and nothing on screen contradicts either reading. ID renumbering (Short `CL06` → Long `CL11`) is clear. |
+| On-screen safety | C04-B01 worker step; torch raised | **pass.** No unbolting, no door opened, no instruction or implied safety protocol, no flame. |
+| Sound | C04-B01 knuckle-on-glass vs Short umbrella-tap reuse | **pass** for the Long as written: knuckle timbre keeps DR02/`CL09` intact with no exception needed. The Short/Long timbre difference is a coordinator/Editor choice (open item 9); Boat's R6-N01 already favours one knuckle-on-glass sound for both. No siren, crash, crowd, creature or casualty sound; designed fictional sound with a visible source, no real recording needing a source. |
+| Film → Mark item 14 | Seam staging, worker visibly inside, beam never on the figure at the glass, no hard cut, chapter card not over the silhouette | **pass.** Matches the beats. |
+| Factual claims | New lines in C03-B03, C04-B01, C04-B02 | **none.** All `D-FICTION`. |
+
+## Findings (R3)
+
+| ID | Severity | Beat(s) | Finding | Suggested handling |
+| --- | --- | --- | --- | --- |
+| `LR3-O01` | optional (staging) | C04-B02, C04-B03; Film → Mark items 4 and 14 | Truth item 2 / DR04 now treat ambient canopy light and the shop's glow as light that lets it approach. So at the pumps, the shop's spill light must not reach the figure's face, or the stop-on-slip (`ตรงที่แสงทิ้งมันไว้ ไม่ขยับเลยสักก้าว`) would contradict the rule. The same applies to the C04-B01 withdrawal path once it is outside the glow. | Film/Mark: keep the pump island clearly outside the shop's light (only the torch lights its face there); its C04-B03 walk enters the shop's light only while the torch is on it. No text change. |
+| `LR3-O02` | optional (wording/sound) | C04-B01 | `เหมือนตอนที่คนส่งของเคาะเมื่อกี้ไม่มีผิด` ("no different") is said over knocks that are deliberately a different timbre (knuckles vs umbrella handle, DR02/`CL09`). It reads as the narrator's in-the-moment perception of the rhythm, so it is not a contradiction. But a clearly audible timbre change under "no different" could feel like a mix error, not a clue. | Editor: keep the timbre difference subtle and the spacing/level identical, so the line is true of the rhythm. Or Preaw may, optionally, narrow the line to the rhythm, e.g. `ที่กระจกหน้าร้าน… สามครั้ง จังหวะเดียวกับที่คนส่งของเคาะเมื่อกี้ไม่มีผิด`. Not required. |
+| `LR3-O03` | optional (truth note) | Truth item 2 | Following the worker from the collision "at a distance in the fog" means moving toward the station in what may be unlit road. This was already in R2 and is never shown, so no viewer-facing rule break. | No text change. Film/Mark: never depict the road leg or the follower before C04-B01. If a later revision shows it, light it (e.g. collision headlights / canopy glow) or keep it static. |
+| `LR3-O04` | optional (continuity) | C03-B03 Event vs Short S04-B01 Event | The Long's worker pats the stack; the Short R6 still says "pats the top carton". This is a deliberate R6-N02 improvement, but if Short footage or shots are reused for the Long seam, the gesture differs. | Mark/coordinator: either restage for the Long or note the gesture difference. The Short is unchanged (not in scope). |
+
+## Claim ledger (R3 additions)
+
+| Claim / location | Exact wording checked | Classification | Verdict | Note |
+| --- | --- | --- | --- | --- |
+| C03-B03 | `ของพวกนี้ลูกค้าสั่งไว้ครับ… เขาบอกว่าจะมารับเองที่นี่` | fiction (dialogue, = Short `VO-17`) | `not-factual` | Verbatim with the Short R6 text passed in R6-C01 |
+| C04-B01 | `ที่กระจกหน้าร้าน… สามครั้ง เหมือนตอนที่คนส่งของเคาะเมื่อกี้ไม่มีผิด` | fiction (narrator perception) | `not-factual` | See `LR3-O02` |
+| C04-B01 | `สงสัยลูกค้ามารับของแล้วครับ` | fiction (character belief) | `not-factual` | Character's mistaken reading; red herring `CL11` |
+| C04-B01 | `แต่ตรงกระจก… ไม่มีใครอยู่แล้ว`; `ฉันส่องไฟออกไปไกลกว่านั้น` | fiction (narration) | `not-factual` | — |
+| C04-B02 | `เงาที่เคาะกระจกเมื่อกี้… ไม่มีรถเข็น ไม่มีกล่องสักใบ` | fiction (narrator observation) | `not-factual` | — |
+| C04-B01 sound | Three bare-knuckle knocks on glass | designed fictional sound | `not-factual` | Visible source (hand at glass); asserts no real event |
+
+Factual claims requiring sources: none.
+
+## Handoff (R3)
+
+`ready-for-film` for WFOG-LONG-SCRIPT-R3 (sha256 prefix `64b91765ea5e`) + WFOG-LONG-REVIEW-R3 → Film (visual/technical brief revision for the C03-B03 end and C04-B01/B02 seam), then Mark. Film carries `LR-S06`, `LR2-O02`, `LR3-O01` and `LR3-O03`; Editor carries `LR3-O02` and open item 9 (knock timbre, coordinator); Mark/coordinator carry `LR3-O04`. Any later change to `VO-17` (Short or Long), C03-B03/C04-B01/C04-B02, truth item 2 or DR01–DR05 needs a fresh Boat recheck. Not user approval; timing still estimated, not audio-tested; no runtime, audio or visual validation.
