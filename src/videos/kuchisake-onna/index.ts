@@ -12,10 +12,11 @@ import type {EpisodeVideos} from '../types';
  * (hard cuts, no in-canvas dissolve), so each shot is one render segment and one pin.
  *
  * Two compositions, one source. The duration of a composition comes from its timeline (`Root.tsx`), not from the ending
- * prop, so B_loop (2461 + 90 f hold = 2551 f) cannot be made from the 2461 f timeline by `--endings`. Both timelines come
- * from `buildTimeline`: they share every shot, caption and cue; B_loop only extends the last shot by the 90 f hold.
+ * prop, so B_loop (2461 + 60 f hold = 2521 f) cannot be made from the 2461 f timeline by `--endings`. Both timelines come
+ * from `buildTimeline`: they share every shot, caption and cue; B_loop only extends the last shot by the 60 f hold.
  *   - `KSO-EP01-SHORT-C` : C_seamless, 2461 f (primary; the last 15 f blend into frame 0; no hold, no fade).
- *   - `KSO-EP01-SHORT-B` : B_loop, 2551 f (the closing caption stays up through the hold, picture frozen by the shared ending).
+ *   - `KSO-EP01-SHORT-B` : B_loop, 2521 f, `endHoldSec: 2` (the closing caption stays up through the hold; the shared ending
+ *     freezes the picture at frame 2461, the picture end).
  *
  * Narration: one approved track (`narration/KSO-EP01-SHORT.mp3`, locked with `store.py use`) shared by both compositions.
  * Library sounds: `public/audio/**` and `public/sfx/**` copies locked in `assets.lock.json` (see `edit-plan.md`).
@@ -24,7 +25,9 @@ import type {EpisodeVideos} from '../types';
 const FPS = 30;
 const MARKER = 'เรื่องแต่ง • จากตำนานญี่ปุ่น';
 const SHORT_END = KSO_SHOT_INDEX.at(-1)!.end;
-const HOLD_FRAMES = 90;
+// B_loop closing hold: 2 s counted from the picture end (user, 1 Nov 2026), a per-deliverable override of the ~3 s default in
+// docs/production-requirements.md; recorded in scripts/kuchisake-onna/delivery.md. Must equal `endHoldSec` * FPS on -B.
+const HOLD_FRAMES = 60;
 const sec = (frame: number) => frame / FPS;
 
 type Sfx = {at: number; src: string; volume: number; durationSec?: number};
@@ -68,6 +71,7 @@ const AUDIO: AudioTrack[] = [
   {src: WHISPERS, startSec: sec(1062), endSec: sec(1152), volume: 0.12, fadeInSec: 0.2, fadeOutSec: 0.3, duckUnderNarration: 0.35},
   // S02-B03 drop: the bed stops 36 f (1.2 s) before the stinger and returns with the hit (EP08a drop -> hit).
   {src: LAMP, startSec: sec(1554), endSec: sec(1870), volume: 0.10, fadeInSec: 0.05, loop: true, duckUnderNarration: 0.5},
+  // Street hum to the end of B (C ends at 2461 and never plays past it, so its audible output is unchanged).
   {src: LAMP, startSec: sec(2388), endSec: sec(SHORT_END + HOLD_FRAMES), volume: 0.10, fadeInSec: 0.5, loop: true, duckUnderNarration: 0.5},
   // Izakaya: small-shop hum and a very low drone under the story (S01-B02, 195-756).
   {src: IZAKAYA_HUM, startSec: sec(195), endSec: sec(756), volume: 0.12, fadeInSec: 0.5, fadeOutSec: 0.3, loop: true, duckUnderNarration: 0.6},
@@ -102,7 +106,7 @@ const captionTrack = (endFrame: number, holdLast: boolean, cuts: readonly {start
   return [...at.entries()].filter(([k]) => k < endFrame).sort(([a], [b]) => a - b).map(([k, text]) => ({at: k, text}));
 };
 
-/** The shared timeline for one ending; `holdFrames` extends the last shot (B_loop: 90 f). */
+/** The shared timeline for one ending; `holdFrames` extends the last shot (B_loop: 60 f). */
 const buildTimeline = (holdFrames: number, holdCaption: boolean): Timeline => {
   const endFrame = SHORT_END + holdFrames;
   const cuts = KSO_SHOT_INDEX.map((row, i, all) => ({id: row.id, start: row.start, end: i === all.length - 1 ? endFrame : row.end}));
@@ -131,7 +135,7 @@ const kso: EpisodeVideos = {
       narration, audio: AUDIO, captionStyle, chrome,
     },
     {
-      id: 'KSO-EP01-SHORT-B', format: 'short', timeline: buildTimeline(HOLD_FRAMES, true), ending: 'B_loop',
+      id: 'KSO-EP01-SHORT-B', format: 'short', timeline: buildTimeline(HOLD_FRAMES, true), ending: 'B_loop', endHoldSec: 2,
       narration, audio: AUDIO, captionStyle, chrome,
     },
   ],

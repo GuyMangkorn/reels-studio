@@ -60,6 +60,19 @@ test('direct seeks resolve the same state as sequential playback, and the ending
   assert.deepEqual(last.plates.map((p) => [p.shot, p.alpha]), [['SHIPWRECK-SH06', 1], ['SHIPWRECK-SH01', 1]]);
 });
 
+test('B_loop endHoldSec 2 freezes the 90 f final scene at local 30 instead of local 0', () => {
+  const at = (frame: number, endingOptions?: {holdSec: number}) =>
+    JSON.stringify(paintedStateAt(paintedProofTimeline, frame, 30, {ending: 'B_loop', durationInFrames: 447, loopBlendFrames: 15, endingOptions}));
+  const sh = (frame: number, h?: {holdSec: number}) => JSON.parse(at(frame, h)).plates[0].frame;
+  assert.equal(sh(446, {holdSec: 2}), 105); // authored frame 387 (local 30) in the 90 f final scene
+  assert.equal(sh(446), 75); // default 3 s hold: authored frame 357 (local 0)
+  assert.equal(sh(386, {holdSec: 2}), 104);
+  assert.equal(at(446, {holdSec: 2}), at(400, {holdSec: 2}));
+  assert.notEqual(at(446, {holdSec: 2}), at(446));
+  assert.equal(at(446), at(357));
+  assert.equal(at(300, {holdSec: 2}), at(300));
+});
+
 test('non-painted scenes paint nothing; shot cameras are finite and respect clock freezes', () => {
   const mixed: Timeline = [{durationSec: 1, bg: 'none', actors: [], subtitle: ''}, painted([{shot: 'SHIPWRECK-SH01', atSec: 0}])];
   validateTimeline(mixed);

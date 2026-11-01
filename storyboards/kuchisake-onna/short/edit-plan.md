@@ -19,11 +19,11 @@ Owner: Editor. Stage: integration and the Draft tab (W5, [sequence workflow](../
 | Composition ID | Ending | Frames / length | Use |
 | --- | --- | --- | --- |
 | `KSO-EP01-SHORT-C` | `C_seamless` (`loopBlendFrames` 15) | 2461 f / 82.03 s | Primary. No hold, no fade; last 15 f crossfade into frame 0 |
-| `KSO-EP01-SHORT-B` | `B_loop` | 2551 f / 85.03 s | 90 f hold after the closing line (2461–2550) |
+| `KSO-EP01-SHORT-B` | `B_loop`, `endHoldSec` 2 | 2521 f / 84.03 s | 2 s hold after the picture end (60 f, 2461–2520); closing caption held to 2520. Per-deliverable override of the ~3 s rule (user, 1 Nov 2026; [delivery record](../../../scripts/kuchisake-onna/delivery.md)) |
 
-**Decision (Editor, recorded): two IDs, one source.** A composition's length is taken from its timeline (`src/Root.tsx` `calculateMetadata`), not from the ending prop, and `render.mjs --endings` only changes the ending prop. So B_loop cannot be made from the 2461 f timeline by a flag. Both timelines come from `buildTimeline(holdFrames)` in [`src/videos/kuchisake-onna/index.ts`](../../../src/videos/kuchisake-onna/index.ts): the shots, captions, cues and narration are the same objects; B_loop only extends the last shot (`S03-B02-SH02`) by 90 f, and its last caption stays up through the hold (Film row `B_loop hold`: "captions stay"). The shared ending freezes the plate at 2461 (`endingState`, 3 s hold default; the plate is not ambient-animated).
+**Decision (Editor, recorded): two IDs, one source.** A composition's length is taken from its timeline (`src/Root.tsx` `calculateMetadata`), not from the ending prop, and `render.mjs --endings` only changes the ending prop. So B_loop cannot be made from the 2461 f timeline by a flag. Both timelines come from `buildTimeline(holdFrames)` in [`src/videos/kuchisake-onna/index.ts`](../../../src/videos/kuchisake-onna/index.ts): the shots, captions, cues and narration are the same objects; B_loop only extends the last shot (`S03-B02-SH02`) by 60 f, and its last caption stays up through the hold (Film row `B_loop hold`: "captions stay"). `endHoldSec: 2` on `KSO-EP01-SHORT-B` (user, 1 Nov 2026: 2 s counted from the picture end) makes the shared ending freeze the plate at 2461 (`endingState`: `duration − 60 f`, local 73 of the 133 f shot). `B_loop` accepts `endHoldSec` through Boss's change to `validateVideoStyle` in `src/scenes/media.ts` (uncommitted in this checkout on 1 Nov 2026). Without `endHoldSec` the 3 s default would freeze at 2431. The plate is not ambient-animated.
 
-Cost: the scene cache is keyed by total length, so the first B_loop render re-paints every scene (recorded for the delivery pass).
+Cost: B's total length changed (2551 → 2521 f), so the first B_loop render re-paints all 26 B scenes. The C_seamless keys are unchanged (measured 1 Nov 2026; see [build-notes](../../../scripts/kuchisake-onna/build-notes.md#1-nov-2026-b_loop-closing-hold-2-s-applied-editor)).
 
 `narration/KSO-EP01-SHORT.mp3` is one file shared by both IDs (locked once), instead of two copies; the amplitude JSON is `scripts/kuchisake-onna/short/KSO-EP01-SHORT.amplitude.json` (copied from the store, 2461 values).
 
@@ -54,7 +54,7 @@ Runtime facts: `video.audio[]` has a static `volume` plus `fadeInSec`/`fadeOutSe
 | `S02-B03` reveal | 1457–1870 | `drop` → `hit` → `hold` → `drop` | NARR gasp/slip 0 dB; WOMAN 0 dB | hum **stops 1518, returns 1554** (drop 1.2 s); heartbeat 0.20 (1700–1852, stops dead) | **stinger 0.55 at 1554** (the one hit); no tear foley | stinger tail runs past SH03 on the composition clock |
 | `S03-B01` escape | 1870–2295 | `hold` → `lift` (quiet) | NARR 0.7 (intimate, breath) | room tone 0.10 (duck 0.5) 1870–2388; cold drone 0.07 from 1900 (fade-in 1.0 s) | run 0.25 (1925–1993); door slam 0.35 (1994); deadbolt 0.30 (2003) | smile cut-in 2092: no sting; pass-on sentence on the quiet bed |
 | `S03-B02` turn | 2295–2461 | `release` (seam) | NARR 0.7 (apology); WOMAN 1.25 (`ถึงตาเธอแล้ว`, planned) | drone thins out 2295–2340; room tone out at 2388; street hum back 0.10 (fade-in 0.5 s from 2388) | none | last 15 f (2446–2460) speech-free, hum only |
-| `B_loop` hold | 2461–2550 | `release` | none | street hum 0.10 continues | none | hum only, closing caption held |
+| `B_loop` hold | 2461–2520 (60 f) | `release` | none | street hum 0.10 continues to 2521 | none | hum only, closing caption held to 2520 |
 
 Bed levels: 0.10, 0.12 and 0.07 (at least two distinct); one `drop` → `hit` (1518 → 1554). Accents: one main `hit` (stinger) plus the riser end and the door slam.
 
@@ -98,6 +98,6 @@ Public copies are locked with `store.py use --episode kuchisake-onna` (`src/vide
 3. Fiction marker position: the top eyebrow sits at about y 163 px, above the caption-safe top (y 288). The channel-label exception does not cover it. Film/user to accept or move it (renderer owns the eyebrow slot).
 4. C_seamless blend overlay (renderer behaviour, to confirm on clip frames 2446–2460): the frame-0 overlay also shows frame 0's caption and marker fading in over the last 15 f. Reported to Boss; not changed in shared code.
 5. Caption band brightness: the 9 shots from DF Round 6 (16 frames) are still open; measured with real captions below. Plates are not changed.
-6. `B_loop` hold: frozen picture, hum continues, closing line held. Confirm the held caption is wanted (Film row says "captions stay"; the production rule says hold the closing line for about 3 s).
+6. `B_loop` hold: decided (user, 1 Nov 2026): 2 s from the picture end, B 2521 f; frozen picture, hum continues, closing line held to 2520. This overrides the ~3 s rule in [production-requirements](../../../docs/production-requirements.md) for this deliverable (rule not edited). Open for Film: revalidate the 90 f rows in `film-brief.md` (lines 3, 93, 115, 158); see [delivery record](../../../scripts/kuchisake-onna/delivery.md).
 7. Gemini TTS commercial terms / SynthID: unchecked (delivery record open item).
 8. Boss in parallel: `S01-B02-SH04` smile (COW_RELIEF) and `S02-B02-SH03` camera; the clips in this pass carry the plate code checksums in `out/logs/`. Re-render those two shots when Boss lands.

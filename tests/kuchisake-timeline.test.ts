@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import kso from '../src/videos/kuchisake-onna/index';
 import {collectEpisodes} from '../src/videos/registry';
 import {timelineFrames} from '../src/scenes/timeline';
+import {paintedStateAt} from '../src/scenes/painted';
 import {KSO_SHOT_INDEX} from '../src/painted/shots/kuchisake';
 import {paintedShots} from '../src/painted/registry';
 import narrationAmplitude from '../scripts/kuchisake-onna/short/KSO-EP01-SHORT.amplitude.json';
@@ -12,9 +13,9 @@ const [primary, loop] = kso.videos;
 
 test('KSO-EP01-SHORT registers two compositions with unique IDs and the measured frame counts', () => {
   collectEpisodes([kso]);
-  assert.deepEqual(kso.videos.map((v) => [v.id, v.ending]), [['KSO-EP01-SHORT-C', 'C_seamless'], ['KSO-EP01-SHORT-B', 'B_loop']]);
+  assert.deepEqual(kso.videos.map((v) => [v.id, v.ending, v.endHoldSec]), [['KSO-EP01-SHORT-C', 'C_seamless', undefined], ['KSO-EP01-SHORT-B', 'B_loop', 2]]);
   assert.equal(timelineFrames(primary.timeline, fps), 2461);
-  assert.equal(timelineFrames(loop.timeline, fps), 2551);
+  assert.equal(timelineFrames(loop.timeline, fps), 2521);
   assert.equal(primary.loopBlendFrames, 15);
   assert.equal(narrationAmplitude.length, 2461);
 });
@@ -31,13 +32,36 @@ test('one scene per shot: plate IDs and frame starts follow KSO_SHOT_INDEX with 
   KSO_SHOT_INDEX.forEach((row, i) => assert.equal(i === 0 ? 0 : KSO_SHOT_INDEX[i - 1].end, row.start, `${row.id} starts where the previous ends`));
 });
 
-test('B_loop shares every scene with C_seamless and extends only the last shot by the 90 f hold', () => {
+test('B_loop shares every scene with C_seamless and extends only the last shot by the 60 f (2 s) hold', () => {
   assert.equal(loop.timeline.length, primary.timeline.length);
   loop.timeline.slice(0, -1).forEach((scene, i) => assert.deepEqual(scene, primary.timeline[i]));
   const last = loop.timeline.at(-1)!;
-  assert.equal(Math.round(last.durationSec * fps), 163);
+  assert.equal(Math.round(last.durationSec * fps), 133);
   // C_seamless ends the closing line with a blank cue at frame 2446; B_loop keeps the line up through the hold.
   assert.deepEqual(last.subtitleCues, primary.timeline.at(-1)!.subtitleCues!.slice(0, -1));
+});
+
+// Painted state of one frame with the blend overlay off (C_seamless blends frame 0 over 2446-2460; B does not).
+const paint = (video: typeof loop, frame: number) => paintedStateAt(video.timeline, frame, fps, {
+  ending: video.ending!, durationInFrames: timelineFrames(video.timeline, fps), loopBlendFrames: 0, endingOptions: {holdSec: video.endHoldSec},
+});
+
+test('B_loop 2 s hold freezes the final shot at the picture end (frame 2461); frames 0-2460 paint what C_seamless paints', () => {
+  for (let frame = 0; frame < 2461; frame++) assert.deepEqual(paint(loop, frame), paint(primary, frame), `frame ${frame}`);
+  const held = paint(loop, 2461);
+  assert.ok(held, 'the frozen picture is painted');
+  for (let frame = 2461; frame < 2521; frame++) assert.deepEqual(paint(loop, frame), held, `frame ${frame} is frozen`);
+  assert.notDeepEqual(paint(loop, 2460), held, 'the picture still moves on frame 2460');
+});
+
+test('the closing caption starts at frame 2394 and stays up to the end of B (frame 2521)', () => {
+  const start = loop.timeline.slice(0, -1).reduce((n, scene) => n + Math.round(scene.durationSec * fps), 0);
+  assert.equal(start, 2388, 'the final shot starts at 2388');
+  const finalCues = loop.timeline.at(-1)!.subtitleCues!;
+  const closing = finalCues.find((cue) => cue.text === 'ถึงตาเธอแล้ว…')!;
+  assert.equal(start + Math.round(closing.atSec * fps), 2394, 'closing caption onset');
+  assert.equal(finalCues.at(-1)!.text, 'ถึงตาเธอแล้ว…', 'no blank cue after it: visible to the end');
+  assert.equal(start + Math.round(loop.timeline.at(-1)!.durationSec * fps), 2521, 'caption end = composition end');
 });
 
 test('every scene starts with a caption cue, and the closing line only holds in B_loop', () => {

@@ -148,6 +148,8 @@ Open items (Editor → owners):
 
 Owner: Editor. Request (user, 1 Nov 2026): the closing caption of `KSO-EP01-SHORT-B` stays on screen about 2 s instead of about 3 s (B 2551 f → about 2521 f). **Not applied:** the hold cannot be shortened inside `B_loop` without freezing the last shot early or changing the ending kind, so the user chooses the route (see [delivery.md](delivery.md), section "1 Nov 2026: B_loop closing hold request"). Unchanged: `KSO-EP01-SHORT-C` 2461 f, voice lock v5, the S02-B01-SH04 murmur, the fiction marker, plate IDs, `KSO_SHOT_INDEX`, `src/painted/` (Boss's uncommitted `shots/kuchisake.tsx` is not Editor's). No code, caption or test changed; no draft clip, page or commit.
 
+**Status (later on 1 Nov 2026): applied as option 2, see "1 Nov 2026: B_loop closing hold 2 s applied (Editor)" at the end of this file. The text below is the options as they stood before the decision.**
+
 **Why a plain `HOLD_FRAMES = 60` is wrong.**
 - The B_loop freeze is `scene length − 3 s` (`endingState` in `src/scenes/endings.ts`, applied to the final scene by `paintedStateAt` in `src/scenes/painted.ts`). With 60 f the final scene `S03-B02-SH02` is 133 f and freezes at local 43, global **2431**, not 2461.
 - Measured with the real `paintedStateAt`: frames 0–2445 no longer equal `KSO-EP01-SHORT-C` plates. The shot's motion from 2431 to 2460 would freeze while the closing line is spoken to 2445.
@@ -178,3 +180,42 @@ Owner: Editor. Request (user, 1 Nov 2026): the closing caption of `KSO-EP01-SHOR
 
 - 4 plates changed in the overlay only (IDs, index, timing, staging, poses unchanged): S01-B02-SH03 (counter-edge shade, whole shot), S01-B02-SH04 (same shade fading in f40-75 with the push), S02-B03-SH02 (chin shade fading in f12-24 as the mask comes down), S02-B03-SH03 (chin shade over the cut, lifting f1-6). Caption-free p95, worst per shot: 0.471 -> 0.389, 0.462 -> 0.383, 0.551 -> 0.383, 0.579 -> 0.383 (all sampled frames pass, the exempt blank-cue frames 617 and 755 too). Controls 60 and 2420 unchanged (0.196); neighbours S01-B02-SH02 (480, 505), S02-B01-SH01 (760), S02-B03-SH01 (1500, 1517), S02-B03-SH04 (1590) unchanged.
 - Editor: no wiring change. Re-render draft clips S01-B02-SH03, S01-B02-SH04, S02-B03-SH02, S02-B03-SH03; the 1 s pads also show them in S01-B02-SH02 (ends on SH03 f0-29), S02-B01-SH01 (opens on SH04 f108-137), S02-B03-SH01 (ends on SH02 f0-29: f12-29 changed) and S02-B03-SH04 (opens on SH03 f0-29: f0-5 changed): 8 clips.
+
+## 1 Nov 2026: B_loop closing hold 2 s applied (Editor)
+
+Owner: Editor. Applies the user's decision of 1 Nov 2026: `KSO-EP01-SHORT-B` closing hold 2 s from the picture end, as `B_loop` with `endHoldSec: 2` (option 2 above; Boss's `validateVideoStyle` change makes it valid). Delivery record: [delivery.md](delivery.md#1-nov-2026-b_loop-closing-hold-2-s-applied-editor).
+
+**Changed:** `src/videos/kuchisake-onna/index.ts` (`HOLD_FRAMES` 90 → 60 with the override comment; `endHoldSec: 2` on `KSO-EP01-SHORT-B`; header comments; comment on the shared hum bed); `tests/kuchisake-timeline.test.ts` (2521 f, the ending pair with `endHoldSec`, 133 f last scene, freeze and C-match test, caption frames test); `storyboards/kuchisake-onna/short/edit-plan.md` (composition row, decision text, B hold row, open item 6); `scripts/kuchisake-onna/short/captions.json` (CAP-26 `source` note only); `scripts/kuchisake-onna/delivery.md`; this file.
+
+**Not changed:** `src/painted/`, `src/scenes/` (Boss's uncommitted `endings.ts` and `media.ts` left as they are), `KSO_SHOT_INDEX`, plate IDs, `KSO-EP01-SHORT-C` (2461 f), voice lock v5, narration, the S02-B01-SH04 murmur, the fiction marker, `docs/production-requirements.md` (the override is recorded in the delivery record instead). Film's `film-brief.md` is listed for Film, not edited.
+
+**Override.** `docs/production-requirements.md` asks for a closing hold of about 3 s. For this deliverable the user set 2 s (1 Nov 2026). No reason beyond the request was recorded.
+
+| Item (composition frames, 30 fps) | Before (90 f) | Now (60 f) |
+| --- | --- | --- |
+| `KSO-EP01-SHORT-B` length | 2551 f / 85.03 s | 2521 f / 84.03 s |
+| Final shot `S03-B02-SH02` | 2388–2551, 163 f | 2388–2521, 133 f |
+| Picture freeze (`duration − hold`) | 2461 | 2461 |
+| Closing caption `ถึงตาเธอแล้ว…` | 2394–2550, 157 f | 2394–2520, 127 f |
+| Hum bed on B (`AUDIO`, shared constant) | 2388 → 85.03 s | 2388 → 84.03 s |
+
+**Checks.** Working tree includes Boss's uncommitted `endings.ts` and `media.ts`. Evidence files are under `out/` (ignored); reproduce with the commands listed below.
+
+- Frames: `node --import tsx out/kso-hold/dump-state.ts pre` (before the edit) and `… post` (after) → `out/kso-hold/state-pre.json`, `state-post.json`. B frames 0–2520 are identical to the previous B (painted state and caption, per frame). B 0–2460 painted equals C 0–2460 with C's blend overlay off; B 0–2445 equals C with captions. The only B/C difference before 2461 is the blend overlay and the closing caption in 2446–2460 (expected). B 2461–2520 is one state. B 2460 differs from 2461 by the one-frame step that the previous B had too.
+- C: 2461 f; painted states and keys identical pre/post (26/26). The shared hum bed's end moves 85.03 → 84.03 s, but `src/scenes/MediaLayers.tsx` clamps each bed to `durationInFrames` (`Math.min(durationInFrames, …)`), so C's rendered audio is unchanged.
+- Cache (`scripts/segments.mjs`): the key hashes every composition prop except timeline, narration and audio, plus the composition length. B's 26 keys all changed (0 of 26 overlap with the old B keys). An `endHoldSec` change alone also re-keys all 26 B scenes (`out/kso-hold/key-check.ts`: 26 of 26, last scene differs). The project source digest is the same before and after (`sourceHash` for both compositions), so editing the declaration does not re-key C. No `KSO-EP01-SHORT-B` folder exists in `$REELS_STORE/cache/segments/` (the `KSO-EP01-SHORT-C` folder does), so no stale B segment can be reused.
+- Tests: `node --import tsx --test tests/kuchisake-timeline.test.ts` 9/9 (`out/logs/kso-hold-timeline-post.log`). `npm test` 311/311 (`out/logs/kso-hold-npm-test-post.log`). Before the edit, the ten timeline, segment, ending and scene-assembly files were 121/121 (`out/logs/kso-hold-baseline-tests-pre.log`).
+- eslint on `src/videos/kuchisake-onna/index.ts` and `tests/kuchisake-timeline.test.ts`: clean (`out/logs/kso-hold-eslint.log`). `npx tsc --noEmit`: one error in `tests/loudness.test.ts` (untouched; tsc was not run before the edit, so it is not shown to predate it); none in the touched files (`out/logs/kso-hold-tsc.log`).
+- Stills (full size, one Chrome): `node scripts/render.mjs KSO-EP01-SHORT-B --stills --frames=0,1,2,2431,2446,2456,2460,2461,2475,2490,2505,2518,2519,2520 --gl=angle --timeout=180000` → `out/KSO-EP01-SHORT-B/stills/`. `2445.png` and `2550.png` in that folder predate this change and are not used.
+- Sheets (viewed): `scripts/qa-sheet.sh out/kso-hold/sheets/B-last3s-2431-2520.png --cols 5` with frames 2431, 2446, 2456, 2460, 2461, 2475, 2490, 2505, 2520 (read left to right, top to bottom); `scripts/qa-sheet.sh out/kso-hold/sheets/B-loop-seam-2518-2520-0-2.png --cols 3` with frames 2518, 2519, 2520, 0, 1, 2.
+- Pixel (ffmpeg `psnr` between stills): 2461 vs 2520 109.1 dB; 2461 vs 2475 106.5 dB; 2461 vs 2505 107.6 dB; 2460 vs 2461 107.6 dB; 2446 vs 2456 44.1 dB (the picture still moves before the freeze; cause not checked); 2431 vs 2446 34.4 dB; 2520 vs frame 0 27.2 dB; frame 0 vs 1 71.8 dB.
+- Caption band (`scripts/caption-zone.py`, default limits 0.25 mean / 0.40 p95): frames 2431, 2460, 2461, 2520 and 0 have mean 0.165–0.167 and p95 0.198; all pass. Overlays: `out/kso-hold/sheets/*_capzone.png`.
+- Caption timing: blank at 2393; onset 2394; visible through 2520 (127 f); it is the last cue, with no blank after it.
+
+**Loop seam.** B_loop has no `loopFadeFrames` and no blend, so the cut from the frozen frame 2520 to frame 0 is a hard cut, as before this edit. The measured difference is 27.2 dB: different framing and caption (frame 0 carries the opening caption `ฉัน… สวยไหม?` and the fiction marker). The Film brief (`film-brief.md` line 116) calls this "a match cut"; the measurement does not support that. Raised as a question for the user.
+
+**Records for other owners (not edited here).** Film: `film-brief.md` lines 3, 93, 115, 158 (90 f / 2551 f) and line 116 (match cut). Preaw: `script.md` lines 8, 39, 130, 142, 147 ("about 3 s" hold, "about 52 s for B_loop"). Mark: `review-rows.json` row 16 (Thai text, 90 frames). Coordinator: stage cells and the storyboard page, if rebuilt.
+
+**Not done.** No draft clip rendered, review page not published, no commit. Studio UI and random/backward seek not run. The frame function was checked frame by frame with `paintedStateAt`, not in the Studio. Before the worktree is removed, file the sheets and dump JSON with `store.py archive` (they are samples and evidence, not cache).
+
+**Scratch scripts** (not product code, in ignored `out/kso-hold/`): `dump-state.ts` (per-frame painted state and caption digests, cache keys, audio beds), `key-check.ts` (endHoldSec alone re-keys).

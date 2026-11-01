@@ -30,6 +30,6 @@
     {"id": "CAP-23", "shot": "S03-B01-SH04", "g0": 2092, "g1": 2137, "text": "ว่าทำไมเพื่อนถึงโล่งใจ…", "source": "KSO-A15 2092-2136"},
     {"id": "CAP-24", "shot": "S03-B01-SH05", "g0": 2161, "g1": 2295, "text": "เพราะใครที่ได้ฟังเรื่องนี้…\nเธอจะไปหาคนนั้น", "source": "KSO-A25 2161-2210 and KSO-A26 2232-2295"},
     {"id": "CAP-25", "shot": "S03-B02-SH01", "g0": 2295, "g1": 2374, "text": "ขอโทษนะ… ที่เล่าให้ฟัง", "source": "KSO-A16 2295-2334, KSO-A17 2334-2373"},
-    {"id": "CAP-26", "shot": "S03-B02-SH02", "g0": 2394, "g1": 2446, "text": "ถึงตาเธอแล้ว…", "source": "KSO-A23 2394-2445; blank from 2446 (C_seamless). B_loop keeps it up through the 90 f hold (Film brief: captions stay)"}
+    {"id": "CAP-26", "shot": "S03-B02-SH02", "g0": 2394, "g1": 2446, "text": "ถึงตาเธอแล้ว…", "source": "KSO-A23 2394-2445; blank from 2446 (C_seamless). B_loop keeps it up through the 60 f (2 s) hold to frame 2520, B 2521 f (user, 1 Nov 2026; Film brief: captions stay)"}
   ]
 }

@@ -256,6 +256,13 @@ test('endings hold final pose, retain three readable seconds, then fade only A',
   assert.ok(endingState(105, 120, 30, 'A_fade').opacity > 0);
   assert.ok(endingState(105, 120, 30, 'A_fade').opacity < 1);
 });
+test('B_loop endHoldSec moves the freeze point; no fade; default stays 3 s', () => {
+  assert.equal(endingState(119, 133, 30, 'B_loop', {holdSec: 2}).poseFrame, 73);
+  assert.equal(endingState(119, 133, 30, 'B_loop').poseFrame, 43);
+  assert.equal(endingState(119, 133, 30, 'B_loop', {holdSec: 3}).poseFrame, 43);
+  assert.equal(endingState(72, 133, 30, 'B_loop', {holdSec: 2}).poseFrame, 72);
+  assert.equal(endingState(132, 133, 30, 'B_loop', {holdSec: 2}).opacity, 1);
+});
 test('blink driver is deterministic under seeking', () => {
   assert.equal(blinkAt(25, 30), blinkAt(25, 30));
   assert.equal(blinkAt(25, 30), 1);
