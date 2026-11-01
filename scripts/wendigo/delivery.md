@@ -9,9 +9,10 @@
 
 | Deliverable | Stage / Next owner | Script | Evidence / open items |
 | --- | --- | --- | --- |
-| WDG-EP01-SHORT | Boat research r1 done (lead-only sources) → Preaw script | — | [research.md](research.md) r1: all sources lead-only (biographi.ca, en.wikipedia.org blocked). Premise-critical claims F001, F002, F004, F006, F007 need reinspection at fact-check. |
+| WDG-EP01-SHORT | Preaw script R1 done (draft, timing `estimated`) → Boat fact-check | [short/script.md](short/script.md) WDG-SCRIPT-R1 | [research.md](research.md) r1: all sources lead-only (biographi.ca, en.wikipedia.org blocked). R1 uses F001–F006, F009 (F007, F008, F010 not used); premise-critical F001, F004, F006 need reinspection. User open questions in the script (ending, Swift Runner vs Fiddler, wording, B_loop extra line, name card). No user approval. |
 
 ## Handoff log
 
 - 2026-11-01: coordinator recorded selection (Short only, ~60 s), mixed horror+fact profile, project defaults, Full tier trimmed to script-only scope. Next owner: Boat (research).
 - 2026-11-01: Boat wrote research r1 (`research.md`): claim ledger F001–F010, sources SRC001–SRC012, all lead-only because WebFetch was blocked for www.biographi.ca and en.wikipedia.org. Labels safe/legend/avoid, cultural framing, sound notes and hook angles. Next owner: Preaw (script).
+- 2026-11-01: Preaw wrote WDG-SCRIPT-R1 (`short/script.md`) from research r1: fictional cold open (labelled `เรื่องแต่ง`, twist: the whisper is the man's own), then folklore + Swift Runner 1879 case, ending on F009 greed with a `C_seamless` pair (`…ที่คอยถามว่า…` → `หิวไหม…`), `B_loop` also written. Timing estimated ≈60 s (C) / ≈64.5 s (B), not read aloud. Claim mapping per line; Boat recheck scope recorded in the script. Not committed. Next owner: Boat (fact-check of WDG-SCRIPT-R1).
