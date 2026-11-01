@@ -101,6 +101,13 @@ section.qs { display: grid; gap: 12px; }
 textarea { font: inherit; font-size: 13px; width: 100%; box-sizing: border-box; min-height: 52px; resize: vertical; padding: 6px 8px; border: 1px solid var(--line); border-radius: 4px; background: var(--surface); color: var(--fg); }
 .saved, .prev, .wait { font-size: 11px; color: var(--muted); min-height: 1em; }
 .wait { font-size: 13px; }
+/* Answers carry over while an item's hash is unchanged; a changed item shows its old answer and asks again. */
+.prev.stale { color: var(--change); }
+.chgmark:not(:empty) { display: inline-block; margin-top: 6px; font-size: 11px; font-weight: 500; padding: 1px 7px; border-radius: 999px; background: var(--flag-bg); color: var(--change); }
+.chgtxt { display: none; margin-top: 6px; padding: 6px 8px; font-size: 13px; background: var(--flag-bg); border-left: 3px solid var(--change); }
+.shot.changed .chgtxt { display: block; }
+.todo { font-size: 13px; }
+.shot[hidden], .beat[hidden] { display: none; }
 
 .clip { display: grid; gap: 6px; }
 .clip video { width: 140px; max-width: 100%; aspect-ratio: 9 / 16; border-radius: 4px; background: #0d1110; border: 1px solid var(--line); display: block; object-fit: cover; cursor: pointer; }
@@ -150,7 +157,9 @@ dialog button { margin-top: 8px; }
     <div class="meters" id="meters"></div>
     <div class="foot">
       <span class="store" id="store">กำลังเชื่อมที่เก็บคำตอบ…</span>
+      <span class="todo" id="todo"></span>
       <span class="sp"></span>
+      <button class="btn" id="only" type="button" aria-pressed="false">ดูเฉพาะที่ต้องตอบ</button>
       <button class="btn" id="copy" type="button">คัดลอกคำตอบทั้งหมด</button>
     </div>
   </div>
@@ -194,13 +203,24 @@ const len = (a, b) => ((b - a) / FPS).toFixed(1) + " วิ";
 const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
 
 // Verdicts: key "<shot>@<stage>" (db doc reviews/<shot>@<stage>); questions keep "<Qid>".
-// A draft or final verdict counts only for the clip it was given on: a new clip asks again.
-const state = {};
+// Each verdict stores the hash of what it judged (build.py): the shot's storyboard text, the clip file or the question.
+// It carries over to later revisions while that hash is unchanged; otherwise it moves to `stale` and the item asks again.
+const state = {}, stale = {};
 const clipOf = (s, stage) => (s.clips || {})[stage];
+const clipId = c => c && (c.hash || c.src);
 const verdictKey = (id, stage) => stage ? `${id}@${stage}` : id;
-const current = (s, stage) => { const r = state[verdictKey(s.id, stage)]; return r && (stage === "board" || r.clip === clipOf(s, stage)?.src) ? r : null; };
+const shotOf = id => D.shots.find(x => x.id === id);
+function expected(key) {
+  const [id, stage] = key.split("@");
+  if (!stage) return (D.questions || []).find(q => q.id === id)?.hash;
+  const s = shotOf(id);
+  return s && (stage === "board" ? s.hash : clipOf(s, stage)?.hash);
+}
+const current = (s, stage) => { const r = state[verdictKey(s.id, stage)]; return r && (stage === "board" || r.clip === clipId(clipOf(s, stage))) ? r : null; };
 const accepted = (s, stage) => current(s, stage)?.status === "ok";
-let tab = "board";
+const needs = (s, stage) => (stage === "board" || clipOf(s, stage)) && !current(s, stage)?.status;
+const said = p => `${p.status === "ok" ? "ผ่าน" : p.status === "change" ? "แก้" : "ยังไม่เลือก"}${p.note ? " · " + p.note : ""}`;
+let tab = "board", onlyOpen = false;
 let db = null;
 
 function reviewHTML(id, stage, s) {
@@ -214,7 +234,7 @@ function reviewHTML(id, stage, s) {
     </div>
     <textarea id="note-${esc(key)}" placeholder="หมายเหตุ (ถ้ามี)" aria-label="หมายเหตุ ${esc(key)}"></textarea>
     <div class="saved" id="saved-${esc(key)}"></div>
-    ${p ? `<div class="prev">รอบ ${esc(D.previousRevision || "ก่อน")}: ${p[0] === "ok" ? "ผ่าน" : "แก้"}${p[1] ? " · " + esc(p[1]) : ""}</div>` : ""}
+    <div class="prev" id="prev-${esc(key)}" data-legacy="${p ? esc(`รอบ ${D.previousRevision || "ก่อน"}: ${said({ status: p[0], note: p[1] })}`) : ""}"></div>
   </div>`;
 }
 function thumbs(list) {
@@ -276,17 +296,26 @@ function renderRows() {
   document.getElementById("beats").innerHTML = D.beats.map(b => {
     const rows = D.shots.filter(s => s.beat === b.id).map(s => `
       <div class="shot${accepted(s, tab) ? " accepted" : ""}" id="${esc(s.id)}">
-        <div><div class="sid">${esc(s.id)}</div>${D.untimed ? "" : `<div class="time">${fmt(s.start)} · ${len(s.start, s.end)}</div>`}${dots(s)}${s.pinned ? `<span class="pin">🔒 ปักแล้ว</span>` : ""}</div>
+        <div><div class="sid">${esc(s.id)}</div>${D.untimed ? "" : `<div class="time">${fmt(s.start)} · ${len(s.start, s.end)}</div>`}${dots(s)}${s.pinned ? `<span class="pin">🔒 ปักแล้ว</span>` : ""}<span class="chgmark"></span></div>
         <div><div class="title">${esc(s.title)}</div>${(s.vo || []).length
           ? `<ul class="vo">${s.vo.map(([w, l]) => `<li>${w ? `<span class="who">${esc(w)}</span><br>` : ""}${esc(l)}</li>`).join("")}</ul>`
           : `<div class="vo none">ไม่มีเสียงพากย์</div>`}</div>
-        <div><span class="lbl">สิ่งที่เห็น</span><p class="seen">${esc(s.seen)}</p>${s.flag ? `<div class="flag">${esc(s.flag)}</div>` : ""}${s.sound ? `<div class="sound">เสียง: ${esc(s.sound)}</div>` : ""}</div>
+        <div><span class="lbl">สิ่งที่เห็น</span><p class="seen">${esc(s.seen)}</p>${s.flag ? `<div class="flag">${esc(s.flag)}</div>` : ""}${s.changed && tab === "board" ? `<div class="chgtxt">เปลี่ยน: ${esc(s.changed)}</div>` : ""}${s.sound ? `<div class="sound">เสียง: ${esc(s.sound)}</div>` : ""}</div>
         ${media ? `<div class="media"><span class="lbl">${mediaHead}</span>${mediaCell(s, tab)}</div>` : ""}
         <div><span class="lbl">ตรวจ ${NAME[tab]}</span>${reviewHTML(s.id, tab, s)}</div>
       </div>`).join("");
     return `<section class="beat" aria-label="${esc(b.id)}"><div class="beat-head"><h2>${esc(b.name)}</h2><span class="bid">${esc(b.id)}</span>${lookHTML(b)}</div>${cols}${rows}</section>`;
   }).join("");
   document.querySelectorAll("#beats .review").forEach(box => paint(box.dataset.key));
+  filter(); count();
+}
+// "ดูเฉพาะที่ต้องตอบ" hides the rows already answered on this tab; applied on toggle and tab change, not per click.
+function filter() {
+  document.querySelectorAll("#beats .shot").forEach(row => { row.hidden = onlyOpen && !needs(shotOf(row.id), tab); });
+  document.querySelectorAll("#beats .beat").forEach(b => { b.hidden = onlyOpen && !b.querySelector(".shot:not([hidden])"); });
+  const btn = document.getElementById("only");
+  btn.setAttribute("aria-pressed", String(onlyOpen));
+  btn.textContent = onlyOpen ? "ดูทั้งหมด" : "ดูเฉพาะที่ต้องตอบ";
 }
 
 function paint(key) {
@@ -299,8 +328,17 @@ function paint(key) {
   const ta = document.getElementById("note-" + key);
   if (document.activeElement !== ta) ta.value = r.note || "";
   document.getElementById("saved-" + key).textContent = r.updatedAt ? "บันทึกแล้ว " + new Date(r.updatedAt).toLocaleString("th-TH", { dateStyle: "short", timeStyle: "short" }) : "";
+  const st = !r.status && stale[key], pv = document.getElementById("prev-" + key);
+  pv.classList.toggle("stale", !!st);
+  pv.textContent = st ? `เปลี่ยนหลังคุณตอบ · คำตอบเดิม (รอบ ${st.rev || "ก่อน"}): ${said(st)}`
+    : r.prev ? `รอบ ${r.prev.rev || "ก่อน"}: ${said(r.prev)}` : pv.dataset.legacy;
   const row = box.closest(".shot");
-  if (row) { row.classList.toggle("accepted", r.status === "ok"); row.querySelector(".dots").outerHTML = dots(s); }
+  if (row) {
+    row.classList.toggle("accepted", r.status === "ok");
+    row.classList.toggle("changed", !!st);
+    row.querySelector(".chgmark").textContent = st ? "เปลี่ยน" : "";
+    row.querySelector(".dots").outerHTML = dots(s);
+  }
 }
 function count() {
   const n = D.shots.length;
@@ -311,6 +349,9 @@ function count() {
     document.getElementById("t-" + k).textContent = `${ok}/${n}`;
     document.getElementById("tab-" + k).classList.toggle("full", n > 0 && ok === n);
   });
+  const need = D.shots.filter(s => needs(s, tab)).length;
+  const chg = D.shots.filter(s => needs(s, tab) && stale[verdictKey(s.id, tab)]).length;
+  document.getElementById("todo").textContent = `${NAME[tab]}: รอคำตอบ ${need} ช็อต` + (chg ? ` · เปลี่ยนหลังคุณตอบ ${chg}` : "");
 }
 
 async function save(key) {
@@ -318,11 +359,13 @@ async function save(key) {
   const [id, stage] = key.split("@");
   const s = D.shots.find(x => x.id === id);
   r.updatedAt = new Date().toISOString();
-  r.clip = s && stage && stage !== "board" ? clipOf(s, stage)?.src || "" : "";
+  r.clip = s && stage && stage !== "board" ? clipId(clipOf(s, stage)) || "" : "";
+  if (!r.prev && stale[key]) r.prev = stale[key];
   paint(key); count();
   if (!db) { document.getElementById("saved-" + key).textContent = "ยังไม่ได้บันทึกขึ้นที่เก็บ ใช้ปุ่มคัดลอกแทน"; return; }
   try {
-    await db.doc("reviews/" + key).set({ shot: id, stage: stage || "", status: r.status || "", note: r.note || "", rev: REV, clip: r.clip, updatedAt: r.updatedAt });
+    await db.doc("reviews/" + key).set({ shot: id, stage: stage || "", status: r.status || "", note: r.note || "", rev: REV, hash: expected(key) || "",
+      clip: r.clip, updatedAt: r.updatedAt, ...(r.prev ? { prev: r.prev } : {}) });
   } catch (e) {
     document.getElementById("saved-" + key).textContent = "บันทึกไม่สำเร็จ ใช้ปุ่มคัดลอกแทน";
   }
@@ -339,6 +382,7 @@ function wire() {
   document.addEventListener("click", e => {
     const t = e.target.closest(".tab");
     if (t) { setTab(t.dataset.tab); return; }
+    if (e.target.closest("#only")) { onlyOpen = !onlyOpen; filter(); return; }
     const b = e.target.closest(".seg button");
     if (b) {
       const key = b.closest(".review").dataset.key;
@@ -402,11 +446,20 @@ renderRows(); wire(); count();
   db.collection("reviews").onSnapshot(snap => {
     snap.docs.forEach(d => {
       const v = d.data();
-      if (!v || v.rev !== REV) return;
+      if (!v) return;
       // Pages built before the tabs stored storyboard verdicts as reviews/<shot>: read them as the storyboard tab.
       const key = !d.id.includes("@") && D.shots.some(x => x.id === d.id) ? d.id + "@board" : d.id;
       if (key !== d.id && state[key]) return;
-      state[key] = { status: v.status, note: v.note, clip: v.clip, updatedAt: v.updatedAt };
+      const [id, stage] = key.split("@");
+      const want = expected(key), c = stage && stage !== "board" ? clipOf(shotOf(id) || {}, stage) : null;
+      let clip = v.clip, ok = v.hash ? v.hash === want : v.rev === REV && (!c || v.clip === c.src);
+      // A verdict saved before hashes counts for this revision (and its clip path): stamp it once so it carries over.
+      if (ok && !v.hash) {
+        if (c) clip = clipId(c);
+        if (want && key === d.id) db.doc("reviews/" + key).set({ ...v, hash: want, clip }).catch(() => {});
+      }
+      if (ok) { state[key] = { status: v.status, note: v.note, clip, updatedAt: v.updatedAt, prev: v.prev }; delete stale[key]; }
+      else if (v.hash && (v.status || v.note)) stale[key] = { status: v.status || "", note: v.note || "", rev: v.rev || "" };
       paint(key);
     });
     count();

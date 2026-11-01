@@ -7,18 +7,35 @@ and shot clip into DIR/pv/, downscaled to 540 px wide JPEG (videos copied as is)
 Shot-by-shot fields per shot (optional): "clips": {"draft"|"final": {"src", "in", "out"}} (360x640 proxies from
 scripts/storyboard-page/clips.mjs; in/out are the shot's seconds inside the padded clip) and "pinned": true once
 scripts/pin.mjs pinned it. The page has three tabs (storyboard, draft, final); verdicts are stored per shot and tab.
+Answers survive revisions: build.py stamps each shot, question and clip with a content hash, and the page keeps a saved
+answer while its hash is unchanged. A changed item shows its old answer and asks again; an optional "changed" text on a
+shot says what changed. The storyboard hash leaves out id, beat, timing, media, "pinned" and "changed", so a retime
+after the voice lock keeps the answers.
 Look frames (Film, W2): top-level "looks": {"<lookId>": {"src", "caption"}} and "look": "<lookId>" on each beat that
 uses it; the storyboard tab is text only and shows each location's look frame in its beat header.
 DIR/preview.html is a local check copy (open it through a local HTTP server); publish index.html, never preview.html.
 Image and video paths in the JSON are repository-relative. Exits 1 on schema errors; prints the publish call.
 """
-import json, os, shutil, subprocess, sys
+import hashlib, json, os, shutil, subprocess, sys
 
 ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 TEMPLATE = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'template.html')
 REQUIRED = ['deliverable', 'revision', 'title', 'source', 'beats', 'shots']
 SHOT_REQUIRED = ['id', 'beat', 'start', 'end', 'title', 'seen']
 CLIP_KINDS = ('draft', 'final')
+# Shot fields left out of the storyboard hash: identity, timing, media and review bookkeeping.
+UNHASHED = {'id', 'beat', 'start', 'end', 'clips', 'pinned', 'previews', 'previewLabel', 'video', 'changed', 'hash'}
+
+
+def digest(value):
+    return hashlib.sha1(json.dumps(value, ensure_ascii=False, sort_keys=True).encode()).hexdigest()[:12]
+
+
+def file_digest(path):
+    if not os.path.isfile(os.path.join(ROOT, path)):
+        sys.exit(f'missing media file: {path}')
+    with open(os.path.join(ROOT, path), 'rb') as f:
+        return hashlib.sha1(f.read()).hexdigest()[:12]
 
 
 def errors(d):
@@ -95,6 +112,12 @@ def main():
     shutil.rmtree(pv, ignore_errors=True)
     os.makedirs(pv)
     used = {}  # repository path -> published path
+    for s in d['shots']:
+        s['hash'] = digest({k: v for k, v in s.items() if k not in UNHASHED})
+        for c in (s.get('clips') or {}).values():
+            c['hash'] = file_digest(c['src'])
+    for q in d.get('questions', []):
+        q['hash'] = digest({k: q.get(k) for k in ('question', 'detail', 'images')})
     for s in d['shots']:
         for p in s.get('previews', []):
             p['src'] = copy_media(p['src'], pv, used)
