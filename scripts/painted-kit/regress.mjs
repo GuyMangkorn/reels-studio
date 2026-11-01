@@ -15,10 +15,10 @@ await mkdir(out, {recursive: true});
 const serveUrl = await bundle({entryPoint: path.resolve('src/index.ts'), publicDir: process.env.PUBLIC_DIR || undefined});
 const chromiumOptions = {gl: 'angle'};
 const browser = await openBrowser('chrome', {chromiumOptions});
-const shoot = async (composition, id, frame) => renderStill({serveUrl, composition, browserInstance: browser, chromiumOptions, frame, output: `${out}/${id}_F${String(frame).padStart(4, '0')}.png`, imageFormat: 'png'});
+const shoot = async (composition, id, frame) => renderStill({serveUrl, composition, puppeteerInstance: browser, chromiumOptions, frame, output: `${out}/${id}_F${String(frame).padStart(4, '0')}.png`, imageFormat: 'png'});
 try {
   for (const id of ids) {
-    const composition = await selectComposition({serveUrl, id, browserInstance: browser, chromiumOptions});
+    const composition = await selectComposition({serveUrl, id, puppeteerInstance: browser, chromiumOptions});
     for (const fr of fractions) {
       await shoot(composition, id, Math.floor(composition.durationInFrames * fr));
     }

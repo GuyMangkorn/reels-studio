@@ -11,8 +11,8 @@ const serveUrl = await bundle({entryPoint: path.resolve('src/painted/kit/catalog
 const chromiumOptions = {gl: 'angle'};
 const browser = await openBrowser('chrome', {chromiumOptions});
 try {
-  const composition = await selectComposition({serveUrl, id: 'KIT-CATALOG', browserInstance: browser, chromiumOptions});
-  await renderStill({serveUrl, composition, browserInstance: browser, chromiumOptions, frame: 0, output: `${out}/KIT-CATALOG.png`, imageFormat: 'png'});
+  const composition = await selectComposition({serveUrl, id: 'KIT-CATALOG', puppeteerInstance: browser, chromiumOptions});
+  await renderStill({serveUrl, composition, puppeteerInstance: browser, chromiumOptions, frame: 0, output: `${out}/KIT-CATALOG.png`, imageFormat: 'png'});
   console.log(`${out}/KIT-CATALOG.png`);
 } finally {
   await browser.close({silent: true});

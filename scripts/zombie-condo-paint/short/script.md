@@ -9,7 +9,7 @@
 | Delivery record | [../delivery.md](../delivery.md) |
 | Research | [../research.md](../research.md) `ZCONDO-RESEARCH-R1` + `SRC022` (added in [fact-check.md](fact-check.md)) |
 | Story mode | `fiction-with-factual-knowledge`: zombies, the outbreak, the barricade's effectiveness and the wrecked city are fiction; the survival tips are real-world claims |
-| Style profile / tier | survival drama + light fantasy, second person (คุณ); comment-prompt cliffhanger ending (unresolved knock + three-way question, user-confirmed 28 Oct 2026); Full tier (see delivery record) |
+| Style profile / tier | survival drama + light fantasy, second person (คุณ); comment-prompt cliffhanger ending (unresolved call at the door + three-way question, user-confirmed 28 Oct 2026); Full tier (see delivery record) |
 | Target | **60–80 s (user decision 28 Oct 2026)**, aiming ≈65–70 s, not stretched to 80; 30 fps. Selected estimate **≈60.1 s VO + ≈5.0 s planned pauses + ≈2.7 s knocks/silence + 3.0 s closing hold ≈ 70.8 s (≈2,124 frames)** |
 | Timing status | `estimated` only. Rate assumption: **≈15 Thai code points/s** (whitespace and punctuation not counted; R3 VO = 901 code points). Basis: the CATBOX C01 Niwat 1.05 calibration (1,331 code points in 82.92 s ≈ 16.05 cp/s) scaled to speed 1.0 (≈15.3 cp/s) and rounded down for a calmer read. Pauses are explicit and listed per beat. Sensitivity: 16 cp/s ≈ 67 s; 14 cp/s ≈ 75 s; 13 cp/s ≈ 80 s. Botnoi voice/speed unknown; not read aloud or audio-tested |
 | Factual status | R2: Boat recheck complete (28 Oct 2026) → `ready-for-storyboard` ([fact-check.md](fact-check.md)). **R3: Boat recheck complete (28 Oct 2026) → `ready-for-storyboard`** ([fact-check.md](fact-check.md#recheck-r3); non-blocking advisories only) |
@@ -17,7 +17,7 @@
 
 ## Story core
 
-- **Logline:** คุณเปิดประตูห้องไปทิ้งขยะ เจอซอมบี้ปลายทางเดิน ต้องขังตัวเองในห้องคอนโดตอนไฟดับ แล้วใช้ทุกอย่างในห้องให้อยู่ได้นานที่สุด จนวันที่สามมีเสียงเคาะประตูที่ไม่ควรมี
+- **Logline:** คุณเปิดประตูห้องไปทิ้งขยะ เจอซอมบี้ปลายทางเดิน ต้องขังตัวเองในห้องคอนโดตอนไฟดับ แล้วใช้ทุกอย่างในห้องให้อยู่ได้นานที่สุด จนวันที่สามมีเสียงเรียกหน้าประตูที่ไม่ควรมี
 - **Central question:** ติดอยู่ในห้องคอนโดตอนไฟดับ คุณจะอยู่ได้นานแค่ไหน และต้องทำอะไรก่อน?
 - **Intention / obstacle:** you want to last as long as possible; the obstacle is that the blackout quietly starts every clock at once (finite tank water, fridge cold, no safe way to cook) while the corridor is closed to you.
 - **Intended feeling:** jolt (hook) → urgency (water clock) → small "aha" (the cistern) → grim control (food order, no stove) → isolation (balcony) → unease and choice (the knock).
@@ -26,7 +26,7 @@
 ## Truth and ending
 
 - **What happens in the story (fiction):** day one, morning: the viewer opens the door, sees an infected figure, retreats, barricades. The power then fails building-wide (story-world cause unstated). The viewer stores water, sets up the bathroom, sorts food, rejects the stove. Night one: balcony view of a dark, burning city. Day three: supplies counted down; a soft knock at the door.
-- **Twist logic (fair, open):** the infected **pound** on the door (planted in B02, heard). On day three the sound is a **knock** (B09). The sound rule (CL04, “พวกมันตามเสียง”) is planted in B02, so calling out is a real risk; the pounding-vs-knock contrast was audible from beat 2: whoever is outside is not one of them, or is something new. The ending does not resolve who it is; it hands the viewer a three-way decision (open the removable barricade from B02, answer and risk the sound rule, or stay silent), with no peephole to check (CL05). User confirmed this unresolved-knock ending on 28 Oct 2026. R3 keeps it unchanged so a possible EP2 can branch on the B10 choice.
+- **Twist logic (fair, open):** the infected **pound** on the door (planted in B02, heard). On day three the sound is a **human call** “มีใครอยู่ไหม” (B09; the infected only groan and pound, never speak). The sound rule (CL04, “พวกมันตามเสียง”) is planted in B02, so calling out is a real risk; the pounding-vs-knock contrast was audible from beat 2: whoever is outside is not one of them, or is something new. The ending does not resolve who it is; it hands the viewer a three-way decision (open the removable barricade from B02, answer and risk the sound rule, or stay silent), with no peephole to check (CL05). User confirmed this unresolved-door ending on 28 Oct 2026. R3 keeps it unchanged so a possible EP2 can branch on the B10 choice.
 - **Verified facts used:** ZC-C01/C02/C03 (water mechanism and filling), ZC-C05/C21 (cistern, not bowl), ZC-C07/C08 (bucket flush, conditional on drains), ZC-C10 (fridge/freezer hold times + derived order), ZC-C13 (no camp stove indoors), ZC-C18 (removable barricade, fire caveat), ZC-C15 (cover stored water, without numbers).
 - **Uncertainty kept visible:** no water duration is stated (GAP01); "หลายแห่ง" not "every condo"; hold times say "ราว", and the freezer figure is framed as an upper bound ("อย่างมากราว"); the flush works "ถ้าท่อยังดี".
 - **Cautions followed:** no indoor camp-stove cooking (stove appears only as a warning); "รองใส่ทุกอย่าง ถัง หม้อ ขวด" rather than bathtub; no hour count for water; no weapons or violence instructions; no building-code rule about door swing; drinking water is not rationed (the countdown counts supplies, it never tells the viewer to drink less; ZC-C22).
@@ -45,7 +45,7 @@ Video time is the TH estimate at ≈15 cp/s plus the listed pauses. Story-world 
 | `ZCONDO-SHORT-S01-B06` | 34.1–43.1 s (1,023–1,293) | Same day | Kitchen: hold times set the eating order | Food plan fixed by the clock | ≈0.3 s after each hold time (fridge line, freezer line) so the two numbers don't blur |
 | `ZCONDO-SHORT-S01-B07` | 43.1–49.0 s (1,293–1,470) | Same day | Counter-intuitive danger: the stove, not the zombie; switch to no-cook food | Cooking removed from the plan | ≈0.3 s after “ห้ามจุดในห้อง” (hand stops) |
 | `ZCONDO-SHORT-S01-B08` | 49.0–54.0 s (1,470–1,620) | Night 1 | Balcony: scale of collapse; no rescue | Hope of rescue gone | ≈0.5 s ambience-only lead-in before the VO (time jump to night) |
-| `ZCONDO-SHORT-S01-B09` | 54.0–64.6 s (1,620–1,938) | Day 3 | Countdown, then the knock; pays off CL01/CL03 | A new unknown at the door | ≈0.2 s between counts (×3); three knocks ≈1.2 s + ≈1.5 s silence; ≈0.4 s after “พวกมันไม่เคาะ” |
+| `ZCONDO-SHORT-S01-B09` | 54.0–64.6 s (1,620–1,938) | Day 3 | Countdown, then the call; pays off CL01/CL03 | A new unknown at the door | ≈0.2 s between counts (×3); one call ≈1.2 s + ≈1.5 s silence; ≈0.4 s after “พวกมันไม่พูด” |
 | `ZCONDO-SHORT-S01-B10` | 64.6–67.8 s (1,938–2,034) + 3.0 s hold → ≈70.8 s (≈2,124) | — | Three-way comment prompt (เปิด / ส่งเสียง / เงียบ); hard cut or `A_fade` (Editor) | Decision handed to the viewer | 3.0 s closing hold on the door and question |
 
 ## Full spoken script (TH)
@@ -70,7 +70,7 @@ Visual intent: by 2.0 s the open door and the still figure at the far end of the
 
 **ซับ:** “ปิด! ล็อก!” / “มันทุบประตูไม่หยุด” / “ลากตู้มาดัน” / “แต่ต้องรื้อออกได้เร็ว เผื่อไฟไหม้” / “ในโลกนี้... พวกมันตามเสียง”
 
-[SFX] slam, deadbolt, heavy rhythmic **pounding** (CL01; keep it fist/body pounding, distinct from the later knock), furniture scrape.
+[SFX] slam, deadbolt, heavy rhythmic **pounding** (CL01; keep it fist/body pounding, distinct from the later human call), furniture scrape.
 
 **Sound intent:** hard slam as the beat's accent; a tense low pulse (high energy) under the barricade. On “พวกมันตามเสียง” the music drops out entirely; only the pounding remains for the ≈0.6 s freeze (CL04 is heard as well as said).
 
@@ -140,25 +140,25 @@ Visual intent: **Blender 3D candidate:** the balcony wide shot of a generic (not
 
 ### `ZCONDO-SHORT-S01-B09` · 54.0–64.6 s
 
-**VO:** “วันที่สาม น้ำเหลือสองถัง ปลากระป๋องสี่กระป๋อง แบตเตอรี่สิบสองเปอร์เซ็นต์... แล้วก็มีเสียงเคาะประตู”
+**VO:** “วันที่สาม น้ำเหลือสองถัง ปลากระป๋องสี่กระป๋อง แบตเตอรี่สิบสองเปอร์เซ็นต์... แล้วก็มีเสียงเรียกหน้าประตู”
 
-[SFX] three soft, evenly spaced knocks (CL03). ≈1.5 s of silence.
+[VOICE] a human voice outside the door, soft, once: “มีใครอยู่ไหม” (CL03; own character voice, not the narrator). ≈1.5 s of silence.
 
-**VO:** “พวกมันไม่เคาะ”
+**VO:** “พวกมันไม่พูด”
 
-**ซับ:** “วันที่สาม” / “น้ำเหลือสองถัง” / “ปลากระป๋องสี่กระป๋อง” / “แบตเตอรี่สิบสองเปอร์เซ็นต์” / “แล้วก็มีเสียงเคาะประตู” / “พวกมันไม่เคาะ”
+**ซับ:** “วันที่สาม” / “น้ำเหลือสองถัง” / “ปลากระป๋องสี่กระป๋อง” / “แบตเตอรี่สิบสองเปอร์เซ็นต์” / “แล้วก็มีเสียงเรียกหน้าประตู” / “พวกมันไม่พูด”
 
-**Sound intent:** daylight room tone; a dry tick on each counter step (≈0.2 s rests between counts). All music out before the knocks. Three soft knuckle knocks on a solid door, close and dry, clearly unlike the B02 pounding; then ≈1.5 s of true silence (no riser). A low sub hit lands under “พวกมันไม่เคาะ”.
+**Sound intent:** daylight room tone; a dry tick on each counter step (≈0.2 s rests between counts). All music out before the knocks. One soft human call through a solid door, muffled and close, clearly unlike the B02 pounding and groans (zombies never speak, they only groan); then ≈1.5 s of true silence (no riser). A low sub hit lands under “พวกมันไม่พูด”.
 
 Visual intent: supply countdown as on-screen counters ticking down (fictional quantities; this is the remaining-supplies countdown). **The water counter uses bucket icons** so “สองถัง” reads as two buckets, not tanks. Then a slow push toward the barricaded door.
 
 ### `ZCONDO-SHORT-S01-B10` · 64.6–67.8 s + 3.0 s hold
 
-**VO:** “คุณจะเปิดประตู ส่งเสียงตอบ หรือเงียบไว้? คอมเมนต์มา”
+**VO:** “คุณจะเปิดประตู ส่งเสียงตอบ หรือเงียบไว้?”
 
-**ซับ:** “คุณจะเปิดประตู ส่งเสียงตอบ” / “หรือเงียบไว้?” / “คอมเมนต์มา”
+**ซับ:** “คุณจะเปิดประตู ส่งเสียงตอบ” / “หรือเงียบไว้?”
 
-**Sound intent:** a thin, unresolved high tone under the question; the 3.0 s hold stays near-silent (room tone, no music resolve), so the ending feels open. Hard cut to black, or `A_fade`, per Editor.
+**Sound intent:** TH (user, 1 Nov 2026): no high tone; the 3.0 s hold stays near-silent (room tone, no music resolve), then three soft knuckle knocks after the last line (≈93.6 / 94.05 / 94.5 s), so the ending feels open. EN keeps the thin, unresolved high tone under the question. Hard cut to black, or `A_fade`, per Editor.
 
 Visual intent: hold on the peephole-less door and the barricade for ≈3 s with the question on screen (optionally three choice labels: เปิดประตู / ส่งเสียงตอบ / เงียบไว้, same wording). Ending: hard cut or `A_fade` (Editor's call). Not a seamless loop.
 
@@ -170,10 +170,10 @@ All clues are fictional story clues, not real evidence.
 | --- | --- | --- | --- | --- | --- |
 | `CL01` | B02 (VO + SFX) | They **pound** the door nonstop, heavy and irregular | Just the threat | Pounding is how *they* sound at a door | B09: a soft knock is categorically different |
 | `CL02` | B02 (VO) | The barricade must be clearable fast, "in case of fire" | A safety caveat | The barricade can come off, so opening is a real option | B10 choice “เปิดประตู” |
-| `CL03` | B09 (SFX + VO) | Three soft, even knocks; story rule "พวกมันไม่เคาะ" | — | Someone outside still thinks (a survivor, a trap, or something new); left open | B10 three-way comment prompt |
+| `CL03` | B09 (SFX + VO) | A soft human call “มีใครอยู่ไหม”; story rule "พวกมันไม่พูด" (they only groan and pound) | — | Someone outside still thinks (a survivor, a trap, or something new); left open | B10 three-way comment prompt |
 | `CL04` | B02 (VO) | Story-world rule “ในโลกนี้... พวกมันตามเสียง” (fiction, ZC-C19); the pounding fades once you go quiet (B03) | Why you must stay silent | Answering the knock is a gamble: if they are nearby, a voice draws them | B10 choices “ส่งเสียงตอบ” vs “เงียบไว้” are both risky |
 
-`CL05` (visual only, no narration): the unit door has **no peephole**, so the viewer cannot check who is knocking; this is why all three B10 choices are blind.
+`CL05` (visual only, no narration): the unit door has **no peephole**, so the viewer cannot check who is calling; this is why all three B10 choices are blind.
 
 ## Claim mapping
 
@@ -197,8 +197,8 @@ Every tip beat maps to ZC-C claim IDs in `ZCONDO-RESEARCH-R1`. Sources and locat
 | B07 | “คาร์บอนมอนอกไซด์ ฆ่าคุณได้ก่อนซอมบี้” | ZC-C13 → `SRC005` (high exposure can cause death) | "ได้" = can; the comparison with zombies is dramatic framing; colourless/odourless **not** claimed |
 | B07 | “กินของที่ไม่ต้องปรุงแทน” | ZC-C13 story impact (research §3) | advice framing; no room-temperature noodle claim used |
 | B08 (**R3**) | “คืนนั้นที่ระเบียง ทั้งเมืองมืดสนิท มีแต่ควันกับเปลวไฟ ไม่มีใครมาช่วยแน่” (R1 wording restored) | ZC-C19 / research §1 | fiction (generic, non-identifiable city); identical to the R1 wording Boat checked as `FC-TH-08`; B08 sound avoids sirens/voices so audio asserts no rescue or crowd |
-| B09 | supply counts; “พวกมันไม่เคาะ” | ZC-C19 | fiction (story-world rule; the "ในโลกนี้" frame is set in B02 and carries over); countdown does not advise rationing drinking water (ZC-C22) |
-| B10 | “คุณจะเปิดประตู ส่งเสียงตอบ หรือเงียบไว้? คอมเมนต์มา” | — | no claim (user-chosen three-way question, 28 Oct 2026) |
+| B09 | supply counts; “พวกมันไม่พูด” | ZC-C19 | fiction (story-world rule; the "ในโลกนี้" frame is set in B02 and carries over); countdown does not advise rationing drinking water (ZC-C22) |
+| B10 | “คุณจะเปิดประตู ส่งเสียงตอบ หรือเงียบไว้?” | — | no claim (user-chosen three-way question, 28 Oct 2026) |
 
 No `needs-research` claims are introduced. Not used (available for a later revision): ZC-C04 (≈4 L/person/day), ZC-C06, ZC-C09 (bag toilet), ZC-C11, ZC-C12, ZC-C14 (visual constraint only), ZC-C16, ZC-C17, ZC-C22 (as narration).
 
@@ -209,8 +209,8 @@ Film owns medium, light and camera; these are story constraints only.
 - **R3 timing (user decision 28 Oct 2026):** the Short is now ≈70 s (estimated) instead of ≈58 s. Beat order, reveals and clues are unchanged; most beats are longer by pauses, B04/B06/B08 also by restored or qualified words. Shot lengths in any R2-based handoff need re-timing to these estimates (and later to measured audio).
 - **No peephole (R2, user decision 28 Oct 2026):** the unit door has no peephole. Visual only; no narration mentions it. Do not show a peephole, viewer or door camera in any beat.
 - **B04 / B06 / B09 visuals:** B04 montage shows bucket, pot and bottles (now also spoken in R3); B06 shows ready-to-eat fridge items only, no raw meat/fish/eggs eaten; B09 water counter uses bucket icons.
-- **Must be seen/heard:** the figure in the corridor by 2.0 s; the pounding (B02) clearly different from the soft three-knock (B09); a shower-only bathroom; the cistern (not the bowl) as the water source; the stove put away unlit; supplies countdown with the same quantities as VO.
-- **Must stay hidden:** who is knocking. Do not show anyone outside the door through B10, and give no way to look (no peephole).
+- **Must be seen/heard:** the figure in the corridor by 2.0 s; the pounding (B02) clearly different from the soft human call (B09); a shower-only bathroom; the cistern (not the bowl) as the water source; the stove put away unlit; supplies countdown with the same quantities as VO.
+- **Must stay hidden:** who is calling. Do not show anyone outside the door through B10, and give no way to look (no peephole).
 - **Continuity:** barricade is a light cabinet that could be moved (CL02); the same bucket/pot/bottles reappear in B05 and B09 (two buckets left); daylight in B04–B07, night in B08, daylight again in B09.
 - **Blender 3D shots that would shine:** B01 corridor reveal (depth, emergency/practical lighting, long corridor perspective) and B08 balcony city (wide parallax, smoke columns, scattered fires; now also spoken). Both are generic, non-identifiable locations.
 - **Do not depict:** a lit camp stove indoors, a pot covering a butane canister, weapons or how-to violence, a bathtub as the storage method, a real building or real brand.
@@ -239,7 +239,7 @@ Film owns medium, light and camera; these are story constraints only.
 6. tts-th.txt against the R3 VO, after a whitespace/punctuation-insensitive comparison. R3 VO = 901 code points.
 7. Change-impact check that B01, B02, B03, B05, B07, B09 and B10 are word-for-word identical to R2, so their R2 verdicts can carry forward.
 
-**R2 (28 Oct 2026):** response to Boat fact-check R1 (`FC-TH-06b`, blocking). Changed: B06 “ของสดกินก่อน” → “ของในตู้เย็นที่กินได้เลย กินก่อน” (Boat option A); learning takeaway (3); B06 claim-mapping rows (+`SRC022`); B06 visual note (ready-to-eat only); B09 visual note (bucket icons, no wording change); B06 lines in tts-th.txt; timing (+≈1.2 s). Boat's optional “อย่างมากราวสองวัน” was **not** adopted: it adds ≈0.5 s and would push the estimate to ≈58.7 s, past the ≈58 s ceiling. R2 also applies the user's decisions of 28 Oct 2026: (a) B10 “คุณจะเอาชีวิตรอดยังไง? คอมเมนต์บอกหน่อย” → “คุณจะเปิดประตู ส่งเสียงตอบ หรือเงียบไว้? คอมเมนต์มา” (unresolved-knock ending confirmed; three-way question); (b) no peephole, visual-only note (CL05), no narration; (c) B02 adds the story-world sound rule “ในโลกนี้... พวกมันตามเสียง” (fiction, ZC-C19; CL04). To stay at ≈58 s: B04 “ถัง หม้อ ขวด” moved to the visual (reserve trim), B08 “มีแต่ควันกับเปลวไฟ” dropped (reserve trim), B09 “ในโลกนี้... พวกมันไม่เคาะ” → “พวกมันไม่เคาะ” (the frame now lives in B02). Clue ledger (+CL04, CL05), twist logic, claim rows for B02/B04/B09/B10, tts-th.txt and timing updated. B01, B03, B05, B07 are word-for-word unchanged from R1; B06 differs only by the Boat fix. **Boat recheck scope:** B02 (new line), B04 (trimmed list), B06 VO/subtitles, B08 (trim), B09 (frame moved), B10 (new question), takeaway (3), mapping rows for B02/B04/B06/B09/B10, tts-th.txt match.
+**R2 (28 Oct 2026):** response to Boat fact-check R1 (`FC-TH-06b`, blocking). Changed: B06 “ของสดกินก่อน” → “ของในตู้เย็นที่กินได้เลย กินก่อน” (Boat option A); learning takeaway (3); B06 claim-mapping rows (+`SRC022`); B06 visual note (ready-to-eat only); B09 visual note (bucket icons, no wording change); B06 lines in tts-th.txt; timing (+≈1.2 s). Boat's optional “อย่างมากราวสองวัน” was **not** adopted: it adds ≈0.5 s and would push the estimate to ≈58.7 s, past the ≈58 s ceiling. R2 also applies the user's decisions of 28 Oct 2026: (a) B10 “คุณจะเอาชีวิตรอดยังไง? คอมเมนต์บอกหน่อย” → “คุณจะเปิดประตู ส่งเสียงตอบ หรือเงียบไว้?” (unresolved-knock ending confirmed; three-way question); (b) no peephole, visual-only note (CL05), no narration; (c) B02 adds the story-world sound rule “ในโลกนี้... พวกมันตามเสียง” (fiction, ZC-C19; CL04). To stay at ≈58 s: B04 “ถัง หม้อ ขวด” moved to the visual (reserve trim), B08 “มีแต่ควันกับเปลวไฟ” dropped (reserve trim), B09 “ในโลกนี้... พวกมันไม่พูด” → “พวกมันไม่พูด” (the frame now lives in B02). Clue ledger (+CL04, CL05), twist logic, claim rows for B02/B04/B09/B10, tts-th.txt and timing updated. B01, B03, B05, B07 are word-for-word unchanged from R1; B06 differs only by the Boat fix. **Boat recheck scope:** B02 (new line), B04 (trimmed list), B06 VO/subtitles, B08 (trim), B09 (frame moved), B10 (new question), takeaway (3), mapping rows for B02/B04/B06/B09/B10, tts-th.txt match.
 
 **R1 (28 Oct 2026):** first draft from `ZCONDO-RESEARCH-R1`. Boat's recheck scope: the whole revision.
 
@@ -257,3 +257,8 @@ Open questions:
 - **Q1 (timing):** Botnoi voice and speed are unknown. The ≈15 cp/s assumption is derived from Niwat, not measured on Botnoi. Measure the user's Botnoi render before timing is locked. At 13 cp/s the R3 text reaches ≈80 s, the ceiling; in that case use the reserve trims above rather than speeding the voice up.
 - **Q5 (Editor/Film):** the pause plan assumes the TTS is delivered line by line (one tts-th.txt line per clip) so pauses can be placed in the timeline. If the TTS is rendered as one take, Editor should confirm that the pauses can still be cut in.
 - Resolved by Boat's R1 answers (kept for history): Q2 “หมดแล้วไม่มีใครเติม” acceptable; Q3 bottle/bucket split supported; Q4 “ฆ่าคุณได้ก่อนซอมบี้” does not overstate.
+
+
+**R4 (31 Oct 2026, user):** B09 knock replaced by a human call. “มีใครอยู่ไหม” (own character voice, Gemini TTS) after “แล้วก็มีเสียงเรียกหน้าประตู”; story rule “พวกมันไม่พูด” replaces “พวกมันไม่เคาะ”, fixing the pound-vs-knock clash with B02. Pending: Boat re-check of FC-TH-09, Mark storyboard/b09.ts (3 knocks → call), Editor re-lock after the Gemini swap. Timings in vo-TH.json and lines.json are the old ones.
+
+**R5 (31 Oct 2026, user):** B10 drops “คอมเมนต์มา” so the closing question is not a forced call to comment; TH ends on “หรือเงียบไว้?”. EN still carries “Comment below.” Storyboard lens-glance cue and timeline captions must follow (Editor).

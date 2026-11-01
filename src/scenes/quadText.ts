@@ -37,3 +37,10 @@ export const quadAt = (overlay: Pick<QuadText, 'quads'>, frame: number): Quad =>
 
 export const quadTextVisibleAt = (overlay: Pick<QuadText, 'startFrame' | 'endFrame'>, frame: number) =>
   frame >= (overlay.startFrame ?? 0) && (overlay.endFrame === undefined || frame < overlay.endFrame);
+
+/** Entrance progress 0..1 (ease-out) for an overlay with `enterFrames`; 1 without it or once it has finished. */
+export const quadTextEnterAt = (overlay: Pick<QuadText, 'startFrame' | 'enterFrames'>, frame: number) => {
+  if (!overlay.enterFrames) return 1;
+  const t = Math.max(0, Math.min(1, (frame - (overlay.startFrame ?? 0)) / overlay.enterFrames));
+  return 1 - (1 - t) * (1 - t);
+};

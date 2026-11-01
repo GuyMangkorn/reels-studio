@@ -12,10 +12,10 @@ await mkdir(outDir, {recursive: true});
 const serveUrl = await bundle({entryPoint: path.resolve('src/index.ts')});
 const browser = await openBrowser('chrome', {browserExecutable: process.env.BROWSER_EXECUTABLE ?? null});
 try {
-  const composition = await selectComposition({serveUrl, id: 'POOLDEPTH-SHORT', browserInstance: browser});
+  const composition = await selectComposition({serveUrl, id: 'POOLDEPTH-SHORT', puppeteerInstance: browser});
   for (const spec of frames) {
     const [name, frame] = spec.split('=');
-    await renderStill({serveUrl, composition, browserInstance: browser, frame: Number(frame), output: `${outDir}/${name}.png`, imageFormat: 'png'});
+    await renderStill({serveUrl, composition, puppeteerInstance: browser, frame: Number(frame), output: `${outDir}/${name}.png`, imageFormat: 'png'});
     console.log(`ok ${name} G${frame}`);
   }
 } finally {await browser.close({silent: true});}

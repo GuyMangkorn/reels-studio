@@ -124,6 +124,28 @@ async function digest({root: requestedRoot, id, props}: Request) {
     add(file);
     if (file.endsWith('.json')) return;
     const source = parse(file);
+    let checker: ts.TypeChecker | undefined;
+    const staticMediaPath = (expression: ts.Expression | undefined): string | undefined => {
+      if (!expression) return undefined;
+      if (ts.isStringLiteralLike(expression)) return expression.text;
+      if (!ts.isPropertyAccessExpression(expression) || !ts.isIdentifier(expression.expression)) return undefined;
+      // Resolve the actual lexical binding, not a name-only lookup: an inner parameter may shadow a constant.
+      if (!checker) {
+        const settings = {noResolve: true, noLib: true};
+        const host = ts.createCompilerHost(settings);
+        host.getSourceFile = name => name === file ? source : undefined;
+        checker = ts.createProgram([file], settings, host).getTypeChecker();
+      }
+      const declaration = checker.getSymbolAtLocation(expression.expression)?.valueDeclaration;
+      if (!declaration || !ts.isVariableDeclaration(declaration) || !(declaration.parent.flags & ts.NodeFlags.Const)) return undefined;
+      const value = declaration.initializer;
+      if (!value || !ts.isAsExpression(value) || value.type.getText(source) !== 'const' || !ts.isObjectLiteralExpression(value.expression)) return undefined;
+      if (value.expression.properties.some(p => !ts.isPropertyAssignment(p) || ts.isComputedPropertyName(p.name))) return undefined;
+      const properties = value.expression.properties.filter(p => ts.isPropertyAssignment(p) && p.name.getText(source) === expression.name.text);
+      if (properties.length !== 1) return undefined;
+      const property = properties[0];
+      return property && ts.isPropertyAssignment(property) && ts.isStringLiteralLike(property.initializer) ? property.initializer.text : undefined;
+    };
     const staticFileNames = new Set(['staticFile']);
     for (const statement of source.statements) {
       if (ts.isImportDeclaration(statement) && statement.importClause?.namedBindings && ts.isNamedImports(statement.importClause.namedBindings)) {
@@ -153,7 +175,8 @@ async function digest({root: requestedRoot, id, props}: Request) {
         const call = node.expression.getText(source);
         if (staticFileNames.has(call) || call.endsWith('.staticFile')) {
           const argument = node.arguments[0];
-          if (argument && ts.isStringLiteralLike(argument)) addMedia(argument.text, true);
+          const literal = staticMediaPath(argument);
+          if (literal !== undefined) addMedia(literal, true);
           else if (!((file === path.join(root, 'src/scenes/SceneRenderer.tsx') && argument?.getText(source) === 'narration.src') ||
             (file === path.join(root, 'src/scenes/media.ts') && argument?.getText(source) === 'src'))) {
             fail(`Computed staticFile path in ${path.relative(root, file)}`);

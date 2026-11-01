@@ -7,8 +7,8 @@ set -e
 D=${1:-out/painted/zcpaint/r26}
 mkdir -p "$D" out/logs
 npx remotion bundle src/painted/spike/zcpaint-r26-index.ts --out-dir "$D/bundle" > out/logs/zcp-r26-bundle.log 2>&1
+for pg in A B C D E F G; do echo "ZCPAINT-R26-$pg 0 $D/R26-$pg.png"; done | node scripts/stills.mjs "$D/bundle" > out/logs/zcp-r26-still.log 2>&1
 for pg in A B C D E F G; do
-  npx remotion still "$D/bundle" "ZCPAINT-R26-$pg" "$D/R26-$pg.png" --frame=0 --gl=angle >> out/logs/zcp-r26-still.log 2>&1
   scripts/qa-sheet.sh "$D/review-$pg.png" --width 540 "$D/R26-$pg.png" > /dev/null
 done
 ffmpeg -loglevel error -y -i "$D/R26-F.png" -vf crop=480:300:275:860 "$D/crop-B02-SH03-collar.png"

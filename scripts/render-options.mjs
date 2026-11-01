@@ -27,8 +27,13 @@ export const parseRenderArgs = argv => {
     gl,
     timeoutInMilliseconds: positive('timeout'),
     concurrency: positive('concurrency') ?? 4,
-    // Draft: half-size output and p5.brush canvas, written to out/<id>/preview/ and not archived.
+    // Quick look: half-size output and p5.brush canvas, written to out/<id>/preview/ and not archived.
     preview: argv.includes('--preview'),
+    // Blocking draft: textured fills become flat washes and hatching is off (BrushCanvas `paintDraft`); full size, cached.
+    draft: argv.includes('--draft'),
+    // Pinned finals (scripts/pin.mjs) whose inputs changed: keep the approved segments, or render these again (unpins them).
+    keepPinned: argv.includes('--keep-pinned'),
+    repaint: value('repaint')?.split(',').filter(Boolean) ?? [],
     // Render every scene again instead of reusing cached scene segments (scripts/segments.mjs).
     noCache: argv.includes('--no-cache'),
     // Video frame range [from, to] (inclusive), e.g. --range=300-599; written to out/<id>/range/, not archived.

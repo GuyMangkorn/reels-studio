@@ -8,8 +8,6 @@ mkdir -p "$OUT" out/logs
 npx remotion bundle src/painted/spike/zcpaint-p10-index.ts --out-dir "$OUT/bundle" > out/logs/zcp-p10-plate-bundle.log 2>&1
 for spec in "$@"; do
   id=${spec%%:*}; frames=${spec#*:}
-  for f in $(echo "$frames" | tr ',' ' '); do
-    npx remotion still "$OUT/bundle" "ZCPAINT-P10-PLATE-$id" "$OUT/${id}_f$f.png" --frame="$f" --gl=angle >> out/logs/zcp-p10-plate-still.log 2>&1
-  done
-done
+  for f in $(echo "$frames" | tr ',' ' '); do echo "ZCPAINT-P10-PLATE-$id $f $OUT/${id}_f$f.png"; done
+done | node scripts/stills.mjs "$OUT/bundle" > out/logs/zcp-p10-plate-still.log 2>&1
 echo "$OUT"

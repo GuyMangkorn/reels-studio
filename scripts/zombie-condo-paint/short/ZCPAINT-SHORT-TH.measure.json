@@ -1,0 +1,1013 @@
+{
+ "deliverable": "ZCPAINT-SHORT-TH",
+ "scriptRevision": "ZCONDO-SHORT-TH-R5 (tts-th.txt; R4/R5 31 Oct 2026)",
+ "narration": {
+  "engine": "gemini-tts",
+  "voice": "Kore",
+  "approvedRead": "kore-measured-nocomment.wav, 96.000 s raw",
+  "processed": "atempo=1.05 -> 91.436 s",
+  "trackZeroAbsSecProcessed": 0.2521,
+  "trackLenSec": 91.184,
+  "store": "projects/ZCONDO/audio/gemini-tts/zcpaint-th-approved-read/"
+ },
+ "method": "split_lines.py: beat cuts from cut-gaps.py (measure-v2); intra-beat cuts at energy gaps nearest the Whisper midpoint (gap >= 0.1 s, else quietest 10 ms within +-0.3 s); onsets/speechEnd = first/last sample >= 300 of 32767 (narration.py THRESHOLD), relative to TH-01 first audible sample",
+ "alignment": {
+  "whisper": "large-v3-turbo CPU int8 (align-full.py, scratch copy: PyAV call patched)",
+  "matchRatio": null,
+  "anchorsInside": 39,
+  "anchorFallback": 0,
+  "clampedAnchors": 13
+ },
+ "beats": {
+  "B01": {
+   "onsetSec": 0.0,
+   "speechEndSec": 6.543,
+   "lines": [
+    "TH-01",
+    "TH-02",
+    "TH-03"
+   ],
+   "clipStartSec": -0.252,
+   "clipEndSec": 6.883,
+   "clip": "projects/ZCONDO/audio/gemini-tts/zcpaint-th-split/beats/B01.wav"
+  },
+  "B02": {
+   "onsetSec": 7.227,
+   "speechEndSec": 16.485,
+   "lines": [
+    "TH-04",
+    "TH-05",
+    "TH-06",
+    "TH-07",
+    "TH-08",
+    "TH-09"
+   ],
+   "clipStartSec": 6.883,
+   "clipEndSec": 16.953,
+   "clip": "projects/ZCONDO/audio/gemini-tts/zcpaint-th-split/beats/B02.wav"
+  },
+  "B03": {
+   "onsetSec": 17.423,
+   "speechEndSec": 18.381,
+   "lines": [
+    "TH-10"
+   ],
+   "clipStartSec": 16.953,
+   "clipEndSec": 18.853,
+   "clip": "projects/ZCONDO/audio/gemini-tts/zcpaint-th-split/lines/TH-10.wav (identical bytes)"
+  },
+  "B04": {
+   "onsetSec": 19.318,
+   "speechEndSec": 34.992,
+   "lines": [
+    "TH-11",
+    "TH-12",
+    "TH-13",
+    "TH-14",
+    "TH-15",
+    "TH-16"
+   ],
+   "clipStartSec": 18.853,
+   "clipEndSec": 35.468,
+   "clip": "projects/ZCONDO/audio/gemini-tts/zcpaint-th-split/beats/B04.wav"
+  },
+  "B05": {
+   "onsetSec": 35.938,
+   "speechEndSec": 48.407,
+   "lines": [
+    "TH-17",
+    "TH-18",
+    "TH-19",
+    "TH-20",
+    "TH-21"
+   ],
+   "clipStartSec": 35.468,
+   "clipEndSec": 48.868,
+   "clip": "projects/ZCONDO/audio/gemini-tts/zcpaint-th-split/beats/B05.wav"
+  },
+  "B06": {
+   "onsetSec": 49.334,
+   "speechEndSec": 59.421,
+   "lines": [
+    "TH-22",
+    "TH-23",
+    "TH-24",
+    "TH-25"
+   ],
+   "clipStartSec": 48.868,
+   "clipEndSec": 59.888,
+   "clip": "projects/ZCONDO/audio/gemini-tts/zcpaint-th-split/beats/B06.wav"
+  },
+  "B07": {
+   "onsetSec": 60.348,
+   "speechEndSec": 67.576,
+   "lines": [
+    "TH-26",
+    "TH-27",
+    "TH-28"
+   ],
+   "clipStartSec": 59.888,
+   "clipEndSec": 68.103,
+   "clip": "projects/ZCONDO/audio/gemini-tts/zcpaint-th-split/beats/B07.wav"
+  },
+  "B08": {
+   "onsetSec": 68.631,
+   "speechEndSec": 74.98,
+   "lines": [
+    "TH-29",
+    "TH-30",
+    "TH-31"
+   ],
+   "clipStartSec": 68.103,
+   "clipEndSec": 75.663,
+   "clip": "projects/ZCONDO/audio/gemini-tts/zcpaint-th-split/beats/B08.wav"
+  },
+  "B09": {
+   "onsetSec": 76.344,
+   "speechEndSec": 88.793,
+   "lines": [
+    "TH-32",
+    "TH-33",
+    "TH-34",
+    "TH-35",
+    "TH-36",
+    "TH-36a",
+    "TH-37"
+   ],
+   "clipStartSec": 75.663,
+   "clipEndSec": 89.165,
+   "clip": null,
+   "clipNote": "call candidate: not re-cut; the split B09 clip ends before the call (use callCandidate.candidateStore)"
+  },
+  "B10": {
+   "onsetSec": 89.543,
+   "speechEndSec": 92.87,
+   "lines": [
+    "TH-38",
+    "TH-39"
+   ],
+   "clipStartSec": 89.165,
+   "clipEndSec": 93.151,
+   "clip": null,
+   "clipNote": "call candidate: not re-cut (see B09)"
+  }
+ },
+ "lines": {
+  "TH-01": {
+   "beat": "B01",
+   "onsetSec": 0.0,
+   "speechEndSec": 2.312
+  },
+  "TH-02": {
+   "beat": "B01",
+   "onsetSec": 2.665,
+   "speechEndSec": 4.965
+  },
+  "TH-03": {
+   "beat": "B01",
+   "onsetSec": 5.676,
+   "speechEndSec": 6.543
+  },
+  "TH-04": {
+   "beat": "B02",
+   "onsetSec": 7.227,
+   "speechEndSec": 7.433
+  },
+  "TH-05": {
+   "beat": "B02",
+   "onsetSec": 8.058,
+   "speechEndSec": 8.318
+  },
+  "TH-06": {
+   "beat": "B02",
+   "onsetSec": 8.974,
+   "speechEndSec": 9.872
+  },
+  "TH-07": {
+   "beat": "B02",
+   "onsetSec": 10.442,
+   "speechEndSec": 11.383
+  },
+  "TH-08": {
+   "beat": "B02",
+   "onsetSec": 11.875,
+   "speechEndSec": 13.766
+  },
+  "TH-09": {
+   "beat": "B02",
+   "onsetSec": 14.127,
+   "speechEndSec": 16.485
+  },
+  "TH-10": {
+   "beat": "B03",
+   "onsetSec": 17.423,
+   "speechEndSec": 18.381
+  },
+  "TH-11": {
+   "beat": "B04",
+   "onsetSec": 19.318,
+   "speechEndSec": 20.17
+  },
+  "TH-12": {
+   "beat": "B04",
+   "onsetSec": 20.926,
+   "speechEndSec": 24.091
+  },
+  "TH-13": {
+   "beat": "B04",
+   "onsetSec": 24.642,
+   "speechEndSec": 26.233
+  },
+  "TH-14": {
+   "beat": "B04",
+   "onsetSec": 26.639,
+   "speechEndSec": 28.795
+  },
+  "TH-15": {
+   "beat": "B04",
+   "onsetSec": 29.14,
+   "speechEndSec": 30.286
+  },
+  "TH-16": {
+   "beat": "B04",
+   "onsetSec": 30.529,
+   "speechEndSec": 34.992
+  },
+  "TH-17": {
+   "beat": "B05",
+   "onsetSec": 35.938,
+   "speechEndSec": 38.312
+  },
+  "TH-18": {
+   "beat": "B05",
+   "onsetSec": 38.422,
+   "speechEndSec": 40.938
+  },
+  "TH-19": {
+   "beat": "B05",
+   "onsetSec": 41.129,
+   "speechEndSec": 44.814
+  },
+  "TH-20": {
+   "beat": "B05",
+   "onsetSec": 45.228,
+   "speechEndSec": 45.936
+  },
+  "TH-21": {
+   "beat": "B05",
+   "onsetSec": 46.18,
+   "speechEndSec": 48.407
+  },
+  "TH-22": {
+   "beat": "B06",
+   "onsetSec": 49.334,
+   "speechEndSec": 52.084
+  },
+  "TH-23": {
+   "beat": "B06",
+   "onsetSec": 52.587,
+   "speechEndSec": 55.393
+  },
+  "TH-24": {
+   "beat": "B06",
+   "onsetSec": 56.042,
+   "speechEndSec": 58.11
+  },
+  "TH-25": {
+   "beat": "B06",
+   "onsetSec": 58.561,
+   "speechEndSec": 59.421
+  },
+  "TH-26": {
+   "beat": "B07",
+   "onsetSec": 60.348,
+   "speechEndSec": 62.422
+  },
+  "TH-27": {
+   "beat": "B07",
+   "onsetSec": 63.056,
+   "speechEndSec": 65.881
+  },
+  "TH-28": {
+   "beat": "B07",
+   "onsetSec": 66.05,
+   "speechEndSec": 67.576
+  },
+  "TH-29": {
+   "beat": "B08",
+   "onsetSec": 68.631,
+   "speechEndSec": 71.341
+  },
+  "TH-30": {
+   "beat": "B08",
+   "onsetSec": 71.802,
+   "speechEndSec": 73.283
+  },
+  "TH-31": {
+   "beat": "B08",
+   "onsetSec": 73.655,
+   "speechEndSec": 74.98
+  },
+  "TH-32": {
+   "beat": "B09",
+   "onsetSec": 76.344,
+   "speechEndSec": 77.039
+  },
+  "TH-33": {
+   "beat": "B09",
+   "onsetSec": 77.546,
+   "speechEndSec": 78.652
+  },
+  "TH-34": {
+   "beat": "B09",
+   "onsetSec": 79.145,
+   "speechEndSec": 80.414
+  },
+  "TH-35": {
+   "beat": "B09",
+   "onsetSec": 80.874,
+   "speechEndSec": 82.149
+  },
+  "TH-36": {
+   "beat": "B09",
+   "onsetSec": 82.918,
+   "speechEndSec": 84.516
+  },
+  "TH-36a": {
+   "beat": "B09",
+   "onsetSec": 85.0,
+   "speechEndSec": 86.222
+  },
+  "TH-37": {
+   "beat": "B09",
+   "onsetSec": 87.726,
+   "speechEndSec": 88.793
+  },
+  "TH-38": {
+   "beat": "B10",
+   "onsetSec": 89.543,
+   "speechEndSec": 91.723
+  },
+  "TH-39": {
+   "beat": "B10",
+   "onsetSec": 92.168,
+   "speechEndSec": 92.87
+  }
+ },
+ "callGap": {
+  "afterLine": "TH-36",
+  "beforeLine": "TH-37",
+  "gapSec": 3.21,
+  "previousGapSec": 1.243,
+  "callId": "TH-36a",
+  "callOnsetSec": 85.0,
+  "callEndSec": 86.222,
+  "callLengthSec": 1.2219,
+  "silenceBeforeCallSec": 0.4839,
+  "silenceAfterCallSec": 1.5035,
+  "silenceAfterCallFrames": 45.1,
+  "shiftFrames": 59,
+  "shiftSec": 1.9667,
+  "note": "silence between TH-36 and TH-37 now holds the in-story call TH-36a (candidate, Gemini Enceladus, not swapped); rule: TH-37 onset = call end + 45 f (SS-R1.6); the planned +52 f becomes +59 f for a 1.222 s call"
+ },
+ "cuts": [
+  {
+   "k": 0,
+   "between": "TH-01|TH-02",
+   "kind": "line",
+   "cutSec": 2.488,
+   "gapSec": 0.34,
+   "clearanceSec": [
+    0.175,
+    0.177
+   ],
+   "clearanceAt100Sec": [
+    0.103,
+    0.177
+   ],
+   "how": "gap centre"
+  },
+  {
+   "k": 1,
+   "between": "TH-02|TH-03",
+   "kind": "line",
+   "cutSec": 5.318,
+   "gapSec": 0.7,
+   "clearanceSec": [
+    0.353,
+    0.358
+   ],
+   "clearanceAt100Sec": [
+    0.309,
+    0.352
+   ],
+   "how": "gap centre"
+  },
+  {
+   "k": 2,
+   "between": "TH-03|TH-04",
+   "kind": "beat",
+   "cutSec": 6.883,
+   "gapSec": null,
+   "clearanceSec": [
+    0.34,
+    0.344
+   ],
+   "clearanceAt100Sec": [
+    0.314,
+    0.343
+   ],
+   "how": "cut-gaps beat cut"
+  },
+  {
+   "k": 3,
+   "between": "TH-04|TH-05",
+   "kind": "line",
+   "cutSec": 7.748,
+   "gapSec": 0.62,
+   "clearanceSec": [
+    0.315,
+    0.31
+   ],
+   "clearanceAt100Sec": [
+    0.305,
+    0.255
+   ],
+   "how": "gap centre"
+  },
+  {
+   "k": 4,
+   "between": "TH-05|TH-06",
+   "kind": "line",
+   "cutSec": 8.648,
+   "gapSec": 0.64,
+   "clearanceSec": [
+    0.33,
+    0.326
+   ],
+   "clearanceAt100Sec": [
+    0.245,
+    0.267
+   ],
+   "how": "gap centre"
+  },
+  {
+   "k": 5,
+   "between": "TH-06|TH-07",
+   "kind": "line",
+   "cutSec": 10.158,
+   "gapSec": 0.56,
+   "clearanceSec": [
+    0.286,
+    0.284
+   ],
+   "clearanceAt100Sec": [
+    0.129,
+    0.095
+   ],
+   "how": "gap centre"
+  },
+  {
+   "k": 6,
+   "between": "TH-07|TH-08",
+   "kind": "line",
+   "cutSec": 11.628,
+   "gapSec": 0.48,
+   "clearanceSec": [
+    0.245,
+    0.247
+   ],
+   "clearanceAt100Sec": [
+    0.209,
+    0.211
+   ],
+   "how": "gap centre"
+  },
+  {
+   "k": 7,
+   "between": "TH-08|TH-09",
+   "kind": "line",
+   "cutSec": 13.943,
+   "gapSec": 0.35,
+   "clearanceSec": [
+    0.177,
+    0.184
+   ],
+   "clearanceAt100Sec": [
+    0.152,
+    0.122
+   ],
+   "how": "gap centre"
+  },
+  {
+   "k": 8,
+   "between": "TH-09|TH-10",
+   "kind": "beat",
+   "cutSec": 16.953,
+   "gapSec": null,
+   "clearanceSec": [
+    0.468,
+    0.47
+   ],
+   "clearanceAt100Sec": [
+    0.455,
+    0.426
+   ],
+   "how": "cut-gaps beat cut"
+  },
+  {
+   "k": 9,
+   "between": "TH-10|TH-11",
+   "kind": "beat",
+   "cutSec": 18.853,
+   "gapSec": null,
+   "clearanceSec": [
+    0.472,
+    0.465
+   ],
+   "clearanceAt100Sec": [
+    0.356,
+    0.453
+   ],
+   "how": "cut-gaps beat cut"
+  },
+  {
+   "k": 10,
+   "between": "TH-11|TH-12",
+   "kind": "line",
+   "cutSec": 20.548,
+   "gapSec": 0.74,
+   "clearanceSec": [
+    0.378,
+    0.379
+   ],
+   "clearanceAt100Sec": [
+    0.363,
+    0.117
+   ],
+   "how": "gap centre"
+  },
+  {
+   "k": 11,
+   "between": "TH-12|TH-13",
+   "kind": "line",
+   "cutSec": 24.368,
+   "gapSec": 0.54,
+   "clearanceSec": [
+    0.277,
+    0.274
+   ],
+   "clearanceAt100Sec": [
+    0.245,
+    0.269
+   ],
+   "how": "gap centre"
+  },
+  {
+   "k": 12,
+   "between": "TH-13|TH-14",
+   "kind": "line",
+   "cutSec": 26.438,
+   "gapSec": 0.4,
+   "clearanceSec": [
+    0.205,
+    0.201
+   ],
+   "clearanceAt100Sec": [
+    0.198,
+    0.201
+   ],
+   "how": "gap centre"
+  },
+  {
+   "k": 13,
+   "between": "TH-14|TH-15",
+   "kind": "line",
+   "cutSec": 28.968,
+   "gapSec": 0.34,
+   "clearanceSec": [
+    0.173,
+    0.172
+   ],
+   "clearanceAt100Sec": [
+    0.171,
+    0.111
+   ],
+   "how": "gap centre"
+  },
+  {
+   "k": 14,
+   "between": "TH-15|TH-16",
+   "kind": "line",
+   "cutSec": 30.408,
+   "gapSec": 0.24,
+   "clearanceSec": [
+    0.122,
+    0.121
+   ],
+   "clearanceAt100Sec": [
+    0.074,
+    0.121
+   ],
+   "how": "gap centre"
+  },
+  {
+   "k": 15,
+   "between": "TH-16|TH-17",
+   "kind": "beat",
+   "cutSec": 35.468,
+   "gapSec": null,
+   "clearanceSec": [
+    0.476,
+    0.47
+   ],
+   "clearanceAt100Sec": [
+    0.47,
+    0.469
+   ],
+   "how": "cut-gaps beat cut"
+  },
+  {
+   "k": 16,
+   "between": "TH-17|TH-18",
+   "kind": "line",
+   "cutSec": 38.368,
+   "gapSec": 0.1,
+   "clearanceSec": [
+    0.056,
+    0.054
+   ],
+   "clearanceAt100Sec": [
+    0.014,
+    0.019
+   ],
+   "how": "gap centre"
+  },
+  {
+   "k": 17,
+   "between": "TH-18|TH-19",
+   "kind": "line",
+   "cutSec": 41.033,
+   "gapSec": 0.19,
+   "clearanceSec": [
+    0.095,
+    0.096
+   ],
+   "clearanceAt100Sec": [
+    0.094,
+    0.053
+   ],
+   "how": "gap centre"
+  },
+  {
+   "k": 18,
+   "between": "TH-19|TH-20",
+   "kind": "line",
+   "cutSec": 45.018,
+   "gapSec": 0.4,
+   "clearanceSec": [
+    0.204,
+    0.21
+   ],
+   "clearanceAt100Sec": [
+    0.184,
+    0.208
+   ],
+   "how": "gap centre"
+  },
+  {
+   "k": 19,
+   "between": "TH-20|TH-21",
+   "kind": "line",
+   "cutSec": 46.058,
+   "gapSec": 0.24,
+   "clearanceSec": [
+    0.122,
+    0.122
+   ],
+   "clearanceAt100Sec": [
+    0.113,
+    0.06
+   ],
+   "how": "gap centre"
+  },
+  {
+   "k": 20,
+   "between": "TH-21|TH-22",
+   "kind": "beat",
+   "cutSec": 48.868,
+   "gapSec": null,
+   "clearanceSec": [
+    0.461,
+    0.466
+   ],
+   "clearanceAt100Sec": [
+    0.443,
+    0.465
+   ],
+   "how": "cut-gaps beat cut"
+  },
+  {
+   "k": 21,
+   "between": "TH-22|TH-23",
+   "kind": "line",
+   "cutSec": 52.333,
+   "gapSec": 0.49,
+   "clearanceSec": [
+    0.249,
+    0.254
+   ],
+   "clearanceAt100Sec": [
+    0.227,
+    0.253
+   ],
+   "how": "gap centre"
+  },
+  {
+   "k": 22,
+   "between": "TH-23|TH-24",
+   "kind": "line",
+   "cutSec": 55.718,
+   "gapSec": 0.64,
+   "clearanceSec": [
+    0.325,
+    0.324
+   ],
+   "clearanceAt100Sec": [
+    0.292,
+    0.323
+   ],
+   "how": "gap centre"
+  },
+  {
+   "k": 23,
+   "between": "TH-24|TH-25",
+   "kind": "line",
+   "cutSec": 58.338,
+   "gapSec": 0.44,
+   "clearanceSec": [
+    0.228,
+    0.223
+   ],
+   "clearanceAt100Sec": [
+    0.192,
+    0.219
+   ],
+   "how": "gap centre"
+  },
+  {
+   "k": 24,
+   "between": "TH-25|TH-26",
+   "kind": "beat",
+   "cutSec": 59.888,
+   "gapSec": null,
+   "clearanceSec": [
+    0.467,
+    0.46
+   ],
+   "clearanceAt100Sec": [
+    0.016,
+    0.459
+   ],
+   "how": "cut-gaps beat cut"
+  },
+  {
+   "k": 25,
+   "between": "TH-26|TH-27",
+   "kind": "line",
+   "cutSec": 62.738,
+   "gapSec": 0.62,
+   "clearanceSec": [
+    0.316,
+    0.318
+   ],
+   "clearanceAt100Sec": [
+    0.291,
+    0.317
+   ],
+   "how": "gap centre"
+  },
+  {
+   "k": 26,
+   "between": "TH-27|TH-28",
+   "kind": "line",
+   "cutSec": 65.968,
+   "gapSec": 0.16,
+   "clearanceSec": [
+    0.087,
+    0.082
+   ],
+   "clearanceAt100Sec": [
+    0.085,
+    0.082
+   ],
+   "how": "gap centre"
+  },
+  {
+   "k": 27,
+   "between": "TH-28|TH-29",
+   "kind": "beat",
+   "cutSec": 68.103,
+   "gapSec": null,
+   "clearanceSec": [
+    0.527,
+    0.528
+   ],
+   "clearanceAt100Sec": [
+    0.493,
+    0.528
+   ],
+   "how": "cut-gaps beat cut"
+  },
+  {
+   "k": 28,
+   "between": "TH-29|TH-30",
+   "kind": "line",
+   "cutSec": 71.573,
+   "gapSec": 0.45,
+   "clearanceSec": [
+    0.232,
+    0.229
+   ],
+   "clearanceAt100Sec": [
+    0.069,
+    0.08
+   ],
+   "how": "gap centre"
+  },
+  {
+   "k": 29,
+   "between": "TH-30|TH-31",
+   "kind": "line",
+   "cutSec": 73.468,
+   "gapSec": 0.36,
+   "clearanceSec": [
+    0.185,
+    0.187
+   ],
+   "clearanceAt100Sec": [
+    0.065,
+    0.134
+   ],
+   "how": "gap centre"
+  },
+  {
+   "k": 30,
+   "between": "TH-31|TH-32",
+   "kind": "beat",
+   "cutSec": 75.663,
+   "gapSec": null,
+   "clearanceSec": [
+    0.682,
+    0.681
+   ],
+   "clearanceAt100Sec": [
+    0.651,
+    0.392
+   ],
+   "how": "cut-gaps beat cut"
+  },
+  {
+   "k": 31,
+   "between": "TH-32|TH-33",
+   "kind": "line",
+   "cutSec": 77.293,
+   "gapSec": 0.49,
+   "clearanceSec": [
+    0.254,
+    0.254
+   ],
+   "clearanceAt100Sec": [
+    0.229,
+    0.251
+   ],
+   "how": "gap centre"
+  },
+  {
+   "k": 32,
+   "between": "TH-33|TH-34",
+   "kind": "line",
+   "cutSec": 78.898,
+   "gapSec": 0.48,
+   "clearanceSec": [
+    0.246,
+    0.247
+   ],
+   "clearanceAt100Sec": [
+    0.229,
+    0.104
+   ],
+   "how": "gap centre"
+  },
+  {
+   "k": 33,
+   "between": "TH-34|TH-35",
+   "kind": "line",
+   "cutSec": 80.643,
+   "gapSec": 0.45,
+   "clearanceSec": [
+    0.229,
+    0.231
+   ],
+   "clearanceAt100Sec": [
+    0.211,
+    0.227
+   ],
+   "how": "gap centre"
+  },
+  {
+   "k": 34,
+   "between": "TH-35|TH-36",
+   "kind": "line",
+   "cutSec": 82.538,
+   "gapSec": 0.76,
+   "clearanceSec": [
+    0.388,
+    0.38
+   ],
+   "clearanceAt100Sec": [
+    0.281,
+    0.281
+   ],
+   "how": "gap centre"
+  },
+  {
+   "k": 35,
+   "between": "TH-36|TH-36a",
+   "kind": "line",
+   "cutSec": 84.758,
+   "gapSec": 0.484,
+   "clearanceSec": null,
+   "clearanceAt100Sec": null,
+   "how": "call candidate: midpoint of the silence before the call (call pinned at 85.000 s); clearance not re-measured"
+  },
+  {
+   "k": 36,
+   "between": "TH-37|TH-38",
+   "kind": "beat",
+   "cutSec": 89.165,
+   "gapSec": null,
+   "clearanceSec": [
+    0.372,
+    0.378
+   ],
+   "clearanceAt100Sec": [
+    0.368,
+    0.377
+   ],
+   "how": "cut-gaps beat cut; shifted +shiftSec (call candidate)"
+  },
+  {
+   "k": 37,
+   "between": "TH-38|TH-39",
+   "kind": "line",
+   "cutSec": 91.945,
+   "gapSec": 0.44,
+   "clearanceSec": [
+    0.222,
+    0.223
+   ],
+   "clearanceAt100Sec": [
+    0.15,
+    0.222
+   ],
+   "how": "gap centre; shifted +shiftSec (call candidate)"
+  }
+ ],
+ "doubtfulCuts": [
+  7
+ ],
+ "store": {
+  "lines": "projects/ZCONDO/audio/gemini-tts/zcpaint-th-split/lines/TH-01..TH-39.wav",
+  "beats": "projects/ZCONDO/audio/gemini-tts/zcpaint-th-split/beats/",
+  "candidateMp3": "projects/ZCONDO/audio/gemini-tts/zcpaint-th-split/candidate/ZCPAINT-SHORT-TH.candidate.mp3 (not in public/; timeline not swapped)",
+  "candidateCallMp3": "projects/ZCONDO/audio/gemini-tts/zcpaint-th-call/candidate/ZCPAINT-SHORT-TH.candidate-call.mp3",
+  "callClip": "projects/ZCONDO/audio/gemini-tts/zcpaint-th-call/muffled/take-3.muffled.wav"
+ },
+ "callCandidate": {
+  "status": "candidate, not swapped into public/narration: the user picks the take by ear, then the swap",
+  "line": "TH-36a",
+  "beat": "B09",
+  "text": "มีใครอยู่ไหม",
+  "caption": null,
+  "voice": "Enceladus (Gemini TTS prebuilt, male, low pitch; Kore is the narrator)",
+  "model": "gemini-3.8-flash-tts",
+  "style": "tired and careful, low soft voice, calling softly through a closed door, not shouting, a little hesitant, slight rise on the last word",
+  "takes": {
+   "count": 3,
+   "chosen": "take-3 (Whisper exact text on raw and muffled; the shortest audible body; take-2 0.69, take-1 0.42 muffled, proxy only)"
+  },
+  "mix": "muffled: ffmpeg lowpass=f=2500:poles=2, aecho=0.8:0.5:24|37:0.22|0.14, volume=-3dB; clip = first to last sample >= 300",
+  "clipStore": "projects/ZCONDO/audio/gemini-tts/zcpaint-th-call/muffled/take-3.muffled.wav",
+  "candidateStore": "projects/ZCONDO/audio/gemini-tts/zcpaint-th-call/candidate/ZCPAINT-SHORT-TH.candidate-call.mp3",
+  "callOnsetSec": 85.0,
+  "callEndSec": 86.222,
+  "callLengthSec": 1.2219,
+  "silenceBeforeCallSec": 0.4839,
+  "silenceAfterCallSec": 1.5035,
+  "shiftFrames": 59,
+  "shiftSec": 1.9667,
+  "amplitude": "scripts/zombie-condo-paint/short/ZCPAINT-SHORT-TH.amplitude.json regenerated from the candidate (30 fps, peak-normalised)",
+  "pending": "Mark/Boss/Editor re-lock of the B09/B10 frame ranges to this call length (see callGap)"
+ }
+}

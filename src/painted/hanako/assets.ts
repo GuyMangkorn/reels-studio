@@ -15,8 +15,9 @@ export const RESTROOM = {
 export const paintRestroom = (p: Painter, view: RestroomView) => {
   if (view === 'RR-KNOCK') {paintDoorFace(p); return;}
   const {brush} = p, {k, ground, top, bottom} = RESTROOM[view];
-  hardFill(p, 1, '#1b292b', rectPts(-300, -300, 1380, 2220));
-  hardFill(p, 2, '#526f6d', rectPts(-300, -300, 1380, ground));
+  washAt(p, 51001, '#1b292b', 255, rectPts(-300, -300, 1380, 2220), .02, .18);
+  washAt(p, 51002, '#526f6d', 255, rectPts(-300, -300, 1380, ground), .025, .22);
+  washAt(p, 51003, '#354f50', 75, [[-200,80],[180,180],[260,ground],[0,ground]], .06, .4);
   // Tile courses stay quiet behind the doors; seeded mineral washes above the caption band.
   for (let y = 0; y < ground; y += 120) {
     inkLine(p, 10 + y, [[-100, y], [1180, y]], {color: '#405c5b', weight: 0.65, closed: false, still: true});
@@ -38,17 +39,34 @@ export const paintRestroom = (p: Painter, view: RestroomView) => {
       const y = bottom - k * (.12 + j * .048);
       hardFill(p, seed + 10 + j, '#304740', rectPts(x + hw * .17, y, cx + hw * .83, y + k * .015));
     }
+    // Damp pigment gathers at the lower seams; the metal edges and slats stay crisp.
+    washAt(p, 52000 + seed, '#233f3c', 85,
+      [[x+4,bottom-k*.16],[x+hw*.30,bottom-k*.11],[cx+hw-4,bottom-k*.06],[cx+hw-4,bottom-3],[x+4,bottom-3]], .015, .5);
+    for (let j=0;j<3;j++) {
+      const dx=x+hw*(.25+hash(seed+j)*1.3), dy=top+k*(.38+hash(seed+j+20)*.7);
+      const w=k*(.025+hash(seed+j+40)*.035);
+      washAt(p, 53000+seed+j, '#334e47', 90, ell(dx,dy,w,k*.014), .015, .4);
+      inkLine(p, 54000+seed+j, [[dx-w*.7,dy+k*.01],[dx,dy+k*.018],[dx+w*.7,dy+k*.008]], {color:'#8d9f8c',weight:.5,closed:false,still:true});
+    }
+    for(let j=0;j<9;j++) {
+      const sx=x+hw*(.12+hash(seed+j+70)*1.76), sy=bottom-k*(.02+hash(seed+j+90)*.08);
+      inkLine(p, 55000+seed+j, [[sx,sy],[sx+k*.013,sy-k*.006]], {color:j%3?'#879b88':'#30483f',weight:.45,closed:false,still:true});
+    }
   }
   // Screen-space values below 860 are deliberately dark; no bright wet reflection.
-  hardFill(p, 700, '#1a2b2d', rectPts(-300, ground, 1380, 2220));
+  washAt(p, 51700, '#1a2b2d', 255, rectPts(-300, ground, 1380, 2220), .01, .16);
   if (view === 'RR-WIDE') {
     for (const x of [-1800, -600, 0, 540, 1080, 1680, 2880]) {
       p.inkStill(710 + x, 'cpencil', '#2c4140', .7);
       brush.line(540 + (x - 540) * .23, ground, x, 1920);
     }
     for (const y of [850, 940, 1080, 1320, 1700]) inkLine(p, y, [[0, y], [1080, y]], {color: '#2b3c3d', weight: .7, closed: false, still: true});
-    hardFill(p, 740, '#102021', [[244, 846], [277, 846], [286, 855], [237, 855]]);
-    hardFill(p, 750, '#b2c9bd', rectPts(315, 270, 765, 282));
+    // Broken wet reflection stays above screen y851 even at the 1.10 entry camera.
+    washAt(p, 51730, '#7c8d70', 60, [[367,804],[672,804],[716,815],[330,815]], .01, .6);
+    washAt(p, 51731, '#b2b18b', 48, [[420,806],[626,806],[646,810],[402,811]], .01, .45);
+    washAt(p, 51732, '#0c1d20', 140, [[145,800],[940,800],[980,807],[115,807]], .01, .25);
+    hardFill(p, 740, '#102021', [[244, 817], [277, 817], [286, 826], [237, 826]]);
+    hardFill(p, 750, '#c4c5a2', rectPts(315, 270, 765, 282));
     hardFill(p, 751, '#354b49', rectPts(300, 260, 780, 269));
   }
 };

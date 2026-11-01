@@ -4,24 +4,25 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans+Thai:wght@400;500;600&family=Noto+Serif+Thai:wght@600;700&display=swap">
 <style>
 /* Fixed layout for every user storyboard review page (docs/mark-storyboard-workflow.md#user-storyboard-review-page).
-   One reading column: open questions, then shot rows grouped by beat. Edit this template, never a published page. */
+   One page per deliverable, three tabs: storyboard, draft, final. Every tab shows the same shot rows; only the media
+   column and the accept step differ. Edit this template, never a published page. */
 :root {
   --bg: #eef0ef; --surface: #f8f9f8; --line: #d5dad8; --fg: #1c2321; --muted: #5f6b67;
-  --accent: #b5641c; --ok: #2f7a4a; --change: #b23a2e; --flag-bg: #f6ead9;
+  --accent: #b5641c; --ok: #2f7a4a; --ok-bg: #e2f0e6; --change: #b23a2e; --flag-bg: #f6ead9;
   --font-display: "Noto Serif Thai", Georgia, serif;
   --font-body: "IBM Plex Sans Thai", system-ui, sans-serif;
   --font-mono: "IBM Plex Mono", ui-monospace, monospace;
 }
 @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
   --bg: #151a19; --surface: #1d2422; --line: #303a37; --fg: #e3e8e6; --muted: #98a6a1;
-  --accent: #e39a4f; --ok: #6cc58c; --change: #ef7c6e; --flag-bg: #33291d; color-scheme: dark } }
+  --accent: #e39a4f; --ok: #6cc58c; --ok-bg: #1f3327; --change: #ef7c6e; --flag-bg: #33291d; color-scheme: dark } }
 :root[data-theme="dark"] {
   --bg: #151a19; --surface: #1d2422; --line: #303a37; --fg: #e3e8e6; --muted: #98a6a1;
-  --accent: #e39a4f; --ok: #6cc58c; --change: #ef7c6e; --flag-bg: #33291d; color-scheme: dark }
+  --accent: #e39a4f; --ok: #6cc58c; --ok-bg: #1f3327; --change: #ef7c6e; --flag-bg: #33291d; color-scheme: dark }
 
 [hidden] { display: none !important; }
 body { background: var(--bg); color: var(--fg); font-family: var(--font-body); font-size: 15px; line-height: 1.6; }
-.wrap { max-width: 1180px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 32px 64px; display: grid; gap: 28px; }
+.wrap { max-width: 1180px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 32px 64px; display: grid; gap: 24px; }
 header { display: grid; gap: 10px; }
 .eyebrow { font-family: var(--font-mono); font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
 h1 { font-family: var(--font-display); font-size: clamp(28px, 5vw, 40px); line-height: 1.2; margin: 0; text-wrap: balance; }
@@ -29,27 +30,57 @@ h2 { font-family: var(--font-display); font-size: 21px; margin: 0; text-wrap: ba
 .lede { max-width: 68ch; margin: 0; color: var(--muted); }
 .facts { display: flex; flex-wrap: wrap; gap: 8px 20px; font-size: 13px; color: var(--muted); }
 .facts b { color: var(--fg); font-weight: 600; font-variant-numeric: tabular-nums; }
-.progress { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 16px; padding: 12px 16px; background: var(--surface); border: 1px solid var(--line); border-radius: 6px; }
-.progress .count { font-variant-numeric: tabular-nums; }
-.progress .sp { flex: 1; }
 .btn { font: inherit; font-size: 13px; padding: 6px 12px; border-radius: 4px; border: 1px solid var(--line); background: var(--bg); color: var(--fg); cursor: pointer; }
-.btn:focus-visible, textarea:focus-visible, .seg button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.btn:focus-visible, textarea:focus-visible, .seg button:focus-visible, .tab:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 .store { font-size: 12px; color: var(--muted); }
+
+/* Accept status: one meter per stage, then the store state and copy button. */
+.status { display: grid; gap: 12px; padding: 14px 16px; background: var(--surface); border: 1px solid var(--line); border-radius: 6px; }
+.meters { display: grid; grid-template-columns: auto repeat(3, minmax(0, 1fr)); gap: 8px 18px; align-items: center; }
+.meters .k { font-size: 12px; color: var(--muted); letter-spacing: .04em; }
+.meter { display: grid; gap: 4px; }
+.meter .row { display: flex; justify-content: space-between; gap: 8px; font-size: 13px; }
+.meter b { font-variant-numeric: tabular-nums; }
+.meter .bar { height: 5px; background: var(--line); border-radius: 3px; overflow: hidden; }
+.meter .bar i { display: block; height: 100%; width: 0; background: var(--ok); transition: width .3s; }
+.status .foot { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 16px; }
+.status .sp { flex: 1; }
+
+.tabs { display: flex; gap: 4px; border-bottom: 2px solid var(--fg); position: sticky; top: env(safe-area-inset-top, 0px); background: var(--bg); z-index: 5; padding-top: 6px; }
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--bg); }
+.tab { font: inherit; font-size: 15px; font-weight: 500; padding: 8px 16px; border: 1px solid transparent; border-bottom: 0; border-radius: 6px 6px 0 0; background: transparent; color: var(--muted); cursor: pointer; display: flex; gap: 8px; align-items: baseline; }
+.tab .n { font-family: var(--font-mono); font-size: 12px; font-variant-numeric: tabular-nums; }
+.tab[aria-selected="true"] { background: var(--fg); color: var(--bg); }
+.tab.full .n::after { content: " ✓"; }
+.tabnote { margin: 0; font-size: 13px; color: var(--muted); max-width: 72ch; }
 
 section.qs { display: grid; gap: 12px; }
 .q { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 320px); gap: 12px 20px; padding: 14px 16px; background: var(--flag-bg); border-radius: 6px; }
 .q p { margin: 0; }
 .q .qid { font-family: var(--font-mono); font-size: 12px; color: var(--accent); }
 
+#beats { display: grid; gap: 28px; }
 .beat { display: grid; gap: 0; }
-.beat-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 12px; padding-bottom: 8px; border-bottom: 2px solid var(--fg); }
+.beat-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 12px; padding-bottom: 8px; border-bottom: 1px solid var(--fg); }
 .beat-head .bid { font-family: var(--font-mono); font-size: 12px; color: var(--muted); }
-.cols, .shot { display: grid; grid-template-columns: 104px minmax(0, 1.1fr) minmax(0, 1.4fr) minmax(0, .8fr) minmax(0, 1.2fr) minmax(0, 1fr); gap: 0 16px; }
+/* Look frame (W2): one painted still per location, shown on every beat that uses it. */
+.beat-head { align-items: center; }
+.look { display: flex; align-items: center; gap: 10px; margin-left: auto; font-size: 12px; color: var(--muted); max-width: 46ch; }
+.look img { width: 54px; aspect-ratio: 9 / 16; object-fit: cover; border: 1px solid var(--line); border-radius: 3px; cursor: zoom-in; background: var(--surface); flex: none; }
+.look .lk { font-family: var(--font-mono); font-size: 11px; color: var(--accent); display: block; }
+#beats.no-media .cols, #beats.no-media .shot { grid-template-columns: 104px minmax(0, 1.2fr) minmax(0, 1.8fr) minmax(0, 1.2fr); }
+.cols, .shot { display: grid; grid-template-columns: 104px minmax(0, 1.1fr) minmax(0, 1.4fr) minmax(0, 1.1fr) minmax(0, 1.2fr); gap: 0 16px; }
 .cols { font-size: 12px; color: var(--muted); padding: 8px 0; border-bottom: 1px solid var(--line); }
 .shot { padding: 14px 0; border-bottom: 1px solid var(--line); align-items: start; }
 .shot > div { min-width: 0; }
+.shot.accepted { background: linear-gradient(90deg, var(--ok-bg), transparent 35%); }
 .sid { font-family: var(--font-mono); font-size: 13px; font-weight: 500; }
 .time { font-family: var(--font-mono); font-size: 12px; color: var(--muted); font-variant-numeric: tabular-nums; }
+.dots { display: flex; gap: 4px; margin-top: 8px; }
+.dots span { width: 8px; height: 8px; border-radius: 50%; border: 2px solid var(--line); box-sizing: border-box; }
+.dots span.ok { background: var(--ok); border-color: var(--ok); }
+.dots span.change { border-color: var(--change); }
+.pin { display: inline-block; margin-top: 6px; font-size: 11px; font-weight: 500; padding: 1px 7px; border-radius: 999px; background: var(--ok-bg); color: var(--ok); }
 .title { font-weight: 600; margin-bottom: 4px; }
 .vo { margin: 0; padding: 0; list-style: none; display: grid; gap: 2px; }
 .vo li { font-size: 14px; }
@@ -57,8 +88,8 @@ section.qs { display: grid; gap: 12px; }
 .vo.none { color: var(--muted); font-size: 13px; }
 .seen { margin: 0; }
 .flag { margin-top: 6px; padding: 6px 8px; font-size: 13px; background: var(--flag-bg); border-left: 3px solid var(--accent); }
-.sound { font-size: 13px; color: var(--muted); }
-.preview { font-size: 12px; color: var(--muted); }
+.sound { font-size: 13px; color: var(--muted); margin-top: 8px; }
+.media { font-size: 12px; color: var(--muted); }
 .lbl { display: none; }
 
 .review { display: grid; gap: 6px; }
@@ -68,14 +99,13 @@ section.qs { display: grid; gap: 12px; }
 .seg button[aria-pressed="true"][data-v="ok"] { background: var(--ok); color: var(--surface); }
 .seg button[aria-pressed="true"][data-v="change"] { background: var(--change); color: var(--surface); }
 textarea { font: inherit; font-size: 13px; width: 100%; box-sizing: border-box; min-height: 52px; resize: vertical; padding: 6px 8px; border: 1px solid var(--line); border-radius: 4px; background: var(--surface); color: var(--fg); }
-.saved { font-size: 11px; color: var(--muted); min-height: 1em; }
-.prev { font-size: 11px; color: var(--muted); }
+.saved, .prev, .wait { font-size: 11px; color: var(--muted); min-height: 1em; }
+.wait { font-size: 13px; }
 
-section.els { display: grid; gap: 12px; }
-.el-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 12px; }
-.el-grid figure { margin: 0; display: grid; gap: 6px; }
-.el-grid img { width: 100%; height: 220px; object-fit: cover; object-position: top; border: 1px solid var(--line); border-radius: 4px; cursor: zoom-in; background: var(--surface); }
-.el-grid figcaption { font-size: 12px; color: var(--muted); }
+.clip { display: grid; gap: 6px; }
+.clip video { width: 140px; max-width: 100%; aspect-ratio: 9 / 16; border-radius: 4px; background: #0d1110; border: 1px solid var(--line); display: block; object-fit: cover; cursor: pointer; }
+.clip .row { display: flex; gap: 6px; flex-wrap: wrap; }
+.clip .btn { font-size: 12px; padding: 3px 8px; }
 .thumbs { display: grid; grid-template-columns: repeat(auto-fill, minmax(64px, 1fr)); gap: 6px; margin-block: 4px 6px; }
 .thumbs figure { margin: 0; display: grid; gap: 2px; }
 .thumbs img { width: 100%; aspect-ratio: 9 / 16; object-fit: cover; border: 1px solid var(--line); border-radius: 3px; cursor: zoom-in; background: var(--surface); }
@@ -83,6 +113,12 @@ section.els { display: grid; gap: 12px; }
 .q .thumbs img { aspect-ratio: auto; }
 .thumbs figcaption { font-size: 10px; line-height: 1.3; color: var(--muted); }
 .pvlabel { font-size: 10px; line-height: 1.35; color: var(--muted); margin-top: 4px; }
+
+section.els { display: grid; gap: 12px; }
+.el-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 12px; }
+.el-grid figure { margin: 0; display: grid; gap: 6px; }
+.el-grid img { width: 100%; height: 220px; object-fit: cover; object-position: top; border: 1px solid var(--line); border-radius: 4px; cursor: zoom-in; background: var(--surface); }
+.el-grid figcaption { font-size: 12px; color: var(--muted); }
 dialog { border: 0; padding: 0; background: transparent; max-width: 96vw; max-height: 94vh; }
 dialog::backdrop { background: rgba(0,0,0,.75); }
 dialog img, dialog video { max-width: 96vw; max-height: 88vh; display: block; }
@@ -94,7 +130,12 @@ dialog button { margin-top: 8px; }
   .shot { grid-template-columns: minmax(0, 1fr); gap: 8px; }
   .lbl { display: block; font-size: 11px; color: var(--muted); letter-spacing: .04em; }
   .q { grid-template-columns: minmax(0, 1fr); }
+  .meters { grid-template-columns: minmax(0, 1fr); }
+  .tab { padding: 8px 10px; font-size: 14px; }
+  #beats.no-media .shot { grid-template-columns: minmax(0, 1fr); }
+  .look { margin-left: 0; width: 100%; }
 }
+@media (prefers-reduced-motion: reduce) { .meter .bar i { transition: none; } }
 </style>
 
 <div class="wrap">
@@ -105,11 +146,13 @@ dialog button { margin-top: 8px; }
     <div class="facts" id="facts"></div>
   </header>
 
-  <div class="progress" role="status">
-    <span class="count" id="count"></span>
-    <span class="store" id="store">กำลังเชื่อมที่เก็บคำตอบ…</span>
-    <span class="sp"></span>
-    <button class="btn" id="copy" type="button">คัดลอกคำตอบทั้งหมด</button>
+  <div class="status" role="status">
+    <div class="meters" id="meters"></div>
+    <div class="foot">
+      <span class="store" id="store">กำลังเชื่อมที่เก็บคำตอบ…</span>
+      <span class="sp"></span>
+      <button class="btn" id="copy" type="button">คัดลอกคำตอบทั้งหมด</button>
+    </div>
   </div>
 
   <section class="qs" id="qs" aria-labelledby="qh" hidden>
@@ -117,6 +160,8 @@ dialog button { margin-top: 8px; }
     <div id="questions"></div>
   </section>
 
+  <div class="tabs" role="tablist" id="tabs"></div>
+  <p class="tabnote" id="tabnote"></p>
   <div id="beats"></div>
 
   <section class="els" id="els" aria-labelledby="elh" hidden>
@@ -128,7 +173,7 @@ dialog button { margin-top: 8px; }
   <p class="note" id="source"></p>
 </div>
 
-<dialog id="zoom"><img id="zoomImg" alt=""><video id="zoomVid" controls loop playsinline muted hidden></video><button class="btn" id="zoomClose" type="button">ปิด</button></dialog>
+<dialog id="zoom"><img id="zoomImg" alt=""><video id="zoomVid" controls playsinline muted hidden></video><button class="btn" id="zoomClose" type="button">ปิด</button></dialog>
 
 <script id="page-data" type="application/json">__DATA__</script>
 <script>
@@ -136,37 +181,67 @@ const D = JSON.parse(document.getElementById("page-data").textContent);
 const FPS = D.fps || 30;
 const REV = D.revision;
 const PREV = D.previousVerdicts || {};
+const STAGES = ["board", "draft", "final"];
+const NAME = { board: "สตอรีบอร์ด", draft: "Draft", final: "Final" };
+const NOTE = {
+  board: "อ่านแผนของแต่ละช็อต: เสียงพากย์ สิ่งที่เห็น กล้อง ถ้าผ่าน Claude จะทำ draft ของช็อตนั้นต่อ",
+  draft: "ดูจังหวะ ท่าทาง มุมกล้อง จาก draft (ยังไม่มีเท็กซ์เจอร์กับลายแรเงา) ถ้าผ่าน Claude จะวาดภาพจริงต่อ",
+  final: "ดูภาพจริงที่จะส่ง ถ้าผ่าน ช็อตนั้นจะถูกปักและไปถึงงานส่งตามที่เห็น",
+};
 
 const fmt = f => { const s = f / FPS; const m = Math.floor(s / 60); return m + ":" + (s - m * 60).toFixed(1).padStart(4, "0"); };
 const len = (a, b) => ((b - a) / FPS).toFixed(1) + " วิ";
 const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
 
-const state = {};   // id -> {status, note, updatedAt}
-const ALL_IDS = [...(D.questions || []).map(q => q.id), ...D.shots.map(s => s.id)];
+// Verdicts: key "<shot>@<stage>" (db doc reviews/<shot>@<stage>); questions keep "<Qid>".
+// A draft or final verdict counts only for the clip it was given on: a new clip asks again.
+const state = {};
+const clipOf = (s, stage) => (s.clips || {})[stage];
+const verdictKey = (id, stage) => stage ? `${id}@${stage}` : id;
+const current = (s, stage) => { const r = state[verdictKey(s.id, stage)]; return r && (stage === "board" || r.clip === clipOf(s, stage)?.src) ? r : null; };
+const accepted = (s, stage) => current(s, stage)?.status === "ok";
+let tab = "board";
 let db = null;
 
-function reviewHTML(id) {
-  const p = PREV[id];
-  return `<div class="review" data-id="${esc(id)}">
-    <div class="seg" role="group" aria-label="ผลตรวจ ${esc(id)}">
-      <button type="button" data-v="ok" aria-pressed="false">ผ่าน</button>
+function reviewHTML(id, stage, s) {
+  const key = verdictKey(id, stage);
+  const p = stage === "board" || !stage ? PREV[id] : null;
+  if (stage && stage !== "board" && !clipOf(s, stage)) return `<div class="wait">ยังไม่มี${NAME[stage]} จะขึ้นเมื่อ Claude render เสร็จ</div>`;
+  return `<div class="review" data-key="${esc(key)}">
+    <div class="seg" role="group" aria-label="ผลตรวจ ${esc(key)}">
+      <button type="button" data-v="ok" aria-pressed="false">ผ่าน${stage ? " " + NAME[stage] : ""}</button>
       <button type="button" data-v="change" aria-pressed="false">แก้</button>
     </div>
-    <textarea id="note-${esc(id)}" placeholder="หมายเหตุ (ถ้ามี)" aria-label="หมายเหตุ ${esc(id)}"></textarea>
-    <div class="saved" id="saved-${esc(id)}"></div>
+    <textarea id="note-${esc(key)}" placeholder="หมายเหตุ (ถ้ามี)" aria-label="หมายเหตุ ${esc(key)}"></textarea>
+    <div class="saved" id="saved-${esc(key)}"></div>
     ${p ? `<div class="prev">รอบ ${esc(D.previousRevision || "ก่อน")}: ${p[0] === "ok" ? "ผ่าน" : "แก้"}${p[1] ? " · " + esc(p[1]) : ""}</div>` : ""}
   </div>`;
 }
-function thumbs(list, video) {
-  return `<div class="thumbs">${list.map(i => `<figure><img src="${esc(i.src)}" alt="${esc(i.caption)}" loading="lazy"><figcaption>${esc(i.caption)}</figcaption></figure>`).join("")}</div>`
-    + (video ? `<button class="btn play" type="button" data-video="${esc(video)}">▶ ดูวิดีโอ</button>` : "");
+function thumbs(list) {
+  return `<div class="thumbs">${list.map(i => `<figure><img src="${esc(i.src)}" alt="${esc(i.caption)}" loading="lazy"><figcaption>${esc(i.caption)}</figcaption></figure>`).join("")}</div>`;
 }
-function previewCell(s) {
-  if (!(s.previews || []).length && !s.video) return "ยังไม่มี";
-  return thumbs(s.previews || [], s.video) + (s.previewLabel ? `<div class="pvlabel">${esc(s.previewLabel)}</div>` : "");
+function clipHTML(c, stage) {
+  return `<div class="clip">
+    <video src="${esc(c.src)}" muted playsinline loop preload="metadata" aria-label="คลิป ${NAME[stage]}"></video>
+    <div class="row">
+      <button class="btn play" type="button" data-video="${esc(c.src)}" data-in="${c.in ?? 0}" data-out="${c.out ?? ""}">▶ ช็อตนี้</button>
+      <button class="btn play" type="button" data-video="${esc(c.src)}">▶ รอยต่อ</button>
+    </div>
+    <div class="pvlabel">${stage === "draft" ? "draft: ไม่มีเท็กซ์เจอร์กับลายแรเงา" : "ภาพจริง"} · รอยต่อ = ช็อตก่อนและหลัง ±1 วิ</div>
+  </div>`;
 }
+function mediaCell(s, stage) {
+  const c = clipOf(s, stage);
+  return c ? clipHTML(c, stage) : `<span class="wait">ยังไม่มีคลิป</span>`;
+}
+function lookHTML(b) {
+  const l = b.look && (D.looks || {})[b.look];
+  if (!l) return "";
+  return `<div class="look"><img src="${esc(l.src)}" alt="${esc(l.caption || b.look)}" loading="lazy"><span><span class="lk">look frame · ${esc(b.look)}</span>${esc(l.caption || "")}</span></div>`;
+}
+const dots = s => `<div class="dots" aria-label="ผ่านแล้ว">${STAGES.map(k => { const r = current(s, k); return `<span class="${r?.status || ""}" title="${NAME[k]}"></span>`; }).join("")}</div>`;
 
-function render() {
+function renderStatic() {
   const total = D.shots.length && !D.untimed ? D.shots[D.shots.length - 1].end - D.shots[0].start : 0;
   document.getElementById("eyebrow").textContent = D.eyebrow || `${D.deliverable} · ${REV}`;
   document.getElementById("h1").textContent = D.title;
@@ -174,29 +249,15 @@ function render() {
   const facts = [["ช็อต", String(D.shots.length)], ...(D.untimed ? [] : [["ความยาว", (total / FPS).toFixed(1) + " วิ" + (D.timingEstimated ? " (ประมาณ)" : "")]]), ...(D.facts || [])];
   document.getElementById("facts").innerHTML = facts.map(([k, v]) => `<span>${esc(k)} <b>${esc(v)}</b></span>`).join("");
   document.getElementById("source").textContent = `หน้านี้เป็นมุมมองสำหรับอ่าน ต้นฉบับของการกำหนดช็อตอยู่ใน ${D.source} (${REV})`;
-
+  document.getElementById("meters").innerHTML = `<span class="k">ผ่านแล้ว</span>` + STAGES.map(k =>
+    `<div class="meter"><div class="row"><span>${NAME[k]}</span><b id="m-${k}"></b></div><div class="bar"><i id="b-${k}"></i></div></div>`).join("");
+  document.getElementById("tabs").innerHTML = STAGES.map(k =>
+    `<button class="tab" role="tab" type="button" id="tab-${k}" data-tab="${k}" aria-selected="false">${NAME[k]} <span class="n" id="t-${k}"></span></button>`).join("");
   if ((D.questions || []).length) {
     document.getElementById("qs").hidden = false;
     document.getElementById("questions").innerHTML = D.questions.map(q =>
-      `<div class="q"><div><div class="qid">${esc(q.id)}</div><p>${esc(q.question)}</p>${q.detail ? `<p class="note">${esc(q.detail)}</p>` : ""}${(q.images || []).length ? thumbs(q.images) : ""}</div>${reviewHTML(q.id)}</div>`).join("");
+      `<div class="q"><div><div class="qid">${esc(q.id)}</div><p>${esc(q.question)}</p>${q.detail ? `<p class="note">${esc(q.detail)}</p>` : ""}${(q.images || []).length ? thumbs(q.images) : ""}</div>${reviewHTML(q.id, null)}</div>`).join("");
   }
-
-  const cols = `<div class="cols"><div>ช็อต / เวลา</div><div>ชื่อ + เสียงพากย์</div><div>สิ่งที่เห็น</div><div>เสียง</div><div>ภาพตัวอย่าง</div><div>ตรวจ</div></div>`;
-  document.getElementById("beats").innerHTML = D.beats.map(b => {
-    const rows = D.shots.filter(s => s.beat === b.id).map(s => `
-      <div class="shot" id="${esc(s.id)}">
-        <div><div class="sid">${esc(s.id)}</div>${D.untimed ? "" : `<div class="time">${fmt(s.start)} · ${len(s.start, s.end)}</div>`}</div>
-        <div><div class="title">${esc(s.title)}</div>${(s.vo || []).length
-          ? `<ul class="vo">${s.vo.map(([w, l]) => `<li>${w ? `<span class="who">${esc(w)}</span><br>` : ""}${esc(l)}</li>`).join("")}</ul>`
-          : `<div class="vo none">ไม่มีเสียงพากย์</div>`}</div>
-        <div><span class="lbl">สิ่งที่เห็น</span><p class="seen">${esc(s.seen)}</p>${s.flag ? `<div class="flag">${esc(s.flag)}</div>` : ""}</div>
-        <div class="sound"><span class="lbl">เสียง</span>${esc(s.sound || "—")}</div>
-        <div class="preview"><span class="lbl">ภาพตัวอย่าง</span>${previewCell(s)}</div>
-        <div>${reviewHTML(s.id)}</div>
-      </div>`).join("");
-    return `<section class="beat" aria-label="${esc(b.id)}"><div class="beat-head"><h2>${esc(b.name)}</h2><span class="bid">${esc(b.id)}</span></div>${cols}${rows}</section>`;
-  }).join("");
-
   if ((D.elements || []).length) {
     document.getElementById("els").hidden = false;
     document.getElementById("elnote").textContent = D.elementsNote || "";
@@ -204,62 +265,121 @@ function render() {
   }
 }
 
-function paint(id) {
-  const r = state[id] || {};
-  const box = document.querySelector(`.review[data-id="${CSS.escape(id)}"]`);
-  if (!box) return;
-  box.querySelectorAll(".seg button").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.v === r.status)));
-  const ta = document.getElementById("note-" + id);
-  if (document.activeElement !== ta && r.note !== undefined) ta.value = r.note;
-  document.getElementById("saved-" + id).textContent = r.updatedAt ? "บันทึกแล้ว " + new Date(r.updatedAt).toLocaleString("th-TH", { dateStyle: "short", timeStyle: "short" }) : "";
-}
-function count() {
-  const n = ALL_IDS.filter(id => state[id]?.status).length;
-  const ch = ALL_IDS.filter(id => state[id]?.status === "change").length;
-  document.getElementById("count").textContent = `ตรวจแล้ว ${n} / ${ALL_IDS.length}` + (ch ? ` · ขอแก้ ${ch}` : "");
+// The shot table: the same rows on every tab; the media column and the accept step follow the tab.
+function renderRows() {
+  document.querySelectorAll(".tab").forEach(b => b.setAttribute("aria-selected", String(b.dataset.tab === tab)));
+  document.getElementById("tabnote").textContent = NOTE[tab];
+  // The storyboard tab is text only: the look of each location sits in its beat header.
+  const media = tab !== "board", mediaHead = "คลิป " + NAME[tab];
+  document.getElementById("beats").classList.toggle("no-media", !media);
+  const cols = `<div class="cols"><div>ช็อต / เวลา</div><div>ชื่อ + เสียงพากย์</div><div>สิ่งที่เห็น</div>${media ? `<div>${mediaHead}</div>` : ""}<div>ตรวจ ${NAME[tab]}</div></div>`;
+  document.getElementById("beats").innerHTML = D.beats.map(b => {
+    const rows = D.shots.filter(s => s.beat === b.id).map(s => `
+      <div class="shot${accepted(s, tab) ? " accepted" : ""}" id="${esc(s.id)}">
+        <div><div class="sid">${esc(s.id)}</div>${D.untimed ? "" : `<div class="time">${fmt(s.start)} · ${len(s.start, s.end)}</div>`}${dots(s)}${s.pinned ? `<span class="pin">🔒 ปักแล้ว</span>` : ""}</div>
+        <div><div class="title">${esc(s.title)}</div>${(s.vo || []).length
+          ? `<ul class="vo">${s.vo.map(([w, l]) => `<li>${w ? `<span class="who">${esc(w)}</span><br>` : ""}${esc(l)}</li>`).join("")}</ul>`
+          : `<div class="vo none">ไม่มีเสียงพากย์</div>`}</div>
+        <div><span class="lbl">สิ่งที่เห็น</span><p class="seen">${esc(s.seen)}</p>${s.flag ? `<div class="flag">${esc(s.flag)}</div>` : ""}${s.sound ? `<div class="sound">เสียง: ${esc(s.sound)}</div>` : ""}</div>
+        ${media ? `<div class="media"><span class="lbl">${mediaHead}</span>${mediaCell(s, tab)}</div>` : ""}
+        <div><span class="lbl">ตรวจ ${NAME[tab]}</span>${reviewHTML(s.id, tab, s)}</div>
+      </div>`).join("");
+    return `<section class="beat" aria-label="${esc(b.id)}"><div class="beat-head"><h2>${esc(b.name)}</h2><span class="bid">${esc(b.id)}</span>${lookHTML(b)}</div>${cols}${rows}</section>`;
+  }).join("");
+  document.querySelectorAll("#beats .review").forEach(box => paint(box.dataset.key));
 }
 
-async function save(id) {
-  const r = state[id];
+function paint(key) {
+  const box = document.querySelector(`.review[data-key="${CSS.escape(key)}"]`);
+  if (!box) return;
+  const [id, stage] = key.split("@");
+  const s = D.shots.find(x => x.id === id);
+  const r = s && stage ? current(s, stage) || {} : state[key] || {};
+  box.querySelectorAll(".seg button").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.v === r.status)));
+  const ta = document.getElementById("note-" + key);
+  if (document.activeElement !== ta) ta.value = r.note || "";
+  document.getElementById("saved-" + key).textContent = r.updatedAt ? "บันทึกแล้ว " + new Date(r.updatedAt).toLocaleString("th-TH", { dateStyle: "short", timeStyle: "short" }) : "";
+  const row = box.closest(".shot");
+  if (row) { row.classList.toggle("accepted", r.status === "ok"); row.querySelector(".dots").outerHTML = dots(s); }
+}
+function count() {
+  const n = D.shots.length;
+  STAGES.forEach(k => {
+    const ok = D.shots.filter(s => accepted(s, k)).length;
+    document.getElementById("m-" + k).textContent = `${ok}/${n}`;
+    document.getElementById("b-" + k).style.width = (n ? 100 * ok / n : 0) + "%";
+    document.getElementById("t-" + k).textContent = `${ok}/${n}`;
+    document.getElementById("tab-" + k).classList.toggle("full", n > 0 && ok === n);
+  });
+}
+
+async function save(key) {
+  const r = state[key];
+  const [id, stage] = key.split("@");
+  const s = D.shots.find(x => x.id === id);
   r.updatedAt = new Date().toISOString();
-  paint(id); count();
-  if (!db) { document.getElementById("saved-" + id).textContent = "ยังไม่ได้บันทึกขึ้นที่เก็บ ใช้ปุ่มคัดลอกแทน"; return; }
+  r.clip = s && stage && stage !== "board" ? clipOf(s, stage)?.src || "" : "";
+  paint(key); count();
+  if (!db) { document.getElementById("saved-" + key).textContent = "ยังไม่ได้บันทึกขึ้นที่เก็บ ใช้ปุ่มคัดลอกแทน"; return; }
   try {
-    await db.doc("reviews/" + id).set({ status: r.status || "", note: r.note || "", rev: REV, updatedAt: r.updatedAt });
+    await db.doc("reviews/" + key).set({ shot: id, stage: stage || "", status: r.status || "", note: r.note || "", rev: REV, clip: r.clip, updatedAt: r.updatedAt });
   } catch (e) {
-    document.getElementById("saved-" + id).textContent = "บันทึกไม่สำเร็จ ใช้ปุ่มคัดลอกแทน";
+    document.getElementById("saved-" + key).textContent = "บันทึกไม่สำเร็จ ใช้ปุ่มคัดลอกแทน";
   }
+}
+
+function setTab(k) {
+  if (!STAGES.includes(k)) return;
+  tab = k;
+  try { localStorage.setItem("sb-tab", k); } catch {}
+  renderRows();
 }
 
 function wire() {
   document.addEventListener("click", e => {
+    const t = e.target.closest(".tab");
+    if (t) { setTab(t.dataset.tab); return; }
     const b = e.target.closest(".seg button");
     if (b) {
-      const id = b.closest(".review").dataset.id;
-      state[id] = state[id] || {};
-      state[id].status = state[id].status === b.dataset.v ? "" : b.dataset.v;
-      save(id);
+      const key = b.closest(".review").dataset.key;
+      const [id, stage] = key.split("@");
+      const s = D.shots.find(x => x.id === id);
+      const prev = s && stage ? current(s, stage) : state[key];
+      state[key] = { ...(prev || {}), status: prev?.status === b.dataset.v ? "" : b.dataset.v };
+      save(key);
     }
-    const img = e.target.closest(".el-grid img, .thumbs img");
+    const img = e.target.closest(".el-grid img, .thumbs img, .look img");
     const vid = document.getElementById("zoomVid");
     if (img) { vid.hidden = true; vid.pause(); const z = document.getElementById("zoomImg"); z.hidden = false; z.src = img.src; z.alt = img.alt; document.getElementById("zoom").showModal(); }
     const play = e.target.closest(".play");
-    if (play) { document.getElementById("zoomImg").hidden = true; vid.hidden = false; vid.src = play.dataset.video; document.getElementById("zoom").showModal(); vid.play().catch(() => {}); }
+    if (play) {
+      document.getElementById("zoomImg").hidden = true; vid.hidden = false;
+      const tin = Number(play.dataset.in || 0), tout = Number(play.dataset.out || 0);
+      vid.src = play.dataset.video; vid.loop = !tout; vid.dataset.in = tin; vid.dataset.out = tout || "";
+      vid.addEventListener("loadedmetadata", () => { vid.currentTime = tin; vid.play().catch(() => {}); }, { once: true });
+      document.getElementById("zoom").showModal();
+    }
+    const inline = e.target.closest(".clip video");
+    if (inline) inline.paused ? inline.play().catch(() => {}) : inline.pause();
   });
   const timers = {};
   document.addEventListener("input", e => {
     if (e.target.tagName !== "TEXTAREA") return;
-    const id = e.target.id.slice(5);
-    state[id] = state[id] || {};
-    state[id].note = e.target.value;
-    clearTimeout(timers[id]);
-    timers[id] = setTimeout(() => save(id), 700);
+    const key = e.target.id.slice(5);
+    const [id, stage] = key.split("@");
+    const s = D.shots.find(x => x.id === id);
+    state[key] = { ...((s && stage ? current(s, stage) : state[key]) || {}), note: e.target.value };
+    clearTimeout(timers[key]);
+    timers[key] = setTimeout(() => save(key), 700);
   });
   document.getElementById("zoomClose").addEventListener("click", () => document.getElementById("zoom").close());
   document.getElementById("zoom").addEventListener("close", () => document.getElementById("zoomVid").pause());
+  // "▶ ช็อตนี้" loops the shot's own frames inside the padded clip.
+  document.getElementById("zoomVid").addEventListener("timeupdate", e => { const v = e.target, out = Number(v.dataset.out); if (out && v.currentTime >= out) v.currentTime = Number(v.dataset.in || 0); });
   document.getElementById("copy").addEventListener("click", async () => {
     const lines = [`${D.deliverable} ${REV} review`];
-    ALL_IDS.forEach(id => { const r = state[id] || {}; lines.push(`${id}\t${r.status || "-"}\t${(r.note || "").replace(/\s+/g, " ")}`); });
+    (D.questions || []).forEach(q => { const r = state[q.id] || {}; lines.push(`${q.id}\t-\t${r.status || "-"}\t${(r.note || "").replace(/\s+/g, " ")}`); });
+    D.shots.forEach(s => STAGES.forEach(k => { const r = current(s, k); if (r?.status || r?.note) lines.push(`${s.id}\t${k}\t${r.status || "-"}\t${(r.note || "").replace(/\s+/g, " ")}`); }));
     const text = lines.join("\n");
     const btn = document.getElementById("copy");
     try { await navigator.clipboard.writeText(text); btn.textContent = "คัดลอกแล้ว"; }
@@ -268,7 +388,11 @@ function wire() {
   });
 }
 
-render(); wire(); count();
+// Open on the tab this viewer used last, else the storyboard tab.
+renderStatic();
+try { tab = localStorage.getItem("sb-tab") || ""; } catch { tab = ""; }
+if (!STAGES.includes(tab)) tab = "board";
+renderRows(); wire(); count();
 
 (async () => {
   const storeEl = document.getElementById("store");
@@ -279,8 +403,11 @@ render(); wire(); count();
     snap.docs.forEach(d => {
       const v = d.data();
       if (!v || v.rev !== REV) return;
-      state[d.id] = { status: v.status, note: v.note, updatedAt: v.updatedAt };
-      paint(d.id);
+      // Pages built before the tabs stored storyboard verdicts as reviews/<shot>: read them as the storyboard tab.
+      const key = !d.id.includes("@") && D.shots.some(x => x.id === d.id) ? d.id + "@board" : d.id;
+      if (key !== d.id && state[key]) return;
+      state[key] = { status: v.status, note: v.note, clip: v.clip, updatedAt: v.updatedAt };
+      paint(key);
     });
     count();
   }, () => { storeEl.textContent = "เชื่อมที่เก็บคำตอบไม่ได้ ใช้ปุ่มคัดลอกส่งให้ Claude"; });

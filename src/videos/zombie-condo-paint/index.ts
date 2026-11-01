@@ -16,8 +16,9 @@ import type {EpisodeVideos} from '../types';
  * - `cues-<LANG>.json`: beat starts, plate IDs with per-language `fromSec`, sound events and beds (composition clock).
  * - B02 pound blows: `poundJoltFrames(lang)` from `src/painted/zcpaint/jolts.ts` (one fist blow per jolt; the first is the slam).
  * Captions: outline preset, VO wording (script ซับ chunks for TH). TH: `captionStyle.bottomEdgeY` 1248 (S-09 c, Boss pass 19); EN stays `middle` (parked). Chrome off (ZC record).
- * Render painted compositions with `--gl=angle`. Narration is a stand-in for TH (Niwat +5%; the user's Botnoi render is not
- * in the repo) and en-US-GuyNeural for EN (Q-EN1 open). Sound: see the sound notes in build-notes "Editor pass 1 (R2.6)".
+ * Render painted compositions with `--gl=angle`. TH narration: Gemini Kore +5% with the B09 call (Enceladus take 3, a single
+ * track; candidate swapped 31 Oct 2026, SS-R1.7). EN narration is still the en-US-GuyNeural stand-in (EN parked). Sound: see
+ * the sound notes in build-notes "Editor pass 1 (R2.6)" and "Editor pass 3 (TH, SS-R1.7)".
  */
 const FPS = 30;
 const round3 = (sec: number) => Math.round(sec * 1000) / 1000;
@@ -29,16 +30,20 @@ type CueSheet = {
   sfx: {src: string; atSec: number; volume?: number; trimStartSec?: number; durationSec?: number}[];
   audio: AudioTrack[];
   /** Screen-space text (S-08 fallback): a static quad over `box` [x, y, w, h] from startSec to endSec. */
-  overlays?: {text: string; box: number[]; startSec: number; endSec: number; fontSize: number; color?: string}[];
+  overlays?: {text: string; box: number[]; startSec: number; endSec: number; fontSize: number; color?: string; enterFrames?: number}[];
 };
 
-/** Captions for one beat: the caption text at each caption line's onset, and a blank cue after speech when the next line is far. */
+/**
+ * Captions for one beat: the caption text at each caption line's onset, and a blank cue after speech when the next line is far.
+ * A line whose measured onset falls a fraction of a frame before its beat's first frame (TH-11, 19.318 s vs B04 at 19.333 s,
+ * SS-R1.7) starts the caption at the beat's first frame, so cues never go negative.
+ */
 const captionsFor = (lines: Line[], beat: string, start: number, end: number): SubtitleCue[] => {
   const mine = lines.filter((l) => l.beat === beat);
   const cues: SubtitleCue[] = [];
   mine.forEach((line, i) => {
     if (line.caption === null) return;
-    cues.push({atSec: round3(line.onsetSec - start), text: line.caption});
+    cues.push({atSec: Math.max(0, round3(line.onsetSec - start)), text: line.caption});
     const next = mine[i + 1]?.onsetSec ?? end;
     if (next - line.speechEndSec > 0.35 && line.speechEndSec + 0.1 < end) cues.push({atSec: round3(line.speechEndSec + 0.1 - start), text: ''});
   });
@@ -70,7 +75,7 @@ const buildTimeline = (lang: Lang, lines: Line[], cues: CueSheet): {timeline: Ti
       const [x, y, w, h] = o.box;
       return {
         text: o.text, quads: [[[x, y], [x + w, y], [x + w, y + h], [x, y + h]]], box: {width: w, height: h}, fontSize: o.fontSize,
-        fontWeight: 700, color: o.color ?? '#2a2633',
+        fontWeight: 700, color: o.color ?? '#2a2633', ...(o.enterFrames ? {enterFrames: o.enterFrames} : {}),
         startFrame: Math.round((o.startSec - start) * FPS), endFrame: Math.round((Math.min(o.endSec, end) - start) * FPS),
       };
     });

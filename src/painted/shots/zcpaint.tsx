@@ -3,6 +3,7 @@ import {easeOver, pushCamera, STILL_CAMERA, type Camera} from '../kit/camera';
 import type {Painter} from '../kit/painter';
 import type {PaintedShot, ShotContext} from '../shot';
 import {ctxOf} from '../zcpaint/ctx';
+import type {Lang} from '../zcpaint/jolts';
 import {CREAM, dim, flatKit, paintCaps, LIT_DAY, type Lights} from '../zcpaint/sets';
 import {paintBathTap, paintUnit} from '../zcpaint/rooms';
 import {NIGHT, paintBalcony} from '../zcpaint/balcony';
@@ -31,6 +32,9 @@ import {b02Sh01Overlay, b03Overlay, b08Overlay, b09Sh01Overlay, screenOnly} from
 // Pass 9 (30 Oct 2026): no ZC plate carries `ZC-CAPSHADE` (Grade and Grain only). New plates: B01-SH01 and B01-SH02 (`corridor.ts`), B02-SH03
 // (`closeups.ts`); B03 View B relight and dressing, B09-SH02B door veil, B04-SH02 Grade and Grain, RM-06 caps (`sets.ts`), the B02-SH01 hand removed.
 // Not built in pass 9: B04-SH03, B04-SH04, B05-SH01..03, B06-SH02..03, B07-SH01, B09-SH02 (see build-notes "Boss pass 9").
+// SS-R1.6 retime (Boss, 31 Oct 2026; index "SS-R1.6 retime list"): TH keys and push lengths follow the measured read. A shared plate keeps
+// its EN keys and length; a plate whose TH length or key table differs has a TH-only ID: ZCP-B01-SH02-TH, ZCP-B04-SH03a-TH, ZCP-B04-SH03b-TH,
+// ZCP-B05-SH03-P1-TH, ZCP-B06-SH02-TH, ZCP-B08-SH01-TH, ZCP-B09-SH02-TH, ZCP-B09-SH03-TH, ZCP-B10-SH01-TH. EN IDs are unchanged.
 
 const FPS = 30;
 const pfOf = (tl: number) => Math.round(tl * FPS);
@@ -123,11 +127,11 @@ const b07 = (p: Painter, tl: number) => {
   truck(p, yc, SEC_2D_LL_B07, UNIT_LIGHT, [figIn(figSeatSofa(YOU, {mitten: MITTEN_6H, hold: 'bread'}), UNIT_LIGHT, 7.65, 0.75, 1, 2300)]);
 };
 
-/** B10-SH01: interior from the bathroom (camera at Y 3.25), the turn on pf 108-116; still camera. */
-const b10 = (p: Painter, tl: number) => paintInterior(ctxOf(p), pfOf(tl));
+/** B10-SH01: interior from the bathroom (camera at Y 3.25), the turn on pf 108-116 (EN); TH `-TH` has no turn (back view). Still camera. */
+const b10 = (lang: Lang) => (p: Painter, tl: number) => paintInterior(ctxOf(p), pfOf(tl), lang);
 
 /** B08-SH01: the over-the-shoulder hero plate (`VD-ZC-08`, composed `B08-OTS`): six layers; the bloom and embers are its Overlay. */
-const b08 = (p: Painter, tl: number) => paintBalcony(ctxOf(p), pfOf(tl));
+const b08 = (lang: Lang) => (p: Painter, tl: number) => paintBalcony(ctxOf(p), pfOf(tl), lang);
 
 /** B04-SH02: schematic diagram, per-language keys (TH and EN plates). */
 const diagram = (lang: 'TH' | 'EN') => (p: Painter, tl: number) => paintDiagram(ctxOf(p), pfOf(tl), lang);
@@ -143,8 +147,11 @@ const plate = (id: string, serves: string[], paper: string, camera: (tl: number)
 const CAM_STILL = (): Camera => STILL_CAMERA;
 /** A slow push about (fx, fy) over `len` seconds (the sheet's insert and medium pushes, Boss pass 10). */
 const CAM_PUSH = (len: number, fx: number, fy: number, s1 = 1.02) => (tl: number) => pushCamera(tl, len, {s0: 1, s1, fx, fy});
+/** A camera that starts at the shot's own first frame: a TH plate whose `fromSec` is `from` (plate clock) runs its push from `from`, not from 0. */
+const fromShotStart = (from: number, cam: (tl: number) => Camera) => (tl: number): Camera => cam(tl - from);
 const CAM_DIAGRAM = (tl: number) => pushCamera(tl, 6.8, {s0: 1, s1: 1.01, fx: 500, fy: 580});
-const CAM_B10 = (tl: number) => pushCamera(tl, 4.3, {s0: 1, s1: 1.015, fx: 420, fy: 560});
+/** B10-SH01 push (s 1.00 -> 1.015 about (420, 560)) over `len` seconds: EN 4.3 s, TH 191 frames (`ZCP-B10-SH01-TH`). */
+const camB10 = (len: number) => (tl: number) => pushCamera(tl, len, {s0: 1, s1: 1.015, fx: 420, fy: 560});
 /** B02-SH01: the push toward the bolt (s 1.00 -> 1.03 about (800, 680)) over the shot. */
 const camB02Sh01 = (len: number) => (tl: number) => pushCamera(tl, len, {s0: 1, s1: 1.03, fx: 800, fy: 680});
 /** B02-SH02 (R2.5): a 1.5 % lurch about (540, 760) over pf 0-6, easing back to rest by pf 20 (the flush and its wobble). No drag. */
@@ -155,25 +162,26 @@ const CAM_B02_SH02 = (tl: number): Camera => {
 };
 /** B01-SH01: the OTS push (s 1.000 -> 1.035 about (640, 690)) over 3.5 s, the plate's own camera (`PERSP-2D`). */
 const camB01Sh01 = (tl: number) => pushCamera(tl, 3.5, {s0: 1, s1: 1.035, fx: 640, fy: 690});
-/** B01-SH02: the long-lens push (s 1.00 -> 1.02 about (540, 560)) over the 48-frame shot. */
-const camB01Sh02 = (tl: number) => pushCamera(tl, 48 / FPS, {s0: 1, s1: 1.02, fx: 540, fy: 560});
+/** B01-SH02: the long-lens push (s 1.00 -> 1.02 about (540, 560)) over the shot: EN 48 frames, TH 53 frames (`len`). */
+const camB01Sh02 = (len: number) => (tl: number) => pushCamera(tl, len, {s0: 1, s1: 1.02, fx: 540, fy: 560});
 /** B02-SH03: the close push (s 1.00 -> 1.02 about his eyes (515, 690), R1.4) over the 84-frame plate. */
 const camB02Sh03 = (tl: number) => pushCamera(tl, 84 / FPS, {s0: 1, s1: 1.02, fx: 515, fy: 690});
 /** B07-SH01: the push about his eye (560, 430; s 1.00 -> 1.02, R1.4) over the 141-frame plate. */
 const camB07Sh01 = (tl: number) => pushCamera(tl, 141 / FPS, {s0: 1, s1: 1.02, fx: 560, fy: 430});
-/** B09-SH02: the push about his eye (R1.4, about (470, 690); s 1.00 -> 1.02) over the 45-frame shot. */
-const camB09Sh02 = (tl: number) => pushCamera(tl, 45 / FPS, {s0: 1, s1: 1.02, fx: 470, fy: 690});
+/** B09-SH02: the push about his eye (R1.4, about (470, 690); s 1.00 -> 1.02) over the shot: EN 45 frames, TH 62 frames (`len`). */
+const camB09Sh02 = (len: number) => (tl: number) => pushCamera(tl, len, {s0: 1, s1: 1.02, fx: 470, fy: 690});
 /** B09-SH01: the held plate's slow push about his head (s 1.000 -> 1.015). */
 const camB09Sh01 = (len: number) => (tl: number) => pushCamera(tl, len, {s0: 1, s1: 1.015, fx: 648, fy: 590});
 /** B09-SH02B: the tilt (dy -1100 -> 0 over 18 f, eased): from the knees up to the still door. */
 export const CAM_B09_SH02B = (tl: number): Camera => ({s: 1, fx: 540, fy: 960, dx: 0, dy: -1100 * (1 - easeOver(tl, 0.6))});
-/** B09-SH03: linear slow push s 1.00 -> 1.04 about (450, 600) over the 84-frame shot. */
-const CAM_B09_SH03 = (tl: number): Camera => ({s: 1 + 0.04 * Math.min(1, tl / 2.8), fx: 450, fy: 600, dx: 0, dy: 0});
+/** B09-SH03: linear slow push s 1.00 -> 1.04 about (450, 600) over `len` seconds: EN 84 frames, TH 96 frames (`ZCP-B09-SH03-TH`). */
+const camB09Sh03 = (len: number) => (tl: number): Camera => ({s: 1 + 0.04 * Math.min(1, tl / len), fx: 450, fy: 600, dx: 0, dy: 0});
 
 export const zcpaintShots: PaintedShot[] = [
   plate('ZCP-B01-SH01', ['B01-SH01'], '#b9b19b', camB01Sh01, pov((c, pf) => paintB01Sh01(c, pf)), screenOnly()),
-  plate('ZCP-B01-SH02', ['B01-SH02'], '#b9b19b', camB01Sh02, pov((c, pf) => paintB01Sh02(c, pf)), screenOnly()),
-  plate('ZCP-B02-SH01-TH', ['B02-SH01'], '#d9ccb0', camB02Sh01(45 / FPS), pov((c, pf) => paintB02Sh01(c, pf, 'TH')), b02Sh01Overlay('TH')),
+  plate('ZCP-B01-SH02', ['B01-SH02'], '#b9b19b', camB01Sh02(48 / FPS), pov((c, pf) => paintB01Sh02(c, pf, 'EN')), screenOnly()),
+  plate('ZCP-B01-SH02-TH', ['B01-SH02'], '#b9b19b', camB01Sh02(53 / FPS), pov((c, pf) => paintB01Sh02(c, pf, 'TH')), screenOnly()),
+  plate('ZCP-B02-SH01-TH', ['B02-SH01'], '#d9ccb0', camB02Sh01(91 / FPS), pov((c, pf) => paintB02Sh01(c, pf, 'TH')), b02Sh01Overlay('TH')),
   plate('ZCP-B02-SH01-EN', ['B02-SH01'], '#d9ccb0', camB02Sh01(57 / FPS), pov((c, pf) => paintB02Sh01(c, pf, 'EN')), b02Sh01Overlay('EN')),
   plate('ZCP-B02-SH02-TH', ['B02-SH02'], '#d9ccb0', CAM_B02_SH02, pov((c, pf) => paintB02Sh02(c, pf, 'TH')), screenOnly()),
   plate('ZCP-B02-SH02-EN', ['B02-SH02'], '#d9ccb0', CAM_B02_SH02, pov((c, pf) => paintB02Sh02(c, pf, 'EN')), screenOnly()),
@@ -186,27 +194,36 @@ export const zcpaintShots: PaintedShot[] = [
   plate('ZCP-B06-SH01', ['B06-SH01'], '#d9ccb0', CAM_STILL, b06, screenOnly()),
   plate('ZCP-B07-SH02', ['B07-SH02'], '#d9ccb0', CAM_STILL, b07, screenOnly()),
   plate('ZCP-B07-SH01', ['B07-SH01'], '#d9ccb0', camB07Sh01, pov((c, pf) => paintB07Sh01(c, pf)), screenOnly()),
-  plate('ZCP-B08-SH01', ['B08-SH01'], NIGHT, CAM_STILL, b08, b08Overlay),
-  plate('ZCP-B09-SH01-TH', ['B09-SH01'], '#d9ccb0', camB09Sh01(156 / FPS), (p) => paintB09Sh01(p), b09Sh01Overlay('TH')),
+  plate('ZCP-B08-SH01', ['B08-SH01'], NIGHT, CAM_STILL, b08('EN'), b08Overlay('EN')),
+  plate('ZCP-B08-SH01-TH', ['B08-SH01'], NIGHT, CAM_STILL, b08('TH'), b08Overlay('TH')),
+  plate('ZCP-B09-SH01-TH', ['B09-SH01'], '#d9ccb0', camB09Sh01(198 / FPS), (p) => paintB09Sh01(p), b09Sh01Overlay('TH')),
   plate('ZCP-B09-SH01-EN', ['B09-SH01'], '#d9ccb0', camB09Sh01(102 / FPS), (p) => paintB09Sh01(p), b09Sh01Overlay('EN')),
   plate('ZCP-B09-SH02B', ['B09-SH02B'], '#d9ccb0', CAM_B09_SH02B, pov((c) => paintB09Sh02b(c)), screenOnly()),
-  plate('ZCP-B09-SH02', ['B09-SH02'], '#d9ccb0', camB09Sh02, (p) => paintB09Sh02(ctxOf(p)), screenOnly()),
-  plate('ZCP-B09-SH03', ['B09-SH03'], '#d9ccb0', CAM_B09_SH03, (p) => paintB09Sh03(p), screenOnly()),
-  plate('ZCP-B10-SH01', ['B10-SH01'], '#c9bfa6', CAM_B10, b10, screenOnly()),
+  plate('ZCP-B09-SH02', ['B09-SH02'], '#d9ccb0', camB09Sh02(45 / FPS), (p) => paintB09Sh02(ctxOf(p)), screenOnly()),
+  plate('ZCP-B09-SH02-TH', ['B09-SH02'], '#d9ccb0', camB09Sh02(62 / FPS), (p) => paintB09Sh02(ctxOf(p)), screenOnly()),
+  plate('ZCP-B09-SH03', ['B09-SH03'], '#d9ccb0', camB09Sh03(84 / FPS), (p) => paintB09Sh03(p), screenOnly()),
+  plate('ZCP-B09-SH03-TH', ['B09-SH03'], '#d9ccb0', camB09Sh03(96 / FPS), (p) => paintB09Sh03(p), screenOnly()),
+  plate('ZCP-B10-SH01', ['B10-SH01'], '#c9bfa6', camB10(4.3), b10('EN'), screenOnly()),
+  plate('ZCP-B10-SH01-TH', ['B10-SH01'], '#c9bfa6', camB10(191 / FPS), b10('TH'), screenOnly()),
   // Pass 10 (Part B): the inserts, the bathroom medium and the fridge, per the sheets' keys (SS-R1.3).
   plate('ZCP-B04-SH03a', ['B04-SH03'], '#bfd9d4', CAM_PUSH(39 / FPS, 540, 700), pov((c, pf) => paintB04Sh03a(c, pf)), screenOnly()),
+  plate('ZCP-B04-SH03a-TH', ['B04-SH03'], '#bfd9d4', CAM_PUSH(78 / FPS, 540, 700), pov((c, pf) => paintB04Sh03a(c, pf)), screenOnly()),
   plate('ZCP-B04-SH03b', ['B04-SH03'], '#bfd9d4', CAM_PUSH(12 / FPS, 540, 700), pov((c, pf) => paintB04Sh03b(c, pf)), screenOnly()),
-  plate('ZCP-B04-SH03c-TH', ['B04-SH03'], '#bfd9d4', CAM_PUSH(12 / FPS, 540, 700), pov((c, pf) => paintB04Sh03c(c, pf, 12)), screenOnly()),
+  plate('ZCP-B04-SH03b-TH', ['B04-SH03'], '#bfd9d4', CAM_PUSH(22 / FPS, 540, 700), pov((c, pf) => paintB04Sh03b(c, pf)), screenOnly()),
+  plate('ZCP-B04-SH03c-TH', ['B04-SH03'], '#bfd9d4', CAM_PUSH(19 / FPS, 540, 700), pov((c, pf) => paintB04Sh03c(c, pf, 19)), screenOnly()),
   plate('ZCP-B04-SH03c-EN', ['B04-SH03'], '#bfd9d4', CAM_PUSH(15 / FPS, 540, 700), pov((c, pf) => paintB04Sh03c(c, pf, 15)), screenOnly()),
-  plate('ZCP-B04-SH04-TH', ['B04-SH04'], '#bfd9d4', CAM_PUSH(12 / FPS, 540, 600), pov((c, pf) => paintB04Sh04(c, pf, 'TH')), screenOnly()),
+  plate('ZCP-B04-SH04-TH', ['B04-SH04'], '#bfd9d4', CAM_PUSH(41 / FPS, 540, 600), pov((c, pf) => paintB04Sh04(c, pf, 'TH')), screenOnly()),
   plate('ZCP-B04-SH04-EN', ['B04-SH04'], '#bfd9d4', CAM_PUSH(33 / FPS, 540, 600), pov((c, pf) => paintB04Sh04(c, pf, 'EN')), screenOnly()),
-  plate('ZCP-B05-SH01-TH', ['B05-SH01'], '#d9ccb0', CAM_PUSH(51 / FPS, 700, 600, 1.03), pov((c, pf) => paintB05Sh01(c, pf, 'TH')), screenOnly()),
+  plate('ZCP-B05-SH01-TH', ['B05-SH01'], '#d9ccb0', CAM_PUSH(81 / FPS, 700, 600, 1.03), pov((c, pf) => paintB05Sh01(c, pf, 'TH')), screenOnly()),
   plate('ZCP-B05-SH01-EN', ['B05-SH01'], '#d9ccb0', CAM_PUSH(48 / FPS, 700, 600, 1.03), pov((c, pf) => paintB05Sh01(c, pf, 'EN')), screenOnly()),
   plate('ZCP-B05-SH02', ['B05-SH02'], '#e6e3da', CAM_PUSH(3, 540, 640, 1.01), pov((c, pf) => paintB05Sh02(c, pf)), screenOnly()),
   plate('ZCP-B05-SH03', ['B05-SH03'], '#e6e3da', CAM_PUSH(3.2, 540, 640), pov((c, pf) => paintB05Sh03(c, pf)), screenOnly()),
+  // TH part 1 starts at its cue's fromSec 0.7 (plate clock); the push runs over its 132 TH frames from the cut.
+  plate('ZCP-B05-SH03-P1-TH', ['B05-SH03'], '#e6e3da', fromShotStart(0.7, CAM_PUSH(132 / FPS, 540, 640)), pov((c, pf) => paintB05Sh03(c, pf)), screenOnly()),
   plate('ZCP-B05-SH03-BOWL', ['B05-SH03'], '#e6e3da', CAM_STILL, pov((c, pf) => paintB05Sh03Bowl(c, pf)), screenOnly()),
   plate('ZCP-B05-SH03-TH', ['B05-SH03'], '#e6e3da', CAM_STILL, pov((c, pf) => paintB05Sh03Part3(c, pf, 'TH')), screenOnly()),
   plate('ZCP-B05-SH03-EN', ['B05-SH03'], '#e6e3da', CAM_STILL, pov((c, pf) => paintB05Sh03Part3(c, pf, 'EN')), screenOnly()),
   plate('ZCP-B06-SH02', ['B06-SH02'], '#d9ccb0', CAM_PUSH(63 / FPS, 540, 560, 1.01), pov((c, pf) => paintB06Sh02(c, pf)), screenOnly()),
+  plate('ZCP-B06-SH02-TH', ['B06-SH02'], '#d9ccb0', CAM_PUSH(76 / FPS, 540, 560, 1.01), pov((c, pf) => paintB06Sh02(c, pf)), screenOnly()),
   plate('ZCP-B06-SH03', ['B06-SH03'], '#b99c72', CAM_STILL, pov((c, pf) => paintB06Sh03(c, pf)), screenOnly()),
 ];

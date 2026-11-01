@@ -25,6 +25,18 @@ test('endings default to the registry ending; --endings overrides', () => {
   assert.deepEqual(endingsFor(['A_fade', 'B_loop'], {ending: 'C_seamless'}), ['A_fade', 'B_loop']);
 });
 
+test('--keep-pinned and --repaint', () => {
+  const off = parseRenderArgs(['ZCPAINT-SHORT-TH']);
+  assert.deepEqual([off.keepPinned, off.repaint], [false, []]);
+  const on = parseRenderArgs(['ZCPAINT-SHORT-TH', '--keep-pinned', '--repaint=B01-SH01,B02-SH03']);
+  assert.deepEqual([on.keepPinned, on.repaint], [true, ['B01-SH01', 'B02-SH03']]);
+});
+
+test('--draft is off by default', () => {
+  assert.equal(parseRenderArgs(['ZCPAINT-SHORT-TH']).draft, false);
+  assert.equal(parseRenderArgs(['ZCPAINT-SHORT-TH', '--draft']).draft, true);
+});
+
 test('--preview and --no-cache are off by default', () => {
   const off = parseRenderArgs(['ZCPAINT-SHORT-TH']);
   assert.deepEqual([off.preview, off.noCache], [false, false]);

@@ -8,12 +8,12 @@ import {CREAM, dim, flatKit, type Flat} from './sets';
 import {paintToilet} from './toilet';
 
 // ZCPAINT B05-SH01 (Boss pass 10; sheet `sc01-b04-b05.md`, SS-R1.3): the bathroom medium, the six capped bottles on the basin counter, the
-// cistern, the bucket lift. Per-language keys: TH lift f 20-36 (51 f), EN lift f 36-46 (48 f). The figure is the full 6-head front view
+// cistern, the bucket lift. Per-language keys: TH lift f 37-53 (81 f shot, SS-R1.6), EN lift f 36-46 (48 f). The figure is the full 6-head front view
 // (`figFront`, the approved S-P12 bucket lift): the shot is a medium, not a close, so the full body stays (the bust is for the closes).
 
 const FLOOR_Y = 1416;
 const WALL_BASE = 1101;
-const LIFT = {TH: [20, 36], EN: [36, 46]} as const;
+const LIFT = {TH: [37, 53], EN: [36, 46]} as const;
 /** The bucket's rest point on the floor (plate px, at his right = screen-left) and the lifted box (sheet: x 443-637, y 699-908). */
 const BUCKET_FLOOR: Pt = [600, 1330];
 /** The bucket's HU insert (S-P12 bucket geometry, head units): the handle at u 3.9, the body from 3.55 to 2.6, a lid at the top. */
@@ -65,7 +65,7 @@ const room = (f: Flat) => {
   f.line([[-100, WALL_BASE], [1200, WALL_BASE]], 1.0);
 };
 
-/** B05-SH01 (TH 51 f, EN 48 f): lift from the floor to the chest by the language's key; the bucket is on the floor before the lift. */
+/** B05-SH01 (TH 81 f on `ZCP-B05-SH01-TH`, EN 48 f): lift from the floor to the chest by the language's key; the bucket is on the floor before the lift. */
 export const paintB05Sh01 = (ctx: PaintContext, pf: number, lang: 'TH' | 'EN') => {
   const f = flatKit(ctx, 37000);
   room(f);

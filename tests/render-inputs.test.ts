@@ -117,6 +117,22 @@ test('computed staticFile paths bypass reuse when their inputs cannot be proven'
   } finally {f.dispose();}
 });
 
+test('readonly local picture metadata resolves without bypassing project reuse', () => {
+  const f = fixture();
+  try {
+    f.put('public/poster', 'poster one');
+    f.put('src/shared.ts', "declare function staticFile(s:string):string; const CARD = {src:'poster'} as const; export const image = () => staticFile(CARD.src);");
+    const before = f.hash();
+    assert.equal(f.hash(), before, 'readonly source metadata is a known input');
+    f.put('public/poster', 'poster two');
+    assert.notEqual(f.hash(), before);
+    f.put('src/shared.ts', "declare function staticFile(s:string):string; const CARD = {src:'poster'} as const; export const image = (CARD:{src:string}) => staticFile(CARD.src);");
+    assert.notEqual(f.hash(), f.hash(), 'a shadowing parameter must not resolve to the outer constant');
+    f.put('src/shared.ts', "declare function staticFile(s:string):string; const BASE = {src:'other'}; const CARD = {src:'poster',...BASE} as const; export const image = () => staticFile(CARD.src);");
+    assert.notEqual(f.hash(), f.hash(), 'an overriding spread is not a proven literal');
+  } finally {f.dispose();}
+});
+
 test('sound paths, bytes and sound-only lock edits preserve all picture keys', () => {
   const f = fixture();
   try {
@@ -162,6 +178,6 @@ test('authoring-only caption edits preserve the source digest and existing per-s
     const before = segmentKeys(composition, {}, {}, source);
     const edited = timeline.map((scene, i) => i === 2 ? {...scene, subtitle: 'new'} : scene);
     const after = segmentKeys({...composition, props: {timeline: edited}}, {}, {}, f.hash());
-    assert.deepEqual(before.flatMap((key, i) => key === after[i] ? [] : [i]), [1, 2, 3]);
+    assert.deepEqual(before.flatMap((key, i) => key === after[i] ? [] : [i]), [2]);
   } finally {f.dispose();}
 });

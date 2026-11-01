@@ -17,8 +17,7 @@ while [ $# -gt 0 ]; do
   mkdir -p "$DIR"
   for item in $(echo "$SPEC" | tr ',' ' '); do
     beat=${item%%:*}; f=${item#*:}
-    npx remotion still "$BUNDLE" "$ID" "$DIR/${beat}_f$f.png" --frame="$f" --gl=angle >> out/logs/zcp-editor-still.log 2>&1
+    echo "$ID $f $DIR/${beat}_f$f.png"
     printf '%s\t%s\t%s\t%s\n' "$ID" "$beat" "$f" "$DIR/${beat}_f$f.png" >> "$DIR/manifest.tsv"
-    echo "$DIR/${beat}_f$f.png"
-  done
+  done | node scripts/stills.mjs "$BUNDLE" 2>> out/logs/zcp-editor-still.log
 done
