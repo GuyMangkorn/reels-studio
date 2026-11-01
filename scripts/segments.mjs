@@ -67,7 +67,10 @@ export const applyPins = (pins, picked, keys, {keep = false, repaint = []} = {})
   return {use, changed, unpin, kept};
 };
 
-/** Content digest of this project's transitive inputs, including shared art. Unknown inputs bypass reuse. */
+/**
+ * Content digest of this project's transitive inputs, including shared art. Null when the inputs cannot be established:
+ * renderSegmented then bypasses the cache and the pin check instead of reporting every pinned scene as changed.
+ */
 export const sourceHash = (root = '.', composition, inputProps = {}) => {
   const run = spawnSync(process.execPath, ['--import', 'tsx', fileURLToPath(new URL('./render-inputs.ts', import.meta.url))], {
     input: JSON.stringify({root: path.resolve(root), id: composition?.id, props: {...composition?.props, ...inputProps}}),
@@ -78,7 +81,7 @@ export const sourceHash = (root = '.', composition, inputProps = {}) => {
     if (run.status === 0 && /^[a-f0-9]{64}$/.test(result.hash)) return result.hash;
     console.warn(`Scene cache reuse bypassed: ${result.error ?? 'render input discovery failed'}`);
   } catch {console.warn('Scene cache reuse bypassed: render input helper did not complete');}
-  return createHash('sha256').update(randomUUID()).digest('hex');
+  return null;
 };
 
 /**
@@ -132,32 +135,39 @@ export const ffmpeg = (args) => {
  */
 export const renderSegmented = async ({render, options, workDir, output, log, frameRange, pinOptions = {}}) => {
   const {composition, inputProps} = render;
-  const allKeys = segmentKeys(composition, inputProps, options, sourceHash('.', composition, inputProps));
+  const source = sourceHash('.', composition, inputProps);
+  const allKeys = segmentKeys(composition, inputProps, options, source ?? randomUUID());
   const allRanges = sceneRanges({...composition.props, ...inputProps}.timeline, composition.fps);
   const picked = frameRange ? scenesInRange(allRanges, frameRange) : allKeys.map((_, i) => i);
   if (!picked.length) throw new Error(`--range f${frameRange[0]}-${frameRange[1]} is outside the video (0-${composition.durationInFrames - 1})`);
   const ranges = picked.map((i) => allRanges[i]);
   const span = [ranges[0][0], ranges.at(-1)[1]];
-  const segDir = segmentDir(composition.id);
+  // Unknown inputs: every picked scene renders into the work folder; nothing is cached, pinned or recorded for pin.mjs.
+  const segDir = source ? segmentDir(composition.id) : workDir;
   await mkdir(segDir, {recursive: true});
-  const variant = variantOf(composition, inputProps);
-  // The keys of the latest render per variant, so scripts/pin.mjs can pin what the user just saw.
-  const manifest = await readJson(manifestFile(composition.id), {});
-  manifest[variant] = {renderedAt: new Date().toISOString(), scenes: allRanges.map((range, i) => ({range, key: allKeys[i]}))};
-  await writeFile(manifestFile(composition.id), JSON.stringify(manifest, null, 1));
-  const allPins = await readJson(pinsFile(composition.id), {});
-  const {use: keys, changed, unpin, kept} = applyPins(allPins[variant], picked, picked.map((i) => allKeys[i]), pinOptions);
-  if (changed.length) {
-    throw new Error(`pinned finals would change: ${changed.map((c) => `${c.shots.join('+')} (scene ${c.scene + 1}, f${c.range[0]}-${c.range[1]})`).join(', ')}. `
-      + 'Re-run with --keep-pinned to keep the approved segments, or --repaint=<shot,...|all> to render them again for a new review.');
-  }
-  const lost = kept.filter((scene) => !existsSync(`${segDir}/${keys[picked.indexOf(scene)]}.mp4`));
-  if (lost.length) throw new Error(`pinned segment file missing for scenes ${lost.map((i) => i + 1).join(', ')} in ${segDir}; use --repaint for them`);
-  if (kept.length) log(`kept ${kept.length} pinned segment(s) whose inputs changed: scenes ${kept.map((i) => i + 1).join(', ')}`);
-  if (unpin.length) {
-    for (const scene of unpin) delete allPins[variant][scene];
-    await writeFile(pinsFile(composition.id), JSON.stringify(allPins, null, 1));
-    log(`unpinned for a new review: scenes ${unpin.map((i) => i + 1).join(', ')}`);
+  let keys = picked.map((i) => allKeys[i]);
+  if (!source) log('scene cache bypassed: pins not checked, segments not cached');
+  else {
+    const variant = variantOf(composition, inputProps);
+    // The keys of the latest render per variant, so scripts/pin.mjs can pin what the user just saw.
+    const manifest = await readJson(manifestFile(composition.id), {});
+    manifest[variant] = {renderedAt: new Date().toISOString(), scenes: allRanges.map((range, i) => ({range, key: allKeys[i]}))};
+    await writeFile(manifestFile(composition.id), JSON.stringify(manifest, null, 1));
+    const allPins = await readJson(pinsFile(composition.id), {});
+    const {use, changed, unpin, kept} = applyPins(allPins[variant], picked, keys, pinOptions);
+    keys = use;
+    if (changed.length) {
+      throw new Error(`pinned finals would change: ${changed.map((c) => `${c.shots.join('+')} (scene ${c.scene + 1}, f${c.range[0]}-${c.range[1]})`).join(', ')}. `
+        + 'Re-run with --keep-pinned to keep the approved segments, or --repaint=<shot,...|all> to render them again for a new review.');
+    }
+    const lost = kept.filter((scene) => !existsSync(`${segDir}/${keys[picked.indexOf(scene)]}.mp4`));
+    if (lost.length) throw new Error(`pinned segment file missing for scenes ${lost.map((i) => i + 1).join(', ')} in ${segDir}; use --repaint for them`);
+    if (kept.length) log(`kept ${kept.length} pinned segment(s) whose inputs changed: scenes ${kept.map((i) => i + 1).join(', ')}`);
+    if (unpin.length) {
+      for (const scene of unpin) delete allPins[variant][scene];
+      await writeFile(pinsFile(composition.id), JSON.stringify(allPins, null, 1));
+      log(`unpinned for a new review: scenes ${unpin.map((i) => i + 1).join(', ')}`);
+    }
   }
   await mkdir(workDir, {recursive: true});
   let rendered = 0;

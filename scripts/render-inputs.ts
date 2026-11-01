@@ -204,9 +204,8 @@ async function digest({root: requestedRoot, id, props}: Request) {
   for (const file of ['remotion.config.ts', 'webpack.config.js']) {
     if (existsSync(path.join(root, file))) walk(path.join(root, file));
   }
-  for (const file of ['package.json', 'scripts/render.mjs', 'scripts/render-options.mjs', 'scripts/segments.mjs', 'scripts/render-inputs.ts']) {
-    if (existsSync(path.join(root, file))) add(path.join(root, file));
-  }
+  // Render tooling (scripts/render.mjs, segments.mjs, this helper) is left out: its pixel settings are in the segment
+  // keys already, and hashing it would ask about every pin after a CLI edit. Bump the version when the key logic changes.
   const hash = createHash('sha256').update('project-render-inputs-v1');
   const lock = path.join(path.dirname(project), 'assets.lock.json');
   if (existsSync(lock)) {

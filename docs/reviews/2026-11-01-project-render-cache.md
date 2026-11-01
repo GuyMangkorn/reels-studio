@@ -6,11 +6,11 @@ User decision, 1 November 2026: p5.brush painting and SVG in Remotion; independe
 
 ## Implementation
 
-- `scripts/segments.mjs` passes composition ID and effective props to `scripts/render-inputs.ts` in a fresh tsx process. The helper returns a content digest; failure produces a unique digest and a warning, preventing stale reuse.
+- `scripts/segments.mjs` passes composition ID and effective props to `scripts/render-inputs.ts` in a fresh tsx process. The helper returns a content digest; failure returns no digest and a warning: the render then bypasses the cache and the pin check (nothing cached, pinned scenes not reported as changed), preventing stale reuse.
 - Shared render imports are traversed from `src/index.ts`. At the painted registry, catalogue object identity identifies the selected shot inventories; their transitive imports include any shared character implementation. IDs are not inferred from prefixes or project directory names.
 - Selected project declarations are evaluated for ownership but are not hashed as runtime source: their serialized output is already covered by the existing scene keys. A caption edit still invalidates only the scene and neighbours that actually read it, preserving the newer upstream key policy.
 - Picture media is identified from effective runtime `src` fields, static asset calls and source literals. Its bytes and applicable selected-project lock entries are included. Extensionless files are supported. Sound-only props and lock entries are excluded: audio is rebuilt independently.
-- Package lock, TypeScript settings, render tooling and supported render configuration are included. Static imports, re-exports, literal dynamic imports and import-equals dependencies are followed. Unresolved imports, unknown ownership/shot inventory, unverified remote media and unsupported computed asset discovery bypass reuse.
+- Package lock, TypeScript settings and supported render configuration are included. Render tooling (`scripts/render.mjs`, `segments.mjs`, this helper, `package.json`) is excluded: its pixel settings are already in the segment keys, and a CLI edit must not trip every pin; the digest version string is bumped when the key logic changes. Static imports, re-exports, literal dynamic imports and import-equals dependencies are followed. Unresolved imports, unknown ownership/shot inventory, unverified remote media and unsupported computed asset discovery bypass reuse.
 
 ## Conservative limits
 

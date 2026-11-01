@@ -81,6 +81,10 @@ test('selected locks, effective props media, code media and build settings track
     before = f.hash();
     f.put('remotion.config.ts', 'export const config = 1;');
     assert.notEqual(f.hash(), before);
+    before = f.hash();
+    f.put('scripts/render.mjs', '// a new CLI flag');
+    f.put('package.json', '{"scripts":{"new":"true"}}');
+    assert.equal(f.hash(), before, 'render tooling and package scripts do not change pixels');
   } finally {f.dispose();}
 });
 
@@ -94,7 +98,7 @@ test('extensionless image contents invalidate pictures and remote src bypasses r
     f.put('public/image', 'two');
     assert.notEqual(f.hash('A', props), before);
     const remote = {media: [{kind: 'image', src: 'https://example.com/image?id=1'}]};
-    assert.notEqual(f.hash('A', remote), f.hash('A', remote));
+    assert.equal(f.hash('A', remote), null);
   } finally {f.dispose();}
 });
 
@@ -113,7 +117,7 @@ test('computed staticFile paths bypass reuse when their inputs cannot be proven'
   const f = fixture();
   try {
     f.put('src/shared.ts', "declare function staticFile(s:string):string; export const image = (name:string) => staticFile('images/' + name + '.png');");
-    assert.notEqual(f.hash(), f.hash());
+    assert.equal(f.hash(), null);
   } finally {f.dispose();}
 });
 
@@ -127,9 +131,9 @@ test('readonly local picture metadata resolves without bypassing project reuse',
     f.put('public/poster', 'poster two');
     assert.notEqual(f.hash(), before);
     f.put('src/shared.ts', "declare function staticFile(s:string):string; const CARD = {src:'poster'} as const; export const image = (CARD:{src:string}) => staticFile(CARD.src);");
-    assert.notEqual(f.hash(), f.hash(), 'a shadowing parameter must not resolve to the outer constant');
+    assert.equal(f.hash(), null, 'a shadowing parameter must not resolve to the outer constant');
     f.put('src/shared.ts', "declare function staticFile(s:string):string; const BASE = {src:'other'}; const CARD = {src:'poster',...BASE} as const; export const image = () => staticFile(CARD.src);");
-    assert.notEqual(f.hash(), f.hash(), 'an overriding spread is not a proven literal');
+    assert.equal(f.hash(), null, 'an overriding spread is not a proven literal');
   } finally {f.dispose();}
 });
 
@@ -151,11 +155,11 @@ test('sound paths, bytes and sound-only lock edits preserve all picture keys', (
 test('unknown ownership, unresolved imports and missing media bypass reuse', () => {
   const f = fixture();
   try {
-    assert.notEqual(f.hash('UNKNOWN'), f.hash('UNKNOWN'));
+    assert.equal(f.hash('UNKNOWN'), null);
     const missing = {media: {src: 'missing.png'}};
-    assert.notEqual(f.hash('A', missing), f.hash('A', missing));
+    assert.equal(f.hash('A', missing), null);
     f.put('src/painted/shots/a.ts', "import './missing'; export const aShots = [{id:'A-SH01'}];");
-    assert.notEqual(f.hash(), f.hash());
+    assert.equal(f.hash(), null);
   } finally {f.dispose();}
 });
 
@@ -163,21 +167,21 @@ test('dynamic dependency discovery bypasses reuse instead of guessing', () => {
   const f = fixture();
   try {
     f.put('src/shared.ts', "export const load = (name:string) => import(name);");
-    assert.notEqual(f.hash(), f.hash());
+    assert.equal(f.hash(), null);
   } finally {f.dispose();}
 });
 
 test('authoring-only caption edits preserve the source digest and existing per-scene reuse', () => {
   const f = fixture();
   try {
-    const source = f.hash();
+    const source = f.hash() ?? assert.fail('known inputs must not bypass');
     f.put('src/videos/a/index.ts', "export default {episode:'a', videos:[{id:'A', note:'new caption authored'}]};");
     assert.equal(f.hash(), source, 'serialized props already account for authoring changes');
     const timeline = Array.from({length: 5}, () => ({durationSec: 1, subtitle: 'old'}));
     const composition = {id: 'A', width: 1080, height: 1920, fps: 30, durationInFrames: 150, props: {timeline}};
     const before = segmentKeys(composition, {}, {}, source);
     const edited = timeline.map((scene, i) => i === 2 ? {...scene, subtitle: 'new'} : scene);
-    const after = segmentKeys({...composition, props: {timeline: edited}}, {}, {}, f.hash());
+    const after = segmentKeys({...composition, props: {timeline: edited}}, {}, {}, f.hash() ?? assert.fail('known inputs must not bypass'));
     assert.deepEqual(before.flatMap((key, i) => key === after[i] ? [] : [i]), [2]);
   } finally {f.dispose();}
 });
