@@ -96,13 +96,18 @@ export const sourceHash = (root = '.', composition, inputProps = {}) => {
  *    all scenes, so they are hashed), and its neighbours are included as for a transition.
  * The scene count is hashed only while the progress bar (`chrome.progressBar`) is on: it is the one place SceneView reads it.
  */
+// Object keys are sorted, so a refactor that only reorders fields of the same props keeps every segment.
+const sortedKeys = (_key, value) => (value && typeof value === 'object' && !Array.isArray(value)
+  ? Object.fromEntries(Object.keys(value).sort().map((k) => [k, value[k]])) : value);
+const stableJson = (value) => JSON.stringify(value, sortedKeys);
+
 export const segmentKeys = (composition, inputProps, options, source) => {
   const {timeline, narration, audio: _audio, ...rest} = {...composition.props, ...inputProps};
   const {src: _src, ...narrationPicture} = narration ?? {};
   const globalTransitions = (rest.sceneTransitionFrames ?? 0) > 0;
   const sceneCount = rest.chrome?.progressBar ? timeline.length : undefined;
   const frameCounts = globalTransitions ? timeline.map((s) => sceneFrames(s.durationSec, composition.fps)) : undefined;
-  const shared = JSON.stringify({rest, narration: narrationPicture, options, source,
+  const shared = stableJson({rest, narration: narrationPicture, options, source,
     size: [composition.width, composition.height, composition.fps, composition.durationInFrames, sceneCount], frameCounts});
   const ranges = sceneRanges(timeline, composition.fps);
   const sounds = (s) => s && {...s, sfx: undefined};
@@ -116,7 +121,7 @@ export const segmentKeys = (composition, inputProps, options, source) => {
       readsNext ? timeline[i + 1] : undefined,
       last && rest.ending !== 'A_fade' ? timeline[0] : undefined,
     ].map(sounds);
-    return createHash('sha256').update(shared).update(JSON.stringify({i, range: ranges[i], near})).digest('hex').slice(0, 16);
+    return createHash('sha256').update(shared).update(stableJson({i, range: ranges[i], near})).digest('hex').slice(0, 16);
   });
 };
 

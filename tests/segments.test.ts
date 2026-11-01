@@ -30,6 +30,14 @@ test('a caption edit re-renders that scene only when no neighbour reads it', () 
   assert.deepEqual(changed(keys(), keys(withScene(scenes, 4, {subtitle: 'new'}))), [4]);
 });
 
+test('reordering the fields of the same props keeps every key', () => {
+  const reordered = scenes.map(({durationSec, subtitle, sfx}) => ({sfx, subtitle, durationSec}));
+  assert.deepEqual(keys(reordered, {ending: 'A_fade'}), keys());
+  const shot = {shot: 'S', atSec: 0, dissolveSec: 0.3};
+  const flipped = {dissolveSec: 0.3, atSec: 0, shot: 'S'};
+  assert.deepEqual(keys(withScene(scenes, 1, {painted: {shots: [flipped]}})), keys(withScene(scenes, 1, {painted: {shots: [shot]}})));
+});
+
 test('a neighbour re-renders where the renderer reads it: actor poses, a first-cue dissolve, an entry transition', () => {
   const withActors = withScene(scenes, 1, {actors: [{id: 'host', type: 'narrator', pose: 'idle', x: 0.5}]});
   assert.deepEqual(changed(keys(withActors), keys(withScene(withActors, 0, {subtitle: 'new'}))), [0, 1]);

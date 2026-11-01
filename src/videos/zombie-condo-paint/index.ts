@@ -5,7 +5,8 @@ import cuesENJson from '../../../scripts/zombie-condo-paint/short/cues-EN.json';
 import ampTH from '../../../scripts/zombie-condo-paint/short/ZCPAINT-SHORT-TH.amplitude.json';
 import ampEN from '../../../scripts/zombie-condo-paint/short/ZCPAINT-SHORT-EN.amplitude.json';
 import {poundJoltFrames, type Lang} from '../../painted/zcpaint/jolts';
-import type {AudioTrack, PaintedShotCue, QuadText, Scene, SceneSoundCue, SubtitleCue, Timeline} from '../../scenes/types';
+import {assemblePaintedTimeline} from '../../scenes/assemble';
+import type {AudioTrack, QuadText, Timeline} from '../../scenes/types';
 import type {EpisodeVideos} from '../types';
 
 /**
@@ -38,17 +39,21 @@ type CueSheet = {
  * A line whose measured onset falls a fraction of a frame before its beat's first frame (TH-11, 19.318 s vs B04 at 19.333 s,
  * SS-R1.7) starts the caption at the beat's first frame, so cues never go negative.
  */
-const captionsFor = (lines: Line[], beat: string, start: number, end: number): SubtitleCue[] => {
+const captionsFor = (lines: Line[], beat: string, start: number, end: number): {at: number; text: string}[] => {
   const mine = lines.filter((l) => l.beat === beat);
-  const cues: SubtitleCue[] = [];
+  const cues: {at: number; text: string}[] = [];
   mine.forEach((line, i) => {
     if (line.caption === null) return;
-    cues.push({atSec: Math.max(0, round3(line.onsetSec - start)), text: line.caption});
+    // Retain unrounded onsets until scene ownership is resolved; rounding here can move a cue across the next cut.
+    cues.push({at: Math.max(start, line.onsetSec), text: line.caption});
     const next = mine[i + 1]?.onsetSec ?? end;
-    if (next - line.speechEndSec > 0.35 && line.speechEndSec + 0.1 < end) cues.push({atSec: round3(line.speechEndSec + 0.1 - start), text: ''});
+    if (next - line.speechEndSec > 0.35 && line.speechEndSec + 0.1 < end) cues.push({at: line.speechEndSec + 0.1, text: ''});
   });
-  if (cues.length === 0 || cues[0].atSec > 0) cues.unshift({atSec: 0, text: ''});
-  return cues.filter((c, i) => i === 0 || c.atSec > cues[i - 1].atSec);
+  if (cues.some(cue => cue.at < start || cue.at >= end)) throw new Error(`${beat}: caption onset is outside its authored beat`);
+  // A cue that rounds onto the scene's end would never be shown: fail instead of dropping or retiming it silently.
+  if (cues.some(cue => round3(cue.at - start) >= round3(end - start))) throw new Error(`${beat}: caption onset rounds onto the end of its beat`);
+  if (cues.length === 0 || round3(cues[0].at - start) > 0) cues.unshift({at: start, text: ''});
+  return cues.filter((c, i) => i === 0 || round3(c.at - start) > round3(cues[i - 1].at - start));
 };
 
 /** Fist blows on the B02 pound jolts (the first jolt is the slam, already a door-slam cue) plus the hold blows until the power cut. */
@@ -60,17 +65,17 @@ const poundBlows = (lang: Lang, whoompSec: number): number[] => {
   return blows;
 };
 
-const buildTimeline = (lang: Lang, lines: Line[], cues: CueSheet): {timeline: Timeline; audio: AudioTrack[]} => {
+export const buildTimeline = (lang: Lang, lines: Line[], cues: CueSheet): {timeline: Timeline; audio: AudioTrack[]} => {
   const whoomp = cues.sfx.find((e) => e.src.includes('power-cut-whoomp'))?.atSec ?? 0;
   const blows = poundBlows(lang, whoomp).map((sec) => ({src: 'sfx/foley/foley_fist-blow-door_01.wav', atSec: round3(sec), volume: 0.35}));
-  const timeline: Timeline = cues.beats.map((beat, i): Scene => {
-    const start = beat.startSec;
-    const end = i + 1 < cues.beats.length ? cues.beats[i + 1].startSec : cues.durationSec;
-    const sfx: SceneSoundCue[] = [...cues.sfx, ...blows]
-      .filter((e) => e.atSec >= start && e.atSec < end)
-      .map((e) => ({...e, atSec: round3(e.atSec - start)}));
-    const subtitleCues = captionsFor(lines, beat.beat, start, end);
-    const shots: PaintedShotCue[] = beat.shots.map((s) => ({shot: s.shot, atSec: round3(s.atSec - start), ...(s.fromSec !== undefined ? {fromSec: s.fromSec} : {})}));
+  const cuts = cues.beats.map((beat, i) => ({id: beat.beat, start: beat.startSec, end: i + 1 < cues.beats.length ? cues.beats[i + 1].startSec : cues.durationSec}));
+  const timeline = assemblePaintedTimeline({
+    clockRate: 1, precision: 3, cuts,
+    shots: cues.beats.flatMap(beat => beat.shots.map(s => ({at: s.atSec, cue: {shot: s.shot, ...(s.fromSec !== undefined ? {fromSec: s.fromSec} : {})}}))),
+    captions: cuts.flatMap(cut => captionsFor(lines, cut.id, cut.start, cut.end)),
+    sounds: [...cues.sfx, ...blows].map(({atSec, ...cue}) => ({at: atSec, cue})),
+  }).map((scene, i) => {
+    const {start, end} = cuts[i];
     const quadTexts: QuadText[] = (cues.overlays ?? []).filter((o) => o.startSec >= start && o.startSec < end).map((o) => {
       const [x, y, w, h] = o.box;
       return {
@@ -79,10 +84,7 @@ const buildTimeline = (lang: Lang, lines: Line[], cues: CueSheet): {timeline: Ti
         startFrame: Math.round((o.startSec - start) * FPS), endFrame: Math.round((Math.min(o.endSec, end) - start) * FPS),
       };
     });
-    return {
-      durationSec: round3(end - start), bg: 'none', actors: [], subtitle: subtitleCues.map((c) => c.text).filter(Boolean).join(' '),
-      subtitleCues, painted: {shots}, ...(sfx.length ? {sfx} : {}), ...(quadTexts.length ? {quadTexts} : {}),
-    };
+    return {...scene, ...(quadTexts.length ? {quadTexts} : {})};
   });
   const total = timeline.reduce((sum, s) => sum + s.durationSec, 0);
   if (Math.abs(total - cues.durationSec) > 0.01) throw new Error(`ZCPAINT ${lang}: beats sum to ${total}, cue sheet says ${cues.durationSec}`);
