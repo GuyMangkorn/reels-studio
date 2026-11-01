@@ -10,7 +10,7 @@
 <a id="role-responsibilities"></a>
 ## Sound across roles
 
-**Requirement:** every role considers music, ambience and SFX for its own output. Sound is a story element (rhythm, mood, reveals, silence), not a late add-on. Roles that the tier skips record `N/A`. Generation, library filing, mixing and sound QA stay with Editor; other roles supply intent and requests, never generated files.
+**Requirement:** every role considers music, ambience and SFX for its own output. Sound is a story element (rhythm, mood, reveals, silence), not a late add-on. A stage recorded `N/A` records `N/A` for sound too. Generation, library filing, mixing and sound QA stay with Editor; other roles supply intent and requests, never generated files.
 
 | Role | Sound duty | Output |
 | --- | --- | --- |

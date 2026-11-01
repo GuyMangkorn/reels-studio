@@ -38,7 +38,7 @@ These are production requirements. Check the active checkout before claiming an 
 <a id="painted-shot-by-shot"></a>
 ## Painted shot-by-shot review
 
-**Default** for painted 2D deliverables on the Full and Light tiers (user, 1 Nov 2026). Each shot is approved in three steps on one [storyboard review page](mark-storyboard-workflow.md#user-storyboard-review-page) per deliverable, and the approved picture is the one delivered. Design, evidence and decisions: [shot-by-shot workflow proposal](reviews/2026-11-01-shot-by-shot-workflow-proposal.md); studio practice behind it: [animation studio pipeline](research/animation-studio-pipeline.md).
+**Default** for painted 2D deliverables (user, 1 Nov 2026). Each shot is approved in three steps on one [storyboard review page](mark-storyboard-workflow.md#user-storyboard-review-page) per deliverable, and the approved picture is the one delivered. Design, evidence and decisions: [shot-by-shot workflow proposal](reviews/2026-11-01-shot-by-shot-workflow-proposal.md); studio practice behind it: [animation studio pipeline](research/animation-studio-pipeline.md).
 
 | Step | What | Who | User gate |
 | --- | --- | --- | --- |

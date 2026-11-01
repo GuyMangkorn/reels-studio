@@ -1,6 +1,6 @@
 # Editor: scene integration, editing and samples
 
-**Requirement, added 27 October 2026:** In the Full tier Editor receives Film's brief and Mark's written scene handoff (Light and Edit-only tiers: see [Direct intake](#direct-intake)), integrates supported assets into Remotion, and delivers one representative rendered frame per story scene for each selected deliverable. Agent configs: `.claude/agents/editor.md` and `.codex/agents/editor.toml`. Configuration defines a role; it does not install an automatic runner, invoke other agents or authorize messaging other chats.
+**Requirement, added 27 October 2026:** Editor receives Film's brief and Mark's written scene handoff (supplied media: see [Direct intake](#direct-intake)), integrates supported assets into Remotion, and delivers one representative rendered frame per story scene for each selected deliverable. Agent configs: `.claude/agents/editor.md` and `.codex/agents/editor.toml`. Configuration defines a role; it does not install an automatic runner, invoke other agents or authorize messaging other chats.
 
 ## Ownership
 
@@ -18,9 +18,9 @@
 Editor reads the exported API/source and authors supported values. Missing reusable behavior or asset/contact defects go to Boss with shot/frame evidence and consumers. Keep geometry/SVG/rigs, projection and shared timing/transition algorithms in their owning library modules. Editor may implement a shared change only when explicitly assigned that scope, following Boss's workflow. Preserve unrelated work.
 
 <a id="direct-intake"></a>
-## Direct intake (Light and Edit-only tiers)
+## Direct intake (supplied media)
 
-The user, or the coordinator for a [Light/Edit-only deliverable](delivery-workflow.md#pipeline-tiers), may brief Editor without Film/Mark handoffs. Editor then works from the user's request and records the missing handoffs as `N/A` instead of inventing them. Resolve gaps with the structured-question tool before editing (see [delivery workflow](delivery-workflow.md#resolve-the-selection-before-writing)); ask only for what the request leaves open.
+Media the user supplies (footage, images, audio) enters the [full pipeline](delivery-workflow.md#pipeline-tiers) as source material; it does not replace the Film brief or Mark's handoff (the Light and Edit-only tiers were retired 2 Nov 2026; legacy Light deliverables keep their recorded stages). Editor records each supplied file as below. Resolve gaps with the structured-question tool before editing (see [delivery workflow](delivery-workflow.md#resolve-the-selection-before-writing)); ask only for what the request leaves open.
 
 | Input | Record |
 | --- | --- |
