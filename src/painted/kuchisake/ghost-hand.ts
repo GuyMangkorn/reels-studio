@@ -27,9 +27,9 @@ const mix = (a: Pt, b: Pt, k: number): Pt => [a[0] + (b[0] - a[0]) * k, a[1] + (
 
 /**
  * The grip on the mask edge at mask state `m`: the right arm (shoulder -> authored elbow -> wrist) and a function painting the
- * hand after the figure. `release` 0..1 lets go: the arm eases (smoothstep) to the P01 hang at the side.
+ * hand after the figure. `release` 0..1 lets go: the arm eases (smoothstep) to the P01 hang at the side; `fist` 0..1 closes the hand.
  */
-export const maskGrip = (g: Pt, unit: number, m: number, o: {release?: number} = {}): {rArm: Arm; paintHand: (p: Painter) => void} => {
+export const maskGrip = (g: Pt, unit: number, m: number, o: {release?: number; fist?: number} = {}): {rArm: Arm; paintHand: (p: Painter) => void} => {
   const K = (H / HEAD_SPAN) * unit;
   const head = womanHead(g, unit), e = maskOutline(m)[EDGE];
   const G: Pt = [head[0] + e[0] * K, head[1] + e[1] * K];
@@ -46,14 +46,19 @@ export const maskGrip = (g: Pt, unit: number, m: number, o: {release?: number} =
   const W = mix(Wg, hang.to, r), E = mix(Eg, hang.via ?? mix(Eg, hang.to, 0.5), r);
   const rArm: Arm = {to: W, via: E};
   const paintHand = (p: Painter) => {
+    // `fist` 0..1 (round 4, user: the released hand closes to a fist like the other one): the finger mass draws in toward the
+    // wrist; at 1 it is not painted and the rig's mitten (the same round fist as the left hand) remains.
+    const c = sm(o.fist ?? 0);
+    if (c >= 1) return;
+    const Lf = Lh * (1 - 0.6 * c);
     // Hand angle: the grip direction while holding, the forearm direction (elbow -> wrist) once hanging; turned through the inside.
     const ag = Math.atan2(d[1], d[0]), af = Math.atan2(W[1] - E[1], W[0] - E[0]);
     const ang = ag + (af - ag) * r;
     const dd: Pt = [Math.cos(ang), Math.sin(ang)];
-    const tip: Pt = [W[0] + dd[0] * Lh, W[1] + dd[1] * Lh];
+    const tip: Pt = [W[0] + dd[0] * Lf, W[1] + dd[1] * Lf];
     const side = 1; // the thumb stays on one side of the hand as it turns (no flip)
     const n: Pt = [-dd[1] * side, dd[0] * side];
-    const thumb: Pt = [tip[0] - dd[0] * Lh * 0.3 + n[0] * Lh * 0.36, tip[1] - dd[1] * Lh * 0.3 + n[1] * Lh * 0.36];
+    const thumb: Pt = [tip[0] - dd[0] * Lf * 0.3 + n[0] * Lf * 0.36, tip[1] - dd[1] * Lf * 0.3 + n[1] * Lf * 0.36];
     paintMassHand(p, KSO_WOMAN.seed * 1000 + 800, HAND_WOMAN, W, tip, thumb, side);
   };
   return {rArm, paintHand};

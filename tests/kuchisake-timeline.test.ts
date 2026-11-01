@@ -58,6 +58,14 @@ test('fiction marker appears on the first shot only and channel chrome is off', 
   assert.equal(loop.chrome?.channelLabel, false);
 });
 
+test('the appearance murmur starts on the riser stop (first lit frame of S02-B01-SH04) and stays inside that shot', () => {
+  const row = KSO_SHOT_INDEX.find((r) => r.id === 'S02-B01-SH04')!;
+  const cue = primary.audio!.find((t) => t.src.endsWith('tension_whispers-children-murmur_01.wav'))!;
+  assert.equal(Math.round(cue.startSec! * fps), 1062);
+  assert.ok(Math.round(cue.startSec! * fps) >= row.start && Math.round(cue.endSec! * fps) <= row.end);
+  assert.ok(cue.fadeInSec! > 0 && cue.fadeOutSec! > 0 && cue.duckUnderNarration! < 1);
+});
+
 test('scene sound cues fall inside the composition and stay on the composition clock', () => {
   const total = timelineFrames(primary.timeline, fps);
   let start = 0;

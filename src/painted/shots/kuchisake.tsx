@@ -9,8 +9,8 @@ import {Grade, Grain} from '../kit/screen';
 import type {PaintedShot, ShotContext} from '../shot';
 import {CALM_FACE, REVEAL_FACE, WOMAN_LIGHT} from '../kuchisake/cast';
 import {bandSlide, COW_HEAD, COW_RELIEF, buzzVeil, camCloseHook, camCloseReturn, drawCoworker, drawCoworkerKnowing, drawNarratorFront, lampOn, NARR_CU_UNIT, NARR_CU_Y, narrCuGround, paintCloseup, paintCuBack, PAPER, smileAt, sstep, TopGlow} from '../kuchisake/shot-art';
-import {drawWomanNeckTilt, drawWomanTear, tearAt} from '../kuchisake/shot-woman';
-import {drawCoworkerTelling} from '../kuchisake/coworker-tell';
+import {drawWomanNeckTilt, drawWomanTear, tearAt, type Tear} from '../kuchisake/shot-woman';
+import {drawCoworkerTelling, paintGlassGrip} from '../kuchisake/coworker-tell';
 import {hangLeftArm, maskGrip} from '../kuchisake/ghost-hand';
 import {drawRunnerProfile} from '../kuchisake/runner';
 import {talkOpen} from '../kuchisake/shot-motion';
@@ -146,6 +146,11 @@ export const maskHook = (lf: number) => 0.13 * sstep((lf - 6) / 30);
 /** Mask state of the reveal S02-B03-SH03: the mask leaves the mouth at f0 (m 0.15) and is out of frame by f8. */
 export const maskReveal = (lf: number) => 0.15 + 0.85 * sstep(lf / 8);
 /**
+ * The grin closing back to a plain mouth in S03-B01-SH01 (round 4, user): the full grin holds to f10, the jaw shuts over f10-34,
+ * then the corners draw in to a closed lip line (the pre-tear mouth, `tearAt` 0) over f20-46; held to the cut (f54).
+ */
+export const grinCloseAt = (lf: number): Tear => ({corner: 1 - sstep((lf - 20) / 26), open: 1 - sstep((lf - 10) / 24)});
+/**
  * The walking narrator (S02-B01-SH01, user note 1 Nov 2026): she walks away from the camera up the street axis (south to north, seen
  * from behind), from z 2.8 m (742 px/m, whole figure in frame) to z 0.8 m (362 px/m, 615 px) over 4.3 s, 2.5 gait cycles.
  * S02-B01-SH02 stands her at the end point.
@@ -185,26 +190,28 @@ export const kuchisakeShots: PaintedShot[] = [
     },
     Overlay: IzakayaOv,
   }),
-  // The coworker tells the story with her hands (P06 base, lifting on the speech), waist-up behind the table (no narrator in frame).
+  // The coworker talks with her arms close to the body (P01, round 4), waist-up behind the table (no narrator in frame).
   shot('S01-B02-SH02', {
     paper: PAPER_ROOM,
     camera: camIzakaya,
     paint: (p, ctx) => {
       paintIzakayaBack(p);
-      drawCoworkerTelling(p, ctx.tl, startOf('S01-B02-SH02') + f_of(ctx.tl));
+      drawCoworkerTelling(p, ctx.tl, startOf('S01-B02-SH02') + f_of(ctx.tl), {arms: 'hang'});
       paintTable(p);
       paintLantern(p);
     },
     Overlay: IzakayaOv,
   }),
-  // The narrator's nape and shoulder from behind (new crop of narrator-back.ts), the coworker small beyond.
+  // The narrator's nape and shoulder from behind (new crop of narrator-back.ts), the coworker small beyond: she reaches for
+  // the beer glass (f14-40) and holds it, the other arm at her side (round 4).
   shot('S01-B02-SH03', {
     paper: PAPER_ROOM,
     camera: (tl) => pushCamera(tl, 3.53, {s0: 1.45, s1: 1.6, fx: 188, fy: 691}),
     paint: (p, ctx) => {
       paintIzakayaBack(p);
-      drawCoworkerTelling(p, ctx.tl, startOf('S01-B02-SH03') + f_of(ctx.tl), {still: true});
+      drawCoworkerTelling(p, ctx.tl, startOf('S01-B02-SH03') + f_of(ctx.tl), {arms: 'glass', f: f_of(ctx.tl)});
       paintTable(p);
+      paintGlassGrip(p, f_of(ctx.tl));
       paintLantern(p);
       paintNarrator(p);
     },
@@ -346,7 +353,8 @@ export const kuchisakeShots: PaintedShot[] = [
       const f = f_of(ctx.tl);
       // The hand yanks the mask down with it for 3 frames, then lets go; the arm settles to the side over f3-15 (user, round 3:
       // the arms return to the body). The left arm hangs throughout.
-      const grip = maskGrip(CU_GROUND, CU_UNIT, maskReveal(Math.min(f, 3)), {release: (f - 3) / 12});
+      // Round 4: the released hand closes to a fist over f5-11, like the left one (user note).
+      const grip = maskGrip(CU_GROUND, CU_UNIT, maskReveal(Math.min(f, 3)), {release: (f - 3) / 12, fist: (f - 5) / 6});
       drawWomanTear(p, CU_GROUND, CU_UNIT, ctx.tl, maskReveal(f), LAMP_LIGHT, REVEAL_FACE, tearAt(f), {rArm: grip.rArm, lArm: hangLeftArm(CU_GROUND, CU_UNIT)}, true);
       grip.paintHand(p);
     },
@@ -386,14 +394,16 @@ export const kuchisakeShots: PaintedShot[] = [
   }),
 
   // S03-B01: the run, the door, the coworker's relief, the pass-on sentence.
-  // The woman stands frozen on the street, the grin bare, arms at her sides (P01); no tilt and no put-the-mask-back beat (user,
-  // round 3: the hand read odd, so the beat is dropped).
+  // The woman stands frozen on the street, arms at her sides (P01); no tilt and no put-the-mask-back beat (user, round 3: the
+  // hand read odd, so the beat is dropped). Round 4 (user): the grin slowly closes back to a plain closed mouth (`grinCloseAt`).
   shot('S03-B01-SH01', {
     paper: PAPER,
     camera: (tl) => pushCamera(tl, 1.83, {s0: 1, s1: 1.03, fx: 540, fy: 880}),
     paint: (p, ctx) => {
       paintStreet(p);
-      drawWomanTear(p, G0, streetUnit(0), ctx.tl, 1, LAMP_LIGHT, REVEAL_FACE, undefined, undefined, true);
+      const f = f_of(ctx.tl);
+      // The brows relax from angry to flat with the mouth (f24-50), so the face reads plain at the cut.
+      drawWomanTear(p, G0, streetUnit(0), ctx.tl, 1, LAMP_LIGHT, {...REVEAL_FACE, browTo: 'flat', browMix: sstep((f - 24) / 26)}, grinCloseAt(f), undefined, true);
     },
     Overlay: StreetOv,
   }),

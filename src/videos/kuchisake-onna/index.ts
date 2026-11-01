@@ -55,11 +55,17 @@ const LAMP = 'audio/electric/electric_streetlamp-hum-loop_01.wav';
 const IZAKAYA_HUM = 'audio/room/room_shop-fridge-hum_01.wav';
 const DARK_ROOM = 'audio/room/room_dark-empty-building_01.wav';
 const DRONE = 'audio/tension/tension_drone-sparse-piano_01.wav';
+const WHISPERS = 'audio/tension/tension_whispers-children-murmur_01.wav';
 /** Music and ambience on the composition clock (level plan and mix intent: edit-plan.md, EP08a). */
 const AUDIO: AudioTrack[] = [
   // Street hum (also the seam bed): from frame 0 (hook), back on the street from the walk, and again at the seamless return.
   {src: LAMP, startSec: 0, endSec: sec(195), volume: 0.10, fadeInSec: 0.2, loop: true, duckUnderNarration: 0.5},
   {src: LAMP, startSec: sec(756), endSec: sec(1518), volume: 0.10, fadeInSec: 0.5, fadeOutSec: 0.05, loop: true, duckUnderNarration: 0.5},
+  // S02-B01-SH04 the woman appears: the riser stops dead on her first lit frame (951 + 3.69 s = 1062), and a faint murmur
+  // starts there (library file reused from HANAKO-SHORT WH1: 4 s, no burst, silent after ~2.7 s; volume 0.12 as WH1). Ducked
+  // as a `hold` bed (EP08a 0.35), not 0.2: the narration envelope keeps the duck on for the whole 3 s window, so a deeper
+  // duck would leave the cue inaudible. The riser's stop is the accent; the cue ends before the shot's end (1220).
+  {src: WHISPERS, startSec: sec(1062), endSec: sec(1152), volume: 0.12, fadeInSec: 0.2, fadeOutSec: 0.3, duckUnderNarration: 0.35},
   // S02-B03 drop: the bed stops 36 f (1.2 s) before the stinger and returns with the hit (EP08a drop -> hit).
   {src: LAMP, startSec: sec(1554), endSec: sec(1870), volume: 0.10, fadeInSec: 0.05, loop: true, duckUnderNarration: 0.5},
   {src: LAMP, startSec: sec(2388), endSec: sec(SHORT_END + HOLD_FRAMES), volume: 0.10, fadeInSec: 0.5, loop: true, duckUnderNarration: 0.5},

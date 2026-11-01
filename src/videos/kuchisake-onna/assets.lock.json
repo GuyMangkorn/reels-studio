@@ -15,6 +15,10 @@
     "store": "library/sound/music/tension/tension_drone-sparse-piano_01.wav",
     "sha256": "952e6e50ad21904e6078aa56f5e46771afed2e74c1ca61743f98f74dd19d7ce4"
   },
+  "public/audio/tension/tension_whispers-children-murmur_01.wav": {
+    "store": "library/sound/sfx/tension/tension_whispers-children-murmur_01.wav",
+    "sha256": "94a7aea26e02a3c41fd2b1a9f8ec820bdff19c6ca6922973cd9be51d93be2875"
+  },
   "public/narration/KSO-EP01-SHORT.mp3": {
     "store": "projects/KSO/audio/voice-lock-v5/final/KSO-EP01-SHORT_narration_voicelock-v5.mp3",
     "sha256": "c25dc1b580813c2d81c10f98557b1c898f3bd49c45f7dac2cb7a172249df1bc8"
