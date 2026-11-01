@@ -29,6 +29,8 @@ Before selecting/revising medium/compositing/camera/light strategy, consult rele
 5. **Hand rough brief to Mark:** use the format below and link the sequence index where present. Hand over matching script/review/brief revisions, constraints and decisions left to Mark. Episode work covers the episode; single-scene work covers that scene and needed boundaries. Finish when Mark can write shot direction without guessing the medium or primary integration strategy.
 
 <a id="look-check"></a>
+**Default — cast from the template library.** For painted work Film casts each character from the template cast first and records it as a [casting line](character-proportion-principles.md#cp-casting-line); only a character no template fits counts as a new look below.
+
 **Requirement — look check for new looks.** When a look-defining element has no approved precedent (a new character, a new medium or style, a new key set mood), the user picks its look before Boss builds it. Film shows up to three options as reference images or links, or the coordinator assigns one low-resolution still of one shot in the proposed look to Film or Boss. Record the pick and the user's words in the brief. An approved precedent (an accepted character template, an earlier episode's accepted set) skips the check. Budget: one reference set or one still per element, never a pass over every scene. Outside the look check and the look lock, the brief cites existing frames (an accepted precedent, a reference plate) and paints no key art, unless the user asks or the brief changes medium, light or projection and only a picture can settle it.
 
 <a id="look-lock"></a>
