@@ -55,3 +55,9 @@ Open items (Editor → owners):
 - 12 shots changed in the plates only (IDs, index, timings unchanged): S01-B01-SH01 band slides with fingers; S01-B02-SH01/02/03 coworker gestures + mouth; S01-B02-SH04 smile curls in (f18-102); S02-B01-SH01/02 walk away from behind, side turn; S02-B03-SH02/03 two-mass hand on the mask, free arms, no stray strokes; SH05 neck-only tilt; SH06 mouth; S03-B01-SH01 no tilt, mask put back; SH02 run; SH05 front crouch zoomed 2.2-2.4.
 - Editor: no wiring needed if the plates sit at `KSO_SHOT_INDEX` starts (mouths read the amplitude at start + local frame). A re-timed mix: set `KSO_AMP.amp` (src/painted/kuchisake/shot-motion.ts). Re-render the 12 draft clips.
 - Open: S02-B01-SH03 (POV back down the street) now follows a side turn, not a look back.
+
+## 1 Nov 2026: Draft-tab fix round 3 (Boss, DF Round 8)
+
+- 11 shots changed in the plates only (IDs, index and timings unchanged): S01-B01-SH01, S01-B02-SH01/02/03/04, S02-B01-SH01/02, S02-B03-SH02/03/05 and S03-B01-SH01/02. The SH03/SH05 mouth cleanup also covers what the user flagged on S02-B03-SH04 (its clip opens on SH03).
+- Editor: no wiring change. The S02-B03-SH02 camera has a fixed `dy -60`. The S03-B01-SH02 insert A no longer has the lamp cone. Re-render these 12 draft clips: the 11 shots plus S02-B03-SH04 for its SH03 lead-in.
+- Open: S01-B01-SH01 stays abstract (an LF01 extreme close-up). If the user still cannot read it, the remedy is a framing change in the look, not a plate fix.

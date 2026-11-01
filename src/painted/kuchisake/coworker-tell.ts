@@ -10,13 +10,13 @@ import {talkOpen} from './shot-motion';
 // bent and pointing back, the elbow at or under the table edge, so only the forearm rises into view. Pose basis: P06
 // (shrug_palms_up) for the hand placement (hands out in front, a little wider than the elbows), with CP-P02 elbows (upper arm
 // behind the torso, `behind: 'upper'`, the elbow just inside the torso edge) instead of P06's spread elbows (CP-P10 would keep
-// P06 spread; the user's note overrides it for this shot). The elbow sits 0.05 m under the table top (0.75 m), so the table
-// hides it. The hands lift and spread a little with the speech envelope; `still` rests them just above the table (SH03).
+// P06 spread; the user's note overrides it for this shot). The table's back edge covers her below 0.69 m (lens perspective),
+// so the elbow at 0.66 m is hidden and only the short, foreshortened forearm rises into view. The hands lift and spread a little with the speech envelope; `still` rests them just above the table (SH03).
 
 const COW_G: [number, number, number] = [0, 0, 2.0];
 const L_COW: InteriorLight = {key: [-0.25, -1], rim: [0.7, 0.8], rimScale: 0.3};
 /** Heights above the floor (m): the hidden elbow, the hand at rest and at full emphasis. */
-const ELBOW_Y = 0.7, ELBOW_X = 0.095, HAND_Y0 = 0.9, HAND_Y1 = 0.99, HAND_X0 = 0.19, HAND_X1 = 0.24;
+const ELBOW_Y = 0.66, ELBOW_X = 0.1, HAND_Y0 = 0.83, HAND_Y1 = 0.92, HAND_X0 = 0.16, HAND_X1 = 0.21;
 
 /** The arm on `side` with the elbow back under the table edge and the forearm toward the camera; `e` 0..1 emphasis, `x`/`y` drift (m). */
 const depthArm = (g: Pt, u: number, side: -1 | 1, hand: Pt): Arm => ({
@@ -34,7 +34,7 @@ export const drawCoworkerTelling = (p: Painter, tl: number, gf: number, o: {face
   const e1 = o.still ? 0 : env([-6, -3, 0]), e2 = o.still ? 0 : env([-11, -8, -5]);
   const w = o.still ? 0 : 1;
   const hand = (e: number, ph: number): Pt => [HAND_X0 + (HAND_X1 - HAND_X0) * e + w * 0.012 * Math.sin(tl * 1.7 + ph), HAND_Y0 + (HAND_Y1 - HAND_Y0) * e + w * 0.015 * Math.sin(tl * 2.3 + ph)];
-  const rest: Pt = [0.16, 0.8];
+  const rest: Pt = [0.14, 0.74];
   const rArm = depthArm(g, u, -1, o.still ? rest : hand(e1, 0));
   const lArm = depthArm(g, u, 1, o.still ? rest : hand(e2, 2));
   const f: FaceState = o.face ?? {brow: 'flat', eyes: 'wide', look: [0, 0], mouth: 'talk', open};

@@ -109,8 +109,8 @@ test('the knowing smile starts neutral (a thin closed line) and curls into the h
   assert.equal(smileAt(102), 1);
   const h = (k: number) => Math.max(...knowingMouth(k).map(([, y]) => y)) - Math.min(...knowingMouth(k).map(([, y]) => y));
   assert.ok(h(0) < 0.04, 'neutral mouth is a thin line');
-  assert.ok(h(1) > 0.25, 'the full smile is clearly curved and parted');
-  const [l0, r0] = [knowingMouth(0)[0], knowingMouth(0)[3]];
+  assert.ok(h(1) > 0.12 && h(1) < 0.2, 'the full smile is curved, the lips only a little parted (round 3: no wide open mouth)');
+  const [l0, r0] = [knowingMouth(0)[0], knowingMouth(0)[4]];
   assert.ok(Math.abs(l0[1] - r0[1]) < 0.02, 'the corners are level at k 0');
 });
 
@@ -131,10 +131,11 @@ const inside = (poly: Pt[], [x, y]: Pt): boolean => {
   return c;
 };
 
-test('the coworker knowing smile is half-sided: the right corner sits higher, and the shape covers the kit flat mouth line', () => {
+test('the coworker smile is symmetric (round 3: a normal smile, no sneer), and the shape covers the kit flat mouth line', () => {
   const pts = knowingMouth();
-  const [left, right] = [pts[0], pts[3]];
-  assert.ok(left[1] - right[1] > 0.08, 'the right corner sits clearly higher than the left (head units)');
+  const [left, right] = [pts[0], pts[4]];
+  assert.ok(Math.abs(left[1] - right[1]) < 1e-9 && Math.abs(left[0] + right[0]) < 1e-9, 'the corners are mirrored');
+  assert.ok(left[1] < 0.55, 'the corners lift above the mouth line');
   for (const u of [-0.2, 0, 0.2]) assert.ok(inside(pts, [u, 0.6]), `the kit flat mouth line at u ${u} is covered, so no line shows through`);
 });
 

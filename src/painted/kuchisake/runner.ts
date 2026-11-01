@@ -5,7 +5,7 @@ import type {Painter, Pt} from '../kit/painter';
 
 // The narrator running in profile (S03-B01-SH02 insert A, user note 1 Nov 2026: "run" needs arms that swing). The kit profile
 // gait is a walk: legs swing +-0.42 rad and the arms hang. This keeps the kit legs and body, raises the cadence, leans the torso
-// toward the run direction, swings both arms through +-0.9 rad with the elbows bent about 70 deg (pose built from FK targets in
+// toward the run direction, swings both arms runner-style (elbows near 90 deg, driving far back; pose built from FK targets in
 // plate px: `rArm`/`lArm` with `via`), and lifts the whole figure in the flight phase (the kit keeps the lower foot on the ground).
 // Not a rig pose (no P01-P30 entry is a run: CP-P12 deviation recorded in DF-20261101-kso-look-stills Round 8).
 
@@ -26,12 +26,16 @@ export const drawRunnerProfile = (p: Painter, def: CastDef, g: Pt, unit: number,
   const gg: Pt = [g[0], g[1] - hop];
   const Sh = shoulderAt(def, gg, unit, dir, lean, ph);
   const L = BONE * unit;
-  const arm = (theta: number): Arm => {
-    const flex = 1.2;
+  // Runner's arms (user note round 3: elbows lower, and driving much further back): the upper arm swings about a centre 0.29 rad
+  // behind vertical, +-0.8 rad, so the elbow reaches 0.5 rad forward (low, below the chest) and 1.1 rad back (stabbing behind the
+  // body). The elbow holds near 90 deg: more closed on the forward swing (hand up by the chest), a little open on the back swing
+  // (hand trailing by the hip). `s` is the swing, +1 fully forward.
+  const arm = (s: number): Arm => {
+    const theta = lean - 0.45 + 0.8 * s, flex = 1.5 + 0.25 * s;
     const E: Pt = [Sh[0] + dir * L * Math.sin(theta), Sh[1] + L * Math.cos(theta)];
     const T: Pt = [E[0] + dir * L * Math.sin(theta + flex), E[1] + L * Math.cos(theta + flex)];
     return {to: T, via: E};
   };
-  const pose: FigPose = {view: dir > 0 ? 'right' : 'left', face, light, walk: cycles, lean, rArm: arm(0.15 - 0.95 * Math.sin(ph)), lArm: arm(0.15 + 0.95 * Math.sin(ph))};
+  const pose: FigPose = {view: dir > 0 ? 'right' : 'left', face, light, walk: cycles, lean, rArm: arm(-Math.sin(ph)), lArm: arm(Math.sin(ph))};
   return drawFigure(p, def, gg, unit, pose, t);
 };

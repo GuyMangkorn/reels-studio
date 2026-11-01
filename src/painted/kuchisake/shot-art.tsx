@@ -20,8 +20,6 @@ import {streetP} from './space';
 export const PAPER = '#0d1624';
 const MASK_WHITE = '#ecebe6';
 
-/** The mask band's edge line across the lens at x (LF01): top edge y at x, before the slide. */
-const bandTop = (x: number) => 470 + ((x + 300) * 140) / 1680;
 /** Slide of the mask band in `S01-B01-SH01` (px, down) at shot-local frame `lf`: still to f25, the fingers unhook it slowly, 230 px by f175, held. */
 export const bandSlide = (lf: number): number => 230 * sstep((lf - 25) / 150);
 
@@ -46,14 +44,15 @@ export const paintCloseup = (p: Painter, slide = 0, push = false) => {
     [[900, -300], [860, 40], [800, 230]],
   ];
   strands.forEach((s, i) => inkLine(p, 6_300_010 + i, s, {color: '#050508', weight: 9, curve: 0.4, closed: false}));
-  if (push && d > 0) washAt(p, 6_300_006, '#2a1f1c', 120, [[-300, 470 + d - 70], [1380, 610 + d - 70], [1380, 610 + d], [-300, 470 + d]], 0.2, 0.3);
+  if (push && d > 0) hardFill(p, 6_300_006, '#4a3a33', [[-300, 470 + d - Math.min(d, 26)], [1380, 610 + d - Math.min(d, 26)], [1380, 610 + d], [-300, 470 + d]]);
   hardFill(p, 6_300_020, '#2b3541', [[-300, 545 + d], [1380, 685 + d], [1380, 2220], [-300, 2220]]);
   hardFill(p, 6_300_021, '#1d2530', [[-300, 1050], [1380, 1050], [1380, 2220], [-300, 2220]]);
   hardFill(p, 6_300_022, '#161c25', [[-300, 1450], [1380, 1450], [1380, 2220], [-300, 2220]]);
   hardFill(p, 6_300_023, MASK_WHITE, [[-300, 470 + d], [1380, 610 + d], [1380, 685 + d], [-300, 545 + d]]);
   inkLine(p, 6_300_030, [[-300, 470 + d], [1380, 610 + d]], {color: '#5b7fa6', weight: 2, closed: false, curve: 0});
-  inkLine(p, 6_300_040, [[60, 800], [330, 760], [600, 790]], {color: '#1a212b', weight: 2.2, curve: 0.4, closed: false});
-  inkLine(p, 6_300_041, [[480, 900], [760, 1010], [1000, 960]], {color: '#1a212b', weight: 2.2, curve: 0.4, closed: false});
+  // The mask's pleats travel with the mask (`slide`).
+  inkLine(p, 6_300_040, [[60, 800 + d], [330, 760 + d], [600, 790 + d]], {color: '#1a212b', weight: 2.2, curve: 0.4, closed: false});
+  inkLine(p, 6_300_041, [[480, 900 + d], [760, 1010 + d], [1000, 960 + d]], {color: '#1a212b', weight: 2.2, curve: 0.4, closed: false});
   if (push) {
     // The finger: the same card, moved down with the band (a little to the left along the band's slope), pressing into it.
     const press = 14 * sstep(d / 40), dx = -0.12 * d, dy = d + press;
@@ -125,7 +124,7 @@ export const COW_KNOW: FaceState = {...COW_RELIEF, look: [COW_SLY.look[0] * 0.85
  * The full smile in head units (kit head decal, mouth line at v 0.6), user note 1 Nov 2026 round 3: a normal, natural smile, no
  * sneer. Both corners lift 0.1 (symmetric), the lips part only a thin crescent (0.08 at the centre). Top edge then bottom edge.
  */
-const SMILE: Pt[] = [[-0.3, 0.5], [-0.15, 0.565], [0, 0.585], [0.15, 0.565], [0.3, 0.5], [0.26, 0.535], [0.14, 0.625], [0, 0.665], [-0.14, 0.625], [-0.26, 0.535]];
+const SMILE: Pt[] = [[-0.3, 0.5], [-0.15, 0.565], [0, 0.585], [0.15, 0.565], [0.3, 0.5], [0.27, 0.55], [0.17, 0.627], [0, 0.67], [-0.17, 0.627], [-0.27, 0.55]];
 /**
  * The smile at progress `k` (0 neutral ... 1 the full smile). The shape covers the kit's flat mouth line: at k 0 it is a thin
  * closed line (the kit flat mouth, +-0.2 wide at v 0.6), then the corners widen and lift together and the lips part a little

@@ -79,6 +79,11 @@ const tooth = (pts: Pt[], sign: 1 | -1, u: number, w: number, depth: number, jit
   return [[u - w / 2, edgeAt(pts, u - w / 2)], [u + w / 2, edgeAt(pts, u + w / 2)], [u + w * 0.22 + jit, tip], [u - w * 0.22 + jit, tip]];
 };
 const strip = (pts: Pt[], sign: 1 | -1, depth: number): Pt[] => [...pts, ...pts.slice().reverse().map(([u, v]): Pt => [u, v + sign * depth])];
+/** The inner shadow under the upper lip, tapered to nothing at the corners so it stays inside the mouth (no smudge past the corners). */
+const stripTaper = (pts: Pt[], depth: number): Pt[] => {
+  const uMax = Math.max(...pts.map(([u]) => Math.abs(u)));
+  return [...pts, ...pts.slice().reverse().map(([u, v]): Pt => [u, v + depth * clamp01((uMax - Math.abs(u)) / 0.4)])];
+};
 
 /**
  * The mask, ear loops and mouth of the woman's face at tear `t`, painted over the decal head centred at (cx, cy), K px per
@@ -107,7 +112,7 @@ export const paintMaskFaceTear = (p: Painter, seed: number, cx: number, cy: numb
     }
     if (open) {
       solid(p, seed + 13, INTERIOR, Q([...top, ...bot.slice().reverse()]), 4, 0.02, 0.1);
-      glaze(p, seed + 14, '#000000', 150, Q(strip(top, 1, 0.24 * o)), {texture: 0.4, border: 0.4, bleed: 0.08});
+      glaze(p, seed + 14, '#000000', 150, Q(clean ? stripTaper(top, 0.24 * o) : strip(top, 1, 0.24 * o)), {texture: 0.4, border: 0.4, bleed: 0.08});
       const cv = lerp(0.33, 0.8, o);
       solid(p, seed + 15, TONGUE, Q(ell(0.02 * s, cv, 0.34 * s, 0.1 * o, 16)), 3, 0.02, 0.05);
     }
@@ -153,6 +158,8 @@ export const paintMaskFaceTear = (p: Painter, seed: number, cx: number, cy: numb
       if (!clean) inkLine(p, seed + line, Q(pts), {color: LIP, weight: 2.0, curve: 0.3, closed: false});
     });
   }
+  // A fully dropped mask (m 1) is out of the close-up frames; in a full-length frame it would hang at the waist, so `clean` leaves it out (S03-B01-SH01).
+  if (clean && m >= 1) return;
   solid(p, seed + 20, MASK, Q(outline), 4, 0.02, 0.1);
   // Pleats across the worn mask; they travel with the mask as it drops.
   const drop = m * DROP;

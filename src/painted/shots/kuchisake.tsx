@@ -1,16 +1,17 @@
-import type {ReactNode} from 'react';
+import {useId, type ReactNode} from 'react';
 import {AbsoluteFill} from 'remotion';
 import {CameraLayer, pushCamera, type Camera} from '../kit/camera';
 import {hardFill, rectPts, type InteriorLight} from '../kit/draw';
 import {Spot} from '../kit/glow';
 import type {FaceState} from '../kit/head';
+import type {Pt} from '../kit/painter';
 import {Grade, Grain} from '../kit/screen';
 import type {PaintedShot, ShotContext} from '../shot';
 import {CALM_FACE, REVEAL_FACE, WOMAN_LIGHT} from '../kuchisake/cast';
 import {bandSlide, COW_HEAD, COW_RELIEF, buzzVeil, camCloseHook, camCloseReturn, drawCoworker, drawCoworkerKnowing, drawNarratorFront, lampOn, NARR_CU_UNIT, NARR_CU_Y, narrCuGround, paintCloseup, paintCuBack, PAPER, smileAt, sstep, TopGlow} from '../kuchisake/shot-art';
 import {drawWomanNeckTilt, drawWomanTear, tearAt} from '../kuchisake/shot-woman';
 import {drawCoworkerTelling} from '../kuchisake/coworker-tell';
-import {freeLeftArm, maskGrip} from '../kuchisake/ghost-hand';
+import {hangLeftArm, maskGrip} from '../kuchisake/ghost-hand';
 import {drawRunnerProfile} from '../kuchisake/runner';
 import {talkOpen} from '../kuchisake/shot-motion';
 import {paintWalkerBack} from '../kuchisake/walker-back';
@@ -37,24 +38,55 @@ const NARR_GLANCE: FaceState = {brow: 'worry', eyes: 'wide', look: [-0.7, 0], mo
 const NARR_DARK_CU: FaceState = {brow: 'worry', eyes: 'half', look: [-0.4, 0.6], mouth: 'flat'};
 const NARR_TURN: FaceState = {brow: 'worry', eyes: 'half', look: [0, 0], mouth: 'flat'};
 const L_DARK: InteriorLight = {key: [0.6, 0.35], rim: [0.9, 0.2], rimScale: 0.9};
-const MS_FACE = CALM_FACE;
 
 /** Shot overlays: the screen layers of the look files (falloff, glow, cold grade, grade and grain), in the same order. */
 type Ov = ShotContext & {camera: Camera; opacity: number};
 const Wrap = ({opacity, children}: {opacity: number; children: ReactNode}) => <AbsoluteFill style={{opacity, pointerEvents: 'none'}}>{children}</AbsoluteFill>;
 
-/** The street lens (LF02): lamp cone, lower-frame falloff; `lamp` 0..1 flickers the cone and the set, `veil` adds the buzz. */
-const StreetOv = ({camera, opacity, lamp = 1, veil = 0, from = 760, peak = 0.62}: Ov & {lamp?: number; veil?: number; from?: number; peak?: number}) => (
-  <Wrap opacity={opacity}>
-    <CameraLayer camera={camera} width={W} height={Hh} opacity={lamp}>
-      <StreetGlow />
-    </CameraLayer>
-    <LowerFalloff from={from} peak={peak} />
-    {(1 - lamp) * 0.7 + veil > 0 && <AbsoluteFill style={{background: '#05080c', opacity: Math.min(0.85, (1 - lamp) * 0.7 + veil)}} />}
-    <Grade />
-    <Grain />
-  </Wrap>
-);
+/**
+ * The street lens (LF02): lamp cone, lower-frame falloff; `lamp` 0..1 flickers the cone and the set, `veil` adds the buzz.
+ * `hole` (plate px) cuts a figure that stands between the lens and the lamp out of the cone and pool (soft-edged), so the light
+ * falls behind her instead of washing over her (S02-B01-SH01/SH02, round 3); `glow` false drops the cone (a set without the lamp).
+ */
+const StreetOv = ({camera, opacity, lamp = 1, veil = 0, from = 760, peak = 0.62, hole, glow = true}: Ov & {lamp?: number; veil?: number; from?: number; peak?: number; hole?: Pt[]; glow?: boolean}) => {
+  const id = useId().replace(/:/g, '');
+  return (
+    <Wrap opacity={opacity}>
+      {glow && (
+        <CameraLayer camera={camera} width={W} height={Hh} opacity={lamp}>
+          {hole ? (
+            <>
+              <defs>
+                <filter id={`${id}b`} x="-50%" y="-50%" width="200%" height="200%">
+                  <feGaussianBlur stdDeviation={6} />
+                </filter>
+                <mask id={`${id}m`} maskUnits="userSpaceOnUse" x={-600} y={-600} width={2400} height={3200}>
+                  <rect x={-600} y={-600} width={2400} height={3200} fill="white" />
+                  <polygon points={hole.map(([x, y]) => `${x},${y}`).join(' ')} fill="black" filter={`url(#${id}b)`} />
+                </mask>
+              </defs>
+              <g mask={`url(#${id}m)`}>
+                <StreetGlow />
+              </g>
+            </>
+          ) : (
+            <StreetGlow />
+          )}
+        </CameraLayer>
+      )}
+      <LowerFalloff from={from} peak={peak} />
+      {(1 - lamp) * 0.7 + veil > 0 && <AbsoluteFill style={{background: '#05080c', opacity: Math.min(0.85, (1 - lamp) * 0.7 + veil)}} />}
+      <Grade />
+      <Grain />
+    </Wrap>
+  );
+};
+/** Back-view silhouette of the walking narrator (m: u right, v up from the feet), a little inside her outline: hair, shoulders and arms, legs. */
+const WALKER_SIL: Pt[] = [[0, 1.73], [0.17, 1.69], [0.225, 1.52], [0.225, 1.25], [0.2, 1.15], [0.22, 0.76], [0.14, 0.7], [0.13, 0.03], [-0.13, 0.03], [-0.14, 0.7], [-0.22, 0.76], [-0.2, 1.15], [-0.225, 1.25], [-0.225, 1.52], [-0.17, 1.69]];
+const walkerHole = (z: number): Pt[] => {
+  const [gx, gy] = streetP([0, 0, z]), u = streetUnit(z);
+  return WALKER_SIL.map(([x, y]): Pt => [gx + x * u, gy - y * u]);
+};
 /** The reveal close-ups (LF03): the lamp from above, the falloff that keeps the caption band quiet. */
 const CuOv = ({camera, opacity, from = 840, to = 1060, peak = 0.85}: Ov & {from?: number; to?: number; peak?: number}) => (
   <Wrap opacity={opacity}>
@@ -109,8 +141,6 @@ const G0 = streetP([0, 0, 0]);
 const HERO_UNIT = 1663;
 const HERO_HEAD: [number, number] = [540, 600];
 const HERO_G: [number, number] = [540, HERO_HEAD[1] + HEAD_CENTRE_M * HERO_UNIT];
-/** The free left arm of the ghost in the close-ups (P06 shrug_palms_up reach, metres from the shoulder): S02-B03-SH02 end, SH03 end. */
-const LEFT_UP: [number, number] = [0.27, -0.06], LEFT_UP2: [number, number] = [0.34, 0.06];
 /** Mask state of the close shot S02-B03-SH02: worn until the mouth is clear; drop begins after the hook (f6). */
 export const maskHook = (lf: number) => 0.13 * sstep((lf - 6) / 30);
 /** Mask state of the reveal S02-B03-SH03: the mask leaves the mouth at f0 (m 0.15) and is out of frame by f8. */
@@ -202,7 +232,8 @@ export const kuchisakeShots: PaintedShot[] = [
       const z = walkZ(ctx.tl);
       paintWalkerBack(p, NARRATOR_DARK, streetP([0, 0, z]), streetUnit(z), LAMP_LIGHT, ctx.tl, {walk: WALK_CYCLES * Math.min(1, ctx.tl / 4.3)});
     },
-    Overlay: StreetOv,
+    // She walks toward the lamp but stays in front of its pool (z 2.8 -> 0.8, the pool is at z 0): the cone is cut around her.
+    Overlay: (props) => <StreetOv {...props} hole={walkerHole(walkZ(props.tl))} />,
   }),
   // The narrator stops (the gait settles over 12 f) and turns her head to the side, curious: profile to screen left, the body still from behind.
   shot('S02-B01-SH02', {
@@ -214,7 +245,7 @@ export const kuchisakeShots: PaintedShot[] = [
       const settle = WALK_CYCLES + 0.5 * sstep(f / 12);
       paintWalkerBack(p, NARRATOR_DARK, streetP([0, 0, WALK_Z1]), streetUnit(WALK_Z1), LAMP_LIGHT, ctx.tl, {walk: f < 12 ? settle : undefined, turn: sstep((f - 22) / 10), face: NARR_GLANCE});
     },
-    Overlay: StreetOv,
+    Overlay: (props) => <StreetOv {...props} hole={walkerHole(WALK_Z1)} />,
   }),
   // Her point of view back down the street: empty, the wires, one far light.
   shot('S02-B01-SH03', {
@@ -291,15 +322,17 @@ export const kuchisakeShots: PaintedShot[] = [
     },
     Overlay: CuOv,
   }),
-  // The right hand holds the mask's left edge (fingers and thumb on it) and pulls it down; the free left arm rises (P12 / P06 base).
+  // The right hand holds the mask's left edge (fingers over it) and pulls it down; the arm is an authored reach in depth (P12 base,
+  // ghost-hand.ts), smooth in the mask state; the left arm hangs (P01). The fixed -60 px camera offset keeps the mask edge and
+  // the hand out of the caption band (y 860) as they move down.
   shot('S02-B03-SH02', {
     paper: PAPER,
-    camera: (tl) => pushCamera(tl, 1.2, {s0: 1, s1: 1.12, fx: 540, fy: 560}),
+    camera: (tl) => ({...pushCamera(tl, 1.2, {s0: 1, s1: 1.12, fx: 540, fy: 560}), dy: -60}),
     paint: (p, ctx) => {
       paintCuBack(p);
-      const f = f_of(ctx.tl), m = maskHook(f);
+      const m = maskHook(f_of(ctx.tl));
       const grip = maskGrip(CU_GROUND, CU_UNIT, m);
-      drawWomanTear(p, CU_GROUND, CU_UNIT, ctx.tl, m, LAMP_LIGHT, CALM_FACE, undefined, {rArm: grip.rArm, lArm: freeLeftArm(CU_GROUND, CU_UNIT, LEFT_UP, f / 36)}, true);
+      drawWomanTear(p, CU_GROUND, CU_UNIT, ctx.tl, m, LAMP_LIGHT, CALM_FACE, undefined, {rArm: grip.rArm, lArm: hangLeftArm(CU_GROUND, CU_UNIT)}, true);
       grip.paintHand(p);
     },
     Overlay: (props) => <CuOv {...props} from={800} peak={Math.min(1, 0.85 + 0.6 * (1 - maskHook(f_of(props.tl))))} />,
@@ -311,9 +344,10 @@ export const kuchisakeShots: PaintedShot[] = [
     paint: (p, ctx) => {
       paintCuBack(p);
       const f = f_of(ctx.tl);
-      // The hand yanks the mask down with it for 3 frames, then lets go and falls to a relaxed hand; the left arm keeps rising.
-      const grip = maskGrip(CU_GROUND, CU_UNIT, maskReveal(Math.min(f, 3)), {hold: 1 - sstep((f - 3) / 6), relaxed: [-0.34, -0.12]});
-      drawWomanTear(p, CU_GROUND, CU_UNIT, ctx.tl, maskReveal(f), LAMP_LIGHT, REVEAL_FACE, tearAt(f), {rArm: grip.rArm, lArm: freeLeftArm(CU_GROUND, CU_UNIT, LEFT_UP2, f / 20, LEFT_UP)}, true);
+      // The hand yanks the mask down with it for 3 frames, then lets go; the arm settles to the side over f3-15 (user, round 3:
+      // the arms return to the body). The left arm hangs throughout.
+      const grip = maskGrip(CU_GROUND, CU_UNIT, maskReveal(Math.min(f, 3)), {release: (f - 3) / 12});
+      drawWomanTear(p, CU_GROUND, CU_UNIT, ctx.tl, maskReveal(f), LAMP_LIGHT, REVEAL_FACE, tearAt(f), {rArm: grip.rArm, lArm: hangLeftArm(CU_GROUND, CU_UNIT)}, true);
       grip.paintHand(p);
     },
     Overlay: (props) => <CuOv {...props} peak={Math.min(1, 0.85 + 0.6 * (1 - maskReveal(f_of(props.tl))))} />,
@@ -352,17 +386,14 @@ export const kuchisakeShots: PaintedShot[] = [
   }),
 
   // S03-B01: the run, the door, the coworker's relief, the pass-on sentence.
-  // The woman stands frozen on the street; the figure no longer tilts. She puts the mask back over her face: the right hand lifts it
-  // from below the mouth (m 0.55, grin showing) to worn (f8-34), then the arm falls. Optional beat (user note), kept short.
+  // The woman stands frozen on the street, the grin bare, arms at her sides (P01); no tilt and no put-the-mask-back beat (user,
+  // round 3: the hand read odd, so the beat is dropped).
   shot('S03-B01-SH01', {
     paper: PAPER,
     camera: (tl) => pushCamera(tl, 1.83, {s0: 1, s1: 1.03, fx: 540, fy: 880}),
     paint: (p, ctx) => {
       paintStreet(p);
-      const f = f_of(ctx.tl), m = 0.55 * (1 - sstep((f - 8) / 26)), u = streetUnit(0);
-      const grip = maskGrip(G0, u, m, {hold: 1 - sstep((f - 36) / 10), relaxed: [-0.07, -0.5]});
-      drawWomanTear(p, G0, u, ctx.tl, m, LAMP_LIGHT, f < 30 ? REVEAL_FACE : MS_FACE, undefined, {rArm: grip.rArm, lArm: freeLeftArm(G0, u, [0.045, -0.518], 0)}, true);
-      grip.paintHand(p);
+      drawWomanTear(p, G0, streetUnit(0), ctx.tl, 1, LAMP_LIGHT, REVEAL_FACE, undefined, undefined, true);
     },
     Overlay: StreetOv,
   }),
@@ -388,7 +419,8 @@ export const kuchisakeShots: PaintedShot[] = [
         paintDarkRoomSet(p);
       }
     },
-    Overlay: (props) => (props.tl * FPS >= 56 ? <DarkOv {...props} /> : <StreetOv {...props} />),
+    // Insert A is a plain dark set (no lamp in it): no cone over the runner.
+    Overlay: (props) => (props.tl * FPS >= 56 ? <DarkOv {...props} /> : <StreetOv {...props} glow={props.tl * FPS >= 28} />),
   }),
   // The dark room: she slides down the door (LF05 as approved).
   shot('S03-B01-SH03', {
