@@ -7,7 +7,7 @@
 - Profile / tier: `wdg-horror-fact` / Full, trimmed to script-only scope (Film/Mark/Boss/Editor not authorized).
 - Ending: **`C_seamless` only** (user choice on R1). `B_loop` material removed.
 - Target: about 60 s. Beat layout below totals **about 60 s (syllable estimate 60–61 s), estimated** (syllable-rate estimate only). No read-aloud, TTS or animatic timing has been performed. Do not lock frames from this estimate.
-- Status: R2 written, **correction applied, recheck pending** (FC01–FC04 applied; F006 line 1 softened by user request; trims). Factual status stays `verification-incomplete`: all claims rest on `lead-only` sources; `ready-for-storyboard` needs inspected sources for F001, F004, F006 or the user recording that a lead-only basis is acceptable. User approval: none. Runtime/audio/visual validation: not performed.
+- Status: R2 written, **rechecked by Boat 2026-11-01 (pass); user accepted lead-only sources → `ready-for-storyboard`** (header synced by coordinator for Preaw) (FC01–FC04 applied; F006 line 1 softened by user request; trims). Factual status stays `verification-incomplete`: all claims rest on `lead-only` sources; `ready-for-storyboard` needs inspected sources for F001, F004, F006 or the user recording that a lead-only basis is acceptable. User approval: none. Runtime/audio/visual validation: not performed.
 
 ## Story core
 
