@@ -1,15 +1,15 @@
-# Dev findings — Boss feedback for Film and Mark
+# Dev findings — Boss feedback for Film
 
-This log records observed issues and reusable lessons from development, blockout, Studio and rendering so Film can choose 2D / 3D / hybrid and Mark can plan with known tool constraints. Boss owns shared-library findings, Editor owns integration/editing findings, Film owns brief implications and Mark owns written-shot implications. Read findings relevant to the assigned assets, camera, lighting, compositing or tooling.
+This log records observed issues and reusable lessons from development, blockout, Studio and rendering so Film can choose 2D / 3D / hybrid and plan scene sheets with known tool constraints. Boss owns shared-library findings, Editor owns integration/editing findings, Film owns brief and written-shot implications. Read findings relevant to the assigned assets, camera, lighting, compositing or tooling.
 
 <a id="วงจรใช้งาน"></a>
 ## Required feedback cycle
 
 1. **Boss or Editor records findings when observed:** blockers, production/shot changes, workarounds and reusable lessons across 2D/3D/hybrid. Search for an existing entry and update its stable ID for the same issue. Record known symptoms/scope immediately, even with unknown cause, then add experiments and fixes during work and before the PR. Create no empty entry when nothing new or changed was found.
 2. **Film reads before choosing/revising approach:** compare relevant entries with target checkout, code/dependencies and applicable conditions. Cite finding ID + checked date/commit and decision ID in the brief, with outcome: use conditionally / build shared capability first / fallback / spike / irrelevant with reason. State when none apply; that does not establish tested feasibility.
-3. **Mark reads before creating/revising scene sheets:** consult Film's cited findings and camera/staging findings. Link IDs to affected shots in scene sheets, framing/motion/contact/reveal constraints or fallback, and Boss/Editor proof requirements. Reconcile conflicts through the coordinator so brief/scene-handoff revisions agree.
+3. **Film reads again before creating/revising scene sheets:** consult Film's cited findings and camera/staging findings. Link IDs to affected shots in scene sheets, framing/motion/contact/reveal constraints or fallback, and Boss/Editor proof requirements. Reconcile conflicts through the coordinator so brief/scene-handoff revisions agree.
 4. **Feed back impacts on active plans:** as soon as the plan cannot be implemented as written, the observing Boss/Editor reports finding ID, scene/shot/decision IDs, effects on story/time/selected deliverables and affected shared consumers and proposed response through the coordinator. Link open items in handoff/PR; keep details authoritative here. Writing this log does not send messages or invoke agents automatically.
-5. **Revalidate after fixes/tool changes:** the finding owner updates status with commit/PR and repeated-test evidence while retaining original symptoms/attempts. After baseline changes, Film/Mark verify the fix exists in the target checkout before reuse. Update active affected brief/scene sheets and link the original finding when results change plans.
+5. **Revalidate after fixes/tool changes:** the finding owner updates status with commit/PR and repeated-test evidence while retaining original symptoms/attempts. After baseline changes, Film verify the fix exists in the target checkout before reuse. Update active affected brief/scene sheets and link the original finding when results change plans.
 
 <a id="ขอบเขตหลักฐานและสถานะ"></a>
 ## Evidence scope and status — requirements
@@ -25,7 +25,7 @@ This log records observed issues and reusable lessons from development, blockout
 
 Created 26 October 2026. The first entry records tooling checks while adding this workflow, without visual/runtime testing to establish medium constraints. The entries below retain their original evidence dates; translating this document does not revalidate them.
 
-| Finding ID / link | Subject / tags | Status | Last checked / commit | Film / Mark implication |
+| Finding ID / link | Subject / tags | Status | Last checked / commit | Film implication |
 | --- | --- | --- | --- | --- |
 | <a id="df-20261026-duplicate-types"></a>[DF-20261026-duplicate-types](dev-findings/DF-20261026-duplicate-types.md) | Typecheck / local dependencies | workaround | 2026-10-26 / `906a85e` | Separate environment failures from medium feasibility |
 | <a id="df-20261026-studio-emfile"></a>[DF-20261026-studio-emfile](dev-findings/DF-20261026-studio-emfile.md) | Studio file watcher / tooling | open | 2026-10-26 / `906a85e` | CLI renders are available; Studio seeking remains unverified |
@@ -118,10 +118,10 @@ Add each entry as its own file `docs/dev-findings/DF-YYYYMMDD-short-slug.md` (un
 
 ## Planning impact
 - Film: medium/compositing/camera/light/interface effect; fallback/shared capability:
-- Mark: selected-deliverable shot/framing/staging/contact/reveal effect; preserved constraints:
+- Film (scene sheets): selected-deliverable shot/framing/staging/contact/reveal effect; preserved constraints:
 - Follow-up: owner + issue/PR; spike/acceptance criteria; brief/scene-sheet/index updates:
 
 ## Revalidation history
 - Date + branch/commit → method/result/coverage → status; fix PR/merge status:
-- Film/Mark adoption: read finding revision/date → decision/shot refs + outcome:
+- Film adoption: read finding revision/date → decision/shot refs + outcome:
 ```

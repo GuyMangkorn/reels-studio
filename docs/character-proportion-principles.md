@@ -1,5 +1,5 @@
 <a id="character-proportion-principles"></a>
-# Character proportion principles for Boss / Film / Mark
+# Character proportion principles for Boss / Film
 
 Updated and sources inspected on 29 October 2026. Rule level: **Reference**. Read when building or changing a character body or head, proportion work, face-expression work or front-view arm poses. Body code in `assets/blender/char_base/` cites these IDs in `# CP-xx` comments; a brief may override a **Default** with a recorded reason. For physical dimensions of scene objects see [scale-and-perspective-principles](scale-and-perspective-principles.md).
 
@@ -83,7 +83,7 @@ Level 1 keeps a human-readable body while pushing it toward a cartoon read.
 <a id="cp-p-arm-depth"></a>
 ## CP-P. Front-view arm depth (Default)
 
-Decided by the user on 30 October 2026 (WORLD FOG r5). In a front view, a bent arm's elbow goes back into depth, behind the torso. It does not splay out to the side at right angles to the body. Mark picks the pose type that fits what the character is doing at that moment and writes it in the scene sheet. Any of the four types is valid when it matches the action.
+Decided by the user on 30 October 2026 (WORLD FOG r5). In a front view, a bent arm's elbow goes back into depth, behind the torso. It does not splay out to the side at right angles to the body. Film picks the pose type that fits what the character is doing at that moment and writes it in the scene sheet. Any of the four types is valid when it matches the action.
 
 | ID | Pose type | When | How it draws |
 | --- | --- | --- | --- |
@@ -93,15 +93,15 @@ Decided by the user on 30 October 2026 (WORLD FOG r5). In a front view, a bent a
 | CP-P04 (AB3) | Hands behind the back | Waiting, hesitating, hiding something | Both arms are behind the torso, with the elbows just past the torso edge |
 
 - **CP-P05.** An arm carrying something while walking or standing hangs straight at the side (the rig's hang). Do not hold it bent across the body.
-- **CP-P06.** Switching between behind and in front is an instant layer change. Mark names the switch frame in the scene sheet. Choose a frame where the upper arm lies outside the torso silhouette so no sleeve pops in.
+- **CP-P06.** Switching between behind and in front is an instant layer change. Film names the switch frame in the scene sheet. Choose a frame where the upper arm lies outside the torso silhouette so no sleeve pops in.
 - **CP-P07.** A hand that sits closer than the shoulder width gets an authored elbow. Two-bone IK with a fixed bone length splays the elbow outward when the hand is near the shoulder.
 
 <a id="cp-p-pose-sheet"></a>
-**Pose sheet P01–P30 (Default, user decision 31 Oct 2026).** The project's standard set of thirty front-view arm poses. The poses and their IDs are the norm; the joint angles are read by eye, not measured (Reference). Owner of the library: Boss (`src/painted/kit/pose-sheet.json`, converted to hand targets in the rig). Film and Mark cite pose IDs; they do not hold the numbers. Picture: asset store `library/image/pose-sheet/2026-10-31_pose_sheet_ALL_P01-P30.webp`.
+**Pose sheet P01–P30 (Default, user decision 31 Oct 2026).** The project's standard set of thirty front-view arm poses. The poses and their IDs are the norm; the joint angles are read by eye, not measured (Reference). Owner of the library: Boss (`src/painted/kit/pose-sheet.json`, converted to hand targets in the rig). Film cite pose IDs; they do not hold the numbers. Picture: asset store `library/image/pose-sheet/2026-10-31_pose_sheet_ALL_P01-P30.webp`.
 
 **Extension P31–P45 (Default, user decision 1 Nov 2026).** Fifteen body poses (sit, kneel, crouch, lie, run, fall, cower, accuse, hug self, peek, hands behind back, surrender) plus profile arms for P02–P30, in `src/painted/kit/poses-more.ts` (`ALL_POSE_IDS`, `POSE_INFO`, `poseFor(id, def, g, unit, view)`). Not every pose has every view (`poseViews`, `hasView`): P14, P37 and P43 are front only; P32 and P36 are profile only. In every view `lean` is toward screen right. Picture: `KIT-POSES` sheets in asset store `projects/KIT/pose-sheets/`.
 
-- **CP-P12 — Look here first.** Any agent that devises a body pose or gesture for a character (Film's brief, Mark's scene sheets, Boss's rig work, Editor's edits) first checks P01–P45 in `src/painted/kit/poses.ts` / `poses-more.ts` and the catalog sheets (`KIT-POSES`). For a move rather than a held pose it picks a preset from `MOTIONS` (`src/painted/kit/motions.ts`, reel `KIT-MOTIONS`) and layers it with `layerMotion`, not a hand-built walk. If a pose fits, cite its ID (e.g. `P14`). If none fits, pick the nearest ID, state what differs, and record the new pose as a proposed addition to Boss, not as a one-off. A brief or scene handoff may override with a recorded reason. Applies to front-view arm poses on the painted rig; other rigs port the set first (runtime `missing` until verified).
+- **CP-P12 — Look here first.** Any agent that devises a body pose or gesture for a character (Film's brief and scene sheets, Boss's rig work, Editor's edits) first checks P01–P45 in `src/painted/kit/poses.ts` / `poses-more.ts` and the catalog sheets (`KIT-POSES`). For a move rather than a held pose it picks a preset from `MOTIONS` (`src/painted/kit/motions.ts`, reel `KIT-MOTIONS`) and layers it with `layerMotion`, not a hand-built walk. If a pose fits, cite its ID (e.g. `P14`). If none fits, pick the nearest ID, state what differs, and record the new pose as a proposed addition to Boss, not as a one-off. A brief or scene handoff may override with a recorded reason. Applies to front-view arm poses on the painted rig; other rigs port the set first (runtime `missing` until verified).
 - **CP-P08.** The elbow stays outside the neck and head silhouette. A hand may touch the face or chin; the forearm never crosses the neck.
 - **CP-P09.** A hand foreshortened toward the camera is at most about 1.3x normal size and never larger than the face. Shorten the arm instead of growing the hand.
 - **CP-P10.** CP-P02 wins over the sheet for poses that hold something at the chest (P10, P17, P25, P26, P28): the elbows go back behind the torso (decided by the user, 31 Oct 2026). The sheet is read for hand placement only. Poses that really spread the elbows (P06, P09, P22) follow CP-P01.
@@ -115,7 +115,7 @@ Runtime (30 Oct 2026, commit `f6e4bd2`):
 - Known costs: [DF-20261030-painted-arm-depth](dev-findings/DF-20261030-painted-arm-depth.md).
 
 <a id="cp-casting-line"></a>
-**Casting line (Default, user decision 1 Nov 2026).** Before designing a new character, Film and Mark pick a person from the template cast (`PEOPLE` in `src/painted/kit/people.ts`, catalog `KIT-CAST-CARDS`) and name each character as `person [+ outfit] [, pose] [, expression]`, e.g. `man-parted + police, P15, scared`. `parseCasting` in `src/painted/kit/casting.ts` validates the line. A new look is proposed to Boss for `PEOPLE` only when no template fits and the look is reusable; one-off changes stay in the episode cast.
+**Casting line (Default, user decision 1 Nov 2026).** Before designing a new character, Film pick a person from the template cast (`PEOPLE` in `src/painted/kit/people.ts`, catalog `KIT-CAST-CARDS`) and name each character as `person [+ outfit] [, pose] [, expression]`, e.g. `man-parted + police, P15, scared`. `parseCasting` in `src/painted/kit/casting.ts` validates the line. A new look is proposed to Boss for `PEOPLE` only when no template fits and the look is reusable; one-off changes stay in the episode cast.
 
 <a id="cp-sources"></a>
 ## Sources

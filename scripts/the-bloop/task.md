@@ -15,7 +15,7 @@ Predates the W1–W8 flow (30 Oct 2026): no look frames, no shot-by-shot review 
   - [x] W1.4 User approves the script — R5, 2026-10-30
 - [ ] W2 Brief and storyboard
   - [x] W2.1 Film brief — `BLOOP-BRIEF-R8` (user approved B10 ending, R5)
-  - [x] W2.2 Mark staging + review rows — `BLOOP-SHEETS-R8`, 13 shots
+  - [x] W2.2 Film storyboard rows (review-rows.json) — `BLOOP-SHEETS-R8`, 13 shots
   - [ ] W2.3 Storyboard page published — not recorded
 - [ ] W3 Look frames and storyboard pass — older flow: Mark sheets went R1 to R8, no review page recorded
   - [ ] W3.1 Look frames on the page — remaining look frames go on the storyboard page
@@ -26,7 +26,7 @@ Predates the W1–W8 flow (30 Oct 2026): no look frames, no shot-by-shot review 
   - [x] W4.2 Narration generated and measured — `timing-gemini-take3.json`
   - [x] W4.3 User approves the voice — user picked var1; ear checks of the voice pending
 - [ ] W5 Draft
-  - [x] W5.1 Mark timed scene sheets — `BLOOP-SHEETS-R8`
+  - [x] W5.1 Film timed scene sheets — `BLOOP-SHEETS-R8`
   - [ ] W5.2 Boss assets and plates — pass 7 done, uncommitted; shot groups not recorded
   - [ ] W5.3 Draft passed — not recorded (older flow)
 - [ ] W6 Final passed — cut 2 rendered by coordinator; per-shot passes not recorded

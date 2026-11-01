@@ -1,19 +1,19 @@
-# Film: visual brief and technical BA before Mark
+# Film: visual brief and technical BA
 
-Film receives the script and factual review, then chooses a rough visual approach before Mark writes the scene handoff. Agent configs: `.claude/agents/film.md` and `.codex/agents/film.toml`; Codex configuration reference: [OpenAI custom agents](https://learn.chatgpt.com/docs/agent-configuration/subagents#custom-agents). Permissions and MCP access are inherited from the calling chat.
+Film receives the script and factual review, then chooses a rough visual approach and, in a later separate pass, writes the scene sheets ([storyboard workflow](mark-storyboard-workflow.md); Mark's role merged into Film, 2 Nov 2026). Agent configs: `.claude/agents/film.md` and `.codex/agents/film.toml`; Codex configuration reference: [OpenAI custom agents](https://learn.chatgpt.com/docs/agent-configuration/subagents#custom-agents). Permissions and MCP access are inherited from the calling chat.
 
-Workflow: Boat research → Preaw script → Boat review / Preaw revision → **Film visual/technical brief** → **Mark written scene sheets** → **Boss shared assets/capabilities** → **Editor integration and rendered proof**. The coordinator invokes agents for the assigned scope; these files do not install an automatic pipeline or send cross-chat messages.
+Workflow: Boat research → Preaw script → Boat review / Preaw revision → **Film visual/technical brief** → **Film written scene sheets (separate pass)** → **Boss shared assets/capabilities** → **Editor integration and rendered proof**. The coordinator invokes agents for the assigned scope; these files do not install an automatic pipeline or send cross-chat messages.
 
-For Blender assets/rendered shots, read [blender-mcp-workflow.md](blender-mcp-workflow.md). Choose pre-render, GLB/Three.js or hybrid with reasons and integration evidence; hand Mark/Boss/Editor the camera/scale/light contract. Remotion retains timeline/audio/subtitles/final export ownership.
+For Blender assets/rendered shots, read [blender-mcp-workflow.md](blender-mcp-workflow.md). Choose pre-render, GLB/Three.js or hybrid with reasons and integration evidence; hand Boss/Editor the camera/scale/light contract and use it in the scene sheets. Remotion retains timeline/audio/subtitles/final export ownership.
 
 <a id="ขอบเขตและอำนาจตัดสินใจ"></a>
 ## Scope and decision ownership — requirements
 
 - **Film** chooses medium per set/character/prop/effect, art direction, lighting/shadows/color, camera language and 2D/Three.js composition. Record reasons, constraints and risks the developer can act on.
-- **Mark** develops shots/key states, blocking, acting, cuts and selected-deliverable framing, with scene sheets and sequence index. Reference Film decision IDs rather than reopening medium choices for every shot.
+- **Film** develops shots/key states, blocking, acting, cuts and selected-deliverable framing, with scene sheets and sequence index. Reference Film decision IDs rather than reopening medium choices for every shot.
 - **Boss** owns shared interfaces/APIs, assets/renderer capabilities and affected-consumer proof; Film writes look-defining assets under [Film and Boss by kind of work](#look-assets). **Editor** owns scene/timeline integration, editing and runtime QA; both feed observed constraints back into brief/handoff revisions.
 
-Routine crop/staging/timing refinements preserving story and approach belong to Mark. Material changes to medium, spatial camera, light strategy, shared interfaces or reveal require recorded reasons and synchronized brief/handoff revisions. Routine work adds no user approval gate. Explicit user direction takes precedence over team recommendations.
+Routine crop/staging/timing refinements preserving story and approach belong to Film. Material changes to medium, spatial camera, light strategy, shared interfaces or reveal require recorded reasons and synchronized brief/handoff revisions. Routine work adds no user approval gate. Explicit user direction takes precedence over team recommendations.
 
 <a id="ขั้นตอน"></a>
 ## Briefing steps
@@ -24,9 +24,9 @@ Before selecting/revising medium/compositing/camera/light strategy, consult rele
 
 1. **Read story before technique:** read AGENTS.md, [editorial workflow](editorial-workflow.md), matching script/review revisions, and available index/neighbor scenes. Preserve beat/clue/claim IDs, story timing, narration and conceal/reveal intent. Label factual gaps when working from a draft. Establish [visual progression](#visual-progression-before-asset-selection) before asset mapping. Finish when every scene in scope has a clear audience knowledge/emotion/observation purpose.
 2. **Inspect target checkout:** inspect `package.json`, `npm ls --depth=0`, `npx remotion versions`, types/validator/renderer and shared asset owners under [Remotion toolkit](remotion-toolkit.md). Check resource licenses. Classify `existing-integrated`, `exists-unintegrated`, `missing` or `unknown`, with paths and inspected branch/commit. Extraneous node_modules are not clean-install dependencies. Finish when important capabilities have evidence or explicit follow-up questions.
-3. **Choose per-scene approach:** state visual purpose, mood/value/color key and medium per element. Sets, characters and props may use 2D, 3D or hybrid under [current production rules](boss-asset-workflow.md#latest-production-rules--requirements). Beyond the illustrated media, a scene may use user/stock footage, still images, typography/kinetic text or screen recordings when the [style profile](delivery-workflow.md#style-profile) calls for them; check what the runtime supports in [Remotion toolkit 10a](remotion-toolkit.md#10a-footage-stills-music-entry-transitions-and-caption-styles) and record missing capability as a Boss dependency. Choose Three.js when spatial parallax, new-angle rotation, occlusion or spatial light/shadows serves the beat; compare simpler story-preserving approaches. Finish with a recommended approach and reason for every scene rather than an undecided menu for Mark.
+3. **Choose per-scene approach:** state visual purpose, mood/value/color key and medium per element. Sets, characters and props may use 2D, 3D or hybrid under [current production rules](boss-asset-workflow.md#latest-production-rules--requirements). Beyond the illustrated media, a scene may use user/stock footage, still images, typography/kinetic text or screen recordings when the [style profile](delivery-workflow.md#style-profile) calls for them; check what the runtime supports in [Remotion toolkit 10a](remotion-toolkit.md#10a-footage-stills-music-entry-transitions-and-caption-styles) and record missing capability as a Boss dependency. Choose Three.js when spatial parallax, new-angle rotation, occlusion or spatial light/shadows serves the beat; compare simpler story-preserving approaches. Finish with a recommended approach and reason for every scene rather than an undecided menu for the scene-sheet pass.
 4. **Perform technical BA at seams:** apply the table below. Separate desired look, integration proposal and tested evidence, including shared foundations needed before scenes. Finish when Boss knows module/interface scope, dependencies, risks and proof criteria while retaining implementation discretion.
-5. **Hand rough brief to Mark:** use the format below and link the sequence index where present. Hand over matching script/review/brief revisions, constraints and decisions left to Mark. Episode work covers the episode; single-scene work covers that scene and needed boundaries. Finish when Mark can write shot direction without guessing the medium or primary integration strategy.
+5. **Close the brief for the scene-sheet pass:** use the format below and link the sequence index where present. Record matching script/review/brief revisions, constraints and decisions left to the scene-sheet pass. Episode work covers the episode; single-scene work covers that scene and needed boundaries. Finish when Film can write shot direction without guessing the medium or primary integration strategy.
 
 <a id="look-check"></a>
 **Default — cast from the template library.** For painted work Film casts each character from the template cast first and records it as a [casting line](character-proportion-principles.md#cp-casting-line); only a character no template fits counts as a new look below.
@@ -45,7 +45,7 @@ Boss then builds every shot of that family to its look frame and compares each p
 <a id="look-assets"></a>
 **Requirement — Film and Boss split by kind of work, not by person.** BLOOP-EP01-SHORT had Film write spike code in `src/painted/spike/BloopLook.tsx` and Boss re-port it into `src/painted/bloop/`; the duplicate drifted (lip-line frame, a 186 px hydrophone pop, a shadow value) and cost extra rounds, while Film's output was often usable as-is (30 Oct 2026).
 - **Film writes look-defining assets** (a new creature, a new look or ending) directly in the production owner module, `src/painted/<episode>/` or the shared library, with stills for [user approval](#look-change). No throwaway spike unless the work is genuinely exploratory. Film does not change the shared renderer or runtime contracts.
-- **Boss** owns runtime/renderer integration and shared capabilities, re-keying plates to Mark's timed sheets, measured QA ([caption zone](boss-asset-workflow.md#visual-and-runtime-qa-before-push), repeatability, RGB 0, anchors) and hardening Film's code.
+- **Boss** owns runtime/renderer integration and shared capabilities, re-keying plates to Film's timed sheets, measured QA ([caption zone](boss-asset-workflow.md#visual-and-runtime-qa-before-push), repeatability, RGB 0, anchors) and hardening Film's code.
 - **Cross-check stays:** Boss checks Film's work with measured numbers; Film checks the look on rendered frames. The roles are not merged: Boss's high-volume work stays on the cheaper model.
 
 <a id="look-change"></a>
@@ -56,7 +56,7 @@ This role is planning. It does not install packages, implement runtime or author
 <a id="light-tier-brief"></a>
 ## Light tier brief (legacy)
 
-The Light tier was retired on 2 Nov 2026; this applies only to [legacy Light deliverables](delivery-workflow.md#pipeline-tiers) that keep their recorded stages. For those the brief is one page and replaces Mark's scene sheet: style profile, per-scene medium and look, a **timed shot list** (scene/beat ID, start–end seconds, visible content or source clip with in/out, caption, transition, audio/music note), music and caption plan, capability gaps, acceptance criteria. With the brief Film writes `review-rows.json` from the shot list for the [first storyboard page](mark-storyboard-workflow.md#user-storyboard-review-page). Numeric XYZ staging is needed only where world-space staging exists. The visual-progression table below still applies.
+The Light tier was retired on 2 Nov 2026; this applies only to [legacy Light deliverables](delivery-workflow.md#pipeline-tiers) that keep their recorded stages. For those the brief is one page and replaces Film's scene sheet: style profile, per-scene medium and look, a **timed shot list** (scene/beat ID, start–end seconds, visible content or source clip with in/out, caption, transition, audio/music note), music and caption plan, capability gaps, acceptance criteria. With the brief Film writes `review-rows.json` from the shot list for the [first storyboard page](mark-storyboard-workflow.md#user-storyboard-review-page). Numeric XYZ staging is needed only where world-space staging exists. The visual-progression table below still applies.
 
 ## Visual progression before asset selection
 
@@ -69,14 +69,14 @@ Choose action, interaction, demonstration, comparison, diagram or reconstruction
 
 Factual visuals retain claim IDs and existing review results. Make reconstructions, hypothetical examples and explanatory diagrams recognizable as such to viewers. Return unsupported details to Preaw/Boat; generating a new image does not authorize new factual claims or making a reconstruction appear to be documentary evidence.
 
-Before `ready-for-mark`, review the table continuously: every section needs a visual purpose. Identify repeated action/information delivery, such as consecutive narrator-and-card beats; revise or justify them in story terms. Changing camera angle, crop, light or text alone does not demonstrate visual progression. One-room scenes and cards are valid when serving the purpose; there are no location/technique/cut quotas. Record beats requiring blockout proof for Mark/Boss/Editor. Before polish, Film and Mark review the actual assembled sequence for each selected deliverable and record shot references, evidence, issues and corrections in the index. Planning readiness and runtime approval are distinct.
+Before `ready-for-mark`, review the table continuously: every section needs a visual purpose. Identify repeated action/information delivery, such as consecutive narrator-and-card beats; revise or justify them in story terms. Changing camera angle, crop, light or text alone does not demonstrate visual progression. One-room scenes and cards are valid when serving the purpose; there are no location/technique/cut quotas. Record beats requiring blockout proof for Film/Boss/Editor. Before polish, Film reviews the actual assembled sequence for each selected deliverable and record shot references, evidence, issues and corrections in the index. Planning readiness and runtime approval are distinct.
 
 <a id="technical-ba-ต้องตอบอะไรเมื่อผสม-2d-กับ-threejs"></a>
 ## Technical BA for 2D and Three.js
 
 Apply relevant rows; `N/A` with a reason is valid. Hybrid is not mandatory. Read evidence/cautions in [asset-engineering-principles.md](asset-engineering-principles.md).
 
-Before choosing camera or projected size, follow [scale and perspective](scale-and-perspective-principles.md) for 2D, 3D and hybrid. Film establishes shared units, size references and projection contract for Mark/Boss/Editor. Finish with a scale baseline, sources/estimated status, and separate physical/projected measurement checks. Record affected decisions/revisions when the approach changes.
+Before choosing camera or projected size, follow [scale and perspective](scale-and-perspective-principles.md) for 2D, 3D and hybrid. Film establishes shared units, size references and projection contract for the scene sheets, Boss and Editor. Finish with a scale baseline, sources/estimated status, and separate physical/projected measurement checks. Record affected decisions/revisions when the approach changes.
 
 | Seam | Brief decision / handoff | Evidence to establish |
 | --- | --- | --- |
@@ -98,7 +98,7 @@ Design example, not an existing feature: a 2D actor walking behind a 3D door dur
 
 Use `storyboards/<episode>/<short|long>/visual-brief.md` for each selected deliverable, with its ID and scope metadata; follow [delivery paths](delivery-workflow.md#files-and-stable-ids). Preserve legacy paths until an explicit migration. A single scene uses `<scene>-visual-brief.md` to preserve the episode brief. Update existing `index.md` or create a compact scoped index without claiming a sequence blockout exists.
 
-**Look frame — Default for painted deliverables (user, 1 Nov 2026; order changed 2 Nov 2026):** the brief itself is text: it names each location and its look notes, with no stills. After Mark's first storyboard pass is on the [storyboard review page](mark-storyboard-workflow.md#user-storyboard-review-page), Film adds one look frame per location: a finished-grade painted still of that location's first storyboard shot (the set with its characters), painted by Boss from the brief and that shot's row. Film writes it into `review-rows.json` (`looks` with `src` and a Thai `caption`, and `look` on every beat at that location) and reports `review page: pending`; the coordinator republishes, so the user sees each look frame in the header of the beats it covers, never as a loose image. The user's approval is the look lock ([W3](sequence-workflow.md#painted-shot-by-shot)): shared painted code is frozen for the episode. A location that reuses an approved look with no new set or character records `look frame: reused (<episode>)` instead.
+**Look frame — Default for painted deliverables (user, 1 Nov 2026; order changed 2 Nov 2026):** the brief itself is text: it names each location and its look notes, with no stills. After Film's first storyboard pass is on the [storyboard review page](mark-storyboard-workflow.md#user-storyboard-review-page), Film adds one look frame per location: a finished-grade painted still of that location's first storyboard shot (the set with its characters), painted by Boss from the brief and that shot's row. Film writes it into `review-rows.json` (`looks` with `src` and a Thai `caption`, and `look` on every beat at that location) and reports `review page: pending`; the coordinator republishes, so the user sees each look frame in the header of the beats it covers, never as a loose image. The user's approval is the look lock ([W3](sequence-workflow.md#painted-shot-by-shot)): shared painted code is frozen for the episode. A location that reuses an approved look with no new set or character records `look frame: reused (<episode>)` instead.
 
 ```markdown
 # Visual brief — <episode/chapter/scene>
@@ -134,12 +134,12 @@ risk/difficulty, smallest spike + observable acceptance criteria
 Dev findings: relevant finding IDs + last-checked date/commit, scope match,
 effect on each decision and chosen response; none relevant if applicable
 
-## Handoff to Mark
-Constraints to preserve; choices left to Mark; missing evidence;
+## Handoff to the scene-sheet pass
+Constraints to preserve; choices left to the scene sheets; missing evidence;
 scene/boundary continuity; affected decisions on revision
 ```
 
 <a id="brief-history"></a>
-**Brief history (Default).** The brief holds current decisions plus the latest change-log entry. When a new revision lands, move the earlier change-log entries and earlier "affected decisions" lists unchanged to `visual-brief-history.md` beside the brief, and leave a one-line link in their place. Decision tables that scene sheets cite as their source (for example per-revision Mark handoff verdicts) stay in the brief until no current sheet links them. When a decision table moves, a stub anchor is left in the brief.
+**Brief history (Default).** The brief holds current decisions plus the latest change-log entry. When a new revision lands, move the earlier change-log entries and earlier "affected decisions" lists unchanged to `visual-brief-history.md` beside the brief, and leave a one-line link in their place. Decision tables that scene sheets cite as their source (for example per-revision Film handoff verdicts) stay in the brief until no current sheet links them. When a decision table moves, a stub anchor is left in the brief.
 
-`ready-for-mark` means sufficient information to scene handoff, not user-approved or runtime-tested. For `needs-feasibility`, identify which unknown affects which decision; Mark may rough-handoff independent portions. Use [cinematography principles](cinematography-principles.md) and [scene handoff principles](storyboard-principles.md) as visual guidance, separate from observed experimental results.
+`ready-for-mark` means sufficient information to scene handoff, not user-approved or runtime-tested. For `needs-feasibility`, identify which unknown affects which decision; Film may rough-handoff independent portions. Use [cinematography principles](cinematography-principles.md) and [scene handoff principles](storyboard-principles.md) as visual guidance, separate from observed experimental results.

@@ -1,4 +1,4 @@
-"""Build the user storyboard review page from Mark's review rows (docs/mark-storyboard-workflow.md#user-storyboard-review-page).
+"""Build the user storyboard review page from Film's review rows (docs/mark-storyboard-workflow.md#user-storyboard-review-page).
 
 Usage: python3 -I scripts/storyboard-page/build.py storyboards/<episode>/<variant>/review-rows.json [--out DIR]
 Default DIR: out/review-pages/<deliverable>/ (one page per deliverable, republished to the same URL for every revision,

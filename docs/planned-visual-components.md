@@ -61,7 +61,7 @@ Draw a generic handset: rounded frame, a plain pill notch, time on the left of t
 | `messages` | `{ sender: string, text: string, atSec: number }[]` | Lines, in order |
 | `scale` | `number` | Uniform scale of the whole phone |
 | `x`, `y` | `number` | Center of the phone, in composition pixels |
-| `badge` | `string` (optional) | Mark inside the header circle |
+| `badge` | `string` (optional) | Film inside the header circle |
 
 `x`, `y`, and `scale` are how one component fits both frames. A Short scene can pass a large centered phone. A Long scene passes a smaller one. Keep the bottom subtitle band clear. PhoneChat does not draw the episode subtitle.
 

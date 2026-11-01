@@ -26,7 +26,7 @@ Legacy Light tier: Film writes the timed shot list and review rows; no Mark, no 
   - [x] W4.2 Narration generated and measured — v5, 82.03 s, 2461 f, [voice-measure.json](short/voice-measure.json)
   - [ ] W4.3 User approves the voice — v3 OK recorded; v5 (+3 st on one word) listened-to verdict not recorded
 - [ ] W5 Draft
-  - [x] W5.1 Mark timed scene sheets — N/A — legacy Light, Film timed shot list (`KSO-BRIEF-FILM-R2.2`)
+  - [x] W5.1 Film timed scene sheets — N/A — legacy Light, Film timed shot list (`KSO-BRIEF-FILM-R2.2`)
   - [ ] W5.2 Boss assets and plates — full build not recorded as done; shot groups not recorded
   - [ ] W5.3 Draft passed — 0/26 recorded (one draft clip rendered, S02-B01-SH04)
 - [ ] W6 Final passed — not recorded

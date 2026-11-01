@@ -1,16 +1,16 @@
 # Blender MCP: assets and rendered shots for Remotion
 
-> **Status: deactivated (user decision, 30 Oct 2026).** Blender used too many resources. The project's visual stack is painted 2D (p5.brush) + Remotion SVG (and Rive if its [feasibility spike](dev-findings.md) passes). Film does not select Blender, Mark does not plan Blender shots and Boss does not build Blender assets unless the user reactivates it. This document and `assets/blender/` stay as they are. The Blender MCP tools are removed from the Film and Boss tool lists; reactivating means restoring them in `.claude/agents/film.md` and `boss.md`, connecting the Blender MCP server in the user's own settings (it is not in the project's `.mcp.json`), and rechecking this workflow.
+> **Status: deactivated (user decision, 30 Oct 2026).** Blender used too many resources. The project's visual stack is painted 2D (p5.brush) + Remotion SVG (and Rive if its [feasibility spike](dev-findings.md) passes). Film does not select Blender or plan Blender shots and Boss does not build Blender assets unless the user reactivates it. This document and `assets/blender/` stay as they are. The Blender MCP tools are removed from the Film and Boss tool lists; reactivating means restoring them in `.claude/agents/film.md` and `boss.md`, connecting the Blender MCP server in the user's own settings (it is not in the project's `.mcp.json`), and rechecking this workflow.
 
-Read this when Film selects Blender, Mark plans Blender-produced shots, or Boss creates, edits or exports Blender work. The user authorized Blender in the workflow on 26 October 2026; the installation in progress at that time still required a live connection check. This document defines a workflow; it adds no renderer, loader or scene JSON fields. Verify session capabilities before claiming availability.
+Read this when Film selects Blender or plans Blender-produced shots, or Boss creates, edits or exports Blender work. The user authorized Blender in the workflow on 26 October 2026; the installation in progress at that time still required a live connection check. This document defines a workflow; it adds no renderer, loader or scene JSON fields. Verify session capabilities before claiming availability.
 
 <a id="หน้าที่และทางเลือกส่งมอบ"></a>
 ## Ownership and delivery routes
 
-Sequence: Boat researches → Preaw writes → Boat reviews → Film prepares the brief → Mark writes scene handoffs → Boss produces shared Blender/code assets and capabilities → Editor integrates/edits in Remotion → QA.
+Sequence: Boat researches → Preaw writes → Boat reviews → Film prepares the brief and writes scene handoffs → Boss produces shared Blender/code assets and capabilities → Editor integrates/edits in Remotion → QA.
 
 - **Film** selects medium and delivery route per shot. Record decision ID/revision, story value, camera/scale/light contract, dependencies, fallback and missing evidence. Use Blender when geometry, new angles, parallax, lighting/shadows or occlusion serve the image. Keep 2D/3D/hybrid available for every element.
-- **Mark** details shots from the brief: cameras for selected output aspects, action/reveal frames, contact, foreground and boundaries. Record the Blender source/export revision reviewed in the written scene handoff. A viewport reference is not runtime proof.
+- **Film** details shots from the brief: cameras for selected output aspects, action/reveal frames, contact, foreground and boundaries. Record the Blender source/export revision reviewed in the written scene handoff. A viewport reference is not runtime proof.
 - **Boss** owns Blender sources, scripts, reusable assets, export settings and shared loader/scene-pipeline capability integration. Editor assembles the scene timeline with those supported capabilities. Fix geometry/rig/anchors in the shared source, re-export, and check both Blender and the output actually used by Remotion.
 - **Remotion** owns the executable timeline, narration/amplitude, Thai subtitles, channel label, screen overlays, endings and final export. Read [Remotion toolkit](remotion-toolkit.md) before adding capabilities.
 
@@ -66,7 +66,7 @@ Blender and Three.js camera, light and material numbers are not interchangeable.
 3. Check the delivery route. For GLB, verify actual material/rig/animation/constraint export support, bake/convert as needed and inspect the destination renderer. For pre-render, inspect alpha edges, color, frame count and trim/hold independently of audio timing. Use motion blur only when it helps movement readability without concealing clues/reveals.
 4. Export from one shared source revision. Produce framing matching each selected deliverable's written scene handoff and record reproducible settings. Include all required occluding/occluded passes. Flat output cannot reveal unrendered sides or automatically receive volumetric lighting.
 5. Before JSON selects the asset/media/animation, Boss adds missing shared capabilities to the shared module, scene types, validator and renderer dispatch together. The shared representation owner handles model loading, frame/fps animation sampling, readiness/errors and disposal.
-6. Editor updates the executable timeline, shot mapping/index and entry/exit states under [sequence rules](sequence-workflow.md). Return constraints that change medium/camera/light/interfaces to Film/Mark and align revisions.
+6. Editor updates the executable timeline, shot mapping/index and entry/exit states under [sequence rules](sequence-workflow.md). Return constraints that change medium/camera/light/interfaces to Film and align revisions.
 
 Integration is complete when the timeline loads actual output through the shared pipeline and random seeking produces expected frames in each selected deliverable and affected shared consumer. Export success alone is insufficient.
 

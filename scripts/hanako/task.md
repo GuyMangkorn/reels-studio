@@ -13,7 +13,7 @@ Record: [delivery.md](delivery.md) · Updated: 2026-11-02, coordinator (backfill
   - [x] W1.4 User approves the script — accepted 2026-10-30
 - [ ] W2 Brief and storyboard
   - [x] W2.1 Film brief — FILM-R4 ready-for-mark ([film-brief.md](short/film-brief.md))
-  - [x] W2.2 Mark staging + review rows — [review-rows.json](short/review-rows.json)
+  - [x] W2.2 Film storyboard rows (review-rows.json) — [review-rows.json](short/review-rows.json)
   - [ ] W2.3 Storyboard page published — SCENE-R3 page pending; R2 sheet was reviewed
 - [ ] W3 Look frames and storyboard pass
   - [ ] W3.1 Look frames on the page — remaining look frames go on the storyboard page
@@ -24,7 +24,7 @@ Record: [delivery.md](delivery.md) · Updated: 2026-11-02, coordinator (backfill
   - [x] W4.2 Narration generated and measured — lock v3, [voice-measure.md](short/voice-measure.md)
   - [ ] W4.3 User approves the voice — ear check open
 - [ ] W5 Draft
-  - [x] W5.1 Mark timed scene sheets — SCENE-R3, [scene-sheet.md](short/scene-sheet.md)
+  - [x] W5.1 Film timed scene sheets — SCENE-R3, [scene-sheet.md](short/scene-sheet.md)
   - [ ] W5.2 Boss assets and plates (shot groups 0/G) — not started, G not recorded
   - [ ] W5.3 Draft passed (0/14 shots)
 - [ ] W6 Final passed (0/14 shots)

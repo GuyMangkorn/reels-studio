@@ -5,7 +5,7 @@ This repository produces Thai Shorts and long-form videos. Remotion owns the tim
 ## Language and rule conventions
 
 - **Language:** author agent instructions, workflows, technical notes, briefs, handoffs, shot sheets and QA in **English** with stable English IDs. Keep audience-facing Thai (narration, dialogue, subtitles, on-screen text, language-specific examples) unchanged. Reply to the user in their language.
-- **Roles:** Preaw (แพรว), Boat (โบ็ต), Film (ฟิล์ม), Mark (มาร์ค), Boss (บอส), Editor. Configs live in `.codex/agents/` (Codex) and `.claude/agents/` (Claude Code); see [parity](#coordinator-and-agent-parity).
+- **Roles:** Preaw (แพรว), Boat (โบ็ต), Film (ฟิล์ม), Boss (บอส), Editor. Configs live in `.codex/agents/` (Codex) and `.claude/agents/` (Claude Code); see [parity](#coordinator-and-agent-parity).
 - **Rule levels:** **Requirement** is mandatory within its stated scope. **Default** is a normal choice that a brief or scene handoff may override with a recorded reason. **Reference** is explanation or examples. **Design/proposed** needs implementation and verification before runtime use.
 - **Runtime status** is separate: `existing-integrated`, `exists-unintegrated`, `missing` or `unknown`, with checkout/revision and evidence. Inspect the active checkout before claiming a capability exists.
 - **One home per rule:** keep each rule in its authoritative document and link to it elsewhere. When moving or translating a section, update references and preserve old heading anchors. Keep historical evidence dated and scoped.
@@ -50,12 +50,12 @@ The **coordinator** is the chat session the user talks to (Claude Code or Codex)
 - selects deliverables, style profile and tier;
 - invokes role agents for the assigned scope (Claude Code: the `Agent` tool with `subagent_type` set to the role name; Codex: the custom agent of that name);
 - passes matching revisions;
-- publishes the [user storyboard review page](docs/mark-storyboard-workflow.md#user-storyboard-review-page) whenever Mark returns a `ready-for-dev` scene-sheet revision or Film adds look frames, built with `scripts/storyboard-page/build.py` from Mark's `review-rows.json`, and relays the verdicts back;
+- publishes the [user storyboard review page](docs/mark-storyboard-workflow.md#user-storyboard-review-page) whenever Film returns a `ready-for-dev` scene-sheet revision or Film adds look frames, built with `scripts/storyboard-page/build.py` from Film's `review-rows.json`, and relays the verdicts back;
 - follows the [agent invocation defaults](docs/delivery-workflow.md#agent-invocation): whole stage per call (shot groups for painting and rendering), inline mechanical edits, separate checking.
 
 Role configs describe roles. They install no automatic runner and authorize no cross-chat messaging. A role agent never invokes the next role on its own.
 
-`.claude/agents/<role>.md` and `.codex/agents/<role>.toml` must carry the same name, description and instructions. `tests/agents.test.ts` enforces this, so edit both in the same change. Claude front matter also carries a required `tools:` allowlist (Claude-only) that keeps each role's startup context small. Add a tool there before a role depends on it. Optional Claude-only `model:` and `effort:` lines pin a role's model and reasoning effort (set 30 Oct 2026: Boss and Editor `claude-haiku-5-5` at `xhigh`; Film `claude-sonnet-5-5` at `medium`; Preaw `claude-opus-5-5` at `medium`, pinned so a Sonnet coordinator is not inherited; Boat `claude-sonnet-5-5` at `medium` since 2 Nov 2026 (user); Mark `claude-sonnet-5-5` at `medium` since 1 Nov 2026, after Opus Mark cost about $3–4 a run with 7 of 12 runs being fixes); the coordinator may still override them per call.
+`.claude/agents/<role>.md` and `.codex/agents/<role>.toml` must carry the same name, description and instructions. `tests/agents.test.ts` enforces this, so edit both in the same change. Claude front matter also carries a required `tools:` allowlist (Claude-only) that keeps each role's startup context small. Add a tool there before a role depends on it. Optional Claude-only `model:` and `effort:` lines pin a role's model and reasoning effort (set 30 Oct 2026: Boss and Editor `claude-haiku-5-5` at `xhigh`; Film `claude-sonnet-5-5` at `medium`; Preaw `claude-opus-5-5` at `medium`, pinned so a Sonnet coordinator is not inherited; Boat `claude-sonnet-5-5` at `medium` since 2 Nov 2026 (user); Mark's role was merged into Film on 2 Nov 2026 (user), after Mark had moved to `claude-sonnet-5-5` at `medium` on 1 Nov 2026); the coordinator may still override them per call.
 
 ## Working principles
 
@@ -69,17 +69,17 @@ Adapted from [andrej-karpathy-skills](https://github.com/multica-ai/andrej-karpa
 <a id="task-routing-and-ownership"></a>
 ## Document index
 
-Every agent reads AGENTS.md plus its **core** documents. It reads any other document only when that document's trigger applies, and *before* acting on the trigger (a linked section is enough when the trigger is a single rule). A skipped document never waives its requirements. Roles: P Preaw, B Boat, F Film, M Mark, S Boss, E Editor.
+Every agent reads AGENTS.md plus its **core** documents. It reads any other document only when that document's trigger applies, and *before* acting on the trigger (a linked section is enough when the trigger is a single rule). A skipped document never waives its requirements. Roles: P Preaw, B Boat, F Film, S Boss, E Editor.
 
 | Document | Read when (owner) | Core for |
 | --- | --- | --- |
 | [context-map](docs/context-map.md) | Locating the files for a topic before reading or grepping; read one entry, not the whole map ([CB01](#context-budget)) | on trigger |
-| [delivery-workflow](docs/delivery-workflow.md) | Selection, Short/Long versions, style profile, pipeline, delivery records, task file, agent invocation; a video that is not an illustrated mystery/educational story | P B F M E |
+| [delivery-workflow](docs/delivery-workflow.md) | Selection, Short/Long versions, style profile, pipeline, delivery records, task file, agent invocation; a video that is not an illustrated mystery/educational story | P B F E |
 | [editorial-workflow](docs/editorial-workflow.md) | Scriptwriting, source research, fact-checking; matching script/review revisions (Preaw, Boat) | P B |
 | [scriptwriting-principles](docs/scriptwriting-principles.md) | Hooks, causal beats, educational payoff, twists, loop-friendly writing; Boat only when the profile uses them | P (when it applies) |
 | [film-visual-brief-workflow](docs/film-visual-brief-workflow.md) | Medium choice, visual/technical brief or its revision; disputed approach ownership (Film) | F |
 | [cinematography-principles](docs/cinematography-principles.md) | Illustrated/cinematic shot language | on trigger |
-| [mark-storyboard-workflow](docs/mark-storyboard-workflow.md) | Writing, revising or reviewing scene sheets (Mark); publishing the [user storyboard review page](docs/mark-storyboard-workflow.md#user-storyboard-review-page) (coordinator) | M |
+| [mark-storyboard-workflow](docs/mark-storyboard-workflow.md) | Writing, revising or reviewing scene sheets (Film); publishing the [user storyboard review page](docs/mark-storyboard-workflow.md#user-storyboard-review-page) (coordinator) | F |
 | [storyboard-principles](docs/storyboard-principles.md) | Shot direction beyond routine staging | on trigger |
 | [boss-asset-workflow](docs/boss-asset-workflow.md) | Shared assets, rigs, renderer capabilities, asset/contact bugs (Boss). Its [QA section](docs/boss-asset-workflow.md#visual-and-runtime-qa-before-push) before pushing visual/runtime work. Its [production rules](docs/boss-asset-workflow.md#latest-production-rules) for medium restrictions, demo lighting, lead size, shot movement, texture lifecycle and visual QA | S |
 | [asset-engineering-principles](docs/asset-engineering-principles.md) | New Remotion/Three/R3F assets; technical feasibility of 3D/hybrid | on trigger |
@@ -91,13 +91,13 @@ Every agent reads AGENTS.md plus its **core** documents. It reads any other docu
 | [sound-generation-workflow](docs/sound-generation-workflow.md) | Sound duties per role, the library index and license. Generating, processing or filing sounds with the `audio-studio` MCP uses the [`sound-generation` skill](.agents/skills/sound-generation/SKILL.md) | on trigger (E) |
 | [voice-tuning skill](.agents/skills/voice-tuning/SKILL.md) | A character voice (child, elderly, other adult) from Edge TTS, a per-line rate, or short-line generation | on trigger (E) |
 | [gemini-tts skill](.agents/skills/gemini-tts/SKILL.md) | A line that needs acted emotion (excited, sad, whisper), vocal sounds (laugh, sigh, sob) or a designed character voice from Gemini TTS | on trigger (E) |
-| [sequence-workflow](docs/sequence-workflow.md) | Sequence planning, blockout before polish, boundaries, continuity review across cuts | on trigger (M, S, E) |
+| [sequence-workflow](docs/sequence-workflow.md) | Sequence planning, blockout before polish, boundaries, continuity review across cuts | on trigger (F, S, E) |
 | [production-requirements](docs/production-requirements.md) | Any production deliverable or its review: formats, duration, Thai text/audio, subtitles, endings, licenses | on trigger |
 | [scale-and-perspective-principles](docs/scale-and-perspective-principles.md) | Physical dimensions, projection, depth staging, resizing, apparent size | on trigger |
-| [character-proportion-principles](docs/character-proportion-principles.md) | Building or changing a character body/head, proportion or face expression work; **any character pose or gesture: check the [pose sheet P01–P45](docs/character-proportion-principles.md#cp-p-pose-sheet) and the kit cast first (CP-P12)**; front-view arm poses ([CP-P](docs/character-proportion-principles.md#cp-p-arm-depth)) | F M S E (poses); on trigger |
+| [character-proportion-principles](docs/character-proportion-principles.md) | Building or changing a character body/head, proportion or face expression work; **any character pose or gesture: check the [pose sheet P01–P45](docs/character-proportion-principles.md#cp-p-pose-sheet) and the kit cast first (CP-P12)**; front-view arm poses ([CP-P](docs/character-proportion-principles.md#cp-p-arm-depth)) | F S E (poses); on trigger |
 | [blender-mcp-workflow](docs/blender-mcp-workflow.md) | **Deactivated 30 Oct 2026**; read only if the user reactivates Blender. Any Blender asset or shot; Eevee 64 is the default [render engine](docs/blender-mcp-workflow.md#render-engine-default) | on trigger |
 | [painted-2d skill](.claude/skills/painted-2d/SKILL.md) | Any painted 2D (p5.brush) shot, asset or review: the BrushCanvas contract, seeding, art direction, review loop. The coordinator may load it as the `painted-2d` skill; role agents read the file | on trigger (F, S, E) |
-| [dev-findings](docs/dev-findings.md) | Choosing or revising medium, camera, light or technique; recording a blocker. Read the index, then only the matching entry files (Boss records; Film and Mark revalidate) | on trigger |
+| [dev-findings](docs/dev-findings.md) | Choosing or revising medium, camera, light or technique; recording a blocker. Read the index, then only the matching entry files (Boss records; Film revalidates) | on trigger |
 | [planned-visual-components](docs/planned-visual-components.md) | RuleCard, PhoneChat or POV work; examples are designs until runtime integration is verified | on trigger |
 | [contributing](docs/contributing.md) | Issues, branches, checks, commits, pushes and PRs; scripting a repeated procedure or proposing a document change ([TL/DP](docs/contributing.md#tools-and-document-improvements)) | when delivering |
 | [README: videos and parallel work](README.md#videos-and-parallel-work) | Registering a video/composition, render or narration output paths, parallel videos: add videos only in `src/videos/<episode>/index.ts`, never edit `src/Root.tsx` per episode, keep composition IDs unique and outputs under per-ID paths | on trigger |
@@ -105,6 +105,6 @@ Every agent reads AGENTS.md plus its **core** documents. It reads any other docu
 <a id="working-boundaries"></a>
 ## Handoff and working boundaries
 
-The production handoff is **Boat research → Preaw script → Boat fact-check → Film visual/technical brief → Mark written scene handoff (timed after the Editor [voice lock](docs/delivery-workflow.md#voice-lock)) → Boss shared assets/capabilities → Editor scene integration/editing**, for every deliverable ([pipeline](docs/delivery-workflow.md#pipeline-tiers)), with progress in `scripts/<episode>/task.md`. Resolve the [selected deliverables](docs/delivery-workflow.md) before new scriptwriting or a scope change, and match the named revisions at each handoff.
+The production handoff is **Boat research → Preaw script → Boat fact-check → Film visual/technical brief and written scene handoff (timed after the Editor [voice lock](docs/delivery-workflow.md#voice-lock)) → Boss shared assets/capabilities → Editor scene integration/editing**, for every deliverable ([pipeline](docs/delivery-workflow.md#pipeline-tiers)), with progress in `scripts/<episode>/task.md`. Resolve the [selected deliverables](docs/delivery-workflow.md) before new scriptwriting or a scope change, and match the named revisions at each handoff.
 
 Preserve the requested scope, story timing, reveals and stable IDs, as well as unrelated checkout changes. Record material brief/handoff revisions with their owners before changing the visual plan. Fix reusable art, geometry, dimensions, contact and camera behavior in the owning library module; scenes select IDs and author staging/timing.

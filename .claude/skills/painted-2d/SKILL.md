@@ -90,7 +90,7 @@ The planned rig follows ton-sea's model, implemented in TypeScript under `src/pa
 
 | ton-sea step | Here |
 | --- | --- |
-| Storyboard, one acted beat per line | Preaw script, then Mark's scene sheets ([mark-storyboard-workflow](../../../docs/mark-storyboard-workflow.md)). Each narration line gets a visible action, and something in the world answers it. |
+| Storyboard, one acted beat per line | Preaw script, then Film's scene sheets ([mark-storyboard-workflow](../../../docs/mark-storyboard-workflow.md)). Each narration line gets a visible action, and something in the world answers it. |
 | Style tests, palette, light | Film's brief records the painted look and its decisions. Keep rejected tests. |
 | Look-defining assets (new creature, look, ending) | Film, directly in `src/painted/<episode>/` with stills for approval, no throwaway spike ([split](../../../docs/film-visual-brief-workflow.md#look-assets)) |
 | Rig, shared sets, `BrushCanvas` features, hardening, measured QA | Boss, in `src/painted/` |

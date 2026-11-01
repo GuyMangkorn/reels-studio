@@ -13,7 +13,7 @@ Record: [delivery.md](delivery.md) · Updated: 2026-11-02, coordinator (backfill
   - [ ] W1.4 User approves the script
 - [ ] W2 Brief and storyboard
   - [ ] W2.1 Film brief
-  - [ ] W2.2 Mark staging + review rows
+  - [ ] W2.2 Film storyboard rows (review-rows.json)
   - [ ] W2.3 Storyboard page published
 - [ ] W3 Look frames and storyboard pass
   - [ ] W3.1 Look frames on the page
@@ -24,7 +24,7 @@ Record: [delivery.md](delivery.md) · Updated: 2026-11-02, coordinator (backfill
   - [ ] W4.2 Narration generated and measured
   - [ ] W4.3 User approves the voice
 - [ ] W5 Draft
-  - [ ] W5.1 Mark timed scene sheets
+  - [ ] W5.1 Film timed scene sheets
   - [ ] W5.2 Boss assets and plates (shot groups 0/G)
   - [ ] W5.3 Draft passed (0/N shots)
 - [ ] W6 Final passed (0/N shots)

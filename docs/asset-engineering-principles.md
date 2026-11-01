@@ -11,7 +11,7 @@ Choose 2D, 3D or hybrid according to Film's brief, including characters and inte
 <a id="การผสาน-2d--threejs-ก่อนเขียนบอร์ด"></a>
 ## 2D / Three.js integration before shot planning
 
-Film selects a strategy before Mark details shots. DOM/SVG over WebGL suits screen overlays but does not automatically share world depth or Three.js lighting. When a 2D actor must move in front of and behind a 3D prop, choose a world-space cut-out adapter or an explicit mask/render-pass plan. Specify camera, coordinate conversion, anchors and compositing order for Boss. A convincing static SVG composite does not prove integration under camera motion.
+Film selects a strategy before detailing shots. DOM/SVG over WebGL suits screen overlays but does not automatically share world depth or Three.js lighting. When a 2D actor must move in front of and behind a 3D prop, choose a world-space cut-out adapter or an explicit mask/render-pass plan. Specify camera, coordinate conversion, anchors and compositing order for Boss. A convincing static SVG composite does not prove integration under camera motion.
 
 For world-space cut-outs, specify fixed-plane or billboard behavior and the viewing angles the artwork supports. Turning a billboard toward the camera does not create unseen character sides and can change grip/seat alignment. Choose camera and lit/unlit materials together with contact/shadow behavior. Test candidate assets in both aspect-ratio blockouts before claiming that angles and lighting are preserved.
 

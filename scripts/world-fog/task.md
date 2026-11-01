@@ -15,7 +15,7 @@ Short predates the W1–W8 flow (Oct 2026); steps are mapped to the nearest reco
   - [x] W1.4 User approves the script — only R1 scope and concept approval recorded; later user decisions on R3+ lines
 - [x] W2 Brief and storyboard
   - [x] W2.1 Film brief — `VB-WFOG-EP01-SHORT-R6`
-  - [x] W2.2 Mark staging + review rows — `SS-R6`, 26 shots
+  - [x] W2.2 Film storyboard rows (review-rows.json) — `SS-R6`, 26 shots
   - [x] W2.3 Storyboard page published — [artifact v1](https://claude.ai/artifact/K9DyY4mhHH1vcwbFgQuBvZ)
 - [ ] W3 Look frames and storyboard pass
   - [x] W3.1 Look frames on the page — done before the 2 Nov order change
@@ -26,7 +26,7 @@ Short predates the W1–W8 flow (Oct 2026); steps are mapped to the nearest reco
   - [x] W4.2 Narration generated and measured — lines by ear, VO-17 added
   - [x] W4.3 User approves the voice — Gemini lines by ear 2026-10-30, VO-17 2026-10-31
 - [ ] W5 Draft
-  - [x] W5.1 Mark timed scene sheets — `SS-R6`
+  - [x] W5.1 Film timed scene sheets — `SS-R6`
   - [ ] W5.2 Boss assets and plates — fix passes r1–r10 done; r11 for SS-R6 open; shot groups not recorded
   - [ ] W5.3 Draft passed — not recorded (older flow)
 - [ ] W6 Final passed — not recorded
@@ -46,7 +46,7 @@ Short predates the W1–W8 flow (Oct 2026); steps are mapped to the nearest reco
   - [ ] W1.4 User approves the script — not recorded; user answered R1 open items only
 - [ ] W2 Brief and storyboard
   - [ ] W2.1 Film brief
-  - [ ] W2.2 Mark staging + review rows
+  - [ ] W2.2 Film storyboard rows (review-rows.json)
   - [ ] W2.3 Storyboard page published
 - [ ] W3 Look frames and storyboard pass — shot count not set yet
   - [ ] W3.1 Look frames on the page
@@ -57,7 +57,7 @@ Short predates the W1–W8 flow (Oct 2026); steps are mapped to the nearest reco
   - [ ] W4.2 Narration generated and measured
   - [ ] W4.3 User approves the voice
 - [ ] W5 Draft
-  - [ ] W5.1 Mark timed scene sheets
+  - [ ] W5.1 Film timed scene sheets
   - [ ] W5.2 Boss assets and plates
   - [ ] W5.3 Draft passed
 - [ ] W6 Final passed

@@ -1,5 +1,5 @@
 <a id="physical-scale-dimensions-and-perspective-for-film--mark--boss"></a>
-# Physical scale, dimensions and perspective for Film / Mark / Boss / Editor
+# Physical scale, dimensions and perspective for Film / Boss / Editor
 
 Updated and sources inspected on 26 October 2026. Read when creating/resizing assets, staging depth, designing cameras or reviewing apparent size in 2D, 3D or hybrid work. Requirements and project-derived methods below are separate from the primary-source findings in section 7.
 
@@ -11,11 +11,11 @@ The user requires **believable relative dimensions for people, animals, objects 
 | Owner | Required handoff |
 | --- | --- |
 | Film | Units/coordinate system, scale baseline, projection and camera approach; 2D/3D composition strategy, limitations and feasibility evidence in the visual brief |
-| Mark | Shot detail using that baseline: relative positions/distances, ground plane, framing, contact, timed key states and boundary states in the scene sheet |
+| Film | Shot detail using that baseline: relative positions/distances, ground plane, framing, contact, timed key states and boundary states in the scene sheet |
 | Boss | Dimensions/anchors and projection in shared owners, runtime-contract integration and affected-consumer proof |
-| Editor | Stage scenes using those interfaces and Mark's named spaces/paths; prove selected-output scale/contact/motion in the assembled edit |
+| Editor | Stage scenes using those interfaces and Film's named spaces/paths; prove selected-output scale/contact/motion in the assembled edit |
 
-Film and Mark record approach changes in brief/handoff revisions; Boss returns observed limitations through [dev findings](dev-findings.md). Adding this guide does not repair an asset or establish any scene's runtime behavior.
+Film record approach changes in brief/handoff revisions; Boss returns observed limitations through [dev findings](dev-findings.md). Adding this guide does not repair an asset or establish any scene's runtime behavior.
 
 <a id="2-ตั้งขนาดอ้างอิงก่อนจัดกล้อง"></a>
 ## 2. Establish reference dimensions before camera placement
@@ -77,12 +77,12 @@ Use baseline world dimensions for 3D geometry and world-space cut-outs already p
 - Picture zoom/crop scales an already projected image. Optical/FOV zoom changes projection at a fixed camera position. Dolly changes camera position and spatial relationships. Record transform owner and order.
 - Camera translation produces depth-dependent parallax: foreground/background move differently on screen. Pure picture zoom or pure rotation does not automatically justify the same added parallax.
 - Versions reusing assets share physical world dimensions; adapt camera/aspect/FOV/crop and staging so each output preserves action/contact/reveal readability.
-- The [Boss workflow's Short lead ≥25% frame-height rule](boss-asset-workflow.md#กฎการผลิตล่าสุดของผู้ใช้) concerns projected visibility. Adjust framing/camera/staging while preserving actor–set–prop proportions. If it conflicts with wide/reveal intent, Film/Mark revise the shot with reasons rather than inflating one actor to pass the threshold.
+- The [Boss workflow's Short lead ≥25% frame-height rule](boss-asset-workflow.md#กฎการผลิตล่าสุดของผู้ใช้) concerns projected visibility. Adjust framing/camera/staging while preserving actor–set–prop proportions. If it conflicts with wide/reveal intent, Film revise the shot with reasons rather than inflating one actor to pass the threshold.
 
 <a id="4-perspective-ในงาน-2d-และ-hybrid"></a>
 ## 4. Perspective in 2D and hybrid work
 
-1. Mark specifies ground plane, eye level/horizon and relevant vanishing directions consistent with the camera. Parallel world directions share the vanishing points implied by projection. Camera roll can tilt the horizon; not every shot needs a horizontal horizon line.
+1. Film specifies ground plane, eye level/horizon and relevant vanishing directions consistent with the camera. Parallel world directions share the vanishing points implied by projection. Camera roll can tilt the horizon; not every shot needs a horizontal horizon line.
 2. People, animals, furniture and props share space/depth. Higher image placement does not always mean greater distance: the object may be on a table or the camera tilted down. Derive projected foot/contact position from its named ground/surface.
 3. Foreshortening changes projected shape when a part points toward the camera. Use pose/view artwork or geometry that supports the angle. Stretching/compressing the entire SVG does not create unseen sides and may distort limbs or held props.
 4. Flat cut-outs have viewing-angle limits. Specify fixed-plane/billboard behavior and readable angle range, and check grip/seat/contact during camera movement. Billboarding creates neither volume nor unseen sides.
@@ -97,7 +97,7 @@ S3–S5 contain the instructors' principles. These pipeline applications are tea
 - **Staging:** use depth, projected size, occlusion and direction to guide attention. Build hierarchy with plausible camera/space while preserving the baseline.
 - **Timing / spacing:** author paths in world/ground space and project every frame. Equal world movement per frame can produce unequal screen spacing as depth changes. Separate action easing from perspective effects.
 - **Volume and squash/stretch:** intentional deformation communicates material/force while preserving perceived mass/volume. Specify extremes, duration and recovery; distinguish it from unintended scale drift and canonical size.
-- **Parallax / continuity:** share depth definitions across motion, occlusion and anchors through cuts. Lens/angle changes can alter screen size while physical size remains constant. Mark records intentional changes so QA can distinguish them from pops.
+- **Parallax / continuity:** share depth definitions across motion, occlusion and anchors through cuts. Lens/angle changes can alter screen size while physical size remains constant. Film records intentional changes so QA can distinguish them from pops.
 
 <a id="6-authoring-handoff-และเกณฑ์จบงาน"></a>
 ## 6. Authoring handoff and completion criteria
@@ -106,8 +106,8 @@ The table describes **authoring notes**, not new JSON fields or APIs. Inspect ta
 
 | Document / owner | Required data | Complete when |
 | --- | --- | --- |
-| Visual brief / Film | Baseline reference, units/spaces, projection, camera intent, hybrid mapping, transform owner, feasibility/fallback | Mark can stage shots without guessing scale conventions; Boss knows shared owners and required proof |
-| Scene sheet / Mark | Baseline revision, shot/decision IDs, ground/surface, FG/MG/BG/depth, camera/key states for each selected output, projected contact, entry/exit | Every scale/depth-changing beat has explicit positions/frames and expected behavior, with runtime imagery checked at blockout |
+| Visual brief / Film | Baseline reference, units/spaces, projection, camera intent, hybrid mapping, transform owner, feasibility/fallback | Film can stage shots without guessing scale conventions; Boss knows shared owners and required proof |
+| Scene sheet / Film | Baseline revision, shot/decision IDs, ground/surface, FG/MG/BG/depth, camera/key states for each selected output, projected contact, entry/exit | Every scale/depth-changing beat has explicit positions/frames and expected behavior, with runtime imagery checked at blockout |
 | Library + QA / Boss; scene integration + QA / Editor | Actual dimensions/bounds/anchors, conversion/projection owner, consumers, frame mapping and evidence | Scoped checks below are completed or marked unverified with follow-up |
 
 QA must record expected → observed, composition, shot ID, frame/clock and repair owner:

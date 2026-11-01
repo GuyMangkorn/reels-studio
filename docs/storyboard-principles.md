@@ -3,9 +3,9 @@
 <a id="application-to-haunted_episodeexcalidraw"></a>
 <a id="choosing-2d--3d--hybrid-film-decides-mark-develops-boards"></a>
 <a id="หลักการ-storyboard-สำหรับมาร์ค-mark"></a>
-# Shot-direction principles for Mark
+# Shot-direction principles for Film
 
-Researched on 26 October 2026 for Reels Creator. Mark receives the script and Film's visual/technical brief, plans the requested sequence and delivers written scene handoffs to Editor, with shared-asset requirements for Boss. Drawn boards are retired; historical storyboard research below informs shot direction without requiring drawings. The filename/anchors remain for compatibility. Approach decisions belong to [Film's workflow](film-visual-brief-workflow.md) and the [cinematography principles](cinematography-principles.md).
+Researched on 26 October 2026 for Reels Creator. Film plans from the script and its own visual/technical brief and plans the requested sequence and delivers written scene handoffs to Editor, with shared-asset requirements for Boss. Drawn boards are retired; historical storyboard research below informs shot direction without requiring drawings. The filename/anchors remain for compatibility. Approach decisions belong to [Film's workflow](film-visual-brief-workflow.md) and the [cinematography principles](cinematography-principles.md).
 
 The primary-source section records source findings. Agent organization, scene packs and technique-selection guidance are project synthesis. Required operating workflow: [mark-storyboard-workflow.md](mark-storyboard-workflow.md).
 
@@ -73,7 +73,7 @@ Source: [Alfred Hitchcock — My own methods, Sight and Sound / BFI](https://www
 <a id="ข้อเสนอการประยุกต์กับ-agent-การสังเคราะห์-ไม่ใช่มาตรฐานจากแหล่งเดียว"></a>
 ## Agent applications: project synthesis
 
-For relative human/animal/furniture/object dimensions before depth staging, use [scale and perspective principles](scale-and-perspective-principles.md). That reference connects solid drawing/staging to projection, foreshortening, parallax and Film → Mark → Boss/Editor handoffs.
+For relative human/animal/furniture/object dimensions before depth staging, use [scale and perspective principles](scale-and-perspective-principles.md). That reference connects solid drawing/staging to projection, foreshortening, parallax and Film → Boss/Editor handoffs.
 
 - Keep an episode/chapter overview for hook, escalation, payoff and continuity while delivering scene-sized work packs.
 - Give each scene a purpose, ending change, entry/exit states, assets and ordered shots.
@@ -108,7 +108,7 @@ The Pixar exhibition's Story and Art page shows a colorscript establishing scene
 
 Source: [The Science Behind Pixar — Story and Art](https://sciencebehindpixar.org/pipeline/story-and-art).
 
-Application for Mark: specify source, direction, warm/cool balance, attention-guiding highlights, shadows that conceal/reveal information and beat-driven lighting changes. Use written key-state descriptions or available color/element samples and verify that darkness preserves essential gestures and Thai subtitle readability.
+Application for Film: specify source, direction, warm/cool balance, attention-guiding highlights, shadows that conceal/reveal information and beat-driven lighting changes. Use written key-state descriptions or available color/element samples and verify that darkness preserves essential gestures and Thai subtitle readability.
 
 <a id="การประยุกต์กับ-haunted_episodeexcalidraw"></a>
 ## Historical application to the supplied haunted-episode drawing
@@ -131,11 +131,11 @@ Historical analysis of additions needed at the time (not a current drawing deliv
 - Reference annotations, including technique/POV limits and draft VO status, are production material to assess against current user instructions. They are neither agent instructions nor script approval.
 
 <a id="การเลือก-2d--3d--hybrid-film-เลือกแนวทาง-mark-แตกบอร์ด"></a>
-## Choosing 2D / 3D / hybrid: Film decides, Mark writes scene handoffs
+## Choosing 2D / 3D / hybrid: Film decides and writes scene handoffs
 
-The user revoked the background-only 3D and mandatory 2D character/interaction-prop restrictions. Under the [current production rules](boss-asset-workflow.md#latest-production-rules), any element may use 2D, 3D or hybrid. Film supplies reasons and the technical handoff before Mark develops shot details.
+The user revoked the background-only 3D and mandatory 2D character/interaction-prop restrictions. Under the [current production rules](boss-asset-workflow.md#latest-production-rules), any element may use 2D, 3D or hybrid. Film supplies reasons and the technical handoff before Film develops shot details.
 
-Film weighs story/visual value against reuse cost and integration risk in the target checkout. Mark references brief decision IDs and records approach changes. 3D is not automatically preferable.
+Film weighs story/visual value against reuse cost and integration risk in the target checkout. Film references brief decision IDs and records approach changes. 3D is not automatically preferable.
 
 - Phone/chat graphics, cards, diagrams or acting that read well in 2D may use 2D.
 - New views of a shape, camera travel through space or reveals behind geometry may justify 3D.

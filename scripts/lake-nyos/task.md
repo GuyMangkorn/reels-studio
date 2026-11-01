@@ -13,7 +13,7 @@ Record: [delivery.md](delivery.md) · Updated: 2026-11-02, coordinator (backfill
   - [ ] W1.4 User approves the script — not recorded
 - [ ] W2 Brief and storyboard
   - [x] W2.1 Film brief — NYOS-BRIEF-R3, written before script R2
-  - [ ] W2.2 Mark staging + review rows
+  - [ ] W2.2 Film storyboard rows (review-rows.json)
   - [ ] W2.3 Storyboard page published
 - [ ] W3 Look frames and storyboard pass
   - [ ] W3.1 Look frames on the page — remaining look frames go on the storyboard page
@@ -24,7 +24,7 @@ Record: [delivery.md](delivery.md) · Updated: 2026-11-02, coordinator (backfill
   - [ ] W4.2 Narration generated and measured — R1 read only, not locked
   - [ ] W4.3 User approves the voice
 - [ ] W5 Draft
-  - [ ] W5.1 Mark timed scene sheets
+  - [ ] W5.1 Film timed scene sheets
   - [ ] W5.2 Boss assets and plates (shot groups 0/G)
   - [ ] W5.3 Draft passed (0/N shots)
 - [ ] W6 Final passed (0/N shots)
@@ -35,7 +35,7 @@ Record: [delivery.md](delivery.md) · Updated: 2026-11-02, coordinator (backfill
 
 ## NYOS-EP01-LONG
 
-**Now:** W1 — NYOS-LSCRIPT-R2 ready-for-storyboard (16:9, about 120 s). **Next:** Film — brief for Long (16:9), then Editor voice read and Mark
+**Now:** W1 — NYOS-LSCRIPT-R2 ready-for-storyboard (16:9, about 120 s). **Next:** Film — brief for Long (16:9), then Film storyboard pass and Editor voice read
 
 - [ ] W1 Script lock
   - [x] W1.1 Boat research — shared NYOS-RESEARCH-R1
@@ -44,7 +44,7 @@ Record: [delivery.md](delivery.md) · Updated: 2026-11-02, coordinator (backfill
   - [ ] W1.4 User approves the script — not recorded
 - [ ] W2 Brief and storyboard
   - [ ] W2.1 Film brief
-  - [ ] W2.2 Mark staging + review rows
+  - [ ] W2.2 Film storyboard rows (review-rows.json)
   - [ ] W2.3 Storyboard page published
 - [ ] W3 Look frames and storyboard pass
   - [ ] W3.1 Look frames on the page
@@ -55,7 +55,7 @@ Record: [delivery.md](delivery.md) · Updated: 2026-11-02, coordinator (backfill
   - [ ] W4.2 Narration generated and measured
   - [ ] W4.3 User approves the voice
 - [ ] W5 Draft
-  - [ ] W5.1 Mark timed scene sheets
+  - [ ] W5.1 Film timed scene sheets
   - [ ] W5.2 Boss assets and plates (shot groups 0/G)
   - [ ] W5.3 Draft passed (0/N shots)
 - [ ] W6 Final passed (0/N shots)
