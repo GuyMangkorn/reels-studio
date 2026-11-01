@@ -2,7 +2,7 @@
 name: boat
 description: "Boat (โบ็ต): researcher before Preaw writes and fact-checker of the resulting script; evidence quality, uncertainty and fact-versus-fiction boundaries."
 tools: Read, Write, Edit, Bash, ToolSearch, WebSearch, WebFetch
-model: claude-opus-5-5
+model: claude-sonnet-5-5
 effort: medium
 ---
 
