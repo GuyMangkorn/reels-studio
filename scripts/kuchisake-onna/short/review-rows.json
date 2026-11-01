@@ -96,6 +96,11 @@
      "src": "out/KSO-EP01-SHORT-C/clips/S01-B01-SH01_draft.mp4",
      "in": 0,
      "out": 6.5
+    },
+    "final": {
+     "src": "out/KSO-EP01-SHORT-C/clips/S01-B01-SH01_final.mp4",
+     "in": 0,
+     "out": 6.5
     }
    }
   },
@@ -117,6 +122,11 @@
    "clips": {
     "draft": {
      "src": "out/KSO-EP01-SHORT-C/clips/S01-B02-SH01_draft.mp4",
+     "in": 1,
+     "out": 6.4
+    },
+    "final": {
+     "src": "out/KSO-EP01-SHORT-C/clips/S01-B02-SH01_final.mp4",
      "in": 1,
      "out": 6.4
     }
@@ -142,6 +152,11 @@
      "src": "out/KSO-EP01-SHORT-C/clips/S01-B02-SH02_draft.mp4",
      "in": 1,
      "out": 6.167
+    },
+    "final": {
+     "src": "out/KSO-EP01-SHORT-C/clips/S01-B02-SH02_final.mp4",
+     "in": 1,
+     "out": 6.167
     }
    }
   },
@@ -163,6 +178,11 @@
    "clips": {
     "draft": {
      "src": "out/KSO-EP01-SHORT-C/clips/S01-B02-SH03_draft.mp4",
+     "in": 1,
+     "out": 4.533
+    },
+    "final": {
+     "src": "out/KSO-EP01-SHORT-C/clips/S01-B02-SH03_final.mp4",
      "in": 1,
      "out": 4.533
     }
@@ -188,6 +208,11 @@
      "src": "out/KSO-EP01-SHORT-C/clips/S01-B02-SH04_draft.mp4",
      "in": 1,
      "out": 5.6
+    },
+    "final": {
+     "src": "out/KSO-EP01-SHORT-C/clips/S01-B02-SH04_final.mp4",
+     "in": 1,
+     "out": 5.6
     }
    }
   },
@@ -208,6 +233,11 @@
    "clips": {
     "draft": {
      "src": "out/KSO-EP01-SHORT-C/clips/S02-B01-SH01_draft.mp4",
+     "in": 1,
+     "out": 5.3
+    },
+    "final": {
+     "src": "out/KSO-EP01-SHORT-C/clips/S02-B01-SH01_final.mp4",
      "in": 1,
      "out": 5.3
     }
@@ -232,6 +262,11 @@
      "src": "out/KSO-EP01-SHORT-C/clips/S02-B01-SH02_draft.mp4",
      "in": 1,
      "out": 3.5
+    },
+    "final": {
+     "src": "out/KSO-EP01-SHORT-C/clips/S02-B01-SH02_final.mp4",
+     "in": 1,
+     "out": 3.5
     }
    }
   },
@@ -248,6 +283,11 @@
    "clips": {
     "draft": {
      "src": "out/KSO-EP01-SHORT-C/clips/S02-B01-SH03_draft.mp4",
+     "in": 1,
+     "out": 3.333
+    },
+    "final": {
+     "src": "out/KSO-EP01-SHORT-C/clips/S02-B01-SH03_final.mp4",
      "in": 1,
      "out": 3.333
     }
@@ -273,6 +313,11 @@
      "src": "out/KSO-EP01-SHORT-C/clips/S02-B01-SH04_draft.mp4",
      "in": 1,
      "out": 7.333
+    },
+    "final": {
+     "src": "out/KSO-EP01-SHORT-C/clips/S02-B01-SH04_final.mp4",
+     "in": 1,
+     "out": 7.333
     }
    }
   },
@@ -293,6 +338,11 @@
    "clips": {
     "draft": {
      "src": "out/KSO-EP01-SHORT-C/clips/S02-B02-SH01_draft.mp4",
+     "in": 1,
+     "out": 3.667
+    },
+    "final": {
+     "src": "out/KSO-EP01-SHORT-C/clips/S02-B02-SH01_final.mp4",
      "in": 1,
      "out": 3.667
     }
@@ -317,6 +367,11 @@
      "src": "out/KSO-EP01-SHORT-C/clips/S02-B02-SH02_draft.mp4",
      "in": 1,
      "out": 2.533
+    },
+    "final": {
+     "src": "out/KSO-EP01-SHORT-C/clips/S02-B02-SH02_final.mp4",
+     "in": 1,
+     "out": 2.533
     }
    }
   },
@@ -339,6 +394,11 @@
      "src": "out/KSO-EP01-SHORT-C/clips/S02-B02-SH03_draft.mp4",
      "in": 1,
      "out": 3.9
+    },
+    "final": {
+     "src": "out/KSO-EP01-SHORT-C/clips/S02-B02-SH03_final.mp4",
+     "in": 1,
+     "out": 3.9
     }
    }
   },
@@ -354,6 +414,11 @@
    "clips": {
     "draft": {
      "src": "out/KSO-EP01-SHORT-C/clips/S02-B02-SH05_draft.mp4",
+     "in": 1,
+     "out": 1.8
+    },
+    "final": {
+     "src": "out/KSO-EP01-SHORT-C/clips/S02-B02-SH05_final.mp4",
      "in": 1,
      "out": 1.8
     }
@@ -378,6 +443,11 @@
      "src": "out/KSO-EP01-SHORT-C/clips/S02-B03-SH01_draft.mp4",
      "in": 1,
      "out": 3.033
+    },
+    "final": {
+     "src": "out/KSO-EP01-SHORT-C/clips/S02-B03-SH01_final.mp4",
+     "in": 1,
+     "out": 3.033
     }
    }
   },
@@ -400,6 +470,11 @@
      "src": "out/KSO-EP01-SHORT-C/clips/S02-B03-SH02_draft.mp4",
      "in": 1,
      "out": 2.2
+    },
+    "final": {
+     "src": "out/KSO-EP01-SHORT-C/clips/S02-B03-SH02_final.mp4",
+     "in": 1,
+     "out": 2.2
     }
    }
   },
@@ -415,6 +490,11 @@
    "clips": {
     "draft": {
      "src": "out/KSO-EP01-SHORT-C/clips/S02-B03-SH03_draft.mp4",
+     "in": 1,
+     "out": 2
+    },
+    "final": {
+     "src": "out/KSO-EP01-SHORT-C/clips/S02-B03-SH03_final.mp4",
      "in": 1,
      "out": 2
     }
@@ -439,6 +519,11 @@
      "src": "out/KSO-EP01-SHORT-C/clips/S02-B03-SH04_draft.mp4",
      "in": 1,
      "out": 4.2
+    },
+    "final": {
+     "src": "out/KSO-EP01-SHORT-C/clips/S02-B03-SH04_final.mp4",
+     "in": 1,
+     "out": 4.2
     }
    }
   },
@@ -459,6 +544,11 @@
    "clips": {
     "draft": {
      "src": "out/KSO-EP01-SHORT-C/clips/S02-B03-SH05_draft.mp4",
+     "in": 1,
+     "out": 5.267
+    },
+    "final": {
+     "src": "out/KSO-EP01-SHORT-C/clips/S02-B03-SH05_final.mp4",
      "in": 1,
      "out": 5.267
     }
@@ -483,6 +573,11 @@
      "src": "out/KSO-EP01-SHORT-C/clips/S02-B03-SH06_draft.mp4",
      "in": 1,
      "out": 3.067
+    },
+    "final": {
+     "src": "out/KSO-EP01-SHORT-C/clips/S02-B03-SH06_final.mp4",
+     "in": 1,
+     "out": 3.067
     }
    }
   },
@@ -503,6 +598,11 @@
    "clips": {
     "draft": {
      "src": "out/KSO-EP01-SHORT-C/clips/S03-B01-SH01_draft.mp4",
+     "in": 1,
+     "out": 2.833
+    },
+    "final": {
+     "src": "out/KSO-EP01-SHORT-C/clips/S03-B01-SH01_final.mp4",
      "in": 1,
      "out": 2.833
     }
@@ -528,6 +628,11 @@
      "src": "out/KSO-EP01-SHORT-C/clips/S03-B01-SH02_draft.mp4",
      "in": 1,
      "out": 3.767
+    },
+    "final": {
+     "src": "out/KSO-EP01-SHORT-C/clips/S03-B01-SH02_final.mp4",
+     "in": 1,
+     "out": 3.767
     }
    }
   },
@@ -549,6 +654,11 @@
    "clips": {
     "draft": {
      "src": "out/KSO-EP01-SHORT-C/clips/S03-B01-SH03_draft.mp4",
+     "in": 1,
+     "out": 3.8
+    },
+    "final": {
+     "src": "out/KSO-EP01-SHORT-C/clips/S03-B01-SH03_final.mp4",
      "in": 1,
      "out": 3.8
     }
@@ -573,6 +683,11 @@
      "src": "out/KSO-EP01-SHORT-C/clips/S03-B01-SH04_draft.mp4",
      "in": 1,
      "out": 2.8
+    },
+    "final": {
+     "src": "out/KSO-EP01-SHORT-C/clips/S03-B01-SH04_final.mp4",
+     "in": 1,
+     "out": 2.8
     }
    }
   },
@@ -593,6 +708,11 @@
    "clips": {
     "draft": {
      "src": "out/KSO-EP01-SHORT-C/clips/S03-B01-SH05_draft.mp4",
+     "in": 1,
+     "out": 5.967
+    },
+    "final": {
+     "src": "out/KSO-EP01-SHORT-C/clips/S03-B01-SH05_final.mp4",
      "in": 1,
      "out": 5.967
     }
@@ -617,6 +737,11 @@
      "src": "out/KSO-EP01-SHORT-C/clips/S03-B02-SH01_draft.mp4",
      "in": 1,
      "out": 4.1
+    },
+    "final": {
+     "src": "out/KSO-EP01-SHORT-C/clips/S03-B02-SH01_final.mp4",
+     "in": 1,
+     "out": 4.1
     }
    }
   },
@@ -637,6 +762,11 @@
    "clips": {
     "draft": {
      "src": "out/KSO-EP01-SHORT-C/clips/S03-B02-SH02_draft.mp4",
+     "in": 1,
+     "out": 3.433
+    },
+    "final": {
+     "src": "out/KSO-EP01-SHORT-C/clips/S03-B02-SH02_final.mp4",
      "in": 1,
      "out": 3.433
     }
