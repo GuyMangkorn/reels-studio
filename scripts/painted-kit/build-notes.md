@@ -51,3 +51,14 @@
 - Proposed: add "A recurring character is a kit `CastDef` (src/painted/kit/README.md#recurring-cast). Per video change `outfit` and props only; changing `head`, `height` or body proportions is a look change that needs user approval."
 - Affects: Film, Mark, Boss
 - Status: proposed
+
+## Pass 3 record (1 Nov 2026, Boss, branch claude/wendigo-script-r3 checkout; uncommitted)
+- Built: `kit/shot-templates.ts` (twoShot, threeShot, talkingCloseUp, sideWalk, povShot, drawShotTemplate), `kit/casting.ts` (parseCasting, formatCasting, CARD_POSES, CARD_EXPRESSIONS, roleLabel), `kit/template-reel.ts`, `shots/kit-templates.tsx` (KIT-SHOT-TEMPLATES, six `kit-template-*` plates), `kit/cast-cards-sheet.tsx` (KIT-CAST-CARDS). Tests: `tests/shot-templates.test.ts`, `tests/casting.test.ts` (21).
+- Regression: `kit/regress.mjs` before/after 29/36 byte-identical; the same code run twice gives 27/36, so the 7 PSNR 83–110 dB differences are render noise (DF-20261030-render-run-noise).
+- TL: a template returned `-follow * 0` as a camera offset; `strictEqual` in node:test reads -0 as unequal to 0. Write offsets as `follow * (a - b)` so a zero offset is +0.
+- TL: `const fail = (): never` does not narrow the type after `if (!isX(v)) fail()`; return an Error and `throw` it.
+- TL: `rm "$D"/*.png` with an unset D is blocked by the safety check; overwrite by copy instead.
+- Finding: a 7-head expression strip at STRIP_K 26 on 76 px cells merges curly and spiky hair (woman-curly, man-spiky, girl-school). STRIP_K 20 clears it. Use K <= 20 for seven heads per 560 px card.
+- Finding: at 3.2x zoom the nurse cap reads as a flat white box; the close-up uses `office` clothing for now.
+- Finding: `store.py archive` stores media only (MEDIA extensions); text evidence stays in out/.
+- Not verified: Remotion Studio (cold load, play, scrub) was not opened for KIT-SHOT-TEMPLATES; seek evidence is fresh-session stills in non-sequential order plus MP4 frame comparison (PSNR ~40 dB, H.264).
