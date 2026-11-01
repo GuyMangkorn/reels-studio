@@ -134,19 +134,25 @@ test('sourceHash: sound lock entries stay out; picture lock entries, src files a
   });
   try {
     write('package-lock.json', '{}');
+    write('src/index.ts', "import './scene';");
     write('src/scene.ts', 'export const a = 1;');
-    write('src/videos/ep/index.ts', 'export default {};');
+    write('src/videos/ep/index.ts', "export default {episode: 'ep', videos: [{id: 'EP'}]};");
+    write('public/images/p.png', 'picture bytes');
     write('src/videos/ep/assets.lock.json', lock('s1', 'p1'));
-    const base = sourceHash(root);
+    const timeline = [{durationSec: 1, media: [{kind: 'image', src: 'images/p.png'}]}];
+    const composition = {id: 'EP', width: 1080, height: 1920, fps: 30, durationInFrames: 30, props: {timeline}};
+    const hash = () => sourceHash(root, composition);
+    const base = hash();
+    assert.equal(hash(), base, 'known project inputs reuse the source hash');
     write('src/videos/ep/assets.lock.json', lock('s2', 'p1'));
-    assert.equal(sourceHash(root), base, 'a sound lock entry does not change the source hash');
-    write('src/videos/ep/index.ts', 'export default {audio: []};');
-    assert.equal(sourceHash(root), base, 'the episode file is outside the source hash');
+    assert.equal(hash(), base, 'a sound lock entry does not change the source hash');
+    write('src/videos/ep/index.ts', "export default {episode: 'ep', videos: [{id: 'EP', audio: []}]};");
+    assert.equal(hash(), base, 'the episode file is outside the source hash');
     write('src/videos/ep/assets.lock.json', lock('s2', 'p2'));
-    assert.notEqual(sourceHash(root), base, 'a picture lock entry changes the source hash');
-    const pictureHash = sourceHash(root);
+    assert.notEqual(hash(), base, 'a picture lock entry changes the source hash');
+    const pictureHash = hash();
     write('src/scene.ts', 'export const a = 2;');
-    assert.notEqual(sourceHash(root), pictureHash, 'shared src changes the source hash');
+    assert.notEqual(hash(), pictureHash, 'shared src changes the source hash');
   } finally {
     rmSync(root, {recursive: true, force: true});
   }
