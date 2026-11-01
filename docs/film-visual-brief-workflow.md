@@ -53,6 +53,7 @@ Boss then builds every shot of that family to its look frame and compares each p
 
 This role is planning. It does not install packages, implement runtime or author detailed scene sheets as a side effect. Specify the smallest feasibility spike/blockout and observable acceptance criteria for Boss. Run an exploratory spike yourself only when separately assigned, following implementation workflow.
 
+<a id="light-tier-brief"></a>
 ## Light tier brief (legacy)
 
 The Light tier was retired on 2 Nov 2026; this applies only to [legacy Light deliverables](delivery-workflow.md#pipeline-tiers) that keep their recorded stages. For those the brief is one page and replaces Mark's scene sheet: style profile, per-scene medium and look, a **timed shot list** (scene/beat ID, start–end seconds, visible content or source clip with in/out, caption, transition, audio/music note), music and caption plan, capability gaps, acceptance criteria. With the brief Film writes `review-rows.json` from the shot list for the [first storyboard page](mark-storyboard-workflow.md#user-storyboard-review-page). Numeric XYZ staging is needed only where world-space staging exists. The visual-progression table below still applies.
