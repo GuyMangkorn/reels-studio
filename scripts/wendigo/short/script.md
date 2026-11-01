@@ -3,7 +3,7 @@
 - Owner / date: Preaw, 2026-11-01 (Asia/Bangkok). R2 supersedes R1 (same day).
 - Deliverable / episode: `WDG-EP01-SHORT` / `WDG-EP01`; Short only, about 60 s, 1080×1920, 30 fps. [Delivery record](../delivery.md).
 - Inputs: [research r1](../research.md) (Boat, 2026-11-01; claim ledger F001–F010, all sources `lead-only`); [Boat fact-check of R1](fact-check.md) (pass-with-fixes, FC01–FC04, leads SRC013–SRC016); user answers on R1 (last R1 line of the [delivery handoff log](../delivery.md#handoff-log)). No topic brief beyond the delivery record. Format precedent: [KSO-SCRIPT-R1](../../kuchisake-onna/short/script.md).
-- Story mode: **mixed** (profile `wdg-horror-fact`, user choice "ผสม"). S01 is a **fictional horror cold open** (`fiction/dramatization`): every person, place and event in it is invented and labelled `เรื่องแต่ง` on screen. S02–S03 are **folklore presented as belief** plus **one documented historical case** (Swift Runner, 1879), presented as history that involved belief in the windigo, never as proof that a windigo exists.
+- Story mode: **mixed** (profile `wdg-horror-fact`, user choice "ผสม"). S01 is a **fictional horror cold open** (`fiction/dramatization`): every person, place and event in it is invented and labelled `เรื่องแต่ง` on screen (the spoken "this was fiction" line was dropped in R3). S02–S03 are **folklore presented as belief** plus **one documented historical case** (Swift Runner, 1879), presented as history that involved belief in the windigo, never as proof that a windigo exists.
 - Profile / tier: `wdg-horror-fact` / Full, trimmed to script-only scope (Film/Mark/Boss/Editor not authorized).
 - Ending: **`C_seamless` only** (user choice on R1). `B_loop` material removed.
 - Target: about 60 s. Beat layout below totals **about 60 s (syllable estimate 60–61 s), estimated** (syllable-rate estimate only). No read-aloud, TTS or animatic timing has been performed. Do not lock frames from this estimate.
@@ -41,7 +41,7 @@ Video times are estimates and contiguous. Story-world: S01 is one fictional nigh
 | `WDG-EP01-SHORT-S01-B01` | 0–3 s | Hook: a whisper outside a snow-buried tent asks `หิวไหม…`; the man says it asks him every night (CL01). | Frame 0: blizzard wind at a steady low level plus tent canvas flutter; no music hit, the whisper is the hook. Whisper dry, close, slightly off-centre (as if outside the canvas). |
 | `WDG-EP01-SHORT-S01-B02` | 3–9.5 s | Setup: snowbound 7 days, food gone since day 3, "we" (CL03); every morning footprints circle the tent (CL02). Raises the question: what walks around them? | Very low cold drone bed enters under VO (detuned pad or bowed metal, not ethnic-coded). Snow crunch on `รอยเท้า`. No stinger. |
 | `WDG-EP01-SHORT-S01-B03` | 9.5–18.5 s | Twist: he follows the footprints; they fit his own boots; he hears the voice again — from his own mouth. Last image: he stands over his sleeping companion. | Drone drops out; only wind and his breath and boots in snow. Hard silence of ~0.3 s before `…จากปากของผมเอง`. **The one stinger of the video**: a low, short dissonant hit on the first frame he realises (on `ปากของผมเอง`), then the whisper `หิว…` almost inaudible, then cut to silence. |
-| `WDG-EP01-SHORT-S02-B01` | 18.5–22.5 s | Fiction → fact turn: the narrator says this was fiction, but the fear is from a real tradition, the Wendigo. | Clean cut to near silence (wind gone). A sparse, calm, low documentary bed (single sustained low note or soft felt piano) enters after `เรื่องแต่ง`. Signals a change of register, not a scare. |
+| `WDG-EP01-SHORT-S02-B01` | 18.5–22.5 s | Fiction → fact turn: the narrator moves straight to the real tradition (spoken "this was fiction" dropped in R3; the on-screen marker still labels S01), the fear comes from a real tradition, the Wendigo. | Clean cut to near silence (wind gone). A sparse, calm, low documentary bed (single sustained low note or soft felt piano) enters after `เรื่องแต่ง`. Signals a change of register, not a scare. |
 | `WDG-EP01-SHORT-S02-B02` | 22.5–28.5 s | Who it belongs to: Algonquian-speaking peoples such as Ojibwe and Cree, Canada and northern US (F001). Name card `Ojibwe: wiindigoo · Cree: wīhtikōw` appears on `อย่างโอจิบเวและครี` (F002). | Same calm bed, steady; the name card enters silently (no whoosh or pop). Optional faint generic winter wind far back. **No drums, chant or flute.** |
 | `WDG-EP01-SHORT-S02-B03` | 28.5–37.5 s | What it is: winter, hunger, cannibal being; said never satisfied; in many tellings a person can become one through hunger or greed (F003, F004). Re-reads the cold open. | Bed thins slightly on `คนธรรมดาก็กลายเป็นมันได้`; a very soft low swell (not a stinger) under that phrase so the callback lands. |
 | `WDG-EP01-SHORT-S02-B04` | 37.5–42.5 s | Myth-bust: the antlered deer skull is mostly a later image from films and games, not the core of traditional tellings (F005). | Bed continues; a light "record-scratch-free" lift — e.g. bed drops for a half beat on `ส่วนใหญ่เป็นภาพยุคหลัง`. No comedic SFX. |
@@ -53,7 +53,7 @@ Video times are estimates and contiguous. Story-world: S01 is one fictional nigh
 **Only the Thai lines labeled MAN / WHISPER / NARR below are spoken.** English notes are production directions. Captions follow the spoken Thai verbatim (no shortened cues in R2). On-screen markers below are not spoken.
 
 **On-screen markers (not spoken):**
-- From frame 0 through S01-B03: `เรื่องแต่ง` (discreet, top area, inside the caption-safe box rules; must not cover the hook).
+- From frame 0 through S01-B03: `เรื่องแต่ง` (discreet, top area, inside the caption-safe box rules; must not cover the hook). **R3 (user): the narrator no longer says it was fiction; the on-screen marker carries the label.**
 - From S02-B01 to the end: `ข้อมูลจริงจากตำนานและประวัติศาสตร์` replaces it. The marker must switch back to `เรื่องแต่ง` on frame 0 of the loop (it does automatically if frame 0 is unchanged).
 - **Name card (required, user choice on R1)** in S02-B02: `Ojibwe: wiindigoo · Cree: wīhtikōw` (F002; spelling checked lead-only by Boat; keep the macron form, do not mix with `wîhtikow`). In on the first syllable of `โอจิบเว`, held to the end of S02-B02 (about 4 s). Placed above the caption band, below the marker; it must not cover the map region being highlighted.
 
@@ -107,7 +107,7 @@ Video times are estimates and contiguous. Story-world: S01 is one fictional nigh
 
 **NARR** — tags: `<short pause>` at `…`; calm
 
-> เรื่องเมื่อกี้เป็นเรื่องแต่ง… แต่ความกลัวแบบนี้ มาจากตำนานจริง… เวนดิโก
+> ความกลัวแบบนี้ มาจากตำนานจริง… เวนดิโก
 
 ### S02 / B02 — Whose tradition, 22.5–28.5 s estimated
 
@@ -183,7 +183,7 @@ Sources are all `lead-only` (research r1). Labels from the ledger. Every factual
 
 | Location / exact wording | Claim | Source (lead) | Label / hedge applied | Boat check |
 | --- | --- | --- | --- | --- |
-| S01 entire (man, tent, footprints, voice, companion) | — | — | **Fiction**, marker `เรื่องแต่ง` from frame 0. No real person, place or nation | Confirm marker framing is enough |
+| S01 entire (man, tent, footprints, voice, companion) | — | — | **Fiction**, marker `เรื่องแต่ง` from frame 0 (spoken label dropped in R3). No real person, place or nation | Confirm marker framing is enough |
 | S02-B01 `มาจากตำนานจริง… เวนดิโก` | F001 (framing) | SRC007, SRC008 | "ตำนาน" = folklore, not a real creature | — |
 | S02-B02 `เป็นเรื่องเล่าของชนพื้นเมืองกลุ่มภาษาอัลกอนเควียน อย่างโอจิบเวและครี ในแคนาดาและทางเหนือของสหรัฐฯ` | F001 | SRC007, SRC008, SRC014 | safe (premise-critical); R2 trim: `เล่าสืบกันมา` dropped, `ที่` → `ของ` so the line still credits the tradition to these peoples | **Recheck R2 wording**; reinspect when sources open |
 | S02-B02 name card (required) `Ojibwe: wiindigoo · Cree: wīhtikōw` | F002 | SRC007, SRC008, SRC014 | safe for names; macron form only; Blackwood attribution not used | Supported lead-only (R1 check); confirm placement on `อย่างโอจิบเวและครี` |
@@ -219,9 +219,9 @@ Sources are all `lead-only` (research r1). Labels from the ledger. Every factual
 
 ## Editorial self-check, change log and open items
 
-- Hook in the first second (the whisper), then a stated pattern ("every night"). Causal chain: whisper → snowbound and starving → footprints circle the tent → he follows them → they are his → the voice is his → he stands over his companion → "this was fiction" → whose tradition → what it is (hunger, never satisfied, a person can become it — re-reads the fiction) → not antlers (explains why no creature was shown) → a real court case shows how seriously the belief was held → for some writers, a figure of greed → the small voice inside that asks `หิวไหม…` (loop).
+- Hook in the first second (the whisper), then a stated pattern ("every night"). Causal chain: whisper → snowbound and starving → footprints circle the tent → he follows them → they are his → the voice is his → he stands over his companion → turn to the real tradition → whose tradition → what it is (hunger, never satisfied, a person can become it — re-reads the fiction) → not antlers (explains why no creature was shown) → a real court case shows how seriously the belief was held → for some writers, a figure of greed → the small voice inside that asks `หิวไหม…` (loop).
 - Twist is fair: CL01–CL04 are heard/seen before the payoff. Knowledge has plot function (F004/F003/F005 re-read the cold open).
-- Respect: tradition credited to living nations as their teaching; no mockery; the real case is stated plainly with his claim reported, no gore, no monster framing. Fiction is clearly labelled.
+- Respect: tradition credited to living nations as their teaching; no mockery; the real case is stated plainly with his claim reported, no gore, no monster framing. Fiction is labelled on screen (`เรื่องแต่ง`); the narrator does not say so (user choice, R3).
 - Timing: `estimated` only (rough syllable rate: ~5 syl/s hushed in S01, ~6–6.5 syl/s in S02–S03, plus written pauses). R2 additions: FC01 +0.3 s, FC02 +0.4 s, FC04 +0.3 s, FC03 +0.3 s, softened F006 line about +0.8 s (≈ +2.1 s). R2 trims (non-hedge words only): `ในป่า` (S01-B02, −0.4 s), `เล่าสืบกันมา` with `ที่` → `ของ` (S02-B02, −0.7 s), `ที่เห็น` (S02-B04, −0.3 s), `ทุกวันนี้` (S03-B02, −0.5 s), `ของ` in `ครอบครัวของตัวเอง` (S03-B01, −0.15 s) (≈ −2.05 s). Net ≈ 60 s (syllable sum 60–61 s). If the read runs long, next trims: `ในคดีกินเนื้อคน` for `ในคดีที่มีการกินเนื้อคน` (Boat to confirm), then `คืนนี้` (S01-B03). Keep the pauses before the twist and every hedge (`ตามความเชื่อ`, `เล่ากันว่า`, `ในหลายเรื่องเล่า`, `ส่วนใหญ่`, `ไม่ใช่ลักษณะหลัก`, `เขาอ้างว่า`, `ราวปี`, `บางคน`).
 - R1 (2026-11-01): first complete script from research r1. Boat recheck scope then: every row in the claim mapping, priority F001, F004, F006 and F005 hedge; the S03-B02 metaphor; the fiction marker framing. Reviewed in [fact-check.md](fact-check.md): pass-with-fixes.
 - R2 (2026-11-01), Preaw, from the fact-check and user answers:
@@ -230,6 +230,7 @@ Sources are all `lead-only` (research r1). Labels from the ledger. Every factual
   - Trims for timing (listed above); beat times re-estimated.
   - Unchanged: S01 lines and events, CL01–CL05, the twist, S02-B01, S02-B03 line 2 (F004), S03-B01 line 2, sound plan except removal of the `B_loop` tail.
   - **Boat recheck scope (R2):** F006 softened line (premise-critical; priority), FC01–FC04 as applied, F001 trimmed wording (`เรื่องเล่าของ…`, no `เล่าสืบกันมา`), F009 without `ทุกวันนี้`, F005 trim `ที่เห็น`, F002 card placement. Affected scenes: S02-B02, S02-B03, S02-B04, S03-B01, S03-B02. Affected clue: CL04 (seam restatement). Re-inspection of F001, F004, F006 when network access or source files become available.
+- R3 (2026-11-01), Preaw, user request: removed the spoken `เรื่องเมื่อกี้เป็นเรื่องแต่ง…` (S02-B01 now `ความกลัวแบบนี้ มาจากตำนานจริง… เวนดิโก`, about −1.3 s) only. The on-screen `เรื่องแต่ง` marker stays.
 - Open questions (for the coordinator / user):
   1. Factual basis: accept lead-only sources for this Short, or wait for inspected sources (en.wikipedia.org, www.biographi.ca, journal hosts blocked)? Needed before `ready-for-storyboard`.
   2. Is the softened F006 line (`…ฆ่าคนในครอบครัวตัวเอง ในคดีที่มีการกินเนื้อคน`) the level of softening the user wants? Any further change needs a Boat recheck.
