@@ -1,4 +1,4 @@
-# KSO-SCRIPT-R1 — "ฉันสวยไหม?"
+# KSO-SCRIPT-R4 — "ฉันสวยไหม?"
 
 - Owner / date: Preaw, 2026-10-30 (Asia/Bangkok).
 - Deliverable / episode: `KSO-EP01-SHORT` / `KSO-EP01`; Short only, 1080×1920, 30 fps. [Delivery record](../delivery.md).
@@ -33,8 +33,8 @@ Video times are estimates and contiguous. Story-world: one night (coworker's sto
 | `KSO-EP01-SHORT-S01-B01` | 0–3.5 s | Hook: the woman's whispered question, very close, then the narrator stops the viewer from answering. | Near silence; room tone of a dead street, one distant hum of a streetlight. Whisper dry and close (no reverb). No music hit on frame 0 so the whisper is the hook. |
 | `KSO-EP01-SHORT-S01-B02` | 3.5–13 s | Setup and plant: same night at work, coworker tells the legend and the rule; coworker smiles "like someone relieved" (CL01). | Very low, sparse dark bed (single sustained low tone or detuned pad) enters under VO. Faint shop ambience. No stinger. |
 | `KSO-EP01-SHORT-S02-B01` | 13–24 s | Dread: narrator walks home alone; footsteps behind her stop when she stops; then the steps vanish and the woman is standing *ahead* under a flickering streetlight. | Bed drops out; footsteps (narrator's sneakers + a second, heavier heel click half a beat late). Hard silence when the following steps stop. Electrical buzz/flicker of the streetlight when the woman is revealed; low sub-swell (riser, slow) under the last line. |
-| `KSO-EP01-SHORT-S02-B02` | 24–31 s | The question: first in Japanese, narrator stays silent; the woman steps closer and asks again *in Thai*. Narrator registers the impossibility. | Only voices, breath and the streetlight buzz. One step of the heel click as she moves closer. Tiny pause of total silence before `เธอพูดภาษาไทย`. |
-| `KSO-EP01-SHORT-S02-B03` | 31–41 s | Scare/reveal: panic makes the narrator slip `ส… สวย—`; the woman lowers the mask (implication only), asks `แล้วตอนนี้ล่ะ…`; narrator remembers the rule and answers `ก็… ธรรมดา`. | The one stinger of the video: a sharp dissonant hit on the mask drop (on the first frame the mouth line is readable), then immediately back to near silence under the woman's wet whisper. Heartbeat-like low pulse may sit under the narrator's answer, stopping dead after `ธรรมดา`. |
+| `KSO-EP01-SHORT-S02-B02` | 24–31 s | The question: first in Japanese, narrator stays silent; the woman steps closer and asks again *in Thai*. Narrator registers the impossibility. | Only voices, breath and the streetlight buzz. One step of the heel click as she moves closer. Tiny pause of total silence after the Thai question (R2: the narrator line `เธอพูดภาษาไทย` was cut). |
+| `KSO-EP01-SHORT-S02-B03` | 31–41 s | Scare/reveal: panic makes the narrator slip `ส… สวย—`; the woman lowers the mask (the slit grin is shown open, user decision), asks `แล้วตอนนี้ล่ะ…`; narrator remembers the rule and answers `ก็… ธรรมดา`. | The one stinger of the video: a sharp dissonant hit on the mask drop (on the first frame the mouth line is readable), then immediately back to near silence under the woman's wet whisper. Heartbeat-like low pulse may sit under the narrator's answer, stopping dead after `ธรรมดา`. |
 | `KSO-EP01-SHORT-S03-B01` | 41–46.5 s | Escape and realisation: the woman freezes; narrator runs home; she now understands the coworker's relief (CL01 payoff). | Running footsteps, door slam and lock click (short, dry), then a quiet cold bed returns at very low level. No release chord. |
 | `KSO-EP01-SHORT-S03-B02` | 46.5–50 s (+ ~3 s hold for `B_loop`) | Twist landing and loop: narrator apologises to the viewer; the woman's whisper says it's the viewer's turn. Final ~0.5 s free of speech for the loop blend. | Bed thins to nothing under the apology; the final whisper is dry, centered and closest of the whole video. After it: silence + streetlight hum only, matching the frame-0 hum level so the seam is continuous (`C_seamless`). For `B_loop`: hold ~3 s on hum; no outro sting. |
 
@@ -61,7 +61,7 @@ Video times are estimates and contiguous. Story-world: one night (coworker's sto
 
 ### S01 / B02 — The story at work, 3.5–13 s estimated
 
-**Event:** Warm-but-dim back room of a small shop or izakaya near closing. A Japanese coworker (young woman, apron) tells the story with a flashlight-under-the-chin feel, no props needed. On `ยิ้ม` the coworker's smile reads as relief, not teasing (CL01). Narrator seen from behind or over the shoulder.
+**Event:** Warm izakaya (Japanese after-work drinking bar) near closing. A Japanese coworker (young woman, apron) stands behind a table, waist-up, and tells the story lit from below by one paper lantern on the table (flashlight-under-the-chin feel). On `ยิ้ม` the coworker's smile reads as relief, not teasing (CL01). Narrator seen from behind, seated at the near side of the table.
 
 **NARR**
 
@@ -97,13 +97,11 @@ Video times are estimates and contiguous. Story-world: one night (coworker's sto
 
 > ฉัน… สวยไหม?
 
-**NARR** — tags: `<short pause>` before; trembling whisper (`<gasp>` may open the line)
-
-> เธอพูดภาษาไทย
+**R2 (user cut, 2026-11-01):** the narrator line `เธอพูดภาษาไทย` is removed. The impossibility is carried by the picture alone (`S02-B02-SH04`: narrator's eyes wide, hand to mouth) and by the woman's Thai question; the beat goes straight from her whispered Thai question to the slip in `S02-B03`.
 
 ### S02 / B03 — The mask, 31–41 s estimated
 
-**Event:** Panic: narrator's mouth opens, a half-word escapes. The woman's fingers hook the mask's ear loop and lower it slowly. **Implication only:** the stinger frame shows the corners of a too-wide smile running back into the shadow of her hair toward the ears, lit from above by the streetlight; no blood, no open wound detail, no gore. Cut to the narrator's eyes for her line about the mouth. The woman tilts her head on `ยังสวยอยู่ไหม`. The narrator forces out the answer; the woman goes perfectly still.
+**Event:** Panic: narrator's mouth opens, a half-word escapes. The woman's fingers hook the mask's ear loop and lower it slowly. **Open slit grin (user decision, 2026-11-01):** the mouth tears open slowly into a grin from ear to ear with teeth, painted dusky and cold, lit from above by the streetlight; no red, no blood, no flesh texture, no scissors or attack. Cut to the narrator's eyes for her line about the mouth. The woman tilts her head on `ยังสวยอยู่ไหม`. The narrator forces out the answer; the woman goes perfectly still.
 
 **NARR** — separate short take allowed; style addition for that take: `panicked, involuntary, cut off`; tags: `<gasp>` before
 
@@ -127,7 +125,7 @@ Video times are estimates and contiguous. Story-world: one night (coworker's sto
 
 **NARR** — breath still uneven at the start, then quieter and colder
 
-> เธอนิ่งไป… ฉันวิ่งไม่หยุดจนถึงห้อง ฉันรอด… แต่ตอนนี้ฉันเข้าใจแล้ว ว่าทำไมเพื่อนถึงโล่งใจ
+> เธอนิ่งไป… ฉันวิ่งไม่หยุดจนถึงห้อง ฉันรอด… แต่ตอนนี้ฉันเข้าใจแล้ว ว่าทำไมเพื่อนถึงโล่งใจ… เพราะใครที่ได้ฟังเรื่องนี้… เธอจะไปหาคนนั้น
 
 ### S03 / B02 — Your turn, 46.5–50 s estimated (+ ~3 s hold for `B_loop`)
 
@@ -176,12 +174,12 @@ There are no factual claims. Legend elements are presented as a story the cowork
 
 - Shared library index not readable from this checkout on 2026-10-30 (`sound-library/INDEX.md` absent; the documented path is on the user's Mac). No candidates selected; Editor checks the library before requesting anything new ([library](../../../docs/sound-generation-workflow.md)). The `audio-studio` MCP server was not connected in this session; not needed for script work.
 - Needed sound types (intent only, not a generation request): dead-street room tone with a streetlight electrical hum/flicker buzz (continuous, also the loop seam bed); sparse low dark drone bed; two footstep sets (sneakers, heel clicks); one dissonant stinger (S02-B03 mask drop only); optional slow low riser (end of S02-B01); optional low pulse under `ก็… ธรรมดา`; running steps, door slam, lock click.
-- Rules: voices lead the mix; whispers stay dry and intelligible; **one** stinger only; silence before `เธอพูดภาษาไทย` and after `ธรรมดา` is part of the scare. Every clue (late footsteps stopping, woman ahead, mask drop, coworker's smile) must also read visually with sound muted.
+- Rules: voices lead the mix; whispers stay dry and intelligible; **one** stinger only; silence after her Thai question (R2) and after `ธรรมดา` is part of the scare. Every clue (late footsteps stopping, woman ahead, mask drop, coworker's smile) must also read visually with sound muted.
 
 ## Visual handoff notes (for Film, when authorised)
 
 1. Project defaults: painted 2D (p5.brush) + Remotion SVG; outlined Thai captions in the [caption-safe box](../../../docs/production-requirements.md#vertical-caption-safe-zone). Keep the woman's eyes/mask, the mouth-reveal area and the coworker's smile above the caption band.
-2. Gore limit: the reveal is the corners of a too-wide smile disappearing into hair shadow; no blood, open flesh, scissors or attack. No on-screen killing. The coworker is never shown harmed.
+2. Gore limit: the reveal is an open slit grin ear to ear, shown with teeth (user decision); no red, blood, flesh texture, scissors or attack. No on-screen killing. The coworker is never shown harmed.
 3. The woman never runs or teleports on camera; dread comes from stillness and from her being where she should not be.
 4. S01-B01 and the final S03-B02 frame are the same composition (extreme close: mask edge + hair at the lens) so the `C_seamless` seam lands on identical pictures.
 5. Fiction marker readable from frame 0 without covering the hook.
@@ -196,3 +194,7 @@ There are no factual claims. Legend elements are presented as a story the cowork
   1. Ending: `C_seamless` (proposed) or `B_loop` only, or both?
   2. The "passed on to whoever hears the story" twist is an invention, not the traditional legend. Keep it, or end on the legend alone (e.g., she appears again at the narrator's window)?
   3. The woman's first question in Japanese (`わたし… きれい?`, captioned `วาตาชิ… คิเร?`) — keep, or all-Thai?
+
+- R2 (2026-11-01, coordinator mechanical edit on the user's instruction "ตัดบทที่พูดว่า เธอพูดภาษาไทย ทิ้งไปเลย"): removed the NARR line `เธอพูดภาษาไทย` (S02-B02, anchor KSO-A09). Nothing else changed. Voice lock re-opens for S02-B02 and later beats (timing shifts); `S02-B02-SH04` keeps the picture beat. Boat N/A (no factual change).
+- R3 (2026-11-01, coordinator mechanical edit on the user's instruction, wording polished with the user): S03-B01 NARR now ends `… ว่าทำไมเพื่อนถึงโล่งใจ… เพราะใครที่ได้ฟังเรื่องนี้… เธอจะไปหาคนนั้น`. States the pass-on rule once so CL01/CL02 pay off (user asked whether the twist was too hard to follow). Adds about 3 s of speech; S03-B01 voice lock reopens for this beat only. The rest is unchanged.
+- R4 (2026-11-01, coordinator mechanical edit on the user's instruction "แก้ให้ตรงได้ ผมอยากให้ปากฉีกแบบสยองนี่แหละ"): S02-B03 reveal wording and the gore limit now match the approved open slit grin (was "implication only"). Spoken lines unchanged, so voice lock v3 stands.

@@ -1,0 +1,62 @@
+{
+  "public/audio/electric/electric_streetlamp-hum-loop_01.wav": {
+    "store": "library/sound/ambience/electric/electric_streetlamp-hum-loop_01.wav",
+    "sha256": "0b2735d0d08fceaca9c5f4f5faaaa4abe57f064744f31e95592c2b1f31a45b76"
+  },
+  "public/audio/room/room_dark-empty-building_01.wav": {
+    "store": "library/sound/ambience/room/room_dark-empty-building_01.wav",
+    "sha256": "182e07d714ac291dfc72cb1789d4cf1df3b287733ab5c0af1715441587ead4c2"
+  },
+  "public/audio/room/room_shop-fridge-hum_01.wav": {
+    "store": "library/sound/ambience/room/room_shop-fridge-hum_01.wav",
+    "sha256": "d4ef096df21c9db1a22ee6240a50ec92e0921170a3305db1ce9fa7e0a5acf1c9"
+  },
+  "public/audio/tension/tension_drone-sparse-piano_01.wav": {
+    "store": "library/sound/music/tension/tension_drone-sparse-piano_01.wav",
+    "sha256": "952e6e50ad21904e6078aa56f5e46771afed2e74c1ca61743f98f74dd19d7ce4"
+  },
+  "public/audio/tension/tension_whispers-children-murmur_01.wav": {
+    "store": "library/sound/sfx/tension/tension_whispers-children-murmur_01.wav",
+    "sha256": "94a7aea26e02a3c41fd2b1a9f8ec820bdff19c6ca6922973cd9be51d93be2875"
+  },
+  "public/narration/KSO-EP01-SHORT.mp3": {
+    "store": "projects/KSO/audio/voice-lock-v5/final/KSO-EP01-SHORT_narration_voicelock-v5.mp3",
+    "sha256": "c25dc1b580813c2d81c10f98557b1c898f3bd49c45f7dac2cb7a172249df1bc8"
+  },
+  "public/sfx/electric/electric_light-flicker-buzz_01.wav": {
+    "store": "library/sound/sfx/electric/electric_light-flicker-buzz_01.wav",
+    "sha256": "f123f9a58b103d3c5bbf02800e027a00dd22ce4105a1d098229aa3e4a977982c"
+  },
+  "public/sfx/foley/foley_deadbolt-clack_01.wav": {
+    "store": "library/sound/sfx/foley/foley_deadbolt-clack_01.wav",
+    "sha256": "2a8ae79b94b90d4ffbf0dd65fdd4cb582676d2d873d791ed97048cd08401cab7"
+  },
+  "public/sfx/foley/foley_heel-click-asphalt_01.wav": {
+    "store": "library/sound/sfx/foley/foley_heel-click-asphalt_01.wav",
+    "sha256": "fcc5db89f88d05f0b4ef7d73ed2fe90cd5cf6e7d1d4fca46fa96d8f37ad40cf8"
+  },
+  "public/sfx/foley/foley_run-sneakers-asphalt_01.wav": {
+    "store": "library/sound/sfx/foley/foley_run-sneakers-asphalt_01.wav",
+    "sha256": "d8e2f488a0f01ba68de747ad84a435af8debb457bf39e7a9fc53b5a64a53a8bf"
+  },
+  "public/sfx/foley/foley_walk-sneakers-asphalt_01.wav": {
+    "store": "library/sound/sfx/foley/foley_walk-sneakers-asphalt_01.wav",
+    "sha256": "c52e1c6ff84b687f0329d3b405053995e2f4e5778724dc9263dbbb7eb291d803"
+  },
+  "public/sfx/impact/impact_door-slam-body_01.wav": {
+    "store": "library/sound/sfx/impact/impact_door-slam-body_01.wav",
+    "sha256": "ac4b988372acaacf8da9c86a2d05377a73958071a3c5ed49722abfed85372b02"
+  },
+  "public/sfx/reveal/reveal_riser-tension_01.wav": {
+    "store": "library/sound/sfx/reveal/reveal_riser-tension_01.wav",
+    "sha256": "571acff153c2e6694fe4ab965b5c5389808ca9cfc51a3452660431b569bba300"
+  },
+  "public/sfx/stinger/stinger_horror-screech_01.wav": {
+    "store": "library/sound/sfx/stinger/stinger_horror-screech_01.wav",
+    "sha256": "3a1d3c177aa21e74add5072244385026d416ba04ffe5a4461474d546f7886e88"
+  },
+  "public/sfx/tension/tension_heartbeat-slow_01.wav": {
+    "store": "library/sound/sfx/tension/tension_heartbeat-slow_01.wav",
+    "sha256": "dad502623f206eab84c180797075271248642712255d081ddeda8e531435513a"
+  }
+}

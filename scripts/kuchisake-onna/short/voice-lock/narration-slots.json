@@ -1,0 +1,74 @@
+[
+ {
+  "beat": "W01_hook",
+  "leadSec": 0.0,
+  "trimHeadSec": 0.02,
+  "durationSec": 3.066667
+ },
+ {
+  "beat": "B01",
+  "leadSec": 0.5,
+  "trimHeadSec": 0.02,
+  "durationSec": 37.333333
+ },
+ {
+  "beat": "W02_jp",
+  "leadSec": 0.466667,
+  "trimHeadSec": 0.02,
+  "durationSec": 2.7
+ },
+ {
+  "beat": "B02",
+  "leadSec": 0.466667,
+  "trimHeadSec": 0.02,
+  "durationSec": 1.433333
+ },
+ {
+  "beat": "W03_th",
+  "leadSec": 0.466667,
+  "trimHeadSec": 0.02,
+  "durationSec": 3.233333
+ },
+ {
+  "beat": "SLIP",
+  "leadSec": 0.766667,
+  "trimHeadSec": 0.02,
+  "durationSec": 2.633333
+ },
+ {
+  "beat": "B04",
+  "leadSec": 0.366667,
+  "trimHeadSec": 0.02,
+  "durationSec": 5.2
+ },
+ {
+  "beat": "W04_mask",
+  "leadSec": 0.6,
+  "trimHeadSec": 0.02,
+  "durationSec": 4.3
+ },
+ {
+  "beat": "B05",
+  "leadSec": 0.5,
+  "trimHeadSec": 0.02,
+  "durationSec": 2.0
+ },
+ {
+  "beat": "B06",
+  "leadSec": 1.0,
+  "trimHeadSec": 0.02,
+  "durationSec": 17.266667
+ },
+ {
+  "beat": "W05_final",
+  "leadSec": 0.6,
+  "trimHeadSec": 0.02,
+  "durationSec": 2.366667
+ },
+ {
+  "beat": "TAIL",
+  "leadSec": 0,
+  "trimHeadSec": 0,
+  "durationSec": 0.5
+ }
+]

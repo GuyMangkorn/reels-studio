@@ -204,6 +204,11 @@ test('video style validation: endHoldSec and endFadeSec need ending A_fade and n
   assert.throws(() => validateVideoStyle({endHoldSec: 0}, 'X'), /only applies to ending 'A_fade'/);
   assert.throws(() => validateVideoStyle({ending: 'B_loop', endFadeSec: 1}, 'X'), /endFadeSec/);
   assert.throws(() => validateVideoStyle({ending: 'A_fade', endHoldSec: -1}, 'X'), /endHoldSec/);
+  assert.doesNotThrow(() => validateVideoStyle({ending: 'B_loop', endHoldSec: 2}, 'X'));
+  assert.doesNotThrow(() => validateVideoStyle({ending: 'B_loop', endHoldSec: 0}, 'X'));
+  assert.throws(() => validateVideoStyle({ending: 'B_loop', endHoldSec: -1}, 'X'), /endHoldSec/);
+  assert.throws(() => validateVideoStyle({ending: 'B_loop', endHoldSec: Number.NaN}, 'X'), /endHoldSec/);
+  assert.throws(() => validateVideoStyle({ending: 'C_seamless', endHoldSec: 2}, 'X'), /only applies to ending 'A_fade' or 'B_loop'/);
 });
 
 const cueTimeline = (cues: unknown[]): Timeline => [{durationSec: 2, bg: 'none', actors: [], subtitle: '', painted: {shots: cues as never}}];

@@ -1,0 +1,8 @@
+{
+  "_about": "KSO-EP01-SHORT voice lock v3 (KSO-SCRIPT-R3; B06 regenerated 1 Nov 2026, the other read groups are v2 unchanged). Text as sent to TTS: ellipses (…) become commas (user rule, narration only); inline tags per gemini-tts skill. B06 is now a separate Erinome call (v2 style, take2 picked by voice-match; out/kso-ep01-short/voice-lock-r3/); its text is the R2 B06 text plus the R3 tail \"เพราะใครที่ได้ฟังเรื่องนี้, เธอจะไปหาคนนั้น\". The v2 read (group keys B01-B05 as before) is in the store voice-lock-r2. WOMAN lines (Despina, five reused takes) and the panic slip (separate take) are not in this read. Group keys are read segments for align-full.py, not script beats; B03 is absent since R2 (KSO-A09 removed, keys not renumbered). The measure file maps the groups to S01-B01..S03-B02.",
+  "B01": "<short pause> อย่าเพิ่งตอบ, ฟังให้จบก่อน คืนนั้นก่อนเลิกงานที่ญี่ปุ่น เพื่อนที่ร้านเล่าตำนานให้ฉันฟัง, คุจิซาเกะอนนะ ผู้หญิงใส่หน้ากาก ที่ถามแค่คำถามเดียว ห้ามตอบว่าสวย, ห้ามตอบว่าไม่สวย เล่าจบ เพื่อนก็ยิ้ม, เหมือนคนที่เพิ่งโล่งใจ ฉันเดินกลับห้องคนเดียว มีเสียงรองเท้าเดินตามหลังมา, ฉันหยุด มันก็หยุด แล้วเสียงนั้นก็หายไป, ใต้เสาไฟข้างหน้า มีผู้หญิงใส่โค้ทยาว ใส่หน้ากากสีขาว, ยืนรอฉันอยู่",
+  "B02": "<whispering> ฉันไม่ตอบ",
+  "B04": "<whispering> เธอดึงหน้ากากลง, ปากของเธอ ฉีกยาว, ไปถึงหู",
+  "B05": "<short pause> ก็, ธรรมดา",
+  "B06": "เธอนิ่งไป, ฉันวิ่งไม่หยุดจนถึงห้อง ฉันรอด, แต่ตอนนี้ฉันเข้าใจแล้ว ว่าทำไมเพื่อนถึงโล่งใจ, เพราะใครที่ได้ฟังเรื่องนี้, เธอจะไปหาคนนั้น <whispering> ขอโทษนะ, ที่เล่าให้ฟัง"
+}

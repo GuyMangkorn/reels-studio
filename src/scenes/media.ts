@@ -111,7 +111,7 @@ export function validateVideoStyle(video: {audio?: unknown; captionStyle?: unkno
   for (const key of ['endHoldSec', 'endFadeSec'] as const) {
     const value = video[key];
     if (value === undefined) continue;
-    if (video.ending !== 'A_fade') fail(key, "only applies to ending 'A_fade'");
+    if (key === 'endHoldSec' ? video.ending !== 'A_fade' && video.ending !== 'B_loop' : video.ending !== 'A_fade') fail(key, key === 'endHoldSec' ? "only applies to ending 'A_fade' or 'B_loop'" : "only applies to ending 'A_fade'");
     if (!finite(value) || value < 0) fail(key, 'expected non-negative seconds');
   }
   if (video.chrome !== undefined) {

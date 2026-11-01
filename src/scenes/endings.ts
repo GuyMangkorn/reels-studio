@@ -4,7 +4,8 @@ export const DEFAULT_LOOP_BLEND_FRAMES = 15;
 /**
  * `A_fade` options (VideoDefinition `endHoldSec` / `endFadeSec`). Defaults: hold the final staging for 3 s, fade over the
  * last second. `holdSec: 0` lets the last scene run to its end (no freeze); `fadeSec: 0` applies no composition fade, so a
- * plate that authors its own black (screen-space layer) owns the fade. Ignored by the other endings.
+ * plate that authors its own black (screen-space layer) owns the fade. `holdSec` also applies to `B_loop` (freeze at final scene
+ * length minus the hold; no fade); `fadeSec` is A_fade only. Both are ignored by C_seamless.
  */
 export type EndingOptions = {holdSec?: number; fadeSec?: number};
 /**

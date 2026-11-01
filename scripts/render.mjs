@@ -43,9 +43,11 @@ try {
     const dir = `out/${id}`;
     await mkdir(dir, {recursive: true});
     if (stills) {
-      const composition = await selectComposition({serveUrl, id, puppeteerInstance: browser, ...shared});
+      // --draft reaches stills too (a draft still used to be painted at final grade); --preview stays out: stills are full size.
+      const stillProps = draft ? {paintDraft: true} : {};
+      const composition = await selectComposition({serveUrl, id, inputProps: stillProps, puppeteerInstance: browser, ...shared});
       await mkdir(`${dir}/stills`, {recursive: true});
-      await renderStills({serveUrl, composition, puppeteerInstance: browser, ...shared, frames, outputFor: (frame) => `${dir}/stills/${frame}.png`, onStill: (frame) => console.log(`Checked ${id} frame ${frame}`)});
+      await renderStills({serveUrl, composition, inputProps: stillProps, puppeteerInstance: browser, ...shared, frames, outputFor: (frame) => `${dir}/stills/${frame}.png`, onStill: (frame) => console.log(`Checked ${id} frame ${frame}`)});
       continue;
     }
     const endings = endingsFor(requestedEndings, (await selectComposition({serveUrl, id, puppeteerInstance: browser, ...shared})).props);
