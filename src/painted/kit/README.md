@@ -17,6 +17,21 @@ view with `scripts/qa-sheet.sh`). Source of the catalog: [catalog.tsx](catalog.t
 | `poses.ts` | `POSE_IDS`, `PoseId`, `POSES`, `poseArms(id, def, g, unit)`, `shoulderAnchors(def)` | Pose sheet P01-P30 as shoulder-relative hand targets for the cast rig (front, standing; [CP-P11](../../../docs/character-proportion-principles.md#cp-p-pose-sheet)) |
 | `head.ts` | `paintHeadFront`, `paintHeadSide`, `HeadStyle`, `FaceState`, `Brow`/`Eyes`/`Mouth`, `headOutline`, `BROW_Y`, `blinking`, `HEAD_SPAN`, `CHIN` | Decal heads with face controls |
 | `hash.ts` | `hash` | Deterministic 0..1 noise |
+| `people.ts` | `PEOPLE`, `PEOPLE_INFO` | **Central template cast**: 11 ready `CastDef`s (men, women, children, elders). Pick one by id, then override `outfit`/`head` per video |
+| `hair.ts` | hair geometry for the `HeadStyle.cut` values `crop parted spiky buzz balding bowl pixie ponytail pigtails curly perm` | Front and profile hair; extra `HeadStyle` fields `facial`, `glasses`, `accent`, `brows` |
+| `people-sheet.tsx` | `KIT-PEOPLE-LINEUP`, `KIT-PERSON-<id>` | Lineup and per-character model sheets (front/left/right, 9 faces); render with `node scripts/painted-kit/people.mjs --out=DIR` |
+| `expressions.ts` | `EXPRESSION_IDS`, `EXPRESSIONS`, `EXPRESSION_INFO` | Named faces (neutral, happy, worried, angry, sad, surprised, scared ...) as `FaceState`; sheet `KIT-EXPRESSIONS` |
+| `wardrobe.ts`, `gear.ts` | `OUTFIT_IDS`, `WARDROBE`, `WARDROBE_INFO`, `dress(def, outfitId)`; `Outfit.gear` | Job and school outfits (police, nurse, monk, office ...) applied to any person; sheet `KIT-WARDROBE` |
+| `legs.ts`, `props.ts` | `kneelSolution`, `KNEEL_STAGES`, `sitFootOffset`; `drawChair` | Sit, kneel and floor legs; chair prop |
+| `poses-more.ts`, `poses-sheet.tsx` | `ALL_POSE_IDS` (P01-P45), `poseFor`, `poseMix`, `hasView`, `poseViews` | Profile arms for P02-P30 and body poses P31-P45; sheets `KIT-POSES`, `KIT-POSES-CLOSE` (`scripts/painted-kit/poses.mjs`) |
+| `motions.ts`, `motion-reel.ts` | `MOTIONS`, `MOTION_INFO`, `layerMotion({person, motion, t, g, unit})` | Motion presets (walk, run, nod, sit-down, kneel-down ...) as pure functions of shot-local time; reel `KIT-MOTIONS`. Use `layerMotion`, don't hand-build walks |
+| `shot-templates.ts`, `template-reel.ts` | `twoShot`, `threeShot`, `talkingCloseUp`, `sideWalk`, `povShot`, `SHOT_TEMPLATE_IDS` | Ready staging templates built on person/outfit/pose/motion ids; video `KIT-SHOT-TEMPLATES` |
+| `casting.ts`, `cast-cards-sheet.tsx` | `parseCasting`, `formatCasting`, `CARD_POSES` | Casting line `person [+ outfit] [, pose] [, expression]` for briefs, e.g. `man-parted + police, P15, scared`; catalog `KIT-CAST-CARDS` |
+
+Template cast (look here first)
+- Need a new person? Start from `PEOPLE` in `people.ts` (see `PEOPLE_INFO` for age, gender, hair) and view `KIT-PEOPLE-LINEUP` / `KIT-PERSON-<id>`; copy the entry into the episode's cast and change only `outfit` and props. Add a new character to `PEOPLE` only for a reusable look.
+- Talking and turning: face controls (`FaceState`, `talk` mouth with `open` from `mouthAt()`), head `front|left|right`. Example: composition `KIT-PEOPLE-TALK`. No 3/4 view yet.
+- `CastDef.headScale` / `armScale` size children; `Outfit.skirtHem` sets a short skirt.
 
 Recurring cast
 - A character is a `CastDef = {height, head: HeadStyle, outfit: Outfit, seed}`; the episode owns its entries (`worldfog/cast.ts` `CAST`) and calls `drawFigure(p, def, ...)`.

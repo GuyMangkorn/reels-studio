@@ -1,3 +1,4 @@
+import {hairFront, hairSide, isNewCut, type NewCut} from './hair';
 import {hash} from './hash';
 import {mixColor, type Painter, type Pt} from './painter';
 import {INK, VD18, ell, glaze, inkLine, lineOf, modelPart, planeBand, rimScaleOf, solid, toneOf, type InteriorLight} from './draw';
@@ -8,14 +9,24 @@ import {INK, VD18, ell, glaze, inkLine, lineOf, modelPart, planeBand, rimScaleOf
 
 export type Brow = 'flat' | 'up' | 'worry' | 'angry' | 'quirk';
 export type Eyes = 'dot' | 'wide' | 'half' | 'shut';
-export type Mouth = 'flat' | 'smile' | 'o' | 'wavy' | 'frown' | 'gasp' | 'talk';
+/** `grin`, `smirk` and `shout` were added for the expression presets (`expressions.ts`, 1 Nov 2026); the first seven are the WFOG/ZC set. */
+export type Mouth = 'flat' | 'smile' | 'o' | 'wavy' | 'frown' | 'gasp' | 'talk' | 'grin' | 'smirk' | 'shout';
 /**
- * `open` 0..1 opens a `talk` mouth (pose tracks drive it; TTS amplitude can replace it later); `squint` closes the lids.
+ * `open` 0..1 opens a `talk` mouth (pose tracks drive it; TTS amplitude can replace it later) or sizes a `shout` mouth;
+ * `squint` closes the lids.
  * `browTo` with `browMix` 0..1 moves the brow line continuously from `brow` toward `browTo` (SS-R4 RT-2 occupant relax).
+ * `tears` 0..1 paints tear streams under the eyes (0 or absent = none); `sweat` adds a sweat drop beside the forehead.
  */
-export type FaceState = {brow: Brow; eyes: Eyes; look: Pt; mouth: Mouth; open?: number; squint?: number; browTo?: Brow; browMix?: number};
-/** `long`: loose shoulder-length hair (the narrator, brief VD03 R2). `lines`: age lines (older occupant, user Q3). */
-export type HeadStyle = {skin: string; hair: string; cut: 'short' | 'tied' | 'bob' | 'hood' | 'long'; hood?: string; lines?: boolean};
+export type FaceState = {brow: Brow; eyes: Eyes; look: Pt; mouth: Mouth; open?: number; squint?: number; browTo?: Brow; browMix?: number; tears?: number; sweat?: boolean};
+/** The cuts of the WFOG/ZC cast (`short|tied|bob|hood|long`) and the people-library cuts (`hair.ts`, `NewCut`). */
+export type Cut = 'short' | 'tied' | 'bob' | 'hood' | 'long' | NewCut;
+/**
+ * `long`: loose shoulder-length hair (the narrator, brief VD03 R2). `lines`: age lines (older occupant, user Q3).
+ * People library only (`people.ts`, all optional, absent = the cast look): `accent` colours hair ties on `ponytail` and `pigtails`;
+ * `facial` adds stubble, a moustache or a full beard in the hair colour; `glasses` adds dark round frames; `brows` overrides the
+ * brow colour (the hair colour by default; grey hair needs a darker brow).
+ */
+export type HeadStyle = {skin: string; hair: string; cut: Cut; hood?: string; lines?: boolean; accent?: string; facial?: 'stubble' | 'mustache' | 'beard'; glasses?: boolean; brows?: string};
 
 /** Head height (forehead top to chin) in head units K; chin below the centre. */
 export const HEAD_SPAN = 2.27;
@@ -29,6 +40,9 @@ const browY = (face: FaceState): [number, number] => {
   return [a[0] + (b[0] - a[0]) * u, a[1] + (b[1] - a[1]) * u];
 };
 const WHITE = '#fbf7ee', MOUTH = '#3b2a24', AGE = '#8a5a43';
+const TEAR = '#a9d6f0', TEAR_INK = '#5f9bc4';
+/** A teardrop (point up) centred at (x, y), `s` head units tall 0.28. */
+const sweatDrop = (x: number, y: number, s: number): Pt[] => [[x, y - 0.16 * s], [x + 0.06 * s, y - 0.02 * s], [x + 0.08 * s, y + 0.05 * s], [x + 0.04 * s, y + 0.11 * s], [x - 0.04 * s, y + 0.11 * s], [x - 0.08 * s, y + 0.05 * s], [x - 0.06 * s, y - 0.02 * s]];
 
 export const headOutline = (n = 40): Pt[] =>
   Array.from({length: n}, (_, i) => {
@@ -73,6 +87,80 @@ const faceModel = (p: Painter, seed: number, skin: string, head: Pt[], L: Interi
 const sheen = (p: Painter, id: number, hair: string, strokes: Pt[][]) =>
   strokes.forEach((pts, i) => inkLine(p, id + i, pts, {closed: false, weight: 2.0, curve: 0.5, color: mixColor(hair, '#b9c3c5', hair === '#8f8a84' ? 0.5 : 0.45)}));
 
+const GLASSES = '#2c2622';
+/** Brow colour: `style.brows`, else the hair colour (grey hair `#8f8a84` gets a darker brow). */
+const browColor = (style: HeadStyle) => style.brows ?? (style.hair === '#8f8a84' ? '#6f6a64' : style.hair);
+
+type FacialCtx = {
+  p: Painter; seed: number; Q: (pts: Pt[]) => Pt[]; color: string; skin: string; L?: InteriorLight;
+  fill: (color: string, pts: Pt[], passes?: number) => void;
+  ink: (pts: Pt[], weight?: number, curve?: number, closed?: boolean, color?: string) => void;
+};
+/** Lower egg outline between angles a0..a1 (rad, 0 = right of the face, pi/2 = chin), head units. */
+const lowerEgg = (a0: number, a1: number, n: number): Pt[] =>
+  Array.from({length: n + 1}, (_, i): Pt => {
+    const a = a0 + ((a1 - a0) * i) / n, s = Math.sin(a);
+    return [Math.cos(a) * (1 - 0.07 * Math.max(0, s)), 1.22 * s];
+  });
+/** Facial hair on the front decal: stubble (a soft glaze), a moustache bar, or a full beard around a skin patch for the mouth. */
+const paintFacialFront = (kind: 'stubble' | 'mustache' | 'beard', c: FacialCtx) => {
+  const {p, seed, Q, color, skin, L, fill, ink} = c;
+  if (kind === 'mustache') {
+    const m: Pt[] = [[-0.34, 0.5], [-0.18, 0.44], [0, 0.46], [0.18, 0.44], [0.34, 0.5], [0.3, 0.57], [0.12, 0.52], [0, 0.54], [-0.12, 0.52], [-0.3, 0.57]];
+    fill(color, m, 6);
+    ink(m, 0.9, 0.3, true, lineOf(color, L));
+    return;
+  }
+  const outer = lowerEgg(0.2, Math.PI - 0.2, 16);
+  if (kind === 'stubble') {
+    glaze(p, 7_700_000 + seed, color, 95, Q([...outer, [-0.78, 0.2], [-0.55, 0.34], [-0.25, 0.42], [0, 0.44], [0.25, 0.42], [0.55, 0.34], [0.78, 0.2]]), {texture: 0.6, border: 0.2, bleed: 0.1});
+    return;
+  }
+  const beard: Pt[] = [...outer, [-0.78, 0.2], [-0.62, 0.4], [-0.34, 0.45], [0, 0.4], [0.34, 0.45], [0.62, 0.4], [0.78, 0.2]];
+  fill(color, beard, 6);
+  ink(beard, 1.0, 0.3, true, lineOf(color, L));
+  fill(skin, ell(0, 0.65, 0.33, 0.15, 18), 4); // the mouth stays on skin
+};
+/** The same on the profile decal (face toward +x). */
+const paintFacialSide = (kind: 'stubble' | 'mustache' | 'beard', c: FacialCtx) => {
+  const {p, seed, Q, color, skin, L, fill, ink} = c;
+  if (kind === 'mustache') {
+    const m: Pt[] = [[0.76, 0.47], [0.98, 0.45], [1.03, 0.53], [0.84, 0.58], [0.74, 0.55]];
+    fill(color, m, 6);
+    ink(m, 0.9, 0.2, true, lineOf(color, L));
+    return;
+  }
+  const jaw = lowerEgg(0.3, 2.0, 14); // front cheek, chin, up to under the ear
+  if (kind === 'stubble') {
+    glaze(p, 7_700_000 + seed, color, 95, Q([...jaw, [-0.3, 0.8], [-0.15, 0.4], [0.25, 0.38], [0.6, 0.42], [0.9, 0.42]]), {texture: 0.6, border: 0.2, bleed: 0.1});
+    return;
+  }
+  const beard: Pt[] = [...jaw, [-0.3, 0.8], [-0.15, 0.42], [0.25, 0.46], [0.58, 0.5], [0.92, 0.5]];
+  fill(color, beard, 6);
+  ink(beard, 1.0, 0.2, true, lineOf(color, L));
+  fill(skin, ell(0.84, 0.64, 0.15, 0.1, 14), 4);
+};
+
+/** Front hair polygon of the WFOG/ZC cuts (`short|tied|bob|hood|long`): skull arc, temples, then the cut's edge right to left. */
+const legacyFrontHair = (cut: Cut): Pt[] => {
+  const hair: Pt[] = [];
+  for (let i = 0; i <= 16; i++) {
+    const a = Math.PI + (i / 16) * Math.PI;
+    hair.push([1.07 * Math.cos(a), 1.12 * Math.sin(a) - 0.04]);
+  }
+  hair.push([0.92, 0.04], [0.86, -0.36]);
+  if (cut === 'tied') for (let i = 0; i <= 12; i++) hair.push([0.86 - (1.72 * i) / 12, -0.62 + 0.22 * (i / 12) ** 2]);
+  else if (cut === 'bob') hair.push([0.84, -0.42], [-0.84, -0.42]);
+  else if (cut === 'long') {
+    // Side parting with a soft sweep to the right of her face; strands stay above the eyes so the gaze reads.
+    for (let i = 0; i <= 12; i++) hair.push([0.86 - (1.72 * i) / 12, -0.42 - 0.2 * Math.sin((i / 12) * Math.PI * 0.9) + 0.06 * (i / 12)]);
+  } else if (cut !== 'hood') {
+    for (let i = 0; i <= 24; i++) hair.push([0.86 - (1.72 * i) / 24, -0.5 + 0.09 * Math.abs(Math.sin((i / 24) * 4 * Math.PI))]);
+  } else hair.push([0.6, -0.55], [0, -0.68], [-0.6, -0.55]); // fringe under the hood
+  hair.push([-0.86, -0.36], [-0.92, 0.04]);
+  return hair;
+};
+
 /**
  * Front decal head centred on (cx, cy), K px per head unit. `seed` keeps its fills apart from other heads; `t` is the
  * plate clock (blink); `warm` 0..1 tints the skin with the torch light.
@@ -89,6 +177,7 @@ export const paintHeadFront = (p: Painter, seed: number, cx: number, cy: number,
   const eyes: Eyes = blinking(t, seed) ? 'shut' : face.eyes;
   const [lx, ly] = face.look;
   const {cut} = style;
+  const nc = isNewCut(cut) ? hairFront(cut) : null;
 
   // Behind the head: hood, bob to the jaw, long hair to the shoulders, or a bun on top.
   const back: Pt[] | null =
@@ -103,39 +192,38 @@ export const paintHeadFront = (p: Painter, seed: number, cx: number, cy: number,
     if (L) modelPart(p, seed * 100 + part, bc, Q(back), L);
     ink(back, 1.0, 0.3, true, lineOf(bc, L));
   }
+  nc?.back?.forEach((poly) => {
+    const bc = toneOf(style.hair, L);
+    fill(bc, poly, 6);
+    if (L) modelPart(p, seed * 100 + part, bc, Q(poly), L);
+    ink(poly, 1.0, 0.3, true, lineOf(bc, L));
+  });
   part = 10;
   if (cut === 'short' || cut === 'tied') for (const side of [-1, 1]) fill(skin, ell(side * 1.0, 0.12, 0.14, 0.21, 16), 3);
+  else if (nc) for (const side of nc.ears) fill(skin, ell(side * 1.0, 0.12, 0.14, 0.21, 16), 3);
   part = 12;
   const head = headOutline();
-  fill(skin, head, back ? 8 : 4);
+  fill(skin, head, back || nc?.back ? 8 : 4);
   if (L) faceModel(p, seed, skin, Q(head), L, [[cx - 0.52 * K, cy + 0.34 * K, 0.2 * K, 0.11 * K], [cx + 0.52 * K, cy + 0.34 * K, 0.2 * K, 0.11 * K]]);
-  const hair: Pt[] = [];
-  for (let i = 0; i <= 16; i++) {
-    const a = Math.PI + (i / 16) * Math.PI;
-    hair.push([1.07 * Math.cos(a), 1.12 * Math.sin(a) - 0.04]);
-  }
-  hair.push([0.92, 0.04], [0.86, -0.36]);
-  if (cut === 'tied') for (let i = 0; i <= 12; i++) hair.push([0.86 - (1.72 * i) / 12, -0.62 + 0.22 * (i / 12) ** 2]);
-  else if (cut === 'bob') hair.push([0.84, -0.42], [-0.84, -0.42]);
-  else if (cut === 'long') {
-    // Side parting with a soft sweep to the right of her face; strands stay above the eyes so the gaze reads.
-    for (let i = 0; i <= 12; i++) hair.push([0.86 - (1.72 * i) / 12, -0.42 - 0.2 * Math.sin((i / 12) * Math.PI * 0.9) + 0.06 * (i / 12)]);
-  } else if (cut !== 'hood') {
-    for (let i = 0; i <= 24; i++) hair.push([0.86 - (1.72 * i) / 24, -0.5 + 0.09 * Math.abs(Math.sin((i / 24) * 4 * Math.PI))]);
-  } else hair.push([0.6, -0.55], [0, -0.68], [-0.6, -0.55]); // fringe under the hood
-  hair.push([-0.86, -0.36], [-0.92, 0.04]);
+  const hairs: Pt[][] = nc ? nc.hair : [legacyFrontHair(cut)];
+  const hairFill = nc?.tone ? mixColor(hairC, skin, nc.tone) : hairC;
   // VD18: the fringe casts a soft band of shadow on the forehead (the hair shape, shifted down, under the hair fill).
-  if (L && cut !== 'hood') glaze(p, 7_600_000 + seed, mixColor(skin, VD18.shadow, 0.36), 140, Q(hair.map(([u, v]): Pt => [u * 0.97, v + 0.12])), {texture: 0.3, border: 0.3, bleed: 0.06});
-  fill(hairC, hair, 6);
-  if (L) {
-    modelPart(p, seed * 100 + part, hairC, Q(hair), L);
-    if (cut !== 'hood') sheen(p, seed * 100 + 90, hairC, [
-      Q(Array.from({length: 7}, (_, i): Pt => [-0.15 - 0.6 * Math.cos(Math.PI / 2 * (i / 6)), -0.95 + 0.55 * Math.sin(Math.PI / 2 * (i / 6))])),
-      Q(Array.from({length: 6}, (_, i): Pt => [0.05 - 0.45 * (i / 5), -1.02 + 0.12 * (i / 5) ** 2])),
-    ]);
-  }
+  if (L && cut !== 'hood') hairs.forEach((hair, i) => glaze(p, 7_600_000 + seed + i, mixColor(skin, VD18.shadow, 0.36), 140, Q(hair.map(([u, v]): Pt => [u * 0.97, v + 0.12])), {texture: 0.3, border: 0.3, bleed: 0.06}));
+  hairs.forEach((hair) => {
+    fill(hairFill, hair, 6);
+    if (L) modelPart(p, seed * 100 + part, hairFill, Q(hair), L);
+  });
+  if (L && cut !== 'hood' && (!nc || nc.sheen)) sheen(p, seed * 100 + 90, hairC, [
+    Q(Array.from({length: 7}, (_, i): Pt => [-0.15 - 0.6 * Math.cos(Math.PI / 2 * (i / 6)), -0.95 + 0.55 * Math.sin(Math.PI / 2 * (i / 6))])),
+    Q(Array.from({length: 6}, (_, i): Pt => [0.05 - 0.45 * (i / 5), -1.02 + 0.12 * (i / 5) ** 2])),
+  ]);
+  nc?.accent?.forEach((poly) => {
+    fill(toneOf(style.accent ?? '#b8483c', L), poly, 4);
+    ink(poly, 0.9, 0.2, true, lineOf(hairC, L));
+  });
   ink(head, 1.1, 0.3, true, lineOf(skin, L));
-  ink(hair, 1.0, 0.3, true, lineOf(hairC, L));
+  hairs.forEach((hair) => ink(hair, 1.0, 0.3, true, lineOf(hairFill, L)));
+  if (nc?.part) ink(nc.part, 0.9, 0.3, false, lineOf(hairC, L));
 
   // Eyes: white almond + pupil offset by the look vector; squint lowers the upper lid.
   part = 30;
@@ -162,7 +250,15 @@ export const paintHeadFront = (p: Painter, seed: number, cx: number, cy: number,
   for (const side of [-1, 1]) {
     let [inner, outer] = browY(face);
     if (face.brow === 'quirk' && side === 1) [inner, outer] = [-0.34, -0.36];
-    fill(style.hair === '#8f8a84' ? '#6f6a64' : style.hair, [[side * 0.22, inner - 0.03], [side * 0.6, outer - 0.03], [side * 0.6, outer + 0.03], [side * 0.22, inner + 0.03]], 6);
+    fill(browColor(style), [[side * 0.22, inner - 0.03], [side * 0.6, outer - 0.03], [side * 0.6, outer + 0.03], [side * 0.22, inner + 0.03]], 6);
+  }
+  if (style.facial) {
+    const sp = part, sl = line;
+    part = 60;
+    line = 60;
+    paintFacialFront(style.facial, {p, seed, Q, color: toneOf(style.hair, L), skin, L, fill, ink});
+    part = sp;
+    line = sl;
   }
   const my = 0.6;
   const m = face.mouth;
@@ -181,6 +277,31 @@ export const paintHeadFront = (p: Painter, seed: number, cx: number, cy: number,
     fill(MOUTH, pts, 4);
     ink(pts, 1.0, 0.4, true);
   }
+  if (m === 'grin') {
+    // Wide open laugh: a deep D with a strip of teeth along the top.
+    const pts: Pt[] = [[-0.42, my - 0.1], [0.42, my - 0.1]];
+    for (let i = 1; i < 14; i++) pts.push([0.42 * Math.cos((i / 14) * Math.PI), my - 0.1 + 0.36 * Math.sin((i / 14) * Math.PI)]);
+    fill(MOUTH, pts, 4);
+    fill(WHITE, [[-0.37, my - 0.09], [0.37, my - 0.09], [0.35, my - 0.01], [-0.35, my - 0.01]], 3);
+    ink(pts, 1.0, 0.2, true);
+  }
+  if (m === 'smirk') {
+    ink([[-0.2, my + 0.03], [0.04, my + 0.04], [0.24, my - 0.05]], 1.3, 0.6);
+    ink([[0.24, my - 0.05], [0.29, my - 0.11]], 1.1, 0);
+  }
+  if (m === 'shout') {
+    const pts = ell(0, my + 0.1, 0.2, 0.08 + 0.12 * (face.open ?? 1), 20);
+    fill(MOUTH, pts, 4);
+    ink(pts, 1.0, 0.4, true);
+  }
+  if (style.glasses) {
+    line = 70;
+    for (const side of [-1, 1]) {
+      ink(ell(side * 0.4, 0.05, 0.3, 0.23, 22), 1.5, 0.3, true, GLASSES);
+      ink([[side * 0.69, 0.0], [side * 0.98, -0.02]], 1.3, 0.2, false, GLASSES);
+    }
+    ink([[-0.12, 0.0], [0, -0.05], [0.12, 0.0]], 1.3, 0.4, false, GLASSES);
+  }
   if (style.lines) {
     line = 80;
     const age = (pts: Pt[], curve = 0.5) => inkLine(p, seed * 100 + ++line, Q(pts), {color: AGE, weight: 0.8, curve, closed: false});
@@ -191,6 +312,25 @@ export const paintHeadFront = (p: Painter, seed: number, cx: number, cy: number,
       age([[side * 0.27, 0.66], [side * 0.29, 0.76]], 0);
     }
     age([[-0.3, -0.62], [0, -0.66], [0.3, -0.62]]); // forehead line under the fringe
+  }
+  // Tear streams and a sweat drop (expressions.ts); drawn only when the face asks, ids above every other part.
+  if (face.tears) {
+    part = 92;
+    line = 92;
+    for (const side of [-1, 1]) {
+      const x = side * 0.42, len = 0.18 + 0.5 * Math.min(1, face.tears);
+      const stream: Pt[] = [[x - 0.035, 0.17], [x + 0.035, 0.17], [x + side * 0.04 + 0.04, 0.17 + len], [x + side * 0.04 - 0.04, 0.17 + len]];
+      fill(TEAR, stream, 4);
+      fill(TEAR, ell(x + side * 0.04, 0.17 + len + 0.03, 0.06, 0.07, 10), 4);
+      ink(stream, 0.8, 0.3, true, TEAR_INK);
+    }
+  }
+  if (face.sweat) {
+    part = 96;
+    line = 96;
+    const drop = sweatDrop(1.02, -0.5, 1);
+    fill(TEAR, drop, 4);
+    ink(drop, 0.9, 0.4, true, TEAR_INK);
   }
 };
 
@@ -207,6 +347,7 @@ export const paintHeadSide = (p: Painter, seed: number, cx: number, cy: number, 
   const skin = toneOf(skinOf(style, warm), L);
   const hairC = toneOf(style.hair, L);
   const {cut} = style;
+  const nc = isNewCut(cut) ? hairSide(cut) : null;
   const arc = (r: number, a0: number, a1: number, n = 20): Pt[] =>
     Array.from({length: n + 1}, (_, i): Pt => {
       const a = a0 + ((a1 - a0) * i) / n;
@@ -218,6 +359,11 @@ export const paintHeadSide = (p: Painter, seed: number, cx: number, cy: number, 
     fill(hairC, back, 6);
     if (L) modelPart(p, seed * 100 + part, hairC, Q(back), L);
   }
+  nc?.back?.forEach((poly) => {
+    fill(hairC, poly, 6);
+    if (L) modelPart(p, seed * 100 + part, hairC, Q(poly), L);
+    ink(poly, 1.0, 0.15, true, lineOf(hairC, L));
+  });
   part = 6;
   const head = headOutline();
   fill(skin, head, 8);
@@ -249,6 +395,22 @@ export const paintHeadSide = (p: Painter, seed: number, cx: number, cy: number, 
       sheen(p, seed * 100 + 90, hairC, [Q(Array.from({length: 7}, (_, i): Pt => [0.6 - 1.1 * (i / 6), -1.0 + 0.15 * Math.sin(Math.PI * (i / 6))]))]);
     }
     ink(cap, 1.0, 0.15, true, lineOf(hairC, L));
+  } else if (nc) {
+    const hairFill = nc.tone ? mixColor(hairC, skin, nc.tone) : hairC;
+    nc.hair.forEach((poly) => {
+      fill(hairFill, poly, 6);
+      if (L) modelPart(p, seed * 100 + part, hairFill, Q(poly), L);
+      ink(poly, 1.0, 0.15, true, lineOf(hairFill, L));
+    });
+    if (L && nc.sheen) sheen(p, seed * 100 + 90, hairC, [Q(Array.from({length: 7}, (_, i): Pt => [0.6 - 1.1 * (i / 6), -1.0 + 0.15 * Math.sin(Math.PI * (i / 6))]))]);
+    nc.accent?.forEach((poly) => {
+      fill(toneOf(style.accent ?? '#b8483c', L), poly, 4);
+      ink(poly, 0.9, 0.2, true, lineOf(hairC, L));
+    });
+    if (nc.ear) {
+      fill(skin, ell(-0.12, 0.12, 0.15, 0.22, 16), 8);
+      ink([[-0.08, 0.0], [-0.17, 0.1], [-0.08, 0.22]], 0.9, 0.6, false);
+    }
   } else {
     const fringe = Array.from({length: 9}, (_, i): Pt => [0.2 + (0.62 * i) / 8, -0.4 - (0.08 * i) / 8 + 0.05 * Math.abs(Math.sin((i / 8) * 2 * Math.PI))]);
     const cap: Pt[] = [...arc(1.08, -1.0, -Math.PI - 0.55), [-0.62, 0.5], [-0.36, 0.06], [-0.12, -0.14], [0.18, -0.34], ...fringe];
@@ -272,12 +434,32 @@ export const paintHeadSide = (p: Painter, seed: number, cx: number, cy: number, 
   part = 50;
   line = 50;
   const [inner, outer] = browY(face);
-  fill(style.hair === '#8f8a84' ? '#6f6a64' : style.hair, [[0.46, outer - 0.03], [0.8, inner - 0.03], [0.8, inner + 0.03], [0.46, outer + 0.03]], 6);
+  fill(browColor(style), [[0.46, outer - 0.03], [0.8, inner - 0.03], [0.8, inner + 0.03], [0.46, outer + 0.03]], 6);
+  if (style.facial) {
+    const sp = part, sl = line;
+    part = 60;
+    line = 60;
+    paintFacialSide(style.facial, {p, seed, Q, color: toneOf(style.hair, L), skin, L, fill, ink: (pts, w, c, closed, col) => ink(pts, w, c, closed, col)});
+    part = sp;
+    line = sl;
+  }
   const m = face.mouth, o = face.open ?? 0;
   if (m === 'smile') fill(MOUTH, [[0.66, 0.56], [0.95, 0.54], [0.9, 0.66], [0.78, 0.7], [0.7, 0.64]], 4);
+  else if (m === 'grin') {
+    fill(MOUTH, [[0.58, 0.52], [0.94, 0.5], [0.9, 0.7], [0.78, 0.8], [0.64, 0.74]], 4);
+    fill(WHITE, [[0.62, 0.53], [0.92, 0.51], [0.91, 0.6], [0.64, 0.62]], 3);
+  } else if (m === 'smirk') ink([[0.7, 0.66], [0.84, 0.66], [0.96, 0.58]], 1.3, 0.5, false);
+  else if (m === 'shout') fill(MOUTH, ell(0.76, 0.66, 0.07 + 0.03 * (face.open ?? 1), 0.08 + 0.1 * (face.open ?? 1), 14), 4);
+  else if (m === 'frown') ink([[0.7, 0.66], [0.8, 0.6], [0.92, 0.64]], 1.4, 0.6, false);
   else if (m === 'wavy') ink([[0.7, 0.62], [0.76, 0.59], [0.82, 0.63], [0.88, 0.59], [0.93, 0.62]], 1.1, 0.5, false);
   else if (m === 'o' || m === 'gasp' || (m === 'talk' && o >= 0.08)) fill(MOUTH, ell(0.84, 0.62, 0.08, 0.03 + 0.06 * (m === 'talk' ? o : 1), 12), 4);
   else ink([[0.72, 0.62], [0.93, 0.62]], 1.2, 0, false);
+  if (style.glasses) {
+    line = 70;
+    ink(ell(0.62, 0.05, 0.22, 0.22, 22), 1.5, 0.3, true, GLASSES);
+    ink([[0.42, 0.0], [-0.1, -0.02]], 1.3, 0.2, false, GLASSES);
+    ink([[0.82, 0.03], [1.0, 0.1]], 1.3, 0.2, false, GLASSES);
+  }
   if (style.lines) {
     line = 80;
     const age = (pts: Pt[], curve = 0.5) => inkLine(p, seed * 100 + ++line, Q(pts), {color: AGE, weight: 0.8, curve, closed: false});
@@ -286,5 +468,21 @@ export const paintHeadSide = (p: Painter, seed: number, cx: number, cy: number, 
     age([[0.9, 0.42], [0.8, 0.52], [0.76, 0.66]]); // nasolabial
     age([[0.7, 0.68], [0.68, 0.78]], 0);
     age([[0.35, -0.62], [0.6, -0.6]], 0.2); // forehead
+  }
+  if (face.tears) {
+    part = 92;
+    line = 92;
+    const len = 0.18 + 0.5 * Math.min(1, face.tears);
+    const stream: Pt[] = [[0.58, 0.17], [0.68, 0.17], [0.7, 0.17 + len], [0.6, 0.17 + len]];
+    fill(TEAR, stream, 4);
+    fill(TEAR, ell(0.65, 0.17 + len + 0.03, 0.06, 0.07, 10), 4);
+    ink(stream, 0.8, 0.3, true, TEAR_INK);
+  }
+  if (face.sweat) {
+    part = 96;
+    line = 96;
+    const drop = sweatDrop(1.18, -0.42, 1);
+    fill(TEAR, drop, 4);
+    ink(drop, 0.9, 0.4, true, TEAR_INK);
   }
 };

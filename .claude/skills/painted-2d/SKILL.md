@@ -84,6 +84,7 @@ The planned rig follows ton-sea's model, implemented in TypeScript under `src/pa
 - **Front-view arm depth:** bent elbows go back behind the torso, not out to the side; pick the pose type per
   action ([CP-P](../../../docs/character-proportion-principles.md#cp-p-arm-depth)).
 - Approve a model sheet of every control before any acting shot.
+- **Template cast:** reusable people (men, women, children, elders) live in `src/painted/kit/people.ts` (`PEOPLE`, `PEOPLE_INFO`). Check the `KIT-PEOPLE-LINEUP` / `KIT-PERSON-<id>` sheets and copy a template before designing a new character; talking/turning example `KIT-PEOPLE-TALK` ([kit README](../../../src/painted/kit/README.md)).
 
 ## Role mapping
 
