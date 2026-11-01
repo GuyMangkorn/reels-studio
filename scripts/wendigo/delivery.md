@@ -9,8 +9,9 @@
 
 | Deliverable | Stage / Next owner | Script | Evidence / open items |
 | --- | --- | --- | --- |
-| WDG-EP01-SHORT | Selection recorded → Boat research | — | — |
+| WDG-EP01-SHORT | Boat research r1 done (lead-only sources) → Preaw script | — | [research.md](research.md) r1: all sources lead-only (biographi.ca, en.wikipedia.org blocked). Premise-critical claims F001, F002, F004, F006, F007 need reinspection at fact-check. |
 
 ## Handoff log
 
 - 2026-11-01: coordinator recorded selection (Short only, ~60 s), mixed horror+fact profile, project defaults, Full tier trimmed to script-only scope. Next owner: Boat (research).
+- 2026-11-01: Boat wrote research r1 (`research.md`): claim ledger F001–F010, sources SRC001–SRC012, all lead-only because WebFetch was blocked for www.biographi.ca and en.wikipedia.org. Labels safe/legend/avoid, cultural framing, sound notes and hook angles. Next owner: Preaw (script).
