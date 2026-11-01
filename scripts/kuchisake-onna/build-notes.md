@@ -80,3 +80,8 @@ Open items (Editor → owners):
 
 - 5 plates changed (IDs, index and timings unchanged): S01-B02-SH01 (elbows at the waist), SH02 (arms at the sides), SH03 (one hand reaches to and holds the glass, rounded curled grip, the other at the side), S02-B03-SH03 (released hand closes to a fist), S03-B01-SH01 (grin closes to a plain mouth, brows relax; the face the user saw in the S03-B01-SH02 clip pad).
 - Editor: no wiring change. Re-render draft clips S01-B02-SH01, SH02, SH03, S02-B03-SH03, S02-B03-SH04 (opens on SH03), S03-B01-SH01 and S03-B01-SH02 (opens on SH01). The 1 s pads also touch S01-B01-SH01 (ends on S01-B02-SH01), S01-B02-SH04 (opens on SH03) and S02-B03-SH02 (ends on S02-B03-SH03 f0-29, the fist closes at f5-11): 10 clips.
+
+## 1 Nov 2026: Draft-tab fix round 5 (Boss, DF Round 10)
+
+- 2 plates changed (IDs, index and timings unchanged): S01-B02-SH01 (elbows 0.05 m lower, upper arms angled out from the torso), S03-B01-SH01 (the closing grin slides down and narrows onto the kit's plain mouth; from f46 only the normal flat mouth; removes the line under the nose the user saw in the S03-B01-SH02 clip pad).
+- Editor: no wiring change. Re-render draft clips S01-B02-SH01, S03-B01-SH01 and S03-B01-SH02 (opens on SH01 f25-54); the 1 s pads also touch S01-B01-SH01 (ends on S01-B02-SH01), S01-B02-SH02 (opens on S01-B02-SH01) and S02-B03-SH06 (ends on S03-B01-SH01 f0-29, the mouth starts moving at f10): 6 clips.

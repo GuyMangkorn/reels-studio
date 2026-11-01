@@ -14,6 +14,9 @@ import {armTarget, sm, talkOpen} from './shot-motion';
 //   the torso (CP-P02, `behind: 'upper'`), so the bend shows and the forearm comes forward and up to the hands in front of the
 //   apron. Hand placement P06 (shrug_palms_up, hands a little wider than the elbows); elbows CP-P02 instead of P06's CP-P01
 //   splay (the user's round-3 depth note). The hands lift and spread a little with the speech envelope.
+//   Round 5 (user): "the elbow crease a little lower; the upper arm need not hug the torso". The elbows drop to 0.30 m under the
+//   shoulder (about 0.88 m, 0.19 m above the table line) and sit 0.11 m out from the shoulder anchor, so the upper arm angles
+//   out past the torso edge (a mild CP-P01 splay, still `behind: 'upper'` at the shoulder); the hands follow 0.015 m wider.
 // - `hang` (SH02): both arms hang close to the body, P01 (CP-P05); the hands fall below the table line. Mouth lip-syncs.
 // - `glass` (SH03): the left arm (screen right) hangs at the side (P01); the right arm (screen left) reaches over the table to
 //   the beer glass and holds it (P01 -> reach; no pose in P01-P30 covers a reach forward to a table object, nearest P05
@@ -24,8 +27,8 @@ import {armTarget, sm, talkOpen} from './shot-motion';
 
 const COW_G: [number, number, number] = [0, 0, 2.0];
 const L_COW: InteriorLight = {key: [-0.25, -1], rim: [0.7, 0.8], rimScale: 0.3};
-/** `tell` arm offsets from each shoulder anchor (m, u outward, v up): the elbow at the waist, the hand at rest and at full emphasis. */
-const ELBOW: Pt = [0.02, -0.25], HAND0: Pt = [0.065, -0.16], HAND1: Pt = [0.1, -0.1];
+/** `tell` arm offsets from each shoulder anchor (m, u outward, v up): the elbow at the waist, out from the torso (round 5), the hand at rest and at full emphasis. */
+const ELBOW: Pt = [0.11, -0.3], HAND0: Pt = [0.085, -0.165], HAND1: Pt = [0.115, -0.105];
 /** The beer glass on the table (izakaya.tsx: x -0.25..-0.19, z 2.42, 0.75..0.87 m) and the grip height on it (m). */
 const GLASS_X0 = -0.25, GLASS_X1 = -0.19, GLASS_Z = 2.42, GRIP_Y0 = 0.775, GRIP_Y1 = 0.845;
 /** SH03 reach timing (shot-local frames): the hand leaves the side at REACH_F0 and closes on the glass at REACH_F1. */

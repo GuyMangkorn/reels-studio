@@ -147,9 +147,12 @@ export const maskHook = (lf: number) => 0.13 * sstep((lf - 6) / 30);
 export const maskReveal = (lf: number) => 0.15 + 0.85 * sstep(lf / 8);
 /**
  * The grin closing back to a plain mouth in S03-B01-SH01 (round 4, user): the full grin holds to f10, the jaw shuts over f10-34,
- * then the corners draw in to a closed lip line (the pre-tear mouth, `tearAt` 0) over f20-46; held to the cut (f54).
+ * then the corners draw in over f20-46. Round 5 (user: black strokes by the nose as the mouth closes): the pre-tear closed line
+ * sat at the nose height (v 0.33), above the kit's plain mouth (v 0.6), so `rest` slides the mouth down and narrows it onto the
+ * kit mouth: down with the jaw over f10-36, narrowed by the corners to f46; from f46 only the kit's normal flat mouth is painted,
+ * held to the cut (f54).
  */
-export const grinCloseAt = (lf: number): Tear => ({corner: 1 - sstep((lf - 20) / 26), open: 1 - sstep((lf - 10) / 24)});
+export const grinCloseAt = (lf: number): Tear => ({corner: 1 - sstep((lf - 20) / 26), open: 1 - sstep((lf - 10) / 24), rest: sstep((lf - 10) / 26)});
 /**
  * The walking narrator (S02-B01-SH01, user note 1 Nov 2026): she walks away from the camera up the street axis (south to north, seen
  * from behind), from z 2.8 m (742 px/m, whole figure in frame) to z 0.8 m (362 px/m, 615 px) over 4.3 s, 2.5 gait cycles.

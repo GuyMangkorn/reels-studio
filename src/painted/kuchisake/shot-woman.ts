@@ -1,8 +1,8 @@
 import {drawFigure, H, type FigAnchors, type FigPose} from '../kit/cast';
-import {ell, glaze, inkLine, solid, type InteriorLight} from '../kit/draw';
+import {ell, glaze, INK, inkLine, solid, type InteriorLight} from '../kit/draw';
 import {hash} from '../kit/hash';
 import {HEAD_SPAN, type FaceState} from '../kit/head';
-import {clamp01, lerp, type Painter, type Pt} from '../kit/painter';
+import {clamp01, lerp, mixColor, type Painter, type Pt} from '../kit/painter';
 import {poseArms} from '../kit/poses';
 import {CALM_FACE, KSO_WOMAN, WOMAN_LIGHT} from './cast';
 import {maskOutline} from './face';
@@ -14,7 +14,12 @@ import {drawFigureNeckTilt} from './shot-motion';
 // corner 1 and open 1 the mouth is the LF03 grin (the same geometry and the same seed order), so the approved still is
 // the end state of the animation. Mouth shapes are painted only once the mask has left the mouth (m >= 0.15), as in face.ts.
 
-export type Tear = {corner: number; open: number};
+/**
+ * `rest` 0..1 (optional, default 0; round 5, S03-B01-SH01 only): the closed lip line slides down and narrows onto the kit's
+ * plain `flat` mouth (head.ts: v 0.6, u -0.2..0.2, weight 1.3, INK), so a grin that closes again ends exactly on the normal
+ * mouth. At rest 1 and corner 0 the overlay mouth is not painted at all and only the kit mouth (drawn under it) remains.
+ */
+export type Tear = {corner: number; open: number; rest?: number};
 
 /** Full grin (LF03) and the closed lip line before the tear. Shot-local frame `lf`: corners split over f0-6, jaw and interior open over f4-12, ease-out. */
 export const tearAt = (lf: number): Tear => {
@@ -55,14 +60,17 @@ const RIPS: Pt[][] = [
 
 /** The face.ts lip warp: the left corner rises and runs further into the cheek. */
 const warp = ([u, v]: Pt): Pt => [u < 0 ? u * 1.08 : u, v + 0.05 * u];
+/** The kit's plain `flat` mouth (head.ts): height and half-width in head units; CLOSED_HALF is the closed line's half-width (warped 1.04 x 1.08 x S(0)). */
+const KIT_MOUTH_V = 0.6, KIT_HALF = 0.2, CLOSED_HALF = 1.04 * 1.08 * 0.4;
 /** Horizontal scale of the mouth: a closed mouth is narrower than the grin. */
 const S = (c: number) => lerp(0.4, 1, c);
 /** A lip edge at tear `t`: the closed line (v = 0.33 + 0.05 u) opens to the grin's edge. */
 const edge = (base: Pt[], t: Tear): Pt[] =>
   base.map((b) => {
     const [wu, wv] = warp(b);
-    const u = wu * S(t.corner);
-    const closed = 0.33 + 0.05 * u;
+    const r = t.rest ?? 0;
+    const u = wu * S(t.corner) * lerp(1, KIT_HALF / CLOSED_HALF, r);
+    const closed = lerp(0.33 + 0.05 * u, KIT_MOUTH_V, r);
     return [u, closed + (wv - closed) * t.open];
   });
 
@@ -102,7 +110,9 @@ export const paintMaskFaceTear = (p: Painter, seed: number, cx: number, cy: numb
     inkLine(p, seed + line, Q([EAR_R, [1.1, 0.2], outline[6]]), {color: LOOP, weight: 1.6, curve: 0.4, closed: false});
   }
   if (m >= 0.15) {
-    const s = S(t.corner), o = t.open;
+    const rest = t.rest ?? 0;
+    // With `rest` the tongue, its ridge and the teeth follow the lip edges down and in (round 5: the ridge stayed at the nose height).
+    const s = S(t.corner) * lerp(1, KIT_HALF / CLOSED_HALF, rest), o = t.open, v0 = lerp(0.33, KIT_MOUTH_V, rest);
     const top = edge(OPEN_TOP_BASE, t), bot = edge(OPEN_BOTTOM_BASE, t);
     const open = o >= 0.02;
     // `clean` also drops the two corner shadows (they run past the cheek onto the hair) and the jag ticks along the lips (round 3).
@@ -113,11 +123,13 @@ export const paintMaskFaceTear = (p: Painter, seed: number, cx: number, cy: numb
     if (open) {
       solid(p, seed + 13, INTERIOR, Q([...top, ...bot.slice().reverse()]), 4, 0.02, 0.1);
       glaze(p, seed + 14, '#000000', 150, Q(clean ? stripTaper(top, 0.24 * o) : strip(top, 1, 0.24 * o)), {texture: 0.4, border: 0.4, bleed: 0.08});
-      const cv = lerp(0.33, 0.8, o);
+      const cv = lerp(v0, 0.8, o);
       solid(p, seed + 15, TONGUE, Q(ell(0.02 * s, cv, 0.34 * s, 0.1 * o, 16)), 3, 0.02, 0.05);
     }
+    // At rest 1 the kit mouth alone remains; ids are still consumed below so the seeds do not shift.
+    const mouth = rest < 1 || t.corner > 0;
     line++;
-    inkLine(p, seed + line, Q([[-0.26 * s, lerp(0.33, 0.8, o) - 0.04 * o], [0, lerp(0.33, 0.8, o) - 0.09 * o], [0.26 * s, lerp(0.33, 0.8, o) - 0.04 * o]]), {color: TONGUE_RIDGE, weight: 1.2, curve: 0.3, closed: false});
+    if (!(rest > 0 && !open)) inkLine(p, seed + line, Q([[-0.26 * s, lerp(v0, 0.8, o) - 0.04 * o], [0, lerp(v0, 0.8, o) - 0.09 * o], [0.26 * s, lerp(v0, 0.8, o) - 0.04 * o]]), {color: TONGUE_RIDGE, weight: 1.2, curve: 0.3, closed: false});
     if (open) {
       solid(p, seed + 16, GUM, Q(strip(top, 1, 0.06 * o)), 3, 0.02, 0.05);
       solid(p, seed + 17, GUM, Q(strip(bot, -1, 0.05 * o)), 3, 0.02, 0.05);
@@ -135,8 +147,12 @@ export const paintMaskFaceTear = (p: Painter, seed: number, cx: number, cy: numb
       });
     }
     // Lip edges and the torn jags (ids consumed in face.ts order, lengths scaled by the jaw opening).
-    inkLine(p, seed + ++line, Q(top), {color: LIP, weight: 2.4, curve: 0.3, closed: false});
-    inkLine(p, seed + ++line, Q(bot), {color: LIP, weight: 2.4, curve: 0.3, closed: false});
+    const lip = {color: mixColor(LIP, INK, rest), weight: lerp(2.4, 1.3, rest), curve: 0.3, closed: false};
+    line++;
+    if (mouth) inkLine(p, seed + line, Q(top), lip);
+    line++;
+    // A closed mouth (open 0) has top = bottom: with `rest` one stroke is enough (two overlaid strokes read heavier than the kit line).
+    if (mouth && !(rest > 0 && !open)) inkLine(p, seed + line, Q(bot), lip);
     for (let i = 1; i < top.length - 1; i += 2) {
       const [u, v] = top[i];
       line++;
