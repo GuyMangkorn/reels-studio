@@ -65,16 +65,20 @@ test('assembly rejects ambiguous cuts, invalid clocks and missing starting pictu
   assert.throws(() => assemblePaintedTimeline({...input, sounds: [{at: NaN, cue: {src: 'invalid.wav'}}]}), /sound/);
 });
 
-test('ZCPAINT captions retain their authored beat when local rounding reaches the next cut', () => {
+test('ZCPAINT captions keep their authored beat near the next cut and never round onto the scene end', () => {
   const line = (id: string, beat: string, onsetSec: number, speechEndSec: number) => ({id, beat, text: id, caption: id, onsetSec, speechEndSec});
-  const {timeline} = buildZcpaintTimeline('TH', [line('first', 'A', 0, 0.2), line('late', 'A', 0.9997, 0.9998), line('next', 'B', 1, 1.2)], {
+  const sheet = {
     durationSec: 2, audio: [], sfx: [], beats: [
       {beat: 'A', startSec: 0, shots: [{shot: 'SHOT-A', atSec: 0}]},
       {beat: 'B', startSec: 1, shots: [{shot: 'SHOT-B', atSec: 1}]},
     ],
-  });
-  assert.deepEqual(timeline[0].subtitleCues, [{atSec: 0, text: 'first'}, {atSec: 0.3, text: ''}, {atSec: 1, text: 'late'}]);
+  };
+  const {timeline} = buildZcpaintTimeline('TH', [line('first', 'A', 0, 0.2), line('late', 'A', 0.9, 0.95), line('next', 'B', 1, 1.2)], sheet);
+  assert.deepEqual(timeline[0].subtitleCues, [{atSec: 0, text: 'first'}, {atSec: 0.3, text: ''}, {atSec: 0.9, text: 'late'}]);
   assert.deepEqual(timeline[1].subtitleCues, [{atSec: 0, text: 'next'}, {atSec: 0.3, text: ''}]);
+  // 0.9997 rounds to 1.000, the end of beat A: it would never be shown, so the build fails instead of moving it.
+  assert.throws(() => buildZcpaintTimeline('TH', [line('first', 'A', 0, 0.2), line('late', 'A', 0.9997, 0.9998), line('next', 'B', 1, 1.2)], sheet),
+    /A.*rounds onto the end/);
 });
 
 test('ZCPAINT rejects a caption authored outside its beat instead of assigning it to another beat', () => {

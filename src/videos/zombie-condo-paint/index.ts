@@ -50,6 +50,8 @@ const captionsFor = (lines: Line[], beat: string, start: number, end: number): {
     if (next - line.speechEndSec > 0.35 && line.speechEndSec + 0.1 < end) cues.push({at: line.speechEndSec + 0.1, text: ''});
   });
   if (cues.some(cue => cue.at < start || cue.at >= end)) throw new Error(`${beat}: caption onset is outside its authored beat`);
+  // A cue that rounds onto the scene's end would never be shown: fail instead of dropping or retiming it silently.
+  if (cues.some(cue => round3(cue.at - start) >= round3(end - start))) throw new Error(`${beat}: caption onset rounds onto the end of its beat`);
   if (cues.length === 0 || round3(cues[0].at - start) > 0) cues.unshift({at: start, text: ''});
   return cues.filter((c, i) => i === 0 || round3(c.at - start) > round3(cues[i - 1].at - start));
 };
