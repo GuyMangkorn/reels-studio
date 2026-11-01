@@ -1,0 +1,207 @@
+# Context map
+
+> Topic → the files that cover it: docs (by section), source, scripts, skills, composition IDs and tests. Locate here first, then read only the linked section ([CB01](../AGENTS.md#context-budget)). The map points; the rules live in the linked documents. Format and reasons: [decision note](reviews/2026-11-02-context-map-format.md).
+
+**Use:** `grep -n '^## ' docs/context-map.md` lists topics; `sed -n '/^## Poses/,/^## /p' docs/context-map.md` prints one entry.
+
+**Keep it current:** a change that adds, moves or removes a doc, script, source module, skill, test or composition updates the matching entry in the same commit. `python3 -I scripts/context-map.py` (also run by `npm test`) fails on a dead link or anchor and on a new module that no entry mentions. Paths on an unmerged branch go on a `Pending` line as code spans; turn them into links once they land.
+
+Episode-specific files are under [Episodes](#episodes); shared topics come first.
+
+## Characters and cast
+
+**Read when:** building, changing or choosing a painted character body, head or recurring cast member.
+
+- Docs: [character proportions](character-proportion-principles.md#character-proportion-principles) ([age canon](character-proportion-principles.md#cp-a-age-canon), [landmarks](character-proportion-principles.md#cp-l-landmarks), [stylize](character-proportion-principles.md#cp-y-stylize)); [kit README, recurring cast](../src/painted/kit/README.md); [project defaults](delivery-workflow.md#project-defaults) (4-head cast)
+- Code: [kit/cast.ts](../src/painted/kit/cast.ts) (`CastDef`, `drawFigure`), [kit/head.ts](../src/painted/kit/head.ts), [kit/hands.ts](../src/painted/kit/hands.ts); episode casts [worldfog/cast.ts](../src/painted/worldfog/cast.ts), [zcpaint/cast.ts](../src/painted/zcpaint/cast.ts), [zcpaint/body6.ts](../src/painted/zcpaint/body6.ts), [kuchisake/cast.ts](../src/painted/kuchisake/cast.ts)
+- Sheets: [spike/CastSheet.tsx](../src/painted/spike/CastSheet.tsx), [spike/ProportionSheet.tsx](../src/painted/spike/ProportionSheet.tsx), [spike/SideSheet.tsx](../src/painted/spike/SideSheet.tsx), [spike/HeadSideSheet.tsx](../src/painted/spike/HeadSideSheet.tsx) (entry [spike/index.ts](../src/painted/spike/index.ts))
+- Tests: [zcpaint-body6](../tests/zcpaint-body6.test.ts), [zcpaint-bust](../tests/zcpaint-bust.test.ts), [zcpaint-costume](../tests/zcpaint-costume.test.ts)
+- Pending — branch `claude/kit-cast-library`: `src/painted/kit/people.ts`, `src/painted/kit/hair.ts`, `src/painted/kit/legs.ts`, `src/painted/kit/casting.ts`, `src/painted/kit/people-sheet.tsx`, `src/painted/kit/cast-cards-sheet.tsx`, `src/videos/kit-people/` (`KIT-PEOPLE-*`, `KIT-CAST-CARDS`), `scripts/painted-kit/people.mjs`, `tests/people.test.ts`, `tests/casting.test.ts`
+
+## Poses
+
+**Read when:** devising or reviewing any character pose or gesture (cite a pose ID first, [CP-P12](character-proportion-principles.md#cp-p-pose-sheet)).
+
+- Docs: [pose sheet P01–P30](character-proportion-principles.md#cp-p-pose-sheet), [front-view arm depth](character-proportion-principles.md#cp-p-arm-depth)
+- Code: [kit/poses.ts](../src/painted/kit/poses.ts) (`POSES`, `poseArms`), [kit/pose-sheet.json](../src/painted/kit/pose-sheet.json); episode pose tracks [zcpaint/pose.ts](../src/painted/zcpaint/pose.ts); legacy SVG rig [rig/poses.ts](../src/rig/poses.ts)
+- Compositions: `WFOG-POSE-SHEET` ([spike/PoseSheet.tsx](../src/painted/spike/PoseSheet.tsx)), `WFOG-ARMBACK-SAMPLE` ([spike/ArmBackSheet.tsx](../src/painted/spike/ArmBackSheet.tsx))
+- Tests: [pose-library](../tests/pose-library.test.ts), [pov-forearm](../tests/pov-forearm.test.ts)
+- Pending — branch `claude/kit-cast-library`: `src/painted/kit/poses-more.ts`, `src/painted/kit/poses-sheet.tsx` (`KIT-POSES`), `scripts/painted-kit/poses.mjs`, `tests/poses-motions.test.ts`
+
+## Expressions and faces
+
+**Read when:** changing a face, brow, eye or mouth state, a blink or lip sync.
+
+- Docs: [face principles](character-proportion-principles.md#cp-f-face); [lip-frame fallback finding](dev-findings/DF-20261030-lip-frame-silent-fallback.md)
+- Code: [kit/head.ts](../src/painted/kit/head.ts) (`FaceState`, `Brow`/`Eyes`/`Mouth`, `blinking`), [kuchisake/face.ts](../src/painted/kuchisake/face.ts)
+- Sheets: [spike/FaceSheet.tsx](../src/painted/spike/FaceSheet.tsx)
+- Pending — branch `claude/kit-cast-library`: `src/painted/kit/expressions.ts`
+
+## Wardrobe and props
+
+**Read when:** changing an outfit, a held prop (torch, phone, umbrella) or adding a new prop.
+
+- Docs: [kit README, outfit swap and props](../src/painted/kit/README.md)
+- Code: [kit/cast.ts](../src/painted/kit/cast.ts) (`Outfit`, `Prop`, `drawTorch`, `drawUmbrella`); episode props such as [zcpaint/accents.ts](../src/painted/zcpaint/accents.ts); legacy SVG props [assets/Props.tsx](../src/assets/Props.tsx), [assets/props/](../src/assets/props/)
+- Tests: [zcpaint-costume](../tests/zcpaint-costume.test.ts)
+- Pending — branch `claude/kit-cast-library`: `src/painted/kit/wardrobe.ts`, `src/painted/kit/gear.ts`, `src/painted/kit/props.ts`, `tests/wardrobe.test.ts`
+
+## Motions
+
+**Read when:** animating a walk, gait, reach, head turn or any body motion over time.
+
+- Docs: [walk bob finding](dev-findings/DF-20261031-painted-walk-bob-authored-hang.md), [profile head turn](dev-findings/DF-20261030-painted-profile-head-turn.md), [pose-track fields](dev-findings/DF-20261030-zcpaint-pose-track-fields.md)
+- Code: [kit/space.ts](../src/painted/kit/space.ts) (easing, `pchip`, `hermite`), [zcpaint/figure.ts](../src/painted/zcpaint/figure.ts), [kuchisake/shot-motion.ts](../src/painted/kuchisake/shot-motion.ts), [kuchisake/walker-back.ts](../src/painted/kuchisake/walker-back.ts), legacy rig drivers [rig/drivers.ts](../src/rig/drivers.ts)
+- Tests: [zcpaint-gait](../tests/zcpaint-gait.test.ts), [animation](../tests/animation.test.ts)
+- Pending — branch `claude/kit-cast-library`: `src/painted/kit/motions.ts`, `src/painted/kit/motion-reel.ts`, `src/painted/shots/kit-motions.tsx`, `src/videos/kit-motions/` (`KIT-MOTIONS`), `tests/poses-motions.test.ts`
+
+## Shot templates and camera
+
+**Read when:** choosing framing, camera move or projection for a shot.
+
+- Docs: [cinematography](cinematography-principles.md), [storyboard principles](storyboard-principles.md), [scale and perspective](scale-and-perspective-principles.md), [lead size and shot movement rules](boss-asset-workflow.md#latest-production-rules)
+- Code: [kit/camera.tsx](../src/painted/kit/camera.tsx) (`Camera`, `pushCamera`), [kit/space.ts](../src/painted/kit/space.ts) (`Proj`, `cardProjector`), [scenes/projection.ts](../src/scenes/projection.ts), [scenes/quadText.ts](../src/scenes/quadText.ts)
+- Scripts: [shot-projection.py](../scripts/shot-projection.py) (lead height, caption-band overlap)
+- Tests: [projection](../tests/projection.test.ts), [zcpaint-proj](../tests/zcpaint-proj.test.ts)
+- Pending — branch `claude/kit-cast-library`: `src/painted/kit/shot-templates.ts`, `src/painted/kit/template-reel.ts`, `src/painted/shots/kit-templates.tsx`, `src/painted/shots/kit.tsx`, `src/videos/kit-shot-templates/` (`KIT-SHOT-TEMPLATES`), `tests/shot-templates.test.ts`
+
+## Rigs
+
+**Read when:** touching how a figure is built from parts (painted brush rig or the retired SVG cut-out rig).
+
+- Painted brush rig (current): [kit/cast.ts](../src/painted/kit/cast.ts) `drawFigure`, [kit/hands.ts](../src/painted/kit/hands.ts), [painted-2d skill](../.claude/skills/painted-2d/SKILL.md); [arm depth finding](dev-findings/DF-20261030-painted-arm-depth.md)
+- SVG cut-out rig (retired for new work): [src/rig/](../src/rig/index.ts), [character-toolkit](character-toolkit.md); legacy SVG scene assets [src/assets/](../src/assets/visuals/VisualStage.tsx)
+- Blender `char_base` (deactivated): [assets/blender/](../assets/blender/char_base/build.py), [blender-mcp-workflow](blender-mcp-workflow.md)
+
+## Painted 2D engine
+
+**Read when:** any p5.brush shot, plate, kit module or painted review.
+
+- Skill: [painted-2d](../.claude/skills/painted-2d/SKILL.md) (BrushCanvas contract, seeding, review loop)
+- Core: [BrushCanvas.tsx](../src/painted/BrushCanvas.tsx), [PaintedStage.tsx](../src/painted/PaintedStage.tsx), [shot.ts](../src/painted/shot.ts) (`PaintedShot`), [plate.ts](../src/painted/plate.ts), [registry.ts](../src/painted/registry.ts) (shot IDs), [Label.tsx](../src/painted/Label.tsx), [p5-brush.d.ts](../src/painted/p5-brush.d.ts), timeline bridge [scenes/painted.ts](../src/scenes/painted.ts)
+- Kit: [kit README](../src/painted/kit/README.md), [painter.ts](../src/painted/kit/painter.ts), [draw.ts](../src/painted/kit/draw.ts), [glow.tsx](../src/painted/kit/glow.tsx), [screen.tsx](../src/painted/kit/screen.tsx), [hash.ts](../src/painted/kit/hash.ts), [catalog.tsx](../src/painted/kit/catalog.tsx) (`KIT-CATALOG`)
+- Shots per episode: [src/painted/shots/](../src/painted/shots/worldfog.tsx); look spikes and sheets (standalone entry, not in Root): [spike/index.ts](../src/painted/spike/index.ts)
+- Scripts: [painted-kit/](../scripts/painted-kit/build-notes.md) ([catalog.mjs](../scripts/painted-kit/catalog.mjs), [regress.mjs](../scripts/painted-kit/regress.mjs), [compare.py](../scripts/painted-kit/compare.py)), [paint-bench.mjs](../scripts/paint-bench.mjs), [paint-bench-compare.mjs](../scripts/paint-bench-compare.mjs)
+- Findings: [dev-findings index](dev-findings.md) (entries `DF-*-painted-*`, `DF-*-p5brush-*`)
+- Tests: [painted](../tests/painted.test.ts)
+
+## Render, stills and scene cache
+
+**Read when:** rendering anything, taking QA stills, pinning approved shots or re-editing.
+
+- Rules: [render by scene / review renders / stills on one Chrome](../AGENTS.md#shared-agent-conventions); [painted shot-by-shot review](sequence-workflow.md#painted-shot-by-shot); [README render and verify](../README.md#render-and-verify), [permanent render folder](../README.md#permanent-render-folder)
+- Scripts: [render.mjs](../scripts/render.mjs), [render-options.mjs](../scripts/render-options.mjs), [render-inputs.ts](../scripts/render-inputs.ts), [segments.mjs](../scripts/segments.mjs), [pin.mjs](../scripts/pin.mjs), [stills.mjs](../scripts/stills.mjs), [qa-sheet.sh](../scripts/qa-sheet.sh), [reference-frames.py](../scripts/reference-frames.py)
+- Findings: [render speed](dev-findings/DF-20261031-render-speed.md), [segment cache key](dev-findings/DF-20261101-segment-cache-key.md); design [project render cache](reviews/2026-11-01-project-render-cache.md)
+- Tests: [segments](../tests/segments.test.ts), [render-options](../tests/render-options.test.ts), [render-inputs](../tests/render-inputs.test.ts)
+
+## Asset store and media
+
+**Read when:** filing, fetching or locking media; a fresh checkout; user-supplied files.
+
+- Docs: [asset store](../README.md#asset-store), [re-editing](../README.md#re-editing), [proposal](reviews/2026-10-31-asset-store-proposal.md)
+- Scripts: [store.py](../scripts/store.py), [episode-media.ts](../scripts/episode-media.ts), [setup.sh](../scripts/setup.sh)
+- Data: per-video locks `src/videos/<episode>/assets.lock.json` (e.g. [world-fog](../src/videos/world-fog/assets.lock.json)); cached media under [public/](../public/fonts/)
+- Tests: [store](../tests/store.test.ts), [media](../tests/media.test.ts)
+
+## Sound
+
+**Read when:** music, ambience, SFX, loudness or the shared sound library.
+
+- Docs: [sound-generation-workflow](sound-generation-workflow.md) ([role duties](sound-generation-workflow.md#role-responsibilities), [library index](sound-generation-workflow.md#library-index)); [audio emphasis EP08a](editor-principles.md#ep08a-shape-audio-emphasis-by-story-beat)
+- Skill: [sound-generation](../.agents/skills/sound-generation/SKILL.md) ([library.md](../.agents/skills/sound-generation/library.md))
+- Scripts: [sound-library.py](../scripts/sound-library.py), [loudness.mjs](../scripts/loudness.mjs)
+- Tests: [loudness](../tests/loudness.test.ts)
+
+## TTS and voice
+
+**Read when:** narration, character voices, emotion lines, the voice lock or transcription.
+
+- Docs: [voice lock](delivery-workflow.md#voice-lock); [Edge TTS tuning finding](dev-findings/DF-20261029-edge-tts-voice-tuning.md)
+- Skills: [voice-tuning](../.agents/skills/voice-tuning/SKILL.md) (Edge TTS registers), [gemini-tts](../.agents/skills/gemini-tts/SKILL.md) ([reference](../.agents/skills/gemini-tts/reference.md))
+- Scripts: [narration.py](../scripts/narration.py), [narration_files.py](../scripts/narration_files.py), [narration/](../scripts/narration/align-full.py) (split one read into beats), [voice-preset.py](../scripts/voice-preset.py), [gemini-tts.py](../scripts/gemini-tts.py), [transcribe.py](../scripts/transcribe.py)
+- Output: `public/narration/<CompositionId>.mp3` + `.amplitude.json`
+
+## Captions and on-screen text
+
+**Read when:** subtitles, Thai line breaks, the caption-safe zone or text layout.
+
+- Docs: [Thai subtitles and narration](production-requirements.md#thai-subtitles-narration-and-channel-label), [vertical caption safe zone](production-requirements.md#vertical-caption-safe-zone), [EP08 captions lead the mix](editor-principles.md#ep08--make-thai-captions-and-voice-lead-the-mix), [remotion captions](remotion-toolkit.md#7-timed-subtitles-and-export-captions)
+- Code: [scenes/Subtitles.tsx](../src/scenes/Subtitles.tsx), [kit/screen.tsx](../src/painted/kit/screen.tsx) (`CaptionShade`), [assets/visuals/textLayout.ts](../src/assets/visuals/textLayout.ts)
+- Scripts: [caption-breaks.mjs](../scripts/caption-breaks.mjs), [caption-zone.py](../scripts/caption-zone.py)
+- Tests: [textLayout](../tests/textLayout.test.ts)
+
+## Timeline and runtime
+
+**Read when:** registering a video, editing timeline JSON, adding a timeline field or claiming a runtime capability.
+
+- Docs: [runtime-contract](runtime-contract.md), [README timeline data](../README.md#timeline-data), [videos and parallel work](../README.md#videos-and-parallel-work), [remotion-toolkit](remotion-toolkit.md); [scene cue assembly](reviews/2026-11-01-scene-cue-assembly.md)
+- Code: [Root.tsx](../src/Root.tsx), [index.ts](../src/index.ts), [videos/registry.ts](../src/videos/registry.ts), [videos/types.ts](../src/videos/types.ts), [scenes/timeline.ts](../src/scenes/timeline.ts), [scenes/types.ts](../src/scenes/types.ts), [scenes/assemble.ts](../src/scenes/assemble.ts), [scenes/SceneRenderer.tsx](../src/scenes/SceneRenderer.tsx), [scenes/MediaLayers.tsx](../src/scenes/MediaLayers.tsx), [scenes/media.ts](../src/scenes/media.ts), [scenes/endings.ts](../src/scenes/endings.ts)
+- Tests: [scene-assembly](../tests/scene-assembly.test.ts), [videos](../tests/videos.test.ts), [media](../tests/media.test.ts)
+
+## Scene sheets and storyboard
+
+**Read when:** writing or reviewing a scene sheet, publishing the user storyboard review page, shot-by-shot approval.
+
+- Docs: [mark-storyboard-workflow](mark-storyboard-workflow.md) ([scene-sheet contract](mark-storyboard-workflow.md#scene-sheet-contract), [user review page](mark-storyboard-workflow.md#user-storyboard-review-page)), [storyboard-principles](storyboard-principles.md), [sequence-workflow](sequence-workflow.md); [shot-by-shot proposal](reviews/2026-11-01-shot-by-shot-workflow-proposal.md)
+- Scripts: [storyboard-page/build.py](../scripts/storyboard-page/build.py), [storyboard-page/clips.mjs](../scripts/storyboard-page/clips.mjs), [template.html](../scripts/storyboard-page/template.html), [example.json](../scripts/storyboard-page/example.json), [shot-projection.py](../scripts/shot-projection.py)
+- Per episode: `scripts/<episode>/short/` scene sheets and `review-rows.json`
+- Tests: [storyboard-page](../tests/storyboard-page.test.ts)
+
+## Script, research and fact-check
+
+**Read when:** Boat research, Preaw script, fact-check.
+
+- Docs: [editorial-workflow](editorial-workflow.md), [scriptwriting-principles](scriptwriting-principles.md)
+- Per episode: `scripts/<episode>/research.md`, `topic-brief.md`, script files under `short/` or `long/`
+
+## Visual brief, look and findings
+
+**Read when:** Film's medium/look decision, a new shared asset, a renderer capability, or recording a blocker.
+
+- Docs: [film-visual-brief-workflow](film-visual-brief-workflow.md), [boss-asset-workflow](boss-asset-workflow.md) ([QA before push](boss-asset-workflow.md#visual-and-runtime-qa-before-push), [preview labels](boss-asset-workflow.md#preview-labels)), [asset-engineering-principles](asset-engineering-principles.md), [planned-visual-components](planned-visual-components.md), [dev-findings index](dev-findings.md) and [entries](dev-findings/DF-20261031-render-speed.md), [animation studio research](research/animation-studio-pipeline.md)
+
+## Delivery workflow
+
+**Read when:** selecting deliverables, style profile, tier, delivery record, agent invocation, or finishing a PR.
+
+- Docs: [delivery-workflow](delivery-workflow.md) ([style profile](delivery-workflow.md#style-profile), [visual engine](delivery-workflow.md#visual-engine), [pipeline tiers](delivery-workflow.md#pipeline-tiers), [agent invocation](delivery-workflow.md#agent-invocation), [delivery record](delivery-workflow.md#delivery-record-and-handoff-checks)), [production-requirements](production-requirements.md), [editor-workflow](editor-workflow.md), [editor-principles](editor-principles.md), [contributing](contributing.md); original design [spec](superpowers/specs/2026-10-27-video-delivery-workflow-design.md) and [plan](superpowers/plans/2026-10-27-video-delivery-workflow.md)
+- Per episode: `scripts/<episode>/delivery.md`, `build-notes.md`
+
+## Agents, roles and tooling
+
+**Read when:** changing a role config, agent instructions, hooks, usage measurement or Codex offload.
+
+- Docs: [AGENTS.md](../AGENTS.md), [CLAUDE.md](../CLAUDE.md), [GLOSSARY.md](../GLOSSARY.md), [README](../README.md), [scripts/README.md](../scripts/README.md), [workflow audits](reviews/2026-10-27-catbox-workflow-audit.md), [handoff migration](reviews/2026-10-27-written-handoff-migration.md)
+- Configs: [.claude/agents/](../.claude/agents/mark.md), [.codex/agents/](../.codex/agents/mark.toml), [.claude/settings.json](../.claude/settings.json), [package.json](../package.json)
+- Skills: [codex](../.agents/skills/codex/SKILL.md) (Claude copy [.claude/skills/codex](../.claude/skills/codex/SKILL.md); [codex-run.sh](../scripts/codex-run.sh))
+- This map: [context-map.md](context-map.md)
+- Scripts: [usage-report.py](../scripts/usage-report.py), [hooks/agent-run-log.py](../scripts/hooks/agent-run-log.py), [git-hooks/post-checkout](../scripts/git-hooks/post-checkout), [check-links.py](../scripts/check-links.py), [context-map.py](../scripts/context-map.py)
+- Tests: [agents](../tests/agents.test.ts) (role config parity), [context-map](../tests/context-map.test.ts)
+
+## Episodes
+
+**Read when:** working on one episode. Script folder holds research, script, delivery record, scene sheets and build notes; `src/videos/<episode>/index.ts` registers its compositions.
+
+| Episode | Scripts | Videos (composition IDs) | Painted source | Tests |
+| --- | --- | --- | --- | --- |
+| Cat boxes (SVG, legacy) | [cat-boxes/](../scripts/cat-boxes/delivery.md), [storyboards/](../storyboards/cat-boxes/blockout.md) | [cat-boxes](../src/videos/cat-boxes/index.ts) | — ([assets/](../src/assets/backgrounds/CatboxRoom.tsx)) | [catbox-shorts](../tests/catbox-shorts.test.ts), [catbox-long-baseline](../tests/catbox-long-baseline.test.ts) |
+| Hanako | [hanako/](../scripts/hanako/) | [hanako](../src/videos/hanako/index.ts) `HANAKO-SHORT` | [hanako/](../src/painted/hanako/look.tsx), [shots/hanako.tsx](../src/painted/shots/hanako.tsx) | [hanako-plates](../tests/hanako-plates.test.ts) |
+| Kuchisake-onna | [kuchisake-onna/](../scripts/kuchisake-onna/delivery.md) | [kuchisake-onna](../src/videos/kuchisake-onna/index.ts) `KSO-EP01-SHORT-B`, `-C` | [kuchisake/](../src/painted/kuchisake/cast.ts), [shots/kuchisake.tsx](../src/painted/shots/kuchisake.tsx) | [kuchisake-shots](../tests/kuchisake-shots.test.ts), [kuchisake-timeline](../tests/kuchisake-timeline.test.ts) |
+| Lake Nyos | [lake-nyos/](../scripts/lake-nyos/delivery.md) | — | [nyos/](../src/painted/nyos/index.ts) | — |
+| Oldest shipwreck | [oldest-shipwreck/](../scripts/oldest-shipwreck/) | [oldest-shipwreck](../src/videos/oldest-shipwreck/index.ts) `SHIPWRECK-SHORT` | [ship.ts](../src/painted/ship.ts), [sea.ts](../src/painted/sea.ts), [diver.ts](../src/painted/diver.ts), [jar.ts](../src/painted/jar.ts), [shots/shipwreck.tsx](../src/painted/shots/shipwreck.tsx) | [oldest-shipwreck](../tests/oldest-shipwreck.test.ts) |
+| Pool depth | [pool-depth/](../scripts/pool-depth/) | [pool-depth](../src/videos/pool-depth/index.ts) `POOLDEPTH-SHORT`, `-BOTNOI` | — | [pool-depth](../tests/pool-depth.test.ts) |
+| The Bloop | [the-bloop/](../scripts/the-bloop/) | [the-bloop](../src/videos/the-bloop/index.ts) `BLOOP-EP01-SHORT` | [bloop/](../src/painted/bloop/map.tsx), [shots/bloop.tsx](../src/painted/shots/bloop.tsx) | [bloop](../tests/bloop.test.ts) |
+| Wendigo | [wendigo/](../scripts/wendigo/delivery.md) | — | — | — |
+| World Fog | [world-fog/](../scripts/world-fog/delivery.md) | [world-fog](../src/videos/world-fog/index.ts) `WFOG-EP01-SHORT` | [worldfog/](../src/painted/worldfog/cast.ts), [shots/worldfog.tsx](../src/painted/shots/worldfog.tsx) | [world-fog](../tests/world-fog.test.ts) |
+| Wow signal | [wow-signal/](../scripts/wow-signal/delivery.md) | — | — | — |
+| Zombie condo (3D, retired) | [zombie-condo/](../scripts/zombie-condo/delivery.md) | — | — | — |
+| Zombie condo painted | [zombie-condo-paint/](../scripts/zombie-condo-paint/) | [zombie-condo-paint](../src/videos/zombie-condo-paint/index.ts) `ZCPAINT-SHORT-TH`, `-EN` | [zcpaint/](../src/painted/zcpaint/cast.ts), [shots/zcpaint.tsx](../src/painted/shots/zcpaint.tsx) | [zcpaint](../tests/zcpaint.test.ts), [zombie-condo-paint](../tests/zombie-condo-paint.test.ts) |
+
+Painted plate and sheet IDs (`S02-SH01`, `KSO-LF01`, `ZCPAINT-R26-A`, …) are listed by the episode's `src/painted/shots/<episode>.tsx` and [spike/index.ts](../src/painted/spike/index.ts).
+
+## Not mapped on purpose
+
+Covered here so the coverage check stays quiet; add a real entry when one becomes a topic.
+
+- `src/amplitude.json` (no importer found on 2 Nov 2026), `scripts/demo.json`, `scripts/render-options.d.mts`, `scripts/segments.d.mts`, `src/videos/webpack-context.d.ts`, `eslint.config.mjs`, `tsconfig.json`, `package-lock.json`
+- Episode-only tooling inside `scripts/<episode>/` (each episode's `build-notes.md` lists it)

@@ -29,12 +29,14 @@ These apply to every role; agent configs link here instead of repeating them.
 - **Delivery:** follow [docs/contributing.md](docs/contributing.md); instruction-only changes use its documentation-only verification exception.
 - **Tools and document improvements:** check [scripts/README.md](scripts/README.md) before writing a one-off command. Script a procedure the second time it repeats. Record findings in the episode's `scripts/<episode>/build-notes.md`. Rule documents are not edited during production work: propose the change there, and the user reviews it before it is applied ([TL/DP rules](docs/contributing.md#tools-and-document-improvements)).
 
+- **Context map (Requirement):** a change that adds, moves or removes a doc, script, source module, skill, test or composition updates its entry in [docs/context-map.md](docs/context-map.md) in the same commit. `npm test` runs `scripts/context-map.py`, which fails on a dead path or anchor and on a module no entry mentions. The map is an index, not a rule document, so [DP01](docs/contributing.md#tools-and-document-improvements) does not apply to it.
+
 <a id="context-budget"></a>
 ### Context budget
 
 **Default.** Everything read stays in context and is paid for again on every later call (measured 27–29 Oct 2026).
 
-- **CB01 — Locate, then read.** Find the section first with `grep -n` on headings or IDs, bounded with `-m`, `-c` or `-l` and `| cut -c1-200` for long-line Markdown. Then read that range with `sed -n`. Read a whole file only when it is short (about 8 KB or less) or the task edits most of it. Briefs, scene sheets, research and the [dev-findings](docs/dev-findings.md) entries are read by section.
+- **CB01 — Locate, then read.** Look the topic up in the [context map](docs/context-map.md) first (`grep -n '^## '`, then one entry with `sed -n`); it names the docs, source, scripts, compositions and tests per topic. Then find the section with `grep -n` on headings or IDs, bounded with `-m`, `-c` or `-l` and `| cut -c1-200` for long-line Markdown. Then read that range with `sed -n`. Read a whole file only when it is short (about 8 KB or less) or the task edits most of it. Briefs, scene sheets, research and the [dev-findings](docs/dev-findings.md) entries are read by section.
 - **CB02 — Logs to files.** Send long command output (Blender, renders, installs, test suites, `tsc`) to a file under `out/logs/`. Print only a summary line, the errors or the tail. Every other command prints under about 40 lines or pipes through `head`, `tail` or `grep -m`. Measured: a Mark run reached 412k context with no images from unbounded output and whole-file reads (ZCPAINT, 30 Oct 2026).
 - **CB03 — Small images.** View frames through `scripts/qa-sheet.sh`, which tiles frames at 270 px or downscales a single frame with `--width 540`. Use full resolution only for a pixel-level judgment that measured numbers cannot settle. Boss's labelled review contact sheets are unchanged.
 - **CB04 — Invocations and sessions** follow [AI01–AI11](docs/delivery-workflow.md#agent-invocation): a fresh invocation per pass instead of one agent resumed across passes (AI04), no return while the agent's own background job runs ([AI10](docs/delivery-workflow.md#ai10)), and inputs read from files by path and revision (AI11).
@@ -71,6 +73,7 @@ Every agent reads AGENTS.md plus its **core** documents. It reads any other docu
 
 | Document | Read when (owner) | Core for |
 | --- | --- | --- |
+| [context-map](docs/context-map.md) | Locating the files for a topic before reading or grepping; read one entry, not the whole map ([CB01](#context-budget)) | on trigger |
 | [delivery-workflow](docs/delivery-workflow.md) | Selection, Short/Long versions, style profile, tier, delivery records, agent invocation; a video that is not an illustrated mystery/educational story | P B F M E |
 | [editorial-workflow](docs/editorial-workflow.md) | Scriptwriting, source research, fact-checking; matching script/review revisions (Preaw, Boat) | P B |
 | [scriptwriting-principles](docs/scriptwriting-principles.md) | Hooks, causal beats, educational payoff, twists, loop-friendly writing; Boat only when the profile uses them | P (when it applies) |
