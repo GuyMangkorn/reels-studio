@@ -47,6 +47,14 @@
     "store": "library/sound/sfx/foley/foley_glass-door-push_01.wav",
     "sha256": "7fcaf713da8faa82fd21831fc765b1fe711fc15122bada64a6f72be2037c3ec0"
   },
+  "public/sfx/foley/foley_hand-pat-carton_01.wav": {
+    "store": "library/sound/sfx/foley/foley_hand-pat-carton_01.wav",
+    "sha256": "435d49666e5f5dcf2686014bcb596b0deb3acbfad46d9ec4f7344ddb10e426ed"
+  },
+  "public/sfx/foley/foley_knuckle-knock-glass_01.wav": {
+    "store": "library/sound/sfx/foley/foley_knuckle-knock-glass_01.wav",
+    "sha256": "e0ddc457425ebdb88946668bfcd7873e5402f6de3b705a1df28317824316b462"
+  },
   "public/sfx/foley/foley_umbrella-tap-glass_01.wav": {
     "store": "library/sound/sfx/foley/foley_umbrella-tap-glass_01.wav",
     "sha256": "24198de263129d2e9815eee78dd11c2efc772be26d8148fad457ea412e4bd31d"

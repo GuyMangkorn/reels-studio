@@ -25,6 +25,12 @@ export const CAST: Record<Who, CastDef> = {
   },
 };
 
+/**
+ * Walk bob of the cast rig at walk phase `walk` (kit/cast.ts `bob`, m): the hip and everything above it, arms included, drop by
+ * this amount, so a plain hang moves with the step. Authored arm targets in a walk must add it to their hang points.
+ */
+export const walkBob = (walk?: number): number => (walk === undefined ? 0 : 0.018 * Math.abs(Math.sin(walk * Math.PI * 2)));
+
 /** WFOG cast by story role: the kit rig drawn with this episode's `CAST` entry. */
 export const drawFigure = (p: Painter, who: Who, g: Pt, unit: number, pose: FigPose, t: number, seed = CAST[who].seed): FigAnchors => kitDrawFigure(p, CAST[who], g, unit, pose, t, seed);
 export const shoulderHeight = (who: Who, crouch = 0): number => kitShoulderHeight(CAST[who], crouch);

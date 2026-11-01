@@ -1,8 +1,8 @@
 {
  "episode": "WFOG-EP01-SHORT",
  "fps": 30,
- "frames": 3766,
- "revision": "Editor r4 (30 Oct 2026): placement of the 17 approved takes per SS-R5.1 cue table (index #ss-r51-cue-table); VO-02 one take cut at file f63 (open item 30); VO-10/VO-15/VO-02b caption splits at measured pauses; levelDb to -16 LUFS for quiet clips (alimiter at -1.5 dBTP)",
+ "frames": 4005,
+ "revision": "Codex r1 SS-R6 (31 Oct 2026): cue table VO-17 t1 at G3365, VO-16 +161, hard cut G4005; earlier cues unchanged",
  "clips": [
   {
    "id": "VO-01",
@@ -159,11 +159,20 @@
    "measuredLufs": -16.4
   },
   {
+   "id": "VO-17",
+   "line": "VO-17",
+   "file": "VO-17.wav",
+   "at": 3365,
+   "from": 0,
+   "levelDb": 0.0,
+   "measuredLufs": -16.2
+  },
+  {
    "id": "VO-16",
    "line": "VO-16",
    "file": "VO-16.wav",
    "from": 0,
-   "at": 3463,
+   "at": 3624,
    "levelDb": 0.0,
    "measuredLufs": -15.9
   }
@@ -415,31 +424,45 @@
    "text": "แต่ตอนนี้ กลับทางเดิมไม่ได้แล้ว"
   },
   {
+   "id": "VO-17-1",
+   "line": "VO-17",
+   "g0": 3368,
+   "g1": 3424,
+   "text": "ของพวกนี้ลูกค้าสั่งไว้ครับ…"
+  },
+  {
+   "id": "VO-17-2",
+   "line": "VO-17",
+   "g0": 3424,
+   "g1": 3493,
+   "text": "เขาบอกว่าจะมารับเองที่นี่"
+  },
+  {
    "id": "VO-16-1",
    "line": "VO-16",
-   "g0": 3466,
-   "g1": 3556,
+   "g0": 3627,
+   "g1": 3717,
    "text": "สิ่งที่ฉันกลัวเมื่อกี้…"
   },
   {
    "id": "VO-16-2",
    "line": "VO-16",
-   "g0": 3560,
-   "g1": 3604,
+   "g0": 3721,
+   "g1": 3765,
    "text": "เป็นแค่คนคนหนึ่ง"
   },
   {
    "id": "VO-16-3",
    "line": "VO-16",
-   "g0": 3613,
-   "g1": 3668,
+   "g0": 3774,
+   "g1": 3829,
    "text": "แต่หมอกนี่ยังไม่ไปไหน…"
   },
   {
    "id": "VO-16-4",
    "line": "VO-16",
-   "g0": 3673,
-   "g1": 3714,
+   "g0": 3834,
+   "g1": 3875,
    "text": "แล้วเราก็ไปไหนไม่ได้"
   }
  ]

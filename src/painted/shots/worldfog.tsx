@@ -6,12 +6,13 @@ import type {PaintedShot, ShotContext} from '../shot';
 import {STILL_CAMERA} from '../kit/camera';
 import {asmPoseAt, assemblyParts, cartOnlyPose, paintAssembly, paintCartSide, paintHubs, type AsmPose} from '../worldfog/assembly';
 import {doorPt, paintCarExterior, paintCarInterior, paintFarShape, paintSedanBody, paintSedanDoor, rimAt, SEDAN_DOOR} from '../worldfog/car';
-import {drawFigure, shoulderHeight, type Arm, type FigAnchors, type FigPose, type Who} from '../worldfog/cast';
+import {drawFigure, shoulderHeight, walkBob, type Arm, type FigAnchors, type FigPose, type Who} from '../worldfog/cast';
 import type {FaceState} from '../kit/head';
 import {Architecture, Beam, FogVeil, Glass, Grade, Grain, Halos, InteriorAir, LensGlow, Rim} from '../worldfog/layers';
 import type {InteriorLight} from '../worldfog/draw';
 import {paintOutside} from '../worldfog/outside';
 import {paintSite} from '../worldfog/site';
+import {paintKnock} from '../worldfog/knock';
 import {PhoneOverlay, paintPhone} from '../worldfog/phone';
 import {groundAt, paintShop, VD18_SET, type Drawable, type ShopDress} from '../worldfog/shop';
 import {PROJ, ambientAt, asmAt, bump, doorAt, ease, frontAt, mix3, ptLerp, riseAt, seg, storyAt, torchOnAt, type Proj, type V3} from '../worldfog/space';
@@ -63,25 +64,37 @@ const fixedCam = (len: number, o: {s0: number; s1: number; fx: number; fy: numbe
 const GLASS = PROJ['CAM-GLASS-OUT'];
 /** S03-SH03 beam (sheet: glow centre (300, 1150) -> (590, 700) over f0-f30 at the match framing), in plate px. */
 const BEAM_FROM: Pt = [6, 1058], BEAM_START: Pt = [360, 1035], BEAM_END: Pt = [583, 689];
-const beamAt = (G: number) => (G < 1800 ? 0 : ease(seg(G, 1800, 1830)));
+/** Torch beam level: on from G1830; SS-R6 fades it out with the last lamps (G2802–G3068, sheet sc04 S04-SH03/SH04: no warm light). */
+export const beamAt = (G: number) => (G < 1800 ? 0 : ease(seg(G, 1800, 1830)) * (1 - ease(seg(G, 2802, 3068))));
 /** S03-SH06A beam glow centre (SS-R4 RT-1, plate px at s 1; SS-R4.1 R8-2): BEAM_END (583, 689), the S03-SH03 exit value, held f0-f30, eased to (588, 820) at f66, held. */
 export const beamSH06A = (G: number): Pt => {
   const u = ease(seg(G - 2070, 30, 66));
   return [lerp(BEAM_END[0], 588, u), lerp(BEAM_END[1], 820, u)];
 };
 
+/**
+ * SS-R6 picture push over S04-SH03 and S04-SH04, one curve (sheet sc04 S04-SH03 Camera): s = 1 + 0.10·(1 − cos(π(G − 3621)/383))/2
+ * about (540, 700), G3621–G4004. `g0` is the shot's composition start; the curve reads the composition frame G.
+ */
+const sharedPush = (g0: number) => (tl: number): Camera => ({
+  s: 1 + (0.1 * (1 - Math.cos((Math.PI * (g0 + frameOf(tl) - 3621)) / 383))) / 2, fx: 540, fy: 700, dx: 0, dy: 0,
+});
+
 type WindowOpts = {assembly: boolean; veil: boolean; jam?: boolean; lowBank?: number; sheen?: number;
   /** Beam glow track in plate px (default: the S03-SH03 sweep). Beam level and fog follow `beamAt` in every case. */
-  beamTo?: (G: number) => Pt};
+  beamTo?: (G: number) => Pt;
+  /** Outside actor painted after the outside plate and before the glass (SS-R6 FIG-KNOCK); `f` is shot-local. */
+  figure?: (p: Painter, f: number) => void};
 /** The window plate: fog outside, the assembly on its story pose, halos, rim, veil, beam, glass and architecture. */
 const windowPlate = (id: string, camera: (tl: number) => Camera, o: WindowOpts): PaintedShot => {
   const poseOf = (G: number, A: number): AsmPose | null => (o.assembly ? asmPoseAt(G, A) : null);
   return plate(id, {
     paper: '#7c8380',
     camera,
-    paint: (p, {G, A}) => {
+    paint: (p, {G, A, f}) => {
       const pose = poseOf(G, A);
       paintOutside(p, GLASS, G, {asm: pose ? {pose, parts: assemblyParts(GLASS, pose)} : undefined, beam: beamAt(G), jam: o.jam, lowBank: o.lowBank, ambient: A});
+      o.figure?.(p, f);
     },
     Overlay: ({camera: cam, width, height, G, A}) => {
       const pose = poseOf(G, A);
@@ -644,14 +657,48 @@ const SLUMP = {
   hangHandR: [0.04, 0.70, -1.10] as V3, hangHandL: [0.46, 0.70, -1.10] as V3,
   hangElbowR: [0.03, 0.95, -1.10] as V3, hangElbowL: [0.47, 0.95, -1.10] as V3,
 };
+/** S04-SH01 worker ground point (m): the approach to the slump (f12–f42), then the SS-R6 back step to the stack (f432–f454). */
+export const s4sh01Body = (f: number) => {
+  const walkU = ease(seg(f, 12, 42)), back = ease(seg(f, 432, 454));
+  return {x: lerp(lerp(0.2, 0.25, walkU), 0.4, back), z: lerp(lerp(0.0, -1.1, walkU), -0.62, back)};
+};
+/** Walk phase of the SS-R6 back step (f432–f454: two short steps to the stack); undefined elsewhere (plain stance). */
+const s4sh01WalkAt = (f: number) => (f >= 432 && f < 454 ? (f - 432) / 22 : undefined);
+/** Plain front-view hang of the right arm (kit/cast.ts `hang`) at ground point b, at walk phase `walk`: hand and elbow in world m. */
+const hangRight = (b: {x: number; z: number}, walk?: number): {hand: V3; elbow: V3} => {
+  const bob = walkBob(walk);
+  return {hand: [b.x - 0.187, 0.6815 - bob, b.z], elbow: [b.x - 0.19, 0.9315 - bob, b.z]};
+};
+/**
+ * S04-SH01 SS-R6 stack pat (sheet D-2; f450–f494): the right hand (screen-left) rises from the hang to the pat-ready point, pats the
+ * top carton (f462) and the carton below (f474), then returns to the hang. P16 placement (deviation recorded in the sheet). World m,
+ * eased between keys; undefined outside f450–f494, where the plain hang applies (the f450 start and f494 end are the hang itself).
+ */
+const PAT_KEYS: {f: number; hand: V3; elbow: V3}[] = [
+  {f: 461, hand: [0.08, 1.37, -0.53], elbow: [0.17, 1.12, -0.58]},
+  {f: 462, hand: [0.08, 1.33, -0.50], elbow: [0.17, 1.12, -0.58]},
+  {f: 466, hand: [0.08, 1.33, -0.53], elbow: [0.17, 1.12, -0.58]},
+  {f: 474, hand: [0.08, 1.00, -0.50], elbow: [0.20, 1.02, -0.60]},
+  {f: 482, hand: [0.08, 1.00, -0.50], elbow: [0.20, 1.02, -0.60]},
+];
+export const s4sh01PatArm = (proj: Proj, f: number): Arm | undefined => {
+  if (f < 450 || f >= 494) return undefined;
+  const keys = [{f: 450, ...hangRight(s4sh01Body(450), s4sh01WalkAt(450))}, ...PAT_KEYS, {f: 494, ...hangRight(s4sh01Body(494))}];
+  let i = 0;
+  while (i < keys.length - 2 && f >= keys[i + 1].f) i++;
+  const [a, b] = [keys[i], keys[i + 1]], u = ease(seg(f, a.f, b.f));
+  const mix = (x: V3, y: V3): V3 => [lerp(x[0], y[0], u), lerp(x[1], y[1], u), lerp(x[2], y[2], u)];
+  return {to: proj.P(mix(a.hand, b.hand)), via: proj.P(mix(a.elbow, b.elbow))};
+};
+
 const s4sh01 = plate('S04-SH01', {
   paper: '#8d918a',
+  // Push s 1.00 → 1.04 over f0–f433; the curve is clamped past its end, so SS-R6 holds 1.04 to f594 (f0–f433 unchanged).
   camera: push(434, 1.0, 1.04, 660, 600),
   paint: (p, {G, A, f, tl}) => {
     const proj = PROJ['CAM-INT-2S'];
     const light = VD18_LIGHT['CAM-INT-2S'];
-    const walkU = ease(seg(f, 12, 42));
-    const wx = lerp(0.2, 0.25, walkU), wz = lerp(0.0, -1.1, walkU);
+    const {x: wx, z: wz} = s4sh01Body(f);
     const slump = ease(seg(f, 48, 56)) * (1 - ease(seg(f, 130, 138)));
     const turn = seg(f, 132, 140);
     // SS-R4 RT-3 eye look toward the door glass (0, 1.5, 0): turn-in f190-f206, back to her by f214. SS-R4.1 R8-4: no backward
@@ -671,19 +718,26 @@ const s4sh01 = plate('S04-SH01', {
       paintHubs(p, proj, cartPose);
     }};
     // Both aisle gondolas are drawn: SS-R3.2 ST-01 moved their front ends to z -2.8, clear of the two-shot.
+    // SS-R6 (sheet S04-SH01 f424–f594): profile held to f432, front view from f432 (instant), back step f432–f454, catch-breath
+    // f426–f440, eyes on the stack f432–f494 (look −1, down 0.3) then on the narrator, head left on the front body f540–f572.
+    const workerLook: Pt = f >= 432 && f < 494 ? [-1, 0.3] : look;
     paintShop(p, proj, G, {light, ambient: A, actors: [
       cart,
       actor(p, proj, 'worker', wx, wz, {
-        view: f >= 140 ? 'right' : 'front', head: f >= 132 ? 'right' : undefined, light, walk: f >= 12 && f < 42 ? (f - 12) / 16 : undefined,
-        // Talk windows = the VO-15 cue windows (SS-R5.1 cue table, shot-local): f138–f148, f151–f344, f350–f377, f388–f424.
-        crouch: 0.30 * slump, nod: [0, 0.04 * slump], rise: 0.012 * slump * Math.sin(f * 0.45), wet: true,
-        face: face({look, brow: 'worry', eyes: f < 138 ? 'half' : 'dot', mouth: f >= 48 && f < 138 ? 'o' : 'flat', open: talk(f, [[138, 148], [151, 344], [350, 377], [388, 424]], 0.8)}),
-        rArm: armsOn ? via(cw, ce) : undefined,
+        view: f >= 140 && f < 432 ? 'right' : 'front', head: f >= 540 && f < 572 ? 'left' : f >= 432 ? undefined : f >= 132 ? 'right' : undefined,
+        light, walk: f >= 12 && f < 42 ? (f - 12) / 16 : s4sh01WalkAt(f),
+        // Talk windows = the VO-15 cue windows (SS-R5.1 cue table, shot-local): f138–f148, f151–f344, f350–f377, f388–f424; the
+        // VO-17 windows (SS-R6 cue table): f462–f512, f518–f526, f531–f580.
+        crouch: 0.30 * slump, nod: [0, 0.04 * slump], rise: 0.012 * slump * Math.sin(f * 0.45) + 0.012 * bump(f, 426, 440), wet: true,
+        face: face({look: workerLook, brow: 'worry', eyes: f < 138 ? 'half' : 'dot', mouth: f >= 48 && f < 138 ? 'o' : 'flat',
+          open: talk(f, [[138, 148], [151, 344], [350, 377], [388, 424], [462, 513], [518, 527], [531, 581]], 0.8)}),
+        rArm: armsOn ? via(cw, ce) : s4sh01PatArm(proj, f),
         lArm: armsOn ? via(cl, cle) : f < 18 ? arm(proj, [wx + 0.15, 0.9, wz - 0.1], 1) : undefined,
         lHold: f < 12 ? {kind: 'umbrella', tip: proj.P([wx + 0.25, 0.02, wz - 0.15])} : undefined,
       }, tl),
       actor(p, proj, 'narrator', nx, nz, {
-        view: 'left', light, warm: 0.6, face: face({look: [1, 0], brow: 'worry', open: talk(f, [[18, 72], [77, 109]], 0.8)}),
+        // SS-R6: from f432 the eyes follow the worker stepping back toward the stack (sheet: slightly down). Profile: +1 faces −x.
+        view: 'left', light, warm: 0.6, face: face({look: f >= 432 ? [1, 0.1] : [1, 0], brow: 'worry', open: talk(f, [[18, 72], [77, 109]], 0.8)}),
         rArm: arm(proj, [nx - 0.05, 0.78, nz - 0.1], 1), rHold: {kind: 'torch', angle: Math.PI / 2 - 0.4, on: 1},
       }, tl),
     ]});
@@ -753,7 +807,9 @@ export const worldfogShots: PaintedShot[] = [
   s3sh07,
   s4sh01,
   s4sh02,
-  windowPlate('S04-SH03', push(306, 1.0, 1.06, 540, 700), {assembly: false, veil: false}),
+  // SS-R6: S04-SH03 (279 f, lamps and FS2→FS3 on the SS-R5.1 story keys) and S04-SH04 (FIG-KNOCK, lamps 0, FS3) share one push.
+  windowPlate('S04-SH03', sharedPush(3621), {assembly: false, veil: false}),
+  windowPlate('S04-SH04', sharedPush(3900), {assembly: false, veil: false, figure: (p, f) => paintKnock(p, GLASS, f)}),
 ];
 
 export type {Proj};

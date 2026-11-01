@@ -1,3 +1,40 @@
+# WFOG-FACTCHECK-R6 — Targeted recheck, ending-only revision (2026-10-31)
+
+- Owner / reviewed: Boat, 2026-10-31 (Asia/Bangkok). Adds to `WFOG-FACTCHECK-R5` for the `WFOG-SCRIPT-R6` change scope only; R5 rows for unchanged lines stand (`VO-01`–`VO-16` verbatim per the R6 change log, spot-checked for S01-B01, S02-B02–S03-B02, S04-B01 `VO-15`, S04-B02 `VO-16`).
+- Deliverable: `WFOG-EP01-SHORT`.
+- Exact input: [WFOG-SCRIPT-R6](script.md), uncommitted working-tree edit by Preaw 2026-10-31 on top of commit `6b8a813` (234 lines, sha256 prefix `3de47356dfc0`). Decision source: last entry of [delivery record](../delivery.md) 2026-10-31 (`เคาะ + เงา, มีที่มา`; supersedes the R5 "no supernatural addition / pure practical predicament" ending for EP1; ambiguous, no reveal; no trim).
+- Coverage (by the R6 change-log recheck list): header/writing status lines 1–11; story core ending and closing-figure truth 21–23; beat table rows S03-B01–S04-B03 (36–40); S02-B03 (82–94) and S01-B01, S02-B02, S02-B04, S03-B01, S03-B02 as continuity context; S04-B01 incl. `VO-17` (134–150); S04-B02 (152–160); S04-B03 (162–168); clue ledger incl. `CL06` (170–181); claim-map rows 183–197; sound handoff 204; Film → Mark items 8–9 (215–216); change log/open items 231–233.
+- Research: no new source access needed. R6 adds no factual claim; `VO-17` and S04-B03 are fiction (`D001`/`D002`). Story mode remains `fiction-with-factual-knowledge`; the only sourced claim stays `K001` (unchanged).
+- Not reviewed: runtime, audio, visuals, timing (estimated, not audio-tested), the Long version (open item, coordinator's).
+- **Verdict: `ready-for-storyboard`** (factual/fiction-consistency scope). No required change; spoken Thai needs no change. Non-blocking notes R6-N01–R6-N04 below.
+
+## R6 findings
+
+| ID | Item | Result | Finding |
+| --- | --- | --- | --- |
+| `R6-C01` | `VO-17` `ของพวกนี้ลูกค้าสั่งไว้ครับ… เขาบอกว่าจะมารับเองที่นี่` vs R3 motive `…เลยต้องเข็นของมาส่งร้านนี้เอง…` and `D001` | pass | Consistent: the shop is the drop-off/pick-up point for a customer order (a familiar convenience-store pickup arrangement; not asserted as fact, only a plausible fictional setup). Character remark, no claim; male `ครับ` matches the worker. No casualty, cause or fog claim. See R6-N02. |
+| `R6-C02` | S04-B03 figure vs established facts | pass | Worker was admitted in S03-B02 and speaks inside in S04-B01; item 9 keeps him established inside before the knocks. Closing-figure truth (ordinary height, solid, hand knock, no cart/cartons/helmet/umbrella) does not contradict CL01–CL05; the worker assembly truth is untouched. |
+| `R6-C03` | Rhyme with S02-B03 taps / silhouette | pass | Three knocks, same spacing and glass-facing view rhyme with S02-B03 without reusing the umbrella source. Setup (`VO-17`, S04-B01) precedes payoff (S04-B03); `CL06` is fair and its ordinary reading is honestly offered. See R6-N01 on the sound source. |
+| `R6-C04` | Ambiguity / nothing supernatural confirmed | pass | No impossible proportion, motion, voice or sound; face unreadable; no narrator reaction or VO; no reveal. `CL06` and the S04-B03 event both keep identity unconfirmed. The R6 supersession of the R5 ending constraint is user-authorised (delivery record) and scoped to EP1/this beat. |
+| `R6-C05` | Safety-protocol implication | pass | Nobody moves toward or opens the door, no light is raised, nobody instructs anything; hard cut leaves the decision undepicted. Does not imply that opening or not opening is safe, nor that outside air is safe. Research item 4 boundary (S03-B02 entry is a character choice) unaffected. |
+| `R6-C06` | VO-16 → S04-B03 pair vs research item 5 (no slogan) | pass | `สิ่งที่ฉันกลัวเมื่อกี้… เป็นแค่คนคนหนึ่ง แต่หมอกนี่ยังไม่ไปไหน… แล้วเราก็ไปไหนไม่ได้` stays a character reaction; the following human-outline knock opens a question but does not turn the line into "fear is the real monster" or its ironic reversal ("now it really is a monster"), because the figure stays human-readable. No EP2 synopsis, card or call to action. |
+| `R6-C07` | On-screen safety | pass | No blood, gore, injury, weapon, broken glass or violence in S04-B01–B03; no on-screen text or caption added (S04-B03 has no speech, no caption). |
+| `R6-C08` | Sound implications | pass | Reused S02-B03 glass-tap sound, dry, same level; no music, stinger, riser, breath, voice, creature, siren or crash sound; hum only, cut with picture. Designed fictional sound with a visible source (hand at glass), `D001`/`D002`; no real recording needing a source. S04-B01 keeps "no crash/siren recording". See R6-N01. |
+| `R6-C09` | Loop seam to S01-B01 `มันตามฉันมา` | pass | Original R2 wording unchanged. On replay the line can read as about the unseen knocker; it remains the narrator's limited fearful interpretation (`D001`/`D002`, existing claim-map row), not a narrator assertion of a creature or of who knocked. See R6-N03. |
+| `R6-C10` | Original wording preserved | pass | `VO-15` (R3 wording) and `VO-16` (R3 wording) match the R5-reviewed text exactly; S01-B01 lines match R2. Only `VO-17` is new spoken text. |
+
+## Non-blocking notes (for Film / Mark / Editor; no script change required)
+
+- **R6-N01 (sound source, Editor/Film):** S03-B02 has the narrator say the earlier taps were the umbrella handle (`ที่เคาะกระจกเมื่อกี้… ก็ด้ามร่ม`). The same hard-handle click synced to a bare hand could read as physically off, or as an object in the hand, which nudges the "not the worker / no umbrella" truth. The script already assigns Editor to confirm it reads as a hand on glass and record any swap; keep the **spacing and level** as the rhyme and allow a knuckle-on-glass variant if the handle click reads as an object.
+- **R6-N02 (prop/gesture, Mark):** the worker pats one carton (the top carton) while saying plural `ของพวกนี้`. Plausible as gesturing at the load; if staging allows, a gesture that takes in the stack avoids a "one carton vs all goods" read. Spoken line needs no change.
+- **R6-N03 (loop reading):** `มันตามฉันมา` uses the non-human pronoun `มัน`; on replay it pulls slightly toward an uncanny reading of the knocker. Acceptable as limited perception (`CL01` initial reading uses the same pronoun logic) and consistent with the user's ambiguous-ending choice; record here only so the pairing is a known effect, not a claim.
+- **R6-N04 (metadata, Preaw/coordinator):** stale timing metadata, no story impact: S04-B01 heading reads `78–93 s` while the beat table reads `78–96 s`; the header Target line still says the editorial layout totals 100 s while S04-B03 runs 102–106 s and the change log cites the measured cut 125.5 s → ≈131 s. Timing is estimated; Mark times from the Editor voice lock, not these numbers.
+- Carried open (coordinator, not Boat-blocking for the Short): Long `C04-B01` `ไม่ใช่ที่กระจก…` vs S04-B03 glass knock and the missing `VO-17` setup in the Long, if the Long continues directly from this Short.
+
+## Handoff (WFOG-SCRIPT-R6)
+
+- Readiness: `WFOG-SCRIPT-R6` + `WFOG-FACTCHECK-R6` → Film (brief revision for S04-B01 event/S04-B03, if Film's tier step applies), then Mark (scene handoff for S04-B01–B03, timed after the Editor voice lock incl. `VO-17`). Fiction-consistency/factual readiness only; not user approval; runtime, audio and visual validation not performed. Recheck if `VO-17`, S04-B03 or the knock sound change.
+
 # WFOG-FACTCHECK-R5 — Exact-revision review
 
 - Owner / reviewed: Boat, 2026-10-30 (Asia/Bangkok). Supersedes `WFOG-FACTCHECK-R4` for the `WFOG-SCRIPT-R5` scope only. R4 is kept below, marked superseded; R3 and R2 stay under History.

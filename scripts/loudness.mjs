@@ -7,6 +7,7 @@ import {execFile} from 'node:child_process';
 import {globSync} from 'node:fs';
 import {rename, rm} from 'node:fs/promises';
 import path from 'node:path';
+import process from 'node:process';
 import {promisify} from 'node:util';
 
 const run = promisify(execFile);
@@ -15,7 +16,9 @@ const env = {...process.env, DYLD_LIBRARY_PATH: path.dirname(path.resolve(ffmpeg
 const TARGET = {I: -14, TP: -1.5, LRA: 20};
 
 const loudnorm = async (args, filter) => {
-  const {stderr} = await run(ffmpeg, ['-hide_banner', '-nostats', ...args.slice(0, 2), '-af', `loudnorm=${filter}:print_format=json`, ...args.slice(2)], {env, maxBuffer: 64 << 20});
+  // Dynamic loudnorm can stretch a packet timestamp while draining its final window (WFOG SS-R6).
+  // Keep playback on the emitted sample clock so late transients and the cut retain their authored timing.
+  const {stderr} = await run(ffmpeg, ['-hide_banner', '-nostats', ...args.slice(0, 2), '-af', `loudnorm=${filter}:print_format=json,asetpts=N/SR/TB`, ...args.slice(2)], {env, maxBuffer: 64 << 20});
   return JSON.parse(stderr.slice(stderr.lastIndexOf('{'), stderr.lastIndexOf('}') + 1));
 };
 

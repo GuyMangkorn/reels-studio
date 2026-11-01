@@ -1389,3 +1389,285 @@ Scope: coordinator message 30 Oct 2026 (approved inputs: Sulafat/Orus Gemini lin
 ### Files changed (Editor r4)
 - Tracked: `src/videos/world-fog/index.ts` (rewritten: RK-2, shot-local cues, scrim by line count, caption feed), `scripts/world-fog/narration.py` (compose/captions/verify on placement.json), `scripts/world-fog/short/placement.json` (new), `scripts/world-fog/short/captions.json` (regenerated, G frames), `scripts/world-fog/short/WFOG-EP01-SHORT.amplitude.json` (3766 frames), `public/scrim/WFOG-caption-scrim-1line-960x180.png` and `…-2line-960x264.png` (new), `public/scrim/WFOG-caption-scrim-960x260.png` (deleted from disk), `tests/world-fog.test.ts` (three R5.1 assertions), `scripts/world-fog/build-notes.md` (this note).
 - Ignored: `public/narration/WFOG-EP01-SHORT.mp3`, `public/audio/…`, `public/sfx/…`, `out/WFOG-EP01-SHORT/…`, `out/qa/world-fog/WFOG-EP01-SHORT/editor-r4/…`, `out/logs/editor-r4-*`, `out/editor/world-fog/WFOG-EP01-SHORT/lines/…` (placed clips, takes, picks), `out/voice-venv/` (from r3).
+
+## 2026-10-31 — Editor r5: VO-17 voice lock (WFOG-EP01-SHORT, R6 script; uncommitted; not approved)
+
+Scope: the one new line `VO-17` (worker, WFOG-SCRIPT-R6, S04-B01, between `VO-15` and `VO-16`). `VO-01`…`VO-16` not regenerated or changed. Not done: full narration recompose, retime, captions, mix, MP4. Placement is Mark's retime from the measured length below. No user listening yet, so nothing here is approved.
+
+Inputs and revisions: `script.md` R6 (2026-10-31; `VO-17` blockquote verbatim, verify 17/17); fact-check R6 verdict `ready-for-storyboard` (`R6-C01` pass); delivery record R6 decision 2026-10-31 (`เคาะ + เงา, มีที่มา`); voice Gemini Orus (worker, user choice 30 Oct).
+
+### 1. Gemini settings (all three takes; only the take number differs)
+- Model `gemini-3.8-flash-tts`, voice `Orus`, one call per take, no inline tags, text verbatim (`…` kept, as in `VO-15`; the ellipsis-to-comma rule applies to the single narrator read only).
+- Style sent: `offhand, tired, still catching breath, casual and matter-of-fact, explaining, brisk natural pace, no long pauses` (the manifest `style` plus the worker `pace`, the same brisk pace as `VO-15`).
+- Output 48 kHz mono, loudnorm −16 LUFS, TP −1.5 dBTP (`scripts/gemini-tts.py`, two-pass).
+- Commands: `zsh -lic "cd <worktree> && python3 -I scripts/world-fog/narration.py tts --take K --only VO-17"` for K = 1, 2, 3, stopped on the first failure, no retry. Log `out/logs/gemini-tts-VO-17.log`. All three calls succeeded on the first attempt (no 429, no timeout).
+- The worktree's `out/gemini-venv` is a symlink to the main checkout's venv (`~/Developer/reels-creator/out/gemini-venv`, google-genai 2.34.0); both are ignored.
+
+### 2. Takes and pick
+Measured with `narration.py` `decode` and `measure_clip` (speech = first to last sample at or above the threshold); LUFS and TP from ffmpeg loudnorm; ASR from `large-v3-turbo` (an estimate for listening, not proof).
+
+| take | file (ignored out/) | clip s | onset s | speech s | longest inner gap s | LUFS | TP | ASR (Thai) | verdict |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| t1 | `out/editor/world-fog/WFOG-EP01-SHORT/lines/takes/VO-17.t1.wav` | 4.32 | 0.11 | 3.94 | 0.19 | −16.2 | −1.5 | matches the manifest text | **picked** (provisional) |
+| t2 | `…/lines/takes/VO-17.t2.wav` | 4.32 | 0.27 | 3.88 | 0.18 | −16.4 | −1.5 | `สั่งไหมครับ` (heard `ไหม` for `ไว้`; a question, so the meaning changes) | alternate only |
+| t3 | `…/lines/takes/VO-17.t3.wav` | 4.68 | 0.30 | 4.00 | 0.31 | −16.7 | −1.5 | `เพราะบอกว่า` (heard `เพราะ` for `เขา`) | not picked |
+
+- Gates (Editor r3 rules): true peak ≤ −1 dBTP, onset ≤ 0.4 s, no silent run over 1.2 s, LUFS within 2 LU of −16. All three pass. The shortest speech (t2) fails the verbatim check, so the pick is t1.
+- Picked: `out/editor/world-fog/WFOG-EP01-SHORT/lines/VO-17.wav` (copy of t1, `lines/takes/picks.json`: `VO-17: 1`).
+
+### 3. Measured length (picked take 1; for Mark's retime, not placed)
+- Clip 4.32 s (≈130 f at 30 fps). First audible sample at 0.114 s (≈3 f). Speech 3.942 s (≈118 f). Speech end 4.056 s (≈122 f). Speech segments 0.11–1.79, 1.98–2.27, 2.42–4.06 s (pauses 0.19 s and 0.15 s).
+- The fact-check estimate was ≈3–3.5 s including the lead pause. The clip is 0.8–1.3 s over it and the speech 0.4–0.9 s over. The R6 budget (net +5–6 s, cut ≈131 s, no trim) therefore needs about 1 s more for this line. Mark decides the holds; the numbers are measured, not heard.
+- Frames are measurements; Mark sets the integer event frames ([voice lock](../../docs/delivery-workflow.md#voice-lock)).
+
+### 4. Manifest and code (tracked)
+- `scripts/world-fog/short/narration-lines.json`: `VO-17` inserted after `VO-15` (story order); `speaker` worker; `gain` 1.0 (provisional; check the level against `VO-15` at compose); `pieces` split at the ellipsis (provisional; caption split not placed); `planned` null and `startG` null (placement pending Mark); `shot` S04-SH01 provisional (S04-B01 per script; Mark to confirm). Top-level `revision` line extended.
+- `scripts/world-fog/narration.py` `cmd_measure`: a line with no `planned` window prints `pending` instead of failing (VO-17 until Mark's retime). No other change.
+- `verify`: 17/17 verbatim; reports `CAPTION MISMATCH VO-17` until captions are placed (expected). It also lists 18 `MISSING CLIP` because this worktree's `out/` has no episode clips (pre-existing; the clips live in the main checkout's out/ and the store).
+- Not run: `compose`, `captions`, `pick` of other lines, the public narration mp3, `placement.json`. The current r4 render has no VO-17.
+
+### 5. Asset store (filed)
+- `~/ReelsStore/projects/WFOG/audio/lines/VO-17.wav` (pick; same bytes as t1, so the t1 take name is not a separate store entry). `~/ReelsStore/projects/WFOG/audio/lines/takes/VO-17.t2.wav` and `VO-17.t3.wav` (archive: 3 stored, 1 already stored).
+- `~/ReelsStore/projects/WFOG/audio/lines/takes/VO-17.t1.json`, `VO-17.t2.json`, `VO-17.t3.json` (Gemini settings sidecars, via `store.py put`).
+- `~/ReelsStore/projects/WFOG/audio/timing/VO-17-voice-lock-r5.json` (measure of all three takes: clip, onset, speech, speech segments, loudness).
+
+### 6. Findings (for the owners)
+1. `scripts/transcribe.py` fails in `.venv-whisper` (`av.open()` rejects `metadata_errors` in faster-whisper's decoder). The one-off ASR above decodes with ffmpeg and passes samples to the same model (`out/editor/world-fog/WFOG-EP01-SHORT/timing/asr-vo17.py`). The fix (pin `av` in the venv) is a tooling change for the owner; not changed here.
+2. Voice lock status: **generated, measured, picked provisionally; not heard by the user.** Next: the coordinator asks the user to listen to t1 (and t2 as the alternate; t2 has the `ไหม` reading). Only after a user pick is the voice lock recorded; then Mark places `VO-17` in S04-B01 with integer frames.
+3. Carry-over: Gemini commercial-use and SynthID terms still unchecked (from r3).
+
+## 2026-10-31 — Editor r6 (SS-R6 sounds)
+
+Scope: sounds only for `WFOG-EP01-SHORT-SS-R6` (cue rows in [index.md](../../storyboards/world-fog/short/index.md#ss-r6-cue-table); prompt fields in [sc04.md](../../storyboards/world-fog/short/sc04.md) S04-SH04 and S04-SH01 Sound lines). Not edited: `src/videos/world-fog/**` (incl. `assets.lock.json`), `placement.json`, narration mp3, captions. Not committed. Nothing listened to by a person; picks are by measurement (ear-proxy).
+
+### 1. Library check (INDEX searched 2026-10-31)
+- Knock: no entry for knock/knuckle on glass. Rejected: `impact_knuckle-rap_01` (solid door; not a fallback per sc04), `foley_umbrella-tap-glass_01` (closed umbrella tip; the S02-SH07 file, kept as the fallback only), `foley_fist-blow-door_01` and `foley_door-pound-wood_01` (fists on doors).
+- Pat: no pat or palm-on-carton entry. `foley_carton-slide-helmet-catch_01` is a helmet slide, not a pat; not used.
+- Gap generated: `foley_knuckle-knock-glass_01` (required), `foley_hand-pat-carton_01` (optional).
+
+### 2. Generation (audio-studio, Stable Audio 3 medium, `audio_type` sfx → server prefix `TrackType: SFX,`; steps 8, cfg 1.0; `variations` 3; `duration_seconds` 2; raw files kept in `library/sound/_raw/`)
+
+Knock — `title` foley_knuckle-knock-glass_01, seeds 31001–31003 (candidates v1–v3):
+- prompt: `A single bare-knuckle knock on a tempered glass shop door, heard from inside the shop, close and dry.`
+- sound_source: `a single bare human knuckle knocking on glass`
+- sound_action: `one light knock: fast attack, short decay, nothing after it`
+- sound_material: `tempered shop-door glass, thin glassy knock with a small resonance, duller than a metal tip, no metallic ring`
+- sound_space: `heard from inside a shop, close, dry, no reverb, no room tail`
+- original_idea: the sc04 S04-SH04 knock brief (English, verbatim in the sidecar).
+
+Pat — `title` foley_hand-pat-carton_01, seeds 31101–31103 (candidates v1–v3):
+- prompt: `A single soft open-palm pat on a full cardboard carton in an indoor shop, close and dry.`
+- sound_source: `an open human palm patting a cardboard carton`
+- sound_action: `one soft flat pat, quick decay, nothing after it`
+- sound_material: `full corrugated cardboard carton, dull papery thud, no crinkle`
+- sound_space: `indoor shop, close, dry, no reverb`
+
+### 3. Measurement and pick
+
+Method: levels from `ffmpeg -af astats` per channel on the stereo file. A mono downmix (`-ac 1`) read about 1.6–2 dB hot on the umbrella master, so mono peaks are not used for levels (see finding 1). Band shares are relative, from the mono 48 kHz signal.
+
+Knock raw candidates (2 s each):
+
+| Candidate | Stereo peak (dBFS) | Onset (ms, −30 dB) | −40 dB after peak | >3 kHz share, first 0.25 s | Verdict |
+| --- | --- | --- | --- | --- | --- |
+| v1 (seed 31001) | −6.15 | 11.2 | 140 ms | 21% | brightest; not picked |
+| v2 (seed 31002) | −3.98 | 12.2 | 180 ms | 14% | alternate (louder raw); not processed |
+| v3 (seed 31003) | −5.96 | **8.7** | 180 ms | **12%** | **picked**: earliest transient, darkest, tail −55 dB at 0.6 s |
+
+Reference, `foley_umbrella-tap-glass_01` (library master, S02-SH07 tap): stereo peak **−1.00 dBFS**, RMS −29.8 dBFS over 1.0 s, first 0.3 s RMS −24.6 dBFS, >3 kHz share about 1%.
+
+Knock processing (`process_audio`, 48 kHz WAV): input v3, `trim_silence` false, start 0, **end 0.30 s**, `normalize` peak to −1 dBFS, `fade_out_ms` 30. A first try with `trim_silence` (−50 dB) gave 0.195 s and cut the decay mid-tail; discarded, not filed. Measured on the master `foley_knuckle-knock-glass_01`:
+- duration 0.300 s; stereo peak −1.00 / −1.00 dBFS; RMS −23.0 dBFS;
+- onset 8.7 ms (0.26 f at 30 fps); peak 15.0 ms (0.45 f);
+- decay: −28 dB at 0.10 s, −45 at 0.20 s, −52 at 0.25–0.29 s; no sound after 0.30 s, so the next copy 0.6 s later never overlaps;
+- spectrogram (`showspectrumpic`, 1024×384, scratchpad `knock_v3_proc300ms_spectrogram.png`): one broadband transient, decays in about 0.2 s, faint 5–8 kHz striations only during the decay, no sustained tone.
+
+Level against the S02-SH07 tap: both masters are peak-normalized to −1.00 dBFS (stereo), so the same timeline `volume` gives the same peak. The knock's RMS is about 1.6 dB higher than the umbrella's over the first 0.3 s, so the starting `volume` is 0.45 (same as the tap) with an ear check at 0.40–0.45 during integration.
+
+Pat raw candidates contain **several hits in 1.2 s**, not one pat: v1 ~0.04/0.32/0.58/0.86/1.07 s; v2 ~0.04/0.28/0.50/0.70/1.00/1.10 s; v3 ~0.06/0.54/0.78/1.02 s. Pick v3 (87% of its energy below 400 Hz, least overlap with the 300–3000 Hz speech band under VO-17), first hit only.
+
+Pat processing: input v3, `trim_silence` false, start **0.02 s**, end **0.25 s**, `normalize` peak −1 dBFS, `fade_out_ms` 30. Measured on the master `foley_hand-pat-carton_01`:
+- duration 0.230 s; stereo peak −1.00 / −1.00 dBFS; RMS −20.9 dBFS;
+- onset 13.5 ms; peak 55.9 ms (**1.7 f** after the file start); −39 dB at 0.11 s, −59 dB at 0.23 s; the second raw event (0.26–0.32 s) is cut off;
+- start 0.02 s also removes the raw pre-hit noise (−25 dB at 0.02 s).
+
+### 4. Files
+
+Shared library (`~/ReelsStore/library/sound`, filed with INDEX rows and `store.py put`; `listened: no`):
+- `/Users/mangkornkatawong/ReelsStore/library/sound/sfx/foley/foley_knuckle-knock-glass_01.wav` (+ `.json` sidecar)
+- `/Users/mangkornkatawong/ReelsStore/library/sound/sfx/foley/foley_hand-pat-carton_01.wav` (+ `.json` sidecar)
+- Raw candidates (kept): `/Users/mangkornkatawong/ReelsStore/library/sound/_raw/foley_knuckle-knock-glass_01_v1.wav`, `_v2.wav`, `_v3.wav` (+ `.wav.json`); `_raw/foley_knuckle-knock-glass_01_proc300ms.wav`; `_raw/foley_hand-pat-carton_01_v1..v3.wav`; `_raw/foley_hand-pat-carton_01_proc_firsthit.wav`.
+
+Project copies (gitignored `public/`, where the timeline expects `public/sfx/foley/<id>.wav`; byte-equal to the masters):
+- `/Users/mangkornkatawong/Developer/reels-creator/.claude/worktrees/pose-sheet-conventions-e6814c/public/sfx/foley/foley_knuckle-knock-glass_01.wav`
+- `/Users/mangkornkatawong/Developer/reels-creator/.claude/worktrees/pose-sheet-conventions-e6814c/public/sfx/foley/foley_hand-pat-carton_01.wav`
+- `public/sfx/NOTICE`: appended block for both IDs (generator, license, not listened).
+
+Not done in this call (out of scope): the lock entries in `src/videos/world-fog/assets.lock.json` (`store.py use ... --episode WFOG-EP01-SHORT` would write there), and the timeline cue entries.
+
+### 5. Proposed timeline entries for the next Editor call (not applied)
+- Knock: `src: 'sfx/foley/foley_knuckle-knock-glass_01.wav'`, `g` = 3939, 3957, 3975, `volume` 0.45 (start), `durationSec` 0.3. The file onset is 0.26 f, so the start frame needs no offset.
+- Pat (optional): `src: 'sfx/foley/foley_hand-pat-carton_01.wav'`, `g` = 3366 (puts the peak at G3367.7, within 0.3 f of G3368) and 3378 (its partner at G3380), `volume` 0.20 (about −7 dB under the tap), `durationSec` 0.23. Omit both if they mask `ของ` in the VO-17 check (sc04).
+
+### 6. Open items
+1. **User listen (priority):** `foley_knuckle-knock-glass_01` must read as a bare hand on glass (R6-N01). If it reads as an object, the fallback is `foley_umbrella-tap-glass_01` at 0.45 (S02-SH07 file), recorded as a swap. The next knock take is `_02` (IDs are not overwritten).
+2. Pat: listen optional; decide in the VO-17 check.
+3. Lock entries and timeline cue rows: next Editor integration call.
+4. Recorded picks are `listened: no`; `listened: user` only after the user's ear check.
+
+### 7. Findings
+1. **Level measurement:** `ffmpeg -ac 1` mono downmix reads about 1.6–2 dB higher than the stereo peak for these files (umbrella master: stereo −1.00 dBFS, mono +0.62). Use `astats` per channel for peak and RMS. Propose to the sound-generation skill's step 4 (documents are not edited during production; user review).
+2. **Trim threshold:** `trim_silence` at −50 dB cut a 0.3 s knock decay to 0.195 s. For a decaying one-shot, set `end_seconds` from the measured decay instead of trimming silence.
+3. **Multi-hit SFX:** a 2 s "single pat" request came back with 3–6 hits per candidate. For one-shots, request ~1 s or cut to the first hit with `start_seconds`/`end_seconds`, and measure the hit count in the envelope before filing.
+4. Onset and peak are not the same point for the pat (onset 13.5 ms, peak 55.9 ms). Integration should place the peak, not the onset, on the contact frame.
+
+## 2026-10-31 — Boss r11 (SS-R6): picture build for the ending (WFOG-EP01-SHORT, uncommitted)
+
+Scope: `WFOG-EP01-SHORT-SS-R6` (Mark, ready-for-dev; user accepted the page: empty glass ~0.3 s, palm flat on the glass until the cut, 4005 frames = 133.5 s). Boss list D-1…D-6 in [index ss-r6-boss-list](../../storyboards/world-fog/short/index.md#ss-r6-boss-list). Worktree `pose-sheet-conventions-e6814c`, branch `claude/word-fog-premiere-ep1-edit-e91211` @ `3166499` plus the uncommitted SS-R6 script/sheet work. **Not committed.** Editor audio, captions, narration, `placement.json` and the narration MP3 are untouched.
+
+### Changes
+| ID | File | Change |
+| --- | --- | --- |
+| D-1 | `src/painted/worldfog/space.ts` | `SHOT_ROWS` S04-SH01 len 595, S04-SH02 g0 3501, S04-SH03 g0 3621 len 279, new S04-SH04 g0 3900 len 105; `TOTAL_FRAMES` 4005; `STORY_CLOCK` S04-SH02…SH04 shift 831 (story keys unchanged: SH03 f278 = story 3068, SH04 f0 = story 3069, ambient continuous); S04-SH01 event clock holds at f433 |
+| D-1 | `src/videos/world-fog/index.ts` | RK-2 entry `[2670, 3340]` → `[2670, 3501]` (inert: no cue reads a story key ≥ 2670); header comment. Nothing else in the Editor timeline |
+| D-2 | `src/painted/shots/worldfog.tsx` (S04-SH01) | back step f432–f454 to (0.40, −0.62) with walk phase; front view from f432; catch-breath f426–f440; right hand P16 stack pat (`PAT_KEYS`: pat 1 f462 (0.08, 1.33, −0.50), lift f466, pat 2 f474 (0.08, 1.00, −0.50), rest to f482, hang at f494); eyes on stack f432–f494 (look −1, down 0.3); head left on the front body f540–f572; VO-17 mouth windows [462,513) [518,527) [531,581); push held at 1.04 f434–f594 (clamped curve, f0–f433 unchanged) |
+| D-2 | same | narrator eyes [1, 0.1] from f432 (see open item 2) |
+| D-3 | `shots/worldfog.tsx` (S04-SH03) | `sharedPush(3621)`: s = 1 + 0.10·(1 − cos(π(G − 3621)/383))/2 about (540, 700); lamps and FS2→FS3 unchanged (story keys) |
+| D-3 | same, `beamAt` | **Boss decision:** the torch-beam glow (on from G1830, never off before) fades with the last lamps, G2802–G3068 (× (1 − ease(seg(G, 2802, 3068)))). Reason: the empty S04 window carried a warm glow that the sheet forbids (SH03 "warm halos to zero", SH04 "no lamp, torch or warm light"); a glow left in SH04 would also pop at the SH03→SH04 boundary. S03 and S02 windows unchanged (G < 2802). Open item 1 |
+| D-4 | `src/painted/worldfog/knock.ts` (new, `FIG-KNOCK`) | `KNOCK_CAST` 1.70 m, shoulder 0.42, head cut `short`, every part `SIL`; `knockBodyZ` (0.04 m/f to z 0.56 at f26, quadratic ease-out to 0.40 at f34); `knockVeil` (1 at z ≥ 1.20 → 0.10 at z ≤ 0.70); `knockHandAt` (strikes f39/f57/f75 with 4 f in, 6 f out, palm settle f75–f83, held to f104); `knockArm` (raise f28–f35 from the hang, then the knock path); `paintKnock` (body not drawn while the veil is 1, i.e. f0–f10; hand patch SIL while within 0.03 m of the glass) |
+| D-4 | `src/painted/kit/cast.ts` (shared rig) | `FigPose.silhouette`: one flat colour, 8 solid passes, no outline, folds, wet/hem lines, face or cast head (outline ellipse instead); shadow takes the same colour. Undefined = unchanged. Byte-identity checked (see QA) |
+| D-4 | `src/painted/worldfog/cast.ts` | `walkBob(walk)` = the rig's bob, used by every authored hang (DF-20261031-painted-walk-bob-authored-hang) |
+| D-4 | `shots/worldfog.tsx` (window plates) | `windowPlate` option `figure` (painted after the outside, before the glass; `f` shot-local) |
+| D-5 | `shots/worldfog.tsx` (S04-SH04) | window plate: `sharedPush(3900)`, lamps 0, FS3 (story 3069+f), `figure: paintKnock` |
+| D-6 | `tests/world-fog.test.ts` | 26 plates, 4005 frames, S04 rows, last painted frame G4004 = S04-SH04 f104, hard cut (MK-WF-DEP-07, `loopBlendFrames` 0); SS-R5.1 pins replaced; new SS-R6 tests: FIG-KNOCK path/veil/knocks, rig-anchor hand-over at the knock raise and at the S04-SH01 pat start (≤ 0.5 px), pat contacts, beam fade |
+
+### Decisions and deviations (recorded)
+1. **Beam fade** (D-3, above): the sheet's look rules override the SS-R5.1 window glow. Mark and Film to confirm.
+2. **Knock walk** is one cycle (two steps) to f34, then held at walk phase 1 (neutral legs, no bob). The sheet says ≈ 2.5 steps; a half-step stop would drop the arm and the legs at f34.
+3. **Knock hand**: the rig's mitten hand has no separate fist/palm shape; the palm at f83–f104 reads as the same hand dot. Limitation, not a deviation of position.
+4. **Veil colour**: the body fades toward `KNOCK_VEIL_BG` = `#6c716b` (pre-overlay), calibrated to the measured pane behind the figure (post-overlay RGB 110, 115, 109; overlays lift the fog colour about +2). The first version (`FOG.veil`) read about 5 levels light at f0 and was replaced.
+5. **Walk bob**: the rig lowers the hip, and the hang with it, by up to 0.018 m during a walk. The first authored raise (f28) and the pat start (f450, walk phase 18/22) missed the plain hang by about 7 px; both now add `walkBob` (test-verified, DF-20261031-painted-walk-bob-authored-hang).
+6. **Shoulder height**: the rig's shoulder is 1.207 m for the 1.70 m cast (chin 1.275 m, four-head figure); Mark's projection JSON uses 1.40 m. Knuckle contacts stay at the sheet's (0.30, 1.50, z). In the render the raised arm reads high, close to head level. Open item 3.
+
+### Measured (projection = `scripts/shot-projection.py` on Mark's two JSON inputs; pixel = rendered frames, `out/qa/…/final/`)
+| Shot / frame | Measure | Value | Sheet |
+| --- | --- | --- | --- |
+| S04-SH01 (s 1, held 1.04 from f434) | worker height | 764 px (s 1); ≈ 795 px at 1.04 | ≥ 480 ✓ |
+| S04-SH01 | worker head top / face y / outline x | (585, 488) / 582 / 486–684 | G3360 head top 488 ± 15 ✓ |
+| S04-SH01 | gap worker–narrator outline | 81 px (s 1), 84 px (1.04) | ≥ 80 ✓ (projection; not isolated in pixels) |
+| S04-SH01 | pat hands / elbows / stack edge | (445, 652) & (445, 795) on carton centres (370, 651) & (370, 792); elbows (482, 747), (495, 792); stack right edge 476 | inside 476 ✓ |
+| S04-SH01 | arm hand-over diff, f493→f494 (arm box 400–520 × 560–1000) | mean 1.26, max 171 (≈ 1–2 px edge, the arm arriving at its hang); f494→f495 mean 0.00 | no pop beyond the arrival |
+| S04-SH03 f278 (G3899) | push s, pane | 1.0826; lamps 0, beam 0 | ≈ 1.083 ✓ |
+| S04-SH04 f34 (G3934) | figure height | 733 px (projection, s 1.092); dark extent 747 px incl. ground shadow | 715–745 ✓ |
+| S04-SH04 f34 | head top y / clearance under transom 409 | 592 / 183 px | ≈ 591; ≥ 150 ✓ |
+| S04-SH04 f39 (G3939) | figure torso luma (box 520–600 × 800–1000) | 46.6 / 255 | S02-SH07 G1311 window box 39.8: Δ 0.027 ≤ 0.05 ✓ |
+| S04-SH04 f39 | contrast vs empty glass (G3899, same box 113.1) | 0.26 | ≥ 0.20 ✓ |
+| S04-SH04 f104 (G4004) | figure scale (s 1.10) | 671 → 738 px (projection) | lead ≥ 480 ✓ |
+| S04-SH04 f11–f34 | smallest visible figure (z 1.16 at f11) | ≈ 548 px (s 1) | lead ≥ 480 whenever visible ✓ |
+| S04-SH04 | knuckle contact (s 1.10) | (687, 676), palm centre (687, 714) | ≈ (687, 676) ✓ |
+
+### QA evidence
+- **Tests:** `node --import tsx --test tests/*.test.ts` (full suite) **246/246 pass** (`out/logs/wfog-ss-r6-npm-test-full.log`); world-fog + painted 47/47 (`out/logs/wfog-ss-r6-tests-6.log`). Baseline before the change: 42/42 for the same two files.
+- **Typecheck** `npx tsc --noEmit` clean (`out/logs/wfog-ss-r6-tsc-final.log`). **Lint** `eslint` on the seven touched files clean (`out/logs/wfog-ss-r6-eslint.log`).
+- **Identity against the SS-R5.1 render (baseline frames, chrome as rendered):** G0, G600, G1500, G2400, G3329 and G2906, G3100 bit-identical to `out/qa/world-fog/ss-r6/baseline/` (PSNR ∞). S04-SH02 moved to G3501: its top 1000 px equal baseline G3340/G3380/G3450/G3459 (∞), so the shift and story keys are right; the only difference in those frames is the caption band (captions.json still at SS-R5.1 times, open item 6). An earlier batch render of G2906/G3100 differed by 108–111 dB from baseline (render-run noise, DF-20261030-render-run-noise); the final re-render is identical to baseline.
+- **Seek parity (stills, not Studio):** frames 4004, 3939, 3934, 3900, 3356 rendered in reverse order in a fresh process equal the forward renders (PSNR ∞). Pure function of G confirmed; Studio interaction (cold load, play/pause, scrub) **not run** (no UI driving here).
+- **Frames:** 66 stills (`--stills --gl=angle`; 64 in the final set plus G2906 and G3100 re-rendered), named by preview labels in `out/handoffs/world-fog/WFOG-EP01-SHORT/frames/` (`<shot>_<view>_f<shot-local>_F<composition>.png`; `BASE-IDENTITY_*` and `S02-SH07_ref_*` for the baseline and rhyme references).
+- **Sheets (viewed):** `review_S04-SH01_pat_f424-f494.png`, `review_S04-SH01_glance_end_and_SH02.png`, `review_S04-SH03_SH04_veil.png`, `review_S04-SH04_knock_f38-f104.png`, `review_rhyme_S02-SH07_vs_S04-SH04.png`, `review_S04-SH03_beam_fade.png` (labelled), and `qa-sheet_S04-SH01_ext_F3330-F3500.png`, `qa-sheet_S04-SH03-SH04_F3621-F4004.png` (`scripts/qa-sheet.sh`). All in `out/handoffs/world-fog/WFOG-EP01-SHORT/`; archived to the store as `projects/WFOG/previews/WFOG-EP01-SHORT-SS-R6/` (78 files).
+- **Visual findings:** veil works (empty glass f0–f10, figure fades in from f11, dark silhouette by f20); the figure reads as an ordinary person with no hood, cart, umbrella or helmet and does not read as the worker assembly (S02-SH07 comparison); S04-SH01 pat sequence and the turn/glance read as intended; the beam glow tapers with the lamps and is gone by f229.
+
+### Open items and questions
+1. **Mark / Film:** confirm the beam fade (D-3 decision; sheet look row "warm halos to zero").
+2. **Mark:** the sheet's narrator "look x −1" (eyes toward the worker) is implemented as +1 (profile convention in `kit/head.ts`: +1 faces the profile side, here −x toward the worker). Confirm.
+3. **Mark:** the projection assumes a 1.40 m shoulder line; the rig's cast shoulder is 1.21 m. The knock hand at 1.50 m reads high. Keep the contact heights (sheet D-4) or ask for lower contacts with a longer forearm.
+4. **Mark:** walk = two steps (deviation 2) and palm = same mitten hand (deviation 3). Accept or ask for a hand-shape change.
+5. **Mark (sheet sc04 baseline row):** `FIG-KNOCK` status is `existing-integrated` in this worktree (picture, uncommitted); scene integration still Editor's. Update the row in the sheet (Mark-owned).
+6. **Editor (captions and audio, not touched by Boss):** `captions.json` still has the SS-R5.1 times. Visible now: VO-16 `สิ่งที่ฉันกลัวเมื่อกี้…` at G3478–G3501 (SS-R6: G3627); VO-17 captions (G3368, G3424, G3493) are missing from the picture pass. Also the S04-SH03 bed (`index.ts` `shotG('S04-SH03', 267)`) should fade G3881–G3899 (SS-R6 cue table), and the knock cues `NEEDS-GEN foley_knuckle-knock-glass_01` at G3939/G3957/G3975 are the Editor's. `public/sfx/NOTICE` in this worktree already carries an Editor r6 entry (not Boss).
+7. **Boss (next):** Studio cold-load/scrub check in an interactive session (not run); S04-SH01 worker outline gap measured from projection only; S04-SH04 veil colour re-check after Editor's final grade.
+
+### Stores and paths
+- Frames and sheets: `out/handoffs/world-fog/WFOG-EP01-SHORT/`; store `~/ReelsStore/projects/WFOG/previews/WFOG-EP01-SHORT-SS-R6/`.
+- Renders (stills only): `out/WFOG-EP01-SHORT/stills/`, logs `out/logs/wfog-ss-r6-*.log`. Baseline set: `out/qa/world-fog/ss-r6/baseline/`.
+- Findings: DF-20261031-painted-walk-bob-authored-hang (new, index row added); DF-20261031-painted-opaque-cast (revalidation line: `FigPose.silhouette`); DF-20261030-render-run-noise and DF-20261031-render-session-drift observed again (see QA).
+
+
+## 2026-10-31 — Codex r1 (SS-R6 fix + integrate)
+
+Scope: user brief `WFOG-EP01-SHORT SS-R6`, active branch `claude/word-fog-premiere-ep1-edit-e91211`, existing uncommitted Boss r11 and Editor r6 work preserved. No commit, push, history change, rule-document edit, new narration or new sound generation. Selected output only: Short, Painted 2D, 4005 frames, hard cut after G4004. Picture acceptance remains the coordinator's; the sheets below are evidence, not a visual-done claim.
+
+### Changes and decisions
+
+| File | Change |
+| --- | --- |
+| `src/painted/worldfog/knock.ts` | P15 single left arm with P01 hang: keep depth contacts f39/f57/f75, add 0.023 m screen-plane recovery (ready x 0.277 → contact x 0.30), six-frame return after knocks 1/2, smaller 0.008 m rebound f75–f77 and settle by f83. Palm stays at x 0.30, y 1.42, z 0 through f104. Raised hand always has 0% veil; its opaque patch lengthens for the palm. Add smooth lean (max 0.006 rad) and breath rise (max 0.003 m), eased from the neutral walk stop f34–f46. Absolute hand targets stay on the glass. Existing depth path, f0–f34 fog reveal, empty-glass frames and shared push unchanged. |
+| `src/painted/kit/cast.ts` | Silhouette-only head: short-hair crown, narrower temples, tapered jaw/chin; still eight solid passes, no facial marks, hood, hat or props. Ordinary cast branch unchanged; removed now-unused `headOutline` import. Only current `FigPose.silhouette` consumer is FIG-KNOCK. |
+| `tests/world-fog.test.ts` | Existing SS-R6 assertions retained. Added assertions in the existing knock test for 10–14 px projected recovery, rebound after all three contacts and x 0.30 palm hold. These test the intended visible motion, which depth-only assertions did not protect. No other assertion relaxed. |
+| `scripts/world-fog/short/placement.json` | 4005 frames; VO-17 t1 clip G3365, gain 1.0 / levelDb 0; VO-16 clip G3624. VO-17 captions [3368,3424), [3424,3493); four VO-16 captions shifted +161 to [3627,3717), [3721,3765), [3774,3829), [3834,3875). All earlier clips/cues unchanged. |
+| `scripts/world-fog/short/narration-lines.json` | Lock VO-17 shot, planned windows/startG and mix; update VO-16 planned windows/startG. Thai wording unchanged. |
+| `scripts/world-fog/short/captions.json`, `WFOG-EP01-SHORT.amplitude.json`, `public/narration/WFOG-EP01-SHORT.mp3` | Regenerated using the existing narration tool (no source edit to narration.py by this pass): 41 cues, 4005 amplitude frames, 133.50 s narration. |
+| `src/videos/world-fog/index.ts` | Knuckle cues G3939/3957/3975 at 0.45, 0.3 s; carton pats G3366/3378 at 0.20, 0.23 s (file peak +1.7 f → G3367.7/3379.7). Bed ends at G3900 with 18 f fade: runtime gain starts falling G3881, reaches zero on G3899. Muffled hush added for SH04 beside unchanged hum, both stop at composition end. No stinger/creature cue. No cue before G3329 changed. |
+| `src/videos/world-fog/assets.lock.json` | `store.py use ... --episode world-fog` locks the two Editor r6 foley masters and refreshes their public copies. The tool takes the episode folder, not composition ID (the initial ID-form call changed nothing). |
+| `scripts/loudness.mjs` | Resumed draft exposed a dynamic-loudnorm timestamp stretch near the ending; rebuild filter output timestamps from emitted samples (`asetpts=N/SR/TB`). Explicit Node `process` import also makes touched-file ESLint pass. Levels, target and cue data unchanged. |
+| `tests/loudness.test.ts` | A 4.5 s real normalization fixture forces dynamic mode and checks AAC packet durations plus decoded length at the cut. Reproduces the clock stretch before the fix and passes after it. Uses system ffmpeg/ffprobe for fixture generation and inspection, the production normalizer for the action under test. |
+
+User brief overrides the original sheet's invisible breath and near-contact-only hand veil: this pass uses the requested slight breathing/weight shift and 0% veil throughout the raised hand gesture. Read P15/P16 source and the pose catalog; no new pose ID. P16 carton acting remains Boss r11's existing build.
+
+### Input recovery and narration evidence
+
+- `python3 -I scripts/store.py fetch`: 92 already present, 0 problems. Line WAVs are outside the lock/cache fetch; restored from `~/ReelsStore/projects/WFOG/audio/lines/`.
+- That folder contains older unsuffixed takes AND the approved r3/r4 takes with SHA suffixes. Initial unsuffixed restore was rejected by speech measurement (VO-16 ended G3792). Replaced VO-01/02/04…16 with their `__<sha8>.wav` versions, whose onset/duration match the Editor r3 table exactly; VO-03a/b use their sole stored versions. VO-15 source `VO-15__d0270a38.wav`; VO-16 `VO-16__71c1bc49.wav`; VO-17 existing picked master `VO-17.wav`. No takes generated.
+- Pat masking proxy: first audible 100 ms of VO-17 is −33.12 dBFS RMS; the 0.20 pat component during that same interval is −44.81 dBFS RMS (11.69 dB lower). User-approved soft pat retained; this is a measurement, not a new human listen.
+- Final compose: VO-15 speech G3044.1–3330.3; VO-17 G3368.4–3486.7; VO-16 G3627.2–3874.7. VO-17 input −16.2 LUFS, −1.5 dBTP, gain 1.0 matches VO-15's established gain. Log `out/logs/wfog-codex-compose.log`.
+- Decoded narration PCM before G3329 is byte-identical to the pre-pass MP3. The amplitude JSON prefix before G3329 also matches the pre-pass (HEAD) file exactly: 0 changed frames, so prior ducking inputs stay unchanged. No early-take substitution survived the final compose.
+- `narration.py compose`, `captions`, `verify`: final verify 17/17 verbatim, 19 clips, 41 cues, 4005 frames; no MISSING CLIP or CAPTION MISMATCH. Exact new caption windows and blank G3493/G3875/G3900/G4004 also asserted against executable `subtitleAt`; `out/logs/wfog-codex-integration-check.log`.
+
+### Checks and measured picture evidence
+
+- `node --import tsx --test tests/*.test.ts > out/logs/wfog-codex-test.log 2>&1; tail -5 ...`: **246/246 pass**, 0 fail.
+- `npx tsc --noEmit`: pass, `out/logs/wfog-codex-tsc.log`. ESLint on knock.ts, kit/cast.ts, video index.ts and world-fog.test.ts: pass, `out/logs/wfog-codex-eslint.log`. Remotion package versions agree (`wfog-codex-versions.log`). `git diff --check`: pass.
+- Projected arm-target travel including the held push: **13.900 / 13.941 / 13.970 px** at f39/f57/f75, contact world point unchanged (0.30,1.50,0); `out/logs/wfog-codex-projection.log`. The rig extends its mitten beyond the target: actual hand-centre travel is **15.288 / 15.333 / 15.365 px** (`wfog-codex-actual-hand.log`), about 1.3 px beyond the brief's approximate 10–14 px range. Kept this small extension rather than changing the rig's existing target/hand contract.
+- New silhouette mask at f34: **738 px** (rows 590–1327, x500:625; max RGB <90 and summed RGB >75 darker than empty G3899; at least 10 mask pixels per row). Measurement JSON `out/qa/world-fog/codex-r1/silhouette-measure.json`. New head top: pixel row **590**, old row **592**. Crown adds about 2 px; physical height remains 1.70 m. Existing r11 projected height 733 px at f34 (738 px at final s1.10); head crown adds about 2–3 px. No whole-body scale change. Transom row ~409, head clearance ~181 px.
+- Before/after stills G0/G600/G1500/G2400/G3329/G3330/G3899 byte-identical (PSNR infinity). G3368/G3500 picture outside the changed caption band identical. G3627 outside y860–1299 differs by only **20 channels, max 1/255**, consistent with recorded ANGLE session noise. B1 intentionally changes caption pixels before G3900; A3 whole-frame identity cannot simultaneously hold at those caption changes. No pre-G3900 painted scene code changed in this pass.
+- Fresh reverse order **4004,3975,3900**: G3975/G3900 byte-identical; G4004 **2 RGB channels, max 1/255, PSNR 113.059 dB**. Repeated G4004 in a further fresh process matches the forward file exactly. This is measured noise, not strict all-frame byte parity; prior finding DF-20261030-render-run-noise applies. Files under `out/qa/world-fog/codex-r1/{before,forward,reverse,repeat}/`; comparison JSON and log retained.
+- Default chrome confirmed in active source: `channelLabel: ทำไมล่ะ`, `progressBar: false`, no WFOG override. Top-left box x60/y60/font30 is clear of transom (~409); label contrast is low on dark plates, unchanged.
+- `caption-zone.py` on six S04 cue samples: **0/6 pass** (G3368 mean/p95 .333/.645; G3424 .329/.625; G3627 .329/.514; G3730 .339/.518; G3790 .347/.499; G3851 .339/.463). Thresholds .25/.40. Full JSON `out/logs/wfog-codex-caption-zone.json`. Existing brightness limitation reported without widening the brief to fix it.
+
+### QA artifacts (coordinator review pending)
+
+All named sheets are under `out/handoffs/world-fog/WFOG-EP01-SHORT/`:
+- `codex_S04-SH04_knock.png`: labelled f34/36/38/39/41/50/56/57/59/74/75/77/83/104; existing label-sheet tool supplies labels, cropped labelled tiles are tiled through `qa-sheet.sh` at 270 px.
+- `codex_head_f34_before-after.png` (left old, right new), plus individual 300×400 head/shoulder crops.
+- `codex_S04-SH01_VO17.png`, `codex_ending.png`, `codex_channel.png`: labelled 270 px tiles. Additional `*_270.png` sheets use `qa-sheet.sh` directly.
+- `codex_caption_boundaries.png`: G3492/3493/3500 and G3874/3875/3900; caption on/off boundaries checked in fresh process.
+- First multi-still pass showed stale text at G3500; a fresh process gave the correct blank G3493/G3500. Original still retained; reviewed sheet uses the fresh boundary check. Final MP4 boundaries must be checked as well.
+- Agent viewed knock, head comparison, VO-17, channel and caption-boundary sheets; no coordinator visual approval inferred.
+
+### Full render, mix and archive
+
+**Final export completed 1 Nov 2026 at about 00:46 ICT**, active checkout `f8788d1a17c4` plus the uncommitted work on `claude/word-fog-premiere-ep1-edit-e91211`. Command: `node scripts/render.mjs WFOG-EP01-SHORT --endings=C_seamless --gl=angle --timeout=180000 > out/logs/wfog-codex-render.log 2>&1`. Four full-resolution scene-cache misses, zero bypasses; final assembly, loudness and automatic archive completed with exit 0. No commit, push or history edit.
+
+- File: `out/WFOG-EP01-SHORT/WFOG-EP01-SHORT_C_seamless.mp4`; ffprobe: **4005 frames, 133.500 s, 1080×1920, 30/1 fps, H.264, AAC 48 kHz** (`out/logs/wfog-codex-final-probe.json`). Last video frame G4004; no ending extension.
+- Independent ffmpeg loudnorm measurement: **−14.32 LUFS, −1.42 dBTP, LRA 11.80** (`out/logs/wfog-codex-final-loudnorm.log`, use `input_*` values of this measurement, not its hypothetical `output_*`). The renderer's own report agrees at −14.3 / −1.4. Dynamic normalization does not reach precisely −14.0, but remains near the delivery target and below the true-peak ceiling.
+- Final AAC clock: **6258 packets, 0 irregular packet durations** (`wfog-codex-final-audio-clock.log`). PCM knock peak frames **G3939/G3957/G3975**, preceding quiet-window RMS −26.34/−29.10/−29.60 dBFS in the mono measurement; knock-frame RMS −15.87/−16.12/−16.03 dBFS. Stereo true peak comes from loudnorm above, not the mono proxy. Complete per-frame results G3860–G4004: `wfog-codex-mix-frames.json`; summary `wfog-codex-mix-summary.log`. Decoded audio **133.482 s**, no samples after G4005; the 18 ms endpoint difference is inside the last video frame. No claim of sample-exact audio length or a human listen.
+- Ending spectrogram: `out/handoffs/world-fog/WFOG-EP01-SHORT/codex_ending_spectrogram.png`, viewed; t0 = G3860 / 128.666667 s, knock peaks about +2.633/+3.233/+3.833 s. Three isolated broadband transients over the low ambient floor; the narration ends near the start of this window.
+- Automatic archive printed **`archived 76, already stored 8, not archived 0`** (this script version prints counts, not a destination path). Resolved its canonical movie by SHA-256 in `~/ReelsStore/manifest.tsv`, then hashed the stored file again: `~/ReelsStore/projects/WFOG/renders/WFOG-EP01-SHORT/f8788d1a17c4-dirty-202611010046/WFOG-EP01-SHORT.mp4`, SHA-256 **`1233d24f01c39cecaddf870c4dd82fa0ca266f5a567ab01511d4c7a31c3c4f3d`**. The ending-named export and the generic MP4 are byte-identical; the store keeps one canonical copy. `out/logs/wfog-codex-final-archive.json` records the lookup.
+- Actual encoded-final sheets, all `qa-sheet.sh` at 270 px and viewed: `codex_final_VO17.png` (G3330/3368/3380/3424/3480/3492/3493/3500/3510), `codex_final_ending.png` (G3860/3874/3875/3899/3900/3939/3957/3975/3983/4004), `codex_final_channel.png` (G0/600/1500/2400/4004), `codex_final_knock.png` (the fourteen requested A4 frames). Read each left-to-right, top-to-bottom; manifests in `out/qa/world-fog/codex-r1/final-check/frames.json`. Caption off boundaries at G3493/G3875 and blank SH04 confirmed in the encoded video; channel label stays top-left, clear of the transom. These sparse encoded-frame sheets supplement the retained labelled full-size-still evidence; they do not replace it or establish continuous playback acceptance.
+- Fresh caption-zone measurement from the encoded final: **0/6 pass**. G3368 mean/p95 **.327/.639**; G3424 **.324/.620**; G3627 **.324/.509**; G3730 **.334/.513**; G3790 **.342/.491**; G3851 **.335/.458**. Thresholds remain .25/.40. `out/logs/wfog-codex-final-caption-zone.json`; `codex_final_caption-zone.png` maps these six frames in that order. Existing brightness failures retained as requested.
+- Final evidence home: `~/ReelsStore/projects/WFOG/previews/SS-R6-Codex-r1-final-check/`. `store.py archive --path ... --project WFOG --kind previews/SS-R6-Codex-r1-final-check` stored 7 media files, 0 unarchived; `store.py import` files the measurement JSON/log sidecars beside them (archive itself handles media only). Local cache folder: `out/handoffs/world-fog/WFOG-EP01-SHORT/codex-r1-final-evidence/`. The earlier labelled still/head evidence remains in `projects/WFOG/previews/SS-R6-Codex-r1/`.
+
+Resume verification (31 Oct, same worktree, after the renderer-rule merge): preserved the existing implementation and the single Codex r1 section rather than repeating the edits. Fresh `store.py fetch`: 94 already present, 0 problems; narration verify: 19 clips / 41 cues / 4005 frames, no mismatch or timing error. Fresh complete test run: **252/252 pass**; TypeScript, touched-file ESLint and `git diff --check` pass. Re-ran `caption-zone.py`: the same six S04 samples fail. Re-ran `paint-bench-compare.mjs` on the retained forward/reverse evidence (aliases under `out/qa/world-fog/codex-r1/compare-*`): three common frames, G4004 differs by two channels at 1/255 (113.1 dB), the other two are identical. These comparisons reuse the retained stills; they are not new still renders. Viewed the retained knock, head, VO-17, ending and channel sheets.
+
+The initial resumed draft using the brief's bare command exited with `TimeoutError ... 33000ms` before producing a segment (`out/logs/wfog-codex-preview-default-backend-failed.log`). Restarted with the painted workflow's required `--gl=angle --timeout=180000`, retaining `--preview` and scene caching. Automatic approval review rejected an attempted SIGTERM as insufficient PID identity evidence; no termination was performed. A subsequent exact-PID check found that process already exited. The ANGLE draft successfully completed segment 1 (G0–G359): ffprobe confirms 360 frames / 12.000 s / 540×960 / 30 fps. Final render and full-mix measurements are pending the complete draft check.
+
+The full ANGLE draft subsequently completed all four scenes (4 rendered, 0 reused), 4005 frames / 133.500 s / 540×960 / 30 fps / AAC 48 kHz. `render.mjs`'s export message reports the unscaled composition size; ffprobe confirms the actual half-size file. Draft sheet extracted from the encoded video: `codex_draft_check.png`, read left-to-right at G3368/3424/3492/3493/3874/3875/3939/3957/3975/3983/4004; viewed. Caption on/off boundaries match the cue table. This is technical review evidence, not coordinator approval or a human listen.
+
+**Audio-clock finding and fix.** The first draft's normalized AAC had a 0.117333 s packet at 130.602667 s (nominal AAC packet 0.021333 s): a **96 ms clock stretch** before the knocks. A plain PCM decode discards the timestamp stretch, so the initial raw-sample knock check falsely looked aligned; packet-clock validation is also required. Actual source sound-only render is 133.500333 s (48 kHz stereo WAV). A 4.5 s synthetic quiet-floor/transient fixture through the same production `normalizeLoudness` reproduces a 0.120000 s packet at 1.600000 s in under one second. `tests/loudness.test.ts` was red on that exact symptom before adding sample-derived timestamps after loudnorm. Logs: `wfog-codex-loudness-red.log`, `wfog-codex-loudness-green.log`, `wfog-codex-audio-clock-{red,green}.log`; scratch investigation under `out/qa/world-fog/codex-r1/`. No narration, SFX placement or gain was changed for this fix.
+
+Rebuilt the draft with `scripts/render.mjs ... --preview --gl=angle --timeout=180000`: **0 of 4 scenes rendered, 4 reused**, `out/logs/wfog-codex-preview-fixed.log`. Normalized result: −14.3 LUFS / −1.4 dBTP / LRA 11.8; packet-clock check has **0 irregular packets**, decoded PCM 133.482 s (18 ms before the video end, less than one frame); knock peaks remain G3939/3957/3975. This small codec/filter endpoint difference is retained as a measured limitation; no audio after the cut. Following the owning-tool fix, the complete suite is **253/253 pass**, TypeScript and ESLint on all touched TypeScript plus `scripts/loudness.mjs` pass; `node --check scripts/loudness.mjs` and diff whitespace check pass. Full-resolution scene-cache render started only after this corrected draft check.
+
+- QA sheets archived: `~/ReelsStore/projects/WFOG/previews/SS-R6-Codex-r1/` (11 files; 0 unarchived), log `out/logs/wfog-codex-preview-archive.log`.
+
+### Deviations and open items
+
+- Coordinator visual acceptance, human motion/audio playback and any decision on the existing caption-band brightness/low-contrast channel label remain separate from automated checks. User's approved knock/pat levels from this brief were used; no new human listening by Codex is claimed.
+- Strict byte identity caveats above: intentional B1 captions and tiny ANGLE render noise; no runtime/shared-renderer refactor attempted.
+- Chrome could not launch in filesystem sandbox; authorized rendering ran outside it. The earlier optional WAV attempt painted frames and was stopped in the interrupted pass. The resumed `soundOnly` probe and required full MP4 have both completed. Logs retained.

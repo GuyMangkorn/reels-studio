@@ -26,3 +26,4 @@
 ## Revalidation history
 
 - 31 Oct 2026: measured on B03-SH01 f100 (kid crop) and B07-SH01 f100 (desk, teacher); no other episode revalidated.
+- 31 Oct 2026 (WFOG SS-R6, Boss r11): the flat dark figure `FIG-KNOCK` uses the opaque path, not the glaze: `FigPose.silhouette` in `src/painted/kit/cast.ts` (8 solid passes, one colour, no outline, folds, face or wet lines; default undefined = unchanged). Measured on S04-SH04 f34: core luma 46.6 against 39.8 for the S02-SH07 silhouette; no fog shows through the body. Status unchanged (workaround).

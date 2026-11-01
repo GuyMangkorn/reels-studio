@@ -196,10 +196,12 @@ def cmd_measure(m):
                 continue
             r = measure_clip(decode(clip))
             results[cid] = r
-            if cid == line['id']:
+            if cid == line['id'] and line.get('planned'):
                 p0, p1 = planned_span(line)
                 plan = f"{p0:>6}-{p1:<6}"
                 plen = f"{p1 - p0:8d}"
+            elif cid == line['id']:  # line with no planned window yet (VO-17 until Mark's retime)
+                plan, plen = f"{'pending':>13}", f"{'-':>8}"
             else:  # VO-03 TTS piece: the SS-R4.1 span covers both pieces; SS-R5 windows are in the Editor r3 notes
                 plan, plen = f"{'split':>13}", f"{'-':>8}"
             segs = ' '.join(f"{a:.2f}-{b:.2f}" for a, b in r['speech_segments'])

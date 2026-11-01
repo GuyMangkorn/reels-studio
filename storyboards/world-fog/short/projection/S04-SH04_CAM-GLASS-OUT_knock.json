@@ -1,0 +1,28 @@
+{
+ "_note": "SS-R6 S04-SH04 knock: unknown figure (1.70 m, cast baseline) walks from WORLD-SHOP (0.05, 0, 1.70) to (0.05, 0, 0.40), left hand knocks the door glass at (0.30, 1.50, 0.00) | camera CAM-GLASS-OUT at s 1 (picture push to s 1.10 about (540, 700) applied in the sheet: p' = c + s (p - c)) | WORLD-SHOP (left-handed) points and camera stored with x negated for this right-handed tool; see index.md#projection-checks",
+ "up": "y",
+ "size": [1080, 1920],
+ "camera": {"position": [0, 1.45, -3.0], "direction": [0, 0, 1], "vfov": 71.197, "shift": [0, -0.13542]},
+ "points": {
+  "fig_head": [-0.05, 1.70, 0.40],
+  "fig_face": [-0.05, 1.49, 0.40],
+  "fig_feet": [-0.05, 0, 0.40],
+  "fig_shoulder_L": [-0.22, 1.40, 0.40],
+  "fig_shoulder_R": [0.12, 1.40, 0.40],
+  "fig_knock": [-0.30, 1.50, 0.0],
+  "fig_knock_off": [-0.30, 1.50, 0.04],
+  "fig_palm_rest": [-0.30, 1.42, 0.0],
+  "fig_elbow_L": [-0.30, 1.22, 0.22],
+  "fig_start_head": [-0.05, 1.70, 1.70],
+  "fig_start_feet": [-0.05, 0, 1.70],
+  "fig_z09_head": [-0.05, 1.70, 0.90],
+  "fig_z09_feet": [-0.05, 0, 0.90],
+  "door_header_ctr": [0, 2.1, 0],
+  "jamb_L": [0.5, 1.0, 0],
+  "jamb_R": [-0.5, 1.0, 0],
+  "glass_ground_x0": [0, 0, 0],
+  "s02_tap_tip": [-0.36, 1.6, 0.0]
+ },
+ "spans": {"figure": ["fig_feet", "fig_head"], "figure_start": ["fig_start_feet", "fig_start_head"], "figure_z09": ["fig_z09_feet", "fig_z09_head"]},
+ "caption_band": [1000, 1248]
+}

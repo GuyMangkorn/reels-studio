@@ -56,6 +56,11 @@ export type FigPose = {
   seated?: boolean;
   /** Interior light (brief VD18): modelled washes, coloured ink, folds, face planes. Undefined = the blockout look. */
   light?: InteriorLight;
+  /**
+   * Flat silhouette (SS-R6 FIG-KNOCK, DF-20261031-painted-opaque-cast): every part, the head outline and the ground shadow are
+   * one opaque colour with 8 solid passes; no inner or outer ink, folds, face, hem or wet lines. Undefined = the cast look.
+   */
+  silhouette?: string;
 };
 
 export type FigAnchors = {
@@ -148,10 +153,11 @@ export const drawFigure = (p: Painter, def: CastDef, g: Pt, unit: number, pose: 
   const Sq = (pts: Pt[]) => pts.map(S);
 
   const L = pose.light;
+  const sil = pose.silhouette;
   let part = 0, line = 0;
   const fill = (color: string, pts: Pt[], outline = true, passes = 4) => {
-    const base = toneOf(color, L);
-    solid(p, seed * 1000 + ++part, base, pts, passes, L ? 0 : 0.07, 0.2);
+    const base = sil ?? toneOf(color, L);
+    solid(p, seed * 1000 + ++part, base, pts, sil ? 8 : passes, sil ? 0.02 : L ? 0 : 0.07, sil ? 0.03 : 0.2);
     if (L) {
       modelPart(p, seed * 1000 + part, base, pts, L);
       // Falloff from the overhead tubes: lower parts sit darker (measured from the shoulders to the ground point).
@@ -159,16 +165,16 @@ export const drawFigure = (p: Painter, def: CastDef, g: Pt, unit: number, pose: 
       const v = clamp01((cy - top) / Math.max(1, g[1] - top));
       if (v > 0.25) glaze(p, 7_900_000 + seed * 1000 + part, VD18.falloff, VD18.falloffOpacity * ((v - 0.25) / 0.75), pts, {border: 0.2, bleed: 0.02});
     }
-    if (outline) inkLine(p, seed * 1000 + ++line, pts, {weight: L ? VD18.lineOuter : 1.0, color: lineOf(base, L)});
+    if (outline && !sil) inkLine(p, seed * 1000 + ++line, pts, {weight: L ? VD18.lineOuter : 1.0, color: lineOf(base, L)});
   };
   /** VD18 fold or crease: a short open ink stroke in a dark shade of the cloth. */
   const fold = (color: string, pts: Pt[]) => {
-    if (L) inkLine(p, seed * 1000 + 400 + ++line, pts, {closed: false, weight: VD18.lineFold, curve: 0.5, color: mixColor(toneOf(color, L), INK, 0.55)});
+    if (L && !sil) inkLine(p, seed * 1000 + 400 + ++line, pts, {closed: false, weight: VD18.lineFold, curve: 0.5, color: mixColor(toneOf(color, L), INK, 0.55)});
   };
 
   // Soft ground shadow under the feet (every human has one). VD18: a wider soft shadow plus a dark occlusion core.
   const sh = ell(g[0], g[1] + 0.01 * unit, (profile ? 0.32 : 0.26) * (L ? 1.15 : 1) * unit, (L ? 0.07 : 0.06) * unit, 16);
-  if (!pose.seated && !L) washAt(p, seed * 1000 + 999, '#1e2324', 70, sh, 0.5, 0.3);
+  if (!pose.seated && !L) washAt(p, seed * 1000 + 999, sil ?? '#1e2324', 70, sh, 0.5, 0.3);
   if (!pose.seated && L) {
     glaze(p, seed * 1000 + 999, '#0e1213', 120, sh, {border: 0.1, bleed: 0.15});
     glaze(p, seed * 1000 + 998, '#07090a', 160, ell(g[0], g[1] + 0.005 * unit, (profile ? 0.22 : 0.2) * unit, 0.03 * unit, 16), {border: 0.1, bleed: 0.08});
@@ -288,8 +294,8 @@ export const drawFigure = (p: Painter, def: CastDef, g: Pt, unit: number, pose: 
     if (coat) {
       const hem = Math.max(kneeV - 0.05, 0.12);
       fill(coat, [...Uq([[-sw + 0.017, shV], [sw - 0.017, shV], [sw + 0.0085, shV - 0.0425]]), S([hw + 0.085 + 0.08 * c, hem]), S([-hw - 0.085 - 0.08 * c, hem]), U([-sw - 0.0085, shV - 0.0425])]);
-      inkLine(p, seed * 1000 + ++line, [U([0, shV - 0.05]), U([0, hip0 - 0.02]), S([0, hem])], {closed: false, weight: 0.9, curve: 0.1});
-      if (pose.wet) for (let i = 0; i < 6; i++) inkLine(p, seed * 1000 + 60 + i, [U([-0.12 + i * 0.05, shV - 0.06 - 0.07 * (i % 3)]), U([-0.12 + i * 0.05, shV - 0.12 - 0.07 * (i % 3)])], {color: '#8fa6b8', weight: 0.8, closed: false});
+      if (!sil) inkLine(p, seed * 1000 + ++line, [U([0, shV - 0.05]), U([0, hip0 - 0.02]), S([0, hem])], {closed: false, weight: 0.9, curve: 0.1});
+      if (pose.wet && !sil) for (let i = 0; i < 6; i++) inkLine(p, seed * 1000 + 60 + i, [U([-0.12 + i * 0.05, shV - 0.06 - 0.07 * (i % 3)]), U([-0.12 + i * 0.05, shV - 0.12 - 0.07 * (i % 3)])], {color: '#8fa6b8', weight: 0.8, closed: false});
     } else {
       fill(o.shirt, Uq(top));
       if (o.jacket) {
@@ -313,7 +319,7 @@ export const drawFigure = (p: Painter, def: CastDef, g: Pt, unit: number, pose: 
         return [lerp(a[0], b[0], bend), lerp(a[1], b[1], bend)];
       };
       fill(coat, [...Uq([[-0.19 * H, shV], [0.14 * H, shV], [0.24 * H, shV - 0.0935], [0.2 * H, hip0]]), hemPt(0.3 * H + 0.06 * bend, hip0 - 0.14), hemPt(-0.32 * H, hip0 - 0.14), ...Uq([[-0.26 * H, hip0], [-0.24 * H, shV - 0.064]])]);
-      if (pose.wet) for (let i = 0; i < 5; i++) inkLine(p, seed * 1000 + 60 + i, [U([-0.06 + i * 0.03, shV - 0.06 - 0.08 * (i % 3)]), U([-0.06 + i * 0.03, shV - 0.13 - 0.08 * (i % 3)])], {color: '#8fa6b8', weight: 0.8, closed: false});
+      if (pose.wet && !sil) for (let i = 0; i < 5; i++) inkLine(p, seed * 1000 + 60 + i, [U([-0.06 + i * 0.03, shV - 0.06 - 0.08 * (i % 3)]), U([-0.06 + i * 0.03, shV - 0.13 - 0.08 * (i % 3)])], {color: '#8fa6b8', weight: 0.8, closed: false});
     } else {
       // The shirt and jacket reach the top of the trousers (hip0 + 0.0255): a shorter hem left a notch at the hip in
       // profile, where the far hanging hand showed through (SS-R3.2 profile hip gap, S03-SH07 and S04-SH02).
@@ -335,7 +341,15 @@ export const drawFigure = (p: Painter, def: CastDef, g: Pt, unit: number, pose: 
   const hc = U([nx + nod[0] * K, chin + CHIN * K - nod[1] * K]);
   const Kpx = K * unit;
   // The head stays upright (decal), only its centre follows the body transform.
-  if (headView === 'front') paintHeadFront(p, seed + 1, hc[0], hc[1], Kpx, pose.face, def.head, t, warm, L);
+  if (sil) {
+    // Bare short-haired human contour: crown volume, temples, tapered jaw and chin. No facial marks.
+    // Only the silhouette branch changes; ordinary cast keeps its existing head rendering.
+    const outline: Pt[] = [[0,-1.08],[0.3,-1.06],[0.56,-0.91],[0.72,-0.64],[0.77,-0.28],
+      [0.73,0.12],[0.68,0.49],[0.52,0.88],[0.3,1.12],[0,1.22],[-0.3,1.12],
+      [-0.52,0.88],[-0.68,0.49],[-0.73,0.12],[-0.77,-0.28],[-0.73,-0.64],[-0.57,-0.91],[-0.28,-1.07]];
+    solid(p, seed + 1, sil, outline.map(([u, v]): Pt => [hc[0] + u * Kpx, hc[1] + v * Kpx]), 8, 0.02, 0.03);
+  }
+  else if (headView === 'front') paintHeadFront(p, seed + 1, hc[0], hc[1], Kpx, pose.face, def.head, t, warm, L);
   else paintHeadSide(p, seed + 1, hc[0], hc[1], Kpx, pose.face, def.head, headView === 'left' ? -1 : 1, t, warm, L);
 
   // ----------------------------------------------------------------- near arms (front: both)
