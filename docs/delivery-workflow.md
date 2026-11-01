@@ -83,8 +83,8 @@ Handoff checks apply to every stage: matching revisions, deliverable ID, covered
 - **Updated** by whoever finishes a step (role agent or coordinator), in the same change that updates the deliverable's `Stage / Next owner` cell. The two must agree; when they differ, `delivery.md` wins and `task.md` is corrected.
 - **Read first** when the user asks for progress ("ทำถึงไหนแล้ว"): answer from the `Now` line and the open steps, and open `delivery.md` only for detail.
 - **Marks:** `[x]` done, `[ ]` open, `[x] … N/A — <reason>` for a step with no subject. Each line is one step plus at most one short note (revision, count, date); link instead of copying.
-- **Per-shot steps** (W3, W5, W6, W7) carry a count, e.g. `12/26 shots passed`; the per-shot verdicts stay on the storyboard review page.
-- For a deliverable whose engine is not painted 2D, W2.2 is `N/A` and W5–W6 are Editor's integration and render review.
+- **Per-shot steps** (W3.3, W5, W6, W7) carry a count, e.g. `12/26 shots passed`; the per-shot verdicts stay on the storyboard review page.
+- For a deliverable whose engine is not painted 2D, W3.1–W3.2 are `N/A` and W5–W6 are Editor's integration and render review.
 
 ```markdown
 # Tasks — <EPISODE>
@@ -100,12 +100,13 @@ Record: [delivery.md](delivery.md) · Updated: <YYYY-MM-DD>, <role>
   - [ ] W1.2 Preaw script
   - [ ] W1.3 Boat fact-check
   - [ ] W1.4 User approves the script
-- [ ] W2 Look
-  - [ ] W2.1 Film brief
-  - [ ] W2.2 Look frames approved
-- [ ] W3 Storyboard
-  - [ ] W3.1 Mark staging + review rows
-  - [ ] W3.2 Storyboard page published
+- [ ] W2 Brief and storyboard
+  - [ ] W2.1 Film brief (text)
+  - [ ] W2.2 Mark staging + review rows
+  - [ ] W2.3 Storyboard page published
+- [ ] W3 Look frames and storyboard pass
+  - [ ] W3.1 Look frames on the page (0/L locations)
+  - [ ] W3.2 Look frames approved (look lock)
   - [ ] W3.3 Storyboard passed (0/N shots)
 - [ ] W4 Voice lock
   - [ ] W4.1 Voice chosen

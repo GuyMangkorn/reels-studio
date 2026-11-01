@@ -13,12 +13,13 @@ Predates the W1–W8 flow (30 Oct 2026): no look frames, no shot-by-shot review 
   - [x] W1.2 Preaw script — `BLOOP-SCRIPT-R5`
   - [x] W1.3 Boat fact-check — `BLOOP-FACTCHECK-R6` (R7 addendum on B10 ending)
   - [x] W1.4 User approves the script — R5, 2026-10-30
-- [ ] W2 Look
+- [ ] W2 Brief and storyboard
   - [x] W2.1 Film brief — `BLOOP-BRIEF-R8` (user approved B10 ending, R5)
-  - [ ] W2.2 Look frames approved — not recorded as a separate step
-- [ ] W3 Storyboard — older flow: Mark sheets went R1 to R8, no review page recorded
-  - [x] W3.1 Mark staging + review rows — `BLOOP-SHEETS-R8`, 13 shots
-  - [ ] W3.2 Storyboard page published — not recorded
+  - [x] W2.2 Mark staging + review rows — `BLOOP-SHEETS-R8`, 13 shots
+  - [ ] W2.3 Storyboard page published — not recorded
+- [ ] W3 Look frames and storyboard pass — older flow: Mark sheets went R1 to R8, no review page recorded
+  - [ ] W3.1 Look frames on the page — remaining look frames go on the storyboard page
+  - [ ] W3.2 Look frames approved (look lock) — not recorded as a separate step
   - [ ] W3.3 Storyboard passed — not recorded
 - [x] W4 Voice lock
   - [x] W4.1 Voice chosen — Gemini Charon, take 3 (user, 2026-10-30)

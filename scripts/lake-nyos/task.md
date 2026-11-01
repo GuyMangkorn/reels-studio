@@ -11,12 +11,13 @@ Record: [delivery.md](delivery.md) · Updated: 2026-11-02, coordinator (backfill
   - [x] W1.2 Preaw script — NYOS-SCRIPT-R2
   - [x] W1.3 Boat fact-check — NYOS-FACTCHECK-R2 ready-for-storyboard
   - [ ] W1.4 User approves the script — not recorded
-- [ ] W2 Look
+- [ ] W2 Brief and storyboard
   - [x] W2.1 Film brief — NYOS-BRIEF-R3, written before script R2
-  - [ ] W2.2 Look frames approved — 1/2 (LF-A approved, LF-S v2 awaiting)
-- [ ] W3 Storyboard
-  - [ ] W3.1 Mark staging + review rows
-  - [ ] W3.2 Storyboard page published
+  - [ ] W2.2 Mark staging + review rows
+  - [ ] W2.3 Storyboard page published
+- [ ] W3 Look frames and storyboard pass
+  - [ ] W3.1 Look frames on the page — remaining look frames go on the storyboard page
+  - [ ] W3.2 Look frames approved (look lock) — 1/2 (LF-A approved, LF-S v2 awaiting)
   - [ ] W3.3 Storyboard passed (0/N shots) — shot count not recorded
 - [ ] W4 Voice lock
   - [x] W4.1 Voice chosen — Sulafat (user pick by rule, not heard)
@@ -41,12 +42,13 @@ Record: [delivery.md](delivery.md) · Updated: 2026-11-02, coordinator (backfill
   - [x] W1.2 Preaw script — NYOS-LSCRIPT-R2
   - [x] W1.3 Boat fact-check — NYOS-LFACTCHECK-R1 + recheck R2
   - [ ] W1.4 User approves the script — not recorded
-- [ ] W2 Look
+- [ ] W2 Brief and storyboard
   - [ ] W2.1 Film brief
-  - [ ] W2.2 Look frames approved
-- [ ] W3 Storyboard
-  - [ ] W3.1 Mark staging + review rows
-  - [ ] W3.2 Storyboard page published
+  - [ ] W2.2 Mark staging + review rows
+  - [ ] W2.3 Storyboard page published
+- [ ] W3 Look frames and storyboard pass
+  - [ ] W3.1 Look frames on the page
+  - [ ] W3.2 Look frames approved (look lock)
   - [ ] W3.3 Storyboard passed (0/N shots)
 - [ ] W4 Voice lock
   - [ ] W4.1 Voice chosen

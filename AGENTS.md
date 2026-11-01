@@ -50,7 +50,7 @@ The **coordinator** is the chat session the user talks to (Claude Code or Codex)
 - selects deliverables, style profile and tier;
 - invokes role agents for the assigned scope (Claude Code: the `Agent` tool with `subagent_type` set to the role name; Codex: the custom agent of that name);
 - passes matching revisions;
-- publishes the [user storyboard review page](docs/mark-storyboard-workflow.md#user-storyboard-review-page) whenever Mark returns a `ready-for-dev` scene-sheet revision, built with `scripts/storyboard-page/build.py` from Mark's `review-rows.json`, and relays the verdicts back;
+- publishes the [user storyboard review page](docs/mark-storyboard-workflow.md#user-storyboard-review-page) whenever Mark returns a `ready-for-dev` scene-sheet revision or Film adds look frames, built with `scripts/storyboard-page/build.py` from Mark's `review-rows.json`, and relays the verdicts back;
 - follows the [agent invocation defaults](docs/delivery-workflow.md#agent-invocation): whole stage per call (shot groups for painting and rendering), inline mechanical edits, separate checking.
 
 Role configs describe roles. They install no automatic runner and authorize no cross-chat messaging. A role agent never invokes the next role on its own.

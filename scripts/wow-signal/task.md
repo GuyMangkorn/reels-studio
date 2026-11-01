@@ -11,12 +11,13 @@ Record: [delivery.md](delivery.md) · Updated: 2026-11-02, coordinator (backfill
   - [x] W1.2 Preaw script — R3
   - [ ] W1.3 Boat fact-check — R1 needs-qualification done; R3 recheck pending
   - [ ] W1.4 User approves the script
-- [ ] W2 Look
+- [ ] W2 Brief and storyboard
   - [ ] W2.1 Film brief
-  - [ ] W2.2 Look frames approved
-- [ ] W3 Storyboard
-  - [ ] W3.1 Mark staging + review rows
-  - [ ] W3.2 Storyboard page published
+  - [ ] W2.2 Mark staging + review rows
+  - [ ] W2.3 Storyboard page published
+- [ ] W3 Look frames and storyboard pass
+  - [ ] W3.1 Look frames on the page
+  - [ ] W3.2 Look frames approved (look lock)
   - [ ] W3.3 Storyboard passed (0/N shots)
 - [ ] W4 Voice lock
   - [ ] W4.1 Voice chosen

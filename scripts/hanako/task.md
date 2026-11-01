@@ -11,12 +11,13 @@ Record: [delivery.md](delivery.md) · Updated: 2026-11-02, coordinator (backfill
   - [x] W1.2 Preaw script — HANAKO-SHORT-SCRIPT-R2
   - [x] W1.3 Boat fact-check — R2 recheck, verification-incomplete
   - [x] W1.4 User approves the script — accepted 2026-10-30
-- [ ] W2 Look
+- [ ] W2 Brief and storyboard
   - [x] W2.1 Film brief — FILM-R4 ready-for-mark ([film-brief.md](short/film-brief.md))
-  - [ ] W2.2 Look frames approved — 3/5 (LF01–LF03 approved; LF04, LF05 not)
-- [ ] W3 Storyboard
-  - [x] W3.1 Mark staging + review rows — [review-rows.json](short/review-rows.json)
-  - [ ] W3.2 Storyboard page published — SCENE-R3 page pending; R2 sheet was reviewed
+  - [x] W2.2 Mark staging + review rows — [review-rows.json](short/review-rows.json)
+  - [ ] W2.3 Storyboard page published — SCENE-R3 page pending; R2 sheet was reviewed
+- [ ] W3 Look frames and storyboard pass
+  - [ ] W3.1 Look frames on the page — remaining look frames go on the storyboard page
+  - [ ] W3.2 Look frames approved (look lock) — 3/5 (LF01–LF03 approved; LF04, LF05 not)
   - [ ] W3.3 Storyboard passed (0/14 shots) — R3 verdicts not recorded
 - [ ] W4 Voice lock
   - [x] W4.1 Voice chosen — Gemini S3
