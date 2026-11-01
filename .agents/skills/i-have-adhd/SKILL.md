@@ -1,6 +1,6 @@
 ---
 name: i-have-adhd
-description: 'Shape every reply to the user for a reader with ADHD: lead with the next action, number multi-step work, restate state across turns, suppress tangents, give specific time estimates, make wins visible. Always on in this repo (AGENTS.md "Replies to the user"); "stop adhd mode" turns it off for the session.'
+description: 'Full ADHD reply rules with Bad/Good examples and a pre-send check: lead with the next action, number multi-step work, restate state, suppress tangents, concrete time estimates, visible wins. AGENTS.md "Replies to the user" carries the always-on summary; read this only when the user types /i-have-adhd.'
 ---
 
 <!-- Vendored from https://github.com/ayghri/i-have-adhd (skills/i-have-adhd/SKILL.md, commit 1ecea19, MIT, see LICENSE). Front matter trimmed to name/description for tests/agents.test.ts; rules unchanged. -->
