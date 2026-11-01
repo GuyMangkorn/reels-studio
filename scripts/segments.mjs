@@ -2,16 +2,18 @@
 // $REELS_STORE/cache/segments/<CompositionId>/<key>.mp4 (muted; outside every worktree, so other checkouts reuse it); the sound is rendered once for the whole video; both are joined.
 // A segment is re-rendered only when its key changes. The key covers what that scene's frames can show: the scene and
 // its neighbours (entry transitions, loop blend), its start and the video length, every non-timeline prop except the
-// sound beds, the shared source code under src/ (episode folders excluded: their output reaches the frames as props),
-// the asset locks and the render options. Editing a caption, overlay or SFX cue re-renders only that scene; changing a
+// sound beds, the selected project's transitive runtime source and media (including shared art),
+// its asset lock and the render options. Project declarations reach frames as props. Editing a caption or overlay
+// re-renders that scene and its neighbours; changing a
 // duration, the narration or shared code re-renders every scene after it, or all.
 import {renderMedia} from '@remotion/renderer';
-import {createHash} from 'node:crypto';
-import {existsSync, globSync, readdirSync, readFileSync, statSync} from 'node:fs';
+import {createHash, randomUUID} from 'node:crypto';
+import {existsSync, globSync} from 'node:fs';
 import {mkdir, rename, rm, writeFile} from 'node:fs/promises';
 import os from 'node:os';
 import path from 'node:path';
 import {spawnSync} from 'node:child_process';
+import {fileURLToPath} from 'node:url';
 
 /** Segment folder of a composition in the asset store (same root as scripts/store.py). */
 export const segmentDir = (id) => path.join(process.env.REELS_STORE || path.join(os.homedir(), 'ReelsStore'), 'cache', 'segments', id);
@@ -29,18 +31,18 @@ export const sceneRanges = (timeline, fps) => {
   });
 };
 
-const filesUnder = (p) => (statSync(p).isDirectory() ? readdirSync(p).sort().flatMap((name) => filesUnder(path.join(p, name))) : [p]);
-
-/** Hash of the code and assets every frame may depend on. Episode folders under src/videos/ only build props. */
-export const sourceHash = (root = '.') => {
-  const hash = createHash('sha256');
-  const files = [
-    ...filesUnder(path.join(root, 'src')).filter((f) => !/^src\/videos\/[^/]+\//.test(path.relative(root, f))),
-    path.join(root, 'package-lock.json'),
-    ...globSync('src/videos/*/assets.lock.json', {cwd: root}).sort().map((f) => path.join(root, f)),
-  ];
-  for (const file of files) hash.update(path.relative(root, file)).update(readFileSync(file));
-  return hash.digest('hex');
+/** Content digest of this project's transitive inputs, including shared art. Unknown inputs bypass reuse. */
+export const sourceHash = (root = '.', composition, inputProps = {}) => {
+  const run = spawnSync(process.execPath, ['--import', 'tsx', fileURLToPath(new URL('./render-inputs.ts', import.meta.url))], {
+    input: JSON.stringify({root: path.resolve(root), id: composition?.id, props: {...composition?.props, ...inputProps}}),
+    encoding: 'utf8', timeout: 60000, maxBuffer: 1024 * 1024,
+  });
+  try {
+    const result = JSON.parse(run.stdout);
+    if (run.status === 0 && /^[a-f0-9]{64}$/.test(result.hash)) return result.hash;
+    console.warn(`Scene cache reuse bypassed: ${result.error ?? 'render input discovery failed'}`);
+  } catch {console.warn('Scene cache reuse bypassed: render input helper did not complete');}
+  return createHash('sha256').update(randomUUID()).digest('hex');
 };
 
 /** One key per scene, in timeline order. `options` are the render settings that change pixels. */
@@ -71,8 +73,8 @@ const ffmpeg = (args) => {
  */
 export const renderSegmented = async ({render, options, workDir, output, log}) => {
   const {composition, inputProps} = render;
-  const keys = segmentKeys(composition, inputProps, options, sourceHash());
-  const ranges = sceneRanges(composition.props.timeline, composition.fps);
+  const keys = segmentKeys(composition, inputProps, options, sourceHash('.', composition, inputProps));
+  const ranges = sceneRanges({...composition.props, ...inputProps}.timeline, composition.fps);
   const segDir = segmentDir(composition.id);
   await mkdir(segDir, {recursive: true});
   await mkdir(workDir, {recursive: true});
