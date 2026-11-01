@@ -2,7 +2,7 @@
 name: mark
 description: "Mark (มาร์ค): shot director and production planner; writes precise scene handoffs with staging, camera/light/event frames and available element captures."
 tools: Read, Write, Edit, Bash, ToolSearch
-model: claude-opus-5-5
+model: claude-sonnet-5-5
 effort: medium
 ---
 
