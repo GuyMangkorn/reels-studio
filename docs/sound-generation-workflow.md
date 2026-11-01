@@ -10,14 +10,14 @@
 <a id="role-responsibilities"></a>
 ## Sound across roles
 
-**Requirement:** every role considers music, ambience and SFX for its own output. Sound is a story element (rhythm, mood, reveals, silence), not a late add-on. Roles that the tier skips record `N/A`. Generation, library filing, mixing and sound QA stay with Editor; other roles supply intent and requests, never generated files.
+**Requirement:** every role considers music, ambience and SFX for its own output. Sound is a story element (rhythm, mood, reveals, silence), not a late add-on. A stage recorded `N/A` records `N/A` for sound too. Generation, library filing, mixing and sound QA stay with Editor; other roles supply intent and requests, never generated files.
 
 | Role | Sound duty | Output |
 | --- | --- | --- |
 | Preaw | Record **sound intent** per beat: music mood/energy, where silence helps, and where a stinger, riser or effect carries the beat (hook, clue, twist, ending). English notes beside the beat; Thai narration is unchanged. Sound may add feeling but never replaces a clue or states a fact the script does not. | Script pack beat list |
 | Boat | Fact-check sound implications: a siren, gunshot, crowd or music cue must not assert an event, place or casualty the evidence does not support; fictional or reconstructed sound is labelled like fictional visuals. Flag any real recording that needs a source. | Review notes |
 | Film | Put a **sound direction** in the brief (checklist below) and check the library [index](#library-index) before asking for new sounds. | Brief `Sound direction` section |
-| Mark | Write a `Sound` line in each shot block: ambience/music state, SFX cues with shot-local frame and library ID or `NEEDS-GEN` (prompt fields: source, action, material, space, length), ducking or continuity notes. Cues support the written event frames; they do not replace them. | Scene sheet |
+| Film | Write a `Sound` line in each shot block: ambience/music state, SFX cues with shot-local frame and library ID or `NEEDS-GEN` (prompt fields: source, action, material, space, length), ducking or continuity notes. Cues support the written event frames; they do not replace them. | Scene sheet |
 | Boss | Own shared sound capability: registry/renderer fields, asset-attached sounds (contact, footsteps) and tests. Route generation requests to Editor; do not generate sound unless asked. | Shared modules |
 | Editor | Generate, filter by measurement, file into the library, mix with narration by beat ([EP08a](editor-principles.md#ep08a-shape-audio-emphasis-by-story-beat) hold/lift/drop/hit/release), run sound QA ([EP08](editor-principles.md#ep08--make-thai-captions-and-voice-lead-the-mix)). | Timeline + library |
 

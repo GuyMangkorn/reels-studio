@@ -1,7 +1,7 @@
 <a id="หลัก-cinema-สำหรับ-film-และ-mark"></a>
-# Cinematography principles for Film and Mark
+# Cinematography principles for Film
 
-Sources checked on 26 October 2026. Film uses this reference for visual briefs; Mark develops the scene sheets. These are decision tools for the channel's stylized work, not a formula requiring the same lens, palette, shot count or technique in every scene. Roles and workflow: [film-visual-brief-workflow.md](film-visual-brief-workflow.md).
+Sources checked on 26 October 2026. Film uses this reference for visual briefs and scene sheets. These are decision tools for the channel's stylized work, not a formula requiring the same lens, palette, shot count or technique in every scene. Roles and workflow: [film-visual-brief-workflow.md](film-visual-brief-workflow.md).
 
 <a id="หลักฐานต้นทาง"></a>
 ## Primary-source evidence

@@ -164,7 +164,7 @@ Episode-specific files are under [Episodes](#episodes); shared topics come first
 
 **Read when:** selecting deliverables, style profile, tier, delivery record, agent invocation, or finishing a PR.
 
-- Docs: [delivery-workflow](delivery-workflow.md) ([style profile](delivery-workflow.md#style-profile), [visual engine](delivery-workflow.md#visual-engine), [pipeline tiers](delivery-workflow.md#pipeline-tiers), [agent invocation](delivery-workflow.md#agent-invocation), [delivery record](delivery-workflow.md#delivery-record-and-handoff-checks)), [production-requirements](production-requirements.md), [editor-workflow](editor-workflow.md), [editor-principles](editor-principles.md), [contributing](contributing.md); original design [spec](superpowers/specs/2026-10-27-video-delivery-workflow-design.md) and [plan](superpowers/plans/2026-10-27-video-delivery-workflow.md)
+- Docs: [delivery-workflow](delivery-workflow.md) ([style profile](delivery-workflow.md#style-profile), [visual engine](delivery-workflow.md#visual-engine), [pipeline](delivery-workflow.md#pipeline-tiers), [task file](delivery-workflow.md#task-file), [agent invocation](delivery-workflow.md#agent-invocation), [delivery record](delivery-workflow.md#delivery-record-and-handoff-checks)), [production-requirements](production-requirements.md), [editor-workflow](editor-workflow.md), [editor-principles](editor-principles.md), [contributing](contributing.md); original design [spec](superpowers/specs/2026-10-27-video-delivery-workflow-design.md) and [plan](superpowers/plans/2026-10-27-video-delivery-workflow.md)
 - Per episode: `scripts/<episode>/delivery.md`, `build-notes.md`
 
 ## Agents, roles and tooling
@@ -172,7 +172,7 @@ Episode-specific files are under [Episodes](#episodes); shared topics come first
 **Read when:** changing a role config, agent instructions, hooks, usage measurement or Codex offload.
 
 - Docs: [AGENTS.md](../AGENTS.md), [CLAUDE.md](../CLAUDE.md), [GLOSSARY.md](../GLOSSARY.md), [README](../README.md), [scripts/README.md](../scripts/README.md), [workflow audits](reviews/2026-10-27-catbox-workflow-audit.md), [handoff migration](reviews/2026-10-27-written-handoff-migration.md)
-- Configs: [.claude/agents/](../.claude/agents/mark.md), [.codex/agents/](../.codex/agents/mark.toml), [.claude/settings.json](../.claude/settings.json), [package.json](../package.json)
+- Configs: [.claude/agents/](../.claude/agents/film.md), [.codex/agents/](../.codex/agents/film.toml), [.claude/settings.json](../.claude/settings.json), [package.json](../package.json)
 - Skills: [codex](../.agents/skills/codex/SKILL.md) (Claude copy [.claude/skills/codex](../.claude/skills/codex/SKILL.md); [codex-run.sh](../scripts/codex-run.sh))
 - This map: [context-map.md](context-map.md)
 - Scripts: [usage-report.py](../scripts/usage-report.py), [hooks/agent-run-log.py](../scripts/hooks/agent-run-log.py), [git-hooks/post-checkout](../scripts/git-hooks/post-checkout), [check-links.py](../scripts/check-links.py), [context-map.py](../scripts/context-map.py)

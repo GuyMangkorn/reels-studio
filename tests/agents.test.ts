@@ -18,7 +18,7 @@ const readCodex = (role: string) => {
 test('every role exists for Claude Code and Codex', () => {
   const codex = readdirSync('.codex/agents').filter(file => file.endsWith('.toml')).map(file => file.replace(/\.toml$/, ''));
   assert.deepEqual([...roles].sort(), [...codex].sort());
-  assert.ok(roles.length >= 6);
+  assert.ok(roles.length >= 5);
 });
 
 test('Claude and Codex role instructions are identical', () => {

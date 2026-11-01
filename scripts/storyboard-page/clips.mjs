@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// Review clips for the storyboard page (shot-by-shot review, T4). For each named shot in Mark's review rows it renders
+// Review clips for the storyboard page (shot-by-shot review, T4). For each named shot in Film's review rows it renders
 // the shot plus about 1 s either side through the scene cache (the same cache keys as scripts/render.mjs, so an
 // approved final is reused at delivery), writes a 360x640 proxy, and records it in the rows as the shot's clip.
 //

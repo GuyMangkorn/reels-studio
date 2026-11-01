@@ -14,7 +14,7 @@ For any capability, record `existing-integrated`, `exists-unintegrated`, `missin
 
 | Path | Responsibility |
 | --- | --- |
-| `storyboards/` | Written Film briefs, Mark scene sheets and sequence indices per selected deliverable; retained directory name |
+| `storyboards/` | Written Film briefs, scene sheets and sequence indices per selected deliverable; retained directory name |
 | `scripts/` | Delivery records, per-deliverable timelines/narration/cues and render helpers under [delivery workflow](delivery-workflow.md) |
 | `src/videos/<episode>/` | Per-episode composition registry (`VideoDefinition`: ID, format, timeline, ending, narration) and episode-only components |
 | `src/scenes/` | Scene contracts, validation, sequencing and shared staging |

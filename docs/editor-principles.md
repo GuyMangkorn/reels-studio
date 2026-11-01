@@ -14,7 +14,7 @@
 | [Remotion toolkit](remotion-toolkit.md) | Package/API preflight, shared integration, clock choice, captions, effects, transitions and sound. |
 | [Visual and runtime QA](boss-asset-workflow.md#visual-and-runtime-qa-before-push) | Studio/seek/render checks, contact sheets, event-boundary frames and continuous sequence review. |
 
-**Ownership:** Film owns the medium, coordinate and projection baseline. Mark owns the written scene handoff: exact shots, staging, camera and timing; storyboard drawings are not required. Boss owns reusable assets and shared renderer capabilities. Editor owns executable timeline/scene integration, editing, narration/audio/captions/effects/transitions and runtime QA. Return material visual-plan or reveal changes to the relevant owner and synchronize revisions before integrating them.
+**Ownership:** Film owns the medium, coordinate and projection baseline. Film owns the written scene handoff: exact shots, staging, camera and timing; storyboard drawings are not required. Boss owns reusable assets and shared renderer capabilities. Editor owns executable timeline/scene integration, editing, narration/audio/captions/effects/transitions and runtime QA. Return material visual-plan or reveal changes to the relevant owner and synchronize revisions before integrating them.
 
 ## EP02 — Cut for a change the viewer needs
 
@@ -96,7 +96,7 @@
 <a id="ep08a-shape-audio-emphasis-by-story-beat"></a>
 ## EP08a — Shape audio emphasis by story beat
 
-**Ownership:** Editor decides and executes audio emphasis; no separate audio role is needed. Preaw's script and Mark's handoff state *where* a beat matters (hook, clue, reveal, payoff, quiet hold) through the `mix intent` field; Editor chooses *how* it sounds. A missing level change that needs new runtime behavior goes to Boss.
+**Ownership:** Editor decides and executes audio emphasis; no separate audio role is needed. Preaw's script and Film's handoff state *where* a beat matters (hook, clue, reveal, payoff, quiet hold) through the `mix intent` field; Editor chooses *how* it sounds. A missing level change that needs new runtime behavior goes to Boss.
 
 **Default:** Emphasis comes from **contrast and change**, not absolute loudness. A beat feels important because the sound around it changed: it got quieter, emptier or denser just before, or the bed dropped out. Raising everything raises nothing.
 

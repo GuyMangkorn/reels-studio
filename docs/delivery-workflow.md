@@ -6,8 +6,8 @@
 
 1. Read the user's request and the existing episode delivery record. Reuse an explicit selection; do not ask again when the user already chose the formats or supplied a scoped revision request.
 2. If the selection or [style profile](#style-profile) is missing or materially ambiguous, ask with the harness's structured-question tool: `AskUserQuestion` in Claude Code, `request_user_input_async` in Codex; if neither exists, ask in chat. Ask only for what the prompt leaves open, in one call in the user's language: the **selection** with three choices, **both**, **Short only**, **Long only**, showing the duration targets from production requirements (Thai example: “หัวข้อนี้ต้องการทำทั้ง Shorts และ YouTube แบบยาว หรือเลือกแบบใดแบบหนึ่ง?”), the **style** (genre/medium, voice, music) and the **target length** when none is stated or implied, and whether the user has a **look reference** (image, link or earlier episode) when the medium is illustrated or 3D. For an animated or illustrated deliverable, the same call also asks the [visual engine](#visual-engine) unless the prompt or record names one. Do not ask about a choice the prompt or the delivery record already settles. A sent question, preselected option or elapsed wait is not an answer. Continue independent research while waiting; begin format-dependent writing/scene sheets only after the selection is resolved.
-3. Record the answer or existing instruction in `scripts/<episode>/delivery.md`: selection, style profile and pipeline tier, evidence of the user's choice, deliverable IDs, target durations and scope. `short`, `long` and `both` are authoring labels, not runtime fields. Default counts are one standalone Short and one Long when both are selected. A chapter series, multiple Shorts or additional edits require explicit scope; selecting both does not make every Long chapter a Short.
-4. Route each selected deliverable through the [pipeline tier](#pipeline-tiers) in its record; the Full tier is Boat research → Preaw script → Boat fact-check → Film brief → Mark written scene sheets → Boss shared assets/capabilities → Editor integration/editing. Shared research may feed both. A scriptwriting-only assignment ends with editorial handoff; selection does not authorize automatic downstream production, agent execution or cross-chat messaging.
+3. Record the answer or existing instruction in `scripts/<episode>/delivery.md`: selection, style profile and pipeline (`Full`), evidence of the user's choice, deliverable IDs, target durations and scope. `short`, `long` and `both` are authoring labels, not runtime fields. Default counts are one standalone Short and one Long when both are selected. A chapter series, multiple Shorts or additional edits require explicit scope; selecting both does not make every Long chapter a Short.
+4. Create `scripts/<episode>/task.md` ([task file](#task-file)) and route each selected deliverable through the [pipeline](#pipeline-tiers): Boat research → Preaw script → Boat fact-check → Film brief and written scene sheets → Boss shared assets/capabilities → Editor integration/editing. Shared research may feed both. A scriptwriting-only assignment ends with editorial handoff; selection does not authorize automatic downstream production, agent execution or cross-chat messaging.
 
 Selection is complete when the record identifies the selected deliverables and the instruction resolving the choice. An explicit custom duration/scope overrides defaults with its reason recorded. For a new version of existing production, preserve existing IDs and evidence; record a migration map before changing paths or IDs. Workflow updates alone do not migrate historical episodes.
 
@@ -40,7 +40,7 @@ Record the chosen values in `delivery.md` as a compact block.
 | Character poses | Pick from the standard pose sheet P01–P45 and the template cast, and cite IDs as a [casting line](character-proportion-principles.md#cp-casting-line); a new pose is proposed to Boss, not made one-off | [CP-P12](character-proportion-principles.md#cp-p-pose-sheet); `src/painted/kit/poses.ts` |
 | Camera | Mostly eye level and observational; slow drift or push on every shot; repeated fixed vantages where the repetition carries the story; the torch reveal is the quality reference | WORLD FOG brief "Camera language", VD10, VD12 |
 | Voice | Gemini TTS with per-line emotion ([gemini-tts skill](../.agents/skills/gemini-tts/SKILL.md)); narrator Sulafat (female) or Orus (male), "brisk natural pace, no long pauses". Minor characters may stay on Edge TTS ([voice-tuning](../.agents/skills/voice-tuning/SKILL.md)) | WORLD FOG delivery record, 30 Oct 2026 casting |
-| New assets | Build every new character, prop, set piece or UI element reusable from the start: it goes in the shared painted kit (`src/painted/kit/`, introduced by the shared-kit work), takes content, colours and lighting as parameters, and is listed in the kit catalog so Film and Mark pick it by picture. Story timing and episode-only logic stay in the episode folder. Existing episode modules are not retrofitted (user decision, 30 Oct 2026). | Kit README and catalog |
+| New assets | Build every new character, prop, set piece or UI element reusable from the start: it goes in the shared painted kit (`src/painted/kit/`, introduced by the shared-kit work), takes content, colours and lighting as parameters, and is listed in the kit catalog so Film pick it by picture. Story timing and episode-only logic stay in the episode folder. Existing episode modules are not retrofitted (user decision, 30 Oct 2026). | Kit README and catalog |
 | Recurring cast | **Film decides per video** whether a character in the brief is an existing recurring character or a new one, and records it as a `VD` decision with the reason (story fit, age, sex, role). Reuse is a choice, not a duty: the cast has no male character yet, so a story that needs one gets a new character. A reused character keeps the same head and body so the viewer knows them on sight; only clothes, accessories and props change. Model each as a cast entry (head style, build, height) plus a swappable outfit, as `CastDef` already separates `head` and `outfit`, never as a per-episode redraw. A new character that is likely to return is added to the kit cast through the [look check](film-visual-brief-workflow.md#look-check); changing a recurring character's head or body is a [look change](film-visual-brief-workflow.md#look-change) and needs the user's approval. | `src/painted/worldfog/cast.ts` (to `src/painted/kit/` in the shared-kit phase 2a); [look check](film-visual-brief-workflow.md#look-check) |
 | Thumbnails | Reuse an earlier thumbnail when it already shows the beat's framing; draw a new one only where none fits | Applies once the Film thumbnail sheet is adopted |
 
@@ -61,17 +61,67 @@ The [voice sample](#style-profile) requirement still applies: a default voice is
 
 Selecting several options means a mix; the brief then states which engine owns each set, character, prop and effect. The harness's free-text answer covers any engine the user names themself. An engine marked `exists-unintegrated` makes its integration a Boss dependency, recorded before Editor work. Re-check the runtime status in the active checkout before relying on this table.
 
-## Pipeline tiers
+<a id="pipeline-tiers"></a>
+## Pipeline
 
-Choose the lightest tier whose outputs the deliverable needs, record it in `delivery.md` and mark skipped stages `N/A` with the reason. Skipping is a recorded scope decision, not a missing handoff.
+**Requirement (user, 2 Nov 2026):** every video deliverable runs the full pipeline. There are no lighter tiers: the Light and Edit-only tiers are retired.
 
-| Tier | Use when | Stages |
-| --- | --- | --- |
-| **Full** | New illustrated story with staging, factual claims or twists | Boat research → Preaw script → Boat fact-check → Film brief → Mark staging (VO-relative timing) + first [storyboard page](mark-storyboard-workflow.md#user-storyboard-review-page) → Editor [voice lock](#voice-lock) → Mark timed scene sheets → Boss assets → Editor |
-| **Light** | Short or simple video from a brief, footage-led or typographic edit with a script | Preaw script (Boat fact-check only when the profile has factual claims) → Film brief (medium, look, music, caption plan; one page) + first [storyboard page](mark-storyboard-workflow.md#user-storyboard-review-page) → Editor. Mark's scene sheet is replaced by a timed shot list inside the Film brief, timed after the [voice lock](#voice-lock); Boss only for named capability gaps |
-| **Edit-only** | The user supplies footage/images/audio and an edit brief | Editor directly ([direct intake](editor-workflow.md#direct-intake)); Boss only for named capability gaps. A script, if wanted, is Preaw's |
+Boat research → Preaw script → Boat fact-check → Film brief → Film storyboard pass (VO-relative timing) + first [storyboard page](mark-storyboard-workflow.md#user-storyboard-review-page) → Editor [voice lock](#voice-lock) → Film timed scene sheets → Boss assets → Editor
 
-Tier changes after the start require a recorded reason. Handoff checks still apply to the stages that run: matching revisions, deliverable ID, covered beats and timing status. A lighter tier never waives licensing, factual review of asserted claims, Thai readability or the QA the owning workflows require for what is actually produced.
+- Record `Full` in `delivery.md`. A stage is `N/A` only when it has no subject at all (for example no narration, so no voice lock), with the reason recorded. A fictional profile still gets Boat research (the legend's sources) and a fact-check of the fact-versus-fiction boundary.
+- Media the user supplies (footage, images, audio) is source material for the stages above, filed and inventoried as in Editor's [direct intake](editor-workflow.md#direct-intake); it does not skip Film's brief or scene sheets.
+- **Legacy:** deliverables recorded as Light before 2 Nov 2026 (`KSO-EP01-SHORT`, `oldest-shipwreck`) keep the Light stages they were started with (Film's timed shot list in place of the scene sheets). They are not migrated.
+
+Handoff checks apply to every stage: matching revisions, deliverable ID, covered beats and timing status. Progress is tracked in the [task file](#task-file).
+
+<a id="task-file"></a>
+### Task file
+
+**Requirement (user, 2 Nov 2026)** for every project: `scripts/<episode>/task.md` is a checklist of the [W1–W8 steps](sequence-workflow.md#painted-shot-by-shot) that answers "how far along is it" without reading `delivery.md`. It holds progress only; decisions, revisions and evidence stay in `delivery.md` and the handoff files, linked by path.
+
+- **Created** by the coordinator in the turn it first writes `delivery.md`, from the template below, one section per deliverable.
+- **Updated** by whoever finishes a step (role agent or coordinator), in the same change that updates the deliverable's `Stage / Next owner` cell. The two must agree; when they differ, `delivery.md` wins and `task.md` is corrected.
+- **Read first** when the user asks for progress ("ทำถึงไหนแล้ว"): answer from the `Now` line and the open steps, and open `delivery.md` only for detail.
+- **Marks:** `[x]` done, `[ ]` open, `[x] … N/A — <reason>` for a step with no subject. Each line is one step plus at most one short note (revision, count, date); link instead of copying.
+- **Per-shot steps** (W3.3, W5, W6, W7) carry a count, e.g. `12/26 shots passed`; the per-shot verdicts stay on the storyboard review page.
+- For a deliverable whose engine is not painted 2D, W3.1–W3.2 are `N/A` and W5–W6 are Editor's integration and render review.
+
+```markdown
+# Tasks — <EPISODE>
+
+Record: [delivery.md](delivery.md) · Updated: <YYYY-MM-DD>, <role>
+
+## <DELIVERABLE-ID>
+
+**Now:** <W-step> — <one line>. **Next:** <owner> — <what, on which revision>
+
+- [ ] W1 Script lock
+  - [ ] W1.1 Boat research
+  - [ ] W1.2 Preaw script
+  - [ ] W1.3 Boat fact-check
+  - [ ] W1.4 User approves the script
+- [ ] W2 Brief and storyboard
+  - [ ] W2.1 Film brief (text)
+  - [ ] W2.2 Film storyboard rows (review-rows.json)
+  - [ ] W2.3 Storyboard page published
+- [ ] W3 Look frames and storyboard pass
+  - [ ] W3.1 Look frames on the page (0/L locations)
+  - [ ] W3.2 Look frames approved (look lock)
+  - [ ] W3.3 Storyboard passed (0/N shots)
+- [ ] W4 Voice lock
+  - [ ] W4.1 Voice chosen
+  - [ ] W4.2 Narration generated and measured
+  - [ ] W4.3 User approves the voice
+- [ ] W5 Draft
+  - [ ] W5.1 Film timed scene sheets
+  - [ ] W5.2 Boss assets and plates (shot groups 0/G)
+  - [ ] W5.3 Draft passed (0/N shots)
+- [ ] W6 Final passed (0/N shots)
+- [ ] W7 Pinned (0/N shots)
+- [ ] W8 Deliver
+  - [ ] W8.1 Assembled from the cache, picture lock
+  - [ ] W8.2 Delivery render archived
+```
 
 <a id="voice-lock"></a>
 ### Voice lock before timing
@@ -80,7 +130,7 @@ Tier changes after the start require a recorded reason. Handoff checks still app
 
 1. The user has chosen the voice ([hear the voice](#style-profile)) and the script revision has passed its fact-check.
 2. Editor generates the final narration with the chosen engine (`scripts/narration.py`, or the [gemini-tts skill](../.agents/skills/gemini-tts/SKILL.md#narration-one-narrator) for one continuous Gemini read). Editor measures each beat's anchor-phrase onsets and the speech end into a committed measure file next to the timeline, and records it with the script revision in `delivery.md` (timing status `audio-measured`).
-3. Mark may write staging, shot order and VO-relative timing ("on the word X", "+0.5 s after the line") before the lock, labelled `estimated`. Mark writes the timed scene sheet (integer frames) from the measure file. Boss builds plates from timed sheets only.
+3. Film may write staging, shot order and VO-relative timing ("on the word X", "+0.5 s after the line") before the lock, labelled `estimated`. Film writes the timed scene sheet (integer frames) from the measure file. Boss builds plates from timed sheets only.
 
 A script or voice change after the lock re-opens it for the affected beats: regenerate, re-measure, then retime those beats once. The BLOOP-EP01-SHORT sheets went R1 → R8 because timing came before the read (30 Oct 2026).
 
@@ -91,12 +141,12 @@ A script or voice change after the lock re-opens it for the affected beats: rege
 **Default** for how the [coordinator](../AGENTS.md#coordinator-and-agent-parity) runs a tier's stages. Every role agent starts cold and rereads AGENTS.md and its core documents, so invocations cost context. A brief may override a rule with a recorded reason.
 
 - **AI01 — One invocation per stage and revision.** Send the whole stage scope in one brief (every beat, shot or asset it covers), not one call per shot or fix. Batch review notes for the same owner into one revision. **Exception for painting and rendering stages:** Boss and Editor plate work, and Film spikes that paint or render, go one invocation per shot group of 3–5 shots (or one asset family). The delivery record lists the remaining groups. Cost grows with turns × accumulated context, and whole-stage runs measured 150–170 turns at 500–580k peak context (ZCPAINT, 30 Oct 2026).
-- **AI02 — Coordinator does mechanical edits inline.** Small edits with no judgment call do not need a role agent: a value, typo, link or `Stage / Next owner` update, applying a change the owning role already decided and recorded, a [single-value fact-check correction](editorial-workflow.md#inline-fact-fixes), or reading status. Name the owning role in the change (e.g. "coordinator for Mark, SS-R2.5"). New or substantially revised scripts, fact-checks, briefs, scene sheets, assets and Blender/render work always go to the owning role.
+- **AI02 — Coordinator does mechanical edits inline.** Small edits with no judgment call do not need a role agent: a value, typo, link or `Stage / Next owner` update, applying a change the owning role already decided and recorded, a [single-value fact-check correction](editorial-workflow.md#inline-fact-fixes), or reading status. Name the owning role in the change (e.g. "coordinator for Film, SS-R2.5"). New or substantially revised scripts, fact-checks, briefs, scene sheets, assets and Blender/render work always go to the owning role.
 - **AI03 — Keep authoring and checking separate.** The role that checks a piece of work never runs in the same invocation as the one that wrote it (Boat's fact-check of Preaw's script). Boss and Editor runtime work (Blender, renders, audio generation) runs in their own agent, so logs and frames stay out of the coordinator's context.
 - **AI04 — Fresh invocation per pass.** Each pass of a role (a new revision, a review-and-fix round, the next shot group) starts a fresh invocation with a short brief: inputs by path and revision, the decisions made since the last pass and the delta to do. Do not resume one agent across passes: its context and cost grow with every pass (BLOOP-EP01-SHORT, 30 Oct 2026: Boss ran 7 passes in one context, 466 calls, 40 % of the session's tokens). Continue an agent (Claude Code: `SendMessage`) only for a clarification of the pass it just finished, minutes later, on the same revision.
 - **AI05 — Point, don't paste.** Briefs name file paths, revisions and stable IDs. They do not paste document or handoff content into the brief, and they list only the trigger documents the stage needs beyond the role's core reads.
 - **AI06 — Wait once for long jobs.** Batch renders and Blender jobs into one run and wait for it once (a background job or `Monitor`), not with repeated polling. Prove the shot with sampled frames or a low-resolution pass before a full render. A run longer than about 10 minutes renders in per-shot chunks, so a stop resumes at the next chunk, and writes progress (chunks or frames done of total, elapsed, estimate) to its log under `out/logs/`; the coordinator answers status questions from that log's last lines. [AI10](#ai10) covers who waits.
-- **AI07 — Short sessions, handoff through the record.** A coordinator session covers one stage, or one review-and-fix round, for one deliverable. Before the session ends, the delivery record's `Stage / Next owner` cell and the handoff files carry everything the next step needs (revisions, open items, evidence paths). The next session starts from `delivery.md` and the named revisions, not from chat history. Start a new session rather than continuing one whose context is already long. Keep the model fixed within a session, because switching models restarts the prompt cache.
+- **AI07 — Short sessions, handoff through the record.** A coordinator session covers one stage, or one review-and-fix round, for one deliverable. Before the session ends, the delivery record's `Stage / Next owner` cell, the [task file](#task-file) and the handoff files carry everything the next step needs (revisions, open items, evidence paths). The next session starts from `task.md`, `delivery.md` and the named revisions, not from chat history. Start a new session rather than continuing one whose context is already long. Keep the model fixed within a session, because switching models restarts the prompt cache.
 - **AI08 — One correction, one pass.** When a user correction touches several handoff files (a prop state, a hand side, a mirrored camera), the coordinator invokes once the role whose judgment the correction needs. That invocation updates every affected file (brief, scene sheets, index) with a change-log line naming each file's owner; the other owners review it in their next scheduled pass instead of a relay of invocations. Boss or Editor re-runs once, after the files agree.
 - **AI09 — Context checkpoint.** A role agent that passes about 80 turns or about 250k context stops at the next clean point. It records progress, open items and evidence paths in the episode's `build-notes.md` and returns. The coordinator starts a fresh invocation for the rest ([AI04](#agent-invocation)).
 

@@ -1,4 +1,4 @@
-"""Build the user storyboard review page from Mark's review rows (docs/mark-storyboard-workflow.md#user-storyboard-review-page).
+"""Build the user storyboard review page from Film's review rows (docs/mark-storyboard-workflow.md#user-storyboard-review-page).
 
 Usage: python3 -I scripts/storyboard-page/build.py storyboards/<episode>/<variant>/review-rows.json [--out DIR]
 Default DIR: out/review-pages/<deliverable>/ (one page per deliverable, republished to the same URL for every revision,
@@ -11,7 +11,7 @@ Answers survive revisions: build.py stamps each shot, question and clip with a c
 answer while its hash is unchanged. A changed item shows its old answer and asks again; an optional "changed" text on a
 shot says what changed. The storyboard hash leaves out id, beat, timing, media, "pinned" and "changed", so a retime
 after the voice lock keeps the answers.
-Look frames (Film, W2): top-level "looks": {"<lookId>": {"src", "caption"}} and "look": "<lookId>" on each beat that
+Look frames (Film, W3, added after the first storyboard pass): top-level "looks": {"<lookId>": {"src", "caption"}} and "look": "<lookId>" on each beat that
 uses it; the storyboard tab is text only and shows each location's look frame in its beat header.
 DIR/preview.html is a local check copy (open it through a local HTTP server); publish index.html, never preview.html.
 Image and video paths in the JSON are repository-relative. Exits 1 on schema errors; prints the publish call.
