@@ -2,11 +2,11 @@
   "mcpServers": {
     "audio-studio": {
       "type": "stdio",
-      "command": "${AUDIO_STUDIO_DIR:-/Users/mangkornkatawong/Developer/audio-studio-mcp}/.venv/bin/audio-studio-mcp",
+      "command": "/Users/mangkornkatawong/Developer/audio-studio-mcp/.venv/bin/audio-studio-mcp",
       "args": [],
       "env": {
-        "PYTHONPATH": "${AUDIO_STUDIO_DIR:-/Users/mangkornkatawong/Developer/audio-studio-mcp}/src",
-        "AUDIO_STUDIO_OUTPUT_DIR": "${REELS_STORE:-~/ReelsStore}/library/sound/_raw"
+        "PYTHONPATH": "/Users/mangkornkatawong/Developer/audio-studio-mcp/src",
+        "AUDIO_STUDIO_OUTPUT_DIR": "/Users/mangkornkatawong/ReelsStore/library/sound/_raw"
       }
     }
   }
