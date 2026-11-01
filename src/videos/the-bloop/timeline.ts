@@ -1,5 +1,6 @@
 import timing from '../../../scripts/the-bloop/short/timing-gemini-take3.json';
-import type {PaintedLabel, PaintedShotCue, Scene, SceneSoundCue, SubtitleCue} from '../../scenes/types';
+import {assemblePaintedTimeline} from '../../scenes/assemble';
+import type {PaintedLabel, Scene, SceneSoundCue} from '../../scenes/types';
 
 /**
  * BLOOP-EP01-SHORT (Editor): Mark's estimated G (`BLOOP-SHEETS-R4`, est. frames) → composition frames through the
@@ -107,22 +108,14 @@ const paintedPieces = (cues: PaintedCue[], trackA: LabelWindow[], trackB: LabelW
 /** Assemble one runtime scene per beat (composition frames), from plates, captions and sound cues. */
 export const buildTimeline = (input: {cues: PaintedCue[]; trackA: LabelWindow[]; trackB: LabelWindow[]; extraEst: number[]; captions: TimedCaption[]; sounds: TimedSound[]}): Scene[] => {
   const pieces = paintedPieces(input.cues, input.trackA, input.trackB, input.extraEst);
-  return BEATS.map((beat, i) => {
-    const start = i === 0 ? 0 : compAt(beat.e);
-    const end = i + 1 < BEATS.length ? compAt(BEATS[i + 1].e) : END;
-    const shots: PaintedShotCue[] = pieces.filter((p) => p.c >= start && p.c < end).map((p) => ({
-      shot: p.shot, atSec: (p.c - start) / FPS, fromSec: p.fromSec,
+  return assemblePaintedTimeline({
+    clockRate: FPS,
+    cuts: BEATS.map((beat, i) => ({id: beat.name, start: i === 0 ? 0 : compAt(beat.e), end: i + 1 < BEATS.length ? compAt(BEATS[i + 1].e) : END})),
+    shots: pieces.map(p => ({at: p.c, cue: {
+      shot: p.shot, fromSec: p.fromSec,
       ...(p.dissolveSec ? {dissolveSec: p.dissolveSec} : {}), ...(p.label ? {label: p.label} : {}),
-    }));
-    const captions: SubtitleCue[] = input.captions.filter((c) => c.at >= start && c.at < end).map((c) => ({atSec: (c.at - start) / FPS, text: c.text}));
-    const sfx: SceneSoundCue[] = input.sounds.filter((s) => s.at >= start && s.at < end).map((s) => ({atSec: (s.at - start) / FPS, ...s.cue}));
-    if (shots.length === 0 || shots[0].atSec !== 0) throw new Error(`${beat.name}: first painted cue must start at the scene start`);
-    if (captions.length === 0 || captions[0].atSec !== 0) throw new Error(`${beat.name}: first caption must start at the scene start`);
-    return {
-      durationSec: (end - start) / FPS, bg: 'none', actors: [],
-      subtitle: captions.map((c) => c.text).filter(Boolean).join(' '),
-      subtitleCues: captions, painted: {shots},
-      ...(sfx.length ? {sfx} : {}),
-    };
+    }})),
+    captions: input.captions,
+    sounds: input.sounds,
   });
 };

@@ -1,7 +1,8 @@
 import narrationAmplitude from '../../../scripts/world-fog/short/WFOG-EP01-SHORT.amplitude.json';
 import captionCues from '../../../scripts/world-fog/short/captions.json';
 import {SHOT_G0, SHOT_ROWS} from '../../painted/worldfog/space';
-import type {AudioTrack, MediaClip, Scene, SceneSoundCue, Timeline} from '../../scenes/types';
+import {assemblePaintedTimeline} from '../../scenes/assemble';
+import type {AudioTrack, MediaClip, Timeline} from '../../scenes/types';
 import type {EpisodeVideos} from '../types';
 
 /**
@@ -117,21 +118,31 @@ const SCRIM_BY_LINES: Record<number, {src: string; box: {x: number; y: number; w
 };
 
 const scenes = ['S01', 'S02', 'S03', 'S04'] as const;
-export const worldFogTimeline: Timeline = scenes.map((scene): Scene => {
+const cuts = scenes.map(scene => {
   const rows = SHOT_ROWS.filter((r) => r.id.startsWith(`${scene}-`));
-  const g0 = rows[0].g0, end = rows[rows.length - 1].g0 + rows[rows.length - 1].len;
+  return {id: scene, start: rows[0].g0, end: rows[rows.length - 1].g0 + rows[rows.length - 1].len};
+});
+const captions = cuts.flatMap(({start, end}) => {
   // captions whose first frame is in this scene; blank cues fill the gaps (no plate on a blank)
-  const cues = captionCues.cues.filter((c) => c.g0 >= g0 && c.g0 < end).sort((a, b) => a.g0 - b.g0);
-  const subtitleCues: {atSec: number; text: string}[] = [];
-  let t = g0;
+  const cues = captionCues.cues.filter((c) => c.g0 >= start && c.g0 < end).sort((a, b) => a.g0 - b.g0);
+  const track: {at: number; text: string}[] = [];
+  let t = start;
   for (const c of cues) {
-    if (c.g0 > t) subtitleCues.push({atSec: sec(t - g0), text: ''});
-    subtitleCues.push({atSec: sec(c.g0 - g0), text: c.text});
+    if (c.g0 > t) track.push({at: t, text: ''});
+    track.push({at: c.g0, text: c.text});
     t = c.g1;
   }
-  if (t < end) subtitleCues.push({atSec: sec(t - g0), text: ''});
-  if (!subtitleCues.length || subtitleCues[0].atSec !== 0) subtitleCues.unshift({atSec: 0, text: ''});
-  const durationSec = (end - g0) / FPS;
+  if (t < end) track.push({at: t, text: ''});
+  if (!track.length || track[0].at !== start) track.unshift({at: start, text: ''});
+  return track;
+});
+export const worldFogTimeline: Timeline = assemblePaintedTimeline({
+  clockRate: FPS, cuts, captions,
+  shots: SHOT_ROWS.map(r => ({at: r.g0, cue: {shot: `WFOG-${r.id}`, ...(r.id === 'S01-SH01' ? {label: MARKER} : {})}})),
+  sounds: SFX.map(c => ({at: c.g, cue: {src: c.src, volume: c.volume, ...(c.durationSec !== undefined ? {durationSec: c.durationSec} : {})}})),
+}).map(scene => {
+  const subtitleCues = scene.subtitleCues!;
+  const durationSec = scene.durationSec;
   const media: MediaClip[] = subtitleCues.flatMap((cue, i) => {
     if (cue.text === '') return [];
     const lines = cue.text.split('\n').length;
@@ -140,15 +151,7 @@ export const worldFogTimeline: Timeline = scenes.map((scene): Scene => {
     const endSec = subtitleCues[i + 1]?.atSec ?? durationSec;
     return [{kind: 'image' as const, ...plate, layer: 'front' as const, startSec: cue.atSec, endSec}];
   });
-  const sfx: SceneSoundCue[] = SFX.filter((c) => c.g >= g0 && c.g < end).map((c) => ({
-    src: c.src, atSec: sec(c.g - g0), volume: c.volume, ...(c.durationSec !== undefined ? {durationSec: c.durationSec} : {}),
-  }));
-  return {
-    durationSec, bg: 'none', actors: [], subtitle: '',
-    subtitleCues, media,
-    ...(sfx.length ? {sfx} : {}),
-    painted: {shots: rows.map((r) => ({shot: `WFOG-${r.id}`, atSec: (r.g0 - g0) / FPS, ...(r.id === 'S01-SH01' ? {label: MARKER} : {})}))},
-  };
+  return {...scene, subtitle: '', media};
 });
 
 const worldFog: EpisodeVideos = {
