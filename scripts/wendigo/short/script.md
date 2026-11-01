@@ -5,7 +5,7 @@
 - Inputs: [research r1](../research.md) (Boat, 2026-11-01; claim ledger F001–F010, all sources `lead-only`); [Boat fact-check of R1](fact-check.md) (pass-with-fixes, FC01–FC04, leads SRC013–SRC016); user answers on R1 (last R1 line of the [delivery handoff log](../delivery.md#handoff-log)). No topic brief beyond the delivery record. Format precedent: [KSO-SCRIPT-R1](../../kuchisake-onna/short/script.md).
 - Story mode: **mixed** (profile `wdg-horror-fact`, user choice "ผสม"). S01 is a **fictional horror cold open** (`fiction/dramatization`): every person, place and event in it is invented and labelled `เรื่องแต่ง` on screen (the spoken "this was fiction" line was dropped in R3). S02–S03 are **folklore presented as belief** plus **one documented historical case** (Swift Runner, 1879), presented as history that involved belief in the windigo, never as proof that a windigo exists.
 - Profile / tier: `wdg-horror-fact` / Full, trimmed to script-only scope (Film/Mark/Boss/Editor not authorized).
-- Ending: **`C_seamless` only** (user choice on R1). `B_loop` material removed.
+- Ending: R1 chose `C_seamless`; **R3 (user: loop is not a focus) ends on the spoken `หิวไหม…` instead**; frame 0 is now the footprint ring, so there is no seam.
 - Target: about 60 s. Beat layout below totals **about 60 s (syllable estimate 60–61 s), estimated** (syllable-rate estimate only). No read-aloud, TTS or animatic timing has been performed. Do not lock frames from this estimate.
 - Status: R2 written, **rechecked by Boat 2026-11-01 (pass); user accepted lead-only sources → `ready-for-storyboard`** (header synced by coordinator for Preaw) (FC01–FC04 applied; F006 line 1 softened by user request; trims). Factual status stays `verification-incomplete`: all claims rest on `lead-only` sources; `ready-for-storyboard` needs inspected sources for F001, F004, F006 or the user recording that a lead-only basis is acceptable. User approval: none. Runtime/audio/visual validation: not performed.
 
@@ -38,8 +38,8 @@ Video times are estimates and contiguous. Story-world: S01 is one fictional nigh
 
 | Beat | Video time | Purpose / cause and change | Sound intent |
 | --- | --- | --- | --- |
-| `WDG-EP01-SHORT-S01-B01` | 0–3 s | Hook: a whisper outside a snow-buried tent asks `หิวไหม…`; the man says it asks him every night (CL01). | Frame 0: blizzard wind at a steady low level plus tent canvas flutter; no music hit, the whisper is the hook. Whisper dry, close, slightly off-centre (as if outside the canvas). |
-| `WDG-EP01-SHORT-S01-B02` | 3–9.5 s | Setup: snowbound 7 days, food gone since day 3, "we" (CL03); every morning footprints circle the tent (CL02). Raises the question: what walks around them? | Very low cold drone bed enters under VO (detuned pad or bowed metal, not ethnic-coded). Snow crunch on `รอยเท้า`. No stinger. |
+| `WDG-EP01-SHORT-S01-B01` | 0–3 s | Hook (R3): footprints circle the tent although nobody came (CL02), then the man's face. | Frame 0: blizzard wind at a steady low level plus tent canvas flutter; no music hit, the whisper is the hook. Whisper dry, close, slightly off-centre (as if outside the canvas). |
+| `WDG-EP01-SHORT-S01-B02` | 3–9.5 s | The voice outside the tent asks `หิวไหม…` every night (CL01); snowbound 7 days, food gone since day 3, "we" (CL03). Raises the question: what walks around them? | Very low cold drone bed enters under VO (detuned pad or bowed metal, not ethnic-coded). Snow crunch on `รอยเท้า`. No stinger. |
 | `WDG-EP01-SHORT-S01-B03` | 9.5–18.5 s | Twist: he follows the footprints; they fit his own boots; he hears the voice again — from his own mouth. Last image: he stands over his sleeping companion. | Drone drops out; only wind and his breath and boots in snow. Hard silence of ~0.3 s before `…จากปากของผมเอง`. **The one stinger of the video**: a low, short dissonant hit on the first frame he realises (on `ปากของผมเอง`), then the whisper `หิว…` almost inaudible, then cut to silence. |
 | `WDG-EP01-SHORT-S02-B01` | 18.5–22.5 s | Fiction → fact turn: the narrator moves straight to the real tradition (spoken "this was fiction" dropped in R3; the on-screen marker still labels S01), the fear comes from a real tradition, the Wendigo. | Clean cut to near silence (wind gone). A sparse, calm, low documentary bed (single sustained low note or soft felt piano) enters after `เรื่องแต่ง`. Signals a change of register, not a scare. |
 | `WDG-EP01-SHORT-S02-B02` | 22.5–28.5 s | Who it belongs to: Algonquian-speaking peoples such as Ojibwe and Cree, Canada and northern US (F001). Name card `Ojibwe: wiindigoo · Cree: wīhtikōw` appears on `อย่างโอจิบเวและครี` (F002). | Same calm bed, steady; the name card enters silently (no whoosh or pop). Optional faint generic winter wind far back. **No drums, chant or flute.** |
@@ -65,25 +65,23 @@ Video times are estimates and contiguous. Story-world: S01 is one fictional nigh
 
 ### S01 / B01 — Hook, 0–3 s estimated
 
-**Event:** Night, inside a small canvas tent half buried in snow. Lantern almost out. The canvas wall bows in the wind; the whisper seems to come from just outside it. The man's face, gaunt, awake, staring at the wall. No figure visible outside — only the canvas moving.
+**Event (R3 hook, user-approved):** Frame 0 is the anomaly, not the tent: a fresh ring of footprints in untouched snow circling a half-buried tent at dawn, no other tracks lead in or out (CL02). Slow push in. On `ทั้งที่ไม่มีใครมา` cut to the man's gaunt face, awake, staring at the canvas wall. Never show his mouth.
+
+**MAN** — hoarse, flat, hushed; tags: `<short pause>` at `…`
+
+> ทุกเช้า… มีรอยเท้าเดินวนรอบเต็นท์ ทั้งที่ไม่มีใครมา
+
+### S01 / B02 — The voice, 3–9.5 s estimated
+
+**Event:** Night, inside the tent. Lantern almost out. The canvas wall bows in the wind; the whisper seems to come from just outside it. No figure visible, only the canvas moving. Quick still images: the tent under heavy snow; an empty tin; the companion asleep under blankets (face turned away, never harmed).
 
 **WHISPER** — style: `slow, dry, breathy whisper, almost tender, very close`; tags: `<whispering>`
 
 > หิวไหม…
 
-**MAN** — tags: `<short pause>` before; hoarse, flat
+**MAN** — tags: `<short pause>` before and at each `…`
 
-> เสียงนั้น… ถามผมทุกคืน
-
-### S01 / B02 — Seven days, 3–9.5 s estimated
-
-**Event:** Quick, still images: the tent from outside under heavy snow; an empty tin; the companion asleep under blankets (face turned away, never harmed, never shown in danger beyond the final stillness). Morning light: a ring of fresh footprints circling the tent in the snow (CL02). No other tracks lead in or out.
-
-**MAN** — tags: `<short pause>` at each `…`
-
-> พายุหิมะขังเราไว้มาเจ็ดวัน อาหารหมดตั้งแต่วันที่สาม…
-
-> ทุกเช้า… มีรอยเท้าเดินวนรอบเต็นท์
+> เสียงนั้น… ถามผมทุกคืน พายุหิมะขังเราไว้มาเจ็ดวัน อาหารหมดตั้งแต่วันที่สาม…
 
 ### S01 / B03 — The footprints, 9.5–18.5 s estimated
 
@@ -157,7 +155,9 @@ Video times are estimates and contiguous. Story-world: S01 is one fictional nigh
 
 > ปีศาจตัวนี้… ไม่ต้องมีเขา แค่มีเสียงเล็กๆ ในใจ ที่คอยถามว่า…
 
-**Then:** ~0.5 s of wind only; the seam lands on frame 0, where WHISPER says `หิวไหม…`.
+**Then (R3):** WHISPER, same take as S01-B02, closes the video: `หิวไหม…`, then ~0.5 s of wind only. The video no longer loops into frame 0 (user: loop is not a focus), so the last picture need not match frame 0.
+
+> หิวไหม…
 
 ## Ending proposal
 
@@ -218,6 +218,8 @@ Sources are all `lead-only` (research r1). Labels from the ledger. Every factual
 8. Must stay hidden until S01-B03: that the whisper is his (do not show his mouth in S01-B01/B02); that the footprints fit his boots.
 
 ## Editorial self-check, change log and open items
+
+- R3 hook (2026-11-01), Preaw, user choice "รอยเท้าขึ้นก่อน": S01-B01 now opens on the footprint ring with `ทุกเช้า… มีรอยเท้าเดินวนรอบเต็นท์ ทั้งที่ไม่มีใครมา`; the whisper moves to S01-B02; the closing `หิวไหม…` is spoken by WHISPER at the end. Timing still estimated (B01 about 3 s, B02 about 6.5 s; net unchanged apart from about +1 s for the closing whisper). Boat recheck: none of the facts changed. Stale text to tidy if the loop is dropped for good: sound note on the seam bed, visual note 7, ending proposal.
 
 - Hook in the first second (the whisper), then a stated pattern ("every night"). Causal chain: whisper → snowbound and starving → footprints circle the tent → he follows them → they are his → the voice is his → he stands over his companion → turn to the real tradition → whose tradition → what it is (hunger, never satisfied, a person can become it — re-reads the fiction) → not antlers (explains why no creature was shown) → a real court case shows how seriously the belief was held → for some writers, a figure of greed → the small voice inside that asks `หิวไหม…` (loop).
 - Twist is fair: CL01–CL04 are heard/seen before the payoff. Knowledge has plot function (F004/F003/F005 re-read the cold open).
