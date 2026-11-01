@@ -4,7 +4,7 @@
 
 **Use:** `grep -n '^## ' docs/context-map.md` lists topics; `sed -n '/^## Poses/,/^## /p' docs/context-map.md` prints one entry.
 
-**Keep it current:** a change that adds, moves or removes a doc, script, source module, skill, test or composition updates the matching entry in the same commit. `python3 -I scripts/context-map.py` (also run by `npm test`) fails on a dead link or anchor and on a new module that no entry mentions. Paths on an unmerged branch go on a `Pending` line as code spans; turn them into links once they land.
+**Keep it current:** a change that adds, moves or removes a doc, script, source module, skill, test or composition updates the matching entry in the same commit. `python3 -I scripts/context-map.py` (also run by `npm test`) fails on a dead link or anchor and on a new module that no entry mentions. Paths on an unmerged branch go on a `- Pending` line as code spans; turn them into links once they land.
 
 Episode-specific files are under [Episodes](#episodes); shared topics come first.
 
@@ -16,17 +16,17 @@ Episode-specific files are under [Episodes](#episodes); shared topics come first
 - Code: [kit/cast.ts](../src/painted/kit/cast.ts) (`CastDef`, `drawFigure`), [kit/head.ts](../src/painted/kit/head.ts), [kit/hands.ts](../src/painted/kit/hands.ts); episode casts [worldfog/cast.ts](../src/painted/worldfog/cast.ts), [zcpaint/cast.ts](../src/painted/zcpaint/cast.ts), [zcpaint/body6.ts](../src/painted/zcpaint/body6.ts), [kuchisake/cast.ts](../src/painted/kuchisake/cast.ts)
 - Sheets: [spike/CastSheet.tsx](../src/painted/spike/CastSheet.tsx), [spike/ProportionSheet.tsx](../src/painted/spike/ProportionSheet.tsx), [spike/SideSheet.tsx](../src/painted/spike/SideSheet.tsx), [spike/HeadSideSheet.tsx](../src/painted/spike/HeadSideSheet.tsx) (entry [spike/index.ts](../src/painted/spike/index.ts))
 - Tests: [zcpaint-body6](../tests/zcpaint-body6.test.ts), [zcpaint-bust](../tests/zcpaint-bust.test.ts), [zcpaint-costume](../tests/zcpaint-costume.test.ts)
-- Pending — branch `claude/kit-cast-library`: `src/painted/kit/people.ts`, `src/painted/kit/hair.ts`, `src/painted/kit/legs.ts`, `src/painted/kit/casting.ts`, `src/painted/kit/people-sheet.tsx`, `src/painted/kit/cast-cards-sheet.tsx`, `src/videos/kit-people/` (`KIT-PEOPLE-*`, `KIT-CAST-CARDS`), `scripts/painted-kit/people.mjs`, `tests/people.test.ts`, `tests/casting.test.ts`
+- Kit library: [people.ts](../src/painted/kit/people.ts), [hair.ts](../src/painted/kit/hair.ts), [legs.ts](../src/painted/kit/legs.ts), [casting.ts](../src/painted/kit/casting.ts), [people-sheet.tsx](../src/painted/kit/people-sheet.tsx), [cast-cards-sheet.tsx](../src/painted/kit/cast-cards-sheet.tsx), [kit-people](../src/videos/kit-people/) (`KIT-PEOPLE-*`, `KIT-CAST-CARDS`), [people.mjs](../scripts/painted-kit/people.mjs), [people.test.ts](../tests/people.test.ts), [casting.test.ts](../tests/casting.test.ts)
 
 ## Poses
 
 **Read when:** devising or reviewing any character pose or gesture (cite a pose ID first, [CP-P12](character-proportion-principles.md#cp-p-pose-sheet)).
 
-- Docs: [pose sheet P01–P30](character-proportion-principles.md#cp-p-pose-sheet), [front-view arm depth](character-proportion-principles.md#cp-p-arm-depth)
+- Docs: [pose sheet P01–P45](character-proportion-principles.md#cp-p-pose-sheet), [front-view arm depth](character-proportion-principles.md#cp-p-arm-depth)
 - Code: [kit/poses.ts](../src/painted/kit/poses.ts) (`POSES`, `poseArms`), [kit/pose-sheet.json](../src/painted/kit/pose-sheet.json); episode pose tracks [zcpaint/pose.ts](../src/painted/zcpaint/pose.ts); legacy SVG rig [rig/poses.ts](../src/rig/poses.ts)
-- Compositions: `WFOG-POSE-SHEET` ([spike/PoseSheet.tsx](../src/painted/spike/PoseSheet.tsx)), `WFOG-ARMBACK-SAMPLE` ([spike/ArmBackSheet.tsx](../src/painted/spike/ArmBackSheet.tsx))
+- Compositions: `KIT-POSES`, `KIT-POSES-CLOSE`, `WFOG-ARMBACK-SAMPLE` ([spike/ArmBackSheet.tsx](../src/painted/spike/ArmBackSheet.tsx))
 - Tests: [pose-library](../tests/pose-library.test.ts), [pov-forearm](../tests/pov-forearm.test.ts)
-- Pending — branch `claude/kit-cast-library`: `src/painted/kit/poses-more.ts`, `src/painted/kit/poses-sheet.tsx` (`KIT-POSES`), `scripts/painted-kit/poses.mjs`, `tests/poses-motions.test.ts`
+- Kit library: [poses-more.ts](../src/painted/kit/poses-more.ts), [poses-sheet.tsx](../src/painted/kit/poses-sheet.tsx) (`KIT-POSES`), [poses.mjs](../scripts/painted-kit/poses.mjs), [poses-motions.test.ts](../tests/poses-motions.test.ts)
 
 ## Expressions and faces
 
@@ -35,7 +35,7 @@ Episode-specific files are under [Episodes](#episodes); shared topics come first
 - Docs: [face principles](character-proportion-principles.md#cp-f-face); [lip-frame fallback finding](dev-findings/DF-20261030-lip-frame-silent-fallback.md)
 - Code: [kit/head.ts](../src/painted/kit/head.ts) (`FaceState`, `Brow`/`Eyes`/`Mouth`, `blinking`), [kuchisake/face.ts](../src/painted/kuchisake/face.ts)
 - Sheets: [spike/FaceSheet.tsx](../src/painted/spike/FaceSheet.tsx)
-- Pending — branch `claude/kit-cast-library`: `src/painted/kit/expressions.ts`
+- Kit library: [expressions.ts](../src/painted/kit/expressions.ts)
 
 ## Wardrobe and props
 
@@ -44,7 +44,7 @@ Episode-specific files are under [Episodes](#episodes); shared topics come first
 - Docs: [kit README, outfit swap and props](../src/painted/kit/README.md)
 - Code: [kit/cast.ts](../src/painted/kit/cast.ts) (`Outfit`, `Prop`, `drawTorch`, `drawUmbrella`); episode props such as [zcpaint/accents.ts](../src/painted/zcpaint/accents.ts); legacy SVG props [assets/Props.tsx](../src/assets/Props.tsx), [assets/props/](../src/assets/props/)
 - Tests: [zcpaint-costume](../tests/zcpaint-costume.test.ts)
-- Pending — branch `claude/kit-cast-library`: `src/painted/kit/wardrobe.ts`, `src/painted/kit/gear.ts`, `src/painted/kit/props.ts`, `tests/wardrobe.test.ts`
+- Kit library: [wardrobe.ts](../src/painted/kit/wardrobe.ts), [gear.ts](../src/painted/kit/gear.ts), [props.ts](../src/painted/kit/props.ts), [wardrobe.test.ts](../tests/wardrobe.test.ts)
 
 ## Motions
 
@@ -53,7 +53,7 @@ Episode-specific files are under [Episodes](#episodes); shared topics come first
 - Docs: [walk bob finding](dev-findings/DF-20261031-painted-walk-bob-authored-hang.md), [profile head turn](dev-findings/DF-20261030-painted-profile-head-turn.md), [pose-track fields](dev-findings/DF-20261030-zcpaint-pose-track-fields.md)
 - Code: [kit/space.ts](../src/painted/kit/space.ts) (easing, `pchip`, `hermite`), [zcpaint/figure.ts](../src/painted/zcpaint/figure.ts), [kuchisake/shot-motion.ts](../src/painted/kuchisake/shot-motion.ts), [kuchisake/walker-back.ts](../src/painted/kuchisake/walker-back.ts), legacy rig drivers [rig/drivers.ts](../src/rig/drivers.ts)
 - Tests: [zcpaint-gait](../tests/zcpaint-gait.test.ts), [animation](../tests/animation.test.ts)
-- Pending — branch `claude/kit-cast-library`: `src/painted/kit/motions.ts`, `src/painted/kit/motion-reel.ts`, `src/painted/shots/kit-motions.tsx`, `src/videos/kit-motions/` (`KIT-MOTIONS`), `tests/poses-motions.test.ts`
+- Kit library: [motions.ts](../src/painted/kit/motions.ts), [motion-reel.ts](../src/painted/kit/motion-reel.ts), [kit-motions.tsx](../src/painted/shots/kit-motions.tsx), [kit-motions](../src/videos/kit-motions/) (`KIT-MOTIONS`), [poses-motions.test.ts](../tests/poses-motions.test.ts)
 
 ## Shot templates and camera
 
@@ -63,7 +63,7 @@ Episode-specific files are under [Episodes](#episodes); shared topics come first
 - Code: [kit/camera.tsx](../src/painted/kit/camera.tsx) (`Camera`, `pushCamera`), [kit/space.ts](../src/painted/kit/space.ts) (`Proj`, `cardProjector`), [scenes/projection.ts](../src/scenes/projection.ts), [scenes/quadText.ts](../src/scenes/quadText.ts)
 - Scripts: [shot-projection.py](../scripts/shot-projection.py) (lead height, caption-band overlap)
 - Tests: [projection](../tests/projection.test.ts), [zcpaint-proj](../tests/zcpaint-proj.test.ts)
-- Pending — branch `claude/kit-cast-library`: `src/painted/kit/shot-templates.ts`, `src/painted/kit/template-reel.ts`, `src/painted/shots/kit-templates.tsx`, `src/painted/shots/kit.tsx`, `src/videos/kit-shot-templates/` (`KIT-SHOT-TEMPLATES`), `tests/shot-templates.test.ts`
+- Kit library: [shot-templates.ts](../src/painted/kit/shot-templates.ts), [template-reel.ts](../src/painted/kit/template-reel.ts), [kit-templates.tsx](../src/painted/shots/kit-templates.tsx), [kit.tsx](../src/painted/shots/kit.tsx), [kit-shot-templates](../src/videos/kit-shot-templates/) (`KIT-SHOT-TEMPLATES`), [shot-templates.test.ts](../tests/shot-templates.test.ts)
 
 ## Rigs
 
