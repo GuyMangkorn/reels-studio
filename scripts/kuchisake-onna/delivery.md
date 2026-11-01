@@ -42,3 +42,10 @@
 - Draft clip re-rendered with `scripts/storyboard-page/clips.mjs KSO-EP01-SHORT-C … --shots=S02-B01-SH04 --draft --gl=angle --timeout=180000`: `out/KSO-EP01-SHORT-C/clips/S02-B01-SH04_draft.mp4` (proxy) and `_draft.full.mp4`. Not published; the review page was not rebuilt.
 - Added the library murmur `tension_whispers-children-murmur_01` from f1062 (woman's first lit frame) for 3.0 s, volume 0.12, ducked 0.35 under narration. Not listened to by a person. Details and measures: [build-notes](build-notes.md#1-nov-2026-s02-b01-sh04-appearance-murmur-editor-draft-note).
 - The draft picture predates the concurrent `src/painted/kuchisake` edits of 18:03–18:04 (not Editor's); re-render the clip after they land.
+
+## 1 Nov 2026: B_loop closing hold request (Editor)
+
+- Request (user, 1 Nov 2026): the closing caption of `KSO-EP01-SHORT-B` stays on screen about 2 s instead of about 3 s. **Not applied yet.** `KSO-EP01-SHORT-B` stays **2551 f / 85.03 s**, `B_loop`, 90 f hold; `KSO-EP01-SHORT-C` stays 2461 f.
+- Blocker: `B_loop` cannot hold 2 s without freezing the last shot 30 f early (frame 2431 instead of 2461), and `validateVideoStyle` accepts `endHoldSec` only for `A_fade`. Routes and evidence: [build-notes](build-notes.md), section "1 Nov 2026: B_loop closing hold 90 f → 60 f requested, not applied". (1) `A_fade`, `endHoldSec` 2, `endFadeSec` 0: same picture, no fade, but the ending kind changes. (2) Boss allows `endHoldSec` on `B_loop` (shared). (3) Keep 90 f.
+- Open for the user: which route; whether "about 2 s" counts from the picture end (B 2521 f, the costed option) or from the end of the speech (B 2506 f). [production-requirements](../../docs/production-requirements.md) asks for about 3 s; a 2 s hold needs a recorded override.
+- Stage / Next owner: **User** (route and reference point) → Editor applies the chosen route, then runs the length, ending, seam and caption checks and the last-3-s qa-sheet. The table above predates the 1 Nov handoffs; the coordinator refreshes its Stage cell.

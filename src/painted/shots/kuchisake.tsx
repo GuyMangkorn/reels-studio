@@ -41,6 +41,13 @@ const L_DARK: InteriorLight = {key: [0.6, 0.35], rim: [0.9, 0.2], rimScale: 0.9}
 
 /** Shot overlays: the screen layers of the look files (falloff, glow, cold grade, grade and grain), in the same order. */
 type Ov = ShotContext & {camera: Camera; opacity: number};
+/**
+ * Caption-band shade (round 11): a second, deeper step of the lamp falloff from `from` to `to` (plate px, screen space), drawn
+ * before the grade. It keeps the lit counter or the pale mask under the chin out of the caption band (y 860-1248) where the
+ * look's own falloff is not enough; `peak` 0 draws nothing, so a shot can fade it in and out with its motion.
+ */
+type Shade = {from: number; to: number; peak: number};
+const BandShade = ({shade}: {shade?: Shade}) => (shade && shade.peak > 0 ? <LowerFalloff from={shade.from} to={shade.to} peak={shade.peak} /> : null);
 const Wrap = ({opacity, children}: {opacity: number; children: ReactNode}) => <AbsoluteFill style={{opacity, pointerEvents: 'none'}}>{children}</AbsoluteFill>;
 
 /**
@@ -88,12 +95,13 @@ const walkerHole = (z: number): Pt[] => {
   return WALKER_SIL.map(([x, y]): Pt => [gx + x * u, gy - y * u]);
 };
 /** The reveal close-ups (LF03): the lamp from above, the falloff that keeps the caption band quiet. */
-const CuOv = ({camera, opacity, from = 840, to = 1060, peak = 0.85}: Ov & {from?: number; to?: number; peak?: number}) => (
+const CuOv = ({camera, opacity, from = 840, to = 1060, peak = 0.85, shade}: Ov & {from?: number; to?: number; peak?: number; shade?: Shade}) => (
   <Wrap opacity={opacity}>
     <CameraLayer camera={camera} width={W} height={Hh}>
       <TopGlow />
     </CameraLayer>
     <LowerFalloff from={from} to={to} peak={peak} />
+    <BandShade shade={shade} />
     <Grade />
     <Grain />
   </Wrap>
@@ -107,7 +115,7 @@ const CloseOv = ({opacity}: Ov) => (
   </Wrap>
 );
 /** The izakaya (LF04): table lantern and wall lanterns, the lower falloff; `cold` adds the cold grade of the cut-in. */
-const IzakayaOv = ({camera, opacity, cold = 0, from = 840, peak = 0.6}: Ov & {cold?: number; from?: number; peak?: number}) => {
+const IzakayaOv = ({camera, opacity, cold = 0, from = 840, peak = 0.6, shade}: Ov & {cold?: number; from?: number; peak?: number; shade?: Shade}) => {
   const [lx, ly] = roomP([0.2, 0.92, 2.4]), [nx, ny] = roomP([-0.62, 2.0, 1.5]), [mx, my] = roomP([0.72, 2.0, 1.5]);
   return (
     <Wrap opacity={opacity}>
@@ -117,6 +125,7 @@ const IzakayaOv = ({camera, opacity, cold = 0, from = 840, peak = 0.6}: Ov & {co
         <Spot x={mx} y={my} r={200} level={0.25} color="#ff9a3c" />
       </CameraLayer>
       <LowerFalloff from={from} to={1080} peak={peak} />
+      <BandShade shade={shade} />
       {cold > 0 && <AbsoluteFill style={{background: '#8fa9c4', mixBlendMode: 'multiply', opacity: cold, pointerEvents: 'none'}} />}
       <Grade />
       <Grain />
@@ -161,6 +170,12 @@ export const grinCloseAt = (lf: number): Tear => ({corner: 1 - sstep((lf - 20) /
 export const WALK_Z0 = 2.8, WALK_Z1 = 0.8, WALK_CYCLES = 2.5;
 export const walkZ = (t: number) => WALK_Z0 + (WALK_Z1 - WALK_Z0) * Math.min(1, Math.max(0, t / 4.3));
 /** Shot start frame (timeline) of a plate: the speech envelope is read at the global frame. */
+/** Round 11 caption-band shades (plate px; see `BandShade`). */
+const SHADE_SH03: Shade = {from: 780, to: 880, peak: 0.19};
+const CHIN_SHADE = {from: 800, to: 890};
+const chinShade = (lf: number): Shade => ({...CHIN_SHADE, peak: 0.36 * sstep((lf - 12) / 12)});
+const revealShade = (lf: number): Shade => ({...CHIN_SHADE, peak: 0.38 * (1 - sstep((lf - 1) / 5))});
+
 const startOf = (id: string) => (SHOT_ROWS.find((r) => r[0] === id) ?? [id, 0, 0])[1];
 /** Mouth opening at shot-local frame `f` of shot `id` (amplitude of the locked narration at the timeline frame). */
 const openAt = (id: string, f: number, max?: number) => talkOpen(startOf(id) + f, max);
@@ -218,7 +233,8 @@ export const kuchisakeShots: PaintedShot[] = [
       paintLantern(p);
       paintNarrator(p);
     },
-    Overlay: (props) => <IzakayaOv {...props} from={760} peak={0.85} />,
+    // Round 11: the counter's front edge and the lantern's lower glow fall off a step earlier (caption band), the whole shot.
+    Overlay: (props) => <IzakayaOv {...props} from={760} peak={0.85} shade={SHADE_SH03} />,
   }),
   // The coworker's knowing half smile after the telling (CL01 relief, one corner up; user decision 1 Nov 2026): close on the head.
   shot('S01-B02-SH04', {
@@ -230,7 +246,9 @@ export const kuchisakeShots: PaintedShot[] = [
       paintTable(p);
       paintLantern(p);
     },
-    Overlay: (props) => <IzakayaOv {...props} from={760} peak={0.85} />,
+    // Round 11: as the push brings the counter and the lantern glow down into the caption band (from about f60), the same
+    // counter-edge shade as S01-B02-SH03 comes in with it.
+    Overlay: (props) => <IzakayaOv {...props} from={760} peak={0.85} shade={{...SHADE_SH03, peak: SHADE_SH03.peak * sstep((f_of(props.tl) - 40) / 35)}} />,
   }),
 
   // S02-B01 street: the narrator walks away from the camera up the street axis, seen from behind (walker-back.ts), a slow drift.
@@ -345,7 +363,8 @@ export const kuchisakeShots: PaintedShot[] = [
       drawWomanTear(p, CU_GROUND, CU_UNIT, ctx.tl, m, LAMP_LIGHT, CALM_FACE, undefined, {rArm: grip.rArm, lArm: hangLeftArm(CU_GROUND, CU_UNIT)}, true);
       grip.paintHand(p);
     },
-    Overlay: (props) => <CuOv {...props} from={800} peak={Math.min(1, 0.85 + 0.6 * (1 - maskHook(f_of(props.tl))))} />,
+    // Round 11: the chin's shadow from the top lamp deepens over the mask as it is drawn down into the caption band (f12-24).
+    Overlay: (props) => <CuOv {...props} from={800} peak={Math.min(1, 0.85 + 0.6 * (1 - maskHook(f_of(props.tl))))} shade={chinShade(f_of(props.tl))} />,
   }),
   // The reveal (LF03): the mouth tears open over 12 f and holds; the camera is still.
   shot('S02-B03-SH03', {
@@ -361,7 +380,8 @@ export const kuchisakeShots: PaintedShot[] = [
       drawWomanTear(p, CU_GROUND, CU_UNIT, ctx.tl, maskReveal(f), LAMP_LIGHT, REVEAL_FACE, tearAt(f), {rArm: grip.rArm, lArm: hangLeftArm(CU_GROUND, CU_UNIT)}, true);
       grip.paintHand(p);
     },
-    Overlay: (props) => <CuOv {...props} peak={Math.min(1, 0.85 + 0.6 * (1 - maskReveal(f_of(props.tl))))} />,
+    // Round 11: the chin shade carries over the cut on the falling mask and lifts as the mask leaves the frame (f1-6).
+    Overlay: (props) => <CuOv {...props} peak={Math.min(1, 0.85 + 0.6 * (1 - maskReveal(f_of(props.tl))))} shade={revealShade(f_of(props.tl))} />,
   }),
   // The narrator's eyes, tight: she is not shown with the mouth again here.
   shot('S02-B03-SH04', {
