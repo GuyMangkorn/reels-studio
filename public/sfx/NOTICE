@@ -49,3 +49,10 @@ Files copied from the shared library for WORLD FOG EP01 (`src/videos/world-fog/i
 
 ## WFOG-EP01-SHORT SS-R6 (Editor r6, 2026-10-31)
 Added from the shared library, generated locally (audio-studio-mcp / Stable Audio 3 medium; same license as above; commercial-use eligibility is the user's decision): foley/foley_knuckle-knock-glass_01 (knock beat S04-SH04, three copies at G3939, G3957, G3975) and foley/foley_hand-pat-carton_01 (optional pat, S04-SH01, G3368 and G3380). Picked by measurement; NOT listened to by a person yet.
+
+KSO-EP01-SHORT (Editor, 1 Nov 2026): library copies used by src/videos/kuchisake-onna (locked in its assets.lock.json).
+  Generated for this episode on 2026-11-01 (audio-studio-mcp, Stable Audio 3 medium; sidecars in the library hold the prompt, seed and settings; none listened to by a person):
+  foley/foley_heel-click-asphalt_01, foley/foley_walk-sneakers-asphalt_01, foley/foley_run-sneakers-asphalt_01.
+  Library, generated 2026-10-28 and first used here (not listened to by a person): reveal/reveal_riser-tension_01, electric/electric_light-flicker-buzz_01,
+  stinger/stinger_horror-screech_01, tension/tension_heartbeat-slow_01, impact/impact_door-slam-body_01, foley/foley_deadbolt-clack_01.
+License: Stability AI Community License (generated audio; commercial-use eligibility is the user's decision, see the library NOTICE.md).

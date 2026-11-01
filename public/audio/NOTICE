@@ -66,3 +66,9 @@ Generated, filed 31 Oct 2026 (library ID / source take): bed_sub-drone-fade-in_0
 Reused from the library (generated earlier by other episodes): room_dark-empty-building_01, impact_knuckle-rap_01, whoosh_fast-slide_01,
   ui_click-tick_01, impact_sub-hit-short_01, reveal_riser-tension_01, tension_drone-sparse-piano_01, bed_mystery-investigation_01, tone_soft-sustain-reflective_01.
 E-R5 (Editor, 31 Oct 2026): electric_light-flicker-buzz_01 reused from the library (sfx/electric; generated 2026-10-28, audio-studio-mcp, Stable Audio 3, sidecar `electric_light-flicker-buzz_01.json`) for BZ1/BZ2 in B08-SH01. bed_warm-pad-felt-third_01 and bed_mystery-investigation_01 are no longer used by this timeline. NOT listened to.
+
+KSO-EP01-SHORT (Editor, 1 Nov 2026): library copies used by src/videos/kuchisake-onna (locked in its assets.lock.json; sidecars hold the prompt, seed and settings):
+  ambience/electric/electric_streetlamp-hum-loop_01 (generated 2026-11-01 for this episode, audio-studio-mcp, Stable Audio 3 medium, loopable, not listened to by a person);
+  ambience/room/room_shop-fridge-hum_01 and ambience/room/room_dark-empty-building_01 (library, generated 2026-10-28; not listened to by a person);
+  music/tension/tension_drone-sparse-piano_01 (library, generated 2026-10-28; narration-safe bed, not listened to by a person).
+Generator: audio-studio-mcp (MIT) / Stable Audio 3 medium, generated locally. License: Stability AI Community License (generated audio; commercial-use eligibility is the user's decision, see the library NOTICE.md).

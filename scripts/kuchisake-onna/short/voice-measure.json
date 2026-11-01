@@ -1,0 +1,1345 @@
+{
+ "deliverable": "KSO-EP01-SHORT",
+ "revision": "v5",
+ "supersedes": "v4 (+1.5 st on โทษ; store projects/KSO/audio/voice-lock-v4, measure kept in projects/KSO/audio/voice-lock-v5/measure/voice-measure-v4.json), itself v3 (projects/KSO/audio/voice-lock-r3/voice-measure-v3.json)",
+ "script_revision": "KSO-SCRIPT-R3",
+ "film_brief_at_lock": "KSO-BRIEF-FILM-R1.1",
+ "voice_lock": "v5: NARR Erinome read (B01-B05, v2) and the B06 read (v3 chunk) unchanged except one pitch fix on โทษ in the NARR apology ขอโทษนะ (B06, S03-B02, KSO-A16), +3.0 st from v3; WOMAN Despina takes and the panic slip unchanged. Script text unchanged (KSO-SCRIPT-R3).",
+ "timing_status": "audio-measured",
+ "lock_basis": "v3 basis (see the v3 record) + the user verdict on S03-B02-SH01 (1 Nov 2026): v4 (+1.5 st) \"not sharp at all\", wants more pitch on โทษ. Fix: +3.0 st on that word only, from v3, length-preserving; anchors, slots and frames unchanged (track 2461 frames, 82.033 s). Editor proxy QA only: nobody listened; the user listens (see open_items).",
+ "measure_by": "Editor (voice lock v5, KSO-SCRIPT-R3 text), 2026-11-01",
+ "fps": 30,
+ "measure_basis": "decoded assembled MP3 (48 kHz mono): first and last sample >= 300 of 32767 inside each slot; frame = round(sample / 1600); end exclusive. Anchors: Whisper large-v3-turbo word timestamps of the full read (estimates, +-0.1-0.2 s), mapped through the slot plan and the clip edits (B01 and B05 crop). WOMAN and slip line bounds: decoded energy.",
+ "frame_origin": "track frame 0 = KSO-EP01-SHORT_narration_voicelock-v3.mp3 start; timeline frame = track frame + preroll (preroll_frames 0, not yet decided)",
+ "preroll_frames": 0,
+ "track": {
+  "file": "out/kso-ep01-short/voice-lock-v5/final/KSO-EP01-SHORT_narration_voicelock-v5.mp3",
+  "store": "projects/KSO/audio/voice-lock-v5/final/KSO-EP01-SHORT_narration_voicelock-v5.mp3",
+  "amplitude": "projects/KSO/audio/voice-lock-v5/final/KSO-EP01-SHORT_narration_voicelock-v5.amplitude.json",
+  "repo_amplitude": "scripts/kuchisake-onna/short/KSO-EP01-SHORT.amplitude.json",
+  "sha256": "c25dc1b580813c2d81c10f98557b1c898f3bd49c45f7dac2cb7a172249df1bc8",
+  "lengthFrames": 2461,
+  "lengthS": 82.033,
+  "v4_sha256": "64d8eb151fd8e00f46587c76003c2435be0f592592654095db5f4776c17a8855",
+  "v3_sha256": "9e6e7f5fa1ab92bec766033142febe4a88d6376dd7b1ae0d9b426ae133dd8f1c",
+  "v4_store": "projects/KSO/audio/voice-lock-v4/final/KSO-EP01-SHORT_narration_voicelock-v4.mp3"
+ },
+ "speech_frames_span": [
+  1,
+  2445
+ ],
+ "speech_total_span_s": 81.49,
+ "speech_total_span_v1_s": 75.79,
+ "speech_total_span_v2_s": 76.06,
+ "audible_clip_seconds_sum": 75.28,
+ "audible_clip_seconds_sum_v1": 69.19,
+ "audible_clip_seconds_sum_v2": 69.86,
+ "budget": {
+  "C_seamless": {
+   "frames": 1500,
+   "speechEndMaxFrame": 1485,
+   "speechEndFrame": 2445,
+   "overrunFrames": 960,
+   "overrunS": 32.0
+  },
+  "B_loop": {
+   "frames": 1590,
+   "speechEndMaxFrame": 1500,
+   "speechEndFrame": 2445,
+   "overrunFrames": 945,
+   "overrunS": 31.5
+  }
+ },
+ "budget_result": "speech runs to 81.51 s (frame 2445); C_seamless needs speech to end by 49.50 s (frame 1485), B_loop by 50.00 s (frame 1500): over by 32.0 s (C) / 31.5 s (B).",
+ "budget_decision": "not met by v1, v2 or v3 (budget 49.5-50 s; v2 about 76 s, v3 about 82 s). The user accepted about 76 s for v2; v3 adds about 5.4 s at the chunk pace. The user decides the length before the timed scene sheets (see open_items).",
+ "beats": {
+  "S01-B01": {
+   "speechOnS": 0.02,
+   "speechOffS": 5.996,
+   "speechOnF": 1,
+   "speechOffF": 180,
+   "lenS": 5.98,
+   "startAnchor": "KSO-A18",
+   "endAnchor": "KSO-A02"
+  },
+  "S01-B02": {
+   "speechOnS": 6.976,
+   "speechOffS": 24.616,
+   "speechOnF": 209,
+   "speechOffF": 738,
+   "lenS": 17.64,
+   "startAnchor": "KSO-A03",
+   "endAnchor": "KSO-A04"
+  },
+  "S02-B01": {
+   "speechOnS": 25.536,
+   "speechOffS": 40.236,
+   "speechOnF": 766,
+   "speechOffF": 1207,
+   "lenS": 14.7,
+   "startAnchor": "KSO-A05",
+   "endAnchor": "KSO-A07"
+  },
+  "S02-B02": {
+   "speechOnS": 40.887,
+   "speechOffS": 47.743,
+   "speechOnF": 1227,
+   "speechOffF": 1432,
+   "lenS": 6.86,
+   "startAnchor": "KSO-A19",
+   "endAnchor": "KSO-A20"
+  },
+  "S02-B03": {
+   "speechOnS": 48.553,
+   "speechOffS": 61.74,
+   "speechOnF": 1457,
+   "speechOffF": 1852,
+   "lenS": 13.19,
+   "startAnchor": "KSO-A21",
+   "endAnchor": "KSO-A13"
+  },
+  "S03-B01": {
+   "speechOnS": 62.894,
+   "speechOffS": 76.493,
+   "speechOnF": 1887,
+   "speechOffF": 2295,
+   "lenS": 13.6,
+   "startAnchor": "KSO-A14",
+   "endAnchor": "KSO-A26"
+  },
+  "S03-B02": {
+   "speechOnS": 76.493,
+   "speechOffS": 81.512,
+   "speechOnF": 2295,
+   "speechOffF": 2445,
+   "lenS": 5.02,
+   "startAnchor": "KSO-A16",
+   "endAnchor": "KSO-A23"
+  }
+ },
+ "anchors": [
+  {
+   "id": "KSO-A01",
+   "beat": "S01-B01",
+   "text": "อย่าเพิ่งตอบ",
+   "what": "NARR hook start: อย่าเพิ่งตอบ",
+   "slot": "B01",
+   "source": "whisper (read, aligned)",
+   "onF": 111,
+   "endF": 135,
+   "onS": 3.696,
+   "endS": 4.496
+  },
+  {
+   "id": "KSO-A02",
+   "beat": "S01-B01",
+   "text": "ฟังให้จบก่อน",
+   "what": "NARR hook end: ฟังให้จบก่อน",
+   "slot": "B01",
+   "source": "whisper (read, aligned)",
+   "onF": 140,
+   "endF": 180,
+   "onS": 4.676,
+   "endS": 5.996
+  },
+  {
+   "id": "KSO-A03",
+   "beat": "S01-B02",
+   "text": "คืนนั้นก่อนเลิกงาน",
+   "what": "NARR line 1 start: คืนนั้นก่อนเลิกงาน",
+   "slot": "B01",
+   "source": "whisper (read, aligned)",
+   "onF": 209,
+   "endF": 243,
+   "onS": 6.976,
+   "endS": 8.096
+  },
+  {
+   "id": "KSO-A04",
+   "beat": "S01-B02",
+   "text": "เหมือนคนที่เพิ่งโล่งใจ",
+   "what": "NARR line 2 end: เหมือนคนที่เพิ่งโล่งใจ",
+   "slot": "B01",
+   "source": "whisper (read, aligned)",
+   "onF": 683,
+   "endF": 738,
+   "onS": 22.756,
+   "endS": 24.616
+  },
+  {
+   "id": "KSO-A05",
+   "beat": "S02-B01",
+   "text": "ฉันเดินกลับห้องคนเดียว",
+   "what": "NARR line 1 start: ฉันเดินกลับห้องคนเดียว",
+   "slot": "B01",
+   "source": "whisper (read, aligned)",
+   "onF": 766,
+   "endF": 805,
+   "onS": 25.536,
+   "endS": 26.836
+  },
+  {
+   "id": "KSO-A06",
+   "beat": "S02-B01",
+   "text": "ฉันหยุด มันก็หยุด",
+   "what": "steps stop: ฉันหยุด มันก็หยุด",
+   "slot": "B01",
+   "source": "whisper (read, aligned)",
+   "onF": 900,
+   "endF": 951,
+   "onS": 29.996,
+   "endS": 31.716
+  },
+  {
+   "id": "KSO-A07",
+   "beat": "S02-B01",
+   "text": "ยืนรอฉันอยู่",
+   "what": "NARR line 2 end: ยืนรอฉันอยู่",
+   "slot": "B01",
+   "source": "whisper (read, aligned)",
+   "onF": 1179,
+   "endF": 1207,
+   "onS": 39.316,
+   "endS": 40.236
+  },
+  {
+   "id": "KSO-A08",
+   "beat": "S02-B02",
+   "text": "ฉันไม่ตอบ",
+   "what": "NARR: ฉันไม่ตอบ",
+   "slot": "B02",
+   "source": "whisper (read, aligned)",
+   "onF": 1310,
+   "endF": 1331,
+   "onS": 43.67,
+   "endS": 44.37
+  },
+  {
+   "id": "KSO-A09",
+   "beat": "S02-B02",
+   "text": "เธอพูดภาษาไทย",
+   "what": "REMOVED in KSO-SCRIPT-R2 (user cut); not generated, not measured",
+   "slot": null,
+   "source": "removed",
+   "onF": null,
+   "endF": null,
+   "onS": null,
+   "endS": null
+  },
+  {
+   "id": "KSO-A10",
+   "beat": "S02-B03",
+   "text": "เธอดึงหน้ากากลง",
+   "what": "NARR mask start: เธอดึงหน้ากากลง",
+   "slot": "B04",
+   "source": "whisper (read, aligned)",
+   "onF": 1524,
+   "endF": 1554,
+   "onS": 50.812,
+   "endS": 51.792
+  },
+  {
+   "id": "KSO-A11",
+   "beat": "S02-B03",
+   "text": "ปากของเธอ",
+   "what": "NARR: ปากของเธอ (stinger reference, Film places the visual)",
+   "slot": "B04",
+   "source": "whisper (read, aligned)",
+   "onF": 1578,
+   "endF": 1603,
+   "onS": 52.592,
+   "endS": 53.432
+  },
+  {
+   "id": "KSO-A12",
+   "beat": "S02-B03",
+   "text": "ไปถึงหู",
+   "what": "NARR mask end: ไปถึงหู",
+   "slot": "B04",
+   "source": "whisper (read, aligned)",
+   "onF": 1634,
+   "endF": 1664,
+   "onS": 54.452,
+   "endS": 55.452
+  },
+  {
+   "id": "KSO-A13",
+   "beat": "S02-B03",
+   "text": "ก็ ธรรมดา",
+   "what": "NARR answer: ก็… ธรรมดา",
+   "slot": "B05",
+   "source": "whisper (read, aligned)",
+   "onF": 1813,
+   "endF": 1852,
+   "onS": 60.42,
+   "endS": 61.74
+  },
+  {
+   "id": "KSO-A14",
+   "beat": "S03-B01",
+   "text": "เธอนิ่งไป",
+   "what": "NARR start: เธอนิ่งไป",
+   "slot": "B06",
+   "source": "whisper (read, aligned)",
+   "onF": 1887,
+   "endF": 1912,
+   "onS": 62.894,
+   "endS": 63.733
+  },
+  {
+   "id": "KSO-A15",
+   "beat": "S03-B01",
+   "text": "ว่าทำไมเพื่อนถึงโล่งใจ",
+   "what": "NARR line 1 end: ว่าทำไมเพื่อนถึงโล่งใจ",
+   "slot": "B06",
+   "source": "whisper (read, aligned)",
+   "onF": 2092,
+   "endF": 2136,
+   "onS": 69.734,
+   "endS": 71.194
+  },
+  {
+   "id": "KSO-A16",
+   "beat": "S03-B02",
+   "text": "ขอโทษนะ",
+   "what": "NARR start: ขอโทษนะ",
+   "slot": "B06",
+   "source": "whisper (read, aligned)",
+   "onF": 2295,
+   "endF": 2334,
+   "onS": 76.493,
+   "endS": 77.793
+  },
+  {
+   "id": "KSO-A17",
+   "beat": "S03-B02",
+   "text": "ที่เล่าให้ฟัง",
+   "what": "NARR end: ที่เล่าให้ฟัง",
+   "slot": "B06",
+   "source": "whisper (read, aligned)",
+   "onF": 2334,
+   "endF": 2373,
+   "onS": 77.793,
+   "endS": 79.094
+  },
+  {
+   "id": "KSO-A18",
+   "beat": "S01-B01",
+   "text": "ฉัน… สวยไหม?",
+   "what": "WOMAN hook: ฉัน… สวยไหม?",
+   "slot": "W01_hook",
+   "source": "energy (line bounds, decoded track)",
+   "onF": 1,
+   "endF": 91,
+   "onS": 0.02,
+   "endS": 3.046
+  },
+  {
+   "id": "KSO-A19",
+   "beat": "S02-B02",
+   "text": "わたし… きれい? (caption วาตาชิ… คิเร?)",
+   "what": "WOMAN JP: わたし… きれい? (caption วาตาชิ… คิเร?)",
+   "slot": "W02_jp",
+   "source": "energy (line bounds, decoded track)",
+   "onF": 1227,
+   "endF": 1292,
+   "onS": 40.887,
+   "endS": 43.069
+  },
+  {
+   "id": "KSO-A20",
+   "beat": "S02-B02",
+   "text": "ฉัน… สวยไหม?",
+   "what": "WOMAN TH: ฉัน… สวยไหม?",
+   "slot": "W03_th",
+   "source": "energy (line bounds, decoded track)",
+   "onF": 1351,
+   "endF": 1432,
+   "onS": 45.02,
+   "endS": 47.743
+  },
+  {
+   "id": "KSO-A21",
+   "beat": "S02-B03",
+   "text": "ส… สวย—",
+   "what": "NARR panic slip: ส… สวย—",
+   "slot": "SLIP",
+   "source": "energy (line bounds, decoded track)",
+   "onF": 1457,
+   "endF": 1512,
+   "onS": 48.553,
+   "endS": 50.386
+  },
+  {
+   "id": "KSO-A22",
+   "beat": "S02-B03",
+   "text": "แล้วตอนนี้ล่ะ… ยังสวยอยู่ไหม?",
+   "what": "WOMAN: แล้วตอนนี้ล่ะ… ยังสวยอยู่ไหม?",
+   "slot": "W04_mask",
+   "source": "energy (line bounds, decoded track)",
+   "onF": 1687,
+   "endF": 1793,
+   "onS": 56.217,
+   "endS": 59.783
+  },
+  {
+   "id": "KSO-A23",
+   "beat": "S03-B02",
+   "text": "ถึงตาเธอแล้ว…",
+   "what": "WOMAN final: ถึงตาเธอแล้ว…",
+   "slot": "W05_final",
+   "source": "energy (line bounds, decoded track)",
+   "onF": 2394,
+   "endF": 2445,
+   "onS": 79.787,
+   "endS": 81.512
+  },
+  {
+   "id": "KSO-A24",
+   "beat": "S02-B03",
+   "text": "",
+   "what": "stinger: first readable smile frame (visual, not an audio anchor)",
+   "slot": null,
+   "source": "N/A audio",
+   "onF": null,
+   "endF": null,
+   "onS": null,
+   "endS": null
+  },
+  {
+   "id": "KSO-A25",
+   "beat": "S03-B01",
+   "text": "เพราะใครที่ได้ฟังเรื่องนี้",
+   "what": "NARR line 2 start: เพราะใครที่ได้ฟังเรื่องนี้",
+   "slot": "B06",
+   "source": "whisper (read, aligned)",
+   "onF": 2161,
+   "endF": 2210,
+   "onS": 72.034,
+   "endS": 73.653
+  },
+  {
+   "id": "KSO-A26",
+   "beat": "S03-B01",
+   "text": "เธอจะไปหาคนนั้น",
+   "what": "NARR end: เธอจะไปหาคนนั้น",
+   "slot": "B06",
+   "source": "whisper (read, aligned)",
+   "onF": 2232,
+   "endF": 2295,
+   "onS": 74.394,
+   "endS": 76.493
+  }
+ ],
+ "slots": [
+  {
+   "slot": "W01_hook",
+   "leadFrames": 0,
+   "slotStartF": 0,
+   "slotFrames": 92,
+   "clipAudibleStartS": 0.0215,
+   "clipAudibleEndS": 3.0477,
+   "speechOnF": 0.6,
+   "speechOffF": 91.39,
+   "gap": "frame 0: hook opens the Short (S01-B01)"
+  },
+  {
+   "slot": "B01",
+   "leadFrames": 15,
+   "slotStartF": 92,
+   "slotFrames": 1120,
+   "clipAudibleStartS": 0.0505,
+   "clipAudibleEndS": 36.8474,
+   "speechOnF": 107.6,
+   "speechOffF": 1211.51,
+   "gap": "WOMAN hook -> NARR: <short pause> (script S01-B01), 0.50 s"
+  },
+  {
+   "slot": "W02_jp",
+   "leadFrames": 14,
+   "slotStartF": 1212,
+   "slotFrames": 81,
+   "clipAudibleStartS": 0.3033,
+   "clipAudibleEndS": 2.4857,
+   "speechOnF": 1226.6,
+   "speechOffF": 1292.07,
+   "gap": "NARR -> WOMAN JP: sample gap NARR->JP 0.45 s, rounded to 14 f"
+  },
+  {
+   "slot": "B02",
+   "leadFrames": 14,
+   "slotStartF": 1293,
+   "slotFrames": 43,
+   "clipAudibleStartS": 0.0413,
+   "clipAudibleEndS": 0.9877,
+   "speechOnF": 1307.6,
+   "speechOffF": 1335.99,
+   "gap": "WOMAN JP -> NARR ฉันไม่ตอบ: 14 f (0.47 s, same as the sample gap)"
+  },
+  {
+   "slot": "W03_th",
+   "leadFrames": 14,
+   "slotStartF": 1336,
+   "slotFrames": 97,
+   "clipAudibleStartS": 0.1575,
+   "clipAudibleEndS": 2.8807,
+   "speechOnF": 1350.6,
+   "speechOffF": 1432.3,
+   "gap": "NARR ฉันไม่ตอบ -> WOMAN TH: 14 f"
+  },
+  {
+   "slot": "SLIP",
+   "leadFrames": 23,
+   "slotStartF": 1433,
+   "slotFrames": 79,
+   "clipAudibleStartS": 0.0215,
+   "clipAudibleEndS": 1.8545,
+   "speechOnF": 1456.6,
+   "speechOffF": 1511.59,
+   "gap": "WOMAN TH -> panic slip: silence after her Thai question (script Sound handoff, R2), 0.75 s, Editor choice (v1 pre-line silence kept)"
+  },
+  {
+   "slot": "B04",
+   "leadFrames": 11,
+   "slotStartF": 1512,
+   "slotFrames": 156,
+   "clipAudibleStartS": 0.0186,
+   "clipAudibleEndS": 4.8203,
+   "speechOnF": 1523.56,
+   "speechOffF": 1667.61,
+   "gap": "slip -> NARR mask lines: 0.35 s"
+  },
+  {
+   "slot": "W04_mask",
+   "leadFrames": 18,
+   "slotStartF": 1668,
+   "slotFrames": 129,
+   "clipAudibleStartS": 0.0168,
+   "clipAudibleEndS": 3.6953,
+   "speechOnF": 1686.5,
+   "speechOffF": 1796.86,
+   "gap": "NARR ไปถึงหู -> WOMAN ยังสวยอยู่ไหม: 0.60 s"
+  },
+  {
+   "slot": "B05",
+   "leadFrames": 15,
+   "slotStartF": 1797,
+   "slotFrames": 60,
+   "clipAudibleStartS": 0.0177,
+   "clipAudibleEndS": 1.4782,
+   "speechOnF": 1812.53,
+   "speechOffF": 1856.35,
+   "gap": "WOMAN -> NARR ก็ ธรรมดา: <short pause> (script), 0.50 s"
+  },
+  {
+   "slot": "B06",
+   "leadFrames": 30,
+   "slotStartF": 1857,
+   "slotFrames": 518,
+   "clipAudibleStartS": 0.0465,
+   "clipAudibleEndS": 16.2709,
+   "speechOnF": 1887.6,
+   "speechOffF": 2374.33,
+   "gap": "silence after ธรรมดา (script scare rule), 1.00 s"
+  },
+  {
+   "slot": "W05_final",
+   "leadFrames": 18,
+   "slotStartF": 2375,
+   "slotFrames": 71,
+   "clipAudibleStartS": 0.384,
+   "clipAudibleEndS": 2.1215,
+   "speechOnF": 2393.6,
+   "speechOffF": 2445.72,
+   "gap": "NARR ที่เล่าให้ฟัง -> WOMAN ถึงตาเธอแล้ว: 0.60 s"
+  },
+  {
+   "slot": "TAIL",
+   "slotStartF": 2446,
+   "slotFrames": 15,
+   "gap": "silence to the seam (0.5 s, C_seamless)"
+  }
+ ],
+ "takes": [
+  {
+   "id": "TAKE-NARR-READ",
+   "what": "NARR one read, groups B01 B02 B04 B05 (Erinome, R2; B03 absent; B06 replaced in R3, see TAKE-NARR-B06)",
+   "file": "out/kso-ep01-short/voice-lock-r3/takes/NARR-Erinome_read_take1.wav",
+   "store": "projects/KSO/audio/voice-lock-r2/takes/NARR-Erinome_read_take1.wav",
+   "new": true,
+   "sha256": "afe4a5dda6e2c4409ce98ab7c41bac2ca304cea099b865ae6dcc846fef1a5193"
+  },
+  {
+   "id": "TAKE-NARR-SLIP",
+   "what": "NARR panic slip (separate take, Erinome, S02-B03)",
+   "file": "out/kso-ep01-short/voice-lock-r3/takes/NARR-Erinome_slip_take1.wav",
+   "store": "projects/KSO/audio/voice-lock-r2/takes/NARR-Erinome_slip_take1.wav",
+   "new": true,
+   "sha256": "2d7c09c7b4fb2e61a83eb62d71332cccabc20e225136e778a48b6cbab5fa39d0"
+  },
+  {
+   "id": "TAKE-W-HOOK",
+   "what": "WOMAN hook (Despina, reused: v1 take, line unchanged)",
+   "file": "out/kso-ep01-short/voice-lock-r3/takes/WOMAN-B-Despina_HOOK_take1.wav",
+   "store": "projects/KSO/audio/WOMAN-B-Despina_HOOK_take1.wav",
+   "new": false,
+   "sha256": "bdad9b87a60c92c9b869bb85f4f69be6d03f25f56fed751a73ea21f315bf5636"
+  },
+  {
+   "id": "TAKE-W-JP",
+   "what": "WOMAN JP question (Despina, reused)",
+   "file": "out/kso-ep01-short/voice-lock-r3/takes/WOMAN-B-Despina_JP_take1.wav",
+   "store": "projects/KSO/audio/lines/WOMAN-B-Despina_JP_take1.wav",
+   "new": false,
+   "sha256": "2695076afe420fe84e489cb964e801e930f93fac11750bebe4619cbbd9751452"
+  },
+  {
+   "id": "TAKE-W-TH",
+   "what": "WOMAN TH question (Despina, reused)",
+   "file": "out/kso-ep01-short/voice-lock-r3/takes/WOMAN-B-Despina_TH_take1.wav",
+   "store": "projects/KSO/audio/lines/WOMAN-B-Despina_TH_take1.wav",
+   "new": false,
+   "sha256": "6b5ad0a4ad0ac14a200282ffa1d19dcf238b1946bf42425b544bf2090c0a47d2"
+  },
+  {
+   "id": "TAKE-W-MASK",
+   "what": "WOMAN mask line (Despina, reused)",
+   "file": "out/kso-ep01-short/voice-lock-r3/takes/WOMAN-B-Despina_MASK_take1.wav",
+   "store": "projects/KSO/audio/WOMAN-B-Despina_MASK_take1.wav",
+   "new": false,
+   "sha256": "20f2a5758fe5951738715f22c0dc8f097836cf3480f1668e37645a9f2b86194c"
+  },
+  {
+   "id": "TAKE-W-FINAL",
+   "what": "WOMAN final line (Despina, reused)",
+   "file": "out/kso-ep01-short/voice-lock-r3/takes/WOMAN-B-Despina_FINAL_take1.wav",
+   "store": "projects/KSO/audio/WOMAN-B-Despina_FINAL_take1.wav",
+   "new": false,
+   "sha256": "64d703b855d2153d383ce5a6c5ca1371593de6386212f232df132aef4724667b"
+  },
+  {
+   "id": "TAKE-NARR-B06",
+   "what": "NARR B06 chunk (S03-B01 + S03-B02 lines, Erinome, R3, separate call, v2 style; take2 picked by voice-match; trimmed 0.30-16.58 s)",
+   "file": "out/kso-ep01-short/voice-lock-r3/takes/B06-chunk_take2.wav",
+   "store": "projects/KSO/audio/voice-lock-r3/align/chunk-take2/B06.wav",
+   "new": true,
+   "sha256": "17f85bc5167d734a01cc6c762c396462fdd2c39b3eca4564b4545bcf9e6c4db4"
+  },
+  {
+   "id": "TAKE-NARR-B06-V4",
+   "what": "NARR B06 clip v4 = the v3 B06 clip (take2) with the pitch fix on โทษ (pitch-fix-v4.py); all other samples equal v3 except MP3 re-encode noise",
+   "file": "out/kso-ep01-short/voice-lock-v4/segments-v4/B06.wav",
+   "store": "projects/KSO/audio/voice-lock-v4/segments-v4/B06.wav",
+   "new": true,
+   "sha256": "14c88bf02bf40c020262b1de00adb0d6170cf959fc8ab510655668256f1842e8"
+  },
+  {
+   "id": "TAKE-NARR-B06-TAIL-ALT1",
+   "what": "ALTERNATIVE, not in the lock: Erinome tail-only take, style as the B06 read, text <whispering> ขอโทษนะ, ที่เล่าให้ฟัง; measured ขอโทษนะ 0.9 s vs 1.3 s in v3 (Whisper), tail speech 1.8-2.0 s vs 2.5 s (about 25 % faster)",
+   "file": "out/kso-ep01-short/voice-lock-v4/takes/B06-tail_take1.wav",
+   "store": "projects/KSO/audio/voice-lock-v4/takes/B06-tail_take1.wav",
+   "new": true,
+   "sha256": "28f33ae046b08a2302d1d8f2607acbfc45f01c6521673c68571c7ea8ca205489"
+  },
+  {
+   "id": "TAKE-NARR-B06-TAIL-ALT2",
+   "what": "ALTERNATIVE, not in the lock: Erinome tail-only take, style as the B06 read, text <whispering> ขอโทษนะ, ที่เล่าให้ฟัง; measured ขอโทษนะ 0.9 s vs 1.3 s in v3 (Whisper), tail speech 1.8-2.0 s vs 2.5 s (about 25 % faster)",
+   "file": "out/kso-ep01-short/voice-lock-v4/takes/B06-tail_take2.wav",
+   "store": "projects/KSO/audio/voice-lock-v4/takes/B06-tail_take2.wav",
+   "new": true,
+   "sha256": "435f048c1c7923170f1621be81ed1d7fafd052cfb8f9dfaf5be7338d49e73535"
+  },
+  {
+   "id": "TAKE-NARR-B06-TAIL-ALT3",
+   "what": "ALTERNATIVE, not in the lock: Erinome tail-only take, style as the B06 read, text <whispering> ขอโทษนะ, ที่เล่าให้ฟัง; measured ขอโทษนะ 0.9 s vs 1.3 s in v3 (Whisper), tail speech 1.8-2.0 s vs 2.5 s (about 25 % faster)",
+   "file": "out/kso-ep01-short/voice-lock-v4/takes/B06-tail_take3.wav",
+   "store": "projects/KSO/audio/voice-lock-v4/takes/B06-tail_take3.wav",
+   "new": true,
+   "sha256": "8a5f1c527c5cd2c4cacc832735d35a7573567cd7f7dfeedc27fcf874b1c0a1cd"
+  },
+  {
+   "id": "TAKE-NARR-B06-V5",
+   "what": "NARR B06 clip v5 = the v3 B06 clip (take2) with the pitch fix on โทษ at +3.0 st (pitch-fix-v5.py); all other samples equal v3 except MP3 re-encode noise",
+   "file": "out/kso-ep01-short/voice-lock-v5/segments-v5/B06.wav",
+   "store": "projects/KSO/audio/voice-lock-v5/segments-v5/B06.wav",
+   "new": true,
+   "sha256": "01e02624682393c93aa7c581a8b3187cde1c085429cbb336d3939e5b07d59803"
+  }
+ ],
+ "clip_edits": [
+  {
+   "clip": "B01",
+   "cropStartS": 0.56,
+   "cutEndS": 37.46,
+   "fadeInS": 0.01,
+   "fadeOutS": 0.06,
+   "lengthS": 36.9
+  },
+  {
+   "clip": "B02",
+   "cropStartS": 0.7,
+   "cutEndS": 1.725,
+   "fadeInS": 0.01,
+   "fadeOutS": 0.06,
+   "lengthS": 1.025
+  },
+  {
+   "clip": "B04",
+   "cropStartS": 0.66,
+   "cutEndS": 5.545,
+   "fadeInS": 0.01,
+   "fadeOutS": 0.06,
+   "lengthS": 4.885
+  },
+  {
+   "clip": "B05",
+   "cropStartS": 0.505,
+   "cutEndS": 2.045,
+   "fadeInS": 0.01,
+   "fadeOutS": 0.06,
+   "lengthS": 1.54
+  },
+  {
+   "clip": "B06",
+   "cropStartS": 0.3,
+   "cutEndS": 16.58,
+   "fadeInS": 0.01,
+   "fadeOutS": 0.03,
+   "lengthS": 16.28,
+   "source": "KSO-SCRIPT-R3 B06 chunk, Erinome take2 (voice-match pick), separate call",
+   "v4_pitch_fix": {
+    "pitch_st": 1.5,
+    "ratio": 1.09051,
+    "context_s": [
+     14.1,
+     15.05
+    ],
+    "span_s": [
+     14.42,
+     14.74
+    ],
+    "ramp_in_s": [
+     14.36,
+     14.42
+    ],
+    "ramp_out_s": [
+     14.74,
+     14.79
+    ],
+    "lag_samples": -720,
+    "span_gain_db": -0.515,
+    "changed_window_s": [
+     14.36,
+     14.79
+    ],
+    "changed_samples": 20638,
+    "method": "ffmpeg asetrate+aresample+atempo on the context window; envelope lag alignment; span gain match; raised-cosine blend in the silent gaps",
+    "f0_vowel_1458_1472_before": {
+     "median": 178.1,
+     "p10": 171.8,
+     "p90": 188.5,
+     "voiced_frames": 10
+    },
+    "f0_vowel_1458_1472_after": {
+     "median": 195.5,
+     "p10": 186.6,
+     "p90": 203.4,
+     "voiced_frames": 10
+    }
+   },
+   "v5_pitch_fix": {
+    "pitch_st": 3.0,
+    "ratio": 1.18921,
+    "context_s": [
+     14.1,
+     15.05
+    ],
+    "span_s": [
+     14.42,
+     14.74
+    ],
+    "ramp_in_s": [
+     14.36,
+     14.42
+    ],
+    "ramp_out_s": [
+     14.74,
+     14.79
+    ],
+    "lag_samples": -480,
+    "shifter_out_samples": 44548,
+    "context_samples": 45600,
+    "span_gain_db": 0.032,
+    "changed_window_s": [
+     14.36,
+     14.79
+    ],
+    "changed_samples": 20639,
+    "method": "ffmpeg asetrate+aresample+atempo on the context window; envelope lag alignment; span gain match; raised-cosine blend in the silent gaps",
+    "f0_vowel_1458_1472_before": {
+     "median": 178.1,
+     "p10": 171.8,
+     "p90": 188.5,
+     "voiced_frames": 10
+    },
+    "f0_vowel_1458_1472_after": {
+     "median": 211.0,
+     "p10": 202.5,
+     "p90": 220.5,
+     "voiced_frames": 10
+    }
+   }
+  }
+ ],
+ "loudness": {
+  "method": "scripts/loudness.mjs measureLoudness (ffmpeg loudnorm measure; integrated LUFS, true peak, LRA of the file as it is)",
+  "track": {
+   "file": "KSO-EP01-SHORT_narration_voicelock-v5.mp3",
+   "lufs": -16.64,
+   "tpDb": -1.64,
+   "lra": 5.1,
+   "v4_lufs": -16.64,
+   "v3_lufs": -16.64,
+   "v3_lra": 5.1
+  },
+  "takes": [
+   {
+    "file": "NARR-Erinome_read_take1.wav",
+    "lufs": -16.18,
+    "tpDb": -1.49,
+    "lra": 3.8
+   },
+   {
+    "file": "NARR-Erinome_slip_take1.wav",
+    "lufs": -21.35,
+    "tpDb": -1.5,
+    "lra": 0
+   },
+   {
+    "file": "WOMAN-B-Despina_HOOK_take1.wav",
+    "lufs": -15.63,
+    "tpDb": -1.5,
+    "lra": 0.3
+   },
+   {
+    "file": "WOMAN-B-Despina_JP_take1.wav",
+    "lufs": -20.74,
+    "tpDb": -1.5,
+    "lra": 0
+   },
+   {
+    "file": "WOMAN-B-Despina_TH_take1.wav",
+    "lufs": -16.07,
+    "tpDb": -1.5,
+    "lra": 0.5
+   },
+   {
+    "file": "WOMAN-B-Despina_MASK_take1.wav",
+    "lufs": -15.71,
+    "tpDb": -1.5,
+    "lra": 1.2
+   },
+   {
+    "file": "WOMAN-B-Despina_FINAL_take1.wav",
+    "lufs": -19.3,
+    "tpDb": -1.5,
+    "lra": 0
+   },
+   {
+    "file": "B06-chunk_take1.wav",
+    "lufs": -16.55,
+    "tpDb": -1.5,
+    "lra": 3.3
+   },
+   {
+    "file": "B06-chunk_take2.wav",
+    "lufs": -16.48,
+    "tpDb": -1.49,
+    "lra": 5.3
+   },
+   {
+    "file": "B06-chunk_take3.wav",
+    "lufs": -16.5,
+    "tpDb": -1.49,
+    "lra": 5.9
+   },
+   {
+    "file": "B06.wav",
+    "lufs": -16.45,
+    "tpDb": -1.49,
+    "lra": 5.5
+   }
+  ],
+  "b06_minus_b01_lufs": -0.33,
+  "v1_reference": {
+   "track_lufs": -16.77,
+   "track_tpDb": -1.52,
+   "NARR_read_sulafat_lufs": -16.42,
+   "NARR_slip_sulafat_lufs": -19.38
+  },
+  "chain": "gemini-tts.py say: two-pass loudnorm I=-16 TP=-1.5 LRA=11 (linear, 48 kHz mono); no extra limiting or gain in the lock",
+  "note": "Erinome read measures at the target (-16.18 LUFS). The lineup hook take (-22.4 LUFS raw) was short and was limited for level matching only; it is not the lock.",
+  "b06_v4": {
+   "file": "segments-v4/B06.wav",
+   "lufs": -16.45,
+   "tpDb": -1.49,
+   "lra": 5.5,
+   "v3_lufs": -16.45,
+   "v3_lra": 5.5
+  },
+  "v4_note": "v4 loudness equals v3 to 0.01 LU on the track and the B06 clip (span RMS gain-matched, span gain -0.515 dB before the match).",
+  "track_v4": {
+   "file": "KSO-EP01-SHORT_narration_voicelock-v4.mp3",
+   "lufs": -16.64,
+   "tpDb": -1.64,
+   "lra": 5.1,
+   "v3_lufs": -16.64,
+   "v3_lra": 5.1
+  },
+  "b06_v5": {
+   "file": "segments-v5/B06.wav",
+   "lufs": -16.44,
+   "tpDb": -1.47,
+   "lra": 5.5,
+   "v4_lufs": -16.45,
+   "v3_lufs": -16.45,
+   "v3_lra": 5.5
+  },
+  "v5_note": "v5 loudness equals v3 and v4 to 0.01 LU on the track; the B06 clip differs by 0.01 LU (span RMS gain-matched, span gain 0.032 dB before the match)."
+ },
+ "written_pause_frames": {
+  "W01_hook": 0,
+  "B01": 15,
+  "W02_jp": 14,
+  "B02": 14,
+  "W03_th": 14,
+  "SLIP": 23,
+  "B04": 11,
+  "W04_mask": 18,
+  "B05": 15,
+  "B06": 30,
+  "W05_final": 18
+ },
+ "written_pause_basis": "Script: <short pause> before NARR lines (B01, B05) = 0.5 s written lead; 0.75 s silence after her Thai question (SLIP lead 23, Editor choice carried from v1 pre-line silence; script Sound handoff: silence after the Thai question is part of the scare); silence after ธรรมดา 1.0 s (B06 lead 30); 0.5 s speech-free before the seam (TAIL 15). Other gaps are Editor choices (sample gaps 0.45-0.6 s). The Erinome read adds a quiet murmur before B01, B02, B04 and B05 and after the phrases; those are cropped or trimmed (clip_edits), so the written leads carry the pauses.",
+ "ellipsis_rule": "NARR text and the panic slip: ellipses became commas in TTS text only (user rule). WOMAN lines keep the script ellipses and the reused takes.",
+ "narrator_pace": "No atempo. The +5% narrator speed-up (memory narrator-pace-plus5) does not apply: NARR is the first-person character (user decision, 1 Nov 2026).",
+ "read_alignment": {
+  "matchRatio": 0.857,
+  "anchorsInside": 18,
+  "anchorsFallback": 0,
+  "cutRule": [
+   "B01|B02: whisper mid 38.010 s -> cut 37.935 s (gap 0.130 s centre)",
+   "B02|B04: whisper mid 40.040 s -> cut 39.915 s (quietest 10 ms (rms 28.6))",
+   "B04|B05: whisper mid 46.010 s -> cut 46.235 s (quietest 10 ms (rms 76.6))",
+   "B05|B06: whisper mid 48.460 s -> cut 48.625 s (gap 0.110 s centre)"
+  ],
+  "note": "cut-gaps verify: edge margins of 11-18 ms at the B04 and B05 cuts (the 40 ms gaps between phrases) and at the read edges of the B01-B05 read (B01 start). B06 is its own chunk, trimmed at 0.30 s and 16.58 s (clip_edits); the sample checks are in qa/ and the open_items."
+ },
+ "asr_check": {
+  "source": "out/kso-ep01-short/voice-lock-r3/qa/asr-r3.json",
+  "model": "Whisper large-v3-turbo, CPU int8, temperature 0, language th (ja for the JP line), 0.5 s silence padding on clips",
+  "proxy_only": true,
+  "lines": [
+   {
+    "line": "W01_hook",
+    "asr": "ฉันสวยมาย",
+    "scored": true,
+    "ratio": 0.778
+   },
+   {
+    "line": "B01",
+    "asr": "อย่าพื้นตอบ ฟังให้จบก่อนคืนนั้นก่อนเลิกงามที่ญี่ปุ่นเพื่อนที่ร้านเล่าตำนานให้ฉันฟังคุจิ ซาเกออนนะผู้ยิงใส่หน้ากากที่ถามแค่คำถามเดียวห้ามตอบว่าสวย ห้ามตอบว่าไม่สวยเราจบ เพื่อนก็หยิม เหมือนคนที่เพิ่งลงใจฉันเดินกลับห้องคนเดียวมีเสียงโรงเท้าเดินตามหลังมาฉันหยุด มันก็หยุด แล้วเสียงดันก็หายไปแต่สะไฟข้างหน้า มีผู้ยิงใส่โคตยาวใส่หน้ากากสีขาว ยืนรอฉันอยู่",
+    "scored": true,
+    "ratio": 0.926,
+    "anchorWindows": {
+     "B01-a1": 0.696,
+     "B01-a2": 1.0,
+     "B01-a3": 0.971,
+     "B01-a4": 0.952,
+     "B01-a5": 1.0,
+     "B01-a6": 1.0,
+     "B01-a7": 1.0
+    }
+   },
+   {
+    "line": "W02_jp",
+    "asr": "私、綺麗?",
+    "scored": false,
+    "ratio": 0.0
+   },
+   {
+    "line": "B02",
+    "asr": "ฉันไม่ตอบ",
+    "scored": true,
+    "ratio": 1.0,
+    "anchorWindows": {
+     "B02-a1": 1.0
+    }
+   },
+   {
+    "line": "W03_th",
+    "asr": "ชันสวัยมัย",
+    "scored": true,
+    "ratio": 0.632
+   },
+   {
+    "line": "SLIP",
+    "asr": "ส...สวัย!",
+    "scored": true,
+    "ratio": 0.889
+   },
+   {
+    "line": "B04",
+    "asr": "เธอดึงหน้ากากลงปากของเธอฉีกยาวไปถึงหู",
+    "scored": true,
+    "ratio": 1.0,
+    "anchorWindows": {
+     "B04-a1": 1.0,
+     "B04-a2": 1.0,
+     "B04-a3": 1.0
+    }
+   },
+   {
+    "line": "W04_mask",
+    "asr": "ล้าตอนนี้ล่ะ ยังสวยอยู่มั้ย",
+    "scored": true,
+    "ratio": 0.846
+   },
+   {
+    "line": "B05",
+    "asr": "ขอบคุณมาด้า",
+    "scored": true,
+    "ratio": 0.316,
+    "anchorWindows": {
+     "B05-a1": 0.429
+    }
+   },
+   {
+    "line": "B06",
+    "asr": "เธอนิ่งไป ฉันวิ่งไม่อยู่จนถึงห้องฉันรอดแต่ตอนนี้ฉันเข้าใจแล้วว่าทำไมเพื่อนถึงลงใจเพราะใครที่ได้ฟังเรื่องนี้เธอจะไปหาคนนั้นขอโทษนะ ที่เราให้ฟัง",
+    "scored": true,
+    "ratio": 0.961,
+    "anchorWindows": {
+     "B06-a1": 1.0,
+     "B06-a2": 0.952,
+     "B06-a3": 1.0,
+     "B06-a4": 1.0,
+     "B06-a5": 1.0,
+     "B06-a6": 0.88
+    }
+   },
+   {
+    "line": "W05_final",
+    "asr": "ถึงตาเธอแล้ว",
+    "scored": true,
+    "ratio": 1.0
+   },
+   {
+    "line": "FULL_TRACK",
+    "asr": "ฉัน สวยไหมฉันหยุด มันก็หยุด แล้วเสียงดันก็หายไปใต้สอบไฟข้างหน้า มีผู้หญิงใส่โคตยาวใส่หน้ากากสี่ข่าว ยืนรอฉันอยู่ฉันไม่ตอบฉัน...สวยไหม?ส...สวย!เธอดึงหน้ากากลง ปากของเธอ ชีกยาว ไปถึงหูแล้วตอนนี้ล่ะ ยังสวยอยู่ไหมก็...ธรรมดาเธอนิ่งไปฉันวิ่งไม่อยู่จนถึงห้องฉันรอดแต่ตอนนี้ฉันเข้าใจแล้วว่าทำไมเพื่อนถึงลงใจเพราะใครที่ได้ฟังเรื่องนี้เธอจะไปหาคนนั้นขอโทษนะ ที่เราให้ฟังถึงตาเธอแล้ว",
+    "scored": false,
+    "ratio": 0.201
+   }
+  ],
+  "caveat": "Thai ASR is rough and not stable on short whispered clips: the question particle ไหม reads as ไม่/มั้ย/มาย across takes; B05 reads ขอบคุณ at clip level but the full-read pass hears ก็ธรรมดา (46.76 s); the full-track pass (no padding) dropped most of the NARR and is not evidence (0.13).",
+  "v4": {
+   "source": "projects/KSO/audio/voice-lock-v4/qa/v4-check.json",
+   "proxy_only": true,
+   "b06_letters_ratio": {
+    "v3": 0.982,
+    "v4": 0.982
+   },
+   "b06_asr_v4": "เธอนิ่งไปฉันวิ่งไม่หยุดจนถึงห้องฉันรอดแต่ตอนนี้ฉันเข้าใจแล้วว่าทำไมเพื่อนถึงลงใจเพราะใครที่ได้ฟังเรื่องนี้เธอจะไปหาคนนั้นขอโทษนะที่เราให้ฟัง",
+   "apology_words_s_v4": [
+    {
+     "w": "ข",
+     "s": 14.14,
+     "e": 14.34
+    },
+    {
+     "w": "อ",
+     "s": 14.34,
+     "e": 14.44
+    },
+    {
+     "w": "โ",
+     "s": 14.44,
+     "e": 14.54
+    },
+    {
+     "w": "ท",
+     "s": 14.54,
+     "e": 14.62
+    },
+    {
+     "w": "ษ",
+     "s": 14.62,
+     "e": 14.76
+    },
+    {
+     "w": "นะ",
+     "s": 14.76,
+     "e": 14.92
+    },
+    {
+     "w": "ท",
+     "s": 14.92,
+     "e": 15.52
+    }
+   ],
+   "note": "Same words in v3 and v4 (ขอโทษนะ at 14.14-14.92 s of the clip); the proxy does not test pitch. The Whisper reading ที่เราให้ฟัง for ที่เล่าให้ฟัง is in both."
+  },
+  "v5": {
+   "source": "projects/KSO/audio/voice-lock-v5/qa/v5-check.json",
+   "proxy_only": true,
+   "b06_letters_ratio": {
+    "v3": 0.982,
+    "v4": 0.982,
+    "v5": 0.961
+   },
+   "b06_asr_v5": "เธอนิ่งไปฉันวิ่งไม่อยู่จนถึงห้องฉันรอดแต่ตอนนี้ฉันเข้าใจแล้วว่าทำไมเพื่อนถึงลงใจเพราะใครที่ได้ฟังเรื่องนี้เธอจะไปหาคนนั้นขอโทษนะที่เราให้ฟัง",
+   "apology_words_s_v5": [
+    {
+     "w": "ข",
+     "s": 14.14,
+     "e": 14.34
+    },
+    {
+     "w": "อ",
+     "s": 14.34,
+     "e": 14.42
+    },
+    {
+     "w": "โ",
+     "s": 14.42,
+     "e": 14.56
+    },
+    {
+     "w": "ท",
+     "s": 14.56,
+     "e": 14.6
+    },
+    {
+     "w": "ษ",
+     "s": 14.6,
+     "e": 14.76
+    },
+    {
+     "w": "นะ",
+     "s": 14.76,
+     "e": 14.92
+    },
+    {
+     "w": "ท",
+     "s": 14.92,
+     "e": 15.52
+    }
+   ],
+   "note": "v5 0.961 is the same ratio the v3 read already scores in out/kso-ep01-short/voice-lock-r3/qa/asr-r3.json (0.5 s silence padding; หยุด reads อยู่ there too). The v5-check run (no padding) scores v3 0.982. The flip is a word before 14.2 s of the clip, where the PCM equals v3; the apology words keep their text. Not a pitch test."
+  }
+ },
+ "reproduce": [
+  "out/whisper-venv/bin/python -I scripts/kuchisake-onna/short/voice-lock/pitch-fix-v5.py --src out/kso-ep01-short/voice-lock-r3/segments/B06.wav --out out/kso-ep01-short/voice-lock-v5/segments-v5/B06.wav --qa out/kso-ep01-short/voice-lock-v5/qa/pitch-fix-v5.json (default --st 3.0; a back-off run uses --st 2.5 and a different --out/--qa)",
+  "copy every v3 clip (out/kso-ep01-short/voice-lock-r3/segments/*.wav) into out/kso-ep01-short/voice-lock-v5/segments-v5/ except B06.wav (already v5)",
+  "python3 -I scripts/narration/assemble-narration.py --clips out/kso-ep01-short/voice-lock-v5/segments-v5 --timeline scripts/kuchisake-onna/short/voice-lock/narration-slots.json --out out/kso-ep01-short/voice-lock-v5/final/KSO-EP01-SHORT_narration_voicelock-v5.mp3",
+  "node scripts/kuchisake-onna/short/voice-lock/measure-loudness.mjs <v5 track> <v4 track> <v3 track> <v5 B06.wav> <v4 B06.wav> <v3 B06.wav> > out/kso-ep01-short/voice-lock-v5/qa/loudness-v5.jsonl",
+  "HF_HUB_OFFLINE=1 out/whisper-venv/bin/python -I scripts/kuchisake-onna/short/voice-lock/v5-check.py --qa out/kso-ep01-short/voice-lock-v5/qa/v5-check.json",
+  "python3 -I scripts/kuchisake-onna/short/voice-lock/update-measure-v5.py --base <store voice-lock-v5/measure/voice-measure-v4.json> --pitch-qa ... --check-qa ... --loudness ...",
+  "out/gemini-venv/bin/python -I scripts/gemini-tts.py say --voice Erinome --style \"hushed, tense late-night storytelling, close to the mic\" --text \"<whispering> ขอโทษนะ, ที่เล่าให้ฟัง\" out/kso-ep01-short/voice-lock-v4/takes/B06-tail_take{1,2}.wav (take3: same style + \", same narrator as the opening, do not speed up\"); ALTERNATIVE only, not in the lock",
+  "python3 -I scripts/kuchisake-onna/short/voice-lock/pitch-fix-v4.py --src out/kso-ep01-short/voice-lock-r3/segments/B06.wav --out out/kso-ep01-short/voice-lock-v4/segments-v4/B06.wav --qa out/kso-ep01-short/voice-lock-v4/qa/pitch-fix-v4.json",
+  "copy every v3 clip (out/kso-ep01-short/voice-lock-r3/segments/*.wav) into out/kso-ep01-short/voice-lock-v4/segments-v4/ except B06.wav (already v4)",
+  "python3 -I scripts/narration/assemble-narration.py --clips out/kso-ep01-short/voice-lock-v4/segments-v4 --timeline scripts/kuchisake-onna/short/voice-lock/narration-slots.json --out out/kso-ep01-short/voice-lock-v4/final/KSO-EP01-SHORT_narration_voicelock-v4.mp3 (reproduces v3 bit-exact from the v3 clips: sha 9e6e7f5f...)",
+  "node scripts/kuchisake-onna/short/voice-lock/measure-loudness.mjs <v4 track> <v3 track> <v4 B06.wav> <v3 B06.wav> > out/kso-ep01-short/voice-lock-v4/qa/loudness-v4.jsonl",
+  "HF_HUB_OFFLINE=1 out/whisper-venv/bin/python -I scripts/kuchisake-onna/short/voice-lock/v4-check.py --qa out/kso-ep01-short/voice-lock-v4/qa/v4-check.json",
+  "python3 -I scripts/kuchisake-onna/short/voice-lock/update-measure-v4.py --base <store voice-measure-v3.json> --pitch-qa ... --check-qa ... --loudness ...",
+  "out/gemini-venv/bin/python -I scripts/gemini-tts.py say --voice Erinome --style \"hushed, tense late-night storytelling, close to the mic\" --text \"<B06 R3 text>\" out/kso-ep01-short/voice-lock-r3/takes/B06-chunk_take{1,2}.wav  (take1 and take2; take3 with style + \", same narrator as the opening, do not speed up\"); text: inputs-v2/B06-chunk-text-r3.txt",
+  "out/whisper-venv/bin/python -I scripts/narration/voice-match.py --config out/kso-ep01-short/voice-lock-r3/align/voice-match-config.json --out out/kso-ep01-short/voice-lock-r3/align/voice-match-B06.json",
+  "HF_HUB_OFFLINE=1 out/whisper-venv/bin/python -I scripts/narration/align-full.py --full out/kso-ep01-short/voice-lock-r3/takes/B06-chunk_take2.wav --tts-beats out/kso-ep01-short/voice-lock-r3/inputs-v2/B06-only-tts-r3.json --timeline out/kso-ep01-short/voice-lock-r3/inputs-v2/B06-only-timeline.json --index scripts/kuchisake-onna/short/voice-lock/anchors.md --segments out/kso-ep01-short/voice-lock-r3/align/chunk-take2 --out out/kso-ep01-short/voice-lock-r3/align/measure-B06-chunk-take2.json",
+  "python3 -I out/kso-ep01-short/voice-lock-r3/scripts/trim-b06-r3.py  (archived: projects/KSO/audio/voice-lock-r3/scripts/trim-b06-r3.py; run from the worktree root)",
+  "python3 -I out/kso-ep01-short/voice-lock-r3/scripts/plan-slots-r3.py  (archived: scripts/plan-slots-r3.py; writes scripts/kuchisake-onna/short/voice-lock/narration-slots.json = v3 slot plan)",
+  "python3 -I scripts/narration/assemble-narration.py --clips out/kso-ep01-short/voice-lock-r3/segments --timeline scripts/kuchisake-onna/short/voice-lock/narration-slots.json --out out/kso-ep01-short/voice-lock-r3/final/KSO-EP01-SHORT_narration_voicelock-v3.mp3",
+  "node scripts/kuchisake-onna/short/voice-lock/measure-loudness.mjs <track v3 mp3, takes/*.wav, B06 chunk takes, segments/B06.wav, segments/B01.wav> > out/kso-ep01-short/voice-lock-r3/qa/loudness.jsonl",
+  "HF_HUB_OFFLINE=1 out/whisper-venv/bin/python -I out/kso-ep01-short/voice-lock-r3/scripts/asr-check-r3.py  (archived: scripts/asr-check-r3.py; output qa/asr-r3.json)",
+  "python3 -I out/kso-ep01-short/voice-lock-r3/scripts/write-measure-r3.py  (archived: scripts/write-measure-r3.py; writes scripts/kuchisake-onna/short/voice-measure.json)"
+ ],
+ "open_items": [
+  "V5 EAR CHECK (user): S03-B02-SH01, track 77.21-77.66 s: โทษ in ขอโทษนะ, v5 (+3.0 st) against v4 (+1.5 st, store projects/KSO/audio/voice-lock-v4) and v3. Proxy F0 vowel median 178.1 (v3) -> 195.5 (v4) -> 211.0 Hz (v5). Listen for: sharp enough without a squeak at the end of โทษ, and the same narrator.",
+  "V5 KNOWN COST of +3.0 st: formants move about +19 % (ratio 1.189). Rising end of the vowel: max 270 Hz in 14.58-14.74 s (below the 330 Hz limit; v4 242 Hz). Spectrum: the source band edge near 13.5 kHz moves up to about 16 kHz inside the word (14-16 kHz band: v3 -26.5 dB, v4 -4.0 dB, v5 +9.6 dB, word window); no narrow tone (8-16 kHz peak-to-median v3 29.3, v5 19.5 dB). Listen for brightness or sizzle on the word against the rest of the track. Fix if heard: a low-pass near 13.5 kHz on the shifted span (a method change; needs the user to ask for it).",
+  "V5 PROXY LIMIT: Whisper letters ratio 0.961 (v3 0.982 in the v5 run; v4 0.982). The v3 read in asr-r3.json already scores 0.961 with the same flip (หยุด reads อยู่), so the drop is not from v5. Not a pitch test.",
+  "V4 ANSWERED (user, 1 Nov 2026): v4 is \"not sharp at all\"; the user asked for more pitch on โทษ, so v5 (+3.0 st). v4 stays in the store as the A/B baseline (projects/KSO/audio/voice-lock-v4).",
+  "V4 FINDING (Boss/Editor): the narration amplitude is a picture input (mouthAt, duck) and is in the scene cache key (scripts/segments.mjs excludes only narration.src), so any change to the amplitude JSON re-keys every scene. The v4 change differs in 22 frames only; the picture is unchanged where the amplitude is unchanged.",
+  "LENGTH (decision needed): v3 track 82.03 s (2461 frames) vs v2 76.60 s (2298): +163 frames = +5.43 s, all in the B06 slot (355 -> 518 frames). The R3 script says about +3 s; the chunk speech measures +5.6 s (Whisper a1 onset to a6 end: v2 10.6 s, v3 16.2 s). Options: (a) accept about 82 s; (b) brisker read (style or pace change, user approval; a new take must pass voice-match, the take1 pace fails the 1.10x gate at 1.13x); (c) text trim (Preaw, script change: the lock re-opens for the changed beats).",
+  "EAR CHECK B06 new tail: เพราะใครที่ได้ฟังเรื่องนี้ (9.46-11.08 s of the chunk) and เธอจะไปหาคนนั้น (11.82-13.92 s): the chunk pace is slower than v2 (rate 0.945 x the opening; whispered ขอโทษนะ 1.30 s vs 0.66 s in v2). Listen whether the tail sounds like the same narrator and whether the apology drags.",
+  "EAR CHECK join: เธอจะไปหาคนนั้น <whispering> ขอโทษนะ has no written pause (Whisper shows no gap); v2 had the same join (โล่งใจ <whispering> ขอโทษนะ). Decide whether the S03-B02 apology needs a pause.",
+  "EAR CHECK B06 head and tail: the chunk head has a quiet murmur (-46 to -52 dB) from 0.00 to 0.36 s; the crop at 0.30 s keeps about 0.06 s of it before the speech onset. The tail keeps a -33 to -40 dB decay to 16.58 s (last word end 16.52 s + 0.06 s). Listen to the ending of ง in ฟัง.",
+  "EAR CHECK B06 internal gaps: the written commas (โล่งใจ, เพราะใคร: 0.84 s) carry a quiet murmur at -47 to -53 dB, the same level as the head. Not trimmed (v2 B06 internal gaps were not trimmed either).",
+  "EAR CHECK timbre and level: B06 vs the opening (voice-match, v2 B01 span): F0 median 178 vs 181 Hz (-1.5 %), F0 spread 74 vs 68 Hz, centroid 2356 vs 2157 Hz (+9 %, brighter). Level: B06 -16.45 LUFS vs B01 -16.12 LUFS (0.33 LU). The proxy gives a match, the ear decides. If it does not sound like one narrator: regenerate the whole read (one Erinome call for B01-B06 with the same style), not a per-beat fix.",
+  "ASR PROXY (not a listening test): B06 ratio 0.961 (v2 0.965). The new tail reads as written: เพราะใครที่ได้ฟังเรื่องนี้ (anchor window 1.0), เธอจะไปหาคนนั้น (1.0), ขอโทษนะ (1.0), ที่เล่าให้ฟัง (0.88: reads ที่เราให้ฟัง). Known: โล่งใจ reads ลงใจ and หยุด reads อยู่ (Whisper); check by ear.",
+  "Unchanged from v2 (byte-identical clips, same ASR output): W01, B01, W02 (JP, not scored), B02, W03, SLIP, B04, W04, B05, W05. B05 still reads ขอบคุณ at clip level (v2 open item, the key scare line): listen.",
+  "Level: NARR Erinome read -16.18 LUFS (v2 read, unchanged), B06 chunk -16.45 LUFS after trim, track -16.64 LUFS (v2 -16.65). Track LRA 5.1 LU (v2 4.2): the whispered B06 tail widens the range.",
+  "Anchors: B01-B05 and the WOMAN and slip lines are identical to v2 (start frames unchanged; compare the anchor table). B06 starts at the same frame (1857); W05_final and TAIL shift by +163 frames (2212 -> 2375; 2283 -> 2446). The v2 NARR read and the v3 chunk are not the same generation; the consistency is measured, not guaranteed.",
+  "Note for Mark and Film: KSO-A15 keeps its text but is now a mid-beat anchor; S03-B01 now ends on KSO-A26 (เธอจะไปหาคนนั้น); new KSO-A25 (เพราะใครที่ได้ฟังเรื่องนี้) starts the second line. KSO-A14, A16 and A17 keep their meaning and frames change only by the shift of their own clip. The timed scene sheets must use the v3 anchors.",
+  "The v3 track is not committed and not in public/. Archive: store.py archive --path out/kso-ep01-short/voice-lock-r3 --kind audio/voice-lock-r3.",
+  "Commercial-use terms and SynthID for Gemini TTS output: unchecked (gemini-tts skill).",
+  "Tooling note: scripts/narration/assemble-narration.py prints speech-start offsets in samples while labelled seconds (log only; the track is correct). Shared tool, not edited here. The R3 steps use derived copies with the voice-lock-r3 paths; the repo scripts are unchanged."
+ ],
+ "v4": {
+  "change": "pitch fix +1.5 semitones on โทษ (NARR ขอโทษนะ, S03-B02, KSO-A16) in the B06 clip; no other clip, slot or anchor changed",
+  "changed_window_track_s": [
+   77.26,
+   77.69
+  ],
+  "changed_track_frames_designed": [
+   2317,
+   2330
+  ],
+  "amplitude_differs_frames": [
+   2316,
+   2317,
+   2318,
+   2319,
+   2320,
+   2321,
+   2322,
+   2323,
+   2324,
+   2325,
+   2326,
+   2327,
+   2328,
+   2329,
+   2332,
+   2333,
+   2335,
+   2361,
+   2363,
+   2366,
+   2367,
+   2369
+  ],
+  "amplitude_max_abs_diff_peak_normalized": 0.1285,
+  "pcm_changed_frames_gt_1e-4": [
+   2316,
+   2374
+  ],
+  "f0_vowel_14_58_14_72_before_hz": 178.1,
+  "f0_vowel_14_58_14_72_after_hz": 195.5,
+  "f0_span_14_42_14_74_before_hz": 180.1,
+  "f0_span_14_42_14_74_after_hz": 197.9,
+  "proxy_only": true
+ },
+ "v5": {
+  "change": "pitch fix +3.0 semitones (total from v3) on โทษ (NARR ขอโทษนะ, S03-B02, KSO-A16) in the B06 clip; no other clip, slot or anchor changed",
+  "changed_samples_track_s": "strong change 77.24-77.64 s; first changed sample 77.21 s; MP3 spill to 79.16 s (about -45 dBFS after 77.72 s, same in v4)",
+  "changed_track_frames_strong": [
+   2317,
+   2329
+  ],
+  "amplitude_differs_frames": [
+   2317,
+   2318,
+   2319,
+   2320,
+   2321,
+   2322,
+   2323,
+   2324,
+   2325,
+   2326,
+   2327,
+   2328,
+   2329,
+   2331,
+   2332,
+   2333,
+   2335,
+   2361,
+   2363,
+   2366,
+   2367,
+   2369
+  ],
+  "amplitude_max_abs_diff_peak_normalized": 0.0501,
+  "pcm_max_abs_outside_77.20_77.70_s": 0.005768,
+  "f0_vowel_14_58_14_72_hz": {
+   "v3": 178.1,
+   "v4": 195.5,
+   "v5": 211.0
+  },
+  "f0_vowel_end_max_14_58_14_74_hz": {
+   "v3": 227.5,
+   "v4": 242.4,
+   "v5": 269.7
+  },
+  "f0_vowel_end_last4_hz_v5": [
+   206.0,
+   212.4,
+   237.6,
+   269.7
+  ],
+  "f0_word_median_hz": {
+   "v3": 180.1,
+   "v4": 197.9,
+   "v5": 212.4
+  },
+  "f0_max_step_st_word": {
+   "v3": 1.72,
+   "v4": 2.44,
+   "v5": 2.19
+  },
+  "hf_db_word_4_8k_8_16k": {
+   "v3": {
+    "4-8kHz_dB": 37.13,
+    "8-16kHz_dB": 32.57
+   },
+   "v4": {
+    "4-8kHz_dB": 36.14,
+    "8-16kHz_dB": 34.72
+   },
+   "v5": {
+    "4-8kHz_dB": 36.26,
+    "8-16kHz_dB": 36.29
+   }
+  },
+  "timing_lag_ms_word_14_42_14_74": {
+   "v4": {
+    "lag_ms": 0,
+    "corr": 0.974
+   },
+   "v5": {
+    "lag_ms": 0,
+    "corr": 0.99
+   }
+  },
+  "timing_lag_ms_vowel_end": {
+   "v4": {
+    "lag_ms": 5,
+    "corr": 0.905
+   },
+   "v5": {
+    "lag_ms": 0,
+    "corr": 0.985
+   }
+  },
+  "splice_v5_vs_v3": {
+   "ramp_in_14.36-14.42": {
+    "src_rms_dbfs": -24.04,
+    "out_rms_dbfs": -25.47,
+    "resid_rms_dbfs": -35.66,
+    "max_abs_resid": 0.14728,
+    "max_step_src": 0.18521,
+    "max_step_out": 0.12607
+   },
+   "ramp_out_14.74-14.79": {
+    "src_rms_dbfs": -40.88,
+    "out_rms_dbfs": -41.62,
+    "resid_rms_dbfs": -42.69,
+    "max_abs_resid": 0.03793,
+    "max_step_src": 0.00659,
+    "max_step_out": 0.00711
+   }
+  },
+  "loudness_track_lufs": -16.64,
+  "proxy_only": true
+ }
+}
