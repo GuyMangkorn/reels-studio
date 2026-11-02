@@ -88,3 +88,47 @@ FC01–FC03 qualify as [inline fact fixes](../../../docs/editorial-workflow.md#i
 - **Visuals and sound (R2):** no change of substance. `B_loop` was removed and no cue was added. S03-B01 still has no gunshot, scream, rope or gallows sound, no depiction of Swift Runner, his family or the victims, and a generic fort silhouette that is not presented as Fort Saskatchewan. No Indigenous drum, chant or flute.
 - **Header sync (for the owner of the script; Boat did not edit it):** the R2 header `correction applied, recheck pending` can become `rechecked by Boat 2026-11-01 (pass); factual status verification-incomplete (lead-only)`.
 - **Uncertainties carried forward:** as in R1. Every row is lead-only. The weakest rows are F005, the F003 "grows as it eats" detail and F009 Forbes. The Swift Runner victim count, trial date and starvation story are disputed, and the script states none of them and must not. If the F006 wording changes again, it needs a recheck.
+
+## WDG-SCRIPT-R3 note (Preaw, 2026-11-02)
+
+- **F005 dropped (R3).** The user cut S02-B04 (`ส่วนเขากวางกับกะโหลกในหนังและเกม ส่วนใหญ่เป็นภาพยุคหลัง ไม่ใช่ลักษณะหลักในเรื่องเล่าดั้งเดิม`). F005 no longer appears in the script; the F005 rows above are historical. No other fact-check row changes. Recorded by Preaw (script owner); not a Boat verdict.
+
+## WDG-SS-R2.2 silhouette ruling (Boat, 2026-11-02)
+
+Scope: scene-S03.md `S03-B01-SH03` option A (silhouette) at G [2462, 2536) over `แต่ศาลตัดสินประหารชีวิตเขา`, user-chosen in chat 2 Nov 2026. Reviewed the proposed visual, not new wording. Script text unchanged (R3).
+
+**Ruling: supportable with conditions (pass-with-conditions).** A generic, unidentified, non-specific standing figure against the plate sky asserts nothing the sources contradict, provided it stays a "man of the era" and nothing ties it to the trial, the prisoner's custody, or the hanging. No premise, reveal or learning impact; narration, captions and timing are untouched.
+
+| ID | Visual claim | Type | Verdict | Notes |
+| --- | --- | --- | --- | --- |
+| V-SIL1 | A figure stands outdoors under a pale sky | dramatization (mood image) | supported only as generic | Sources place the hanging outdoors in the fort yard (lead-only) but the sentence in a court, venue unknown. The image must not be read as the sentencing scene or the gallows. |
+| V-SIL2 | The figure is "a condemned man" / Swift Runner | identity | not supported | No depiction of him is licensed or verified. A viewer inferring him is tolerable only because the narration names him and the image carries no feature (face, dress, ethnic marker, restraint, setting) that asserts it. Film must not add features that make the inference firmer. |
+| V-SIL3 | Rope, gallows, hood, pinioned arms | fact detail | forbidden | Lead-only sources mention pinioning, a hood and a scaffold at the hanging, not at the sentence. Showing any of them puts the hanging under a line about the sentence and breaks script visual note 5. |
+| V-SIL4 | A specific place (Fort Saskatchewan, a courtroom) | place | not supported | Fort line 50 stands: generic fort, not Fort Saskatchewan. No courtroom here. |
+
+**What it may imply:** a person, a year-less era, solitude, fate. Nothing more.
+**What it must not imply:** that the man was Swift Runner as photographed, that he stood outdoors when sentenced, that he was restrained, uniformed escort present, or about to hang.
+**Wording that stays out of any caption, alt text or label:** `ผู้ต้องโทษ`, `นักโทษ`, `ตะแลงแกง`, `ลานประหาร`, `เชือก`, `Fort Saskatchewan`, `สวิฟต์ รันเนอร์` as a caption on this shot, `ภาพจริง/ภาพถ่ายจริง`. If a label is wanted: none (the existing captions are enough). Internal files should call it "generic silhouette", not "condemned figure".
+**Lead-only sources and viewer reading as Swift Runner:** acceptable at the level of "a man the narration is talking about", because the narration is itself lead-only (F006 supported lead-only) and the image adds no fact. It would not be acceptable as a portrait.
+
+**Conditions for Film (all required):**
+1. Back or strict side view, flat dark shape, no face, no readable clothing detail, no hair or headdress, blanket, feather, braid or any Indigenous-coded costume (stereotype risk). Plain long coat outline or just a neutral head-and-shoulders mass.
+2. No rope, noose, gallows, scaffold, hood, shackles, bound arms, guard, uniform, police coat, hat of a police pattern, weapon, or crowd.
+3. Background: pale plate sky and, at most, the same generic fence line already in `ERA-K1..K3`. No fort gate, no building that could be a jail or courthouse, no `1879` on this shot.
+4. Slight fade: dissolve in over about 6-8 frames from the cut, and a short fade to the next shot's cut at G2536 is optional. A hard cut at the end is fine. The slight fade keeps it as a mood plate, not an evidentiary image.
+5. No sound added: no gavel, rope creak, gunshot, scream, crowd or chant (unchanged).
+6. Record in the scene sheet that the figure is "generic dramatization, not Swift Runner" and keep the casting line as a silhouette only. Re-run this check if any element above changes.
+
+**Source answers (from this session's WebSearch/WebFetch; every item lead-only, not primary):**
+| Question | Finding | Label |
+| --- | --- | --- |
+| Where tried | Not stated by the pages read (rcmpveteransvancouver.com, executedtoday.com). Venue stays unknown. Do not say Fort Saskatchewan courtroom. | lead-only, venue unverified |
+| When tried | Aug 1879 in several popular accounts (one gives 20 Aug); dates differ across sources, as already carried forward. | lead-only |
+| Jury / process | rcmpveteransvancouver.com: tried by a jury including "three 'English speaking Cree halfbreeds'"; a Cree translator is mentioned in another search result. Not corroborated by an independent primary source. | lead-only |
+| Restraints | Pinioned tightly with rope and hooded at the hanging (rcmpveteransvancouver.com); executedtoday.com says the hangman had forgotten the pinioning straps. No source read states restraints during the trial. | lead-only (hanging only) |
+| Sentence read in court | Death by hanging is stated; no source read quotes the sentence or how it was read. | lead-only (outcome); wording unknown |
+| Hanging date/place | 20 Dec 1879, Fort Saskatchewan, fort yard, 7:30 a.m. ordered; first legal hanging in the North-West Territories. Same as F006; one list says 19 Dec. | lead-only (consistent across 2 popular pages) |
+| Licensed archival trial image | None found. rcmpveteransvancouver.com mentions a "Photograph of Swift Runner and a NWMP member" but its rights and provenance were not verified; no trial photo found. The ucalgary.ca digital collections item surfaced in search was not opened. Not usable. | not found / access gap |
+
+Access gaps: no archive (Glenbow, Provincial Archives of Alberta, Library and Archives Canada) searched in this pass; the only items opened were two popular pages. Qualitative confidence: low-medium for the hanging facts, low for trial details.
+Readiness: the silhouette passes for scene-sheet handoff only with conditions 1-6 written into `S03-B01-SH03`; script R3 and R2 shots are unaffected.

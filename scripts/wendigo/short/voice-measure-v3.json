@@ -1,0 +1,414 @@
+{
+ "deliverable": "WDG-EP01-SHORT",
+ "revision": "v3",
+ "script_revision": "WDG-SCRIPT-R3 (S02-B04 removed; S03-B02 ไม่ต้องมีเขา cut from the audio; script text still needs Preaw sync)",
+ "supersedes": "voice-measure-v2.json alternate block (Achernar, six beats) for the narrator timing",
+ "timing_status": "audio-measured on the final file (Editor, 2 Nov 2026): beat edges by the cut-gaps energy rule (10 ms blocks, peak >= 300 of 32767); phrase times are whisper estimates with the overrides listed per row",
+ "lock_status": "Editor edit of the locked Achernar read (no regeneration). Not heard by the Editor: checks are measurements only. Not user-approved.",
+ "user_decisions_2026-11-02": [
+  "R3: remove S02-B04 entirely; join S02-B03 end to S03-B01 start with the existing B04->B05 pause",
+  "R3: S03-B02 delete ไม่ต้องมีเขา (reads ปีศาจตัวนี้… แค่มีเสียงเล็กๆ ในใจ ที่คอยถามว่า…)",
+  "Narrator about 3% faster than the locked take: total tempo 1.05 x 1.03 = 1.0815, applied ONCE to the raw take (not stacked on atempo105)",
+  "MAN and WHISPER clips untouched; Film S01 edits E1/E2 not applied (report only)"
+ ],
+ "narrator": {
+  "voice": "Achernar",
+  "style": "mysterious storyteller, hushed and intimate, low and steady, like a ghost story told in the dark, no long pauses",
+  "tempo": {
+   "total_atempo": 1.0815,
+   "composition": "1.05 (locked read) x 1.03 (user); one ffmpeg atempo=1.0815 pass on the raw take; pitch preserved (F0 median unchanged)"
+  },
+  "source_raw": {
+   "store": "projects/WDG-EP01-SHORT/audio/voice-lock-v2/WDG-EP01-SHORT_voice-lock-v2_alt-NARR-Achernar_mysterious_raw_full.wav",
+   "md5": "3873d6eddd782687d6df7b46596628db",
+   "length_sec": 78.36,
+   "tts_cache": "0259b8ba0f594367"
+  },
+  "file": {
+   "store": "projects/WDG-EP01-SHORT/audio/voice-lock-v2/WDG-EP01-SHORT_voice-lock-v2_alt-NARR-Achernar_mysterious_atempo108_R3_full.wav",
+   "length_sec": 62.668,
+   "samples": 3008066,
+   "frames_at_30fps": 1880,
+   "format": "mono 16-bit PCM 48 kHz",
+   "loudness_LUFS_integrated": -16.4,
+   "true_peak_dBFS": -1.5
+  },
+  "edits_on_raw": [
+   {
+    "id": "R3-E1",
+    "what": "S02-B04 removed",
+    "raw_cut_sec": [
+     35.5895,
+     44.4495
+    ],
+    "removed_raw_sec": 8.86,
+    "seam": "both sides in silence (-66 / -62 dBFS, +-30 ms); 10 ms equal-power crossfade; B03 speech end to B05 onset keeps the raw B04->B05 gap (1.52 s peak rule, 1.41 s final)"
+   },
+   {
+    "id": "R3-E2",
+    "what": "ไม่ต้องมีเขา removed from S03-B02",
+    "raw_cut_sec": [
+     72.61,
+     74.35
+    ],
+    "removed_raw_sec": 1.74,
+    "seam": "both sides in silence (-73 / -63 dBFS); 10 ms crossfade; pause after ปีศาจตัวนี้ 0.49 s final (58.58 to 59.07 s)"
+   }
+  ],
+  "beats": [
+   {
+    "beat": "B01",
+    "script": "WDG-EP01-SHORT-S02-B01",
+    "segStartSec": 0.0,
+    "segEndSec": 4.935,
+    "speechOnSec": 0.337,
+    "speechEndSec": 4.706,
+    "speechOnFrame": 10,
+    "speechEndFrame": 141,
+    "speechSpanSec": 4.369
+   },
+   {
+    "beat": "B02",
+    "script": "WDG-EP01-SHORT-S02-B02",
+    "segStartSec": 4.935,
+    "segEndSec": 13.94,
+    "speechOnSec": 5.162,
+    "speechEndSec": 13.407,
+    "speechOnFrame": 155,
+    "speechEndFrame": 402,
+    "speechSpanSec": 8.245
+   },
+   {
+    "beat": "B03",
+    "script": "WDG-EP01-SHORT-S02-B03",
+    "segStartSec": 13.94,
+    "segEndSec": 32.505,
+    "speechOnSec": 14.475,
+    "speechEndSec": 32.352,
+    "speechOnFrame": 434,
+    "speechEndFrame": 971,
+    "speechSpanSec": 17.877,
+    "note": "B03 speech ends here; the join pause follows (raw B04->B05 gap, 1.41 s final)"
+   },
+   {
+    "beat": "B04",
+    "script": "WDG-EP01-SHORT-S02-B04",
+    "status": "removed R3 (user, 2 Nov 2026); ID kept, not reused; no audio in the R3 file"
+   },
+   {
+    "beat": "B05",
+    "script": "WDG-EP01-SHORT-S03-B01",
+    "segStartSec": 32.505,
+    "segEndSec": 50.27,
+    "speechOnSec": 33.765,
+    "speechEndSec": 49.564,
+    "speechOnFrame": 1013,
+    "speechEndFrame": 1487,
+    "speechSpanSec": 15.799,
+    "note": "speech onset is the pre-speech blip (peak rule), as in voice-measure-v2; first sustained speech about 34.0 s (RMS)"
+   },
+   {
+    "beat": "B06",
+    "script": "WDG-EP01-SHORT-S03-B02",
+    "segStartSec": 50.27,
+    "segEndSec": 62.668,
+    "speechOnSec": 50.976,
+    "speechEndSec": 62.385,
+    "speechOnFrame": 1529,
+    "speechEndFrame": 1872,
+    "speechSpanSec": 11.409
+   }
+  ],
+  "anchors": [
+   {
+    "id": "B01-a1",
+    "beat": "B01",
+    "phrase": "ความกลัวแบบนี้ มาจากตำนานจริง",
+    "onSec": 0.337,
+    "endSec": 2.84,
+    "source": "whisper on the final file (faster-whisper large-v3-turbo), cut-gaps measured",
+    "atempo105_R3_divided_by_1_03": {
+     "onSec": 0.327,
+     "endSec": 2.835
+    }
+   },
+   {
+    "id": "B01-a2",
+    "beat": "B01",
+    "phrase": "เวนดิโก",
+    "onSec": 2.84,
+    "endSec": 4.706,
+    "source": "whisper on the final file (faster-whisper large-v3-turbo), cut-gaps measured",
+    "atempo105_R3_divided_by_1_03": {
+     "onSec": 2.835,
+     "endSec": 4.705
+    }
+   },
+   {
+    "id": "B02-a1",
+    "beat": "B02",
+    "phrase": "เป็นเรื่องเล่าของชนพื้นเมืองกลุ่มภาษาอัลกอนเควียน",
+    "onSec": 5.162,
+    "endSec": 8.68,
+    "source": "whisper on the final file (faster-whisper large-v3-turbo), cut-gaps measured",
+    "atempo105_R3_divided_by_1_03": {
+     "onSec": 5.169,
+     "endSec": 8.621
+    }
+   },
+   {
+    "id": "B02-a2",
+    "beat": "B02",
+    "phrase": "อย่างโอจิบเวและครี",
+    "onSec": 8.74,
+    "endSec": 10.1,
+    "source": "whisper on the final file (faster-whisper large-v3-turbo), cut-gaps measured",
+    "atempo105_R3_divided_by_1_03": {
+     "onSec": 8.738,
+     "endSec": 10.097
+    }
+   },
+   {
+    "id": "B02-a3",
+    "beat": "B02",
+    "phrase": "ในแคนาดาและทางเหนือของสหรัฐฯ",
+    "onSec": 10.94,
+    "endSec": 13.18,
+    "source": "whisper on the final file (faster-whisper large-v3-turbo), cut-gaps measured",
+    "atempo105_R3_divided_by_1_03": {
+     "onSec": 10.951,
+     "endSec": 13.204
+    }
+   },
+   {
+    "id": "B03-a1",
+    "beat": "B03",
+    "phrase": "ตามความเชื่อ มันคือวิญญาณหรือปีศาจแห่งฤดูหนาวและความหิว",
+    "onSec": 14.475,
+    "endSec": 19.82,
+    "source": "whisper on the final file (faster-whisper large-v3-turbo), cut-gaps measured",
+    "atempo105_R3_divided_by_1_03": {
+     "onSec": 14.474,
+     "endSec": 19.825
+    }
+   },
+   {
+    "id": "B03-a2",
+    "beat": "B03",
+    "phrase": "ที่กินคน เล่ากันว่ายิ่งกิน ยิ่งหิว",
+    "onSec": 19.82,
+    "endSec": 24.28,
+    "source": "whisper on the final file (faster-whisper large-v3-turbo), cut-gaps measured",
+    "atempo105_R3_divided_by_1_03": {
+     "onSec": 19.825,
+     "endSec": 24.291
+    }
+   },
+   {
+    "id": "B03-a3",
+    "beat": "B03",
+    "phrase": "ถ้าปล่อยให้ความหิวหรือความโลภครอบงำ",
+    "onSec": 29.32,
+    "endSec": 32.28,
+    "source": "whisper on the final file (faster-whisper large-v3-turbo), cut-gaps measured",
+    "atempo105_R3_divided_by_1_03": {
+     "onSec": 29.32,
+     "endSec": 32.291
+    }
+   },
+   {
+    "id": "B05-a1",
+    "beat": "B05",
+    "phrase": "ราวปี หนึ่งพันแปดร้อยเจ็ดสิบเก้า",
+    "onSec": 34.005,
+    "endSec": 34.4,
+    "source": "override: whisper clamped to the pre-speech blip (33.765 s); onset = locked take mapped to the final tempo (energy RMS onset about 34.05 s)",
+    "atempo105_R3_divided_by_1_03": {
+     "onSec": 34.005,
+     "endSec": 34.413
+    }
+   },
+   {
+    "id": "B05-a2",
+    "beat": "B05",
+    "phrase": "ในคดีที่มีการกินเนื้อคน",
+    "onSec": 41.0,
+    "endSec": 42.76,
+    "source": "whisper on the final file (faster-whisper large-v3-turbo), cut-gaps measured",
+    "atempo105_R3_divided_by_1_03": {
+     "onSec": 41.015,
+     "endSec": 42.743
+    }
+   },
+   {
+    "id": "B05-a3",
+    "beat": "B05",
+    "phrase": "เขาอ้างว่าถูกวิญญาณเวนดิโกตามรังควาน",
+    "onSec": 43.64,
+    "endSec": 46.64,
+    "source": "whisper on the final file (faster-whisper large-v3-turbo), cut-gaps measured",
+    "atempo105_R3_divided_by_1_03": {
+     "onSec": 43.636,
+     "endSec": 46.665
+    }
+   },
+   {
+    "id": "B05-a4",
+    "beat": "B05",
+    "phrase": "แต่ศาลตัดสินประหารชีวิตเขา",
+    "onSec": 47.24,
+    "endSec": 49.56,
+    "source": "whisper on the final file (faster-whisper large-v3-turbo), cut-gaps measured",
+    "atempo105_R3_divided_by_1_03": {
+     "onSec": 47.248,
+     "endSec": 49.563
+    }
+   },
+   {
+    "id": "B06-a1",
+    "beat": "B06",
+    "phrase": "นักเขียนพื้นเมืองบางคนใช้เวนดิโก",
+    "onSec": 50.976,
+    "endSec": 53.63,
+    "source": "override: phrase ends at the pause (peak-rule gap 53.63-54.22 s); whisper end 52.90 s",
+    "atempo105_R3_divided_by_1_03": {
+     "onSec": 50.993,
+     "endSec": 53.718
+    }
+   },
+   {
+    "id": "B06-a2",
+    "beat": "B06",
+    "phrase": "แทนความโลภที่กินเท่าไหร่ก็ไม่พอ",
+    "onSec": 54.22,
+    "endSec": 56.6,
+    "source": "override: phrase starts after the pause (gap end 54.22 s); whisper onset 54.06 s sits inside the pause",
+    "atempo105_R3_divided_by_1_03": {
+     "onSec": 54.238,
+     "endSec": 56.587
+    }
+   },
+   {
+    "id": "B06-a3",
+    "beat": "B06",
+    "phrase": "ปีศาจตัวนี้",
+    "onSec": 57.74,
+    "endSec": 58.58,
+    "source": "override: new phrase between peak-rule gaps 56.66-57.74 s and 58.58-59.07 s; whisper 57.58-58.46 s",
+    "atempo105_R3_divided_by_1_03": {
+     "onSec": 57.728,
+     "endSec": 58.515
+    }
+   },
+   {
+    "id": "B06-a4",
+    "beat": "B06",
+    "phrase": "ที่คอยถามว่า",
+    "onSec": 60.55,
+    "endSec": 62.32,
+    "source": "override: RMS onset (locked take /1.03); whisper onset 60.78 s",
+    "atempo105_R3_divided_by_1_03": {
+     "onSec": 60.553,
+     "endSec": 62.306
+    }
+   }
+  ],
+  "checks": {
+   "seams_after_atempo": {
+    "R3-E1 (S02-B04 removed)": {
+     "at_sec": 32.91,
+     "max_step_LSB": 18.0,
+     "median_step_LSB": 2.0
+    },
+    "R3-E2 (ไม่ต้องมีเขา removed)": {
+     "at_sec": 58.95,
+     "max_step_LSB": 22.0,
+     "median_step_LSB": 1.0
+    }
+   },
+   "gaps_final_s": {
+    "B03_end_to_B05_onset": 1.413,
+    "B05_end_to_B06_onset": 1.412,
+    "ellipsis_pause_S03-B02_s": [
+     58.58,
+     59.07
+    ]
+   },
+   "pitch_F0_median_Hz": {
+    "raw": 162.7,
+    "final": 162.7,
+    "method": "40 ms autocorrelation, 70-320 Hz, r > 0.5, voiced frames"
+   },
+   "retranscribe": "faster-whisper on the final file: S02-B04 text absent; ไม่ต้องมีเขา absent; ราวปี 1879 read as 18 / 79 (p 0.9 / 1.0); Swift Runner read as Swift Runner (p 0.8 / 0.6); Vendigo read as V end igo (p 0.07 on V); Ojibway / Kree low confidence (p 0.15 / 0.28)"
+  },
+  "artifact_flags": {
+   "soft_or_breathy_windows_start_s": [
+    8.7,
+    16.8,
+    23.1,
+    24.3,
+    26.4,
+    37.2,
+    43.5,
+    44.7,
+    47.1,
+    49.5,
+    52.2,
+    58.8,
+    60.9
+   ],
+   "soft_rule": "300 ms windows inside speech whose RMS is more than 12 dB below the speech median (-16.5 dBFS); measured, not heard",
+   "pre_speech_blip_s": [
+    33.77
+   ],
+   "names_and_terms": {
+    "Swift Runner (สวิฟต์ รันเนอร์)": "recognised",
+    "1879 (หนึ่งพันแปดร้อยเจ็ดสิบเก้า)": "recognised as 18 79",
+    "Vendigo (เวนดิโก)": "recognised weakly (V p 0.07); check by ear",
+    "Ojibway / Kree (โอจิบเว / ครี)": "weak (p 0.15 / 0.28); check by ear",
+    "wiindigoo / wīhtikōw": "not in the narration text (tts-beats and timeline are Thai only); they appear only in the script, fact-check and scene notes, so there is nothing to detect in the audio"
+   }
+  },
+  "listen_sample": null
+ },
+ "comparison_atempo105_R3": {
+  "file": "projects/WDG-EP01-SHORT/audio/voice-lock-v2/WDG-EP01-SHORT_voice-lock-v2_alt-NARR-Achernar_mysterious_atempo105_R3_full.wav",
+  "recipe": "splice of the stored atempo105 file (cuts 33.90-42.3347 s and 69.15-70.80 s), 10 ms crossfade; kept for comparison",
+  "length_sec": 64.56,
+  "beats_speech_sec": {
+   "B01": [
+    0.337,
+    4.846
+   ],
+   "B02": [
+    5.324,
+    13.801
+   ],
+   "B03": [
+    14.908,
+    33.32
+   ],
+   "B05": [
+    34.786,
+    51.05
+   ],
+   "B06": [
+    52.523,
+    64.261
+   ]
+  }
+ },
+ "method": [
+  "Raw take (md5 3873d6...) spliced at silent points with a 10 ms equal-power crossfade (splice-raw.py), then one ffmpeg atempo=1.0815 pass (mono 48 kHz, pcm_s16le)",
+  "Reproduction check: ffmpeg atempo=1.05 on the raw take reproduces the stored atempo105 file byte for byte (md5 7d3625a7...)",
+  "Whisper: align-full.py with the R3 timeline and tts-beats (B04 skipped), then cut-gaps.py (VERIFY OK); B02|B03 cut 13.94 s (gap centre), matching the locked take / 1.03",
+  "Tools copied to out/wendigo-voice/tts/v3/tools/ (ignored, not committed)"
+ ],
+ "open": [
+  "USER: listen to the atempo108 R3 file (the Editor cannot listen): seams at 32.9 s and 59.0 s, ellipsis pause 58.6-59.1 s, soft windows in narrator.artifact_flags",
+  "USER: choose atempo108 or atempo105 R3 (both kept in the store)",
+  "PREAW: script.md S03-B02 still reads ไม่ต้องมีเขา; sync the wording to the audio",
+  "FILM: narration timing moved again (final file 62.67 s): B05 starts 33.77 s, B06 50.98 s; re-time S03 shots and the N0-placed narrator (scene-index.md)",
+  "FILM/USER: S01 E1 and E2 are assumed in the timed sheets but not applied (report only); decide apply or decline"
+ ]
+}

@@ -1,0 +1,729 @@
+{
+ "deliverable": "WDG-EP01-SHORT",
+ "revision": "v5",
+ "base": {
+  "pMID": "v4 pMID (voice-measure-v4.json)",
+  "pTIGHT": "v4 pTIGHT (voice-measure-v4.json)"
+ },
+ "change": "B02 word gap between anchors B02-a2 (อย่างโอจิบเวและครี) and B02-a3 (ในแคนาดาและทางเหนือของสหรัฐฯ), one sentence in script.md: silence cut from 0.42 s (energy, peak rule) to 0.12 s in both variants. The 0.84 s figure in the feedback is the Whisper anchor gap (B02-a2 end 9.66 s vs energy speech end 10.19 s); the audible silence was 0.42 s.",
+ "variants": {
+  "pMID2": {
+   "file": "projects/WDG-EP01-SHORT/audio/voice-lock-v2/WDG-EP01-SHORT_voice-lock-v2_alt-NARR-Achernar_mysterious_atempo108_R3_pMID2_full.wav",
+   "length_sec": 59.308,
+   "samples": 2846786,
+   "cut": {
+    "what": "B02 word gap (B02-a2 to B02-a3)",
+    "in_variant_sec": [
+     10.25,
+     10.55
+    ],
+    "removed_sec": 0.3,
+    "silence_before": "0.42 s",
+    "silence_after": "0.12 s",
+    "kept_each_side_sec": [
+     0.06,
+     0.06
+    ]
+   },
+   "seam": {
+    "out_sec": 10.245,
+    "max_step_LSB_20ms": 9,
+    "median_step_LSB": 1.0
+   },
+   "speech_samples_identical_outside_cut": true,
+   "beats": [
+    {
+     "beat": "B01",
+     "script": "WDG-EP01-SHORT-S02-B01",
+     "speechOnSec": 0.337,
+     "speechEndSec": 4.266,
+     "speechOnFrame": 10,
+     "speechEndFrame": 128,
+     "speechSpanSec": 3.929,
+     "check_vs_peak_runs_s": [
+      0.007,
+      0.004
+     ]
+    },
+    {
+     "beat": "B02",
+     "script": "WDG-EP01-SHORT-S02-B02",
+     "speechOnSec": 4.722,
+     "speechEndSec": 12.667,
+     "speechOnFrame": 142,
+     "speechEndFrame": 380,
+     "speechSpanSec": 7.945,
+     "check_vs_peak_runs_s": [
+      0.002,
+      0.003
+     ]
+    },
+    {
+     "beat": "B03",
+     "script": "WDG-EP01-SHORT-S02-B03",
+     "speechOnSec": 13.575,
+     "speechEndSec": 30.832,
+     "speechOnFrame": 407,
+     "speechEndFrame": 925,
+     "speechSpanSec": 17.257,
+     "check_vs_peak_runs_s": [
+      0.005,
+      0.008
+     ]
+    },
+    {
+     "beat": "B04",
+     "script": "WDG-EP01-SHORT-S02-B04",
+     "status": "removed R3 (user, 2 Nov 2026); ID kept, not reused; no audio in the R3 file"
+    },
+    {
+     "beat": "B05",
+     "script": "WDG-EP01-SHORT-S03-B01",
+     "speechOnSec": 31.745,
+     "speechEndSec": 47.224,
+     "speechOnFrame": 952,
+     "speechEndFrame": 1417,
+     "speechSpanSec": 15.479,
+     "check_vs_peak_runs_s": [
+      0.005,
+      0.006
+     ]
+    },
+    {
+     "beat": "B06",
+     "script": "WDG-EP01-SHORT-S03-B02",
+     "speechOnSec": 48.136,
+     "speechEndSec": 59.025,
+     "speechOnFrame": 1444,
+     "speechEndFrame": 1771,
+     "speechSpanSec": 10.889,
+     "check_vs_peak_runs_s": [
+      0.006,
+      0.005
+     ]
+    }
+   ],
+   "anchors": [
+    {
+     "id": "B01-a1",
+     "beat": "B01",
+     "phrase": "ความกลัวแบบนี้ มาจากตำนานจริง",
+     "onSec": 0.337,
+     "endSec": 2.84,
+     "source": "mapped from v4 (speech unchanged; cut offset applied)"
+    },
+    {
+     "id": "B01-a2",
+     "beat": "B01",
+     "phrase": "เวนดิโก",
+     "onSec": 2.84,
+     "endSec": 4.266,
+     "source": "mapped from v4 (speech unchanged; cut offset applied)"
+    },
+    {
+     "id": "B02-a1",
+     "beat": "B02",
+     "phrase": "เป็นเรื่องเล่าของชนพื้นเมืองกลุ่มภาษาอัลกอนเควียน",
+     "onSec": 4.722,
+     "endSec": 8.24,
+     "source": "mapped from v4 (speech unchanged; cut offset applied)"
+    },
+    {
+     "id": "B02-a2",
+     "beat": "B02",
+     "phrase": "อย่างโอจิบเวและครี",
+     "onSec": 8.3,
+     "endSec": 10.19,
+     "source": "energy: speech of อย่างโอจิบเวและครี ends (peak rule); v4 whisper end was 9.66 / 9.46 s"
+    },
+    {
+     "id": "B02-a3",
+     "beat": "B02",
+     "phrase": "ในแคนาดาและทางเหนือของสหรัฐฯ",
+     "onSec": 10.31,
+     "endSec": 12.44,
+     "source": "energy: onset of ในแคนาดา (peak rule, mapped through the cut); v4 whisper onset was 10.50 / 10.30 s"
+    },
+    {
+     "id": "B03-a1",
+     "beat": "B03",
+     "phrase": "ตามความเชื่อ มันคือวิญญาณหรือปีศาจแห่งฤดูหนาวและความหิว",
+     "onSec": 13.575,
+     "endSec": 18.92,
+     "source": "mapped from v4 (speech unchanged; cut offset applied)"
+    },
+    {
+     "id": "B03-a2",
+     "beat": "B03",
+     "phrase": "ที่กินคน เล่ากันว่ายิ่งกิน ยิ่งหิว",
+     "onSec": 18.92,
+     "endSec": 23.15,
+     "source": "mapped from v4 (speech unchanged; cut offset applied)"
+    },
+    {
+     "id": "B03-a3",
+     "beat": "B03",
+     "phrase": "ถ้าปล่อยให้ความหิวหรือความโลภครอบงำ",
+     "onSec": 27.8,
+     "endSec": 30.76,
+     "source": "mapped from v4 (speech unchanged; cut offset applied)"
+    },
+    {
+     "id": "B05-a1",
+     "beat": "B05",
+     "phrase": "ราวปี หนึ่งพันแปดร้อยเจ็ดสิบเก้า",
+     "onSec": 31.985,
+     "endSec": 32.38,
+     "source": "mapped from v4 (speech unchanged; cut offset applied)"
+    },
+    {
+     "id": "B05-a2",
+     "beat": "B05",
+     "phrase": "ในคดีที่มีการกินเนื้อคน",
+     "onSec": 38.98,
+     "endSec": 40.74,
+     "source": "mapped from v4 (speech unchanged; cut offset applied)"
+    },
+    {
+     "id": "B05-a3",
+     "beat": "B05",
+     "phrase": "เขาอ้างว่าถูกวิญญาณเวนดิโกตามรังควาน",
+     "onSec": 41.3,
+     "endSec": 44.3,
+     "source": "mapped from v4 (speech unchanged; cut offset applied)"
+    },
+    {
+     "id": "B05-a4",
+     "beat": "B05",
+     "phrase": "แต่ศาลตัดสินประหารชีวิตเขา",
+     "onSec": 44.9,
+     "endSec": 47.22,
+     "source": "mapped from v4 (speech unchanged; cut offset applied)"
+    },
+    {
+     "id": "B06-a1",
+     "beat": "B06",
+     "phrase": "นักเขียนพื้นเมืองบางคนใช้เวนดิโก",
+     "onSec": 48.136,
+     "endSec": 50.79,
+     "source": "mapped from v4 (speech unchanged; cut offset applied)"
+    },
+    {
+     "id": "B06-a2",
+     "beat": "B06",
+     "phrase": "แทนความโลภที่กินเท่าไหร่ก็ไม่พอ",
+     "onSec": 51.38,
+     "endSec": 53.76,
+     "source": "mapped from v4 (speech unchanged; cut offset applied)"
+    },
+    {
+     "id": "B06-a3",
+     "beat": "B06",
+     "phrase": "ปีศาจตัวนี้",
+     "onSec": 54.42,
+     "endSec": 55.26,
+     "source": "mapped from v4 (speech unchanged; cut offset applied)"
+    },
+    {
+     "id": "B06-a4",
+     "beat": "B06",
+     "phrase": "ที่คอยถามว่า",
+     "onSec": 57.19,
+     "endSec": 58.96,
+     "source": "mapped from v4 (speech unchanged; cut offset applied)"
+    }
+   ],
+   "mid_sentence_silences_over_0_3s": [
+    {
+     "start_sec": 14.36,
+     "end_sec": 14.94,
+     "len_sec": 0.58,
+     "context": "ตามความเชื่อ | มันคือวิญญาณ"
+    },
+    {
+     "start_sec": 17.66,
+     "end_sec": 18.29,
+     "len_sec": 0.63,
+     "context": "ฤดูหนาว | และความหิว"
+    },
+    {
+     "start_sec": 19.97,
+     "end_sec": 20.57,
+     "len_sec": 0.6,
+     "context": "ที่กินคน | เล่ากันว่า"
+    },
+    {
+     "start_sec": 25.05,
+     "end_sec": 25.48,
+     "len_sec": 0.43,
+     "context": "เรื่องเล่า | คนธรรมดา"
+    },
+    {
+     "start_sec": 27.27,
+     "end_sec": 27.81,
+     "len_sec": 0.54,
+     "context": "มันได้ | ถ้าปล่อยให้"
+    },
+    {
+     "start_sec": 36.54,
+     "end_sec": 37.05,
+     "len_sec": 0.51,
+     "context": "รันเนอร์ | ฆ่าคนในครอบครัว"
+    },
+    {
+     "start_sec": 38.49,
+     "end_sec": 39.11,
+     "len_sec": 0.62,
+     "context": "ตัวเอง | ในคดีที่มี"
+    },
+    {
+     "start_sec": 45.56,
+     "end_sec": 45.94,
+     "len_sec": 0.38,
+     "context": "แต่ศาล | ตัดสิน"
+    },
+    {
+     "start_sec": 49.48,
+     "end_sec": 49.85,
+     "len_sec": 0.37,
+     "context": "พื้นเมืองบางคน | ใช้เวนดิโก"
+    },
+    {
+     "start_sec": 50.79,
+     "end_sec": 51.38,
+     "len_sec": 0.59,
+     "context": "ใช้เวนดิโก | แทนความโลภ"
+    }
+   ],
+   "loudness_LUFS_integrated": -16.4,
+   "F0_median_Hz": 162.7
+  },
+  "pTIGHT2": {
+   "file": "projects/WDG-EP01-SHORT/audio/voice-lock-v2/WDG-EP01-SHORT_voice-lock-v2_alt-NARR-Achernar_mysterious_atempo108_R3_pTIGHT2_full.wav",
+   "length_sec": 55.998,
+   "samples": 2687906,
+   "cut": {
+    "what": "B02 word gap (B02-a2 to B02-a3)",
+    "in_variant_sec": [
+     10.05,
+     10.35
+    ],
+    "removed_sec": 0.3,
+    "silence_before": "0.42 s",
+    "silence_after": "0.12 s",
+    "kept_each_side_sec": [
+     0.06,
+     0.06
+    ]
+   },
+   "seam": {
+    "out_sec": 10.045,
+    "max_step_LSB_20ms": 9,
+    "median_step_LSB": 1.0
+   },
+   "speech_samples_identical_outside_cut": true,
+   "beats": [
+    {
+     "beat": "B01",
+     "script": "WDG-EP01-SHORT-S02-B01",
+     "speechOnSec": 0.337,
+     "speechEndSec": 4.066,
+     "speechOnFrame": 10,
+     "speechEndFrame": 122,
+     "speechSpanSec": 3.729,
+     "check_vs_peak_runs_s": [
+      0.007,
+      0.004
+     ]
+    },
+    {
+     "beat": "B02",
+     "script": "WDG-EP01-SHORT-S02-B02",
+     "speechOnSec": 4.522,
+     "speechEndSec": 12.467,
+     "speechOnFrame": 136,
+     "speechEndFrame": 374,
+     "speechSpanSec": 7.945,
+     "check_vs_peak_runs_s": [
+      0.002,
+      0.003
+     ]
+    },
+    {
+     "beat": "B03",
+     "script": "WDG-EP01-SHORT-S02-B03",
+     "speechOnSec": 13.125,
+     "speechEndSec": 29.382,
+     "speechOnFrame": 394,
+     "speechEndFrame": 881,
+     "speechSpanSec": 16.257,
+     "check_vs_peak_runs_s": [
+      0.005,
+      0.008
+     ]
+    },
+    {
+     "beat": "B04",
+     "script": "WDG-EP01-SHORT-S02-B04",
+     "status": "removed R3 (user, 2 Nov 2026); ID kept, not reused; no audio in the R3 file"
+    },
+    {
+     "beat": "B05",
+     "script": "WDG-EP01-SHORT-S03-B01",
+     "speechOnSec": 30.045,
+     "speechEndSec": 44.654,
+     "speechOnFrame": 901,
+     "speechEndFrame": 1340,
+     "speechSpanSec": 14.609,
+     "check_vs_peak_runs_s": [
+      0.005,
+      0.006
+     ]
+    },
+    {
+     "beat": "B06",
+     "script": "WDG-EP01-SHORT-S03-B02",
+     "speechOnSec": 45.316,
+     "speechEndSec": 55.715,
+     "speechOnFrame": 1359,
+     "speechEndFrame": 1671,
+     "speechSpanSec": 10.399,
+     "check_vs_peak_runs_s": [
+      0.006,
+      0.005
+     ]
+    }
+   ],
+   "anchors": [
+    {
+     "id": "B01-a1",
+     "beat": "B01",
+     "phrase": "ความกลัวแบบนี้ มาจากตำนานจริง",
+     "onSec": 0.337,
+     "endSec": 2.84,
+     "source": "mapped from v4 (speech unchanged; cut offset applied)"
+    },
+    {
+     "id": "B01-a2",
+     "beat": "B01",
+     "phrase": "เวนดิโก",
+     "onSec": 2.84,
+     "endSec": 4.066,
+     "source": "mapped from v4 (speech unchanged; cut offset applied)"
+    },
+    {
+     "id": "B02-a1",
+     "beat": "B02",
+     "phrase": "เป็นเรื่องเล่าของชนพื้นเมืองกลุ่มภาษาอัลกอนเควียน",
+     "onSec": 4.522,
+     "endSec": 8.04,
+     "source": "mapped from v4 (speech unchanged; cut offset applied)"
+    },
+    {
+     "id": "B02-a2",
+     "beat": "B02",
+     "phrase": "อย่างโอจิบเวและครี",
+     "onSec": 8.1,
+     "endSec": 9.99,
+     "source": "energy: speech of อย่างโอจิบเวและครี ends (peak rule); v4 whisper end was 9.66 / 9.46 s"
+    },
+    {
+     "id": "B02-a3",
+     "beat": "B02",
+     "phrase": "ในแคนาดาและทางเหนือของสหรัฐฯ",
+     "onSec": 10.11,
+     "endSec": 12.24,
+     "source": "energy: onset of ในแคนาดา (peak rule, mapped through the cut); v4 whisper onset was 10.50 / 10.30 s"
+    },
+    {
+     "id": "B03-a1",
+     "beat": "B03",
+     "phrase": "ตามความเชื่อ มันคือวิญญาณหรือปีศาจแห่งฤดูหนาวและความหิว",
+     "onSec": 13.125,
+     "endSec": 18.06,
+     "source": "mapped from v4 (speech unchanged; cut offset applied)"
+    },
+    {
+     "id": "B03-a2",
+     "beat": "B03",
+     "phrase": "ที่กินคน เล่ากันว่ายิ่งกิน ยิ่งหิว",
+     "onSec": 18.06,
+     "endSec": 22.04,
+     "source": "mapped from v4 (speech unchanged; cut offset applied)"
+    },
+    {
+     "id": "B03-a3",
+     "beat": "B03",
+     "phrase": "ถ้าปล่อยให้ความหิวหรือความโลภครอบงำ",
+     "onSec": 26.35,
+     "endSec": 29.31,
+     "source": "mapped from v4 (speech unchanged; cut offset applied)"
+    },
+    {
+     "id": "B05-a1",
+     "beat": "B05",
+     "phrase": "ราวปี หนึ่งพันแปดร้อยเจ็ดสิบเก้า",
+     "onSec": 30.285,
+     "endSec": 30.68,
+     "source": "mapped from v4 (speech unchanged; cut offset applied)"
+    },
+    {
+     "id": "B05-a2",
+     "beat": "B05",
+     "phrase": "ในคดีที่มีการกินเนื้อคน",
+     "onSec": 36.85,
+     "endSec": 38.61,
+     "source": "mapped from v4 (speech unchanged; cut offset applied)"
+    },
+    {
+     "id": "B05-a3",
+     "beat": "B05",
+     "phrase": "เขาอ้างว่าถูกวิญญาณเวนดิโกตามรังควาน",
+     "onSec": 38.97,
+     "endSec": 41.97,
+     "source": "mapped from v4 (speech unchanged; cut offset applied)"
+    },
+    {
+     "id": "B05-a4",
+     "beat": "B05",
+     "phrase": "แต่ศาลตัดสินประหารชีวิตเขา",
+     "onSec": 42.33,
+     "endSec": 44.65,
+     "source": "mapped from v4 (speech unchanged; cut offset applied)"
+    },
+    {
+     "id": "B06-a1",
+     "beat": "B06",
+     "phrase": "นักเขียนพื้นเมืองบางคนใช้เวนดิโก",
+     "onSec": 45.316,
+     "endSec": 47.97,
+     "source": "mapped from v4 (speech unchanged; cut offset applied)"
+    },
+    {
+     "id": "B06-a2",
+     "beat": "B06",
+     "phrase": "แทนความโลภที่กินเท่าไหร่ก็ไม่พอ",
+     "onSec": 48.37,
+     "endSec": 50.75,
+     "source": "mapped from v4 (speech unchanged; cut offset applied)"
+    },
+    {
+     "id": "B06-a3",
+     "beat": "B06",
+     "phrase": "ปีศาจตัวนี้",
+     "onSec": 51.21,
+     "endSec": 52.05,
+     "source": "mapped from v4 (speech unchanged; cut offset applied)"
+    },
+    {
+     "id": "B06-a4",
+     "beat": "B06",
+     "phrase": "ที่คอยถามว่า",
+     "onSec": 53.88,
+     "endSec": 55.65,
+     "source": "mapped from v4 (speech unchanged; cut offset applied)"
+    }
+   ],
+   "mid_sentence_silences_over_0_3s": [
+    {
+     "start_sec": 13.91,
+     "end_sec": 14.31,
+     "len_sec": 0.4,
+     "context": "ความเชื่อ | มันคือ"
+    },
+    {
+     "start_sec": 17.03,
+     "end_sec": 17.43,
+     "len_sec": 0.4,
+     "context": "ฤดูหนาว | และความหิว"
+    },
+    {
+     "start_sec": 19.11,
+     "end_sec": 19.51,
+     "len_sec": 0.4,
+     "context": "ที่กินคน | เล่ากันว่า"
+    },
+    {
+     "start_sec": 23.74,
+     "end_sec": 24.17,
+     "len_sec": 0.43,
+     "context": "เรื่องเล่า | คนธรรมดา"
+    },
+    {
+     "start_sec": 25.96,
+     "end_sec": 26.36,
+     "len_sec": 0.4,
+     "context": "มันได้ | ถ้าปล่อย"
+    },
+    {
+     "start_sec": 34.74,
+     "end_sec": 35.14,
+     "len_sec": 0.4,
+     "context": "รันเนอร์ | ฆ่าคนในครอบครัว"
+    },
+    {
+     "start_sec": 36.58,
+     "end_sec": 36.98,
+     "len_sec": 0.4,
+     "context": "ตัวเอง | ในคดี"
+    },
+    {
+     "start_sec": 42.99,
+     "end_sec": 43.37,
+     "len_sec": 0.38,
+     "context": "แต่ศาล | ตัดสิน"
+    },
+    {
+     "start_sec": 46.66,
+     "end_sec": 47.03,
+     "len_sec": 0.37,
+     "context": "พื้นเมืองบางคน | ใช้เวนดิโก"
+    },
+    {
+     "start_sec": 47.97,
+     "end_sec": 48.37,
+     "len_sec": 0.4,
+     "context": "ใช้เวนดิโก | แทนความโลภ"
+    }
+   ],
+   "loudness_LUFS_integrated": -16.4,
+   "F0_median_Hz": 162.7
+  }
+ },
+ "mid_sentence_silences_over_0_3s_unchanged": {
+  "pMID2": [
+   {
+    "start_sec": 14.36,
+    "end_sec": 14.94,
+    "len_sec": 0.58,
+    "context": "ตามความเชื่อ | มันคือวิญญาณ"
+   },
+   {
+    "start_sec": 17.66,
+    "end_sec": 18.29,
+    "len_sec": 0.63,
+    "context": "ฤดูหนาว | และความหิว"
+   },
+   {
+    "start_sec": 19.97,
+    "end_sec": 20.57,
+    "len_sec": 0.6,
+    "context": "ที่กินคน | เล่ากันว่า"
+   },
+   {
+    "start_sec": 25.05,
+    "end_sec": 25.48,
+    "len_sec": 0.43,
+    "context": "เรื่องเล่า | คนธรรมดา"
+   },
+   {
+    "start_sec": 27.27,
+    "end_sec": 27.81,
+    "len_sec": 0.54,
+    "context": "มันได้ | ถ้าปล่อยให้"
+   },
+   {
+    "start_sec": 36.54,
+    "end_sec": 37.05,
+    "len_sec": 0.51,
+    "context": "รันเนอร์ | ฆ่าคนในครอบครัว"
+   },
+   {
+    "start_sec": 38.49,
+    "end_sec": 39.11,
+    "len_sec": 0.62,
+    "context": "ตัวเอง | ในคดีที่มี"
+   },
+   {
+    "start_sec": 45.56,
+    "end_sec": 45.94,
+    "len_sec": 0.38,
+    "context": "แต่ศาล | ตัดสิน"
+   },
+   {
+    "start_sec": 49.48,
+    "end_sec": 49.85,
+    "len_sec": 0.37,
+    "context": "พื้นเมืองบางคน | ใช้เวนดิโก"
+   },
+   {
+    "start_sec": 50.79,
+    "end_sec": 51.38,
+    "len_sec": 0.59,
+    "context": "ใช้เวนดิโก | แทนความโลภ"
+   }
+  ],
+  "pTIGHT2": [
+   {
+    "start_sec": 13.91,
+    "end_sec": 14.31,
+    "len_sec": 0.4,
+    "context": "ความเชื่อ | มันคือ"
+   },
+   {
+    "start_sec": 17.03,
+    "end_sec": 17.43,
+    "len_sec": 0.4,
+    "context": "ฤดูหนาว | และความหิว"
+   },
+   {
+    "start_sec": 19.11,
+    "end_sec": 19.51,
+    "len_sec": 0.4,
+    "context": "ที่กินคน | เล่ากันว่า"
+   },
+   {
+    "start_sec": 23.74,
+    "end_sec": 24.17,
+    "len_sec": 0.43,
+    "context": "เรื่องเล่า | คนธรรมดา"
+   },
+   {
+    "start_sec": 25.96,
+    "end_sec": 26.36,
+    "len_sec": 0.4,
+    "context": "มันได้ | ถ้าปล่อย"
+   },
+   {
+    "start_sec": 34.74,
+    "end_sec": 35.14,
+    "len_sec": 0.4,
+    "context": "รันเนอร์ | ฆ่าคนในครอบครัว"
+   },
+   {
+    "start_sec": 36.58,
+    "end_sec": 36.98,
+    "len_sec": 0.4,
+    "context": "ตัวเอง | ในคดี"
+   },
+   {
+    "start_sec": 42.99,
+    "end_sec": 43.37,
+    "len_sec": 0.38,
+    "context": "แต่ศาล | ตัดสิน"
+   },
+   {
+    "start_sec": 46.66,
+    "end_sec": 47.03,
+    "len_sec": 0.37,
+    "context": "พื้นเมืองบางคน | ใช้เวนดิโก"
+   },
+   {
+    "start_sec": 47.97,
+    "end_sec": 48.37,
+    "len_sec": 0.4,
+    "context": "ใช้เวนดิโก | แทนความโลภ"
+   }
+  ]
+ },
+ "method": [
+  "cut_one.py on the v4 variant: 0.30 s removed from the middle of the 0.42 s silence (kept 0.06 s each side, junction at the quietest 10 ms, no step over 50 LSB within 50 ms), 10 ms equal-power crossfade",
+  "silences over 0.3 s classified by reading the script.md VO lines (quotes) against Whisper word context: ellipsis (… inside a line), sentence end (line break between quoted lines), beat edge (beat change), mid-sentence (everything else)",
+  "beat edges and anchors mapped through the cut; beat edges checked against peak-rule runs (check_vs_peak_runs_s)"
+ ],
+ "open": [
+  "USER: listen to the B02 join (pMID2 at 10.2-10.4 s, pTIGHT2 at 10.0-10.2 s); the Editor cannot listen",
+  "USER: decide on the 10 mid-sentence silences listed for each variant (unchanged in this step)",
+  "USER: a 0.30 s silence at 39.97 s in pTIGHT2 is exactly 0.30 s, not listed"
+ ]
+}

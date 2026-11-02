@@ -1,0 +1,10 @@
+{
+  "public/audio/wendigo/WDG-EP01-SHORT_sound.wav": {
+    "store": "projects/WDG-EP01-SHORT/audio/mix-v7/WDG-EP01-SHORT_sound.wav",
+    "sha256": "3e963763bcf8538a5ed589652dc557a1faa7b12b26ee46d40e780c99e33a6196"
+  },
+  "public/audio/wendigo/WDG-EP01-SHORT_voice.wav": {
+    "store": "projects/WDG-EP01-SHORT/audio/mix-v7/WDG-EP01-SHORT_voice.wav",
+    "sha256": "4cacf334b4ee7d911f48efc2e128ef1723fade65b299983608104f32ded6ce1b"
+  }
+}

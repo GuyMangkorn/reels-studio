@@ -1,0 +1,495 @@
+{
+ "deliverable": "WDG-EP01-SHORT",
+ "revision": "v1",
+ "timing_status": "audio-measured",
+ "lock_status": "Editor measure done. Not user-approved (W4.3 open). Over the script timing (see budget); length decision pending.",
+ "supersedes": "none (first voice lock)",
+ "script_revision": "WDG-SCRIPT-R2",
+ "film_brief_at_lock": "WDG-BRIEF-FILM-R1.4",
+ "storyboard_at_lock": "SB-R2.2",
+ "fps": 30,
+ "frames": "round(seconds * 30) from the decoded 48 kHz track",
+ "voices": {
+  "MAN": {
+   "voice": "Algenib",
+   "engine": "Gemini TTS gemini-3.8-flash-tts (prebuilt)",
+   "style": "hushed, exhausted, hoarse, close to the mic, cold",
+   "basis": "Editor choice (not heard by Editor): gravelly timbre fits the brief; the whisper keeps the speech timbre in the lineup measure (F0 94 vs 92 Hz, centroid 2864 vs 2694 Hz)"
+  },
+  "WHISPER": {
+   "voice": "Algenib (same voice ID as MAN, CL04)",
+   "style": "slow, dry, breathy whisper, almost tender, very close (W2 adds: barely audible)",
+   "tags": "<whispering>"
+  },
+  "NARR": {
+   "voice": "Kore",
+   "engine": "Gemini TTS gemini-3.8-flash-tts (prebuilt)",
+   "style": "calm, low, serious documentary narration, brisk natural pace, no long pauses",
+   "styleBasis": "script base style (calm, low, serious, measured documentary narration) with the project-default narrator pace (brisk, no long pauses); the script-style read is kept as alternate",
+   "basis": "user proposal in chat 2 Nov 2026 (\"เสียง kore ปะนะ\"); female, distinct from the male MAN; no concrete problem found for this script. Proposal, not approval.",
+   "atempo": 1.05,
+   "atempoBasis": "non-character narrator +5%, applied to the full read before alignment"
+  }
+ },
+ "alternates": {
+  "MAN/WHISPER": "Enceladus (breathy): lineup whisper F0 86 Hz and centroid 1532 Hz vs speech 96 Hz / 2704 Hz, weaker identity match; for the user to hear",
+  "NARR": "Kore script-style read (calm, measured): 71.16 s raw, 67.8 s after atempo"
+ },
+ "takes": {
+  "narration_full_atempo105": "WDG-EP01-SHORT_voice-lock-v1_NARR-Kore_brisk_atempo105_full.wav",
+  "narration_raw_brisk": "WDG-EP01-SHORT_voice-lock-v1_NARR-Kore_brisk_raw_full.wav",
+  "narration_raw_calm_script_style": "WDG-EP01-SHORT_voice-lock-v1_alt-NARR-Kore_calm-script-style_raw_full.wav"
+ },
+ "ttsOnlyDifferences": [
+  "1879 spelled in TTS as หนึ่งพันแปดร้อยเจ็ดสิบเก้า (caption stays 1879)",
+  "ellipses in TTS text become commas (NARR) or <short pause> (MAN, WHISPER); captions keep the script text"
+ ],
+ "s01_clips": [
+  {
+   "id": "WDG-EP01-SHORT-S01-B01-W1",
+   "role": "WHISPER",
+   "voice": "Algenib",
+   "style": "slow, dry, breathy whisper, almost tender, very close",
+   "ttsText": "<whispering> หิวไหม",
+   "file": "WDG-EP01-SHORT_voice-lock-v1_S01-B01-W1_WHISPER-Algenib.wav",
+   "durationSec": 1.76,
+   "speechOnSec": 0.34,
+   "speechEndSec": 1.76,
+   "speechSpanSec": 1.42,
+   "speechEndFrame": 53
+  },
+  {
+   "id": "WDG-EP01-SHORT-S01-B01-M1",
+   "role": "MAN",
+   "voice": "Algenib",
+   "style": "hushed, exhausted, hoarse, close to the mic, cold",
+   "ttsText": "<short pause> เสียงนั้น <short pause> ถามผมทุกคืน",
+   "file": "WDG-EP01-SHORT_voice-lock-v1_S01-B01-M1_MAN-Algenib.wav",
+   "durationSec": 5.2,
+   "speechOnSec": 0.19,
+   "speechEndSec": 5.0,
+   "speechSpanSec": 4.81,
+   "speechEndFrame": 150
+  },
+  {
+   "id": "WDG-EP01-SHORT-S01-B02-M2",
+   "role": "MAN",
+   "voice": "Algenib",
+   "style": "hushed, exhausted, hoarse, close to the mic, cold",
+   "ttsText": "พายุหิมะขังเราไว้มาเจ็ดวัน อาหารหมดตั้งแต่วันที่สาม <short pause>",
+   "file": "WDG-EP01-SHORT_voice-lock-v1_S01-B02-M2_MAN-Algenib.wav",
+   "durationSec": 6.4,
+   "speechOnSec": 0.01,
+   "speechEndSec": 6.2,
+   "speechSpanSec": 6.19,
+   "speechEndFrame": 186
+  },
+  {
+   "id": "WDG-EP01-SHORT-S01-B02-M3",
+   "role": "MAN",
+   "voice": "Algenib",
+   "style": "hushed, exhausted, hoarse, close to the mic, cold",
+   "ttsText": "ทุกเช้า <short pause> มีรอยเท้าเดินวนรอบเต็นท์",
+   "file": "WDG-EP01-SHORT_voice-lock-v1_S01-B02-M3_MAN-Algenib.wav",
+   "durationSec": 4.84,
+   "speechOnSec": 0.01,
+   "speechEndSec": 4.78,
+   "speechSpanSec": 4.77,
+   "speechEndFrame": 143
+  },
+  {
+   "id": "WDG-EP01-SHORT-S01-B03-M4",
+   "role": "MAN",
+   "voice": "Algenib",
+   "style": "hushed, exhausted, hoarse, close to the mic, cold",
+   "ttsText": "<breath> คืนนี้ผมตามรอยนั้นไป <short pause> มันพอดีกับรองเท้าของผม",
+   "file": "WDG-EP01-SHORT_voice-lock-v1_S01-B03-M4_MAN-Algenib.wav",
+   "durationSec": 6.56,
+   "speechOnSec": 0.01,
+   "speechEndSec": 6.5,
+   "speechSpanSec": 6.49,
+   "speechEndFrame": 195
+  },
+  {
+   "id": "WDG-EP01-SHORT-S01-B03-M5",
+   "role": "MAN",
+   "voice": "Algenib",
+   "style": "hushed, exhausted, hoarse, close to the mic, cold",
+   "ttsText": "<short pause> <whispering> แล้วผมก็ได้ยินเสียงนั้นอีก <short pause> จากปากของผมเอง",
+   "file": "WDG-EP01-SHORT_voice-lock-v1_S01-B03-M5_MAN-Algenib.wav",
+   "durationSec": 9.64,
+   "speechOnSec": 0.01,
+   "speechEndSec": 9.48,
+   "speechSpanSec": 9.47,
+   "speechEndFrame": 284
+  },
+  {
+   "id": "WDG-EP01-SHORT-S01-B03-W2",
+   "role": "WHISPER",
+   "voice": "Algenib",
+   "style": "slow, dry, breathy whisper, almost tender, very close, barely audible",
+   "ttsText": "<whispering> หิว",
+   "file": "WDG-EP01-SHORT_voice-lock-v1_S01-B03-W2_WHISPER-Algenib.wav",
+   "durationSec": 1.8,
+   "speechOnSec": 0.01,
+   "speechEndSec": 1.78,
+   "speechSpanSec": 1.77,
+   "speechEndFrame": 53
+  }
+ ],
+ "s01_clip_sum_sec": 36.2,
+ "s01_speech_sum_sec": 34.92,
+ "alternate_clips": [
+  {
+   "role": "MAN",
+   "voice": "Enceladus (alternate, not chosen)",
+   "file": "WDG-EP01-SHORT_voice-lock-v1_alt-S01-B01-M1_MAN-Enceladus.wav",
+   "durationSec": 3.8,
+   "speechSpanSec": 3.51,
+   "speechEndSec": 3.58
+  },
+  {
+   "role": "WHISPER",
+   "voice": "Enceladus (alternate, not chosen)",
+   "file": "WDG-EP01-SHORT_voice-lock-v1_alt-S01-B01-W1_WHISPER-Enceladus.wav",
+   "durationSec": 1.32,
+   "speechSpanSec": 1.0,
+   "speechEndSec": 1.08
+  }
+ ],
+ "narration": {
+  "full_file": "WDG-EP01-SHORT_voice-lock-v1_NARR-Kore_brisk_atempo105_full.wav",
+  "durationSec": 62.568,
+  "speechOnSec": 0.328,
+  "speechEndSec": 62.334,
+  "speechOnFrame": 10,
+  "speechEndFrame": 1870,
+  "speechSpanSec": 62.006,
+  "beats": [
+   {
+    "beat": "B01",
+    "scriptBeat": "WDG-EP01-SHORT-S02-B01",
+    "segmentFile": "WDG-EP01-SHORT_voice-lock-v1_NARR-Kore_beat-B01.wav",
+    "segStartSec": 0.0,
+    "segEndSec": 4.3,
+    "speechOnSec": 0.328,
+    "speechEndSec": 4.165,
+    "speechOnFrame": 10,
+    "speechEndFrame": 125,
+    "speechSpanSec": 3.837,
+    "scriptWindowSec": [
+     18.5,
+     22.5
+    ],
+    "overScriptWindowSec": -0.163,
+    "anchors": [
+     {
+      "id": "B01-a1",
+      "phrase": "ความกลัวแบบนี้ มาจากตำนานจริง",
+      "onSec": 0.328,
+      "endSec": 2.7,
+      "onFrame": 10,
+      "endFrame": 81,
+      "note": "faster-whisper word time (estimate, about +-0.2 s), re-measured after cut-gaps"
+     },
+     {
+      "id": "B01-a2",
+      "phrase": "เวนดิโก",
+      "onSec": 2.7,
+      "endSec": 4.165,
+      "onFrame": 81,
+      "endFrame": 125,
+      "note": "approximate (fallback: onset from the preceding anchor end)"
+     }
+    ]
+   },
+   {
+    "beat": "B02",
+    "scriptBeat": "WDG-EP01-SHORT-S02-B02",
+    "segmentFile": "WDG-EP01-SHORT_voice-lock-v1_NARR-Kore_beat-B02.wav",
+    "segStartSec": 4.3,
+    "segEndSec": 11.975,
+    "speechOnSec": 4.433,
+    "speechEndSec": 11.811,
+    "speechOnFrame": 133,
+    "speechEndFrame": 354,
+    "speechSpanSec": 7.377,
+    "scriptWindowSec": [
+     22.5,
+     28.5
+    ],
+    "overScriptWindowSec": 1.377,
+    "anchors": [
+     {
+      "id": "B02-a1",
+      "phrase": "เป็นเรื่องเล่าของชนพื้นเมืองกลุ่มภาษาอัลกอนเควียน",
+      "onSec": 4.433,
+      "endSec": 7.38,
+      "onFrame": 133,
+      "endFrame": 221,
+      "note": "faster-whisper word time (estimate, about +-0.2 s), re-measured after cut-gaps"
+     },
+     {
+      "id": "B02-a2",
+      "phrase": "อย่างโอจิบเวและครี",
+      "onSec": 7.74,
+      "endSec": 9.08,
+      "onFrame": 232,
+      "endFrame": 272,
+      "note": "faster-whisper word time (estimate, about +-0.2 s), re-measured after cut-gaps"
+     },
+     {
+      "id": "B02-a3",
+      "phrase": "ในแคนาดาและทางเหนือของสหรัฐฯ",
+      "onSec": 9.66,
+      "endSec": 11.8,
+      "onFrame": 290,
+      "endFrame": 354,
+      "note": "faster-whisper word time (estimate, about +-0.2 s), re-measured after cut-gaps"
+     }
+    ]
+   },
+   {
+    "beat": "B03",
+    "scriptBeat": "WDG-EP01-SHORT-S02-B03",
+    "segmentFile": "WDG-EP01-SHORT_voice-lock-v1_NARR-Kore_beat-B03.wav",
+    "segStartSec": 11.975,
+    "segEndSec": 28.375,
+    "speechOnSec": 12.137,
+    "speechEndSec": 28.182,
+    "speechOnFrame": 364,
+    "speechEndFrame": 845,
+    "speechSpanSec": 16.046,
+    "scriptWindowSec": [
+     28.5,
+     37.5
+    ],
+    "overScriptWindowSec": 7.046,
+    "anchors": [
+     {
+      "id": "B03-a1",
+      "phrase": "ตามความเชื่อ มันคือวิญญาณหรือปีศาจแห่งฤดูหนาวและความหิว",
+      "onSec": 12.137,
+      "endSec": 16.78,
+      "onFrame": 364,
+      "endFrame": 503,
+      "note": "faster-whisper word time (estimate, about +-0.2 s), re-measured after cut-gaps"
+     },
+     {
+      "id": "B03-a2",
+      "phrase": "ที่กินคน เล่ากันว่ายิ่งกิน ยิ่งหิว",
+      "onSec": 16.78,
+      "endSec": 21.04,
+      "onFrame": 503,
+      "endFrame": 631,
+      "note": "faster-whisper word time (estimate, about +-0.2 s), re-measured after cut-gaps"
+     },
+     {
+      "id": "B03-a3",
+      "phrase": "ถ้าปล่อยให้ความหิวหรือความโลภครอบงำ",
+      "onSec": 25.54,
+      "endSec": 28.16,
+      "onFrame": 766,
+      "endFrame": 845,
+      "note": "faster-whisper word time (estimate, about +-0.2 s), re-measured after cut-gaps"
+     }
+    ]
+   },
+   {
+    "beat": "B04",
+    "scriptBeat": "WDG-EP01-SHORT-S02-B04",
+    "segmentFile": "WDG-EP01-SHORT_voice-lock-v1_NARR-Kore_beat-B04.wav",
+    "segStartSec": 28.375,
+    "segEndSec": 35.79,
+    "speechOnSec": 28.562,
+    "speechEndSec": 35.644,
+    "speechOnFrame": 857,
+    "speechEndFrame": 1069,
+    "speechSpanSec": 7.081,
+    "scriptWindowSec": [
+     37.5,
+     42.5
+    ],
+    "overScriptWindowSec": 2.081,
+    "anchors": [
+     {
+      "id": "B04-a1",
+      "phrase": "ส่วนเขากวางกับกะโหลกในหนังและเกม",
+      "onSec": 28.92,
+      "endSec": 31.24,
+      "onFrame": 868,
+      "endFrame": 937,
+      "note": "faster-whisper word time (estimate, about +-0.2 s), re-measured after cut-gaps"
+     },
+     {
+      "id": "B04-a2",
+      "phrase": "ไม่ใช่ลักษณะหลักในเรื่องเล่าดั้งเดิม",
+      "onSec": 33.48,
+      "endSec": 35.6,
+      "onFrame": 1004,
+      "endFrame": 1068,
+      "note": "faster-whisper word time (estimate, about +-0.2 s), re-measured after cut-gaps"
+     }
+    ]
+   },
+   {
+    "beat": "B05",
+    "scriptBeat": "WDG-EP01-SHORT-S03-B01",
+    "segmentFile": "WDG-EP01-SHORT_voice-lock-v1_NARR-Kore_beat-B05.wav",
+    "segStartSec": 35.79,
+    "segEndSec": 51.235,
+    "speechOnSec": 35.936,
+    "speechEndSec": 51.095,
+    "speechOnFrame": 1078,
+    "speechEndFrame": 1533,
+    "speechSpanSec": 15.159,
+    "scriptWindowSec": [
+     42.5,
+     52
+    ],
+    "overScriptWindowSec": 5.659,
+    "anchors": [
+     {
+      "id": "B05-a1",
+      "phrase": "ราวปี หนึ่งพันแปดร้อยเจ็ดสิบเก้า",
+      "onSec": 36.3,
+      "endSec": 36.7,
+      "onFrame": 1089,
+      "endFrame": 1101,
+      "note": "faster-whisper word time (estimate, about +-0.2 s), re-measured after cut-gaps"
+     },
+     {
+      "id": "B05-a2",
+      "phrase": "ในคดีที่มีการกินเนื้อคน",
+      "onSec": 42.58,
+      "endSec": 44.7,
+      "onFrame": 1277,
+      "endFrame": 1341,
+      "note": "faster-whisper word time (estimate, about +-0.2 s), re-measured after cut-gaps"
+     },
+     {
+      "id": "B05-a3",
+      "phrase": "เขาอ้างว่าถูกวิญญาณเวนดิโกตามรังควาน",
+      "onSec": 45.22,
+      "endSec": 48.24,
+      "onFrame": 1357,
+      "endFrame": 1447,
+      "note": "faster-whisper word time (estimate, about +-0.2 s), re-measured after cut-gaps"
+     },
+     {
+      "id": "B05-a4",
+      "phrase": "แต่ศาลตัดสินประหารชีวิตเขา",
+      "onSec": 48.9,
+      "endSec": 50.88,
+      "onFrame": 1467,
+      "endFrame": 1526,
+      "note": "faster-whisper word time (estimate, about +-0.2 s), re-measured after cut-gaps"
+     }
+    ]
+   },
+   {
+    "beat": "B06",
+    "scriptBeat": "WDG-EP01-SHORT-S03-B02",
+    "segmentFile": "WDG-EP01-SHORT_voice-lock-v1_NARR-Kore_beat-B06.wav",
+    "segStartSec": 51.235,
+    "segEndSec": 62.568,
+    "speechOnSec": 51.378,
+    "speechEndSec": 62.334,
+    "speechOnFrame": 1541,
+    "speechEndFrame": 1870,
+    "speechSpanSec": 10.955,
+    "scriptWindowSec": [
+     52,
+     60
+    ],
+    "overScriptWindowSec": 2.955,
+    "anchors": [
+     {
+      "id": "B06-a1",
+      "phrase": "นักเขียนพื้นเมืองบางคนใช้เวนดิโก",
+      "onSec": 51.378,
+      "endSec": 53.46,
+      "onFrame": 1541,
+      "endFrame": 1604,
+      "note": "faster-whisper word time (estimate, about +-0.2 s), re-measured after cut-gaps"
+     },
+     {
+      "id": "B06-a2",
+      "phrase": "แทนความโลภที่กินเท่าไหร่ก็ไม่พอ",
+      "onSec": 53.72,
+      "endSec": 56.38,
+      "onFrame": 1612,
+      "endFrame": 1691,
+      "note": "faster-whisper word time (estimate, about +-0.2 s), re-measured after cut-gaps"
+     },
+     {
+      "id": "B06-a3",
+      "phrase": "ปีศาจตัวนี้ ไม่ต้องมีเขา",
+      "onSec": 57.0,
+      "endSec": 59.2,
+      "onFrame": 1710,
+      "endFrame": 1776,
+      "note": "faster-whisper word time (estimate, about +-0.2 s), re-measured after cut-gaps"
+     },
+     {
+      "id": "B06-a4",
+      "phrase": "ที่คอยถามว่า",
+      "onSec": 61.12,
+      "endSec": 62.3,
+      "onFrame": 1834,
+      "endFrame": 1869,
+      "note": "faster-whisper word time (estimate, about +-0.2 s), re-measured after cut-gaps"
+     }
+    ]
+   }
+  ]
+ },
+ "budget": {
+  "targetSec": 60,
+  "scriptS01WindowSec": [
+   0,
+   18.5
+  ],
+  "scriptNarrationWindowSec": [
+   18.5,
+   60
+  ],
+  "s01SpeechSumSec": 34.92,
+  "narrationSpeechSpanSec": 62.006,
+  "estimatedSpeechSumSec": 96.9,
+  "calmScriptStyleNarrationRawSec": 71.16,
+  "calmScriptStyleNarrationAtempoSec": 67.77,
+  "note": "Speech sums before the pauses between lines. The script (about 60 s) does not fit this voice pace; length is a user decision (open)."
+ },
+ "hookCheck": {
+  "beat": "S01-B01 (script 0-3 s, user-confirmed 2 Nov 2026)",
+  "measuredSpeechSec": 6.23,
+  "note": "WHISPER + MAN line, before any gap"
+ },
+ "open": [
+  "USER: length. Script about 60 s vs measured speech about 97 s before pauses (S01 about 35 s, NARR about 62 s). Options: Preaw trims text (beats re-timed), accept about 100 s, or try another pace (untested).",
+  "USER: hook S01-B01 0-3 s (confirmed by user). WHISPER plus MAN line measures about 6.2 s of speech.",
+  "USER: MAN and WHISPER Algenib (Editor choice, measured) or Enceladus alternate, by ear.",
+  "USER: NARR Kore (user proposal) by ear, including the Thai read of 1879, S02-B03 and S03-B01.",
+  "Editor could not listen to any take; every check here is measured only."
+ ],
+ "method": [
+  "gemini-tts.py say: NARR one read (--text-file), MAN and WHISPER one call per line; cached takes in $REELS_STORE/cache/tts",
+  "ffmpeg atempo=1.05 on the brisk NARR read (65.68 s raw to 62.568 s)",
+  "scripts/narration/align-full.py (faster-whisper large-v3-turbo, Thai, word timestamps, difflib to TTS text; decoded-samples patch, see the note in the script)",
+  "scripts/narration/cut-gaps.py (energy-gap cuts; VERIFY OK; smallest edge margin 0.133 s)",
+  "scripts/wendigo/short/voice-lock/measure-clips.py for MAN and WHISPER clips (10 ms blocks, peak >= 300 of 32767)"
+ ],
+ "inputs": [
+  "scripts/wendigo/short/voice-lock/narration-timeline.json",
+  "scripts/wendigo/short/voice-lock/tts-beats.json",
+  "scripts/wendigo/short/voice-lock/narration-anchors.md"
+ ],
+ "quota": "Primary GEMINI_API_KEY returned HTTP 429 (100 per day, Tier 1) on every call; GEMINI_API_KEY_REEL_EXTRA served the takes (11 takes, 2 Nov 2026).",
+ "store": {
+  "folder": "projects/WDG-EP01-SHORT/audio/voice-lock-v1/ (26 files: takes with .json sidecars, the narration track, six beat segments; listen/ holds the two samples)",
+  "narration_full": "projects/WDG-EP01-SHORT/audio/voice-lock-v1/WDG-EP01-SHORT_voice-lock-v1_NARR-Kore_brisk_atempo105_full.wav",
+  "listen_A_recommended": "projects/WDG-EP01-SHORT/audio/voice-lock-v1/listen/WDG-EP01-SHORT_voice-lock-v1_listen-A_Algenib-Kore.mp3",
+  "listen_B_alternate": "projects/WDG-EP01-SHORT/audio/voice-lock-v1/listen/WDG-EP01-SHORT_voice-lock-v1_listen-B_Enceladus-alt-Kore.mp3"
+ }
+}

@@ -1,0 +1,211 @@
+{
+ "deliverable": "WDG-EP01-SHORT",
+ "revision": "v2",
+ "supersedes_narrator_of": "voice-measure.json v1 (NARR Kore brisk, 2 Nov 2026)",
+ "unchanged_from_v1": "MAN and WHISPER (Algenib, S01 seven clips, speech 34.92 s); see voice-measure.json",
+ "script_revision": "WDG-SCRIPT-R2 (unchanged; user decision: keep)",
+ "timing_status": "audio-measured",
+ "lock_status": "Editor measure done for narrator v2 candidates. Not user-approved (W4.3 open).",
+ "user_decisions_2026-11-02": [
+  "length: accept about 100 s; script R2 unchanged; no trim; the S01-B01 hook miss (6.2 s against 0-3 s) is a known miss",
+  "narrator: stays female; mysterious, hushed storyteller style; atempo 1.05 for narrator only; MAN and WHISPER stay Algenib"
+ ],
+ "narrator": {
+  "chosen": {
+   "voice": "Kore",
+   "style": "mysterious storyteller, hushed and intimate, low and steady, like a ghost story told in the dark, no long pauses",
+   "atempo": 1.05,
+   "raw_full_sec": 77.8,
+   "atempo_full_sec": 74.096,
+   "loudness_LUFS_atempo": -16.3,
+   "peak_dBFS": -1.5,
+   "speech_span_sec": 73.661,
+   "beats": [
+    {
+     "beat": "B01",
+     "speechOnSec": 0.167,
+     "speechEndSec": 4.84,
+     "speechOnFrame": 5,
+     "speechEndFrame": 145,
+     "speechSpanSec": 4.672,
+     "scriptWindowSpanSec": 4.0
+    },
+    {
+     "beat": "B02",
+     "speechOnSec": 5.388,
+     "speechEndSec": 13.526,
+     "speechOnFrame": 162,
+     "speechEndFrame": 406,
+     "speechSpanSec": 8.138,
+     "scriptWindowSpanSec": 6.0
+    },
+    {
+     "beat": "B03",
+     "speechOnSec": 14.079,
+     "speechEndSec": 34.125,
+     "speechOnFrame": 422,
+     "speechEndFrame": 1024,
+     "speechSpanSec": 20.046,
+     "scriptWindowSpanSec": 9.0
+    },
+    {
+     "beat": "B04",
+     "speechOnSec": 34.791,
+     "speechEndSec": 42.376,
+     "speechOnFrame": 1044,
+     "speechEndFrame": 1271,
+     "speechSpanSec": 7.585,
+     "scriptWindowSpanSec": 5.0
+    },
+    {
+     "beat": "B05",
+     "speechOnSec": 43.023,
+     "speechEndSec": 59.63,
+     "speechOnFrame": 1291,
+     "speechEndFrame": 1789,
+     "speechSpanSec": 16.607,
+     "scriptWindowSpanSec": 9.5
+    },
+    {
+     "beat": "B06",
+     "speechOnSec": 60.298,
+     "speechEndSec": 73.829,
+     "speechOnFrame": 1809,
+     "speechEndFrame": 2215,
+     "speechSpanSec": 13.531,
+     "scriptWindowSpanSec": 8
+    }
+   ],
+   "silences_ge_0_25s": 36,
+   "timbre_proxy": {
+    "centroid_hz": 1950,
+    "f0_median_hz": 144.6,
+    "f0_p10_p90_hz": [
+     116,
+     202
+    ]
+   },
+   "why": "User proposal, kept. Achernar is not clearly better: its measured median F0 is higher (166 Hz vs 145 Hz for Kore; brisk Kore 157 Hz) and its centroid is slightly brighter (1995 vs 1950 Hz). Descriptor Soft vs Firm does not show up in these measures. Ear decides."
+  },
+  "alternate": {
+   "voice": "Achernar",
+   "style": "same style text",
+   "raw_full_sec": 78.36,
+   "atempo_full_sec": 74.645,
+   "loudness_LUFS_atempo": -16.1,
+   "peak_dBFS": -1.5,
+   "speech_span_sec": 74.009,
+   "beats": [
+    {
+     "beat": "B01",
+     "speechOnSec": 0.337,
+     "speechEndSec": 4.846,
+     "speechOnFrame": 10,
+     "speechEndFrame": 145,
+     "speechSpanSec": 4.51,
+     "scriptWindowSpanSec": 4.0
+    },
+    {
+     "beat": "B02",
+     "speechOnSec": 5.324,
+     "speechEndSec": 13.801,
+     "speechOnFrame": 160,
+     "speechEndFrame": 414,
+     "speechSpanSec": 8.477,
+     "scriptWindowSpanSec": 6.0
+    },
+    {
+     "beat": "B03",
+     "speechOnSec": 14.908,
+     "speechEndSec": 33.32,
+     "speechOnFrame": 447,
+     "speechEndFrame": 1000,
+     "speechSpanSec": 18.412,
+     "scriptWindowSpanSec": 9.0
+    },
+    {
+     "beat": "B04",
+     "speechOnSec": 34.711,
+     "speechEndSec": 41.754,
+     "speechOnFrame": 1041,
+     "speechEndFrame": 1253,
+     "speechSpanSec": 7.043,
+     "scriptWindowSpanSec": 5.0
+    },
+    {
+     "beat": "B05",
+     "speechOnSec": 43.221,
+     "speechEndSec": 59.485,
+     "speechOnFrame": 1297,
+     "speechEndFrame": 1785,
+     "speechSpanSec": 16.264,
+     "scriptWindowSpanSec": 9.5
+    },
+    {
+     "beat": "B06",
+     "speechOnSec": 60.958,
+     "speechEndSec": 74.346,
+     "speechOnFrame": 1829,
+     "speechEndFrame": 2230,
+     "speechSpanSec": 13.388,
+     "scriptWindowSpanSec": 8
+    }
+   ],
+   "silences_ge_0_25s": 36,
+   "timbre_proxy": {
+    "centroid_hz": 1995,
+    "f0_median_hz": 165.5,
+    "f0_p10_p90_hz": [
+     137,
+     222
+    ]
+   }
+  },
+  "brisk_reference_v1": {
+   "voice": "Kore",
+   "style": "calm, low, serious documentary narration, brisk natural pace, no long pauses",
+   "speech_span_sec": 62.006,
+   "timbre_proxy": {
+    "centroid_hz": 1800,
+    "f0_median_hz": 157.4
+   },
+   "silences_ge_0_25s": 29
+  }
+ },
+ "length": {
+  "s01_speech_sec": 34.92,
+  "narrator_speech_sec_chosen": 73.661,
+  "total_speech_sec_before_pauses": 108.6,
+  "v1_total_speech_sec": 96.9,
+  "accepted_by_user_sec": 100,
+  "note": "The mysterious read is about 12 s longer than the v1 brisk read (74.0 s vs 62.0 s), because the style adds pauses (36 pauses at least 0.25 s vs 29) and a slower delivery. Total about 109 s before pauses, about 9 s over the accepted 100 s. Not trimmed (user: no more length work). User to confirm or pick the brisk read again."
+ },
+ "hookCheck": {
+  "beat": "S01-B01 (script 0-3 s, user-confirmed)",
+  "measured_speech_sec": 6.23,
+  "status": "known miss, accepted by user"
+ },
+ "store": {
+  "folder": "projects/WDG-EP01-SHORT/audio/voice-lock-v2/ (14 files: takes with sidecars, full tracks, six chosen beat segments, measures)",
+  "narration_full_chosen": "projects/WDG-EP01-SHORT/audio/voice-lock-v2/WDG-EP01-SHORT_voice-lock-v2_NARR-Kore_mysterious_atempo105_full.wav",
+  "listen_sample": "projects/WDG-EP01-SHORT/audio/voice-lock-v2/listen/WDG-EP01-SHORT_voice-lock-v2_listen-Kore-mysterious_Algenib-man.mp3",
+  "alternate_full": "projects/WDG-EP01-SHORT/audio/voice-lock-v2/WDG-EP01-SHORT_voice-lock-v2_alt-NARR-Achernar_mysterious_atempo105_full.wav"
+ },
+ "listen_sample": {
+  "content": "narrator B01 (Kore, 4.84 s segment) + 0.6 s gap + MAN line S01-B01-M1 (Algenib)",
+  "duration_sec": 10.91,
+  "loudness_LUFS": -16.6
+ },
+ "quota": "Both full reads and no others: 2 calls, each primary 429 then GEMINI_API_KEY_REEL_EXTRA (fallback), one attempt each, no retry loops.",
+ "method": [
+  "gemini-tts.py say, one read per candidate via --text-file (same text as v1, same style)",
+  "ffmpeg atempo=1.05 (narrator only)",
+  "scripts/narration/align-full.py then cut-gaps.py (VERIFY OK) per candidate",
+  "timbre proxy: numpy, 2048-sample Hann centroid over active frames; 40 ms autocorrelation F0 (70-320 Hz, r > 0.5)"
+ ],
+ "open": [
+  "USER: narrator Kore mysterious (chosen by measure, not heard by Editor) or Achernar alternate, by ear",
+  "USER: total is about 109 s before pauses (v1 brisk read was 97 s). Confirm the length or go back to the brisk narrator read (no trim unless asked).",
+  "USER: W4.3 approval (voices and length) stays open"
+ ]
+}

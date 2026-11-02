@@ -29,6 +29,8 @@ export type VideoDefinition = {
   audio?: AudioTrack[];
   captionStyle?: CaptionStyle;
   chrome?: ChromeStyle;
+  /** Episode chrome above every scene on the composition clock by name in src/videos/overlays.ts. */
+  overlay?: string;
 };
 
 /** Default export shape of `src/videos/<episode>/index.ts`. */

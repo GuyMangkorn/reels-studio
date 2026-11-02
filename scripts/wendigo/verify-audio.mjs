@@ -1,0 +1,20 @@
+// Numeric checks of the WDG-EP01-SHORT stems (run after build-audio.mjs): speech onsets, hard silences, seam, loudness.
+import {spawnSync} from 'node:child_process';
+import {SR, decode, db, rmsCurve} from './audio-lib.mjs';
+const D = 'out/wendigo/audio/';
+const voice = decode(`${D}WDG-EP01-SHORT_voice.wav`), sound = decode(`${D}WDG-EP01-SHORT_sound.wav`, {ch: 2});
+const fr = (g) => Math.round(g * SR / 30);
+const rms = (a, g0, g1, ch = 1, c = 0) => { let t = 0, n = 0; for (let i = fr(g0); i < fr(g1); i++) { const v = a[i * ch + c]; t += v * v; n++; } return db(Math.sqrt(t / n)); };
+const onset = (g0, g1, thr = -40) => { for (let g = g0; g < g1; g += 0.25) if (rms(voice, g, g + 0.25) > thr) return g; return null; };
+console.log('voice RMS dBFS: silence G978-987', rms(voice, 978, 987).toFixed(1), '| G987-995 (M5 onset)', rms(voice, 987, 995).toFixed(1), '| G1000-1020', rms(voice, 1000, 1020).toFixed(1));
+console.log('M1 first words (expect ~G64):', onset(55, 75), ' M1 breath start (expect ~49):', onset(44, 60, -48));
+console.log('narration speech onset (expect >=1272):', onset(1262, 1290));
+console.log('voice in last frames G2849-2861', rms(voice, 2849, 2861).toFixed(1));
+const wrapGap = (a, ch) => Math.abs(a[(a.length / ch - 1) * ch] - a[0]);
+console.log('seam sound stem: RMS G0-12 L/R', rms(sound, 0, 12, 2, 0).toFixed(1), rms(sound, 0, 12, 2, 1).toFixed(1), '| G2841-2861 L/R', rms(sound, 2841, 2861, 2, 0).toFixed(1), rms(sound, 2841, 2861, 2, 1).toFixed(1));
+console.log('seam last->first sample step L', wrapGap(sound, 2).toExponential(2), 'typical sample step', (() => { let t = 0; for (let i = fr(2841); i < fr(2860); i++) t += Math.abs(sound[2 * i + 2] - sound[2 * i]); return (t / (fr(2860) - fr(2841))).toExponential(2); })());
+console.log('S01 hard silence sound stem G978-987', rms(sound, 978, 987, 2).toFixed(1), '| G1250-1262', rms(sound, 1250, 1262, 2).toFixed(1));
+console.log('sound stem RMS by section dBFS:', [[0,6],[100,190],[210,260],[300,380],[386,446],[470,520],[640,700],[740,790],[1110,1200],[1360,1390],[1500,1600],[1800,1850],[2000,2080],[2150,2300],[2400,2500],[2560,2640],[2720,2800]].map(([a,b]) => `${a}-${b}:${rms(sound,a,b,2).toFixed(0)}`).join(' '));
+const mix = spawnSync('ffmpeg', ['-v', 'info', '-nostats', '-i', `${D}WDG-EP01-SHORT_voice.wav`, '-i', `${D}WDG-EP01-SHORT_sound.wav`, '-filter_complex', '[0:a]aformat=channel_layouts=stereo[v];[v][1:a]amix=inputs=2:normalize=0,ebur128=peak=true', '-f', 'null', '-'], {encoding: 'utf8'});
+const sum = (mix.stderr.match(/Summary:[\s\S]*$/) || [''])[0].replace(/\s+/g, ' ').slice(0, 420);
+console.log('sum voice+sound (before render normalisation):', sum);
