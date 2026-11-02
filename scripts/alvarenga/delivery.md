@@ -28,6 +28,6 @@
 
 | Deliverable | Stage / Next owner | Script / research / review | Brief / scene handoff | Evidence / open items |
 | --- | --- | --- | --- | --- |
-| ALV-EP01-SHORT | W1.3 clean: Recheck R1.1 `ready-for-storyboard` (medium confidence) → W1.4 **user** approves the script; then **Film** brief | research `ALV-RESEARCH-R1`; review [short/fact-check.md](short/fact-check.md) `ALV-FACTCHECK-R1`; script [short/script.md](short/script.md) `ALV-SCRIPT-R1.1` (2026-11-02), timing `estimated` ≈ 45.0 s | — | Sources lead-only (fetch blocked); main hook "ไม่กี่วัน" vs. user's `ALT-HOOK-U` "วันเดียว" (needs-research); death timing omitted |
+| ALV-EP01-SHORT | W1.3 clean: Recheck R1.1 `ready-for-storyboard` (medium confidence) → W1 script lock done (user approved `ALV-SCRIPT-R1.2`, main hook, 2026-11-02) → **Film** W2.1 brief when the user starts it | research `ALV-RESEARCH-R1`; review [short/fact-check.md](short/fact-check.md) `ALV-FACTCHECK-R1`; script [short/script.md](short/script.md) `ALV-SCRIPT-R1.1` (2026-11-02), timing `estimated` ≈ 45.0 s | — | Sources lead-only (fetch blocked); main hook "ไม่กี่วัน" vs. user's `ALT-HOOK-U` "วันเดียว" (needs-research); death timing omitted |
 
-- 2026-11-02 user (AskUserQuestion): hook = main "ไม่กี่วัน… ได้ขึ้นฝั่งอีกที" (`ALT-HOOK-U` dropped). Script approval (W1.4) pending: user is reading `ALV-SCRIPT-R1.1` first.
+- 2026-11-02 user (AskUserQuestion): hook = main "ไม่กี่วัน… ได้ขึ้นฝั่งอีกที" (`ALT-HOOK-U` dropped). Script `ALV-SCRIPT-R1.2` approved (W1.4); R1.2 only replaces the S09 closing line with "ถ้าเป็นคุณ… จะทำยังไง" (user request, no comment call).
