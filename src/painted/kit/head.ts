@@ -16,8 +16,9 @@ export type Mouth = 'flat' | 'smile' | 'o' | 'wavy' | 'frown' | 'gasp' | 'talk' 
  * `squint` closes the lids.
  * `browTo` with `browMix` 0..1 moves the brow line continuously from `brow` toward `browTo` (SS-R4 RT-2 occupant relax).
  * `tears` 0..1 paints tear streams under the eyes (0 or absent = none); `sweat` adds a sweat drop beside the forehead.
+ * `bags` 0..1 paints dark under-eye bags (the `tired` expression, 2 Nov 2026).
  */
-export type FaceState = {brow: Brow; eyes: Eyes; look: Pt; mouth: Mouth; open?: number; squint?: number; browTo?: Brow; browMix?: number; tears?: number; sweat?: boolean};
+export type FaceState = {brow: Brow; eyes: Eyes; look: Pt; mouth: Mouth; open?: number; squint?: number; browTo?: Brow; browMix?: number; tears?: number; sweat?: boolean; bags?: number};
 /** The cuts of the WFOG/ZC cast (`short|tied|bob|hood|long`) and the people-library cuts (`hair.ts`, `NewCut`). */
 export type Cut = 'short' | 'tied' | 'bob' | 'hood' | 'long' | NewCut;
 /**
@@ -54,7 +55,7 @@ const browY = (face: FaceState): [number, number] => {
   return [a[0] + (b[0] - a[0]) * u, a[1] + (b[1] - a[1]) * u];
 };
 const WHITE = '#fbf7ee', MOUTH = '#3b2a24', AGE = '#8a5a43';
-const TEAR = '#a9d6f0', TEAR_INK = '#5f9bc4';
+const TEAR = '#a9d6f0', TEAR_INK = '#5f9bc4', BAGS = '#6a4a5c';
 /** A teardrop (point up) centred at (x, y), `s` head units tall 0.28. */
 const sweatDrop = (x: number, y: number, s: number): Pt[] => [[x, y - 0.16 * s], [x + 0.06 * s, y - 0.02 * s], [x + 0.08 * s, y + 0.05 * s], [x + 0.04 * s, y + 0.11 * s], [x - 0.04 * s, y + 0.11 * s], [x - 0.08 * s, y + 0.05 * s], [x - 0.06 * s, y - 0.02 * s]];
 
@@ -461,7 +462,17 @@ export const paintHeadFront = (p: Painter, seed: number, cx: number, cy: number,
     }
     age([[-0.3, -0.62], [0, -0.66], [0.3, -0.62]]); // forehead line under the fringe
   }
-  // Tear streams and a sweat drop (expressions.ts); drawn only when the face asks, ids above every other part.
+  // Under-eye bags, tear streams and a sweat drop (expressions.ts); drawn only when the face asks, ids above every other part.
+  if (face.bags) {
+    part = 88;
+    line = 88;
+    const b = Math.min(1, face.bags);
+    for (const side of [-1, 1]) {
+      const x = side * 0.4;
+      fill(mixColor(skin, BAGS, 0.3 * b), [[x - 0.2, 0.15], [x, 0.2], [x + 0.2, 0.15], [x + 0.12, 0.25], [x, 0.28], [x - 0.12, 0.25]], 3);
+      ink([[x - 0.16, 0.24], [x, 0.29], [x + 0.16, 0.24]], 0.8, 0.6, false, mixColor(skin, BAGS, 0.6 * b));
+    }
+  }
   if (face.tears) {
     part = 92;
     line = 92;
@@ -616,6 +627,13 @@ export const paintHeadSide = (p: Painter, seed: number, cx: number, cy: number, 
     age([[0.9, 0.42], [0.8, 0.52], [0.76, 0.66]]); // nasolabial
     age([[0.7, 0.68], [0.68, 0.78]], 0);
     age([[0.35, -0.62], [0.6, -0.6]], 0.2); // forehead
+  }
+  if (face.bags) {
+    part = 88;
+    line = 88;
+    const b = Math.min(1, face.bags);
+    fill(mixColor(skin, BAGS, 0.3 * b), [[0.48, 0.15], [0.62, 0.2], [0.76, 0.15], [0.7, 0.25], [0.6, 0.27], [0.52, 0.23]], 3);
+    ink([[0.5, 0.23], [0.62, 0.28], [0.74, 0.23]], 0.8, 0.6, false, mixColor(skin, BAGS, 0.6 * b));
   }
   if (face.tears) {
     part = 92;

@@ -22,7 +22,7 @@ const g: Pt = [540, 1500], unit = 600;
 const HEX = /^#[0-9a-f]{6}$/i;
 const FACE: FaceState = EXPRESSIONS.neutral;
 
-const REQUIRED_EXPRESSIONS = ['neutral', 'happy', 'laugh', 'smug', 'sad', 'crying', 'angry', 'furious', 'surprised', 'scared', 'terrified', 'worried', 'suspicious', 'disgusted', 'sleepy', 'whisper', 'shock', 'talk'];
+const REQUIRED_EXPRESSIONS = ['neutral', 'happy', 'laugh', 'smug', 'sad', 'crying', 'angry', 'furious', 'surprised', 'scared', 'terrified', 'worried', 'suspicious', 'disgusted', 'sleepy', 'whisper', 'shock', 'talk', 'tired'];
 
 test('expression ids are unique and every id has a preset and an info line', () => {
   assert.equal(new Set(EXPRESSION_IDS).size, EXPRESSION_IDS.length);

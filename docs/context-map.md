@@ -17,6 +17,7 @@ Episode-specific files are under [Episodes](#episodes); shared topics come first
 - Sheets: [spike/CastSheet.tsx](../src/painted/spike/CastSheet.tsx), [spike/ProportionSheet.tsx](../src/painted/spike/ProportionSheet.tsx), [spike/SideSheet.tsx](../src/painted/spike/SideSheet.tsx), [spike/HeadSideSheet.tsx](../src/painted/spike/HeadSideSheet.tsx) (entry [spike/index.ts](../src/painted/spike/index.ts))
 - Tests: [zcpaint-body6](../tests/zcpaint-body6.test.ts), [zcpaint-bust](../tests/zcpaint-bust.test.ts), [zcpaint-costume](../tests/zcpaint-costume.test.ts)
 - Kit library: [people.ts](../src/painted/kit/people.ts), [hair.ts](../src/painted/kit/hair.ts), [legs.ts](../src/painted/kit/legs.ts), [casting.ts](../src/painted/kit/casting.ts), [people-sheet.tsx](../src/painted/kit/people-sheet.tsx), [cast-cards-sheet.tsx](../src/painted/kit/cast-cards-sheet.tsx), [kit-people](../src/videos/kit-people/) (`KIT-PEOPLE-*`, `KIT-CAST-CARDS`), [people.mjs](../scripts/painted-kit/people.mjs), [people.test.ts](../tests/people.test.ts), [casting.test.ts](../tests/casting.test.ts)
+- Animals: [animals.ts](../src/painted/kit/animals.ts) (`ANIMALS`, `drawAnimal`: dogs and cats), [animals-sheet.tsx](../src/painted/kit/animals-sheet.tsx) (`KIT-ANIMALS`, `KIT-ANIMALS-LINEUP`), [animals.test.ts](../tests/animals.test.ts); motions [animal-motions.ts](../src/painted/kit/animal-motions.ts) (`ANIMAL_MOTIONS`, reel data), [kit-animal-motions.tsx](../src/painted/shots/kit-animal-motions.tsx), [kit-animal-motions](../src/videos/kit-animal-motions/) (`KIT-ANIMAL-MOTIONS`)
 
 ## Poses
 
