@@ -43,7 +43,7 @@ Story-world time ≠ video time. Video times are `estimated` (Niwat, +5 %, see t
 | S06 | 23.3–27.0 s | early 2014 | Payoff of hook: landing in the Marshall Islands | Survival question answered; seems the end |
 | S07 | 27.0–32.0 s | late 2015 | Twist: family files suit alleging he ate his crewmate | Survivor becomes accused |
 | S08 | 32.0–39.3 s | after the suit | His denial + his side's version; one witness; no ruling found | Reframes S03 and S05 attributions; leaves the question open |
-| S09 | 39.3–42.4 s VO + 42.4–45.0 s hold | (viewer) | Comment question about survival; loop seam to S01 | Viewer engagement without presuming guilt |
+| S09 | 39.3–42.4 s VO + 42.4–45.0 s hold | (viewer) | Closing question (no comment call); loop seam to S01 | Viewer engagement without presuming guilt |
 
 ## Full spoken script
 
@@ -136,13 +136,13 @@ Narration = Niwat (`th-TH-NiwatNeural`, Default +5 %). Captions show the narrati
 
 ### ALV-EP01-SHORT-S09 · 39.1–42.2 s VO (est.) + 42.2–45.0 s hold — closing question
 
-> ถ้าเป็นคุณ… จะรอดแบบเขาไหม คอมเมนต์บอกหน่อย
+> ถ้าเป็นคุณ… จะทำยังไง
 
-- On-screen text (held through the end): `ถ้าเป็นคุณ จะรอดไหม?`
+- On-screen text (held through the end): `ถ้าเป็นคุณ จะทำยังไง?`
 - Visual: return to the S01 framing: the small boat alone on calm water, now at dusk/dawn tone matching S01 so the `B_loop` seam reads; no figure movement.
 - Sound: music resolves softly back to the S01 ambience bed so the loop seam into S01 (ambience only) is level; no end stinger.
 - Claims: none (viewer question). The question is about survival, not guilt (user constraint).
-- **Loop pairing:** "จะรอดแบบเขาไหม" → loop → "เขาออกไปตกปลาแค่ไม่กี่วัน…": the question about surviving hands straight back to the start of the trip. Ending form `B_loop` is the profile default; Film/Editor confirm (this is not a `C_seamless` loop).
+- **Loop pairing:** "จะทำยังไง" → loop → "เขาออกไปตกปลาแค่ไม่กี่วัน…": the question about surviving hands straight back to the start of the trip. Ending form `B_loop` is the profile default; Film/Editor confirm (this is not a `C_seamless` loop).
 
 ## Sound / story events (summary for Film, Editor)
 
@@ -241,3 +241,7 @@ Claim IDs used: F001, F002, F003, F004, F005, F006 (visual only), F007, F008, F0
 ## Change log — ALV-SCRIPT-R1.1 (2026-11-02, coordinator for Preaw, AI02)
 
 Applied Boat's `ALV-FACTCHECK-R1` replacements verbatim: FC01 (S07 "กินร่างของเพื่อนร่วมเรือหลังเสียชีวิต"), FC02 (S08 "ฝ่ายเขาบอกว่า"), FC03 ("ยังไม่พบรายงานผลคดี" in VO and on screen), FC04 (on-screen `รายงานข่าว ธ.ค. 2015`), FC05 (TRIM-1 taken: distance cut from S06). FC06/FC07 optional, not applied; FC08 noted in S07 sound. Scene times re-estimated (net about −0.2 s; VO ≈ 42.2 s + hold = 45.0 s, est.). Claim-mapping rows S06–S08 updated to R1.1 text by Boat at recheck. Hook: main hook kept; `ALT-HOOK-U` rejected by Boat (FC/F008), final choice is the user's.
+
+## Change log — ALV-SCRIPT-R1.2 (2026-11-02, coordinator for Preaw, user request)
+
+S09 closing line changed from "ถ้าเป็นคุณ… จะรอดแบบเขาไหม คอมเมนต์บอกหน่อย" to "ถ้าเป็นคุณ… จะทำยังไง" (no comment call-to-action; on-screen `ถ้าเป็นคุณ จะทำยังไง?`). No claim changes, so no Boat recheck. VO is about 1.4 s shorter (est.): total about 43.6 s, hold absorbs the rest; Editor re-times at the voice lock. The question stays open-ended and does not ask about guilt.
