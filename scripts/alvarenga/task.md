@@ -1,15 +1,15 @@
 # Tasks — alvarenga
 
-Record: [delivery.md](delivery.md) · Updated: 2026-11-02, coordinator
+Record: [delivery.md](delivery.md) · Updated: 2026-11-02, Preaw
 
 ## ALV-EP01-SHORT
 
-**Now:** W1.2 — Preaw script (read `research.md` `ALV-RESEARCH-R1`; sources lead-only, see access limitation). **Next:** Boat W1.3 fact-check
+**Now:** W1.4 user approval of `ALV-SCRIPT-R1.1` (W1.3 clean: `ready-for-storyboard`, medium confidence, sources lead-only). **Next:** Film brief (W2.1) after approval
 
 - [ ] W1 Script lock
   - [x] W1.1 Boat research (`ALV-RESEARCH-R1`, lead-only sources)
-  - [ ] W1.2 Preaw script
-  - [ ] W1.3 Boat fact-check
+  - [x] W1.2 Preaw script (`ALV-SCRIPT-R1`, [short/script.md](short/script.md), timing estimated)
+  - [x] W1.3 Boat fact-check — `ALV-FACTCHECK-R1` `fixes-required` → Recheck R1.1 on `ALV-SCRIPT-R1.1`: `ready-for-storyboard`, medium confidence (sources lead-only, no page opened)
   - [ ] W1.4 User approves the script
 - [ ] W2 Brief and storyboard
   - [ ] W2.1 Film brief (text)

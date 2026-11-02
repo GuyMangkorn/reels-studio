@@ -24,9 +24,9 @@
 
 ## Truth and ending
 
-- **What the sources report (all lead-only, medium at best):** departure from Chiapas, Mexico, late 2012 (F002); storm and engine failure, drifting (F009); raw turtle, bird and fish, rainwater, turtle blood and urine (F010, F011); Córdoba weakened and died on the way, per Alvarenga only (F012, F013); landing in the Marshall Islands in early 2014, about 14 months / 438 days later (F003, F004); December 2015 lawsuit by Córdoba's relatives alleging he ate the crewmate (F017, F018); Alvarenga denies it, and his lawyer said the body was committed to the sea (F019); no ruling, settlement or dismissal found (F020).
+- **What the sources report (all lead-only, medium at best):** departure from Chiapas, Mexico, late 2012 (F002); storm and engine failure, drifting (F009); raw turtle, bird and fish, rainwater, turtle blood and urine (F010, F011); Córdoba weakened and died on the way, per Alvarenga only (F012, F013); landing in the Marshall Islands in early 2014, about 14 months / 438 days later (F003, F004); December 2015 lawsuit by Córdoba's relatives alleging he ate the crewmate (F017, F018); Alvarenga denies it, and his side says the body was committed to the sea (F019); no ruling, settlement or dismissal found (F020).
 - **Ending chosen before planting clues:** the video ends **without** a verdict. The twist is the allegation itself plus the fact that only one person can tell what happened. The closing question asks about survival ("could you survive like him"), not about guilt.
-- **Remaining uncertainty kept visible:** exact trip length (F008), death timing (F012), distance (F005), ages (F007, F014), lawsuit venue and outcome (F017, F020). None of these is stated as a number except "14 เดือน" (F004) and the rounded hedged distance (F005, optional cut TRIM-1).
+- **Remaining uncertainty kept visible:** exact trip length (F008), death timing (F012), distance (F005), ages (F007, F014), lawsuit venue and outcome (F017, F020). None of these is stated as a number except "14 เดือน" (F004) (distance F005 cut from VO in R1.1).
 - **Not claimed:** guilt or innocence, a court, a settlement, "the case is still open", the mother suing, the trip length in days, death timing, ages, boat length, weight at rescue.
 
 ## Beat list
@@ -42,7 +42,7 @@ Story-world time ≠ video time. Video times are `estimated` (Niwat, +5 %, see t
 | S05 | 18.1–23.3 s | during the drift (no time stated) | Loss: Ezequiel can't eat raw, weakens, dies (second attribution plant: "เขาบอกว่า"); empty seat | Alvarenga is now alone, the only witness |
 | S06 | 23.3–27.0 s | early 2014 | Payoff of hook: landing in the Marshall Islands | Survival question answered; seems the end |
 | S07 | 27.0–32.0 s | late 2015 | Twist: family files suit alleging he ate his crewmate | Survivor becomes accused |
-| S08 | 32.0–39.3 s | after the suit | His denial + lawyer's version; one witness; no ruling found | Reframes S03 and S05 attributions; leaves the question open |
+| S08 | 32.0–39.3 s | after the suit | His denial + his side's version; one witness; no ruling found | Reframes S03 and S05 attributions; leaves the question open |
 | S09 | 39.3–42.4 s VO + 42.4–45.0 s hold | (viewer) | Comment question about survival; loop seam to S01 | Viewer engagement without presuming guilt |
 
 ## Full spoken script
@@ -105,36 +105,36 @@ Narration = Niwat (`th-TH-NiwatNeural`, Default +5 %). Captions show the narrati
 - Claims: F013 (cause per Alvarenga only: couldn't eat raw food, weakened, died; attributed "เขาบอกว่า"), F012 (death on the way, **no timing stated**).
 - Clue plant CL02 ("เขาบอกว่า") and CL03 (empty seat: he is now alone, the only witness).
 
-### ALV-EP01-SHORT-S06 · 23.3–27.0 s (est.) — landing
+### ALV-EP01-SHORT-S06 · 23.3–25.6 s (est.) — landing
 
-> ต้นปี 2014 เรือไปเกยหมู่เกาะมาร์แชลล์ ไกลราวหมื่นกิโลเมตร
+> ต้นปี 2014 เรือไปเกยหมู่เกาะมาร์แชลล์
 
 - On-screen text: `หมู่เกาะมาร์แชลล์` and `438 วัน (ตามที่เขานับ)`
 - Visual: same boat, now near a pale reef and a palm-lined islet on the horizon; boat rests on shallow water / sand. Alvarenga stands slowly (thin, long hair and beard). Slow push-in only.
 - Sound: pad lifts gently (relief), surf on a reef, a few birds; small warm swell in the music, not triumphant.
-- Claims: F003 (early 2014, Marshall Islands), F005 (distance, hedged "ราว"; **TRIM-1** first cut if the read runs long), F004 (438 days as his count, on screen only).
+- Claims: F003 (early 2014, Marshall Islands), F005 cut from VO (TRIM-1 taken, FC05), F004 (438 days as his count, on screen only).
 
-### ALV-EP01-SHORT-S07 · 27.0–32.0 s (est.) — twist: the lawsuit
+### ALV-EP01-SHORT-S07 · 25.6–31.6 s (est.) — twist: the lawsuit
 
-> แต่ปลายปี 2015… ครอบครัวเอเซเกียลฟ้องเขา กล่าวหาว่า เขากินเพื่อนร่วมเรือ
+> แต่ปลายปี 2015… ครอบครัวเอเซเกียลฟ้องเขา กล่าวหาว่า เขากินร่างของเพื่อนร่วมเรือหลังเสียชีวิต
 
-- On-screen text: `ข้อกล่าวหา` (stamped on a cut-out paper document), small line `ธ.ค. 2015`
+- On-screen text: `ข้อกล่าวหา` (stamped on a cut-out paper document), small line `รายงานข่าว ธ.ค. 2015`
 - Visual: a cut-out legal document slides over the frame above the same boat scene (now still, empty, at dusk); the hat from S05 sits in the boat. No body, no food imagery, no court building (venue unknown).
-- Sound: music cuts out on "แต่ปลายปี 2015…" (silence for the pause), then a low, soft riser under "ฟ้องเขา" ending in a muted low thud on "เพื่อนร่วมเรือ". Restrained; no horror cue.
+- Sound: music cuts out on "แต่ปลายปี 2015…" (silence for the pause), then a low, soft riser under "ฟ้องเขา" ending in a muted low thud on "เพื่อนร่วมเรือ" (FC08: muted, no heartbeat, siren or crowd cue). Restrained; no horror cue.
 - Claims: F017 (Dec 2015 suit by Córdoba's relatives alleging he ate the crewmate), F018 ("ครอบครัว" = relatives; not "แม่").
 - Wording note: "กล่าวหาว่า" must stay in VO and captions; do not shorten the caption to "เขากินเพื่อน".
 
-### ALV-EP01-SHORT-S08 · 32.0–39.3 s (est.) — his side, one witness, no verdict
+### ALV-EP01-SHORT-S08 · 31.6–39.1 s (est.) — his side, one witness, no verdict
 
-> เขาปฏิเสธ ทนายบอกว่าร่างเพื่อนถูกปล่อยลงทะเล… บนเรือมีพยานคนเดียว คือตัวเขาเอง และยังไม่พบรายงานคำตัดสิน
+> เขาปฏิเสธ ฝ่ายเขาบอกว่าร่างเพื่อนถูกปล่อยลงทะเล… บนเรือมีพยานคนเดียว คือตัวเขาเอง และยังไม่พบรายงานผลคดี
 
-- On-screen text: `เขาปฏิเสธ` → `พยาน: 1 คน` → `ไม่พบรายงานคำตัดสิน`
-- Visual: Alvarenga in silhouette on the shore looking out at the empty boat on calm water. For the lawyer's line, the hat drifting gently away on calm water (stands in for "committed to the sea"; no body). Final image of the beat: boat and one figure, balanced composition, no accusatory framing.
+- On-screen text: `เขาปฏิเสธ` → `พยาน: 1 คน` → `ไม่พบรายงานผลคดี`
+- Visual: Alvarenga in silhouette on the shore looking out at the empty boat on calm water. For the "ฝ่ายเขาบอกว่า" line, the hat drifting gently away on calm water (stands in for "committed to the sea"; no body). Final image of the beat: boat and one figure, balanced composition, no accusatory framing.
 - Sound: a sparse, unresolved piano or pad figure, low; sea ambience; no stinger. Let the last clause land on near-silence.
-- Claims: F019 (denial; lawyer Ricardo Cucalón said the body was committed to the sea), F013 (sole witness), F020 (no outcome found; worded as "ยังไม่พบรายงาน", not "ยังไม่ตัดสิน").
+- Claims: F019 (denial; his side says the body was committed to the sea; own account and lawyer Ricardo Cucalón per tabloid relay, name not spoken), F013 (sole witness), F020 (no outcome found; worded as "ยังไม่พบรายงานผลคดี", not "ยังไม่ตัดสิน").
 - Clue payoff for CL01–CL03.
 
-### ALV-EP01-SHORT-S09 · 39.3–42.4 s VO (est.) + 42.4–45.0 s hold — closing question
+### ALV-EP01-SHORT-S09 · 39.1–42.2 s VO (est.) + 42.2–45.0 s hold — closing question
 
 > ถ้าเป็นคุณ… จะรอดแบบเขาไหม คอมเมนต์บอกหน่อย
 
@@ -170,7 +170,7 @@ All clues are real evidence limits (how the story is known), not fictional clues
 | CL02 | S05 | "เขาบอกว่า" before Ezequiel's death | he describes his friend's decline | the death has no other witness | S08 |
 | CL03 | S05 → S07 | empty seat and Ezequiel's hat | grief, loneliness | the only person who could confirm or contradict is gone | S07 hat in the boat; S08 hat drifting away |
 
-**Twist logic (fair):** S03 and S05 attribute the account to Alvarenga and S05 leaves him alone on the boat. The S07 allegation reframes those plants: nobody else can say what happened. S08 gives his denial and his lawyer's version, and says no ruling was found. The plants point to *uncertainty*, never to guilt; no image or line implies that he did it.
+**Twist logic (fair):** S03 and S05 attribute the account to Alvarenga and S05 leaves him alone on the boat. The S07 allegation reframes those plants: nobody else can say what happened. S08 gives his denial and his side's version, and says no ruling was found. The plants point to *uncertainty*, never to guilt; no image or line implies that he did it.
 
 ## Claim mapping
 
@@ -192,14 +192,14 @@ All sources are `lead-only` in `ALV-RESEARCH-R1` (search summaries; no page open
 | S05 | เขาบอกว่า เอเซเกียลกินแบบนั้นไม่ได้… อ่อนแรงลง | F013 | SRC006 (SRC017 weak, not relied on) | Alvarenga's account only |
 | S05 | จนเสียชีวิตระหว่างทาง | F012 | SRC001, SRC004, SRC006 | no timing stated (1 / 2 / 4 months conflict) |
 | S06 | ต้นปี 2014 เรือไปเกยหมู่เกาะมาร์แชลล์ | F003 | SRC004, SRC005, SRC006 | 29/30 Jan conflict avoided by "ต้นปี" |
-| S06 | ไกลราวหมื่นกิโลเมตร | F005 | SRC006, SRC016 | low-medium; hedged "ราว"; TRIM-1 |
+| S06 | (cut) ไกลราวหมื่นกิโลเมตร | F005 | SRC006, SRC016 | removed from VO in R1.1 (FC05, TRIM-1); not stated |
 | S06 | on-screen 438 วัน (ตามที่เขานับ) | F004 | SRC001, SRC014 | labelled as his count |
-| S07 | ปลายปี 2015… ครอบครัวเอเซเกียลฟ้องเขา / on-screen ธ.ค. 2015 | F017, F018 | SRC008, SRC009, SRC010, SRC011 | relatives, not "mother"; no venue; separate from the Perlera suit |
-| S07 | กล่าวหาว่า เขากินเพื่อนร่วมเรือ | F017 | SRC008, SRC009, SRC010, SRC011 | allegation only |
+| S07 | ปลายปี 2015… ครอบครัวเอเซเกียลฟ้องเขา / on-screen รายงานข่าว ธ.ค. 2015 | F017, F018 | SRC008, SRC009, SRC010, SRC011 | relatives, not "mother"; no venue; separate from the Perlera suit |
+| S07 | กล่าวหาว่า เขากินร่างของเพื่อนร่วมเรือหลังเสียชีวิต | F017 | SRC008, SRC009, SRC010, SRC011 | allegation only; remains after death, not killing (FC01) |
 | S08 | เขาปฏิเสธ | F019 | SRC008, SRC009, SRC011 | |
-| S08 | ทนายบอกว่าร่างเพื่อนถูกปล่อยลงทะเล | F019 | SRC008, SRC009, SRC011 | lawyer Ricardo Cucalón (name not spoken) |
+| S08 | ฝ่ายเขาบอกว่าร่างเพื่อนถูกปล่อยลงทะเล | F019 | SRC008, SRC009, SRC011 | his side (own account and lawyer, tabloid relay); name not spoken (FC02) |
 | S08 | บนเรือมีพยานคนเดียว คือตัวเขาเอง | F013 | SRC006 | |
-| S08 | ยังไม่พบรายงานคำตัดสิน | F020 | all (absence) | worded as "not found", not "still pending" |
+| S08 | ยังไม่พบรายงานผลคดี / on-screen ไม่พบรายงานผลคดี | F020 | all (absence) | absence of reports in search only; not "still pending" (FC03) |
 
 Claim IDs used: F001, F002, F003, F004, F005, F006 (visual only), F007, F008, F009, F010, F011, F012, F013, F017, F018, F019, F020. Not used: F014 (age), F015 (condition at rescue), F016 (plausibility).
 
@@ -237,3 +237,7 @@ Claim IDs used: F001, F002, F003, F004, F005, F006 (visual only), F007, F008, F0
 3. Boat: keep the distance (F005, low-medium) or take TRIM-1 now?
 4. Optional, not used for time: his lawyer called the suit a bid to share book royalties (F019). Adding it would cost about 2 s and tilt the framing; left out.
 5. Voice check (Editor, W4): pronunciation of อัลวาเรนกา and เอเซเกียล in Niwat; timing remains `estimated` until the read is measured.
+
+## Change log — ALV-SCRIPT-R1.1 (2026-11-02, coordinator for Preaw, AI02)
+
+Applied Boat's `ALV-FACTCHECK-R1` replacements verbatim: FC01 (S07 "กินร่างของเพื่อนร่วมเรือหลังเสียชีวิต"), FC02 (S08 "ฝ่ายเขาบอกว่า"), FC03 ("ยังไม่พบรายงานผลคดี" in VO and on screen), FC04 (on-screen `รายงานข่าว ธ.ค. 2015`), FC05 (TRIM-1 taken: distance cut from S06). FC06/FC07 optional, not applied; FC08 noted in S07 sound. Scene times re-estimated (net about −0.2 s; VO ≈ 42.2 s + hold = 45.0 s, est.). Claim-mapping rows S06–S08 updated to R1.1 text by Boat at recheck. Hook: main hook kept; `ALT-HOOK-U` rejected by Boat (FC/F008), final choice is the user's.

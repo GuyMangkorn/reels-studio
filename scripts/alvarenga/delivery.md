@@ -28,4 +28,4 @@
 
 | Deliverable | Stage / Next owner | Script / research / review | Brief / scene handoff | Evidence / open items |
 | --- | --- | --- | --- | --- |
-| ALV-EP01-SHORT | W1.2 → **Preaw** script | research `ALV-RESEARCH-R1` (2026-11-02) | — | Sources lead-only (fetch blocked); hook "วันเดียว" and death timing conflicts |
+| ALV-EP01-SHORT | W1.3 clean: Recheck R1.1 `ready-for-storyboard` (medium confidence) → W1.4 **user** approves the script; then **Film** brief | research `ALV-RESEARCH-R1`; review [short/fact-check.md](short/fact-check.md) `ALV-FACTCHECK-R1`; script [short/script.md](short/script.md) `ALV-SCRIPT-R1.1` (2026-11-02), timing `estimated` ≈ 45.0 s | — | Sources lead-only (fetch blocked); main hook "ไม่กี่วัน" vs. user's `ALT-HOOK-U` "วันเดียว" (needs-research); death timing omitted |
