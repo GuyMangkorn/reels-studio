@@ -28,4 +28,4 @@
 
 | Deliverable | Stage / Next owner | Script / research / review | Brief / scene handoff | Evidence / open items |
 | --- | --- | --- | --- | --- |
-| ONO-EP01-SHORT | W1.1 done → **Preaw** W1.2 script | research `ONO-RESEARCH-R1` (`research.md`; all sources lead-only, fetch blocked) | — | open: civilian toll unresolved; hook "29 ปี" is 28.6 yr, prefer "เกือบ 29 ปี" |
+| ONO-EP01-SHORT | W1.3 done (`ONO-FACTCHECK-R1`, `ready-for-storyboard`, main hook; `ALT-HOOK-U` not supported as written) → **user** W1.4 approves script and picks hook | research `ONO-RESEARCH-R1` (`research.md`; all sources lead-only, fetch blocked); script `ONO-SCRIPT-R1` (`short/script.md`, ≈ 44.5 s `estimated`) | — | open: civilian toll unresolved (hedged "ราว 30 คน ตามที่มีรายงาน"); hook main "เกือบ 29 ปี" vs `ALT-HOOK-U` "29 ปี" (user picks) |

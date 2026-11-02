@@ -1,15 +1,15 @@
 # Tasks — onoda
 
-Record: [delivery.md](delivery.md) · Updated: 2026-11-02, coordinator
+Record: [delivery.md](delivery.md) · Updated: 2026-11-02, Preaw
 
 ## ONO-EP01-SHORT
 
-**Now:** W1.2 — Preaw script on `ONO-RESEARCH-R1`. **Next:** Boat W1.3 fact-check
+**Now:** W1.4 — waiting for the user to approve the script and pick the hook. **Next:** Film brief (W2.1)
 
 - [ ] W1 Script lock
   - [x] W1.1 Boat research — `ONO-RESEARCH-R1` (lead-only sources)
-  - [ ] W1.2 Preaw script
-  - [ ] W1.3 Boat fact-check
+  - [x] W1.2 Preaw script — `ONO-SCRIPT-R1` (`short/script.md`, ≈ 44.5 s estimated)
+  - [x] W1.3 Boat fact-check — `ONO-FACTCHECK-R1` (`ready-for-storyboard`, lead-only sources, medium-low confidence)
   - [ ] W1.4 User approves the script
 - [ ] W2 Brief and storyboard
   - [ ] W2.1 Film brief (text)
