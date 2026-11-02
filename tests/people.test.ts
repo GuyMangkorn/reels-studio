@@ -135,3 +135,7 @@ test('KIT-PEOPLE-TALK is a registered, valid 3.5 s painted clip', () => {
   assert.equal(videos[0].id, 'KIT-PEOPLE-TALK');
   assert.equal(timelineFrames(videos[0].timeline, 30), 105);
 });
+
+test('every PEOPLE head carries a face look (the bare round-eye face is for episode casts only)', () => {
+  for (const id of PERSON_IDS) assert.ok(PEOPLE[id].head.look, `${id} has no head.look`);
+});

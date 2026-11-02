@@ -24,9 +24,23 @@ export type Cut = 'short' | 'tied' | 'bob' | 'hood' | 'long' | NewCut;
  * `long`: loose shoulder-length hair (the narrator, brief VD03 R2). `lines`: age lines (older occupant, user Q3).
  * People library only (`people.ts`, all optional, absent = the cast look): `accent` colours hair ties on `ponytail` and `pigtails`;
  * `facial` adds stubble, a moustache or a full beard in the hair colour; `glasses` adds dark round frames; `brows` overrides the
- * brow colour (the hair colour by default; grey hair needs a darker brow).
+ * brow colour (the hair colour by default; grey hair needs a darker brow). `look` (front view only, sheets
+ * `KIT-FACE-LOOKS`, `KIT-FACE-CAST`) swaps the eye, nose, brow and closed-mouth drawing; absent = the legacy round eyes, no nose, bar brows (episode casts
+ * only; every PEOPLE entry has a look).
  */
-export type HeadStyle = {skin: string; hair: string; cut: Cut; hood?: string; lines?: boolean; accent?: string; facial?: 'stubble' | 'mustache' | 'beard'; glasses?: boolean; brows?: string};
+export type HeadStyle = {skin: string; hair: string; cut: Cut; hood?: string; lines?: boolean; accent?: string; facial?: 'stubble' | 'mustache' | 'beard'; glasses?: boolean; brows?: string; look?: FaceLook};
+
+/**
+ * Front-view face drawing (user-approved for PEOPLE, 2 Nov 2026). `eye`: `almond` pointed corners with a lash line, `lidded` almond with a lid
+ * crease, `hooded` a heavy upper lid with an outer wing (`wing: false` drops the wing); each has a coloured iris clipped to the eye and a catch-light.
+ * `nose`: `hook` a small side curve, `ell` a bridge shadow ending in the nose base, `nostrils` two marks with a soft shadow.
+ * `round` is a large child eye. `nose`: `hook` a small side curve, `ell` a bridge shadow ending in the nose base, `nostrils`
+ * two marks with a soft shadow, `broad` wide nostrils with the wings drawn, `button` a small child nose.
+ * `brow`: `arch`, `tapered` (thick head, thin tail) or `thick`; `browDrop` lowers every brow toward the eye (head units).
+ * `mouth` redraws the closed mouths (`flat`, closed `talk`, `frown`): `line` a soft line with lifted corners, `lip` a lip line
+ * with a lower-lip shadow, `full` tinted upper and lower lips, `thin` a short line with corner ticks; absent = the bare line.
+ */
+export type FaceLook = {eye: 'almond' | 'lidded' | 'hooded' | 'round'; wing?: boolean; nose: 'hook' | 'ell' | 'nostrils' | 'broad' | 'button'; brow: 'arch' | 'tapered' | 'thick'; browDrop: number; mouth?: 'line' | 'lip' | 'full' | 'thin'; iris?: string};
 
 /** Head height (forehead top to chin) in head units K; chin below the centre. */
 export const HEAD_SPAN = 2.27;
@@ -165,6 +179,127 @@ const legacyFrontHair = (cut: Cut): Pt[] => {
  * Front decal head centred on (cx, cy), K px per head unit. `seed` keeps its fills apart from other heads; `t` is the
  * plate clock (blink); `warm` 0..1 tints the skin with the torch light.
  */
+type Fill = (color: string, pts: Pt[], passes?: number, texture?: number) => void;
+type Ink = (pts: Pt[], weight?: number, curve?: number, closed?: boolean, color?: string) => void;
+const IRIS = '#4a3226', LID = '#2b1f1a';
+
+/** Upper and lower lid curves of a `look` eye across u 0..1 (inner to outer corner), in head units. */
+const lidAt = (lk: FaceLook, side: number, ex: number, ey: number, eyes: Eyes, sq: number) => {
+  const hu = (lk.eye === 'round' ? 0.16 : lk.eye === 'hooded' ? 0.12 : lk.eye === 'lidded' ? 0.135 : 0.145) * (eyes === 'wide' ? 1.3 : eyes === 'half' ? 0.55 : 1) * sq;
+  const hl = lk.eye === 'round' ? 0.12 : lk.eye === 'hooded' ? 0.075 : 0.08;
+  const tilt = lk.eye === 'round' ? 0 : 0.025; // outer corner sits a little higher
+  const x = (u: number) => ex + side * (-0.21 + 0.42 * u);
+  const yc = (u: number) => ey - tilt * u + 0.01;
+  // Upper lid peaks inner of centre (u 0.42), lower lid lowest outer of centre (u 0.58): the asymmetry reads as almond.
+  const up = (u: number): Pt => [x(u), yc(u) - hu * Math.sin(Math.PI * u ** 0.85)];
+  const lo = (u: number): Pt => [x(u), yc(u) + hl * Math.sin(Math.PI * u ** 1.2)];
+  return {up, lo, hu};
+};
+
+const lookEye = (lk: FaceLook, side: number, ex: number, ey: number, eyes: Eyes, sq: number, look: Pt, fill: Fill, ink: Ink, skin: string) => {
+  const {up, lo, hu} = lidAt(lk, side, ex, ey, eyes, sq);
+  const n = 16, us = Array.from({length: n + 1}, (_, i) => i / n);
+  const upper = us.map(up), lower = us.map(lo);
+  const white: Pt[] = [...upper, ...[...lower].reverse()];
+  fill(WHITE, white, 3);
+  // Iris: a circle clamped between the lids (each point's y held inside the eye at its x), so lids crop it.
+  const r = lk.eye === 'round' ? 0.1 : 0.085, icx = ex + look[0] * 0.08, icy = ey + look[1] * 0.04 - 0.005;
+  const yAt = (curve: Pt[], px: number) => {
+    let best = curve[0];
+    for (const c of curve) if (Math.abs(c[0] - px) < Math.abs(best[0] - px)) best = c;
+    return best[1];
+  };
+  const iris = Array.from({length: 20}, (_, i): Pt => {
+    const a = (i / 20) * Math.PI * 2, px = icx + r * Math.cos(a), py = icy + r * 1.05 * Math.sin(a);
+    return [px, Math.min(Math.max(py, yAt(upper, px)), yAt(lower, px))];
+  });
+  fill(lk.iris ?? IRIS, iris, 5);
+  fill(INK, iris.map(([px, py]): Pt => [icx + (px - icx) * 0.45, icy + (py - icy) * 0.45]), 4);
+  if (hu > 0.05) fill(WHITE, ell(icx - 0.025, icy - 0.03, 0.018, 0.018, 8), 3);
+  // Lash line: heavier upper lid, light partial lower lid.
+  ink(upper, lk.eye === 'hooded' ? 2.4 : 1.8, 0.4, false, LID);
+  ink(lower.slice(5), 0.7, 0.4, false);
+  if (lk.eye === 'hooded' && lk.wing !== false) {
+    const o = up(1);
+    ink([up(0.8), o, [o[0] + side * 0.07, o[1] - 0.05]], 2.4, 0.3, false, LID); // outer wing
+  }
+  if (lk.eye === 'lidded' || lk.eye === 'hooded') {
+    const lift = lk.eye === 'hooded' ? 0.035 : 0.055;
+    ink(us.slice(3, 15).map((u): Pt => { const [px, py] = up(u); return [px, py - lift]; }), 0.8, 0.5, false, mixColor(skin, LID, 0.5)); // lid crease
+  }
+};
+
+/** Brow polygon of a `look` brow from inner x 0.17 to outer x 0.62, inner and outer heights given. */
+const lookBrow = (lk: FaceLook, side: number, inner: number, outer: number): Pt[] => {
+  const n = 10, top: Pt[] = [], bot: Pt[] = [];
+  for (let i = 0; i <= n; i++) {
+    const u = i / n, x = side * (0.17 + 0.45 * u);
+    const arc = lk.brow === 'arch' ? 0.06 * Math.sin(Math.PI * Math.min(1, u / 0.7) * 0.5) * (u < 0.7 ? 1 : 1 - (u - 0.7) / 0.3 * 0.9) : lk.brow === 'tapered' ? 0.02 * Math.sin(Math.PI * u) : 0;
+    const y = inner + (outer - inner) * u - arc + (lk.brow === 'tapered' && u > 0.75 ? (u - 0.75) * 0.12 : 0);
+    const w = lk.brow === 'thick' ? 0.065 - 0.015 * u : lk.brow === 'tapered' ? 0.062 * (1 - u) + 0.01 : 0.055 * (1 - u * 0.7);
+    top.push([x, y - w * 0.55]);
+    bot.push([x, y + w * 0.45]);
+  }
+  return [...top, ...bot.reverse()];
+};
+
+/** Front nose marks; shadow side is screen-right. */
+const lookNose = (lk: FaceLook, fill: Fill, ink: Ink, skin: string, line: string) => {
+  const shade = mixColor(skin, '#7a4a38', 0.28);
+  if (lk.nose === 'hook') {
+    fill(shade, [[0.02, 0.22], [0.08, 0.34], [0.05, 0.4], [-0.02, 0.4], [0.04, 0.34]], 3, 0.1);
+    ink([[0.04, 0.24], [0.08, 0.34], [0.05, 0.39], [-0.03, 0.4]], 1.1, 0.6, false, line);
+  }
+  if (lk.nose === 'ell') {
+    fill(shade, [[0.03, 0.06], [0.08, 0.08], [0.09, 0.36], [0.03, 0.34]], 3, 0.1);
+    ink([[0.05, 0.1], [0.07, 0.3], [0.06, 0.37]], 0.9, 0.5, false, line);
+    ink([[0.08, 0.37], [-0.02, 0.4], [-0.07, 0.38]], 1.1, 0.5, false, line);
+  }
+  if (lk.nose === 'nostrils') {
+    fill(shade, ell(0.0, 0.42, 0.11, 0.035, 12), 3, 0.1);
+    ink([[-0.09, 0.36], [-0.06, 0.39], [-0.03, 0.385]], 1.0, 0.5, false, line);
+    ink([[0.03, 0.385], [0.06, 0.39], [0.09, 0.36]], 1.0, 0.5, false, line);
+  }
+  if (lk.nose === 'broad') {
+    fill(shade, ell(0.0, 0.43, 0.16, 0.04, 12), 3, 0.1);
+    for (const side of [-1, 1]) {
+      ink([[side * 0.07, 0.3], [side * 0.15, 0.36], [side * 0.14, 0.41], [side * 0.09, 0.42]], 1.0, 0.6, false, line); // wing
+      ink([[side * 0.08, 0.4], [side * 0.04, 0.415]], 1.0, 0.4, false, line); // nostril
+    }
+  }
+  if (lk.nose === 'button') {
+    fill(shade, ell(0.01, 0.37, 0.06, 0.03, 10), 3, 0.1);
+    ink([[-0.04, 0.37], [0.0, 0.385], [0.04, 0.37]], 0.9, 0.5, false, line);
+  }
+};
+
+/** Closed `look` mouths centred on y `my`; returns false when the mouth keeps its legacy drawing. */
+const lookMouth = (lk: FaceLook, m: Mouth, open: number, my: number, fill: Fill, ink: Ink, skin: string, line: string) => {
+  const closed = m === 'flat' || m === 'frown' || (m === 'talk' && open < 0.08);
+  if (!lk.mouth || !closed) return false;
+  const lip = mixColor(skin, '#a4504a', 0.32), shade = mixColor(skin, '#7a4a38', 0.25);
+  const sag = m === 'frown' ? 0.05 : 0; // frown pulls the corners down
+  if (lk.mouth === 'line') ink([[-0.2, my - 0.02 + sag], [-0.1, my + 0.01], [0.1, my + 0.01], [0.2, my - 0.02 + sag]], 1.3, 0.6);
+  if (lk.mouth === 'thin') {
+    ink([[-0.15, my + sag * 0.5], [0, my - 0.01], [0.15, my + sag * 0.5]], 1.2, 0.5);
+    for (const side of [-1, 1]) ink([[side * 0.17, my - 0.01 + sag], [side * 0.2, my + 0.03 + sag]], 0.8, 0);
+  }
+  if (lk.mouth === 'lip') {
+    ink([[-0.21, my + sag], [-0.06, my - 0.005], [0, my + 0.01], [0.06, my - 0.005], [0.21, my + sag]], 1.3, 0.5);
+    fill(shade, [[-0.09, my + 0.07], [0.09, my + 0.07], [0.06, my + 0.1], [-0.06, my + 0.1]], 3, 0.1);
+    ink([[-0.07, my + 0.085], [0.07, my + 0.085]], 0.8, 0.5, false, line);
+  }
+  if (lk.mouth === 'full') {
+    const up: Pt[] = [[-0.23, my + sag], [-0.11, my - 0.055], [-0.03, my - 0.045], [0, my - 0.03], [0.03, my - 0.045], [0.11, my - 0.055], [0.23, my + sag], [0, my + 0.005]];
+    const lo: Pt[] = [[-0.21, my + sag], [0, my + 0.005], [0.21, my + sag], [0.12, my + 0.08], [0, my + 0.1], [-0.12, my + 0.08]];
+    fill(lip, up, 4);
+    fill(mixColor(lip, '#ffffff', 0.08), lo, 4);
+    ink([[-0.23, my + sag], [-0.1, my + 0.005], [0, my + 0.01], [0.1, my + 0.005], [0.23, my + sag]], 1.3, 0.5);
+    ink(lo.slice(2), 0.7, 0.5, false, line);
+  }
+  return true;
+};
+
 export const paintHeadFront = (p: Painter, seed: number, cx: number, cy: number, K: number, face: FaceState, style: HeadStyle, t: number, warm = 0, L?: InteriorLight) => {
   const P = ([u, v]: Pt): Pt => [cx + u * K, cy + v * K];
   const Q = (pts: Pt[]) => pts.map(P);
@@ -229,10 +364,15 @@ export const paintHeadFront = (p: Painter, seed: number, cx: number, cy: number,
   part = 30;
   line = 30;
   const sq = 1 - 0.6 * (face.squint ?? 0);
+  const lk = style.look;
   for (const side of [-1, 1]) {
     const ex = side * 0.4, ey = 0.05;
     if (eyes === 'shut') {
-      ink([[ex - 0.18, ey], [ex, ey + 0.05], [ex + 0.18, ey]], 1.5);
+      ink(lk ? [[ex - 0.2, ey - 0.01], [ex, ey + 0.05], [ex + 0.2, ey - 0.01 - side * 0.02]] : [[ex - 0.18, ey], [ex, ey + 0.05], [ex + 0.18, ey]], lk ? 1.8 : 1.5);
+      continue;
+    }
+    if (lk) {
+      lookEye(lk, side, ex, ey, eyes, sq, [lx, ly], fill, ink, skin);
       continue;
     }
     const ry = (eyes === 'wide' ? 0.15 : 0.12) * sq;
@@ -250,7 +390,14 @@ export const paintHeadFront = (p: Painter, seed: number, cx: number, cy: number,
   for (const side of [-1, 1]) {
     let [inner, outer] = browY(face);
     if (face.brow === 'quirk' && side === 1) [inner, outer] = [-0.34, -0.36];
-    fill(browColor(style), [[side * 0.22, inner - 0.03], [side * 0.6, outer - 0.03], [side * 0.6, outer + 0.03], [side * 0.22, inner + 0.03]], 6);
+    if (lk) fill(browColor(style), lookBrow(lk, side, inner + lk.browDrop, outer + lk.browDrop), 6);
+    else fill(browColor(style), [[side * 0.22, inner - 0.03], [side * 0.6, outer - 0.03], [side * 0.6, outer + 0.03], [side * 0.22, inner + 0.03]], 6);
+  }
+  if (lk) {
+    part = 56;
+    line = 56;
+    lookNose(lk, fill, ink, skin, lineOf(skin, L));
+    line = 50;
   }
   if (style.facial) {
     const sp = part, sl = line;
@@ -262,8 +409,9 @@ export const paintHeadFront = (p: Painter, seed: number, cx: number, cy: number,
   }
   const my = 0.6;
   const m = face.mouth;
-  if (m === 'flat' || (m === 'talk' && (face.open ?? 0) < 0.08)) ink([[-0.2, my], [0.2, my]], 1.3, 0);
-  if (m === 'frown') ink([[-0.18, my + 0.05], [0, my - 0.03], [0.18, my + 0.05]], 1.4, 0.8);
+  const lookShut = lk ? lookMouth(lk, m, face.open ?? 0, my, fill, ink, skin, lineOf(skin, L)) : false;
+  if (!lookShut && (m === 'flat' || (m === 'talk' && (face.open ?? 0) < 0.08))) ink([[-0.2, my], [0.2, my]], 1.3, 0);
+  if (!lookShut && m === 'frown') ink([[-0.18, my + 0.05], [0, my - 0.03], [0.18, my + 0.05]], 1.4, 0.8);
   if (m === 'wavy') ink(Array.from({length: 9}, (_, i): Pt => [-0.24 + i * 0.06, my + (i % 2 ? 0.035 : -0.01)]), 1.2, 0.6);
   if (m === 'smile') {
     const pts: Pt[] = [[-0.3, my - 0.06], [0.3, my - 0.06]];
