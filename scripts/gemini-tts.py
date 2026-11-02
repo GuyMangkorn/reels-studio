@@ -47,9 +47,10 @@ def say(client, a):
         part = {'type': 'text', 'text': text}
         if a.style:
             part['annotations'] = [{'type': 'speech_metadata', 'style': a.style}]
-        r = client().interactions.create(model=a.model, input=[{'type': 'user_input', 'content': [part]}],
-                                         response_format={'type': 'audio'},
-                                         generation_config={'speech_config': [{'voice': a.voice}]})
+        c = client()  # keep a reference: google-genai 2.34 closes a temporary client before the request is sent
+        r = c.interactions.create(model=a.model, input=[{'type': 'user_input', 'content': [part]}],
+                                  response_format={'type': 'audio'},
+                                  generation_config={'speech_config': [{'voice': a.voice}]})
         CACHE.mkdir(parents=True, exist_ok=True)
         tmp = raw.with_suffix('.part')
         tmp.write_bytes(base64.b64decode(r.output_audio.data)); tmp.replace(raw)
@@ -67,7 +68,8 @@ def voices(client, a):
         print(v.id, v.display_name, v.gender, v.pitch, getattr(v, 'accent', ''), (v.description or '')[:80], sep=' | ')
 
 def design(client, a):
-    v = client().voices.create(store=True, voice={'model': a.model, 'type': 'prompted', 'display_name': a.name,
+    c = client()  # keep a reference (see say)
+    v = c.voices.create(store=True, voice={'model': a.model, 'type': 'prompted', 'display_name': a.name,
                                                 'gender': a.gender, 'language_code': 'th-TH', 'prompted': {'input': a.text}})
     Path(a.out).write_bytes(base64.b64decode(v.sample_audio.data))
     print(v.id, a.out)
