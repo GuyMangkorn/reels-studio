@@ -1,4 +1,4 @@
-// WDG-EP01-SHORT sound build (Editor, D17; mix-v6 (store dir; M2 phrase 2 retime + beat bed on top of mix-v4 R2.5d crawl retime)). Places the locked voices (with the E1/E2 breath edits), beds, ambience and
+// WDG-EP01-SHORT sound build (Editor, D17; mix-v7 (store dir; round 5: W2 `หิว` +4 semitones; before that mix-v6: M2 phrase 2 retime + beat bed on top of mix-v4 R2.5d crawl retime)). Places the locked voices (with the E1/E2 breath edits), beds, ambience and
 // cues on the composition clock (30 fps, 2861 frames) and writes two stems:
 //   out/wendigo/audio/WDG-EP01-SHORT_voice.wav   mono, all voices (the Remotion `narration` track)
 //   out/wendigo/audio/WDG-EP01-SHORT_sound.wav   stereo, beds + ambience + cues (the Remotion `audio[]` track)
@@ -8,7 +8,7 @@
 /* global console */
 import {mkdirSync, writeFileSync} from 'node:fs';
 import os from 'node:os';
-import {SR, decode, lin, writeWav} from './audio-lib.mjs';
+import {SR, blendSpan, decode, lin, pitchUp, writeWav} from './audio-lib.mjs';
 
 const FPS = 30, FRAMES = 2861, N = Math.round(FRAMES * SR / FPS);
 const store = `${os.homedir()}/ReelsStore`;
@@ -47,6 +47,7 @@ const clip = (id, startG, gainDb, o = {}) => {
   let a = decode(id === 'NARR' ? NARR : `${V1}${id}-Algenib.wav`);
   if (o.cut) { a = cutOut(a, ...o.cut); edits.push({clip: id, cut: o.cut, gate: o.gate ?? null}); }
   if (o.gate) a = gate(a, ...o.gate);
+  if (o.pitch) { a = blendSpan(a, pitchUp(a, o.pitch.semis), o.pitch.t0, o.pitch.t1, o.pitch.xf ?? 0.02); edits.push({clip: id, pitch: o.pitch}); }
   place(voice, a, startG, gainDb, o.offsetSec ?? 0);
   return a.length / SR;
 };
@@ -74,7 +75,8 @@ const M5C = `${V3}B03-M5_MAN-Algenib_notag.wav`;
 piece(M5C, 0, 2.40, 816 / FPS, 1);                 // onset 0.22 s -> G822.6 (ends G~875; caption `แล้วผมก็ได้ยิน…` G795-908)
 piece(M5C, 2.40, 3.70, 921 / FPS - 0.24, 1);       // onset 2.64 s -> G921 (ends G953)
 piece(M5C, 5.10, 6.96, 987 / FPS - 0.08, 1);       // onset 5.18 s -> G987.0; the silence G978-987 is the take's own floor, gated below
-clip('B03-W2_WHISPER', 1039, 0);
+// round 5 (user, Draft SH04): the whisper `หิว` is raised +4 semitones at the same duration. Span 0.56-1.40 s of the clip (word 0.60-1.35 s, floor -43 dBFS around it), 20 ms crossfades.
+clip('B03-W2_WHISPER', 1039, 0, {pitch: {semis: 4, t0: 0.56, t1: 1.40}});
 gate(voice, 978 / FPS, 987 / FPS - 0.012, 0.004); // hard silence G978-987 (digital zero)
 clip('NARR', 1262, -1);
 

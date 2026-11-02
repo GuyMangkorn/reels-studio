@@ -1,4 +1,5 @@
 // Shared audio helpers for the WDG-EP01-SHORT sound build (decode through ffmpeg, envelope, writing 32-bit float WAV).
+import {Buffer} from 'node:buffer';
 import {spawnSync} from 'node:child_process';
 import {writeFileSync} from 'node:fs';
 export const SR = 48000;
@@ -8,6 +9,24 @@ export const decode = (file, {ch = 1, ss, t} = {}) => {
   const r = spawnSync('ffmpeg', args, {maxBuffer: 1 << 30});
   if (r.status !== 0) throw new Error(`ffmpeg decode failed: ${file}: ${r.stderr}`);
   const b = r.stdout; return new Float32Array(b.buffer, b.byteOffset, Math.floor(b.length / 4)).slice();
+};
+/** Raise `a` (mono Float32, 48 kHz) by `semis` semitones at the same duration: resample up (asetrate), then atempo back to the length. Formants move with the pitch (the clip is a whisper, so this is the only pitch cue). Returns exactly a.length samples. */
+export const pitchUp = (a, semis) => {
+  const r = 2 ** (semis / 12);
+  const p = spawnSync('ffmpeg', ['-v', 'error', '-f', 'f32le', '-ar', String(SR), '-ac', '1', '-i', '-', '-af', `asetrate=${Math.round(SR * r)},aresample=${SR},atempo=${(1 / r).toFixed(6)}`, '-f', 'f32le', '-ar', String(SR), '-ac', '1', '-'], {input: Buffer.from(a.buffer, a.byteOffset, a.byteLength), maxBuffer: 1 << 30});
+  if (p.status !== 0) throw new Error(`ffmpeg pitchUp failed: ${p.stderr}`);
+  const b = p.stdout, o = new Float32Array(b.buffer, b.byteOffset, Math.floor(b.length / 4)), out = new Float32Array(a.length);
+  out.set(o.subarray(0, a.length));
+  return out;
+};
+/** Equal-power blend of `b` over `a` inside [t0, t1] seconds with `xf`-second crossfades at both edges (a and b the same length and aligned); outside the span the result is `a`. */
+export const blendSpan = (a, b, t0, t1, xf = 0.02) => {
+  const out = new Float32Array(a.length), i0 = Math.round(t0 * SR), i1 = Math.round(t1 * SR), x = Math.round(xf * SR);
+  for (let i = 0; i < a.length; i++) {
+    const w = Math.max(0, Math.min(1, (i - (i0 - x)) / x, ((i1 + x) - i) / x));
+    out[i] = a[i] * Math.cos(w * Math.PI / 2) + b[i] * Math.sin(w * Math.PI / 2);
+  }
+  return out;
 };
 export const db = (x) => 20 * Math.log10(Math.max(x, 1e-9));
 export const lin = (d) => 10 ** (d / 20);

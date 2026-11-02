@@ -201,7 +201,11 @@ export const paintTent = (p: Painter, t: number) => {
 /** Ring in px: closed ellipse around the tent, ~65 deg down-look so the circle foreshortens to ry/rx = 0.8 (estimate). */
 export const RING = {cx: 540, cy: 590, rx: 380, ry: 270, prints: 30};
 
-export const paintSnow = (p: Painter, t: number) => {
+/**
+ * `reveal` (R2.6, user: the ring should grow like a person walking it) = prints laid so far, in walking order from the door side (i = 0, clockwise on
+ * screen); a fractional part fades the newest in. Default = all `RING.prints` (the closed ring; look frame `WDG-LF-SNOW` and the shot's last frames).
+ */
+export const paintSnow = (p: Painter, t: number, reveal: number = RING.prints) => {
   // dawn snow: mid blue-grey (the lower third is darkened by the overlay shade)
   washAt(p, 1, '#7f97ab', 255, full, 0.1, 0.4);
   washAt(p, 2, '#97aebf', 120, blob(2, 540, 620, 600, 440, 0), 0.8, 0.8);
@@ -260,6 +264,8 @@ export const paintSnow = (p: Painter, t: number) => {
   // the ring: closed ellipse of boot-print pairs, alternating left/right foot, long axis along the walk (no track leaves or enters)
   p.ink(30, 'rotring', '#1f3042', 0.9);
   for (let i = 0; i < RING.prints; i++) {
+    const vis = Math.min(1, reveal - i);
+    if (vis <= 0) break;
     const u = (i / RING.prints) * Math.PI * 2;
     const px = RING.cx + RING.rx * Math.cos(u), py = RING.cy + RING.ry * Math.sin(u);
     const tx = -RING.rx * Math.sin(u), ty = RING.ry * Math.cos(u);
@@ -267,8 +273,8 @@ export const paintSnow = (p: Painter, t: number) => {
     const side = i % 2 === 0 ? 1 : -1;
     const ox = (-ty / tl) * 12 * side, oy = (tx / tl) * 12 * side;
     const near = 0.9 + 0.3 * (Math.sin(u) + 1) / 2;
-    washAt(p, 100 + i, '#2e4660', 230, ell(px + ox, py + oy, 34 * near, 16 * near, 12, ang), 0.2, 0.4);
-    inkLine(p, 200 + i, ell(px + ox, py + oy, 34 * near, 16 * near, 12, ang), {color: '#16222f', weight: 0.7});
+    washAt(p, 100 + i, '#2e4660', 230 * vis, ell(px + ox, py + oy, 34 * near, 16 * near, 12, ang), 0.2, 0.4);
+    if (vis >= 1) inkLine(p, 200 + i, ell(px + ox, py + oy, 34 * near, 16 * near, 12, ang), {color: '#16222f', weight: 0.7});
   }
   // blown snow streaks, slow (ambient)
   for (let i = 0; i < 6; i++) {

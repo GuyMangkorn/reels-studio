@@ -152,39 +152,67 @@ export const paintSleeper = (p: Painter, t: number) => {
 };
 
 /**
- * Boot in print (D08, S01-B03-SH02): the boot profile (toe to the right), sole at `soleY`, centre x 540. The print is the
- * same shape at rest (sole 600) grown by ~20 px, so a rim shows all round when it rests.
+ * Boot in print (D08, S01-B03-SH02, R2.6, user: the print must run up the screen, toe up; lay the boot down): a plan view from above.
+ * The print is the sole outline with its long axis vertical (heel down, toe up) at (540, 530), 560 x 270 px; the boot lies along the same
+ * axis (toe up) and lowers onto it: `lift` 1..0 is its height above the snow (scale 1.12 -> 1.0 about the print centre, its shadow offset
+ * and soft while it hovers). At rest the print rim shows 18-24 px all round.
  */
-const BOOT_PROFILE: [number, number][] = [
-  [262, 0], [826, 0], [838, 36], [826, 70], [760, 92], [690, 120], [620, 190], [560, 262], [500, 340], [470, 420],
-  [420, 440], [300, 440], [262, 380], [246, 240], [248, 120],
+const PLAN: [number, number][] = [ // [v 0 heel .. 1 toe, half width as a fraction of the full width]
+  [0, 0], [0.012, 0.2], [0.04, 0.3], [0.1, 0.355], [0.2, 0.37], [0.3, 0.335], [0.4, 0.315], [0.5, 0.35], [0.62, 0.43], [0.74, 0.5], [0.84, 0.5], [0.92, 0.44], [0.97, 0.33], [0.992, 0.2], [1, 0],
 ];
-export const BOOT = {restSole: 600, cx: 540, length: 564};
-export const bootPts = (soleY: number, grow = 0): Pt[] => {
-  const s = 1 + grow / 300;
-  return BOOT_PROFILE.map(([x, dy]): Pt => {
-    const px = BOOT.cx + (x - 540) * s, py = soleY - dy * s;
-    return [px, py];
-  });
+export const BOOT = {cx: 540, cy: 530, length: 560, width: 270};
+const planHalf = (v: number) => {
+  const k = PLAN.findIndex(([pv], n) => n < PLAN.length - 1 && v >= pv && v <= PLAN[n + 1][0]);
+  const [v0, h0] = PLAN[k], [v1, h1] = PLAN[k + 1], u = (v - v0) / (v1 - v0), e = (1 - Math.cos(Math.PI * u)) / 2;
+  return h0 + (h1 - h0) * e;
 };
-/** Paint the print (at rest) and the boot at `soleY`; `puff` 0..1 is the snow burst at the contact. */
-export const paintBootPrint = (p: Painter, soleY: number, puff: number) => {
+/** Plan outline of the sole, offset outward by `grow` px and scaled by `s` about the print centre, with `(dx, dy)` added; heel at the bottom, toe up. */
+export const bootPlan = (grow = 0, s = 1, dx = 0, dy = 0): Pt[] => {
+  const n = 28, L = BOOT.length + 2 * grow, left: Pt[] = [], right: Pt[] = [];
+  for (let i = 0; i <= n; i++) {
+    const v = i / n, hw = planHalf(v) * BOOT.width + (i > 0 && i < n ? grow : 0), y = BOOT.cy - (v - 0.5) * L;
+    left.push([BOOT.cx - hw * 0.96 - 6 * Math.sin(Math.PI * v), y]); // the inner side (arch) is a touch straighter than the outer
+    right.push([BOOT.cx + hw * 1.04 + 0, y]);
+  }
+  return [...left, ...right.reverse()].map(([x, y]): Pt => [BOOT.cx + (x - BOOT.cx) * s + dx, BOOT.cy + (y - BOOT.cy) * s + dy]);
+};
+/** A point on the sole axis: `v` 0 heel .. 1 toe, `u` -1..1 across (fraction of the local half width), same transform as `bootPlan`. */
+const planAt = (v: number, u: number, s: number, dx = 0, dy = 0): Pt => [BOOT.cx + (u * planHalf(v) * BOOT.width) * s + dx, BOOT.cy + (-(v - 0.5) * BOOT.length) * s + dy];
+/** Paint the print (at rest) and the boot at height `lift` (1 hovering, 0 resting); `puff` 0..1 is the snow burst at the contact. */
+export const paintBootPrint = (p: Painter, lift: number, puff: number) => {
   washAt(p, 1, '#c3d0da', 255, full, 0.1, 0.4);
-  washAt(p, 2, '#b4c3ce', 160, blob(2, 540, 700, 520, 260, 0), 0.6, 0.6);
-  // print rim: a lighter snow lip around the footprint, then the dark hollow
-  washAt(p, 3, '#e6eef4', 210, bootPts(BOOT.restSole, 22), 0.2, 0.3);
-  washAt(p, 4, '#58707f', 230, bootPts(BOOT.restSole, 4), 0.2, 0.4);
-  // the boot
-  hardFill(p, 10, '#1d1b1a', bootPts(soleY));
-  washAt(p, 11, '#0c0b0b', 200, bootPts(soleY).slice(0, 2).concat([[826, soleY - 8], [262, soleY - 8]]), 0.1, 0.3);
-  washAt(p, 12, '#4b4540', 90, [[300, soleY - 330], [400, soleY - 350], [380, soleY - 220], [300, soleY - 200]], 0.2, 0.5);
+  washAt(p, 2, '#b4c3ce', 160, blob(2, 540, 560, 520, 420, 0), 0.6, 0.6);
+  // print rim: a lighter snow lip around the footprint, then the dark hollow and its tread
+  washAt(p, 3, '#e6eef4', 210, bootPlan(22), 0.2, 0.3);
+  washAt(p, 4, '#58707f', 230, bootPlan(4), 0.2, 0.4);
+  for (let k = 0; k < 7; k++) { // lugs across the forefoot, a block heel: the print has a pattern
+    const v = 0.58 + k * 0.055;
+    const a = planAt(v, -0.6, 1), b = planAt(v, 0.6, 1);
+    washAt(p, 6 + k, '#3c5262', 200, [[a[0], a[1] - 5], [b[0], b[1] - 5], [b[0], b[1] + 5], [a[0], a[1] + 5]], 0.1, 0.3);
+  }
+  for (let k = 0; k < 3; k++) {
+    const v = 0.06 + k * 0.05, a = planAt(v, -0.6, 1), b = planAt(v, 0.6, 1);
+    washAt(p, 14 + k, '#3c5262', 200, [[a[0], a[1] - 5], [b[0], b[1] - 5], [b[0], b[1] + 5], [a[0], a[1] + 5]], 0.1, 0.3);
+  }
+  // the boot, laid along the same axis: soft shadow while it hovers, welt, upper, toe cap, ankle opening
+  const sc = 1 + 0.12 * lift, dx = 18 * lift, dy = 36 * lift;
+  washAt(p, 9, '#2c3d4a', 120 * (1 - 0.5 * lift) + 40, bootPlan(10, sc, dx * 1.6, dy * 1.6), 0.5, 0.6);
+  hardFill(p, 10, '#1d1b1a', bootPlan(0, sc));
+  washAt(p, 11, '#0c0b0b', 200, bootPlan(-12, sc), 0.1, 0.3); // upper: darker, inset from the welt
+  const toe = (v: number, u: number) => planAt(v, u, sc);
+  washAt(p, 12, '#4b4540', 110, [toe(0.62, -0.7), toe(0.86, -0.55), toe(0.9, 0.2), toe(0.7, 0.3)], 0.2, 0.5); // light catching the toe cap
+  washAt(p, 13, '#0a0909', 235, ell(...toe(0.27, 0), 0.34 * BOOT.width * sc, 0.12 * BOOT.length * sc, 20, 0), 0.1, 0.3); // ankle opening
   p.ink(20, 'rotring', '#050505', 2.2);
-  inkLine(p, 21, bootPts(soleY), {closed: true, color: '#050505', weight: 2.2});
-  // snow burst on landing
+  inkLine(p, 21, bootPlan(0, sc), {closed: true, color: '#050505', weight: 2.2});
+  p.ink(22, 'rotring', '#3a342f', 1.4);
+  inkLine(p, 23, [toe(0.58, -0.8), toe(0.6, 0), toe(0.58, 0.85)], {closed: false, color: '#3a342f', weight: 1.4}); // toe-cap seam
+  inkLine(p, 24, [toe(0.4, -0.18), toe(0.5, -0.12), toe(0.56, -0.1)], {closed: false, color: '#3a342f', weight: 1.2}); // lacing
+  inkLine(p, 25, [toe(0.4, 0.18), toe(0.5, 0.12), toe(0.56, 0.1)], {closed: false, color: '#3a342f', weight: 1.2});
+  // snow burst on landing, round the print
   for (let i = 0; i < 12; i++) {
     const a = (i / 12) * Math.PI * 2 + hash(300 + i) * 0.4;
-    const r = 180 + 60 * puff;
-    washAt(p, 310 + i, '#f2f8fb', 200 * puff, blob(310 + i, 540 + r * Math.cos(a) * 0.9, soleY + 10 - Math.abs(Math.sin(a)) * 40 * puff, 26 + 18 * puff, 14 + 10 * puff, 0), 0.5, 0.6);
+    const rx = 165 + 40 * puff, ry = 290 + 40 * puff;
+    washAt(p, 310 + i, '#f2f8fb', 200 * puff, blob(310 + i, BOOT.cx + rx * Math.cos(a), BOOT.cy + ry * Math.sin(a), 26 + 18 * puff, 14 + 10 * puff, 0), 0.5, 0.6);
   }
 };
 

@@ -9,7 +9,7 @@ import {EXPRESSIONS} from '../kit/expressions';
 import {hash} from '../kit/hash';
 import {ramp, type Pt} from '../kit/painter';
 import type {PaintedShot, ShotContext} from '../shot';
-import {LANTERN, LANTERN6, LANTERN7, FLAP_CRAWL, MAP_FOCUS, STORM_CRAWL, paintDoc, paintEra, paintEraPhoto, paintEraSilhouette, paintMap, paintSnow, paintTent, paintTentR6, paintTentR7, paintWendigoFlap, paintWendigoStorm} from '../wendigo/look';
+import {RING, LANTERN, LANTERN6, LANTERN7, FLAP_CRAWL, MAP_FOCUS, STORM_CRAWL, paintDoc, paintEra, paintEraPhoto, paintEraSilhouette, paintMap, paintSnow, paintTent, paintTentR6, paintTentR7, paintWendigoFlap, paintWendigoStorm} from '../wendigo/look';
 import {NIGHT_TENT, LANTERN_M, LIPS, paintBootPrint, paintLantern, paintLips, paintMitten, paintNightTent, paintSleeper, paintTin} from '../wendigo/props';
 import {WDG_MAN, anchorsAt, paintGaunt, paintParkaBack, paintParkaFront, groundForHead, manLayer, shockFace, talkVoiceEnv, whisperFace} from '../wendigo/cast';
 import {WALK_GROUND, paintNightWalk, paintTentWall} from '../wendigo/night';
@@ -273,8 +273,12 @@ const frames = (tl: number) => tl * WDG_FPS;
 /** Storm gap visibility `v` (S02-B03-SH01 sheet): 0 to frame 90, 0.5 at 139, 0.6 at 233, then held. */
 const stormGap = (L: number) => (L <= 90 ? 0 : L < 139 ? 0.5 * ramp(L, 90, 139) : L < 233 ? 0.5 + 0.1 * ramp(L, 139, 233) : 0.6);
 
-/** Boot sole height (S01-B03-SH02): hovers at y 520, lands at frame 19 on the print at y 600. */
-const bootSole = (L: number) => 520 + 80 * ramp(L, 0, 19);
+/** Prints laid by shot-local frame `L` (S01-B02-SH04, R2.6): print k starts at L 6 + 4.2 k and fades in over one step; the 30th is whole at L 132, the closed ring holds to L 154. */
+const RING_START = 6, RING_STEP = 4.2;
+const ringReveal = (L: number) => Math.max(0, Math.min(RING.prints, (L - RING_START) / RING_STEP));
+
+/** Boot height above the print (S01-B03-SH02, R2.6 plan view): 1 hovering at L0, 0 resting from L19. */
+const bootSole = (L: number) => 1 - ramp(L, 0, 19);
 /** Snow burst on landing: up at 19-22, gone by about 40. */
 const bootPuff = (L: number) => ramp(L, 19, 22) * (1 - ramp(L, 28, 40));
 
@@ -391,9 +395,10 @@ const timedShots: PaintedShot[] = [
         paintTentWall(p, wdgAmbientAt('S01-B01-SH02', tl));
         const l = sh02Layer(tl);
         paintParkaBack(p, SH02.head, H * SH02.unit, 'left');
-        drawFigure(p, l.def, l.g, SH02.unit, l.pose, tl, l.seed);
-        paintGaunt(p, SH02.head, H * SH02.unit, 'left');
-        paintParkaFront(p, SH02.head, H * SH02.unit, 'left');
+        // R2.6: the overlays (stubble, hollows, collar) ride the drawn head (breath rise, nod), not the fixed sheet position
+        const hd02 = drawFigure(p, l.def, l.g, SH02.unit, l.pose, tl, l.seed).head;
+        paintGaunt(p, hd02, H * SH02.unit, 'left');
+        paintParkaFront(p, hd02, H * SH02.unit, 'left');
       },
       ({camera, width, height, tl}) => (
         <>
@@ -445,9 +450,9 @@ const timedShots: PaintedShot[] = [
         }
         const l = sh03Layer(tl);
         paintParkaBack(p, SH03.head, H * SH03.unit, 'front');
-        drawFigure(p, l.def, l.g, SH03.unit, l.pose, tl, l.seed);
-        paintGaunt(p, SH03.head, H * SH03.unit, 'front');
-        paintParkaFront(p, SH03.head, H * SH03.unit, 'front');
+        const hd03 = drawFigure(p, l.def, l.g, SH03.unit, l.pose, tl, l.seed).head;
+        paintGaunt(p, hd03, H * SH03.unit, 'front');
+        paintParkaFront(p, hd03, H * SH03.unit, 'front');
         const h = LANTERN_M * SH03.unit, f = anchorsAt(l, SH03.unit, tl).lHand;
         paintLantern(p, f[0], f[1] - 0.12 * h, h, 1);
         paintMitten(p, f[0], f[1], SH03.unit, l.def.head.skin, 0.5);
@@ -500,7 +505,7 @@ const timedShots: PaintedShot[] = [
   {
     ...plate('WDG-S01-B02-SH04', ['S01-B02-SH04'], '#7f97ab',
       (tl) => pushCamera(tl, shotSec('S01-B02-SH04'), {s0: 1, s1: 1.05, fx: 540, fy: 590}),
-      (p, {tl}) => paintSnow(p, wdgAmbientAt('S01-B02-SH04', tl)),
+      (p, {tl}) => paintSnow(p, wdgAmbientAt('S01-B02-SH04', tl), ringReveal(frames(tl))),
       () => <Shade from={780} to={1000} color="#0f1c2e" peak={0.96} />),
   },
   // S01-B03-SH02 (D08): boot lowers into the print, lands at frame 19, snow burst; push 1.00 -> 1.08 about (540, 620).

@@ -1,5 +1,5 @@
 # S01 — fiction cold open (B01 hook, B02 seven days, B03 footprints)
-Deliverable: WDG-EP01-SHORT · Revision: WDG-SS-R2.5d · Status: ready-for-dev · Timing: checked-with-audio
+Deliverable: WDG-EP01-SHORT · Revision: WDG-SS-R2.6 · Status: ready-for-dev · Timing: checked-with-audio
 Inputs: `WDG-SCRIPT-R3` S01 (CL01–CL04) · brief `WDG-BRIEF-FILM-R1.4` (`VD03e`, `VD04`–`VD07`, `VD13`, `VD13a`, `VD14`, `SN01`, `SN02`) · [scene-index.md](scene-index.md) (spaces, clocks, audio placement, dependencies `D01`–`D09`, `D10`, `D15`–`D17`)
 Target: 30 fps · scene frames G [0, 1250) · 1080×1920 · composition offset 0
 Evidence: runtime unverified · render none · audio sync: clip placements exact, intra-clip word edges ±0.2 s · user approval: look frames and storyboard SB-R2.2 approved in chat; these sheets not yet reviewed
@@ -54,6 +54,7 @@ Staging: screen px; head view `left` for the whole shot (no turn).
 | backdrop | `D01` tent plate at scale 1.5, focus (300, 600), soft | fixed | wall at left, lantern pool low left |
 Camera: scale 1.00 → 1.05, focus (650, 520), ease-in-out over L [0, 132).
 Look: key from low left (amber), cool rim from upper right; pale gaunt face, stubble.
+R2.6 (user: `หนวดไม่ track กับหน้า`). The facial hair (the stubble grain ticks, the cheek and jaw shadows, the mouth-corner hollow, the hair mass, and the collar edge) is painted by overlay code (`paintGaunt`, `paintParkaFront`) that was anchored to the fixed sheet head centre (650, 460) while the kit head sways with `idle-breathe` (lean and nod): measured drift up to 34.9 px in x and 6.7 px in y between the overlay and the drawn head, so the stubble slid across the face. Now the overlays use the drawn head anchor returned by `drawFigure` each frame: one transform for skin, kit stubble, overlay stubble and collar; measured drift 0. The kit head has no separate jaw-drop (the `talk` mouth is an opening drawn in the face decal), so the beard has nothing to follow beyond the head: it stays rigid with the face while the mouth opens (the mouth is clear of the ticks). Same fix in `S01-B03-SH03` (front view, same cause). Shot range, mouth spans, captions, camera unchanged.
 R2.1 (W5.2 verdict: **fix**). (a) Face: the plate reads as a healthy cartoon boy (round cheek, clean jaw). Required: cheek hollow under the cheekbone (a cool shadow wash from the ear to the mouth corner, value 12-15 % darker than the skin), deeper eye socket (brow shadow plus a dark under-eye wash), dry cracked lip colour, stubble as a visible grain over the jaw, hair slightly greasy and flat, a second wrinkle at the mouth corner; the jaw line is the only hard edge. Gaunt is the story fact (day-seven starvation), tired not frightening. (b) Parka: the crop at y 860 hides all of it. Reframe: head centre (650, 460), head height 380 px, shoulders visible down to y 840 with the **hood bunched behind the neck and the collar edge** so the parka reads at the neck and left shoulder (dark, bulky, value below the skin and the wall). The neck column stays short (it reads as a long flat tube in the plate). Keep the face above y 860. (c) Backdrop: the plate shows a simplified tent wall (flat blue wash, two cord lines), not the scaled `LF-TENT_r7` of the sheet. **Accept the simplified wall** if it keeps the wall at left, the stitch holes and the lantern pool low left with the lantern light raking the face; do not scale the r7 plate (it would show the lantern, boots and the open floor, a different shot). Update the plate note: backdrop = `D01` wall detail painted close, same hue family as `LF-TENT_r7`.
 VO + subtitles: MAN `เสียงนั้น… ถามผมทุกคืน`. Mouth `talk` G [64, 91) and [101, 176). Captions `เสียงนั้น…` G [62, 96); `ถามผมทุกคืน` G [100, 182).
 Sound: `AMB-WIND` steady; M1 breath starts G51; `SN01` out by G90. Close dry voice.
@@ -113,7 +114,8 @@ Acceptance:
 
 ## S01-B02-SH04 — the ring
 Range and clocks: G [446, 600); L = G − 446.
-Direction: high angle (camera 60–70° down, estimate), morning (`D02` morning, `LF-SNOW`). Tent at the centre of a closed ellipse of small boot prints (`RING` cx 540, cy 590, rx 380, ry 270, 30 prints), all present from the first frame; no track enters or leaves.
+Direction: high angle (camera 60–70° down, estimate), morning (`D02` morning, `LF-SNOW`). Tent at the centre of a closed ellipse of small boot prints (`RING` cx 540, cy 590, rx 380, ry 270, 30 prints), laid one by one over L 6–132 (R2.6, below); no track enters or leaves.
+R2.6 (user: `อยากให้รอบค่อย ๆ เพิ่มขึ้นเหมือนคนค่อย ๆ เดิน`). **Reading:** the ring is laid print by print, as if someone were walking it. Prints appear in walking order from the door side (the `RING` print 0 at the right end, then clockwise on screen: down the right side, along the near side, up the left, across the far side). Print k starts at L 6 + 4.2 k and fades in over one step (4.2 frames); the 30th is whole at L 132 and the closed ring holds L 132–154 (the G599 cut-out frame is unchanged). L0 shows the tent and snow with no print yet. **Cadence conflict, stated:** the R2.1 walking cadence (1 step per 29 frames) would lay only about 5 prints in 154 frames; the ring has 30, so a literal 29-frame cadence cannot close it inside the shot. The laying rate is therefore 4.2 frames per print (about 7 prints per second: a fast trace of the ring, not a walk). If the user wants a true walking pace the ring needs fewer prints or a longer shot (a script/timing change, not made here). Replaces the old 'all present from the first frame' line above.
 Camera: scale 1.00 → 1.05, focus (540, 590), ease-in-out over L [0, 154).
 VO + subtitles: M3 speech `ทุกเช้า` G [449, 484), `มีรอยเท้าเดินวนรอบเต็นท์` G [507, 580). Captions `ทุกเช้า…` G [449, 494); `มีรอยเท้าเดินวนรอบเต็นท์` G [505, 586).
 Sound: `AMB-WIND` fades down by L30 to near still (-8 dB), snow smooth; one snow crunch `FX-SNOW-STEP` at L79 (G525) on `รอยเท้า`; drone continues.
@@ -123,7 +125,8 @@ Entry → exit: night interior to morning exterior (time jump by picture and lig
 Acceptance:
 | Frame | Observable | Evidence |
 | --- | --- | --- |
-| G446, G599 | ring closed, no inbound or outbound tracks, ring reads with sound muted | frame sheet |
+| G599 | ring closed (30 prints), no inbound or outbound tracks, ring reads with sound muted | frame sheet |
+| G446, G476, G500, G530, G560 | ring grows print by print in walking order: 0, about 7, about 13, about 20, about 26 prints (R2.6) | frame sheet |
 | G525 | crunch on `รอยเท้า` | audio check |
 
 ## S01-B03-SH01 — following the ring
@@ -145,8 +148,8 @@ Acceptance:
 
 ## S01-B03-SH02 — it fits
 Range and clocks: G [713, 795); L = G − 713.
-Direction: close, ground level, low angle (`D08`). A snow-dusted boot (profile, toe to the right) lowers into one footprint of the ring: starts hovering with its sole at y 520, lands at L19 (G732) with the sole at y 600 and a snow puff; the print's rim shows around it at 18–24 px all round, so the shape is visibly identical.
-Staging: print centre (540, 640), sole length 560 px; everything above y 860, bottom is flat snow.
+Direction (R2.6, user: `รอยเท้ามันต้องแนวตั้ง ... เอารองเท้านอนมาเลย`): close, plan view from above (replaces the ground-level profile). The footprint's long axis runs up the screen, toe up, and the boot lies along the same axis (toe up): it lowers onto the print from L0 (hover: scale 1.12 about the print centre, soft offset shadow) and lands at L19 (G732) at scale 1.0 with a snow puff round the print; the print's rim shows around it at 18–24 px all round, so the shape is visibly identical. The print carries a tread (forefoot lugs, heel block); the boot shows welt, toe-cap seam, lacing and the ankle opening at the heel end.
+Staging: print centre (540, 530), sole length 560 px, width 270 px (heel at the bottom, toe up); everything above y 860 (rim to y 232–838 unpushed, about 850 at the end of the 1.08 push), bottom is flat snow. Was: centre (540, 640), horizontal.
 Camera: scale 1.00 → 1.08, focus (540, 620), ease-in-out over L [0, 82).
 VO + subtitles: M4 second phrase speech G [724, 780). Caption `มันพอดีกับรองเท้าของผม` G [722, 790).
 Sound: wind drops to near nothing L0–L20; `FX-SNOW-STEP` press at L19 (G732), no bed.
@@ -156,7 +159,7 @@ Entry → exit: boot hovers, then rests in the print; exit rests.
 Acceptance:
 | Frame | Observable | Evidence |
 | --- | --- | --- |
-| G732 / G780 | boot contacts the print at L19; the print rim is even all round | frame sheet |
+| G732 / G780 | boot (long axis vertical, toe up) contacts the print at L19; the print rim is even all round; pair above y 860 | frame sheet, `scripts/caption-zone.py` |
 
 ## S01-B03-SH03 — hearing it again
 Range and clocks: G [795, 987); L = G − 795.
@@ -236,3 +239,4 @@ Element captures: none taken by Film this pass (look frames in the store `look-f
 2 Nov 2026 `WDG-SS-R2.5` — user notes: (1) the form is outside the tent, so the tent must hide it; (2) the crouch must be a deep frog coil. `S01-B03-SH05`: draw order changed (form behind the tent canvas; canvas right of and above the opening repainted over it; geometry stated in the shot); spider-frog key poses COIL/PUSH/FLIGHT (R2.5b, same day: coil eased from half height to about a third lower, all four limbs splayed with the knees and elbows high and out, head low between the arms, per the user's reference `2026-11-02_wendigo-crouch-splayed-limbs-ref.jpg`); crouch G1186–1206 (was G1196–1220; starts 10 frames earlier, inside the morph), coil held G1206–1220, launch (push) G1220 unchanged, toes off G1225, fully hidden ≈ G1243, not drawn from G1245, empty G1244–1249. Shot range, cut at G1250, morph ramp L12–132, `D16`, audio, narration and captions unchanged. Look frame `WDG-LF-WENDIGO` stays static (no motion); its layering now also puts the figure behind the sill (feet veiled a few px).
 2 Nov 2026 `WDG-SS-R2.5` (R2.5c, same day, user corrections): legs in the coil foreshortened and lost in shade (shins faded, knees just over the back, feet close under the hips); crawling arms in the lope (`CRAWL` base posture) and the coil (shoulders low, elbows bent out and low, hands flat ahead); snap exit: launch G1220 unchanged, toes off G1223, one blur frame G1224, gone from G1225 (was ≈ G1243/G1245), empty G1225–1249.
 2 Nov 2026 `WDG-SS-R2.5d` — user dropped the leap: the wendigo crawls slowly out of the frame instead. Removed: crouch, coil, launch, push, flight and blur streak (`Bound`, `COIL`/`PUSH`/`FLIGHT`, snow kick, leg fading); also the in-place lope (no stepping in place). Added: `CRAWL` posture (the user-approved crawl-out frame), planted diagonal gait, hind-leg IK at standing bone lengths, `FLAP_CRAWL`. `S01-B03-SH05`: crawl from G1190 (first moves G1191), fully hidden behind the right tent wall at G1242, empty G1242–1249. Tent occlusion, morph ramp, shot range, cut G1250, `D16`, static look frame unchanged. Editor re-places wail 2 (was G1214) and the hit (was G1222) to the crawl; audio not touched by Film.
+2 Nov 2026 `WDG-SS-R2.6` — user Draft notes. (1) `S01-B01-SH02` (and `S01-B03-SH03`): overlay facial hair and shadows now ride the drawn head (were fixed to the sheet head centre, drift up to 35 px); (2) `S01-B02-SH04`: ring laid print by print (4.2 frames per print, L 6–132), closed ring from L132 and at the cut unchanged; the 29-frame walking cadence cannot lay 30 prints in 154 frames (see the shot section); (3) `S01-B03-SH02`: plan view, print and boot share one vertical axis, toe up. Shot ranges, timing, audio, narration, captions, `D16` and the look frames unchanged (`WDG-LF-SNOW` still paints the closed ring).
