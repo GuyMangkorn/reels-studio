@@ -1,0 +1,1043 @@
+{
+ "deliverable": "WDG-EP01-SHORT",
+ "revision": "v4",
+ "base": {
+  "file": "projects/WDG-EP01-SHORT/audio/voice-lock-v2/WDG-EP01-SHORT_voice-lock-v2_alt-NARR-Achernar_mysterious_atempo108_R3_full.wav",
+  "md5": "780b425682ebf66e50be9fa214eada4e",
+  "length_sec": 62.668
+ },
+ "supersedes": "none; voice-measure-v3.json kept unchanged (1.0815 base timing)",
+ "user_feedback": "chat, 2 Nov 2026 (via coordinator): the 1.0815 voice is OK, but the pauses before the next sentence are too long. Shorten silences, no regeneration, no further tempo change; two variants to pick by ear.",
+ "rules": {
+  "source": "the 1.0815 file (no re-tempo; speech samples untouched, checked sample for sample)",
+  "silence": "gaps between audible runs (10 ms blocks, peak >= 300 of 32767, cut-gaps rule)",
+  "beat gaps (speech end to next beat start)": {
+   "pMID": 0.9,
+   "pTIGHT": 0.65,
+   "note": "set only when longer than target; B01|B02 (0.46 s) is already shorter than both targets and is untouched"
+  },
+  "B06 ellipsis after ปีศาจตัวนี้": {
+   "pMID": 0.45,
+   "pTIGHT": 0.35
+  },
+  "other silences": {
+   "pMID": "cut to 0.60 s when longer",
+   "pTIGHT": "cut to 0.40 s when longer"
+  },
+  "cut placement": "middle of the silence; at least 0.12 s of the original room tone kept on each side; junctions chosen where 10 ms RMS <= about -60 dBFS and no sample step over 50 LSB within 50 ms; 10 ms equal-power crossfade",
+  "skipped": "removals under 45 ms on internal pauses are not made (a splice for a few ms adds risk and is not audible); listed below"
+ },
+ "variants": {
+  "pMID": {
+   "file": "projects/WDG-EP01-SHORT/audio/voice-lock-v2/WDG-EP01-SHORT_voice-lock-v2_alt-NARR-Achernar_mysterious_atempo108_R3_pMID_full.wav",
+   "length_sec": 59.608,
+   "samples": 2861186,
+   "frames_at_30fps": 1788,
+   "removed_total_sec": 3.06,
+   "pauses_shortened": [
+    {
+     "kind": "internal",
+     "old_start_sec": 2.94,
+     "old_end_sec": 3.98,
+     "old_len_sec": 1.04,
+     "new_len_sec": 0.6,
+     "removed_sec": 0.44,
+     "new_start_sec": 2.94,
+     "new_end_sec": 3.54,
+     "kept_each_side_sec": [
+      0.16,
+      0.44
+     ]
+    },
+    {
+     "kind": "beat gap",
+     "old_start_sec": 13.41,
+     "old_end_sec": 14.47,
+     "old_len_sec": 1.06,
+     "new_len_sec": 0.9,
+     "removed_sec": 0.16,
+     "new_start_sec": 12.97,
+     "new_end_sec": 13.87,
+     "kept_each_side_sec": [
+      0.73,
+      0.17
+     ]
+    },
+    {
+     "kind": "internal",
+     "old_start_sec": 20.87,
+     "old_end_sec": 21.7,
+     "old_len_sec": 0.83,
+     "new_len_sec": 0.6,
+     "removed_sec": 0.23,
+     "new_start_sec": 20.27,
+     "new_end_sec": 20.87,
+     "kept_each_side_sec": [
+      0.38,
+      0.22
+     ]
+    },
+    {
+     "kind": "internal",
+     "old_start_sec": 24.35,
+     "old_end_sec": 25.34,
+     "old_len_sec": 0.99,
+     "new_len_sec": 0.6,
+     "removed_sec": 0.39,
+     "new_start_sec": 23.52,
+     "new_end_sec": 24.12,
+     "kept_each_side_sec": [
+      0.16,
+      0.44
+     ]
+    },
+    {
+     "kind": "beat gap",
+     "old_start_sec": 32.36,
+     "old_end_sec": 33.76,
+     "old_len_sec": 1.4,
+     "new_len_sec": 0.9,
+     "removed_sec": 0.5,
+     "new_start_sec": 31.14,
+     "new_end_sec": 32.04,
+     "kept_each_side_sec": [
+      0.14,
+      0.76
+     ]
+    },
+    {
+     "kind": "internal",
+     "old_start_sec": 42.85,
+     "old_end_sec": 43.77,
+     "old_len_sec": 0.92,
+     "new_len_sec": 0.6,
+     "removed_sec": 0.32,
+     "new_start_sec": 41.13,
+     "new_end_sec": 41.73,
+     "kept_each_side_sec": [
+      0.25,
+      0.35
+     ]
+    },
+    {
+     "kind": "beat gap",
+     "old_start_sec": 49.57,
+     "old_end_sec": 50.97,
+     "old_len_sec": 1.4,
+     "new_len_sec": 0.9,
+     "removed_sec": 0.5,
+     "new_start_sec": 47.53,
+     "new_end_sec": 48.43,
+     "kept_each_side_sec": [
+      0.53,
+      0.37
+     ]
+    },
+    {
+     "kind": "internal",
+     "old_start_sec": 56.66,
+     "old_end_sec": 57.74,
+     "old_len_sec": 1.08,
+     "new_len_sec": 0.6,
+     "removed_sec": 0.48,
+     "new_start_sec": 54.12,
+     "new_end_sec": 54.72,
+     "kept_each_side_sec": [
+      0.24,
+      0.36
+     ]
+    },
+    {
+     "kind": "ellipsis",
+     "old_start_sec": 58.58,
+     "old_end_sec": 59.07,
+     "old_len_sec": 0.49,
+     "new_len_sec": 0.45,
+     "removed_sec": 0.04,
+     "new_start_sec": 55.56,
+     "new_end_sec": 56.01,
+     "kept_each_side_sec": [
+      0.28,
+      0.17
+     ]
+    }
+   ],
+   "pauses_left_over_target": [
+    {
+     "old_start_sec": 18.56,
+     "old_end_sec": 19.19,
+     "old_len_sec": 0.63,
+     "reason": "removal under 0.05 s not worth a splice"
+    },
+    {
+     "old_start_sec": 40.51,
+     "old_end_sec": 41.13,
+     "old_len_sec": 0.62,
+     "reason": "removal under 0.05 s not worth a splice"
+    },
+    {
+     "old_start_sec": 46.74,
+     "old_end_sec": 47.38,
+     "old_len_sec": 0.64,
+     "reason": "removal under 0.05 s not worth a splice"
+    }
+   ],
+   "beats": [
+    {
+     "beat": "B01",
+     "script": "WDG-EP01-SHORT-S02-B01",
+     "speechOnSec": 0.337,
+     "speechEndSec": 4.266,
+     "speechOnFrame": 10,
+     "speechEndFrame": 128,
+     "speechSpanSec": 3.929,
+     "check_vs_peak_runs_s": [
+      0.007,
+      0.004
+     ]
+    },
+    {
+     "beat": "B02",
+     "script": "WDG-EP01-SHORT-S02-B02",
+     "speechOnSec": 4.722,
+     "speechEndSec": 12.967,
+     "speechOnFrame": 142,
+     "speechEndFrame": 389,
+     "speechSpanSec": 8.245,
+     "check_vs_peak_runs_s": [
+      0.002,
+      0.003
+     ]
+    },
+    {
+     "beat": "B03",
+     "script": "WDG-EP01-SHORT-S02-B03",
+     "speechOnSec": 13.875,
+     "speechEndSec": 31.132,
+     "speechOnFrame": 416,
+     "speechEndFrame": 934,
+     "speechSpanSec": 17.257,
+     "check_vs_peak_runs_s": [
+      0.005,
+      0.008
+     ]
+    },
+    {
+     "beat": "B04",
+     "script": "WDG-EP01-SHORT-S02-B04",
+     "status": "removed R3 (user, 2 Nov 2026); ID kept, not reused; no audio in the R3 file"
+    },
+    {
+     "beat": "B05",
+     "script": "WDG-EP01-SHORT-S03-B01",
+     "speechOnSec": 32.045,
+     "speechEndSec": 47.524,
+     "speechOnFrame": 961,
+     "speechEndFrame": 1426,
+     "speechSpanSec": 15.479,
+     "check_vs_peak_runs_s": [
+      0.005,
+      0.006
+     ]
+    },
+    {
+     "beat": "B06",
+     "script": "WDG-EP01-SHORT-S03-B02",
+     "speechOnSec": 48.436,
+     "speechEndSec": 59.325,
+     "speechOnFrame": 1453,
+     "speechEndFrame": 1780,
+     "speechSpanSec": 10.889,
+     "check_vs_peak_runs_s": [
+      0.006,
+      0.005
+     ]
+    }
+   ],
+   "anchors": [
+    {
+     "id": "B01-a1",
+     "beat": "B01",
+     "phrase": "ความกลัวแบบนี้ มาจากตำนานจริง",
+     "onSec": 0.337,
+     "endSec": 2.84,
+     "source": "mapped from v3 (speech unchanged, cut offsets applied)"
+    },
+    {
+     "id": "B01-a2",
+     "beat": "B01",
+     "phrase": "เวนดิโก",
+     "onSec": 2.84,
+     "endSec": 4.266,
+     "source": "mapped from v3 (speech unchanged, cut offsets applied)"
+    },
+    {
+     "id": "B02-a1",
+     "beat": "B02",
+     "phrase": "เป็นเรื่องเล่าของชนพื้นเมืองกลุ่มภาษาอัลกอนเควียน",
+     "onSec": 4.722,
+     "endSec": 8.24,
+     "source": "mapped from v3 (speech unchanged, cut offsets applied)"
+    },
+    {
+     "id": "B02-a2",
+     "beat": "B02",
+     "phrase": "อย่างโอจิบเวและครี",
+     "onSec": 8.3,
+     "endSec": 9.66,
+     "source": "mapped from v3 (speech unchanged, cut offsets applied)"
+    },
+    {
+     "id": "B02-a3",
+     "beat": "B02",
+     "phrase": "ในแคนาดาและทางเหนือของสหรัฐฯ",
+     "onSec": 10.5,
+     "endSec": 12.74,
+     "source": "mapped from v3 (speech unchanged, cut offsets applied)"
+    },
+    {
+     "id": "B03-a1",
+     "beat": "B03",
+     "phrase": "ตามความเชื่อ มันคือวิญญาณหรือปีศาจแห่งฤดูหนาวและความหิว",
+     "onSec": 13.875,
+     "endSec": 19.22,
+     "source": "mapped from v3 (speech unchanged, cut offsets applied)"
+    },
+    {
+     "id": "B03-a2",
+     "beat": "B03",
+     "phrase": "ที่กินคน เล่ากันว่ายิ่งกิน ยิ่งหิว",
+     "onSec": 19.22,
+     "endSec": 23.45,
+     "source": "mapped from v3 (speech unchanged, cut offsets applied)"
+    },
+    {
+     "id": "B03-a3",
+     "beat": "B03",
+     "phrase": "ถ้าปล่อยให้ความหิวหรือความโลภครอบงำ",
+     "onSec": 28.1,
+     "endSec": 31.06,
+     "source": "mapped from v3 (speech unchanged, cut offsets applied)"
+    },
+    {
+     "id": "B05-a1",
+     "beat": "B05",
+     "phrase": "ราวปี หนึ่งพันแปดร้อยเจ็ดสิบเก้า",
+     "onSec": 32.285,
+     "endSec": 32.68,
+     "source": "mapped from v3 (speech unchanged, cut offsets applied)"
+    },
+    {
+     "id": "B05-a2",
+     "beat": "B05",
+     "phrase": "ในคดีที่มีการกินเนื้อคน",
+     "onSec": 39.28,
+     "endSec": 41.04,
+     "source": "mapped from v3 (speech unchanged, cut offsets applied)"
+    },
+    {
+     "id": "B05-a3",
+     "beat": "B05",
+     "phrase": "เขาอ้างว่าถูกวิญญาณเวนดิโกตามรังควาน",
+     "onSec": 41.6,
+     "endSec": 44.6,
+     "source": "mapped from v3 (speech unchanged, cut offsets applied)"
+    },
+    {
+     "id": "B05-a4",
+     "beat": "B05",
+     "phrase": "แต่ศาลตัดสินประหารชีวิตเขา",
+     "onSec": 45.2,
+     "endSec": 47.52,
+     "source": "mapped from v3 (speech unchanged, cut offsets applied)"
+    },
+    {
+     "id": "B06-a1",
+     "beat": "B06",
+     "phrase": "นักเขียนพื้นเมืองบางคนใช้เวนดิโก",
+     "onSec": 48.436,
+     "endSec": 51.09,
+     "source": "mapped from v3 (speech unchanged, cut offsets applied)"
+    },
+    {
+     "id": "B06-a2",
+     "beat": "B06",
+     "phrase": "แทนความโลภที่กินเท่าไหร่ก็ไม่พอ",
+     "onSec": 51.68,
+     "endSec": 54.06,
+     "source": "mapped from v3 (speech unchanged, cut offsets applied)"
+    },
+    {
+     "id": "B06-a3",
+     "beat": "B06",
+     "phrase": "ปีศาจตัวนี้",
+     "onSec": 54.72,
+     "endSec": 55.56,
+     "source": "mapped from v3 (speech unchanged, cut offsets applied)"
+    },
+    {
+     "id": "B06-a4",
+     "beat": "B06",
+     "phrase": "ที่คอยถามว่า",
+     "onSec": 57.49,
+     "endSec": 59.26,
+     "source": "mapped from v3 (speech unchanged, cut offsets applied)"
+    }
+   ],
+   "checks": {
+    "speech_samples_identical_outside_cuts": true,
+    "seams": [
+     {
+      "out_sec": 3.095,
+      "max_step_LSB_20ms": 7,
+      "median_step_LSB": 1.0
+     },
+     {
+      "out_sec": 13.695,
+      "max_step_LSB_20ms": 9,
+      "median_step_LSB": 1.0
+     },
+     {
+      "out_sec": 20.645,
+      "max_step_LSB_20ms": 16,
+      "median_step_LSB": 2.0
+     },
+     {
+      "out_sec": 23.675,
+      "max_step_LSB_20ms": 12,
+      "median_step_LSB": 2.0
+     },
+     {
+      "out_sec": 31.275,
+      "max_step_LSB_20ms": 7,
+      "median_step_LSB": 1.0
+     },
+     {
+      "out_sec": 41.375,
+      "max_step_LSB_20ms": 9,
+      "median_step_LSB": 1.0
+     },
+     {
+      "out_sec": 48.055,
+      "max_step_LSB_20ms": 8,
+      "median_step_LSB": 1.0
+     },
+     {
+      "out_sec": 54.355,
+      "max_step_LSB_20ms": 6,
+      "median_step_LSB": 1.0
+     },
+     {
+      "out_sec": 55.835,
+      "max_step_LSB_20ms": 5,
+      "median_step_LSB": 1.0
+     }
+    ],
+    "F0_median_Hz": {
+     "base": 162.7,
+     "variant": 162.7
+    },
+    "loudness_LUFS_integrated": {
+     "base": -16.4,
+     "variant": -16.4
+    },
+    "true_peak_dBFS": -1.5,
+    "retranscribe": "faster-whisper: text similarity vs the 1.0815 transcript 0.97 (pMID) / 0.98 (pTIGHT); removed phrases absent"
+   },
+   "editor_could_not_listen": "seams and pauses verified by measurement only"
+  },
+  "pTIGHT": {
+   "file": "projects/WDG-EP01-SHORT/audio/voice-lock-v2/WDG-EP01-SHORT_voice-lock-v2_alt-NARR-Achernar_mysterious_atempo108_R3_pTIGHT_full.wav",
+   "length_sec": 56.298,
+   "samples": 2702306,
+   "frames_at_30fps": 1689,
+   "removed_total_sec": 6.37,
+   "pauses_shortened": [
+    {
+     "kind": "internal",
+     "old_start_sec": 2.94,
+     "old_end_sec": 3.98,
+     "old_len_sec": 1.04,
+     "new_len_sec": 0.4,
+     "removed_sec": 0.64,
+     "new_start_sec": 2.94,
+     "new_end_sec": 3.34,
+     "kept_each_side_sec": [
+      0.18,
+      0.22
+     ]
+    },
+    {
+     "kind": "beat gap",
+     "old_start_sec": 13.41,
+     "old_end_sec": 14.47,
+     "old_len_sec": 1.06,
+     "new_len_sec": 0.65,
+     "removed_sec": 0.41,
+     "new_start_sec": 12.77,
+     "new_end_sec": 13.42,
+     "kept_each_side_sec": [
+      0.26,
+      0.39
+     ]
+    },
+    {
+     "kind": "internal",
+     "old_start_sec": 15.26,
+     "old_end_sec": 15.84,
+     "old_len_sec": 0.58,
+     "new_len_sec": 0.4,
+     "removed_sec": 0.18,
+     "new_start_sec": 14.21,
+     "new_end_sec": 14.61,
+     "kept_each_side_sec": [
+      0.24,
+      0.16
+     ]
+    },
+    {
+     "kind": "internal",
+     "old_start_sec": 18.56,
+     "old_end_sec": 19.19,
+     "old_len_sec": 0.63,
+     "new_len_sec": 0.4,
+     "removed_sec": 0.23,
+     "new_start_sec": 17.33,
+     "new_end_sec": 17.73,
+     "kept_each_side_sec": [
+      0.24,
+      0.16
+     ]
+    },
+    {
+     "kind": "internal",
+     "old_start_sec": 20.87,
+     "old_end_sec": 21.7,
+     "old_len_sec": 0.83,
+     "new_len_sec": 0.4,
+     "removed_sec": 0.43,
+     "new_start_sec": 19.41,
+     "new_end_sec": 19.81,
+     "kept_each_side_sec": [
+      0.13,
+      0.27
+     ]
+    },
+    {
+     "kind": "internal",
+     "old_start_sec": 23.23,
+     "old_end_sec": 23.68,
+     "old_len_sec": 0.45,
+     "new_len_sec": 0.4,
+     "removed_sec": 0.05,
+     "new_start_sec": 21.34,
+     "new_end_sec": 21.74,
+     "kept_each_side_sec": [
+      0.21,
+      0.19
+     ]
+    },
+    {
+     "kind": "internal",
+     "old_start_sec": 24.35,
+     "old_end_sec": 25.34,
+     "old_len_sec": 0.99,
+     "new_len_sec": 0.4,
+     "removed_sec": 0.59,
+     "new_start_sec": 22.41,
+     "new_end_sec": 22.81,
+     "kept_each_side_sec": [
+      0.18,
+      0.22
+     ]
+    },
+    {
+     "kind": "internal",
+     "old_start_sec": 28.79,
+     "old_end_sec": 29.33,
+     "old_len_sec": 0.54,
+     "new_len_sec": 0.4,
+     "removed_sec": 0.14,
+     "new_start_sec": 26.26,
+     "new_end_sec": 26.66,
+     "kept_each_side_sec": [
+      0.25,
+      0.15
+     ]
+    },
+    {
+     "kind": "beat gap",
+     "old_start_sec": 32.36,
+     "old_end_sec": 33.76,
+     "old_len_sec": 1.4,
+     "new_len_sec": 0.65,
+     "removed_sec": 0.75,
+     "new_start_sec": 29.69,
+     "new_end_sec": 30.34,
+     "kept_each_side_sec": [
+      0.15,
+      0.5
+     ]
+    },
+    {
+     "kind": "internal",
+     "old_start_sec": 35.92,
+     "old_end_sec": 36.42,
+     "old_len_sec": 0.5,
+     "new_len_sec": 0.4,
+     "removed_sec": 0.1,
+     "new_start_sec": 32.5,
+     "new_end_sec": 32.9,
+     "kept_each_side_sec": [
+      0.14,
+      0.26
+     ]
+    },
+    {
+     "kind": "internal",
+     "old_start_sec": 38.56,
+     "old_end_sec": 39.07,
+     "old_len_sec": 0.51,
+     "new_len_sec": 0.4,
+     "removed_sec": 0.11,
+     "new_start_sec": 35.04,
+     "new_end_sec": 35.44,
+     "kept_each_side_sec": [
+      0.27,
+      0.13
+     ]
+    },
+    {
+     "kind": "internal",
+     "old_start_sec": 40.51,
+     "old_end_sec": 41.13,
+     "old_len_sec": 0.62,
+     "new_len_sec": 0.4,
+     "removed_sec": 0.22,
+     "new_start_sec": 36.88,
+     "new_end_sec": 37.28,
+     "kept_each_side_sec": [
+      0.13,
+      0.27
+     ]
+    },
+    {
+     "kind": "internal",
+     "old_start_sec": 42.85,
+     "old_end_sec": 43.77,
+     "old_len_sec": 0.92,
+     "new_len_sec": 0.4,
+     "removed_sec": 0.52,
+     "new_start_sec": 39.0,
+     "new_end_sec": 39.4,
+     "kept_each_side_sec": [
+      0.24,
+      0.16
+     ]
+    },
+    {
+     "kind": "internal",
+     "old_start_sec": 46.74,
+     "old_end_sec": 47.38,
+     "old_len_sec": 0.64,
+     "new_len_sec": 0.4,
+     "removed_sec": 0.24,
+     "new_start_sec": 42.37,
+     "new_end_sec": 42.77,
+     "kept_each_side_sec": [
+      0.28,
+      0.12
+     ]
+    },
+    {
+     "kind": "beat gap",
+     "old_start_sec": 49.57,
+     "old_end_sec": 50.97,
+     "old_len_sec": 1.4,
+     "new_len_sec": 0.65,
+     "removed_sec": 0.75,
+     "new_start_sec": 44.96,
+     "new_end_sec": 45.61,
+     "kept_each_side_sec": [
+      0.23,
+      0.42
+     ]
+    },
+    {
+     "kind": "internal",
+     "old_start_sec": 53.63,
+     "old_end_sec": 54.22,
+     "old_len_sec": 0.59,
+     "new_len_sec": 0.4,
+     "removed_sec": 0.19,
+     "new_start_sec": 48.27,
+     "new_end_sec": 48.67,
+     "kept_each_side_sec": [
+      0.24,
+      0.16
+     ]
+    },
+    {
+     "kind": "internal",
+     "old_start_sec": 56.66,
+     "old_end_sec": 57.74,
+     "old_len_sec": 1.08,
+     "new_len_sec": 0.4,
+     "removed_sec": 0.68,
+     "new_start_sec": 51.11,
+     "new_end_sec": 51.51,
+     "kept_each_side_sec": [
+      0.15,
+      0.25
+     ]
+    },
+    {
+     "kind": "ellipsis",
+     "old_start_sec": 58.58,
+     "old_end_sec": 59.07,
+     "old_len_sec": 0.49,
+     "new_len_sec": 0.35,
+     "removed_sec": 0.14,
+     "new_start_sec": 52.35,
+     "new_end_sec": 52.7,
+     "kept_each_side_sec": [
+      0.22,
+      0.13
+     ]
+    }
+   ],
+   "pauses_left_over_target": [
+    {
+     "old_start_sec": 10.63,
+     "old_end_sec": 11.05,
+     "old_len_sec": 0.42,
+     "reason": "removal under 0.05 s not worth a splice"
+    },
+    {
+     "old_start_sec": 26.57,
+     "old_end_sec": 27.0,
+     "old_len_sec": 0.43,
+     "reason": "removal under 0.05 s not worth a splice"
+    }
+   ],
+   "beats": [
+    {
+     "beat": "B01",
+     "script": "WDG-EP01-SHORT-S02-B01",
+     "speechOnSec": 0.337,
+     "speechEndSec": 4.066,
+     "speechOnFrame": 10,
+     "speechEndFrame": 122,
+     "speechSpanSec": 3.729,
+     "check_vs_peak_runs_s": [
+      0.007,
+      0.004
+     ]
+    },
+    {
+     "beat": "B02",
+     "script": "WDG-EP01-SHORT-S02-B02",
+     "speechOnSec": 4.522,
+     "speechEndSec": 12.767,
+     "speechOnFrame": 136,
+     "speechEndFrame": 383,
+     "speechSpanSec": 8.245,
+     "check_vs_peak_runs_s": [
+      0.002,
+      0.003
+     ]
+    },
+    {
+     "beat": "B03",
+     "script": "WDG-EP01-SHORT-S02-B03",
+     "speechOnSec": 13.425,
+     "speechEndSec": 29.682,
+     "speechOnFrame": 403,
+     "speechEndFrame": 890,
+     "speechSpanSec": 16.257,
+     "check_vs_peak_runs_s": [
+      0.005,
+      0.008
+     ]
+    },
+    {
+     "beat": "B04",
+     "script": "WDG-EP01-SHORT-S02-B04",
+     "status": "removed R3 (user, 2 Nov 2026); ID kept, not reused; no audio in the R3 file"
+    },
+    {
+     "beat": "B05",
+     "script": "WDG-EP01-SHORT-S03-B01",
+     "speechOnSec": 30.345,
+     "speechEndSec": 44.954,
+     "speechOnFrame": 910,
+     "speechEndFrame": 1349,
+     "speechSpanSec": 14.609,
+     "check_vs_peak_runs_s": [
+      0.005,
+      0.006
+     ]
+    },
+    {
+     "beat": "B06",
+     "script": "WDG-EP01-SHORT-S03-B02",
+     "speechOnSec": 45.616,
+     "speechEndSec": 56.015,
+     "speechOnFrame": 1368,
+     "speechEndFrame": 1680,
+     "speechSpanSec": 10.399,
+     "check_vs_peak_runs_s": [
+      0.006,
+      0.005
+     ]
+    }
+   ],
+   "anchors": [
+    {
+     "id": "B01-a1",
+     "beat": "B01",
+     "phrase": "ความกลัวแบบนี้ มาจากตำนานจริง",
+     "onSec": 0.337,
+     "endSec": 2.84,
+     "source": "mapped from v3 (speech unchanged, cut offsets applied)"
+    },
+    {
+     "id": "B01-a2",
+     "beat": "B01",
+     "phrase": "เวนดิโก",
+     "onSec": 2.84,
+     "endSec": 4.066,
+     "source": "mapped from v3 (speech unchanged, cut offsets applied)"
+    },
+    {
+     "id": "B02-a1",
+     "beat": "B02",
+     "phrase": "เป็นเรื่องเล่าของชนพื้นเมืองกลุ่มภาษาอัลกอนเควียน",
+     "onSec": 4.522,
+     "endSec": 8.04,
+     "source": "mapped from v3 (speech unchanged, cut offsets applied)"
+    },
+    {
+     "id": "B02-a2",
+     "beat": "B02",
+     "phrase": "อย่างโอจิบเวและครี",
+     "onSec": 8.1,
+     "endSec": 9.46,
+     "source": "mapped from v3 (speech unchanged, cut offsets applied)"
+    },
+    {
+     "id": "B02-a3",
+     "beat": "B02",
+     "phrase": "ในแคนาดาและทางเหนือของสหรัฐฯ",
+     "onSec": 10.3,
+     "endSec": 12.54,
+     "source": "mapped from v3 (speech unchanged, cut offsets applied)"
+    },
+    {
+     "id": "B03-a1",
+     "beat": "B03",
+     "phrase": "ตามความเชื่อ มันคือวิญญาณหรือปีศาจแห่งฤดูหนาวและความหิว",
+     "onSec": 13.425,
+     "endSec": 18.36,
+     "source": "mapped from v3 (speech unchanged, cut offsets applied)"
+    },
+    {
+     "id": "B03-a2",
+     "beat": "B03",
+     "phrase": "ที่กินคน เล่ากันว่ายิ่งกิน ยิ่งหิว",
+     "onSec": 18.36,
+     "endSec": 22.34,
+     "source": "mapped from v3 (speech unchanged, cut offsets applied)"
+    },
+    {
+     "id": "B03-a3",
+     "beat": "B03",
+     "phrase": "ถ้าปล่อยให้ความหิวหรือความโลภครอบงำ",
+     "onSec": 26.65,
+     "endSec": 29.61,
+     "source": "mapped from v3 (speech unchanged, cut offsets applied)"
+    },
+    {
+     "id": "B05-a1",
+     "beat": "B05",
+     "phrase": "ราวปี หนึ่งพันแปดร้อยเจ็ดสิบเก้า",
+     "onSec": 30.585,
+     "endSec": 30.98,
+     "source": "mapped from v3 (speech unchanged, cut offsets applied)"
+    },
+    {
+     "id": "B05-a2",
+     "beat": "B05",
+     "phrase": "ในคดีที่มีการกินเนื้อคน",
+     "onSec": 37.15,
+     "endSec": 38.91,
+     "source": "mapped from v3 (speech unchanged, cut offsets applied)"
+    },
+    {
+     "id": "B05-a3",
+     "beat": "B05",
+     "phrase": "เขาอ้างว่าถูกวิญญาณเวนดิโกตามรังควาน",
+     "onSec": 39.27,
+     "endSec": 42.27,
+     "source": "mapped from v3 (speech unchanged, cut offsets applied)"
+    },
+    {
+     "id": "B05-a4",
+     "beat": "B05",
+     "phrase": "แต่ศาลตัดสินประหารชีวิตเขา",
+     "onSec": 42.63,
+     "endSec": 44.95,
+     "source": "mapped from v3 (speech unchanged, cut offsets applied)"
+    },
+    {
+     "id": "B06-a1",
+     "beat": "B06",
+     "phrase": "นักเขียนพื้นเมืองบางคนใช้เวนดิโก",
+     "onSec": 45.616,
+     "endSec": 48.27,
+     "source": "mapped from v3 (speech unchanged, cut offsets applied)"
+    },
+    {
+     "id": "B06-a2",
+     "beat": "B06",
+     "phrase": "แทนความโลภที่กินเท่าไหร่ก็ไม่พอ",
+     "onSec": 48.67,
+     "endSec": 51.05,
+     "source": "mapped from v3 (speech unchanged, cut offsets applied)"
+    },
+    {
+     "id": "B06-a3",
+     "beat": "B06",
+     "phrase": "ปีศาจตัวนี้",
+     "onSec": 51.51,
+     "endSec": 52.35,
+     "source": "mapped from v3 (speech unchanged, cut offsets applied)"
+    },
+    {
+     "id": "B06-a4",
+     "beat": "B06",
+     "phrase": "ที่คอยถามว่า",
+     "onSec": 54.18,
+     "endSec": 55.95,
+     "source": "mapped from v3 (speech unchanged, cut offsets applied)"
+    }
+   ],
+   "checks": {
+    "speech_samples_identical_outside_cuts": true,
+    "seams": [
+     {
+      "out_sec": 3.115,
+      "max_step_LSB_20ms": 44,
+      "median_step_LSB": 1.0
+     },
+     {
+      "out_sec": 13.025,
+      "max_step_LSB_20ms": 11,
+      "median_step_LSB": 2.0
+     },
+     {
+      "out_sec": 14.445,
+      "max_step_LSB_20ms": 11,
+      "median_step_LSB": 2.0
+     },
+     {
+      "out_sec": 17.565,
+      "max_step_LSB_20ms": 13,
+      "median_step_LSB": 2.0
+     },
+     {
+      "out_sec": 19.535,
+      "max_step_LSB_20ms": 11,
+      "median_step_LSB": 2.0
+     },
+     {
+      "out_sec": 21.545,
+      "max_step_LSB_20ms": 49,
+      "median_step_LSB": 1.0
+     },
+     {
+      "out_sec": 22.585,
+      "max_step_LSB_20ms": 8,
+      "median_step_LSB": 1.0
+     },
+     {
+      "out_sec": 26.505,
+      "max_step_LSB_20ms": 14,
+      "median_step_LSB": 2.0
+     },
+     {
+      "out_sec": 29.835,
+      "max_step_LSB_20ms": 5,
+      "median_step_LSB": 1.0
+     },
+     {
+      "out_sec": 32.635,
+      "max_step_LSB_20ms": 9,
+      "median_step_LSB": 1.0
+     },
+     {
+      "out_sec": 35.305,
+      "max_step_LSB_20ms": 19,
+      "median_step_LSB": 2.0
+     },
+     {
+      "out_sec": 37.005,
+      "max_step_LSB_20ms": 7,
+      "median_step_LSB": 1.0
+     },
+     {
+      "out_sec": 39.235,
+      "max_step_LSB_20ms": 7,
+      "median_step_LSB": 1.0
+     },
+     {
+      "out_sec": 42.645,
+      "max_step_LSB_20ms": 9,
+      "median_step_LSB": 1.0
+     },
+     {
+      "out_sec": 45.185,
+      "max_step_LSB_20ms": 6,
+      "median_step_LSB": 1.0
+     },
+     {
+      "out_sec": 48.505,
+      "max_step_LSB_20ms": 7,
+      "median_step_LSB": 1.0
+     },
+     {
+      "out_sec": 51.255,
+      "max_step_LSB_20ms": 6,
+      "median_step_LSB": 1.0
+     },
+     {
+      "out_sec": 52.565,
+      "max_step_LSB_20ms": 7,
+      "median_step_LSB": 1.0
+     }
+    ],
+    "F0_median_Hz": {
+     "base": 162.7,
+     "variant": 162.7
+    },
+    "loudness_LUFS_integrated": {
+     "base": -16.4,
+     "variant": -16.4
+    },
+    "true_peak_dBFS": -1.5,
+    "retranscribe": "faster-whisper: text similarity vs the 1.0815 transcript 0.97 (pMID) / 0.98 (pTIGHT); removed phrases absent"
+   },
+   "editor_could_not_listen": "seams and pauses verified by measurement only"
+  }
+ },
+ "method": [
+  "splice-raw.py on the 1.0815 file with the cut list in plan JSON (copies in out/wendigo-voice/tts/v4/tools/)",
+  "plan_v5.py: silences, targets and junction choice as in rules",
+  "beat and phrase times: v3 times mapped through the cuts; beat edges checked against peak-rule runs of each output (deviation in check_vs_peak_runs_s)"
+ ],
+ "open": [
+  "USER: pick pMID or pTIGHT by ear (the Editor cannot listen); the seams at the listed out_sec values are the first places to listen",
+  "USER: three pMID pauses (0.62-0.64 s) and three pTIGHT pauses (0.42-0.43 s) are left, each within 45 ms of target; say if they must be cut",
+  "FILM: narrator lengths now pMID 59.61 s and pTIGHT 56.30 s (base 62.67 s); re-time if one is chosen"
+ ]
+}

@@ -1,0 +1,1573 @@
+{
+ "deliverable": "WDG-EP01-SHORT",
+ "revision": "v6",
+ "date": "2026-11-02",
+ "editor_listened": false,
+ "base": {
+  "pMID": "WDG-EP01-SHORT_voice-lock-v2_alt-NARR-Achernar_mysterious_atempo108_R3_pMID2_full.wav (voice-measure-v5 pMID2)",
+  "pTIGHT": "WDG-EP01-SHORT_voice-lock-v2_alt-NARR-Achernar_mysterious_atempo108_R3_pTIGHT2_full.wav (voice-measure-v5 pTIGHT2)"
+ },
+ "change": "(1) B02 word gap between อย่างโอจิบเวและครี and ในแคนาดา: the join is cut into the decay of the word-final tail and the room tone before the nasal onset of ใน; the nasal and the vowel are not touched. Sample-level gap E->O 0.133 s -> 0.053 s (both variants). (2) Every mid-sentence silence over 0.300 s (sample level, 12 per variant) is closed to 0.150 s, room tone kept each side.",
+ "method": [
+  "Silence = run of samples with |x| < 300 (peak-rule threshold, as in v2-v5) between two speech samples; measured at sample level, not in 10 ms blocks.",
+  "Classes (script.md VO quotes + Whisper tokens, checked by hand): mid-sentence (no punctuation, no ellipsis, no line break, no beat change) is cut; ellipsis (…), sentence end (line break) and beat edge are not.",
+  "Cuts: 10 ms equal-power crossfade (out-side tail + pre-roll of the in-side), splice-raw.py from the previous pass. Mid cuts keep 0.050-0.100 s of room tone before the cut, the rest after; the cut point is the quietest junction in that range.",
+  "The B02 cut keeps 10 ms of decaying tail after the last speech sample of ครี and 2 ms of room tone before the nasal onset of ใน (10.276 s in the MID source).",
+  "Mid silences that v5 did not list (sample-level 0.314-0.315 s, 10 ms block measure 0.29-0.30 s): 6.45 s and 42.29 s in pMID2, 6.25 s and 39.96 s in pTIGHT2. Closed under the rule; they are the only additions to the v5 list.",
+  "Times for beats and anchors: source times mapped through the cuts; onsets/ends snapped to the energy (peak-rule) edges of pauses of at least 50 ms; overrides listed per anchor (edgeSource = override)."
+ ],
+ "variants": {
+  "pMID3": {
+   "file": "projects/WDG-EP01-SHORT/audio/voice-lock-v2/WDG-EP01-SHORT_voice-lock-v2_alt-NARR-Achernar_mysterious_atempo108_R3_pMID3_full.wav",
+   "derived_from": "projects/WDG-EP01-SHORT/audio/voice-lock-v2/WDG-EP01-SHORT_voice-lock-v2_alt-NARR-Achernar_mysterious_atempo108_R3_pMID2_full.wav",
+   "derived_from_sha256": "5ff846069a601eb3941eae64e8d49c20ddd39134846d1bcd6b5fc725aac2e41f",
+   "sha256": "1b8b7bf6584e85236bed593020b6d5e80356435da73c5955dfb6867780293434",
+   "samples": 2641106,
+   "length_sec": 55.023,
+   "length_before_sec": 59.308,
+   "removed_sec": 4.285,
+   "speech_samples_identical_outside_crossfades": true,
+   "crossfade_ms": 10,
+   "crossfade_blend_matches_formula": true,
+   "loudness": {
+    "before": {
+     "I_LUFS": -16.4,
+     "LRA_LU": 3.4,
+     "true_peak_dBFS": -1.5
+    },
+    "after": {
+     "I_LUFS": -16.3,
+     "LRA_LU": 3.1,
+     "true_peak_dBFS": -1.5
+    },
+    "integrated_change_LU": 0.1
+   },
+   "cuts": [
+    {
+     "id": "MID-6.4456",
+     "kind": "mid-sentence",
+     "old_s": [
+      6.4456,
+      6.7596
+     ],
+     "old_len_s": 0.3139,
+     "new_s": [
+      6.4456,
+      6.5957
+     ],
+     "new_len_s": 0.15,
+     "removed_s": 0.1639,
+     "kept_before_cut_s": 0.088,
+     "kept_after_cut_s": 0.062,
+     "seam": {
+      "join_max_step_LSB": 6,
+      "source_max_step_same_windows_LSB": 8,
+      "step_at_join_start_LSB": 1,
+      "step_at_join_end_LSB": 5,
+      "level_before_dBFS": -65.0,
+      "level_after_dBFS": -64.8,
+      "source_level_before_dBFS": -65.0,
+      "source_level_after_dBFS": -64.8,
+      "flag_over_30_LSB": false
+     }
+    },
+    {
+     "id": "B02-gap",
+     "kind": "B02 word gap",
+     "old_s": [
+      10.183,
+      10.3158
+     ],
+     "old_len_s": 0.1329,
+     "new_s": [
+      10.019,
+      10.0719
+     ],
+     "new_len_s": 0.0529,
+     "removed_s": 0.08,
+     "kept_before_cut_s": 0.01,
+     "kept_after_cut_s": 0.0429,
+     "seam": {
+      "join_max_step_LSB": 50,
+      "source_max_step_same_windows_LSB": 50,
+      "step_at_join_start_LSB": 31,
+      "step_at_join_end_LSB": 3,
+      "level_before_dBFS": -47.8,
+      "level_after_dBFS": -52.7,
+      "source_level_before_dBFS": -47.8,
+      "source_level_after_dBFS": -52.7,
+      "flag_over_30_LSB": true
+     }
+    },
+    {
+     "id": "MID-14.3536",
+     "kind": "mid-sentence",
+     "old_s": [
+      14.3536,
+      14.9473
+     ],
+     "old_len_s": 0.5937,
+     "new_s": [
+      14.1097,
+      14.2597
+     ],
+     "new_len_s": 0.15,
+     "removed_s": 0.4437,
+     "kept_before_cut_s": 0.0515,
+     "kept_after_cut_s": 0.0985,
+     "seam": {
+      "join_max_step_LSB": 8,
+      "source_max_step_same_windows_LSB": 8,
+      "step_at_join_start_LSB": 1,
+      "step_at_join_end_LSB": 2,
+      "level_before_dBFS": -59.5,
+      "level_after_dBFS": -60.3,
+      "source_level_before_dBFS": -59.5,
+      "source_level_after_dBFS": -60.3,
+      "flag_over_30_LSB": false
+     }
+    },
+    {
+     "id": "MID-17.6586",
+     "kind": "mid-sentence",
+     "old_s": [
+      17.6586,
+      18.2974
+     ],
+     "old_len_s": 0.6388,
+     "new_s": [
+      16.971,
+      17.121
+     ],
+     "new_len_s": 0.15,
+     "removed_s": 0.4888,
+     "kept_before_cut_s": 0.05,
+     "kept_after_cut_s": 0.1,
+     "seam": {
+      "join_max_step_LSB": 7,
+      "source_max_step_same_windows_LSB": 7,
+      "step_at_join_start_LSB": 0,
+      "step_at_join_end_LSB": 3,
+      "level_before_dBFS": -65.2,
+      "level_after_dBFS": -68.0,
+      "source_level_before_dBFS": -65.2,
+      "source_level_after_dBFS": -68.0,
+      "flag_over_30_LSB": false
+     }
+    },
+    {
+     "id": "MID-19.9661",
+     "kind": "mid-sentence",
+     "old_s": [
+      19.9661,
+      20.5751
+     ],
+     "old_len_s": 0.609,
+     "new_s": [
+      18.7897,
+      18.9398
+     ],
+     "new_len_s": 0.15,
+     "removed_s": 0.459,
+     "kept_before_cut_s": 0.069,
+     "kept_after_cut_s": 0.081,
+     "seam": {
+      "join_max_step_LSB": 8,
+      "source_max_step_same_windows_LSB": 9,
+      "step_at_join_start_LSB": 3,
+      "step_at_join_end_LSB": 0,
+      "level_before_dBFS": -63.1,
+      "level_after_dBFS": -65.5,
+      "source_level_before_dBFS": -63.1,
+      "source_level_after_dBFS": -65.5,
+      "flag_over_30_LSB": false
+     }
+    },
+    {
+     "id": "MID-25.0436",
+     "kind": "mid-sentence",
+     "old_s": [
+      25.0436,
+      25.4843
+     ],
+     "old_len_s": 0.4407,
+     "new_s": [
+      23.4082,
+      23.5582
+     ],
+     "new_len_s": 0.15,
+     "removed_s": 0.2907,
+     "kept_before_cut_s": 0.1,
+     "kept_after_cut_s": 0.05,
+     "seam": {
+      "join_max_step_LSB": 5,
+      "source_max_step_same_windows_LSB": 6,
+      "step_at_join_start_LSB": 1,
+      "step_at_join_end_LSB": 3,
+      "level_before_dBFS": -63.5,
+      "level_after_dBFS": -75.4,
+      "source_level_before_dBFS": -63.5,
+      "source_level_after_dBFS": -75.4,
+      "flag_over_30_LSB": false
+     }
+    },
+    {
+     "id": "MID-27.2604",
+     "kind": "mid-sentence",
+     "old_s": [
+      27.2604,
+      27.8121
+     ],
+     "old_len_s": 0.5517,
+     "new_s": [
+      25.3343,
+      25.4843
+     ],
+     "new_len_s": 0.15,
+     "removed_s": 0.4017,
+     "kept_before_cut_s": 0.09,
+     "kept_after_cut_s": 0.06,
+     "seam": {
+      "join_max_step_LSB": 8,
+      "source_max_step_same_windows_LSB": 8,
+      "step_at_join_start_LSB": 2,
+      "step_at_join_end_LSB": 3,
+      "level_before_dBFS": -58.3,
+      "level_after_dBFS": -63.9,
+      "source_level_before_dBFS": -58.3,
+      "source_level_after_dBFS": -63.9,
+      "flag_over_30_LSB": false
+     }
+    },
+    {
+     "id": "MID-36.5326",
+     "kind": "mid-sentence",
+     "old_s": [
+      36.5326,
+      37.0583
+     ],
+     "old_len_s": 0.5256,
+     "new_s": [
+      34.2049,
+      34.3549
+     ],
+     "new_len_s": 0.15,
+     "removed_s": 0.3756,
+     "kept_before_cut_s": 0.092,
+     "kept_after_cut_s": 0.058,
+     "seam": {
+      "join_max_step_LSB": 42,
+      "source_max_step_same_windows_LSB": 43,
+      "step_at_join_start_LSB": 2,
+      "step_at_join_end_LSB": 1,
+      "level_before_dBFS": -50.3,
+      "level_after_dBFS": -46.9,
+      "source_level_before_dBFS": -50.3,
+      "source_level_after_dBFS": -46.9,
+      "flag_over_30_LSB": true
+     }
+    },
+    {
+     "id": "MID-38.4831",
+     "kind": "mid-sentence",
+     "old_s": [
+      38.4831,
+      39.1194
+     ],
+     "old_len_s": 0.6364,
+     "new_s": [
+      35.7797,
+      35.9297
+     ],
+     "new_len_s": 0.15,
+     "removed_s": 0.4864,
+     "kept_before_cut_s": 0.083,
+     "kept_after_cut_s": 0.067,
+     "seam": {
+      "join_max_step_LSB": 6,
+      "source_max_step_same_windows_LSB": 5,
+      "step_at_join_start_LSB": 1,
+      "step_at_join_end_LSB": 1,
+      "level_before_dBFS": -68.1,
+      "level_after_dBFS": -78.2,
+      "source_level_before_dBFS": -68.1,
+      "source_level_after_dBFS": -78.2,
+      "flag_over_30_LSB": false
+     }
+    },
+    {
+     "id": "MID-42.2913",
+     "kind": "mid-sentence",
+     "old_s": [
+      42.2913,
+      42.6061
+     ],
+     "old_len_s": 0.3148,
+     "new_s": [
+      39.1016,
+      39.2516
+     ],
+     "new_len_s": 0.15,
+     "removed_s": 0.1648,
+     "kept_before_cut_s": 0.056,
+     "kept_after_cut_s": 0.094,
+     "seam": {
+      "join_max_step_LSB": 8,
+      "source_max_step_same_windows_LSB": 9,
+      "step_at_join_start_LSB": 7,
+      "step_at_join_end_LSB": 2,
+      "level_before_dBFS": -60.7,
+      "level_after_dBFS": -63.4,
+      "source_level_before_dBFS": -60.7,
+      "source_level_after_dBFS": -63.4,
+      "flag_over_30_LSB": false
+     }
+    },
+    {
+     "id": "MID-45.5514",
+     "kind": "mid-sentence",
+     "old_s": [
+      45.5514,
+      45.9458
+     ],
+     "old_len_s": 0.3944,
+     "new_s": [
+      42.1969,
+      42.3469
+     ],
+     "new_len_s": 0.15,
+     "removed_s": 0.2444,
+     "kept_before_cut_s": 0.0985,
+     "kept_after_cut_s": 0.0515,
+     "seam": {
+      "join_max_step_LSB": 5,
+      "source_max_step_same_windows_LSB": 5,
+      "step_at_join_start_LSB": 4,
+      "step_at_join_end_LSB": 1,
+      "level_before_dBFS": -61.8,
+      "level_after_dBFS": -74.2,
+      "source_level_before_dBFS": -61.8,
+      "source_level_after_dBFS": -74.2,
+      "flag_over_30_LSB": false
+     }
+    },
+    {
+     "id": "MID-49.4717",
+     "kind": "mid-sentence",
+     "old_s": [
+      49.4717,
+      49.8566
+     ],
+     "old_len_s": 0.3849,
+     "new_s": [
+      45.8728,
+      46.0228
+     ],
+     "new_len_s": 0.15,
+     "removed_s": 0.2349,
+     "kept_before_cut_s": 0.0725,
+     "kept_after_cut_s": 0.0775,
+     "seam": {
+      "join_max_step_LSB": 16,
+      "source_max_step_same_windows_LSB": 16,
+      "step_at_join_start_LSB": 5,
+      "step_at_join_end_LSB": 2,
+      "level_before_dBFS": -53.0,
+      "level_after_dBFS": -68.6,
+      "source_level_before_dBFS": -53.0,
+      "source_level_after_dBFS": -68.6,
+      "flag_over_30_LSB": false
+     }
+    },
+    {
+     "id": "MID-50.7850",
+     "kind": "mid-sentence",
+     "old_s": [
+      50.785,
+      51.3861
+     ],
+     "old_len_s": 0.6011,
+     "new_s": [
+      46.9511,
+      47.1011
+     ],
+     "new_len_s": 0.15,
+     "removed_s": 0.4511,
+     "kept_before_cut_s": 0.095,
+     "kept_after_cut_s": 0.055,
+     "seam": {
+      "join_max_step_LSB": 7,
+      "source_max_step_same_windows_LSB": 8,
+      "step_at_join_start_LSB": 4,
+      "step_at_join_end_LSB": 0,
+      "level_before_dBFS": -55.9,
+      "level_after_dBFS": -70.4,
+      "source_level_before_dBFS": -55.9,
+      "source_level_after_dBFS": -70.4,
+      "flag_over_30_LSB": false
+     }
+    }
+   ],
+   "silences_over_0_3s_remaining": [
+    {
+     "start_s": 2.9398,
+     "end_s": 3.5413,
+     "len_s": 0.6015
+    },
+    {
+     "start_s": 4.2658,
+     "end_s": 4.7216,
+     "len_s": 0.4558
+    },
+    {
+     "start_s": 12.423,
+     "end_s": 13.3315,
+     "len_s": 0.9085
+    },
+    {
+     "start_s": 20.4566,
+     "end_s": 20.9244,
+     "len_s": 0.4678
+    },
+    {
+     "start_s": 21.5819,
+     "end_s": 22.1881,
+     "len_s": 0.6062
+    },
+    {
+     "start_s": 28.5041,
+     "end_s": 29.4168,
+     "len_s": 0.9127
+    },
+    {
+     "start_s": 31.5713,
+     "end_s": 32.0745,
+     "len_s": 0.5032
+    },
+    {
+     "start_s": 37.6324,
+     "end_s": 38.2426,
+     "len_s": 0.6102
+    },
+    {
+     "start_s": 41.0441,
+     "end_s": 41.6927,
+     "len_s": 0.6486
+    },
+    {
+     "start_s": 43.6251,
+     "end_s": 44.5371,
+     "len_s": 0.912
+    },
+    {
+     "start_s": 49.5312,
+     "end_s": 50.1416,
+     "len_s": 0.6104
+    },
+    {
+     "start_s": 50.9677,
+     "end_s": 51.4252,
+     "len_s": 0.4575
+    }
+   ],
+   "beats": [
+    {
+     "beat": "B01",
+     "speechOnSec": 0.336,
+     "speechEndSec": 4.266,
+     "speechOnFrame": 10,
+     "speechEndFrame": 128,
+     "speechSpanSec": 3.929
+    },
+    {
+     "beat": "B02",
+     "speechOnSec": 4.722,
+     "speechEndSec": 12.423,
+     "speechOnFrame": 142,
+     "speechEndFrame": 373,
+     "speechSpanSec": 7.701
+    },
+    {
+     "beat": "B03",
+     "speechOnSec": 13.331,
+     "speechEndSec": 28.504,
+     "speechOnFrame": 400,
+     "speechEndFrame": 855,
+     "speechSpanSec": 15.173
+    },
+    {
+     "beat": "B05",
+     "speechOnSec": 29.417,
+     "speechEndSec": 43.625,
+     "speechOnFrame": 883,
+     "speechEndFrame": 1309,
+     "speechSpanSec": 14.208,
+     "note": "speechOnSec is a click at the beat start (peak rule); the first word follows 0.30 s later at firstWordOnSec",
+     "firstWordOnSec": 29.713
+    },
+    {
+     "beat": "B06",
+     "speechOnSec": 44.537,
+     "speechEndSec": 54.74,
+     "speechOnFrame": 1336,
+     "speechEndFrame": 1642,
+     "speechSpanSec": 10.203
+    }
+   ],
+   "anchors": [
+    {
+     "id": "B01-a1",
+     "beat": "B01",
+     "phrase": "ความกลัวแบบนี้ มาจากตำนานจริง",
+     "onSec": 0.336,
+     "endSec": 2.94,
+     "edgeSource": [
+      "override",
+      "pause"
+     ],
+     "snapMs": [
+      -1,
+      100
+     ],
+     "srcOnSec": 0.337,
+     "srcEndSec": 2.84
+    },
+    {
+     "id": "B01-a2",
+     "beat": "B01",
+     "phrase": "เวนดิโก",
+     "onSec": 3.541,
+     "endSec": 4.266,
+     "edgeSource": [
+      "pause",
+      "pause"
+     ],
+     "snapMs": [
+      701,
+      0
+     ],
+     "srcOnSec": 2.84,
+     "srcEndSec": 4.266
+    },
+    {
+     "id": "B02-a1",
+     "beat": "B02",
+     "phrase": "เป็นเรื่องเล่าของชนพื้นเมืองกลุ่มภาษาอัลกอนเควียน",
+     "onSec": 4.722,
+     "endSec": 8.003,
+     "edgeSource": [
+      "pause",
+      "pause"
+     ],
+     "snapMs": [
+      0,
+      -73
+     ],
+     "srcOnSec": 4.722,
+     "srcEndSec": 8.24
+    },
+    {
+     "id": "B02-a2",
+     "beat": "B02",
+     "phrase": "อย่างโอจิบเวและครี",
+     "onSec": 8.188,
+     "endSec": 10.019,
+     "edgeSource": [
+      "pause",
+      "override"
+     ],
+     "snapMs": [
+      52,
+      -7
+     ],
+     "srcOnSec": 8.3,
+     "srcEndSec": 10.19
+    },
+    {
+     "id": "B02-a3",
+     "beat": "B02",
+     "phrase": "ในแคนาดาและทางเหนือของสหรัฐฯ",
+     "onSec": 10.072,
+     "endSec": 12.423,
+     "edgeSource": [
+      "override",
+      "pause"
+     ],
+     "snapMs": [
+      6,
+      227
+     ],
+     "srcOnSec": 10.31,
+     "srcEndSec": 12.44,
+     "lowLevelOnsetSec": 10.031
+    },
+    {
+     "id": "B03-a1",
+     "beat": "B03",
+     "phrase": "ตามความเชื่อ มันคือวิญญาณหรือปีศาจแห่งฤดูหนาวและความหิว",
+     "onSec": 13.331,
+     "endSec": 17.261,
+     "edgeSource": [
+      "pause",
+      "override"
+     ],
+     "snapMs": [
+      0,
+      -482
+     ],
+     "srcOnSec": 13.575,
+     "srcEndSec": 18.92
+    },
+    {
+     "id": "B03-a2",
+     "beat": "B03",
+     "phrase": "ที่กินคน เล่ากันว่ายิ่งกิน ยิ่งหิว",
+     "onSec": 17.311,
+     "endSec": 21.582,
+     "edgeSource": [
+      "override",
+      "pause"
+     ],
+     "snapMs": [
+      -432,
+      67
+     ],
+     "srcOnSec": 18.92,
+     "srcEndSec": 23.15
+    },
+    {
+     "id": "B03-a3",
+     "beat": "B03",
+     "phrase": "ถ้าปล่อยให้ความหิวหรือความโลภครอบงำ",
+     "onSec": 25.484,
+     "endSec": 28.504,
+     "edgeSource": [
+      "pause",
+      "pause"
+     ],
+     "snapMs": [
+      12,
+      72
+     ],
+     "srcOnSec": 27.8,
+     "srcEndSec": 30.76
+    },
+    {
+     "id": "B05-a1",
+     "beat": "B05",
+     "phrase": "ราวปี หนึ่งพันแปดร้อยเจ็ดสิบเก้า",
+     "onSec": 29.713,
+     "endSec": 31.571,
+     "edgeSource": [
+      "override",
+      "override"
+     ],
+     "snapMs": [
+      56,
+      1519
+     ],
+     "srcOnSec": 31.985,
+     "srcEndSec": 32.38
+    },
+    {
+     "id": "B05-a2",
+     "beat": "B05",
+     "phrase": "ในคดีที่มีการกินเนื้อคน",
+     "onSec": 35.93,
+     "endSec": 37.632,
+     "edgeSource": [
+      "pause",
+      "pause"
+     ],
+     "snapMs": [
+      67,
+      82
+     ],
+     "srcOnSec": 38.98,
+     "srcEndSec": 40.74
+    },
+    {
+     "id": "B05-a3",
+     "beat": "B05",
+     "phrase": "เขาอ้างว่าถูกวิญญาณเวนดิโกตามรังควาน",
+     "onSec": 38.243,
+     "endSec": 41.044,
+     "edgeSource": [
+      "pause",
+      "pause"
+     ],
+     "snapMs": [
+      132,
+      99
+     ],
+     "srcOnSec": 41.3,
+     "srcEndSec": 44.3
+    },
+    {
+     "id": "B05-a4",
+     "beat": "B05",
+     "phrase": "แต่ศาลตัดสินประหารชีวิตเขา",
+     "onSec": 41.693,
+     "endSec": 43.625,
+     "edgeSource": [
+      "pause",
+      "pause"
+     ],
+     "snapMs": [
+      147,
+      4
+     ],
+     "srcOnSec": 44.9,
+     "srcEndSec": 47.22
+    },
+    {
+     "id": "B06-a1",
+     "beat": "B06",
+     "phrase": "นักเขียนพื้นเมืองบางคนใช้เวนดิโก",
+     "onSec": 44.537,
+     "endSec": 46.951,
+     "edgeSource": [
+      "pause",
+      "pause"
+     ],
+     "snapMs": [
+      0,
+      -5
+     ],
+     "srcOnSec": 48.136,
+     "srcEndSec": 50.79
+    },
+    {
+     "id": "B06-a2",
+     "beat": "B06",
+     "phrase": "แทนความโลภที่กินเท่าไหร่ก็ไม่พอ",
+     "onSec": 47.101,
+     "endSec": 49.531,
+     "edgeSource": [
+      "pause",
+      "pause"
+     ],
+     "snapMs": [
+      6,
+      56
+     ],
+     "srcOnSec": 51.38,
+     "srcEndSec": 53.76
+    },
+    {
+     "id": "B06-a3",
+     "beat": "B06",
+     "phrase": "ปีศาจตัวนี้",
+     "onSec": 50.142,
+     "endSec": 50.968,
+     "edgeSource": [
+      "pause",
+      "pause"
+     ],
+     "snapMs": [
+      7,
+      -7
+     ],
+     "srcOnSec": 54.42,
+     "srcEndSec": 55.26
+    },
+    {
+     "id": "B06-a4",
+     "beat": "B06",
+     "phrase": "ที่คอยถามว่า",
+     "onSec": 53.534,
+     "endSec": 54.74,
+     "edgeSource": [
+      "pause",
+      "override"
+     ],
+     "snapMs": [
+      629,
+      65
+     ],
+     "srcOnSec": 57.19,
+     "srcEndSec": 58.96
+    }
+   ]
+  },
+  "pTIGHT3": {
+   "file": "projects/WDG-EP01-SHORT/audio/voice-lock-v2/WDG-EP01-SHORT_voice-lock-v2_alt-NARR-Achernar_mysterious_atempo108_R3_pTIGHT3_full.wav",
+   "derived_from": "projects/WDG-EP01-SHORT/audio/voice-lock-v2/WDG-EP01-SHORT_voice-lock-v2_alt-NARR-Achernar_mysterious_atempo108_R3_pTIGHT2_full.wav",
+   "derived_from_sha256": "adbaaa4f7bb298697aa4adbab5cbdeb40315827b78af40d44727e4aeb96e622b",
+   "sha256": "c7151e6e37763f9d17ba736cd255e1c7f9c9c4b6f8248e82a8e47ee36e4520f2",
+   "samples": 2543186,
+   "length_sec": 52.983,
+   "length_before_sec": 55.998,
+   "removed_sec": 3.015,
+   "speech_samples_identical_outside_crossfades": true,
+   "crossfade_ms": 10,
+   "crossfade_blend_matches_formula": true,
+   "loudness": {
+    "before": {
+     "I_LUFS": -16.4,
+     "LRA_LU": 2.9,
+     "true_peak_dBFS": -1.5
+    },
+    "after": {
+     "I_LUFS": -16.3,
+     "LRA_LU": 2.8,
+     "true_peak_dBFS": -1.5
+    },
+    "integrated_change_LU": 0.1
+   },
+   "cuts": [
+    {
+     "id": "MID-6.2456",
+     "kind": "mid-sentence",
+     "old_s": [
+      6.2456,
+      6.5596
+     ],
+     "old_len_s": 0.3139,
+     "new_s": [
+      6.2456,
+      6.3957
+     ],
+     "new_len_s": 0.15,
+     "removed_s": 0.1639,
+     "kept_before_cut_s": 0.088,
+     "kept_after_cut_s": 0.062,
+     "seam": {
+      "join_max_step_LSB": 6,
+      "source_max_step_same_windows_LSB": 8,
+      "step_at_join_start_LSB": 1,
+      "step_at_join_end_LSB": 5,
+      "level_before_dBFS": -65.0,
+      "level_after_dBFS": -64.8,
+      "source_level_before_dBFS": -65.0,
+      "source_level_after_dBFS": -64.8,
+      "flag_over_30_LSB": false
+     }
+    },
+    {
+     "id": "B02-gap",
+     "kind": "B02 word gap",
+     "old_s": [
+      9.983,
+      10.1158
+     ],
+     "old_len_s": 0.1329,
+     "new_s": [
+      9.819,
+      9.8719
+     ],
+     "new_len_s": 0.0529,
+     "removed_s": 0.08,
+     "kept_before_cut_s": 0.01,
+     "kept_after_cut_s": 0.0429,
+     "seam": {
+      "join_max_step_LSB": 50,
+      "source_max_step_same_windows_LSB": 50,
+      "step_at_join_start_LSB": 31,
+      "step_at_join_end_LSB": 3,
+      "level_before_dBFS": -47.8,
+      "level_after_dBFS": -52.7,
+      "source_level_before_dBFS": -47.8,
+      "source_level_after_dBFS": -52.7,
+      "flag_over_30_LSB": true
+     }
+    },
+    {
+     "id": "MID-13.9036",
+     "kind": "mid-sentence",
+     "old_s": [
+      13.9036,
+      14.3173
+     ],
+     "old_len_s": 0.4137,
+     "new_s": [
+      13.6597,
+      13.8097
+     ],
+     "new_len_s": 0.15,
+     "removed_s": 0.2637,
+     "kept_before_cut_s": 0.0515,
+     "kept_after_cut_s": 0.0985,
+     "seam": {
+      "join_max_step_LSB": 8,
+      "source_max_step_same_windows_LSB": 8,
+      "step_at_join_start_LSB": 1,
+      "step_at_join_end_LSB": 2,
+      "level_before_dBFS": -59.5,
+      "level_after_dBFS": -60.3,
+      "source_level_before_dBFS": -59.5,
+      "source_level_after_dBFS": -60.3,
+      "flag_over_30_LSB": false
+     }
+    },
+    {
+     "id": "MID-17.0286",
+     "kind": "mid-sentence",
+     "old_s": [
+      17.0286,
+      17.4374
+     ],
+     "old_len_s": 0.4088,
+     "new_s": [
+      16.521,
+      16.671
+     ],
+     "new_len_s": 0.15,
+     "removed_s": 0.2588,
+     "kept_before_cut_s": 0.05,
+     "kept_after_cut_s": 0.1,
+     "seam": {
+      "join_max_step_LSB": 7,
+      "source_max_step_same_windows_LSB": 7,
+      "step_at_join_start_LSB": 0,
+      "step_at_join_end_LSB": 3,
+      "level_before_dBFS": -65.2,
+      "level_after_dBFS": -68.0,
+      "source_level_before_dBFS": -65.2,
+      "source_level_after_dBFS": -68.0,
+      "flag_over_30_LSB": false
+     }
+    },
+    {
+     "id": "MID-19.1061",
+     "kind": "mid-sentence",
+     "old_s": [
+      19.1061,
+      19.5151
+     ],
+     "old_len_s": 0.409,
+     "new_s": [
+      18.3397,
+      18.4898
+     ],
+     "new_len_s": 0.15,
+     "removed_s": 0.259,
+     "kept_before_cut_s": 0.069,
+     "kept_after_cut_s": 0.081,
+     "seam": {
+      "join_max_step_LSB": 8,
+      "source_max_step_same_windows_LSB": 9,
+      "step_at_join_start_LSB": 3,
+      "step_at_join_end_LSB": 0,
+      "level_before_dBFS": -63.1,
+      "level_after_dBFS": -65.5,
+      "source_level_before_dBFS": -63.1,
+      "source_level_after_dBFS": -65.5,
+      "flag_over_30_LSB": false
+     }
+    },
+    {
+     "id": "MID-23.7336",
+     "kind": "mid-sentence",
+     "old_s": [
+      23.7336,
+      24.1743
+     ],
+     "old_len_s": 0.4407,
+     "new_s": [
+      22.7082,
+      22.8582
+     ],
+     "new_len_s": 0.15,
+     "removed_s": 0.2907,
+     "kept_before_cut_s": 0.1,
+     "kept_after_cut_s": 0.05,
+     "seam": {
+      "join_max_step_LSB": 5,
+      "source_max_step_same_windows_LSB": 6,
+      "step_at_join_start_LSB": 1,
+      "step_at_join_end_LSB": 3,
+      "level_before_dBFS": -63.5,
+      "level_after_dBFS": -75.4,
+      "source_level_before_dBFS": -63.5,
+      "source_level_after_dBFS": -75.4,
+      "flag_over_30_LSB": false
+     }
+    },
+    {
+     "id": "MID-25.9504",
+     "kind": "mid-sentence",
+     "old_s": [
+      25.9504,
+      26.3621
+     ],
+     "old_len_s": 0.4117,
+     "new_s": [
+      24.6343,
+      24.7843
+     ],
+     "new_len_s": 0.15,
+     "removed_s": 0.2617,
+     "kept_before_cut_s": 0.09,
+     "kept_after_cut_s": 0.06,
+     "seam": {
+      "join_max_step_LSB": 8,
+      "source_max_step_same_windows_LSB": 8,
+      "step_at_join_start_LSB": 2,
+      "step_at_join_end_LSB": 3,
+      "level_before_dBFS": -58.3,
+      "level_after_dBFS": -63.9,
+      "source_level_before_dBFS": -58.3,
+      "source_level_after_dBFS": -63.9,
+      "flag_over_30_LSB": false
+     }
+    },
+    {
+     "id": "MID-34.7326",
+     "kind": "mid-sentence",
+     "old_s": [
+      34.7326,
+      35.1482
+     ],
+     "old_len_s": 0.4156,
+     "new_s": [
+      33.1549,
+      33.3049
+     ],
+     "new_len_s": 0.15,
+     "removed_s": 0.2656,
+     "kept_before_cut_s": 0.092,
+     "kept_after_cut_s": 0.058,
+     "seam": {
+      "join_max_step_LSB": 42,
+      "source_max_step_same_windows_LSB": 43,
+      "step_at_join_start_LSB": 2,
+      "step_at_join_end_LSB": 1,
+      "level_before_dBFS": -50.3,
+      "level_after_dBFS": -46.9,
+      "source_level_before_dBFS": -50.3,
+      "source_level_after_dBFS": -46.9,
+      "flag_over_30_LSB": true
+     }
+    },
+    {
+     "id": "MID-36.5731",
+     "kind": "mid-sentence",
+     "old_s": [
+      36.5731,
+      36.9894
+     ],
+     "old_len_s": 0.4164,
+     "new_s": [
+      34.7297,
+      34.8797
+     ],
+     "new_len_s": 0.15,
+     "removed_s": 0.2664,
+     "kept_before_cut_s": 0.083,
+     "kept_after_cut_s": 0.067,
+     "seam": {
+      "join_max_step_LSB": 6,
+      "source_max_step_same_windows_LSB": 5,
+      "step_at_join_start_LSB": 1,
+      "step_at_join_end_LSB": 1,
+      "level_before_dBFS": -68.1,
+      "level_after_dBFS": -78.2,
+      "source_level_before_dBFS": -68.1,
+      "source_level_after_dBFS": -78.2,
+      "flag_over_30_LSB": false
+     }
+    },
+    {
+     "id": "MID-39.9613",
+     "kind": "mid-sentence",
+     "old_s": [
+      39.9613,
+      40.2761
+     ],
+     "old_len_s": 0.3148,
+     "new_s": [
+      37.8516,
+      38.0016
+     ],
+     "new_len_s": 0.15,
+     "removed_s": 0.1648,
+     "kept_before_cut_s": 0.056,
+     "kept_after_cut_s": 0.094,
+     "seam": {
+      "join_max_step_LSB": 8,
+      "source_max_step_same_windows_LSB": 9,
+      "step_at_join_start_LSB": 7,
+      "step_at_join_end_LSB": 2,
+      "level_before_dBFS": -60.7,
+      "level_after_dBFS": -63.4,
+      "source_level_before_dBFS": -60.7,
+      "source_level_after_dBFS": -63.4,
+      "flag_over_30_LSB": false
+     }
+    },
+    {
+     "id": "MID-42.9814",
+     "kind": "mid-sentence",
+     "old_s": [
+      42.9814,
+      43.3758
+     ],
+     "old_len_s": 0.3944,
+     "new_s": [
+      40.7069,
+      40.8569
+     ],
+     "new_len_s": 0.15,
+     "removed_s": 0.2444,
+     "kept_before_cut_s": 0.0985,
+     "kept_after_cut_s": 0.0515,
+     "seam": {
+      "join_max_step_LSB": 5,
+      "source_max_step_same_windows_LSB": 5,
+      "step_at_join_start_LSB": 4,
+      "step_at_join_end_LSB": 1,
+      "level_before_dBFS": -61.8,
+      "level_after_dBFS": -74.2,
+      "source_level_before_dBFS": -61.8,
+      "source_level_after_dBFS": -74.2,
+      "flag_over_30_LSB": false
+     }
+    },
+    {
+     "id": "MID-46.6517",
+     "kind": "mid-sentence",
+     "old_s": [
+      46.6517,
+      47.0366
+     ],
+     "old_len_s": 0.3849,
+     "new_s": [
+      44.1328,
+      44.2828
+     ],
+     "new_len_s": 0.15,
+     "removed_s": 0.2349,
+     "kept_before_cut_s": 0.0725,
+     "kept_after_cut_s": 0.0775,
+     "seam": {
+      "join_max_step_LSB": 16,
+      "source_max_step_same_windows_LSB": 16,
+      "step_at_join_start_LSB": 5,
+      "step_at_join_end_LSB": 2,
+      "level_before_dBFS": -53.0,
+      "level_after_dBFS": -68.6,
+      "source_level_before_dBFS": -53.0,
+      "source_level_after_dBFS": -68.6,
+      "flag_over_30_LSB": false
+     }
+    },
+    {
+     "id": "MID-47.9650",
+     "kind": "mid-sentence",
+     "old_s": [
+      47.965,
+      48.3761
+     ],
+     "old_len_s": 0.4111,
+     "new_s": [
+      45.2111,
+      45.3611
+     ],
+     "new_len_s": 0.15,
+     "removed_s": 0.2611,
+     "kept_before_cut_s": 0.095,
+     "kept_after_cut_s": 0.055,
+     "seam": {
+      "join_max_step_LSB": 7,
+      "source_max_step_same_windows_LSB": 8,
+      "step_at_join_start_LSB": 4,
+      "step_at_join_end_LSB": 0,
+      "level_before_dBFS": -55.9,
+      "level_after_dBFS": -70.4,
+      "source_level_before_dBFS": -55.9,
+      "source_level_after_dBFS": -70.4,
+      "flag_over_30_LSB": false
+     }
+    }
+   ],
+   "silences_over_0_3s_remaining": [
+    {
+     "start_s": 2.9398,
+     "end_s": 3.3413,
+     "len_s": 0.4015
+    },
+    {
+     "start_s": 4.0658,
+     "end_s": 4.5216,
+     "len_s": 0.4558
+    },
+    {
+     "start_s": 12.223,
+     "end_s": 12.8815,
+     "len_s": 0.6585
+    },
+    {
+     "start_s": 20.0066,
+     "end_s": 20.4244,
+     "len_s": 0.4178
+    },
+    {
+     "start_s": 21.0819,
+     "end_s": 21.4881,
+     "len_s": 0.4062
+    },
+    {
+     "start_s": 27.8041,
+     "end_s": 28.4668,
+     "len_s": 0.6627
+    },
+    {
+     "start_s": 30.6213,
+     "end_s": 31.0245,
+     "len_s": 0.4032
+    },
+    {
+     "start_s": 36.5824,
+     "end_s": 36.9926,
+     "len_s": 0.4102
+    },
+    {
+     "start_s": 39.7941,
+     "end_s": 40.2028,
+     "len_s": 0.4086
+    },
+    {
+     "start_s": 42.1351,
+     "end_s": 42.7971,
+     "len_s": 0.662
+    },
+    {
+     "start_s": 47.7912,
+     "end_s": 48.2016,
+     "len_s": 0.4104
+    },
+    {
+     "start_s": 49.0277,
+     "end_s": 49.3852,
+     "len_s": 0.3575
+    }
+   ],
+   "beats": [
+    {
+     "beat": "B01",
+     "speechOnSec": 0.336,
+     "speechEndSec": 4.066,
+     "speechOnFrame": 10,
+     "speechEndFrame": 122,
+     "speechSpanSec": 3.729
+    },
+    {
+     "beat": "B02",
+     "speechOnSec": 4.522,
+     "speechEndSec": 12.223,
+     "speechOnFrame": 136,
+     "speechEndFrame": 367,
+     "speechSpanSec": 7.701
+    },
+    {
+     "beat": "B03",
+     "speechOnSec": 12.881,
+     "speechEndSec": 27.804,
+     "speechOnFrame": 386,
+     "speechEndFrame": 834,
+     "speechSpanSec": 14.923
+    },
+    {
+     "beat": "B05",
+     "speechOnSec": 28.467,
+     "speechEndSec": 42.135,
+     "speechOnFrame": 854,
+     "speechEndFrame": 1264,
+     "speechSpanSec": 13.668,
+     "note": "speechOnSec is a click at the beat start (peak rule); the first word follows 0.30 s later at firstWordOnSec",
+     "firstWordOnSec": 28.763
+    },
+    {
+     "beat": "B06",
+     "speechOnSec": 42.797,
+     "speechEndSec": 52.7,
+     "speechOnFrame": 1284,
+     "speechEndFrame": 1581,
+     "speechSpanSec": 9.903
+    }
+   ],
+   "anchors": [
+    {
+     "id": "B01-a1",
+     "beat": "B01",
+     "phrase": "ความกลัวแบบนี้ มาจากตำนานจริง",
+     "onSec": 0.336,
+     "endSec": 2.94,
+     "edgeSource": [
+      "override",
+      "pause"
+     ],
+     "snapMs": [
+      -1,
+      100
+     ],
+     "srcOnSec": 0.337,
+     "srcEndSec": 2.84
+    },
+    {
+     "id": "B01-a2",
+     "beat": "B01",
+     "phrase": "เวนดิโก",
+     "onSec": 3.341,
+     "endSec": 4.066,
+     "edgeSource": [
+      "pause",
+      "pause"
+     ],
+     "snapMs": [
+      501,
+      0
+     ],
+     "srcOnSec": 2.84,
+     "srcEndSec": 4.066
+    },
+    {
+     "id": "B02-a1",
+     "beat": "B02",
+     "phrase": "เป็นเรื่องเล่าของชนพื้นเมืองกลุ่มภาษาอัลกอนเควียน",
+     "onSec": 4.522,
+     "endSec": 7.803,
+     "edgeSource": [
+      "pause",
+      "pause"
+     ],
+     "snapMs": [
+      0,
+      -73
+     ],
+     "srcOnSec": 4.522,
+     "srcEndSec": 8.04
+    },
+    {
+     "id": "B02-a2",
+     "beat": "B02",
+     "phrase": "อย่างโอจิบเวและครี",
+     "onSec": 7.988,
+     "endSec": 9.819,
+     "edgeSource": [
+      "pause",
+      "override"
+     ],
+     "snapMs": [
+      52,
+      -7
+     ],
+     "srcOnSec": 8.1,
+     "srcEndSec": 9.99
+    },
+    {
+     "id": "B02-a3",
+     "beat": "B02",
+     "phrase": "ในแคนาดาและทางเหนือของสหรัฐฯ",
+     "onSec": 9.872,
+     "endSec": 12.223,
+     "edgeSource": [
+      "override",
+      "pause"
+     ],
+     "snapMs": [
+      6,
+      227
+     ],
+     "srcOnSec": 10.11,
+     "srcEndSec": 12.24,
+     "lowLevelOnsetSec": 9.831
+    },
+    {
+     "id": "B03-a1",
+     "beat": "B03",
+     "phrase": "ตามความเชื่อ มันคือวิญญาณหรือปีศาจแห่งฤดูหนาวและความหิว",
+     "onSec": 12.881,
+     "endSec": 16.811,
+     "edgeSource": [
+      "pause",
+      "override"
+     ],
+     "snapMs": [
+      0,
+      -482
+     ],
+     "srcOnSec": 13.125,
+     "srcEndSec": 18.06
+    },
+    {
+     "id": "B03-a2",
+     "beat": "B03",
+     "phrase": "ที่กินคน เล่ากันว่ายิ่งกิน ยิ่งหิว",
+     "onSec": 16.861,
+     "endSec": 21.082,
+     "edgeSource": [
+      "override",
+      "pause"
+     ],
+     "snapMs": [
+      -432,
+      67
+     ],
+     "srcOnSec": 18.06,
+     "srcEndSec": 22.04
+    },
+    {
+     "id": "B03-a3",
+     "beat": "B03",
+     "phrase": "ถ้าปล่อยให้ความหิวหรือความโลภครอบงำ",
+     "onSec": 24.784,
+     "endSec": 27.804,
+     "edgeSource": [
+      "pause",
+      "pause"
+     ],
+     "snapMs": [
+      12,
+      72
+     ],
+     "srcOnSec": 26.35,
+     "srcEndSec": 29.31
+    },
+    {
+     "id": "B05-a1",
+     "beat": "B05",
+     "phrase": "ราวปี หนึ่งพันแปดร้อยเจ็ดสิบเก้า",
+     "onSec": 28.763,
+     "endSec": 30.621,
+     "edgeSource": [
+      "override",
+      "override"
+     ],
+     "snapMs": [
+      56,
+      1519
+     ],
+     "srcOnSec": 30.285,
+     "srcEndSec": 30.68
+    },
+    {
+     "id": "B05-a2",
+     "beat": "B05",
+     "phrase": "ในคดีที่มีการกินเนื้อคน",
+     "onSec": 34.88,
+     "endSec": 36.582,
+     "edgeSource": [
+      "pause",
+      "pause"
+     ],
+     "snapMs": [
+      67,
+      82
+     ],
+     "srcOnSec": 36.85,
+     "srcEndSec": 38.61
+    },
+    {
+     "id": "B05-a3",
+     "beat": "B05",
+     "phrase": "เขาอ้างว่าถูกวิญญาณเวนดิโกตามรังควาน",
+     "onSec": 36.993,
+     "endSec": 39.794,
+     "edgeSource": [
+      "pause",
+      "pause"
+     ],
+     "snapMs": [
+      132,
+      99
+     ],
+     "srcOnSec": 38.97,
+     "srcEndSec": 41.97
+    },
+    {
+     "id": "B05-a4",
+     "beat": "B05",
+     "phrase": "แต่ศาลตัดสินประหารชีวิตเขา",
+     "onSec": 40.203,
+     "endSec": 42.135,
+     "edgeSource": [
+      "pause",
+      "pause"
+     ],
+     "snapMs": [
+      147,
+      4
+     ],
+     "srcOnSec": 42.33,
+     "srcEndSec": 44.65
+    },
+    {
+     "id": "B06-a1",
+     "beat": "B06",
+     "phrase": "นักเขียนพื้นเมืองบางคนใช้เวนดิโก",
+     "onSec": 42.797,
+     "endSec": 45.211,
+     "edgeSource": [
+      "pause",
+      "pause"
+     ],
+     "snapMs": [
+      0,
+      -5
+     ],
+     "srcOnSec": 45.316,
+     "srcEndSec": 47.97
+    },
+    {
+     "id": "B06-a2",
+     "beat": "B06",
+     "phrase": "แทนความโลภที่กินเท่าไหร่ก็ไม่พอ",
+     "onSec": 45.361,
+     "endSec": 47.791,
+     "edgeSource": [
+      "pause",
+      "pause"
+     ],
+     "snapMs": [
+      6,
+      56
+     ],
+     "srcOnSec": 48.37,
+     "srcEndSec": 50.75
+    },
+    {
+     "id": "B06-a3",
+     "beat": "B06",
+     "phrase": "ปีศาจตัวนี้",
+     "onSec": 48.202,
+     "endSec": 49.028,
+     "edgeSource": [
+      "pause",
+      "pause"
+     ],
+     "snapMs": [
+      7,
+      -7
+     ],
+     "srcOnSec": 51.21,
+     "srcEndSec": 52.05
+    },
+    {
+     "id": "B06-a4",
+     "beat": "B06",
+     "phrase": "ที่คอยถามว่า",
+     "onSec": 51.494,
+     "endSec": 52.7,
+     "edgeSource": [
+      "pause",
+      "override"
+     ],
+     "snapMs": [
+      629,
+      65
+     ],
+     "srcOnSec": 53.88,
+     "srcEndSec": 55.65
+    }
+   ]
+  }
+ },
+ "open": [
+  "USER: listen to the B02 join (pMID3 at about 10.0 s, pTIGHT3 at about 9.8 s). The Editor cannot listen. The nasal onset of ใน (about 43 ms before the vowel, -52 dBFS) is left in place; cutting into it would give a 0.05 s gap on the peak-rule measure but would cut speech.",
+  "USER: the 0.314-0.315 s silences (6.45 s, 42.29 s in pMID3 source; 6.25 s, 39.96 s in pTIGHT3 source) were added by the sample-level 0.300 s rule. Keep or revert (re-run with the v5 list).",
+  "TIMING: every timed item after the first cut moved (up to -4.29 s in pMID3). narration-timeline.json, narration-anchors.md and the scene timing still use v4/v5 times and must be re-based by the owner before any render. Editor did not change them.",
+  "Beat-edge click: a 1-3 sample burst at 29.417 s (pMID3) / 28.467 s (pTIGHT3), 0.30 s before the first word of S03-B01; not changed (beat edge). Film/Boss may want to check the first beat transient."
+ ]
+}

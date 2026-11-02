@@ -58,6 +58,8 @@ test('direct seeks resolve the same state as sequential playback, and the ending
   // C_seamless blends frame 0's plate over the last frames.
   const last = state(paintedProofTimeline, 446, 'C_seamless')!;
   assert.deepEqual(last.plates.map((p) => [p.shot, p.alpha]), [['SHIPWRECK-SH06', 1], ['SHIPWRECK-SH01', 1]]);
+  // The outgoing plate's overlay layers fade out as frame 0's fade in: by the last frame only frame 0 shows.
+  assert.deepEqual(last.plates.map((p) => p.overlayOpacity), [0, 1]);
 });
 
 test('B_loop endHoldSec 2 freezes the 90 f final scene at local 30 instead of local 0', () => {

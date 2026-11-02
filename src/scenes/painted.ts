@@ -123,7 +123,11 @@ export const paintedStateAt = (timeline: Timeline, frame: number, fps: number, o
   const plates = platesAt(spans, stageFrame, fps);
   if (o.ending === 'C_seamless') {
     const blend = loopBlendOpacity(frame, o.durationInFrames, o.loopBlendFrames);
-    if (blend > 0) plates.push(...platesAt(spans, 0, fps).map((p) => ({...p, alpha: p.alpha * blend, overlayOpacity: p.overlayOpacity * blend})));
+    if (blend > 0) {
+      // The outgoing plates' glow/overlay layers fade out as frame 0's fade in; their paint is covered by frame 0's opaque plate.
+      plates.forEach((p, i) => { plates[i] = {...p, overlayOpacity: p.overlayOpacity * (1 - blend)}; });
+      plates.push(...platesAt(spans, 0, fps).map((p) => ({...p, alpha: p.alpha * blend, overlayOpacity: p.overlayOpacity * blend})));
+    }
   }
   return plates.length ? {plates, opacity} : null;
 };

@@ -5,6 +5,7 @@ import {kitShots} from './shots/kit';
 import {kuchisakeShots} from './shots/kuchisake';
 import {bloopShots} from './shots/bloop';
 import {shipwreckShots} from './shots/shipwreck';
+import {wendigoShots} from './shots/wendigo';
 import {worldfogShots} from './shots/worldfog';
 import {zcpaintShots} from './shots/zcpaint';
 
@@ -12,7 +13,7 @@ import {zcpaintShots} from './shots/zcpaint';
  * Painted plates by stable ID. A timeline selects them with `scene.painted.shots[].shot`; the validator rejects unknown
  * IDs. Add an episode's plates by appending its list here (one owner module per episode under `src/painted/shots/`).
  */
-const all: PaintedShot[] = [...shipwreckShots, ...worldfogShots, ...zcpaintShots, ...bloopShots, ...hanakoShots, ...kuchisakeShots, ...kitShots];
+const all: PaintedShot[] = [...shipwreckShots, ...worldfogShots, ...zcpaintShots, ...bloopShots, ...hanakoShots, ...kuchisakeShots, ...wendigoShots, ...kitShots];
 
 export const paintedShots: Readonly<Record<string, PaintedShot>> = Object.freeze(Object.fromEntries(all.map((shot) => [shot.id, shot])));
 if (Object.keys(paintedShots).length !== all.length) throw new Error('Duplicate painted shot ID in src/painted/registry.ts');

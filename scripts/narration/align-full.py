@@ -75,7 +75,12 @@ def main():
         joined += piece
         pos += len(piece)
     model = WhisperModel('large-v3-turbo', device='cpu', compute_type='int8')
-    segments, _ = model.transcribe(str(FULL), language='th', word_timestamps=True, vad_filter=False)
+    # Pass decoded 16 kHz samples, not the path: faster-whisper 1.2 opens paths with av.open(metadata_errors=...),
+    # which the Whisper venv's av build rejects (WDG-EP01-SHORT voice lock, 2 Nov 2026).
+    import numpy as np
+    pcm = subprocess.run(['ffmpeg', '-v', 'error', '-i', str(FULL), '-ac', '1', '-ar', '16000', '-f', 'f32le', '-'],
+                         capture_output=True, check=True).stdout
+    segments, _ = model.transcribe(np.frombuffer(pcm, dtype=np.float32), language='th', word_timestamps=True, vad_filter=False)
     words = [{'on': w.start, 'end': w.end, 'text': w.word} for seg in segments for w in (seg.words or [])]
     asr, owner = [], []
     for k, w in enumerate(words):
