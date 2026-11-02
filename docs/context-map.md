@@ -35,7 +35,7 @@ Episode-specific files are under [Episodes](#episodes); shared topics come first
 - Docs: [face principles](character-proportion-principles.md#cp-f-face); [lip-frame fallback finding](dev-findings/DF-20261030-lip-frame-silent-fallback.md)
 - Code: [kit/head.ts](../src/painted/kit/head.ts) (`FaceState`, `Brow`/`Eyes`/`Mouth`, `blinking`), [kuchisake/face.ts](../src/painted/kuchisake/face.ts)
 - Sheets: [spike/FaceSheet.tsx](../src/painted/spike/FaceSheet.tsx)
-- Kit library: [expressions.ts](../src/painted/kit/expressions.ts)
+- Kit library: [expressions.ts](../src/painted/kit/expressions.ts), [face-looks-sheet.tsx](../src/painted/kit/face-looks-sheet.tsx) (`KIT-FACE-LOOKS`, `KIT-FACE-CAST`; `HeadStyle.look` in [kit/head.ts](../src/painted/kit/head.ts))
 
 ## Wardrobe and props
 
@@ -99,7 +99,7 @@ Episode-specific files are under [Episodes](#episodes); shared topics come first
 **Read when:** filing, fetching or locking media; a fresh checkout; user-supplied files.
 
 - Docs: [asset store](../README.md#asset-store), [re-editing](../README.md#re-editing), [proposal](reviews/2026-10-31-asset-store-proposal.md)
-- Scripts: [store.py](../scripts/store.py), [episode-media.ts](../scripts/episode-media.ts), [setup.sh](../scripts/setup.sh)
+- Scripts: [store.py](../scripts/store.py), [episode-media.ts](../scripts/episode-media.ts), [setup.sh](../scripts/setup.sh); kit browse page `$REELS_STORE/index.html` (cast cards, people, poses, motions) built by [painted-kit/store-page.py](../scripts/painted-kit/store-page.py) from [store-page.html](../scripts/painted-kit/store-page.html) and [kit-data.ts](../scripts/painted-kit/kit-data.ts)
 - Data: per-video locks `src/videos/<episode>/assets.lock.json` (e.g. [world-fog](../src/videos/world-fog/assets.lock.json)); cached media under [public/](../public/fonts/)
 - Tests: [store](../tests/store.test.ts), [media](../tests/media.test.ts)
 
