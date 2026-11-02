@@ -4,6 +4,8 @@ Thai YouTube studio for Shorts and long-form videos, built with Remotion. Read [
 
 ## Reference snapshot and implementation status
 
+**Scope (2 Nov 2026):** this guide covers the legacy SVG joint rig in `src/rig/` (Little Wander), which no current video uses. Painted work uses the painted kit ([src/painted/kit/README.md](../src/painted/kit/README.md)): people `people.ts`, poses `poses.ts`, motions `motions.ts`, and dogs and cats `animals.ts` with `animal-motions.ts`. Do not cast the `src/rig` `Cat` / `Dog` in a painted video.
+
 This guide records the character import that replaced the original seven-second narrated rig demo with a twenty-second JSON demo. It introduced a different Character API; `Short` and `Long` remained the render IDs, while `Rig2DDemo` and the original `Pose`/`Costume` API were not carried over. Audio-driven mouth movement was restored on the Joint rig with a committed per-frame RMS envelope. Migration requirements described that import, not a fresh review of current callers.
 
 Treat APIs, inventory, demo durations and verification below as a reference snapshot. Confirm exported types, validators, registries, package scripts and the selected timeline in the active checkout before using them. [Runtime contract](runtime-contract.md) owns implementation-status rules; [production requirements](production-requirements.md) own output requirements. The included demo is development material, not the required length of a publishable story.

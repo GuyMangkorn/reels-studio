@@ -17,6 +17,8 @@ Example requests:
 
 This table is the authoritative home for the user's rules, updated 26 October 2026 after the user revoked background-only 3D and mandatory 2D characters/interaction props. Film selects the approach for story value and feasibility. These rules apply to Film, Boss and Editor. The 27 October 2026 handoff revision assigns scene integration and editing to Editor while Boss retains shared implementation. They replace earlier medium/prop-plane/effect-stage restrictions; lifecycle, demo lighting, contact/scale and QA requirements remain. Numeric values are project rules, not universal Three.js/Remotion settings.
 
+> **Engine status (2 Nov 2026):** painted 2D (p5.brush) plus Remotion SVG is the project default ([visual engine](delivery-workflow.md#visual-engine)); Blender 3D and the `src/rig` SVG rig are retired and Three.js is unused. Rows about 3D lighting, emissive caps and world-space cut-outs apply only if the user reactivates a 3D engine; the painted rows, lead size, shot movement and visual QA apply now.
+
 | Requirement | Implementation and evidence |
 | --- | --- |
 | **Choose 2D / 3D / hybrid for story and technique** | Any set, character, prop or effect may use these media. Film records reasons and integration strategy, Film develops scene sheets, and Boss proves implementation. Check dependencies/APIs and each selected/affected aspect ratio before claiming support. |

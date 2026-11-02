@@ -19,7 +19,7 @@ Selection is complete when the record identifies the selected deliverables and t
 | --- | --- |
 | Genre / purpose | mystery-educational (default), comedy, explainer/tutorial, vlog or documentary cut, news/recap, review, ad/promo, music/lyric video, slideshow/photo story, screen recording, motivational |
 | Visual medium | illustrated 2D/3D/hybrid (existing library), user footage, stock/licensed footage, still images, typography/kinetic text, screen recording, mixed |
-| Visual engine | for illustrated/animated media: painted 2D (p5.brush) + Remotion SVG (project default), Remotion rig 2D, Blender 3D (deactivated), Remotion rig 2D, a mix of these, Film's choice, or the user's own answer ([visual engine](#visual-engine)) |
+| Visual engine | for illustrated/animated media: painted 2D (p5.brush) + Remotion SVG (project default), a mix of these, Film's choice, or the user's own answer ([visual engine](#visual-engine)) |
 | Voice | Gemini TTS ([project default](#project-defaults)), Niwat TTS (male, Edge), Premwadee TTS (female, Edge), user-supplied recording, on-camera audio, no voice |
 | Music / SFX | none, user-supplied, licensed library (record the license), shared sound library / locally generated ([`sound-generation` skill](../.agents/skills/sound-generation/SKILL.md)), sparse SFX; ducking under voice |
 | Captions | outline (default), box, none; position; burned-in or SRT only |
@@ -56,7 +56,7 @@ The [voice sample](#style-profile) requirement still applies: a default voice is
 | --- | --- | --- |
 | Blender 3D | Rendered 3D shots and assets ([Blender workflow](blender-mcp-workflow.md)) | `deactivated` (user decision, 30 Oct 2026): not offered; code and assets are kept |
 | Painted 2D (p5.brush) | Hand-painted watercolour and boiling ink, drawn per frame in `src/painted/BrushCanvas.tsx`; method in the [painted-2d skill](../.claude/skills/painted-2d/SKILL.md) | `existing-integrated` (30 Oct 2026, `main` 59f8cee): painted scene type `src/scenes/painted.ts` with plates by ID in `src/painted/registry.ts`; shipped in WORLD FOG EP01 |
-| Remotion rig 2D | The existing vector character rig and scene library (`src/rig/`, `src/scenes/`) | `existing-integrated` |
+| Remotion rig 2D | The legacy vector joint rig (`src/rig/`; [character toolkit](character-toolkit.md)); painted work casts from `src/painted/kit` instead | `retired` (user decision, 1 Nov 2026): not offered; no video imports `src/rig`; code is kept |
 | Let Film choose | Film picks per scene or element and records the reasons in the brief | — |
 
 Selecting several options means a mix; the brief then states which engine owns each set, character, prop and effect. The harness's free-text answer covers any engine the user names themself. An engine marked `exists-unintegrated` makes its integration a Boss dependency, recorded before Editor work. Re-check the runtime status in the active checkout before relying on this table.

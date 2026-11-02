@@ -3,6 +3,8 @@
 
 Sources inspected on 26 October 2026. This is technical reference for Boss and Film's technical analysis, not evidence that the current runtime has been repaired. Read [Boss's workflow](boss-asset-workflow.md) for production requirements and [Film's workflow](film-visual-brief-workflow.md) for the handoff contract. Recommendations below explain tradeoffs; verify APIs and integration in the target checkout.
 
+> **Legacy (2 Nov 2026):** the project now paints in 2D with p5.brush plus Remotion SVG ([visual engine](delivery-workflow.md#visual-engine)). Three.js/R3F, Blender and the `src/rig` SVG rig are inactive and no video uses them, so the 3D and hybrid sections here apply only if the user reactivates a 3D engine. For painted work only the general rules still hold: a frame-pure clock, seeded noise, the render-loading lifecycle and the QA checks; the [painted-2d skill](../.claude/skills/painted-2d/SKILL.md) owns the painted method.
+
 <a id="1-ข้อกำหนดผู้ใช้กับหลักทั่วไป"></a>
 ## 1. User requirements and general principles
 

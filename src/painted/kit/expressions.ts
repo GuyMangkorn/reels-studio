@@ -2,7 +2,7 @@ import type {FaceState} from './head';
 
 // Named expression presets for the painted kit's decal heads (`head.ts`, any `CastDef`, front and profile). A shot picks an id
 // instead of assembling brow / eyes / mouth: `drawFigure(p, def, g, unit, {view, face: EXPRESSIONS.smug}, t)`. Ids are stable.
-// Added 1 Nov 2026 (people library pass 1). Sheet: KIT-EXPRESSIONS (adult, child and elder, front and profile).
+// Added 1 Nov 2026 (people library pass 1); `tired` 2 Nov 2026. Sheet: KIT-EXPRESSIONS (adult, child and elder, front and profile).
 //
 // - Every preset is a plain `FaceState`; spread it to override one control: `{...EXPRESSIONS.talk, open: mouthAt(...)}`.
 // - Eyes blink on the rig's own clock (`blinking`), so a still can catch a shut frame: pass a `t` where `!blinking(t, seed)`.
@@ -11,7 +11,7 @@ import type {FaceState} from './head';
 
 export const EXPRESSION_IDS = [
   'neutral', 'happy', 'laugh', 'smug', 'sad', 'crying', 'angry', 'furious', 'surprised', 'scared', 'terrified',
-  'worried', 'suspicious', 'disgusted', 'sleepy', 'whisper', 'shock', 'talk', 'asleep',
+  'worried', 'suspicious', 'disgusted', 'sleepy', 'whisper', 'shock', 'talk', 'asleep', 'tired',
 ] as const;
 export type ExpressionId = (typeof EXPRESSION_IDS)[number];
 
@@ -35,6 +35,7 @@ export const EXPRESSIONS: Record<ExpressionId, FaceState> = {
   shock: {brow: 'up', eyes: 'wide', look: [0, 0], mouth: 'shout', open: 0.6},
   talk: {brow: 'flat', eyes: 'dot', look: [0, 0], mouth: 'talk', open: 0.7},
   asleep: {brow: 'flat', eyes: 'shut', look: [0, 0], mouth: 'flat'},
+  tired: {brow: 'worry', eyes: 'half', look: [0, 0.4], mouth: 'gasp', squint: 0.4, sweat: true, bags: 1},
 };
 
 export type ExpressionInfo = {
@@ -64,4 +65,5 @@ export const EXPRESSION_INFO: Record<ExpressionId, ExpressionInfo> = {
   shock: {description: 'Raised brows, wide eyes, jaw dropped (medium open mouth).', use: 'Stunned silence, a twist landing, frozen disbelief.'},
   talk: {description: 'Flat brows, dot eyes, speaking mouth (open 0.7).', use: 'Speaking; override `open` per frame from the narration amplitude.'},
   asleep: {description: 'Flat brows, eyes shut, flat mouth.', use: 'Sleeping, eyes closed on purpose (the rig blink is not needed).'},
+  tired: {description: 'Drooping brows, heavy half-lidded eyes with dark under-eye bags, open panting mouth, sweat drop.', use: 'Exhausted, worn out after running or work; pair with a slumped pose. Use `sleepy` for drowsy.'},
 };

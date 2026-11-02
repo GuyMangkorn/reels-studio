@@ -8,7 +8,7 @@ For medium flexibility, demo lighting, texture lifecycle, lead size, shot moveme
 
 ## Visual direction and motion
 
-Use original stylized artwork, readable silhouettes, simple forms and a consistent channel palette. Existing 2D characters keep solid fills, rounded shapes and dark outlines. Character representation follows Film's brief; preserve identity and appearance when switching medium. Keep the chosen 2D/3D/hybrid assets visually consistent through shape language, materials, lighting and color. The brief and scene handoff determine daylight, dusk, night, moonlight, shadows and atmosphere; bright daytime pastel lighting is not mandatory for every shot. Three.js is an intended production tool, including for actual 3D geometry and spatial camera movement.
+Use original stylized artwork, readable silhouettes, simple forms and a consistent channel palette. Characters and animals come from the painted kit (`src/painted/kit`): watercolour fills with boiling ink lines in a darkened shade of the fill, per the [painted-2d skill](../.claude/skills/painted-2d/SKILL.md). Character representation follows Film's brief; preserve identity and appearance when switching medium. Keep the chosen 2D/3D/hybrid assets visually consistent through shape language, materials, lighting and color. The brief and scene handoff determine daylight, dusk, night, moonlight, shadows and atmosphere; bright daytime pastel lighting is not mandatory for every shot. Three.js and Blender 3D are inactive ([visual engine](delivery-workflow.md#visual-engine)); 3D and hybrid rules below apply only if the user reactivates them.
 
 **Reference palette:** The existing colors guide asset continuity; the brief determines the shot lighting and grade:
 
@@ -24,21 +24,20 @@ Use original stylized artwork, readable silhouettes, simple forms and a consiste
 | Sky | `#FFF1C9` → `#FFE0E6` |
 | Sun / ground | `#FFD166` / `#B8F2C9` |
 
-- Keep nested pivots: shoulder → elbow → wrist, hip → knee → ankle, torso → head. Limbs retain phase-lagged secondary motion; use `src/rig/poses.ts` and shared drivers.
-- Use `blinkAt` and audio-amplitude-driven `mouthAt`. Use authored pose tracks for reliable random seeking and interrupted transitions. Check pivots with `showPivots`, then disable debug markers for delivery.
+- Pose and move characters with the kit: poses from the [pose sheet P01–P45](character-proportion-principles.md#cp-p-pose-sheet) (`poseArms`), motions from `MOTIONS` via `layerMotion`, faces from `EXPRESSIONS` with the kit blink, animals with `animalMotion`. Every pose and motion is a pure function of shot time, so random seeking and interrupted transitions reproduce the same frame.
 - Derive animation, cameras, lighting, flicker and particles from Remotion frame/fps and seeded deterministic functions. Render seeking and parallel workers must reproduce the same frame.
-- Place reusable 2D rigs in 3D through a shared cut-out adapter when needed. Preserve depth ordering, transparent edges, shadows and floor/seat contact across camera motion.
+- Preserve depth ordering, ground shadows and floor/seat contact across camera motion.
 - Wait for textures, models and fonts through Remotion's render-loading lifecycle. Release GPU resources in shared components.
 - Keep Thai subtitles, cards and channel labels in screen space unless the scene handoff explicitly places an element in the world. Camera movement must keep the subtitle band readable.
 
 
 ## Adding reusable assets
 
-For a pose, extend `PoseName`, the pose registry and frame sampling in `src/rig/poses.ts`; update species-specific sampling and validation when needed. Start from an existing joint set, keep lag and use the shared transition system.
+For a person, outfit, expression, pose, motion or animal, add it to the painted kit (`src/painted/kit`: `PEOPLE`, `WARDROBE`, `EXPRESSIONS`, `POSES`, `MOTIONS`, `ANIMALS`) with its info entry, kit-sheet row and context-map entry ([kit README](../src/painted/kit/README.md)). Start from the nearest existing entry; a new pose joins the [pose sheet](character-proportion-principles.md#cp-p-pose-sheet).
 
-Choose 2D or 3D characters from Film's brief, checking available rigs, assets and render feasibility. Reuse shared character assets across scenes. For a variant of an existing character, reuse its body type and expose appearance parameters or named costumes. The current 2D `Character` uses appearance props and pose inputs; confirm the exported API before writing an example. New 3D rigs/adapters require explicit shared implementation and integration. Add a new skeleton only when the selected body or representation requires it. Cat and Dog currently share `src/rig/Animal.tsx`.
+Cast characters from the painted kit per Film's brief. Reuse shared character assets across scenes. For a variant of an existing character, reuse its body type and expose appearance parameters or named costumes. Confirm the exported kit API before writing an example. Dogs and cats come from `ANIMALS` (`src/painted/kit/animals.ts`); the legacy `src/rig` Cat and Dog are retired.
 
-For 3D sets, characters or props, implement shared modules and register them with the scene pipeline. Follow Film's composition strategy for hybrid work: specify spaces, camera, depth/alpha, lighting, anchors and resource ownership. Compose from reusable geometry, materials and lighting. Expose parameters for time of day, reveal state or set dressing when the scene handoff needs them. Define dimensions and floor/seat/grip anchors so actors stay in contact as assets move or scale. DOM overlays do not automatically share WebGL depth or lighting.
+If the user reactivates a 3D engine: for 3D sets, characters or props, implement shared modules and register them with the scene pipeline. Follow Film's composition strategy for hybrid work: specify spaces, camera, depth/alpha, lighting, anchors and resource ownership. Compose from reusable geometry, materials and lighting. Expose parameters for time of day, reveal state or set dressing when the scene handoff needs them. Define dimensions and floor/seat/grip anchors so actors stay in contact as assets move or scale. DOM overlays do not automatically share WebGL depth or lighting.
 
 For a 2D background or prop, extend its shared registry and validator. For an overlay, implement the shared screen component and scene dispatch. A chapter references library ids and timing rather than copying SVG, geometry, pose functions or layout code.
 

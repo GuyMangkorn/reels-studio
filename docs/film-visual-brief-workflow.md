@@ -74,6 +74,8 @@ Before `ready-for-mark`, review the table continuously: every section needs a vi
 <a id="technical-ba-ต้องตอบอะไรเมื่อผสม-2d-กับ-threejs"></a>
 ## Technical BA for 2D and Three.js
 
+> **Legacy (2 Nov 2026):** the Three.js rows apply only if the user reactivates a 3D engine ([visual engine](delivery-workflow.md#visual-engine)). For painted 2D (the default), answer the scale, camera, lighting and determinism rows for the painted plate and record the Three.js rows `N/A (painted 2D)`.
+
 Apply relevant rows; `N/A` with a reason is valid. Hybrid is not mandatory. Read evidence/cautions in [asset-engineering-principles.md](asset-engineering-principles.md).
 
 Before choosing camera or projected size, follow [scale and perspective](scale-and-perspective-principles.md) for 2D, 3D and hybrid. Film establishes shared units, size references and projection contract for the scene sheets, Boss and Editor. Finish with a scale baseline, sources/estimated status, and separate physical/projected measurement checks. Record affected decisions/revisions when the approach changes.
