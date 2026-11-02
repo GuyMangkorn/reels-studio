@@ -149,7 +149,7 @@ Episode-specific files are under [Episodes](#episodes); shared topics come first
 
 ## Script, research and fact-check
 
-**Read when:** Boat research, Preaw script, fact-check.
+**Read when:** ideation concepts, Boat research, Preaw script, fact-check.
 
 - Docs: [editorial-workflow](editorial-workflow.md), [scriptwriting-principles](scriptwriting-principles.md)
 - Per episode: `scripts/<episode>/research.md`, `topic-brief.md`, script files under `short/` or `long/`

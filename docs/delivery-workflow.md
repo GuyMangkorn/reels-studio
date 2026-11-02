@@ -5,9 +5,9 @@
 ## Resolve the selection before writing
 
 1. Read the user's request and the existing episode delivery record. Reuse an explicit selection; do not ask again when the user already chose the formats or supplied a scoped revision request.
-2. If the selection or [style profile](#style-profile) is missing or materially ambiguous, ask with the harness's structured-question tool: `AskUserQuestion` in Claude Code, `request_user_input_async` in Codex; if neither exists, ask in chat. Ask only for what the prompt leaves open, in one call in the user's language: the **selection** with three choices, **both**, **Short only**, **Long only**, showing the duration targets from production requirements (Thai example: “หัวข้อนี้ต้องการทำทั้ง Shorts และ YouTube แบบยาว หรือเลือกแบบใดแบบหนึ่ง?”), the **style** (genre/medium, voice, music) and the **target length** when none is stated or implied, and whether the user has a **look reference** (image, link or earlier episode) when the medium is illustrated or 3D. For an animated or illustrated deliverable, the same call also asks the [visual engine](#visual-engine) unless the prompt or record names one. Do not ask about a choice the prompt or the delivery record already settles. A sent question, preselected option or elapsed wait is not an answer. Continue independent research while waiting; begin format-dependent writing/scene sheets only after the selection is resolved.
+2. For a new video, run the [ideation round](#ideation) first; the chosen concept settles the genre, medium and tone it names. If the selection or a [style profile](#style-profile) field the concept leaves open is missing or materially ambiguous, ask with the harness's structured-question tool: `AskUserQuestion` in Claude Code, `request_user_input_async` in Codex; if neither exists, ask in chat. Ask only for what the prompt leaves open, in one call in the user's language: the **selection** with three choices, **both**, **Short only**, **Long only**, showing the duration targets from production requirements (Thai example: “หัวข้อนี้ต้องการทำทั้ง Shorts และ YouTube แบบยาว หรือเลือกแบบใดแบบหนึ่ง?”), the **style** (genre/medium, voice, music) and the **target length** when none is stated or implied, and whether the user has a **look reference** (image, link or earlier episode) when the medium is illustrated or 3D. For an animated or illustrated deliverable, the same call also asks the [visual engine](#visual-engine) unless the prompt or record names one. Do not ask about a choice the prompt or the delivery record already settles. A sent question, preselected option or elapsed wait is not an answer. Continue independent research while waiting; begin format-dependent writing/scene sheets only after the selection is resolved.
 3. Record the answer or existing instruction in `scripts/<episode>/delivery.md`: selection, style profile and pipeline (`Full`), evidence of the user's choice, deliverable IDs, target durations and scope. `short`, `long` and `both` are authoring labels, not runtime fields. Default counts are one standalone Short and one Long when both are selected. A chapter series, multiple Shorts or additional edits require explicit scope; selecting both does not make every Long chapter a Short.
-4. Create `scripts/<episode>/task.md` ([task file](#task-file)) and route each selected deliverable through the [pipeline](#pipeline-tiers): Boat research → Preaw script → Boat fact-check → Film brief and written scene sheets → Boss shared assets/capabilities → Editor integration/editing. Shared research may feed both. A scriptwriting-only assignment ends with editorial handoff; selection does not authorize automatic downstream production, agent execution or cross-chat messaging.
+4. Create `scripts/<episode>/task.md` ([task file](#task-file)) and route each selected deliverable through the [pipeline](#pipeline-tiers): Ideation → Boat research → Preaw script → Boat fact-check → Film brief and written scene sheets → Boss shared assets/capabilities → Editor integration/editing. Shared research may feed both. A scriptwriting-only assignment ends with editorial handoff; selection does not authorize automatic downstream production, agent execution or cross-chat messaging.
 
 Selection is complete when the record identifies the selected deliverables and the instruction resolving the choice. An explicit custom duration/scope overrides defaults with its reason recorded. For a new version of existing production, preserve existing IDs and evidence; record a migration map before changing paths or IDs. Workflow updates alone do not migrate historical episodes.
 
@@ -30,7 +30,7 @@ Selection is complete when the record identifies the selected deliverables and t
 Record the chosen values in `delivery.md` as a compact block.
 
 <a id="project-defaults"></a>
-**Default — project defaults when the prompt does not say** (user decision, 30 Oct 2026, from WORLD FOG EP01). An illustrated story whose prompt leaves these open uses the values below without asking; record each in `delivery.md` as `default`. A prompt, brief or the user's answer overrides any of them, with the reason recorded.
+**Default — project defaults when the prompt does not say** (user decision, 30 Oct 2026, from WORLD FOG EP01). An illustrated story whose prompt and chosen [concept](#ideation) leave these open uses the values below without asking; record each in `delivery.md` as `default`. A prompt, brief or the user's answer overrides any of them, with the reason recorded.
 
 | Field | Default | Reference |
 | --- | --- | --- |
@@ -66,7 +66,7 @@ Selecting several options means a mix; the brief then states which engine owns e
 
 **Requirement (user, 2 Nov 2026):** every video deliverable runs the full pipeline. There are no lighter tiers: the Light and Edit-only tiers are retired.
 
-Boat research → Preaw script → Boat fact-check → Film brief → Film storyboard pass (VO-relative timing) + first [storyboard page](mark-storyboard-workflow.md#user-storyboard-review-page) → Editor [voice lock](#voice-lock) → Film timed scene sheets → Boss assets → Editor
+[Ideation](#ideation) (Preaw pitch → Film annotation → user pick) → Boat research → Preaw script → Boat fact-check → Film brief → Film storyboard pass (VO-relative timing) + first [storyboard page](mark-storyboard-workflow.md#user-storyboard-review-page) → Editor [voice lock](#voice-lock) → Film timed scene sheets → Boss assets → Editor
 
 - Record `Full` in `delivery.md`. A stage is `N/A` only when it has no subject at all (for example no narration, so no voice lock), with the reason recorded. A fictional profile still gets Boat research (the legend's sources) and a fact-check of the fact-versus-fiction boundary.
 - Media the user supplies (footage, images, audio) is source material for the stages above, filed and inventoried as in Editor's [direct intake](editor-workflow.md#direct-intake); it does not skip Film's brief or scene sheets.
@@ -74,10 +74,22 @@ Boat research → Preaw script → Boat fact-check → Film brief → Film story
 
 Handoff checks apply to every stage: matching revisions, deliverable ID, covered beats and timing status. Progress is tracked in the [task file](#task-file).
 
+<a id="ideation"></a>
+### Ideation
+
+**Requirement (user, 2 Nov 2026):** every new video starts with an ideation round before Boat research, so the channel looks for the best concept instead of repeating its defaults. The user skips it for one video by naming the concept (genre, format and visual medium) in the prompt; record `W0 N/A — concept given by user` with their words. Re-edits and new versions of an existing deliverable skip it.
+
+1. **Preaw pitches** (one invocation) `scripts/<episode>/concepts.md`: six concepts `C1`–`C6` on the user's topic, or on topics Preaw proposes when the user gives none. Spread: at least three genres from the [style profile](#style-profile) list, at least two visual mediums, and one wild card that the current kit and [project defaults](#project-defaults) cannot make. The channel default (mystery-educational in the WORLD FOG look) is at most one of the six. Each concept gives: ID, Thai working title, genre, a one- or two-sentence logline, the hook's opening line in Thai, a 3–5 beat outline, ending type, voice and tone, why it would hold a viewer (hook mechanism, payoff, why someone would share it) and research load (none, general knowledge, named real case).
+2. **Film annotates** (one fresh invocation) the same file: per concept, the visual approach in one or two lines (medium, engine, look reference), buildability from the kit catalog (`ready`, `new assets: <list>` or `missing capability: <list>`) and a production size `S`, `M` or `L`. Film does not drop or rewrite concepts. The coordinator runs this pass on Opus ([per-call override](../AGENTS.md#coordinator-and-agent-parity)).
+3. **The coordinator asks the user** to pick with the structured-question tool, after a summary table (ID, title, genre, medium, hook line, size) in the reply. Where the tool caps options at four, ask two questions, `C1`–`C3` and `C4`–`C6`, each with a "none of these" option. The user may pick one, merge two, or ask for another round with a direction; a new round is a new revision of `concepts.md` (`R2`, …) and earlier rounds stay in the file.
+4. `delivery.md` records the chosen concept ID, revision and the user's words, and the style profile fields the concept names. The [project defaults](#project-defaults) fill only what the concept leaves open.
+
+Concepts are pitches, not research: no claim in `concepts.md` counts as checked until Boat's research and fact-check.
+
 <a id="task-file"></a>
 ### Task file
 
-**Requirement (user, 2 Nov 2026)** for every project: `scripts/<episode>/task.md` is a checklist of the [W1–W8 steps](sequence-workflow.md#painted-shot-by-shot) that answers "how far along is it" without reading `delivery.md`. It holds progress only; decisions, revisions and evidence stay in `delivery.md` and the handoff files, linked by path.
+**Requirement (user, 2 Nov 2026)** for every project: `scripts/<episode>/task.md` is a checklist of the [W0–W8 steps](sequence-workflow.md#painted-shot-by-shot) that answers "how far along is it" without reading `delivery.md`. It holds progress only; decisions, revisions and evidence stay in `delivery.md` and the handoff files, linked by path.
 
 - **Created** by the coordinator in the turn it first writes `delivery.md`, from the template below, one section per deliverable.
 - **Updated** by whoever finishes a step (role agent or coordinator), in the same change that updates the deliverable's `Stage / Next owner` cell. The two must agree; when they differ, `delivery.md` wins and `task.md` is corrected.
@@ -95,6 +107,10 @@ Record: [delivery.md](delivery.md) · Updated: <YYYY-MM-DD>, <role>
 
 **Now:** <W-step> — <one line>. **Next:** <owner> — <what, on which revision>
 
+- [ ] W0 Ideation
+  - [ ] W0.1 Preaw concepts (concepts.md R1)
+  - [ ] W0.2 Film annotation
+  - [ ] W0.3 User picks a concept
 - [ ] W1 Script lock
   - [ ] W1.1 Boat research
   - [ ] W1.2 Preaw script
