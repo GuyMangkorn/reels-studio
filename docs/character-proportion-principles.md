@@ -117,6 +117,9 @@ Runtime (30 Oct 2026, commit `f6e4bd2`):
 <a id="cp-casting-line"></a>
 **Casting line (Default, user decision 1 Nov 2026).** Before designing a new character, Film pick a person from the template cast (`PEOPLE` in `src/painted/kit/people.ts`, catalog `KIT-CAST-CARDS`) and name each character as `person [+ outfit] [, pose] [, expression]`, e.g. `man-parted + police, P15, scared`. `parseCasting` in `src/painted/kit/casting.ts` validates the line. A new look is proposed to Boss for `PEOPLE` only when no template fits and the look is reusable; one-off changes stay in the episode cast.
 
+<a id="cp-casting-line-animals"></a>
+**Animal casting line (Default, user decision 2 Nov 2026).** A dog or cat is picked from `ANIMALS` in `src/painted/kit/animals.ts` (sheets `KIT-ANIMALS`, `KIT-ANIMALS-LINEUP`) and named as `animal [, state] [, motion]`, e.g. `dog-golden, sit, happy-wag` or `cat-black, stand, sniff`: `state` is `stand`, `sit` or `lie`, `motion` an id of `ANIMAL_MOTION_IDS` (`src/painted/kit/animal-motions.ts`, reel `KIT-ANIMAL-MOTIONS`). `parseCasting` does not validate animal lines yet; check the ids against those modules.
+
 <a id="cp-sources"></a>
 ## Sources
 
