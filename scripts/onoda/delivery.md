@@ -28,4 +28,6 @@
 
 | Deliverable | Stage / Next owner | Script / research / review | Brief / scene handoff | Evidence / open items |
 | --- | --- | --- | --- | --- |
-| ONO-EP01-SHORT | W1.3 done (`ONO-FACTCHECK-R1`, `ready-for-storyboard`, main hook; `ALT-HOOK-U` not supported as written) → **user** W1.4 approves script and picks hook | research `ONO-RESEARCH-R1` (`research.md`; all sources lead-only, fetch blocked); script `ONO-SCRIPT-R1` (`short/script.md`, ≈ 44.5 s `estimated`) | — | open: civilian toll unresolved (hedged "ราว 30 คน ตามที่มีรายงาน"); hook main "เกือบ 29 ปี" vs `ALT-HOOK-U` "29 ปี" (user picks) |
+| ONO-EP01-SHORT | W1 script lock done (user approved `ONO-SCRIPT-R1`, main hook, 2026-11-02) → **Film** W2.1 brief when the user starts it | research `ONO-RESEARCH-R1` (`research.md`; all sources lead-only, fetch blocked); script `ONO-SCRIPT-R1` (`short/script.md`, ≈ 44.5 s `estimated`) | — | open: civilian toll unresolved (hedged "ราว 30 คน ตามที่มีรายงาน"); hook main "เกือบ 29 ปี" vs `ALT-HOOK-U` "29 ปี" (user picks) |
+
+- 2026-11-02 user (AskUserQuestion): hook = main "สงครามจบไปเกือบ 29 ปี… แต่ทหารคนนี้ยังรบอยู่" (`ALT-HOOK-U` dropped); script `ONO-SCRIPT-R1` approved (W1.4).

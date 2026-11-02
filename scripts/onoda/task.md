@@ -1,16 +1,16 @@
 # Tasks — onoda
 
-Record: [delivery.md](delivery.md) · Updated: 2026-11-02, Preaw
+Record: [delivery.md](delivery.md) · Updated: 2026-11-02, coordinator
 
 ## ONO-EP01-SHORT
 
-**Now:** W1.4 — waiting for the user to approve the script and pick the hook. **Next:** Film brief (W2.1)
+**Now:** W1 done — script `ONO-SCRIPT-R1` approved with the main hook. **Next:** Film — W2.1 brief on `ONO-SCRIPT-R1`
 
-- [ ] W1 Script lock
+- [x] W1 Script lock
   - [x] W1.1 Boat research — `ONO-RESEARCH-R1` (lead-only sources)
   - [x] W1.2 Preaw script — `ONO-SCRIPT-R1` (`short/script.md`, ≈ 44.5 s estimated)
   - [x] W1.3 Boat fact-check — `ONO-FACTCHECK-R1` (`ready-for-storyboard`, lead-only sources, medium-low confidence)
-  - [ ] W1.4 User approves the script
+  - [x] W1.4 User approves the script (2026-11-02, main hook "เกือบ 29 ปี")
 - [ ] W2 Brief and storyboard
   - [ ] W2.1 Film brief (text)
   - [ ] W2.2 Film storyboard rows (review-rows.json)
