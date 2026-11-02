@@ -17,7 +17,7 @@ view with `scripts/qa-sheet.sh`). Source of the catalog: [catalog.tsx](catalog.t
 | `poses.ts` | `POSE_IDS`, `PoseId`, `POSES`, `poseArms(id, def, g, unit)`, `shoulderAnchors(def)` | Pose sheet P01-P30 as shoulder-relative hand targets for the cast rig (front, standing; [CP-P11](../../../docs/character-proportion-principles.md#cp-p-pose-sheet)) |
 | `head.ts` | `paintHeadFront`, `paintHeadSide`, `HeadStyle`, `FaceLook`, `FaceState`, `Brow`/`Eyes`/`Mouth`, `headOutline`, `BROW_Y`, `blinking`, `HEAD_SPAN`, `CHIN` | Decal heads with face controls; `HeadStyle.look` picks eye, nose, brow and closed-mouth drawing (front view) |
 | `hash.ts` | `hash` | Deterministic 0..1 noise |
-| `people.ts` | `PEOPLE`, `PEOPLE_INFO` | **Central template cast**: 11 ready `CastDef`s (men, women, children, elders). Pick one by id, then override `outfit`/`head` per video |
+| `people.ts` | `PEOPLE`, `PEOPLE_INFO` | **Central template cast**: 14 ready `CastDef`s (men, women, children, elders). Pick one by id, then override `outfit`/`head` per video |
 | `hair.ts` | hair geometry for the `HeadStyle.cut` values `crop parted spiky buzz balding bowl pixie ponytail pigtails curly perm` | Front and profile hair; extra `HeadStyle` fields `facial`, `glasses`, `accent`, `brows` |
 | `people-sheet.tsx` | `KIT-PEOPLE-LINEUP`, `KIT-PERSON-<id>` | Lineup and per-character model sheets (front/left/right, 9 faces); render with `node scripts/painted-kit/people.mjs --out=DIR` |
 | `face-looks-sheet.tsx` | `KIT-FACE-LOOKS`, `KIT-FACE-CAST` | Every `FaceLook` part side by side, and each PEOPLE head without and with its look; render with `printf 'KIT-FACE-CAST 0 out/face-looks/KIT-FACE-CAST.png\n' \| node scripts/stills.mjs src/painted/kit/face-looks-sheet.tsx` |

@@ -17,7 +17,7 @@ import {POSE_INFO, poseFor} from './poses';
 //   printf 'KIT-CAST-CARDS 0 out/kit-pass3/cast-cards/KIT-CAST-CARDS.png\n' | node scripts/stills.mjs src/painted/kit/cast-cards-sheet.tsx
 // Added 1 Nov 2026 (pass 3).
 
-const W = 2380, H = 2290;
+const W = 2380, H = 3000;
 const X0 = 40, Y0 = 160, CARD_W = 560, CARD_H = 690, GAP = 20, COLS = 4;
 /** Head size for the expression strip, px per head unit, and the figure size for the pose thumbnails, px per metre. */
 const STRIP_K = 20, THUMB_UNIT = 165;
@@ -81,7 +81,7 @@ const explain = (line: string): {ok: boolean; text: string} => {
 };
 
 const Cards = () => {
-  const legend = cardX(11), legendY = cardY(11);
+  const legend = cardX(PERSON_IDS.length), legendY = cardY(PERSON_IDS.length);
   return (
     <AbsoluteFill>
       <BrushCanvas paint={({brush}) => {

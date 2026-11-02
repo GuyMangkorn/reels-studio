@@ -34,6 +34,7 @@ export type HeadStyle = {skin: string; hair: string; cut: Cut; hood?: string; li
 /**
  * Front-view face drawing (user-approved for PEOPLE, 2 Nov 2026). `eye`: `almond` pointed corners with a lash line, `lidded` almond with a lid
  * crease, `hooded` a heavy upper lid with an outer wing (`wing: false` drops the wing); each has a coloured iris clipped to the eye and a catch-light.
+ * `lash: false` draws the upper lid as a thin plain line with no wing, so the eye reads without lashes (every male PEOPLE entry, 2 Nov 2026).
  * `nose`: `hook` a small side curve, `ell` a bridge shadow ending in the nose base, `nostrils` two marks with a soft shadow.
  * `round` is a large child eye. `nose`: `hook` a small side curve, `ell` a bridge shadow ending in the nose base, `nostrils`
  * two marks with a soft shadow, `broad` wide nostrils with the wings drawn, `button` a small child nose.
@@ -41,7 +42,7 @@ export type HeadStyle = {skin: string; hair: string; cut: Cut; hood?: string; li
  * `mouth` redraws the closed mouths (`flat`, closed `talk`, `frown`): `line` a soft line with lifted corners, `lip` a lip line
  * with a lower-lip shadow, `full` tinted upper and lower lips, `thin` a short line with corner ticks; absent = the bare line.
  */
-export type FaceLook = {eye: 'almond' | 'lidded' | 'hooded' | 'round'; wing?: boolean; nose: 'hook' | 'ell' | 'nostrils' | 'broad' | 'button'; brow: 'arch' | 'tapered' | 'thick'; browDrop: number; mouth?: 'line' | 'lip' | 'full' | 'thin'; iris?: string};
+export type FaceLook = {eye: 'almond' | 'lidded' | 'hooded' | 'round'; wing?: boolean; lash?: false; nose: 'hook' | 'ell' | 'nostrils' | 'broad' | 'button'; brow: 'arch' | 'tapered' | 'thick'; browDrop: number; mouth?: 'line' | 'lip' | 'full' | 'thin'; iris?: string};
 
 /** Head height (forehead top to chin) in head units K; chin below the centre. */
 export const HEAD_SPAN = 2.27;
@@ -217,10 +218,10 @@ const lookEye = (lk: FaceLook, side: number, ex: number, ey: number, eyes: Eyes,
   fill(lk.iris ?? IRIS, iris, 5);
   fill(INK, iris.map(([px, py]): Pt => [icx + (px - icx) * 0.45, icy + (py - icy) * 0.45]), 4);
   if (hu > 0.05) fill(WHITE, ell(icx - 0.025, icy - 0.03, 0.018, 0.018, 8), 3);
-  // Lash line: heavier upper lid, light partial lower lid.
-  ink(upper, lk.eye === 'hooded' ? 2.4 : 1.8, 0.4, false, LID);
+  // Lash line: heavier upper lid, light partial lower lid. `lash: false` keeps a plain thin upper lid (men).
+  ink(upper, lk.lash === false ? 1.0 : lk.eye === 'hooded' ? 2.4 : 1.8, 0.4, false, LID);
   ink(lower.slice(5), 0.7, 0.4, false);
-  if (lk.eye === 'hooded' && lk.wing !== false) {
+  if (lk.eye === 'hooded' && lk.wing !== false && lk.lash !== false) {
     const o = up(1);
     ink([up(0.8), o, [o[0] + side * 0.07, o[1] - 0.05]], 2.4, 0.3, false, LID); // outer wing
   }

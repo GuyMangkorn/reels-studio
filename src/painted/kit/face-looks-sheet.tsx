@@ -55,7 +55,7 @@ const Sheet = () => (
 
 const lookTag = (l?: FaceLook) => !l ? '' : `${l.eye} · ${l.nose} · ${l.brow} · ${l.mouth}`;
 
-const CW = 2200, CH = 1380, COLS = 6, CK = 78;
+const CW = 2200, CH = 1380, COLS = 7, CK = 78;
 const PONY_LOOK = PEOPLE['woman-ponytail'].head.look as FaceLook;
 const MOUTHS: NonNullable<FaceLook['mouth']>[] = ['line', 'lip', 'full', 'thin'];
 const cellX = (i: number) => (CW / COLS) * ((i % COLS) + 0.5);
@@ -77,7 +77,7 @@ const Cast = () => (
     {PERSON_IDS.map((id, i) => (
       <Fragment key={id}>
         <div style={{...cap, left: cellX(i) - CW / COLS / 2, top: cellY(i) - 175, fontSize: 24, fontWeight: 700}}>{id}</div>
-        <div style={{...cap, left: cellX(i) - CW / COLS / 2, top: cellY(i) + 125, fontSize: 18}}>{lookTag(PEOPLE[id].head.look)}</div>
+        <div style={{...cap, left: cellX(i) - CW / COLS / 2, top: cellY(i) + 150, fontSize: 18}}>{lookTag(PEOPLE[id].head.look)}</div>
       </Fragment>
     ))}
     <div style={{...cap, left: 0, width: CW, top: 900, fontSize: 30, fontWeight: 700}}>mouth (closed): line · lip · full · thin</div>
