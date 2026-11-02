@@ -4,7 +4,7 @@ Record: [delivery.md](delivery.md) · Updated: 2026-11-02, coordinator
 
 ## Z7-EP01-SHORT
 
-**Now:** W1 — Z7-SCRIPT-R4.1 (≈116 s, estimated) = R4 + Boat fixes Z7R4-01/02; Z7-FACTCHECK-R4.1 ready-for-storyboard (0 fixes); user approved R4.1. **Next:** Film — brief; Editor — full Kore read and length check (sample pace suggests ≈130–140 s)
+**Now:** W1 — Z7-SCRIPT-R4.1 (≈116 s, estimated) = R4 + Boat fixes Z7R4-01/02; Z7-FACTCHECK-R4.1 ready-for-storyboard (0 fixes); user approved R4.1. **Next:** Film — storyboard rows (W2.2) from Z7-BRIEF-R1; Editor — full Kore read and length check (sample pace suggests ≈130–140 s)
 
 - [x] W1 Script lock
   - [x] W1.1 Boat research — N/A, fiction only
@@ -12,7 +12,7 @@ Record: [delivery.md](delivery.md) · Updated: 2026-11-02, coordinator
   - [x] W1.3 Boat fact-check — [short/factcheck.md](short/factcheck.md) Z7-FACTCHECK-R4.1 ready-for-storyboard
   - [x] W1.4 User approves the script — R4.1 approved 2026-11-02
 - [ ] W2 Brief and storyboard
-  - [ ] W2.1 Film brief
+  - [x] W2.1 Film brief — [short/film-brief.md](short/film-brief.md) Z7-BRIEF-R1 (2026-11-02; text only, 38 shots planned, 4 open questions)
   - [ ] W2.2 Film storyboard rows (review-rows.json)
   - [ ] W2.3 Storyboard page published
 - [ ] W3 Look frames and storyboard pass

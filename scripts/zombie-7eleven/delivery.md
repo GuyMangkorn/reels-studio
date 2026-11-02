@@ -13,7 +13,7 @@
 
 | Deliverable | Stage / Next owner | Script / research / review | Brief / scene handoff | Evidence / open items |
 | --- | --- | --- | --- | --- |
-| Z7-EP01-SHORT | W1 script lock, voice picked (Kore) → **Film** brief; then Editor full voice read and length lock | Script `Z7-SCRIPT-R4.1` ([short/script.md](short/script.md), Preaw, ≈448 syllables, ≈116 s **estimated**, not read aloud); Boat `Z7-FACTCHECK-R4` needs-revision (minor), fixes applied in R4.1; `Z7-FACTCHECK-R4.1` ready-for-storyboard, 0 fixes ([short/factcheck.md](short/factcheck.md)) | None yet | User approved the R4.1 direction and text 2026-11-02 (hook `B00` changed by the user's approval, 6-frame shoulder included). Open: Film brief, full voice read (length risk ≈130–140 s) |
+| Z7-EP01-SHORT | W2.1 brief done (`Z7-BRIEF-R1`) → **Film** first storyboard pass (W2.2); in parallel Editor full voice read and length lock | Script `Z7-SCRIPT-R4.1` ([short/script.md](short/script.md), Preaw, ≈448 syllables, ≈116 s **estimated**, not read aloud); Boat `Z7-FACTCHECK-R4` needs-revision (minor), fixes applied in R4.1; `Z7-FACTCHECK-R4.1` ready-for-storyboard, 0 fixes ([short/factcheck.md](short/factcheck.md)) | Brief `Z7-BRIEF-R1` ([short/film-brief.md](short/film-brief.md), Film, 2026-11-02, text only); scene sheets none yet | User approved the R4.1 direction and text 2026-11-02 (hook `B00` changed by the user's approval, 6-frame shoulder included). Open: user picks (zombie look, ending cut, gore/chrome defaults), full voice read (length risk ≈130–140 s; trim ladder in the brief) |
 
 ## Log
 

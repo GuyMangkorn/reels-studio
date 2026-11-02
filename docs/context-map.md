@@ -195,7 +195,7 @@ Episode-specific files are under [Episodes](#episodes); shared topics come first
 | World Fog | [world-fog/](../scripts/world-fog/delivery.md) | [world-fog](../src/videos/world-fog/index.ts) `WFOG-EP01-SHORT` | [worldfog/](../src/painted/worldfog/cast.ts), [shots/worldfog.tsx](../src/painted/shots/worldfog.tsx) | [world-fog](../tests/world-fog.test.ts) |
 | Wow signal | [wow-signal/](../scripts/wow-signal/delivery.md) | — | — | — |
 | Zombie condo (3D, retired) | [zombie-condo/](../scripts/zombie-condo/delivery.md) | — | — | — |
-| Zombie 7-Eleven | [zombie-7eleven/](../scripts/zombie-7eleven/delivery.md) | — | — | — |
+| Zombie 7-Eleven | [zombie-7eleven/](../scripts/zombie-7eleven/delivery.md), [film-brief](../scripts/zombie-7eleven/short/film-brief.md) | — | — | — |
 | Zombie condo painted | [zombie-condo-paint/](../scripts/zombie-condo-paint/) | [zombie-condo-paint](../src/videos/zombie-condo-paint/index.ts) `ZCPAINT-SHORT-TH`, `-EN` | [zcpaint/](../src/painted/zcpaint/cast.ts), [shots/zcpaint.tsx](../src/painted/shots/zcpaint.tsx) | [zcpaint](../tests/zcpaint.test.ts), [zombie-condo-paint](../tests/zombie-condo-paint.test.ts) |
 
 Painted plate and sheet IDs (`S02-SH01`, `KSO-LF01`, `ZCPAINT-R26-A`, …) are listed by the episode's `src/painted/shots/<episode>.tsx` and [spike/index.ts](../src/painted/spike/index.ts).
