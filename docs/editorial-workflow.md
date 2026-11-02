@@ -12,6 +12,7 @@ Before format-dependent research/writing, resolve the [delivery selection and re
 
 | Stage | Owner | Handoff |
 | --- | --- | --- |
+| [Ideation](delivery-workflow.md#ideation) | Preaw, then Film | Six concepts in `concepts.md` across genres and mediums; the user picks one |
 | Brief / research | Boat | Questions, evidence, usable knowledge and unresolved gaps |
 | Script | Preaw | Full script, beats, clues, reveal and claim references |
 | Fact-check | Boat | Claim-by-claim review of a named revision, corrections and impact |
