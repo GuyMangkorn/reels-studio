@@ -132,7 +132,7 @@ const SceneView = ({scene, index, total, previous, start, narration, ending, end
       {!portrait && chrome.channelLabel !== false && <span lang="th" style={{fontSize: 19, color: ink, marginLeft: chrome.progressBar ? 12 : 'auto'}}>{chrome.channelLabel}</span>}
     </div>}
     {/* Portrait: top-left corner, outside the caption-safe box by choice (user 2026-10-30), clear of the platform's bottom UI. */}
-    {!entering && portrait && chrome.channelLabel !== false && <span lang="th" style={{position: 'absolute', top: 60, left: 60, fontSize: 30, color: ink}}>{chrome.channelLabel}</span>}
+    {!entering && portrait && chrome.channelLabel !== false && <span lang="th" style={{position: 'absolute', top: 60, left: 60, fontSize: 22, color: ink}}>{chrome.channelLabel}</span>}
   </AbsoluteFill>;
 };
 /** Scenes are intentionally data-driven: edit JSON, never duplicate layout for aspect ratios. */

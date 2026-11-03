@@ -1,0 +1,70 @@
+{
+  "public/audio/bed/bed_clean-pulse-95bpm_01.wav": {
+    "store": "library/sound/music/bed/bed_clean-pulse-95bpm_01.wav",
+    "sha256": "225d28515f1620418be9c8c8c1d6c0a8b92d5a382183862b796c6f8fe7c63cb6"
+  },
+  "public/audio/bed/bed_dark-drone-sub_01.wav": {
+    "store": "library/sound/ambience/bed/bed_dark-drone-sub_01.wav",
+    "sha256": "c20f82a3f9ece1e12890b8017689d06822563777404eec4b1153b5756a19ad24"
+  },
+  "public/audio/bed/bed_warm-pad-felt-third_01.wav": {
+    "store": "library/sound/music/bed/bed_warm-pad-felt-third_01.wav",
+    "sha256": "137d2ece5ad9c6f843602a5a4503c171629fe029ab65ee13e1960594e4bfe5bf"
+  },
+  "public/audio/room/room_pot-steam-hiss_01.wav": {
+    "store": "library/sound/ambience/room/room_pot-steam-hiss_01.wav",
+    "sha256": "bcd1535e11dfd5f1d32556a8cbe73613622b9fbbc4a185513e821c7b3ce2d89e"
+  },
+  "public/audio/room/room_shop-fridge-hum_01.wav": {
+    "store": "library/sound/ambience/room/room_shop-fridge-hum_01.wav",
+    "sha256": "d4ef096df21c9db1a22ee6240a50ec92e0921170a3305db1ce9fa7e0a5acf1c9"
+  },
+  "public/audio/room/room_soi-morning-quiet_01.wav": {
+    "store": "library/sound/ambience/room/room_soi-morning-quiet_01.wav",
+    "sha256": "e02708726f53054f7388dae8b6caef42ae1be31861e2df57d3e2bf425aef95d2"
+  },
+  "public/audio/tone/tone_soft-sustain-reflective_01.wav": {
+    "store": "library/sound/music/tone/tone_soft-sustain-reflective_01.wav",
+    "sha256": "98961e8e011f34fb71d225ce1a98788918f074337916e6c6648c965b20ccb2c7"
+  },
+  "public/narration/EG-EP01-SHORT.wav": {
+    "store": "projects/EG/narration/EG-EP01-SHORT-narration-lock.wav",
+    "sha256": "0b76d4bb61de10cc43bf42ff2e6359b635bed2a122eb1e61e3985f2a17adf908"
+  },
+  "public/sfx/foley/foley_jump-scuff-sneakers_01.wav": {
+    "store": "library/sound/sfx/foley/foley_jump-scuff-sneakers_01.wav",
+    "sha256": "ebae6764513ee5f2e9b9d80419932fa82cd216eddc933452fd62d4d37f109249"
+  },
+  "public/sfx/foley/foley_walk-sneakers-asphalt_01.wav": {
+    "store": "library/sound/sfx/foley/foley_walk-sneakers-asphalt_01.wav",
+    "sha256": "c52e1c6ff84b687f0329d3b405053995e2f4e5778724dc9263dbbb7eb291d803"
+  },
+  "public/sfx/mechanical/mechanical_sliding-door-glide_01.wav": {
+    "store": "library/sound/sfx/mechanical/mechanical_sliding-door-glide_01.wav",
+    "sha256": "9f57c1c12816cbcfd7bc1e64977b682efb6db7d37bdd42ceb9c1dce779edd058"
+  },
+  "public/sfx/reveal/reveal_riser-tension_01.wav": {
+    "store": "library/sound/sfx/reveal/reveal_riser-tension_01.wav",
+    "sha256": "571acff153c2e6694fe4ab965b5c5389808ca9cfc51a3452660431b569bba300"
+  },
+  "public/sfx/tension/tension_heartbeat-slow_01.wav": {
+    "store": "library/sound/sfx/tension/tension_heartbeat-slow_01.wav",
+    "sha256": "dad502623f206eab84c180797075271248642712255d081ddeda8e531435513a"
+  },
+  "public/sfx/ui/ui_card-tick-sweep_01.wav": {
+    "store": "library/sound/sfx/ui/ui_card-tick-sweep_01.wav",
+    "sha256": "8764faf60f36996a50bc15a8077a161db7de702b0efa3e285abbce3e7f528b49"
+  },
+  "public/sfx/ui/ui_entry-chime-two-tone_01.wav": {
+    "store": "library/sound/sfx/ui/ui_entry-chime-two-tone_01.wav",
+    "sha256": "74525b41ab73c264f358c05e2977ab62f3b95d367e593a6ef114936580e7f929"
+  },
+  "public/sfx/vehicle/vehicle_bts-viaduct-passby_01.wav": {
+    "store": "library/sound/sfx/vehicle/vehicle_bts-viaduct-passby_01.wav",
+    "sha256": "c6c4893634f4ab697850601670f5ec49a87aa836bce7354904d933e566c89f7a"
+  },
+  "public/sfx/water/water_ice-settle-tick_01.wav": {
+    "store": "library/sound/sfx/water/water_ice-settle-tick_01.wav",
+    "sha256": "b5b95b9fc45dc5c62c2134852e8d5f175403f99dbe8455db1d6b0a8c2cbc297a"
+  }
+}

@@ -1,4 +1,4 @@
-# EG-SCRIPT-R1 (fact-check fixes applied 2026-11-03, recheck pending) — "ประตูที่ไม่เปิดให้คุณ"
+# EG-SCRIPT-R1.2 (L16 cut 2026-11-03; R1.1 fact-check fixes applied, recheck pending) — "ประตูที่ไม่เปิดให้คุณ"
 
 - Owner / date: Preaw, 2026-11-03 (Asia/Bangkok). First revision.
 - Deliverable / episode: `EG-EP01-SHORT` / `EG01`; Short only, 1080×1920, 30 fps. [Delivery record](../delivery.md). Task file: [task.md](../task.md) (stage W1.2).
@@ -7,7 +7,7 @@
 - Profile / tier: mystery-educational, painted 2D (p5.brush) WORLD FOG look + SVG sensor insert; project defaults for the rest / Full pipeline.
 - Narration: second person `คุณ`, one narrator (NARR). No dialogue.
 - Ending: **user override 2026-11-03: no loop, the video ends on `คนที่หายไป… คือคุณ` (L20b); L21 removed.** The seamless-loop proposal below is superseded; Film chooses the closing frame (hold or fade) and records it. No `ข้อมูลจริง` tag on the sensor card (user, 2026-11-03).
-- Target / timing: about 50 s of speech, **about 55–57 s total, `estimated`** (syllable count about 235 at about 4.8 syllables/s plus written pauses and two SFX gaps). Not read aloud or audio-tested. Within the Short range 40–60 s; `B_loop` would add a 3 s hold (about 59–60 s, at the top of the range).
+- Target / timing: about 50 s of speech, **about 55–57 s total, `estimated`** (syllable count about 235 at about 4.8 syllables/s plus written pauses and two SFX gaps). Not read aloud or audio-tested. R1.2: L16 cut (about 2.3 s of speech by the R1 estimate); the locked narration already omits it, so timing now comes from the Editor voice lock, not this estimate. Within the Short range 40–60 s; `B_loop` would add a 3 s hold (about 59–60 s, at the top of the range).
 - Factual status: **not fact-checked**; next is Boat W1.3. Sensor wording is deliberately general because the research sources are weak (research.md open item 1).
 - User approval: none yet (W1.4). Readiness here is not approval.
 
@@ -21,7 +21,7 @@
 
 **Feeling:** quiet unease (silence you can hear) → curiosity (signs of life) → frustration and a chill at the door → calm "oh, that's how it works" in the sensor beat → cold, still realisation → a soft, endless loop.
 
-**Knowledge takeaway (fact):** Many automatic doors have a sensor that keeps sending out microwaves; when something moves, the reflected wave comes back at a slightly different frequency (the same effect that bends a passing siren's pitch). The door is not looking for people; it is waiting for **something that moves**.
+**Knowledge takeaway (fact):** Many automatic doors have a sensor that keeps sending out microwaves; when something moves, the reflected wave comes back at a slightly different frequency The door is not looking for people; it is waiting for **something that moves**.
 
 **Plot function of the knowledge:** it is the key to the twist. If the door reacts to anything that moves, then a door that stays still while you wave and jump means that, for it, nothing is there. And a door that opens "for nobody" means something did move past you. Remove the knowledge beat and the twist has no logic.
 
@@ -30,7 +30,7 @@
 - **What actually happens (fiction):** You have died or otherwise left the world in the night; the story never says how. Bangkok is full and normal. You cannot see or hear people; they cannot see you; objects that react to people (the door) do not react to you. Each morning you wake at seven and live the same empty morning again.
 - **The twist:** `ทุกคนไม่ได้หายไปไหน… คนที่หายไป คือคุณ`. The planted door at S01-B02 opened for a real person you could not see; the door at S02-B01 stays still because, to it, there is nothing in front of it.
 - **Verified facts used:** radar/microwave door sensors detect motion through a change in the reflected wave (F001, medium confidence, weak sources); radar detects motion, not people as such (F002 general principle). BTS runs at 07:00 (F102), implied only, no minute or headway spoken.
-- **Remaining uncertainty:** sensor sources are lead-only or low-trust; the siren analogy is a new general-physics claim (`needs-research`, see claim mapping). The boundary that a real working radar door **would** open for a waving, jumping person (research.md section 1 point 4, boundary item 5) is respected: the narration scopes the refusal to `ประตูบานนี้` inside the fiction and never says a real sensor can ignore a moving person.
+- **Remaining uncertainty:** sensor sources are lead-only or low-trust; the siren analogy (old L16) was cut in R1.2, so no Doppler-for-sound claim is spoken. The boundary that a real working radar door **would** open for a waving, jumping person (research.md section 1 point 4, boundary item 5) is respected: the narration scopes the refusal to `ประตูบานนี้` inside the fiction and never says a real sensor can ignore a moving person.
 
 ## Scene and beat progression
 
@@ -47,7 +47,7 @@ Story-world time: one morning, about 07:00 to a few minutes later, then "tomorro
 
 ## Full spoken script and required story events
 
-**Only the Thai lines labelled NARR are spoken.** English text is production direction. Captions follow the spoken Thai verbatim (no shortened cues in R1); `…` marks a spoken pause and is shown in captions as written. Line IDs `L01`–`L21` (with `L20a`/`L20b`) are stable.
+**Only the Thai lines labelled NARR are spoken.** English text is production direction. Captions follow the spoken Thai verbatim (no shortened cues in R1); `…` marks a spoken pause and is shown in captions as written. Line IDs `L01`–`L21` (with `L20a`/`L20b`) are stable; `L16` was removed in R1.2 and its ID is not reused.
 
 **Voice (NARR):** one narrator for the whole video. Project default Gemini TTS narrator (Sulafat or Orus per [project defaults](../../../docs/delivery-workflow.md#project-defaults); Editor and user choose at W4 voice lock). Base style for every line: `calm, close, quietly curious second-person storytelling, soft and intimate, unhurried but not slow`. Per-line cues below adjust it. Tags are Gemini TTS markup suggestions (`<short pause>`, `<long pause>`, `<whispering>`); Editor adapts them to the [gemini-tts skill](../../../.agents/skills/gemini-tts/SKILL.md).
 
@@ -96,13 +96,12 @@ Story-world time: one morning, about 07:00 to a few minutes later, then "tomorro
 
 ### EG01-S03-B01 — How the door sees, 31–42 s estimated
 
-**Event:** Crisp SVG insert (diagram card): a sensor box above a door sends out waves; a plain shape (not a person) moves into the field and the returning waves bunch up / change spacing; a still field returns unchanged waves. Optional siren icon passing for L16. No numbers on screen (no GHz, no speed threshold). Return to the painted door at the end of L17.
+**Event:** Crisp SVG insert (diagram card): a sensor box above a door sends out waves; a plain shape (not a person) moves into the field and the returning waves bunch up / change spacing; a still field returns unchanged waves. No siren icon (L16 cut in R1.2). No numbers on screen (no GHz, no speed threshold). Return to the painted door at the end of L17.
 
 | Line | Fact / fiction | NARR (spoken) | Emotion cue |
 | --- | --- | --- | --- |
 | `L14` | **fact** (F001) | ประตูอัตโนมัติหลายบาน มีเซนเซอร์ที่คอยส่งคลื่นไมโครเวฟออกมา | calm, clear, explanatory; warmer than the story lines |
 | `L15` | **fact** (F001) | ถ้ามีอะไรขยับ คลื่นที่สะท้อนกลับจะเปลี่ยนความถี่ | clear, slight emphasis on `ขยับ` and `เปลี่ยนความถี่` |
-| `L16` | **fact** (new claim, `needs-research`) | เหมือนเสียงไซเรนที่สูงต่ำเปลี่ยนไป ตอนรถวิ่งผ่าน | light, relatable; `<short pause>` after |
 | `L17` | **fact** (F002 general principle) | ประตูแบบนี้ไม่ได้มองหาคน… มันรอแค่สิ่งที่ขยับ | slower, deliberate, the key line; `<short pause>` after `คน` |
 
 ### EG01-S04-B01 — The twist and the loop, 42–56 s estimated
@@ -149,7 +148,7 @@ All clues are **fictional story construction**, not real evidence. None claims t
 | L04 (BTS running at 07:00) | fiction scene resting on a fact | F102 implied; no minute, first-train time or headway spoken. |
 | L06 `เซนเซอร์คงรวน` | character's guess | Not a claim that sensors glitch in this way. |
 | L14, L15, L17 | **fact** | F001, F002 (general principle). Hedged: `หลายบาน` (not all doors), `สิ่งที่ขยับ` (never `คน`/`ร่างกาย`). |
-| L16 | **fact, new** | Doppler effect on sound as an analogy; `needs-research` (general physics, Boat to source). |
+| L16 | **removed (R1.2)** | Siren/Doppler-for-sound analogy cut by user 2026-11-03; no longer spoken or shown. |
 | Not stated anywhere | — | Pressure mats (F005), PIR / active IR (F003/F004), any frequency or speed number, chain brand, that a door opens only for people, that a real sensor can ignore a moving person. |
 
 ## Claim mapping
@@ -158,9 +157,9 @@ Sources per research.md; all sensor sources are weak (SRC003 inspected low-trust
 
 | Location / exact wording | Claim | Source | Hedge applied | Boat check |
 | --- | --- | --- | --- | --- |
-| L14 `ประตูอัตโนมัติหลายบาน มีเซนเซอร์ที่คอยส่งคลื่นไมโครเวฟออกมา` | F001 (microwave/radar sensor, continuous emission) | SRC003 (inspected, weak); SRC001 (lead) | `หลายบาน`, no band numbers | needed: is "ตลอด" (continuous) safe; does "หลายบาน" overstate prevalence |
+| L14 `ประตูอัตโนมัติหลายบาน มีเซนเซอร์ที่คอยส่งคลื่นไมโครเวฟออกมา` | F001 (microwave/radar sensor, continuous emission) | SRC003 (inspected, weak); SRC001 (lead) | `หลายบาน`, no band numbers | checked R1.2 (no "ตลอด" since R1.1); does "หลายบาน" overstate prevalence |
 | L15 `ถ้ามีอะไรขยับ คลื่นที่สะท้อนกลับจะเปลี่ยนความถี่` | F001 (Doppler shift on reflection from a moving object) | SRC003; SRC001 (lead, "Doppler Effect Principle") | `อะไร` = anything, not a person | needed |
-| L16 `เหมือนเสียงไซเรนที่สูงต่ำเปลี่ยนไป ตอนรถวิ่งผ่าน` | **new: Doppler effect for sound, as analogy** | none in research.md | analogy (`เหมือน`), no numbers | `needs-research`: one textbook/educational source for Doppler with a passing siren |
+| ~~L16~~ (removed R1.2) | — (claim withdrawn; analogy cut) | — | — | none; L15 now leads straight into L17 |
 | L17 `ประตูไม่ได้มองหาคน… มันรอแค่สิ่งที่ขยับ` | F002 (radar detects motion, not a body; cannot tell a person from other moving things) | SRC001 (lead), SRC003 | uses `สิ่งที่ขยับ` per coordinator rule; no speed threshold | needed: confirm the general principle wording |
 | L18 `แต่สำหรับประตูบานนี้… ตรงหน้ามันไม่มีอะไรขยับเลย` | — (fiction logic) | — | scoped to `ประตูบานนี้` so it is not read as real sensor behaviour (boundary item 5) | check presentation does not mislead |
 | L04 `รถไฟฟ้ายังวิ่งผ่านตามปกติ` | F102 (BTS in service at 07:00) | SRC005 | no minute, no headway | check |
@@ -176,7 +175,7 @@ Library checked 2026-11-03 (`~/ReelsStore/library/sound/INDEX.md`): possible can
 | S01-B02 | Soft, sparse, curious (single piano or mallet notes), energy 2/10 | Distant BTS rails pass overhead (steel viaduct hum, no announcements); soi room tone | Door glide + **soft, distant entry chime** (stinger 1, gentle, slightly reverberant) |
 | S01-B03 | Same motif, slightly lower and slower, energy 2/10 | Pot steam hiss, ice settle tick in the glass; still no human sound | none; drop music to almost nothing after L09 for the pause |
 | S02-B01 | Tension thins out; optional slow heartbeat low in the mix, energy 3/10 | Closer storefront hum; your own footsteps and a scuff on the jump (you can hear yourself) | Door glide + **dry, close entry chime** (stinger 2, louder and drier than stinger 1, same sound so they mirror) |
-| S03-B01 | Clean, light, clear tone (soft pulse/arp), energy 3–4/10; a low drone starts under L16 and rises through L17 | Ambience ducked under the diagram | Subtle soft sweep or tick on each wave animation; drone rise (candidate `reveal_riser-tension_01`) |
+| S03-B01 | Clean, light, clear tone (soft pulse/arp), energy 3–4/10; a low drone starts under the end of L15 and rises through L17 (R1.2: L16 cut) | Ambience ducked under the diagram | Subtle soft sweep or tick on each wave animation; drone rise (candidate `reveal_riser-tension_01`) |
 | S04-B01 | Drone holds under L18–L19, then **cuts to silence on `คือคุณ`** (about 1.2 s true quiet); L21 over a very soft return of the S01 pad | Fridge hum returns faintly with L21 so the seam into S01-B01 is continuous | Optional faint echo of chime 1 under L19 (the earlier door, re-heard as someone passing); no stinger on the reveal itself |
 
 **Seam:** the audio under the last about 0.5 s must match frame 0's ambience (fridge hum, no music hit) so `C_seamless` does not click. **Chime:** a generic two-tone entry chime, not a copy of any chain's recognisable chime (brand rule, F107/F108).
@@ -208,3 +207,4 @@ Library checked 2026-11-03 (`~/ReelsStore/library/sound/INDEX.md`): possible can
 5. Timing: estimate only; Editor's narration read at W4 decides whether L16 or L12 needs trimming to stay under 60 s.
 
 - R1.1 (2026-11-03, coordinator inline): Boat fact-check fixes applied (L04, L14, L16, L17, SVG label 4). User approval: script approved with no loop, ending on L20b, L21 removed; no fact tag. Speech is about 3 s shorter than estimated.
+- R1.2 (2026-11-03, Preaw): **L16 removed** (user decision via structured question; locked narration already omits it). No other line rewritten, no renumbering; L15 now runs straight into L17. Follow-ups: takeaway, uncertainty, S03 event (no siren icon), fact/claim tables and the S03 drone start (now under the end of L15) updated; open items 2 and 5 resolved by the cut. Boat recheck: L14–L15 wording unchanged; only their neighbour changed (L15 → L17 directly).

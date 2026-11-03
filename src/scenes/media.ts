@@ -166,4 +166,4 @@ export const clipVisibleAt = (clip: Pick<MediaClip, 'startSec' | 'endSec'>, fram
   frame >= Math.round((clip.startSec ?? 0) * fps) && (clip.endSec === undefined || frame < Math.round(clip.endSec * fps));
 
 export const defaultCaptionStyle: Required<Omit<CaptionStyle, 'color' | 'bottomEdgeY'>> & {color: string; bottomEdgeY?: number} = {preset: 'outline', position: 'bottom', color: '#fff', scale: 1};
-export const defaultChrome: Required<ChromeStyle> = {channelLabel: 'ทำไมล่ะ', progressBar: false};
+export const defaultChrome: Required<ChromeStyle> = {channelLabel: '@TamMaiLa', progressBar: false};

@@ -25,7 +25,22 @@
 
 - User review: Q1 and S04-B01-SH01 `change` ("เป็น FPOV เลยดีกว่า"). Code: `space.ts` (STATION_B moved to (0.3, 1.6, 2.2) f 587; new STATION_G (0.3, 1.6, 0.8) f 700 hy 900; YOU_B, YOU_GLASS, TOUCH; SS-R1 values kept as `STATION_B_SSR1`, `YOU`), new `fpov.ts` (YOU_HAND tone, `paintWaveHand`, `paintReachHand` on kit `paintPovHand`, VIEWMODEL 1.2), `look.tsx`/`look-index.ts` (LF01 FPOV, LF01-WAVE, LF01-REACH, new EG-LF05-START, EG-LF05-GLASS). `figure-back.ts` is used only for the small figure (C and the proposed A-start).
 - Frames: `$REELS_STORE/projects/EG/previews/look-frames/ss-r2/` (LF01, LF01-WAVE, LF01-REACH, LF05-START, LF05-GLASS, `sheet-looks.png` with all nine). SS-R1 LF01 frames stay at the parent folder (immutable store) and in `out/eg/look/final/ssr1/`.
-- Measured (computed from the projection, checked on the sheet): door opening at B x 220..700, y 584..1171 (A x 298..609, y 640..1020, same centre x 454); bollard at B x 657..731, y 1176..1733; its shadow tip at the wall (857, 1171); the missing-shadow line x 980, y 1171..1920. Wave hand: wrist (812, 930), palm about 133 px. Reach: fingertips (449, 1064), hand about 196 px long (size 0.655). LF05-START figure about 356 px (18.5%), feet y 1067; LF05-GLASS about 204 px (10.6%), feet y 1145.
+- Measured (computed from the projection, checked on the sheet): door opening at B x 220..700, y 584..1171 (A x 298..609, y 640..1020, centre x A 453.6, B 460: 6 px offset, accepted in EG-SC-R2); bollard at B x 657..731, y 1176..1733; its shadow tip at the wall (857, 1171); the missing-shadow line x 980, y 1171..1920. Wave hand: wrist (812, 930), palm about 133 px. Reach: fingertips (449, 1064), hand about 196 px long (size 0.655). LF05-START figure about 356 px (18.5%), feet y 1067; LF05-GLASS about 204 px (10.6%), feet y 1145.
 - Caption bands (caption-zone.py mean/p95): 860-1248: LF01 0.761/0.827, WAVE 0.745/0.827, REACH 0.713/0.788, START 0.718/0.794, GLASS 0.722/0.846; 300-560: LF01 0.670/0.878, REACH 0.782/0.903, LF02 0.642/0.904, LF03 0.779/0.822, LF04 0.911/0.946, LF05 0.738/0.815. All fail 0.25/0.40; brief R1.3 VD14 sets the override. Finding 4's low band 1400-1640 broke the safe-box Requirement (bottom edge <= 1248) and is withdrawn.
 - Finding: at B the CL07 strip (x 980) and the whole pavement (y > 1171) sit under the platform UI (right rail x > 888, bottom 35%); CL07 is carried by the closing wide (brief R1.3 item 8).
 - Not checked this pass: two-session determinism of the new frames.
+
+## 2026-11-03 voice samples (W4.1)
+
+- Voice samples: Achernar, style "calm, soft and close, awake, quiet wonder", atempo 1.08 (user liked it; "sleepy" style rejected).
+- User note: cut the silent gaps between sentences shorter (trim after generation; fewer `<short pause>` tags). Apply in W4.2.
+- Opening arc (user picked take t1, 3 Nov 2026): one read, Achernar, style "Starts sleepy, soft and hushed as if just woken up, then gradually wakes up and becomes calm, clear and quietly uneasy by the third sentence; same narrator throughout, do not speed up", atempo 1.08. Sample: out/eg-voice/arc-t1-x108.wav (L01–L05). Use this style for the full narration read.
+- Still to do in W4.2: compact the pauses between sentences (user note); no sample made yet, apply when generating the full narration.
+
+## 2026-11-03 voice lock (W4)
+
+- **Locked take:** `EG-EP01-SHORT-narration-lock.wav` (store EG/narration, filed with `store.py archive`); raw Gemini take `EG-EP01-SHORT-narration-raw-gemini.wav` beside it. Voice Achernar, style = "natural everyday storytelling, no audible breathing; first two sentences slightly sleepy; last three firm and weighty, calm certainty", one read, 7 Gemini calls today.
+- **Post-processing** ([voice-regap.py](voice-regap.py), run with the Whisper venv python): cut gaps between sentences proportionally (0.12 + 0.55 × (gap − 0.12)), set 0.9 s after L20a and 0.45 s where L16 was removed, 1.2 s tail; `atempo=1.05`; smooth 0→+3 dB gain curve from "คนที่หายไป" (no cutting inside it); alimiter 0.95.
+- **L16 cut from the audio** at the user's choice (Preaw/Film agreed it can go, ~3–4 s). Script still has L16 until Preaw revises; Boat to recheck L14–L15 after.
+- Film/Preaw opinion (not heard, text only): ending delivery may be too heavy against the quiet pull-back; boost on "คือคุณ" kept small (+3 dB) by the user's choice.
+- `scripts/transcribe.py` fails with this venv's `av` (`metadata_errors` TypeError); used `faster_whisper` on a decoded array instead.
