@@ -6,7 +6,9 @@ draft and final). Writes DIR/index.html from template.html and copies every prev
 and shot clip into DIR/pv/, downscaled to 540 px wide JPEG (videos copied as is).
 Shot-by-shot fields per shot (optional): "clips": {"draft"|"final": {"src", "in", "out"}} (360x640 proxies from
 scripts/storyboard-page/clips.mjs; in/out are the shot's seconds inside the padded clip) and "pinned": true once
-scripts/pin.mjs pinned it. The page has three tabs (storyboard, draft, final); verdicts are stored per shot and tab.
+scripts/pin.mjs pinned it. With top-level "finalCut": {"src"} (clips.mjs --full) the Final tab shows that one cut, and
+each shot's clips.final points into it; a clip "key" (the shot's scene-cache keys) replaces the file hash, so a re-cut
+keeps the answers of unchanged shots. The page has three tabs (storyboard, draft, final); verdicts are stored per shot and tab.
 Answers survive revisions: build.py stamps each shot, question and clip with a content hash, and the page keeps a saved
 answer while its hash is unchanged. A changed item shows its old answer and asks again; an optional "changed" text on a
 shot says what changed. The storyboard hash leaves out id, beat, timing, media, "pinned" and "changed", so a retime
@@ -69,6 +71,8 @@ def errors(d):
             prev_end = s['end']
         else:
             out.append(f'{sid}: start/end must be integer frames')
+    if 'finalCut' in d and not (isinstance(d['finalCut'], dict) and d['finalCut'].get('src')):
+        out.append('finalCut must be an object with a "src"')
     for q in d.get('questions', []):
         if not q.get('id') or not q.get('question'):
             out.append(f'question {q.get("id", "?")}: needs "id" and "question"')
@@ -115,7 +119,7 @@ def main():
     for s in d['shots']:
         s['hash'] = digest({k: v for k, v in s.items() if k not in UNHASHED})
         for c in (s.get('clips') or {}).values():
-            c['hash'] = file_digest(c['src'])
+            c['hash'] = c.get('key') or file_digest(c['src'])
     for q in d.get('questions', []):
         q['hash'] = digest({k: q.get(k) for k in ('question', 'detail', 'images')})
     for s in d['shots']:
@@ -128,6 +132,8 @@ def main():
     for q in d.get('questions', []):
         for i in q.get('images', []):
             i['src'] = copy_media(i['src'], pv, used)
+    if d.get('finalCut'):
+        d['finalCut']['src'] = copy_media(d['finalCut']['src'], pv, used)
     for v in (d.get('looks') or {}).values():
         v['src'] = copy_media(v['src'], pv, used)
     for e in d.get('elements', []):
