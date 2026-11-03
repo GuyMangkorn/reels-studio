@@ -138,9 +138,10 @@ export const ffmpeg = (args) => {
  * `frameRange` [from, to] (render.mjs --range) renders and caches only the whole scenes that overlap it, then cuts the
  * range out, so a reviewed range is reused by the later full render.
  */
-export const renderSegmented = async ({render, options, workDir, output, log, frameRange, pinOptions = {}}) => {
+export const renderSegmented = async ({render, options, workDir, output, log, frameRange, pinOptions = {}, metrics}) => {
   const {composition, inputProps} = render;
-  const source = sourceHash('.', composition, inputProps);
+  const measure = (stage, work, details = {}) => metrics ? metrics.time(stage, work, {id: composition.id, output, ...details}) : work();
+  const source = await measure('inputs', () => sourceHash('.', composition, inputProps));
   const allKeys = segmentKeys(composition, inputProps, options, source ?? randomUUID());
   const allRanges = sceneRanges({...composition.props, ...inputProps}.timeline, composition.fps);
   const picked = frameRange ? scenesInRange(allRanges, frameRange) : allKeys.map((_, i) => i);
@@ -180,26 +181,28 @@ export const renderSegmented = async ({render, options, workDir, output, log, fr
     const file = `${segDir}/${key}.mp4`;
     if (existsSync(file)) continue;
     // Written under a temporary name first, so an interrupted render never leaves a cached segment behind.
-    await renderMedia({...render, codec: 'h264', pixelFormat: 'yuv420p', crf: 18, muted: true, frameRange: ranges[i], outputLocation: `${file}.part.mp4`});
+    await measure('scene', () => renderMedia({...render, codec: 'h264', pixelFormat: 'yuv420p', crf: 18, muted: true, frameRange: ranges[i], outputLocation: `${file}.part.mp4`}),
+      {scene: picked[i] + 1, frames: ranges[i][1] - ranges[i][0] + 1, range: ranges[i]});
     await rename(`${file}.part.mp4`, file);
     rendered++;
     log(`segment ${picked[i] + 1}/${allKeys.length} f${ranges[i][0]}-${ranges[i][1]} rendered`);
   }
   log(`${rendered} of ${keys.length} segments rendered, ${keys.length - rendered} reused`);
+  metrics?.event('cache', {id: composition.id, output, rendered, reused: keys.length - rendered, bypassed: !source});
   const sound = `${workDir}/sound.wav`;
   // soundOnly skips p5.brush painting (src/painted/BrushCanvas.tsx); the sound tree is unchanged.
-  await renderMedia({...render, inputProps: {...inputProps, soundOnly: true}, codec: 'wav', outputLocation: sound, ...(frameRange ? {frameRange: span} : {})});
+  await measure('sound', () => renderMedia({...render, inputProps: {...inputProps, soundOnly: true}, codec: 'wav', outputLocation: sound, ...(frameRange ? {frameRange: span} : {})}));
   const list = `${workDir}/concat.txt`;
   await writeFile(list, keys.map((key) => `file '${path.resolve(segDir, key)}.mp4'`).join('\n'));
   const joined = frameRange ? `${workDir}/joined.mp4` : output;
-  ffmpeg(['-f', 'concat', '-safe', '0', '-i', list, '-i', sound, '-map', '0:v', '-map', '1:a', '-c:v', 'copy', '-c:a', 'aac', '-b:a', '320k',
-    '-movflags', '+faststart', joined]);
+  await measure('mux', () => ffmpeg(['-f', 'concat', '-safe', '0', '-i', list, '-i', sound, '-map', '0:v', '-map', '1:a', '-c:v', 'copy', '-c:a', 'aac', '-b:a', '320k',
+    '-movflags', '+faststart', joined]));
   if (frameRange) {
     // Frame-exact cut from the joined scenes: the range's offset inside them, re-encoded at the segments' quality.
     const from = frameRange[0] - span[0], count = Math.min(frameRange[1], span[1]) - frameRange[0] + 1, fps = composition.fps;
     // Output-side -ss decodes up to the start, so the cut is frame-exact (this ffmpeg build has no setpts/asetpts filters).
-    ffmpeg(['-i', joined, '-ss', String(Math.max(0, from) / fps), '-t', String(count / fps), '-frames:v', String(count),
-      '-c:v', 'libx264', '-crf', '18', '-pix_fmt', 'yuv420p', '-c:a', 'aac', '-b:a', '320k', '-movflags', '+faststart', output]);
+    await measure('trim', () => ffmpeg(['-i', joined, '-ss', String(Math.max(0, from) / fps), '-t', String(count / fps), '-frames:v', String(count),
+      '-c:v', 'libx264', '-crf', '18', '-pix_fmt', 'yuv420p', '-c:a', 'aac', '-b:a', '320k', '-movflags', '+faststart', output]));
   }
   await rm(workDir, {recursive: true, force: true});
   return rendered;

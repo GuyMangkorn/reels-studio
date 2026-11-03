@@ -94,6 +94,7 @@ Episode-specific files are under [Episodes](#episodes); shared topics come first
 - Scripts: [render.mjs](../scripts/render.mjs), [render-options.mjs](../scripts/render-options.mjs), [render-inputs.ts](../scripts/render-inputs.ts), [segments.mjs](../scripts/segments.mjs), [pin.mjs](../scripts/pin.mjs), [stills.mjs](../scripts/stills.mjs), [qa-sheet.sh](../scripts/qa-sheet.sh), [reference-frames.py](../scripts/reference-frames.py)
 - Findings: [render speed](dev-findings/DF-20261031-render-speed.md), [segment cache key](dev-findings/DF-20261101-segment-cache-key.md); design [project render cache](reviews/2026-11-01-project-render-cache.md)
 - Tests: [segments](../tests/segments.test.ts), [render-options](../tests/render-options.test.ts), [render-inputs](../tests/render-inputs.test.ts)
+- ANGLE defaults and timing logs: [logger](../scripts/render-log.mjs), [logger types](../scripts/render-log.d.mts), [log tests](../tests/render-log.test.ts), [measurements and usage](reviews/2026-11-03-angle-render-logging.md). Both render entrypoints write incremental `out/logs/render-*.jsonl` stage, cache and result records; explicit `--gl` overrides the ANGLE default.
 
 ## Asset store and media
 
