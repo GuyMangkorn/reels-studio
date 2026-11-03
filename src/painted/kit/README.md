@@ -56,7 +56,11 @@ Sets and atmosphere (ENV-P01, ENV-P02; user, 3 Nov 2026)
 - **ENV-P01 — Promote on the second use (Requirement).** An atmosphere layer or set tool (sky, falling particles, fog, halo, water) moves into the kit when a second episode needs it ([TL01](../../../docs/contributing.md#tools-and-document-improvements)). A finished set (room, door, street, cabinet) is never promoted: it stays in its episode and gets a `PLATES` entry when its episode is delivered.
 - **ENV-P02 — Check the kit first (Requirement).** Before painting a plate, list the kit layers it uses next to the casting line in the scene sheet, e.g. `kit: ENV-SKY, ENV-FALL:snow`. A layer written new in the episode records why the kit layer did not fit. `PLATES` is reference only, never a default.
 
-Rules
+<a id="kit-intake"></a>
+Kit intake at delivery (KIT-P01; user, 3 Nov 2026)
+- **KIT-P01 — Every delivered episode files what it created (Requirement).** After the delivery render is archived (W8.2), Boss copies into the kit each new look the episode approved and the kit lacks: a person into `PEOPLE` + `PEOPLE_INFO`, an outfit into `WARDROBE` + `WARDROBE_INFO`, an animal into `ANIMALS` + `ANIMAL_INFO`, a pose or motion into its catalog, and each finished set into `PLATES` (stills with `npx tsx scripts/painted-kit/plates.ts`). Ids follow the existing catalogs, and the kit sheet for that catalog is re-rendered and viewed.
+- **Copy, never move.** The episode keeps its own code and imports unchanged, so its pinned scenes keep their cache hashes ([render by scene](../../../AGENTS.md#shared-agent-conventions)). The kit entry is a copy.
+- **Nothing new to file** is recorded `W8.4 N/A — <reason>` in the task file (e.g. every character came from `PEOPLE` unchanged).
 - Nothing here (except `catalog.tsx`, which shows WFOG's `CAST`) may import an episode module (`worldfog/`, `zcpaint/`, `bloop/`, ...); episodes pass their constants in
   (`WFOG_HAND` in `worldfog/hand.ts`, `ZC_HAND` in `zcpaint/hand.ts`).
 - `hands.ts` defines its own `ring`/`capsule`/`solid`/`inkLine` (different signatures from `painter.ts`/`draw.ts`): import by module, not by guess.

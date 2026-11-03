@@ -105,6 +105,7 @@ Concepts are pitches, not research: no claim in `concepts.md` counts as checked 
 - **Created** by the coordinator in the turn it first writes `delivery.md`, from the template below, one section per deliverable.
 - **Updated** by whoever finishes a step (role agent or coordinator), in the same change that updates the deliverable's `Stage / Next owner` cell. The two must agree; when they differ, `delivery.md` wins and `task.md` is corrected.
 - **Posted:** when the user says a video is on the channel, the coordinator ticks W8 and W8.3 in that turn, with the date, and marks any W8 step it cannot evidence `not recorded`.
+- **Kit intake (W8.4):** Boss files the episode's new looks and sets into the kit after W8.2, under [KIT-P01](../src/painted/kit/README.md#kit-intake); the deliverable is not done until W8.4 is ticked or `N/A` with a reason.
 - **Read first** when the user asks for progress ("ทำถึงไหนแล้ว"): answer from the `Now` line and the open steps, and open `delivery.md` only for detail.
 - **Marks:** `[x]` done, `[ ]` open, `[x] … N/A — <reason>` for a step with no subject. Each line is one step plus at most one short note (revision, count, date); link instead of copying.
 - **Per-shot steps** (W3.3, W5, W6, W7) carry a count, e.g. `12/26 shots passed`; the per-shot verdicts stay on the storyboard review page.
@@ -151,6 +152,7 @@ Record: [delivery.md](delivery.md) · Updated: <YYYY-MM-DD>, <role>
   - [ ] W8.1 Assembled from the cache, picture lock
   - [ ] W8.2 Delivery render archived
   - [ ] W8.3 Posted to the channel (user, date)
+  - [ ] W8.4 Kit intake: new people, outfits, animals, poses, sets filed (KIT-P01)
 ```
 
 <a id="voice-lock"></a>
