@@ -37,7 +37,7 @@ Record the chosen values in `delivery.md` as a compact block.
 | Visual engine | Painted 2D (p5.brush) for sets, characters and wide-to-medium shots, mixed with crisp Remotion SVG for close-ups and first-person (FPOV) inserts such as a phone screen or an object in the narrator's hands | WORLD FOG VD01, VD09 (PHONE-SVG) in [the brief](../storyboards/world-fog/short/visual-brief.md) |
 | Character proportions | The WORLD FOG cast: adult 4 heads tall (1.70 m; 1.60 m for a shorter adult with the same head), mitten hands, flat-face decal heads with face controls, drawn as a flat card at the character's depth | `src/painted/worldfog/cast.ts`, `head.ts`; brief VD03 |
 | Arm poses | Bent arms go back into depth with perspective (elbow behind the torso, a shade darker), never splayed out to the side | [CP-P](character-proportion-principles.md#cp-p-arm-depth); `Arm.via` / `Arm.behind` in `cast.ts` |
-| Character poses | Pick from the standard pose sheet P01–P45 and the template cast, and cite IDs as a [casting line](character-proportion-principles.md#cp-casting-line); a new pose is proposed to Boss, not made one-off | [CP-P12](character-proportion-principles.md#cp-p-pose-sheet); `src/painted/kit/poses.ts` |
+| Character poses | Designed from the story first, then matched against the pose sheet P01–P45 and the template cast ([story first](../AGENTS.md#story-first)); a match is cited as a [casting line](character-proportion-principles.md#cp-casting-line), a new pose is proposed to Boss, not made one-off | [CP-P12](character-proportion-principles.md#cp-p-pose-sheet); `src/painted/kit/poses.ts` |
 | Camera | Mostly eye level and observational; slow drift or push on every shot; repeated fixed vantages where the repetition carries the story; the torch reveal is the quality reference | WORLD FOG brief "Camera language", VD10, VD12 |
 | Voice | Gemini TTS with per-line emotion ([gemini-tts skill](../.agents/skills/gemini-tts/SKILL.md)); narrator Sulafat (female) or Orus (male), "brisk natural pace, no long pauses". Minor characters may stay on Edge TTS ([voice-tuning](../.agents/skills/voice-tuning/SKILL.md)) | WORLD FOG delivery record, 30 Oct 2026 casting |
 | New assets | Build every new character, prop, set piece or UI element reusable from the start: it goes in the shared painted kit (`src/painted/kit/`, introduced by the shared-kit work), takes content, colours and lighting as parameters, and is listed in the kit catalog so Film pick it by picture. Story timing and episode-only logic stay in the episode folder. Existing episode modules are not retrofitted (user decision, 30 Oct 2026). | Kit README and catalog |
@@ -108,6 +108,7 @@ Concepts are pitches, not research: no claim in `concepts.md` counts as checked 
 - **Created** by the coordinator in the turn it first writes `delivery.md`, from the template below, one section per deliverable.
 - **Updated** by whoever finishes a step (role agent or coordinator), in the same change that updates the deliverable's `Stage / Next owner` cell. The two must agree; when they differ, `delivery.md` wins and `task.md` is corrected.
 - **Posted:** when the user says a video is on the channel, the coordinator ticks W8 and W8.3 in that turn, with the date, and marks any W8 step it cannot evidence `not recorded`.
+- **Kit intake (W8.4):** Boss files the episode's new looks and sets into the kit after W8.2, under [KIT-P01](../src/painted/kit/README.md#kit-intake); the deliverable is not done until W8.4 is ticked or `N/A` with a reason.
 - **Read first** when the user asks for progress ("ทำถึงไหนแล้ว"): answer from the `Now` line and the open steps, and open `delivery.md` only for detail.
 - **Marks:** `[x]` done, `[ ]` open, `[x] … N/A — <reason>` for a step with no subject. Each line is one step plus at most one short note (revision, count, date); link instead of copying.
 - **Per-shot steps** (W3.3, W5, W6, W7) carry a count, e.g. `12/26 shots passed`; the per-shot verdicts stay on the storyboard review page.
@@ -154,6 +155,7 @@ Record: [delivery.md](delivery.md) · Updated: <YYYY-MM-DD>, <role>
   - [ ] W8.1 Assembled from the cache, picture lock
   - [ ] W8.2 Delivery render archived
   - [ ] W8.3 Posted to the channel (user, date)
+  - [ ] W8.4 Kit intake: new people, outfits, animals, poses, sets filed (KIT-P01)
 ```
 
 <a id="voice-lock"></a>
