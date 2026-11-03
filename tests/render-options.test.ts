@@ -11,9 +11,10 @@ test('render options parse gl, timeout and concurrency', () => {
   assert.equal(args.endings, undefined);
 });
 
-test('render options keep the old defaults and reject bad values', () => {
+test('render options default to ANGLE and reject bad values', () => {
   const args = parseRenderArgs(['Short', '--stills', '--frames=10,20']);
-  assert.deepEqual([args.stills, args.frames, args.gl, args.timeoutInMilliseconds, args.concurrency], [true, [10, 20], undefined, undefined, 4]);
+  assert.deepEqual([args.stills, args.frames, args.gl, args.timeoutInMilliseconds, args.concurrency], [true, [10, 20], 'angle', undefined, 4]);
+  assert.equal(parseRenderArgs(['Short', '--gl=swangle']).gl, 'swangle');
   assert.throws(() => parseRenderArgs(['Short', '--gl=opengl']), /--gl must be one of/);
   assert.throws(() => parseRenderArgs(['Short', '--timeout=3s']), /--timeout needs a positive integer/);
   assert.throws(() => parseRenderArgs(['Short', '--concurrency=0']), /--concurrency needs a positive integer/);

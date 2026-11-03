@@ -2,7 +2,8 @@
 //        [--gl=angle|egl|swiftshader|swangle|vulkan|angle-egl] [--timeout=<ms per frame>] [--concurrency=<n, default 4>]
 //        [--preview] [--draft] [--range=<from>-<to>] [--no-cache] [--keep-pinned | --repaint=<shot,...|all>]
 // Without --endings, only the ending selected in the episode registry (VideoDefinition.ending) is rendered.
-// Painted (p5.brush) or WebGL episodes: --gl=angle --timeout=180000, so a slow frame does not stall at the 30 s default.
+// ANGLE is the default; --gl overrides it. Painted episodes may need --timeout=180000 for heavy frames.
+// Per-run backend, stage/cache timing and result: out/logs/render-*.jsonl (printed on start and finish).
 // Videos render one scene at a time and keep each scene in the asset store (scripts/segments.mjs): a later render
 // re-renders only the scenes whose inputs changed. --no-cache renders every scene again.
 // --preview: half-size quick look (output and p5.brush canvas) in out/<id>/preview/, not archived; not for line-weight review.
@@ -27,6 +28,7 @@ import {spawnSync} from 'node:child_process';
 import {describeLoudness, normalizeLoudness} from './loudness.mjs';
 import {endingsFor, parseRenderArgs} from './render-options.mjs';
 import {renderSegmented} from './segments.mjs';
+import {withRenderLog} from './render-log.mjs';
 
 const {ids, stills, frames, endings: requestedEndings, gl, timeoutInMilliseconds, concurrency, preview, draft, noCache, range, keepPinned, repaint} = parseRenderArgs(process.argv.slice(2));
 if (!ids.length) throw new Error('Name at least one composition ID, e.g. npm run render -- CATBOX-C01-Short');
@@ -36,8 +38,9 @@ const chromiumOptions = gl ? {gl} : {};
 const shared = {browserExecutable, chromiumOptions, timeoutInMilliseconds};
 const scale = preview ? 0.5 : 1;
 const renderProps = {...(preview ? {paintScale: 0.5} : {}), ...(draft ? {paintDraft: true} : {})};
-const serveUrl = await bundle({entryPoint: path.resolve('src/index.ts')});
-const browser = await openBrowser('chrome', {browserExecutable, chromiumOptions});
+await withRenderLog({tool: 'render', ids, gl, stills, draft, preview, range, concurrency, scale}, async (metrics) => {
+const serveUrl = await metrics.time('bundle', () => bundle({entryPoint: path.resolve('src/index.ts')}));
+const browser = await metrics.time('browser', () => openBrowser('chrome', {browserExecutable, chromiumOptions}));
 try {
   for (const id of ids) {
     const dir = `out/${id}`;
@@ -47,7 +50,8 @@ try {
       const stillProps = draft ? {paintDraft: true} : {};
       const composition = await selectComposition({serveUrl, id, inputProps: stillProps, puppeteerInstance: browser, ...shared});
       await mkdir(`${dir}/stills`, {recursive: true});
-      await renderStills({serveUrl, composition, inputProps: stillProps, puppeteerInstance: browser, ...shared, frames, outputFor: (frame) => `${dir}/stills/${frame}.png`, onStill: (frame) => console.log(`Checked ${id} frame ${frame}`)});
+      metrics.event('composition', {id, width: composition.width, height: composition.height, fps: composition.fps, frames});
+      await metrics.time('stills', () => renderStills({serveUrl, composition, inputProps: stillProps, puppeteerInstance: browser, ...shared, frames, outputFor: (frame) => `${dir}/stills/${frame}.png`, onStill: (frame) => console.log(`Checked ${id} frame ${frame}`)}), {id});
       continue;
     }
     const endings = endingsFor(requestedEndings, (await selectComposition({serveUrl, id, puppeteerInstance: browser, ...shared})).props);
@@ -56,22 +60,37 @@ try {
     for (const ending of endings) {
       const inputProps = {ending, ...renderProps};
       const composition = await selectComposition({serveUrl, id, puppeteerInstance: browser, ...shared, inputProps});
+      metrics.event('composition', {id, ending, width: composition.width, height: composition.height, fps: composition.fps, frames: composition.durationInFrames});
       const output = `${outDir}/${id}_${ending}${range ? `${draft ? '_draft' : ''}${preview ? '_preview' : ''}_f${range[0]}-${range[1]}` : ''}.mp4`;
       const render = {serveUrl, composition, puppeteerInstance: browser, ...shared, scale, concurrency, inputProps};
       if (noCache) {
         let last = -1;
-        await renderMedia({...render, codec: 'h264', pixelFormat: 'yuv420p', crf: 18, ...(range ? {frameRange: range} : {}), outputLocation: output,
+        await metrics.time('uncached', () => renderMedia({...render, codec: 'h264', pixelFormat: 'yuv420p', crf: 18, ...(range ? {frameRange: range} : {}), outputLocation: output,
           onProgress: ({progress}) => {const percent = Math.floor(progress * 10) * 10; if (percent !== last) {console.log(`${id} ${ending}: ${percent}%`); last = percent;}}
-        });
+        }), {id, ending});
       } else {
-        await renderSegmented({render, options: {gl, scale, crf: 18}, workDir: `${dir}/segments-work`, output, frameRange: range, pinOptions: {keep: keepPinned, repaint}, log: (line) => console.log(`${id} ${ending}: ${line}`)});
+        await renderSegmented({render, options: {gl, scale, crf: 18}, workDir: `${dir}/segments-work`, output, frameRange: range, pinOptions: {keep: keepPinned, repaint}, metrics, log: (line) => console.log(`${id} ${ending}: ${line}`)});
       }
       console.log(`Exported ${output}: ${composition.width}x${composition.height}, ${composition.fps}fps, ${composition.durationInFrames} frames`);
-      console.log(`Loudness ${output}: ${describeLoudness(await normalizeLoudness(output))}`);
+      console.log(`Loudness ${output}: ${describeLoudness(await metrics.time('loudness', () => normalizeLoudness(output), {id, output}))}`);
       if (ending === endings.at(-1)) await copyFile(output, `${outDir}/${id}.mp4`);
     }
     if (preview || draft || range) continue;
-    const archived = spawnSync('python3', ['-I', 'scripts/store.py', 'archive', id], {encoding: 'utf8'});
-    console.log(archived.status === 0 ? `Archive ${id}: ${archived.stdout.trim()}` : `WARNING archive failed for ${id}: ${archived.stderr.trim()}`);
+    try {
+      const archived = await metrics.time('archive', () => {
+        const result = spawnSync('python3', ['-I', 'scripts/store.py', 'archive', id], {encoding: 'utf8'});
+        if (result.status !== 0) {
+          const error = new Error(result.error?.message ?? result.stderr?.trim() ?? `archive exited ${result.status}`);
+          error.exitCode = result.status;
+          throw error;
+        }
+        return result;
+      }, {id});
+      console.log(`Archive ${id}: ${archived.stdout.trim()}`);
+    } catch (error) {
+      metrics.event('warning', {id, stage: 'archive', exitCode: error.exitCode, error: String(error.message ?? error)});
+      console.log(`WARNING archive failed for ${id}: ${error.message ?? error}`);
+    }
   }
-} finally {await browser.close({silent: true});}
+} finally {await metrics.time('browser-close', () => browser.close({silent: true}));}
+});

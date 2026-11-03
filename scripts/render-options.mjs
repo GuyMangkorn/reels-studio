@@ -17,7 +17,7 @@ export const parseRenderArgs = argv => {
     if (!Number.isInteger(number) || number < 1) throw new Error(`--${name} needs a positive integer, got "${raw}"`);
     return number;
   };
-  const gl = value('gl');
+  const gl = value('gl') ?? 'angle';
   if (gl !== undefined && !GL.includes(gl)) throw new Error(`--gl must be one of ${GL.join(', ')}; got "${gl}"`);
   return {
     ids: argv.filter(arg => !arg.startsWith('--')),

@@ -3,7 +3,7 @@ export type RenderArgs = {
   stills: boolean;
   frames: number[];
   endings: string[] | undefined;
-  gl: string | undefined;
+  gl: string;
   timeoutInMilliseconds: number | undefined;
   concurrency: number;
   preview: boolean;
