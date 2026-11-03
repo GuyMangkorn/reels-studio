@@ -47,6 +47,9 @@ Record the chosen values in `delivery.md` as a compact block.
 
 The [voice sample](#style-profile) requirement still applies: a default voice is not a user choice. The Gemini key is on the paid tier (per-token billing); keep generation bounded as in the [gemini-tts skill](../.agents/skills/gemini-tts/SKILL.md#limits-and-costs).
 
+<a id="voice-audition-cap"></a>
+**Requirement — voice audition cap (user, 3 Nov 2026).** Every take generated for the user to *choose* a voice, style, pace or delivery is at most **10 s** of audio: the opening line or two, the same text for every candidate. Never read the full script or a long passage per candidate. Evidence: three 1-minute candidates were generated just to pick a voice. A full read happens only after the choice, as the [length check](#length-check-at-script-lock) (one read, one voice) or the [voice lock](#voice-lock). A role agent that thinks a longer audition is needed asks the user first, through the coordinator.
+
 **Requirement — hear the voice before integration.** When the voice is TTS or new to the channel, the user hears a sample of about 10 s (the opening lines in the chosen voice, over the planned music bed if there is one) before Editor integrates the full narration. Record the user's choice in `delivery.md`; a default voice is not a user choice. A profile that needs a missing runtime capability is a Boss dependency, not a reason to change the story. Supported runtime fields are listed in [Remotion toolkit 10a](remotion-toolkit.md#10a-footage-stills-music-entry-transitions-and-caption-styles); inspect the active checkout before promising more.
 
 ### Visual engine
