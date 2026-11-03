@@ -62,6 +62,8 @@ export const washAt = (p: Painter, seed: number, color: string, opacity: number,
 /** One boiling ink line (closed by default). */
 export const inkLine = (p: Painter, id: number, pts: Pt[], o: {color?: string; weight?: number; curve?: number; closed?: boolean; still?: boolean} = {}) => {
   if (pts.length < 2 || !pts.every(([x, y]) => Number.isFinite(x) && Number.isFinite(y))) return;
+  // A stroke with no length (close cameras clamp props behind the lens to one point) makes p5.brush throw "pressure must be finite".
+  if (pts.every(([x, y]) => Math.hypot(x - pts[0][0], y - pts[0][1]) < 0.01)) return;
   (o.still ? p.inkStill : p.ink)(id, 'rotring', o.color ?? INK, o.weight ?? 1.0);
   p.brush.spline(o.closed === false ? pts : [...pts, pts[0]], o.curve ?? 0.15);
 };

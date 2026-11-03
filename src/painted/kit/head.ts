@@ -29,7 +29,7 @@ export type Cut = 'short' | 'tied' | 'bob' | 'hood' | 'long' | NewCut;
  * `KIT-FACE-LOOKS`, `KIT-FACE-CAST`) swaps the eye, nose, brow and closed-mouth drawing; absent = the legacy round eyes, no nose, bar brows (episode casts
  * only; every PEOPLE entry has a look).
  */
-export type HeadStyle = {skin: string; hair: string; cut: Cut; hood?: string; lines?: boolean; accent?: string; facial?: 'stubble' | 'mustache' | 'beard'; glasses?: boolean; brows?: string; look?: FaceLook};
+export type HeadStyle = {skin: string; hair: string; cut: Cut; hood?: string; /** Profile hood only: a wide opening that leaves the whole face visible (set by the hood-up state, `back.ts` `hoodUpHead`); absent = the WFOG hood. */ hoodOpen?: boolean; lines?: boolean; accent?: string; facial?: 'stubble' | 'mustache' | 'beard'; glasses?: boolean; brows?: string; look?: FaceLook};
 
 /**
  * Front-view face drawing (user-approved for PEOPLE, 2 Nov 2026). `eye`: `almond` pointed corners with a lash line, `lidded` almond with a lid
@@ -537,7 +537,7 @@ export const paintHeadSide = (p: Painter, seed: number, cx: number, cy: number, 
     const hood: Pt[] = [...Array.from({length: 25}, (_, i): Pt => {
       const a = 1.25 + ((5.08 - 1.25) * i) / 24;
       return [-0.12 + 1.14 * Math.cos(a), 1.3 * Math.sin(a)];
-    }), [0.5, -1.0], [0.66, -0.55], [0.62, 0.25], [0.45, 0.95]];
+    }), ...(style.hoodOpen ? [[0.62, -1.06], [0.5, -0.7], [0.3, -0.25], [0.22, 0.35], [0.3, 0.95]] as Pt[] : [[0.5, -1.0], [0.66, -0.55], [0.62, 0.25], [0.45, 0.95]] as Pt[])];
     fill(style.hood ?? style.hair, hood, 6);
     ink(hood);
     fill(style.hair, [[0.58, -0.78], [0.88, -0.5], [0.72, -0.42], [0.6, -0.42]], 6);

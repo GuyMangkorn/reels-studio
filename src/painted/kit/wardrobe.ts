@@ -1,4 +1,5 @@
 import type {CastDef, Outfit} from './cast';
+import {mixColor} from './painter';
 
 // Job and school wardrobe for the painted kit: whole outfits a shot can put on any `CastDef` (usually a `PEOPLE` entry,
 // `people.ts`) by id, so Film names "nurse" or "police" and Editor writes `dress(PEOPLE['woman-ponytail'], 'nurse')`.
@@ -133,4 +134,17 @@ export const dress = (def: CastDef, outfitId: OutfitId): CastDef => {
     delete head.accent;
   }
   return {...def, head, outfit};
+};
+
+/** Coral hoodie colours (EG-EP02 `คุณ`; Film brief EG2-BRIEF-FILM-R1 VD03): body and sleeves, and the darker hood. The grey-blue kit hoodie vanishes on a cool dawn plate. */
+export const HOODIE_CORAL = {body: '#d0503f', hood: '#a8432f'} as const;
+
+/**
+ * Per-video colour override of a worn hoodie, through the same `outfit` spread an episode would write by hand: `shirt` and `sleeve`
+ * take `body`; the hood (`gear.collar.color`, which the hood-down bunch and the hood-up hood both use) takes `hood`, default 20% darker
+ * than `body`. White drawstrings, jeans and sneakers stay. A def without a hood collar is returned with only the body recoloured.
+ */
+export const tintHoodie = (def: CastDef, body: string = HOODIE_CORAL.body, hood: string = body === HOODIE_CORAL.body ? HOODIE_CORAL.hood : mixColor(body, '#000000', 0.2)): CastDef => {
+  const gear = def.outfit.gear, collar = gear?.collar;
+  return {...def, outfit: {...def.outfit, shirt: body, sleeve: body, ...(gear && collar?.kind === 'hood' ? {gear: {...gear, collar: {...collar, color: hood}}} : {})}};
 };
