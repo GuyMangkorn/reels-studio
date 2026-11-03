@@ -28,6 +28,7 @@ Record: [delivery.md](delivery.md) · Updated: 2026-11-03, coordinator
   - [x] W4.2 Narration generated (one read, 64.8 s with L16 cut; per-line timing in short/voice-timing.md)
   - [x] W4.3 User approves the voice (lock, 2026-11-03)
 - [ ] W5 Draft
+  - [x] W5.1 Film timed scene sheets (EG2-SC-R2.0 ready-for-dev, 2026-11-03: ep02/index.md + sc01–sc05.md, 19 shots, 1928 f; rows SS-R2.0 timed, review page: pending; word edges `est`; optional gap requests GR1–GR3)
   - [x] W5.1 Film timed scene sheets (EG-SC-R1 ready-for-dev, 2026-11-03: short/index.md + sc01–sc04.md, 17 shots, 1945 f; review-rows SS-R3 timed, review page: pending republish; 2 word edges `est`, Editor snaps)
   - [ ] W5.2 Boss assets and plates (partial, 2026-11-03, Boss: all 17 shot plates built as `ShotPlate` in `src/painted/everyone-gone/shots.tsx` (`EG-PL-<shot id>` via plate-index.ts), `doorOpen`/`DOOR_CLOCK`, camera paths (walk-in, tilt, pull-back A to C with fade), viaduct + train (train angle reworked 3 Nov after user note: foreshortened faces, verticals lean to the zenith VP; out/eg/bts/after.png; Draft not reviewed), timed `SensorCardShot`, door/glass/paper/shimmer options; 51 stills viewed (out/eg/plates/sheet-A-S01-S02.png, sheet-B-S03-S04.png), figure 356 px at A / 204 px at C measured, tsc + npm test pass. Open: Film answers on DF-20261103-eg-shot-plates (viaduct as sky card, door centre 460 at B, sheet deviations); no moving-clip review yet (stills only); caption stills with real captions are Editor's; groups G1-G5 not yet shown to the user as a Draft; NEEDS-GEN SND-NG01..08 untouched)
   - [x] W5.4 Sound stage (Editor 2026-11-03: SND-NG01..08 generated and filed; full spine in src/videos/everyone-gone/index.ts; notes in short/sound-notes.md; measured + render-checked, NOT listened to or approved by the user)
@@ -37,3 +38,31 @@ Record: [delivery.md](delivery.md) · Updated: 2026-11-03, coordinator
 - [ ] W8 Deliver
   - [ ] W8.1 Assembled from the cache, picture lock
   - [ ] W8.2 Delivery render archived
+
+## EG-EP02-SHORT
+
+**Now:** W5.1 timed sheets done (EG2-SC-R2.0, rows SS-R2.1, voice T-v4 = T-v3 + GR1). **Next:** user review of timed storyboard, then Boss W5.2 assets (B1–B8 in ep02/index.md).
+
+- [x] W0 Ideation
+  - [x] W0.1 Preaw concepts (concepts.md R1)
+  - [x] W0.2 Film annotation (photo-based; superseded by the painted decision)
+  - [x] W0.3 User picks a concept (C3, painted 2D, 2026-11-03)
+- [x] W1 Script lock
+  - [x] W1.1 Boat research (ep02-research.md; sources LOW-MEDIUM)
+  - [x] W1.2 Preaw script (ep02-script.md EG2-SCRIPT-R1, A_fade)
+  - [x] W1.3 Boat fact-check (PASS, R1.1)
+  - [x] W1.4 User approves the script (R1.2, 2026-11-03)
+- [ ] W2 Brief and storyboard
+  - [x] W2.1 Film brief (EG2-BRIEF-FILM-R1)
+  - [x] W2.2 Film storyboard rows (ep02/review-rows.json, 19 shots, untimed)
+  - [ ] W2.3 Storyboard page published
+- [x] W3 Look frames and storyboard pass (look lock + 19/19, user 2026-11-03)
+  - [x] W3.1 Look frames LF01–LF05 added to ep02/review-rows.json (Film 2026-11-03; store EG/previews/look-frames/ep02; `คุณ` = episode-local stand-in `ep02/you-hoodie.ts` until the kit back view lands; thumbnails step skipped on the coordinator's assignment; viewer check done: [ep02/viewer-check.md](ep02/viewer-check.md); fix pass v2 done 2026-11-03 with the kit back view, store EG/previews/look-frames/ep02/v2, brief R1.2; VD12 caption style open; page republish pending)
+  - [x] W3.1 verdict pass v3 (Film 2026-11-03): LF01 shop/door detail, boat moored alongside (LF03/LF05), crowd collision rule VD13 + tests/eg2-crowd-collision.test.ts; store EG/previews/look-frames/ep02/v3/; review page: pending
+  - [ ] W3.2 Look frames approved (look lock)
+  - [ ] W3.3 Storyboard passed
+- [x] W4 Voice lock (T-v3, user 2026-11-03)
+- [ ] W5 Draft
+- [ ] W6 Final passed
+- [ ] W7 Pinned
+- [ ] W8 Deliver

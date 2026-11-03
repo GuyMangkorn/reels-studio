@@ -4,6 +4,7 @@ import {hatFront, hatSide} from './gear';
 import {CHIN, HEAD_SPAN, paintHeadFront, paintHeadSide, type FaceState, type HeadStyle} from './head';
 import {clamp01} from './space';
 import {modeLegs, modeOf, type ModeLegs} from './legs';
+import {drawFigureBack, hoodUpHead} from './back';
 
 // Recurring-cast rig (from WFOG MK-WF-DEP-05; brief VD03): one draw function for any `CastDef`, front and profile views only,
 // 4 heads tall (1.7 m = 4 x 0.425 m; occupant 1.60 m with the same head), mitten hands, decal heads with face controls.
@@ -69,7 +70,10 @@ export type Prop =
   | {kind: 'umbrella'; tip: Pt};
 
 export type FigPose = {
-  view: 'front' | 'left' | 'right';
+  /** `back`: seen from behind (`back.ts`; standing, walk, lean, arms, no face); the character's right is screen right and front-view arm targets are mirrored. */
+  view: 'front' | 'left' | 'right' | 'back';
+  /** Hood up (`gear.collar.kind` `hood`; any view): the hair is covered by a hood in the collar colour. Default absent = hood down, bunched at the neck. */
+  hoodUp?: boolean;
   head?: 'front' | 'left' | 'right';
   crouch?: number;
   /** Profile only: torso pitch toward the facing side, 0..1 (1 = about 60 deg, hands on knees). */
@@ -251,6 +255,7 @@ export const shoulderPoint = (def: CastDef, g: Pt, unit: number, pose: BodyField
  * (blink). Returns world anchors in plate px (head, hands, torch lens) for props, glows and other characters.
  */
 export const drawFigure = (p: Painter, def: CastDef, g: Pt, unit: number, pose: FigPose, t: number, seed = def.seed): FigAnchors => {
+  if (pose.view === 'back') return drawFigureBack(p, def, g, unit, pose, t, seed);
   const o = def.outfit;
   const Ht = def.height;
   const HD = H * (def.headScale ?? 1), AB = BONE * (def.armScale ?? 1); // children (people.ts): smaller head, shorter arms; absent = the 4-head adult
@@ -264,7 +269,8 @@ export const drawFigure = (p: Painter, def: CastDef, g: Pt, unit: number, pose: 
   const {c, bend, mode} = fr;
   const profile = pose.view !== 'front';
   const dir: 1 | -1 = pose.view === 'left' ? -1 : 1;
-  const headView = pose.head ?? pose.view;
+  const headView = pose.head ?? (pose.view as 'front' | 'left' | 'right');
+  const headStyle = pose.hoodUp ? hoodUpHead(def.head, o) : def.head;
   const walk = pose.walk;
   const warm = pose.warm ?? 0;
   const coat = o.coat && pose.wet ? '#24384a' : o.coat;
@@ -599,7 +605,7 @@ export const drawFigure = (p: Painter, def: CastDef, g: Pt, unit: number, pose: 
           fill(col.color, Uq([[sd * 0.045, shV + 0.004], [sd * (sw - 0.02), shV], [sd * (sw - 0.03), shV - 0.055], [sd * 0.012, shV - 0.2], [0, shV - 0.17]]), true, 6);
           if (col.trim) stripe(col.trim, Uq([[sd * (sw - 0.045), shV - 0.014], [sd * (sw - 0.052), shV - 0.05], [sd * 0.02, shV - 0.17]]), 1.1);
         }
-      } else if (col?.kind === 'hood') {
+      } else if (col?.kind === 'hood' && !pose.hoodUp) {
         fill(col.color, Uq([[-0.095, shV + 0.025], [-0.085, shV - 0.06], [-0.04, shV - 0.115], [0, shV - 0.125], [0.04, shV - 0.115], [0.085, shV - 0.06], [0.095, shV + 0.025], [0.055, shV + 0.01], [0.04, shV - 0.045], [0, shV - 0.07], [-0.04, shV - 0.045], [-0.055, shV + 0.01]]), true, 6);
         for (const sd of [-1, 1]) stripe(col.trim ?? '#e8e4da', Uq([[sd * 0.035, shV - 0.085], [sd * 0.042, shV - 0.17], [sd * 0.036, shV - 0.23]]), 1.2);
       }
@@ -633,7 +639,7 @@ export const drawFigure = (p: Painter, def: CastDef, g: Pt, unit: number, pose: 
         for (const k of [1, 2]) crease(G.drape, Uq([[-0.1 * HD + 0.07 * HD * k, shV - 0.04 * k], [-0.12 * HD + 0.05 * HD * k, hip0 + 0.12 - 0.02 * k]]));
       }
       const col = G.collar;
-      if (col?.kind === 'hood') fill(col.color, Uq([[-0.075, shV + 0.04], [-0.01, shV + 0.045], [0.0, shV - 0.05], [-0.09, shV - 0.12], [-0.16, shV - 0.06], [-0.15, shV]]), true, 6);
+      if (col?.kind === 'hood' && !pose.hoodUp) fill(col.color, Uq([[-0.075, shV + 0.04], [-0.01, shV + 0.045], [0.0, shV - 0.05], [-0.09, shV - 0.12], [-0.16, shV - 0.06], [-0.15, shV]]), true, 6);
       else if (col?.kind === 'sailor') {
         fill(col.color, Uq([[-0.19 * HD, shV], [0.02, shV], [0.03, shV - 0.04], [-0.1, shV - 0.15], [-0.2 * HD, shV - 0.14]]), true, 6);
         if (col.trim) stripe(col.trim, Uq([[-0.2 * HD + 0.01, shV - 0.125], [-0.09, shV - 0.135], [0.02, shV - 0.035]]), 1.1);
@@ -673,8 +679,8 @@ export const drawFigure = (p: Painter, def: CastDef, g: Pt, unit: number, pose: 
       [-0.52,0.88],[-0.68,0.49],[-0.73,0.12],[-0.77,-0.28],[-0.73,-0.64],[-0.57,-0.91],[-0.28,-1.07]];
     solid(p, seed + 1, sil, outline.map(([u, v]): Pt => [hc[0] + u * Kpx, hc[1] + v * Kpx]), 8, 0.02, 0.03);
   }
-  else if (headView === 'front') paintHeadFront(p, seed + 1, hc[0], hc[1], Kpx, pose.face, def.head, t, warm, L);
-  else paintHeadSide(p, seed + 1, hc[0], hc[1], Kpx, pose.face, def.head, headView === 'left' ? -1 : 1, t, warm, L);
+  else if (headView === 'front') paintHeadFront(p, seed + 1, hc[0], hc[1], Kpx, pose.face, headStyle, t, warm, L);
+  else paintHeadSide(p, seed + 1, hc[0], hc[1], Kpx, pose.face, headStyle, headView === 'left' ? -1 : 1, t, warm, L);
   if (G?.hat) {
     // Headwear over the head (wardrobe.ts): parts in head units, mirrored for a left-facing profile.
     part = 130;

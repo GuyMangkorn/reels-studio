@@ -13,7 +13,7 @@ import {makePainter, type Painter, type Pt} from './painter';
 import {PEOPLE, PEOPLE_INFO, PERSON_IDS, type PersonId} from './people';
 import {poseArms} from './poses';
 import {inkLine} from './draw';
-import {OUTFIT_IDS, WARDROBE_INFO, dress, type OutfitId} from './wardrobe';
+import {OUTFIT_IDS, WARDROBE_INFO, dress, tintHoodie, type OutfitId} from './wardrobe';
 
 const h = createElement;
 const LINEUP_W = 2400, LINEUP_H = 1120;
@@ -203,9 +203,42 @@ const Wardrobe = () => (
   </AbsoluteFill>
 );
 
+// ------------------------------------------------------------------------------------------------ KIT-BACK
+// Back view (`FigPose.view: 'back'`, `back.ts`) and the hood-up state (`FigPose.hoodUp`). Top row: woman-bob + hoodie in the coral override
+// (`tintHoodie`), hood down and hood up, seen from back, front and right profile. Bottom rows: every PEOPLE entry from behind (P01).
+const BACK_UNIT = 270, BACK_W = 2400, BACK_H = 1560;
+const BackSheet = () => (
+  <AbsoluteFill>
+    <BrushCanvas paint={({brush}) => {
+      const p = makePainter(brush, {t: 0, frame: 0});
+      const coral = tintHoodie(dress(PEOPLE['woman-bob'], 'hoodie'));
+      const g0 = 590;
+      const cells: {view: FigPose['view']; up: boolean}[] = [
+        {view: 'back', up: false}, {view: 'back', up: true}, {view: 'front', up: false}, {view: 'front', up: true}, {view: 'right', up: false}, {view: 'right', up: true},
+      ];
+      hLine(p, 9400, 30, BACK_W - 30, g0 + 6, '#b9ad9d');
+      cells.forEach(({view, up}, i) => {
+        const g: Pt = [200 + i * 400, g0], pose: FigPose = {view, hoodUp: up, face: EXPRESSIONS.neutral, ...(view === 'right' ? {} : poseArms('P01', coral, g, BACK_UNIT))};
+        drawFigure(p, coral, g, BACK_UNIT, pose, openT(830 + i), 830 + i);
+      });
+      const ids = PERSON_IDS;
+      const per = 7, u2 = 215;
+      ids.forEach((id, i) => {
+        const row = Math.floor(i / per), col = i % per, def = PEOPLE[id], g: Pt = [170 + col * 335, 1030 + row * 420];
+        if (col === 0) hLine(p, 9410 + row, 30, BACK_W - 30, g[1] + 6, '#b9ad9d');
+        drawFigure(p, def, g, u2, {view: 'back', face: EXPRESSIONS.neutral, ...poseArms('P01', def, g, u2) }, 0, def.seed);
+      });
+    }} />
+    <Text x={36} y={14} w={2300} size={36} weight={700}>src/painted/kit/back.ts: back view and hood-up (woman-bob + hoodie, tintHoodie coral)</Text>
+    <Text x={36} y={58} w={2300} size={18} color="#4a3f38">back hood down | back hood up | front hood down | front hood up | right hood down | right hood up. Below: every PEOPLE entry from behind (FigPose.view 'back', P01 mirrored).</Text>
+    {PERSON_IDS.map((id, i) => <Text key={id} x={170 + (i % 7) * 335 - 150} y={1030 + Math.floor(i / 7) * 420 + 12} w={300} size={16} color="#7a6f64" align="center">{id}</Text>)}
+  </AbsoluteFill>
+);
+
 registerRoot(() => h(Fragment, null,
   h(Composition, {id: 'KIT-PEOPLE-LINEUP', component: Lineup, width: LINEUP_W, height: LINEUP_H, fps: 30, durationInFrames: 30}),
   ...PERSON_IDS.map((id) => h(Composition, {key: id, id: `KIT-PERSON-${id}`, component: () => <Sheet id={id} />, width: SHEET_W, height: SHEET_H, fps: 30, durationInFrames: 30})),
   h(Composition, {id: 'KIT-EXPRESSIONS', component: Expressions, width: EXPR_W, height: EXPR_H, fps: 30, durationInFrames: 30}),
+  h(Composition, {id: 'KIT-BACK', component: BackSheet, width: BACK_W, height: BACK_H, fps: 30, durationInFrames: 30}),
   h(Composition, {id: 'KIT-WARDROBE', component: Wardrobe, width: WARD_W, height: WARD_H, fps: 30, durationInFrames: 30}),
 ));
