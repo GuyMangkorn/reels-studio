@@ -31,4 +31,4 @@ Rule levels follow [AGENTS.md](../AGENTS.md#language-and-rule-conventions). Plat
 
 ## Implementation
 
-A cover composition per episode, `<EP>-COVERS`: one 1 s scene per candidate holding an episode plate with `fromSec` at the chosen frame, and an overlay that draws the text (example: [src/videos/wendigo/covers.tsx](../src/videos/wendigo/covers.tsx), overlay `wendigo-covers`). Stills at frame 15 of each scene are the cover PNGs; archive them with `store.py archive --kind covers`.
+A cover composition per episode, `<EP>-COVERS`: one 1 s scene per candidate holding an episode plate with `fromSec` at the chosen frame, and an overlay that draws the text (example: [src/videos/wendigo/covers.tsx](../src/videos/wendigo/covers.tsx), overlay `wendigo-covers`). Stills at frame 15 of each scene are the cover PNGs; archive them with `store.py archive --path <dir> --project <PROJECT> --kind covers` (the same project folder as the renders, e.g. `WDG`). The picked cover is also stored beside the delivered MP4 as `<CompositionId>_cover.png` (`store.py put`), where the user takes files to upload.
