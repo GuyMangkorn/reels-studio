@@ -75,9 +75,9 @@ Selecting several options means a mix; the brief then states which engine owns e
 Handoff checks apply to every stage: matching revisions, deliverable ID, covered beats and timing status. Progress is tracked in the [task file](#task-file).
 
 <a id="wip-limit"></a>
-### Work-in-progress limit
+### Finish first
 
-**Requirement (user, 3 Nov 2026):** at most **two** deliverables are open between W1 and W8 at once. Ideation (W0) may run for more, but a new deliverable starts W1 only when an open one is posted or the user parks one (record `parked` with the user's words in `delivery.md`). When the user asks for a new video while two are open, the coordinator asks with the structured-question tool which one to park or whether to wait. Evidence: on 3 Nov 2026 eleven deliverables were open at once and the open ones waited on the user or on rework.
+**Default (user, 3 Nov 2026):** any number of deliverables may stay open; none is parked. When the coordinator proposes what to work on next, or the user asks, it proposes the open deliverable closest to W8 first, and its next-step questions name that one. A deliverable waiting on the user is listed with the one decision it waits on. Evidence: on 3 Nov 2026 eight deliverables were open at once while six had been posted.
 
 <a id="length-check"></a>
 ### Length check at script lock
@@ -103,7 +103,7 @@ Concepts are pitches, not research: no claim in `concepts.md` counts as checked 
 
 - **Created** by the coordinator in the turn it first writes `delivery.md`, from the template below, one section per deliverable.
 - **Updated** by whoever finishes a step (role agent or coordinator), in the same change that updates the deliverable's `Stage / Next owner` cell. The two must agree; when they differ, `delivery.md` wins and `task.md` is corrected.
-- **Posted:** when the user says a video is on the channel, the coordinator ticks W8 and W8.3 in that turn, with the date, and marks any W8 step it cannot evidence `not recorded`. A posted deliverable frees its [WIP](#wip-limit) slot.
+- **Posted:** when the user says a video is on the channel, the coordinator ticks W8 and W8.3 in that turn, with the date, and marks any W8 step it cannot evidence `not recorded`.
 - **Read first** when the user asks for progress ("ทำถึงไหนแล้ว"): answer from the `Now` line and the open steps, and open `delivery.md` only for detail.
 - **Marks:** `[x]` done, `[ ]` open, `[x] … N/A — <reason>` for a step with no subject. Each line is one step plus at most one short note (revision, count, date); link instead of copying.
 - **Per-shot steps** (W3.3, W5, W6, W7) carry a count, e.g. `12/26 shots passed`; the per-shot verdicts stay on the storyboard review page.
