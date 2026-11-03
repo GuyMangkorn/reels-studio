@@ -81,6 +81,7 @@ Every agent reads AGENTS.md plus its **core** documents. It reads any other docu
 | [cinematography-principles](docs/cinematography-principles.md) | Illustrated/cinematic shot language | on trigger |
 | [mark-storyboard-workflow](docs/mark-storyboard-workflow.md) | Writing, revising or reviewing scene sheets (Film); publishing the [user storyboard review page](docs/mark-storyboard-workflow.md#user-storyboard-review-page) (coordinator) | F |
 | [user-taste](docs/user-taste.md) | Painting a thumbnail, look frame or plate; running the [viewer check](docs/sequence-workflow.md#viewer-check); adding a repeated user note (coordinator) | F S |
+| [cover-principles](docs/cover-principles.md) | Cover image / thumbnail of any deliverable: five candidates, safe zones, small-size check (Film) | F |
 | [storyboard-principles](docs/storyboard-principles.md) | Shot direction beyond routine staging | on trigger |
 | [boss-asset-workflow](docs/boss-asset-workflow.md) | Shared assets, rigs, renderer capabilities, asset/contact bugs (Boss). Its [QA section](docs/boss-asset-workflow.md#visual-and-runtime-qa-before-push) before pushing visual/runtime work. Its [production rules](docs/boss-asset-workflow.md#latest-production-rules) for medium restrictions, demo lighting, lead size, shot movement, texture lifecycle and visual QA | S |
 | [asset-engineering-principles](docs/asset-engineering-principles.md) | **Legacy:** Three/R3F or 3D/hybrid assets, only if the user reactivates a 3D engine; painted assets use the painted-2d skill | on trigger |
