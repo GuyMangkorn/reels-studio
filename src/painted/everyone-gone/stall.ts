@@ -35,34 +35,59 @@ const hull = (pts: Pt[]): Pt[] => {
 const shadowOf = (c: Cam, seed: number, p: Painter, pts: V3[], opacity = 120) => {
   const g = hull(pts.map(([x, y, z]): Pt => [x + SUN_DIR[0] * SUN_K * y, Math.max(WALL_Z, z + SUN_DIR[1] * SUN_K * y)]));
   const cut = clipHalf(g, [0, 1], WALL_Z);
-  if (cut.length) shadowFill(p, seed, cut.map(([x, z]) => proj(c, [x, 0, z])), opacity);
+  if (cut.length) shadowFill(p, seed, cut.map(([x, z]) => proj(c, [x, 0, z])), opacity, false);
 };
 const box = (x0: number, x1: number, y0: number, y1: number, z0: number, z1: number): V3[] =>
   [[x0, y0, z0], [x1, y0, z0], [x0, y0, z1], [x1, y0, z1], [x0, y1, z0], [x1, y1, z0], [x0, y1, z1], [x1, y1, z1]];
 
 /** Steam from the pot: soft wisps rising and drifting, a pure function of `t` (hold-safe ambient clock). */
 const steam = (p: Painter, c: Cam, seed: number, t: number, cx: number, top: number, z: number) => {
-  for (let k = 0; k < 5; k++) {
-    const ph = (t * 0.35 + k / 5) % 1;
-    const y = top + 0.05 + ph * 0.75, x = cx + 0.06 * Math.sin(t * 1.3 + k * 1.7) + ph * 0.12 * (k % 2 ? 1 : -0.6);
+  // Fix pass 1 (viewer check: bubbles at f530): no outlines, ragged lobed blobs, smaller and more of them, a faint cool-grey core so they read as vapour.
+  for (let k = 0; k < 7; k++) {
+    const ph = (t * 0.35 + k / 7) % 1;
+    const y = top + 0.04 + ph * 0.8, x = cx + 0.05 * Math.sin(t * 1.3 + k * 1.7) + ph * 0.14 * (k % 2 ? 1 : -0.6);
     const [sx, sy] = proj(c, [x, y, z]);
-    const r = (0.07 + ph * 0.16) * c.f / (c.z - z);
-    washAt(p, seed + k, '#fff6e4', 150 * (1 - ph) * Math.min(1, ph * 6), ell(sx, sy, r, r * 1.3, 16), 0.3, 0.45);
-    inkLine(p, seed + 10 + k, ell(sx, sy, r * 0.8, r * 1.1, 10).slice(0, 6), {color: '#d9cdb8', weight: 0.8, closed: false, curve: 0.6});
+    const r = (0.05 + ph * 0.11) * c.f / (c.z - z);
+    const blob = (rr: number, ry: number, ph0: number) => Array.from({length: 14}, (_, i): Pt => {
+      const a = (i / 14) * Math.PI * 2, w = 1 + 0.22 * Math.sin(3 * a + k + ph0) + 0.12 * Math.sin(5 * a + t * 2 + ph0 * 2);
+      return [sx + rr * w * Math.cos(a), sy + ry * w * Math.sin(a)];
+    });
+    const fade = (1 - ph) * Math.min(1, ph * 6);
+    washAt(p, seed + k, '#e9ecea', 120 * fade, blob(r * 1.15, r * 1.5, 0), 0.45, 0.6);
+    washAt(p, seed + 10 + k, '#fff6e4', 95 * fade, blob(r * 0.7, r * 1.0, 1.7), 0.5, 0.6);
   }
 };
 
-/** Paint the stall at shot-local time `t`. */
-export const paintStall = (p: Painter, t: number, c: Cam = STALL_CAM) => {
+/** Paint the stall at shot-local time `t` (s). `o.ice` = ice-cube turn in revolutions. */
+export const paintStall = (p: Painter, t: number, c: Cam = STALL_CAM, o: {ice?: number} = {}) => {
   const S = 7_600_000;
   // Wall and a closed shutter, a drainpipe; pavement with joints; the sunlit wedge on the wall (camera-left brighter).
-  hardFill(p, S + 1, EG_PAL.facadeB, frontRect(c, WALL_Z, -6, 6, 0, 9));
-  hardFill(p, S + 2, EG_PAL.shutter, frontRect(c, WALL_Z, 0.4, 3.6, 0, 2.8));
-  for (let k = 1; k < 14; k++) inkLine(p, S + 10 + k, [proj(c, [0.4, (2.8 * k) / 14, WALL_Z]), proj(c, [3.6, (2.8 * k) / 14, WALL_Z])], {color: EG_PAL.shutterLine, weight: 0.6, closed: false, curve: 0, still: true});
-  hardFill(p, S + 3, '#9aa3a6', frontRect(c, WALL_Z + 0.05, -1.6, -1.5, 0, 9));
-  hardFill(p, S + 4, EG_PAL.upperWin, frontRect(c, WALL_Z, -3.2, -1.9, 3.6, 5.0));
-  washAt(p, S + 5, '#f6f0e1', 80, frontRect(c, WALL_Z + 0.01, -6, 0.2, 0, 9), 0.4, 0.4);
-  hardFill(p, S + 6, EG_PAL.pavement, groundQuad(c, -6, 6, WALL_Z, 3));
+  // Viewer check 3 Nov 2026 (UT01): the stall reads outdoors. Milky sky above a low (3.9 m) cool-grey wall, an alley opening to the
+  // left of the shutter with a far street end, wires across. The beige room is gone; the pot stays the one warm point.
+  const WALL_TOP = 3.9, ALLEY: [number, number] = [-3.4, 0.2], FAR_Z = -9;
+  hardFill(p, S + 1, '#b7bfc1', [[-300, -300], [1380, -300], [1380, 2300], [-300, 2300]]);
+  washAt(p, S + 7, '#c2c7c5', 170, [[-300, 0], [1380, 0], [1380, 900], [-300, 900]], 0.3, 0.3);
+  hardFill(p, S + 8, '#8e9a9f', frontRect(c, FAR_Z, ALLEY[0], ALLEY[1], 0, 3.4));
+  hardFill(p, S + 9, '#c6cbc9', frontRect(c, FAR_Z + 0.01, ALLEY[0] + 0.9, ALLEY[1] - 0.9, 0, 2.3));
+  hardFill(p, S + 21, '#b9bcb7', groundQuad(c, ALLEY[0], ALLEY[1], FAR_Z, WALL_Z));
+  // fix pass 2: the far-ground wash (S + 22, 8d979c) is removed; it switched on as a dark blot under the table edge at S01-B03-SH02 f623-f679.
+  hardFill(p, S + 10, '#a5b0b4', frontRect(c, WALL_Z, 0.2, 6, 0, WALL_TOP));
+  hardFill(p, S + 11, '#9ca7ab', frontRect(c, WALL_Z, -6, ALLEY[0], 0, WALL_TOP));
+  hardFill(p, S + 12, '#b4bcbe', frontRect(c, WALL_Z + 0.02, 0.2, 6, WALL_TOP - 0.18, WALL_TOP));
+  hardFill(p, S + 13, '#b4bcbe', frontRect(c, WALL_Z + 0.02, -6, ALLEY[0], WALL_TOP - 0.18, WALL_TOP));
+  hardFill(p, S + 2, EG_PAL.shutter, frontRect(c, WALL_Z + 0.01, 0.6, 3.6, 0, 2.8));
+  for (let k = 1; k < 14; k++) inkLine(p, S + 30 + k, [proj(c, [0.6, (2.8 * k) / 14, WALL_Z + 0.01]), proj(c, [3.6, (2.8 * k) / 14, WALL_Z + 0.01])], {color: EG_PAL.shutterLine, weight: 0.6, closed: false, curve: 0, still: true});
+  hardFill(p, S + 3, '#8f999d', frontRect(c, WALL_Z + 0.05, 0.28, 0.38, 0, WALL_TOP));
+  hardFill(p, S + 4, EG_PAL.upperWin, frontRect(c, WALL_Z + 0.01, -5.4, -4.2, 1.9, 3.2));
+  washAt(p, S + 5, '#d3d9d8', 60, frontRect(c, WALL_Z + 0.02, -6, 0.2, 0, WALL_TOP), 0.4, 0.4);
+  hardFill(p, S + 6, '#c4c7c2', groundQuad(c, -6, 6, WALL_Z, 3));
+  for (const [h, sag] of [[3.5, 0.25], [3.3, 0.3]] as const) {
+    const wp: Pt[] = Array.from({length: 14}, (_, j) => {
+      const u = j / 13;
+      return proj(c, [-4 + 10 * u, h - sag * Math.sin(Math.PI * u), WALL_Z + 0.8 + 0.4 * u]);
+    });
+    inkLine(p, S + 60 + h * 10, wp, {color: EG_PAL.wire, weight: 1.2, closed: false, curve: 0.4, still: true});
+  }
   for (let x = -6; x <= 6; x += 0.6) inkLine(p, S + 100 + Math.round(x * 10), [proj(c, [x, 0, WALL_Z]), proj(c, [x, 0, 1.7])], {color: EG_PAL.pavementLine, weight: 0.5, closed: false, curve: 0, still: true});
   for (let z = WALL_Z + 0.6; z < 1.8; z += 0.6) inkLine(p, S + 200 + Math.round(z * 10), [proj(c, [-6, 0, z]), proj(c, [6, 0, z])], {color: EG_PAL.pavementLine, weight: 0.5, closed: false, curve: 0, still: true});
 
@@ -80,7 +105,7 @@ export const paintStall = (p: Painter, t: number, c: Cam = STALL_CAM) => {
   hardFill(p, S + 401, '#7e878b', frontRect(c, cart.z1, cart.x0, cart.x1, 0, 0.12));
   hardFill(p, S + 402, '#d7dde0', [P(cart.x0, cart.top, cart.z1), P(cart.x1, cart.top, cart.z1), P(cart.x1, cart.top, cart.z0), P(cart.x0, cart.top, cart.z0)]);
   hardFill(p, S + 403, '#e9ece9', frontRect(c, cart.z1 + 0.01, cart.x0 + 0.08, cart.x1 - 0.08, 0.45, 0.78));
-  washAt(p, S + 404, '#e2c58f', 200, frontRect(c, cart.z1 + 0.02, cart.x0 + 0.14, cart.x1 - 0.5, 0.5, 0.6), 0.05, 0.4);
+  washAt(p, S + 404, '#e08a3c', 200, frontRect(c, cart.z1 + 0.02, cart.x0 + 0.14, cart.x1 - 0.5, 0.5, 0.6), 0.05, 0.4);
   inkLine(p, S + 405, frontRect(c, cart.z1, cart.x0, cart.x1, 0, cart.top), {color: EG_PAL.frameInk, weight: 1.0, curve: 0});
   for (const wx of [cart.x0 + 0.1, cart.x1 - 0.1]) {
     const [wcx, wcy] = P(wx, 0.06, cart.z1 + 0.02);
@@ -122,9 +147,13 @@ export const paintStall = (p: Painter, t: number, c: Cam = STALL_CAM) => {
   const cubes: [number, number, number][] = [[0.12, 0.34, 0.1], [0.5, 0.3, -0.08], [0.3, 0.62, 0.05], [0.66, 0.62, 0.12]];
   cubes.forEach(([u, v, a], i) => {
     const cx = g0x + u * w + w * 0.12, cy = gty + v * w * 0.9, s = w * 0.2;
-    const sq: Pt[] = [[-1, -1], [1, -1], [1, 1], [-1, 1]].map(([x, y]) => [cx + s * (x * Math.cos(a) - y * Math.sin(a)), cy + s * (x * Math.sin(a) + y * Math.cos(a))]);
-    hardFill(p, S + 630 + i, '#f1ece2', sq);
-    inkLine(p, S + 640 + i, sq, {color: '#a08a72', weight: 0.6, curve: 0});
+    const ar = a + 2 * Math.PI * (o.ice ?? 0) * (i % 2 ? -1 : 1); // `ice` = revolutions (S01-B03-SH02 turns 0.15 rev); cubes stay whole
+    const sq: Pt[] = [[-1, -1], [1, -1], [1, 1], [-1, 1]].map(([x, y]) => [cx + s * (x * Math.cos(ar) - y * Math.sin(ar)), cy + s * (x * Math.sin(ar) + y * Math.cos(ar))]);
+    // Fix pass 1: clear ice, not paper: pale blue-green body, a white highlight on the upper-left edge, a cool edge line, a darker lower facet.
+    washAt(p, S + 630 + i, '#cfe4e8', 235, sq, 0.02, 0.15);
+    washAt(p, S + 660 + i, '#8fb3be', 150, [sq[1], sq[2], sq[3], [(sq[0][0] + sq[3][0]) / 2 + (sq[2][0] - sq[3][0]) * 0.1, (sq[0][1] + sq[3][1]) / 2]], 0.02, 0.15);
+    inkLine(p, S + 640 + i, [sq[0], sq[1]], {color: '#ffffff', weight: 1.6, curve: 0, closed: false, still: true});
+    inkLine(p, S + 670 + i, sq, {color: '#5f8794', weight: 0.7, curve: 0});
   });
   washAt(p, S + 650, '#e3a35e', 120, ell((g0x + g1x) / 2, gty + w * 0.32, w * 0.46, ery, 16), 0.1, 0.3);
   inkLine(p, S + 651, [[g0x, gty], [g0x + w * 0.08, g0y], [g1x - w * 0.08, g0y], [g1x, gty]], {color: '#6e675e', weight: 0.9, closed: false, curve: 0.1});

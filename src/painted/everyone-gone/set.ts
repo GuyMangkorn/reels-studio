@@ -1,7 +1,7 @@
 import {clipHalf, hardFill, inkLine, washAt} from '../kit/draw';
 import type {Painter, Pt} from '../kit/painter';
 import type {V3} from '../kit/space';
-import {BOLLARD, BOLLARD_H, frontRect, groundQuad, POST, proj, SUN_DIR, SUN_K, type Cam} from './space';
+import {BOLLARD, BOLLARD_H, frontRect, groundQuad, POST, proj, SUN_DIR, SUN_K, unitAt, type Cam} from './space';
 
 // EG-EP01-SHORT soi + storefront set, daylight key (brief R1.2: VD02 look, VD04 stations, VD05 glass stack, VD13 shadows).
 // Look-defining first version by Film (W3.1, 3 Nov 2026); Boss hardens it and lifts the generic parts to
@@ -27,12 +27,26 @@ export type SetOpts = {
   door?: number;
   /** Draw the reflection slot (default true). It holds the street only (VD05, CL04). */
   reflection?: boolean;
+  /** Reflection opacity 0..255 (default 118; S02-B01-SH03 raises it so the street reads as a reflection). */
+  reflectionOpacity?: number;
+  /** Paint pavement, road, cast shadows, props and wires (default true). The viaduct tilt (pitch > 0) turns it off. */
+  ground?: boolean;
+  /** With `ground: false`: still paint the standing props (scooters, bollard, lamp post, wires) and their shadows, so a pitched shot keeps what the walk-up ended with. */
+  props?: boolean;
+  /** CL01 payoff prop (S04-B01-SH02): a paper card on the pavement at the door line; value = shift to the right in px (0 = resting). Omitted = no card. */
+  paper?: number;
+  /** Rotation of the card (rad) about its centre, with `paper`. */
+  paperRot?: number;
+  /** Sheen bands slide by this fraction of the glass width (S04-B01-SH01 shimmer, a few percent). */
+  shimmer?: number;
+  /** Painted right after the sky, before the facades (the elevated line, `viaduct.ts`). */
+  behind?: (p: Painter) => void;
 };
 
 type Rect = [number, number, number, number]; // x0, y0, x1, y1 (screen px)
 
 /** Flat fill at an opacity (brush.wash: no bleed, no texture). */
-const flatA = (p: Painter, seed: number, color: string, opacity: number, pts: Pt[]) => {
+export const flatA = (p: Painter, seed: number, color: string, opacity: number, pts: Pt[]) => {
   if (pts.length < 3) return;
   const {brush} = p;
   brush.seed(seed);
@@ -55,10 +69,10 @@ const clipRect = (pts: Pt[], [x0, y0, x1, y1]: Rect): Pt[] => {
  * Sun shadow fill (VD13): a flat cool layer (crisp edge, the low sun) plus a soft wash over it for paper texture. Plain
  * `washAt` alone reads far paler than its opacity on the light pavement (W3.1 look-frame check), so the flat layer carries it.
  */
-export const shadowFill = (p: Painter, seed: number, pts: Pt[], opacity = 100) => {
+export const shadowFill = (p: Painter, seed: number, pts: Pt[], opacity = 100, soft = true) => {
   if (pts.length < 3) return;
   flatA(p, seed, EG_PAL.shadow, opacity, pts);
-  washAt(p, seed + 0.5, EG_PAL.shadow, opacity * 0.6, pts, 0.06, 0.35);
+  if (soft) washAt(p, seed + 0.5, EG_PAL.shadow, opacity * 0.6, pts, 0.06, 0.35); // soft=false: flat only (fix pass 2, stall table shadow blot)
 };
 /** Frame-safe cut (keeps every polygon inside a generous picture margin). */
 const SAFE: Rect = [-400, -400, 1480, 2320];
@@ -67,9 +81,10 @@ const SAFE: Rect = [-400, -400, 1480, 2320];
  * Ground shadow of a vertical object (footprint half-width `w`, height `h`) standing at (x, z): a strip along SUN_DIR on the
  * pavement, then straight up the storefront plane (z 0) for the height it has left.
  */
-const castShadow = (p: Painter, c: Cam, seed: number, [x, , z]: V3, w: number, h: number, opacity = 120) => {
+const castShadow = (p: Painter, c: Cam, seed: number, [x, , z]: V3, w: number, h: number, opacity = 120, throughWall = false) => {
   const [dx, dz] = SUN_DIR, L = SUN_K * h;
-  const tWall = dz < 0 ? z / -dz : Infinity;
+  // throughWall: the strip keeps its full length past the shopfront plane (bollard at B 1.1 m, object-specific, 3 Nov 2026).
+  const tWall = dz < 0 && !throughWall ? z / -dz : Infinity;
   const tEnd = Math.min(L, tWall);
   const nx = -dz, nz = dx; // across the strip
   const a: V3 = [x - nx * w, 0, z - nz * w], b: V3 = [x + nx * w, 0, z + nz * w];
@@ -200,11 +215,11 @@ const reflection = (p: Painter, c: Cam, seed: number, rects: Rect[], opacity: nu
 };
 
 /** Glass sheen (DF-20261030-painted-glass-sheen-veil: low, so the interior stays visible): two pale diagonal bands per rect. */
-const sheen = (p: Painter, seed: number, rects: Rect[]) => {
+const sheen = (p: Painter, seed: number, rects: Rect[], shim = 0) => {
   rects.forEach((r, i) => {
     const w = r[2] - r[0], h = r[3] - r[1];
     for (const [u, bw] of [[0.18, 0.12], [0.55, 0.05]] as const) {
-      const x = r[0] + u * w, d = 0.35 * h;
+      const x = r[0] + (u + shim) * w, d = 0.35 * h;
       const band = clipRect([[x, r[3]], [x + bw * w, r[3]], [x + bw * w + d, r[1]], [x + d, r[1]]], r);
       if (band.length) flatA(p, seed + i * 4 + u * 10, '#ffffff', 34, band);
     }
@@ -249,6 +264,24 @@ const wires = (p: Painter, c: Cam, seed: number) => {
   });
 };
 
+/** Overhead service wires along the soi (viewer check 3 Nov 2026): three sagging runs between poles every 6.5 m, 4.6-5.2 m up, so a camera that walks the soi passes under them. */
+const overheadWires = (p: Painter, c: Cam, seed: number) => {
+  const poles = [-9.1, POST[0], 3.9, 10.4];
+  [[4.6, 0.9, 0.3], [4.9, 1.1, 0.25], [5.2, 1.3, 0.28]].forEach(([h, z, sag], i) => {
+    for (let k = 0; k < poles.length - 1; k++) {
+      const pts: Pt[] = Array.from({length: 12}, (_, j) => {
+        const u = j / 11;
+        return proj(c, [poles[k] + (poles[k + 1] - poles[k]) * u, h - sag * Math.sin(Math.PI * u), z]);
+      });
+      inkLine(p, seed + i * 8 + k, pts, {color: EG_PAL.wire, weight: 1.3, closed: false, curve: 0.4, still: true});
+    }
+  });
+  for (const x of poles.filter((x) => x !== POST[0])) {
+    const a = proj(c, [x, 0, 0.7]), b = proj(c, [x, 6.2, 0.7]);
+    inkLine(p, seed + 40 + Math.round(x), [a, b], {color: EG_PAL.postInk, weight: 2.2 * Math.max(0.5, unitAt(c, 0.7) / 170), closed: false, curve: 0, still: true});
+  }
+};
+
 /** Paint the soi + storefront for camera `c` (plate px). The figure is not part of the set. */
 export const paintSoiStore = (p: Painter, c: Cam, o: SetOpts = {}) => {
   const open = o.door ?? 0;
@@ -256,6 +289,8 @@ export const paintSoiStore = (p: Painter, c: Cam, o: SetOpts = {}) => {
   // Sky (milky, no sun disc): only shows above the rows in the wide (station C).
   washAt(p, S + 1, EG_PAL.sky, 255, [[-300, -300], [1380, -300], [1380, 1400], [-300, 1400]], 0.1, 0.25);
   washAt(p, S + 2, EG_PAL.skyLow, 140, [[-300, 300], [1380, 300], [1380, 1400], [-300, 1400]], 0.3, 0.3);
+
+  o.behind?.(p);
 
   // Neighbour rows left and right of the store, and the store's own upper floors.
   shophouses(p, c, S + 100, -0.25, -16, -4, 9.6, (i) => [EG_PAL.facadeB, EG_PAL.facadeC, EG_PAL.facadeA][i % 3], true);
@@ -275,8 +310,8 @@ export const paintSoiStore = (p: Painter, c: Cam, o: SetOpts = {}) => {
   // Interior through the open part of the doorway as well.
   const gap = open > 0.02 ? [rectOf(frontRect(c, 0, -0.86 * open, 0.86 * open, 0, DOOR.top))] : [];
   interior(p, c, S + 1000, [...all, ...gap]);
-  if (o.reflection !== false) reflection(p, c, S + 3000, all, 118);
-  sheen(p, S + 5000, all);
+  if (o.reflection !== false) reflection(p, c, S + 3000, all, o.reflectionOpacity ?? 118);
+  sheen(p, S + 5000, all, o.shimmer ?? 0);
 
   // Frames: window mullions, door panel frames, transom bar, the sensor box above the door (VD07 push-in target).
   const bar = (seed: number, x0: number, x1: number, y0: number, y1: number, z = 0.02) => hardFill(p, seed, EG_PAL.frame, frontRect(c, z, x0, x1, y0, y1));
@@ -310,33 +345,43 @@ export const paintSoiStore = (p: Painter, c: Cam, o: SetOpts = {}) => {
   hardFill(p, S + 5202, '#b7c0c4', [cv(-4, 0.9, 3.45), cv(4, 0.9, 3.45), cv(4, 0.9, 3.52), cv(-4, 0.9, 3.52)]);
   flatA(p, S + 5201, EG_PAL.shadow, 60, frontRect(c, 0.01, -4, 4, 2.55, 2.75));
 
+  const gnd = o.ground !== false;
+  if (!gnd && !o.props) return;
+  if (gnd) {
   // Pavement (z 0..2.5, raised 0.12), kerb, road (2.5..8.5), far pavement (8.5..11). Tile joints on our pavement.
-  hardFill(p, S + 6000, EG_PAL.roadFar, groundQuad(c, -16, 16, 2.5, 8.5, 0));
-  for (let k = 0; k < 6; k++) washAt(p, S + 6010 + k, '#9a9fa1', 70, groundQuad(c, -16, 16, 2.6 + k, 3.1 + k, 0), 0.2, 0.6);
+  hardFill(p, S + 6000, EG_PAL.roadFar, clipRect(groundQuad(c, -16, 16, 2.5, 8.5, 0), SAFE));
+  // fix pass 2: the road wash strokes are removed (they drew a one-frame white streak at S01-B02-SH01 f190 and a white puff f160-178); the flat road fill stays.
   // Shade of the low camera-side row across the near road (its roofline steps), so the storefront side reads sunlit.
   const shade: Pt[] = [[-16, 3.3], [-6, 3.3], [-5, 3.8], [-1, 3.8], [0, 3.05], [5, 3.05], [6, 3.6], [16, 3.6], [16, 11], [-16, 11]].map(([x, z]) => proj(c, [x, 0, Math.min(z, c.z - 0.36)]));
-  shadowFill(p, S + 6060, clipRect(shade, SAFE), 85);
+  flatA(p, S + 6060, EG_PAL.shadow, 85, clipRect(shade, SAFE)); // fix pass 2: no wash on the road shade (white streak f190, puff f160-178)
   const mh = groundQuad(c, 1.1, 1.7, 5.2, 5.8, 0);
   if (c.z - 5.8 > 0.4) {
     flatA(p, S + 6070, '#7f8588', 200, mh);
     inkLine(p, S + 6071, mh, {color: '#5d6366', weight: 0.8, curve: 0, still: true});
   }
   for (let x = -16; x < 16; x += 0.9) flatA(p, S + 6080 + Math.round(x * 10), '#6d7477', 160, [proj(c, [x, 0, 2.55]), proj(c, [x + 0.5, 0, 2.55]), proj(c, [x + 0.5, 0, 2.7]), proj(c, [x, 0, 2.7])]);
-  hardFill(p, S + 6001, EG_PAL.pavement, groundQuad(c, -16, 16, 8.5, 11, 0.12));
-  hardFill(p, S + 6002, EG_PAL.pavement, groundQuad(c, -16, 16, -0.25, 2.5, 0.0));
+  hardFill(p, S + 6001, EG_PAL.pavement, clipRect(groundQuad(c, -16, 16, 8.5, 11, 0.12), SAFE));
+  // Far-side pavement: kerb strip and tile joints so a camera at the far edge (S01-B02-SH01 f0-15) sees a pavement, not a flat beige slab.
+  hardFill(p, S + 6004, EG_PAL.kerb, [proj(c, [-16, 0.12, 8.5]), proj(c, [16, 0.12, 8.5]), proj(c, [16, 0, 8.5]), proj(c, [-16, 0, 8.5])]);
+  washAt(p, S + 6005, '#b4ad9d', 90, groundQuad(c, -16, 16, 9.6, 11, 0.12), 0.05, 0.3);
+  for (let z = 9; z < 11; z += 0.5) inkLine(p, S + 6120 + Math.round(z * 10), [proj(c, [-16, 0.12, z]), proj(c, [16, 0.12, z])], {color: EG_PAL.pavementLine, weight: 0.6, closed: false, curve: 0, still: true});
+  for (let x = -16; x <= 16; x += 0.6) inkLine(p, S + 6140 + Math.round(x * 10), [proj(c, [x, 0.12, 8.5]), proj(c, [x, 0.12, Math.min(11, c.z - 0.4)])], {color: EG_PAL.pavementLine, weight: 0.5, closed: false, curve: 0, still: true});
+  hardFill(p, S + 6002, EG_PAL.pavement, clipRect(groundQuad(c, -16, 16, -0.25, 2.5, 0.0), SAFE));
   hardFill(p, S + 6003, EG_PAL.kerb, [proj(c, [-16, 0, 2.5]), proj(c, [16, 0, 2.5]), proj(c, [16, -0.12, 2.5]), proj(c, [-16, -0.12, 2.5])]);
   for (let k = 1; k < 5; k++) inkLine(p, S + 6020 + k, [proj(c, [-16, 0, k * 0.5]), proj(c, [16, 0, k * 0.5])], {color: EG_PAL.pavementLine, weight: 0.6, closed: false, curve: 0, still: true});
   for (let x = -16; x <= 16; x += 0.6) inkLine(p, S + 6040 + Math.round(x * 10), [proj(c, [x, 0, 0]), proj(c, [x, 0, Math.min(2.5, c.z - 0.4)])], {color: EG_PAL.pavementLine, weight: 0.5, closed: false, curve: 0, still: true});
   inkLine(p, S + 6030, [proj(c, [-16, 0, 2.5]), proj(c, [16, 0, 2.5])], {color: '#8a8478', weight: 1.0, closed: false, curve: 0, still: true});
   // Daylight on the pavement: a pale glaze where the sun lands (camera-left is brighter).
-  washAt(p, S + 6050, '#f4efe2', 70, groundQuad(c, -16, 2, 0, 2.5, 0), 0.3, 0.4);
+  // fix pass 2: flat glaze, no bleed. The old washAt (bleed 0.3) spilled a white cloud onto the road (S01-B02-SH01 f160-178) and a one-frame streak (f190).
+  flatA(p, S + 6050, '#f4efe2', 45, groundQuad(c, -16, 2, 0, 2.5, 0));
 
+  }
   // Set cast shadows (VD13): post, door frame jamb, scooters, bollard. Long, soft, right and away. Nothing for the figure.
   castShadow(p, c, S + 7000, POST, 0.075, 6.0, 130);
   castShadow(p, c, S + 7010, [DOOR.x0 - 0.035, 0, 0.06], 0.035, 2.6, 70);
-  const bikes = [[1.7, 1.35], [2.45, 1.4], [3.2, 1.3], [-3.3, 1.35]] as const;
+  const bikes = [[1.7, 1.35], [2.45, 1.4], [3.2, 1.3], [-3.3, 1.35], [-5.0, 1.55], [-5.8, 1.3], [-6.9, 1.5]] as const;
   bikes.forEach(([x, z], i) => castShadow(p, c, S + 7020 + i * 3, [x, 0, z], 0.24, 1.15, 110));
-  castShadow(p, c, S + 7040, BOLLARD, 0.07, BOLLARD_H, 120);
+  castShadow(p, c, S + 7040, BOLLARD, 0.07, BOLLARD_H, 175, true);
 
   // Standing props, far to near: bollard, scooters, the lamp post.
   // Steel bollard (VD13 object 1.0 m from you): lit left side, a cap, grounded by a contact mark.
@@ -356,4 +401,19 @@ export const paintSoiStore = (p: Painter, c: Cam, o: SetOpts = {}) => {
   hardFill(p, S + 7302, EG_PAL.postInk, frontRect(c, POST[2], POST[0] - pw * 1.3, POST[0] + pw * 1.3, 0, 0.35));
   inkLine(p, S + 7303, [proj(c, [POST[0] - pw, 0, POST[2]]), proj(c, [POST[0] - pw * 0.7, 6.4, POST[2]]), proj(c, [POST[0] + pw * 0.7, 6.4, POST[2]]), proj(c, [POST[0] + pw, 0, POST[2]])], {color: EG_PAL.postInk, weight: 1.0, curve: 0, closed: false});
   wires(p, c, S + 7400);
+  overheadWires(p, c, S + 7450);
+  if (o.paper !== undefined) paperCard(p, c, S + 7600, o.paper, o.paperRot ?? 0);
+};
+
+/** A flat paper card lying on the pavement 0.35 m in front of the door line, left of the door axis; `shift` px moves it right. */
+const paperCard = (p: Painter, c: Cam, seed: number, shift: number, rot = 0) => {
+  const [mx, my] = proj(c, [-0.5, 0.005, 0.44]), cr = Math.cos(rot), sr = Math.sin(rot);
+  const q = (x: number, z: number): Pt => {
+    const [px, py] = proj(c, [x, 0.005, z]), dx = px - mx, dy = py - my;
+    return [mx + dx * cr - dy * sr + shift, my + dx * sr + dy * cr];
+  };
+  const quad: Pt[] = [q(-0.62, 0.52), q(-0.4, 0.5), q(-0.37, 0.36), q(-0.6, 0.38)];
+  flatA(p, seed, '#3f4a55', 60, quad.map(([x, y]): Pt => [x + 3, y + 2]));
+  hardFill(p, seed + 1, '#f4f1ea', quad);
+  inkLine(p, seed + 2, quad, {color: '#8e9592', weight: 0.6, curve: 0, still: true});
 };

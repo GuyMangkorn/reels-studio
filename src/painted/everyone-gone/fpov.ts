@@ -34,12 +34,16 @@ const VIEWMODEL = 1.2;
  * Picture numbers (px, plate): wrist (812, 930), knuckles about (800, 825), fingertips about y 700; hand about 0.42 m from
  * the eye, size 0.7 (palm about 133 px wide).
  */
-export const paintWaveHand = (p: Painter, sway = 0.4) => {
+export const paintWaveHand = (p: Painter, sway = 0.4, lift = 1) => {
+  // `lift` 0..1: 1 = the approved LF01-WAVE pose; 0 = hand and forearm fully below the frame (S02-B01-SH02 raise and lower).
+  const k = 1 - Math.min(1, Math.max(0, lift)), dy = 1150 * k;
+  // The hand rises from the bottom-right corner: while it is level with the bollard (y 1190-1760 at B 1.1 m) the palm stays 108 px (0.10 W) right of the pole's right edge (x 803).
+  const sm = Math.min(1, k / 0.25), dx = 68 * k + 300 * sm * sm * (3 - 2 * sm);
   const dir = -Math.PI / 2 + 0.25 * sway;
-  const wrist: Pt = [812, 930];
+  const wrist: Pt = [812 + dx, 930 + dy];
   paintPovHand(p, {
     side: 1, base: BASE, wrist, dir, size: 0.7, curl: 0.05, spread: 0.55, thumb: [70, 150],
-    elbow: [1150, 1560], forearmElbowScale: 2.6, sleeveCuffFraction: 0.95, tone: YOU_HAND,
+    elbow: [1150 + dx, 1560 + dy], forearmElbowScale: 2.6, sleeveCuffFraction: 0.95, tone: YOU_HAND,
   });
 };
 

@@ -36,7 +36,7 @@ const DayGrade = () => (
   <AbsoluteFill style={{pointerEvents: 'none', background: 'radial-gradient(ellipse 80% 65% at 50% 42%, rgba(40,52,62,0) 60%, rgba(40,52,62,0.16) 100%)'}} />
 );
 
-const Painted = ({cam, paint}: {cam: (tl: number) => Camera; paint: (p: Painter, tl: number) => void}) => {
+export const Painted = ({cam, paint}: {cam: (tl: number) => Camera; paint: (p: Painter, tl: number) => void}) => {
   const fn = useCallback(({brush, frame}: PaintContext) => plate(brush, frame, cam, paint), [cam, paint]);
   return (
     <AbsoluteFill style={{background: PAPER}}>

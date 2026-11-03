@@ -31,7 +31,7 @@ const fillOf = (p: Painter, base: number, L: InteriorLight) => {
 };
 
 /** Paint the figure from behind at ground point `g` (plate px), `unit` px per metre. `breath` 0..1 lifts the shoulders. */
-export const paintYouBack = (p: Painter, g: Pt, unit: number, pose: BackPose = 'idle', o: {breath?: number; def?: CastDef; L?: InteriorLight; reachTo?: Pt} = {}) => {
+export const paintYouBack = (p: Painter, g: Pt, unit: number, pose: BackPose = 'idle', o: {breath?: number; def?: CastDef; L?: InteriorLight; reachTo?: Pt; reachElbow?: Pt; reachHandPx?: number} = {}) => {
   const def = o.def ?? YOU_DEF, L = o.L ?? SUN_LIGHT, od = def.outfit;
   const rise = 0.008 * (o.breath ?? 0);
   const chin = def.height - H, shV = chin - 0.16 * H + rise;
@@ -43,7 +43,8 @@ export const paintYouBack = (p: Painter, g: Pt, unit: number, pose: BackPose = '
   const skin = def.head.skin, skinShade = mixColor(skin, VD18.shadow, 0.28);
 
   // Away-reach: the right arm is behind the body's silhouette (painted first, only the upper arm shows past the shoulder).
-  if (pose === 'reach') {
+  // `reachElbow` given = the arm is drawn in front of the torso further down (it sticks out past the shoulder and reads from behind).
+  if (pose === 'reach' && !o.reachElbow) {
     // `reachTo` is the hand's picture point, projected by the caller from the world (the hand about 0.6 m ahead of the
     // shoulder, toward the glass): forward reads as up and inward on screen and the far hand is smaller.
     const S = at([sw - 0.03, shV - 0.03]), T = o.reachTo ?? at([sw + 0.25, shV + 0.05]);
@@ -91,6 +92,22 @@ export const paintYouBack = (p: Painter, g: Pt, unit: number, pose: BackPose = '
     fill(skin, capsule(M, E, 0.055 * unit, 0.05 * unit), true, 4);
     fill(skin, capsule(E, T, 0.05 * unit, 0.044 * unit), true, 4);
     fill(skinShade, ell(T[0], T[1] - 0.03 * unit, 0.04 * unit, 0.055 * unit, 14, -0.15), true, 4);
+  }
+
+  // Reach seen from behind and to the side (S04-B01-SH04, P16): sleeve, forearm and a flat hand with the fingertips on the glass.
+  if (pose === 'reach' && o.reachElbow) {
+    const S = at([sw - 0.03, shV - 0.03]), E = o.reachElbow, T = o.reachTo ?? at([sw + 0.25, shV + 0.05]);
+    const M: Pt = [(S[0] + E[0]) / 2, (S[1] + E[1]) / 2], hw2 = o.reachHandPx ?? 0.03 * unit;
+    fill(od.sleeve, capsule(S, E, 0.078 * unit, 0.065 * unit));
+    fill(mixColor(skin, VD18.shadow, 0.1), capsule(E, T, 0.05 * unit, 0.04 * unit), true, 4);
+    // Back of the hand: palm ellipse behind the fingertips, four short fingers fanning up, thumb inward.
+    const palm: Pt = [T[0] - (T[0] - E[0]) * 0.06, T[1] + hw2 * 0.9];
+    fill(skinShade, ell(palm[0], palm[1], hw2 * 1.0, hw2 * 1.15, 14), true, 4);
+    for (let i = 0; i < 4; i++) {
+      const fx = palm[0] + (i - 1.5) * hw2 * 0.5;
+      fill(skinShade, capsule([fx, palm[1] - hw2 * 0.5], [fx + (i - 1.5) * hw2 * 0.08, T[1] - hw2 * 0.9], hw2 * 0.22, hw2 * 0.18), true, 4);
+    }
+    fill(skinShade, capsule([palm[0] - hw2 * 0.8, palm[1]], [palm[0] - hw2 * 1.2, palm[1] - hw2 * 0.9], hw2 * 0.24, hw2 * 0.2), true, 4);
   }
 
   // Head from behind: neck under the nape, ears at the sides, the crop hair cap down to a low nape hairline. No face part.
