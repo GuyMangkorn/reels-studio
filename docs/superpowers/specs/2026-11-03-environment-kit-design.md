@@ -43,7 +43,7 @@ An entry is added when its episode is delivered; `tests/plates.test.ts` fails on
 
 **ENV-P01 — Promote on the second use.** An atmosphere layer or set tool moves into the kit when a second episode needs it (same rule as [TL01](../../contributing.md#tools-and-document-improvements)). A finished set is never promoted; it gets a gallery entry when its episode is delivered.
 
-**ENV-P02 — Check the kit first.** Before painting a plate, Film lists the kit layers it uses (`sky: ENV-SKY, fall: snow`) in the scene sheet, next to the casting line. A layer written new in the episode records why the kit layer did not fit.
+**ENV-P02 — Check the kit first** (revised on application, user 3 Nov 2026: design from the story first, then check the kit; see [story first](../../../AGENTS.md#story-first)). Before painting a plate, Film lists the kit layers it uses (`sky: ENV-SKY, fall: snow`) in the scene sheet, next to the casting line. A layer written new in the episode records why the kit layer did not fit.
 
 These two rules were applied (user, 3 Nov 2026) to [src/painted/kit/README.md](../../../src/painted/kit/README.md) and [film-visual-brief-workflow](../../film-visual-brief-workflow.md) after review ([DP01](../../contributing.md#tools-and-document-improvements)).
 

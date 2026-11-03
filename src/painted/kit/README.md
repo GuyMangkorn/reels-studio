@@ -37,8 +37,8 @@ view with `scripts/qa-sheet.sh`). Source of the catalog: [catalog.tsx](catalog.t
 | `env-sheet.tsx` | `KIT-ENV` | Every ENV layer at 1/3 plus the episode code it replaces; `printf 'KIT-ENV 0 out/kit-env/KIT-ENV-0.png\n' \| node scripts/stills.mjs src/painted/kit/env-sheet.tsx` |
 | `plates.ts`, `plates-sheet.tsx` | `PLATES`, `PlateEntry`, `findPlates({episode, kind, time, mood, layer})`, `plateStill(id)`; `KIT-PLATES` | **Plate gallery**: finished sets from delivered episodes, reference only (never a default). Filter the index first, then view the sheet: `npx tsx scripts/painted-kit/plates.ts --sheet-only`; stills in the store at `projects/KIT/plates/` |
 
-Template cast (look here first)
-- Need a new person? Start from `PEOPLE` in `people.ts` (see `PEOPLE_INFO` for age, gender, hair) and view `KIT-PEOPLE-LINEUP` / `KIT-PERSON-<id>`; copy the entry into the episode's cast and change only `outfit` and props. Add a new character to `PEOPLE` only for a reusable look.
+Template cast (look here after designing; [story first, kit second](../../../AGENTS.md#story-first))
+- Designed a person who matches a template? Use `PEOPLE` in `people.ts` (see `PEOPLE_INFO` for age, gender, hair) and view `KIT-PEOPLE-LINEUP` / `KIT-PERSON-<id>`; copy the entry into the episode's cast and change only `outfit` and props. Add a new character to `PEOPLE` only for a reusable look.
 - Face look: every `PEOPLE` head carries a `look` (eye `almond|lidded|hooded|round`, nose `hook|ell|nostrils|broad|button`, brow `arch|tapered|thick`, mouth `line|lip|full|thin`), chosen to match the person (user-approved 2 Nov 2026, sheet `KIT-FACE-CAST`). Keep the look when copying a person; a new person picks parts that fit their age and features. Every `PEOPLE` entry must have a `look` (`tests/people.test.ts`); the bare round-eye face stays only for episode casts that predate it (WFOG, ZCPAINT, KSO). The profile view does not use `look` yet.
 - Talking and turning: face controls (`FaceState`, `talk` mouth with `open` from `mouthAt()`), head `front|left|right`. Example: composition `KIT-PEOPLE-TALK`. No 3/4 view yet.
 - `CastDef.headScale` / `armScale` size children; `Outfit.skirtHem` sets a short skirt.
@@ -54,7 +54,7 @@ Recurring cast
 <a id="env-rules"></a>
 Sets and atmosphere (ENV-P01, ENV-P02; user, 3 Nov 2026)
 - **ENV-P01 — Promote on the second use (Requirement).** An atmosphere layer or set tool (sky, falling particles, fog, halo, water) moves into the kit when a second episode needs it ([TL01](../../../docs/contributing.md#tools-and-document-improvements)). A finished set (room, door, street, cabinet) is never promoted: it stays in its episode and gets a `PLATES` entry when its episode is delivered.
-- **ENV-P02 — Check the kit first (Requirement).** Before painting a plate, list the kit layers it uses next to the casting line in the scene sheet, e.g. `kit: ENV-SKY, ENV-FALL:snow`. A layer written new in the episode records why the kit layer did not fit. `PLATES` is reference only, never a default.
+- **ENV-P02 — Name the kit layers used (Default).** The set is designed from the story first ([story first, kit second](../../../AGENTS.md#story-first)); a kit layer that matches the design is used and named next to the casting line in the scene sheet, e.g. `kit: ENV-SKY, ENV-FALL:snow`. A layer the design needs and the kit lacks is written new with no further justification. `PLATES` is reference only, never a default.
 
 <a id="kit-intake"></a>
 Kit intake at delivery (KIT-P01; user, 3 Nov 2026)

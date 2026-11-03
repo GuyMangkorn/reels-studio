@@ -21,7 +21,7 @@ Episode-specific files are under [Episodes](#episodes); shared topics come first
 
 ## Poses
 
-**Read when:** devising or reviewing any character pose or gesture (cite a pose ID first, [CP-P12](character-proportion-principles.md#cp-p-pose-sheet)).
+**Read when:** devising or reviewing any character pose or gesture (design from the beat, then cite a matching pose ID, [CP-P12](character-proportion-principles.md#cp-p-pose-sheet)).
 
 - Docs: [pose sheet P01–P45](character-proportion-principles.md#cp-p-pose-sheet), [front-view arm depth](character-proportion-principles.md#cp-p-arm-depth)
 - Code: [kit/poses.ts](../src/painted/kit/poses.ts) (`POSES`, `poseArms`), [kit/pose-sheet.json](../src/painted/kit/pose-sheet.json); episode pose tracks [zcpaint/pose.ts](../src/painted/zcpaint/pose.ts); legacy SVG rig [rig/poses.ts](../src/rig/poses.ts)
