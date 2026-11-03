@@ -18,7 +18,7 @@ const FPS = 30;
 const PAPER = '#e9e6e0';
 
 /** Grade per state: cool blue-hour vignette (empty) or a warm morning lift (crowd/mother). Same for every pixel (VD03). */
-const StateGrade = ({state}: {state: State}) => (
+export const StateGrade = ({state}: {state: State}) => (
   <AbsoluteFill
     style={{
       pointerEvents: 'none',
@@ -30,7 +30,7 @@ const StateGrade = ({state}: {state: State}) => (
   />
 );
 
-const Painted = ({state, cam, paint, children}: {state: State; cam: (tl: number) => Camera; paint: (p: Painter) => void; children?: React.ReactNode}) => {
+export const Painted = ({state, cam, paint, children}: {state: State; cam: (tl: number) => Camera; paint: (p: Painter) => void; children?: React.ReactNode}) => {
   const fn = useCallback(
     ({brush, frame}: PaintContext) => {
       const tl = frame / FPS;

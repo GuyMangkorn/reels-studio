@@ -9,6 +9,7 @@ import {poseArms, poseFor} from '../../kit/poses';
 import type {V3} from '../../kit/space';
 import {dress, tintHoodie} from '../../kit/wardrobe';
 import {frontRect, groundQuad, proj, unitAt, type Cam} from '../space';
+import type {SheetState} from './sheet';
 import {box, figureBox, measureFigure, paintOrder, union, type Box, type Item} from './collide';
 
 /** `คุณ` (VD03): `woman-bob + hoodie, P01, neutral`, kit back view (`view: 'back'`), coral `tintHoodie` (#d0503f body, #a8432f hood). */
@@ -72,6 +73,9 @@ const glow = (p: Painter, seed: number, x: number, y: number, r: number, color: 
 const SHEET_W = 0.3, SHEET_H = 0.42;
 export const paintSheetBack = (p: Painter, c: Cam, seed: number, x: number, y: number, z: number, w = 0) => {
   const r = frontRect(c, z, x - SHEET_W / 2, x + SHEET_W / 2, y, y + SHEET_H);
+  // Ambient clock (CL05): the lower outer corner lifts in the breeze, 0.4 Hz, never fully flat (S02-B01-SH03 "one corner lifting").
+  const lift = unitAt(c, z) * 0.03 * (0.6 + 0.4 * Math.sin(p.t * Math.PI * 2 * 0.4 + 1));
+  r[2] = [r[2][0] + lift * 0.5, r[2][1] - lift];
   hardFill(p, seed, mix('#e9ecee', '#fbf8f0', w), r);
   // A faint show-through of the print (unreadable, CL06 "you cannot read it") and two tape strips.
   const u = unitAt(c, z), [cx, cy] = proj(c, [x, y + SHEET_H * 0.62, z]);
@@ -284,8 +288,8 @@ const shopfront = (p: Painter, c: Cam, b: Bay, i: number, state: State, w: numbe
   fillC(p, base + 130, mix('#6d747b', '#a29886', w), groundQuad(c, X - s * 0.4, X, za, zb, 0.02));
 };
 
-export const paintYaowarat = (p: Painter, state: State, o: {you?: boolean} = {}) => {
-  const c = YW_CAM, w = warmOf(state);
+export const paintYaowarat = (p: Painter, state: State, o: {you?: boolean; cam?: Cam; haze?: number} = {}) => {
+  const c = o.cam ?? YW_CAM, w = warmOf(state);
   // Sky: milky blue hour (empty) / warm pale morning (crowd).
   sky(p, 21000, mix('#8fa2b8', '#b9cbd8', w), mix('#e4dcd2', '#f7e4c6', w), -20, 960);
   // Far haze block at the end of the street.
@@ -344,6 +348,8 @@ export const paintYaowarat = (p: Painter, state: State, o: {you?: boolean} = {})
     hardFill(p, 26200 + j * 10 + s, w < 1 ? '#fff0c8' : '#b9b2a6', ell(hx, hy + u * 0.08, u * 0.28, u * 0.1, 12));
   }
 
+  // Close cameras (B3): a soft haze over the street so the pole or the shrine ledge painted after it sits forward (no blur filter).
+  if (o.haze) washAt(p, 26900, mix('#c4ccd6', '#f1e4cc', w), 150 * o.haze, [[-20, -20], [1100, -20], [1100, 1940], [-20, 1940]], 0.05, 0.2);
   // The pole with the sheet (left kerb, CL05), and the small street shrine with garland and incense (right, VD08).
   const [px] = proj(c, YW_POLE), pu = unitAt(c, YW_POLE[2]);
   fillC(p, 27000, mix('#868c90', '#a39888', w), frontRect(c, YW_POLE[2], YW_POLE[0] - 0.13, YW_POLE[0] + 0.13, 0, 9));
@@ -390,7 +396,7 @@ export const paintIncense = (p: Painter, c: Cam, at: V3, w: number, u: number) =
   for (let k = 0; k < 3; k++) {
     const pts: Pt[] = [];
     for (let s = 0; s <= 8; s++) {
-      const v = s / 8, sway = Math.sin(p.t * 0.9 + v * 5 + k * 2) * u * 0.05 * v;
+      const v = s / 8, sway = Math.sin(p.t * 2.4 + v * 5 + k * 2) * u * 0.05 * v;
       pts.push([px + (k - 1) * u * 0.02 + sway + v * u * 0.04, py - u * (0.26 + 0.6 * v)]);
     }
     inkLine(p, 28130 + k, pts, {color: mix('#c6ccd2', '#e9e2d6', w), weight: Math.max(1, u * 0.012), closed: false, curve: 0.6});
@@ -399,7 +405,7 @@ export const paintIncense = (p: Painter, c: Cam, at: V3, w: number, u: number) =
 
 /** Jasmine garland (phuang malai) draped on a ledge: white buds in a loop with a red-green tassel. */
 export const paintGarland = (p: Painter, c: Cam, at: V3, u: number) => {
-  const [px, py] = proj(c, at), r = u * 0.022;
+  const [px0, py] = proj(c, at), r = u * 0.022, px = px0 + Math.sin(p.t * Math.PI * 2 * 0.4); // ambient clock: 1 px at 0.4 Hz (B7)
   for (let k = 0; k < 14; k++) {
     const a = (k / 14) * Math.PI;
     const bx = px + Math.cos(a) * u * 0.08, by = py - u * 0.01 + Math.sin(a) * u * 0.05;
@@ -461,7 +467,15 @@ const bench = (p: Painter, c: Cam, seed: number, b: Bench, w: number) => {
  * Crowd card. `bench` (index into PIER_BENCHES) seats the person there in P31, profile toward the river: the ground point is
  * placed so the hip sits 0.28 m behind the seat front (VD13); `at[0]` is ignored for sitters.
  */
-type Walker = {who: CastDef; at: V3; view: 'left' | 'right'; walk?: number; bench?: number; seed: number};
+type Walker = {who: CastDef; at: V3; view: 'left' | 'right'; walk?: number; bench?: number; seed: number; /** Speed m/s along the facing direction; 0/absent = stands (B6). */ pace?: number};
+/** Stroll amplitude of the animated crowd (calm morning, VD13). */
+const STROLL = 0.6;
+/** A walker `df` frames after its look-frame position: it keeps its facing (left = -x, right = +x), the walk phase follows the distance. */
+export const walkerNow = (wk: Walker, df: number): Walker => {
+  if (!wk.pace || wk.bench !== undefined) return wk;
+  const d = (wk.pace * df) / 30, dir = wk.view === 'left' ? -1 : 1;
+  return {...wk, at: [wk.at[0] + dir * d, wk.at[1], wk.at[2]], walk: (wk.walk ?? 0) + d / 0.8};
+};
 const dressAs = (id: keyof typeof PEOPLE, outfit?: Parameters<typeof dress>[1], over: Partial<CastDef['outfit']> = {}): CastDef => {
   const base = outfit ? dress(PEOPLE[id], outfit) : PEOPLE[id];
   return {...base, outfit: {...base.outfit, ...over}};
@@ -557,7 +571,7 @@ export const walkerAt = (wk: Walker): V3 => {
   return [b.x + 0.28 + sitHipU(wk.who), 0, wk.at[2]];
 };
 const walkerPose = (wk: Walker) => (g: Pt, u: number) =>
-  ({...poseFor(wk.bench !== undefined ? 'P31' : 'P01', wk.who, g, u, wk.view), face: EXPRESSIONS.neutral, walk: wk.bench !== undefined ? undefined : wk.walk}) as FigPose;
+  ({...poseFor(wk.bench !== undefined ? 'P31' : 'P01', wk.who, g, u, wk.view), face: EXPRESSIONS.neutral, walk: wk.bench !== undefined ? undefined : wk.walk, stride: wk.pace ? STROLL : undefined}) as FigPose;
 const motherPose = (g: Pt, u: number) => {
   const base = poseFor('P10', MOTHER, g, u, 'left');
   const {rHold: _r, lHold: _l, ...arms} = base as typeof base & {rHold?: unknown; lHold?: unknown};
@@ -572,7 +586,9 @@ const paintPerson = (p: Painter, c: Cam, wk: Walker, t: number) => {
 
 export const paintMother = (p: Painter, c: Cam, t: number) => {
   const g = proj(c, PIER_MOTHER), u = unitAt(c, PIER_MOTHER[2]);
-  const a = drawFigure(p, MOTHER, g, u, motherPose(g, u), t, 6100);
+  // Ambient clock (B8, hold rule): breathing about +-1 px on the chest (0.25 Hz), garland swing 2 px at 0.5 Hz, a sheet corner lifting.
+  const breath = (1 / u) * Math.sin(t * Math.PI * 2 * 0.25);
+  const a = drawFigure(p, MOTHER, g, u, {...motherPose(g, u), rise: breath} as FigPose, t, 6100);
   // The sheet stack held up at the chest (VD09 fallback, LF05 v2): five sheets, printed faces inward, fanned so their edges read
   // as paper; 0.16 x 0.30 m, a little in front of the hands.
   const hx = (a.rHand[0] + a.lHand[0]) / 2 + 0.03 * u, hy = (a.rHand[1] + a.lHand[1]) / 2 - 0.06 * u;
@@ -580,13 +596,14 @@ export const paintMother = (p: Painter, c: Cam, t: number) => {
   for (let k = 4; k >= 0; k--) {
     const ox = -k * 0.012 * u, oy = -k * 0.01 * u, tilt = (k - 2) * 0.02;
     const q: Pt[] = [[-sw, -sh], [sw, -sh], [sw, sh], [-sw, sh]].map(([x, y]): Pt => [hx + ox + x + y * tilt, hy + oy + y - x * tilt * 0.5]);
+    if (k === 0) q[1] = [q[1][0] + 1.2, q[1][1] - 1.5 - 1.5 * Math.sin(t * Math.PI * 2 * 0.35)]; // top sheet: its upper outer corner lifts in the breeze
     hardFill(p, 6200 + k, k % 2 ? '#efebe1' : '#fbf9f3', q);
     inkLine(p, 6206 + k, q, {color: '#7a746a', weight: 0.9, curve: 0, still: true});
   }
   // A faint show-through of the print on the outer sheet (unreadable, sheets face inward).
   washAt(p, 6212, '#a7a39a', 40, ell(hx - 0.01 * u, hy - 0.04 * u, 0.04 * u, 0.05 * u, 12), 0.1, 0.3);
   // Jasmine garland on the wrist nearest the lens, 1.3x (VD09 fallback): a ring of white buds, a small rose and leaf tassel below.
-  const wx = Math.max(a.rHand[0], a.lHand[0]) + 0.06 * u, wy = hy + 0.08 * u, r = u * 0.026;
+  const wx = Math.max(a.rHand[0], a.lHand[0]) + 0.06 * u + 2 * Math.sin(t * Math.PI * 2 * 0.5), wy = hy + 0.08 * u, r = u * 0.026;
   for (let k = 0; k < 12; k++) {
     const ang = (k / 12) * Math.PI * 2;
     hardFill(p, 6220 + k, k % 3 ? '#fcfcf6' : '#eef3e4', ell(wx + Math.cos(ang) * u * 0.046, wy + Math.sin(ang) * u * 0.064, r, r * 0.9, 8));
@@ -686,9 +703,32 @@ const postZs = () => {
 const pigeons = () => Array.from({length: 6}, (_, k) => ({k, at: [-2.4 + 1.6 * hash(k * 5.1), 0, -6.5 - 6 * hash(k * 2.7)] as V3}));
 
 /** Build the paint items of one pier state; `paint` is undefined for the collision test (geometry only). */
-export const pierItems = (state: State, o: {you?: boolean} = {}, paint?: {p: Painter; w: number}) => {
-  const c = state === 'mother' ? PIER_CAM_S05 : PIER_CAM;
-  const p = paint?.p, w = paint?.w ?? 0, t = p?.t ?? 0;
+export type PierOpts = {
+  you?: boolean;
+  /** Shot-local frame (ambient clock, pigeons) and the frame at which the crowd stands where the look frame has it (`ref`). */
+  f?: number;
+  ref?: number;
+  cam?: Cam;
+};
+/** The pace (m/s) of a walking pier crowd member: calm, per person (B6). Sitters and standers do not move. */
+/** Walkers that would meet a bench, post or another walker head-on during the S05 push stand still (VD13, found by the per-frame test). */
+const STANDS = new Set([12, 13, 16, 17, 18, 22, 23]);
+const paceOf = (wk: Walker) => (wk.walk !== undefined && wk.bench === undefined && !STANDS.has(wk.seed) ? 0.28 + 0.22 * hash(wk.seed * 1.7) : 0);
+/** Pigeons (empty state, S01-B02-SH03 ambient clock): #0 steps right f 60-110, #1 flies out of frame f 128-150. Returns undefined once gone. */
+const pigeonAt = (k: number, at: V3, f: number): {at: V3; y: number; wing: number} | undefined => {
+  const ramp = (a: number, b: number) => Math.max(0, Math.min(1, (f - a) / (b - a)));
+  if (k === 0) return {at: [at[0] + 0.35 * ramp(60, 110), 0, at[2]], y: 0.02 * Math.abs(Math.sin(f * 0.5)) * (f > 60 && f < 110 ? 1 : 0), wing: 0};
+  if (k === 1) {
+    const u = ramp(128, 150);
+    if (u >= 1) return undefined;
+    return {at: [at[0] + 2.5 * u * u, 0, at[2] - 3 * u], y: 3.2 * u * u, wing: u > 0 ? Math.sin(f * 1.6) : 0};
+  }
+  return {at, y: 0, wing: 0};
+};
+export const pierItems = (state: State, o: PierOpts = {}, paint?: {p: Painter; w: number}) => {
+  const c = o.cam ?? (state === 'mother' ? PIER_CAM_S05 : PIER_CAM);
+  const f = o.f ?? 0, df = f - (o.ref ?? 0);
+  const p = paint?.p, w = paint?.w ?? 0, t = p?.t ?? f / 30;
   type It = Item & {kind: 'solid' | 'person'; bench?: number; at?: V3; seatV?: number; hipX?: number};
   const items: It[] = [];
   const noop = () => {};
@@ -700,17 +740,23 @@ export const pierItems = (state: State, o: {you?: boolean} = {}, paint?: {p: Pai
   const rail = mix('#c8cdd0', '#e6dccb', w);
   for (const z of postZs()) items.push({id: `post@${z}`, kind: 'solid', box: box(EDGE - POST_HALF, EDGE + POST_HALF, 0, 1.05, z - POST_HALF, z + POST_HALF), draw: p ? () => fillC(p, 31900 + z, rail, frontRect(c, z, EDGE - POST_HALF, EDGE + POST_HALF, 0, 1.05)) : noop});
   items.push({id: 'bollard', kind: 'solid', box: box(BOLLARD[0] - 0.1, BOLLARD[0] + 0.1, 0, 0.36, BOLLARD[2] - 0.1, BOLLARD[2] + 0.1), draw: p ? () => paintBollard(p, c, w) : noop});
-  if (state === 'empty') for (const {k, at} of pigeons()) items.push({id: `pigeon${k}`, kind: 'solid', box: box(at[0] - 0.25, at[0] + 0.25, 0, 0.25, at[2] - 0.08, at[2] + 0.08), draw: p ? () => {
-    const [bx, by] = proj(c, at), u = unitAt(c, at[2]);
+  if (state === 'empty') for (const pg of pigeons()) {
+    const now = pigeonAt(pg.k, pg.at, f);
+    if (!now) continue;
+    const k = pg.k, at = now.at;
+    items.push({id: `pigeon${k}`, kind: 'solid', box: box(at[0] - 0.25, at[0] + 0.25, now.y, now.y + 0.25, at[2] - 0.08, at[2] + 0.08), draw: p ? () => {
+    const [bx, by0] = proj(c, at), u = unitAt(c, at[2]), by = by0 - now.y * u;
     const dir = k % 2 ? 1 : -1;
     hardFill(p, 32200 + k, '#6e7782', ell(bx, by - u * 0.1, u * 0.13, u * 0.07, 12, dir * 0.15));
     hardFill(p, 32210 + k, '#5b6470', [[bx - dir * u * 0.1, by - u * 0.12], [bx - dir * u * 0.24, by - u * 0.1], [bx - dir * u * 0.1, by - u * 0.07]]);
     hardFill(p, 32220 + k, '#4f5864', ell(bx + dir * u * 0.12, by - u * 0.19, u * 0.045, u * 0.042, 10));
     hardFill(p, 32230 + k, '#7f8f8a', ell(bx + dir * u * 0.09, by - u * 0.14, u * 0.03, u * 0.025, 8));
     inkLine(p, 32240 + k, [[bx, by - u * 0.04], [bx, by]], {color: '#b0675a', weight: 1, closed: false, curve: 0, still: true});
+    if (now.wing) hardFill(p, 32250 + k, '#5b6470', [[bx - dir * u * 0.02, by - u * 0.14], [bx - dir * u * 0.12, by - u * (0.3 + 0.12 * now.wing)], [bx + dir * u * 0.04, by - u * 0.17]]);
   } : noop});
+  }
   // People: a measured box per figure; sitters join their bench (painted right after it, the back behind them).
-  const crowd = state === 'empty' ? [] : PIER_CROWD[state];
+  const crowd = state === 'empty' ? [] : PIER_CROWD[state].map((wk) => walkerNow({...wk, pace: paceOf(wk)}, df));
   const sitters: It[][] = PIER_BENCHES.map(() => []);
   crowd.forEach((wk, i) => {
     const at = walkerAt(wk), m = measureFigure(wk.who, walkerPose(wk), 0, 5000 + wk.seed * 37);
@@ -738,10 +784,10 @@ export const pierItems = (state: State, o: {you?: boolean} = {}, paint?: {p: Pai
   };
   return {layout, order};
 };
-export const pierLayout = (state: State, o: {you?: boolean} = {}) => pierItems(state, o).layout;
+export const pierLayout = (state: State, o: PierOpts = {}) => pierItems(state, o).layout;
 
-export const paintPier = (p: Painter, state: State, o: {you?: boolean} = {}) => {
-  const c = state === 'mother' ? PIER_CAM_S05 : PIER_CAM, w = warmOf(state), dy = c.hy - PIER_CAM.hy;
+export const paintPier = (p: Painter, state: State, o: PierOpts = {}) => {
+  const c = o.cam ?? (state === 'mother' ? PIER_CAM_S05 : PIER_CAM), w = warmOf(state), dy = c.hy - PIER_CAM.hy;
   sky(p, 31000, mix('#91a4ba', '#b9cbd8', w), mix('#ecdfd0', '#f7e4c6', w), -20, 900 + dy);
   // Soft cloud banks in the open sky above the deck.
   for (let k = 0; k < 5; k++) {
@@ -767,7 +813,12 @@ export const paintPier = (p: Painter, state: State, o: {you?: boolean} = {}) => 
     if (a[1] > 900 + dy) inkLine(p, 31300 + k, [a, [(a[0] + b[0]) / 2, a[1] - 1], b], {color: mix('#a9bccb', '#f3e2c0', w), weight: 0.9, closed: false, curve: 0.4});
   }
   // The moored ferry (morning only: people board; none at dawn).
-  if (w > 0) paintBoat(p, c);
+  if (w > 0) {
+    p.brush.push();
+    p.brush.translate(0, 3 * Math.sin(p.t * Math.PI * 2 * 0.3)); // ambient clock: the moored ferry bobs 3 px at 0.3 Hz
+    paintBoat(p, c);
+    p.brush.pop();
+  }
   // Pier deck (planks along z), the hall end edge, the railing on the river side.
   fillC(p, 31400, mix('#7d7b78', '#b09a7c', w), groundQuad(c, EDGE, WALL, HALL_END - 3, DECK_NEAR));
   for (let k = 0; k < 14; k++) {
@@ -814,7 +865,8 @@ export const PHOTO = {x: POSTER.x + 60, y: POSTER.y + 168, w: POSTER.w - 120, h:
 /** Poster photo figure scale (px per metre) and crown offset: LF04 v2 frames `คุณ` from the crown to the upper-mid back. */
 const PHOTO_UNIT = 270, PHOTO_CROWN = 12;
 
-export const paintSoiPost = (p: Painter, state: State, o: {poster?: 'front' | 'back'} = {}) => {
+/** The soi street behind the post: houses, spirit house, scooter, cables, haze (everything in picture space at `SOI_CAM`). */
+export const paintSoiBackdrop = (p: Painter, state: State) => {
   const c = SOI_CAM, w = warmOf(state);
   sky(p, 41000, mix('#8ea0b6', '#e3cba3', w), mix('#dcd6cf', '#f6e9d4', w), -20, 1100);
   // Soi: two rows of low houses (x +-3.2), concrete road, gates; distant lit shop at the far end.
@@ -890,6 +942,15 @@ export const paintSoiPost = (p: Painter, state: State, o: {poster?: 'front' | 'b
   for (const [x0, x1, y1] of [[860, 960, 760], [200, 120, 820], [940, 1060, 640]] as const) inkLine(p, 41640 + x0, [[x0, 420], [x1, y1]], {color: mix('#2c3238', '#3e3a36', w), weight: 1.2, closed: false, curve: 0.2, still: true});
   // Atmosphere: a soft haze over the background so the post and poster sit forward (shallow depth, no blur filter).
   washAt(p, 41700, mix('#b5c0cc', '#f1e3cc', w), 70, [[-20, -20], [1100, -20], [1100, 1940], [-20, 1940]], 0.05, 0.3);
+};
+
+/**
+ * The lamp post with its layered sheets and the newest sheet (B2/B4). Picture space of `SOI_CAM`; the wide set paints the same
+ * calls under a scale so the pile has the same marks at any distance (PAIR201). `sheet` drives the top sheet: `turn` 0 = hanging
+ * blank back out, 1 = face-out (see `sheetFlip`); without it `poster` picks the settled LF04 states.
+ */
+export const paintPostAssembly = (p: Painter, state: State, o: {poster?: 'front' | 'back'; sheet?: SheetState} = {}) => {
+  const w = warmOf(state);
 
   // The concrete lamp post (frontal, tapering slightly), its lamp head out of frame top.
   const post: Pt[] = [[410, -20], [670, -20], [688, 1940], [392, 1940]];
@@ -903,7 +964,8 @@ export const paintSoiPost = (p: Painter, state: State, o: {poster?: 'front' | 'b
   if (w < 1) washAt(p, 42300, '#ffe2a8', 40 * (1 - w), [[300, -20], [780, -20], [820, 900], [260, 900]], 0.4, 0.3);
   // Old sheets under the poster: sun-faded cream, curled, torn; offsets and tilts (POS202, CL06), no readable front.
   const old: [number, number, number, string][] = [[318, 1010, -0.05, '#ddd2b5'], [372, 900, 0.05, '#ece3cb'], [350, 180, 0.07, '#e3d9bf'], [400, 250, -0.08, '#eee6d2']];
-  const oldSheet = ([x, y, a, col]: [number, number, number, string], k: number) => {
+  const oldSheet = ([x, y0, a, col]: [number, number, number, string], k: number) => {
+    const y = y0 + (o.sheet?.flutter ?? 0) * Math.sin(k * 2.1 + 1);
     const pw = 380, ph = 520, cs = Math.cos(a), sn = Math.sin(a);
     const R = (u: number, v: number): Pt => [x + u * cs - v * sn, y + u * sn + v * cs];
     const sheet = [R(0, 0), R(pw, 0), R(pw, ph * 0.85), R(pw * 0.8, ph), R(0, ph)];
@@ -917,7 +979,16 @@ export const paintSoiPost = (p: Painter, state: State, o: {poster?: 'front' | 'b
   old.forEach(oldSheet);
   // The newest sheet (the poster), with its tape on the left vertical line (the flip hinge, VD07).
   const {x, y, w: pw, h: ph} = POSTER;
-  if (o.poster === 'back') {
+  const sheet = o.sheet, face = sheet ? sheet.face : o.poster;
+  if (sheet) {
+    // Hinge on the left tape line: scale the width about x, lean the loose sheet about the top tape (droop), ambient stir.
+    p.brush.push();
+    p.brush.translate(x, y + sheet.dy);
+    p.brush.rotate(sheet.droop * 0.035);
+    p.brush.scale(Math.max(0.015, sheet.width), 1 + sheet.droop * 0.02);
+    p.brush.translate(-x, -y);
+  }
+  if (face === 'back') {
     hardFill(p, 42200, '#f8f6f0', [[x, y], [x + pw, y], [x + pw, y + ph], [x, y + ph]]);
   } else {
     hardFill(p, 42200, '#f8f6f0', [[x, y], [x + pw, y], [x + pw, y + ph], [x, y + ph]]);
@@ -946,4 +1017,13 @@ export const paintSoiPost = (p: Painter, state: State, o: {poster?: 'front' | 'b
   washAt(p, 42230, '#b8b2a4', 60, [[x + pw * 0.75, y + ph * 0.85], [x + pw, y + ph * 0.8], [x + pw, y + ph], [x + pw * 0.7, y + ph]], 0.15, 0.5);
   inkLine(p, 42231, [[x, y], [x + pw, y], [x + pw, y + ph], [x, y + ph]], {color: '#7a746a', weight: 0.9, curve: 0, still: true});
   for (const ty of [y + 30, y + ph - 60]) washAt(p, 42240 + ty, '#e9dfae', 170, [[x - 22, ty], [x + 26, ty - 4], [x + 28, ty + 36], [x - 20, ty + 40]], 0.05, 0.3);
+  if (sheet) p.brush.pop();
 };
+
+export const paintSoiPost = (p: Painter, state: State, o: {poster?: 'front' | 'back'; sheet?: SheetState} = {}) => {
+  paintSoiBackdrop(p, state);
+  paintPostAssembly(p, state, o);
+};
+
+/** Drawing helpers shared with the other EP02 sets (monument, soi wide): same fills, washes, sky and glow as the look-frame sets. */
+export {fillC, washC, mix, sky, glow, warmOf, sideQuad, flatQuad, dressAs};
