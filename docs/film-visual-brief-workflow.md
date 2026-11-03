@@ -31,6 +31,9 @@ Before selecting/revising medium/compositing/camera/light strategy, consult rele
 <a id="look-check"></a>
 **Default — cast from the template library.** For painted work Film casts each character from the template cast first and records it as a [casting line](character-proportion-principles.md#cp-casting-line); only a character no template fits counts as a new look below.
 
+<a id="kit-layers"></a>
+**Requirement — kit layers before a new plate.** For painted sets Film checks the kit's atmosphere layers and the plate gallery (`findPlates` in [src/painted/kit/plates.ts](../src/painted/kit/plates.ts)) before writing new set code, and names the layers in the scene sheet next to the casting line ([ENV-P01/P02](../src/painted/kit/README.md#env-rules)). Gallery plates are reference for the look check, never a default set.
+
 **Requirement — look check for new looks.** When a look-defining element has no approved precedent (a new character, a new medium or style, a new key set mood), the user picks its look before Boss builds it. Film shows up to three options as reference images or links, or the coordinator assigns one low-resolution still of one shot in the proposed look to Film or Boss. Record the pick and the user's words in the brief. An approved precedent (an accepted character template, an earlier episode's accepted set) skips the check. Budget: one reference set or one still per element, never a pass over every scene. Outside the look check and the look lock, the brief cites existing frames (an accepted precedent, a reference plate) and paints no key art, unless the user asks or the brief changes medium, light or projection and only a picture can settle it.
 
 <a id="look-lock"></a>

@@ -1,6 +1,6 @@
 # Environment layer for the painted kit (design, proposed)
 
-Status: **phases 1 and 2 built** (3 Nov 2026). Phase 1: `kit/sky.ts`, `kit/fall.ts`, `kit/fog.ts`, `kit/sea.ts`, sheet `KIT-ENV`. Phase 2: `kit/plates.ts` (27 plates from 9 episodes), sheet `KIT-PLATES`, `scripts/painted-kit/plates.ts`. The ENV-P rules are still proposed.
+Status: **phases 1 and 2 built** (3 Nov 2026). Phase 1: `kit/sky.ts`, `kit/fall.ts`, `kit/fog.ts`, `kit/sea.ts`, sheet `KIT-ENV`. Phase 2: `kit/plates.ts` (27 plates from 9 episodes), sheet `KIT-PLATES`, `scripts/painted-kit/plates.ts`. ENV-P01/P02 applied to the kit README and Film's brief workflow after user review (3 Nov 2026).
 
 ## Decision in one line
 
@@ -45,7 +45,7 @@ An entry is added when its episode is delivered; `tests/plates.test.ts` fails on
 
 **ENV-P02 — Check the kit first.** Before painting a plate, Film lists the kit layers it uses (`sky: ENV-SKY, fall: snow`) in the scene sheet, next to the casting line. A layer written new in the episode records why the kit layer did not fit.
 
-These two rules land in [src/painted/kit/README.md](../../../src/painted/kit/README.md) and [film-visual-brief-workflow](../../film-visual-brief-workflow.md) only after review ([DP01](../../contributing.md#tools-and-document-improvements)).
+These two rules were applied (user, 3 Nov 2026) to [src/painted/kit/README.md](../../../src/painted/kit/README.md) and [film-visual-brief-workflow](../../film-visual-brief-workflow.md) after review ([DP01](../../contributing.md#tools-and-document-improvements)).
 
 ## Migration
 
@@ -65,6 +65,7 @@ These two rules land in [src/painted/kit/README.md](../../../src/painted/kit/REA
 
 1. Gallery: typed `PLATES` index first, generated `KIT-PLATES` sheet second (user, 3 Nov 2026).
 2. Migration: new episodes only; delivered episodes keep their code (user, 3 Nov 2026).
+3. ENV-P01/P02 approved and applied (user, 3 Nov 2026).
 
 ## Build notes
 
