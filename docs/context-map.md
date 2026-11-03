@@ -159,7 +159,7 @@ Episode-specific files are under [Episodes](#episodes); shared topics come first
 
 **Read when:** Film's medium/look decision, a new shared asset, a renderer capability, or recording a blocker.
 
-- Docs: [film-visual-brief-workflow](film-visual-brief-workflow.md), [boss-asset-workflow](boss-asset-workflow.md) ([QA before push](boss-asset-workflow.md#visual-and-runtime-qa-before-push), [preview labels](boss-asset-workflow.md#preview-labels)), [asset-engineering-principles](asset-engineering-principles.md), [planned-visual-components](planned-visual-components.md), [dev-findings index](dev-findings.md) and [entries](dev-findings/DF-20261031-render-speed.md), [animation studio research](research/animation-studio-pipeline.md)
+- Docs: [film-visual-brief-workflow](film-visual-brief-workflow.md), [boss-asset-workflow](boss-asset-workflow.md) ([QA before push](boss-asset-workflow.md#visual-and-runtime-qa-before-push), [preview labels](boss-asset-workflow.md#preview-labels)), [asset-engineering-principles](asset-engineering-principles.md), [planned-visual-components](planned-visual-components.md), [dev-findings index](dev-findings.md) and [entries](dev-findings/DF-20261031-render-speed.md), [animation studio research](research/animation-studio-pipeline.md); [user-taste](user-taste.md) (read with the [viewer check](sequence-workflow.md#viewer-check) and [look thumbnails](sequence-workflow.md#look-thumbnails))
 
 ## Delivery workflow
 
