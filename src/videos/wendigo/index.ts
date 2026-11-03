@@ -45,7 +45,7 @@ const episodeVideo = {
   narration: {src: 'audio/wendigo/WDG-EP01-SHORT_voice.wav', amplitude: narrationAmplitude, fps: WDG_FPS},
   audio: [{src: 'audio/wendigo/WDG-EP01-SHORT_sound.wav'}],
   captionStyle: {preset: 'outline' as const, bottomEdgeY: 1240},
-  chrome: {channelLabel: false as const, progressBar: false},
+  chrome: {channelLabel: '@TamMaiLa', progressBar: false},
   overlay: 'wendigo',
 };
 
