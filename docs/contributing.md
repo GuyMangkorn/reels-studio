@@ -53,6 +53,9 @@ Stop when the success criteria and required checks pass. Repeat affected checks 
 - **DP03 — Review.** When a stage ends, or when the user asks, the coordinator lists the `proposed` entries for the user with the structured-question tool. Approve, reject and edit are per entry. The coordinator records the decision with date and the user's words.
 - **DP04 — Apply.** The coordinator applies approved entries in a documentation-only PR, separate from production work, and marks each entry `applied` with the PR link. Apply them in one batch at a deliverable boundary (a delivery, or a stage end the user picks) so an episode in progress keeps one rule set; apply a single entry sooner only when the user asks. The user's merge is the final review. A rejected entry stays as `rejected` with the reason, so it is not proposed again.
 
+<a id="maintenance-window"></a>
+**MW — maintenance window (Requirement, user, 3 Nov 2026).** Tooling, runtime and rule work that no open deliverable is blocked on (new scripts, refactors, renderer speed-ups, doc restructures, DP04 batches) is collected as `TL` rows and `proposed` entries and done in one maintenance session per week, on a day the user picks. Work that unblocks an open deliverable may go in sooner; its PR names that deliverable. Open deliverables keep the rule set they started on ([DP04](#tools-and-document-improvements)). Evidence: of about 135 PRs merged 27 Oct–3 Nov 2026, about 49 were episode work; the rest changed tools or rules under work in progress.
+
 Template for `scripts/<episode>/build-notes.md`:
 
 ```markdown

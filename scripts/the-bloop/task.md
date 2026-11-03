@@ -1,12 +1,12 @@
 # Tasks — BLOOP-EP01-SHORT
 
-Record: [delivery.md](delivery.md) · Updated: 2026-11-02, coordinator (backfill)
+Record: [delivery.md](delivery.md) · Updated: 2026-11-03, coordinator (posted)
 
 Predates the W1–W8 flow (30 Oct 2026): no look frames, no shot-by-shot review page, no pinning; steps below are mapped to the nearest recorded stage.
 
 ## BLOOP-EP01-SHORT
 
-**Now:** W6 — cut 2 rendered on `BLOOP-SHEETS-R8` (2,127 f = 70.9 s), caption-zone fails at SH06 and P5 still open. **Next:** Boss / Editor — plates and timeline re-keyed to `BLOOP-SHEETS-R8` (stage cell: SH06 H12 reveal G894, SH13 lip-line G2047); coordinator: length vs ≈ 67 s accepted earlier (user later accepted 70.9 s).
+**Now:** W8 — posted to the channel (user, 3 Nov 2026). **Next:** none; the delivery-render archive (W8.2) was not recorded.
 
 - [x] W1 Script lock
   - [x] W1.1 Boat research — `BLOOP-RESEARCH-R2`; R3 (SRC024) still to add
@@ -31,6 +31,6 @@ Predates the W1–W8 flow (30 Oct 2026): no look frames, no shot-by-shot review 
   - [ ] W5.3 Draft passed — not recorded (older flow)
 - [ ] W6 Final passed — cut 2 rendered by coordinator; per-shot passes not recorded
 - [ ] W7 Pinned — not recorded
-- [ ] W8 Deliver
+- [x] W8 Deliver — posted to the channel (user, 3 Nov 2026)
   - [ ] W8.1 Assembled from the cache, picture lock — not recorded
   - [ ] W8.2 Delivery render archived — cut 2 not committed, archive not recorded

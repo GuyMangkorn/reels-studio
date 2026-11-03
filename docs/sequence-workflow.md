@@ -43,7 +43,7 @@ These are production requirements. Check the active checkout before claiming an 
 | Step | What | Who | User gate |
 | --- | --- | --- | --- |
 | W0 | [Ideation](delivery-workflow.md#ideation): six concepts pitched, annotated and picked | Preaw, Film, coordinator | chosen concept |
-| W1 | Script lock (research, script, fact-check unchanged) | Boat, Preaw | approved script |
+| W1 | Script lock (research, script, fact-check unchanged; a measured [length check](delivery-workflow.md#length-check) before approval) | Boat, Preaw | approved script |
 | W2 | **Brief and storyboard tab**: Film's brief (text: medium, look notes per location, no stills), then Film's text rows per shot (VO, what is seen, sound) under beat headers; the coordinator publishes the page | Film, coordinator | none (the first pass is not a gate) |
 | W3 | **Look frames on the page** (user, 2 Nov 2026): one finished-grade painted still per location, painted from that location's first shot in the storyboard (the set with its characters), [film brief deliverables](film-visual-brief-workflow.md#deliverables). Film adds it to `review-rows.json` (`looks`, and `look` on each beat at that location) and the coordinator republishes, so each look frame sits in its beat header above the shots it covers. Skipped for a location that reuses an approved look, recorded `reused (<episode>)` | Film, Boss, coordinator | **look lock** (shared painted code is frozen for the episode) and storyboard pass per shot |
 | W4 | [Voice lock](delivery-workflow.md#voice-lock) (unchanged) | Editor | voice approval |

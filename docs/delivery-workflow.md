@@ -74,6 +74,16 @@ Selecting several options means a mix; the brief then states which engine owns e
 
 Handoff checks apply to every stage: matching revisions, deliverable ID, covered beats and timing status. Progress is tracked in the [task file](#task-file).
 
+<a id="wip-limit"></a>
+### Work-in-progress limit
+
+**Requirement (user, 3 Nov 2026):** at most **two** deliverables are open between W1 and W8 at once. Ideation (W0) may run for more, but a new deliverable starts W1 only when an open one is posted or the user parks one (record `parked` with the user's words in `delivery.md`). When the user asks for a new video while two are open, the coordinator asks with the structured-question tool which one to park or whether to wait. Evidence: on 3 Nov 2026 eleven deliverables were open at once and the open ones waited on the user or on rework.
+
+<a id="length-check"></a>
+### Length check at script lock
+
+**Requirement (user, 3 Nov 2026):** before the user approves a script (W1.5), Editor reads the whole script once with the chosen voice, or the [project default](#project-defaults) voice when none is chosen yet, and records the measured length in `delivery.md`. A read more than 5 % over the target goes back to Preaw for trims before approval; an estimate does not count. The read is a measurement, not the [voice lock](#voice-lock). Evidence: `ZOMBIE-7ELEVEN` was approved at an estimated ≈116 s while a sample read paced it at ≈130–140 s, and `WFOG-EP01-SHORT` went to script R6 and scene sheets SS-R6 after the picture was built.
+
 <a id="ideation"></a>
 ### Ideation
 
@@ -93,6 +103,7 @@ Concepts are pitches, not research: no claim in `concepts.md` counts as checked 
 
 - **Created** by the coordinator in the turn it first writes `delivery.md`, from the template below, one section per deliverable.
 - **Updated** by whoever finishes a step (role agent or coordinator), in the same change that updates the deliverable's `Stage / Next owner` cell. The two must agree; when they differ, `delivery.md` wins and `task.md` is corrected.
+- **Posted:** when the user says a video is on the channel, the coordinator ticks W8 and W8.3 in that turn, with the date, and marks any W8 step it cannot evidence `not recorded`. A posted deliverable frees its [WIP](#wip-limit) slot.
 - **Read first** when the user asks for progress ("ทำถึงไหนแล้ว"): answer from the `Now` line and the open steps, and open `delivery.md` only for detail.
 - **Marks:** `[x]` done, `[ ]` open, `[x] … N/A — <reason>` for a step with no subject. Each line is one step plus at most one short note (revision, count, date); link instead of copying.
 - **Per-shot steps** (W3.3, W5, W6, W7) carry a count, e.g. `12/26 shots passed`; the per-shot verdicts stay on the storyboard review page.
@@ -115,7 +126,8 @@ Record: [delivery.md](delivery.md) · Updated: <YYYY-MM-DD>, <role>
   - [ ] W1.1 Boat research
   - [ ] W1.2 Preaw script
   - [ ] W1.3 Boat fact-check
-  - [ ] W1.4 User approves the script
+  - [ ] W1.4 Length check: measured read ≤ target + 5 % (s)
+  - [ ] W1.5 User approves the script
 - [ ] W2 Brief and storyboard
   - [ ] W2.1 Film brief (text)
   - [ ] W2.2 Film storyboard rows (review-rows.json)
@@ -137,6 +149,7 @@ Record: [delivery.md](delivery.md) · Updated: <YYYY-MM-DD>, <role>
 - [ ] W8 Deliver
   - [ ] W8.1 Assembled from the cache, picture lock
   - [ ] W8.2 Delivery render archived
+  - [ ] W8.3 Posted to the channel (user, date)
 ```
 
 <a id="voice-lock"></a>

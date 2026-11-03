@@ -1,10 +1,10 @@
 # Tasks — WENDIGO
 
-Record: [delivery.md](delivery.md) · Updated: 2026-11-02, Editor (W5.4 assembly, sound, chrome)
+Record: [delivery.md](delivery.md) · Updated: 2026-11-03, coordinator (posted)
 
 ## WDG-EP01-SHORT
 
-**Now:** W5.4 Editor assembly built (2 Nov 2026): composition `WDG-EP01-SHORT`, 20 shots (S03-B01-SH03 silhouette included), **2861 frames (95.4 s)** at 30 fps per `WDG-SS-R2.2`, locked narration `pTIGHT3` at N0 = 1262, chrome, captions and sound D17 in place; stills and range checks only, nothing heard by the Editor. **Next:** user listens ([short/edit-plan.md](short/edit-plan.md) lists the ear checks), then Draft review per shot. Earlier text on this line (WDG-SS-R1, 20 shots, 3510 frames, 117.0 s) is superseded.
+**Now:** W8 — posted to the channel (user, 3 Nov 2026). **Next:** none; the delivery-render archive (W8.2) was not recorded.
 
 - [x] W1 Script lock
   - [x] W1.1 Boat research — r1, [research.md](research.md)
@@ -32,6 +32,6 @@ Record: [delivery.md](delivery.md) · Updated: 2026-11-02, Editor (W5.4 assembly
   - [ ] W5.3 Draft passed (0/20 shots)
 - [ ] W6 Final passed (0/N shots)
 - [ ] W7 Pinned (0/N shots)
-- [ ] W8 Deliver
+- [x] W8 Deliver — posted to the channel (user, 3 Nov 2026)
   - [ ] W8.1 Assembled from the cache, picture lock
   - [ ] W8.2 Delivery render archived
