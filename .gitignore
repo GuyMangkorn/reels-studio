@@ -22,3 +22,6 @@ public/audio/**/*.*
 public/sfx/**/*.*
 public/pool-depth/
 public/images/hanako/
+
+# Plate gallery cache (filled from the asset store by scripts/painted-kit/plates.ts)
+public/kit-plates/

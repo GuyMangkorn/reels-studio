@@ -35,6 +35,7 @@ view with `scripts/qa-sheet.sh`). Source of the catalog: [catalog.tsx](catalog.t
 | `fog.ts` | `paintFogBank`, `fogPuffs`, `paintFogCone`, `paintHalo` | ENV-FOG / ENV-GLOW: drifting fog bank, light cone through fog, lamp halo painted into the plate (behind actors painted later); overlay light stays in `glow.tsx` |
 | `sea.ts` | re-export of `src/painted/sea.ts` (`paintWater`, `paintSeabed`, `paintStormSky`, `paintRain`, `bands`, `span` ...) | ENV-SEA: water, storm and seabed; new episodes import from here |
 | `env-sheet.tsx` | `KIT-ENV` | Every ENV layer at 1/3 plus the episode code it replaces; `printf 'KIT-ENV 0 out/kit-env/KIT-ENV-0.png\n' \| node scripts/stills.mjs src/painted/kit/env-sheet.tsx` |
+| `plates.ts`, `plates-sheet.tsx` | `PLATES`, `PlateEntry`, `findPlates({episode, kind, time, mood, layer})`, `plateStill(id)`; `KIT-PLATES` | **Plate gallery**: finished sets from delivered episodes, reference only (never a default). Filter the index first, then view the sheet: `npx tsx scripts/painted-kit/plates.ts --sheet-only`; stills in the store at `projects/KIT/plates/` |
 
 Template cast (look here first)
 - Need a new person? Start from `PEOPLE` in `people.ts` (see `PEOPLE_INFO` for age, gender, hair) and view `KIT-PEOPLE-LINEUP` / `KIT-PERSON-<id>`; copy the entry into the episode's cast and change only `outfit` and props. Add a new character to `PEOPLE` only for a reusable look.
