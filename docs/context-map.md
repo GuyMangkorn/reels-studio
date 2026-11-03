@@ -159,7 +159,7 @@ Episode-specific files are under [Episodes](#episodes); shared topics come first
 
 **Read when:** Film's medium/look decision, a new shared asset, a renderer capability, or recording a blocker.
 
-- Docs: [film-visual-brief-workflow](film-visual-brief-workflow.md), [boss-asset-workflow](boss-asset-workflow.md) ([QA before push](boss-asset-workflow.md#visual-and-runtime-qa-before-push), [preview labels](boss-asset-workflow.md#preview-labels)), [asset-engineering-principles](asset-engineering-principles.md), [planned-visual-components](planned-visual-components.md), [dev-findings index](dev-findings.md) and [entries](dev-findings/DF-20261031-render-speed.md), [animation studio research](research/animation-studio-pipeline.md)
+- Docs: [film-visual-brief-workflow](film-visual-brief-workflow.md), [boss-asset-workflow](boss-asset-workflow.md) ([QA before push](boss-asset-workflow.md#visual-and-runtime-qa-before-push), [preview labels](boss-asset-workflow.md#preview-labels)), [asset-engineering-principles](asset-engineering-principles.md), [planned-visual-components](planned-visual-components.md), [dev-findings index](dev-findings.md) and [entries](dev-findings/DF-20261031-render-speed.md), [animation studio research](research/animation-studio-pipeline.md); [user-taste](user-taste.md) (read with the [viewer check](sequence-workflow.md#viewer-check) and [look thumbnails](sequence-workflow.md#look-thumbnails))
 
 ## Delivery workflow
 
@@ -192,6 +192,7 @@ Episode-specific files are under [Episodes](#episodes); shared topics come first
 | Alvarenga 438 days | [alvarenga/](../scripts/alvarenga/delivery.md) | [alvarenga](../src/videos/alvarenga/index.ts) `ALV-LOOK` (look frames) | [alvarenga/](../src/painted/alvarenga/cast.ts) ([set](../src/painted/alvarenga/set.ts), [palette](../src/painted/alvarenga/palette.ts)), [shots/alvarenga.tsx](../src/painted/shots/alvarenga.tsx) | — |
 | Lake Nyos | [lake-nyos/](../scripts/lake-nyos/delivery.md) | — | [nyos/](../src/painted/nyos/index.ts) | — |
 | Onoda 29 years | [onoda/](../scripts/onoda/delivery.md) | — | — | — |
+| Among us (1 in 5) | [among-us/](../scripts/among-us/delivery.md) | — | — | — |
 | Oldest shipwreck | [oldest-shipwreck/](../scripts/oldest-shipwreck/) | [oldest-shipwreck](../src/videos/oldest-shipwreck/index.ts) `SHIPWRECK-SHORT` | [ship.ts](../src/painted/ship.ts), [sea.ts](../src/painted/sea.ts), [diver.ts](../src/painted/diver.ts), [jar.ts](../src/painted/jar.ts), [shots/shipwreck.tsx](../src/painted/shots/shipwreck.tsx) | [oldest-shipwreck](../tests/oldest-shipwreck.test.ts) |
 | Pool depth | [pool-depth/](../scripts/pool-depth/) | [pool-depth](../src/videos/pool-depth/index.ts) `POOLDEPTH-SHORT`, `-BOTNOI` | — | [pool-depth](../tests/pool-depth.test.ts) |
 | The Bloop | [the-bloop/](../scripts/the-bloop/) | [the-bloop](../src/videos/the-bloop/index.ts) `BLOOP-EP01-SHORT` | [bloop/](../src/painted/bloop/map.tsx), [shots/bloop.tsx](../src/painted/shots/bloop.tsx) | [bloop](../tests/bloop.test.ts) |

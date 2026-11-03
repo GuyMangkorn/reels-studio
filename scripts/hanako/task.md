@@ -1,10 +1,10 @@
 # Tasks — HANAKO
 
-Record: [delivery.md](delivery.md) · Updated: 2026-11-02, coordinator (backfill)
+Record: [delivery.md](delivery.md) · Updated: 2026-11-03, coordinator (posted)
 
 ## HANAKO-SHORT
 
-**Now:** W5 — SCENE-R3 ready-for-dev (14 shots, 2596 f, voice lock v3); storyboard page for it pending. **Next:** Boss — plates from SCENE-R3; coordinator — build review page from short/review-rows.json; user — approve LF04/LF05, ear check of the S3 read
+**Now:** W8 — posted to the channel (user, 3 Nov 2026). **Next:** none; the delivery-render archive (W8.2) was not recorded.
 
 - [x] W1 Script lock
   - [x] W1.1 Boat research — r1, leads only
@@ -29,6 +29,6 @@ Record: [delivery.md](delivery.md) · Updated: 2026-11-02, coordinator (backfill
   - [ ] W5.3 Draft passed (0/14 shots)
 - [ ] W6 Final passed (0/14 shots)
 - [ ] W7 Pinned (0/14 shots)
-- [ ] W8 Deliver
+- [x] W8 Deliver — posted to the channel (user, 3 Nov 2026)
   - [ ] W8.1 Assembled from the cache, picture lock
   - [ ] W8.2 Delivery render archived

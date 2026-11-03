@@ -1,12 +1,12 @@
 # Tasks — KSO-EP01
 
-Record: [delivery.md](delivery.md) · Updated: 2026-11-02, coordinator (backfill)
+Record: [delivery.md](delivery.md) · Updated: 2026-11-03, coordinator (posted)
 
 ## KSO-EP01-SHORT
 
 Legacy Light tier: Film writes the timed shot list and review rows; no Mark, no Boat.
 
-**Now:** W5 — all 26 shots passed on `SB-R2.2` (storyboard page v7), voice lock v5 done, S02-B01-SH04 draft clip rendered. **Next:** Boss — full build (stage cell predates this; the 1 Nov log says "Boss full build", plus S01-B02-SH04 sly-smile item); then Editor draft and final per shot.
+**Now:** W8 — posted to the channel (user, 3 Nov 2026). **Next:** none; the delivery-render archive (W8.2) was not recorded.
 
 - [x] W1 Script lock
   - [x] W1.1 Boat research — N/A — legacy Light tier
@@ -31,6 +31,6 @@ Legacy Light tier: Film writes the timed shot list and review rows; no Mark, no 
   - [ ] W5.3 Draft passed — 0/26 recorded (one draft clip rendered, S02-B01-SH04)
 - [ ] W6 Final passed — not recorded
 - [ ] W7 Pinned — not recorded
-- [ ] W8 Deliver
+- [x] W8 Deliver — posted to the channel (user, 3 Nov 2026)
   - [ ] W8.1 Assembled from the cache, picture lock — B 2521 f / C 2461 f set; seam question open
   - [ ] W8.2 Delivery render archived — not recorded
