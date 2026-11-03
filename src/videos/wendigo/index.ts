@@ -4,7 +4,6 @@ import type {EpisodeVideos} from '../types';
 import {paintedShots} from '../../painted/registry';
 import {WDG_FPS, WDG_SHOTS} from '../../painted/wendigo/timed';
 import {EPISODE_ID, wendigoTimeline} from './episode';
-import {coversTimeline} from './covers';
 
 /**
  * WDG-LOOKS: the W3.1 look frames of WDG-EP01-SHORT (tent interior, snow exterior with footprint ring, documentary lake, North America map; SB-R2.1 adds tent r6, the wendigo shadow study flap and storm, and the 1879 era frame), one per
@@ -56,7 +55,6 @@ const videos: EpisodeVideos = {
     {id: 'WDG-LOOKS', format: 'short', timeline, ending: 'A_fade', endHoldSec: 0, endFadeSec: 0, chrome: {channelLabel: false, progressBar: false}},
     {id: 'WDG-ERA-KEYS', format: 'short', timeline: eraKeys, ending: 'A_fade', endHoldSec: 0, endFadeSec: 0, chrome: {channelLabel: false, progressBar: false}},
     episodeVideo,
-    {id: 'WDG-COVERS', format: 'short', timeline: coversTimeline(), ending: 'A_fade', endHoldSec: 0, endFadeSec: 0, chrome: {channelLabel: '@TamMaiLa', progressBar: false}, overlay: 'wendigo-covers'},
     {id: 'WDG-PROOF', format: 'short', timeline: proofTimeline, ending: 'A_fade', endHoldSec: 0, endFadeSec: 0, chrome: {channelLabel: false, progressBar: false}},
   ],
 };

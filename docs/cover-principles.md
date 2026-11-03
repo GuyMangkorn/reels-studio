@@ -1,12 +1,12 @@
 # Cover principles
 
-Rules for the cover image (thumbnail) of every deliverable: the 9:16 cover of a Short/Reel and the 16:9 thumbnail of a long video. **Owner: Film.** Status: **proposed** (3 Nov 2026, user request "มี principle อะไรในการทำปกคลิป … ให้ agent สักคนนึงถือไว้"); first used on `WDG-COVERS`.
+Rules for the cover image (thumbnail) of every deliverable: the 9:16 cover of a Short/Reel and the 16:9 thumbnail of a long video. **Owner: Film.** Status: **proposed** (3 Nov 2026, user request "มี principle อะไรในการทำปกคลิป … ให้ agent สักคนนึงถือไว้"); first used on `WDG-EP01-SHORT-COVERS` and `EG-EP01-SHORT-COVERS`.
 
 Rule levels follow [AGENTS.md](../AGENTS.md#language-and-rule-conventions). Platform facts in [CV-P](#cv-p-platforms) are **Reference**, unverified against current platform docs; recheck before relying on one.
 
 ## When
 
-**Requirement.** A cover is a stage of every deliverable, after the Final cut is approved and before delivery. Film proposes **five candidates** (CV09), the user picks one with the structured-question tool, and the pick is recorded in the delivery record. A stage with no subject (for example a look-frame composition) is recorded `N/A`.
+**Requirement.** Covers come with the delivery render. Before the delivery render, Film registers `<ID>-COVERS` with **five candidates** (CV09); `scripts/render.mjs <ID>` then renders them into `out/<ID>/covers/` (`<ID>_cover-A.png` … `-E.png`), archived beside the MP4. The coordinator sends the sheet and the user picks one with the structured-question tool; the pick is copied beside the MP4 as `<ID>_cover.png` (`store.py put`), where the user takes files to upload, and recorded in the delivery record. A deliverable rendered before its covers existed gets them with `render.mjs <ID> --covers` (stills only, no video). A stage with no subject (for example a look-frame composition) is recorded `N/A`.
 
 ## Rules
 
@@ -31,4 +31,6 @@ Rule levels follow [AGENTS.md](../AGENTS.md#language-and-rule-conventions). Plat
 
 ## Implementation
 
-A cover composition per episode, `<EP>-COVERS`: one 1 s scene per candidate holding an episode plate with `fromSec` at the chosen frame, and an overlay that draws the text (example: [src/videos/wendigo/covers.tsx](../src/videos/wendigo/covers.tsx), overlay `wendigo-covers`). Stills at frame 15 of each scene are the cover PNGs; archive them with `store.py archive --path <dir> --project <PROJECT> --kind covers` (the same project folder as the renders, e.g. `WDG`). The picked cover is also stored beside the delivered MP4 as `<CompositionId>_cover.png` (`store.py put`), where the user takes files to upload.
+- Data: `src/videos/covers/<episode>.ts` lists the five covers (plate ID, shot-local frame, text lines) and the episode's cover style (accent colour, optional scrim); `src/videos/covers/index.ts` registers `<ID>-COVERS` with `coversVideo` ([src/videos/cover-overlay.tsx](../src/videos/cover-overlay.tsx)). Covers stay out of the episode modules: an episode's scene keys hash its own imports, so a cover edit there would mark every pinned scene changed.
+- Look: the shared `covers` overlay draws the text from `overlayProps` (data), one 1 s scene per candidate; the cover is scene frame 15.
+- Check: `node scripts/render.mjs <ID>-COVERS --stills --frames=15,45,75,105,135`, then `scripts/qa-sheet.sh` at 270 px and 120 px (CV10).

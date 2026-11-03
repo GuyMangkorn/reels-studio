@@ -31,6 +31,8 @@ export type VideoDefinition = {
   chrome?: ChromeStyle;
   /** Episode chrome above every scene on the composition clock by name in src/videos/overlays.ts. */
   overlay?: string;
+  /** Serialisable props for `overlay` (data such as cover text, never functions). */
+  overlayProps?: Record<string, unknown>;
 };
 
 /** Default export shape of `src/videos/<episode>/index.ts`. */

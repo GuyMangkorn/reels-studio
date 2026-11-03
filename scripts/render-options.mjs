@@ -22,6 +22,8 @@ export const parseRenderArgs = argv => {
   return {
     ids: argv.filter(arg => !arg.startsWith('--')),
     stills: argv.includes('--stills'),
+    // Cover candidates only (`<id>-COVERS` stills into out/<id>/covers/), for a deliverable rendered earlier; no video, no archive.
+    covers: argv.includes('--covers'),
     frames: (value('frames') ?? '90,210,330,450,570').split(',').map(Number),
     endings: value('endings')?.split(','),
     gl,
