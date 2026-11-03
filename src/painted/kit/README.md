@@ -30,6 +30,11 @@ view with `scripts/qa-sheet.sh`). Source of the catalog: [catalog.tsx](catalog.t
 | `animals.ts`, `animals-sheet.tsx` | `ANIMAL_IDS`, `ANIMALS`, `ANIMAL_INFO`, `drawAnimal(p, seed, def, g, unit, pose, t)`, `animalWalkSpeed` | Dogs (chihuahua, pom, Thai, golden, black lab) and cats (tabbies, black, white, siamese, calico, tuxedo); profile and front, stand/walk/sit/lie, wag, open mouth; sheets `KIT-ANIMALS`, `KIT-ANIMALS-LINEUP` |
 | `animal-motions.ts` | `ANIMAL_MOTION_IDS`, `animalMotion(id, t, {animal, view})`, `animalMotionDuration`, `ANIMAL_MOTION_INFO` | Animal motions (idle, happy-wag, speak, sniff, startle-hop, walk in/out, run, sit-down, stand-up, lie-down, get-up) as pose + root offset; video `KIT-ANIMAL-MOTIONS` |
 | `casting.ts`, `cast-cards-sheet.tsx` | `parseCasting`, `formatCasting`, `CARD_POSES` | Casting line `person [+ outfit] [, pose] [, expression]` for briefs, e.g. `man-parted + police, P15, scared`; catalog `KIT-CAST-CARDS` |
+| `sky.ts` | `paintSkyBands(p, {from, via?, to, horizon, width, style?})`, `skyBandColors`, `paintSkyDisc(p, {x, y, r, color, glow?})` | ENV-SKY: graded sky bands (`'wash'` or poster `'flat'`), sun or moon disc; sheet `KIT-ENV` |
+| `fall.ts` | `FALL`, `FallKind`, `paintFall(p, kind, {width, height, t, wind?, seed?, style?, captionBand?})`, `fallMarks` | ENV-FALL: snow, rain, dust, ash, bubbles; thinned to 1/3 in the caption band 860-1248 |
+| `fog.ts` | `paintFogBank`, `fogPuffs`, `paintFogCone`, `paintHalo` | ENV-FOG / ENV-GLOW: drifting fog bank, light cone through fog, lamp halo painted into the plate (behind actors painted later); overlay light stays in `glow.tsx` |
+| `sea.ts` | re-export of `src/painted/sea.ts` (`paintWater`, `paintSeabed`, `paintStormSky`, `paintRain`, `bands`, `span` ...) | ENV-SEA: water, storm and seabed; new episodes import from here |
+| `env-sheet.tsx` | `KIT-ENV` | Every ENV layer at 1/3 plus the episode code it replaces; `printf 'KIT-ENV 0 out/kit-env/KIT-ENV-0.png\n' \| node scripts/stills.mjs src/painted/kit/env-sheet.tsx` |
 
 Template cast (look here first)
 - Need a new person? Start from `PEOPLE` in `people.ts` (see `PEOPLE_INFO` for age, gender, hair) and view `KIT-PEOPLE-LINEUP` / `KIT-PERSON-<id>`; copy the entry into the episode's cast and change only `outfit` and props. Add a new character to `PEOPLE` only for a reusable look.

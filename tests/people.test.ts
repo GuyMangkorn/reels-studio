@@ -120,9 +120,9 @@ test('pose arms follow the arm scale: shoulder anchors match the drawn figure an
   }
 });
 
-test('the kit stays episode-neutral: no kit module (except the catalog) imports an episode module', () => {
+test('the kit stays episode-neutral: no kit module (except the catalog and env sheets) imports an episode module', () => {
   const dir = new URL('../src/painted/kit/', import.meta.url);
-  for (const file of readdirSync(dir).filter((f) => /\.tsx?$/.test(f) && f !== 'catalog.tsx')) {
+  for (const file of readdirSync(dir).filter((f) => /\.tsx?$/.test(f) && !['catalog.tsx', 'env-sheet.tsx'].includes(f))) {
     const text = readFileSync(new URL(file, dir), 'utf8');
     assert.doesNotMatch(text, /from '\.\.\/(worldfog|zcpaint|bloop|shipwreck|hanako|kuchisake|nyos|spike)\//, `${file} imports an episode module`);
   }
