@@ -66,6 +66,7 @@ These two rules were applied (user, 3 Nov 2026) to [src/painted/kit/README.md](.
 1. Gallery: typed `PLATES` index first, generated `KIT-PLATES` sheet second (user, 3 Nov 2026).
 2. Migration: new episodes only; delivered episodes keep their code (user, 3 Nov 2026).
 3. ENV-P01/P02 approved and applied (user, 3 Nov 2026).
+4. Kit intake (KIT-P01, W8.4) applies to episodes delivered from 3 Nov 2026 on; episodes delivered earlier are not backfilled with comp cards (user, 3 Nov 2026).
 
 ## Build notes
 
