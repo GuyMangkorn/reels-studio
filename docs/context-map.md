@@ -162,6 +162,14 @@ Episode-specific files are under [Episodes](#episodes); shared topics come first
 
 - Docs: [film-visual-brief-workflow](film-visual-brief-workflow.md), [boss-asset-workflow](boss-asset-workflow.md) ([QA before push](boss-asset-workflow.md#visual-and-runtime-qa-before-push), [preview labels](boss-asset-workflow.md#preview-labels)), [asset-engineering-principles](asset-engineering-principles.md), [planned-visual-components](planned-visual-components.md), [dev-findings index](dev-findings.md) and [entries](dev-findings/DF-20261031-render-speed.md), [animation studio research](research/animation-studio-pipeline.md); [user-taste](user-taste.md) (read with the [viewer check](sequence-workflow.md#viewer-check) and [look thumbnails](sequence-workflow.md#look-thumbnails))
 
+## Covers and thumbnails
+
+**Read when:** making or reviewing a cover image (Short/Reel cover, long-video thumbnail).
+
+- Docs: [cover-principles](cover-principles.md) (CV01–CV10, [platforms](cover-principles.md#cv-p-platforms)).
+- Source: [cover-overlay.tsx](../src/videos/cover-overlay.tsx) (`coversVideo`, `CoverOverlay` = overlay `covers` in [overlays.ts](../src/videos/overlays.ts)); cover data [covers/index.ts](../src/videos/covers/index.ts), [covers/wendigo.ts](../src/videos/covers/wendigo.ts), [covers/everyone-gone.ts](../src/videos/covers/everyone-gone.ts) (`WDG-EP01-SHORT-COVERS`, `EG-EP01-SHORT-COVERS`).
+- Scripts: [render.mjs](../scripts/render.mjs) renders `<ID>-COVERS` into `out/<ID>/covers/` with each delivery render; `--covers` for stills only.
+
 ## Delivery workflow
 
 **Read when:** selecting deliverables, style profile, tier, delivery record, agent invocation, or finishing a PR.

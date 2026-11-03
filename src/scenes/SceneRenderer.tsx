@@ -18,7 +18,7 @@ import {VisualStage} from '../assets/visuals/VisualStage';
 import {PaintedStage} from '../painted/PaintedStage';
 
 export type Narration = {src: string; amplitude: readonly number[]; fps: number; startFrame?: number};
-export type SceneRendererProps = {/** Episode chrome drawn above every scene on the composition clock (SVG markers, cards); optional, absent = none. */ overlay?: string; timeline: Timeline; narration?: Narration; ending?: Ending; endHoldSec?: number; endFadeSec?: number; sceneTransitionFrames?: number; loopFadeFrames?: number; loopBlendFrames?: number; audio?: AudioTrack[]; captionStyle?: CaptionStyle; chrome?: ChromeStyle};
+export type SceneRendererProps = {/** Episode chrome drawn above every scene on the composition clock (SVG markers, cards); optional, absent = none. */ overlay?: string; /** Serialisable props for the overlay (data, never functions). */ overlayProps?: Record<string, unknown>; timeline: Timeline; narration?: Narration; ending?: Ending; endHoldSec?: number; endFadeSec?: number; sceneTransitionFrames?: number; loopFadeFrames?: number; loopBlendFrames?: number; audio?: AudioTrack[]; captionStyle?: CaptionStyle; chrome?: ChromeStyle};
 
 const transitionOpacityAt = (frame: number, timeline: Timeline, fps: number, transitionFrames: number) => {
   if (transitionFrames <= 0 || timeline.length < 2) return 0;
@@ -136,7 +136,7 @@ const SceneView = ({scene, index, total, previous, start, narration, ending, end
   </AbsoluteFill>;
 };
 /** Scenes are intentionally data-driven: edit JSON, never duplicate layout for aspect ratios. */
-export const SceneRenderer = ({overlay, timeline, narration, ending = 'B_loop', sceneTransitionFrames = 0, loopFadeFrames = 0, loopBlendFrames = DEFAULT_LOOP_BLEND_FRAMES, endHoldSec, endFadeSec, audio, captionStyle, chrome}: SceneRendererProps) => {
+export const SceneRenderer = ({overlay, overlayProps, timeline, narration, ending = 'B_loop', sceneTransitionFrames = 0, loopFadeFrames = 0, loopBlendFrames = DEFAULT_LOOP_BLEND_FRAMES, endHoldSec, endFadeSec, audio, captionStyle, chrome}: SceneRendererProps) => {
   const {fps, durationInFrames, width, height, id} = useVideoConfig();
   const endingOptions: EndingOptions = {holdSec: endHoldSec, fadeSec: endFadeSec};
   const portraitFormat = height > width;
@@ -159,5 +159,5 @@ export const SceneRenderer = ({overlay, timeline, narration, ending = 'B_loop', 
     const lead = index > 0 && scene.transitionIn ? scene.transitionIn.frames : 0;
     const view = <SceneView scene={scene} index={index} total={timeline.length} previous={timeline[index - 1]} start={from} narration={narration} ending={ending} endingOptions={endingOptions} loopFadeFrames={loopFadeFrames} captionStyle={captionStyle} chrome={chromeStyle} entering={frame < from || (blendOpacity > 0 && index === timeline.length - 1)}/>;
     return <Sequence key={index} name={scene.eyebrow ?? scene.bg} from={from - lead} durationInFrames={duration + lead} premountFor={fps}>{lead > 0 ? <EntryTransition entry={scene.transitionIn!}><Freeze frame={lead} active={f => f < lead}><Sequence from={lead} durationInFrames={duration}>{view}</Sequence></Freeze></EntryTransition> : view}</Sequence>;
-  })}</Freeze>{blendOpacity > 0 && <AbsoluteFill style={{opacity: blendOpacity}}><Freeze frame={0}><Sequence durationInFrames={sceneFrames(timeline[0].durationSec, fps)}><SceneView scene={timeline[0]} index={0} total={timeline.length} start={0} narration={narration} ending={ending} endingOptions={endingOptions} loopFadeFrames={loopFadeFrames} captionStyle={captionStyle} chrome={chromeStyle} entering={false}/></Sequence></Freeze></AbsoluteFill>}{pictureOpacity > 0 && <AbsoluteFill style={{backgroundColor: '#101018', opacity: pictureOpacity, pointerEvents: 'none'}}/>}{Overlay && <Overlay/>}</AbsoluteFill>;
+  })}</Freeze>{blendOpacity > 0 && <AbsoluteFill style={{opacity: blendOpacity}}><Freeze frame={0}><Sequence durationInFrames={sceneFrames(timeline[0].durationSec, fps)}><SceneView scene={timeline[0]} index={0} total={timeline.length} start={0} narration={narration} ending={ending} endingOptions={endingOptions} loopFadeFrames={loopFadeFrames} captionStyle={captionStyle} chrome={chromeStyle} entering={false}/></Sequence></Freeze></AbsoluteFill>}{pictureOpacity > 0 && <AbsoluteFill style={{backgroundColor: '#101018', opacity: pictureOpacity, pointerEvents: 'none'}}/>}{Overlay && <Overlay {...overlayProps}/>}</AbsoluteFill>;
 };

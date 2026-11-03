@@ -1,6 +1,6 @@
 // Usage: node scripts/render.mjs <CompositionId>... [--stills] [--frames=90,210] [--endings=A_fade,B_loop,C_seamless]
 //        [--gl=angle|egl|swiftshader|swangle|vulkan|angle-egl] [--timeout=<ms per frame>] [--concurrency=<n, default 4>]
-//        [--preview] [--draft] [--range=<from>-<to>] [--no-cache] [--keep-pinned | --repaint=<shot,...|all>]
+//        [--covers] [--preview] [--draft] [--range=<from>-<to>] [--no-cache] [--keep-pinned | --repaint=<shot,...|all>]
 // Without --endings, only the ending selected in the episode registry (VideoDefinition.ending) is rendered.
 // ANGLE is the default; --gl overrides it. Painted episodes may need --timeout=180000 for heavy frames.
 // Per-run backend, stage/cache timing and result: out/logs/render-*.jsonl (printed on start and finish).
@@ -18,6 +18,9 @@
 // Each exported MP4 is loudness-normalized in place (scripts/loudness.mjs) and its before/after levels are logged.
 // After the MP4s are exported, out/<CompositionId>/ is copied into the asset store ($REELS_STORE, default
 // ~/ReelsStore/projects/<PROJECT>/renders/<CompositionId>/<commit>/) by scripts/store.py archive, outside every worktree.
+// Cover candidates (docs/cover-principles.md): a delivery render of <id> also renders `<id>-COVERS`, when registered
+// (src/videos/covers/), as stills into out/<id>/covers/ (scene frame 15 of each 1 s scene, named <id>_cover-A.png ...),
+// so they are archived beside the MP4. --covers renders only those stills, for a deliverable rendered earlier.
 // Set BROWSER_EXECUTABLE to use an installed Chromium instead of Remotion's download.
 import {bundle} from '@remotion/bundler';
 import {openBrowser, selectComposition, renderMedia} from '@remotion/renderer';
@@ -30,7 +33,7 @@ import {endingsFor, parseRenderArgs} from './render-options.mjs';
 import {renderSegmented} from './segments.mjs';
 import {withRenderLog} from './render-log.mjs';
 
-const {ids, stills, frames, endings: requestedEndings, gl, timeoutInMilliseconds, concurrency, preview, draft, noCache, range, keepPinned, repaint} = parseRenderArgs(process.argv.slice(2));
+const {ids, stills, covers: coversOnly, frames, endings: requestedEndings, gl, timeoutInMilliseconds, concurrency, preview, draft, noCache, range, keepPinned, repaint} = parseRenderArgs(process.argv.slice(2));
 if (!ids.length) throw new Error('Name at least one composition ID, e.g. npm run render -- CATBOX-C01-Short');
 
 const browserExecutable = process.env.BROWSER_EXECUTABLE ?? null;
@@ -45,6 +48,19 @@ try {
   for (const id of ids) {
     const dir = `out/${id}`;
     await mkdir(dir, {recursive: true});
+    const renderCovers = async (id) => {
+      const covers = await selectComposition({serveUrl, id: `${id}-COVERS`, puppeteerInstance: browser, ...shared}).catch(() => null);
+      if (!covers) return;
+      await mkdir(`${dir}/covers`, {recursive: true});
+      const coverFrames = Array.from({length: Math.floor(covers.durationInFrames / covers.fps)}, (_, i) => i * covers.fps + 15);
+      await metrics.time('covers', () => renderStills({serveUrl, composition: covers, inputProps: {}, puppeteerInstance: browser, ...shared, frames: coverFrames,
+        outputFor: (frame) => `${dir}/covers/${id}_cover-${String.fromCharCode(65 + Math.floor(frame / covers.fps))}.png`}), {id});
+      console.log(`Covers ${id}: ${coverFrames.length} stills in ${dir}/covers/`);
+    };
+    if (coversOnly) {
+      await renderCovers(id);
+      continue;
+    }
     if (stills) {
       // --draft reaches stills too (a draft still used to be painted at final grade); --preview stays out: stills are full size.
       const stillProps = draft ? {paintDraft: true} : {};
@@ -76,6 +92,7 @@ try {
       if (ending === endings.at(-1)) await copyFile(output, `${outDir}/${id}.mp4`);
     }
     if (preview || draft || range) continue;
+    await renderCovers(id);
     try {
       const archived = await metrics.time('archive', () => {
         const result = spawnSync('python3', ['-I', 'scripts/store.py', 'archive', id], {encoding: 'utf8'});
