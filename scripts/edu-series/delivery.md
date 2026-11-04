@@ -9,7 +9,7 @@
 
 | Deliverable | Stage / Next owner | Script | Evidence / open items |
 | --- | --- | --- | --- |
-| EDU-EP01-SHORT | W2.2 done -> storyboard page review (user) | [research.md](research.md); [EDU-SCRIPT-R1.1](short/script.md) ([fact-check](short/fact-check.md)) | open: voice (sample before integration) |
+| EDU-EP01-SHORT | W4 passed: Kore v1 locked (61.97 s); next W5.1 Film timed sheets | [research.md](research.md); [EDU-SCRIPT-R1.1](short/script.md) ([fact-check](short/fact-check.md)) | voice: Achernar candidate v1, **audio-measured** 59.53 s ([narration-measure.json](short/narration-measure.json), store `projects/EDU/audio/voice-lock-v1/`); open: user approval W4.3, L06 gasp performer, Film sets the jolt gap (3.02 s placeholder) |
 
 ## Handoff log
 
@@ -22,3 +22,6 @@
 - 2026-11-04: coordinator published the storyboard page for SS-R1 (23 shots, artifact v1): https://claude.ai/artifact/EGGvCUCR4DUHPWFueYmBLy . Verdicts live in its `db` under `reviews/<shot ID>@board` with `rev`. Republish from `out/review-pages/EDU-EP01-SHORT/` via `python3 -I scripts/storyboard-page/build.py scripts/edu-series/short/review-rows.json`, same file path. Next user: storyboard verdicts; then Film W3.1 look frames.
 - 2026-11-04: Film W3.1 look frames LF01–LF05 v1 (LF01 bedroom, LF02 dream cliff, LF03 idea space, LF04 trigger icons, LF05 doctor) in `src/painted/edu01/` (standalone entry `look-index.ts`, `EDU1-LF0n`); store `projects/EDU/previews/look-frames/ep01/v1/`; review-rows `looks` + beat `look` added (Q1 removed as decided), page rebuilt at out/review-pages/EDU-EP01-SHORT/ (not published). Open for the user: pyjama trousers vs the brief's shorts; caption style on bright paper/dream grounds (caption-zone fails LF02–LF05). Thumbnails (W3 default) skipped on coordinator instruction. Next: viewer check (fresh Film, Opus), then coordinator republishes. Notes: [build-notes.md](build-notes.md).
 - 2026-11-04: coordinator republished the page with look frames LF01–LF05 (artifact v1793802323-ce27, same URL https://claude.ai/artifact/EGGvCUCR4DUHPWFueYmBLy). Looks: LF01 v2, LF02 v5, LF03 v2, LF04 v3, LF05 v2; viewer checks passed (v2/v3/v5 notes in `short/viewer-check-lf-*.md`). Verdicts for look lock live in its `db` under `reviews/<shot ID>@board`. Next user: storyboard verdicts and look lock.
+- 2026-11-04: Editor W4.1-W4.2 + W1.4: one Achernar read of L01-L16 (no L06), style 'natural everyday storytelling, soft and warm but clear and conversational, calm quiet wonder, awake...'; raw 68.96 s, regapped + atempo 1.08 = **59.53 s** (target 40-60 s, limit 63 s: pass; atempo 1.05 alternative 61.23 s also passes); -16.2 LUFS, TP -1.5. Timing status audio-measured. Next: user W4.3, then Film W5.1.
+
+- 2026-11-04: W4.3 user approved voice: Kore v1 (store `projects/EDU/audio/voice-lock-v1/EDU-EP01-SHORT-narration-kore-v1.wav`, timing `short/narration-measure-kore.json`). Silence audit: no unwanted gaps; 3 s jolt gap L05-L07 stays for Film W5.1 (user).

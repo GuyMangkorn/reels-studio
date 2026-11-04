@@ -1,0 +1,37 @@
+{
+  "deliverable": "EDU-EP01-SHORT",
+  "script": "EDU-SCRIPT-R1.1",
+  "timingStatus": "audio-measured (voice-lock candidate v1, not yet user-approved at W4.3)",
+  "take": "projects/EDU/audio/voice-lock-v1/EDU-EP01-SHORT-narration-lock-v1.wav",
+  "voice": "Gemini TTS Achernar",
+  "style": "natural everyday storytelling, soft and warm but clear and conversational, calm quiet wonder, awake, steady brisk pace, short natural pauses, no audible breathing; same narrator throughout, do not speed up",
+  "post": "scripts/edu-series/short/voice-regap.py: gaps >= 0.15 s tightened (line gap 0.28 s, comma 0.14 s, reveal pauses 0.55 s before L09 and L12, jolt gap 3.2 s placeholder before L07, 0.5 s tail), atempo 1.08, loudnorm -16 LUFS / TP -1.5",
+  "durationSec": 59.53,
+  "speechEndSec": 58.75,
+  "tailSilenceSec": 0.78,
+  "loudness": {"integratedLUFS": -16.2, "LRA": 2.2, "truePeakDBFS": -1.5},
+  "method": "line onset = end of the silence (-38 dB, >= 0.15 s) before the line minus 0.03 s, line end = start of the silence after it; checked against Whisper word times (+-0.2 s). Seconds in the locked take; frames = round(s*30) are Film's job at W5.1.",
+  "jolt": "L05 end to L07 onset is 3.02 s of silence (placeholder for fall ~1.5 s + hard silence ~0.5 s + jolt/gasp + beat); Film sets the final gap in W5.1 and Editor re-gaps with voice-regap.py (L06 gasp is not in this take).",
+  "lines": {
+    "L01": {"beat": "B01", "onset": 0.23, "end": 4.06},
+    "L02": {"beat": "B01", "onset": 4.37, "end": 5.21},
+    "L03": {"beat": "B02", "onset": 5.53, "end": 8.79},
+    "L04": {"beat": "B02", "onset": 9.12, "end": 10.46},
+    "L05": {"beat": "B03", "onset": 10.77, "end": 15.17},
+    "L06": {"beat": "B03", "onset": null, "end": null, "note": "acted gasp, not generated; sits inside the 3.02 s gap"},
+    "L07": {"beat": "B04", "onset": 18.19, "end": 23.05},
+    "L08": {"beat": "B05", "onset": 23.38, "end": 26.75},
+    "L09": {"beat": "B05", "onset": 27.33, "end": 28.29},
+    "L10": {"beat": "B05", "onset": 28.61, "end": 32.33},
+    "L11": {"beat": "B05", "onset": 32.65, "end": 38.23},
+    "L12": {"beat": "B05", "onset": 38.79, "end": 40.69},
+    "L13": {"beat": "B06", "onset": 41.01, "end": 47.69},
+    "L14": {"beat": "B07", "onset": 48.01, "end": 50.57},
+    "L15": {"beat": "B07", "onset": 50.88, "end": 55.71},
+    "L16": {"beat": "B08", "onset": 56.03, "end": 58.75}
+  },
+  "beats": {
+    "B01": [0.23, 5.21], "B02": [5.53, 10.46], "B03": [10.77, 15.17], "B04": [18.19, 23.05], "B05": [23.38, 40.69],
+    "B06": [41.01, 47.69], "B07": [48.01, 55.71], "B08": [56.03, 58.75]
+  }
+}
