@@ -1,5 +1,118 @@
 # EDU-SERIES build notes
 
+## W3.1 LF02 v5 back-of-head fix (2026-11-04, Film)
+
+User approved this repaint (2026-11-04) after [viewer-check-lf-v3](short/viewer-check-lf-v3.md) failed LF02 on facing direction; the user keeps the v3 look over v4, so the scene, palette, cliff and figure scale are v3's. References viewed again (the three in `projects/EDU/references/web/`): from behind, a bob's back hem sits close to the collar with at most a dark sliver of neck; the hair is one dark mass to the shoulders. Painter: `paintBowedHeadBack` and `paintDreamer` in `src/painted/edu01/set.ts`; nothing else changed.
+
+| Fix (viewer check v3) | Change |
+| --- | --- |
+| 1 no skin at the nape | Notch under the hem filled in `mix(hair, '#4a3c64', 0.26)` (hair shadow, no skin mixed in) from the hem to the collar; curtains closed to an inner edge of ±0.3 K (the build-notes fallback). |
+| 2 back of a bob, not bangs | Back hem shortened to v 0.85–0.91 K and uneven (six points, not mirrored) with short lighter strand tips; side curtains run lower (outer to v 1.1–1.15 K, under the shoulders). |
+| 3 show the bow | Whole head rolled 6 degrees about the nape (0, 0.95) K, top toward the cliff edge; crown moved down to (0.08, −0.24) K so the radiating strands fill more of the shape. Dome kept 1.14 × 1.0 K: a flatter 0.92 K dome and a 10 degree roll both exposed a grey crescent of the rig head underlay at the top left (tried, dropped). |
+| 4 back-of-shirt cue, soften the flat panel | Opaque (`p.flat` + `solid`) only across the shoulder tops down to 1.05 K under the shoulder line (it must still hide the rig neck and the rig's V-collar line); below that a translucent wash (150) that lets the rig's painted shirt through, a cool shadow wash down the left side; crew collar band (pale rib line plus a darker stitch line 0.09 K under it) and a broken centre back seam. A light wash on the right shoulder was tried and dropped (read as a stain). |
+| 5 feet facing away | The rig's front-view foot ovals painted out in the ledge's local tone (sampled from the v3 render, left `#dcc4c3`, right `#dcd2d2`), then a small cool contact shadow, a narrow heel (0.17 × 0.1 K) and a trouser hem over it. Foot centres measured on the v3 render (±0.46 K from `a.feet`, 0.13 K above). |
+
+Casting line: `woman-bob + new: pyjama (shoulder 0.42), P01 back, new: bowed head back (v5)`.
+
+Render: `printf 'EDU1-LF02 0 out/edu01/look/v5/LF02.png\n' | node scripts/stills.mjs src/painted/edu01/look-index.ts`. Determinism: two renders differ by max 1/255 on 7 channels. Caption zone 860–1248 mean 0.78 / p95 0.93 (fail, unchanged from v3; the W5 caption-shade decision stands). ESLint clean on `set.ts` (the unused `skin` parameter was dropped from `paintBowedHeadBack`). Store `projects/EDU/previews/look-frames/ep01/v5/`: `LF02.png`, `LF02-540.png`, `LF02-head-crop.png` (2x native crop x 450–690, y 350–650), `head-crop-v3-v5.png`, `sheet-v3-v5.png` (v3 | v5 at 270 px), `LF02-feet-crop.png` (4x crop x 500–620, y 735–795).
+
+Frame check (viewed: 270 px sheet, 540 px still, 2x head crop, 4x feet crop): the skin notch is gone; at 270 px the head is one dark bob mass set between the shoulders with no face read; at 2x the crown strands, the short uneven back hem over a dark nape and the collar band with the centre seam show. The bow is still moderate: the 6 degree roll and lower crown are visible at 2x and 540 px but at 270 px "looking down" is carried mainly by the pose at the edge, not by the head alone. Feet read as heels under hems at 2x; at 270 px they are too small to matter.
+
+Open: (a) fresh-eyes viewer check of v5 (not by the author); (b) the v3 shoulder cap still juts slightly past the right arm (a squared corner, visible at 2x; geometry unchanged from v3, left for the user's verdict); (c) faint remnants of the rig foot-oval ink at the outer edges at 4x, and the pencil stipple along the lip is interrupted under the feet (not visible at 540 px); (d) kit gap unchanged: a `bowed` back-view head state in `src/painted/kit/back.ts` (Boss, proposed) and a back-view foot (heel) in the rig so shots after SH02 do not repaint the feet.
+
+## W3.1 LF02 v4 dream rework (2026-11-04, Film)
+
+**Dropped by user choice (2026-11-04):** the user picked the v3 picture (the first tile on `sheet-v4.png`) over both v4 looks. LF02 renders the v3 path again (`paintDreamCliff` in `look.tsx`); the v4 code (`paintDreamV4`, `stampCloud`, `paperChip`, `floatRock`, the dream `Spot`, `EDU1-LF02B`) was removed so nothing dead remains; the v4 stills stay in the store as the record. Re-rendered LF02 equals the filed `v3/LF02.png` exactly (pixel diff max 0). Also fixed the two unused-variable ESLint errors in `set.ts` (`N` in `paintLyingHead`, `h` in `paintBedroom`; output unchanged). The section below is the record of the attempt.
+
+User feedback on v3 (via coordinator): what still feels strange is the scene itself; "it is supposed to be a dream". Read again before painting: brief story-first line (the dream is made "of the same paint", read as imagined from the material, CL02), VD04 row (cloud washes, half-painted ledge, **no hard edge on the cliff**), review row S01-B03-SH02 (wide, small figure from behind at an unfinished ledge whose edge melts into paper, looking down into the clouds), concepts C2 (room melts into an abstract watercolour dreamscape), user taste UT01 (place reads at a glance), UT03, UT11. The v3 bowed-head painter is kept unchanged (`paintDreamer` wraps it).
+
+Painter: `paintDreamV4(p, t, look)` in `src/painted/edu01/set.ts`, plus a screen-blended `Spot` halo for `kind="dream"` in `look.tsx` (`DREAM_GLOW` 600, 640, r 460, level 0.3). Shared by both looks:
+- wet-in-wet colour blooms (eight `blob` washes, bleed 0.8) instead of horizontal sky bands, so there is no horizon line;
+- a glow with no source behind her (four warm-white rings plus the `Spot`);
+- the ledge as a floating tongue of paper: pale top face, rose underside that thins in three bleeding layers into cool lilac and a pencil contour, then breaks into drifting paper chips (`paperChip`; three of them float upward);
+- small white specks drifting up through the glow; the dim drop straight under the edge kept for height.
+
+| Look | Cloud sea and extras | Verdict |
+| --- | --- | --- |
+| `island` (picked, `EDU1-LF02`) | one cloud shape stamped in six rows (`stampCloud`) that grow toward the viewer (scale 0.55 → 1.8), the drop under the edge left open; three rocks floating in the air (`floatRock`, 86/52/34 px) | Reads as a dream at 270 px (floating rocks and ledge, repeated clouds, glow) and still reads as height: the rows shrink toward the edge, so the eye measures the drop. The figure stays the clearest shape. |
+| `well` (alternative, `EDU1-LF02B`) | the same cloud stamped in six rings round a glowing hollow far below the edge (a funnel) | Strongly unreal, but the rings mass into a busy foam texture at 270 px that pulls the eye off the figure and reads less as clouds. Kept in the store for the user's comparison. |
+
+Measured (v4 `island`): determinism max 1/255 on 8 channels across two renders; caption zone 860–1248 mean 0.68 / p95 0.88 (fail, as every look; the W5 caption-shade decision stands; lower than v3's 0.78 / 0.93 because the zone now crosses the rose underside). Figure and head unchanged from v3 (hair 128 × 107 px, feet y ~776).
+
+Frame check (viewed): `sheet-v4.png` (v3 | v4 island | v4 well at 270 px) and the 540 px single still. Tried and dropped in this pass: a paper-white `p.flat` under the ledge (read as a flat pale lens); underside washes with bleed 0.3–0.35 (bled about 200 px above the lip into a maroon mound behind her); one rose wash with a straight bottom (hard edge, now three bleeding layers); rocks with a white top and faint cone (read as saucers).
+
+Store: `projects/EDU/previews/look-frames/ep01/v4/` (`LF02.png` = island, `LF02-alt-well.png`, `sheet-v4.png`, `LF02-540.png`).
+
+Open: viewer check of v4 by a fresh invocation; the narrow nape notch from v3 is unchanged (same risk); a darker mottle in the underside's left rose (watercolour pooling) is left as texture; `stampCloud` and `floatRock` are proposed for the kit (ENV layers) at intake if the user keeps the look.
+
+## W3.1 LF02 v3 references: back view, bowed head (2026-11-04, Film)
+
+User correction (via coordinator, 4 Nov 2026): the first v3 head attempt looked very strange (a V-shaped dip under a fringe-like hem read as a face in a V-neck); stop, study real back views, then repaint. References (internal shape study only, never composited) in the store with a sidecar each (source URL, licence, what was learned):
+
+- `projects/EDU/references/web/2026-11-04_bob-rear-view-slight-bow.jpg` (Wikimedia Commons, CC BY-SA 4.0): black jaw-length bob, head tipped slightly forward.
+- `projects/EDU/references/web/2026-11-04_bob-rear-view-upright.jpg` (Wikimedia Commons, CC BY-SA 4.0, Alex Neman): upright black bob, crew-neck tee.
+- `projects/EDU/references/web/2026-11-04_nape-bowed-updo.jpg` (Wikimedia Commons, CC BY 2.0): hair up, head bowed, nape and ears.
+
+Search note: a free photo of a standing person bowing the head at a ledge, seen from behind, was not found on Commons; a stock-site download was refused by the permission system and not retried. The shapes below come from the three references plus the bow geometry they show.
+
+Shapes to copy (head units `K`, the cast's 4-head proportion kept):
+
+1. **Hair silhouette = a bell, not a dome or helmet:** rounded top narrower than the base, widest at about 70 % of the hair height, a nearly straight horizontal hem with small rounded corners. No arch or split in the hem, no uneven fringe-like ends (those read as a face's bangs).
+2. **Crown:** only a short pale parting line from the top edge down about 15 % of the hair height. Never a dot or whorl in the middle of the mass (read as an eye in v1/v2).
+3. **Strands:** long near-vertical streaks, gently converging toward the parting at the top, fine light highlights in the lower half on the lit side; the mass stays one even dark value.
+4. **Neck and nape:** under the hem a neck column narrower than the hair (about 0.45 of the hair width), in shadowed skin. Upright, almost no neck shows (hem nearly on the collar); bowed, the nape lengthens to about 0.15–0.2 of the hair height. Its sides run into the collar; never a square patch.
+5. **Collar:** a shallow U crew curve at the neck base. A V reads as the front of a shirt.
+6. **Shoulders:** they slope down and out from the collar (trapezius, about 15–20 degrees), then round over into the arms; real head width is about 0.6 of the shoulder width (the 4-head cast keeps its larger head). Rounded/hunched shoulders lift their inner tops slightly so they overlap the lower corners of the hair: the head sits down between them.
+7. **The bow itself:** the head's top drops (crown lower relative to the shoulders than upright) while the hem stays horizontal; the cue is the longer nape plus the head sunk between the shoulders, not a tilt of the hair mass.
+
+Second user correction (via coordinator, 4 Nov 2026): the repaint from points 1–7 "still looks strange"; study the perspective of a bowed head before painting. Points 4 and 7 above are superseded by the construction sheet below (a bowed head shows a **short** neck, not a longer one, and the bob hem does not stay level).
+
+### LF02 v3 bowed-head construction sheet
+
+Sketch: store `projects/EDU/previews/look-frames/ep01/v3/construction-sketch.png` (viewed; side view above, back view below, head units `K`). Painter: `paintBowedHeadBack` in `src/painted/edu01/set.ts` draws the whole head from these numbers (the rig head is only an underlay hidden by it, like `paintLyingHead` in LF01).
+
+1. **Side view, tilt:** skull = ellipse 1.0 × 1.15 K, long axis tilted 40 degrees forward (face down toward the drop). The crown rotates toward the face and down; the occiput and nape now face the camera behind her. The neck leans forward from the shoulders to the skull base, so from behind it is foreshortened.
+2. **Back view, skull and hair silhouette:** hair dome = half ellipse 1.12 × 1.0 K centred at the head centre; sides widen to ±1.2 K at v +0.3; below that the bob splits: the **side hair falls forward** past the jaw and hangs as two curtains to v +1.05 (outer ±1.0–1.18 K, inner ±0.46–0.62 K), while the **back hair ends higher** because the hem swings forward off the tipped skull.
+3. **Crown:** at (0.06, −0.42) K, inside the mass (no longer on the top edge, because it rotated toward the camera). Strands radiate from it with no dot: up and over the top edge, sideways out to the edge then down the curtains (the forward fall), and down to the nape hairline (short, bulging with the occiput).
+4. **Nape hairline = lowest edge of the back hair:** a soft W at v +0.66–0.72 between ±0.46 K, with two small points of hair at ±0.3 K.
+5. **Neck:** a short skin column ±0.45–0.5 K from the hairline to the collar (visible length about 0.4–0.5 K, shorter than upright because it leans away), its top in the shadow of the hair mass (a cool wash v +0.6–0.85).
+6. **Ears:** move up and back relative to the shoulders, but the forward-falling bob curtains cover them in this cut; not drawn (an ear would read as a handle at 27 px of head at 270 px).
+7. **Shoulders and collar:** shoulder line at v +0.9 K (the head sinks so the nape hairline sits just above it); a shallow U crew collar dipping to v +1.2 K; the shoulders are nearer the camera than the forward head, so they overlap the curtain ends, then slope down and out about 15–20 degrees into the arms. For this shot the cast shoulder is widened 0.34 → 0.42 (`SLEEPER` copy in `paintDreamCliff`) so the shoulders are wider than the hair, as in the references.
+8. **Light:** key from the upper right (`PAPER_LIGHT`): strands on the right half lighter; the shadow under the hair falls on the nape and the shoulder tops.
+
+### LF02 v3 and LF04 v3 result
+
+Render: `printf 'EDU1-LF02 0 out/edu01/look/v3/LF02.png\nEDU1-LF04 0 out/edu01/look/v3/LF04.png\n' | node scripts/stills.mjs src/painted/edu01/look-index.ts` (one Chrome). Store: `projects/EDU/previews/look-frames/ep01/v3/` (LF02, LF04, `sheet-v3.png` = v2 LF02 | v3 LF02 | v3 LF04 at 270 px, `construction-sketch.png`, `LF02-head-crop.png` = 2x native crop of the head).
+
+| Look | Change | Casting line | Measured |
+| --- | --- | --- | --- |
+| LF02 | Bowed head per the construction sheet (`paintBowedHeadBack` draws the whole head; rig `nod [-0.18, -1.02]` keeps the rig head under it and centred on the torso, which `lean 0.1` had pushed 14 px off); cast shoulder 0.34 → 0.42 for this shot; shoulder caps and crew collar in the rig's lit shirt tone (`toneOf`, opaque). Strata: the four ruled pencil dashes became three broken contours that bend toward the edge (two pieces each). Cliff edge, bare paper and cloud depth unchanged from v2. | `woman-bob + new: pyjama (shoulder 0.42), P01 back, new: bowed head back` | hair 128 × 107 px (x 506–634, y 381–488; v2 head 106 px tall); figure hair top y 381 to feet y ~776 (395 px); determinism: two renders differ by max 1/255 on 3 channels; caption zone 860–1248 mean 0.78 / p95 0.93 (fail, unchanged decision: caption shade at W5) |
+| LF04 | Dumbbell floor shadow moved up under the plates' bottom rims and widened (`ell(x + 16, y + 60, 178, 16)`), so both plates rest on it | `new: icons x4` | caption zone mean 0.90 / p95 0.91 (fail, same decision) |
+
+Frame check (viewed): 270 px sheet `sheet-v3.png` and the 540 px single still. At 270 px the head now reads as a dark bob seen from behind, set down between rounded shoulders, with no dot or pale square; the strata no longer read as text lines. At 540 px the crown's radiating strands and the forward-falling side curtains show; the narrow shadowed nape between the curtains is the remaining risk (a small skin notch under dark hair can still be taken for a face in shadow at 270 px); the bow itself is moderate, carried by the sunk head rather than a visible tilt.
+
+Tried and dropped (same session): (a) a full-head overlay with a V-shaped dip under an uneven hem (read as a face in a V-neck); (b) a broad shirt panel over the whole upper torso (flat colour mismatch, read as a bib or scarf; `solid` alone let the rig neck show through, so the cap now gets `p.flat` first); (c) shoulder caps narrower than their inner collar points (crossed into pointed "ears").
+
+Open: a fresh-eyes viewer check of v3 (W3.1 rule: never author and check in one invocation); if the nape still reads as a face, the next step is to close the curtains further (inner edge ±0.3 K) so only a sliver of neck shows. Kit gap (Boss, proposed): a `bowed` back-view head state in `src/painted/kit/back.ts` built from this sheet, so W5 plates and the B03 shots after SH02 do not need the per-shot painter.
+
+## W3.1 look frames v2 (2026-11-04, Film)
+
+Repaint of the viewer-check fails ([viewer-check-lf-v1](short/viewer-check-lf-v1.md)) plus the LF04 dumbbell note; LF03 code unchanged (re-rendered, same picture). User decisions (question tool, 4 Nov 2026): doctor = long hair or bun woman with clear female cues, stethoscope, soft window light, softer smile; pyjama keeps long trousers. Source `src/painted/edu01/` (`cast.ts`, `set.ts`, `look.tsx`). Render: `for i in 1 2 3 4 5; do echo "EDU1-LF0$i 0 out/edu01/look/v2/LF0$i.png"; done | node scripts/stills.mjs src/painted/edu01/look-index.ts` (one Chrome; `scripts/render.mjs --stills` bundles only `src/index.ts`, and the look compositions live in the standalone entry). Store: `projects/EDU/previews/look-frames/ep01/v2/` (LF01–LF05 + `sheet-v2.png`).
+
+| Look | Change (fix id from the viewer check) | Casting line / layers | Lead (measured from the still, px) |
+| --- | --- | --- | --- |
+| LF01 bedroom | (1) episode-local lying head `paintLyingHead` (profile face up, bob fanned on the pillow, fringe, nose and coloured lips, half-lid arc with lashes, `lid` 0.6; rig head no longer drawn here); (2) `ROOM` v2: U 520 → 640, mattress top 1010, legs 1300, window y 150–720, moon (880, 300), rug from y 1470 (23.4 % of the frame); (3) duvet ends at the mattress edge (hem y ~1110–1146) with fold shadows; (4) clock glow: amber on the table top, wall amber glazes removed, `Spot` r 230 → 150 | `woman-bob + new: pyjama, P36, sleepy (lid 0.6)`; `new: lying head`; kit ENV-SKY moon, `Spot` | head + hair 264 × 262 px (x 228–492, y 706–968), was about 200 px wide; bed y 760 (headboard top) – 1300 |
+| LF02 dream cliff | (1) bowed head: rig `nod [0, -0.85]`, `lean 0.1`, painted back-of-head overlay with the crown whorl, radiating strands and the nape under an arched hem; (2) cliff = bare-paper rock (`p.flat`) with the far end painted, dry-brush drags at the paint edge, HB pencil lip, edge and strata contours; free diagonal strokes removed; (3) depth: cool `DEPTH` washes below the horizon, a dark gap under the ledge, rows of small pale cumulus that shrink toward the horizon | `woman-bob + new: pyjama, P01 back, bowed`; `new: cloud-dream plate` v2; figure U 250 → 280 | figure 404 px (hair top y 372 to feet y 776), head 106 px |
+| LF04 trigger icons | dumbbell: round plates at a three-quarter angle with rim thickness, hub, knurled grip and floor shadow | `new: icons x4` | unchanged rows; dumbbell y ~1400–1560 |
+| LF05 doctor | (1) recast `woman-long + doctor`, no tie, rose blouse with a V collar, full lips, cheek blush; bust shading and the coat fronts pinched at the waist painted over the rig (`paintDoctorTorso`); (2) teal stethoscope round the neck (`paintStethoscope`; dark slate vanished on the black hair); (3) window: brighter glass, sheer curtain, a two-pane light patch on the wall and a warm glaze on her shoulder; (4) soft closed smile: `happy` with mouth `flat` (kit `full` lips) plus lifted corners | `woman-long + doctor (no tie, rose blouse) + new: stethoscope, P01, happy (soft)` | figure U 980, hair top y 312, cut at the shins |
+
+Findings:
+- **Caption zone** (`scripts/caption-zone.py`, default band 860–1248): still fails on every look (LF01 mean 0.37 / p95 0.74; LF02 0.78 / 0.93; LF03 0.82 / 0.91; LF04 0.90 / 0.91; LF05 0.86 / 0.95). The caption shade decision from v1 still stands (W5, Editor/coordinator).
+- **Determinism:** LF01, LF02, LF05 rendered twice: max channel difference 1/255 on 14 channels (LF02), LF01 and LF05 identical.
+- **Kit gaps (Boss, proposed):** the rig has no female torso shape (UT08 cues are painted per shot), no stethoscope gear, no soft closed smile preset, and its P36 profile head with a bob reads as a helmet when rotated; `paintLyingHead` is a static painter (no jolt or eyes-open state beyond `lid`), so B01-SH02 (eyes open toward camera), B02, B03-SH05 jolt and B07-SH02 need it hardened or rigged before W5.
+- **Tried and dropped:** p5.brush `charcoal` and `2B` strokes for the dry brush read as hatch marks or text dashes at 540 px; `marker` 2.6–2.8 strokes read as dry paint. A `hardFill` paper rock with a bottom edge left a hard horizontal line; the rock is now a wedge bounded by its pencil edge and faded with cool washes.
+- **Lead size still small in LF02** (wide by design, row "small figure on a ledge"): the bowed head reads at 540 px, weaker at 270 px; left for the user.
+
 ## W3.1 look frames v1 (2026-11-04, Film)
 
 Source: `src/painted/edu01/` (`cast.ts`, `set.ts`, `look.tsx`, standalone entry `look-index.ts`; compositions `EDU1-LF01`–`EDU1-LF05`, frame 0). Render: `for i in 1 2 3 4 5; do echo "EDU1-LF0$i 0 out/edu01/look/LF0$i.png"; done | node scripts/stills.mjs src/painted/edu01/look-index.ts`. Store: `projects/EDU/previews/look-frames/ep01/v1/` (LF01–LF05 + `sheet-v1.png`).
@@ -19,4 +132,5 @@ Findings:
 - **Amber over blue reads green:** a thin `paintHalo` in `#e8a35c` over the ink-blue wall painted a green patch; the clock glow is the wall colour mixed toward amber plus a screen-blend `Spot`.
 - **P36 lying head:** the kit's rotated profile head reads as a face-up head on the pillow at 270 px, but the hair mass sits under the head and the half-lid eye reads fairly open; left to the viewer check.
 - **Pyjama:** long trousers instead of the brief's shorts (rig has no shorts); open question for the user.
+- **Viewer check (2026-11-04, fresh Film):** LF01 fail (sleeper's head/face unreadable, no female cue, rug fills the lower 40 %), LF02 fail (no look-down, cliff not "unfinished", no sense of height), LF03 pass, LF04 pass (dumbbell reads as "H"), LF05 fail (doctor reads male, no stethoscope). Details and fixes: [viewer-check-lf-v1](short/viewer-check-lf-v1.md).
 - Not done in this pass: the [thumbnails](../../docs/sequence-workflow.md#look-thumbnails) step (skipped on coordinator instruction) and the [viewer check](../../docs/sequence-workflow.md#viewer-check) (needs a fresh Film invocation).

@@ -40,7 +40,7 @@ const Painted = ({kind, cam, paint}: {kind: Kind; cam: (tl: number) => Camera; p
       {kind === 'night' ? (
         <AbsoluteFill style={{pointerEvents: 'none', mixBlendMode: 'screen'}}>
           <svg width="100%" height="100%" viewBox="0 0 1080 1920">
-            <Spot x={ROOM.clock.x + 10} y={ROOM.clock.y - 10} r={230} level={0.26} color="#e8a35c" />
+            <Spot x={ROOM.clock.x + 10} y={ROOM.clock.y + 20} r={150} level={0.24} color="#f0a050" />
           </svg>
         </AbsoluteFill>
       ) : null}
