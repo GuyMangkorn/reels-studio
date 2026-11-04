@@ -2,7 +2,7 @@
 name: film
 description: "Film (ฟิล์ม): visual development lead, technical BA and shot director; chooses medium, light, scale, projection and camera, then writes the storyboard and timed scene sheets."
 tools: Read, Write, Edit, Bash, ToolSearch, WebSearch, WebFetch
-model: claude-sonnet-5-5
+model: claude-opus-5-5
 effort: medium
 ---
 

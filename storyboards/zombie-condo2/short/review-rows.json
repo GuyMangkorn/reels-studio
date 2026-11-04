@@ -1,0 +1,1365 @@
+{
+ "deliverable": "ZCONDO2-SHORT-TH",
+ "revision": "ZC2-SB-R3.1",
+ "eyebrow": "ZCONDO2-SHORT-TH · สตอรีบอร์ด ZC2-SB-R3.1 (ภาพนิ่งบล็อกกิ้งครบ 30 ช็อต) · brief VB-ZC2-SHORT-R2 · บท ZCONDO-SHORT-TH-R3",
+ "title": "คอนโดวันโลกแตก (ลุคมาตรฐานของ kit) — สตอรีบอร์ดพร้อมภาพนิ่งทุกช็อต",
+ "pageTitle": "ZCONDO2-SHORT-TH Storyboard ZC2-SB-R3.1",
+ "lede": "รอบ R3.1: ช็อต ZC2-B04-SH02 แยกเป็นสองช็อต (SH02 ตึกกับถังบนดาดฟ้า / SH02b ห้องปั๊มตอนไฟดับ) ตามที่ผู้ใช้เลือกหลังฟังเสียง ช็อตอื่นไม่เปลี่ยน คำตอบเดิมคงอยู่ · ผู้ใช้อนุมัติลุคของ kit แล้วเมื่อ 4 พ.ย. 2026 (ภาพตัวอย่าง r6) รอบนี้แต่ละช็อตมีภาพนิ่งบล็อกกิ้งหนึ่งภาพในลุคนั้น (สี่ช็อตแรกที่อนุมัติแล้วใช้ภาพเดิม) ใช้กฎของผู้ใช้: ฉากมีรายละเอียด 3 ชั้น (UT12) กล้องใกล้ตัวละครเดี่ยว ภาพกว้างเฉพาะช็อตที่ brief ระบุ (UT13) มือเป็นก้อนมือง่าย ๆ ไม่มีนิ้ว (UT14) เรื่อง จังหวะ เบาะแส ตอนจบไม่เปลี่ยน เสียงบรรยายชุดเดิม ความยาว 95.9 วินาทีไปก่อน ตัวอักษรไทย ตัวเลข เครื่องหมายถูกผิด และป้ายตัวเลือกในภาพนิ่งเป็นตัวอย่างว่าจะวางตรงไหน ของจริงทำใน Remotion",
+ "fps": 30,
+ "timingEstimated": false,
+ "facts": [
+  [
+   "เฟรม",
+   "1080×1920 · 30 fps · ราว 95.9 วินาที (ตามเสียงบรรยายเดิม)"
+  ],
+  [
+   "ภาพ",
+   "Painted 2D (p5.brush) ลุคมาตรฐานของ kit · ตัวละคร 4 หัวจาก PEOPLE · ตัดภาพแบบ hard cut"
+  ],
+  [
+   "เสียงบรรยาย",
+   "Gemini Kore +5% ชุดเดิม · เสียงเรียกใน B09: Enceladus อู้อี้ผ่านประตู"
+  ],
+  [
+   "ภาษา",
+   "ไทยเท่านั้น"
+  ]
+ ],
+ "source": "storyboards/zombie-condo2/short/",
+ "questions": [
+  {
+   "id": "Q-ZC2-S1",
+   "question": "ช็อตที่ฉากสว่างมาก (ห้องน้ำ ครัว แผนภาพ ทางเดิน) ให้ใช้เงาหลังคำบรรยาย CaptionShade แบบ band แบบเบาที่สุดที่ผ่านเกณฑ์ของแต่ละช็อต (0.00–0.78 ช็อตครัว 0.73 ห้องน้ำ 0.75) แล้วใช้ตัวหนังสือขาวขอบหนาตามเดิมได้ไหม",
+   "detail": "เงาจางตามค่าเริ่มต้นของ kit (soft 0.5, band 0.62) ยังทำให้พื้นหลังหลังคำบรรยายสว่างเกินเกณฑ์ ตัวเลขวัดที่ y 1080–1248 (บรรทัดคำบรรยายจริง) ที่ภาพห้องน้ำ B05-SH01: ไม่มีเงา 0.78, soft 0.57, band 0.62 = 0.34, band 0.75 = 0.24 ผ่านเกณฑ์ 0.25 ภาพครัว B04-SH01: 0.72, 0.53, 0.31, 0.24 (band 0.73) ผ่านเช่นกัน เงาติดเฉพาะตอนมีคำบรรยายและไม่กินส่วนบนของภาพ ดูภาพของสองช็อตนี้ในแถวของมัน",
+   "images": [
+    {
+     "src": "/Users/mangkornkatawong/ReelsStore/projects/ZCONDO2/previews/ZC2-SB-R3/shade/SBX-B05-SH01.png",
+     "caption": "B05-SH01 พร้อมเงา band 0.75 (เบาที่สุดที่ผ่าน)"
+    },
+    {
+     "src": "/Users/mangkornkatawong/ReelsStore/projects/ZCONDO2/previews/ZC2-SB-R3/shade/SBX-B04-SH01.png",
+     "caption": "B04-SH01 พร้อมเงา band 0.73 (เบาที่สุดที่ผ่าน)"
+    }
+   ]
+  },
+  {
+   "id": "Q-ZC2-S2",
+   "question": "ช็อตกว้างที่ brief ระบุ (B03-SH01, B07-SH02, B08-SH02, B10-SH01) ตัวละครเล็กหรือไกลเท่านี้โอเคไหม หรืออยากให้ใกล้ขึ้น",
+   "detail": "ความสูงตัวละครถ้ายืนในเฟรม 1920 px: B03-SH01 ราว 1130 px (นั่งอยู่ ตัวจริงราว 640 px), B07-SH02 ราว 1230 px (ท่ายกแขนเก็บกล่องเตา), B08-SH02 ราว 580 px เป็นเงา, B10-SH01 ราว 1760 px (นั่งอยู่ ตัวจริงราว 900 px) ถ้าอยากให้ใกล้ขึ้นบอกชื่อช็อต"
+  }
+ ],
+ "beats": [
+  {
+   "id": "B01",
+   "name": "เปิดประตู เจอคนยืนนิ่ง",
+   "look": "L1"
+  },
+  {
+   "id": "B02",
+   "name": "ปิด ล็อก ดันตู้ เงียบ",
+   "look": "L2"
+  },
+  {
+   "id": "B03",
+   "name": "ไฟดับทั้งตึก"
+  },
+  {
+   "id": "B04",
+   "name": "น้ำที่เหลือในถัง"
+  },
+  {
+   "id": "B05",
+   "name": "ห้องน้ำและถังพักน้ำ"
+  },
+  {
+   "id": "B06",
+   "name": "ตู้เย็นกับลำดับการกิน"
+  },
+  {
+   "id": "B07",
+   "name": "เตาปิกนิก ห้ามจุด"
+  },
+  {
+   "id": "B08",
+   "name": "คืนแรกที่ระเบียง"
+  },
+  {
+   "id": "B09",
+   "name": "วันที่สาม เสียงเรียก"
+  },
+  {
+   "id": "B10",
+   "name": "คุณจะทำยังไง"
+  }
+ ],
+ "shots": [
+  {
+   "id": "ZC2-B01-SH01",
+   "beat": "B01",
+   "title": "ประตูเปิดออกสู่ทางเดิน",
+   "vo": [
+    [
+     "ผู้บรรยาย",
+     "คุณเปิดประตูห้อง จะเอาขยะไปทิ้ง"
+    ]
+   ],
+   "seen": "ภาพระดับต่ำจากในห้องข้างไหล่คุณ (ถือถุงขยะ) ประตูเปิดเข้ามา ทางเดินค่อย ๆ โผล่ในช่องประตู ปลายทางมีคนยืนเป็นเงาดำตัดกับหน้าต่างสว่าง เห็นภายใน 1.2 วินาที [ตัวละคร: man-crop เห็นด้านหลัง ถือถุงขยะ · ซอมบี้ไกล ๆ เป็นเงา]",
+   "sound": "กลอนประตู เสียงไฟนีออนฮึม ไม่มีดนตรี",
+   "cast": [
+    "man-crop, P01, neutral (back view, bag in hand = new: trash bag prop)",
+    "new: infected neighbour = man-shaved base (no glasses, grey-green skin, house polo) + blood on mouth/chin/collar, silhouette, far"
+   ],
+   "kit": "kit: back view, FigPose.silhouette, camera push",
+   "previews": [
+    {
+     "src": "/Users/mangkornkatawong/ReelsStore/projects/ZCONDO2/previews/ZC2-SB-R3/ZC2-B01-SH01-sb-r3.png",
+     "caption": "ข้างไหล่คุณ ประตูเปิดเห็นทางเดิน ซอมบี้ยืนไกลที่ปลายทาง"
+    }
+   ],
+   "previewLabel": "ภาพนิ่งบล็อกกิ้งในลุคที่ผู้ใช้อนุมัติแล้ว (4 พ.ย. 2026) ยังไม่ใช่ plate จริง ไม่มีคำบรรยาย ไม่มีกล้องขยับ",
+   "start": 0,
+   "end": 75,
+   "clips": {
+    "draft": {
+     "src": "out/ZCONDO2-SHORT-TH/clips/ZC2-B01-SH01_draft.mp4",
+     "in": 0,
+     "out": 2.5
+    },
+    "final": {
+     "src": "out/ZCONDO2-SHORT-TH/clips/_final_cut.mp4",
+     "in": 0,
+     "out": 2.5,
+     "cut": true,
+     "key": "1570b81dabeef139"
+    }
+   }
+  },
+  {
+   "id": "ZC2-B01-SH02",
+   "beat": "B01",
+   "title": "คนยืนนิ่งปลายทางเดิน",
+   "vo": [
+    [
+     "ผู้บรรยาย",
+     "ปลายทางเดิน มีคนยืนนิ่งอยู่"
+    ]
+   ],
+   "seen": "มุมมองคุณ เลนส์ยาว กล้องดันเข้าช้า ๆ ไปตามทางเดิน รองเท้าวางหน้าห้องต่าง ๆ คนนั้นยืนหันหน้าเข้าประตูห้องตัวเองที่ปลายทาง ไฟนีออนดวงหนึ่งกะพริบ [ตัวละคร: ซอมบี้ (ดัดแปลง man-shaved) ยืนหันหน้าเข้าประตู เป็นเงา]",
+   "sound": "เสียงเบสต่ำค่อย ๆ ขึ้น",
+   "cast": [
+    "new: infected neighbour = man-shaved base (no glasses, grey-green skin, house polo) + blood on mouth/chin/collar, P01 profile facing its door, sleepy, silhouette"
+   ],
+   "kit": "kit: pushCamera; set new (corridor); lead off screen (POV)",
+   "previews": [
+    {
+     "src": "/Users/mangkornkatawong/ReelsStore/projects/ZCONDO2/previews/ZC2-SB-R3/ZC2-B01-SH02-sb-r3.png",
+     "caption": "ทางเดินเลนส์ยาว ซอมบี้ยืนหันเข้าประตูห้องตัวเอง (ภาพที่ผู้ใช้อนุมัติ)"
+    }
+   ],
+   "previewLabel": "ภาพนิ่งบล็อกกิ้งในลุคที่ผู้ใช้อนุมัติแล้ว (4 พ.ย. 2026) ยังไม่ใช่ plate จริง ไม่มีคำบรรยาย ไม่มีกล้องขยับ",
+   "start": 75,
+   "end": 160,
+   "clips": {
+    "draft": {
+     "src": "out/ZCONDO2-SHORT-TH/clips/ZC2-B01-SH02_draft.mp4",
+     "in": 1,
+     "out": 3.833
+    },
+    "final": {
+     "src": "out/ZCONDO2-SHORT-TH/clips/_final_cut.mp4",
+     "in": 2.5,
+     "out": 5.333,
+     "cut": true,
+     "key": "06b05404b4cefa66"
+    }
+   }
+  },
+  {
+   "id": "ZC2-B01-SH03",
+   "beat": "B01",
+   "title": "มันหันมา",
+   "vo": [
+    [
+     "ผู้บรรยาย",
+     "แล้วมันก็หันมา"
+    ]
+   ],
+   "seen": "ภาพครึ่งตัวใกล้ เลนส์ยาว หัวค่อย ๆ หันมาทางกล้อง หน้าอยู่ในเงา ตาสะท้อนแสงซีด มีคราบเลือดรอบปากและคาง ค้างไว้ครู่หนึ่งก่อนตัด [ตัวละคร: ซอมบี้ (man-shaved ดัดแปลง) หันหน้า สีหน้า tired มีเลือดที่ปากและคาง]",
+   "sound": "เสียงคอลั่นเปียก ๆ แล้วกลั้นหายใจ",
+   "cast": [
+    "new: infected neighbour = man-shaved base (no glasses, grey-green skin, house polo) + blood on mouth/chin/collar, P01, tired"
+   ],
+   "kit": "kit: motion turn-head-to-camera, template talkingCloseUp (no talk)",
+   "changed": "ซอมบี้มีเลือดที่หน้าและปาก ตามคำตอบ Q-ZC2-F2 (ออกแบบใหม่บนตัวละคร kit)",
+   "previews": [
+    {
+     "src": "/Users/mangkornkatawong/ReelsStore/projects/ZCONDO2/previews/ZC2-SB-R3/ZC2-B01-SH03-sb-r3.png",
+     "caption": "ซอมบี้หันมา เลือดที่ปาก คาง และคอเสื้อ (ภาพที่ผู้ใช้อนุมัติ)"
+    }
+   ],
+   "previewLabel": "ภาพนิ่งบล็อกกิ้งในลุคที่ผู้ใช้อนุมัติแล้ว (4 พ.ย. 2026) ยังไม่ใช่ plate จริง ไม่มีคำบรรยาย ไม่มีกล้องขยับ",
+   "start": 160,
+   "end": 206,
+   "clips": {
+    "draft": {
+     "src": "out/ZCONDO2-SHORT-TH/clips/ZC2-B01-SH03_draft.mp4",
+     "in": 1,
+     "out": 2.533
+    },
+    "final": {
+     "src": "out/ZCONDO2-SHORT-TH/clips/_final_cut.mp4",
+     "in": 5.333,
+     "out": 6.867,
+     "cut": true,
+     "key": "934e4fb324ae4e44"
+    }
+   }
+  },
+  {
+   "id": "ZC2-B02-SH01",
+   "beat": "B02",
+   "title": "ปิด!",
+   "vo": [
+    [
+     "ผู้บรรยาย",
+     "ปิด!"
+    ]
+   ],
+   "seen": "ภาพกลางในห้อง คุณกระแทกประตูปิดด้วยสองมือและไหล่ ถุงขยะหล่นที่พื้น ภาพสั่นตามแรงกระแทก [ตัวละคร: man-crop ท่า P15 ปรับเป็นกำปั้น สีหน้า scared]",
+   "sound": "ประตูกระแทก ถุงหล่น",
+   "cast": [
+    "man-crop, P15, scared (profile; fists on the leaf instead of open palms = new variant)"
+   ],
+   "kit": "kit: motion gasp-recoil on the hit; new: bag drop, shake in picture stage",
+   "previews": [
+    {
+     "src": "/Users/mangkornkatawong/ReelsStore/projects/ZCONDO2/previews/ZC2-SB-R3/ZC2-B02-SH01-sb-r3.png",
+     "caption": "ปิด! ชนไหล่และกำปั้นใส่ประตู ถุงขยะหล่น"
+    }
+   ],
+   "previewLabel": "ภาพนิ่งบล็อกกิ้งในลุคที่ผู้ใช้อนุมัติแล้ว (4 พ.ย. 2026) ยังไม่ใช่ plate จริง ไม่มีคำบรรยาย ไม่มีกล้องขยับ",
+   "start": 206,
+   "end": 233,
+   "clips": {
+    "draft": {
+     "src": "out/ZCONDO2-SHORT-TH/clips/ZC2-B02-SH01_draft.mp4",
+     "in": 1,
+     "out": 1.9
+    },
+    "final": {
+     "src": "out/ZCONDO2-SHORT-TH/clips/_final_cut.mp4",
+     "in": 6.867,
+     "out": 7.767,
+     "cut": true,
+     "key": "527d5a12ecb6918e"
+    }
+   }
+  },
+  {
+   "id": "ZC2-B02-SH02",
+   "beat": "B02",
+   "title": "ล็อก!",
+   "vo": [
+    [
+     "ผู้บรรยาย",
+     "ล็อก!"
+    ]
+   ],
+   "seen": "ภาพแทรกมุมมองคุณ มือขวาเข้ามาจากขอบจอขวา บิดตัวล็อกประตู ประตูทึบไม่มีตาแมว [ตัวละคร: มือ POV ของ kit (paintPovHand)]",
+   "sound": "เสียงกลอนล็อก",
+   "cast": [
+    "hand only: no person"
+   ],
+   "kit": "kit: mitten hand (openHandParts, UT14: no drawn fingers); paintPovHand not used; new: deadbolt set piece",
+   "previews": [
+    {
+     "src": "/Users/mangkornkatawong/ReelsStore/projects/ZCONDO2/previews/ZC2-SB-R3/ZC2-B02-SH02-sb-r3.png",
+     "caption": "มือ POV บิดกลอนเดดโบลต์ ประตูทึบไม่มีตาแมว"
+    }
+   ],
+   "previewLabel": "ภาพนิ่งบล็อกกิ้งในลุคที่ผู้ใช้อนุมัติแล้ว (4 พ.ย. 2026) ยังไม่ใช่ plate จริง ไม่มีคำบรรยาย ไม่มีกล้องขยับ",
+   "start": 233,
+   "end": 260,
+   "clips": {
+    "draft": {
+     "src": "out/ZCONDO2-SHORT-TH/clips/ZC2-B02-SH02_draft.mp4",
+     "in": 1,
+     "out": 1.9
+    },
+    "final": {
+     "src": "out/ZCONDO2-SHORT-TH/clips/_final_cut.mp4",
+     "in": 7.767,
+     "out": 8.667,
+     "cut": true,
+     "key": "84de046514197036"
+    }
+   }
+  },
+  {
+   "id": "ZC2-B02-SH03",
+   "beat": "B02",
+   "title": "มันทุบประตู",
+   "vo": [
+    [
+     "ผู้บรรยาย",
+     "มันทุบประตูไม่หยุด"
+    ]
+   ],
+   "seen": "มุมประตูจากกลางห้อง (มุมนี้จะกลับมาอีกหลายครั้ง) ประตูสั่นในวงกบ ฝุ่นร่วงจากขอบบน คุณถอยห่าง [ตัวละคร: man-crop เห็นด้านหลัง ถอยจากประตู]",
+   "sound": "เสียงทุบหนัก ๆ ไม่เป็นจังหวะ จังหวะตึงต่ำ",
+   "cast": [
+    "man-crop, P15 to P01, scared (back view, steps back)"
+   ],
+   "kit": "kit: back view, motion gasp-recoil; set new (unit, door vantage)",
+   "previews": [
+    {
+     "src": "/Users/mangkornkatawong/ReelsStore/projects/ZCONDO2/previews/ZC2-SB-R3/ZC2-B02-SH03-sb-r3.png",
+     "caption": "มุมประตูจากกลางห้อง ฝุ่นร่วงจากวงกบ คุณถอยหลัง"
+    }
+   ],
+   "previewLabel": "ภาพนิ่งบล็อกกิ้งในลุคที่ผู้ใช้อนุมัติแล้ว (4 พ.ย. 2026) ยังไม่ใช่ plate จริง ไม่มีคำบรรยาย ไม่มีกล้องขยับ",
+   "start": 260,
+   "end": 305,
+   "clips": {
+    "draft": {
+     "src": "out/ZCONDO2-SHORT-TH/clips/ZC2-B02-SH03_draft.mp4",
+     "in": 1,
+     "out": 2.5
+    },
+    "final": {
+     "src": "out/ZCONDO2-SHORT-TH/clips/_final_cut.mp4",
+     "in": 8.667,
+     "out": 10.167,
+     "cut": true,
+     "key": "6d443fb456b3b59b"
+    }
+   }
+  },
+  {
+   "id": "ZC2-B02-SH04",
+   "beat": "B02",
+   "title": "ลากตู้มาดัน",
+   "vo": [
+    [
+     "ผู้บรรยาย",
+     "ลากตู้มาดัน"
+    ],
+    [
+     "ผู้บรรยาย",
+     "แต่ต้องรื้อออกได้เร็ว เผื่อไฟไหม้"
+    ]
+   ],
+   "seen": "ภาพกว้างด้านข้าง คุณลากตู้รองเท้าชั้นโล่งทรงเตี้ยกว้าง (กว้างราว 0.77 สูง 1.06 ม.) จากข้างประตูครูดไปบนพื้นกระเบื้องมาขวางประตูใต้กลอน ปลายตู้ข้างหนึ่งชนประตู ตู้เบา ชั้นโล่ง ไม่ได้ตอกหรือยึด ดูออกว่ารื้อออกได้เร็ว รองเท้าหล่นจากชั้นหนึ่งข้าง [ตัวละคร: man-crop ท่า P16 ปรับเป็นลาก (เสนอท่าใหม่ให้บอส)]",
+   "sound": "เสียงตู้ครูดพื้น เสียงทุบยังดังต่อ",
+   "cast": [
+    "man-crop, P16, worried (profile, leaning back, both hands on the cabinet = new pose `drag` proposed to Boss)"
+   ],
+   "kit": "kit: layerMotion walk-out-to-left is the nearest; set new",
+   "previews": [
+    {
+     "src": "/Users/mangkornkatawong/ReelsStore/projects/ZCONDO2/previews/ZC2-SB-R3/ZC2-B02-SH04-sb-r3.png",
+     "caption": "ลากตู้รองเท้าชั้นโล่งมาขวางประตู (ภาพที่ผู้ใช้อนุมัติ)"
+    }
+   ],
+   "previewLabel": "ภาพนิ่งบล็อกกิ้งในลุคที่ผู้ใช้อนุมัติแล้ว (4 พ.ย. 2026) ยังไม่ใช่ plate จริง ไม่มีคำบรรยาย ไม่มีกล้องขยับ",
+   "start": 305,
+   "end": 419,
+   "clips": {
+    "draft": {
+     "src": "out/ZCONDO2-SHORT-TH/clips/ZC2-B02-SH04_draft.mp4",
+     "in": 1,
+     "out": 4.8
+    },
+    "final": {
+     "src": "out/ZCONDO2-SHORT-TH/clips/_final_cut.mp4",
+     "in": 10.167,
+     "out": 13.967,
+     "cut": true,
+     "key": "323b889b8889e4cc"
+    }
+   }
+  },
+  {
+   "id": "ZC2-B02-SH05",
+   "beat": "B02",
+   "title": "เงียบ… พวกมันตามเสียง",
+   "vo": [
+    [
+     "ผู้บรรยาย",
+     "ในโลกนี้... พวกมันตามเสียง"
+    ]
+   ],
+   "seen": "ภาพเต็มตัวระยะกลาง คุณ (ผู้ชาย) นั่งพื้นพิงตู้ที่ลากมาขวางประตู (ตู้ตั้งเฉียง มีรอยลากบนพื้น รองเท้าหล่น) ชันเข่าเอนไปทางขวา แขนซ้ายกอดรอบหน้าแข้ง มือขวาปิดปากแน่น ตาเหลือบขึ้นไปทางกลอนและลูกบิดเหนือตู้ นิ่งสนิท แสงเช้าจากระเบียงพาดผ่านตู้กับประตู ถุงขยะยังตกอยู่ข้างประตู [ตัวละคร: man-crop ท่า P33 นั่งกอดเข่า มือขวาปิดปาก สีหน้า scared]",
+   "sound": "ดนตรีหยุด เหลือแต่เสียงทุบ 0.6 วินาที",
+   "cast": [
+    "man-crop, P33, scared (front; right fist at the mouth = P12 right hand on P33, variant proposed to Boss)"
+   ],
+   "kit": "set new; sun bands flat tint",
+   "previews": [
+    {
+     "src": "/Users/mangkornkatawong/ReelsStore/projects/ZCONDO2/previews/ZC2-SB-R3/ZC2-B02-SH05-sb-r3.png",
+     "caption": "นั่งพิงตู้ มือปิดปาก ตาเงยไปทางกลอน (ภาพที่ผู้ใช้อนุมัติ)"
+    }
+   ],
+   "previewLabel": "ภาพนิ่งบล็อกกิ้งในลุคที่ผู้ใช้อนุมัติแล้ว (4 พ.ย. 2026) ยังไม่ใช่ plate จริง ไม่มีคำบรรยาย ไม่มีกล้องขยับ",
+   "start": 419,
+   "end": 511,
+   "clips": {
+    "draft": {
+     "src": "out/ZCONDO2-SHORT-TH/clips/ZC2-B02-SH05_draft.mp4",
+     "in": 1,
+     "out": 4.067
+    },
+    "final": {
+     "src": "out/ZCONDO2-SHORT-TH/clips/_final_cut.mp4",
+     "in": 13.967,
+     "out": 17.033,
+     "cut": true,
+     "key": "cd9fe0121c1dc852"
+    }
+   }
+  },
+  {
+   "id": "ZC2-B03-SH01",
+   "beat": "B03",
+   "title": "ไฟดับทั้งตึก",
+   "vo": [
+    [
+     "ผู้บรรยาย",
+     "แล้วไฟก็ดับทั้งตึก"
+    ]
+   ],
+   "seen": "มุมประตูเดิมแต่กว้างขึ้น ไฟเพดาน ไฟสแตนด์บายแอร์ ไฟตู้เย็น และแสงทางเดินใต้ประตู ดับต่อกันเป็นทอด ๆ ห้องเหลือแค่แสงกลางวัน [ตัวละคร: man-crop นั่งเงียบต่อ ตัวเล็ก (Film เติมเข้ามา บทเดิมไม่ได้พูดถึง)]",
+   "sound": "เสียงไฟตัด ตู้เย็นและแอร์หยุด แล้วเงียบเกือบสนิท",
+   "cast": [
+    "man-crop, P33, worried (small, still seated at the cabinet)"
+   ],
+   "kit": "kit: motion idle-breathe; lights are new overlays",
+   "previews": [
+    {
+     "src": "/Users/mangkornkatawong/ReelsStore/projects/ZCONDO2/previews/ZC2-SB-R3/ZC2-B03-SH01-sb-r3.png",
+     "caption": "ไฟดับ เหลือแสงกลางวัน คุณนั่งเล็ก ๆ ที่ตู้ แอร์ ตู้เย็น ไฟเพดานดับ"
+    }
+   ],
+   "previewLabel": "ภาพนิ่งบล็อกกิ้งในลุคที่ผู้ใช้อนุมัติแล้ว (4 พ.ย. 2026) ยังไม่ใช่ plate จริง ไม่มีคำบรรยาย ไม่มีกล้องขยับ",
+   "start": 511,
+   "end": 568,
+   "clips": {
+    "draft": {
+     "src": "out/ZCONDO2-SHORT-TH/clips/ZC2-B03-SH01_draft.mp4",
+     "in": 1,
+     "out": 2.9
+    },
+    "final": {
+     "src": "out/ZCONDO2-SHORT-TH/clips/_final_cut.mp4",
+     "in": 17.033,
+     "out": 18.933,
+     "cut": true,
+     "key": "2b3fcf91d7ed0be7"
+    }
+   }
+  },
+  {
+   "id": "ZC2-B04-SH01",
+   "beat": "B04",
+   "title": "ก๊อกยังไหล",
+   "vo": [
+    [
+     "ผู้บรรยาย",
+     "แต่ก๊อกน้ำยังไหล"
+    ]
+   ],
+   "seen": "ภาพแทรกใกล้ ก๊อกในครัวยังมีน้ำไหลลงซิงก์ แสงแดดสะท้อนน้ำ [ตัวละคร: ไม่มีคน]",
+   "sound": "เสียงน้ำไหลเป็นเสียงแรกหลังความเงียบ",
+   "cast": [
+    "no person"
+   ],
+   "kit": "new: tap, sink; kit ENV-GLOW not needed",
+   "previews": [
+    {
+     "src": "/Users/mangkornkatawong/ReelsStore/projects/ZCONDO2/previews/ZC2-SB-R3/ZC2-B04-SH01-sb-r3.png",
+     "caption": "ก๊อกในครัวยังไหล แสงจากหน้าต่างสะท้อนน้ำ"
+    },
+    {
+     "src": "/Users/mangkornkatawong/ReelsStore/projects/ZCONDO2/previews/ZC2-SB-R3/shade/SBX-B04-SH01.png",
+     "caption": "พร้อม CaptionShade แบบ band เบาที่สุดที่ผ่านของช็อตนี้ (ดูคำถาม Q-ZC2-S1)"
+    }
+   ],
+   "previewLabel": "ภาพนิ่งบล็อกกิ้งในลุคที่ผู้ใช้อนุมัติแล้ว (4 พ.ย. 2026) ยังไม่ใช่ plate จริง ไม่มีคำบรรยาย ไม่มีกล้องขยับ",
+   "start": 568,
+   "end": 617,
+   "clips": {
+    "draft": {
+     "src": "out/ZCONDO2-SHORT-TH/clips/ZC2-B04-SH01_draft.mp4",
+     "in": 1,
+     "out": 2.633
+    },
+    "final": {
+     "src": "out/ZCONDO2-SHORT-TH/clips/_final_cut.mp4",
+     "in": 18.933,
+     "out": 20.567,
+     "cut": true,
+     "key": "0806340bbaf279f0"
+    }
+   }
+  },
+  {
+   "id": "ZC2-B04-SH02",
+   "beat": "B04",
+   "title": "น้ำมาจากถังบนดาดฟ้า",
+   "vo": [
+    [
+     "ผู้บรรยาย",
+     "คอนโดสูงหลายแห่ง ปั๊มน้ำขึ้นไปเก็บในถังบนดาดฟ้า"
+    ]
+   ],
+   "seen": "แผนภาพบนกระดาษ ตึกผ่าซีก ปั๊มชั้นล่างส่งน้ำขึ้นท่อด้านขวาไปถังบนดาดฟ้า น้ำไหลลงทุกชั้น ป้าย ถังบนดาดฟ้า / ปั๊ม [ตัวละคร: ไม่มีคน แผนภาพ]",
+   "flag": "เป็นแผนภาพอธิบาย ไม่ใช่ตึกจริง",
+   "cast": [
+    "no person (diagram)"
+   ],
+   "kit": "new: diagram set; text in Remotion",
+   "previews": [
+    {
+     "src": "/Users/mangkornkatawong/ReelsStore/projects/ZCONDO2/previews/ZC2-SB-R3/ZC2-B04-SH02-sb-r3.png",
+     "caption": "แผนภาพตึกผ่าซีก ปั๊มชั้นล่าง ท่อขึ้นถังบนดาดฟ้า น้ำไหลลงทุกชั้น ป้ายเป็นข้อความ Remotion (ภาพใหม่ แยกจากเดิม)"
+    }
+   ],
+   "previewLabel": "ภาพนิ่งบล็อกกิ้งในลุคที่ผู้ใช้อนุมัติแล้ว (4 พ.ย. 2026) ยังไม่ใช่ plate จริง ไม่มีคำบรรยาย ไม่มีกล้องขยับ",
+   "start": 617,
+   "end": 731,
+   "clips": {
+    "draft": {
+     "src": "out/ZCONDO2-SHORT-TH/clips/ZC2-B04-SH02_draft.mp4",
+     "in": 1,
+     "out": 4.8
+    },
+    "final": {
+     "src": "out/ZCONDO2-SHORT-TH/clips/_final_cut.mp4",
+     "in": 20.567,
+     "out": 24.367,
+     "cut": true,
+     "key": "f1a7c3902bb408c0"
+    }
+   }
+  },
+  {
+   "id": "ZC2-B04-SH02b",
+   "beat": "B04",
+   "title": "ไฟดับ ปั๊มหยุด น้ำหมดถัง",
+   "vo": [
+    [
+     "ผู้บรรยาย",
+     "ไฟดับ ปั๊มก็หยุด"
+    ],
+    [
+     "ผู้บรรยาย",
+     "น้ำที่ยังไหล คือน้ำที่เหลือในถัง"
+    ],
+    [
+     "ผู้บรรยาย",
+     "หมดแล้วไม่มีใครเติม"
+    ]
+   ],
+   "seen": "ภาพใกล้ห้องปั๊มที่ฐานตึก (ภาพตัดผ่า) สายไฟขาดมีกากบาทแดง สัญลักษณ์ฟ้าผ่าสีแดง ปั๊มเป็นสีเทาหยุดนิ่ง ท่อว่างเปล่า ป้าย ปั๊ม / ไฟดับ พอถึง “หมดแล้วไม่มีใครเติม” จบด้วยท่อว่าง [ตัวละคร: ไม่มีคน แผนภาพ]",
+   "sound": "เสียงเดินนาฬิกาเริ่มที่ “หมดแล้วไม่มีใครเติม”",
+   "flag": "เป็นแผนภาพอธิบาย ไม่ใช่ตึกจริง",
+   "cast": [
+    "no person (diagram)"
+   ],
+   "kit": "new: diagram set; text in Remotion",
+   "previews": [
+    {
+     "src": "/Users/mangkornkatawong/ReelsStore/projects/ZCONDO2/previews/ZC2-SB-R3/ZC2-B04-SH02b-sb-r3.png",
+     "caption": "ภาพใกล้ห้องปั๊ม สายไฟขาด ฟ้าผ่าแดง ป้าย ปั๊ม / ไฟดับ เป็นข้อความ Remotion"
+    }
+   ],
+   "previewLabel": "ภาพนิ่งบล็อกกิ้งในลุคที่ผู้ใช้อนุมัติแล้ว (4 พ.ย. 2026) ยังไม่ใช่ plate จริง ไม่มีคำบรรยาย ไม่มีกล้องขยับ",
+   "start": 731,
+   "end": 912,
+   "clips": {
+    "draft": {
+     "src": "out/ZCONDO2-SHORT-TH/clips/ZC2-B04-SH02b_draft.mp4",
+     "in": 1,
+     "out": 7.033
+    },
+    "final": {
+     "src": "out/ZCONDO2-SHORT-TH/clips/_final_cut.mp4",
+     "in": 24.367,
+     "out": 30.4,
+     "cut": true,
+     "key": "d33313c179f7ff3b"
+    }
+   }
+  },
+  {
+   "id": "ZC2-B04-SH03",
+   "beat": "B04",
+   "title": "รองน้ำใส่ทุกอย่าง",
+   "vo": [
+    [
+     "ผู้บรรยาย",
+     "รองใส่ทุกอย่าง ถัง หม้อ ขวด แล้วปิดฝา"
+    ]
+   ],
+   "seen": "ภาพมองลงจากด้านบน พื้นครัว ถัง หม้อ ขวด เต็มน้ำทีละอย่างตามคำพูด แล้วฝาปิดสามครั้งตอน “แล้วปิดฝา” [ตัวละคร: ไม่มีคน มองลงจากด้านบน]",
+   "sound": "เสียงรองน้ำ ฝาปิดดังกึกสามครั้ง",
+   "cast": [
+    "no person (top-down)"
+   ],
+   "kit": "new props: bucket, pot, bottle, lids (kit has torch/phone/umbrella only)",
+   "previews": [
+    {
+     "src": "/Users/mangkornkatawong/ReelsStore/projects/ZCONDO2/previews/ZC2-SB-R3/ZC2-B04-SH03-sb-r3.png",
+     "caption": "มองลงจากด้านบน ถัง หม้อ ขวด ฝาปิด บนพื้นครัว"
+    }
+   ],
+   "previewLabel": "ภาพนิ่งบล็อกกิ้งในลุคที่ผู้ใช้อนุมัติแล้ว (4 พ.ย. 2026) ยังไม่ใช่ plate จริง ไม่มีคำบรรยาย ไม่มีกล้องขยับ",
+   "start": 912,
+   "end": 1066,
+   "clips": {
+    "draft": {
+     "src": "out/ZCONDO2-SHORT-TH/clips/ZC2-B04-SH03_draft.mp4",
+     "in": 1,
+     "out": 6.133
+    },
+    "final": {
+     "src": "out/ZCONDO2-SHORT-TH/clips/_final_cut.mp4",
+     "in": 30.4,
+     "out": 35.533,
+     "cut": true,
+     "key": "7e991f25bc2a3d65"
+    }
+   }
+  },
+  {
+   "id": "ZC2-B05-SH01",
+   "beat": "B05",
+   "title": "ขวดไว้ดื่ม ถังไว้ราด",
+   "vo": [
+    [
+     "ผู้บรรยาย",
+     "ขวดไว้ดื่ม ถังไว้ราดชักโครก"
+    ]
+   ],
+   "seen": "ภาพกลางจากประตูห้องน้ำ ห้องน้ำมีแต่ฝักบัว ไม่มีอ่าง ขวดน้ำเรียงบนเคาน์เตอร์อ่างล้างหน้า ถังแดงกับขันวางข้างชักโครก มีสายฉีดชำระ [ตัวละคร: ไม่มีคน อ้างอิงฉากห้องน้ำเดิมเท่านั้น]",
+   "sound": "เสียงก้องห้องน้ำ เสียงเดินนาฬิกาเบา ๆ",
+   "cast": [
+    "no person"
+   ],
+   "kit": "reference only: PL-ZCPAINT-BATHROOM (plate gallery); new set",
+   "previews": [
+    {
+     "src": "/Users/mangkornkatawong/ReelsStore/projects/ZCONDO2/previews/ZC2-SB-R3/ZC2-B05-SH01-sb-r3.png",
+     "caption": "ห้องน้ำจากหน้าประตู ขวดน้ำบนอ่างล้างหน้า ถังแดงกับขันข้างโถ"
+    },
+    {
+     "src": "/Users/mangkornkatawong/ReelsStore/projects/ZCONDO2/previews/ZC2-SB-R3/shade/SBX-B05-SH01.png",
+     "caption": "พร้อม CaptionShade แบบ band เบาที่สุดที่ผ่านของช็อตนี้ (ดูคำถาม Q-ZC2-S1)"
+    }
+   ],
+   "previewLabel": "ภาพนิ่งบล็อกกิ้งในลุคที่ผู้ใช้อนุมัติแล้ว (4 พ.ย. 2026) ยังไม่ใช่ plate จริง ไม่มีคำบรรยาย ไม่มีกล้องขยับ",
+   "start": 1066,
+   "end": 1151,
+   "clips": {
+    "draft": {
+     "src": "out/ZCONDO2-SHORT-TH/clips/ZC2-B05-SH01_draft.mp4",
+     "in": 1,
+     "out": 3.833
+    },
+    "final": {
+     "src": "out/ZCONDO2-SHORT-TH/clips/_final_cut.mp4",
+     "in": 35.533,
+     "out": 38.367,
+     "cut": true,
+     "key": "b3efd4f7aac8eadb"
+    }
+   }
+  },
+  {
+   "id": "ZC2-B05-SH02",
+   "beat": "B05",
+   "title": "เทแรงทีเดียว",
+   "vo": [
+    [
+     "ผู้บรรยาย",
+     "เทแรงทีเดียว ถ้าท่อยังดี มันลงเอง"
+    ]
+   ],
+   "seen": "ภาพกลางด้านข้าง คุณยกถังเทลงโถชักโครกทีเดียวจากระดับเอว น้ำไหลลงเองตอน “มันลงเอง” [ตัวละคร: man-crop ท่า P26 ยกถัง เทลงโถ]",
+   "sound": "เสียงเทน้ำ เสียงชักโครกกลืนน้ำ",
+   "cast": [
+    "man-crop, P26, neutral (profile; bucket at the belly then tipped = new: bucket prop, pour variant)"
+   ],
+   "kit": "kit: P26 carry; new: pour",
+   "previews": [
+    {
+     "src": "/Users/mangkornkatawong/ReelsStore/projects/ZCONDO2/previews/ZC2-SB-R3/ZC2-B05-SH02-sb-r3.png",
+     "caption": "ยกถังเทน้ำลงโถทีเดียว (ท่าเทเป็นท่าใหม่ที่เสนอให้บอส)"
+    }
+   ],
+   "previewLabel": "ภาพนิ่งบล็อกกิ้งในลุคที่ผู้ใช้อนุมัติแล้ว (4 พ.ย. 2026) ยังไม่ใช่ plate จริง ไม่มีคำบรรยาย ไม่มีกล้องขยับ",
+   "start": 1151,
+   "end": 1231,
+   "clips": {
+    "draft": {
+     "src": "out/ZCONDO2-SHORT-TH/clips/ZC2-B05-SH02_draft.mp4",
+     "in": 1,
+     "out": 3.667
+    },
+    "final": {
+     "src": "out/ZCONDO2-SHORT-TH/clips/_final_cut.mp4",
+     "in": 38.367,
+     "out": 41.033,
+     "cut": true,
+     "key": "d70519a48835ee78"
+    }
+   }
+  },
+  {
+   "id": "ZC2-B05-SH03",
+   "beat": "B05",
+   "title": "น้ำสะอาดในถังพักน้ำ",
+   "vo": [
+    [
+     "ผู้บรรยาย",
+     "ส่วนน้ำสะอาดสำรอง อยู่ในถังพักน้ำหลังชักโครก"
+    ]
+   ],
+   "seen": "ภาพแทรกใกล้ สองมือยกฝาถังพักน้ำขึ้น น้ำใสข้างในรับแสงจากหน้าต่าง [ตัวละคร: มือจาก kit (paintEdgeGrip)]",
+   "sound": "เสียงฝาเซรามิกครูด เสียงวิ้งเบา ๆ ตอนเปิดเจอ",
+   "cast": [
+    "hands only: no person"
+   ],
+   "kit": "kit: two mitten hands (openHandParts) under the lid ends; paintEdgeGrip not used (drawn fingers, UT14)",
+   "previews": [
+    {
+     "src": "/Users/mangkornkatawong/ReelsStore/projects/ZCONDO2/previews/ZC2-SB-R3/ZC2-B05-SH03-sb-r3.png",
+     "caption": "สองมือยกฝาถังพักน้ำ น้ำใสรับแสงจากหน้าต่าง"
+    }
+   ],
+   "previewLabel": "ภาพนิ่งบล็อกกิ้งในลุคที่ผู้ใช้อนุมัติแล้ว (4 พ.ย. 2026) ยังไม่ใช่ plate จริง ไม่มีคำบรรยาย ไม่มีกล้องขยับ",
+   "start": 1231,
+   "end": 1351,
+   "clips": {
+    "draft": {
+     "src": "out/ZCONDO2-SHORT-TH/clips/ZC2-B05-SH03_draft.mp4",
+     "in": 1,
+     "out": 5
+    },
+    "final": {
+     "src": "out/ZCONDO2-SHORT-TH/clips/_final_cut.mp4",
+     "in": 41.033,
+     "out": 45.033,
+     "cut": true,
+     "key": "6835db3ab8c2a51f"
+    }
+   }
+  },
+  {
+   "id": "ZC2-B05-SH04",
+   "beat": "B05",
+   "title": "ไม่ใช่ในโถ",
+   "vo": [
+    [
+     "ผู้บรรยาย",
+     "ไม่ใช่ในโถ"
+    ],
+    [
+     "ผู้บรรยาย",
+     "ถ้าน้ำใส และไม่ได้ใส่น้ำยา"
+    ]
+   ],
+   "seen": "ภาพมองลงจากด้านบน ถังพักน้ำเปิดอยู่ด้านบนมีเครื่องหมายถูก โถด้านล่างมีกากบาทตอน “ไม่ใช่ในโถ” แล้วป้ายเล็ก น้ำใส / ไม่ได้ใส่น้ำยา ขึ้นข้างถัง [ตัวละคร: ไม่มีคน]",
+   "sound": "เงียบ เสียงเดินนาฬิกาต่อ",
+   "flag": "ไม่โชว์ก้อนน้ำยาสีฟ้าในถัง",
+   "cast": [
+    "no person (top-down)"
+   ],
+   "kit": "new: top-down toilet; marks in Remotion",
+   "previews": [
+    {
+     "src": "/Users/mangkornkatawong/ReelsStore/projects/ZCONDO2/previews/ZC2-SB-R3/ZC2-B05-SH04-sb-r3.png",
+     "caption": "มองลงจากด้านบน ถังพักน้ำเปิดมีเครื่องหมายถูก โถมีกากบาท (ข้อความและเครื่องหมายเป็น Remotion)"
+    }
+   ],
+   "previewLabel": "ภาพนิ่งบล็อกกิ้งในลุคที่ผู้ใช้อนุมัติแล้ว (4 พ.ย. 2026) ยังไม่ใช่ plate จริง ไม่มีคำบรรยาย ไม่มีกล้องขยับ",
+   "start": 1351,
+   "end": 1468,
+   "clips": {
+    "draft": {
+     "src": "out/ZCONDO2-SHORT-TH/clips/ZC2-B05-SH04_draft.mp4",
+     "in": 1,
+     "out": 4.9
+    },
+    "final": {
+     "src": "out/ZCONDO2-SHORT-TH/clips/_final_cut.mp4",
+     "in": 45.033,
+     "out": 48.933,
+     "cut": true,
+     "key": "3821b91c5aa48d67"
+    }
+   }
+  },
+  {
+   "id": "ZC2-B06-SH01",
+   "beat": "B06",
+   "title": "ตู้เย็นที่ไม่เปิด",
+   "vo": [
+    [
+     "ผู้บรรยาย",
+     "ตู้เย็นถ้าไม่เปิด จะเย็นได้ราวสี่ชั่วโมง"
+    ],
+    [
+     "ผู้บรรยาย",
+     "ช่องแช่แข็งที่อัดแน่น อย่างมากราวสองวัน"
+    ]
+   ],
+   "seen": "ภาพกลาง ตู้เย็นสองประตูดับมืด มือคุณวางแนบประตูไว้ไม่เปิด วงนาฬิกาค่อย ๆ วาดขึ้นบนประตูล่าง “ราว 4 ชม.” แล้วประตูบน “อย่างมากราว 2 วัน” [ตัวละคร: man-crop ท่า P11 มือแนบประตูตู้เย็น]",
+   "sound": "ตู้เย็นเงียบ เสียงติ๊กหนึ่งครั้งต่อหนึ่งตัวเลข",
+   "cast": [
+    "man-crop, P11, worried (profile, palm flat on the fridge door)"
+   ],
+   "kit": "new: fridge set, clock chips in Remotion",
+   "previews": [
+    {
+     "src": "/Users/mangkornkatawong/ReelsStore/projects/ZCONDO2/previews/ZC2-SB-R3/ZC2-B06-SH01-sb-r3.png",
+     "caption": "ตู้เย็นดับ มือแนบประตู ป้ายเวลาวาดขึ้นทีหลัง"
+    }
+   ],
+   "previewLabel": "ภาพนิ่งบล็อกกิ้งในลุคที่ผู้ใช้อนุมัติแล้ว (4 พ.ย. 2026) ยังไม่ใช่ plate จริง ไม่มีคำบรรยาย ไม่มีกล้องขยับ",
+   "start": 1468,
+   "end": 1672,
+   "clips": {
+    "draft": {
+     "src": "out/ZCONDO2-SHORT-TH/clips/ZC2-B06-SH01_draft.mp4",
+     "in": 1,
+     "out": 7.8
+    },
+    "final": {
+     "src": "out/ZCONDO2-SHORT-TH/clips/_final_cut.mp4",
+     "in": 48.933,
+     "out": 55.733,
+     "cut": true,
+     "key": "7c8d5522c58fbcc1"
+    }
+   }
+  },
+  {
+   "id": "ZC2-B06-SH02",
+   "beat": "B06",
+   "title": "ของที่กินได้เลย กินก่อน",
+   "vo": [
+    [
+     "ผู้บรรยาย",
+     "ของในตู้เย็นที่กินได้เลย กินก่อน"
+    ]
+   ],
+   "seen": "ภาพย้อนจากในตู้เย็นมืด ประตูเปิด แสงกลางวันส่องเข้ามา มือคุณหยิบโยเกิร์ต นม ขนมปัง กล่องกับข้าวสุกจากชั้นประตู ไม่มีเนื้อดิบหรือไข่ [ตัวละคร: man-crop ท่า P16 ยื่นมือเข้าหากล้อง]",
+   "sound": "เสียงขอบยางตู้เย็นเปิด เสียงหยิบของ",
+   "flag": "มือที่เอื้อมเข้าหากล้องเป็นจุดเสี่ยง ถ้าไม่ผ่านจะเปลี่ยนเป็นมุมข้างประตู",
+   "cast": [
+    "man-crop, P16, neutral (front, reaching to the viewer; depth arm toCam)"
+   ],
+   "kit": "kit: CP-P arm depth (toCam); new: fridge interior",
+   "previews": [
+    {
+     "src": "/Users/mangkornkatawong/ReelsStore/projects/ZCONDO2/previews/ZC2-SB-R3/ZC2-B06-SH02-sb-r3.png",
+     "caption": "มองจากในตู้เย็น คุณหยิบโยเกิร์ตกับนมจากชั้นประตู"
+    }
+   ],
+   "previewLabel": "ภาพนิ่งบล็อกกิ้งในลุคที่ผู้ใช้อนุมัติแล้ว (4 พ.ย. 2026) ยังไม่ใช่ plate จริง ไม่มีคำบรรยาย ไม่มีกล้องขยับ",
+   "start": 1672,
+   "end": 1750,
+   "clips": {
+    "draft": {
+     "src": "out/ZCONDO2-SHORT-TH/clips/ZC2-B06-SH02_draft.mp4",
+     "in": 1,
+     "out": 3.6
+    },
+    "final": {
+     "src": "out/ZCONDO2-SHORT-TH/clips/_final_cut.mp4",
+     "in": 55.733,
+     "out": 58.333,
+     "cut": true,
+     "key": "d0367a41f4fffe91"
+    }
+   }
+  },
+  {
+   "id": "ZC2-B06-SH03",
+   "beat": "B06",
+   "title": "กระป๋องไว้ท้ายสุด",
+   "vo": [
+    [
+     "ผู้บรรยาย",
+     "กระป๋องไว้ท้ายสุด"
+    ]
+   ],
+   "seen": "ภาพระดับสายตาบนเคาน์เตอร์ ของจากตู้เย็นเรียงไว้ก่อน ปลากระป๋องสีแดงวางลงท้ายแถวตอน “ท้ายสุด” [ตัวละคร: มือจาก kit วางกระป๋อง]",
+   "sound": "เสียงวางกระป๋อง",
+   "cast": [
+    "hand only: no person"
+   ],
+   "kit": "kit: mitten fist (fistParts) setting the can; new: can, food props",
+   "previews": [
+    {
+     "src": "/Users/mangkornkatawong/ReelsStore/projects/ZCONDO2/previews/ZC2-SB-R3/ZC2-B06-SH03-sb-r3.png",
+     "caption": "ของจากตู้เย็นเรียงก่อน ปลากระป๋องวางท้ายสุด"
+    }
+   ],
+   "previewLabel": "ภาพนิ่งบล็อกกิ้งในลุคที่ผู้ใช้อนุมัติแล้ว (4 พ.ย. 2026) ยังไม่ใช่ plate จริง ไม่มีคำบรรยาย ไม่มีกล้องขยับ",
+   "start": 1750,
+   "end": 1799,
+   "clips": {
+    "draft": {
+     "src": "out/ZCONDO2-SHORT-TH/clips/ZC2-B06-SH03_draft.mp4",
+     "in": 1,
+     "out": 2.633
+    },
+    "final": {
+     "src": "out/ZCONDO2-SHORT-TH/clips/_final_cut.mp4",
+     "in": 58.333,
+     "out": 59.967,
+     "cut": true,
+     "key": "1ec8c18a4db08417"
+    }
+   }
+  },
+  {
+   "id": "ZC2-B07-SH01",
+   "beat": "B07",
+   "title": "เตาปิกนิก ห้ามจุด",
+   "vo": [
+    [
+     "ผู้บรรยาย",
+     "เตาแก๊สปิกนิก ห้ามจุดในห้อง"
+    ]
+   ],
+   "seen": "ภาพแทรกใกล้ กล่องเตาแก๊สปิกนิกเปิดบนเคาน์เตอร์ มือถือกระป๋องแก๊สค้างกลางอากาศตอน “ห้ามจุดในห้อง” เตาไม่ถูกจุดเลย [ตัวละคร: มือจาก kit ถือกระป๋องแก๊ส]",
+   "sound": "เสียงกระป๋องแก๊สกระทบ เสียงต่ำสั้น ๆ แล้วหยุด ไม่มีเสียงจุดไฟ",
+   "cast": [
+    "hand only: no person"
+   ],
+   "kit": "kit: mitten fist (fistParts) holding the canister (new prop); new: stove case",
+   "previews": [
+    {
+     "src": "/Users/mangkornkatawong/ReelsStore/projects/ZCONDO2/previews/ZC2-SB-R3/ZC2-B07-SH01-sb-r3.png",
+     "caption": "กล่องเตาปิกนิกเปิด มือถือกระป๋องแก๊สค้างกลางอากาศ เตาไม่ถูกจุด"
+    }
+   ],
+   "previewLabel": "ภาพนิ่งบล็อกกิ้งในลุคที่ผู้ใช้อนุมัติแล้ว (4 พ.ย. 2026) ยังไม่ใช่ plate จริง ไม่มีคำบรรยาย ไม่มีกล้องขยับ",
+   "start": 1799,
+   "end": 1882,
+   "clips": {
+    "draft": {
+     "src": "out/ZCONDO2-SHORT-TH/clips/ZC2-B07-SH01_draft.mp4",
+     "in": 1,
+     "out": 3.767
+    },
+    "final": {
+     "src": "out/ZCONDO2-SHORT-TH/clips/_final_cut.mp4",
+     "in": 59.967,
+     "out": 62.733,
+     "cut": true,
+     "key": "5fe8bfe028c0c176"
+    }
+   }
+  },
+  {
+   "id": "ZC2-B07-SH02",
+   "beat": "B07",
+   "title": "ห้องที่ปิดตาย",
+   "vo": [
+    [
+     "ผู้บรรยาย",
+     "คาร์บอนมอนอกไซด์ ฆ่าคุณได้ก่อนซอมบี้"
+    ]
+   ],
+   "seen": "ภาพกว้างถอยออก คุณเก็บกล่องเตาขึ้นชั้นบนสุด เห็นทั้งห้องเป็นกล่องปิด ประตูกระจกระเบียงปิด ตู้เตี้ยกว้างยังขวางประตูอยู่ใต้กลอน [ตัวละคร: man-crop ยกแขนเก็บกล่องขึ้นชั้นบน (เสนอท่าใหม่ให้บอส)]",
+   "sound": "ดนตรีบางเหลือเสียงหึ่งต่ำเส้นเดียว",
+   "cast": [
+    "man-crop, P08 one arm up, neutral (profile, sliding the case onto the top shelf = new pose `reach_shelf` proposed)"
+   ],
+   "kit": "new: unit wide set",
+   "previews": [
+    {
+     "src": "/Users/mangkornkatawong/ReelsStore/projects/ZCONDO2/previews/ZC2-SB-R3/ZC2-B07-SH02-sb-r3.png",
+     "caption": "ภาพกว้างทั้งห้อง คุณเก็บกล่องเตาขึ้นชั้นบน ตู้ขวางประตู ประตูระเบียงปิด (ท่าเอื้อมชั้นเป็นท่าใหม่ที่เสนอให้บอส)"
+    }
+   ],
+   "previewLabel": "ภาพนิ่งบล็อกกิ้งในลุคที่ผู้ใช้อนุมัติแล้ว (4 พ.ย. 2026) ยังไม่ใช่ plate จริง ไม่มีคำบรรยาย ไม่มีกล้องขยับ",
+   "start": 1882,
+   "end": 1979,
+   "clips": {
+    "draft": {
+     "src": "out/ZCONDO2-SHORT-TH/clips/ZC2-B07-SH02_draft.mp4",
+     "in": 1,
+     "out": 4.233
+    },
+    "final": {
+     "src": "out/ZCONDO2-SHORT-TH/clips/_final_cut.mp4",
+     "in": 62.733,
+     "out": 65.967,
+     "cut": true,
+     "key": "994ddc6da3ad5950"
+    }
+   }
+  },
+  {
+   "id": "ZC2-B07-SH03",
+   "beat": "B07",
+   "title": "กินของไม่ต้องปรุง",
+   "vo": [
+    [
+     "ผู้บรรยาย",
+     "กินของที่ไม่ต้องปรุงแทน"
+    ]
+   ],
+   "seen": "ภาพใกล้บนโต๊ะเตี้ย ฉีกถุงขนมปัง กล้วย ถั่ว ปลากระป๋อง [ตัวละคร: มือจาก kit ฉีกถุงขนมปัง]",
+   "sound": "เสียงถุงกรอบแกรบ",
+   "cast": [
+    "hands only: no person"
+   ],
+   "kit": "kit: two mitten fists (fistParts) tearing the bread bag; new: bread, banana, nuts, can",
+   "previews": [
+    {
+     "src": "/Users/mangkornkatawong/ReelsStore/projects/ZCONDO2/previews/ZC2-SB-R3/ZC2-B07-SH03-sb-r3.png",
+     "caption": "โต๊ะเตี้ย ฉีกถุงขนมปัง กล้วย ถั่ว ปลากระป๋อง"
+    }
+   ],
+   "previewLabel": "ภาพนิ่งบล็อกกิ้งในลุคที่ผู้ใช้อนุมัติแล้ว (4 พ.ย. 2026) ยังไม่ใช่ plate จริง ไม่มีคำบรรยาย ไม่มีกล้องขยับ",
+   "start": 1979,
+   "end": 2047,
+   "clips": {
+    "draft": {
+     "src": "out/ZCONDO2-SHORT-TH/clips/ZC2-B07-SH03_draft.mp4",
+     "in": 1,
+     "out": 3.267
+    },
+    "final": {
+     "src": "out/ZCONDO2-SHORT-TH/clips/_final_cut.mp4",
+     "in": 65.967,
+     "out": 68.233,
+     "cut": true,
+     "key": "c4983ae36118b537"
+    }
+   }
+  },
+  {
+   "id": "ZC2-B08-SH01",
+   "beat": "B08",
+   "title": "คืนนั้นที่ระเบียง",
+   "vo": [
+    [
+     "ผู้บรรยาย",
+     "คืนนั้นที่ระเบียง ทั้งเมืองมืดสนิท"
+    ]
+   ],
+   "seen": "กลางคืน มองจากในห้องมืดผ่านประตูกระจก คุณเป็นเงาที่ราวระเบียง เมืองข้างหลังมืด มีแสงไฟไหม้ส้มส่องจากด้านล่าง ไม่ดำจนมองไม่เห็น [ตัวละคร: man-crop เห็นด้านหลัง เป็นเงาที่ราวระเบียง]",
+   "sound": "ลมบนที่สูง ไฟปะทุไกล ๆ ก่อนเสียงพูดครึ่งวินาที ไม่มีไซเรน",
+   "cast": [
+    "man-crop, P01, neutral (back view, leaning on the rail, flat silhouette)"
+   ],
+   "kit": "kit: back view lean, FigPose.silhouette; ENV-SKY night, ENV-GLOW for the fire; new: city layers",
+   "previews": [
+    {
+     "src": "/Users/mangkornkatawong/ReelsStore/projects/ZCONDO2/previews/ZC2-SB-R3/ZC2-B08-SH01-sb-r3.png",
+     "caption": "กลางคืน คุณเป็นเงาที่ราวระเบียง เมืองมืดมีไฟไหม้ส้ม"
+    }
+   ],
+   "previewLabel": "ภาพนิ่งบล็อกกิ้งในลุคที่ผู้ใช้อนุมัติแล้ว (4 พ.ย. 2026) ยังไม่ใช่ plate จริง ไม่มีคำบรรยาย ไม่มีกล้องขยับ",
+   "start": 2047,
+   "end": 2147,
+   "clips": {
+    "draft": {
+     "src": "out/ZCONDO2-SHORT-TH/clips/ZC2-B08-SH01_draft.mp4",
+     "in": 1,
+     "out": 4.333
+    },
+    "final": {
+     "src": "out/ZCONDO2-SHORT-TH/clips/_final_cut.mp4",
+     "in": 68.233,
+     "out": 71.567,
+     "cut": true,
+     "key": "9268bdd4e3202a8e"
+    }
+   }
+  },
+  {
+   "id": "ZC2-B08-SH02",
+   "beat": "B08",
+   "title": "ไม่มีใครมาช่วย",
+   "vo": [
+    [
+     "ผู้บรรยาย",
+     "มีแต่ควันกับเปลวไฟ"
+    ],
+    [
+     "ผู้บรรยาย",
+     "ไม่มีใครมาช่วยแน่"
+    ]
+   ],
+   "seen": "ภาพกว้างข้ามราวระเบียง กล้องถอยช้า ๆ ตึกมืด เสาควัน เปลวไฟแหลมหลายจุด ตอนจบเห็นคุณตัวเล็กที่ราว [ตัวละคร: man-crop ตัวเล็ก เป็นเงา]",
+   "sound": "ลมกับไฟต่อ เสียงต่ำเย็น ๆ",
+   "cast": [
+    "man-crop, P01, neutral (back view, small, flat silhouette)"
+   ],
+   "kit": "kit: ENV-SKY, ENV-FALL:ash optional, ENV-FOG; new: smoke columns, fires",
+   "previews": [
+    {
+     "src": "/Users/mangkornkatawong/ReelsStore/projects/ZCONDO2/previews/ZC2-SB-R3/ZC2-B08-SH02-sb-r3.png",
+     "caption": "ภาพกว้างเหนือราว ตึกมืด ควัน เปลวไฟ คุณตัวเล็กที่ราว"
+    }
+   ],
+   "previewLabel": "ภาพนิ่งบล็อกกิ้งในลุคที่ผู้ใช้อนุมัติแล้ว (4 พ.ย. 2026) ยังไม่ใช่ plate จริง ไม่มีคำบรรยาย ไม่มีกล้องขยับ",
+   "start": 2147,
+   "end": 2278,
+   "clips": {
+    "draft": {
+     "src": "out/ZCONDO2-SHORT-TH/clips/ZC2-B08-SH02_draft.mp4",
+     "in": 1,
+     "out": 5.367
+    },
+    "final": {
+     "src": "out/ZCONDO2-SHORT-TH/clips/_final_cut.mp4",
+     "in": 71.567,
+     "out": 75.933,
+     "cut": true,
+     "key": "ab0a742f09d1435b"
+    }
+   }
+  },
+  {
+   "id": "ZC2-B09-SH01",
+   "beat": "B09",
+   "title": "วันที่สาม นับของที่เหลือ",
+   "vo": [
+    [
+     "ผู้บรรยาย",
+     "วันที่สาม"
+    ],
+    [
+     "ผู้บรรยาย",
+     "น้ำเหลือสองถัง"
+    ],
+    [
+     "ผู้บรรยาย",
+     "ปลากระป๋องสี่กระป๋อง"
+    ],
+    [
+     "ผู้บรรยาย",
+     "แบตเตอรี่สิบสองเปอร์เซ็นต์"
+    ]
+   ],
+   "seen": "ภาพมองลงจากด้านบน พื้นห้องวันที่ 3 ป้าย “วันที่ 3” ถังสองใบ กระป๋องสี่กระป๋อง มือถือแบต 12% ตัวเลขข้างของแต่ละอย่างนับขึ้นตามคำพูด [ตัวละคร: ไม่มีคน]",
+   "sound": "เสียงติ๊กแห้ง ๆ ทุกตัวเลข",
+   "cast": [
+    "no person (top-down)"
+   ],
+   "kit": "kit: phone prop; new: buckets x2, cans x4, numerals in Remotion",
+   "previews": [
+    {
+     "src": "/Users/mangkornkatawong/ReelsStore/projects/ZCONDO2/previews/ZC2-SB-R3/ZC2-B09-SH01-sb-r3.png",
+     "caption": "วันที่ 3 มองลงจากด้านบน ถังสองใบ กระป๋องสี่กระป๋อง มือถือ 12% (ตัวเลขเป็น Remotion)"
+    }
+   ],
+   "previewLabel": "ภาพนิ่งบล็อกกิ้งในลุคที่ผู้ใช้อนุมัติแล้ว (4 พ.ย. 2026) ยังไม่ใช่ plate จริง ไม่มีคำบรรยาย ไม่มีกล้องขยับ",
+   "start": 2278,
+   "end": 2476,
+   "clips": {
+    "draft": {
+     "src": "out/ZCONDO2-SHORT-TH/clips/ZC2-B09-SH01_draft.mp4",
+     "in": 1,
+     "out": 7.6
+    },
+    "final": {
+     "src": "out/ZCONDO2-SHORT-TH/clips/_final_cut.mp4",
+     "in": 75.933,
+     "out": 82.533,
+     "cut": true,
+     "key": "bd96540ba77399c8"
+    }
+   }
+  },
+  {
+   "id": "ZC2-B09-SH02",
+   "beat": "B09",
+   "title": "เสียงเรียกหน้าประตู",
+   "vo": [
+    [
+     "ผู้บรรยาย",
+     "แล้วก็มีเสียงเรียกหน้าประตู"
+    ]
+   ],
+   "seen": "ภาพกลางด้านข้าง คุณนั่งพื้นข้างโซฟา ห่มผ้าบาง ๆ ผมยุ่ง หนวดเคราขึ้นนิด ๆ เงยหน้าหันไปทางประตู แสงเทาของวันที่ 3 [ตัวละคร: man-crop เคราขึ้นนิดหน่อย ท่า P33 สีหน้า tired ห่มผ้า]",
+   "sound": "ดนตรีออกหมด เหลือเสียงห้อง",
+   "cast": [
+    "man-crop with head.facial stubble, P33, tired (profile, thin blanket = new prop)"
+   ],
+   "kit": "kit: motion turn-head-left/right toward the door",
+   "changed": "ตัวเอกเป็นผู้ชาย เคราขึ้นนิดหน่อย (Q-ZC2-F1)",
+   "previews": [
+    {
+     "src": "/Users/mangkornkatawong/ReelsStore/projects/ZCONDO2/previews/ZC2-SB-R3/ZC2-B09-SH02-sb-r3.png",
+     "caption": "วันที่ 3 นั่งพื้นหน้าโซฟา ห่มผ้า เคราขึ้น หันไปทางประตู"
+    }
+   ],
+   "previewLabel": "ภาพนิ่งบล็อกกิ้งในลุคที่ผู้ใช้อนุมัติแล้ว (4 พ.ย. 2026) ยังไม่ใช่ plate จริง ไม่มีคำบรรยาย ไม่มีกล้องขยับ",
+   "start": 2476,
+   "end": 2543,
+   "clips": {
+    "draft": {
+     "src": "out/ZCONDO2-SHORT-TH/clips/ZC2-B09-SH02_draft.mp4",
+     "in": 1,
+     "out": 3.233
+    },
+    "final": {
+     "src": "out/ZCONDO2-SHORT-TH/clips/_final_cut.mp4",
+     "in": 82.533,
+     "out": 84.767,
+     "cut": true,
+     "key": "c620ff7822c83a08"
+    }
+   }
+  },
+  {
+   "id": "ZC2-B09-SH03",
+   "beat": "B09",
+   "title": "มีใครอยู่ไหม",
+   "vo": [
+    [
+     "เสียงหน้าประตู (ผู้ชาย อู้อี้)",
+     "มีใครอยู่ไหม"
+    ]
+   ],
+   "seen": "มุมประตูเดิม กล้องดันเข้าช้ามาก ไม่มีอะไรขยับ แสงทางเดินลอดใต้ประตูเป็นเส้นบาง ถุงขยะยังวางอยู่ ไม่เห็นใครข้างนอก [ตัวละคร: ไม่มีคน]",
+   "sound": "เสียงเรียกเบา ๆ ครั้งเดียวผ่านประตู แล้วเงียบสนิท 1.5 วินาที",
+   "cast": [
+    "no person"
+   ],
+   "kit": "set reuse: unit door vantage, day-3 light",
+   "previews": [
+    {
+     "src": "/Users/mangkornkatawong/ReelsStore/projects/ZCONDO2/previews/ZC2-SB-R3/ZC2-B09-SH03-sb-r3.png",
+     "caption": "มุมประตูเดิม แสงทางเดินเป็นเส้นใต้ประตู ถุงขยะยังอยู่ ไม่มีใคร"
+    }
+   ],
+   "previewLabel": "ภาพนิ่งบล็อกกิ้งในลุคที่ผู้ใช้อนุมัติแล้ว (4 พ.ย. 2026) ยังไม่ใช่ plate จริง ไม่มีคำบรรยาย ไม่มีกล้องขยับ",
+   "start": 2543,
+   "end": 2620,
+   "clips": {
+    "draft": {
+     "src": "out/ZCONDO2-SHORT-TH/clips/ZC2-B09-SH03_draft.mp4",
+     "in": 1,
+     "out": 3.567
+    },
+    "final": {
+     "src": "out/ZCONDO2-SHORT-TH/clips/_final_cut.mp4",
+     "in": 84.767,
+     "out": 87.333,
+     "cut": true,
+     "key": "e797fe97dafc01ab"
+    }
+   }
+  },
+  {
+   "id": "ZC2-B09-SH04",
+   "beat": "B09",
+   "title": "พวกมันไม่พูด",
+   "vo": [
+    [
+     "ผู้บรรยาย",
+     "พวกมันไม่พูด"
+    ]
+   ],
+   "seen": "ภาพใกล้ ตาคุณเลื่อนไปทางประตู [ตัวละคร: man-crop เคราขึ้นนิดหน่อย ตาเลื่อนไปทางประตู]",
+   "sound": "เสียงเบสต่ำตูมเดียว",
+   "cast": [
+    "man-crop with stubble, P01, tired (eyes only move to the door)"
+   ],
+   "kit": "kit: template talkingCloseUp (no talk), face look toward the door",
+   "previews": [
+    {
+     "src": "/Users/mangkornkatawong/ReelsStore/projects/ZCONDO2/previews/ZC2-SB-R3/ZC2-B09-SH04-sb-r3.png",
+     "caption": "ใกล้มาก ตาเลื่อนไปทางประตู เคราขึ้นนิดหน่อย"
+    }
+   ],
+   "previewLabel": "ภาพนิ่งบล็อกกิ้งในลุคที่ผู้ใช้อนุมัติแล้ว (4 พ.ย. 2026) ยังไม่ใช่ plate จริง ไม่มีคำบรรยาย ไม่มีกล้องขยับ",
+   "start": 2620,
+   "end": 2675,
+   "clips": {
+    "draft": {
+     "src": "out/ZCONDO2-SHORT-TH/clips/ZC2-B09-SH04_draft.mp4",
+     "in": 1,
+     "out": 2.833
+    },
+    "final": {
+     "src": "out/ZCONDO2-SHORT-TH/clips/_final_cut.mp4",
+     "in": 87.333,
+     "out": 89.167,
+     "cut": true,
+     "key": "0d93fa67577ea9a8"
+    }
+   }
+  },
+  {
+   "id": "ZC2-B10-SH01",
+   "beat": "B10",
+   "title": "คุณจะทำยังไง",
+   "vo": [
+    [
+     "ผู้บรรยาย",
+     "คุณจะเปิดประตู ส่งเสียงตอบ"
+    ],
+    [
+     "ผู้บรรยาย",
+     "หรือเงียบไว้?"
+    ]
+   ],
+   "seen": "ภาพกว้างสองชั้น คุณอยู่หน้าซ้าย ประตูกับตู้ที่ดันไว้และถุงขยะอยู่ลึกเข้าไป ป้าย เปิดประตู / ส่งเสียงตอบ / เงียบไว้ ขึ้นตามคำพูด ค้างไว้ราว 3 วินาที [ตัวละคร: man-crop นั่งหน้าซ้าย หันเข้าหาประตู]",
+   "sound": "เกือบเงียบ แล้วเคาะเบา ๆ สามครั้ง จบโดยไม่คลี่คลาย",
+   "cast": [
+    "man-crop with stubble, P33, worried (profile facing the door, foreground left)"
+   ],
+   "kit": "kit: depth stack; choice labels in Remotion",
+   "previews": [
+    {
+     "src": "/Users/mangkornkatawong/ReelsStore/projects/ZCONDO2/previews/ZC2-SB-R3/ZC2-B10-SH01-sb-r3.png",
+     "caption": "คุณอยู่หน้าซ้าย ประตูกับตู้ลึกเข้าไป ป้ายตัวเลือกเป็น Remotion"
+    }
+   ],
+   "previewLabel": "ภาพนิ่งบล็อกกิ้งในลุคที่ผู้ใช้อนุมัติแล้ว (4 พ.ย. 2026) ยังไม่ใช่ plate จริง ไม่มีคำบรรยาย ไม่มีกล้องขยับ",
+   "start": 2675,
+   "end": 2877,
+   "clips": {
+    "draft": {
+     "src": "out/ZCONDO2-SHORT-TH/clips/ZC2-B10-SH01_draft.mp4",
+     "in": 1,
+     "out": 7.733
+    },
+    "final": {
+     "src": "out/ZCONDO2-SHORT-TH/clips/_final_cut.mp4",
+     "in": 89.167,
+     "out": 95.9,
+     "cut": true,
+     "key": "9e23a7c8d3cfb766"
+    }
+   }
+  }
+ ],
+ "looks": {
+  "L1": {
+   "src": "/Users/mangkornkatawong/ReelsStore/projects/ZCONDO2/previews/ZC2-SB-R3/ZC2-B01-SH02-sb-r3.png",
+   "caption": "ทางเดินคอนโด ลุค kit (อนุมัติแล้ว)"
+  },
+  "L2": {
+   "src": "/Users/mangkornkatawong/ReelsStore/projects/ZCONDO2/previews/ZC2-SB-R3/ZC2-B02-SH05-sb-r3.png",
+   "caption": "ห้องพัก ตู้กั้นประตู แสงเช้า ลุค kit (อนุมัติแล้ว)"
+  }
+ },
+ "finalCut": {
+  "src": "out/ZCONDO2-SHORT-TH/clips/_final_cut.mp4",
+  "frames": 2877
+ }
+}

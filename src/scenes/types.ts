@@ -61,7 +61,7 @@ export type AudioTrack = {
   duckUnderNarration?: number;
 };
 /** `lower` puts the block's bottom edge at y 1240 of 1920 (production-requirements caption-safe box; MK-WF-DEP-08). */
-export type CaptionStyle = {preset?: 'outline' | 'box' | 'none'; position?: 'bottom' | 'middle' | 'top' | 'lower'; /** Composition y (px from the top) of the caption block's bottom edge; overrides `position` when set. */ bottomEdgeY?: number; /** Composition y of the caption block's vertical CENTRE (a 1-, 2- or 3-line cue grows symmetrically about it); overrides `bottomEdgeY` and `position`. Pair it with `CaptionShade centerY` (src/scenes/captionLayout.ts). */ centerY?: number; color?: string; scale?: number};
+export type CaptionStyle = {preset?: 'outline' | 'box' | 'none'; position?: 'bottom' | 'middle' | 'top' | 'lower'; /** Composition y (px from the top) of the caption block's bottom edge; overrides `position` when set. */ bottomEdgeY?: number; /** Composition y of the caption block's vertical CENTRE (a 1-, 2- or 3-line cue grows symmetrically about it); overrides `bottomEdgeY` and `position`. Pair it with `CaptionShade centerY` (src/scenes/captionLayout.ts). */ centerY?: number; color?: string; scale?: number; /** `outline` only, all optional (unset = the original 7 px #3d3c53 stroke and `0 4px 0 #3d3c53` shadow): stroke width in px (centred, paint-order stroke fill, so half shows), stroke colour, CSS text-shadow list (e.g. a soft dark halo). */ strokeWidth?: number; strokeColor?: string; textShadow?: string};
 /** Channel label (false hides it) and the scene progress bar. */
 export type ChromeStyle = {channelLabel?: string | false; progressBar?: boolean};
 /**
