@@ -3,7 +3,7 @@
 import {createElement, Fragment} from 'react';
 import {Composition, registerRoot} from 'remotion';
 import {FORMATS} from '../../videos/types';
-import {ZcPovB02, ZcGrip, ZcSetB04, ZcSetB04Cap, ZcSetB04Diagram, ZcSetB06, ZcSetB07, ZcSetB08, ZcSetB10} from './ZcSetSheet';
+import {ZcPovB02, ZcGrip, ZcSetB04, ZcSetB04Cap, ZcSetBackdrop, ZcSetB04Diagram, ZcSetB06, ZcSetB07, ZcSetB08, ZcSetB10} from './ZcSetSheet';
 
 const {width, height, fps} = FORMATS.short;
 const dur = (n: number) => ({width, height, fps, durationInFrames: n});
@@ -13,6 +13,7 @@ registerRoot(() =>
     null,
     createElement(Composition, {id: 'ZCPAINT-SET-B04-SH01', component: ZcSetB04, ...dur(90)}),
     createElement(Composition, {id: 'ZCPAINT-SET-B04-SH01-CAP', component: ZcSetB04Cap, ...dur(90)}),
+    createElement(Composition, {id: 'ZCPAINT-SET-CAPTION-BACKDROP', component: ZcSetBackdrop, ...dur(60)}),
     createElement(Composition, {id: 'ZCPAINT-SET-B04-SH02-TH', component: ZcSetB04Diagram, ...dur(210)}),
     createElement(Composition, {id: 'ZCPAINT-SET-B06-SH01', component: ZcSetB06, ...dur(90)}),
     createElement(Composition, {id: 'ZCPAINT-SET-B07-SH02', component: ZcSetB07, ...dur(90)}),
