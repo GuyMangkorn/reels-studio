@@ -9,7 +9,7 @@
 
 | Deliverable | Stage / Next owner | Script | Evidence / open items |
 | --- | --- | --- | --- |
-| EDU-EP01-SHORT | W5.1 timed sheets ready-for-dev (EDU-SHEETS-R1.1, 1860 f = 62.00 s); next W5.2 Boss | [research.md](research.md); [EDU-SCRIPT-R1.1](short/script.md) ([fact-check](short/fact-check.md)) | voice: Achernar candidate v1, **audio-measured** 59.53 s ([narration-measure.json](short/narration-measure.json), store `projects/EDU/audio/voice-lock-v1/`); open: user approval W4.3, L06 gasp performer, Film sets the jolt gap (3.02 s placeholder) |
+| EDU-EP01-SHORT | W5.1 timed sheets ready-for-dev (EDU-SHEETS-R1.1, 1860 f = 62.00 s); W5.2 Boss picture draft built 2026-11-04 (composition `EDU-EP01-SHORT`, `src/videos/edu-ep01/index.ts`, stills only, no sound/captions; viewer check pending); next W5.3 Editor | [research.md](research.md); [EDU-SCRIPT-R1.1](short/script.md) ([fact-check](short/fact-check.md)) | voice: Achernar candidate v1, **audio-measured** 59.53 s ([narration-measure.json](short/narration-measure.json), store `projects/EDU/audio/voice-lock-v1/`); open: user approval W4.3, L06 gasp performer, Film sets the jolt gap (3.02 s placeholder) |
 
 ## Handoff log
 

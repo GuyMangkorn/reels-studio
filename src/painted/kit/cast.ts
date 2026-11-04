@@ -123,8 +123,10 @@ export type FigPose = {
   run?: number;
   /** Whole figure rotated about its ground contact: -1..1, +1 = lying with the head toward screen left (CCW), -1 = head toward screen right. Arm targets stay in the unrotated body frame. */
   lie?: number;
-  /** Whole figure raised off the ground, metres (jump, fall); the ground shadow stays. */
+  /** Whole figure raised off the ground, metres (jump, fall); the ground shadow stays unless `noShadow`. */
   lift?: number;
+  /** Skip the soft ground shadow (and its dark core): a figure with no ground under it (the dream fall). Default absent = shadow as before. */
+  noShadow?: boolean;
   /**
    * Profile only: paint the far arm BEFORE the legs, so the near thigh and the torso hide a hanging far hand (default absent: after
    * the legs, as the WFOG cast always drew it, which leaves a hand floating over the thigh). The pose library sets it in every profile.
@@ -329,8 +331,8 @@ export const drawFigure = (p: Painter, def: CastDef, g: Pt, unit: number, pose: 
   const lie = Math.max(-1, Math.min(1, pose.lie ?? 0)), lieA = Math.abs(lie);
   const shX = g[0] - Math.sign(lie) * 0.5 * Ht * lieA * unit, shW = (profile ? 0.32 : 0.26) + (0.52 * Ht - (profile ? 0.32 : 0.26)) * lieA;
   const sh = ell(shX, g[1] + 0.01 * unit, shW * (L ? 1.15 : 1) * unit, (L ? 0.07 : 0.06) * (1 + lieA) * unit, 16);
-  if (!pose.seated && !L) washAt(p, seed * 1000 + 999, sil ?? '#1e2324', 70, sh, 0.5, 0.3);
-  if (!pose.seated && L) {
+  if (!pose.seated && !pose.noShadow && !L) washAt(p, seed * 1000 + 999, sil ?? '#1e2324', 70, sh, 0.5, 0.3);
+  if (!pose.seated && !pose.noShadow && L) {
     glaze(p, seed * 1000 + 999, '#0e1213', 120, sh, {border: 0.1, bleed: 0.15});
     glaze(p, seed * 1000 + 998, '#07090a', 160, ell(shX, g[1] + 0.005 * unit, ((profile ? 0.22 : 0.2) + (0.4 * Ht - (profile ? 0.22 : 0.2)) * lieA) * unit, 0.03 * (1 + lieA) * unit, 16), {border: 0.1, bleed: 0.08});
   }
