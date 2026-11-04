@@ -126,3 +126,13 @@ test('polarUnion merges a skull and a hair cap into one outline; splitByCurve cu
   assert.equal(s.length, 5); // ends, the spike tip and its two feet
   assert.ok(s.some(([, y]) => y === 0.5));
 });
+
+test('four views: squareToCam shows the asked view to the camera at any set angle, view4At snaps in 90 degree steps', async () => {
+  const {figureView4, squareToCam, view4At} = await import('../src/painted/kit/views');
+  const {orbitYCam} = await import('../src/painted/kit/ycam');
+  for (const az of [0, 45, 135, 225, 300]) {
+    const cam = orbitYCam([0, 0, 0], 3, (az * Math.PI) / 180, 1.5, 900, 900);
+    for (const v of ['front', 'right', 'back', 'left'] as const) assert.equal(figureView4(cam, [0, 0, 0], squareToCam(cam, [0, 0, 0], v)), v, `az ${az} ${v}`);
+  }
+  assert.deepEqual([0, 44, 46, 134, 136, -46, -44, 200].map(view4At), ['front', 'front', 'right', 'right', 'back', 'left', 'front', 'back']);
+});

@@ -56,3 +56,28 @@ export const figureView = (cam: YCam, at: V3, facing: [number, number], opts: {p
   if (opts.prev && opts.hysteresis && next !== opts.prev && sectorMargin(opts.prev, a) > -opts.hysteresis) return opts.prev;
   return next;
 };
+
+// --- four views only (user, 4 Nov 2026: "only 4 angles, play with the set at 45 degrees") ------------------------------------
+// The default for painted characters: front, right, back, left and nothing between. Depth comes from the set and the camera
+// (`ycam.ts`): stand the camera at an angle to the set and square the figure up with the lens (`squareToCam`), so the figure reads
+// in a plain view while the set runs diagonally through the frame. Example: spike `SET45-*` in the kit test set TESTSET-CROSSROADS.
+export type View4 = 'front' | 'right' | 'back' | 'left';
+export const VIEW4_NAMES: View4[] = ['front', 'right', 'back', 'left'];
+/** Nearest of the four views for an angle in degrees (90 degree steps; 0 = facing the camera, +90 = facing the screen right). */
+export const view4At = (deg: number): View4 => VIEW4_NAMES[((Math.round(deg / 90) % 4) + 4) % 4];
+/** `figureView` limited to the four views. */
+export const figureView4 = (cam: YCam, at: V3, facing: [number, number]): View4 => view4At(viewAngle(cam, at, facing));
+/**
+ * The facing ([x, z] horizontal world direction) that shows a figure at `at` in `view` to a camera standing at (`cam.x`, `cam.z`):
+ * `front` faces the lens, `back` faces away, `right` / `left` stand side-on facing the screen right / left. Fix it for a shot from
+ * the mid-shot camera; a camera arc of up to about +-40 degrees then keeps the same view.
+ */
+export const squareToCam = (cam: Pick<YCam, 'x' | 'z'>, at: V3, view: View4): [number, number] => {
+  const dx = cam.x - at[0], dz = cam.z - at[2], n = Math.hypot(dx, dz) || 1, tx = dx / n, tz = dz / n;
+  switch (view) {
+    case 'front': return [tx, tz];
+    case 'back': return [-tx, -tz];
+    case 'right': return [tz, -tx];
+    case 'left': return [-tz, tx];
+  }
+};
