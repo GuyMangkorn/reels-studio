@@ -153,3 +153,39 @@ Findings:
 - [short/voice-regap.py](short/voice-regap.py) now takes an optional 4th argument (JSON of raw silence starts -> line) and merges silences less than 0.01 s apart; default table (Achernar) unchanged. Kore table = `lineGaps` in [short/narration-measure-kore.json](short/narration-measure-kore.json). Line gaps were identified with Whisper word order (Thai tokens fragmented, used only to match gap order).
 - Store: `projects/EDU/audio/voice-lock-v1/EDU-EP01-SHORT-narration-kore-v1.wav` (+ `.json` measure), `...-raw-gemini-kore.wav/.json`. Not listened to by an agent; W4.3 not ticked.
 - **Silence audit (Editor, 2026-11-04, user: "lingering silence somewhere")**: `silencedetect` on `kore-v1` at -45 dB / 0.3 s finds only intended silences: lead 0.38 s, 13 line gaps 0.31-0.33 s (measure JSON 0.26-0.30 s), reveal pauses 0.565 s (L08->L09 at 27.67 s, L11->L12 at 39.51 s), **jolt gap 3.01 s (L05 end 16.33 s -> L07 onset 19.31 s, 2.99 s by line times)**, tail 0.65 s. At -38 dB no silence of 0.2 s or more sits inside any line; at -30 dB the longest in-line holds are 0.43 s (L11 comma at 34.3 s) and 0.35 s (L01 at 1.0 s), ordinary commas. No dead air in the raw take (all raw gaps map to the regap table). No v2 built; nothing to cut. The only silence a listener would call lingering is the 3 s jolt placeholder (Film retimes it in W5.1); the two 0.55 s reveal pauses are the next longest.
+
+## W5.1 timed scene sheets (2026-11-04, Film)
+
+- Output: [short/scene-sheets.md](short/scene-sheets.md) EDU-SHEETS-R1; `review-rows.json` start/end (frames) and `timingEstimated: false`, facts line updated.
+- Method: frames = round(s x 30) from [narration-measure-kore.json](short/narration-measure-kore.json); shot start = line (or phrase) onset - 4 f. Phrase onsets inside L05, L07, L11, L13, L15 come from `ffmpeg silencedetect noise=-36dB d=0.07` on `kore-v1.wav` (estimate +-4 f; Editor confirms with Whisper words). The measure file has line-level times only.
+- Result: B01-SH02 (37 f) and B04-SH01 (30 f) are the tightest shots; B05-SH04 (145 f) the longest, because L11 is one 4.6 s phrase. Total 1860 f = 62.00 s; target 60 s missed by 2 s, limit 63 s met.
+- Jolt gap: kept 2.99 s; fall 45 f + silence 15 f + jolt 29 f = 89 f. The library has `pulse_underwater-soft-thump_01` for the thump, so the brief's NEEDS-GEN thump is dropped. Wind and fall accent come from existing library files (`outdoor_wind-open-roundabout_01`, `whoosh_air-swish-rising_01`). Still NEEDS-GEN: warm pad (matched head/tail), plucked notes, the gasp.
+- Gasp: separate character voice via Gemini TTS `<gasp>` tag (gemini-tts skill), not Kore. Untested; the tag may return words.
+- Caption: shade ladder at W5.3; all look frames fail `caption-zone.py`, so every spoken shot is shaded.
+- Open (Film, for Boss/Editor): `new: sit on bed edge` and the 10 f nod on the bowed head are not in the kit; both are in the Boss list.
+
+## W5.1 Editor jobs: L06 gasp and phrase-onset check (Editor, 2026-11-04, against EDU-SHEETS-R1)
+
+- Gasp: Gemini TTS (gemini-tts skill), text `<gasp>` only, style `young woman suddenly startled awake, one sharp inhale through the mouth, no words, very short`, three prebuilt voices other than Kore/Achernar: Aoede, Leda, Zephyr (3 requests; raw takes 0.72-0.92 s in `out/edu-gasp/gasp-<Voice>.wav` + cache `$REELS_STORE/cache/tts/`). Not listened to by a human; ranked by Whisper (no words) and by the energy envelope.
+- Trim: Aoede 0.21-0.63 s of the raw take (0.42 s), Leda 0.07-0.50 s (0.43 s), Zephyr 0.07-0.55 s (0.48 s); 10 ms fade in, 80 ms fade out, no atempo, mono to stereo 48 kHz 24-bit, peak -1.2 dBFS (library sfx master rule; sheet asked -3 dBFS peak and 3 dB under the narrator, so mix it at timeline volume about -2 dB for peak and about -3 dB for level). Mean level -15.7 / -15.2 / -17.9 dB against the Kore narration's mean -16.1 dB and peak -1.5 dB.
+- Whisper on the raw takes: Aoede no words (clean gasp, onset 0.24 s, decays by 0.5 s); Leda hears a Japanese "ha" syllable (breath-like, still no Thai or English word); Zephyr hears "Oh" (word-like, ranked last).
+- Filed: `~/ReelsStore/library/sound/sfx/vocal/vocal_gasp-young-woman_01` (Aoede, best), `_02` (Leda), `_03` (Zephyr) with sidecars and INDEX rows. New category `vocal` added to the library README.
+- Phrase onsets, method: Whisper `medium` (faster-whisper, Thai, decoded numpy from the Kore take) syllable starts, plus a 10 ms RMS envelope (-40 dB crossing after at least 50 ms of silence). Whisper's first token often snaps to the end of the previous segment, so it reads early where the gap is long; the envelope onset reads late where the phrase starts softly. Both are quoted below; a frame is flagged only when it differs by more than 3 f.
+
+| Onset | Sheet f | Whisper f | Envelope f | Diff > 3 f? | Corrected f |
+| --- | --- | --- | --- | --- | --- |
+| L05 p1 | 335 | 333 | 335 | no | |
+| L05 p2 | 415 | 410 (snapped to prior end) | 414 | no | |
+| L07 p1 | 579 | 579 | 580 | no | |
+| L07 p2 | 613 | 617 | 616 (loud body from f622) | yes, +3 to +4 | 617 |
+| L11 p1 | 1012 | 1012 | 1012 | no | |
+| L11 p2 | 1157 | 1155 | 1157 | no | |
+| L13 p1 | 1273 | 1274 | 1274 | no | |
+| L13 p2 (dumbbell, "และ") | 1417 | 1415 (snapped) | 1420 | no, borderline +3 | 1419-1420 suggested |
+| L15 p1 | 1580 | 1586 | 1590 (faint noise from f1580, speech from f1590) | yes, +6 to +10 | 1586 |
+| L15 p2 | 1641 | 1641 | 1641 | no | |
+| L13 cup "คาเฟอีน" | 1333 | 1334 | 1333 | no | |
+| L13 scribble "ความเครียด" | 1359 | 1358 | 1359 | no | |
+| L13 moon+clock "การอดนอน" | 1387 | 1390 | 1390 | no, borderline +3 | 1390 suggested |
+
+- L15 p1 and L07 p2: the sheet onset sits on a faint low-level breath (-41 to -46 dB) that precedes the word by 0.2 to 0.3 s. For a shot that starts 4 f before the phrase, Film decides whether to move; L15 p1 would move B07-SH02 start from 1576 to about 1582 (7 f shorter on the shot before and longer after). Sheet not edited.

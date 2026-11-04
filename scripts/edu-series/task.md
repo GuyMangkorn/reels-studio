@@ -4,7 +4,7 @@ Record: [delivery.md](delivery.md) · Updated: 2026-11-04, Editor (W4.1-W4.2, W1
 
 ## EDU-EP01-SHORT
 
-**Now:** W4 passed (user, 2026-11-04): voice locked = Gemini TTS Kore v1, 61.97 s. **Next:** W5.1 Film timed scene sheets from `short/narration-measure-kore.json` (retime the 3 s jolt gap L05-L07; keep total <= 63 s)
+**Now:** W5.1 written (Film, 2026-11-04): [scene-sheets.md](short/scene-sheets.md) EDU-SHEETS-R1, 23 shots, 1860 f = 62.00 s, jolt gap kept 2.99 s. **Next:** coordinator publishes the page (review page: pending), then W5.2 Boss assets and plates; Editor generates the L06 gasp (separate character voice)
 
 - [x] W0 Ideation
   - [x] W0.1 Preaw concepts (concepts.md R1)
@@ -29,7 +29,7 @@ Record: [delivery.md](delivery.md) · Updated: 2026-11-04, Editor (W4.1-W4.2, W1
   - [x] W4.2 Narration generated and measured: `projects/EDU/audio/voice-lock-v1/EDU-EP01-SHORT-narration-lock-v1.wav`, 59.53 s, -16.2 LUFS, measure file `short/narration-measure.json` (audio-measured)
   - [x] W4.3 User approved the voice: Kore v1 (`projects/EDU/audio/voice-lock-v1/EDU-EP01-SHORT-narration-kore-v1.wav`, 61.97 s, -16.1 LUFS); Achernar kept as alternative (user, 2026-11-04). 3 s gap after L05 left for Film (W5.1)
 - [ ] W5 Draft
-  - [ ] W5.1 Film timed scene sheets
+  - [x] W5.1 Film timed scene sheets: [scene-sheets.md](short/scene-sheets.md) EDU-SHEETS-R1 `ready-for-dev`, 23 shots, 1860 f (62.00 s, limit 63 s), jolt gap kept at 2.99 s (no voice regeneration), L06 = separate character voice, caption-shade ladder 0.5/0.4/0.3 at W5.3; `review-rows.json` start/end timed; review page: pending
   - [ ] W5.2 Boss assets and plates (shot groups 0/G)
   - [ ] W5.3 Draft passed (0/N shots)
 - [ ] W6 Final passed (0/N shots)
