@@ -111,3 +111,4 @@ Kit intake (KIT-P01) at delivery: new `pyjama` outfit, any new pose/motion (jolt
 ## Change log
 
 - **EDU-BRIEF-R1 (2026-11-04, Film W2.1):** first brief from script R1.1; cast changed from W0.2 `girl-school` to `woman-bob` pending Q1.
+- **W3.1 look frames v1 (2026-11-04, Film):** LF01–LF05 painted in `src/painted/edu01/` (no brief revision: decisions unchanged). Q1 settled by the user: `woman-bob + new: pyjama`. Proposed deviation awaiting the user: pyjama with long trousers instead of shorts (rig has no shorts). LF04 places the dumbbell bottom-left under the caption band (SH02 row text) and the row of three at y 360–720 (was est y 300–520). Measured numbers and caption-zone results: [build-notes](../build-notes.md#w31-look-frames-v1-2026-11-04-film).
