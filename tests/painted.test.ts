@@ -75,6 +75,8 @@ test('B_loop endHoldSec 2 freezes the 90 f final scene at local 30 instead of lo
   assert.equal(at(300, {holdSec: 2}), at(300));
 });
 
+// EG-EP02 SS-R2.3: S03-B01-SH02 and S04-B01-SH01 are one camera chain at 0.92-0.94 (Boss extends sky/walls past the plate); every other camera stays >= 1.
+const EG2_SOI_CHAIN = ['EG2-S03-B01-SH02', 'EG2-S04-B01-SH01'];
 test('non-painted scenes paint nothing; shot cameras are finite and respect clock freezes', () => {
   const mixed: Timeline = [{durationSec: 1, bg: 'none', actors: [], subtitle: ''}, painted([{shot: 'SHIPWRECK-SH01', atSec: 0}])];
   validateTimeline(mixed);
@@ -83,7 +85,7 @@ test('non-painted scenes paint nothing; shot cameras are finite and respect cloc
   for (const id of paintedShotIds) {
     for (const tl of [0, 1, 3, 6]) {
       const c = cameraAt(id, tl);
-      assert.ok([c.s, c.fx, c.fy, c.dx, c.dy].every(Number.isFinite) && c.s >= 1, `${id} camera at ${tl}`);
+      assert.ok([c.s, c.fx, c.fy, c.dx, c.dy].every(Number.isFinite) && c.s >= (EG2_SOI_CHAIN.includes(id) ? 0.9 : 1), `${id} camera at ${tl}`);
     }
     assert.ok(paintedShots[id].serves.length > 0, `${id} names the shots it serves`);
   }

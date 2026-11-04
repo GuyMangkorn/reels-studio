@@ -1,7 +1,7 @@
 import {test} from 'node:test';
 import assert from 'node:assert/strict';
 import {poundJoltFrames, poundJoltPlateFrames, joltAt, B02_TIMING} from '../src/painted/zcpaint/jolts';
-import {shadeGate} from '../src/painted/kit/screen';
+import {captionInk, shadeGate, shadeLines} from '../src/painted/kit/screen';
 import {paintedStateAt} from '../src/scenes/painted';
 import {timelineFrames} from '../src/scenes/timeline';
 import type {Timeline} from '../src/scenes/types';
@@ -41,6 +41,23 @@ test('ZC-CAPSHADE is cue-gated: nothing without cues, on from the first cue to 6
   assert.equal(shadeGate(4 + 6 / 30 + 4 / 30, cues, 30), 0);
   assert.equal(shadeGate(10, cues, 30), 0);
   assert.equal(shadeGate(3.9, cues, 30), shadeGate(3.9, cues, 30));
+});
+
+test('caption backdrop centres on the glyphs and fits the lines (production-requirements#caption-backdrop)', () => {
+  // measured ink: WFOG-EP01-SHORT (bottom 1240) f20 one line 1172-1212, f2760 two lines 1085-1212;
+  // ZCPAINT-SET-CAPTION-BACKDROP (bottom 1248, tone mark) f45 one line 1168-1220, f15 two lines 1084-1220
+  const near = (box: {center: number}, top: number, bottom: number) => Math.abs(box.center - (top + bottom) / 2) <= 6;
+  const one = captionInk(1240, 1), two = captionInk(1240, 2);
+  assert.ok(near(one, 1172, 1212) && near(two, 1085, 1212));
+  assert.ok(near(captionInk(1248, 1), 1168, 1220) && near(captionInk(1248, 2), 1084, 1220));
+  assert.ok(two.bottom - two.top > one.bottom - one.top + 80); // one line gets a one-line shade, not a two-line one
+  const cues = [[1, 2, 2], [2, 3, 1], [4, 5, 1]] as const;
+  assert.equal(shadeLines(0, cues), 2);
+  assert.equal(shadeLines(1.5, cues), 2);
+  assert.equal(shadeLines(2, cues), 2); // back-to-back: eases from 2 ...
+  assert.ok(shadeLines(2 + 2 / 30, cues) < 2 && shadeLines(2 + 2 / 30, cues) > 1);
+  assert.equal(shadeLines(2 + 4 / 30, cues), 1); // ... to 1 over the 4 f ramp
+  assert.equal(shadeLines(4, [[1, 2, 2], [4, 5, 1]]), 1); // after a gap the shade has faded: no ease
 });
 
 import {track, trackHand, trackPt} from '../src/painted/zcpaint/pose';

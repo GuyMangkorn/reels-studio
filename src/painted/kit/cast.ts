@@ -80,6 +80,10 @@ export type FigPose = {
   view: 'front' | 'left' | 'right' | 'back';
   /** Hood up (`gear.collar.kind` `hood`; any view): the hair is covered by a hood in the collar colour. Default absent = hood down, bunched at the neck. */
   hoodUp?: boolean;
+  /** Hood being pulled up 0..1 (back view only, `hood-pull` motion): the bunched hood rises from the neck over the head and the hair shows above its rim; 1 = `hoodUp`. */
+  hoodRise?: number;
+  /** Back view, hood up: `'drape'` keeps the cowl that falls over the nape to the shoulders (head-only close shots); absent = neck mode, the neck column in the hood colour and nothing wider than the torso below the hood (SS-R2.5). */
+  cowl?: 'drape';
   head?: 'front' | 'left' | 'right';
   crouch?: number;
   /** Profile only: torso pitch toward the facing side, 0..1 (1 = about 60 deg, hands on knees). */
@@ -88,6 +92,10 @@ export type FigPose = {
   walk?: number;
   /** Walk amplitude 0..1 (default 1): leg swing, knee flex, foot lift, bob and arm swing scale with it, so a walk eases into standing by taking it to 0 (motions.ts). */
   stride?: number;
+  /** Back view only: head turned toward screen right, radians (the hood opening shows as a crescent on the right edge). */
+  headYaw?: number;
+  /** Back view only: head tilted up, radians (the head lifts off the nape). */
+  headTilt?: number;
   /** Upper-body lean toward screen right, radians. */
   lean?: number;
   /** Shoulders/breath rise, metres. */

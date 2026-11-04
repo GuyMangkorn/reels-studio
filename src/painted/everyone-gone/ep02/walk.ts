@@ -15,6 +15,12 @@ import {YOU2, paintYou} from './places';
 export type Facing = 'left' | 'right' | 'front' | 'back';
 /** Unit travel direction (x, z) of a facing: left/right cross the picture, front comes toward the lens (+z), back leaves it. */
 export const DIR: Record<Facing, readonly [number, number]> = {left: [-1, 0], right: [1, 0], front: [0, 1], back: [0, -1]};
+/**
+ * The facing a body must have to walk along (dx, dz) in the world (x right, z toward the lens): the dominant axis decides. A figure that
+ * travels sideways while drawn back or front view reads as a crab (EG-EP02 Draft r1, S01-B02-SH02: `คุณ` crossed the kerb in x with the back
+ * view); use this for any figure whose path is not along its facing.
+ */
+export const facingOf = (dx: number, dz: number): Facing => (Math.abs(dx) >= Math.abs(dz) ? (dx >= 0 ? 'right' : 'left') : dz >= 0 ? 'front' : 'back');
 export type Mover = {id: string; who: CastDef; view: Facing; seed: number; /** Ground point at `ref`. */ at: V3; /** m/s along the facing; 0 stands. */ pace: number};
 
 /** Stroll amplitude (calm morning crowd). */

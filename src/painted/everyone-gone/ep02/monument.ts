@@ -2,14 +2,15 @@ import {drawFigure, type FigPose} from '../../kit/cast';
 import {hardFill, inkLine, washAt, ell} from '../../kit/draw';
 import {EXPRESSIONS} from '../../kit/expressions';
 import {mixColor} from '../../kit/painter';
-import {poseArms} from '../../kit/poses';
+import {poseArms, poseFor} from '../../kit/poses';
 import {hash} from '../../kit/hash';
 import type {Painter, Pt} from '../../kit/painter';
 import type {V3} from '../../kit/space';
 import {frontRect, groundQuad, proj, unitAt, type Cam} from '../space';
 import {box} from './collide';
+import {vmBg, vmFg, vmMid, vmMist} from './detail';
 import {YOU2, dressAs, fillC, mix, paintSheetBack, sky, warmOf, washC, type State} from './places';
-import type {CrowdSet, Mover} from './walk';
+import {facingOf, type CrowdSet, type Facing, type Mover} from './walk';
 
 // EG-EP02-SHORT Victory Monument circle (Boss B1; scene sheets S01-B02-SH02 `empty`, S04-B01-SH05 `crowd`). A new set under the same
 // convention as Yaowarat: metres, origin on the ground under the camera, +x right, +y up, the camera looks toward -z. Film's
@@ -18,13 +19,13 @@ import type {CrowdSet, Mover} from './walk';
 // No banner, flag, tent or placard (LOC202). Every prop is drawn from the same numbers in both states (VD05).
 
 export const VM_CAM: Cam = {x: 0, y: 1.6, z: 0, f: 700, hy: 900};
-/** `คุณ`: walks the kerb in S01-B02-SH02 (x -3.4 -> 0.8, 1.17 m/s over 108 f), stands at the end point in S04-B01-SH05. */
-export const VM_YOU_START: V3 = [-3.4, 0, -8.5];
-export const VM_YOU_END: V3 = [0.8, 0, -8.5];
+/** `คุณ`: walks away from the camera in S01-B02-SH02 (back view, (-1.1,-5.5) -> (0.1,-8.2) over 108 f, SS-R2.2), stands at the end point in S04-B01-SH05. */
+export const VM_YOU_START: V3 = [-1.1, 0, -5.5];
+export const VM_YOU_END: V3 = [0.1, 0, -8.2];
 export const VM_YOU_FRAMES = 108;
 export const vmYouAt = (f: number): V3 => {
   const u = Math.min(1, Math.max(0, f / VM_YOU_FRAMES));
-  return [VM_YOU_START[0] + (VM_YOU_END[0] - VM_YOU_START[0]) * u, 0, VM_YOU_START[2]];
+  return [VM_YOU_START[0] + (VM_YOU_END[0] - VM_YOU_START[0]) * u, 0, VM_YOU_START[2] + (VM_YOU_END[2] - VM_YOU_START[2]) * u];
 };
 /** Bus-stop pole with the sheet beside the path (x 2.0, sheet at 1.35 m like the Yaowarat pole) and the shelter behind it. */
 export const VM_POLE: V3 = [2.0, 0, -8.0];
@@ -50,7 +51,7 @@ export const VM_CROWD: CrowdSet = {
     mv('v2', dressAs('woman-pixie', 'office'), 'left', 3.4, -5.6, 1.0, 202),
     mv('v3', dressAs('girl-school'), 'front', -4.6, -10.8, 0.9, 203),
     mv('v4', dressAs('man-elder'), 'right', -4.8, -7.4, 0.7, 204),
-    mv('v5', dressAs('woman-long'), 'front', -0.4, -8.0, 0.9, 205),
+    mv('v5', dressAs('woman-long'), 'front', -1.6, -8.0, 0.9, 205),
     mv('v6', dressAs('man-shaved'), 'left', 4.6, -7.0, 0.9, 206),
     mv('v7', dressAs('woman-ponytail', 'vendor'), 'back', -1.2, -5.2, 0.8, 207),
     mv('v8', dressAs('boy-school'), 'right', -2.6, -11.4, 0.9, 208),
@@ -58,7 +59,7 @@ export const VM_CROWD: CrowdSet = {
   ],
 };
 
-export const paintMonument = (p: Painter, state: State, o: {you?: V3 | false; youWalk?: number} = {}) => {
+export const paintMonument = (p: Painter, state: State, o: {you?: V3 | false; youWalk?: number; youFacing?: Facing} = {}) => {
   const c = VM_CAM, w = warmOf(state);
   sky(p, 51000, mix('#8fa2b8', '#b9cbd8', w), mix('#e4dcd2', '#f7e4c6', w), -20, 940);
   // Far skyline: low blocks and trees, haze.
@@ -66,6 +67,7 @@ export const paintMonument = (p: Painter, state: State, o: {you?: V3 | false; yo
   for (let k = 0; k <= 28; k++) { const x = -20 + k * 40, h = 14 + 40 * hash(k * 5.3) * (k % 4 === 1 ? 1.5 : 1); far.push([x, 905 - h], [x + 36, 905 - h]); }
   far.push([1100, 905]);
   washC(p, 51100, mix('#8f9aa7', '#cdbba2', w), 200, far, 0.1, 0.4);
+  vmBg(p, c, w); // SD02 bg: ring of mid-rise buildings in haze
   // Obelisk: a tapered shaft, a stepped base and four small sculpture groups (generic silhouette, no text).
   const ob: V3 = [-1.5, 0, -95], ou = unitAt(c, ob[2]);
   const [ox, oy] = proj(c, ob);
@@ -89,6 +91,8 @@ export const paintMonument = (p: Painter, state: State, o: {you?: V3 | false; yo
   fillC(p, 51501, mix('#59636e', '#877a68', w), frontRect(c, vz, -60, 60, 11.2, 11.6));
   for (let k = -4; k <= 4; k++) fillC(p, 51510 + k, mix('#6e7983', '#a09079', w), frontRect(c, vz, k * 14 - 0.7, k * 14 + 0.7, 0, 11.2));
   inkLine(p, 51520, [proj(c, [-60, 13.2, vz]), proj(c, [60, 13.2, vz])], {color: mix('#3f4852', '#5e554a', w), weight: 1, closed: false, curve: 0, still: true});
+  vmMist(p, w); // SD02 bg: thin mist over the circle (ENV-FOG)
+  vmMid(p, c, w); // SD02 mid: kerb stripes, lane arrows, traffic light, island planter
   // Trees along the pavement edge (rain-tree crowns as soft masses).
   for (const [k, x] of [-6, 9].entries()) {
     const at: V3 = [x, 0, -10.2], [tx, ty] = proj(c, at), tu = unitAt(c, at[2]);
@@ -116,9 +120,14 @@ export const paintMonument = (p: Painter, state: State, o: {you?: V3 | false; yo
   const you = o.you === false ? undefined : o.you;
   if (you) {
     const g = proj(c, you), u = unitAt(c, you[2]);
-    paintYouWalking(p, g, u, o.youWalk);
+    paintYouWalking(p, g, u, o.youWalk, o.youFacing);
   }
+  vmFg(p, w); // SD02 fg: rain-tree branch (top right), blurred street-sign back (left edge)
 };
-/** `คุณ` on the monument kerb: standing, or walking (`walk` = phase in cycles) at a calm stride. */
-export const paintYouWalking = (p: Painter, g: Pt, u: number, walk?: number) =>
-  drawFigure(p, YOU2, g, u, {view: 'back', hoodUp: true, face: EXPRESSIONS.neutral, ...poseArms('P01', YOU2, g, u), walk, stride: walk === undefined ? undefined : 0.6} as FigPose, p.t, YOU2.seed);
+/** `คุณ` on the monument kerb: standing (back view), or walking (`walk` = phase in cycles) at a calm stride in profile facing the way she travels (`facing`, default along the kerb, x +). */
+export const paintYouWalking = (p: Painter, g: Pt, u: number, walk?: number, facing: Facing = facingOf(VM_YOU_END[0] - VM_YOU_START[0], 0)) => {
+  if (walk === undefined) return drawFigure(p, YOU2, g, u, {view: 'back', hoodUp: true, face: EXPRESSIONS.neutral, ...poseArms('P01', YOU2, g, u)} as FigPose, p.t, YOU2.seed);
+  const view = facing === 'left' || facing === 'right' ? facing : 'back';
+  const arms = view === 'back' ? poseArms('P01', YOU2, g, u) : poseFor('P01', YOU2, g, u, view);
+  return drawFigure(p, YOU2, g, u, {...arms, view, hoodUp: true, face: EXPRESSIONS.neutral, walk, stride: 0.6} as FigPose, p.t, YOU2.seed);
+};

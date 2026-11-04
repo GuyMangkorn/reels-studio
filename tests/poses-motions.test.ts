@@ -191,7 +191,7 @@ test('every motion is finite for every person, supported view and time, and its 
         for (const side of ['r', 'l'] as const) {
           const arm = side === 'r' ? f.pose.rArm : f.pose.lArm;
           if (!arm?.via) continue;
-          const sh = shoulderPoint(f.def, f.g, unit, {...f.pose, view: f.view}, side);
+          const sh = shoulderPoint(f.def, f.g, unit, {...f.pose, view: f.view === 'back' ? 'front' : f.view}, side); // back figures take the front-view arm targets
           assert.ok(Math.hypot(arm.via[0] - sh[0], arm.via[1] - sh[1]) / unit / (BONE * k) <= 1.05, `${pid} ${id} ${view} t=${t.toFixed(2)} ${side} upper arm`);
           assert.ok(Math.hypot(arm.to[0] - arm.via[0], arm.to[1] - arm.via[1]) / unit / (BONE * k) <= 1.05, `${pid} ${id} ${view} t=${t.toFixed(2)} ${side} forearm`);
         }

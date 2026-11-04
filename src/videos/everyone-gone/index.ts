@@ -3,7 +3,10 @@ import {egPlateId} from '../../painted/shots/everyone-gone';
 import {EG_SHOTS} from '../../painted/everyone-gone/shots';
 import {assemblePaintedTimeline} from '../../scenes/assemble';
 import type {AudioTrack} from '../../scenes/types';
+import {eg2PlateId, EG2_CAPTION_CENTRE_Y, EG2_LINES} from '../../painted/shots/everyone-gone-ep02';
+import {EG2_SHOTS} from '../../painted/everyone-gone/ep02/sheet';
 import type {EpisodeVideos} from '../types';
+import amplitude2 from '../../../scripts/everyone-gone/ep02/EG-EP02-SHORT.amplitude.json';
 
 /**
  * EG-EP01-SHORT Draft (W5.3, Editor, 3 Nov 2026). Scene sheets `EG-SC-R2` (scripts/everyone-gone/short/index.md + sc01-sc04.md),
@@ -126,6 +129,97 @@ const audio: AudioTrack[] = [
   t(TICK, 1252, 1252 + 24, {volume: 0.2, trimStartSec: 1.0, fadeOutSec: 0.1}),
 ];
 
+/**
+ * EG-EP02-SHORT Draft (W5.3, Editor, 3 Nov 2026). Scene sheets `EG2-SC-R2.0` (scripts/everyone-gone/ep02/index.md + sc01-sc05.md), rows SS-R2.1, voice T-v4
+ * (= T-v3 + GR1: the L11 gap 0.88 -> 1.25 s accepted by the user, 2026-11-03; GR2/GR3 declined): store EG/narration/EG-EP02-SHORT-narration-B-x108-tight-v4.wav,
+ * 61.62 s = 1849 f + 90 f hold = 1939 f. 19 shots = 19 timeline scenes (sizes from Boss's EG2_SHOTS, which carry the +11 f of GR1 from S04-B01-SH01); each scene mounts the
+ * registry plate `EG2-<shot id>` (src/painted/shots/everyone-gone-ep02.tsx). Offset 0. Captions: verbatim script wording, one cue per line (line frames in EG2_LINES), cue end =
+ * line end + 6 f, never past the end of the shot holding the line's last frame; a caption live at a cut is repeated at the cut. CaptionShade band lives in the plate overlay.
+ * The in-scene dissolves (S04-SH04..SH07, VD06) are inside Boss's plates. The S05 plate owns its end black, so the ending adds no hold or fade.
+ */
+const EG2_FRAMES = EG2_SHOTS.map(([, n]) => n);
+const eg2Starts = EG2_FRAMES.map((_, i) => EG2_FRAMES.slice(0, i).reduce((a, b) => a + b, 0));
+const EG2_TOTAL = EG2_FRAMES.reduce((a, b) => a + b, 0);
+if (EG2_TOTAL !== 1939) throw new Error(`EG-EP02-SHORT: shots sum to ${EG2_TOTAL}, T-v4 sheets say 1939`);
+const eg2Cuts = EG2_SHOTS.map(([id, n], i) => ({id, start: eg2Starts[i], end: eg2Starts[i] + n}));
+const eg2Cues = EG2_LINES.map(([from, end, text]) => ({from, to: Math.min(end + 6, eg2Cuts.find((c) => end - 1 >= c.start && end - 1 < c.end)!.end), text}));
+const eg2Captions = (() => {
+  const events = new Map<number, string>();
+  for (const c of eg2Cues) events.set(c.to, events.get(c.to) ?? '');
+  for (const c of eg2Cues) events.set(c.from, c.text);
+  for (const cut of eg2Cuts) {
+    if (events.has(cut.start)) continue;
+    const live = eg2Cues.find((c) => c.from < cut.start && c.to > cut.start);
+    events.set(cut.start, live ? live.text : '');
+  }
+  return [...events].sort((a, b) => a[0] - b[0]).map(([at, text]) => ({at, text}));
+})();
+const timeline2 = assemblePaintedTimeline({
+  clockRate: FPS, precision: 4, cuts: eg2Cuts,
+  shots: eg2Cuts.map((cut) => ({at: cut.start, cue: {shot: eg2PlateId(cut.id)}})),
+  captions: eg2Captions,
+});
+
+/**
+ * Sound stage (Editor, 3 Nov 2026; draft levels, measured not listened). Clock = Film's index.md "Sound direction" shifted +11 f from f1123 (GR1). New cues generated and filed
+ * (EG2 set, library 3 Nov 2026): piano, dawn, Yaowarat, open wind, pier, ferry, murmur far/close, hood, incense, wind-on-paper, gust+flip. `AMB-SOI` = existing
+ * `room_soi-morning-quiet_01` + `electric_streetlamp-hum-loop_01` (not generated). `SFX-BOAT-NEAR` = the same ferry file, louder. No stinger, riser or hit (FIC007).
+ */
+const A = 'audio/';
+const PIANO = A + 'bed/bed_eg2-solo-piano-sparse_01.wav';
+const DAWN = A + 'outdoor/outdoor_dawn-street-empty_01.wav';
+const YAO = A + 'outdoor/outdoor_yaowarat-signs-buzz_01.wav';
+const WIND = A + 'outdoor/outdoor_wind-open-roundabout_01.wav';
+const PIER = A + 'water/water_pier-lapping-pigeons_01.wav';
+const SOI = A + 'room/room_soi-morning-quiet_01.wav';
+const LAMP = A + 'electric/electric_streetlamp-hum-loop_01.wav';
+const MFAR = A + 'crowd/crowd_murmur-far-bangkok_01.wav';
+const MCLOSE = A + 'crowd/crowd_murmur-close-bangkok_01.wav';
+const BOAT = A + 'vehicle/vehicle_river-ferry-passing_01.wav';
+const D = 0.6;
+const audio2: AudioTrack[] = [
+  // Music: opening piano f0-400; rests after L05; pad under L09; quiet return after the gust; melody swell with the dissolves; opening figure under L17-L19, rings out in the hold.
+  t(PIANO, 0, 400, {volume: 0.25, fadeInSec: 1, fadeOutSec: 1.5, duckUnderNarration: D}),
+  t(A + 'bed/bed_warm-pad-felt-third_01.wav', 785, 925, {volume: 0.1, fadeInSec: 1, fadeOutSec: 1.5, duckUnderNarration: D}),
+  t(PIANO, 1226, 1417, {volume: 0.12, trimStartSec: 12, fadeInSec: 1.5, fadeOutSec: 0.5, duckUnderNarration: D}),
+  t(PIANO, 1417, 1640, {volume: 0.2, trimStartSec: 20, fadeInSec: 1.5, fadeOutSec: 0.5, duckUnderNarration: D}),
+  t(PIANO, 1640, 1929, {volume: 0.22, trimStartSec: 2, fadeInSec: 0.5, fadeOutSec: 3, duckUnderNarration: D}),
+  // Place beds (cross with the picture; each fades 0.3-0.5 s at its edges).
+  t(DAWN, 0, 214, {volume: 0.22, loop: true, fadeInSec: 0.5, fadeOutSec: 0.5}),
+  t(YAO, 206, 288, {volume: 0.2, loop: true, fadeInSec: 0.5, fadeOutSec: 0.3}),
+  t(WIND, 288, 404, {volume: 0.16, loop: true, fadeInSec: 0.3, fadeOutSec: 0.3}),
+  t(PIER, 396, 585, {volume: 0.35, loop: true, fadeInSec: 0.5, fadeOutSec: 0.3}),
+  t(YAO, 577, 806, {volume: 0.12, loop: true, fadeInSec: 0.5, fadeOutSec: 0.3}),
+  t(PIER, 806, 920, {volume: 0.32, loop: true, fadeInSec: 0.4, fadeOutSec: 0.4}),
+  t(SOI, 912, 1134, {volume: 0.14, loop: true, fadeInSec: 0.5, fadeOutSec: 0.5}),
+  t(LAMP, 912, 1119, {volume: 0.08, loop: true, fadeInSec: 0.8, fadeOutSec: 1}),
+  t(LAMP, 1157, 1417, {volume: 0.07, loop: true, fadeInSec: 0.8, fadeOutSec: 0.5}),
+  t(WIND, 1134, 1240, {volume: 0.1, loop: true, fadeInSec: 0.3, fadeOutSec: 1.5}),
+  t(YAO, 1417, 1504, {volume: 0.2, loop: true, fadeInSec: 0.5, fadeOutSec: 0.3}),
+  t(WIND, 1504, 1567, {volume: 0.16, loop: true, fadeInSec: 0.3, fadeOutSec: 0.3}),
+  t(PIER, 1567, 1603, {volume: 0.35, loop: true, fadeInSec: 0.2, fadeOutSec: 0.2}),
+  t(SOI, 1603, 1640, {volume: 0.14, loop: true, fadeInSec: 0.2, fadeOutSec: 0.4}),
+  t(PIER, 1640, 1929, {volume: 0.35, loop: true, fadeInSec: 0.8, fadeOutSec: 2}),
+  // Crowd murmur (CL02): far bed under everything until the silence before the gust; close bed fades up with the dissolves and stays until the end; gone after L19.
+  t(MFAR, 0, 1125, {volume: 0.05, loop: true, fadeInSec: 1, fadeOutSec: 1}),
+  t(MFAR, 402, 571, {volume: 0.04, loop: true, fadeInSec: 0.8, fadeOutSec: 0.8}),
+  t(MFAR, 1160, 1450, {volume: 0.04, loop: true, fadeInSec: 1, fadeOutSec: 1.5}),
+  t(MCLOSE, 1459, 1520, {volume: 0.06, loop: true, fadeInSec: 1.2}),
+  t(MCLOSE, 1520, 1620, {volume: 0.11, loop: true, fadeInSec: 0.5}),
+  t(MCLOSE, 1620, 1860, {volume: 0.14, loop: true, fadeInSec: 0.5, fadeOutSec: 2, duckUnderNarration: D}),
+  // Ferry: far on the pier hall (S01-B02-SH03), nearer under S04-SH06 and S05.
+  t(BOAT, 440, 440 + 240, {volume: 0.14}),
+  t(BOAT, 1567, 1567 + 73, {volume: 0.22, fadeOutSec: 0.1}),
+  t(BOAT, 1640, 1640 + 240, {volume: 0.22, trimStartSec: 0, fadeOutSec: 1}),
+  // One-shots: hood rustle on the hoodPull (S01-B01-SH02 f32-70 = 160-198, swap f60 = 188), incense, wind on paper, the gust and flip (S04-SH01 f0-23 = 1134-1157).
+  t(A + 'foley/foley_hoodie-hood-pull_01.wav', 176, 176 + 26, {volume: 0.5, fadeOutSec: 0.1}),
+  t(A + 'foley/foley_incense-crackle_01.wav', 663, 663 + 36, {volume: 0.6, fadeOutSec: 0.2}),
+  t(A + 'foley/foley_wind-on-paper_01.wav', 699, 806, {volume: 0.25, loop: true, fadeInSec: 0.3, fadeOutSec: 0.4}),
+  t(A + 'foley/foley_wind-on-paper_01.wav', 912, 1119, {volume: 0.18, loop: true, fadeInSec: 0.5, fadeOutSec: 1}),
+  t(A + 'whoosh/whoosh_gust-paper-flip_01.wav', 1134, 1134 + 40, {volume: 0.55, fadeOutSec: 0.2}),
+  t(A + 'whoosh/whoosh_page-flip-paper_01.wav', 1138, 1138 + 17, {volume: 0.2, fadeOutSec: 0.1}),
+];
+
 const everyoneGone: EpisodeVideos = {
   episode: 'everyone-gone',
   videos: [
@@ -133,6 +227,11 @@ const everyoneGone: EpisodeVideos = {
       id: 'EG-EP01-SHORT', format: 'short', timeline, ending: 'A_fade', endHoldSec: 0, endFadeSec: 0, audio,
       captionStyle: {preset: 'outline', position: 'bottom', bottomEdgeY: 560}, chrome: {channelLabel: '@TamMaiLa', progressBar: false},
       narration: {src: 'narration/EG-EP01-SHORT.wav', amplitude, fps: FPS},
+    },
+    {
+      id: 'EG-EP02-SHORT', format: 'short', timeline: timeline2, ending: 'A_fade', endHoldSec: 0, endFadeSec: 0, audio: audio2,
+      captionStyle: {preset: 'outline', position: 'bottom', centerY: EG2_CAPTION_CENTRE_Y}, chrome: {channelLabel: '@TamMaiLa', progressBar: false},
+      narration: {src: 'narration/EG-EP02-SHORT.wav', amplitude: amplitude2, fps: FPS},
     },
   ],
 };

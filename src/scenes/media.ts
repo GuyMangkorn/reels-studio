@@ -103,7 +103,7 @@ export function validateVideoStyle(video: {audio?: unknown; captionStyle?: unkno
     if (style.preset !== undefined && !(captionPresets as readonly string[]).includes(String(style.preset))) fail('captionStyle.preset', 'expected outline, box or none');
     if (style.position !== undefined && !(captionPositions as readonly string[]).includes(String(style.position))) fail('captionStyle.position', 'expected bottom, middle, top or lower');
     if (style.bottomEdgeY !== undefined && (!finite(style.bottomEdgeY) || style.bottomEdgeY < 0 || style.bottomEdgeY > 4320)) fail('captionStyle.bottomEdgeY', 'expected a composition y in px, 0 to 4320');
-
+    if (style.centerY !== undefined && (!finite(style.centerY) || style.centerY < 0 || style.centerY > 4320)) fail('captionStyle.centerY', 'expected a composition y in px, 0 to 4320');
     if (style.color !== undefined && typeof style.color !== 'string') fail('captionStyle.color', 'expected CSS color text');
     if (style.strokeWidth !== undefined && (!finite(style.strokeWidth) || style.strokeWidth < 0 || style.strokeWidth > 16)) fail('captionStyle.strokeWidth', 'expected 0 to 16 px');
     for (const key of ['strokeColor', 'textShadow']) if (style[key] !== undefined && typeof style[key] !== 'string') fail(`captionStyle.${key}`, 'expected CSS text');
@@ -172,5 +172,5 @@ export const outlineLook = (style?: CaptionStyle) => {
   const {strokeWidth = 7, strokeColor = '#3d3c53', textShadow = `0 4px 0 ${strokeColor}`} = style ?? {};
   return {WebkitTextStroke: `${strokeWidth}px ${strokeColor}`, paintOrder: 'stroke fill', textShadow};
 };
-export const defaultCaptionStyle: Required<Omit<CaptionStyle, 'color' | 'bottomEdgeY'>> & {color: string; bottomEdgeY?: number} = {preset: 'outline', position: 'bottom', color: '#fff', scale: 1};
+export const defaultCaptionStyle: Required<Omit<CaptionStyle, 'color' | 'bottomEdgeY' | 'centerY'>> & {color: string; bottomEdgeY?: number; centerY?: number} = {preset: 'outline', position: 'bottom', color: '#fff', scale: 1};
 export const defaultChrome: Required<ChromeStyle> = {channelLabel: '@TamMaiLa', progressBar: false};

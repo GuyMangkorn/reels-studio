@@ -41,7 +41,7 @@ Record: [delivery.md](delivery.md) · Updated: 2026-11-03, coordinator
 
 ## EG-EP02-SHORT
 
-**Now:** W5.1 timed sheets done (EG2-SC-R2.0, rows SS-R2.1, voice T-v4 = T-v3 + GR1). **Next:** user review of timed storyboard, then Boss W5.2 assets (B1–B8 in ep02/index.md).
+**Now:** W5.1 timed sheets done (EG2-SC-R2.0, rows SS-R2.1, voice T-v4 = T-v3 + GR1); W5.2 Boss shot sets for 19 shots merged (PR #215); timed storyboard page republished 2026-11-03 (artifact v5). **Now (cont.):** Editor registered `EG-EP02-SHORT` and rendered 19 Draft clips (W5.3). **Next:** coordinator republishes the page; user passes the Draft shot by shot.
 
 - [x] W0 Ideation
   - [x] W0.1 Preaw concepts (concepts.md R1)
@@ -55,7 +55,7 @@ Record: [delivery.md](delivery.md) · Updated: 2026-11-03, coordinator
 - [ ] W2 Brief and storyboard
   - [x] W2.1 Film brief (EG2-BRIEF-FILM-R1)
   - [x] W2.2 Film storyboard rows (ep02/review-rows.json, 19 shots, untimed)
-  - [ ] W2.3 Storyboard page published
+  - [x] W2.3 Storyboard page published (rows SS-R2.1 timed, https://claude.ai/artifact/Qc5e45d8SEBMhD13dTgLfF v5, 2026-11-03)
 - [x] W3 Look frames and storyboard pass (look lock + 19/19, user 2026-11-03)
   - [x] W3.1 Look frames LF01–LF05 added to ep02/review-rows.json (Film 2026-11-03; store EG/previews/look-frames/ep02; `คุณ` = episode-local stand-in `ep02/you-hoodie.ts` until the kit back view lands; thumbnails step skipped on the coordinator's assignment; viewer check done: [ep02/viewer-check.md](ep02/viewer-check.md); fix pass v2 done 2026-11-03 with the kit back view, store EG/previews/look-frames/ep02/v2, brief R1.2; VD12 caption style open; page republish pending)
   - [x] W3.1 verdict pass v3 (Film 2026-11-03): LF01 shop/door detail, boat moored alongside (LF03/LF05), crowd collision rule VD13 + tests/eg2-crowd-collision.test.ts; store EG/previews/look-frames/ep02/v3/; review page: pending
@@ -63,6 +63,15 @@ Record: [delivery.md](delivery.md) · Updated: 2026-11-03, coordinator
   - [ ] W3.3 Storyboard passed
 - [x] W4 Voice lock (T-v3, user 2026-11-03)
 - [ ] W5 Draft
+  - [x] W5.1 Film timed scene sheets (EG2-SC-R2.0, 19 shots, 1928 f)
+  - [x] W5.2 Boss shot sets for SS-R2.1 (19 shots, commit 3c134e4; crowds VD13 test, sheetFlip, hoodPull)
+  - [ ] W5.3 Draft passed (0/19 shots user-passed; Editor 2026-11-03: composition `EG-EP02-SHORT` registered (src/videos/everyone-gone/index.ts, 19 scenes, 1939 f = voice T-v4 EG-EP02-SHORT-narration-B-x108-tight-v4.wav + 90 f hold; registry plates `EG2-<shot id>` in src/painted/shots/everyone-gone-ep02.tsx); captions verbatim, CaptionShade band, mark @TamMaiLa; sound spine with 11 new cues generated and filed (EG2 set, not listened); 19 Draft clips rendered into ep02/review-rows.json, review page not republished; 20 stills viewed (out/EG-EP02-SHORT/qa-sheet-1/2.png); npm test 452/0, tsc only 3 old tests/ errors)
 - [ ] W6 Final passed
 - [ ] W7 Pinned
 - [ ] W8 Deliver
+
+- 4 Nov 2026: EG-EP02-SHORT Draft r5 published (page v11): SS-R2.6 set detail + L11 voice R1.3. Awaiting user review.
+
+- 4 Nov 2026: Draft r5 approved (user, chat). Next: Final stage (full-quality clips, pin) and commit, both awaiting the user's go.
+
+- 4 Nov 2026 Pin (19 shots), delivery MP4 and cover (L5, `EG-EP02-SHORT_cover.png`) done; see delivery.md.

@@ -12,7 +12,7 @@ import {paintPier, paintSoiPost, paintYaowarat, POSTER, type State} from './plac
 // the same pier crowded (S04-B01-SH06, same camera and props), LF04 the soi lamp post with the poster face-out
 // (S04-B01-SH02), LF05 the mother at the pier (S05-B01-SH01, no "คุณ" in frame, VD10).
 
-loadFont({family: 'Noto Sans Thai', url: staticFile('fonts/NotoSansThai.ttf'), weight: '100 900'});
+if (typeof document !== 'undefined') loadFont({family: 'Noto Sans Thai', url: staticFile('fonts/NotoSansThai.ttf'), weight: '100 900'});
 
 const FPS = 30;
 const PAPER = '#e9e6e0';

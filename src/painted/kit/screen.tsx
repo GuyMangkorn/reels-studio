@@ -1,5 +1,6 @@
 import {useId} from 'react';
 import {AbsoluteFill} from 'remotion';
+import {DEFAULT_SHADE_CENTRE_Y, shadeBandStops} from '../../scenes/captionLayout';
 
 // Shared screen-space layers of the painted episodes (S-P06 Grade/Grain, S-P08 ZC-CAPSHADE). They sit outside the
 // picture camera: a plate's `Overlay` (src/painted/shot.ts) renders them, in the order Grade -> Grain -> CaptionShade.
@@ -26,8 +27,8 @@ export const Grain = ({opacity = 0.09}: {opacity?: number}) => {
   );
 };
 
-/** Caption cue window in shot-local seconds (`tl`), the span a caption is on screen. */
-export type CaptionCue = readonly [from: number, to: number];
+/** Caption cue window in shot-local seconds (`tl`) and the cue's line count (default 2), so the shade fits the lines on screen. */
+export type CaptionCue = readonly [from: number, to: number, lines?: number];
 
 /** Frames the shade lingers after the last cue ends (`MK-ZC-ST-09`: off 6 f after the last cue). */
 export const SHADE_TAIL_FRAMES = 6;
@@ -49,30 +50,52 @@ export const shadeGate = (tl: number, cues: readonly CaptionCue[], fps = 30): nu
 };
 
 /**
- * `ZC-CAPSHADE` (S-P08): soft darkening behind the low caption block (bottom edge y 1248), cue-gated by `shadeGate`.
- * `band` is the horizontal CSS gradient y 990-1330 (peak 0.62) for light section/close shots; `soft` the 560 x 190 px
- * ellipse at (540, 1170) (peak 0.5) for full-frame POV. Colour is a warm near-black so the cream sets keep their hue.
+ * Ink rows of a caption block as `Subtitles` draws it in portrait (Noto Sans Thai 700, 51 px x `scale`, line-height 1.65):
+ * the last line's ink runs from about 74 to 28 px above the block's bottom edge and lines are 84 px apart. The top is the
+ * mean of a line with upper vowels only (68 px, WFOG-EP01-SHORT f20/f2760) and one with a tone mark (80 px, ZCPAINT-SET-
+ * CAPTION-BACKDROP f45), 4 Nov 2026, so the centre is within 6 px of the glyphs either way. The line box is not the ink: centring on it leaves the glyphs off-centre.
+ * `lines` may be fractional while the shade eases between cues. Rule: production-requirements#caption-backdrop.
  */
-export const CaptionShade = ({tl, cues, mode = 'band', strength, fps = 30, lines, width}: {tl: number; cues: readonly CaptionCue[]; mode?: 'band' | 'soft'; strength?: number; fps?: number; lines?: 1 | 2; width?: number}) => {
+export const captionInk = (bottomEdgeY: number, lines: number, scale = 1) => {
+  const bottom = bottomEdgeY - 28 * scale, top = bottom - 46 * scale - (lines - 1) * 51 * 1.65 * scale;
+  return {top, bottom, center: (top + bottom) / 2};
+};
+
+/**
+ * Line count the shade fits at `tl`: the latest cue that has started (the first cue before it). Between back-to-back cues
+ * (gap within the shade tail, so the shade stays up) the height eases from the previous count over `SHADE_RAMP_FRAMES`.
+ */
+export const shadeLines = (tl: number, cues: readonly CaptionCue[], fps = 30): number => {
+  const sorted = [...cues].sort((a, b) => a[0] - b[0]);
+  const n = (c: CaptionCue) => c[2] ?? 2;
+  let i = 0;
+  while (i + 1 < sorted.length && sorted[i + 1][0] <= tl) i++;
+  const cur = sorted[i], prev = sorted[i - 1];
+  if (!cur) return 2;
+  if (!prev || cur[0] - prev[1] > SHADE_TAIL_FRAMES / fps) return n(cur);
+  const x = Math.max(0, Math.min(1, (tl - cur[0]) / (SHADE_RAMP_FRAMES / fps)));
+  return n(prev) + (n(cur) - n(prev)) * x * x * (3 - 2 * x);
+};
+
+/** Shade core margin above and below the ink, and the feather beyond it (px at scale 1). */
+export const SHADE_PAD = 24;
+export const SHADE_FEATHER = 80;
+
+/**
+ * `ZC-CAPSHADE` (S-P08): soft darkening behind the caption block, cue-gated by `shadeGate` and sized by `shadeLines`:
+ * its centre is the glyphs' centre (`captionInk`), its height the lines on screen. `bottomEdgeY` is the caption block's
+ * bottom edge (default 1248, ZC TH). `band` is a horizontal CSS gradient (core = ink +/- `SHADE_PAD`, `SHADE_FEATHER`
+ * feather, peak 0.62) for light section/close shots; `soft` a 560 px wide ellipse (peak 0.5) for full-frame POV.
+ * Colour is a warm near-black so the cream sets keep their hue. Rule: production-requirements#caption-backdrop.
+ */
+export const CaptionShade = ({tl, cues, mode = 'band', strength, fps = 30, bottomEdgeY = 1248, scale = 1}: {tl: number; cues: readonly CaptionCue[]; mode?: 'band' | 'soft'; strength?: number; fps?: number; bottomEdgeY?: number; scale?: number}) => {
   const g = shadeGate(tl, cues, fps);
   if (g <= 0) return null;
   const peak = (strength ?? (mode === 'band' ? 0.62 : 0.5)) * g;
-  // `lines` (optional, band mode): a soft cloud that follows the caption's line count, bottom-aligned to the caption bottom edge (y 1248):
-  // smoothstep feather up/down (1 line: 0 at 1060, solid 1160-1250, 0 at 1330; 2 lines: 0 at 970, solid 1076-1250, 0 at 1330) and a smoothstep
-  // sideways mask (0 at 5 %, solid from 20 % to 80 %, 0 at 95 % of the width; with `width` text + 40 px solid, 80 px feather), so the shade has no hard edge and never spans the frame.
-  // Unset = the tall linear band below (delivered episodes, unchanged).
-  const T = [0, 0.1, 0.25, 0.4, 0.55, 0.7, 0.85, 1], S = T.map((t) => t * t * (3 - 2 * t));
-  const ramp = (a: number, b: number, unit: string, alpha: (k: number) => string) => T.map((t, i) => `${alpha(S[i])} ${(a + (b - a) * t).toFixed(1)}${unit}`).join(', ');
-  const [t0, s0, s1, t1] = lines === 1 ? [1060, 1160, 1250, 1330] : lines === 2 ? [970, 1076, 1250, 1330] : [990, 1080, 1250, 1330];
-  const c = (k: number) => `rgba(20,16,12,${(peak * k).toFixed(4)})`;
-  const background = lines
-    ? `linear-gradient(to bottom, ${ramp(t0, s0, 'px', c)}, ${c(1)} ${s1}px, ${ramp(s1, t1, 'px', (k) => c(1 - k))})`
-    : mode === 'band'
-      ? `linear-gradient(to bottom, rgba(20,16,12,0) ${t0}px, rgba(20,16,12,${peak}) ${s0}px, rgba(20,16,12,${peak}) ${s1}px, rgba(20,16,12,0) ${t1}px)`
-      : `radial-gradient(ellipse 560px 190px at 540px 1170px, rgba(20,16,12,${peak}) 0%, rgba(20,16,12,${peak * 0.7}) 55%, rgba(20,16,12,0) 100%)`;
-  // `width` (optional, with `lines`): the caption text width in px; the sideways mask is then solid over text + 40 px and feathers 80 px each side.
-  const half = (width ?? 0) / 2 + 20, [m0, m1] = width ? [Math.max(0.2, (540 - half - 80) / 10.8), (540 - half) / 10.8] : [5, 20];
-  const mask = lines ? `linear-gradient(to right, ${ramp(m0, m1, '%', (k) => `rgba(0,0,0,${k.toFixed(4)})`)}, ${ramp(100 - m1, 100 - m0, '%', (k) => `rgba(0,0,0,${(1 - k).toFixed(4)})`)})` : undefined;
-  if (mask) return <AbsoluteFill style={{pointerEvents: 'none', background, WebkitMaskImage: mask, maskImage: mask}} />;
+  const ink = captionInk(bottomEdgeY, shadeLines(tl, cues, fps), scale);
+  const pad = SHADE_PAD * scale, feather = SHADE_FEATHER * scale, c = `rgba(20,16,12,${peak})`, clear = 'rgba(20,16,12,0)';
+  const background = mode === 'band'
+    ? `linear-gradient(to bottom, ${clear} ${ink.top - pad - feather}px, ${c} ${ink.top - pad}px, ${c} ${ink.bottom + pad}px, ${clear} ${ink.bottom + pad + feather}px)`
+    : `radial-gradient(ellipse 560px ${(ink.bottom - ink.top) / 2 + pad + feather + 24 * scale}px at 540px ${ink.center}px, ${c} 0%, rgba(20,16,12,${peak * 0.7}) 55%, ${clear} 100%)`;
   return <AbsoluteFill style={{pointerEvents: 'none', background}} />;
 };
