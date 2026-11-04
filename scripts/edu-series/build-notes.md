@@ -188,4 +188,6 @@ Findings:
 | L13 scribble "ความเครียด" | 1359 | 1358 | 1359 | no | |
 | L13 moon+clock "การอดนอน" | 1387 | 1390 | 1390 | no, borderline +3 | 1390 suggested |
 
+- **R1.1 (2026-11-04, Film):** applied the onset check above: L07 p2 f613 -> f617, L13 p2 f1417 -> f1419, L15 p1 f1580 -> f1586, icon 'moon and clock' f1387 -> f1390. Shot boundaries B04-SH01/SH02 609 -> 613, B06-SH01/SH02 1413 -> 1415, B07-SH01/SH02 1576 -> 1582 (each = onset - 4). All 23 shots contiguous, 1860 f unchanged; review-rows.json start/end updated. L05 p2, L11, L13 p1, L07 p1 unchanged (diff <= 3 f).
+
 - L15 p1 and L07 p2: the sheet onset sits on a faint low-level breath (-41 to -46 dB) that precedes the word by 0.2 to 0.3 s. For a shot that starts 4 f before the phrase, Film decides whether to move; L15 p1 would move B07-SH02 start from 1576 to about 1582 (7 f shorter on the shot before and longer after). Sheet not edited.

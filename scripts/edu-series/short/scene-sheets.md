@@ -1,4 +1,4 @@
-# Timed scene sheets and index — EDU-EP01-SHORT (EDU-SHEETS-R1)
+# Timed scene sheets and index — EDU-EP01-SHORT (EDU-SHEETS-R1.1)
 
 - **Status:** `ready-for-dev` (Film W5.1, 2026-11-04). Timing = **audio-measured** (Kore v1 lock, [narration-measure-kore.json](narration-measure-kore.json), 61.97 s). Picture, runtime and sound: not yet validated.
 - **Inputs (by revision):** script EDU-SCRIPT-R1.1 ([script.md](script.md)); brief EDU-BRIEF-R1 ([brief.md](brief.md), decisions VD01–VD10, sound direction, technical handoff); storyboard SS-R1 23/23 passed and look lock LF01 v2, LF02 v5, LF03 v2, LF04 v3, LF05 v2 ([review-rows.json](review-rows.json), seen-text per shot lives there and is not repeated); voice lock `~/ReelsStore/projects/EDU/audio/voice-lock-v1/EDU-EP01-SHORT-narration-kore-v1.wav` (store path, 61.97 s, -16.1 LUFS).
@@ -48,7 +48,7 @@ Library check 2026-11-04, `~/ReelsStore/library/sound/INDEX.md`. All library fil
 | **NEEDS-GEN 3** | Gasp `vocal_gasp-young-woman_01` | f552 (above) |
 | Optional gen | Quiet bedroom room tone, 20 s loop | under clock; skip if the pad covers it |
 
-**Pad gain arc (dB re the B01 level = 0; Editor adjusts, ducks `duckUnderNarration`):** f0–331 `0`; f331–411 to `−8`; f411–535 to `−24` (near nothing); f535–550 hard cut (−∞); f550–579 off; f579–609 returns to `+1` (slightly brighter at the name); B05–B06 `−1` with plucks; B07 `+1`; f1746–1860 eases to `0`, exact B01 level at f1860, no fade-out, no stinger. Hard silence at 535: pad, clock and wind all gain to zero on frame 535 (no 4 f ramp).
+**Pad gain arc (dB re the B01 level = 0; Editor adjusts, ducks `duckUnderNarration`):** f0–331 `0`; f331–411 to `−8`; f411–535 to `−24` (near nothing); f535–550 hard cut (−∞); f550–579 off; f579–613 returns to `+1` (slightly brighter at the name); B05–B06 `−1` with plucks; B07 `+1`; f1746–1860 eases to `0`, exact B01 level at f1860, no fade-out, no stinger. Hard silence at 535: pad, clock and wind all gain to zero on frame 535 (no 4 f ramp).
 
 ## Caption-shade plan (UT12, [caption-backdrop](../../../docs/production-requirements.md#caption-backdrop))
 
@@ -70,18 +70,18 @@ Library check 2026-11-04, `~/ReelsStore/library/sound/INDEX.md`. All library fil
 | S01-B03-SH03 | B03 | 490–535 (45) | no VO | dramatised | |
 | S01-B03-SH04 | B03 | 535–550 (15) | silence | dramatised | |
 | S01-B03-SH05 | B03 | 550–579 (29) | L06 gasp f552 | dramatised | |
-| S01-B04-SH01 | B04 | 579–609 (30) | L07 phrase 1 19.31–20.35 (f579–610) | F001 | |
-| S01-B04-SH02 | B04 | 609–719 (110) | L07 phrase 2 20.43–23.82 (f613–715) | F001 | |
+| S01-B04-SH01 | B04 | 579–613 (34) | L07 phrase 1 19.31–20.35 (f579–610) | F001 | |
+| S01-B04-SH02 | B04 | 613–719 (106) | L07 phrase 2 20.43–23.82 (f617–715) | F001 | |
 | S01-B05-SH01 | B05 | 719–842 (123) | L08 24.10–27.67 (f723–830) | F007 | |
 | S01-B05-SH02 | B05 | 842–882 (40) | L09 28.21–29.25 (f846–878) | F007–F009 | |
 | S01-B05-SH03 | B05 | 882–1008 (126) | L10 29.54–33.44 (f886–1003) | F008 | |
 | S01-B05-SH04 | B05 | 1008–1153 (145) | L11 phrase 1 33.72–38.29 (f1012–1149) | F009 | |
 | S01-B05-SH05 | B05 | 1153–1198 (45) | L11 phrase 2 38.57–39.50 (f1157–1185) | F009 | |
 | S01-B05-SH06 | B05 | 1198–1269 (71) | L12 40.05–42.14 (f1202–1264) | F007 | |
-| S01-B06-SH01 | B06 | 1269–1413 (144) | L13 phrase 1 42.42–47.02 (f1273–1411) | F011 | |
-| S01-B06-SH02 | B06 | 1413–1483 (70) | L13 phrase 2 47.23–49.27 (f1417–1478) | F011 | |
-| S01-B07-SH01 | B07 | 1483–1576 (93) | L14 49.56–52.40 (f1487–1572) | F003, F012 | |
-| S01-B07-SH02 | B07 | 1576–1637 (61) | L15 phrase 1 52.66–54.50 (f1580–1635) | F013 | |
+| S01-B06-SH01 | B06 | 1269–1415 (146) | L13 phrase 1 42.42–47.02 (f1273–1411) | F011 | |
+| S01-B06-SH02 | B06 | 1415–1483 (68) | L13 phrase 2 47.23–49.27 (f1419–1478) | F011 | |
+| S01-B07-SH01 | B07 | 1483–1582 (99) | L14 49.56–52.40 (f1487–1572) | F003, F012 | |
+| S01-B07-SH02 | B07 | 1582–1637 (55) | L15 phrase 1 52.66–54.50 (f1586–1635) | F013 | |
 | S01-B07-SH03 | B07 | 1637–1746 (109) | L15 phrase 2 54.70–58.04 (f1641–1741) | F013 | |
 | S01-B08-SH01 | B08 | 1746–1860 (114) | L16 58.34–61.32 (f1750–1840) | CL03 | |
 
@@ -161,19 +161,19 @@ Each block: **Time** (comp frames, shot-local key frames), **Motion** (actor, ca
 - **Caption:** none.
 - **Accept:** lift of head and shoulders only, hard cut on one frame; eyes clearly wide at 270 px; gasp starts within 3 f of the lift.
 
-### S01-B04-SH01 · 579–609 · sits up
+### S01-B04-SH01 · 579–613 · sits up
 
-- **Time:** L0–29. L07 phrase 1 f579–610 = L0–31. She rises from lying to sit at the bed edge L0–22 (`new: sit on bed edge`), hand on chest from L 14; breath slows. Room softness back `w0.2`, light eases up.
+- **Time:** L0–33. L07 phrase 1 f579–610 = L0–31. She rises from lying to sit at the bed edge L0–22 (`new: sit on bed edge`), hand on chest from L 14; breath slows. Room softness back `w0.2`, light eases up.
 - **Motion:** side-on medium, push 1.000→1.010, fy 820.
 - **Sound:** pad returns L0 from −∞ to +1 dB over 24 f; clock −24 dB; `foley_hoodie-hood-pull_01` L 4 (sit-up, −18 dB).
-- **Caption:** "อาการนี้มีชื่อนะ…"; shade L0–30.
+- **Caption:** "อาการนี้มีชื่อนะ…"; shade L0–34.
 - **Accept:** she is seated by L 22; no frame shows the jolt pose.
 
-### S01-B04-SH02 · 609–719 · name card
+### S01-B04-SH02 · 613–719 · name card
 
-- **Time:** L0–109. L07 phrase 2 f613–715 = L 4–106. Card "hypnic jerk" (Latin) with "อาการกระตุกตอนเคลิ้มหลับ" below fades in at L 28 (comp f637, on "ฮิปนิก"; word time est from the line's pace, Editor confirms), holds to L 109. Card in y 200–420, above the caption band.
+- **Time:** L0–105. L07 phrase 2 f617–715 = L 4–102. Card "hypnic jerk" (Latin) with "อาการกระตุกตอนเคลิ้มหลับ" below fades in at L 24 (comp f637, on "ฮิปนิก"; word time est from the line's pace, Editor confirms), holds to L 105. Card in y 200–420, above the caption band.
 - **Motion:** medium, she sits still, breathing; push 1.000→1.012, fy 820.
-- **Sound:** `reveal_glass-shimmer-soft_01` at L 28 at −26 dB, under the narration; pad +1 dB.
+- **Sound:** `reveal_glass-shimmer-soft_01` at L 24 at −26 dB, under the narration; pad +1 dB.
 - **Caption:** "เรียกว่า ฮิปนิก เจิร์ก" / "หรือ อาการกระตุกตอนเคลิ้มหลับ" (script sub text; card shows the Latin form, captions the Thai read).
 - **Accept:** Latin title legible at 360 px; card clear of the channel mark and the caption band. Capability `unknown` (N11); fallback in the brief.
 
@@ -225,36 +225,36 @@ Each block: **Time** (comp frames, shot-local key frames), **Motion** (actor, ca
 - **Caption:** "แต่ทั้งหมดนี้… ยังไม่มีใครพิสูจน์ได้"; shade L 4–67.
 - **Accept:** by the last frame both bubbles are empty washes; no new idea appears.
 
-### S01-B06-SH01 · 1269–1413 · three icons
+### S01-B06-SH01 · 1269–1415 · three icons
 
-- **Time:** L0–143. L13 phrase 1 f1273–1411 = L 4–142. Icons pop on the word onsets (Editor confirms with Whisper): cup (coffee) at L 64 (f1333, "คาเฟอีน"), scribble ball at L 90 (f1359, "ความเครียด"), moon and clock at L 118 (f1387, "การอดนอน"). Row of three at y 360–720 (LF04 v3).
+- **Time:** L0–145. L13 phrase 1 f1273–1411 = L 4–142. Icons pop on the word onsets (Editor confirms with Whisper): cup (coffee) at L 64 (f1333, "คาเฟอีน"), scribble ball at L 90 (f1359, "ความเครียด"), moon and clock at L 121 (f1390, "การอดนอน"). Row of three at y 360–720 (LF04 v3).
 - **Motion:** still on paper, push 1.000→1.020, fy 600.
 - **Sound:** `ui_pop_01` at each icon frame (−18 dB), pluck notes optional on the same frames; pad −1 dB.
 - **Caption:** "มีรายงานว่า มันเชื่อมโยงกับ" / "คาเฟอีน ความเครียด การอดนอน"; shade L 4–142.
 - **Accept:** icons arrive one at a time on the words; no arrows; caption does not cover icons (they sit above y 840).
 
-### S01-B06-SH02 · 1413–1483 · dumbbell
+### S01-B06-SH02 · 1415–1483 · dumbbell
 
-- **Time:** L0–69. L13 phrase 2 f1417–1478 = L 4–65. Dumbbell pops at L 4 (f1417, "และ" onset est), bottom-left under the caption band as in LF04 v3; the other three fade to 60 % over L 4–20.
+- **Time:** L0–67. L13 phrase 2 f1419–1478 = L 4–63. Dumbbell pops at L 4 (f1419, "และ" onset, Whisper/envelope 1419–1420), bottom-left under the caption band as in LF04 v3; the other three fade to 60 % over L 4–20.
 - **Motion:** same framing, push 1.020→1.030 continuing, fy 600 (shot continues the SH01 push; total ≤ 3 %).
 - **Sound:** `ui_pop_01` at L 4; pad `−1 dB`.
-- **Caption:** "และการออกกำลังหนัก ๆ ใกล้เวลานอน"; shade L 4–66.
+- **Caption:** "และการออกกำลังหนัก ๆ ใกล้เวลานอน"; shade L 4–64.
 - **Accept:** four icons, no arrows, dumbbell's floor shadow intact.
 
-### S01-B07-SH01 · 1483–1576 · common and harmless
+### S01-B07-SH01 · 1483–1582 · common and harmless
 
-- **Time:** L0–92. L14 f1487–1572 = L 4–89. Hard cut back to the bedroom (LF01 look, warmer); she sits, a soft smile from L 20, shoulders relax, hugs the pillow L 30–60.
+- **Time:** L0–98. L14 f1487–1572 = L 4–89. Hard cut back to the bedroom (LF01 look, warmer); she sits, a soft smile from L 20, shoulders relax, hugs the pillow L 30–60.
 - **Motion:** medium side-on, push 1.000→1.010, fy 820. Light warms +6 % over the shot.
 - **Sound:** pad +1 dB, fuller; clock −24 dB returns at L0; fabric (−26 dB) at L 32.
 - **Caption:** "อาการนี้พบได้บ่อย" / "และส่วนใหญ่ ไม่อันตราย"; shade L 4–90.
 - **Accept:** posture and expression read as relief; no alarm cue.
 
-### S01-B07-SH02 · 1576–1637 · lying awake
+### S01-B07-SH02 · 1582–1637 · lying awake
 
-- **Time:** L0–60. L15 phrase 1 f1580–1635 = L 4–59. She lies eyes open on the ceiling, tired not scared; clock glow shows a late hour (no digits).
+- **Time:** L0–54. L15 phrase 1 f1586–1635 = L 4–53. She lies eyes open on the ceiling, tired not scared; clock glow shows a late hour (no digits).
 - **Motion:** semi-wide side-on, push 1.000→1.010, fy 820.
 - **Sound:** clock −22 dB (a touch louder); pad holds, no new cue.
-- **Caption:** "แต่ถ้าสะดุ้งถี่ จนนอนไม่หลับ…"; shade L 4–60.
+- **Caption:** "แต่ถ้าสะดุ้งถี่ จนนอนไม่หลับ…"; shade L 4–54.
 - **Accept:** eyes open at all frames; mood calm, not frightening.
 
 ### S01-B07-SH03 · 1637–1746 · doctor
@@ -300,7 +300,7 @@ Shot groups for painting (one shot = one timeline scene; groups G1–G5 are by p
 8. Freeze for B03-SH04 (story clock, not the breath clock) and the 3 f room flash at B03-SH05.
 9. `new: sit on bed edge` (B04, B07-SH01, hands in lap P31), `new: lie-back motion` (B08), `new: jolt motion`, breath phase 0 contract at f0 and B08's last frame.
 10. B05 timing hooks: bubble pops L 8 / L 20 (SH02), sun-moon slide with a stall (SH03 L 40–110), brain looks down (SH04), twitch line (SH05), wash-out L 0–60 (SH06).
-11. B06 icon pops at L 64 / 90 / 118 (SH01) and L 4 (SH02) with the fade-to-60 % of the other three.
+11. B06 icon pops at L 64 / 90 / 121 (SH01) and L 4 (SH02) with the fade-to-60 % of the other three.
 12. Kit intake (KIT-P01) items: pyjama, stethoscope, soft closed smile, bedroom set as a `PLATES` entry (already in `src/painted/edu01/set.ts`).
 
 **Plates not needed:** no new camera moves beyond ≤ 3 %; no Blender; no footage.
@@ -310,3 +310,4 @@ Shot groups for painting (one shot = one timeline scene; groups G1–G5 are by p
 ## Change log
 
 - **EDU-SHEETS-R1 (2026-11-04, Film W5.1):** first timed sheet from the Kore v1 measure (61.97 s). Jolt gap kept at 2.99 s; L06 = separate character voice; thump taken from `pulse_underwater-soft-thump_01` (the brief listed it NEEDS-GEN); `review-rows.json` start/end set to the timed frames.
+- **EDU-SHEETS-R1.1 (2026-11-04, Film W5.1):** applies the Editor Whisper + envelope onset check (build-notes W5.1 Editor jobs). L07 p2 onset f613 -> f617, L13 p2 (dumbbell) f1417 -> f1419, L15 p1 f1580 -> f1586, icon 'moon and clock' f1387 -> f1390. Boundaries: B04-SH01/SH02 609 -> 613; B06-SH01/SH02 1413 -> 1415; B07-SH01/SH02 1576 -> 1582. Local L times, shade ranges, name-card and shimmer cue (L 28 -> L 24, same comp f637) and pop frames updated. 23 shots, still 1860 f; shortest shot B01-SH02 37 f, no shot under 24 f.

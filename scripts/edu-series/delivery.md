@@ -9,7 +9,7 @@
 
 | Deliverable | Stage / Next owner | Script | Evidence / open items |
 | --- | --- | --- | --- |
-| EDU-EP01-SHORT | W5.1 timed sheets ready-for-dev (EDU-SHEETS-R1, 1860 f = 62.00 s); next W5.2 Boss | [research.md](research.md); [EDU-SCRIPT-R1.1](short/script.md) ([fact-check](short/fact-check.md)) | voice: Achernar candidate v1, **audio-measured** 59.53 s ([narration-measure.json](short/narration-measure.json), store `projects/EDU/audio/voice-lock-v1/`); open: user approval W4.3, L06 gasp performer, Film sets the jolt gap (3.02 s placeholder) |
+| EDU-EP01-SHORT | W5.1 timed sheets ready-for-dev (EDU-SHEETS-R1.1, 1860 f = 62.00 s); next W5.2 Boss | [research.md](research.md); [EDU-SCRIPT-R1.1](short/script.md) ([fact-check](short/fact-check.md)) | voice: Achernar candidate v1, **audio-measured** 59.53 s ([narration-measure.json](short/narration-measure.json), store `projects/EDU/audio/voice-lock-v1/`); open: user approval W4.3, L06 gasp performer, Film sets the jolt gap (3.02 s placeholder) |
 
 ## Handoff log
 
@@ -27,4 +27,5 @@
 - 2026-11-04: W4.3 user approved voice: Kore v1 (store `projects/EDU/audio/voice-lock-v1/EDU-EP01-SHORT-narration-kore-v1.wav`, timing `short/narration-measure-kore.json`). Silence audit: no unwanted gaps; 3 s jolt gap L05-L07 stays for Film W5.1 (user).
 
 - 2026-11-04: Film W5.1: [scene-sheets.md](short/scene-sheets.md) EDU-SHEETS-R1 `ready-for-dev` (23 shots, 1860 f = 62.00 s from the Kore v1 measure; no content change vs SS-R1). Jolt gap kept at 2.99 s (fall 45 f, hard silence 15 f, jolt 29 f); no voice regeneration. L06 gasp = separate young-woman character voice (not Kore), Editor generates. Caption shade: one peak per video, ladder 0.5/0.4/0.3 at W5.3 (UT12). Boss list and plates at the end of the sheet. Review page: pending (coordinator republishes from review-rows.json).
+- 2026-11-04: Film W5.1 revision: scene-sheets EDU-SHEETS-R1.1 `ready-for-dev` applies the Editor onset check (L07 p2 f617, L13 p2 f1419, L15 p1 f1586, moon-and-clock icon f1390); boundaries B04 609->613, B06 1413->1415, B07 1576->1582; 23 shots, 1860 f unchanged. review-rows.json updated; review page: pending.
 - 2026-11-04: Editor W5.1 jobs (EDU-SHEETS-R1): L06 gasp generated (Gemini TTS `<gasp>`, voices Aoede/Leda/Zephyr, 3 requests) and filed as library `sfx/vocal/vocal_gasp-young-woman_01` (Aoede, best), `_02`, `_03`; not human-listened. Phrase onsets checked with Whisper plus energy envelope: L07 p2 (f613 to f617) and L15 p1 (f1580 to f1586) differ by more than 3 f; L13 p2 and the moon icon are +3 f borderline; the rest agree. Details in [build-notes.md](build-notes.md). Sheet unchanged (Film owns it).
