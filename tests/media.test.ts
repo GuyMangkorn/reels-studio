@@ -1,7 +1,7 @@
 import {test} from 'node:test';
 import assert from 'node:assert/strict';
 import {timelineFrames, validateTimeline} from '../src/scenes/timeline';
-import {duckGainAt, entryTransitionStyle, trackFadeAt, validateVideoStyle} from '../src/scenes/media';
+import {duckGainAt, entryTransitionStyle, outlineLook, trackFadeAt, validateVideoStyle} from '../src/scenes/media';
 import type {Scene} from '../src/scenes/types';
 
 const plain = (extra: Partial<Scene> = {}): Scene => ({durationSec: 2, bg: 'none', actors: [], subtitle: '', ...extra});
@@ -29,6 +29,9 @@ test('video style validates tracks, captions and chrome', () => {
   assert.throws(() => validateVideoStyle({audio: [{src: 'a.mp3', duckUnderNarration: 2}]}, 'X'), /duckUnderNarration/);
   assert.throws(() => validateVideoStyle({captionStyle: {preset: 'karaoke'}}, 'X'), /captionStyle\.preset/);
   validateVideoStyle({captionStyle: {position: 'lower'}}, 'X');
+  validateVideoStyle({captionStyle: {strokeWidth: 8, strokeColor: '#101018', textShadow: '0 0 8px #000'}}, 'X');
+  assert.throws(() => validateVideoStyle({captionStyle: {strokeWidth: 40}}, 'X'), /captionStyle\.strokeWidth/);
+  assert.throws(() => validateVideoStyle({captionStyle: {textShadow: 3}}, 'X'), /captionStyle\.textShadow/);
   assert.throws(() => validateVideoStyle({captionStyle: {position: 'left'}}, 'X'), /captionStyle\.position/);
   assert.throws(() => validateVideoStyle({chrome: {channelLabel: 3}}, 'X'), /chrome\.channelLabel/);
 });
@@ -67,4 +70,11 @@ test('loopBlendFrames must be a frame count shorter than the last scene', () => 
   collectEpisodes([video(10)]);
   assert.throws(() => collectEpisodes([video(30)]), /shorter than the last scene/);
   assert.throws(() => collectEpisodes([video(-1)]), /loopBlendFrames/);
+});
+
+test('outline look: unset fields keep the original stroke and shadow', () => {
+  const original = {WebkitTextStroke: '7px #3d3c53', paintOrder: 'stroke fill', textShadow: '0 4px 0 #3d3c53'};
+  assert.deepEqual(outlineLook(), original);
+  assert.deepEqual(outlineLook({preset: 'outline', position: 'bottom', bottomEdgeY: 1248}), original);
+  assert.deepEqual(outlineLook({strokeWidth: 8, strokeColor: '#101018', textShadow: '0 0 8px #000'}), {WebkitTextStroke: '8px #101018', paintOrder: 'stroke fill', textShadow: '0 0 8px #000'});
 });

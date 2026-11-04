@@ -1,5 +1,5 @@
 import {lerp, mixColor, type Painter, type Pt} from './painter';
-import {INK, VD18, capsule, ell, glaze, inkLine, limb, lineOf, modelPart, solid, toneOf, washAt, type InteriorLight} from './draw';
+import {INK, palOf, capsule, ell, fistParts, formDir, openHandParts, planeBand, shapedLimb, glaze, hardFill, inkLine, limb, lineOf, modelPart, solid, toneOf, washAt, type InteriorLight} from './draw';
 import {hatFront, hatSide} from './gear';
 import {CHIN, HEAD_SPAN, paintHeadFront, paintHeadSide, type FaceState, type HeadStyle} from './head';
 import {clamp01} from './space';
@@ -63,7 +63,13 @@ export type CastDef = {height: number; head: HeadStyle; outfit: Outfit; seed: nu
  * (about 0.1 m away) and `via` on the shoulder-hand line; the arm then draws as a short cone that widens toward the hand and the hand
  * grows up to 1.3x (CP-P09: never more than 1.3x, never larger than the face). `finger` adds the end-on tip of a pointing finger.
  */
-export type Arm = {to: Pt; out?: number; via?: Pt; behind?: 'upper' | 'all'; toCam?: number; finger?: boolean};
+export type Arm = {to: Pt; out?: number; via?: Pt; behind?: 'upper' | 'all'; toCam?: number; finger?: boolean;
+  /** `InteriorLight.shaped` only: the hand is a fist (back of the hand, finger bumps, thumb) instead of an oval; the value is the side the thumb lies on (+1 / -1 in the hand's frame). `to` is the wrist, the fist reaches about 0.1 m past it. */
+  fist?: 1 | -1;
+  /** `InteriorLight.shaped` only (UT14): an open mitten hand; the value is the side the thumb lobe lies on. */
+  open?: 1 | -1;
+  /** With `open`: hide the thumb lobe (mitten outline without it), e.g. a hand clamped over the mouth where the thumb is behind the palm. */
+  noThumb?: boolean};
 export type Prop =
   | {kind: 'torch'; angle: number; on: number}
   | {kind: 'phone'}
@@ -142,6 +148,11 @@ export type FigAnchors = {
 export const H = 0.425; // one head, m
 /** Upper-arm and forearm length, m (both bones; the pose library and its test use it). */
 export const BONE = 0.26;
+
+/** Short-sleeve hem of the shaped front-view arm, as a fraction of the on-screen upper arm (shoulder -> elbow); ZC2-SB-R3 sleeve fix. */
+export const SLEEVE_HEM = 0.6;
+/** Limb width at the elbow of the shaped arm (U): the upper arm ends and the forearm starts on the IK elbow point at this width, so both round caps are one circle of radius ELBOW_W / 2 centred on the joint (ZC2-SB-R3 elbow fix). */
+export const ELBOW_W = 0.066;
 
 /** Two-bone IK in px: elbow for shoulder S, hand target T, bone L; picks the solution bending down and toward `out`. */
 export const ikElbow = (S: Pt, T: Pt, L: number, out: number): Pt => {
@@ -301,19 +312,20 @@ export const drawFigure = (p: Painter, def: CastDef, g: Pt, unit: number, pose: 
   let part = 0, line = 0;
   const fill = (color: string, pts: Pt[], outline = true, passes = 4) => {
     const base = sil ?? toneOf(color, L);
+    if (L?.under && !sil) hardFill(p, seed * 1000 + part + 500, base, pts);
     solid(p, seed * 1000 + ++part, base, pts, sil ? 8 : passes, sil ? 0.02 : L ? 0 : 0.07, sil ? 0.03 : 0.2);
     if (L) {
       modelPart(p, seed * 1000 + part, base, pts, L);
       // Falloff from the overhead tubes: lower parts sit darker (measured from the shoulders to the ground point).
       const cy = pts.reduce((a, q) => a + q[1], 0) / pts.length, top = U([0, shV])[1];
       const v = clamp01((cy - top) / Math.max(1, g[1] - top));
-      if (v > 0.25) glaze(p, 7_900_000 + seed * 1000 + part, VD18.falloff, VD18.falloffOpacity * ((v - 0.25) / 0.75), pts, {border: 0.2, bleed: 0.02});
+      if (v > 0.25) glaze(p, 7_900_000 + seed * 1000 + part, palOf(L).falloff, palOf(L).falloffOpacity * ((v - 0.25) / 0.75), pts, {border: 0.2, bleed: 0.02});
     }
-    if (outline && !sil) inkLine(p, seed * 1000 + ++line, pts, {weight: L ? VD18.lineOuter : 1.0, color: lineOf(base, L)});
+    if (outline && !sil) inkLine(p, seed * 1000 + ++line, pts, {weight: L ? palOf(L).lineOuter : 1.0, color: lineOf(base, L)});
   };
   /** VD18 fold or crease: a short open ink stroke in a dark shade of the cloth. */
   const fold = (color: string, pts: Pt[]) => {
-    if (L && !sil) inkLine(p, seed * 1000 + 400 + ++line, pts, {closed: false, weight: VD18.lineFold, curve: 0.5, color: mixColor(toneOf(color, L), INK, 0.55)});
+    if (L && !sil) inkLine(p, seed * 1000 + 400 + ++line, pts, {closed: false, weight: palOf(L).lineFold, curve: 0.5, color: mixColor(toneOf(color, L), L?.ink ?? INK, 0.55)});
   };
 
   // Soft ground shadow under the feet (every human has one). VD18: a wider soft shadow plus a dark occlusion core.
@@ -323,8 +335,8 @@ export const drawFigure = (p: Painter, def: CastDef, g: Pt, unit: number, pose: 
   const sh = ell(shX, g[1] + 0.01 * unit, shW * (L ? 1.15 : 1) * unit, (L ? 0.07 : 0.06) * (1 + lieA) * unit, 16);
   if (!pose.seated && !L) washAt(p, seed * 1000 + 999, sil ?? '#1e2324', 70, sh, 0.5, 0.3);
   if (!pose.seated && L) {
-    glaze(p, seed * 1000 + 999, '#0e1213', 120, sh, {border: 0.1, bleed: 0.15});
-    glaze(p, seed * 1000 + 998, '#07090a', 160, ell(shX, g[1] + 0.005 * unit, ((profile ? 0.22 : 0.2) + (0.4 * Ht - (profile ? 0.22 : 0.2)) * lieA) * unit, 0.03 * (1 + lieA) * unit, 16), {border: 0.1, bleed: 0.08});
+    glaze(p, seed * 1000 + 999, palOf(L).ground, 120, sh, {border: 0.1, bleed: 0.15});
+    glaze(p, seed * 1000 + 998, palOf(L).groundCore, 160, ell(shX, g[1] + 0.005 * unit, ((profile ? 0.22 : 0.2) + (0.4 * Ht - (profile ? 0.22 : 0.2)) * lieA) * unit, 0.03 * (1 + lieA) * unit, 16), {border: 0.1, bleed: 0.08});
   }
   // Contact (kneel, floor-sit; default absent): a darker core under each part that rests on the ground, so the folded legs read as
   // touching it: the knees and the shin of a kneel, the seat of a floor-sit. Drawn under the figure like the shadow above.
@@ -432,7 +444,7 @@ export const drawFigure = (p: Painter, def: CastDef, g: Pt, unit: number, pose: 
   const hangX = childHangExtra(def);
   const hang = (s: number): Pt => (profile ? U([0.01 + 0.02 * Math.sin(ph + (s > 0 ? Math.PI : 0)) * (walk === undefined ? 0 : 6 * (pose.stride ?? 1)), shV - 0.03 - 2 * AB + 0.02]) : U([s * (sw - 0.0255 + 0.034 + hangX), shV - 0.0255 - 2 * AB + 0.02]));
   /** Run: arms pump opposite to the leg on their side (profile: elbow ~80 deg; front: hands rise to the chest and drop to the hip). */
-  type ArmGeo = {Sh: Pt; E: Pt; T: Pt; cam?: number; finger?: boolean};
+  type ArmGeo = {Sh: Pt; E: Pt; T: Pt; cam?: number; finger?: boolean; fist?: 1 | -1; open?: 1 | -1; noThumb?: boolean};
   const runArm = (s: number, Sh: Pt): ArmGeo => {
     const th = ph0 + (profile ? (s * dir < 0 ? Math.PI : 0) : s > 0 ? 0 : Math.PI);
     if (profile) {
@@ -454,7 +466,7 @@ export const drawFigure = (p: Painter, def: CastDef, g: Pt, unit: number, pose: 
     if (!a && mode?.kind === 'run') return runArm(s, Sh);
     const T = a?.via ? a.to : reachTo(Sh, a?.to ?? hang(s), Lpx);
     const E = a?.via ?? (a ? ikElbow(Sh, T, Lpx, a.out ?? (profile ? -dir : s)) : ([lerp(Sh[0], T[0], 0.5) + (profile ? -dir * 0.02 * unit : s * 0.02 * unit), lerp(Sh[1], T[1], 0.5)] as Pt));
-    return a?.toCam && !profile ? {Sh, E, T, cam: Math.max(0, Math.min(1, a.toCam)), finger: a.finger} : {Sh, E, T};
+    return a?.toCam && !profile ? {Sh, E, T, cam: Math.max(0, Math.min(1, a.toCam)), finger: a.finger} : {Sh, E, T, fist: a?.fist, open: a?.open, noThumb: a?.noThumb};
   };
   const R = arm('r'), Lm = arm('l');
   const drawArm = (A: ArmGeo, hold: Prop | undefined, k: number, far: boolean, only?: 'upper' | 'lower') => {
@@ -464,6 +476,90 @@ export const drawFigure = (p: Painter, def: CastDef, g: Pt, unit: number, pose: 
     // Pointing at the viewer (`toCam`): a short cone that widens toward the hand, the hand up to 1.3x (CP-P09).
     const cam = A.cam ?? 0;
     const slc = cam ? mixColor(sl, '#ffffff', 0.16 * cam) : sl; // the nearer cone is lit lighter than the sleeve behind it, so it parts from the torso
+    const shp = !!L?.shaped && !sil && !cam;
+    if (shp) {
+      // Shaped arm (InteriorLight.shaped): forearm with a belly that tapers to the wrist, a sleeve cut with a flared hem over it, a fist or an oval hand.
+      const fx = A.T[0] - A.E[0], fy = A.T[1] - A.E[1], fl = Math.hypot(fx, fy) || 1, ux = fx / fl, uy = fy / fl;
+      const ax = A.E[0] - A.Sh[0], ay = A.E[1] - A.Sh[1], al = Math.hypot(ax, ay) || 1;
+      const forearmColor = o.longSleeves ? slc : skinHand;
+      const drawFore = () => {
+        part = 600 + k * 30;
+        line = 600 + k * 30;
+        // ZC2-SB-R3 elbow fix: the forearm starts AT the elbow joint (it began 0.05 U behind it, so its round start cap poked past
+        // the upper arm as a ball), at the shared elbow width, so its cap is the same circle as the upper arm's end cap.
+        fill(forearmColor, shapedLimb(A.E, A.T, ELBOW_W * unit, 0.044 * unit * (1 + ((L?.handScale ?? 1) - 1) * 0.75), {bulge: 0.018 * unit, peak: 0.3, asym: 0.25, capB: false}), true);
+      };
+      // ZC2-SB-R3 sleeves (front view, short sleeves): the sleeve no longer runs to the elbow as a slab over a round shoulder ball. A bare
+      // upper arm runs shoulder -> elbow (round elbow cap); the sleeve is a tapered tube that starts on the shoulder seam (its cap sunk into
+      // the torso line), ends at `SLEEVE_HEM` of the on-screen upper arm with a slightly flared, gently curved hem perpendicular to the bone,
+      // and drops a small shadow on the skin under the cuff; the forearm comes out at the elbow, under the upper arm. Profile and long sleeves
+      // keep the r6 sleeve-to-elbow drawing.
+      const frontShort = !profile && !o.longSleeves;
+      const dX = ax / al, dY = ay / al;
+      if (only !== 'upper') drawFore();
+      if (only !== 'lower' && frontShort) {
+        part = 900 + k * 20;
+        line = 900 + k * 20;
+        const s0 = Math.min(0.022 * unit, al * 0.25), a0: Pt = [A.Sh[0] + dX * s0, A.Sh[1] + Math.max(dY * s0, 0.02 * unit)]; // cap top level with the shoulder line
+        const hl = Math.max(al * SLEEVE_HEM, Math.min(al, 0.07 * unit)), hem: Pt = [A.Sh[0] + dX * hl, A.Sh[1] + dY * hl];
+        const u0 = Math.max(s0, hl * 0.5); // the bare upper arm starts inside the sleeve, so no skin shows above the shoulder seam
+        fill(skinHand, shapedLimb([A.Sh[0] + dX * u0, A.Sh[1] + dY * u0], A.E, 0.074 * unit, ELBOW_W * unit, {bulge: 0.006 * unit, peak: 0.3, asym: 0.15, capB: true}), true);
+        const nX = -dY, nY = dX, hw = 0.046 * unit;
+        washAt(p, seed * 1000 + 910 + k * 20, mixColor(skinHand, L?.ink ?? INK, 0.55), 150, [[hem[0] - nX * hw, hem[1] - nY * hw], [hem[0] + nX * hw, hem[1] + nY * hw], [hem[0] + nX * hw * 0.8 + dX * 0.032 * unit, hem[1] + nY * hw * 0.8 + dY * 0.032 * unit], [hem[0] - nX * hw * 0.8 + dX * 0.032 * unit, hem[1] - nY * hw * 0.8 + dY * 0.032 * unit]], 0.3, 0.3);
+        part = 620 + k * 30;
+        line = 620 + k * 30;
+        const tube = shapedLimb(a0, hem, 0.096 * unit, 0.082 * unit, {bulge: 0.01 * unit, peak: 0.3, asym: 0.15, capB: false, flare: 0.014 * unit});
+        tube.push([hem[0] + dX * 0.012 * unit, hem[1] + dY * 0.012 * unit]); // the hem wraps the arm: a shallow curve toward the hand
+        fill(slc, tube, true);
+        fold(sl, [[hem[0] - nX * 0.036 * unit - dX * 0.014 * unit, hem[1] - nY * 0.036 * unit - dY * 0.014 * unit], [hem[0] - dX * 0.004 * unit, hem[1] - dY * 0.004 * unit], [hem[0] + nX * 0.036 * unit - dX * 0.014 * unit, hem[1] + nY * 0.036 * unit - dY * 0.014 * unit]]);
+      } else if (only !== 'lower') {
+        part = 620 + k * 30;
+        line = 620 + k * 30;
+        const hemEnd: Pt = [A.E[0] + (ax / al) * 0.012 * unit, A.E[1] + (ay / al) * 0.012 * unit];
+        fill(slc, shapedLimb(A.Sh, hemEnd, 0.1 * unit, 0.078 * unit, {bulge: 0.012 * unit, peak: 0.35, asym: 0.15, capB: false, flare: 0.012 * unit}), true);
+        fold(sl, [[A.E[0] - (ax / al) * 0.05 * unit - (ay / al) * 0.03 * unit, A.E[1] - (ay / al) * 0.05 * unit + (ax / al) * 0.03 * unit], [A.E[0] - (ax / al) * 0.03 * unit, A.E[1] - (ay / al) * 0.03 * unit], [A.E[0] - (ax / al) * 0.05 * unit + (ay / al) * 0.03 * unit, A.E[1] - (ay / al) * 0.05 * unit - (ax / al) * 0.03 * unit]]);
+      }
+      if (only === 'upper') return A.T;
+      const ang = Math.atan2(uy, ux);
+      // HL1 hands (ZCONDO2, 4 Nov 2026): flat skin with one warm shade down the side away from the key and the arm's falloff, no cool
+      // form glaze (it left a purple bruise on the small round shape); one smooth outline, short dark strokes only.
+      const hu = unit * (L?.handScale ?? 1); // hand-only scale about the wrist (default 1)
+      const dark = mixColor(skinHand, L?.ink ?? INK, 0.5);
+      const handFill = (pts: Pt[]) => {
+        const base = toneOf(skinHand, L);
+        if (L?.under) hardFill(p, seed * 1000 + part + 500, base, pts);
+        solid(p, seed * 1000 + ++part, base, pts, 4, 0, 0.2);
+        if (L) {
+          const sh = planeBand(pts, formDir(pts, L.key), 0.58);
+          if (sh.length) glaze(p, 7_100_000 + seed * 1000 + part, mixColor(base, '#5a3020', 0.4), 80, sh, {border: 0.15, bleed: 0.03, split: 0});
+          const cy = pts.reduce((a, q) => a + q[1], 0) / pts.length, top = U([0, shV])[1];
+          const v = clamp01((cy - top) / Math.max(1, g[1] - top));
+          if (v > 0.25) glaze(p, 7_900_000 + seed * 1000 + part, palOf(L).falloff, palOf(L).falloffOpacity * ((v - 0.25) / 0.75), pts, {border: 0.1, bleed: 0.02, split: 0});
+        }
+        inkLine(p, seed * 1000 + ++line, pts, {weight: L ? palOf(L).lineOuter : 1.0, color: lineOf(base, L)});
+      };
+      const strokes = (list: Pt[][]) => list.forEach((cr) => inkLine(p, seed * 1000 + ++line, cr, {closed: false, weight: 1.5, curve: 0.5, color: dark}));
+      part = 660 + k * 30;
+      line = 660 + k * 30;
+      if (A.fist) {
+        const F = fistParts(A.T, ang, hu, A.fist);
+        handFill(F.back);
+        strokes([...F.creases, F.thumbCrease]);
+        return [A.T[0] + ux * 0.05 * hu, A.T[1] + uy * 0.05 * hu] as Pt;
+      }
+      if (A.open) {
+        const H = openHandParts(A.T, ang, hu, A.open, A.noThumb);
+        if (A.noThumb) { handFill(H.palm); strokes(H.creases); return [A.T[0] + ux * 0.06 * hu, A.T[1] + uy * 0.06 * hu] as Pt; }
+        handFill(H.palm);
+        strokes([...H.creases, H.thumbCrease]);
+        return [A.T[0] + ux * 0.06 * hu, A.T[1] + uy * 0.06 * hu] as Pt;
+      }
+      // relaxed hand (no fist/open given): the same bean, finger grooves only (it was a plain oval, two of them clasped read as a dough ball)
+      const R0 = fistParts(A.T, ang, hu, k === 0 ? -1 : 1);
+      handFill(R0.back);
+      strokes(R0.creases);
+      return [A.T[0] + ux * 0.045 * hu, A.T[1] + uy * 0.045 * hu] as Pt;
+    }
     if (only !== 'lower') fill(slc, capsule(A.Sh, A.E, 0.08 * unit, (cam ? 0.068 + 0.03 * cam : 0.068) * unit), true);
     if (only === 'upper') return A.T;
     fill(o.longSleeves ? slc : skinHand, capsule(A.E, A.T, (cam ? 0.066 + 0.04 * cam : 0.066) * unit, (cam ? 0.056 + 0.06 * cam : 0.056) * unit), true);
@@ -547,6 +643,14 @@ export const drawFigure = (p: Painter, def: CastDef, g: Pt, unit: number, pose: 
       }
       if (o.apron) fill(o.apron, Uq([[-0.085, shV - 0.0935], [0.085, shV - 0.0935], [0.11, hip0 - 0.136], [-0.11, hip0 - 0.136]]), true, 8);
       // VD18 drape: the shirt sags under the collar; a crouch bunches it at the waist.
+      if (L?.shaped && !sil) {
+        // Shirt folds (shaped look): pull creases from the armpits, a belly crease and a bunch at the hem.
+        for (const s2 of [-1, 1]) {
+          fold(o.shirt, Uq([[s2 * (sw - 0.03), shV - 0.07], [s2 * (sw - 0.055), shV - 0.115], [s2 * (sw - 0.05), shV - 0.17]]));
+          fold(o.shirt, Uq([[s2 * (hw - 0.01), hip0 + 0.09], [s2 * (hw * 0.55), hip0 + 0.07], [s2 * 0.03, hip0 + 0.085]]));
+        }
+        fold(o.shirt, Uq([[-0.07, shV - 0.17], [-0.01, shV - 0.185], [0.06, shV - 0.17]]));
+      }
       fold(o.shirt, Uq([[-0.045, shV - 0.05], [0, shV - 0.075], [0.045, shV - 0.05]]));
       if (c > 0.4) for (const dv of [0.05, 0.09]) fold(o.jacket ?? o.shirt, Uq([[-hw + 0.01, hip0 + dv], [-hw * 0.4, hip0 + dv - 0.015], [-0.07, hip0 + dv]]));
       if (o.jacket) for (const s2 of [-1, 1]) fold(o.jacket, Uq([[s2 * 0.12, shV - 0.03], [s2 * 0.14, (shV + hip0) / 2], [s2 * 0.13, hip0 + 0.01]]));
@@ -666,7 +770,17 @@ export const drawFigure = (p: Painter, def: CastDef, g: Pt, unit: number, pose: 
   line = 120;
   const nw = o.coat ? (profile ? 0.16 * HD : 0.24 * HD) : profile ? 0.08 * HD : 0.1 * HD;
   const nx = profile ? -0.08 * HD : 0;
-  fill(coat ?? (L ? mixColor(def.head.skin, VD18.shadow, 0.3) : def.head.skin), Uq([[nx - nw, chin + 0.051], [nx + nw, chin + 0.051], [nx + nw + 0.0043, shV - 0.013], [nx - nw - 0.0043, shV - 0.013]]), false, 6);
+  const scoop = !!L?.shaped && !sil && !coat; // crew-neck shirt: the neck ends in a U of chest skin and a collar band covers its foot
+  const neckC = coat ?? (L ? mixColor(def.head.skin, palOf(L).shadow, 0.3) : def.head.skin);
+  if (scoop) {
+    const dip = (u: number): Pt => [nx + u * nw, shV - 0.013 - 0.026 * (1 - u * u)];
+    const u = [0.75, 0.5, 0.25, 0, -0.25, -0.5, -0.75];
+    fill(neckC, Uq([[nx - nw, chin + 0.051], [nx + nw, chin + 0.051], [nx + nw + 0.0043, shV - 0.013], ...u.map(dip), [nx - nw - 0.0043, shV - 0.013]]), false, 6);
+    const rim = (d: number): Pt[] => [-1, -0.75, -0.5, -0.25, 0, 0.25, 0.5, 0.75, 1].map((q) => [nx + q * (nw + 0.016), shV - 0.006 - 0.026 * (1 - q * q) - d]);
+    fill(o.shirt, Uq([...rim(0), ...rim(0.016).reverse()]), true, 4);
+  } else {
+    fill(neckC, Uq([[nx - nw, chin + 0.051], [nx + nw, chin + 0.051], [nx + nw + 0.0043, shV - 0.013], [nx - nw - 0.0043, shV - 0.013]]), false, 6);
+  }
   const nod = pose.nod ?? [0, 0];
   const hc = U([nx + nod[0] * K, chin + CHIN * K - nod[1] * K]);
   const Kpx = K * unit;

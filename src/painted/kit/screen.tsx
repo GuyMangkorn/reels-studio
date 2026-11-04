@@ -53,12 +53,26 @@ export const shadeGate = (tl: number, cues: readonly CaptionCue[], fps = 30): nu
  * `band` is the horizontal CSS gradient y 990-1330 (peak 0.62) for light section/close shots; `soft` the 560 x 190 px
  * ellipse at (540, 1170) (peak 0.5) for full-frame POV. Colour is a warm near-black so the cream sets keep their hue.
  */
-export const CaptionShade = ({tl, cues, mode = 'band', strength, fps = 30}: {tl: number; cues: readonly CaptionCue[]; mode?: 'band' | 'soft'; strength?: number; fps?: number}) => {
+export const CaptionShade = ({tl, cues, mode = 'band', strength, fps = 30, lines, width}: {tl: number; cues: readonly CaptionCue[]; mode?: 'band' | 'soft'; strength?: number; fps?: number; lines?: 1 | 2; width?: number}) => {
   const g = shadeGate(tl, cues, fps);
   if (g <= 0) return null;
   const peak = (strength ?? (mode === 'band' ? 0.62 : 0.5)) * g;
-  const background = mode === 'band'
-    ? `linear-gradient(to bottom, rgba(20,16,12,0) 990px, rgba(20,16,12,${peak}) 1080px, rgba(20,16,12,${peak}) 1250px, rgba(20,16,12,0) 1330px)`
-    : `radial-gradient(ellipse 560px 190px at 540px 1170px, rgba(20,16,12,${peak}) 0%, rgba(20,16,12,${peak * 0.7}) 55%, rgba(20,16,12,0) 100%)`;
+  // `lines` (optional, band mode): a soft cloud that follows the caption's line count, bottom-aligned to the caption bottom edge (y 1248):
+  // smoothstep feather up/down (1 line: 0 at 1060, solid 1160-1250, 0 at 1330; 2 lines: 0 at 970, solid 1076-1250, 0 at 1330) and a smoothstep
+  // sideways mask (0 at 5 %, solid from 20 % to 80 %, 0 at 95 % of the width; with `width` text + 40 px solid, 80 px feather), so the shade has no hard edge and never spans the frame.
+  // Unset = the tall linear band below (delivered episodes, unchanged).
+  const T = [0, 0.1, 0.25, 0.4, 0.55, 0.7, 0.85, 1], S = T.map((t) => t * t * (3 - 2 * t));
+  const ramp = (a: number, b: number, unit: string, alpha: (k: number) => string) => T.map((t, i) => `${alpha(S[i])} ${(a + (b - a) * t).toFixed(1)}${unit}`).join(', ');
+  const [t0, s0, s1, t1] = lines === 1 ? [1060, 1160, 1250, 1330] : lines === 2 ? [970, 1076, 1250, 1330] : [990, 1080, 1250, 1330];
+  const c = (k: number) => `rgba(20,16,12,${(peak * k).toFixed(4)})`;
+  const background = lines
+    ? `linear-gradient(to bottom, ${ramp(t0, s0, 'px', c)}, ${c(1)} ${s1}px, ${ramp(s1, t1, 'px', (k) => c(1 - k))})`
+    : mode === 'band'
+      ? `linear-gradient(to bottom, rgba(20,16,12,0) ${t0}px, rgba(20,16,12,${peak}) ${s0}px, rgba(20,16,12,${peak}) ${s1}px, rgba(20,16,12,0) ${t1}px)`
+      : `radial-gradient(ellipse 560px 190px at 540px 1170px, rgba(20,16,12,${peak}) 0%, rgba(20,16,12,${peak * 0.7}) 55%, rgba(20,16,12,0) 100%)`;
+  // `width` (optional, with `lines`): the caption text width in px; the sideways mask is then solid over text + 40 px and feathers 80 px each side.
+  const half = (width ?? 0) / 2 + 20, [m0, m1] = width ? [Math.max(0.2, (540 - half - 80) / 10.8), (540 - half) / 10.8] : [5, 20];
+  const mask = lines ? `linear-gradient(to right, ${ramp(m0, m1, '%', (k) => `rgba(0,0,0,${k.toFixed(4)})`)}, ${ramp(100 - m1, 100 - m0, '%', (k) => `rgba(0,0,0,${(1 - k).toFixed(4)})`)})` : undefined;
+  if (mask) return <AbsoluteFill style={{pointerEvents: 'none', background, WebkitMaskImage: mask, maskImage: mask}} />;
   return <AbsoluteFill style={{pointerEvents: 'none', background}} />;
 };

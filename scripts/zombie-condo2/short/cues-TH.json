@@ -1,0 +1,666 @@
+{
+  "deliverable": "ZCPAINT-SHORT-TH",
+  "durationSec": 95.9,
+  "scriptRevision": "ZCONDO-SHORT-TH-R5 (R4 B09 call, R5 B10 caption removed); VO and captions from ZCPAINT-SHORT-TH.lines.json",
+  "sheetRevision": "ZCPAINT-SHORT-SS-R1.7 (Editor re-lock to the measured Gemini read + B09 call, 31 Oct 2026; TH 2877 frames)",
+  "beats": [
+    {
+      "beat": "B01",
+      "startSec": 0.0,
+      "shots": [
+        {
+          "shot": "ZCP-B01-SH01",
+          "atSec": 0.0
+        },
+        {
+          "shot": "ZCP-B01-SH02-TH",
+          "atSec": 5.433
+        }
+      ]
+    },
+    {
+      "beat": "B02",
+      "startSec": 7.2,
+      "shots": [
+        {
+          "shot": "ZCP-B02-SH01-TH",
+          "atSec": 7.2
+        },
+        {
+          "shot": "ZCP-B02-SH02-TH",
+          "atSec": 10.233,
+          "fromSec": 0.1
+        },
+        {
+          "shot": "ZCP-B02-SH03",
+          "atSec": 14.3
+        }
+      ]
+    },
+    {
+      "beat": "B03",
+      "startSec": 17.267,
+      "shots": [
+        {
+          "shot": "ZCP-B03-SH01-TH",
+          "atSec": 17.267
+        }
+      ]
+    },
+    {
+      "beat": "B04",
+      "startSec": 19.333,
+      "shots": [
+        {
+          "shot": "ZCP-B04-SH01",
+          "atSec": 19.333
+        },
+        {
+          "shot": "ZCP-B04-SH02-TH",
+          "atSec": 21.467
+        },
+        {
+          "shot": "ZCP-B04-SH03a-TH",
+          "atSec": 30.4
+        },
+        {
+          "shot": "ZCP-B04-SH03b-TH",
+          "atSec": 33.0
+        },
+        {
+          "shot": "ZCP-B04-SH03c-TH",
+          "atSec": 33.733
+        },
+        {
+          "shot": "ZCP-B04-SH04-TH",
+          "atSec": 34.367
+        }
+      ]
+    },
+    {
+      "beat": "B05",
+      "startSec": 35.733,
+      "shots": [
+        {
+          "shot": "ZCP-B05-SH01-TH",
+          "atSec": 35.733
+        },
+        {
+          "shot": "ZCP-B05-SH02",
+          "atSec": 38.433,
+          "fromSec": 1.2
+        },
+        {
+          "shot": "ZCP-B05-SH03-P1-TH",
+          "atSec": 40.733,
+          "fromSec": 0.7
+        },
+        {
+          "shot": "ZCP-B05-SH03-BOWL",
+          "atSec": 45.133
+        },
+        {
+          "shot": "ZCP-B05-SH03-TH",
+          "atSec": 46.167
+        }
+      ]
+    },
+    {
+      "beat": "B06",
+      "startSec": 48.933,
+      "shots": [
+        {
+          "shot": "ZCP-B06-SH01",
+          "atSec": 48.933
+        },
+        {
+          "shot": "ZCP-B06-SH02-TH",
+          "atSec": 56.033
+        },
+        {
+          "shot": "ZCP-B06-SH03",
+          "atSec": 58.567
+        }
+      ]
+    },
+    {
+      "beat": "B07",
+      "startSec": 60.333,
+      "shots": [
+        {
+          "shot": "ZCP-B07-SH01",
+          "atSec": 60.333,
+          "fromSec": 0.267
+        },
+        {
+          "shot": "ZCP-B07-SH02",
+          "atSec": 64.367
+        }
+      ]
+    },
+    {
+      "beat": "B08",
+      "startSec": 68.133,
+      "shots": [
+        {
+          "shot": "ZCP-B08-SH01-TH",
+          "atSec": 68.133
+        }
+      ]
+    },
+    {
+      "beat": "B09",
+      "startSec": 76.333,
+      "shots": [
+        {
+          "shot": "ZCP-B09-SH01-TH",
+          "atSec": 76.333
+        },
+        {
+          "shot": "ZCP-B09-SH02-TH",
+          "atSec": 82.933
+        },
+        {
+          "shot": "ZCP-B09-SH02B",
+          "atSec": 85.0
+        },
+        {
+          "shot": "ZCP-B09-SH03-TH",
+          "atSec": 86.333
+        }
+      ]
+    },
+    {
+      "beat": "B10",
+      "startSec": 89.533,
+      "shots": [
+        {
+          "shot": "ZCP-B10-SH01-TH",
+          "atSec": 89.533
+        }
+      ]
+    }
+  ],
+  "sfx": [
+    {
+      "src": "sfx/foley/foley_door-latch-hinge_01.wav",
+      "atSec": 0.0,
+      "volume": 0.6
+    },
+    {
+      "src": "sfx/reveal/reveal_riser-tension_01.wav",
+      "atSec": 2.667,
+      "volume": 0.25,
+      "durationSec": 3.867
+    },
+    {
+      "src": "sfx/creature/creature_neck-creak-wet_01.wav",
+      "atSec": 5.667,
+      "volume": 0.5
+    },
+    {
+      "src": "sfx/foley/foley_footsteps-run-slam_01.wav",
+      "atSec": 6.533,
+      "volume": 0.45,
+      "trimStartSec": 0.58
+    },
+    {
+      "src": "sfx/impact/impact_door-slam-body_01.wav",
+      "atSec": 7.267,
+      "volume": 0.6
+    },
+    {
+      "src": "sfx/foley/foley_bag-drop-tile_01.wav",
+      "atSec": 7.4,
+      "volume": 0.25
+    },
+    {
+      "src": "sfx/foley/foley_deadbolt-clack_01.wav",
+      "atSec": 8.067,
+      "volume": 0.5
+    },
+    {
+      "src": "sfx/foley/foley_cabinet-scrape-thud_01.wav",
+      "atSec": 10.333,
+      "volume": 0.6
+    },
+    {
+      "src": "sfx/impact/impact_power-cut-whoomp_01.wav",
+      "atSec": 17.567,
+      "volume": 0.5
+    },
+    {
+      "src": "sfx/water/water_tap-fill-containers_01.wav",
+      "atSec": 19.333,
+      "volume": 0.12,
+      "durationSec": 6.0
+    },
+    {
+      "src": "sfx/water/water_tap-fill-containers_01.wav",
+      "atSec": 30.4,
+      "volume": 0.22,
+      "durationSec": 5.0
+    },
+    {
+      "src": "sfx/foley/foley_lid-snaps-three_01.wav",
+      "atSec": 34.467,
+      "volume": 0.6,
+      "trimStartSec": 0.08,
+      "durationSec": 0.12
+    },
+    {
+      "src": "sfx/foley/foley_lid-snaps-three_01.wav",
+      "atSec": 34.6,
+      "volume": 0.6,
+      "trimStartSec": 0.08,
+      "durationSec": 0.12
+    },
+    {
+      "src": "sfx/foley/foley_lid-snaps-three_01.wav",
+      "atSec": 34.733,
+      "volume": 0.6,
+      "trimStartSec": 0.08,
+      "durationSec": 0.12
+    },
+    {
+      "src": "sfx/foley/foley_cistern-lid-tap_01.wav",
+      "atSec": 36.967,
+      "volume": 0.6,
+      "trimStartSec": 0.7
+    },
+    {
+      "src": "sfx/water/water_bucket-pour-gurgle_01.wav",
+      "atSec": 39.633,
+      "volume": 0.7
+    },
+    {
+      "src": "sfx/reveal/reveal_glass-shimmer-soft_01.wav",
+      "atSec": 41.133,
+      "volume": 0.5
+    },
+    {
+      "src": "sfx/ui/ui_click-tick_01.wav",
+      "atSec": 52.2,
+      "volume": 0.5
+    },
+    {
+      "src": "sfx/ui/ui_click-tick_01.wav",
+      "atSec": 55.267,
+      "volume": 0.5
+    },
+    {
+      "src": "sfx/foley/foley_fridge-seal-pop_01.wav",
+      "atSec": 56.033,
+      "volume": 0.6
+    },
+    {
+      "src": "sfx/foley/foley_packaging-rustle_01.wav",
+      "atSec": 56.533,
+      "volume": 0.6
+    },
+    {
+      "src": "sfx/foley/foley_fridge-seal-thump_01.wav",
+      "atSec": 57.4,
+      "volume": 0.6
+    },
+    {
+      "src": "sfx/foley/foley_can-setdown-laminate_01.wav",
+      "atSec": 58.667,
+      "volume": 0.6
+    },
+    {
+      "src": "sfx/mechanical/mechanical_canister-handling_01.wav",
+      "atSec": 61.4,
+      "volume": 0.6
+    },
+    {
+      "src": "sfx/stinger/stinger_low-muted-hit_01.wav",
+      "atSec": 61.667,
+      "volume": 0.5
+    },
+    {
+      "src": "sfx/foley/foley_packaging-rustle_01.wav",
+      "atSec": 66.367,
+      "volume": 0.35
+    },
+    {
+      "src": "sfx/ui/ui_click-tick_01.wav",
+      "atSec": 76.333,
+      "volume": 0.5
+    },
+    {
+      "src": "sfx/ui/ui_click-tick_01.wav",
+      "atSec": 77.533,
+      "volume": 0.5
+    },
+    {
+      "src": "sfx/ui/ui_click-tick_01.wav",
+      "atSec": 79.133,
+      "volume": 0.5
+    },
+    {
+      "src": "sfx/ui/ui_click-tick_01.wav",
+      "atSec": 80.867,
+      "volume": 0.5
+    },
+    {
+      "src": "sfx/impact/impact_sub-hit-short_01.wav",
+      "atSec": 87.733,
+      "volume": 0.5
+    },
+    {
+      "src": "sfx/impact/impact_knuckle-rap_01.wav",
+      "atSec": 93.6,
+      "volume": 0.6
+    },
+    {
+      "src": "sfx/impact/impact_knuckle-rap_01.wav",
+      "atSec": 94.05,
+      "volume": 0.6
+    },
+    {
+      "src": "sfx/impact/impact_knuckle-rap_01.wav",
+      "atSec": 94.5,
+      "volume": 0.6
+    }
+  ],
+  "audio": [
+    {
+      "src": "sfx/electric/electric_light-flicker-buzz_01.wav",
+      "startSec": 0.0,
+      "endSec": 17.567,
+      "volume": 0.08,
+      "loop": true,
+      "fadeOutSec": 0.05
+    },
+    {
+      "src": "audio/room/room_shop-fridge-hum_01.wav",
+      "startSec": 7.2,
+      "endSec": 17.567,
+      "volume": 0.18,
+      "fadeOutSec": 0.05
+    },
+    {
+      "src": "sfx/tension/tension_heartbeat-slow_01.wav",
+      "startSec": 7.3,
+      "endSec": 15.6,
+      "volume": 0.18,
+      "loop": true
+    },
+    {
+      "src": "audio/room/room_dark-empty-building_01.wav",
+      "startSec": 19.0,
+      "endSec": 68.133,
+      "volume": 0.1,
+      "loop": true,
+      "fadeInSec": 0.5,
+      "duckUnderNarration": 0.4
+    },
+    {
+      "src": "audio/bed/bed_dark-drone-sub_01.wav",
+      "startSec": 19.0,
+      "endSec": 85.0,
+      "volume": 0.12,
+      "loop": true,
+      "fadeInSec": 0.6,
+      "fadeOutSec": 0.5,
+      "duckUnderNarration": 0.5
+    },
+    {
+      "src": "sfx/tension/tension_clock-pulse_01.wav",
+      "startSec": 29.133,
+      "endSec": 63.067,
+      "volume": 0.15,
+      "loop": true,
+      "fadeInSec": 1.0,
+      "duckUnderNarration": 0.5
+    },
+    {
+      "src": "sfx/tension/tension_clock-pulse_01.wav",
+      "startSec": 63.067,
+      "endSec": 68.133,
+      "volume": 0.06,
+      "loop": true
+    },
+    {
+      "src": "audio/city/city_distant-fire-crackle_01.wav",
+      "startSec": 68.133,
+      "endSec": 76.333,
+      "volume": 0.25,
+      "loop": true,
+      "fadeInSec": 0.5
+    },
+    {
+      "src": "audio/nature/nature_wind-eerie-street_01.wav",
+      "startSec": 68.133,
+      "endSec": 76.333,
+      "volume": 0.2,
+      "loop": true,
+      "fadeInSec": 0.5
+    },
+    {
+      "src": "audio/room/room_dark-empty-building_01.wav",
+      "startSec": 76.333,
+      "endSec": 86.333,
+      "volume": 0.1,
+      "loop": true
+    },
+    {
+      "src": "audio/room/room_dark-empty-building_01.wav",
+      "startSec": 87.733,
+      "endSec": 95.9,
+      "volume": 0.08,
+      "loop": true,
+      "fadeOutSec": 0.5
+    }
+  ],
+  "overlays": [
+    {
+      "text": "ปั๊ม",
+      "box": [
+        640,
+        700,
+        220,
+        50
+      ],
+      "startSec": 22.233,
+      "endSec": 30.4,
+      "fontSize": 30,
+      "color": "#2a2633",
+      "note": "B04-SH02 diagram label, key TH f 23 (sheet sc01-b04-b05 step 2); holds to the end of SH02"
+    },
+    {
+      "text": "ถังบนดาดฟ้า",
+      "box": [
+        590,
+        300,
+        298,
+        40
+      ],
+      "startSec": 23.167,
+      "endSec": 30.4,
+      "fontSize": 30,
+      "color": "#2a2633",
+      "note": "B04-SH02 label, key TH f 51 (step 3)"
+    },
+    {
+      "text": "ไฟดับ",
+      "box": [
+        140,
+        720,
+        230,
+        70
+      ],
+      "startSec": 24.633,
+      "endSec": 30.4,
+      "fontSize": 34,
+      "color": "#e5484d",
+      "note": "B04-SH02 label, key TH f 95 (step 4)"
+    },
+    {
+      "text": "ตู้เย็น (ไม่เปิด) ราว 4 ชม.",
+      "box": [
+        343,
+        296,
+        420,
+        72
+      ],
+      "startSec": 51.2,
+      "endSec": 56.033,
+      "fontSize": 32,
+      "color": "#2a2633",
+      "note": "B06 cold clock device line 1 (key TH f 68, tick f 98); SH01 box, then the SH02+ strip; text pending-label-check (Preaw/Boat) | x 120→310 (31 Oct 2026, user: dark text hidden by the black pillar at x≈252-292)"
+    },
+    {
+      "text": "ตู้เย็น (ไม่เปิด) ราว 4 ชม.",
+      "box": [
+        420,
+        296,
+        560,
+        44
+      ],
+      "startSec": 56.033,
+      "endSec": 60.333,
+      "fontSize": 32,
+      "color": "#2a2633"
+    },
+    {
+      "text": "ช่องแช่แข็งอัดแน่น อย่างมากราว 2 วัน",
+      "box": [
+        343,
+        344,
+        420,
+        72
+      ],
+      "startSec": 54.267,
+      "endSec": 56.033,
+      "fontSize": 32,
+      "color": "#2a2633",
+      "note": "B06 device line 2 (key TH f 160, tick f 190); SH01 box, then the strip | x 120→310 (31 Oct 2026, user: dark text hidden by the black pillar at x≈252-292) | y 380→344 (user: line 2 closer to line 1)"
+    },
+    {
+      "text": "ช่องแช่แข็งอัดแน่น อย่างมากราว 2 วัน",
+      "box": [
+        420,
+        340,
+        560,
+        44
+      ],
+      "startSec": 56.033,
+      "endSec": 60.333,
+      "fontSize": 32,
+      "color": "#2a2633"
+    },
+    {
+      "text": "กระป๋อง ท้ายสุด",
+      "box": [
+        420,
+        380,
+        560,
+        44
+      ],
+      "startSec": 58.667,
+      "endSec": 60.333,
+      "fontSize": 32,
+      "color": "#2a2633",
+      "note": "B06-SH03 line 3 (sheet sc01-b06-b08 SH03, TH f 3)"
+    },
+    {
+      "text": "วันที่ 3",
+      "box": [
+        420,
+        290,
+        180,
+        60
+      ],
+      "startSec": 76.333,
+      "endSec": 82.933,
+      "fontSize": 34,
+      "color": "#2a2633",
+      "note": "B09 day card and counters: owned by B09-SH01 (painted icons on its plate); end at the SH01 cut (2488), not carried over the door shots"
+    },
+    {
+      "text": "2",
+      "box": [
+        500,
+        370,
+        60,
+        80
+      ],
+      "startSec": 77.533,
+      "endSec": 82.933,
+      "fontSize": 56,
+      "color": "#2a2633"
+    },
+    {
+      "text": "4",
+      "box": [
+        660,
+        370,
+        60,
+        80
+      ],
+      "startSec": 79.133,
+      "endSec": 82.933,
+      "fontSize": 56,
+      "color": "#2a2633"
+    },
+    {
+      "text": "12%",
+      "box": [
+        800,
+        370,
+        80,
+        80
+      ],
+      "startSec": 80.867,
+      "endSec": 82.933,
+      "fontSize": 44,
+      "color": "#2a2633"
+    },
+    {
+      "text": "เปิดประตู",
+      "box": [
+        460,
+        250,
+        460,
+        55
+      ],
+      "startSec": 89.867,
+      "endSec": 95.9,
+      "fontSize": 56,
+      "color": "#2a2633",
+      "note": "B10 choice labels in order (sheet sc01-b09-b10, x 480-880 y 250-438), TH f 10 / 42 / 86, held to the last frame",
+      "enterFrames": 8
+    },
+    {
+      "text": "ส่งเสียงตอบ",
+      "box": [
+        460,
+        318,
+        460,
+        55
+      ],
+      "startSec": 90.933,
+      "endSec": 95.9,
+      "fontSize": 56,
+      "color": "#2a2633",
+      "enterFrames": 8
+    },
+    {
+      "text": "เงียบไว้",
+      "box": [
+        460,
+        386,
+        460,
+        52
+      ],
+      "startSec": 92.4,
+      "endSec": 95.9,
+      "fontSize": 56,
+      "color": "#2a2633",
+      "enterFrames": 8
+    }
+  ],
+  "overlayNote": "Screen-space text (Editor, S-08 fallback quadTexts): static quads per box; each shows from startSec to endSec (clipped to its beat). Times are TH composition frames / 30 from the sheets. The painted icons and counters are in the plates (Boss). Check every frame with overlay text."
+}
