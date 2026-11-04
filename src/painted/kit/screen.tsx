@@ -1,5 +1,6 @@
 import {useId} from 'react';
 import {AbsoluteFill} from 'remotion';
+import {DEFAULT_SHADE_CENTRE_Y, shadeBandStops} from '../../scenes/captionLayout';
 
 // Shared screen-space layers of the painted episodes (S-P06 Grade/Grain, S-P08 ZC-CAPSHADE). They sit outside the
 // picture camera: a plate's `Overlay` (src/painted/shot.ts) renders them, in the order Grade -> Grain -> CaptionShade.
@@ -49,16 +50,17 @@ export const shadeGate = (tl: number, cues: readonly CaptionCue[], fps = 30): nu
 };
 
 /**
- * `ZC-CAPSHADE` (S-P08): soft darkening behind the low caption block (bottom edge y 1248), cue-gated by `shadeGate`.
+ * `ZC-CAPSHADE` (S-P08): soft darkening behind the low caption block (centred on `centerY`, default 1164 = bottom edge y 1248 of a 2-line block), cue-gated by `shadeGate`.
  * `band` is the horizontal CSS gradient y 990-1330 (peak 0.62) for light section/close shots; `soft` the 560 x 190 px
  * ellipse at (540, 1170) (peak 0.5) for full-frame POV. Colour is a warm near-black so the cream sets keep their hue.
  */
-export const CaptionShade = ({tl, cues, mode = 'band', strength, fps = 30}: {tl: number; cues: readonly CaptionCue[]; mode?: 'band' | 'soft'; strength?: number; fps?: number}) => {
+export const CaptionShade = ({tl, cues, mode = 'band', strength, fps = 30, centerY = DEFAULT_SHADE_CENTRE_Y}: {tl: number; cues: readonly CaptionCue[]; mode?: 'band' | 'soft'; strength?: number; fps?: number; /** Shade centre y; give the video's `captionStyle.centerY` so the text sits in the middle of the band (default 1164 = the 1248 bottom-edge layout). */ centerY?: number}) => {
   const g = shadeGate(tl, cues, fps);
   if (g <= 0) return null;
   const peak = (strength ?? (mode === 'band' ? 0.62 : 0.5)) * g;
+  const [s0, s1, s2, s3] = shadeBandStops(centerY);
   const background = mode === 'band'
-    ? `linear-gradient(to bottom, rgba(20,16,12,0) 990px, rgba(20,16,12,${peak}) 1080px, rgba(20,16,12,${peak}) 1250px, rgba(20,16,12,0) 1330px)`
-    : `radial-gradient(ellipse 560px 190px at 540px 1170px, rgba(20,16,12,${peak}) 0%, rgba(20,16,12,${peak * 0.7}) 55%, rgba(20,16,12,0) 100%)`;
+    ? `linear-gradient(to bottom, rgba(20,16,12,0) ${s0}px, rgba(20,16,12,${peak}) ${s1}px, rgba(20,16,12,${peak}) ${s2}px, rgba(20,16,12,0) ${s3}px)`
+    : `radial-gradient(ellipse 560px 190px at 540px ${centerY + 6}px, rgba(20,16,12,${peak}) 0%, rgba(20,16,12,${peak * 0.7}) 55%, rgba(20,16,12,0) 100%)`;
   return <AbsoluteFill style={{pointerEvents: 'none', background}} />;
 };

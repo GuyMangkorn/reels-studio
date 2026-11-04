@@ -7,6 +7,7 @@ import {poseArms} from '../../kit/poses';
 import type {V3} from '../../kit/space';
 import {groundQuad, proj, unitAt, type Cam} from '../space';
 import {box} from './collide';
+import {SOI_DETAIL_SOLIDS, soiBg, soiFg, soiMid} from './detail';
 import {YOU2, dressAs, fillC, mix, paintPostAssembly, sky, sideQuad, warmOf, type State} from './places';
 import type {SheetState} from './sheet';
 import type {CrowdSet, Mover} from './walk';
@@ -36,6 +37,7 @@ export const soiWideSolids = () => [
   {id: 'spirit-house', box: box(2.45, 2.95, 0, 2.3, -4.2, -3.7)},
   {id: 'scooter-a', box: box(-2.95, -1.65, 0, 1.1, -5.6, -4.9)},
   {id: 'scooter-b', box: box(-2.95, -1.65, 0, 1.1, -13.4, -12.7)},
+  ...SOI_DETAIL_SOLIDS, // SS-R2.6: pots along the walls and the school-bag stack (SD04)
 ];
 const mv = (id: string, who: Mover['who'], view: Mover['view'], x: number, z: number, pace: number, seed: number): Mover => ({id, who, view, seed, at: [x, 0, z], pace});
 /** Soi crowd (S04-B01-SH07, cue f6-36): people walking to work and school; clear of the post, the spirit house, the scooters and `คุณ`. */
@@ -78,6 +80,7 @@ const scooter = (p: Painter, c: Cam, seed: number, at: V3, w: number) => {
 export const paintSoiWide = (p: Painter, state: State, o: {sheet?: SheetState; you?: boolean | 'walk'; f?: number} = {}) => {
   const c = SOI_WIDE, w = warmOf(state);
   sky(p, 61000, mix('#8ea0b6', '#e3cba3', w), mix('#dcd6cf', '#f6e9d4', w), -20, 960);
+  soiBg(p, c, w); // SD04 bg: condo tower, receding power poles, thin haze
   fillC(p, 61100, mix('#6b7682', '#a39a8c', w), groundQuad(c, -3.2, 3.2, -120, 1.9));
   // Two rows of low houses with dark upper windows and open ground floors, far to near (the far end is a lit shop).
   for (const s of [-1, 1] as const) for (let k = 0; k < 14; k++) {
@@ -86,6 +89,7 @@ export const paintSoiWide = (p: Painter, state: State, o: {sheet?: SheetState; y
     fillC(p, 61203 + k * 10 + s, mix('#505b66', '#857865', w), sideQuad(c, s * 3.2, z0 + 1, z1 - 1, 3.2, 4.6));
     fillC(p, 61205 + k * 10 + s, mix('#929aa1', '#c7b9a2', w), sideQuad(c, s * 3.2, z0 + 0.5, z1 - 0.5, 0, 1.8));
   }
+  soiMid(p, c, w); // SD04 mid: balcony laundry, potted plants, corner-shop shutter, school bags (crowd)
   // Overhead cable bundles across the soi, every 12 m, sagging.
   for (let k = 0; k < 8; k++) for (let j = 0; j < 3; j++) {
     const z = -2 - k * 12 - j * 1.5, a = proj(c, [-3.2, 6.4 + j * 0.3, z]), b = proj(c, [3.2, 6.2 + j * 0.3, z]), u = unitAt(c, z);
@@ -116,5 +120,6 @@ export const paintSoiWide = (p: Painter, state: State, o: {sheet?: SheetState; y
     const {at, walk} = soiYouAt(o.f ?? WALK_F1), g = proj(c, at), yu = unitAt(c, at[2]);
     drawFigure(p, YOU2, g, yu, {view: 'back', hoodUp: true, face: EXPRESSIONS.neutral, ...poseArms('P01', YOU2, g, yu), walk: o.you === 'walk' ? walk : undefined, stride: 0.6} as FigPose, p.t, YOU2.seed);
   }
+  soiFg(p, w); // SD04 fg: bougainvillea spray, cable bundle, stool and jug
   void mixColor;
 };

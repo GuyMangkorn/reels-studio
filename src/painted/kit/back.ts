@@ -140,20 +140,28 @@ export const drawFigureBack = (p: Painter, def: CastDef, g: Pt, unit: number, po
   if (o.apron) stroke(o.apron, Uq([[-hw, hip0 + 0.01], [0, hip0 - 0.01], [hw, hip0 + 0.01]]), 1.2);
   if (G?.pack) fill(G.pack, Uq([[-0.2 * sc, shV0 - 0.02], [0.2 * sc, shV0 - 0.02], [0.2 * sc, shV0 - 0.3], [-0.2 * sc, shV0 - 0.3]]));
   // Neck, nape and collar band.
+  const pts4 = (f: (q: Pt) => Pt, a: Pt[]) => a.map(f);
   const hcBase = U([0, chin + CHIN * K]);
   const nod = pose.nod ?? [0, 0];
   const hc: Pt = [hcBase[0] + nod[0] * K * unit, hcBase[1] - nod[1] * K * unit];
   const k = K * unit;
-  const head = ([u, v]: Pt): Pt => [hc[0] + u * k, hc[1] + v * k];
+  // Head turn / tilt (`headYaw` radians toward screen right, `headTilt` radians up): the skull narrows by cos(yaw) and slides toward
+  // the turn, the whole head lifts with the tilt (hood top rises, the nape gap opens); the neck and shoulders stay put.
+  const yaw = pose.headYaw ?? 0, tilt = pose.headTilt ?? 0, cy = Math.cos(yaw), lift = tilt * 0.62;
+  const neck = ([u, v]: Pt): Pt => [hc[0] + u * k, hc[1] + v * k];
+  const head = ([u, v]: Pt): Pt => [hc[0] + (u * cy + 0.3 * Math.sin(yaw)) * k, hc[1] + (v - lift) * k];
   const H2 = (pts: Pt[]) => pts.map(head);
-  fill(o.coat ?? skinShade, H2([[-0.5, 0.5], [0.5, 0.5], [0.46, 1.6], [-0.46, 1.6]]), true, 4);
+  fill(pose.hoodUp && pose.cowl !== 'drape' ? (hoodColorOf(o) ?? mixColor(o.shirt, INK, 0.2)) : o.coat ?? skinShade, pts4(neck, [[-0.5, 0.5], [0.5, 0.5], [0.46, 1.6], [-0.46, 1.6]]), true, 4);
   fill(mixColor(o.shirt, '#ffffff', 0.08), Uq([[-0.075, shV0 - 0.005], [0.075, shV0 - 0.005], [0.07, shV0 + 0.025], [-0.07, shV0 + 0.025]]), true, 4);
 
   // Hood down: the hood bunched on the upper back, seam down the middle.
   const col = G?.collar, hoodUp = !!pose.hoodUp;
-  if (col?.kind === 'hood' && !hoodUp) {
-    fill(col.color, Uq([[-0.115, shV0 + 0.03], [-0.15, shV0 - 0.06], [-0.1, shV0 - 0.19], [0, shV0 - 0.22], [0.1, shV0 - 0.19], [0.15, shV0 - 0.06], [0.115, shV0 + 0.03], [0.04, shV0 + 0.012], [-0.04, shV0 + 0.012]]), true, 6);
-    stroke(col.color, Uq([[0, shV0 + 0.012], [0, shV0 - 0.2]]), 0.8);
+  const hoodR = hoodUp || col?.kind !== 'hood' ? 0 : Math.max(0, Math.min(1, pose.hoodRise ?? 0));
+  if (col?.kind === 'hood' && !hoodUp && hoodR < 0.98) {
+    // The bunch flattens as the hood leaves it (`hoodRise`): its height shrinks about the neck line.
+    const bv = (v: number) => shV0 + 0.03 + (v - shV0 - 0.03) * (1 - hoodR);
+    fill(col.color, Uq([[-0.115, shV0 + 0.03], [-0.15, bv(shV0 - 0.06)], [-0.1, bv(shV0 - 0.19)], [0, bv(shV0 - 0.22)], [0.1, bv(shV0 - 0.19)], [0.15, bv(shV0 - 0.06)], [0.115, shV0 + 0.03], [0.04, bv(shV0 + 0.012)], [-0.04, bv(shV0 + 0.012)]]), true, 6);
+    stroke(col.color, Uq([[0, bv(shV0 + 0.012)], [0, bv(shV0 - 0.2)]]), 0.8);
   }
 
   // ------------------------------------------------------------------ head from behind
@@ -167,10 +175,31 @@ export const drawFigureBack = (p: Painter, def: CastDef, g: Pt, unit: number, po
   if (hoodUp) {
     const hc2 = hoodColorOf(o) ?? mixColor(o.shirt, INK, 0.2);
     const hood: Pt[] = [...arcBack(1.32, 1.46).map(([u, v]): Pt => [u, v - 0.02]), [1.3, 0.55], [1.16, 1.12], [0.7, 1.3], [0, 1.34], [-0.7, 1.3], [-1.16, 1.12], [-1.3, 0.55]];
+    // Cowl: the hood's lower cloth gathers into a collar that falls over the nape and neck to the shoulders (the hoodie's own cloth, so the
+    // hood does not sit on the head as a ball). Its top edge is on the head (follows the tilt) and overlaps the hood hem; the lower corners are
+    // the arm roots. Folds: a dark crease along the gather, a seam each side of the neck, a centre fold.
     fill(hc2, H2(hood), true, 8);
+    const dk = mixColor(hc2, INK, 0.4);
+    if (pose.cowl === 'drape') {
+      const cw = mixColor(hc2, '#ffffff', 0.05), shR = shoulderOf(1), shL = shoulderOf(-1);
+      fill(cw, [head([-1.06, 0.9]), head([-0.55, 1.0]), head([0, 1.04]), head([0.55, 1.0]), head([1.06, 0.9]), neck([1.35, 1.35]), neck([1.7, 1.7]), shR, shL, neck([-1.7, 1.7]), neck([-1.35, 1.35])], true, 8);
+      stroke(dk, H2([[-1.08, 0.9], [-0.55, 1.0], [0, 1.04], [0.55, 1.0], [1.08, 0.9]]), 1.3);
+      stroke(dk, [head([-0.55, 1.0]), neck([-0.8, 1.7]), neck([-1.0, 2.6])], 0.9);
+      stroke(dk, [head([0.55, 1.0]), neck([0.8, 1.7]), neck([1.0, 2.6])], 0.9);
+      stroke(dk, [head([0, 1.04]), neck([0.03, 1.8]), neck([0, 2.6])], 0.8);
+    }
+    stroke(dk, H2([[-1.08, 0.9], [-0.55, 1.0], [0, 1.04], [0.55, 1.0], [1.08, 0.9]]), 1.3);
     stroke(hc2, H2([[0, -1.4], [0.04, -0.4], [0, 0.5], [0, 1.28]]), 1.0);
     stroke(hc2, H2([[-1.1, 0.5], [-0.7, 1.1], [-0.3, 1.26]]), 0.8);
     stroke(hc2, H2([[1.1, 0.5], [0.7, 1.1], [0.3, 1.26]]), 0.8);
+    if (yaw > 0.05) {
+      // The turned hood opening: a thin crescent of cheek on the right edge (screen right), inside the rim.
+      const w = Math.sin(yaw) * 0.42, edge = (v: number) => 1.3 - 0.18 * Math.abs(v - 0.3) ** 2;
+      const vs = [-0.55, -0.3, -0.05, 0.2, 0.45, 0.7, 0.9];
+      const outer = vs.map((v): Pt => [edge(v) * 1.0, v]), inner = vs.map((v): Pt => [edge(v) - w * Math.max(0.05, 1 - ((v - 0.15) / 0.8) ** 2), v]).reverse();
+      fill(skinShade, H2([...outer, ...inner]), true, 7);
+      stroke(mixColor(hc2, INK, 0.45), H2(inner.slice().reverse()), 0.9);
+    }
   } else if (cut === 'hood') {
     const hc2 = style.hood ?? style.hair;
     fill(hc2, H2([...arcBack(1.32, 1.46), [1.3, 0.55], [1.16, 1.12], [0.7, 1.3], [0, 1.34], [-0.7, 1.3], [-1.16, 1.12], [-1.3, 0.55]]), true, 8);
@@ -203,6 +232,15 @@ export const drawFigureBack = (p: Painter, def: CastDef, g: Pt, unit: number, po
       strokes.forEach((s, i) => inkLine(p, seed * 1000 + 600 + i, H2(s), {closed: false, weight: 0.6, curve: 0.4, color: mixColor(hairC, '#9aa7ae', 0.3)}));
     }
   }
+  // Hood on its way up (`hoodRise` 0..1): the full hood shape squeezed vertically about the nape hem (v 1.34 in head units), so its rim
+  // travels from the neck over the head with the hands; the hair shows above the rim until the hood covers it (hoodR 1 = hoodUp).
+  if (hoodR > 0) {
+    const hc2 = hoodColorOf(o) ?? mixColor(o.shirt, INK, 0.2), sv = 0.1 + 0.9 * hoodR, su = 0.75 + 0.25 * hoodR;
+    const sq = (pts: Pt[]): Pt[] => pts.map(([u, v]): Pt => [u * su, 1.34 + (v - 1.34) * sv]);
+    const hood: Pt[] = [...arcBack(1.32, 1.46).map(([u, v]): Pt => [u, v - 0.02]), [1.3, 0.55], [1.16, 1.12], [0.7, 1.3], [0, 1.34], [-0.7, 1.3], [-1.16, 1.12], [-1.3, 0.55]];
+    fill(hc2, H2(sq(hood)), true, 8);
+    stroke(hc2, H2(sq([[0, -1.4], [0.04, -0.4], [0, 0.5], [0, 1.28]])), 1.0);
+  }
   // Headwear from behind: the same hat parts as the front, taken without face-side details (dome over the crown).
   if (G?.hat) {
     for (const {tone, pts} of hatFront(G.hat.kind)) {
@@ -215,7 +253,7 @@ export const drawFigureBack = (p: Painter, def: CastDef, g: Pt, unit: number, po
   if (rG.raised) rHand = paintArm(1, rG);
   if (lG.raised) lHand = paintArm(-1, lG);
 
-  const headTop = hc[1] - (hoodUp || cut === 'hood' ? 1.46 : 1.17) * k;
+  const headTop = hc[1] - (hoodUp || cut === 'hood' ? 1.46 : 1.17 + 0.29 * hoodR) * k;
   return {
     head: hc, headTop, chin: hc[1] + CHIN * k, feet: g, rHand, lHand, rShoulder: rG.Sh, lShoulder: lG.Sh,
     rUpper: [(rG.Sh[0] + rG.E[0]) / 2, (rG.Sh[1] + rG.E[1]) / 2], lUpper: [(lG.Sh[0] + lG.E[0]) / 2, (lG.Sh[1] + lG.E[1]) / 2],

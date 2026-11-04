@@ -29,7 +29,7 @@ Gap plan P (seconds after the line): default 0.35; L01 0.45, L05 0.50, L09 0.60,
 | L08 | 24.72 | 27.88 | 3.16 | 0.85 | 23.71 | 26.87 | 0.59 |
 | L09 | 28.73 | 31.75 | 3.02 | 0.60 | 27.46 | 30.48 | 0.42 |
 | L10 | 32.35 | 36.93 | 4.58 | 0.35 | 30.90 | 35.48 | 0.24 |
-| L11 | 37.28 | 39.15 | 1.87 | 1.25 | 35.72 | 37.59 | 0.88 |
+| L11 | 37.28 | 39.15 | 1.87 (R1.3 text: see v4-L11r) | 1.25 | 35.72 | 37.59 | 0.88 |
 | L12 | 40.40 | 42.18 | 1.79 | 0.75 | 38.47 | 40.25 | 0.52 |
 | L13 | 42.93 | 45.18 | 2.24 | 0.35 | 40.77 | 43.02 | 0.24 |
 | L14 | 45.53 | 48.66 | 3.13 | 0.95 | 43.26 | 46.39 | 0.66 |
@@ -77,7 +77,7 @@ Loudness of both: -16.2 LUFS integrated, true peak about -1.5 dBFS (ebur128).
 | L08 | 23.71 | 26.87 | 3.16 | 0.59 |
 | L09 | 27.46 | 30.48 | 3.02 | 0.42 |
 | L10 | 30.90 | 35.48 | 4.58 | 0.24 |
-| L11 | 35.72 | 37.59 | 1.87 | 0.88 |
+| L11 | 35.72 | 37.59 | 1.87 (superseded by v4-L11r) | 0.88 |
 | L12 | 38.47 | 40.25 | 1.79 | 0.52 |
 | L13 | 40.77 | 43.02 | 2.24 | 0.24 |
 | L14 | 43.26 | 46.39 | 3.13 | 0.66 |
@@ -88,3 +88,43 @@ Loudness of both: -16.2 LUFS integrated, true peak about -1.5 dBFS (ebur128).
 | L19 | 59.69 | 61.24 | 1.55 | 0.00 |
 
 Narration ends at 61.24 s; the 3 s hold makes 64.24 s. Lines L01-L18 are sample-identical to T (v1); everything from L19 on moves 0.28 s earlier than in T, so L19 starts at 59.69 s (T: 59.97 s). Reproduce: `out/eg2-voice/assemble-v2.py`, `out/eg2-voice/v2/` (measure script in the scratchpad: voice-match.py metrics per line).
+
+## v4-L11r (2026-11-04, script R1.3, current file `public/narration/EG-EP02-SHORT.wav`)
+
+Script R1.3 changes L11 `แผ่นบนสุด… หันหลังให้คุณ` to `แผ่นบนสุด… คว่ำหน้าอยู่`. Only L11 was regenerated: 1 Gemini request, voice Achernar, style `warm, quiet, intimate, a little more awake; very still, soft and close, even low energy` (the take-B style plus a stillness phrase for the single short line), text `แผ่นบนสุด, คว่ำหน้าอยู่.` (ellipsis as comma), raw 2.88 s. Processing as the other takes: leading/trailing silence cut (0.28 s to 2.53 s; the internal pause is 0.24 s, already under 0.35 s), `atempo=1.08` (the rate every EG-EP02 take uses; not 1.05), gain -1.8 dB to match the old L11 (-17.5 LUFS integrated, new -17.6), 12 ms fade-in and 20 ms fade-out. Spliced into v4 at the old L11 start (35.436 s); the old L11 region was cleared to the start of L12 (38.559 s). Every other sample is identical to v4 (L12 still starts 38.559 s = frame 1157; total 61.62 s unchanged).
+
+| Line | Start s | End s | Dur s | Gap after s | Frames [start, end) |
+| --- | --- | --- | --- | --- | --- |
+| L11 (v4, old text) | 35.44 | 37.31 | 1.87 | 1.25 | [1063, 1119) |
+| **L11 (R1.3, new)** | 35.44 | 37.53 | 2.10 | 1.03 | [1063, 1126) |
+
+The new take is 0.23 s (7 f) longer; the gap before L12 absorbs it (1.25 -> 1.03 s, still above the 0.6 s wind-and-flip SFX gap). Reproduce: `out/eg2-voice-l11/` (`L11-a.wav` raw, `L11-t.wav`, `splice.py`; old v4 wav kept as `old.wav` and in the store). The take has not been heard by the user: listen to L11 before locking.
+
+## v4-L11s (2026-11-04, current file `public/narration/EG-EP02-SHORT.wav`)
+
+User listened to the v4-L11r take and found it weaker than L10/L12 although louder: the style `very still, soft and close, even low energy` made the delivery low-energy. L11 only was regenerated again: 2 Gemini requests, voice Achernar, text `แผ่นบนสุด, คว่ำหน้าอยู่.`; candidate b = take-B style `warm, quiet, intimate, a little more awake`, candidate c = that plus `and present`. Both trimmed (-40 dB), `atempo=1.08`. Measured on the processed clips and on the current file (48 kHz; voiced = frames within 30 dB of the line's loudest 20 ms frame):
+
+| Take | Dur s | Voiced RMS dB | Line RMS dB | f0 median Hz | Centroid Hz (median) | Voiced share |
+| --- | --- | --- | --- | --- | --- | --- |
+| L10 (neighbour) | 4.65 | -14.9 | -16.4 | 161 | 1202 | 0.70 |
+| L12 (neighbour) | 1.85 | -14.1 | -15.1 | 169 | 928 | 0.80 |
+| a: v4-L11r (low-energy style, previous) | 2.10 | -15.1 | -15.9 | 184 | 1036 | 0.84 |
+| b: take-B style | 1.72 | -17.3 | -17.5 | 205 | 1261 | 0.95 |
+| **c: take-B style + present (chosen)** | 1.72 | -15.0 | -15.3 | 192 | 1076 | 0.94 |
+
+Chosen **c**: closest to the neighbours on f0 (192 vs 161/169 Hz; b 205 is higher) and centroid, and on voiced RMS without help from gain. Gain -0.4 dB (line RMS -15.7 dB = mean of L10 and L12), peak -4.0 dBFS, no limiter; 12 ms fade-in, 20 ms fade-out. Limits: both new takes read the line in one breath (no 0.24 s inner pause, voiced share 0.94) and sit 25-30 Hz above the neighbours' f0, so it still reads a little brighter than L10/L12; the 1.72 s take is 0.38 s shorter than before. L11 is now [1063, 1115); L12 stays at 1157 (frame 1157), so the gap after L11 is 1.40 s. All samples outside 35.436-38.559 s are identical to v4-L11r (total 61.62 s). Reproduce: `out/eg2-voice-l11/` (`L11-b.wav`, `L11-c.wav` raw; `prep.sh`, `measure.py`, `splice.py`; v4-L11r wav kept as `old-v4b.wav`). Not yet heard by the user.
+
+## v4-L11t (2026-11-04, current file `public/narration/EG-EP02-SHORT.wav`)
+
+User heard the v4-L11s take (c) as a different tone from the other lines. Cause: the locked narration is ONE full read (take B: voice Achernar, style `warm, quiet, intimate, a little more awake`, whole script in one request, no seed/temperature set; see the top of this file) cut per line, while the L11 retakes were separate single-line requests, which Gemini renders with another baseline. L11 was therefore redone the way the locked read was made: **1 Gemini request** (request 1 of 2 allowed; the second was not needed) = the whole script text of the take-B read (`out/eg2-voice/full.txt` of the T-v2 work) with only L11 replaced by the R1.3 text `แผ่นบนสุด, คว่ำหน้าอยู่.`, same voice and style. Raw read 83.6 s (store cache `$REELS_STORE/cache/tts/`, copy `out/eg2-voice-l11/t/full.wav`, `full.json`).
+
+Cut: Whisper (large-v3-turbo) puts the line at 47.26-49.38 s of the new read; silencedetect -36 dB gives speech 47.41-49.32 s with an internal gap 48.03-48.60 s (0.56 s). Segments 47.38-48.04, 0.216 s of the inner gap (compressed to 0.2 s after tempo), 48.595-49.34; ends trimmed at -40 dB; `atempo=1.08`; gain -1.0 dB (line RMS -15.7 dB = mean of L10 and L12); 12 ms fade-in, 20 ms fade-out; peak -2.5 dBFS, no limiter.
+
+| Take | Dur s | Voiced RMS dB | Line RMS dB | f0 median Hz | Centroid Hz (median) | Voiced share |
+| --- | --- | --- | --- | --- | --- | --- |
+| L10 (neighbour) | 4.65 | -14.9 | -16.4 | 161 | 1202 | 0.70 |
+| L12 (neighbour) | 1.85 | -14.1 | -15.1 | 169 | 928 | 0.80 |
+| c: v4-L11s (previous, single-line request) | 1.72 | -15.0 | -15.3 | 192 | 1076 | 0.94 |
+| **t: v4-L11t (full-read cut, chosen)** | 1.50 | -15.1 | -15.9 | 174 | 1102 | 0.83 |
+
+(Same `measure.py` method; the t row is measured in place in the spliced file, c as in v4-L11s.) Compared with c: f0 192 -> 174 Hz (L10/L12: 161/169), voiced share 0.94 -> 0.83 (closer to L12 0.80), the 0.2 s inner pause is back (spliced file silence 36.04-36.24 s). L11 is now [1063, 1108) (1.50 s, was 1.72 s, -7 f); L12 stays at 1157, so the gap after L11 is 1.63 s. All samples outside 35.436-37.160 s are identical to v4-L11s (total 61.62 s). Reproduce: `out/eg2-voice-l11/` (`t/full-r13.txt`, `t/full.wav`, `L11-t4.wav`, `splice4.py`, `measure2.py`; v4-L11s wav kept as `old-v4s.wav`). Not yet heard by the user.

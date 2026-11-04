@@ -65,6 +65,7 @@ export const MOTION_REEL: ReelEntry[] = [
   {motion: 'kneel-down', cast: pair({view: 'right', expression: 'sad'}, {view: 'front', expression: 'sad'})},
   {motion: 'stand-from-kneel', cast: pair({view: 'right', expression: 'sad'}, {view: 'front', expression: 'sad'})},
   {motion: 'crouch-hide', cast: pair({view: 'front'}, {view: 'right', expression: 'neutral'})},
+  {motion: 'hood-pull', cast: [{person: A, outfit: 'hoodie', x: 330, view: 'back'}, {person: B, outfit: 'hoodie', x: 770, view: 'back'}]},
 ];
 
 /** Longest `motionDuration` among a scene's cast (walks and runs depend on height and distance), plus the hold, in whole frames. */

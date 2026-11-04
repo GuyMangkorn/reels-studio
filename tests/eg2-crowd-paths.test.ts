@@ -2,10 +2,10 @@ import {test} from 'node:test';
 import assert from 'node:assert/strict';
 import {frontOf, hullOf, hullsOverlap, intersects} from '../src/painted/everyone-gone/ep02/collide';
 import {YW_CROWD} from '../src/painted/everyone-gone/ep02/crowds';
-import {VM_CROWD, VM_YOU_FRAMES, vmYouAt} from '../src/painted/everyone-gone/ep02/monument';
+import {VM_CROWD, VM_YOU_END, VM_YOU_FRAMES, VM_YOU_START, vmYouAt} from '../src/painted/everyone-gone/ep02/monument';
 import {SOI_CROWD, soiYouAt} from '../src/painted/everyone-gone/ep02/soi-wide';
-import {PIER_BOUNDS, pierLayout} from '../src/painted/everyone-gone/ep02/places';
-import {crowdViolations} from '../src/painted/everyone-gone/ep02/walk';
+import {PIER_BOUNDS, pierLayout, ywSolids} from '../src/painted/everyone-gone/ep02/places';
+import {DIR, crowdViolations, facingOf} from '../src/painted/everyone-gone/ep02/walk';
 
 import {EG2_FRAMES, EG2_SHOTS, FLIP, hoodPull, sheetFlip} from '../src/painted/everyone-gone/ep02/sheet';
 
@@ -83,16 +83,32 @@ test('sheetFlip: deterministic, edge-on mid-flip, face swaps once, overshoot <= 
   assert.ok(Math.abs(settled.width - 1) < 0.01 && Math.abs(settled.dy) < 0.5);
 });
 
-test('hoodPull: deterministic; hands up by f45, hood swaps at f60, hands released by f70', () => {
+test('hoodPull: deterministic; motion starts f28, hood on at f60 (lift of the kit hood-pull ends at 1.05 s), hands down by the end of the shot', () => {
   for (const f of range(0, 78)) assert.deepEqual(hoodPull(f), hoodPull(f));
-  assert.ok(hoodPull(45).arms > 0.95);
+  assert.equal(hoodPull(28).t, 0);
+  assert.ok(Math.abs(hoodPull(60).t - 1.0667) < 1e-3 && hoodPull(77).t >= 1.6);
   assert.equal(hoodPull(59).hoodUp, false);
   assert.equal(hoodPull(60).hoodUp, true);
-  assert.ok(hoodPull(70).arms < 0.01 && hoodPull(0).arms === 0);
+});
+
+test('S01-B02-SH02: `คุณ` walks away in depth, so she shows the back view (crab walk fix, SS-R2.2 3 Nov 2026)', () => {
+  assert.equal(facingOf(VM_YOU_END[0] - VM_YOU_START[0], VM_YOU_END[2] - VM_YOU_START[2]), 'back');
+  assert.equal(facingOf(-1, 0), 'left');
+  assert.equal(facingOf(0.2, -1), 'back');
+  assert.equal(facingOf(0, 1), 'front');
+  for (const v of ['left', 'right', 'front', 'back'] as const) assert.ok(DIR[v][0] * DIR[facingOf(DIR[v][0], DIR[v][1])][0] + DIR[v][1] * DIR[facingOf(DIR[v][0], DIR[v][1])][1] === 1, `${v} travels along its own facing`);
 });
 
 test('SS-R2.1: 19 shots, 1939 frames, S03-B01-SH02 is 74', () => {
   assert.equal(EG2_SHOTS.length, 19);
   assert.equal(EG2_SHOTS.reduce((a, [, n]) => a + n, 0), 1939);
   assert.equal(EG2_FRAMES['S03-B01-SH02'], 74);
+});
+
+test('SS-R2.6 set-detail props are solids in the VD13 sets: Yaowarat bikes/racks/boards, soi pots/bags, pier crate+bin and kiosk (every state)', () => {
+  const ids = (xs: {id: string}[]) => xs.map((s) => s.id);
+  for (const id of ['bike0', 'bike2', 'rack0', 'rack2', 'board0', 'board1']) assert.ok(ids(YW_CROWD.solids).includes(id), `Yaowarat crowd solids lack ${id}`);
+  for (const id of ['pot0', 'pot4', 'bags']) assert.ok(ids(SOI_CROWD.solids).includes(id), `soi crowd solids lack ${id}`);
+  for (const state of ['empty', 'crowd', 'mother'] as const) assert.ok(['crate', 'kiosk'].every((id) => ids(pierLayout(state, {f: 0, ref: 0}).solids).includes(id)), `pier ${state} lacks crate/kiosk`);
+  assert.ok(ids(ywSolids()).includes('bike1'));
 });
