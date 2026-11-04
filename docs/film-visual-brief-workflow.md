@@ -87,7 +87,7 @@ The [project default](delivery-workflow.md#project-defaults) look for every proj
 
 ## Technical BA for 2D and Three.js
 
-> **Legacy (2 Nov 2026):** the Three.js rows apply only if the user reactivates a 3D engine ([visual engine](delivery-workflow.md#visual-engine)). For painted 2D (the default), answer the scale, camera, lighting and determinism rows for the painted plate and record the Three.js rows `N/A (painted 2D)`.
+> **Legacy (2 Nov 2026):** the Three.js rows apply only if the user reactivates a 3D engine ([visual engine](delivery-workflow.md#visual-engine)). For painted 2D (the default), answer the scale, camera, lighting and determinism rows for the painted set, with the camera row as the [painted 3D camera](#painted-3d-camera) line and record the Three.js rows `N/A (painted 2D)`.
 
 Apply relevant rows; `N/A` with a reason is valid. Hybrid is not mandatory. Read evidence/cautions in [asset-engineering-principles.md](asset-engineering-principles.md).
 

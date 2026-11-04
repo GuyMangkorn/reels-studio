@@ -19,7 +19,7 @@ Selection is complete when the record identifies the selected deliverables and t
 | --- | --- |
 | Genre / purpose | mystery-educational (default), comedy, explainer/tutorial, vlog or documentary cut, news/recap, review, ad/promo, music/lyric video, slideshow/photo story, screen recording, motivational |
 | Visual medium | illustrated 2D/3D/hybrid (existing library), user footage, stock/licensed footage, still images, typography/kinetic text, screen recording, mixed |
-| Visual engine | for illustrated/animated media: painted 2D (p5.brush) + Remotion SVG (project default), a mix of these, Film's choice, or the user's own answer ([visual engine](#visual-engine)) |
+| Visual engine | for illustrated/animated media: painted 2D (p5.brush) with the [painted 3D camera](film-visual-brief-workflow.md#painted-3d-camera) + Remotion SVG (project default), a mix of these, Film's choice, or the user's own answer ([visual engine](#visual-engine)) |
 | Voice | Gemini TTS ([project default](#project-defaults)), Niwat TTS (male, Edge), Premwadee TTS (female, Edge), user-supplied recording, on-camera audio, no voice |
 | Music / SFX | none, user-supplied, licensed library (record the license), shared sound library / locally generated ([`sound-generation` skill](../.agents/skills/sound-generation/SKILL.md)), sparse SFX; ducking under voice |
 | Captions | outline (default), box, none; position; burned-in or SRT only |
@@ -35,7 +35,7 @@ Record the chosen values in `delivery.md` as a compact block.
 | Field | Default | Reference |
 | --- | --- | --- |
 | Visual engine | **Painted 3D camera** (user, 5 Nov 2026): sets built in world metres and seen through the kit yaw camera ([`kit/ycam.ts`](../src/painted/kit/ycam.ts)), painted with p5.brush, for sets, characters and wide-to-medium shots; mixed with crisp Remotion SVG for close-ups and first-person (FPOV) inserts such as a phone screen or an object in the narrator's hands ([Film: painted 3D camera](film-visual-brief-workflow.md#painted-3d-camera)) | WORLD FOG VD01, VD09 (PHONE-SVG) in [the brief](../storyboards/world-fog/short/visual-brief.md) |
-| Character proportions | The WORLD FOG cast: adult 4 heads tall (1.70 m; 1.60 m for a shorter adult with the same head), mitten hands, flat-face decal heads with face controls, drawn as a flat card at the character's depth | `src/painted/worldfog/cast.ts`, `head.ts`; brief VD03 |
+| Character proportions | The WORLD FOG cast: adult 4 heads tall (1.70 m; 1.60 m for a shorter adult with the same head), mitten hands, flat-face decal heads with face controls, drawn as a flat card at the character's depth in one of four views (see Character views) | `src/painted/worldfog/cast.ts`, `head.ts`; brief VD03 |
 | Arm poses | Bent arms go back into depth with perspective (elbow behind the torso, a shade darker), never splayed out to the side | [CP-P](character-proportion-principles.md#cp-p-arm-depth); `Arm.via` / `Arm.behind` in `cast.ts` |
 | Character views | Four body views (front, back, left, right), squared to the lens with `squareToCam` ([`kit/views.ts`](../src/painted/kit/views.ts)); the front three-quarter (`quarter`, 15–45°) is optional for close-ups; head acting with `headCock` (±6–12°) or the head turned aside on a front body. No back three-quarter views (user, 4–5 Nov 2026) | Sheets `VIEWSHEET-*`, `HEADTRICKS-YOU`; spike `SET45-*` |
 | Character poses | Designed from the story first, then matched against the pose sheet P01–P45 and the template cast ([story first](../AGENTS.md#story-first)); a match is cited as a [casting line](character-proportion-principles.md#cp-casting-line), a new pose is proposed to Boss, not made one-off | [CP-P12](character-proportion-principles.md#cp-p-pose-sheet); `src/painted/kit/poses.ts` |
@@ -60,7 +60,7 @@ The [voice sample](#style-profile) requirement still applies: a default voice is
 | Option | Meaning | Runtime status (checkout `733808f`) |
 | --- | --- | --- |
 | Blender 3D | Rendered 3D shots and assets ([Blender workflow](blender-mcp-workflow.md)) | `deactivated` (user decision, 30 Oct 2026): not offered; code and assets are kept |
-| Painted 2D (p5.brush) | Hand-painted watercolour and boiling ink, drawn per frame in `src/painted/BrushCanvas.tsx`; method in the [painted-2d skill](../.claude/skills/painted-2d/SKILL.md) | `existing-integrated` (30 Oct 2026, `main` 59f8cee): painted scene type `src/scenes/painted.ts` with plates by ID in `src/painted/registry.ts`; shipped in WORLD FOG EP01 |
+| Painted 2D (p5.brush) | Hand-painted watercolour and boiling ink, drawn per frame in `src/painted/BrushCanvas.tsx`, sets seen through the kit yaw camera by default ([painted 3D camera](film-visual-brief-workflow.md#painted-3d-camera)); method in the [painted-2d skill](../.claude/skills/painted-2d/SKILL.md) | `existing-integrated` (30 Oct 2026, `main` 59f8cee): painted scene type `src/scenes/painted.ts` with plates by ID in `src/painted/registry.ts`; shipped in WORLD FOG EP01 |
 | Remotion rig 2D | The legacy vector joint rig (`src/rig/`; [character toolkit](character-toolkit.md)); painted work casts from `src/painted/kit` instead | `retired` (user decision, 1 Nov 2026): not offered; no video imports `src/rig`; code is kept |
 | Let Film choose | Film picks per scene or element and records the reasons in the brief | — |
 
