@@ -125,9 +125,9 @@ Episode-specific files are under [Episodes](#episodes); shared topics come first
 
 ## Captions and on-screen text
 
-**Read when:** subtitles, Thai line breaks, the caption-safe zone or text layout.
+**Read when:** subtitles, Thai line breaks, the caption-safe zone, a caption backdrop (shade, scrim) or text layout.
 
-- Docs: [Thai subtitles and narration](production-requirements.md#thai-subtitles-narration-and-channel-label), [vertical caption safe zone](production-requirements.md#vertical-caption-safe-zone), [EP08 captions lead the mix](editor-principles.md#ep08--make-thai-captions-and-voice-lead-the-mix), [remotion captions](remotion-toolkit.md#7-timed-subtitles-and-export-captions), [research: vertical safe areas](research/vertical-safe-areas.md) (platform top/bottom overlays, channel-mark placement, proposed box change)
+- Docs: [Thai subtitles and narration](production-requirements.md#thai-subtitles-narration-and-channel-label), [vertical caption safe zone](production-requirements.md#vertical-caption-safe-zone), [caption backdrop](production-requirements.md#caption-backdrop), [EP08 captions lead the mix](editor-principles.md#ep08--make-thai-captions-and-voice-lead-the-mix), [remotion captions](remotion-toolkit.md#7-timed-subtitles-and-export-captions), [research: vertical safe areas](research/vertical-safe-areas.md) (platform top/bottom overlays, channel-mark placement, proposed box change)
 - Code: [scenes/Subtitles.tsx](../src/scenes/Subtitles.tsx), [kit/screen.tsx](../src/painted/kit/screen.tsx) (`CaptionShade`), [assets/visuals/textLayout.ts](../src/assets/visuals/textLayout.ts)
 - Scripts: [caption-breaks.mjs](../scripts/caption-breaks.mjs), [caption-zone.py](../scripts/caption-zone.py)
 - Tests: [textLayout](../tests/textLayout.test.ts)
