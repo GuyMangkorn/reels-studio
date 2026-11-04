@@ -124,6 +124,13 @@
      "src": "out/ZCONDO2-SHORT-TH/clips/ZC2-B01-SH01_draft.mp4",
      "in": 0,
      "out": 2.5
+    },
+    "final": {
+     "src": "out/ZCONDO2-SHORT-TH/clips/_final_cut.mp4",
+     "in": 0,
+     "out": 2.5,
+     "cut": true,
+     "key": "1570b81dabeef139"
     }
    }
   },
@@ -157,6 +164,13 @@
      "src": "out/ZCONDO2-SHORT-TH/clips/ZC2-B01-SH02_draft.mp4",
      "in": 1,
      "out": 3.833
+    },
+    "final": {
+     "src": "out/ZCONDO2-SHORT-TH/clips/_final_cut.mp4",
+     "in": 2.5,
+     "out": 5.333,
+     "cut": true,
+     "key": "06b05404b4cefa66"
     }
    }
   },
@@ -191,6 +205,13 @@
      "src": "out/ZCONDO2-SHORT-TH/clips/ZC2-B01-SH03_draft.mp4",
      "in": 1,
      "out": 2.533
+    },
+    "final": {
+     "src": "out/ZCONDO2-SHORT-TH/clips/_final_cut.mp4",
+     "in": 5.333,
+     "out": 6.867,
+     "cut": true,
+     "key": "934e4fb324ae4e44"
     }
    }
   },
@@ -224,6 +245,13 @@
      "src": "out/ZCONDO2-SHORT-TH/clips/ZC2-B02-SH01_draft.mp4",
      "in": 1,
      "out": 1.9
+    },
+    "final": {
+     "src": "out/ZCONDO2-SHORT-TH/clips/_final_cut.mp4",
+     "in": 6.867,
+     "out": 7.767,
+     "cut": true,
+     "key": "527d5a12ecb6918e"
     }
    }
   },
@@ -257,6 +285,13 @@
      "src": "out/ZCONDO2-SHORT-TH/clips/ZC2-B02-SH02_draft.mp4",
      "in": 1,
      "out": 1.9
+    },
+    "final": {
+     "src": "out/ZCONDO2-SHORT-TH/clips/_final_cut.mp4",
+     "in": 7.767,
+     "out": 8.667,
+     "cut": true,
+     "key": "84de046514197036"
     }
    }
   },
@@ -290,6 +325,13 @@
      "src": "out/ZCONDO2-SHORT-TH/clips/ZC2-B02-SH03_draft.mp4",
      "in": 1,
      "out": 2.5
+    },
+    "final": {
+     "src": "out/ZCONDO2-SHORT-TH/clips/_final_cut.mp4",
+     "in": 8.667,
+     "out": 10.167,
+     "cut": true,
+     "key": "6d443fb456b3b59b"
     }
    }
   },
@@ -327,6 +369,13 @@
      "src": "out/ZCONDO2-SHORT-TH/clips/ZC2-B02-SH04_draft.mp4",
      "in": 1,
      "out": 4.8
+    },
+    "final": {
+     "src": "out/ZCONDO2-SHORT-TH/clips/_final_cut.mp4",
+     "in": 10.167,
+     "out": 13.967,
+     "cut": true,
+     "key": "323b889b8889e4cc"
     }
    }
   },
@@ -360,6 +409,13 @@
      "src": "out/ZCONDO2-SHORT-TH/clips/ZC2-B02-SH05_draft.mp4",
      "in": 1,
      "out": 4.067
+    },
+    "final": {
+     "src": "out/ZCONDO2-SHORT-TH/clips/_final_cut.mp4",
+     "in": 13.967,
+     "out": 17.033,
+     "cut": true,
+     "key": "cd9fe0121c1dc852"
     }
    }
   },
@@ -393,6 +449,13 @@
      "src": "out/ZCONDO2-SHORT-TH/clips/ZC2-B03-SH01_draft.mp4",
      "in": 1,
      "out": 2.9
+    },
+    "final": {
+     "src": "out/ZCONDO2-SHORT-TH/clips/_final_cut.mp4",
+     "in": 17.033,
+     "out": 18.933,
+     "cut": true,
+     "key": "2b3fcf91d7ed0be7"
     }
    }
   },
@@ -430,6 +493,13 @@
      "src": "out/ZCONDO2-SHORT-TH/clips/ZC2-B04-SH01_draft.mp4",
      "in": 1,
      "out": 2.633
+    },
+    "final": {
+     "src": "out/ZCONDO2-SHORT-TH/clips/_final_cut.mp4",
+     "in": 18.933,
+     "out": 20.567,
+     "cut": true,
+     "key": "0806340bbaf279f0"
     }
    }
   },
@@ -463,6 +533,13 @@
      "src": "out/ZCONDO2-SHORT-TH/clips/ZC2-B04-SH02_draft.mp4",
      "in": 1,
      "out": 4.8
+    },
+    "final": {
+     "src": "out/ZCONDO2-SHORT-TH/clips/_final_cut.mp4",
+     "in": 20.567,
+     "out": 24.367,
+     "cut": true,
+     "key": "f1a7c3902bb408c0"
     }
    }
   },
@@ -505,6 +582,13 @@
      "src": "out/ZCONDO2-SHORT-TH/clips/ZC2-B04-SH02b_draft.mp4",
      "in": 1,
      "out": 7.033
+    },
+    "final": {
+     "src": "out/ZCONDO2-SHORT-TH/clips/_final_cut.mp4",
+     "in": 24.367,
+     "out": 30.4,
+     "cut": true,
+     "key": "d33313c179f7ff3b"
     }
    }
   },
@@ -538,6 +622,13 @@
      "src": "out/ZCONDO2-SHORT-TH/clips/ZC2-B04-SH03_draft.mp4",
      "in": 1,
      "out": 6.133
+    },
+    "final": {
+     "src": "out/ZCONDO2-SHORT-TH/clips/_final_cut.mp4",
+     "in": 30.4,
+     "out": 35.533,
+     "cut": true,
+     "key": "7e991f25bc2a3d65"
     }
    }
   },
@@ -575,6 +666,13 @@
      "src": "out/ZCONDO2-SHORT-TH/clips/ZC2-B05-SH01_draft.mp4",
      "in": 1,
      "out": 3.833
+    },
+    "final": {
+     "src": "out/ZCONDO2-SHORT-TH/clips/_final_cut.mp4",
+     "in": 35.533,
+     "out": 38.367,
+     "cut": true,
+     "key": "b3efd4f7aac8eadb"
     }
    }
   },
@@ -608,6 +706,13 @@
      "src": "out/ZCONDO2-SHORT-TH/clips/ZC2-B05-SH02_draft.mp4",
      "in": 1,
      "out": 3.667
+    },
+    "final": {
+     "src": "out/ZCONDO2-SHORT-TH/clips/_final_cut.mp4",
+     "in": 38.367,
+     "out": 41.033,
+     "cut": true,
+     "key": "d70519a48835ee78"
     }
    }
   },
@@ -641,6 +746,13 @@
      "src": "out/ZCONDO2-SHORT-TH/clips/ZC2-B05-SH03_draft.mp4",
      "in": 1,
      "out": 5
+    },
+    "final": {
+     "src": "out/ZCONDO2-SHORT-TH/clips/_final_cut.mp4",
+     "in": 41.033,
+     "out": 45.033,
+     "cut": true,
+     "key": "6835db3ab8c2a51f"
     }
    }
   },
@@ -679,6 +791,13 @@
      "src": "out/ZCONDO2-SHORT-TH/clips/ZC2-B05-SH04_draft.mp4",
      "in": 1,
      "out": 4.9
+    },
+    "final": {
+     "src": "out/ZCONDO2-SHORT-TH/clips/_final_cut.mp4",
+     "in": 45.033,
+     "out": 48.933,
+     "cut": true,
+     "key": "3821b91c5aa48d67"
     }
    }
   },
@@ -716,6 +835,13 @@
      "src": "out/ZCONDO2-SHORT-TH/clips/ZC2-B06-SH01_draft.mp4",
      "in": 1,
      "out": 7.8
+    },
+    "final": {
+     "src": "out/ZCONDO2-SHORT-TH/clips/_final_cut.mp4",
+     "in": 48.933,
+     "out": 55.733,
+     "cut": true,
+     "key": "7c8d5522c58fbcc1"
     }
    }
   },
@@ -750,6 +876,13 @@
      "src": "out/ZCONDO2-SHORT-TH/clips/ZC2-B06-SH02_draft.mp4",
      "in": 1,
      "out": 3.6
+    },
+    "final": {
+     "src": "out/ZCONDO2-SHORT-TH/clips/_final_cut.mp4",
+     "in": 55.733,
+     "out": 58.333,
+     "cut": true,
+     "key": "d0367a41f4fffe91"
     }
    }
   },
@@ -783,6 +916,13 @@
      "src": "out/ZCONDO2-SHORT-TH/clips/ZC2-B06-SH03_draft.mp4",
      "in": 1,
      "out": 2.633
+    },
+    "final": {
+     "src": "out/ZCONDO2-SHORT-TH/clips/_final_cut.mp4",
+     "in": 58.333,
+     "out": 59.967,
+     "cut": true,
+     "key": "1ec8c18a4db08417"
     }
    }
   },
@@ -816,6 +956,13 @@
      "src": "out/ZCONDO2-SHORT-TH/clips/ZC2-B07-SH01_draft.mp4",
      "in": 1,
      "out": 3.767
+    },
+    "final": {
+     "src": "out/ZCONDO2-SHORT-TH/clips/_final_cut.mp4",
+     "in": 59.967,
+     "out": 62.733,
+     "cut": true,
+     "key": "5fe8bfe028c0c176"
     }
    }
   },
@@ -849,6 +996,13 @@
      "src": "out/ZCONDO2-SHORT-TH/clips/ZC2-B07-SH02_draft.mp4",
      "in": 1,
      "out": 4.233
+    },
+    "final": {
+     "src": "out/ZCONDO2-SHORT-TH/clips/_final_cut.mp4",
+     "in": 62.733,
+     "out": 65.967,
+     "cut": true,
+     "key": "994ddc6da3ad5950"
     }
    }
   },
@@ -882,6 +1036,13 @@
      "src": "out/ZCONDO2-SHORT-TH/clips/ZC2-B07-SH03_draft.mp4",
      "in": 1,
      "out": 3.267
+    },
+    "final": {
+     "src": "out/ZCONDO2-SHORT-TH/clips/_final_cut.mp4",
+     "in": 65.967,
+     "out": 68.233,
+     "cut": true,
+     "key": "c4983ae36118b537"
     }
    }
   },
@@ -915,6 +1076,13 @@
      "src": "out/ZCONDO2-SHORT-TH/clips/ZC2-B08-SH01_draft.mp4",
      "in": 1,
      "out": 4.333
+    },
+    "final": {
+     "src": "out/ZCONDO2-SHORT-TH/clips/_final_cut.mp4",
+     "in": 68.233,
+     "out": 71.567,
+     "cut": true,
+     "key": "9268bdd4e3202a8e"
     }
    }
   },
@@ -952,6 +1120,13 @@
      "src": "out/ZCONDO2-SHORT-TH/clips/ZC2-B08-SH02_draft.mp4",
      "in": 1,
      "out": 5.367
+    },
+    "final": {
+     "src": "out/ZCONDO2-SHORT-TH/clips/_final_cut.mp4",
+     "in": 71.567,
+     "out": 75.933,
+     "cut": true,
+     "key": "ab0a742f09d1435b"
     }
    }
   },
@@ -997,6 +1172,13 @@
      "src": "out/ZCONDO2-SHORT-TH/clips/ZC2-B09-SH01_draft.mp4",
      "in": 1,
      "out": 7.6
+    },
+    "final": {
+     "src": "out/ZCONDO2-SHORT-TH/clips/_final_cut.mp4",
+     "in": 75.933,
+     "out": 82.533,
+     "cut": true,
+     "key": "bd96540ba77399c8"
     }
    }
   },
@@ -1031,6 +1213,13 @@
      "src": "out/ZCONDO2-SHORT-TH/clips/ZC2-B09-SH02_draft.mp4",
      "in": 1,
      "out": 3.233
+    },
+    "final": {
+     "src": "out/ZCONDO2-SHORT-TH/clips/_final_cut.mp4",
+     "in": 82.533,
+     "out": 84.767,
+     "cut": true,
+     "key": "c620ff7822c83a08"
     }
    }
   },
@@ -1064,6 +1253,13 @@
      "src": "out/ZCONDO2-SHORT-TH/clips/ZC2-B09-SH03_draft.mp4",
      "in": 1,
      "out": 3.567
+    },
+    "final": {
+     "src": "out/ZCONDO2-SHORT-TH/clips/_final_cut.mp4",
+     "in": 84.767,
+     "out": 87.333,
+     "cut": true,
+     "key": "e797fe97dafc01ab"
     }
    }
   },
@@ -1097,6 +1293,13 @@
      "src": "out/ZCONDO2-SHORT-TH/clips/ZC2-B09-SH04_draft.mp4",
      "in": 1,
      "out": 2.833
+    },
+    "final": {
+     "src": "out/ZCONDO2-SHORT-TH/clips/_final_cut.mp4",
+     "in": 87.333,
+     "out": 89.167,
+     "cut": true,
+     "key": "0d93fa67577ea9a8"
     }
    }
   },
@@ -1134,6 +1337,13 @@
      "src": "out/ZCONDO2-SHORT-TH/clips/ZC2-B10-SH01_draft.mp4",
      "in": 1,
      "out": 7.733
+    },
+    "final": {
+     "src": "out/ZCONDO2-SHORT-TH/clips/_final_cut.mp4",
+     "in": 89.167,
+     "out": 95.9,
+     "cut": true,
+     "key": "9e23a7c8d3cfb766"
     }
    }
   }
@@ -1147,5 +1357,9 @@
    "src": "/Users/mangkornkatawong/ReelsStore/projects/ZCONDO2/previews/ZC2-SB-R3/ZC2-B02-SH05-sb-r3.png",
    "caption": "ห้องพัก ตู้กั้นประตู แสงเช้า ลุค kit (อนุมัติแล้ว)"
   }
+ },
+ "finalCut": {
+  "src": "out/ZCONDO2-SHORT-TH/clips/_final_cut.mp4",
+  "frames": 2877
  }
 }
