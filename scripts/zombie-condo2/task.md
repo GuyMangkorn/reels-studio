@@ -37,7 +37,7 @@ Record: [delivery.md](delivery.md) · Updated: 2026-11-04, Film (W5.1 timed scen
 - [x] W6 Final passed (30/30 shots; whole cut passed by the user in chat 4 Nov 2026; page verdicts not set; Film viewer check in build-notes)
 - [x] W7 Pinned (30/30 shots, `pin.mjs pin-rows --ending=A_fade`, 4 Nov 2026)
 - [ ] W8 Deliver
-  - [ ] W8.1 Assembled from the cache, picture lock
-  - [ ] W8.2 Delivery render archived
+  - [x] W8.1 Assembled from the cache, picture lock (30/30 scenes reused from the cache, 0 repainted, 4 Nov 2026)
+  - [x] W8.2 Delivery render archived (`out/ZCONDO2-SHORT-TH/ZCONDO2-SHORT-TH_A_fade.mp4`, 1080x1920 30 fps 2877 f = 95.9 s, -14.1 LUFS, -1.4 dBTP, archived to the store 4 Nov 2026; listening pass not done)
   - [ ] W8.3 Posted to the channel
   - [ ] W8.4 Kit intake (KIT-P01)

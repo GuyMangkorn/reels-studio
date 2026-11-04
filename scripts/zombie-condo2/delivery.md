@@ -27,3 +27,7 @@
 ## W6 Final cut published (4 Nov 2026)
 - Page: https://claude.ai/artifact/99M8EJ9GmvYHLodv25A3Hv, artifact version `1793801505-9d4f`; Final tab = `pv/_final_cut.mp4` (540x960, whole video from the scene cache, render 1190 s). Verdicts: `reviews/<shot>@final` in the page db.
 - Viewer check (Film, opus medium): findings in build-notes "W6 viewer check". Only change vs the passed drafts: B10-SH01 last frame fades to black = the `A_fade` ending, not a shot change.
+
+## W8 delivery render (4 Nov 2026)
+- `node scripts/render.mjs ZCONDO2-SHORT-TH` (ending A_fade): 30 of 30 scenes reused, 0 rendered; 1080x1920, 30 fps, 2877 f (95.9 s). Loudness -14.1 LUFS, -1.4 dBTP, LRA 3.6 (loudnorm from -16.6). Archived to the asset store (69 files). The "No target found" puppeteer line in the log is a harmless page-close warning.
+- Not done: a listening pass of the mix; W8.3 (post: user says when it is on the channel); W8.4 kit intake (Boss).
