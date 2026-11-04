@@ -135,6 +135,13 @@
      "src": "out/EG-EP02-SHORT/clips/S01-B01-SH01_draft.mp4",
      "in": 0,
      "out": 4.267
+    },
+    "final": {
+     "src": "out/EG-EP02-SHORT/clips/_final_cut.mp4",
+     "in": 0,
+     "out": 4.267,
+     "cut": true,
+     "key": "416207f1c1360925"
     }
    }
   },
@@ -158,6 +165,13 @@
      "src": "out/EG-EP02-SHORT/clips/S01-B01-SH02_draft.mp4",
      "in": 1,
      "out": 3.6
+    },
+    "final": {
+     "src": "out/EG-EP02-SHORT/clips/_final_cut.mp4",
+     "in": 4.267,
+     "out": 6.867,
+     "cut": true,
+     "key": "9808103aa5d8ebba"
     }
    }
   },
@@ -180,6 +194,13 @@
      "src": "out/EG-EP02-SHORT/clips/S01-B02-SH01_draft.mp4",
      "in": 1,
      "out": 3.733
+    },
+    "final": {
+     "src": "out/EG-EP02-SHORT/clips/_final_cut.mp4",
+     "in": 6.867,
+     "out": 9.6,
+     "cut": true,
+     "key": "88a4e5435b04ec49"
     }
    }
   },
@@ -202,6 +223,13 @@
      "src": "out/EG-EP02-SHORT/clips/S01-B02-SH02_draft.mp4",
      "in": 1,
      "out": 4.6
+    },
+    "final": {
+     "src": "out/EG-EP02-SHORT/clips/_final_cut.mp4",
+     "in": 9.6,
+     "out": 13.2,
+     "cut": true,
+     "key": "db5908f4bea3a36f"
     }
    }
   },
@@ -225,6 +253,13 @@
      "src": "out/EG-EP02-SHORT/clips/S01-B02-SH03_draft.mp4",
      "in": 1,
      "out": 7.033
+    },
+    "final": {
+     "src": "out/EG-EP02-SHORT/clips/_final_cut.mp4",
+     "in": 13.2,
+     "out": 19.233,
+     "cut": true,
+     "key": "fa8fbbd63c8f6177"
     }
    }
   },
@@ -247,6 +282,13 @@
      "src": "out/EG-EP02-SHORT/clips/S02-B01-SH01_draft.mp4",
      "in": 1,
      "out": 3.867
+    },
+    "final": {
+     "src": "out/EG-EP02-SHORT/clips/_final_cut.mp4",
+     "in": 19.233,
+     "out": 22.1,
+     "cut": true,
+     "key": "e692eba4a6f4d43b"
     }
    }
   },
@@ -269,6 +311,13 @@
      "src": "out/EG-EP02-SHORT/clips/S02-B01-SH02_draft.mp4",
      "in": 1,
      "out": 2.2
+    },
+    "final": {
+     "src": "out/EG-EP02-SHORT/clips/_final_cut.mp4",
+     "in": 22.1,
+     "out": 23.3,
+     "cut": true,
+     "key": "c8e02cf998ff8ea3"
     }
    }
   },
@@ -291,6 +340,13 @@
      "src": "out/EG-EP02-SHORT/clips/S02-B01-SH03_draft.mp4",
      "in": 1,
      "out": 4.567
+    },
+    "final": {
+     "src": "out/EG-EP02-SHORT/clips/_final_cut.mp4",
+     "in": 23.3,
+     "out": 26.867,
+     "cut": true,
+     "key": "a1c6a1cfa81e48ac"
     }
    }
   },
@@ -313,6 +369,13 @@
      "src": "out/EG-EP02-SHORT/clips/S02-B01-SH04_draft.mp4",
      "in": 1,
      "out": 4.533
+    },
+    "final": {
+     "src": "out/EG-EP02-SHORT/clips/_final_cut.mp4",
+     "in": 26.867,
+     "out": 30.4,
+     "cut": true,
+     "key": "3a360b6524d2aff1"
     }
    }
   },
@@ -335,6 +398,13 @@
      "src": "out/EG-EP02-SHORT/clips/S03-B01-SH01_draft.mp4",
      "in": 1,
      "out": 5.933
+    },
+    "final": {
+     "src": "out/EG-EP02-SHORT/clips/_final_cut.mp4",
+     "in": 30.4,
+     "out": 35.333,
+     "cut": true,
+     "key": "4c2a6bbe6ae662f8"
     }
    }
   },
@@ -357,6 +427,13 @@
      "src": "out/EG-EP02-SHORT/clips/S03-B01-SH02_draft.mp4",
      "in": 1,
      "out": 3.467
+    },
+    "final": {
+     "src": "out/EG-EP02-SHORT/clips/_final_cut.mp4",
+     "in": 35.333,
+     "out": 37.8,
+     "cut": true,
+     "key": "bbe816fe72ae8183"
     }
    }
   },
@@ -379,6 +456,13 @@
      "src": "out/EG-EP02-SHORT/clips/S04-B01-SH01_draft.mp4",
      "in": 1,
      "out": 3.967
+    },
+    "final": {
+     "src": "out/EG-EP02-SHORT/clips/_final_cut.mp4",
+     "in": 37.8,
+     "out": 40.767,
+     "cut": true,
+     "key": "1bde9e402a7260cb"
     }
    }
   },
@@ -402,6 +486,13 @@
      "src": "out/EG-EP02-SHORT/clips/S04-B01-SH02_draft.mp4",
      "in": 1,
      "out": 3.467
+    },
+    "final": {
+     "src": "out/EG-EP02-SHORT/clips/_final_cut.mp4",
+     "in": 40.767,
+     "out": 43.233,
+     "cut": true,
+     "key": "f5d4cf16a7bfed96"
     }
    }
   },
@@ -424,6 +515,13 @@
      "src": "out/EG-EP02-SHORT/clips/S04-B01-SH03_draft.mp4",
      "in": 1,
      "out": 5
+    },
+    "final": {
+     "src": "out/EG-EP02-SHORT/clips/_final_cut.mp4",
+     "in": 43.233,
+     "out": 47.233,
+     "cut": true,
+     "key": "c4a8b59bd11f3c08"
     }
    }
   },
@@ -447,6 +545,13 @@
      "src": "out/EG-EP02-SHORT/clips/S04-B01-SH04_draft.mp4",
      "in": 1,
      "out": 3.9
+    },
+    "final": {
+     "src": "out/EG-EP02-SHORT/clips/_final_cut.mp4",
+     "in": 47.233,
+     "out": 50.133,
+     "cut": true,
+     "key": "174a6e1b3a77e510"
     }
    }
   },
@@ -469,6 +574,13 @@
      "src": "out/EG-EP02-SHORT/clips/S04-B01-SH05_draft.mp4",
      "in": 1,
      "out": 3.1
+    },
+    "final": {
+     "src": "out/EG-EP02-SHORT/clips/_final_cut.mp4",
+     "in": 50.133,
+     "out": 52.233,
+     "cut": true,
+     "key": "429b23b7092bd821"
     }
    }
   },
@@ -491,6 +603,13 @@
      "src": "out/EG-EP02-SHORT/clips/S04-B01-SH06_draft.mp4",
      "in": 1,
      "out": 2.2
+    },
+    "final": {
+     "src": "out/EG-EP02-SHORT/clips/_final_cut.mp4",
+     "in": 52.233,
+     "out": 53.433,
+     "cut": true,
+     "key": "742b4201f4829f81"
     }
    }
   },
@@ -509,6 +628,13 @@
      "src": "out/EG-EP02-SHORT/clips/S04-B01-SH07_draft.mp4",
      "in": 1,
      "out": 2.233
+    },
+    "final": {
+     "src": "out/EG-EP02-SHORT/clips/_final_cut.mp4",
+     "in": 53.433,
+     "out": 54.667,
+     "cut": true,
+     "key": "20d943c2d6af23c6"
     }
    }
   },
@@ -541,6 +667,13 @@
      "src": "out/EG-EP02-SHORT/clips/S05-B01-SH01_draft.mp4",
      "in": 1,
      "out": 10.967
+    },
+    "final": {
+     "src": "out/EG-EP02-SHORT/clips/_final_cut.mp4",
+     "in": 54.667,
+     "out": 64.633,
+     "cut": true,
+     "key": "3701ec23ddfdcca3"
     }
    }
   }
@@ -567,5 +700,9 @@
    "caption": "LF05 v3 แม่ที่ท่าเรือ (S05-B01-SH01) · แก้รอบ 3: เรือจอดเทียบข้างท่าแบบเดียวกับ LF03 คนเดินผ่านด้านหลังไม่ทับม้านั่งแล้ว (ย้ายคนที่เคยดูเหมือนเดินบนม้านั่ง และวาดม้านั่งที่อยู่ใกล้กว่าทับคนที่อยู่ไกลกว่า) แม่สูงราว 23% ของจอเหมือนเดิม ผมเริ่มหงอก ใส่คาร์ดิแกน กอดกระดาษซ้อนที่อก พวงมาลัยมะลิที่ข้อมือ · ไม่มีคุณในภาพ"
   }
  },
- "previousRevision": "SS-R2.5"
+ "previousRevision": "SS-R2.5",
+ "finalCut": {
+  "src": "out/EG-EP02-SHORT/clips/_final_cut.mp4",
+  "frames": 1939
+ }
 }

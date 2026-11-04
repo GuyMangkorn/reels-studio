@@ -179,27 +179,27 @@ const BOAT = A + 'vehicle/vehicle_river-ferry-passing_01.wav';
 const D = 0.6;
 const audio2: AudioTrack[] = [
   // Music: opening piano f0-400; rests after L05; pad under L09; quiet return after the gust; melody swell with the dissolves; opening figure under L17-L19, rings out in the hold.
-  t(PIANO, 0, 400, {volume: 0.16, fadeInSec: 1, fadeOutSec: 1.5, duckUnderNarration: D}),
+  t(PIANO, 0, 400, {volume: 0.25, fadeInSec: 1, fadeOutSec: 1.5, duckUnderNarration: D}),
   t(A + 'bed/bed_warm-pad-felt-third_01.wav', 785, 925, {volume: 0.1, fadeInSec: 1, fadeOutSec: 1.5, duckUnderNarration: D}),
   t(PIANO, 1226, 1417, {volume: 0.12, trimStartSec: 12, fadeInSec: 1.5, fadeOutSec: 0.5, duckUnderNarration: D}),
   t(PIANO, 1417, 1640, {volume: 0.2, trimStartSec: 20, fadeInSec: 1.5, fadeOutSec: 0.5, duckUnderNarration: D}),
-  t(PIANO, 1640, 1929, {volume: 0.14, trimStartSec: 2, fadeInSec: 0.5, fadeOutSec: 3, duckUnderNarration: D}),
+  t(PIANO, 1640, 1929, {volume: 0.22, trimStartSec: 2, fadeInSec: 0.5, fadeOutSec: 3, duckUnderNarration: D}),
   // Place beds (cross with the picture; each fades 0.3-0.5 s at its edges).
   t(DAWN, 0, 214, {volume: 0.22, loop: true, fadeInSec: 0.5, fadeOutSec: 0.5}),
   t(YAO, 206, 288, {volume: 0.2, loop: true, fadeInSec: 0.5, fadeOutSec: 0.3}),
   t(WIND, 288, 404, {volume: 0.16, loop: true, fadeInSec: 0.3, fadeOutSec: 0.3}),
-  t(PIER, 396, 585, {volume: 0.5, loop: true, fadeInSec: 0.5, fadeOutSec: 0.3}),
+  t(PIER, 396, 585, {volume: 0.35, loop: true, fadeInSec: 0.5, fadeOutSec: 0.3}),
   t(YAO, 577, 806, {volume: 0.12, loop: true, fadeInSec: 0.5, fadeOutSec: 0.3}),
-  t(PIER, 806, 920, {volume: 0.45, loop: true, fadeInSec: 0.4, fadeOutSec: 0.4}),
+  t(PIER, 806, 920, {volume: 0.32, loop: true, fadeInSec: 0.4, fadeOutSec: 0.4}),
   t(SOI, 912, 1134, {volume: 0.14, loop: true, fadeInSec: 0.5, fadeOutSec: 0.5}),
   t(LAMP, 912, 1119, {volume: 0.08, loop: true, fadeInSec: 0.8, fadeOutSec: 1}),
   t(LAMP, 1157, 1417, {volume: 0.07, loop: true, fadeInSec: 0.8, fadeOutSec: 0.5}),
   t(WIND, 1134, 1240, {volume: 0.1, loop: true, fadeInSec: 0.3, fadeOutSec: 1.5}),
   t(YAO, 1417, 1504, {volume: 0.2, loop: true, fadeInSec: 0.5, fadeOutSec: 0.3}),
   t(WIND, 1504, 1567, {volume: 0.16, loop: true, fadeInSec: 0.3, fadeOutSec: 0.3}),
-  t(PIER, 1567, 1603, {volume: 0.5, loop: true, fadeInSec: 0.2, fadeOutSec: 0.2}),
+  t(PIER, 1567, 1603, {volume: 0.35, loop: true, fadeInSec: 0.2, fadeOutSec: 0.2}),
   t(SOI, 1603, 1640, {volume: 0.14, loop: true, fadeInSec: 0.2, fadeOutSec: 0.4}),
-  t(PIER, 1640, 1929, {volume: 0.5, loop: true, fadeInSec: 0.8, fadeOutSec: 2}),
+  t(PIER, 1640, 1929, {volume: 0.35, loop: true, fadeInSec: 0.8, fadeOutSec: 2}),
   // Crowd murmur (CL02): far bed under everything until the silence before the gust; close bed fades up with the dissolves and stays until the end; gone after L19.
   t(MFAR, 0, 1125, {volume: 0.05, loop: true, fadeInSec: 1, fadeOutSec: 1}),
   t(MFAR, 402, 571, {volume: 0.04, loop: true, fadeInSec: 0.8, fadeOutSec: 0.8}),

@@ -78,3 +78,5 @@
 - 4 Nov 2026 Draft r5 (page v15) approved by the user in chat ("ผ่านหมด") after L11 retake cut from a full-script read (v4-L11t, 1.50 s). Carries SS-R2.6 set detail and script R1.3. Next: Final stage; nothing committed.
 
 - 4 Nov 2026 Final cut r5 (commit after Draft approval): full-size final cut rendered through the scene cache (`clips.mjs --full --timeout=180000`; the default 30 s per-frame timeout failed at f1574 in S04-B01-SH06, twice; log out/logs/r5-final4.log, 2075 s). Published as page v16 for the user's Final-tab approval; not pinned.
+
+- 4 Nov 2026 Final cut r5b (page v17): sound mix per user note (piano felt too quiet, ambience masked it; measured, not listened). Piano f0-400 0.16 -> 0.25, f1640-1929 0.14 -> 0.22 (+3.9 dB); AMB-PIER 0.5 -> 0.35 and 0.45 -> 0.32 (-3 dB). Effective LUFS before: piano -30.7 / -31.9 vs dawn -27.7, pier -27.2. Video segments reused (19 of 19), audio re-mixed in the final cut. Not pinned.
