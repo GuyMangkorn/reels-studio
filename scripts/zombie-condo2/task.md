@@ -40,4 +40,4 @@ Record: [delivery.md](delivery.md) · Updated: 2026-11-04, Film (W5.1 timed scen
   - [x] W8.1 Assembled from the cache, picture lock (30/30 scenes reused from the cache, 0 repainted, 4 Nov 2026)
   - [x] W8.2 Delivery render archived (`out/ZCONDO2-SHORT-TH/ZCONDO2-SHORT-TH_A_fade.mp4`, 1080x1920 30 fps 2877 f = 95.9 s, -14.1 LUFS, -1.4 dBTP, archived to the store 4 Nov 2026; listening pass not done)
   - [ ] W8.3 Posted to the channel
-  - [ ] W8.4 Kit intake (KIT-P01)
+  - [x] W8.4 Kit intake (KIT-P01) N/A: user declined kit intake of HL1 (4 Nov 2026)
