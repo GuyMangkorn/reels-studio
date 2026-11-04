@@ -32,6 +32,10 @@ Why this file exists: in WDG-EP01-SHORT one look frame went through seven painte
 - **UT09 — Dread over jump scares.** Imply the ghost (a look, a sound, a shadow); avoid a heavy jump scare. Evidence: HANAKO ("not too much jumpscare", Hanako never shown as a body, 31 Oct 2026); KSO ("implication only", 1 Nov 2026).
 - **UT10 — A monster design starts from the user's reference.** Ask for or find a reference before designing a creature the user names; do not invent its look. Evidence: WDG untildawn wendigo (reference supplied after SB-R2, 2 Nov 2026).
 
+## Captions
+
+- **UT12 — The caption shade is as light as it can be.** The dark overlay behind captions uses the lowest opacity at which the text still reads on the brightest background of that video; a heavier overlay than needed dulls the picture. Evidence: EG-EP02-SHORT (user preferred 0.3 over 0.62 on the first comparison, 4 Nov 2026; 0.3 failed on the cream paper at f1075-1160, so 0.4 was kept). Rule: [production-requirements](production-requirements.md#caption-backdrop).
+
 ## Medium
 
 - **UT11 — Painted, not flat SVG,** for pictures the user sees. Evidence: BLOOP ("paint, not SVG", 30 Oct 2026); [project defaults](delivery-workflow.md#project-defaults).

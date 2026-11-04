@@ -82,7 +82,7 @@ const shotOf = (id: Eg2ShotId, index: number): PaintedShot => {
           {plate.header && <Header camera={camera} sx={plate.header.sx} mini={plate.header.mini} />}
           {(Object.entries(plate.grade) as [Parameters<typeof StateGrade>[0]['state'], number][]).map(([s, v]) => v > 0 && <AbsoluteFill key={s} style={{opacity: v}}><StateGrade state={s} /></AbsoluteFill>)}
           <Grain opacity={0.1} />
-          <CaptionShade tl={tl} cues={cues} mode="band" bottomEdgeY={EG2_CAPTION_CENTRE_Y + 84} />
+          <CaptionShade tl={tl} cues={cues} mode="band" strength={0.4} bottomEdgeY={EG2_CAPTION_CENTRE_Y + 84} />
           {plate.black ? <AbsoluteFill style={{background: '#000', opacity: plate.black}} /> : null}
         </AbsoluteFill>
       );
