@@ -87,6 +87,63 @@ export const capsule = (a: Pt, b: Pt, w0: number, w1: number, n = 6): Pt[] => {
   return [...arc(b, w1 / 2, ang - Math.PI / 2), ...arc(a, w0 / 2, ang + Math.PI / 2)];
 };
 
+/**
+ * A shaped limb a-b (arms, `InteriorLight.shaped`): width `w0` at a to `w1` at b plus a muscle `bulge` peaking at `peak` (0..1) along
+ * the segment, the +normal side a little fuller than the other (`asym`), the b end capped round (`capB`) or cut straight (a sleeve hem,
+ * flared by `flare`). Tubes (`capsule`) have no belly and no wrist; this gives a forearm that tapers to the wrist.
+ */
+export const shapedLimb = (a: Pt, b: Pt, w0: number, w1: number, o: {bulge?: number; peak?: number; asym?: number; capB?: boolean; flare?: number; n?: number} = {}): Pt[] => {
+  const n = o.n ?? 8, bulge = o.bulge ?? 0, peak = o.peak ?? 0.3, asym = o.asym ?? 0.2, cap = o.capB ?? true;
+  const len = Math.hypot(b[0] - a[0], b[1] - a[1]) || 1, dx = (b[0] - a[0]) / len, dy = (b[1] - a[1]) / len, nx = -dy, ny = dx;
+  const half = (t: number, side: 1 | -1) => {
+    const bell = Math.sin((Math.PI * Math.min(peak, t)) / (2 * peak)), tail = t > peak ? Math.cos(((t - peak) / (1 - peak)) * Math.PI * 0.5) : 1;
+    const w = w0 + (w1 - w0) * t + bulge * (t < peak ? bell : tail) * (1 + side * asym) + (o.flare ?? 0) * t ** 4;
+    return w / 2;
+  };
+  const pt = (t: number, side: 1 | -1): Pt => [a[0] + dx * len * t + nx * side * half(t, side), a[1] + dy * len * t + ny * side * half(t, side)];
+  const Lp = Array.from({length: n + 1}, (_, i) => pt(1 - i / n, 1)); // b -> a along +normal
+  const Rp = Array.from({length: n + 1}, (_, i) => pt(i / n, -1)); // a -> b along -normal
+  const arc = (c: Pt, r: number, from: number, m = 6): Pt[] => Array.from({length: m - 1}, (_, i): Pt => [c[0] + r * Math.cos(from + (Math.PI * (i + 1)) / m), c[1] + r * Math.sin(from + (Math.PI * (i + 1)) / m)]);
+  const ang = Math.atan2(dy, dx);
+  return [...Lp, ...arc(a, w0 / 2, ang + Math.PI / 2), ...Rp, ...(cap ? arc(b, w1 / 2, ang - Math.PI / 2) : [])];
+};
+
+/** Chaikin corner cutting on a closed outline (HL1 hands: a smooth cartoon edge instead of a polygon). */
+const chaikin = (pts: Pt[], it = 2): Pt[] => {
+  let q = pts;
+  for (let r = 0; r < it; r++) q = q.flatMap((a, i): Pt[] => { const b = q[(i + 1) % q.length]; return [[a[0] * 0.75 + b[0] * 0.25, a[1] * 0.75 + b[1] * 0.25], [a[0] * 0.25 + b[0] * 0.75, a[1] * 0.25 + b[1] * 0.75]]; });
+  return q;
+};
+/**
+ * A fist at `o` (the wrist point), pointing along `ang` (plate radians), size `k` px per metre. ZCONDO2 hand language HL1 (4 Nov 2026, user: cartoon, not
+ * strange; UT14 no drawn fingers): one smooth bean, as wide as the wrist where it joins it, swelling to 0.064 wide (about 1.5x the wrist) and 0.093 long,
+ * the thumb side a little fuller; three short finger grooves at the knuckle end; the thumb is one ink curve lying across the front from the `side` edge
+ * (no separate thumb shape). Local u runs along `ang`, v is 90 degrees clockwise on screen. `thumb`, `fingers`, `knuckleRow`, `nail` stay empty (kept for callers).
+ */
+export const fistParts = (o: Pt, ang: number, k: number, side: 1 | -1) => {
+  const c = Math.cos(ang), s = Math.sin(ang);
+  const P = ([u, v]: Pt): Pt => [o[0] + (u * c - v * s) * k, o[1] + (u * s + v * c) * k];
+  const Q = (pts: Pt[]) => pts.map(([u, v]): Pt => P([u, v * side]));
+  const back: Pt[] = chaikin(Q([[-0.004, -0.022], [0.024, -0.029], [0.05, -0.032], [0.07, -0.03], [0.085, -0.022], [0.093, -0.008], [0.093, 0.008], [0.087, 0.022], [0.072, 0.033], [0.052, 0.037], [0.032, 0.036], [0.014, 0.03], [-0.004, 0.022]]));
+  const creases: Pt[][] = [-0.016, -0.002, 0.012].map((v) => Q([[0.074, v], [0.083, v + 0.001], [0.09, v + 0.0015]]));
+  const thumbCrease: Pt[] = Q([[0.03, 0.034], [0.046, 0.024], [0.064, 0.016]]);
+  return {back, fingers: [] as Pt[][], creases, thumbCrease, knuckleRow: [] as Pt[], thumb: [] as Pt[], nail: [] as Pt[]};
+};
+/**
+ * An open hand at `o` (the wrist), HL1: one smooth mitten outline, the four-finger mass 0.064 wide with a round tip at 0.124, the thumb a rounded lobe of the
+ * same outline on the `side` edge, angled out and forward, with a V notch to the fingers; three short strokes at the finger end, one crease at the thumb root.
+ * Same local frame as `fistParts`.
+ */
+export const openHandParts = (o: Pt, ang: number, k: number, side: 1 | -1, noThumb = false) => {
+  const c = Math.cos(ang), s = Math.sin(ang);
+  const P = ([u, v]: Pt): Pt => [o[0] + (u * c - v * s) * k, o[1] + (u * s + v * c) * k];
+  const Q = (pts: Pt[]) => pts.map(([u, v]): Pt => P([u, v * side]));
+  const palm: Pt[] = chaikin(Q(noThumb ? [[-0.004, -0.022], [0.03, -0.03], [0.062, -0.032], [0.092, -0.03], [0.11, -0.024], [0.122, -0.012], [0.125, 0.002], [0.12, 0.016], [0.108, 0.026], [0.088, 0.03], [0.06, 0.032], [0.03, 0.03], [-0.004, 0.023]] : [[-0.004, -0.022], [0.03, -0.03], [0.062, -0.032], [0.092, -0.03], [0.11, -0.024], [0.122, -0.012], [0.125, 0.002], [0.12, 0.016], [0.108, 0.026], [0.088, 0.03], [0.068, 0.031], [0.06, 0.034], [0.068, 0.046], [0.07, 0.057], [0.063, 0.065], [0.052, 0.064], [0.038, 0.054], [0.022, 0.041], [0.008, 0.031], [-0.004, 0.023]]));
+  const thumbCrease: Pt[] = Q([[0.052, 0.031], [0.038, 0.03], [0.024, 0.026]]);
+  const creases: Pt[][] = [-0.015, 0, 0.015].map((v) => Q([[0.099, v], [0.11, v + 0.001], [0.119, v + 0.001]]));
+  return {palm, thumb: [] as Pt[], thumbCrease, creases};
+};
+
 export const rectPts = (x0: number, y0: number, x1: number, y1: number): Pt[] => [[x0, y0], [x1, y0], [x1, y1], [x0, y1]];
 
 /** Soft breathing blob, phases from `id`, so neighbouring banks do not move in step. */
@@ -238,6 +295,18 @@ export type InteriorLight = {
   rim: Pt;
   /** Rim strength (brief VD18 `rimMix` x 0.5 where the glass is behind the camera). Default 1. */
   rimScale?: number;
+  /** Palette overrides of the VD18 table (a warm morning room instead of the cool fluorescent one). Absent = VD18. */
+  pal?: Partial<Palette>;
+  /** Paint an opaque flat underlay under every part, so a set with shelves or bars behind the figure never shows through it. */
+  under?: boolean;
+  /** Shaped limbs and fists: tapered forearms with a muscle bulge, an elbow knuckle, and `Arm.fist` hands with finger rows and a thumb. */
+  shaped?: boolean;
+  /** `shaped` only: scale of the hand (fist, mitten, oval) about the wrist; the arm is unchanged. Default 1 (ZCONDO2 sets 1.45: kit fist 0.10 k = 0.37 of the forearm, x1.45 = 0.54). */
+  handScale?: number;
+  /** Skip the pencil hatching inside the form shadow (soft watercolour shading only). */
+  noHatch?: boolean;
+  /** Fold ink and form-shadow colour source: ink lines mix toward this warm dark instead of INK (default INK). */
+  ink?: string;
 };
 
 /** VD18 numbers: one table so Boss can apply the look shot by shot. */
@@ -258,8 +327,14 @@ export const VD18 = {
   lineMix: 0.6, lineOuter: 0.9, lineFold: 0.7,
   /** Top-light falloff down the body: a cool dark glaze on parts below the shoulders, growing to `falloffOpacity` at the feet. */
   falloff: '#1a2327', falloffOpacity: 165,
+  /** Ground shadow under the feet: soft body and dark occlusion core. */
+  ground: '#0e1213', groundCore: '#07090a',
 } as const;
 
+
+export type Palette = {[K in keyof typeof VD18]: (typeof VD18)[K] extends number ? number : string};
+/** The VD18 table with a light's overrides applied. */
+export const palOf = (L?: InteriorLight): Palette => ({...VD18, ...(L?.pal ?? {})}) as Palette;
 
 /**
  * Model one opaque part under an interior light (VD18): mottled glaze, cool form shadow on the far side of the key,
@@ -267,19 +342,20 @@ export const VD18 = {
  */
 export const modelPart = (p: Painter, seed: number, color: string, pts: Pt[], L: InteriorLight, scale = 1) => {
   if (!finite(pts)) return;
+  const V = palOf(L);
   const s = 7_000_000 + seed * 8;
-  glaze(p, s, mixColor(color, '#000000', 0.06), VD18.glazeOpacity, pts, {texture: VD18.glazeTexture, border: VD18.glazeBorder, bleed: 0.02});
+  glaze(p, s, mixColor(color, '#000000', 0.06), V.glazeOpacity, pts, {texture: V.glazeTexture, border: V.glazeBorder, bleed: 0.02});
   const dir = formDir(pts, L.key);
-  const lit = planeBand(pts, dir, 0, VD18.lightTo);
-  if (lit.length) glaze(p, s + 1, mixColor(color, VD18.light, VD18.lightMix), VD18.lightOpacity * scale, lit, {texture: 0.3, border: 0.2, bleed: 0.05});
-  const shade = planeBand(pts, dir, VD18.shadowFrom);
+  const lit = planeBand(pts, dir, 0, V.lightTo);
+  if (lit.length) glaze(p, s + 1, mixColor(color, V.light, V.lightMix), V.lightOpacity * scale, lit, {texture: 0.3, border: 0.2, bleed: 0.05});
+  const shade = planeBand(pts, dir, V.shadowFrom);
   if (shade.length) {
-    glaze(p, s + 2, mixColor(color, VD18.shadow, VD18.shadowMix), VD18.shadowOpacity * scale, shade, {texture: 0.45, border: 0.5, bleed: VD18.shadowBleed});
-    hatchIn(p, s + 4, mixColor(color, VD18.shadow, VD18.hatchMix), shade);
+    glaze(p, s + 2, mixColor(color, V.shadow, V.shadowMix), V.shadowOpacity * scale, shade, {texture: 0.45, border: 0.5, bleed: V.shadowBleed});
+    if (!L.noHatch) hatchIn(p, s + 4, mixColor(color, V.shadow, V.hatchMix), shade);
   }
   // The rim is opaque passes, not a glaze: a light watercolour glaze cannot lighten a dark part (pigment is subtractive).
-  const rim = planeBand(pts, L.rim, 0, VD18.rimTo);
-  if (rim.length) solid(p, s + 3, mixColor(color, VD18.rimColor, VD18.rimMix * scale * rimScaleOf(L)), rim, 3, 0, 0.15);
+  const rim = planeBand(pts, L.rim, 0, V.rimTo);
+  if (rim.length) solid(p, s + 3, mixColor(color, V.rimColor, V.rimMix * scale * rimScaleOf(L)), rim, 3, 0, 0.15);
 };
 
 /** Rim strength of a light (1 unless the setup halves it, brief VD18 glass-behind-camera rows). */
@@ -300,6 +376,6 @@ export const hatchIn = (p: Painter, seed: number, color: string, pts: Pt[], dist
 };
 
 /** Base colour of a part under the interior ambient (VD18), or unchanged without a light. */
-export const toneOf = (color: string, L?: InteriorLight) => (L ? mixColor(color, VD18.ambient, VD18.ambientMix) : color);
+export const toneOf = (color: string, L?: InteriorLight) => (L ? mixColor(color, palOf(L).ambient, palOf(L).ambientMix) : color);
 /** Ink colour for a part outline under VD18: a dark shade of the local colour. */
-export const lineOf = (color: string, L?: InteriorLight) => (L ? mixColor(color, INK, VD18.lineMix) : INK);
+export const lineOf = (color: string, L?: InteriorLight) => (L ? mixColor(color, L.ink ?? INK, palOf(L).lineMix) : INK);

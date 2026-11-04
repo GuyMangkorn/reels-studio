@@ -1,14 +1,15 @@
 import {hairFront, hairSide, isNewCut, type NewCut} from './hair';
 import {hash} from './hash';
 import {mixColor, type Painter, type Pt} from './painter';
-import {INK, VD18, ell, glaze, inkLine, lineOf, modelPart, planeBand, rimScaleOf, solid, toneOf, type InteriorLight} from './draw';
+import {INK, palOf, ell, glaze, hardFill, inkLine, lineOf, modelPart, planeBand, rimScaleOf, solid, toneOf, type InteriorLight} from './draw';
 
 // Flat-face decal heads (front and profile) for the WFOG cast (brief VD03; user-approved look 29 Oct 2026), ported
 // from the spike sheets `FaceSheet.tsx` / `SideSheet.tsx` into the plate Painter: egg head, cap of hair, almond eyes
 // with a look vector, bar brows, line/filled mouth, periodic blink, and age lines (older occupant, front and profile).
 
 export type Brow = 'flat' | 'up' | 'worry' | 'angry' | 'quirk';
-export type Eyes = 'dot' | 'wide' | 'half' | 'shut';
+/** `none` draws no eye at all (the shot paints its own eyes over a plain face, e.g. a blind-white infected). */
+export type Eyes = 'dot' | 'wide' | 'half' | 'shut' | 'none';
 /** `grin`, `smirk` and `shout` were added for the expression presets (`expressions.ts`, 1 Nov 2026); the first seven are the WFOG/ZC set. */
 export type Mouth = 'flat' | 'smile' | 'o' | 'wavy' | 'frown' | 'gasp' | 'talk' | 'grin' | 'smirk' | 'shout';
 /**
@@ -85,7 +86,7 @@ const faceModel = (p: Painter, seed: number, skin: string, head: Pt[], L: Interi
   // Form shadow as a crescent on the far side: shade the far half, then repaint a lit oval shifted toward the key, so
   // the shadow keeps the head's round edge instead of a straight cut across the face.
   const side = planeBand(head, L.key, 0.4);
-  if (side.length) glaze(p, s + 1, mixColor(skin, VD18.shadow, 0.46), 205, side, {texture: 0.35, border: 0.45, bleed: 0.08});
+  if (side.length) glaze(p, s + 1, mixColor(skin, palOf(L).shadow, 0.46), 205, side, {texture: 0.35, border: 0.45, bleed: 0.08});
   const xs = head.map((q) => q[0]), ys = head.map((q) => q[1]);
   const cx = (Math.min(...xs) + Math.max(...xs)) / 2, cy = (Math.min(...ys) + Math.max(...ys)) / 2;
   const rx = (Math.max(...xs) - Math.min(...xs)) / 2, ry = (Math.max(...ys) - Math.min(...ys)) / 2;
@@ -94,10 +95,10 @@ const faceModel = (p: Painter, seed: number, skin: string, head: Pt[], L: Interi
   solid(p, s + 7, skin, lit, 3, 0, 0.05); // texture 0: granulation would show what the head base holds (glaze rule)
   glaze(p, s + 8, skin, 160, head.map(([x, y]): Pt => [cx + (x - cx) * 0.93 - kx * 0.08 * rx, cy + (y - cy) * 0.93 - ky * 0.05 * ry]), {texture: 0.2, border: 0, bleed: 0.12});
   const jaw = planeBand(head, [0, 1], 0.86);
-  if (jaw.length) glaze(p, s + 2, mixColor(skin, VD18.shadow, 0.3), 100, jaw, {texture: 0.3, border: 0.3, bleed: 0.06});
+  if (jaw.length) glaze(p, s + 2, mixColor(skin, palOf(L).shadow, 0.3), 100, jaw, {texture: 0.3, border: 0.3, bleed: 0.06});
   cheeks.forEach(([x, y, rx, ry], i) => glaze(p, s + 3 + i, '#cf7a68', 42, ell(x, y, rx, ry, 16), {texture: 0.3, border: 0.1, bleed: 0.12}));
   const rim = planeBand(head, L.rim, 0, 0.07);
-  if (rim.length) solid(p, s + 6, mixColor(skin, VD18.rimColor, 0.3 * rimScaleOf(L)), rim, 3, 0, 0.15);
+  if (rim.length) solid(p, s + 6, mixColor(skin, palOf(L).rimColor, 0.3 * rimScaleOf(L)), rim, 3, 0, 0.15);
 };
 /** VD18 hair sheen: a few strokes along the crown on the key side, a cool highlight from the tube lights. */
 const sheen = (p: Painter, id: number, hair: string, strokes: Pt[][]) =>
@@ -306,12 +307,15 @@ export const paintHeadFront = (p: Painter, seed: number, cx: number, cy: number,
   const P = ([u, v]: Pt): Pt => [cx + u * K, cy + v * K];
   const Q = (pts: Pt[]) => pts.map(P);
   let part = 0;
-  const fill = (color: string, pts: Pt[], passes = 3, texture = 0.06) => solid(p, seed * 100 + ++part, color, Q(pts), passes, L ? 0 : texture, 0.2);
+  const fill = (color: string, pts: Pt[], passes = 3, texture = 0.06) => {
+    if (L?.under) hardFill(p, seed * 100 + part + 5000, color, Q(pts));
+    solid(p, seed * 100 + ++part, color, Q(pts), passes, L ? 0 : texture, 0.2);
+  };
   let line = 0;
   const ink = (pts: Pt[], weight = 1.1, curve = 0.5, closed = false, color?: string) => inkLine(p, seed * 100 + ++line, Q(pts), {weight, curve, closed, color});
   const skin = toneOf(skinOf(style, warm), L);
   const hairC = toneOf(style.hair, L);
-  const eyes: Eyes = blinking(t, seed) ? 'shut' : face.eyes;
+  const eyes: Eyes = face.eyes !== 'none' && blinking(t, seed) ? 'shut' : face.eyes;
   const [lx, ly] = face.look;
   const {cut} = style;
   const nc = isNewCut(cut) ? hairFront(cut) : null;
@@ -345,7 +349,7 @@ export const paintHeadFront = (p: Painter, seed: number, cx: number, cy: number,
   const hairs: Pt[][] = nc ? nc.hair : [legacyFrontHair(cut)];
   const hairFill = nc?.tone ? mixColor(hairC, skin, nc.tone) : hairC;
   // VD18: the fringe casts a soft band of shadow on the forehead (the hair shape, shifted down, under the hair fill).
-  if (L && cut !== 'hood') hairs.forEach((hair, i) => glaze(p, 7_600_000 + seed + i, mixColor(skin, VD18.shadow, 0.36), 140, Q(hair.map(([u, v]): Pt => [u * 0.97, v + 0.12])), {texture: 0.3, border: 0.3, bleed: 0.06}));
+  if (L && cut !== 'hood') hairs.forEach((hair, i) => glaze(p, 7_600_000 + seed + i, mixColor(skin, palOf(L).shadow, 0.36), 140, Q(hair.map(([u, v]): Pt => [u * 0.97, v + 0.12])), {texture: 0.3, border: 0.3, bleed: 0.06}));
   hairs.forEach((hair) => {
     fill(hairFill, hair, 6);
     if (L) modelPart(p, seed * 100 + part, hairFill, Q(hair), L);
@@ -369,6 +373,7 @@ export const paintHeadFront = (p: Painter, seed: number, cx: number, cy: number,
   const lk = style.look;
   for (const side of [-1, 1]) {
     const ex = side * 0.4, ey = 0.05;
+    if (eyes === 'none') continue;
     if (eyes === 'shut') {
       ink(lk ? [[ex - 0.2, ey - 0.01], [ex, ey + 0.05], [ex + 0.2, ey - 0.01 - side * 0.02]] : [[ex - 0.18, ey], [ex, ey + 0.05], [ex + 0.18, ey]], lk ? 1.8 : 1.5);
       continue;
@@ -501,7 +506,10 @@ export const paintHeadFront = (p: Painter, seed: number, cx: number, cy: number,
 export const paintHeadSide = (p: Painter, seed: number, cx: number, cy: number, K: number, face: FaceState, style: HeadStyle, dir: 1 | -1, t: number, warm = 0, L?: InteriorLight) => {
   const Q = (pts: Pt[]): Pt[] => pts.map(([u, v]) => [cx + dir * u * K, cy + v * K]);
   let part = 0;
-  const fill = (color: string, pts: Pt[], passes = 4) => solid(p, seed * 100 + ++part, color, Q(pts), passes, L ? 0 : 0.06, 0.2);
+  const fill = (color: string, pts: Pt[], passes = 4) => {
+    if (L?.under) hardFill(p, seed * 100 + part + 5000, color, Q(pts));
+    solid(p, seed * 100 + ++part, color, Q(pts), passes, L ? 0 : 0.06, 0.2);
+  };
   let line = 0;
   const ink = (pts: Pt[], weight = 1.0, curve = 0.15, closed = true, color?: string) => inkLine(p, seed * 100 + ++line, Q(pts), {weight, curve, closed, color});
   const skin = toneOf(skinOf(style, warm), L);
@@ -581,9 +589,10 @@ export const paintHeadSide = (p: Painter, seed: number, cx: number, cy: number, 
   }
   part = 30;
   line = 30;
-  const eyes: Eyes = blinking(t, seed) ? 'shut' : face.eyes;
+  const eyes: Eyes = face.eyes !== 'none' && blinking(t, seed) ? 'shut' : face.eyes;
   const [lx, ly] = face.look;
-  if (eyes === 'shut') ink([[0.5, 0.05], [0.62, 0.1], [0.74, 0.05]], 1.4, 0.5, false);
+  if (eyes === 'none') { /* the shot paints its own eye */ }
+  else if (eyes === 'shut') ink([[0.5, 0.05], [0.62, 0.1], [0.74, 0.05]], 1.4, 0.5, false);
   else {
     const sq = 1 - 0.6 * (face.squint ?? 0);
     const white = ell(0.62, 0.05, 0.13, (eyes === 'wide' ? 0.15 : 0.12) * sq, 16);

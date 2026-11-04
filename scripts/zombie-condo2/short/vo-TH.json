@@ -1,0 +1,296 @@
+{
+  "deliverable": "ZCPAINT-SHORT-TH",
+  "script": "ZCONDO-SHORT-TH-R5 (R4, R5 user 31 Oct 2026; tts-th.txt; captions = script ซับ chunks)",
+  "voice": "th-TH-NiwatNeural",
+  "voiceNote": "SUPERSEDED 31 Oct 2026: the TH narration is the Gemini TTS Kore read (key \"narration\"). The voice and rate fields are the old Edge stand-in, kept for history. Do not run place-narration.py --write for TH: it would replace the Gemini track and these onsets with Edge TTS.",
+  "rate": "+5%",
+  "lines": [
+    {
+      "id": "TH-01",
+      "beat": "B01",
+      "text": "คุณเปิดประตูห้อง จะเอาขยะไปทิ้ง",
+      "atSec": 0.0
+    },
+    {
+      "id": "TH-02",
+      "beat": "B01",
+      "text": "ปลายทางเดิน มีคนยืนนิ่งอยู่",
+      "atSec": 2.665
+    },
+    {
+      "id": "TH-03",
+      "beat": "B01",
+      "text": "แล้วมันก็หันมา",
+      "atSec": 5.676
+    },
+    {
+      "id": "TH-04",
+      "beat": "B02",
+      "text": "ปิด",
+      "atSec": 7.227,
+      "caption": "ปิด! ล็อก!"
+    },
+    {
+      "id": "TH-05",
+      "beat": "B02",
+      "text": "ล็อก",
+      "atSec": 8.058,
+      "caption": null
+    },
+    {
+      "id": "TH-06",
+      "beat": "B02",
+      "text": "มันทุบประตูไม่หยุด",
+      "atSec": 8.974
+    },
+    {
+      "id": "TH-07",
+      "beat": "B02",
+      "text": "ลากตู้มาดัน",
+      "atSec": 10.442
+    },
+    {
+      "id": "TH-08",
+      "beat": "B02",
+      "text": "แต่ต้องรื้อออกได้เร็ว เผื่อไฟไหม้",
+      "atSec": 11.875
+    },
+    {
+      "id": "TH-09",
+      "beat": "B02",
+      "text": "ในโลกนี้ พวกมันตามเสียง",
+      "atSec": 14.127,
+      "caption": "ในโลกนี้... พวกมันตามเสียง"
+    },
+    {
+      "id": "TH-10",
+      "beat": "B03",
+      "text": "แล้วไฟก็ดับทั้งตึก",
+      "atSec": 17.423
+    },
+    {
+      "id": "TH-11",
+      "beat": "B04",
+      "text": "แต่ก๊อกน้ำยังไหล",
+      "atSec": 19.318
+    },
+    {
+      "id": "TH-12",
+      "beat": "B04",
+      "text": "คอนโดสูงหลายแห่ง ปั๊มน้ำขึ้นไปเก็บในถังบนดาดฟ้า",
+      "atSec": 20.926,
+      "caption": "คอนโดสูงหลายแห่ง ปั๊มน้ำขึ้นไป\nเก็บในถังบนดาดฟ้า"
+    },
+    {
+      "id": "TH-13",
+      "beat": "B04",
+      "text": "ไฟดับ ปั๊มก็หยุด",
+      "atSec": 24.642
+    },
+    {
+      "id": "TH-14",
+      "beat": "B04",
+      "text": "น้ำที่ยังไหล คือน้ำที่เหลือในถัง",
+      "atSec": 26.639
+    },
+    {
+      "id": "TH-15",
+      "beat": "B04",
+      "text": "หมดแล้วไม่มีใครเติม",
+      "atSec": 29.14
+    },
+    {
+      "id": "TH-16",
+      "beat": "B04",
+      "text": "รองใส่ทุกอย่าง ถัง หม้อ ขวด แล้วปิดฝา",
+      "atSec": 30.529
+    },
+    {
+      "id": "TH-17",
+      "beat": "B05",
+      "text": "ขวดไว้ดื่ม ถังไว้ราดชักโครก",
+      "atSec": 35.938
+    },
+    {
+      "id": "TH-18",
+      "beat": "B05",
+      "text": "เทแรงทีเดียว ถ้าท่อยังดี มันลงเอง",
+      "atSec": 38.422
+    },
+    {
+      "id": "TH-19",
+      "beat": "B05",
+      "text": "ส่วนน้ำสะอาดสำรอง อยู่ในถังพักน้ำหลังชักโครก",
+      "atSec": 41.129,
+      "caption": "ส่วนน้ำสะอาดสำรอง อยู่ในถังพัก\nน้ำหลังชักโครก"
+    },
+    {
+      "id": "TH-20",
+      "beat": "B05",
+      "text": "ไม่ใช่ในโถ",
+      "atSec": 45.228
+    },
+    {
+      "id": "TH-21",
+      "beat": "B05",
+      "text": "ถ้าน้ำใส และไม่ได้ใส่น้ำยา",
+      "atSec": 46.18
+    },
+    {
+      "id": "TH-22",
+      "beat": "B06",
+      "text": "ตู้เย็นถ้าไม่เปิด จะเย็นได้ราวสี่ชั่วโมง",
+      "atSec": 49.334,
+      "caption": "ตู้เย็นถ้าไม่เปิด\nจะเย็นได้ราวสี่ชั่วโมง"
+    },
+    {
+      "id": "TH-23",
+      "beat": "B06",
+      "text": "ช่องแช่แข็งที่อัดแน่น อย่างมากราวสองวัน",
+      "atSec": 52.587,
+      "caption": "ช่องแช่แข็งที่อัดแน่น\nอย่างมากราวสองวัน"
+    },
+    {
+      "id": "TH-24",
+      "beat": "B06",
+      "text": "ของในตู้เย็นที่กินได้เลย กินก่อน",
+      "atSec": 56.042
+    },
+    {
+      "id": "TH-25",
+      "beat": "B06",
+      "text": "กระป๋องไว้ท้ายสุด",
+      "atSec": 58.561
+    },
+    {
+      "id": "TH-26",
+      "beat": "B07",
+      "text": "เตาแก๊สปิกนิก ห้ามจุดในห้อง",
+      "atSec": 60.348
+    },
+    {
+      "id": "TH-27",
+      "beat": "B07",
+      "text": "คาร์บอนมอนอกไซด์ ฆ่าคุณได้ก่อนซอมบี้",
+      "atSec": 63.056,
+      "caption": "คาร์บอนมอนอกไซด์\nฆ่าคุณได้ก่อนซอมบี้"
+    },
+    {
+      "id": "TH-28",
+      "beat": "B07",
+      "text": "กินของที่ไม่ต้องปรุงแทน",
+      "atSec": 66.05
+    },
+    {
+      "id": "TH-29",
+      "beat": "B08",
+      "text": "คืนนั้นที่ระเบียง ทั้งเมืองมืดสนิท",
+      "atSec": 68.631
+    },
+    {
+      "id": "TH-30",
+      "beat": "B08",
+      "text": "มีแต่ควันกับเปลวไฟ",
+      "atSec": 71.802
+    },
+    {
+      "id": "TH-31",
+      "beat": "B08",
+      "text": "ไม่มีใครมาช่วยแน่",
+      "atSec": 73.655
+    },
+    {
+      "id": "TH-32",
+      "beat": "B09",
+      "text": "วันที่สาม",
+      "atSec": 76.344
+    },
+    {
+      "id": "TH-33",
+      "beat": "B09",
+      "text": "น้ำเหลือสองถัง",
+      "atSec": 77.546
+    },
+    {
+      "id": "TH-34",
+      "beat": "B09",
+      "text": "ปลากระป๋องสี่กระป๋อง",
+      "atSec": 79.145
+    },
+    {
+      "id": "TH-35",
+      "beat": "B09",
+      "text": "แบตเตอรี่สิบสองเปอร์เซ็นต์",
+      "atSec": 80.874
+    },
+    {
+      "id": "TH-36",
+      "beat": "B09",
+      "text": "แล้วก็มีเสียงเรียกหน้าประตู",
+      "atSec": 82.918
+    },
+    {
+      "id": "TH-36a",
+      "beat": "B09",
+      "text": "มีใครอยู่ไหม",
+      "atSec": 85.0,
+      "caption": null
+    },
+    {
+      "id": "TH-37",
+      "beat": "B09",
+      "text": "พวกมันไม่พูด",
+      "atSec": 87.726
+    },
+    {
+      "id": "TH-38",
+      "beat": "B10",
+      "text": "คุณจะเปิดประตู ส่งเสียงตอบ",
+      "atSec": 89.543
+    },
+    {
+      "id": "TH-39",
+      "beat": "B10",
+      "text": "หรือเงียบไว้?",
+      "atSec": 92.168
+    }
+  ],
+  "relock": "2026-10-31 Editor (Kore): onsets and speech ends measured from the approved read at +5% atempo (Whisper anchors + energy gap cuts; measure file above). atSec = measured onset. The Niwat +5% relock of 30 Oct is superseded. Scene starts in the timeline are not yet retimed (Mark/Editor). 2026-10-31 Editor (call candidate): TH-36a “มีใครอยู่ไหม” (Gemini Enceladus, not the narrator) inserted at 85.000 s, no caption; TH-37..TH-39 moved +59 f (1.9667 s) so the silence after the call is 45.1 f; candidate track, not swapped (see callCandidate).",
+  "captionNote": "\"caption\" overrides the on-screen text (script ซับ chunk, merged utterance, or an authored \"\\n\" at a word boundary for the caption-breaks check); null = no new caption cue. Absent = the VO text.",
+  "narration": {
+    "engine": "gemini-tts",
+    "model": "gemini-3.8-flash-tts",
+    "voice": "Kore",
+    "style": "documentary narrator, compact but not rushed, steady measured pace, clearly stress the key words and numbers, calm and tense",
+    "approvedRead": "out/gemini-narr/zcpaint-th/kore-measured-nocomment.wav (store: projects/ZCONDO/audio/gemini-tts/zcpaint-th-approved-read/kore-measured-nocomment.wav)",
+    "pace": "ffmpeg atempo=1.05 on the approved read (narrator default, user memory 31 Oct 2026); raw approved read = measured x 1.05",
+    "trackZero": "TH-01 first audible sample (threshold 300 of 32767); all onsetSec and speechEndSec are track-relative",
+    "measureFile": "scripts/zombie-condo-paint/short/ZCPAINT-SHORT-TH.measure.json"
+  },
+  "callCandidate": {
+    "status": "candidate, not swapped into public/narration: the user picks the take by ear, then the swap",
+    "line": "TH-36a",
+    "beat": "B09",
+    "text": "มีใครอยู่ไหม",
+    "caption": null,
+    "voice": "Enceladus (Gemini TTS prebuilt, male, low pitch; Kore is the narrator)",
+    "model": "gemini-3.8-flash-tts",
+    "style": "tired and careful, low soft voice, calling softly through a closed door, not shouting, a little hesitant, slight rise on the last word",
+    "takes": {
+      "count": 3,
+      "chosen": "take-3 (Whisper exact text on raw and muffled; the shortest audible body; take-2 0.69, take-1 0.42 muffled, proxy only)"
+    },
+    "mix": "muffled: ffmpeg lowpass=f=2500:poles=2, aecho=0.8:0.5:24|37:0.22|0.14, volume=-3dB; clip = first to last sample >= 300",
+    "clipStore": "projects/ZCONDO/audio/gemini-tts/zcpaint-th-call/muffled/take-3.muffled.wav",
+    "candidateStore": "projects/ZCONDO/audio/gemini-tts/zcpaint-th-call/candidate/ZCPAINT-SHORT-TH.candidate-call.mp3",
+    "callOnsetSec": 85.0,
+    "callEndSec": 86.222,
+    "callLengthSec": 1.2219,
+    "silenceBeforeCallSec": 0.4839,
+    "silenceAfterCallSec": 1.5035,
+    "shiftFrames": 59,
+    "shiftSec": 1.9667,
+    "amplitude": "scripts/zombie-condo-paint/short/ZCPAINT-SHORT-TH.amplitude.json regenerated from the candidate (30 fps, peak-normalised)",
+    "pending": "Mark/Boss/Editor re-lock of the B09/B10 frame ranges to this call length (see callGap)"
+  }
+}
