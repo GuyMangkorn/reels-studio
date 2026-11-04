@@ -34,3 +34,7 @@
 
 ## Cover (4 Nov 2026)
 - Five candidates by Film (`src/videos/covers/zombie-condo2.ts`, build-notes "Covers"); the user picked **B "มันหันมา" / "ปลายทางเดินคอนโด"** (frame ZC2D-B01-SH03 f 40). Copied to `out/ZCONDO2-SHORT-TH/ZCONDO2-SHORT-TH_cover.png` beside the MP4. CV02 headline height reads under the mark-to-baseline measure (152-226 px); the letters alone are smaller than 135 px (noted by Film, not blocking).
+
+## Delivery render after merging main (4 Nov 2026)
+- Merging origin/main (PR 220, "follow main" for the shared CaptionShade: ZC2 now passes the cue line count and gets main's glyph-centred shade) changed the code hash of all 30 pinned scenes, so `render.mjs` stopped ("pinned finals would change"). User chose to ship the approved pictures: `render.mjs ZCONDO2-SHORT-TH --keep-pinned` reused 30/30 segments, 0 repainted; same MP4 (-14.1 LUFS, -1.4 dBTP), covers archived with it.
+- Consequence: the delivered picture keeps the ZC2 shade the user approved; the code now draws main's shade, so a future repaint of any scene will look slightly different. Caption legibility with main's shade measured on the real frames: all 29 captioned shots pass ZC2-CAP-L1 (min CR 5.3, p90 <= 0.60).
