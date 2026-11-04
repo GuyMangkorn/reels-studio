@@ -31,3 +31,6 @@
 ## W8 delivery render (4 Nov 2026)
 - `node scripts/render.mjs ZCONDO2-SHORT-TH` (ending A_fade): 30 of 30 scenes reused, 0 rendered; 1080x1920, 30 fps, 2877 f (95.9 s). Loudness -14.1 LUFS, -1.4 dBTP, LRA 3.6 (loudnorm from -16.6). Archived to the asset store (69 files). The "No target found" puppeteer line in the log is a harmless page-close warning.
 - Not done: a listening pass of the mix; W8.3 (post: user says when it is on the channel); W8.4 kit intake (Boss).
+
+## Cover (4 Nov 2026)
+- Five candidates by Film (`src/videos/covers/zombie-condo2.ts`, build-notes "Covers"); the user picked **B "มันหันมา" / "ปลายทางเดินคอนโด"** (frame ZC2D-B01-SH03 f 40). Copied to `out/ZCONDO2-SHORT-TH/ZCONDO2-SHORT-TH_cover.png` beside the MP4. CV02 headline height reads under the mark-to-baseline measure (152-226 px); the letters alone are smaller than 135 px (noted by Film, not blocking).

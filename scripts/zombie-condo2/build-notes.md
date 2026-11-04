@@ -467,3 +467,17 @@ Input: `out/zc2d/w6/sheet-1..6.png` (final-grade cut, start/mid/end) against `st
 - B10-SH01: seated man in profile toward the door, three choice chips. fail (new in final): last frame is faded to near black; row says hard cut, last frame still (loop seam); UT03.
 
 Fails by severity: (1) B10-SH01 end fade to black, the only regression from draft, breaks the loop-seam end; (2) B06-SH02 lead reads as the infected at the start and arms spread instead of reaching to camera; (3) B02-SH04 no drag pose; (4) B02-SH01 open palms instead of fists/shoulder, one leg; (5) B06-SH01 palm not flat on the door. Pre-existing oddities to weigh: B02-SH03 armless back, B01-SH03 helmet face, B05-SH03 toes/doubled lid, B04-SH02 empty caption shade.
+
+## Covers (Film, 4 Nov 2026)
+
+`ZCONDO2-SHORT-TH-COVERS` in [src/videos/covers/zombie-condo2.ts](../../src/videos/covers/zombie-condo2.ts), registered in `src/videos/covers/index.ts`; no episode module, shot code or pinned scene touched. All five use the episode's own plates (CV07), Noto Sans Thai 800, accent `#ff7a3a` (balcony fire orange), dark scrim from y 1020, `@TamMaiLa` top-left from the chrome. None shows the ending choices (CV04); everything implied is in the video.
+
+| Cover | Angle (CV09) | Plate / shot-local frame | Text (headline / sub) | Why it fits |
+| --- | --- | --- | --- | --- |
+| A | question / quote | `ZC2D-B09-SH03` f 60 (barricaded door, trash bag, light under the door) | มีใครอยู่ไหม? / เสียงเรียกหน้าประตู วันที่ 3 | The exact call through the door (TH-36a) that sets up the closing dilemma, without the choices |
+| B | creature reveal | `ZC2D-B01-SH03` f 40 (zombie turned to camera) | มันหันมา / ปลายทางเดินคอนโด | The hook beat (TH-03 "แล้วมันก็หันมา"); the one creature close-up |
+| C | face with emotion | `ZC2D-B02-SH05` f 46 (lead, hand over mouth, sweat) | ห้ามมีเสียง / พวกมันตามเสียง | The survival rule of the world (TH-09) on the clearest fear face |
+| D | mystery | `ZC2D-B04-SH01` f 30 (tap running in the dark-less kitchen) | ไฟดับทั้งตึก / แต่น้ำยังไหล? | Curiosity gap the video answers (roof tank, B04-SH02) |
+| E | number / fact | `ZC2D-B06-SH01` f 120 (lead at the closed fridge) | 4 ชั่วโมง / ตู้เย็นห้ามเปิด | Boat-checked claim TH-22 "ตู้เย็นถ้าไม่เปิด จะเย็นได้ราวสี่ชั่วโมง" |
+
+Checks (CV06, CV10): rendered with `node scripts/render.mjs ZCONDO2-SHORT-TH --covers` in a clean detached worktree at `2a12af9` (this checkout had a merge in progress with conflict markers that broke the bundle; that merge commit also picked up the r1 cover file, r2 sizes are uncommitted). Headline accent ink measured x 136-950 (all clear of the right 120 px), baselines y 1300-1420, inside the 3:4 crop (y 240-1680) and above the bottom 20 %. Ink height (tallest mark to baseline) 152-226 px; the consonant body alone is estimated at 80-121 px, below a strict 135 px reading of CV02 (Thai has no cap height; wider type would break the right margin). Headlines read at 120 px; sub-lines do not, and each headline carries the idea alone. 3:4 crop: E loses the top of the lead's head (frame has the head at y 80-520); A-D keep their subject. Sheets in `out/ZCONDO2-SHORT-TH/covers/sheet-{270,120,3x4}.png`. Film recommends C.
