@@ -430,3 +430,40 @@ Files: `src/painted/zc2kit/sb-b.tsx` only. HL1, HAND_SCALE 1.45, UT13/UT14, shot
 - Draft verdict B06-SH01 "มือมันต้องกำเข้าไปที่ด้ามเปิดตู้เย็น" (the same note had been read as B06-SH02 in round 2; B06-SH02 was passed, so the target was this shot). The scene sheet said palm flat on the door; the user's call replaces it: the closed fist wraps the upper door handle (hand target fx0+40, ft+150; `gripArm` fist=1).
 - Handle bars: 22 px wide, ft+60..250 (upper) with a highlight, so they read as handles. The second clock ring and chip moved right/below (x 700; chip left 650, top 505) so the ring no longer covers the fist.
 - Checks: `npm test` 453/453; seek parity 79 dB; caption CR 6.48, p90 0.60 at peak 0.09. Stills `out/zc2d/w53r3/`.
+
+## W6 viewer check (Film, 4 Nov 2026)
+
+Input: `out/zc2d/w6/sheet-1..6.png` (final-grade cut, start/mid/end) against `storyboards/zombie-condo2/short/scene-sheet.md` Cast/Acceptance lines, UT01-UT14, pose sheet. Compared with the post-HL1 draft stills `out/zc2d/ha/` for the doubtful shots (side-by-side `cmp.png`, `cmp2.png` in the session scratchpad, not kept): the only picture change from draft to final besides the @TamMaiLa mark is the B10-SH01 end fade. Every other fail below was already in the draft the user passed (marked "pre").
+
+- B01-SH01: over-shoulder, man opens door with trash bag, dark figure at corridor end. pass.
+- B01-SH02: long corridor, green figure at the end with a hand at its face. pass; figure ~23% of frame height vs row "< 1/8" (pre, minor).
+- B01-SH03: infected MCU, blood at mouth. pass vs row; face reads as a diving mask/helmet (dark oval visor and pale translucent rim around the head, light shaft visible through the skull top) (pre).
+- B02-SH01: man slams the door in profile, bag drops. fail: row asks for fists and shoulder on the leaf (G5); frames show two open mitten palms hovering at the lever; reads as one leg only (pre).
+- B02-SH02: POV fist turns the deadbolt with arrows. pass (UT14 ok; caption sits on the lever handle, still legible).
+- B02-SH03: back view in front of a shaking door. pass vs row; no arms visible at all, torso is an armless slab (missing parts) (pre).
+- B02-SH04: man in profile beside the cabinet now against the door. fail: row's `drag` pose (leaning back, hands on the cabinet edge, feet pushing) is not there; upright, fists hover in front of the cabinet, reads as walking or punching (pre).
+- B02-SH05: seated, fist over mouth, eyes up, cabinet/lock/bag in frame. pass.
+- B03-SH01: man seated small, lights go out in turn. pass; end grade is a cold blue that reads as night, row says "only daylight" (minor, UT04).
+- B04-SH01: tap running in an empty bathroom. pass; sun reflection on the water barely reads; set sparse, blank window square, flat grey cabinet (UT12, pre).
+- B04-SH02: building diagram, pump to roof tank. pass; end frame shows the caption shade box with no text, a grey smear across the diagram (pre).
+- B04-SH02b: pump room, power cut, pipes empty. pass.
+- B04-SH03: top-down vessels filled and lidded. pass.
+- B05-SH01: bathroom, bottles on the vanity, red bucket by the toilet. pass.
+- B05-SH02: man tips a red bucket into the toilet, both hands on it. pass.
+- B05-SH03: two hands lift the cistern lid, clear water. pass vs row; start frame the hand tips at the bottom edge read as toes, plus a translucent doubled lid band under the lid; window reflection not readable; lifted fists read as eggs (pre, HL1 weak note).
+- B05-SH04: top-down toilet, tick on cistern, cross on bowl, Thai labels. pass.
+- B06-SH01: man in profile at the fridge, time chips. fail: row says palm flat on the door through the shot; start frame hand is down, mid/end it is a fist at the door edge (UT14 fine, pose wrong) (pre).
+- B06-SH02: fridge-interior view, man in the doorway. fail: start frame he is grey-green in the dark and reads as the infected; mid frame both arms spread sideways ("ta-da"), not P16 reach to camera (`toCam`); no reach toward the items (UT06) (pre).
+- B06-SH03: hand sets the can last in the row. pass.
+- B07-SH01: fist holds a gas canister over an unlit stove. pass; fist sits in front of the canister (HL1 weak note).
+- B07-SH02: man reaches up to the top shelf, door cabinet and balcony door in frame. pass; end pose reads as a fist pump, the case is a small dark shape on the shelf (minor).
+- B07-SH03: two fists tear a bread bag, banana/nuts/can. pass.
+- B08-SH01: night balcony, black back silhouette, city fires. pass; standing upright, not leaning on the rail (minor); channel mark nearly invisible on dark B08 frames.
+- B08-SH02: wide night city on fire, small silhouette behind the rail. pass.
+- B09-SH01: top-down count: day card, 2 buckets, 4 cans, phone 12%. pass; no tick marks visible (row acceptance names four).
+- B09-SH02: tired stubbled man under a blanket before the sofa turns toward the door. pass; end three-quarter head puts the stubble under the hair on the back of the head; he sits front-on, not profile on the floor (pre).
+- B09-SH03: door, cabinet, bag, nobody. pass.
+- B09-SH04: stubbled tired MCU, eyes slide. pass; dark grey patch on his left cheek reads as dirt/bruise rather than shade (pre).
+- B10-SH01: seated man in profile toward the door, three choice chips. fail (new in final): last frame is faded to near black; row says hard cut, last frame still (loop seam); UT03.
+
+Fails by severity: (1) B10-SH01 end fade to black, the only regression from draft, breaks the loop-seam end; (2) B06-SH02 lead reads as the infected at the start and arms spread instead of reaching to camera; (3) B02-SH04 no drag pose; (4) B02-SH01 open palms instead of fists/shoulder, one leg; (5) B06-SH01 palm not flat on the door. Pre-existing oddities to weigh: B02-SH03 armless back, B01-SH03 helmet face, B05-SH03 toes/doubled lid, B04-SH02 empty caption shade.
