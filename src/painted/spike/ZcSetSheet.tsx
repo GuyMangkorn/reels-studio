@@ -7,7 +7,7 @@ import {ell} from '../zcpaint/ctx';
 import {paintPovBackdrop} from '../zcpaint/pov';
 import {flatKit} from '../zcpaint/sets';
 import {Subtitles} from '../../scenes/Subtitles';
-import {CaptionShade, Grade, Grain} from '../kit/screen';
+import {CaptionShade, Grade, Grain, type CaptionCue} from '../kit/screen';
 import {PlatePreview} from './PlatePreview';
 import {zcpaintShots} from '../shots/zcpaint';
 
@@ -21,7 +21,7 @@ const plateOf = (id: string) => {
   return shot;
 };
 /** A plate with the production screen layers; `cues` gate the ZC-CAPSHADE band (B03: the TH cue 9-45 f), `caption` adds a mock low caption. */
-const Plate = ({id, note, caption, cues}: {id: string; note: string; caption?: string; cues?: readonly (readonly [number, number])[]}) => {
+const Plate = ({id, note, caption, cues}: {id: string; note: string; caption?: string; cues?: readonly CaptionCue[]}) => {
   const frame = useCurrentFrame();
   return (
     <AbsoluteFill>
@@ -42,6 +42,22 @@ const Plate = ({id, note, caption, cues}: {id: string; note: string; caption?: s
 const B04_CUES = [[0, 32 / 30]] as const;
 export const ZcSetB04 = () => <Plate id="ZCP-B04-SH01" note="" cues={B04_CUES} />;
 export const ZcSetB04Cap = () => <Plate id="ZCP-B04-SH01" note="" cues={B04_CUES} caption="แต่ก๊อกน้ำยังไหล" />;
+/**
+ * Caption-backdrop check (production-requirements#caption-backdrop, 4 Nov 2026): a two-line cue [0, 1) s then a one-line cue
+ * [1, 2) s back to back on a flat grey card; the band is centred on the glyphs and shrinks to one line over 4 f from f30.
+ */
+const BACKDROP_CUES = [[0, 1, 2], [1, 2, 1]] as const;
+export const ZcSetBackdrop = () => {
+  const frame = useCurrentFrame();
+  return (
+    <AbsoluteFill style={{background: '#a39c92'}}>
+      <CaptionShade tl={frame / 30} cues={BACKDROP_CUES} mode="band" />
+      <AbsoluteFill style={{transform: 'translateY(-538px)'}}>
+        <Subtitles text={frame < 30 ? 'แต่ก๊อกน้ำยังไหล\nทั้งที่ไม่มีใครเปิด' : 'แต่ก๊อกน้ำยังไหล'} style={{preset: 'outline', position: 'bottom'}} />
+      </AbsoluteFill>
+    </AbsoluteFill>
+  );
+};
 /** Plain paper, no vignette (user 30 Oct 2026; brief default for the diagram): the plate and the grain layer only. */
 export const ZcSetB04Diagram = () => (
   <AbsoluteFill>

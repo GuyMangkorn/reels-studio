@@ -27,8 +27,8 @@ export const Grain = ({opacity = 0.09}: {opacity?: number}) => {
   );
 };
 
-/** Caption cue window in shot-local seconds (`tl`), the span a caption is on screen. */
-export type CaptionCue = readonly [from: number, to: number];
+/** Caption cue window in shot-local seconds (`tl`) and the cue's line count (default 2), so the shade fits the lines on screen. */
+export type CaptionCue = readonly [from: number, to: number, lines?: number];
 
 /** Frames the shade lingers after the last cue ends (`MK-ZC-ST-09`: off 6 f after the last cue). */
 export const SHADE_TAIL_FRAMES = 6;
@@ -50,17 +50,52 @@ export const shadeGate = (tl: number, cues: readonly CaptionCue[], fps = 30): nu
 };
 
 /**
- * `ZC-CAPSHADE` (S-P08): soft darkening behind the low caption block (centred on `centerY`, default 1164 = bottom edge y 1248 of a 2-line block), cue-gated by `shadeGate`.
- * `band` is the horizontal CSS gradient y 990-1330 (peak 0.62) for light section/close shots; `soft` the 560 x 190 px
- * ellipse at (540, 1170) (peak 0.5) for full-frame POV. Colour is a warm near-black so the cream sets keep their hue.
+ * Ink rows of a caption block as `Subtitles` draws it in portrait (Noto Sans Thai 700, 51 px x `scale`, line-height 1.65):
+ * the last line's ink runs from about 74 to 28 px above the block's bottom edge and lines are 84 px apart. The top is the
+ * mean of a line with upper vowels only (68 px, WFOG-EP01-SHORT f20/f2760) and one with a tone mark (80 px, ZCPAINT-SET-
+ * CAPTION-BACKDROP f45), 4 Nov 2026, so the centre is within 6 px of the glyphs either way. The line box is not the ink: centring on it leaves the glyphs off-centre.
+ * `lines` may be fractional while the shade eases between cues. Rule: production-requirements#caption-backdrop.
  */
-export const CaptionShade = ({tl, cues, mode = 'band', strength, fps = 30, centerY = DEFAULT_SHADE_CENTRE_Y}: {tl: number; cues: readonly CaptionCue[]; mode?: 'band' | 'soft'; strength?: number; fps?: number; /** Shade centre y; give the video's `captionStyle.centerY` so the text sits in the middle of the band (default 1164 = the 1248 bottom-edge layout). */ centerY?: number}) => {
+export const captionInk = (bottomEdgeY: number, lines: number, scale = 1) => {
+  const bottom = bottomEdgeY - 28 * scale, top = bottom - 46 * scale - (lines - 1) * 51 * 1.65 * scale;
+  return {top, bottom, center: (top + bottom) / 2};
+};
+
+/**
+ * Line count the shade fits at `tl`: the latest cue that has started (the first cue before it). Between back-to-back cues
+ * (gap within the shade tail, so the shade stays up) the height eases from the previous count over `SHADE_RAMP_FRAMES`.
+ */
+export const shadeLines = (tl: number, cues: readonly CaptionCue[], fps = 30): number => {
+  const sorted = [...cues].sort((a, b) => a[0] - b[0]);
+  const n = (c: CaptionCue) => c[2] ?? 2;
+  let i = 0;
+  while (i + 1 < sorted.length && sorted[i + 1][0] <= tl) i++;
+  const cur = sorted[i], prev = sorted[i - 1];
+  if (!cur) return 2;
+  if (!prev || cur[0] - prev[1] > SHADE_TAIL_FRAMES / fps) return n(cur);
+  const x = Math.max(0, Math.min(1, (tl - cur[0]) / (SHADE_RAMP_FRAMES / fps)));
+  return n(prev) + (n(cur) - n(prev)) * x * x * (3 - 2 * x);
+};
+
+/** Shade core margin above and below the ink, and the feather beyond it (px at scale 1). */
+export const SHADE_PAD = 24;
+export const SHADE_FEATHER = 80;
+
+/**
+ * `ZC-CAPSHADE` (S-P08): soft darkening behind the caption block, cue-gated by `shadeGate` and sized by `shadeLines`:
+ * its centre is the glyphs' centre (`captionInk`), its height the lines on screen. `bottomEdgeY` is the caption block's
+ * bottom edge (default 1248, ZC TH). `band` is a horizontal CSS gradient (core = ink +/- `SHADE_PAD`, `SHADE_FEATHER`
+ * feather, peak 0.62) for light section/close shots; `soft` a 560 px wide ellipse (peak 0.5) for full-frame POV.
+ * Colour is a warm near-black so the cream sets keep their hue. Rule: production-requirements#caption-backdrop.
+ */
+export const CaptionShade = ({tl, cues, mode = 'band', strength, fps = 30, bottomEdgeY = 1248, scale = 1}: {tl: number; cues: readonly CaptionCue[]; mode?: 'band' | 'soft'; strength?: number; fps?: number; bottomEdgeY?: number; scale?: number}) => {
   const g = shadeGate(tl, cues, fps);
   if (g <= 0) return null;
   const peak = (strength ?? (mode === 'band' ? 0.62 : 0.5)) * g;
-  const [s0, s1, s2, s3] = shadeBandStops(centerY);
+  const ink = captionInk(bottomEdgeY, shadeLines(tl, cues, fps), scale);
+  const pad = SHADE_PAD * scale, feather = SHADE_FEATHER * scale, c = `rgba(20,16,12,${peak})`, clear = 'rgba(20,16,12,0)';
   const background = mode === 'band'
-    ? `linear-gradient(to bottom, rgba(20,16,12,0) ${s0}px, rgba(20,16,12,${peak}) ${s1}px, rgba(20,16,12,${peak}) ${s2}px, rgba(20,16,12,0) ${s3}px)`
-    : `radial-gradient(ellipse 560px 190px at 540px ${centerY + 6}px, rgba(20,16,12,${peak}) 0%, rgba(20,16,12,${peak * 0.7}) 55%, rgba(20,16,12,0) 100%)`;
+    ? `linear-gradient(to bottom, ${clear} ${ink.top - pad - feather}px, ${c} ${ink.top - pad}px, ${c} ${ink.bottom + pad}px, ${clear} ${ink.bottom + pad + feather}px)`
+    : `radial-gradient(ellipse 560px ${(ink.bottom - ink.top) / 2 + pad + feather + 24 * scale}px at 540px ${ink.center}px, ${c} 0%, rgba(20,16,12,${peak * 0.7}) 55%, ${clear} 100%)`;
   return <AbsoluteFill style={{pointerEvents: 'none', background}} />;
 };
