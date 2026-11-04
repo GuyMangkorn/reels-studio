@@ -73,3 +73,5 @@ Record: [delivery.md](delivery.md) · Updated: 2026-11-03, coordinator
 - 4 Nov 2026: EG-EP02-SHORT Draft r5 published (page v11): SS-R2.6 set detail + L11 voice R1.3. Awaiting user review.
 
 - 4 Nov 2026: Draft r5 approved (user, chat). Next: Final stage (full-quality clips, pin) and commit, both awaiting the user's go.
+
+- 4 Nov 2026 Pin (19 shots), delivery MP4 and cover (L5, `EG-EP02-SHORT_cover.png`) done; see delivery.md.
