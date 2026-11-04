@@ -76,3 +76,5 @@
 - 4 Nov 2026 Draft r5 (SS-R2.6 set detail 3 layers on 14 wide shots, script R1.3 L11 `คว่ำหน้าอยู่` re-voiced 2.10 s at atempo 1.08, page v11): 15 clips re-rendered (r5-clips.log, r5-s03sh02.log). Not verified: clip motion, determinism double-render, matched-pair 2 px bound. Open: Film camera S04-SH02/SH03 change, SFX-HOOD audio, sc03.md sound note timings (f59/f63) stale vs L11, nothing committed.
 
 - 4 Nov 2026 Draft r5 (page v15) approved by the user in chat ("ผ่านหมด") after L11 retake cut from a full-script read (v4-L11t, 1.50 s). Carries SS-R2.6 set detail and script R1.3. Next: Final stage; nothing committed.
+
+- 4 Nov 2026 Final cut r5 (commit after Draft approval): full-size final cut rendered through the scene cache (`clips.mjs --full --timeout=180000`; the default 30 s per-frame timeout failed at f1574 in S04-B01-SH06, twice; log out/logs/r5-final4.log, 2075 s). Published as page v16 for the user's Final-tab approval; not pinned.
