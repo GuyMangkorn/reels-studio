@@ -172,5 +172,5 @@ export const outlineLook = (style?: CaptionStyle) => {
   const {strokeWidth = 7, strokeColor = '#3d3c53', textShadow = `0 4px 0 ${strokeColor}`} = style ?? {};
   return {WebkitTextStroke: `${strokeWidth}px ${strokeColor}`, paintOrder: 'stroke fill', textShadow};
 };
-export const defaultCaptionStyle: Required<Omit<CaptionStyle, 'color' | 'bottomEdgeY' | 'centerY'>> & {color: string; bottomEdgeY?: number; centerY?: number} = {preset: 'outline', position: 'bottom', color: '#fff', scale: 1};
+export const defaultCaptionStyle: Required<Omit<CaptionStyle, 'color' | 'bottomEdgeY' | 'centerY' | 'strokeWidth' | 'strokeColor' | 'textShadow'>> & {color: string; bottomEdgeY?: number; centerY?: number} = {preset: 'outline', position: 'bottom', color: '#fff', scale: 1};
 export const defaultChrome: Required<ChromeStyle> = {channelLabel: '@TamMaiLa', progressBar: false};

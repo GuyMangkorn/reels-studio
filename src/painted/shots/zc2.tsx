@@ -31,7 +31,7 @@ const plateOf = (shot: string): PaintedShot => {
           {s.over ? <AbsoluteFill style={{transformOrigin: '0 0', transform: camCss(s.cam(f))}}>{s.over(f)}</AbsoluteFill> : null}
           {s.after?.(f)}
           <Grain opacity={0.1} />
-          {s.peak > 0 ? <CaptionShade tl={f / FPS} cues={s.cues.map(([a, b]) => [a / FPS, b / FPS] as const)} mode="band" strength={s.peak} lines={s.lines} width={s.capW} /> : null}
+          {s.peak > 0 ? <CaptionShade tl={f / FPS} cues={s.cues.map(([a, b]) => [a / FPS, b / FPS, s.lines ?? 2] as const)} mode="band" strength={s.peak} /> : null}
         </AbsoluteFill>
       );
     },
