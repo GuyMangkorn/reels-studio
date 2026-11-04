@@ -1,10 +1,10 @@
 # Tasks — EDU-SERIES
 
-Record: [delivery.md](delivery.md) · Updated: 2026-11-04, coordinator
+Record: [delivery.md](delivery.md) · Updated: 2026-11-04, Film
 
 ## EDU-EP01-SHORT
 
-**Now:** W2.2 done; page built, not yet published. **Next:** user — storyboard verdicts; Film W3.1 look frames
+**Now:** W3.1 look frames LF01–LF05 v1 painted (Film). **Next:** viewer check (fresh Film, Opus), then coordinator republishes the page; user — storyboard verdicts and look lock
 
 - [x] W0 Ideation
   - [x] W0.1 Preaw concepts (concepts.md R1)
@@ -19,9 +19,9 @@ Record: [delivery.md](delivery.md) · Updated: 2026-11-04, coordinator
 - [ ] W2 Brief and storyboard
   - [x] W2.1 Film brief (text) (EDU-BRIEF-R1)
   - [x] W2.2 Film storyboard rows (SS-R1, 23 shots)
-  - [ ] W2.3 Storyboard page published
+  - [x] W2.3 Storyboard page published
 - [ ] W3 Look frames and storyboard pass
-  - [ ] W3.1 Look frames on the page (0/L locations)
+  - [ ] W3.1 Look frames on the page (5/5 locations painted, v1, store `projects/EDU/previews/look-frames/ep01/v1/`; rows updated, page rebuilt; thumbnails step skipped on coordinator instruction; viewer check and publish pending)
   - [ ] W3.2 Look frames approved (look lock)
   - [ ] W3.3 Storyboard passed (0/N shots)
 - [ ] W4 Voice lock
