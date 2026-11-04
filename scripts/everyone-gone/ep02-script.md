@@ -1,4 +1,4 @@
-# EG2-SCRIPT-R1.2 — "เมืองที่ไม่รอคุณ"
+# EG2-SCRIPT-R1.3 — "เมืองที่ไม่รอคุณ"
 
 > Revision R1.1 (Boat W1.3, 2026-11-03): minimal wording fixes to R1, see the change log and [ep02-fact-check.md](ep02-fact-check.md). Story, beats, timing and line IDs unchanged.
 
@@ -44,7 +44,7 @@ Story-world time: one dawn walk, then the same places later that morning (crowde
 | `EG02-S01-B01` | Hook: Bangkok has no one left except you; you pull up your hood | Sets the question; plants the hoodie (CL01) | 0–6 s |
 | `EG02-S01-B02` | The empty walk: Yaowarat, Victory Monument, the pier; a far murmur | Establishes your route and your perception; plants the murmur (CL02) and "no hurry" | 6–17 s |
 | `EG02-S02-B01` | Small traces: fresh garland, smoking incense, the same white sheet everywhere | Hypothesis: someone walks this route just ahead of you (CL03–CL05) | 17–28 s |
-| `EG02-S03-B01` | Your soi: layered sheets on the lamp post, the top one turned away | The trail leads home; the object is withheld (CL06) | 28–35 s |
+| `EG02-S03-B01` | Your soi: layered sheets on the lamp post, the top one face-down (printed side hidden) | The trail leads home; the object is withheld (CL06) | 28–35 s |
 | `EG02-S04-B01` | Reversal: the wind turns it, "ตามหา", the hoodie; every place fills with people | The paper is about you; the city was never empty | 35–47 s |
 | `EG02-S05-B01` | The mother at the pier; last line; 3 s hold, fade | The traces were hers; the city has not heard you yet | 47–57 s |
 
@@ -93,7 +93,7 @@ Story-world time: one dawn walk, then the same places later that morning (crowde
 | Line | Clue | NARR (spoken) | Emotion cue |
 | --- | --- | --- | --- |
 | `L10` | **CL06** | ที่เสาไฟปากซอยบ้านคุณ… กระดาษแบบเดียวกัน ติดซ้อนกันหลายแผ่น | slower, a held breath; `<short pause>` after `บ้านคุณ` |
-| `L11` | **CL06** | แผ่นบนสุด… หันหลังให้คุณ | very still; `<short pause>` after `บนสุด`; `<long pause>` after the line |
+| `L11` | **CL06** | แผ่นบนสุด… คว่ำหน้าอยู่ | very still; `<short pause>` after `บนสุด`; `<long pause>` after the line |
 
 ### EG02-S04-B01 — Reversal, 35–47 s estimated
 
@@ -208,3 +208,7 @@ Library checked 2026-11-03 (`~/ReelsStore/library/sound/INDEX.md`): candidates `
 ## R1.2 (2026-11-03, user)
 
 - User chose the concept's original final line: L19 is now `มันแค่ไม่ได้ยินคุณอีกแล้ว` (Boat had recommended `ยังไม่ได้ยิน`, noting `อีกแล้ว` can read as a death reading; user decision recorded, protagonist state still never stated). Everything else is R1.1. L01 kept. Script locked by the user as R1.2.
+
+## R1.3 (2026-11-04, user note on S03-B01-SH02)
+
+- User: `หันหลัง` is a word for people; the top sheet is face-down. L11 `แผ่นบนสุด… หันหลังให้คุณ` -> `แผ่นบนสุด… คว่ำหน้าอยู่` (`คว่ำหน้า` is the normal word for a sheet or card with its printed side hidden). Syllables 7 -> 6; pause after `บนสุด`, emotion cue and gap plan unchanged. The person word stays only in L14 `คนในรูปหันหลังอยู่`, so the sheet's `…อยู่` now echoes the figure's `…อยู่` at the reveal; L12 `แล้วลมก็พลิกมันกลับมา` reads as the sheet flipping back over. CL06 ledger wording updated. No fact, clue or scene change; Boat recheck limited to L11 wording. Voice not regenerated (L11 take, voice-timing, captions and review rows need follow-up).

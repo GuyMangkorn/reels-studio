@@ -19,8 +19,6 @@ export type SheetState = {
 export const FLIP = {start: 4, end: 22, settleEnd: 30, flutterEnd: 26} as const;
 const ease = (u: number) => u * u * (3 - 2 * u);
 const clamp01 = (v: number) => Math.max(0, Math.min(1, v));
-const prog = (f: number, a: number, b: number) => clamp01((f - a) / (b - a));
-const smooth = (u: number) => u * u * (3 - 2 * u);
 
 /**
  * Top sheet during S03-B01-SH02 / S04-B01-SH01. `f` = frames since the start of S04-B01-SH01 (negative values are the S03 hold,
@@ -53,14 +51,12 @@ export type Eg2ShotId = (typeof EG2_SHOTS)[number][0];
 export const EG2_FRAMES: Record<Eg2ShotId, number> = Object.fromEntries(EG2_SHOTS) as Record<Eg2ShotId, number>;
 
 
-// --- hoodPull (B5, VD04) -------------------------------------------------------------------------------------------------
+// --- hoodPull (B5, VD04; r1 3 Nov 2026) ---------------------------------------------------------------------------------
 /**
- * `คุณ` pulls the hood up (S01-B01-SH02, back view, kit pose blend P01 -> P23 "hands at the sides of the head"): hands rise
- * f32-46 (14 f), pull f46-60 (hands move 1.5 cm of figure height upward on the hood), the hood-up card swaps in at f60, hands
- * release f60-70. Pure function of the shot-local frame.
+ * `คุณ` pulls the hood up (S01-B01-SH02, back view) with the kit motion `hood-pull` (src/painted/kit/motions.ts): the hands reach the
+ * hood at the neck, carry it up over the head (the hood rim travels with the hands), drop. The motion (1.5 s) starts
+ * at f28, so the lift ends (hood on) at f59.5 = swap f60 (the rustle sound is timed to it) and the hands are down by f73. Pure function
+ * of the shot-local frame; `t` is the motion time in seconds.
  */
-export const hoodPull = (f: number): {hoodUp: boolean; arms: number; pull: number} => ({
-  hoodUp: f >= 60,
-  arms: f < 60 ? smooth(prog(f, 32, 46)) : 1 - smooth(prog(f, 60, 70)),
-  pull: f >= 46 && f < 60 ? prog(f, 46, 60) : 0,
-});
+export const HOOD_PULL_START = 28;
+export const hoodPull = (f: number): {t: number; hoodUp: boolean} => ({t: Math.max(0, f - HOOD_PULL_START) / 30, hoodUp: f >= 60});

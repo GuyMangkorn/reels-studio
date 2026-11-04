@@ -103,7 +103,7 @@ export function validateVideoStyle(video: {audio?: unknown; captionStyle?: unkno
     if (style.preset !== undefined && !(captionPresets as readonly string[]).includes(String(style.preset))) fail('captionStyle.preset', 'expected outline, box or none');
     if (style.position !== undefined && !(captionPositions as readonly string[]).includes(String(style.position))) fail('captionStyle.position', 'expected bottom, middle, top or lower');
     if (style.bottomEdgeY !== undefined && (!finite(style.bottomEdgeY) || style.bottomEdgeY < 0 || style.bottomEdgeY > 4320)) fail('captionStyle.bottomEdgeY', 'expected a composition y in px, 0 to 4320');
-
+    if (style.centerY !== undefined && (!finite(style.centerY) || style.centerY < 0 || style.centerY > 4320)) fail('captionStyle.centerY', 'expected a composition y in px, 0 to 4320');
     if (style.color !== undefined && typeof style.color !== 'string') fail('captionStyle.color', 'expected CSS color text');
     if (style.scale !== undefined && (!finite(style.scale) || style.scale < 0.5 || style.scale > 2)) fail('captionStyle.scale', 'expected 0.5 to 2');
   }
@@ -165,5 +165,5 @@ export function entryTransitionStyle(transition: SceneTransition, frame: number)
 export const clipVisibleAt = (clip: Pick<MediaClip, 'startSec' | 'endSec'>, frame: number, fps: number) =>
   frame >= Math.round((clip.startSec ?? 0) * fps) && (clip.endSec === undefined || frame < Math.round(clip.endSec * fps));
 
-export const defaultCaptionStyle: Required<Omit<CaptionStyle, 'color' | 'bottomEdgeY'>> & {color: string; bottomEdgeY?: number} = {preset: 'outline', position: 'bottom', color: '#fff', scale: 1};
+export const defaultCaptionStyle: Required<Omit<CaptionStyle, 'color' | 'bottomEdgeY' | 'centerY'>> & {color: string; bottomEdgeY?: number; centerY?: number} = {preset: 'outline', position: 'bottom', color: '#fff', scale: 1};
 export const defaultChrome: Required<ChromeStyle> = {channelLabel: '@TamMaiLa', progressBar: false};

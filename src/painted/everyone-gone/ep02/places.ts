@@ -11,6 +11,9 @@ import {dress, tintHoodie} from '../../kit/wardrobe';
 import {frontRect, groundQuad, proj, unitAt, type Cam} from '../space';
 import type {SheetState} from './sheet';
 import {box, figureBox, measureFigure, paintOrder, union, type Box, type Item} from './collide';
+import {
+  PIER_BIN, PIER_CRATE, PIER_KIOSK, YW_DETAIL_SOLIDS, paintCrate, paintKiosk, pierBg, pierFg, pierRing, pierWet, ywBay, ywBg, ywCloseBg, ywCloseFg, ywCloseMid, ywFg, ywMid, type CloseKind,
+} from './detail';
 
 /** `คุณ` (VD03): `woman-bob + hoodie, P01, neutral`, kit back view (`view: 'back'`), coral `tintHoodie` (#d0503f body, #a8432f hood). */
 export const YOU2: CastDef = tintHoodie(dress(PEOPLE['woman-bob'], 'hoodie'));
@@ -54,12 +57,14 @@ const flatQuad = (c: Cam, x0: number, x1: number, z0: number, z1: number, h: num
  * Vertical gradient sky: many thin bands with ragged (hashed) edges, so no step reads as a line (viewer check fix 5: banding),
  * then textured washes of both end colours over overlapping halves to dither what is left.
  */
-const sky = (p: Painter, seed: number, top: string, low: string, y0: number, y1: number, n = 56) => {
+const sky = (p: Painter, seed: number, top: string, low: string, y0: number, y1: number, n = 56, xr: [number, number] = [-20, 1100]) => {
+  const dx = (xr[1] - xr[0]) / 8;
   for (let i = 0; i < n; i++) {
     const a = y0 + ((y1 - y0) * i) / n, b = y0 + ((y1 - y0) * (i + 1.6)) / n;
-    const edge = (y: number, k: number): Pt[] => Array.from({length: 9}, (_, j): Pt => [-20 + j * 140, y + (hash(seed + i * 17 + j * 5 + k) - 0.5) * 10]);
+    const edge = (y: number, k: number): Pt[] => Array.from({length: 9}, (_, j): Pt => [xr[0] + j * dx, y + (hash(seed + i * 17 + j * 5 + k) - 0.5) * 10]);
     hardFill(p, seed + i, mixColor(top, low, (i / (n - 1)) ** 1.4), [...edge(a, 0), ...edge(b, 1).reverse()]);
   }
+  if (xr[0] !== -20 || xr[1] !== 1100) return;
   const mid = (y0 + y1) / 2;
   washAt(p, seed + 90, top, 36, [[-20, y0], [1100, y0], [1100, mid + 120], [-20, mid + 60]], 0.3, 0.75);
   washAt(p, seed + 91, low, 40, [[-20, mid - 80], [1100, mid - 140], [1100, y1], [-20, y1]], 0.3, 0.75);
@@ -127,6 +132,7 @@ export const ywSolids = (): {id: string; box: Box}[] => [
     const x0 = b.side < 0 ? -YW_FACADE + 0.2 : YW_FACADE - 0.2 - b.sign!.out;
     return {id: `sign${i}`, box: box(x0, x0 + b.sign!.out, b.sign!.h0, b.sign!.h1, b.z1 - 0.35, b.z1 - 0.25)};
   }),
+  ...YW_DETAIL_SOLIDS, // SS-R2.6: tarp motorbikes, goods racks, A-frame boards against the facades (SD01)
 ];
 
 /** Glyph-like strokes in a vertical sign (no readable text): blocks of three to four short strokes per cell. */
@@ -288,10 +294,11 @@ const shopfront = (p: Painter, c: Cam, b: Bay, i: number, state: State, w: numbe
   fillC(p, base + 130, mix('#6d747b', '#a29886', w), groundQuad(c, X - s * 0.4, X, za, zb, 0.02));
 };
 
-export const paintYaowarat = (p: Painter, state: State, o: {you?: boolean; cam?: Cam; haze?: number} = {}) => {
-  const c = o.cam ?? YW_CAM, w = warmOf(state);
+export const paintYaowarat = (p: Painter, state: State, o: {you?: boolean; cam?: Cam; haze?: number; /** SS-R2.6 SD05: which close shot (`o.cam` is its CU_* camera). */ detail?: CloseKind} = {}) => {
+  const c = o.cam ?? YW_CAM, w = warmOf(state), street = !o.cam || o.cam === YW_CAM, lead = proj(c, [YW_YOU[0], 0.9, YW_YOU[2]]);
   // Sky: milky blue hour (empty) / warm pale morning (crowd).
   sky(p, 21000, mix('#8fa2b8', '#b9cbd8', w), mix('#e4dcd2', '#f7e4c6', w), -20, 960);
+  if (street) ywBg(p, c, w); // SD01 bg: pink horizon band, crescent moon (blue hour), hotel/condo skyline
   // Far haze block at the end of the street.
   washC(p, 21100, mix('#a9b3bf', '#e2d3bc', w), 200, frontRect(c, -YW_FAR, -YW_FACADE, YW_FACADE, 0, 26));
   // Road, pavements, kerbs.
@@ -316,6 +323,7 @@ export const paintYaowarat = (p: Painter, state: State, o: {you?: boolean; cam?:
     if (d < 70) {
       // Ground floor: closed doors with their hardware at dawn; open shopfront (warm interior, goods) in the morning (LF01 v3).
       shopfront(p, c, b, i, state, w);
+      if (street) ywBay(p, c, b, i, state, w, lead); // SD01 mid: AC units and cables, tarp motorbikes; crowd: awnings, racks, boards, lanterns
       // Upper floor windows (two floors).
       for (const y0 of [4.2, 7.4]) if (y0 + 1.6 < b.top) fillC(p, 22000 + i * 40 + 20 + y0, mix('#4f5c69', '#7d7468', w), sideQuad(c, X, b.z0 + 0.8, b.z1 - 0.8, y0, y0 + 1.6));
     }
@@ -335,6 +343,7 @@ export const paintYaowarat = (p: Painter, state: State, o: {you?: boolean; cam?:
     }
   }
 
+  if (street) ywMid(p, c, w); // SD01 mid: thin ground mist, blue-hour puddles
   // No sign reflections: the soft smears under the signs read as stains or ghost shapes standing on the road (viewer check
   // fix 2, OPN201); the wet sheen band down the middle carries the wet road.
 
@@ -348,6 +357,7 @@ export const paintYaowarat = (p: Painter, state: State, o: {you?: boolean; cam?:
     hardFill(p, 26200 + j * 10 + s, w < 1 ? '#fff0c8' : '#b9b2a6', ell(hx, hy + u * 0.08, u * 0.28, u * 0.1, 12));
   }
 
+  if (o.detail) ywCloseBg(p, o.detail, w); // SD05 bg: dawn street bokeh behind the haze veil
   // Close cameras (B3): a soft haze over the street so the pole or the shrine ledge painted after it sits forward (no blur filter).
   if (o.haze) washAt(p, 26900, mix('#c4ccd6', '#f1e4cc', w), 150 * o.haze, [[-20, -20], [1100, -20], [1100, 1940], [-20, 1940]], 0.05, 0.2);
   // The pole with the sheet (left kerb, CL05), and the small street shrine with garland and incense (right, VD08).
@@ -357,11 +367,14 @@ export const paintYaowarat = (p: Painter, state: State, o: {you?: boolean; cam?:
   paintSheetBack(p, c, 27010, YW_POLE[0], 1.35, YW_POLE[2] + 0.14, w);
   void px; void pu;
   paintShrine(p, c, YW_SHRINE, w);
+  if (o.detail) ywCloseMid(p, c, o.detail, w); // SD05 mid: petals, glass, candle; ash and stubs; pole rust and sticker ghosts
 
   if (o.you !== false) {
     const g = proj(c, YW_YOU), u = unitAt(c, YW_YOU[2]);
     paintYou(p, g, u, {t: p.t});
   }
+  if (street) ywFg(p, w); // SD01 fg: stools on a cart (left kerb edge), power-line catenary
+  if (o.detail) ywCloseFg(p, o.detail, w); // SD05 fg
 };
 
 /** Chinese-style street shrine: pedestal, small red house with a tiled roof, ledge with the jasmine garland and the incense pot. */
@@ -736,9 +749,13 @@ export const pierItems = (state: State, o: PierOpts = {}, paint?: {p: Painter; w
     fillC(p, 32000 + Math.round(z * 4) + x, mix('#9aa1a7', '#d2c4ac', w), frontRect(c, z, x - PILLAR_HALF, x + PILLAR_HALF, 0, ROOF));
     inkLine(p, 32050 + Math.round(z * 4) + x, [proj(c, [x + PILLAR_HALF, 0, z]), proj(c, [x + PILLAR_HALF, ROOF, z])], {color: mix('#5d656c', '#8a7a64', w), weight: 0.8, closed: false, curve: 0, still: true});
     if (z === PIER_SHEET.z && x === EDGE) paintSheetBack(p, c, 32100, PIER_SHEET.x, PIER_SHEET.y, z + 0.19, w);
+    if (z === -7 && x === WALL - 0.3) pierRing(p, c, w); // SD03 mid: life ring on the wall-side pillar (far from the sheet pillar and from `คุณ`)
   } : noop});
   const rail = mix('#c8cdd0', '#e6dccb', w);
   for (const z of postZs()) items.push({id: `post@${z}`, kind: 'solid', box: box(EDGE - POST_HALF, EDGE + POST_HALF, 0, 1.05, z - POST_HALF, z + POST_HALF), draw: p ? () => fillC(p, 31900 + z, rail, frontRect(c, z, EDGE - POST_HALF, EDGE + POST_HALF, 0, 1.05)) : noop});
+  // SD03 mid (SS-R2.6): life-jacket crate and bin against the wall, shuttered ticket kiosk at the hall end; solids in every state (VD13).
+  items.push({id: 'crate', kind: 'solid', box: union(PIER_CRATE, PIER_BIN), draw: p ? () => paintCrate(p, c, w) : noop});
+  items.push({id: 'kiosk', kind: 'solid', box: PIER_KIOSK, draw: p ? () => paintKiosk(p, c, w) : noop});
   items.push({id: 'bollard', kind: 'solid', box: box(BOLLARD[0] - 0.1, BOLLARD[0] + 0.1, 0, 0.36, BOLLARD[2] - 0.1, BOLLARD[2] + 0.1), draw: p ? () => paintBollard(p, c, w) : noop});
   if (state === 'empty') for (const pg of pigeons()) {
     const now = pigeonAt(pg.k, pg.at, f);
@@ -812,6 +829,7 @@ export const paintPier = (p: Painter, state: State, o: PierOpts = {}) => {
     const a = proj(c, [xx - 2, -0.8, zz]), b = proj(c, [xx + 2, -0.8, zz]);
     if (a[1] > 900 + dy) inkLine(p, 31300 + k, [a, [(a[0] + b[0]) / 2, a[1] - 1], b], {color: mix('#a9bccb', '#f3e2c0', w), weight: 0.9, closed: false, curve: 0.4});
   }
+  pierBg(p, bankY, w, o.f ?? 0); // SD03 bg: far-bank roofline and prang, long-tail boats, sun glow, hyacinth clump (the ambient item)
   // The moored ferry (morning only: people board; none at dawn).
   if (w > 0) {
     p.brush.push();
@@ -849,8 +867,10 @@ export const paintPier = (p: Painter, state: State, o: PierOpts = {}) => {
   const railInk = mix('#5a6066', '#6d5f50', w);
   for (const y of [1.05, 0.55]) inkLine(p, 31950 + y * 10, [proj(c, [EDGE, y, HALL_END - 3]), proj(c, [EDGE, y, DECK_NEAR])], {color: railInk, weight: 1.6, closed: false, curve: 0, still: true});
   for (const y of [1.05, 0.55]) inkLine(p, 31960 + y * 10, [proj(c, [EDGE, y, HALL_END - 3]), proj(c, [WALL, y, HALL_END - 3])], {color: railInk, weight: 1.0, closed: false, curve: 0, still: true});
+  pierWet(p, c, w); // SD03 mid: wet deck patches (blue hour)
   // Deck solids and people, back to front by the VD13 occlusion sort (benches, pillars, posts, bollard, pigeons, cast).
   pierItems(state, o, {p, w}).order.forEach((it) => it.draw());
+  pierFg(p, w); // SD03 fg: ceiling tubes and wire, blurred near pillar, mooring rope
 };
 
 // ---------------------------------------------------------------------------------------------------------------------
@@ -864,6 +884,13 @@ export const POSTER = {x: 330, y: 300, w: 420, h: 588} as const;
 export const PHOTO = {x: POSTER.x + 60, y: POSTER.y + 168, w: POSTER.w - 120, h: 250} as const;
 /** Poster photo figure scale (px per metre) and crown offset: LF04 v2 frames `คุณ` from the crown to the upper-mid back. */
 const PHOTO_UNIT = 270, PHOTO_CROWN = 12;
+
+/** Sky strips beside the 1080 px plate (x -360...-20 and 1100...1440) for the close soi shots whose camera sees past the plate edge (SS-R2.2). */
+export const paintSoiSideSky = (p: Painter, state: State) => {
+  const w = warmOf(state), top = mix('#8ea0b6', '#e3cba3', w), low = mix('#dcd6cf', '#f6e9d4', w);
+  sky(p, 41800, top, low, -20, 1100, 56, [-360, -20]);
+  sky(p, 41900, top, low, -20, 1100, 56, [1100, 1440]);
+};
 
 /** The soi street behind the post: houses, spirit house, scooter, cables, haze (everything in picture space at `SOI_CAM`). */
 export const paintSoiBackdrop = (p: Painter, state: State) => {
@@ -949,16 +976,16 @@ export const paintSoiBackdrop = (p: Painter, state: State) => {
  * calls under a scale so the pile has the same marks at any distance (PAIR201). `sheet` drives the top sheet: `turn` 0 = hanging
  * blank back out, 1 = face-out (see `sheetFlip`); without it `poster` picks the settled LF04 states.
  */
-export const paintPostAssembly = (p: Painter, state: State, o: {poster?: 'front' | 'back'; sheet?: SheetState} = {}) => {
-  const w = warmOf(state);
+export const paintPostAssembly = (p: Painter, state: State, o: {poster?: 'front' | 'back'; sheet?: SheetState; foot?: number} = {}) => {
+  const w = warmOf(state), foot = o.foot ?? 1940;
 
   // The concrete lamp post (frontal, tapering slightly), its lamp head out of frame top.
-  const post: Pt[] = [[410, -20], [670, -20], [688, 1940], [392, 1940]];
+  const post: Pt[] = [[410, -20], [670, -20], [688, foot], [392, foot]];
   hardFill(p, 42000, mix('#8e959b', '#bdb3a4', w), post);
-  washAt(p, 42001, mix('#6c757d', '#9c9284', w), 110, [[600, -20], [670, -20], [688, 1940], [612, 1940]], 0.1, 0.5);
-  washAt(p, 42002, mix('#b9c1c8', '#e3d8c6', w), 80, [[420, -20], [470, -20], [460, 1940], [402, 1940]], 0.1, 0.5);
-  inkLine(p, 42003, [[410, -20], [392, 1940]], {color: '#4c5258', weight: 1.4, closed: false, curve: 0, still: true});
-  inkLine(p, 42004, [[670, -20], [688, 1940]], {color: '#4c5258', weight: 1.4, closed: false, curve: 0, still: true});
+  washAt(p, 42001, mix('#6c757d', '#9c9284', w), 110, [[600, -20], [670, -20], [688, foot], [612, foot]], 0.1, 0.5);
+  washAt(p, 42002, mix('#b9c1c8', '#e3d8c6', w), 80, [[420, -20], [470, -20], [460, foot], [402, foot]], 0.1, 0.5);
+  inkLine(p, 42003, [[410, -20], [392, foot]], {color: '#4c5258', weight: 1.4, closed: false, curve: 0, still: true});
+  inkLine(p, 42004, [[670, -20], [688, foot]], {color: '#4c5258', weight: 1.4, closed: false, curve: 0, still: true});
   // Warm lamp spill from the lamp head above (dawn only), on the post and the old sheets but painted before the poster: over the
   // poster its textured wash made the yellow-green blob beside the photo head (viewer check fix 3, VD03 "never glowing").
   if (w < 1) washAt(p, 42300, '#ffe2a8', 40 * (1 - w), [[300, -20], [780, -20], [820, 900], [260, 900]], 0.4, 0.3);

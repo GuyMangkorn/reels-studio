@@ -7,9 +7,49 @@
     "store": "library/sound/ambience/bed/bed_dark-drone-sub_01.wav",
     "sha256": "c20f82a3f9ece1e12890b8017689d06822563777404eec4b1153b5756a19ad24"
   },
+  "public/audio/bed/bed_eg2-solo-piano-sparse_01.wav": {
+    "store": "library/sound/music/bed/bed_eg2-solo-piano-sparse_01.wav",
+    "sha256": "d51f78214e67414e3ace8c60352ce6f0808a7708450e0d4d22380b3df800054e"
+  },
   "public/audio/bed/bed_warm-pad-felt-third_01.wav": {
     "store": "library/sound/music/bed/bed_warm-pad-felt-third_01.wav",
     "sha256": "137d2ece5ad9c6f843602a5a4503c171629fe029ab65ee13e1960594e4bfe5bf"
+  },
+  "public/audio/crowd/crowd_murmur-close-bangkok_01.wav": {
+    "store": "library/sound/ambience/crowd/crowd_murmur-close-bangkok_01.wav",
+    "sha256": "dfcf24276ad36f99c38e50f91efb31fd4c4bee0d844e5b2e033f1a82aebd29aa"
+  },
+  "public/audio/crowd/crowd_murmur-far-bangkok_01.wav": {
+    "store": "library/sound/ambience/crowd/crowd_murmur-far-bangkok_01.wav",
+    "sha256": "a63eec260f0b9baa19a81cd13ea6aeb82ab379ba577b3899ea87f532c9e524dd"
+  },
+  "public/audio/electric/electric_streetlamp-hum-loop_01.wav": {
+    "store": "library/sound/ambience/electric/electric_streetlamp-hum-loop_01.wav",
+    "sha256": "0b2735d0d08fceaca9c5f4f5faaaa4abe57f064744f31e95592c2b1f31a45b76"
+  },
+  "public/audio/foley/foley_hoodie-hood-pull_01.wav": {
+    "store": "library/sound/sfx/foley/foley_hoodie-hood-pull_01.wav",
+    "sha256": "d31bd8c91e575320d219f8e094f870222789d596cb405a75dd75874230a0e0b1"
+  },
+  "public/audio/foley/foley_incense-crackle_01.wav": {
+    "store": "library/sound/sfx/foley/foley_incense-crackle_01.wav",
+    "sha256": "97920373a352cb06e7f447aa1e823555542574ed9b59f2152885c160f00a0dc6"
+  },
+  "public/audio/foley/foley_wind-on-paper_01.wav": {
+    "store": "library/sound/sfx/foley/foley_wind-on-paper_01.wav",
+    "sha256": "7657ab625917f904d4b3e9298746f2385e67ba07bbb4cf23716ae47be03b2610"
+  },
+  "public/audio/outdoor/outdoor_dawn-street-empty_01.wav": {
+    "store": "library/sound/ambience/outdoor/outdoor_dawn-street-empty_01.wav",
+    "sha256": "b887591c95796f3198e89fe094c1e37c8d01ddc8810c7d4394e2ffda0aecb183"
+  },
+  "public/audio/outdoor/outdoor_wind-open-roundabout_01.wav": {
+    "store": "library/sound/ambience/outdoor/outdoor_wind-open-roundabout_01.wav",
+    "sha256": "94e6b169957f078b1c70a98a7dd35f453c112948f093c363c5b85ca57b02ea5f"
+  },
+  "public/audio/outdoor/outdoor_yaowarat-signs-buzz_01.wav": {
+    "store": "library/sound/ambience/outdoor/outdoor_yaowarat-signs-buzz_01.wav",
+    "sha256": "b34750aaa44d0451a86bfa1f52b4837f623bd700805ab150c0d8565af25285b3"
   },
   "public/audio/room/room_pot-steam-hiss_01.wav": {
     "store": "library/sound/ambience/room/room_pot-steam-hiss_01.wav",
@@ -27,9 +67,29 @@
     "store": "library/sound/music/tone/tone_soft-sustain-reflective_01.wav",
     "sha256": "98961e8e011f34fb71d225ce1a98788918f074337916e6c6648c965b20ccb2c7"
   },
+  "public/audio/vehicle/vehicle_river-ferry-passing_01.wav": {
+    "store": "library/sound/sfx/vehicle/vehicle_river-ferry-passing_01.wav",
+    "sha256": "dca34d38ad2174164ac501ba71cb28df8b0562956f878f5e4ee85858cb534375"
+  },
+  "public/audio/water/water_pier-lapping-pigeons_01.wav": {
+    "store": "library/sound/ambience/water/water_pier-lapping-pigeons_01.wav",
+    "sha256": "d85557553326b8ac04481123da465f278b514b6f4c0986a5c19a16801a94adf3"
+  },
+  "public/audio/whoosh/whoosh_gust-paper-flip_01.wav": {
+    "store": "library/sound/sfx/whoosh/whoosh_gust-paper-flip_01.wav",
+    "sha256": "5db412a7979393ef2f5f458c7c318a680b906a254d7eee629312c2f142f1030d"
+  },
+  "public/audio/whoosh/whoosh_page-flip-paper_01.wav": {
+    "store": "library/sound/sfx/whoosh/whoosh_page-flip-paper_01.wav",
+    "sha256": "c8e201e30f6ac1588df54c5bbc27695893cde40cb4350735cc73fa80be2884e2"
+  },
   "public/narration/EG-EP01-SHORT.wav": {
     "store": "projects/EG/narration/EG-EP01-SHORT-narration-lock.wav",
     "sha256": "0b76d4bb61de10cc43bf42ff2e6359b635bed2a122eb1e61e3985f2a17adf908"
+  },
+  "public/narration/EG-EP02-SHORT.wav": {
+    "store": "projects/EG/narration/EG-EP02-SHORT-narration-B-x108-tight-v4.wav",
+    "sha256": "5a8a0bd9eed6b8f8db1daa22d87eb27139d2ff69df1be1fdc552cdb555e06d38"
   },
   "public/sfx/foley/foley_jump-scuff-sneakers_01.wav": {
     "store": "library/sound/sfx/foley/foley_jump-scuff-sneakers_01.wav",

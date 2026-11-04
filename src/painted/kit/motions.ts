@@ -34,7 +34,7 @@ import {dress, type OutfitId} from './wardrobe';
 export const MOTION_IDS = [
   'idle-breathe', 'walk-in-from-left', 'walk-in-from-right', 'walk-out-to-left', 'walk-out-to-right', 'run-left-to-right', 'run-right-to-left',
   'nod', 'shake-head', 'startle-jump', 'look-around', 'turn-head-left', 'turn-head-right', 'turn-head-to-camera', 'shiver',
-  'sit-down', 'stand-up', 'point-and-say', 'gasp-recoil', 'talk', 'kneel-down', 'stand-from-kneel', 'crouch-hide',
+  'sit-down', 'stand-up', 'point-and-say', 'gasp-recoil', 'talk', 'kneel-down', 'stand-from-kneel', 'crouch-hide', 'hood-pull',
 ] as const;
 export type MotionId = (typeof MOTION_IDS)[number];
 
@@ -74,6 +74,8 @@ export type MotionFrame = {
   look?: Pt;
   /** Mouth open 0..1 on the `talk` mouth, over whatever face is in force. */
   talk?: number;
+  /** Hood travelling up 0..1 (back view; `FigPose.hoodRise`, 1 = hood up). The outfit needs a hood (`gear.collar.kind` `hood`). */
+  hood?: number;
 };
 
 export type MotionCtx = {
@@ -282,6 +284,13 @@ export const MOTIONS: Record<MotionId, Motion> = {
       body: {kneel: 1 - seg(t, 0.2, 1.8), bend: profile ? 0.12 * hump(t, 0.2, 1.8) : 0},
     };
   },
+  'hood-pull': (t) => {
+    // One arm path hang (P01) -> hands above the head (P08): the hands reach the hood at the sides of the neck (u 0.58 = jaw height, P12's
+    // level) by 0.45 s, grip, then carry it up over the head to u 0.9 (just above the crown) by 1.05 s while the hood rim travels with
+    // them (`hood` = the lift), and drop straight back to the hang by 1.5 s. The hood stays up.
+    const u = keys(t, [[0, 0], [0.45, 0.58], [0.55, 0.58], [1.05, 0.9], [1.1, 0.9], [1.5, 0]]);
+    return {view: 'back', arms: {a: 'P01', b: 'P08', u}, hood: seg(t, 0.55, 1.05)};
+  },
   'crouch-hide': (t, c) => {
     const u = seg(t, 0.15, 0.95), profile = c.view !== 'front';
     return {
@@ -315,6 +324,7 @@ export const MOTION_INFO: Record<MotionId, MotionInfo> = {
   talk: {name: 'Talk', description: 'The talk mouth driven by `amp` (mouthAt on the narration) or a seeded syllable envelope, with a breath and a small head bob; the rig blinks.', duration: 2.4, loop: true, views: ['front', 'left', 'right'], use: 'A person speaking on screen; pass `amp` for lip-sync to an actual line.'},
   'kneel-down': {name: 'Kneel down', description: 'Steps one foot forward and lowers onto the other knee, brings the second knee down, then the hips settle back to the upright kneel of P34 with a slight forward lean, hands to the thighs, 2 s. Feet that are on the ground do not slide.', duration: 2, loop: false, views: ['front', 'left', 'right'], use: 'Begging, searching the floor, a scene of grief.'},
   'stand-from-kneel': {name: 'Stand from kneel', description: 'The reverse of kneel-down: hips lift off the heels, one knee comes up and the foot plants, the figure stands, hands drop to the hang, 2 s.', duration: 2, loop: false, views: ['front', 'left', 'right'], use: 'Getting up after a plea or a search.'},
+  'hood-pull': {name: 'Pull the hood up', description: 'Back view: both hands reach the hood at the neck, carry it up over the head (the hood rim travels with the hands, hair above it until it covers), the hands stop just above the crown, then drop to the hang with the hood up, 1.5 s. Needs an outfit with a hood (hoodie, coral hoodie).', duration: 1.5, loop: false, views: ['back'], use: 'A person pulls the hood up against the cold or to hide: the hands carry the hood, no swap.'},
   'crouch-hide': {name: 'Crouch and hide', description: 'Ducks into a crouch (front) or a deep knee bend (profile), arms cover the head (P35), scared face, 1.4 s.', duration: 1.4, loop: false, views: ['front', 'left', 'right'], use: 'Hiding behind cover, taking shelter.'},
 };
 
@@ -380,12 +390,13 @@ export const layerMotion = (a: LayerArgs): Layered => {
   const ctx: MotionCtx = {view: a.view ?? 'front', k: def.height / 1.7, legK: legScale(def), seed, distance: a.distance, amp: a.amp};
   const frame = motionFrame(a.motion, a.t, ctx);
   const view = frame.view ?? ctx.view;
+  const pv: View = view === 'back' ? 'front' : view; // the pose library has no back targets: arms are the front-view ones, mirrored by the back figure
   const off = frame.offset ?? [0, 0];
   const g: Pt = [a.g[0] + off[0] * a.unit, a.g[1] - off[1] * a.unit];
   const basePose: AnyPoseId = a.pose ?? 'P01';
   const ref = (r: PoseRef): AnyPoseId => (r === 'base' ? basePose : r);
   // Body and arms from the pose library: the motion's blend, or the base pose.
-  const src: PoseFigure = frame.arms ? poseMix(ref(frame.arms.a), ref(frame.arms.b ?? frame.arms.a), frame.arms.u ?? 0, def, g, a.unit, view) : poseFor(basePose, def, g, a.unit, view);
+  const src: PoseFigure = frame.arms ? poseMix(ref(frame.arms.a), ref(frame.arms.b ?? frame.arms.a), frame.arms.u ?? 0, def, g, a.unit, pv) : poseFor(basePose, def, g, a.unit, pv);
   // The motion's body fields.
   const body: Record<string, unknown> = {...src};
   const mb = frame.body ?? {};
@@ -396,7 +407,7 @@ export const layerMotion = (a: LayerArgs): Layered => {
   // Arms hung from the pose body stay with the shoulders of the body the motion makes (rigid shift).
   const shift = (side: 'r' | 'l', arm: FigPose['rArm']): FigPose['rArm'] => {
     if (!arm) return arm;
-    const s0 = shoulderPoint(def, g, a.unit, {...src, view}, side), s1 = shoulderPoint(def, g, a.unit, {...pose, view}, side);
+    const s0 = shoulderPoint(def, g, a.unit, {...src, view: pv}, side), s1 = shoulderPoint(def, g, a.unit, {...pose, view: pv}, side);
     const d: Pt = [s1[0] - s0[0], s1[1] - s0[1]];
     return {...arm, to: [arm.to[0] + d[0], arm.to[1] + d[1]], via: arm.via && [arm.via[0] + d[0], arm.via[1] + d[1]]};
   };
@@ -405,5 +416,6 @@ export const layerMotion = (a: LayerArgs): Layered => {
   let face = asFace(frame.face ?? a.expression ?? 'neutral');
   if (frame.look) face = {...face, look: frame.look};
   if (frame.talk !== undefined) face = {...face, mouth: 'talk', open: frame.talk};
-  return {def, g, pose: {...pose, view, face} as FigPose, seed, view, frame};
+  const hood = frame.hood === undefined ? {} : frame.hood >= 1 ? {hoodUp: true} : {hoodRise: frame.hood};
+  return {def, g, pose: {...pose, ...hood, view, face} as FigPose, seed, view, frame};
 };
