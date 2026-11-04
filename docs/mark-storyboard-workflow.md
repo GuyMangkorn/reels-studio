@@ -107,7 +107,7 @@ Range and clocks: scene-local [start, endExclusive); shot-local offset; composit
 Direction: composition, focal point, visible action, hidden/revealed information, subtitle-safe region (portrait: [caption-safe box](production-requirements.md#vertical-caption-safe-zone))
 Staging: | Entity/anchor | Space/unit | Start | Key/end + local frames | Facing/gaze/contact |
   depth/layers; actor paths (separate from camera): start/key/end frames, easing/holds, attach/detach
-Camera: projection/bounds or position/target/FOV; start/key/end frames; transform owner; picture moves and their layers
+Camera: projection/bounds or position/target/FOV; start/key/end frames; transform owner; picture moves and their layers; painted shots write the camera line of the [painted 3D camera](film-visual-brief-workflow.md#painted-3d-camera), e.g. `cam: yaw 45, arc 35→55, r 3.0→2.0 m, eye 1.4, f 900`
 Look: only what differs from the brief (palette/value hierarchy, motivated lights, shadows, beat-driven changes)
 VO + subtitles: full Thai VO (or exact accessible source range); subtitle text + frame ranges; SFX asset/onset/clock/license or proposed
 Sound: ambience/music state; cues with shot-local frame + library ID or `NEEDS-GEN` request; ducking/continuity ([duties](sound-generation-workflow.md#role-responsibilities))

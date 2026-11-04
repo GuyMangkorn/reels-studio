@@ -63,7 +63,7 @@ These are **Defaults**: Film's brief can override them with a recorded reason.
 - Paint back to front in a fixed depth order: sky strata, far land/sea, haze, set, floor, cast, weather, foreground frame.
 - Fills drawn in the same frame are "wet": a fill touching a recent one feathers into it. Order and overlap are part of
   the look. Change them on purpose, never by accident.
-- The camera always drifts or pushes a little (`brush.push/translate/scale` eased over the shot). Screen-space
+- The camera always moves inside the set (user, 5 Nov 2026): build the set in world metres and move the kit yaw camera (`kit/ycam.ts`: dolly, truck, arc, push) so near and far slide at different speeds; the set stands at about 45° to the lens by default. A `brush.push/translate/scale` push of the whole picture is the legacy fallback, used only with a recorded reason. Characters stay in four views squared to the lens (`squareToCam`, `kit/views.ts`); rules in [painted 3D camera](../../../docs/film-visual-brief-workflow.md#painted-3d-camera). Screen-space
   weather (rain) is drawn after `pop()`, so it doesn't zoom.
 - No painted text, except at most one word the story needs. Thai text on screen is captions, owned by Editor.
 

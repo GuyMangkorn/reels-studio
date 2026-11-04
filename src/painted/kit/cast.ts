@@ -1,10 +1,11 @@
 import {lerp, mixColor, type Painter, type Pt} from './painter';
 import {INK, palOf, capsule, ell, fistParts, formDir, openHandParts, planeBand, shapedLimb, glaze, hardFill, inkLine, limb, lineOf, modelPart, solid, toneOf, washAt, type InteriorLight} from './draw';
 import {hatFront, hatSide} from './gear';
-import {CHIN, HEAD_SPAN, paintHeadFront, paintHeadSide, type FaceState, type HeadStyle} from './head';
+import {CHIN, HEAD_SPAN, paintHeadFront, paintHeadSide, turnU, type FaceState, type HeadStyle} from './head';
 import {clamp01} from './space';
 import {modeLegs, modeOf, type ModeLegs} from './legs';
 import {drawFigureBack, hoodUpHead} from './back';
+import {QUARTER_DEPTH, clipHalf, curvedEdge, quarterGeo, turnedCap} from './quarter';
 
 // Recurring-cast rig (from WFOG MK-WF-DEP-05; brief VD03): one draw function for any `CastDef`, front and profile views only,
 // 4 heads tall (1.7 m = 4 x 0.425 m; occupant 1.60 m with the same head), mitten hands, decal heads with face controls.
@@ -85,6 +86,32 @@ export type FigPose = {
   /** Back view, hood up: `'drape'` keeps the cowl that falls over the nape to the shoulders (head-only close shots); absent = neck mode, the neck column in the hood colour and nothing wider than the torso below the hood (SS-R2.5). */
   cowl?: 'drape';
   head?: 'front' | 'left' | 'right';
+  /**
+   * Head cock (roll), DEGREES, positive = the top of the head tips toward screen right (user, 4 Nov 2026). Default absent (or 0) = the
+   * upright head, drawn exactly as before. The whole head (skull, hair, face, ears, hood-up hood, hat) rotates in the picture plane about
+   * a pivot at the top of the neck (the head centre line, 0.051 m above the chin, inside the jaw); the neck, collar and body stay. Every
+   * view: front, front three-quarter, left, right and back. Readable range about -15..15; the neck join holds up to 15 without a gap.
+   * Eases like any number: a motion's `body.headCock` adds to it (`motions.ts`), or drive it from a pose track (`zcpaint/pose.ts` `track`).
+   * The returned `head`, `headTop` and `chin` anchors follow the cock. A tilt with the eyes looking sideways (`face.look`) reads puzzled.
+   */
+  headCock?: number;
+  /**
+   * Front three-quarter view (default absent = the exact front view; an optional extra beside the default front, back, left and right,
+   * user 4 Nov 2026): with `view: 'front'` the body is turned about the vertical axis by `quarterDeg` (default 45, valid 15..60) so the
+   * figure faces toward the screen side named here: `{view: 'front', quarter: 'left'}` is front-left (face toward the viewer and the
+   * screen left). Valid only with `view: 'front'`; `drawFigure` ignores it for the back and profile views (the back three-quarter views
+   * were removed on 4 Nov 2026: the hair covers the turn, so they barely read). The near shoulder is the character's left for `left`,
+   * right for `right`. Drawn from the front figure: shoulders and hips foreshorten (torso width follows an ellipse of depth 0.62 of the
+   * width, limb centres follow cos), the far arm goes behind the torso, shoes turn toward the facing side, chest details shift toward
+   * it. The head is one solid (pass 4): its silhouette (skull, hair cap, volume, hood) keeps the unturned outline, and only the face
+   * window under the hairline, the features and the hairline turn on the sphere (`head.ts` `turnU`), so the far side shows hair and
+   * the ear. Front-view arm targets (the pose library's front poses) are
+   * foreshortened about the figure's centre line, so any front pose that stays in the frontal plane reads turned with the body.
+   * Supported like the back view: standing, crouch, walk, lean, rise, nod, arms, hats, `light`, `silhouette`; not sit, kneel, floorSit,
+   * squat, run, lie, held props (those cut to a profile). The figure's own ground shadow stays round.
+   */
+  quarter?: 'left' | 'right';
+  quarterDeg?: number;
   crouch?: number;
   /** Profile only: torso pitch toward the facing side, 0..1 (1 = about 60 deg, hands on knees). */
   bend?: number;
@@ -154,6 +181,7 @@ export type FigAnchors = {
 };
 
 export const H = 0.425; // one head, m
+export {QUARTER_DEPTH};
 /** Upper-arm and forearm length, m (both bones; the pose library and its test use it). */
 export const BONE = 0.26;
 
@@ -274,6 +302,8 @@ export const shoulderPoint = (def: CastDef, g: Pt, unit: number, pose: BodyField
  * (blink). Returns world anchors in plate px (head, hands, torch lens) for props, glows and other characters.
  */
 export const drawFigure = (p: Painter, def: CastDef, g: Pt, unit: number, pose: FigPose, t: number, seed = def.seed): FigAnchors => {
+  // Three-quarter is a front-view field (user, 4 Nov 2026): with any other view it is ignored and the plain view is drawn.
+  if (pose.quarter && pose.view !== 'front') pose = {...pose, quarter: undefined, quarterDeg: undefined};
   if (pose.view === 'back') return drawFigureBack(p, def, g, unit, pose, t, seed);
   const o = def.outfit;
   const Ht = def.height;
@@ -289,6 +319,13 @@ export const drawFigure = (p: Painter, def: CastDef, g: Pt, unit: number, pose: 
   const profile = pose.view !== 'front';
   const dir: 1 | -1 = pose.view === 'left' ? -1 : 1;
   const headView = pose.head ?? (pose.view as 'front' | 'left' | 'right');
+  // Three-quarter turn (FigPose.quarter): kp foreshortens centre offsets (shoulders, hips, arm targets), kt the torso and cloth width, both 1 when absent.
+  const qg = quarterGeo(pose);
+  const qr = qg?.qr ?? 0, qdir = qg?.qdir ?? 1, kp = qg?.kp ?? 1, kt = qg?.kt ?? 1, kr = qg?.kr ?? 1, sinq = qg?.sin ?? 0;
+  // The front plane takes the facing side, the side plane (a darker shade) the other; `udiv(w)` is the edge between them at half-width w.
+  const udiv = (w: number) => qdir * (1 - 2 * (qg?.sf ?? 1)) * w;
+  /** Turned-body marks: shapes that get the side-plane shade (px polygons). */
+  const planeShapes: Pt[][] = [];
   const headStyle = pose.hoodUp ? hoodUpHead(def.head, o) : def.head;
   const walk = pose.walk;
   const warm = pose.warm ?? 0;
@@ -301,7 +338,7 @@ export const drawFigure = (p: Painter, def: CastDef, g: Pt, unit: number, pose: 
   const ph0 = (pose.run ?? 0) * Math.PI * 2;
 
   // Local metres (u toward screen right for front; toward the facing side for profile) -> plate px.
-  const X = (u: number) => g[0] + (profile ? dir : 1) * u * unit;
+  const X = (u: number) => g[0] + (profile ? dir : 1) * u * kt * unit;
   const Y = (v: number) => g[1] - (v + airborne) * unit;
   const S = ([u, v]: Pt): Pt => [X(u), Y(v)];
   /** Upper body: scale about the hip (crouch), breath rise, then rotate about the hip (lean / bend). */
@@ -314,6 +351,12 @@ export const drawFigure = (p: Painter, def: CastDef, g: Pt, unit: number, pose: 
   };
   const Uq = (pts: Pt[]) => pts.map(U);
   const Sq = (pts: Pt[]) => pts.map(S);
+  /** Legs are round: their centres foreshorten (already in their u), their thickness does not. */
+  const SLq = (pts: Pt[]) => (pose.quarter ? pts.map(([u, v]): Pt => [g[0] + u * unit, Y(v)]) : pts.map(S));
+  /** Chest-front marks (collar, tie, buttons, lapels) lie on the face of the torso, which a turned body brings toward the facing side. */
+  const chestShift = pose.quarter && pose.view === 'front' ? (qdir * 0.1 * sinq) / kt : 0;
+  // The shift tapers toward the cloth edge, so an outer corner (a jacket half, a collar tip) never leaves the silhouette.
+  const Uqf = (pts: Pt[]) => (chestShift ? pts.map(([u, v]): Pt => U([u + chestShift * (1 - Math.min(1, Math.abs(u) / sw) ** 3), v])) : pts.map(U));
 
   const L = pose.light;
   const sil = pose.silhouette;
@@ -388,11 +431,15 @@ export const drawFigure = (p: Painter, def: CastDef, g: Pt, unit: number, pose: 
   } else if (!profile) {
     for (const s of [-1, 1]) {
       const lift = walk === undefined ? 0 : 0.06 * Math.max(0, Math.sin(ph + (s > 0 ? Math.PI : 0))) * (pose.stride ?? 1);
-      const hip: Pt = [s * 0.0725, hipV];
-      const ankle: Pt = [s * (0.08 + 0.05 * c), ankleV + lift];
-      const knee: Pt = [s * (0.077 + 0.17 * c), lerp((hipV + ankle[1]) / 2, 0.46, c)];
-      legs.push({hip, knee, ankle, far: false});
+      // Turned body: the leg on the facing side of the screen is the far one: a step behind and a little higher (it stands farther back on
+      // the ground), the near one a step toward the turn.
+      const farLeg = !!qg && s === qdir, st = qg ? (farLeg ? -0.035 : 0.07) * sinq : 0, rs = qg && farLeg ? 0.03 * sinq : 0;
+      const hip: Pt = [s * 0.0725 * kp, hipV];
+      const ankle: Pt = [s * (0.08 + 0.05 * c) * kp + qdir * st, ankleV + lift + rs];
+      const knee: Pt = [s * (0.077 + 0.17 * c) * kp + qdir * st * 0.5, lerp((hipV + ankle[1]) / 2, 0.46, c)];
+      legs.push({hip, knee, ankle, far: farLeg});
     }
+    if (qg) legs.sort((a, b) => Number(b.far) - Number(a.far));
   } else {
     const L1 = hip0 - knee0, L2 = knee0 - ankleV;
     for (const s of [1, -1]) {
@@ -415,42 +462,62 @@ export const drawFigure = (p: Painter, def: CastDef, g: Pt, unit: number, pose: 
     });
     legs.sort((a, b) => Number(b.far) - Number(a.far));
   }
+  // Three-quarter front: a skirt or coat hides what is under it. The legs start at the cloth hem and the far arm stops at the cloth top, so
+  // the translucent wash never shows a thigh or a hand through it (4 Nov 2026). Old views are untouched (qg only).
+  const clothHem = qg && !profile && !mode && (o.skirt || coat)
+    ? Math.min(o.skirt ? o.skirtHem ?? Math.max(legs[0].knee[1] - 0.19 * (1 - c), 0.3 * c + 0.2) : 9, coat ? Math.max(legs[0].knee[1] - 0.05, 0.12) : 9) - (coat ? 0.035 : 0.03) * sinq * 0.9
+    : undefined;
+  const clipLeg = (pts: Pt[]): Pt[] => (clothHem === undefined ? pts : clipHalf(pts, [-1e5, Y(clothHem)], [1e5, Y(clothHem)], [0, Y(clothHem) + 1e5]));
+  const clothW = coat ? hw + 0.085 + 0.08 * c : Math.abs(legs[0].knee[0]) + 0.06;
+  const clothTopY = clothHem === undefined ? 0 : U([0, hip0 + 0.034])[1], clothX0 = X(-clothW), clothX1 = X(clothW);
+  const clipArmCloth = (pts: Pt[]): Pt[] => {
+    const cx = pts.reduce((a, q) => a + q[0], 0) / pts.length;
+    return cx > clothX0 && cx < clothX1 ? clipHalf(pts, [-1e5, clothTopY], [1e5, clothTopY], [0, clothTopY - 1e5]) : pts;
+  };
   const legColor = (far: boolean) => (far ? mixColor(o.pants, '#000000', 0.18) : o.pants);
   // Front view, thighs toward the camera (sitting, knees up): the legs are painted over the torso, after the head.
   const legsOver = !!mode && !profile && (mode.kind === 'sit' || mode.kind === 'floor');
+  const fillL = (color: string, pts: Pt[], outline = true) => {
+    const q = clipLeg(pts);
+    if (q.length > 2) fill(color, q, outline);
+  };
   const paintLegs = () => {
   part = 10;
   line = 10;
   for (const {hip, knee, ankle, far, foot, hide} of pose.seated ? [] : legs) {
     // Front kneel: the thigh comes toward the camera, so it widens toward the knee (the knee is the nearest part).
     const near = hide && !profile && mode?.kind === 'kneel';
-    fill(legColor(far), Sq(limb(hip, knee, 0.11, near ? 0.125 : 0.095)), true);
-    if (!hide) fill(legColor(far), Sq(limb(knee, ankle, 0.095, 0.08)), true);
-    if (c > 0.2 || mode) fill(legColor(far), Sq(ell(knee[0], knee[1], near ? 0.064 : hide || legsOver ? 0.056 : 0.05, near ? 0.064 : hide || legsOver ? 0.056 : 0.05, 12)), false);
+    fillL(legColor(far), SLq(limb(hip, knee, 0.11, near ? 0.125 : 0.095)), true);
+    if (!hide) fillL(legColor(far), SLq(limb(knee, ankle, 0.095, 0.08)), true);
+    if (c > 0.2 || mode) fillL(legColor(far), SLq(ell(knee[0], knee[1], near ? 0.064 : hide || legsOver ? 0.056 : 0.05, near ? 0.064 : hide || legsOver ? 0.056 : 0.05, 12)), false);
     if (hide) continue;
     if (c > 0.4) {
       // Crouched: the cloth bunches behind the knee (two short creases on the thigh just above it).
       const kx = knee[0] - hip[0], ky = knee[1] - hip[1], kl = Math.hypot(kx, ky) || 1, ux = kx / kl, uy = ky / kl;
-      for (const d of [0.07, 0.13]) fold(legColor(far), Sq([[knee[0] - ux * d - uy * 0.035, knee[1] - uy * d + ux * 0.035], [knee[0] - ux * (d - 0.02), knee[1] - uy * (d - 0.02)], [knee[0] - ux * d + uy * 0.035, knee[1] - uy * d - ux * 0.035]]));
+      for (const d of [0.07, 0.13]) fold(legColor(far), SLq([[knee[0] - ux * d - uy * 0.035, knee[1] - uy * d + ux * 0.035], [knee[0] - ux * (d - 0.02), knee[1] - uy * (d - 0.02)], [knee[0] - ux * d + uy * 0.035, knee[1] - uy * d - ux * 0.035]]));
     }
     const shoe = far ? mixColor(o.shoes, '#000000', 0.2) : o.shoes;
     if (o.boots && !foot) {
-      if (!profile) fill(shoe, Sq([[ankle[0] - 0.05, ankle[1] + 0.135], [ankle[0] + 0.05, ankle[1] + 0.135], [ankle[0] + 0.06, ankle[1] - 0.038], [ankle[0] - 0.06, ankle[1] - 0.038]]));
-      else fill(shoe, Sq([[ankle[0] - 0.05, ankle[1] + 0.135], [ankle[0] + 0.05, ankle[1] + 0.135], [ankle[0] + 0.05, ankle[1] + 0.01], [ankle[0] + 0.13, ankle[1] - 0.02], [ankle[0] + 0.13, ankle[1] - 0.038], [ankle[0] - 0.055, ankle[1] - 0.038]]));
-    } else if (!profile) fill(shoe, Sq(ell(ankle[0] + Math.sign(ankle[0]) * 0.017, ankle[1] - 0.017, 0.068, 0.03, 14)));
-    else if (foot) fill(shoe, Sq(ell(foot.c[0], foot.c[1], 0.085, 0.03, 14, foot.a)));
-    else fill(shoe, Sq(ell(ankle[0] + 0.035, ankle[1] - 0.017, 0.085, 0.03, 14)));
+      if (!profile) fill(shoe, SLq([[ankle[0] - 0.05, ankle[1] + 0.135], [ankle[0] + 0.05, ankle[1] + 0.135], [ankle[0] + 0.06, ankle[1] - 0.038], [ankle[0] - 0.06, ankle[1] - 0.038]]));
+      else fill(shoe, SLq([[ankle[0] - 0.05, ankle[1] + 0.135], [ankle[0] + 0.05, ankle[1] + 0.135], [ankle[0] + 0.05, ankle[1] + 0.01], [ankle[0] + 0.13, ankle[1] - 0.02], [ankle[0] + 0.13, ankle[1] - 0.038], [ankle[0] - 0.055, ankle[1] - 0.038]]));
+    } else if (!profile && qg) fill(shoe, SLq(ell(ankle[0] + qdir * (far ? 0.04 : 0.085) * sinq + Math.sign(ankle[0]) * 0.008, ankle[1] - 0.017, 0.068 + (far ? 0.03 : 0.055) * sinq, 0.03, 14, qdir * 0.22 * sinq)));
+    else if (!profile) fill(shoe, SLq(ell(ankle[0] + Math.sign(ankle[0]) * 0.017, ankle[1] - 0.017, 0.068, 0.03, 14)));
+    else if (foot) fill(shoe, SLq(ell(foot.c[0], foot.c[1], 0.085, 0.03, 14, foot.a)));
+    else fill(shoe, SLq(ell(ankle[0] + 0.035, ankle[1] - 0.017, 0.085, 0.03, 14)));
   }
   };
   const farUnder = profile && !!pose.farArmUnder;
   if (!legsOver && !farUnder) paintLegs();
 
   // ----------------------------------------------------------------- arms
-  const shR: Pt = profile ? U([-0.0043, shV - 0.03]) : U([-(sw - 0.0255), shV - 0.0255]);
-  const shL: Pt = profile ? U([-0.0043, shV - 0.03]) : U([sw - 0.0255, shV - 0.0255]);
+  // Turned body (`qg`): the arm on the screen side away from the facing direction is the near one (shoulder at the silhouette edge, so it overlaps
+  // the side plane); the one on the facing side is the far arm, tucked behind the chest (shoulder pulled in).
+  const shU = (s: number) => (qg ? (s === qdir ? s * (sw - 0.0255) * kr * 0.8 : s * (sw - 0.014)) : s * (sw - 0.0255) * kr);
+  const shR: Pt = profile ? U([-0.0043, shV - 0.03]) : U([shU(-1), shV - 0.0255]);
+  const shL: Pt = profile ? U([-0.0043, shV - 0.03]) : U([shU(1), shV - 0.0255]);
   const Lpx = AB * unit;
   const hangX = childHangExtra(def);
-  const hang = (s: number): Pt => (profile ? U([0.01 + 0.02 * Math.sin(ph + (s > 0 ? Math.PI : 0)) * (walk === undefined ? 0 : 6 * (pose.stride ?? 1)), shV - 0.03 - 2 * AB + 0.02]) : U([s * (sw - 0.0255 + 0.034 + hangX), shV - 0.0255 - 2 * AB + 0.02]));
+  const hang = (s: number): Pt => (profile ? U([0.01 + 0.02 * Math.sin(ph + (s > 0 ? Math.PI : 0)) * (walk === undefined ? 0 : 6 * (pose.stride ?? 1)), shV - 0.03 - 2 * AB + 0.02]) : U([qg ? (s === qdir ? s * (sw - 0.0255 + 0.02 + hangX) * kr * 0.62 : s * (sw - 0.0255 + 0.04 + hangX)) : s * (sw - 0.0255 + 0.034 + hangX) * kr, shV - 0.0255 - 2 * AB + 0.02]));
   /** Run: arms pump opposite to the leg on their side (profile: elbow ~80 deg; front: hands rise to the chest and drop to the hip). */
   type ArmGeo = {Sh: Pt; E: Pt; T: Pt; cam?: number; finger?: boolean; fist?: 1 | -1; open?: 1 | -1; noThumb?: boolean};
   const runArm = (s: number, Sh: Pt): ArmGeo => {
@@ -470,7 +537,14 @@ export const drawFigure = (p: Painter, def: CastDef, g: Pt, unit: number, pose: 
   const arm = (side: 'r' | 'l') => {
     const s = side === 'r' ? -1 : 1;
     const Sh = side === 'r' ? shR : shL;
-    const a = side === 'r' ? pose.rArm : pose.lArm;
+    const a0 = side === 'r' ? pose.rArm : pose.lArm;
+    // Turned body: a target near the body (hanging) scales with the torso (the near hand stays out at the silhouette edge, the far hand goes
+    // in behind the chest); a target far from it (reaching, pointing) foreshortens by cos only.
+    const qx = (q: Pt): Pt => {
+      const dx = (q[0] - g[0]) / unit, ext = clamp01((Math.abs(dx) - (sw + 0.1)) / 0.25);
+      return [g[0] + (q[0] - g[0]) * lerp(s === qdir ? 0.55 * kt : kt, kp, ext), q[1]];
+    };
+    const a = a0 && pose.quarter ? {...a0, to: qx(a0.to), via: a0.via && qx(a0.via)} : a0;
     if (!a && mode?.kind === 'run') return runArm(s, Sh);
     const T = a?.via ? a.to : reachTo(Sh, a?.to ?? hang(s), Lpx);
     const E = a?.via ?? (a ? ikElbow(Sh, T, Lpx, a.out ?? (profile ? -dir : s)) : ([lerp(Sh[0], T[0], 0.5) + (profile ? -dir * 0.02 * unit : s * 0.02 * unit), lerp(Sh[1], T[1], 0.5)] as Pt));
@@ -479,6 +553,10 @@ export const drawFigure = (p: Painter, def: CastDef, g: Pt, unit: number, pose: 
   const R = arm('r'), Lm = arm('l');
   const drawArm = (A: ArmGeo, hold: Prop | undefined, k: number, far: boolean, only?: 'upper' | 'lower') => {
     part = 70 + k * 10;
+    const fillA = (color: string, pts: Pt[], outline = true, passes = 4) => {
+      const q = far && clothHem !== undefined ? clipArmCloth(pts) : pts;
+      if (q.length > 2) fill(color, q, outline, passes);
+    };
     line = 70 + k * 10;
     const sl = far ? mixColor(sleeve, '#000000', 0.15) : sleeve;
     // Pointing at the viewer (`toCam`): a short cone that widens toward the hand, the hand up to 1.3x (CP-P09).
@@ -568,15 +646,15 @@ export const drawFigure = (p: Painter, def: CastDef, g: Pt, unit: number, pose: 
       strokes(R0.creases);
       return [A.T[0] + ux * 0.045 * hu, A.T[1] + uy * 0.045 * hu] as Pt;
     }
-    if (only !== 'lower') fill(slc, capsule(A.Sh, A.E, 0.08 * unit, (cam ? 0.068 + 0.03 * cam : 0.068) * unit), true);
+    if (only !== 'lower') fillA(slc, capsule(A.Sh, A.E, 0.08 * unit, (cam ? 0.068 + 0.03 * cam : 0.068) * unit), true);
     if (only === 'upper') return A.T;
-    fill(o.longSleeves ? slc : skinHand, capsule(A.E, A.T, (cam ? 0.066 + 0.04 * cam : 0.066) * unit, (cam ? 0.056 + 0.06 * cam : 0.056) * unit), true);
+    fillA(o.longSleeves ? slc : skinHand, capsule(A.E, A.T, (cam ? 0.066 + 0.04 * cam : 0.066) * unit, (cam ? 0.056 + 0.06 * cam : 0.056) * unit), true);
     if (o.gear?.wideSleeves) {
       // Kimono sleeve: the cloth hangs in a wide flap round the forearm, the hand comes out of its opening.
       part = 70 + k * 10 + 5;
       const ex = A.T[0] - A.E[0], ey = A.T[1] - A.E[1], el = Math.hypot(ex, ey) || 1, nx = -ey / el, ny = ex / el;
       const w1 = 0.07 * unit, w2 = 0.11 * unit, dr = 0.1 * unit;
-      fill(sl, [[A.E[0] - nx * w1, A.E[1] - ny * w1], [A.E[0] + nx * w1, A.E[1] + ny * w1], [A.T[0] + nx * w2, A.T[1] + ny * w2 + dr], [A.T[0] - nx * w2, A.T[1] - ny * w2 + dr]], true);
+      fillA(sl, [[A.E[0] - nx * w1, A.E[1] - ny * w1], [A.E[0] + nx * w1, A.E[1] + ny * w1], [A.T[0] + nx * w2, A.T[1] + ny * w2 + dr], [A.T[0] - nx * w2, A.T[1] - ny * w2 + dr]], true);
     }
     if (o.longSleeves && L) {
       // Elbow crease: two short strokes where the sleeve bunches, on the inside of the bend.
@@ -586,21 +664,23 @@ export const drawFigure = (p: Painter, def: CastDef, g: Pt, unit: number, pose: 
     const ang = Math.atan2(A.T[1] - A.E[1], A.T[0] - A.E[0]);
     const hand: Pt = [A.T[0] + Math.cos(ang) * 0.03 * unit, A.T[1] + Math.sin(ang) * 0.03 * unit];
     if (hold?.kind === 'torch') drawTorch(p, seed * 1000 + 200 + k * 10, hand, hold.angle, unit, hold.on);
-    if (hold?.kind === 'phone') fill('#1f2326', [[hand[0] - 0.035 * unit, hand[1] - 0.07 * unit], [hand[0] + 0.035 * unit, hand[1] - 0.07 * unit], [hand[0] + 0.035 * unit, hand[1] + 0.06 * unit], [hand[0] - 0.035 * unit, hand[1] + 0.06 * unit]]);
+    if (hold?.kind === 'phone') fillA('#1f2326', [[hand[0] - 0.035 * unit, hand[1] - 0.07 * unit], [hand[0] + 0.035 * unit, hand[1] - 0.07 * unit], [hand[0] + 0.035 * unit, hand[1] + 0.06 * unit], [hand[0] - 0.035 * unit, hand[1] + 0.06 * unit]]);
     if (hold?.kind === 'umbrella') drawUmbrella(p, seed * 1000 + 220 + k * 10, hand, hold.tip, unit);
     part = 70 + k * 10 + 8;
     const hs = cam ? 1 + 0.3 * cam : 1;
-    fill(o.coat ? '#26292c' : skinHand, ell(hand[0], hand[1], 0.045 * unit * hs, 0.052 * unit * hs, 14, ang), true, o.coat ? 6 : 4);
+    fillA(o.coat ? '#26292c' : skinHand, ell(hand[0], hand[1], 0.045 * unit * hs, 0.052 * unit * hs, 14, ang), true, o.coat ? 6 : 4);
     if (A.finger && cam) {
       // The pointing finger seen end-on: a small round tip on the fist, toward the viewer.
       part = 70 + k * 10 + 9;
-      fill(o.coat ? '#26292c' : mixColor(skinHand, '#7a4a30', 0.18), ell(hand[0], hand[1] - 0.03 * unit * hs, 0.022 * unit * hs, 0.024 * unit * hs, 10), true, 4);
+      fillA(o.coat ? '#26292c' : mixColor(skinHand, '#7a4a30', 0.18), ell(hand[0], hand[1] - 0.03 * unit * hs, 0.022 * unit * hs, 0.024 * unit * hs, 10), true, 4);
     }
     return hand;
   };
 
   // Profile: the far arm goes behind the torso; redraw order handled by drawing it first (before head and near arm).
   const nearSide: 'r' | 'l' = dir > 0 ? 'r' : 'l';
+  /** Three-quarter front: the arm on the far side of the turned body is painted under the torso, a shade darker (the near one over it). */
+  const quarterFar: 'r' | 'l' | undefined = pose.quarter ? (qdir < 0 ? 'r' : 'l') : undefined;
   let rHand: Pt = R.T, lHand: Pt = Lm.T;
   if (profile) {
     // The far arm is painted over the torso but is hidden behind it when it hangs; draw it slightly darker.
@@ -609,7 +689,9 @@ export const drawFigure = (p: Painter, def: CastDef, g: Pt, unit: number, pose: 
     if (farUnder && !legsOver) paintLegs();
   } else {
     if (pose.rArm?.behind) rHand = drawArm(R, pose.rHold, 0, true, pose.rArm.behind === 'upper' ? 'upper' : undefined);
+    else if (quarterFar === 'r') rHand = drawArm(R, pose.rHold, 0, true);
     if (pose.lArm?.behind) lHand = drawArm(Lm, pose.lHold, 1, true, pose.lArm.behind === 'upper' ? 'upper' : undefined);
+    else if (quarterFar === 'l') lHand = drawArm(Lm, pose.lHold, 1, true);
   }
 
   // ----------------------------------------------------------------- torso layers
@@ -636,20 +718,28 @@ export const drawFigure = (p: Painter, def: CastDef, g: Pt, unit: number, pose: 
       // Seated, kneeling or on the floor the skirt drapes over the thighs to the knee instead of hanging to a fixed height.
       const lap = mode && mode.kind !== 'run' && mode.kind !== 'squat' ? Math.min(o.skirtHem ?? 9, kneeV + (mode.kind === 'floor' ? 0.02 : -0.03)) : undefined;
       const hemF = lap ?? o.skirtHem ?? Math.max(kneeV - 0.19 * (1 - c), 0.3 * c + 0.2);
-      fill(o.skirt, [...Uq([[-hw - 0.0085, hip0 + 0.034], [hw + 0.0085, hip0 + 0.034]]), ...Sq([[kx + 0.06, hemF], [-kx - 0.06, hemF]])]);
+      const skirtPts = [...Uq([[-hw - 0.0085, hip0 + 0.034], [hw + 0.0085, hip0 + 0.034]]), ...(qg ? Sq(curvedEdge(kx + 0.06, -kx - 0.06, hemF, udiv(kx + 0.06), 0.03 * sinq, 8)) : Sq([[kx + 0.06, hemF], [-kx - 0.06, hemF]]))];
+      fill(o.skirt, skirtPts);
+      if (qg) planeShapes.push(skirtPts);
     }
-    const top: Pt[] = [[-sw + 0.017, shV], [sw - 0.017, shV], [sw, shV - 0.034], [hw + 0.013, hip0], [-hw - 0.013, hip0], [-sw, shV - 0.034]];
+    // The hem of a turned body curves: lowest at the edge between the planes (the nearest part), rising toward both ends.
+    const top: Pt[] = qg
+      ? [[-sw + 0.017, shV], [sw - 0.017, shV], [sw, shV - 0.034], ...curvedEdge(hw + 0.013, -hw - 0.013, hip0, udiv(hw + 0.013), 0.016 * sinq), [-sw, shV - 0.034]]
+      : [[-sw + 0.017, shV], [sw - 0.017, shV], [sw, shV - 0.034], [hw + 0.013, hip0], [-hw - 0.013, hip0], [-sw, shV - 0.034]];
     if (coat) {
       const hem = Math.max(kneeV - 0.05, 0.12);
-      fill(coat, [...Uq([[-sw + 0.017, shV], [sw - 0.017, shV], [sw + 0.0085, shV - 0.0425]]), S([hw + 0.085 + 0.08 * c, hem]), S([-hw - 0.085 - 0.08 * c, hem]), U([-sw - 0.0085, shV - 0.0425])]);
+      const coatPts = [...Uq([[-sw + 0.017, shV], [sw - 0.017, shV], [sw + 0.0085, shV - 0.0425]]), ...(qg ? curvedEdge(hw + 0.085 + 0.08 * c, -hw - 0.085 - 0.08 * c, hem, udiv(hw + 0.085 + 0.08 * c), 0.035 * sinq).map(S) : [S([hw + 0.085 + 0.08 * c, hem]), S([-hw - 0.085 - 0.08 * c, hem])]), U([-sw - 0.0085, shV - 0.0425])];
+      fill(coat, coatPts);
+      if (qg) planeShapes.push(coatPts);
       if (!sil) inkLine(p, seed * 1000 + ++line, [U([0, shV - 0.05]), U([0, hip0 - 0.02]), S([0, hem])], {closed: false, weight: 0.9, curve: 0.1});
       if (pose.wet && !sil) for (let i = 0; i < 6; i++) inkLine(p, seed * 1000 + 60 + i, [U([-0.12 + i * 0.05, shV - 0.06 - 0.07 * (i % 3)]), U([-0.12 + i * 0.05, shV - 0.12 - 0.07 * (i % 3)])], {color: '#8fa6b8', weight: 0.8, closed: false});
     } else {
       fill(o.shirt, Uq(top));
+      if (qg) planeShapes.push(Uq(top));
       if (o.jacket) {
-        for (const s of [-1, 1]) fill(o.jacket, Uq([[s * (sw - 0.017), shV], [s * 0.051, shV], [s * 0.0425, hip0 - 0.0255], [s * (hw + 0.021), hip0 - 0.0255], [s * sw, shV - 0.034]]));
+        for (const s of [-1, 1]) fill(o.jacket, Uqf([[s * (sw - 0.017), shV], [s * 0.051, shV], [s * 0.0425, hip0 - 0.0255], [s * (hw + 0.021), hip0 - 0.0255], [s * sw, shV - 0.034]]));
       }
-      if (o.apron) fill(o.apron, Uq([[-0.085, shV - 0.0935], [0.085, shV - 0.0935], [0.11, hip0 - 0.136], [-0.11, hip0 - 0.136]]), true, 8);
+      if (o.apron) fill(o.apron, Uqf([[-0.085, shV - 0.0935], [0.085, shV - 0.0935], [0.11, hip0 - 0.136], [-0.11, hip0 - 0.136]]), true, 8);
       // VD18 drape: the shirt sags under the collar; a crouch bunches it at the waist.
       if (L?.shaped && !sil) {
         // Shirt folds (shaped look): pull creases from the armpits, a belly crease and a bunch at the hem.
@@ -704,47 +794,50 @@ export const drawFigure = (p: Painter, def: CastDef, g: Pt, unit: number, pose: 
     const bandV1 = hip0 - 0.015; // over the shirt hem / trouser top seam
     if (!profile) {
       if (G.drape) {
-        fill(G.drape, Uq([[0, shV - 0.005], [sw - 0.017, shV], [sw, shV - 0.034], [0.05, hip0 + 0.01], [-hw - 0.013, hip0 + 0.02], [-hw - 0.013, hip0 + 0.15]]));
-        for (const k of [1, 2, 3]) crease(G.drape, Uq([[0.04 * k, shV - 0.01 - 0.03 * k], [-hw + 0.02 + 0.045 * k, hip0 + 0.12 - 0.03 * k]]));
+        fill(G.drape, Uqf([[0, shV - 0.005], [sw - 0.017, shV], [sw, shV - 0.034], [0.05, hip0 + 0.01], [-hw - 0.013, hip0 + 0.02], [-hw - 0.013, hip0 + 0.15]]));
+        for (const k of [1, 2, 3]) crease(G.drape, Uqf([[0.04 * k, shV - 0.01 - 0.03 * k], [-hw + 0.02 + 0.045 * k, hip0 + 0.12 - 0.03 * k]]));
       }
       const col = G.collar;
       if (col?.kind === 'v') {
         const d = col.depth ?? 0.17;
-        fill(col.trim ?? def.head.skin, Uq([[-0.05, shV + 0.004], [0.05, shV + 0.004], [0, shV - d]]), false, 6);
-        for (const sd of [-1, 1]) fill(col.color, Uq([[sd * 0.04, shV + 0.004], [sd * 0.115, shV - 0.004], [sd * 0.03, shV - d], [0, shV - d + 0.012]]), true, 6);
+        fill(col.trim ?? def.head.skin, Uqf([[-0.05, shV + 0.004], [0.05, shV + 0.004], [0, shV - d]]), false, 6);
+        for (const sd of [-1, 1]) fill(col.color, Uqf([[sd * 0.04, shV + 0.004], [sd * 0.115, shV - 0.004], [sd * 0.03, shV - d], [0, shV - d + 0.012]]), true, 6);
       } else if (col?.kind === 'sailor') {
         for (const sd of [-1, 1]) {
-          fill(col.color, Uq([[sd * 0.045, shV + 0.004], [sd * (sw - 0.02), shV], [sd * (sw - 0.03), shV - 0.055], [sd * 0.012, shV - 0.2], [0, shV - 0.17]]), true, 6);
-          if (col.trim) stripe(col.trim, Uq([[sd * (sw - 0.045), shV - 0.014], [sd * (sw - 0.052), shV - 0.05], [sd * 0.02, shV - 0.17]]), 1.1);
+          fill(col.color, Uqf([[sd * 0.045, shV + 0.004], [sd * (sw - 0.02), shV], [sd * (sw - 0.03), shV - 0.055], [sd * 0.012, shV - 0.2], [0, shV - 0.17]]), true, 6);
+          if (col.trim) stripe(col.trim, Uqf([[sd * (sw - 0.045), shV - 0.014], [sd * (sw - 0.052), shV - 0.05], [sd * 0.02, shV - 0.17]]), 1.1);
         }
       } else if (col?.kind === 'hood' && !pose.hoodUp) {
-        fill(col.color, Uq([[-0.095, shV + 0.025], [-0.085, shV - 0.06], [-0.04, shV - 0.115], [0, shV - 0.125], [0.04, shV - 0.115], [0.085, shV - 0.06], [0.095, shV + 0.025], [0.055, shV + 0.01], [0.04, shV - 0.045], [0, shV - 0.07], [-0.04, shV - 0.045], [-0.055, shV + 0.01]]), true, 6);
-        for (const sd of [-1, 1]) stripe(col.trim ?? '#e8e4da', Uq([[sd * 0.035, shV - 0.085], [sd * 0.042, shV - 0.17], [sd * 0.036, shV - 0.23]]), 1.2);
+        fill(col.color, Uqf([[-0.095, shV + 0.025], [-0.085, shV - 0.06], [-0.04, shV - 0.115], [0, shV - 0.125], [0.04, shV - 0.115], [0.085, shV - 0.06], [0.095, shV + 0.025], [0.055, shV + 0.01], [0.04, shV - 0.045], [0, shV - 0.07], [-0.04, shV - 0.045], [-0.055, shV + 0.01]]), true, 6);
+        for (const sd of [-1, 1]) stripe(col.trim ?? '#e8e4da', Uqf([[sd * 0.035, shV - 0.085], [sd * 0.042, shV - 0.17], [sd * 0.036, shV - 0.23]]), 1.2);
       }
       if (G.tie) {
         const tc = G.tie.color;
         if (G.tie.bow) {
           const y = shV - 0.19;
-          fill(tc, Uq([[0, y], [-0.07, y + 0.045], [-0.075, y - 0.045]]), true, 6);
-          fill(tc, Uq([[0, y], [0.07, y + 0.045], [0.075, y - 0.045]]), true, 6);
-          fill(tc, Uq([[-0.016, y + 0.016], [0.016, y + 0.016], [0.016, y - 0.016], [-0.016, y - 0.016]]), true, 6);
+          fill(tc, Uqf([[0, y], [-0.07, y + 0.045], [-0.075, y - 0.045]]), true, 6);
+          fill(tc, Uqf([[0, y], [0.07, y + 0.045], [0.075, y - 0.045]]), true, 6);
+          fill(tc, Uqf([[-0.016, y + 0.016], [0.016, y + 0.016], [0.016, y - 0.016], [-0.016, y - 0.016]]), true, 6);
         } else {
-          fill(tc, Uq([[-0.018, shV - 0.045], [0.018, shV - 0.045], [0.014, shV - 0.075], [-0.014, shV - 0.075]]), true, 6);
-          fill(tc, Uq([[-0.014, shV - 0.075], [0.014, shV - 0.075], [0.027, shV - 0.2], [0, shV - 0.235], [-0.027, shV - 0.2]]), true, 6);
+          fill(tc, Uqf([[-0.018, shV - 0.045], [0.018, shV - 0.045], [0.014, shV - 0.075], [-0.014, shV - 0.075]]), true, 6);
+          fill(tc, Uqf([[-0.014, shV - 0.075], [0.014, shV - 0.075], [0.027, shV - 0.2], [0, shV - 0.235], [-0.027, shV - 0.2]]), true, 6);
         }
       }
       if (G.belt) {
         const h = G.belt.h ?? 0.035, v0 = bandV1 + h;
-        fill(G.belt.color, Uq([[-edge(v0), v0], [edge(v0), v0], [edge(bandV1), bandV1], [-edge(bandV1), bandV1]]));
-        if (G.belt.buckle) fill(G.belt.buckle, Uq([[-0.03, v0 - 0.004], [0.03, v0 - 0.004], [0.03, bandV1 + 0.004], [-0.03, bandV1 + 0.004]]), true, 6);
+        if (qg) {
+          const ub = udiv(edge(bandV1)), a1 = 0.016 * sinq;
+          fill(G.belt.color, [...curvedEdge(-edge(v0), edge(v0), v0, ub, a1).map(U), ...curvedEdge(edge(bandV1), -edge(bandV1), bandV1, ub, a1).map(U)]);
+        } else fill(G.belt.color, Uqf([[-edge(v0), v0], [edge(v0), v0], [edge(bandV1), bandV1], [-edge(bandV1), bandV1]]));
+        if (G.belt.buckle) fill(G.belt.buckle, Uqf([[-0.03, v0 - 0.004], [0.03, v0 - 0.004], [0.03, bandV1 + 0.004], [-0.03, bandV1 + 0.004]]), true, 6);
       }
       if (G.overcoat) {
         const hem = Math.min(G.overcoat.hem, kneeV + 0.12);
         for (const sd of [-1, 1]) fill(G.overcoat.color, [U([sd * (sw - 0.017), shV]), U([sd * 0.045, shV]), S([sd * 0.075, hem]), S([sd * (hw + 0.085 + 0.08 * c), hem]), U([sd * (sw + 0.0085), shV - 0.0425])]);
-        if (!sil) for (const sd of [-1, 1]) crease(G.overcoat.color, Uq([[sd * 0.07, hip0 - 0.06], [sd * 0.125, hip0 - 0.06], [sd * 0.125, hip0 - 0.17]]));
+        if (!sil) for (const sd of [-1, 1]) crease(G.overcoat.color, Uqf([[sd * 0.07, hip0 - 0.06], [sd * 0.125, hip0 - 0.06], [sd * 0.125, hip0 - 0.17]]));
       }
-      if (G.badge) fill(G.badge, Uq([[0.04, shV - 0.075], [0.1, shV - 0.075], [0.1, shV - 0.105], [0.04, shV - 0.105]]), true, 6);
-      if (G.pockets) for (const sd of [-1, 1]) crease(o.shirt, Uq([[sd * 0.04, shV - 0.13], [sd * 0.1, shV - 0.13], [sd * 0.1, shV - 0.2], [sd * 0.04, shV - 0.2], [sd * 0.04, shV - 0.13]]));
+      if (G.badge) fill(G.badge, Uqf([[0.04, shV - 0.075], [0.1, shV - 0.075], [0.1, shV - 0.105], [0.04, shV - 0.105]]), true, 6);
+      if (G.pockets) for (const sd of [-1, 1]) crease(o.shirt, Uqf([[sd * 0.04, shV - 0.13], [sd * 0.1, shV - 0.13], [sd * 0.1, shV - 0.2], [sd * 0.04, shV - 0.2], [sd * 0.04, shV - 0.13]]));
     } else {
       if (G.drape) {
         fill(G.drape, Uq([[-0.18 * HD, shV], [0.14 * HD, shV], [0.22 * HD, shV - 0.085], [0.18 * HD, hip0 + 0.0255], [-0.05 * HD, hip0 + 0.0255], [-0.21 * HD, hip0 + 0.16]]));
@@ -773,6 +866,20 @@ export const drawFigure = (p: Painter, def: CastDef, g: Pt, unit: number, pose: 
     line = sl;
   }
 
+  // ----------------------------------------------------------------- turned body: the side plane
+  // The garment on the side away from the facing direction is the side of the torso block, in shadow: every cloth shape is shaded where it
+  // lies beyond the edge between the planes (a straight line from the shoulder to the hip, carried on down a coat), and the edge itself is
+  // a thin fold line. Painted over the gear (belt, collar) so those darken with the cloth; the near arm is painted over it later.
+  if (qg && !sil && !profile) {
+    const D1 = U([udiv(sw), shV - 0.034]), D2 = U([udiv(hw + 0.013), hip0]), N = U([-qdir * sw, shV - 0.034]);
+    const ext = (t: number): Pt => [D1[0] + (D2[0] - D1[0]) * t, D1[1] + (D2[1] - D1[1]) * t];
+    planeShapes.forEach((shape, i) => {
+      const part2 = clipHalf(shape, D1, D2, N);
+      if (part2.length > 2) glaze(p, 7_700_000 + seed * 1000 + i, mixColor(coat ?? o.shirt, '#0a0d12', 0.62), 135 + 70 * sinq, part2, {border: 0.25, bleed: 0.02});
+    });
+    inkLine(p, seed * 1000 + 450, [ext(0.04), ext(1)], {closed: false, weight: 0.8, curve: 0.2, color: mixColor(toneOf(coat ?? o.shirt, L), INK, 0.55)});
+  }
+
   // ----------------------------------------------------------------- neck and head
   part = 120;
   line = 120;
@@ -792,7 +899,17 @@ export const drawFigure = (p: Painter, def: CastDef, g: Pt, unit: number, pose: 
   const nod = pose.nod ?? [0, 0];
   const hc = U([nx + nod[0] * K, chin + CHIN * K - nod[1] * K]);
   const Kpx = K * unit;
-  // The head stays upright (decal), only its centre follows the body transform.
+  // The head stays upright (decal), only its centre follows the body transform. Head cock (FigPose.headCock): the head and hat rotate
+  // about the neck top (0.051 m above the chin on the head's centre line); absent or 0 = no transform, so the strokes are unchanged.
+  const cock = pose.headCock ? (pose.headCock * Math.PI) / 180 : 0;
+  const pivot: Pt = [hc[0], hc[1] + (CHIN * K - 0.051) * unit];
+  const rotHead = ([x, y]: Pt): Pt => cock === 0 ? [x, y] : [pivot[0] + (x - pivot[0]) * Math.cos(cock) - (y - pivot[1]) * Math.sin(cock), pivot[1] + (x - pivot[0]) * Math.sin(cock) + (y - pivot[1]) * Math.cos(cock)];
+  if (cock !== 0) {
+    p.brush.push();
+    p.brush.translate(pivot[0], pivot[1]);
+    p.brush.rotate(cock);
+    p.brush.translate(-pivot[0], -pivot[1]);
+  }
   if (sil) {
     // Bare short-haired human contour: crown volume, temples, tapered jaw and chin. No facial marks.
     // Only the silhouette branch changes; ordinary cast keeps its existing head rendering.
@@ -801,7 +918,7 @@ export const drawFigure = (p: Painter, def: CastDef, g: Pt, unit: number, pose: 
       [-0.52,0.88],[-0.68,0.49],[-0.73,0.12],[-0.77,-0.28],[-0.73,-0.64],[-0.57,-0.91],[-0.28,-1.07]];
     solid(p, seed + 1, sil, outline.map(([u, v]): Pt => [hc[0] + u * Kpx, hc[1] + v * Kpx]), 8, 0.02, 0.03);
   }
-  else if (headView === 'front') paintHeadFront(p, seed + 1, hc[0], hc[1], Kpx, pose.face, headStyle, t, warm, L);
+  else if (headView === 'front') paintHeadFront(p, seed + 1, hc[0], hc[1], Kpx, pose.face, headStyle, t, warm, L, pose.quarter ? qdir * qr : 0);
   else paintHeadSide(p, seed + 1, hc[0], hc[1], Kpx, pose.face, headStyle, headView === 'left' ? -1 : 1, t, warm, L);
   if (G?.hat) {
     // Headwear over the head (wardrobe.ts): parts in head units, mirrored for a left-facing profile.
@@ -810,9 +927,10 @@ export const drawFigure = (p: Painter, def: CastDef, g: Pt, unit: number, pose: 
     const hat = G.hat, hd = headView === 'left' ? -1 : 1;
     const tone = {main: hat.color, band: hat.band ?? mixColor(hat.color, INK, 0.55), dark: mixColor(hat.color, INK, 0.6), white: '#e8dcb0'};
     for (const {tone: tn, pts} of headView === 'front' ? hatFront(hat.kind) : hatSide(hat.kind)) {
-      fill(tone[tn], pts.map(([u, v]): Pt => [hc[0] + (headView === 'front' ? u : hd * u) * Kpx, hc[1] + v * Kpx]), true, 6);
+      fill(tone[tn], (pose.quarter && headView === 'front' && hat.kind === 'cap' ? turnedCap(tn, pts, qdir * qr) : pts.map(([u, v]): Pt => [headView === 'front' ? (pose.quarter ? turnU(qdir * qr, u, v) : u) : hd * u, v])).map(([u, v]): Pt => [hc[0] + u * Kpx, hc[1] + v * Kpx]), true, 6);
     }
   }
+  if (cock !== 0) p.brush.pop();
 
   if (legsOver) paintLegs();
 
@@ -826,9 +944,9 @@ export const drawFigure = (p: Painter, def: CastDef, g: Pt, unit: number, pose: 
   };
   if (!profile) {
     // A `behind: 'all'` arm is already painted under the torso; 'upper' adds its forearm and hand here, over the torso.
-    const front = (a?: Arm) => (a?.behind === 'all' ? null : a?.behind === 'upper' ? ('lower' as const) : undefined);
-    if (front(pose.rArm) !== null) rHand = drawArm(R, pose.rHold, 0, false, front(pose.rArm) ?? undefined);
-    if (front(pose.lArm) !== null) lHand = drawArm(Lm, pose.lHold, 1, false, front(pose.lArm) ?? undefined);
+    const front = (a?: Arm, side?: 'r' | 'l') => (a?.behind === 'all' || (!a?.behind && quarterFar === side) ? null : a?.behind === 'upper' ? ('lower' as const) : undefined);
+    if (front(pose.rArm, 'r') !== null) rHand = drawArm(R, pose.rHold, 0, false, front(pose.rArm, 'r') ?? undefined);
+    if (front(pose.lArm, 'l') !== null) lHand = drawArm(Lm, pose.lHold, 1, false, front(pose.lArm, 'l') ?? undefined);
     torchOf(pose.rHold, rHand);
     torchOf(pose.lHold, lHand);
   } else if (nearSide === 'r') {
@@ -842,20 +960,21 @@ export const drawFigure = (p: Painter, def: CastDef, g: Pt, unit: number, pose: 
   }
 
   if (lie !== 0) p.brush.pop();
-  const headTop = hc[1] - 1.17 * Kpx;
-  const chinY = hc[1] + CHIN * Kpx;
+  const headTop = rotHead([hc[0], hc[1] - 1.17 * Kpx])[1];
+  const chinY = rotHead([hc[0], hc[1] + CHIN * Kpx])[1];
+  const headPt = rotHead(hc);
   if (lie !== 0) {
     // Anchors in the rotated picture; the bounds are the extremes of the rotated body (head top, feet, ground).
-    const top = Math.min(...[rotLie([hc[0], headTop]), rotLie(g)].map((q) => q[1]));
-    const head = rotLie(hc);
+    const top = Math.min(...[rotLie([headPt[0], headTop]), rotLie(g)].map((q) => q[1]));
+    const head = rotLie(headPt);
     return {
-      head, headTop: top, chin: rotLie([hc[0], chinY])[1], feet: g, rHand: rotLie(rHand), lHand: rotLie(lHand), rShoulder: rotLie(R.Sh), lShoulder: rotLie(Lm.Sh),
+      head, headTop: top, chin: rotLie([headPt[0], chinY])[1], feet: g, rHand: rotLie(rHand), lHand: rotLie(lHand), rShoulder: rotLie(R.Sh), lShoulder: rotLie(Lm.Sh),
       rUpper: rotLie([lerp(R.Sh[0], R.E[0], 0.5), lerp(R.Sh[1], R.E[1], 0.5)]), lUpper: rotLie([lerp(Lm.Sh[0], Lm.E[0], 0.5), lerp(Lm.Sh[1], Lm.E[1], 0.5)]),
       lens: lens && rotLie(lens), lensDir: lensDir === undefined ? undefined : lensDir + lieAng, top, bottom: g[1],
     };
   }
   return {
-    head: hc, headTop, chin: chinY, feet: g, rHand, lHand, rShoulder: R.Sh, lShoulder: Lm.Sh,
+    head: headPt, headTop, chin: chinY, feet: g, rHand, lHand, rShoulder: R.Sh, lShoulder: Lm.Sh,
     rUpper: [lerp(R.Sh[0], R.E[0], 0.5), lerp(R.Sh[1], R.E[1], 0.5)], lUpper: [lerp(Lm.Sh[0], Lm.E[0], 0.5), lerp(Lm.Sh[1], Lm.E[1], 0.5)],
     lens, lensDir, top: headTop, bottom: g[1],
   };

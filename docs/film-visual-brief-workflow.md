@@ -75,9 +75,19 @@ Factual visuals retain claim IDs and existing review results. Make reconstructio
 Before `ready-for-mark`, review the table continuously: every section needs a visual purpose. Identify repeated action/information delivery, such as consecutive narrator-and-card beats; revise or justify them in story terms. Changing camera angle, crop, light or text alone does not demonstrate visual progression. One-room scenes and cards are valid when serving the purpose; there are no location/technique/cut quotas. Record beats requiring blockout proof for Film/Boss/Editor. Before polish, Film reviews the actual assembled sequence for each selected deliverable and record shot references, evidence, issues and corrections in the index. Planning readiness and runtime approval are distinct.
 
 <a id="technical-ba-ต้องตอบอะไรเมื่อผสม-2d-กับ-threejs"></a>
+<a id="painted-3d-camera"></a>
+## Painted 3D camera — requirements (user, 5 Nov 2026)
+
+The [project default](delivery-workflow.md#project-defaults) look for every project: painted p5.brush sets built in world metres, seen through the kit yaw camera, with the depth carried by the set and the camera move rather than by character angles.
+
+- **Set layout in metres (Requirement).** The brief gives each set a plan: origin, +x right, +y up, the main walls, kerbs, props and lights with sizes and positions in metres, and where each character stands and faces.
+- **A camera line per shot (Requirement).** Every scene sheet row names the camera as yaw to the set, move and lens, e.g. `cam: yaw 45, arc 35→55, r 3.0→2.0 m, eye 1.4, f 900`, or `cam: dolly z 6.0→4.0, truck x 0→-0.5, eye 1.5`. A shot without a camera move records why.
+- **Characters square to the lens (Default).** Name the body view (`front`, `back`, `left`, `right`) per character per shot; it is held with `squareToCam` from the mid-shot camera, so an arc up to about ±40° keeps it. The front three-quarter (15–45°) only for a close-up that needs it; head acting by `headCock` or a head turned aside. A view change inside a shot is a cut-on-turn, written in the sheet.
+- **Test before look frames (Default).** Camera ideas can be tried in the kit test set TESTSET-CROSSROADS (`kit/test-sets.ts`, spikes `SET45-*`); it is never painted in a delivered shot.
+
 ## Technical BA for 2D and Three.js
 
-> **Legacy (2 Nov 2026):** the Three.js rows apply only if the user reactivates a 3D engine ([visual engine](delivery-workflow.md#visual-engine)). For painted 2D (the default), answer the scale, camera, lighting and determinism rows for the painted plate and record the Three.js rows `N/A (painted 2D)`.
+> **Legacy (2 Nov 2026):** the Three.js rows apply only if the user reactivates a 3D engine ([visual engine](delivery-workflow.md#visual-engine)). For painted 2D (the default), answer the scale, camera, lighting and determinism rows for the painted set, with the camera row as the [painted 3D camera](#painted-3d-camera) line and record the Three.js rows `N/A (painted 2D)`.
 
 Apply relevant rows; `N/A` with a reason is valid. Hybrid is not mandatory. Read evidence/cautions in [asset-engineering-principles.md](asset-engineering-principles.md).
 
