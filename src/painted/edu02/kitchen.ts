@@ -6,12 +6,13 @@ import {CHIN, HEAD_SPAN, type FaceState} from '../kit/head';
 import {paintHalo} from '../kit/fog';
 import {hash} from '../kit/hash';
 import {mixColor, tintPainter, type Painter, type Pt} from '../kit/painter';
-import {poseFor, type AnyPoseId} from '../kit/poses';
+import {poseFor, poseMix, type AnyPoseId} from '../kit/poses';
 import type {V3} from '../kit/space';
 import {squareToCam} from '../kit/views';
 import {camPoint, camSpace, camUnit, type YCam} from '../kit/ycam';
 import {APRON, COOK, paintBibApron} from './cast';
-import {flatCircle, paintBox, paintSorted, qx, qy, qz, sphereAt, wFill, wInk, wp, wWash, type Item} from './world';
+import {candleItems, FRIDGE_COLD, fridgePovItems, paintBreadInMouth, paintGoggles, paintFridgeDark, paintFrontWall, paintFrost, paintMatch, type CandleState} from './props';
+import {flatCircle, hull, paintBox, paintSorted, qx, qy, qz, sphereAt, wFill, wInk, wp, wWash, type Item} from './world';
 
 // SET-KITCHEN (brief EDU-BRIEF-R1 set plan and VD03; look frame LF01, first shot S01-B01-SH02). Look-defining set written by
 // Film at W3.1; Boss hardens it into shot plates at W5.2. Named space KITCHEN: metres, origin on the floor under the cutting-
@@ -96,6 +97,8 @@ const paintShell = (p: Painter, c: YCam) => {
     for (let k = 0; k < 4; k++) wFill(p, c, 40250 + i * 4 + k, K.tileGrout, qz(wz + 0.003, x + row - 0.004, x + row + 0.004, 0.86 + k * 0.135, 0.86 + (k + 1) * 0.135));
   }
   wWash(p, c, 40370, K.wallShadow, 50, qz(wz + 0.004, 0.2, 1.2, 0.86, 1.4), 0.3, 0.6);
+  // W5.2 G-D (B05-SH04, the fridge POV looks toward +z): the front wall closes the room on the camera side; never seen before.
+  if (Math.cos(c.yaw) < -0.2) paintFrontWall(p, c, 3, -2.6, S.rightX, S.ceilY, K.wall);
 };
 
 // ------------------------------------------------------------------ window, light and sky
@@ -462,20 +465,58 @@ const paintLooseSkin = (p: Painter, id: number, cx: number, cy: number, sz: numb
  * normal and turns `turn[i]` radians about its own vertical axis (a cut face turning toward the lens). Halves stand on their
  * root ends, cut faces vertical; the same bulb proportions as `paintOnion` (1.06 r wide, 0.92 r tall).
  */
-export type OnionPiece = {kind: 'whole'; at: V3; r?: number} | {kind: 'halves'; at: V3; r?: number; n: number; sep: number | [number, number]; turn?: [number, number]};
-
-const hull = (pts: Pt[]): Pt[] => {
-  const q = pts.slice().sort((a, b) => a[0] - b[0] || a[1] - b[1]);
-  if (q.length < 3) return q;
-  const cr = (o: Pt, a: Pt, b: Pt) => (a[0] - o[0]) * (b[1] - o[1]) - (a[1] - o[1]) * (b[0] - o[0]);
-  const lo: Pt[] = [], up: Pt[] = [];
-  for (const v of q) { while (lo.length >= 2 && cr(lo[lo.length - 2], lo[lo.length - 1], v) <= 0) lo.pop(); lo.push(v); }
-  for (const v of q.slice().reverse()) { while (up.length >= 2 && cr(up[up.length - 2], up[up.length - 1], v) <= 0) up.pop(); up.push(v); }
-  return [...lo.slice(0, -1), ...up.slice(0, -1)];
+export type OnionPiece = (
+  | {kind: 'whole'; at: V3; r?: number}
+  | {kind: 'halves'; at: V3; r?: number; n: number; sep: number | [number, number]; turn?: [number, number]}
+  /** W5.2 G-C (B04-SH03): `n` cut slices lying flat on the board in a row from `at` along +x, ring face up, the newest last. */
+  | {kind: 'slices'; at: V3; r?: number; n: number}
+  /**
+   * W5.2 G-E (B06-SH04, O4): a fresh half onion lying cut face down, `at` the centre of its flat face on the board, `axis` the x-z
+   * angle of its stem-root axis (+axis end = the root). `cut`: a slice plane at `s` m along the axis from the centre, the knife's
+   * depth into it `depth` 0..1 (a groove over the dome), and the slice (the cap past `s`) falling away `fall` 0..1.
+   */
+  | {kind: 'dome'; at: V3; r?: number; axis: number; cut?: {s: number; depth: number; fall: number}}
+  /**
+   * W5.2 G-F (B07, O4): the same half onion turned cut face up, resting on its round side; `at` the centre of its footprint on the
+   * board, `axis` the x-z angle of the stem-root axis (+axis = root), `trim` metres sliced off the root end (B07-SH03 strokes).
+   */
+  | {kind: 'cup'; at: V3; r?: number; axis: number; trim?: number}
+) & {
+  /** W5.2 G-D (N4, O3 from the fridge): 0..1 white rime and specks on the skin (W5.3: no tint, no twinkle); `t` seconds. */
+  frost?: number; t?: number;
 };
 
+/**
+ * One onion slice lying flat on the board (W5.2 G-C, N4 pieces): a half-disc of the onion's section (`ang` points its round side), a
+ * thin darker side band for its thickness, the cream ring face with three ring arcs, the skin rim and a soft contact shadow.
+ */
+const paintOnionSlice = (p: Painter, c: YCam, seed: number, at: V3, R: number, ang: number, tint?: string) => {
+  const ON = tint ? mixColor(K.onion, tint, 0.4) : K.onion, FACE = tint ? mixColor('#f3ead2', tint, 0.3) : '#f3ead2';
+  const y0 = SET.board.y1 + 0.0005, th = 0.006;
+  const disc = (y: number, s = 1): V3[] => Array.from({length: 15}, (_, k) => {
+    const a = ang - Math.PI / 2 + (k / 14) * Math.PI;
+    return [at[0] + R * s * Math.cos(a), y, at[2] + R * s * Math.sin(a)];
+  });
+  const sh = wp(c, disc(y0).map(([x, y, z]): V3 => [x + 0.004, y, z + 0.004]));
+  if (sh.length >= 3) washAt(p, seed, '#3a2014', 90, sh, 0.1, 0.2);
+  const side = hull([...wp(c, disc(y0)), ...wp(c, disc(y0 + th))]);
+  if (side.length >= 3) hardFill(p, seed + 1, dk(ON, 0.25), side);
+  const top = wp(c, disc(y0 + th));
+  if (top.length < 3) return;
+  hardFill(p, seed + 2, FACE, top);
+  const wk = Math.max(0.5, (R * camUnit(c, at)) / 60);
+  [0.75, 0.5, 0.26].forEach((s, i) => {
+    const ring = wp(c, disc(y0 + th + 0.0002, s));
+    if (ring.length >= 3) inkLine(p, seed + 3 + i, ring.slice(0, -1), {closed: false, weight: wk * (i % 2 ? 0.7 : 1), color: i % 2 ? '#d9c79c' : '#c9b27e'});
+  });
+  inkLine(p, seed + 7, top, {weight: wk * 1.6, color: ON});
+};
+
+
 /** One onion half (`side` +1 / -1 of the cut normal). Cut face `#f3ead2` with ring lines, skin with layer lines, contact shadow. */
-const paintOnionHalf = (p: Painter, c: YCam, seed: number, at: V3, r: number, nAng: number, side: 1 | -1, sep: number, turn: number) => {
+const paintOnionHalf = (p: Painter, c: YCam, seed: number, at: V3, r: number, nAng: number, side: 1 | -1, sep: number, turn: number, tint?: string) => {
+  // W5.2 G-D: `tint` (O3 frost) mixes the skin 0.4 and the cut face 0.3 toward it (the kit tint painter does not reach hardFill).
+  const ON = tint ? mixColor(K.onion, tint, 0.4) : K.onion, FACE = tint ? mixColor('#f3ead2', tint, 0.3) : '#f3ead2';
   const a = r * 1.06, b = r * 0.92;
   // Local frame of this half: e1 = outward normal (turned), e3 = along the cut face, both horizontal.
   const ang = nAng + (side < 0 ? Math.PI : 0) + turn;
@@ -507,9 +548,9 @@ const paintOnionHalf = (p: Painter, c: YCam, seed: number, at: V3, r: number, nA
   }).filter((q): q is Pt => !!q);
   if (sh.length >= 3) washAt(p, seed, '#3a2014', 120, sh, 0.12, 0.2);
   const cx = hl.reduce((s, q) => s + q[0], 0) / hl.length, cy = hl.reduce((s, q) => s + q[1], 0) / hl.length;
-  hardFill(p, seed + 1, K.onion, hl);
+  hardFill(p, seed + 1, ON, hl);
   const sd = clipHalf(hl, [0.8, 0.6], cx * 0.8 + cy * 0.6 - r * unit * 0.15);
-  if (sd.length >= 3) washAt(p, seed + 2, dk(K.onion, 0.4), 150, sd, 0.2, 0.4);
+  if (sd.length >= 3) washAt(p, seed + 2, dk(ON, 0.4), 150, sd, 0.2, 0.4);
   // Layer lines on the visible skin: longitudes from the neck to the root, only where the surface faces the lens.
   const camW: V3 = [c.x, c.y, c.z];
   const facing = (v: V3, nrm: V3) => (camW[0] - v[0]) * nrm[0] + (camW[1] - v[1]) * nrm[1] + (camW[2] - v[2]) * nrm[2] > 0;
@@ -521,14 +562,14 @@ const paintOnionHalf = (p: Painter, c: YCam, seed: number, at: V3, r: number, nA
       const q = camPoint(c, v);
       if (q && facing(v, nrm)) pts.push(q);
     }
-    if (pts.length >= 3) inkLine(p, seed + 10 + k, pts, {closed: false, weight: wk * 1.1, color: dk(K.onion, 0.5), curve: 0.4});
+    if (pts.length >= 3) inkLine(p, seed + 10 + k, pts, {closed: false, weight: wk * 1.1, color: dk(ON, 0.5), curve: 0.4});
   }
   // Cut face: visible when its normal (-e1) points at the lens.
   const fn: V3 = [-e1[0], 0, -e1[2]], fc = W(0, 0, 0);
   if (facing(fc, fn) && fq.length >= 3) {
-    hardFill(p, seed + 20, '#f3ead2', fq);
+    hardFill(p, seed + 20, FACE, fq);
     // The skin rim round the face, then rings (the onion's layers), each ring a scaled copy of the face outline about its centre.
-    inkLine(p, seed + 21, fq, {weight: wk * 2.4, color: K.onion});
+    inkLine(p, seed + 21, fq, {weight: wk * 2.4, color: ON});
     const ctr = camPoint(c, fc);
     if (ctr) {
       [0.86, 0.72, 0.58, 0.45, 0.32, 0.2].forEach((s, i) => {
@@ -540,7 +581,7 @@ const paintOnionHalf = (p: Painter, c: YCam, seed: number, at: V3, r: number, nA
       washAt(p, seed + 31, '#fffaf0', 140, ell(ctr[0] - a * unit * 0.25, ctr[1] - b * unit * 0.35, a * unit * 0.18, b * unit * 0.1, 12, -0.3), 0.1, 0.2); // wet sheen
     }
   }
-  inkLine(p, seed + 40, hl, {weight: wk * 1.0, color: dk(K.onion, 0.6)});
+  inkLine(p, seed + 40, hl, {weight: wk * 1.0, color: dk(ON, 0.6)});
   // Half of the dry neck: a short papery stub on the top, leaning out over the skin side.
   const n0p = camPoint(c, S(0, 0)), n1p = camPoint(c, W(a * 0.1, b + r * 0.3, 0)), n2p = camPoint(c, W(a * 0.32, b + r * 0.36, 0));
   if (n0p && n1p && n2p) {
@@ -555,10 +596,239 @@ const paintOnionHalf = (p: Painter, c: YCam, seed: number, at: V3, r: number, nA
   }
 };
 
+/**
+ * A half onion lying cut face down (W5.2 G-E, N4 `O4`; B06-SH04): a dome 1.06 r high and wide over a 0.92 r half-axis, its skin
+ * longitudes running stem to root along the axis, a dry neck stub at the stem end (-axis) and the root tuft at the root end. With
+ * `cut` the dome is two parts split at the slice plane `s` (the knife's groove over the top while `depth` < 1 and before the slice
+ * falls), the slice (cap) sliding off along +axis by `fall` and showing the ringed cut face of the rest when that face meets the lens.
+ * `between` is painted after the farther part (the blade standing in the cut).
+ */
+const paintOnionDome = (p: Painter, c: YCam, seed: number, at: V3, r: number, axis: number, cut?: {s: number; depth: number; fall: number}, between?: () => void) => {
+  const A = r * 1.06, L = r * 0.92, e1: V3 = [Math.cos(axis), 0, Math.sin(axis)], e3: V3 = [-Math.sin(axis), 0, Math.cos(axis)];
+  const camW: V3 = [c.x, c.y, c.z], unit = camUnit(c, at), wk = Math.max(0.6, (r * unit) / 70);
+  const rho = (s: number) => Math.sqrt(Math.max(0, 1 - (s / L) ** 2));
+  const W = (s: number, al: number, sh = 0, y = at[1]): V3 => {
+    const k = rho(s);
+    return [at[0] + e1[0] * (s + sh) + e3[0] * A * k * Math.cos(al), y + A * k * Math.sin(al), at[2] + e1[2] * (s + sh) + e3[2] * A * k * Math.cos(al)];
+  };
+  const facing = (v: V3, n: V3) => (camW[0] - v[0]) * n[0] + (camW[1] - v[1]) * n[1] + (camW[2] - v[2]) * n[2] > 0;
+  const pts = (vs: V3[]) => vs.map((v) => camPoint(c, v)).filter((q): q is Pt => !!q);
+  const face = (s: number, sh: number, sc = 1): V3[] => Array.from({length: 17}, (_, k) => {
+    const al = (k / 16) * Math.PI, k0 = rho(s) * sc;
+    return [at[0] + e1[0] * (s + sh) + e3[0] * A * k0 * Math.cos(al), at[1] + A * k0 * Math.sin(al), at[2] + e1[2] * (s + sh) + e3[2] * A * k0 * Math.cos(al)];
+  });
+  type Part = {s0: number; s1: number; sh: number; faceS?: number; faceN?: 1 | -1; id: number};
+  const fall = cut ? Math.max(0, Math.min(1, cut.fall)) : 0, cs = cut ? cut.s : L;
+  // Split once the blade is in (depth > 0): the rest, then the blade (`between`), then the slice on the lens side of the plane
+  // (+axis toward the lens in B06-SH04), so the slice's skin hides the blade inside the cut.
+  const parts: Part[] = cut && (fall > 0 || cut.depth > 0)
+    ? [{s0: -L, s1: cs, sh: 0, faceS: cs, faceN: 1, id: 0}, {s0: cs, s1: L, sh: 0.028 * fall, faceS: cs, faceN: -1, id: 1}]
+    : [{s0: -L, s1: L, sh: 0, id: 0}];
+  const dep = (pt: Part) => camSpace(c, W((pt.s0 + pt.s1) / 2, Math.PI / 2, pt.sh)).d;
+  const paintPart = (pt: Part) => {
+    const sd = seed + pt.id * 200, grid: V3[] = [];
+    for (let i = 0; i <= 12; i++) for (let j = 0; j <= 12; j++) grid.push(W(pt.s0 + ((pt.s1 - pt.s0) * i) / 12, (j / 12) * Math.PI, pt.sh));
+    const hl = hull(pts(grid));
+    if (hl.length < 3) return;
+    // Contact shadow: the part's footprint on the board nudged toward the lens-right (window back-left).
+    const foot = hull(pts(Array.from({length: 24}, (_, k) => {
+      const s = pt.s0 + ((pt.s1 - pt.s0) * (k % 12)) / 11, al = k < 12 ? 0 : Math.PI, v = W(s, al, pt.sh, at[1] + 0.0005);
+      return [v[0] + 0.006, v[1], v[2] + 0.005] as V3;
+    })));
+    if (foot.length >= 3) washAt(p, sd, '#3a2014', 130, foot, 0.12, 0.2);
+    hardFill(p, sd + 1, K.onion, hl);
+    const cx = hl.reduce((s, q) => s + q[0], 0) / hl.length, cy = hl.reduce((s, q) => s + q[1], 0) / hl.length;
+    const shd = clipHalf(hl, [0.8, 0.6], cx * 0.8 + cy * 0.6 - r * unit * 0.1);
+    if (shd.length >= 3) washAt(p, sd + 2, dk(K.onion, 0.4), 150, shd, 0.2, 0.4);
+    for (let k = 0; k < 3; k++) {
+      const q = camPoint(c, W((pt.s0 + pt.s1) / 2 - 0.2 * (pt.s1 - pt.s0), 2.2, pt.sh));
+      if (q) hardFill(p.layer(0.1, sd + 100 + k), sd + 100 + k, '#f2c886', ell(q[0], q[1], (0.3 - 0.06 * k) * A * unit, (0.22 - 0.05 * k) * A * unit, 16, -0.3));
+    }
+    // Skin longitudes (constant angle round the axis), where the surface faces the lens.
+    for (let k = 1; k < 9; k++) {
+      const al = (k / 9) * Math.PI, line: Pt[] = [];
+      for (let i = 0; i <= 14; i++) {
+        const s = pt.s0 + ((pt.s1 - pt.s0) * i) / 14, v = W(s, al, pt.sh), ctr: V3 = [at[0] + e1[0] * (s + pt.sh), at[1], at[2] + e1[2] * (s + pt.sh)];
+        const q = camPoint(c, v);
+        if (q && facing(v, [v[0] - ctr[0], v[1] - ctr[1], v[2] - ctr[2]])) line.push(q);
+      }
+      if (line.length >= 3) inkLine(p, sd + 10 + k, line, {closed: false, weight: wk * (k > 4 ? 1.3 : 1.0), color: k > 4 ? dk(K.onion, 0.6) : dk(K.onion, 0.45), curve: 0.4});
+    }
+    // Ringed cut face at the slice plane, when it meets the lens.
+    if (pt.faceS !== undefined && pt.faceN) {
+      const n: V3 = [e1[0] * pt.faceN, 0, e1[2] * pt.faceN], fc = W(pt.faceS, Math.PI / 2, pt.sh, at[1]);
+      const fq = pts(face(pt.faceS, pt.sh));
+      if (facing([fc[0], at[1] + 0.02, fc[2]], n) && fq.length >= 3) {
+        hardFill(p, sd + 30, '#f3ead2', fq);
+        inkLine(p, sd + 31, fq, {weight: wk * 2.2, color: K.onion});
+        [0.82, 0.64, 0.46, 0.28].forEach((s, i) => {
+          const ring = pts(face(pt.faceS!, pt.sh, s));
+          if (ring.length >= 3) inkLine(p, sd + 32 + i, ring.slice(0, -1), {closed: false, weight: wk * (i % 2 ? 0.7 : 1.0), color: i % 2 ? '#d9c79c' : '#c9b27e'});
+        });
+      }
+    }
+    inkLine(p, sd + 40, hl, {weight: wk * 1.0, color: dk(K.onion, 0.6)});
+    // Root tuft at the +axis end, a dry neck stub at the -axis end.
+    if (pt.s1 >= L - 1e-6) {
+      const rt = camPoint(c, [at[0] + e1[0] * (L + pt.sh), at[1] + A * 0.3, at[2] + e1[2] * (L + pt.sh)]), R = r * unit;
+      if (rt) for (let k = 0; k < 9; k++) {
+        const f = k / 8 - 0.5, h = hash(sd + k * 3.1);
+        inkLine(p, sd + 50 + k, [[rt[0], rt[1] + f * R * 0.25], [rt[0] + R * (0.06 + 0.04 * h), rt[1] + f * R * 0.5], [rt[0] + R * (0.1 + 0.05 * h), rt[1] + f * R * 0.75 + R * 0.04]], {closed: false, weight: wk * 0.7, color: k % 3 ? '#cdb184' : '#8a6a42', curve: 0.5});
+      }
+    }
+    if (pt.s0 <= -L + 1e-6) {
+      const n0 = camPoint(c, [at[0] - e1[0] * L * 0.97, at[1] + A * 0.4, at[2] - e1[2] * L * 0.97]), nx = at[1] + A * 0.45;
+      const n1 = camPoint(c, [at[0] - e1[0] * (L + 0.018), nx, at[2] - e1[2] * (L + 0.018)]), n2 = camPoint(c, [at[0] - e1[0] * (L + 0.034), nx + 0.006, at[2] - e1[2] * (L + 0.034)]);
+      if (n0 && n1 && n2) {
+        inkLine(p, sd + 60, [n0, n1, n2], {closed: false, weight: wk * 3.2, color: '#7a4a24', curve: 0.5});
+        inkLine(p, sd + 61, [n0, n1], {closed: false, weight: wk * 1.0, color: '#d8a868', curve: 0.5});
+      }
+    }
+  };
+  const order = parts.slice().sort((a, b) => dep(b) - dep(a));
+  order.forEach((pt, i) => {
+    paintPart(pt);
+    if (i === 0) between?.();
+  });
+  {
+    // The knife's groove over the dome while the blade is in it (before the slice falls).
+    if (cut && fall <= 0 && cut.depth > 0) {
+      const d = Math.min(1, cut.depth), g = pts(Array.from({length: 13}, (_, k) => W(cut.s, Math.PI / 2 + (k / 12 - 0.5) * Math.PI * d)));
+      if (g.length >= 2) {
+        inkLine(p, seed + 90, g, {closed: false, weight: wk * 1.8, color: '#5e3818', curve: 0.4});
+        inkLine(p.layer(0.8, seed + 91), seed + 91, g.map(([x, y]): Pt => [x + wk, y + wk * 0.6]), {closed: false, weight: wk * 0.9, color: '#f6ecd0', curve: 0.4});
+      }
+    }
+  }
+};
+
+/** Cut-face height of the `cup` half above the board (its round side flattened a little where it rests), in units of `r`. */
+const CUP_H = 1.06 * 0.86;
+/**
+ * The half onion lying cut face up (W5.2 G-F, N4 `O4`; B07): a bowl of the dome's proportions (1.06 r across, 0.92 r half-axis)
+ * whose flat face sits CUP_H r above the board. The cut face is the brief's cream `#f3ead2` with the longitudinal section's
+ * layers: nested ovals that close in toward the root plate, alternate bands in `#dfe6c0` and a tan line at each layer edge (the
+ * pale green alone is ~1.1:1 on the cream), a yellow-green heart near the root and a wet sheen. Skin longitudes show on the visible
+ * belly under the rim, a dry neck stub at the stem end, the root tuft at the root end unless `trim` has cut it off.
+ */
+const paintOnionCup = (p: Painter, c: YCam, seed: number, at: V3, r: number, axis: number, trim = 0) => {
+  const A = r * 1.06, L = r * 0.92, h = r * CUP_H, s1 = L - Math.max(0, trim), e1: V3 = [Math.cos(axis), 0, Math.sin(axis)], e3: V3 = [-Math.sin(axis), 0, Math.cos(axis)];
+  const camW: V3 = [c.x, c.y, c.z], unit = camUnit(c, at), wk = Math.max(0.6, (r * unit) / 70);
+  const rho = (s: number) => Math.sqrt(Math.max(0, 1 - (s / L) ** 2));
+  const P3 = (s: number, u: number, y: number): V3 => [at[0] + e1[0] * s + e3[0] * u, y, at[2] + e1[2] * s + e3[2] * u];
+  /** Bowl surface: `al` 0..pi from one rim edge under the belly to the other. */
+  const B = (s: number, al: number): V3 => P3(s, A * rho(s) * Math.cos(al), at[1] + h - h * rho(s) * Math.sin(al));
+  const pts = (vs: V3[]) => vs.map((v) => camPoint(c, v)).filter((q): q is Pt => !!q);
+  /** Face outline scaled `k` about the point `sr` along the axis (k 1 = the rim), clipped at the trimmed end. */
+  const sr = L * 0.62;
+  const rim = (k: number, yOff = 0): V3[] => {
+    const out: V3[] = [];
+    for (let i = 0; i <= 40; i++) {
+      const a = (i / 40) * Math.PI * 2, s = L * Math.cos(a), w = A * Math.sin(a);
+      const sk = sr + (s - sr) * k;
+      out.push(P3(Math.min(sk, s1), sk > s1 ? Math.sign(w) * Math.min(Math.abs(w * k), A * rho(s1)) : w * k, at[1] + h + yOff));
+    }
+    return out;
+  };
+  const grid: V3[] = [];
+  for (let i = 0; i <= 12; i++) for (let j = 0; j <= 12; j++) grid.push(B(-L + ((s1 + L) * i) / 12, (j / 12) * Math.PI));
+  const face = pts(rim(1));
+  const hl = hull([...pts(grid), ...face]);
+  if (hl.length < 3) return;
+  // Contact shadow: the footprint (the belly's lowest line, widened) nudged toward the lens-right (window back-left).
+  const foot = hull(pts(Array.from({length: 24}, (_, k) => {
+    const s = -L * 0.85 + ((Math.min(s1, L * 0.85) + L * 0.85) * (k % 12)) / 11, u = (k < 12 ? 1 : -1) * A * 0.55 * rho(s);
+    return P3(s + 0.006, u, at[1] + 0.0005).map((v, i) => (i === 2 ? v + 0.005 : v)) as V3;
+  })));
+  // Shadow and belly shade are flat translucent layers, not washes: a wash's bleed re-rolls with the projected polygon, so under the
+  // moving B07 cameras it flickered (the kitchen wash flicker of G-D/G-E, here on a new piece).
+  if (foot.length >= 3) hardFill(p.layer(0.22, seed), seed, '#3a2014', foot);
+  // Root tuft first (the root end is the far end from every B07 camera): only what sticks out past the bowl shows.
+  if (trim <= 0) {
+    const rt = camPoint(c, P3(L, 0, at[1] + h * 0.7)), R = r * unit;
+    if (rt) for (let k = 0; k < 9; k++) {
+      const f = k / 8 - 0.5, hh = hash(seed + k * 3.1);
+      inkLine(p, seed + 85 + k, [[rt[0], rt[1] + f * R * 0.25], [rt[0] + R * (0.06 + 0.04 * hh), rt[1] + f * R * 0.5], [rt[0] + R * (0.1 + 0.05 * hh), rt[1] + f * R * 0.75 + R * 0.04]], {closed: false, weight: wk * 0.7, color: k % 3 ? '#cdb184' : '#8a6a42', curve: 0.5});
+    }
+  }
+  hardFill(p, seed + 1, K.onion, hl);
+  const cx = hl.reduce((a, q) => a + q[0], 0) / hl.length, cy = hl.reduce((a, q) => a + q[1], 0) / hl.length;
+  const shd = clipHalf(hl, [0.8, 0.6], cx * 0.8 + cy * 0.6 - r * unit * 0.1);
+  if (shd.length >= 3) hardFill(p.layer(0.3, seed + 2), seed + 2, dk(K.onion, 0.4), shd);
+  // Skin longitudes on the belly where it faces the lens.
+  // Each longitude splits where it turns away, so a line never jumps across a hidden stretch.
+  for (let k = 1; k < 9; k++) {
+    const al = (k / 9) * Math.PI, runs: Pt[][] = [[]];
+    for (let i = 1; i <= 13; i++) {
+      const s = -L + ((s1 + L) * i) / 14, v = B(s, al), ctr = P3(s, 0, at[1] + h);
+      const q = camPoint(c, v), n: V3 = [v[0] - ctr[0], v[1] - ctr[1], v[2] - ctr[2]];
+      if (q && (camW[0] - v[0]) * n[0] + (camW[1] - v[1]) * n[1] + (camW[2] - v[2]) * n[2] > 0) runs[runs.length - 1].push(q);
+      else if (runs[runs.length - 1].length) runs.push([]);
+    }
+    runs.forEach((line, j) => {
+      if (line.length >= 3) inkLine(p, seed + 100 + k * 5 + j, line, {closed: false, weight: wk * (k > 4 ? 1.3 : 1.0), color: k > 4 ? dk(K.onion, 0.6) : dk(K.onion, 0.45), curve: 0.4});
+    });
+  }
+  // The cut face (up): cream, alternate pale-green layer bands, tan layer lines, the heart and a wet sheen; a thick skin rim.
+  if (face.length >= 3 && c.y > at[1] + h) {
+    hardFill(p, seed + 30, '#f3ead2', face);
+    const K6 = [0.86, 0.72, 0.58, 0.45, 0.32, 0.2];
+    K6.forEach((k, i) => {
+      const ring = pts(rim(k, 0.0002));
+      if (ring.length < 3) return;
+      if (i % 2 === 0) hardFill(p.layer(0.75, seed + 40 + i), seed + 40 + i, '#dfe6c0', ring);
+      else hardFill(p, seed + 40 + i, '#f3ead2', ring);
+    });
+    K6.forEach((k, i) => {
+      const ring = pts(rim(k, 0.0003));
+      if (ring.length >= 3) inkLine(p, seed + 50 + i, ring, {weight: wk * (i % 2 ? 0.7 : 1.0), color: i % 2 ? '#d9c79c' : '#c9b27e'});
+    });
+    const heart = camPoint(c, P3(sr, 0, at[1] + h + 0.0004));
+    if (heart) washAt(p, seed + 60, '#d6dc98', 120, ell(heart[0], heart[1], A * unit * 0.14, A * unit * 0.07, 12), 0.1, 0.3);
+    const sheen = camPoint(c, P3(-L * 0.35, A * 0.3, at[1] + h + 0.0004));
+    if (sheen) washAt(p, seed + 61, '#fffaf0', 140, ell(sheen[0], sheen[1], A * unit * 0.22, A * unit * 0.07, 12, -0.2), 0.1, 0.2);
+    inkLine(p, seed + 62, face, {weight: wk * 2.4, color: K.onion});
+  }
+  inkLine(p, seed + 70, hl, {weight: wk * 1.0, color: dk(K.onion, 0.6)});
+  // Dry neck stub at the stem end (-axis), leaning out along the axis at the face's height.
+  const n0 = camPoint(c, P3(-L * 0.97, 0, at[1] + h * 0.9)), n1 = camPoint(c, P3(-L - 0.018, 0, at[1] + h * 0.95)), n2 = camPoint(c, P3(-L - 0.034, 0.004, at[1] + h + 0.004));
+  if (n0 && n1 && n2) {
+    inkLine(p, seed + 80, [n0, n1, n2], {closed: false, weight: wk * 3.2, color: '#7a4a24', curve: 0.5});
+    inkLine(p, seed + 81, [n0, n1], {closed: false, weight: wk * 1.0, color: '#d8a868', curve: 0.5});
+  }
+};
+/** Projected box of a `cup` piece (px): its top (the face's far rim), base, centre and width (B07 measurements and the bell anchor). */
+export const cupExtent = (c: YCam, at: V3, axis: number, r = SET.onionR) => {
+  const A = r * 1.06, L = r * 0.92, h = r * CUP_H, vs: V3[] = [];
+  for (let i = 0; i < 24; i++) {
+    const a = (i / 24) * Math.PI * 2, s = L * Math.cos(a), u = A * Math.sin(a);
+    for (const y of [at[1] + h, at[1]]) vs.push([at[0] + Math.cos(axis) * s - Math.sin(axis) * u * (y === at[1] ? 0.55 : 1), y, at[2] + Math.sin(axis) * s + Math.cos(axis) * u * (y === at[1] ? 0.55 : 1)]);
+  }
+  const q = vs.map((v) => camPoint(c, v)).filter((x): x is Pt => !!x);
+  if (!q.length) return null;
+  const xs = q.map((v) => v[0]), ys = q.map((v) => v[1]);
+  const x0 = Math.min(...xs), x1 = Math.max(...xs), y0 = Math.min(...ys), y1 = Math.max(...ys);
+  return {top: Math.round(y0), base: Math.round(y1), cx: Math.round((x0 + x1) / 2), cy: Math.round((y0 + y1) / 2), width: Math.round(x1 - x0)};
+};
+
 /** `between`: painted after the far half and before the near one (a blade standing in the cut). `sep` / `turn` per side [+n, -n]. */
-export const paintOnionPiece = (p: Painter, c: YCam, seed: number, o: OnionPiece, between?: () => void) => {
-  const r = o.r ?? SET.onionR;
-  if (o.kind === 'whole') { paintOnion(p, c, seed, o.at, r); between?.(); return; }
+export const paintOnionPiece = (p0: Painter, c: YCam, seed: number, o: OnionPiece, between?: () => void) => {
+  const fr = o.frost ?? 0;
+  // W5.2 G-D (O3): frost was an ice tint at the source plus a rime and sparkle pass; W5.3 fix round 1: no tint (the onion keeps its
+  // colour, the tint read as grey glass), the white rime pass alone over the projected bulb after the piece (props.ts `paintFrost`).
+  const p = p0, r = o.r ?? SET.onionR;
+  const frostOver = () => {
+    const s = fr > 0 && o.kind !== 'slices' ? sphereAt(c, o.at, r * (o.kind === 'halves' ? 1.15 : 1)) : null;
+    if (s) paintFrost(p, seed + 400, s.x, s.y - s.r * 0.05, s.r, fr);
+  };
+  if (o.kind === 'whole') { paintOnion(p, c, seed, o.at, r); frostOver(); between?.(); return; }
+  if (o.kind === 'dome') { paintOnionDome(p, c, seed, o.at, r, o.axis, o.cut, between); return; }
+  if (o.kind === 'cup') { paintOnionCup(p, c, seed, o.at, r, o.axis, o.trim); between?.(); return; }
+  if (o.kind === 'slices') {
+    for (let k = 0; k < o.n; k++) paintOnionSlice(p, c, seed + k * 10, [o.at[0] + 0.022 * k, o.at[1], o.at[2] + 0.012 * Math.sin(k * 2.3)], r * (0.95 - 0.04 * (k % 3)), -Math.PI / 2 + 0.25 * Math.sin(k * 1.7));
+    between?.();
+    return;
+  }
   // Far half first (the one whose centre is deeper in the picture).
   const sides: (1 | -1)[] = [1, -1], sepOf = (sd: 1 | -1) => (typeof o.sep === 'number' ? o.sep : o.sep[sd > 0 ? 0 : 1]);
   const depth = (sd: 1 | -1) => camSpace(c, [o.at[0] + Math.cos(o.n) * sd * (sepOf(sd) + r * 0.4), o.at[1], o.at[2] + Math.sin(o.n) * sd * (sepOf(sd) + r * 0.4)]).d;
@@ -566,6 +836,7 @@ export const paintOnionPiece = (p: Painter, c: YCam, seed: number, o: OnionPiece
     paintOnionHalf(p, c, seed + (sd > 0 ? 0 : 100), o.at, r, o.n, sd, sepOf(sd), (o.turn ?? [0, 0])[sd > 0 ? 0 : 1]);
     if (i === 0) between?.();
   });
+  frostOver();
 };
 
 /**
@@ -642,7 +913,102 @@ export const paintDroplets = (p: Painter, c: YCam, seed: number, o: {from: V3; s
   }
 };
 
-const boardItem = (pieces?: OnionPiece[], out?: CookOut, kn?: KitchenOpts['knife']): Item => ({
+/**
+ * Lilac onion gas rising in the kitchen (W5.2 G-C, N7; S01-B04-SH01). Three wisps leave the cut onion at `from` and rise toward
+ * `to` (the cook's eyes); `reach` 0..1 is how far the heads have travelled (heights from.y -> to.y), each head rolling into a
+ * small curl in the picture. The body: a broad soft haze, puffs strung along the path (kit fog-bank puffs, retinted) and three drifting filaments,
+ * widening as it rises (0.012 -> 0.06 m), fading in at the source and tapering into the curl; `alpha` scales the whole stack
+ * (default 1 = about 0.55 at the densest strand, 0.35 at the body's edges: sheet alpha 0.35-0.55). Painted as one depth-sorted item per wisp at its source, so the vapour sits
+ * after the board and the cook (it is between them and the lens) and the face under it keeps its own paint: the fog depth gate
+ * (DF-20261030-painted-fog-front-depth-gate), no global fade of what is behind.
+ */
+export type KitchenMist = {from: V3; to: V3; reach: number; t: number; alpha?: number;
+  /** W5.2 G-D: a waypoint (world m) the wisps bend through on the way to `to` (B05-SH02: 0.05 m in front of the bread, then up to the eyes). */
+  via?: V3;
+  /** W5.2 G-E: how many of the three wisps (default 3; B06-SH04's single thread is 1) and a width scale (default 1). */
+  n?: number; width?: number;
+};
+/** Per wisp: source offset (world m), end offset (m along the camera's right, m up) from `to`, sway (m), curl turn and radius (m), width and alpha scale, lag (0..1 of `reach`). */
+type MistWisp = {from: V3; to: [number, number]; sway: number; dir: 1 | -1; curl: number; w: number; a: number; lag: number};
+const MIST_WISPS: MistWisp[] = [
+  {from: [-0.03, 0.0, 0.02], to: [-0.075, 0.0], sway: -0.06, dir: -1, curl: 0.03, w: 1, a: 1, lag: 0},
+  {from: [0.03, 0.0, -0.015], to: [0.075, -0.01], sway: 0.055, dir: 1, curl: 0.026, w: 0.9, a: 0.9, lag: 0.06},
+  {from: [0.0, 0.0, 0.03], to: [0.0, -0.06], sway: 0.03, dir: -1, curl: 0.022, w: 0.8, a: 0.8, lag: 0.12},
+];
+/** `k`: the mist's index in `KitchenOpts.mist` (its seed block; 0 keeps the G-C seeds). */
+const mistItems = (m: KitchenMist, k = 0): Item[] =>
+  MIST_WISPS.slice(0, m.n ?? 3).map((wi, w) => ({at: add3(m.from, wi.from), bias: -0.06, draw: (p: Painter, c: YCam) => paintMistWisp(p, c, 43800 + k * 300 + w * 60, m, w)}));
+const paintMistWisp = (p: Painter, c: YCam, seed: number, m: KitchenMist, w: number) => {
+  const wi = MIST_WISPS[w], reach = Math.max(0, Math.min(1, (m.reach - wi.lag) / (1 - wi.lag)));
+  if (reach <= 0.02) return;
+  const right: V3 = [Math.cos(c.yaw), 0, Math.sin(c.yaw)], t = m.t;
+  const A0 = add3(m.from, wi.from);
+  const B0: V3 = [m.to[0] + right[0] * wi.to[0], m.to[1] + wi.to[1], m.to[2] + right[2] * wi.to[0]];
+  const N = 30, ph = t * 0.8 + w * 1.9, world: V3[] = [];
+  for (let k = 0; k <= N; k++) {
+    const s = (k / N) * reach, h = s ** 1.5; // rises first, drifts toward the face later
+    // The path runs almost along the lens axis in B04-SH01 (onion -> face), so its shape in the picture comes from the sideways
+    // terms: an outward lean (bulge) that comes back to the end point, plus a slow sway.
+    const sw = wi.sway * Math.sin(Math.PI * s) + 0.35 * Math.abs(wi.sway) * Math.sin(Math.PI * s * 1.3 + ph) * Math.sin(Math.PI * Math.min(1, s * 1.2));
+    if (m.via) {
+      // Through the waypoint: a quadratic curve A0 -> via -> B0 (the via shifted with the wisp's end offset), plus the sway.
+      const V: V3 = [m.via[0] + right[0] * wi.to[0] * 0.5, m.via[1], m.via[2] + right[2] * wi.to[0] * 0.5], a = (1 - s) * (1 - s), b = 2 * s * (1 - s), e = s * s;
+      world.push([a * A0[0] + b * V[0] + e * B0[0] + right[0] * sw, a * A0[1] + b * V[1] + e * B0[1], a * A0[2] + b * V[2] + e * B0[2] + right[2] * sw]);
+    } else world.push([A0[0] + (B0[0] - A0[0]) * h + right[0] * sw, A0[1] + (B0[1] - A0[1]) * s, A0[2] + (B0[2] - A0[2]) * h + right[2] * sw]);
+  }
+  const pts = world.map((v) => camPoint(c, v));
+  if (pts.some((q) => !q)) return;
+  const all = pts as Pt[];
+  const unitAt = world.map((v) => camUnit(c, v));
+  // The curl at the head, in the picture (tangent to the path), radius in metres at the head's projection.
+  const [ex, ey] = all[N], [qx, qy] = all[N - 1], hl = Math.hypot(ex - qx, ey - qy) || 1, hx = (ex - qx) / hl, hy = (ey - qy) / hl;
+  const r0 = wi.curl * unitAt[N] * Math.min(1, reach / 0.6), cx = ex - hy * r0 * wi.dir, cy = ey + hx * r0 * wi.dir, phi0 = Math.atan2(ey - cy, ex - cx);
+  const curl: Pt[] = [];
+  for (let k = 1; k <= 14; k++) {
+    const th = (k / 14) * Math.PI * 1.7, r = r0 * (1 - 0.55 * (k / 14));
+    curl.push([cx + r * Math.cos(phi0 + wi.dir * th), cy + r * Math.sin(phi0 + wi.dir * th)]);
+    unitAt.push(unitAt[N]);
+  }
+  const line = [...all, ...curl], n = line.length - 1;
+  const hw = (f: number) => (m.width ?? 1) * wi.w * (0.012 + 0.048 * Math.min(1, (f * n) / N)) * unitAt[Math.round(f * n)] * (1 + 0.15 * Math.sin(f * 8 + w * 2.1 + t * 0.8));
+  const env = (f: number) => Math.min(1, f / 0.2) * Math.pow(Math.min(1, (1 - f) / 0.15), 0.7); // fade in at the source, taper into the curl
+  const A = (m.alpha ?? 1) * wi.a;
+  const nrm = line.map((_, k): Pt => {
+    const pa = line[Math.max(0, k - 1)], pb = line[Math.min(n, k + 1)], d = Math.hypot(pb[0] - pa[0], pb[1] - pa[1]) || 1;
+    return [-(pb[1] - pa[1]) / d, (pb[0] - pa[0]) / d];
+  });
+  const ribbonOf = (q: Pt[], wf: (f: number) => number): Pt[] => {
+    const L: Pt[] = [], R: Pt[] = [];
+    q.forEach((v, k) => {
+      const ww = wf(k / n);
+      L.push([v[0] + nrm[k][0] * ww, v[1] + nrm[k][1] * ww]);
+      R.push([v[0] - nrm[k][0] * ww, v[1] - nrm[k][1] * ww]);
+    });
+    return [...L, ...R.reverse()];
+  };
+  const veil = (id: number, color: string, a: number, q: Pt[]) => { if (a > 0.002 && q.length >= 3) hardFill(p.layer(a, id), id, color, q); };
+  ([[1.6, 0.08], [1.1, 0.1]] as const).forEach(([gw, al], i) => veil(seed + i, '#8f5cf5', al * A, ribbonOf(line, (f) => hw(f) * gw * env(f))));
+  // Puffs (the kit fog bank's drifting puffs, retinted and strung along the path): soft stacked ovals growing as the gas rises,
+  // each drifting on its own phase, so the body reads as a cloud of gas and not as a ribbon.
+  for (let k = 2; k < n; k += 3) {
+    const f = k / n, r = hw(f) * 1.5 * env(f), j = hash(seed + k * 1.3);
+    if (r < 2) continue;
+    const cx2 = line[k][0] + r * 0.35 * Math.sin(t * 0.9 + k * 1.7), cy2 = line[k][1] + r * 0.2 * Math.cos(t * 0.7 + k);
+    for (let i = 0; i < 4; i++) veil(seed + 100 + k * 4 + i, '#9d6bff', 0.06 * A, ell(cx2, cy2, r * (1 - 0.18 * i) * (0.9 + 0.3 * j), r * (1 - 0.18 * i) * 0.8, 14, j * 3));
+  }
+  [-0.6, 0, 0.6].forEach((sj, j) => {
+    const q = line.map((v, k): Pt => {
+      const f = k / n, a = hw(f) * (sj + 0.28 * Math.sin(f * 7 + j * 1.7 + t * (0.5 + 0.12 * j)));
+      return [v[0] + nrm[k][0] * a, v[1] + nrm[k][1] * a];
+    });
+    const fw = (f: number) => hw(f) * (0.3 + 0.1 * Math.sin(f * 5 + j * 2.3)) * env(f);
+    ([[1.4, 0.08], [0.8, 0.12]] as const).forEach(([gw, al], i) => veil(seed + 5 + j * 4 + i, j === 1 ? '#7c40f0' : '#9a5cff', al * A, ribbonOf(q, (f) => fw(f) * gw)));
+  });
+  // A pale lilac lift along the window side (upper left) of the body, soft, so the gas reads lit and not as a purple stain.
+  veil(seed + 40, '#d8c4ff', 0.1 * A, ribbonOf(line.map((v, k): Pt => [v[0] - 0.35 * hw(k / n), v[1] - 0.2 * hw(k / n)]), (f) => hw(f) * 0.45 * env(f)));
+};
+
+const boardItem = (pieces?: OnionPiece[], out?: CookOut, kn?: KitchenOpts['knife'], rest?: KnifeHold): Item => ({
   at: [SET.onion[0], 0, SET.onion[2]],
   bias: -0.05,
   draw: (p, c) => {
@@ -679,6 +1045,16 @@ const boardItem = (pieces?: OnionPiece[], out?: CookOut, kn?: KitchenOpts['knife
       if (q) paintLooseSkin(p, 41240 + k * 12, q[0], q[1], sz * camUnit(c, [SET.onion[0] + fx, Y, SET.onion[2] + fz]), ang);
     });
     if (out?.knife) paintKnife(p, 42100, out.knife.wrist, out.knife.ang, out.knife.unit, out.knife.wu, true, out.knife.fist);
+    // W5.2 G-D: the knife put down on the board (no hand): the same picture knife as a hold, handle and all, with a thin shadow.
+    if (rest) {
+      const W = camPoint(c, rest.grip), P = camPoint(c, rest.tip);
+      if (W && P) {
+        const L = Math.hypot(P[0] - W[0], P[1] - W[1]) / 0.3, ang = Math.atan2(P[1] - W[1], P[0] - W[0]), wu = Math.max(L, camUnit(c, rest.grip) * 0.8);
+        const n: Pt = [-Math.sin(ang), Math.cos(ang)], sh = 0.006 * wu;
+        washAt(p, 42150, '#3a2014', 110, [[W[0] + n[0] * sh, W[1] + n[1] * sh + sh], [P[0] + n[0] * sh, P[1] + n[1] * sh + sh], [P[0] + n[0] * sh * 3, P[1] + n[1] * sh * 3 + sh * 2], [W[0] + n[0] * sh * 3, W[1] + n[1] * sh * 3 + sh * 2]], 0.1, 0.2);
+        paintKnife(p, 42160, W, ang, L, wu);
+      }
+    }
     if (!pieces) paintOnion(p, c, 41120, SET.onion, SET.onionR);
     else pieces.forEach((o, i) => paintOnionPiece(p, c, i ? 44000 + i * 500 : 41120, o, kn && kn.inPiece === i ? () => paintWorldKnife(p, c, 42500, kn.tip, kn.dirAng, kn.tilt, kn.hand) : undefined));
   },
@@ -816,6 +1192,51 @@ export type CookState = {
    */
   raise?: number; hold?: KnifeHold; holdMix?: number; holdElbow?: [number, number];
   lHand?: V3; lFlat?: number; faceAdd?: Partial<FaceState>; rise?: number;
+  /** W5.2 G-C: comic waterfall tears 0..1 (`paintWaterfallTears`, B04-SH03). */
+  waterfall?: number;
+  /**
+   * W5.2 G-D (B05). `at`: ground point (default `SET.cook`; B05-SH04 stands at the fridge). A `hold` without the knife drives the
+   * right wrist the same way (laying the knife down, picking it up, a match). `rPose`: the right arm blended by `mix` toward kit pose
+   * `a` (or `poseMix(a, b, u)`), `off` metres (picture right, up), `knifeAng` the knife's picture angle there (P06 shrug: point
+   * down). `lPose`: the left arm from its rest on the island toward pose `a` by `mix`; `lRest`: the left hand rests on the island
+   * without the knife. `rReach`: the right wrist reaching to a world point (open hand). `bread`: a slice in the mouth (N8),
+   * `bob` m down, `tilt` rad. `cold` 0..1: the fridge's cold light on her (B05-SH04).
+   */
+  at?: V3;
+  rPose?: {a: AnyPoseId; b?: AnyPoseId; u?: number; mix: number; off?: [number, number]; knifeAng?: number};
+  lPose?: {a: AnyPoseId; mix: number;
+    /** W5.2 G-E: blend `poseMix(a, b, u)`, take the kit pose's RIGHT arm mirrored about her centre line (`mirror`: P24 eye wipe with the left hand), `off` metres (picture right, up). */
+    b?: AnyPoseId; u?: number; mirror?: boolean; off?: [number, number]};
+  lRest?: boolean;
+  /**
+   * W5.3 fix round 2 (B05-SH03 SS-R3, "keep the elbow visibly bent"): 0..1 mix of the left elbow from its default (hanging at her
+   * side) toward a bent elbow in the picture: 0.45 of the way from the shoulder to the wrist, dropped 0.09 m (x armScale) below that
+   * line, so a long reach (the wick, about 0.68 m) reads as upper arm + forearm with a bend, not one bar. Off when absent.
+   */
+  lBend?: number;
+  /**
+   * W6 (B05-SH03, user: "two palms at the candle"): a left hand held up in the air (the match at the wick). `handItem` repaints the
+   * rig's own open hand (forearm direction, rig size, wrist at the target) instead of its island palm (turned 0.5 rad, sized by the
+   * hand's depth), which showed beside the rig's hand as a second palm; both drop the thumb lobe, which hung under the palm like
+   * another one. Off when absent.
+   */
+  lAirHand?: boolean;
+  /**
+   * W5.3 fix round 2 (B05-SH04 `carryR.hand`): `elbow` a world elbow point (default: between the shoulder and the wrist); `hide`
+   * the world centre of a sphere (the carried onion, painted after the cook) the rig's own open hand is tucked behind: the rig's wrist goes to
+   * the sphere's middle so its hand lies inside the sphere's picture circle, while `out.reach` keeps `to` as the wrist.
+   */
+  rReach?: {to: V3; mix: number; elbow?: V3; hide?: V3};
+  bread?: {bob: number; tilt: number};
+  cold?: number;
+  /** W5.3 fix round 1 (B05-SH04): the fridge's cool key on her face and apron, 0..1 (off when absent). */
+  coldKey?: number;
+  /**
+   * W5.2 G-E (N8 swim goggles, B06-SH02/SH03): `lift` head units the lenses sit above the eyes (0 = on); `held` 0..1 the strap
+   * ends at her two hands (stretched over the curls) instead of round the head; `squash` 0..1 the snap; `bounce` the curls' bounce
+   * (signed, head units).
+   */
+  goggles?: {lift: number; held?: number; squash?: number; bounce?: number};
 };
 const lerpPt = (a: Pt, b: Pt, u: number): Pt => [a[0] + (b[0] - a[0]) * u, a[1] + (b[1] - a[1]) * u];
 const lerpAng = (a: number, b: number, u: number) => {
@@ -840,20 +1261,26 @@ const paintKnife = (p: Painter, seed: number, wrist: Pt, ang: number, unit: numb
   inkLine(p, seed + 3, blade, {weight: 0.8, color: '#4d565c'});
 };
 
-type CookOut = {a?: FigAnchors; arm?: {E: Pt; T: Pt; unit: number; hu: number; flat?: number}; knife?: {wrist: Pt; ang: number; unit: number; wu: number; fist: number}};
+type CookOut = {
+  /** W5.3: the waterfall tears' frame, painted after the set (`paintKitchen`) so the falls land on the island top in front of it. */
+  falls?: {a: FigAnchors; u: number; Kpx: number; hc: Pt; rot: (q: Pt) => Pt; level: number; t: number; land: [Pt, Pt]};
+  /** W5.3: the right arm's reach (`rReach`) in px, for `carryR.hand` to repaint the forearm and hand over the onion. */
+  reach?: {E: Pt; T: Pt; unit: number; mix: number; cold: number};
+  a?: FigAnchors; arm?: {E: Pt; T: Pt; unit: number; hu: number; flat?: number; air?: boolean}; knife?: {wrist: Pt; ang: number; unit: number; wu: number; fist: number}};
 /** Wrist of the cook's resting hand on the island top (B01-SH02, P07 + knife raised). */
 const HAND_AT: V3 = [0.15, 0.9, -0.27];
 const cookItem = (t: number, st: CookState, out: CookOut): Item => ({
-  at: SET.cook,
-  draw: (p, c) => {
-    const at = SET.cook, g = camPoint(c, at), u = camUnit(c, at);
+  at: st.at ?? SET.cook,
+  draw: (p0, c) => {
+    const at = st.at ?? SET.cook, g = camPoint(c, at), u = camUnit(c, at);
     if (!g) return;
+    const p = p0;
     // Squared to the lens (front view): facing set from the camera of this frame's shot, passed in by the look frame (`facingCam`).
     const pose = poseFor(st.pose, COOK, g, u, 'front');
     const face = {...EXPRESSIONS[st.face], ...(st.look ? {look: st.look} : {}), ...(st.faceAdd ?? {})};
     if (st.rise) pose.rise = (pose.rise ?? 0) + st.rise;
     let knifeAng = -Math.PI / 2 - 0.35, knifeU = u, knifeW = u;
-    if (st.knife === 'raised' && st.pose === 'P07' && pose.rArm?.via) {
+    if ((st.knife === 'raised' || st.hold) && st.pose === 'P07' && pose.rArm?.via) {
       // W3.1 v2 (viewer check r1: elbow/shoulder seams and a stiff vertical forearm): the knife is held up beside her face with
       // the elbow tucked back at her side (CP-P02, `behind: 'upper'`), so the elbow joint and the sleeve cut sit behind the torso
       // and only the forearm and fist show, rising past the shoulder line. Both bones at the P07 length (0.26 m); the shoulder
@@ -886,32 +1313,73 @@ const cookItem = (t: number, st: CookState, out: CookOut): Item => ({
     // right) keeps the elbow at her side (CP-P arm depth) and the forearm reaches forward and out to the island top, the wrist
     // on the top at HAND_AT (0.03 m inside the far edge). The rig paints the whole arm; the island then covers the part below
     // its far edge, and `handItem` repaints the forearm and the open mitten hand over the top with a contact shadow.
-    if (st.knife === 'raised') {
+    // W5.2 G-D: the right arm blended toward a kit pose (wipe, thinking, shrug) or reaching to a world point.
+    if (st.rPose && st.rPose.mix > 0 && pose.rArm) {
+      const R = st.rPose, m = Math.min(1, R.mix), B = (R.b ? poseMix(R.a, R.b, R.u ?? 0, COOK, g, u, 'front') : poseFor(R.a, COOK, g, u, 'front')).rArm;
+      if (B) {
+        const o = R.off ?? [0, 0], off = (q: Pt): Pt => [q[0] + o[0] * u, q[1] - o[1] * u], A = pose.rArm;
+        pose.rArm = {...A, to: lerpPt(A.to, off(B.to), m), via: lerpPt(A.via ?? B.via ?? A.to, off(B.via ?? B.to), m), behind: m > 0.5 ? B.behind : A.behind};
+        if (R.knifeAng !== undefined) knifeAng = lerpAng(knifeAng, R.knifeAng, m);
+      }
+    }
+    if (st.rReach && st.rReach.mix > 0 && pose.rArm) {
+      const T = camPoint(c, st.rReach.to), sh = shoulderPoint(COOK, g, u, {...pose, view: 'front'}, 'r');
+      if (T) {
+        const m = Math.min(1, st.rReach.mix), A = pose.rArm, E0 = st.rReach.elbow ? camPoint(c, st.rReach.elbow) : null;
+        const E: Pt = E0 ?? [(sh[0] + T[0]) / 2 - 0.04 * u, (sh[1] + T[1]) / 2], H = st.rReach.hide, C = H ? camPoint(c, H) : null;
+        // `hide`: the rig's hand (about 0.125 m x handScale from its wrist along the forearm) centred on the sphere's middle.
+        let Tr = T;
+        if (C) { const dx = C[0] - E[0], dy = C[1] - E[1], n = Math.hypot(dx, dy) || 1, h = 0.0625 * u * (KITCHEN_LIGHT.handScale ?? 1); Tr = [C[0] - (dx / n) * h, C[1] - (dy / n) * h]; }
+        pose.rArm = {to: lerpPt(A.to, Tr, m), via: lerpPt(A.via ?? E, E, m), open: 1};
+        out.reach = {E: pose.rArm.via ?? E, T: C ? lerpPt(A.to, T, m) : pose.rArm.to, unit: u, mix: m, cold: st.coldKey ?? 0};
+      }
+    }
+    if (st.knife === 'raised' || st.lRest) {
       const k = COOK.armScale ?? 1, sh = shoulderPoint(COOK, g, u, {...pose, view: 'front'}, 'l');
       const LH = st.lHand ?? HAND_AT, T0 = camPoint(c, LH);
       if (T0) {
-        const E: Pt = [sh[0] + 0.03 * k * u, sh[1] + 0.25 * k * u];
-        pose.lArm = {via: E, to: T0, open: 1};
-        out.arm = {E, T: T0, unit: u, hu: camUnit(c, LH), flat: st.lFlat ?? (st.lHand ? 0 : 1)};
+        let E: Pt = [sh[0] + 0.03 * k * u, sh[1] + 0.25 * k * u];
+        if (st.lBend) {
+          // The perpendicular to shoulder -> wrist that points down in the picture.
+          const dx = T0[0] - sh[0], dy = T0[1] - sh[1], n = Math.hypot(dx, dy) || 1, s0 = dx >= 0 ? 1 : -1, drop = 0.09 * k * u;
+          const B: Pt = [sh[0] + 0.45 * dx - (s0 * dy / n) * drop, sh[1] + 0.45 * dy + (s0 * dx / n) * drop];
+          E = lerpPt(E, B, Math.min(1, st.lBend));
+        }
+        pose.lArm = {via: E, to: T0, open: 1, ...(st.lAirHand ? {noThumb: true} : {})};
+        out.arm = {E, T: T0, unit: u, hu: camUnit(c, LH), flat: st.lFlat ?? (st.lHand ? 0 : 1), ...(st.lAirHand ? {air: true} : {})};
+        // W5.2 G-D (P06 shrug): the left hand leaves the island toward the pose; past halfway the rig's own open hand shows it.
+        const LP = st.lPose, P = LP && LP.mix > 0 ? (LP.b ? poseMix(LP.a, LP.b, LP.u ?? 0, COOK, g, u, 'front') : poseFor(LP.a, COOK, g, u, 'front')) : undefined;
+        // W5.2 G-E: `mirror` takes the pose's right arm reflected about her centre line (a left-hand eye wipe from P24).
+        const Bm = P && LP?.mirror ? P.rArm : P?.lArm, o = LP?.off ?? [0, 0];
+        const mr = (q: Pt): Pt => [(LP?.mirror ? 2 * g[0] - q[0] : q[0]) + o[0] * u, q[1] - o[1] * u];
+        const B = Bm ? {to: mr(Bm.to), via: Bm.via ? mr(Bm.via) : undefined} : undefined;
+        if (st.lPose && B) {
+          const m = Math.min(1, st.lPose.mix), via = lerpPt(E, B.via ?? B.to, m), to = lerpPt(T0, B.to, m);
+          // The shrug's palm-up hand points out to picture right, so the thumb lies on the upper side (v is down there): open -1.
+          pose.lArm = {via, to, open: LP?.a === 'P06' ? -1 : 1};
+          out.arm = m < 0.5 ? {...out.arm, E: via, T: to, flat: (out.arm.flat ?? 1) * (1 - 2 * m)} : undefined;
+        }
       }
     }
     // Knife first, so the rig's fist (KITCHEN_LIGHT.shaped, UT14) closes over the handle: grip from the pose's wrist target.
     // W5.2 G-A: once the knife comes down in front of her (hold mix > 0.35) its blade is painted by the board, after the island
     // and before the onion pieces (a blade through the onion reads inside it); the rig's fist covers the handle.
-    const late = !!st.hold && (st.holdMix ?? 1) > 0.35;
+    // W5.2 G-D: a shrug (`rPose` past halfway) brings the knife back to the fist in front of her: painted with the cook again.
+    const late = !!st.hold && (st.holdMix ?? 1) > 0.35 && !(st.rPose && st.rPose.mix > 0.5);
     if (st.knife === 'raised' && pose.rArm) {
       if (late) out.knife = {wrist: pose.rArm.to, ang: knifeAng, unit: knifeU, wu: knifeW, fist: 0.085 * u * (KITCHEN_LIGHT.handScale ?? 1)};
       else paintKnife(p, 42100, pose.rArm.to, knifeAng, knifeU, knifeW);
     }
-    const a = drawFigure(p, COOK, g, u, {...pose, face, headCock: st.headCock, light: KITCHEN_LIGHT}, t);
+    // W5.3 fix round 1: `coldKey` cools the skin itself (the fridge key is frontal, so the whole face takes it evenly; a veil over
+    // the drawn head either banded or tinted the fringe and brows).
+    const fig = st.coldKey ? {...COOK, head: {...COOK.head, skin: mixColor(COOK.head.skin, FRIDGE_COLD, 0.24 * st.coldKey)}} : COOK;
+    const a = drawFigure(p, fig, g, u, {...pose, face, headCock: st.headCock, light: KITCHEN_LIGHT}, t);
     // W5.2 v6 (viewer check r5: "2-3 px warm hair rim, no tan streak"): KITCHEN_LIGHT's straight-cut rim band is cut to a
     // sliver (rimTo 0.006), and the window rim on the hair is one thin warm line just inside the upper-left silhouette of
     // the curly cloud (kit `hairFront('curly').back`, placed with the rig's own head frame: K = HD / HEAD_SPAN, head cock
     // about the neck-top pivot), fading in and out along the arc that faces the window.
+    const {Kpx, hc, rot} = headFrame(a, u, st.headCock ?? 0);
     if (COOK.head.cut === 'curly') {
-      const HD = H * (COOK.headScale ?? 1), Kpx = (HD / HEAD_SPAN) * u, d = CHIN * Kpx - 0.051 * u, th = ((st.headCock ?? 0) * Math.PI) / 180;
-      const pv: Pt = [a.head[0] - d * Math.sin(th), a.head[1] + d * Math.cos(th)], hc: Pt = [pv[0], pv[1] - d];
-      const rot = ([x, y]: Pt): Pt => [pv[0] + (x - pv[0]) * Math.cos(th) - (y - pv[1]) * Math.sin(th), pv[1] + (x - pv[0]) * Math.sin(th) + (y - pv[1]) * Math.cos(th)];
       const cloudPts = (hairFront('curly').back ?? [])[0] ?? [];
       const lit = [-0.88, -0.48], arc: {q: Pt; w: number}[] = [];
       cloudPts.slice(0, 81).forEach(([x, y]) => {
@@ -929,9 +1397,126 @@ const cookItem = (t: number, st: CookState, out: CookOut): Item => ({
     const S = (du: number, dv: number): Pt => [g[0] + du * u, g[1] - dv * u];
     for (const sd of [-1, 1]) solid(p, 42060 + sd, APRON, [S(sd * 0.1, hip + 0.04), S(sd * 0.125, hip + 0.04), S(sd * 0.17, 0.5), S(sd * 0.1, 0.5)], 3, 0.06, 0.2);
     paintBibApron(p, COOK, g, u, 42000, a);
+    if (st.waterfall) {
+      // W5.3 fix round 1: each fall lands on the island top 0.55 m out to her side, just inside its far edge (behind the board).
+      const L = [-1, 1].map((sd) => camPoint(c, [at[0] + sd * 0.55, SET.board.y1 - 0.015, -0.24])).filter((q): q is Pt => !!q).sort((x, y) => x[0] - y[0]);
+      if (L.length === 2) out.falls = {a, u, Kpx, hc, rot, level: st.waterfall, t, land: [L[0], L[1]]};
+    }
+    // W5.2 G-D (N8, B05-SH02): the bread slice held in her teeth, over the mouth (head units y 0.6, kit head.ts `my`).
+    // W5.2 G-D (B05-SH04): the fridge's cold light falls on her from the lens side: a soft cold pool over her head and chest
+    // (and the wall round her), three stacked veils (the kit tint painter does not reach the rig's brush fills).
+    if (st.cold) for (let k = 0; k < 3; k++) hardFill(p.layer(0.035 * st.cold, 42900 + k), 42900 + k, FRIDGE_COLD, ell(g[0], a.head[1] + 0.1 * u, (0.26 + 0.1 * k) * u, (0.3 + 0.1 * k) * u, 24));
+    // W5.3 fix round 1 (viewer check r1: "no cold light on the face", sheet acceptance c 1170): `coldKey` 0..1 is the fridge's cool
+    // key itself, frontal from the lens: the skin is cooled in the figure def above, plus a light cool veil over the bib. Absent
+    // paints as W5.2.
+    if (st.coldKey) hardFill(p.layer(0.14 * st.coldKey, 42913), 42913, FRIDGE_COLD, ell(g[0], a.head[1] + 0.5 * u, 0.12 * u, 0.15 * u, 20));
+    if (st.goggles) {
+      // W5.2 G-E (N8): the goggles over the face in the rig's head frame (eyes at head units (+-0.4, 0.05)); the strap is pulled up
+      // over the curls while she stretches it, else runs to the curl cloud's edge at the temples (where it squashes the curls).
+      const P = (x: number, y: number): Pt => rot([hc[0] + x * Kpx, hc[1] + y * Kpx]);
+      const cloud = (hairFront('curly').back ?? [])[0] ?? [], edge = cloud.filter(([, y]) => Math.abs(y + 0.05) < 0.2).reduce((m, [x]) => Math.max(m, Math.abs(x)), 1.05);
+      paintGoggles(p, 48100, P, Kpx, {...st.goggles, edge: edge * 0.95, hair: COOK.head.hair});
+    }
+    if (st.bread) paintBreadInMouth(p, 42800, rot([hc[0], hc[1] + 0.6 * Kpx + st.bread.bob * u]), u, st.bread.tilt + ((st.headCock ?? 0) * Math.PI) / 180, toneOf(COOK.head.skin, KITCHEN_LIGHT));
     out.a = a;
   },
 });
+
+/** The rig's front head frame in px: head units `Kpx`, the un-cocked head centre `hc` and the head-cock rotation about the neck. */
+const headFrame = (a: FigAnchors, u: number, cockDeg: number) => {
+  const HD = H * (COOK.headScale ?? 1), Kpx = (HD / HEAD_SPAN) * u, d = CHIN * Kpx - 0.051 * u, th = (cockDeg * Math.PI) / 180;
+  const pv: Pt = [a.head[0] - d * Math.sin(th), a.head[1] + d * Math.cos(th)], hc: Pt = [pv[0], pv[1] - d];
+  const rot = ([x, y]: Pt): Pt => [pv[0] + (x - pv[0]) * Math.cos(th) - (y - pv[1]) * Math.sin(th), pv[1] + (x - pv[0]) * Math.sin(th) + (y - pv[1]) * Math.cos(th)];
+  return {Kpx, hc, rot};
+};
+
+/**
+ * Comic waterfall tears (W5.2 G-C, N7 `new: waterfall-tears FX`; S01-B04-SH03): from under each lower lid (head units
+ * (+-0.44, 0.2), the kit's tear-stream start) a jet spouts up and out past the temple, arcs over and falls outside the shoulder onto
+ * the island top beside her, splashing there. W5.3 fix round 1 (viewer check r1: the W5.2 arcs fell back inside the shoulders onto
+ * the bib and read as a stethoscope / headphone cord): open fountain arcs (cubic, crest 0.45 head units above the lid, 2.2 out) that
+ * land on the island top 0.55 m out to each side of her, just inside its far edge (`land`, projected by the cook item), clear of both
+ * hands; painted after the set so the landing is not under the island. The jet tapers into the fall and breaks into drops over its
+ * last 15 %. `level` 0..1 grows the arcs from the lid; `t` runs
+ * the flow (white streaks travelling along each arc), the beads breaking off its outer edge and the splash. Water as light: a
+ * wobbling edge (a clean even band read as a tube), a soft spray veil, a deeper blue underside, a lit core and splash beads round
+ * the landing. Painted after the apron, in front of the whole figure.
+ */
+const paintWaterfallTears = (p: Painter, seed: number, w: NonNullable<CookOut['falls']>) => {
+  const {Kpx, hc, rot, level, t} = w;
+  const lv = Math.max(0, Math.min(1, level));
+  if (lv <= 0) return;
+  const veil = (id: number, color: string, al: number, q: Pt[]) => { if (al > 0.002 && q.length >= 3) hardFill(p.layer(al, id), id, color, q); };
+  for (const side of [-1, 1] as const) {
+    const P0 = rot([hc[0] + side * 0.44 * Kpx, hc[1] + 0.2 * Kpx]);
+    const C1 = rot([hc[0] + side * 1.05 * Kpx, hc[1] - 0.45 * Kpx]); // spouts up and out past the temple
+    const C2 = rot([hc[0] + side * 2.2 * Kpx, hc[1] - 0.35 * Kpx]);
+    const P2 = w.land[side < 0 ? 0 : 1];
+    const bz = (s: number): Pt => {
+      const v = 1 - s;
+      return [v ** 3 * P0[0] + 3 * v * v * s * C1[0] + 3 * v * s * s * C2[0] + s ** 3 * P2[0], v ** 3 * P0[1] + 3 * v * v * s * C1[1] + 3 * v * s * s * C2[1] + s ** 3 * P2[1]];
+    };
+    const JET = 0.85, N = 24, arc = Array.from({length: N + 1}, (_, k) => bz((k / N) * Math.min(lv, JET)));
+    const nrm = arc.map((_, k): Pt => {
+      const pa = arc[Math.max(0, k - 1)], pb = arc[Math.min(N, k + 1)], d = Math.hypot(pb[0] - pa[0], pb[1] - pa[1]) || 1;
+      return [-(pb[1] - pa[1]) / d, (pb[0] - pa[0]) / d];
+    });
+    // Half-width wobbles along the jet and in time, so the edge is never a clean tube wall.
+    const wob = (k: number, i: number) => 1 + 0.18 * Math.sin(k * 1.9 + t * 9 + side + i) + 0.1 * Math.sin(k * 4.3 - t * 13 + i * 2);
+    // Thin at the lid, fullest past the crest, tapering into the fall (where it breaks into drops).
+    const prof = (f: number) => (f < 0.08 ? 0.5 + f / 0.16 : 1) * (f > 0.55 ? 1 - 0.55 * ((f - 0.55) / 0.45) : 1);
+    const band = (w0: number, w1: number, o = 0, i = 0): Pt[] => {
+      const L: Pt[] = [], R: Pt[] = [];
+      arc.forEach((v, k) => {
+        const f = k / N, ww = (w0 + (w1 - w0) * Math.min(1, f * 1.8)) * Kpx * prof(f) * wob(k, i), oo = o * Kpx;
+        L.push([v[0] + nrm[k][0] * (ww + oo), v[1] + nrm[k][1] * (ww + oo)]);
+        R.push([v[0] - nrm[k][0] * (ww - oo), v[1] - nrm[k][1] * (ww - oo)]);
+      });
+      return [...L, ...R.reverse()];
+    };
+    // Which normal side faces up in the picture (the lit side of the jet).
+    const up = nrm[Math.round(N / 2)][1] < 0 ? 1 : -1;
+    // Thin at the lid, opening toward the landing; a soft outer spray veil, the body, a deeper blue on the underside, the lit core.
+    veil(seed + (side + 1) * 40, '#bfe2f4', 0.3, band(0.07, 0.26, 0, 1));
+    veil(seed + (side + 1) * 40 + 1, '#8fcbec', 0.6, band(0.05, 0.16, 0, 2));
+    veil(seed + (side + 1) * 40 + 3, '#5f9bc4', 0.4, band(0.02, 0.06, -up * 0.08, 3));
+    veil(seed + (side + 1) * 40 + 2, '#f4fbff', 0.75, band(0.014, 0.035, up * 0.04, 4));
+    // Beads breaking off the outer edge of the jet, carried along it.
+    for (let j = 0; j < 6; j++) {
+      const s0 = (((j / 6 + t * 1.2 + hash(seed + j * 2.9 + side)) % 1) + 1) % 1;
+      if (s0 > Math.min(lv, JET) || s0 < 0.2) continue;
+      const k = Math.min(N, Math.round((s0 / Math.min(lv, JET)) * N)), q = bz(s0), off = (0.14 + 0.1 * hash(seed + j * 7.1)) * Kpx * (0.5 + s0);
+      const r = (0.025 + 0.02 * hash(seed + j * 3.3)) * Kpx;
+      veil(seed + (side + 1) * 40 + 30 + j, '#dff3fc', 0.8, ell(q[0] + nrm[k][0] * off * up, q[1] + nrm[k][1] * off * up, r, r * 1.2, 10));
+    }
+    // Flow: four short white streaks travelling along the arc (the highlight line).
+    for (let j = 0; j < 4; j++) {
+      const s0 = (((j / 4 + t * 1.5 + (side > 0 ? 0.12 : 0)) % 1) + 1) % 1, s1 = Math.min(JET, s0 + 0.1);
+      if (s0 > Math.min(lv, JET) - 0.04) continue;
+      const seg = Array.from({length: 5}, (_, k) => bz(s0 + ((Math.min(s1, lv) - s0) * k) / 4));
+      inkLine(p.layer(0.85, seed + (side + 1) * 40 + 10 + j), seed + (side + 1) * 40 + 10 + j, seg, {closed: false, weight: Math.max(1.5, 0.035 * Kpx), color: '#ffffff', curve: 0.5});
+    }
+    // The fall breaks into drops over the last 15 % of the arc, each a small bead travelling down it.
+    for (let j = 0; j < 8; j++) {
+      const s0 = JET + (1 - JET) * ((((j / 8 + t * 2.2 + 0.07 * side) % 1) + 1) % 1);
+      if (s0 > lv) continue;
+      const q = bz(s0), r = (0.05 - 0.015 * ((s0 - JET) / (1 - JET))) * Kpx;
+      veil(seed + (side + 1) * 40 + 50 + j, '#8fcbec', 0.7, ell(q[0], q[1], r, r * 1.35, 10));
+      veil(seed + (side + 1) * 40 + 70 + j, '#f4fbff', 0.8, ell(q[0] - 0.3 * r, q[1] - 0.35 * r, r * 0.35, r * 0.4, 8));
+    }
+    if (lv < 0.97) continue;
+    // Landing on the island top beside her: a wet darker patch, a splash crown and beads thrown out and up, re-born on a 0.4 s cycle.
+    washAt(p, seed + (side + 1) * 40 + 20, '#5a3418', 70, ell(P2[0], P2[1] + 0.04 * Kpx, 0.3 * Kpx, 0.1 * Kpx, 14), 0.08, 0.2);
+    veil(seed + (side + 1) * 40 + 21, '#cfeaf7', 0.6, ell(P2[0], P2[1], 0.18 * Kpx, 0.06 * Kpx, 14));
+    for (let j = 0; j < 7; j++) {
+      const ph = (((t / 0.4 + hash(seed + j * 3.7 + side)) % 1) + 1) % 1, ang = -Math.PI / 2 + (j - 3) * 0.42 + 0.2 * (hash(seed + j * 5.1) - 0.5);
+      const dist = (0.15 + 0.35 * ph) * Kpx, drop = 0.6 * ph * ph * Kpx;
+      const q: Pt = [P2[0] + Math.cos(ang) * dist, P2[1] + Math.sin(ang) * dist * 0.8 + drop];
+      const r = (0.035 + 0.02 * hash(seed + j)) * Kpx * (1 - 0.5 * ph);
+      veil(seed + (side + 1) * 40 + 22 + j, '#dff3fc', 0.85 * (1 - ph * 0.7), ell(q[0], q[1], r, r * 1.15, 10));
+    }
+  }
+};
 
 /**
  * The cook's resting hand over the island top (v6): the forearm from the elbow to the wrist and an open mitten hand lying
@@ -954,7 +1539,7 @@ const handItem = (out: CookOut, at: V3 = HAND_AT, carry?: V3): Item => ({
     const L = KITCHEN_LIGHT, V = palOf(L), skin = toneOf(COOK.head.skin, L), unit = A.unit;
     const fa = Math.atan2(A.T[1] - A.E[1], A.T[0] - A.E[0]), ang = fa + 0.5, hk = A.hu * 0.92;
     // The hand's wrist sits a little back inside the forearm's end so the two overlap (no gap at the wrist).
-    const hand = openHandParts([A.T[0] - Math.cos(fa) * 0.012 * hk, A.T[1] - Math.sin(fa) * 0.012 * hk], ang, hk, 1);
+    const hand = A.air ? openHandParts(A.T, fa, unit * (L.handScale ?? 1), 1, true) : openHandParts([A.T[0] - Math.cos(fa) * 0.012 * hk, A.T[1] - Math.sin(fa) * 0.012 * hk], ang, hk, 1);
     // Contact shadow first, on the wood: a soft pool offset toward the lens-right and a tight dark core under the palm.
     const off = (pts: Pt[], dx: number, dy: number, f: number): Pt[] => {
       const cx = pts.reduce((a, q) => a + q[0], 0) / pts.length, cy = pts.reduce((a, q) => a + q[1], 0) / pts.length;
@@ -983,6 +1568,53 @@ const handItem = (out: CookOut, at: V3 = HAND_AT, carry?: V3): Item => ({
   },
 });
 
+/**
+ * W5.3 fix round 2 (B05-SH04, user note: "an arm laid over the onion, not a hand holding it"): her right hand lifting O3 the way a
+ * hand lifts a ball, drawn from the onion outward (`sp`, its picture circle; hand sizes follow the onion's depth, not the cook's).
+ * `back` (before the onion): the forearm from the rig's elbow `E` to the wrist `T` (set by the shot just inside the onion's
+ * lower-left, widening toward the lens) and the cupped palm under and behind the onion's lower half, so the onion hides the palm and
+ * the wrist and no forearm crosses its front. `front` (after the onion and its frost): the thumb, one rounded form coming round the
+ * near side from under the bottom onto the front lower-right (round 3: a right hand's medial edge), and four mitten fingertips curling
+ * over the far upper-right rim at different heights (index at the right next to the thumb, middle reaching furthest, little finger at the top and shortest), each with a soft contact shadow on the onion. Fades in with the reach (`mix`).
+ */
+const DEG_RAD = Math.PI / 180;
+const paintCarryHand = (p0: Painter, seed: number, R: NonNullable<CookOut['reach']>, sp: {x: number; y: number; r: number}, part: 'back' | 'front') => {
+  if (R.mix <= 0.02) return;
+  const p = R.mix < 1 ? p0.layer(R.mix, seed) : p0;
+  const L = KITCHEN_LIGHT, V = palOf(L), skin = toneOf(R.cold ? mixColor(COOK.head.skin, FRIDGE_COLD, 0.24 * R.cold) : COOK.head.skin, L);
+  const ink = lineOf(skin, L), dark = mixColor(skin, '#5a3020', 0.4), {x, y, r} = sp;
+  const rim = (deg: number, k: number): Pt => [x + Math.cos(deg * DEG_RAD) * r * k, y + Math.sin(deg * DEG_RAD) * r * k];
+  const part3 = (k: number, pts: Pt[]) => {
+    hardFill(p, seed + k, skin, pts);
+    modelPart(p, seed + k + 1, skin, pts, L);
+    const shd = planeBand(pts, formDir(pts, L.key), 0.62);
+    if (shd.length) glaze(p, seed + k + 2, dark, 70, shd, {border: 0.15, bleed: 0.03, split: 0});
+    inkLine(p, seed + k + 3, pts, {weight: V.lineOuter, color: ink});
+  };
+  if (part === 'back') {
+    // Forearm: the rig's elbow width to a wrist about 0.06 m wide at the onion's depth (x handScale), foreshortened toward the lens.
+    const wW = Math.max(ELBOW_W * R.unit, 0.85 * r * ((L.handScale ?? 1) * 0.06) / SET.onionR);
+    part3(10, shapedLimb(R.E, R.T, ELBOW_W * R.unit, wW, {bulge: 0.12 * wW, peak: 0.35, asym: 0.25, capB: true}));
+    // Cupped palm under and behind the lower half (a tilted sliver: only its heel and outer edge show past the onion's bottom).
+    part3(20, ell(x - 0.2 * r, y + 0.7 * r, 0.66 * r, 0.34 * r, 22, -0.3));
+    return;
+  }
+  // Thumb (W5.3 fix round 3, user note "the hand is mirrored"): a right hand with its palm toward the lens and the forearm from the
+  // lower-left has its thumb on the medial (her-left = picture-right) edge, so it comes from under the onion's bottom round onto
+  // the front lower-right, opposite the fingers (round 2 had it on the front-left, a left hand's side). Shorter than the fingers.
+  const tb = rim(104, 1.06), tt: Pt = [x + 0.24 * r, y + 0.6 * r], tw = 0.3 * r;
+  glaze(p, seed + 30, '#3a2410', 70, shapedLimb([tb[0] + 0.05 * r, tb[1] + 0.05 * r], [tt[0] + 0.06 * r, tt[1] + 0.07 * r], tw, tw * 0.9), {border: 0.3, bleed: 0.06, split: 0});
+  part3(31, shapedLimb(tb, tt, tw, tw * 0.88, {bulge: 0.08 * tw, capB: true}));
+  // Fingers (index -> little): rim angle (deg, picture, y down), how far the tip curls in past the rim (x r), width (x r). Round 3:
+  // the index next to the thumb (right rim), the little finger at the top and shortest, the middle finger reaching furthest.
+  const FINGERS: [number, number, number][] = [[-17, 0.17, 0.3], [-34, 0.21, 0.31], [-52, 0.18, 0.3], [-70, 0.13, 0.26]];
+  FINGERS.forEach(([a, d, w], i) => {
+    const base = rim(a + 5, 1.07), tip = rim(a - 3, 1 - d), ww = w * r;
+    glaze(p, seed + 40 + i * 8, '#3a2410', 60, shapedLimb([base[0] - 0.04 * r, base[1] + 0.06 * r], [tip[0] - 0.04 * r, tip[1] + 0.07 * r], ww, ww * 0.9), {border: 0.3, bleed: 0.06, split: 0});
+    part3(41 + i * 8, shapedLimb(base, tip, ww, ww * 0.9, {bulge: 0.06 * ww, capB: true}));
+  });
+};
+
 export type KitchenOpts = {
   t: number; cook?: CookState;
   /** W5.2 G-A: the onions on the board (default: the LF01 whole onion at `SET.onion`); `carry`: an onion in her left hand (world centre). */
@@ -993,22 +1625,60 @@ export type KitchenOpts = {
   droplets?: Parameters<typeof paintDroplets>[3][];
   /** The cook (and her hand) colour-mixed toward the room air 0..1: soft behind a close prop (B01-SH01, B02-SH01). */
   cookSoft?: number;
+  /** W5.2 G-D: the knife lying on the board without a hand (B05-SH01 after she lays it down, B05-SH03 until she picks it up). */
+  knifeRest?: KnifeHold;
+  /** W5.2 G-D (N8, B05-SH03): candle, saucer and matchbox; the struck match in her fingers. */
+  candle?: CandleState;
+  /** W5.2 G-D (N2, B05-SH04): the camera is inside the fridge: interior instead of the fridge box, `door` 0..1 open, `light` 0..1 on. */
+  fridgePov?: {door: number; light: number};
+  /**
+   * W5.2 G-D (N4): an onion of her right hand at a world centre (painted after the cook), `frost` 0..1 (O3). W5.3 fix round 1
+   * (B05-SH04, viewer check r1: "no arm reach, the onion floats up"): `hand` repaints her reaching forearm and open mitten over the
+   * onion (from the cook's `rReach`), gripping it over the top; absent paints as W5.2. W5.3 fix round 2 (user note): `hand` is
+   * `paintCarryHand`, the palm under and behind the onion, the thumb on its front lower-right (round 3) and the fingertips over its upper-right rim.
+   */
+  carryR?: {at: V3; frost?: number; hand?: boolean};
+  /** W5.2 G-C: lilac onion gas rising from the board (N7, `paintMistWisp`), depth-sorted with the set; G-D: several (B05-SH03 split). */
+  mist?: KitchenMist | KitchenMist[];
+  /**
+   * W5.2 G-E (B06-SH03): skip set items whose anchor lies nearer the lens than this (m): the board, its pieces and the knife sit
+   * 0.2-0.31 m from a close face camera and would show a near-plane cut. The island (a big box, clipped below the frame) stays.
+   */
+  cullNear?: number;
 };
 /** Paint SET-KITCHEN seen from `c`: shell and window, then the set items depth-sorted far to near with the cook. Returns the cook's anchors. */
 export const paintKitchen = (p: Painter, c: YCam, o: KitchenOpts): FigAnchors | undefined => {
   paintShell(p, c);
-  paintWindow(p, c, o.t);
+  if (!o.fridgePov) paintWindow(p, c, o.t);
   const out: CookOut = {};
-  const items: Item[] = [backCounter(o.t), shelfAndRail(), fridgeItem(), islandItem(), boardItem(o.pieces, out, o.knife), basketItem(), garlicItem(), pendantItem(o.t), ...homeProps()];
+  const island = islandItem();
+  let items: Item[] = [backCounter(o.t), shelfAndRail(), ...(o.fridgePov ? fridgePovItems(SET.fridge, o.fridgePov.door, o.fridgePov.light, o.t) : [fridgeItem()]), island, boardItem(o.pieces, out, o.knife, o.knifeRest), basketItem(), garlicItem(), pendantItem(o.t), ...homeProps()];
   if (o.cook) {
     const soft = o.cookSoft ?? 0, sp = (it: Item): Item => (soft > 0 ? {...it, draw: (q, cc) => it.draw(tintPainter(q, '#d9c3a0', soft), cc)} : it);
     items.push(sp(cookItem(o.t, o.cook, out)), sp(handItem(out, o.cook.lHand ?? HAND_AT, o.carry)));
   }
   if (o.knife && o.knife.inPiece === undefined) { const kn = o.knife; items.push({at: kn.tip, bias: -0.2, draw: (q, cc) => paintWorldKnife(q, cc, 42500, kn.tip, kn.dirAng, kn.tilt, kn.hand)}); }
-  // Window light after the back counter (it lies on the counter top) and before the island props.
-  items.push({at: [-0.7, 0, -1.25], bias: -0.01, draw: (q, cc) => paintWindowLight(q, cc)});
+  if (o.mist) (Array.isArray(o.mist) ? o.mist : [o.mist]).forEach((m, k) => items.push(...mistItems(m, k)));
+  if (o.candle) items.push(...candleItems(o.candle));
+  if (o.candle?.match) { const m = o.candle.match, tt = o.t; items.push({at: m.to, bias: -0.35, draw: (q, cc) => paintMatch(q, cc, m, tt)}); }
+  if (o.carryR) {
+    // W5.2 G-D: O3 in her right hand (the hand behind it, as `carry`), frost and all; contact shadow only near the shelf or board.
+    const cr = o.carryR;
+    items.push({at: cr.at, bias: -0.32, draw: (q, cc) => {
+      const sp = sphereAt(cc, cr.at, SET.onionR), hand = cr.hand && out.reach && sp ? out.reach : undefined;
+      if (hand && sp) paintCarryHand(q, 46000, hand, sp, 'back');
+      paintOnion(q, cc, 45900, cr.at, SET.onionR, {noShadow: true});
+      if (sp) paintFrost(q, 46300 + 600, sp.x, sp.y - sp.r * 0.05, sp.r, cr.frost ?? 0);
+      if (hand && sp) paintCarryHand(q, 46100, hand, sp, 'front');
+    }});
+  }
+  // Window light after the back counter (it lies on the counter top) and before the island props (not from inside the fridge).
+  if (!o.fridgePov) items.push({at: [-0.7, 0, -1.25], bias: -0.01, draw: (q, cc) => paintWindowLight(q, cc)});
+  if (o.cullNear) { const near = o.cullNear; items = items.filter((it) => it === island || camSpace(c, it.at).d >= near); }
   paintSorted(p, c, items);
-  paintBeam(p, c);
+  if (out.falls) paintWaterfallTears(p, 42700, out.falls);
+  if (!o.fridgePov) paintBeam(p, c);
+  if (o.fridgePov) paintFridgeDark(p, o.fridgePov.light);
   // Warm room glaze over the far set (air), very light.
   glaze(p, 41900, '#f6cf86', 18, [[-200, -200], [1280, -200], [1280, 2200], [-200, 2200]], {border: 0});
   (o.droplets ?? []).forEach((d, i) => paintDroplets(p, c, 43000 + i * 400, d));

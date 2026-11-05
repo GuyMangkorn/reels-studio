@@ -45,6 +45,16 @@ export function validateScenePainted(s: Record<string, unknown>, path: string, p
     if (j === 0 && cue.atSec !== 0) fail(`${cp}.atSec`, 'first painted shot must start at zero');
     if (cue.fromSec !== undefined && (!finite(cue.fromSec) || cue.fromSec < 0)) fail(`${cp}.fromSec`, 'expected non-negative seconds');
     if (cue.label !== undefined) validateLabel(cue.label, `${cp}.label`, fail);
+    for (const key of ['labelAtSec', 'labelTop'] as const) {
+      if (cue[key] === undefined) continue;
+      if (cue.label === undefined) fail(`${cp}.${key}`, 'needs a label on the same cue');
+      if (!finite(cue[key]) || (cue[key] as number) < 0) fail(`${cp}.${key}`, key === 'labelTop' ? 'expected non-negative px' : 'expected non-negative seconds');
+    }
+    if (finite(cue.labelAtSec)) {
+      const next = (shots as Record<string, unknown>[])[j + 1]?.atSec;
+      const end = finite(next) ? next : duration;
+      if ((cue.atSec as number) + cue.labelAtSec >= end) fail(`${cp}.labelAtSec`, 'label must start before the next cue or the scene end');
+    }
     if (cue.dissolveSec !== undefined) {
       if (!finite(cue.dissolveSec) || cue.dissolveSec <= 0) fail(`${cp}.dissolveSec`, 'expected positive seconds');
       const next = (shots as Record<string, unknown>[])[j + 1]?.atSec;
@@ -58,7 +68,7 @@ export function validateScenePainted(s: Record<string, unknown>, path: string, p
 }
 
 /** One painted cue on the composition clock. */
-export type PaintedSpan = {shot: string; startFrame: number; endFrame: number; fromFrame: number; dissolveFrames: number; label?: PaintedLabel; scene: number};
+export type PaintedSpan = {shot: string; startFrame: number; endFrame: number; fromFrame: number; dissolveFrames: number; label?: PaintedLabel; labelFrames: number; labelTop?: number; scene: number};
 
 /** Flatten every painted cue into composition frames; a cue ends at the next cue or its scene end. */
 export const paintedSpans = (timeline: Timeline, fps: number): PaintedSpan[] => {
@@ -76,6 +86,8 @@ export const paintedSpans = (timeline: Timeline, fps: number): PaintedSpan[] => 
         fromFrame: Math.round((cue.fromSec ?? 0) * fps),
         dissolveFrames: cue.dissolveSec ? Math.max(1, Math.round(cue.dissolveSec * fps)) : 0,
         label: cue.label,
+        labelFrames: Math.round((cue.labelAtSec ?? 0) * fps),
+        ...(cue.labelTop !== undefined ? {labelTop: cue.labelTop} : {}),
         scene: index,
       });
     });
@@ -85,7 +97,7 @@ export const paintedSpans = (timeline: Timeline, fps: number): PaintedSpan[] => 
 };
 
 /** A plate to paint this frame: `tl` on its shot clock (before the shot's own clock remap), plate and glow opacity. */
-export type PaintedPlate = {shot: string; tl: number; frame: number; alpha: number; overlayOpacity: number; label?: PaintedLabel; /** A frame-0 plate laid by the C_seamless loop blend. */ incoming?: boolean};
+export type PaintedPlate = {shot: string; tl: number; frame: number; alpha: number; overlayOpacity: number; label?: PaintedLabel; /** Slot-0 top in px (cue `labelTop`). */ labelTop?: number; /** A frame-0 plate laid by the C_seamless loop blend. */ incoming?: boolean};
 export type PaintedState = {plates: PaintedPlate[]; opacity: number};
 
 const platesAt = (spans: PaintedSpan[], frame: number, fps: number): PaintedPlate[] => {
@@ -94,7 +106,8 @@ const platesAt = (spans: PaintedSpan[], frame: number, fps: number): PaintedPlat
   const span = spans[k];
   const plate = (s: PaintedSpan, alpha: number, overlayOpacity: number): PaintedPlate => {
     const f = frame - s.startFrame + s.fromFrame;
-    return {shot: s.shot, tl: f / fps, frame: f, alpha, overlayOpacity, label: s.label};
+    const label = frame - s.startFrame >= s.labelFrames ? s.label : undefined;
+    return {shot: s.shot, tl: f / fps, frame: f, alpha, overlayOpacity, label, ...(label !== undefined && s.labelTop !== undefined ? {labelTop: s.labelTop} : {})};
   };
   const prev = spans[k - 1];
   if (span.dissolveFrames > 0 && prev && prev.endFrame === span.startFrame && frame < span.startFrame + span.dissolveFrames) {

@@ -50,6 +50,19 @@ test('plates follow the composition clock, dissolve across a scene boundary and 
   assert.deepEqual(state(paintedProofTimeline, 222)!.plates.map((p) => [p.shot, p.alpha, p.label]), [['SHIPWRECK-SH04a', 1, undefined]]);
 });
 
+test('a cue label can start inside the cue (labelAtSec) and move its box (labelTop)', () => {
+  const tl = [painted([{shot: 'SHIPWRECK-SH01', atSec: 0}]), painted([{shot: 'SHIPWRECK-SH06', atSec: 0, dissolveSec: 0.5, label: 'ภาพจำลอง', labelAtSec: 0.3, labelTop: 200}]), painted([{shot: 'SHIPWRECK-SH01', atSec: 0}], {durationSec: 4})]; // last scene absorbs the B_loop hold
+  validateTimeline(tl);
+  // Frame 60 opens the 15 f dissolve; the label stays off until 9 f into the cue (frame 69), even under the dissolve.
+  assert.deepEqual([60, 68].map((f) => state(tl, f)!.plates.map((p) => p.label)), [[undefined, undefined], [undefined, undefined]]);
+  assert.deepEqual(state(tl, 69)!.plates.map((p) => [p.shot, p.label, p.labelTop]), [['SHIPWRECK-SH01', undefined, undefined], ['SHIPWRECK-SH06', 'ภาพจำลอง', 200]]);
+  // Without the new fields a plate carries no labelTop key (existing videos unchanged).
+  assert.equal('labelTop' in state(paintedProofTimeline, 150)!.plates[0], false);
+  assert.throws(() => validateTimeline([painted([{shot: 'SHIPWRECK-SH01', atSec: 0, labelTop: 200}])]), /labelTop: needs a label/);
+  assert.throws(() => validateTimeline([painted([{shot: 'SHIPWRECK-SH01', atSec: 0, label: 'x', labelAtSec: -1}])]), /labelAtSec/);
+  assert.throws(() => validateTimeline([painted([{shot: 'SHIPWRECK-SH01', atSec: 0, label: 'x', labelAtSec: 1}, {shot: 'SHIPWRECK-SH06', atSec: 1}])]), /label must start before/);
+});
+
 test('direct seeks resolve the same state as sequential playback, and the ending hold applies to plates', () => {
   const forward = Array.from({length: 447}, (_, f) => JSON.stringify(state(paintedProofTimeline, f)));
   for (const f of [446, 0, 300, 192, 113, 221, 60]) assert.equal(JSON.stringify(state(paintedProofTimeline, f)), forward[f]);

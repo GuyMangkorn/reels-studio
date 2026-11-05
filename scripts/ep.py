@@ -1,14 +1,15 @@
 #!/usr/bin/env python3
 """Episode record edits without one-off Python: task.md steps, Markdown table cells, review-rows.json.
 
-  python3 -I scripts/ep.py tick  <task.md> <stepId> [--text TEXT] [--undo]
+  python3 -I scripts/ep.py tick  <task.md> <stepId> [--text TEXT] [--undo] [--deliverable ID]
   python3 -I scripts/ep.py now   <task.md> <now> <next> [--deliverable ID]
   python3 -I scripts/ep.py cell  <file.md> <rowKey> <column> [value]      (no value: print the cell)
   python3 -I scripts/ep.py rows  <review-rows.json> list
   python3 -I scripts/ep.py rows  <review-rows.json> get <target> [key ...]
   python3 -I scripts/ep.py rows  <review-rows.json> set <target> key=value [key=value ...]
 
-  tick   marks `- [ ] <stepId> ...` done (`--undo` reopens it); --text replaces what follows the ID.
+  tick   marks `- [ ] <stepId> ...` done (`--undo` reopens it); --text replaces what follows the ID; --deliverable
+         looks only under `## <ID>` (a step ID repeated per deliverable). `--undo --text` edits an open step's text.
   now    replaces the `**Now:** ... **Next:** ...` line (under `## <ID>` when the file holds several).
   cell   finds the table row whose first cell, or any cell, equals rowKey and the column by header text,
          e.g. `cell scripts/x/delivery.md EDU-EP01-SHORT "Stage / Next owner" "W6 ..."`.
@@ -38,10 +39,17 @@ def one(matches, what):
     return matches[0]
 
 
-def tick(path, step, text=None, undo=False):
+def section(L, deliverable):
+    if not deliverable: return 0, len(L)
+    lo = one([k for k, l in enumerate(L) if l.strip() == f'## {deliverable}'], f'heading ## {deliverable}')
+    return lo, next((k for k in range(lo + 1, len(L)) if L[k].startswith('## ')), len(L))
+
+
+def tick(path, step, text=None, undo=False, deliverable=None):
     L = read(path).split('\n')
     rx = re.compile(r'^(\s*- \[)([ xX])(\] )' + re.escape(step) + r'(?=\s|$)(.*)$')
-    i = one([k for k, l in enumerate(L) if rx.match(l)], f'step {step}')
+    lo, hi = section(L, deliverable)
+    i = one([k for k in range(lo, hi) if rx.match(L[k])], f'step {step}')
     m = rx.match(L[i])
     rest = (' ' + text) if text is not None else m.group(4)
     L[i] = m.group(1) + (' ' if undo else 'x') + m.group(3) + step + rest
@@ -50,10 +58,7 @@ def tick(path, step, text=None, undo=False):
 
 def now(path, now_text, next_text, deliverable=None):
     L = read(path).split('\n')
-    lo, hi = 0, len(L)
-    if deliverable:
-        lo = one([k for k, l in enumerate(L) if l.strip() == f'## {deliverable}'], f'heading ## {deliverable}')
-        hi = next((k for k in range(lo + 1, len(L)) if L[k].startswith('## ')), len(L))
+    lo, hi = section(L, deliverable)
     i = one([k for k in range(lo, hi) if L[k].startswith('**Now:**')], '**Now:** line')
     L[i] = f'**Now:** {now_text} **Next:** {next_text}'
     write(path, '\n'.join(L)); print(L[i][:160])
@@ -128,10 +133,10 @@ def main(a):
     cmd, path, rest = a[0], a[1], a[2:]
     opt = lambda name: rest.pop(rest.index(name) + 1) if name in rest and rest.index(name) + 1 < len(rest) else None
     if cmd == 'tick':
-        text = opt('--text'); undo = '--undo' in rest
-        rest = [x for x in rest if x not in ('--text', '--undo')]
-        if len(rest) != 1: die('usage: tick <task.md> <stepId> [--text TEXT] [--undo]')
-        tick(path, rest[0], text, undo)
+        text = opt('--text'); dl = opt('--deliverable'); undo = '--undo' in rest
+        rest = [x for x in rest if x not in ('--text', '--undo', '--deliverable')]
+        if len(rest) != 1: die('usage: tick <task.md> <stepId> [--text TEXT] [--undo] [--deliverable ID]')
+        tick(path, rest[0], text, undo, dl)
     elif cmd == 'now':
         dl = opt('--deliverable'); rest = [x for x in rest if x != '--deliverable']
         if len(rest) != 2: die('usage: now <task.md> <now> <next> [--deliverable ID]')

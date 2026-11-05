@@ -7,7 +7,8 @@ import {wp as wpRaw} from './world';
 
 // EDU-EP02-SHORT asset N6 `eye-macro plate + sparks + tear wave` (brief EDU-BRIEF-R1.4 VD06, shot S01-B04-SH02). Written by
 // Film as the LF03 look frame (W3.1 v1-v4, src/painted/edu02/macro.ts until v4); hardened by Boss at W5.2 (v5) after the
-// viewer checks r1-r4 (scripts/edu-series/ep02/viewer-check-look-r1.md).
+// viewer checks r1-r4 (scripts/edu-series/ep02/viewer-check-look-r1.md); v6 after r5; W5.2 G-C polish (S01-B04-SH02 plate in
+// shots.tsx): lid shadow depth, nerve halo falloff, tear-wave fade over the pupil, mist body and the third wisp in frame.
 //   EYE set: 1 set-m ~ 1 cm; globe radius 0.16 centred at z -0.04 (front of the cornea at z +0.12), skin plane at z +0.07,
 //   eye opening +-0.11 wide; the cook's left eye (outer corner at screen right). Not an anatomy diagram: no labels.
 // Reusable: `paintEyeMacro(p, cam, state, look?)` paints the whole plate from any yaw camera around the origin (LF03_CAM in
@@ -255,11 +256,14 @@ export const paintEyeMacro = (p: Painter, cam: YCam, s: EyeState, look: EyeLook 
   // curve (v4's were straight), deepest at the lid and fading with no edge over ~0.03 set-m; a thinner one under the lower lid.
   // v6 (viewer check r5: "sclera near-flat with faint upper-lid shadow"): 14 bands reaching ~0.028 set-m below the lid at
   // the centre (the top 20-25% of the 0.11 opening), alpha ~0.6 at the lid, warmer toward the lid, fading with no edge.
+  // W5.2 G-C (carried from the LF03 v6 accept: "upper-lid shadow depth"): the 14 bands reach 0.034 set-m (about a third of
+  // the opening at the centre) and the four nearest the lid are doubled, so the shadow under the lid reads as depth (the lid
+  // overhangs the globe) and not as a tint; still no edge.
   for (let i = 0; i < 14; i++) {
-    const d = 0.003 + 0.026 * Math.pow((i + 1) / 14, 1.25);
+    const d = 0.003 + 0.031 * Math.pow((i + 1) / 14, 1.25);
     const xsE = Array.from({length: 23}, (_, k) => -EW + (2 * EW * k) / 22);
     const top = wp(xsE.map((x): V3 => [x, upperAt(x) + 0.004, SKINZ])), bot = wp(xsE.map((x): V3 => [x, upperAt(x) - d * (0.6 + 0.4 * Math.sin((Math.PI * (x + EW)) / (2 * EW))), SKINZ]));
-    veil(60150 + i * 2, i < 5 ? '#3a2428' : '#2c2430', 0.095, inOpen(bandOf(top, bot)));
+    veil(60150 + i * 2, i < 5 ? '#3a2428' : '#2c2430', i < 4 ? 0.15 : 0.1, inOpen(bandOf(top, bot)));
   }
   for (let i = 0; i < 4; i++) {
     const d = 0.0015 + 0.006 * ((i + 1) / 4);
@@ -288,7 +292,10 @@ export const paintEyeMacro = (p: Painter, cam: YCam, s: EyeState, look: EyeLook 
       // v6 (viewer check r5: "gold nerve crisp with no glow falloff"): uneven core width (thicker near the root, two swells,
       // pinched at a knot) and a soft halo 3-4x the core in five stacked widths, total alpha <= 0.3 (glow cap).
       const coreW = (g: number) => (1.3 + 0.9 * sp) * (0.45 + 0.55 * Math.sin(Math.PI * Math.min(0.95, g + 0.06))) * (1 + 0.35 * Math.sin(g * 17 + 0.6) - 0.25 * Math.exp(-(((g - 0.55) / 0.06) ** 2)));
-      [4, 3.3, 2.6, 2, 1.5].forEach((f, i) => veil(62000 + i, '#eea52e', (0.3 * sp) / 5, ribbon(run, (g) => coreW(g) * f + 2)));
+      // W5.2 G-C (carried "nerve halo"): the halo reached ~4x the core (~6 px each side) and read as a gold line with a rim;
+      // now seven widths out to ~9x the core plus 8 px, densest near the core, still <= 0.3 total (glow cap), so the light
+      // falls off into the white over ~15 px.
+      [9, 7, 5.4, 4, 3, 2.2, 1.5].forEach((f, i) => veil(62000 + i, '#eea52e', (0.3 * sp * (0.6 + 0.12 * i)) / 7, ribbon(run, (g) => coreW(g) * f + 2 + 0.9 * f)));
       veil(62008, '#f2b440', 0.2 * sp, ribbon(run, (g) => coreW(g) * 1.7));
       veil(62010, mix(K.sclera, '#d9962c', 0.9), 0.55 + 0.4 * sp, ribbon(run, coreW));
       // The pulse: which flick is running sets how far up the thread it has travelled.
@@ -315,6 +322,11 @@ export const paintEyeMacro = (p: Painter, cam: YCam, s: EyeState, look: EyeLook 
   // gone (a wash only darkens, so over the white it went grey). Water is shown by what it does to the light: a thin dark
   // refraction line on the leading edge, a clear bead body at 0.05 (a light veil greys the pupil above ~0.1: v5 trial) and a
   // broken white specular crest, so the iris, pupil and white stay visible through it.
+  // W5.2 G-C (carried "f71 tear-wave refraction line over the pupil"): over the near-black pupil the flat 0.05 + 0.04 body
+  // veils showed as a lighter strip with two straight edges and the crest as a white scratch across the pupil. Now the body
+  // is feathered (the band stacked at narrowing widths about its middle, so neither edge shows), and the crest and the dark
+  // lead line fade over the pupil and its soft rim (distance from the pupil centre in set-m: 30% inside 0.026, full from
+  // 0.042; at 0% the wave vanished over the iris), so over the pupil the water shows as a thin broken glint, not a strip.
   if (wave > 0 && wave < 1) {
     const front: V3[] = [], frontB: V3[] = [];
     for (let k = 0; k <= 12; k++) {
@@ -325,16 +337,38 @@ export const paintEyeMacro = (p: Painter, cam: YCam, s: EyeState, look: EyeLook 
     }
     const fq = wp(front), bq = wp(frontB);
     if (fq.length === front.length && bq.length === frontB.length) {
-      veil(60402, '#e4f3f8', 0.05, inOpen(bandOf(fq, bq)));
-      veil(60403, '#ffffff', 0.04, inOpen(bandOf(fq.map(([x, y], k): Pt => [x + (bq[k][0] - x) * 0.15, y + (bq[k][1] - y) * 0.15]), fq.map(([x, y], k): Pt => [x + (bq[k][0] - x) * 0.55, y + (bq[k][1] - y) * 0.55]))));
-      const lead = runsIn(fq, open);
-      for (const r of lead) veil(60404, '#26323a', 0.16, ribbon(r, (g) => 1.3 * Math.sin(Math.PI * g)));
-      const crest = runsIn(fq.map(([x, y], k): Pt => [x + (bq[k][0] - x) * 0.3, y + (bq[k][1] - y) * 0.3]), open);
-      crest.forEach((r, ri) => {
+      const at = (s: number) => fq.map(([x, y], k): Pt => [x + (bq[k][0] - x) * s, y + (bq[k][1] - y) * s]);
+      for (let i = 0; i < 5; i++) {
+        const h = 0.5 - 0.09 * i;
+        veil(60440 + i, '#c4dbe8', 0.014, inOpen(bandOf(at(0.5 - h), at(0.5 + h))));
+      }
+      for (let i = 0; i < 4; i++) veil(60446 + i, '#ffffff', 0.011, inOpen(bandOf(at(0.35 - 0.05 * i), at(0.35 + 0.05 * i + 0.02))));
+      const pupilFade = (v: V3) => 0.3 + 0.7 * ramp(Math.hypot(v[0] - 0.004, v[1] - 0.004), 0.026, 0.042);
+      // The visible runs of a picture line, each point with its fade over the pupil.
+      const runsF = (q: Pt[], fade: number[]) => {
+        const out: {pt: Pt; a: number}[][] = [];
+        let cur: {pt: Pt; a: number}[] = [];
+        q.forEach((v, k) => {
+          if (inPoly(v, open)) cur.push({pt: v, a: fade[k]});
+          else if (cur.length) { out.push(cur); cur = []; }
+        });
+        if (cur.length) out.push(cur);
+        return out.filter((r) => r.length >= 2);
+      };
+      const fadeF = front.map(pupilFade);
+      runsF(fq, fadeF).forEach((r, ri) => {
+        for (let j = 0; j + 1 < r.length; j++) {
+          // 0.3 and 2 px (v6 0.16, 1.3 px): over the white the crest is white on white, so this line is what shows the wave there.
+          const a = 0.3 * Math.min(r[j].a, r[j + 1].a);
+          if (a > 0.01) veil(60460 + ri * 20 + j, '#26323a', a, ribbon([r[j].pt, r[j + 1].pt], (g) => 2 * Math.sin(Math.PI * (0.1 + 0.8 * g))));
+        }
+      });
+      const crestS = front.map((v, k): V3 => [v[0] + (frontB[k][0] - v[0]) * 0.3, v[1], v[2]]).map(pupilFade);
+      runsF(at(0.3), crestS).forEach((r, ri) => {
         for (let j = 0; j + 1 < r.length; j++) {
           if (hash(ri * 31 + j * 7.3 + 0.4) < 0.18) continue;
-          const f = j / Math.max(1, r.length - 2);
-          veil(60410 + j, '#ffffff', 0.55 + 0.35 * Math.sin(Math.PI * f), ribbon([r[j], r[j + 1]], (g) => (1.2 + 1.4 * Math.sin(Math.PI * f)) * Math.sin(Math.PI * (0.08 + 0.84 * g))));
+          const f = j / Math.max(1, r.length - 2), fa = Math.min(r[j].a, r[j + 1].a);
+          veil(60410 + j, '#ffffff', (0.55 + 0.35 * Math.sin(Math.PI * f)) * fa, ribbon([r[j].pt, r[j + 1].pt], (g) => (1.2 + 1.4 * Math.sin(Math.PI * f)) * Math.sin(Math.PI * (0.08 + 0.84 * g))));
         }
       });
     }
@@ -434,7 +468,10 @@ export const paintEyeMacro = (p: Painter, cam: YCam, s: EyeState, look: EyeLook 
   const wisps: Wisp[] = [
     {p0: [-0.03, -0.29], p1: [-0.068, -0.12], sway: 0.018, dir: -1, r0: 0.026, w: 62, a: 1},
     {p0: [0.07, -0.29], p1: [0.084, -0.165], sway: -0.014, dir: 1, r0: 0.022, w: 54, a: 0.9},
-    {p0: [0.005, -0.3], p1: [0.018, -0.225], sway: 0.008, dir: -1, r0: 0.015, w: 36, a: 0.65},
+    // W5.2 G-C (carried "third wisp barely shows"): its curl ended at y -0.225, below the frame's bottom edge (~ -0.215 on
+    // this camera), so only the rising stem's top showed. Now it rises to -0.175 (curl ~y 1650-1730 px) and is as dense as the
+    // second one.
+    {p0: [0.0, -0.31], p1: [0.012, -0.175], sway: 0.012, dir: -1, r0: 0.019, w: 50, a: 0.9},
   ];
   wisps.forEach((wi, w) => {
     // Centre line in set metres: a swaying rise p0 -> p1, then the curl.
@@ -465,14 +502,16 @@ export const paintEyeMacro = (p: Painter, cam: YCam, s: EyeState, look: EyeLook 
     });
     const off = (amp: (f: number) => number) => all.map((v, k): Pt => [v[0] + nrm[k][0] * amp(k / n), v[1] + nrm[k][1] * amp(k / n)]);
     // A faint broad haze holding the strands together.
-    ([[1.3, 0.06], [0.95, 0.085], [0.6, 0.09]] as const).forEach(([gw, al], i) => veil(64200 + w * 100 + i, '#9a5cff', al * A, ribbon(all, (f) => hwAt(f) * gw * env(f))));
+    // W5.2 G-C (carried "mist filaments"): at 270 px the v6 body read as thin purple lines with little vapour between them;
+    // the haze is wider and denser and the filaments wider and fainter, so the strands read as streaks inside one soft body.
+    ([[1.6, 0.07], [1.15, 0.09], [0.75, 0.1]] as const).forEach(([gw, al], i) => veil(64200 + w * 100 + i, '#9a5cff', al * A, ribbon(all, (f) => hwAt(f) * gw * env(f))));
     // Five soft filaments that drift across one another (each its own phase), so the body has streaks of denser vapour
     // instead of one even band; each filament is three stacked widths for a soft edge.
     const lean = (k: number) => nrm[k][0] * LDIR[0] + nrm[k][1] * LDIR[1]; // left normal . light
     const fil = [-0.75, -0.38, 0, 0.38, 0.75].map((sj, j) => off((f) => hwAt(f) * (sj + 0.28 * Math.sin(f * 7 + j * 1.7 + t * (0.5 + 0.12 * j)))));
     fil.forEach((q, j) => {
-      const fw = (f: number) => hwAt(f) * (0.2 + 0.08 * Math.sin(f * 5 + j * 2.3)) * env(f);
-      ([[1.6, 0.075], [1.0, 0.125], [0.5, 0.14]] as const).forEach(([gw, al], i) => veil(64220 + w * 100 + j * 5 + i, j === 2 ? '#7c40f0' : '#9a5cff', al * A, ribbon(q, (f) => fw(f) * gw)));
+      const fw = (f: number) => hwAt(f) * (0.3 + 0.1 * Math.sin(f * 5 + j * 2.3)) * env(f);
+      ([[1.6, 0.06], [1.0, 0.1], [0.5, 0.11]] as const).forEach(([gw, al], i) => veil(64220 + w * 100 + j * 5 + i, j === 2 ? '#7c40f0' : '#9a5cff', al * A, ribbon(q, (f) => fw(f) * gw)));
     });
     // The lit edge: a soft pale-lilac line on the outermost filament on the key side only, its width following how squarely
     // that side faces the light, so it fades out where the vapour turns away (no hard white arc).

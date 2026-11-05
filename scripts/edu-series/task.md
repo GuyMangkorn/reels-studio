@@ -42,7 +42,7 @@ Record: [delivery.md](delivery.md) · Updated: 2026-11-05, Film
 
 ## EDU-EP02-SHORT
 
-**Now:** W5.1 Film timed scene sheets SS-R2 `ready-for-dev` ([ep02/scenes/index.md](ep02/scenes/index.md), 23 shots, 1771 f = 59.03 s; rows SS-R2 timed, page builds, review page: pending). **Next:** coordinator republishes the review page (SS-R2); Boss W5.2 plates by shot group G-A…G-F (N6 LF03 mist / nerve / lid-shadow polish + f71 refraction line carried); Editor composition with narration segments N1–N7 and `bottomEdgeY` 1344 captions; user — storyboard verdicts
+**Now:** W6 Final passed (user, 2026-11-05: "Final ผ่านแล้ว"). W7 pinned 23/23 scenes. W8 Deliver next, after the cover pick (user asked for a cover, 2026-11-05).
 
 - [x] W0 Ideation (C1, user pick 2026-11-05; Short Thai, A_fade)
 - [x] W1 Script lock (W1.4 measured read pending voice)
@@ -63,9 +63,18 @@ Record: [delivery.md](delivery.md) · Updated: 2026-11-05, Film
   - [x] W4.1 Voice chosen (Kore, user)
   - [x] W4.2 Narration generated and measured (tempo 1.16 after user chose "read faster"; redo pass 3 `gemini-fast`: new Kore read with pace in the style prompt, speech end 53.97 s, per-line levelled, store `..._ep02-narration-kore-fast.wav`, pending user listen; replaces the 1.16 file as the voice-lock candidate)
   - [x] W4.3 User approves the voice
-- [ ] W5–W8 as EDU-EP01-SHORT (draft, final, pin, deliver)
+- [x] W5 Draft tab: 23/23 shots passed (user "ผ่านหมดครับ" 2026-11-05; Film viewer check r2 23 pass)
+- [x] W6 Final passed (user, 2026-11-05: "Final ผ่านแล้ว"; re-round after N1/N2, artifact v1793876953-6bb5)
+- [x] W7 Pinned (23/23 scenes, 2026-11-05)
+- [ ] W8 Deliver (cover picked: A, 2026-11-05)
+  - [x] W8.0 Cover: `EDU-EP02-SHORT-COVERS`, user picked A "ทำไมร้องไห้?" (2026-11-05)
+  - [x] W8.1 Assembled from the cache, picture lock (23 of 23 scenes reused, 2026-11-05)
+  - [x] W8.2 Delivery render archived (1080×1920, 1771 f, -16.3 LUFS, -1.3 dBTP; dirty tag 69f500eea03f-dirty-202611051824)
+  - [ ] W8.3 Posted to the channel (user, date)
+  - [ ] W8.4 Kit intake (KIT-P01), partial 2026-11-05: 4 plates filed (`PL-EDU-KITCHEN`, `PL-EDU-FRIDGE`, `PL-EDU-ONION-CELLS`, `PL-EDU-EYE`); outfit `kitchen-apron` deferred by the user 2026-11-05 (filing changes EP01's source hash; patch `projects/KIT/intake/2026-11-05_kitchen-apron-wardrobe.patch` in the store); details in [delivery.md](delivery.md)
   - [x] W5.1 Film timed scene sheets (SS-R2, [ep02/scenes/](ep02/scenes/index.md), 2026-11-05; brief R1.5)
-  - [ ] W5.2 Boss assets and plates (N6 eye-macro v6 built ahead of W5 on the user's call, viewer check r6 pending; LF01 v6 done; **G-A 5/23 shots plated 2026-11-05** (B01-SH01…SH03, B02-SH01…SH02: N3 chop, N4 halves, N7 droplets; `src/painted/edu02/shots.tsx`, stills `EDU2-S01-*` via `shots-index.ts`; uncommitted, Film W5.3 review open); G-B…G-F, N2 fridge interior, N4 frosty/pieces, N5 timing, N6 polish, N7 mist/waterfall, N8, N9 open)
+  - [x] W5.2 Boss assets and plates, 23/23 shots plated 2026-11-05 (stills only; N6 eye-macro v6 built ahead of W5 on the user's call, viewer check r6 pending; LF01 v6 done; **G-A 5/23** (B01-SH01…SH03, B02-SH01…SH02: N3 chop, N4 halves, N7 droplets); **G-B 3/23** (B03-SH01…SH03: N5 timed cell states, blade, tear, orange/violet/lilac steps; evidence `projects/EDU/previews/shots/ep02/w52-GB/`); **G-C 3/23** (B04-SH01…SH03: N6 polish, N7 kitchen mist + waterfall tears, N4 slices; evidence `projects/EDU/previews/shots/ep02/w52-GC/`); **G-D 5/23** (B05-SH01…SH05: N8 bread/candle/match, N2 fridge-POV interior, N4 frosty, N9 "?" and stamped ✗; AI13 value changes in the s01-b05 change log for Film; evidence `projects/EDU/previews/shots/ep02/w52-GD/`); **G-E 4/23** (B06-SH01…SH04: N8 swim goggles, N4 O4 half onion cut face down + slow slice, near-item culling under 0.35 m; interpretations in the s01-b06-b07 change log for Film; evidence `projects/EDU/previews/shots/ep02/w52-GE/`); **G-F 3/23** (B07-SH01…SH03: N4 O4 cut face up (`cup`), N9 chalk alarm bell with draw-on and wiggle; hy 600 → 440 on B07-SH01/SH02 and SH03 dolly end r 1.70 → 1.68 in the s01-b06-b07 change log for Film; evidence `projects/EDU/previews/shots/ep02/w52-GF/`); `src/painted/edu02/shots.tsx`, stills `EDU2-S01-*` via `shots-index.ts`; no motion render or seek pass, sound not checked; uncommitted; Film W5.3 review open; kitchen wash flicker open)
     - [x] N6 `eye-macro plate + sparks + tear wave` v5 (`src/painted/edu02/eye.ts`, store `.../ep02/v5/`, [build notes](build-notes.md#ep02-w52-n6-eye-macro-v5-2026-11-05-boss))
     - [x] LF01 v6 + N6 v6 to the viewer check r5 list (store `.../ep02/v6/`, [build notes](build-notes.md#ep02-w52-lf01-lf03-v6-2026-11-05-boss))
+  - [ ] W5.3 Draft passed (0/23 shots): Editor assembly done 2026-11-05 (blockout timeline, narration N1-N7, captions + edge shade, tag, sound stem, 23 Draft clips; [build notes](build-notes.md#ep02-w53-draft)); viewer check Draft r1 16 pass / 7 change; Boss fix round 1 plates done 2026-11-05 for 6 of 7 ([build notes](build-notes.md#ep02-w53-fix-round-1-boss)), B05-SH03 with Film SS-R3; awaiting Editor clip re-render, fresh viewer check and user verdicts
 

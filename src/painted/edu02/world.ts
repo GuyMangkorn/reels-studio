@@ -83,4 +83,15 @@ export type Item = {at: V3; draw: (p: Painter, c: YCam) => void; bias?: number};
 export const paintSorted = (p: Painter, c: YCam, items: Item[]) =>
   items.map((it) => ({it, d: camDist(c, it.at) + (it.bias ?? 0)})).sort((a, b) => b.d - a.d).forEach((o) => o.it.draw(p, c));
 
+/** Convex hull of picture points (monotone chain), for round props seen from any side (onion halves, slices, the candle). */
+export const hull = (pts: Pt[]): Pt[] => {
+  const q = pts.slice().sort((a, b) => a[0] - b[0] || a[1] - b[1]);
+  if (q.length < 3) return q;
+  const cr = (o: Pt, a: Pt, b: Pt) => (a[0] - o[0]) * (b[1] - o[1]) - (a[1] - o[1]) * (b[0] - o[0]);
+  const lo: Pt[] = [], up: Pt[] = [];
+  for (const v of q) { while (lo.length >= 2 && cr(lo[lo.length - 2], lo[lo.length - 1], v) <= 0) lo.pop(); lo.push(v); }
+  for (const v of q.slice().reverse()) { while (up.length >= 2 && cr(up[up.length - 2], up[up.length - 1], v) <= 0) up.pop(); up.push(v); }
+  return [...lo.slice(0, -1), ...up.slice(0, -1)];
+};
+
 export {camPoint, camSpace, camUnit, ell};
