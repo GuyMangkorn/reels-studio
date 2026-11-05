@@ -10,7 +10,8 @@ import type {V3} from './space';
 // A set that is to be seen all round must have something behind the lens: this camera clips polygons at the near plane
 // but cannot paint what the set lacks (see `src/painted/spike/Orbit360.tsx` for a closed crossroads).
 
-export type YCam = {x: number; y: number; z: number; yaw: number; f: number; hy: number; pitch?: number; cx?: number};
+/** `near` (optional, m): this camera's near plane instead of `YCAM_NEAR`, for a lens a few centimetres over a counter (EDU-EP02 board-level inserts); absent = 0.3 as before. */
+export type YCam = {x: number; y: number; z: number; yaw: number; f: number; hy: number; pitch?: number; cx?: number; near?: number};
 /** Camera space: `r` right, `u` up, `d` depth along the view axis (m). */
 export type CamPt = {r: number; u: number; d: number};
 /** Nearest depth (m) a polygon may reach before it is cut. */
@@ -27,7 +28,7 @@ export const camSpace = (c: YCam, [x, y, z]: V3): CamPt => {
 /** Picture point of a camera-space point (must have d > 0). */
 export const camToPicture = (c: YCam, q: CamPt): Pt => [540 + (c.cx ?? 0) + (c.f * q.r) / q.d, c.hy - (c.f * q.u) / q.d];
 /** Picture point of a world point, or null when it is not in front of the near plane. */
-export const camPoint = (c: YCam, v: V3, near = YCAM_NEAR): Pt | null => {
+export const camPoint = (c: YCam, v: V3, near = c.near ?? YCAM_NEAR): Pt | null => {
   const q = camSpace(c, v);
   return q.d >= near ? camToPicture(c, q) : null;
 };
@@ -36,10 +37,10 @@ export const camDepth = (c: YCam, v: V3): number => camSpace(c, v).d;
 /** Horizontal distance from the camera (m), for painter's order. */
 export const camDist = (c: YCam, [x, , z]: V3): number => Math.hypot(x - c.x, z - c.z);
 /** px per metre at the world point (the `unit` drawFigure takes), clamped at the near plane. */
-export const camUnit = (c: YCam, v: V3, near = YCAM_NEAR): number => c.f / Math.max(near, camSpace(c, v).d);
+export const camUnit = (c: YCam, v: V3, near = c.near ?? YCAM_NEAR): number => c.f / Math.max(near, camSpace(c, v).d);
 
 /** World polygon to picture polygon, cut at the near plane first (Sutherland-Hodgman on depth), so a floor or wall that runs behind the lens still fills the picture correctly. */
-export const camPoly = (c: YCam, pts: V3[], near = YCAM_NEAR): Pt[] => {
+export const camPoly = (c: YCam, pts: V3[], near = c.near ?? YCAM_NEAR): Pt[] => {
   const q = pts.map((p) => camSpace(c, p)), out: CamPt[] = [];
   for (let i = 0; i < q.length; i++) {
     const a = q[i], b = q[(i + 1) % q.length], ina = a.d >= near, inb = b.d >= near;

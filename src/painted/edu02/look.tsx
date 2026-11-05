@@ -5,7 +5,8 @@ import {makePainter, type Painter} from '../kit/painter';
 import {Grain} from '../kit/screen';
 import {orbitYCam, mixYCam, type YCam} from '../kit/ycam';
 import {paintKitchen, T} from './kitchen';
-import {paintCellMacro, paintEyeMacro, type CellState} from './macro';
+import {paintEyeMacro} from './eye';
+import {paintCellMacro, type CellState} from './macro';
 
 // EDU-EP02-SHORT look frames (brief EDU-BRIEF-R1, workflow W3.1, review rows SS-R1). Look stills only: no timeline, no voice,
 // no caption, eyebrow or channel mark. Painted 3D camera: every frame is the shot's own yaw-camera move in a world-metre set.
@@ -25,7 +26,7 @@ const PAPER: Record<Kind, string> = {kitchen: '#efe0c4', cell: '#f3dfa6', eye: '
 const GRADE: Record<Kind, string> = {
   kitchen: 'radial-gradient(ellipse 95% 75% at 45% 40%, rgba(255,236,190,0) 55%, rgba(90,54,40,0.22) 100%)',
   cell: 'radial-gradient(ellipse 90% 70% at 50% 32%, rgba(255,244,210,0.10) 0%, rgba(160,110,40,0) 55%, rgba(150,96,40,0.22) 100%)',
-  eye: 'radial-gradient(ellipse 95% 70% at 50% 30%, rgba(255,240,220,0) 50%, rgba(50,28,18,0.25) 100%)',
+  eye: 'radial-gradient(ellipse 95% 70% at 50% 45%, rgba(255,240,220,0) 50%, rgba(50,28,18,0.25) 100%)',
 };
 
 const Painted = ({kind, paint}: {kind: Kind; paint: (p: Painter, frame: number) => void}) => {
@@ -45,10 +46,13 @@ const Painted = ({kind, paint}: {kind: Kind; paint: (p: Painter, frame: number) 
   );
 };
 
-// ---- LF01 kitchen, S01-B01-SH02. Brief est. `cam: T-CHEST, yaw -40 -> -32, r 1.9 -> 1.6, eye 1.30, f 1000, hy 560`; W3.1 revision
-// (look frame r1-r2: the island front and an empty island top filled the lower half, lead 441 px): a longer lens from further
-// back, `r 2.35 -> 2.05, eye 1.55, pitch -8, f 1600, hy 520`, so the island stops looming and the cook's visible height is >= 480 px.
-export const LF01_CAM = {at: T.CHEST, yaw0: -40, yaw1: -32, r0: 2.35, r1: 2.05, eye: 1.55, pitch: -8, f: 1600, hy: 520};
+// ---- LF01 kitchen, S01-B01-SH02. Brief est. `cam: T-CHEST, yaw -40 -> -32, r 1.9 -> 1.6, eye 1.30, f 1000, hy 560`; W3.1 v1
+// `r 2.35 -> 2.05, eye 1.55, pitch -8, f 1600, hy 520` (the island front and an empty island top filled ~45% of the frame:
+// viewer check r1 fail). W3.1 v2 (brief R1.2): a medium close-up just above her eye height, `r 1.20 -> 1.10, eye 1.45,
+// pitch -6, f 1300, hy 593`, with the board moved left of centre on the island on the cook-camera line: the cook fills the top
+// two thirds, the island top with the onion (projected radius ~75-85 px, was 35) sits in the lower third and the cabinet
+// front leaves frame (an r 1.55 trial left the island top as an empty lower 40%).
+export const LF01_CAM = {at: T.CHEST, yaw0: -40, yaw1: -32, r0: 1.2, r1: 1.1, eye: 1.45, pitch: -6, f: 1300, hy: 593};
 export const camLF01 = (frame: number): YCam => {
   const k = LF01_CAM, e = ease(frame / (LF_FRAMES.LF01 - 1));
   return {...orbitYCam(k.at, k.r0 + (k.r1 - k.r0) * e, (k.yaw0 + (k.yaw1 - k.yaw0) * e) * DEG, k.eye, k.f, k.hy), pitch: k.pitch * DEG};
@@ -73,9 +77,16 @@ const paintSpkCell = (p: Painter, frame: number) =>
   paintCellMacro(p, camLF02(LF_FRAMES.LF02 - 1), {t: frame / FPS, beadGlint: 0, sacPulse: 0, burst: 1});
 export const SPK_CELL = () => <Painted kind="cell" paint={paintSpkCell} />;
 
-// ---- LF03 eye macro, S01-B04-SH02. Brief est. `cam: EYE, yaw -7 -> +6 arc, r 0.30 -> 0.26, eye 0, f 1000, hy 560`; W3.1 revision:
-// r 0.34 -> 0.30 so both eye corners stay inside the 1080 width (UT01: reads as an eye at a glance).
-export const LF03_CAM = {yaw0: -7, yaw1: 6, r0: 0.34, r1: 0.3, eye: 0, f: 1000, hy: 560};
+// ---- LF03 eye macro, S01-B04-SH02. Brief est. `cam: EYE, yaw -7 -> +6 arc, r 0.30 -> 0.26, eye 0, f 1000, hy 560`; W3.1 v1
+// r 0.34 -> 0.30 (both eye corners inside the 1080 width). W3.1 v2 (brief R1.2; viewer check r1: the eye sat in the top ~40%
+// over flat skin): r 0.36 -> 0.32 (eye ~75% of the frame width) and hy 650 (eye centre lower, its bottom still above the
+// caption band), with the brow above and the modelled cheek, nose side and rising wisps below. W3.1 v3 (brief R1.3; viewer
+// check r2: eye centre at ~33% of the height over a flat lower 55%): r 0.33 -> 0.30 (eye ~77-88% of the width) and hy 780
+// (eye centre ~y 760, ~40%). Recorded frame-zone exception (brief R1.3): the lower lid and lashes reach ~y 985, the top of
+// the 860-1248 band, so this shot needs captions anchored at the bottom edge (y >= 1240, at most two lines: top >= 1072).
+// W3.1 v4 (brief R1.4; viewer check r3, third fail; user: zoom the eye to fill the frame): r 0.307 -> 0.294 (eye ~85-90% of
+// the width) and hy 880 (eye centre ~y 856, 44.6%; lashes <= ~1150); captions bottom-anchored at y 1344, top >= 1176 (brief R1.4).
+export const LF03_CAM = {yaw0: -7, yaw1: 6, r0: 0.307, r1: 0.294, eye: 0, f: 1000, hy: 880};
 export const camLF03 = (frame: number): YCam => {
   const k = LF03_CAM, e = ease(frame / (LF_FRAMES.LF03 - 1));
   return orbitYCam([0, 0, 0], k.r0 + (k.r1 - k.r0) * e, (k.yaw0 + (k.yaw1 - k.yaw0) * e) * DEG, k.eye, k.f, k.hy);
