@@ -38,6 +38,11 @@ export type AnimalDef = {
   light?: string;
   /** Stripes (`tabby`), points (`points`), saddle-free patches (`calico`, second colour). */
   dark?: string;
+  /** Opt-in softer drawing (EDU-EP03 look frames, 5 Nov 2026): share of ink mixed into body and head outlines (default 0.55) and of dusk-violet mixed into far legs (default 0.28). */
+  inkMix?: number;
+  farMix?: number;
+  /** Opt-in (EDU-EP03): while sniffing in profile, draw the neck as a wide arched tube blending shoulder into head, and a soft chest blaze instead of the straight light strip. */
+  sniffNeck?: boolean;
   pattern: 'solid' | 'chest' | 'tabby' | 'points' | 'tuxedo' | 'calico';
   ears: 'prick' | 'big' | 'flop' | 'cat';
   tail: 'curl' | 'plume' | 'whip' | 'otter' | 'sickle' | 'cat';
@@ -194,7 +199,7 @@ export const drawAnimal = (p: Painter, seed: number, def: AnimalDef, g: Pt, unit
   const front = pose.view === 'front';
   const Q = (pts: UV[]): Pt[] => pts.map(([u, v]): Pt => [g[0] + (front ? u : dir * u) * s, g[1] - v * s]);
   let n = 0;
-  const outline = (c: string) => mixColor(c, INK, 0.55);
+  const outline = (c: string) => mixColor(c, INK, def.inkMix ?? 0.55);
   /** Legs and paws: a darker shade of the fur instead of the ink line (user, 2 Nov 2026). */
   const furLine = (c: string) => mixColor(c, INK, 0.28);
   const fill = (c: string, pts: UV[], passes = 4) => solid(p, seed * 1000 + ++n, c, Q(pts), passes, 0.07, 0.2);
@@ -208,7 +213,7 @@ export const drawAnimal = (p: Painter, seed: number, def: AnimalDef, g: Pt, unit
   const leg = (c: string, pts: UV[], fur = false) => part(c, pts, fur, true);
 
   const coat = def.pattern === 'calico' ? def.light ?? '#f4efe6' : def.coat;
-  const far = mixColor(coat, '#3a2a40', 0.28);
+  const far = mixColor(coat, '#3a2a40', def.farMix ?? 0.28);
   const light = def.light ?? coat;
   const dark = def.dark ?? mixColor(def.coat, INK, 0.4);
   const points = def.pattern === 'points';
@@ -418,9 +423,13 @@ export const drawAnimal = (p: Painter, seed: number, def: AnimalDef, g: Pt, unit
     if (R.haunch > 0.05) part(coat, ellUV(add(hip, [0.06, -0.02]), 0.24 * R.haunch, 0.23 * R.haunch, 0, 18), true);
     limb(R.nf, true, false);
 
-    const neck = tube([add(sh, [0.06, 0.1]), add(H, [-0.04, -0.06])], [isCat ? 0.28 : 0.3 * def.build, 0.24 * hs]);
+    const arch = def.sniffNeck && sniff > 0.3;
+    const neck = arch
+      ? tube([add(sh, [-0.06, 0.02]), add(sh, [0.12, 0.0]), lerpUV(add(sh, [0.12, 0.0]), add(H, [-0.1, 0.02]), 0.55), add(H, [-0.06, 0.0])], [0.5 * def.build, 0.42 * def.build, 0.34 * hs, 0.3 * hs])
+      : tube([add(sh, [0.06, 0.1]), add(H, [-0.04, -0.06])], [isCat ? 0.28 : 0.3 * def.build, 0.24 * hs]);
     part(coat, neck, true);
-    if (def.pattern === 'chest' || def.pattern === 'tuxedo') fill(light, tube([add(sh, [0.14, 0.02]), add(H, [0.04, -0.12])], [0.14, 0.1]), 3);
+    if (arch) { if (def.pattern === 'chest' || def.pattern === 'tuxedo') fill(mixColor(coat, light, 0.55), ellUV(add(sh, [0.16, -0.12]), 0.07, 0.15, -0.3, 14), 4); }
+    else if (def.pattern === 'chest' || def.pattern === 'tuxedo') fill(light, tube([add(sh, [0.14, 0.02]), add(H, [0.04, -0.12])], [0.14, 0.1]), 3);
     headSide(H);
     return;
   }
