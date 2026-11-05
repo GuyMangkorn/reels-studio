@@ -156,8 +156,12 @@ export type FigPose = {
   run?: number;
   /** Whole figure rotated about its ground contact: -1..1, +1 = lying with the head toward screen left (CCW), -1 = head toward screen right. Arm targets stay in the unrotated body frame. */
   lie?: number;
-  /** Whole figure raised off the ground, metres (jump, fall); the ground shadow stays. */
+  /** Whole figure raised off the ground, metres (jump, fall); the ground shadow stays unless `noShadow`. */
   lift?: number;
+  /** Skip the soft ground shadow (and its dark core): a figure with no ground under it (the dream fall). Default absent = shadow as before. */
+  noShadow?: boolean;
+  /** Neck in the face skin tone with a soft jaw shade and no outline, flaring into the collar (default absent = the VD18 shaded neck block, grey beside a lit face). EDU-EP01 W5.4. */
+  softNeck?: boolean;
   /**
    * Profile only: paint the far arm BEFORE the legs, so the near thigh and the torso hide a hanging far hand (default absent: after
    * the legs, as the WFOG cast always drew it, which leaves a hand floating over the thigh). The pose library sets it in every profile.
@@ -384,8 +388,8 @@ export const drawFigure = (p: Painter, def: CastDef, g: Pt, unit: number, pose: 
   const lie = Math.max(-1, Math.min(1, pose.lie ?? 0)), lieA = Math.abs(lie);
   const shX = g[0] - Math.sign(lie) * 0.5 * Ht * lieA * unit, shW = (profile ? 0.32 : 0.26) + (0.52 * Ht - (profile ? 0.32 : 0.26)) * lieA;
   const sh = ell(shX, g[1] + 0.01 * unit, shW * (L ? 1.15 : 1) * unit, (L ? 0.07 : 0.06) * (1 + lieA) * unit, 16);
-  if (!pose.seated && !L) washAt(p, seed * 1000 + 999, sil ?? '#1e2324', 70, sh, 0.5, 0.3);
-  if (!pose.seated && L) {
+  if (!pose.seated && !pose.noShadow && !L) washAt(p, seed * 1000 + 999, sil ?? '#1e2324', 70, sh, 0.5, 0.3);
+  if (!pose.seated && !pose.noShadow && L) {
     glaze(p, seed * 1000 + 999, palOf(L).ground, 120, sh, {border: 0.1, bleed: 0.15});
     glaze(p, seed * 1000 + 998, palOf(L).groundCore, 160, ell(shX, g[1] + 0.005 * unit, ((profile ? 0.22 : 0.2) + (0.4 * Ht - (profile ? 0.22 : 0.2)) * lieA) * unit, 0.03 * (1 + lieA) * unit, 16), {border: 0.1, bleed: 0.08});
   }
@@ -887,7 +891,13 @@ export const drawFigure = (p: Painter, def: CastDef, g: Pt, unit: number, pose: 
   const nx = profile ? -0.08 * HD : 0;
   const scoop = !!L?.shaped && !sil && !coat; // crew-neck shirt: the neck ends in a U of chest skin and a collar band covers its foot
   const neckC = coat ?? (L ? mixColor(def.head.skin, palOf(L).shadow, 0.3) : def.head.skin);
-  if (scoop) {
+  if (pose.softNeck && !coat && !sil) {
+    // one skin tone with the face (mottled like it), narrow under the jaw and flaring into the collar, so it is neither a darker block nor cut off from the shirt
+    const neck = Uq([[nx - nw, chin + 0.051], [nx + nw, chin + 0.051], [nx + nw * 1.18, shV - 0.03], [nx + nw * 1.42, shV + 0.012], [nx - nw * 1.42, shV + 0.012], [nx - nw * 1.18, shV - 0.03]]);
+    const nt = mixColor(toneOf(def.head.skin, L), '#6a4a58', 0.03); // toneOf: the same ambient pull the face and shirt get, so it matches the face as painted
+    solid(p, seed * 1000 + ++part, nt, neck, 6, 0.04, 0.1);
+    if (L) glaze(p, 7_800_000 + seed * 1000 + part, mixColor(nt, '#4a3a58', 0.4), 85, Uq([[nx - nw, chin + 0.051], [nx + nw, chin + 0.051], [nx + nw, chin + 0.051 + 0.45 * (shV - chin - 0.051)], [nx - nw, chin + 0.051 + 0.3 * (shV - chin - 0.051)]]), {border: 0.1, bleed: 0.3});
+  } else if (scoop) {
     const dip = (u: number): Pt => [nx + u * nw, shV - 0.013 - 0.026 * (1 - u * u)];
     const u = [0.75, 0.5, 0.25, 0, -0.25, -0.5, -0.75];
     fill(neckC, Uq([[nx - nw, chin + 0.051], [nx + nw, chin + 0.051], [nx + nw + 0.0043, shV - 0.013], ...u.map(dip), [nx - nw - 0.0043, shV - 0.013]]), false, 6);

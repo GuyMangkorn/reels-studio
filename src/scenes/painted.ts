@@ -85,7 +85,7 @@ export const paintedSpans = (timeline: Timeline, fps: number): PaintedSpan[] => 
 };
 
 /** A plate to paint this frame: `tl` on its shot clock (before the shot's own clock remap), plate and glow opacity. */
-export type PaintedPlate = {shot: string; tl: number; frame: number; alpha: number; overlayOpacity: number; label?: PaintedLabel};
+export type PaintedPlate = {shot: string; tl: number; frame: number; alpha: number; overlayOpacity: number; label?: PaintedLabel; /** A frame-0 plate laid by the C_seamless loop blend. */ incoming?: boolean};
 export type PaintedState = {plates: PaintedPlate[]; opacity: number};
 
 const platesAt = (spans: PaintedSpan[], frame: number, fps: number): PaintedPlate[] => {
@@ -126,7 +126,7 @@ export const paintedStateAt = (timeline: Timeline, frame: number, fps: number, o
     if (blend > 0) {
       // The outgoing plates' glow/overlay layers fade out as frame 0's fade in; their paint is covered by frame 0's opaque plate.
       plates.forEach((p, i) => { plates[i] = {...p, overlayOpacity: p.overlayOpacity * (1 - blend)}; });
-      plates.push(...platesAt(spans, 0, fps).map((p) => ({...p, alpha: p.alpha * blend, overlayOpacity: p.overlayOpacity * blend})));
+      plates.push(...platesAt(spans, 0, fps).map((p) => ({...p, alpha: p.alpha * blend, overlayOpacity: p.overlayOpacity * blend, incoming: true})));
     }
   }
   return plates.length ? {plates, opacity} : null;

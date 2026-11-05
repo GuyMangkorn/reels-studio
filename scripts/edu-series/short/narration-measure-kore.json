@@ -1,0 +1,155 @@
+{
+ "deliverable": "EDU-EP01-SHORT",
+ "script": "EDU-SCRIPT-R1.1",
+ "timingStatus": "audio-measured (alternative voice take, not user-approved)",
+ "take": "projects/EDU/audio/voice-lock-v1/EDU-EP01-SHORT-narration-kore-v1.wav",
+ "voice": "Gemini TTS Kore",
+ "style": "natural everyday storytelling, soft and warm but clear and conversational, calm quiet wonder, awake, steady brisk pace, short natural pauses, no audible breathing; same narrator throughout, do not speed up",
+ "post": "scripts/edu-series/short/voice-regap.py (4th arg = lineGaps table below): gaps >= 0.15 s tightened (line gap 0.28 s, comma 0.14 s, reveal pauses 0.55 s before L09 and L12, jolt gap 3.2 s placeholder before L07, 0.5 s tail), atempo 1.08, loudnorm -16 LUFS / TP -1.5",
+ "durationSec": 61.97,
+ "speechEndSec": 61.32,
+ "tailSilenceSec": 0.65,
+ "loudness": {
+  "integratedLUFS": -16.1,
+  "LRA": 2.7,
+  "truePeakDBFS": -1.5
+ },
+ "method": "line onset = end of the silence (-38 dB, >= 0.15 s) before the line minus 0.03 s, line end = start of the silence after it; checked against Whisper word times (+-0.2 s). Seconds in the locked take; frames = round(s*30) are Film's job at W5.1.",
+ "jolt": "L05 end to L07 onset is 2.99 s of silence (same 3.2 s placeholder pre-tempo)",
+ "lines": {
+  "L01": {
+   "beat": "B01",
+   "onset": 0.35,
+   "end": 4.0
+  },
+  "L02": {
+   "beat": "B01",
+   "onset": 4.28,
+   "end": 5.2
+  },
+  "L03": {
+   "beat": "B02",
+   "onset": 5.49,
+   "end": 8.98
+  },
+  "L04": {
+   "beat": "B02",
+   "onset": 9.28,
+   "end": 10.87
+  },
+  "L05": {
+   "beat": "B03",
+   "onset": 11.16,
+   "end": 16.32
+  },
+  "L07": {
+   "beat": "B04",
+   "onset": 19.31,
+   "end": 23.82
+  },
+  "L08": {
+   "beat": "B05",
+   "onset": 24.1,
+   "end": 27.67
+  },
+  "L09": {
+   "beat": "B05",
+   "onset": 28.21,
+   "end": 29.25
+  },
+  "L10": {
+   "beat": "B05",
+   "onset": 29.54,
+   "end": 33.44
+  },
+  "L11": {
+   "beat": "B05",
+   "onset": 33.72,
+   "end": 39.5
+  },
+  "L12": {
+   "beat": "B05",
+   "onset": 40.05,
+   "end": 42.14
+  },
+  "L13": {
+   "beat": "B06",
+   "onset": 42.42,
+   "end": 49.27
+  },
+  "L14": {
+   "beat": "B07",
+   "onset": 49.56,
+   "end": 52.4
+  },
+  "L15": {
+   "beat": "B07",
+   "onset": 52.66,
+   "end": 58.04
+  },
+  "L16": {
+   "beat": "B08",
+   "onset": 58.34,
+   "end": 61.32
+  },
+  "L06": {
+   "beat": "B03",
+   "onset": null,
+   "end": null,
+   "note": "acted gasp, not generated; sits inside the 3.02 s gap"
+  }
+ },
+ "beats": {
+  "B01": [
+   0.35,
+   5.2
+  ],
+  "B02": [
+   5.49,
+   10.87
+  ],
+  "B03": [
+   11.16,
+   16.32
+  ],
+  "B04": [
+   19.31,
+   23.82
+  ],
+  "B05": [
+   24.1,
+   42.14
+  ],
+  "B06": [
+   42.42,
+   49.27
+  ],
+  "B07": [
+   49.56,
+   58.04
+  ],
+  "B08": [
+   58.34,
+   61.32
+  ]
+ },
+ "lineGaps": {
+  "4.36": "L02",
+  "5.93": "L03",
+  "10.45": "L04",
+  "12.70": "L05",
+  "19.06": "L07",
+  "25.04": "L08",
+  "30.45": "L09",
+  "32.03": "L10",
+  "37.03": "L11",
+  "44.29": "L12",
+  "47.47": "L13",
+  "56.29": "L14",
+  "60.20": "L15",
+  "66.37": "L16"
+ },
+ "lineGapsNote": "raw Kore take silence starts (raw.wav 70.52 s) mapped to the line that follows; pass as JSON to voice-regap.py",
+ "rawTakeSec": 70.52,
+ "atempo": 1.08
+}

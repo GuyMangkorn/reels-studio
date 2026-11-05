@@ -164,7 +164,8 @@ export const drawFigureBack = (p: Painter, def: CastDef, g: Pt, unit: number, po
   const rotHead = ([x, y]: Pt): Pt => cock === 0 ? [x, y] : [pivot[0] + (x - pivot[0]) * Math.cos(cock) - (y - pivot[1]) * Math.sin(cock), pivot[1] + (x - pivot[0]) * Math.sin(cock) + (y - pivot[1]) * Math.cos(cock)];
   const head = ([u, v]: Pt): Pt => rotHead([hc[0] + (u * cy + 0.3 * Math.sin(yaw)) * k, hc[1] + (v - lift) * k]);
   const H2 = (pts: Pt[]) => pts.map(head);
-  fill(pose.hoodUp && pose.cowl !== 'drape' ? (hoodColorOf(o) ?? mixColor(o.shirt, INK, 0.2)) : o.coat ?? skinShade, pts4(neck, [[-0.5, 0.5], [0.5, 0.5], [0.46, 1.6], [-0.46, 1.6]]), true, 4);
+  // softNeck (EDU-EP01 W5.4): the caller paints its own nape and collar, so the rig's neck block (its lower edge showed as a bar on the shirt) is skipped
+  if (!pose.softNeck) fill(pose.hoodUp && pose.cowl !== 'drape' ? (hoodColorOf(o) ?? mixColor(o.shirt, INK, 0.2)) : o.coat ?? skinShade, pts4(neck, [[-0.5, 0.5], [0.5, 0.5], [0.46, 1.6], [-0.46, 1.6]]), true, 4);
   fill(mixColor(o.shirt, '#ffffff', 0.08), Uq([[-0.075, shV0 - 0.005], [0.075, shV0 - 0.005], [0.07, shV0 + 0.025], [-0.07, shV0 + 0.025]]), true, 4);
 
   // Hood down: the hood bunched on the upper back, seam down the middle.
