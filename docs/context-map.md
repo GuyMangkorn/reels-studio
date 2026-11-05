@@ -145,8 +145,8 @@ Episode-specific files are under [Episodes](#episodes); shared topics come first
 **Read when:** writing or reviewing a scene sheet, publishing the user storyboard review page, shot-by-shot approval.
 
 - Docs: [mark-storyboard-workflow](mark-storyboard-workflow.md) ([scene-sheet contract](mark-storyboard-workflow.md#scene-sheet-contract), [user review page](mark-storyboard-workflow.md#user-storyboard-review-page)), [storyboard-principles](storyboard-principles.md), [sequence-workflow](sequence-workflow.md); [shot-by-shot proposal](reviews/2026-11-01-shot-by-shot-workflow-proposal.md)
-- Scripts: [storyboard-page/build.py](../scripts/storyboard-page/build.py), [storyboard-page/clips.mjs](../scripts/storyboard-page/clips.mjs), [template.html](../scripts/storyboard-page/template.html), [example.json](../scripts/storyboard-page/example.json), [shot-projection.py](../scripts/shot-projection.py)
-- Per episode: `scripts/<episode>/short/` scene sheets and `review-rows.json`
+- Scripts: [storyboard-page/build.py](../scripts/storyboard-page/build.py), [storyboard-page/clips.mjs](../scripts/storyboard-page/clips.mjs), [template.html](../scripts/storyboard-page/template.html), [example.json](../scripts/storyboard-page/example.json), [shot-projection.py](../scripts/shot-projection.py), [viewer-check.py](../scripts/viewer-check.py) (one-file input bundle and carried-over passes for the [viewer check](sequence-workflow.md#viewer-check))
+- Per episode: `scripts/<episode>/short/` scene sheets, `review-rows.json` and `viewer-check-<stage>.json`
 - Tests: [storyboard-page](../tests/storyboard-page.test.ts)
 
 ## Script, research and fact-check
