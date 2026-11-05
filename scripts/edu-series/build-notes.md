@@ -135,7 +135,6 @@ Findings:
 - **Viewer check (2026-11-04, fresh Film):** LF01 fail (sleeper's head/face unreadable, no female cue, rug fills the lower 40 %), LF02 fail (no look-down, cliff not "unfinished", no sense of height), LF03 pass, LF04 pass (dumbbell reads as "H"), LF05 fail (doctor reads male, no stethoscope). Details and fixes: [viewer-check-lf-v1](short/viewer-check-lf-v1.md).
 - Not done in this pass: the [thumbnails](../../docs/sequence-workflow.md#look-thumbnails) step (skipped on coordinator instruction) and the [viewer check](../../docs/sequence-workflow.md#viewer-check) (needs a fresh Film invocation).
 
-<<<<<<< HEAD
 ## EP02 W3.1 look frames v1 (2026-11-05, Film)
 
 Source: `src/painted/edu02/` (`cast.ts` cook + bib apron, `world.ts` world-metre paint helpers, `kitchen.ts` SET-KITCHEN, `macro.ts` CELL and EYE sets, `look.tsx`, standalone entry `look-index.ts`; compositions `EDU2-LF01` (48 f), `EDU2-LF02` (126 f), `EDU2-LF03` (102 f), spike `EDU2-SPK-CELL`). Every comp runs its shot's yaw-camera move (painted 3D camera). Render (render.mjs bundles only the registry, so the standalone entry goes through the one-Chrome stills CLI): `printf 'EDU2-LF01 24 out/edu02/look/v1/EDU2-LF01_f24.png\n' | node scripts/stills.mjs src/painted/edu02/look-index.ts`. Store: `projects/EDU/previews/look-frames/ep02/v1/` (look stills `EDU2-LF01_f24`, `EDU2-LF02_f110`, `EDU2-LF03_f45` + `_540` copies, start/middle/end frames, spike, `sheet-LF0n.png`, `sheet-v1.png`).
@@ -292,7 +291,6 @@ Shots S01-B01-SH01…SH03, S01-B02-SH01…SH02 (SS-R2, brief R1.5) as `plateOf(i
 - **Board-level cameras** (B02-SH01 lens 0.08 m in front of the island, B02-SH02 lens 0.08 m over its top): the kit yaw camera's 0.3 m near plane cut the island top away and the floor and the cook's feet showed through. Kit `YCam.near` (optional, default unchanged) set to 0.04 on those two cameras.
 - **Feasibility changes for Film:** B01-SH01 `hy 600 → 440` (at 600 her mouth and chin were in frame at y ≈ 121); B01-SH03 chop grip (−0.40, 1.05, −0.18) → tip (−0.33, 0.92, 0.08), halves part along the blade's normal (−15° off x); B02-SH01 O2 comes down from her side (start (−0.12, 1.16, −0.20)) instead of from frame right, stays in the hand until l 22; B02-SH02 cut plane 40° off the view axis, near half parts 0.045 m (sheet 0.02) so the far cut face shows; O1 halves at the board end parted 0.07 m with faces turned; cook omitted in B02-SH02 (face off frame left).
 - **Not built:** O2 settle wobble ±1° (≈ 2–3 px at the tip), a true defocus for the soft cook (colour mix toward the room air instead).
-=======
 ## W4.1-W4.2 voice lock and W1.4 length check (Editor, 2026-11-04)
 
 - Voice: Gemini TTS Achernar (user's liked narrator), atempo 1.08 (EG-EP01 awake style; 1.05 alternative kept). Text `out/edu-voice/text.txt`: script VO with `…` -> `,`, one line per row, L06 omitted (non-verbal), L16 ends on "ว่าตอนที่คุณ" with no closing punctuation.
@@ -442,4 +440,3 @@ Inputs: sheets EDU-SHEETS-R1.1, script EDU-SCRIPT-R1.1, voice Kore v1, compositi
 - Problem: SceneRenderer hid the last scene's captions when the C_seamless loop blend opened (f1844), so the final cue vanished in one frame.
 - Fix: new opt-in `captionStyle.fadeOutWithLoop` (types.ts, validated in media.ts). When set, the final scene keeps its captions through the blend and `Subtitles` takes an `opacity` of `max(0, 1 - 1.25 * blendOpacity)`: full at f1844, gone by f1855, so the faint-ghost PSNR cost at the seam is nil. Off by default; other videos unchanged. EDU-EP01-SHORT sets it in src/videos/edu-ep01/index.ts.
 - Evidence: seam PSNR f1858 vs f0 52.24 dB (52.28 without the change; f1859 64.86 vs 65.73), stills out/EDU-EP01-SHORT/w57-fade-sheet.png, draft clip out/EDU-EP01-SHORT/clips/S01-B08-SH01_draft.mp4. npm test 465/465 pass.
->>>>>>> 830a28ab055fd2c31d2684eae01d6643ad567ca7
