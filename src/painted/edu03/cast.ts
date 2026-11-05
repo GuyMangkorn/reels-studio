@@ -64,7 +64,7 @@ export const paintFaceKey = (p: Painter, a: FigAnchors, unit: number, seed: numb
  * Cream canvas sling bag: strap from his right shoulder (screen left) across the chest to a flap bag at his left hip (screen right).
  * Front view, standing. Closed until B06 (`open` 0). `a` are the anchors `drawFigure` returned.
  */
-export const paintSlingBag = (p: Painter, def: CastDef, g: Pt, unit: number, seed: number, a: FigAnchors) => {
+export const paintSlingBag = (p: Painter, def: CastDef, g: Pt, unit: number, seed: number, a: FigAnchors, open = 0) => {
   const f = bodyFrame(def, {view: 'front'});
   const P = (u: number, v: number): Pt => [g[0] + u * unit, g[1] - v * unit];
   const sh = a.rShoulder;
@@ -78,11 +78,22 @@ export const paintSlingBag = (p: Painter, def: CastDef, g: Pt, unit: number, see
   const body: Pt[] = [P(cu - w, h0), P(cu + w, h0), P(cu + w + 0.005, h1), P(cu - w - 0.005, h1)];
   solid(p, seed + 3, BAG, body, 8, 0.03, 0.1);
   const flap: Pt[] = [body[0], body[1], [body[1][0] + 0.002 * unit, body[1][1] + 0.12 * unit], [(body[0][0] + body[1][0]) / 2, body[1][1] + 0.16 * unit], [body[0][0] - 0.002 * unit, body[0][1] + 0.12 * unit]];
-  solid(p, seed + 4, mixColor(BAG, '#b09a6a', 0.22), flap, 6, 0.03, 0.1);
-  inkLine(p, seed + 5, body, {weight: 0.75, color: edge});
-  inkLine(p, seed + 6, flap, {weight: 0.65, color: edge});
-  const bx = (body[0][0] + body[1][0]) / 2, by = body[1][1] + 0.13 * unit;
-  solid(p, seed + 7, '#8a6a3a', ell(bx, by, 0.018 * unit, 0.014 * unit, 10), 3, 0.03, 0.1);
+  const k = Math.max(0, Math.min(1, open));
+  if (k > 0.02) {
+    // Open: the bag mouth shows dark and the flap hangs back above it, hinged on the top edge (fold-over: foreshortened by the open amount).
+    const mouth: Pt[] = [body[0], body[1], [body[1][0], body[1][1] + 0.05 * unit * k], [body[0][0], body[0][1] + 0.05 * unit * k]];
+    solid(p, seed + 3, '#4a3b28', mouth, 4, 0.03, 0.08);
+    const up: Pt[] = [body[0], body[1], [body[1][0] + 0.004 * unit, body[1][1] - 0.11 * unit * k], [(body[0][0] + body[1][0]) / 2, body[1][1] - 0.14 * unit * k], [body[0][0] - 0.004 * unit, body[0][1] - 0.11 * unit * k]];
+    solid(p, seed + 4, mixColor(BAG, '#b09a6a', 0.22), up, 6, 0.03, 0.1);
+    inkLine(p, seed + 5, body, {weight: 0.75, color: edge});
+    inkLine(p, seed + 6, up, {weight: 0.65, color: edge});
+  } else {
+    solid(p, seed + 4, mixColor(BAG, '#b09a6a', 0.22), flap, 6, 0.03, 0.1);
+    inkLine(p, seed + 5, body, {weight: 0.75, color: edge});
+    inkLine(p, seed + 6, flap, {weight: 0.65, color: edge});
+    const bx = (body[0][0] + body[1][0]) / 2, by = body[1][1] + 0.13 * unit;
+    solid(p, seed + 7, '#8a6a3a', ell(bx, by, 0.018 * unit, 0.014 * unit, 10), 3, 0.03, 0.1);
+  }
   // Stitch/denim-tone contact shade under the flap.
   washAt(p, seed + 8, dark, 90, [body[3], body[2], [body[2][0], body[2][1] - 0.03 * unit], [body[3][0], body[3][1] - 0.03 * unit]], 0.1, 0.3);
 };

@@ -97,7 +97,7 @@ Record: [delivery.md](delivery.md) · Updated: 2026-11-05, Film
   - [x] W4.3 User approves the voice (narrator Kore `kore-v1`, owner Algenib `owner-v1`, 2026-11-05)
 - [ ] W5 Draft
   - [x] W5.1 Film timed scene sheets (SS-R3, [ep03/scenes/](ep03/scenes/index.md), 2026-11-05; brief R2.1): `ready-for-dev`, 15 shots, 1571 f = 52.37 s (margin 7.63 s), timed from silence boundaries (no Whisper); content changes vs the user-passed SS-R2 only in B02-SH03 (owner alone) and B06-SH02 (run enters on the B02 lane, turns straight to the ball), questions Q-T1/Q-T2 in `review-rows.json`; review page: pending (rows SS-R3 built locally `out/review-pages/EDU-EP03-SHORT/index.html`)
-  - [ ] W5.2 Boss assets and plates (groups G-A…G-E in [ep03/scenes/index.md](ep03/scenes/index.md#dependencies-and-open-items); `park.ts` `POS.D0` to R2 first)
+  - [x] W5.2 Boss assets and plates, **15/15 shots plated as stills** 2026-11-05 (G-A B01–B02, G-B B03–B04, G-C B05–B07; `src/painted/edu03/shots.tsx` `plateOf`, standalone `shots-index.ts` `EDU3-S01-*`; `POS.D0` was already R2; evidence `projects/EDU/previews/shots/ep03/w52-GA|GB|GC/`; details and open items in [build-notes.md](build-notes.md#ep03-w52-shot-plates-2026-11-05-boss); stills only, not user-reviewed, W5.3 Draft is Editor's)
 - [ ] W6 Final
 - [ ] W7 Pinned
 - [ ] W8 Deliver

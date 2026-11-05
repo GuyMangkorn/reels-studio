@@ -1,5 +1,5 @@
 import {drawAnimal, ANIMALS, type AnimalPose} from '../kit/animals';
-import {drawFigure, type FigAnchors} from '../kit/cast';
+import {drawFigure, ikElbow, shoulderPoint, BONE, type Arm, type FigAnchors} from '../kit/cast';
 import {ell, hardFill, inkLine, INK, limb, solid, washAt} from '../kit/draw';
 import type {InteriorLight} from '../kit/draw';
 import {EXPRESSIONS, type ExpressionId} from '../kit/expressions';
@@ -227,8 +227,12 @@ const paintTufts = (p: Painter, c: YCam, region: {x0: number; x1: number; z0: nu
 };
 
 // ------------------------------------------------------------------------------------------------------------------ cast
-export type OwnerState = {at?: V3; pose?: AnyPoseId; face?: ExpressionId; headCock?: number; /** Ball in his right hand, at chest. */ held?: BallColor; /** Scene light override (B04 face key, `PARK_LIGHT_B04`); default `PARK_LIGHT`. */ light?: InteriorLight; /** Warm face/hand light 0..1 (kit `FigPose.warm`). */ warm?: number; /** B04 face key paint (`paintFaceKey`). */ faceKey?: boolean};  // `faceKey` also switches the owner to his sunlit skin (`OWNER_B04`)
-export type DogState = {at?: V3; pose: AnimalPose; ball?: undefined};
+/** A hand target in metres from the shoulder (screen right +x, up +y; a profile: forward +x), elbow `via`. */
+export type ArmM = {to: Pt; via: Pt};
+/** Reach a world point with a hand: the arm is solved in the picture (EP03 shot plates: ruffle, bag). */
+export type ArmAt = {reach: V3; out?: number};
+export type OwnerState = {/** Figure view (default front). */ view?: 'front' | 'left' | 'right'; /** Hand targets (plate shots; replace the pose's arm for that side). */ rArm?: ArmM | ArmAt; lArm?: ArmM | ArmAt; /** Kneel fraction 0..1 of the pose's kneel (kneel-down). */ kneelK?: number; /** Upper-body lean toward screen right, radians (reaching the dog). */ lean?: number; /** Ball in the left hand. */ heldL?: BallColor; /** How far the held ball sits toward the lens, 0..1 of the way to the camera (default 0.2). */ holdK?: number; /** Sling-bag flap open 0..1. */ bagOpen?: number; /** Squash of the held ball (1 = round). */ squash?: number; at?: V3; pose?: AnyPoseId; face?: ExpressionId; headCock?: number; /** Ball in his right hand, at chest. */ held?: BallColor; /** Scene light override (B04 face key, `PARK_LIGHT_B04`); default `PARK_LIGHT`. */ light?: InteriorLight; /** Warm face/hand light 0..1 (kit `FigPose.warm`). */ warm?: number; /** B04 face key paint (`paintFaceKey`). */ faceKey?: boolean};  // `faceKey` also switches the owner to his sunlit skin (`OWNER_B04`)
+export type DogState = {at?: V3; pose: AnimalPose; /** Ball carried in the mouth: world offset (m) from `at`, picture-space scale optional. */ mouth?: {color: BallColor; off: V3; scale?: number}};
 export type ParkState = {t: number; balls?: BallState[]; owner?: OwnerState; dog?: DogState; /** Skip the tufts and the haze for a cheap iteration frame. */ draft?: boolean};
 
 const ownerItem = (p: Painter, c: YCam, st: OwnerState, t: number): Item => {
@@ -238,24 +242,41 @@ const ownerItem = (p: Painter, c: YCam, st: OwnerState, t: number): Item => {
     if (!g) return;
     groundShadow(p, c, 8300, at, 0.55, 0.28, 0.55, 0.12, 110);
     const def = st.faceKey ? OWNER_B04 : OWNER;
-    const pose = poseFor(st.pose ?? 'P11', def, g, u, 'front');
+    const view = st.view ?? 'front';
+    const pose = poseFor(st.pose ?? 'P11', def, g, u, view);
+    if (st.kneelK !== undefined && pose.kneel !== undefined) pose.kneel = pose.kneel * st.kneelK;
+    if (st.lean) pose.lean = st.lean;
     const face = EXPRESSIONS[st.face ?? 'happy'];
-    const a: FigAnchors = drawFigure(p, def, g, u, {...pose, face, headCock: st.headCock, warm: st.warm, light: st.light ?? PARK_LIGHT}, t);
+    const arm = (side: 'r' | 'l', a: ArmM | ArmAt | undefined): Arm | undefined => {
+      if (!a) return undefined;
+      const sh = shoulderPoint(def, g, u, pose, side), d = view === 'left' ? -1 : 1;
+      if ('reach' in a) {
+        const T = camPoint(c, a.reach);
+        if (!T) return undefined;
+        return {to: T, via: ikElbow(sh, T, BONE * u, a.out ?? (side === 'r' ? -1 : 1))};
+      }
+      return {to: [sh[0] + d * a.to[0] * u, sh[1] - a.to[1] * u], via: [sh[0] + d * a.via[0] * u, sh[1] - a.via[1] * u]};
+    };
+    const rA = arm('r', st.rArm), lA = arm('l', st.lArm);
+    const fig = {...pose, face, headCock: st.headCock, warm: st.warm, light: st.light ?? PARK_LIGHT, ...(rA ? {rArm: rA} : {}), ...(lA ? {lArm: lA} : {})};
+    const a: FigAnchors = drawFigure(p, def, g, u, fig, t);
     if (st.faceKey) paintFaceKey(p, a, u, 8350);
-    paintSlingBag(p, def, pose.kneel ? [g[0], g[1] + 0.3 * u] : g, u, 8450, a); // kneeling: the hip (and the bag on it) drops by the shin length
-    if (st.held) {
-      // The ball sits in his right grip (screen left), held up and a little toward the lens, so it is drawn at the nearer scale.
-      const toCam: V3 = [at[0] + (c.x - at[0]) * 0.2, 0, at[2] + (c.z - at[2]) * 0.2], un = camUnit(c, toCam);
-      const cx = a.rHand[0], cy = a.rHand[1] - BALL_R * un * 0.9;
-      paintBallDisc(p, 8500, cx, cy, BALL_R * un, st.held);
-      const fingers: Pt[] = ell(cx + 0.012 * un, cy + BALL_R * un * 0.95, 0.052 * un, 0.034 * un, 12);
-      solid(p, 8510, OWNER.head.skin, fingers, 3, 0.04, 0.1);
-      inkLine(p, 8511, fingers, {weight: 0.6, color: mixColor(OWNER.head.skin, INK, 0.6)});
-    }
+    if (view === 'front') paintSlingBag(p, def, pose.kneel ? [g[0], g[1] + 0.3 * (pose.kneel) * u] : g, u, 8450, a, st.bagOpen ?? 0); // kneeling: the hip (and the bag on it) drops by the shin length
+    const hold = (hand: Pt, color: BallColor, seed: number, rightHand: boolean) => {
+      // The ball sits in the grip, held up and a little toward the lens, so it is drawn at the nearer scale.
+      const k = st.holdK ?? 0.2, toCam: V3 = [at[0] + (c.x - at[0]) * k, 0, at[2] + (c.z - at[2]) * k], un = camUnit(c, toCam);
+      const cx = hand[0], cy = hand[1] - BALL_R * un * 0.9, sq = st.squash ?? 1;
+      paintBallDisc(p, seed, cx, cy, BALL_R * un, color);
+      const fingers: Pt[] = ell(cx + (rightHand ? 0.012 : -0.012) * un, cy + BALL_R * un * 0.95 * sq, 0.052 * un, 0.034 * un * sq, 12);
+      solid(p, seed + 10, OWNER.head.skin, fingers, 3, 0.04, 0.1);
+      inkLine(p, seed + 11, fingers, {weight: 0.6, color: mixColor(OWNER.head.skin, INK, 0.6)});
+    };
+    if (st.held) hold(a.rHand, st.held, 8500, true);
+    if (st.heldL) hold(a.lHand, st.heldL, 8520, false);
   }};
 };
 /** EP03 golden: lighter outline and far-leg shade (user note, 5 Nov 2026); the shared kit entry is unchanged. */
-const DOG_EP03 = {...ANIMALS['dog-golden'], inkMix: 0.06, farMix: 0.12, sniffNeck: true};
+const DOG_EP03 = {...ANIMALS['dog-golden'], inkMix: 0.06, farMix: 0.12, sniffNeck: true, smoothLimbs: true};
 const dogItem = (p: Painter, c: YCam, st: DogState, t: number): Item => {
   const at = st.at ?? POS.D0;
   return {at, draw: () => {
@@ -263,6 +284,11 @@ const dogItem = (p: Painter, c: YCam, st: DogState, t: number): Item => {
     if (!g) return;
     groundShadow(p, c, 8700, at, 0.5, 0.2, 0.4, 0.1, 120);
     drawAnimal(p, ANIMALS['dog-golden'].seed, DOG_EP03, g, u, st.pose, t);
+    if (st.mouth) {
+      const m = st.mouth, q = camPoint(c, [at[0] + m.off[0], m.off[1], at[2] + m.off[2]]);
+      const un = camUnit(c, [at[0] + m.off[0], 0, at[2] + m.off[2]]);
+      if (q) paintBallDisc(p, 8800, q[0], q[1], BALL_R * un * (m.scale ?? 1), m.color);
+    }
   }};
 };
 
