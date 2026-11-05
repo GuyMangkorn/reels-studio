@@ -37,7 +37,10 @@ export const PaintedStage = ({timeline, ending, loopBlendFrames, endingOptions}:
     return {plate, shot, tl, alpha, camera: shot.camera(tl)};
   });
   const paint = ({brush}: PaintContext) => {
-    state.plates.forEach((plate, i) => drawPlate(brush, paintedShots[plate.shot], {tl: plate.tl, fps, width, height, alpha: plate.alpha, paper: i > 0, fade: plates[0].shot.paper}));
+    state.plates.forEach((plate, i) => {
+      if (plate.incoming && plate.alpha < 1 && paintedShots[plate.shot].loopExact) return;
+      drawPlate(brush, paintedShots[plate.shot], {tl: plate.tl, fps, width, height, alpha: plate.alpha, paper: i > 0, fade: plates[0].shot.paper});
+    });
   };
   const visible = plates.filter((x) => x.alpha > 0 || x.plate.overlayOpacity > 0);
   const slots = labelSlots(visible.map((x) => x.plate.label).filter((l): l is PaintedLabel => l !== undefined));

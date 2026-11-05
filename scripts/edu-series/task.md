@@ -4,7 +4,7 @@ Record: [delivery.md](delivery.md) · Updated: 2026-11-04, Editor (W4.1-W4.2, W1
 
 ## EDU-EP01-SHORT
 
-**Now:** W5.2 passed (user, 2026-11-04, after 4 repaint rounds on stills; viewer check v3 pass). **Next:** W5.3 Editor Draft: narration Kore v1 + L06 gasp, captions with shade (UT12), tag, name card, SFX/BGM, per-shot draft clips (`clips.mjs --draft`), then user Draft review
+**Now:** W5.3 Draft passed 23/23 (user, 2026-11-05). Previously: W5.2 passed (user, 2026-11-04, after 4 repaint rounds on stills; viewer check v3 pass). **Next:** W5.3 Editor Draft: narration Kore v1 + L06 gasp, captions with shade (UT12), tag, name card, SFX/BGM, per-shot draft clips (`clips.mjs --draft`), then user Draft review
 
 - [x] W0 Ideation
   - [x] W0.1 Preaw concepts (concepts.md R1)
@@ -31,7 +31,7 @@ Record: [delivery.md](delivery.md) · Updated: 2026-11-04, Editor (W4.1-W4.2, W1
 - [ ] W5 Draft
   - [x] W5.1 Film timed scene sheets: [scene-sheets.md](short/scene-sheets.md) EDU-SHEETS-R1 `ready-for-dev`, 23 shots, 1860 f (62.00 s, limit 63 s), jolt gap kept at 2.99 s (no voice regeneration), L06 = separate character voice, caption-shade ladder 0.5/0.4/0.3 at W5.3; `review-rows.json` start/end timed; review page: pending
   - [x] W5.2 Boss assets and plates (shot groups 5/5 built as stills, 2026-11-04: composition `EDU-EP01-SHORT`, 23 scenes, 69 key stills in `out/edu01/w52/` (G1-G5 sheets); Repaint round 2026-11-04 (Boss) after the viewer check: seated sit-up body, faller `noShadow` + bigger, B01-SH02 recompose, pencil fade, SH02 framing, cool dim (see build-notes); NOT yet done: motion check of the sit-up, caption zone fails on every ground (W5.3 shade), no frame-sequence/seek check beyond stills, viewer check pending (coordinator); tick when the coordinator accepts)
-  - [ ] W5.3 Draft passed (0/N shots)
+  - [x] W5.3 Draft passed (23/23 shots, user, 2026-11-05, after repaint rounds W5.4-W5.9, caption fade W5.7; viewer checks w54/w56/w58/w59 pass; see delivery.md W5.3 and build-notes). Open, not blocking: sound not listened, LF01 look frame not re-rendered, nits in viewer-check-w59.md
 - [ ] W6 Final passed (0/N shots)
 - [ ] W7 Pinned (0/N shots)
 - [ ] W8 Deliver

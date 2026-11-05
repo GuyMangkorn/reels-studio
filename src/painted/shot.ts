@@ -25,6 +25,10 @@ export type PaintedShot = {
   clock?: (tl: number) => number;
   /** Optional plate opacity over the (unmapped) shot clock: a drain to paper. */
   alpha?: (tl: number) => number;
+  /** C_seamless: this shot is the first of a video whose last frame is built to equal its frame 0. The loop blend then crossfades only the
+   * overlay layers (grade, glow, shade); frame 0's ink is not laid at partial alpha (faded ink mixes toward paper and bleaches the picture
+   * mid-blend, EDU-EP01 W5.3) and cuts in on the last frame, which equals the frame before it. */
+  loopExact?: boolean;
   /** World marks, painted inside the camera transform. */
   paint: (p: Painter, ctx: ShotContext) => void;
   /** Screen-space marks after the camera (rain, particles). */

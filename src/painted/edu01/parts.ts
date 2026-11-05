@@ -69,7 +69,7 @@ export const paintFaller = (p: Painter, t: number, cx: number, cy: number, deg: 
   p.brush.translate(cx, cy);
   p.brush.rotate((deg * Math.PI) / 180);
   p.brush.translate(-cx, -cy);
-  drawFigure(p, SLEEPER, g, U, {...poseFor('P39', SLEEPER, g, U, 'front'), face: EXPRESSIONS.scared, light: PAPER_LIGHT, noShadow: true}, t);
+  drawFigure(p, SLEEPER, g, U, {...poseFor('P39', SLEEPER, g, U, 'front'), face: EXPRESSIONS.scared, light: PAPER_LIGHT, noShadow: true, softNeck: true}, t);
   p.brush.pop();
 };
 
@@ -103,15 +103,16 @@ export const paintBubble = (p: Painter, seed: number, cx: number, cy: number, rx
 /** `new: brain-cloud`: a soft stylised lump (overlapping pink-lilac washes, two fold strokes), not anatomical; two small eyes
  *  looking toward (`gx`, `gy`) in -1..1. `s` is the width in px. */
 export const paintBrain = (p: Painter, seed: number, cx: number, cy: number, s: number, gx: number, gy: number) => {
-  const cl = ['#e6b4c8', '#d9a6c6', '#eec3d0', '#cfa0c8', '#e9b9cb'];
+  // W5.4 (user: "cute, but a little heavier/darker colours"): the same pinks and lilacs pulled toward a deeper plum (about 22 %), cuteness kept (same shape, eyes)
+  const cl = ['#e6b4c8', '#d9a6c6', '#eec3d0', '#cfa0c8', '#e9b9cb'].map((c) => mixColor(c, '#8a4f88', 0.24));
   const puffs: [number, number, number, number][] = [[-0.3, -0.04, 0.3, 0.26], [0.0, -0.12, 0.34, 0.3], [0.3, -0.04, 0.3, 0.26], [-0.18, 0.12, 0.3, 0.22], [0.2, 0.12, 0.3, 0.22], [0, 0.04, 0.4, 0.28]];
   puffs.forEach(([dx, dy, rx, ry], i) => washAt(p, seed + i, cl[i % cl.length], 215, blob(seed + i, cx + dx * s, cy + dy * s, rx * s, ry * s, 0), 0.5, 0.5));
-  washAt(p, seed + 8, '#f7dde4', 160, blob(seed + 8, cx - 0.1 * s, cy - 0.17 * s, 0.26 * s, 0.1 * s, 0), 0.6, 0.5);
-  glaze(p, seed + 9, '#b983b3', 110, [[cx - 0.4 * s, cy + 0.1 * s], [cx + 0.4 * s, cy + 0.1 * s], [cx + 0.3 * s, cy + 0.28 * s], [cx - 0.3 * s, cy + 0.28 * s]], {bleed: 0.3, border: 0.1});
+  washAt(p, seed + 8, '#ecc6d6', 150, blob(seed + 8, cx - 0.1 * s, cy - 0.17 * s, 0.26 * s, 0.1 * s, 0), 0.6, 0.5);
+  glaze(p, seed + 9, '#8d5a96', 150, [[cx - 0.4 * s, cy + 0.1 * s], [cx + 0.4 * s, cy + 0.1 * s], [cx + 0.3 * s, cy + 0.28 * s], [cx - 0.3 * s, cy + 0.28 * s]], {bleed: 0.3, border: 0.1});
   // two fold strokes (a centre groove and one side groove)
-  inkLine(p, seed + 20, [[cx - 0.02 * s, cy - 0.3 * s], [cx + 0.03 * s, cy - 0.12 * s], [cx - 0.02 * s, cy + 0.02 * s], [cx + 0.02 * s, cy + 0.14 * s]], {color: '#a2679c', weight: 0.8, closed: false, curve: 0.5, still: true});
-  inkLine(p, seed + 21, [[cx - 0.3 * s, cy - 0.1 * s], [cx - 0.2 * s, cy + 0.0 * s], [cx - 0.28 * s, cy + 0.1 * s]], {color: '#a2679c', weight: 0.6, closed: false, curve: 0.5, still: true});
-  inkLine(p, seed + 22, [[cx + 0.3 * s, cy - 0.1 * s], [cx + 0.2 * s, cy + 0.0 * s], [cx + 0.28 * s, cy + 0.1 * s]], {color: '#a2679c', weight: 0.6, closed: false, curve: 0.5, still: true});
+  inkLine(p, seed + 20, [[cx - 0.02 * s, cy - 0.3 * s], [cx + 0.03 * s, cy - 0.12 * s], [cx - 0.02 * s, cy + 0.02 * s], [cx + 0.02 * s, cy + 0.14 * s]], {color: '#7d4680', weight: 0.8, closed: false, curve: 0.5, still: true});
+  inkLine(p, seed + 21, [[cx - 0.3 * s, cy - 0.1 * s], [cx - 0.2 * s, cy + 0.0 * s], [cx - 0.28 * s, cy + 0.1 * s]], {color: '#7d4680', weight: 0.6, closed: false, curve: 0.5, still: true});
+  inkLine(p, seed + 22, [[cx + 0.3 * s, cy - 0.1 * s], [cx + 0.2 * s, cy + 0.0 * s], [cx + 0.28 * s, cy + 0.1 * s]], {color: '#7d4680', weight: 0.6, closed: false, curve: 0.5, still: true});
   // eyes
   [-1, 1].forEach((d, i) => {
     const ex = cx + d * 0.1 * s, ey = cy + 0.1 * s, r = 0.045 * s;
@@ -163,7 +164,7 @@ export const paintMiniSleeper = (p: Painter, t: number, gx: number, gy: number, 
     p.brush.rotate(((-2.2 * twitch) * Math.PI) / 180);
     p.brush.translate(-gx, -gy - 7 * twitch);
   }
-  drawFigure(p, SLEEPER, g, U, {...poseFor('P36', SLEEPER, g, U, 'right'), face: EXPRESSIONS.asleep, light: PAPER_LIGHT}, t);
+  drawFigure(p, SLEEPER, g, U, {...poseFor('P36', SLEEPER, g, U, 'right'), face: EXPRESSIONS.asleep, light: PAPER_LIGHT, softNeck: true}, t);
   p.brush.pop();
 };
 

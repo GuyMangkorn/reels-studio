@@ -1,4 +1,4 @@
-import {drawFigure, type FigAnchors} from '../kit/cast';
+import {drawFigure, H, type FigAnchors} from '../kit/cast';
 import {blob, ell, glaze, hardFill, inkLine, INK, rectPts, solid, toneOf, washAt, type InteriorLight} from '../kit/draw';
 import {EXPRESSIONS} from '../kit/expressions';
 import {hash} from '../kit/hash';
@@ -165,9 +165,17 @@ const paintBedBack = (p: Painter, hidePillow = false) => {
   // pillow (W5.2: taken off the bed when she hugs it, B07-SH01)
   if (hidePillow) return;
   const pl = R.pillow;
-  const pillow = blob(210, pl.x, pl.y, 140, 46, 0);
+  // W5.4 (user, jolt: "a puffy pillow instead"): a plump pillow, squarish-round with bulging ends, a lit crown, a shaded underside and a soft crease
+  const puff = (k: number): Pt[] => Array.from({length: 28}, (_, i): Pt => {
+    const a = (i / 28) * Math.PI * 2, c = Math.cos(a), sn = Math.sin(a);
+    const r = 1 + 0.04 * Math.sin(3 * a + 1.1) + 0.025 * Math.sin(5 * a + 0.4);
+    return [pl.x + k * 152 * Math.sign(c) * Math.abs(c) ** 0.62 * r, pl.y - 6 + k * 64 * Math.sign(sn) * Math.abs(sn) ** 0.8 * r];
+  });
+  const pillow = puff(1);
   body(p, 211, N.linen, pillow, 50);
-  washAt(p, 212, mix(N.linen, '#5a6ea8', 0.45), 150, [[pl.x - 130, pl.y + 8], [pl.x + 132, pl.y + 4], [pl.x + 124, pl.y + 38], [pl.x - 120, pl.y + 40]], 0.3, 0.4);
+  washAt(p, 212, mix(N.linen, '#5a6ea8', 0.5), 150, [[pl.x - 150, pl.y + 14], [pl.x + 150, pl.y + 10], [pl.x + 120, pl.y + 56], [pl.x - 120, pl.y + 58]], 0.3, 0.4);
+  glaze(p, 214, mix(N.linen, '#fff8ee', 0.6), 120, puff(0.7).filter(([, y]) => y < pl.y - 12), {bleed: 0.3, border: 0.05});
+  inkLine(p, 215, [[pl.x - 118, pl.y - 8], [pl.x - 40, pl.y + 2], [pl.x + 50, pl.y - 2], [pl.x + 120, pl.y - 12]], {color: mix(INK, N.linen, 0.55), weight: 0.45, closed: false, curve: 0.5, still: true});
   inkLine(p, 213, pillow, {color: mix(INK, N.linen, 0.4), weight: 0.55, still: true});
 };
 
@@ -193,47 +201,36 @@ export type HeadOpts = {
 
 export const paintLyingHead = (p: Painter, hc: Pt, K: number, lid: number, light = 1, o: HeadOpts = {}) => {
   const sk = SLEEPER.head.skin, hair = SLEEPER.head.hair;
-  const xf = o.xf ?? ((q: Pt) => q), rot = o.rot ?? 0, lm = o.lyingMix ?? 1;
+  const xf = o.xf ?? ((q: Pt) => q), lm = o.lyingMix ?? 1;
   const M = ([u, v]: Pt): Pt => xf([hc[0] + v * K, hc[1] - u * K]);
   const Q = (pts: Pt[]) => pts.map(M);
   const skin = mix(sk, '#6a7ab0', 0.28); // moonlit night skin, still warm
   const hairLit = mix(hair, '#6a7cab', 0.3);
   const fill = (seed: number, color: string, pts: Pt[]) => solid(p, seed, color, Q(pts), 6, 0.04, 0.2);
   const ink = (id: number, pts: Pt[], weight = 1.0, closed = true, color = mix(INK, skin, 0.35), curve = 0.3) => inkLine(p, id, Q(pts), {weight, curve, closed, color, still: true});
-  // 1. bob fanned on the pillow behind and beyond the crown (drawn first: under the head)
-  // W5.2: upright (`rot` 1) the part of the fan beyond the crown folds away (v < -1.17 shrinks to the crown line), leaving the bob hanging behind
-  // round 3: it also draws in toward the head (a bob behind the head, not a second dark head-shaped layer coming up with her)
-  // round 4: the fan belongs to the lying head only; it shrinks to nothing (`lm`) as the head lifts and is not drawn once it is gone
-  const fold = ([u0, v0]: Pt): Pt => {
-    const u = u0 * lm, v = -0.2 + (v0 + 0.2) * lm;
-    return [u, v];
-  };
-  const fan: Pt[] = ([[0.55, -1.0], [0.2, -1.38], [-0.3, -1.62], [-0.7, -1.7], [-1.05, -1.45], [-1.25, -0.9], [-1.3, -0.2], [-1.25, 0.45], [-1.05, 0.85], [-0.6, 0.7], [-0.2, 0.2], [0.3, -0.5]] as Pt[]).map(fold);
-  const fanCol = mix(hairLit, hair, 0.75 * rot); // sitting up it hangs in shade behind her: dark hair, not a grey panel
-  if (lm > 0.02) {
-    p.flat(fanCol, Q(fan));
-    fill(7300, fanCol, fan);
-    ink(7301, fan, 0.8, true, mix(INK, hair, 0.3));
-    [[[0.1, -1.2], [-0.3, -1.5], [-0.6, -1.64]], [[-0.3, -1.0], [-0.75, -1.3], [-1.0, -1.4]], [[-0.6, -0.6], [-1.0, -0.8], [-1.2, -0.78]], [[-0.7, 0.0], [-1.05, 0.1], [-1.22, 0.3]], [[0.3, -1.3], [-0.1, -1.55], [-0.35, -1.66]]].forEach((pts, i) =>
-      ink(7302 + i, (pts as Pt[]).map(fold), 0.9, false, mix(hairLit, '#c8d2f0', 0.45), 0.5),
-    );
-  }
+  // 1. W5.4 (user: "black thing stuck to the hair, gone when she sits up"): the bob fanned on the pillow is not painted any more. It read as a
+  // separate grey-black slab glued to the hair and shrank away on the sit-up; the hair is now the one cap over the skull (step 3) at every frame.
   // 2. neck, then the head
-  if (lm > 0.02) fill(7310, mix(skin, '#2a3460', 0.28), [[-0.4, 0.62], [0.35, 0.9], [0.3, 1.3], [-0.42, 1.3]]);
-  const head: Pt[] = [[0.0, -1.17], [0.45, -1.06], [0.78, -0.8], [0.93, -0.38], [0.95, -0.05], [0.9, 0.42], [0.95, 0.52], [0.9, 0.62], [0.92, 0.72], [0.86, 0.92], [0.7, 1.04], [0.5, 1.05], [0.0, 0.86], [-0.25, 0.68], [-0.7, 0.45], [-0.98, 0.0], [-1.0, -0.4], [-0.85, -0.85], [-0.5, -1.08]];
+  // W5.4: the neck is the face skin (was a grey-taupe block, mix 0.28 toward navy), tapering into the collar.
+  // W5.6 (user, B01-SH01/B02/B03-SH01: "remove the shadow at the side of the head and the neck"): no shade under the jaw any more; flat skin.
+  // W5.8 (user: "things growing out of the shirt and the neck" when lying): the lying neck plate is painted by `paintLyingNeck` under the
+  // shirt (`paintBedroom`), not here over it, so its foot ends at the shirt's own neckline (no spike above the shoulder line, no box edge).
+  const lyingNeck = lm > 0.02 && !(o.rot && o.rot > 0);
+  const head: Pt[] = [[0.0, -1.17], [0.45, -1.06], [0.78, -0.8], [0.93, -0.38], [0.95, -0.05], [1.08, 0.12], [1.24, 0.3], [1.1, 0.38], [0.93, 0.44], [0.95, 0.52], [0.9, 0.62], [0.92, 0.72], [0.86, 0.92], [0.7, 1.04], [0.5, 1.05], [0.0, 0.86], [-0.25, 0.68], [-0.7, 0.45], [-0.98, 0.0], [-1.0, -0.4], [-0.85, -0.85], [-0.5, -1.08]];
   fill(7311, skin, head);
-  // shade the side of the head turned toward the pillow (lower on screen): volume, so the head reads lying, not a flat disc
-  if (lm > 0.02) glaze(p, 7319, mix(skin, '#26305a', 0.55), 210 * lm, Q([[0.15, -1.1], [-0.5, -1.08], [-0.95, -0.4], [-0.95, 0.3], [-0.5, 0.75], [0.0, 1.05], [0.3, 1.1], [0.1, 0.4], [0.2, -0.4]]), {bleed: 0.25, border: 0.1});
+  // W5.6 (user: "dark thing stuck to the head; remove the shadow at the side of the head and the neck"): the pillow-side shade glaze (7319,
+  // navy 0.55 at 210, lying only) is gone; it read as a dark patch on the jaw and neck and came back on the lie-back (B08). Skin stays flat.
   // moon rim along the face (light from the window, upper right)
   glaze(p, 7312, mix(skin, '#dfe6fa', 0.5), 70 * light, Q([[0.5, -0.9], [0.88, -0.4], [0.9, 0.9], [0.6, 1.1], [0.6, -0.2]]), {bleed: 0.2, border: 0.1});
   // nose, lips, cheek blush
-  const nose: Pt[] = [[0.93, -0.08], [1.24, 0.3], [1.1, 0.38], [0.95, 0.42]];
-  fill(7313, skin, nose);
+  // W5.4 (user: "the nose looks detached from the face"): the nose is part of the head outline (no separate polygon, no root line across the face)
   fill(7314, mix(sk, '#b0505a', 0.6), [[0.92, 0.48], [1.03, 0.54], [0.97, 0.62], [1.03, 0.7], [0.92, 0.78], [0.86, 0.62]]);
   ink(7309, [[1.08, 0.34], [1.02, 0.37]], 0.9, false); // nostril
   washAt(p, 7315, '#d98a92', 90, ell(...M([0.6, 0.4]), 0.12 * K, 0.16 * K, 12), 0.4, 0.3);
-  ink(7316, head, 1.0);
-  ink(7317, nose, 1.0, false);
+  // W5.8: lying, the outline stops under the chin where the jaw meets the throat; the rest of the jaw and the nape segment
+  // ([0.5, 1.05] -> [0, 0.86] -> [-0.7, 0.45]) crossed the neck skin as a seam that ended mid-neck.
+  if (lyingNeck) ink(7316, [...head.slice(17), ...head.slice(0, 15), [0.3, 0.98]], 1.0, false);
+  else ink(7316, head, 1.0);
   ink(7318, [[0.92, 0.62], [0.85, 0.62]], 0.8, false);
   // 3. hair over the skull: the crown, behind the ear, and a fringe falling back off the forehead
   const cap: Pt[] = [[0.78, -0.82], [0.5, -1.12], [0.0, -1.26], [-0.55, -1.12], [-0.95, -0.75], [-1.08, -0.2], [-1.02, 0.35], [-0.78, 0.68], [-0.45, 0.74], [-0.36, 0.45], [-0.34, 0.1], [-0.1, -0.25], [0.3, -0.5], [0.6, -0.6]];
@@ -284,12 +281,28 @@ export const paintLyingHead = (p: Painter, hc: Pt, K: number, lid: number, light
   return {chin: M([0.55, 1.18]), nape: M([-0.6, 0.85])};
 };
 
+/** W5.8: the lying neck (rot 0), painted before the shirt panel so the shirt's neckline covers its foot. Head units and mapping as
+ *  `paintLyingHead` (`xf` = the head's transform). Throat edge curves from under the chin down into the collar; nape edge curves from the
+ *  hair corner to the shirt's back edge. Replaces the W5.4 plate whose top corner rose above the shoulder line and whose foot was a flat box. */
+export const paintLyingNeck = (p: Painter, hc: Pt, K: number, xf: (q: Pt) => Pt) => {
+  const M = ([u, v]: Pt): Pt => xf([hc[0] + v * K, hc[1] - u * K]);
+  const skin = mix(SLEEPER.head.skin, '#6a7ab0', 0.28); // same as the lying face
+  const neck: Pt[] = [[0.42, 0.95], [0.36, 1.12], [0.27, 1.28], [0.18, 1.42], [0.0, 1.6], [-0.4, 1.6], [-0.32, 1.12], [-0.36, 0.98], [-0.42, 0.82], [-0.46, 0.7], [-0.3, 0.6], [0.1, 0.8]];
+  solid(p, 7310, skin, neck.map(M), 6, 0.04, 0.2);
+};
+
 /** Blanket over the sleeper, from the chest to off-frame right; the near side folds down the mattress side only (v2). */
 const paintBlanket = (p: Painter, chestX: number, bodyTop: number, feetX: number, jump = 0, knee = 0, band = 1) => {
   const N = NIGHT, R = ROOM;
   const top: Pt[] = [];
   const x1 = W + 140;
-  top.push([chestX - 30, R.mattressTop + 6], [chestX - 18, bodyTop + 22]);
+  // W5.9: lying (`band` 1) the blanket is pulled up over the upper arm: its head-side edge runs from the chest down and back toward the
+  // pillow (bottom 64 px further left, a soft bulge over the arm), so the shirt shows as a rounded shoulder above it, not a slab beside a
+  // vertical cloth edge. Fades out with the band (rot 0 -> 0.5); from rot 0.5 the points are the original ones (seated unchanged).
+  const dr = band > 0.01 ? band : 0, dx = -64 * dr;
+  top.push([chestX - 30 + dx, R.mattressTop + 6]);
+  if (dr > 0) top.push([chestX - 24 + dx * 0.55 - 14 * dr, (R.mattressTop + bodyTop) / 2 + 20]);
+  top.push([chestX - 18 - 8 * dr, bodyTop + 22 - 6 * dr]);
   for (let i = 0; i <= 24; i++) {
     const x = chestX + ((x1 - chestX) * i) / 24;
     // chest, a soft dip over the belly, the knees, then the tent over the toes (shape est from the 1.58 m figure at U 640)
@@ -297,7 +310,7 @@ const paintBlanket = (p: Painter, chestX: number, bodyTop: number, feetX: number
     top.push([x, y]);
   }
   // near side: the duvet ends a little below the mattress edge, with a gentle wave (no mound over the rug, viewer check v1)
-  const hem: Pt[] = [[x1, R.mattressSide + 34], [960, R.mattressSide + 44], [860, R.mattressSide + 28], [740, R.mattressSide + 46], [620, R.mattressSide + 26], [chestX + 40, R.mattressSide + 10], [chestX - 20, R.mattressTop + 60]];
+  const hem: Pt[] = [[x1, R.mattressSide + 34], [960, R.mattressSide + 44], [860, R.mattressSide + 28], [740, R.mattressSide + 46], [620, R.mattressSide + 26], [chestX + 40 + dx * 0.4, R.mattressSide + 10], [chestX - 20 + dx, R.mattressTop + 60]];
   const pts = [...top, ...hem];
   body(p, 220, N.blanket, pts, 70);
   // the fold down the side: a darker band below the mattress line, fold shadows, moon light on the top
@@ -307,7 +320,9 @@ const paintBlanket = (p: Painter, chestX: number, bodyTop: number, feetX: number
   // the mattress edge under the cloth: a soft crease line where the duvet turns down
   inkLine(p, 223, [[chestX + 20, R.mattressTop + 34], [x1, R.mattressTop + 30]], {color: mix(N.blanket, INK, 0.45), weight: 0.5, closed: false, still: true});
   // turned-down sheet band at the chest (gone once she sits up: the blanket then pools over her lap)
-  const bandPts: Pt[] = [[chestX - 26, R.mattressTop + 10], [chestX - 22, bodyTop + 16], [chestX - 6, bodyTop - 4], [chestX + 40, bodyTop - 2], [chestX + 30, bodyTop + 80], [chestX + 36, R.mattressTop + 30], [chestX - 18, R.mattressTop + 30]];
+  const bandPts: Pt[] = dr > 0
+    ? [[chestX - 26 + dx, R.mattressTop + 10], [chestX - 30 + dx * 0.55 - 14 * dr, (R.mattressTop + bodyTop) / 2 + 20], [chestX - 22 - 8 * dr, bodyTop + 16 - 6 * dr], [chestX - 6 - 6 * dr, bodyTop - 4 - 4 * dr], [chestX + 40, bodyTop - 2], [chestX + 30 + dx * 0.3, bodyTop + 80], [chestX + 36 + dx * 0.9, R.mattressTop + 30], [chestX - 18 + dx, R.mattressTop + 30]]
+    : [[chestX - 26, R.mattressTop + 10], [chestX - 22, bodyTop + 16], [chestX - 6, bodyTop - 4], [chestX + 40, bodyTop - 2], [chestX + 30, bodyTop + 80], [chestX + 36, R.mattressTop + 30], [chestX - 18, R.mattressTop + 30]];
   if (band > 0.01) {
     const pb = band >= 0.999 ? p : p.layer(band, 9300);
     body(pb, 226, mix(N.fold, N.blanket, 0.3), bandPts, 50);
@@ -363,7 +378,10 @@ export const sleeperXf = (rot: number, lift = 0, sink = 0) => {
 
 /** Torso frame (a up the spine, b to the front) of the sitting-up figure: new contour (N) and the lying shirt's contour (O), point for point. */
 const TORSO_N: Pt[] = [[312, 32], [298, 60], [270, 80], [235, 88], [200, 90], [150, 72], [110, 62], [60, 78], [20, 84], [-20, 80], [-50, 40], [-50, -40], [-30, -80], [30, -84], [90, -66], [150, -70], [210, -86], [270, -82], [306, -48], [312, -12]];
-const TORSO_O: Pt[] = [[371.5, 64], [320, 104], [270, 104], [235, 104], [200, 104], [150, 94], [110, 85], [60, 76], [20, 72], [-20, 70], [-50, 70], [-50, -104], [-30, -104], [30, -104], [90, -104], [150, -104], [210, -104], [270, -104], [306, -104], [383, -104]];
+// W5.9 (user, B08 lying: "a square back attached to the bed grows out"): the lying contour was a box (vertical back edge x 480-491, flat
+// top y 812, hard corner by the neck). Now a rounded shoulder: chest line rising gently from the throat under the blanket, the back of the
+// shoulder curving down into the mattress (15-19), neckline 19-0 across the neck foot. Rot 0 paints the same contour (`paintBedroom`).
+const TORSO_O: Pt[] = [[325, 90], [297, 99], [267, 102], [223, 94], [183, 88], [143, 84], [103, 80], [60, 76], [20, 72], [-20, 70], [-50, 70], [-50, -104], [0, -104], [120, -104], [230, -104], [323, -102], [353, -84], [369, -52], [374, -14], [367, 28]];
 const lerp2 = (u: Pt[], v: Pt[], w: number): Pt[] => u.map(([a, b], i): Pt => [a + (v[i][0] - a) * w, b + (v[i][1] - b) * w]);
 const smoothstep = (u: number) => u * u * (3 - 2 * u);
 const clamp01 = (u: number) => Math.max(0, Math.min(1, u));
@@ -396,13 +414,25 @@ export const paintBedroom = (p: Painter, t: number, s: RoomState) => {
   // back, chest, waist, hips; `TORSO_N`), mixed from the lying panel (`TORSO_O`) over the first 20 % of the rise so nothing pops.
   const w = smoothstep(clamp01(rot * 10)), lyingMix = 1 - smoothstep(clamp01((rot - 0.03) / 0.1));
   if (rot === 0) {
-    const shoulder: Pt[] = [[B.hc[0] + 0.95 * B.K, R.mattressTop + 10], [B.hc[0] + 1.05 * B.K, B.hc[1] + 0.05 * B.K], [B.hc[0] + 1.5 * B.K, B.hc[1] - 0.3 * B.K], [B.hc[0] + 2.6 * B.K, B.hc[1] - 0.3 * B.K], [780, 838], [860, 846], [860, R.mattressTop + 10]];
+    const shoulder = TORSO_O.map(([a, b]): Pt => [HIP_LYING[0] - a, HIP_LYING[1] - b]); // W5.9: the rounded lying contour (was a 7-point box)
     const torsoPts = lift === 0 && sink === 0 ? shoulder : shoulder.map((q) => xf(q));
+    paintLyingNeck(p, B.hc, B.K, (q) => xf(q, 1)); // W5.8: under the shirt, so the neckline covers its foot
     body(p, 7290, shirt, torsoPts, 60);
+    // W5.9: shade down the back of the rounded shoulder (away from the moon), so it reads as a round body part, not a flat panel
+    const shade: Pt[] = [[502, 900], [493, 940], [498, 975], [515, 1004], [546, 1018], [566, 1004], [538, 984], [522, 952], [516, 916]];
+    glaze(p, 7297, mix(shirt, '#1c2448', 0.45), 170, lift === 0 && sink === 0 ? shade : shade.map((q) => xf(q)), {bleed: 0.3, border: 0.1});
     inkLine(p, 7291, torsoPts, {color: mix(INK, SLEEPER.outfit.shirt, 0.4), weight: 0.6, still: true});
   } else {
     // neck: skin from the collar up under the jaw (the shirt is painted over its foot)
-    body(p, 7285, mix(mix(SLEEPER.head.skin, '#6a7ab0', 0.28), '#3a3460', 0.12), TT([[380, -10], [335, 26], [294, 36], [274, 6], [286, -40]]), 40);
+    // W5.4 (user: "neck cut and re-attached on sitting up"): the neck runs from the torso neckline to under the head's jaw (head-frame points mapped
+    // with the head's own transform), so it follows the head through the rise and never leaves a gap; same skin as the face and the lying neck.
+    const hxf = (u: number, v: number): Pt => xf([B.hc[0] + v * B.K + 66 * w, B.hc[1] - u * B.K + 38 * w], 1);
+    // W5.8: near lying (w < 1) two extra points pull the throat and nape edges toward the lying neck (`paintLyingNeck`): throat into the
+    // collar, nape curving to the shirt's back edge instead of a straight diagonal; at w 1 they sit on the original edges (seated unchanged).
+    const n0 = [hxf(0.3, 0.95), T(335, 26), T(294, 36), T(274, 6), T(286, -40), hxf(-0.38, 0.6)];
+    const toward = (a: Pt, q0: Pt, q1: Pt): Pt => [a[0] + ((q0[0] + q1[0]) / 2 - a[0]) * w, a[1] + ((q0[1] + q1[1]) / 2 - a[1]) * w];
+    const neckPts = w >= 1 ? n0 : [n0[0], toward(hxf(0.2, 1.4), n0[0], n0[1]), ...n0.slice(1, 5), toward(hxf(-0.36, 0.98), n0[4], n0[5]), n0[5]];
+    body(p, 7285, mix(mix(SLEEPER.head.skin, '#6a7ab0', 0.28), '#5a4a78', 0.05), neckPts, 40);
     const torso = TT(lerp2(TORSO_O, TORSO_N, w));
     body(p, 7290, shirt, torso, 60);
     if (w > 0.01) {
@@ -414,17 +444,23 @@ export const paintBedroom = (p: Painter, t: number, s: RoomState) => {
     }
     inkLine(p, 7291, torso, {color: mix(INK, SLEEPER.outfit.shirt, 0.4), weight: 0.6, still: true});
   }
-  paintLyingHead(p, B.hc, B.K, s.lid ?? (s.face === 'asleep' ? 1 : 0.6), s.moon, {xf: (q) => xf([q[0] + 66 * rot, q[1] + 38 * rot], 1), rot, wide: s.wide, smile: s.smile, lens: s.lens, lyingMix});
+  // W5.6 (user, B08: "lying down the neck stretches"): the head's seated offset (66, 38) follows the torso morph `w`, not `rot`. With `rot`
+  // the torso was already the short seated body from rot 0.1 while the head still sat up to 75 px further out, so mid-arc the neck stretched.
+  paintLyingHead(p, B.hc, B.K, s.lid ?? (s.face === 'asleep' ? 1 : 0.6), s.moon, {xf: (q) => xf([q[0] + 66 * w, q[1] + 38 * w], 1), rot, wide: s.wide, smile: s.smile, lens: s.lens, lyingMix});
   // pale V collar of the pyjama at the throat (lying: at the chin; sitting: the neckline of the shirt)
   const collar = rot === 0 ? [[B.hc[0] + 1.1 * B.K, B.hc[1] - 0.0 * B.K], [B.hc[0] + 1.5 * B.K, B.hc[1] + 0.2 * B.K], [B.hc[0] + 1.6 * B.K, B.hc[1] - 0.28 * B.K]].map((q) => xf(q as Pt, 1)) : TT(lerp2([[366, 70], [321, 47], [309, 102]], [[304, 54], [258, 14], [300, -44]], w));
-  inkLine(p, 7292, collar, {color: '#efe6f6', weight: 1.4, closed: false, still: true});
+  // W5.8 (user: "something growing out of the shirt" lying): the pale V is the seated pyjama collar only; it fades into the shirt toward lying
+  // (rot 0.6 -> 0.15) and is not painted lying, so the lying neck runs into a plain neckline. rot 1 (B04-SH02, B07-SH01) unchanged.
+  const collarK = smoothstep(clamp01((rot - 0.15) / 0.45));
+  if (collarK > 0.02) inkLine(p, 7292, collar, {color: collarK >= 1 ? '#efe6f6' : mix(shirt, '#efe6f6', collarK), weight: 1.4, closed: false, still: true});
   const bTop = B.hc[1] - 0.2 * B.K + (R.mattressTop - 120 - (B.hc[1] - 0.2 * B.K)) * rot * 0.9;
   const bX = B.hc[0] + 2.2 * B.K + (590 - (B.hc[0] + 2.2 * B.K)) * rot;
   // arms (W5.2 round 2): always opaque. Rising or lying down (rot < 0.8) the arm is painted before the blanket so the cloth covers it;
   // its hand goes from "at her side" (lying) to the lap as she sits up. Sat up, it is painted after the blanket and the pillow (in front).
   const hug = Math.min(1, s.hug ?? 0), e = hug * hug * (3 - 2 * hug);
   const paintArm = () => {
-    if (!(rot > 0.001 || (s.arms ?? 0) > 0.01)) return;
+    // W5.6 (viewer V1): not while the torso is still the lying panel (w < 1, rot < 0.1); its shoulder disc showed over the shirt beside the blanket
+    if (w < 0.999 || !(rot > 0.001 || (s.arms ?? 0) > 0.01)) return;
     const pa = p;
     const h = s.hand ?? 0, Sh = ARM.shoulder, side = smoothstep(clamp01((rot - 0.25) / 0.55));
     const lap: Pt = [ARM.lap[0], 35 + (ARM.lap[1] - 35) * side];
@@ -512,7 +548,9 @@ const dryBrush = (p: Painter, id: number, color: string, pts: Pt[], weight: numb
  * cliff edge about the nape and its top flattened, so the crown takes more of the shape. Shoulders nearer the camera than the head
  * overlap the curtain ends; a crew collar band and a centre back seam say "back of a shirt". Draws the whole head over the rig's
  * back-view head (an underlay hidden by it, `a.head` 0.15 K below this head's centre) and neck. `K` px per head unit. */
-const paintBowedHeadBack = (p: Painter, a: FigAnchors, K: number, shirt: string, hair: string, o: {roll?: number; dip?: number} = {}) => {
+/** The rig's back-view torso frame (W5.5): `U` maps rig metres (u right, v up) to plate px like `drawFigureBack`'s upper body. */
+type TorsoFrame = {U: (q: Pt) => Pt; sw: number; hw: number; sh: number; hip: number};
+const paintBowedHeadBack = (p: Painter, a: FigAnchors, K: number, shirt: string, hair: string, torso: TorsoFrame, o: {roll?: number; dip?: number} = {}) => {
   const hc: Pt = [a.head[0], a.head[1] - 0.15 * K + (o.dip ?? 0) * K];
   const shY = (a.rShoulder[1] + a.lShoulder[1]) / 2, sx = Math.abs(a.rShoulder[0] - a.lShoulder[0]) / 2;
   const ROLL = ((o.roll ?? 6) * Math.PI) / 180, piv: Pt = [0, 0.95], cR = Math.cos(ROLL), sR = Math.sin(ROLL);
@@ -521,7 +559,8 @@ const paintBowedHeadBack = (p: Painter, a: FigAnchors, K: number, shirt: string,
     return [hc[0] + (piv[0] + du * cR - dv * sR) * K, hc[1] + (piv[1] + du * sR + dv * cR) * K];
   };
   const Q = (pts: Pt[]) => pts.map(P);
-  const shade = mix(hair, '#4a3c64', 0.26); // deep shadow under the hair: neck in shade, never skin-pink
+  // W5.5: the nape under the hair hem is a soft shirt-and-hair shadow (the deep grey-purple read as a hole); never skin-pink
+  const shade = mix(hair, toneOf(shirt, PAPER_LIGHT), 0.5);
   // the notch under the nape hem, filled in the shadow tone from the hair down to the collar
   hardFill(p, 381, shade, Q([[-0.42, 0.62], [0.42, 0.62], [0.36, 1.0], [0.36, 1.38], [-0.36, 1.38], [-0.36, 1.0]]));
   // hair silhouette: a flatter dome (head tipped forward), widening sides, curtains hanging low to an inner edge of ±0.3 K, and a short,
@@ -553,31 +592,27 @@ const paintBowedHeadBack = (p: Painter, a: FigAnchors, K: number, shirt: string,
   // the uneven nape hem: a few short lighter strand tips at the bottom of the back hair, over the shade
   hem.forEach(([u, v], i) => inkLine(p, 393 + i, Q([[u + 0.03, v - 0.26], [u + 0.01, v - 0.1], [u, v + 0.01]]), {color: mix(hair, '#d2c4e2', u > 0 ? 0.45 : 0.3), weight: 0.8, curve: 0.5, closed: false, still: true}));
   inkLine(p, 389, Q(hairPts), {color: mix(INK, hair, 0.3), weight: 0.8, still: true});
-  // shoulders and collar (sheet 7): nearer the camera than the head, over the curtain ends; shallow U collar; slope into the arms.
-  const w = sx + 0.42 * K, hx = hc[0];
-  const S = (u: number, dy: number): Pt => [hx + u * K, shY + dy * K];
-  const sw = w / K, cyv = (hc[1] + 1.2 * K - shY) / K; // collar dip below the shoulder line
+  // W5.5 (user, again: "the chest comes off the body when the head moves"): the head-centred shoulder cap and collar are gone (centred on
+  // the nodding head, they stuck out past the right shoulder as a flap). The whole shirt back is now ONE surface on the rig's own torso
+  // (`back`, body-centred, from the shoulder line to the hem; it does not follow the nod): one tone, one soft cool wash down the shaded
+  // left side from the shoulder to the hem (no horizontal band), one outline. It is painted after the hair, so the still shoulders
+  // overlap the bowed head's curtain ends; the nape shows only as a soft shadow on the shirt under the hair hem.
+  const {U: B, sw, hw, sh, hip} = torso, tone = toneOf(shirt, PAPER_LIGHT);
   const back: Pt[] = [
-    S(-0.55, 1.9), S(-(sw - 0.1), 0.55), S(-(sw - 0.05), 0.5), S(-(sw - 0.22), 0.28), S(-0.98, 0.08), S(-0.7, 0.1), S(-0.34, cyv - 0.04), S(0, cyv),
-    S(0.34, cyv - 0.04), S(0.7, 0.1), S(0.98, 0.08), S(sw - 0.22, 0.28), S(sw - 0.05, 0.5), S(sw - 0.1, 0.55), S(0.55, 1.9),
-  ];
-  const tone = toneOf(shirt, PAPER_LIGHT);
-  // v5 (viewer check v3 fix 4): opaque only across the shoulder tops (it must hide the rig neck); below, a wash that lets the rig's
-  // painted shirt through and fades out, with the light from the upper right and a cool shadow down the left side
-  const cap: Pt[] = [S(-(sw - 0.14), 1.05), ...back.slice(1, 14), S(sw - 0.14, 1.05)];
-  p.flat(tone, cap);
-  solid(p, 385, tone, cap, 3, 0.08, 0.25);
-  washAt(p, 390, tone, 150, back, 0.08, 0.5);
-  washAt(p, 391, mix(tone, '#4a3c70', 0.35), 95, [S(-(sw - 0.05), 0.5), S(-0.2, 0.3), S(-0.1, 1.9), S(-0.55, 1.9)], 0.08, 0.5);
-  // the hair's shadow on the shoulder tops beside the neck
-  washAt(p, 386, mix(tone, '#3a3060', 0.35), 120, [S(-0.98, 0.06), S(-0.42, cyv - 0.06), S(0.42, cyv - 0.06), S(0.98, 0.06), S(0.9, 0.34), S(-0.9, 0.34)], 0.2, 0.3);
-  inkLine(p, 387, back.slice(1, 6), {color: mix(INK, tone, 0.5), weight: 0.8, curve: 0.5, closed: false, still: true});
-  inkLine(p, 384, back.slice(9, 14), {color: mix(INK, tone, 0.5), weight: 0.8, curve: 0.5, closed: false, still: true});
-  // crew collar band: the pale rib line and a darker stitch line just under it, then the centre back seam running down from it
-  inkLine(p, 379, back.slice(5, 10), {color: '#efe6f6', weight: 1.4, curve: 0.6, closed: false, still: true});
-  inkLine(p, 378, back.slice(5, 10).map(([x, y]): Pt => [x, y + 0.09 * K]), {color: mix(tone, INK, 0.3), weight: 0.6, curve: 0.6, closed: false, still: true});
-  inkLine(p, 377, [S(0, cyv + 0.12), S(0.01, cyv + 0.6), S(0.02, 1.15)], {color: mix(tone, INK, 0.4), weight: 0.8, curve: 0.5, closed: false, still: true});
-  inkLine(p, 376, [S(0.02, 1.3), S(0.03, 1.7)], {color: mix(tone, INK, 0.3), weight: 0.6, curve: 0.5, closed: false, still: true});
+    [-sw - 0.012, sh - 0.075], [-sw - 0.004, sh - 0.035], [-sw + 0.02, sh - 0.01], [-sw * 0.55, sh + 0.004], [-0.075, sh - 0.004], [0, sh - 0.016], [0.075, sh - 0.004],
+    [sw * 0.55, sh + 0.004], [sw - 0.02, sh - 0.01], [sw + 0.004, sh - 0.035], [sw + 0.012, sh - 0.075], [hw + 0.026, hip - 0.02], [hw + 0.03, hip - 0.072],
+    [-hw - 0.03, hip - 0.072], [-hw - 0.026, hip - 0.02],
+  ].map((q) => B(q as Pt));
+  p.flat(tone, back);
+  solid(p, 385, tone, back, 3, 0.06, 0.2);
+  // the shaded left side, full height and feathered (light from the upper right): one wash from the shoulder to the hem
+  washAt(p, 386, mix(tone, '#5a4c86', 0.45), 80, [[-sw - 0.012, sh - 0.075], [-sw + 0.01, sh - 0.012], [-sw * 0.45, sh], [-hw * 0.35, hip - 0.072], [-hw - 0.03, hip - 0.072], [-hw - 0.026, hip - 0.02]].map((q) => B(q as Pt)), 0.35, 0.3);
+  // the bowed head's soft shadow on the shirt just under the hair (a wash on the shirt, not a separate shape)
+  const nx = Math.max(-sw * 0.4, Math.min(sw * 0.4, (hc[0] - B([0, sh])[0]) / (B([1, sh])[0] - B([0, sh])[0])));
+  washAt(p, 379, mix(tone, hair, 0.3), 80, ell(B([nx, sh - 0.03])[0], B([nx, sh - 0.03])[1], 0.11 * (B([1, sh])[0] - B([0, sh])[0]), 0.045 * (B([1, sh])[0] - B([0, sh])[0]), 16), 0.4, 0.3);
+  inkLine(p, 387, back, {color: mix(INK, tone, 0.5), weight: 0.8, curve: 0.4, still: true});
+  // centre back seam from the neckline to the hem
+  inkLine(p, 377, [B([0, sh - 0.04]), B([0.004, (sh + hip) / 2]), B([0.006, hip - 0.06])], {color: mix(tone, INK, 0.3), weight: 0.6, curve: 0.5, closed: false, still: true});
 };
 
 /** The sleeper from behind at the lip, head bowed to look down into the drop (back view, P01 arms, slight lean; LF02 v3 head). */
@@ -585,9 +620,15 @@ export type DreamerOpts = {lean?: number; roll?: number; dip?: number};
 const paintDreamer = (p: Painter, t: number, g: Pt, o: DreamerOpts = {}): FigAnchors => {
   // construction sheet 7: shoulders wider than the hair for this shot (cast shoulder 0.34 -> 0.42)
   const fig = {...SLEEPER, outfit: {...SLEEPER.outfit, shoulder: 0.42}};
-  const a = drawFigure(p, fig, g, CLIFF.U, {...poseFor('P01', fig, g, CLIFF.U, 'front'), view: 'back', lean: o.lean ?? 0.1, nod: [-0.18, -1.02], face: EXPRESSIONS.neutral, light: PAPER_LIGHT}, t);
+  const a = drawFigure(p, fig, g, CLIFF.U, {...poseFor('P01', fig, g, CLIFF.U, 'front'), view: 'back', lean: o.lean ?? 0.1, nod: [-0.18, -1.02], face: EXPRESSIONS.neutral, light: PAPER_LIGHT, softNeck: true}, t);
   const K = (a.head[1] - a.headTop) / 1.17;
-  paintBowedHeadBack(p, a, K, fig.outfit.shirt, fig.head.hair, {roll: o.roll, dip: o.dip});
+  // the rig's torso frame, same numbers as `drawFigureBack` (kit/back.ts: shV0, hip0, upper-body lean about the hip; no walk, no rise)
+  const HD = H * (fig.headScale ?? 1), chin = fig.height - HD, sh = chin - 0.16 * HD, hip = sh - (chin - 0.068) * 0.44 + 0.034, ln = o.lean ?? 0.1;
+  const U = ([u, v]: Pt): Pt => {
+    const dv = v - hip;
+    return [g[0] + (u * Math.cos(ln) + dv * Math.sin(ln)) * CLIFF.U, g[1] - (hip + dv * Math.cos(ln) - u * Math.sin(ln)) * CLIFF.U];
+  };
+  paintBowedHeadBack(p, a, K, fig.outfit.shirt, fig.head.hair, {U, sw: fig.outfit.shoulder * HD, hw: 0.3 * HD, sh, hip}, {roll: o.roll, dip: o.dip});
   // v5 (viewer check v3, feet): seen from behind, the trouser hems fall over the feet and only two narrow heels show under them. The
   // rig's front-view foot ovals are first painted out in the ledge's local tone (sampled on the v3 render), then a contact shadow, the
   // heel and the hem. Foot centres measured on the v3 render: ±0.46 K from `a.feet`, 0.13 K above it.
@@ -753,7 +794,7 @@ export const paintIdeaSpace = (p: Painter, t: number, o: IdeaOpts = {}): FigAnch
   washAt(p, 432, '#cbbfa8', 130, blob(432, g[0], g[1] + 6, 260, 22, 0), 0.4, 0.4); // floor shadow under the feet
   // P31 sit, hands in lap (front), head tilted (nod) and eyes up: thinking
   const pose = poseFor('P31', SLEEPER, g, U, 'front');
-  const a = drawFigure(p, SLEEPER, g, U, {...pose, nod: [0.12 * tilt, 0.04 * tilt], face: {...EXPRESSIONS.worried, look: [0.5 * tilt, -0.5 * tilt]}, light: PAPER_LIGHT}, t);
+  const a = drawFigure(p, SLEEPER, g, U, {...pose, nod: [0.12 * tilt, 0.04 * tilt], face: {...EXPRESSIONS.worried, look: [0.5 * tilt, -0.5 * tilt]}, light: PAPER_LIGHT, softNeck: true}, t);
   return a;
 };
 
@@ -954,7 +995,7 @@ export const paintDoctor = (p: Painter, t: number, o: {nod?: number; rise?: numb
   const U = 980;
   const g: Pt = [540, 1940];
   // soft smile: closed full lips (kit `full` look mouth draws on a flat mouth), lifted at the corners below
-  const a = drawFigure(p, DOCTOR, g, U, {...poseFor('P01', DOCTOR, g, U, 'front'), nod: [0, -(o.nod ?? 0)], rise: o.rise, face: {...EXPRESSIONS.happy, mouth: 'flat'}, light: PAPER_LIGHT}, t);
+  const a = drawFigure(p, DOCTOR, g, U, {...poseFor('P01', DOCTOR, g, U, 'front'), nod: [0, -(o.nod ?? 0)], rise: o.rise, face: {...EXPRESSIONS.happy, mouth: 'flat'}, light: PAPER_LIGHT, softNeck: true}, t);
   const [hx, hy] = a.head;
   const K = (hy - a.headTop) / 1.17;
   const F = ([u, v]: Pt): Pt => [hx + u * K, hy + v * K];

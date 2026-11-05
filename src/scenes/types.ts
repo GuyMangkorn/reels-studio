@@ -61,7 +61,7 @@ export type AudioTrack = {
   duckUnderNarration?: number;
 };
 /** `lower` puts the block's bottom edge at y 1240 of 1920 (production-requirements caption-safe box; MK-WF-DEP-08). */
-export type CaptionStyle = {preset?: 'outline' | 'box' | 'none'; position?: 'bottom' | 'middle' | 'top' | 'lower'; /** Composition y (px from the top) of the caption block's bottom edge; overrides `position` when set. */ bottomEdgeY?: number; /** Composition y of the caption block's vertical CENTRE (a 1-, 2- or 3-line cue grows symmetrically about it); overrides `bottomEdgeY` and `position`. Pair it with `CaptionShade centerY` (src/scenes/captionLayout.ts). */ centerY?: number; color?: string; scale?: number};
+export type CaptionStyle = {preset?: 'outline' | 'box' | 'none'; position?: 'bottom' | 'middle' | 'top' | 'lower'; /** Composition y (px from the top) of the caption block's bottom edge; overrides `position` when set. */ bottomEdgeY?: number; /** Composition y of the caption block's vertical CENTRE (a 1-, 2- or 3-line cue grows symmetrically about it); overrides `bottomEdgeY` and `position`. Pair it with `CaptionShade centerY` (src/scenes/captionLayout.ts). */ centerY?: number; color?: string; scale?: number; /** C_seamless only: the final scene's captions stay on and fade out across the loop blend instead of vanishing when it opens. Default off. */ fadeOutWithLoop?: boolean};
 /** Channel label (false hides it) and the scene progress bar. */
 export type ChromeStyle = {channelLabel?: string | false; progressBar?: boolean};
 /**

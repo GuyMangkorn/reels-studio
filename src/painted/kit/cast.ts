@@ -127,6 +127,8 @@ export type FigPose = {
   lift?: number;
   /** Skip the soft ground shadow (and its dark core): a figure with no ground under it (the dream fall). Default absent = shadow as before. */
   noShadow?: boolean;
+  /** Neck in the face skin tone with a soft jaw shade and no outline, flaring into the collar (default absent = the VD18 shaded neck block, grey beside a lit face). EDU-EP01 W5.4. */
+  softNeck?: boolean;
   /**
    * Profile only: paint the far arm BEFORE the legs, so the near thigh and the torso hide a hanging far hand (default absent: after
    * the legs, as the WFOG cast always drew it, which leaves a hand floating over the thigh). The pose library sets it in every profile.
@@ -676,7 +678,13 @@ export const drawFigure = (p: Painter, def: CastDef, g: Pt, unit: number, pose: 
   line = 120;
   const nw = o.coat ? (profile ? 0.16 * HD : 0.24 * HD) : profile ? 0.08 * HD : 0.1 * HD;
   const nx = profile ? -0.08 * HD : 0;
-  fill(coat ?? (L ? mixColor(def.head.skin, VD18.shadow, 0.3) : def.head.skin), Uq([[nx - nw, chin + 0.051], [nx + nw, chin + 0.051], [nx + nw + 0.0043, shV - 0.013], [nx - nw - 0.0043, shV - 0.013]]), false, 6);
+  if (pose.softNeck && !coat && !sil) {
+    // one skin tone with the face (mottled like it), narrow under the jaw and flaring into the collar, so it is neither a darker block nor cut off from the shirt
+    const neck = Uq([[nx - nw, chin + 0.051], [nx + nw, chin + 0.051], [nx + nw * 1.18, shV - 0.03], [nx + nw * 1.42, shV + 0.012], [nx - nw * 1.42, shV + 0.012], [nx - nw * 1.18, shV - 0.03]]);
+    const nt = mixColor(toneOf(def.head.skin, L), '#6a4a58', 0.03); // toneOf: the same ambient pull the face and shirt get, so it matches the face as painted
+    solid(p, seed * 1000 + ++part, nt, neck, 6, 0.04, 0.1);
+    if (L) glaze(p, 7_800_000 + seed * 1000 + part, mixColor(nt, '#4a3a58', 0.4), 85, Uq([[nx - nw, chin + 0.051], [nx + nw, chin + 0.051], [nx + nw, chin + 0.051 + 0.45 * (shV - chin - 0.051)], [nx - nw, chin + 0.051 + 0.3 * (shV - chin - 0.051)]]), {border: 0.1, bleed: 0.3});
+  } else fill(coat ?? (L ? mixColor(def.head.skin, VD18.shadow, 0.3) : def.head.skin), Uq([[nx - nw, chin + 0.051], [nx + nw, chin + 0.051], [nx + nw + 0.0043, shV - 0.013], [nx - nw - 0.0043, shV - 0.013]]), false, 6);
   const nod = pose.nod ?? [0, 0];
   const hc = U([nx + nod[0] * K, chin + CHIN * K - nod[1] * K]);
   const Kpx = K * unit;

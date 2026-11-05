@@ -76,7 +76,7 @@ const ProjectedSceneStage = ({scene, previous, poseFrame, width, height, fps, mo
   </div>;
 };
 
-const SceneView = ({scene, index, total, previous, start, narration, ending, endingOptions, loopFadeFrames, captionStyle, chrome, entering}: {scene: Scene; index: number; total: number; previous?: Scene; start: number; narration?: Narration; ending: Ending; endingOptions?: EndingOptions; loopFadeFrames: number; captionStyle?: CaptionStyle; chrome: Required<ChromeStyle>; entering: boolean}) => {
+const SceneView = ({scene, index, total, previous, start, narration, ending, endingOptions, loopFadeFrames, captionStyle, chrome, entering, captionOpacity = 1}: {scene: Scene; index: number; total: number; previous?: Scene; start: number; narration?: Narration; ending: Ending; endingOptions?: EndingOptions; loopFadeFrames: number; captionStyle?: CaptionStyle; chrome: Required<ChromeStyle>; entering: boolean; captionOpacity?: number}) => {
   const frame = useCurrentFrame(); const {width, height, fps} = useVideoConfig(); const portrait = height > width;
   const duration = sceneFrames(scene.durationSec, fps); const night = scene.time === 'night';
   const final = index === total - 1;
@@ -126,7 +126,7 @@ const SceneView = ({scene, index, total, previous, start, narration, ending, end
       {scene.title && <div style={{fontFamily: 'Noto Sans Thai, sans-serif', fontSize: portrait ? 105 : 76, lineHeight: 1.13, fontWeight: 800, letterSpacing: -4, whiteSpace: 'pre-line', marginTop: 24}}>{scene.title}</div>}
       <div style={{width: 65, height: 7, borderRadius: 8, background: night ? '#ffdba4' : '#e5a08c', marginTop: 25}}/>
     </div>}
-    {!entering && <Subtitles text={subtitleAt(scene, sceneFrame, fps)} style={captionStyle}/>}
+    {(!entering || captionOpacity < 1) && <Subtitles text={subtitleAt(scene, sceneFrame, fps)} style={captionStyle} opacity={captionOpacity}/>}
     {!entering && <div style={{position: 'absolute', bottom: portrait ? 53 : 24, left: width * .075, right: width * .075, display: 'flex', alignItems: 'center', gap: 12}}>
       {chrome.progressBar && Array.from({length: total}, (_, i) => <div key={i} style={{height: 4, flex: 1, borderRadius: 8, background: night ? '#ffffff25' : '#49445c20', overflow: 'hidden'}}><div style={{height: '100%', width: `${i < index ? 100 : i === index ? (frame + 1) / duration * 100 : 0}%`, background: night ? '#ffe0a8' : '#77718f'}}/></div>)}
       {!portrait && chrome.channelLabel !== false && <span lang="th" style={{fontSize: 19, color: ink, marginLeft: chrome.progressBar ? 12 : 'auto'}}>{chrome.channelLabel}</span>}
@@ -146,6 +146,7 @@ export const SceneRenderer = ({overlay, overlayProps, timeline, narration, endin
   validateTimeline(timeline, fps);
   validateVideoStyle({audio, captionStyle, chrome, loopBlendFrames, ending, endHoldSec, endFadeSec}, id);
   const blendOpacity = ending === 'C_seamless' ? loopBlendOpacity(frame, durationInFrames, loopBlendFrames) : 0;
+  const fadeCaptions = Boolean(captionStyle?.fadeOutWithLoop);
   const chromeStyle = {...defaultChrome, ...chrome};
   const transitionOpacity = transitionOpacityAt(frame, timeline, fps, sceneTransitionFrames);
   const loopOpacity = loopFadeOpacityAt(frame, durationInFrames, ending, loopFadeFrames);
@@ -157,7 +158,7 @@ export const SceneRenderer = ({overlay, overlayProps, timeline, narration, endin
     const from = start; const duration = sceneFrames(scene.durationSec, fps); start += duration;
     // An entry transition starts the incoming scene early, held on its first frame, so cut frames stay put.
     const lead = index > 0 && scene.transitionIn ? scene.transitionIn.frames : 0;
-    const view = <SceneView scene={scene} index={index} total={timeline.length} previous={timeline[index - 1]} start={from} narration={narration} ending={ending} endingOptions={endingOptions} loopFadeFrames={loopFadeFrames} captionStyle={captionStyle} chrome={chromeStyle} entering={frame < from || (blendOpacity > 0 && index === timeline.length - 1)}/>;
+    const view = <SceneView scene={scene} index={index} total={timeline.length} previous={timeline[index - 1]} start={from} narration={narration} ending={ending} endingOptions={endingOptions} loopFadeFrames={loopFadeFrames} captionStyle={captionStyle} chrome={chromeStyle} entering={frame < from || (blendOpacity > 0 && index === timeline.length - 1 && !fadeCaptions)} captionOpacity={fadeCaptions && index === timeline.length - 1 ? Math.max(0, 1 - blendOpacity * 1.25) : 1}/>;
     return <Sequence key={index} name={scene.eyebrow ?? scene.bg} from={from - lead} durationInFrames={duration + lead} premountFor={fps}>{lead > 0 ? <EntryTransition entry={scene.transitionIn!}><Freeze frame={lead} active={f => f < lead}><Sequence from={lead} durationInFrames={duration}>{view}</Sequence></Freeze></EntryTransition> : view}</Sequence>;
   })}</Freeze>{blendOpacity > 0 && <AbsoluteFill style={{opacity: blendOpacity}}><Freeze frame={0}><Sequence durationInFrames={sceneFrames(timeline[0].durationSec, fps)}><SceneView scene={timeline[0]} index={0} total={timeline.length} start={0} narration={narration} ending={ending} endingOptions={endingOptions} loopFadeFrames={loopFadeFrames} captionStyle={captionStyle} chrome={chromeStyle} entering={false}/></Sequence></Freeze></AbsoluteFill>}{pictureOpacity > 0 && <AbsoluteFill style={{backgroundColor: '#101018', opacity: pictureOpacity, pointerEvents: 'none'}}/>}{Overlay && <Overlay {...overlayProps}/>}</AbsoluteFill>;
 };
