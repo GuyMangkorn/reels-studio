@@ -1,5 +1,6 @@
 import {coversVideo} from '../cover-overlay';
 import type {EpisodeVideos} from '../types';
+import {EDU1_COVER_STYLE, EDU1_COVERS} from './edu-ep01';
 import {EG_COVER_STYLE, EG_COVERS} from './everyone-gone';
 import {EG2_A_LAYOUT, EG2_A_TYPE, EG2_COVER_STYLE, EG2_COVERS} from './everyone-gone-ep02';
 import {WDG_COVER_STYLE, WDG_COVERS} from './wendigo';
@@ -16,6 +17,7 @@ const covers: EpisodeVideos = {
     coversVideo('EG-EP02-SHORT', EG2_COVERS, EG2_COVER_STYLE),
     coversVideo('EG-EP02-SHORT-A-TYPE', EG2_A_TYPE, EG2_COVER_STYLE),
     coversVideo('EG-EP02-SHORT-A-LAYOUT', EG2_A_LAYOUT, EG2_COVER_STYLE),
+    coversVideo('EDU-EP01-SHORT', EDU1_COVERS, EDU1_COVER_STYLE),
   ],
 };
 export default covers;
