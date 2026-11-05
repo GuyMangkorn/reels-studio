@@ -53,6 +53,8 @@ export type AnimalDef = {
   /** Body girth, 1 = normal. */
   build: number;
   fluffy?: boolean;
+  /** Retriever coat, front view: a smooth feathered outline (tufts only on the chest and the back of the forelegs), a longer muzzle and tapered legs instead of the curly round fluff. Profile unchanged. */
+  feathered?: boolean;
   /** Iris colour. */
   eye: string;
   seed: number;
@@ -72,7 +74,7 @@ export const ANIMALS: Record<AnimalId, AnimalDef> = {
   'dog-chihuahua': dog({height: 0.2, coat: '#c99a62', light: '#ecd2a8', pattern: 'chest', ears: 'big', tail: 'whip', muzzle: 0.55, head: 1.45, build: 0.85, eye: '#2a1a12', seed: 901}),
   'dog-pom': dog({height: 0.22, coat: '#d98a3c', light: '#f1c48a', pattern: 'chest', ears: 'prick', tail: 'curl', muzzle: 0.45, head: 1.3, build: 1.2, fluffy: true, eye: '#2a1a12', seed: 902}),
   'dog-thai': dog({height: 0.5, coat: '#b8834f', light: '#e2c49a', pattern: 'chest', ears: 'prick', tail: 'sickle', muzzle: 0.95, head: 1, build: 0.85, eye: '#3a2414', seed: 903}),
-  'dog-golden': dog({height: 0.58, coat: '#d9a957', light: '#efd29a', pattern: 'chest', ears: 'flop', tail: 'plume', muzzle: 1, head: 1, build: 1.05, fluffy: true, eye: '#3a2414', seed: 904}),
+  'dog-golden': dog({height: 0.58, coat: '#d9a957', light: '#efd29a', pattern: 'chest', ears: 'flop', tail: 'plume', muzzle: 1, head: 1, build: 1.05, fluffy: true, feathered: true, eye: '#3a2414', seed: 904}),
   'dog-black-lab': dog({height: 0.58, coat: '#2e2a2a', pattern: 'solid', ears: 'flop', tail: 'otter', muzzle: 1, head: 1, build: 1.1, eye: '#5a3a1a', seed: 905}),
   'cat-orange-tabby': cat({height: 0.25, coat: '#e09a4c', dark: '#b8632a', light: '#f4d6aa', pattern: 'tabby', eye: '#c9a43a', seed: 911}),
   'cat-gray-tabby': cat({height: 0.25, coat: '#9a9690', dark: '#4e4a48', light: '#d8d4cc', pattern: 'tabby', eye: '#8fae4a', seed: 912}),
@@ -287,16 +289,17 @@ export const drawAnimal = (p: Painter, seed: number, def: AnimalDef, g: Pt, unit
       part(earC, ear);
       fill(mixColor(earC, '#e8a0a0', 0.45), [[H[0] + sd * 0.08 * hs, H[1] + 0.14 * hs], [H[0] + sd * (0.17 + spread) * hs, H[1] + (0.13 + 0.16 * k) * hs], [H[0] + sd * 0.18 * hs, H[1] + 0.09 * hs]], 3);
     }
-    part(points ? light : coat, ellUV(H, r[0], r[1]), true);
+    if (def.feathered) part(coat, ellUV([H[0], H[1] - 0.01 * hs], r[0] * 0.97, r[1] * 1.04, 0, 24));
+    else part(points ? light : coat, ellUV(H, r[0], r[1]), true);
     if (def.pattern === 'tabby') for (const dx of [-0.05, 0, 0.05]) ink([[H[0] + dx * hs, H[1] + 0.17 * hs], [H[0] + dx * 0.8 * hs, H[1] + 0.09 * hs]], dark, 1.2, false, 0);
     if (def.pattern === 'calico') fill(def.dark ?? INK, ellUV([H[0] - 0.09 * hs, H[1] + 0.08 * hs], 0.1 * hs, 0.09 * hs), 3);
     if (def.pattern === 'calico') fill(def.coat, ellUV([H[0] + 0.1 * hs, H[1] + 0.1 * hs], 0.08 * hs, 0.07 * hs), 3);
-    const M: UV = [H[0], H[1] - (isCat ? 0.07 : 0.08) * hs];
+    const M: UV = [H[0], H[1] - (isCat ? 0.07 : def.feathered ? 0.125 : 0.08) * hs];
     const mzC = points ? dark : def.pattern === 'solid' || def.pattern === 'calico' ? coat : light;
     const mzW = isCat ? 0.09 : 0.08 + 0.05 * Math.min(1, def.muzzle);
     if (points) fill(dark, ellUV([H[0], H[1] - 0.02 * hs], 0.14 * hs, 0.13 * hs), 3);
-    if (mzC !== coat || !isCat) part(mzC, ellUV(M, mzW * hs, (isCat ? 0.06 : 0.08) * hs));
-    const nose: UV = [M[0], M[1] + 0.03 * hs];
+    if (mzC !== coat || !isCat) part(mzC, ellUV(M, (def.feathered ? 0.9 : 1) * mzW * hs, (isCat ? 0.06 : def.feathered ? 0.115 : 0.08) * hs));
+    const nose: UV = [M[0], M[1] + (def.feathered ? 0.072 : 0.03) * hs];
     fill(isCat ? '#d98a8a' : '#2a2224', isCat ? [[nose[0] - 0.025 * hs, nose[1] + 0.01 * hs], [nose[0] + 0.025 * hs, nose[1] + 0.01 * hs], [nose[0], nose[1] - 0.015 * hs]] : ellUV(nose, 0.045 * hs, 0.03 * hs, 0, 10), 4);
     if (pose.mouth === 'open') {
       fill('#5a2a2a', ellUV([M[0], M[1] - 0.05 * hs], 0.05 * hs, 0.035 * hs, 0, 10), 4);
@@ -440,24 +443,46 @@ export const drawAnimal = (p: Painter, seed: number, def: AnimalDef, g: Pt, unit
   const {chest, H} = R;
   const [crx, cry] = R.chestR;
   for (const sd of [-1, 1]) {
-    if (R.back > 0.05) leg(far, tube([[sd * 0.18, 0.05 + 0.5 * R.back], [sd * 0.2, 0.05]], [0.12, 0.09]), true);
+    if (R.back > 0.05 && def.feathered) {
+      leg(far, ellUV([sd * 0.235, 0.4], 0.105, 0.19, sd * 0.12, 18));
+      leg(far, tube(resample([[sd * 0.215, 0.36], [sd * 0.215, 0.2], [sd * 0.2, 0.05]], 6), [0.13, 0.1, 0.09, 0.085, 0.085, 0.09]));
+    }
+    else if (R.back > 0.05) leg(far, tube([[sd * 0.18, 0.05 + 0.5 * R.back], [sd * 0.2, 0.05]], [0.12, 0.09]), true);
     if (R.haunch > 0.05) {
       part(coat, ellUV([sd * 0.26, 0.2], 0.18 * R.haunch, 0.2 * R.haunch, 0, 16), true);
       if (R.haunch > 0.4) leg(def.pattern === 'tuxedo' ? light : limbC, ellUV([sd * 0.32, 0.04], 0.08, 0.04, 0, 12));
     }
   }
   tail(R.tail);
-  part(coat, fluff(ellUV(chest, crx, cry, 0, 20), def.fluffy ? 0.04 : 0, seed + 11));
+  const frontLegs = () => {
+  for (const [k, pts] of [R.fl, R.fr].entries()) {
+    if (def.feathered) {
+      // Close-shot legs: a heavier elbow tapering to a slim pastern, a small bend at the wrist, a feathered fringe down the back (outer side) and a round paw.
+      const sd = k === 0 ? -1 : 1, line = resample(pts, 6);
+      leg(limbC, tube(line, [0.15, 0.12, 0.098, 0.082, 0.078, 0.088]));
+      leg(def.pattern === 'tuxedo' ? light : limbC, ellUV(add(pts[2], [sd * 0.008, 0.032]), 0.082, 0.05, 0, 14));
+    } else {
+      leg(limbC, tube(pts, [0.13, 0.1, 0.09]), true);
+      leg(def.pattern === 'tuxedo' ? light : limbC, ellUV(add(pts[2], [0, 0.03]), 0.075, 0.045, 0, 12));
+    }
+  }
+  };
+  const neckBlock = () => {
+    part(coat, tube([[0, chest[1] + cry * 0.5], [0, H[1] - 0.1 * hs]], [isCat ? 0.26 : 0.3 * def.build, 0.26 * hs]), !def.feathered);
+  };
+  // Retrievers: the chest overlaps the leg tops and the neck foot, so no flat joins show.
+  if (def.feathered) { neckBlock(); frontLegs(); }
+  if (def.feathered) {
+    // Smooth teardrop chest with a few feathered tufts along the lower edge (instead of tufts all round).
+    const ch = ellUV(chest, crx, cry, 0, 28).map(([x, y], i): UV => y < chest[1] - cry * 0.3 ? [x, y - 0.03 * (0.4 + 0.8 * hash(seed + 11 + i)) * (i % 2 ? 1 : 0.5)] : [x, y]);
+    part(coat, ch);
+  } else part(coat, fluff(ellUV(chest, crx, cry, 0, 20), def.fluffy ? 0.04 : 0, seed + 11));
   if (def.pattern === 'chest' || def.pattern === 'tuxedo') fill(light, ellUV([chest[0], chest[1] + 0.02], crx * 0.5, cry * 0.75, 0, 16), 4);
   if (def.pattern === 'tabby') for (const dy of [0.12, 0, -0.12]) ink([[-0.14, chest[1] + dy], [0, chest[1] + dy - 0.04], [0.14, chest[1] + dy]], dark, 1.3, false, 0.4);
   if (def.pattern === 'calico') {
     fill(def.coat, ellUV([chest[0] - 0.12, chest[1] + 0.06], 0.12, 0.1, 0, 14), 4);
     fill(def.dark ?? INK, ellUV([chest[0] + 0.13, chest[1] - 0.05], 0.1, 0.09, 0, 14), 4);
   }
-  for (const pts of [R.fl, R.fr]) {
-    leg(limbC, tube(pts, [0.13, 0.1, 0.09]), true);
-    leg(def.pattern === 'tuxedo' ? light : limbC, ellUV(add(pts[2], [0, 0.03]), 0.075, 0.045, 0, 12));
-  }
-  part(coat, tube([[0, chest[1] + cry * 0.5], [0, H[1] - 0.1 * hs]], [isCat ? 0.26 : 0.3 * def.build, 0.26 * hs]), true);
+  if (!def.feathered) { frontLegs(); neckBlock(); }
   headFront(H);
 };

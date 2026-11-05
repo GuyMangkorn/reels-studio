@@ -86,7 +86,12 @@ export const drawFigureBack = (p: Painter, def: CastDef, g: Pt, unit: number, po
     // as two dark blocks across the hem (4 Nov 2026, bug: YOU2 back). The visible edges are the same lines; the ids and the lower part are unchanged.
     const tt = 0.07 / Math.max(0.1, hip[1] - knee[1]), top: Pt = [hip[0] + (knee[0] - hip[0]) * tt, hip[1] + (knee[1] - hip[1]) * tt];
     fill(pc, Sq(limb(top, knee, (0.11 + (0.095 - 0.11) * tt) * sc, 0.095 * sc)));
-    fill(pc, Sq(limb(knee, ankle, 0.095 * sc, 0.08 * sc)));
+    if (o.shorts) {
+      const at = (k: number): Pt => [knee[0] + (ankle[0] - knee[0]) * k, knee[1] + (ankle[1] - knee[1]) * k];
+      fill(skin, Sq(limb(at(0.1), ankle, 0.088 * sc, 0.066 * sc)));
+      fill(o.shorts.sock, Sq(limb(at(0.84), [ankle[0], ankle[1] - 0.005], 0.07 * sc, 0.066 * sc)));
+      fill(pc, Sq(limb(knee, at(0.16), 0.095 * sc, 0.1 * sc)));
+    } else fill(pc, Sq(limb(knee, ankle, 0.095 * sc, 0.08 * sc)));
     const sc2 = o.boots ? mixColor(o.shoes, '#000000', 0.1) : o.shoes;
     if (o.boots) fill(sc2, Sq(limb([ankle[0], ankle[1] + 0.1], ankle, 0.085 * sc, 0.08 * sc)));
     fill(o.shoes, Sq(ell(ankle[0] + s * 0.01, ankle[1] - 0.012, 0.062 * sc, 0.032 * sc, 14).map((q) => q as Pt)));

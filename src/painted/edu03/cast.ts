@@ -1,6 +1,6 @@
 import type {CastDef, FigAnchors} from '../kit/cast';
-import {bodyFrame, H} from '../kit/cast';
-import {ell, hardFill, inkLine, limb, solid, washAt, INK} from '../kit/draw';
+import {bodyFrame} from '../kit/cast';
+import {ell, inkLine, limb, solid, washAt, INK} from '../kit/draw';
 import type {InteriorLight} from '../kit/draw';
 import {mixColor, type Painter, type Pt} from '../kit/painter';
 import {PEOPLE} from '../kit/people';
@@ -9,16 +9,15 @@ import {PEOPLE} from '../kit/people';
 // outfit in WARDROBE and the gear in `Gear` at delivery. All colours are the brief's colour key.
 //
 // `new: park-casual` on `man-crop`: mustard crew-neck tee, denim knee-length shorts, white sneakers, blue baseball cap (kit `gear.hat`
-// cap, four views), cream canvas sling bag worn across the body. The rig has no shorts: the trousers are drawn denim to the knee
-// (`paintShortsLegs` over the front-view standing legs puts bare shins and white socks over the lower half) and the bag is painted
-// over the torso (`paintSlingBag`).
+// cap, four views), cream canvas sling bag worn across the body. Shorts are the kit `Outfit.shorts` (denim cuff under
+// the knee, bare shin, white sock; front, back and both profiles, same leg silhouette, no overlay) and the bag is painted over the torso (`paintSlingBag`).
 
 export const TEE = '#e3b23c', DENIM = '#4a6f9e', CAP = '#2f5fb8', BAG = '#e8dcc0', SNEAKER = '#f2f0ea';
 const crop = PEOPLE['man-crop'];
 
 export const OWNER: CastDef = {
   ...crop,
-  outfit: {...crop.outfit, shirt: TEE, sleeve: TEE, longSleeves: false, pants: DENIM, shoes: SNEAKER,
+  outfit: {...crop.outfit, shirt: TEE, sleeve: TEE, longSleeves: false, pants: DENIM, shoes: SNEAKER, shorts: {sock: '#f4f1ea'},
     gear: {hat: {kind: 'cap', color: CAP, band: mixColor(CAP, '#0b1a3a', 0.45)}}},
 };
 
@@ -59,24 +58,6 @@ export const paintFaceKey = (p: Painter, a: FigAnchors, unit: number, seed: numb
   const sx = 0.168 * unit, sy = 0.185 * unit, sy0 = a.chin - sy;
   const rim: Pt[] = Array.from({length: 9}, (_, i): Pt => { const ang = Math.PI * (0.66 + 0.3 * (i / 8)); return [cx + 0.004 * unit + sx * Math.cos(ang), sy0 + sy * Math.sin(ang)]; });
   washAt(p, seed + 3, '#fff8e0', 170 * k, [...rim, ...[...rim].reverse().map(([x, y]): Pt => [x + 0.028 * unit, y - 0.003 * unit])], 0.03, 0.1);
-};
-
-/** Bare shins and white socks below knee-length shorts (front view, standing, no crouch). Call right after `drawFigure`. */
-export const paintShortsLegs = (p: Painter, def: CastDef, g: Pt, unit: number, seed: number) => {
-  const f = bodyFrame(def, {view: 'front'}), skin = def.head.skin;
-  const hipV = f.hipV, kneeV = (hipV + 0.038) / 2, hem = kneeV + 0.035, ankle = 0.038;
-  const P = (u: number, v: number): Pt => [g[0] + u * unit, g[1] - v * unit];
-  for (const s of [-1, 1]) {
-    const shin = limb(P(s * 0.078, hem), P(s * 0.08, ankle + 0.045), 0.088 * unit, 0.066 * unit);
-    hardFill(p, seed + s * 3, skin, shin);
-    washAt(p, seed + s * 3 + 1, mixColor(skin, '#6b3f26', 0.5), 70, limb(P(s * 0.078 + s * 0.02, hem), P(s * 0.08 + s * 0.016, ankle + 0.045), 0.03 * unit, 0.022 * unit), 0.1, 0.3);
-    inkLine(p, seed + 10 + s, [P(s * 0.078 - 0.044, hem - 0.004), P(s * 0.08 - 0.033, ankle + 0.045)], {closed: false, weight: 0.55, color: mixColor(skin, INK, 0.6)});
-    inkLine(p, seed + 14 + s, [P(s * 0.078 + 0.044, hem - 0.004), P(s * 0.08 + 0.033, ankle + 0.045)], {closed: false, weight: 0.55, color: mixColor(skin, INK, 0.6)});
-    hardFill(p, seed + 20 + s, '#f4f1ea', limb(P(s * 0.08, ankle + 0.055), P(s * 0.08, ankle + 0.005), 0.07 * unit, 0.066 * unit));
-  }
-  // Shorts hem: a darker denim cuff line across each leg.
-  for (const s of [-1, 1]) inkLine(p, seed + 30 + s, [P(s * 0.078 - 0.05, hem), P(s * 0.078 + 0.05, hem)], {closed: false, weight: 0.7, color: mixColor(DENIM, INK, 0.55)});
-  void H;
 };
 
 /**

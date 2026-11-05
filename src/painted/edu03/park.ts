@@ -9,7 +9,7 @@ import {poseFor, type AnyPoseId} from '../kit/poses';
 import {paintSkyBands} from '../kit/sky';
 import type {V3} from '../kit/space';
 import {camPoint, camSpace, camToPicture, camUnit, type YCam} from '../kit/ycam';
-import {OWNER, OWNER_B04, PARK_LIGHT, paintFaceKey, paintShortsLegs, paintSlingBag} from './cast';
+import {OWNER, OWNER_B04, PARK_LIGHT, paintFaceKey, paintSlingBag} from './cast';
 import {paintBox, paintSorted, qy, sphereAt, wFill, wInk, wWash, wp, type Item} from './world';
 
 // EDU-EP03-SHORT SET-PARK (brief EDU-BRIEF-R1 VD04, set plan): a Bangkok public park in world metres (`PARK` space: origin at the red
@@ -32,7 +32,7 @@ export type BallColor = keyof typeof BALLS;
 export const BALL_R = 0.05;
 
 export const POS = {
-  R0: [0, 0, 0] as V3, L1: [-0.6, 0, -0.2] as V3, O: [-4.5, 0, -1.5] as V3, D0: [-3.9, 0, -1.1] as V3, S1: [2.6, 0, -1.0] as V3,
+  R0: [0, 0, 0] as V3, L1: [-0.6, 0, -0.2] as V3, O: [-4.5, 0, -1.5] as V3, D0: [-3.85, 0, -0.85] as V3, S1: [2.6, 0, -1.0] as V3,
   TREE_Y: [-4.0, 0, -8.5] as V3, TREE_R: [5.0, 0, -10.0] as V3, BENCH: [-6.8, 0, -3.6] as V3, LAMP: [4.8, 0, -5.0] as V3, BIN: [-2.8, 0, -5.0] as V3, SALA: [-9, 0, -18] as V3,
 };
 /** Camera targets (brief "Camera targets"). */
@@ -242,8 +242,6 @@ const ownerItem = (p: Painter, c: YCam, st: OwnerState, t: number): Item => {
     const face = EXPRESSIONS[st.face ?? 'happy'];
     const a: FigAnchors = drawFigure(p, def, g, u, {...pose, face, headCock: st.headCock, warm: st.warm, light: st.light ?? PARK_LIGHT}, t);
     if (st.faceKey) paintFaceKey(p, a, u, 8350);
-    // Kneeling (B04): the standing-leg overlay (bare shins, socks) does not apply; the denim thigh and the shoes come from the rig.
-    if (!pose.kneel) paintShortsLegs(p, def, g, u, 8400);
     paintSlingBag(p, def, pose.kneel ? [g[0], g[1] + 0.3 * u] : g, u, 8450, a); // kneeling: the hip (and the bag on it) drops by the shin length
     if (st.held) {
       // The ball sits in his right grip (screen left), held up and a little toward the lens, so it is drawn at the nearer scale.
