@@ -91,8 +91,9 @@ Record: [delivery.md](delivery.md) · Updated: 2026-11-05, Film
   - [x] W1.5 User approves the script (R1.1, 2026-11-05)
 - [ ] W2 Brief and storyboard
 - [ ] W3 Look frames and storyboard pass
-- [ ] W4 Voice lock (narration approved by user: Kore, EP02 tone, `kore-v1` 40.76 s, 2026-11-05; owner lines O1/O2 and timed scene sheets still open)
+- [ ] W4 Voice lock (narration approved by user: Kore, EP02 tone, `kore-v1` 40.76 s, 2026-11-05; owner lines O1/O2 Algenib approved by user 2026-11-05; owner lines O1/O2 and timed scene sheets still open)
   - [ ] W4.2 Kore sample generated (EP02 style, 40.76 s, -16.4 LUFS), pending user listen: [ep03/voice-measure.md](ep03/voice-measure.md); store `projects/EDU/narration/narration-ep03-kore.wav`
+  - [ ] W4.2 Owner lines O1/O2 generated (Gemini Algenib, -16.0 LUFS, 2 requests), pending user listen: [ep03/voice-measure.md](ep03/voice-measure.md#owner-lines-o1--o2-w42-revision-owner-v1)
 - [ ] W5 Draft
 - [ ] W6 Final
 - [ ] W7 Pinned
