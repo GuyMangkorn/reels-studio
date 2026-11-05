@@ -20,5 +20,18 @@ export const SLEEPER: CastDef = {
   },
 };
 
-/** The doctor (`woman-pixie + doctor, P01, happy`): kit person and kit outfit, unchanged. */
-export const DOCTOR: CastDef = dress(PEOPLE['woman-pixie'], 'doctor');
+/**
+ * The doctor (`woman-long + doctor (no tie, rose blouse), P01, happy (soft)`; user, 4 Nov 2026, after the LF05 v1 viewer check
+ * read the `woman-pixie` doctor as a man): long dark hair over the shoulders, kit `doctor` coat and ID tag, a rose blouse with a
+ * soft V neck instead of shirt and tie. The stethoscope, waist/bust shaping and soft closed smile are painted in `set.ts`
+ * (`paintDoctor`) from the rig anchors until Boss adds them to the kit (gear `stethoscope`, a female torso shape).
+ */
+const doc = dress(PEOPLE['woman-long'], 'doctor');
+export const DOCTOR: CastDef = {
+  ...doc,
+  outfit: {
+    ...doc.outfit,
+    shirt: '#d9a3a6', pants: '#3e4658',
+    gear: {...doc.outfit.gear, tie: undefined, collar: {kind: 'v', color: '#f2dcd8', depth: 0.1}},
+  },
+};
