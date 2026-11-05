@@ -239,7 +239,7 @@ S1 implementation as found: option 1 (picture pass) built in the episode module 
 | Owner's shorts drawn as an overlay on the legs (edges read pasted) | LF01 v2 | **Fix** in `new: park-casual` before kit intake (KIT-P01): shorts integrated with the leg silhouette in all four views | Boss, before W5 owner shots |
 | Sniff neck (v3) | LF02 v3 | **Done**, user-passed | — |
 
-### VD12 — Faces in the dog view (risk R2), **user decision pending**
+### VD12 — Faces in the dog view (risk R2), **user chose option A (2026-11-05)**
 
 LF01-dogview shows the owner's face grey-olive and skin close to the khaki lawn; B04 keeps the dog view for ~10 s on a two-shot (VD07, user Q2). Options for the coordinator to ask with the structured-question tool:
 
@@ -263,6 +263,8 @@ Set plan: `D0` → (−3.85, 0, −0.85); lamp post → (+4.80, 0, −5.00). `V-
 - **LF01 v2** verdict (pass, or notes), knowing D5 changes the ball hold and the kit fixes change the dog front view and the shorts in later frames.
 
 ## Change log
+
+- **EDU-BRIEF-R2.1 (2026-11-05, Film):** recorded the user's VD12 choice (option A; LF03 v4 painted at the B04-SH02 push r 1.50, hy 700, warm key + rim; owner skin `#f5c27a` in B04 only, user accepted). Storyboard rows moved to SS-R2 with these values. No other brief value changed.
 
 - **EDU-BRIEF-R2 (2026-11-05, Film):** confirmed Boss's LF01/LF02 deviations: mirrored LF01 camera kept (B07 follows, `D0` moved to (−3.85, 0, −0.85)); `V-BALL` yaw 44°/hy 910 kept; ball above the caption band in all `V-BALL` uses (no band exception needed); lamp to x +4.80; `V-BALL` ball 88 px kept, LF01 held ball raised toward the lens (≥ 85 px); dog-view map 27 % desaturation kept with its evidence limit; kit look gaps recorded (dog front view and body: fix; shorts overlay: fix; lawn stripes: keep); VD12 faces-in-dog-view put to the user with options A–E; B07 correction from SS-R1 (flip back in the last 10 f of B06-SH02, B07 untagged). Look frames: user pass on LF02 v3; LF01 v2 verdict pending.
 
