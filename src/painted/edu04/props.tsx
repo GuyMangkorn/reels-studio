@@ -1,6 +1,8 @@
 import type {CSSProperties} from 'react';
-import {inkLine} from '../kit/draw';
-import type {Painter} from '../kit/painter';
+import {ell, hardFill, inkLine, INK, solid} from '../kit/draw';
+import {mixColor, type Painter, type Pt} from '../kit/painter';
+import type {V3} from '../kit/space';
+import {camPoint, camUnit, type YCam} from '../kit/ycam';
 import {LANE} from './cast';
 
 // `new: tally doodle`, `new: stamp text` (ซวยตลอด) and `new: title strip` (brief EDU-BRIEF-R1.1 VD11, VD12, VD16). Screen space.
@@ -43,3 +45,40 @@ export const TitleStrip = ({text = 'ทำไมแถวข้าง ๆ เร
     {([1, 2, 3] as const).map((n) => <div key={n} style={{position: 'absolute', left: 60 + (n - 1) * 262, width: 238, height: 12, bottom: 24, background: LANE[n], borderRadius: 6}} />)}
   </div>
 );
+
+// ---- W5.2 props (S01-B02-SH02, SH03): `new: pineapple`, `new: coin purse + coins` (world metres through the camera, screen helpers for the hand-held ones).
+
+/** `new: pineapple`: the unpriced fruit CSH1 lifts off the belt. `at` = centre of the body (px), `u` px per metre, body 0.2 m wide, 0.26 m tall, crown 0.14 m. */
+export const paintPineapple = (p: Painter, at: Pt, u: number, seed = 8300) => {
+  const [x, y] = at, rx = 0.1 * u, ry = 0.13 * u;
+  const crown = ['#3f7a3a', '#4f9a4c', '#3f7a3a'];
+  [-1, 0, 1].forEach((k, i) => solid(p, seed + i, crown[i], [[x + k * 0.025 * u, y - ry * 0.85], [x + k * 0.08 * u - 0.025 * u, y - ry - 0.13 * u], [x + k * 0.1 * u, y - ry - 0.05 * u], [x + k * 0.04 * u + 0.03 * u, y - ry * 0.85]], 2, 0.05, 0.1));
+  solid(p, seed + 4, '#e3a52a', ell(x, y, rx, ry, 18), 3, 0.06, 0.1);
+  inkLine(p, seed + 5, ell(x, y, rx, ry, 18), {weight: 1.2, color: mixColor('#e3a52a', INK, 0.65)});
+  for (let i = -2; i <= 2; i++) {
+    inkLine(p, seed + 6 + i + 2, [[x + i * 0.04 * u - 0.05 * u, y - ry * 0.75], [x + i * 0.04 * u + 0.05 * u, y + ry * 0.75]], {closed: false, weight: 0.6, color: '#a66f1c'});
+    inkLine(p, seed + 12 + i + 2, [[x + i * 0.04 * u + 0.05 * u, y - ry * 0.75], [x + i * 0.04 * u - 0.05 * u, y + ry * 0.75]], {closed: false, weight: 0.6, color: '#a66f1c'});
+  }
+};
+
+/** `new: coin purse`: a drawstring pouch in the hand (`hand` = grip px). */
+export const paintCoinPurse = (p: Painter, hand: Pt, u: number, seed = 8350) => {
+  const [x, y] = hand, w = 0.09 * u, h = 0.1 * u;
+  solid(p, seed, '#7a4b2f', [[x - w, y - h * 0.4], [x + w, y - h * 0.4], [x + w * 1.15, y + h * 0.4], [x, y + h * 0.7], [x - w * 1.15, y + h * 0.4]], 3, 0.06, 0.1);
+  inkLine(p, seed + 1, [[x - w, y - h * 0.4], [x + w, y - h * 0.4], [x + w * 1.15, y + h * 0.4], [x, y + h * 0.7], [x - w * 1.15, y + h * 0.4]], {weight: 1.1, color: INK});
+  inkLine(p, seed + 2, [[x - w * 0.9, y - h * 0.4], [x - w * 0.3, y - h * 0.62], [x + w * 0.3, y - h * 0.62], [x + w * 0.9, y - h * 0.4]], {closed: false, weight: 1.1, color: '#4b2d1c', curve: 0.3});
+};
+
+/** `new: coin stack` on a counter: `n` coins (diameter `d` m, 0.012 m thick; exaggerated for the 270 px read) stacked at `base`, plus one tilted loose coin. */
+export const paintCoins = (p: Painter, c: YCam, base: V3, n: number, d = 0.07, seed = 8400) => {
+  const u = camUnit(c, base), th = 0.012;
+  for (let i = 0; i < n; i++) {
+    const g = camPoint(c, [base[0], base[1] + i * th, base[2]]);
+    if (!g) continue;
+    const rx = (d / 2) * u, ry = rx * 0.4, off = (i % 2 ? 0.012 : -0.012) * u, tone = i % 2 ? '#e8c04a' : '#d9ab33';
+    hardFill(p, seed + i * 4, mixColor(tone, INK, 0.35), ell(g[0] + off, g[1] + th * u * 0.5, rx, ry, 14));
+    hardFill(p, seed + i * 4 + 1, tone, ell(g[0] + off, g[1], rx, ry, 14));
+    inkLine(p, seed + i * 4 + 2, ell(g[0] + off, g[1], rx, ry, 14), {weight: 0.9, color: INK});
+    inkLine(p, seed + i * 4 + 3, ell(g[0] + off, g[1], rx * 0.62, ry * 0.62, 12), {weight: 0.5, color: '#a47a1c'});
+  }
+};

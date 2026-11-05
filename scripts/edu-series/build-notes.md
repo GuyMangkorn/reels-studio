@@ -608,3 +608,7 @@ Film, 5 Nov 2026, fresh invocation. Input: the 13 re-rendered Draft clips (B03-S
 - **Housekeeping:** `render.mjs --stills` overwrote `out/EDU-EP02-SHORT/stills/{330,540,1080}.png`; Boss moved them to `out/edu02/w6/diag/timeline/`, so those stills are missing from the stills cache until re-rendered.
 - **Proposed, not applied (DP01):** a dev-findings entry "a textured p5.brush fill shimmers under a moving camera even with a fixed seed; use the flat wash for moving camera shots". For the user to approve.
 - **Film to accept (AI13):** the B05-SH03 hand path change (`scenes/s01-b05.md`, W6 Final fix line).
+
+## EDU-EP04 W5.2 G1 (2026-11-05, Boss)
+
+Composition `EDU-EP04-SHORT` (`src/videos/edu-ep04/index.ts`), plates `EDU4-<shot id>` = `plateOf(id, f)` in `src/painted/edu04/shots.tsx` via `src/painted/shots/edu04.tsx`; stills entry `src/painted/edu04/shots-index.ts`. G1 = S01-B01-SH01..B03-SH01. Set changes in `checkout.ts` (opt-in `Who.facing/mix/fig/held`, `CheckoutOpts.items`, ceiling off when pitch < -30 deg), props in `props.tsx`. SD09: sheet T-GAG did not reproduce its own meas (elder off-frame); re-solved to target (2.0,1.0,-1.4), az 35, r 2.3->2.2. SD10: sheet T-LANES lens stands behind the lane-1 register/`man-buzz` (MAN hidden); now `orbit([0->-1.2,1.4,-2], az -35->-45, r 3.0, eye 2.5, pitch -10, hy 520)`. Measured (0.37 m head): B01-SH01 86 px at f55 (sheet 90; G4 bookend reference), B01-SH02 291->326, B02-SH02 99->102, B02-SH03 139, B02-SH04 194. H7 crane end lanes 253/540/827 y 560 exact. Evidence `out/edu04/w52/g1/G1-sheet.png`.

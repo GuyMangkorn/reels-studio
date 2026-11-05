@@ -1,13 +1,13 @@
 import {drawFigure} from '../kit/cast';
-import type {CastDef, FigAnchors} from '../kit/cast';
+import type {CastDef, FigAnchors, FigPose} from '../kit/cast';
 import {ell, hardFill, inkLine, INK, solid, washAt} from '../kit/draw';
 import {EXPRESSIONS, type ExpressionId} from '../kit/expressions';
 import type {FaceState} from '../kit/head';
 import {paintHalo} from '../kit/fog';
 import {mixColor, type Painter, type Pt} from '../kit/painter';
-import {poseFor, type AnyPoseId} from '../kit/poses';
+import {poseFor, poseMix, type AnyPoseId} from '../kit/poses';
 import type {V3} from '../kit/space';
-import {camPoint, camUnit, type YCam} from '../kit/ycam';
+import {camPoint, camUnit, viewAngle, type YCam} from '../kit/ycam';
 import {BASKET_RED, CSH1, CSH2, CSH3, LANE, MAN, shopper, type LaneNo} from './cast';
 import {paintBox, paintSorted, qx, qy, qz, sphereAt, wFill, wInk, wWash, type Item} from './world';
 
@@ -29,6 +29,14 @@ const PRODUCT = ['#d9473a', '#f2c230', '#4f9a5c', '#4a78b8', '#e48a3a', '#f4f0e6
 export type Who = {
   def: CastDef; at: V3; face?: ExpressionId; faceState?: FaceState; pose?: AnyPoseId; view?: 'front' | 'left' | 'right';
   basket?: boolean; trolley?: boolean; headCock?: number; scale?: number; look?: Pt; key: string;
+  /** W5.2: world facing [x, z]; the view (front / quarter / profile / back) follows from the camera (`viewAngle`) and replaces `view`. */
+  facing?: [number, number];
+  /** W5.2: blend `pose` toward `mix.to` by `mix.u` (gestures that ease in and out). */
+  mix?: {to: AnyPoseId; u: number};
+  /** W5.2: FigPose overrides applied last (walk phase, lean, extra arm targets). */
+  fig?: Partial<FigPose>;
+  /** W5.2: props drawn after the figure from its anchors (`u` px per metre). */
+  held?: (p: Painter, a: FigAnchors, u: number) => void;
 };
 export type Light = 'off' | 'green' | 'red';
 export type CheckoutOpts = {
@@ -37,6 +45,17 @@ export type CheckoutOpts = {
   out?: Record<string, FigAnchors>;
   /** Draw only the set (no people). */
   empty?: boolean;
+  /** W5.2: extra depth-sorted items (pineapple on a belt, coins on a counter). */
+  items?: Item[];
+};
+
+/** View of a figure at `at` facing the world direction `facing` from camera `c` (`viewAngle`: 0 toward the lens, +90 screen right, 180 away). */
+export const viewOf = (c: YCam, at: V3, facing: [number, number]): Pick<FigPose, 'view' | 'quarter' | 'quarterDeg'> => {
+  const a = viewAngle(c, at, facing), m = Math.abs(a);
+  if (m <= 15) return {view: 'front'};
+  if (m < 70) return {view: 'front', quarter: a > 0 ? 'right' : 'left', quarterDeg: Math.min(60, Math.max(15, m))};
+  if (m <= 112) return {view: a > 0 ? 'right' : 'left'};
+  return {view: 'back'};
 };
 
 // ---- Held basket (screen space: `hand` is the grip, `u` px per metre).
@@ -58,14 +77,16 @@ const whoItem = (w: Who, o: CheckoutOpts): Item => ({
   draw: (p, c) => {
     const g0 = camPoint(c, w.at), u0 = camUnit(c, w.at);
     if (!g0) return;
-    const u = u0 * (w.scale ?? 1), g = g0, view = w.view ?? 'front';
+    const u = u0 * (w.scale ?? 1), g = g0, auto = w.facing ? viewOf(c, w.at, w.facing) : null, view = auto?.view ?? w.view ?? 'front';
     washAt(p, 5100 + w.key.length * 7, '#6b5b45', 70, ell(g[0], g[1], 0.3 * u, 0.07 * u, 14), 0.2, 0.3);
-    const pose = poseFor(w.pose ?? 'P01', w.def, g, u, view);
+    const pv = view === 'back' ? 'front' : view;
+    const pose = w.mix ? poseMix(w.pose ?? 'P01', w.mix.to, w.mix.u, w.def, g, u, pv) : poseFor(w.pose ?? 'P01', w.def, g, u, pv);
     const face = {...(w.faceState ?? EXPRESSIONS[w.face ?? 'neutral']), ...(w.look ? {look: w.look} : {})};
     if (w.trolley) paintTrolley(p, c, w.at);
-    const a = drawFigure(p, w.def, g, u, {...pose, face, headCock: w.headCock}, o.t);
+    const a = drawFigure(p, w.def, g, u, {...pose, ...(auto ? {view: auto.view, quarter: auto.quarter, quarterDeg: auto.quarterDeg} : {}), face, headCock: w.headCock, ...w.fig}, o.t);
     if (o.out) o.out[w.key] = a;
-    if (w.basket && view === 'front') paintBasket(p, [a.rHand[0], a.rHand[1]], u, 5300 + w.key.length * 11);
+    if (w.basket && view !== 'back') paintBasket(p, [a.rHand[0], a.rHand[1]], u, 5300 + w.key.length * 11);
+    w.held?.(p, a, u);
   },
 });
 
@@ -87,7 +108,8 @@ const sky = (p: Painter, c: YCam) => {
 const paintShell = (p: Painter, c: YCam) => {
   hardFill(p, 5900, S.wall, [[-300, -300], [1380, -300], [1380, 2220], [-300, 2220]]);
   wFill(p, c, 5910, S.wall, qz(-10, -7, 7, 0, 3.2));
-  wFill(p, c, 5911, S.ceil, qy(3.2, -7, 7, -10, 9));
+  const looksDown = (c.pitch ?? 0) < -Math.PI / 6; // a high-angle crane sees no ceiling (S01-B03-SH01)
+  if (!looksDown) wFill(p, c, 5911, S.ceil, qy(3.2, -7, 7, -10, 9));
   wFill(p, c, 5912, S.wallDusk, qx(-7, 0, 3.2, -10, 9));
   wFill(p, c, 5913, S.floor, qy(0, -7, 7, -10, 9));
   sky(p, c);
@@ -105,7 +127,7 @@ const paintShell = (p: Painter, c: YCam) => {
     wWash(p, c, 6510 + n, '#b8aa88', 28, qy(0.003, x - 0.08, x + 0.08, -4.4, 0.4), 0.1, 0.8);
   });
   // ceiling tube rows (flat fluorescent), every 1.5 m along z
-  for (let z = -9; z <= 8; z += 1.5) for (const x of [-3.5, 0, 3.5]) wFill(p, c, 6600 + z * 9 + x, '#fbfdff', qy(3.18, x - 1.0, x + 1.0, z - 0.06, z + 0.06));
+  if (!looksDown) for (let z = -9; z <= 8; z += 1.5) for (const x of [-3.5, 0, 3.5]) wFill(p, c, 6600 + z * 9 + x, '#fbfdff', qy(3.18, x - 1.0, x + 1.0, z - 0.06, z + 0.06));
   // hanging sale flags (shapes only): a string across the shop at z -5.0, y 2.6
   for (let x = -4.4; x < 4.4; x += 0.44) {
     const col = hsh(x * 9) > 0.5 ? '#d9473a' : '#f2c230';
@@ -248,6 +270,7 @@ export const paintCheckout = (p: Painter, c: YCam, o: CheckoutOpts): void => {
   ([1, 2, 3] as LaneNo[]).forEach((n) => items.push(counterItem(n, L[n] ?? 'off', o), rackItem(n)));
   if (o.shared) items.push(...stanchionItems());
   if (!o.empty) o.who.forEach((w) => items.push(whoItem(w, o)));
+  if (o.items) items.push(...o.items);
   paintSorted(p, c, items);
 };
 
