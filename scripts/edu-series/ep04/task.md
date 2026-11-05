@@ -23,6 +23,7 @@ Record: this file. Series context: [concepts.md](../concepts.md) · series task 
   - [x] W3.2 Storyboard review page published (SS-R1, 20 shots, https://claude.ai/artifact/2AGFhYLfG2ZPAGsG5duRhf); user verdicts 20/20 ok, no notes (2026-11-05). Film's W3 storyboard pass (look-frame check against the L20 end frame) still open.
 - [ ] W4 Voice lock
 - [ ] W5 Draft
+  - [x] W5.1 Film timed scene sheets EDU-EP04-SHEETS-R1 ([scene-sheets.md](scene-sheets.md), `ready-for-dev`, 2026-11-05): 20 shots, 1657 f = 55.23 s (≤ 60 s); end hold 2.0 s; timing assumes the Editor pause edit VL-EDIT-01 (narrator in-line 0.15 s, between-line 0.22 s from L07; without it 57.6 s). [review-rows.json](review-rows.json) timed (S01-B06-SH03 hold text 2.5 → 2 s). Review page: pending (coordinator republishes). Next: Editor VL-EDIT-01 + `narration-lock.json` (H5), Boss W5.2 plates (handoff H1–H4, H7, H8).
 - [ ] W6 Final
 - [ ] W7 Pinned
 - [ ] W8 Deliver
