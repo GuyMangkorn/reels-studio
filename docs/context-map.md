@@ -90,7 +90,7 @@ Episode-specific files are under [Episodes](#episodes); shared topics come first
 
 **Read when:** rendering anything, taking QA stills, pinning approved shots or re-editing.
 
-- Rules: [render by scene / review renders / stills on one Chrome](../AGENTS.md#shared-agent-conventions); [painted shot-by-shot review](sequence-workflow.md#painted-shot-by-shot); [README render and verify](../README.md#render-and-verify), [permanent render folder](../README.md#permanent-render-folder)
+- Rules: [render by scene / review renders / stills on one Chrome](render-rules.md); [painted shot-by-shot review](sequence-workflow.md#painted-shot-by-shot); [README render and verify](../README.md#render-and-verify), [permanent render folder](../README.md#permanent-render-folder)
 - Scripts: [render.mjs](../scripts/render.mjs), [render-options.mjs](../scripts/render-options.mjs), [render-inputs.ts](../scripts/render-inputs.ts), [segments.mjs](../scripts/segments.mjs), [pin.mjs](../scripts/pin.mjs), [stills.mjs](../scripts/stills.mjs), [qa-sheet.sh](../scripts/qa-sheet.sh), [reference-frames.py](../scripts/reference-frames.py)
 - Findings: [render speed](dev-findings/DF-20261031-render-speed.md), [segment cache key](dev-findings/DF-20261101-segment-cache-key.md); design [project render cache](reviews/2026-11-01-project-render-cache.md)
 - Tests: [segments](../tests/segments.test.ts), [render-options](../tests/render-options.test.ts), [render-inputs](../tests/render-inputs.test.ts)
