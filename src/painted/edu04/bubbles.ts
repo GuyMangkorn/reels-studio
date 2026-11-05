@@ -36,7 +36,8 @@ const steam = (p: Painter, x: number, y: number, s: number, seed: number) => {
 };
 
 /** Hot bubble: centre (cx, cy). */
-export const paintHotBubble = (p: Painter, cx: number, cy: number, rx: number, ry: number, t: number) => {
+/** `puffs` 0..3 trailing puffs shown (pop-in, 3 f apart); `heat` 0..1 sharpens the red and adds steam (S01-B05-SH01 L62). */
+export const paintHotBubble = (p: Painter, cx: number, cy: number, rx: number, ry: number, t: number, puffs = 3, heat = 0) => {
   const shape = scallop(cx, cy, rx, ry, 9, 0.045, 0.6);
   washAt(p, 7100, '#e8503c', 150, shape, 0.1, 0.35);
   solid(p, 7101, '#f7a98e', scallop(cx, cy + ry * 0.12, rx * 0.86, ry * 0.8, 7, 0.03, 1.1), 2, 0.05, 0.2);
@@ -48,18 +49,20 @@ export const paintHotBubble = (p: Painter, cx: number, cy: number, rx: number, r
   mini(p, MAN, cx + rx * 0.14, fy + ry * 0.2, 0.62 * ry * 1.25, 'furious', t, 7140);
   steam(p, cx + rx * 0.14, cy - ry * 0.28, 22, 7150);
   // heat: red glaze over the whole memory, then heavy sharp ink on the cloud edge
-  glaze(p, 7160, '#d9301f', 70, shape, {border: 0});
-  inkLine(p, 7161, shape, {weight: 3.4, color: '#7a1a12'});
+  glaze(p, 7160, '#d9301f', 70 + 50 * heat, shape, {border: 0});
+  inkLine(p, 7161, shape, {weight: 3.4 + 1.6 * heat, color: '#7a1a12'});
+  if (heat > 0) { steam(p, cx + rx * 0.14 - 46, cy - ry * 0.5, 20 * heat, 7190); steam(p, cx + rx * 0.14 + 52, cy - ry * 0.42, 18 * heat, 7195); }
   inkLine(p, 7162, scallop(cx, cy, rx * 0.97, ry * 0.97, 9, 0.045, 0.6), {weight: 1.3, color: '#7a1a12'});
   // trailing puffs toward MAN's head (down and to the right)
   [[cx + rx * 0.48, cy + ry * 1.04, 28], [cx + rx * 0.66, cy + ry * 1.22, 19], [cx + rx * 0.78, cy + ry * 1.36, 11]].forEach(([x, y, r], i) => {
+    if (i >= puffs) return;
     hardFill(p, 7170 + i * 2, mixColor('#e8503c', '#fff3ee', 0.35), ell(x, y, r, r, 14));
     inkLine(p, 7171 + i * 2, ell(x, y, r, r, 14), {weight: 2.4 - i * 0.4, color: '#7a1a12'});
   });
 };
 
 /** Pale bubble: soft edges, grey-blue, faint. `fade` 1 -> 0.4 over the beat (never 0). */
-export const paintPaleBubble = (p: Painter, cx: number, cy: number, rx: number, ry: number, t: number, fade = 0.8) => {
+export const paintPaleBubble = (p: Painter, cx: number, cy: number, rx: number, ry: number, t: number, fade = 0.8, puffs = 3) => {
   const q = tintPainter(p, '#e6eaef', 0.45);
   const shape = bubbleWobble(cx, cy, rx, ry, 1.3);
   washAt(p, 7200, '#dfe5ec', 120 * fade + 40, shape, 0.5, 0.6);
@@ -72,6 +75,7 @@ export const paintPaleBubble = (p: Painter, cx: number, cy: number, rx: number, 
   glaze(p, 7240, '#f4f6f9', 50 + 40 * (1 - fade), shape, {border: 0});
   inkLine(p, 7241, shape, {weight: 1.3, color: mixColor('#9aa6b2', '#ffffff', 1 - fade)});
   [[cx - rx * 0.46, cy + ry * 1.04, 24], [cx - rx * 0.62, cy + ry * 1.2, 16], [cx - rx * 0.74, cy + ry * 1.33, 9]].forEach(([x, y, r], i) => {
+    if (i >= puffs) return;
     hardFill(p, 7250 + i * 2, '#eef1f5', ell(x, y, r, r, 14));
     inkLine(p, 7251 + i * 2, ell(x, y, r, r, 14), {weight: 1.1, color: '#9aa6b2'});
   });

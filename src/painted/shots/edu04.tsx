@@ -3,7 +3,7 @@ import type {PaintedShot} from '../shot';
 import {STILL_CAMERA} from '../kit/camera';
 import {Grain} from '../kit/screen';
 import {EDU4_SHOTS, PlanText, plateOf, titleWipe, type Edu4ShotId} from '../edu04/shots';
-import {TitleStrip} from '../edu04/props';
+import {StampText, TitleStrip} from '../edu04/props';
 
 // EDU-EP04-SHORT timeline adapter, Boss W5.2 (5 Nov 2026). One registry plate per shot, ID `EDU4-<shot id>`, wrapping the pure
 // `plateOf(id, f)` of src/painted/edu04/shots.tsx. Screen layers (grade, title strip, grain) come back through `Overlay`.
@@ -24,6 +24,7 @@ export const edu04Shots: PaintedShot[] = EDU4_SHOTS.map(([id]): PaintedShot => (
       <AbsoluteFill style={{pointerEvents: 'none', opacity}}>
         {plate.gradeOpacity > 0 && <AbsoluteFill style={{background: plate.grade, opacity: plate.gradeOpacity}} />}
         {wipe > 0 && <TitleStrip wipe={wipe} />}
+        {plate.stamp && <StampText {...plate.stamp} />}
         {plate.labels && <PlanText labels={plate.labels} />}
         <Grain opacity={0.09} />
       </AbsoluteFill>

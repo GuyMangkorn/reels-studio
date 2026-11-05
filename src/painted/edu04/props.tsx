@@ -13,30 +13,66 @@ import {LANE} from './cast';
 const font: CSSProperties = {fontFamily: 'Noto Sans Thai', position: 'absolute', textAlign: 'center'};
 
 /** Red chalk strokes: `n` strokes (1-4 upright, the 5th would be the diagonal) as a hand tally at (x, y), `u` px per stroke gap. */
-export const paintTally = (p: Painter, n: number, x: number, y: number, u = 34, seed = 8100) => {
+export const paintTally = (p: Painter, n: number, x: number, y: number, u = 34, seed = 8100, part = 1) => {
   for (let i = 0; i < Math.min(4, n); i++) {
-    const sx = x + i * u + (i % 2 ? 1.5 : -1.5);
-    inkLine(p, seed + i, [[sx, y - 70], [sx + (i % 2 ? 3 : -2), y + 70]], {closed: false, weight: 3.2, color: '#d2342a', curve: 0.1});
-    inkLine(p, seed + 20 + i, [[sx + 5, y - 66], [sx + 8, y + 62]], {closed: false, weight: 1.4, color: '#e8695e', curve: 0.1});
+    const sx = x + i * u + (i % 2 ? 1.5 : -1.5), k = i === n - 1 ? Math.max(0.05, part) : 1; // the newest stroke draws on top-down (`part` 0..1)
+    inkLine(p, seed + i, [[sx, y - 70], [sx + (i % 2 ? 3 : -2) * k, y - 70 + 140 * k]], {closed: false, weight: 6.2, color: '#d2342a', curve: 0.1});
+    inkLine(p, seed + 20 + i, [[sx + 5, y - 66], [sx + 5 + 3 * k, y - 66 + 128 * k]], {closed: false, weight: 2.4, color: '#e8695e', curve: 0.1});
   }
   if (n >= 5) inkLine(p, seed + 9, [[x - 18, y + 52], [x + 3.5 * u, y - 52]], {closed: false, weight: 3.4, color: '#d2342a', curve: 0.1});
 };
 
-export const StampText = ({x = 540, y = 1010, crack = 0, rot = -6, scale = 1}: {x?: number; y?: number; crack?: number; rot?: number; scale?: number}) => (
-  <div lang="th" style={{...font, left: x - 330, top: y - 80, width: 660, height: 160, transform: `rotate(${rot}deg) scale(${scale})`}}>
-    <svg width="660" height="160" viewBox="0 0 660 160" style={{position: 'absolute', inset: 0}}>
-      <defs>
-        <filter id="stampGrain"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" seed="4" result="n" /><feColorMatrix in="n" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 -1.2 1.5" result="m" /><feComposite in="SourceGraphic" in2="m" operator="in" /></filter>
-      </defs>
-      <g filter="url(#stampGrain)" fill="none" stroke="#c42a22" strokeWidth="7">
-        <rect x="8" y="10" width="644" height="140" rx="16" />
-        <rect x="20" y="22" width="620" height="116" rx="10" strokeWidth="2.5" />
-        <text x="330" y="106" textAnchor="middle" fontFamily="Noto Sans Thai" fontWeight="800" fontSize="92" fill="#c42a22" stroke="none">ซวยตลอด</text>
-      </g>
-      {crack > 0 && <polyline points="250,6 290,50 262,82 312,118 286,156" stroke="#f3ead6" strokeWidth={7 * crack} fill="none" />}
-    </svg>
-  </div>
-);
+const CRACK = '246,-10 290,50 258,82 316,118 282,172';
+/**
+ * `new: stamp text`. `crack` 0..1 draws the cream crack line down through the stamp (stroke draw-on); `split` px offsets the two halves
+ * across the crack (left half up-left, right half down-right, `split` total) once the crack is drawn; `op` is the pop-in opacity.
+ */
+export const StampText = ({x = 540, y = 1010, crack = 0, rot = -6, scale = 1, split = 0, op = 1}: {x?: number; y?: number; crack?: number; rot?: number; scale?: number; split?: number; op?: number}) => {
+  const body = (
+    <g filter="url(#stampGrain)" fill="none" stroke="#c42a22" strokeWidth="7">
+      <rect x="8" y="10" width="644" height="140" rx="16" />
+      <rect x="20" y="22" width="620" height="116" rx="10" strokeWidth="2.5" />
+      <text x="330" y="106" textAnchor="middle" fontFamily="Noto Sans Thai" fontWeight="800" fontSize="92" fill="#c42a22" stroke="none">ซวยตลอด</text>
+    </g>
+  );
+  const half = split > 0 && crack >= 1;
+  return (
+    <div lang="th" style={{...font, left: x - 330, top: y - 80, width: 660, height: 160, opacity: op, transform: `rotate(${rot}deg) scale(${scale})`}}>
+      <svg width="660" height="160" viewBox="0 0 660 160" style={{position: 'absolute', inset: 0}}>
+        <defs>
+          <filter id="stampGrain"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" seed="4" result="n" /><feColorMatrix in="n" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 -1.2 1.5" result="m" /><feComposite in="SourceGraphic" in2="m" operator="in" /></filter>
+          <clipPath id="stampL"><polygon points={`-20,-20 ${CRACK} -20,180`} /></clipPath>
+          <clipPath id="stampR"><polygon points={`680,-20 ${CRACK} 680,180`} /></clipPath>
+        </defs>
+        {half ? (
+          <>
+            <g clipPath="url(#stampL)" transform={`translate(${-split / 2} ${-split / 5}) rotate(-2 280 80)`}>{body}</g>
+            <g clipPath="url(#stampR)" transform={`translate(${split / 2} ${split / 5}) rotate(2 280 80)`}>{body}</g>
+          </>
+        ) : body}
+        {crack > 0 && (
+          <>
+            <polyline points={CRACK} pathLength={1} strokeDasharray={`${crack} 1`} stroke="#f3ead6" strokeWidth={split > 0 ? split + 8 : 9} strokeLinecap="round" strokeLinejoin="round" fill="none" />
+            <polyline points={CRACK} pathLength={1} strokeDasharray={`${crack} 1`} stroke="#3a120c" strokeWidth={10} strokeLinecap="round" strokeLinejoin="round" fill="none" />
+            {crack >= 1 && (
+              <g stroke="#3a120c" strokeWidth={6} strokeLinecap="round" fill="none">
+                <polyline points="290,50 322,38 340,52" />
+                <polyline points="262,82 232,90 216,78" />
+                <polyline points="312,118 342,126 352,114" />
+                <polyline points="262,82 250,104" />
+              </g>
+            )}
+            {crack >= 1 && split > 0 && (
+              <g fill="#c42a22" stroke="#4a1c14" strokeWidth={1.5}>
+                <polygon points="336,22 350,18 344,32" /><polygon points="214,128 226,122 224,138" /><polygon points="348,140 362,146 350,152" /><polygon points="228,40 238,34 240,46" />
+              </g>
+            )}
+          </>
+        )}
+      </svg>
+    </div>
+  );
+};
 
 export const TitleStrip = ({text = 'ทำไมแถวข้าง ๆ เร็วกว่าเสมอ', wipe = 1}: {text?: string; wipe?: number}) => (
   <div lang="th" style={{...font, left: 90, top: 300, width: 900, height: 190, clipPath: `inset(0 ${(1 - wipe) * 100}% 0 0)`}}>
