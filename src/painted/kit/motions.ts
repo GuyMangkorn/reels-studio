@@ -25,7 +25,7 @@ import {dress, type OutfitId} from './wardrobe';
 // - Offsets are metres from the shot's rest point `g` (x right, y up), scaled by person height, so a walk does not skate:
 //   the walk phase is the distance travelled over the person's step length (1.1 m per cycle for a 1.7 m adult) and the stride
 //   amplitude (`FigPose.stride`) follows the speed, so a walk-in settles into standing without a pop.
-// - Fields combine like this: `lean`, `rise`, `lift` and `nod` ADD to the base pose; `crouch`, `bend`, `walk`, `stride`, `sit`,
+// - Fields combine like this: `lean`, `rise`, `lift`, `headCock` and `nod` ADD to the base pose; `crouch`, `bend`, `walk`, `stride`, `sit`,
 //   `floorSit`, `kneel`, `squat`, `run` and `head` REPLACE. The arms of a motion (`arms`) replace the base pose's arms, hung
 //   from the body the motion makes; an arm the motion leaves alone keeps the base pose's arm, moved with the shoulder.
 // - `lean` is toward the SCREEN RIGHT in every view, profile too (the rig's convention): a lean forward in a profile is `dir * lean`
@@ -47,6 +47,8 @@ export type MotionBody = {
   rise?: number;
   lift?: number;
   nod?: Pt;
+  /** Head cock, degrees toward screen right (`FigPose.headCock`); added to the base pose's. */
+  headCock?: number;
   /** Replace the base pose's value. */
   crouch?: number;
   bend?: number;
@@ -376,7 +378,7 @@ export type Layered = {
 };
 
 const asFace = (f: ExpressionId | FaceState): FaceState => (typeof f === 'string' ? EXPRESSIONS[f] : f);
-const ADD = ['lean', 'rise', 'lift'] as const;
+const ADD = ['lean', 'rise', 'lift', 'headCock'] as const;
 const SET = ['crouch', 'bend', 'walk', 'stride', 'sit', 'floorSit', 'kneel', 'squat', 'run', 'head'] as const;
 
 /**
@@ -400,7 +402,7 @@ export const layerMotion = (a: LayerArgs): Layered => {
   // The motion's body fields.
   const body: Record<string, unknown> = {...src};
   const mb = frame.body ?? {};
-  for (const f of ADD) if (mb[f] !== undefined) body[f] = ((src[f] as number | undefined) ?? 0) + mb[f]!;
+  for (const f of ADD) if (mb[f] !== undefined) body[f] = (((src as Partial<FigPose>)[f] as number | undefined) ?? 0) + mb[f]!;
   for (const f of SET) if (mb[f] !== undefined) body[f] = mb[f];
   if (mb.nod) body.nod = [(src.nod?.[0] ?? 0) + mb.nod[0], (src.nod?.[1] ?? 0) + mb.nod[1]] as Pt;
   const pose = body as PoseFigure & Partial<FigPose>;

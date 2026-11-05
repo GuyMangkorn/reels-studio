@@ -1,0 +1,138 @@
+{
+  "public/audio/bed/bed_dark-drone-sub_01.wav": {
+    "store": "library/sound/ambience/bed/bed_dark-drone-sub_01.wav",
+    "sha256": "c20f82a3f9ece1e12890b8017689d06822563777404eec4b1153b5756a19ad24"
+  },
+  "public/audio/city/city_distant-fire-crackle_01.wav": {
+    "store": "library/sound/ambience/city/city_distant-fire-crackle_01.wav",
+    "sha256": "0e265f54454bada1ce6a229d4c44821323d105456441d6a1b33ee2842623143f"
+  },
+  "public/audio/nature/nature_wind-eerie-street_01.wav": {
+    "store": "library/sound/ambience/nature/nature_wind-eerie-street_01.wav",
+    "sha256": "0e6f294efa6147d3b79652e85471ea632e3bc3b7dd974e44d1e9fd3f99e7995f"
+  },
+  "public/audio/room/room_dark-empty-building_01.wav": {
+    "store": "library/sound/ambience/room/room_dark-empty-building_01.wav",
+    "sha256": "182e07d714ac291dfc72cb1789d4cf1df3b287733ab5c0af1715441587ead4c2"
+  },
+  "public/audio/room/room_shop-fridge-hum_01.wav": {
+    "store": "library/sound/ambience/room/room_shop-fridge-hum_01.wav",
+    "sha256": "d4ef096df21c9db1a22ee6240a50ec92e0921170a3305db1ce9fa7e0a5acf1c9"
+  },
+  "public/sfx/creature/creature_neck-creak-wet_01.wav": {
+    "store": "library/sound/sfx/creature/creature_neck-creak-wet_01.wav",
+    "sha256": "5373169de988588faff466b2b3d803dfd685e8443f454bf6d1a9dd6cad31715d"
+  },
+  "public/sfx/electric/electric_light-flicker-buzz_01.wav": {
+    "store": "library/sound/sfx/electric/electric_light-flicker-buzz_01.wav",
+    "sha256": "f123f9a58b103d3c5bbf02800e027a00dd22ce4105a1d098229aa3e4a977982c"
+  },
+  "public/sfx/foley/foley_bag-drop-tile_01.wav": {
+    "store": "library/sound/sfx/foley/foley_bag-drop-tile_01.wav",
+    "sha256": "4a97c8e943dff3a45c87e75e76187dc2aea962fb629b66f2e73c47a3557c8fb7"
+  },
+  "public/sfx/foley/foley_cabinet-scrape-thud_01.wav": {
+    "store": "library/sound/sfx/foley/foley_cabinet-scrape-thud_01.wav",
+    "sha256": "4a47070b6d9a5f4ba25a6b7b9f7fbabf8a6e7aa6734e1143a45ba827c7377068"
+  },
+  "public/sfx/foley/foley_can-setdown-laminate_01.wav": {
+    "store": "library/sound/sfx/foley/foley_can-setdown-laminate_01.wav",
+    "sha256": "1b64475a0a412765f000215c291ffbafad03a48eb577b0cda21ad0faa093ed5b"
+  },
+  "public/sfx/foley/foley_cistern-lid-tap_01.wav": {
+    "store": "library/sound/sfx/foley/foley_cistern-lid-tap_01.wav",
+    "sha256": "b7ab9e6411ace46f7c780b9fa1cd2f79cd8d404fd594d49cbecf87180d4141b2"
+  },
+  "public/sfx/foley/foley_deadbolt-clack_01.wav": {
+    "store": "library/sound/sfx/foley/foley_deadbolt-clack_01.wav",
+    "sha256": "2a8ae79b94b90d4ffbf0dd65fdd4cb582676d2d873d791ed97048cd08401cab7"
+  },
+  "public/sfx/foley/foley_door-latch-hinge_01.wav": {
+    "store": "library/sound/sfx/foley/foley_door-latch-hinge_01.wav",
+    "sha256": "aafd88aab9d5bcf2d4577b1498bdab30de36e3afb6f0de444a230a82d6d12d3d"
+  },
+  "public/sfx/foley/foley_door-pound-wood_01.wav": {
+    "store": "library/sound/sfx/foley/foley_door-pound-wood_01.wav",
+    "sha256": "5e59fea5a15978773c2e13906b11ed8ba4d40b5978897759173f78de93b4c3d8"
+  },
+  "public/sfx/foley/foley_fist-blow-door_01.wav": {
+    "store": "library/sound/sfx/foley/foley_fist-blow-door_01.wav",
+    "sha256": "c10e007a284995ecff26335f6de1d46a15a56de26e617531e8d2f195bace9548"
+  },
+  "public/sfx/foley/foley_footsteps-run-slam_01.wav": {
+    "store": "library/sound/sfx/foley/foley_footsteps-run-slam_01.wav",
+    "sha256": "ca6299ae66c306e4c406f61ac68eedf208f9a6b460dbadef59aabd5106328ffc"
+  },
+  "public/sfx/foley/foley_fridge-seal-pop_01.wav": {
+    "store": "library/sound/sfx/foley/foley_fridge-seal-pop_01.wav",
+    "sha256": "5988ee72efc791dabd7a3d50026fdfdfca5adaccbdfafcf8d4290ee5b8365e67"
+  },
+  "public/sfx/foley/foley_fridge-seal-thump_01.wav": {
+    "store": "library/sound/sfx/foley/foley_fridge-seal-thump_01.wav",
+    "sha256": "86093c02a44a90930a4f93739dc6d1ade8e675c88e580eb8750f69dad311cd08"
+  },
+  "public/sfx/foley/foley_lid-snaps-three_01.wav": {
+    "store": "library/sound/sfx/foley/foley_lid-snaps-three_01.wav",
+    "sha256": "38cded2ce2e9468dc69f6070a297bd208d5ac213d38774802d70f226e485ad39"
+  },
+  "public/sfx/foley/foley_packaging-rustle_01.wav": {
+    "store": "library/sound/sfx/foley/foley_packaging-rustle_01.wav",
+    "sha256": "b8c203046530f1e0b94976a2f2d6880a60f794972f333426bd0bf4bd59496bb7"
+  },
+  "public/sfx/hum/hum_low-travelling-flat_01.wav": {
+    "store": "library/sound/sfx/hum/hum_low-travelling-flat_01.wav",
+    "sha256": "a1b2bb1d8aafb2324ca30d63c5fc42ddb2289bc25062511ed0df2fdf1a29fca0"
+  },
+  "public/sfx/impact/impact_door-slam-body_01.wav": {
+    "store": "library/sound/sfx/impact/impact_door-slam-body_01.wav",
+    "sha256": "ac4b988372acaacf8da9c86a2d05377a73958071a3c5ed49722abfed85372b02"
+  },
+  "public/sfx/impact/impact_knuckle-rap_01.wav": {
+    "store": "library/sound/sfx/impact/impact_knuckle-rap_01.wav",
+    "sha256": "7c31f64c65f823f2b97491f9a72987a1c797e58d15f796a46a96734811ab786c"
+  },
+  "public/sfx/impact/impact_power-cut-whoomp_01.wav": {
+    "store": "library/sound/sfx/impact/impact_power-cut-whoomp_01.wav",
+    "sha256": "8dae474e2e72c03fc13afa6f9581b938fcb40b1651a7239831d17649563d14eb"
+  },
+  "public/sfx/impact/impact_sub-hit-short_01.wav": {
+    "store": "library/sound/sfx/impact/impact_sub-hit-short_01.wav",
+    "sha256": "d250ecf6bc280a93b9b781d3bc26677bd054fd27bcc9dc1956c3253e3b4adec8"
+  },
+  "public/sfx/mechanical/mechanical_canister-handling_01.wav": {
+    "store": "library/sound/sfx/mechanical/mechanical_canister-handling_01.wav",
+    "sha256": "f5bd7401431531959cf75e3f1b1643fe5fde4d084e033387addd601267d863f1"
+  },
+  "public/sfx/reveal/reveal_glass-shimmer-soft_01.wav": {
+    "store": "library/sound/sfx/reveal/reveal_glass-shimmer-soft_01.wav",
+    "sha256": "89ff0fa14a783ff3b312762d7a00d391edf5df4f49cd01389238cbc9367901c7"
+  },
+  "public/sfx/reveal/reveal_riser-tension_01.wav": {
+    "store": "library/sound/sfx/reveal/reveal_riser-tension_01.wav",
+    "sha256": "571acff153c2e6694fe4ab965b5c5389808ca9cfc51a3452660431b569bba300"
+  },
+  "public/sfx/stinger/stinger_low-muted-hit_01.wav": {
+    "store": "library/sound/sfx/stinger/stinger_low-muted-hit_01.wav",
+    "sha256": "47d98153c9092e3de68697db7369b266cad3c1ab0a6d37af71a6bad601b22cc0"
+  },
+  "public/sfx/tension/tension_clock-pulse_01.wav": {
+    "store": "library/sound/sfx/tension/tension_clock-pulse_01.wav",
+    "sha256": "6a460e04255cdfa4979fa45e01fedcd62c75b1816d4aa37bc4a80acb916036c0"
+  },
+  "public/sfx/tension/tension_heartbeat-slow_01.wav": {
+    "store": "library/sound/sfx/tension/tension_heartbeat-slow_01.wav",
+    "sha256": "dad502623f206eab84c180797075271248642712255d081ddeda8e531435513a"
+  },
+  "public/sfx/ui/ui_click-tick_01.wav": {
+    "store": "library/sound/sfx/ui/ui_click-tick_01.wav",
+    "sha256": "edfafbe6bfb91e1c01aa9b3e13ca051dcf257406ae63d3ac54178aaf3991babb"
+  },
+  "public/sfx/water/water_bucket-pour-gurgle_01.wav": {
+    "store": "library/sound/sfx/water/water_bucket-pour-gurgle_01.wav",
+    "sha256": "494c3f0a6217cf5003c2137e6dfad4790bb7f9de2a9bc311112ca14833ef2ba4"
+  },
+  "public/sfx/water/water_tap-fill-containers_01.wav": {
+    "store": "library/sound/sfx/water/water_tap-fill-containers_01.wav",
+    "sha256": "0c5d866509389d53e1245311314e582f4b03f9fa60c424ea77f47c32a954f03f"
+  }
+}

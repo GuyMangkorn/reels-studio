@@ -16,7 +16,8 @@ import {mixColor, type Painter, type Pt} from './painter';
 //   cut seen from behind, hood down (bunch on the upper back) and hood up (`FigPose.hoodUp`), hats (cap, helmet, nurse), pack,
 //   belt, skirt, overcoat, `light`, `silhouette`. No face is drawn; `face`, `head` and holds are ignored.
 // - Not supported (cut to front or profile for these): crouch, bend, sit, floorSit, kneel, squat, run, lie, props in hand.
-// - The head is a decal on a round skull, so a "3/4 back" does not exist: the kit has front, left, right and back only.
+// - No three-quarter back (user, 4 Nov 2026: the back-left/back-right views barely read, the hair covers the turn). `FigPose.quarter` is
+//   a front-view field; this view ignores it and draws the plain back. Depth from behind comes from camera moves in the set (`ycam.ts`).
 
 const mirrorX = (g: Pt, q: Pt): Pt => [2 * g[0] - q[0], q[1]];
 
@@ -81,13 +82,20 @@ export const drawFigureBack = (p: Painter, def: CastDef, g: Pt, unit: number, po
     const lift = pose.walk === undefined ? 0 : wv(s);
     const hip: Pt = [s * 0.0725 * sc, hip0], ankle: Pt = [s * 0.085 * sc, ankleV + lift], knee: Pt = [s * 0.08 * sc, (hip0 + ankleV) / 2 + lift / 2];
     const pc = mixColor(o.pants, '#000000', s > 0 ? 0.05 : 0);
-    fill(pc, Sq(limb(hip, knee, 0.11 * sc, 0.095 * sc)));
+    // The thigh starts where the torso hem ends (hip0 - 0.07), not at hip0: the 7 cm above lay under the translucent torso and showed through it
+    // as two dark blocks across the hem (4 Nov 2026, bug: YOU2 back). The visible edges are the same lines; the ids and the lower part are unchanged.
+    const tt = 0.07 / Math.max(0.1, hip[1] - knee[1]), top: Pt = [hip[0] + (knee[0] - hip[0]) * tt, hip[1] + (knee[1] - hip[1]) * tt];
+    fill(pc, Sq(limb(top, knee, (0.11 + (0.095 - 0.11) * tt) * sc, 0.095 * sc)));
     fill(pc, Sq(limb(knee, ankle, 0.095 * sc, 0.08 * sc)));
     const sc2 = o.boots ? mixColor(o.shoes, '#000000', 0.1) : o.shoes;
     if (o.boots) fill(sc2, Sq(limb([ankle[0], ankle[1] + 0.1], ankle, 0.085 * sc, 0.08 * sc)));
     fill(o.shoes, Sq(ell(ankle[0] + s * 0.01, ankle[1] - 0.012, 0.062 * sc, 0.032 * sc, 14).map((q) => q as Pt)));
   }
-  fill(o.pants, Sq([[-hw - 0.0085, hip0 + 0.03], [hw + 0.0085, hip0 + 0.03], [hw, crotch0], [-hw, crotch0]]), false);
+  // The pelvis block (hip0 + 0.03 down to the crotch) lies wholly under the torso (which reaches hip0 - 0.07): painted, it showed the trouser
+  // colour through the translucent hoodie as a dark band across the hem (4 Nov 2026, bug: YOU2 back; the thigh tops below were the other half).
+  // The part number is kept so every later mark keeps its seed.
+  part++;
+  void crotch0;
 
   // ------------------------------------------------------------------ arms
   // Right arm = screen right. Arms that stay below the shoulder line go under the torso and hood; raised ones are painted last.
@@ -149,7 +157,12 @@ export const drawFigureBack = (p: Painter, def: CastDef, g: Pt, unit: number, po
   // the turn, the whole head lifts with the tilt (hood top rises, the nape gap opens); the neck and shoulders stay put.
   const yaw = pose.headYaw ?? 0, tilt = pose.headTilt ?? 0, cy = Math.cos(yaw), lift = tilt * 0.62;
   const neck = ([u, v]: Pt): Pt => [hc[0] + u * k, hc[1] + v * k];
-  const head = ([u, v]: Pt): Pt => [hc[0] + (u * cy + 0.3 * Math.sin(yaw)) * k, hc[1] + (v - lift) * k];
+  // Head cock (FigPose.headCock, degrees toward screen right): the head points rotate about the neck top (0.051 m above the chin on the
+  // centre line, as the front view); neck(), the cowl's lower edge and the shoulders stay. Absent or 0 = the unrotated mapping.
+  const cock = pose.headCock ? (pose.headCock * Math.PI) / 180 : 0;
+  const pivot: Pt = [hc[0], hc[1] + (CHIN - 0.051 / K) * k];
+  const rotHead = ([x, y]: Pt): Pt => cock === 0 ? [x, y] : [pivot[0] + (x - pivot[0]) * Math.cos(cock) - (y - pivot[1]) * Math.sin(cock), pivot[1] + (x - pivot[0]) * Math.sin(cock) + (y - pivot[1]) * Math.cos(cock)];
+  const head = ([u, v]: Pt): Pt => rotHead([hc[0] + (u * cy + 0.3 * Math.sin(yaw)) * k, hc[1] + (v - lift) * k]);
   const H2 = (pts: Pt[]) => pts.map(head);
   // softNeck (EDU-EP01 W5.4): the caller paints its own nape and collar, so the rig's neck block (its lower edge showed as a bar on the shirt) is skipped
   if (!pose.softNeck) fill(pose.hoodUp && pose.cowl !== 'drape' ? (hoodColorOf(o) ?? mixColor(o.shirt, INK, 0.2)) : o.coat ?? skinShade, pts4(neck, [[-0.5, 0.5], [0.5, 0.5], [0.46, 1.6], [-0.46, 1.6]]), true, 4);
@@ -245,6 +258,8 @@ export const drawFigureBack = (p: Painter, def: CastDef, g: Pt, unit: number, po
   // Headwear from behind: the same hat parts as the front, taken without face-side details (dome over the crown).
   if (G?.hat) {
     for (const {tone, pts} of hatFront(G.hat.kind)) {
+      // A cap seen from behind shows the crown and the back of the band: no badge, no visor shade (4 Nov 2026, bug: the front badge showed from behind).
+      if (G.hat.kind === 'cap' && (tone === 'white' || tone === 'dark')) continue;
       const c = tone === 'main' ? G.hat.color : tone === 'band' ? G.hat.band ?? mixColor(G.hat.color, INK, 0.55) : tone === 'dark' ? mixColor(G.hat.color, INK, 0.6) : '#e8dcb0';
       fill(c, H2(pts), true, 6);
     }
@@ -254,9 +269,9 @@ export const drawFigureBack = (p: Painter, def: CastDef, g: Pt, unit: number, po
   if (rG.raised) rHand = paintArm(1, rG);
   if (lG.raised) lHand = paintArm(-1, lG);
 
-  const headTop = hc[1] - (hoodUp || cut === 'hood' ? 1.46 : 1.17 + 0.29 * hoodR) * k;
+  const headTop = rotHead([hc[0], hc[1] - (hoodUp || cut === 'hood' ? 1.46 : 1.17 + 0.29 * hoodR) * k])[1];
   return {
-    head: hc, headTop, chin: hc[1] + CHIN * k, feet: g, rHand, lHand, rShoulder: rG.Sh, lShoulder: lG.Sh,
+    head: rotHead(hc), headTop, chin: rotHead([hc[0], hc[1] + CHIN * k])[1], feet: g, rHand, lHand, rShoulder: rG.Sh, lShoulder: lG.Sh,
     rUpper: [(rG.Sh[0] + rG.E[0]) / 2, (rG.Sh[1] + rG.E[1]) / 2], lUpper: [(lG.Sh[0] + lG.E[0]) / 2, (lG.Sh[1] + lG.E[1]) / 2],
     top: headTop, bottom: g[1],
   };
