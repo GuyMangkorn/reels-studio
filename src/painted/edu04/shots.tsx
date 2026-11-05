@@ -9,12 +9,13 @@ import type {V3} from '../kit/space';
 import {Grain} from '../kit/screen';
 import {camPoint, camUnit, mixYCam, orbitYCam, type YCam} from '../kit/ycam';
 import {span} from '../sea';
-import {b01Cast, paintCheckout, type Light, type Who} from './checkout';
+import {b01Cast, b06Cast, CONTENT, paintCheckout, type Light, type Who} from './checkout';
 import {PAPER} from './look';
 import {paintPlan, PAPER_PLAN, planPush, type PlanState} from './plan';
 import {FractionLockup, ModelEyebrow, YouTag} from './plan-labels';
 import {glaze} from '../kit/draw';
-import {MAN} from './cast';
+import {CSH2, MAN} from './cast';
+import {paintBasket} from './checkout';
 import {paintHotBubble, paintPaleBubble} from './bubbles';
 import {paintWho} from './checkout';
 import {paintCoinPurse, paintCoins, paintPineapple, paintTally, StampText, TitleStrip} from './props';
@@ -43,7 +44,9 @@ export const G2: readonly Edu4ShotId[] = ['S01-B03-SH02', 'S01-B03-SH03', 'S01-B
 export const isPlan = (id: Edu4ShotId) => G2.includes(id);
 /** G3: store B04 (neck craned, eyes track lane 3, tallies, his own overtake) and B05 (memory bubbles, stamp + crack). */
 export const G3: readonly Edu4ShotId[] = ['S01-B04-SH01', 'S01-B04-SH02', 'S01-B04-SH03', 'S01-B04-SH04', 'S01-B05-SH01', 'S01-B05-SH02'];
-export const isBuilt = (id: Edu4ShotId) => G1.includes(id) || G2.includes(id) || G3.includes(id);
+/** G4: the refit B06 (LF04 v2 shared queue, calm, walk to till 2). */
+export const G4: readonly Edu4ShotId[] = ['S01-B06-SH01', 'S01-B06-SH02', 'S01-B06-SH03'];
+export const isBuilt = (id: Edu4ShotId) => G1.includes(id) || G2.includes(id) || G3.includes(id) || G4.includes(id);
 
 const FPS = 30;
 const DEG = Math.PI / 180;
@@ -315,11 +318,69 @@ export const stampOf = (id: Edu4ShotId, f: number): StampLayer | null => {
   return {x: 540, y: 1038, scale: 0.9 * mix(1.3, 1.0, easeOut(k)), rot: -6, op: Math.min(1, (f - 19) / 2), crack: prog(f, 91, 97), split: f >= 97 ? 14 : 0};
 };
 
-type Spec = {post?: (p: Painter) => void; veil?: boolean; cam: YCam; who: Who[]; lights: Partial<Record<1 | 2 | 3, Light>>; items?: {at: V3; draw: (p: Painter, c: YCam) => void}[]; t?: number};
+// ---- G4 refit B06 (LF04 v2): one serpentine feeding three tills. MAN eyes shut and calm at the queue head; SH03 walks to till 2 (SD07, SD08).
+const T_HEAD: V3 = [0, 1.55, -3.0];
+const b06sh01Cam = (f: number): YCam => { const e = inOut(f / 84); return orbit(T_HEAD, mix(4, 2, e), mix(3.5, 3.2, e), 2.0, 1050, 640, -3); };
+const b06sh02Cam = (f: number): YCam => orbit(T_HEAD, mix(-12, -18, f / 178), mix(1.4, 1.25, f / 178), 1.55, 1100, 720);
+const TILL2: V3 = [0.2, 1.4, -0.5];
+const b06sh03Cam = (f: number): YCam => { const e = 1 - Math.exp((-4.6 * f) / 120), l = Math.min(1, e / 0.99); return orbit(TILL2, mix(-25, -18, l), mix(3.9, 3.6, l), 1.8, 860, 760, -5); };
+Object.assign(CAMS, {'S01-B06-SH01': b06sh01Cam, 'S01-B06-SH02': b06sh02Cam, 'S01-B06-SH03': b06sh03Cam});
+const GRADE_B06 = `linear-gradient(rgba(255,176,80,0.06), rgba(255,176,80,0.06)), ${GRADE}`; // warmer (-5 % blue)
+
+/** `b06Cast` with the queue one 0.45 m step on (flow along each row: row -3.05 and -5.2 toward +x, row -4.1 toward -x) and per-key patches. */
+const b06With = (shuffle: number, patch: Record<string, Patch>): Who[] => {
+  const dx: Record<string, number> = {long: 1, pixie: 1, girl: -1, shaved: -1, curly: -1, elder: -1, buzz: 1, welder: 1};
+  return b06Cast().flatMap((w) => {
+    const q = patch[w.key];
+    if (q === null) return [];
+    const d = dx[w.key];
+    const moved = d && shuffle > 0 ? {at: [w.at[0] + d * 0.45 * shuffle, 0, w.at[2]] as V3, ...(shuffle > 0 && shuffle < 1 ? {fig: {walk: (0.45 * shuffle) / 1.15, stride: 0.6}} : {})} : {};
+    return [{...w, ...moved, ...(q ?? {})}];
+  });
+};
+const b06sh01 = (f: number) => ({
+  cam: b06sh01Cam(f), lights: {2: 'green'} as Partial<Record<1 | 2 | 3, Light>>, shared: true, grade: GRADE_B06,
+  who: b06With(inOut(prog(f, 40, 52)), {man: {headCock: 0}}),
+});
+const b06sh02 = (f: number) => {
+  const eyes = (f < 112 ? 'shut' : f < 116 ? 'half' : 'dot') as 'shut' | 'half' | 'dot', face = {...CONTENT, eyes, mouth: 'smile' as const, open: 0, brow: f >= 116 ? 'up' as const : 'flat' as const};
+  const walkU = prog(f, 170, 179), z = mix(-3.05, -2.8, inOut(walkU));
+  return {
+    cam: b06sh02Cam(f), lights: {2: 'green'} as Partial<Record<1 | 2 | 3, Light>>, shared: true, grade: GRADE_B06,
+    who: b06With(1, {man: {faceState: face, basket: f >= 162, pose: 'P44', mix: {to: 'P01' as const, u: inOut(prog(f, 160, 170))}, at: [0, 0, z] as V3,
+      fig: {rise: f >= 118 ? mix(0.02, -0.012, inOut(prog(f, 118, 140))) : 0.01, ...(walkU > 0 && walkU < 1 ? {walk: (z + 3.05) / 1.15, stride: 0.7} : {})}}}),
+  };
+};
+const BELT_END: V3 = [0.62, 0.85, -0.65];
+const b06sh03 = (f: number) => {
+  const cam = b06sh03Cam(f), walkZ = mix(-1.6, -0.4, prog(f, 0, 60)), w = inOut(prog(f, 60, 72)) * (1 - inOut(prog(f, 74, 82)));
+  const turn = inOut(prog(f, 60, 68)) * (1 - inOut(prog(f, 80, 92)));
+  const B = camPoint(cam, BELT_END) ?? [0, 0] as [number, number], u = camUnit(cam, [0, 0, walkZ]);
+  const rest = (dx: number) => camPoint(cam, [dx, 0.85, walkZ]) ?? [0, 0] as [number, number];
+  const handArm = (dx: number, off: number) => {
+    const r = rest(dx), tgt: [number, number] = [B[0] + off * u, B[1] - 0.04 * u];
+    return {to: [mix(r[0], tgt[0], w), mix(r[1], tgt[1], w)] as [number, number]};
+  };
+  const down = f >= 74;
+  const fig = {...(f < 60 ? {walk: (walkZ + 1.6) / 1.15, stride: 1} : {}), ...(w > 0.01 ? {rArm: handArm(-0.22, -0.07), lArm: handArm(0.22, 0.07)} : {})};
+  const basketItem = {at: BELT_END, draw: (p: Painter, c: YCam) => { const b = camPoint(c, BELT_END), uu = camUnit(c, BELT_END); if (b) paintBasket(p, [b[0], b[1] - 0.3 * uu], uu, 5900); }};
+  const man: Partial<Who> = {at: [0, 0, walkZ] as V3, pose: 'P01', faceState: {...EXPRESSIONS.happy, mouth: 'smile' as const, open: 0, look: [0, 0] as [number, number]}, facing: [0.36 * turn, 1], basket: f < 74, fig};
+  const noodle = f >= 95 && f < 125 ? mix(0, 1, inOut(prog(f, 95, 110))) : 0;
+  return {
+    cam, lights: {2: 'green'} as Partial<Record<1 | 2 | 3, Light>>, shared: true, grade: GRADE_B06, items: down ? [basketItem] : [],
+    who: b06With(1, {
+      man, long: {at: [0, 0, -2.0] as V3, view: 'front' as const}, pixie: {at: [0, 0, -2.95] as V3, view: 'front' as const},
+      csh2: {def: CSH2, at: [1.65, 0, -0.2] as V3, view: 'left' as const, face: f >= 70 ? 'happy' as const : 'neutral' as const, pose: 'P25' as const, fig: noodle ? {lean: 0} : {}},
+    }),
+  };
+};
+
+type Spec = {shared?: boolean; grade?: string; post?: (p: Painter) => void; veil?: boolean; cam: YCam; who: Who[]; lights: Partial<Record<1 | 2 | 3, Light>>; items?: {at: V3; draw: (p: Painter, c: YCam) => void}[]; t?: number};
 const SPECS: Record<string, (f: number) => Spec> = {
   'S01-B01-SH01': b01sh01, 'S01-B01-SH02': b01sh02, 'S01-B02-SH01': b02sh01, 'S01-B02-SH02': b02sh02, 'S01-B02-SH03': b02sh03, 'S01-B02-SH04': b02sh04,
   'S01-B03-SH01': (f) => ({cam: b03sh01Cam(f), who: b02sh04Who(41), lights: {1: 'green'}, t: 41 / FPS}),
   'S01-B04-SH01': b04sh01, 'S01-B04-SH02': b04sh02, 'S01-B04-SH03': b04sh03, 'S01-B04-SH04': b04sh04, 'S01-B05-SH01': b05sh01, 'S01-B05-SH02': b05sh02,
+  'S01-B06-SH01': b06sh01, 'S01-B06-SH02': b06sh02, 'S01-B06-SH03': b06sh03,
 };
 
 // ---- G2 `PLAN` shots (S01-B03-SH02..SH05): fixed plane in plan px (130 px/m), picture push scale 1.00 -> 1.02 -> 1.05 about (540, 560).
@@ -393,7 +454,7 @@ export const plateOf = (id: Edu4ShotId, f: number): Edu4Plate => {
     };
   }
   return {
-    cam: STILL_CAMERA, ycam: s.cam, paper: PAPER, grade: GRADE, built: true, gradeOpacity: 1, stamp: stampOf(id, fr),
+    cam: STILL_CAMERA, ycam: s.cam, paper: PAPER, grade: s.grade ?? GRADE, built: true, gradeOpacity: 1, stamp: stampOf(id, fr),
     paint: (p) => {
       if (s.veil) {
         // the memory pulls focus (LF03): the set under a cream veil, then MAN, then the bubbles

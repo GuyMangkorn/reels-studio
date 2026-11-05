@@ -295,7 +295,7 @@ export const b01Cast = (man: Partial<Who> = {}): Who[] => [
 ];
 
 /** The refit (B06 L17): MAN at the queue head, eyes shut and a small smile (`new: content`), 8 others behind him. */
-export const CONTENT: FaceState = {brow: 'flat', eyes: 'shut', look: [0, 0], mouth: 'smile'};
+export const CONTENT: FaceState = {brow: 'flat', eyes: 'shut', look: [0, 0], mouth: 'smile', open: 0}; // open 0 = closed-lip small smile
 export const b06Cast = (): Who[] => [
   {key: 'csh1', def: CSH1, at: CASHIER(1), view: 'left', face: 'neutral'},
   {key: 'csh2', def: CSH2, at: CASHIER(2), view: 'left', face: 'happy'},
