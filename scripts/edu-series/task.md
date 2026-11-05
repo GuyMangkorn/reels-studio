@@ -78,3 +78,22 @@ Record: [delivery.md](delivery.md) · Updated: 2026-11-05, Film
     - [x] LF01 v6 + N6 v6 to the viewer check r5 list (store `.../ep02/v6/`, [build notes](build-notes.md#ep02-w52-lf01-lf03-v6-2026-11-05-boss))
   - [ ] W5.3 Draft passed (0/23 shots): Editor assembly done 2026-11-05 (blockout timeline, narration N1-N7, captions + edge shade, tag, sound stem, 23 Draft clips; [build notes](build-notes.md#ep02-w53-draft)); viewer check Draft r1 16 pass / 7 change; Boss fix round 1 plates done 2026-11-05 for 6 of 7 ([build notes](build-notes.md#ep02-w53-fix-round-1-boss)), B05-SH03 with Film SS-R3; awaiting Editor clip re-render, fresh viewer check and user verdicts
 
+## EDU-EP03-SHORT
+
+**Now:** W0 done (user picked C5 "ลูกบอลสีแดงที่หมามองไม่เห็น", 2026-11-05). W1.1 Boat research landed ([ep03/research.md](ep03/research.md), re-run 2026-11-05; beat 2 "brownish-yellow", "แทบกลืนไปกับหญ้า", "mainly by nose" and the blue payoff need rewording before writing). W1.2 script R1 written ([ep03/script.md](ep03/script.md), est. 46–53 s, not measured). W1.3 Boat fact-check: revision-required (minor) ([ep03/fact-check.md](ep03/fact-check.md)). R1.1 applied (L06 hedge, B06 tag; L03 kept per user) and rechecked by Boat (pass). User approved R1.1 (2026-11-05). W2.1 Film brief R1 written ([ep03/brief.md](ep03/brief.md), `ready-for-mark`, 15 shots est. 50.6 s). User decided Q1: male owner; Q2: dog view through B04 (2026-11-05). W2.2 storyboard rows SS-R1 written ([ep03/review-rows.json](ep03/review-rows.json), 15 shots, est. 50.6 s, untimed). Brief R2 needed: B07-SH01 return to colour moved to the last 10 frames of B06-SH02 (tag rule). Review page built locally (`out/review-pages/EDU-EP03-SHORT/`, no look frames yet). W3 look frames v1 painted: LF01 and LF02 (store `projects/EDU/previews/look-frames/ep03/v1/`), spike S1 pass (ΔE drop 81.3 %, red ball C* 34.1, blue ball ΔE 78.5). Deviations to confirm with Film: LF01 camera mirrored, V-BALL yaw 44°, ball-zone vs caption-band conflict, lamp moved. Open: R2 skin and face go grey-olive in dog view (matters for B04). **v2 (2026-11-05):** dog outline and far-leg shade lightened by an EP03-only override (`DOG_EP03` in `src/painted/edu03/park.ts`, opt-in `inkMix`/`farMix` on `AnimalDef`; shared defaults unchanged); S1 still passes; store `projects/EDU/previews/look-frames/ep03/v2/`. **v3 (2026-11-05):** sniff-pose neck redrawn as an arched tube (opt-in `sniffNeck` on `AnimalDef`, set only in `DOG_EP03`); S1 passes; LF02 store `.../ep03/v3/`. User verdict: "ผ่าน" on the v3 neck (2026-11-05). LF01 v2 has no explicit verdict yet. **Brief R2 written** ([ep03/brief.md](ep03/brief.md) section R2; B07 correction, ball above band in all V-BALL shots, camera decisions kept). **VD12 chosen: option A** (user "A แนะนำ", 2026-11-05). LF03 v4 painted (B04 push r 1.5, warm key, rim, owner kneeling): face in dog view L* 80.8 / C* 26.5 / ΔE 12.7 vs lawn (before 71.3 / 20.3 / 9.0); S1 unchanged and passing; LF01/LF02 normal view unchanged; store `projects/EDU/previews/look-frames/ep03/v4/`. User accepted the B04-only owner skin `#f5c27a` (sunlit cast skin, not the colour map; 2026-11-05, "ยอมรับ"). Open for user: LF03 verdict; LF01 v2 verdict. **Next:** user verdict on LF01/LF02, Film confirms deviations, brief R2 (B07-SH01 return), then the untimed storyboard page. W1.4 measured read is deferred to the voice lock (W4), as EP02 did. **Captions (user, 2026-11-05: "ตาม ep02"):** EP03 captions use the EP02 caption shade (`EDU2_CAPTION_SHADE` in `src/painted/edu02/captions.ts`, text edge with stroke and halo, not a dark band), imported at W5 Draft; band 1176–1344, no captions in look frames.
+
+- [x] W0 Ideation (C5, user pick 2026-11-05; Short Thai, B_loop per concepts.md)
+- [ ] W1 Script lock
+  - [x] W1.1 Boat research ([ep03/research.md](ep03/research.md), 2026-11-05)
+  - [x] W1.2 Preaw script R1 ([ep03/script.md](ep03/script.md), 2026-11-05)
+  - [x] W1.3 Boat fact-check: first pass revision-required (minor) ([ep03/fact-check.md](ep03/fact-check.md)); R1.1 recheck pass for L06 and the B06 tag ([ep03/fact-check-r1.1.md](ep03/fact-check-r1.1.md), 2026-11-05; ready for user approval from the fact-check side)
+  - [ ] W1.4 Length check
+  - [x] W1.5 User approves the script (R1.1, 2026-11-05)
+- [ ] W2 Brief and storyboard
+- [ ] W3 Look frames and storyboard pass
+- [ ] W4 Voice lock
+- [ ] W5 Draft
+- [ ] W6 Final
+- [ ] W7 Pinned
+- [ ] W8 Deliver
+
