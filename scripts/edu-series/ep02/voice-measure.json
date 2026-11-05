@@ -1,0 +1,317 @@
+{
+ "deliverable": "EDU-EP02-SHORT",
+ "scriptRevision": "EDU-SCRIPT-R1.1",
+ "status": "audio-measured (pending user voice approval)",
+ "voice": "Gemini TTS Kore, style \"fast-paced, quick brisk delivery with short pauses between phrases, playful deadpan female narrator, dry and matter-of-fact, speaking quickly without dragging\", one continuous read, model speaks faster itself (no atempo, no pause shortening)",
+ "processing": "ellipses to commas (tts-text.txt); no atempo, no gap shortening; gemini-tts.py say loudnorm -16 LUFS, then per-line gain (17 slices, step at the gap centres, 40 ms smoothing) to -16 LUFS, alimiter limit 0.82; 48 kHz mono",
+ "file": "out/edu02/narration/narration-ep02.wav",
+ "store": "projects/EDU/narration/ep02/2026-11-05_ep02-narration-kore-fast.wav",
+ "fileDurationSec": 54.16,
+ "speechOnSec": 0.25,
+ "speechEndSec": 53.97,
+ "method": "ffmpeg silencedetect -40 dB / 0.12 s on the raw file, gaps assigned to lines in script order (30 gaps = 16 line boundaries + 12 in-line pauses + head/tail, all consistent); in-line anchors follow pauses, Whisper word times (+-0.2 s) for L07 'ที่ทำให้น้ำตาไหล' and L16, interpolated for L06 and L08 second anchor. Whisper large-v3-turbo (cross-check only) dropped L08-L10 and half of L11 on this read, so it is not used for timing",
+ "excluded": "L03 and other non-verbal sobs/stings (not generated); end hold ~1.0 s + fade 0.5-1.0 s",
+ "beats": {
+  "EDU-EP02-S01-B01": {
+   "onSec": 0.25,
+   "endSec": 3.78
+  },
+  "EDU-EP02-S01-B02": {
+   "onSec": 4.12,
+   "endSec": 8.5
+  },
+  "EDU-EP02-S01-B03": {
+   "onSec": 9.01,
+   "endSec": 18.85
+  },
+  "EDU-EP02-S01-B04": {
+   "onSec": 19.17,
+   "endSec": 26.67
+  },
+  "EDU-EP02-S01-B05": {
+   "onSec": 27.31,
+   "endSec": 37.55
+  },
+  "EDU-EP02-S01-B06": {
+   "onSec": 38.0,
+   "endSec": 47.63
+  },
+  "EDU-EP02-S01-B07": {
+   "onSec": 48.2,
+   "endSec": 53.97
+  }
+ },
+ "lines": [
+  {
+   "id": "EDU-EP02-S01-L01",
+   "line": "L01",
+   "beat": "EDU-EP02-S01-B01",
+   "onSec": 0.25,
+   "endSec": 1.83,
+   "anchors": [],
+   "lufsBefore": -14.9,
+   "gainDb": -1.1,
+   "lufsAfter": -16.0
+  },
+  {
+   "id": "EDU-EP02-S01-L02",
+   "line": "L02",
+   "beat": "EDU-EP02-S01-B01",
+   "onSec": 1.96,
+   "endSec": 3.78,
+   "anchors": [],
+   "lufsBefore": -17.4,
+   "gainDb": 1.4,
+   "lufsAfter": -16.4
+  },
+  {
+   "id": "EDU-EP02-S01-L04",
+   "line": "L04",
+   "beat": "EDU-EP02-S01-B02",
+   "onSec": 4.12,
+   "endSec": 7.4,
+   "anchors": [
+    {
+     "phrase": "แทบไม่มีอะไรเกิดขึ้น",
+     "onSec": 6.05
+    }
+   ],
+   "lufsBefore": -16.4,
+   "gainDb": 0.4,
+   "lufsAfter": -16.1
+  },
+  {
+   "id": "EDU-EP02-S01-L05",
+   "line": "L05",
+   "beat": "EDU-EP02-S01-B02",
+   "onSec": 7.57,
+   "endSec": 8.5,
+   "anchors": [],
+   "lufsBefore": -15.5,
+   "gainDb": -0.5,
+   "lufsAfter": -16.1
+  },
+  {
+   "id": "EDU-EP02-S01-L06",
+   "line": "L06",
+   "beat": "EDU-EP02-S01-B03",
+   "onSec": 9.01,
+   "endSec": 13.15,
+   "anchors": [
+    {
+     "phrase": "ซึ่งปกติแยกกันอยู่",
+     "onSec": 11.9,
+     "interpolated": true
+    }
+   ],
+   "lufsBefore": -16.1,
+   "gainDb": 0.1,
+   "lufsAfter": -16.0
+  },
+  {
+   "id": "EDU-EP02-S01-L07",
+   "line": "L07",
+   "beat": "EDU-EP02-S01-B03",
+   "onSec": 13.38,
+   "endSec": 18.85,
+   "anchors": [
+    {
+     "phrase": "แล้วเอนไซม์อีกตัว",
+     "onSec": 15.54
+    },
+    {
+     "phrase": "ที่ทำให้น้ำตาไหล",
+     "onSec": 17.66
+    }
+   ],
+   "lufsBefore": -16.4,
+   "gainDb": 0.4,
+   "lufsAfter": -16.1
+  },
+  {
+   "id": "EDU-EP02-S01-L08",
+   "line": "L08",
+   "beat": "EDU-EP02-S01-B04",
+   "onSec": 19.17,
+   "endSec": 23.92,
+   "anchors": [
+    {
+     "phrase": "ปลายประสาทที่กระจกตาจับได้",
+     "onSec": 20.86
+    },
+    {
+     "phrase": "ก็สั่งให้น้ำตาไหลออกมาล้าง",
+     "onSec": 22.4,
+     "interpolated": true
+    }
+   ],
+   "lufsBefore": -16.1,
+   "gainDb": 0.1,
+   "lufsAfter": -16.1
+  },
+  {
+   "id": "EDU-EP02-S01-L09",
+   "line": "L09",
+   "beat": "EDU-EP02-S01-B04",
+   "onSec": 24.3,
+   "endSec": 26.67,
+   "anchors": [
+    {
+     "phrase": "ตาแค่กำลังล้างตัวเอง",
+     "onSec": 25.4
+    }
+   ],
+   "lufsBefore": -14.8,
+   "gainDb": -1.2,
+   "lufsAfter": -16.0
+  },
+  {
+   "id": "EDU-EP02-S01-L10",
+   "line": "L10",
+   "beat": "EDU-EP02-S01-B05",
+   "onSec": 27.31,
+   "endSec": 28.63,
+   "anchors": [],
+   "lufsBefore": -13.4,
+   "gainDb": -2.6,
+   "lufsAfter": -16.0
+  },
+  {
+   "id": "EDU-EP02-S01-L11",
+   "line": "L11",
+   "beat": "EDU-EP02-S01-B05",
+   "onSec": 29.1,
+   "endSec": 32.08,
+   "anchors": [
+    {
+     "phrase": "แต่ที่โดนแก๊สคือตา",
+     "onSec": 30.54
+    }
+   ],
+   "lufsBefore": -14.8,
+   "gainDb": -1.2,
+   "lufsAfter": -16.0
+  },
+  {
+   "id": "EDU-EP02-S01-L12",
+   "line": "L12",
+   "beat": "EDU-EP02-S01-B05",
+   "onSec": 32.46,
+   "endSec": 35.19,
+   "anchors": [
+    {
+     "phrase": "ผลที่คนลองกันเอง",
+     "onSec": 33.36
+    }
+   ],
+   "lufsBefore": -16.2,
+   "gainDb": 0.2,
+   "lufsAfter": -16.1
+  },
+  {
+   "id": "EDU-EP02-S01-L13",
+   "line": "L13",
+   "beat": "EDU-EP02-S01-B05",
+   "onSec": 35.6,
+   "endSec": 37.55,
+   "anchors": [
+    {
+     "phrase": "หลักฐานก็ยังไม่ชัด",
+     "onSec": 36.39
+    }
+   ],
+   "lufsBefore": -15.7,
+   "gainDb": -0.3,
+   "lufsAfter": -16.0
+  },
+  {
+   "id": "EDU-EP02-S01-L14",
+   "line": "L14",
+   "beat": "EDU-EP02-S01-B06",
+   "onSec": 38.0,
+   "endSec": 41.41,
+   "anchors": [
+    {
+     "phrase": "คือแว่นว่ายน้ำ",
+     "onSec": 40.6
+    }
+   ],
+   "lufsBefore": -15.8,
+   "gainDb": -0.2,
+   "lufsAfter": -16.0
+  },
+  {
+   "id": "EDU-EP02-S01-L15",
+   "line": "L15",
+   "beat": "EDU-EP02-S01-B06",
+   "onSec": 41.71,
+   "endSec": 43.75,
+   "anchors": [
+    {
+     "phrase": "แต่แก๊สไปถึงตาไม่ค่อยได้",
+     "onSec": 42.41
+    }
+   ],
+   "lufsBefore": -15.6,
+   "gainDb": -0.4,
+   "lufsAfter": -15.9
+  },
+  {
+   "id": "EDU-EP02-S01-L16",
+   "line": "L16",
+   "beat": "EDU-EP02-S01-B06",
+   "onSec": 43.98,
+   "endSec": 47.63,
+   "anchors": [
+    {
+     "phrase": "กับการหั่นช้า ๆ",
+     "onSec": 44.9
+    },
+    {
+     "phrase": "ช่วยลดละอองที่กระเด็นออกมา",
+     "onSec": 46.1
+    }
+   ],
+   "lufsBefore": -16.1,
+   "gainDb": 0.1,
+   "lufsAfter": -16.0
+  },
+  {
+   "id": "EDU-EP02-S01-L17",
+   "line": "L17",
+   "beat": "EDU-EP02-S01-B07",
+   "onSec": 48.2,
+   "endSec": 49.78,
+   "anchors": [],
+   "lufsBefore": -14.7,
+   "gainDb": -1.3,
+   "lufsAfter": -16.0
+  },
+  {
+   "id": "EDU-EP02-S01-L18",
+   "line": "L18",
+   "beat": "EDU-EP02-S01-B07",
+   "onSec": 50.16,
+   "endSec": 53.97,
+   "anchors": [
+    {
+     "phrase": "ก็เหมือนสัญญาณกันขโมย",
+     "onSec": 51.03
+    },
+    {
+     "phrase": "ที่ดังเฉพาะตอนโดนบุก",
+     "onSec": 52.8
+    }
+   ],
+   "lufsBefore": -16.9,
+   "gainDb": 0.9,
+   "lufsAfter": -16.2
+  }
+ ],
+ "revision": "gemini-fast",
+ "estimatedVideoSec": "about 59.5 (speech end 53.97 + ~4 s sob/sting gaps + ~1.5 s hold/fade)",
+ "previous": "tempo 1.16: speech 0.20-54.07 s, store 2026-11-05_ep02-narration-kore-t1.16.wav; tempo 1.05: 59.32 s",
+ "rawStore": "projects/EDU/narration/ep02/2026-11-05_ep02-raw-kore-fast.wav (cache key 9dbf16b6f1921118 in $REELS_STORE/cache/tts)",
+ "integratedLufs": -16.3,
+ "peakDbfs": -1.7
+}

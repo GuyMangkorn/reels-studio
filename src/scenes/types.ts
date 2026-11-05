@@ -84,10 +84,13 @@ export type QuadText = {
  * `dissolveSec` paints it over the previous plate in the same canvas, opacity ramping 0 -> 1 from `atSec` (the
  * previous plate keeps running underneath, across a scene boundary too). `label` is the screen-space
  * reconstruction label (e.g. "ภาพจำลอง") shown on every frame this plate is visible, dissolves included.
+ * `labelAtSec` holds the label back until that many seconds into the cue (default 0, e.g. a tag that starts inside the
+ * cue's own dissolve); `labelTop` moves label slot 0 of this cue to that composition y in px (slot 1 stacks below;
+ * default the format's `LABEL_BOX` top in src/painted/Label.tsx), for a plate whose set crosses the default box.
  */
 /** Fact label of a cue: one text (slot 1), or `[slot1, slot2]` (DEP03: a second label slot below the first; `null` = empty slot). */
 export type PaintedLabel = string | (string | null)[];
-export type PaintedShotCue = {shot: string; atSec: number; fromSec?: number; dissolveSec?: number; label?: PaintedLabel};
+export type PaintedShotCue = {shot: string; atSec: number; fromSec?: number; dissolveSec?: number; label?: PaintedLabel; labelAtSec?: number; labelTop?: number};
 /** Painted 2D (p5.brush) picture for a scene: one canvas per composition, plates switched by time. */
 export type PaintedScene = {shots: PaintedShotCue[]};
 /** Eyebrow presentation. `fade: false` shows the eyebrow from its first frame with no fade or slide. */

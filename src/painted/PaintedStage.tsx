@@ -7,13 +7,16 @@ import {PaintedLabel as LabelText} from './Label';
 import {paintedShots} from './registry';
 import {drawPlate} from './plate';
 
-/** Fact-label slots of one frame: slot 0 (y 300) and slot 1 (y 360, DEP03). Texts are merged per slot, first come first kept. */
-const labelSlots = (labels: PaintedLabel[]): string[][] => {
-  const slots: string[][] = [[], []];
-  for (const label of labels) {
+/**
+ * Fact-label slots of one frame: slot 0 (y 300, or the cue's `labelTop`) and slot 1 (y 360, DEP03). Texts are merged
+ * per slot, first come first kept (with the top of the plate that brought them).
+ */
+const labelSlots = (labels: {label: PaintedLabel; top?: number}[]): {text: string; top?: number}[][] => {
+  const slots: {text: string; top?: number}[][] = [[], []];
+  for (const {label, top} of labels) {
     const texts = typeof label === 'string' ? [label] : label;
     texts.forEach((text, i) => {
-      if (text && i < slots.length && !slots[i].includes(text)) slots[i].push(text);
+      if (text && i < slots.length && !slots[i].some((x) => x.text === text)) slots[i].push({text, top});
     });
   }
   return slots;
@@ -43,7 +46,7 @@ export const PaintedStage = ({timeline, ending, loopBlendFrames, endingOptions}:
     });
   };
   const visible = plates.filter((x) => x.alpha > 0 || x.plate.overlayOpacity > 0);
-  const slots = labelSlots(visible.map((x) => x.plate.label).filter((l): l is PaintedLabel => l !== undefined));
+  const slots = labelSlots(visible.flatMap(({plate}) => (plate.label !== undefined ? [{label: plate.label, top: plate.labelTop}] : [])));
   return (
     <AbsoluteFill style={{opacity: state.opacity}}>
       <BrushCanvas paint={paint} paper={plates[0].shot.paper} />
@@ -53,7 +56,7 @@ export const PaintedStage = ({timeline, ending, loopBlendFrames, endingOptions}:
         const Overlay = shot.Overlay;
         return <Overlay key={`${shot.id}-${i}`} tl={tl} width={width} height={height} camera={camera} opacity={opacity} />;
       })}
-      {slots.map((texts, slot) => texts.map((text) => <LabelText key={`${slot}-${text}`} text={text} slot={slot} />))}
+      {slots.map((texts, slot) => texts.map(({text, top}) => <LabelText key={`${slot}-${text}`} text={text} slot={slot} top={top} />))}
     </AbsoluteFill>
   );
 };

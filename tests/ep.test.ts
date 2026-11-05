@@ -45,6 +45,13 @@ test('tick marks one step, keeps its text, and refuses an ambiguous or missing I
   assert.equal(readFileSync(p, 'utf8'), before);
 });
 
+test('tick --deliverable edits a step ID repeated per deliverable; --undo --text edits an open step', () => {
+  const p = file(dir(), 'task.md', '# Tasks\n\n## A\n\n- [x] W5.2 plates A\n\n## B\n\n- [ ] W5.2 plates B\n');
+  assert.equal(run('tick', p, 'W5.2', '--undo', '--text', 'x').code, 1); // two matches, no scope
+  assert.equal(run('tick', p, 'W5.2', '--deliverable', 'B', '--undo', '--text', 'plates B (G-B)').code, 0);
+  assert.equal(readFileSync(p, 'utf8'), '# Tasks\n\n## A\n\n- [x] W5.2 plates A\n\n## B\n\n- [ ] W5.2 plates B (G-B)\n');
+});
+
 test('now replaces the Now/Next line, scoped to a deliverable when the file has several', () => {
   const p = file(dir(), 'task.md', TASK);
   assert.equal(run('now', p, 'W1.1 done.', 'Preaw script').code, 1); // two Now lines, no scope

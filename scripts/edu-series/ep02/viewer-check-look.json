@@ -1,0 +1,14 @@
+{
+ "LF01": {
+  "hash": "92f28c7be045c65f",
+  "result": "pass"
+ },
+ "LF02": {
+  "hash": "ca5a3983b75743e3",
+  "result": "pass"
+ },
+ "LF03": {
+  "hash": "febcbbdbe21544ef",
+  "result": "fail"
+ }
+}
