@@ -1,6 +1,6 @@
 # Tasks — EDU-SERIES
 
-Record: [delivery.md](delivery.md) · Updated: 2026-11-04, Film
+Record: [delivery.md](delivery.md) · Updated: 2026-11-05, Film
 
 ## EDU-EP01-SHORT
 
@@ -39,3 +39,25 @@ Record: [delivery.md](delivery.md) · Updated: 2026-11-04, Film
   - [ ] W8.2 Delivery render archived
   - [ ] W8.3 Posted to the channel (user, date)
   - [ ] W8.4 Kit intake: new people, outfits, animals, poses, sets filed (KIT-P01)
+
+## EDU-EP02-SHORT
+
+**Now:** W3.1 look frames LF01–LF03 v1 painted (Film). **Next:** viewer check (fresh Film, Opus), then coordinator republishes the page; user — storyboard verdicts and look lock
+
+- [x] W0 Ideation (C1, user pick 2026-11-05; Short Thai, A_fade)
+- [x] W1 Script lock (W1.4 measured read pending voice)
+  - [x] W1.1 Boat research
+  - [x] W1.2 Preaw script (R1, ep02/script.md)
+  - [x] W1.3 Boat fact-check (R1.1, ep02/fact-check.md)
+  - [ ] W1.4 Length check
+  - [x] W1.5 User approves the script
+- [ ] W2 Brief and storyboard
+  - [x] W2.1 Film brief (text) (EDU-BRIEF-R1, ep02/brief.md)
+  - [x] W2.2 Film storyboard rows (SS-R1, 23 shots, ep02/review-rows.json)
+  - [x] W2.3 Storyboard page published
+- [ ] W3 Look frames and storyboard pass
+  - [ ] W3.1 Look frames on the page (3/3 locations painted, v1, store `projects/EDU/previews/look-frames/ep02/v1/`; rows updated, page rebuilt; thumbnails skipped (user asked for the looks now); viewer check and publish pending)
+  - [ ] W3.2 Look frames approved (look lock)
+  - [ ] W3.3 Storyboard passed (0/23 shots)
+- [ ] W4–W8 as EDU-EP01-SHORT (voice, draft, final, pin, deliver)
+
