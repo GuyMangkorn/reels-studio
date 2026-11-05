@@ -11,7 +11,8 @@ import {camPoint, camUnit, mixYCam, orbitYCam, type YCam} from '../kit/ycam';
 import {span} from '../sea';
 import {b01Cast, paintCheckout, type Light, type Who} from './checkout';
 import {PAPER} from './look';
-import {paintPlan, PAPER_PLAN} from './plan';
+import {paintPlan, PAPER_PLAN, planPush, type PlanState} from './plan';
+import {FractionLockup, ModelEyebrow, YouTag} from './plan-labels';
 import {paintCoinPurse, paintCoins, paintPineapple, TitleStrip} from './props';
 
 // EDU-EP04-SHORT shot plates (Boss W5.2; scene sheets EDU-EP04-SHEETS-R1 under brief EDU-BRIEF-R1.1).
@@ -31,9 +32,12 @@ export const EDU4_SHOTS = [
 export type Edu4ShotId = (typeof EDU4_SHOTS)[number][0];
 export const EDU4_FRAMES = Object.fromEntries(EDU4_SHOTS) as Record<Edu4ShotId, number>;
 export const EDU4_TOTAL = EDU4_SHOTS.reduce((a, [, n]) => a + n, 0);
-/** G1 plates are built; the others are placeholders until their group. */
+/** G1 and G2 plates are built; the others are placeholders until their group. */
 export const G1: readonly Edu4ShotId[] = ['S01-B01-SH01', 'S01-B01-SH02', 'S01-B02-SH01', 'S01-B02-SH02', 'S01-B02-SH03', 'S01-B02-SH04', 'S01-B03-SH01'];
-export const isBuilt = (id: Edu4ShotId) => G1.includes(id);
+/** G2: the `PLAN` diagram shots (S01-B03-SH02..SH05). */
+export const G2: readonly Edu4ShotId[] = ['S01-B03-SH02', 'S01-B03-SH03', 'S01-B03-SH04', 'S01-B03-SH05'];
+export const isPlan = (id: Edu4ShotId) => G2.includes(id);
+export const isBuilt = (id: Edu4ShotId) => G1.includes(id) || G2.includes(id);
 
 const FPS = 30;
 const DEG = Math.PI / 180;
@@ -214,7 +218,49 @@ const SPECS: Record<string, (f: number) => Spec> = {
   'S01-B03-SH01': (f) => ({cam: b03sh01Cam(f), who: b02sh04Who(41), lights: {1: 'green'}, t: 41 / FPS}),
 };
 
-export type Edu4Plate = {cam: Camera; ycam?: YCam; paper: string; grade: string; built: boolean; paint: (p: Painter) => void; title?: number; gradeOpacity: number};
+// ---- G2 `PLAN` shots (S01-B03-SH02..SH05): fixed plane in plan px (130 px/m), picture push scale 1.00 -> 1.02 -> 1.05 about (540, 560).
+export type PlanLabels = {equal: number; fracs: {text: string; x: number; op: number}[]; tag?: {x: number; y: number; op: number}};
+type PlanSpec = {state: PlanState; labels: PlanLabels};
+const HOP = {from: 33, to: 45, apex: 520, slide: 47};
+const planSpec = (id: Edu4ShotId, f: number): PlanSpec => {
+  const t = f / FPS;
+  if (id === 'S01-B03-SH02') {
+    const state: PlanState = {lit: [1, 2, 3], manLane: 2, t, scale: 1 + 0.02 * (f / 35), inkIn: [prog(f, 2, 8), prog(f, 8, 14), prog(f, 14, 20)]};
+    return {state, labels: {equal: prog(f, 4, 10), fracs: []}};
+  }
+  if (id === 'S01-B03-SH03') {
+    const lit = f < 22 ? [1, 2, 3] : f < 92 ? [2] : f < 140 ? [1, 3] : [2];
+    const state: PlanState = {lit: lit as (1 | 2 | 3)[], manLane: 2, t, glow: f >= 22 && f < 140 || f >= 140, scale: 1.02 + 0.03 * (f / 157)};
+    const one = Math.min(prog(f, 61, 65), 1 - prog(f, 92, 98)) + prog(f, 140, 146), two = Math.min(prog(f, 92, 98), 1 - prog(f, 140, 146));
+    const man = planPush(state, [540, 586]);
+    return {state, labels: {equal: 0, fracs: [{text: '1/3', x: 540, op: Math.min(1, one)}, {text: '2/3', x: 540, op: two}], tag: f >= 22 ? {x: man[0] - 40 * (state.scale ?? 1), y: man[1], op: prog(f, 22, 26)} : undefined}};
+  }
+  // SH04 hop and SH05 caveat: SH04 end state held
+  const hopU = id === 'S01-B03-SH04' ? inOut(prog(f, HOP.from, HOP.to)) : 1, landed = hopU >= 1;
+  const dot: [number, number] = [mix(540, 826, hopU), 586 - (586 - HOP.apex) * Math.sin(Math.PI * hopU)];
+  const hopping = id !== 'S01-B03-SH04' || f >= HOP.from;
+  const state: PlanState = {
+    lit: hopping && f >= (id === 'S01-B03-SH04' ? 39 : 0) ? [3] : [2], manLane: 2, t, glow: true, scale: 1.05, dx: id === 'S01-B03-SH04' ? (10 * f) / 103 : 10,
+    ...(hopping ? {man: dot, plain2: id === 'S01-B03-SH04' ? prog(f, HOP.from, HOP.from + 6) : 1, plain3: id === 'S01-B03-SH04' ? 1 - prog(f, 42, 48) : 0} : {}),
+    ...(id === 'S01-B03-SH05' ? {wobble: 6 * Math.min(prog(f, 6, 10), 1 - prog(f, 38, 42)), wobblePhase: (2 * Math.PI * 2 * (f - 6)) / 36, sign: prog(f, 54, 60), trolley: prog(f, 64, 70)} : {}),
+  };
+  const lx = id === 'S01-B03-SH04' ? mix(540, 826, inOut(prog(f, HOP.from, HOP.slide))) : 826, pos = planPush(state, hopping ? dot : [540, 586]);
+  void landed;
+  return {state, labels: {equal: 0, fracs: [{text: '1/3', x: lx, op: 1}], tag: {x: pos[0] - 40 * 1.05, y: pos[1], op: 1}}};
+};
+export const planLabelsOf = (id: Edu4ShotId, f: number): PlanLabels | null => (isPlan(id) ? planSpec(id, Math.max(0, Math.min(EDU4_FRAMES[id] - 1, f))).labels : null);
+
+/** Screen text of the `PLAN` shots (Thai type is rendered, never painted): "ถ้าทุกแถวเท่ากัน" (L07), the fraction + "แบบจำลอง" lockup, the "คุณ" tag. */
+export const PlanText = ({labels}: {labels: PlanLabels}) => (
+  <>
+    <ModelEyebrow />
+    {labels.equal > 0 && <div lang="th" style={{position: 'absolute', left: 0, width: 1080, top: 900, textAlign: 'center', fontFamily: 'Noto Sans Thai', fontWeight: 800, fontSize: 92, lineHeight: 1.1, color: '#2b211c', opacity: labels.equal}}>ถ้าทุกแถวเท่ากัน</div>}
+    {labels.fracs.filter((q) => q.op > 0).map((q) => <div key={q.text} style={{position: 'absolute', inset: 0, opacity: q.op}}><FractionLockup frac={q.text} x={Math.min(q.x, 1080 - 40 - 330 + 120)} /></div>)}
+    {labels.tag && <div style={{position: 'absolute', inset: 0, opacity: labels.tag.op}}><YouTag x={labels.tag.x} y={labels.tag.y} /></div>}
+  </>
+);
+
+export type Edu4Plate = {cam: Camera; ycam?: YCam; paper: string; grade: string; built: boolean; paint: (p: Painter) => void; title?: number; gradeOpacity: number; labels?: PlanLabels};
 
 /** Title strip wipe (S01-B01-SH02, VD16): wipes in L 0-6, holds, wipes out L 58-64 (strip off by the cut). */
 export const titleWipe = (id: Edu4ShotId, f: number) => (id === 'S01-B01-SH02' ? Math.min(prog(f, 0, 6), 1 - prog(f, 58, 64)) : 0);
@@ -223,6 +269,10 @@ export const titleWipe = (id: Edu4ShotId, f: number) => (id === 'S01-B01-SH02' ?
 export const plateOf = (id: Edu4ShotId, f: number): Edu4Plate => {
   const fr = Math.max(0, Math.min(EDU4_FRAMES[id] - 1, f));
   if (!isBuilt(id)) return {cam: STILL_CAMERA, paper: PAPER, grade: 'none', built: false, gradeOpacity: 0, paint: () => {}};
+  if (isPlan(id)) {
+    const ps = planSpec(id, fr);
+    return {cam: STILL_CAMERA, paper: PAPER_PLAN, grade: 'none', built: true, gradeOpacity: 0, labels: ps.labels, paint: (p) => paintPlan(p, ps.state)};
+  }
   const s = SPECS[id](fr);
   if (id === 'S01-B03-SH01') {
     const d = B03SH01_DISSOLVE, u = prog(fr, d.from - 1, d.from + d.frames), t = s.t ?? fr / FPS;
@@ -268,6 +318,7 @@ export const ShotPlate = ({id}: {id: Edu4ShotId}) => {
       <BrushCanvas paint={fn} paper={PAPER} />
       {plate.gradeOpacity > 0 && <AbsoluteFill style={{pointerEvents: 'none', background: plate.grade, opacity: plate.gradeOpacity}} />}
       {wipe > 0 && <TitleStrip wipe={wipe} />}
+      {plate.labels && <PlanText labels={plate.labels} />}
       <Grain opacity={0.09} />
     </AbsoluteFill>
   );

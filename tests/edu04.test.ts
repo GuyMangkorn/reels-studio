@@ -1,7 +1,7 @@
 import {readFileSync} from 'node:fs';
 import {test} from 'node:test';
 import assert from 'node:assert/strict';
-import {EDU4_SHOTS, EDU4_TOTAL, G1, measureOf, plateOf} from '../src/painted/edu04/shots';
+import {EDU4_SHOTS, EDU4_TOTAL, G1, G2, measureOf, plateOf} from '../src/painted/edu04/shots';
 import {paintedShots} from '../src/painted/registry';
 import videos from '../src/videos/edu-ep04';
 
@@ -14,14 +14,14 @@ test('EDU-EP04-SHORT shots match the review-rows boundaries (1657 f)', () => {
   let at = 0;
   EDU4_SHOTS.forEach(([id, n], i) => { assert.equal(id, rows[i].id); assert.equal(at, rows[i].start); assert.equal(at + n, rows[i].end); at += n; });
 });
-test('EDU-EP04-SHORT registers one plate and one scene per shot; G1 plates are built', () => {
+test('EDU-EP04-SHORT registers one plate and one scene per shot; G1 and G2 plates are built', () => {
   const video = videos.videos[0];
   assert.equal(video.id, 'EDU-EP04-SHORT');
   assert.equal(video.timeline.length, 20);
   EDU4_SHOTS.forEach(([id, n], i) => {
     assert.ok(paintedShots[`EDU4-${id}`]);
     assert.equal(Math.round(video.timeline[i].durationSec * 30), n);
-    assert.equal(plateOf(id, 0).built, G1.includes(id));
+    assert.equal(plateOf(id, 0).built, G1.includes(id) || G2.includes(id));
   });
 });
 test('EDU-EP04-SHORT G1 frames are seekable and keep MAN in the picture', () => {
