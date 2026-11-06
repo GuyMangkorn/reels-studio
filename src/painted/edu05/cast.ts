@@ -8,6 +8,7 @@ import {poseFor, type AnyPoseId} from '../kit/poses';
 import type {V3} from '../kit/space';
 import {squareToCam, type View4} from '../kit/views';
 import {camPoint, camUnit, viewAngle, type YCam} from '../kit/ycam';
+import {BASE_OF, namedPose, type NamedPose} from './poses';
 import type {Item} from './world';
 
 // EDU-EP05-SHORT cast (brief EDU-BRIEF-R1.1 VD02). TINY = `woman-bob + new: morning-pyjamas`. Look-frame code (W3.1), episode only:
@@ -29,6 +30,8 @@ export const TINY: CastDef = {
 
 export type TinyOpts = {
   at: V3; view: View4; pose?: AnyPoseId; face?: ExpressionId; faceState?: Partial<FaceState>; headCock?: number;
+  /** N10 named pose (`poses.ts`) at shot-local frame `L`; its base kit pose is used when `pose` is absent. */
+  named?: {name: NamedPose; L: number};
   fig?: Partial<FigPose>; t: number;
   /** Colour-mix the figure toward a light (cool shade `#6f8fb0`, warm sun). `mul` (LF04 v3) multiplies every colour by an RGB light
    * filter first, and `u` then mixes toward `to` scaled by (1 - luminance): light colours (skin) keep their hue and only cool and darken
@@ -48,7 +51,7 @@ export const paintTiny = (p: Painter, c: YCam, o: TinyOpts): FigAnchors | null =
   const a = viewAngle(c, o.at, facing), view: FigPose['view'] = Math.abs(a) <= 45 ? 'front' : Math.abs(a) >= 135 ? 'back' : a > 0 ? 'right' : 'left';
   if (o.shadow !== false) washAt(p, 5101, '#3b3226', 60, ell(g[0], g[1], 0.32 * u, 0.06 * u, 16), 0.15, 0.2);
   const pv = view === 'back' ? 'front' : view;
-  const pose = poseFor(o.pose ?? 'P01', TINY, g, u, pv);
+  const pose = {...poseFor(o.pose ?? (o.named ? BASE_OF[o.named.name] : 'P01'), TINY, g, u, pv), ...(o.named ? namedPose(o.named.name, o.named.L, TINY, g, u, view) : {})};
   const face = {...EXPRESSIONS[o.face ?? 'neutral'], ...(o.faceState ?? {})} as FaceState;
   // K1 (W5.2): the kit `tintPainter` with `brush: true` takes the rig's solid fills (was the episode-local `tintAll`)
   const q = o.tint ? tintPainter(p, o.tint.to, o.tint.u, {mul: o.tint.mul, brush: true}) : p;
