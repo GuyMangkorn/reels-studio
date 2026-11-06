@@ -159,7 +159,8 @@ export const paintLIFT = (p: Painter, frame: number) => {
       crumb = [rest[0] + (top[0] - rest[0]) * k, rest[1] + (top[1] - rest[1]) * k, rest[2]];
       // hands: both on the resting crumb's +x face (one above the other), then on its left / right grips as it rises
       const gr = crumbGrips(c, crumb)!, mix = (a: Pt, b: Pt): Pt => [a[0] + (b[0] - a[0]) * k, a[1] + (b[1] - a[1]) * k];
-      const leftHand = mix([gr0.r[0] + 0.02 * u, gr0.r[1] - 0.12 * u], gr.l), rightHand = mix([gr0.r[0] + 0.02 * u, gr0.r[1]], gr.r);
+      const k2 = smooth01((k - 0.45) / 0.55); // hands ride the moving crumb's +x face first, then slide to its grips (they were left behind at the rest position)
+      const leftHand = mix([gr.r[0] + 0.02 * u, gr.r[1] - 0.12 * u], gr.l, k2), rightHand = mix([gr.r[0] + 0.02 * u, gr.r[1]], gr.r, k2);
       const out = (a: Arm, to: Pt, sx: number): Arm => ({...a, to, via: mix([(to[0] + g[0]) / 2, to[1] - 0.12 * u], [a.via![0] + sx * 0.14 * u, a.via![1]])}); // elbow low and in while she grips, up and out in the lift
       const lowX = pz.rArm.to[0] < pz.lArm.to[0]; // rArm = screen-left hand in `front`
       fig = {crouch: 0.6 * (1 - k), ...(lowX ? {rArm: out(pz.rArm, leftHand, -1), lArm: out(pz.lArm, rightHand, 1)} : {rArm: out(pz.rArm, rightHand, 1), lArm: out(pz.lArm, leftHand, -1)})}; // crouched at the grip, rising with the lift
