@@ -1,5 +1,6 @@
 import {CAPTION_OUTLINE} from '../../scenes/media';
 import {assemblePaintedTimeline} from '../../scenes/assemble';
+import {BAR_LABELS} from '../../painted/edu05/effects';
 import {paintedShots} from '../../painted/registry';
 import type {EpisodeVideos} from '../types';
 import {EDU5_CUTS, EDU5_FPS, EDU5_SHOTS, EDU5_TOTAL, edu5CaptionEvents} from './shots';
@@ -22,10 +23,15 @@ const plateOf = (id: string) => (paintedShots[`EDU5-${id}`] ? `EDU5-${id}` : STA
 const placeholder = (id: string) => plateOf(id) === STAND_IN
   ? [{kind: 'card' as const, text: `${id}\nPLACEHOLDER\nneeds ${needs.get(id)}`, x: 540, y: 960, w: 1080, h: 1920, atFrame: 0, popFrames: 1}]
   : undefined;
+/** Cue items per shot: the placeholder card (until the plate exists), then N9 bar labels on S01-B05-SH02 (Thai text is DOM, not painted; shot-local atFrame 20 / 26). */
+const itemsOf = (id: string) => {
+  const items = [...(placeholder(id) ?? []), ...(id === 'S01-B05-SH02' ? BAR_LABELS : [])];
+  return items.length ? {items} : {};
+};
 
 const timeline = assemblePaintedTimeline({
   clockRate: EDU5_FPS, precision: 4, cuts: EDU5_CUTS,
-  shots: EDU5_CUTS.map((cut) => ({at: cut.start, cue: {shot: plateOf(cut.id), ...(placeholder(cut.id) ? {items: placeholder(cut.id)} : {})}})),
+  shots: EDU5_CUTS.map((cut) => ({at: cut.start, cue: {shot: plateOf(cut.id), ...itemsOf(cut.id)}})),
   captions: edu5CaptionEvents(),
 });
 

@@ -8,7 +8,7 @@ import {braceClamp, namedPose, NAMED_POSES, paintClamp, VIEW_OF} from './poses';
 import {TINY} from './cast';
 import {paintPuff} from './scenes';
 import {antItem, antWalk, ANT_SPEED} from './ant';
-import type {FigAnchors} from '../kit/cast';
+import type {Arm, FigAnchors, FigPose} from '../kit/cast';
 import {camPoint, camUnit} from '../kit/ycam';
 import {B_DEW, D1_CONTACT} from './garden';
 import {bladeItem} from './macro';
@@ -19,7 +19,7 @@ import type {Item} from './world';
 //   printf 'EDU5-CHK-EDGE 45 out/edu05/w52/g1/EDGE45.png\n' | node scripts/stills.mjs src/painted/edu05/check-index.ts
 // They show an element in its shot's camera and staging, not a finished shot (Editor assembles those).
 
-export const CHECK_FRAMES = {EDGE: 90, DROP2: 87, DROP3: 119, DROP4: 133, ANTW: 25, FX: 80, FAC: 97, SPECK: 32, DRIFT: 133, POSES: 210, CRUMB: 90, PUFF: 150} as const;
+export const CHECK_FRAMES = {EDGE: 90, DROP2: 87, DROP3: 119, DROP4: 133, ANTW: 25, FX: 80, FAC: 97, SPECK: 32, DRIFT: 133, POSES: 210, CRUMB: 90, PUFF: 150, LIFT: 173} as const;
 const FPS = 30;
 
 /** G1: N2 shade edge sliding -0.5 -> -1.2 (S01-B05-SH01 L 0-89) with the shot camera, TINY cooled by `edgeShade` (K1), a gust (N1). */
@@ -72,7 +72,7 @@ export const paintANTW = (p: Painter, frame: number) => {
 };
 
 /** G4-G8: N7 pop ring, N8 puffs, N5 crumb, N9 bars on one frame sheet (frame = shot-local frame of the sheet it belongs to, see fx key). */
-import {crumbFollowHand, warmthPuffsAt, paintCrumb, paintScaleBars, paintShrinkPop, paintWarmthPuffs, barsAt, shrinkScale, type PuffSpec} from './effects';
+import {crumbFollowHand, crumbGrips, warmthPuffsAt, paintCrumb, paintScaleBars, paintShrinkPop, paintWarmthPuffs, barsAt, shrinkScale, type PuffSpec} from './effects';
 export const paintFX = (p: Painter, frame: number) => {
   const c = camOf(MACRO_CAMS['S01-B04-SH03'], 0.5), t = frame / FPS;
   paintGarden(p, c, {t, mode: 'sun', drop: false, shadeEdge: -0.5, sun: [900, 330], items: [
@@ -88,18 +88,22 @@ export const paintFX = (p: Painter, frame: number) => {
 import {paintCap, paintFacadeDown, paintFacadeUp, paintRing, lookDownCam, speckAt, speckCam} from './facade';
 import {paintAirStreaks, paintDriftAir} from './effects';
 /** G9: N3 look-down facade (S01-B01-SH02) with the cap. */
-export const paintFAC = (p: Painter, frame: number) => { const c = lookDownCam(frame / 96); paintFacadeDown(p, c, frame / FPS); paintCap(p, c); };
+const D_ = Math.PI / 180; const FACC = [{x:-1.732,y:2.0,z:-6.279,yaw:-195*D_,pitch:-50*D_,f:950,hy:880}, {x:-1.732,y:1.9,z:-6.279,yaw:-195*D_,pitch:-50*D_,f:950,hy:880}, {x:-2.273,y:2.2,z:-6.108,yaw:-200*D_,pitch:-52*D_,f:950,hy:820}, {x:-1.991,y:2.5,z:-7.244,yaw:-195*D_,pitch:-50*D_,f:950,hy:820}, {x:-2.586,y:2.0,z:-5.438,yaw:-205*D_,pitch:-50*D_,f:950,hy:880}, {x:-1.732,y:2.0,z:-6.279,yaw:-195*D_,pitch:-45*D_,f:950,hy:1000}];
+export const paintFAC = (p: Painter, frame: number) => { const c = (FACC as any)[frame] ?? lookDownCam(frame / 96); paintFacadeDown(p, c, frame / FPS); paintCap(p, c); };
 /** G9: N3 speck on the facade with the ring marker (S01-B02-SH03). */
 export const paintSPECK = (p: Painter, frame: number) => {
   const k = frame / 31, c = speckCam(k); paintFacadeUp(p, c, k);
   const s = camPoint(c, speckAt(k, frame / FPS));
   if (s) { solid(p, 15900, '#3a2f2a', ell(s[0], s[1], 3, 3, 8), 2); paintRing(p, s, (frame - 2) / 6); }
 };
+/** SET-DRIFT body roll as the kit `lie` field: +-8 deg, sine, period 90 f (R1.3 FR13). */
+export const driftRoll = (L: number) => (8 / 90) * Math.sin((2 * Math.PI * L) / 90);
 /** G10: N2 drift air + N10 air streaks round TINY (S01-B02-SH02, spread arms). */
 export const paintDRIFT = (p: Painter, frame: number) => {
   const c = camOf({at: [[0, 0.8, 0], [0, 0.8, 0]], yaw: [-10, 15], r: [2.4, 2.4], eye: [1.0, 1.0], f: 1050, hy: 780}, frame / 132), t = frame / FPS, out: {a?: FigAnchors | null} = {};
   paintDriftAir(p, t, frame, 438);
-  tinyItem({at: [0, 0, 0], view: 'front', named: {name: 'drift-spread', L: frame}, face: 'surprised', t}, out).draw(p, c);
+  // R1.3 FR13: no contact shadow (she is airborne); body roll +-8 deg (sine, period 90 f) as the sheet's SET-DRIFT staging says (kit `lie`: 1 = 90 deg)
+  tinyItem({at: [0, 0, 0], view: 'front', named: {name: 'drift-spread', L: frame}, face: 'surprised', t, shadow: false, fig: {lie: driftRoll(frame)}}, out).draw(p, c);
   const a = out.a;
   if (a) { const cx = a.head[0], cy = (a.headTop + 1218) / 2, ring: Pt[] = Array.from({length: 40}, (_, i) => [cx + Math.cos((i / 40) * 6.283) * 190, cy + Math.sin((i / 40) * 6.283) * 520] as Pt); paintAirStreaks(p, ring, frame); }
 };
@@ -134,3 +138,37 @@ export const paintPUFF = (p: Painter, frame: number) => {
   paintGarden(p, c, {t, mode: 'sun', drop: false, sun: [150, 300], shadeEdge: -2, items: [tinyItem({at, view: 'front', named: clutch ? {name: 'clutch-puff', L: L - 96} : undefined, pose: clutch ? undefined : 'P42', face: 'worried', t}, out)]});
   if (out.a) warmthPuffsAt(L, out.a, camUnit(c, at)).forEach((q) => { if (q.a > 0.02) paintPuff(p, q.x, q.y, q.r, q.seed, t, q.a); });
 };
+
+/**
+ * G14: S01-B05-SH03 stand-in (the lift, R1.3 FR08): TINY seated beside C1 (L 0-35), stands L 36, hands reach the crumb's two grips and
+ * lift it overhead L 42-54 (`lift-overhead`, arms blended grip -> overhead), holds. C1 is parented to the mean of her two hands with
+ * `crumbFollowHand` (x) and a lift solved the same way (y), so it never leaves her grip. Frame = shot-local L (0-172).
+ */
+export const paintLIFT = (p: Painter, frame: number) => {
+  const L = frame, c = camOf(MACRO_CAMS['S01-B05-SH03'], L / 172), t = L / FPS + 60, at: V3 = [-1.75, 0, -0.6], rest: V3 = [-2.4, 0, -0.6];
+  const g = camPoint(c, at), u = camUnit(c, at);
+  if (!g) return;
+  const seated = L < 36, k = smooth01((L - 42) / 12);
+  let crumb = rest, fig: Partial<FigPose> | undefined;
+  if (!seated) {
+    const pz = namedPose('lift-overhead', L - 42, TINY, g, u, 'front'), gr0 = crumbGrips(c, rest);
+    if (pz.rArm && pz.lArm && gr0) {
+      // lifted position: C1 centred over her, its grip line at the pose's hand height (the grips are 0.85 sm apart: elbows go out, the pose's 0.26 sm hand gap cannot hold C1)
+      const handY = (pz.rArm.to[1] + pz.lArm.to[1]) / 2;
+      let top: V3 = [at[0], 1.9, at[2]];
+      for (let i = 0; i < 3; i++) { const gg = crumbGrips(c, top); if (gg) top = [top[0], top[1] + (gg.l[1] - handY) / gg.u, top[2]]; }
+      crumb = [rest[0] + (top[0] - rest[0]) * k, rest[1] + (top[1] - rest[1]) * k, rest[2]];
+      // hands: both on the resting crumb's +x face (one above the other), then on its left / right grips as it rises
+      const gr = crumbGrips(c, crumb)!, mix = (a: Pt, b: Pt): Pt => [a[0] + (b[0] - a[0]) * k, a[1] + (b[1] - a[1]) * k];
+      const leftHand = mix([gr0.r[0] + 0.02 * u, gr0.r[1] - 0.12 * u], gr.l), rightHand = mix([gr0.r[0] + 0.02 * u, gr0.r[1]], gr.r);
+      const out = (a: Arm, to: Pt, sx: number): Arm => ({...a, to, via: mix([(to[0] + g[0]) / 2, to[1] - 0.12 * u], [a.via![0] + sx * 0.14 * u, a.via![1]])}); // elbow low and in while she grips, up and out in the lift
+      const lowX = pz.rArm.to[0] < pz.lArm.to[0]; // rArm = screen-left hand in `front`
+      fig = {crouch: 0.6 * (1 - k), ...(lowX ? {rArm: out(pz.rArm, leftHand, -1), lArm: out(pz.lArm, rightHand, 1)} : {rArm: out(pz.rArm, rightHand, 1), lArm: out(pz.lArm, leftHand, -1)})}; // crouched at the grip, rising with the lift
+    }
+  }
+  paintGarden(p, c, {t, mode: 'sun', drop: false, sun: [150, 300], shadeEdge: -1.2 - 1.8 * Math.min(1, L / 80), items: [
+    {at: crumb, bias: 0.1, draw: (q, cc) => paintCrumb(q, cc, crumb, {bites: 1})},
+    tinyItem({at, view: 'front', named: seated ? {name: 'sit-up-check', L} : {name: 'lift-overhead', L: L - 42}, fig, face: L < 40 ? 'surprised' : 'happy', t}),
+  ]});
+};
+const smooth01 = (x: number) => { const k = Math.min(1, Math.max(0, x)); return k * k * (3 - 2 * k); };

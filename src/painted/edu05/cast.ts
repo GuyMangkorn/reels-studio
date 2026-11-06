@@ -40,7 +40,7 @@ export type TinyOpts = {
   tint?: {to: string; u: number; mul?: [number, number, number]};
   /** Props drawn after the figure from its anchors (`u` px per unit). */
   held?: (p: Painter, a: FigAnchors, u: number) => void;
-  /** Soft contact shadow under the feet (default true). */
+  /** Soft contact shadow under the feet (default true); false also sets the kit figure's own `noShadow` (R1.3 FR13, airborne). */
   shadow?: boolean;
 };
 
@@ -56,7 +56,7 @@ export const paintTiny = (p: Painter, c: YCam, o: TinyOpts): FigAnchors | null =
   const face = {...EXPRESSIONS[o.face ?? 'neutral'], ...(o.faceState ?? {})} as FaceState;
   // K1 (W5.2): the kit `tintPainter` with `brush: true` takes the rig's solid fills (was the episode-local `tintAll`)
   const q = o.tint ? tintPainter(p, o.tint.to, o.tint.u, {mul: o.tint.mul, brush: true}) : p;
-  const anchors = drawFigure(q, TINY, g, u, {...pose, view, face, headCock: o.headCock, ...o.fig}, o.t);
+  const anchors = drawFigure(q, TINY, g, u, {...pose, view, face, headCock: o.headCock, ...(o.shadow === false ? {noShadow: true} : {}), ...o.fig}, o.t);
   o.held?.(q, anchors, u);
   return anchors;
 };
