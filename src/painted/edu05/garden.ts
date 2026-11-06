@@ -3,7 +3,7 @@ import {hash} from '../kit/hash';
 import {mixColor, type Painter, type Pt} from '../kit/painter';
 import type {V3} from '../kit/space';
 import {camPoint, camUnit, type YCam} from '../kit/ycam';
-import {bladeItem, clump, glow, MIDLIT, nearTips, paintAir, paintDrop, paintGround, paintShafts, SHADE, SUNLIT, type Blade, type BladePal, type Dof} from './macro';
+import {bladeItem, clump, gust, glow, MIDLIT, nearTips, paintAir, paintDrop, paintGround, paintShafts, SHADE, SUNLIT, type Bend, type Blade, type BladePal, type Dof} from './macro';
 import {paintSorted, type Item} from './world';
 
 // SET-GARDEN-GRASS and SET-MACRO-PLANTER (brief EDU-BRIEF-R1.1 set plans; sm, k 320). Look-frame code (W3.1) for LF02-LF04 and the
@@ -39,12 +39,35 @@ export const B_DEW: Blade = {
   line: spline([[3.4, 0, -1.2], [3.36, 3, -1.18], [3.22, 6, -1.15], [3.0, 8, -1.12], [2.7, 8.7, -1.1], [2.45, 8.2, -1.08], [2.33, 6.5, -1.06], [2.3, 4.5, -1.04], [2.3, 2.8, -1.02], [2.3, 1.8, -1.01], [2.28, 1.45, -1.0], [2.22, 1.25, -1.0], [2.14, 1.24, -1.0], [2.07, 1.29, -1.0]]),
 };
 
+/**
+ * N2: the shade edge of SET-GARDEN-GRASS, keyed per shot (scene sheets: x -0.5 through B04 and the garden, sliding to -1.2 over
+ * S01-B05-SH01 L 0-89, then -1.2 -> -3.0 over S01-B05-SH03 L 0-80, "story-time cheat"). `local` is the shot-local frame.
+ */
+export const SHADE_EDGE_KEYS: Record<string, {x: [number, number]; frames: [number, number]}> = {
+  'S01-B05-SH01': {x: [-0.5, -1.2], frames: [0, 89]},
+  'S01-B05-SH02': {x: [-1.2, -1.2], frames: [0, 173]},
+  'S01-B05-SH03': {x: [-1.2, -3.0], frames: [0, 80]},
+  'S01-B05-SH04': {x: [-3.0, -3.0], frames: [0, 196]},
+};
+const smoothstep = (a: number, b: number, v: number) => { const k = Math.min(1, Math.max(0, (v - a) / (b - a))); return k * k * (3 - 2 * k); };
+/** Shade edge x (sm) for a shot at a shot-local frame; -0.5 (the garden default) for shots without a key. */
+export const shadeEdgeAt = (shot: string, local: number): number => {
+  const k = SHADE_EDGE_KEYS[shot];
+  if (!k) return -0.5;
+  return k.x[0] + (k.x[1] - k.x[0]) * smoothstep(k.frames[0], k.frames[1], local);
+};
+/** How much of the shade a figure standing at world x takes (0 sunlit .. 1 shaded), soft over `soft` sm round the edge: the `u` for a
+ * `tint` (K1 `tintPainter`) so a figure or the ant crossing the edge cools as she goes. */
+export const edgeShade = (x: number, edge: number, soft = 0.5): number => 1 - smoothstep(edge - soft / 2, edge + soft / 2, x);
+/** Cool a blade palette toward SHADE (a lit blade seen from inside the pocket). */
+const coolPal = (pal: BladePal, k = 0.8): BladePal => (pal === SHADE ? pal : {base: mixColor(pal.base, SHADE.base, k), body: mixColor(pal.body, '#4a7a62', k), edge: mixColor(pal.edge, '#7aa08a', k), vein: mixColor(pal.vein, SHADE.vein, k)});
+
 export type GardenMode = 'sun' | 'shade';
 const AIR_SUN: [number, string][] = [[-40, '#f6e9b8'], [520, '#efe3a8'], [900, '#d9df98'], [1300, '#bcd27e'], [1960, '#a9c46c']];
 const AIR_SHADE: [number, string][] = [[-40, '#9fb6c8'], [520, '#8eaab8'], [900, '#7d9aa6'], [1300, '#6a8a8c'], [1960, '#5e7e7a']];
 
 /** Ring of blade clumps round the clearing plus the shade tuft; far ones become washes through the painted depth of field. */
-export const gardenBlades = (t: number, gap?: {x: number; w: number}): Blade[] => {
+export const gardenBlades = (t: number, gap?: {x: number; w: number}, edge = -0.5): Blade[] => {
   const out: Blade[] = [];
   const ring = 34;
   for (let i = 0; i < ring; i++) {
@@ -52,7 +75,7 @@ export const gardenBlades = (t: number, gap?: {x: number; w: number}): Blade[] =
     const R = 6 + r(1) * 5, x = 1.0 + Math.cos(a) * R, z = -1.5 + Math.sin(a) * R * 0.9;
     if (z > 1.2) continue; // keep the camera side of the clearing open; shots add their own foreground sweeps
     if (x < -0.5 && x > -8 && z < -0.5 && z > -7) continue; // the shade tuft is authored below
-    const sun = x > -0.5 || z < -7;
+    const sun = x > edge || z < -7;
     if (gap && Math.abs(x - gap.x) < gap.w && z < -4) continue; // a gap in the grass for the far CL02 crossing
     out.push(...clump({x, z, n: 5, h: [16, 26], w: [1.0, 1.5], pal: sun ? (i % 3 === 0 ? SUNLIT : MIDLIT) : SHADE, seed: 400 + i, spread: 1.1, beads: r(3) > 0.6, lean: [2, 14], curl: [4, 26], sway: 1}));
   }
@@ -76,6 +99,8 @@ export type GardenOpts = {
   /** Extra foreground blades (shot-specific sweeps). */
   fore?: Blade[];
   dof?: Dof;
+  /** Breeze over the whole set (N1: tip deflection <= 25% of height). */
+  gust?: Bend;
   /** Ground shade edge x (sm): shade (cool glaze) for x < edge. */
   shadeEdge?: number;
   /** Gap in the grass ring (x centre, half width) for a far crossing. */
@@ -98,7 +123,8 @@ export const paintGarden = (p: Painter, c: YCam, o: GardenOpts) => {
     if (q.every(Boolean)) washAt(p, 9610, '#4f6f8a', 120, q as Pt[], 0.25, 0.1);
   }
   const dof = o.dof;
-  const items: Item[] = gardenBlades(o.t, o.gap).map((b) => bladeItem(sunMode ? b : {...b, pal: shadeOf(b.pal)}, o.t, dof));
+  const edge = o.shadeEdge ?? -0.5;
+  const items: Item[] = (o.gust ? gust(gardenBlades(o.t, o.gap, edge), o.gust) : gardenBlades(o.t, o.gap, edge)).map((b) => bladeItem(!sunMode ? {...b, pal: shadeOf(b.pal)} : edge < -0.5 && b.root[0] < edge ? {...b, pal: coolPal(b.pal)} : b, o.t, dof));
   if (o.drop !== false) {
     items.push(bladeItem(B_DEW, o.t, dof));
     items.push({at: D1_CONTACT, bias: -0.05, draw: (q, cc) => { const g = camPoint(cc, D1_CONTACT); if (g) paintDrop(q, g, camUnit(cc, D1_CONTACT), {sunSide: -1, t: o.t}); }});

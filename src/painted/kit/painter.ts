@@ -117,12 +117,40 @@ export const makePainter = (brush: Brush, {t, frame, alpha = 1, boilEvery = 2, s
   };
 };
 
-/** A painter whose wash, flat and ink colours are mixed `u` toward `toward` (the alpha is unchanged): a colour-mix fade (BLOOP-SHEETS-R8 SH07). Colours given straight to `brush` (hatch) stay unmixed. */
-export const tintPainter = (q: Painter, toward: string, u: number): Painter => ({
-  ...q,
-  wash: (c, o, pts, bleed, texture) => q.wash(mixColor(c, toward, u), o, pts, bleed, texture),
-  flat: (c, pts) => q.flat(mixColor(c, toward, u), pts),
-  ink: (id, name, c, w) => q.ink(id, name, mixColor(c, toward, u), w),
-  inkStill: (id, name, c, w) => q.inkStill(id, name, mixColor(c, toward, u), w),
-  layer: (a, base) => tintPainter(q.layer(a, base), toward, u),
-});
+/** Light filter for `tintPainter`: `mul` multiplies each colour by an RGB light first, and the mix toward `toward` is then scaled by
+ * (1 - luminance), so light colours (skin) keep their hue and only cool and darken a little while dark ones (hair, ink) take the tint
+ * (EDU-EP05 LF04 v3). `brush` also routes the rig's direct `brush.fill/wash/stroke/set` colour calls through the mix (K1, EDU-EP05 W5.2:
+ * rig `solid` fills call `p.brush.fill`, so without it a tinted figure kept its sunlit colours). Without options: the plain mix, brush untouched. */
+export type TintOpts = {mul?: [number, number, number]; brush?: boolean};
+const shadeColor = (c: string, to: string, u: number, mul?: [number, number, number]) => {
+  if (!mul) return mixColor(c, to, u);
+  const m = /^#([0-9a-f]{6})$/i.exec(c);
+  if (!m) return mixColor(c, to, u);
+  const v = [0, 2, 4].map((i, k) => Math.min(255, Math.round(parseInt(m[1].slice(i, i + 2), 16) * mul[k])));
+  const lum = (0.299 * v[0] + 0.587 * v[1] + 0.114 * v[2]) / 255;
+  return mixColor(`#${v.map((x) => x.toString(16).padStart(2, '0')).join('')}`, to, u * (1 - lum));
+};
+const tintBrush = (b: Brush, to: string, u: number, mul?: [number, number, number]): Brush => {
+  const raw = b as unknown as Record<string | symbol, unknown>, mix = (c: unknown) => (typeof c === 'string' ? shadeColor(c, to, u, mul) : c);
+  return new Proxy(raw, {
+    get: (t, k) => {
+      const v = Reflect.get(t, k, t);
+      if (typeof v !== 'function') return v;
+      if (k === 'fill' || k === 'wash' || k === 'stroke') return (c: unknown, ...r: unknown[]) => v.call(t, mix(c), ...r);
+      if (k === 'set') return (n: unknown, c: unknown, ...r: unknown[]) => v.call(t, n, mix(c), ...r);
+      return v.bind(t);
+    },
+  }) as unknown as Brush;
+};
+export const tintPainter = (q: Painter, toward: string, u: number, o: TintOpts = {}): Painter => {
+  const mix = (c: string) => shadeColor(c, toward, u, o.mul);
+  return {
+    ...q,
+    ...(o.brush ? {brush: tintBrush(q.brush, toward, u, o.mul)} : {}),
+    wash: (c, op, pts, bleed, texture) => q.wash(mix(c), op, pts, bleed, texture),
+    flat: (c, pts) => q.flat(mix(c), pts),
+    ink: (id, name, c, w) => q.ink(id, name, mix(c), w),
+    inkStill: (id, name, c, w) => q.inkStill(id, name, mix(c), w),
+    layer: (a, base) => tintPainter(q.layer(a, base), toward, u, o),
+  };
+};

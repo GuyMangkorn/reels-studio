@@ -37,7 +37,13 @@ export type Blade = {
   near?: boolean;
   /** Extra width multiplier along the blade, s 0..1 root to tip (LF03 v3: `B-DEW` narrows to a slim tip under the drop). */
   widthAt?: (s: number) => number;
+  /** Breeze bend (N1, SH05 "tip deflection <= 25% of height"): the line is pushed toward `dir` [x, z] by `amt` x height at the tip,
+   * growing with s^2 from the root (the root stays planted). `amt` is clamped to `MAX_BEND`. */
+  bend?: Bend;
 };
+export type Bend = {dir: [number, number]; amt: number};
+/** Largest tip deflection of a blade in the breeze, as a fraction of its height (scene sheet S01-B02-SH01). */
+export const MAX_BEND = 0.25;
 
 const DEG = Math.PI / 180;
 /** World centre line of a blade at time t (n segments). */
@@ -53,6 +59,30 @@ export const bladeLine = (b: Blade, t = 0, n = 12): V3[] => {
   }
   return pts;
 };
+
+/** Applies a breeze bend to a world centre line of height `h`: lateral shift `amt * h * s^2` along `dir` (s = arc fraction), tip drop
+ * so the blade keeps its length. Returns the line unchanged when there is no bend. */
+export const bendLine = (line: V3[], h: number, bend?: Bend): V3[] => {
+  if (!bend || bend.amt <= 0) return line;
+  const k = Math.hypot(bend.dir[0], bend.dir[1]) || 1, ux = bend.dir[0] / k, uz = bend.dir[1] / k, amt = Math.min(MAX_BEND, bend.amt);
+  const shifted = line.map((v, i): V3 => { const s = i / (line.length - 1), d = amt * h * s * s; return [v[0] + ux * d, v[1], v[2] + uz * d]; });
+  // restore the segment lengths (the lean adds length): pull each segment's y back so it keeps its original length
+  const out: V3[] = [shifted[0]];
+  for (let i = 1; i < line.length; i++) {
+    const L0 = Math.hypot(line[i][0] - line[i - 1][0], line[i][1] - line[i - 1][1], line[i][2] - line[i - 1][2]);
+    const dx = shifted[i][0] - shifted[i - 1][0], dz = shifted[i][2] - shifted[i - 1][2], dy0 = line[i][1] - line[i - 1][1];
+    const dy = Math.sqrt(Math.max(0, L0 * L0 - dx * dx - dz * dz)) * Math.sign(dy0 || 1);
+    out.push([shifted[i][0], out[i - 1][1] + dy, shifted[i][2]]);
+  }
+  return out;
+};
+/** Tip deflection of a bent line as a fraction of its height (horizontal tip distance from the unbent line over the unbent height). */
+export const tipDeflection = (base: V3[], bent: V3[]): number => {
+  const a = base[base.length - 1], b = bent[bent.length - 1], h = Math.max(1e-6, a[1] - base[0][1]);
+  return Math.hypot(b[0] - a[0], b[2] - a[2]) / h;
+};
+/** The same breeze on many blades (a gust over the set). */
+export const gust = (blades: Blade[], bend: Bend): Blade[] => blades.map((b) => ({...b, bend}));
 
 /** Screen ribbon of a world centre line: half widths `hw(s)` in world units, facing the lens. */
 const ribbon = (c: YCam, line: V3[], hw: (s: number) => number) => {
@@ -72,8 +102,9 @@ const ribbon = (c: YCam, line: V3[], hw: (s: number) => number) => {
 export type Dof = {near: number; far: number; nearColor: string; farColor: string; farMix: number};
 export const DOF_SUN: Dof = {near: 0.9, far: 22, nearColor: '#3e5a26', farColor: '#f3e6b4', farMix: 0.55};
 
+const lineHeight = (l?: V3[]) => (l ? l[l.length - 1][1] - l[0][1] : 1);
 export const paintBlade = (p: Painter, c: YCam, b: Blade, t: number, dof: Dof = DOF_SUN) => {
-  const line = b.line ?? bladeLine(b, t), d = camDist(c, b.root);
+  const line = bendLine(b.line ?? bladeLine(b, t), b.h || lineHeight(b.line), b.bend), d = camDist(c, b.root);
   const fl = b.flatten ?? 0;
   const hw = (s: number) => (b.w / 2) * Math.pow(1 - s, b.taper ?? 0.55) * (1 - fl * Math.min(1, s * 1.6)) * (b.widthAt ? b.widthAt(s) : 1);
   const r = ribbon(c, line, hw);
