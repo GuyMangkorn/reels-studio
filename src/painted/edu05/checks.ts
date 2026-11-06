@@ -139,36 +139,60 @@ export const paintPUFF = (p: Painter, frame: number) => {
 };
 
 /**
- * G14: S01-B05-SH03 stand-in (the lift, R1.3 FR08): TINY seated beside C1 (L 0-35), stands L 36, hands reach the crumb's two grips and
- * lift it overhead L 42-54 (`lift-overhead`, arms blended grip -> overhead), holds. C1 is parented to the mean of her two hands with
- * `crumbFollowHand` (x) and a lift solved the same way (y), so it never leaves her grip. Frame = shot-local L (0-172).
+ * G14: S01-B05-SH03 stand-in (the lift, SHEETS-R1.5 FR17). Story: she finds the loaf bigger than her body goes up easily (strength
+ * against body weight is the point; R07: no flex, no strain wobble): grip, one clean drive, a single catch of the weight, then a calm
+ * proud hold that breathes, a laugh bob on the laugh beat. Shot-local L (0-172):
+ *  - L 0-35 seated (`sit-up-check`); L 36 squat (crouch 0.6), hands reach the crumb's near (+x) face L 36-40: one low near the bottom
+ *    corner, one high, 0.3 sm apart (they never clump); gather dip L 40-43 (crouch 0.6 -> 0.68).
+ *  - drive L 43-54 (key L 54, sting): legs extend first (crouch -> 0 by L 50), the crumb rises beside her then swings over her head
+ *    (height leads, x lags), so her face stays clear; each hand is a fixed point on the crumb that slides from the face grips to
+ *    under its base (the `lift-overhead` palms), so the crumb never leaves her hands.
+ *  - catch L 54-62: one knee give of 0.06 crouch and back (the weight lands); hold from L 62: breath rise 5 mm, period 48 f;
+ *    laugh bob L 100-112 (two 8 mm shoulder bounces, face `laugh`). The crumb rides the hands through all of it.
  */
 export const paintLIFT = (p: Painter, frame: number) => {
   const L = frame, c = camOf(MACRO_CAMS['S01-B05-SH03'], L / 172), t = L / FPS + 60, at: V3 = [-1.75, 0, -0.6], rest: V3 = [-2.4, 0, -0.6];
   const g = camPoint(c, at), u = camUnit(c, at);
   if (!g) return;
-  const seated = L < 36, k = smooth01((L - 42) / 12);
+  const seated = L < 36, ramp = (a: number, b: number) => smooth01((L - a) / (b - a));
+  const s = ramp(43, 54), legs = ramp(43, 50);
+  const crouch = L < 43 ? 0.6 + 0.08 * ramp(40, 43) : 0.68 * (1 - legs) + (L >= 54 && L < 62 ? 0.06 * Math.sin((Math.PI * (L - 54)) / 8) : 0);
+  const rise = L >= 62 ? 0.005 * Math.sin((2 * Math.PI * (L - 62)) / 48) + (L >= 100 && L < 112 ? 0.008 * Math.abs(Math.sin((Math.PI * (L - 100)) / 6)) : 0) : 0;
   let crumb = rest, fig: Partial<FigPose> | undefined;
   if (!seated) {
-    const pz = namedPose('lift-overhead', L - 42, TINY, g, u, 'front'), gr0 = crumbGrips(c, rest);
-    if (pz.rArm && pz.lArm && gr0) {
-      // v4 (user: "looks odder"; overhead-press reference: arms near vertical, forearms vertical from the front, load centred over the head on the palms):
-      // the crumb rides on the pose's own hands (0.26 sm apart, arms straight up), its bottom edge on the palms; on the way up the hands stay on its +x face, then slide under it.
+    const pz = namedPose('lift-overhead', L - 42, TINY, g, u, 'front', {crouch, rise});
+    if (pz.rArm && pz.lArm) {
       const handPx = (pz.rArm.to[1] + pz.lArm.to[1]) / 2;
       let top: V3 = [at[0], 1.9, at[2]];
-      for (let i = 0; i < 4; i++) { const gg = crumbGrips(c, top); if (gg) top = [top[0], top[1] + (gg.centre[1] + 0.5 * CRUMB.h * gg.u - handPx) / gg.u, top[2]]; } // bottom edge on the palms
-      crumb = [rest[0] + (top[0] - rest[0]) * k, rest[1] + (top[1] - rest[1]) * k, rest[2]];
-      const gr = crumbGrips(c, crumb)!, mix = (a: Pt, b: Pt, w: number): Pt => [a[0] + (b[0] - a[0]) * w, a[1] + (b[1] - a[1]) * w];
-      const k2 = smooth01((k - 0.4) / 0.6), fx = gr.centre[0] + 0.5 * CRUMB.w * gr.u + 0.02 * u;
-      const faceHi: Pt = [fx, gr.centre[1] - 0.06 * u], faceLo: Pt = [fx, gr.centre[1] + 0.1 * u];
-      const hand = (a: Arm, fc: Pt): Arm => ({...a, to: mix(fc, a.to, k2), via: mix([(fc[0] + g[0]) / 2, fc[1] + 0.1 * u], a.via!, k2)});
+      for (let i = 0; i < 4; i++) { const gg = crumbGrips(c, top); if (gg) top = [top[0], top[1] + (gg.centre[1] + 0.5 * CRUMB.h * gg.u - handPx) / gg.u, top[2]]; } // base on the palms
+      const ey = 1 - Math.pow(1 - s, 2.5), ex = Math.pow(s, 2.5); // height leads, x lags: the base clears her head beside her, then swings over
+      crumb = [rest[0] + (top[0] - rest[0]) * ex, rest[1] + (top[1] - rest[1]) * ey, rest[2]];
+      const gr = crumbGrips(c, crumb)!, grT = crumbGrips(c, top)!, mix = (a: Pt, b: Pt, w: number): Pt => [a[0] + (b[0] - a[0]) * w, a[1] + (b[1] - a[1]) * w];
+      // a point on the crumb in its own metres (x from the base centre, y up from the base) -> px, and back (on the top crumb)
+      const onC = (q: typeof gr, l: Pt): Pt => [q.centre[0] + l[0] * q.u, q.centre[1] + (0.5 * CRUMB.h - l[1]) * q.u];
+      const toC = (q: typeof gr, px: Pt): Pt => [(px[0] - q.centre[0]) / q.u, 0.5 * CRUMB.h - (px[1] - q.centre[1]) / q.u];
+      const face = 0.5 * CRUMB.w + 0.015, reach = ramp(36, 40);
       const lowX = pz.rArm.to[0] < pz.lArm.to[0]; // rArm = screen-left hand in `front`
-      fig = {crouch: 0.6 * (1 - k), ...(lowX ? {rArm: hand(pz.rArm, faceLo), lArm: hand(pz.lArm, faceHi)} : {rArm: hand(pz.rArm, faceHi), lArm: hand(pz.lArm, faceLo)})};
+      const [aL, aR] = lowX ? [pz.rArm, pz.lArm] : [pz.lArm, pz.rArm]; // screen-left (crumb side) / screen-right arm
+      const knee = (side: -1 | 1): Pt => [g[0] + side * 0.1 * u, g[1] - 0.34 * u]; // hands at the knees as she comes up from the seat
+      const shY = g[1] - (0.78 - 0.3 * (L < 43 ? 0.6 : 0.68 * (1 - legs))) * u; // rough shoulder height for the low elbow hints
+      const low = (to: Pt, side: -1 | 1): Pt => { const sx = g[0] + side * 0.11 * u; return [(sx + to[0]) / 2 + side * 0.06 * u, (shY + to[1]) / 2 + 0.09 * u]; };
+      // crumb-side hand: low on the near face, slides under the base corner as it leaves the ground, then to its palm spot overhead
+      const w1 = smooth01(s / 0.3), w2 = smooth01((s - 0.4) / 0.6);
+      const lLoc = mix(mix([face, 0.1], [0.3, -0.05], w1), toC(grT, aL.to), w2), lTo = mix(knee(-1), onC(gr, lLoc), reach);
+      const left: Arm = {...aL, to: lTo, via: mix(low(lTo, -1), aL.via!, w2)};
+      // far hand: high on the near face (crossing her waist in the squat), lets go as the drive starts and comes up her own right side
+      // (a curve out past her right shoulder, never across her face) to catch the base on its palm spot as the crumb swings over
+      const r = smooth01((s - 0.05) / 0.8), p0 = mix(knee(1), onC(crumbGrips(c, rest)!, [face, 0.42]), reach), p2 = aR.to, p1: Pt = [g[0] + 0.5 * u, shY + 0.05 * u];
+      const rTo: Pt = [(1 - r) * (1 - r) * p0[0] + 2 * r * (1 - r) * p1[0] + r * r * p2[0], (1 - r) * (1 - r) * p0[1] + 2 * r * (1 - r) * p1[1] + r * r * p2[1]];
+      const right: Arm = {...aR, to: rTo, via: mix(low(rTo, 1), aR.via!, r)};
+      fig = {crouch, rise, ...(lowX ? {rArm: left, lArm: right} : {rArm: right, lArm: left})};
     }
   }
+  const face = L < 40 ? 'surprised' : L >= 100 && L < 112 ? 'laugh' : 'happy';
   paintGarden(p, c, {t, mode: 'sun', drop: false, sun: [150, 300], shadeEdge: -1.2 - 1.8 * Math.min(1, L / 80), items: [
     {at: crumb, bias: 0.1, draw: (q, cc) => paintCrumb(q, cc, crumb, {bites: 1})},
-    tinyItem({at, view: 'front', named: seated ? {name: 'sit-up-check', L} : {name: 'lift-overhead', L: L - 42}, fig, face: L < 40 ? 'surprised' : 'happy', t}),
+    tinyItem({at, view: 'front', named: seated ? {name: 'sit-up-check', L} : {name: 'lift-overhead', L: L - 42}, fig, face, t}),
   ]});
 };
 const smooth01 = (x: number) => { const k = Math.min(1, Math.max(0, x)); return k * k * (3 - 2 * k); };

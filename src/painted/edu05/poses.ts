@@ -20,12 +20,15 @@ export const VIEW_OF: Record<NamedPose, 'front' | 'left' | 'right'> = {
 };
 
 type Spec = {to: Pt; via: Pt; behind?: Arm['behind']};
-type Body = Pick<FigPose, 'squat' | 'crouch' | 'bend' | 'lean' | 'rise' | 'floorSit' | 'nod' | 'walk' | 'stride'>;
+export type Body = Pick<FigPose, 'squat' | 'crouch' | 'bend' | 'lean' | 'rise' | 'floorSit' | 'nod' | 'walk' | 'stride'>;
 const pulse = (L: number, period: number) => Math.abs(Math.sin((Math.PI * L) / period)); // 0..1, one bump per `period` frames
 const pat = (L: number, period: number) => Math.pow(pulse(L, period), 3); // sharp touch, long lift
 
-/** Body fields and both arms of one named pose at event frame `L`. Returns what `paintTiny` spreads between the base pose and `fig`. */
-export const namedPose = (name: NamedPose, L: number, def: CastDef, g: Pt, u: number, view: View): Partial<FigPose> => {
+/**
+ * Body fields and both arms of one named pose at event frame `L`. Returns what `paintTiny` spreads between the base pose and `fig`.
+ * `extra` (shot staging: a dip, a breath) is merged over the pose's body before the shoulders are solved, so the arm targets ride it.
+ */
+export const namedPose = (name: NamedPose, L: number, def: CastDef, g: Pt, u: number, view: View, extra: Body = {}): Partial<FigPose> => {
   let body: Body = {}, r: Spec, l: Spec;
   switch (name) {
     case 'drift-spread': // arms level at shoulder height and wide, soft knees (CP-P01)
@@ -58,10 +61,11 @@ export const namedPose = (name: NamedPose, L: number, def: CastDef, g: Pt, u: nu
     case 'clutch-puff': // hands cupped at the chest (CP-P02) as the puff squeezes out
       r = {to: [0.1, -0.12], via: [-0.04, -0.22], behind: 'upper'}; l = {to: [-0.1, -0.12], via: [0.04, -0.22], behind: 'upper'};
       break;
-    case 'lift-overhead': // both hands overhead, elbows back into depth
+    case 'lift-overhead': // lock-out: arms near vertical, palms under the load 0.26 sm apart, elbows back into depth (SHEETS-R1.5 FR17)
       r = {to: [-0.13, 0.56], via: [-0.22, 0.28], behind: 'upper'}; l = {to: [0.13, 0.56], via: [0.22, 0.28], behind: 'upper'};
       break;
   }
+  body = {...body, ...extra};
   const dir = view === 'left' ? -1 : 1, bodyView = {view: (view === 'back' ? 'front' : view) as FigPose['view'], ...poseBody(BASE_OF[name], view === 'front' ? 'front' : 'right'), ...body};
   const arm = (side: 'r' | 'l', s: Spec): Arm => {
     const sh = shoulderPoint(def, g, u, bodyView, side), k = def.armScale ?? 1;
