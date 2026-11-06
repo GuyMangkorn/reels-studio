@@ -104,3 +104,37 @@ test('ant-walk: planted feet do not slide, three feet always down, leaf sway <= 
     assert.ok(maxSway <= 4, `${shot} sway ${maxSway}`);
   }
 });
+
+// N7/N8/N5/N9 (EDU-EP05 W5.2): pop timing and cut match, puff emitter, crumb grips, bar heights and boxes.
+import {barsAt, BARS, crumbGrips, popCutDelta, popPeak, puffsOf, shrinkScale} from '../src/painted/edu05/effects';
+import {orbitYCam} from '../src/painted/kit/ycam';
+
+test('shrink-pop: 8 f ease-in to ~0, peak on the cut, puff centres within 40 px across the cut', () => {
+  assert.equal(shrinkScale(55), 1);
+  assert.ok(shrinkScale(63) < 0.01 && shrinkScale(59) < 0.9 && shrinkScale(59) > 0.1);
+  assert.ok(popPeak(71) === 1 && popPeak(58) === 0);
+  const d = popCutDelta([554, 732], [540, 762]);
+  assert.ok(d <= 40, `cut delta ${d}`);
+  console.log(`pop cut delta ${d.toFixed(1)} px (limit 40)`);
+});
+
+test('warmth puffs: drift away, fade in and out, the squeezed puff re-inflates', () => {
+  const e = {anchor: [500, 600] as [number, number], r: 80, drift: [-120, -90] as [number, number], period: 0.5, life: 1.6, phase: 0, squeeze: true};
+  let last = puffsOf(e, 2.0);
+  assert.ok(last.length >= 3);
+  for (const q of last) { assert.ok(q.a >= 0 && q.a <= 1); assert.ok(q.x <= 500 && q.y <= 600); }
+  const young = puffsOf(e, 2.05).sort((a, b) => b.y - a.y)[0];
+  assert.ok(young.rx < young.ry, 'squeezed when young');
+});
+
+test('breadcrumb grips are on opposite faces; scale-bars end heights and boxes', () => {
+  const cam = {...orbitYCam([-2.4, 0.3, -0.6], 2.4, 0.3, 0.8, 1050, 780)};
+  const g = crumbGrips(cam, [-2.4, 0, -0.6])!;
+  assert.ok(g.r[0] - g.l[0] > 100 && Math.abs(g.r[1] - g.l[1]) < 1);
+  const end = barsAt(150);
+  assert.equal(Math.round(end.force), 216);
+  assert.equal(Math.round(end.weight), 72);
+  assert.equal(Math.round(barsAt(30).force), 480);
+  assert.ok(end.force > end.weight * 2.9 && BARS.slots.force[1] === 900);
+  assert.equal(Math.round(end.icon), 48);
+});
