@@ -168,6 +168,12 @@ put(shape(onset(L('sfx/foley/foley_canvas-bag-flap_01.wav')), peak=-16), 1206, 0
 put(shape(speed(paws, 1.25), peak=-14, length=41 / FPS, fade_out=0.3), 1294, 0, 'paws gallop + skid B06-SH02 l34-75 (c1294-1335, SS-R3.2)')
 put(shape(bark, peak=-8), 1356, 0, 'happy bark stinger B06-SH02 l96 (attack c1356, SS-R3.2)')
 
+# ---- closing tag (W9, 2026-11-06, user: "closing music like EP02"): the same library file EP02 closes on, placed as EP02 places it
+# (starts at the last word's end, peak -10 dB, bed stays under). EP02: 1.4 s + 0.6 s fade over its A_fade; here the hold is live (3.0 s), so 2.2 s with a 0.5 s fade,
+# finished by c1548 (sheet: nothing starts after c1556; the hard restart at c0 hears no ring). Last word ends c1481 (49.365 s).
+tagx = shape(load(LIB + 'sfx/stinger/stinger_pizz-tag-ending_01.wav'), peak=-10, length=2.2, fade_out=0.5)
+put(tagx, 1482, 0, 'closing pizz tag stinger_pizz-tag-ending_01 (EP02 close) from c1482')
+
 pk = np.abs(mix).max()
 if pk > db(-1.0): mix *= db(-1.0) / pk
 sf.write(f'{OUT}/EDU-EP03-SHORT-sound-stem-v1.wav', mix.astype('float32'), SR, subtype='PCM_24')

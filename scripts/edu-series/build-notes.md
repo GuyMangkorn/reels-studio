@@ -754,3 +754,9 @@ Editor, 6 Nov 2026, after Boss w53g.
 - **Archive:** `projects/EDU/w6-final-ep03-flat/` (cut, proxy, 6 sheets, psnr.json, caption-zone.json, review-rows.json).
 
 - **Second verification pass (Editor, same day; `out/edu03/w6c/`):** 45 full-frame Final-vs-Draft PSNR samples (start+2 / mid / end-3 per shot, 1080x1920; Draft clip local frame = global - shot start + 30): 40.86-52.26 dB, lowest B04-SH02 end-3 40.86; no stale textured segment. Seam 20.87 dB, -16.2 LUFS, TP -1.6 dBFS repeated. Sheets: `sheet_shots_mid.png`, `sheet_cuts.png`, `sheet_final_vs_draft.png`, `b01sh02_final_frames.png` (f100-103 opaque dog), `flicker_B04SH02_B06SH02.png` (f1000-1003, f1300-1303). Stem lock re-run is a no-op. Store `projects/EDU/w6-final-ep03-flat/` also holds these (hash-suffixed or `flicker_B04SH02_B06SH02.png`, `psnr-final-vs-draft.txt`).
+
+## EP03 W9 closing music (Editor, 6 Nov 2026)
+
+- EP02's close is a library tag, not a bed fade: `stinger_pizz-tag-ending_01` from the last word's end (c1726), peak -10 dB, tag stem level about narration level (-20 dBFS RMS vs narration -12..-21), picture fades 0.75 s over it. EP02's `sound-mix.py` still reads the raw `edu2-pizz-tag_v2` (same audio).
+- EP03 has a 3.0 s live hold (narration ends 49.365 s of 52.367 s), so the same tag fits inside 1571 f with no length change: c1482, 2.2 s, finished c1548 before the c1556 "nothing starts" rule and the hard restart. Tag chord C-G-E-B over a G-centred guitar bed: no clash by chroma (not listened).
+- Procedure: `sound-mix.py <out>` -> `store.py put` the stem -> `store.py use --replace` -> `render.mjs` (all scenes reused, no repaint). A stem change makes the tree dirty-tagged until committed.
