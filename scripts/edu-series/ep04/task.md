@@ -1,0 +1,33 @@
+# EDU-EP04-SHORT — task
+
+Record: this file. Series context: [concepts.md](../concepts.md) · series task list: [task.md](../task.md). Kept in its own file so it does not collide with the EP03 section that another worktree (`claude/education-remaining-topics-092333`) is still writing in `task.md`.
+
+**Now:** W1.5 script approved by the user (EDU-EP04-SCRIPT-R1.2, 2026-11-05). W4 narrator locked: Gemini TTS Kore, R1.3 take 3 (`projects/EDU/narration/ep04/2026-11-05_ep04-r13-kore-take3-regap028.wav`, user pick 2026-11-05, prompt byte-identical to EP02; R1.2 take 2 and R1.3 take 1 kept as alternatives). R1.3 script approval still pending. MAN/CSH voices chosen by Film (Algenib / Charon, not generated). W2.1 brief done. Next: W2.2 Film storyboard rows.
+
+- [x] W4 Voice lock (narrator): Kore R1.3 take 3, user chose (2026-11-05). Measured ~50.7 s video at 1.00x without MAN/CSH. R1.2 take 2 kept as alternative.
+  - [ ] W4.x MAN and CSH voices: **chosen by Film** (user delegated, 2026-11-05; [brief.md](brief.md#voice-casting-w4x-film-decision-editor-generates-at-w4)): MAN = Algenib, CSH = Charon (fallback Enceladus). Not generated yet; Editor generates at W4.
+
+- [x] W0 Ideation (C4, user pick 2026-11-05; Short Thai, portrait 1080×1920, 30 fps; ending `B_loop` per concept C4 since the user set no ending for this one)
+- [ ] W1 Script lock
+  - [x] W1.1 Boat research ([research.md](research.md))
+  - [x] W1.2 Preaw script R1 ([script.md](script.md)); R1.1 after fact-check; R1.2 after a length trim
+  - [x] W1.3 Boat fact-check R1.1 ([fact-check.md](fact-check.md), 9 lines fixed, none cut); R1.2 re-check passed (no wording change)
+  - [x] W1.4 Length check: R1.1 failed (~68 s video); R1.2 passes at ~48.8 s video, 1.00x, Charon provisional ([voice-measure.md](voice-measure.md))
+  - [x] W1.5 User approves the script (R1.3, closed ending, 2026-11-05; R1.2 superseded)
+- [ ] W2 Brief and storyboard
+  - [x] W2.1 Film brief EDU-BRIEF-R1 ([brief.md](brief.md), 2026-11-05; not user-approved); R1.1 = R1.3 update (closed ending, L10a, L20)
+  - [x] W2.2 Film first storyboard pass SS-R1 ([review-rows.json](review-rows.json) untimed, 20 shots; [storyboard.md](storyboard.md); 2026-11-05). Review page: pending (coordinator builds).
+- [ ] W3 Look frames and storyboard pass
+  - [x] W3.1 Look frames v2 approved by user (2026-11-05): LF01–LF04 in `out/edu04/look-frames/v2/` (asset store copy pending); v1 superseded; per-look caption-band threshold relaxed for cream look ([look-frames.md](look-frames.md))
+  - [ ] W3.2 Storyboard review page published (SS-R1 with LF01–LF04 in the beat headers); user verdicts pending. Film's W3 storyboard pass (look-frame check against the L20 end frame) still open.
+- [ ] W4 Voice lock
+- [ ] W5 Draft
+- [ ] W6 Final
+- [ ] W7 Pinned
+- [ ] W8 Deliver
+
+## Notes
+
+- Concept sub-genre: psychology (perception and memory bias) with simple probability. Staging: ensemble at a supermarket checkout; camera rises to a top-down painted diagram (dots, arrows, a big "1/3").
+- Factual claims are `unchecked` in the concept. Boat's research and fact-check decide what the narration may say.
+- Film annotation for C4 exists in [concepts.md](../concepts.md) (R1, buildability: checkout set `PL-EG-COUNTER` / `STORE-I`-style assets are new).

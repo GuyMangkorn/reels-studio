@@ -1,0 +1,71 @@
+{
+ "deliverable": "EDU-EP04-SHORT",
+ "script": "EDU-EP04-SCRIPT-R1.2",
+ "timingStatus": "audio-measured (provisional voice, W1.4 length check only; not a voice lock)",
+ "voice": "Gemini TTS Charon (provisional), same style/settings as R1.1",
+ "requests": 1,
+ "tempoUsed": 1.0,
+ "rawDurationSec": 52.88,
+ "speechOnlySec": 36.37,
+ "segmentCount": 31,
+ "gapsAt028": 30,
+ "modelGapTotalSec": 16.51,
+ "regap028Sec": 44.77,
+ "regap028Atempo105Sec": 42.64,
+ "extraBeatsSec": {
+  "silentGag": 1.5,
+  "endHold": 2.5
+ },
+ "totalVideoSec": {
+  "1.00x": 48.77,
+  "1.05x": 46.64
+ },
+ "loudness": {
+  "integratedLUFS": -16.9,
+  "LRA": 3.0,
+  "afterRegapLUFS": -16.9,
+  "afterRegapLRA": 2.4
+ },
+ "method": "ffmpeg silencedetect n=-35dB d=0.18; segments rejoined with 0.28 s gaps. Same filter on the R1.1 file gives speech 50.05 s / 45 segments / 62.37 s regap (R1.1 figures below used a slightly different threshold: 50.5 / 64.0), so R1.2 may read ~1.5 s low against R1.1 numbers (~50.4 s video).",
+ "audio": {
+  "raw": "projects/EDU/narration/ep04/2026-11-05_ep04-r12-charon-raw-provisional.wav",
+  "regap028": "projects/EDU/narration/ep04/2026-11-05_ep04-r12-charon-regap028-provisional.wav"
+ },
+ "lengthCheck": {
+  "target": [
+   40,
+   60
+  ],
+  "pass": true,
+  "userTrimTarget": 55
+ },
+ "r1_1": {
+  "deliverable": "EDU-EP04-SHORT",
+  "script": "EDU-EP04-SCRIPT-R1.1",
+  "timingStatus": "audio-measured (provisional voice, W1.4 length check only; not a voice lock)",
+  "voice": "Gemini TTS Charon (provisional)",
+  "requests": 1,
+  "tempoUsed": 1.0,
+  "rawDurationSec": 78.88,
+  "speechOnlySec": 50.5,
+  "gapCount": 48,
+  "gapTotalSec": 27.9,
+  "regap028Sec": 64.0,
+  "regap028Atempo105Sec": 60.9,
+  "extraBeatsSec": {
+   "silentGag": 1.5,
+   "endHold": 2.5
+  },
+  "loudness": {
+   "integratedLUFS": -16.5,
+   "LRA": 3.3
+  },
+  "lengthCheck": {
+   "target": [
+    40,
+    60
+   ],
+   "pass": false
+  }
+ }
+}
