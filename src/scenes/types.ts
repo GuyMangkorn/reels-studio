@@ -90,7 +90,14 @@ export type QuadText = {
  */
 /** Fact label of a cue: one text (slot 1), or `[slot1, slot2]` (DEP03: a second label slot below the first; `null` = empty slot). */
 export type PaintedLabel = string | (string | null)[];
-export type PaintedShotCue = {shot: string; atSec: number; fromSec?: number; dissolveSec?: number; label?: PaintedLabel; labelAtSec?: number; labelTop?: number};
+/**
+ * Positioned screen item of a cue (frame-based, in the plate's own shot frames `l`, i.e. including `fromSec`, so the numbers of a
+ * plate spec carry over). `label`: pop-in outlined text centred at (`x`,`y`) px. `card`: paper card of `w` x `h` px centred at
+ * (`x`,`y`) with `text`, optional red strike drawn bottom-left to top-right from `strikeAtFrame` over `strikeFrames`. The item pops in
+ * over `popFrames` (default 6) from `atFrame` and is gone from `untilFrame` (default: stays while the plate is visible).
+ */
+export type PaintedItem = {kind: 'label' | 'card'; text: string; x: number; y: number; atFrame: number; popFrames?: number; untilFrame?: number; w?: number; h?: number; strikeAtFrame?: number; strikeFrames?: number};
+export type PaintedShotCue = {shot: string; atSec: number; fromSec?: number; dissolveSec?: number; label?: PaintedLabel; labelAtSec?: number; labelTop?: number; items?: PaintedItem[]};
 /** Painted 2D (p5.brush) picture for a scene: one canvas per composition, plates switched by time. */
 export type PaintedScene = {shots: PaintedShotCue[]};
 /** Eyebrow presentation. `fade: false` shows the eyebrow from its first frame with no fade or slide. */

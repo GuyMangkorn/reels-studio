@@ -105,3 +105,17 @@ test('non-painted scenes paint nothing; shot cameras are finite and respect cloc
   // SH03b freezes on the doubt line: the camera (and so every glow layer) holds too.
   assert.deepEqual(cameraAt('SHIPWRECK-SH03b', SH03B.freezeAt + 0.7), cameraAt('SHIPWRECK-SH03b', SH03B.freezeAt));
 });
+
+test('cue items (positioned labels and cards) are frame-based, validated, and absent when unused', () => {
+  const items = [{kind: 'label' as const, text: 'คน: 3 แบบ', x: 560, y: 540, atFrame: 78}, {kind: 'card' as const, text: 'ขาวดำ', x: 600, y: 420, w: 220, h: 90, atFrame: 40, untilFrame: 104, strikeAtFrame: 84, strikeFrames: 10}];
+  const tl = [painted([{shot: 'SHIPWRECK-SH01', atSec: 0, fromSec: 1, items}]), painted([{shot: 'SHIPWRECK-SH01', atSec: 0}], {durationSec: 4})];
+  validateTimeline(tl);
+  assert.deepEqual(state(tl, 5)!.plates[0].items, items);
+  assert.equal(state(tl, 5)!.plates[0].frame, 35); // item frames are shot frames: fromSec 1 s + 5
+  assert.equal('items' in state(paintedProofTimeline, 150)!.plates[0], false);
+  const bad = (item: object) => [painted([{shot: 'SHIPWRECK-SH01', atSec: 0, items: [{...items[0], ...item} as never]}])];
+  assert.throws(() => validateTimeline(bad({kind: 'x'})), /items\[0\]\.kind/);
+  assert.throws(() => validateTimeline(bad({x: 'a'})), /items\[0\]\.x/);
+  assert.throws(() => validateTimeline(bad({untilFrame: 10})), /untilFrame/);
+  assert.throws(() => validateTimeline(bad({w: 10})), /card only/);
+});

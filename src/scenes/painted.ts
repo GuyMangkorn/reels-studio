@@ -1,6 +1,6 @@
 import {paintedShots} from '../painted/registry';
 import {endingState, loopBlendOpacity, type Ending, type EndingOptions} from './endings';
-import type {PaintedLabel, Timeline} from './types';
+import type {PaintedItem, PaintedLabel, Timeline} from './types';
 
 type Fail = (path: string, message: string) => never;
 const finite = (v: unknown): v is number => typeof v === 'number' && Number.isFinite(v);
@@ -50,6 +50,23 @@ export function validateScenePainted(s: Record<string, unknown>, path: string, p
       if (cue.label === undefined) fail(`${cp}.${key}`, 'needs a label on the same cue');
       if (!finite(cue[key]) || (cue[key] as number) < 0) fail(`${cp}.${key}`, key === 'labelTop' ? 'expected non-negative px' : 'expected non-negative seconds');
     }
+    if (cue.items !== undefined) {
+      if (!Array.isArray(cue.items) || cue.items.length > 8) fail(`${cp}.items`, 'expected up to eight items');
+      (cue.items as unknown[]).forEach((raw2, k) => {
+        const ip = `${cp}.items[${k}]`;
+        if (!record(raw2)) fail(ip, 'expected item');
+        const it = raw2 as Record<string, unknown>;
+        if (it.kind !== 'label' && it.kind !== 'card') fail(`${ip}.kind`, "expected 'label' or 'card'");
+        if (typeof it.text !== 'string' || it.text.trim() === '') fail(`${ip}.text`, 'expected non-empty text');
+        for (const key of ['x', 'y']) if (!finite(it[key])) fail(`${ip}.${key}`, 'expected px');
+        for (const key of ['atFrame', 'popFrames', 'untilFrame', 'strikeAtFrame', 'strikeFrames']) if (it[key] !== undefined && (!finite(it[key]) || (it[key] as number) < 0)) fail(`${ip}.${key}`, 'expected non-negative frames');
+        if (!finite(it.atFrame)) fail(`${ip}.atFrame`, 'expected frames');
+        if (finite(it.untilFrame) && it.untilFrame <= (it.atFrame as number)) fail(`${ip}.untilFrame`, 'must be after atFrame');
+        if (it.kind === 'label') for (const key of ['w', 'h', 'strikeAtFrame', 'strikeFrames']) if (it[key] !== undefined) fail(`${ip}.${key}`, 'card only');
+        if (it.kind === 'card') for (const key of ['w', 'h']) if (it[key] !== undefined && (!finite(it[key]) || (it[key] as number) <= 0)) fail(`${ip}.${key}`, 'expected positive px');
+        if ((it.strikeFrames !== undefined) !== (it.strikeAtFrame !== undefined)) fail(`${ip}.strikeAtFrame`, 'strikeAtFrame and strikeFrames go together');
+      });
+    }
     if (finite(cue.labelAtSec)) {
       const next = (shots as Record<string, unknown>[])[j + 1]?.atSec;
       const end = finite(next) ? next : duration;
@@ -68,7 +85,7 @@ export function validateScenePainted(s: Record<string, unknown>, path: string, p
 }
 
 /** One painted cue on the composition clock. */
-export type PaintedSpan = {shot: string; startFrame: number; endFrame: number; fromFrame: number; dissolveFrames: number; label?: PaintedLabel; labelFrames: number; labelTop?: number; scene: number};
+export type PaintedSpan = {shot: string; startFrame: number; endFrame: number; fromFrame: number; dissolveFrames: number; label?: PaintedLabel; labelFrames: number; labelTop?: number; items?: PaintedItem[]; scene: number};
 
 /** Flatten every painted cue into composition frames; a cue ends at the next cue or its scene end. */
 export const paintedSpans = (timeline: Timeline, fps: number): PaintedSpan[] => {
@@ -88,6 +105,7 @@ export const paintedSpans = (timeline: Timeline, fps: number): PaintedSpan[] => 
         label: cue.label,
         labelFrames: Math.round((cue.labelAtSec ?? 0) * fps),
         ...(cue.labelTop !== undefined ? {labelTop: cue.labelTop} : {}),
+        ...(cue.items?.length ? {items: cue.items} : {}),
         scene: index,
       });
     });
@@ -97,7 +115,7 @@ export const paintedSpans = (timeline: Timeline, fps: number): PaintedSpan[] => 
 };
 
 /** A plate to paint this frame: `tl` on its shot clock (before the shot's own clock remap), plate and glow opacity. */
-export type PaintedPlate = {shot: string; tl: number; frame: number; alpha: number; overlayOpacity: number; label?: PaintedLabel; /** Slot-0 top in px (cue `labelTop`). */ labelTop?: number; /** A frame-0 plate laid by the C_seamless loop blend. */ incoming?: boolean};
+export type PaintedPlate = {shot: string; tl: number; frame: number; alpha: number; overlayOpacity: number; label?: PaintedLabel; /** Slot-0 top in px (cue `labelTop`). */ labelTop?: number; /** Positioned items of the cue (cue `items`). */ items?: PaintedItem[]; /** A frame-0 plate laid by the C_seamless loop blend. */ incoming?: boolean};
 export type PaintedState = {plates: PaintedPlate[]; opacity: number};
 
 const platesAt = (spans: PaintedSpan[], frame: number, fps: number): PaintedPlate[] => {
@@ -107,7 +125,7 @@ const platesAt = (spans: PaintedSpan[], frame: number, fps: number): PaintedPlat
   const plate = (s: PaintedSpan, alpha: number, overlayOpacity: number): PaintedPlate => {
     const f = frame - s.startFrame + s.fromFrame;
     const label = frame - s.startFrame >= s.labelFrames ? s.label : undefined;
-    return {shot: s.shot, tl: f / fps, frame: f, alpha, overlayOpacity, label, ...(label !== undefined && s.labelTop !== undefined ? {labelTop: s.labelTop} : {})};
+    return {shot: s.shot, tl: f / fps, frame: f, alpha, overlayOpacity, label, ...(label !== undefined && s.labelTop !== undefined ? {labelTop: s.labelTop} : {}), ...(s.items ? {items: s.items} : {})};
   };
   const prev = spans[k - 1];
   if (span.dissolveFrames > 0 && prev && prev.endFrame === span.startFrame && frame < span.startFrame + span.dissolveFrames) {

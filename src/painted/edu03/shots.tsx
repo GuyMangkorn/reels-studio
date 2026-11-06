@@ -11,6 +11,7 @@ import {PARK_LIGHT_B04} from './cast';
 import {DogView} from './dog-view-pass';
 import {dogMatrixValues} from './dogview';
 import {B04_OWNER_AT, B04_DOG_AT, camLF01, LF01_DOG_AT, VBALL_CAM} from './look';
+import type {AnimalPose} from '../kit/animals';
 import {BALL_R, paintPark, POS, T, type BallColor, type BallState, type DogState, type OwnerState, type ParkState} from './park';
 
 // EDU-EP03-SHORT shot plates (Boss W5.2; scene sheets SS-R3 under brief EDU-BRIEF-R2.1, scripts/edu-series/ep03/scenes/).
@@ -58,11 +59,13 @@ const eseg = (l: number, a: number, b: number) => ease(seg(l, a, b));
 const lerp3 = (a: V3, b: V3, u: number): V3 => [lin(a[0], b[0], u), lin(a[1], b[1], u), lin(a[2], b[2], u)];
 
 const RED: BallColor = 'red', BLUE: BallColor = 'blue';
+/** Owner's left hand at rest (on the knee) in B04-SH01/SH02, world m (measured from the pose hand, within 3 px). */
+const B04_HAND_REST: V3 = [-4.44, 0.267, -1.25];
 const B1: V3 = [-0.25, 0, -0.08], W: V3 = [-0.25, 0, -0.95], L1 = POS.L1, R0 = POS.R0, LANE_Z = -0.9;
 const ballAt = (v: V3, color: BallColor): BallState => ({at: [v[0], Math.max(BALL_R, v[1]), v[2]], color});
 
 /** `V-BALL` on its truck: camera-right metres `cr` from the LF02 position (index baseline). */
-const vball = (cr: number, push = 0): YCam => ({...VBALL_CAM, x: VBALL_CAM.x + 0.719 * cr + 0.695 * push, z: VBALL_CAM.z + 0.695 * cr - 0.719 * push});
+const vball = (cr: number, push = 0, yawDeg = 44): YCam => ({...VBALL_CAM, yaw: yawDeg * DEG, x: VBALL_CAM.x + 0.719 * cr + 0.695 * push, z: VBALL_CAM.z + 0.695 * cr - 0.719 * push});
 
 /** The thrown ball's last 26 frames before it settles (B02-SH02 / B06-SH02, shared): off-frame `L1` hit l 4, `B1` touch l 12, rest at `R0` l 26. */
 const ballLane = (l: number): V3 => {
@@ -140,26 +143,11 @@ const thoughtBubble = (p: Painter, seed: number, from: Pt, c: Pt, d: number, ope
   solid(p, seed + 17, '#767676', ell(...px(10, 52), 8 * s, 8 * s, 10), 3, 0.03, 0.08);
 };
 
-const THAI = {fontFamily: 'Noto Sans Thai', fontWeight: 700, color: '#fff', WebkitTextStroke: '6px #1d2129', paintOrder: 'stroke fill', textShadow: '0 3px 0 #1d2129'} as const;
-const popLabel = (text: string, x: number, y: number, k: number): ReactNode => k <= 0 ? null : (
-  <div key={text} lang="th" style={{position: 'absolute', left: x, top: y, transform: `translate(-50%,-50%) scale(${0.6 + 0.4 * ease(k)})`, opacity: clamp(k * 2), ...THAI, fontSize: 52, lineHeight: 1, whiteSpace: 'nowrap'}}>{text}</div>
-);
-/** Card `ขาวดำ` with its red strike (screen layers, never mapped). */
-const strikeCard = (cx: number, cy: number, w: number, h: number, show: number, strike: number): ReactNode => show <= 0 ? null : (
-  <div key="card" style={{position: 'absolute', left: cx - w / 2, top: cy - h / 2, width: w, height: h, transform: `scale(${0.8 + 0.2 * ease(show)})`, opacity: clamp(show * 3)}}>
-    <div style={{position: 'absolute', inset: 0, background: '#f7f4ec', border: '4px solid #1d2129', borderRadius: 10, display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
-      <span lang="th" style={{fontFamily: 'Noto Sans Thai', fontWeight: 800, fontSize: 56, color: '#1d2129', lineHeight: 1}}>ขาวดำ</span>
-    </div>
-    <svg width={w + 80} height={h + 80} style={{position: 'absolute', left: -40, top: -40}}>
-      {strike > 0 && <line x1={30} y1={h + 56} x2={30 + (w + 20) * strike} y2={h + 56 - (h + 32) * strike} stroke="#e61b1b" strokeWidth={12} strokeLinecap="round" />}
-    </svg>
-  </div>
-);
-
 // ------------------------------------------------------------------------------------------------------------ owner / dog helpers
 const STAND_REL = (x: number, y: number): [number, number] => [x, y];
 /** Arm reaching a point in metres from the shoulder (screen right +x, up +y), elbow `via` below/outside. */
 const armM = (to: [number, number], via: [number, number]) => ({to: STAND_REL(...to), via: STAND_REL(...via)});
+const CUT = 77;
 const dogRun = (view: 'left' | 'right' | 'front', l: number, wag = 0.6): DogState['pose'] => ({view, state: 'stand', gait: 'run', walk: l * 0.55, stride: 1, wag, mouth: 'open'});
 
 // ------------------------------------------------------------------------------------------------------------ specs
@@ -257,8 +245,7 @@ const SPECS: Record<Edu3ShotId, (l: number) => Spec> = {
       extra: (p) => {
         chalkBubble(p, 70000, [343, 576], [530, 390], 240, 3, b1, [seg(l, 50, 54), seg(l, 60, 64), seg(l, 70, 74)]);
         chalkBubble(p, 70200, [813, 765], [830, 470], 240, 2, b2, [seg(l, 112, 116), seg(l, 120, 124)]);
-      },
-      screen: <>{popLabel('คน: 3 แบบ', 560, 540, seg(l, 78, 84))}{popLabel('หมา: 2 แบบ', 830, 310, seg(l, 123, 129))}</>};
+      }};
   },
   // B04-SH02 (LF03): thought bubble, card, strike, pop, wag + ruffle, flip back l 172-186 (radial from the dog's head).
   'S01-B04-SH02': (l) => {
@@ -266,31 +253,36 @@ const SPECS: Record<Edu3ShotId, (l: number) => Spec> = {
     const cam = orbitYCam(T.TWO, lin(1.8, 1.4, e), lin(-5, 5, e) * DEG, 0.9, 1000, 700);
     const ruffleIn = eseg(l, 118, 130) * (1 - eseg(l, 150, 160)), stroke = ruffleIn * Math.sin(((l - 130) / 10) * Math.PI) * 0.05 * (l > 130 && l < 150 ? 1 : 0);
     const owner: OwnerState = {at: B04_OWNER_AT, pose: 'P34', face: 'happy', light: PARK_LIGHT_B04, warm: 0, faceKey: true};
-    if (ruffleIn > 0) { owner.lArm = {reach: [B04_DOG_AT[0] - 0.02 + stroke, 0.84, B04_DOG_AT[2] + 0.05], out: 1}; owner.lean = 0.3 * ruffleIn; }
+    if (ruffleIn > 0) {
+      // The hand leaves its rest (on the knee, B04_HAND_REST) in an arc to the skull top (y 0.745 = head top 0.76 less the finger overlap), then strokes along it
+      // (dome: y drops 3.2 stroke^2); owner drawn after the dog so the palm is visible on the head. Hand-to-head-top 6-45 px (11-17 at rest) at 1080 wide, no hover.
+      const k = ruffleIn, head: V3 = [B04_DOG_AT[0] - 0.06 + stroke, 0.745 - 3.2 * stroke * stroke, B04_DOG_AT[2] + 0.05];
+      owner.lArm = {reach: [lin(B04_HAND_REST[0], head[0], k), lin(B04_HAND_REST[1], head[1], k) + 0.12 * Math.sin(Math.PI * k), lin(B04_HAND_REST[2], head[2], k)], out: 1};
+      owner.lean = 0.3 * ruffleIn; owner.bias = -1;
+    }
     const dog: DogState = {at: B04_DOG_AT, pose: {view: 'front', state: 'sit', wag: l >= 114 ? 1 : 0.5, mouth: 'open'}};
     const bubble = l < 104 ? eseg(l, 10, 20) : 0, fadeOld = 1 - seg(l, 0, 8);
-    const card = l < 104 ? seg(l, 40, 46) : 0, strike = seg(l, 84, 94);
     const sw = sweepOut(870, 760, eseg(l, 172, 186), farCorner(870, 760));
     return {cam, ...sw, tag: true, st: {t: l / FPS, owner, dog, balls: []},
       extra: (p) => {
         if (fadeOld > 0) chalkBubble(p, 70000, [343, 576], [530, 390], 240, 3, fadeOld, [1, 1, 1]);
         thoughtBubble(p, 71000, [870, 650], [600, 400], 300, bubble);
-      },
-      screen: <>{l < 104 ? strikeCard(600, 420, 220, 90, card, strike) : null}</>};
+      }};
   },
   // B05-SH01 `V-BALL` 3/4, normal colour: nose-trail to R0, pick-up, sit, thump.
   'S01-B05-SH01': (l) => {
     const cam = vball(lin(0, -0.2, l / 142));
     const trail = seg(l, 0, 56), wob = Math.sin(l * 0.52) * 0.04;
-    const at: V3 = l < 56 ? [lin(2.4, 0.4, trail), 0, lin(-0.8, -0.05, trail) + wob] : [0.4, 0, -0.05];
+    // The nose stops at the ball (dog 0.25 m past its old stop, so the pick-up needs no slide), then settles back to the old sit spot x 0.4 while the head comes up (l 66-84).
+    const stopX = lin(0.65, 0.4, eseg(l, 66, 84));
+    const at: V3 = l < 56 ? [lin(2.4, 0.65, trail), 0, lin(-0.8, -0.05, trail) + wob] : [stopX, 0, -0.05];
     const sit = eseg(l, 80, 96);
-    const hasBall = l >= 64;
+    const hasBall = l >= 62;
     const lift = eseg(l, 66, 74);
     const pose: DogState['pose'] = l < 56 ? {view: 'left', state: 'stand', sniff: 0.95, walk: l * 0.18, stride: 0.5, gait: 'walk', wag: 0}
       : l < 80 ? {view: 'left', state: 'stand', sniff: lin(0.95, 0.1, lift), wag: 0.2, mouth: l >= 62 ? 'closed' : 'open'}
       : {view: 'left', state: 'sit', from: 'stand', blend: sit, wag: l >= 96 ? 0.6 + 0.4 * (Math.sin(l * 0.8) > 0 ? 1 : 0) : 0.2, mouth: 'open'};
-    const mouthOff: V3 = l < 80 ? [lin(-0.34, -0.62, lift), lin(0.1, 0.52, lift), 0] : [-0.52, 0.62, 0];
-    return {cam, st: {t: l / FPS, dog: {at, pose, ...(hasBall ? {mouth: {color: RED, off: mouthOff}} : {})}, balls: hasBall ? [] : [ballAt(R0, RED)]}};
+    return {cam, st: {t: l / FPS, dog: {at, pose, ...(hasBall ? {mouth: {color: RED, off: [0, 0, 0], track: true, nudge: [0, 0], from: {at: [R0[0], BALL_R, R0[2]], k: eseg(l, 62, 69)}}} : {})}, balls: hasBall ? [] : [ballAt(R0, RED)]}};
   },
   // B06-SH01: bag flap, blue ball out, overhand throw; red ball stays in the left hand.
   'S01-B06-SH01': (l) => {
@@ -312,20 +304,41 @@ const SPECS: Record<Edu3ShotId, (l: number) => Spec> = {
   },
   // B06-SH02 `V-BALL` 4/4: sweep to dog view l 0-10 (tag on), blue ball lane, dog on the miss lane, turn at W, straight to the ball, pick-up, bark, flip back l 106-115.
   'S01-B06-SH02': (l) => {
-    const cam = vball(lin(-0.25, 0, l / 115));
-    const sweep = l < 11 ? sweepIn(0, 760, eseg(l, 0, 10), farCorner(0, 760)) : l >= 106 ? sweepOut(300, 700, eseg(l, 106, 115), farCorner(300, 700)) : {dog: true};
+    // Nodal pan (SS-R3.2): 44 deg (l 0-34, identical to B02-SH02) -> 20 (l 34-54) -> hold -> 30 (l 58-80) -> hold. `cr` unchanged.
+    const yawDeg = l < 34 ? 44 : l < 58 ? lin(44, 20, eseg(l, 34, 54)) : lin(20, 30, eseg(l, 58, 80));
+    const cam = vball(lin(-0.25, 0, l / 115), 0, yawDeg);
+    const sweep = l < 11 ? sweepIn(0, 760, eseg(l, 0, 10), farCorner(0, 760)) : l >= 106 ? sweepOut(550, 450, eseg(l, 106, 115), farCorner(550, 450)) : {dog: true};
     const P: V3 = [0.04, 0, -0.42];
     let dog: DogState | undefined;
     if (l >= 34) {
-      // lane run to W (reached l 42, 5 m/s), then the straight leg W -> P, decelerating, stopped l 60
-      if (l < 42) dog = {at: [W[0] - (42 - l) * 0.167, 0, LANE_Z - 0.0], pose: dogRun('right', l)};
-      else if (l < 60) { const k = 1 - Math.pow(1 - (l - 42) / 18, 2); dog = {at: lerp3(W, P, k), pose: dogRun('front', l, 0.6)}; }
-      else if (l < 64) dog = {at: P, pose: {view: 'front', state: 'stand', sniff: 0.5, wag: 0.3, mouth: 'open'}};
-      else if (l < 76) dog = {at: P, pose: {view: 'front', state: 'stand', sniff: lin(0.5, 0, eseg(l, 64, 76)), wag: 0.3, mouth: 'closed'}};
-      else dog = {at: P, pose: {view: 'front', state: 'stand', wag: l >= 92 ? 1 : 0.3, mouth: l >= 92 && l < 98 ? 'open' : 'closed'}};
-      if (dog && l >= 70) dog = {...dog, mouth: {color: BLUE, off: [-0.05, lin(0.2, 0.52, eseg(l, 70, 80)), 0.22]}};
+      // Launch from D0 at l 34 (accelerate l 34-46, cruise l 46-56, constant deceleration l 56-75, stop at P); path s(l) 0.99 / 2.64 / 4.21 m.
+      const T1 = 12 / FPS, T2 = 10 / FPS, T3 = 19 / FPS, D = 3.6 + Math.hypot(P[0] - W[0], P[2] - W[2]);
+      const v = D / (0.5 * T1 + T2 + 0.5 * T3);
+      const t = (l - 34) / FPS;
+      const s = t <= T1 ? 0.5 * v * t * t / T1 : t <= T1 + T2 ? 0.5 * v * T1 + v * (t - T1) : t <= T1 + T2 + T3 ? 0.5 * v * T1 + v * T2 + v * (t - T1 - T2) - 0.5 * v * (t - T1 - T2) ** 2 / T3 : D;
+      const at: V3 = s < 3.6 ? lerp3(POS.D0, W, s / 3.6) : lerp3(W, P, (s - 3.6) / (D - 3.6));
+      // gait clock follows distance (about 1.5 m per stride); frame-rate independent, no skating drift
+      const walk = (s / 1.5) * 0.561;
+      const brake = eseg(l, 68, 75);
+      // Profile gallop to l 62; the 3/4 kit view (`quarter`) takes over with a 3-f dissolve (l 61-64) and keeps turning toward the lens (0.12 -> 0.62 by l 68) while it
+      // runs, then brakes l 68-75 (forelegs braced wide and forward, chest dip), eases to head-on l 72-77 and dissolves into the existing sniff pose l 74-81 (7 f, head tops glided together: `fade.align`).
+      const prof: AnimalPose = {view: 'right', state: 'stand', gait: 'run', walk, stride: 1, wag: 0.6, mouth: 'open'};
+      const q3 = (): AnimalPose => ({view: 'right', state: 'stand', gait: 'run', walk, stride: 1 - 0.85 * brake, quarter: 0.12 + 0.5 * eseg(l, 62, 68) + 0.38 * eseg(l, 72, 77), brake: brake * (1 - 0.35 * eseg(l, 75, 80)), wag: 0.6, mouth: 'open'});
+      const q3At = (k: number): AnimalPose => ({view: 'right', state: 'stand', gait: 'run', walk, stride: 1 - 0.85 * brake, quarter: 0.12 + 0.5 * eseg(k, 62, 68) + 0.38 * eseg(k, 72, 77), brake: brake * (1 - 0.35 * eseg(k, 75, 80)), wag: 0.6, mouth: 'open'});
+      if (l <= 61) dog = {at, pose: prof};
+      else if (l < 64) dog = {at, pose: prof, fade: {to: q3(), a: (l - 61) / 3}};
+      else if (l < CUT) dog = {at, pose: q3()};
+      else {
+        // No cross-fade (two brush-drawn views double): a hard cut at l CUT, where the 3/4 view has just reached head-on and the front sniff's head top is nearest; the sniff
+        // is drawn with its head top on the 3/4 view's at the cut and glides home over l CUT-CUT+6. The 3/4 pose is held at its l CUT-1 state for the reference.
+        const lift = eseg(l, 87, 93);
+        const front: AnimalPose = {view: 'front', state: 'stand', sniff: 0.5 * (1 - lift), wag: l >= 96 ? 1 : 0.3, mouth: l >= 96 && l < 102 ? 'open' : 'closed'};
+        dog = {at: P, pose: front, match: {ref: q3At(CUT - 1), k: eseg(l, CUT, CUT + 6), bias: [35, 0]}};
+        // Pick-up: the ball rides from the ground to the muzzle over l 77-83 (in the mouth l 83), then stays on the jaw front, nose above it.
+        if (l >= 77) dog = {...dog, mouth: {color: BLUE, off: [0, 0, 0], track: true, nudge: [0, -0.12], scale: 0.9, from: {at: [R0[0], BALL_R, R0[2]], k: eseg(l, 77, 83)}}};
+      }
     }
-    const blue = l >= 70 ? [] : [ballAt(ballLane(Math.min(l, 26)), BLUE)];
+    const blue = l >= 77 ? [] : [ballAt(ballLane(Math.min(l, 26)), BLUE)];
     return {cam, ...sweep, tag: true, st: {t: l / FPS, dog, balls: blue}};
   },
   // B07-SH01: the hook's camera in reverse, ease-out to B01-SH01 c 0 (yaw -24, r 1.90, hy 660), then a live hold. Normal colour, no tag.
@@ -334,7 +347,7 @@ const SPECS: Record<Edu3ShotId, (l: number) => Spec> = {
     const cam = orbitYCam(T.TWO, lin(1.7, 1.9, e), lin(-32, -24, e) * DEG, 1.2, 1100, lin(640, 660, e));
     return {cam, st: {t: l / FPS,
       owner: {held: RED, pose: 'P11', face: l >= 84 ? 'happy' : 'neutral', holdK: lin(0.34, 0.2, e), headCock: lin(0, 8, eseg(l, 10, 40)) * (1 - eseg(l, 110, 150))},
-      dog: {at: POS.D0, pose: {view: 'front', state: 'sit', wag: 0.7, mouth: 'closed'}, mouth: {color: BLUE, off: [-0.2, 0.72, 0.26]}}, balls: []}};
+      dog: {at: POS.D0, pose: {view: 'front', state: 'sit', wag: 0.7, mouth: 'closed'}, mouth: {color: BLUE, off: [0, 0, 0], track: true, nudge: [0, -0.12], scale: 0.9}}, balls: []}};
   },
 };
 

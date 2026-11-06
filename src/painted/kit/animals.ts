@@ -28,6 +28,19 @@ export type AnimalPose = {
   walk?: number; gait?: AnimalGait; stride?: number; sniff?: number; wag?: number; mouth?: 'closed' | 'open';
   /** Opt-in (EDU-EP03 `dog-front-sniff-low`): front view with `sniff` > 0 draws the head-low sniff (head down between splayed forelegs, rump raised behind, eyes high in a foreshortened head) instead of the head sliding down the chest. */
   headLow?: boolean;
+  /**
+   * Opt-in (EDU-EP03 B06-SH02): front view, `state` 'stand', 0..1 draws a dog charging at the lens: chest low and forward, rump raised behind,
+   * forelegs reaching alternately on the `walk` clock (`gait`, `stride` scales the reach); `stride` -> 0 braces the forelegs wide and straight
+   * (braking). 0 = the normal front pose. `yaw` 0..1 turns the charge pose three-quarter (head and chest toward +x, rump trailing to -x), the
+   * bridge between a profile run and the straight-on charge.
+   */
+  charge?: number; yaw?: number;
+  /**
+   * Opt-in (EDU-EP03 B06-SH02): the front-three-quarter view of a stand/run dog (`view` 'left'/'right' = the side it heads to). `quarter` 0..1 is the body's turn from
+   * the picture plane toward the lens (0 = profile layout, 1 = 80 deg, nearly head-on): near and far legs offset in depth, the head turned and foreshortened to match,
+   * the tail attached to the rump. Uses `walk`/`gait`/`stride` for the run. `brake` 0..1 skids it: chest dip, forelegs braced wide and slid forward, hind legs trailing.
+   */
+  quarter?: number; brake?: number;
 };
 export type AnimalGait = 'walk' | 'run';
 
@@ -195,6 +208,13 @@ const fluff = (pts: UV[], amp: number, id: number): UV[] => {
     return [q, [m[0] + (dx / d) * k, m[1] + (dy / d) * k]];
   });
 };
+/** Convex hull (monotone chain) of a point cloud: one silhouette for two overlapping body ellipses. */
+const hull = (pts: UV[]): UV[] => {
+  const q = [...pts].sort((a, b) => a[0] - b[0] || a[1] - b[1]);
+  const cross = (o: UV, a: UV, b: UV) => (a[0] - o[0]) * (b[1] - o[1]) - (a[1] - o[1]) * (b[0] - o[0]);
+  const half = (arr: UV[]) => { const h: UV[] = []; for (const x of arr) { while (h.length >= 2 && cross(h[h.length - 2], h[h.length - 1], x) <= 0) h.pop(); h.push(x); } h.pop(); return h; };
+  return [...half(q), ...half([...q].reverse())];
+};
 const rotAbout = (o: UV, a: number) => ([u, v]: UV): UV => [o[0] + (u - o[0]) * Math.cos(a) - (v - o[1]) * Math.sin(a), o[1] + (u - o[0]) * Math.sin(a) + (v - o[1]) * Math.cos(a)];
 
 /** Tail centrelines in shoulder heights from the tail root, for stand / sit / lie. */
@@ -207,11 +227,14 @@ const TAILS: Record<AnimalDef['tail'], {stand: UV[]; sit: UV[]; lie: UV[]; w: [n
   cat: {stand: [[0, 0], [-0.16, 0], [-0.3, 0.08], [-0.38, 0.26], [-0.36, 0.46], [-0.28, 0.54]], sit: [[0, 0], [0, -0.16], [0.14, -0.26], [0.34, -0.28], [0.5, -0.24]], lie: [[0, 0], [-0.18, -0.06], [-0.36, -0.08], [-0.5, -0.02], [-0.56, 0.08]], w: [0.09, 0.06]},
 };
 
+/** Optional out-parameter of `drawAnimal`: picture points (px) of the posed animal, written while it paints. `mouth` = where a carried ball sits (bottom-front of the muzzle; profile and front views), a pure function of the pose and clock (head bob, sniff, sit blend). */
+export type AnimalAnchors = {mouth?: Pt; /** Top of the skull (between the ears), for a hand that pats the head. */ top?: Pt};
+
 /**
  * Paints one animal. `g` ground point (px) under the body centre, `unit` px per metre, `pose` view/state/walk/wag/mouth,
  * `t` the plate clock (breathing, blink, cat tail sway). Pure function of its arguments.
  */
-export const drawAnimal = (p: Painter, seed: number, def: AnimalDef, g: Pt, unit: number, pose: AnimalPose, t: number) => {
+export const drawAnimal = (p: Painter, seed: number, def: AnimalDef, g: Pt, unit: number, pose: AnimalPose, t: number, anchors?: AnimalAnchors) => {
   const s = def.height * unit, isCat = def.kind === 'cat';
   const state = pose.state ?? 'stand';
   const dir = pose.view === 'left' ? -1 : 1;
@@ -274,6 +297,7 @@ export const drawAnimal = (p: Painter, seed: number, def: AnimalDef, g: Pt, unit
     const tip: UV = isCat ? add(H, [0.23 * hs, -0.04 * hs]) : add(H, [(0.12 + 0.22 * mz) * hs, -0.04 * hs]);
     fill(isCat ? '#d98a8a' : '#2a2224', ellUV(tip, (isCat ? 0.025 : 0.04) * hs, (isCat ? 0.02 : 0.035) * hs, 0, 10), 4);
     const mouthY = isCat ? -0.11 : -0.1;
+    if (anchors) { anchors.mouth = Q([add(tip, [-0.06 * hs, -0.06 * hs])])[0]; anchors.top = Q([add(H, [0, 0.18 * hs])])[0]; }
     if (pose.mouth === 'open') {
       const m0 = add(tip, [-0.02 * hs, (mouthY + 0.04) * hs]);
       fill('#5a2a2a', [m0, add(m0, [-0.12 * hs, -0.02 * hs]), add(m0, [-0.04 * hs, -0.08 * hs])], 4);
@@ -317,6 +341,7 @@ export const drawAnimal = (p: Painter, seed: number, def: AnimalDef, g: Pt, unit
     if (points) fill(dark, ellUV([H[0], H[1] - 0.02 * hs], 0.14 * hs, 0.13 * hs), 3);
     if (mzC !== coat || !isCat) part(mzC, ellUV(M, (def.feathered ? 0.9 : 1) * mzW * hs, (isCat ? 0.06 : def.feathered ? 0.115 : 0.08) * hs));
     const nose: UV = [M[0], M[1] + (def.feathered ? 0.072 : 0.03) * hs];
+    if (anchors) { anchors.mouth = Q([[M[0], M[1] - 0.02 * hs]])[0]; anchors.top = Q([[H[0], H[1] + 0.19 * hs]])[0]; }
     fill(isCat ? '#d98a8a' : '#2a2224', isCat ? [[nose[0] - 0.025 * hs, nose[1] + 0.01 * hs], [nose[0] + 0.025 * hs, nose[1] + 0.01 * hs], [nose[0], nose[1] - 0.015 * hs]] : ellUV(nose, 0.045 * hs, 0.03 * hs, 0, 10), 4);
     if (pose.mouth === 'open') {
       fill('#5a2a2a', ellUV([M[0], M[1] - 0.05 * hs], 0.05 * hs, 0.035 * hs, 0, 10), 4);
@@ -401,6 +426,75 @@ export const drawAnimal = (p: Painter, seed: number, def: AnimalDef, g: Pt, unit
   const sniff = clamp(pose.sniff ?? 0);
   const paw = (c: string, at: UV, isFar: boolean) => leg(isFar ? far : def.pattern === 'tuxedo' ? light : c, ellUV(add(at, [0.04, 0.03]), 0.075, 0.04, 0, 12));
 
+
+  // ------------------------------------------------------------------------------------- front three-quarter (stand / run / brake)
+  if (!front && pose.quarter !== undefined && state === 'stand' && !pose.from && !isCat) {
+    // Plan (forward u, lateral l, height v) -> picture: the body turns by `th` from the picture plane toward the lens; nearer points sit lower (K).
+    const th = (clamp(pose.quarter) * 80 * Math.PI) / 180, cT = Math.cos(th), sT = Math.sin(th), K = 0.2;
+    const P = (u: number, l: number, v: number): UV => [u * cT - l * sT, v - K * (u * sT + l * cT)];
+    const b = ease01(pose.brake ?? 0), R3 = profRig('stand');
+    const hip: UV = [R3.hip[0], R3.hip[1] - 0.06 * b], sh: UV = [R3.sh[0] + 0.04 * b, R3.sh[1] - 0.24 * b];
+    const cH = P(hip[0], 0, hip[1]), cS = P(sh[0], 0, sh[1]);
+    const body = fluff(hull([...ellUV(cH, (0.2 * cT + 0.27 * sT) * def.build, 0.26 * def.build, 0, 20), ...ellUV(cS, (0.2 * cT + 0.29 * sT) * def.build, 0.28 * def.build, 0, 20)]), def.fluffy ? 0.03 : 0, seed + 7);
+    // Legs: the profile run/stand control points, braced variants blended by `brake`, spread to either side of the body axis.
+    const foreBrace = (sd: number): UV[] => [add(sh, [0.02, -0.12]), [sh[0] + 0.3, 0.34], [sh[0] + 0.5, 0.1], [sh[0] + 0.58 + 0.02 * sd, 0]];
+    const hindBrace: UV[] = [add(hip, [0.04, -0.1]), [hip[0] + 0.16, 0.42], [hip[0] - 0.02, 0.18], [hip[0] - 0.08, 0]];
+    const legPts = (gal: UV[], isFront: boolean, sd: number): UV[] => gal.map((g0, i): UV => {
+      const t = i / 3, bp = isFront ? foreBrace(sd)[i] : hindBrace[i];
+      const m = lerpUV(g0, bp, b), l = sd * ((isFront ? 0.13 + 0.24 * b * t : 0.15 + 0.04 * b * t));
+      return P(m[0], l, m[1]);
+    });
+    const drawLeg = (pts: UV[], isFront: boolean, isFar: boolean) => {
+      const sm = smoothLine(pts, 4), w0 = isFront ? [0.17, 0.12, 0.09, 0.085] : [0.24, 0.14, 0.09, 0.085];
+      leg(isFar ? far : limbC, tube(sm, sm.map((_, i) => { const x = (i / (sm.length - 1)) * 3, a = Math.min(2, Math.floor(x)); return w0[a] + (w0[a + 1] - w0[a]) * (x - a); })));
+      leg(isFar ? far : limbC, ellUV(add(pts[3], [0.03, 0.03]), 0.08, 0.045, 0, 14));
+    };
+    const farHind = legPts(R3.fb, false, -1), farFore = legPts(R3.ff, true, -1), nearHind = legPts(R3.nb, false, 1), nearFore = legPts(R3.nf, true, 1);
+    drawLeg(farHind, false, true);
+    drawLeg(farFore, true, true);
+    const rawTail = tailLine([hip[0] - 0.2, hip[1] + 0.08], 'stand');
+    tail(rawTail.map(([u, v]): UV => P(u, 0, v)));
+    part(coat, body);
+    if (def.pattern === 'chest' || def.pattern === 'tuxedo') fill(light, ellUV(add(cS, [0.1 * cT, -0.02]), (0.1 + 0.07 * sT) * def.build, 0.2 * def.build, 0, 16), 4);
+    part(coat, ellUV(P(hip[0] + 0.02, 0.1, hip[1] - 0.02), 0.2 * def.build, 0.22 * def.build, 0, 16), true);
+    drawLeg(nearHind, false, false);
+    // Neck and head: the head follows the body's heading, so its turn from the lens is 90 deg minus the body's.
+    const headPlan: UV = [sh[0] + 0.34 - 0.04 * b, sh[1] + 0.4 + 0.02 * b];
+    const Hq = P(headPlan[0], 0, headPlan[1]);
+    if (anchors) anchors.top = Q([[Hq[0], Hq[1] + 0.185 * hs]])[0];
+    part(coat, tube([P(sh[0] + 0.06, 0, sh[1] + 0.1), add(Hq, [-0.03 * hs * cT, -0.08 * hs])], [0.3 * def.build, 0.26 * hs]));
+    drawLeg(nearFore, true, false);
+    const psi = Math.PI / 2 - th, c = Math.cos(psi), sn = Math.sin(psi), w = psi / (Math.PI / 2);
+    const earLine = (farEar: boolean): UV[] => {
+      const F: [UV, UV] = farEar ? [[0.15, 0.12], [0.23, -0.12]] : [[-0.15, 0.12], [-0.23, -0.12]], S: [UV, UV] = farEar ? [[0.04, 0.12], [0.05, -0.1]] : [[-0.04, 0.12], [-0.11, -0.14]];
+      return F.map((f, i): UV => [Hq[0] + (f[0] * (1 - w) + S[i][0] * w) * hs * (farEar ? c : 1), Hq[1] + (f[1] * (1 - w) + S[i][1] * w) * hs]);
+    };
+    const ear = (farEar: boolean): UV[] => { const [a, b2] = earLine(farEar); return tube(resample([a, lerpUV(a, b2, 0.5), b2], 6), [0.1 * hs, 0.15 * hs, 0.17 * hs, 0.17 * hs, 0.15 * hs, 0.1 * hs]); };
+    if (c > 0.3) part(mixColor(coat, '#3a2a40', 0.22), ear(true), false, true);
+    part(coat, ellUV([Hq[0] + 0.01 * hs * sn, Hq[1]], 0.205 * hs, 0.185 * hs, 0, 24));
+    const A: UV = [Hq[0] + 0.03 * hs * sn, Hq[1] - (0.03 + 0.03 * c) * hs], T: UV = [Hq[0] + (0.08 + 0.22 * def.muzzle) * 1.1 * hs * sn, Hq[1] - (0.05 + 0.05 * c) * hs];
+    const mzC = def.pattern === 'solid' ? coat : light;
+    part(mzC, ellUV([(A[0] + T[0]) / 2, (A[1] + T[1]) / 2], Math.hypot(T[0] - A[0], T[1] - A[1]) / 2 + 0.1 * hs, (0.098 + 0.02 * c) * hs, Math.atan2(T[1] - A[1], T[0] - A[0]), 22));
+    const nose: UV = [T[0], T[1] + 0.03 * hs * c];
+    if (pose.mouth === 'open') {
+      fill('#5a2a2a', ellUV([nose[0] - 0.01 * hs * sn, nose[1] - (0.07 + 0.01 * c) * hs], 0.05 * hs, 0.032 * hs, 0, 10), 4);
+      part('#e0707a', tube([[nose[0] - 0.01 * hs * sn, nose[1] - 0.07 * hs], [nose[0] - 0.02 * hs * sn, nose[1] - 0.17 * hs]], [0.07 * hs, 0.06 * hs]));
+    }
+    fill('#2a2224', ellUV(nose, (0.036 + 0.01 * c) * hs, 0.03 * hs, 0, 10), 4);
+    if (pose.mouth !== 'open') ink([add(nose, [0, -0.025 * hs]), add(nose, [-0.03 * hs, -0.07 * hs]), add(nose, [-0.1 * hs * sn - 0.03 * hs, -0.07 * hs])], INK, 1.0, false, 0.4);
+    for (const sd of [-1, 1]) {
+      if (sd > 0 && c < 0.2) continue;
+      const E: UV = [Hq[0] + hs * (sd * 0.085 * c + 0.06 * sn), Hq[1] + (0.04 + 0.01 * c) * hs], k = sd > 0 ? 0.5 + 0.5 * c : 1;
+      if (blink) ink([[E[0] - 0.035 * hs * k, E[1]], [E[0] + 0.035 * hs * k, E[1]]], INK, 1.2, false, 0);
+      else {
+        fill(INK, ellUV(E, 0.032 * hs * k, 0.03 * hs, 0, 10), 5);
+        fill('#fbf7ee', ellUV([E[0] + 0.01 * hs * k, E[1] + 0.01 * hs], 0.009 * hs, 0.009 * hs, 0, 6), 3);
+      }
+    }
+    part(coat, ear(false), true);
+    return;
+  }
+
   // ------------------------------------------------------------------------------------------------------------- profile
   if (!front) {
     const wR = (isCat ? 0.4 : 0.44) * def.build * breathe, wC = (isCat ? 0.38 : 0.5) * def.build * breathe;
@@ -460,6 +554,40 @@ export const drawAnimal = (p: Painter, seed: number, def: AnimalDef, g: Pt, unit
 
   // --------------------------------------------------------------------------------------------------------------- front
   const R = lerpRig(frontRig(from), frontRig(state), u);
+  if (pose.charge && state === 'stand' && !pose.from && !isCat) {
+    // Charging / braking at the lens: low chest, rump high behind, forelegs reach alternately (or brace wide when `stride` is low).
+    const c = ease01(pose.charge), yaw = clamp(pose.yaw ?? 0), brace = 1 - amp, a = 2 * Math.PI * ph;
+    const bob = moving ? 0.025 * amp * Math.sin(2 * a) : 0;
+    const chest: UV = lerpUV(R.chest, [yaw * 0.16, 0.6 - 0.05 * brace + bob], c);
+    const chestR: UV = lerpUV(R.chestR, [(0.3 + 0.03 * brace) * def.build, 0.28], c);
+    const Hc: UV = lerpUV(R.H, [yaw * 0.4, 0.98 - 0.12 * brace + bob], c);
+    const rumpC: UV = [-yaw * 0.4 - 0.02, 0.9 + 0.04 * brace + bob * 0.5];
+    const hindPh = (sd: number) => (moving ? amp * Math.max(0, Math.sin(a + (sd > 0 ? 0.35 : 0.35 + Math.PI))) : 0);
+    // Hind legs behind the rump (paws at its bottom corners, lifting on the clock), then the rump itself.
+    for (const sd of [-1, 1]) {
+      const x = rumpC[0] + sd * 0.2, h = hindPh(sd) * 0.12;
+      leg(far, tube(resample([[x, rumpC[1] - 0.1], [x + sd * 0.03, 0.36 + h * 0.5], [x + sd * 0.02, 0.05 + h]], 5), [0.2, 0.15, 0.11, 0.1, 0.1]));
+      paw(limbC, [x + sd * 0.02 - 0.04, h], true);
+    }
+    part(coat, ellUV(rumpC, 0.3 * def.build, 0.26, 0, 22), true);
+    const tl = tailLine([rumpC[0] + 0.1, rumpC[1] + 0.1], 'stand');
+    tail(tl);
+    part(coat, tube([[chest[0] * 0.6, chest[1] + chestR[1] * 0.4], [Hc[0] * 0.95, Hc[1] - 0.1 * hs]], [0.32 * def.build, 0.27 * hs]), !def.feathered);
+    for (const sd of [-1, 1]) {
+      const reach = moving ? Math.sin(a + (sd > 0 ? 0.9 : 0.9 + Math.PI)) : 0;
+      const lift = amp * Math.max(0, reach) * 0.16;
+      const splay = 0.17 + 0.03 * amp * reach + 0.17 * brace * c;
+      const top: UV = [chest[0] + sd * 0.14, chest[1] + 0.02];
+      const paw0: UV = [chest[0] + sd * splay, lift];
+      const knee: UV = [(top[0] + paw0[0]) / 2 + sd * 0.02, (top[1] + paw0[1]) / 2 + 0.02];
+      leg(limbC, tube(resample([top, knee, paw0], 6), [0.16, 0.12, 0.098, 0.085, 0.08, 0.088]));
+      leg(limbC, ellUV(add(paw0, [sd * 0.008, 0.032]), 0.085 + 0.012 * (1 - brace) * Math.max(0, reach), 0.05, 0, 14));
+    }
+    part(coat, ellUV(chest, chestR[0], chestR[1], 0, 28));
+    if (def.pattern === 'chest' || def.pattern === 'tuxedo') fill(light, ellUV([chest[0], chest[1] + 0.02], chestR[0] * 0.5, chestR[1] * 0.75, 0, 16), 4);
+    headFront(Hc, 0.5 * c);
+    return;
+  }
   const lowFront = !!pose.headLow && sniff > 0;
   if (lowFront) {
     // Head-low sniff: shoulders dip, forelegs splay and bend forward, head drops between them, rump stays high.
