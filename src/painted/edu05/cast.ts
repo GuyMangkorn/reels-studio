@@ -21,6 +21,7 @@ const bob = PEOPLE['woman-bob'];
 /** `new: morning-pyjamas`: pastel blue short-sleeve shirt with white piping (v collar), matching knee shorts, bare feet. */
 export const TINY: CastDef = {
   ...bob,
+  head: {...bob.head, sideDetail: true}, // profile eye detail + bob bangs (kit 9173a74)
   outfit: {
     shoulder: bob.outfit.shoulder, shirt: PYJAMA, sleeve: PYJAMA, longSleeves: false, pants: '#9cbde0',
     shoes: bob.head.skin, shorts: {sock: bob.head.skin},
