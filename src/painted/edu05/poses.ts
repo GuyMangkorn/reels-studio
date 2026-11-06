@@ -40,8 +40,8 @@ export const namedPose = (name: NamedPose, L: number, def: CastDef, g: Pt, u: nu
     }
     case 'brace-heave': { // profile pull, lean away 15-20 deg, the far hand clamps the near forearm on each heave
       const h = pulse(L, 12);
-      body = {crouch: 0.15, lean: -(0.26 + 0.08 * h), walk: 0.25, stride: 0.5};
-      r = {to: [0.3 + 0.03 * h, -0.02], via: [0.14, -0.1]}; l = {to: [0.27 + 0.03 * h, -0.03], via: [0.12, -0.12]};
+      body = {crouch: 0.15, lean: -(0.24 + 0.14 * h), walk: 0.25, stride: 0.5};
+      r = {to: [0.3 + 0.07 * h, -0.02 - 0.06 * h], via: [0.14, -0.1]}; l = {to: [0.27 + 0.07 * h, -0.03 - 0.06 * h], via: [0.12, -0.12]};
       break;
     }
     case 'nibble': { // both hands flat on the crumb face, head forward 0.05 sm per bite

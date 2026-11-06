@@ -1,5 +1,5 @@
 import {Painted} from './look';
-import {paintDROP2, paintDROP3, paintANTW, paintDRIFT, paintFAC, paintFX, paintSPECK, paintDROP4, paintEDGE, paintPOSES, paintCRUMB} from './checks';
+import {paintDROP2, paintDROP3, paintANTW, paintDRIFT, paintFAC, paintFX, paintSPECK, paintDROP4, paintEDGE, paintPOSES, paintCRUMB, paintPUFF} from './checks';
 
 export {CHECK_FRAMES} from './checks';
 export const CHK_EDGE = () => <Painted paint={paintEDGE} />;
@@ -13,3 +13,4 @@ export const CHK_SPECK = () => <Painted paint={paintSPECK} />;
 export const CHK_DRIFT = () => <Painted paint={paintDRIFT} />;
 export const CHK_POSES = () => <Painted paint={paintPOSES} />;
 export const CHK_CRUMB = () => <Painted paint={paintCRUMB} />;
+export const CHK_PUFF = () => <Painted paint={paintPUFF} />;

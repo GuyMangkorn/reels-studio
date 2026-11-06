@@ -4,7 +4,9 @@ import type {V3} from '../kit/space';
 import {camOf, MACRO_CAMS} from './cams';
 import {edgeShade, paintGarden, shadeEdgeAt} from './garden';
 import {tinyItem} from './cast';
-import {NAMED_POSES, VIEW_OF} from './poses';
+import {namedPose, NAMED_POSES, VIEW_OF} from './poses';
+import {TINY} from './cast';
+import {paintPuff} from './scenes';
 import {antItem, antWalk, ANT_SPEED} from './ant';
 import type {FigAnchors} from '../kit/cast';
 import {camPoint, camUnit} from '../kit/ycam';
@@ -17,7 +19,7 @@ import type {Item} from './world';
 //   printf 'EDU5-CHK-EDGE 45 out/edu05/w52/g1/EDGE45.png\n' | node scripts/stills.mjs src/painted/edu05/check-index.ts
 // They show an element in its shot's camera and staging, not a finished shot (Editor assembles those).
 
-export const CHECK_FRAMES = {EDGE: 90, DROP2: 87, DROP3: 119, DROP4: 133, ANTW: 25, FX: 80, FAC: 97, SPECK: 32, DRIFT: 133, POSES: 210, CRUMB: 90} as const;
+export const CHECK_FRAMES = {EDGE: 90, DROP2: 87, DROP3: 119, DROP4: 133, ANTW: 25, FX: 80, FAC: 97, SPECK: 32, DRIFT: 133, POSES: 210, CRUMB: 90, PUFF: 150} as const;
 const FPS = 30;
 
 /** G1: N2 shade edge sliding -0.5 -> -1.2 (S01-B05-SH01 L 0-89) with the shot camera, TINY cooled by `edgeShade` (K1), a gust (N1). */
@@ -61,7 +63,7 @@ export const paintANTW = (p: Painter, frame: number) => {
 };
 
 /** G4-G8: N7 pop ring, N8 puffs, N5 crumb, N9 bars on one frame sheet (frame = shot-local frame of the sheet it belongs to, see fx key). */
-import {paintCrumb, paintScaleBars, paintShrinkPop, paintWarmthPuffs, barsAt, shrinkScale, type PuffSpec} from './effects';
+import {crumbFollowHand, warmthPuffsAt, paintCrumb, paintScaleBars, paintShrinkPop, paintWarmthPuffs, barsAt, shrinkScale, type PuffSpec} from './effects';
 export const paintFX = (p: Painter, frame: number) => {
   const c = camOf(MACRO_CAMS['S01-B04-SH03'], 0.5), t = frame / FPS;
   paintGarden(p, c, {t, mode: 'sun', drop: false, shadeEdge: -0.5, sun: [900, 330], items: [
@@ -88,7 +90,7 @@ export const paintSPECK = (p: Painter, frame: number) => {
 export const paintDRIFT = (p: Painter, frame: number) => {
   const c = camOf({at: [[0, 0.8, 0], [0, 0.8, 0]], yaw: [-10, 15], r: [2.4, 2.4], eye: [1.0, 1.0], f: 1050, hy: 780}, frame / 132), t = frame / FPS, out: {a?: FigAnchors | null} = {};
   paintDriftAir(p, t, frame, 438);
-  tinyItem({at: [0, 0, 0], view: 'front', pose: 'P01', face: 'surprised', t, fig: {lArm: {to: [200, 700], out: -1}, rArm: {to: [880, 700], out: 1}}}, out).draw(p, c);
+  tinyItem({at: [0, 0, 0], view: 'front', named: {name: 'drift-spread', L: frame}, face: 'surprised', t}, out).draw(p, c);
   const a = out.a;
   if (a) { const cx = a.head[0], cy = (a.headTop + 1218) / 2, ring: Pt[] = Array.from({length: 40}, (_, i) => [cx + Math.cos((i / 40) * 6.283) * 190, cy + Math.sin((i / 40) * 6.283) * 520] as Pt); paintAirStreaks(p, ring, frame); }
 };
@@ -104,9 +106,22 @@ export const paintPOSES = (p: Painter, frame: number) => {
 export const paintCRUMB = (p: Painter, frame: number) => {
   const L = frame, k = L / 114, c = camOf(MACRO_CAMS['S01-B04-SH03'], k), t = frame / FPS + 40;
   const d = Math.min(1, Math.max(0, (L - 36) / 44)), at = (a: V3, b: V3): V3 => [a[0] + (b[0] - a[0]) * d, 0, a[2] + (b[2] - a[2]) * d];
-  const crumb = at([-3.6, 0, -1.0], [-2.4, 0, -0.6]), tiny = at([-2.85, 0, -0.95], [-1.7, 0, -0.6]);
+  let crumb = at([-3.6, 0, -1.0], [-2.4, 0, -0.6]);
+  const tiny = at([-2.85, 0, -0.95], [-1.7, 0, -0.6]);
+  if (L >= 36) { // parented: the crumb's +x grip follows her hands (named pose arm targets) during the drag
+    const g = camPoint(c, tiny), u = camUnit(c, tiny), pz = g && namedPose('drag-back', L - 36, TINY, g, u, 'left');
+    if (pz?.rArm && pz.lArm) crumb = crumbFollowHand(c, crumb, [(pz.rArm.to[0] + pz.lArm.to[0]) / 2, 0]);
+  }
   paintGarden(p, c, {t, mode: 'sun', drop: false, sun: [150, 300], shadeEdge: -0.5, items: [
     {at: crumb, bias: 0.1, draw: (q, cc) => paintCrumb(q, cc, crumb, {bites: L >= 22 ? 1 : 0})},
     tinyItem({at: tiny, view: 'left', named: {name: L < 36 ? 'nibble' : 'drag-back', L: L < 36 ? L : L - 36}, face: 'worried', t}),
   ]});
+};
+
+/** G13: N8 puffs fed from TINY's anchors on S01-B04-SH02 (L 72-116, clutch-puff from L 96). */
+export const paintPUFF = (p: Painter, frame: number) => {
+  const L = frame, c = camOf(MACRO_CAMS['S01-B04-SH02'], L / 140), t = L / FPS + 20, at: V3 = [-1.4, 0, -0.6], out: {a?: FigAnchors | null} = {};
+  const clutch = L >= 96;
+  paintGarden(p, c, {t, mode: 'sun', drop: false, sun: [150, 300], shadeEdge: -2, items: [tinyItem({at, view: 'front', named: clutch ? {name: 'clutch-puff', L: L - 96} : undefined, pose: clutch ? undefined : 'P42', face: 'worried', t}, out)]});
+  if (out.a) warmthPuffsAt(L, out.a, camUnit(c, at)).forEach((q) => { if (q.a > 0.02) paintPuff(p, q.x, q.y, q.r, q.seed, t, q.a); });
 };

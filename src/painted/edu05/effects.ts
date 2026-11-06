@@ -143,7 +143,7 @@ export const paintDriftAir = (p: Painter, t: number, L: number, u: number) => {
   washAt(p, 16100, '#bcd0e0', 90, rect(-40, -40, 260, 1960), 0.3, 0.1); // facade as a soft vertical wash, screen left
   const y = slabBandY(L);
   washAt(p, 16101, '#9fb4c8', 80, rect(-40, y - 40, 300, y + 40), 0.3, 0.1);
-  driftMotes(t, u).forEach((m, i) => washAt(p, 16200 + i, '#fff6dc', 255 * m.a, ell(m.x, m.y, m.r, m.r, 8), 0.1, 0.05));
+  driftMotes(t, u).forEach((m, i) => washAt(p, 16200 + i, '#f2c27a', 255 * m.a, ell(m.x, m.y, m.r, m.r, 8), 0.1, 0.05));
 };
 /** Soft air streaks: curved pale strokes hugging an outline (a closed ring of points round the figure, px), drawn as an arc each, slowly
  * drifting along the outline; none radial. `k` 0..1 is the fade over L 50-70 (ramp in, hold). */
@@ -154,8 +154,8 @@ export const paintAirStreaks = (p: Painter, ring: Pt[], L: number, seed = 16400)
   for (let i = 0; i < 4; i++) {
     const start = Math.floor(((i / 4) * n + (L - DRIFT.streaks[0]) * 0.15 + hash(seed + i) * 3) % n), len = Math.floor(n * (0.12 + 0.06 * hash(seed + 9 + i)));
     const arc: Pt[] = Array.from({length: len}, (_, j) => { const q = ring[(start + j) % n], dx = q[0] - cx, dy = q[1] - cy, m = Math.hypot(dx, dy) || 1, off = 26 + 10 * i; return [q[0] + (dx / m) * off, q[1] + (dy / m) * off] as Pt; });
-    inkLine(p, seed + 20 + i, arc, {weight: 1.6, color: mixColor('#ffffff', '#cfe0ec', 0.3), closed: false, curve: 0.4});
-    washAt(p, seed + 40 + i, '#ffffff', 60 * k, arc.concat(arc.slice().reverse().map(([x, y]): Pt => [x + 4, y + 4])), 0.2, 0.05);
+    inkLine(p, seed + 20 + i, arc, {weight: 2.4, color: '#8aa5bb', closed: false, curve: 0.4});
+    washAt(p, seed + 40 + i, '#b9cfe0', 110 * k, arc.concat(arc.slice().reverse().map(([x, y]): Pt => [x + 4, y + 4])), 0.2, 0.05);
   }
 };
 
@@ -164,3 +164,36 @@ export const BAR_LABELS: {kind: 'label'; text: string; x: number; y: number; atF
   const [x0, y0, x1, y1] = BARS.slots[k];
   return {kind: 'label', text: k === 'force' ? 'แรง' : 'น้ำหนัก', x: (x0 + x1) / 2, y: (y0 + y1) / 2, atFrame: k === 'force' ? 20 : 26};
 });
+
+/**
+ * N8 emission for S01-B04-SH02, fed from the figure (`FigAnchors`, picture px; `u` px per sm): puff 1 from the shoulders at L 72, puff 2 from
+ * the top of the head at L 84, puffs 3-4 at L 92 / 100 (shoulders / head); all drift -x and up at 0.3 sm/s. Puff 2 is clutched to the chest
+ * L 96-106 (it follows the hands' midpoint) and squeezes out between the mittens L 106-116 (narrowed sideways, then re-inflates), then
+ * floats off. Anchors are read at the current frame (she is nearly still until the shiver at L 116).
+ */
+export const warmthPuffsAt = (L: number, a: {headTop: number; head: [number, number] | number[]; rShoulder: Pt; lShoulder: Pt; rHand: Pt; lHand: Pt}, u: number): {x: number; y: number; r: number; a: number; seed: number}[] => {
+  const sh: Pt = [(a.rShoulder[0] + a.lShoulder[0]) / 2, (a.rShoulder[1] + a.lShoulder[1]) / 2 - 0.05 * u], hd: Pt = [a.head[0], a.headTop - 0.08 * u];
+  const hands: Pt = [(a.rHand[0] + a.lHand[0]) / 2, (a.rHand[1] + a.lHand[1]) / 2];
+  const specs = [{t0: 72, src: sh, r: 0.2}, {t0: 84, src: hd, r: 0.24}, {t0: 92, src: sh, r: 0.17}, {t0: 100, src: hd, r: 0.19}];
+  const out: {x: number; y: number; r: number; a: number; seed: number}[] = [];
+  specs.forEach((e, i) => {
+    const s = (L - e.t0) / 30;
+    if (s < 0 || s > 3.2) return;
+    const f = s / 3.2, grow = 0.45 + 0.55 * ease(f), al = smooth(0, 0.18, f) * (1 - smooth(0.6, 1, f));
+    let x = e.src[0] - 0.3 * u * s, y = e.src[1] - 0.3 * u * s * 0.9, rx = e.r * u * grow;
+    if (i === 1 && L >= 96) { // clutched, squeezed out, floats off
+      const k = smooth(96, 106, L) * (1 - smooth(110, 130, L));
+      x += (hands[0] - x) * k; y += (hands[1] - y) * k;
+      if (L >= 106) rx *= 0.55 + 0.45 * smooth(106, 116, L);
+    }
+    out.push({x, y, r: rx, a: al, seed: 12500 + i * 10});
+  });
+  return out;
+};
+
+/** N5 parenting: the crumb ground point (same y, z as `at`) at which its +x grip sits on the hand point `hand` (px; the mean of her two hands). Two fixed-point steps (the camera yaw makes px per sm vary a little with x). */
+export const crumbFollowHand = (c: YCam, at: V3, hand: Pt): V3 => {
+  let a: V3 = at;
+  for (let i = 0; i < 2; i++) { const gr = crumbGrips(c, a); if (!gr) break; a = [a[0] + (hand[0] - gr.r[0]) / gr.u, a[1], a[2]]; }
+  return a;
+};
