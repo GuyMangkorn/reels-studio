@@ -20,6 +20,8 @@ Record: this file. Series context: [concepts.md](../concepts.md) · series task 
 - [ ] W5 Draft
   - [x] W5.1 Film timed scene sheets EDU-EP05-SHEETS-R1 ([scene-sheets.md](scene-sheets.md), 2026-11-06; `ready-for-dev`, not user-approved; 19 shots, 1963 f = 65.43 s at 30 fps; V04 = tight edit; [review-rows.json](review-rows.json) gains start/end frames; review page: pending). Uncertain boundaries UB-1 (L14/L15) and UB-2 (L15/L16) marked on S01-B05-SH01/SH02. **Defect VL-DEF-01:** the store split files L03-L17 are digital silence and L02 is truncated; Editor must re-split from the full read (0 requests) before audio placement.
   - [ ] W5.2 Boss assets (N1-N10, K1 tint fold; dependency order in scene-sheets.md), then Editor blockout and Draft
+  - [ ] W5.2 status (Boss, in progress 2026-11-06): group 1 committed (K1 tint fold, N1 bend, N2 shade-edge keys); N3-N10 open.
+  - [ ] W5.3 Editor: blockout done 2026-11-06 ([build-notes.md](build-notes.md)): `EDU-EP05-SHORT` registered (`src/videos/edu-ep05/`, 19 scenes, 1963 f, A_fade, @TamMaiLa, edu stroke captions), narration placed (VL-DEF-01 resolved), library-only sound stem v1 (NG-* not generated, all sounds unlistened), placeholder still sheet `out/EDU-EP05-SHORT/blockout-sheet-v1.png`. **Draft NOT passed:** picture is placeholder cards until Boss's N1-N10 plates land; UB-1/UB-2 not ear-checked; no Studio/seek/motion/mixed-audio check.
 - [ ] W6 Final
 - [ ] W7 Pinned
 - [ ] W8 Deliver
