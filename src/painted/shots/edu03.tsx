@@ -2,6 +2,7 @@ import {AbsoluteFill} from 'remotion';
 import type {PaintedShot} from '../shot';
 import {STILL_CAMERA} from '../kit/camera';
 import {Grain} from '../kit/screen';
+import {flatPainter} from '../edu02/flat';
 import {dogMatrixValues} from '../edu03/dogview';
 import {EDU3_PAPER, EDU3_SHOTS, plateOf} from '../edu03/shots';
 
@@ -30,7 +31,8 @@ export const edu03Shots: PaintedShot[] = EDU3_SHOTS.map(([id]): PaintedShot => (
   serves: [id],
   paper: EDU3_PAPER,
   camera: () => STILL_CAMERA,
-  paint: (p) => plateOf(id, p.frame).paint(p),
+  // W6: Draft's flat fills at every grade (user, 6 Nov 2026), via the EDU2 W6 flatPainter; textured fills boil under the moving camera.
+  paint: (p) => plateOf(id, p.frame).paint(flatPainter(p, EDU3_PAPER)),
   Overlay: ({tl, opacity}) => {
     const {spec} = plateOf(id, Math.round(tl * FPS));
     return (

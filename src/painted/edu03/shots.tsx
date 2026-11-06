@@ -3,6 +3,7 @@ import {AbsoluteFill, getInputProps, useCurrentFrame} from 'remotion';
 import {BrushCanvas, type PaintContext} from '../BrushCanvas';
 import {PaintedLabel} from '../Label';
 import {ell, inkLine, solid, washAt} from '../kit/draw';
+import {flatFillBrush} from '../edu02/flat';
 import {makePainter, type Painter, type Pt} from '../kit/painter';
 import {Grain} from '../kit/screen';
 import type {V3} from '../kit/space';
@@ -366,7 +367,7 @@ export const ShotPlate = ({id}: {id: Edu3ShotId}) => {
   const normal = (getInputProps() as {normal?: boolean}).normal === true;
   const spec0 = SPECS[id](clamp(frame, 0, EDU3_FRAMES[id] - 1)), spec: Spec = normal ? {...spec0, dog: false, over: undefined} : spec0;
   const host = useRef<HTMLDivElement>(null), copy = useRef<HTMLCanvasElement>(null);
-  const fn = useCallback(({brush, frame: fr}: PaintContext) => plateOf(id, fr).paint(makePainter(brush, {t: fr / FPS, frame: fr, fade: EDU3_PAPER})), [id]);
+  const fn = useCallback(({brush, frame: fr}: PaintContext) => plateOf(id, fr).paint(makePainter(flatFillBrush(brush), {t: fr / FPS, frame: fr, fade: EDU3_PAPER})), [id]);
   // The masked layer is a copy of the one painted canvas (same strokes), shown with or without the dog-view filter.
   useLayoutEffect(() => {
     const src = host.current?.querySelector('canvas'), dst = copy.current;

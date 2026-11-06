@@ -110,6 +110,13 @@
      "src": "out/EDU-EP03-SHORT/clips/S01-B01-SH01_draft.mp4",
      "in": 0,
      "out": 2
+    },
+    "final": {
+     "src": "out/EDU-EP03-SHORT/clips/_final_cut.mp4",
+     "in": 0,
+     "out": 2,
+     "cut": true,
+     "key": "fa8b29869141c472"
     }
    }
   },
@@ -141,6 +148,13 @@
      "src": "out/EDU-EP03-SHORT/clips/S01-B01-SH02_draft.mp4",
      "in": 1,
      "out": 4
+    },
+    "final": {
+     "src": "out/EDU-EP03-SHORT/clips/_final_cut.mp4",
+     "in": 2,
+     "out": 5,
+     "cut": true,
+     "key": "393860da2ebd4cd8"
     }
    }
   },
@@ -172,6 +186,13 @@
      "src": "out/EDU-EP03-SHORT/clips/S01-B02-SH01_draft.mp4",
      "in": 1,
      "out": 3.267
+    },
+    "final": {
+     "src": "out/EDU-EP03-SHORT/clips/_final_cut.mp4",
+     "in": 5,
+     "out": 7.267,
+     "cut": true,
+     "key": "46db5231eb0d78dc"
     }
    }
   },
@@ -199,6 +220,13 @@
      "src": "out/EDU-EP03-SHORT/clips/S01-B02-SH02_draft.mp4",
      "in": 1,
      "out": 4.133
+    },
+    "final": {
+     "src": "out/EDU-EP03-SHORT/clips/_final_cut.mp4",
+     "in": 7.267,
+     "out": 10.4,
+     "cut": true,
+     "key": "cf5180ce17e59443"
     }
    }
   },
@@ -230,6 +258,13 @@
      "src": "out/EDU-EP03-SHORT/clips/S01-B02-SH03_draft.mp4",
      "in": 1,
      "out": 3.133
+    },
+    "final": {
+     "src": "out/EDU-EP03-SHORT/clips/_final_cut.mp4",
+     "in": 10.4,
+     "out": 12.533,
+     "cut": true,
+     "key": "21995a88f032d156"
     }
    }
   },
@@ -261,6 +296,13 @@
      "src": "out/EDU-EP03-SHORT/clips/S01-B02-SH04_draft.mp4",
      "in": 1,
      "out": 4
+    },
+    "final": {
+     "src": "out/EDU-EP03-SHORT/clips/_final_cut.mp4",
+     "in": 12.533,
+     "out": 15.533,
+     "cut": true,
+     "key": "a9bad111daaacdc4"
     }
    }
   },
@@ -293,6 +335,13 @@
      "src": "out/EDU-EP03-SHORT/clips/S01-B03-SH01_draft.mp4",
      "in": 1,
      "out": 3.9
+    },
+    "final": {
+     "src": "out/EDU-EP03-SHORT/clips/_final_cut.mp4",
+     "in": 15.533,
+     "out": 18.433,
+     "cut": true,
+     "key": "b5b4748019cfc22d"
     }
    }
   },
@@ -324,6 +373,13 @@
      "src": "out/EDU-EP03-SHORT/clips/S01-B03-SH02_draft.mp4",
      "in": 1,
      "out": 3.5
+    },
+    "final": {
+     "src": "out/EDU-EP03-SHORT/clips/_final_cut.mp4",
+     "in": 18.433,
+     "out": 20.933,
+     "cut": true,
+     "key": "489d5c2b4b9831ad"
     }
    }
   },
@@ -355,6 +411,13 @@
      "src": "out/EDU-EP03-SHORT/clips/S01-B03-SH03_draft.mp4",
      "in": 1,
      "out": 4.367
+    },
+    "final": {
+     "src": "out/EDU-EP03-SHORT/clips/_final_cut.mp4",
+     "in": 20.933,
+     "out": 24.3,
+     "cut": true,
+     "key": "00829ad889db54b1"
     }
    }
   },
@@ -387,6 +450,13 @@
      "src": "out/EDU-EP03-SHORT/clips/S01-B04-SH01_draft.mp4",
      "in": 1,
      "out": 5.833
+    },
+    "final": {
+     "src": "out/EDU-EP03-SHORT/clips/_final_cut.mp4",
+     "in": 24.3,
+     "out": 29.133,
+     "cut": true,
+     "key": "18b2953998cb34ee"
     }
    }
   },
@@ -419,6 +489,13 @@
      "src": "out/EDU-EP03-SHORT/clips/S01-B04-SH02_draft.mp4",
      "in": 1,
      "out": 7.233
+    },
+    "final": {
+     "src": "out/EDU-EP03-SHORT/clips/_final_cut.mp4",
+     "in": 29.133,
+     "out": 35.367,
+     "cut": true,
+     "key": "5c22eca53f644a50"
     }
    }
   },
@@ -451,6 +528,13 @@
      "src": "out/EDU-EP03-SHORT/clips/S01-B05-SH01_draft.mp4",
      "in": 1,
      "out": 5.767
+    },
+    "final": {
+     "src": "out/EDU-EP03-SHORT/clips/_final_cut.mp4",
+     "in": 35.367,
+     "out": 40.133,
+     "cut": true,
+     "key": "7b16a32acdae55f7"
     }
    }
   },
@@ -483,6 +567,13 @@
      "src": "out/EDU-EP03-SHORT/clips/S01-B06-SH01_draft.mp4",
      "in": 1,
      "out": 2.867
+    },
+    "final": {
+     "src": "out/EDU-EP03-SHORT/clips/_final_cut.mp4",
+     "in": 40.133,
+     "out": 42,
+     "cut": true,
+     "key": "fae748605cfb9375"
     }
    }
   },
@@ -517,6 +608,13 @@
      "src": "out/EDU-EP03-SHORT/clips/S01-B06-SH02_draft.mp4",
      "in": 1,
      "out": 4.867
+    },
+    "final": {
+     "src": "out/EDU-EP03-SHORT/clips/_final_cut.mp4",
+     "in": 42,
+     "out": 45.867,
+     "cut": true,
+     "key": "8351819e7873ff77"
     }
    }
   },
@@ -550,6 +648,13 @@
      "src": "out/EDU-EP03-SHORT/clips/S01-B07-SH01_draft.mp4",
      "in": 1,
      "out": 7.5
+    },
+    "final": {
+     "src": "out/EDU-EP03-SHORT/clips/_final_cut.mp4",
+     "in": 45.867,
+     "out": 52.367,
+     "cut": true,
+     "key": "7f0b20eac3bd236b"
     }
    }
   }
@@ -592,5 +697,9 @@
    "question": "B06-SH02: ให้หมาวิ่งเข้ามาในเลนเดียวกับตอนวิ่งเลย แล้วเลี้ยวพุ่งตรงไปที่บอลฟ้า ได้ไหม?",
    "detail": "เส้นวิ่งตรงจากข้างเจ้าของถึงบอลผ่านข้างกล้องและอยู่นอกจอจนถึง 30 ซม. สุดท้าย ถ้าใช้เส้นนั้นหมาจะโผล่มาตัวใหญ่ที่ขอบซ้ายแล้วถึงบอลทันที แบบเลนเดิมทำให้เห็นการวิ่งตรงไปที่บอลชัด และเทียบกับช็อตวิ่งเลยได้ตรง ๆ"
   }
- ]
+ ],
+ "finalCut": {
+  "src": "out/EDU-EP03-SHORT/clips/_final_cut.mp4",
+  "frames": 1571
+ }
 }
