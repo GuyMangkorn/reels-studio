@@ -7,7 +7,7 @@
 // Videos render one scene at a time and keep each scene in the asset store (scripts/segments.mjs): a later render
 // re-renders only the scenes whose inputs changed. --no-cache renders every scene again.
 // --preview: half-size quick look (output and p5.brush canvas) in out/<id>/preview/, not archived; not for line-weight review.
-// --draft: blocking draft (textured fills as flat washes, no hatching), full size, scene-cached, in out/<id>/draft/, not archived.
+// --draft: blocking draft, full size, scene-cached, in out/<id>/draft/, not archived (same flat fills as a final since 6 Nov 2026).
 // --range=<from>-<to>: those frames only, in out/<id>/range/, not archived. The whole scenes they touch are rendered
 // into the scene cache first, so a later full render reuses them.
 // Pinned finals (scripts/pin.mjs): a render stops when a pinned scene would change; --keep-pinned reuses the approved

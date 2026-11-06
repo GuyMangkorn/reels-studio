@@ -608,3 +608,9 @@ Film, 5 Nov 2026, fresh invocation. Input: the 13 re-rendered Draft clips (B03-S
 - **Housekeeping:** `render.mjs --stills` overwrote `out/EDU-EP02-SHORT/stills/{330,540,1080}.png`; Boss moved them to `out/edu02/w6/diag/timeline/`, so those stills are missing from the stills cache until re-rendered.
 - **Proposed, not applied (DP01):** a dev-findings entry "a textured p5.brush fill shimmers under a moving camera even with a fixed seed; use the flat wash for moving camera shots". For the user to approve.
 - **Film to accept (AI13):** the B05-SH03 hand path change (`scenes/s01-b05.md`, W6 Final fix line).
+
+## Flat fills for every render (coordinator, 6 Nov 2026)
+
+- **User decision:** "use the Draft as the Final". `BrushCanvas` (`drafted`) now paints flat fills in every render, not only with `paintDraft`; `--draft` keeps its own output folder and cache key.
+- **Measured (EDU3-LF01, 60 f, azimuth -24 to -32 deg):** frame residual |f - mean(f-1, f+1)| at 540x960: textured fill 1.26, bleed 0 + no scatter 1.10, bleed 0 + no texture 1.03, flat wash 1.01. The bleed (random walk along projected vertices) is most of the flicker; the canvas-fixed paper grain is the rest. Frames: `out/edu03/fillcmp/`, `out/edu04/fillcmp/` (not archived).
+- **Effect:** every painted episode's Final picture changes (no texture, bleed or hatching), and scene-cache segments repaint. EP02's `flatFillBrush` is now redundant (it wraps an already flat brush; same picture).
