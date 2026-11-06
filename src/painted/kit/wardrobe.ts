@@ -16,7 +16,7 @@ import {mixColor} from './painter';
 
 export const OUTFIT_IDS = [
   'student-th-trousers', 'student-th-skirt', 'school-jp-sailor', 'school-jp-gakuran', 'office', 'police', 'nurse', 'doctor',
-  'monk', 'vendor', 'rider', 'hoodie', 'guard', 'yukata', 'kimono',
+  'monk', 'vendor', 'rider', 'hoodie', 'guard', 'yukata', 'kimono', 'kitchen-apron', 'park-casual',
 ] as const;
 export type OutfitId = (typeof OUTFIT_IDS)[number];
 
@@ -85,6 +85,19 @@ export const WARDROBE: Record<OutfitId, Outfit> = {
     shoulder: SHOULDER, shirt: '#8a2f4a', sleeve: '#8a2f4a', longSleeves: true, skirt: '#8a2f4a', skirtHem: 0.06, pants: '#8a2f4a', shoes: '#2a2523',
     gear: {collar: {kind: 'v', color: '#f2f0ea', depth: 0.34}, belt: {color: '#d0a443', h: 0.15}, wideSleeves: true},
   },
+  // Kit intake (KIT-P01) from EDU-EP02-SHORT `woman-curly + new: kitchen-apron` (src/painted/edu02/cast.ts COOK, copied, 5 Nov 2026):
+  // woman-curly's mustard blouse and plum skirt with the rig apron panel in brick red; the belt stands in for the waist tie. The
+  // episode's neck strap, bow tail and front pocket (`paintBibApron`, front view only) stay in the episode.
+  'kitchen-apron': {
+    shoulder: SHOULDER, shirt: '#c9863f', sleeve: '#c9863f', longSleeves: false, skirt: '#4a3a52', skirtHem: 0.166, apron: '#b5473a', pants: '#4a3a52', shoes: '#3a2a22',
+    gear: {belt: {color: '#8a362c', h: 0.03}},
+  },
+  // Kit intake (KIT-P01) from EDU-EP03-SHORT `man-crop + new: park-casual` (src/painted/edu03/cast.ts OWNER, copied, 6 Nov 2026): the
+  // cream sling bag is not filed (a painted overlay `paintSlingBag`, not a `Gear` kind).
+  'park-casual': {
+    shoulder: SHOULDER, shirt: '#e3b23c', sleeve: '#e3b23c', longSleeves: false, pants: '#4a6f9e', shoes: '#f2f0ea', shorts: {sock: '#f4f1ea'},
+    gear: {hat: {kind: 'cap', color: '#2f5fb8', band: mixColor('#2f5fb8', '#0b1a3a', 0.45)}},
+  },
 };
 
 export type OutfitInfo = {
@@ -113,6 +126,8 @@ export const WARDROBE_INFO: Record<OutfitId, OutfitInfo> = {
   guard: {group: 'work', description: 'Security guard: light blue-grey short-sleeve shirt with pockets and gold badge, navy trousers, black belt, navy peaked cap.'},
   yukata: {group: 'traditional', description: 'Japanese yukata: indigo summer robe with white crossover collar, wide sleeves, orange obi sash, ankle-length hem, geta.', bareLegs: true},
   kimono: {group: 'traditional', description: 'Japanese kimono: plum robe with white crossover collar, wide sleeves, wide gold obi, ankle-length hem.', bareLegs: true},
+  'kitchen-apron': {group: 'casual', description: 'Home cook: mustard short-sleeve blouse, plum skirt just below the knee, brick-red bib apron from the chest to below the hip with a dark red waist tie, dark shoes.', bareLegs: true},
+  'park-casual': {group: 'casual', description: 'Weekend park walk: mustard crew-neck tee, denim-blue knee-length shorts with bare shins and white socks, white sneakers, blue baseball cap (four views).'},
 };
 
 /**
