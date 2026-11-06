@@ -4,12 +4,18 @@ import {camOf, MACRO_CAMS} from './cams';
 import {edgeShade, paintGarden, shadeEdgeAt} from './garden';
 import {tinyItem} from './cast';
 import {antItem} from './ant';
+import type {FigAnchors} from '../kit/cast';
+import {camPoint, camUnit} from '../kit/ycam';
+import {B_DEW, D1_CONTACT} from './garden';
+import {bladeItem} from './macro';
+import {dropHand, dropStateFor, paintDropState} from './drop';
+import type {Item} from './world';
 
 // EDU-EP05 W5.2 element check scenes: pure paint functions of the frame (stills only), one per element group, rendered with
 //   printf 'EDU5-CHK-EDGE 45 out/edu05/w52/g1/EDGE45.png\n' | node scripts/stills.mjs src/painted/edu05/check-index.ts
 // They show an element in its shot's camera and staging, not a finished shot (Editor assembles those).
 
-export const CHECK_FRAMES = {EDGE: 90} as const;
+export const CHECK_FRAMES = {EDGE: 90, DROP2: 87, DROP3: 119, DROP4: 133} as const;
 const FPS = 30;
 
 /** G1: N2 shade edge sliding -0.5 -> -1.2 (S01-B05-SH01 L 0-89) with the shot camera, TINY cooled by `edgeShade` (K1), a gust (N1). */
@@ -22,3 +28,25 @@ export const paintEDGE = (p: Painter, frame: number) => {
       tinyItem({at, view: 'front', pose: 'P33', face: 'surprised', t, tint: {to: '#4f6fb8', u: 0.27 * u, mul: [0.95, 0.93, 0.97]}}),
     ]});
 };
+
+export const MEASURE: Record<string, FigAnchors | null> = {};
+/** G2: N4 dew drop states with the hand inside, layered back / figure / front (scene sheets S01-B03-SH02..SH04). */
+const dropShot = (shot: 'S01-B03-SH02' | 'S01-B03-SH03' | 'S01-B03-SH04', len: number, tiny: V3, lean: number) => (p: Painter, frame: number) => {
+  const m = MACRO_CAMS[shot], cam = camOf(m, frame / len), t = frame / FPS, st = dropStateFor(shot, frame)!;
+  const g = camPoint(cam, D1_CONTACT), u = camUnit(cam, D1_CONTACT);
+  if (!g) return;
+  const hand = dropHand(g, u, st);
+  const items: Item[] = [
+    bladeItem(B_DEW, t, undefined, 0.5),
+    {at: D1_CONTACT, bias: 0.6, draw: (q) => paintDropState(q, g, u, st, {layer: 'back', t})},
+    {at: D1_CONTACT, bias: -0.6, draw: (q) => paintDropState(q, g, u, st, {layer: 'front', t})},
+  ];
+  // staging check: her shoulder must stay within arm reach (0.55) of the wrist, so she stands back as the neck stretches
+  const wx = hand.wrist ? D1_CONTACT[0] + (hand.wrist[0] - g[0]) / u : tiny[0] + 0.5, tx = Math.min(tiny[0], wx - 0.55);
+  if (shot !== 'S01-B03-SH03') items.push(tinyItem({at: [tx, 0, tiny[2]], view: 'right', pose: 'P16', face: shot === 'S01-B03-SH04' && st.snapF !== undefined ? 'shock' : 'angry', t,
+    fig: {rArm: hand.wrist ? {to: hand.hand ?? hand.wrist, out: -1} : undefined, lean}}));
+  paintGarden(p, cam, {t, mode: 'sun', drop: false, sun: [150, 300], shadeEdge: -0.5, items});
+};
+export const paintDROP2 = dropShot('S01-B03-SH02', 86, [1.3, 0, -0.75], 0.2);
+export const paintDROP3 = dropShot('S01-B03-SH03', 118, [1.3, 0, -0.75], 0.2);
+export const paintDROP4 = dropShot('S01-B03-SH04', 132, [1.15, 0, -0.72], 0.2);

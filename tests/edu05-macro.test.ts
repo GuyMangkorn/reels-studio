@@ -39,3 +39,33 @@ test('breeze bend: tip deflection is clamped to 25% of the height and the root s
     assert.ok(Math.abs(len(bent) / len(base) - 1) < 0.03);
   }
 });
+
+// N4 (EDU-EP05 W5.2) spike 3: the dew drop's contact states keep their volume (area within +-10% of rest), stay under 1.0x TINY's
+// height, keep the foot on the blade (contact patch inside the rest patch + 0.1 sm), the neck never passes 0.5 sm, and the
+// hand-inside layering has a wrist while the hand is in.
+import {areaOf, dropGeometry, dropStateFor, footRange, MAX_NECK, neckLength, REST_AREA} from '../src/painted/edu05/drop';
+import {dropShape} from '../src/painted/edu05/macro';
+
+test('dew drop states: area, height, foot, neck length across the sheet timelines', () => {
+  const rest = footRange(dropShape(72));
+  let worstArea = 0, worstNeck = 0, worstFoot = 0, topMax = 0, n = 0;
+  const frames: [string, number][] = [['S01-B03-SH02', 87], ['S01-B03-SH03', 119], ['S01-B03-SH04', 133]];
+  for (const [shot, len] of frames) {
+    for (let L = 0; L < len; L++) {
+      const st = dropStateFor(shot, L)!, g = dropGeometry(st);
+      const a = areaOf(g.outline.slice(0, -1)) / REST_AREA - 1, f = footRange(g.outline);
+      worstArea = Math.max(worstArea, Math.abs(a));
+      worstNeck = Math.max(worstNeck, neckLength(st));
+      worstFoot = Math.max(worstFoot, rest[0] - f[0], f[1] - rest[1]);
+      assert.ok(Math.min(...g.outline.map(([, y]) => y)) > -0.03, `${shot} L${L} dips below the blade`);
+      topMax = Math.max(topMax, ...g.outline.map(([, y]) => y));
+      n++;
+      assert.ok(Math.abs(a) <= 0.1, `${shot} L${L} area ${a}`);
+      if (st.push > 0.05) assert.ok(g.wrist, `${shot} L${L} no wrist`);
+    }
+  }
+  console.log(`drop ${n} frames: worst area ${(worstArea * 100).toFixed(1)}%, neck ${worstNeck.toFixed(3)} sm, foot slip ${worstFoot.toFixed(3)} sm, top ${topMax.toFixed(2)} sm (TINY 1.58)`);
+  assert.ok(worstNeck <= MAX_NECK + 0.06, `neck ${worstNeck}`);
+  assert.ok(worstFoot <= 0.1, `foot ${worstFoot}`);
+  assert.ok(topMax < 1.58);
+});

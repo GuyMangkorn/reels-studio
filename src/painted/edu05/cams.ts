@@ -8,8 +8,10 @@ import {orbitYCam, type YCam} from '../kit/ycam';
 export type CamMove = {
   at: [V3, V3]; yaw: [number, number]; r: [number, number]; eye: [number, number]; pitch?: [number, number];
   f: number; hy: number; cx?: number;
+  /** The move happens only between these fractions of the shot (smoothstep); static before and after. */
+  ease?: [number, number];
 };
-const c = (at: V3 | [V3, V3], yaw: [number, number], r: [number, number] | number, eye: [number, number] | number, o: {pitch?: [number, number]; f: number; hy: number; cx?: number}): CamMove => ({
+const c = (at: V3 | [V3, V3], yaw: [number, number], r: [number, number] | number, eye: [number, number] | number, o: {pitch?: [number, number]; f: number; hy: number; cx?: number; ease?: [number, number]}): CamMove => ({
   at: Array.isArray(at[0]) ? (at as [V3, V3]) : [at as V3, at as V3], yaw, r: typeof r === 'number' ? [r, r] : r, eye: typeof eye === 'number' ? [eye, eye] : eye, ...o,
 });
 
@@ -19,7 +21,7 @@ export const MACRO_CAMS: Record<string, CamMove> = {
   'S01-B03-SH01': c([1.55, 1.0, -0.8], [-12, -6], [3.3, 3.1], 1.0, {f: 1050, hy: 760}),
   'S01-B03-SH02': c([1.75, 1.1, -0.85], [18, 12], 2.0, 1.0, {f: 1100, hy: 720}),
   'S01-B03-SH03': c([1.85, 1.42, -0.95], [16, 10], [1.6, 1.45], 1.35, {f: 1150, hy: 700}),
-  'S01-B03-SH04': c([[1.3, 0.9, -0.8], [-0.4, 0.9, -0.5]], [18, 12], [2.7, 2.6], 0.8, {f: 1050, hy: 780}),
+  'S01-B03-SH04': c([[1.3, 0.9, -0.8], [-0.4, 0.9, -0.5]], [18, 12], [2.7, 2.6], 0.8, {f: 1050, hy: 780, ease: [104 / 132, 1]}),
   'S01-B04-SH01': c([-1.4, 1.4, -0.6], [-10, -4], [2.0, 1.8], 1.0, {f: 1050, hy: 700}),
   'S01-B04-SH02': c([-1.4, 1.4, -0.6], [-25, -15], 1.9, 1.0, {f: 1050, hy: 640}),
   'S01-B04-SH03': c([[-3.3, 0.6, -0.75], [-2.0, 0.6, -0.75]], [20, 20], 2.4, 0.8, {f: 1050, hy: 780}),
@@ -31,7 +33,8 @@ export const MACRO_CAMS: Record<string, CamMove> = {
 
 const DEG = Math.PI / 180;
 /** The shot's camera at u in 0..1 (linear; the sheets' eases are the Editor's). */
-export const camOf = (m: CamMove, u: number): YCam => {
+export const camOf = (m: CamMove, u0: number): YCam => {
+  const u = m.ease ? (() => { const k = Math.min(1, Math.max(0, (u0 - m.ease[0]) / (m.ease[1] - m.ease[0]))); return k * k * (3 - 2 * k); })() : u0;
   const l = (a: number, b: number) => a + (b - a) * u;
   const at: V3 = [l(m.at[0][0], m.at[1][0]), l(m.at[0][1], m.at[1][1]), l(m.at[0][2], m.at[1][2])];
   return {...orbitYCam(at, l(m.r[0], m.r[1]), l(m.yaw[0], m.yaw[1]) * DEG, l(m.eye[0], m.eye[1]), m.f, m.hy), pitch: (m.pitch ? l(m.pitch[0], m.pitch[1]) : 0) * DEG, cx: m.cx ?? 0};

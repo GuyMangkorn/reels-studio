@@ -216,6 +216,19 @@ const inDrop = ([x, y]: Pt, m = 0.97): Pt => {
   const k = n > lim ? lim / n : 1;
   return [x * k, DROP_C + dy * k];
 };
+/** `inDrop` for a deformed outline `D` (about the contact, star-shaped about the rest centre): pulls a point inside the outline (`m` of its radius). */
+export const inShape = (D: Pt[], [x, y]: Pt, m = 0.97): Pt => {
+  const dy = y - DROP_C, a = Math.atan2(dy, x), n = Math.hypot(x, dy), ux = Math.cos(a), uy = Math.sin(a);
+  let best = 0;
+  for (let i = 0; i < D.length - 1; i++) {
+    const [x0, y0] = D[i], [x1, y1] = D[i + 1], ex = x1 - x0, ey = y1 - (y0), qx = x0, qy = y0 - DROP_C, den = ux * ey - uy * ex;
+    if (Math.abs(den) < 1e-9) continue;
+    const t = (qx * ey - qy * ex) / den, w = (qx * uy - qy * ux) / den;
+    if (t > 0 && w >= 0 && w <= 1 && t > best) best = t;
+  }
+  const lim = best * m, k = best > 0 && n > lim ? lim / n : 1;
+  return [x * k, DROP_C + dy * k];
+};
 const circ = (cx: number, cy: number, r: number, ry = r, n = 24): Pt[] => Array.from({length: n}, (_, i): Pt => [cx + Math.cos((i / n) * 2 * Math.PI) * r, cy + Math.sin((i / n) * 2 * Math.PI) * ry]);
 
 /**
@@ -224,42 +237,55 @@ const circ = (cx: number, cy: number, r: number, ry = r, n = 24): Pt[] => Array.
  * hugs the top contour (no horizontal band, no level line) and a soft warm glow low in the body; a thin cool refraction edge on the
  * shadow side, a soft bright rim on the sun side, soft window highlights, a rounded foot that wraps the blade bend (v3: no ellipses under it; v4: no flat foot).
  */
-export const paintDrop = (p: Painter, g: Pt, u: number, o: {sunSide?: -1 | 1; t?: number; sky?: string; green?: string} = {}) => {
+export const paintDrop = (p: Painter, g: Pt, u: number, o: {
+  sunSide?: -1 | 1; t?: number; sky?: string; green?: string;
+  /** N4 contact states: a deformed outline (sm about the contact, from `dropOutline`) replaces the rest shape; the inner glows are clipped to it. */
+  shape?: Pt[];
+  /** `back` = the water body (behind a hand inside the drop), `front` = veil, refraction edge, rim and highlights (over it); default both. */
+  layer?: 'all' | 'back' | 'front';
+  /** Front layer only: opacity 0..1 of the water veil painted over what is inside the drop (the hand, 35-55%). */
+  veil?: number;
+} = {}) => {
   const s = o.sunSide ?? -1, S = ([x, y]: Pt): Pt => [g[0] + x * u, g[1] - y * u];
-  const D = dropShape(), C = DROP_C, R = DROP_R;
-  const clipD = (pts: Pt[]) => pts.map((q) => inDrop(q));
+  const D = o.shape ?? dropShape(), C = DROP_C, R = DROP_R, back = o.layer !== 'front', front = o.layer !== 'back';
+  const clipD = (pts: Pt[]) => pts.map((q) => (o.shape ? inShape(o.shape, q) : inDrop(q)));
   void R;
   // LF03 v3: no caustic, contact shade or meniscus ellipses under the foot (they read as a puddle rim); the flat foot on the slim blade
   // tip is the contact (LF03 v4: the rounded foot wraps the blade bend instead)
-  // body: transparent water, a pale cool tint over the blade behind
-  washAt(p, 8504, '#e4f2ea', 85, D.map(S), 0.04, 0.05);
-  // LF03 v5: a soft water veil over the low-left belly where the blade's upturned tip shows through (v4: a pale J, the brightest drawn
-  // shape in the belly), in the water body's own green so the glow above it stays the light, so the tip reads as a faint refraction, not an outline
-  washAt(p, 8515, '#bfd68e', 130, clipD(circ(-0.03, 0.1, 0.22, 0.13)).map(S), 0.35, 0.05);
-  // the inverted scene: the dark ground and blades as a crescent along the top contour (thick at the top, thin down the sides)
-  const top = D.filter(([, y]) => y > C - 0.1);
-  const inner = top.map(([x, y]): Pt => { const dx = x, dy = y - C, n = Math.hypot(dx, dy) || 1, th = 0.24 * Math.max(0, dy / n) + 0.05; return [dx * (1 - th / n), C - 0.06 + dy * (1 - th / n)]; }).reverse();
-  washAt(p, 8506, o.green ?? '#557f34', 150, [...top, ...inner].map(S), 0.18, 0.08);
-  // the inverted bright sky low in the body: a soft warm glow, no edge
-  washAt(p, 8505, o.sky ?? '#fff3cf', 170, clipD(circ(0, C - 0.12, 0.34, 0.24)).map(S), 0.2, 0.05);
-  washAt(p, 8507, '#fffbe6', 150, clipD(circ(-s * 0.06, C - 0.2, 0.2, 0.12)).map(S), 0.2, 0.05);
-  // the inverted low sun: a bright spot low on the side away from the sun
-  washAt(p, 8508, '#ffffff', 220, ell(g[0] - s * 0.16 * u, g[1] - 0.18 * u, 0.08 * u, 0.05 * u, 12), 0.1, 0.03);
-  // thin cool refraction edge along the shadow side, a soft bright rim along the sun side
-  const ring = (k: number, keep: (x: number, y: number) => boolean) => {
-    const outer = D.filter(([x, y]) => keep(x, y)), inner2 = outer.map(([x, y]): Pt => [x * k, C + (y - C) * k]).reverse();
-    return [...outer, ...inner2].map(S);
-  };
-  washAt(p, 8509, '#3f6450', 120, ring(0.9, (x, y) => x * s < 0.05 && y > 0.05), 0.12, 0.05);
-  washAt(p, 8510, '#fffbe8', 190, ring(0.93, (x, y) => x * s > -0.15 && y > 0.08), 0.12, 0.05);
-  // soft window highlights up on the sun side
-  washAt(p, 8511, '#ffffff', 225, ell(g[0] + s * 0.2 * u, g[1] - (C + 0.32) * u, 0.1 * u, 0.06 * u, 14, s * 0.5), 0.12, 0);
-  washAt(p, 8512, '#ffffff', 200, ell(g[0] + s * 0.04 * u, g[1] - (C + 0.44) * u, 0.035 * u, 0.028 * u, 8), 0.1, 0);
-  // thin, light ink line (hero object): water edge, not a glass rim
-  // LF03 v4: open where the water wraps the blade bend (the contact), so the foot reads as water on the blade, not a rim
-  inkLine(p, 8513, D.filter(([x, y]) => !(y < 0.14 && x > -0.24 && x < 0.16)).map(S), {weight: Math.max(0.5, u / 560), color: '#7d9c8a', closed: false});
-  const sh = 0.6 + 0.4 * Math.sin((o.t ?? 0) * 3.1);
-  washAt(p, 8514, '#ffffff', 190 * sh, ell(g[0] + s * 0.42 * u, g[1] - C * u, 0.025 * u, 0.025 * u, 8), 0.05, 0);
+  if (back) {
+    // body: transparent water, a pale cool tint over the blade behind
+    washAt(p, 8504, '#e4f2ea', 85, D.map(S), 0.04, 0.05);
+    // LF03 v5: a soft water veil over the low-left belly where the blade's upturned tip shows through (v4: a pale J, the brightest drawn
+    // shape in the belly), in the water body's own green so the glow above it stays the light, so the tip reads as a faint refraction, not an outline
+    washAt(p, 8515, '#bfd68e', 130, clipD(circ(-0.03, 0.1, 0.22, 0.13)).map(S), 0.35, 0.05);
+    // the inverted scene: the dark ground and blades as a crescent along the top contour (thick at the top, thin down the sides)
+    const top = D.filter(([, y]) => y > C - 0.1);
+    const inner = top.map(([x, y]): Pt => { const dx = x, dy = y - C, n = Math.hypot(dx, dy) || 1, th = 0.24 * Math.max(0, dy / n) + 0.05; return [dx * (1 - th / n), C - 0.06 + dy * (1 - th / n)]; }).reverse();
+    washAt(p, 8506, o.green ?? '#557f34', 150, [...top, ...inner].map(S), 0.18, 0.08);
+    // the inverted bright sky low in the body: a soft warm glow, no edge
+    washAt(p, 8505, o.sky ?? '#fff3cf', 170, clipD(circ(0, C - 0.12, 0.34, 0.24)).map(S), 0.2, 0.05);
+    washAt(p, 8507, '#fffbe6', 150, clipD(circ(-s * 0.06, C - 0.2, 0.2, 0.12)).map(S), 0.2, 0.05);
+    // the inverted low sun: a bright spot low on the side away from the sun
+    washAt(p, 8508, '#ffffff', 220, ell(g[0] - s * 0.16 * u, g[1] - 0.18 * u, 0.08 * u, 0.05 * u, 12), 0.1, 0.03);
+  }
+  if (front) {
+    // thin cool refraction edge along the shadow side, a soft bright rim along the sun side
+    if (o.veil) washAt(p, 8503, '#d4ead8', 255 * o.veil, D.map(S), 0.04, 0.05);
+    const ring = (k: number, keep: (x: number, y: number) => boolean) => {
+      const outer = D.filter(([x, y]) => keep(x, y)), inner2 = outer.map(([x, y]): Pt => [x * k, C + (y - C) * k]).reverse();
+      return [...outer, ...inner2].map(S);
+    };
+    washAt(p, 8509, '#3f6450', 120, ring(0.9, (x, y) => x * s < 0.05 && y > 0.05), 0.12, 0.05);
+    washAt(p, 8510, '#fffbe8', 190, ring(0.93, (x, y) => x * s > -0.15 && y > 0.08), 0.12, 0.05);
+    // soft window highlights up on the sun side
+    washAt(p, 8511, '#ffffff', 225, ell(g[0] + s * 0.2 * u, g[1] - (C + 0.32) * u, 0.1 * u, 0.06 * u, 14, s * 0.5), 0.12, 0);
+    washAt(p, 8512, '#ffffff', 200, ell(g[0] + s * 0.04 * u, g[1] - (C + 0.44) * u, 0.035 * u, 0.028 * u, 8), 0.1, 0);
+    // thin, light ink line (hero object): water edge, not a glass rim
+    // LF03 v4: open where the water wraps the blade bend (the contact), so the foot reads as water on the blade, not a rim
+    inkLine(p, 8513, D.filter(([x, y]) => !(y < 0.14 && x > -0.24 && x < 0.16)).map(S), {weight: Math.max(0.5, u / 560), color: '#7d9c8a', closed: false});
+    const sh = 0.6 + 0.4 * Math.sin((o.t ?? 0) * 3.1);
+    washAt(p, 8514, '#ffffff', 190 * sh, ell(g[0] + s * 0.42 * u, g[1] - C * u, 0.025 * u, 0.025 * u, 8), 0.05, 0);
+  }
 };
 
 /**
