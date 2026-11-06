@@ -69,3 +69,38 @@ test('dew drop states: area, height, foot, neck length across the sheet timeline
   assert.ok(worstFoot <= 0.1, `foot ${worstFoot}`);
   assert.ok(topMax < 1.58);
 });
+
+// N6 (EDU-EP05 W5.2) spike 6: tripod gait, 24 f at each sheet speed: six feet plant without sliding, always >= 3 feet down, the leaf
+// stays upright (sway <= 4 deg).
+import {ANT_SPEED, antFoot, antWalk, GAIT} from '../src/painted/edu05/ant';
+
+test('ant-walk: planted feet do not slide, three feet always down, leaf sway <= 4 deg', () => {
+  for (const [shot, v] of Object.entries(ANT_SPEED)) {
+    let worstSlide = 0, minDown = 6, maxSway = 0;
+    const stance: Record<string, number[]> = {};
+    for (let f = 0; f <= 24; f++) {
+      const w = antWalk(v * f);
+      maxSway = Math.max(maxSway, Math.abs(w.sway));
+      let down = 0;
+      for (const set of [0, 1] as const) {
+        const ft = antFoot(w.walk, set);
+        // three feet per tripod: the ones of a set move together, so one probe per set per leg offset is the same series
+        if (ft.planted) { down += 3; (stance[`${set}`] ??= []).push(v * f + ft.dx); } else if (stance[`${set}`]?.length) { /* stance run ends */ }
+      }
+      minDown = Math.min(minDown, down);
+    }
+    // world x of a foot while planted must be constant within one stance run: split runs where the set was off the ground
+    for (const set of [0, 1] as const) {
+      let run: number[] = [], prev = true;
+      for (let f = 0; f <= 24; f++) {
+        const ft = antFoot(antWalk(v * f).walk, set), wx = v * f + ft.dx;
+        if (ft.planted) { if (!prev) run = []; run.push(wx); prev = true; } else prev = false;
+        if (run.length > 1) worstSlide = Math.max(worstSlide, Math.max(...run) - Math.min(...run));
+      }
+    }
+    console.log(`ant ${shot} ${v} sm/f: worst planted slide ${worstSlide.toExponential(1)} sm, min feet down ${minDown}, max sway ${maxSway.toFixed(2)} deg, cycles in 24 f ${(24 * v / GAIT.cycle).toFixed(2)}`);
+    assert.ok(worstSlide < 0.005, `${shot} slide ${worstSlide}`);
+    assert.ok(minDown >= 3);
+    assert.ok(maxSway <= 4, `${shot} sway ${maxSway}`);
+  }
+});

@@ -3,7 +3,7 @@ import type {V3} from '../kit/space';
 import {camOf, MACRO_CAMS} from './cams';
 import {edgeShade, paintGarden, shadeEdgeAt} from './garden';
 import {tinyItem} from './cast';
-import {antItem} from './ant';
+import {antItem, antWalk, ANT_SPEED} from './ant';
 import type {FigAnchors} from '../kit/cast';
 import {camPoint, camUnit} from '../kit/ycam';
 import {B_DEW, D1_CONTACT} from './garden';
@@ -15,7 +15,7 @@ import type {Item} from './world';
 //   printf 'EDU5-CHK-EDGE 45 out/edu05/w52/g1/EDGE45.png\n' | node scripts/stills.mjs src/painted/edu05/check-index.ts
 // They show an element in its shot's camera and staging, not a finished shot (Editor assembles those).
 
-export const CHECK_FRAMES = {EDGE: 90, DROP2: 87, DROP3: 119, DROP4: 133} as const;
+export const CHECK_FRAMES = {EDGE: 90, DROP2: 87, DROP3: 119, DROP4: 133, ANTW: 25} as const;
 const FPS = 30;
 
 /** G1: N2 shade edge sliding -0.5 -> -1.2 (S01-B05-SH01 L 0-89) with the shot camera, TINY cooled by `edgeShade` (K1), a gust (N1). */
@@ -50,3 +50,10 @@ const dropShot = (shot: 'S01-B03-SH02' | 'S01-B03-SH03' | 'S01-B03-SH04', len: n
 export const paintDROP2 = dropShot('S01-B03-SH02', 86, [1.3, 0, -0.75], 0.2);
 export const paintDROP3 = dropShot('S01-B03-SH03', 118, [1.3, 0, -0.75], 0.2);
 export const paintDROP4 = dropShot('S01-B03-SH04', 132, [1.15, 0, -0.72], 0.2);
+
+/** G3: N6 ant-walk, 24 f at the S01-B05-SH01 speed (0.07 sm/f) on the shot camera: feet planted, leaf upright, gait clock by distance. */
+export const paintANTW = (p: Painter, frame: number) => {
+  const shot = 'S01-B05-SH01', v = ANT_SPEED[shot], c = camOf({...MACRO_CAMS[shot], yaw: [-10, -10], r: [2.2, 2.2], at: [[0.6, 0.5, -2.0], [0.6, 0.5, -2.0]]}, 0), t = frame / FPS;
+  const x0 = -0.2, d = v * frame, w = antWalk(d);
+  paintGarden(p, c, {t, mode: 'sun', drop: false, shadeEdge: -3, sun: [900, 330], items: [antItem([x0 + d, 0, -2.0], {view: 'right', walk: w.walk, sway: w.sway, t})]});
+};
