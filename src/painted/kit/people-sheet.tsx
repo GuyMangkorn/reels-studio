@@ -155,7 +155,7 @@ const Expressions = () => (
 );
 
 // ------------------------------------------------------------------------------------------------ KIT-WARDROBE
-const WARD_COLS = 5, WARD_CELL_W = 620, WARD_CELL_H = 760, WARD_W = WARD_COLS * WARD_CELL_W, WARD_H = 130 + 3 * WARD_CELL_H;
+const WARD_COLS = 5, WARD_CELL_W = 620, WARD_CELL_H = 760, WARD_W = WARD_COLS * WARD_CELL_W, WARD_H = 130 + Math.ceil(OUTFIT_IDS.length / WARD_COLS) * WARD_CELL_H;
 const WARD_UNIT = 290, WARD_GROUND = 645;
 /** Who wears each outfit on the sheet (any PEOPLE adult fits) and, for the school uniforms, the child who wears it too. */
 const WARD_WHO: Record<OutfitId, {adult: PersonId; child?: PersonId}> = {
@@ -165,7 +165,7 @@ const WARD_WHO: Record<OutfitId, {adult: PersonId; child?: PersonId}> = {
   'school-jp-gakuran': {adult: 'man-crop', child: 'boy-school'},
   office: {adult: 'man-parted'}, police: {adult: 'man-buzz'}, nurse: {adult: 'woman-ponytail'}, doctor: {adult: 'woman-pixie'},
   monk: {adult: 'man-crop'}, vendor: {adult: 'woman-curly'}, rider: {adult: 'man-spiky'}, hoodie: {adult: 'woman-pixie'},
-  guard: {adult: 'man-elder'}, yukata: {adult: 'woman-ponytail'}, kimono: {adult: 'woman-curly'},
+  guard: {adult: 'man-elder'}, yukata: {adult: 'woman-ponytail'}, kimono: {adult: 'woman-curly'}, 'kitchen-apron': {adult: 'woman-curly'}, 'park-casual': {adult: 'man-crop'},
 };
 const wardCell = (i: number) => ({x: (i % WARD_COLS) * WARD_CELL_W, y: 130 + Math.floor(i / WARD_COLS) * WARD_CELL_H});
 

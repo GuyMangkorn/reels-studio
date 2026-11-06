@@ -62,6 +62,8 @@ export const PLATES: PlateEntry[] = [
   {id: 'PL-EDU-FRIDGE', episode: 'EDU', title: 'Inside a fridge looking out at the cook holding an onion', kind: 'interior', time: 'lamp-lit', mood: ['cold', 'comic'], palette: ['#40332a', '#925b4a', '#a68565', '#ccbea5', '#e1dccc'], kitLayers: [], shot: 'EDU2-S01-B05-SH04', t: 0.533},
   {id: 'PL-EDU-ONION-CELLS', episode: 'EDU', title: 'Macro of onion cells releasing enzyme beads, flat science diagram', kind: 'diagram', time: 'day', mood: ['scientific', 'playful'], palette: ['#ccb16e', '#dcbd78', '#e1c995', '#e8d7aa', '#f2e5bf'], kitLayers: [], shot: 'EDU2-S01-B03-SH02', t: 1},
   {id: 'PL-EDU-EYE', episode: 'EDU', title: 'Extreme close-up of a brown eye with irritant gas curling up', kind: 'diagram', time: 'day', mood: ['intimate', 'scientific'], palette: ['#442d20', '#764c34', '#85563b', '#8c5b3d', '#9b6f56'], kitLayers: [], shot: 'EDU2-S01-B04-SH02', t: 1.667},
+  {id: 'PL-EDU-PARK', episode: 'EDU', title: 'Sunny city-park lawn with a curving path and a golden-shower tree, an owner and a golden retriever with a red ball', kind: 'exterior', time: 'day', mood: ['sunny', 'warm', 'playful'], palette: ['#527642', '#739c46', '#8bb454', '#d2b655', '#c4cdcd'], kitLayers: ['ENV-SKY'], shot: 'EDU3-S01-B01-SH01', t: 1},
+  {id: 'PL-EDU-PARK-DOGVIEW', episode: 'EDU', title: 'The same park seen with dog colour vision (red-green weak, muted): the red ball sinks into the grass', kind: 'exterior', time: 'day', mood: ['muted', 'scientific', 'playful'], palette: ['#6a6348', '#7a7352', '#9a9162', '#b6ab78', '#c8bc82'], kitLayers: ['ENV-SKY'], shot: 'EDU3-S01-B03-SH03', t: 3},
 ];
 
 export type PlateQuery = Partial<{episode: string; kind: PlateKind; time: PlateTime; mood: string; layer: string}>;

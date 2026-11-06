@@ -22,6 +22,8 @@ const COLS: {name: string; pose: AnimalPose}[] = [
   {name: 'front stand', pose: {view: 'front', state: 'stand'}},
   {name: 'front sit', pose: {view: 'front', state: 'sit'}},
   {name: 'front lie', pose: {view: 'front', state: 'lie'}},
+  {name: '3/4 run', pose: {view: 'right', state: 'stand', gait: 'run', walk: 0.2, quarter: 0.5, mouth: 'open'}},
+  {name: '3/4 brake', pose: {view: 'right', state: 'stand', gait: 'run', walk: 0.2, quarter: 0.6, brake: 1, stride: 0.15}},
 ];
 const LABEL_W = 330, CELL_W = 270, ROW_H = 230, TOP = 110, SHOULDER = 92;
 const W = LABEL_W + CELL_W * COLS.length, H = TOP + ROW_H * ANIMAL_IDS.length + 20;
