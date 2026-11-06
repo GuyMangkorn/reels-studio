@@ -50,7 +50,7 @@ const dropShot = (shot: 'S01-B03-SH02' | 'S01-B03-SH03' | 'S01-B03-SH04', len: n
 };
 export const paintDROP2 = dropShot('S01-B03-SH02', 86, [1.3, 0, -0.75], 0.2);
 export const paintDROP3 = dropShot('S01-B03-SH03', 118, [1.3, 0, -0.75], 0.2);
-export const paintDROP4 = dropShot('S01-B03-SH04', 132, [1.15, 0, -0.72], 0.2);
+export const paintDROP4 = dropShot('S01-B03-SH04', 132, [0.76, 0, -0.72], 0.2);
 
 /** G3: N6 ant-walk, 24 f at the S01-B05-SH01 speed (0.07 sm/f) on the shot camera: feet planted, leaf upright, gait clock by distance. */
 export const paintANTW = (p: Painter, frame: number) => {
