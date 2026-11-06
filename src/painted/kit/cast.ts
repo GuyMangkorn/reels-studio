@@ -18,6 +18,8 @@ export type Outfit = {
   boots?: boolean; jacket?: string; coat?: string; apron?: string; skirt?: string;
   /** Skirt hem height above the ground, m (front and profile); absent = just above the knee. Short figures (children) set it: the knee rule drops their hem to the ankle in profile. */
   skirtHem?: number;
+  /** Knee-length shorts: the `pants` colour stops just below the knee (a cuff); the shin is bare skin with a sock of this colour above the shoe. Front, profile and turned views (`back.ts` too). Absent = long trousers. */
+  shorts?: {sock: string};
   /** Job-wardrobe details (`wardrobe.ts`): absent on every existing character, which then draws exactly as before. */
   gear?: Gear;
 };
@@ -492,7 +494,14 @@ export const drawFigure = (p: Painter, def: CastDef, g: Pt, unit: number, pose: 
     // Front kneel: the thigh comes toward the camera, so it widens toward the knee (the knee is the nearest part).
     const near = hide && !profile && mode?.kind === 'kneel';
     fillL(legColor(far), SLq(limb(hip, knee, 0.11, near ? 0.125 : 0.095)), true);
-    if (!hide) fillL(legColor(far), SLq(limb(knee, ankle, 0.095, 0.08)), true);
+    if (!hide && o.shorts) {
+      // Shorts: bare shin and sock from under a denim cuff that reaches a little below the knee (same limb silhouette as trousers, so no overlay edge).
+      const at = (k: number): Pt => [knee[0] + (ankle[0] - knee[0]) * k, knee[1] + (ankle[1] - knee[1]) * k];
+      const skinC = far ? mixColor(def.head.skin, '#000000', 0.18) : def.head.skin, sockC = far ? mixColor(o.shorts.sock, '#000000', 0.18) : o.shorts.sock;
+      fillL(skinC, SLq(limb(at(0.1), ankle, 0.088, 0.066)), true);
+      fillL(sockC, SLq(limb(at(0.84), [ankle[0], ankle[1] - 0.005], 0.07, 0.066)), true);
+      fillL(legColor(far), SLq(limb(knee, at(0.16), 0.095, 0.1)), true);
+    } else if (!hide) fillL(legColor(far), SLq(limb(knee, ankle, 0.095, 0.08)), true);
     if (c > 0.2 || mode) fillL(legColor(far), SLq(ell(knee[0], knee[1], near ? 0.064 : hide || legsOver ? 0.056 : 0.05, near ? 0.064 : hide || legsOver ? 0.056 : 0.05, 12)), false);
     if (hide) continue;
     if (c > 0.4) {

@@ -1,216 +1,705 @@
 {
-  "deliverable": "EDU-EP03-SHORT",
-  "revision": "SS-R1",
-  "status": "W2.2 first storyboard pass, untimed. Not user-approved; no runtime or visual evidence; timed scene sheets come after the W4 voice lock. Review page: pending.",
-  "brief": "scripts/edu-series/ep03/brief.md EDU-BRIEF-R1",
-  "script": "scripts/edu-series/ep03/script.md EDU-SCRIPT-R1.1 (ALT-A not in the main cut)",
-  "userDecisions": [
-    "Q1 (2026-11-05): owner is male, man-crop + new: park-casual",
-    "Q2 (2026-11-05): dog view stays on through B04 (VD07); tag on from the first flip frame; colour returns at the B04-SH02 end / B05"
+ "deliverable": "EDU-EP03-SHORT",
+ "revision": "SS-R3.2",
+ "status": "W5.3 Draft finding applied: timed scene sheets SS-R3.2 (scripts/edu-series/ep03/scenes/index.md), ready-for-dev; only S01-B06-SH02 changed (run window +15 f inside the shot, start back at D0, camera pan after the comparison window, bark l 96); timing and totals unchanged (1571 f = 52.37 s), narration and B_loop seam unchanged. Plates not yet rebuilt (Boss row open). Review page: pending.",
+ "brief": "scripts/edu-series/ep03/brief.md EDU-BRIEF-R2 (section R2) + VD12 option A (user, 2026-11-05)",
+ "script": "scripts/edu-series/ep03/script.md EDU-SCRIPT-R1.1 (ALT-A not in the main cut)",
+ "userDecisions": [
+  "Q1 (2026-11-05): owner is male, man-crop + new: park-casual",
+  "Q2 (2026-11-05): dog view stays on through B04 (VD07); tag on from the first flip frame; colour returns at the B04-SH02 end / B05",
+  "VD12 (2026-11-05): option A, B04 faces framed larger (push end r <= 1.6), warm face key and rim; owner skin #f5c27a in B04 only (user accepted)",
+  "LF02 v3 (2026-11-05): user pass on the sniff neck",
+  "Captions (2026-11-05): EP02 caption shade, band y 1176-1344, no captions in look frames",
+  "B06-SH02 run (2026-11-05): dog starts nearer than D0, about 5 m/s from 1.4 m before W, still after the blue ball settles, no catch",
+  "B04-SH01 (2026-11-05): owner starts already part-way into the kneel (0.4) so the cap clears the tag",
+  "B02-SH04 (2026-11-05): keep the head-low beat; Boss builds a front head-low sniff pose",
+  "B06-SH02 run (2026-11-06, W5.3 Draft): stretch the run window by +15 f, frames taken from other shots/gaps where narration and beats allow (applied in SS-R3.2 inside the shot; total unchanged)"
+ ],
+ "eyebrow": "EDU-EP03-SHORT · สตอรีบอร์ด SS-R3 (จับเวลาแล้ว 52.4 วินาที) · brief EDU-BRIEF-R2.1 · script R1.1 · เสียง Kore + Algenib",
+ "title": "ลูกบอลสีแดงที่หมามองไม่เห็น — สตอรีบอร์ด",
+ "pageTitle": "EDU-EP03-SHORT Storyboard",
+ "lede": "รอบสาม: ใส่เวลาจริงจากเสียงที่ล็อกแล้ว (ผู้บรรยาย Kore, เจ้าของหมา Algenib) ยาวรวม 52.4 วินาที เหลือเผื่ออีก 7.6 วินาทีก่อนครบ 60 15 ช็อตเท่าเดิม เปลี่ยนเนื้อหาแค่ 2 ช็อตเพราะเรื่องตำแหน่งในฉาก มีหมายเหตุบอกในช็อตนั้น: B02-SH03 ไม่เห็นหมาข้างหลังเจ้าของแล้ว (ได้ยินเสียงดมแทน) และ B06-SH02 หมาวิ่งเข้ามาในเลนเดียวกับตอนวิ่งเลย แล้วเลี้ยวตรงเข้าหาบอลฟ้า ช็อตอื่นเนื้อหาเหมือนรอบที่ผ่านแล้ว ป้าย \"ภาพจำลอง (โดยประมาณ)\" ขึ้นทุกเฟรมที่เป็นสายตาหมา (B03-SH01 ถึงท้าย B04-SH02 และ B06-SH02) บอลกับหัวหมาอยู่เหนือแถบซับทุกช็อต",
+ "fps": 30,
+ "timingEstimated": false,
+ "facts": [
+  [
+   "เฟรม",
+   "1080×1920 · 30 fps · 1571 เฟรม = 52.4 วินาที (เผื่อ 7.6 วินาที)"
   ],
-  "eyebrow": "EDU-EP03-SHORT · สตอรีบอร์ด SS-R1 (รอบแรก ยังไม่จับเวลา) · brief EDU-BRIEF-R1 · script R1.1 · ยังไม่ล็อกเสียง",
-  "title": "ลูกบอลสีแดงที่หมามองไม่เห็น — สตอรีบอร์ด",
-  "pageTitle": "EDU-EP03-SHORT Storyboard",
-  "lede": "รอบแรก: ดูมุมกล้องกับเสียงบรรยายของแต่ละช็อตก่อน ยังไม่มีเวลาต่อช็อตและยังไม่มีภาพ look 15 ช็อต ฉากเดียวคือสวนสาธารณะยามเช้า กล้องขยับอยู่ในฉากทุกช็อต มุมระดับพื้นหญ้าที่มีลูกบอลอยู่หน้ากล้อง (V-BALL) กลับมา 4 ครั้ง แต่ละครั้งเปลี่ยนแค่อย่างเดียว: หมาวิ่งเลย → สีแบบสายตาหมา → ดมจนเจอ → ลูกสีฟ้า ภาพสายตาหมาเป็นภาพจำลอง มีป้าย \"ภาพจำลอง (โดยประมาณ)\" ทุกเฟรมที่เห็น (B03, B04, B06-SH02) เรื่องหมาวิ่งเลยและวิ่งหาบอลเป็นการแสดง ไม่ใช่ผลทดลอง เจ้าของหมาเป็นผู้ชายตามที่คุณเลือกแล้ว",
-  "fps": 30,
-  "untimed": true,
-  "timingEstimated": true,
-  "facts": [
-    ["เฟรม", "1080×1920 · 30 fps · ยังไม่จับเวลา (ล็อกเสียงก่อน)"],
-    ["ภาพ", "Painted 2D (p5.brush) · กล้อง 3D ในฉากที่วัดเป็นเมตร · ตัวละครสัดส่วน 4 หัว"],
-    ["ตัวละคร", "เจ้าของหมาผู้ชาย (man-crop) เสื้อยืดสีมัสตาร์ด กางเกงขาสั้นยีนส์ หมวกแก๊ปสีฟ้า กระเป๋าผ้าสะพาย · หมาโกลเด้นรีทรีฟเวอร์ (dog-golden) เห่า คราง ดม ไม่มีบทพูด"],
-    ["ผู้บรรยาย", "หญิง เสียงอบอุ่นร่าเริง (เลือกเสียงตอนล็อกเสียง) · เจ้าของหมาพูด 2 ประโยคสั้น"],
-    ["จบ", "B_loop: ค้างราว 3 วินาทีที่หมาคาบบอลฟ้า ภาพยังขยับ แล้ววนกลับช็อตแรก"]
+  [
+   "ภาพ",
+   "Painted 2D (p5.brush) · กล้อง 3D ในฉากที่วัดเป็นเมตร · ตัวละครสัดส่วน 4 หัว"
   ],
-  "source": "scripts/edu-series/ep03/",
-  "beats": [
-    { "id": "EDU-EP03-S01-B01", "name": "เปิดเรื่อง: ลูกบอลแดงที่คุณคิดว่าเด่น", "plannedLook": "LF01 (W3, not painted)" },
-    { "id": "EDU-EP03-S01-B02", "name": "โยนแล้ววิ่งเลยลูก", "plannedLook": "LF01" },
-    { "id": "EDU-EP03-S01-B03", "name": "ลองดูผ่านตาหมา (ภาพจำลอง)", "plannedLook": "LF02 (W3, not painted)" },
-    { "id": "EDU-EP03-S01-B04", "name": "ทำไม: เซลล์รับสี 3 แบบ กับ 2 แบบ", "plannedLook": "LF02" },
-    { "id": "EDU-EP03-S01-B05", "name": "จมูกช่วยหาเจอ", "plannedLook": "LF01" },
-    { "id": "EDU-EP03-S01-B06", "name": "ลูกบอลสีฟ้า", "plannedLook": "LF01 (SH01), LF02 (SH02)" },
-    { "id": "EDU-EP03-S01-B07", "name": "คำถามปิดท้าย แล้ววนกลับ", "plannedLook": "LF01" }
+  [
+   "ตัวละคร",
+   "เจ้าของหมาผู้ชาย (man-crop) เสื้อยืดสีมัสตาร์ด กางเกงขาสั้นยีนส์ หมวกแก๊ปสีฟ้า กระเป๋าผ้าสะพาย · หมาโกลเด้นรีทรีฟเวอร์ (dog-golden) เห่า คราง ดม ไม่มีบทพูด"
   ],
-  "shots": [
-    {
-      "id": "S01-B01-SH01", "beat": "EDU-EP03-S01-B01", "lines": ["L01"], "est": 2.0,
-      "cast": "man-crop + new: park-casual, P11 (grip variant, ball at chest), happy · dog-golden, stand, happy-wag (front)",
-      "camera": "cam: T-TWO, yaw 30→38 arc, r 1.60→1.40, eye 1.20, f 1100 (est)",
-      "views": "owner front · dog front, frame right", "ballZone": "above caption band (held at chest)",
-      "tag": "off (normal colour)",
-      "title": "ยกบอลแดงโชว์",
-      "vo": [["ผู้บรรยาย", "ลูกบอลสีแดง ที่คุณซื้อให้หมา…"]],
-      "seen": "ภาพใกล้สองคน กล้องระดับอก โค้งเข้าช้า ๆ เจ้าของหมายิ้มภูมิใจ ยกลูกบอลยางสีแดงเงาระดับอกแล้วบีบให้ดังเอี๊ยด หมาโกลเด้นอยู่ขวาของจอ เงยหน้ามอง กระดิกหาง ข้างหลังเป็นสวนยามเช้า ต้นราชพฤกษ์ดอกเหลือง ทางเดินปูน แปลงดาวเรือง",
-      "sound": "กีตาร์โปร่งสดใสเริ่ม นกร้อง เสียงบีบบอลดังเอี๊ยด"
-    },
-    {
-      "id": "S01-B01-SH02", "beat": "EDU-EP03-S01-B01", "lines": ["L02"], "est": 3.5,
-      "cast": "dog-golden, stand, happy-wag (slow) · man-crop + new: park-casual, P11 (arm raised, ball held up), happy",
-      "camera": "cam: dog-height, from (−3.10, 0.45, −0.30) to target (−4.20, 1.30, −1.50), truck x 0→+0.15, f 1000 (est)",
-      "views": "dog left (profile), foreground right · owner front, low angle", "ballZone": "above caption band (held up against the tree line)",
-      "tag": "off (normal colour)",
-      "title": "บอลแดงตัดกับทิวไม้เขียว",
-      "vo": [["ผู้บรรยาย", "ในสายตามัน อาจดูคล้ายหญ้า มากกว่าที่คุณคิด"]],
-      "seen": "มุมต่ำระดับหัวหมา กล้องเลื่อนข้างช้ามาก หมาหันข้างอยู่ใกล้กล้องด้านขวา เงยมองขึ้นไปทางซ้าย เจ้าของชูบอลแดงขึ้นตัดกับทิวไม้สีเขียวข้างหลัง ภาพยังเป็นสีปกติ บอลแดงเด่นชัดในสายตาเรา",
-      "sound": "ดนตรีต่อเนื่อง นกร้อง"
-    },
-    {
-      "id": "S01-B02-SH01", "beat": "EDU-EP03-S01-B02", "lines": ["O1"], "est": 1.6,
-      "cast": "man-crop + new: park-casual, new: overhand-throw, happy + talk · dog-golden, stand, run (launch)",
-      "camera": "cam: T-TWO, yaw −50→−40, r 2.60, eye 1.20, f 1000 (est)",
-      "views": "owner right (squareToCam, est) · dog right", "ballZone": "in flight, leaves frame",
-      "tag": "off",
-      "title": "ไปเลย! เอามา!",
-      "vo": [["เจ้าของหมา", "ไปเลย! เอามา!"]],
-      "seen": "ภาพกลางสองคน กล้องโค้งช้า ๆ จากด้านข้าง เจ้าของง้างแขนโยนบอลแดงสุดแรงพร้อมตะโกน หมาเห่าหนึ่งทีแล้วพุ่งออกวิ่ง",
-      "sound": "เสียงลมตอนโยน หมาเห่าหนึ่งที ดนตรีเด้งขึ้นแล้วเบาลงตอนเจ้าของพูด",
-      "soundIds": "whoosh_air-swish-rising_01; NEEDS-GEN single bark"
-    },
-    {
-      "id": "S01-B02-SH02", "beat": "EDU-EP03-S01-B02", "lines": ["L03a"], "est": 2.6,
-      "cast": "dog-golden, run-left-to-right → new: skid-stop → sniff → new: puzzled whine (view cut left↔right) · ball new: dog ball (red)",
-      "camera": "V-BALL, truck x 0→+0.30 (est)",
-      "views": "dog right (run), then left/right cuts while looking around", "ballZone": "below caption band (ball top ≥ 1380, est; same for all four V-BALL uses)",
-      "tag": "off (normal colour)",
-      "title": "วิ่งเลยลูกบอล",
-      "vo": [],
-      "seen": "มุมระดับพื้นหญ้า (มุมเทียบ V-BALL ที่จะกลับมาอีก 3 ครั้ง) กล้องเลื่อนข้างช้า บอลแดงตกลงในหญ้าที่โดนแดด เด้งหนึ่งทีแล้วกลิ้งมาหยุดใกล้กล้อง เห็นชัดมาก หมาวิ่งผ่านข้างหลังบอล ไถลหยุด ดมซ้ายดมขวา ครางงง ๆ",
-      "sound": "บอลตกหญ้าแล้วกลิ้ง ฝีเท้าวิ่ง ไถลหยุด ดมฟุดฟิด ครางงง",
-      "soundIds": "NEEDS-GEN thud/roll, paws on grass, skid, sniff, whine"
-    },
-    {
-      "id": "S01-B02-SH03", "beat": "EDU-EP03-S01-B02", "lines": ["O2"], "est": 1.6,
-      "cast": "man-crop + new: park-casual, P05 / point-and-say, surprised → worried + talk · dog-golden, sniff (background, small)",
-      "camera": "cam: T-OWNER, yaw 25→30, r 2.20→2.00, eye 1.35, f 1050 (est)",
-      "views": "owner right · dog left/right, background", "ballZone": "not in frame",
-      "tag": "off",
-      "title": "ตรงนั้นไง!",
-      "vo": [["เจ้าของหมา", "ตรงนั้นไง! ข้างหน้าเลย!"]],
-      "seen": "ภาพกลางเจ้าของ ระดับสายตา กล้องเลื่อนเข้านิดเดียว เจ้าของชี้ไปข้างหน้า หน้าตกใจปนหงุดหงิดแบบขำ ๆ ตะโกนบอก หมาตัวเล็กข้างหลังกำลังดมผิดที่",
-      "sound": "ดนตรีเบาลง เสียงพูดชัดใกล้"
-    },
-    {
-      "id": "S01-B02-SH04", "beat": "EDU-EP03-S01-B02", "lines": ["L03"], "est": 2.8,
-      "cast": "dog-golden, stand, idle (front; head low → lifts to lens)",
-      "camera": "cam: T-DOG-S1 (head), yaw 0, r 1.20→0.55 push, eye 0.50, f 1000 (est)",
-      "views": "dog front", "ballZone": "not in frame",
-      "tag": "off (L03 is spoken before the tag; accepted in R1.1)",
-      "title": "มันไม่ได้ซื่อบื้อ",
-      "vo": [["ผู้บรรยาย", "มันไม่ได้ซื่อบื้อนะ… ลองดูโลกผ่านตาหมากัน"]],
-      "seen": "ภาพใกล้หน้าหมาระดับหัวหมา กล้องดันเข้าช้า ๆ หมาเงยหน้าขึ้นมองตรงกล้อง หน้าใสซื่อ กล้องดันจนเห็นตาชัด",
-      "sound": "ดนตรีต่อเนื่อง"
-    },
-    {
-      "id": "S01-B03-SH01", "beat": "EDU-EP03-S01-B03", "lines": ["L04"], "est": 3.6,
-      "cast": "dog-golden, sniff (at S1) · red ball at R0 · new: dog-view colour map (VD05), radial sweep from the dog's head",
-      "camera": "V-BALL held, then push r −0.15 after the sweep (est)",
-      "views": "dog left/right as end of B02-SH02", "ballZone": "below caption band (as B02-SH02)",
-      "tag": "ON from f0 (first flip frame) to end of shot",
-      "title": "ภาพเปลี่ยนเป็นสายตาหมา",
-      "vo": [["ผู้บรรยาย", "สีแดงกับสีเขียว… แยกยากสำหรับหมา"]],
-      "seen": "มุม V-BALL เดิม กล้องนิ่งแล้วดันเข้านิดเดียวหลังสีเปลี่ยน สีทั้งภาพค่อย ๆ เปลี่ยนจากหัวหมาแผ่ออกไปเหมือนน้ำซึมในสีน้ำ ฝีแปรงเดิมทุกเส้น เปลี่ยนแค่สี บอลแดงกลายเป็นเหลืองอมเขียวหม่น ใกล้สีหญ้ามากขึ้นแต่ยังมองเห็นได้ ป้าย ภาพจำลอง (โดยประมาณ) ขึ้นด้านบนตั้งแต่เฟรมแรกที่สีเริ่มเปลี่ยน",
-      "sound": "เสียงวิ้งใสพาภาพเปลี่ยน ดนตรีกลายเป็นแพดนุ่ม ๆ เสียงนกอู้อี้ลง",
-      "soundIds": "reveal_glass-shimmer-soft_01 at f0; bed_warm-pad-felt-third_01 (partial fit)"
-    },
-    {
-      "id": "S01-B03-SH02", "beat": "EDU-EP03-S01-B03", "lines": ["L05"], "est": 2.6,
-      "cast": "set SET-PARK whole · man-crop + new: park-casual (small, front) · dog-golden (small) · dog-view map u=1",
-      "camera": "cam: T-PARK, crane eye 0.30→1.60, yaw −10→+12, r 5.0→6.0, f 900 (est; the one wide)",
-      "views": "owner front · dog left", "ballZone": "ball tiny or out of frame; not the subject",
-      "tag": "ON whole shot",
-      "title": "ฟ้ากับเหลืองยังชัด",
-      "vo": [["ผู้บรรยาย", "แต่สีฟ้ากับสีเหลือง มันเห็นได้ดี"]],
-      "seen": "ภาพกว้างช็อตเดียวของเรื่อง กล้องเครนจากระดับหญ้าขึ้นสูง เห็นทั้งสวนในสายตาหมา ท้องฟ้ายังฟ้า ต้นราชพฤกษ์ยังเหลืองสด เสื้อเหลืองกับหมวกฟ้าของเจ้าของยังเด่น ส่วนดอกหางนกยูงสีแดงกลืนไปกับใบ ป้ายภาพจำลองยังอยู่",
-      "sound": "แพดต่อเนื่อง นกอู้อี้"
-    },
-    {
-      "id": "S01-B03-SH03", "beat": "EDU-EP03-S01-B03", "lines": ["L06"], "est": 3.3,
-      "cast": "red ball close · split comparison (VD09a): normal left, dog view right, ends full dog view",
-      "camera": "cam: T-BALL, yaw 20→12, r 0.70→0.60, eye 0.25, f 1100 (est)",
-      "views": "—", "ballZone": "above caption band (y 900–1150, est)",
-      "tag": "ON whole shot",
-      "title": "บอลลูกเดียว สองสายตา",
-      "vo": [["ผู้บรรยาย", "ลูกบอลแดงบนหญ้าเขียว… เลยอาจไม่เด่นเท่าที่เราเห็น"]],
-      "seen": "ภาพใกล้บอลระดับพื้น กล้องดันเข้าช้า เส้นแบ่งนุ่ม ๆ เลื่อนผ่านลูกบอล ซีกซ้ายสีปกติ (แดงสด) ซีกขวาสายตาหมา (เหลืองอมเขียวหม่น) แล้วจบที่สายตาหมาทั้งภาพ ป้ายภาพจำลองยังอยู่",
-      "sound": "แพดต่อ เสียงวูบเบา ๆ ตอนเส้นแบ่งเลื่อน (ถ้าใช้)",
-      "flag": "ต้องทดลองก่อน (S3): เส้นแบ่งต้องผ่านกลางลูกบอล และสองซีกต้องดูเป็นลูกเดียวกัน ถ้าไม่ผ่านจะใช้วิธีกะพริบสลับสีแทน"
-    },
-    {
-      "id": "S01-B04-SH01", "beat": "EDU-EP03-S01-B04", "lines": ["L07"], "est": 4.5,
-      "cast": "man-crop + new: park-casual, kneel-down, happy · dog-golden, sit-down → sit, happy-wag (front) · new: chalk magnifier bubbles + cones (3 / 2, no cone colours) · labels คน: 3 แบบ / หมา: 2 แบบ (screen layer, N8) · dog-view map u=1",
-      "camera": "cam: T-TWO, yaw −15→−5 arc, r 2.00→1.80, eye 0.90, f 1000 (est)",
-      "views": "owner front · dog front", "ballZone": "not in frame",
-      "tag": "ON whole shot (dog view held, VD07, user Q2)",
-      "title": "คน 3 แบบ หมา 2 แบบ",
-      "vo": [["ผู้บรรยาย", "ทำไมล่ะ?… ในตาคนมีเซลล์รับสี สามแบบ… หมามีแค่ สองแบบ"]],
-      "seen": "ภาพกลางสองคนระดับหัวหมา กล้องโค้งช้า ยังเป็นสายตาหมา เจ้าของคุกเข่าข้างหมาที่นั่งลง ฟองแว่นขยายลายชอล์กเปิดจากตาเจ้าของ รูปเซลล์รับสี 3 อันโผล่ทีละอัน ป้าย คน: 3 แบบ แล้วฟองจากตาหมามี 2 อัน ป้าย หมา: 2 แบบ เซลล์วาดด้วยชอล์กสีเดียว ไม่บอกว่าเป็นสีอะไร ป้ายภาพจำลองยังอยู่",
-      "sound": "ทำนองดีดเบา ๆ ชวนสงสัย เสียงป๊อปเล็ก ๆ ทุกครั้งที่รูปหรือป้ายโผล่",
-      "soundIds": "ui_pop_01 per cone and label"
-    },
-    {
-      "id": "S01-B04-SH02", "beat": "EDU-EP03-S01-B04", "lines": ["L08"], "est": 5.5,
-      "cast": "man-crop + new: park-casual, kneel, new: ruffle, happy · dog-golden, sit, happy-wag · grey thought bubble + card ขาวดำ + red strike (screen layer, outside the map) · flip back to normal over the last 15 f",
-      "camera": "cam: T-TWO, r 1.80→1.40 push, yaw −5→+5, eye 0.90, f 1000 (est)",
-      "views": "owner front · dog front", "ballZone": "not in frame",
-      "tag": "ON until the last frame of the flip back (last frame of this shot), then off",
-      "title": "ไม่ใช่ขาวดำ",
-      "vo": [["ผู้บรรยาย", "แต่ไม่ได้แปลว่าหมาเห็นเป็นขาวดำนะ… อันนั้นเป็นความเชื่อผิด ๆ… หมาเห็นสี แค่เห็นไม่เหมือนเรา"]],
-      "seen": "ภาพเดิมดันเข้าใกล้ขึ้น ฟองความคิดของหมาโผล่ ข้างในเป็นสวนจิ๋วสีเทาและการ์ดคำว่า ขาวดำ เส้นสีแดงขีดฆ่าการ์ดตอน \"อันนั้นเป็นความเชื่อผิด ๆ\" แล้วฟองแตก เงียบสั้น ๆ หมากระดิกหาง เจ้าของลูบหัวหมา ฉากหลังที่เป็นสายตาหมาก็ยังมีสีให้เห็น ท้ายช็อตภาพค่อย ๆ กลับเป็นสีปกติ ป้ายภาพจำลองหายที่เฟรมสุดท้าย",
-      "sound": "เสียงขีดฆ่าด้วยชอล์ก เงียบราว 0.4 วินาทีก่อน \"หมาเห็นสี\" เสียงวิ้งย้อนกลับคร่อมรอยต่อไปช็อตถัดไป",
-      "soundIds": "NEEDS-GEN chalk cross-out scratch; reveal_glass-shimmer-soft_01 reversed (Editor)"
-    },
-    {
-      "id": "S01-B05-SH01", "beat": "EDU-EP03-S01-B05", "lines": ["L09"], "est": 4.5,
-      "cast": "dog-golden, new: nose-trail → new: pick-up-ball (+ new: ball-in-mouth), happy-wag · red ball at R0",
-      "camera": "V-BALL, truck x +0.30→0 (est)",
-      "views": "dog left (nose trail toward −x)", "ballZone": "below caption band (as B02-SH02)",
-      "tag": "off (normal colour)",
-      "title": "ดมจนเจอ",
-      "vo": [["ผู้บรรยาย", "สุดท้ายมันก็หาเจอ… เพราะหมาไม่ได้ใช้แค่ตา มันใช้จมูกช่วยด้วย"]],
-      "seen": "มุม V-BALL เดิม สีปกติ ไม่มีป้าย กล้องเลื่อนกลับช้า หมาก้มจมูกดมตามพื้นจากที่ที่มันดมอยู่ เดินตรงมาที่บอลแดง คาบขึ้น หางตีพื้น",
-      "sound": "กีตาร์กลับมาแบบโล่งใจ เสียงดมฟุดฟิดใกล้ ๆ หางตีพื้นตุบ ๆ",
-      "soundIds": "NEEDS-GEN sniff-snuffle, tail thumps"
-    },
-    {
-      "id": "S01-B06-SH01", "beat": "EDU-EP03-S01-B06", "lines": ["L10 (first clause: คราวนี้ลองลูกสีฟ้า…)"], "est": 2.0,
-      "cast": "man-crop + new: park-casual, smug → happy, bag open, new: overhand-throw (red ball in left hand) · dog-golden, stand, happy-wag (eager, at his side)",
-      "camera": "cam: T-OWNER, yaw 30→22, r 2.00→1.80, eye 1.30, f 1050 (est)",
-      "views": "owner front/right (squareToCam, est) · dog front", "ballZone": "blue ball in hand, above caption band",
-      "tag": "off (normal colour)",
-      "title": "ลองลูกสีฟ้า",
-      "vo": [["ผู้บรรยาย", "คราวนี้ลองลูกสีฟ้า…"]],
-      "seen": "ภาพกลางเจ้าของระดับสายตา กล้องโค้งเข้านิดหนึ่ง สีปกติ มือซ้ายถือบอลแดง ยิ้มมีเลศนัย เปิดกระเป๋าสะพายหยิบบอลสีฟ้าออกมาเป็นครั้งแรก แล้วโยน หมายืนรอข้าง ๆ ตื่นเต้น",
-      "sound": "เสียงเปิดกระเป๋าผ้า เสียงลมตอนโยน ดนตรีเริ่มยกขึ้น",
-      "soundIds": "NEEDS-GEN canvas bag flap; whoosh_air-swish-rising_01"
-    },
-    {
-      "id": "S01-B06-SH02", "beat": "EDU-EP03-S01-B06", "lines": ["L10 (second clause: บนหญ้าเขียว หมาน่าจะเห็นชัดกว่าสีแดง)", "run + bark"], "est": 4.5,
-      "cast": "blue ball (new: dog ball) L1 → R0 · dog-golden, new: run-to-stop (D0→R0, after the ball settles) → new: pick-up-ball → new: bark-once · dog-view map: fast sweep in (10 f) at f0, fast flip back (10 f) at the end",
-      "camera": "V-BALL, truck x 0→−0.20 (est)",
-      "views": "dog right (run toward +x), then front-ish nose-on", "ballZone": "below caption band (as B02-SH02)",
-      "tag": "ON from f0 (first flip frame) to the last frame of the flip back (last frame of this shot)",
-      "title": "วิ่งตรงไปหาบอลฟ้า",
-      "vo": [["ผู้บรรยาย", "บนหญ้าเขียว หมาน่าจะเห็นชัดกว่าสีแดง"]],
-      "seen": "มุม V-BALL เดิม ภาพเปลี่ยนเป็นสายตาหมาเร็ว ๆ ตั้งแต่เฟรมแรก ป้ายภาพจำลองขึ้นพร้อมกัน บอลฟ้าตกที่จุดเดิมแล้วกลิ้งมาหยุดที่เดิม สีฟ้าสดเด่นบนหญ้าสีหม่น พอบอลนิ่งแล้วหมาจึงวิ่งตรงมา หยุดจมูกจ่อบอล คาบขึ้น เห่าดีใจ ไม่มีการงับกลางอากาศ ท้ายช็อตภาพกลับเป็นสีปกติเร็ว ๆ ป้ายหายที่เฟรมสุดท้าย",
-      "sound": "เสียงวิ้งตอนภาพเปลี่ยน บอลตกหญ้า ฝีเท้าวิ่ง เห่าดีใจหนึ่งทีตอนถึงบอล ดนตรีสว่างที่สุด",
-      "soundIds": "reveal_glass-shimmer-soft_01 at f0; NEEDS-GEN thud, paws, happy bark",
-      "flag": "ต่างจาก brief: ย้ายช่วงภาพกลับเป็นสีปกติจากต้นช็อตสุดท้ายมาไว้ท้ายช็อตนี้ เพื่อให้ป้ายภาพจำลองอยู่ครบทุกเฟรมที่เป็นสายตาหมา และช็อตสุดท้ายไม่มีป้าย · ต้องทดลองก่อน (S2): บอลฟ้าต้องเป็นสิ่งแรกที่เห็น"
-    },
-    {
-      "id": "S01-B07-SH01", "beat": "EDU-EP03-S01-B07", "lines": ["L11", "hold ~3 s", "B_loop seam"], "est": 6.0,
-      "cast": "man-crop + new: park-casual, P11 (red ball held up), neutral + headCock → small smile · dog-golden, sit, happy-wag + new: ball-in-mouth (blue)",
-      "camera": "same camera as S01-B01-SH01: cam: T-TWO, yaw 38→30, r 1.40→1.60 ease out, stops by L11's last word (est)",
-      "views": "owner front · dog front, frame right", "ballZone": "red ball above caption band; dog head and blue ball must stay above y 1176 (set hy at W5.1)",
-      "tag": "off (normal colour from f0)",
-      "title": "หมาเห็นมันไหม",
-      "vo": [["ผู้บรรยาย", "ครั้งหน้าที่ซื้อของเล่น… ลองถามตัวเองว่า… หมาเห็นมันไหม"]],
-      "seen": "ภาพใกล้สองคนมุมเดียวกับช็อตแรก กล้องถอยช้า ๆ แล้วหยุดตอนจบประโยค สีปกติ ไม่มีป้าย เจ้าของถือบอลแดงขึ้น เอียงคอคิด แล้วยิ้มนิด ๆ หมานั่งข้าง ๆ คาบบอลฟ้า กระดิกหาง ค้างไว้ราว 3 วินาที ภาพยังขยับ (หายใจ กระดิกหาง) แล้ววนกลับไปช็อตแรก",
-      "sound": "ดนตรีลงเป็นท่อนจบอุ่น ๆ นกร้อง ครึ่งวินาทีสุดท้ายไม่มีเสียงใหม่"
-    }
+  [
+   "ผู้บรรยาย",
+   "Kore (หญิง) อ่านทั้ง 11 บรรทัด · เจ้าของหมา Algenib (ชาย) พูด 2 ประโยค: \"ไปเลย! เอามา!\" และ \"ตรงนั้นไง! ข้างหน้าเลย!\""
   ],
-  "estTotalSec": 50.6,
-  "changeLog": [
-    "SS-R1 (2026-11-05, Film W2.2): first untimed storyboard pass from EDU-BRIEF-R1 shot list (15 shots, est 50.6 s). Owner male and dog view through B04 per user Q1/Q2. Deviation from the brief: the flip back to normal moves from B07-SH01 f0 to the last 10 f of B06-SH02 so the tag covers every dog-view frame and B07 carries no tag (brief to follow in its next revision). V-BALL ball sits below the caption band in all four uses; B03-SH03 ball above it."
+  [
+   "จบ",
+   "B_loop: ค้างราว 3 วินาทีที่หมาคาบบอลฟ้า ภาพยังขยับ แล้ววนกลับช็อตแรก"
   ]
+ ],
+ "source": "scripts/edu-series/ep03/",
+ "beats": [
+  {
+   "id": "EDU-EP03-S01-B01",
+   "name": "เปิดเรื่อง: ลูกบอลแดงที่คุณคิดว่าเด่น",
+   "look": "LF01"
+  },
+  {
+   "id": "EDU-EP03-S01-B02",
+   "name": "โยนแล้ววิ่งเลยลูก",
+   "look": "LF01"
+  },
+  {
+   "id": "EDU-EP03-S01-B03",
+   "name": "ลองดูผ่านตาหมา (ภาพจำลอง)",
+   "look": "LF01-dogview"
+  },
+  {
+   "id": "EDU-EP03-S01-B04",
+   "name": "ทำไม: เซลล์รับสี 3 แบบ กับ 2 แบบ",
+   "look": "LF03"
+  },
+  {
+   "id": "EDU-EP03-S01-B05",
+   "name": "จมูกช่วยหาเจอ",
+   "look": "LF01"
+  },
+  {
+   "id": "EDU-EP03-S01-B06",
+   "name": "ลูกบอลสีฟ้า",
+   "look": "LF02"
+  },
+  {
+   "id": "EDU-EP03-S01-B07",
+   "name": "คำถามปิดท้าย แล้ววนกลับ",
+   "look": "LF01"
+  }
+ ],
+ "shots": [
+  {
+   "id": "S01-B01-SH01",
+   "beat": "EDU-EP03-S01-B01",
+   "lines": [
+    "L01"
+   ],
+   "cast": "man-crop + new: park-casual, P11 (grip variant: forearm forward ~0.3 m, ball at chest toward the lens, ≥ 85 px at the arc end; brief R2 D5), happy, squeeze · dog-golden at D0 (−3.85, 0, −0.85), stand, happy-wag (front)",
+   "camera": "cam: T-TWO (−4.20, 0.80, −1.30), yaw −24→−32 arc, r 1.90→1.70, eye 1.20, f 1100, hy 660 (LF01 v2 measured; mirrored side, brief R2 D1)",
+   "views": "owner front · dog front, frame right",
+   "ballZone": "above caption band (held at chest, pushed toward the lens, ≥ 85 px at the arc end)",
+   "tag": "off (normal colour)",
+   "title": "ยกบอลแดงโชว์",
+   "vo": [
+    [
+     "ผู้บรรยาย",
+     "ลูกบอลสีแดง ที่คุณซื้อให้หมา…"
+    ]
+   ],
+   "seen": "ภาพใกล้สองคน กล้องระดับอก โค้งเข้าช้า ๆ เจ้าของหมายิ้มภูมิใจ ยกลูกบอลยางสีแดงเงาระดับอก ยื่นมาทางกล้องให้เห็นลูกบอลชัด แล้วบีบให้ดังเอี๊ยด หมาโกลเด้นอยู่ขวาของจอ เงยหน้ามอง กระดิกหาง ข้างหลังเป็นสวนยามเช้า ต้นราชพฤกษ์ดอกเหลือง ต้นหางนกยูงดอกแดง ทางเดินปูน แปลงดาวเรือง",
+   "sound": "กีตาร์โปร่งสดใสเริ่ม นกร้อง เสียงบีบบอลดังเอี๊ยด",
+   "changed": "SS-R2: กล้องย้ายไปอีกฝั่งตามภาพ look LF01 ให้ต้นไม้ แปลงดอกไม้ และทางเดินอยู่ข้างหลังสองตัวละคร เจ้าของยื่นบอลแดงมาทางกล้อง ให้บอลใหญ่ขึ้น (จากราว 70 เป็นอย่างน้อย 85 px)",
+   "start": 0,
+   "end": 60,
+   "clips": {
+    "draft": {
+     "src": "out/EDU-EP03-SHORT/clips/S01-B01-SH01_draft.mp4",
+     "in": 0,
+     "out": 2
+    },
+    "final": {
+     "src": "out/EDU-EP03-SHORT/clips/_final_cut.mp4",
+     "in": 0,
+     "out": 2,
+     "cut": true,
+     "key": "fa8b29869141c472"
+    }
+   }
+  },
+  {
+   "id": "S01-B01-SH02",
+   "beat": "EDU-EP03-S01-B01",
+   "lines": [
+    "L02"
+   ],
+   "cast": "dog-golden, stand, happy-wag (slow) at D0 + 0.30 m x · man-crop + new: park-casual, P11 (arm raised, ball held up), happy",
+   "camera": "cam: dog-height, from (−3.10, 0.45, −0.30) to target (−4.20, 1.30, −1.50), truck x 0→+0.15, f 1000 (est)",
+   "views": "dog left (profile), foreground right · owner front, low angle",
+   "ballZone": "above caption band (held up against the tree line)",
+   "tag": "off (normal colour)",
+   "title": "บอลแดงตัดกับทิวไม้เขียว",
+   "vo": [
+    [
+     "ผู้บรรยาย",
+     "ในสายตามัน อาจดูคล้ายหญ้า มากกว่าที่คุณคิด"
+    ]
+   ],
+   "seen": "มุมต่ำระดับหัวหมา กล้องเลื่อนข้างช้ามาก หมาหันข้างอยู่ใกล้กล้องด้านขวา เงยมองขึ้นไปทางซ้าย เจ้าของชูบอลแดงขึ้นตัดกับทิวไม้สีเขียวข้างหลัง ภาพยังเป็นสีปกติ บอลแดงเด่นชัดในสายตาเรา",
+   "sound": "ดนตรีต่อเนื่อง นกร้อง",
+   "start": 60,
+   "end": 150,
+   "changed": "SS-R3.1: หมาขยับเข้ากลางภาพ 30 ซม. จมูกไม่ถูกขอบซ้ายตัด",
+   "clips": {
+    "draft": {
+     "src": "out/EDU-EP03-SHORT/clips/S01-B01-SH02_draft.mp4",
+     "in": 1,
+     "out": 4
+    },
+    "final": {
+     "src": "out/EDU-EP03-SHORT/clips/_final_cut.mp4",
+     "in": 2,
+     "out": 5,
+     "cut": true,
+     "key": "393860da2ebd4cd8"
+    }
+   }
+  },
+  {
+   "id": "S01-B02-SH01",
+   "beat": "EDU-EP03-S01-B02",
+   "lines": [
+    "O1"
+   ],
+   "cast": "man-crop + new: park-casual, new: overhand-throw, happy + talk · dog-golden, stand, run (launch)",
+   "camera": "cam: T-TWO, yaw −50→−40, r 2.60, eye 1.20, f 1000 (est)",
+   "views": "owner right (squareToCam, est) · dog right",
+   "ballZone": "in flight, leaves frame",
+   "tag": "off",
+   "title": "ไปเลย! เอามา!",
+   "vo": [
+    [
+     "เจ้าของหมา",
+     "ไปเลย! เอามา!"
+    ]
+   ],
+   "seen": "ภาพกลางสองคน กล้องโค้งช้า ๆ จากด้านข้าง เจ้าของง้างแขนโยนบอลแดงสุดแรงพร้อมตะโกน หมาเห่าหนึ่งทีแล้วพุ่งออกวิ่ง",
+   "sound": "เสียงลมตอนโยน หมาเห่าหนึ่งที ดนตรีเด้งขึ้นแล้วเบาลงตอนเจ้าของพูด",
+   "soundIds": "whoosh_air-swish-rising_01; NEEDS-GEN single bark",
+   "start": 150,
+   "end": 218,
+   "clips": {
+    "draft": {
+     "src": "out/EDU-EP03-SHORT/clips/S01-B02-SH01_draft.mp4",
+     "in": 1,
+     "out": 3.267
+    },
+    "final": {
+     "src": "out/EDU-EP03-SHORT/clips/_final_cut.mp4",
+     "in": 5,
+     "out": 7.267,
+     "cut": true,
+     "key": "46db5231eb0d78dc"
+    }
+   }
+  },
+  {
+   "id": "S01-B02-SH02",
+   "beat": "EDU-EP03-S01-B02",
+   "lines": [
+    "L03a"
+   ],
+   "cast": "dog-golden, run from D0 (−3.85, 0, −0.85) along z −0.90 → new: skid-stop at S1 → sniff → new: puzzled whine (view cut left↔right) · ball new: dog ball (red), lands L1, rests R0",
+   "camera": "V-BALL: camera (−0.55, 0.20, 0.95), yaw 44°, f 1100, hy 910 (LF02 measured; brief R2 D2), truck x 0→+0.30 (est; dog at S1 and ball stay inside x 60–1020)",
+   "views": "dog right (run), then left/right cuts while looking around",
+   "ballZone": "above caption band: ball centre y ≈ 1058, r 44 px, bottom ≈ 1102 (LF02 measured), 74 px clear of y 1176; the sniffing dog head stays above the band too (brief R2 D3; same in all four V-BALL uses)",
+   "tag": "off (normal colour)",
+   "title": "วิ่งเลยลูกบอล",
+   "vo": [],
+   "seen": "มุมระดับพื้นหญ้า (มุมเทียบ V-BALL ที่จะกลับมาอีก 3 ครั้ง) กล้องเลื่อนข้างช้า บอลแดงตกลงในหญ้าที่โดนแดด เด้งหนึ่งทีแล้วกลิ้งมาหยุดใกล้กล้อง อยู่เหนือแถบซับ เห็นชัดมาก หมาวิ่งผ่านข้างหลังบอล ไถลหยุด ดมซ้ายดมขวา ครางงง ๆ",
+   "sound": "บอลตกหญ้าแล้วกลิ้ง ฝีเท้าวิ่ง ไถลหยุด ดมฟุดฟิด ครางงง",
+   "soundIds": "NEEDS-GEN thud/roll, paws on grass, skid, sniff, whine",
+   "changed": "SS-R2: ลูกบอลอยู่เหนือแถบซับ (รอบก่อนเขียนว่าใต้ซับ ซึ่งจะทำให้ตัวหมาทับซับ) กล้องหันไปทางขวามากขึ้นตามภาพ look LF02 ให้เห็นบอลกับหมาในภาพเดียว",
+   "start": 218,
+   "end": 312,
+   "clips": {
+    "draft": {
+     "src": "out/EDU-EP03-SHORT/clips/S01-B02-SH02_draft.mp4",
+     "in": 1,
+     "out": 4.133
+    },
+    "final": {
+     "src": "out/EDU-EP03-SHORT/clips/_final_cut.mp4",
+     "in": 7.267,
+     "out": 10.4,
+     "cut": true,
+     "key": "cf5180ce17e59443"
+    }
+   }
+  },
+  {
+   "id": "S01-B02-SH03",
+   "beat": "EDU-EP03-S01-B02",
+   "lines": [
+    "O2"
+   ],
+   "cast": "man-crop + new: park-casual, P05 / point-and-say, surprised → worried + talk (owner alone; dog heard off-screen)",
+   "camera": "cam: T-OWNER, yaw 25→30, r 2.20→2.00, eye 1.35, f 1050 (est)",
+   "views": "owner right/front",
+   "ballZone": "not in frame",
+   "tag": "off",
+   "title": "ตรงนั้นไง!",
+   "vo": [
+    [
+     "เจ้าของหมา",
+     "ตรงนั้นไง! ข้างหน้าเลย!"
+    ]
+   ],
+   "seen": "ภาพกลางเจ้าของ ระดับสายตา กล้องเลื่อนเข้านิดเดียว เจ้าของชี้ไปข้างหน้าทางขวาของจอ หน้าตกใจปนหงุดหงิดแบบขำ ๆ ตะโกนบอก ในช็อตนี้ไม่เห็นหมา (หมาอยู่ข้างหน้าเขา ซึ่งอยู่หลังกล้อง) ได้ยินแค่เสียงหมาดมฟุดฟิดนอกจอ",
+   "sound": "ดนตรีเบาลง เสียงพูดชัดใกล้ เสียงหมาดมเบา ๆ นอกจอ",
+   "start": 312,
+   "end": 376,
+   "changed": "SS-R3: เอาหมาตัวเล็กข้างหลังออก เพราะหมาอยู่ข้างหน้าเจ้าของราว 7 เมตร มุมไหนที่เห็นหน้าเจ้าของ หมาจะอยู่หลังกล้องเสมอ ให้ได้ยินเสียงหมาดมนอกจอแทน",
+   "clips": {
+    "draft": {
+     "src": "out/EDU-EP03-SHORT/clips/S01-B02-SH03_draft.mp4",
+     "in": 1,
+     "out": 3.133
+    },
+    "final": {
+     "src": "out/EDU-EP03-SHORT/clips/_final_cut.mp4",
+     "in": 10.4,
+     "out": 12.533,
+     "cut": true,
+     "key": "21995a88f032d156"
+    }
+   }
+  },
+  {
+   "id": "S01-B02-SH04",
+   "beat": "EDU-EP03-S01-B02",
+   "lines": [
+    "L03"
+   ],
+   "cast": "dog-golden, stand, idle (front) + new: head-low sniff (front) (head low → lifts to lens)",
+   "camera": "cam: T-DOG-S1 (head), yaw 0, r 1.20→0.55 push, eye 0.50, f 1000 (est)",
+   "views": "dog front",
+   "ballZone": "not in frame",
+   "tag": "off (L03 is spoken before the tag; accepted in R1.1)",
+   "title": "มันไม่ได้ซื่อบื้อ",
+   "vo": [
+    [
+     "ผู้บรรยาย",
+     "มันไม่ได้ซื่อบื้อนะ… ลองดูโลกผ่านตาหมากัน"
+    ]
+   ],
+   "seen": "ภาพใกล้หน้าหมาระดับหัวหมา กล้องดันเข้าช้า ๆ หมายังก้มหน้าดมอยู่ แล้วเงยหน้าขึ้นมองตรงกล้อง หน้าใสซื่อ กล้องดันจนเห็นตาชัด",
+   "sound": "ดนตรีต่อเนื่อง",
+   "start": 376,
+   "end": 466,
+   "changed": "SS-R3.1: คงจังหวะก้มดมแล้วเงยหน้า ท่าก้มหัวมุมหน้าตรงกำลังสร้างใหม่",
+   "clips": {
+    "draft": {
+     "src": "out/EDU-EP03-SHORT/clips/S01-B02-SH04_draft.mp4",
+     "in": 1,
+     "out": 4
+    },
+    "final": {
+     "src": "out/EDU-EP03-SHORT/clips/_final_cut.mp4",
+     "in": 12.533,
+     "out": 15.533,
+     "cut": true,
+     "key": "a9bad111daaacdc4"
+    }
+   }
+  },
+  {
+   "id": "S01-B03-SH01",
+   "beat": "EDU-EP03-S01-B03",
+   "lines": [
+    "L04"
+   ],
+   "cast": "dog-golden, sniff (at S1) · red ball at R0 · new: dog-view colour map (VD05), radial sweep from the dog's head",
+   "camera": "V-BALL: camera (−0.55, 0.20, 0.95), yaw 44°, f 1100, hy 910 (LF02 measured; brief R2 D2), held; push r −0.15 after the sweep only if the ball bottom stays ≤ y 1150 (est centre ≈ 1081, bottom ≈ 1132), else no push",
+   "views": "dog left/right as end of B02-SH02",
+   "ballZone": "above caption band: ball centre y ≈ 1058, r 44 px, bottom ≈ 1102 (LF02 measured), 74 px clear of y 1176; the sniffing dog head stays above the band too (brief R2 D3; same in all four V-BALL uses)",
+   "tag": "ON from f0 (first flip frame) to end of shot",
+   "title": "ภาพเปลี่ยนเป็นสายตาหมา",
+   "vo": [
+    [
+     "ผู้บรรยาย",
+     "สีแดงกับสีเขียว… แยกยากสำหรับหมา"
+    ]
+   ],
+   "seen": "มุม V-BALL เดิม กล้องนิ่งแล้วดันเข้านิดเดียวหลังสีเปลี่ยน สีทั้งภาพค่อย ๆ เปลี่ยนจากหัวหมาแผ่ออกไปเหมือนน้ำซึมในสีน้ำ ฝีแปรงเดิมทุกเส้น เปลี่ยนแค่สี บอลแดงกลายเป็นเหลืองอมเขียวหม่น ใกล้สีหญ้ามากขึ้นแต่ยังมองเห็นได้ ป้าย ภาพจำลอง (โดยประมาณ) ขึ้นด้านบนตั้งแต่เฟรมแรกที่สีเริ่มเปลี่ยน",
+   "sound": "เสียงวิ้งใสพาภาพเปลี่ยน ดนตรีกลายเป็นแพดนุ่ม ๆ เสียงนกอู้อี้ลง",
+   "soundIds": "reveal_glass-shimmer-soft_01 at f0; bed_warm-pad-felt-third_01 (partial fit)",
+   "changed": "SS-R2: ลูกบอลอยู่เหนือแถบซับ (รอบก่อนเขียนว่าใต้ซับ ซึ่งจะทำให้ตัวหมาทับซับ) กล้องหันไปทางขวามากขึ้นตามภาพ look LF02 ให้เห็นบอลกับหมาในภาพเดียว กล้องดันเข้านิดเดียวหลังสีเปลี่ยนเฉพาะเมื่อบอลยังไม่ลงไปถึงซับ",
+   "start": 466,
+   "end": 553,
+   "clips": {
+    "draft": {
+     "src": "out/EDU-EP03-SHORT/clips/S01-B03-SH01_draft.mp4",
+     "in": 1,
+     "out": 3.9
+    },
+    "final": {
+     "src": "out/EDU-EP03-SHORT/clips/_final_cut.mp4",
+     "in": 15.533,
+     "out": 18.433,
+     "cut": true,
+     "key": "b5b4748019cfc22d"
+    }
+   }
+  },
+  {
+   "id": "S01-B03-SH02",
+   "beat": "EDU-EP03-S01-B03",
+   "lines": [
+    "L05"
+   ],
+   "cast": "set SET-PARK whole · man-crop + new: park-casual (small, front) · dog-golden (small) · dog-view map u=1",
+   "camera": "cam: T-PARK, crane eye 0.30→1.60, yaw −10→+12, r 5.0→6.0, f 900 (est; the one wide)",
+   "views": "owner front · dog left",
+   "ballZone": "ball tiny or out of frame; not the subject",
+   "tag": "ON whole shot",
+   "title": "ฟ้ากับเหลืองยังชัด",
+   "vo": [
+    [
+     "ผู้บรรยาย",
+     "แต่สีฟ้ากับสีเหลือง มันเห็นได้ดี"
+    ]
+   ],
+   "seen": "ภาพกว้างช็อตเดียวของเรื่อง กล้องเครนจากระดับหญ้าขึ้นสูง เห็นทั้งสวนในสายตาหมา ท้องฟ้ายังฟ้า ต้นราชพฤกษ์ยังเหลืองสด เสื้อเหลืองกับหมวกฟ้าของเจ้าของยังเด่น ส่วนดอกหางนกยูงสีแดงกลืนไปกับใบ ป้ายภาพจำลองยังอยู่",
+   "sound": "แพดต่อเนื่อง นกอู้อี้",
+   "start": 553,
+   "end": 628,
+   "changed": "SS-R3.1: เกณฑ์ความสดของเสื้อเหลืองและหมวกฟ้าในสายตาหมาเป็น C* ≥ 35 (วัดได้ 37) ส่วนดอกราชพฤกษ์ยังต้อง ≥ 45",
+   "clips": {
+    "draft": {
+     "src": "out/EDU-EP03-SHORT/clips/S01-B03-SH02_draft.mp4",
+     "in": 1,
+     "out": 3.5
+    },
+    "final": {
+     "src": "out/EDU-EP03-SHORT/clips/_final_cut.mp4",
+     "in": 18.433,
+     "out": 20.933,
+     "cut": true,
+     "key": "489d5c2b4b9831ad"
+    }
+   }
+  },
+  {
+   "id": "S01-B03-SH03",
+   "beat": "EDU-EP03-S01-B03",
+   "lines": [
+    "L06"
+   ],
+   "cast": "red ball close · split comparison (VD09a): normal left, dog view right, ends full dog view",
+   "camera": "cam: T-BALL, yaw 20→12, r 0.70→0.60, eye 0.25, f 1100 (est)",
+   "views": "—",
+   "ballZone": "above caption band (y 900–1150, est)",
+   "tag": "ON whole shot",
+   "title": "บอลลูกเดียว สองสายตา",
+   "vo": [
+    [
+     "ผู้บรรยาย",
+     "ลูกบอลแดงบนหญ้าเขียว… เลยอาจไม่เด่นเท่าที่เราเห็น"
+    ]
+   ],
+   "seen": "ภาพใกล้บอลระดับพื้น กล้องดันเข้าช้า เส้นแบ่งนุ่ม ๆ เลื่อนผ่านลูกบอล ซีกซ้ายสีปกติ (แดงสด) ซีกขวาสายตาหมา (เหลืองอมเขียวหม่น) แล้วจบที่สายตาหมาทั้งภาพ ป้ายภาพจำลองยังอยู่",
+   "sound": "แพดต่อ เสียงวูบเบา ๆ ตอนเส้นแบ่งเลื่อน (ถ้าใช้)",
+   "flag": "ต้องทดลองก่อน (S3): เส้นแบ่งต้องผ่านกลางลูกบอล และสองซีกต้องดูเป็นลูกเดียวกัน ถ้าไม่ผ่านจะใช้วิธีกะพริบสลับสีแทน",
+   "start": 628,
+   "end": 729,
+   "clips": {
+    "draft": {
+     "src": "out/EDU-EP03-SHORT/clips/S01-B03-SH03_draft.mp4",
+     "in": 1,
+     "out": 4.367
+    },
+    "final": {
+     "src": "out/EDU-EP03-SHORT/clips/_final_cut.mp4",
+     "in": 20.933,
+     "out": 24.3,
+     "cut": true,
+     "key": "00829ad889db54b1"
+    }
+   }
+  },
+  {
+   "id": "S01-B04-SH01",
+   "beat": "EDU-EP03-S01-B04",
+   "lines": [
+    "L07"
+   ],
+   "cast": "man-crop + new: park-casual, kneel-down from part-way (0.4) at f0 → P34 kneel (front) at (−4.55, 0, −1.30), happy · dog-golden, sit-down → sit at (−3.75, 0, −1.15), nearer the lens than his hands, happy-wag (front) · light PARK_LIGHT_B04: warm face key + light rim, eye whites and mouth interiors kept high-value; owner skin #f5c27a in B04 only (VD12 A, user accepted) · new: chalk magnifier bubbles + cones (3 / 2, no cone colours) · labels คน: 3 แบบ / หมา: 2 แบบ (screen layer, N8) · dog-view map u=1",
+   "camera": "cam: T-TWO, yaw −15→−5 arc, r 2.00→1.80, eye 0.90, f 1000, hy 700 (LF03 base). W5 check (est criterion): face vs lawn ΔE ≥ 12 in dog view at r 1.80 with the B04 light; if it fails, start closer (r 1.80→1.60)",
+   "views": "owner front · dog front",
+   "ballZone": "not in frame",
+   "tag": "ON whole shot (dog view held, VD07, user Q2)",
+   "title": "คน 3 แบบ หมา 2 แบบ",
+   "vo": [
+    [
+     "ผู้บรรยาย",
+     "ทำไมล่ะ?… ในตาคนมีเซลล์รับสี สามแบบ… หมามีแค่ สองแบบ"
+    ]
+   ],
+   "seen": "ภาพกลางสองคนระดับหัวหมา กล้องโค้งช้า ยังเป็นสายตาหมา เจ้าของกำลังย่อตัวลงคุกเข่า (เริ่มช็อตตอนย่อไปแล้วครึ่งทาง หมวกไม่ทับป้าย) ข้างหมาที่นั่งลง แสงอุ่นส่องหน้า มีขอบแสงบาง ๆ หน้าทั้งสองอ่านออกชัดแม้เป็นสายตาหมา ฟองแว่นขยายลายชอล์กเปิดจากตาเจ้าของ รูปเซลล์รับสี 3 อันโผล่ทีละอัน ป้าย คน: 3 แบบ แล้วฟองจากตาหมามี 2 อัน ป้าย หมา: 2 แบบ เซลล์วาดด้วยชอล์กสีเดียว ไม่บอกว่าเป็นสีอะไร ป้ายภาพจำลองยังอยู่",
+   "sound": "ทำนองดีดเบา ๆ ชวนสงสัย เสียงป๊อปเล็ก ๆ ทุกครั้งที่รูปหรือป้ายโผล่",
+   "soundIds": "ui_pop_01 per cone and label",
+   "changed": "SS-R2: ทางเลือก A ตามภาพ look LF03: แสงอุ่นที่หน้าและขอบแสง ผิวเจ้าของสว่างขึ้นเฉพาะ B04 หมานั่งใกล้กล้องกว่ามือเจ้าของ หน้าไม่ทับซับ · SS-R3.1: เจ้าของเริ่มช็อตตอนย่อตัวไปแล้วบางส่วน หมวกไม่ทับป้ายภาพจำลองในเฟรมแรก ๆ ป้าย คน: 3 แบบ ขยับไม่ให้ทับหมวก",
+   "start": 729,
+   "end": 874,
+   "clips": {
+    "draft": {
+     "src": "out/EDU-EP03-SHORT/clips/S01-B04-SH01_draft.mp4",
+     "in": 1,
+     "out": 5.833
+    },
+    "final": {
+     "src": "out/EDU-EP03-SHORT/clips/_final_cut.mp4",
+     "in": 24.3,
+     "out": 29.133,
+     "cut": true,
+     "key": "18b2953998cb34ee"
+    }
+   }
+  },
+  {
+   "id": "S01-B04-SH02",
+   "beat": "EDU-EP03-S01-B04",
+   "lines": [
+    "L08"
+   ],
+   "cast": "man-crop + new: park-casual, P34 kneel (front), new: ruffle (left hand, lean toward the dog), happy · dog-golden, sit, happy-wag · grey thought bubble + card ขาวดำ + red strike (screen layer, outside the map) · flip back to normal over the last 15 f · light PARK_LIGHT_B04 as SH01; owner skin #f5c27a in B04 only",
+   "camera": "cam: T-TWO, r 1.80→1.40 push, yaw −5→+5, eye 0.90, f 1000, hy 700; LF03 = this push at r 1.50 (VD12 A: faces larger, r ≤ 1.6 by the push end)",
+   "views": "owner front · dog front",
+   "ballZone": "not in frame",
+   "tag": "ON until the last frame of the flip back (last frame of this shot), then off",
+   "title": "ไม่ใช่ขาวดำ",
+   "vo": [
+    [
+     "ผู้บรรยาย",
+     "แต่ไม่ได้แปลว่าหมาเห็นเป็นขาวดำนะ… อันนั้นเป็นความเชื่อผิด ๆ… หมาเห็นสี แค่เห็นไม่เหมือนเรา"
+    ]
+   ],
+   "seen": "ภาพเดิมดันเข้าใกล้ขึ้น หน้าใหญ่ขึ้นและแสงอุ่นที่หน้าเหมือนภาพ look LF03 ฟองความคิดของหมาโผล่ ข้างในเป็นสวนจิ๋วสีเทาและการ์ดคำว่า ขาวดำ เส้นสีแดงขีดฆ่าการ์ดตอน \"อันนั้นเป็นความเชื่อผิด ๆ\" แล้วฟองแตก เงียบสั้น ๆ หมากระดิกหาง เจ้าของเอื้อมมือซ้ายลูบหัวหมา ฉากหลังที่เป็นสายตาหมาก็ยังมีสีให้เห็น ท้ายช็อตภาพค่อย ๆ กลับเป็นสีปกติ ป้ายภาพจำลองหายที่เฟรมสุดท้าย",
+   "sound": "เสียงขีดฆ่าด้วยชอล์ก เงียบราว 0.4 วินาทีก่อน \"หมาเห็นสี\" เสียงวิ้งย้อนกลับคร่อมรอยต่อไปช็อตถัดไป",
+   "soundIds": "NEEDS-GEN chalk cross-out scratch; reveal_glass-shimmer-soft_01 reversed (Editor)",
+   "changed": "SS-R2: ภาพตอนดันกล้องเข้าตรงกับภาพ look LF03 (ทางเลือก A) หน้าใหญ่ขึ้น แสงอุ่นที่หน้า ผิวเจ้าของสว่างขึ้นเฉพาะ B04 · SS-R3.1: ลูบหัวด้วยมือซ้าย เพราะหมานั่งอยู่ทางซ้ายของเจ้าของ",
+   "start": 874,
+   "end": 1061,
+   "clips": {
+    "draft": {
+     "src": "out/EDU-EP03-SHORT/clips/S01-B04-SH02_draft.mp4",
+     "in": 1,
+     "out": 7.233
+    },
+    "final": {
+     "src": "out/EDU-EP03-SHORT/clips/_final_cut.mp4",
+     "in": 29.133,
+     "out": 35.367,
+     "cut": true,
+     "key": "5c22eca53f644a50"
+    }
+   }
+  },
+  {
+   "id": "S01-B05-SH01",
+   "beat": "EDU-EP03-S01-B05",
+   "lines": [
+    "L09"
+   ],
+   "cast": "dog-golden, new: nose-trail → new: pick-up-ball (+ new: ball-in-mouth), happy-wag · red ball at R0",
+   "camera": "V-BALL: camera (−0.55, 0.20, 0.95), yaw 44°, f 1100, hy 910 (LF02 measured; brief R2 D2), truck x +0.30→0 (est)",
+   "views": "dog left (nose trail toward −x)",
+   "ballZone": "above caption band: ball centre y ≈ 1058, r 44 px, bottom ≈ 1102 (LF02 measured), 74 px clear of y 1176; the sniffing dog head stays above the band too (brief R2 D3; same in all four V-BALL uses)",
+   "tag": "off (normal colour)",
+   "title": "ดมจนเจอ",
+   "vo": [
+    [
+     "ผู้บรรยาย",
+     "สุดท้ายมันก็หาเจอ… เพราะหมาไม่ได้ใช้แค่ตา มันใช้จมูกช่วยด้วย"
+    ]
+   ],
+   "seen": "มุม V-BALL เดิม สีปกติ ไม่มีป้าย กล้องเลื่อนกลับช้า หมาก้มจมูกดมตามพื้นจากที่ที่มันดมอยู่ เดินตรงมาที่บอลแดง คาบขึ้น หางตีพื้น",
+   "sound": "กีตาร์กลับมาแบบโล่งใจ เสียงดมฟุดฟิดใกล้ ๆ หางตีพื้นตุบ ๆ",
+   "soundIds": "NEEDS-GEN sniff-snuffle, tail thumps",
+   "changed": "SS-R2: ลูกบอลอยู่เหนือแถบซับ (รอบก่อนเขียนว่าใต้ซับ ซึ่งจะทำให้ตัวหมาทับซับ) กล้องหันไปทางขวามากขึ้นตามภาพ look LF02 ให้เห็นบอลกับหมาในภาพเดียว",
+   "start": 1061,
+   "end": 1204,
+   "clips": {
+    "draft": {
+     "src": "out/EDU-EP03-SHORT/clips/S01-B05-SH01_draft.mp4",
+     "in": 1,
+     "out": 5.767
+    },
+    "final": {
+     "src": "out/EDU-EP03-SHORT/clips/_final_cut.mp4",
+     "in": 35.367,
+     "out": 40.133,
+     "cut": true,
+     "key": "7b16a32acdae55f7"
+    }
+   }
+  },
+  {
+   "id": "S01-B06-SH01",
+   "beat": "EDU-EP03-S01-B06",
+   "lines": [
+    "L10 (first clause: คราวนี้ลองลูกสีฟ้า…)"
+   ],
+   "cast": "man-crop + new: park-casual, smug → happy, bag open, new: overhand-throw (red ball in left hand) · dog-golden, stand, happy-wag (eager, at his side)",
+   "camera": "cam: T-OWNER, yaw 30→22, r 2.00→1.80, eye 1.30, f 1050 (est)",
+   "views": "owner front/right (squareToCam, est) · dog front whole shot (head turns to the ball)",
+   "ballZone": "blue ball in hand, above caption band",
+   "tag": "off (normal colour)",
+   "title": "ลองลูกสีฟ้า",
+   "vo": [
+    [
+     "ผู้บรรยาย",
+     "คราวนี้ลองลูกสีฟ้า…"
+    ]
+   ],
+   "seen": "ภาพกลางเจ้าของระดับสายตา กล้องโค้งเข้านิดหนึ่ง สีปกติ มือซ้ายถือบอลแดง ยิ้มมีเลศนัย เปิดกระเป๋าสะพายหยิบบอลสีฟ้าออกมาเป็นครั้งแรก แล้วโยน หมายืนรอข้าง ๆ ตื่นเต้น",
+   "sound": "เสียงเปิดกระเป๋าผ้า เสียงลมตอนโยน ดนตรีเริ่มยกขึ้น",
+   "soundIds": "NEEDS-GEN canvas bag flap; whoosh_air-swish-rising_01",
+   "start": 1204,
+   "end": 1260,
+   "changed": "SS-R3.1: หมาหันหน้าตรงทั้งช็อต หันแค่หัวตามบอล (ถ้าหันข้าง ตัวหมาจะเลยขอบภาพ)",
+   "clips": {
+    "draft": {
+     "src": "out/EDU-EP03-SHORT/clips/S01-B06-SH01_draft.mp4",
+     "in": 1,
+     "out": 2.867
+    },
+    "final": {
+     "src": "out/EDU-EP03-SHORT/clips/_final_cut.mp4",
+     "in": 40.133,
+     "out": 42,
+     "cut": true,
+     "key": "fae748605cfb9375"
+    }
+   }
+  },
+  {
+   "id": "S01-B06-SH02",
+   "beat": "EDU-EP03-S01-B06",
+   "lines": [
+    "L10 (second clause: บนหญ้าเขียว หมาน่าจะเห็นชัดกว่าสีแดง)",
+    "run + bark"
+   ],
+   "cast": "blue ball (new: dog ball) L1 → B1 → R0 · dog-golden, new: run-to-stop (gallop, right profile; start D0 (−3.85, 0, −0.85) l 34, off-frame to l 55, enters frame left mid-stride l 56, turns at W (−0.25, 0, −0.95) l 63, slows to a stop nose-on l 75; after the ball settles) → new: pick-up-ball (ball in mouth l 83) → new: bark-once (l 96) · dog-view map: sweep in 10 f at f0, flip back over the last 10 f",
+   "camera": "V-BALL: camera (−0.55, 0.20, 0.95), f 1100, hy 910, truck cr −0.25 → 0 (as B02-SH02); yaw 44° l 0–34 (identical to B02-SH02), pan left 44° → 20° l 34–54, follow 20° → 30° l 58–80, hold 30°",
+   "views": "dog right profile while galloping in (l 56–66), front from l 67 to the stop",
+   "ballZone": "blue ball at R0 above caption band: ball centre y ≈ 1058, r 44 px, bottom ≈ 1102 (LF02 measured), 74 px clear of y 1176; the sniffing dog head stays above the band too (brief R2 D3; same in all four V-BALL uses)",
+   "tag": "ON from f0 (first flip frame) to the last frame of this shot, covering the 10 f flip back (brief R2 B07 correction)",
+   "title": "วิ่งตรงไปหาบอลฟ้า",
+   "vo": [
+    [
+     "ผู้บรรยาย",
+     "บนหญ้าเขียว หมาน่าจะเห็นชัดกว่าสีแดง"
+    ]
+   ],
+   "seen": "มุม V-BALL เดิม ภาพเปลี่ยนเป็นสายตาหมาเร็ว ๆ ตั้งแต่เฟรมแรก ป้ายภาพจำลองขึ้นพร้อมกัน บอลฟ้าตกที่จุดเดิมแล้วกลิ้งมาหยุดที่เดิม สีฟ้าสดเด่นบนหญ้าสีหม่น พอบอลนิ่งแล้วได้ยินเสียงฝีเท้านอกจอ กล้องแพนไปทางซ้ายรอที่เลนเดิม หมาวิ่งควบเข้ามาด้านข้างเห็นขาก้าวชัด ในเลนเดียวกับที่เคยวิ่งเลย แต่รอบนี้เลี้ยวพุ่งตรงมาที่บอลทันที กล้องตามไป หมาค่อย ๆ ชะลอจนหยุด จมูกจ่อบอล คาบขึ้น เห่าดีใจ ไม่มีการงับกลางอากาศ ท้ายช็อตภาพกลับเป็นสีปกติเร็ว ๆ ป้ายหายที่เฟรมสุดท้าย",
+   "sound": "เสียงวิ้งตอนภาพเปลี่ยน บอลตกหญ้า ฝีเท้าวิ่ง เห่าดีใจหนึ่งทีตอนถึงบอล ดนตรีสว่างที่สุด",
+   "soundIds": "reveal_glass-shimmer-soft_01 at f0; foley_dog-paws-gallop-skid_01 l 34–75; creature_dog-bark-happy_01 l 96",
+   "flag": "ต้องทดลองก่อน (S2): บอลฟ้าต้องเป็นสิ่งแรกที่เห็น",
+   "changed": "SS-R3: เส้นวิ่งตรงจากจุดเริ่มถึงบอลผ่านข้างกล้องและอยู่นอกจอเกือบทั้งเส้น หมาเลยวิ่งเข้ามาในเลนเดียวกับช็อตที่วิ่งเลย แล้วเลี้ยวตรงเข้าหาบอล ทำให้เทียบกับช็อตวิ่งเลยได้ชัดขึ้น · SS-R3.1: หมาออกตัวจากนอกจอที่ใกล้กว่าเดิม (ห่างจุดเลี้ยว 1.4 เมตร) วิ่งราว 5 เมตรต่อวินาที เลี้ยวตรงเข้าหาบอลแล้วชะลอหยุดที่เฟรมเดิม แบบเดิมต้องวิ่ง 13 เมตรต่อวินาทีถึงจะทันเวลา · SS-R3.2: ใน Draft หมาโผล่มาหน้าตรงเกือบนั่งแค่ราว 8 เฟรม ไม่เห็นว่าวิ่ง จึงยืดช่วงวิ่งอีก 15 เฟรม (เอาเวลามาจากช่วงหลังหยุดในช็อตเดียวกัน เห่าช้าลงนิดเดียว) หมาออกตัวจากจุดเดิมข้างเจ้าของ กล้องแพนไปรับให้เห็นหมาวิ่งควบด้านข้างก่อนเลี้ยวเข้าหาบอล ความยาวคลิปรวมเท่าเดิม",
+   "start": 1260,
+   "end": 1376,
+   "clips": {
+    "draft": {
+     "src": "out/EDU-EP03-SHORT/clips/S01-B06-SH02_draft.mp4",
+     "in": 1,
+     "out": 4.867
+    },
+    "final": {
+     "src": "out/EDU-EP03-SHORT/clips/_final_cut.mp4",
+     "in": 42,
+     "out": 45.867,
+     "cut": true,
+     "key": "8351819e7873ff77"
+    }
+   }
+  },
+  {
+   "id": "S01-B07-SH01",
+   "beat": "EDU-EP03-S01-B07",
+   "lines": [
+    "L11",
+    "hold ~3 s",
+    "B_loop seam"
+   ],
+   "cast": "man-crop + new: park-casual, P11 (grip variant, red ball at chest toward the lens, ≥ 85 px; brief R2 D5), neutral + headCock → small smile · dog-golden at D0 (−3.85, 0, −0.85), sit, happy-wag + new: ball-in-mouth (blue)",
+   "camera": "cam: T-TWO, yaw −32→−24, r 1.70→1.90, eye 1.20, f 1100, hy 660 (reverse of S01-B01-SH01, brief R2 D1), ease out, stops by L11's last word (est)",
+   "views": "owner front · dog front, frame right",
+   "ballZone": "red ball above caption band (≥ 85 px); dog head and blue ball above y 1176 (hy 660 as LF01)",
+   "tag": "off (normal colour from f0; the flip back ended inside S01-B06-SH02)",
+   "title": "หมาเห็นมันไหม",
+   "vo": [
+    [
+     "ผู้บรรยาย",
+     "ครั้งหน้าที่ซื้อของเล่น… ลองถามตัวเองว่า… หมาเห็นมันไหม"
+    ]
+   ],
+   "seen": "ภาพใกล้สองคนมุมเดียวกับช็อตแรก กล้องถอยช้า ๆ แล้วหยุดตอนจบประโยค สีปกติ ไม่มีป้าย เจ้าของถือบอลแดงขึ้นยื่นมาทางกล้องเหมือนช็อตแรก เอียงคอคิด แล้วยิ้มนิด ๆ หมานั่งข้าง ๆ คาบบอลฟ้า กระดิกหาง ค้างไว้ราว 3 วินาที ภาพยังขยับ (หายใจ กระดิกหาง) แล้ววนกลับไปช็อตแรก",
+   "sound": "ดนตรีลงเป็นท่อนจบอุ่น ๆ นกร้อง ครึ่งวินาทีสุดท้ายไม่มีเสียงใหม่",
+   "changed": "SS-R2: กล้องตามช็อตแรกที่ย้ายไปอีกฝั่ง (ถอยย้อนทางเดิม) เจ้าของยื่นบอลแดงมาทางกล้องเหมือนช็อตแรก สีปกติไม่มีป้ายตั้งแต่เฟรมแรก",
+   "start": 1376,
+   "end": 1571,
+   "clips": {
+    "draft": {
+     "src": "out/EDU-EP03-SHORT/clips/S01-B07-SH01_draft.mp4",
+     "in": 1,
+     "out": 7.5
+    },
+    "final": {
+     "src": "out/EDU-EP03-SHORT/clips/_final_cut.mp4",
+     "in": 45.867,
+     "out": 52.367,
+     "cut": true,
+     "key": "7f0b20eac3bd236b"
+    }
+   }
+  }
+ ],
+ "changeLog": [
+  "SS-R1 (2026-11-05, Film W2.2): first untimed storyboard pass from EDU-BRIEF-R1 shot list (15 shots, est 50.6 s). Owner male and dog view through B04 per user Q1/Q2. Deviation from the brief: the flip back to normal moves from B07-SH01 f0 to the last 10 f of B06-SH02 so the tag covers every dog-view frame and B07 carries no tag (brief to follow in its next revision). V-BALL ball sits below the caption band in all four uses; B03-SH03 ball above it.",
+  "SS-R2 (2026-11-05, Film): applied EDU-BRIEF-R2 and VD12 option A. B01-SH01/B07-SH01 camera per D1 (mirrored, hy 660) and ball hold per D5 (≥ 85 px); D0 (−3.85, 0, −0.85) in B01-SH01, B02-SH02, B06-SH02, B07-SH01; V-BALL yaw 44°, hy 910 in all four uses; ball ABOVE the caption band in all four V-BALL uses (supersedes the SS-R1 line saying below; brief R2 D3); B03-SH01 push conditional on ball bottom ≤ 1150; B04 P34 kneel, B04 light, owner skin #f5c27a in B04 only, hy 700, LF03 = SH02 push at r 1.50; B06-SH02 flip back in its last 10 f with the tag on the whole shot now matches the brief (flag removed); B07-SH01 normal colour, no tag. Look frames attached: LF01 v2 (verdict pending), LF01-dogview v1, LF02 v3 (user pass), LF03 v4 (verdict pending). Still untimed; 15 shots, IDs and Thai VO unchanged.",
+  "SS-R3 (2026-11-05, Film W5.1): timed from voice kore-v1 + owner-v1: 1571 f = 52.37 s, margin 7.63 s; narration in six segments with gaps for the throw, the miss, O2, the flip back, the snort, the blue throw and the bark. Content changes: S01-B02-SH03 owner alone (dog off-screen by geometry), S01-B06-SH02 dog enters on the B02 lane and turns straight to the ball. Camera numbers corrected in the sheets (V-BALL trucks, B01-SH02, B02-SH04, B03-SH02, B06-SH01, B07-SH01).",
+  "SS-R3.1 (2026-11-05, Film, W5.2 findings): S01-B06-SH02 run from off-frame P6 1.40 m before W at ≈ 5 m/s (user), stop l 60 unchanged; S01-B04-SH01 owner starts at kneel 0.4 (user); S01-B02-SH04 head-low beat kept, new front head-low sniff pose for Boss (user); Film: S01-B03-SH02 cap/tee C* ≥ 35, S01-B01-SH02 dog D0 + 0.30 m x, S01-B06-SH01 dog front all shot, S01-B04-SH02 left-hand ruffle, S01-B04-SH01 dog face by features. Timing, IDs and Thai lines unchanged.",
+  "SS-R3.2 (2026-11-06, Film, W5.3 Draft finding): S01-B06-SH02 run window l 34–60 → l 34–75 (+15 f, user), frames taken from the shot's own gaps after the stop (bark l 92 → 96); dog starts at D0 again (P6 retired, ≈ 4.9 m/s); V-BALL pans 44° → 20° → 30° after l 34 so the gallop is seen in profile; right profile l 56–66, front from l 67. Shot ranges, narration, captions, total 1571 f and the loop seam unchanged."
+ ],
+ "previousRevision": "SS-R3.1",
+ "looks": {
+  "LF01": {
+   "src": "out/edu03/look/review/LF01-v2.png",
+   "caption": "LF01 v2 สีปกติ (ช็อตแรก S01-B01-SH01 ปลายกล้องโค้ง) · ใช้กับ B01 B02 B05 B07 · กล้องอยู่อีกฝั่ง ข้างหลังเป็นต้นราชพฤกษ์ ต้นหางนกยูง แปลงดาวเรือง ทางเดิน · รอบถัดไปจะแก้: บอลแดงยื่นมาทางกล้องให้ใหญ่ขึ้น (ภาพนี้ราว 70 px) หน้าหมาให้เป็นโกลเด้นมากขึ้น (ขนยาวเรียบ ปากยาวขึ้น) กางเกงขาสั้นให้กลืนกับขา · รอคำตัดสินจากคุณ"
+  },
+  "LF01-dogview": {
+   "src": "out/edu03/look/review/LF01-dogview-v1.png",
+   "caption": "LF01 สายตาหมา v1 (ภาพเดียวกับ LF01 ผ่านสีแบบสายตาหมา) · ใช้ดูช่วง B03: ฟ้า ราชพฤกษ์เหลือง หมวกฟ้า เสื้อเหลืองยังเด่น ดอกหางนกยูงแดงกลืนไปกับใบ บอลแดงในมือกลายเป็นสีหม่น · ภาพนี้เป็นหลักฐานที่ทำให้แก้หน้าใน B04 (หน้าซีดใกล้สีหญ้า) ภาพจริงของ B03-SH02 เป็นภาพกว้างทั้งสวน"
+  },
+  "LF02": {
+   "src": "out/edu03/look/review/LF02-v3.png",
+   "caption": "LF02 v3 มุม V-BALL สายตาหมา (S01-B03-SH01 หลังสีเปลี่ยนเสร็จ) · ใช้กับ B06-SH02 ด้วย (มุมเดียวกัน ลูกฟ้าแทนลูกแดง) และ B02-SH02 / B05-SH01 เป็นสีปกติ · บอลอยู่เหนือแถบซับ (กึ่งกลาง y ราว 1058) หมาดมพื้นอยู่ไกลออกไป · คอหมาตอนดมผ่านแล้ว (คุณตัดสิน 5 พ.ย.)"
+  },
+  "LF03": {
+   "src": "out/edu03/look/review/LF03-v4.png",
+   "caption": "LF03 v4 B04 สายตาหมา (S01-B04-SH02 ระหว่างดันกล้องเข้า r 1.5) · ทางเลือก A: หน้าใหญ่ขึ้น แสงอุ่นที่หน้า ขอบแสงบาง ๆ เจ้าของคุกเข่าข้างหมาที่นั่ง หมานั่งใกล้กล้องกว่า · ผิวเจ้าของสว่างขึ้นเฉพาะ B04 (คุณยอมรับแล้ว) หน้าต่างจากหญ้าชัดขึ้น (ΔE 9.0 → 12.7) · ยังไม่มีฟองแว่นขยายและป้ายในภาพนี้ · รอคำตัดสินจากคุณ"
+  }
+ },
+ "totalSec": 52.37,
+ "questions": [
+  {
+   "id": "Q-T1",
+   "question": "B02-SH03: ให้เห็นเจ้าของคนเดียวตอนตะโกน \"ตรงนั้นไง!\" (ไม่เห็นหมา ได้ยินเสียงดมนอกจอ) ได้ไหม?",
+   "detail": "หมาอยู่ข้างหน้าเจ้าของราว 7 เมตร ถ้ากล้องเห็นหน้าเจ้าของ หมาจะอยู่หลังกล้องเสมอ ทางเลือกอื่นคือมุมข้างหลังเจ้าของที่เห็นหมาเล็ก ๆ ปลายนิ้วชี้ แต่จะไม่เห็นสีหน้าเจ้าของ Film แนะนำแบบเห็นหน้า"
+  },
+  {
+   "id": "Q-T2",
+   "question": "B06-SH02: ให้หมาวิ่งเข้ามาในเลนเดียวกับตอนวิ่งเลย แล้วเลี้ยวพุ่งตรงไปที่บอลฟ้า ได้ไหม?",
+   "detail": "เส้นวิ่งตรงจากข้างเจ้าของถึงบอลผ่านข้างกล้องและอยู่นอกจอจนถึง 30 ซม. สุดท้าย ถ้าใช้เส้นนั้นหมาจะโผล่มาตัวใหญ่ที่ขอบซ้ายแล้วถึงบอลทันที แบบเลนเดิมทำให้เห็นการวิ่งตรงไปที่บอลชัด และเทียบกับช็อตวิ่งเลยได้ตรง ๆ"
+  }
+ ],
+ "finalCut": {
+  "src": "out/EDU-EP03-SHORT/clips/_final_cut.mp4",
+  "frames": 1571
+ }
 }

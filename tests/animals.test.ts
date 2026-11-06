@@ -43,3 +43,40 @@ test('animal motions: every id is in the reel once, frames are finite and hold t
   // A walk-in ends at the rest point.
   assert.ok(Math.abs(animalMotion('walk-in-from-left', 99, {animal: 'dog-golden'}).offset[0]) < 1e-9);
 });
+
+// EDU-EP03 `charge` (opt-in front-view run/brake pose): absent or 0 leaves the front pose byte-identical; set, it paints a different, finite drawing.
+test('dog charge pose is opt-in and does not change the existing front pose', () => {
+  const calls = (pose: AnimalPose) => {
+    const log: string[] = [];
+    const rec = new Proxy({}, {get: (_t, name) => (...a: unknown[]) => { log.push(String(name) + JSON.stringify(a)); }}) as Brush;
+    const def = ANIMALS['dog-golden'];
+    drawAnimal(makePainter(rec, {t: 0.5, frame: 15}), def.seed, def, [540, 1500], 300, pose, 0.5);
+    return log.join('|');
+  };
+  const base: AnimalPose = {view: 'front', state: 'stand', gait: 'run', walk: 0.2, stride: 1, mouth: 'open'};
+  assert.equal(calls(base), calls({...base, charge: 0}));
+  assert.equal(calls(base), calls({...base, yaw: 0.5}));
+  assert.notEqual(calls(base), calls({...base, charge: 1}));
+  assert.ok(!calls({...base, charge: 1, yaw: 0.9, stride: 0.15}).includes('NaN'));
+});
+
+// EDU-EP03 `quarter` / `brake` (opt-in front-three-quarter run/brake view): absent leaves every existing view byte-identical; set, it paints a finite drawing for both facings.
+test('dog three-quarter view is opt-in and finite', () => {
+  const calls = (pose: AnimalPose) => {
+    const log: string[] = [];
+    const rec = new Proxy({}, {get: (_t, name) => (...a: unknown[]) => { log.push(String(name) + JSON.stringify(a)); }}) as Brush;
+    const def = ANIMALS['dog-golden'];
+    drawAnimal(makePainter(rec, {t: 0.5, frame: 15}), def.seed, def, [540, 1500], 300, pose, 0.5);
+    return log.join('|');
+  };
+  for (const view of ['right', 'left', 'front'] as const) {
+    const base: AnimalPose = {view, state: 'stand', gait: 'run', walk: 0.2, stride: 1, mouth: 'open'};
+    assert.equal(calls(base), calls({...base, brake: 0.5}));
+    if (view === 'front') continue;
+    for (const [quarter, brake] of [[0, 0], [0.5, 0], [1, 1]]) {
+      const out = calls({...base, quarter, brake});
+      assert.notEqual(out, calls(base));
+      assert.ok(!out.includes('NaN'));
+    }
+  }
+});

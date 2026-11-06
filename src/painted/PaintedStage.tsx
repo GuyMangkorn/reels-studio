@@ -3,7 +3,7 @@ import type {Ending, EndingOptions} from '../scenes/endings';
 import {paintedStateAt} from '../scenes/painted';
 import type {PaintedLabel, Timeline} from '../scenes/types';
 import {BrushCanvas, type PaintContext} from './BrushCanvas';
-import {PaintedLabel as LabelText} from './Label';
+import {PaintedItemView, PaintedLabel as LabelText} from './Label';
 import {paintedShots} from './registry';
 import {drawPlate} from './plate';
 
@@ -57,6 +57,7 @@ export const PaintedStage = ({timeline, ending, loopBlendFrames, endingOptions}:
         return <Overlay key={`${shot.id}-${i}`} tl={tl} width={width} height={height} camera={camera} opacity={opacity} />;
       })}
       {slots.map((texts, slot) => texts.map(({text, top}) => <LabelText key={`${slot}-${text}`} text={text} slot={slot} top={top} />))}
+      {visible.flatMap(({plate}, i) => (plate.items ?? []).map((item, k) => <PaintedItemView key={`item-${i}-${k}`} item={item} l={plate.frame} />))}
     </AbsoluteFill>
   );
 };

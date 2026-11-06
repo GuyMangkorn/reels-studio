@@ -1,5 +1,5 @@
-import {drawAnimal, ANIMALS, type AnimalPose} from '../kit/animals';
-import {drawFigure, type FigAnchors} from '../kit/cast';
+import {drawAnimal, ANIMALS, type AnimalAnchors, type AnimalPose} from '../kit/animals';
+import {drawFigure, ikElbow, shoulderPoint, BONE, type Arm, type FigAnchors} from '../kit/cast';
 import {ell, hardFill, inkLine, INK, limb, solid, washAt} from '../kit/draw';
 import type {InteriorLight} from '../kit/draw';
 import {EXPRESSIONS, type ExpressionId} from '../kit/expressions';
@@ -9,7 +9,7 @@ import {poseFor, type AnyPoseId} from '../kit/poses';
 import {paintSkyBands} from '../kit/sky';
 import type {V3} from '../kit/space';
 import {camPoint, camSpace, camToPicture, camUnit, type YCam} from '../kit/ycam';
-import {OWNER, OWNER_B04, PARK_LIGHT, paintFaceKey, paintShortsLegs, paintSlingBag} from './cast';
+import {OWNER, OWNER_B04, PARK_LIGHT, paintFaceKey, paintSlingBag} from './cast';
 import {paintBox, paintSorted, qy, sphereAt, wFill, wInk, wWash, wp, type Item} from './world';
 
 // EDU-EP03-SHORT SET-PARK (brief EDU-BRIEF-R1 VD04, set plan): a Bangkok public park in world metres (`PARK` space: origin at the red
@@ -32,7 +32,7 @@ export type BallColor = keyof typeof BALLS;
 export const BALL_R = 0.05;
 
 export const POS = {
-  R0: [0, 0, 0] as V3, L1: [-0.6, 0, -0.2] as V3, O: [-4.5, 0, -1.5] as V3, D0: [-3.9, 0, -1.1] as V3, S1: [2.6, 0, -1.0] as V3,
+  R0: [0, 0, 0] as V3, L1: [-0.6, 0, -0.2] as V3, O: [-4.5, 0, -1.5] as V3, D0: [-3.85, 0, -0.85] as V3, S1: [2.6, 0, -1.0] as V3,
   TREE_Y: [-4.0, 0, -8.5] as V3, TREE_R: [5.0, 0, -10.0] as V3, BENCH: [-6.8, 0, -3.6] as V3, LAMP: [4.8, 0, -5.0] as V3, BIN: [-2.8, 0, -5.0] as V3, SALA: [-9, 0, -18] as V3,
 };
 /** Camera targets (brief "Camera targets"). */
@@ -227,44 +227,108 @@ const paintTufts = (p: Painter, c: YCam, region: {x0: number; x1: number; z0: nu
 };
 
 // ------------------------------------------------------------------------------------------------------------------ cast
-export type OwnerState = {at?: V3; pose?: AnyPoseId; face?: ExpressionId; headCock?: number; /** Ball in his right hand, at chest. */ held?: BallColor; /** Scene light override (B04 face key, `PARK_LIGHT_B04`); default `PARK_LIGHT`. */ light?: InteriorLight; /** Warm face/hand light 0..1 (kit `FigPose.warm`). */ warm?: number; /** B04 face key paint (`paintFaceKey`). */ faceKey?: boolean};  // `faceKey` also switches the owner to his sunlit skin (`OWNER_B04`)
-export type DogState = {at?: V3; pose: AnimalPose; ball?: undefined};
-export type ParkState = {t: number; balls?: BallState[]; owner?: OwnerState; dog?: DogState; /** Skip the tufts and the haze for a cheap iteration frame. */ draft?: boolean};
+/** A hand target in metres from the shoulder (screen right +x, up +y; a profile: forward +x), elbow `via`. */
+export type ArmM = {to: Pt; via: Pt};
+/** Reach a world point with a hand: the arm is solved in the picture (EP03 shot plates: ruffle, bag). */
+export type ArmAt = {reach: V3; out?: number};
+export type OwnerState = {/** Figure view (default front). */ view?: 'front' | 'left' | 'right'; /** Hand targets (plate shots; replace the pose's arm for that side). */ rArm?: ArmM | ArmAt; lArm?: ArmM | ArmAt; /** Kneel fraction 0..1 of the pose's kneel (kneel-down). */ kneelK?: number; /** Upper-body lean toward screen right, radians (reaching the dog). */ lean?: number; /** Painter's-order bias (m, negative = nearer than its ground point): a hand over the dog's head draws the owner after the dog. */ bias?: number; /** Ball in the left hand. */ heldL?: BallColor; /** How far the held ball sits toward the lens, 0..1 of the way to the camera (default 0.2). */ holdK?: number; /** Sling-bag flap open 0..1. */ bagOpen?: number; /** Squash of the held ball (1 = round). */ squash?: number; at?: V3; pose?: AnyPoseId; face?: ExpressionId; headCock?: number; /** Ball in his right hand, at chest. */ held?: BallColor; /** Scene light override (B04 face key, `PARK_LIGHT_B04`); default `PARK_LIGHT`. */ light?: InteriorLight; /** Warm face/hand light 0..1 (kit `FigPose.warm`). */ warm?: number; /** B04 face key paint (`paintFaceKey`). */ faceKey?: boolean};  // `faceKey` also switches the owner to his sunlit skin (`OWNER_B04`)
+export type DogState = {at?: V3; pose: AnimalPose; /** Brush-drawn kit views cannot morph: a short dissolve of `pose` into `to` (`a` 0..1 = share of `to`). */ fade?: {to: AnimalPose; a: number; /** Glide the two drawings' head tops together during the dissolve (the first layer's head slides `a` of the way to the second's, the second's starts `1 - a` away), so no two-head ghost shows; the first layer stays opaque under the incoming one (no see-through dip). */ align?: boolean}; /** Hard-cut hand-over between two brush-drawn views: draw `pose` shifted so its head top starts on `ref`'s head top and glides back to its own place as `k` goes 0 -> 1 (no cross-fade, no ghost). */ match?: {ref: AnimalPose; k: number; /** Picture px added to the matched start (the kit's head-top anchors are not the visible head centre across views). */ bias?: Pt}; /** Ball carried in the mouth: world offset (m) from `at`, picture-space scale optional. */ mouth?: {color: BallColor; off: V3; scale?: number; /** Ball follows the posed head: centre = the kit's mouth anchor + `nudge` (dog heights; +x toward the nose side in the picture, +y up); `off` is ignored. */ track?: boolean; nudge?: [number, number]; /** Pick-up: the ball travels from this world point (resting centre) to the mouth anchor, `k` 0..1 (eased by the caller). */ from?: {at: V3; k: number}}};
+/** Measured picture points (px), written while painting when `ParkState.probe` is set (QA only). */
+export type ParkProbe = {mouth?: Pt; top?: Pt; ball?: Pt; ballR?: number; lHand?: Pt; rHand?: Pt};
+export type ParkState = {t: number; /** QA out-parameter, see `ParkProbe`. */ probe?: ParkProbe; balls?: BallState[]; owner?: OwnerState; dog?: DogState; /** Skip the tufts and the haze for a cheap iteration frame. */ draft?: boolean};
 
-const ownerItem = (p: Painter, c: YCam, st: OwnerState, t: number): Item => {
+const ownerItem = (p: Painter, c: YCam, st: OwnerState, t: number, probe?: ParkProbe): Item => {
   const at = st.at ?? POS.O;
-  return {at, draw: () => {
+  return {at, bias: st.bias, draw: () => {
     const g = camPoint(c, at), u = camUnit(c, at);
     if (!g) return;
     groundShadow(p, c, 8300, at, 0.55, 0.28, 0.55, 0.12, 110);
     const def = st.faceKey ? OWNER_B04 : OWNER;
-    const pose = poseFor(st.pose ?? 'P11', def, g, u, 'front');
+    const view = st.view ?? 'front';
+    const pose = poseFor(st.pose ?? 'P11', def, g, u, view);
+    if (st.kneelK !== undefined && pose.kneel !== undefined) pose.kneel = pose.kneel * st.kneelK;
+    if (st.lean) pose.lean = st.lean;
     const face = EXPRESSIONS[st.face ?? 'happy'];
-    const a: FigAnchors = drawFigure(p, def, g, u, {...pose, face, headCock: st.headCock, warm: st.warm, light: st.light ?? PARK_LIGHT}, t);
+    const arm = (side: 'r' | 'l', a: ArmM | ArmAt | undefined): Arm | undefined => {
+      if (!a) return undefined;
+      const sh = shoulderPoint(def, g, u, pose, side), d = view === 'left' ? -1 : 1;
+      if ('reach' in a) {
+        const T = camPoint(c, a.reach);
+        if (!T) return undefined;
+        return {to: T, via: ikElbow(sh, T, BONE * u, a.out ?? (side === 'r' ? -1 : 1))};
+      }
+      return {to: [sh[0] + d * a.to[0] * u, sh[1] - a.to[1] * u], via: [sh[0] + d * a.via[0] * u, sh[1] - a.via[1] * u]};
+    };
+    const rA = arm('r', st.rArm), lA = arm('l', st.lArm);
+    const fig = {...pose, face, headCock: st.headCock, warm: st.warm, light: st.light ?? PARK_LIGHT, ...(rA ? {rArm: rA} : {}), ...(lA ? {lArm: lA} : {})};
+    const a: FigAnchors = drawFigure(p, def, g, u, fig, t);
+    if (probe) { probe.lHand = a.lHand; probe.rHand = a.rHand; }
     if (st.faceKey) paintFaceKey(p, a, u, 8350);
-    // Kneeling (B04): the standing-leg overlay (bare shins, socks) does not apply; the denim thigh and the shoes come from the rig.
-    if (!pose.kneel) paintShortsLegs(p, def, g, u, 8400);
-    paintSlingBag(p, def, pose.kneel ? [g[0], g[1] + 0.3 * u] : g, u, 8450, a); // kneeling: the hip (and the bag on it) drops by the shin length
-    if (st.held) {
-      // The ball sits in his right grip (screen left), held up and a little toward the lens, so it is drawn at the nearer scale.
-      const toCam: V3 = [at[0] + (c.x - at[0]) * 0.2, 0, at[2] + (c.z - at[2]) * 0.2], un = camUnit(c, toCam);
-      const cx = a.rHand[0], cy = a.rHand[1] - BALL_R * un * 0.9;
-      paintBallDisc(p, 8500, cx, cy, BALL_R * un, st.held);
-      const fingers: Pt[] = ell(cx + 0.012 * un, cy + BALL_R * un * 0.95, 0.052 * un, 0.034 * un, 12);
-      solid(p, 8510, OWNER.head.skin, fingers, 3, 0.04, 0.1);
-      inkLine(p, 8511, fingers, {weight: 0.6, color: mixColor(OWNER.head.skin, INK, 0.6)});
-    }
+    if (view === 'front') paintSlingBag(p, def, pose.kneel ? [g[0], g[1] + 0.3 * (pose.kneel) * u] : g, u, 8450, a, st.bagOpen ?? 0); // kneeling: the hip (and the bag on it) drops by the shin length
+    const hold = (hand: Pt, color: BallColor, seed: number, rightHand: boolean) => {
+      // The ball sits in the grip, held up and a little toward the lens, so it is drawn at the nearer scale.
+      const k = st.holdK ?? 0.2, toCam: V3 = [at[0] + (c.x - at[0]) * k, 0, at[2] + (c.z - at[2]) * k], un = camUnit(c, toCam);
+      const cx = hand[0], cy = hand[1] - BALL_R * un * 0.9, sq = st.squash ?? 1;
+      paintBallDisc(p, seed, cx, cy, BALL_R * un, color);
+      const fingers: Pt[] = ell(cx + (rightHand ? 0.012 : -0.012) * un, cy + BALL_R * un * 0.95 * sq, 0.052 * un, 0.034 * un * sq, 12);
+      solid(p, seed + 10, OWNER.head.skin, fingers, 3, 0.04, 0.1);
+      inkLine(p, seed + 11, fingers, {weight: 0.6, color: mixColor(OWNER.head.skin, INK, 0.6)});
+    };
+    if (st.held) hold(a.rHand, st.held, 8500, true);
+    if (st.heldL) hold(a.lHand, st.heldL, 8520, false);
   }};
 };
 /** EP03 golden: lighter outline and far-leg shade (user note, 5 Nov 2026); the shared kit entry is unchanged. */
-const DOG_EP03 = {...ANIMALS['dog-golden'], inkMix: 0.06, farMix: 0.12, sniffNeck: true};
-const dogItem = (p: Painter, c: YCam, st: DogState, t: number): Item => {
+const DOG_EP03 = {...ANIMALS['dog-golden'], inkMix: 0.06, farMix: 0.12, sniffNeck: true, smoothLimbs: true};
+/** A painter that draws nothing (anchor measurement only: every call returns the painter itself, `layer` included). */
+const nullPainter = (): Painter => { const f: any = new Proxy(function () {}, {get: (_t, k) => (k === Symbol.toPrimitive ? () => 0 : f), apply: () => f}); return f; };
+const dogItem = (p: Painter, c: YCam, st: DogState, t: number, probe?: ParkProbe): Item => {
   const at = st.at ?? POS.D0;
   return {at, draw: () => {
     const g = camPoint(c, at), u = camUnit(c, at);
     if (!g) return;
     groundShadow(p, c, 8700, at, 0.5, 0.2, 0.4, 0.1, 120);
-    drawAnimal(p, ANIMALS['dog-golden'].seed, DOG_EP03, g, u, st.pose, t);
+    const anchors: AnimalAnchors = {};
+    let gm = g;
+    if (st.match && st.match.k < 1) {
+      const A: AnimalAnchors = {}, B: AnimalAnchors = {}, np = nullPainter();
+      drawAnimal(np, ANIMALS['dog-golden'].seed, DOG_EP03, g, u, st.match.ref, t, A);
+      drawAnimal(np, ANIMALS['dog-golden'].seed, DOG_EP03, g, u, st.pose, t, B);
+      if (A.top && B.top) { const k = 1 - st.match.k; gm = [g[0] + (A.top[0] - B.top[0] + (st.match.bias?.[0] ?? 0)) * k, g[1] + (A.top[1] - B.top[1] + (st.match.bias?.[1] ?? 0)) * k]; }
+    }
+    if (st.fade && st.fade.a > 0 && st.fade.a < 1) {
+      let g1 = g, g2 = g;
+      if (st.fade.align) {
+        const A: AnimalAnchors = {}, B: AnimalAnchors = {};
+        drawAnimal(p.layer(0, 8730), ANIMALS['dog-golden'].seed, DOG_EP03, g, u, st.pose, t, A);
+        drawAnimal(p.layer(0, 8740), ANIMALS['dog-golden'].seed, DOG_EP03, g, u, st.fade.to, t, B);
+        if (A.top && B.top) {
+          const dx = B.top[0] - A.top[0], dy = B.top[1] - A.top[1], k = st.fade.a;
+          g1 = [g[0] + dx * k, g[1] + dy * k]; g2 = [g[0] - dx * (1 - k), g[1] - dy * (1 - k)];
+        }
+      }
+      drawAnimal(p.layer(st.fade.align ? 1 : 1 - st.fade.a, 8710), ANIMALS['dog-golden'].seed, DOG_EP03, g1, u, st.pose, t, anchors);
+      drawAnimal(p.layer(st.fade.a, 8720), ANIMALS['dog-golden'].seed, DOG_EP03, g2, u, st.fade.to, t);
+    } else drawAnimal(p, ANIMALS['dog-golden'].seed, DOG_EP03, gm, u, st.fade && st.fade.a >= 1 ? st.fade.to : st.pose, t, anchors);
+    if (probe) { probe.mouth = anchors.mouth; probe.top = anchors.top; }
+    if (st.mouth?.track) {
+      const m = st.mouth, a = anchors.mouth;
+      if (a) {
+        const s = DOG_EP03.height * u, dir = st.pose.view === 'left' ? -1 : 1, front = st.pose.view === 'front';
+        const nx = m.nudge?.[0] ?? 0, ny = m.nudge?.[1] ?? 0;
+        let cx = a[0] + (front ? nx : dir * nx) * s, cy = a[1] - ny * s, r = BALL_R * u * (m.scale ?? 1);
+        if (m.from && m.from.k < 1) {
+          const f = camPoint(c, m.from.at), fr = BALL_R * camUnit(c, m.from.at) * (m.scale ?? 1);
+          if (f) { cx = f[0] + (cx - f[0]) * m.from.k; cy = f[1] + (cy - f[1]) * m.from.k; r = fr + (r - fr) * m.from.k; }
+        }
+        paintBallDisc(p, 8800, cx, cy, r, m.color);
+        if (probe) { probe.ball = [cx, cy]; probe.ballR = r; }
+      }
+    } else if (st.mouth) {
+      const m = st.mouth, q = camPoint(c, [at[0] + m.off[0], m.off[1], at[2] + m.off[2]]);
+      const un = camUnit(c, [at[0] + m.off[0], 0, at[2] + m.off[2]]);
+      if (q) paintBallDisc(p, 8800, q[0], q[1], BALL_R * un * (m.scale ?? 1), m.color);
+    }
   }};
 };
 
@@ -278,8 +342,8 @@ export const paintPark = (p: Painter, c: YCam, st: ParkState) => {
   paintMarigolds(p, c);
   paintTufts(p, c, {x0: -9, x1: 9, z0: -3.8, z1: 2.5, n: st.draft ? 20 : 150});
   const items: Item[] = [treeY(p, c), treeR(p, c), bench(p, c), lamp(p, c), bin(p, c), sala(p, c)];
-  if (st.owner) items.push(ownerItem(p, c, st.owner, st.t));
-  if (st.dog) items.push(dogItem(p, c, st.dog, st.t));
+  if (st.owner) items.push(ownerItem(p, c, st.owner, st.t, st.probe));
+  if (st.dog) items.push(dogItem(p, c, st.dog, st.t, st.probe));
   (st.balls ?? []).forEach((b, i) => items.push({...ballItem(p, c, b, i), bias: -0.05}));
   paintSorted(p, c, items);
 };

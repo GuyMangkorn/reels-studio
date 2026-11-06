@@ -599,7 +599,10 @@ export const paintHeadFront = (p: Painter, seed: number, cx: number, cy: number,
   if (!lookShut && (m === 'flat' || (m === 'talk' && (face.open ?? 0) < 0.08))) ink([[-0.2, my], [0.2, my]], 1.3, 0);
   if (!lookShut && m === 'frown') ink([[-0.18, my + 0.05], [0, my - 0.03], [0.18, my + 0.05]], 1.4, 0.8);
   if (m === 'wavy') ink(Array.from({length: 9}, (_, i): Pt => [-0.24 + i * 0.06, my + (i % 2 ? 0.035 : -0.01)]), 1.2, 0.6);
-  if (m === 'smile') {
+  // `smile` with `open` 0..0.3 set is the closed-lip small smile (a shallow upturned arc, no mouth fill); absent `open` = the D smile.
+  const softSmile = m === 'smile' && face.open !== undefined && face.open < 0.3;
+  if (softSmile) ink(Array.from({length: 9}, (_, i): Pt => { const x = -0.24 + i * 0.06; return [x, my + 0.045 - 0.09 * (x / 0.24) ** 2]; }), 1.4, 0.7);
+  if (m === 'smile' && !softSmile) {
     const pts: Pt[] = [[-0.3, my - 0.06], [0.3, my - 0.06]];
     for (let i = 1; i < 12; i++) pts.push([0.3 * Math.cos((i / 12) * Math.PI), my - 0.06 + 0.2 * Math.sin((i / 12) * Math.PI)]);
     fill(MOUTH, pts, 4);
