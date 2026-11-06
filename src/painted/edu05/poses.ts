@@ -11,7 +11,7 @@ import type {View} from '../kit/poses';
 export const NAMED_POSES = ['drift-spread', 'sit-up-check', 'brace-heave', 'nibble', 'drag-back', 'clutch-puff', 'lift-overhead'] as const;
 export type NamedPose = (typeof NAMED_POSES)[number];
 export const BASE_OF: Record<NamedPose, AnyPoseId> = {
-  'drift-spread': 'P45', 'sit-up-check': 'P33', 'brace-heave': 'P16', nibble: 'P19', 'drag-back': 'P26', 'clutch-puff': 'P42', 'lift-overhead': 'P45',
+  'drift-spread': 'P45', 'sit-up-check': 'P33', 'brace-heave': 'P16', nibble: 'P34', 'drag-back': 'P26', 'clutch-puff': 'P42', 'lift-overhead': 'P45',
 };
 /** The view each pose is built for (sheet N10); the shot may flip it with `view`. */
 export const VIEW_OF: Record<NamedPose, 'front' | 'left' | 'right'> = {
@@ -34,28 +34,28 @@ export const namedPose = (name: NamedPose, L: number, def: CastDef, g: Pt, u: nu
     case 'sit-up-check': { // alternate pats: right hand on the left forearm, then left hand on the right thigh (1 pat / 7 f)
       body = {floorSit: 1};
       const k = Math.floor(L / 7) % 2, d = pat(L, 7);
-      r = k === 0 ? {to: [0.2 - 0.04 * d, -0.2 - 0.04 * d], via: [-0.04, -0.2]} : {to: [-0.2, -0.24], via: [-0.06, -0.2]};
-      l = k === 1 ? {to: [-0.12 + 0.03 * d, -0.3 - 0.03 * d], via: [0.06, -0.2]} : {to: [0.2, -0.24], via: [0.06, -0.2]};
+      r = k === 0 ? {to: [0.2 - 0.04 * d, -0.2 - 0.04 * d], via: [-0.04, -0.2]} : {to: [0.03, -0.3], via: [-0.06, -0.22]};
+      l = k === 1 ? {to: [-0.1 + 0.03 * d, -0.3 - 0.03 * d], via: [0.06, -0.22]} : {to: [-0.03, -0.3], via: [0.06, -0.22]};
       break;
     }
     case 'brace-heave': { // profile pull, lean away 15-20 deg, the far hand clamps the near forearm on each heave
       const h = pulse(L, 12);
-      body = {crouch: 0.15, lean: -(0.26 + 0.08 * h)};
+      body = {crouch: 0.15, lean: -(0.26 + 0.08 * h), walk: 0.25, stride: 0.5};
       r = {to: [0.3 + 0.03 * h, -0.02], via: [0.14, -0.1]}; l = {to: [0.27 + 0.03 * h, -0.03], via: [0.12, -0.12]};
       break;
     }
     case 'nibble': { // both hands flat on the crumb face, head forward 0.05 sm per bite
       const b = pat(L, 10);
-      body = {bend: 0.08, nod: [0.12 * b, -0.05 * b]};
-      r = {to: [0.32, -0.16], via: [0.12, -0.2]}; l = {to: [0.3, -0.2], via: [0.1, -0.22]};
+      body = {bend: 0.7, nod: [0.12 * b, -0.05 * b]};
+      r = {to: [0.3, -0.34], via: [0.14, -0.2]}; l = {to: [0.28, -0.36], via: [0.12, -0.22]};
       break;
     }
     case 'drag-back': // profile, hands hooked on the crumb edge, lean away, walk clock reversed and slow (planted feet read)
-      body = {lean: 0.2, walk: -L / 24, stride: 0.45};
-      r = {to: [0.3, -0.28], via: [0.12, -0.22]}; l = {to: [0.28, -0.3], via: [0.1, -0.23]};
+      body = {crouch: 0.45, lean: 0.35, walk: -L / 24, stride: 0.6};
+      r = {to: [0.3, -0.4], via: [0.12, -0.26]}; l = {to: [0.28, -0.42], via: [0.1, -0.27]};
       break;
     case 'clutch-puff': // hands cupped at the chest (CP-P02) as the puff squeezes out
-      r = {to: [-0.07, -0.17], via: [-0.2, -0.27], behind: 'upper'}; l = {to: [0.07, -0.17], via: [0.2, -0.27], behind: 'upper'};
+      r = {to: [0.1, -0.12], via: [-0.04, -0.22], behind: 'upper'}; l = {to: [-0.1, -0.12], via: [0.04, -0.22], behind: 'upper'};
       break;
     case 'lift-overhead': // both hands overhead, elbows back into depth
       r = {to: [-0.13, 0.56], via: [-0.22, 0.28], behind: 'upper'}; l = {to: [0.13, 0.56], via: [0.22, 0.28], behind: 'upper'};
