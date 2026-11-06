@@ -29,8 +29,12 @@ Record: this file. Series context: [concepts.md](../concepts.md) · series task 
   - [x] W5.3 Draft passed (user, 2026-11-06: the full-grade review cut `_final_cut.mp4` published on the review page is used as the Draft round, no separate `--draft` render; all 20 shots ok after round 3 (user, 2026-11-06); Final is re-rendered after W4 voice lock)
 - [x] W6 Final (user listened to the 55.40 s cut with stem v5 and passed it, 2026-11-06: "ไม่มีตรงไหนสะดุด"; Film viewer check skipped; new sounds are unlistened by Editor, only by the user)
   - Note (Film, 2026-11-06, VL-RT-01): the L15 drift was a Film table error (R1 dropped L15's 0.15 s in-line pause); the assembled narration is right. Ruling: picture follows the narration, sheets **EDU-EP04-SHEETS-R1.4** ([scene-sheets.md](scene-sheets.md#voice-lock-retime-vl-rt-01-r14)): B05-SH01 1024–1153 (+4 f), B05-SH02 1153–1261 (+1 f), B06-SH01/SH02/SH03 slide +5 f; L18a → f1457 and L20 → f1533 (+5 f); total **1662 f = 55.40 s**. Before the W6 render: Boss H10 (two shot lengths + two camera ease denominators), Editor H11 (mix placements, cue frames, `TOTAL`, captions) and H5 `narration-lock.json`. `review-rows.json` start/end updated (timing outside the row hash). Review page: pending.
-- [ ] W7 Pinned
+- [x] W7 Pinned (20/20 shots, pin-rows, A_fade, final render 2026-11-06T06:33Z, stem v5 cut; user passed Final 2026-11-06)
 - [ ] W8 Deliver
+  - [x] W8.1 Delivery render 2026-11-06: out/EDU-EP04-SHORT/EDU-EP04-SHORT_A_fade.mp4, 1080x1920, 1662 f, 55.40 s, -14.1 LUFS, -1.5 dBTP; 20/20 pinned scenes reused; archived to the store
+  - [x] W8.2 Cover: user picked A (ย้ายดีไหม?), store projects/EDU/covers/ep04/EDU-EP04-SHORT_cover.png
+  - [ ] W8.4 Kit intake (KIT-P01)
+  - [ ] Posting (user)
 
 ## Notes
 
