@@ -34,7 +34,7 @@ import {dress, type OutfitId} from './wardrobe';
 export const MOTION_IDS = [
   'idle-breathe', 'walk-in-from-left', 'walk-in-from-right', 'walk-out-to-left', 'walk-out-to-right', 'run-left-to-right', 'run-right-to-left',
   'nod', 'shake-head', 'startle-jump', 'look-around', 'turn-head-left', 'turn-head-right', 'turn-head-to-camera', 'shiver',
-  'sit-down', 'stand-up', 'point-and-say', 'gasp-recoil', 'talk', 'kneel-down', 'stand-from-kneel', 'crouch-hide', 'hood-pull',
+  'sit-down', 'stand-up', 'point-and-say', 'gasp-recoil', 'talk', 'kneel-down', 'stand-from-kneel', 'crouch-hide', 'hood-pull', 'coin-count',
 ] as const;
 export type MotionId = (typeof MOTION_IDS)[number];
 
@@ -190,7 +190,14 @@ const turnHead = (dir: 'left' | 'right'): Motion => (t) => {
   return {look: [g * 0.9 * seg(t, 0.3, 0.5) * (t < 0.55 ? 1 : 0), 0], body: {head: t < 0.55 ? 'front' : dir, nod: [t < 0.55 ? g * 0.05 * seg(t, 0.3, 0.55) : 0, 0]}};
 };
 
+// Filed from EDU-EP04 (KIT-P01): the hand dips from the purse to the counter once every 7 frames (0.233 s), one coin per dip.
+const coinCount: Motion = (t) => {
+  const f = t * 30, dip = smooth(Math.max(0, 1 - Math.abs(((((f - 1) % 7) + 7) % 7) - 3.5) / 3.5));
+  return {arms: {a: 'P01', b: 'P25', u: 1}, body: {rise: 0.01 * dip}};
+};
+
 export const MOTIONS: Record<MotionId, Motion> = {
+  'coin-count': coinCount,
   'idle-breathe': (t) => {
     const w = (2 * Math.PI * t) / 3;
     return {body: {rise: 0.004 * (1 - Math.cos(w)), lean: 0.006 * Math.sin(w + 1.1), nod: [0, 0.012 * Math.sin(w - 0.6)]}};
@@ -327,6 +334,7 @@ export const MOTION_INFO: Record<MotionId, MotionInfo> = {
   'kneel-down': {name: 'Kneel down', description: 'Steps one foot forward and lowers onto the other knee, brings the second knee down, then the hips settle back to the upright kneel of P34 with a slight forward lean, hands to the thighs, 2 s. Feet that are on the ground do not slide.', duration: 2, loop: false, views: ['front', 'left', 'right'], use: 'Begging, searching the floor, a scene of grief.'},
   'stand-from-kneel': {name: 'Stand from kneel', description: 'The reverse of kneel-down: hips lift off the heels, one knee comes up and the foot plants, the figure stands, hands drop to the hang, 2 s.', duration: 2, loop: false, views: ['front', 'left', 'right'], use: 'Getting up after a plea or a search.'},
   'hood-pull': {name: 'Pull the hood up', description: 'Back view: both hands reach the hood at the neck, carry it up over the head (the hood rim travels with the hands, hair above it until it covers), the hands stop just above the crown, then drop to the hang with the hood up, 1.5 s. Needs an outfit with a hood (hoodie, coral hoodie).', duration: 1.5, loop: false, views: ['back'], use: 'A person pulls the hood up against the cold or to hide: the hands carry the hood, no swap.'},
+  'coin-count': {name: 'Count coins', description: 'Arm held out in the counting pose (P25) with a tiny body rise, a hand dip every 7 frames (0.233 s, one coin per dip), 0.7 s loop. Pair with `paintCoinPurse` in the hand and `paintCoins` on the counter (`groceries.ts`).', duration: 0.7, loop: true, views: ['front', 'left', 'right'], use: 'A silent counting-out gag at a counter: change, tips, a toll.'},
   'crouch-hide': {name: 'Crouch and hide', description: 'Ducks into a crouch (front) or a deep knee bend (profile), arms cover the head (P35), scared face, 1.4 s.', duration: 1.4, loop: false, views: ['front', 'left', 'right'], use: 'Hiding behind cover, taking shelter.'},
 };
 

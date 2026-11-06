@@ -1,0 +1,452 @@
+{
+ "deliverable": "EDU-EP04-SHORT",
+ "sheets": "EDU-EP04-SHEETS-R1.4",
+ "script": "EDU-EP04-SCRIPT-R1.2",
+ "timingStatus": "audio-measured (assembled review narration; VL-EDIT-01 + VL-RT-01; not listened)",
+ "fps": 30,
+ "totalFrames": 1662,
+ "file": "public/narration/EDU-EP04-SHORT.wav",
+ "narrator": "Gemini TTS Kore take 3 regap 0.28, atempo 1.00 (no +5 % rule applied; see sheet open item)",
+ "method": "ffmpeg silencedetect -35 dB d 0.12 on the assembled file (review-mix.py); speech spans mapped to lines by order. Whisper not run.",
+ "lastSpeechFrame": 1602.0,
+ "f1661Silent": true,
+ "lines": [
+  {
+   "line": "L01",
+   "speaker": "NAR",
+   "sheetOnset": 7,
+   "sheetEnd": 47,
+   "measuredOnset": 7.2,
+   "measuredEnd": 47.6,
+   "dOnset": 0.2,
+   "dEnd": 0.6,
+   "phraseOnsetsSheet": [],
+   "ok_within_2f": true
+  },
+  {
+   "line": "L02",
+   "speaker": "NAR",
+   "sheetOnset": 56,
+   "sheetEnd": 115,
+   "measuredOnset": 56.0,
+   "measuredEnd": 114.9,
+   "dOnset": 0.0,
+   "dEnd": -0.1,
+   "phraseOnsetsSheet": [],
+   "ok_within_2f": true
+  },
+  {
+   "line": "L03",
+   "speaker": "MAN",
+   "sheetOnset": 124,
+   "sheetEnd": 168,
+   "measuredOnset": 126.8,
+   "measuredEnd": 171.6,
+   "dOnset": 2.8,
+   "dEnd": 3.6,
+   "phraseOnsetsSheet": [],
+   "ok_within_2f": false
+  },
+  {
+   "line": "L04",
+   "speaker": "CSH",
+   "sheetOnset": 175,
+   "sheetEnd": 227,
+   "measuredOnset": 175.3,
+   "measuredEnd": 227.0,
+   "dOnset": 0.3,
+   "dEnd": -0.0,
+   "phraseOnsetsSheet": [],
+   "ok_within_2f": true
+  },
+  {
+   "line": "L05",
+   "speaker": "MAN",
+   "sheetOnset": 275,
+   "sheetEnd": 302,
+   "measuredOnset": 275.5,
+   "measuredEnd": 302.4,
+   "dOnset": 0.5,
+   "dEnd": 0.4,
+   "phraseOnsetsSheet": [],
+   "ok_within_2f": true
+  },
+  {
+   "line": "L06",
+   "speaker": "NAR",
+   "sheetOnset": 317,
+   "sheetEnd": 351,
+   "measuredOnset": 317.2,
+   "measuredEnd": 347.2,
+   "dOnset": 0.2,
+   "dEnd": -3.8,
+   "phraseOnsetsSheet": [],
+   "ok_within_2f": true
+  },
+  {
+   "line": "L07",
+   "speaker": "NAR",
+   "sheetOnset": 359,
+   "sheetEnd": 394,
+   "measuredOnset": 359.3,
+   "measuredEnd": 393.9,
+   "dOnset": 0.3,
+   "dEnd": -0.1,
+   "phraseOnsetsSheet": [],
+   "ok_within_2f": true
+  },
+  {
+   "line": "L08",
+   "speaker": "NAR",
+   "sheetOnset": 400,
+   "sheetEnd": 481,
+   "measuredOnset": 400.5,
+   "measuredEnd": 481.1,
+   "dOnset": 0.5,
+   "dEnd": 0.1,
+   "phraseOnsetsSheet": [
+    448
+   ],
+   "ok_within_2f": true
+  },
+  {
+   "line": "L09",
+   "speaker": "NAR",
+   "sheetOnset": 488,
+   "sheetEnd": 552,
+   "measuredOnset": 487.7,
+   "measuredEnd": 552.0,
+   "dOnset": -0.3,
+   "dEnd": -0.0,
+   "phraseOnsetsSheet": [
+    488,
+    516
+   ],
+   "ok_within_2f": true
+  },
+  {
+   "line": "L10",
+   "speaker": "NAR",
+   "sheetOnset": 558,
+   "sheetEnd": 655,
+   "measuredOnset": 558.6,
+   "measuredEnd": 655.5,
+   "dOnset": 0.6,
+   "dEnd": 0.5,
+   "phraseOnsetsSheet": [
+    558,
+    587,
+    629
+   ],
+   "ok_within_2f": true
+  },
+  {
+   "line": "L10a",
+   "speaker": "NAR",
+   "sheetOnset": 662,
+   "sheetEnd": 742,
+   "measuredOnset": 662.1,
+   "measuredEnd": 742.6,
+   "dOnset": 0.1,
+   "dEnd": 0.6,
+   "phraseOnsetsSheet": [
+    662,
+    709
+   ],
+   "ok_within_2f": true
+  },
+  {
+   "line": "L11",
+   "speaker": "NAR",
+   "sheetOnset": 749,
+   "sheetEnd": 798,
+   "measuredOnset": 749.2,
+   "measuredEnd": 798.0,
+   "dOnset": 0.2,
+   "dEnd": -0.0,
+   "phraseOnsetsSheet": [],
+   "ok_within_2f": true
+  },
+  {
+   "line": "L12",
+   "speaker": "NAR",
+   "sheetOnset": 804,
+   "sheetEnd": 884,
+   "measuredOnset": 804.6,
+   "measuredEnd": 884.5,
+   "dOnset": 0.6,
+   "dEnd": 0.5,
+   "phraseOnsetsSheet": [
+    836
+   ],
+   "ok_within_2f": true
+  },
+  {
+   "line": "L13",
+   "speaker": "NAR",
+   "sheetOnset": 891,
+   "sheetEnd": 952,
+   "measuredOnset": 891.1,
+   "measuredEnd": 951.7,
+   "dOnset": 0.1,
+   "dEnd": -0.3,
+   "phraseOnsetsSheet": [],
+   "ok_within_2f": true
+  },
+  {
+   "line": "L14",
+   "speaker": "NAR",
+   "sheetOnset": 958,
+   "sheetEnd": 1021,
+   "measuredOnset": 958.3,
+   "measuredEnd": 1021.5,
+   "dOnset": 0.3,
+   "dEnd": 0.5,
+   "phraseOnsetsSheet": [
+    958,
+    991
+   ],
+   "ok_within_2f": true
+  },
+  {
+   "line": "L15",
+   "speaker": "NAR",
+   "sheetOnset": 1028,
+   "sheetEnd": 1151,
+   "measuredOnset": 1028.1,
+   "measuredEnd": 1150.8,
+   "dOnset": 0.1,
+   "dEnd": -0.2,
+   "phraseOnsetsSheet": [
+    1028,
+    1075
+   ],
+   "ok_within_2f": true
+  },
+  {
+   "line": "L16",
+   "speaker": "NAR",
+   "sheetOnset": 1157,
+   "sheetEnd": 1258,
+   "measuredOnset": 1157.4,
+   "measuredEnd": 1258.2,
+   "dOnset": 0.4,
+   "dEnd": 0.2,
+   "phraseOnsetsSheet": [
+    1157,
+    1173,
+    1205,
+    1233
+   ],
+   "ok_within_2f": true
+  },
+  {
+   "line": "L17",
+   "speaker": "NAR",
+   "sheetOnset": 1265,
+   "sheetEnd": 1343,
+   "measuredOnset": 1264.8,
+   "measuredEnd": 1343.2,
+   "dOnset": -0.2,
+   "dEnd": 0.2,
+   "phraseOnsetsSheet": [
+    1265,
+    1299
+   ],
+   "ok_within_2f": true
+  },
+  {
+   "line": "L18",
+   "speaker": "NAR",
+   "sheetOnset": 1350,
+   "sheetEnd": 1449,
+   "measuredOnset": 1349.8,
+   "measuredEnd": 1448.7,
+   "dOnset": -0.2,
+   "dEnd": -0.3,
+   "phraseOnsetsSheet": [
+    1350,
+    1396,
+    1424
+   ],
+   "ok_within_2f": true
+  },
+  {
+   "line": "L18a",
+   "speaker": "MAN",
+   "sheetOnset": 1457,
+   "sheetEnd": 1521,
+   "measuredOnset": 1457.3,
+   "measuredEnd": 1524.8,
+   "dOnset": 0.3,
+   "dEnd": 3.8,
+   "phraseOnsetsSheet": [],
+   "ok_within_2f": true
+  },
+  {
+   "line": "L20",
+   "speaker": "NAR",
+   "sheetOnset": 1533,
+   "sheetEnd": 1602,
+   "measuredOnset": 1533.1,
+   "measuredEnd": 1602.0,
+   "dOnset": 0.1,
+   "dEnd": -0.0,
+   "phraseOnsetsSheet": [
+    1533,
+    1567
+   ],
+   "ok_within_2f": true
+  }
+ ],
+ "speechSpansFrames": [
+  [
+   7.2,
+   47.6
+  ],
+  [
+   56.0,
+   114.9
+  ],
+  [
+   126.8,
+   171.6
+  ],
+  [
+   175.3,
+   227.0
+  ],
+  [
+   275.5,
+   302.4
+  ],
+  [
+   317.2,
+   347.2
+  ],
+  [
+   359.3,
+   393.9
+  ],
+  [
+   400.5,
+   444.7
+  ],
+  [
+   448.5,
+   481.1
+  ],
+  [
+   487.7,
+   511.9
+  ],
+  [
+   516.4,
+   552.0
+  ],
+  [
+   558.6,
+   583.1
+  ],
+  [
+   587.6,
+   624.9
+  ],
+  [
+   629.4,
+   655.5
+  ],
+  [
+   662.1,
+   704.6
+  ],
+  [
+   709.1,
+   742.6
+  ],
+  [
+   749.2,
+   798.0
+  ],
+  [
+   804.6,
+   836.2
+  ],
+  [
+   839.9,
+   884.5
+  ],
+  [
+   891.1,
+   951.7
+  ],
+  [
+   958.3,
+   986.6
+  ],
+  [
+   991.1,
+   1021.5
+  ],
+  [
+   1028.1,
+   1066.2
+  ],
+  [
+   1075.0,
+   1150.8
+  ],
+  [
+   1157.4,
+   1168.5
+  ],
+  [
+   1173.1,
+   1200.6
+  ],
+  [
+   1205.1,
+   1228.5
+  ],
+  [
+   1233.0,
+   1258.2
+  ],
+  [
+   1264.8,
+   1294.4
+  ],
+  [
+   1298.9,
+   1343.2
+  ],
+  [
+   1349.8,
+   1391.3
+  ],
+  [
+   1395.7,
+   1419.9
+  ],
+  [
+   1424.4,
+   1448.7
+  ],
+  [
+   1457.3,
+   1524.8
+  ],
+  [
+   1533.1,
+   1562.6
+  ],
+  [
+   1567.1,
+   1602.0
+  ]
+ ],
+ "notes": [
+  "L03 MAN: measured onset 126.8 vs sheet 124 (+2.8 f), kept as is by decision (coordinator, 2026-11-06); not retimed.",
+  "Stem v5 (2026-11-06): MUZ-A/B/C, RT-STORE, SFX-SCAN, SFX-MEMSWELL added; re-measured L18a onset 1457.3, L20 onset 1533.2, last speech f1602.0, stem f1661 digital zero; narration unchanged. Generated sounds not listened."
+ ]
+}

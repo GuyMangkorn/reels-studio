@@ -72,3 +72,21 @@
 
 - Reading: lower jump rate than R1.3 take 1 but far above R1.2 take 1 (5.6/s); more pauses, so a different pacing. Not listened to; crackle and wording unverified by ear.
 - Store: `projects/EDU/narration/ep04/2026-11-05_ep04-r13-kore-take3-raw.wav`, `..._kore-take3-regap028.wav` (sidecars `.json`). Local: `out/edu04/narration/ep04-r13-kore-take3-*.wav`. Earlier takes untouched.
+
+## R1.3 MAN and CSH lines (W4.x, Film casting: MAN Algenib, CSH Charon)
+
+- Script EDU-EP04-SCRIPT-R1.3 wording unchanged (`…` became `,` in the TTS text only). Model gemini-3.8-flash-tts, 1.00x, one take per line, style cues from [brief.md](brief.md#voice-casting-w4x-film-decision-editor-generates-at-w4). **5 Gemini requests** (4 lines + 1 L05 retake). Not listened to by ear; wording and timbre unchecked.
+- Speech = non-silent span at -35 dB; loudness is per-clip integrated (short clips, indicative). Narrator R1.3 take 3 is -16.2 LUFS.
+
+| Line | Voice | File dur | Speech | LUFS | Gain to match NAR |
+| --- | --- | --- | --- | --- | --- |
+| L03 "แถวนั้นไปเร็วกว่า" | Algenib | 2.00 s | 1.47 s | -20.4 | ~+4 dB |
+| L04 CSH "เช็กราคาแป๊บนึงนะ" | Charon | 2.56 s | 1.72 s (0.29-2.01) | -19.3 | ~+3 dB |
+| L05 "อ้าว" take 1 | Algenib | 3.40 s | 2.67 s (groan with a mid gap) | -16.0 | 0 |
+| L05 "อ้าว" take 2 (short style) | Algenib | 1.88 s | 0.90 s (0.40-1.30) | -16.0 | 0 |
+| L18a "สบายจัง" | Algenib | 2.84 s | 2.14 s (0.24-2.38) | -19.0 | ~+3 dB |
+
+- Fit: use L05 **take 2**; take 1 (2.67 s) is too long for a sulk turn. Spoken MAN/CSH speech adds about 4.1 s (1.47 + 1.72 + 0.90) in B02 plus 2.14 s in B06. Video estimate ~50.7 s (NAR take 3) + 4.1 + 2.14 = **~57 s**, inside 40-60 s but above the ~55 s trim target.
+- Fit problem: the estimated B02 window (3.2-10.0 s, 6.8 s) holds L03 + L04 + 1.5 s gag + L05 + NAR L06 ~ 7.1 s of speech plus gaps (~8 s), so B02 runs ~1-1.5 s over its estimate; later beat times shift by the same amount at the voice lock. L18a (2.14 s with edge silence) sits in B06 and needs checking against the till "ding".
+- Gain: MAN/CSH clips need +3-4 dB at the mix; clips carry ~0.25-0.4 s leading silence to trim at cut.
+- Store (flat under `projects/EDU/narration/`, sidecars `.json`): `ep04-r13-man-l03-algenib.wav`, `ep04-r13-csh-l04-charon.wav`, `ep04-r13-man-l05-algenib.wav` (take 1), `ep04-r13-man-l05-algenib-take2.wav`, `ep04-r13-man-l18a-algenib.wav`. Local: `out/edu04/narration/`.
