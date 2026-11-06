@@ -160,3 +160,179 @@ Notes for the pick:
 - Cheapest: C5 (one set, kit dog, one palette function). Strongest painted-only payoff: C5 palette flip and C2 fall through paint.
 - C3 and C6 are each about twice C1/C2/C4: C3 by wardrobe and ensemble volume, C6 by the ant rig and the macro-scale contract.
 - Sound and claims are unchanged from Preaw's R1; nothing here is checked fact.
+
+---
+
+## R2 — Preaw pitch (2026-11-06)
+
+- **Request (user):** "ตอนนี้คลิป education ep03 เรื่องหมาค่อยข้างจะ viral มากเลย ... คิดให้เพิ่มหน่อยครับ"
+- **Topic direction (user):** more like the viral dog episode (EP03 = R1 C5 "ลูกบอลสีแดงที่หมามองไม่เห็น"). This is why the spread is narrower than R1: four of six concepts are about pets, one is an everyday non-pet animal, one is outside animals entirely so the series does not turn single-topic.
+- **Fixed (carried from R1):** genre educational for all six; medium painted 2D p5.brush with the 4-head cast ([project defaults](../../docs/delivery-workflow.md#project-defaults)). The style-profile genre and medium spread does not apply; what varies is sub-genre and staging.
+  - **Sub-genres (6):** animal senses, dog sequel (C7); animal communication (C8); pet care / body (C9); everyday insects (C10); human perception (C11); animal memory myth (C12).
+  - **Staging styles:** time-lapse of an empty home through the dog's nose (C7); eye-level two-shot, human and cat, extreme close-ups (C8); low floor-level camera at a food bowl (C9); evening ensemble of three on a balcony with a heat-map overlay (C10); direct-to-camera test the viewer does on their own screen (C11); POV from inside a fish tank (C12).
+- **Wild card:** C12. The kit has no fish, no water/glass refraction and no fisheye camera; see its "Kit gap" line.
+- **Channel default (mystery-educational in the WORLD FOG look):** none. C7 has a light "how does it know?" mystery turn.
+- **Series status:** EP01 = C2, EP02 = C1, EP03 = C5, EP04 = C4 (in production). C3 and C6 stay with the user and are not re-pitched.
+- **Mode:** non-fiction explainers acted out by fictional 4-head characters; no named real person or case. These are pitches, not research: every fact below is `unchecked` until Boat's research and fact-check. Where the science is known to be thin, the beat says so.
+- **Duration:** every concept estimated at 40–60 s (Short default). Timing is not measured.
+- Film annotation (W0.2) is not done in this pass.
+
+### Why EP03 worked (hypothesis)
+
+Hypothesis only: no view, retention or share analytics were supplied; these are Preaw's guesses to steer R2, not findings.
+
+- **Your own pet, secretly different:** the viewer already lives with the subject, so the reveal is about their home, not a distant fact.
+- **One-move visual reveal:** the palette flip shows the dog's world in a single striking change that only a painted frame does cleanly; the idea is grasped before the narration explains it.
+- **Myth-buster with a soft landing:** "not black and white" corrects a belief most people hold, without making them feel stupid.
+- **A tip owners send each other:** "buy blue toys" is an action, so sharing it is helpful, not just "look at this".
+- **Low-stakes warmth:** a cute animal failing then succeeding is safe, cheerful and easy to rewatch on a loop.
+
+R2 concepts each try to keep at least three of these five.
+
+### C7 — หมารู้ว่าคุณจะกลับบ้านกี่โมง (dog sequel: smell)
+
+- **Sub-genre:** animal senses (dog smell and time).
+- **Staging:** an empty condo across one day in time-lapse; `dog-thai` waits by the door. Scent is painted as coloured mist trails (the owner's smell in warm amber) that thin out hour by hour.
+- **Logline:** The owner leaves at 8; the dog sleeps all day, then walks to the door minutes before the key turns. We paint smell visible and show one idea of how: the owner's scent in the room fades through the day, and the dog may read "how faded" as "almost home time".
+- **Hook (Thai):** "หมาของคุณไม่มีนาฬิกา… แต่มันรู้ว่าคุณจะกลับบ้านกี่โมง"
+- **Beats:**
+  1. Morning: owner leaves; the room is full of thick amber scent mist. Dog flops down.
+  2. Reveal: the painting switches to "nose view": every smell in the room becomes coloured mist, layered like a map. A dog's nose is many times more sensitive than ours. `unchecked`
+  3. Time-lapse: the amber mist thins hour by hour; the dog lifts its head at each step.
+  4. When the scent drops to "evening level", the dog goes to the door; the key turns. One hypothesis researchers have proposed, not proven; routine, sounds and light also play a part. `unchecked`
+  5. Payoff and tip: let your dog sniff on walks; for a dog, smelling is how it reads the news. Last line: "ครั้งหน้าที่หมาหยุดดมเสาไฟ… อย่าเพิ่งดึงมัน มันกำลังอ่านข่าวอยู่"
+- **Ending:** `B_loop`.
+- **Voice / tone:** same warm female narrator as EP03 (series continuity); dog only sighs, ear-flicks and one happy whine.
+- **Why it holds:** direct sequel to the viral dog episode; "my dog knows when I'm coming" is something owners already noticed and argue about; the nose-view mist is a second palette-flip-style reveal; the sniff-walk tip is shareable.
+- **Research load:** general knowledge plus uncertainty (dog olfaction is well documented; the scent-decay timekeeping idea is a hypothesis and must be framed that way).
+- **Sound intent:** soft ticking-clock pulse under light pizzicato strings; room tone thins with the mist; a breathy "inhale" whoosh carries the switch to nose view; silence just before the key-in-lock click, which is the stinger.
+- **Alternatives Preaw considered for a dog sequel:** hearing (high-pitched sounds, why dogs bark before the doorbell rings) and "guilty look" (the guilty face is a reaction to the owner, not guilt). Either could replace C7 if the user prefers.
+
+### C8 — กะพริบตาช้า ๆ ใส่แมว
+
+- **Sub-genre:** animal communication (cats).
+- **Staging:** eye-level two-shot on a sofa, `woman-curly` and `cat-orange-tabby`; the shot alternates between extreme close-ups of the two pairs of eyes.
+- **Logline:** A cat lover stares lovingly at her cat; the cat looks away and leaves. In cat view her wide unblinking stare reads like a threat. When she slowly closes and opens her eyes instead, the cat slow-blinks back and walks over.
+- **Hook (Thai):** "จ้องตาแมวด้วยความรัก… ในภาษาแมว คุณอาจกำลังท้าตีมันอยู่"
+- **Beats:**
+  1. Owner leans in, big eyes, "น่ารักจังเลย"; the cat's ears go flat and it turns away.
+  2. Reveal: the frame shifts into "cat read": her eyes are repainted as a predator's hard glare with sharp shadows. A long direct stare is a challenge among cats. `unchecked`
+  3. The slow blink: narration counts it out, eyes close… hold… open. Research has found cats tend to answer a slow blink with one of their own and approach more. `unchecked`
+  4. She tries it; the cat blinks back; a soft painted glow passes between them.
+  5. Payoff and tip, said to the viewer: try it on your own cat tonight. Last line: "ลองดูคืนนี้… ถ้ามันกะพริบกลับมา นั่นคือคำว่ารักในภาษาแมว"
+- **Ending:** `B_loop`.
+- **Voice / tone:** warm, a little teasing narrator; owner two short lines; the cat only purrs and gives one annoyed "mrrp".
+- **Why it holds:** cats are the other half of pet owners; a myth-buster (staring = love) with an instant, free tip that viewers can try within a minute and report back in comments; the stare-to-glare repaint is a clear painted reveal.
+- **Research load:** general knowledge (slow-blink studies, cat eye-contact behaviour).
+- **Sound intent:** gentle lo-fi piano; a low tense drone under the stare; a soft "glass chime" on the slow blink carries the moment; purr fades in as the stinger.
+
+### C9 — ทำไมแมวเขี่ยอาหารออกจากชาม
+
+- **Sub-genre:** pet care / body (cat whiskers).
+- **Staging:** low floor-level camera in a kitchen, `cat-gray-tabby` at a deep narrow bowl; the whiskers light up as a painted sensor field.
+- **Logline:** The cat paws food out of the bowl and eats it off the floor, and the owner thinks it is being fussy. We light up the whiskers and show they are touch sensors: every bump against a deep, narrow rim may feel unpleasant, so the cat avoids it. A wide, shallow dish can fix it.
+- **Hook (Thai):** "แมวคุณไม่ได้เรื่องมาก… มันแค่ไม่อยากให้หนวดโดนขอบชาม"
+- **Beats:**
+  1. Cat paws kibble onto the floor; owner sighs, "เรื่องมากจริง ๆ".
+  2. Reveal: the whiskers glow, each one sending a spark to the brain when touched; a cat's whiskers are roughly as wide as its body and help it judge gaps. `unchecked`
+  3. Close-up: in the deep bowl, the rim strikes the whiskers again and again, sparks flashing. Some vets call this "whisker stress"; how much it bothers cats is still debated. `unchecked`
+  4. The owner swaps to a wide shallow plate; the cat eats calmly, whiskers dim.
+  5. Payoff, plus myth-buster: never trim a cat's whiskers, they are not decoration. Last line: "ชามใบเดียว… อาจเป็นเหตุผลที่แมวคุณไม่ยอมกินข้าว"
+- **Ending:** `B_loop`.
+- **Voice / tone:** brisk, friendly narrator; owner one line; cat sounds only.
+- **Why it holds:** almost every cat owner has seen the pawing; the cause is surprising and the fix is cheap and visible; whiskers-as-glowing-sensors is a strong painted image; owners tag each other with "this is your cat".
+- **Research load:** general knowledge plus uncertainty (whisker anatomy is solid; "whisker fatigue" is a vet-community term with limited evidence and must be labelled so).
+- **Sound intent:** playful marimba; crunchy kibble skitter on tile; each whisker spark is a tiny electric "tik"; the music drops out and comes back calm on the shallow plate.
+
+### C10 — ทำไมยุงกัดคุณคนเดียว
+
+- **Sub-genre:** everyday insects (non-pet animal).
+- **Staging:** evening condo balcony, an ensemble of three friends (`man-parted`, `woman-pixie`, `boy-school`); only one gets bitten. The frame flips to "mosquito view": a painted heat-and-breath map where people glow as plumes.
+- **Logline:** Three friends sit in the same spot and only one of them is covered in bites. In mosquito view, people are not faces but clouds of breath, heat and skin smell, and some people simply give off a louder signal. Sweet blood is not the reason.
+- **Hook (Thai):** "นั่งด้วยกันสามคน… ทำไมยุงกัดคุณอยู่คนเดียว"
+- **Beats:**
+  1. Balcony, dusk; slap, slap, only one friend; the others joke "เลือดหวาน".
+  2. Reveal: mosquito view: each person becomes a glowing plume of breath (carbon dioxide), body heat and skin smell. Mosquitoes track these from a distance. `unchecked`
+  3. Myth-buster: "sweet blood" is not it; differences in skin smell (from skin bacteria and chemicals) seem to make some people more attractive. `unchecked`
+  4. Extra clues: after exercise or a beer the plume grows; dark clothes may stand out more. `unchecked`
+  5. Tip: a fan on the balcony breaks up the plume and mosquitoes are weak flyers. Last line: "คืนนี้ถ้าโดนกัดอีก… ไม่ใช่เพราะเลือดหวาน แต่เพราะกลิ่นคุณดังกว่าคนอื่น"
+- **Ending:** `B_loop`.
+- **Voice / tone:** lively, joking narrator; three friends with short banter lines; one mosquito whine motif.
+- **Why it holds:** everyone in Thailand has lived this exact scene; it busts a common Thai saying (เลือดหวาน); "mosquito view" is a sibling of the palette flip; the fan tip is free and shareable in friend groups ("this is why they always bite you").
+- **Research load:** general knowledge (mosquito host-seeking cues, skin odour studies); the clothing and alcohol claims need care.
+- **Sound intent:** warm evening city ambience, cicadas; the thin mosquito whine is the recurring motif and stinger; a low "thermal" hum riser carries the switch to mosquito view; a fan whoosh blows the plume and the whine away.
+
+### C11 — จุดบอดในตาคุณ (outside pets)
+
+- **Sub-genre:** human perception (blind spot).
+- **Staging:** direct-to-camera; one character (`girl-school`) holds up a painted card and the viewer does the test on their own phone screen. The reveal is the painting itself "filling in" a hole.
+- **Logline:** Everyone has a blind spot in each eye where there are no light sensors, yet we never see a hole. With a simple test on screen, the viewer makes a dot vanish, then watches the painting show how the brain quietly paints over the gap with what is around it.
+- **Hook (Thai):** "ตอนนี้ในตาคุณมีรูอยู่หนึ่งรู… และสมองคุณกำลังระบายสีทับมันอยู่"
+- **Beats:**
+  1. The character grins at the camera: "ปิดตาซ้ายนะ"; a cross and a dot appear on a painted card.
+  2. Test: look at the cross, move the phone closer; at the right distance the dot vanishes. `unchecked` (the test geometry must be checked on a real phone at Shorts size)
+  3. Why: where the optic nerve leaves the eye there are no light sensors. `unchecked`
+  4. Reveal: the painted background flows into the hole and the gap is filled with matching brush strokes, the way the brain fills it in. `unchecked`
+  5. Payoff: "what you see" is partly painted by your brain. Last line, leading back into the hook: "ภาพที่คุณเห็นอยู่ตอนนี้… สมองคุณระบายเองไปครึ่งหนึ่งแล้ว"
+- **Ending:** `C_seamless` (last line flows back into the hook; Film and Editor to match first and last frame).
+- **Voice / tone:** playful, challenging narrator; the character mimes the steps.
+- **Why it holds:** the viewer does it themselves, and it works on the very phone they hold; "your brain paints the world" ties to the channel's painted look; people send it to friends as a "try this" challenge. It keeps the series from being only about pets.
+- **Research load:** general knowledge (optic disc blind spot, perceptual filling-in); the on-screen test needs a real-device check.
+- **Sound intent:** minimal plucked synth; near-silence during the test so the viewer concentrates; a soft "pop" when the dot vanishes carries the beat; a brush-stroke swish as the hole fills.
+
+### C12 — ปลาทองความจำ 3 วินาที? (wild card)
+
+- **Sub-genre:** animal memory myth (pet fish).
+- **Staging:** POV from inside a round fish tank: the living room curved through glass and water, the owner `man-crop` huge and bent at the edge; a goldfish in the foreground.
+- **Logline:** Everyone "knows" goldfish forget everything in three seconds. From inside the tank, we watch a goldfish learn: it swims to the same corner every time the owner walks over at feeding time, and it still remembers weeks later.
+- **Hook (Thai):** "ปลาทองความจำแค่ 3 วินาที… แล้วทำไมมันรอคุณอยู่ที่มุมเดิมทุกเช้า"
+- **Beats:**
+  1. Owner taps the glass: "ลืมแล้วล่ะสิ"; we drop into the fish's curved, rippled view of the room.
+  2. Day 1–3 montage: every morning the owner appears, food falls in the same corner.
+  3. Day 4: the fish is waiting in that corner before the food arrives. Studies suggest goldfish can learn and keep such patterns for weeks to months. `unchecked`
+  4. Myth-buster: the three-second figure has no good source behind it. `unchecked`
+  5. Tip and payoff: feed at the same time and place; a fish can learn your routine, so give it a little variety in the tank. Last line: "ปลาของคุณอาจจำคุณได้… นานกว่าที่คุณจำว่าให้อาหารมันหรือยัง"
+- **Ending:** `B_loop`.
+- **Voice / tone:** dry, gently funny narrator; owner one line; underwater sound bed instead of animal sounds.
+- **Why it holds:** a famous myth almost everyone repeats; the inside-the-tank view is a striking frame nobody expects from a 2D painting; the last line is a joke viewers quote.
+- **Research load:** general knowledge (fish learning and memory studies; origin of the three-second myth is unclear).
+- **Kit gap (why it is the wild card):** no fish in `ANIMALS`, no water or glass refraction treatment, and no fisheye / curved-glass camera for the painted 3D camera. Film and Boss would scope these in W0.2.
+- **Sound intent:** muffled underwater bed with slow bubbles; the owner's voice heard low-passed through water; a bright glass "tink" on the tap is the stinger; music is a soft music-box loop that returns each "morning".
+
+---
+
+## R2 — Summary
+
+| ID | Title | Sub-genre | Staging | Hook (Thai) | Ending | Research |
+| --- | --- | --- | --- | --- | --- | --- |
+| C7 | หมารู้ว่าคุณจะกลับบ้านกี่โมง | animal senses (dog sequel) | empty home time-lapse, painted scent mist | "หมาของคุณไม่มีนาฬิกา… แต่มันรู้ว่าคุณจะกลับบ้านกี่โมง" | B_loop | general + uncertainty |
+| C8 | กะพริบตาช้า ๆ ใส่แมว | animal communication | human + cat eye close-ups, stare-to-glare repaint | "จ้องตาแมวด้วยความรัก… ในภาษาแมว คุณอาจกำลังท้าตีมันอยู่" | B_loop | general |
+| C9 | ทำไมแมวเขี่ยอาหารออกจากชาม | pet care / body | floor-level cat at bowl, glowing whiskers | "แมวคุณไม่ได้เรื่องมาก… มันแค่ไม่อยากให้หนวดโดนขอบชาม" | B_loop | general + uncertainty |
+| C10 | ทำไมยุงกัดคุณคนเดียว | everyday insects | ensemble of three, mosquito-view heat map | "นั่งด้วยกันสามคน… ทำไมยุงกัดคุณอยู่คนเดียว" | B_loop | general |
+| C11 | จุดบอดในตาคุณ (outside pets) | human perception | direct-to-camera viewer test, painting fills the hole | "ตอนนี้ในตาคุณมีรูอยู่หนึ่งรู… และสมองคุณกำลังระบายสีทับมันอยู่" | C_seamless | general + device check |
+| C12 | ปลาทองความจำ 3 วินาที? (wild card) | animal memory myth | POV inside a fish tank, curved glass | "ปลาทองความจำแค่ 3 วินาที… แล้วทำไมมันรอคุณอยู่ที่มุมเดิมทุกเช้า" | B_loop | general |
+
+---
+
+## R2 — Film annotation (W0.2, 2026-11-06)
+
+Engine fixed: painted 2D p5.brush, 4-head cast, default look the [painted 3D camera](../../docs/film-visual-brief-workflow.md#painted-3d-camera) (world-metre sets, `YCam` yaw moves, four views squared to the lens). Looks designed from each story first; kit checked afterwards against `src/painted/kit/README.md` at `0fbbe08` (PEOPLE 14, ANIMALS dogs chihuahua/pom/thai/golden/black-lab and seven cats, `animalMotion` idle/happy-wag/speak/sniff/startle-hop/walk/run/sit/stand/lie/get-up, ENV-SKY/FALL/FOG/GLOW/SEA, PLATES reference only). Animal eyes blink only on the rig clock (`animalBlink`); there is no authored eyelid, ear-flat, paw or whisker control. The EP03 palette flip is `src/painted/edu03/dogview.ts` (one 3x3 linear-RGB matrix blended by `u`, applied as an SVG `feColorMatrix` pass in `dog-view-pass.tsx`): status `exists-unintegrated` in the kit (episode module, not filed). Casting lines are proposals. Sizes as in R1: S about one new set and small additions; M one or two sets plus several new props/FX/motions; L a new capability or rig.
+
+| ID | Look (one line) | Signature painted moment | Buildability | Size |
+| --- | --- | --- | --- | --- |
+| C7 | Empty Bangkok condo living room, morning gold to evening amber through one window (ENV-SKY bands keyed to the clock); `dog-thai`, lie / get-up / walk-in, `asleep` then alert; owner `man-crop` (casual) only at the door | "Nose view": the EP03 pass generalised: room drops to a dim muted wash while every smell becomes coloured ENV-FOG mist, the owner's amber trail thinning per time-lapse step | new assets: condo living-room set with front door and key-turn insert, scent-mist layer (ENV-FOG retinted, per-scent colour and density driven by the clock), nose-view pass (reuse the `dogview.ts` matrix with a darker/desat preset), head-lift-from-lie motion (not in `animalMotion`), wall clock prop. Alternative cast `dog-golden` for series continuity with EP03 is a user choice | M |
+| C8 | Warm lamp-lit sofa in the evening, `woman-curly` (casual), `happy` then a calm `sleepy`-style half-lid; `cat-orange-tabby` sit / walk-in; alternating human and cat eye ECUs | Stare-to-glare repaint: her eyes harden into a predator glare (hard cast shadow, cooler key) as the frame shifts to "cat read", then a slow blink answered by the cat and a soft ENV-GLOW passing between them | new assets: sofa/living-room set, human-eye and cat-eye ECU plates (the face rig is untested at ECU scale), glare repaint layer; missing capability: authored eyelid control for animals (slow blink on a cue, not `animalBlink`), cat ear-flat and turn-away head pose | M |
+| C9 | Low floor-level kitchen at cat height, morning light on tile; `cat-gray-tabby`, owner `woman-pixie` mostly legs and one line | Whisker sensor field: each whisker lights up and sparks a thin line to the brain on every rim strike, dimming to calm on the shallow plate | new assets: kitchen floor-level set (EP02 kitchen in `src/painted/edu02/` and PL-EDU-KITCHEN as reference only), deep bowl, shallow plate, kibble scatter; missing capability: cat whisker geometry (none in `animals.ts`), head-down eating pose, paw-scoop motion (not in `animalMotion`) | M |
+| C10 | Dusk condo balcony with city lights and a fan; `man-parted`, `woman-pixie`, `boy-school` seated (sit legs in kit), `suspicious`/`laugh`; one painted mosquito | "Mosquito view": the scene collapses to a dark thermal ground while each friend becomes a glowing plume of breath and heat, one plume visibly louder; the fan blows it apart | new assets: balcony set, plastic stools, fan, slap and scratch motions, mosquito sprite (small, no rig needed at Shorts scale), breath plume layer (ENV-FOG based); missing capability: thermal-ramp pass (a luminance-to-ramp map, not the EP03 3x3 matrix; likely SVG `feComponentTransfer`, untested), three-figure seated staging not yet tried in the yaw camera | M |
+| C11 | Plain warm studio wall, `girl-school` direct to camera holding a painted card; the card goes full screen for the test | The painting fills the hole: background brush strokes flow into the vanished dot's place, the brain "painting over" the gap | new assets: test card prop and full-screen card plate, fill-in stroke animation (mask over the plate), close-one-eye pose (cover-eye hand, not in P01–P45); risk: the test's dot/cross spacing and size must be fixed in phone millimetres and checked on a real phone at Shorts size before scene sheets, and the caption zone must stay clear of the test card; `C_seamless` needs first = last frame matched | S |
+| C12 | Inside a round glass bowl: living room bent and rippled, owner `man-crop` huge at the curved edge, a goldfish foreground, morning light; music-box "mornings" montage | Fisheye glass POV: the room wraps around the bowl and ripples when food lands, the fish already waiting in the corner on day 4 | missing capability: fish (no fish in `ANIMALS`; needs a new rig plus swim/fin motion), curved-glass/fisheye projection for `YCam` (none), water refraction/ripple displacement (none in kit; SVG `feDisplacementMap` untested on painted plates); new assets: fish bowl/tank, living room seen through it, food flakes (ENV-FALL bubbles reuse for bubbles) | L |
+
+Notes for the pick:
+- Most reuse from EP03: C7 (dog from `ANIMALS` with kit motions, the `dogview.ts` palette-pass technique repurposed as nose view, same narrator). C10 reuses the flip idea but needs a different pass type.
+- Cheapest: C11 (one simple set, kit person, one fill-in effect), gated by a real-phone test check. Biggest: C12, the only one that needs a new rig and a new projection.
+- C8 and C9 both need the first authored cat face/body controls (eyelid, ears, whiskers, head-down); if both are picked over time, building those once covers both.
+- Claims and sound are unchanged from Preaw's R2; nothing here is checked fact.
+
+## R2 — User pick (W0.3, 2026-11-06)
+
+User kept **C7, C8, C9, C10, C11** (structured question, two multi-select questions C7–C9 and C10–C12); **C12 not picked**. Order of episodes not yet chosen. Context: user said EP03 (C5 dog) "ค่อยข้างจะ viral มากเลย ... คิดให้เพิ่มหน่อยครับ".
