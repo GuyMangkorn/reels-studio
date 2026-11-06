@@ -34,6 +34,29 @@ export type AntOpts = {
 };
 
 const DEG = Math.PI / 180;
+
+// ---- `new: ant-walk` (N6, W5.2): tripod gait whose clock follows the distance walked, so a planted foot is fixed on the ground.
+/** Gait constants (sm): one cycle covers `cycle` of ground; each tripod is on the ground for `duty` of it (stance) and swings for the rest;
+ * during stance a foot moves back along the body by `stride = duty * cycle` while the body moves forward by the same, so it does not slide. */
+export const GAIT = {cycle: 0.55, duty: 0.6, lift: 0.09, sway: 2.5};
+export const GAIT_STRIDE = GAIT.cycle * GAIT.duty;
+/** Ant speeds (sm per frame) by shot (scene sheets: 0.043 in the shade look S01-B04-SH02, 0.07 in S01-B05-SH01). */
+export const ANT_SPEED: Record<string, number> = {'S01-B04-SH02': 0.043, 'S01-B05-SH01': 0.07, 'S01-B05-SH02': 0.07};
+/** Gait phase in cycles for a distance walked. */
+export const walkPhase = (distance: number) => distance / GAIT.cycle;
+/** Leaf sway (deg) about the mandible grip for a gait phase: twice per cycle (each tripod step), <= GAIT.sway + 1 (R04: leaf upright, <= 4). */
+export const gaitSway = (walk: number) => GAIT.sway * Math.sin(2 * Math.PI * walk * 2) + 0.8 * Math.sin(2 * Math.PI * walk * 4 + 1);
+/** A foot's offset in the ant frame at gait phase `walk` (cycles): `dx` along the body (+ = toward the head), `lift` above the ground
+ * (sm), `planted` while in stance. `set` 0 = tripod A (near fore and hind, far mid), 1 = tripod B. */
+export const antFoot = (walk: number, set: 0 | 1): {dx: number; lift: number; planted: boolean} => {
+  const ph = (((walk + set * 0.5) % 1) + 1) % 1, d = GAIT.duty;
+  if (ph < d) return {dx: GAIT_STRIDE * (0.5 - ph / d), lift: 0, planted: true};
+  const k = (ph - d) / (1 - d), e = 0.5 - 0.5 * Math.cos(Math.PI * k);
+  return {dx: GAIT_STRIDE * (-0.5 + e), lift: GAIT.lift * Math.sin(Math.PI * k), planted: false};
+};
+/** The ant's state at a distance walked (a pure function of distance, like the kit's `animalMotion`): gait phase and leaf sway. */
+export const antWalk = (distance: number) => { const walk = walkPhase(distance); return {walk, sway: gaitSway(walk)}; };
+
 /** A solid stroke (polyline as a filled band, width w0 -> w1 px): lines that must read at 270 px (antennae, veins). */
 export const band = (p: Painter, seed: number, pts: Pt[], w0: number, w1: number, color: string) => {
   if (pts.length < 2) return;
@@ -76,9 +99,8 @@ export const drawAnt = (p0: Painter, g: Pt, u: number, o: AntOpts) => {
   // ---- legs: coxa under the thorax, femur up and out to a knee above the belly line, tibia down to a planted foot.
   const coxa = [0.38, 0.22, 0.06], foot0 = [0.78, 0.18, -0.5], kneeOut = [0.08, 0.0, -0.1];
   const leg = (i: number, near: boolean) => {
-    const set = (i + (near ? 0 : 1)) % 2; // tripod: near L1, L3 with far R2; then the other three
-    const ph = o.walk === undefined ? 0 : 2 * Math.PI * (o.walk + set * 0.5);
-    const swing = o.walk === undefined ? 0 : 0.16 * Math.sin(ph), lift = o.walk === undefined ? 0 : Math.max(0, Math.cos(ph)) * 0.09;
+    const set = ((i + (near ? 0 : 1)) % 2) as 0 | 1; // tripod: near L1, L3 with far R2; then the other three
+    const gf = o.walk === undefined ? {dx: 0, lift: 0} : antFoot(o.walk, set), swing = gf.dx, lift = gf.lift;
     const off = near ? 0 : 0.06;
     const c: Pt = [coxa[i] + off * 0.5, 0.25 + (near ? 0 : 0.02)], f: Pt = [foot0[i] + swing + off, lift + (near ? 0 : 0.04)];
     const k: Pt = [(c[0] + f[0]) / 2 + kneeOut[i], 0.44 + lift * 0.6 + (i === 1 ? 0.02 : 0)];

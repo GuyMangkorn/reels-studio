@@ -40,35 +40,6 @@ export type TinyOpts = {
   shadow?: boolean;
 };
 
-/**
- * LF04 v2 (kit gap, episode-local): `tintPainter` mixes the painter's wash/flat/ink colours but the rig's `solid` fills call
- * `p.brush.fill` directly, so a tinted figure kept its sunlit skin and pyjamas. This also routes the brush's colour calls (`fill`, `wash`,
- * `stroke`, `set`) through the same mix, so every fill and line of the figure takes the light. Boss: fold into `tintPainter` at kit intake.
- */
-const shadeColor = (c: string, to: string, u: number, mul?: [number, number, number]) => {
-  if (!mul) return mixColor(c, to, u);
-  const m = /^#([0-9a-f]{6})$/i.exec(c);
-  if (!m) return mixColor(c, to, u);
-  const v = [0, 2, 4].map((i, k) => Math.min(255, Math.round(parseInt(m[1].slice(i, i + 2), 16) * mul[k])));
-  const lum = (0.299 * v[0] + 0.587 * v[1] + 0.114 * v[2]) / 255;
-  return mixColor(`#${v.map((x) => x.toString(16).padStart(2, '0')).join('')}`, to, u * (1 - lum));
-};
-const tintAll = (p: Painter, to: string, u: number, mul?: [number, number, number]): Painter => {
-  const b = p.brush as unknown as Record<string | symbol, unknown>, mix = (c: unknown) => (typeof c === 'string' ? shadeColor(c, to, u, mul) : c);
-  const brush = new Proxy(b, {
-    get: (t, k) => {
-      const v = Reflect.get(t, k, t);
-      if (typeof v !== 'function') return v;
-      if (k === 'fill' || k === 'wash' || k === 'stroke') return (c: unknown, ...r: unknown[]) => v.call(t, mix(c), ...r);
-      if (k === 'set') return (n: unknown, c: unknown, ...r: unknown[]) => v.call(t, n, mix(c), ...r);
-      return v.bind(t);
-    },
-  }) as unknown as Painter['brush'];
-  const base = mul ? {...p, wash: ((c, o, pts, bl, tx) => p.wash(shadeColor(c, to, u, mul), o, pts, bl, tx)) as Painter['wash'], flat: ((c, pts) => p.flat(shadeColor(c, to, u, mul), pts)) as Painter['flat'],
-    ink: ((id, n, c, w) => p.ink(id, n, shadeColor(c, to, u, mul), w)) as Painter['ink'], inkStill: ((id, n, c, w) => p.inkStill(id, n, shadeColor(c, to, u, mul), w)) as Painter['inkStill']} : tintPainter(p, to, u);
-  return {...base, brush};
-};
-
 /** TINY through the yaw camera: flat card at the ground point, view held square to `cam` (painted 3D camera). */
 export const paintTiny = (p: Painter, c: YCam, o: TinyOpts): FigAnchors | null => {
   const g = camPoint(c, o.at), u = camUnit(c, o.at);
@@ -79,7 +50,8 @@ export const paintTiny = (p: Painter, c: YCam, o: TinyOpts): FigAnchors | null =
   const pv = view === 'back' ? 'front' : view;
   const pose = poseFor(o.pose ?? 'P01', TINY, g, u, pv);
   const face = {...EXPRESSIONS[o.face ?? 'neutral'], ...(o.faceState ?? {})} as FaceState;
-  const q = o.tint ? tintAll(p, o.tint.to, o.tint.u, o.tint.mul) : p;
+  // K1 (W5.2): the kit `tintPainter` with `brush: true` takes the rig's solid fills (was the episode-local `tintAll`)
+  const q = o.tint ? tintPainter(p, o.tint.to, o.tint.u, {mul: o.tint.mul, brush: true}) : p;
   const anchors = drawFigure(q, TINY, g, u, {...pose, view, face, headCock: o.headCock, ...o.fig}, o.t);
   o.held?.(q, anchors, u);
   return anchors;
