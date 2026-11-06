@@ -19,7 +19,7 @@ export const VIEW_OF: Record<NamedPose, 'front' | 'left' | 'right'> = {
 };
 
 type Spec = {to: Pt; via: Pt; behind?: Arm['behind']};
-type Body = Pick<FigPose, 'crouch' | 'bend' | 'lean' | 'rise' | 'floorSit' | 'nod' | 'walk' | 'stride'>;
+type Body = Pick<FigPose, 'squat' | 'crouch' | 'bend' | 'lean' | 'rise' | 'floorSit' | 'nod' | 'walk' | 'stride'>;
 const pulse = (L: number, period: number) => Math.abs(Math.sin((Math.PI * L) / period)); // 0..1, one bump per `period` frames
 const pat = (L: number, period: number) => Math.pow(pulse(L, period), 3); // sharp touch, long lift
 
@@ -51,7 +51,7 @@ export const namedPose = (name: NamedPose, L: number, def: CastDef, g: Pt, u: nu
       break;
     }
     case 'drag-back': // profile, hands hooked on the crumb edge, lean away, walk clock reversed and slow (planted feet read)
-      body = {crouch: 0.45, lean: 0.35, walk: -L / 24, stride: 0.6};
+      body = {squat: 0.35, lean: 0.35, rise: -0.012 * pulse(L, 8)}; // squat mode has no walk: a dip per 8 f stands for the small backward steps (feet slide with the crumb, open)
       r = {to: [0.3, -0.4], via: [0.12, -0.26]}; l = {to: [0.28, -0.42], via: [0.1, -0.27]};
       break;
     case 'clutch-puff': // hands cupped at the chest (CP-P02) as the puff squeezes out

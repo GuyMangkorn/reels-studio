@@ -85,7 +85,7 @@ export const paintCrumb = (p: Painter, c: YCam, at: V3, o: {lift?: number; bites
     solid(p, 13400 + i, col(CRUMB.pore), ell(x, y, r, r * 0.7, 8), 2);
   }
   inkLine(p, 13500, loaf, {weight: 0.8, color: col('#5a3216')});
-  for (let b = 0; b < Math.min(2, o.bites ?? 0); b++) solid(p, 13600 + b, col(CRUMB.crumb), ell(centre[0] - w * (0.36 - 0.14 * b), centre[1] - h * 0.5 + h * 0.04 * b, w * 0.09, h * 0.07, 10), 2);
+  for (let b = 0; b < Math.min(2, o.bites ?? 0); b++) solid(p, 13600 + b, col(mixColor(CRUMB.crumb, '#8a5326', 0.45)), ell(centre[0] + w * (0.3 + 0.08 * b), centre[1] - h * 0.3 + h * 0.05 * b, w * 0.07, h * 0.06, 10), 2); // bite notch inside the cut face, near its top edge
 };
 
 // ---- N9 scale-bars (S01-B05-SH02, picture px): card, two bars, label slots, icon, shrink, surplus glow. No digits, axis, ticks or %.
@@ -158,3 +158,9 @@ export const paintAirStreaks = (p: Painter, ring: Pt[], L: number, seed = 16400)
     washAt(p, seed + 40 + i, '#ffffff', 60 * k, arc.concat(arc.slice().reverse().map(([x, y]): Pt => [x + 4, y + 4])), 0.2, 0.05);
   }
 };
+
+/** N9 Thai bar labels as timeline items (`painted.shots[].items`, Remotion DOM, not painted): centred under each bar, in shot-local frames of S01-B05-SH02 (the label pops with its bar's grow). Editor spreads these into the shot cue. */
+export const BAR_LABELS: {kind: 'label'; text: string; x: number; y: number; atFrame: number}[] = (['force', 'weight'] as const).map((k) => {
+  const [x0, y0, x1, y1] = BARS.slots[k];
+  return {kind: 'label', text: k === 'force' ? 'แรง' : 'น้ำหนัก', x: (x0 + x1) / 2, y: (y0 + y1) / 2, atFrame: k === 'force' ? 20 : 26};
+});
