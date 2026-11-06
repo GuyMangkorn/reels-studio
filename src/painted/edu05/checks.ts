@@ -88,8 +88,7 @@ export const paintFX = (p: Painter, frame: number) => {
 import {paintCap, paintFacadeDown, paintFacadeUp, paintRing, lookDownCam, speckAt, speckCam} from './facade';
 import {paintAirStreaks, paintDriftAir} from './effects';
 /** G9: N3 look-down facade (S01-B01-SH02) with the cap. */
-const D_ = Math.PI / 180; const FACC = [{x:-1.732,y:2.0,z:-6.279,yaw:-195*D_,pitch:-50*D_,f:950,hy:880}, {x:-1.732,y:1.9,z:-6.279,yaw:-195*D_,pitch:-50*D_,f:950,hy:880}, {x:-2.273,y:2.2,z:-6.108,yaw:-200*D_,pitch:-52*D_,f:950,hy:820}, {x:-1.991,y:2.5,z:-7.244,yaw:-195*D_,pitch:-50*D_,f:950,hy:820}, {x:-2.586,y:2.0,z:-5.438,yaw:-205*D_,pitch:-50*D_,f:950,hy:880}, {x:-1.732,y:2.0,z:-6.279,yaw:-195*D_,pitch:-45*D_,f:950,hy:1000}];
-export const paintFAC = (p: Painter, frame: number) => { const c = (FACC as any)[frame] ?? lookDownCam(frame / 96); paintFacadeDown(p, c, frame / FPS); paintCap(p, c); };
+export const paintFAC = (p: Painter, frame: number) => { const c = lookDownCam(frame / 96); paintFacadeDown(p, c, frame / FPS); paintCap(p, c); };
 /** G9: N3 speck on the facade with the ring marker (S01-B02-SH03). */
 export const paintSPECK = (p: Painter, frame: number) => {
   const k = frame / 31, c = speckCam(k); paintFacadeUp(p, c, k);
