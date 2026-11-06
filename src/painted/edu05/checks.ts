@@ -72,7 +72,7 @@ export const paintANTW = (p: Painter, frame: number) => {
 };
 
 /** G4-G8: N7 pop ring, N8 puffs, N5 crumb, N9 bars on one frame sheet (frame = shot-local frame of the sheet it belongs to, see fx key). */
-import {crumbFollowHand, crumbGrips, warmthPuffsAt, paintCrumb, paintScaleBars, paintShrinkPop, paintWarmthPuffs, barsAt, shrinkScale, type PuffSpec} from './effects';
+import {CRUMB, crumbFollowHand, crumbGrips, warmthPuffsAt, paintCrumb, paintScaleBars, paintShrinkPop, paintWarmthPuffs, barsAt, shrinkScale, type PuffSpec} from './effects';
 export const paintFX = (p: Painter, frame: number) => {
   const c = camOf(MACRO_CAMS['S01-B04-SH03'], 0.5), t = frame / FPS;
   paintGarden(p, c, {t, mode: 'sun', drop: false, shadeEdge: -0.5, sun: [900, 330], items: [
@@ -152,18 +152,18 @@ export const paintLIFT = (p: Painter, frame: number) => {
   if (!seated) {
     const pz = namedPose('lift-overhead', L - 42, TINY, g, u, 'front'), gr0 = crumbGrips(c, rest);
     if (pz.rArm && pz.lArm && gr0) {
-      // lifted position: C1 centred over her, its grip line at the pose's hand height (the grips are 0.85 sm apart: elbows go out, the pose's 0.26 sm hand gap cannot hold C1)
-      const handY = (pz.rArm.to[1] + pz.lArm.to[1]) / 2;
+      // v4 (user: "looks odder"; overhead-press reference: arms near vertical, forearms vertical from the front, load centred over the head on the palms):
+      // the crumb rides on the pose's own hands (0.26 sm apart, arms straight up), its bottom edge on the palms; on the way up the hands stay on its +x face, then slide under it.
+      const handPx = (pz.rArm.to[1] + pz.lArm.to[1]) / 2;
       let top: V3 = [at[0], 1.9, at[2]];
-      for (let i = 0; i < 3; i++) { const gg = crumbGrips(c, top); if (gg) top = [top[0], top[1] + (gg.l[1] - handY) / gg.u, top[2]]; }
+      for (let i = 0; i < 4; i++) { const gg = crumbGrips(c, top); if (gg) top = [top[0], top[1] + (gg.centre[1] + 0.5 * CRUMB.h * gg.u - handPx) / gg.u, top[2]]; } // bottom edge on the palms
       crumb = [rest[0] + (top[0] - rest[0]) * k, rest[1] + (top[1] - rest[1]) * k, rest[2]];
-      // hands: both on the resting crumb's +x face (one above the other), then on its left / right grips as it rises
-      const gr = crumbGrips(c, crumb)!, mix = (a: Pt, b: Pt): Pt => [a[0] + (b[0] - a[0]) * k, a[1] + (b[1] - a[1]) * k];
-      const k2 = smooth01((k - 0.45) / 0.55); // hands ride the moving crumb's +x face first, then slide to its grips (they were left behind at the rest position)
-      const leftHand = mix([gr.r[0] + 0.02 * u, gr.r[1] - 0.12 * u], gr.l, k2), rightHand = mix([gr.r[0] + 0.02 * u, gr.r[1]], gr.r, k2);
-      const out = (a: Arm, to: Pt, sx: number): Arm => ({...a, to, via: mix([(to[0] + g[0]) / 2, to[1] - 0.12 * u], [a.via![0] + sx * 0.14 * u, a.via![1]])}); // elbow low and in while she grips, up and out in the lift
+      const gr = crumbGrips(c, crumb)!, mix = (a: Pt, b: Pt, w: number): Pt => [a[0] + (b[0] - a[0]) * w, a[1] + (b[1] - a[1]) * w];
+      const k2 = smooth01((k - 0.4) / 0.6), fx = gr.centre[0] + 0.5 * CRUMB.w * gr.u + 0.02 * u;
+      const faceHi: Pt = [fx, gr.centre[1] - 0.06 * u], faceLo: Pt = [fx, gr.centre[1] + 0.1 * u];
+      const hand = (a: Arm, fc: Pt): Arm => ({...a, to: mix(fc, a.to, k2), via: mix([(fc[0] + g[0]) / 2, fc[1] + 0.1 * u], a.via!, k2)});
       const lowX = pz.rArm.to[0] < pz.lArm.to[0]; // rArm = screen-left hand in `front`
-      fig = {crouch: 0.6 * (1 - k), ...(lowX ? {rArm: out(pz.rArm, leftHand, -1), lArm: out(pz.lArm, rightHand, 1)} : {rArm: out(pz.rArm, rightHand, 1), lArm: out(pz.lArm, leftHand, -1)})}; // crouched at the grip, rising with the lift
+      fig = {crouch: 0.6 * (1 - k), ...(lowX ? {rArm: hand(pz.rArm, faceLo), lArm: hand(pz.lArm, faceHi)} : {rArm: hand(pz.rArm, faceHi), lArm: hand(pz.lArm, faceLo)})};
     }
   }
   paintGarden(p, c, {t, mode: 'sun', drop: false, sun: [150, 300], shadeEdge: -1.2 - 1.8 * Math.min(1, L / 80), items: [
