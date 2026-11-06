@@ -80,9 +80,11 @@ const deferredSeeding = () => {
 let deferred: ReturnType<typeof deferredSeeding> | null = null;
 
 /**
- * Blocking-review draft (input prop `paintDraft`, render.mjs --draft): the same marks, minus the expensive passes. A textured
- * `fill` (about 2 ms per polygon per pass) becomes a flat `wash` of the same colour (0.04 ms), bleed and texture are dropped,
- * and `hatch` (about 4 ms) is switched off. Ink lines are untouched. The draft only judges staging, camera and timing.
+ * Flat fills, for every render (user, 6 Nov 2026: "use the Draft as the Final"; it was the `paintDraft` blocking draft only).
+ * A textured `fill` (about 2 ms per polygon per pass) becomes a flat `wash` of the same colour (0.04 ms), bleed and texture are
+ * dropped, and `hatch` (about 4 ms) is switched off. Ink lines are untouched. Why: a textured fill draws its bleed from random
+ * numbers walked along the polygon's projected vertices, and its grain is fixed to the canvas, so under a moving camera it
+ * flickers even with a fixed seed (EDU3-LF01: frame residual 1.26 textured vs 1.01 flat, scripts/edu-series/build-notes.md).
  */
 const drafted = (base: Brush): Brush => {
   // A wash this wrapper turned on (from `fill`) is turned off by `noFill`; a wash the scene asked for is left alone.
@@ -192,7 +194,7 @@ export const BrushCanvas = ({paint, paper = '#efe6d2', boilEvery = 2, brushScale
     if (!props.paintSeedEager) deferred ??= deferredSeeding();
     if (props.paintProfile) profiler ??= profiled(deferred?.brush ?? brush, deferred?.modes);
     const inner = profiler?.brush ?? deferred?.brush ?? brush;
-    const b = props.paintDraft ? (draftBrush ??= drafted(inner)) : inner;
+    const b = (draftBrush ??= drafted(inner));
     const reseed = (n: number) => {
       b.seed(n);
       b.noiseSeed(n);

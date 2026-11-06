@@ -31,7 +31,7 @@ export const parseRenderArgs = argv => {
     concurrency: positive('concurrency') ?? 4,
     // Quick look: half-size output and p5.brush canvas, written to out/<id>/preview/ and not archived.
     preview: argv.includes('--preview'),
-    // Blocking draft: textured fills become flat washes and hatching is off (BrushCanvas `paintDraft`); full size, cached.
+    // Blocking draft: full size, cached, written to out/<id>/draft/. Since 6 Nov 2026 it paints the same flat fills as a final (BrushCanvas `drafted`).
     draft: argv.includes('--draft'),
     // Pinned finals (scripts/pin.mjs) whose inputs changed: keep the approved segments, or render these again (unpins them).
     keepPinned: argv.includes('--keep-pinned'),
