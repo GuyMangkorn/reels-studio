@@ -168,8 +168,14 @@ put(shape(onset(L('sfx/foley/foley_canvas-bag-flap_01.wav')), peak=-16), 1206, 0
 put(shape(speed(paws, 1.25), peak=-14, length=41 / FPS, fade_out=0.3), 1294, 0, 'paws gallop + skid B06-SH02 l34-75 (c1294-1335, SS-R3.2)')
 put(shape(bark, peak=-8), 1356, 0, 'happy bark stinger B06-SH02 l96 (attack c1356, SS-R3.2)')
 
+# ---- closing fade (W8.6, 2026-11-06, user: bird and ambience should also fade to zero as the clip ends): every layer so far (beds, birds, sfx; NOT narration, NOT the tag below)
+# gets a smooth-start fade from the last word's end c1482 to exact zero at the last sample: gain in dB = -90 * t^1.5 (t 0..1; zero slope at the start so no kink, about -28 dB at the middle, then steadily down; a cos^2 curve left the tail at -52 dBFS), final sample forced to 0.
+f0 = fs(1482); tt = np.linspace(0, 1, N - f0)
+mix[f0:] *= (10 ** (-90 * tt ** 1.5 / 20))[:, None]; mix[-1] = 0
+cues.append({'cue': 'closing fade of all non-narration layers (-90 dB * t^1.5)', 'from_frame': 1482, 'to_frame': 1571})
+
 # ---- closing tag (W9, 2026-11-06, user: "closing music like EP02"): the same library file EP02 closes on, placed as EP02 places it
-# (starts at the last word's end, peak -10 dB, bed stays under). EP02: 1.4 s + 0.6 s fade over its A_fade; here the hold is live (3.0 s), so 2.2 s with a 0.5 s fade,
+# (starts at the last word's end, peak -10 dB, over the dying bed). EP02: 1.4 s + 0.6 s fade over its A_fade; here the hold is live (3.0 s), so 2.2 s with a 0.5 s fade,
 # finished by c1548 (sheet: nothing starts after c1556; the hard restart at c0 hears no ring). Last word ends c1481 (49.365 s).
 tagx = shape(load(LIB + 'sfx/stinger/stinger_pizz-tag-ending_01.wav'), peak=-10, length=2.2, fade_out=0.5)
 put(tagx, 1482, 0, 'closing pizz tag stinger_pizz-tag-ending_01 (EP02 close) from c1482')
