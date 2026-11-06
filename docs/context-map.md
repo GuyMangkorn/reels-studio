@@ -45,7 +45,7 @@ Episode-specific files are under [Episodes](#episodes); shared topics come first
 - Docs: [kit README, outfit swap and props](../src/painted/kit/README.md)
 - Code: [kit/cast.ts](../src/painted/kit/cast.ts) (`Outfit`, `Prop`, `drawTorch`, `drawUmbrella`); episode props such as [zcpaint/accents.ts](../src/painted/zcpaint/accents.ts); legacy SVG props [assets/Props.tsx](../src/assets/Props.tsx), [assets/props/](../src/assets/props/)
 - Tests: [zcpaint-costume](../tests/zcpaint-costume.test.ts)
-- Kit library: [wardrobe.ts](../src/painted/kit/wardrobe.ts), [gear.ts](../src/painted/kit/gear.ts), [props.ts](../src/painted/kit/props.ts), [wardrobe.test.ts](../tests/wardrobe.test.ts), [back-view.test.ts](../tests/back-view.test.ts) (back view, hood-up, `tintHoodie` coral)
+- Kit library: [wardrobe.ts](../src/painted/kit/wardrobe.ts), [gear.ts](../src/painted/kit/gear.ts), [props.ts](../src/painted/kit/props.ts), [groceries.ts](../src/painted/kit/groceries.ts) (`paintPineapple`, `paintCoinPurse`, `paintCoins`, `paintBasket`; EDU-EP04), [wardrobe.test.ts](../tests/wardrobe.test.ts), [back-view.test.ts](../tests/back-view.test.ts) (back view, hood-up, `tintHoodie` coral)
 
 ## Motions
 
