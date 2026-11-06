@@ -1,6 +1,7 @@
 import type {Arm, CastDef, FigPose} from '../kit/cast';
-import {shoulderPoint} from '../kit/cast';
-import type {Pt} from '../kit/painter';
+import {BONE, ikElbow, shoulderPoint} from '../kit/cast';
+import {ell, inkLine, solid} from '../kit/draw';
+import {mixColor, type Painter, type Pt} from '../kit/painter';
 import {poseBody, type AnyPoseId} from '../kit/poses';
 import type {View} from '../kit/poses';
 
@@ -68,4 +69,24 @@ export const namedPose = (name: NamedPose, L: number, def: CastDef, g: Pt, u: nu
     return {to: px(s.to), via: px(s.via), ...(s.behind ? {behind: s.behind} : {})};
   };
   return {...body, rArm: arm('r', r), lArm: arm('l', l), rHold: undefined, lHold: undefined};
+};
+
+/**
+ * FR09 `brace-heave` with the right arm on a given wrist (the dew drop): the right arm keeps `wrist` (px), the left hand is a separate clamp
+ * at 0.6 of the way from the right elbow to the right wrist (the two-bone elbow the rig solves, out = -1). Returns the arms to spread over
+ * the named pose (`fig`) and the clamp point (px) where the shot draws the left mitten over the forearm (`paintClamp`).
+ */
+export const braceClamp = (L: number, def: CastDef, g: Pt, u: number, wrist: Pt): {rArm: Arm; lArm: Arm; clamp: Pt} => {
+  const np = namedPose('brace-heave', L, def, g, u, 'right'), view = {view: 'right' as const, ...poseBody(BASE_OF['brace-heave'], 'right'), ...np};
+  const sh = shoulderPoint(def, g, u, view, 'r'), Lpx = BONE * (def.armScale ?? 1) * u, d = Math.hypot(wrist[0] - sh[0], wrist[1] - sh[1]), m = 2 * Lpx - 0.5;
+  const T: Pt = d <= m ? wrist : [sh[0] + ((wrist[0] - sh[0]) * m) / d, sh[1] + ((wrist[1] - sh[1]) * m) / d]; // the rig clamps the reach the same way
+  const el = ikElbow(sh, T, Lpx, -1), clamp: Pt = [el[0] + (T[0] - el[0]) * 0.6, el[1] + (T[1] - el[1]) * 0.6];
+  return {rArm: {to: wrist, out: -1}, lArm: {to: clamp, out: -1}, clamp};
+};
+/** The left mitten of the clamp, drawn after the figure (front layer) over the top edge of the right forearm. */
+export const paintClamp = (p: Painter, at: Pt, u: number, skin: string) => {
+  const w = 0.056 * u, h = 0.05 * u;
+  solid(p, 6120, skin, ell(at[0], at[1] - 0.012 * u, w, h, 14), 3);
+  inkLine(p, 6121, ell(at[0], at[1] - 0.012 * u, w, h, 14), {weight: 0.9, color: mixColor(skin, '#7a4a30', 0.55), curve: 0.3});
+  inkLine(p, 6122, [[at[0] + 0.02 * u, at[1] - 0.05 * u], [at[0] + 0.03 * u, at[1] - 0.005 * u]], {weight: 0.9, color: mixColor(skin, '#7a4a30', 0.55), closed: false});
 };

@@ -3,7 +3,7 @@ import {mixColor, type Painter, type Pt} from '../kit/painter';
 import type {V3} from '../kit/space';
 import {camPoint, type YCam} from '../kit/ycam';
 import {B} from './balcony';
-import {paintBox, qx, qy, qz, wFill, wWash} from './world';
+import {paintBox, qx, qy, qz, wFill, wInk, wWash} from './world';
 
 // `new: SET-FACADE` + look-down view of SET-BALCONY (N3, W5.2; scene sheets S01-B01-SH02 and S01-B02-SH03). Balcony metres (see
 // balcony.ts): the building face is the plane z = FACE_Z, floors every SLAB_PITCH m below the rail (slab ledges stick out to z -SLAB_OUT),
@@ -20,6 +20,43 @@ export const speckAt = (k: number, t = 0): V3 => [0.2 + 0.2 * k + 0.1 * Math.sin
 /** Vertical vanishing point of the look-down view (a point far below the cap), px. */
 export const downVanish = (c: YCam): Pt | null => camPoint(c, [c.x, -5000, FACE_Z]);
 
+
+/**
+ * FR14 `new: SET-FACADE` art: an apartment block, not stairs. Each floor (slab top at `y`, outward = `out` along z) gets a window band
+ * (frames, glass catching the dawn sky, a few warm lit rooms and curtains) on the face plane and a balcony rail on the slab edge (top
+ * rail plus balusters, glass panel wash). `far` 0..1 fades the floor toward the haze. Dawn: cool shade on the wall, peach glass.
+ */
+const WIN_W = 1.5, WIN_PITCH = 2.4, WIN_X = 9;
+const floorArt = (p: Painter, c: YCam, seed: number, y: number, out: 1 | -1, far: number, o: {up?: boolean; zr?: number} = {}) => {
+  const z = FACE_Z, y0 = y + 0.75, y1 = y + SLAB_PITCH - 0.7, n = Math.round(WIN_X / WIN_PITCH);
+  const frame = mixColor('#e8dccb', '#8da2b6', far * 0.5), pier = mixColor('#a7b4c2', '#8da2b6', far * 0.4);
+  // wall band between slabs (stucco in cool shade), piers a shade darker between the windows
+  wFill(p, c, seed, mixColor('#bcc6d0', '#9fb0c2', far * 0.5), qz(z + 0.0005 * out, -WIN_X - 2, WIN_X + 2, y + 0.02, y + SLAB_PITCH - 0.27));
+  for (let k = -n; k <= n; k++) {
+    const cx = k * WIN_PITCH, x0 = cx - WIN_W / 2, x1 = cx + WIN_W / 2, zz = z + 0.002 * out, id = seed + 10 + (k + n) * 12;
+    wFill(p, c, id, frame, qz(zz, x0 - 0.1, x1 + 0.1, y0 - 0.1, y1 + 0.1));
+    const lit = (k * 7 + Math.round(-y)) % 5 === 0, curtain = (k * 3 + Math.round(-y * 2)) % 4 === 0;
+    wFill(p, c, id + 1, lit ? '#f6d48a' : mixColor('#d9a98a', '#8aa8c8', 0.45 + far * 0.2), qz(zz + 0.001 * out, x0, x1, y0, y1)); // glass: peach dawn at the sill, sky above
+    wWash(p, c, id + 2, lit ? '#fff1c0' : '#9fc0e0', lit ? 120 : 110, qz(zz + 0.002 * out, x0, x1, (y0 + y1) / 2, y1), 0.1, 0.1);
+    if (curtain) wFill(p, c, id + 3, '#e9dfd0', qz(zz + 0.003 * out, x0, cx - 0.05, y0, y1));
+    wFill(p, c, id + 4, frame, qz(zz + 0.004 * out, cx - 0.03, cx + 0.03, y0, y1)); // mullion
+    wFill(p, c, id + 5, frame, qz(zz + 0.004 * out, x0, x1, (y0 + y1) / 2 - 0.03, (y0 + y1) / 2 + 0.03)); // transom
+    wInk(p, c, id + 6, qz(zz + 0.005 * out, x0 - 0.1, x1 + 0.1, y0 - 0.1, y1 + 0.1), {color: pier, weight: 0.7});
+    void pier;
+  }
+  // balcony rail on the slab edge: panel wash, top rail, balusters every 0.35 m
+  const zr = o.zr ?? (o.up ? 1.4 : -SLAB_OUT), rx = 4.2, rt = y + 1.05;
+  wWash(p, c, seed + 300, '#cfe0e4', 90, qz(zr, -rx, rx, y + 0.1, rt), 0.05, 0.1);
+  for (let b = -12; b <= 12; b++) wFill(p, c, seed + 310 + b + 12, mixColor(B.railDark, '#8da2b6', far * 0.4), qz(zr + 0.001 * out, (b * rx) / 12 - 0.02, (b * rx) / 12 + 0.02, y + 0.1, rt));
+  wFill(p, c, seed + 340, mixColor(B.rail, '#c9d3dc', far * 0.4), qz(zr + 0.002 * out, -rx - 0.05, rx + 0.05, rt - 0.05, rt + 0.03));
+  wFill(p, c, seed + 341, mixColor(B.railDark, '#8da2b6', far * 0.4), qz(zr + 0.002 * out, -rx - 0.05, rx + 0.05, y + 0.08, y + 0.14));
+};
+/** Dawn light over the facade: a warm wash from the sun side (+x), strongest on the upper floors, and a pale sheen on the slab edges. */
+const dawnLight = (p: Painter, c: YCam, seed: number, y0: number, y1: number) => {
+  wWash(p, c, seed, '#ffd9a8', 60, qz(FACE_Z + 0.008, -3, 40, y0, y1), 0.3, 0.1);
+  wWash(p, c, seed + 1, '#f6b4a0', 40, qz(FACE_Z + 0.009, 3, 40, y0, y1), 0.3, 0.1);
+};
+
 /** Slab ledges and windows of the building face below (look down): cool shade, ledges every 2.9 m. */
 export const paintFacadeDown = (p: Painter, c: YCam, t: number) => {
   hardFill(p, 14999, B.tile, [[-60, -60], [1140, -60], [1140, 1980], [-60, 1980]]); // the balcony floor behind the cap
@@ -28,12 +65,15 @@ export const paintFacadeDown = (p: Painter, c: YCam, t: number) => {
   wWash(p, c, 15001, '#f6e9b8', 120, qy(LAWN_Y + 0.01, -60, 60, -30, FACE_Z - 0.2), 0.2, 0.1);
   wFill(p, c, 15002, '#a9b9c9', qz(FACE_Z, -40, 40, LAWN_Y, 0));
   wWash(p, c, 15003, '#6f8fb0', 90, qz(FACE_Z + 0.001, -40, 40, LAWN_Y, 0), 0.2, 0.1);
-  for (let i = 1; i <= 9; i++) {
-    const y = -i * SLAB_PITCH, far = i / 9;
-    const col = mixColor('#c9cfd4', '#9aa8b8', far * 0.5);
-    paintBox(p, c, 15100 + i * 4, {x0: -4, x1: 4, y0: y - 0.25, y1: y, z0: -SLAB_OUT, z1: FACE_Z}, col, {top: 0.12, front: -0.08, right: 0.04}, {ink: true});
-    hardFill(p, 15300 + i, mixColor('#bfd0dd', '#8da2b6', far * 0.6), (() => { const q = [[-3, y + SLAB_PITCH - 0.5, FACE_Z + 0.001], [-0.8, y + SLAB_PITCH - 0.5, FACE_Z + 0.001], [-0.8, y + 0.6, FACE_Z + 0.001], [-3, y + 0.6, FACE_Z + 0.001]].map((v) => camPoint(c, v as V3)); return q.every(Boolean) ? (q as Pt[]) : []; })());
+  for (let i = 9; i >= 1; i--) { // far to near
+    const y = -i * SLAB_PITCH, far = i / 9, so = i % 2 === 0 ? SLAB_OUT + 1.1 : SLAB_OUT; // even floors jut 1.1 m further: their rails peek past the slab above
+    const col = mixColor('#e3d9c8', '#b7b6b4', far * 0.5); // balcony floor seen from above: warm tile, not grey stairs
+    paintBox(p, c, 15100 + i * 4, {x0: -4, x1: 4, y0: y - 0.25, y1: y, z0: -so, z1: FACE_Z}, col, {top: -0.12, front: -0.25, right: 0.04}, {ink: true});
+    for (let j = -4; j <= 4; j++) wInk(p, c, 15140 + i * 12 + j + 4, [[j * 0.9, y + 0.002, FACE_Z], [j * 0.9, y + 0.002, -so]], {color: mixColor('#c4b9a6', '#9aa8b8', far * 0.5), closed: false, weight: 0.6});
+    if (i % 2 === 1) paintBox(p, c, 15260 + i * 8, {x0: 1.2, x1: 3.4, y0: y, y1: y + 0.4, z0: -0.7, z1: FACE_Z - 0.05}, mixColor('#e9e4da', '#9aa8b8', far * 0.5), {top: -0.1}, {ink: true}), wFill(p, c, 15264 + i * 8, mixColor('#6f9a45', '#8da2b6', far * 0.5), qy(y + 0.4, 1.3, 3.3, -0.65, FACE_Z - 0.1));
+    floorArt(p, c, 20000 + i * 400, y, -1, far, {zr: -so});
   }
+  dawnLight(p, c, 15290, LAWN_Y, 0);
   void t; void qx;
 };
 /** The rail cap and the mug on it for the look-down view (the right forearm is the rig's). */
@@ -46,7 +86,9 @@ export const paintFacadeUp = (p: Painter, c: YCam, k: number) => {
   wFill(p, c, 15600, '#a9c4dc', qy(60, -80, 80, -40, 40));
   wFill(p, c, 15601, '#b7c4d0', qz(FACE_Z, -12, 12, 0, 40));
   wWash(p, c, 15602, '#6f8fb0', 90, qz(FACE_Z + 0.001, -12, 12, 0, 40), 0.2, 0.1);
-  for (let i = 0; i <= 9; i++) paintBox(p, c, 15610 + i * 4, {x0: -6, x1: 6, y0: 27 - i * SLAB_PITCH - 0.25, y1: 27 - i * SLAB_PITCH, z0: -0.05, z1: 1.4}, '#c9cfd4', {top: 0.12, front: -0.08, right: 0.04}, {ink: true});
+  for (let i = 9; i >= 0; i--) floorArt(p, c, 30000 + i * 400, 27 - i * SLAB_PITCH, 1, i / 12, {up: true});
+  dawnLight(p, c, 15605, -2, 30);
+  for (let i = 0; i <= 9; i++) paintBox(p, c, 15610 + i * 4, {x0: -6, x1: 6, y0: 27 - i * SLAB_PITCH - 0.25, y1: 27 - i * SLAB_PITCH, z0: -0.05, z1: 1.4}, '#e0d8cb', {top: 0.12, front: -0.2, right: 0.04}, {ink: true});
   const dot = camPoint(c, [0.3, 27.15, 0.5]);
   if (dot) washAt(p, 15700, '#5f8a34', 255, ell(dot[0], dot[1], 6, 4, 8), 0, 0);
   void k;

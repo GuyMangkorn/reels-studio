@@ -4,7 +4,7 @@ import type {V3} from '../kit/space';
 import {camOf, MACRO_CAMS} from './cams';
 import {edgeShade, paintGarden, shadeEdgeAt} from './garden';
 import {tinyItem} from './cast';
-import {namedPose, NAMED_POSES, VIEW_OF} from './poses';
+import {braceClamp, namedPose, NAMED_POSES, paintClamp, VIEW_OF} from './poses';
 import {TINY} from './cast';
 import {paintPuff} from './scenes';
 import {antItem, antWalk, ANT_SPEED} from './ant';
@@ -46,14 +46,23 @@ const dropShot = (shot: 'S01-B03-SH02' | 'S01-B03-SH03' | 'S01-B03-SH04', len: n
     {at: D1_CONTACT, bias: -0.6, draw: (q) => paintDropState(q, g, u, st, {layer: 'front', t})},
   ];
   // staging check: her shoulder must stay within arm reach (0.55) of the wrist, so she stands back as the neck stretches
-  const wx = hand.wrist ? D1_CONTACT[0] + (hand.wrist[0] - g[0]) / u : tiny[0] + 0.5, tx = Math.min(tiny[0], wx - 0.55);
-  if (shot !== 'S01-B03-SH03') items.push(tinyItem({at: [tx, 0, tiny[2]], view: 'right', pose: 'P16', face: shot === 'S01-B03-SH04' && st.snapF !== undefined ? 'shock' : 'angry', t,
-    fig: {rArm: hand.wrist ? {to: hand.hand ?? hand.wrist, out: -1} : undefined, lean}}));
+  const wx = hand.wrist ? D1_CONTACT[0] + (hand.wrist[0] - g[0]) / u : tiny[0] + 0.5, tx = Math.min(tiny[0], wx - (shot === 'S01-B03-SH04' ? 0.36 : 0.55)); // SH04: lean away + feet apart pull the shoulder back, so she stands nearer to keep the wrist in reach
+  if (shot !== 'S01-B03-SH03') {
+    const face = shot === 'S01-B03-SH04' && st.snapF !== undefined ? 'shock' : 'angry', at: V3 = [tx, 0, tiny[2]];
+    if (shot === 'S01-B03-SH04' && hand.wrist) {
+      // FR09: brace-heave body (feet apart, lean away = negative in view right), right arm on the drop wrist, left hand clamped on the forearm
+      const gt = camPoint(cam, at), ut = camUnit(cam, at);
+      if (gt) {
+        const bc = braceClamp(frame, TINY, gt, ut, hand.hand ?? hand.wrist);
+        items.push(tinyItem({at, view: 'right', named: {name: 'brace-heave', L: frame}, face, t, fig: {rArm: bc.rArm, lArm: bc.lArm}, held: (q, _a, uu) => paintClamp(q, bc.clamp, uu, TINY.head.skin)}));
+      }
+    } else items.push(tinyItem({at, view: 'right', pose: 'P16', face, t, fig: {rArm: hand.wrist ? {to: hand.hand ?? hand.wrist, out: -1} : undefined, lean}}));
+  }
   paintGarden(p, cam, {t, mode: 'sun', drop: false, sun: [150, 300], shadeEdge: -0.5, items});
 };
-export const paintDROP2 = dropShot('S01-B03-SH02', 86, [1.3, 0, -0.75], 0.2);
+export const paintDROP2 = dropShot('S01-B03-SH02', 86, [1.3, 0, -0.75], -0.3);
 export const paintDROP3 = dropShot('S01-B03-SH03', 118, [1.3, 0, -0.75], 0.2);
-export const paintDROP4 = dropShot('S01-B03-SH04', 132, [0.76, 0, -0.72], 0.2);
+export const paintDROP4 = dropShot('S01-B03-SH04', 132, [0.76, 0, -0.72], -0.3);
 
 /** G3: N6 ant-walk, 24 f at the S01-B05-SH01 speed (0.07 sm/f) on the shot camera: feet planted, leaf upright, gait clock by distance. */
 export const paintANTW = (p: Painter, frame: number) => {
