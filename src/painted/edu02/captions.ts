@@ -12,7 +12,7 @@ export const EDU2_CAPTION_BAND = '1176:1344';
  * Caption shade on bright grounds (user, 5 Nov 2026): a text edge, not a dark band. `outline` preset with a heavier warm-black stroke and a soft
  * dark halo; stroke width is the CSS stroke centred on the glyph edge (paint-order stroke fill), so half of it shows.
  */
-export const EDU2_CAPTION_SHADE = {strokeWidth: 14, strokeColor: '#2b1a12', textShadow: '0 0 16px rgba(34,18,10,0.92), 0 0 5px rgba(34,18,10,0.9), 0 4px 0 #2b1a12'} as const;
+export {CAPTION_OUTLINE as EDU2_CAPTION_SHADE} from '../../scenes/media';
 
 export const EDU2_CUES: Edu2Cue[] = [
   {from: 8, to: 59, text: 'หัวหอมไม่ได้ทำให้คุณร้องไห้…'},

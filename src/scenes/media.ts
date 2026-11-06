@@ -168,9 +168,14 @@ export function entryTransitionStyle(transition: SceneTransition, frame: number)
 export const clipVisibleAt = (clip: Pick<MediaClip, 'startSec' | 'endSec'>, frame: number, fps: number) =>
   frame >= Math.round((clip.startSec ?? 0) * fps) && (clip.endSec === undefined || frame < Math.round(clip.endSec * fps));
 
-/** The `outline` preset's CSS stroke and shadow; unset fields give the original look (delivered episodes render unchanged, tests/media.test.ts). */
+/**
+ * Channel caption look (user, 6 Nov 2026: every deliverable, from the education clips EDU-EP02/EP03): white text with a heavy warm-black
+ * stroke and a soft dark halo, no backdrop band. Stroke width is the CSS stroke centred on the glyph edge (paint-order stroke fill), so half shows.
+ */
+export const CAPTION_OUTLINE = {strokeWidth: 14, strokeColor: '#2b1a12', textShadow: '0 0 16px rgba(34,18,10,0.92), 0 0 5px rgba(34,18,10,0.9), 0 4px 0 #2b1a12'} as const;
+/** The `outline` preset's CSS stroke and shadow; unset fields take `CAPTION_OUTLINE` (tests/media.test.ts). */
 export const outlineLook = (style?: CaptionStyle) => {
-  const {strokeWidth = 7, strokeColor = '#3d3c53', textShadow = `0 4px 0 ${strokeColor}`} = style ?? {};
+  const {strokeWidth = CAPTION_OUTLINE.strokeWidth, strokeColor = CAPTION_OUTLINE.strokeColor, textShadow = CAPTION_OUTLINE.textShadow} = style ?? {};
   return {WebkitTextStroke: `${strokeWidth}px ${strokeColor}`, paintOrder: 'stroke fill', textShadow};
 };
 export const defaultCaptionStyle: Required<Omit<CaptionStyle, 'color' | 'bottomEdgeY' | 'centerY' | 'fadeOutWithLoop' | 'strokeWidth' | 'strokeColor' | 'textShadow'>> & {color: string; bottomEdgeY?: number; centerY?: number} = {preset: 'outline', position: 'bottom', color: '#fff', scale: 1};

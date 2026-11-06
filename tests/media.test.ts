@@ -72,9 +72,9 @@ test('loopBlendFrames must be a frame count shorter than the last scene', () => 
   assert.throws(() => collectEpisodes([video(-1)]), /loopBlendFrames/);
 });
 
-test('outline look: unset fields keep the original stroke and shadow', () => {
-  const original = {WebkitTextStroke: '7px #3d3c53', paintOrder: 'stroke fill', textShadow: '0 4px 0 #3d3c53'};
-  assert.deepEqual(outlineLook(), original);
-  assert.deepEqual(outlineLook({preset: 'outline', position: 'bottom', bottomEdgeY: 1248}), original);
+test('outline look: unset fields take the channel caption outline', () => {
+  const channel = {WebkitTextStroke: '14px #2b1a12', paintOrder: 'stroke fill', textShadow: '0 0 16px rgba(34,18,10,0.92), 0 0 5px rgba(34,18,10,0.9), 0 4px 0 #2b1a12'};
+  assert.deepEqual(outlineLook(), channel);
+  assert.deepEqual(outlineLook({preset: 'outline', position: 'bottom', bottomEdgeY: 1248}), channel);
   assert.deepEqual(outlineLook({strokeWidth: 8, strokeColor: '#101018', textShadow: '0 0 8px #000'}), {WebkitTextStroke: '8px #101018', paintOrder: 'stroke fill', textShadow: '0 0 8px #000'});
 });
