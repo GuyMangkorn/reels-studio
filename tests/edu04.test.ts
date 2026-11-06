@@ -8,8 +8,8 @@ import videos from '../src/videos/edu-ep04';
 // EDU-EP04-SHORT W5.2: scene boundaries = review-rows.json start/end, one registry plate per shot, G1 built.
 const rows = JSON.parse(readFileSync('scripts/edu-series/ep04/review-rows.json', 'utf8')).shots as {id: string; start: number; end: number}[];
 
-test('EDU-EP04-SHORT shots match the review-rows boundaries (1657 f)', () => {
-  assert.equal(EDU4_TOTAL, 1657);
+test('EDU-EP04-SHORT shots match the review-rows boundaries (1662 f)', () => {
+  assert.equal(EDU4_TOTAL, 1662);
   assert.equal(EDU4_SHOTS.length, rows.length);
   let at = 0;
   EDU4_SHOTS.forEach(([id, n], i) => { assert.equal(id, rows[i].id); assert.equal(at, rows[i].start); assert.equal(at + n, rows[i].end); at += n; });

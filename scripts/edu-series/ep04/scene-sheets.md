@@ -1,9 +1,9 @@
-# Timed scene sheets and index — EDU-EP04-SHORT (EDU-EP04-SHEETS-R1.3)
+# Timed scene sheets and index — EDU-EP04-SHORT (EDU-EP04-SHEETS-R1.4)
 
-- **Deliverable:** `EDU-EP04-SHORT` · **Revision:** EDU-EP04-SHEETS-R1.2 (Film W5.1, 2026-11-05; R1.1 = G2 `PLAN` review, R1.2 = G3 review, see [Change log](#change-log)) · **Status:** `ready-for-dev` · **Timing:** checked-with-audio (narrator segment spans measured by Film on the take-3 file; line mapping by order, see [Voice-lock edit](#voice-lock-edit-request-vl-edit-01-editor)). Picture, runtime, sound and user approval of this revision: none yet. Review page: pending (coordinator rebuilds from [review-rows.json](review-rows.json)).
+- **Deliverable:** `EDU-EP04-SHORT` · **Revision:** EDU-EP04-SHEETS-R1.4 (Film W5.1, 2026-11-05; R1.1 = G2 `PLAN` review, R1.2 = G3 review, R1.3 = G4 review, R1.4 = voice-lock retime of L15–L20 ([VL-RT-01](#voice-lock-retime-vl-rt-01-r14)), see [Change log](#change-log)) · **Status:** `ready-for-dev` · **Timing:** f0–f1153 checked-with-audio (take-3 segment spans; line mapping by order); from L15 p2 on **audio-measured** on the assembled `public/narration/EDU-EP04-SHORT.wav` (review-mix.py placements + `silencedetect -35 dB d 0.1`, Film 2026-11-06), see [VL-RT-01](#voice-lock-retime-vl-rt-01-r14). Picture, runtime, sound and user approval of this revision: none yet. Review page: pending (coordinator rebuilds from [review-rows.json](review-rows.json)).
 - **Inputs (by revision):** script EDU-EP04-SCRIPT-R1.3 ([script.md](script.md), user-approved); fact-check R1.3 re-check PASS ([fact-check.md](fact-check.md)); brief EDU-BRIEF-R1.1 ([brief.md](brief.md), VD01–VD17, set plan `SET-CHECKOUT`, `PLAN`, sound direction, technical handoff); storyboard SS-R1 ([storyboard.md](storyboard.md); user 20/20 ok) incl. W3 check **FX-L20-01** and the **W4.x B02 retime**; look frames LF01–LF04 **v2** (user-approved, [look-frames.md](look-frames.md), source `src/painted/edu04/`); voices ([voice-measure.md](voice-measure.md)): narrator Kore R1.3 take 3 `projects/EDU/narration/ep04/2026-11-05_ep04-r13-kore-take3-regap028.wav`, MAN Algenib `projects/EDU/narration/ep04-r13-man-l03-algenib.wav`, `…-man-l05-algenib-take2.wav`, `…-man-l18a-algenib.wav`, CSH Charon `projects/EDU/narration/ep04-r13-csh-l04-charon.wav` (all user-passed 2026-11-05).
 - **Content changes vs the passed storyboard:** none to script text, shot IDs, order, lines or approved looks. One review-row text change: the S01-B06-SH03 hold is "ราว 2 วินาที" (was 2.5; coordinator's ~55 s target). Staging corrections forced by the approved LF01 v2 set-up are listed in [Staging deviations](#staging-deviations-from-the-brief-film-decisions).
-- **Target:** branch `claude/edu-ep-continuation-d7897d` · 30 fps · `durationFrames` **1657** · 1080×1920 portrait · composition offset 0 (composition not registered yet; Editor).
+- **Target:** branch `claude/edu-ep-continuation-d7897d` · 30 fps · `durationFrames` **1662** (R1.4; was 1657) · 1080×1920 portrait · composition offset 0 (composition not registered yet; Editor).
 - **Baseline (link, not copied):** world space `CHECKOUT` (metres; origin floor at lane-2 paying point; +x right from the hero vantage, +y up, +z toward the tills/hero camera; customers face +z) and the camera-line form `cam: target, yaw a→b, r, eye, f, hy` per [brief set plan](brief.md#set-plan--set-checkout-world-metres); kit `ycam.ts` math (picture x = 540 + cx + f·right/depth, y = hy − f·up/depth; `orbitYCam` puts the camera at target + r·(sin yaw, ·, cos yaw)). Positive yaw puts the camera on the +x side. `PLAN` is orthographic 130 px/m, screen x = 540 + 130·x, y = 300 − 130·z (brief). Screen-space layers: px, origin top-left, y down. Shot-local frame `L` = global frame − shot start. Ranges are half-open `[start, end)`.
 - **Frame rule:** frame = round(s × 30). Narrator-led shots start 4 f before their line's onset (picture leads voice). Exceptions: f0–f360 keep the W4.x B02 retime frames (voice-lock window B01–B02 + L06, 0–12.00 s), and S01-B06-SH03 starts on L18a's end + 4 f (cut on MAN's step).
 - **Projection check:** every world-space camera below was run through the kit `ycam` formula (Film script mirroring `src/painted/kit/ycam.ts`; log `out/logs/ep04-w51-projection.txt`, not committed) at the brief's baseline (MAN 1.80 m, effective head 0.37 m as measured on LF01 v2). Values marked `meas` in the shot blocks come from that run; everything else is `est`.
@@ -11,11 +11,11 @@
 
 ## Totals
 
-- **20 shots, 1657 frames = 55.23 s** at 30 fps. Limit 60 s: **pass** (4.77 s spare). Target ~55 s: +0.23 s.
+- **20 shots, 1662 frames = 55.40 s** at 30 fps (R1.4; R1–R1.3: 1657 f = 55.23 s). Limit 60 s: **pass** (4.60 s spare). Target ~55 s: +0.40 s.
 - Build-up: narrator speech 38.62 s (take 3) + MAN/CSH speech 6.23 s (L03 1.47, L04 1.72, L05 0.90, L18a 2.14) + pauses after VL-EDIT-01 + silent gag 1.20 s + end hold **2.00 s** (was 2.5; applied here).
 - **If VL-EDIT-01 is not applied** (take-3 pauses left at 0.28 s): +2.41 s → 1729 f = **57.63 s**, still ≤ 60 s; every frame after f359 shifts and this sheet would need a retime pass. So VL-EDIT-01 is the planned lock, not an option.
 - Shortest shots: S01-B02-SH03 and S01-B03-SH02, 36 f each; none under 24 f.
-- Ending: `video.ending: 'A_fade'`, `endHoldSec: 0` (live hold), `endFadeSec: 1.0` (brief: VD15). Silence after the last speech: 60 f (f1597–f1657), fade over the last 30 f.
+- Ending: `video.ending: 'A_fade'`, `endHoldSec: 0` (live hold), `endFadeSec: 1.0` (brief: VD15). Silence after the last speech: 60 f (f1602–f1662), fade over the last 30 f.
 
 ## Voice-lock edit request VL-EDIT-01 (Editor)
 
@@ -23,12 +23,12 @@ A pause edit of the locked takes, not a script change and not a new read. Script
 
 1. **Narrator piece A** (L01, L02): take-3 file 0.000–3.900 s **unchanged** (gap L01→L02 stays 0.28 s). Place file 0.000 at global 0.067 s (2 f), so L01 = f7–f47 and L02 = f56–f115.
 2. **Narrator piece B** (L06–L18): take-3 file from 3.900 s to the end of L18 (44.038 s). Keep L06 and the L06→L07 gap (0.28 s) as is. From L07 on: every **in-line** pause (13, inside L09, L10 ×2, L10a, L14, L15, L16 ×3, L17, L18 ×2, L20) → **0.15 s**; every **between-line** pause (L07→L08 … L17→L18, 12) → **0.22 s**. Natural sub-0.18 s gaps inside a phrase (at file 5.04, 8.35, 22.22, 30.20 s) stay. Place so L06 onset (file 4.039) lands at global f317 (10.567 s).
-3. **Narrator piece C** (L20): file 44.318–46.742 s with its in-line pause at 0.15 s; onset at global f1528 (50.930 s).
-4. **Dialogue** (leading silence trimmed at the cut; gains from [voice-measure](voice-measure.md#r13-man-and-csh-lines-w4x-film-casting-man-algenib-csh-charon)): L03 onset f124 (+4 dB), L04 onset f175 (+3 dB), L05 take 2 onset f275 (0 dB), L18a onset f1452 (+3 dB).
+3. **Narrator piece C** (L20): file 44.318–46.742 s with its in-line pause at 0.15 s; onset at global ~~f1528~~ **f1533** (51.100 s; R1.4 VL-RT-01).
+4. **Dialogue** (leading silence trimmed at the cut; gains from [voice-measure](voice-measure.md#r13-man-and-csh-lines-w4x-film-casting-man-algenib-csh-charon)): L03 onset f124 (+4 dB), L04 onset f175 (+3 dB), L05 take 2 onset f275 (0 dB), L18a onset ~~f1452~~ **f1457** (+3 dB; R1.4 VL-RT-01).
 5. Measure the result with Whisper words + `silencedetect -35 dB d 0.12` into a committed measure file `scripts/edu-series/ep04/narration-lock.json` (timing status `audio-measured`), and archive the assembled narration in the store. **Tolerance:** every onset in the table below within ±2 f; if any onset moves more, return the measure file to Film for a retime of the affected shots (do not move picture to fit).
 6. Known gap: Film's segment-to-line mapping (30 segments → 17 NAR lines) is by order and matches the 13 in-line / 16 between-line counts, but is not checked by ear or by Whisper (`scripts/transcribe.py` failed here: faster-whisper `av.open(..., metadata_errors=...)` TypeError in the shared `.venv-whisper`; Editor's environment may differ).
 
-**Planned narration placement (global frames, after VL-EDIT-01).** Phrase spans are split at the in-line pauses.
+**Narration placement (global frames, after VL-EDIT-01).** Phrase spans are split at the in-line pauses. L01–L15 p1: planned (R1), matched by the assembled file within ±1 f. L15 p2–L20: **R1.4, measured** on the assembled file (L15–L18) or set by VL-RT-01 (L18a, L20 = R1 frames + 5).
 
 | Line | Speaker | Global frames | Phrase onsets |
 | --- | --- | --- | --- |
@@ -47,12 +47,39 @@ A pause edit of the locked takes, not a script change and not a new read. Script
 | L12 | NAR | 804–884 | "ตอนรอ…" ≈ 836 (natural gap) |
 | L13 | NAR | 891–952 | |
 | L14 | NAR | 958–1021 | 958, 991 |
-| L15 | NAR | 1028–1146 | 1028, 1071 |
-| L16 | NAR | 1153–1254 | 1153, 1169, 1201, 1229 |
-| L17 | NAR | 1260–1339 | 1260, 1294 |
-| L18 | NAR | 1345–1444 | 1345, 1391, 1420 |
-| L18a | MAN | 1452–1516 | |
-| L20 | NAR | 1528–1597 | 1528, 1562 |
+| L15 | NAR | 1028–1151 (R1: 1146) | 1028, **1075** (R1: 1071) |
+| L16 | NAR | **1157–1258** (R1: 1153–1254) | 1157, 1173, 1205, 1233 |
+| L17 | NAR | **1265–1343** (R1: 1260–1339) | 1265, 1299 |
+| L18 | NAR | **1350–1449** (R1: 1345–1444) | 1350, 1396, 1424 |
+| L18a | MAN | **1457–1521** (R1: 1452–1516; Editor moves the clip +5 f) | |
+| L20 | NAR | **1533–1602** (R1: 1528–1597; Editor moves piece C +5 f) | 1533, 1567 |
+
+<a id="voice-lock-retime-vl-rt-01-r14"></a>
+### Voice-lock retime VL-RT-01 (R1.4, Film, 2026-11-06)
+
+**Finding.** The assembled narration (`public/narration/EDU-EP04-SHORT.wav`, `review-mix.py`, VL-EDIT-01 applied, narrator at 1.00x) is correct to VL-EDIT-01: 24 piece-B pauses, 12 in-line at 0.15 s and 12 between-line at 0.22 s. The R1 table above was wrong at L15: Film's R1 arithmetic placed L15 p2 directly after p1 (1071 = 1028 + 1.415 s) and dropped L15's 0.15 s in-line pause. Every narrator frame from L15 p2 to L18 is therefore 4–5 f later than R1 (measured: L15 p2 1074.9, L16 1157.2, L17 1264.6, L18 1349.6, L18 end 1448.5; silencedetect on the file agrees within 0.4 f). L01–L15 p1 sit within ±1 f of R1. Effects in the R1.3 cut: L15 runs 1.6 f past the B05-SH01 cut, L16 2 f past B05-SH02, L17 2 f past B06-SH01; L18 now ends 2.5 f after the ding (L 105 = f1446) and only 3.5 f before L18a (f1452), so ding, L18 tail and "…สบายจัง" crowd together.
+
+**Ruling: (c) picture follows the narration (the VL-EDIT-01 step 5 rule), plus one dialogue/piece-C slide of +5 f so B06 keeps its designed spacing.** Total grows 5 f to 1662 f = 55.40 s.
+
+- Rejected (b), audio trimmed to the sheet: the 4.5 f has to come out before L16's onset, i.e. L15's in-line pause 0.15 → 0 s (removes the "…" after "ซ้ำเติม") or that pause plus the L15→L16 gap cut to ~0.08 / ~0.14 s, below the VL-EDIT-01 floor across a beat change (memory → stamp). It also leaves the R1 table error in place.
+- Rejected (a) alone (only B05/B06-SH01 cuts move, L18a stays at f1452): B06-SH02 would start at f1346 with L18a fixed, so the ding (L 105 = f1451) lands 1 f before MAN's line; re-keying SH02's tail and shrinking it by 5 f touches an approved shot's acting.
+- Chosen: every shot after L15 slides with its line. Plates are functions of shot-local L, so only B05-SH01 (+4 f) and B05-SH02 (+1 f) change length; B06-SH01/SH02/SH03 keep their lengths and every shot-local key in them lands on the same word as R1 designed. No change to script, take, IDs, order, reveals, looks or the 2.0 s end hold.
+
+**Frame table R1.4 (changed rows bold; all other shots unchanged).**
+
+| Shot | R1.3 [start, end) (len) | R1.4 [start, end) (len) | Change |
+| --- | --- | --- | --- |
+| S01-B01-SH01 … S01-B04-SH04 (15 shots) | 0–1024 | 0–1024 | none |
+| **S01-B05-SH01** | 1024–1149 (125) | 1024–1153 (129) | end +4 → length +4 |
+| **S01-B05-SH02** | 1149–1256 (107) | 1153–1261 (108) | start +4, end +5 → length +1 |
+| **S01-B06-SH01** | 1256–1341 (85) | 1261–1346 (85) | slide +5 |
+| **S01-B06-SH02** | 1341–1520 (179) | 1346–1525 (179) | slide +5 |
+| **S01-B06-SH03** | 1520–1657 (137) | 1525–1662 (137) | slide +5 |
+| Total | 1657 f = 55.23 s | **1662 f = 55.40 s** | +5 f |
+
+Cut rule check: B05-SH02 start = L16 onset 1157 − 4; B06-SH01 = L17 1265 − 4; B06-SH02 = L18 1350 − 4; B06-SH03 = L18a end 1521 + 4. Line ends before each cut: L15 1151 < 1153, L16 1258 < 1261, L17 1343 < 1346.
+
+**Shot-local word check (R1.4 vs R1 design).** B05-SH01: L15 p1 L 4–42, p2 L 51–127 (R1 design L 47–122; the plate's L 62 angry key stays as built: the user passed it at this audio in the Draft, and "≈ หัวร้อน" was `est`). B05-SH02: L16 phrases L 4, 20, 52, 80, end L 105 = R1 design (stamp L 20 on "ฉันซวยตลอด", crack L 91). B06-SH01: L17 L 4–82, p2 L 38 = design. B06-SH02: L18 L 4–103, phrases L 4, 50, 78; ding L 105 (f1451); L18a L 111–175 = design. B06-SH03: L20 L 8–77, p2 L 42, hold L 77–137, fade L 107–137 (f1632–f1662) = design.
 
 ## Staging deviations from the brief (Film decisions)
 
@@ -74,8 +101,8 @@ Library checked 2026-11-05, `~/ReelsStore/library/sound/INDEX.md` (186 lines); e
 | Layer | Source | Global use |
 | --- | --- | --- |
 | Muzak main | **NEEDS-GEN MUZ-A**: bright bossa-lounge supermarket muzak, electric piano, nylon guitar, soft brushes, 110 bpm, 60 s loopable, instrumental | f0–f311, low (−18 dB re narration), ducked under every line |
-| Muzak detuned | **NEEDS-GEN MUZ-B**: same tune and seed family, slight pitch wobble/tape detune | f745–f1024; low-passed (~800 Hz) under B05 f1024–f1256 |
-| Muzak calm + end chord | **NEEDS-GEN MUZ-C**: same tune, slower feel (~90 bpm), warm, ends on a held resolving chord; layer `stinger_outro-resolve_01` from f1520 only if MUZ-C has no clean final chord | f1256–f1657, chord under L20, rings out, fades with the picture to silence at f1657 |
+| Muzak detuned | **NEEDS-GEN MUZ-B**: same tune and seed family, slight pitch wobble/tape detune | f745–f1024; low-passed (~800 Hz) under B05 f1024–f1261 (R1.4) |
+| Muzak calm + end chord | **NEEDS-GEN MUZ-C**: same tune, slower feel (~90 bpm), warm, ends on a held resolving chord; layer `stinger_outro-resolve_01` from f1525 (R1.4) only if MUZ-C has no clean final chord | f1261–f1662 (R1.4), chord under L20, rings out, fades with the picture to silence at f1662 |
 | Room tone | **NEEDS-GEN RT-STORE**: 12 s loop, fluorescent hum, distant trolley rattle, soft murmur, rare far scanner beeps; `room_shop-fridge-hum_01` as a low partial layer | all store shots; **off f311–f745** (freeze + plan); low-passed in B05 |
 | Model bed | `bed_curious-explainer-light_01` (95 bpm, partial fit; fallback `bed_pool-curious-sparse_01`) | f345–f745 only |
 | Plucks | `pluck_soft-note-01_01` … `06_01` | lanes appear (B03-SH02) |
@@ -86,7 +113,7 @@ Library checked 2026-11-05, `~/ReelsStore/library/sound/INDEX.md` (186 lines); e
 | Stamp + crack | **NEEDS-GEN SFX-STAMP** (rubber-stamp thunk) + **SFX-CRACK** (small ceramic crack) | B05-SH02 |
 | Library one-shots | `foley_cart-wheel-squeak-scrape_01`, `whoosh_fast-slide_01`, `comedy_record-scratch_01`, `stinger_wahwah-fail_01`, `whoosh_air-swish-rising_01`, `reveal_reverse-swell-airy_01`, `reveal_glass-shimmer-soft_01`, `ui_click-tick_01`, `ui_pop_01`, `stinger_low-muted-hit_01`, `ui_notification-ding_01` | per shot |
 
-**Silence policy (brief):** (1) f311–f327 true silence except L06 (music and room tone cut on the freeze frame, no ramp); (2) no tick on MAN's own overtake (B04-SH04); (3) after L20 (f1597): no speech; chord, low room tone and one soft scanner beep, all fading with the picture to digital silence on f1656.
+**Silence policy (brief):** (1) f311–f327 true silence except L06 (music and room tone cut on the freeze frame, no ramp); (2) no tick on MAN's own overtake (B04-SH04); (3) after L20 (f1602, R1.4): no speech; chord, low room tone and one soft scanner beep, all fading with the picture to digital silence on f1661.
 
 **Mix intent (EP08a):** B01 hold; B02 lift (comedy hits); f311 drop; B03 hold, small hit on "1/3"; B04 hold with ticks; B05 drop (muffled) and one hit on the red memory; B06 release; end fade.
 
@@ -116,11 +143,11 @@ Library checked 2026-11-05, `~/ReelsStore/library/sound/INDEX.md` (186 lines); e
 | S01-B04-SH02 | B04 | 800–887 (87) | L12 | F005 hypothesis; **CL02** |
 | S01-B04-SH03 | B04 | 887–954 (67) | L13 | F005 hypothesis |
 | S01-B04-SH04 | B04 | 954–1024 (70) | L14 | F005 hypothesis; CL02 payoff |
-| S01-B05-SH01 | B05 | 1024–1149 (125) | L15 | F007 |
-| S01-B05-SH02 | B05 | 1149–1256 (107) | L16 | F009 hypothesis |
-| S01-B06-SH01 | B06 | 1256–1341 (85) | L17 | F014 |
-| S01-B06-SH02 | B06 | 1341–1520 (179) | L18, L18a | F012; dramatization |
-| S01-B06-SH03 | B06 | 1520–1657 (137) | L20 + hold | F014 restated; closing |
+| S01-B05-SH01 | B05 | 1024–1153 (129) (R1.3: 1024–1149) | L15 | F007 |
+| S01-B05-SH02 | B05 | 1153–1261 (108) (R1.3: 1149–1256) | L16 | F009 hypothesis |
+| S01-B06-SH01 | B06 | 1261–1346 (85) (R1.3: 1256–1341) | L17 | F014 |
+| S01-B06-SH02 | B06 | 1346–1525 (179) (R1.3: 1341–1520) | L18, L18a | F012; dramatization |
+| S01-B06-SH03 | B06 | 1525–1662 (137) (R1.3: 1520–1657) | L20 + hold | F014 restated; closing |
 
 ---
 
@@ -264,52 +291,57 @@ Picture intent per shot is the row's `seen` text in [review-rows.json](review-ro
 - **Caption:** "แต่ตอนเราแซงคนอื่น… มักไม่ทันสังเกต" f958–1027.
 - **Exit:** MAN at (0, 0, −2.20) = B05 position. **Accept:** three strokes at the last frame; the pass is visible.
 
-### S01-B05-SH01 · 1024–1149 · memory bubbles (LF03)
+<a id="s01-b05-sh01--10241149--memory-bubbles-lf03"></a>
+### S01-B05-SH01 · 1024–1153 · memory bubbles (LF03)
 
-- **Time:** L15 f1028–1146: "ความจำก็ช่วยซ้ำเติม…" L 4–42, "วันที่รอจนหัวร้อน มักติดอยู่ในความจำ" L 47–122. Pale bubble pops L 8, hot red bubble pops L 14 (trail puffs 3 f apart); red sharpens + MAN-in-bubble steams at L 62 (≈ "หัวร้อน", est); pale fades 100 → 40 % over L 66–122 and **stays** (VD12).
+- **Time:** L15 f1028–1151 (R1.4, measured): "ความจำก็ช่วยซ้ำเติม…" L 4–42, "วันที่รอจนหัวร้อน มักติดอยู่ในความจำ" L 51–127 (R1: L 47–122); shot ends L 128 (129 f). Keys below stay at their built L (user-passed in the Draft); the hold after L 122 is 6 f of the settled pose. Pale bubble pops L 8, hot red bubble pops L 14 (trail puffs 3 f apart); red sharpens + MAN-in-bubble steams at L 62 (≈ "หัวร้อน", est); pale fades 100 → 40 % over L 66–122 and **stays** (VD12).
 - **Staging:** LF03 v2: MAN at (0, 0, −2.20), `neutral` → `angry` at L 62 (3 f blend), hold to L 100, back to `neutral` by L 106 (R1.2); bubbles (`new: memory-bubble`) in y 220–700: left hot red (`furious` MAN in a long queue), right pale `#c9cfd6` (`happy` MAN at a smooth checkout). No text.
-- **Camera:** LF03 v2: `cam: T-MAN (0, 1.55, −2.20), yaw −10→−4, r 1.5→1.4, eye 1.5, f 1100, hy 1000`. `meas`: head top y 780→764, chin y 1051→1055 (above the band).
+- **Camera:** LF03 v2: `cam: T-MAN (0, 1.55, −2.20), yaw −10→−4, r 1.5→1.4, eye 1.5, f 1100, hy 1000`, eased over the shot's 129 f (R1.4: L 0–128). `meas`: head top y 780→764, chin y 1051→1055 (above the band).
 - **Sound:** MUZ-B low-passed (~800 Hz); RT-STORE low-passed; SFX-MEMSWELL from L 4; `ui_pop_01` L 8, L 14; `stinger_low-muted-hit_01` L 62 (−10 dB); the pale fade has no hit.
-- **Caption:** "ความจำก็ช่วยซ้ำเติม… วันที่รอจนหัวร้อน มักติดอยู่ในความจำ" f1028–1152.
+- **Caption:** "ความจำก็ช่วยซ้ำเติม… วันที่รอจนหัวร้อน มักติดอยู่ในความจำ" f1028–1157 (R1.4).
 - **Accept:** the pale bubble is visible (≥ 40 %) on the last frame; no caption names it.
 
-### S01-B05-SH02 · 1149–1256 · stamp, then crack
+<a id="s01-b05-sh02--11491256--stamp-then-crack"></a>
+### S01-B05-SH02 · 1153–1261 · stamp, then crack
 
-- **Time:** L16 f1153–1254: "คำว่า" L 4–15, "ฉันซวยตลอด" L 20–47, "เลยฟังดูจริง…" L 52–75, "ทั้งที่อาจไม่ใช่" L 80–105. `new: stamp text` "ซวยตลอด" thunks on at L 20 (scale 1.3 → 1.0 in 4 f, rotation −6°), over MAN's chest; R1.2: drawn at 0.9 scale, centre y 1038, box ~y 940–1140 (over the jaw, mouth and eyes clear); crack line draws through it L 91–97 (≈ "อาจไม่ใช่", est), halves offset 8 px (R1.2, was 4).
+- **Time:** L16 f1157–1258 (R1.4, measured; shot-local L unchanged): "คำว่า" L 4–15, "ฉันซวยตลอด" L 20–47, "เลยฟังดูจริง…" L 52–75, "ทั้งที่อาจไม่ใช่" L 80–105. `new: stamp text` "ซวยตลอด" thunks on at L 20 (scale 1.3 → 1.0 in 4 f, rotation −6°), over MAN's chest; R1.2: drawn at 0.9 scale, centre y 1038, box ~y 940–1140 (over the jaw, mouth and eyes clear); crack line draws through it L 91–97 (≈ "อาจไม่ใช่", est), halves offset 8 px (R1.2, was 4).
 - **Staging:** MAN (0, 0, −2.20) `sad`→`neutral` (a small look-up at the crack, L 92–100).
-- **Camera:** `cam: T-MAN (0, 1.55, −2.20), yaw 0, r 1.30→1.20, eye 1.55, f 1100, hy 860`. `meas`: head 313→339 px, chin y 962→970; stamp sits between chin and band.
+- **Camera:** `cam: T-MAN (0, 1.55, −2.20), yaw 0, r 1.30→1.20 over L 0–107 (R1.4; 108 f), eye 1.55, f 1100, hy 860`. `meas`: head 313→339 px, chin y 962→970; stamp sits between chin and band.
 - **Sound:** SFX-STAMP L 20 (−8 dB); SFX-CRACK L 91; MUZ-B low-passed continues; RT-STORE low.
-- **Caption:** "คำว่า "ฉันซวยตลอด" เลยฟังดูจริง… ทั้งที่อาจไม่ใช่" f1153–1259.
+- **Caption:** "คำว่า "ฉันซวยตลอด" เลยฟังดูจริง… ทั้งที่อาจไม่ใช่" f1157–1264 (R1.4).
 - **Accept:** stamp bottom ≤ y 1140; the crack is visible at 270 px.
 
-### S01-B06-SH01 · 1256–1341 · refit wide (LF04)
+<a id="s01-b06-sh01--12561341--refit-wide-lf04"></a>
+### S01-B06-SH01 · 1261–1346 · refit wide (LF04)
 
-- **Time:** L17 f1260–1339: "หลายที่ใช้แถวเดียว…" L 4–34, "ช่องไหนว่าง ก็เรียกคนถัดไป" L 38–83. Queue shuffles one 0.45 m step L 40–52 (same rate as B01); till-2 lamp green, steady (no ding here; the one ding calls MAN in SH02).
+- **Time:** L17 f1265–1343 (R1.4, measured; L 4–82, shot-local L unchanged): "หลายที่ใช้แถวเดียว…" L 4–34, "ช่องไหนว่าง ก็เรียกคนถัดไป" L 38–83. Queue shuffles one 0.45 m step L 40–52 (same rate as B01); till-2 lamp green, steady (no ding here; the one ding calls MAN in SH02).
 - **Staging:** LF04 v2 refit, `b06Cast`: MAN (0, 0, −3.05) **`man-parted + new: rush-hour-blazer, P01, new: content`** (eyes shut, small smile), basket in right hand; `woman-long, P01, neutral` next; 9 customers in the serpentine. No clock, timer or display (VD13).
 - **Camera:** LF04 v2: `cam: T-HEAD (0, 1.55, −3.00), yaw +4→+2, r 3.5→3.2, eye 2.0, pitch −3, f 1050, hy 640, cx 0`. `meas`: MAN head 109→118 px, body 517→563 px.
 - **Look:** B06 warmer grade (−5 % blue).
 - **Sound:** MUZ-C (calm) from L0, −18 dB, ducked; RT-STORE.
-- **Caption:** "หลายที่ใช้แถวเดียว… ช่องไหนว่าง ก็เรียกคนถัดไป" f1260–1344.
+- **Caption:** "หลายที่ใช้แถวเดียว… ช่องไหนว่าง ก็เรียกคนถัดไป" f1265–1349 (R1.4).
 - **Accept (brief spike 6):** one line feeding three tills at 270 px; count = B01 ± 1.
 
-### S01-B06-SH02 · 1341–1520 · calm, "…สบายจัง"
+<a id="s01-b06-sh02--13411520--calm-สบายจัง"></a>
+### S01-B06-SH02 · 1346–1525 · calm, "…สบายจัง"
 
-- **Time:** L18 f1345–1444 = L 4–103 (phrases L 4, 50, 79). Ding + till-2 lamp pulse (glow 0.3 → 0.45 → 0.3 over 8 f) at L 105. L18a MAN f1452–1516 = L 111–175. Eyes open L 112–120 (`content` → eyes open, `happy` small smile); exhale shoulders L 118–140; first step toward +z L 170–179 (cut on action).
+- **Time:** L18 f1350–1449 = L 4–103 (phrases L 4, 50, 78; R1.4 measured). Ding + till-2 lamp pulse (glow 0.3 → 0.45 → 0.3 over 8 f) at L 105 (f1451). L18a MAN f1457–1521 = L 111–175 (R1.4: Editor moves the clip +5 f). Eyes open L 112–120 (`content` → eyes open, `happy` small smile); exhale shoulders L 118–140; first step toward +z L 170–179 (cut on action).
 - **Staging:** MAN (0, 0, −3.05) **P44** hands behind back, basket hanging from both hands behind him (brief VD13); at L 160–170 he brings the basket to his right hand (P01) for the step.
 - **Camera:** `cam: T-HEAD (0, 1.55, −3.00), yaw −12→−18, r 1.4→1.25, eye 1.55, f 1100, hy 720`. `meas`: head 281→314 px, chin y 811→822.
 - **Sound:** MUZ-C continues; `ui_notification-ding_01` at L 105 (−10 dB, dry); L18a +3 dB, no reverb.
-- **Caption:** "ไม่มีแถวข้าง ๆ ให้อิจฉา… หลายคนรู้สึกว่ายุติธรรมกว่า" f1345–1450; "…สบายจัง" f1452–1520.
+- **Caption:** "ไม่มีแถวข้าง ๆ ให้อิจฉา… หลายคนรู้สึกว่ายุติธรรมกว่า" f1350–1455; "…สบายจัง" f1457–1525 (R1.4).
 - **Accept:** eyes shut through L18 read calm, not asleep or laughing (the `content` face is `unknown` on its own; check on this shot).
 
-### S01-B06-SH03 · 1520–1657 · walk to till 2, hold, fade (bookend)
+<a id="s01-b06-sh03--15201657--walk-to-till-2-hold-fade-bookend"></a>
+### S01-B06-SH03 · 1525–1662 · walk to till 2, hold, fade (bookend)
 
-- **Time:** walk L 0–60; turn ~20° to the counter and two-hand set-down of the basket L 60–80; back to facing +z, hands loose, L 80–92; L20 f1528–1597: "ไม่ต้องเปลี่ยนแถวอีกแล้ว…" L 8–37, "แค่รอให้ถึงคิวของเรา" L 42–77. Cashier smile L 70; she lifts the noodles and scans L 95–125. Live hold L 77–137 (2.0 s: breath, blinks at L 90 and L 120, slow scan, push easing out); fade to black L 107–137 (`endFadeSec` 1.0).
+- **Time:** walk L 0–60; turn ~20° to the counter and two-hand set-down of the basket L 60–80; back to facing +z, hands loose, L 80–92; L20 f1533–1602 (R1.4: piece C +5 f): "ไม่ต้องเปลี่ยนแถวอีกแล้ว…" L 8–37, "แค่รอให้ถึงคิวของเรา" L 42–77. Cashier smile L 70; she lifts the noodles and scans L 95–125. Live hold L 77–137 (2.0 s: breath, blinks at L 90 and L 120, slow scan, push easing out); fade to black L 107–137 = f1632–f1662 (`endFadeSec` 1.0).
 - **Staging (SD07, SD08):** MAN `man-parted + new: rush-hour-blazer, P01 → walk → P01, new: content → happy` from (0, 0, −1.60) to lane-2 S1 (0, 0, −0.40) at 0.6 m/s, facing +z; basket set on the belt end at (0.62, 0.85, −0.65). Cashier **`woman-ponytail + vendor (apron retint #2f8a5e, badge), P25, happy`** at (1.65, 0, −0.20) facing −x. `woman-long` next in line at (0, 0, −2.00) behind him, then the queue. Eyes forward or on the cashier only; never toward another lane (brief spike 7). No timer, clock or display.
 - **Camera (FX-L20-01):** `cam: T-TILL2 (+0.20, 1.40, −0.50), yaw −25→−18 arc, r 3.9→3.6 push, ease-out reaching 99 % of travel by L 120, eye 1.80, pitch −5, f 860, hy 760`. `meas` at L 137: MAN x 500, head **92 px** (bookend band 81–99 px vs S01-B01-SH01's 90 px), body 433 px; cashier x 875; register spans x 667–764; basket x 571–663 (handoff H2).
 - **Look:** till-2 green glow ≤ 0.3 on his shoulder; B06 grade.
 - **Sound:** MUZ-C settles on its resolving chord under L20 (or `stinger_outro-resolve_01` layered from L0); SFX-SCAN single at L 105 (−20 dB), one more at L 125 optional; RT-STORE low; everything fades with the picture to digital silence at L 136. No muzak return, no stinger, no end card.
-- **Caption:** "ไม่ต้องเปลี่ยนแถวอีกแล้ว… แค่รอให้ถึงคิวของเรา" f1528–1603; none in the hold.
-- **Accept:** head 81–99 px on the last pre-fade frame (L 106); basket and hand clear of the register; f1656 full black and silent.
+- **Caption:** "ไม่ต้องเปลี่ยนแถวอีกแล้ว… แค่รอให้ถึงคิวของเรา" f1533–1608 (R1.4); none in the hold.
+- **Accept:** head 81–99 px on the last pre-fade frame (L 106); basket and hand clear of the register; f1661 (R1.4; was f1656) full black and silent.
 
 ---
 
@@ -319,7 +351,7 @@ Picture intent per shot is the row's `seen` text in [review-rows.json](review-ro
 
 | # | Owner | Item | Acceptance |
 | --- | --- | --- | --- |
-| H1 | Boss (Editor confirms on the draft) | **Head-height measure**, S01-B06-SH03 end vs S01-B01-SH01 end | Measured on rendered frames (S01-B01-SH01 f55, S01-B06-SH03 L 106 = f1626): MAN head within ±10 % (planned 90 vs 92 px). Fallback: keep f 860 and lower yaw to −14 (FX-L20-01) or end r 3.5 |
+| H1 | Boss (Editor confirms on the draft) | **Head-height measure**, S01-B06-SH03 end vs S01-B01-SH01 end | Measured on rendered frames (S01-B01-SH01 f55, S01-B06-SH03 L 106 = f1631 since R1.4, f1626 in R1.3): MAN head within ±10 % (planned 90 vs 92 px). Fallback: keep f 860 and lower yaw to −14 (FX-L20-01) or end r 3.5 |
 | H2 | Boss | **Till-2 register** vs MAN's basket hand (S01-B06-SH03 L 60–137) | Register (x 667–764 planned) never covers the basket or his hand; planned clearance only 4 px, so check the rendered set-down frame L 80 at full size. Fallback: basket at x 0.58, or the FX-L20-01 yaw −14 fallback |
 | H3 | Boss | **Coin gag at 270 px** (S01-B02-SH03) | On a `qa-sheet.sh` 270 px sheet of L 10, 20, 30: coin stack, the elder's hand and MAN's face all read; stack grows by one coin per frame group. If not: raise coin exaggeration to ×2 (Ø 0.05 m) and record it, or push r to 1.6 |
 | H4 | Editor | **Trombone vs "อ้าว…"** (S01-B02-SH04) | Two mixes compared by ear: (A) `stinger_wahwah-fail_01` at L 26, −6 dB under the speech until L 33; (B) sting at L 33, cut by the f311 silence. "อ้าว…" must stay fully intelligible; pick one, record in build-notes. If neither works, NEEDS-GEN a 0.6 s trombone "wah-wah" that ends by L 42 |
@@ -327,13 +359,17 @@ Picture intent per shot is the row's `seen` text in [review-rows.json](review-ro
 | H6 | Editor | NEEDS-GEN sounds: MUZ-A/B/C, RT-STORE, SFX-SCAN, SFX-COIN, SFX-BOING, SFX-STAMP, SFX-CRACK, SFX-MEMSWELL | `sound-generation` skill; filed in the library with sidecars; ear-checked |
 | H7 | Boss | Crane end + dissolve (S01-B03-SH01, SD06) | Lanes within ±40 px at y 560 ± 60 on the L 34 frame; ceiling hidden for pitch < −30°. Fallback: hard cut on the freeze |
 | H8 | Boss | `new:` assets still `missing` (brief N1–N7 minus what LF01–LF04 v2 already built in `src/painted/edu04/`): `new: pineapple`, `new: coin purse + coins`, `new: coin-count motion`, `new: plan icons` (price-check sign, trolley) + paper wobble, dot hop with `manLane` tween, tally draw-on, stamp crack, `new: content` → open-eye transition, basket two-hand set-down, B02 lane-switch path around the counter tail, `woman-curly` lane change (SD02) | Each on its first consuming shot's blockout; kit intake (KIT-P01) at delivery: basket, trolley, coin-count, `SET-CHECKOUT` → `PLATES` |
-| H9 | Editor | Composition registration, scene IDs = shot IDs, `durationFrames` 1657, `A_fade` values, caption cues as listed | Timeline seek check; captions only in their ranges |
+| H9 | Editor | Composition registration, scene IDs = shot IDs, `durationFrames` 1662 (R1.4; was 1657), `A_fade` values, caption cues as listed | Timeline seek check; captions only in their ranges |
+| H10 | Boss | **VL-RT-01 plate lengths** (R1.4): `EDU4_SHOTS` lengths S01-B05-SH01 125 → **129**, S01-B05-SH02 107 → **108** (others unchanged; total 1662; the `EDU4_TOTAL` guard and the composition doc comment 1657 → 1662). Camera ease denominators: `b05sh01Cam` `f / 124` → `f / 128`, `b05sh02Cam` `f / 106` → `f / 107`. No other key moves | Stills at B05-SH01 L 124, 128 and B05-SH02 L 107: camera at end values, no jump; the pale bubble ≥ 40 % at L 128; `npm test` passes |
+| H11 | Editor | **VL-RT-01 audio placement** (R1.4) in `review-mix.py` / the final mix: `TOTAL` 1657 → 1662; L18a onset f1452 → **f1457**; piece C (L20, both phrases) 1528 → **1533**; shot-anchored cues by new shot starts: SFX-STAMP 1149+20 → **1173**, SFX-CRACK 1149+91 → **1244**, ding 1341+105 → **1451**, outro resolve f1520 → **f1525**, hum segments h3 1024–1256 → **1024–1261**, h4 1256–1657 → **1261–1662**; NEEDS-GEN MUZ-B/MUZ-C windows per the [Sound plan](#sound-plan-whole-video-per-shot-cues-in-the-shot-blocks). Pieces A/B and L03–L05 unchanged. Captions per the R1.4 shot blocks | Re-measure: L18a onset 1457 ± 2, L20 onset 1533 ± 2, last speech ≤ f1603, f1661 silent; write `narration-lock.json` (H5) from this file |
 
 ## Dependencies and open items
 
 | Owner | Item | Status |
 | --- | --- | --- |
 | Film | Segment-to-line mapping of take 3 (by order) | unverified until H5 |
+| Film | VL-RT-01 frames assume the narrator at 1.00x (no `atempo 1.05`). Applying the +5 % narrator rule now re-opens the voice lock for every narrator line from L01 and needs a full retime, not this patch | open: coordinator/user; R1.4 keeps 1.00x |
+| Editor | Word-level check of L15 p2 ("วันที่รอจนหัวร้อน") vs the B05-SH01 `angry` key at L 62 (p2 onset now L 51, "≈ หัวร้อน" was `est`) | optional ear check; move only on a user note |
 | Film | FG-01: till-line alignment dropped (SD06); brief acceptance 4 amended here | approved by the user in chat, 2026-11-05 (lane alignment instead of till line y 300; hard cut on the freeze stays the fallback) |
 | Film | Lead-size rule (≥ 480 px): S01-B01-SH01 (390–422 px) and S01-B06-SH03 (≤ 433 px) are below it by the approved LF01 v2 framing and the bookend; S01-B03-SH01 crane is a reveal | recorded deviation, not a new decision |
 | Boss | `content` face reads calm (S01-B06-SH01/SH02) | unknown |
@@ -343,6 +379,7 @@ Element captures: LF01–LF04 v2 (`out/edu04/look-frames/v2/`, asset-store copy 
 
 ## Change log
 
+- **EDU-EP04-SHEETS-R1.4 (2026-11-06, Film voice-lock retime VL-RT-01):** the R1 placement table dropped L15's 0.15 s in-line pause (Film arithmetic error, not an audio defect); the assembled narration is correct to VL-EDIT-01. Picture follows the narration: S01-B05-SH01 1024–1149 → 1024–1153 (+4 f), S01-B05-SH02 1149–1256 → 1153–1261 (+1 f), S01-B06-SH01/SH02/SH03 slide +5 f (lengths unchanged), L18a and L20 placed +5 f by the Editor; total 1657 → 1662 f (55.40 s). Narration table, shot map, B05–B06 time/caption/camera lines, Sound plan windows, H1 frame, H9 and new H10/H11 updated; old B05–B06 heading anchors kept. No script, take, ID, order, reveal, look or end-hold change. `review-rows.json` `start`/`end` of the five shots updated (timing is outside the row hash, so Draft verdicts stay); its `clips.final` still points into the R1.3 cut until the W6 render.
 - **EDU-EP04-SHEETS-R1.3 (2026-11-06, Film G4 review):** S01-B06-SH01/SH02/SH03: `new: content` and the SH03 `happy` face use the closed-lip small smile (`mouth: 'smile'`, `open` 0..0.3; SD14); SH03 MAN must show it in every frame, cashier keeps the kit `happy`. S01-B06-SH01: queue step 0.45 m runs along each serpentine row's own flow, MAN fixed at the head (SD15). S01-B06-SH02: basket not drawn L 0–161 (behind his back, out of this camera's view), in the right hand from L 162 (SD16). B06 grade = 6 % orange overlay in place of −5 % blue (plate path has no per-channel grade). Not drawn and accepted: till-2 lamp pulse at SH02 L 105 (off frame; the ding carries it), noodle lift/scan in SH03 (SFX-SCAN at L 105 carries it), stiff set-down arms L 74–82 (8 f in a wide under the caption). Timing, IDs and look unchanged.
 - **EDU-EP04-SHEETS-R1.2 (2026-11-06, Film G3 review):** S01-B04-SH01/SH02: lane-3 queue off frame right under the sheet cameras is accepted (SD11); gaze carries it, walkers first seen in SH03. S01-B04-SH04: lane 1 as `woman-pixie` + `girl-school` head and shoulders over the rack, `man-shaved` dropped from this shot, walkers held at z −0.5 / −1.4 / −2.3 accepted (SD13). S01-B05-SH01: wince at L 62 read as tired, now `angry` L 62–100, `neutral` by L 106. S01-B05-SH02: stamp 0.9 scale, centre y 1038, box ~940–1140 accepted (SD12; jaw overlap only, band clear); crack halves offset 4 → 8 px for 270 px legibility. Head turn by eye look + 6° cock + quarter body accepted.
 - **EDU-EP04-SHEETS-R1.1 (2026-11-05, Film G2 review):** S01-B03-SH02: "ถ้าทุกแถวเท่ากัน" ~92 px accepted; eyebrow = plate-drawn LF02 pill, scene eyebrow unset. SH03: at L 140 the glow returns to lane 2 with the "1/3" lockup. SH05: price-check sign moved onto the till-1 icon (pad centre (364, 186), 80 × 64 px, stick to (364, 267)); paper wobble peak 6 px; trolley handle bar + goods. No script, shot ID, timing or look change.

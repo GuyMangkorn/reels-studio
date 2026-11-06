@@ -45,13 +45,14 @@ export const paintHotBubble = (p: Painter, cx: number, cy: number, rx: number, r
   const fy = cy + ry * 0.62;
   solid(p, 7110, '#b8432f', [[cx - rx * 0.85, fy], [cx + rx * 0.85, fy], [cx + rx * 0.85, fy + ry * 0.4], [cx - rx * 0.85, fy + ry * 0.4]], 2, 0.05, 0.2);
   solid(p, 7111, '#3a3f47', [[cx + rx * 0.5, fy - ry * 0.34], [cx + rx * 0.9, fy - ry * 0.34], [cx + rx * 0.9, fy], [cx + rx * 0.5, fy]], 2);
-  [['woman-curly', -0.62], ['man-elder', -0.28], ['man-spiky', 0.08]].forEach(([id, dx], i) => mini(p, shopper(id as 'woman-curly'), cx + (dx as number) * rx, fy - 8 - i * 4, 0.52 * ry * 1.1, 'angry', t, 7120 + i, 'right'));
+  [['woman-curly', -0.66], ['man-elder', -0.42], ['man-spiky', -0.18]].forEach(([id, dx], i) => mini(p, shopper(id as 'woman-curly'), cx + (dx as number) * rx, fy - 8 - i * 4, 0.52 * ry * 1.1, 'angry', t, 7120 + i, 'right'));
   mini(p, MAN, cx + rx * 0.14, fy + ry * 0.2, 0.62 * ry * 1.25, 'furious', t, 7140);
-  steam(p, cx + rx * 0.14, cy - ry * 0.28, 22, 7150);
+  // FX-D02 (user, 6 Nov 2026): the puff sat on the mini MAN's face like a cluster of eggs. It now rises from the crown, a little above the head.
+  steam(p, cx + rx * 0.14, cy - ry * 0.7 - 3 * Math.sin(t * 7), 18, 7150);
   // heat: red glaze over the whole memory, then heavy sharp ink on the cloud edge
   glaze(p, 7160, '#d9301f', 70 + 50 * heat, shape, {border: 0});
   inkLine(p, 7161, shape, {weight: 3.4 + 1.6 * heat, color: '#7a1a12'});
-  if (heat > 0) { steam(p, cx + rx * 0.14 - 46, cy - ry * 0.5, 20 * heat, 7190); steam(p, cx + rx * 0.14 + 52, cy - ry * 0.42, 18 * heat, 7195); }
+  if (heat > 0) { steam(p, cx + rx * 0.14 - 62, cy - ry * 0.56 - 4 * Math.sin(t * 7 + 2), 13 * heat, 7190); steam(p, cx + rx * 0.14 + 64, cy - ry * 0.52 - 4 * Math.sin(t * 7 + 4), 12 * heat, 7195); }
   inkLine(p, 7162, scallop(cx, cy, rx * 0.97, ry * 0.97, 9, 0.045, 0.6), {weight: 1.3, color: '#7a1a12'});
   // trailing puffs toward MAN's head (down and to the right)
   [[cx + rx * 0.48, cy + ry * 1.04, 28], [cx + rx * 0.66, cy + ry * 1.22, 19], [cx + rx * 0.78, cy + ry * 1.36, 11]].forEach(([x, y, r], i) => {

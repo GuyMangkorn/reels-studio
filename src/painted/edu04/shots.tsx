@@ -31,7 +31,7 @@ export const EDU4_SHOTS = [
   ['S01-B01-SH01', 56], ['S01-B01-SH02', 65], ['S01-B02-SH01', 50], ['S01-B02-SH02', 62], ['S01-B02-SH03', 36], ['S01-B02-SH04', 42],
   ['S01-B03-SH01', 49], ['S01-B03-SH02', 36], ['S01-B03-SH03', 158], ['S01-B03-SH04', 104], ['S01-B03-SH05', 87],
   ['S01-B04-SH01', 55], ['S01-B04-SH02', 87], ['S01-B04-SH03', 67], ['S01-B04-SH04', 70],
-  ['S01-B05-SH01', 125], ['S01-B05-SH02', 107],
+  ['S01-B05-SH01', 129], ['S01-B05-SH02', 108],
   ['S01-B06-SH01', 85], ['S01-B06-SH02', 179], ['S01-B06-SH03', 137],
 ] as const satisfies readonly (readonly [string, number])[];
 export type Edu4ShotId = (typeof EDU4_SHOTS)[number][0];
@@ -230,8 +230,8 @@ const b04sh03Cam = (f: number): YCam => orbit(T_S4, mix(-30, -36, f / 66), 1.8, 
 const T_S3: V3 = [0, 1.55, -2.65];
 const b04sh04Cam = (f: number): YCam => orbit(T_S3, mix(30, 36, f / 69), 2.1, 1.5, 900, 680, 0, 200);
 const T_B05: V3 = [0, 1.55, -2.2];
-const b05sh01Cam = (f: number): YCam => { const e = inOut(f / 124); return orbit(T_B05, mix(-10, -4, e), mix(1.5, 1.4, e), 1.5, 1100, 1000); };
-const b05sh02Cam = (f: number): YCam => orbit(T_B05, 0, mix(1.3, 1.2, f / 106), 1.55, 1100, 860);
+const b05sh01Cam = (f: number): YCam => { const e = inOut(f / 128); return orbit(T_B05, mix(-10, -4, e), mix(1.5, 1.4, e), 1.5, 1100, 1000); };
+const b05sh02Cam = (f: number): YCam => orbit(T_B05, 0, mix(1.3, 1.2, f / 107), 1.55, 1100, 860);
 Object.assign(CAMS, {'S01-B04-SH01': b04sh01Cam, 'S01-B04-SH02': b04sh02Cam, 'S01-B04-SH03': b04sh03Cam, 'S01-B04-SH04': b04sh04Cam, 'S01-B05-SH01': b05sh01Cam, 'S01-B05-SH02': b05sh02Cam});
 
 /** Lane 3 walkers of S01-B04-SH03: constant 0.075 m/f (0.9 m per 12 f), head crossing z -3.10 at L 12 / 30 / 48; the queue ahead of each opens. */
@@ -347,7 +347,7 @@ const b06sh02 = (f: number) => {
   const walkU = prog(f, 170, 179), z = mix(-3.05, -2.8, inOut(walkU));
   return {
     cam: b06sh02Cam(f), lights: {2: 'green'} as Partial<Record<1 | 2 | 3, Light>>, shared: true, grade: GRADE_B06,
-    who: b06With(1, {man: {faceState: face, basket: f >= 162, pose: 'P44', mix: {to: 'P01' as const, u: inOut(prog(f, 160, 170))}, at: [0, 0, z] as V3,
+    who: b06With(1, {man: {faceState: face, basket: true, pose: 'P01', at: [0, 0, z] as V3,
       fig: {rise: f >= 118 ? mix(0.02, -0.012, inOut(prog(f, 118, 140))) : 0.01, ...(walkU > 0 && walkU < 1 ? {walk: (z + 3.05) / 1.15, stride: 0.7} : {})}}}),
   };
 };
