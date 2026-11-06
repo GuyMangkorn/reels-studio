@@ -16,3 +16,17 @@ Inputs: scene sheets EDU-EP05-SHEETS-R1, script R1.3a, voice lock W4 (NAR Kore x
 **Evidence:** `node --import tsx --test tests/edu05.test.ts` 3/3; `node scripts/render.mjs EDU-EP05-SHORT --stills --frames=14,55,151,...` renders 19 stills (one per shot, shot start + 14), sheet `out/EDU-EP05-SHORT/blockout-sheet-v1.png` (placeholder cards, caption stroke in the 1176-1344 band, mark top-left, no caption in the silence). Not run: Studio, random/backward seek, motion, mixed-audio listen, any render of final art. Caption stroke over the bright LF01 floor (sheet's open check) can only be judged on real art.
 
 **Open:** Boss N1-N10/K1 plates; Film review of the blockout; NG-* generation + ear check of all library one-shots; UB-1/UB-2 ear check; amplitude track (`narration.amplitude` is `[]`, EP04 pattern; no talking figure needs it).
+
+## W5.2 Boss elements (2026-11-06, branch claude/edu-draft-element-1afc3a)
+
+Stills-only verification (`scripts/edu-series/ep05/w52-stills.sh`, comps `EDU5-CHK-*`), numbers from `tests/edu05-macro.test.ts`.
+
+- **K1** done: kit `tintPainter(q, to, u, {mul, brush})` (`src/painted/kit/painter.ts`); episode `tintAll` removed. LF04 f30 vs the pre-fold render: PSNR 72.6 dB, equal to the render-to-render noise (72.4 dB).
+- **N1** bend and parallax: `Blade.bend` / `bendLine` / `gust`, tip deflection clamped to 25%; parallax measured for 13 macro camera moves (`cams.ts`), near blade moves 2-6x the far one in every move.
+- **N2** shade edge keys (`SHADE_EDGE_KEYS`, `shadeEdgeAt`, `edgeShade`) done; drift motes + slab band + streaks exist (`effects.ts`) but are plain washes; not ENV-FALL `dust`, no real slab blur.
+- **N4** states a-d + layering done (`drop.ts`): area 0.0% (renormalised), neck <= 0.5 sm, foot slip 0.007 sm, top 0.96 sm vs TINY 1.58. Findings for Film: (1) the SH03 `meas` (wrist 499/649 with D1 centre x 419) puts the wrist right of the drop centre, impossible with a stretched neck; (2) a 0.5 sm neck puts the wrist ~1.1 sm from contact in x, so TINY must stand ~0.55 behind the wrist (x ~0.55-0.9), not 1.15-1.30 as staged; or cap the neck at the 0.3 fallback. The check scene moves TINY back to reach.
+- **N6** ant gait by distance done (`ant.ts`: `antFoot`, `antWalk`, `ANT_SPEED`): planted-foot slide 2e-16 sm, >= 3 feet down, sway max 3.24 deg in 24 f at 0.043 and 0.07 sm/f. No `ANIMALS` entry (the quadruped drawer cannot draw an insect); kit intake owes that wiring.
+- **N7/N8/N5/N9** pure-function versions in `effects.ts` with tests (pop cut delta 33.1 px; bar end heights 216/72; crumb grips). Looks are first-pass.
+- **N3** look-down camera, facade and speck camera reproduce the sheet `meas` to < 4 px (vanishing point (540, 963), mug 908,354 -> 986,225, speck 487,764 -> 490,703). Facade art is crude (grey ledges), SET-BALCONY look-down mug/forearm not built.
+- **N10** only `soft air streaks` (first pass). Poses `drift-spread`, `sit-up-check`, `brace-heave`, `nibble`, `drag-back`, `clutch-puff`, `lift-overhead` are NOT built.
+- Sheet inconsistency: SH02-drift mote speed 0.15 sm/s is 66 px/s at her depth (438 px/sm), not 27; capped at 27 px/s.

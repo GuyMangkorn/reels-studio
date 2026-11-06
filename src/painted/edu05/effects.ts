@@ -122,3 +122,39 @@ export const paintScaleBars = (p: Painter, s: BarsState) => {
   inkLine(p, 14042, [[ix - h * 0.2, iy - h * 0.1], [ix + h * 0.2, iy - h * 0.1]], {weight: 1.4, color: '#4a4a4a', closed: false});
   inkLine(p, 14043, [[ix - h * 0.14, iy + h * 0.5], [ix, iy + h * 0.2], [ix + h * 0.14, iy + h * 0.5]], {weight: 1.4, color: '#4a4a4a', closed: false});
 };
+
+// ---- N2 SET-DRIFT (S01-B02-SH02) and N10 `soft air streaks`: motes rising relative to her at 0.15 sm/s, a blurred slab band sliding up
+// the left, and 3-5 thin pale curved strokes hugging her outline on L 50-70 (air holding her, never radial speed lines).
+/** The sheet's 0.15 sm/s is quoted as ~27 px/s but at TINY's depth (692 px for 1.58 sm = 438 px/sm) it is 66 px/s: the rise is capped at `maxPx` px/s (spike 4: < 40). */
+export const DRIFT = {moteSpeed: 0.15, maxPx: 27, slab: [20, 132] as [number, number], streaks: [50, 70] as [number, number], band: [1176, 1344] as [number, number]};
+export type Mote = {x: number; y: number; r: number; a: number};
+/** Motes at time `t` s for a camera that follows her: `u` px per sm; rise at 0.15 sm/s (px/s = 0.15 u), sparse, faded inside the caption band. */
+export const driftMotes = (t: number, u: number, n = 22, seed = 16000): Mote[] =>
+  Array.from({length: n}, (_, i): Mote => {
+    const h = (k: number) => hash(seed + i * 7 + k), span = 1500, y = ((h(2) * span - t * moteSpeedPx(u)) % span + span) % span - 100;
+    const inBand = y > DRIFT.band[0] - 40 && y < DRIFT.band[1] + 40;
+    return {x: 40 + h(1) * 1000, y, r: 2 + h(3) * 4, a: (0.35 + 0.4 * h(4)) * (inBand ? 0.15 : 1)};
+  });
+/** Mote speed on screen (px/s) for the spike-4 check (< 40). */
+export const moteSpeedPx = (u: number) => Math.min(DRIFT.moteSpeed * u, DRIFT.maxPx);
+/** Slab band centre y (px) sliding up: enters the bottom at L 20, leaves the top at L 132. */
+export const slabBandY = (L: number) => 1960 + (-160 - 1960) * smooth(DRIFT.slab[0], DRIFT.slab[1], L);
+export const paintDriftAir = (p: Painter, t: number, L: number, u: number) => {
+  washAt(p, 16100, '#bcd0e0', 90, rect(-40, -40, 260, 1960), 0.3, 0.1); // facade as a soft vertical wash, screen left
+  const y = slabBandY(L);
+  washAt(p, 16101, '#9fb4c8', 80, rect(-40, y - 40, 300, y + 40), 0.3, 0.1);
+  driftMotes(t, u).forEach((m, i) => washAt(p, 16200 + i, '#fff6dc', 255 * m.a, ell(m.x, m.y, m.r, m.r, 8), 0.1, 0.05));
+};
+/** Soft air streaks: curved pale strokes hugging an outline (a closed ring of points round the figure, px), drawn as an arc each, slowly
+ * drifting along the outline; none radial. `k` 0..1 is the fade over L 50-70 (ramp in, hold). */
+export const paintAirStreaks = (p: Painter, ring: Pt[], L: number, seed = 16400) => {
+  const k = smooth(DRIFT.streaks[0], DRIFT.streaks[0] + 6, L) * (1 - smooth(DRIFT.streaks[1], DRIFT.streaks[1] + 6, L));
+  if (k <= 0.02 || ring.length < 8) return;
+  const n = ring.length, cx = ring.reduce((s, q) => s + q[0], 0) / n, cy = ring.reduce((s, q) => s + q[1], 0) / n;
+  for (let i = 0; i < 4; i++) {
+    const start = Math.floor(((i / 4) * n + (L - DRIFT.streaks[0]) * 0.15 + hash(seed + i) * 3) % n), len = Math.floor(n * (0.12 + 0.06 * hash(seed + 9 + i)));
+    const arc: Pt[] = Array.from({length: len}, (_, j) => { const q = ring[(start + j) % n], dx = q[0] - cx, dy = q[1] - cy, m = Math.hypot(dx, dy) || 1, off = 26 + 10 * i; return [q[0] + (dx / m) * off, q[1] + (dy / m) * off] as Pt; });
+    inkLine(p, seed + 20 + i, arc, {weight: 1.6, color: mixColor('#ffffff', '#cfe0ec', 0.3), closed: false, curve: 0.4});
+    washAt(p, seed + 40 + i, '#ffffff', 60 * k, arc.concat(arc.slice().reverse().map(([x, y]): Pt => [x + 4, y + 4])), 0.2, 0.05);
+  }
+};

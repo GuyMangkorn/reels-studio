@@ -1,4 +1,5 @@
-import type {Painter} from '../kit/painter';
+import {ell, solid} from '../kit/draw';
+import type {Painter, Pt} from '../kit/painter';
 import type {V3} from '../kit/space';
 import {camOf, MACRO_CAMS} from './cams';
 import {edgeShade, paintGarden, shadeEdgeAt} from './garden';
@@ -15,7 +16,7 @@ import type {Item} from './world';
 //   printf 'EDU5-CHK-EDGE 45 out/edu05/w52/g1/EDGE45.png\n' | node scripts/stills.mjs src/painted/edu05/check-index.ts
 // They show an element in its shot's camera and staging, not a finished shot (Editor assembles those).
 
-export const CHECK_FRAMES = {EDGE: 90, DROP2: 87, DROP3: 119, DROP4: 133, ANTW: 25, FX: 80} as const;
+export const CHECK_FRAMES = {EDGE: 90, DROP2: 87, DROP3: 119, DROP4: 133, ANTW: 25, FX: 80, FAC: 97, SPECK: 32, DRIFT: 133} as const;
 const FPS = 30;
 
 /** G1: N2 shade edge sliding -0.5 -> -1.2 (S01-B05-SH01 L 0-89) with the shot camera, TINY cooled by `edgeShade` (K1), a gust (N1). */
@@ -70,4 +71,23 @@ export const paintFX = (p: Painter, frame: number) => {
   paintShrinkPop(p, [560, 640], 55 + frame * 0.2);
   paintScaleBars(p, barsAt(frame * 2));
   void shrinkScale;
+};
+
+import {paintCap, paintFacadeDown, paintFacadeUp, paintRing, lookDownCam, speckAt, speckCam} from './facade';
+import {paintAirStreaks, paintDriftAir} from './effects';
+/** G9: N3 look-down facade (S01-B01-SH02) with the cap. */
+export const paintFAC = (p: Painter, frame: number) => { const c = lookDownCam(frame / 96); paintFacadeDown(p, c, frame / FPS); paintCap(p, c); };
+/** G9: N3 speck on the facade with the ring marker (S01-B02-SH03). */
+export const paintSPECK = (p: Painter, frame: number) => {
+  const k = frame / 31, c = speckCam(k); paintFacadeUp(p, c, k);
+  const s = camPoint(c, speckAt(k, frame / FPS));
+  if (s) { solid(p, 15900, '#3a2f2a', ell(s[0], s[1], 3, 3, 8), 2); paintRing(p, s, (frame - 2) / 6); }
+};
+/** G10: N2 drift air + N10 air streaks round TINY (S01-B02-SH02, spread arms). */
+export const paintDRIFT = (p: Painter, frame: number) => {
+  const c = camOf({at: [[0, 0.8, 0], [0, 0.8, 0]], yaw: [-10, 15], r: [2.4, 2.4], eye: [1.0, 1.0], f: 1050, hy: 780}, frame / 132), t = frame / FPS, out: {a?: FigAnchors | null} = {};
+  paintDriftAir(p, t, frame, 438);
+  tinyItem({at: [0, 0, 0], view: 'front', pose: 'P01', face: 'surprised', t, fig: {lArm: {to: [200, 700], out: -1}, rArm: {to: [880, 700], out: 1}}}, out).draw(p, c);
+  const a = out.a;
+  if (a) { const cx = a.head[0], cy = (a.headTop + 1218) / 2, ring: Pt[] = Array.from({length: 40}, (_, i) => [cx + Math.cos((i / 40) * 6.283) * 190, cy + Math.sin((i / 40) * 6.283) * 520] as Pt); paintAirStreaks(p, ring, frame); }
 };

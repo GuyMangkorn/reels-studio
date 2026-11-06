@@ -138,3 +138,17 @@ test('breadcrumb grips are on opposite faces; scale-bars end heights and boxes',
   assert.ok(end.force > end.weight * 2.9 && BARS.slots.force[1] === 900);
   assert.equal(Math.round(end.icon), 48);
 });
+
+// N3 (EDU-EP05 W5.2): the look-down camera and the facade-up camera reproduce the sheets' `meas`; N2/N10 drift motes stay under 40 px/s.
+import {downVanish, lookDownCam, speckAt, speckCam} from '../src/painted/edu05/facade';
+import {moteSpeedPx} from '../src/painted/edu05/effects';
+
+test('look-down and speck cameras hit the sheet meas', () => {
+  const near = (a: number[], b: number[], tol: number, what: string) => assert.ok(Math.hypot(a[0] - b[0], a[1] - b[1]) <= tol, `${what} ${a} vs ${b}`);
+  near(downVanish(lookDownCam(0))!, [540, 963], 3, 'vanishing point');
+  near(camPoint(lookDownCam(0), [-0.25, 1.12, 0])!, [908, 354], 4, 'mug start');
+  near(camPoint(lookDownCam(1), [-0.25, 1.12, 0])!, [986, 225], 4, 'mug end');
+  near(camPoint(speckCam(0), speckAt(0))!, [487, 764], 4, 'speck start');
+  near(camPoint(speckCam(1), speckAt(1))!, [490, 703], 4, 'speck end');
+  assert.ok(moteSpeedPx(438) <= 27 && moteSpeedPx(180) <= 27, 'motes under 40 px/s at her depth (692 px / 1.58 sm = 438 px/sm)');
+});
