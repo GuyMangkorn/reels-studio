@@ -1,5 +1,34 @@
 # EDU-EP05-SHORT build notes (Editor)
 
+## W5.3 sound pass, 2026-11-07 (Editor)
+
+**Generated (audio-studio, Stable Audio 3, seeds in each library sidecar; raw candidates in `library/sound/_raw/edu05_ng-*`).** Library INDEX searched first: no match for any NG item. 2 candidates for music, 3 for SFX; picked by measured shape (onset, peak position, tail, low/high band share) vs prompt, not by ear. All "generated, not listened".
+
+| NG | Library ID | Pick | Note |
+| --- | --- | --- | --- |
+| M1 | `bed_edu05-curious-theme_01` | v1 (60 s, -13.98 LUFS) | one flat texture, steady -17..-20 dB RMS: the model did not follow the sections (airy / pluck / pizzicato); the sheet's section changes are NOT delivered |
+| M2 | `bed_edu05-cold-theme_01` | v1 (cut to 13.4 s, -13.46 LUFS) | v2 had heavy low band (not sparse) |
+| M3 | `bed_edu05-warm-theme_01` | v1 (25 s, -13.99 LUFS) | builds to a peak at about 17 s, tail to 22 s; from G1356 the peak lands near G1866, the sheet wants the end chord from about G1771 (not aligned) |
+| S1 | `comedy_shrink-pop-gliss_01` | v2, 1.05 s | |
+| S2 | `foley_grass-creak-giant_01` | v1, 2.70 s | sheet asks 3 s |
+| S3 | `foley_soft-landing-tap_01` | v3, 0.095 s | shorter than the 0.4 s asked; high-passed 150 Hz in the mix (no thump) |
+| S4 | `comedy_glass-boing-creak_01` | v1, 1.23 s | |
+| S5 | `foley_wet-plop_01` | v1, 0.26 s | shorter than 0.5 s |
+| S6 | `reveal_warmth-fwoop_01` | v2, 0.87 s | darkest (warm) of three |
+| S7 | `foley_crumb-drag-scrape_01` | v1, 2.13 s | |
+| S8 | `foley_ant-steps-tiny_01` | v3, 4.0 s loop (0.5 s crossfade) | loop seam not checked beyond the processing step |
+| S9 | `stinger_brass-celesta-triumph_01` | v3, 1.88 s | |
+
+**Stem v2:** `python3 -I scripts/edu-series/ep05/review-mix.py` -> `public/audio/edu/EDU-EP05-SHORT-review-stem-v2.wav` (ignored cache; 1963 f; 48 kHz mono). Integrated -33.9 LUFS (v1 -32.4), peak -8.8 dBFS, narration alone -15.8 LUFS. The sheets and brief state NO loudness target for the sound stem; the level is kept at v1's relation (music ducked by the narration side-chain, about -18 LU under the voice), by number only. M1 -25 dB, M2 -26, M3 -25 before the duck. Silence policy checked by measurement: G1332-1356 (44.4-45.2 s) holds only the ant steps (RMS -48 dB); M2 ends by a 1-frame fade on G1332; G1962 (65.2-65.43 s) RMS -100 dB. Cue frames are shot start + L offset from the shot blocks (S1 190, S2 212, S3 499, S4 665 and soft creaks 769/799, S5 976, S6 1149/1161, S7 1253, S8 1117-1173 far and 1332-1430 close, S9 1648). Old stand-ins removed; library fallbacks kept for the non-NG cues. Not delivered: soft mug sip (not requested), B02 "airy harp + high pad" and B03 "comic cello pizzicato" sections of NG-M1, M3 end chord aligned to L16/L17.
+
+**UB-1 / UB-2 waveform check (NOT an ear check).** `silencedetect -35 dB / 0.15 s` on the full read `projects/EDU/narration/ep05/2026-11-06_ep05-nar-kore-brisk-fullread-x110.wav` (edges equal `voice-measure.json`) and on the placed `public/narration/EDU-EP05-SHORT.wav`:
+- UB-1: silence 39.79-40.23 s (0.44 s) is the only silence >= 0.15 s between 37.80 and 41.24, so no other candidate boundary exists in the merged region. Weakness: its length equals a comma pause of L15 (41.24-41.67, 0.43 s), so length alone does not tell a line break from a comma; the other comma pauses are 0.18 and 0.34 s, line-break gaps 0.66 (L13/L14) and 0.71 s. Placed: gap G1415-1425 (0.31 s); the cut G1421 is inside it (4 f before the L15 onset G1425, 5 f after L14 end).
+- L15 phrase cues vs read: phrase 1 (sheet L4-34 = G1429-1459) is followed by a silence starting G1455 (-4 f); phrase 2 (L48-69 = G1473-1494) by one at G1490-1495 (-4 f); L15a caption end G1500 is 5 f after that gap ends. L15 end G1589 equals read 45.70 s exactly.
+- UB-2: gap 45.70-46.41 s (0.71 s) is the longest in the line, longer than every comma pause (0.18-0.43) and equal to the L13/L14 line-break gap (0.66); "แล้วคุณล่ะ" 46.41-46.91 is followed by a 0.54 s pause (46.91-47.46) above the comma range, so it stands as its own phrase, as L16a. Placed: speech from G1620 to about G1635, silence G1635-1651, L16a caption G1620-1652 fits (+1 f). Between L15 end G1589 and G1620 the placed gap is 31 f (read 0.71 s = 21 f) because L15 and L16 are placed at the sheet onsets; V07's gasp (G1598-1603) sits inside it.
+- Conclusion: the waveform supports both splits and all G1421/G1425/G1500/G1620-1652 cues within +-5 f (0.17 s, inside the sheet's +-0.18 s). It cannot decide UB-1 more firmly than the single-silence argument; the final judgment (does the ear hear L14 end and L15 start there; does "แล้วคุณล่ะ" belong to L16) stays with the user.
+
+**Tests:** `node --import tsx --test tests/edu05*.test.ts` 11/11; `python3 scripts/context-map.py` 0 problems (logs `out/logs/w53-edu05-test.log`, `w53-context-map.log`).
+
 ## W5.3 blockout, 2026-11-06 (Editor) — status: blockout only, Draft NOT passed
 
 Inputs: scene sheets EDU-EP05-SHEETS-R1, script R1.3a, voice lock W4 (NAR Kore x1.10, TINY Leda picks). Picture: none of Boss's N1-N10/K1 plates exist yet in the painted registry.
@@ -15,7 +44,7 @@ Inputs: scene sheets EDU-EP05-SHEETS-R1, script R1.3a, voice lock W4 (NAR Kore x
 
 **Evidence:** `node --import tsx --test tests/edu05.test.ts` 3/3; `node scripts/render.mjs EDU-EP05-SHORT --stills --frames=14,55,151,...` renders 19 stills (one per shot, shot start + 14), sheet `out/EDU-EP05-SHORT/blockout-sheet-v1.png` (placeholder cards, caption stroke in the 1176-1344 band, mark top-left, no caption in the silence). Not run: Studio, random/backward seek, motion, mixed-audio listen, any render of final art. Caption stroke over the bright LF01 floor (sheet's open check) can only be judged on real art.
 
-**Open:** Boss N1-N10/K1 plates; Film review of the blockout; NG-* generation + ear check of all library one-shots; UB-1/UB-2 ear check; amplitude track (`narration.amplitude` is `[]`, EP04 pattern; no talking figure needs it).
+**Open:** Boss N1-N10/K1 plates; Film review of the blockout; ear check of every NG-* sound and the stem v2 (nobody has listened); UB-1/UB-2 ear check (waveform measured only); amplitude track (`narration.amplitude` is `[]`, EP04 pattern; no talking figure needs it).
 
 ## W5.2 Boss elements (2026-11-06, branch claude/edu-draft-element-1afc3a)
 
