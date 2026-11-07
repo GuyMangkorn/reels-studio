@@ -22,8 +22,8 @@ export const EDU5_TOUCH_FRAMES = 71;
 /** S01-B01-SH04 length in frames (she stands, `paintSTAND`). */
 export const EDU5_STAND_FRAMES = 32;
 
-/** S01-B02-SH02 length in frames (the follow camera runs over L 0-132, `paintDRIFT` k = L / 132). */
-export const EDU5_DRIFT_FRAMES = 132;
+/** S01-B02-SH02 length in frames (the follow camera runs over L 0-158, `paintDRIFT` k = L / 158). */
+export const EDU5_DRIFT_FRAMES = 158;
 
 /** S01-B02-SH03 length in frames (the speck camera runs over L 0-31, `paintSPECK` k = L / 31). */
 export const EDU5_SPECK_FRAMES = 32;
@@ -120,8 +120,8 @@ export const edu05Shots: PaintedShot[] = [
     Overlay: screen,
   },
   {
-    // S01-B02-SH02 (the drift, G329-461): `paintDRIFT` is the check stand-in's own paint (follow camera yaw -10 -> +15, drift-spread pose, +-8 deg roll, no contact shadow,
-    // drift motes + slab band + air streaks L 50-70), reused not copied. Frame clamped to the shot's 132 f.
+    // S01-B02-SH02 (the drift, G329-487): `paintDRIFT` is the check stand-in's own paint (follow camera yaw -10 -> +15, drift-spread pose, +-8 deg roll, no contact shadow,
+    // drift motes + slab band + air streaks L 81-119), reused not copied. Frame clamped to the shot's 158 f.
     id: 'EDU5-S01-B02-SH02',
     serves: ['S01-B02-SH02'],
     paper: PAPER,

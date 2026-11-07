@@ -7,7 +7,7 @@ import {EDU5_CUTS, EDU5_FPS, EDU5_SHOTS, EDU5_TOTAL, edu5CaptionEvents} from './
 
 /**
  * EDU-EP05-SHORT (C6 "ถ้าคุณตัวเล็กเท่ามด") W5.3 blockout (Editor, 6 Nov 2026): scene sheets EDU-EP05-SHEETS-R1 (scripts/edu-series/ep05/scene-sheets.md),
- * script R1.3a, voice lock W4 (Kore x1.10 + Leda picks). 19 shots = 19 scenes, 1963 f at 30 fps (65.43 s), hard cuts. Ending `A_fade`, live hold (endHoldSec 0),
+ * script R1.3a, voice lock W4 (Kore x1.10 + Leda picks). 19 shots = 19 scenes, 1989 f at 30 fps (66.30 s), hard cuts. Ending `A_fade`, live hold (endHoldSec 0),
  * fade 0.8 s (brief VD17). Narration = scripts/edu-series/ep05/narration-place.py -> public/narration/EDU-EP05-SHORT.wav; sound = review-mix.py
  * (library-only stem, NG-* not generated). Captions: edu stroke style (CAPTION_OUTLINE, no band), bottom edge y 1344, cues from the shot blocks.
  *
