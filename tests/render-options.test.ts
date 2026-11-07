@@ -52,3 +52,10 @@ test('--range parses <from>-<to> and rejects bad ranges', () => {
   assert.throws(() => parseRenderArgs(['Short', '--range=500-100']), /--range needs/);
   assert.throws(() => parseRenderArgs(['Short', '--range=10']), /--range needs/);
 });
+
+test('--unreviewed needs a reason', () => {
+  assert.equal(parseRenderArgs(['ZCPAINT-SHORT-TH']).unreviewed, undefined);
+  assert.equal(parseRenderArgs(['ZCPAINT-SHORT-TH', '--unreviewed=user skipped the review']).unreviewed, 'user skipped the review');
+  assert.throws(() => parseRenderArgs(['ZCPAINT-SHORT-TH', '--unreviewed']), /--unreviewed needs a reason/);
+  assert.throws(() => parseRenderArgs(['ZCPAINT-SHORT-TH', '--unreviewed=']), /--unreviewed needs a reason/);
+});

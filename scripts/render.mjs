@@ -12,6 +12,9 @@
 // into the scene cache first, so a later full render reuses them.
 // Pinned finals (scripts/pin.mjs): a render stops when a pinned scene would change; --keep-pinned reuses the approved
 // segment, --repaint=<shot,...|all> renders it again and unpins it for a new review.
+// Delivery gate (docs/render-rules.md#render-stage): a delivery render (no --range, --draft, --preview, --stills or --covers)
+// stops before painting while any scene of the ending is unpinned, i.e. before the user passed the final cut.
+// --unreviewed="<reason>" renders anyway, only after the user chose to skip the review; the reason is logged.
 // Measurements: docs/dev-findings/DF-20261031-render-speed.md.
 // Each run bundles into its own temp directory, lets Remotion pick a free port and writes only under
 // out/<CompositionId>/, so renders of different videos can run at the same time.
@@ -30,10 +33,10 @@ import {mkdir, copyFile} from 'node:fs/promises';
 import {spawnSync} from 'node:child_process';
 import {describeLoudness, normalizeLoudness} from './loudness.mjs';
 import {endingsFor, parseRenderArgs} from './render-options.mjs';
-import {renderSegmented} from './segments.mjs';
+import {pinsFile, readJson, renderSegmented, unpinnedScenes, variantOf} from './segments.mjs';
 import {withRenderLog} from './render-log.mjs';
 
-const {ids, stills, covers: coversOnly, frames, endings: requestedEndings, gl, timeoutInMilliseconds, concurrency, preview, draft, noCache, range, keepPinned, repaint} = parseRenderArgs(process.argv.slice(2));
+const {ids, stills, covers: coversOnly, frames, endings: requestedEndings, gl, timeoutInMilliseconds, concurrency, preview, draft, noCache, range, keepPinned, repaint, unreviewed} = parseRenderArgs(process.argv.slice(2));
 if (!ids.length) throw new Error('Name at least one composition ID, e.g. npm run render -- CATBOX-C01-Short');
 
 const browserExecutable = process.env.BROWSER_EXECUTABLE ?? null;
@@ -70,7 +73,25 @@ try {
       await metrics.time('stills', () => renderStills({serveUrl, composition, inputProps: stillProps, puppeteerInstance: browser, ...shared, frames, outputFor: (frame) => `${dir}/stills/${frame}.png`, onStill: (frame) => console.log(`Checked ${id} frame ${frame}`)}), {id});
       continue;
     }
-    const endings = endingsFor(requestedEndings, (await selectComposition({serveUrl, id, puppeteerInstance: browser, ...shared})).props);
+    const base = await selectComposition({serveUrl, id, puppeteerInstance: browser, ...shared});
+    const endings = endingsFor(requestedEndings, base.props);
+    if (!preview && !draft && !range) {
+      const pins = await readJson(pinsFile(id), {});
+      const sceneCount = base.props.timeline?.length ?? 0;
+      for (const ending of endings) {
+        const open = unpinnedScenes(pins[variantOf(base, {ending})], sceneCount);
+        if (!open.length) continue;
+        const list = open.slice(0, 12).map((i) => i + 1).join(', ') + (open.length > 12 ? ', ...' : '');
+        const summary = `${id} ${ending}: ${open.length} of ${sceneCount} scenes are not pinned (scenes ${list})`;
+        if (!unreviewed) {
+          throw new Error(`delivery render stopped: ${summary}. Stages (docs/render-rules.md#render-stage): per-shot draft clips `
+            + '(storyboard-page/clips.mjs --draft), the final cut (clips.mjs --full), pins (pin.mjs pin-rows), then this render. '
+            + 'For a review render use --range or --draft. Only if the user chose to skip the review: --unreviewed="<reason>".');
+        }
+        metrics.event('unreviewed', {id, ending, unpinned: open.length, scenes: sceneCount, reason: unreviewed});
+        console.log(`WARNING unreviewed delivery render: ${summary}; reason: ${unreviewed}`);
+      }
+    }
     const outDir = range ? `${dir}/range` : preview ? `${dir}/preview` : draft ? `${dir}/draft` : dir;
     await mkdir(outDir, {recursive: true});
     for (const ending of endings) {

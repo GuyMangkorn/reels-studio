@@ -15,6 +15,8 @@
 // scene cache to out/<CompositionId>/clips/_final_cut.mp4 (540x960) and gives every shot clips.final on that cut, with
 // "key" = the segment keys of the shot's scenes, so a re-render keeps the verdicts of shots whose scenes did not change.
 // Pinned scenes are reused when unchanged; --keep-pinned keeps changed pinned scenes as approved.
+// --full stops while any shot has no draft clip (docs/render-rules.md#render-stage); --skip-draft="<reason>" renders
+// anyway, only after the user chose to skip the draft stage.
 // Prints one line per shot, then the build command.
 // Defaults to --gl=angle; per-run timings and cache counts are written to out/logs/render-clips-*.jsonl.
 import {bundle} from '@remotion/bundler';
@@ -33,6 +35,14 @@ const full = flags.full === true;
 const draft = flags.draft === true;
 if (full && draft) throw new Error('--full renders the final cut; draft clips stay per shot');
 const rows = JSON.parse(await readFile(rowsPath, 'utf8'));
+const noDraft = full ? rows.shots.filter((s) => !s.clips?.draft).map((s) => s.id) : [];
+const skipDraft = typeof flags['skip-draft'] === 'string' && flags['skip-draft'] ? flags['skip-draft'] : null;
+if (noDraft.length && !skipDraft) {
+  throw new Error(`final cut stopped: ${noDraft.length} of ${rows.shots.length} shots have no draft clip (${noDraft.slice(0, 12).join(', ')}${noDraft.length > 12 ? ', ...' : ''}). `
+    + 'Render them first (--draft --missing) and let the user pass them (docs/render-rules.md#render-stage). '
+    + 'Only if the user chose to skip the draft stage: --skip-draft="<reason>".');
+}
+if (noDraft.length) console.log(`WARNING final cut without drafts for ${noDraft.length} shots; reason: ${skipDraft}`);
 const kind = draft ? 'draft' : 'final';
 const wanted = full ? rows.shots.map((s) => s.id) : flags.shots ? String(flags.shots).split(',') : rows.shots.filter((s) => !s.clips?.[kind]).map((s) => s.id);
 const shots = wanted.map((sid) => rows.shots.find((s) => s.id === sid) ?? (() => { throw new Error(`shot ${sid} is not in ${rowsPath}`); })());
@@ -40,7 +50,7 @@ if (!shots.length) { console.log(`every shot already has a ${kind} clip`); proce
 
 const {gl, timeoutInMilliseconds, concurrency} = parseRenderArgs(argv);
 const chromiumOptions = gl ? {gl} : {};
-await withRenderLog({tool: 'clips', ids: [id], gl, draft, full, shots: wanted, concurrency, scale: 1}, async (metrics) => {
+await withRenderLog({tool: 'clips', ids: [id], gl, draft, full, shots: wanted, concurrency, scale: 1, ...(noDraft.length ? {skipDraft, noDraft} : {})}, async (metrics) => {
 const serveUrl = await metrics.time('bundle', () => bundle({entryPoint: path.resolve('src/index.ts')}));
 const browser = await metrics.time('browser', () => openBrowser('chrome', {chromiumOptions}));
 const dir = `out/${id}/clips`;

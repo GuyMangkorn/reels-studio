@@ -50,6 +50,9 @@ export const variantOf = (composition, inputProps) => {
   return [props.ending ?? 'A_fade', props.paintDraft ? 'draft' : '', props.paintScale && props.paintScale !== 1 ? `scale${props.paintScale}` : ''].filter(Boolean).join('|');
 };
 
+/** Scene indexes (0-based) that one variant's pins leave open; render.mjs refuses a delivery render while any remain. */
+export const unpinnedScenes = (pins, sceneCount) => Array.from({length: sceneCount}, (_, i) => i).filter((i) => !pins?.[i]);
+
 /**
  * Checks the picked scenes against their pins. A pinned scene whose key changed is `changed` (the user must choose),
  * unless `repaint` names it (render new, unpin) or `keep` is set (reuse the pinned segment). Returns the keys to use.

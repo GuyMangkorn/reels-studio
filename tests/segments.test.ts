@@ -4,7 +4,7 @@ import {mkdirSync, mkdtempSync, rmSync, writeFileSync} from 'node:fs';
 import {tmpdir} from 'node:os';
 import path from 'node:path';
 import {sceneFrames as runtimeSceneFrames} from '../src/scenes/timeline';
-import {applyPins, sceneFrames, sceneRanges, scenesInRange, segmentKeys, sourceHash, variantOf} from '../scripts/segments.mjs';
+import {applyPins, sceneFrames, sceneRanges, scenesInRange, segmentKeys, sourceHash, unpinnedScenes, variantOf} from '../scripts/segments.mjs';
 
 type Scene = {durationSec: number; subtitle?: string; sfx?: unknown[]; actors?: unknown[];
   painted?: {shots: {shot: string; atSec: number; dissolveSec?: number}[]}; transitionIn?: {frames: number}};
@@ -120,6 +120,13 @@ test('applyPins keeps unchanged pins and stops on changed ones', () => {
   assert.deepEqual([repaint.use, repaint.unpin, repaint.changed], [keys, [1], []]);
   assert.deepEqual(applyPins(pins, picked, keys, {repaint: ['all']}).unpin, [1]);
   assert.deepEqual(applyPins(undefined, picked, keys).changed, []);
+});
+
+test('unpinnedScenes lists the scenes a delivery render would ship unapproved', () => {
+  const pins = {0: {key: 'k0', shots: ['B01-SH01'], range: [0, 29]}, 2: {key: 'k2', shots: ['B02-SH01'], range: [105, 116]}};
+  assert.deepEqual(unpinnedScenes(pins, 4), [1, 3]);
+  assert.deepEqual(unpinnedScenes(undefined, 3), [0, 1, 2]);
+  assert.deepEqual(unpinnedScenes({...pins, 1: pins[0], 3: pins[2]}, 4), []);
 });
 
 test('variantOf separates finals from draft and preview renders', () => {

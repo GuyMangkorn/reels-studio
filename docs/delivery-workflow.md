@@ -116,7 +116,7 @@ Concepts are pitches, not research: no claim in `concepts.md` counts as checked 
 - **Read first** when the user asks for progress ("ทำถึงไหนแล้ว"): answer from the `Now` line and the open steps, and open `delivery.md` only for detail.
 - **Marks:** `[x]` done, `[ ]` open, `[x] … N/A — <reason>` for a step with no subject. Each line is one step plus at most one short note (revision, count, date); link instead of copying.
 - **Per-shot steps** (W3.3, W5, W6, W7) carry a count, e.g. `12/26 shots passed`; the per-shot verdicts stay on the storyboard review page.
-- For a deliverable whose engine is not painted 2D, W3.1–W3.2 are `N/A` and W5–W6 are Editor's integration and render review.
+- For a deliverable whose engine is not painted 2D, W3.1–W3.2 are `N/A`; W5 is Editor's integration reviewed scene by scene (`render.mjs --range` per scene, about 1 s either side), W6 the whole cut once every scene passed, and W7 pins as for painted work ([render stage](render-rules.md#render-stage)).
 
 ```markdown
 # Tasks — <EPISODE>

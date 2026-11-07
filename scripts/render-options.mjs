@@ -17,6 +17,8 @@ export const parseRenderArgs = argv => {
     if (!Number.isInteger(number) || number < 1) throw new Error(`--${name} needs a positive integer, got "${raw}"`);
     return number;
   };
+  const unreviewed = value('unreviewed');
+  if (argv.includes('--unreviewed') || unreviewed === '') throw new Error('--unreviewed needs a reason quoting the user\'s choice, e.g. --unreviewed="user skipped the review, 7 Nov 2026"');
   const gl = value('gl') ?? 'angle';
   if (gl !== undefined && !GL.includes(gl)) throw new Error(`--gl must be one of ${GL.join(', ')}; got "${gl}"`);
   return {
@@ -40,6 +42,8 @@ export const parseRenderArgs = argv => {
     noCache: argv.includes('--no-cache'),
     // Video frame range [from, to] (inclusive), e.g. --range=300-599; written to out/<id>/range/, not archived.
     range: parseRange(value('range')),
+    // Delivery render with unpinned scenes, only after the user chose to skip the review (docs/render-rules.md#render-stage).
+    unreviewed,
   };
 };
 

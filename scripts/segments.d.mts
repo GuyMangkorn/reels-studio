@@ -10,6 +10,7 @@ export declare const pinsFile: (id: string) => string;
 export declare const manifestFile: (id: string) => string;
 export declare const readJson: <T>(file: string, fallback: T) => Promise<T>;
 export declare const variantOf: (composition: CompositionLike, inputProps: Record<string, unknown>) => string;
+export declare const unpinnedScenes: (pins: Record<string | number, Pin> | undefined, sceneCount: number) => number[];
 export declare const applyPins: (pins: Record<string | number, Pin> | undefined, picked: number[], keys: string[], options?: {keep?: boolean; repaint?: string[]}) =>
   {use: string[]; changed: {scene: number; shots: string[]; range: number[]}[]; unpin: number[]; kept: number[]};
 export declare const ffmpeg: (args: string[]) => void;
