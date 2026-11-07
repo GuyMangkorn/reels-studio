@@ -3,10 +3,11 @@
 // A segment is re-rendered only when its key changes. The key covers what that scene's frames can show: the scene, its
 // range, the neighbours the renderer reads (actor poses and dissolves from the previous scene, the entry transition of
 // the next one, the C_seamless/B_loop wrap to the first scene; see segmentKeys), the scene count and total length, every
-// non-timeline prop except the sound beds, the selected project’s transitive runtime imports and picture media,
-// applicable picture lock entries and render options. Project declarations reach frames as props. Unknown inputs
+// non-timeline prop except the sound beds, the selected project’s transitive runtime imports and picture media (shot-own
+// files only for the scenes showing that shot, scripts/render-inputs.ts), applicable picture lock entries and render options. Project declarations reach frames as props. Unknown inputs
 // bypass reuse. Editing a caption, overlay or SFX cue re-renders only that scene (plus a neighbour that reads it). A duration
 // change re-renders every scene, because the total length is in every key; narration timing or shared code does too.
+// Editing a shot-own file (named after the shot, imported by the inventory) re-renders only the scenes showing that shot.
 // Evidence: docs/dev-findings/DF-20261101-segment-cache-key.md.
 import {renderMedia} from '@remotion/renderer';
 import {createHash, randomUUID} from 'node:crypto';
@@ -50,6 +51,9 @@ export const variantOf = (composition, inputProps) => {
   return [props.ending ?? 'A_fade', props.paintDraft ? 'draft' : '', props.paintScale && props.paintScale !== 1 ? `scale${props.paintScale}` : ''].filter(Boolean).join('|');
 };
 
+/** Scene indexes (0-based) that one variant's pins leave open; render.mjs refuses a delivery render while any remain. */
+export const unpinnedScenes = (pins, sceneCount) => Array.from({length: sceneCount}, (_, i) => i).filter((i) => !pins?.[i]);
+
 /**
  * Checks the picked scenes against their pins. A pinned scene whose key changed is `changed` (the user must choose),
  * unless `repaint` names it (render new, unpin) or `keep` is set (reuse the pinned segment). Returns the keys to use.
@@ -68,21 +72,47 @@ export const applyPins = (pins, picked, keys, {keep = false, repaint = []} = {})
 };
 
 /**
- * Content digest of this project's transitive inputs, including shared art. Null when the inputs cannot be established:
+ * Content digests of this project's transitive inputs: `hash` for shared code and art, `scenes[i]` for the shot-own
+ * code of scene i ('' when it has none; scripts/render-inputs.ts). Null when the inputs cannot be established:
  * renderSegmented then bypasses the cache and the pin check instead of reporting every pinned scene as changed.
  */
-export const sourceHash = (root = '.', composition, inputProps = {}) => {
+export const sourceInputs = (root = '.', composition, inputProps = {}) => {
   const run = spawnSync(process.execPath, ['--import', 'tsx', fileURLToPath(new URL('./render-inputs.ts', import.meta.url))], {
     input: JSON.stringify({root: path.resolve(root), id: composition?.id, props: {...composition?.props, ...inputProps}}),
     encoding: 'utf8', timeout: 60000, maxBuffer: 1024 * 1024,
   });
   try {
     const result = JSON.parse(run.stdout);
-    if (run.status === 0 && /^[a-f0-9]{64}$/.test(result.hash)) return result.hash;
+    if (run.status === 0 && /^[a-f0-9]{64}$/.test(result.hash) && Array.isArray(result.scenes)) {
+      for (const warning of result.warnings ?? []) console.warn(`Scene cache: ${warning}`);
+      return {hash: result.hash, scenes: result.scenes, own: result.own ?? result.scenes.map(() => []), warnings: result.warnings ?? []};
+    }
     console.warn(`Scene cache reuse bypassed: ${result.error ?? 'render input discovery failed'}`);
   } catch {console.warn('Scene cache reuse bypassed: render input helper did not complete');}
   return null;
 };
+/**
+ * Why each scene in `indexes` needs a new segment, from the manifest entry of the previous render of the same variant
+ * (`previous`: {source, scenes: [{range, key, code}]}) and this render's inputs. Returns one short reason per index.
+ */
+export const repaintReasons = (previous, {source, scenes = [], own = [], keys, ranges}, indexes) => indexes.map((i) => {
+  const before = previous?.scenes?.[i];
+  if (!previous?.source || !before) return 'first render';
+  if (previous.scenes.length !== ranges.length || previous.scenes.at(-1).range[1] !== ranges.at(-1)[1]) return 'video length or scene count';
+  if (previous.source !== source) return 'shared code or art';
+  if ((before.code ?? '') !== (scenes[i] ?? '')) return `shot file ${own[i]?.join(', ') || '(removed)'}`;
+  if (before.key === keys[i]) return 'segment missing from the cache';
+  return 'timeline, neighbour or render options';
+});
+/** One log line: reasons grouped, scenes numbered from 1. */
+export const describeReasons = (indexes, reasons) => {
+  const groups = new Map();
+  indexes.forEach((scene, j) => groups.set(reasons[j], [...(groups.get(reasons[j]) ?? []), scene + 1]));
+  return [...groups].map(([reason, scenes]) => `${reason} → scene${scenes.length > 1 ? 's' : ''} ${scenes.join(', ')}`).join('; ');
+};
+
+/** The shared digest alone (see sourceInputs). */
+export const sourceHash = (root = '.', composition, inputProps = {}) => sourceInputs(root, composition, inputProps)?.hash ?? null;
 
 /**
  * One key per scene, in timeline order. `options` are the render settings that change pixels. A neighbour enters a
@@ -95,13 +125,15 @@ export const sourceHash = (root = '.', composition, inputProps = {}) => {
  *  - every scene: a global sceneTransitionFrames fades at every boundary (`transitionOpacityAt` reads the frame counts of
  *    all scenes, so they are hashed), and its neighbours are included as for a transition.
  * The scene count is hashed only while the progress bar (`chrome.progressBar`) is on: it is the one place SceneView reads it.
+ * `sceneSources[i]` (sourceInputs().scenes) is scene i's shot-own code; a key takes it for the same scenes as `near`, and
+ * only when one is set, so keys of episodes without shot-own files are unchanged.
  */
 // Object keys are sorted, so a refactor that only reorders fields of the same props keeps every segment.
 const sortedKeys = (_key, value) => (value && typeof value === 'object' && !Array.isArray(value)
   ? Object.fromEntries(Object.keys(value).sort().map((k) => [k, value[k]])) : value);
 const stableJson = (value) => JSON.stringify(value, sortedKeys);
 
-export const segmentKeys = (composition, inputProps, options, source) => {
+export const segmentKeys = (composition, inputProps, options, source, sceneSources = []) => {
   const {timeline, narration, audio: _audio, ...rest} = {...composition.props, ...inputProps};
   const {src: _src, ...narrationPicture} = narration ?? {};
   const globalTransitions = (rest.sceneTransitionFrames ?? 0) > 0;
@@ -115,13 +147,10 @@ export const segmentKeys = (composition, inputProps, options, source) => {
     const last = i === timeline.length - 1;
     const readsPrev = globalTransitions || (i > 0 && (Boolean(scene.actors?.length) || scene.painted?.shots?.[0]?.dissolveSec !== undefined));
     const readsNext = !last && (globalTransitions || Boolean(timeline[i + 1].transitionIn));
-    const near = [
-      readsPrev ? timeline[i - 1] : undefined,
-      scene,
-      readsNext ? timeline[i + 1] : undefined,
-      last && rest.ending !== 'A_fade' ? timeline[0] : undefined,
-    ].map(sounds);
-    return createHash('sha256').update(shared).update(stableJson({i, range: ranges[i], near})).digest('hex').slice(0, 16);
+    const nearIndexes = [readsPrev ? i - 1 : -1, i, readsNext ? i + 1 : -1, last && rest.ending !== 'A_fade' ? 0 : -1];
+    const near = nearIndexes.map((j) => (j < 0 ? undefined : timeline[j])).map(sounds);
+    const code = nearIndexes.map((j) => (j < 0 ? '' : sceneSources[j] ?? ''));
+    return createHash('sha256').update(shared).update(stableJson({i, range: ranges[i], near, ...(code.some(Boolean) ? {code} : {})})).digest('hex').slice(0, 16);
   });
 };
 
@@ -141,8 +170,9 @@ export const ffmpeg = (args) => {
 export const renderSegmented = async ({render, options, workDir, output, log, frameRange, pinOptions = {}, metrics}) => {
   const {composition, inputProps} = render;
   const measure = (stage, work, details = {}) => metrics ? metrics.time(stage, work, {id: composition.id, output, ...details}) : work();
-  const source = await measure('inputs', () => sourceHash('.', composition, inputProps));
-  const allKeys = segmentKeys(composition, inputProps, options, source ?? randomUUID());
+  const inputs = await measure('inputs', () => sourceInputs('.', composition, inputProps));
+  const source = inputs?.hash ?? null;
+  const allKeys = segmentKeys(composition, inputProps, options, source ?? randomUUID(), inputs?.scenes);
   const allRanges = sceneRanges({...composition.props, ...inputProps}.timeline, composition.fps);
   const picked = frameRange ? scenesInRange(allRanges, frameRange) : allKeys.map((_, i) => i);
   if (!picked.length) throw new Error(`--range f${frameRange[0]}-${frameRange[1]} is outside the video (0-${composition.durationInFrames - 1})`);
@@ -152,18 +182,26 @@ export const renderSegmented = async ({render, options, workDir, output, log, fr
   const segDir = source ? segmentDir(composition.id) : workDir;
   await mkdir(segDir, {recursive: true});
   let keys = picked.map((i) => allKeys[i]);
+  let reasonOf = () => 'scene cache bypassed';
   if (!source) log('scene cache bypassed: pins not checked, segments not cached');
   else {
     const variant = variantOf(composition, inputProps);
-    // The keys of the latest render per variant, so scripts/pin.mjs can pin what the user just saw.
+    // The keys of the latest render per variant, so scripts/pin.mjs can pin what the user just saw; `source` and `code`
+    // let the next render say why a scene repaints (repaintReasons).
     const manifest = await readJson(manifestFile(composition.id), {});
-    manifest[variant] = {renderedAt: new Date().toISOString(), scenes: allRanges.map((range, i) => ({range, key: allKeys[i]}))};
+    const previous = manifest[variant];
+    const current = {source, scenes: inputs.scenes, own: inputs.own, keys: allKeys, ranges: allRanges};
+    reasonOf = (scene) => repaintReasons(previous, current, [scene])[0];
+    // A pin can be older than the previous render, which may already carry the change.
+    const pinReason = (scene) => {const reason = reasonOf(scene); return reason === 'segment missing from the cache' ? 'changed before the last render' : reason;};
+    manifest[variant] = {renderedAt: new Date().toISOString(), source,
+      scenes: allRanges.map((range, i) => ({range, key: allKeys[i], ...(inputs.scenes[i] ? {code: inputs.scenes[i]} : {})}))};
     await writeFile(manifestFile(composition.id), JSON.stringify(manifest, null, 1));
     const allPins = await readJson(pinsFile(composition.id), {});
     const {use, changed, unpin, kept} = applyPins(allPins[variant], picked, keys, pinOptions);
     keys = use;
     if (changed.length) {
-      throw new Error(`pinned finals would change: ${changed.map((c) => `${c.shots.join('+')} (scene ${c.scene + 1}, f${c.range[0]}-${c.range[1]})`).join(', ')}. `
+      throw new Error(`pinned finals would change: ${changed.map((c) => `${c.shots.join('+')} (scene ${c.scene + 1}, f${c.range[0]}-${c.range[1]}; ${pinReason(c.scene)})`).join(', ')}. `
         + 'Re-run with --keep-pinned to keep the approved segments, or --repaint=<shot,...|all> to render them again for a new review.');
     }
     const lost = kept.filter((scene) => !existsSync(`${segDir}/${keys[picked.indexOf(scene)]}.mp4`));
@@ -176,6 +214,8 @@ export const renderSegmented = async ({render, options, workDir, output, log, fr
     }
   }
   await mkdir(workDir, {recursive: true});
+  const toRender = picked.filter((_scene, j) => !existsSync(`${segDir}/${keys[j]}.mp4`));
+  if (toRender.length) log(`repaint ${toRender.length} of ${picked.length}: ${describeReasons(toRender, toRender.map(reasonOf))}`);
   let rendered = 0;
   for (const [i, key] of keys.entries()) {
     const file = `${segDir}/${key}.mp4`;

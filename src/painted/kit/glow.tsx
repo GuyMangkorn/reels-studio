@@ -98,3 +98,70 @@ export const Vignette = ({x, y, r, strength = 0.6}: {x: number; y: number; r: nu
     </>
   );
 };
+
+// ------------------------------------------------------------------------------------------------------------------------ glow pass
+// `new: glow-pass` (EDU-EP06 N5; Boss W5.2, 2026-11-07): a halo bloom at a point and 5-8 warm motes drifting in one screen direction. It is a
+// pure function of the pass progress `u` (0..1, from the shot clock) and a seed, so it is deterministic on seek. Use the SAME `dir` and `seed`
+// in two shots on either side of a cut and the motes keep their screen direction (the glow leaves frame left in one shot and enters from the
+// right in the next). No shapes: no hearts, no stars. Peak opacity <= GLOW_PEAK (0.3). Draw inside an `<svg>` with a screen blend.
+export const GLOW_DIR_LEFT: [number, number] = [-1, -0.12];
+export type GlowPassOpts = {
+  /** Source point (plate px) of the bloom and where the motes start. */
+  x: number; y: number;
+  /** Progress through the pass, 0..1. */
+  u: number;
+  /** Screen direction of the drift (normalised for you); default `GLOW_DIR_LEFT`. */
+  dir?: [number, number];
+  /** Number of motes, clamped to 5..8 (default 7). */
+  count?: number;
+  /** Total drift of the farthest mote, px (default 520). */
+  travel?: number;
+  /** Bloom radius, px (default 260); the bloom envelope peaks at u 0.4. */
+  r?: number;
+  level?: number;
+  seed?: number;
+  /** The motes already drift across the frame at u 0 (the second shot of a cut): start `lead` of the way along their path (default 0). */
+  lead?: number;
+};
+export type GlowMote = {x: number; y: number; r: number; a: number};
+const env = (u: number) => Math.sin(Math.PI * Math.max(0, Math.min(1, u))) ** 1.4;
+/** Bloom opacity (<= level <= GLOW_PEAK) at progress u. */
+export const glowBloom = (u: number, level = GLOW_PEAK) => Math.min(level, GLOW_PEAK) * env(u);
+/** Mote positions, radii and opacities at progress u: a pure function (tests, QA, and the component share it). */
+export const glowMotes = (o: GlowPassOpts): GlowMote[] => {
+  const n = Math.max(5, Math.min(8, Math.round(o.count ?? 7))), [dx, dy] = o.dir ?? GLOW_DIR_LEFT, dl = Math.hypot(dx, dy) || 1, seed = o.seed ?? 0;
+  const travel = o.travel ?? 520, lead = o.lead ?? 0, level = Math.min(o.level ?? GLOW_PEAK, GLOW_PEAK);
+  return Array.from({length: n}, (_, i) => {
+    const k = 0.55 + 0.45 * hash(seed + i * 5.3), v = Math.max(0, Math.min(1, lead + (1 - lead) * o.u));
+    const along = travel * k * v, px = (hash(seed + i * 2.1) - 0.5) * 150, py = (hash(seed + i * 3.7) - 0.5) * 110;
+    const life = Math.sin(Math.PI * Math.max(0, Math.min(1, (v - 0.05 * i / n) / 0.95)));
+    return {x: o.x + px + (dx / dl) * along, y: o.y + py + (dy / dl) * along - 40 * v * hash(seed + i * 7.9), r: 6 + 9 * hash(seed + i * 9.7), a: level * Math.max(0, life)};
+  });
+};
+export const GlowPass = (o: GlowPassOpts) => {
+  const id = useId(), lv = glowBloom(o.u, o.level), r = o.r ?? 260;
+  return (
+    <g>
+      <defs>
+        <radialGradient id={id} gradientUnits="userSpaceOnUse" cx={o.x} cy={o.y} r={r}>
+          <stop offset="0" stopColor="#ffd9a0" stopOpacity={lv} />
+          <stop offset="0.45" stopColor="#ffe6bc" stopOpacity={lv * 0.45} />
+          <stop offset="1" stopColor="#fff1cf" stopOpacity={0} />
+        </radialGradient>
+      </defs>
+      <ellipse cx={o.x} cy={o.y} rx={r} ry={r * 0.8} fill={`url(#${id})`} />
+      {glowMotes(o).map((m, i) => (
+        <g key={i}>
+          <circle cx={m.x} cy={m.y} r={m.r * 2.4} fill="#ffe2b0" opacity={m.a * 0.35} />
+          <circle cx={m.x} cy={m.y} r={m.r} fill="#fff1cf" opacity={m.a} />
+        </g>
+      ))}
+    </g>
+  );
+};
+
+// ------------------------------------------------------------------------------------------------------------------------ glare veil
+/** Edge darkening of the `glare-repaint` grade (kit/glare.ts) at grade `g` 0..1: a cool vignette, the screen-space half of the state. */
+export const GlareVeil = ({g}: {g: number}) => (
+  <div style={{position: 'absolute', inset: 0, pointerEvents: 'none', background: `radial-gradient(ellipse 95% 75% at 50% 42%, rgba(0,0,0,0) 55%, rgba(12,18,32,${(0.7 * Math.max(0, Math.min(1, g))).toFixed(3)}) 100%)`}} />
+);

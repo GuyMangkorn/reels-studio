@@ -110,3 +110,7 @@ Record: [delivery.md](delivery.md) · Updated: 2026-11-05, Film
   - [ ] W8.3 Posted to the channel (user, date)
   - [x] W8.4 Kit intake (KIT-P01), 2026-11-06: 2 plates filed (`PL-EDU-PARK`, `PL-EDU-PARK-DOGVIEW`), README animals row updated; outfit `park-casual` filed 2026-11-06 after the user's "เก็บทั้งคู่" (patch `projects/KIT/intake/2026-11-06_park-casual-wardrobe.patch`, applied with kitchen-apron; same hashes as above); details in [ep03/delivery.md](ep03/delivery.md#kit-intake)
 
+
+## EDU-EP06-SHORT
+
+**Now:** W0 done (C8, user pick 2026-11-07). W1.1 Boat research next. Detail: [ep06/task.md](ep06/task.md).

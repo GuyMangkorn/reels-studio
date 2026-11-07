@@ -63,5 +63,12 @@ Method: `render.mjs --range` for the production composition, and a scratch harne
 - Boss: the open items above; re-check after any change to `SceneRenderer.tsx`, `painted.ts` or `endings.ts` (the neighbour rules follow them).
 - Film / Mark: none; no shot, staging or timing changes.
 
+## Addendum 2026-11-07: code edits keyed per shot
+- Found: `sourceHash` was one digest of the whole episode's code, so any code fix to one painted shot changed every scene key (EDU-EP03 W6: a code fix rendered 9 of 15 scenes; the other 6 had been rendered with that code earlier, `scripts/edu-series/build-notes.md`).
+- Fixed: `scripts/render-inputs.ts` returns `{hash, scenes}`. A file named after a timeline shot and imported directly by the selected inventory goes into `scenes[i]` for the scenes showing that shot, with what only it imports; `segmentKeys` adds it for the same scenes as `near`, and only when set. Convention: [one shot, one file](../sequence-workflow.md#one-shot-one-file).
+- Evidence: `tests/render-inputs.test.ts` (shot edit → [1]; character → [0]; shared → all; shot file imported by shared code → all; loop ending → [0, 2]); old and new helper give the same `hash` and all-empty `scenes` on ZCONDO2-SHORT-TH, EDU-EP06/EP04-SHORT, HANAKO-SHORT and CATBOX-C01-Short, so existing segments and pins are kept.
+
+- Hardened the same day: a shot file stays shared, with a `Scene cache:` warning, when the inventory computes with it (field reads, `.map` over its array), when a file other than the registry imports the inventory, or when a demoted shot file imports it; a near-miss file name is warned. The render logs a `repaint N of M:` reason line from `source`/`code` kept in `manifest.json`. `scripts/new-shot.mjs` scaffolds compliant files. Evidence: `tests/render-inputs.test.ts` (computing inventory → all shared; foreign importer; `d_sh03` near-miss; shot A importing shot B → [0, 1]; reasons), `tests/new-shot.test.ts`.
+
 ## Revalidation history
 - 2026-11-01 working tree on `claude/hanako-next-437b9b` (base `7ccacff`) → key probe, 12/12 segment tests, typecheck, lint, `npm test` 256/256, boundary renders → fixed, uncommitted

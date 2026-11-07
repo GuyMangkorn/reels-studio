@@ -25,6 +25,24 @@ test('Claude and Codex role instructions are identical', () => {
   for (const role of roles) assert.deepEqual(readClaude(role), readCodex(role), role);
 });
 
+test('OpenCode role agents match Claude (python3 -I scripts/opencode-agents.py)', () => {
+  for (const role of roles) {
+    const claude = readClaude(role);
+    const match = readFileSync(`.opencode/agents/${role}.md`, 'utf8').match(/^---\ndescription: "(.+)"\nmode: subagent\n[\s\S]*?\n---\n\n([\s\S]+)$/);
+    assert.ok(match, `.opencode/agents/${role}.md exists with description/mode front matter`);
+    assert.deepEqual({description: match[1], instructions: match[2].trim()}, {description: claude.description, instructions: claude.instructions}, role);
+  }
+});
+
+test('ZCode role agents match Claude (python3 -I scripts/zcode-agents.py)', () => {
+  for (const role of roles) {
+    const match = readFileSync(`.zcode/agents/${role}.md`, 'utf8').match(/^---\nname: (.+)\ndescription: "(.+)"\nmodel: .+\nthoughtLevel: (?:low|high|max)\ntools: \[.+\]\n---\n\n([\s\S]+)$/);
+    assert.ok(match, `.zcode/agents/${role}.md exists with name/description/model/thoughtLevel/tools front matter`);
+    assert.deepEqual({name: match[1], description: match[2], instructions: match[3].trim()}, readClaude(role), role);
+  }
+  assert.equal(realpathSync('.agents/mcp.json'), realpathSync('.mcp.json'), '.agents/mcp.json links to .mcp.json');
+});
+
 test('every document an agent references exists', () => {
   for (const role of roles) {
     for (const doc of new Set(readClaude(role).instructions.match(/docs\/[a-z-]+\.md|\.agents\/skills\/[a-z-]+\/SKILL\.md/g) ?? [])) assert.ok(existsSync(doc), `${role} references missing ${doc}`);

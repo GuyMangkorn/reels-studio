@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import {mkdtempSync, mkdirSync, writeFileSync, rmSync} from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
-import {segmentKeys, sourceHash} from '../scripts/segments.mjs';
+import {describeReasons, repaintReasons, segmentKeys, sourceHash, sourceInputs} from '../scripts/segments.mjs';
 
 const fixture = () => {
   const root = mkdtempSync(path.join(os.tmpdir(), 'reels-inputs-'));
@@ -184,4 +184,143 @@ test('authoring-only caption edits preserve the source digest and existing per-s
     const after = segmentKeys({...composition, props: {timeline: edited}}, {}, {}, f.hash() ?? assert.fail('known inputs must not bypass'));
     assert.deepEqual(before.flatMap((key, i) => key === after[i] ? [] : [i]), [2]);
   } finally {f.dispose();}
+});
+
+// Episode D keeps each shot in its own file named after the shot, imported by the inventory (shot-own code).
+const perShot = (f: ReturnType<typeof fixture>) => {
+  f.put('src/painted/d/D-SH01.ts', "import {character} from '../kit/character'; export const shot = {id:'D-SH01', character, pose:1};");
+  f.put('src/painted/d/D-SH02.ts', "import {eye} from '../kit/eye'; export const shot = {id:'D-SH02', eye, pose:1};");
+  f.put('src/painted/d/D-SH03.ts', "export const shot = {id:'D-SH03', pose:1};");
+  f.put('src/painted/kit/eye.ts', 'export const eye = 1;');
+  f.put('src/painted/shots/d.ts', "import {shot as one} from '../d/D-SH01'; import {shot as two} from '../d/D-SH02'; import {shot as three} from '../d/D-SH03'; export const dShots = [one, two, three];");
+  f.put('src/painted/registry.ts', "import {aShots} from './shots/a'; import {dShots} from './shots/d'; export const paintedShots = Object.fromEntries([...aShots,...dShots].map(s=>[s.id,s]));");
+  f.put('src/videos/d/index.ts', "export default {episode:'d', videos:[{id:'D'}]};");
+  const timeline = ['D-SH01', 'D-SH02', 'D-SH03'].map(shot => ({durationSec: 1, painted: {shots: [{shot, atSec: 0}]}}));
+  const composition = {id: 'D', width: 1080, height: 1920, fps: 30, durationInFrames: 90, props: {timeline, ending: 'A_fade'}};
+  const inputs = () => sourceInputs(f.root, composition) ?? assert.fail('known inputs must not bypass');
+  const keys = () => {const i = inputs(); return segmentKeys(composition, {}, {}, i.hash, i.scenes);};
+  const changed = (a: string[], b: string[]) => a.flatMap((key, i) => key === b[i] ? [] : [i]);
+  return {inputs, keys, changed};
+};
+
+test('a shot-own file edit repaints only the scene showing that shot', () => {
+  const f = fixture();
+  try {
+    const d = perShot(f);
+    const before = d.keys();
+    f.put('src/painted/d/D-SH02.ts', "import {eye} from '../kit/eye'; export const shot = {id:'D-SH02', eye, pose:2};");
+    assert.deepEqual(d.changed(before, d.keys()), [1]);
+  } finally {f.dispose();}
+});
+
+test('shared art repaints every scene that uses it, and only those', () => {
+  const f = fixture();
+  try {
+    const d = perShot(f);
+    let before = d.keys();
+    f.put('src/painted/kit/palette.json', '{"ink":"blue"}');
+    assert.deepEqual(d.changed(before, d.keys()), [0], 'the character reaches only D-SH01');
+    before = d.keys();
+    f.put('src/shared.ts', 'export const shared = 2;');
+    assert.deepEqual(d.changed(before, d.keys()), [0, 1, 2], 'shared renderer code reaches every scene');
+  } finally {f.dispose();}
+});
+
+test('a loop ending carries the first shot\'s code into the last scene', () => {
+  const f = fixture();
+  try {
+    const d = perShot(f);
+    const i = d.inputs();
+    const timeline = ['D-SH01', 'D-SH02', 'D-SH03'].map(shot => ({durationSec: 1, painted: {shots: [{shot, atSec: 0}]}}));
+    const composition = {id: 'D', width: 1080, height: 1920, fps: 30, durationInFrames: 90, props: {timeline, ending: 'C_seamless'}};
+    const edited = [i.scenes[0] + 'x', i.scenes[1], i.scenes[2]];
+    const before = segmentKeys(composition, {}, {}, i.hash, i.scenes), after = segmentKeys(composition, {}, {}, i.hash, edited);
+    assert.deepEqual(d.changed(before, after), [0, 2]);
+  } finally {f.dispose();}
+});
+
+test('a shot file that shared code imports stays shared', () => {
+  const f = fixture();
+  try {
+    const d = perShot(f);
+    f.put('src/shared.ts', "import {shot} from './painted/d/D-SH03'; export const shared = shot;");
+    const before = d.keys();
+    assert.equal(d.inputs().scenes[2], '', 'D-SH03 is no longer shot-own');
+    f.put('src/painted/d/D-SH03.ts', "export const shot = {id:'D-SH03', pose:2};");
+    assert.deepEqual(d.changed(before, d.keys()), [0, 1, 2]);
+  } finally {f.dispose();}
+});
+
+test('episodes without shot-own files keep their keys', () => {
+  const f = fixture();
+  try {
+    const painted = {id: 'A', width: 1080, height: 1920, fps: 30, durationInFrames: 30,
+      props: {timeline: [{durationSec: 1, painted: {shots: [{shot: 'A-SH01', atSec: 0}]}}]}};
+    const i = sourceInputs(f.root, painted) ?? assert.fail('known inputs must not bypass');
+    assert.deepEqual(i.scenes, ['']);
+    const timeline = Array.from({length: 3}, () => ({durationSec: 1}));
+    const composition = {id: 'A', width: 1080, height: 1920, fps: 30, durationInFrames: 90, props: {timeline}};
+    assert.deepEqual(segmentKeys(composition, {}, {}, i.hash, ['', '', '']), segmentKeys(composition, {}, {}, i.hash));
+  } finally {f.dispose();}
+});
+
+test('an inventory that computes with shot files keeps them shared, with a warning', () => {
+  const f = fixture();
+  try {
+    const d = perShot(f);
+    f.put('src/painted/shots/d.ts', "import {shot as one} from '../d/D-SH01'; import {shot as two} from '../d/D-SH02'; import {shot as three} from '../d/D-SH03'; export const dShots = [one, two, three].map(s => ({...s, pose: two.pose}));");
+    const i = d.inputs();
+    assert.deepEqual(i.scenes, ['', '', '']);
+    assert.ok(i.warnings.some(w => w.includes('D-SH02') && w.includes('counts as shared')), i.warnings.join('\n'));
+    const before = d.keys();
+    f.put('src/painted/d/D-SH02.ts', "import {eye} from '../kit/eye'; export const shot = {id:'D-SH02', eye, pose:2};");
+    assert.deepEqual(d.changed(before, d.keys()), [0, 1, 2]);
+  } finally {f.dispose();}
+});
+
+test('an inventory imported by shared code other than the registry keeps its shot files shared', () => {
+  const f = fixture();
+  try {
+    const d = perShot(f);
+    f.put('src/shared.ts', "import {dShots} from './painted/shots/d'; export const shared = dShots.length;");
+    const i = d.inputs();
+    assert.deepEqual(i.scenes, ['', '', '']);
+    assert.ok(i.warnings.some(w => w.includes('src/shared.ts imports its inventory')), i.warnings.join('\n'));
+  } finally {f.dispose();}
+});
+
+test('a shot file named almost like its shot is shared and named in a warning', () => {
+  const f = fixture();
+  try {
+    const d = perShot(f);
+    f.put('src/painted/d/d_sh03.ts', "export const shot = {id:'D-SH03', pose:1};");
+    f.put('src/painted/shots/d.ts', "import {shot as one} from '../d/D-SH01'; import {shot as two} from '../d/D-SH02'; import {shot as three} from '../d/d_sh03'; export const dShots = [one, two, three];");
+    const i = d.inputs();
+    assert.equal(i.scenes[2], '');
+    assert.ok(i.warnings.some(w => w.includes('d_sh03') && w.includes('rename it to the shot ID')), i.warnings.join('\n'));
+  } finally {f.dispose();}
+});
+
+test('a shot file that imports another shot file repaints both shots when the imported one changes', () => {
+  const f = fixture();
+  try {
+    const d = perShot(f);
+    f.put('src/painted/d/D-SH01.ts', "import {character} from '../kit/character'; import {shot as next} from './D-SH02'; export const shot = {id:'D-SH01', character, pose:next.pose};");
+    const before = d.keys();
+    assert.deepEqual(d.inputs().own, [['src/painted/d/D-SH01.ts'], ['src/painted/d/D-SH02.ts'], ['src/painted/d/D-SH03.ts']]);
+    f.put('src/painted/d/D-SH02.ts', "import {eye} from '../kit/eye'; export const shot = {id:'D-SH02', eye, pose:2};");
+    assert.deepEqual(d.changed(before, d.keys()), [0, 1]);
+  } finally {f.dispose();}
+});
+
+test('repaint reasons name the input that changed', () => {
+  const ranges = [[0, 29], [30, 59], [60, 89]];
+  const previous = {source: 's1', scenes: ranges.map((range, i) => ({range, key: `k${i}`, ...(i === 1 ? {code: 'c1'} : {})}))};
+  const current = {source: 's1', scenes: ['', 'c2', ''], own: [[], ['src/painted/d/D-SH02.ts'], []], keys: ['k0', 'k1x', 'k2x'], ranges};
+  assert.deepEqual(repaintReasons(previous, current, [0, 1, 2]),
+    ['segment missing from the cache', 'shot file src/painted/d/D-SH02.ts', 'timeline, neighbour or render options']);
+  assert.deepEqual(repaintReasons(previous, {...current, source: 's2'}, [0]), ['shared code or art']);
+  assert.deepEqual(repaintReasons(previous, {...current, ranges: [[0, 29], [30, 59], [60, 99]]}, [0]), ['video length or scene count']);
+  assert.deepEqual(repaintReasons(undefined, current, [0]), ['first render']);
+  assert.equal(describeReasons([1, 2], ['shared code or art', 'shared code or art']), 'shared code or art → scenes 2, 3');
 });

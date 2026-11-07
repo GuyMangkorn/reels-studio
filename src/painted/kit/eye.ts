@@ -1,22 +1,25 @@
-import {blob, ell, hardFill, inkLine} from '../kit/draw';
-import {hash} from '../kit/hash';
-import {mixColor, type Painter, type Pt} from '../kit/painter';
-import type {V3} from '../kit/space';
-import {camPoint as camPointRaw, type YCam} from '../kit/ycam';
-import {wp as wpRaw} from './world';
+import {blob, clipHalf, ell, hardFill, inkLine} from './draw';
+import {hash} from './hash';
+import {mixColor, type Painter, type Pt} from './painter';
+import type {V3} from './space';
+import {camPoint as camPointRaw, camPoly, type YCam} from './ycam';
 
-// EDU-EP02-SHORT asset N6 `eye-macro plate + sparks + tear wave` (brief EDU-BRIEF-R1.4 VD06, shot S01-B04-SH02). Written by
-// Film as the LF03 look frame (W3.1 v1-v4, src/painted/edu02/macro.ts until v4); hardened by Boss at W5.2 (v5) after the
-// viewer checks r1-r4 (scripts/edu-series/ep02/viewer-check-look-r1.md); v6 after r5; W5.2 G-C polish (S01-B04-SH02 plate in
-// shots.tsx): lid shadow depth, nerve halo falloff, tear-wave fade over the pupil, mist body and the third wisp in frame.
-//   EYE set: 1 set-m ~ 1 cm; globe radius 0.16 centred at z -0.04 (front of the cornea at z +0.12), skin plane at z +0.07,
-//   eye opening +-0.11 wide; the cook's left eye (outer corner at screen right). Not an anatomy diagram: no labels.
-// Reusable: `paintEyeMacro(p, cam, state, look?)` paints the whole plate from any yaw camera around the origin (LF03_CAM in
-// look.tsx is the shot's arc); `look` swaps the skin and iris palette for another cast member. `state.u` 0..1 runs the beat:
-// mist lands (0.05-0.45), the gold nerve sparks x3 (0.28-0.62), the tear wave (0.5-0.92), one drop (0.85-1).
-// Painting order (back to front): skin form, brow, lid and socket, eyeball (sclera, iris, pupil, lid shadow, nerve, haze,
-// tear sheet, catchlight), lid rims (lash line, wet lower rim), lashes, mist wisps, drop.
+const SAFE = [-300, -300, 1380, 2220] as const;
+/** Picture polygon clipped to a box around the 1080x1920 frame (same box as the EP02 world helpers). */
+const clipSafe = (pts: Pt[]): Pt[] => {
+  let r = clipHalf(pts, [1, 0], SAFE[0]);
+  if (r.length) r = clipHalf(r, [-1, 0], -SAFE[2]);
+  if (r.length) r = clipHalf(r, [0, 1], SAFE[1]);
+  if (r.length) r = clipHalf(r, [0, -1], -SAFE[3]);
+  return r;
+};
 
+// KIT `eye-macro` plate (ENV/KIT: `kit-eye`). Promoted by Boss (EDU-EP06 N3, 2026-11-07) from `src/painted/edu02/eye.ts` (EP02 N6, the
+// cook's eye, PL-EDU-EYE) merged with Film's EP06 look-frame copy. Defaults reproduce the EP02 plate pixel for pixel
+// (`lid` 1, `lift` 0, `catch` 'kitchen', `mist` on, `glare` 0); EP02's `EDU2-S01-B04-SH02` and `EDU2-LF03` consume it unchanged.
+// Options over EP02: `lid` aperture (1.3 wide, 1 neutral, 0.75 smile with `lift` 1 = cheek push, ~0 shut), `lift` (lower lid and
+// cheek), `mist: false` (the onion mist), `catch` 'kitchen' | 'warm' (lamp from screen left) | 'sharp' (one small hard light),
+// `glare` 0..1 (hard-edged brow shadow, the `glare-repaint` paint state; the colour grade is `kit/glare.ts`).
 const mix = mixColor;
 const W = 1080, HGT = 1920;
 const full: Pt[] = [[-200, -200], [W + 200, -200], [W + 200, HGT + 200], [-200, HGT + 200]];
@@ -30,7 +33,9 @@ export const EYEC = {
   iris: '#4a2f1c', irisLit: '#8c5e36', pupil: '#0d0806', nerve: '#f2c66d', lilac: '#a070ff', lilacEdge: '#eee6ff', lash: '#1b120d',
 } as const;
 export type EyeLook = Partial<Pick<typeof EYEC, 'skin' | 'skinDark' | 'skinHi' | 'skinWarm' | 'skinCool' | 'iris' | 'irisLit'>>;
-export type EyeState = {t: number; u: number};
+export type EyeState = {t: number; u: number; lid?: number; lift?: number; mist?: boolean; catch?: 'kitchen' | 'warm' | 'sharp'; glare?: number};
+/** Lid state of the current paint call (set at the top of paintEyeMacro; module-level so the shape helpers read it). */
+const LID = {open: 1, lift: 0};
 
 const GR = 0.16, GZ = -0.04, SKINZ = 0.07, EW = 0.11, EUP = 0.06, EDN = 0.05;
 /** A point on the globe surface over (x, y). */
@@ -38,13 +43,21 @@ const onGlobe = (x: number, y: number, lift = 0): V3 => {
   const d = GR * GR - x * x - y * y;
   return [x, y, GZ + Math.sqrt(Math.max(0, d)) + lift];
 };
-const upperAt = (x: number) => {
+const upperBase = (x: number) => {
   const u = (x + EW) / (2 * EW), s = Math.sin(Math.PI * Math.max(0, Math.min(1, u)));
   return EUP * Math.pow(s, 0.8) * (1 + 0.18 * (0.5 - u)) + 0.006 * (u - 0.5);
 };
 const lowerAt = (x: number) => {
   const u = (x + EW) / (2 * EW), s = Math.sin(Math.PI * Math.max(0, Math.min(1, u)));
-  return -EDN * Math.pow(s, 0.9) * (1 - 0.15 * (0.5 - u));
+  const L = Math.min(0.65, LID.lift); // the opening must stay convex (clipToOpen); lift above 0.65 only raises the cheek
+  return -EDN * Math.pow(s, 0.9) * (1 - 0.15 * (0.5 - u)) * (1 - L) + L * 0.022 * s; // a smile pushes the middle up
+};
+/** Upper lid: wide scales the open arc up; below 1 the lid comes down toward the (lifted) lower lid, a sliver left at ~0. */
+const upperAt = (x: number) => {
+  const b = upperBase(x);
+  if (LID.open >= 1) return b * LID.open;
+  const lo = lowerAt(x), k = Math.max(0.035, LID.open);
+  return lo + (b - lo) * k;
 };
 /** Eye opening outline in the skin plane (upper lid arc, lower lid arc), outer corner at +x. */
 const lidPts = (n = 28): V3[] => {
@@ -85,9 +98,15 @@ export const paintEyeMacro = (p: Painter, cam: YCam, s: EyeState, look: EyeLook 
   const c: YCam = {...cam, x: cam.x * 10, y: cam.y * 10, z: cam.z * 10};
   const sc = (v: V3): V3 => [v[0] * 10, v[1] * 10, v[2] * 10];
   const cp = (v: V3) => camPointRaw(c, sc(v));
-  const wp = (pts: V3[]) => wpRaw(c, pts.map(sc));
+  const wp = (pts: V3[]) => clipSafe(camPoly(c, pts.map(sc)));
   const line = (pts: V3[]) => pts.map(cp).filter(Boolean) as Pt[];
   const {u, t} = s;
+  LID.open = s.lid ?? 1;
+  LID.lift = s.lift ?? 0;
+  const shut = LID.open < 0.2;
+  // smile cheek push (lift > 0.5): how far the cheek rides up over the lower part of the eye
+  const cheekUp = Math.max(0, Math.min(1, (LID.lift - 0.5) / 0.5));
+  const lowerVis = (x: number) => { const u = (x + EW) / (2 * EW), sn = Math.sin(Math.PI * Math.max(0, Math.min(1, u))); return lowerAt(x) + cheekUp * 0.017 * sn ** 1.6; };
   // Flat partial-opacity veil on a sub-layer (a wash only darkens: light colours over dark skin and the white are veils).
   const veil = (seed: number, color: string, a: number, q: Pt[]) => {
     if (a > 0.002 && q.length >= 3) hardFill(p.layer(a, seed), seed, color, q);
@@ -153,7 +172,7 @@ export const paintEyeMacro = (p: Painter, cam: YCam, s: EyeState, look: EyeLook 
     if (Math.abs(x) < EW + 0.008 && y > lowerAt(x) - 0.016 && y < upperAt(x) + lashTh(x) + 0.012) continue;
     const ax = EW * 1.35, by = 0.1, gx = (2 * x) / (ax * ax), gy = (2 * (y + 0.004)) / (by * by), gl = Math.hypot(gx, gy) || 1;
     const tx = -gy / gl, ty = gx / gl, L = 0.014 + 0.018 * hash(k * 3.3), bend = 0.45 * (hash(k * 8.9) - 0.5);
-    const xc = Math.max(-EW, Math.min(EW, x)), crease = upperAt(xc) * 1.25 + 0.03;
+    const xc = Math.max(-EW, Math.min(EW, x)), crease = upperBase(xc) * 1.25 + 0.03;
     const lit = (y < -0.1 && x > 0.0) || (y > 0.13 && y < 0.16 && x > -0.02) || (y < -0.03 && y > -0.07 && Math.abs(x) < 0.08);
     const lid = Math.abs(x) < EW && y > upperAt(xc) && y < crease;
     const hollow = (y > crease && y < 0.118) || (y < -0.065 && y > -0.11) || x < -0.1;
@@ -184,7 +203,7 @@ export const paintEyeMacro = (p: Painter, cam: YCam, s: EyeState, look: EyeLook 
   // line and the crease, darkening toward the lashes; the crease is a soft tapered shadow with the fold edge lit just
   // below it; the socket above the crease is a cool shadow, deepest at the inner corner; the lower lid has a lit puff, then
   // the under-eye fold as a soft tapered shadow.
-  const creaseAt = (x: number) => upperAt(Math.max(-EW, Math.min(EW, x))) * 1.25 + 0.03;
+  const creaseAt = (x: number) => upperBase(Math.max(-EW, Math.min(EW, x))) * 1.25 + 0.03;
   curveBand(60030, '#3c2418', 0.5, (x) => creaseAt(x) + 0.008, -EW * 1.1, EW * 1.05, taperH(0.009, 0.3), 6); // socket under the brow bone
   ov(60031, K.skinCool, 0.36, oval(-0.098, 0.075, 0.03, 0.045, 0.3), 10); // deep inner socket, cool
   ov(60032, '#9e5c40', 0.4, oval(0.008, 0.083, 0.085, 0.014, -0.03), 12); // lid puff, warm and lit over the cornea bulge
@@ -195,14 +214,33 @@ export const paintEyeMacro = (p: Painter, cam: YCam, s: EyeState, look: EyeLook 
   const foldAt = (x: number) => lowerAt(Math.max(-EW, Math.min(EW, x))) * 1.35 - 0.014;
   curveBand(60060, '#3a2216', 0.5, foldAt, -EW * 0.85, EW * 0.95, taperH(0.004, 0.55), 6); // under-eye fold
   curveBand(60068, '#b07a54', 0.26, (x) => foldAt(x) - 0.006, -EW * 0.6, EW * 0.8, taperH(0.0022, 0.6), 3); // its lit lower edge
+  if (LID.lift > 0) {
+    // smile (EP06 lid states): the cheek rises; a soft lit puff under the lower lid and a second, lower crease toward the outer side
+    const k = Math.min(1, LID.lift / 0.5);
+    curveBand(60070, '#c8925f', 0.3 * k, (x) => foldAt(x) - 0.004, -EW * 0.5, EW * 0.95, taperH(0.006, 0.65), 4);
+    curveBand(60074, '#3a2216', 0.45 * k, (x) => foldAt(x) - 0.026 + 0.012 * ((x + EW) / (2 * EW)), -EW * 0.2, EW * 1.1, taperH(0.0035, 0.7), 5);
+    // W3 v2 (user, 2026-11-07: "push the cheeks up"): the cheek mass rides up under the eye as a lit, rounded bulge with a
+    // deep smile crease below it, and crow's feet fan from the outer corner; the lower lid flattens (lift capped at 0.65 for the convex opening).
+    const kk = Math.max(0, Math.min(1, (LID.lift - 0.5) / 0.5));
+    if (kk > 0) {
+      ov(60080, K.skinDark, 0.45 * kk, oval(0.02, -0.085, 0.15, 0.026, 0.12), 12); // shadow under the raised cheek
+      ov(60081, K.skinHi, 0.7 * kk, oval(0.015, -0.03, 0.12, 0.028, 0.06), 12); // the raised cheek, lit
+      ov(60082, '#d6a070', 0.55 * kk, oval(0.03, -0.026, 0.07, 0.012, 0.06), 8); // its highlight
+      curveBand(60084, '#2e1a10', 0.6 * kk, (x) => -0.064 + 1.6 * (x - 0.01) ** 2, -EW * 0.9, EW * 1.15, taperH(0.0055, 0.6), 6); // smile crease
+      for (let i = 0; i < 3; i++) { // crow's feet at the outer corner
+        const y0 = 0.012 - 0.022 * i, sl = 0.25 - 0.32 * i;
+        curveBand(60090 + i, '#3a2216', 0.5 * kk, (x) => y0 + sl * (x - EW - 0.012), EW + 0.012, EW + 0.055 - 0.008 * Math.abs(i - 1), taperH(0.0022, 0.8), 3);
+      }
+    }
+  }
 
   // ---------------------------------------------------------------- eyeball
   const open = wp(lidPts());
   if (open.length < 3) return;
-  const inOpen = (q: Pt[]) => clipToOpen(q, open);
+  const inOpen = (q: Pt[]) => (shut ? [] : clipToOpen(q, open)); // shut: no eyeball shows
   // Sclera (viewer check r4: a flat white): a cool grey-blue base, lit to off-white toward the front of the globe on either
   // side of the iris, so it stays grey-blue in the corners and under both lids.
-  hardFill(p, 60100, K.scleraShade, open);
+  if (!shut) hardFill(p, 60100, K.scleraShade, open);
   const blobV = (cx: number, cy: number, rx: number, ry: number, n = 16) => Array.from({length: n}, (_, k): V3 => onGlobe(cx + rx * Math.cos((k / n) * 6.283), cy + ry * Math.sin((k / n) * 6.283), 0.0004));
   softVeil(60102, '#d9d6d8', 0.9, inOpen(wp(blobV(0.0, -0.002, 0.1, 0.05, 20))), 6, 0.35);
   softVeil(60110, K.sclera, 0.9, inOpen(wp(blobV(-0.062, -0.004, 0.04, 0.03))), 8, 0.6);
@@ -221,7 +259,7 @@ export const paintEyeMacro = (p: Painter, cam: YCam, s: EyeState, look: EyeLook 
       x += 0.0042 * Math.cos(a);
       y += 0.0042 * Math.sin(a);
     }
-    for (const run of runsIn(pts, open)) inkLine(p, 61240 + k, run, {closed: false, weight: 0.7 + 0.3 * (k % 2), color: mix(K.sclera, '#b8574e', 0.42 - 0.05 * k), curve: 0.5, still: true});
+    for (const run of runsIn(pts, shut ? [] : open)) inkLine(p, 61240 + k, run, {closed: false, weight: 0.7 + 0.3 * (k % 2), color: mix(K.sclera, '#b8574e', 0.42 - 0.05 * k), curve: 0.5, still: true});
   });
   // Iris (v4, kept: the r4 critic's "best part"): dark base, warmer lit lower half, ~150 radial fibres, broken collarette,
   // dark soft limbal ring on the visible arcs.
@@ -238,12 +276,12 @@ export const paintEyeMacro = (p: Painter, cam: YCam, s: EyeState, look: EyeLook 
         return onGlobe(0.004 + r * Math.cos(aa), 0.004 + r * Math.sin(aa));
       }));
       const tone = k % 5 === 0 ? '#2a190e' : k % 3 === 0 ? '#c09060' : k % 2 ? '#9a6c42' : '#6e4a2c';
-      for (const run of runsIn(pts, open)) inkLine(p, 61000 + k, run, {closed: false, weight: 0.5 + 0.6 * hash(k * 8.1), color: tone, curve: 0.4, still: true});
+      for (const run of runsIn(pts, shut ? [] : open)) inkLine(p, 61000 + k, run, {closed: false, weight: 0.5 + 0.6 * hash(k * 8.1), color: tone, curve: 0.4, still: true});
     }
     // v6 (viewer check r5: "the wavy ring around the pupil reads as a scratch"): the broken collarette line is gone; the
     // collarette is a soft warmer zone round the pupil (a stacked veil under the pupil's soft edge), no line.
     softVeil(60290, '#b8865a', 0.22, clipToOpen(wp(ringG(0.036)), iris), 12, 0.35);
-    for (const run of runsIn(wp(ringG(0.0505, 0.004, 0.004, 48)), open)) {
+    for (const run of runsIn(wp(ringG(0.0505, 0.004, 0.004, 48)), shut ? [] : open)) {
       inkLine(p, 60140, run, {closed: false, weight: 7, color: mix('#1e120a', K.iris, 0.45), curve: 0.3, still: true});
       inkLine(p, 60142, run, {closed: false, weight: 3, color: '#1a0f08', curve: 0.3, still: true});
     }
@@ -287,7 +325,7 @@ export const paintEyeMacro = (p: Painter, cam: YCam, s: EyeState, look: EyeLook 
       x += 0.0036 * Math.cos(a);
       y += 0.0036 * Math.sin(a);
     }
-    const run = runsIn(pts, open).sort((r1, r2) => r2.length - r1.length)[0];
+    const run = runsIn(pts, shut ? [] : open).sort((r1, r2) => r2.length - r1.length)[0];
     if (run && run.length >= 3) {
       // v6 (viewer check r5: "gold nerve crisp with no glow falloff"): uneven core width (thicker near the root, two swells,
       // pinched at a knot) and a soft halo 3-4x the core in five stacked widths, total alpha <= 0.3 (glow cap).
@@ -376,7 +414,21 @@ export const paintEyeMacro = (p: Painter, cam: YCam, s: EyeState, look: EyeLook 
 
   // ---------------------------------------------------------------- wet cornea dome: catchlight (v4, kept)
   const hl = cp(onGlobe(-0.022, 0.024, 0.01)), hs = cp(onGlobe(0.03, -0.012, 0.01));
-  if (hl) {
+  const cat = s.catch ?? 'kitchen';
+  if (cat === 'sharp' && hl && !shut) {
+    // glare state: one small hard white catchlight, no soft dome
+    veil(60500, '#ffffff', 0.95, inOpen(ell(hl[0] - 4, hl[1] - 2, 9, 9, 12)));
+  } else if (cat === 'warm' && hl && !shut) {
+    // lamp from screen left: a warm soft dome and two warm-white pieces, smaller than the kitchen window's; they fade out as `glare` rises
+    // (the glare block below adds the one sharp catchlight), so a grade 0..1 crosses warm -> sharp without a pop
+    const wk = 1 - Math.max(0, Math.min(1, s.glare ?? 0));
+    if (wk > 0.001) {
+      softVeil(60501, '#ffe9c8', 0.26 * wk, inOpen(ell(hl[0] + 6, hl[1] + 4, 48, 30, 18, -0.5)), 6);
+      veil(60500, '#fff4e0', 0.88 * wk, inOpen(blob(60500, hl[0] - 6, hl[1] - 2, 12, 13, 0, 14)));
+      veil(60504, '#ffffff', 0.6 * wk, inOpen(blob(60504, hl[0] - 13, hl[1] - 8, 5, 4, 0, 10)));
+    }
+  }
+  if (hl && cat === 'kitchen') {
     softVeil(60501, '#fff8ee', 0.3, ell(hl[0] + 8, hl[1] + 6, 62, 38, 18, -0.5), 6);
     const piece = (id: number, dx: number, dy: number, rx: number, ry: number, a: number) => {
       const q = blob(id, hl[0] + dx, hl[1] + dy, rx, ry, 0, 16).map(([x, y]): Pt => {
@@ -389,11 +441,19 @@ export const paintEyeMacro = (p: Painter, cam: YCam, s: EyeState, look: EyeLook 
     piece(60503, 13, 1, 10, 15, 0.78);
     veil(60504, '#ffffff', 0.55, blob(60504, hl[0] - 13, hl[1] - 8, 6, 5, 0, 10));
   }
-  if (hs) {
-    softVeil(60502, '#ffffff', 0.5, blob(60502, hs[0], hs[1], 9, 6, 0, 12), 5);
-    veil(60505, '#ffffff', 0.6, blob(60505, hs[0] - 2, hs[1] - 1, 3.5, 2.5, 0, 8));
+  if (hs && cat !== 'sharp' && !shut) {
+    softVeil(60502, '#ffffff', 0.5, inOpen(blob(60502, hs[0], hs[1], 9, 6, 0, 12)), 5);
+    veil(60505, '#ffffff', 0.6, inOpen(blob(60505, hs[0] - 2, hs[1] - 1, 3.5, 2.5, 0, 8)));
   }
 
+  // W3 v2 smile (user, 2026-11-07: "push the cheeks up"): the raised cheek rides up over the bottom of the eye, so the visible
+  // lower lid arches upward into a crescent while the clip opening (lowerAt) stays convex; the rim and lower lashes follow it.
+  if (cheekUp > 0 && !shut) {
+    const xsC = Array.from({length: 29}, (_, k) => -EW + (2 * EW * k) / 28);
+    const cTop = wp(xsC.map((x): V3 => [x, lowerVis(x) + 0.0006, SKINZ + 0.0009])), cBot = wp(xsC.map((x): V3 => [x, lowerAt(x) - 0.0025, SKINZ + 0.0009]));
+    veil(60596, K.skin, 1, bandOf(cTop, cBot));
+    veil(60597, K.skinHi, 0.35 * cheekUp, bandOf(wp(xsC.map((x): V3 => [x, lowerVis(x) - 0.002, SKINZ + 0.0009])), cBot));
+  }
   // ---------------------------------------------------------------- lid rims
   // v5 (viewer check r4: "a hard even black outline ... no lid thickness, no wet lower rim"). Upper: a lash line that
   // tapers from a hairline at the inner corner to a soft wing at the outer corner, painted as three stacked bands (wide
@@ -407,18 +467,18 @@ export const paintEyeMacro = (p: Painter, cam: YCam, s: EyeState, look: EyeLook 
     veil(60520 + i, col, a, bandOf(top, bot));
   });
   const wetU = ramp(u, 0.6, 0.95);
-  const rimTop = wp(xsR.map((x): V3 => [x, lowerAt(x) + 0.0007, SKINZ + 0.001]));
-  const rimBot = wp(xsR.map((x): V3 => [x, lowerAt(x) - rimTh(x), SKINZ + 0.001]));
-  const rimMid = wp(xsR.map((x): V3 => [x, lowerAt(x) - rimTh(x) * 0.45, SKINZ + 0.001]));
+  const rimTop = wp(xsR.map((x): V3 => [x, lowerVis(x) + 0.0007, SKINZ + 0.001]));
+  const rimBot = wp(xsR.map((x): V3 => [x, lowerVis(x) - rimTh(x), SKINZ + 0.001]));
+  const rimMid = wp(xsR.map((x): V3 => [x, lowerVis(x) - rimTh(x) * 0.45, SKINZ + 0.001]));
   veil(60530, K.rim, 0.92, bandOf(rimTop, rimBot));
   veil(60531, K.rimWet, 0.55, bandOf(rimTop, rimMid));
-  const rimLow = wp(xsR.map((x): V3 => [x, lowerAt(x) - rimTh(x) - 0.0016 * Math.sin((Math.PI * (x + EW)) / (2 * EW)), SKINZ + 0.001]));
+  const rimLow = wp(xsR.map((x): V3 => [x, lowerVis(x) - rimTh(x) - 0.0016 * Math.sin((Math.PI * (x + EW)) / (2 * EW)), SKINZ + 0.001]));
   veil(60532, '#4a2a1c', 0.45, bandOf(rimBot, rimLow));
-  veil(60533, '#3a2016', 0.3, bandOf(wp(xsR.map((x): V3 => [x, lowerAt(x) - rimTh(x) * 0.85, SKINZ + 0.001])), rimBot));
+  veil(60533, '#3a2016', 0.3, bandOf(wp(xsR.map((x): V3 => [x, lowerVis(x) - rimTh(x) * 0.85, SKINZ + 0.001])), rimBot));
   // Tear meniscus on the eye just above the rim, and the broken wet highlight along the rim's inner edge.
-  const men = wp(xsR.map((x): V3 => onGlobe(x, lowerAt(x) + 0.0028 + 0.002 * wetU, 0.0008)));
+  const men = wp(xsR.map((x): V3 => onGlobe(x, lowerVis(x) + 0.0028 + 0.002 * wetU, 0.0008)));
   veil(60534, '#e8f2f4', 0.35 + 0.3 * wetU, inOpen(bandOf(men, rimTop)));
-  const wetL = wp(xsR.map((x): V3 => [x, lowerAt(x) - 0.0004, SKINZ + 0.0015]));
+  const wetL = wp(xsR.map((x): V3 => [x, lowerVis(x) - 0.0004, SKINZ + 0.0015]));
   for (let j = 1; j + 2 < wetL.length; j++) {
     if (hash(j * 5.7 + 0.2) < 0.32 - 0.25 * wetU) continue;
     veil(60540 + j, '#ffffff', 0.62 + 0.3 * wetU, ribbon([wetL[j], wetL[j + 1]], (g) => (1.4 + 1.2 * wetU) * Math.sin(Math.PI * (0.1 + 0.8 * g))));
@@ -438,6 +498,7 @@ export const paintEyeMacro = (p: Painter, cam: YCam, s: EyeState, look: EyeLook 
       px += (L / 8) * Math.cos(a);
       py += (L / 8) * Math.sin(a);
     }
+    if (shut) for (const v of pts) v[1] = 2 * y - v[1]; // closed lid: the lashes hang down from the lid line
     const q2 = line(pts);
     if (q2.length >= 3) veil(seed, K.lash, alpha, ribbon(q2, (f) => w0 * Math.pow(1 - f, 0.85) + 0.25));
   };
@@ -452,7 +513,7 @@ export const paintEyeMacro = (p: Painter, cam: YCam, s: EyeState, look: EyeLook 
   }
   for (let k = 0; k < 13; k++) {
     const sN = 0.3 + (0.62 * (k + 0.5 * hash(k * 2.3))) / 12, x = -EW + 2 * EW * sN;
-    lash(60720 + k, x, lowerAt(x) - rimTh(x) - 0.0008, -1.8 + 1.2 * sN, -0.25, 0.005 + 0.007 * sN * hash(k * 4.7 + 0.3) + 0.002, 1.3, [0, 0], 0.7, 0.006);
+    lash(60720 + k, x, lowerVis(x) - rimTh(x) - 0.0008, -1.8 + 1.2 * sN, -0.25, 0.005 + 0.007 * sN * hash(k * 4.7 + 0.3) + 0.002, 1.3, [0, 0], 0.7, 0.006);
   }
 
   // ---------------------------------------------------------------- mist wisps rising from the cut onion
@@ -473,7 +534,18 @@ export const paintEyeMacro = (p: Painter, cam: YCam, s: EyeState, look: EyeLook 
     // second one.
     {p0: [0.0, -0.31], p1: [0.012, -0.175], sway: 0.012, dir: -1, r0: 0.019, w: 50, a: 0.9},
   ];
-  wisps.forEach((wi, w) => {
+  if ((s.glare ?? 0) > 0) {
+    // EP06 glare state (`new: glare-repaint`, LOOK-FRAME): a hard-edged cast shadow from the brow across the socket, the upper lid
+    // and the top of the eyeball (light from above-front); the edge is straight-ish and crisp, not a soft veil.
+    const g = s.glare ?? 0, xsG = Array.from({length: 25}, (_, k) => -0.3 + (0.6 * k) / 24);
+    const edge = (x: number) => (Math.abs(x) < EW ? upperAt(x) - 0.016 * Math.sin((Math.PI * (x + EW)) / (2 * EW)) : upperBase(Math.sign(x) * EW) + 0.1 * Math.min(1, (Math.abs(x) - EW) / 0.1) ** 0.8); // rises along the socket past the corners
+    const sh = wp([...xsG.map((x): V3 => [x, 0.4, SKINZ + 0.003]), ...xsG.slice().reverse().map((x): V3 => [x, edge(x), SKINZ + 0.003])]);
+    veil(65000, '#141c2c', 0.5 * g, sh);
+    veil(65001, '#1f2a3f', 0.25 * g, wp([...xsG.map((x): V3 => [x, 0.4, SKINZ + 0.003]), ...xsG.slice().reverse().map((x): V3 => [x, edge(x) + 0.03, SKINZ + 0.003])]));
+    // the sharp catchlight again, above the shadow (it sits on the cornea, lit by the hard key)
+    if (hl) veil(65002, '#ffffff', 0.95 * g, inOpen(ell(hl[0] + 8, hl[1] + 30, 8, 8, 12)));
+  }
+  if (s.mist !== false) wisps.forEach((wi, w) => {
     // Centre line in set metres: a swaying rise p0 -> p1, then the curl.
     const ph = t * 0.7 + w * 1.9, set: [number, number][] = [];
     const dx = wi.p1[0] - wi.p0[0], dy = wi.p1[1] - wi.p0[1], dl = Math.hypot(dx, dy), nx = -dy / dl, ny = dx / dl;

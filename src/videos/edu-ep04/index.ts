@@ -27,9 +27,9 @@ const videos: EpisodeVideos = {
   episode: 'edu-ep04',
   videos: [{
     id: 'EDU-EP04-SHORT', format: 'short', timeline, ending: 'A_fade', endHoldSec: 0, endFadeSec: 1.0,
-    // Rough review mix (Editor, 6 Nov 2026; scripts/edu-series/ep04/review-mix.py): narration + MAN/CSH per VL-EDIT-01, library-only stem. Not the final mix.
+    // Rough review mix (Editor, 6 Nov 2026; scripts/edu-series/ep04/review-mix.py): narration + MAN/CSH per VL-EDIT-01, library-only stem; v6 adds the EP02 ending pizz tag (user, 7 Nov 2026). Not the final mix.
     narration: {src: 'narration/EDU-EP04-SHORT.wav', amplitude: [], fps: FPS},
-    audio: [{src: 'audio/edu/EDU-EP04-SHORT-review-stem-v5.wav', volume: 1}],
+    audio: [{src: 'audio/edu/EDU-EP04-SHORT-review-stem-v6.wav', volume: 1}],
     captionStyle: {preset: 'outline', position: 'middle', centerY: 1164},
     chrome: {channelLabel: '@TamMaiLa', progressBar: false},
   }],

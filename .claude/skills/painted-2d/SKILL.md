@@ -109,8 +109,10 @@ E=src/painted/spike/index.ts; ID=PAINTED-SPIKE-Short          # swap for the rea
 for f in 0 40 75 120; do echo "$ID $f out/painted/f$f.png"; done | node scripts/stills.mjs $E > out/logs/painted-still.log 2>&1   # one Chrome for all frames (AGENTS.md: Stills on one Chrome)
 sh scripts/qa-sheet.sh out/painted/sheet.png --cols 4 out/painted/f*.png            # one frame per beat
 ffmpeg -loglevel error -y -i out/painted/f75.png -vf crop=540:600:200:1000 out/painted/crop.png   # faces/hands/lines at full res
-npx remotion render $E $ID out/painted/$ID.mp4 --gl=angle > out/logs/painted-render.log 2>&1      # timing and motion
+npx remotion render $E $ID out/painted/$ID.mp4 --gl=angle --scale=0.5 --props='{"paintScale":0.5}' > out/logs/painted-render.log 2>&1   # timing and motion, half size
 ```
+
+The `npx remotion render` line is only for a scratch composition in its own entry (a spike, an asset sheet), at half size like a draft. A shot of a registered deliverable renders through `scripts/render.mjs` and `scripts/storyboard-page/clips.mjs` in [stage order](../../../docs/render-rules.md#render-stage): stills for the frame check, then the half-size draft cut.
 
 Questions for each sheet:
 - Does each beat read as a distinct action?
