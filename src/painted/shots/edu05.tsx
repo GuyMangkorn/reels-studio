@@ -2,6 +2,7 @@ import {AbsoluteFill} from 'remotion';
 import type {PaintedShot} from '../shot';
 import {STILL_CAMERA} from '../kit/camera';
 import {Grain} from '../kit/screen';
+import {paintCoverA} from '../edu05/cover';
 import {paintFacadeDown, lookDownCam} from '../edu05/facade';
 import {paintBARS, paintCOLD, paintCRUMB, paintDEW1, paintDROP2, paintDROP3, paintDROP4, paintEND, paintPASS, paintPUFF, paintDRIFT, paintLANDING, paintLIFT, paintLIFTOFF, paintSIP, paintSPECK, paintSTAND, paintTOUCH} from '../edu05/checks';
 
@@ -246,6 +247,15 @@ export const edu05Shots: PaintedShot[] = [
     paper: PAPER,
     camera: () => STILL_CAMERA,
     paint: (p) => paintEND(p, Math.min(p.frame, EDU5_END_FRAMES - 1)),
+    Overlay: screen,
+  },
+  {
+    // EDU5-COVER-A (covers.md N-A, EDU-EP05-SHORT-COVERS option A): one painted still, TINY small in the planter clearing under the blades (`paintCoverA`).
+    id: 'EDU5-COVER-A',
+    serves: ['S01-B01-SH04'],
+    paper: PAPER,
+    camera: () => STILL_CAMERA,
+    paint: (p) => paintCoverA(p, 0),
     Overlay: screen,
   },
 ];

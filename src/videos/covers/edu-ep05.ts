@@ -13,8 +13,8 @@ import type {Cover, CoverStyle} from '../cover-overlay';
 const RED = '#ff3b30';
 
 export const EDU5_COVERS: Cover[] = [
-  // A question. S01-B01-SH04 l16: just shrunk, looking up at the planter grass that towers like trees (LF02).
-  {id: 'A-forest', plate: 'EDU5-S01-B01-SH04', local: 16,
+  // A question. Route N (user picked A, 2026-11-07): EDU5-COVER-A, TINY small in the planter clearing, blades 13-24x her height, hazy towers behind (covers.md N-A).
+  {id: 'A-forest', plate: 'EDU5-COVER-A', local: 16,
     lines: [{text: 'รอดไหม?', y: 1340, size: 200, accent: true}, {text: 'ในโลกที่หญ้าสูงเท่าตึก', y: 1470, size: 88}]},
   // B subject. S01-B03-SH02 l43: hand stuck in the dew drop, the drop stretching like jelly (L08).
   {id: 'B-drop', plate: 'EDU5-S01-B03-SH02', local: 43,

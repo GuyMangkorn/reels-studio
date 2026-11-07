@@ -4,6 +4,7 @@ import {AbsoluteFill, staticFile} from 'remotion';
 import {BrushCanvas, type PaintContext} from '../BrushCanvas';
 import {makePainter, type Painter} from '../kit/painter';
 import {Grain} from '../kit/screen';
+import {paintCoverA} from './cover';
 import {paintANT1, paintANT2, paintANT3, paintLF01, paintLF02, paintLF03, paintLF04} from './scenes';
 
 export {LF_FRAMES} from './scenes';
@@ -38,3 +39,4 @@ export const LF01 = () => <Painted paint={paintLF01} />;
 export const LF02 = () => <Painted paint={paintLF02} />;
 export const LF03 = () => <Painted paint={paintLF03} />;
 export const LF04 = () => <Painted paint={paintLF04} />;
+export const COVERA = () => <Painted paint={paintCoverA} />;

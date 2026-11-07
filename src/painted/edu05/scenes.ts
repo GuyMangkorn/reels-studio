@@ -16,7 +16,7 @@ import {paintBlade, SHADE, type Blade} from './macro';
 
 const FPS = 30;
 const DEG = Math.PI / 180;
-export const LF_FRAMES = {ANT1: 60, ANT2: 60, ANT3: 60, LF01: 60, LF02: 60, LF03: 60, LF04: 60} as const;
+export const LF_FRAMES = {ANT1: 60, ANT2: 60, ANT3: 60, LF01: 60, LF02: 60, LF03: 60, LF04: 60, COVERA: 60} as const;
 /** Anchors of the lead written by each paint call (lead-height measure). */
 export const MEASURE: Record<string, FigAnchors | null> = {};
 

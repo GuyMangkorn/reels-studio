@@ -274,3 +274,12 @@ User picked by ear: L05 = A, L15 = A, no hedge on "กล้ามมันเ�
 - **Page:** all 19 draft clips and `_final_cut.mp4` rebuilt with the v2 sound (draft log `out/logs/r111c-draft.log`, full cut `out/logs/r111c-full.log`: 19 of 19 reused), page rebuilt.
 - **Files:** `out/edu05/r111b/EDU-EP05-SHORT_ending_10s.wav|.mp3` (last 10 s of the mix, from 56.282 s), `EDU-EP05-SHORT_A_fade_720p.mp4` (9.7 MB), `before-audio_A_fade.mp4` (the clip before this change). Not listened.
 - **Film's sound-plan row** (scene-sheets.md line 158, "end chord" fallback) left untouched; this note is the record of the end tag.
+
+## Cover A painted (Boss, 2026-11-07)
+
+- **Request:** user picked cover A ("รอดไหม?" / "ในโลกที่หญ้าสูงเท่าตึก"); new art allowed. Film handoff N-A ([covers.md](covers.md)) was "tiny on the lip"; for the pick I painted the option's own promise instead (the whole video is the grass trip): TINY small in the planter clearing, blades towering, far wall and hazy towers behind. Film may veto; the lip variant is untouched.
+- **Plate:** `EDU5-COVER-A` (`src/painted/edu05/cover.ts` `paintCoverA`, registered in `src/painted/shots/edu05.tsx`; also `EDU5-COVERA` in `look-index.ts` for stills). SET-MACRO-PLANTER sm k 320: TINY at (0.2, 0, -2.2) P12 surprised, look up; 8 blade clumps 20-38 sm (13-24x her 1.58 sm) round a clearing; two dark foreground sweeps. Camera `at (0.2,1.0,-2.2), yaw 0, r 3.6, eye 0.55, pitch +12, f 1000, hy 690`. Scales in one frame: TINY (0.4 sm head) vs blades several times the frame height, the planter lip and towers beyond.
+- **Cover entry:** `A-forest` now `plate: 'EDU5-COVER-A'`; text, accent, scrim, mark unchanged.
+- **Render:** `node scripts/render.mjs EDU-EP05-SHORT --covers` (log `out/logs-covers.txt`), `out/EDU-EP05-SHORT/covers/EDU-EP05-SHORT_cover-A.png`; 3:4 crop (y 240-1680) `..._cover-A_3x4.png`; sheets `sheetA-270.png`, `sheetA-120.png` (rough comp left, painted right).
+- **Measured:** lead head y 597 to feet y 1070 = 473 px = 24.6 % of frame height (rough comp ~ 30 %, handoff asked >= 18 %); feet 50 px above the scrim start y 1120, no face or hero in y 1120-1500; text lines unchanged (headline 200 at y 1340, sub 88 at y 1470, centred x 540). 120 px: headline and TINY read; sub-line soft (CV10 exception).
+- **Known limits:** blade tops are flat-cut slabs (macro blade kit, as in the film); the @TamMaiLa mark (y 143) sits outside the 3:4 crop (shared chrome).
