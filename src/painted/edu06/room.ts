@@ -265,7 +265,7 @@ export type CastItem = {at: V3; draw: (p: Painter, c: YCam) => void; /** Where i
 export const catItem = (at: V3, pose: AnimalPose, t: number, layer?: RoomLayer): CastItem => ({at, layer, draw: (p, c) => {
   const g = camPoint(c, at), u = camUnit(c, at);
   if (!g) return;
-  drawAnimal(tintPainter(p, day() ? '#e6eef2' : '#ffcf8a', day() ? 0.04 : 0.06, {brush: true}), 8000, ANIMALS['cat-orange-tabby'], g, u, {contact: 1, ...pose}, t);
+  drawAnimal(tintPainter(p, day() ? '#e6eef2' : '#ffcf8a', day() ? 0.04 : 0.06, {brush: true}), 8000, ANIMALS['cat-orange-tabby'], g, u, {contact: 1, polish: true, ...pose}, t);
 }});
 
 /** Light state of the room and the cast painted between the sofa back and its front arm (cast = cat first, then the owner). */

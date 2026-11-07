@@ -53,6 +53,8 @@ export type AnimalPose = {
   lid?: number | [number, number]; ears?: number; headDown?: number;
   lean?: number; leanTo?: [number, number]; leanAnchor?: 'nose' | 'top'; tilt?: number;
   curl?: number; tailTo?: [number, number]; contact?: number;
+  /** Cat, profile (EDU-EP06 draft review): smooth centrelines for legs and tail (no visible joints), a thicker arched neck, and a targeted curled tail that stays low in front of the chin instead of crossing the head. Off by default so other episodes keep their painted look. */
+  polish?: boolean;
 };
 export type AnimalGait = 'walk' | 'run';
 
@@ -463,11 +465,17 @@ export const drawAnimal = (p: Painter, seed: number, def: AnimalDef, g: Pt, unit
   const tail = (line0: UV[], sway = true) => {
     const T = TAILS[def.tail];
     const line = line0.map(rotAbout(line0[0], sway ? -wagA : 0)).map(([u, v]): UV => [u, Math.max(0.04, v)]); // a tail never dips under the ground
+    const sline = pose.polish && isCat ? smoothLine(smoothLine(line, 3), 3) : line;
     const w = def.fluffy ? [T.w[0] * 1.5, T.w[1] * 1.6] : T.w;
-    const poly = tube(line, taper(line.length, w[0], w[1]));
+    const poly = tube(sline, taper(sline.length, w[0], w[1]));
     part(points ? dark : def.pattern === 'tuxedo' || def.pattern === 'solid' ? def.coat : def.pattern === 'calico' ? def.coat : coat, poly, true);
-    if (def.pattern === 'tabby') for (let i = 1; i < line.length - 1; i += 2) {
-      const a = line[i], b = line[i + 1], d = Math.hypot(b[0] - a[0], b[1] - a[1]) || 1, wv = w[0] * 0.45;
+    if (sline !== line) { // rounded root and tip instead of the tube's flat cut ends
+      const cp = (pt: UV, r: number) => part(points ? dark : def.pattern === 'tuxedo' || def.pattern === 'solid' || def.pattern === 'calico' ? def.coat : coat, ellUV(pt, r, r, 0, 12), true);
+      cp(sline[0], w[0] * 0.55); cp(sline[sline.length - 1], w[1] * 0.55);
+    }
+    const tabStep = sline === line ? 2 : 8;
+    if (def.pattern === 'tabby') for (let i = sline === line ? 1 : 6; i < sline.length - 1; i += tabStep) {
+      const a = sline[i], b = sline[i + 1], d = Math.hypot(b[0] - a[0], b[1] - a[1]) || 1, wv = w[0] * 0.45;
       ink([[a[0] - ((b[1] - a[1]) / d) * wv, a[1] + ((b[0] - a[0]) / d) * wv], [a[0] + ((b[1] - a[1]) / d) * wv, a[1] - ((b[0] - a[0]) / d) * wv]], dark, 1.4, false, 0);
     }
   };
@@ -565,6 +573,10 @@ export const drawAnimal = (p: Painter, seed: number, def: AnimalDef, g: Pt, unit
         // along the tail, so the tip lands exactly on the target without a straight stick across the back.
         const tip = R.tail[R.tail.length - 1], n = R.tail.length - 1;
         const dist = Math.hypot(tg[0] - tip[0], tg[1] - tip[1]);
+        if (pose.polish) {
+          // Low, then up: the end runs forward under the chin and rises only near the target, so the tail never crosses behind the head.
+          R.tail = R.tail.map(([u, v], i): UV => { const s = i / n; return [u + (tg[0] - tip[0]) * (1 - (1 - s) ** 2) * s, v + (tg[1] - tip[1]) * s ** 3]; });
+        } else
         R.tail = R.tail.map(([u, v], i): UV => [u + (tg[0] - tip[0]) * (i / n) ** 2, v + (tg[1] - tip[1]) * (i / n) ** 2 + 0.3 * dist * Math.sin(Math.PI * (i / n) ** 1.5)]);
       } else
       R.tail = Array.from({length: 7}, (_, i): UV => { const f = i / 6; return [r0[0] + (tg[0] - r0[0]) * f, r0[1] + (tg[1] - r0[1]) * f + 0.12 * ch * Math.sin(Math.PI * f) * (1 - 0.5 * f)]; });
@@ -585,7 +597,16 @@ export const drawAnimal = (p: Painter, seed: number, def: AnimalDef, g: Pt, unit
         if (!isFar) fill(coat, ellUV(add(sh, [0.0, -0.14]), 0.15, 0.2, 0.2, 16), 3); // shoulder: a soft rounded top instead of a cut-off column
         return;
       }
-      if (def.smoothLimbs && moving) {
+      if (pose.polish && isCat && !isFront) {
+        // Polished hind leg: a round thigh over a slimmer, smoothed shank, not a kite-shaped tube (EDU-EP06 draft R3 "the cat looks angular").
+        const sm = smoothLine(q, 6), wh = [0.17, 0.15, 0.1, 0.085, 0.085];
+        const c = isFar ? far : limbC;
+        leg(c, tube(sm, sm.map((_, i) => { const x = (i / (sm.length - 1)) * (wh.length - 1), a0 = Math.floor(x), b0 = Math.min(wh.length - 1, a0 + 1); return wh[a0] + (wh[b0] - wh[a0]) * (x - a0); })), true);
+        leg(c, ellUV(lerpUV(q[0], q[1], 0.4), 0.17, 0.21, 0.3, 20), true);
+        paw(limbC, q[3], isFar);
+        return;
+      }
+      if ((def.smoothLimbs && moving) || (pose.polish && isCat)) {
         const sm = smoothLine(q, 4);
         leg(isFar ? far : limbC, tube(sm, sm.map((_, i) => { const x = (i / (sm.length - 1)) * (w0.length - 1), a = Math.floor(x), b = Math.min(w0.length - 1, a + 1); return w0[a] + (w0[b] - w0[a]) * (x - a); })), true);
       } else leg(isFar ? far : limbC, tube(q, w0), true);
@@ -625,7 +646,18 @@ export const drawAnimal = (p: Painter, seed: number, def: AnimalDef, g: Pt, unit
     const neck = arch
       ? tube([add(sh, [-0.06, 0.02]), add(sh, [0.12, 0.0]), lerpUV(add(sh, [0.12, 0.0]), add(H, [-0.1, 0.02]), 0.55), add(H, [-0.06, 0.0])], [0.5 * def.build, 0.42 * def.build, 0.34 * hs, 0.3 * hs])
       : tube([add(sh, [0.06, 0.1]), add(H, [-0.04, -0.06])], [isCat ? 0.28 : 0.3 * def.build, 0.24 * hs]);
-    part(coat, neck, true);
+    if (pose.polish && isCat && !arch) {
+      // Soft cat neck (draft review 2026-11-07, "neck like a rod"): a curved column that starts deep in the chest and flows into the skull, filled without an
+      // outline at either end, so only its two sides are inked and it reads as one body with the shoulder and the head.
+      const a0 = add(sh, [-0.02, -0.04]), b0 = add(H, [-0.05, -0.07]), m0 = lerpUV(a0, b0, 0.5), sm = smoothLine([a0, add(m0, [-0.015, 0.035]), b0], 6);
+      const wd = (i: number) => 0.4 - 0.12 * Math.sin((Math.PI / 2) * (i / (sm.length - 1))), L: UV[] = [], Rr: UV[] = [];
+      sm.forEach((q, i) => {
+        const pa = sm[Math.max(0, i - 1)], pb = sm[Math.min(sm.length - 1, i + 1)], dx = pb[0] - pa[0], dy = pb[1] - pa[1], ln = Math.hypot(dx, dy) || 1, w = wd(i) / 2;
+        L.push([q[0] - (dy / ln) * w, q[1] + (dx / ln) * w]); Rr.push([q[0] + (dy / ln) * w, q[1] - (dx / ln) * w]);
+      });
+      fill(coat, [...L, ...Rr.slice().reverse()], 4);
+      ink(L.slice(3), coat, 1.0, false, 0.15, true); ink(Rr.slice(3), coat, 1.0, false, 0.15, true);
+    } else part(coat, neck, true);
     if (arch) { if (def.pattern === 'chest' || def.pattern === 'tuxedo') fill(mixColor(coat, light, 0.55), ellUV(add(sh, [0.16, -0.12]), 0.07, 0.15, -0.3, 14), 4); }
     else if (def.pattern === 'chest' || def.pattern === 'tuxedo') fill(light, tube([add(sh, [0.14, 0.02]), add(H, [0.04, -0.12])], [0.14, 0.1]), 3);
     if (tailOver) tail(R.tail, false);

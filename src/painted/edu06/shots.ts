@@ -29,7 +29,7 @@ const OWN_FEET = LR.ownFeet;
 export const camB01SH04 = (L: number): YCam => { const e = shotEase(L, SHOT_LEN.B01SH04); return {...orbit(T_PAIR, 14 + 4 * e, 1.6 - 0.1 * e, 0.95, 1100, 760), cx: 60}; };
 export const camB02SH03 = (L: number): YCam => { const e = shotEase(L, SHOT_LEN.B02SH03); return orbit([-0.15, 1.07, 0.05], 40 - 4 * e, 0.72 - 0.04 * e, 1.1, 1100, 700); };
 export const camB04SH03 = (L: number): YCam => { const e = shotEase(L, SHOT_LEN.B04SH03); return {...orbit([0.35, 0.6, -0.3], -25 + 7 * e, 1.9, 0.85, 1000, 760), cx: -40}; };
-export const camB04SH05 = (L: number): YCam => { const e = shotEase(L, SHOT_LEN.B04SH05); return orbit([0.15, 0.62, -0.05], 20 + 6 * e, 1.05 - 0.05 * e, 0.8, 1100, 760); };
+export const camB04SH05 = (L: number): YCam => { const e = shotEase(L, SHOT_LEN.B04SH05); return orbit([0.24, 0.62, -0.05], 20 + 6 * e, 1.05 - 0.05 * e, 0.8, 1100, 760); };
 export const camB05SH02 = (L: number): YCam => { const e = shotEase(L, SHOT_LEN.B05SH02); return {...orbit([0.1, 0.42, -0.02], 30 + 4 * e, 0.7 - 0.05 * e, 0.65, 1100, 760), pitch: -20 * DEG}; };
 export const camB05SH03 = (L: number): YCam => { const e = shotEase(L, SHOT_LEN.B05SH03); return {...orbit(T_PAIR, 12 - 4 * e, 1.75 - 0.13 * e, 1.0, 1050, 660), cx: 60}; };
 
@@ -39,14 +39,28 @@ const px = (c: YCam, at: V3): {g: Pt; u: number} | null => { const g = camPoint(
 export const cardAt = px;
 
 // ------------------------------------------------------------------------------------------------ S01-B01-SH04: the exit (RN01)
-/** Cat clocks of S01-B01-SH04: sit `left` (lid 0.15), ears 0 -> 1 on L50-56, view swap and `stand-up` L60-81, `walk-out-to-right` from L75 (t = (L - 75)/30). */
+/**
+ * Cat clocks of S01-B01-SH04 (user review 2026-11-07: the first exit walked through the sofa's right arm): sit `left` (lid 0.15), ears 0 -> 1 on L50-56,
+ * view swap and `stand-up` L60-81, a short stand to L84 (its forepaws already reach the arm's inner face), then the BC1 `step-up` hop (10 f) from the
+ * cushion onto the arm top and a walk over the arm top and out of frame right. On the seat the cat is on the `sofa` layer (the arm box overpaints it);
+ * from mid-hop it is on the `arm` layer, so it is never inside the arm.
+ */
+export const B01SH04_HOP = 84;
+const exitCtx = {animal: 'cat-orange-tabby' as const, view: 'right' as const};
+const B01_ARM_TOP: V3 = [0.72, LR.arm, LR.catStart[2]];
+const B01_HOP = {rise: LR.arm - LR.seat, across: B01_ARM_TOP[0] - LR.catStart[0]};
 export const catB01SH04 = (L: number): {at: V3; pose: AnimalPose; layer: RoomLayer} => {
   const ears = smooth((L - 50) / 6);
   if (L < 60) return {at: LR.catStart, pose: {view: 'left', state: 'sit', lid: 0.15, ears}, layer: 'sofa'};
   const blend = Math.min(1, (L - 60) / 21);
-  if (L < 75) return {at: LR.catStart, pose: {view: 'right', from: 'sit', state: 'stand', blend, lid: 0.15, ears: 1}, layer: 'sofa'};
-  const m = animalMotion('walk-out-to-right', (L - 75) / FPS, {animal: 'cat-orange-tabby', view: 'right'});
-  return {at: [LR.catStart[0] + m.offset[0], LR.catStart[1], LR.catStart[2]], pose: {...m.pose, from: 'sit', blend, lid: 0.15, ears: 1}, layer: 'sofa'};
+  if (L < B01SH04_HOP) return {at: LR.catStart, pose: {view: 'right', from: 'sit', state: 'stand', blend, lid: 0.15, ears: 1}, layer: 'sofa'};
+  const hopEnd = B01SH04_HOP + STEP_UP_HOP * FPS;
+  if (L < hopEnd) {
+    const tt = (L - B01SH04_HOP) / FPS, m = animalMotion('step-up', tt, {...exitCtx, ...B01_HOP}), g = lerp3(LR.catStart, B01_ARM_TOP, smooth(tt / STEP_UP_HOP));
+    return {at: [g[0], LR.seat + m.offset[1], g[2]], pose: {...m.pose, lid: 0.15, ears: 1}, layer: L < B01SH04_HOP + 5 ? 'sofa' : 'arm'};
+  }
+  const landed = animalMotion('step-up', 1, {...exitCtx, ...B01_HOP}).pose.walk ?? 0, s = ((L - hopEnd) / FPS) * WALK_V;
+  return {at: [B01_ARM_TOP[0] + s, LR.arm, B01_ARM_TOP[2]], pose: {view: 'right', state: 'stand', walk: landed + gaitOf(s), stride: 1, contact: 1, lid: 0.15, ears: 1}, layer: 'arm'};
 };
 export const paintB01SH04 = (p: Painter, L: number) => {
   const c = camB01SH04(L), t = L / FPS, cat = catB01SH04(L), out: {own?: FigAnchors | null} = {};
@@ -104,7 +118,7 @@ export const paintB04SH03 = (p: Painter, L: number) => {
 };
 
 // ------------------------------------------------------------------------------------------------ S01-B04-SH05: the head-rub (RN05)
-export const RUB_GROUND: V3 = [0.34, LR.rightCushion[1], -0.1];
+export const RUB_GROUND: V3 = [0.5, LR.rightCushion[1], -0.1];
 export const rubClock = (L: number) => (L + 11) / FPS;
 /** The head-rub `target` that puts the skull-top anchor on `hand` (px) for a cat of ground point `g` (px) and scale `u` (px/m), `view: 'left'` (forward = screen left). */
 export const rubTarget = (g: Pt, u: number, hand: Pt): [number, number] => [(g[0] - hand[0]) / u, (g[1] - hand[1]) / u];
@@ -121,7 +135,7 @@ export const paintB04SH05 = (p: Painter, L: number, o: {press?: number} = {}) =>
   const m = animalMotion('head-rub', Math.min(rubClock(L), 2.6), {animal: 'cat-orange-tabby', view: 'left', target, press});
   const anchors: AnimalAnchors = {};
   paintRoom(p, c, {t, fore: false, cast: [
-    {at: RUB_GROUND, draw: (q, cc) => { const k = px(cc, RUB_GROUND)!; drawAnimal(q, 8000, CAT, k.g, k.u, {contact: 1, ...m.pose}, t, anchors); }},
+    {at: RUB_GROUND, draw: (q, cc) => { const k = px(cc, RUB_GROUND)!; drawAnimal(q, 8000, CAT, k.g, k.u, {contact: 1, polish: true, ...m.pose}, t, anchors); }},
     {at: OWN_FEET, draw: (q, cc) => { out.own = paintOwn(q, cc, {at: OWN_FEET, view: 'front', pose: 'P31', face: 'happy', faceState: {eyes: 'half', look: [0.6, 0.3]}, t, warm: 0.12,
       fig: {...seatedPose('seated-offer-palm', OWN, og.g, og.u, 'front', {toward: 1})}}); }},
   ]});
@@ -130,19 +144,16 @@ export const paintB04SH05 = (p: Painter, L: number, o: {press?: number} = {}) =>
 
 // ------------------------------------------------------------------------------------------------ S01-B05-SH02 / SH03: the curled cat, the tail on her knee
 export const CURL_AT: V3 = [0.2, LR.rightCushion[1], -0.1];
-/** The curl's wrapped tail tip (forward m, up m from the ground point), read from the anchor of an un-targeted curl. */
-const TAIL_REST: [number, number] = (() => { const a: AnimalAnchors = {}; drawAnimal(nullPainter(0), 8000, CAT, [0, 0], 1000, {view: 'right', state: 'lie', curl: 1}, 0, a); return a.tailTip ? [a.tailTip[0] / 1000, -a.tailTip[1] / 1000] : [0.12, 0.03]; })();
-export const tailRest = TAIL_REST;
-/** B05-SH02: the tail tip eases from the curl's rest tip to her left knee over L39-75 (36 f), lands L75. Returns the pose with `tailTo` and the knee px for the check. */
+/**
+ * B05-SH02 / SH03 (user review 2026-11-07: "the tail flicking her knee is not needed, let her just stroke the cat"): the cat lies curled and still, her hand rests
+ * on its back; no tail reach (`tailTo` dropped). Returns the pose with the knee px (her left knee) for the checks. `L` is kept so callers read the same clock.
+ */
 export const catB05 = (L: number, c: YCam, t: number, o: {earTwitch?: boolean; breath?: boolean} = {}) => {
   const k = px(c, CURL_AT), og = px(c, OWN_FEET);
   if (!k || !og) return null;
   const knee = seatedKnee(OWN, og.g, og.u, 'l', 'front');
-  const target: [number, number] = [-(knee[0] - k.g[0]) / k.u, (k.g[1] - knee[1]) / k.u]; // view 'left': forward = screen left
-  const e = smooth((L - 39) / 36), br = o.breath ? 0.004 * Math.sin(2 * Math.PI * 0.9 * t) : 0;
-  const tailTo: [number, number] = [TAIL_REST[0] + (target[0] - TAIL_REST[0]) * e, TAIL_REST[1] + (target[1] - TAIL_REST[1]) * e + br];
   const tw = o.earTwitch ? 0.22 * (twitch(L, 118) + twitch(L, 171)) : 0;
-  return {knee, k, og, target, pose: {view: 'left', state: 'lie', curl: 1, lid: 0.55, tailTo, ears: tw} as AnimalPose};
+  return {knee, k, og, pose: {view: 'left', state: 'lie', curl: 1, lid: 0.55, ears: tw} as AnimalPose};
 };
 /** A 7 f ear flick (a bump) centred on shot frame `at`. */
 export const twitch = (L: number, at: number) => Math.max(0, Math.sin(Math.PI * (L - at + 3.5) / 7)) * (Math.abs(L - at) < 3.5 ? 1 : 0);
@@ -152,9 +163,9 @@ export const paintB05SH02 = (p: Painter, L: number) => {
   const anchors: AnimalAnchors = {};
   paintRoom(p, c, {t, fore: false, cast: [
     {at: OWN_FEET, draw: (q, cc) => { const o = paintOwn(q, cc, {at: OWN_FEET, view: 'front', pose: 'P31', face: 'happy', faceState: {eyes: 'half'}, t, warm: 0.12, fig: {...seatedPose('seated-offer-palm', OWN, cat.og.g, cat.og.u, 'front', {toward: 1})}}); out.hand = o?.lHand; }},
-    {at: [OWN_FEET[0], OWN_FEET[1], OWN_FEET[2] + 0.2], draw: (q, cc) => { const k = px(cc, CURL_AT)!; drawAnimal(q, 8000, CAT, k.g, k.u, {contact: 1, ...cat.pose}, t, anchors); }},
+    {at: [OWN_FEET[0], OWN_FEET[1], OWN_FEET[2] + 0.2], draw: (q, cc) => { const k = px(cc, CURL_AT)!; drawAnimal(q, 8000, CAT, k.g, k.u, {contact: 1, polish: true, ...cat.pose}, t, anchors); }},
   ]});
-  return {...out, tip: anchors.tailTip, knee: cat.knee};
+  return {...out, knee: cat.knee};
 };
 export const paintB05SH03 = (p: Painter, L: number) => {
   const c = camB05SH03(L), t = (L + 1406 - 1308) / FPS, cat = catB05(100, c, t, {earTwitch: false, breath: true});
@@ -164,7 +175,7 @@ export const paintB05SH03 = (p: Painter, L: number) => {
   const g = smooth((L - 60) / 40), look: [number, number] = [0.6 + 0.15 * g, 0.2 + 0.1 * g];
   paintRoom(p, c, {t, fore: false, cast: [
     {at: OWN_FEET, draw: (q, cc) => { paintOwn(q, cc, {at: OWN_FEET, view: 'front', pose: 'P31', face: 'happy', faceState: {eyes: 'half', look}, t, warm: 0.12, fig: {...seatedPose('seated-offer-palm', OWN, og.g, og.u, 'front', {toward: 1})}}); }},
-    {at: [OWN_FEET[0], OWN_FEET[1], OWN_FEET[2] + 0.2], draw: (q, cc) => { const k = px(cc, CURL_AT)!; drawAnimal(q, 8000, CAT, k.g, k.u, {contact: 1, ...catL}, t); }},
+    {at: [OWN_FEET[0], OWN_FEET[1], OWN_FEET[2] + 0.2], draw: (q, cc) => { const k = px(cc, CURL_AT)!; drawAnimal(q, 8000, CAT, k.g, k.u, {contact: 1, polish: true, ...catL}, t); }},
   ]});
 };
 

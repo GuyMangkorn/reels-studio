@@ -26,6 +26,20 @@ const surf = (x: number, y: number, lift = 0): V => {
   return [x, y, C * Math.sqrt(Math.max(0, d)) + lift];
 };
 const lerp = (a: number, b: number, u: number) => a + (b - a) * u;
+/** Catmull-Rom through `pts`, `per` samples per span; `closed` wraps round (rounded tufts and ears instead of straight-edged shards). */
+const soften = (pts: Pt[], per = 5, closed = false): Pt[] => {
+  const n = pts.length, at = (i: number): Pt => (closed ? pts[((i % n) + n) % n] : pts[Math.max(0, Math.min(n - 1, i))]);
+  const out: Pt[] = [];
+  for (let i = 0; i < (closed ? n : n - 1); i++) {
+    const p0 = at(i - 1), p1 = at(i), p2 = at(i + 1), p3 = at(i + 2);
+    for (let k = 0; k < per; k++) {
+      const t = k / per, t2 = t * t, t3 = t2 * t;
+      out.push([0, 1].map((c) => 0.5 * (2 * p1[c] + (-p0[c] + p2[c]) * t + (2 * p0[c] - 5 * p1[c] + 4 * p2[c] - p3[c]) * t2 + (-p0[c] + 3 * p1[c] - 3 * p2[c] + p3[c]) * t3)) as Pt);
+    }
+  }
+  if (!closed) out.push(pts[n - 1]);
+  return out;
+};
 const lerpV = (a: V, b: V, u: number): V => [lerp(a[0], b[0], u), lerp(a[1], b[1], u), lerp(a[2], b[2], u)];
 
 export const paintCatFace = (p: Painter, cam: CatCam, s: CatFace, L: CatLight) => {
@@ -70,14 +84,15 @@ export const paintCatFace = (p: Painter, cam: CatCam, s: CatFace, L: CatLight) =
   const sx = px(Math.sin(yaw) * 1.2), top = cam.hy + px(2.2);
   const X = (cm: number) => 540 + sx + px(cm), Y = (cm: number) => top + px(cm);
   // silhouette: neck under the head, a shoulder bulge, then the forelegs and haunches widening to the frame bottom
-  const bodyL: Pt[] = [[X(-4.4), Y(0)], [X(-5.6), Y(2.5)], [X(-6.2), Y(5.5)], [X(-6.0), Y(9)], [X(-6.6), 2100]];
+  const bodyL: Pt[] = soften([[X(-3.2), Y(-0.8)], [X(-4.4), Y(0.4)], [X(-5.6), Y(2.6)], [X(-6.2), Y(5.6)], [X(-6.0), Y(10)], [X(-5.4), Y(16)], [X(-5.6), Y(24)], [X(-6.2), 2100]], 6);
   const bodyR: Pt[] = bodyL.map(([x, y]): Pt => [2 * (540 + sx) - x, y]).reverse();
   fill(9020, coat, [...bodyL, ...bodyR]);
   // pale bib: fluffy at the top under the chin, narrowing down the chest between the forelegs
   const bib: Pt[] = [];
-  for (let i = 0; i <= 12; i++) { const a = Math.PI * (i / 12); bib.push([X(-Math.cos(a) * 3.0), Y(0.4 - Math.sin(a) * 0.5 + (i % 2) * 0.35)]); }
+  for (let i = 0; i <= 12; i++) { const a = Math.PI * (i / 12); bib.push([X(-Math.cos(a) * 3.0), Y(0.4 - Math.sin(a) * 0.5 + (i % 2) * 0.12)]); }
   const bibSide = (sd: number): Pt[] => Array.from({length: 9}, (_, i): Pt => { const f = i / 8, x = lerp(2.9, 1.4, f ** 0.8) + (i % 2) * 0.35; return [X(sd * x), Y(lerp(0.6, 8.5, f))]; });
-  const bibDown: Pt[] = [...bibSide(1), [X(1.3), 2100], [X(-1.3), 2100], ...bibSide(-1).reverse()];
+  const bibSoft = (sd: number): Pt[] => soften(bibSide(sd).filter((_, i) => i % 2 === 0), 5);
+  const bibDown: Pt[] = [...bibSoft(1), [X(1.3), 2100], [X(-1.3), 2100], ...bibSoft(-1).reverse()];
   fill(9021, light, [...bib, ...bibDown]);
   // forelegs: two columns from the chest down, a soft shade between them and an ink line on the inner edges
   for (const sd of [-1, 1]) {
@@ -89,6 +104,7 @@ export const paintCatFace = (p: Painter, cam: CatCam, s: CatFace, L: CatLight) =
     const y = top + px(3.0 + 2.6 * k);
     for (const sd of [-1, 1]) washAt(p, 9030 + k * 2 + (sd > 0 ? 1 : 0), dark, 80, ribbonFlat([[540 + sx + sd * px(6.6 + 0.6 * k), y + px(1.2)], [540 + sx + sd * px(5.4 + 0.5 * k), y + px(0.2)], [540 + sx + sd * px(4.0), y]], px(0.3)), 0.4, 0.3);
   }
+  for (const sd of [-1, 1]) washAt(p, 9044 + (sd > 0 ? 1 : 0), '#7a4a22', 90, blob(9044 + (sd > 0 ? 1 : 0), 540 + sx + sd * px(5.2), top + px(10), px(1.9), px(11), 0), 0.6, 0.3); // roundness: the torso darkens toward both edges
   washAt(p, 9040, '#2a1a12', 70, blob(9040, 540 + sx + px(5.5), top + px(8), px(3), px(9), 0), 0.6, 0.3); // shadow side of the body
 
   // ------------------------------------------------ ears (far one first when turned)
@@ -98,8 +114,9 @@ export const paintCatFace = (p: Painter, cam: CatCam, s: CatFace, L: CatLight) =
     const tipUp: V = [sd * 3.2, 5.9, 0.9], tipFlat: V = [sd * 6.4, 2.9, -0.4];
     const tip = lerpV(tipUp, tipFlat, e), mid0 = lerpV(b0, tip, 0.5), mid1 = lerpV(b1, tip, 0.5);
     const outer = P([b0, [mid0[0] - sd * 0.15, mid0[1] + 0.2, mid0[2]], tip, [mid1[0] + sd * 0.25, mid1[1], mid1[2]], b1]);
-    fill(9100 + (sd > 0 ? 10 : 0), coat, outer);
-    inkLine(p, 9101 + (sd > 0 ? 10 : 0), outer, {weight: 1.1, color: mixColor(dark, INK, 0.4), closed: false, curve: 0.2});
+    const earSoft = soften(outer, 6);
+    fill(9100 + (sd > 0 ? 10 : 0), coat, earSoft);
+    inkLine(p, 9101 + (sd > 0 ? 10 : 0), earSoft, {weight: 1.1, color: mixColor(dark, INK, 0.4), closed: false, curve: 0.2});
     // inner ear: pink, less of it as the ear flattens and turns its opening away
     const inA = 1 - 0.75 * e, c0 = lerpV(b0, b1, 0.5);
     const inner = P([lerpV(b0, c0, 0.35), lerpV(tip, c0, 0.18), lerpV(b1, c0, 0.35), lerpV(c0, tip, 0.05)]);
@@ -123,7 +140,7 @@ export const paintCatFace = (p: Painter, cam: CatCam, s: CatFace, L: CatLight) =
   for (let k = 0; k < 14; k++) {
     const sd = k < 7 ? -1 : 1, f = (k % 7) / 6, y = lerp(0.6, -2.6, f), x = sd * (lerp(4.6, 3.6, f) + 0.5);
     const a = pr([x - sd * 0.9, y + 0.3, 1.0]), b = pr([x + sd * 0.25, y - 0.5, 1.0]), c = pr([x - sd * 0.9, y - 0.6, 1.2]);
-    fill(9210 + k, f > 0.6 ? light : coat, [a, b, c]);
+    fill(9210 + k, f > 0.6 ? light : coat, soften([a, b, c], 6, true));
   }
 
   // ------------------------------------------------ light: warm key from screen left; shadow side to the right
