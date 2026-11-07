@@ -12,7 +12,8 @@ Usage:
                                                              # lock media already in public/ (paths also from stdin)
   python3 -I scripts/store.py backfill-chat GLOB...          # store images the user attached in past chat transcripts
   python3 -I scripts/store.py archive ID... | --all-worktrees # out/<ID>/ -> projects/<PROJECT>/renders/<ID>/<commit>/
-  python3 -I scripts/store.py archive --path DIR --project P --kind K   # takes, previews, samples -> projects/P/K/
+  python3 -I scripts/store.py archive --path DIR --id ID --kind K [--label L]  # -> projects/<SERIES>/K/ID/L/ (README#project-layout)
+  python3 -I scripts/store.py mv OLD NEW | --plan FILE [--apply]   # move in the store; manifest, locks, publish follow
   python3 -I scripts/store.py prune PATH... [--delete]       # free gitignored folders: drop stored copies and scratch
   python3 -I scripts/store.py publish ID [--video STORE_PATH] [--cover PATH] [--posted DATE] [--title T] --reason R
                                                              # publish/<PROJECT>/<ID>/: the one MP4 + cover the user posts
@@ -56,7 +57,11 @@ GIT = [git('branch', '--show-current'), git('rev-parse', '--short=12', 'HEAD')]
 METADATA = ('.json', '.md')  # sidecars and indexes: edited in place (selection notes, INDEX rows), so not hash-checked
 MEDIA = {'.mp4', '.mov', '.webm', '.mp3', '.wav', '.m4a', '.ogg', '.flac', '.png', '.jpg', '.jpeg', '.webp', '.gif'}
 SKIP_PARTS = ('bundle', 'venv', 'node_modules', 'logs', 'tmp', 'qa')  # scratch under out/ that is never archived
-ALIASES = {'ZCPAINT': 'ZCONDO'}  # composition ID prefix -> project folder, only where they differ
+ALIASES = {'ZCPAINT': 'ZCONDO', 'ZC2': 'ZCONDO2', 'ALV': 'ALVARENGA'}  # composition ID prefix -> series folder, only where they differ
+# Project layout (README.md#project-layout): projects/<SERIES>/<kind>/<CompositionId or _series>/<label>/<file>
+KINDS = ('renders', 'reference', 'review', 'previews', 'covers', 'audio', 'references', 'public')
+EXEMPT = ('KIT', '_legacy', '_unsorted', '_shared')  # kit library (src/painted/kit owns its paths) and holding areas
+SERIES = re.compile(r'^[A-Z][A-Z0-9]*$')
 _rows = None
 
 
@@ -102,8 +107,41 @@ def store_file(src, rel, sidecar=True, commit=None):
     return status
 
 
+def scratch_segment(seg):
+    return seg in SKIP_PARTS or seg.startswith('qa-') or seg.endswith('-qa')
+
+
+def layout_error(rel):
+    """Why a projects/ path breaks the project layout, or None. Paths outside projects/ are not checked."""
+    parts = rel.split('/')
+    if parts[0] != 'projects': return None
+    if len(parts) < 2 or parts[1] in EXEMPT: return None
+    series = parts[1]
+    if not SERIES.match(series):
+        return f'series folder must be a series code such as EDU (the composition ID before its first "-"), not {series}'
+    if len(parts) < 5 or parts[2] not in KINDS:
+        return f'expected projects/{series}/<kind>/<CompositionId or _series>/[<label>/]<file>, kind one of {", ".join(KINDS)}'
+    if any(scratch_segment(seg) for seg in parts[2:-1]): return 'qa, tmp and log folders are scratch and are never stored'
+    kind, owner = parts[2], parts[3]
+    if kind == 'public' or (kind == 'references' and owner == 'user') or owner == '_series': return None
+    if not COMPOSITION_ID.match(owner) or project_of(owner) != series:
+        return f'{owner} is not a composition ID of series {series} (use _series for series-wide files)'
+    return None
+
+
+def layout_path(series_or_id, kind, label=''):
+    """projects/<SERIES>/<kind>/<ID or _series>[/<label>] for a composition ID, or a bare series code (-> _series)."""
+    if kind not in KINDS: sys.exit(f'bad kind: {kind} (one of {", ".join(KINDS)})')
+    if COMPOSITION_ID.match(series_or_id): series, owner = project_of(series_or_id), series_or_id
+    elif SERIES.match(series_or_id): series, owner = ALIASES.get(series_or_id, series_or_id), '_series'
+    else: sys.exit(f'bad --id: {series_or_id} (a composition ID such as EDU-EP05-SHORT, or a series code such as EDU)')
+    if label and (label.startswith('/') or '..' in label.split('/')): sys.exit(f'bad label: {label}')
+    return '/'.join(p for p in ('projects', series, kind, owner, label.strip('/')) if p)
+
+
 def put(a):
     rel, _ = store_path(a.store_path)
+    if (why := layout_error(rel)): sys.exit(f'bad store path {rel}: {why} (README.md#project-layout)')
     if not os.path.isfile(a.file): return fail(f'no such file: {a.file}')
     status = store_file(a.file, rel)
     if status == 'conflict': return fail(f'{rel} exists with other content; stored files are immutable, use a new ID or number')
@@ -251,8 +289,9 @@ def archive_folder(folder, prefix, dedupe_prefix, commit, counts):
 def archive(a):
     counts = {'stored': 0, 'already': 0, 'cloud': 0}; skipped = []; known = None
     if a.path:
-        if not (a.project and a.kind): sys.exit('bad arguments: --path needs --project and --kind')
-        archive_folder(a.path, f'projects/{a.project}/{a.kind}', f'projects/{a.project}/', GIT[1], counts)
+        if not (a.id and a.kind): sys.exit('bad arguments: --path needs --id (composition ID or series code) and --kind')
+        prefix = layout_path(a.id, a.kind, a.label or '')
+        archive_folder(a.path, prefix, '/'.join(prefix.split('/')[:2]) + '/', GIT[1], counts)
     trees = [l[9:] for l in git('worktree', 'list', '--porcelain').splitlines() if l.startswith('worktree ')] if a.all_worktrees else ['.']
     for tree in trees:
         out = os.path.join(tree, 'out')
@@ -362,7 +401,7 @@ def publish(a):
                         'draft, final-cut, range and clip renders are never published')
         if rel: changed.append(('video', f'{cid}.mp4', rel))
     if a.cover:
-        rel = stored_or_put(a.cover, f'projects/{project}/renders/{cid}/covers')
+        rel = stored_or_put(a.cover, f'projects/{project}/covers/{cid}')
         if os.path.splitext(rel)[1].lower() not in ('.png', '.jpg', '.jpeg', '.webp'): return fail(f'{rel}: a cover is a picture')
         changed.append(('cover', f'{cid}_cover{os.path.splitext(rel)[1].lower()}', rel))
     if not changed and not a.posted and a.title is None: return fail(f'{cid}: nothing to publish (give --video, --cover, --posted or --title)')
@@ -404,6 +443,109 @@ def write_publish_index():
             'A file outside this folder is not final.\n\n| Series | Video | Status | Updated | MP4 | Cover | Title |\n'
             '| --- | --- | --- | --- | --- | --- | --- |\n' + '\n'.join(rows) + '\n')
     with open(os.path.join(STORE, PUBLISH, 'INDEX.md'), 'w', encoding='utf-8') as f: f.write(text)
+
+
+def find_by_sha(digest):
+    """A stored path holding these bytes (used when a lock still names a path that was moved), or None."""
+    for rel in sorted((rel for rel, r in manifest().items() if r['sha256'] == digest), key=rank):
+        if os.path.isfile(os.path.join(STORE, rel)): return rel
+    return None
+
+
+def fix_case(rename):
+    """On a case-insensitive disk a move into ALVARENGA/ lands in an existing alvarenga/: rename such folders."""
+    done = set()
+    for n in rename.values():
+        parts = n.split('/')
+        for i in range(1, len(parts)):
+            parent = os.path.join(STORE, *parts[:i]); want = parts[i]
+            if (parent, want) in done or not os.path.isdir(parent): continue
+            done.add((parent, want))
+            for have in os.listdir(parent):
+                if have != want and have.lower() == want.lower():
+                    tmp = os.path.join(parent, have + '.case-tmp')
+                    os.rename(os.path.join(parent, have), tmp); os.rename(tmp, os.path.join(parent, want))
+
+
+def move(a):
+    """Move files or folders inside the store and rewrite manifest rows, assets.lock.json entries and publish.json
+    sources; every move is logged in $REELS_STORE/moves.tsv. Dry run unless --apply."""
+    pairs = []
+    if a.plan:
+        for line in open(a.plan, encoding='utf-8'):
+            if line.strip() and not line.startswith('#'): pairs.append(line.rstrip('\n').split('\t')[:2])
+    elif a.old and a.new: pairs = [(a.old, a.new)]
+    else: sys.exit('bad arguments: give OLD NEW or --plan FILE')
+    moves = []; problems = []
+    for old, new in pairs:
+        old, src = store_path(old); new, _ = store_path(new)
+        if os.path.isdir(src):
+            for root, _dirs, files in os.walk(src):
+                for name in sorted(files):
+                    rel = os.path.relpath(os.path.join(root, name), src)
+                    moves.append((os.path.join(old, rel), os.path.join(new, rel)))
+        elif os.path.isfile(src): moves.append((old, new))
+        else: problems.append(f'missing: {old}')
+    moves = [(o, n) for o, n in moves if os.path.basename(o) != '.DS_Store']
+    problems += [f'{n}: {why}' for o, n in moves if (why := layout_error(n))]
+    if problems:
+        print(f'{len(problems)} problems, nothing moved')
+        for p_ in problems[:20]: print(f'  {p_}')
+        return 1
+    if not a.apply:
+        print(f'would move {len(moves)} files from {len(pairs)} entries (rerun with --apply)')
+        for o, n in moves[:5]: print(f'  {o} -> {n}')
+        return 0
+    rename = {}
+    for o, n in moves:
+        so, sn = os.path.join(STORE, o), os.path.join(STORE, n)
+        if os.path.exists(sn) and sha256(sn) != sha256(so):
+            stem, ext = os.path.splitext(n); n = f'{stem}.{sha256(so)[:8]}{ext}'; sn = os.path.join(STORE, n)
+        os.makedirs(os.path.dirname(sn), exist_ok=True)
+        if os.path.exists(sn) and not os.path.samefile(so, sn): os.remove(so)  # same bytes already there
+        else: os.replace(so, sn)
+        rename[o] = n
+    fix_case(rename)
+    # macOS folders are case-insensitive: rows may spell a moved path in another case (projects/hanako vs HANAKO)
+    lower = {o.lower(): n for o, n in rename.items()}
+    rename.update({k: v for k, v in ((r, lower[r.lower()]) for r in manifest() if r not in rename and r.lower() in lower)})
+    path = os.path.join(STORE, MANIFEST); lines = open(path, encoding='utf-8').read().splitlines(); out = lines[:1]
+    for line in lines[1:]:
+        r = line.split('\t')
+        if len(r) >= 3 and r[2] in rename: r[2] = rename[r[2]]
+        out.append('\t'.join(r))
+    with open(path + '.tmp', 'w', encoding='utf-8') as f: f.write('\n'.join(out) + '\n')
+    os.replace(path + '.tmp', path)
+    global _rows; _rows = None
+    locks = 0
+    if os.path.isdir(os.path.join('src', 'videos')):
+        for ep in episodes([]):
+            lp = lock_file(ep); lock = read_lock(lp); hit = False
+            for entry in lock.values():
+                if entry['store'] in rename: entry['store'] = rename[entry['store']]; hit = True; locks += 1
+            if hit:
+                with open(lp, 'w', encoding='utf-8') as f: json.dump(lock, f, indent=2); f.write('\n')
+    for meta_path in glob.glob(os.path.join(STORE, PUBLISH, '*', '*', 'publish.json')):
+        meta = json.load(open(meta_path, encoding='utf-8')); hit = False
+        for k in ('video', 'cover'):
+            if meta.get(k) and meta[k]['source'] in rename: meta[k]['source'] = rename[meta[k]['source']]; hit = True
+        if hit:
+            with open(meta_path, 'w', encoding='utf-8') as f: json.dump(meta, f, ensure_ascii=False, indent=2); f.write('\n')
+    log = os.path.join(STORE, 'moves.tsv'); new_log = not os.path.exists(log); today = datetime.date.today().isoformat()
+    with open(log, 'a', encoding='utf-8') as f:
+        if new_log: f.write('date\told\tnew\n')
+        for o, n in rename.items(): f.write(f'{today}\t{o}\t{n}\n')
+    for old, _ in pairs:
+        top = os.path.join(STORE, os.path.normpath(old))
+        for root, _dirs, _files in sorted(os.walk(top, topdown=False), key=lambda w: -len(w[0])) if os.path.isdir(top) else []:
+            for junk in ('.DS_Store',):
+                if os.path.exists(os.path.join(root, junk)): os.remove(os.path.join(root, junk))
+            if not os.listdir(root): os.rmdir(root)
+        parent = os.path.dirname(top)
+        while parent.startswith(os.path.join(STORE, 'projects', '')) and os.path.isdir(parent) and not os.listdir(parent):
+            os.rmdir(parent); parent = os.path.dirname(parent)
+    print(f'moved {len(rename)} files, {locks} lock entries updated, logged in moves.tsv')
+    return 0
 
 
 def lock_file(episode):
@@ -455,6 +597,7 @@ def fetch(a):
                 if sha256(pub) == entry['sha256']: present += 1; continue
                 if not a.force: problems.append(f'{ep}: {pub} differs from the lock (edited cache copy?); --force restores it'); continue
             src = os.path.join(STORE, entry['store'])
+            if not os.path.isfile(src) and (moved := find_by_sha(entry['sha256'])): src = os.path.join(STORE, moved)
             if not os.path.isfile(src): problems.append(f'{ep}: {entry["store"]} missing from the store'); continue
             if not copy_verified(src, pub, entry['sha256']): problems.append(f'{ep}: {entry["store"]} hash mismatch in the store'); continue
             copied += 1
@@ -474,7 +617,8 @@ def verify(a):
         for ep in episodes([]):
             for pub, entry in read_lock(lock_file(ep)).items():
                 locked += 1; row = rows.get(entry['store'])
-                if not row: problems.append(f'{ep}: {entry["store"]} not in the manifest')
+                if not row and (moved := find_by_sha(entry['sha256'])): print(f'  note: {ep}: {entry["store"]} moved to {moved} (fetch finds it; update the lock)')
+                elif not row: problems.append(f'{ep}: {entry["store"]} not in the manifest')
                 elif row['sha256'] != entry['sha256']: problems.append(f'{ep}: {pub} lock hash differs from the manifest')
     print(f'{len(rows)} stored, {locked} locked, {len(problems)} problems')
     for p in problems: print(f'  {p}')
@@ -500,11 +644,16 @@ def main():
     p.add_argument('--project', required=True); p.add_argument('--source', default='.', help='checkout whose public/ holds the files')
     p.set_defaults(fn=adopt)
     p = sub.add_parser('archive'); p.add_argument('ids', nargs='*', help='composition IDs: archive out/<ID>/')
-    p.add_argument('--path', help='archive media under this folder instead'); p.add_argument('--project'); p.add_argument('--kind')
+    p.add_argument('--path', help='archive media under this folder instead')
+    p.add_argument('--id', help='with --path: composition ID, or a series code for series-wide files')
+    p.add_argument('--kind', help=f'with --path: one of {", ".join(KINDS)}'); p.add_argument('--label', help='with --path: round, date or take set')
     p.add_argument('--all-worktrees', action='store_true', help='every out/<ID>/ in every worktree; lists the rest')
     p.set_defaults(fn=archive)
     p = sub.add_parser('prune'); p.add_argument('paths', nargs='+', help='gitignored folders, e.g. out/')
     p.add_argument('--delete', action='store_true', help='actually delete (default: dry run)'); p.set_defaults(fn=prune)
+    p = sub.add_parser('mv', help='move inside the store, rewriting manifest, locks and publish sources')
+    p.add_argument('old', nargs='?'); p.add_argument('new', nargs='?'); p.add_argument('--plan', help='TSV of OLD<TAB>NEW lines')
+    p.add_argument('--apply', action='store_true', help='actually move (default: dry run)'); p.set_defaults(fn=move)
     p = sub.add_parser('publish', help='set the MP4/cover the user posts: publish/<PROJECT>/<ID>/')
     p.add_argument('id', help='composition ID'); p.add_argument('--video', help='stored delivery render (default: the newest)')
     p.add_argument('--cover', help='store path or local file of the picked cover'); p.add_argument('--posted', metavar='YYYY-MM-DD')

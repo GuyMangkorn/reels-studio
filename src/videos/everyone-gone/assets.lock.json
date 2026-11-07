@@ -84,11 +84,11 @@
     "sha256": "c8e201e30f6ac1588df54c5bbc27695893cde40cb4350735cc73fa80be2884e2"
   },
   "public/narration/EG-EP01-SHORT.wav": {
-    "store": "projects/EG/narration/EG-EP01-SHORT-narration-lock.wav",
+    "store": "projects/EG/audio/EG-EP01-SHORT/narration/EG-EP01-SHORT-narration-lock.wav",
     "sha256": "0b76d4bb61de10cc43bf42ff2e6359b635bed2a122eb1e61e3985f2a17adf908"
   },
   "public/narration/EG-EP02-SHORT.wav": {
-    "store": "projects/EG/narration/EG-EP02-SHORT-narration-B-x108-tight-v4.wav",
+    "store": "projects/EG/audio/EG-EP02-SHORT/narration/EG-EP02-SHORT-narration-B-x108-tight-v4.wav",
     "sha256": "5a8a0bd9eed6b8f8db1daa22d87eb27139d2ff69df1be1fdc552cdb555e06d38"
   },
   "public/sfx/foley/foley_jump-scuff-sneakers_01.wav": {

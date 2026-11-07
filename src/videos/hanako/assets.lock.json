@@ -84,15 +84,15 @@
     "sha256": "c8e201e30f6ac1588df54c5bbc27695893cde40cb4350735cc73fa80be2884e2"
   },
   "public/images/hanako/film-card-poster-1995-redacted.png": {
-    "store": "projects/HANAKO/reference/2026-10-31_b07-film-card-poster-1995-redacted.png",
+    "store": "projects/HANAKO/references/HANAKO-SHORT/reference/2026-10-31_b07-film-card-poster-1995-redacted.png",
     "sha256": "75809926fcc26ca495cb23ed8c05c9ba26aa592bcdc9cfdcc4a60a00c5e6581b"
   },
   "public/narration/HANAKO-SHORT.amplitude.json": {
-    "store": "projects/HANAKO/audio/final/lock-v3/HANAKO-SHORT.amplitude.json",
+    "store": "projects/HANAKO/audio/HANAKO-SHORT/final/lock-v3/HANAKO-SHORT.amplitude.json",
     "sha256": "fdfe80f92780b1056f62deb079e41edd3ff59af757db459575507a5093bd3fa3"
   },
   "public/narration/HANAKO-SHORT.mp3": {
-    "store": "projects/HANAKO/audio/final/s3-tail-reread/HANAKO-SHORT-tail.mp3",
+    "store": "projects/HANAKO/audio/HANAKO-SHORT/final/s3-tail-reread/HANAKO-SHORT-tail.mp3",
     "sha256": "ed3a339f124a8f7125afc4b5d9101a1d56d9d320b0fa83ea25a7067acd2c50f7"
   }
 }
