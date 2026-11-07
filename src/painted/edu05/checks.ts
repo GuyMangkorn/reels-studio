@@ -10,8 +10,9 @@ import {poseFor} from '../kit/poses';
 import {sweep} from './garden';
 import {blendFig, braceClamp, namedPose, NAMED_POSES, paintClamp, VIEW_OF} from './poses';
 import {TINY} from './cast';
-import {paintPuff} from './scenes';
+import {coldTiny, paintPuff, shadeSet} from './scenes';
 import {antItem, antWalk, ANT_SPEED} from './ant';
+import {paintFarTower} from './effects';
 import type {Arm, FigAnchors, FigPose} from '../kit/cast';
 import {BONE, legScale} from '../kit/cast';
 import {camPoint, camUnit, type YCam} from '../kit/ycam';
@@ -24,7 +25,7 @@ import type {Item} from './world';
 //   printf 'EDU5-CHK-EDGE 45 out/edu05/w52/g1/EDGE45.png\n' | node scripts/stills.mjs src/painted/edu05/check-index.ts
 // They show an element in its shot's camera and staging, not a finished shot (Editor assembles those).
 
-export const CHECK_FRAMES = {EDGE: 90, DROP2: 87, DROP3: 119, DROP4: 133, ANTW: 25, FX: 80, FAC: 97, SPECK: 32, DRIFT: 133, POSES: 210, CRUMB: 90, PUFF: 150, LIFT: 173, LIFTOFF: 89, LANDING: 93, SIP: 41, TOUCH: 71, STAND: 32} as const;
+export const CHECK_FRAMES = {EDGE: 90, DEW1: 77, DROP2: 86, DROP3: 119, DROP4: 132, ANTW: 25, FX: 80, FAC: 97, SPECK: 32, DRIFT: 133, POSES: 210, CRUMB: 115, PUFF: 140, LIFT: 173, LIFTOFF: 89, LANDING: 93, SIP: 41, TOUCH: 71, STAND: 32, COLD: 77, PASS: 89, BARS: 173, END: 196} as const;
 const FPS = 30;
 
 /** G1: N2 shade edge sliding -0.5 -> -1.2 (S01-B05-SH01 L 0-89) with the shot camera, TINY cooled by `edgeShade` (K1), a gust (N1). */
@@ -39,35 +40,7 @@ export const paintEDGE = (p: Painter, frame: number) => {
 };
 
 export const MEASURE: Record<string, FigAnchors | null> = {};
-/** G2: N4 dew drop states with the hand inside, layered back / figure / front (scene sheets S01-B03-SH02..SH04). */
-const dropShot = (shot: 'S01-B03-SH02' | 'S01-B03-SH03' | 'S01-B03-SH04', len: number, tiny: V3, lean: number) => (p: Painter, frame: number) => {
-  const m = MACRO_CAMS[shot], cam = camOf(m, frame / len), t = frame / FPS, st = dropStateFor(shot, frame)!;
-  const g = camPoint(cam, D1_CONTACT), u = camUnit(cam, D1_CONTACT);
-  if (!g) return;
-  const hand = dropHand(g, u, st);
-  const items: Item[] = [
-    bladeItem(B_DEW, t, undefined, 0.5),
-    {at: D1_CONTACT, bias: 0.6, draw: (q) => paintDropState(q, g, u, st, {layer: 'back', t})},
-    {at: D1_CONTACT, bias: -0.6, draw: (q) => paintDropState(q, g, u, st, {layer: 'front', t})},
-  ];
-  // staging check: her shoulder must stay within arm reach (0.55) of the wrist, so she stands back as the neck stretches
-  const wx = hand.wrist ? D1_CONTACT[0] + (hand.wrist[0] - g[0]) / u : tiny[0] + 0.5, tx = Math.min(tiny[0], wx - (shot === 'S01-B03-SH04' ? 0.36 : 0.55)); // SH04: lean away + feet apart pull the shoulder back, so she stands nearer to keep the wrist in reach
-  if (shot !== 'S01-B03-SH03') {
-    const face = shot === 'S01-B03-SH04' && st.snapF !== undefined ? 'shock' : 'angry', at: V3 = [tx, 0, tiny[2]];
-    if (shot === 'S01-B03-SH04' && hand.wrist) {
-      // FR09: brace-heave body (feet apart, lean away = negative in view right), right arm on the drop wrist, left hand clamped on the forearm
-      const gt = camPoint(cam, at), ut = camUnit(cam, at);
-      if (gt) {
-        const bc = braceClamp(frame, TINY, gt, ut, hand.hand ?? hand.wrist);
-        items.push(tinyItem({at, view: 'right', named: {name: 'brace-heave', L: frame}, face, t, fig: {rArm: bc.rArm, lArm: bc.lArm}, held: (q, _a, uu) => paintClamp(q, bc.clamp, uu, TINY.head.skin)}));
-      }
-    } else items.push(tinyItem({at, view: 'right', pose: 'P16', face, t, fig: {rArm: hand.wrist ? {to: hand.hand ?? hand.wrist, out: -1} : undefined, lean}}));
-  }
-  paintGarden(p, cam, {t, mode: 'sun', drop: false, sun: [150, 300], shadeEdge: -0.5, items});
-};
-export const paintDROP2 = dropShot('S01-B03-SH02', 86, [1.3, 0, -0.75], -0.3);
-export const paintDROP3 = dropShot('S01-B03-SH03', 118, [1.3, 0, -0.75], 0.2);
-export const paintDROP4 = dropShot('S01-B03-SH04', 132, [0.76, 0, -0.72], -0.3);
+// G2 (N4 dew drop shots, `paintDROP2` / `paintDROP3` / `paintDROP4`) and `paintDEW1` moved to the R1.10 block at the end of this file.
 
 /** G3: N6 ant-walk, 24 f at the S01-B05-SH01 speed (0.07 sm/f) on the shot camera: feet planted, leaf upright, gait clock by distance. */
 export const paintANTW = (p: Painter, frame: number) => {
@@ -119,29 +92,7 @@ export const paintPOSES = (p: Painter, frame: number) => {
   paintGarden(p, c, {t, mode: 'sun', drop: false, sun: [150, 300], shadeEdge: -2, items: [tinyItem({at: [0, 0, 0], view: VIEW_OF[name], named: {name, L}, face: 'neutral', t})]});
 };
 
-/** G12: B04-SH03 stand-in: crumb C1 + TINY nibble (L 0-35) then drag (L 36-80, truck camera), on the shot camera. */
-export const paintCRUMB = (p: Painter, frame: number) => {
-  const L = frame, k = L / 114, c = camOf(MACRO_CAMS['S01-B04-SH03'], k), t = frame / FPS + 40;
-  const d = Math.min(1, Math.max(0, (L - 36) / 44)), at = (a: V3, b: V3): V3 => [a[0] + (b[0] - a[0]) * d, 0, a[2] + (b[2] - a[2]) * d];
-  let crumb = at([-3.6, 0, -1.0], [-2.4, 0, -0.6]);
-  const tiny = at([-2.85, 0, -0.95], [-1.7, 0, -0.6]);
-  if (L >= 36) { // parented: the crumb's +x grip follows her hands (named pose arm targets) during the drag
-    const g = camPoint(c, tiny), u = camUnit(c, tiny), pz = g && namedPose('drag-back', L - 36, TINY, g, u, 'left');
-    if (pz?.rArm && pz.lArm) crumb = crumbFollowHand(c, crumb, [(pz.rArm.to[0] + pz.lArm.to[0]) / 2, 0]);
-  }
-  paintGarden(p, c, {t, mode: 'sun', drop: false, sun: [150, 300], shadeEdge: -0.5, items: [
-    {at: crumb, bias: 0.1, draw: (q, cc) => paintCrumb(q, cc, crumb, {bites: L >= 22 ? 1 : 0})},
-    tinyItem({at: tiny, view: 'left', named: {name: L < 36 ? 'nibble' : 'drag-back', L: L < 36 ? L : L - 36}, face: 'worried', t}),
-  ]});
-};
-
-/** G13: N8 puffs fed from TINY's anchors on S01-B04-SH02 (L 72-116, clutch-puff from L 96). */
-export const paintPUFF = (p: Painter, frame: number) => {
-  const L = frame, c = camOf(MACRO_CAMS['S01-B04-SH02'], L / 140), t = L / FPS + 20, at: V3 = [-1.4, 0, -0.6], out: {a?: FigAnchors | null} = {};
-  const clutch = L >= 96;
-  paintGarden(p, c, {t, mode: 'sun', drop: false, sun: [150, 300], shadeEdge: -2, items: [tinyItem({at, view: 'front', named: clutch ? {name: 'clutch-puff', L: L - 96} : undefined, pose: clutch ? undefined : 'P42', face: 'worried', t}, out)]});
-  if (out.a) warmthPuffsAt(L, out.a, camUnit(c, at)).forEach((q) => { if (q.a > 0.02) paintPuff(p, q.x, q.y, q.r, q.seed, t, q.a); });
-};
+// G12 (`paintCRUMB`, B04-SH03) and G13 (`paintPUFF`, B04-SH02) moved to the R1.10 block at the end of this file.
 
 /**
  * G14: S01-B05-SH03 stand-in (the lift, SHEETS-R1.5 FR17, R1.6 FR18). Story: she finds the loaf bigger than her body goes up easily (strength
@@ -467,4 +418,349 @@ export const paintSTAND = (p: Painter, frame: number) => {
     const wy = (g0[1] - 762) / u0, pc = camPoint(c, [0, wy, 0]), pu = camUnit(c, at);
     if (pc) paintShrinkPop(p, [pc[0] + (540 - g0[0]) * 0 , pc[1]], 71, 150 * (pu / u0), 11000, 1 - ramp(0, 10));
   }
+};
+
+// ======================================================================================================================================
+// R1.10 (SHEETS-R1.10 FR29-FR39): the plates that were placeholder cards. Each is one pure paint function of the shot-local frame, camera
+// `camOf(MACRO_CAMS[id], L / (len - 1))`; arms are two bones of `BONE_H` x u (`twoBoneArm`), never the rig's reach IK; walks run by distance (FR29f).
+// ======================================================================================================================================
+import {glow} from './macro';
+import {ARM_DIR, DEPTH, dropGeometry, HAND_LEN, MAX_NECK, type DropState} from './drop';
+import {BONE_H, shoulderOf, twoBoneArm} from './poses';
+import {dropShape, DROP_C} from './macro';
+import {MOTIONS} from '../kit/motions';
+import type {AnyPoseId} from '../kit/poses';
+import type {TinyOpts} from './cast';
+import {camPoint as camPt} from '../kit/ycam';
+
+/** Sm per walk cycle: the kit's `WALK_STEP` 1.1 m x 1.58 / 1.7 (the walk phase of a distance d is d / WSTEP, negative for a backward step). */
+const WSTEP = (1.1 * 1.58) / 1.7;
+const REACH = 0.98;
+/** Stride envelope of a walk window [a, b]: 0 -> 1 over the first 4 f, 1 -> 0 over the last 6 f (FR29f). */
+const stepEnv = (L: number, a: number, b: number) => (L <= a || L >= b ? 0 : smooth01((L - a) / 4) * (1 - smooth01((L - (b - 6)) / 6)));
+const bump = (L: number, a: number, pk: number, b: number) => (L <= a || L >= b ? 0 : L < pk ? smooth01((L - a) / (pk - a)) : 1 - smooth01((L - pk) / (b - pk)));
+
+/** Body of a profile figure standing at world (x, 0, z): the fields the shoulder depends on, so a shot places arm targets before drawing. */
+type Stance = {x: number; z: number; lean?: number; crouch?: number; walk?: number; stride?: number; rise?: number; floorSit?: number};
+const shAt = (c: YCam, base: AnyPoseId, s: Stance, side: 'r' | 'l' = 'r', named?: Partial<FigPose>): {sh: Pt; g: Pt; u: number} | null => {
+  const at: V3 = [s.x, 0, s.z], g = camPt(c, at), u = camUnit(c, at);
+  if (!g) return null;
+  const {x: _x, z: _z, ...fig} = s;
+  return {sh: shoulderOf(TINY, g, u, 'right', base, {...(named ?? {}), ...fig}, side), g, u};
+};
+const dist2 = (a: Pt, b: Pt) => Math.hypot(a[0] - b[0], a[1] - b[1]);
+/** Feet x (sm) at which the shoulder is `REACH` x 2 bones from `hand` (px): bisection, the shoulder left of the hand. */
+const solveX = (c: YCam, base: AnyPoseId, mk: (x: number) => Stance, hand: Pt, lo = 0.2, hi = 1.9, ratio = REACH): number => {
+  const f = (x: number) => { const s = shAt(c, base, mk(x)); return s ? dist2(s.sh, hand) / (2 * BONE_H * s.u) - ratio : 9; };
+  let a = lo, b = hi;
+  for (let i = 0; i < 28; i++) { const m = (a + b) / 2; if (f(m) > 0) a = m; else b = m; }
+  return (a + b) / 2;
+};
+
+/** Where the fully-in wrist of D1 sits (sm, drop frame): the entry point P on the surface. */
+const P0 = dropGeometry({push: HAND_LEN + DEPTH, neck: DEPTH}).wrist!;
+/**
+ * The `neck` field that puts D1's hand (the mitten centre, `HAND_LEN` x 0.55 beyond the wrist) exactly `chordPx` from her shoulder `sh` (px): the linear
+ * inverse of `wristOffset` along `ARM_DIR` (FR31 cause -> effect), clamped to `MAX_NECK` (visible neck) and 0.
+ */
+const deriveNeck = (sh: Pt, g: Pt, u: number, chordPx: number, clamp = true): number => {
+  const S: Pt = [(sh[0] - g[0]) / u, -(sh[1] - g[1]) / u], D: Pt = [P0[0] - S[0], P0[1] - S[1]], aD = ARM_DIR[0] * D[0] + ARM_DIR[1] * D[1];
+  const perp2 = D[0] * D[0] + D[1] * D[1] - aD * aD, ch = chordPx / u, w = -aD - Math.sqrt(Math.max(0, ch * ch - perp2));
+  const n = w + HAND_LEN * 0.55 + DEPTH;
+  return clamp ? Math.min(MAX_NECK + DEPTH, Math.max(0, n)) : n;
+};
+const IN = HAND_LEN + DEPTH;
+const dropLayers = (g: Pt, u: number, st: DropState, t: number): Item[] => [
+  bladeItem(B_DEW, t, undefined, 0.5),
+  {at: D1_CONTACT, bias: 0.6, draw: (q) => paintDropState(q, g, u, st, {layer: 'back', t})},
+  {at: D1_CONTACT, bias: -0.6, draw: (q) => paintDropState(q, g, u, st, {layer: 'front', t})},
+];
+/** Polar blend of a point about the origin (shoulder): keeps the arm length while it swings (as `paintTOUCH`). */
+const swingTo = (a: Pt, b: Pt, w: number): Pt => {
+  const ra = Math.hypot(a[0], a[1]), rb = Math.hypot(b[0], b[1]), aa = Math.atan2(a[1], a[0]), ab = Math.atan2(b[1], b[0]), r = ra + (rb - ra) * w, ang = aa + (ab - aa) * w;
+  return [r * Math.cos(ang), r * Math.sin(ang)];
+};
+const hipA = () => { const hip0 = legScale(TINY) * 0.672 + 0.038; return easeInv((0.282 * (TINY.height / 1.7)) / (hip0 - 0.075)); };
+
+/**
+ * FR30 S01-B03-SH01 (77 f), the dew drop (LF03): she walks in from the left (L 4-44, off frame until L ~12), plants, the near arm reaches to 0.3 sm short of the drop
+ * (L 50-62, two bones; she leans toward it up to +0.10 rad if the arm does not reach), holds with an idle breath. Glint on the drop's upper-left rim L 34-40.
+ */
+export const paintDEW1 = (p: Painter, frame: number) => {
+  const L = frame, len = 77, c = camOf(MACRO_CAMS['S01-B03-SH01'], L / (len - 1)), t = L / FPS + 70;
+  const mv = smooth01((L - 4) / 40), x = 0.95 * mv, z = -0.55 * mv, dist = Math.hypot(0.95, 0.55) * mv;
+  const stride = L < 4 || L >= 44 ? 0 : smooth01((L - 4) / 4) * (1 - smooth01((L - 38) / 6)), walk = dist / WSTEP;
+  const reach = smooth01((L - 50) / 12), br = L >= 62 ? MOTIONS['idle-breathe']((L - 62) / 30, {view: 'right', k: 1, seed: 1}).body ?? {} : {};
+  const base: Stance = {x, z, walk, stride, rise: br.rise ?? 0};
+  const g = camPt(c, [x, 0, z]), u = camUnit(c, [x, 0, z]), tp = camPt(c, [1.65, 1.42, -1.0]), ud = camUnit(c, D1_CONTACT), gd = camPt(c, D1_CONTACT);
+  if (!g || !tp || !gd) return;
+  const target: Pt = [tp[0] - 0.3 * ud, tp[1]];
+  let need = 0;
+  for (let k = 0; k <= 10; k++) { const s = shAt(c, 'P01', {...base, lean: 0.01 * k}); need = 0.01 * k; if (s && dist2(s.sh, target) <= REACH * 2 * BONE_H * s.u) break; }
+  const lean = need * reach + (br.lean ?? 0), stc: Stance = {...base, lean}, sh = shAt(c, 'P01', stc)!;
+  const hang: Pt = [0.04 * u, 0.39 * u], tr: Pt = [target[0] - sh.sh[0], target[1] - sh.sh[1]], hr = swingTo(hang, tr, reach);
+  const rArm = L >= 44 ? twoBoneArm(sh.sh, [sh.sh[0] + hr[0], sh.sh[1] + hr[1]], BONE_H * u, 'down') : undefined;
+  const lead: Item = {at: [x, 0, z], draw: (q, cc) => {
+    MEASURE.DEW1 = paintTiny(q, cc, {at: [x, 0, z], view: 'right', pose: 'P01', face: 'surprised', faceState: {mouth: 'smile', look: [0.6, -0.3]}, t,
+      fig: {walk: L >= 4 ? walk : undefined, stride, lean, rise: br.rise, nod: br.nod, ...(rArm ? {rArm} : {})}});
+  }};
+  paintGarden(p, c, {t, mode: 'sun', sun: [150, 300], shadeEdge: -0.5, items: [lead], fore: [sweep([0.2, 0, 1.35], [0.6, -1], 10, 40, 9921, 0.9, 20)]});
+  const k = bump(L, 34, 36, 40);
+  if (k > 0) {
+    // one warm glint on D1's upper-left rim
+    const D = dropShape(72), ref = (q: Pt) => (q[0] - 0) * -0.7 + (q[1] - DROP_C) * 0.7;
+    const rim = D.reduce((b, q) => (ref(q) > ref(b) ? q : b), D[0]);
+    glow(p, gd[0] + rim[0] * ud, gd[1] - rim[1] * ud, 0.08 * ud, '#fff8e0', k, 9930);
+  }
+};
+
+// ---- B03-SH02 (FR31) ------------------------------------------------------------------------------------------------------------------
+const SH02 = 86;
+/** Entry reach ratio (hand distance / 2 bones) of SH02 L 0-16: the fully-in wrist is 0.37 sm above her shoulder, so a straight 0.98 arm would stand vertical in front of her face; she stands back so the hand stops on the line 0.06 sm short (35 deg from vertical) and the arm clears the face (R1.10 ruling not met as written, see build notes). */
+const RA = 1.25;
+const cam02 = (L: number) => camOf(MACRO_CAMS['S01-B03-SH02'], L / (SH02 - 1));
+type S2 = {x0: number; xA: number; s: number};
+const stance02 = (L: number, S: S2, x?: number): Stance => {
+  const a1 = smooth01((L - 18) / 12), a2 = smooth01((L - 40) / 14), xx = x ?? S.xA - S.s * (a1 + a2);
+  const osc = L > 60 ? 0.045 * smooth01((L - 60) / 6) * Math.sin((2 * Math.PI * (L - 60)) / 40) : 0;
+  const lunge = L < 10 ? 1 - smooth01((L - 5) / 5) : 0;
+  return {x: xx, z: -0.75 + (0.01 * (a1 + a2)) / 2, lean: -0.21 * smooth01((L - 16) / 14) + osc, walk: (xx - S.x0) / WSTEP, stride: lunge + stepEnv(L, 18, 30) + stepEnv(L, 40, 54)};
+};
+const handAt = (c: YCam, st: DropState): Pt => dropHand(camPt(c, D1_CONTACT)!, camUnit(c, D1_CONTACT), {...st, push: Math.max(st.push, -0.29)}).hand!; // push -0.3 has no wrist (hand not yet at the drop): the arm still points at it
+let s02: S2 | undefined;
+/** Feet derived from the full-length arm (FR31, D6): x0 (L 0, hand 0.3 sm short) and xA (L 10, hand fully in) put the shoulder at 0.98 x 2 bones; `s` is the backward step that lets the neck reach 0.50 sm at L 54. */
+const solve02 = (): S2 => {
+  if (s02) return s02;
+  const mk = (x: number): Stance => ({x, z: -0.75});
+  const x0 = solveX(cam02(0), 'P16', mk, handAt(cam02(0), dropStateFor('S01-B03-SH02', 0)!), 0.2, 1.9, RA), xA = solveX(cam02(10), 'P16', mk, handAt(cam02(10), dropStateFor('S01-B03-SH02', 10)!), 0.2, 1.9, RA);
+  const vis = (s: number) => {
+    const S: S2 = {x0, xA, s}, c = cam02(54), sh = shAt(c, 'P16', stance02(54, S))!;
+    return deriveNeck(sh.sh, camPt(c, D1_CONTACT)!, camUnit(c, D1_CONTACT), REACH * 2 * BONE_H * sh.u) - DEPTH;
+  };
+  let a = 0, b = 0.4;
+  for (let i = 0; i < 24; i++) { const m = (a + b) / 2; if (vis(m) < 0.5) a = m; else b = m; }
+  return (s02 = {x0, xA, s: (a + b) / 2});
+};
+/** FR31 S01-B03-SH02 (86 f), stuck: the hand goes in L 0-10 (she lunges in, no foot slide), then she leans away and steps back twice (L 18-30, 40-54) and the drop's neck is whatever her straight arm leaves. */
+export const paintDROP2 = (p: Painter, frame: number) => {
+  const L = frame, c = cam02(L), t = L / FPS, S = solve02(), gd = camPt(c, D1_CONTACT), ud = camUnit(c, D1_CONTACT);
+  if (!gd) return;
+  let st = dropStateFor('S01-B03-SH02', L)!;
+  const x = L < 10 ? solveX(c, 'P16', (xx) => ({x: xx, z: -0.75}), handAt(c, st), 0.2, 1.9, RA) : undefined, stc = stance02(L, S, x), sh = shAt(c, 'P16', stc)!;
+  if (L >= 10) st = {push: IN, neck: deriveNeck(sh.sh, gd, ud, REACH * 2 * BONE_H * sh.u), collar: 0};
+  const rArm = twoBoneArm(sh.sh, handAt(c, st), BONE_H * sh.u, 'down'), at: V3 = [stc.x, 0, stc.z];
+  const items: Item[] = [...dropLayers(gd, ud, st, t), {at, draw: (q, cc) => { MEASURE.DROP2 = paintTiny(q, cc, {at, view: 'right', pose: 'P16', face: L < 16 ? 'disgusted' : 'angry', t, fig: {lean: stc.lean, walk: stc.walk, stride: stc.stride, rArm}}); }}];
+  paintGarden(p, c, {t, mode: 'sun', drop: false, sun: [150, 300], shadeEdge: -0.5, items});
+};
+
+// ---- B03-SH03 (FR32) ------------------------------------------------------------------------------------------------------------------
+const SH03 = 119;
+const cam03 = (L: number) => camOf(MACRO_CAMS['S01-B03-SH03'], L / (SH03 - 1));
+const tug = (L: number) => Math.sin(Math.PI * Math.min(1, Math.max(0, (L - 18) / 6))) * (L < 30 ? 1 : 0) + Math.sin(Math.PI * Math.min(1, Math.max(0, (L - 48) / 6))) * (L > 40 ? 1 : 0);
+const stance03 = (L: number, x: number): Stance => ({x, z: -0.74, lean: -0.21 - 0.05 * tug(L), walk: 0.25, stride: 0.5});
+let s03: number | undefined;
+const solve03 = (): number => {
+  if (s03 !== undefined) return s03;
+  const Ls = [0, 20, 23, 40, 53, 56, 70, 90, 118];
+  const worst = (x: number) => Math.max(...Ls.map((L) => { const c = cam03(L), s = shAt(c, 'P16', stance03(L, x))!; return dist2(s.sh, handAt(c, dropStateFor('S01-B03-SH03', L)!)) / (2 * BONE_H * s.u); }));
+  let a = 0.2, b = 1.9;
+  for (let i = 0; i < 26; i++) { const m = (a + b) / 2; if (worst(m) > REACH) a = m; else b = m; }
+  return (s03 = (a + b) / 2);
+};
+/** FR32 S01-B03-SH03 (119 f), the wrist close: she is drawn whole (the camera `cx -160` leaves only the arm in frame), brace stance, the tugs lean her first and the wrist follows. */
+export const paintDROP3 = (p: Painter, frame: number) => {
+  const L = frame, c = cam03(L), t = L / FPS, gd = camPt(c, D1_CONTACT), ud = camUnit(c, D1_CONTACT);
+  if (!gd) return;
+  const st = dropStateFor('S01-B03-SH03', L)!, stc = stance03(L, solve03()), sh = shAt(c, 'P16', stc)!, at: V3 = [stc.x, 0, stc.z];
+  const rArm = twoBoneArm(sh.sh, handAt(c, st), BONE_H * sh.u, 'down');
+  const items: Item[] = [...dropLayers(gd, ud, st, t), {at, draw: (q, cc) => { MEASURE.DROP3 = paintTiny(q, cc, {at, view: 'right', pose: 'P16', face: 'angry', t, fig: {lean: stc.lean, walk: stc.walk, stride: stc.stride, rArm}}); }}];
+  paintGarden(p, c, {t, mode: 'sun', drop: false, sun: [150, 300], shadeEdge: -0.5, items});
+};
+
+// ---- B03-SH04 (FR33) ------------------------------------------------------------------------------------------------------------------
+const SH04 = 132;
+const cam04 = (L: number) => camOf(MACRO_CAMS['S01-B03-SH04'], L / (SH04 - 1));
+/** Heave 0..1: one bump per grunt, L 56-73 (peak 64) and L 83-104 (peak 93); 0 elsewhere (FR33, D7). */
+export const heaveAt = (L: number) => Math.max(bump(L, 56, 64, 73), bump(L, 83, 93, 104));
+const braceSh = (c: YCam, L: number, x: number, z: number, h: number) => {
+  const at: V3 = [x, 0, z], g = camPt(c, at), u = camUnit(c, at);
+  if (!g) return null;
+  const np = namedPose('brace-heave', L, TINY, g, u, 'right', {}, h);
+  return {sh: shoulderOf(TINY, g, u, 'right', 'P16', np), g, u};
+};
+let x04: number | undefined;
+/** Feet x0 of the heave (fixed to L 108): the neck reaches MAX_NECK at the heave peak (L 64), the arm at 0.98 x 2 bones all along. */
+const solve04 = (): number => {
+  if (x04 !== undefined) return x04;
+  const c = cam04(64);
+  const vis = (x: number) => { const s = braceSh(c, 64, x, -0.72, heaveAt(64))!; return deriveNeck(s.sh, camPt(c, D1_CONTACT)!, camUnit(c, D1_CONTACT), REACH * 2 * BONE_H * s.u, false) - DEPTH; };
+  let a = 0.2, b = 1.9;
+  for (let i = 0; i < 26; i++) { const m = (a + b) / 2; if (vis(m) > MAX_NECK) a = m; else b = m; } // vis falls as x grows
+  return (x04 = (a + b) / 2);
+};
+/**
+ * FR33 S01-B03-SH04 (132 f), heave, snap, tumble into the shade. L 0-108 `brace-heave` on fixed feet, the neck follows her shoulder (cap `MAX_NECK` at the peaks);
+ * snap L 108; backpedal tumble L 108-128 (walk by distance, P39-style flung arms, crouch -> floor sit), seated L 128-131, profile throughout.
+ */
+export const paintDROP4 = (p: Painter, frame: number) => {
+  const L = frame, c = cam04(L), t = L / FPS, gd = camPt(c, D1_CONTACT), ud = camUnit(c, D1_CONTACT), x0 = solve04();
+  if (!gd) return;
+  const items: Item[] = [];
+  let st = dropStateFor('S01-B03-SH04', L)!;
+  if (L < 108) {
+    const h = heaveAt(L), s = braceSh(c, L, x0, -0.72, h)!;
+    st = {push: IN, neck: deriveNeck(s.sh, gd, ud, REACH * 2 * BONE_H * s.u), collar: 0.03};
+    const hand = dropHand(gd, ud, st).hand!, bc = braceClamp(L, TINY, s.g, s.u, hand, {heave: h}), at: V3 = [x0, 0, -0.72];
+    items.push(...dropLayers(gd, ud, st, t), {at, draw: (q, cc) => {
+      MEASURE.DROP4 = paintTiny(q, cc, {at, view: 'right', named: {name: 'brace-heave', L, heave: h}, face: 'angry', t, fig: {rArm: bc.rArm, lArm: bc.lArm}, held: (qq, _a, uu) => paintClamp(qq, bc.clamp, uu, TINY.head.skin)});
+    }});
+  } else {
+    const sPre = braceSh(cam04(107), 107, x0, -0.72, 0)!, c107 = cam04(107);
+    st = {...st, neck: deriveNeck(sPre.sh, camPt(c107, D1_CONTACT)!, camUnit(c107, D1_CONTACT), REACH * 2 * BONE_H * sPre.u), push: IN, collar: 0.03};
+    const x = keyed([[108, x0], [112, x0 - 0.2], [116, 0.1], [120, -0.5], [124, -0.95], [128, -1.2], [140, -1.2]], L), z = keyed([[108, -0.72], [128, -0.4], [140, -0.4]], L);
+    const lean = -0.35 * (1 - smooth01((L - 118) / 6)), bb = 1 - smooth01((L - 122) / 6), aStar = hipA();
+    const crouch = L < 118 ? 0.15 * (1 - smooth01((L - 108) / 4)) : L < 122 ? 0.6 * smooth01((L - 118) / 4) : 0.6 * bb;
+    const settle = L >= 128 ? -0.02 * Math.sin((Math.PI * Math.min(3, L - 128)) / 3) : 0;
+    const stride = L < 112 ? 0.5 + 0.5 * smooth01((L - 108) / 4) : 1 - smooth01((L - 120) / 4);
+    const stc: Stance = {x, z, lean, crouch, walk: 0.25 + (x - x0) / WSTEP, stride, rise: settle, ...(L >= 122 ? {floorSit: 1 - (1 - aStar) * bb} : {})};
+    const s = shAt(c, 'P16', stc)!, ls = shAt(c, 'P16', stc, 'l')!, B = BONE_H * s.u;
+    const fr = smooth01((L - 108) / 6), settleArms = smooth01((L - 118) / 10);
+    const handUp = (sd: Pt, ang: number, len: number): Pt => [sd[0] + Math.cos((ang * Math.PI) / 180) * len * B, sd[1] - Math.sin((ang * Math.PI) / 180) * len * B];
+    const hold = (sd: Pt, bend: 'down' | 'out', hand: Pt, hang: Pt): Arm => twoBoneArm(sd, [hand[0] + (hang[0] - hand[0]) * settleArms, hand[1] + (hang[1] - hand[1]) * settleArms], B, bend);
+    const rHeld = twoBoneArm(s.sh, dropHand(gd, ud, st).hand ?? s.sh, B, 'down').to;
+    const rHand0: Pt = [rHeld[0] + (handUp(s.sh, 40, 1.9)[0] - rHeld[0]) * fr, rHeld[1] + (handUp(s.sh, 40, 1.9)[1] - rHeld[1]) * fr];
+    const lHand0: Pt = [ls.sh[0] + (handUp(ls.sh, 25, 1.8)[0] - ls.sh[0]) * fr, ls.sh[1] + (handUp(ls.sh, 25, 1.8)[1] - ls.sh[1]) * fr];
+    const hangPt = (sd: Pt, dx: number): Pt => [sd[0] + dx * B, sd[1] + 1.8 * B];
+    const rArm = hold(s.sh, 'down', rHand0, hangPt(s.sh, 0.3)), lArm = hold(ls.sh, 'down', lHand0, hangPt(ls.sh, 0.2)), at: V3 = [x, 0, z];
+    const sh2 = edgeShade(x, -0.5);
+    items.push(...dropLayers(gd, ud, st, t), {at, draw: (q, cc) => {
+      MEASURE.DROP4 = paintTiny(q, cc, {at, view: 'right', pose: 'P16', face: 'shock', t, tint: sh2 > 0.01 ? {to: '#4f6fb8', u: 0.27 * sh2, mul: [0.95, 0.93, 0.97]} : undefined,
+        fig: {wet: true, lean, crouch, walk: stc.walk, stride, rise: settle, ...(stc.floorSit !== undefined ? {floorSit: stc.floorSit} : {}), rArm, lArm}});
+    }});
+  }
+  paintGarden(p, c, {t, mode: 'sun', drop: false, sun: [150, 300], shadeEdge: -0.5, items});
+};
+
+
+// ---- B04 (FR34-FR36) ------------------------------------------------------------------------------------------------------------------
+/** FR29g: `MOTIONS.shiver` body fields at `t` s, scaled by `k` (0.5 = half amplitude), as a `FigPose` fragment. */
+const shiverFig = (t: number, k: number): Partial<FigPose> => {
+  const b = MOTIONS.shiver(t, {view: 'front', k: 1, seed: 1}).body ?? {};
+  return {crouch: (b.crouch ?? 0) * k, lean: (b.lean ?? 0) * k, rise: (b.rise ?? 0) * k, nod: [(b.nod?.[0] ?? 0) * k, (b.nod?.[1] ?? 0) * k]};
+};
+const COLD_AT: V3 = [-1.4, 0, -0.6];
+const foreShade = [sweep([-2.9, 0, 0.45], [0.8, -1], 12, 46, 9931, 0.8, 18, '#26383c')];
+/** FR34 S01-B04-SH01 (77 f), cold shade: the LF04 v5 shade build without the ant and puffs, TINY hugging herself (P42), shivering at half amplitude from L 40. */
+export const paintCOLD = (p: Painter, frame: number) => {
+  const L = frame, c = camOf(MACRO_CAMS['S01-B04-SH01'], L / 76), t = L / FPS + 20;
+  paintGarden(p, c, {t, mode: 'sun', drop: false, sun: [900, 330], shadeEdge: -0.5, gap: {x: -0.4, w: 1.2}, fore: foreShade,
+    after: (q, cc) => {
+      shadeSet(q, cc, t);
+      MEASURE.COLD = coldTiny(q, cc, t, {view: 'front', pose: 'P42', face: L < 40 ? 'worried' : 'sad', headCock: -4, fig: L >= 40 ? shiverFig((L - 40) / 30, 0.5) : undefined});
+    }});
+};
+
+/** FR35 S01-B04-SH02 (140 f), warmth puffs: the LF04 build, CL02 crossing the gap behind her (L ~40-96), a breeze over the blades L 40-62, `clutch-puff` L 96-116, back to P42 + shiver. */
+export const paintPUFF = (p: Painter, frame: number) => {
+  const L = frame, c = camOf(MACRO_CAMS['S01-B04-SH02'], L / 139), t = L / FPS + 20, at = COLD_AT;
+  const g = camPoint(c, at), u = camUnit(c, at);
+  if (!g) return;
+  const clutch = L >= 96 && L < 116, back = L >= 116, w = smooth01((L - 116) / 6);
+  let fig: Partial<FigPose> | undefined;
+  if (back) {
+    const m = blendFig(namedPose('clutch-puff', 20, TINY, g, u, 'front'), poseFor('P42', TINY, g, u, 'front'), w);
+    fig = {rArm: m.rArm, lArm: m.lArm, ...shiverFig((L - 116) / 30, 0.5)};
+  }
+  const aw = antWalk(0.0429 * L), amt = 0.15 * (smooth01((L - 40) / 6) - smooth01((L - 56) / 6)), out: {a?: FigAnchors | null} = {};
+  paintGarden(p, c, {t, mode: 'sun', drop: false, sun: [900, 330], shadeEdge: -0.5, gap: {x: -0.4, w: 1.2}, fore: foreShade, gust: amt > 0.001 ? {dir: [-1, 0], amt} : undefined,
+    items: [antItem([2.5 - 0.0429 * L, 0, -13.0], {view: 'left', walk: aw.walk, sway: aw.sway, tint: {to: '#6f8aa0', u: 0.4}, noInk: true, t})],
+    after: (q, cc) => {
+      shadeSet(q, cc, t);
+      out.a = MEASURE.PUFF = coldTiny(q, cc, t, {view: 'front', ...(clutch ? {named: {name: 'clutch-puff' as const, L: L - 96}} : {pose: 'P42' as const}), face: L < 116 ? 'worried' : 'sad', headCock: -4, fig});
+    }});
+  if (out.a) warmthPuffsAt(L, out.a, u).forEach((q) => { if (q.a > 0.02) paintPuff(p, q.x, q.y, q.r, q.seed, t, q.a); });
+};
+
+/**
+ * FR36 S01-B04-SH03 (115 f), the crumb: nibble L 0-35, bite L 22, drag L 36-80 (`crumbFollowHand`, camera truck L 30-84), then she lets go, stands (L 80-84, hands come down),
+ * one hard swap profile -> kit quarter at L 84 (60 deg, turning to the lens by L 92, the LIFTOFF pattern), sits L 92-100 (crouch -> `floorSit`), sigh L 101-111.
+ * C1 stays where the drag left it (-2.4, 0, -0.6). Shade tint and wet throughout.
+ */
+export const paintCRUMB = (p: Painter, frame: number) => {
+  const L = frame, c = camOf(MACRO_CAMS['S01-B04-SH03'], L / 114), t = L / FPS + 40;
+  const ramp = (a: number, b: number) => smooth01((L - a) / (b - a));
+  const dragAt = (l: number): {tiny: V3; crumb: V3} => {
+    const d = Math.min(1, Math.max(0, (l - 36) / 44)), at = (a: V3, b: V3): V3 => [a[0] + (b[0] - a[0]) * d, 0, a[2] + (b[2] - a[2]) * d];
+    let crumb = at([-3.6, 0, -1.0], [-2.4, 0, -0.6]);
+    const tiny = at([-2.85, 0, -0.95], [-1.7, 0, -0.6]);
+    if (l >= 36) { // parented: the crumb's +x grip follows her hands (named pose arm targets) during the drag
+      const cl = camOf(MACRO_CAMS['S01-B04-SH03'], l / 114), g = camPoint(cl, tiny), u = camUnit(cl, tiny), pz = g && namedPose('drag-back', l - 36, TINY, g, u, 'left');
+      if (pz?.rArm && pz.lArm) crumb = crumbFollowHand(cl, crumb, [(pz.rArm.to[0] + pz.lArm.to[0]) / 2, 0]);
+    }
+    return {tiny, crumb};
+  };
+  const {tiny: tinyD, crumb} = dragAt(Math.min(L, 80));
+  const feetX = L < 84 ? tinyD[0] : -1.7 - 0.05 * ramp(84, 92), at: V3 = [feetX, 0, tinyD[2]];
+  const g = camPoint(c, at), u = camUnit(c, at);
+  if (!g) return;
+  const edge = -0.5, shade = edgeShade(feetX, edge), face = L < 80 ? 'worried' : 'tired';
+  let opts: TinyOpts;
+  const sh = L < 6 ? shiverFig(0.3 + L / 30, 0.5 * (1 - L / 6)) : {};
+  if (L < 84) {
+    const w = ramp(80, 84), nm = L < 36 ? namedPose('nibble', L, TINY, g, u, 'left', sh as never) : namedPose('drag-back', L - 36, TINY, g, u, 'left');
+    const calm = poseFor('P01', TINY, g, u, 'left'), m = w > 0 ? blendFig(nm, calm, w) : nm;
+    opts = {at, view: 'left', named: L < 36 ? {name: 'nibble', L} : w >= 1 ? undefined : {name: 'drag-back', L: L - 36}, pose: w >= 1 ? 'P01' : undefined, face, t, fig: w > 0 ? {squat: m.squat, lean: m.lean, rise: m.rise, rArm: m.rArm, lArm: m.lArm} : (L < 6 ? sh : undefined)};
+  } else {
+    // front view from L 84: quarter 60 -> 15 deg to L 92, then the exact front; arms down along the body; sit L 92-100; sigh L 101-111
+    const seatB = 1 - ramp(95, 100), aStar = hipA(), crouch = L < 95 ? 0.6 * ramp(92, 95) : 0.6 * seatB;
+    const sg = bump(L, 101, 106, 111), body: Partial<FigPose> = {crouch, rise: -0.01 * sg, nod: [0, 0.04 * sg], ...(L >= 95 ? {floorSit: 1 - (1 - aStar) * seatB} : {})};
+    const calm = poseFor('P01', TINY, g, u, 'front'), sit = namedPose('sit-up-check', 35, TINY, g, u, 'front', body), arms = blendFig(calm, sit, ramp(92, 100));
+    const qDeg = keyed([[84, 60], [86, 50], [88, 40], [90, 28], [92, 15]], L);
+    opts = {at, view: 'front', pose: 'P01', face, t, fig: {...body, rArm: arms.rArm, lArm: arms.lArm, walk: L < 92 ? ramp(84, 92) * 0.05 / WSTEP : 0.05 / WSTEP, stride: L < 92 ? 0.5 * (1 - ramp(88, 92)) : 0, ...(L < 92 ? {quarter: 'left' as const, quarterDeg: qDeg} : {})}};
+  }
+  const lead: Item = {at, draw: (q, cc) => {
+    MEASURE.CRUMB = paintTiny(q, cc, {...opts, fig: {wet: true, ...(opts.fig ?? {})}, tint: {to: '#4f6fb8', u: 0.27 * shade, mul: [0.95, 0.93, 0.97]}});
+  }};
+  paintGarden(p, c, {t, mode: 'sun', drop: false, sun: [150, 300], shadeEdge: -0.5, items: [
+    {at: crumb, bias: 0.1, draw: (q, cc) => paintCrumb(q, cc, crumb, {bites: L >= 22 ? 1 : 0})}, lead]});
+};
+
+// ---- B05 (FR37-FR39) ------------------------------------------------------------------------------------------------------------------
+const CRUMB_REST: V3 = [-2.4, 0, -0.6];
+/** The ant of S01-B05-SH01 / SH02: x(L) = -4.2 + 0.07 L to L 71, a quadratic ease-out to the stop at x 1.20 at L 83 (SH02 cuts in on the same spot). */
+const passAntX = (L: number) => (L <= 71 ? -4.2 + 0.07 * L : L < 83 ? (-4.2 + 0.07 * 71) + (1.2 - (-4.2 + 0.07 * 71)) * (1 - (1 - (L - 71) / 12) ** 2) : 1.2);
+/** FR37 S01-B05-SH01 (89 f), silence, the ant passes: she sits in the shade, tired, then startled; the ant walks in behind her, her eyes lead and the head swaps to the right profile at L 42. */
+export const paintPASS = (p: Painter, frame: number) => {
+  const L = frame, c = camOf(MACRO_CAMS['S01-B05-SH01'], L / 88), edge = shadeEdgeAt('S01-B05-SH01', L), t = L / FPS + 50, at: V3 = [-1.75, 0, -0.6];
+  const ax = passAntX(L), moving = L < 83, aw = antWalk(ax - (-4.2)), th = L >= 25 ? MOTIONS['turn-head-right']((L - 25) / 30, {view: 'front', k: 1, seed: 1}) : null;
+  const antSh = edgeShade(ax, edge);
+  const lead: Item = {at, draw: (q, cc) => {
+    MEASURE.PASS = paintTiny(q, cc, {at, view: 'front', pose: 'P33', named: {name: 'sit-up-check', L: 35}, face: L < 30 ? 'tired' : 'surprised', t,
+      faceState: th?.look ? {look: th.look as Pt} : undefined,
+      fig: {wet: true, ...(th?.body?.head ? {head: th.body.head} : {}), ...(th?.body?.nod ? {nod: th.body.nod} : {})},
+      tint: {to: '#4f6fb8', u: 0.27 * edgeShade(at[0], edge), mul: [0.95, 0.93, 0.97]}});
+  }};
+  paintGarden(p, c, {t, mode: 'sun', drop: false, sun: [900, 330], shadeEdge: edge, items: [
+    antItem([ax, 0, -2.0], {view: 'right', walk: moving ? aw.walk : undefined, sway: moving ? aw.sway : 1.5 * Math.sin(1.3 * t), tint: {to: '#6f8aa0', u: 0.4 * antSh}, t}),
+    {at: CRUMB_REST, bias: 0.1, draw: (q, cc) => paintCrumb(q, cc, CRUMB_REST, {bites: 1})}, lead]});
+};
+
+/** FR38 S01-B05-SH02 (173 f), two bars: the stopped ant (1.2, 0, -2.0), a 15% dim as the card wipes in, then the scale-bars card (labels are timeline items). */
+export const paintBARS = (p: Painter, frame: number) => {
+  const L = frame, c = camOf(MACRO_CAMS['S01-B05-SH02'], L / 172), t = L / FPS + 80, s = barsAt(L);
+  paintGarden(p, c, {t, mode: 'sun', drop: false, sun: [900, 330], shadeEdge: -1.2, items: [antItem([1.2, 0, -2.0], {view: 'right', sway: 1.5 * Math.sin(1.3 * t), t})]});
+  if (s.wipe > 0) washAt(p, 15800, '#000000', 0.15 * 255 * s.wipe, [[-60, -60], [1140, -60], [1140, 1980], [-60, 1980]], 0, 0);
+  paintScaleBars(p, s);
+};
+
+/** FR39 S01-B05-SH04 (196 f), the end frame: the SH03 hold continued (`liftState` at Llift = 173 + L, SH04 camera), the ant glances at her L 125-131, a far-tower haze in the sky. */
+export const paintEND = (p: Painter, frame: number) => {
+  const L = frame, c = camOf(MACRO_CAMS['S01-B05-SH04'], L / 195), t = L / FPS + 90, st = liftState(c, 173 + L);
+  if (!st) return;
+  const {rest, crumb, fig} = st, Ll = 173 + L, gl = smooth01((L - 125) / 6);
+  paintGarden(p, c, {t, mode: 'sun', drop: false, sun: [900, 330], shadeEdge: -3.0, back: (q) => paintFarTower(q), items: [
+    antItem([1.2, 0, -2.0], {view: 'right', sway: 1.5 * Math.sin(1.3 * t), ...(gl > 0 ? {glance: gl, lookSide: -1 as const} : {}), t}),
+    {at: rest, draw: (q: Painter, cc: YCam) => paintCrumb(q, cc, rest, {loose: 'only' as const, shadow: 0})},
+    {at: crumb, bias: 0.1, draw: (q, cc) => paintCrumb(q, cc, crumb, {bites: 1, shadow: 1 - smooth01(crumb[1] / 0.05), loose: crumb[1] > 0.005 ? 'off' : 'on'})},
+    {at: st.at, draw: (q, cc) => { MEASURE.END = paintTiny(q, cc, {at: st.at, view: 'front', named: {name: 'lift-overhead', L: Ll - 42}, fig, face: 'happy', t}); }}]});
 };
