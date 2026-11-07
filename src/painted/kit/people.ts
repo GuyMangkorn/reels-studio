@@ -79,7 +79,7 @@ export const PEOPLE = {
     outfit: {shoulder: 0.35, shirt: '#e9d9cf', sleeve: '#e9d9cf', longSleeves: true, skirt: '#2f3a4a', pants: '#e8b98f', shoes: '#2a2523'},
   }),
   'woman-bob': person({
-    height: 1.58, seed: 830, head: {skin: '#f2d2b0', hair: '#1c1714', cut: 'bob', look: {eye: 'lidded', nose: 'button', brow: 'tapered', browDrop: 0.05, mouth: 'line', iris: '#4a3226'}},
+    height: 1.58, seed: 830, head: {skin: '#f2d2b0', hair: '#1c1714', cut: 'bob', look: {eye: 'lidded', nose: 'button', brow: 'tapered', browDrop: 0.05, mouth: 'line', iris: '#4a3226'}, sideDetail: true}, // profile bangs to the brow + eye detail (from EDU EP05, user 7 Nov 2026)
     outfit: {shoulder: 0.34, shirt: '#f3efe6', sleeve: '#c46a5a', longSleeves: true, jacket: '#c46a5a', pants: '#3e4a5e', shoes: '#e8e4da'},
   }),
   'man-shaved': person({

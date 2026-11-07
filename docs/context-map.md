@@ -36,7 +36,7 @@ Episode-specific files are under [Episodes](#episodes); shared topics come first
 - Docs: [face principles](character-proportion-principles.md#cp-f-face); [lip-frame fallback finding](dev-findings/DF-20261030-lip-frame-silent-fallback.md)
 - Code: [kit/head.ts](../src/painted/kit/head.ts) (`FaceState`, `Brow`/`Eyes`/`Mouth`, `blinking`), [kuchisake/face.ts](../src/painted/kuchisake/face.ts)
 - Sheets: [spike/FaceSheet.tsx](../src/painted/spike/FaceSheet.tsx)
-- Kit library: [expressions.ts](../src/painted/kit/expressions.ts), [face-looks-sheet.tsx](../src/painted/kit/face-looks-sheet.tsx) (`KIT-FACE-LOOKS`, `KIT-FACE-CAST`, `KIT-PROFILE-DETAIL`, `KIT-PROFILE-DETAIL-MID`; `HeadStyle.look` in [kit/head.ts](../src/painted/kit/head.ts))
+- Kit library: [expressions.ts](../src/painted/kit/expressions.ts), [face-looks-sheet.tsx](../src/painted/kit/face-looks-sheet.tsx) (`KIT-FACE-LOOKS`, `KIT-FACE-CAST`, `KIT-PROFILE-DETAIL`, `KIT-PROFILE-DETAIL-MID`; `HeadStyle.look` in [kit/head.ts](../src/painted/kit/head.ts)); profile and 3/4 jaw (`jawOpenOf`, `FaceState.chew`, no drawn lips in profile), sheet [mouth-strips-sheet.tsx](../src/painted/kit/mouth-strips-sheet.tsx) (`KIT-MOUTH-STRIPS`, `KIT-CHEW-STRIPS`)
 
 ## Wardrobe and props
 

@@ -34,7 +34,7 @@ import {dress, type OutfitId} from './wardrobe';
 export const MOTION_IDS = [
   'idle-breathe', 'walk-in-from-left', 'walk-in-from-right', 'walk-out-to-left', 'walk-out-to-right', 'run-left-to-right', 'run-right-to-left',
   'nod', 'shake-head', 'startle-jump', 'look-around', 'turn-head-left', 'turn-head-right', 'turn-head-to-camera', 'shiver',
-  'sit-down', 'stand-up', 'point-and-say', 'gasp-recoil', 'talk', 'kneel-down', 'stand-from-kneel', 'crouch-hide', 'hood-pull', 'coin-count',
+  'sit-down', 'stand-up', 'point-and-say', 'gasp-recoil', 'talk', 'kneel-down', 'stand-from-kneel', 'crouch-hide', 'hood-pull', 'coin-count', 'eat-chew',
 ] as const;
 export type MotionId = (typeof MOTION_IDS)[number];
 
@@ -76,6 +76,8 @@ export type MotionFrame = {
   look?: Pt;
   /** Mouth open 0..1 on the `talk` mouth, over whatever face is in force. */
   talk?: number;
+  /** Near cheek bulge 0..1 (`FaceState.chew`): the cheek swells in profile and 3/4 views, over whatever face is in force. */
+  chew?: number;
   /** Hood travelling up 0..1 (back view; `FigPose.hoodRise`, 1 = hood up). The outfit needs a hood (`gear.collar.kind` `hood`). */
   hood?: number;
 };
@@ -276,6 +278,13 @@ export const MOTIONS: Record<MotionId, Motion> = {
     const open = c.amp ? c.amp(t) : syllableOpen(t, c.seed), w = (2 * Math.PI * t) / 2.4;
     return {talk: open, body: {rise: 0.004 * (1 - Math.cos(w)), nod: [0, 0.03 * Math.sin(w * 2 + c.seed)]}};
   },
+  'eat-chew': (t) => {
+    // About 1.5 chews a second (2 s = 3 chews, looping): the jaw opens a little (`talk` open up to 0.4: the profile and 3/4 jaw drops about 0.1
+    // head units, never a talk shape) and closes, the near cheek swells a beat later while the jaw closes, and the head dips a hair with each chew.
+    // No hand-to-mouth bite (the arms stay on the base pose).
+    const w = 2 * Math.PI * 1.5 * t, v = 0.5 - 0.5 * Math.cos(w);
+    return {talk: 0.4 * v, chew: 0.35 + 0.65 * (0.5 + 0.5 * Math.sin(w - 0.6)), body: {nod: [0, 0.02 * v], rise: 0.002 * (1 - Math.cos(w))}};
+  },
   'kneel-down': (t, c) => {
     // One foot steps forward and stays, the other knee goes down, then the second knee, then the hips settle back and down to P34
     // (the stages are in `kneelSolution`); the torso stays upright with a slight forward lean while the knees go down.
@@ -330,6 +339,7 @@ export const MOTION_INFO: Record<MotionId, MotionInfo> = {
   'stand-up': {name: 'Stand up', description: 'The reverse: leans forward and rises from the chair to stand in front of it, feet planted, hands drop to the hang, 1.6 s. Draw the chair at the rest point.', duration: 1.6, loop: false, views: ['front', 'left', 'right'], prop: 'chair', use: 'Rising to leave or to react.'},
   'point-and-say': {name: 'Point and say', description: 'Raises an arm to point (P05), the mouth talks, a nod on the emphasis, lowers it again, 2.4 s.', duration: 2.4, loop: false, views: ['front', 'left', 'right'], use: 'Calling something out: "there!", directing attention.'},
   'gasp-recoil': {name: 'Gasp and recoil', description: 'A hop and a lean back (profile) or a duck (front), palms up (P15), shock then scared face, 1.6 s.', duration: 1.6, loop: false, views: ['front', 'left', 'right'], use: 'Something frightening appears in front of the person.'},
+  'eat-chew': {name: 'Eat / chew', description: 'Chewing, 1.5 chews a second (2 s loop = 3 chews): the jaw opens a little and closes (talk open up to 0.4, the profile and 3/4 jaw drops with it, no wide talk shapes), the near cheek swells in profile and 3/4 (`FaceState.chew`), a tiny head dip with each chew. No hand-to-mouth bite; layer it on a pose that holds the food.', duration: 2, loop: true, views: ['front', 'left', 'right'], use: 'Eating, munching, a mouth full of food; the jaw and cheek read best in profile or 3/4.'},
   talk: {name: 'Talk', description: 'The talk mouth driven by `amp` (mouthAt on the narration) or a seeded syllable envelope, with a breath and a small head bob; the rig blinks.', duration: 2.4, loop: true, views: ['front', 'left', 'right'], use: 'A person speaking on screen; pass `amp` for lip-sync to an actual line.'},
   'kneel-down': {name: 'Kneel down', description: 'Steps one foot forward and lowers onto the other knee, brings the second knee down, then the hips settle back to the upright kneel of P34 with a slight forward lean, hands to the thighs, 2 s. Feet that are on the ground do not slide.', duration: 2, loop: false, views: ['front', 'left', 'right'], use: 'Begging, searching the floor, a scene of grief.'},
   'stand-from-kneel': {name: 'Stand from kneel', description: 'The reverse of kneel-down: hips lift off the heels, one knee comes up and the foot plants, the figure stands, hands drop to the hang, 2 s.', duration: 2, loop: false, views: ['front', 'left', 'right'], use: 'Getting up after a plea or a search.'},
@@ -426,6 +436,7 @@ export const layerMotion = (a: LayerArgs): Layered => {
   let face = asFace(frame.face ?? a.expression ?? 'neutral');
   if (frame.look) face = {...face, look: frame.look};
   if (frame.talk !== undefined) face = {...face, mouth: 'talk', open: frame.talk};
+  if (frame.chew !== undefined) face = {...face, chew: frame.chew};
   const hood = frame.hood === undefined ? {} : frame.hood >= 1 ? {hoodUp: true} : {hoodRise: frame.hood};
   return {def, g, pose: {...pose, ...hood, view, face} as FigPose, seed, view, frame};
 };

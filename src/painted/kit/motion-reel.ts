@@ -67,6 +67,7 @@ export const MOTION_REEL: ReelEntry[] = [
   {motion: 'crouch-hide', cast: pair({view: 'front'}, {view: 'right', expression: 'neutral'})},
   {motion: 'hood-pull', cast: [{person: A, outfit: 'hoodie', x: 330, view: 'back'}, {person: B, outfit: 'hoodie', x: 770, view: 'back'}]},
   {motion: 'coin-count', cast: pair({expression: 'neutral'}, {expression: 'neutral'})},
+  {motion: 'eat-chew', cast: pair({view: 'right', expression: 'neutral'}, {view: 'left', expression: 'neutral'})},
 ];
 
 /** Longest `motionDuration` among a scene's cast (walks and runs depend on height and distance), plus the hold, in whole frames. */
