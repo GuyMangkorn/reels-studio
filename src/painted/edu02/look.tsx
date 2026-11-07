@@ -5,7 +5,7 @@ import {makePainter, type Painter} from '../kit/painter';
 import {Grain} from '../kit/screen';
 import {orbitYCam, mixYCam, type YCam} from '../kit/ycam';
 import {paintKitchen, T} from './kitchen';
-import {paintEyeMacro} from './eye';
+import {paintEyeMacro} from '../kit/eye';
 import {paintCellMacro, type CellState} from './macro';
 
 // EDU-EP02-SHORT look frames (brief EDU-BRIEF-R1, workflow W3.1, review rows SS-R1). Look stills only: no timeline, no voice,

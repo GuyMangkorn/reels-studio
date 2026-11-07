@@ -8,7 +8,7 @@ import type {V3} from '../kit/space';
 import {camPoint, camUnit, mixYCam, orbitYCam, type YCam} from '../kit/ycam';
 import {span} from '../sea';
 import {paintDoodle, type Doodle} from './doodles';
-import {paintEyeMacro} from './eye';
+import {paintEyeMacro} from '../kit/eye';
 import {flatFillBrush} from './flat';
 import {cupExtent, paintKitchen, SET, T, type CookState, type KitchenMist, type KitchenOpts, type KnifeHold, type OnionPiece} from './kitchen';
 import {LF02_CAM, LF03_CAM} from './look';

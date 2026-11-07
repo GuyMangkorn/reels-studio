@@ -139,3 +139,23 @@ Script revision: EDU-EP06-SCRIPT-R1.2. Scope: ending only (scene `EDU-EP06-S01-B
 Dependent claims: C07 (dramatization reused) and C10 (delivery note only). No change to C01–C06, C08, C09, C11–C16. Uncertainty unchanged: small sample (18 + 18 cats), SRC002–SRC007 not reopened, and the "many cat people translate as love" social claim rests on lead-only commercial pages (low-risk, no "ทุกคน" or percentage).
 
 **Readiness: supported for Film** for EDU-EP06-SCRIPT-R1.2. This is a fact-check pass only, not user approval (W1.5) and not a length check (W1.4).
+
+## R1.3 recheck (Boat, 2026-11-07)
+
+Script revision: EDU-EP06-SCRIPT-R1.3. Scope: L13 wording only (C10). Inspected: script.md L13 row, claim-table L13 row, N7 L13 voice condition, B05 sound note, closing-picture row, revision log; compared with my R1.2 verdict and N4b. L01–L12 diffed by reading against R1.2: unchanged.
+
+L13 now: `แต่ถ้ามันกะพริบกลับมา… นั่นคือสัญญาณที่ดี ที่คนเลี้ยงแมวหลายคนเชื่อว่ามันกำลังบอก… รัก`
+
+| Item | Verdict | Note |
+| --- | --- | --- |
+| (1) Love stays attributed to owners' belief | **pass** | "รัก" sits inside the clause "ที่คนเลี้ยงแมวหลายคนเชื่อว่า…". The narrator asserts only "สัญญาณที่ดี". No sentence states that the cat loves anyone, or that the study found love. |
+| "มันกำลังบอก" (cat intent inside the belief) | **pass, acceptable under the C10 hedge** | It is reported belief ("เชื่อว่า"), not the narrator's claim. The cat is credited with intent only as the owners' view. "เชื่อว่า" is a stronger frame than the old "แปลว่า", because it names a belief about the cat's intent. It is still fine: SRC001 itself says "positive emotional communication" and calls for further research, so the narrator never claims it. C10 stays `unsupported` as fact and `hedge` as attributed interpretation. |
+| (2) "คนเลี้ยงแมวหลายคนเชื่อว่า" supported | **pass, low confidence on the social fact** | "หลายคน" is a plain "many", with no "ทุกคน" or percentage. The support is the same as before: lead-only commercial and pet-site pages, with no survey, so no proportion can be claimed. The wording asserts none. It is low-risk, because it is an attributed belief and is not used as evidence. "คนเลี้ยงแมว" is broader than "ทาสแมว" (it adds no new claim). |
+| (3) "สัญญาณที่ดี" unchanged | **pass** | Same phrase as R1.2, supported as "positive sign / positive emotional communication" (SRC001 Discussion), hedged by the research limits spoken in L09, L10 and L12. |
+| Delivery condition (N4b / N7) | **kept, with one added point** | Read "สัญญาณที่ดี ที่คนเลี้ยง…เชื่อว่ามันกำลังบอก" as one phrase. The pause before the final "รัก" must stay after "บอก", never before "ที่คนเลี้ยง". Do not drop or rush the clause: "รัก" heard alone would sound like the narrator's own claim. The B05 piano note (resolve lands on "…รัก", never covers the clause) still holds. The closing picture comes after the line and must not be captioned "it loves her". |
+
+Stale items (not blocking; for the coordinator and Preaw): script.md open item N-list (b) near line 111 still quotes the old "ที่ทาสแมวหลายคนแปลว่า… รัก" and its fallback. Older fact-check sections (N4b, verdict row L13, R1.1 and R1.2 notes) quote the old wording as dated history. Film's scene sheets and rows quote the old L13 and need the new text at retime.
+
+Dependent claims: C10 only. No change to C01–C09, C11–C16. Uncertainty unchanged: small sample (18 + 18 cats), SRC002–SRC007 not reopened, and the owners'-belief claim rests on lead-only pages. N1 timing (+1 syllable) is not checked here (W1.4).
+
+**Readiness: supported for Film** for EDU-EP06-SCRIPT-R1.3. Fact-check pass only. It is not user approval of the R1.3 wording (still pending) and not a length check.

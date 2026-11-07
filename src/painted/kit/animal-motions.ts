@@ -15,6 +15,7 @@ export const ANIMAL_MOTION_IDS = [
   'idle', 'happy-wag', 'speak', 'sniff', 'startle-hop',
   'walk-in-from-left', 'walk-in-from-right', 'walk-out-to-left', 'walk-out-to-right', 'run-left-to-right', 'run-right-to-left',
   'sit-down', 'stand-up', 'lie-down', 'get-up',
+  'step-up', 'head-rub',
 ] as const;
 export type AnimalMotionId = (typeof ANIMAL_MOTION_IDS)[number];
 
@@ -24,6 +25,12 @@ export type AnimalMotionCtx = {
   view?: AnimalView;
   /** Walk / run distance, m (default: a walk 1.2 m or 4 shoulder heights, a run 1.5 m each side of the rest point). */
   distance?: number;
+  /** `step-up`: height of the higher surface above the one it leaves, m (negative = a step DOWN of that depth; default 0.18: SET-LIVINGROOM sofa arm 0.48 over the armchair seat 0.30), and the distance across to it, m (default 0.28). */
+  rise?: number; across?: number;
+  /** `head-rub`: how far the skull dips into the hand at the push of each rub, m (default 0.012). */
+  press?: number;
+  /** `head-rub`: the contact point [forward m, up m] from the rest point where the skull top meets the hand (default [0.2, 0.3]). */
+  target?: [number, number];
 };
 export type AnimalMotionFrame = {pose: AnimalPose; offset: [number, number]};
 
@@ -43,13 +50,17 @@ export const ANIMAL_MOTION_INFO: Record<AnimalMotionId, {description: string; lo
   'stand-up': {description: 'Sit to stand.'},
   'lie-down': {description: 'Stand to lying down.'},
   'get-up': {description: 'Lying down to stand.'},
+  'step-up': {description: 'A small hop onto a higher surface (0.18 m rise by default, over 0.33 s = 10 frames; the arc clears the edge by 0.06 m), landing mid-stride so a walk can follow. Offset carries the rise. A negative `rise` is a step DOWN: no arc, the drop accelerates and lands on the contact frame.'},
+  'head-rub': {description: 'Neck stretches, skull top meets a hand point; head tilt and two cheek-pushes along it, eyes at half-close (lid 0.5); releases.'},
 };
 
 const defOf = (c: AnimalMotionCtx) => (typeof c.animal === 'string' ? ANIMALS[c.animal] : c.animal);
 const STOP = 0.5;
 const walkDistance = (def: AnimalDef, c: AnimalMotionCtx) => c.distance ?? Math.max(1.2, 4 * def.height);
 const runDistance = (c: AnimalMotionCtx) => c.distance ?? 1.5;
-const TRANSITION: Partial<Record<AnimalMotionId, number>> = {'sit-down': 0.8, 'stand-up': 0.7, 'lie-down': 1.1, 'get-up': 0.9};
+const TRANSITION: Partial<Record<AnimalMotionId, number>> = {'sit-down': 0.8, 'stand-up': 0.7, 'lie-down': 1.1, 'get-up': 0.9, 'step-up': 0.7, 'head-rub': 2.6};
+/** `step-up`: the hop lasts this long (10 frames at 30 fps); the rest of the motion is the landing hold. */
+export const STEP_UP_HOP = 1 / 3;
 
 export const animalMotionDuration = (id: AnimalMotionId, c: AnimalMotionCtx): number => {
   const def = defOf(c), v = animalWalkSpeed(def);
@@ -115,6 +126,21 @@ export const animalMotion = (id: AnimalMotionId, t: number, c: AnimalMotionCtx):
     case 'stand-up': return still({from: 'sit', state: 'stand', blend: tt / dur});
     case 'lie-down': return still({from: 'stand', state: 'lie', blend: tt / dur});
     case 'get-up': return still({from: 'lie', state: 'stand', blend: tt / dur});
+    case 'step-up': {
+      // K7: crouch-free hop; x travels `across`, y follows the rise plus a small arc so the paws clear the edge; the gait clock follows the
+      // distance so the landing is mid-stride and a following walk picks the clock up (stride 0 on the ground before, 1 after landing).
+      // A negative `rise` is the step DOWN (EDU-EP06 BOSS-1): no arc over an edge; the body stays level while the front paws reach out, then the drop
+      // accelerates (gravity, quadratic) and lands at the end of the hop with the contact flag. A positive `rise` is unchanged.
+      const rise = c.rise ?? 0.18, across = c.across ?? 0.28, sgn = view === 'left' ? -1 : 1, u = ease(tt / STEP_UP_HOP), hop = Math.min(1, tt / STEP_UP_HOP);
+      const arc = rise < 0 ? 0 : 0.06 * bump(tt, 0, STEP_UP_HOP), v = rise < 0 ? hop * hop : u;
+      const stride = ease((tt - 0.04) / (STEP_UP_HOP * 0.7)) * 0.8 + 0.2 * ease((tt - STEP_UP_HOP) / 0.3);
+      return {pose: {view: sgn > 0 ? 'right' : 'left', state: 'stand', walk: gaitClock(def, across * u, 'walk'), stride, contact: tt >= STEP_UP_HOP ? 1 : 0}, offset: [sgn * across * u, rise * v + arc]};
+    }
+    case 'head-rub': {
+      // K5: lean in over 0.5 s, two rubs (0.7 s each) pushing the skull top along the hand, release over 0.4 s. `tilt` follows the push.
+      const to = c.target ?? [0.2, 0.3], lean = ease(tt / 0.5) * ease((dur - tt) / 0.4), ph = Math.max(0, Math.min(1, (tt - 0.6) / 1.4)), rub = Math.sin(2 * Math.PI * 2 * ph) * Math.sin(Math.PI * ph) ** 0.5;
+      return still({lean, leanTo: [to[0] + 0.03 * rub, to[1] - (c.press ?? 0.012) * Math.abs(rub)], leanAnchor: 'top', tilt: 6 + 8 * rub * lean, lid: 0.5, contact: 1});
+    }
   }
 };
 
@@ -146,6 +172,8 @@ export const ANIMAL_REEL: AnimalReelEntry[] = [
   {motion: 'stand-up', cast: lanes('right', 'front')},
   {motion: 'lie-down', cast: lanes('right', 'front', 'dog-black-lab', 'cat-calico')},
   {motion: 'get-up', cast: lanes('right', 'front', 'dog-black-lab', 'cat-calico')},
+  {motion: 'step-up', cast: lanes('right', 'right', 'dog-thai', 'cat-orange-tabby')},
+  {motion: 'head-rub', cast: lanes('right', 'right', 'dog-pom', 'cat-orange-tabby')},
 ];
 export const ANIMAL_REEL_HOLD = 0.5;
 export const animalReelSceneSec = (e: AnimalReelEntry): number => {
