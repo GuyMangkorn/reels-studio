@@ -9,7 +9,10 @@ DUR = TOTAL / FPS
 # (file, start of the FILE in global frames, gain dB). NAR: file start = onset frame - 0.05 s (in-file onset); TINY: file start as stated per shot.
 nar = {'L01': 6, 'L02': 45, 'L03': 141, 'L04': 244, 'L05': 347, 'L06': 469, 'L07': 590, 'L09': 753, 'L10': 872, 'L11': 1004,
        'L12': 1081, 'L13': 1221, 'L14': 1356, 'L15': 1425, 'L16': 1620, 'L17': 1771}
-cues = [(f'{S}/lines/2026-11-06_ep05-nar-{k}-kore-x110.wav', f / FPS - 0.05, 0) for k, f in nar.items()]
+# R1.4 (2026-11-07): L15 = picked candidate A (trimmed, r14-trim.py). L05 r14 is 0.85 s over its slot and would overlap L06 (G469): kept on the old take
+# until the user picks a retime option (build-notes R1.4); set R14_L05 = True once the following lines are shifted.
+R14 = {'L15'} | ({'L05'} if os.environ.get('R14_L05') else set())
+cues = [(f'{S}/lines/' + (f'2026-11-07_ep05-nar-{k}-kore-x110-r14.wav' if k in R14 else f'2026-11-06_ep05-nar-{k}-kore-x110.wav'), f / FPS - 0.05, 0) for k, f in nar.items()]
 tiny = [('V01-t1', 218), ('V02-t2', 318), ('V03-t2', 552), ('L08-t1', 658), ('2026-11-06_ep05-V04-t2-tight', 916), ('V05-t1', 1193),
         ('V06-t2', 1280), ('V07-t1', 1592), ('V08-t1', 1883)]
 cues += [(f'{S}/tiny/{k}.wav', f / FPS, 0) for k, f in tiny]
