@@ -157,10 +157,12 @@ export const paintPUFF = (p: Painter, frame: number) => {
  *  - catch L 54-62: one knee give of 0.06 crouch and back (the weight lands); hold from L 62: breath rise 5 mm, period 48 f;
  *    laugh bob L 100-112 (two 8 mm shoulder bounces, face `laugh`). The crumb rides the hands through all of it.
  */
-export const paintLIFT = (p: Painter, frame: number) => {
-  const L = frame, c = camOf(MACRO_CAMS['S01-B05-SH03'], L / 172), t = L / FPS + 60, at: V3 = [-1.75, 0, -0.6], rest: V3 = [-2.4, 0, -0.6];
+/** R1.10 FR39: the figure and crumb solve of the lift at lift-local frame `Llift` for any camera (`paintLIFT` calls it with the SH03 camera, `paintEND` with SH04's). */
+export type LiftState = {at: V3; rest: V3; crumb: V3; fig: Partial<FigPose> | undefined; seated: boolean};
+export const liftState = (c: YCam, L: number): LiftState | null => {
+  const at: V3 = [-1.75, 0, -0.6], rest: V3 = [-2.4, 0, -0.6];
   const g = camPoint(c, at), u = camUnit(c, at);
-  if (!g) return;
+  if (!g) return null;
   const seated = L < 36, ramp = (a: number, b: number) => smooth01((L - a) / (b - a));
   // FR18: seated -> squat over L 35-40 (b 0 -> 1): the floor sit opens up (floorSit 1 -> a*, where its hip height meets crouch 0.6)
   // while crouch eases in (torso scale), and both arms travel from their L 35 seated spots; pure crouch from L 40, no pop at L 36
@@ -206,7 +208,7 @@ export const paintLIFT = (p: Painter, frame: number) => {
       const bk = s > 0.12 && s < 0.85;
       let rVia = mix(low(rTo, 1), aR.via!, w2);
       if (s > 0.1) {
-        const pa = paintTiny(nullPainter(), c, {at, view: 'front', named: {name: 'lift-overhead', L: L - 42}, fig: {crouch, rise}, t, shadow: false});
+        const pa = paintTiny(nullPainter(), c, {at, view: 'front', named: {name: 'lift-overhead', L: L - 42}, fig: {crouch, rise}, t: 0, shadow: false});
         if (pa) {
           const S = pa.lShoulder[0] > pa.rShoulder[0] ? pa.lShoulder : pa.rShoulder, B = BONE * u, dx = rTo[0] - S[0], dy = rTo[1] - S[1];
           const d = Math.min(Math.hypot(dx, dy), 2 * B - 1e-3), h = Math.sqrt(B * B - (d * d) / 4), n = Math.hypot(dx, dy) || 1;
@@ -225,6 +227,13 @@ export const paintLIFT = (p: Painter, frame: number) => {
       } else fig = {crouch, rise, ...armsL};
     }
   }
+  return {at, rest, crumb, fig, seated};
+};
+export const paintLIFT = (p: Painter, frame: number) => {
+  const L = frame, c = camOf(MACRO_CAMS['S01-B05-SH03'], L / 172), t = L / FPS + 60;
+  const st = liftState(c, L);
+  if (!st) return;
+  const {at, rest, crumb, fig, seated} = st;
   const face = L < 40 ? 'surprised' : L >= 100 && L < 112 ? 'laugh' : 'happy';
   paintGarden(p, c, {t, mode: 'sun', drop: false, sun: [150, 300], shadeEdge: -1.2 - 1.8 * Math.min(1, L / 80), items: [
     // FR19: the contact shadow fades out over the first 5 cm of rise (it was painted under the base in the air, across her face at L 48)

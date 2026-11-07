@@ -256,3 +256,16 @@ export const crumbFollowHand = (c: YCam, at: V3, hand: Pt): V3 => {
   for (let i = 0; i < 2; i++) { const gr = crumbGrips(c, a); if (!gr) break; a = [a[0] + (hand[0] - gr.r[0]) / gr.u, a[1], a[2]]; }
   return a;
 };
+
+// ---- R1.10 FR39 / D12: the far tower of S01-B05-SH04. At 9 600 sm it is at infinity at macro scale, so it is a screen-space haze silhouette (no parallax):
+// the tower x 500-600 from y 170 down, her balcony slab as a notch y 232-246 reaching x 640, '#c9b48a' at 18% fading to 0 by y 560. Drawn through `GardenOpts.back`.
+export const FAR_TOWER = {x: [500, 600] as [number, number], top: 170, fade: 560, slab: {y: [232, 246] as [number, number], x: 640}, color: '#c9b48a', alpha: 0.18};
+export const paintFarTower = (p: Painter) => {
+  const {x, top, fade, slab, color, alpha} = FAR_TOWER, n = 13, h = (fade - top) / n;
+  for (let i = 0; i < n; i++) {
+    const y0 = top + i * h, a = alpha * 255 * (1 - (i + 0.5) / n);
+    washAt(p, 15700 + i, color, a, rect(x[0], y0, x[1], y0 + h + 1), 0.02, 0.08);
+  }
+  const k = 1 - (((slab.y[0] + slab.y[1]) / 2 - top) / (fade - top));
+  washAt(p, 15720, color, alpha * 255 * k * 1.15, rect(x[1] - 1, slab.y[0], slab.x, slab.y[1]), 0.02, 0.08);
+};

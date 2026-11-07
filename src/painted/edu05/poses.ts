@@ -1,5 +1,5 @@
 import type {Arm, CastDef, FigPose} from '../kit/cast';
-import {BONE, ikElbow, shoulderPoint} from '../kit/cast';
+import {shoulderPoint} from '../kit/cast';
 import {ell, inkLine, solid} from '../kit/draw';
 import {mixColor, type Painter, type Pt} from '../kit/painter';
 import {poseBody, type AnyPoseId} from '../kit/poses';
@@ -28,7 +28,7 @@ const pat = (L: number, period: number) => Math.pow(pulse(L, period), 3); // sha
  * Body fields and both arms of one named pose at event frame `L`. Returns what `paintTiny` spreads between the base pose and `fig`.
  * `extra` (shot staging: a dip, a breath) is merged over the pose's body before the shoulders are solved, so the arm targets ride it.
  */
-export const namedPose = (name: NamedPose, L: number, def: CastDef, g: Pt, u: number, view: View, extra: Body = {}): Partial<FigPose> => {
+export const namedPose = (name: NamedPose, L: number, def: CastDef, g: Pt, u: number, view: View, extra: Body = {}, heave?: number): Partial<FigPose> => {
   let body: Body = {}, r: Spec, l: Spec;
   switch (name) {
     case 'drift-spread': // arms level at shoulder height and wide, soft knees (CP-P01)
@@ -43,7 +43,7 @@ export const namedPose = (name: NamedPose, L: number, def: CastDef, g: Pt, u: nu
       break;
     }
     case 'brace-heave': { // profile pull, lean away 15-20 deg, the far hand clamps the near forearm on each heave
-      const h = pulse(L, 12);
+      const h = heave ?? pulse(L, 12); // R1.10 FR33: `heave` (0..1) replaces the 12 f pulse, so the pulls land on the grunts only
       body = {crouch: 0.15, lean: -(0.24 + 0.14 * h), walk: 0.25, stride: 0.5};
       r = {to: [0.3 + 0.07 * h, -0.02 - 0.06 * h], via: [0.14, -0.1]}; l = {to: [0.27 + 0.07 * h, -0.03 - 0.06 * h], via: [0.12, -0.12]};
       break;
@@ -75,17 +75,36 @@ export const namedPose = (name: NamedPose, L: number, def: CastDef, g: Pt, u: nu
   return {...body, rArm: arm('r', r), lArm: arm('l', l), rHold: undefined, lHold: undefined};
 };
 
+/** Figure metres: the two bones of a reach, pull or brace arm in a profile shot (the `paintTOUCH` arm, R1.10 FR29c). */
+export const BONE_H = 0.2;
 /**
- * FR09 `brace-heave` with the right arm on a given wrist (the dew drop): the right arm keeps `wrist` (px), the left hand is a separate clamp
- * at 0.6 of the way from the right elbow to the right wrist (the two-bone elbow the rig solves, out = -1). Returns the arms to spread over
- * the named pose (`fig`) and the clamp point (px) where the shot draws the left mitten over the forearm (`paintClamp`).
+ * Two-bone arm (R1.10 FR29c, extracted from `paintTOUCH`'s `ikArm`): both bones are exactly `bonePx`, the elbow is solved from the hand. The hand is
+ * clamped to `reach` x 2 bones from the shoulder (0.98: an arm never reads dead straight); when the target is farther the hand stops on the
+ * shoulder -> target line. `bend` picks the elbow side: `down` = the clockwise normal of the shoulder -> hand line in picture px (below the line for a
+ * hand reaching right, behind the body for a hand hanging), `out` = the other side. The rig's own reach IK (`{to, out}`) is not used for these arms.
  */
-export const braceClamp = (L: number, def: CastDef, g: Pt, u: number, wrist: Pt): {rArm: Arm; lArm: Arm; clamp: Pt} => {
-  const np = namedPose('brace-heave', L, def, g, u, 'right'), view = {view: 'right' as const, ...poseBody(BASE_OF['brace-heave'], 'right'), ...np};
-  const sh = shoulderPoint(def, g, u, view, 'r'), Lpx = BONE * (def.armScale ?? 1) * u, d = Math.hypot(wrist[0] - sh[0], wrist[1] - sh[1]), m = 2 * Lpx - 0.5;
-  const T: Pt = d <= m ? wrist : [sh[0] + ((wrist[0] - sh[0]) * m) / d, sh[1] + ((wrist[1] - sh[1]) * m) / d]; // the rig clamps the reach the same way
-  const el = ikElbow(sh, T, Lpx, -1), clamp: Pt = [el[0] + (T[0] - el[0]) * 0.6, el[1] + (T[1] - el[1]) * 0.6];
-  return {rArm: {to: wrist, out: -1}, lArm: {to: clamp, out: -1}, clamp};
+export const twoBoneArm = (shoulder: Pt, hand: Pt, bonePx: number, bend: 'down' | 'out' = 'down', reach = 0.98): Arm => {
+  const ex = hand[0] - shoulder[0], ey = hand[1] - shoulder[1], d = Math.hypot(ex, ey), k = Math.min(1, (reach * 2 * bonePx) / Math.max(d, 1e-6)), dd = d * k;
+  const h = Math.sqrt(Math.max(0, bonePx * bonePx - (dd / 2) ** 2)), s = bend === 'down' ? 1 : -1, n = Math.max(d, 1e-6);
+  const to: Pt = [shoulder[0] + ex * k, shoulder[1] + ey * k];
+  return {to, via: [shoulder[0] + (to[0] - shoulder[0]) / 2 - s * (ey / n) * h, shoulder[1] + (to[1] - shoulder[1]) / 2 + s * (ex / n) * h]};
+};
+/** The shoulder of a figure in `view` for body fields `fig` over the base pose `base` (px), so a shot can place its arm targets before drawing. */
+export const shoulderOf = (def: CastDef, g: Pt, u: number, view: View, base: AnyPoseId, fig: Partial<FigPose> = {}, side: 'r' | 'l' = 'r'): Pt =>
+  shoulderPoint(def, g, u, {view: (view === 'back' ? 'front' : view) as FigPose['view'], ...poseBody(base, view === 'front' ? 'front' : 'right'), ...fig} as Parameters<typeof shoulderPoint>[3], side);
+
+/**
+ * FR09 / R1.10 FR33 `brace-heave` with the right arm on a given wrist (the dew drop): the right arm is two bones of `BONE_H` from the shoulder to `wrist`
+ * (px; the hand stops short on the line when the wrist is out of reach), the left hand is a separate clamp at 0.6 of the way from the right elbow to the
+ * right hand. `fig` carries body fields the shot staged (lean, crouch, walk, stride) over the named pose. Returns the arms to spread over the named
+ * pose (`fig`) and the clamp point (px) where the shot draws the left mitten over the forearm (`paintClamp`).
+ */
+export const braceClamp = (L: number, def: CastDef, g: Pt, u: number, wrist: Pt, o: {heave?: number; fig?: Body} = {}): {rArm: Arm; lArm: Arm; clamp: Pt; shoulder: Pt} => {
+  const np = namedPose('brace-heave', L, def, g, u, 'right', o.fig ?? {}, o.heave), sh = shoulderOf(def, g, u, 'right', BASE_OF['brace-heave'], np);
+  const arm = twoBoneArm(sh, wrist, BONE_H * u, 'down'), el = arm.via!;
+  const clamp: Pt = [el[0] + (arm.to[0] - el[0]) * 0.6, el[1] + (arm.to[1] - el[1]) * 0.6];
+  const lsh = shoulderOf(def, g, u, 'right', BASE_OF['brace-heave'], np, 'l');
+  return {rArm: arm, lArm: twoBoneArm(lsh, clamp, BONE_H * u, 'down'), clamp, shoulder: sh};
 };
 /** The left mitten of the clamp, drawn after the figure (front layer) over the top edge of the right forearm. */
 export const paintClamp = (p: Painter, at: Pt, u: number, skin: string) => {

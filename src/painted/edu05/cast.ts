@@ -32,7 +32,7 @@ export const TINY: CastDef = {
 export type TinyOpts = {
   at: V3; view: View4; pose?: AnyPoseId; face?: ExpressionId; faceState?: Partial<FaceState>; headCock?: number;
   /** N10 named pose (`poses.ts`) at shot-local frame `L`; its base kit pose is used when `pose` is absent. */
-  named?: {name: NamedPose; L: number};
+  named?: {name: NamedPose; L: number; heave?: number};
   fig?: Partial<FigPose>; t: number;
   /** Colour-mix the figure toward a light (cool shade `#6f8fb0`, warm sun). `mul` (LF04 v3) multiplies every colour by an RGB light
    * filter first, and `u` then mixes toward `to` scaled by (1 - luminance): light colours (skin) keep their hue and only cool and darken
@@ -58,7 +58,7 @@ export const paintTiny = (p: Painter, c: YCam, o: TinyOpts): FigAnchors | null =
   const floor = sc && o.shadowFade !== undefined ? {g: g0, unit: u0, k: Math.max(0, Math.min(1, o.shadowFade))} : undefined;
   if (o.shadow !== false && (!floor || floor.k > 0.001)) washAt(p, 5101, '#3b3226', 60 * (floor?.k ?? 1), ell(floor ? floor.g[0] : g[0], floor ? floor.g[1] : g[1], 0.32 * (floor ? u0 : u), 0.06 * (floor ? u0 : u), 16), 0.15, 0.2);
   const pv = view === 'back' ? 'front' : view;
-  const pose = {...poseFor(o.pose ?? (o.named ? BASE_OF[o.named.name] : 'P01'), TINY, g, u, pv), ...(o.named ? namedPose(o.named.name, o.named.L, TINY, g, u, view) : {})};
+  const pose = {...poseFor(o.pose ?? (o.named ? BASE_OF[o.named.name] : 'P01'), TINY, g, u, pv), ...(o.named ? namedPose(o.named.name, o.named.L, TINY, g, u, view, {}, o.named.heave) : {})};
   const face = {...EXPRESSIONS[o.face ?? 'neutral'], ...(o.faceState ?? {})} as FaceState;
   // K1 (W5.2): the kit `tintPainter` with `brush: true` takes the rig's solid fills (was the episode-local `tintAll`)
   const q = o.tint ? tintPainter(p, o.tint.to, o.tint.u, {mul: o.tint.mul, brush: true}) : p;

@@ -105,6 +105,8 @@ export type GardenOpts = {
   shadeEdge?: number;
   /** Gap in the grass ring (x centre, half width) for a far crossing. */
   gap?: {x: number; w: number};
+  /** Painted after the air and sun glow and before the ground (R1.10 FR39: a far silhouette at infinity, `paintFarTower`). */
+  back?: (p: Painter, c: YCam) => void;
   /** Items painted after the depth-sorted set and before the foreground (the shade air, a lead drawn on top of a glaze). */
   after?: (p: Painter, c: YCam) => void;
   /** Foreground tips (default 14 blades, height 0.25-0.6 sm); a shot with a lead low in the frame thins them (S01-B02-SH04). */
@@ -119,6 +121,7 @@ export const paintGarden = (p: Painter, c: YCam, o: GardenOpts) => {
   const sun = o.sun ?? [180, 300];
   if (sunMode) glow(p, sun[0], sun[1], 420, '#fff1c8', 1, 9520);
   else glow(p, sun[0], sun[1], 360, '#f6e3a8', 0.55, 9520);
+  o.back?.(p, c);
   paintGround(p, c, {x: [-40, 40], z: [-40, 6], soil: sunMode ? '#7a5c40' : '#4b4a48', thatch: sunMode ? '#c9ae76' : '#7f8a86', pebble: sunMode ? '#a89a88' : '#6f7a80', seed: 9600, bits: 260, bx: [c.x - 6, c.x + 6], bz: [c.z - 9, c.z - 0.3]});
   if (o.shadeEdge !== undefined && sunMode) {
     // the shade pocket on the ground (x < edge): cool glaze
