@@ -20,8 +20,8 @@ export const EDU5_CUTS = EDU5_SHOTS.map(([id, n], i) => ({id, start: starts[i], 
 /** Caption cues, global frames [from, to), text = the spoken line verbatim (script: no subtitle differences). Break after "…" (brief VD19). L02/L05-L16 two-clause cues use "\n". */
 export type Edu5Cue = {from: number; to: number; text: string};
 export const EDU5_CUES: Edu5Cue[] = [
-  {from: 6, to: 42, text: 'ถ้าคุณตัวเล็กเท่ามด…'},
-  {from: 45, to: 138, text: 'ตกจากตึกสิบชั้น…\nคุณจะแทบไม่เป็นอะไรเลย'},
+  {from: 6, to: 41, text: 'ถ้าคุณตัวเล็กเท่ามด…'},
+  {from: 45, to: 137, text: 'ตกจากตึกสิบชั้น…\nคุณจะแทบไม่เป็นอะไรเลย'},
   {from: 141, to: 214, text: 'สมมติว่าหดทั้งตัว…\nรวมทั้งน้ำหนักด้วย'},
   {from: 244, to: 331, text: 'ลมพัดวูบเดียว…\nปลิวหลุดจากระเบียงชั้นสิบ'},
   {from: 347, to: 461, text: 'แรงโน้มถ่วงเท่าเดิม…\nแต่ตัวยิ่งเล็ก อากาศยิ่งต้านเก่ง เมื่อเทียบกับน้ำหนัก'},
