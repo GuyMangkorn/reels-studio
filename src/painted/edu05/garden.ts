@@ -2,7 +2,7 @@ import {ell, washAt} from '../kit/draw';
 import {hash} from '../kit/hash';
 import {mixColor, type Painter, type Pt} from '../kit/painter';
 import type {V3} from '../kit/space';
-import {camPoint, camUnit, type YCam} from '../kit/ycam';
+import {camPoint, camPoly, camUnit, type YCam} from '../kit/ycam';
 import {bladeItem, clump, gust, glow, MIDLIT, nearTips, paintAir, paintDrop, paintGround, paintShafts, SHADE, SUNLIT, type Bend, type Blade, type BladePal, type Dof} from './macro';
 import {paintSorted, type Item} from './world';
 
@@ -105,8 +105,22 @@ export type GardenOpts = {
   shadeEdge?: number;
   /** Gap in the grass ring (x centre, half width) for a far crossing. */
   gap?: {x: number; w: number};
+  /** Painted after the air and sun glow and before the ground (R1.10 FR39: a far silhouette at infinity, `paintFarTower`). */
+  back?: (p: Painter, c: YCam) => void;
   /** Items painted after the depth-sorted set and before the foreground (the shade air, a lead drawn on top of a glaze). */
   after?: (p: Painter, c: YCam) => void;
+  /** Foreground tips (default 14 blades, height 0.25-0.6 sm); a shot with a lead low in the frame thins them (S01-B02-SH04). */
+  tips?: {n: number; h: [number, number]};
+  /** Root the foreground tips in front of this camera (a shot's frame-0 camera) so they stay in the world while the camera moves; default: the drawing camera. */
+  tipsAt?: YCam | YCam[];
+  /** R1.11 ground glaze (B04 cold shade): `clip` cuts the glaze polygon at the near plane (default drops it if a corner is behind the lens); `full` also runs it to x +40 sm, one continuous ground tone. */
+  shadeGround?: 'clip' | 'full';
+};
+
+/** R1.11: foreground tips rooted in the world. One camera = its frame-0 look; several cameras (a shot's start, middle and end) split `n` between them so a moving camera always has tips ahead of it. */
+const worldTips = (at: YCam | YCam[], o: Parameters<typeof nearTips>[1]): Blade[] => {
+  const cams = Array.isArray(at) ? at : [at], n = Math.ceil(o.n / cams.length);
+  return cams.flatMap((cc, j) => nearTips(cc, {...o, n, seed: o.seed + j * 13}));
 };
 
 export const paintGarden = (p: Painter, c: YCam, o: GardenOpts) => {
@@ -115,12 +129,14 @@ export const paintGarden = (p: Painter, c: YCam, o: GardenOpts) => {
   const sun = o.sun ?? [180, 300];
   if (sunMode) glow(p, sun[0], sun[1], 420, '#fff1c8', 1, 9520);
   else glow(p, sun[0], sun[1], 360, '#f6e3a8', 0.55, 9520);
+  o.back?.(p, c);
   paintGround(p, c, {x: [-40, 40], z: [-40, 6], soil: sunMode ? '#7a5c40' : '#4b4a48', thatch: sunMode ? '#c9ae76' : '#7f8a86', pebble: sunMode ? '#a89a88' : '#6f7a80', seed: 9600, bits: 260, bx: [c.x - 6, c.x + 6], bz: [c.z - 9, c.z - 0.3]});
   if (o.shadeEdge !== undefined && sunMode) {
     // the shade pocket on the ground (x < edge): cool glaze
-    const e = o.shadeEdge, poly: V3[] = [[-40, 0.003, -40], [e, 0.003, -40], [e + 0.3, 0.003, 6], [-40, 0.003, 6]];
-    const q = poly.map((v) => camPoint(c, v));
-    if (q.every(Boolean)) washAt(p, 9610, '#4f6f8a', 120, q as Pt[], 0.25, 0.1);
+    // R1.11: camPoly cuts at the near plane (the old all-points camPoint test dropped the whole glaze when a corner was behind the lens, e.g. B04-SH03 yaw 20)
+    const e = o.shadeEdge, xr = o.shadeGround === 'full' ? 40 : e, poly: V3[] = [[-40, 0.003, -40], [xr, 0.003, -40], [xr + (o.shadeGround === 'full' ? 0 : 0.3), 0.003, 6], [-40, 0.003, 6]];
+    const q = o.shadeGround ? camPoly(c, poly) : poly.map((v) => camPoint(c, v));
+    if (o.shadeGround ? q.length >= 3 : q.every(Boolean)) washAt(p, 9610, '#4f6f8a', 120, q as Pt[], 0.25, 0.1);
   }
   const dof = o.dof;
   const edge = o.shadeEdge ?? -0.5;
@@ -133,7 +149,7 @@ export const paintGarden = (p: Painter, c: YCam, o: GardenOpts) => {
   paintSorted(p, c, items);
   if (sunMode) paintShafts(p, [-120, 60, 260, 420], {top: -60, bottom: 1150, slant: 380, color: '#ffd9a0', level: 0.55, seed: 9700, t: o.t});
   o.after?.(p, c);
-  nearTips(c, {n: 14, h: [0.25, 0.6], seed: 77, color: sunMode ? '#55752e' : '#34504a'}).forEach((b) => bladeItem(b, o.t, dof).draw(p, c));
+  worldTips(o.tipsAt ?? c, {n: o.tips?.n ?? 14, h: o.tips?.h ?? [0.25, 0.6], seed: 77, color: sunMode ? '#55752e' : '#34504a'}).forEach((b) => bladeItem(b, o.t, dof).draw(p, c));
   (o.fore ?? []).forEach((b) => bladeItem(b, o.t, dof).draw(p, c));
 };
 const shadeOf = (pal: BladePal): BladePal => (pal === SUNLIT ? {...SHADE, body: '#4a7a62', edge: '#7aa08a'} : pal);
@@ -148,7 +164,13 @@ export const planterBlades = (): Blade[] => {
   const spots: [number, number, number][] = [[-4, -2, 7], [-1.5, -4.5, 7], [2.5, -3, 7], [5, 1, 6], [-6, 3, 5], [7.5, -5.5, 5], [-8, -5, 5], [0.5, -9, 4]];
   return spots.flatMap(([x, z, n], i) => clump({x, z, n, h: [20, 38], w: [1.0, 1.6], pal: {base: '#5f8a34', body: '#b9d86a', edge: '#e8f2a0', vein: '#8fb24a'}, seed: 3100 + i * 7, spread: 0.9, beads: true, beadAt: [0.03, 0.14], lean: [3, 14], curl: [4, 22], sway: 1.2}));
 };
-export const paintPlanter = (p: Painter, c: YCam, o: {t: number; items?: Item[]; fore?: Blade[]; sun?: Pt}) => {
+/**
+ * `blades` replaces the planter's tufts (a shot keeps the ones behind the lead) and `gust` bends them in a breeze (S01-B02-SH01, N1).
+ * `wallItem` draws the outer wall as a depth-sorted item, so tufts rooted behind it and a figure that has gone over it are hidden by it
+ * (default: a backdrop painted before everything). `calm` [y0, y1] veils the soil in that picture band (the caption band) with a flat
+ * soil wash before the figure; `bits` sets the soil's pebble and thatch count (default 220). All absent = as before (LF02, B01 plates).
+ */
+export const paintPlanter = (p: Painter, c: YCam, o: {t: number; items?: Item[]; fore?: Blade[]; sun?: Pt; blades?: Blade[]; gust?: Bend; wallItem?: boolean; calm?: [number, number]; bits?: number; tipsAt?: YCam}) => {
   paintAir(p, PLANTER_AIR, 9800);
   const hz = camPoint(c, [0, c.y, -4000]);
   const sun = o.sun ?? [880, (hz?.[1] ?? 900) - 160];
@@ -163,17 +185,22 @@ export const paintPlanter = (p: Painter, c: YCam, o: {t: number; items?: Item[];
     washAt(p, 9850, '#f3dcb8', 140, [[-60, lip[1] - 170], [1140, lip[1] - 170], [1140, lip[1] + 10], [-60, lip[1] + 10]], 0.3, 0.1);
   }
   // trough: outer lip (pale plastic edge), soil
-  paintGround(p, c, {x: [-14, 14], z: [-6.4, 14], soil: '#4a3628', thatch: '#7a5c44', pebble: '#f2efe6', seed: 9860, bits: 220, bx: [c.x - 5, c.x + 5], bz: [-6.3, c.z - 0.3]});
-  const lipPts: V3[] = [[-14, 0, -6.4], [14, 0, -6.4], [14, 1.3, -6.4], [-14, 1.3, -6.4]];
-  const lp = lipPts.map((v) => camPoint(c, v));
-  if (lp.every(Boolean)) washAt(p, 9870, '#e9e4da', 255, lp as Pt[], 0.02, 0.05);
-  const lt = ([[-14, 1.3, -6.4], [14, 1.3, -6.4], [14, 1.3, -7.0], [-14, 1.3, -7.0]] as V3[]).map((v) => camPoint(c, v));
-  if (lt.every(Boolean)) washAt(p, 9871, '#f7f4ec', 255, lt as Pt[], 0.02, 0.05);
-  const items: Item[] = planterBlades().map((b) => bladeItem(b, o.t, {near: 0.9, far: 22, nearColor: '#3e5a26', farColor: '#f3e6b4', farMix: 0.5}));
+  paintGround(p, c, {x: [-14, 14], z: [-6.4, 14], soil: '#4a3628', thatch: '#7a5c44', pebble: '#f2efe6', seed: 9860, bits: o.bits ?? 220, bx: [c.x - 5, c.x + 5], bz: [-6.3, c.z - 0.3]});
+  if (o.calm) washAt(p, 9872, '#5a4434', 170, [[-60, o.calm[0]], [1140, o.calm[0]], [1140, o.calm[1]], [-60, o.calm[1]]], 0.4, 0.1);
+  // camPoly clips at the near plane: with a yawed camera (S01-B02-SH01, yaw -35) the +-14 m ends of the wall are behind the lens
+  const wall = (q: Painter, cc: YCam) => {
+    const lp = camPoly(cc, [[-14, 0, -6.4], [14, 0, -6.4], [14, 1.3, -6.4], [-14, 1.3, -6.4]]);
+    if (lp.length >= 3) washAt(q, 9870, '#e9e4da', 255, lp, 0.02, 0.05);
+    const lt = camPoly(cc, [[-14, 1.3, -6.4], [14, 1.3, -6.4], [14, 1.3, -7.0], [-14, 1.3, -7.0]]);
+    if (lt.length >= 3) washAt(q, 9871, '#f7f4ec', 255, lt, 0.02, 0.05);
+  };
+  if (!o.wallItem) wall(p, c);
+  const items: Item[] = (o.gust ? gust(o.blades ?? planterBlades(), o.gust) : o.blades ?? planterBlades()).map((b) => bladeItem(b, o.t, {near: 0.9, far: 22, nearColor: '#3e5a26', farColor: '#f3e6b4', farMix: 0.5}));
+  if (o.wallItem) items.push({at: [o.items?.[0]?.at[0] ?? 0, 0, -6.4], draw: wall});
   items.push(...(o.items ?? []));
   paintSorted(p, c, items);
   paintShafts(p, [520, 700, 860, 1000], {top: -60, bottom: 1100, slant: -420, color: '#ffd9a0', level: 0.5, seed: 9880, t: o.t});
-  nearTips(c, {n: 12, h: [0.25, 0.55], seed: 78, color: '#34502a'}).forEach((b) => bladeItem(b, o.t).draw(p, c));
+  nearTips(o.tipsAt ?? c, {n: 12, h: [0.25, 0.55], seed: 78, color: '#34502a'}).forEach((b) => bladeItem(b, o.t).draw(p, c));
   (o.fore ?? []).forEach((b) => bladeItem(b, o.t).draw(p, c));
   void ell;
 };

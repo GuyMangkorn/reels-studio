@@ -144,9 +144,10 @@ const paintCollar = (p: Painter, g: Pt, u: number, st: DropState, geo: DropGeome
   if (rise < 0.01 || st.push < 0.05) return;
   // one flared sleeve of water round the wrist (symmetrical about the arm line), flaring into the surface
   const base = (t: number, off: number): Pt => [W[0] + a[0] * t + nrm[0] * off, W[1] + a[1] * t + nrm[1] * off];
-  const prof: [number, number][] = [[-0.05, WRIST_HW + 0.035], [-0.02, WRIST_HW + 0.03], [rise * 0.5, WRIST_HW + 0.02], [rise, WRIST_HW + 0.01]];
+  // R1.11: the sleeve is a tapering fillet (wide at the water, hugging the wrist at its top), not a constant-width strip: the strip read as a rectangle round the wrist
+  const prof: [number, number][] = Array.from({length: 9}, (_, i) => { const s = i / 8; return [-0.04 + (rise + 0.04) * s, 0.008 + 0.05 * (1 - s) ** 1.7] as [number, number]; });
   const sleeve = [...prof.map(([t, o]) => base(t, o)), ...prof.slice().reverse().map(([t, o]) => base(t, -o))];
-  washAt(p, 8530, WATER, 170, sleeve.map(S), 0.04, 0.05);
+  washAt(p, 8530, WATER, 120, sleeve.map(S), 0.04, 0.05);
   [-1, 1].forEach((sd, i) => inkLine(p, 8532 + i, prof.map(([t, o]) => S(base(t, sd * o))), {weight: Math.max(0.5, u / 560), color: '#7d9c8a', closed: false}));
   if (snapped) {
     // the bead left on the wrist and the wet sheen along the forearm

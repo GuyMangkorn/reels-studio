@@ -85,6 +85,8 @@ export type FigPose = {
   hoodUp?: boolean;
   /** Hood being pulled up 0..1 (back view only, `hood-pull` motion): the bunched hood rises from the neck over the head and the hair shows above its rim; 1 = `hoodUp`. */
   hoodRise?: number;
+  /** v collar (front view) blended into the shirt colour 0..1 (default 0 = as authored): a mug or hand held at the neck leaves a lone wedge of piping beside it that reads as a coaster (EDU-EP05 SIP/TOUCH). */
+  collarHide?: number;
   /** Back view, hood up: `'drape'` keeps the cowl that falls over the nape to the shoulders (head-only close shots); absent = neck mode, the neck column in the hood colour and nothing wider than the torso below the hood (SS-R2.5). */
   cowl?: 'drape';
   head?: 'front' | 'left' | 'right';
@@ -162,6 +164,10 @@ export type FigPose = {
   lift?: number;
   /** Skip the soft ground shadow (and its dark core): a figure with no ground under it (the dream fall). Default absent = shadow as before. */
   noShadow?: boolean;
+  /** Profile `run` only: 0..1 (default 1) blends the legs from a planted two-foot stance to the stride, the grounded foot staying put (EDU-EP05 R1.9 FR28). */
+  runMix?: number;
+  /** Ground shadow held at its own floor spot (picture px `g`, `unit` px per metre) with opacity factor `k` 0..1, for a figure drawn scaled about a point (EDU-EP05 shrink: the shadow fades instead of riding the shrinking card). Absent = under the feet. */
+  shadowFloor?: {g: Pt; unit: number; k: number};
   /** Neck in the face skin tone with a soft jaw shade and no outline, flaring into the collar (default absent = the VD18 shaded neck block, grey beside a lit face). EDU-EP01 W5.4. */
   softNeck?: boolean;
   /**
@@ -244,7 +250,7 @@ export const shoulderHeight = (def: CastDef, crouch = 0): number => {
 };
 
 /** Fields of a pose that decide the body frame (hip height, torso tilt, leg mode). */
-export type BodyFields = Pick<FigPose, 'crouch' | 'bend' | 'walk' | 'stride' | 'lean' | 'rise' | 'sit' | 'floorSit' | 'kneel' | 'squat' | 'run' | 'lift'>;
+export type BodyFields = Pick<FigPose, 'crouch' | 'bend' | 'walk' | 'stride' | 'lean' | 'rise' | 'sit' | 'floorSit' | 'kneel' | 'squat' | 'run' | 'runMix' | 'lift'>;
 export type BodyFrame = {
   hip0: number; shV: number; hipV: number; hipU: number; tScale: number; rise: number; tilt: number; lift: number;
   /** Crouch after the front-view squat mapping, 0..1. */
@@ -275,7 +281,7 @@ export const bodyFrame = (def: CastDef, pose: BodyFields & {view: FigPose['view'
   const walk = pose.walk;
   const ph = walk === undefined ? 0 : walk * Math.PI * 2;
   const bob = walk === undefined ? 0 : 0.018 * Math.abs(Math.sin(ph)) * (pose.stride ?? 1);
-  const mode = m ? modeLegs({hip0, ankleV, L1: hip0 - knee0, L2: knee0 - ankleV}, profile ? 'profile' : 'front', m.kind === 'run' ? {kind: 'run', amount: m.amount * Math.PI * 2} : m) : undefined;
+  const mode = m ? modeLegs({hip0, ankleV, L1: hip0 - knee0, L2: knee0 - ankleV}, profile ? 'profile' : 'front', m.kind === 'run' ? {kind: 'run', amount: m.amount * Math.PI * 2, mix: pose.runMix} : m) : undefined;
   const hipDrop = 0.47 * c * (Ht / 1.7) + bob;
   return {
     hip0, shV, c, bend, ph, bob, mode,
@@ -388,12 +394,13 @@ export const drawFigure = (p: Painter, def: CastDef, g: Pt, unit: number, pose: 
   // Soft ground shadow under the feet (every human has one). VD18: a wider soft shadow plus a dark occlusion core.
   // Lying (`lie`): the shadow lengthens along the body, toward the side the head points to.
   const lie = Math.max(-1, Math.min(1, pose.lie ?? 0)), lieA = Math.abs(lie);
-  const shX = g[0] - Math.sign(lie) * 0.5 * Ht * lieA * unit, shW = (profile ? 0.32 : 0.26) + (0.52 * Ht - (profile ? 0.32 : 0.26)) * lieA;
-  const sh = ell(shX, g[1] + 0.01 * unit, shW * (L ? 1.15 : 1) * unit, (L ? 0.07 : 0.06) * (1 + lieA) * unit, 16);
-  if (!pose.seated && !pose.noShadow && !L) washAt(p, seed * 1000 + 999, sil ?? '#1e2324', 70, sh, 0.5, 0.3);
-  if (!pose.seated && !pose.noShadow && L) {
-    glaze(p, seed * 1000 + 999, palOf(L).ground, 120, sh, {border: 0.1, bleed: 0.15});
-    glaze(p, seed * 1000 + 998, palOf(L).groundCore, 160, ell(shX, g[1] + 0.005 * unit, ((profile ? 0.22 : 0.2) + (0.4 * Ht - (profile ? 0.22 : 0.2)) * lieA) * unit, 0.03 * (1 + lieA) * unit, 16), {border: 0.1, bleed: 0.08});
+  const sfl = pose.shadowFloor, sg = sfl?.g ?? g, su = sfl?.unit ?? unit, sk = sfl?.k ?? 1;
+  const shX = sg[0] - Math.sign(lie) * 0.5 * Ht * lieA * su, shW = (profile ? 0.32 : 0.26) + (0.52 * Ht - (profile ? 0.32 : 0.26)) * lieA;
+  const sh = ell(shX, sg[1] + 0.01 * su, shW * (L ? 1.15 : 1) * su, (L ? 0.07 : 0.06) * (1 + lieA) * su, 16);
+  if (!pose.seated && !pose.noShadow && sk > 0.001 && !L) washAt(p, seed * 1000 + 999, sil ?? '#1e2324', 70 * sk, sh, 0.5, 0.3);
+  if (!pose.seated && !pose.noShadow && sk > 0.001 && L) {
+    glaze(p, seed * 1000 + 999, palOf(L).ground, 120 * sk, sh, {border: 0.1, bleed: 0.15});
+    glaze(p, seed * 1000 + 998, palOf(L).groundCore, 160 * sk, ell(shX, sg[1] + 0.005 * su, ((profile ? 0.22 : 0.2) + (0.4 * Ht - (profile ? 0.22 : 0.2)) * lieA) * su, 0.03 * (1 + lieA) * su, 16), {border: 0.1, bleed: 0.08});
   }
   // Contact (kneel, floor-sit; default absent): a darker core under each part that rests on the ground, so the folded legs read as
   // touching it: the knees and the shin of a kneel, the seat of a floor-sit. Drawn under the figure like the shadow above.
@@ -480,7 +487,7 @@ export const drawFigure = (p: Painter, def: CastDef, g: Pt, unit: number, pose: 
     const cx = pts.reduce((a, q) => a + q[0], 0) / pts.length;
     return cx > clothX0 && cx < clothX1 ? clipHalf(pts, [-1e5, clothTopY], [1e5, clothTopY], [0, clothTopY - 1e5]) : pts;
   };
-  const legColor = (far: boolean) => (far ? mixColor(o.pants, '#000000', 0.18) : o.pants);
+  const legColor = (far: boolean) => (far ? mixColor(o.pants, '#000000', qg ? 0.1 : 0.18) : o.pants); // turned body (R1.9 FR22): far leg at most ~0.12 luma under the near one
   // Front view, thighs toward the camera (sitting, knees up): the legs are painted over the torso, after the head.
   const legsOver = !!mode && !profile && (mode.kind === 'sit' || mode.kind === 'floor');
   const fillL = (color: string, pts: Pt[], outline = true) => {
@@ -813,8 +820,9 @@ export const drawFigure = (p: Painter, def: CastDef, g: Pt, unit: number, pose: 
       const col = G.collar;
       if (col?.kind === 'v') {
         const d = col.depth ?? 0.17;
-        fill(col.trim ?? def.head.skin, Uqf([[-0.05, shV + 0.004], [0.05, shV + 0.004], [0, shV - d]]), false, 6);
-        for (const sd of [-1, 1]) fill(col.color, Uqf([[sd * 0.04, shV + 0.004], [sd * 0.115, shV - 0.004], [sd * 0.03, shV - d], [0, shV - d + 0.012]]), true, 6);
+        const ch = clamp01(pose.collarHide ?? 0), cm = (c: string) => (ch > 0 ? mixColor(c, o.shirt, ch) : c);
+        fill(cm(col.trim ?? def.head.skin), Uqf([[-0.05, shV + 0.004], [0.05, shV + 0.004], [0, shV - d]]), false, 6);
+        for (const sd of [-1, 1]) fill(cm(col.color), Uqf([[sd * 0.04, shV + 0.004], [sd * 0.115, shV - 0.004], [sd * 0.03, shV - d], [0, shV - d + 0.012]]), true, 6);
       } else if (col?.kind === 'sailor') {
         for (const sd of [-1, 1]) {
           fill(col.color, Uqf([[sd * 0.045, shV + 0.004], [sd * (sw - 0.02), shV], [sd * (sw - 0.03), shV - 0.055], [sd * 0.012, shV - 0.2], [0, shV - 0.17]]), true, 6);
@@ -888,7 +896,7 @@ export const drawFigure = (p: Painter, def: CastDef, g: Pt, unit: number, pose: 
     const ext = (t: number): Pt => [D1[0] + (D2[0] - D1[0]) * t, D1[1] + (D2[1] - D1[1]) * t];
     planeShapes.forEach((shape, i) => {
       const part2 = clipHalf(shape, D1, D2, N);
-      if (part2.length > 2) glaze(p, 7_700_000 + seed * 1000 + i, mixColor(coat ?? o.shirt, '#0a0d12', 0.62), 135 + 70 * sinq, part2, {border: 0.25, bleed: 0.02});
+      if (part2.length > 2) glaze(p, 7_700_000 + seed * 1000 + i, mixColor(coat ?? o.shirt, '#0a0d12', 0.22), 110 + 60 * sinq, part2, {border: 0.25, bleed: 0.02});
     });
     inkLine(p, seed * 1000 + 450, [ext(0.04), ext(1)], {closed: false, weight: 0.8, curve: 0.2, color: mixColor(toneOf(coat ?? o.shirt, L), INK, 0.55)});
   }

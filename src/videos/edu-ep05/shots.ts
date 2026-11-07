@@ -2,12 +2,12 @@
 // (EDU-EP05-SHEETS-R1: shot map, "VO + caption" lines) and review-rows.json start/end. Boss's art (N1-N10, K1) is not in yet, so
 // every scene is a placeholder card over a stand-in plate until `EDU5-<shot id>` plates exist in the painted registry.
 export const EDU5_FPS = 30;
-export const EDU5_TOTAL = 1963;
+export const EDU5_TOTAL = 1989;
 
 /** [shot id, frames, Boss items still missing for this shot (scene-sheets "Boss and Editor handoff (W5.2)")]. */
 export const EDU5_SHOTS = [
   ['S01-B01-SH01', 41, 'N3 N10'], ['S01-B01-SH02', 96, 'N3'], ['S01-B01-SH03', 71, 'N3 N7 N10'], ['S01-B01-SH04', 32, 'N1 N2 N7 N10'],
-  ['S01-B02-SH01', 89, 'N1 N2 N10'], ['S01-B02-SH02', 132, 'N2 drift N10'], ['S01-B02-SH03', 32, 'N3 N10'], ['S01-B02-SH04', 93, 'N1 N2 N10'],
+  ['S01-B02-SH01', 89, 'N1 N2 N10'], ['S01-B02-SH02', 158, 'N2 drift N10'], ['S01-B02-SH03', 32, 'N3 N10'], ['S01-B02-SH04', 93, 'N1 N2 N10'],
   ['S01-B03-SH01', 77, 'N1 N2 N4'], ['S01-B03-SH02', 86, 'N4 N10'], ['S01-B03-SH03', 119, 'N4 N10'], ['S01-B03-SH04', 132, 'N4 N10'],
   ['S01-B04-SH01', 77, 'N1 N2 K1'], ['S01-B04-SH02', 140, 'N1 N2 N6 N8 N10 K1'], ['S01-B04-SH03', 115, 'N1 N2 N5 N6 N10 K1'],
   ['S01-B05-SH01', 89, 'N1 N2 N5 N6'], ['S01-B05-SH02', 173, 'N1 N2 N6 N9'], ['S01-B05-SH03', 173, 'N1 N2 N5 N6 N10'],
@@ -20,26 +20,27 @@ export const EDU5_CUTS = EDU5_SHOTS.map(([id, n], i) => ({id, start: starts[i], 
 /** Caption cues, global frames [from, to), text = the spoken line verbatim (script: no subtitle differences). Break after "…" (brief VD19). L02/L05-L16 two-clause cues use "\n". */
 export type Edu5Cue = {from: number; to: number; text: string};
 export const EDU5_CUES: Edu5Cue[] = [
-  {from: 6, to: 42, text: 'ถ้าคุณตัวเล็กเท่ามด…'},
-  {from: 45, to: 138, text: 'ตกจากตึกสิบชั้น…\nคุณจะแทบไม่เป็นอะไรเลย'},
+  {from: 6, to: 41, text: 'ถ้าคุณตัวเล็กเท่ามด…'},
+  {from: 45, to: 137, text: 'ตกจากตึกสิบชั้น…\nคุณจะแทบไม่เป็นอะไรเลย'},
   {from: 141, to: 214, text: 'สมมติว่าหดทั้งตัว…\nรวมทั้งน้ำหนักด้วย'},
-  {from: 244, to: 331, text: 'ลมพัดวูบเดียว…\nปลิวหลุดจากระเบียงชั้นสิบ'},
-  {from: 347, to: 461, text: 'แรงโน้มถ่วงเท่าเดิม…\nแต่ตัวยิ่งเล็ก อากาศยิ่งต้านเก่ง เมื่อเทียบกับน้ำหนัก'},
-  {from: 469, to: 493, text: 'ตกสิบชั้น…'},                                          // L06a
-  {from: 493, to: 561, text: 'ถึงพื้นก็แค่ราว ๆ กระโดดลงจากเก้าอี้'},                // L06b
-  {from: 590, to: 665, text: 'แต่ข้างล่าง…\nมีหยดน้ำค้างรออยู่'},
-  {from: 678, to: 752, text: 'ทำไมน้ำมันเหนียวแบบนี้!'},                              // L08 (TINY)
-  {from: 753, to: 869, text: 'ตัวเล็กขนาดนี้…\nแรงตึงผิวน้ำอาจแรงพอจะดึงคุณติดไว้'},
-  {from: 872, to: 936, text: 'แรงกว่าน้ำหนักตัวคุณ…\nได้หลายเท่า'},
-  {from: 1004, to: 1079, text: 'ในร่มหญ้า…\nศัตรูต่อไปคือความหนาว'},
-  {from: 1081, to: 1195, text: 'ยิ่งตัวเล็ก ยิ่งเหมือนเปลือยกลางลม…\nความร้อนหนีออกเร็วขึ้นมาก'},
-  {from: 1221, to: 1288, text: 'จะอุ่นได้…\nต้องกินแทบตลอดเวลา'},
-  {from: 1356, to: 1422, text: 'มดบางชนิดแบกของหนักได้หลายเท่าของตัว'},
-  {from: 1425, to: 1500, text: 'ไม่ใช่เพราะกล้ามมันเก่ง…\nแต่ตัวเล็กลง…'},               // L15a (UB-1/UB-2: +-0.18 s)
-  {from: 1500, to: 1595, text: 'น้ำหนักลดเยอะกว่าแรงที่ลดลง เลยมีแรงเหลือใช้'},       // L15b
-  {from: 1620, to: 1652, text: 'แล้วคุณล่ะ…'},                                          // L16a
-  {from: 1652, to: 1768, text: 'ตัวเล็กขนาดนี้ก็ได้เปรียบเรื่องแรงเมื่อเทียบกับน้ำหนักตัวด้วย'}, // L16b
-  {from: 1771, to: 1889, text: 'โลกใบเดียวกันแท้ ๆ…\nแค่ขนาดตัวเปลี่ยน เกมก็เปลี่ยนทั้งเกม'},
+  {from: 244, to: 329, text: 'ลมพัดวูบเดียว…\nปลิวหลุดจากระเบียงชั้นสิบ'},
+  {from: 347, to: 390, text: 'แรงโน้มถ่วงเท่าเดิมนะ…'},                              // L05a (R1.4 A; phrase 1 ends G384, phrase 2 onset G390)
+  {from: 390, to: 487, text: 'แต่ตัวยิ่งเล็ก อากาศยิ่งต้านดี\nพอเทียบกับน้ำหนักตัว'}, // L05b (R1.4 A, R1.11 FR40: voiced end G485, cue ends on the cut G487)
+  {from: 495, to: 519, text: 'ตกสิบชั้น…'},                                          // L06a
+  {from: 519, to: 587, text: 'ถึงพื้นก็แค่ราว ๆ กระโดดลงจากเก้าอี้'},                // L06b
+  {from: 616, to: 691, text: 'แต่ข้างล่าง…\nมีหยดน้ำค้างรออยู่'},
+  {from: 704, to: 778, text: 'ทำไมน้ำมันเหนียวแบบนี้!'},                              // L08 (TINY)
+  {from: 779, to: 895, text: 'ตัวเล็กขนาดนี้…\nแรงตึงผิวน้ำอาจแรงพอจะดึงคุณติดไว้'},
+  {from: 898, to: 962, text: 'แรงกว่าน้ำหนักตัวคุณ…\nได้หลายเท่า'},
+  {from: 1030, to: 1105, text: 'ในร่มหญ้า…\nศัตรูต่อไปคือความหนาว'},
+  {from: 1107, to: 1221, text: 'ยิ่งตัวเล็ก ยิ่งเหมือนเปลือยกลางลม…\nความร้อนหนีออกเร็วขึ้นมาก'},
+  {from: 1247, to: 1314, text: 'จะอุ่นได้…\nต้องกินแทบตลอดเวลา'},
+  {from: 1382, to: 1448, text: 'มดบางชนิดแบกของหนักได้หลายเท่าของตัว'},
+  {from: 1451, to: 1526, text: 'ไม่ใช่เพราะกล้ามมันเยอะหรอก…\nแต่พอตัวเล็กลง…'},          // L15a (R1.4 A; UB-1/UB-2: +-0.18 s)
+  {from: 1526, to: 1620, text: 'น้ำหนักลดไปมากกว่าแรง…\nแรงก็เลยเหลือ ๆ'},             // L15b (R1.4 A)
+  {from: 1646, to: 1678, text: 'แล้วคุณล่ะ…'},                                          // L16a
+  {from: 1678, to: 1793, text: 'ตัวเล็กขนาดนี้ก็ได้เปรียบเรื่องแรงเมื่อเทียบกับน้ำหนักตัวด้วย'}, // L16b
+  {from: 1797, to: 1915, text: 'โลกใบเดียวกันแท้ ๆ…\nแค่ขนาดตัวเปลี่ยน เกมก็เปลี่ยนทั้งเกม'},
 ];
 
 /** Caption events for `assemblePaintedTimeline`: every scene starts with a cue ('' = none); a cue running across a cut repeats at the cut start. */

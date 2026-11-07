@@ -5,7 +5,7 @@ import type {V3} from '../kit/space';
 import {camPoint, camUnit, orbitYCam, type YCam} from '../kit/ycam';
 import {antItem} from './ant';
 import {paintBalcony, steam} from './balcony';
-import {paintMug, paintTiny, TINY, tinyItem} from './cast';
+import {paintMug, paintTiny, TINY, tinyItem, type TinyOpts} from './cast';
 import {D1_CONTACT, paintGarden, paintPlanter, sweep} from './garden';
 import {paintBlade, SHADE, type Blade} from './macro';
 
@@ -16,7 +16,7 @@ import {paintBlade, SHADE, type Blade} from './macro';
 
 const FPS = 30;
 const DEG = Math.PI / 180;
-export const LF_FRAMES = {ANT1: 60, ANT2: 60, ANT3: 60, LF01: 60, LF02: 60, LF03: 60, LF04: 60} as const;
+export const LF_FRAMES = {ANT1: 60, ANT2: 60, ANT3: 60, LF01: 60, LF02: 60, LF03: 60, LF04: 60, COVERA: 60} as const;
 /** Anchors of the lead written by each paint call (lead-height measure). */
 export const MEASURE: Record<string, FigAnchors | null> = {};
 
@@ -144,6 +144,35 @@ const LF04_CANOPY: Blade[] = (() => {
     return {root: line[0], h: 0, w, dir: [0, 1], lean: 0, curl: 0, pal, seed, line, taper: 0.7};
   });
 })();
+/** R1.10 FR34: the LF04 v5 shade build shared by LF04, B04-SH01 (COLD) and B04-SH02 (PUFF): the cool wedge over everything left of the shade edge (x < -0.5 sm) and the canopy blades. */
+export const shadeSet = (q: Painter, cc: YCam, t: number, full = false) => {
+  // the shade: cool air over everything left of the shade edge (x < -0.5 sm); the clearing behind on the right stays warm
+  const e0 = camPoint(cc, [-0.5, 0, -30]), e1 = camPoint(cc, [-0.5, 0, -0.2]);
+  const a0: Pt = e0 ?? [300, 700], a1: Pt = e1 ?? [1100, 1200], k = (a1[0] - a0[0]) / Math.max(1, a1[1] - a0[1]);
+  const xb = a0[0] + k * (1980 - a0[1]);
+  // LF04 v4: the wedge's upright edge pulled 30 px left (a0 + 20 -> a0 - 10) so it no longer overlaps the CL02 leaf's left tip
+  // R1.11 `full` (B04-SH01/02): below the horizon the cool air runs across the whole picture, so the ground is one tone; the upright edge stays above it (the warm clearing wall)
+  washAt(q, 9950, '#5f7fa4', 150, full ? [[-60, -60], [a0[0] - 10, -60], [a0[0] - 10, a0[1]], [1140, a0[1]], [1140, 1980], [-60, 1980]] : [[-60, -60], [a0[0] - 10, -60], [a0[0] - 10, a0[1]], [xb + 20, 1980], [-60, 1980]], 0.35, 0.1);
+  // LF04 v5: the canopy is real world-space blades of the shade tuft leaning over the pocket (v4: a zigzag wash read as a pattern)
+  LF04_CANOPY.forEach((b) => paintBlade(q, cc, b, t));
+};
+/**
+ * R1.10 FR34: TINY in the cold (LF04 v5 K1): wet, the cool tint (`u` 0.27, mul [0.95, 0.93, 0.97]) and the blue crescent on the shadow side of the face.
+ * `o` is a normal `paintTiny` option set (view, pose / named, face, fig, headCock); `at` defaults to LF04's spot. Returns the figure anchors.
+ */
+export const coldTiny = (q: Painter, cc: YCam, t: number, o: Omit<TinyOpts, 't' | 'at' | 'tint'> & {at?: V3; u?: number; shade?: number}) => {
+  const at: V3 = o.at ?? [T_TINY_SHADE[0], 0, T_TINY_SHADE[2]], {u: tu, shade, ...rest} = o;
+  const a = paintTiny(q, cc, {...rest, at, t, fig: {wet: true, ...(o.fig ?? {})}, tint: {to: '#4f6fb8', u: (tu ?? 0.27) * (shade ?? 1), mul: [0.95, 0.93, 0.97]}});
+  if (a) {
+    // LF04 v3: skin stays a healthy cool peach (light filter, not a mix toward grey-blue); the shadow side (screen left, away from
+    // the warm clearing) takes a soft blue crescent on the face
+    // (inside the skin window under the fringe: cy headTop + 0.66 head, rx 0.39, ry 0.35 head, measured on v2)
+    const hh = a.chin - a.headTop, cy = a.headTop + 0.66 * hh, rx = 0.37 * hh, ry = 0.33 * hh;
+    const arc = (x0: number, a0: number, a1: number): Pt[] => Array.from({length: 13}, (_, i) => { const th = a0 + ((a1 - a0) * i) / 12; return [x0 + rx * Math.cos(th), cy + ry * Math.sin(th)] as Pt; });
+    washAt(q, 9955, '#7088d4', 55 * (shade ?? 1), [...arc(a.head[0], 0.58 * Math.PI, 1.3 * Math.PI), ...arc(a.head[0] + 0.12 * hh, 1.3 * Math.PI, 0.58 * Math.PI)], 0.15, 0.05);
+  }
+  return a;
+};
 export const paintLF04 = (p: Painter, frame: number) => {
   const c = orbit(T_TINY_SHADE, LF04_CAM, ease(frame, LF_FRAMES.LF04)), t = frame / FPS, out: {a?: FigAnchors | null} = {};
   // LF04 v2: CL02 moved clear of the tuft blade (x -1.14 -> -0.2 at frame 30, just on the lit side of the shade edge x -0.5, z -14.5 -> -13.0, gap centre -1.5 -> -0.4) and walking
@@ -154,23 +183,10 @@ export const paintLF04 = (p: Painter, frame: number) => {
   paintGarden(p, c, {t, mode: 'sun', drop: false, sun: [900, 330], shadeEdge: -0.5, gap: {x: -0.4, w: 1.2},
     items: [antItem(antAt, {view: 'left', walk: frame / 18, sway: 2 * Math.sin((frame / 18) * 2 * Math.PI), tint: {to: '#6f8aa0', u: 0.4}, noInk: true, t})],
     after: (q, cc) => {
-      // the shade: cool air over everything left of the shade edge (x < -0.5 sm); the clearing behind on the right stays warm
-      const e0 = camPoint(cc, [-0.5, 0, -30]), e1 = camPoint(cc, [-0.5, 0, -0.2]);
-      const a0: Pt = e0 ?? [300, 700], a1: Pt = e1 ?? [1100, 1200], k = (a1[0] - a0[0]) / Math.max(1, a1[1] - a0[1]);
-      const xb = a0[0] + k * (1980 - a0[1]);
-      // LF04 v4: the wedge's upright edge pulled 30 px left (a0 + 20 -> a0 - 10) so it no longer overlaps the CL02 leaf's left tip
-      washAt(q, 9950, '#5f7fa4', 150, [[-60, -60], [a0[0] - 10, -60], [a0[0] - 10, a0[1]], [xb + 20, 1980], [-60, 1980]], 0.35, 0.1);
-      // LF04 v5: the canopy is real world-space blades of the shade tuft leaning over the pocket (v4: a zigzag wash read as a pattern)
-      LF04_CANOPY.forEach((b) => paintBlade(q, cc, b, t));
-      const a = paintTiny(q, cc, {at: [T_TINY_SHADE[0], 0, T_TINY_SHADE[2]], view: 'front', pose: 'P42', face: 'worried', headCock: -4, t, fig: {wet: true}, tint: {to: '#4f6fb8', u: 0.27, mul: [0.95, 0.93, 0.97]}});
+      shadeSet(q, cc, t);
+      const a = coldTiny(q, cc, t, {view: 'front', pose: 'P42', face: 'worried', headCock: -4});
       out.a = a;
       if (a) {
-        // LF04 v3: skin stays a healthy cool peach (light filter, not a mix toward grey-blue); the shadow side (screen left, away from
-        // the warm clearing) takes a soft blue crescent on the face
-        // (inside the skin window under the fringe: cy headTop + 0.66 head, rx 0.39, ry 0.35 head, measured on v2)
-        const hh = a.chin - a.headTop, cy = a.headTop + 0.66 * hh, rx = 0.37 * hh, ry = 0.33 * hh;
-        const arc = (x0: number, a0: number, a1: number): Pt[] => Array.from({length: 13}, (_, i) => { const th = a0 + ((a1 - a0) * i) / 12; return [x0 + rx * Math.cos(th), cy + ry * Math.sin(th)] as Pt; });
-        washAt(q, 9955, '#7088d4', 55, [...arc(a.head[0], 0.58 * Math.PI, 1.3 * Math.PI), ...arc(a.head[0] + 0.12 * hh, 1.3 * Math.PI, 0.58 * Math.PI)], 0.15, 0.05);
         const u = camUnit(cc, [T_TINY_SHADE[0], 0, T_TINY_SHADE[2]]), dr = t * 0.3 * u * 0.4;
         // three puffs seeping from the head and shoulders, drifting left and up; one squeezing out between her arms
         paintPuff(q, a.head[0] - 0.38 * u - dr, a.headTop - 0.22 * u - dr * 0.6, 0.2 * u, 9960, t);

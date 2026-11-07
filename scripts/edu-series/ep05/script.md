@@ -7,7 +7,7 @@
 - Profile: educational ("what if" scale physics), painted 2D, 4-head cast, Thai Short 1080×1920 30 fps, ending **`A_fade`** (closed payoff; see [Truth and ending](#truth-and-ending)).
 - Voices: narrator NAR (project default Gemini TTS; voice not chosen here). TINY = the shrunk character: Gemini vocal sounds (V01–V08) plus one spoken line (L08).
 - Target 45–55 s narration (brief). **Timing: estimated** (N1): NAR ~49.5 s, TINY line ~2 s; video ~58 s with vocal sounds, one silence and the end hold (~55 s with the +5% narrator speed-up). Not read aloud or audio-tested.
-- Status: R1.1 for Boat recheck of the changed lines (L01 cue, L06, L07 kept, L10, L12, L14, L16). Not user-approved.
+- Status (2026-11-07): R1.3a user-approved; R1.4 L05/L15 wording candidates pending the user's ear pick and Boat wording recheck. Earlier: R1.1 for Boat recheck of the changed lines (L01 cue, L06, L07 kept, L10, L12, L14, L16). Not user-approved.
 
 ## Story core
 
@@ -50,7 +50,7 @@
 | V01 | TINY | [short high squeak of surprise] | TINY looks up at the grass forest. | dramatization |
 | L04 | NAR | ลมพัดวูบเดียว… ปลิวหลุดจากระเบียงชั้นสิบ | A breeze bends the blades; TINY is lifted off the planter edge and over the rail. | dramatization (sets up C01) |
 | V02 | TINY | [falling yelp, fading, under L05] | TINY tumbles, then drifts, arms out, slow against the building face. | dramatization; overlaps L05 |
-| L05 | NAR | แรงโน้มถ่วงเท่าเดิม… แต่ตัวยิ่งเล็ก อากาศยิ่งต้านเก่ง เมื่อเทียบกับน้ำหนัก | Drift continues; soft air streaks around the tiny body (no speed lines that read as fast). | C03 `verified-physics`; refrain 1 "ตัวยิ่งเล็ก" |
+| L05 | NAR | แรงโน้มถ่วงเท่าเดิมนะ… แต่ตัวยิ่งเล็ก อากาศยิ่งต้านดี พอเทียบกับน้ำหนักตัว | Drift continues; soft air streaks around the tiny body (no speed lines that read as fast). | C03 `verified-physics`; refrain 1 "ตัวยิ่งเล็ก". R1.4 candidate A, pending the user's ear pick ([R1.4 candidates](#r14-candidates-l05-l15)); approved R1.3a text: "แรงโน้มถ่วงเท่าเดิม… แต่ตัวยิ่งเล็ก อากาศยิ่งต้านเก่ง เมื่อเทียบกับน้ำหนัก" |
 | L06 | NAR | ตกสิบชั้น… ถึงพื้นก็แค่ราว ๆ กระโดดลงจากเก้าอี้ | TINY lands in garden grass with a small bounce, sits up, pats themself. | C01 `hedge` + `calc` (~0.45 m drop = chair seat); "ราว ๆ" (R1.1, fact-check N4d) |
 | V03 | TINY | [puzzled little "huh?" then a relieved giggle] | TINY checks arms and legs, unhurt. | dramatization |
 | L07 | NAR | แต่ข้างล่าง… มีหยดน้ำค้างรออยู่ | A dew drop on a blade, about TINY's size, glowing in low morning backlight. TINY reaches out. | C07 `hedge`: drop drawn about a body length; larger = exaggeration. Dew fits the early-morning setting (SRC009; R1.1) |
@@ -65,7 +65,7 @@
 | V06 | TINY | [effortful grunt, then a defeated sigh] | TINY slumps against the crumb. | dramatization |
 | — | — | (no line, ~0.8 s) | Hold: footsteps; an ant enters frame, carrying a load several times its size, walks past TINY easily. | silence for the reveal |
 | L14 | NAR | มดบางชนิดแบกของหนักได้หลายเท่าของตัว | TINY watches the ant pass, mouth open. | C12 `hedge` ("บางชนิด", "หลายเท่า"; SRC008 ~8x); no 5,000x (C13) (R1.1) |
-| L15 | NAR | ไม่ใช่เพราะกล้ามมันเก่ง… แต่ตัวเล็กลง… น้ำหนักลดเยอะกว่าแรงที่ลดลง เลยมีแรงเหลือใช้ | Simple painted overlay: two bars beside the ant, "แรง" shrinking slowly, "น้ำหนัก" shrinking fast (labelled illustration, no numbers). | C14 `verified-physics`; refrain 3. Not "muscle is stronger" |
+| L15 | NAR | ไม่ใช่เพราะกล้ามมันเยอะหรอก… แต่พอตัวเล็กลง… น้ำหนักลดไปมากกว่าแรง… แรงก็เลยเหลือ ๆ | Simple painted overlay: two bars beside the ant, "แรง" shrinking slowly, "น้ำหนัก" shrinking fast (labelled illustration, no numbers). | C14 `verified-physics`; refrain 3 "ตัวเล็กลง". Not "muscle is stronger". R1.4 candidate A, pending the user's ear pick ([R1.4 candidates](#r14-candidates-l05-l15)); approved R1.3a text: "ไม่ใช่เพราะกล้ามมันเก่ง… แต่ตัวเล็กลง… น้ำหนักลดเยอะกว่าแรงที่ลดลง เลยมีแรงเหลือใช้" |
 | V07 | TINY | [sharp gasp of realisation] | TINY looks from the ant to the crumb, grips it, and lifts it overhead with ease. | dramatization of C15 direction |
 | L16 | NAR | แล้วคุณล่ะ… ตัวเล็กขนาดนี้ก็ได้เปรียบเรื่องแรงเมื่อเทียบกับน้ำหนักตัวด้วย | TINY holds the crumb high, grinning. | C14/C15: direction only (strength relative to body weight), no multiple, not "as strong as an ant" (R1.1, fact-check N4a) |
 | L17 | NAR | โลกใบเดียวกันแท้ ๆ… แค่ขนาดตัวเปลี่ยน เกมก็เปลี่ยนทั้งเกม | Wide: TINY with the crumb overhead beside the ant, warm low morning light through the grass forest. | frame: takeaway (C03/C08/C14 summary; gravity unchanged); closing |
@@ -132,6 +132,30 @@ No `needs-research` claims in R1.1.
 
 ## Revision log
 
+<a id="r14-candidates-l05-l15"></a>
+### R1.4 candidates (L05, L15)
+
+User request 2026-11-07 (answers confirmed): (1) L05 "อากาศยิ่งต้านเก่ง" -> "อากาศยิ่งต้านดี" (no doubled ยิ่ง); (2) L15 "กล้ามมันเก่ง" -> "กล้ามมันเยอะ"; (3) make only L05 and L15 sound like a friend telling the story. Both user words appear verbatim in every candidate. Claims, refrains ("ตัวยิ่งเล็ก" L05; "ตัวเล็กลง" L15, refrain 3) and the L15 caption split (L15a ends after "ตัวเล็กลง…") are unchanged. The user picks A or B by ear; Editor then updates `shots.ts` captions, narration and timings. Preaw did not touch `shots.ts`, audio or timings.
+
+Syllable counts are Preaw's own count (estimate, not audio-tested). Caption length = visible glyphs (Thai combining marks not counted).
+
+| Line | Cand. | Thai (TTS text) | Syll. (R1.3a with user words) | Caption lines | Why |
+| --- | --- | --- | --- | --- | --- |
+| L05 | **A (recommended)** | แรงโน้มถ่วงเท่าเดิมนะ… แต่ตัวยิ่งเล็ก อากาศยิ่งต้านดี พอเทียบกับน้ำหนักตัว | 21 (19; +11%) | card a: `แรงโน้มถ่วงเท่าเดิมนะ…` (18) / card b: `แต่ตัวยิ่งเล็ก อากาศยิ่งต้านดี` (21) + `พอเทียบกับน้ำหนักตัว` (15) | "นะ" is the friend's nudge; "พอเทียบกับ…ตัว" replaces the textbook "เมื่อเทียบกับ". Keeps "เท่าเดิม" word for word, so the gravity half is the exact R1.3a claim. |
+| L05 | B | แรงโน้มถ่วงไม่เปลี่ยนเลย… แต่ตัวยิ่งเล็ก อากาศยิ่งต้านดี ถ้าเทียบกับน้ำหนักนะ | 21 (19; +11%) | card a: `แรงโน้มถ่วงไม่เปลี่ยนเลย…` (20) / card b: `แต่ตัวยิ่งเล็ก อากาศยิ่งต้านดี` (21) + `ถ้าเทียบกับน้ำหนักนะ` (15) | Punchier denial up front ("ไม่เปลี่ยนเลย"); the particle moves to the end. |
+| L15 | **A (recommended)** | ไม่ใช่เพราะกล้ามมันเยอะหรอก… แต่พอตัวเล็กลง… น้ำหนักลดไปมากกว่าแรง… แรงก็เลยเหลือ ๆ | 24 (24; 0%) | L15a: `ไม่ใช่เพราะกล้ามมันเยอะหรอก…` (24) + `แต่พอตัวเล็กลง…` (12) / L15b: `น้ำหนักลดไปมากกว่าแรง…` (19) + `แรงก็เลยเหลือ ๆ` (13) | Removes the second "เยอะ" (the user's "กล้ามมันเยอะ" would otherwise echo "ลดเยอะกว่า") and the stiff "แรงที่ลดลง". Same comparison structure Boat passed ("น้ำหนักลด…กว่าแรง"), so the claim is unchanged. |
+| L15 | B | ไม่ใช่เพราะกล้ามมันเยอะนะ… แต่ตัวเล็กลง… น้ำหนักลดฮวบ ๆ แรงลดน้อยกว่า… เลยมีแรงเหลือใช้ | 25 (24; +4%) | L15a: `ไม่ใช่เพราะกล้ามมันเยอะนะ…` (22) + `แต่ตัวเล็กลง…` (10) / L15b: `น้ำหนักลดฮวบ ๆ แรงลดน้อยกว่า…` (25) + `เลยมีแรงเหลือใช้` (13) | Two short clauses that match the two bars (น้ำหนัก drops fast, แรง drops less); keeps the user-approved ending "เลยมีแรงเหลือใช้". |
+
+Caption notes for Editor: L05 is three phrases (~54 glyphs), which do not fit 2 lines of ~20 glyphs; the R1.3a caption already carries a 38-glyph second line. Recommended: split L05 into two cards at the "…" breath (card a / card b above). If Editor keeps one card, break after "…" as now. L15 keeps the existing L15a/L15b cue split.
+
+Timing (estimate): at the EP04 rate (~0.228 s/syllable) L05 A/B add ~0.4 s to the placed read (G347–459, 3.73 s); L15 A ~0, B ~+0.2 s on G1425–1589. Inside the Drift (S01-B02-SH02, 329–461) and bars (S01-B05-SH02, 1421–1594) shots only if Editor trims or re-gaps; the UB-1/UB-2 split points do not move in the text. To be measured on the new take.
+
+Fact-check impact: claims C03 and C14 unchanged; Boat rechecks wording only (risk notes below), no new sources.
+- L05: "ต้านดี" says the same as "ต้านเก่ง" (drag relative to weight); "เทียบกับน้ำหนักตัว" keeps the comparison, so it still does not say gravity weakens or the body is "light". B's "ไม่เปลี่ยนเลย" = "เท่าเดิม".
+- L15 risk (from the user's word, flagged for Boat): "ไม่ใช่เพราะกล้ามมันเยอะ" denies *more muscle*, while C14 denies *stronger muscle*. Research checks per-area strength, not ant muscle mass fraction. Boat to confirm the denial is fair or suggest a hedge; the spoken logic (size, not muscle) stands either way.
+- L15 A "แรงก็เลยเหลือ ๆ" = strength to spare relative to weight, not more absolute strength (same as "แรงเหลือใช้"); B "ลดฮวบ ๆ" and "แรงลดน้อยกว่า" are proportional statements (L³ vs L²), no number. Avoided "แรงลดนิดเดียว" (false: absolute strength falls a lot).
+
+- R1.4 (2026-11-07, user wording + Preaw): L05 "ต้านเก่ง" -> "ต้านดี"; L15 "กล้ามมันเก่ง" -> "กล้ามมันเยอะ"; both lines rewritten as spoken Thai in two candidates (A recommended, in the script table; B alternative) in [R1.4 candidates](#r14-candidates-l05-l15). Claims C03/C14, refrains and the L15 caption split unchanged. Pending the user's ear pick, then Editor (captions, narration, timing) and Boat wording recheck of L05/L15. Numbered R1.4 because R1.3/R1.3a already name the L12 change.
 - R1.3a (2026-11-06, Boat recheck): last clause changed to "ความร้อนหนีออกเร็วขึ้นมาก" so the line compares against normal size instead of claiming tiny things are always cold. Keep the background ant out of the shivering (cold-blooded).
 - R1.3 (2026-11-06, user wording): L12 rewritten to "ยิ่งตัวเล็ก ยิ่งเหมือนเปลือยกลางลม… ความร้อนหนีออกเร็วขึ้นมาก" (user pick F). Visual is a comedy gag (warmth puff leaking out of the outline). Same claim C08; the idiom is a feeling, not a number. The L05/L12 refrain wording "ตัวยิ่งเล็ก…" is now "ยิ่งตัวเล็ก…". Boat to recheck L12 with L15.
 - R1.2 (2026-11-06, user wording): L15 rewritten to "ไม่ใช่เพราะกล้ามมันเก่ง… แต่ตัวเล็กลง… น้ำหนักลดเยอะกว่าแรงที่ลดลง เลยมีแรงเหลือใช้" because "น้ำหนักยิ่งหายเร็วกว่าแรง" was unclear to the user. Same claim C14 (`verified-physics`, strength ~ L², weight ~ L³); the refrain "ตัวยิ่งเล็ก…" is now only L05 and L12. Boat to recheck L15 (one line).
@@ -140,5 +164,6 @@ No `needs-research` claims in R1.1.
 | --- | --- | --- | --- | --- |
 | R1 | 2026-11-06 | Preaw | First draft. | W1.2 |
 | R1.1 | 2026-11-06 | Preaw | L06 "ก้าวลงบันไดขั้นเดียว" -> "ราว ๆ กระโดดลงจากเก้าอี้"; L10 drops "ราว ๆ ยี่สิบเท่า" for "ได้หลายเท่า"; L12 "เร็วมาก" -> "เร็วขึ้นมาก"; L14 "หลายสิบเท่า" -> "ได้หลายเท่า"; L16 names the advantage as strength vs body weight; B01/L01 setting moved from warm afternoon to early morning, L07 keeps "น้ำค้าง" (coordinator decision, matches the backlit-dew look); L07/L17 cues, B01/B04 sound notes, CL01 payoff, claim table, Truth and ending, N1 timing updated. L17 optional tweak not taken (N7). Lines, IDs, beats, reveal and `A_fade` unchanged. | Boat fact-check W1.3 (revision-required, minor): 0.45 m is a chair, not one step; 20x needs whole-body wetting; ant study ~8x, not tens; "แบบนั้น" read as "as strong as an ant"; dew is a morning phenomenon (SRC008, SRC009). |
+| R1.4 | 2026-11-07 | Preaw | L05 and L15 spoken-Thai candidates A/B with the user's words "ต้านดี" and "กล้ามมันเยอะ"; table shows A. | User request 2026-11-07 (natural speech, no doubled ยิ่ง, "เยอะ" instead of "เก่ง"). |
 
 **Boat recheck (affected lines):** L01 cue (setting), L06, L07 (kept with morning setting), L10, L12, L14, L16; L17 unchanged. Clues CL01/CL02 and the reveal unchanged; beats B01 (setting), B02, B03, B04, B05 touched by wording only.
