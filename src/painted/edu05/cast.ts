@@ -42,12 +42,15 @@ export type TinyOpts = {
   held?: (p: Painter, a: FigAnchors, u: number) => void;
   /** Soft contact shadow under the feet (default true); false also sets the kit figure's own `noShadow` (R1.3 FR13, airborne). */
   shadow?: boolean;
+  /** Shrink-pop (N7): the whole card (feet point, unit, shadow, props) scaled by `s` about the picture point `about`. */
+  scale?: {about: Pt; s: number};
 };
 
 /** TINY through the yaw camera: flat card at the ground point, view held square to `cam` (painted 3D camera). */
 export const paintTiny = (p: Painter, c: YCam, o: TinyOpts): FigAnchors | null => {
-  const g = camPoint(c, o.at), u = camUnit(c, o.at);
-  if (!g) return null;
+  const g0 = camPoint(c, o.at), u0 = camUnit(c, o.at);
+  if (!g0) return null;
+  const sc = o.scale, g: Pt = sc ? [sc.about[0] + (g0[0] - sc.about[0]) * sc.s, sc.about[1] + (g0[1] - sc.about[1]) * sc.s] : g0, u = sc ? u0 * sc.s : u0;
   const facing = squareToCam(c, o.at, o.view);
   const a = viewAngle(c, o.at, facing), view: FigPose['view'] = Math.abs(a) <= 45 ? 'front' : Math.abs(a) >= 135 ? 'back' : a > 0 ? 'right' : 'left';
   if (o.shadow !== false) washAt(p, 5101, '#3b3226', 60, ell(g[0], g[1], 0.32 * u, 0.06 * u, 16), 0.15, 0.2);
@@ -70,7 +73,7 @@ export const tinyItem = (o: TinyOpts, out?: {a?: FigAnchors | null}): Item => ({
  * metre. Returns the rim centre (for the steam).
  */
 const MUG = '#e8795a';
-export const paintMug = (p: Painter, hand: Pt, u: number, o: {handle: 1 | -1; from: 1 | -1; skin: string}): Pt => {
+export const paintMug = (p: Painter, hand: Pt, u: number, o: {handle: 1 | -1; from: 1 | -1; skin: string; bare?: boolean}): Pt => {
   const w = 0.09 * u, h = 0.10 * u, ry = w * 0.2, cx = hand[0] - o.from * 0.24 * w, cy = hand[1] - 0.14 * h;
   const top = cy - h / 2, bot = cy + h / 2, L = cx - w / 2, R = cx + w / 2, taper = w * 0.04;
   const arc = (x0: number, y0: number, rx: number, ryy: number, a0: number, a1: number, n = 10): Pt[] =>
@@ -91,6 +94,7 @@ export const paintMug = (p: Painter, hand: Pt, u: number, o: {handle: 1 | -1; fr
   solid(p, 6103, mixColor(MUG, '#ffffff', 0.35), ell(cx, top, w / 2, ry, 18), 2);
   solid(p, 6107, '#4a2c1e', ell(cx, top + ry * 0.12, w / 2 - w * 0.07, ry - w * 0.06, 16), 2);
   inkLine(p, 6108, ell(cx, top, w / 2, ry, 18), {weight: 0.7, color: mixColor(MUG, INK, 0.55)});
+  if (o.bare) return [cx, top]; // set down on the rail cap, no hand (S01-B01-SH03)
   // mitten wrapped round the lower body: back of the hand outside the near edge, the finger band across the front, thumb over the top
   const sk = o.skin, skInk = mixColor(sk, '#7a4a30', 0.55), f = o.from;
   // v3 (user note 2026-11-06 "the palm round the mug looks a little small"): mitten ~26% wider, ~20% taller, the fingers wrap to near

@@ -4,7 +4,10 @@ import type {Painter, Pt} from '../kit/painter';
 import type {V3} from '../kit/space';
 import {camOf, MACRO_CAMS} from './cams';
 import {edgeShade, paintGarden, paintPlanter, planterBlades, shadeEdgeAt} from './garden';
-import {paintTiny, tinyItem} from './cast';
+import {paintMug, paintTiny, tinyItem} from './cast';
+import {paintBalcony, steam} from './balcony';
+import {poseFor} from '../kit/poses';
+import {sweep} from './garden';
 import {blendFig, braceClamp, namedPose, NAMED_POSES, paintClamp, VIEW_OF} from './poses';
 import {TINY} from './cast';
 import {paintPuff} from './scenes';
@@ -21,7 +24,7 @@ import type {Item} from './world';
 //   printf 'EDU5-CHK-EDGE 45 out/edu05/w52/g1/EDGE45.png\n' | node scripts/stills.mjs src/painted/edu05/check-index.ts
 // They show an element in its shot's camera and staging, not a finished shot (Editor assembles those).
 
-export const CHECK_FRAMES = {EDGE: 90, DROP2: 87, DROP3: 119, DROP4: 133, ANTW: 25, FX: 80, FAC: 97, SPECK: 32, DRIFT: 133, POSES: 210, CRUMB: 90, PUFF: 150, LIFT: 173, LIFTOFF: 89, LANDING: 93} as const;
+export const CHECK_FRAMES = {EDGE: 90, DROP2: 87, DROP3: 119, DROP4: 133, ANTW: 25, FX: 80, FAC: 97, SPECK: 32, DRIFT: 133, POSES: 210, CRUMB: 90, PUFF: 150, LIFT: 173, LIFTOFF: 89, LANDING: 93, SIP: 41, TOUCH: 71, STAND: 32} as const;
 const FPS = 30;
 
 /** G1: N2 shade edge sliding -0.5 -> -1.2 (S01-B05-SH01 L 0-89) with the shot camera, TINY cooled by `edgeShade` (K1), a gust (N1). */
@@ -333,4 +336,100 @@ export const paintLANDING = (p: Painter, frame: number) => {
     MEASURE.LANDING = paintTiny(q, cc, {at, view: 'front', named: {name: L < 22 ? 'drift-spread' : 'sit-up-check', L: L < 22 ? L : pats}, face, faceState: {look}, headCock: tilt, t, shadow: y <= 1e-4, fig: {...body, rArm: arms.rArm, lArm: arms.lArm}});
   }};
   paintGarden(p, c, {t, mode: 'sun', drop: false, sun: [180, 300], items: [lead], tips: {n: 7, h: [0.08, 0.2]}, tipsAt: camOf(MACRO_CAMS['S01-B02-SH04'], 0)});
+};
+
+// ---- B01 stand-ins for the three shots that had only look frames or specs (SHEETS-R1.8, Boss): S01-B01-SH01 (sip), SH03 (touch and pop), SH04 (stand up).
+/** G17: S01-B01-SH01 stand-in (LF01 v3 set-up, SD01 camera, SET-BALCONY). Shot-local L (0-40): the mug rises L 8-16, at the lips L 16-26, back under the chin L 26-34. */
+export const paintSIP = (p: Painter, frame: number) => {
+  const L = frame, c = camOf(MACRO_CAMS['S01-B01-SH01'], L / 40), t = L / FPS, gp: V3 = [-0.4, 0, 0.2], out: {a?: FigAnchors | null} = {};
+  const g = camPoint(c, gp), uu = camUnit(c, gp);
+  if (!g) return;
+  const at = (x: number, y: number): Pt => [g[0] + x * uu, g[1] - y * uu];
+  const up = smooth01(keyed([[0, 0], [8, 0], [16, 1], [26, 1], [34, 0]], L));
+  const dy = 0.06 * up;
+  const held = (q: Painter, a: FigAnchors, u: number) => { const rim = paintMug(q, a.rHand, u, {handle: 1, from: -1, skin: TINY.head.skin}); steam(q, rim, u, t); };
+  paintBalcony(p, c, {t, cast: [tinyItem({at: gp, view: 'front', pose: 'P19', face: 'sleepy', headCock: 4, t, held,
+    fig: {rArm: {to: at(-0.01, 1.015 + dy), via: at(-0.14 - 0.01 * up, 0.79 + dy * 1.4)}}}, out)]});
+  MEASURE.SIP = out.a ?? null;
+};
+
+/** The touch point of S01-B01-SH03 (grass blades on the planter's outer edge) and the mug's resting spot on the rail cap, world metres. */
+const TOUCH_W: V3 = [0.15, 1.30, -0.05], MUG_W: V3 = [-0.25, 1.10, 0.0];
+/**
+ * G18: S01-B01-SH03 stand-in (touch and pop, VD05; SD03 camera). Shot-local L (0-70):
+ *  - L 2-8 she carries the mug to the rail cap and lets go (the hand opens at L 8; the mug stays on the cap, bare), arm then drops L 8-16.
+ *  - L 4-13 she turns front -> right through the kit's front three-quarter (15 -> 60 deg, one hard swap to the profile at L 13, no dissolve) while
+ *    she steps (-0.40 -> -0.20, walk L 4-18); L 18-50 the near arm reaches to the blades (the rig's near arm in the right profile is the character's
+ *    right; the sheet says left hand: that arm would be the far one, behind her body), hand on the grass from L 50 to the touch at L 53.
+ *  - L 55-63 the shrink (`shrinkScale` about the touch point), L 59-71 puff ring + sparkles peaking on the cut.
+ */
+export const paintTOUCH = (p: Painter, frame: number) => {
+  const L = frame, c = camOf(MACRO_CAMS['S01-B01-SH03'], L / 70), t = L / FPS, out: {a?: FigAnchors | null} = {};
+  const ramp = (a: number, b: number) => smooth01((L - a) / (b - a));
+  const step = ramp(4, 18), at: V3 = [-0.4 + 0.2 * step, 0, 0.2 + 0.02 * step];
+  const g = camPoint(c, at), u = camUnit(c, at), tp = camPoint(c, TOUCH_W), mp = camPoint(c, MUG_W), mu = camUnit(c, MUG_W);
+  if (!g || !tp || !mp) return;
+  const sh = (x: number, y: number): Pt => [g[0] + x * u, g[1] - y * u];
+  const profile = L >= 13, qDeg = keyed([[4, 15], [8, 38], [12, 60]], L);
+  const view = profile ? 'right' : 'front';
+  const mw = 0.09 * mu, mh = 0.10 * mu; // mug on the cap: hand point that puts the mug base on the cap
+  const capHand: Pt = [mp[0] - 0.24 * mw, mp[1] - 0.36 * mh];
+  const hold = L < 8;
+  // arms: cradle -> cap (L 2-8), then hang, then reach
+  const cradle = { to: sh(-0.01, 1.015), via: sh(-0.14, 0.79) };
+  const carry = ramp(2, 8);
+  // the rig draws its own hang when no arm is given; an explicit one is needed to blend from the cap and into the reach (figure metres from the feet point)
+  const hang: Arm = profile ? {to: sh(0.03, 0.8), via: sh(0.01, 1.04)} : {to: sh(-0.13, 0.8), via: sh(-0.14, 1.04)};
+  const reachPose: Partial<FigPose> = {rArm: {to: tp, out: -1}};
+  const reach = ramp(18, 50);
+  let rArm: Arm | undefined;
+  if (L < 8) rArm = {...cradle, to: [cradle.to[0] + (capHand[0] - cradle.to[0]) * carry, cradle.to[1] + (capHand[1] - cradle.to[1]) * carry], via: [cradle.via[0] + (capHand[0] - 0.05 - cradle.via[0]) * carry, cradle.via[1] + (capHand[1] + 0.12 * u - cradle.via[1]) * carry]};
+  else if (L < 18) { const w = ramp(8, 16); const rest = hang; rArm = {...rest, to: [capHand[0] + (rest.to[0] - capHand[0]) * w, capHand[1] + (rest.to[1] - capHand[1]) * w], via: rest.via ? [capHand[0] - 0.05 + (rest.via[0] - capHand[0] + 0.05) * w, capHand[1] + (rest.via[1] - capHand[1]) * w] : undefined}; }
+  else rArm = blendFig({rArm: hang}, reachPose, reach).rArm;
+  const walk = L >= 4 && L < 19 ? ((L - 4) / 15) * 0.75 : undefined, stride = walk === undefined ? undefined : 0.7 * (1 - ramp(14, 19));
+  const faceId = L < 53 ? 'neutral' : 'surprised';
+  const faceState = L < 53 ? {look: [0.7 * ramp(10, 22) + 0.1, -0.2 * ramp(10, 22)] as [number, number]} : {look: [0.6, -0.3] as [number, number]};
+  const s = shrinkScale(L);
+  const fig: Partial<FigPose> = {rArm, ...(walk !== undefined ? {walk, stride} : {}), ...(!profile && L >= 4 ? {quarter: 'right' as const, quarterDeg: qDeg} : {}), ...(profile ? {lean: 0.1 * reach} : {})};
+  const lead: Item = {at, draw: (q, cc) => {
+    if (s < 0.01) return;
+    MEASURE.TOUCH = paintTiny(q, cc, {at, view, pose: 'P01', face: faceId, faceState, t, fig, scale: s < 1 ? {about: tp, s} : undefined,
+      held: hold ? (qq, a, uu) => { paintMug(qq, a.rHand, uu, {handle: 1, from: -1, skin: TINY.head.skin}); } : undefined});
+  }};
+  const mug: Item = {at: MUG_W, bias: -0.05, draw: (q, cc) => {
+    if (hold) return;
+    const m = camPoint(cc, MUG_W), k = camUnit(cc, MUG_W);
+    if (m) paintMug(q, [m[0] - 0.24 * 0.09 * k, m[1] - 0.36 * 0.10 * k], k, {handle: 1, from: -1, skin: TINY.head.skin, bare: true});
+  }};
+  paintBalcony(p, c, {t, cast: [lead, mug]});
+  paintShrinkPop(p, tp, L, 150);
+  MEASURE.TOUCH_POP = {head: tp, headTop: tp[1], chin: tp[1], feet: tp, rHand: tp, lHand: tp, rShoulder: tp, lShoulder: tp, rUpper: tp, lUpper: tp, top: tp[1], bottom: tp[1]};
+};
+
+/**
+ * G19: S01-B01-SH04 stand-in (macro planter looking up, LF02 / SD04; V01 voiced L 10-23). Shot-local L (0-31): the pop's puff fades round her L 0-10 (world point
+ * fixed to the frame-0 camera); she sits (P33) L 0-8, sit -> squat L 8-11, stands L 11-16 (hands P33 -> P12 at the mouth), the head tilts back and the eyes go up
+ * L 10-14. Crane eye 0.6 -> 1.05, pitch 0 -> 8.75 (ease L 6-31). Foreground tips are rooted at the frame-0 camera (`tipsAt`).
+ */
+export const paintSTAND = (p: Painter, frame: number) => {
+  const L = frame, c = camOf(MACRO_CAMS['S01-B01-SH04'], L / 31), c0 = camOf(MACRO_CAMS['S01-B01-SH04'], 0), t = L / FPS + 40, at: V3 = [0, 0, 0];
+  const g = camPoint(c, at), u = camUnit(c, at);
+  if (!g) return;
+  const ramp = (a: number, b: number) => smooth01((L - a) / (b - a));
+  const hip0 = legScale(TINY) * 0.672 + 0.038, aStar = easeInv((0.282 * (TINY.height / 1.7)) / (hip0 - 0.075));
+  const bb = ramp(8, 11), seated = L < 11, crouch = seated ? 0.6 * bb : 0.6 * (1 - ramp(11, 16));
+  const body: Partial<FigPose> = {crouch, ...(seated ? {floorSit: 1 - (1 - aStar) * bb} : {})};
+  const a = poseFor('P33', TINY, g, u, 'front'), b = poseFor('P12', TINY, g, u, 'front');
+  const arms = blendFig(a, b, ramp(8, 16));
+  const up = ramp(10, 14), look: [number, number] = [0.15 * up, -0.9 * up];
+  const lead: Item = {at, draw: (q, cc) => {
+    MEASURE.STAND = paintTiny(q, cc, {at, view: 'front', pose: seated ? 'P33' : 'P12', face: L < 10 ? 'surprised' : 'shock', faceState: {look}, headCock: -3 * up, t, fig: {...body, rArm: arms.rArm, lArm: arms.lArm}});
+  }};
+  paintPlanter(p, c, {t, items: [lead], fore: [sweep([-1.0, 0, 1.75], [0.5, -1], 4, 26, 9911, 0.8, 22, '#2f4a22'), sweep([1.05, 0, 1.6], [-0.4, -1], 6, 20, 9912, 0.9, 24, '#2f4a22')], tipsAt: c0});
+  const g0 = camPoint(c0, at), u0 = camUnit(c0, at);
+  if (g0) {
+    // the puff centre: the world point that projects to (540, 762) in the frame-0 camera (sheet: SH03 pop (554, 732) -> SH04 L0 (540, 762))
+    const wy = (g0[1] - 762) / u0, pc = camPoint(c, [0, wy, 0]), pu = camUnit(c, at);
+    if (pc) paintShrinkPop(p, [pc[0] + (540 - g0[0]) * 0 , pc[1]], 71, 150 * (pu / u0), 11000, 1 - ramp(0, 10));
+  }
 };

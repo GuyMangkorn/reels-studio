@@ -18,7 +18,12 @@ const c = (at: V3 | [V3, V3], yaw: [number, number], r: [number, number] | numbe
 export const MACRO_CAMS: Record<string, CamMove> = {
   // R1.4 FR16: exterior look-down on the facade (pos (-1.73, 2.00, -6.28)), a slow 3 deg tilt down, ease in-out L 0-96
   'S01-B01-SH02': c([-0.05, 0, 0], [195, 195], 6.5, 2.0, {pitch: [-50, -53], f: 950, hy: 600, ease: [0, 1]}),
-  'S01-B01-SH04': c([0, 1.0, 0], [0, 2], 2.6, [0.6, 1.05], {pitch: [0, 8.75], f: 1000, hy: 820}),
+  // SD01: LF01 v3 set-up, a slow push-in over the 41 f shot
+  'S01-B01-SH01': c([-0.4, 1.4, 0.2], [-24, -18], [2.0, 1.85], 1.45, {f: 1050, hy: 600}),
+  // SD03: target (0.05, 1.25, 0.05), `cx -60` lands the pop point on SH04's puff centre
+  'S01-B01-SH03': c([0.05, 1.25, 0.05], [4, 10], [1.8, 1.65], 1.35, {f: 1100, hy: 700, cx: -60}),
+  // SD04: crane, ease L 6-31 (the sheet's "ease-in L 6-32"; the move is a smoothstep from L 6)
+  'S01-B01-SH04': c([0, 1.0, 0], [0, 2], 2.6, [0.6, 1.05], {pitch: [0, 8.75], f: 1000, hy: 820, ease: [6 / 31, 1]}),
   // SD05 (SHEETS-R1): lift-off over the balcony lip, she stays in frame from the lip to clear air (the camera does not follow her up fully)
   'S01-B02-SH01': c([-0.6, 1.5, -7.0], [-35, -25], [3.8, 3.4], 0.8, {pitch: [10, 12], f: 1000, hy: 760}),
   'S01-B02-SH04': c([0, 0.7, 0], [15, 5], [2.2, 1.9], 0.7, {f: 1050, hy: 820}),

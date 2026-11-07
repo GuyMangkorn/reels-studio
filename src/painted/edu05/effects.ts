@@ -22,12 +22,14 @@ export const shrinkAbout = (q: Pt, c: Pt, local: number): Pt => { const s = shri
 /** Puff ring progress 0..1 (1 = the peak on the cut). */
 export const popPeak = (local: number) => smooth(POP.ring[0], POP.ring[1], local);
 /** Puff ring + sparkle ticks centred on `c` (px), `r` px at the peak. */
-export const paintShrinkPop = (p: Painter, c: Pt, local: number, r = 150, seed = 11000) => {
+export const paintShrinkPop = (p: Painter, c: Pt, local: number, r = 150, seed = 11000, fade = 1) => {
   const k = popPeak(local);
-  if (k <= 0) return;
+  if (k <= 0 || fade <= 0.02) return;
+  if (fade < 1) p = p.layer(fade, seed); // S01-B01-SH04 L 0-10: the puff fades round her (painter layer, seeds kept)
   const rr = r * (0.25 + 0.75 * ease(k)), a = 0.6 + 0.4 * k;
   washAt(p, seed, '#fff1cf', 150 * a, ell(c[0], c[1], rr * 1.15, rr * 1.15, 28), 0.3, 0.1);
-  const ring = [...ell(c[0], c[1], rr, rr, 32), ...ell(c[0], c[1], rr * 0.72, rr * 0.72, 32).reverse()];
+  const o = ell(c[0], c[1], rr, rr, 32), i = ell(c[0], c[1], rr * 0.72, rr * 0.72, 32).reverse();
+  const ring = [...o, o[0], ...i, i[0]]; // closed seam: the open donut polygon left a C-shaped gap
   washAt(p, seed + 1, '#ffffff', 200 * a, ring, 0.15, 0.05);
   for (let i = 0; i < 7; i++) {
     const th = (i / 7) * 2 * Math.PI + hash(seed + i) * 0.6, d = rr * (1.05 + 0.35 * hash(seed + 20 + i)) * (0.6 + 0.4 * k), len = r * 0.07 * (0.6 + hash(seed + 40 + i));
