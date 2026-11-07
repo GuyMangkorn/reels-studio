@@ -78,17 +78,21 @@ const tear = (poly: Pt[], seed: number, amt: number, sub = 3): Pt[] => {
   return out;
 };
 /** Paints the crumb at ground point `at`, lifted by `lift` sm. `bites` 0..2 (first bite mark from L 22 of S01-B04-SH03). Silhouette box, grips and
- * cut-face box are fixed by CRUMB; torn edges, cracks, flour, pores and loose crumbs are seeded (13000-13999), never random. */
-export const paintCrumb = (p: Painter, c: YCam, at: V3, o: {lift?: number; bites?: number; shade?: number} = {}) => {
+ * cut-face box are fixed by CRUMB; torn edges, cracks, flour, pores and loose crumbs are seeded (13000-13999), never random.
+ * `shadow` 0..1 (default 1) scales the contact shadow painted under the base (FR19: the lift fades it out as the crumb leaves the ground,
+ * so no shadow hangs in the air across her face). */
+export const paintCrumb = (p: Painter, c: YCam, at: V3, o: {lift?: number; bites?: number; shade?: number; shadow?: number} = {}) => {
   const gr = crumbGrips(c, at, o.lift ?? 0);
   if (!gr) return;
   const {centre, u} = gr, w = CRUMB.w * u, h = CRUMB.h * u, sh = o.shade ?? 0, col = (x: string) => mixColor(x, '#5f7fa4', sh);
   const L = (pts: Pt[]): Pt[] => pts.map(([x, y]): Pt => [centre[0] + x * w, centre[1] + y * h]); // local units (x,y in -0.5..0.5, y down) to picture px
   const lifted = (o.lift ?? 0) > 0.001;
   // contact shadow: wide soft pool, tighter dark core under the loaf, thinner when lifted
-  const sA = lifted ? 0.5 : 1;
-  washAt(p, 13000, '#3b2a1c', 55 * sA, ell(centre[0] + w * 0.04, centre[1] + h * 0.53, w * 0.72, h * 0.12, 20), 0.35, 0.3);
-  washAt(p, 13010, '#2c1e14', 110 * sA, ell(centre[0] + w * 0.02, centre[1] + h * 0.5, w * 0.54, h * 0.065, 18), 0.2, 0.25);
+  const sA = (lifted ? 0.5 : 1) * Math.max(0, Math.min(1, o.shadow ?? 1));
+  if (sA > 0) {
+    washAt(p, 13000, '#3b2a1c', 55 * sA, ell(centre[0] + w * 0.04, centre[1] + h * 0.53, w * 0.72, h * 0.12, 20), 0.35, 0.3);
+    washAt(p, 13010, '#2c1e14', 110 * sA, ell(centre[0] + w * 0.02, centre[1] + h * 0.5, w * 0.54, h * 0.065, 18), 0.2, 0.25);
+  }
   // loose crumbs at the base (skipped when lifted: they stay on the ground)
   if (!lifted) for (let i = 0; i < 7; i++) {
     const side = hash(13020 + i) < 0.5 ? -1 : 1, x = side * (0.5 + 0.02 + 0.28 * hash(13030 + i)) * (hash(13040 + i) < 0.3 ? 0.6 : 1), y = 0.5 + 0.03 + 0.08 * hash(13050 + i), r = (0.012 + 0.022 * hash(13060 + i)) * u;

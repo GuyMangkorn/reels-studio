@@ -3,13 +3,13 @@ import type {Painter, Pt} from '../kit/painter';
 import type {V3} from '../kit/space';
 import {camOf, MACRO_CAMS} from './cams';
 import {edgeShade, paintGarden, shadeEdgeAt} from './garden';
-import {tinyItem} from './cast';
+import {paintTiny, tinyItem} from './cast';
 import {braceClamp, namedPose, NAMED_POSES, paintClamp, VIEW_OF} from './poses';
 import {TINY} from './cast';
 import {paintPuff} from './scenes';
 import {antItem, antWalk, ANT_SPEED} from './ant';
 import type {Arm, FigAnchors, FigPose} from '../kit/cast';
-import {legScale} from '../kit/cast';
+import {BONE, legScale} from '../kit/cast';
 import {camPoint, camUnit} from '../kit/ycam';
 import {B_DEW, D1_CONTACT} from './garden';
 import {bladeItem} from './macro';
@@ -147,7 +147,8 @@ export const paintPUFF = (p: Painter, frame: number) => {
  *    corner, one high, 0.3 sm apart (they never clump); gather dip L 40-43 (crouch 0.6 -> 0.68).
  *  - drive L 43-54 (key L 54, sting): legs extend first (crouch -> 0 by L 50), the crumb rises beside her then swings over her head
  *    (height leads, x lags), so her face stays clear; each hand is a fixed point on the crumb that slides from the face grips to
- *    under its base (the `lift-overhead` palms), so the crumb never leaves her hands (FR18: the far hand too; its arm goes behind her head).
+ *    under its base (the `lift-overhead` palms), so the crumb never leaves her hands (FR18: the far hand too; FR19: its arm goes behind her head with the hand showing on the crumb's near face beside her hair, the crumb
+ *    held out to her side until its base clears her head, and no crumb shadow in the air).
  *  - catch L 54-62: one knee give of 0.06 crouch and back (the weight lands); hold from L 62: breath rise 5 mm, period 48 f;
  *    laugh bob L 100-112 (two 8 mm shoulder bounces, face `laugh`). The crumb rides the hands through all of it.
  */
@@ -169,8 +170,10 @@ export const paintLIFT = (p: Painter, frame: number) => {
       const handPx = (pz.rArm.to[1] + pz.lArm.to[1]) / 2;
       let top: V3 = [at[0], 1.9, at[2]];
       for (let i = 0; i < 4; i++) { const gg = crumbGrips(c, top); if (gg) top = [top[0], top[1] + (gg.centre[1] + 0.5 * CRUMB.h * gg.u - handPx) / gg.u, top[2]]; } // base on the palms
-      const ey = 1 - Math.pow(1 - s, 2.5), ex = Math.pow(s, 2.5); // height leads, x lags: the base clears her head beside her, then swings over
-      crumb = [rest[0] + (top[0] - rest[0]) * ex, rest[1] + (top[1] - rest[1]) * ey, rest[2]];
+      // FR19: height leads harder (ey cubic), x waits until s 0.5 and the crumb first eases 0.08 sm out to her side, so its near face stays
+      // a hand's width left of her hair until the base clears her head top (L 50), then it swings over L 49-54
+      const ey = 1 - Math.pow(1 - s, 3), ex = smooth01((s - 0.5) / 0.5), side = 0.08 * smooth01(s / 0.3) * (1 - ex);
+      crumb = [rest[0] - side + (top[0] - rest[0]) * ex, rest[1] + (top[1] - rest[1]) * ey, rest[2]];
       const gr = crumbGrips(c, crumb)!, grT = crumbGrips(c, top)!, mix = (a: Pt, b: Pt, w: number): Pt => [a[0] + (b[0] - a[0]) * w, a[1] + (b[1] - a[1]) * w];
       // a point on the crumb in its own metres (x from the base centre, y up from the base) -> px, and back (on the top crumb)
       const onC = (q: typeof gr, l: Pt): Pt => [q.centre[0] + l[0] * q.u, q.centre[1] + (0.5 * CRUMB.h - l[1]) * q.u];
@@ -189,9 +192,22 @@ export const paintLIFT = (p: Painter, frame: number) => {
       // FR18: the far hand keeps its grip through the swing: high on the near face, it slides down that face to the base edge while the
       // crumb-side hand moves under the base, then both slide to their palm spots overhead (fixed points on the crumb, never off it)
       const wa = smooth01(s / 0.3), rLoc = mix(mix([face, 0.42], [face, 0.06], wa), toC(grT, aR.to), w2), rTo = mix(knee(1), onC(gr, rLoc), reach);
-      // while that hand is up beside / above her head on the far side (s 0.12-0.75) the whole arm reaches round behind her head
-      // (`behind: 'all'`), so her face stays clear
-      const right: Arm = {...aR, to: rTo, via: mix(low(rTo, 1), aR.via!, w2), ...(s > 0.12 && s < 0.75 ? {behind: 'all' as const} : {})};
+      // FR19: while that hand is beside / above her head (s 0.12-0.85) the whole arm reaches round behind her head (`behind: 'all'`),
+      // elbow raised and out (two bones of BONE x u, bent up to screen-right, so the forearm runs behind her hair), and the crumb path keeps
+      // the near face left of her hair until the base clears it, so the hand shows on the crumb beside her head and never crosses her face
+      const bk = s > 0.12 && s < 0.85;
+      let rVia = mix(low(rTo, 1), aR.via!, w2);
+      if (s > 0.1) {
+        const pa = paintTiny(nullPainter(), c, {at, view: 'front', named: {name: 'lift-overhead', L: L - 42}, fig: {crouch, rise}, t, shadow: false});
+        if (pa) {
+          const S = pa.lShoulder[0] > pa.rShoulder[0] ? pa.lShoulder : pa.rShoulder, B = BONE * u, dx = rTo[0] - S[0], dy = rTo[1] - S[1];
+          const d = Math.min(Math.hypot(dx, dy), 2 * B - 1e-3), h = Math.sqrt(B * B - (d * d) / 4), n = Math.hypot(dx, dy) || 1;
+          let px = -dy / n, py = dx / n; if (px < 0) { px = -px; py = -py; } // the perpendicular toward screen-right (elbow out)
+          const ik: Pt = [S[0] + (dx / n) * (d / 2) + px * h, S[1] + (dy / n) * (d / 2) + py * h];
+          rVia = mix(rVia, mix(ik, aR.via!, w2), smooth01((s - 0.1) / 0.1));
+        }
+      }
+      const right: Arm = {...aR, to: rTo, via: rVia, ...(bk ? {behind: 'all' as const} : {})};
       const armsL = lowX ? {rArm: left, lArm: right} : {rArm: right, lArm: left};
       if (b < 1) {
         const sp = namedPose('sit-up-check', 35, TINY, g, u, 'front'), blend = (a: Arm, z: Arm | undefined): Arm => z ? {...a, to: mix(z.to, a.to, b), via: mix(z.via ?? z.to, a.via ?? a.to, b)} : a;
@@ -201,10 +217,12 @@ export const paintLIFT = (p: Painter, frame: number) => {
   }
   const face = L < 40 ? 'surprised' : L >= 100 && L < 112 ? 'laugh' : 'happy';
   paintGarden(p, c, {t, mode: 'sun', drop: false, sun: [150, 300], shadeEdge: -1.2 - 1.8 * Math.min(1, L / 80), items: [
-    {at: crumb, bias: 0.1, draw: (q, cc) => paintCrumb(q, cc, crumb, {bites: 1})},
+    // FR19: the contact shadow fades out over the first 5 cm of rise (it was painted under the base in the air, across her face at L 48)
+    {at: crumb, bias: 0.1, draw: (q, cc) => paintCrumb(q, cc, crumb, {bites: 1, shadow: 1 - smooth01(crumb[1] / 0.05)})},
     tinyItem({at, view: 'front', named: seated ? {name: 'sit-up-check', L} : {name: 'lift-overhead', L: L - 42}, fig, face, t}),
   ]});
 };
+const nullPainter = (): Painter => { const k: unknown = new Proxy(function () {}, {get: (_t, q) => (q === 'alpha' || q === 't' || q === 'frame' ? 0 : k), apply: () => k}); return k as Painter; };
 const smooth01 = (x: number) => { const k = Math.min(1, Math.max(0, x)); return k * k * (3 - 2 * k); };
 /** Inverse of the smoothstep k*k*(3-2k) on 0..1 (the leg solver's `ease`). */
 const easeInv = (y: number) => { const v = Math.min(1, Math.max(0, y)); return 0.5 - Math.sin(Math.asin(1 - 2 * v) / 3); };
