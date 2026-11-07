@@ -194,7 +194,8 @@ const STAGES = ["board", "draft", "final"];
 const NAME = { board: "สตอรีบอร์ด", draft: "Draft", final: "Final" };
 const NOTE = {
   board: "อ่านแผนของแต่ละช็อต: เสียงพากย์ สิ่งที่เห็น กล้อง ถ้าผ่าน Claude จะทำ draft ของช็อตนั้นต่อ",
-  draft: "ดูจังหวะ ท่าทาง มุมกล้อง จาก draft (ยังไม่มีเท็กซ์เจอร์กับลายแรเงา) ถ้าผ่าน Claude จะวาดภาพจริงต่อ",
+  draft: "ดูจังหวะ ท่าทาง มุมกล้อง จาก draft (ภาพครึ่งขนาด ทำได้เร็ว) ถ้าผ่าน Claude จะวาดภาพจริงต่อ",
+  draftCut: "ดูคลิป draft เต็มรอบเดียว (ภาพครึ่งขนาด) แล้วกด \"แก้\" เฉพาะช็อตที่ต้องแก้ พร้อมโน้ต (บอกเวลาได้) ช็อตที่ไม่ได้กด Claude จะถามก่อนว่าให้ผ่านทั้งหมดไหม แล้ววาดภาพจริงเต็มขนาดต่อ",
   final: "ดูภาพจริงที่จะส่ง ถ้าผ่าน ช็อตนั้นจะถูกปักและไปถึงงานส่งตามที่เห็น",
   cut: "ดูคลิปเต็มรอบเดียว แล้วกด \"แก้\" เฉพาะช็อตที่ต้องแก้ พร้อมโน้ต (บอกเวลาได้) ช็อตที่ไม่ได้กด Claude จะถามก่อนว่าให้ผ่านทั้งหมดไหม แล้วปักทุกช็อตพร้อมกัน",
 };
@@ -243,17 +244,17 @@ function thumbs(list) {
   return `<div class="thumbs">${list.map(i => `<figure><img src="${esc(i.src)}" alt="${esc(i.caption)}" loading="lazy"><figcaption>${esc(i.caption)}</figcaption></figure>`).join("")}</div>`;
 }
 function clipHTML(c, stage) {
-  // Final cut (clips.mjs --full): one video for the whole tab; each row jumps into it.
+  // Draft or final cut (clips.mjs --full [--draft]): one video for the whole tab; each row jumps into it.
   if (c.cut) return `<div class="clip"><div class="row">
       <button class="btn play" type="button" data-video="${esc(c.src)}" data-in="${c.in ?? 0}" data-out="${c.out ?? ""}">▶ ช็อตนี้ในคลิปเต็ม</button>
-    </div><div class="pvlabel">ภาพจริง · ${fmtTime(c.in)}–${fmtTime(c.out)}</div></div>`;
+    </div><div class="pvlabel">${stage === "draft" ? "draft ครึ่งขนาด" : "ภาพจริง"} · ${fmtTime(c.in)}–${fmtTime(c.out)}</div></div>`;
   return `<div class="clip">
     <video src="${esc(c.src)}" muted playsinline loop preload="metadata" aria-label="คลิป ${NAME[stage]}"></video>
     <div class="row">
       <button class="btn play" type="button" data-video="${esc(c.src)}" data-in="${c.in ?? 0}" data-out="${c.out ?? ""}">▶ ช็อตนี้</button>
       <button class="btn play" type="button" data-video="${esc(c.src)}">▶ รอยต่อ</button>
     </div>
-    <div class="pvlabel">${stage === "draft" ? "draft: ไม่มีเท็กซ์เจอร์กับลายแรเงา" : "ภาพจริง"} · รอยต่อ = ช็อตก่อนและหลัง ±1 วิ</div>
+    <div class="pvlabel">${stage === "draft" ? "draft ครึ่งขนาด" : "ภาพจริง"} · รอยต่อ = ช็อตก่อนและหลัง ±1 วิ</div>
   </div>`;
 }
 function mediaCell(s, stage) {
@@ -294,9 +295,9 @@ function renderStatic() {
 // The shot table: the same rows on every tab; the media column and the accept step follow the tab.
 function renderRows() {
   document.querySelectorAll(".tab").forEach(b => b.setAttribute("aria-selected", String(b.dataset.tab === tab)));
-  const cut = tab === "final" && D.finalCut;
-  document.getElementById("tabnote").innerHTML = esc(cut ? NOTE.cut : NOTE[tab])
-    + (cut ? ` <button class="btn play" type="button" data-video="${esc(D.finalCut.src)}">▶ ดูทั้งคลิป</button>` : "");
+  const cut = (tab === "draft" && D.draftCut) || (tab === "final" && D.finalCut);
+  document.getElementById("tabnote").innerHTML = esc(cut ? NOTE[tab === "draft" ? "draftCut" : "cut"] : NOTE[tab])
+    + (cut ? ` <button class="btn play" type="button" data-video="${esc(cut.src)}">▶ ดูทั้งคลิป</button>` : "");
   // The storyboard tab is text only: the look of each location sits in its beat header.
   const media = tab !== "board", mediaHead = "คลิป " + NAME[tab];
   document.getElementById("beats").classList.toggle("no-media", !media);

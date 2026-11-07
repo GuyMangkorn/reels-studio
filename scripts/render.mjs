@@ -7,7 +7,8 @@
 // Videos render one scene at a time and keep each scene in the asset store (scripts/segments.mjs): a later render
 // re-renders only the scenes whose inputs changed. --no-cache renders every scene again.
 // --preview: half-size quick look (output and p5.brush canvas) in out/<id>/preview/, not archived; not for line-weight review.
-// --draft: blocking draft, full size, scene-cached, in out/<id>/draft/, not archived (same flat fills as a final since 6 Nov 2026).
+// --draft: half-size draft (paintScale 0.5 + paintDraft), scene-cached under its own variant (shared with the
+// storyboard page's draft cut, clips.mjs --full --draft), in out/<id>/draft/, not archived, never reused for delivery.
 // --range=<from>-<to>: those frames only, in out/<id>/range/, not archived. The whole scenes they touch are rendered
 // into the scene cache first, so a later full render reuses them.
 // Pinned finals (scripts/pin.mjs): a render stops when a pinned scene would change; --keep-pinned reuses the approved
@@ -42,8 +43,8 @@ if (!ids.length) throw new Error('Name at least one composition ID, e.g. npm run
 const browserExecutable = process.env.BROWSER_EXECUTABLE ?? null;
 const chromiumOptions = gl ? {gl} : {};
 const shared = {browserExecutable, chromiumOptions, timeoutInMilliseconds};
-const scale = preview ? 0.5 : 1;
-const renderProps = {...(preview ? {paintScale: 0.5} : {}), ...(draft ? {paintDraft: true} : {})};
+const scale = preview || draft ? 0.5 : 1;
+const renderProps = {...(preview || draft ? {paintScale: 0.5} : {}), ...(draft ? {paintDraft: true} : {})};
 await withRenderLog({tool: 'render', ids, gl, stills, draft, preview, range, concurrency, scale}, async (metrics) => {
 const serveUrl = await metrics.time('bundle', () => bundle({entryPoint: path.resolve('src/index.ts')}));
 const browser = await metrics.time('browser', () => openBrowser('chrome', {browserExecutable, chromiumOptions}));
@@ -84,8 +85,8 @@ try {
         const list = open.slice(0, 12).map((i) => i + 1).join(', ') + (open.length > 12 ? ', ...' : '');
         const summary = `${id} ${ending}: ${open.length} of ${sceneCount} scenes are not pinned (scenes ${list})`;
         if (!unreviewed) {
-          throw new Error(`delivery render stopped: ${summary}. Stages (docs/render-rules.md#render-stage): per-shot draft clips `
-            + '(storyboard-page/clips.mjs --draft), the final cut (clips.mjs --full), pins (pin.mjs pin-rows), then this render. '
+          throw new Error(`delivery render stopped: ${summary}. Stages (docs/render-rules.md#render-stage): the half-size draft cut `
+            + '(storyboard-page/clips.mjs --full --draft), the final cut (clips.mjs --full), pins (pin.mjs pin-rows), then this render. '
             + 'For a review render use --range or --draft. Only if the user chose to skip the review: --unreviewed="<reason>".');
         }
         metrics.event('unreviewed', {id, ending, unpinned: open.length, scenes: sceneCount, reason: unreviewed});
