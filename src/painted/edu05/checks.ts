@@ -357,7 +357,7 @@ export const paintSIP = (p: Painter, frame: number) => {
 };
 
 /** The touch point of S01-B01-SH03 (grass blades on the planter's outer edge) and the mug's resting spot on the rail cap, world metres. */
-const TOUCH_W: V3 = [0.15, 1.30, -0.05], MUG_W: V3 = [-0.55, 1.10, 0.0];
+const TOUCH_W: V3 = [0.15, 1.30, -0.05], MUG_W: V3 = [-0.1, 1.10, 0.0];
 /**
  * G18: S01-B01-SH03 stand-in (touch and pop, VD05; SD03 camera). Shot-local L (0-70):
  *  - L 2-7 she carries the mug to the rail cap (elbow low and out, forearm up to the cap) and lets go at L 7 (the mug stays on the cap, bare from L 7); the arm eases away from L 7 and is down by L 16.
@@ -369,7 +369,7 @@ const TOUCH_W: V3 = [0.15, 1.30, -0.05], MUG_W: V3 = [-0.55, 1.10, 0.0];
 export const paintTOUCH = (p: Painter, frame: number) => {
   const L = frame, c = camOf(MACRO_CAMS['S01-B01-SH03'], L / 70), t = L / FPS, out: {a?: FigAnchors | null} = {};
   const ramp = (a: number, b: number) => smooth01((L - a) / (b - a));
-  const step = ramp(4, 18), at: V3 = [-0.4 + 0.2 * step, 0, 0.2 + 0.02 * step];
+  const step = ramp(2, 12), at: V3 = [-0.4 + 0.2 * step, 0, 0.2 + 0.02 * step];
   const g = camPoint(c, at), u = camUnit(c, at), tp = camPoint(c, TOUCH_W), mp = camPoint(c, MUG_W), mu = camUnit(c, MUG_W);
   if (!g || !tp || !mp) return;
   const sh = (x: number, y: number): Pt => [g[0] + x * u, g[1] - y * u];
@@ -380,15 +380,24 @@ export const paintTOUCH = (p: Painter, frame: number) => {
   const hold = L < 7; // the hand sets the mug down at L 7 and is already easing away when the shot shows it bare on the cap (L 8)
   // arms: cradle -> cap (L 2-8), then hang, then reach
   const cradle = { to: sh(-0.01, 1.015), via: sh(MUG_ELBOW[0], MUG_ELBOW[1]) };
-  const heldElbow = sh(-0.21, 0.93); // while carrying the elbow stays low and out; the forearm (not an arm up behind the head) takes the hand to the cap
+  // the cap is AHEAD of her in her final facing (user, 7 Nov 2026): the arm reaches out in the picture plane, roughly horizontal, at full length; the elbow sits below the shoulder-hand line (two bones of BONE_V each) so it reads, never an arm behind the head
+  const shoulderS = sh(-0.1, 1.05), BONE_V = 0.17;
+  const dx = capHand[0] - shoulderS[0], dy = capHand[1] - shoulderS[1], dl = Math.hypot(dx, dy), drop = Math.sqrt(Math.max(0, (BONE_V * u) ** 2 - (dl / 2) ** 2));
+  const heldElbow: Pt = [shoulderS[0] + dx / 2, shoulderS[1] + dy / 2 + drop];
   const carry = ramp(2, 6.5);
+  // the arm eases from the cap down to the hang along an arc about the shoulder (radius and angle blended), so it never folds toward the chest and keeps its length
+  const swing = (a: Pt, b: Pt, w: number): Pt => {
+    const ra = Math.hypot(a[0] - shoulderS[0], a[1] - shoulderS[1]), rb = Math.hypot(b[0] - shoulderS[0], b[1] - shoulderS[1]);
+    const aa = Math.atan2(a[1] - shoulderS[1], a[0] - shoulderS[0]), ab = Math.atan2(b[1] - shoulderS[1], b[0] - shoulderS[0]), r = ra + (rb - ra) * w, ang = aa + (ab - aa) * w;
+    return [shoulderS[0] + r * Math.cos(ang), shoulderS[1] + r * Math.sin(ang)];
+  };
   // the rig draws its own hang when no arm is given; an explicit one is needed to blend from the cap and into the reach (figure metres from the feet point)
-  const hang: Arm = profile ? {to: sh(0.03, 0.8), via: sh(0.01, 1.04)} : {to: sh(-0.13, 0.8), via: sh(-0.14, 0.93)};
+  const hang: Arm = profile ? {to: sh(0.03, 0.72), via: sh(0.02, 0.89)} : {to: sh(-0.1, 0.72), via: sh(-0.13, 0.89)};
   const reachPose: Partial<FigPose> = {rArm: {to: tp, out: -1}};
   const reach = ramp(18, 50);
   let rArm: Arm | undefined;
   if (L < 7) rArm = {...cradle, to: [cradle.to[0] + (capHand[0] - cradle.to[0]) * carry, cradle.to[1] + (capHand[1] - cradle.to[1]) * carry], via: [cradle.via[0] + (heldElbow[0] - cradle.via[0]) * carry, cradle.via[1] + (heldElbow[1] - cradle.via[1]) * carry]};
-  else if (L < 18) { const w = 1 - (1 - Math.min(1, Math.max(0, (L - 7) / 9))) ** 2; const rest = hang; rArm = {...rest, to: [capHand[0] + (rest.to[0] - capHand[0]) * w, capHand[1] + (rest.to[1] - capHand[1]) * w], via: rest.via ? [heldElbow[0] + (rest.via[0] - heldElbow[0]) * w, heldElbow[1] + (rest.via[1] - heldElbow[1]) * w] : undefined}; }
+  else if (L < 18) { const w = 1 - (1 - Math.min(1, Math.max(0, (L - 7) / 9))) ** 2; const rest = hang; rArm = {...rest, to: swing(capHand, rest.to, w), via: rest.via ? [heldElbow[0] + (rest.via[0] - heldElbow[0]) * w, heldElbow[1] + (rest.via[1] - heldElbow[1]) * w] : undefined}; }
   else rArm = blendFig({rArm: hang}, reachPose, reach).rArm;
   const walk = L >= 4 && L < 19 ? ((L - 4) / 15) * 0.75 : undefined, stride = walk === undefined ? undefined : 0.7 * (1 - ramp(14, 19));
   const faceId = L < 53 ? 'neutral' : 'surprised';
