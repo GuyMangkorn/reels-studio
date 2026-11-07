@@ -3,7 +3,7 @@ import type {PaintedShot} from '../shot';
 import {STILL_CAMERA} from '../kit/camera';
 import {Grain} from '../kit/screen';
 import {paintFacadeDown, lookDownCam} from '../edu05/facade';
-import {paintDRIFT, paintLIFT, paintSPECK} from '../edu05/checks';
+import {paintDRIFT, paintLANDING, paintLIFT, paintLIFTOFF, paintSPECK} from '../edu05/checks';
 
 // EDU-EP05-SHORT timeline adapter, Editor W5.3 (7 Nov 2026). One registry plate per finished shot, ID `EDU5-<shot id>`; the episode registry
 // (src/videos/edu-ep05/index.ts) mounts the plate when it exists and a placeholder card otherwise. Each plate is a pure function of the
@@ -18,6 +18,12 @@ export const EDU5_DRIFT_FRAMES = 132;
 
 /** S01-B02-SH03 length in frames (the speck camera runs over L 0-31, `paintSPECK` k = L / 31). */
 export const EDU5_SPECK_FRAMES = 32;
+
+/** S01-B02-SH01 length in frames (lift-off at the lip, `paintLIFTOFF`). */
+export const EDU5_LIFTOFF_FRAMES = 89;
+
+/** S01-B02-SH04 length in frames (soft landing, `paintLANDING`). */
+export const EDU5_LANDING_FRAMES = 93;
 
 /** S01-B05-SH03 length in frames (scene sheets: L 0-172). */
 export const EDU5_LIFT_FRAMES = 173;
@@ -39,6 +45,15 @@ export const edu05Shots: PaintedShot[] = [
     Overlay: screen,
   },
   {
+    // S01-B02-SH01 (lift-off at the planter lip, G240-329): `paintLIFTOFF` is the check stand-in's paint (EDU5-CHK-LIFTOFF), reused not copied. Frame clamped to 89 f.
+    id: 'EDU5-S01-B02-SH01',
+    serves: ['S01-B02-SH01'],
+    paper: PAPER,
+    camera: () => STILL_CAMERA,
+    paint: (p) => paintLIFTOFF(p, Math.min(p.frame, EDU5_LIFTOFF_FRAMES - 1)),
+    Overlay: screen,
+  },
+  {
     // S01-B02-SH02 (the drift, G329-461): `paintDRIFT` is the check stand-in's own paint (follow camera yaw -10 -> +15, drift-spread pose, +-8 deg roll, no contact shadow,
     // drift motes + slab band + air streaks L 50-70), reused not copied. Frame clamped to the shot's 132 f.
     id: 'EDU5-S01-B02-SH02',
@@ -55,6 +70,15 @@ export const edu05Shots: PaintedShot[] = [
     paper: PAPER,
     camera: () => STILL_CAMERA,
     paint: (p) => paintSPECK(p, Math.min(p.frame, EDU5_SPECK_FRAMES - 1)),
+    Overlay: screen,
+  },
+  {
+    // S01-B02-SH04 (soft landing, G493-586): `paintLANDING` is the check stand-in's paint (EDU5-CHK-LANDING), reused not copied. Frame clamped to 93 f.
+    id: 'EDU5-S01-B02-SH04',
+    serves: ['S01-B02-SH04'],
+    paper: PAPER,
+    camera: () => STILL_CAMERA,
+    paint: (p) => paintLANDING(p, Math.min(p.frame, EDU5_LANDING_FRAMES - 1)),
     Overlay: screen,
   },
   {
