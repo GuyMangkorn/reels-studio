@@ -10,7 +10,7 @@ import {paintPuff} from './scenes';
 import {antItem, antWalk, ANT_SPEED} from './ant';
 import type {Arm, FigAnchors, FigPose} from '../kit/cast';
 import {BONE, legScale} from '../kit/cast';
-import {camPoint, camUnit} from '../kit/ycam';
+import {camPoint, camUnit, type YCam} from '../kit/ycam';
 import {B_DEW, D1_CONTACT} from './garden';
 import {bladeItem} from './macro';
 import {dropHand, dropStateFor, paintDropState} from './drop';
@@ -224,7 +224,9 @@ export const paintLIFT = (p: Painter, frame: number) => {
   const face = L < 40 ? 'surprised' : L >= 100 && L < 112 ? 'laugh' : 'happy';
   paintGarden(p, c, {t, mode: 'sun', drop: false, sun: [150, 300], shadeEdge: -1.2 - 1.8 * Math.min(1, L / 80), items: [
     // FR19: the contact shadow fades out over the first 5 cm of rise (it was painted under the base in the air, across her face at L 48)
-    {at: crumb, bias: 0.1, draw: (q, cc) => paintCrumb(q, cc, crumb, {bites: 1, shadow: 1 - smooth01(crumb[1] / 0.05)})},
+    // user note (2026-11-07): the loose crumbs travelled with the lifted loaf and hung in the air at its left; they stay where it stood
+    ...(crumb[1] > 0.005 ? [{at: rest, draw: (q: Painter, cc: YCam) => paintCrumb(q, cc, rest, {loose: 'only' as const, shadow: 0})}] : []),
+    {at: crumb, bias: 0.1, draw: (q, cc) => paintCrumb(q, cc, crumb, {bites: 1, shadow: 1 - smooth01(crumb[1] / 0.05), loose: crumb[1] > 0.005 ? 'off' : 'on'})},
     tinyItem({at, view: 'front', named: seated ? {name: 'sit-up-check', L} : {name: 'lift-overhead', L: L - 42}, fig, face, t}),
   ]});
 };

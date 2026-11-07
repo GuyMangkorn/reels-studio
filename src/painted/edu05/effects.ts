@@ -81,7 +81,7 @@ const tear = (poly: Pt[], seed: number, amt: number, sub = 3): Pt[] => {
  * cut-face box are fixed by CRUMB; torn edges, cracks, flour, pores and loose crumbs are seeded (13000-13999), never random.
  * `shadow` 0..1 (default 1) scales the contact shadow painted under the base (FR19: the lift fades it out as the crumb leaves the ground,
  * so no shadow hangs in the air across her face). */
-export const paintCrumb = (p: Painter, c: YCam, at: V3, o: {lift?: number; bites?: number; shade?: number; shadow?: number} = {}) => {
+export const paintCrumb = (p: Painter, c: YCam, at: V3, o: {lift?: number; bites?: number; shade?: number; shadow?: number; loose?: 'on' | 'off' | 'only'} = {}) => {
   const gr = crumbGrips(c, at, o.lift ?? 0);
   if (!gr) return;
   const {centre, u} = gr, w = CRUMB.w * u, h = CRUMB.h * u, sh = o.shade ?? 0, col = (x: string) => mixColor(x, '#5f7fa4', sh);
@@ -93,12 +93,15 @@ export const paintCrumb = (p: Painter, c: YCam, at: V3, o: {lift?: number; bites
     washAt(p, 13000, '#3b2a1c', 55 * sA, ell(centre[0] + w * 0.04, centre[1] + h * 0.53, w * 0.72, h * 0.12, 20), 0.35, 0.3);
     washAt(p, 13010, '#2c1e14', 110 * sA, ell(centre[0] + w * 0.02, centre[1] + h * 0.5, w * 0.54, h * 0.065, 18), 0.2, 0.25);
   }
-  // loose crumbs at the base (skipped when lifted: they stay on the ground)
-  if (!lifted) for (let i = 0; i < 7; i++) {
+  // loose crumbs at the base (skipped when lifted: they stay on the ground). `loose` 'off' skips them (the crumb is carried), 'only'
+  // paints just them (a ground stand-in left where the crumb stood, so they do not travel with the loaf)
+  const looseMode = o.loose ?? 'on';
+  if (looseMode !== 'off' && !lifted) for (let i = 0; i < 7; i++) {
     const side = hash(13020 + i) < 0.5 ? -1 : 1, x = side * (0.5 + 0.02 + 0.28 * hash(13030 + i)) * (hash(13040 + i) < 0.3 ? 0.6 : 1), y = 0.5 + 0.03 + 0.08 * hash(13050 + i), r = (0.012 + 0.022 * hash(13060 + i)) * u;
     const px = centre[0] + x * w, py = centre[1] + y * h;
     solid(p, 13070 + i, col(hash(13080 + i) < 0.6 ? CRUMB.crumb : CRUMB.crust), ell(px, py, r, r * 0.65, 7, hash(13090 + i) - 0.5), 2);
   }
+  if (looseMode === 'only') return;
   // loaf: torn silhouette inside the fixed box (base edge stays straight on the ground)
   const base: Pt[] = [[-0.5, 0.5], [-0.485, 0.12], [-0.46, -0.08], [-0.33, -0.32], [-0.2, -0.47], [0.05, -0.5], [0.3, -0.5], [0.44, -0.3], [0.5, -0.1], [0.5, 0.5]];
   const torn = tear(base, 13100, 0.05, 2).map(([x, y]): Pt => [Math.max(-0.5, Math.min(0.5, x)), Math.min(0.5, Math.max(-0.5, y))]);
