@@ -85,10 +85,10 @@ export const paintFX = (p: Painter, frame: number) => {
   void shrinkScale;
 };
 
-import {paintCap, paintFacadeDown, paintFacadeUp, paintRing, lookDownCam, speckAt, speckCam} from './facade';
+import {paintFacadeDown, paintFacadeUp, paintRing, lookDownCam, speckAt, speckCam} from './facade';
 import {paintAirStreaks, paintDriftAir} from './effects';
 /** G9: N3 look-down facade (S01-B01-SH02) with the cap. */
-export const paintFAC = (p: Painter, frame: number) => { const c = lookDownCam(frame / 96); paintFacadeDown(p, c, frame / FPS); paintCap(p, c); };
+export const paintFAC = (p: Painter, frame: number) => { const c = lookDownCam(frame / 96); paintFacadeDown(p, c, frame / FPS); };
 /** G9: N3 speck on the facade with the ring marker (S01-B02-SH03). */
 export const paintSPECK = (p: Painter, frame: number) => {
   const k = frame / 31, c = speckCam(k); paintFacadeUp(p, c, k);

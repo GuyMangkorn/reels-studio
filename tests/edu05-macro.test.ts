@@ -11,6 +11,7 @@ import type {V3} from '../src/painted/kit/space';
 test('parallax: near and far blades separate under every macro camera move', () => {
   const rows: string[] = [];
   for (const [id, m] of Object.entries(MACRO_CAMS)) {
+    if (id === 'S01-B01-SH02') continue; // R1.4 FR16: an exterior facade tilt, no blades; its meas are in the look-down test below
     const c0 = camOf(m, 0), c1 = camOf(m, 1), sy = Math.sin(c0.yaw), cy = Math.cos(c0.yaw);
     // two ground points on the start camera's optical axis, 0.5x and 2x the shot radius ahead
     const pt = (d: number): V3 => [c0.x + sy * d, 0.3, c0.z - cy * d];
@@ -145,9 +146,13 @@ import {moteSpeedPx} from '../src/painted/edu05/effects';
 
 test('look-down and speck cameras hit the sheet meas', () => {
   const near = (a: number[], b: number[], tol: number, what: string) => assert.ok(Math.hypot(a[0] - b[0], a[1] - b[1]) <= tol, `${what} ${a} vs ${b}`);
-  near(downVanish(lookDownCam(0))!, [540, 963], 3, 'vanishing point');
-  near(camPoint(lookDownCam(0), [-0.25, 1.12, 0])!, [908, 354], 4, 'mug start');
-  near(camPoint(lookDownCam(1), [-0.25, 1.12, 0])!, [986, 225], 4, 'mug end');
+  // R1.4 FR16 meas (L 0 -> L 96): vanishing point, face foot at x 0 and x +9, lawn 8 m out, her floor line (just off the top edge)
+  near(downVanish(lookDownCam(0))!, [540, 1395], 3, 'vanishing point start');
+  near(downVanish(lookDownCam(1))!, [540, 1314], 3, 'vanishing point end');
+  near(camPoint(lookDownCam(0), [0, -27, -0.05])!, [538, 1093], 4, 'face foot start');
+  near(camPoint(lookDownCam(1), [9, -27, -0.05])!, [248, 948], 4, 'face foot x+9 end');
+  near(camPoint(lookDownCam(0), [0, -27, -8])!, [446, 1467], 4, 'lawn 8 m start');
+  assert.ok(camPoint(lookDownCam(0), [0, 0, -0.05])![1] < 0 && camPoint(lookDownCam(1), [0, 0, -0.05])![1] < camPoint(lookDownCam(0), [0, 0, -0.05])![1], 'floor line off the top edge, tilting down');
   near(camPoint(speckCam(0), speckAt(0))!, [487, 764], 4, 'speck start');
   near(camPoint(speckCam(1), speckAt(1))!, [490, 703], 4, 'speck end');
   assert.ok(moteSpeedPx(438) <= 27 && moteSpeedPx(180) <= 27, 'motes under 40 px/s at her depth (692 px / 1.58 sm = 438 px/sm)');

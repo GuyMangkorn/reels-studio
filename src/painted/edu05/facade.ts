@@ -3,6 +3,7 @@ import {mixColor, type Painter, type Pt} from '../kit/painter';
 import type {V3} from '../kit/space';
 import {camPoint, type YCam} from '../kit/ycam';
 import {B} from './balcony';
+import {camOf, MACRO_CAMS} from './cams';
 import {paintBox, qx, qy, qz, wFill, wInk, wWash} from './world';
 
 // `new: SET-FACADE` + look-down view of SET-BALCONY (N3, W5.2; scene sheets S01-B01-SH02 and S01-B02-SH03). Balcony metres (see
@@ -11,8 +12,8 @@ import {paintBox, qx, qy, qz, wFill, wInk, wWash} from './world';
 
 export const FACE_Z = -0.05, SLAB_PITCH = 2.9, SLAB_OUT = 1.5, LAWN_Y = -27, TOP_Y = 27;
 export const DEG = Math.PI / 180;
-/** SD02 camera (look down the facade, yaw 180, pitch -65). `k` 0..1 over the shot (eye 1.55 -> 1.45, eased by the caller). */
-export const lookDownCam = (k: number): YCam => ({x: -0.05, y: 1.55 - 0.1 * k, z: -0.3, yaw: 180 * DEG, pitch: -65 * DEG, f: 950, hy: 520});
+/** SD02 camera (R1.4 FR16, exterior look-down): the shot camera `MACRO_CAMS['S01-B01-SH02']` at shot fraction `k` 0..1 (its ease is in the data). */
+export const lookDownCam = (k: number): YCam => camOf(MACRO_CAMS['S01-B01-SH02'], k);
 /** SH03 camera (the speck on the facade, looking up from the lawn side). */
 export const speckCam = (k: number): YCam => ({x: 2.0, y: 0.25, z: 6.0, yaw: -12 * DEG, pitch: (50 - 4 * k) * DEG, f: 900, hy: 1100});
 /** The speck (TINY seen from afar) at shot fraction k: (+0.2, 14.0, +1.4) -> (+0.4, 12.6, +1.7) with a +-0.1 m sway. */
@@ -74,7 +75,28 @@ export const paintFacadeDown = (p: Painter, c: YCam, t: number) => {
     floorArt(p, c, 20000 + i * 400, y, -1, far, {zr: -so});
   }
   dawnLight(p, c, 15290, LAWN_Y, 0);
+  paintLawnTree(p, c);
   void t; void qx;
+};
+/**
+ * R1.4 scale cue: one lawn tree, base (+6.0, -27, -4.5), 5 m tall, crown dia 4 m (about 120 px in the FAC camera). Deterministic:
+ * trunk quad, a shaded crown blob, a sunlit blob on the sun side (+x) and a soft ground shadow.
+ */
+export const TREE = {base: [6.0, LAWN_Y, -4.5] as V3, h: 5, crown: 4};
+const paintLawnTree = (p: Painter, c: YCam) => {
+  const [bx, by, bz] = TREE.base, cy = by + TREE.h - TREE.crown / 2;
+  const sh = camPoint(c, [bx + 1.2, by, bz + 0.6]), ground = camPoint(c, [bx, by, bz]), cen = camPoint(c, [bx, cy, bz]);
+  const l = camPoint(c, [bx - TREE.crown / 2, cy, bz]), r = camPoint(c, [bx + TREE.crown / 2, cy, bz]);
+  if (!sh || !ground || !cen || !l || !r) return;
+  const rad = Math.abs(r[0] - l[0]) / 2, ppm = rad / (TREE.crown / 2);
+  washAt(p, 15900, '#4d6f2e', 150, ell(sh[0], sh[1], rad * 0.95, rad * 0.28, 16), 0.2, 0.2); // ground shadow, toward the face
+  wFill(p, c, 15901, '#6b4b32', qy(by, bx - 0.12, bx + 0.12, bz - 0.12, bz + 0.12)); // trunk foot (top view of the base)
+  wFill(p, c, 15902, '#6b4b32', qz(bz, bx - 0.14, bx + 0.14, by, by + TREE.h - TREE.crown * 0.4));
+  hardFill(p, 15903, '#3f6a2c', ell(cen[0], cen[1], rad, rad * 0.92, 20));
+  washAt(p, 15904, '#6f9a3c', 230, ell(cen[0] + rad * 0.22, cen[1] - rad * 0.2, rad * 0.62, rad * 0.55, 18), 0.25, 0.3);
+  washAt(p, 15905, '#a9c862', 150, ell(cen[0] + rad * 0.34, cen[1] - rad * 0.34, rad * 0.3, rad * 0.26, 14), 0.3, 0.3);
+  inkLine(p, 15906, ell(cen[0], cen[1], rad, rad * 0.92, 20), {color: '#2f4a22', weight: 1.4, closed: true});
+  void ppm;
 };
 /** The rail cap and the mug on it for the look-down view (the right forearm is the rig's). */
 export const paintCap = (p: Painter, c: YCam) => {

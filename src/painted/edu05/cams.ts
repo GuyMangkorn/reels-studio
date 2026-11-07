@@ -16,6 +16,8 @@ const c = (at: V3 | [V3, V3], yaw: [number, number], r: [number, number] | numbe
 });
 
 export const MACRO_CAMS: Record<string, CamMove> = {
+  // R1.4 FR16: exterior look-down on the facade (pos (-1.73, 2.00, -6.28)), a slow 3 deg tilt down, ease in-out L 0-96
+  'S01-B01-SH02': c([-0.05, 0, 0], [195, 195], 6.5, 2.0, {pitch: [-50, -53], f: 950, hy: 600, ease: [0, 1]}),
   'S01-B01-SH04': c([0, 1.0, 0], [0, 2], 2.6, [0.6, 1.05], {pitch: [0, 8.75], f: 1000, hy: 820}),
   'S01-B02-SH04': c([0, 0.7, 0], [15, 5], [2.2, 1.9], 0.7, {f: 1050, hy: 820}),
   'S01-B03-SH01': c([1.55, 1.0, -0.8], [-12, -6], [3.3, 3.1], 1.0, {f: 1050, hy: 760}),
