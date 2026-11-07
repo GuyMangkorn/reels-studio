@@ -14,12 +14,15 @@ Usage:
   python3 -I scripts/store.py archive ID... | --all-worktrees # out/<ID>/ -> projects/<PROJECT>/renders/<ID>/<commit>/
   python3 -I scripts/store.py archive --path DIR --project P --kind K   # takes, previews, samples -> projects/P/K/
   python3 -I scripts/store.py prune PATH... [--delete]       # free gitignored folders: drop stored copies and scratch
+  python3 -I scripts/store.py publish ID [--video STORE_PATH] [--cover PATH] [--posted DATE] [--title T] --reason R
+                                                             # publish/<PROJECT>/<ID>/: the one MP4 + cover the user posts
 
 $REELS_STORE sets the store root (default ~/ReelsStore). STORE_PATH is relative to it, for example
 library/sound/sfx/water/water_pool-splash-small_01.wav or projects/WFOG/renders/... . A sidecar FILE.json or
 FILE-without-extension.json is stored next to the file as <name>.json. Stored files are never overwritten: putting
 the same content again is a no-op, different content at an existing path is refused. Metadata (.json sidecars, .md
-indexes) may be replaced and is not hash-checked by verify. PROJECT is the composition ID's first segment (ALIASES). Exit 0 ok, 1 problems found,
+indexes) may be replaced and is not hash-checked by verify. publish/ is the one mutable folder: only `publish` writes
+it, with copies of stored files, and it is not in the manifest (each folder's history.tsv records every change). PROJECT is the composition ID's first segment (ALIASES). Exit 0 ok, 1 problems found,
 2 bad arguments. Prints one summary line plus any problems.
 """
 import argparse, base64, datetime, fnmatch, glob, hashlib, json, os, re, shutil, subprocess, sys
@@ -39,7 +42,7 @@ def sha256(path):
 def store_path(rel):
     """Return the absolute path for a store-relative path, or exit 2 if it leaves the store or hits the manifest."""
     norm = os.path.normpath(rel)
-    if os.path.isabs(rel) or norm.startswith('..') or norm in ('.', MANIFEST):
+    if os.path.isabs(rel) or norm.startswith('..') or norm in ('.', MANIFEST) or norm.split(os.sep)[0] == 'publish':
         sys.exit(f'bad store path: {rel}')  # main() maps 'bad ...' exits to code 2
     return norm, os.path.join(STORE, norm)
 
@@ -306,6 +309,103 @@ def prune(a):
     return 0
 
 
+PUBLISH = 'publish'  # the files the user posts: one mutable folder per deliverable (docs/reviews/2026-11-07-publish-folder-proposal.md)
+DELIVERY = re.compile(r'^projects/[^/]+/renders/(?P<id>[^/]+)/[^/]+/(?P=id)(_[A-Za-z0-9_]+)?\.mp4$')
+
+
+def delivery_renders(composition_id):
+    """Delivery renders of an ID in the manifest (renders/<ID>/<version>/<ID>[_ending].mp4), oldest first."""
+    rows = [r for rel, r in manifest().items() if (m := DELIVERY.match(rel)) and m['id'] == composition_id]
+    return [r['path'] for r in sorted(rows, key=lambda r: r['filed'])]
+
+
+def stored_or_put(path, fallback_dir):
+    """Store-relative path for a file given by store path or as a local file; a local file not yet stored is put
+    under fallback_dir (a name taken by other bytes gets its sha prefix)."""
+    candidate = os.path.normpath(path)
+    if not os.path.isabs(path) and candidate in manifest(): return candidate
+    local = os.path.abspath(os.path.expanduser(path))
+    if local.startswith(os.path.join(STORE, '')):
+        rel = os.path.relpath(local, STORE)
+        if rel in manifest(): return rel
+    if not os.path.isfile(local): sys.exit(f'not in the store and no such file: {path}')
+    digest = sha256(local)
+    same = sorted((rel for rel, r in manifest().items() if r['sha256'] == digest and not rel.startswith(PUBLISH + '/')), key=rank)
+    if same: return same[0]
+    rel = f'{fallback_dir}/{os.path.basename(local)}'
+    if store_file(local, rel, sidecar=False) == 'conflict':
+        stem, ext = os.path.splitext(rel); rel = f'{stem}.{digest[:8]}{ext}'; store_file(local, rel, sidecar=False)
+    return rel
+
+
+def place(src, dest):
+    """Copy src over dest atomically, as an APFS clone where the filesystem allows it (no extra disk space)."""
+    tmp = dest + '.tmp'
+    if subprocess.run(['cp', '-c', src, tmp], capture_output=True).returncode: shutil.copy2(src, tmp)
+    os.replace(tmp, dest)
+
+
+def publish(a):
+    cid = a.id
+    if not COMPOSITION_ID.match(cid): sys.exit(f'bad composition ID: {cid}')
+    project = project_of(cid); folder = os.path.join(STORE, PUBLISH, project, cid)
+    meta_path = os.path.join(folder, 'publish.json')
+    meta = json.load(open(meta_path, encoding='utf-8')) if os.path.exists(meta_path) else {'id': cid, 'project': project}
+    today = datetime.date.today().isoformat(); changed = []
+    if a.video or (not meta.get('video') and not a.posted):
+        rel = os.path.normpath(a.video) if a.video else (delivery_renders(cid) or [None])[-1]
+        if rel and os.path.isabs(rel) and rel.startswith(os.path.join(STORE, '')): rel = os.path.relpath(rel, STORE)
+        if not rel and not a.cover: return fail(f'{cid}: no delivery render in the store (render.mjs {cid} archives one)')
+        m = DELIVERY.match(rel or '')
+        if rel and (not m or m['id'] != cid or rel not in manifest()):
+            return fail(f'{rel}: not a stored delivery render of {cid} (projects/<P>/renders/{cid}/<version>/{cid}[_ending].mp4); '
+                        'draft, final-cut, range and clip renders are never published')
+        if rel: changed.append(('video', f'{cid}.mp4', rel))
+    if a.cover:
+        rel = stored_or_put(a.cover, f'projects/{project}/renders/{cid}/covers')
+        if os.path.splitext(rel)[1].lower() not in ('.png', '.jpg', '.jpeg', '.webp'): return fail(f'{rel}: a cover is a picture')
+        changed.append(('cover', f'{cid}_cover{os.path.splitext(rel)[1].lower()}', rel))
+    if not changed and not a.posted and a.title is None: return fail(f'{cid}: nothing to publish (give --video, --cover, --posted or --title)')
+    if changed and not a.reason: sys.exit('bad arguments: --reason is required when a file changes')
+    os.makedirs(folder, exist_ok=True)
+    history = os.path.join(folder, 'history.tsv'); new_history = not os.path.exists(history)
+    with open(history, 'a', encoding='utf-8') as h:
+        if new_history: h.write('date\tkind\tfile\tsha256\tsource\tcommit\treason\n')
+        for kind, name, rel in changed:
+            old = meta.get(kind)
+            if old and old['file'] != name and os.path.exists(os.path.join(folder, old['file'])): os.remove(os.path.join(folder, old['file']))
+            place(os.path.join(STORE, rel), os.path.join(folder, name))
+            row = manifest()[rel]
+            meta[kind] = {'file': name, 'source': rel, 'sha256': row['sha256'], 'commit': row['commit']}
+            h.write('\t'.join([today, kind, name, row['sha256'], rel, row['commit'], a.reason or '']) + '\n')
+        if a.posted:
+            meta['posted'] = a.posted
+            h.write('\t'.join([today, 'posted', '', '', '', '', a.posted]) + '\n')
+    if a.title is not None: meta['title'] = a.title
+    if changed:
+        meta['status'] = 'ready' if not meta.get('posted') else f"re-cut after posting {meta['posted']}: post again or keep"
+    if a.posted: meta['status'] = f'posted {a.posted}'
+    meta['updated'] = today
+    with open(meta_path, 'w', encoding='utf-8') as f: json.dump(meta, f, ensure_ascii=False, indent=2); f.write('\n')
+    write_publish_index()
+    missing = [k for k in ('video', 'cover') if not meta.get(k)]
+    print(f"{cid}: {meta['status']} -> {os.path.join(PUBLISH, project, cid)}/ "
+          + ' '.join(f'{k}={n} (from {r})' for k, n, r in changed) + (f" missing: {', '.join(missing)}" if missing else ''))
+    return 0
+
+
+def write_publish_index():
+    rows = []
+    for meta_path in sorted(glob.glob(os.path.join(STORE, PUBLISH, '*', '*', 'publish.json'))):
+        m = json.load(open(meta_path, encoding='utf-8'))
+        rows.append(f"| {m['project']} | [{m['id']}]({m['project']}/{m['id']}/) | {m.get('status', '')} | {m.get('updated', '')} "
+                    f"| {'yes' if m.get('video') else '**missing**'} | {'yes' if m.get('cover') else '**missing**'} | {m.get('title', '')} |")
+    text = ('# Publish\n\nThe files to post: one folder per video, written only by `python3 -I scripts/store.py publish`. '
+            'A file outside this folder is not final.\n\n| Series | Video | Status | Updated | MP4 | Cover | Title |\n'
+            '| --- | --- | --- | --- | --- | --- | --- |\n' + '\n'.join(rows) + '\n')
+    with open(os.path.join(STORE, PUBLISH, 'INDEX.md'), 'w', encoding='utf-8') as f: f.write(text)
+
+
 def lock_file(episode):
     folder = os.path.join('src', 'videos', episode)
     if not os.path.isdir(folder): sys.exit(f'no episode folder: {folder}')
@@ -405,6 +505,11 @@ def main():
     p.set_defaults(fn=archive)
     p = sub.add_parser('prune'); p.add_argument('paths', nargs='+', help='gitignored folders, e.g. out/')
     p.add_argument('--delete', action='store_true', help='actually delete (default: dry run)'); p.set_defaults(fn=prune)
+    p = sub.add_parser('publish', help='set the MP4/cover the user posts: publish/<PROJECT>/<ID>/')
+    p.add_argument('id', help='composition ID'); p.add_argument('--video', help='stored delivery render (default: the newest)')
+    p.add_argument('--cover', help='store path or local file of the picked cover'); p.add_argument('--posted', metavar='YYYY-MM-DD')
+    p.add_argument('--title'); p.add_argument('--reason', help='why the file changes (required when one does)')
+    p.set_defaults(fn=publish)
     p = sub.add_parser('backfill-chat'); p.add_argument('transcripts', nargs='+', help='transcript globs (Claude Code / Codex .jsonl)')
     p.set_defaults(fn=backfill_chat)
     a = ap.parse_args()

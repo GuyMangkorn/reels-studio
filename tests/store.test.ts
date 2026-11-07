@@ -223,3 +223,37 @@ test('prune deletes only stored copies and scratch, and refuses tracked folders'
   mkdirSync(path.join(repo, 'src'), {recursive: true});
   assert.equal(run('prune', 'src').code, 2);
 });
+
+test('publish keeps one MP4 and one cover per video, refuses review renders and records every change', () => {
+  const {store, run, write} = setup();
+  run('put', write('in/v1.mp4', 'cut-1'), 'projects/X/renders/X-EP01-SHORT/aaa/X-EP01-SHORT.mp4');
+  run('put', write('in/v2.mp4', 'cut-2'), 'projects/X/renders/X-EP01-SHORT/bbb/X-EP01-SHORT.mp4');
+  run('put', write('in/clip.mp4', 'clip'), 'projects/X/renders/X-EP01-SHORT/bbb/clips/sh01.mp4');
+  const folder = path.join(store, 'publish/X/X-EP01-SHORT');
+
+  const clip = run('publish', 'X-EP01-SHORT', '--video', 'projects/X/renders/X-EP01-SHORT/bbb/clips/sh01.mp4', '--reason', 'r');
+  assert.equal(clip.code, 1, clip.out);
+  assert.match(clip.out, /never published/);
+
+  // Without --video the newest delivery render is used; a local cover file is stored first.
+  const cover = write('in/pick-C.png', 'cover-C');
+  const r = run('publish', 'X-EP01-SHORT', '--cover', cover, '--reason', 'delivery');
+  assert.equal(r.code, 0, r.out);
+  assert.equal(readFileSync(path.join(folder, 'X-EP01-SHORT.mp4'), 'utf8'), 'cut-2');
+  assert.equal(readFileSync(path.join(folder, 'X-EP01-SHORT_cover.png'), 'utf8'), 'cover-C');
+  assert.match(readFileSync(path.join(store, 'manifest.tsv'), 'utf8'), /projects\/X\/renders\/X-EP01-SHORT\/covers\/pick-C\.png/);
+
+  assert.equal(run('publish', 'X-EP01-SHORT', '--posted', '2026-11-07').code, 0);
+  assert.match(readFileSync(path.join(store, 'publish/INDEX.md'), 'utf8'), /X-EP01-SHORT.*posted 2026-11-07/);
+
+  // A cover fix after posting replaces the file in place and flags the video for a decision.
+  assert.equal(run('publish', 'X-EP01-SHORT', '--cover', write('in/fix.png', 'cover-fix')).code, 2);
+  assert.equal(run('publish', 'X-EP01-SHORT', '--cover', path.join(store, '..', 'in/fix.png'), '--reason', 'headline fix').code, 0);
+  assert.deepEqual(readdirSync(folder).sort(), ['X-EP01-SHORT.mp4', 'X-EP01-SHORT_cover.png', 'history.tsv', 'publish.json']);
+  assert.equal(readFileSync(path.join(folder, 'X-EP01-SHORT_cover.png'), 'utf8'), 'cover-fix');
+  assert.match(JSON.parse(readFileSync(path.join(folder, 'publish.json'), 'utf8')).status, /re-cut after posting 2026-11-07/);
+  assert.equal(readFileSync(path.join(folder, 'history.tsv'), 'utf8').trim().split('\n').length, 5);
+
+  assert.equal(run('put', write('in/x.mp4', 'x'), 'publish/X/x.mp4').code, 2);
+  assert.equal(run('verify').code, 0);
+});
