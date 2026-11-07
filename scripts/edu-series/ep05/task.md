@@ -31,3 +31,4 @@ Record: this file. Series context: [concepts.md](../concepts.md) · series task 
 - [ ] W6 Final
 - [ ] W7 Pinned
 - [ ] W8 Deliver
+  - [ ] W8.0 Cover: options A–E + F CLICKBAIT ([covers.md](covers.md) EDU-EP05-COVERS-R1, `EDU-EP05-SHORT-COVERS`, Film 2026-11-07); user pick pending
