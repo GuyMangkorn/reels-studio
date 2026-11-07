@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import {mkdtempSync, mkdirSync, writeFileSync, rmSync} from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
-import {segmentKeys, sourceHash} from '../scripts/segments.mjs';
+import {segmentKeys, sourceHash, sourceInputs} from '../scripts/segments.mjs';
 
 const fixture = () => {
   const root = mkdtempSync(path.join(os.tmpdir(), 'reels-inputs-'));
@@ -183,5 +183,83 @@ test('authoring-only caption edits preserve the source digest and existing per-s
     const edited = timeline.map((scene, i) => i === 2 ? {...scene, subtitle: 'new'} : scene);
     const after = segmentKeys({...composition, props: {timeline: edited}}, {}, {}, f.hash() ?? assert.fail('known inputs must not bypass'));
     assert.deepEqual(before.flatMap((key, i) => key === after[i] ? [] : [i]), [2]);
+  } finally {f.dispose();}
+});
+
+// Episode D keeps each shot in its own file named after the shot, imported by the inventory (shot-own code).
+const perShot = (f: ReturnType<typeof fixture>) => {
+  f.put('src/painted/d/D-SH01.ts', "import {character} from '../kit/character'; export const shot = {id:'D-SH01', character, pose:1};");
+  f.put('src/painted/d/D-SH02.ts', "import {eye} from '../kit/eye'; export const shot = {id:'D-SH02', eye, pose:1};");
+  f.put('src/painted/d/D-SH03.ts', "export const shot = {id:'D-SH03', pose:1};");
+  f.put('src/painted/kit/eye.ts', 'export const eye = 1;');
+  f.put('src/painted/shots/d.ts', "import {shot as one} from '../d/D-SH01'; import {shot as two} from '../d/D-SH02'; import {shot as three} from '../d/D-SH03'; export const dShots = [one, two, three];");
+  f.put('src/painted/registry.ts', "import {aShots} from './shots/a'; import {dShots} from './shots/d'; export const paintedShots = Object.fromEntries([...aShots,...dShots].map(s=>[s.id,s]));");
+  f.put('src/videos/d/index.ts', "export default {episode:'d', videos:[{id:'D'}]};");
+  const timeline = ['D-SH01', 'D-SH02', 'D-SH03'].map(shot => ({durationSec: 1, painted: {shots: [{shot, atSec: 0}]}}));
+  const composition = {id: 'D', width: 1080, height: 1920, fps: 30, durationInFrames: 90, props: {timeline, ending: 'A_fade'}};
+  const inputs = () => sourceInputs(f.root, composition) ?? assert.fail('known inputs must not bypass');
+  const keys = () => {const i = inputs(); return segmentKeys(composition, {}, {}, i.hash, i.scenes);};
+  const changed = (a: string[], b: string[]) => a.flatMap((key, i) => key === b[i] ? [] : [i]);
+  return {inputs, keys, changed};
+};
+
+test('a shot-own file edit repaints only the scene showing that shot', () => {
+  const f = fixture();
+  try {
+    const d = perShot(f);
+    const before = d.keys();
+    f.put('src/painted/d/D-SH02.ts', "import {eye} from '../kit/eye'; export const shot = {id:'D-SH02', eye, pose:2};");
+    assert.deepEqual(d.changed(before, d.keys()), [1]);
+  } finally {f.dispose();}
+});
+
+test('shared art repaints every scene that uses it, and only those', () => {
+  const f = fixture();
+  try {
+    const d = perShot(f);
+    let before = d.keys();
+    f.put('src/painted/kit/palette.json', '{"ink":"blue"}');
+    assert.deepEqual(d.changed(before, d.keys()), [0], 'the character reaches only D-SH01');
+    before = d.keys();
+    f.put('src/shared.ts', 'export const shared = 2;');
+    assert.deepEqual(d.changed(before, d.keys()), [0, 1, 2], 'shared renderer code reaches every scene');
+  } finally {f.dispose();}
+});
+
+test('a loop ending carries the first shot\'s code into the last scene', () => {
+  const f = fixture();
+  try {
+    const d = perShot(f);
+    const i = d.inputs();
+    const timeline = ['D-SH01', 'D-SH02', 'D-SH03'].map(shot => ({durationSec: 1, painted: {shots: [{shot, atSec: 0}]}}));
+    const composition = {id: 'D', width: 1080, height: 1920, fps: 30, durationInFrames: 90, props: {timeline, ending: 'C_seamless'}};
+    const edited = [i.scenes[0] + 'x', i.scenes[1], i.scenes[2]];
+    const before = segmentKeys(composition, {}, {}, i.hash, i.scenes), after = segmentKeys(composition, {}, {}, i.hash, edited);
+    assert.deepEqual(d.changed(before, after), [0, 2]);
+  } finally {f.dispose();}
+});
+
+test('a shot file that shared code imports stays shared', () => {
+  const f = fixture();
+  try {
+    const d = perShot(f);
+    f.put('src/shared.ts', "import {shot} from './painted/d/D-SH03'; export const shared = shot;");
+    const before = d.keys();
+    assert.equal(d.inputs().scenes[2], '', 'D-SH03 is no longer shot-own');
+    f.put('src/painted/d/D-SH03.ts', "export const shot = {id:'D-SH03', pose:2};");
+    assert.deepEqual(d.changed(before, d.keys()), [0, 1, 2]);
+  } finally {f.dispose();}
+});
+
+test('episodes without shot-own files keep their keys', () => {
+  const f = fixture();
+  try {
+    const painted = {id: 'A', width: 1080, height: 1920, fps: 30, durationInFrames: 30,
+      props: {timeline: [{durationSec: 1, painted: {shots: [{shot: 'A-SH01', atSec: 0}]}}]}};
+    const i = sourceInputs(f.root, painted) ?? assert.fail('known inputs must not bypass');
+    assert.deepEqual(i.scenes, ['']);
+    const timeline = Array.from({length: 3}, () => ({durationSec: 1}));
+    const composition = {id: 'A', width: 1080, height: 1920, fps: 30, durationInFrames: 90, props: {timeline}};
+    assert.deepEqual(segmentKeys(composition, {}, {}, i.hash, ['', '', '']), segmentKeys(composition, {}, {}, i.hash));
   } finally {f.dispose();}
 });

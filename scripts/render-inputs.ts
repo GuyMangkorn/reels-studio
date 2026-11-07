@@ -1,6 +1,11 @@
-// Internal helper for segments.mjs. One JSON request on stdin: {root, id, props}; one digest on stdout.
+// Internal helper for segments.mjs. One JSON request on stdin: {root, id, props}; on stdout {hash, scenes}.
 // Follow actual local imports, selecting only the painted inventories used by the effective project timeline.
 // Any uncertainty throws; the caller must bypass cache reuse, never fall back to a possibly stale key.
+// Shot-own code (docs/render-rules.md#render-by-scene): a file named after a painted shot of the timeline (its `id` or a
+// `serves` entry, e.g. `S01-B05-SH02.tsx`) and imported directly by the selected inventory module belongs to the scenes
+// showing that shot. It and whatever only it imports are hashed into `scenes[i]` for those scenes, not into `hash`, so
+// editing one shot repaints only its scenes. Imported from any other shared file, it stays shared. `scenes[i]` is ''
+// for a scene without shot-own code, so episodes without such files keep the keys they had.
 import {createHash} from 'node:crypto';
 import {existsSync, readFileSync, readdirSync, realpathSync} from 'node:fs';
 import path from 'node:path';
@@ -14,10 +19,13 @@ const record = (value: unknown): value is Record<string, unknown> => value !== n
 
 async function digest({root: requestedRoot, id, props}: Request) {
   const root = realpathSync(requestedRoot);
-  const files = new Set<string>();
+  type Bag = {files: Set<string>; media: Set<string>; visited: Set<string>};
+  const newBag = (): Bag => ({files: new Set(), media: new Set(), visited: new Set()});
+  const shared = newBag();
+  let bag = shared;
   const add = (file: string) => {
     if (!existsSync(file)) fail(`Missing render input: ${path.relative(root, file)}`);
-    files.add(realpathSync(file));
+    bag.files.add(realpathSync(file));
   };
   const configFile = ts.findConfigFile(root, ts.sys.fileExists);
   let options: ts.CompilerOptions = {moduleResolution: ts.ModuleResolutionKind.Bundler, resolveJsonModule: true, allowJs: true};
@@ -70,8 +78,20 @@ async function digest({root: requestedRoot, id, props}: Request) {
   }
   const registryImports = existsSync(registry) ? imports(registry) : [];
   const selected = new Set<string>();
+  // Shot-own file stem (shot id or `serves` entry) -> the timeline scenes showing that shot.
+  const ownerScenes = new Map<string, Set<number>>();
   if (wanted.size) {
     const catalogue = (await import(pathToFileURL(registry).href)).paintedShots;
+    timeline.forEach((scene, i) => {
+      for (const cue of scene.painted?.shots ?? []) {
+        const shot = catalogue?.[cue.shot];
+        for (const name of [cue.shot, ...(record(shot) && Array.isArray(shot.serves) ? shot.serves : [])]) {
+          if (typeof name !== 'string') continue;
+          if (!ownerScenes.has(name)) ownerScenes.set(name, new Set());
+          ownerScenes.get(name)!.add(i);
+        }
+      }
+    });
     for (const shot of wanted) if (!catalogue?.[shot]) fail(`Unknown painted shot: ${shot}`);
     for (const {file, statement} of registryImports) {
       if (ts.isImportDeclaration(statement) && statement.importClause?.isTypeOnly) continue;
@@ -98,14 +118,13 @@ async function digest({root: requestedRoot, id, props}: Request) {
     }
   }
 
-  const pictureMedia = new Set<string>();
   const addMedia = (value: string, required: boolean) => {
     if (!required && !media.test(value)) return;
     if (/^(?:https?:|data:|blob:)/i.test(value)) fail('Remote media cannot be content-verified');
     const file = path.resolve(root, 'public', value.replace(/^\/?(?:public\/)?/, '').split(/[?#]/)[0]);
     if (required || existsSync(file)) {
       add(file);
-      pictureMedia.add(realpathSync(file));
+      bag.media.add(realpathSync(file));
     }
   };
   const visitProps = (value: unknown, key = ''): void => {
@@ -117,10 +136,11 @@ async function digest({root: requestedRoot, id, props}: Request) {
   };
   visitProps(props);
 
-  const visited = new Set<string>();
+  const stem = (file: string) => path.basename(file).replace(/\.[^.]+$/, '');
+  const ownFiles = new Set<string>();
   const walk = (file: string): void => {
-    if (visited.has(file)) return;
-    visited.add(file);
+    if (bag.visited.has(file)) return;
+    bag.visited.add(file);
     add(file);
     if (file.endsWith('.json')) return;
     const source = parse(file);
@@ -156,6 +176,10 @@ async function digest({root: requestedRoot, id, props}: Request) {
     }
     for (const dependency of imports(file)) {
       if (file === registry && inventories.has(dependency.file) && !selected.has(dependency.file)) continue;
+      if (bag === shared && selected.has(file) && ownerScenes.has(stem(dependency.file))) {
+        ownFiles.add(dependency.file);
+        continue;
+      }
       walk(dependency.file);
     }
     const visit = (node: ts.Node): void => {
@@ -204,25 +228,49 @@ async function digest({root: requestedRoot, id, props}: Request) {
   for (const file of ['remotion.config.ts', 'webpack.config.js']) {
     if (existsSync(path.join(root, file))) walk(path.join(root, file));
   }
+  // A shot file that shared code also imports is shared: its edits reach every scene.
+  for (const file of ownFiles) if (shared.visited.has(file)) ownFiles.delete(file);
+  const own = new Map<string, Bag>();
+  for (const file of ownFiles) {
+    bag = newBag();
+    walk(file);
+    for (const known of shared.files) bag.files.delete(known);
+    own.set(file, bag);
+  }
+  bag = shared;
+
   // Render tooling (scripts/render.mjs, segments.mjs, this helper) is left out: its pixel settings are in the segment
   // keys already, and hashing it would ask about every pin after a CLI edit. Bump the version when the key logic changes.
-  const hash = createHash('sha256').update('project-render-inputs-v1');
   const lock = path.join(path.dirname(project), 'assets.lock.json');
-  if (existsSync(lock)) {
-    const entries = Object.entries(JSON.parse(readFileSync(lock, 'utf8'))).filter(([file]) => {
-      const local = path.resolve(root, file);
-      return existsSync(local) && pictureMedia.has(realpathSync(local));
-    }).sort(([a], [b]) => a.localeCompare(b));
-    // A sound-only lock edit must not discard picture segments.
-    hash.update(JSON.stringify(entries));
-  }
-  for (const file of [...files].sort()) hash.update(path.relative(root, file)).update('\0').update(readFileSync(file)).update('\0');
-  return hash.digest('hex');
+  const lockEntries = existsSync(lock) ? Object.entries(JSON.parse(readFileSync(lock, 'utf8'))) : undefined;
+  const digestOf = (version: string, files: Set<string>, pictureMedia: Set<string>) => {
+    const hash = createHash('sha256').update(version);
+    if (lockEntries) {
+      const entries = lockEntries.filter(([file]) => {
+        const local = path.resolve(root, file);
+        return existsSync(local) && pictureMedia.has(realpathSync(local));
+      }).sort(([a], [b]) => a.localeCompare(b));
+      // A sound-only lock edit must not discard picture segments.
+      hash.update(JSON.stringify(entries));
+    }
+    for (const file of [...files].sort()) hash.update(path.relative(root, file)).update('\0').update(readFileSync(file)).update('\0');
+    return hash.digest('hex');
+  };
+  const scenes = timeline.map((_scene, i) => {
+    const files = new Set<string>(), pictureMedia = new Set<string>();
+    for (const [file, owned] of own) {
+      if (!ownerScenes.get(stem(file))?.has(i)) continue;
+      owned.files.forEach(f => files.add(f));
+      owned.media.forEach(f => pictureMedia.add(f));
+    }
+    return files.size ? digestOf('scene-render-inputs-v1', files, pictureMedia) : '';
+  });
+  return {hash: digestOf('project-render-inputs-v1', shared.files, shared.media), scenes};
 }
 
 async function main() {
   const request: Request = JSON.parse(readFileSync(0, 'utf8'));
-  console.log(JSON.stringify({hash: await digest(request)}));
+  console.log(JSON.stringify(await digest(request)));
 }
 main().catch(error => {
   console.log(JSON.stringify({error: error instanceof Error ? error.message : 'Render input discovery failed'}));
