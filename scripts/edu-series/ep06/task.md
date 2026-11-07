@@ -46,3 +46,5 @@ Record: this file. Series context: [concepts.md](../concepts.md) (R2, C8) · ser
 - [ ] W6 Final
 - [ ] W7 Pinned
 - [ ] W8 Deliver (render, cover, posting, kit intake)
+  - 2026-11-07 W8.0 cover: user picked **N1** from the new-approach set `EDU-EP06-SHORT-V2-COVERS` ("แมวผมเลือก ปก N1"): "ในสายตาแมว / คุณดูน่ากลัว?", plate `EDU6-S01-B02-SH02` l50, cool tint. Replaces the earlier cat close-up pick. Copied as `EDU-EP06-SHORT_cover.png` beside the MP4 (store `projects/EDU/renders/EDU-EP06-SHORT/bab8cd318317-dirty-202611071716/`).
+  - 2026-11-07 W8.0 cover, two-pick flow (first run of the revised cover-design skill): pick 1 `EDU-EP06-SHORT-PIC-COVERS`, user picked **P1-catface** (`EDU6-S01-B01-SH03` l45); pick 2 `EDU-EP06-SHORT-V3-COVERS`, user picked **T2-think** "แมวคิดอะไร / ตอนคุณจ้องตา?". Replaces N1. Store `…/bab8cd318317-dirty-202611071716/EDU-EP06-SHORT_cover-v2.png` (store files are immutable; `_cover.png` there is still N1). Local `out/EDU-EP06-SHORT/EDU-EP06-SHORT_cover.png`.
