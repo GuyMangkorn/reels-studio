@@ -13,6 +13,7 @@ build/
 
 # Local planning notes
 docs/superpowers/
+.zcode/plans/
 assets/blender/**/renders/
 .venv-whisper/
 __pycache__/
