@@ -3,7 +3,7 @@ import type {PaintedShot} from '../shot';
 import {STILL_CAMERA} from '../kit/camera';
 import {Grain} from '../kit/screen';
 import {paintFacadeDown, lookDownCam} from '../edu05/facade';
-import {paintDRIFT, paintLANDING, paintLIFT, paintLIFTOFF, paintSIP, paintSPECK, paintSTAND, paintTOUCH} from '../edu05/checks';
+import {paintBARS, paintCOLD, paintCRUMB, paintDEW1, paintDROP2, paintDROP3, paintDROP4, paintEND, paintPASS, paintPUFF, paintDRIFT, paintLANDING, paintLIFT, paintLIFTOFF, paintSIP, paintSPECK, paintSTAND, paintTOUCH} from '../edu05/checks';
 
 // EDU-EP05-SHORT timeline adapter, Editor W5.3 (7 Nov 2026). One registry plate per finished shot, ID `EDU5-<shot id>`; the episode registry
 // (src/videos/edu-ep05/index.ts) mounts the plate when it exists and a placeholder card otherwise. Each plate is a pure function of the
@@ -36,6 +36,36 @@ export const EDU5_LANDING_FRAMES = 93;
 
 /** S01-B05-SH03 length in frames (scene sheets: L 0-172). */
 export const EDU5_LIFT_FRAMES = 173;
+
+/** S01-B03-SH01 length in frames (`paintDEW1`, EDU5-CHK-DEW1). */
+export const EDU5_DEW1_FRAMES = 77;
+
+/** S01-B03-SH02 length in frames (`paintDROP2`, EDU5-CHK-DROP2). */
+export const EDU5_DROP2_FRAMES = 86;
+
+/** S01-B03-SH03 length in frames (`paintDROP3`, EDU5-CHK-DROP3). */
+export const EDU5_DROP3_FRAMES = 119;
+
+/** S01-B03-SH04 length in frames (`paintDROP4`, EDU5-CHK-DROP4). */
+export const EDU5_DROP4_FRAMES = 132;
+
+/** S01-B04-SH01 length in frames (`paintCOLD`, EDU5-CHK-COLD). */
+export const EDU5_COLD_FRAMES = 77;
+
+/** S01-B04-SH02 length in frames (`paintPUFF`, EDU5-CHK-PUFF). */
+export const EDU5_PUFF_FRAMES = 140;
+
+/** S01-B04-SH03 length in frames (`paintCRUMB`, EDU5-CHK-CRUMB). */
+export const EDU5_CRUMB_FRAMES = 115;
+
+/** S01-B05-SH01 length in frames (`paintPASS`, EDU5-CHK-PASS). */
+export const EDU5_PASS_FRAMES = 89;
+
+/** S01-B05-SH02 length in frames (`paintBARS`, EDU5-CHK-BARS). */
+export const EDU5_BARS_FRAMES = 173;
+
+/** S01-B05-SH04 length in frames (`paintEND`, EDU5-CHK-END). */
+export const EDU5_END_FRAMES = 196;
 
 const screen = ({opacity}: {opacity: number}) => (
   <AbsoluteFill style={{pointerEvents: 'none', opacity}}>
@@ -126,6 +156,96 @@ export const edu05Shots: PaintedShot[] = [
     paper: PAPER,
     camera: () => STILL_CAMERA,
     paint: (p) => paintLIFT(p, Math.min(p.frame, EDU5_LIFT_FRAMES - 1)),
+    Overlay: screen,
+  },
+  {
+    // S01-B03-SH01 (`paintDEW1` = EDU5-CHK-DEW1, SHEETS-R1.10), reused not copied.
+    id: 'EDU5-S01-B03-SH01',
+    serves: ['S01-B03-SH01'],
+    paper: PAPER,
+    camera: () => STILL_CAMERA,
+    paint: (p) => paintDEW1(p, Math.min(p.frame, EDU5_DEW1_FRAMES - 1)),
+    Overlay: screen,
+  },
+  {
+    // S01-B03-SH02 (`paintDROP2` = EDU5-CHK-DROP2, SHEETS-R1.10), reused not copied.
+    id: 'EDU5-S01-B03-SH02',
+    serves: ['S01-B03-SH02'],
+    paper: PAPER,
+    camera: () => STILL_CAMERA,
+    paint: (p) => paintDROP2(p, Math.min(p.frame, EDU5_DROP2_FRAMES - 1)),
+    Overlay: screen,
+  },
+  {
+    // S01-B03-SH03 (`paintDROP3` = EDU5-CHK-DROP3, SHEETS-R1.10), reused not copied.
+    id: 'EDU5-S01-B03-SH03',
+    serves: ['S01-B03-SH03'],
+    paper: PAPER,
+    camera: () => STILL_CAMERA,
+    paint: (p) => paintDROP3(p, Math.min(p.frame, EDU5_DROP3_FRAMES - 1)),
+    Overlay: screen,
+  },
+  {
+    // S01-B03-SH04 (`paintDROP4` = EDU5-CHK-DROP4, SHEETS-R1.10), reused not copied.
+    id: 'EDU5-S01-B03-SH04',
+    serves: ['S01-B03-SH04'],
+    paper: PAPER,
+    camera: () => STILL_CAMERA,
+    paint: (p) => paintDROP4(p, Math.min(p.frame, EDU5_DROP4_FRAMES - 1)),
+    Overlay: screen,
+  },
+  {
+    // S01-B04-SH01 (`paintCOLD` = EDU5-CHK-COLD, SHEETS-R1.10), reused not copied.
+    id: 'EDU5-S01-B04-SH01',
+    serves: ['S01-B04-SH01'],
+    paper: PAPER,
+    camera: () => STILL_CAMERA,
+    paint: (p) => paintCOLD(p, Math.min(p.frame, EDU5_COLD_FRAMES - 1)),
+    Overlay: screen,
+  },
+  {
+    // S01-B04-SH02 (`paintPUFF` = EDU5-CHK-PUFF, SHEETS-R1.10), reused not copied.
+    id: 'EDU5-S01-B04-SH02',
+    serves: ['S01-B04-SH02'],
+    paper: PAPER,
+    camera: () => STILL_CAMERA,
+    paint: (p) => paintPUFF(p, Math.min(p.frame, EDU5_PUFF_FRAMES - 1)),
+    Overlay: screen,
+  },
+  {
+    // S01-B04-SH03 (`paintCRUMB` = EDU5-CHK-CRUMB, SHEETS-R1.10), reused not copied.
+    id: 'EDU5-S01-B04-SH03',
+    serves: ['S01-B04-SH03'],
+    paper: PAPER,
+    camera: () => STILL_CAMERA,
+    paint: (p) => paintCRUMB(p, Math.min(p.frame, EDU5_CRUMB_FRAMES - 1)),
+    Overlay: screen,
+  },
+  {
+    // S01-B05-SH01 (`paintPASS` = EDU5-CHK-PASS, SHEETS-R1.10), reused not copied.
+    id: 'EDU5-S01-B05-SH01',
+    serves: ['S01-B05-SH01'],
+    paper: PAPER,
+    camera: () => STILL_CAMERA,
+    paint: (p) => paintPASS(p, Math.min(p.frame, EDU5_PASS_FRAMES - 1)),
+    Overlay: screen,
+  },
+  {
+    // S01-B05-SH02 (`paintBARS` = EDU5-CHK-BARS, SHEETS-R1.10), reused not copied.
+    id: 'EDU5-S01-B05-SH02',
+    serves: ['S01-B05-SH02'],
+    paper: PAPER,
+    camera: () => STILL_CAMERA,
+    paint: (p) => paintBARS(p, Math.min(p.frame, EDU5_BARS_FRAMES - 1)),
+    Overlay: screen,
+  },
+  {
+    // S01-B05-SH04 (`paintEND` = EDU5-CHK-END, SHEETS-R1.10), reused not copied.
+    id: 'EDU5-S01-B05-SH04',
+    serves: ['S01-B05-SH04'],
+    paper: PAPER,
+    camera: () => STILL_CAMERA,
+    paint: (p) => paintEND(p, Math.min(p.frame, EDU5_END_FRAMES - 1)),
     Overlay: screen,
   },
 ];
