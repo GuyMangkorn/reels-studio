@@ -20,7 +20,7 @@ export type Mouth = 'flat' | 'smile' | 'o' | 'wavy' | 'frown' | 'gasp' | 'talk' 
  * `tears` 0..1 paints tear streams under the eyes (0 or absent = none); `sweat` adds a sweat drop beside the forehead.
  * `bags` 0..1 paints dark under-eye bags (the `tired` expression, 2 Nov 2026).
  */
-export type FaceState = {brow: Brow; eyes: Eyes; look: Pt; mouth: Mouth; open?: number; squint?: number; browTo?: Brow; browMix?: number; tears?: number; sweat?: boolean; bags?: number};
+export type FaceState = {brow: Brow; eyes: Eyes; look: Pt; mouth: Mouth; open?: number; squint?: number; browTo?: Brow; browMix?: number; tears?: number; sweat?: boolean; bags?: number; /** Near cheek bulge 0..1 (eating, chewing): profile and turned heads only, a soft push of the cheek and a short crease. */ chew?: number};
 /** The cuts of the WFOG/ZC cast (`short|tied|bob|hood|long`) and the people-library cuts (`hair.ts`, `NewCut`). */
 export type Cut = 'short' | 'tied' | 'bob' | 'hood' | 'long' | NewCut;
 /**
@@ -32,7 +32,7 @@ export type Cut = 'short' | 'tied' | 'bob' | 'hood' | 'long' | NewCut;
  * only; every PEOPLE entry has a look).
  */
 export type HeadStyle = {skin: string; hair: string; cut: Cut; hood?: string; /** Profile hood only: a wide opening that leaves the whole face visible (set by the hood-up state, `back.ts` `hoodUpHead`); absent = the WFOG hood. */ hoodOpen?: boolean; lines?: boolean; accent?: string; facial?: 'stubble' | 'mustache' | 'beard'; glasses?: boolean; brows?: string; look?: FaceLook;
-  /** Profile views only (`paintHeadSide`): hair strands with a lit edge, an iris eye with lid line, crease, lash and catch-light, a nose wing and nostril, upper and lower lips with a corner crease. Follows `look` (iris colour, `lash: false`). Default absent = the plain WFOG profile; front, back and turned views ignore it. */
+  /** Profile views only (`paintHeadSide`): hair strands with a lit edge, an iris eye with lid line, crease, lash and catch-light, a nose wing and nostril (no drawn lips in profile). Follows `look` (iris colour, `lash: false`). Default absent = the plain WFOG profile; front, back and turned views ignore it. */
   sideDetail?: boolean};
 
 /**
@@ -51,6 +51,28 @@ export type FaceLook = {eye: 'almond' | 'lidded' | 'hooded' | 'round'; wing?: bo
 /** Head height (forehead top to chin) in head units K; chin below the centre. */
 export const HEAD_SPAN = 2.27;
 export const CHIN = 1.22;
+/**
+ * Jaw opening 0..1 of a face (profile and turned heads, 7 Nov 2026): how far the lower jaw drops. `talk` and `shout` follow `open`; `o`, `gasp`
+ * and an open `smile` are a fixed fraction of it; `grin` is a wide laugh. Closed mouths (flat, frown, smirk, wavy, small talk) are 0.
+ */
+export const jawOpenOf = (face: FaceState): number => {
+  const o = face.open, m = face.mouth;
+  if (m === 'talk') return Math.max(0, Math.min(1, o ?? 0));
+  if (m === 'shout') return Math.min(1, o ?? 1);
+  if (m === 'o') return 0.4 * Math.min(1, o ?? 1);
+  if (m === 'gasp') return 0.6 * Math.min(1, o ?? 1);
+  if (m === 'grin') return 0.5;
+  if (m === 'smile') return o === undefined || o >= 0.3 ? 0.2 : 0;
+  return 0;
+};
+/** Chin drop in head units at full jaw opening. */
+const JAW_DROP = 0.24;
+/** Profile jaw: the point `[x, y]` of the head egg after the lower jaw drops by `jaw` (0..1): below the lip line it drops and swings back a little. */
+const jawSide = (jaw: number, [x, y]: Pt): Pt => {
+  if (jaw <= 0) return [x, y];
+  const w = smooth01(0.55, 0.75, y);
+  return [x - 0.05 * jaw * w, y + JAW_DROP * jaw * w];
+};
 export const BROW_Y: Record<Brow, [number, number]> = {flat: [-0.24, -0.24], up: [-0.33, -0.31], worry: [-0.34, -0.2], angry: [-0.16, -0.32], quirk: [-0.24, -0.24]};
 /** Brow line heights of a face: the `brow` table entry, blended toward `browTo` by `browMix` when both are set. */
 const browY = (face: FaceState): [number, number] => {
@@ -394,6 +416,8 @@ export const paintHeadFront = (p: Painter, seed: number, cx: number, cy: number,
     : cut === 'long' ? [...Array.from({length: 17}, (_, i): Pt => [1.16 * Math.cos(Math.PI + (i / 16) * Math.PI), 1.18 * Math.sin(Math.PI + (i / 16) * Math.PI) - 0.02]), [1.2, 0.6], [1.26, 1.3], [1.12, 1.72], [0.72, 1.62], [-0.72, 1.62], [-1.12, 1.72], [-1.26, 1.3], [-1.2, 0.6]]
     : cut === 'tied' ? ell(0.05, -1.12, 0.32, 0.22, 18)
     : null;
+  // Turned head (7 Nov 2026): the lower jaw drops with `open` (the chin of the skull and of the face window move down), and `chew` bulges the near cheek.
+  const jawT = turn ? jawOpenOf(face) : 0, jawDown = (pts: Pt[]): Pt[] => (jawT > 0 ? pts.map(([u, v]): Pt => [u, v + JAW_DROP * 0.8 * jawT * smooth01(0.45, 1.05, v)]) : pts);
   const hairs: Pt[][] = nc ? nc.hair : [legacyFrontHair(cut)];
   const hairFill = nc?.tone ? mixColor(hairC, skin, nc.tone) : hairC;
   // Three-quarter head (pass 4, 4 Nov 2026; user: the r3 hair read as a wig sliding off the skull). Skull and hair are one solid: the
@@ -423,10 +447,10 @@ export const paintHeadFront = (p: Painter, seed: number, cx: number, cy: number,
     });
     const volume = cut === 'curly' || cut === 'perm' ? nc?.back ?? [] : [];
     const bald = cut === 'balding';
-    const shell = polarUnion([headOutline(60), ...(back ? [back] : []), ...volume, ...(bald ? [] : hairs)], [0, -0.1]);
+    const shell = polarUnion([jawDown(headOutline(60)), ...(back ? [back] : []), ...volume, ...(bald ? [] : hairs)], [0, -0.1]);
     // The face window: skin below the hairline of the cap (the whole face for the hood opening and a bald crown).
     const hl = cut === 'hood' || bald ? null : hairs.map(hairlineOf).find((r) => r) ?? null;
-    const win = hl ? faceWindow(hl) : headOutline(96);
+    const win = jawDown(hl ? faceWindow(hl) : headOutline(96));
     const vT = hl ? (sg > 0 ? hl[hl.length - 1][1] : hl[0][1]) : 0.02;
     // Side hairline (x = position toward the facing side): at the face window's far edge (the ear line, -cos theta) it is the temple, at
     // the far silhouette the nape height behind the ear. Bob, curly and perm end at their cut; long hair and the hood cover the head.
@@ -501,6 +525,13 @@ export const paintHeadFront = (p: Painter, seed: number, cx: number, cy: number,
     const far = vs.map((v): Pt => [turnU(turn, -sg * headRho(v) * 0.995, v), v]);
     const inn = vs.map((v, i): Pt => [far[i][0] + sg * 0.36 * sn * Math.max(0.06, 1 - ((v - 0.45) / 0.85) ** 2), v]).reverse();
     glaze(p, 7_650_000 + seed, mixColor(skin, '#6a3f2c', 0.3), 95, R([...far, ...inn]), {border: 0.3, bleed: 0.1});
+    // Chewing: the facing cheek swells (a warm round shade over the cheek and a short crease round its lower edge).
+    const chewT = Math.min(1, face.chew ?? 0);
+    if (chewT > 0) {
+      const cc = turnU(turn, sg * 0.1, 0.52), bulge = ell(cc, 0.52, 0.15 + 0.05 * chewT, 0.14 + 0.04 * chewT, 16);
+      glaze(p, 7_660_000 + seed, mixColor(skin, '#d9806a', 0.4), 70 + 60 * chewT, R(bulge), {border: 0.3, bleed: 0.08});
+      inkLine(p, seed * 100 + 97, R(Array.from({length: 7}, (_, i): Pt => [cc + sg * (0.04 + 0.17 * Math.cos(0.4 + (i / 6) * 1.7)), 0.52 + 0.17 * Math.sin(0.4 + (i / 6) * 1.7)])), {weight: 0.7 + 0.3 * chewT, curve: 0.5, closed: false, color: mixColor(lineOf(skin, L), '#a4504a', 0.3)});
+    }
     const u0 = turnU(turn, 0, 0.3), tip = u0 + sg * (0.2 + 0.2 * sn);
     const nose: Pt[] = [[u0, 0.14], [tip, 0.36], [tip - sg * 0.05, 0.42], [u0 + sg * 0.04, 0.45]];
     solid(p, seed * 100 + 98, skin, R(nose), 3, L ? 0 : 0.04, 0.2);
@@ -591,7 +622,7 @@ export const paintHeadFront = (p: Painter, seed: number, cx: number, cy: number,
     const sp = part, sl = line;
     part = 60;
     line = 60;
-    paintFacialFront(style.facial, {p, seed, Q, color: toneOf(style.hair, L), skin, L, fill, ink});
+    paintFacialFront(style.facial, {p, seed, Q: (pts) => Q(jawDown(pts)), color: toneOf(style.hair, L), skin, L, fill, ink});
     part = sp;
     line = sl;
   }
@@ -612,7 +643,8 @@ export const paintHeadFront = (p: Painter, seed: number, cx: number, cy: number,
   }
   if (m === 'o' || m === 'gasp' || (m === 'talk' && (face.open ?? 0) >= 0.08)) {
     const o = face.open ?? 1;
-    const pts = m === 'o' ? ell(0, my + 0.03, 0.11, 0.13, 16) : m === 'gasp' ? ell(0, my + 0.02, 0.15, 0.07, 16) : ell(0, my + 0.02, 0.13, 0.02 + 0.08 * o, 16);
+    const dj = turn ? JAW_DROP * 0.8 * jawT : 0; // turned head: the upper lip stays, the lower lip goes down with the chin
+    const pts = m === 'o' ? ell(0, my + 0.03 + dj / 2, 0.11, 0.13, 16) : m === 'gasp' ? ell(0, my + 0.02 + dj / 2, 0.15, 0.07, 16) : turn ? ell(0, my + 0.01 + 0.025 + dj / 2, 0.13, 0.025 + dj / 2, 16) : ell(0, my + 0.02, 0.13, 0.02 + 0.08 * o, 16);
     fill(MOUTH, pts, 4);
     ink(pts, 1.0, 0.4, true);
   }
@@ -629,7 +661,7 @@ export const paintHeadFront = (p: Painter, seed: number, cx: number, cy: number,
     ink([[0.24, my - 0.05], [0.29, my - 0.11]], 1.1, 0);
   }
   if (m === 'shout') {
-    const pts = ell(0, my + 0.1, 0.2, 0.08 + 0.12 * (face.open ?? 1), 20);
+    const pts = ell(0, my + 0.1 + (turn ? JAW_DROP * 0.4 * jawT : 0), 0.2, 0.08 + 0.12 * (face.open ?? 1), 20);
     fill(MOUTH, pts, 4);
     ink(pts, 1.0, 0.4, true);
   }
@@ -717,7 +749,15 @@ export const paintHeadSide = (p: Painter, seed: number, cx: number, cy: number, 
     ink(poly, 1.0, 0.15, true, lineOf(hairC, L));
   });
   part = 6;
-  const head = headOutline();
+  // The jaw follows `open` (the chin outline moves down and back with the lower lip), the near cheek bulges with `chew`.
+  const jaw = jawOpenOf(face), chewK = Math.min(1, face.chew ?? 0);
+  const jawQ = (pts: Pt[]): Pt[] => pts.map((q) => jawSide(jaw, q));
+  const head = headOutline(120).map(([x, y]): Pt => {
+    const [jx, jy] = jawSide(jaw, [x, y]);
+    if (chewK <= 0) return [jx, jy];
+    const d = Math.hypot(jx - 0.8, jy - 0.5), g = Math.max(0, 1 - d / 0.38), push = chewK * 0.09 * g * g * (3 - 2 * g), nx = jx + 0.1, ny = jy - 0.2, nl = Math.hypot(nx, ny) || 1;
+    return [jx + (nx / nl) * push, jy + (ny / nl) * push];
+  });
   fill(skin, head, 8);
   if (L) faceModel(p, seed, skin, Q(head), L, [[cx + dir * 0.55 * K, cy + 0.36 * K, 0.2 * K, 0.11 * K]]);
   fill(skin, [[0.9, 0.1], [1.13, 0.34], [0.95, 0.43]], 4); // nose
@@ -818,21 +858,31 @@ export const paintHeadSide = (p: Painter, seed: number, cx: number, cy: number, 
     const sp = part, sl = line;
     part = 60;
     line = 60;
-    paintFacialSide(style.facial, {p, seed, Q, color: toneOf(style.hair, L), skin, L, fill, ink: (pts, w, c, closed, col) => ink(pts, w, c, closed, col)});
+    paintFacialSide(style.facial, {p, seed, Q: (pts) => Q(jawQ(pts)), color: toneOf(style.hair, L), skin, L, fill, ink: (pts, w, c, closed, col) => ink(pts, w, c, closed, col)});
     part = sp;
     line = sl;
   }
-  const m = face.mouth, o = face.open ?? 0;
-  if (m === 'smile') fill(MOUTH, [[0.66, 0.56], [0.95, 0.54], [0.9, 0.66], [0.78, 0.7], [0.7, 0.64]], 4);
-  else if (m === 'grin') {
-    fill(MOUTH, [[0.58, 0.52], [0.94, 0.5], [0.9, 0.7], [0.78, 0.8], [0.64, 0.74]], 4);
-    fill(WHITE, [[0.62, 0.53], [0.92, 0.51], [0.91, 0.6], [0.64, 0.62]], 3);
-  } else if (m === 'smirk') ink([[0.7, 0.66], [0.84, 0.66], [0.96, 0.58]], 1.3, 0.5, false);
-  else if (m === 'shout') fill(MOUTH, ell(0.76, 0.66, 0.07 + 0.03 * (face.open ?? 1), 0.08 + 0.1 * (face.open ?? 1), 14), 4);
-  else if (m === 'frown') ink([[0.7, 0.66], [0.8, 0.6], [0.92, 0.64]], 1.4, 0.6, false);
-  else if (m === 'wavy') ink([[0.7, 0.62], [0.76, 0.59], [0.82, 0.63], [0.88, 0.59], [0.93, 0.62]], 1.1, 0.5, false);
-  else if (m === 'o' || m === 'gasp' || (m === 'talk' && o >= 0.08)) fill(MOUTH, ell(0.84, 0.62, 0.08, 0.03 + 0.06 * (m === 'talk' ? o : 1), 12), 4);
-  else ink([[0.72, 0.62], [0.93, 0.62]], 1.2, 0, false);
+  // Mouth (7 Nov 2026): the plain profile mouth shapes, no drawn lips (user: no shaped/cupid's-bow lips in profile). The jaw drops with
+  // `open` (`jawSide`), so every mouth point below the lip line moves down and back with the chin.
+  {
+    const m = face.mouth, o = face.open ?? 0, J = (pts: Pt[]) => pts.map((q) => jawSide(jaw, q));
+    part = 40;
+    line = 40;
+    if (m === 'smile') fill(MOUTH, J([[0.66, 0.56], [0.95, 0.54], [0.9, 0.66], [0.78, 0.7], [0.7, 0.64]]), 4);
+    else if (m === 'grin') {
+      fill(MOUTH, J([[0.58, 0.52], [0.94, 0.5], [0.9, 0.7], [0.78, 0.8], [0.64, 0.74]]), 4);
+      fill(WHITE, [[0.62, 0.53], [0.92, 0.51], [0.91, 0.6], [0.64, 0.62]], 3);
+    } else if (m === 'smirk') ink([[0.7, 0.66], [0.84, 0.66], [0.96, 0.58]], 1.3, 0.5, false);
+    else if (m === 'shout') fill(MOUTH, J(ell(0.76, 0.64, 0.07 + 0.03 * (face.open ?? 1), 0.08, 14)), 4); // the jaw adds the height
+    else if (m === 'frown') ink([[0.7, 0.66], [0.8, 0.6], [0.92, 0.64]], 1.4, 0.6, false);
+    else if (m === 'wavy') ink([[0.7, 0.62], [0.76, 0.59], [0.82, 0.63], [0.88, 0.59], [0.93, 0.62]], 1.1, 0.5, false);
+    else if (m === 'o' || m === 'gasp' || (m === 'talk' && (o >= 0.08 || jaw > 0.03))) {
+      // Open mouth: a dark gap whose lower edge rides the dropped jaw.
+      const h = m === 'talk' ? 0.02 + 0.03 * o : 0.06;
+      fill(MOUTH, J(ell(0.84, 0.6, 0.08, h, 12)), 4);
+    } else ink([[0.72, 0.62], [0.93, 0.62]], 1.2, 0, false);
+    if (chewK > 0) ink([[0.5, 0.52], [0.58, 0.6], [0.55, 0.7]], 0.8 + 0.4 * chewK, 0.6, false, mixColor(skinLine, '#a4504a', 0.3)); // bulging cheek: a short crease round it
+  }
   if (style.glasses) {
     line = 70;
     ink(ell(0.62, 0.05, 0.22, 0.22, 22), 1.5, 0.3, true, GLASSES);
