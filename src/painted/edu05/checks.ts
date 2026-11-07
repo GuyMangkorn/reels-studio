@@ -25,7 +25,7 @@ import type {Item} from './world';
 //   printf 'EDU5-CHK-EDGE 45 out/edu05/w52/g1/EDGE45.png\n' | node scripts/stills.mjs src/painted/edu05/check-index.ts
 // They show an element in its shot's camera and staging, not a finished shot (Editor assembles those).
 
-export const CHECK_FRAMES = {EDGE: 90, DEW1: 77, DROP2: 86, DROP3: 119, DROP4: 132, ANTW: 25, FX: 80, FAC: 97, SPECK: 32, DRIFT: 133, POSES: 210, CRUMB: 115, PUFF: 140, LIFT: 173, LIFTOFF: 89, LANDING: 93, SIP: 41, TOUCH: 71, STAND: 32, COLD: 77, PASS: 89, BARS: 173, END: 196} as const;
+export const CHECK_FRAMES = {EDGE: 90, DEW1: 77, DROP2: 86, DROP3: 119, DROP4: 132, ANTW: 25, FX: 80, FAC: 97, SPECK: 32, DRIFT: 159, POSES: 210, CRUMB: 115, PUFF: 140, LIFT: 173, LIFTOFF: 89, LANDING: 93, SIP: 41, TOUCH: 71, STAND: 32, COLD: 77, PASS: 89, BARS: 173, END: 196} as const;
 const FPS = 30;
 
 /** G1: N2 shade edge sliding -0.5 -> -1.2 (S01-B05-SH01 L 0-89) with the shot camera, TINY cooled by `edgeShade` (K1), a gust (N1). */
@@ -77,7 +77,7 @@ export const paintSPECK = (p: Painter, frame: number) => {
 export const driftRoll = (L: number) => (8 / 90) * Math.sin((2 * Math.PI * L) / 90);
 /** G10: N2 drift air + N10 air streaks round TINY (S01-B02-SH02, spread arms). */
 export const paintDRIFT = (p: Painter, frame: number) => {
-  const c = camOf({at: [[0, 0.8, 0], [0, 0.8, 0]], yaw: [-10, 15], r: [2.4, 2.4], eye: [1.0, 1.0], f: 1050, hy: 780}, frame / 132), t = frame / FPS, out: {a?: FigAnchors | null} = {};
+  const c = camOf({at: [[0, 0.8, 0], [0, 0.8, 0]], yaw: [-10, 15], r: [2.4, 2.4], eye: [1.0, 1.0], f: 1050, hy: 780}, frame / 158), t = frame / FPS, out: {a?: FigAnchors | null} = {};
   paintDriftAir(p, t, frame, 438);
   // R1.3 FR13: no contact shadow (she is airborne); body roll +-8 deg (sine, period 90 f) as the sheet's SET-DRIFT staging says (kit `lie`: 1 = 90 deg)
   tinyItem({at: [0, 0, 0], view: 'front', named: {name: 'drift-spread', L: frame}, face: 'surprised', t, shadow: false, fig: {lie: driftRoll(frame)}}, out).draw(p, c);

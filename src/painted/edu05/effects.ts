@@ -185,7 +185,7 @@ export const paintScaleBars = (p: Painter, s: BarsState) => {
 // ---- N2 SET-DRIFT (S01-B02-SH02) and N10 `soft air streaks`: motes rising relative to her at 0.15 sm/s, a blurred slab band sliding up
 // the left, and 3-5 thin pale curved strokes hugging her outline on L 50-70 (air holding her, never radial speed lines).
 /** The sheet's 0.15 sm/s is quoted as ~27 px/s but at TINY's depth (692 px for 1.58 sm = 438 px/sm) it is 66 px/s: the rise is capped at `maxPx` px/s (spike 4: < 40). */
-export const DRIFT = {moteSpeed: 0.15, maxPx: 27, slab: [20, 132] as [number, number], streaks: [50, 70] as [number, number], band: [1176, 1344] as [number, number]};
+export const DRIFT = {moteSpeed: 0.15, maxPx: 27, slab: [20, 158] as [number, number], streaks: [81, 113] as [number, number], band: [1176, 1344] as [number, number]};
 export type Mote = {x: number; y: number; r: number; a: number};
 /** Motes at time `t` s for a camera that follows her: `u` px per sm; rise at 0.15 sm/s (px/s = 0.15 u), sparse, faded inside the caption band. */
 export const driftMotes = (t: number, u: number, n = 22, seed = 16000): Mote[] =>
