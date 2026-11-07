@@ -41,3 +41,4 @@ Record: this file. Series context: [concepts.md](../concepts.md) · series task 
 - Concept sub-genre: psychology (perception and memory bias) with simple probability. Staging: ensemble at a supermarket checkout; camera rises to a top-down painted diagram (dots, arrows, a big "1/3").
 - Factual claims are `unchecked` in the concept. Boat's research and fact-check decide what the narration may say.
 - Film annotation for C4 exists in [concepts.md](../concepts.md) (R1, buildability: checkout set `PL-EG-COUNTER` / `STORE-I`-style assets are new).
+- 2026-11-07 (W8.0 cover): user picked **N2-feel** "ทำไมรู้สึก / แพ้ทุกที?" (plate `EDU4-S01-B05-SH01` l60) from `EDU-EP04-SHORT-V2-COVERS` (cover-design skill). Copied as `EDU-EP04-SHORT_cover.png` beside the MP4 (store `projects/EDU/renders/EDU-EP04-SHORT/d79951c20814-dirty-202611061433/`).
