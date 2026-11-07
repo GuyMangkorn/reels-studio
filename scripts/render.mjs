@@ -1,19 +1,19 @@
 // Usage: node scripts/render.mjs <CompositionId>... [--stills] [--frames=90,210] [--endings=A_fade,B_loop,C_seamless]
 //        [--gl=angle|egl|swiftshader|swangle|vulkan|angle-egl] [--timeout=<ms per frame>] [--concurrency=<n, default 4>]
-//        [--covers] [--preview] [--draft] [--range=<from>-<to>] [--no-cache] [--keep-pinned | --repaint=<shot,...|all>]
+//        [--covers] [--draft] [--preview = --draft] [--range=<from>-<to>] [--no-cache] [--keep-pinned | --repaint=<shot,...|all>]
 // Without --endings, only the ending selected in the episode registry (VideoDefinition.ending) is rendered.
 // ANGLE is the default; --gl overrides it. Painted episodes may need --timeout=180000 for heavy frames.
 // Per-run backend, stage/cache timing and result: out/logs/render-*.jsonl (printed on start and finish).
 // Videos render one scene at a time and keep each scene in the asset store (scripts/segments.mjs): a later render
 // re-renders only the scenes whose inputs changed. --no-cache renders every scene again.
-// --preview: half-size quick look (output and p5.brush canvas) in out/<id>/preview/, not archived; not for line-weight review.
 // --draft: half-size draft (paintScale 0.5 + paintDraft), scene-cached under its own variant (shared with the
-// storyboard page's draft cut, clips.mjs --full --draft), in out/<id>/draft/, not archived, never reused for delivery.
+// storyboard page's draft cut, clips.mjs --full --draft), in out/<id>/draft/, not archived, never reused for delivery;
+// not for line-weight review. --preview is the same render under its old name.
 // --range=<from>-<to>: those frames only, in out/<id>/range/, not archived. The whole scenes they touch are rendered
 // into the scene cache first, so a later full render reuses them.
 // Pinned finals (scripts/pin.mjs): a render stops when a pinned scene would change; --keep-pinned reuses the approved
 // segment, --repaint=<shot,...|all> renders it again and unpins it for a new review.
-// Delivery gate (docs/render-rules.md#render-stage): a delivery render (no --range, --draft, --preview, --stills or --covers)
+// Delivery gate (docs/render-rules.md#render-stage): a delivery render (no --range, --draft, --stills or --covers)
 // stops before painting while any scene of the ending is unpinned, i.e. before the user passed the final cut.
 // --unreviewed="<reason>" renders anyway, only after the user chose to skip the review; the reason is logged.
 // Measurements: docs/dev-findings/DF-20261031-render-speed.md.
@@ -37,15 +37,15 @@ import {endingsFor, parseRenderArgs} from './render-options.mjs';
 import {pinsFile, readJson, renderSegmented, unpinnedScenes, variantOf} from './segments.mjs';
 import {withRenderLog} from './render-log.mjs';
 
-const {ids, stills, covers: coversOnly, frames, endings: requestedEndings, gl, timeoutInMilliseconds, concurrency, preview, draft, noCache, range, keepPinned, repaint, unreviewed} = parseRenderArgs(process.argv.slice(2));
+const {ids, stills, covers: coversOnly, frames, endings: requestedEndings, gl, timeoutInMilliseconds, concurrency, draft, noCache, range, keepPinned, repaint, unreviewed} = parseRenderArgs(process.argv.slice(2));
 if (!ids.length) throw new Error('Name at least one composition ID, e.g. npm run render -- CATBOX-C01-Short');
 
 const browserExecutable = process.env.BROWSER_EXECUTABLE ?? null;
 const chromiumOptions = gl ? {gl} : {};
 const shared = {browserExecutable, chromiumOptions, timeoutInMilliseconds};
-const scale = preview || draft ? 0.5 : 1;
-const renderProps = {...(preview || draft ? {paintScale: 0.5} : {}), ...(draft ? {paintDraft: true} : {})};
-await withRenderLog({tool: 'render', ids, gl, stills, draft, preview, range, concurrency, scale}, async (metrics) => {
+const scale = draft ? 0.5 : 1;
+const renderProps = draft ? {paintScale: 0.5, paintDraft: true} : {};
+await withRenderLog({tool: 'render', ids, gl, stills, draft, range, concurrency, scale}, async (metrics) => {
 const serveUrl = await metrics.time('bundle', () => bundle({entryPoint: path.resolve('src/index.ts')}));
 const browser = await metrics.time('browser', () => openBrowser('chrome', {browserExecutable, chromiumOptions}));
 try {
@@ -66,7 +66,7 @@ try {
       continue;
     }
     if (stills) {
-      // --draft reaches stills too (a draft still used to be painted at final grade); --preview stays out: stills are full size.
+      // --draft reaches stills too (a draft still used to be painted at final grade); stills stay full size.
       const stillProps = draft ? {paintDraft: true} : {};
       const composition = await selectComposition({serveUrl, id, inputProps: stillProps, puppeteerInstance: browser, ...shared});
       await mkdir(`${dir}/stills`, {recursive: true});
@@ -76,7 +76,7 @@ try {
     }
     const base = await selectComposition({serveUrl, id, puppeteerInstance: browser, ...shared});
     const endings = endingsFor(requestedEndings, base.props);
-    if (!preview && !draft && !range) {
+    if (!draft && !range) {
       const pins = await readJson(pinsFile(id), {});
       const sceneCount = base.props.timeline?.length ?? 0;
       for (const ending of endings) {
@@ -93,13 +93,13 @@ try {
         console.log(`WARNING unreviewed delivery render: ${summary}; reason: ${unreviewed}`);
       }
     }
-    const outDir = range ? `${dir}/range` : preview ? `${dir}/preview` : draft ? `${dir}/draft` : dir;
+    const outDir = range ? `${dir}/range` : draft ? `${dir}/draft` : dir;
     await mkdir(outDir, {recursive: true});
     for (const ending of endings) {
       const inputProps = {ending, ...renderProps};
       const composition = await selectComposition({serveUrl, id, puppeteerInstance: browser, ...shared, inputProps});
       metrics.event('composition', {id, ending, width: composition.width, height: composition.height, fps: composition.fps, frames: composition.durationInFrames});
-      const output = `${outDir}/${id}_${ending}${range ? `${draft ? '_draft' : ''}${preview ? '_preview' : ''}_f${range[0]}-${range[1]}` : ''}.mp4`;
+      const output = `${outDir}/${id}_${ending}${range ? `${draft ? '_draft' : ''}_f${range[0]}-${range[1]}` : ''}.mp4`;
       const render = {serveUrl, composition, puppeteerInstance: browser, ...shared, scale, concurrency, inputProps};
       if (noCache) {
         let last = -1;
@@ -113,7 +113,7 @@ try {
       console.log(`Loudness ${output}: ${describeLoudness(await metrics.time('loudness', () => normalizeLoudness(output), {id, output}))}`);
       if (ending === endings.at(-1)) await copyFile(output, `${outDir}/${id}.mp4`);
     }
-    if (preview || draft || range) continue;
+    if (draft || range) continue;
     await renderCovers(id);
     try {
       const archived = await metrics.time('archive', () => {

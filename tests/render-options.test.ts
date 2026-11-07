@@ -39,11 +39,12 @@ test('--draft is off by default', () => {
   assert.equal(parseRenderArgs(['ZCPAINT-SHORT-TH', '--draft']).draft, true);
 });
 
-test('--preview and --no-cache are off by default', () => {
+test('--preview is --draft; --no-cache is off by default', () => {
   const off = parseRenderArgs(['ZCPAINT-SHORT-TH']);
-  assert.deepEqual([off.preview, off.noCache], [false, false]);
+  assert.deepEqual([off.draft, off.noCache], [false, false]);
   const on = parseRenderArgs(['ZCPAINT-SHORT-TH', '--preview', '--no-cache']);
-  assert.deepEqual([on.preview, on.noCache], [true, true]);
+  assert.deepEqual([on.draft, on.noCache], [true, true]);
+  assert.equal('preview' in on, false);
 });
 
 test('--range parses <from>-<to> and rejects bad ranges', () => {

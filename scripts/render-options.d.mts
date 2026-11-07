@@ -6,7 +6,6 @@ export type RenderArgs = {
   gl: string;
   timeoutInMilliseconds: number | undefined;
   concurrency: number;
-  preview: boolean;
   draft: boolean;
   keepPinned: boolean;
   repaint: string[];

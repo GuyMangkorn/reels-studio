@@ -31,10 +31,9 @@ export const parseRenderArgs = argv => {
     gl,
     timeoutInMilliseconds: positive('timeout'),
     concurrency: positive('concurrency') ?? 4,
-    // Quick look: half-size output and p5.brush canvas, written to out/<id>/preview/ and not archived.
-    preview: argv.includes('--preview'),
     // Draft: half size (paintScale 0.5) with paintDraft, cached under its own variant, written to out/<id>/draft/; never reused for delivery.
-    draft: argv.includes('--draft'),
+    // --preview is the old name of the same half-size render (user, 7 Nov 2026: one fast render, one cache).
+    draft: argv.includes('--draft') || argv.includes('--preview'),
     // Pinned finals (scripts/pin.mjs) whose inputs changed: keep the approved segments, or render these again (unpins them).
     keepPinned: argv.includes('--keep-pinned'),
     repaint: value('repaint')?.split(',').filter(Boolean) ?? [],
