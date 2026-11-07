@@ -265,9 +265,9 @@ export const liftoffAt = (L: number): V3 => [
  *    into it L 22-38 (P01 -> P39 arms, lean; legs stay straight and planted until her feet leave the soil).
  *  - L 38 lift-off: legs trail into the P39 stride only after the feet are off the ground (run ramps in L 38-46, no slide); she rises
  *    gently (first 4 f 0.1 sm), over the lip by L 54 (feet 1.5), clear by L 62, drifting up and away to (-0.8, 3.0, -8.5).
- *  - L 46-59 the profile settles toward the front pose (stride closes L 46-55, lean goes, arms ease to the profile `drift-spread` arms L 50-59),
- *    then a 1 f hard swap at L 59 to the front `drift-spread` (no cross-dissolve, so no ghost double; soft roll fades in over L 60-72 and ends where
- *    SH02's starts, ~0 deg).
+ *  - L 46-52 the stride closes, the lean goes and both arms come down along the body (profile: no arm points toward or away from the lens);
+ *    L 52 one hard swap to the kit's front three-quarter (60 deg, no ghost), the body turns to the lens 60 -> 15 deg over L 52-60 while the arms
+ *    open out from the sides to `drift-spread`; L 60 the exact front view, soft roll fades in over L 60-72 and ends where SH02's starts, ~0 deg.
  *  - the ground shadow fades with her height (none from 0.35 sm up).
  */
 export const paintLIFTOFF = (p: Painter, frame: number) => {
@@ -277,22 +277,25 @@ export const paintLIFTOFF = (p: Painter, frame: number) => {
   if (!g) return;
   // profile phase: P01 -> P39 (the kit blend), the lean and arms come in L 22-38, the run (stride) only once she is off the soil
   const w = ramp(22, 38), side = poseMix('P01', 'P39', w, TINY, g, u, 'left');
-  // L 50-59 the profile settles toward the front pose (stride closes, lean goes, arms ease to the profile drift-spread arms), so the one-frame swap at L 59 has close silhouettes
-  const settle = ramp(50, 59), driftSide = namedPose('drift-spread', L, TINY, g, u, 'left');
-  const sideBase: Partial<FigPose> = {...side, run: 0.3 * ramp(38, 46) * (1 - ramp(46, 55)), lean: (side.lean ?? 0) * (L < 38 ? w : 1) * (1 - settle)};
-  const sideFig: Partial<FigPose> = settle > 0 ? {...sideBase, rArm: blendFig(sideBase, driftSide, settle).rArm, lArm: blendFig(sideBase, driftSide, settle).lArm} : sideBase;
-  // front phase: drift-spread arms with the SET-DRIFT roll
+  // profile: stride closes and both arms come down along the body L 46-52 (no arm points toward or away from the lens in a true profile)
+  const close = ramp(46, 52), calmSide = poseMix('P01', 'P01', 0, TINY, g, u, 'left');
+  const sideBase: Partial<FigPose> = {...side, run: 0.3 * ramp(38, 46) * (1 - close), lean: (side.lean ?? 0) * (L < 38 ? w : 1) * (1 - close)};
+  const sideFig: Partial<FigPose> = close > 0 ? {...sideBase, ...(() => { const m = blendFig(sideBase, calmSide, close); return {rArm: m.rArm, lArm: m.lArm}; })()} : sideBase;
+  // L 52-60 one hard swap to the front three-quarter (60 deg), then the body turns to the camera (60 -> 15 deg) while the arms open out from the sides
+  const turn = L >= 52, qDeg = keyed([[52, 60], [54, 50], [56, 40], [58, 28], [60, 15]], L), open = ramp(52, 60);
   const roll = driftRoll(L) * ramp(60, 72), frontNamed = namedPose('drift-spread', L, TINY, g, u, 'front');
-  const fade = L >= 59 ? 1 : 0, facing = 'scared' as const;
+  const restFront = frontNamed, calmFront = poseMix('P01', 'P01', 0, TINY, g, u, 'front');
+  const armsOpen = blendFig(calmFront, restFront, open);
+  const facing = 'scared' as const;
   const lipMat = L < 4 ? 0 : 0.22 * ramp(4, 30);
   const sideOpts = {at, view: 'left' as const, pose: 'P39' as const, face: facing, t, shadow: false, fig: sideFig};
-  const frontOpts = {at, view: 'front' as const, named: {name: 'drift-spread' as const, L}, face: facing, t, shadow: false, fig: {...frontNamed, lie: roll}};
+  const frontFig: Partial<FigPose> = {...frontNamed, rArm: armsOpen.rArm, lArm: armsOpen.lArm, ...(L < 60 ? {quarter: 'left' as const, quarterDeg: qDeg} : {lie: roll})};
+  const frontOpts = {at, view: 'front' as const, named: {name: 'drift-spread' as const, L}, face: facing, t, shadow: false, fig: frontFig};
   const lead: Item = {at, bias: 0, draw: (q, cc) => {
     if (h <= 1e-4) MEASURE.LIFTOFF = paintTiny(q, cc, {...sideOpts, shadow: true});
     else {
       groundShadow(q, cc, at, h, true);
-      if (fade < 1) MEASURE.LIFTOFF = paintTiny(fade > 0 ? q.layer(1 - fade, 20000) : q, cc, sideOpts);
-      if (fade > 0) MEASURE.LIFTOFF = paintTiny(fade < 1 ? q.layer(fade, 21000) : q, cc, frontOpts);
+      MEASURE.LIFTOFF = paintTiny(q, cc, turn ? frontOpts : sideOpts);
     }
   }};
   paintPlanter(p, c, {t, items: [lead], blades: planterBlades().filter((b) => b.root[2] < -5.3 || b.root[0] < -3.3 || b.root[0] > 3.4), wallItem: true, calm: [1150, 1370], bits: 110, gust: lipMat > 0 ? {dir: [0, -1], amt: lipMat} : undefined});
