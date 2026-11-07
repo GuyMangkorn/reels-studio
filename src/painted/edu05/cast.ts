@@ -44,6 +44,8 @@ export type TinyOpts = {
   shadow?: boolean;
   /** Shrink-pop (N7): the whole card (feet point, unit, shadow, props) scaled by `s` about the picture point `about`. */
   scale?: {about: Pt; s: number};
+  /** R1.9 FR26: with `scale`, the contact shadow stays at its floor spot (unscaled) at this opacity factor 0..1 (default 1 = scales with the card). */
+  shadowFade?: number;
 };
 
 /** TINY through the yaw camera: flat card at the ground point, view held square to `cam` (painted 3D camera). */
@@ -53,13 +55,14 @@ export const paintTiny = (p: Painter, c: YCam, o: TinyOpts): FigAnchors | null =
   const sc = o.scale, g: Pt = sc ? [sc.about[0] + (g0[0] - sc.about[0]) * sc.s, sc.about[1] + (g0[1] - sc.about[1]) * sc.s] : g0, u = sc ? u0 * sc.s : u0;
   const facing = squareToCam(c, o.at, o.view);
   const a = viewAngle(c, o.at, facing), view: FigPose['view'] = Math.abs(a) <= 45 ? 'front' : Math.abs(a) >= 135 ? 'back' : a > 0 ? 'right' : 'left';
-  if (o.shadow !== false) washAt(p, 5101, '#3b3226', 60, ell(g[0], g[1], 0.32 * u, 0.06 * u, 16), 0.15, 0.2);
+  const floor = sc && o.shadowFade !== undefined ? {g: g0, unit: u0, k: Math.max(0, Math.min(1, o.shadowFade))} : undefined;
+  if (o.shadow !== false && (!floor || floor.k > 0.001)) washAt(p, 5101, '#3b3226', 60 * (floor?.k ?? 1), ell(floor ? floor.g[0] : g[0], floor ? floor.g[1] : g[1], 0.32 * (floor ? u0 : u), 0.06 * (floor ? u0 : u), 16), 0.15, 0.2);
   const pv = view === 'back' ? 'front' : view;
   const pose = {...poseFor(o.pose ?? (o.named ? BASE_OF[o.named.name] : 'P01'), TINY, g, u, pv), ...(o.named ? namedPose(o.named.name, o.named.L, TINY, g, u, view) : {})};
   const face = {...EXPRESSIONS[o.face ?? 'neutral'], ...(o.faceState ?? {})} as FaceState;
   // K1 (W5.2): the kit `tintPainter` with `brush: true` takes the rig's solid fills (was the episode-local `tintAll`)
   const q = o.tint ? tintPainter(p, o.tint.to, o.tint.u, {mul: o.tint.mul, brush: true}) : p;
-  const anchors = drawFigure(q, TINY, g, u, {...pose, view, face, headCock: o.headCock, ...(o.shadow === false ? {noShadow: true} : {}), ...o.fig}, o.t);
+  const anchors = drawFigure(q, TINY, g, u, {...pose, view, face, headCock: o.headCock, ...(o.shadow === false ? {noShadow: true} : {}), ...(floor ? {shadowFloor: floor} : {}), ...o.fig}, o.t);
   o.held?.(q, anchors, u);
   return anchors;
 };

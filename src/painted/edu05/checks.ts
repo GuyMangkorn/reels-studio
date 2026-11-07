@@ -265,7 +265,7 @@ export const liftoffAt = (L: number): V3 => [
 /**
  * G15: S01-B02-SH01 stand-in (breeze and lift-off, SD05 camera, SET-MACRO-PLANTER). Shot-local L (0-88):
  *  - L 4-30 breeze bends the tufts toward -z (tip deflection 0.22 of height, < 0.25, then holds); she stands at the lip, scared, leaning
- *    into it L 22-38 (P01 -> P39 arms, lean; legs stay straight and planted until her feet leave the soil).
+ *    into it L 22-38 (P01 -> P39 arms, lean; both soles on the soil L 0-24 (kit `runMix` 0: stance, feet 0.12 sm apart), P39 legs blend in L 24-38 with the grounded foot fixed; R1.9 FR28).
  *  - L 38 lift-off: legs trail into the P39 stride only after the feet are off the ground (run ramps in L 38-46, no slide); she rises
  *    gently (first 4 f 0.1 sm), over the lip by L 54 (feet 1.5), clear by L 62, drifting up and away to (-0.8, 3.0, -8.5).
  *  - L 46-52 the stride closes, the lean goes and both arms come down along the body (profile: no arm points toward or away from the lens);
@@ -282,7 +282,7 @@ export const paintLIFTOFF = (p: Painter, frame: number) => {
   const w = ramp(22, 38), side = poseMix('P01', 'P39', w, TINY, g, u, 'left');
   // profile: stride closes and both arms come down along the body L 46-52 (no arm points toward or away from the lens in a true profile)
   const close = ramp(46, 52), calmSide = poseMix('P01', 'P01', 0, TINY, g, u, 'left');
-  const sideBase: Partial<FigPose> = {...side, run: 0.3 * ramp(38, 46) * (1 - close), lean: (side.lean ?? 0) * (L < 38 ? w : 1) * (1 - close)};
+  const sideBase: Partial<FigPose> = {...side, run: 0.3 * ramp(38, 46) * (1 - close), runMix: ramp(24, 38), lean: (side.lean ?? 0) * (L < 38 ? w : 1) * (1 - close)};
   const sideFig: Partial<FigPose> = close > 0 ? {...sideBase, ...(() => { const m = blendFig(sideBase, calmSide, close); return {rArm: m.rArm, lArm: m.lArm}; })()} : sideBase;
   // L 52-60 one hard swap to the front three-quarter (60 deg), then the body turns to the camera (60 -> 15 deg) while the arms open out from the sides
   const turn = L >= 52, qDeg = keyed([[52, 60], [54, 50], [56, 40], [58, 28], [60, 15]], L), open = ramp(52, 60);
@@ -354,7 +354,7 @@ export const paintSIP = (p: Painter, frame: number) => {
 };
 
 /** The touch point of S01-B01-SH03 (grass blades on the planter's outer edge) and the mug's resting spot on the rail cap, world metres. */
-const TOUCH_W: V3 = [0.15, 1.30, -0.05], MUG_W: V3 = [-0.25, 1.10, 0.0];
+const TOUCH_W: V3 = [0.15, 1.30, -0.05], MUG_W: V3 = [-0.55, 1.10, 0.0];
 /**
  * G18: S01-B01-SH03 stand-in (touch and pop, VD05; SD03 camera). Shot-local L (0-70):
  *  - L 2-8 she carries the mug to the rail cap and lets go (the hand opens at L 8; the mug stays on the cap, bare), arm then drops L 8-16.
@@ -393,7 +393,7 @@ export const paintTOUCH = (p: Painter, frame: number) => {
   const fig: Partial<FigPose> = {rArm, ...(walk !== undefined ? {walk, stride} : {}), ...(!profile && L >= 4 ? {quarter: 'right' as const, quarterDeg: qDeg} : {}), ...(profile ? {lean: 0.1 * reach} : {})};
   const lead: Item = {at, draw: (q, cc) => {
     if (s < 0.01) return;
-    MEASURE.TOUCH = paintTiny(q, cc, {at, view, pose: 'P01', face: faceId, faceState, t, fig, scale: s < 1 ? {about: tp, s} : undefined,
+    MEASURE.TOUCH = paintTiny(q, cc, {at, view, pose: 'P01', face: faceId, faceState, t, fig, scale: s < 1 ? {about: tp, s} : undefined, shadowFade: s < 1 ? 1 - ramp(55, 59) : undefined,
       held: hold ? (qq, a, uu) => { paintMug(qq, a.rHand, uu, {handle: 1, from: -1, skin: TINY.head.skin}); } : undefined});
   }};
   const mug: Item = {at: MUG_W, bias: -0.05, draw: (q, cc) => {
