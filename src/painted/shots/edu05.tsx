@@ -3,7 +3,7 @@ import type {PaintedShot} from '../shot';
 import {STILL_CAMERA} from '../kit/camera';
 import {Grain} from '../kit/screen';
 import {paintFacadeDown, lookDownCam} from '../edu05/facade';
-import {paintLIFT} from '../edu05/checks';
+import {paintDRIFT, paintLIFT, paintSPECK} from '../edu05/checks';
 
 // EDU-EP05-SHORT timeline adapter, Editor W5.3 (7 Nov 2026). One registry plate per finished shot, ID `EDU5-<shot id>`; the episode registry
 // (src/videos/edu-ep05/index.ts) mounts the plate when it exists and a placeholder card otherwise. Each plate is a pure function of the
@@ -12,6 +12,12 @@ const FPS = 30;
 const PAPER = '#ece6d6';
 /** S01-B01-SH02 length in frames (scene sheets: L 0-96; the camera ease runs over it, `lookDownCam(k)` k = L / 96). */
 export const EDU5_FAC_FRAMES = 96;
+
+/** S01-B02-SH02 length in frames (the follow camera runs over L 0-132, `paintDRIFT` k = L / 132). */
+export const EDU5_DRIFT_FRAMES = 132;
+
+/** S01-B02-SH03 length in frames (the speck camera runs over L 0-31, `paintSPECK` k = L / 31). */
+export const EDU5_SPECK_FRAMES = 32;
 
 /** S01-B05-SH03 length in frames (scene sheets: L 0-172). */
 export const EDU5_LIFT_FRAMES = 173;
@@ -30,6 +36,25 @@ export const edu05Shots: PaintedShot[] = [
     paper: PAPER,
     camera: () => STILL_CAMERA,
     paint: (p) => paintFacadeDown(p, lookDownCam(Math.min(p.frame, EDU5_FAC_FRAMES) / EDU5_FAC_FRAMES), p.frame / FPS),
+    Overlay: screen,
+  },
+  {
+    // S01-B02-SH02 (the drift, G329-461): `paintDRIFT` is the check stand-in's own paint (follow camera yaw -10 -> +15, drift-spread pose, +-8 deg roll, no contact shadow,
+    // drift motes + slab band + air streaks L 50-70), reused not copied. Frame clamped to the shot's 132 f.
+    id: 'EDU5-S01-B02-SH02',
+    serves: ['S01-B02-SH02'],
+    paper: PAPER,
+    camera: () => STILL_CAMERA,
+    paint: (p) => paintDRIFT(p, Math.min(p.frame, EDU5_DRIFT_FRAMES - 1)),
+    Overlay: screen,
+  },
+  {
+    // S01-B02-SH03 (speck on the facade, G461-493): `paintSPECK` is the check's paint (speck camera, ring marker L 2-8), reused not copied.
+    id: 'EDU5-S01-B02-SH03',
+    serves: ['S01-B02-SH03'],
+    paper: PAPER,
+    camera: () => STILL_CAMERA,
+    paint: (p) => paintSPECK(p, Math.min(p.frame, EDU5_SPECK_FRAMES - 1)),
     Overlay: screen,
   },
   {
