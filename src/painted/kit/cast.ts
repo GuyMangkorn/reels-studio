@@ -85,6 +85,8 @@ export type FigPose = {
   hoodUp?: boolean;
   /** Hood being pulled up 0..1 (back view only, `hood-pull` motion): the bunched hood rises from the neck over the head and the hair shows above its rim; 1 = `hoodUp`. */
   hoodRise?: number;
+  /** v collar (front view) blended into the shirt colour 0..1 (default 0 = as authored): a mug or hand held at the neck leaves a lone wedge of piping beside it that reads as a coaster (EDU-EP05 SIP/TOUCH). */
+  collarHide?: number;
   /** Back view, hood up: `'drape'` keeps the cowl that falls over the nape to the shoulders (head-only close shots); absent = neck mode, the neck column in the hood colour and nothing wider than the torso below the hood (SS-R2.5). */
   cowl?: 'drape';
   head?: 'front' | 'left' | 'right';
@@ -818,8 +820,9 @@ export const drawFigure = (p: Painter, def: CastDef, g: Pt, unit: number, pose: 
       const col = G.collar;
       if (col?.kind === 'v') {
         const d = col.depth ?? 0.17;
-        fill(col.trim ?? def.head.skin, Uqf([[-0.05, shV + 0.004], [0.05, shV + 0.004], [0, shV - d]]), false, 6);
-        for (const sd of [-1, 1]) fill(col.color, Uqf([[sd * 0.04, shV + 0.004], [sd * 0.115, shV - 0.004], [sd * 0.03, shV - d], [0, shV - d + 0.012]]), true, 6);
+        const ch = clamp01(pose.collarHide ?? 0), cm = (c: string) => (ch > 0 ? mixColor(c, o.shirt, ch) : c);
+        fill(cm(col.trim ?? def.head.skin), Uqf([[-0.05, shV + 0.004], [0.05, shV + 0.004], [0, shV - d]]), false, 6);
+        for (const sd of [-1, 1]) fill(cm(col.color), Uqf([[sd * 0.04, shV + 0.004], [sd * 0.115, shV - 0.004], [sd * 0.03, shV - d], [0, shV - d + 0.012]]), true, 6);
       } else if (col?.kind === 'sailor') {
         for (const sd of [-1, 1]) {
           fill(col.color, Uqf([[sd * 0.045, shV + 0.004], [sd * (sw - 0.02), shV], [sd * (sw - 0.03), shV - 0.055], [sd * 0.012, shV - 0.2], [0, shV - 0.17]]), true, 6);

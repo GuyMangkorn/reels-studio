@@ -339,6 +339,8 @@ export const paintLANDING = (p: Painter, frame: number) => {
 };
 
 // ---- B01 stand-ins for the three shots that had only look frames or specs (SHEETS-R1.8, Boss): S01-B01-SH01 (sip), SH03 (touch and pop), SH04 (stand up).
+/** Elbow of the mug arm, figure metres from the feet point (shoulder ~(-0.155, 1.05), hand at the lips ~(-0.01, 1.075)): out and ~0.15 below the shoulder, upper arm short in view (it comes toward the lens). */
+const MUG_ELBOW: Pt = [-0.2, 0.9], COLLAR_HIDE = 0.85;
 /** G17: S01-B01-SH01 stand-in (LF01 v3 set-up, SD01 camera, SET-BALCONY). Shot-local L (0-40): the mug rises L 8-16, at the lips L 16-26, back under the chin L 26-34. */
 export const paintSIP = (p: Painter, frame: number) => {
   const L = frame, c = camOf(MACRO_CAMS['S01-B01-SH01'], L / 40), t = L / FPS, gp: V3 = [-0.4, 0, 0.2], out: {a?: FigAnchors | null} = {};
@@ -349,7 +351,8 @@ export const paintSIP = (p: Painter, frame: number) => {
   const dy = 0.06 * up;
   const held = (q: Painter, a: FigAnchors, u: number) => { const rim = paintMug(q, a.rHand, u, {handle: 1, from: -1, skin: TINY.head.skin}); steam(q, rim, u, t); };
   paintBalcony(p, c, {t, cast: [tinyItem({at: gp, view: 'front', pose: 'P19', face: 'sleepy', headCock: 4, t, held,
-    fig: {rArm: {to: at(-0.01, 1.015 + dy), via: at(-0.14 - 0.01 * up, 0.79 + dy * 1.4)}}}, out)]});
+    // elbow winged out and low-forward of the torso (upper arm foreshortened, forearm up to the mug), so the bend reads against the rail; collar blended into the shirt behind the mug (no lone white wedge)
+    fig: {rArm: {to: at(-0.01, 1.015 + dy), via: at(MUG_ELBOW[0] - 0.005 * up, MUG_ELBOW[1] + dy * 1.4)}, collarHide: COLLAR_HIDE}}, out)]});
   MEASURE.SIP = out.a ?? null;
 };
 
@@ -357,7 +360,7 @@ export const paintSIP = (p: Painter, frame: number) => {
 const TOUCH_W: V3 = [0.15, 1.30, -0.05], MUG_W: V3 = [-0.55, 1.10, 0.0];
 /**
  * G18: S01-B01-SH03 stand-in (touch and pop, VD05; SD03 camera). Shot-local L (0-70):
- *  - L 2-8 she carries the mug to the rail cap and lets go (the hand opens at L 8; the mug stays on the cap, bare), arm then drops L 8-16.
+ *  - L 2-7 she carries the mug to the rail cap (elbow low and out, forearm up to the cap) and lets go at L 7 (the mug stays on the cap, bare from L 7); the arm eases away from L 7 and is down by L 16.
  *  - L 4-13 she turns front -> right through the kit's front three-quarter (15 -> 60 deg, one hard swap to the profile at L 13, no dissolve) while
  *    she steps (-0.40 -> -0.20, walk L 4-18); L 18-50 the near arm reaches to the blades (the rig's near arm in the right profile is the character's
  *    right; the sheet says left hand: that arm would be the far one, behind her body), hand on the grass from L 50 to the touch at L 53.
@@ -374,23 +377,27 @@ export const paintTOUCH = (p: Painter, frame: number) => {
   const view = profile ? 'right' : 'front';
   const mw = 0.09 * mu, mh = 0.10 * mu; // mug on the cap: hand point that puts the mug base on the cap
   const capHand: Pt = [mp[0] - 0.24 * mw, mp[1] - 0.36 * mh];
-  const hold = L < 8;
+  const hold = L < 7; // the hand sets the mug down at L 7 and is already easing away when the shot shows it bare on the cap (L 8)
   // arms: cradle -> cap (L 2-8), then hang, then reach
-  const cradle = { to: sh(-0.01, 1.015), via: sh(-0.14, 0.79) };
-  const carry = ramp(2, 8);
+  const cradle = { to: sh(-0.01, 1.015), via: sh(MUG_ELBOW[0], MUG_ELBOW[1]) };
+  const heldElbow = sh(-0.21, 0.93); // while carrying the elbow stays low and out; the forearm (not an arm up behind the head) takes the hand to the cap
+  const carry = ramp(2, 6.5);
   // the rig draws its own hang when no arm is given; an explicit one is needed to blend from the cap and into the reach (figure metres from the feet point)
-  const hang: Arm = profile ? {to: sh(0.03, 0.8), via: sh(0.01, 1.04)} : {to: sh(-0.13, 0.8), via: sh(-0.14, 1.04)};
+  const hang: Arm = profile ? {to: sh(0.03, 0.8), via: sh(0.01, 1.04)} : {to: sh(-0.13, 0.8), via: sh(-0.14, 0.93)};
   const reachPose: Partial<FigPose> = {rArm: {to: tp, out: -1}};
   const reach = ramp(18, 50);
   let rArm: Arm | undefined;
-  if (L < 8) rArm = {...cradle, to: [cradle.to[0] + (capHand[0] - cradle.to[0]) * carry, cradle.to[1] + (capHand[1] - cradle.to[1]) * carry], via: [cradle.via[0] + (capHand[0] - 0.05 - cradle.via[0]) * carry, cradle.via[1] + (capHand[1] + 0.12 * u - cradle.via[1]) * carry]};
-  else if (L < 18) { const w = ramp(8, 16); const rest = hang; rArm = {...rest, to: [capHand[0] + (rest.to[0] - capHand[0]) * w, capHand[1] + (rest.to[1] - capHand[1]) * w], via: rest.via ? [capHand[0] - 0.05 + (rest.via[0] - capHand[0] + 0.05) * w, capHand[1] + (rest.via[1] - capHand[1]) * w] : undefined}; }
+  if (L < 7) rArm = {...cradle, to: [cradle.to[0] + (capHand[0] - cradle.to[0]) * carry, cradle.to[1] + (capHand[1] - cradle.to[1]) * carry], via: [cradle.via[0] + (heldElbow[0] - cradle.via[0]) * carry, cradle.via[1] + (heldElbow[1] - cradle.via[1]) * carry]};
+  else if (L < 18) { const w = 1 - (1 - Math.min(1, Math.max(0, (L - 7) / 9))) ** 2; const rest = hang; rArm = {...rest, to: [capHand[0] + (rest.to[0] - capHand[0]) * w, capHand[1] + (rest.to[1] - capHand[1]) * w], via: rest.via ? [heldElbow[0] + (rest.via[0] - heldElbow[0]) * w, heldElbow[1] + (rest.via[1] - heldElbow[1]) * w] : undefined}; }
   else rArm = blendFig({rArm: hang}, reachPose, reach).rArm;
   const walk = L >= 4 && L < 19 ? ((L - 4) / 15) * 0.75 : undefined, stride = walk === undefined ? undefined : 0.7 * (1 - ramp(14, 19));
   const faceId = L < 53 ? 'neutral' : 'surprised';
   const faceState = L < 53 ? {look: [0.7 * ramp(10, 22) + 0.1, -0.2 * ramp(10, 22)] as [number, number]} : {look: [0.6, -0.3] as [number, number]};
   const s = shrinkScale(L);
-  const fig: Partial<FigPose> = {rArm, ...(walk !== undefined ? {walk, stride} : {}), ...(!profile && L >= 4 ? {quarter: 'right' as const, quarterDeg: qDeg} : {}), ...(profile ? {lean: 0.1 * reach} : {})};
+  // the far (character's left) arm of the turned body: tucked behind the chest during the front -> quarter turn, hand inside the torso silhouette (no hand without its arm)
+  const tuck = ramp(3, 9);
+  const lArm: Arm | undefined = !profile ? {to: sh(0.13 - 0.06 * tuck, 0.8), via: sh(0.14 - 0.04 * tuck, 0.93)} : undefined;
+  const fig: Partial<FigPose> = {rArm, ...(lArm ? {lArm} : {}), collarHide: COLLAR_HIDE * (1 - ramp(8, 14)), ...(walk !== undefined ? {walk, stride} : {}), ...(!profile && L >= 4 ? {quarter: 'right' as const, quarterDeg: qDeg} : {}), ...(profile ? {lean: 0.1 * reach} : {})};
   const lead: Item = {at, draw: (q, cc) => {
     if (s < 0.01) return;
     MEASURE.TOUCH = paintTiny(q, cc, {at, view, pose: 'P01', face: faceId, faceState, t, fig, scale: s < 1 ? {about: tp, s} : undefined, shadowFade: s < 1 ? 1 - ramp(55, 59) : undefined,
