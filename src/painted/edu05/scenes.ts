@@ -145,13 +145,14 @@ const LF04_CANOPY: Blade[] = (() => {
   });
 })();
 /** R1.10 FR34: the LF04 v5 shade build shared by LF04, B04-SH01 (COLD) and B04-SH02 (PUFF): the cool wedge over everything left of the shade edge (x < -0.5 sm) and the canopy blades. */
-export const shadeSet = (q: Painter, cc: YCam, t: number) => {
+export const shadeSet = (q: Painter, cc: YCam, t: number, full = false) => {
   // the shade: cool air over everything left of the shade edge (x < -0.5 sm); the clearing behind on the right stays warm
   const e0 = camPoint(cc, [-0.5, 0, -30]), e1 = camPoint(cc, [-0.5, 0, -0.2]);
   const a0: Pt = e0 ?? [300, 700], a1: Pt = e1 ?? [1100, 1200], k = (a1[0] - a0[0]) / Math.max(1, a1[1] - a0[1]);
   const xb = a0[0] + k * (1980 - a0[1]);
   // LF04 v4: the wedge's upright edge pulled 30 px left (a0 + 20 -> a0 - 10) so it no longer overlaps the CL02 leaf's left tip
-  washAt(q, 9950, '#5f7fa4', 150, [[-60, -60], [a0[0] - 10, -60], [a0[0] - 10, a0[1]], [xb + 20, 1980], [-60, 1980]], 0.35, 0.1);
+  // R1.11 `full` (B04-SH01/02): below the horizon the cool air runs across the whole picture, so the ground is one tone; the upright edge stays above it (the warm clearing wall)
+  washAt(q, 9950, '#5f7fa4', 150, full ? [[-60, -60], [a0[0] - 10, -60], [a0[0] - 10, a0[1]], [1140, a0[1]], [1140, 1980], [-60, 1980]] : [[-60, -60], [a0[0] - 10, -60], [a0[0] - 10, a0[1]], [xb + 20, 1980], [-60, 1980]], 0.35, 0.1);
   // LF04 v5: the canopy is real world-space blades of the shade tuft leaning over the pocket (v4: a zigzag wash read as a pattern)
   LF04_CANOPY.forEach((b) => paintBlade(q, cc, b, t));
 };

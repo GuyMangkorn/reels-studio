@@ -186,7 +186,7 @@ export const paintLIFT = (p: Painter, frame: number) => {
   if (!st) return;
   const {at, rest, crumb, fig, seated} = st;
   const face = L < 40 ? 'surprised' : L >= 100 && L < 112 ? 'laugh' : 'happy';
-  paintGarden(p, c, {t, mode: 'sun', drop: false, sun: [150, 300], shadeEdge: -1.2 - 1.8 * Math.min(1, L / 80), items: [
+  paintGarden(p, c, {t, mode: 'sun', drop: false, sun: [150, 300], shadeEdge: -1.2 - 1.8 * Math.min(1, L / 80), tipsAt: tipCams('S01-B05-SH03'), items: [
     // FR19: the contact shadow fades out over the first 5 cm of rise (it was painted under the base in the air, across her face at L 48)
     // user note (2026-11-07): the loose crumbs travelled with the lifted loaf and hung in the air at its left; they stay where it stood
     ...(crumb[1] > 0.005 ? [{at: rest, draw: (q: Painter, cc: YCam) => paintCrumb(q, cc, rest, {loose: 'only' as const, shadow: 0})}] : []),
@@ -648,14 +648,16 @@ const shiverFig = (t: number, k: number): Partial<FigPose> => {
   const b = MOTIONS.shiver(t, {view: 'front', k: 1, seed: 1}).body ?? {};
   return {crouch: (b.crouch ?? 0) * k, lean: (b.lean ?? 0) * k, rise: (b.rise ?? 0) * k, nod: [(b.nod?.[0] ?? 0) * k, (b.nod?.[1] ?? 0) * k]};
 };
+/** R1.11: the shot's start, middle and end cameras for `paintGarden`'s `tipsAt`: the foreground tips are rooted in the world (on the soil) and the camera moves past them, instead of being re-rooted in front of every frame's camera (screen-fixed). */
+const tipCams = (id: string): YCam[] => [0, 0.5, 1].map((u) => camOf(MACRO_CAMS[id], u));
 const COLD_AT: V3 = [-1.4, 0, -0.6];
 const foreShade = [sweep([-2.9, 0, 0.45], [0.8, -1], 12, 46, 9931, 0.8, 18, '#26383c')];
 /** FR34 S01-B04-SH01 (77 f), cold shade: the LF04 v5 shade build without the ant and puffs, TINY hugging herself (P42), shivering at half amplitude from L 40. */
 export const paintCOLD = (p: Painter, frame: number) => {
   const L = frame, c = camOf(MACRO_CAMS['S01-B04-SH01'], L / 76), t = L / FPS + 20;
-  paintGarden(p, c, {t, mode: 'sun', drop: false, sun: [900, 330], shadeEdge: -0.5, gap: {x: -0.4, w: 1.2}, fore: foreShade,
+  paintGarden(p, c, {t, mode: 'sun', drop: false, sun: [900, 330], shadeEdge: -0.5, shadeGround: 'full', tipsAt: tipCams('S01-B04-SH01'), gap: {x: -0.4, w: 1.2}, fore: foreShade,
     after: (q, cc) => {
-      shadeSet(q, cc, t);
+      shadeSet(q, cc, t, true);
       MEASURE.COLD = coldTiny(q, cc, t, {view: 'front', pose: 'P42', face: L < 40 ? 'worried' : 'sad', headCock: -4, fig: L >= 40 ? shiverFig((L - 40) / 30, 0.5) : undefined});
     }});
 };
@@ -672,10 +674,10 @@ export const paintPUFF = (p: Painter, frame: number) => {
     fig = {rArm: m.rArm, lArm: m.lArm, ...shiverFig((L - 116) / 30, 0.5)};
   }
   const aw = antWalk(0.0429 * L), amt = 0.15 * (smooth01((L - 40) / 6) - smooth01((L - 56) / 6)), out: {a?: FigAnchors | null} = {};
-  paintGarden(p, c, {t, mode: 'sun', drop: false, sun: [900, 330], shadeEdge: -0.5, gap: {x: -0.4, w: 1.2}, fore: foreShade, gust: amt > 0.001 ? {dir: [-1, 0], amt} : undefined,
+  paintGarden(p, c, {t, mode: 'sun', drop: false, sun: [900, 330], shadeEdge: -0.5, shadeGround: 'full', tipsAt: tipCams('S01-B04-SH02'), gap: {x: -0.4, w: 1.2}, fore: foreShade, gust: amt > 0.001 ? {dir: [-1, 0], amt} : undefined,
     items: [antItem([2.5 - 0.0429 * L, 0, -13.0], {view: 'left', walk: aw.walk, sway: aw.sway, tint: {to: '#6f8aa0', u: 0.4}, noInk: true, t})],
     after: (q, cc) => {
-      shadeSet(q, cc, t);
+      shadeSet(q, cc, t, true);
       out.a = MEASURE.PUFF = coldTiny(q, cc, t, {view: 'front', ...(clutch ? {named: {name: 'clutch-puff' as const, L: L - 96}} : {pose: 'P42' as const}), face: L < 116 ? 'worried' : 'sad', headCock: -4, fig});
     }});
   if (out.a) warmthPuffsAt(L, out.a, u).forEach((q) => { if (q.a > 0.02) paintPuff(p, q.x, q.y, q.r, q.seed, t, q.a); });
@@ -721,7 +723,7 @@ export const paintCRUMB = (p: Painter, frame: number) => {
   const lead: Item = {at, draw: (q, cc) => {
     MEASURE.CRUMB = paintTiny(q, cc, {...opts, fig: {wet: true, ...(opts.fig ?? {})}, tint: {to: '#4f6fb8', u: 0.27 * shade, mul: [0.95, 0.93, 0.97]}});
   }};
-  paintGarden(p, c, {t, mode: 'sun', drop: false, sun: [150, 300], shadeEdge: -0.5, items: [
+  paintGarden(p, c, {t, mode: 'sun', drop: false, sun: [150, 300], shadeEdge: -0.5, shadeGround: 'clip', tipsAt: tipCams('S01-B04-SH03'), items: [
     {at: crumb, bias: 0.1, draw: (q, cc) => paintCrumb(q, cc, crumb, {bites: L >= 22 ? 1 : 0})}, lead]});
 };
 
@@ -740,7 +742,7 @@ export const paintPASS = (p: Painter, frame: number) => {
       fig: {wet: true, ...(th?.body?.head ? {head: th.body.head} : {}), ...(th?.body?.nod ? {nod: th.body.nod} : {})},
       tint: {to: '#4f6fb8', u: 0.27 * edgeShade(at[0], edge), mul: [0.95, 0.93, 0.97]}});
   }};
-  paintGarden(p, c, {t, mode: 'sun', drop: false, sun: [900, 330], shadeEdge: edge, items: [
+  paintGarden(p, c, {t, mode: 'sun', drop: false, sun: [900, 330], shadeEdge: edge, tipsAt: tipCams('S01-B05-SH01'), items: [
     antItem([ax, 0, -2.0], {view: 'right', walk: moving ? aw.walk : undefined, sway: moving ? aw.sway : 1.5 * Math.sin(1.3 * t), tint: {to: '#6f8aa0', u: 0.4 * antSh}, t}),
     {at: CRUMB_REST, bias: 0.1, draw: (q, cc) => paintCrumb(q, cc, CRUMB_REST, {bites: 1})}, lead]});
 };
@@ -748,7 +750,7 @@ export const paintPASS = (p: Painter, frame: number) => {
 /** FR38 S01-B05-SH02 (173 f), two bars: the stopped ant (1.2, 0, -2.0), a 15% dim as the card wipes in, then the scale-bars card (labels are timeline items). */
 export const paintBARS = (p: Painter, frame: number) => {
   const L = frame, c = camOf(MACRO_CAMS['S01-B05-SH02'], L / 172), t = L / FPS + 80, s = barsAt(L);
-  paintGarden(p, c, {t, mode: 'sun', drop: false, sun: [900, 330], shadeEdge: -1.2, items: [antItem([1.2, 0, -2.0], {view: 'right', sway: 1.5 * Math.sin(1.3 * t), t})]});
+  paintGarden(p, c, {t, mode: 'sun', drop: false, sun: [900, 330], shadeEdge: -1.2, tipsAt: tipCams('S01-B05-SH02'), items: [antItem([1.2, 0, -2.0], {view: 'right', sway: 1.5 * Math.sin(1.3 * t), t})]});
   if (s.wipe > 0) washAt(p, 15800, '#000000', 0.15 * 255 * s.wipe, [[-60, -60], [1140, -60], [1140, 1980], [-60, 1980]], 0, 0);
   paintScaleBars(p, s);
 };
@@ -758,7 +760,7 @@ export const paintEND = (p: Painter, frame: number) => {
   const L = frame, c = camOf(MACRO_CAMS['S01-B05-SH04'], L / 195), t = L / FPS + 90, st = liftState(c, 173 + L);
   if (!st) return;
   const {rest, crumb, fig} = st, Ll = 173 + L, gl = smooth01((L - 125) / 6);
-  paintGarden(p, c, {t, mode: 'sun', drop: false, sun: [900, 330], shadeEdge: -3.0, back: (q) => paintFarTower(q), items: [
+  paintGarden(p, c, {t, mode: 'sun', drop: false, sun: [900, 330], shadeEdge: -3.0, tipsAt: tipCams('S01-B05-SH04'), back: (q) => paintFarTower(q), items: [
     antItem([1.2, 0, -2.0], {view: 'right', sway: 1.5 * Math.sin(1.3 * t), ...(gl > 0 ? {glance: gl, lookSide: -1 as const} : {}), t}),
     {at: rest, draw: (q: Painter, cc: YCam) => paintCrumb(q, cc, rest, {loose: 'only' as const, shadow: 0})},
     {at: crumb, bias: 0.1, draw: (q, cc) => paintCrumb(q, cc, crumb, {bites: 1, shadow: 1 - smooth01(crumb[1] / 0.05), loose: crumb[1] > 0.005 ? 'off' : 'on'})},

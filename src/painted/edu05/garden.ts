@@ -112,7 +112,15 @@ export type GardenOpts = {
   /** Foreground tips (default 14 blades, height 0.25-0.6 sm); a shot with a lead low in the frame thins them (S01-B02-SH04). */
   tips?: {n: number; h: [number, number]};
   /** Root the foreground tips in front of this camera (a shot's frame-0 camera) so they stay in the world while the camera moves; default: the drawing camera. */
-  tipsAt?: YCam;
+  tipsAt?: YCam | YCam[];
+  /** R1.11 ground glaze (B04 cold shade): `clip` cuts the glaze polygon at the near plane (default drops it if a corner is behind the lens); `full` also runs it to x +40 sm, one continuous ground tone. */
+  shadeGround?: 'clip' | 'full';
+};
+
+/** R1.11: foreground tips rooted in the world. One camera = its frame-0 look; several cameras (a shot's start, middle and end) split `n` between them so a moving camera always has tips ahead of it. */
+const worldTips = (at: YCam | YCam[], o: Parameters<typeof nearTips>[1]): Blade[] => {
+  const cams = Array.isArray(at) ? at : [at], n = Math.ceil(o.n / cams.length);
+  return cams.flatMap((cc, j) => nearTips(cc, {...o, n, seed: o.seed + j * 13}));
 };
 
 export const paintGarden = (p: Painter, c: YCam, o: GardenOpts) => {
@@ -125,9 +133,10 @@ export const paintGarden = (p: Painter, c: YCam, o: GardenOpts) => {
   paintGround(p, c, {x: [-40, 40], z: [-40, 6], soil: sunMode ? '#7a5c40' : '#4b4a48', thatch: sunMode ? '#c9ae76' : '#7f8a86', pebble: sunMode ? '#a89a88' : '#6f7a80', seed: 9600, bits: 260, bx: [c.x - 6, c.x + 6], bz: [c.z - 9, c.z - 0.3]});
   if (o.shadeEdge !== undefined && sunMode) {
     // the shade pocket on the ground (x < edge): cool glaze
-    const e = o.shadeEdge, poly: V3[] = [[-40, 0.003, -40], [e, 0.003, -40], [e + 0.3, 0.003, 6], [-40, 0.003, 6]];
-    const q = poly.map((v) => camPoint(c, v));
-    if (q.every(Boolean)) washAt(p, 9610, '#4f6f8a', 120, q as Pt[], 0.25, 0.1);
+    // R1.11: camPoly cuts at the near plane (the old all-points camPoint test dropped the whole glaze when a corner was behind the lens, e.g. B04-SH03 yaw 20)
+    const e = o.shadeEdge, xr = o.shadeGround === 'full' ? 40 : e, poly: V3[] = [[-40, 0.003, -40], [xr, 0.003, -40], [xr + (o.shadeGround === 'full' ? 0 : 0.3), 0.003, 6], [-40, 0.003, 6]];
+    const q = o.shadeGround ? camPoly(c, poly) : poly.map((v) => camPoint(c, v));
+    if (o.shadeGround ? q.length >= 3 : q.every(Boolean)) washAt(p, 9610, '#4f6f8a', 120, q as Pt[], 0.25, 0.1);
   }
   const dof = o.dof;
   const edge = o.shadeEdge ?? -0.5;
@@ -140,7 +149,7 @@ export const paintGarden = (p: Painter, c: YCam, o: GardenOpts) => {
   paintSorted(p, c, items);
   if (sunMode) paintShafts(p, [-120, 60, 260, 420], {top: -60, bottom: 1150, slant: 380, color: '#ffd9a0', level: 0.55, seed: 9700, t: o.t});
   o.after?.(p, c);
-  nearTips(o.tipsAt ?? c, {n: o.tips?.n ?? 14, h: o.tips?.h ?? [0.25, 0.6], seed: 77, color: sunMode ? '#55752e' : '#34504a'}).forEach((b) => bladeItem(b, o.t, dof).draw(p, c));
+  worldTips(o.tipsAt ?? c, {n: o.tips?.n ?? 14, h: o.tips?.h ?? [0.25, 0.6], seed: 77, color: sunMode ? '#55752e' : '#34504a'}).forEach((b) => bladeItem(b, o.t, dof).draw(p, c));
   (o.fore ?? []).forEach((b) => bladeItem(b, o.t, dof).draw(p, c));
 };
 const shadeOf = (pal: BladePal): BladePal => (pal === SUNLIT ? {...SHADE, body: '#4a7a62', edge: '#7aa08a'} : pal);
