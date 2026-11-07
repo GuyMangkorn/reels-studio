@@ -40,7 +40,7 @@ const videos: EpisodeVideos = {
   videos: [{
     id: 'EDU-EP05-SHORT', format: 'short', timeline, ending: 'A_fade', endHoldSec: 0, endFadeSec: 0.8,
     narration: {src: 'narration/EDU-EP05-SHORT.wav', amplitude: [], fps: EDU5_FPS},
-    audio: [{src: 'audio/edu/EDU-EP05-SHORT-review-stem-v1.wav', volume: 1}],
+    audio: [{src: 'audio/edu/EDU-EP05-SHORT-review-stem-v2.wav', volume: 1}],
     captionStyle: {preset: 'outline', bottomEdgeY: 1344, ...CAPTION_OUTLINE},
     chrome: {channelLabel: '@TamMaiLa', progressBar: false},
   }],

@@ -48,7 +48,7 @@ cue('sfx/foley/foley_crumb-drag-scrape_01.wav', 1279, -20, 1.4)            # NG-
 cue('sfx/stinger/stinger_pizz-shrug_01.wav', 1331, -20)                    # slump (G1297-1315)
 cue('_raw/reveal_reverse-swell-airy_01.wav', 1646, -22)                    # small riser into V07 (G1592-1620)
 cue('music/stinger/stinger_brass-celesta-triumph_01.wav', 1674, -22)       # NG-S9 lift sting (G1648)
-cue('sfx/stinger/stinger_pizz-tag-ending_01.wav', 1916, -18)               # end tag after V08
+cue('sfx/stinger/stinger_pizz-tag-ending_01.wav', 1929, -8.5, 1.4, ex='afade=t=out:st=0.8:d=0.6')   # end tag = EDU-EP02 tag (edu2-pizz-tag_v2): on the last voiced frame G1929, 1.4 s, 0.6 s fade
 bed('sfx/foley/foley_ant-steps-tiny_01.wav', 1143, 1199, -44, 'lowpass=f=4000', 0.2)    # NG-S8 far, very low (SH02 L40-96)
 bed('sfx/foley/foley_ant-steps-tiny_01.wav', 1358, 1456, -30, '', 0.01)    # NG-S8 close; the only sound in G1332-1356
 # music: NG-M1 G0-1000 low; NG-M2 cold G1000-1332 hard out; NG-M3 warm G1356-1939 under the fade
