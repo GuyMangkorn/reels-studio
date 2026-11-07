@@ -5,6 +5,7 @@
 - Deliverable: `EDU-EP01-SHORT`; selection: **Short only (Thai)**, 1080×1920, 30 fps (user, structured question "Short ไทย (แนะนำ)", 2026-11-04). Target duration from C2: 40–60 s (estimate).
 - Profile from C2: educational (body / sleep), painted 2D (p5.brush), 4-head cast, ending `C_seamless` per the concept; other fields = [project defaults](../../docs/delivery-workflow.md#project-defaults).
 - Pipeline: `Full`.
+- Series sound norm: every episode closes on the EP02 strings tag, [UT15](../../docs/user-taste.md#ut-edu-end-tag) (user, 2026-11-07).
 - Factual claims: the hypnic jerk and its proposed causes; Boat to research; the cause is presented as theory, not settled fact.
 
 | Deliverable | Stage / Next owner | Script | Evidence / open items |
