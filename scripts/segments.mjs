@@ -83,11 +83,34 @@ export const sourceInputs = (root = '.', composition, inputProps = {}) => {
   });
   try {
     const result = JSON.parse(run.stdout);
-    if (run.status === 0 && /^[a-f0-9]{64}$/.test(result.hash) && Array.isArray(result.scenes)) return {hash: result.hash, scenes: result.scenes};
+    if (run.status === 0 && /^[a-f0-9]{64}$/.test(result.hash) && Array.isArray(result.scenes)) {
+      for (const warning of result.warnings ?? []) console.warn(`Scene cache: ${warning}`);
+      return {hash: result.hash, scenes: result.scenes, own: result.own ?? result.scenes.map(() => []), warnings: result.warnings ?? []};
+    }
     console.warn(`Scene cache reuse bypassed: ${result.error ?? 'render input discovery failed'}`);
   } catch {console.warn('Scene cache reuse bypassed: render input helper did not complete');}
   return null;
 };
+/**
+ * Why each scene in `indexes` needs a new segment, from the manifest entry of the previous render of the same variant
+ * (`previous`: {source, scenes: [{range, key, code}]}) and this render's inputs. Returns one short reason per index.
+ */
+export const repaintReasons = (previous, {source, scenes = [], own = [], keys, ranges}, indexes) => indexes.map((i) => {
+  const before = previous?.scenes?.[i];
+  if (!previous?.source || !before) return 'first render';
+  if (previous.scenes.length !== ranges.length || previous.scenes.at(-1).range[1] !== ranges.at(-1)[1]) return 'video length or scene count';
+  if (previous.source !== source) return 'shared code or art';
+  if ((before.code ?? '') !== (scenes[i] ?? '')) return `shot file ${own[i]?.join(', ') || '(removed)'}`;
+  if (before.key === keys[i]) return 'segment missing from the cache';
+  return 'timeline, neighbour or render options';
+});
+/** One log line: reasons grouped, scenes numbered from 1. */
+export const describeReasons = (indexes, reasons) => {
+  const groups = new Map();
+  indexes.forEach((scene, j) => groups.set(reasons[j], [...(groups.get(reasons[j]) ?? []), scene + 1]));
+  return [...groups].map(([reason, scenes]) => `${reason} → scene${scenes.length > 1 ? 's' : ''} ${scenes.join(', ')}`).join('; ');
+};
+
 /** The shared digest alone (see sourceInputs). */
 export const sourceHash = (root = '.', composition, inputProps = {}) => sourceInputs(root, composition, inputProps)?.hash ?? null;
 
@@ -159,18 +182,26 @@ export const renderSegmented = async ({render, options, workDir, output, log, fr
   const segDir = source ? segmentDir(composition.id) : workDir;
   await mkdir(segDir, {recursive: true});
   let keys = picked.map((i) => allKeys[i]);
+  let reasonOf = () => 'scene cache bypassed';
   if (!source) log('scene cache bypassed: pins not checked, segments not cached');
   else {
     const variant = variantOf(composition, inputProps);
-    // The keys of the latest render per variant, so scripts/pin.mjs can pin what the user just saw.
+    // The keys of the latest render per variant, so scripts/pin.mjs can pin what the user just saw; `source` and `code`
+    // let the next render say why a scene repaints (repaintReasons).
     const manifest = await readJson(manifestFile(composition.id), {});
-    manifest[variant] = {renderedAt: new Date().toISOString(), scenes: allRanges.map((range, i) => ({range, key: allKeys[i]}))};
+    const previous = manifest[variant];
+    const current = {source, scenes: inputs.scenes, own: inputs.own, keys: allKeys, ranges: allRanges};
+    reasonOf = (scene) => repaintReasons(previous, current, [scene])[0];
+    // A pin can be older than the previous render, which may already carry the change.
+    const pinReason = (scene) => {const reason = reasonOf(scene); return reason === 'segment missing from the cache' ? 'changed before the last render' : reason;};
+    manifest[variant] = {renderedAt: new Date().toISOString(), source,
+      scenes: allRanges.map((range, i) => ({range, key: allKeys[i], ...(inputs.scenes[i] ? {code: inputs.scenes[i]} : {})}))};
     await writeFile(manifestFile(composition.id), JSON.stringify(manifest, null, 1));
     const allPins = await readJson(pinsFile(composition.id), {});
     const {use, changed, unpin, kept} = applyPins(allPins[variant], picked, keys, pinOptions);
     keys = use;
     if (changed.length) {
-      throw new Error(`pinned finals would change: ${changed.map((c) => `${c.shots.join('+')} (scene ${c.scene + 1}, f${c.range[0]}-${c.range[1]})`).join(', ')}. `
+      throw new Error(`pinned finals would change: ${changed.map((c) => `${c.shots.join('+')} (scene ${c.scene + 1}, f${c.range[0]}-${c.range[1]}; ${pinReason(c.scene)})`).join(', ')}. `
         + 'Re-run with --keep-pinned to keep the approved segments, or --repaint=<shot,...|all> to render them again for a new review.');
     }
     const lost = kept.filter((scene) => !existsSync(`${segDir}/${keys[picked.indexOf(scene)]}.mp4`));
@@ -183,6 +214,8 @@ export const renderSegmented = async ({render, options, workDir, output, log, fr
     }
   }
   await mkdir(workDir, {recursive: true});
+  const toRender = picked.filter((_scene, j) => !existsSync(`${segDir}/${keys[j]}.mp4`));
+  if (toRender.length) log(`repaint ${toRender.length} of ${picked.length}: ${describeReasons(toRender, toRender.map(reasonOf))}`);
   let rendered = 0;
   for (const [i, key] of keys.entries()) {
     const file = `${segDir}/${key}.mp4`;

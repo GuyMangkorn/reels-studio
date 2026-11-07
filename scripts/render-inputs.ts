@@ -1,4 +1,4 @@
-// Internal helper for segments.mjs. One JSON request on stdin: {root, id, props}; on stdout {hash, scenes}.
+// Internal helper for segments.mjs. One JSON request on stdin: {root, id, props}; on stdout {hash, scenes, own, warnings}.
 // Follow actual local imports, selecting only the painted inventories used by the effective project timeline.
 // Any uncertainty throws; the caller must bypass cache reuse, never fall back to a possibly stale key.
 // Shot-own code (docs/render-rules.md#render-by-scene): a file named after a painted shot of the timeline (its `id` or a
@@ -6,6 +6,9 @@
 // showing that shot. It and whatever only it imports are hashed into `scenes[i]` for those scenes, not into `hash`, so
 // editing one shot repaints only its scenes. Imported from any other shared file, it stays shared. `scenes[i]` is ''
 // for a scene without shot-own code, so episodes without such files keep the keys they had.
+// A shot file stays shared, with a warning, when shared code imports it, when a file other than the registry imports its
+// inventory, or when the inventory does more with it than list it in an exported array: each of those can carry its
+// code into other shots' frames. `own[i]` names scene i's shot files; `warnings` explains every demotion and near-miss name.
 import {createHash} from 'node:crypto';
 import {existsSync, readFileSync, readdirSync, realpathSync} from 'node:fs';
 import path from 'node:path';
@@ -137,7 +140,13 @@ async function digest({root: requestedRoot, id, props}: Request) {
   visitProps(props);
 
   const stem = (file: string) => path.basename(file).replace(/\.[^.]+$/, '');
-  const ownFiles = new Set<string>();
+  const loose = (name: string) => name.toLowerCase().replace(/[^a-z0-9]/g, '');
+  const rel = (file: string) => path.relative(root, file);
+  const looseShots = new Map([...ownerScenes.keys()].map(name => [loose(name), name]));
+  const warnings = new Set<string>();
+  // Shot-own file -> the inventory that imports it; inventory -> a shared file (not the registry) that imports it.
+  const ownFiles = new Map<string, string>();
+  const inventoryReaders = new Map<string, string>();
   const walk = (file: string): void => {
     if (bag.visited.has(file)) return;
     bag.visited.add(file);
@@ -176,9 +185,13 @@ async function digest({root: requestedRoot, id, props}: Request) {
     }
     for (const dependency of imports(file)) {
       if (file === registry && inventories.has(dependency.file) && !selected.has(dependency.file)) continue;
+      if (bag === shared && file !== registry && selected.has(dependency.file)) inventoryReaders.set(dependency.file, file);
       if (bag === shared && selected.has(file) && ownerScenes.has(stem(dependency.file))) {
-        ownFiles.add(dependency.file);
+        ownFiles.set(dependency.file, file);
         continue;
+      }
+      if (bag === shared && selected.has(file) && looseShots.has(loose(stem(dependency.file)))) {
+        warnings.add(`${rel(dependency.file)} is named like shot ${looseShots.get(loose(stem(dependency.file)))} but not exactly: it counts as shared; rename it to the shot ID`);
       }
       walk(dependency.file);
     }
@@ -228,10 +241,77 @@ async function digest({root: requestedRoot, id, props}: Request) {
   for (const file of ['remotion.config.ts', 'webpack.config.js']) {
     if (existsSync(path.join(root, file))) walk(path.join(root, file));
   }
-  // A shot file that shared code also imports is shared: its edits reach every scene.
-  for (const file of ownFiles) if (shared.visited.has(file)) ownFiles.delete(file);
+  // Why a shot file must count as shared, or undefined. The inventory may only list it: as an array element (or spread
+  // into one), re-exported, or inside an array that is itself only exported or listed. Anything else (a `.map`, a field
+  // read, a computed value) can reach other shots, so the file is shared.
+  const listingProblem = (inventory: string, file: string): string | undefined => {
+    const source = parse(inventory);
+    const names = new Set<string>();
+    for (const statement of source.statements) {
+      if (!ts.isImportDeclaration(statement) || !ts.isStringLiteral(statement.moduleSpecifier)) continue;
+      if (resolve(statement.moduleSpecifier.text, inventory) !== file) continue;
+      const clause = statement.importClause;
+      if (clause?.name) names.add(clause.name.text);
+      const bindings = clause?.namedBindings;
+      if (bindings && ts.isNamespaceImport(bindings)) return 'the inventory imports it as a namespace';
+      if (bindings) for (const element of bindings.elements) names.add(element.name.text);
+    }
+    const listed = (node: ts.Node) => ts.isArrayLiteralExpression(node.parent) || ts.isExportSpecifier(node.parent) ||
+      (ts.isSpreadElement(node.parent) && ts.isArrayLiteralExpression(node.parent.parent));
+    const exportedArray = (node: ts.Node): string | undefined => {
+      // `export const xs = [a, b]` (optionally `as const` / `satisfies`): the array is exported as it is.
+      let top = node;
+      while (ts.isArrayLiteralExpression(top.parent) || (ts.isSpreadElement(top.parent) && ts.isArrayLiteralExpression(top.parent.parent))) top = ts.isSpreadElement(top.parent) ? top.parent.parent : top.parent;
+      while (ts.isAsExpression(top.parent) || ts.isSatisfiesExpression(top.parent)) top = top.parent;
+      const declaration = top.parent;
+      if (!ts.isVariableDeclaration(declaration) || declaration.initializer !== top || !ts.isIdentifier(declaration.name)) return undefined;
+      return declaration.name.text;
+    };
+    let problem: string | undefined;
+    const arrays = new Set<string>();
+    const check = (node: ts.Node): void => {
+      if (problem) return;
+      if (ts.isIdentifier(node) && names.has(node.text) && !ts.isImportSpecifier(node.parent) && !ts.isImportClause(node.parent)) {
+        if (!listed(node)) problem = `the inventory uses ${node.text} in \`${node.parent.getText(source).slice(0, 60)}\``;
+        else if (!ts.isExportSpecifier(node.parent)) {
+          const array = exportedArray(node);
+          if (array) arrays.add(array);
+          else problem = `the inventory computes with the array holding ${node.text}`;
+        }
+      }
+      ts.forEachChild(node, check);
+    };
+    check(source);
+    if (problem) return problem;
+    // The arrays holding shot files may only be exported or listed in turn.
+    const useOfArrays = (node: ts.Node): void => {
+      if (problem) return;
+      if (ts.isIdentifier(node) && arrays.has(node.text) && !(ts.isVariableDeclaration(node.parent) && node.parent.name === node) && !listed(node)) {
+        problem = `the inventory uses ${node.text} in \`${node.parent.getText(source).slice(0, 60)}\``;
+      }
+      ts.forEachChild(node, useOfArrays);
+    };
+    useOfArrays(source);
+    return problem;
+  };
   const own = new Map<string, Bag>();
-  for (const file of ownFiles) {
+  for (const [file, inventory] of ownFiles) {
+    const reason = shared.visited.has(file) ? 'shared code imports it'
+      : inventoryReaders.has(inventory) ? `${rel(inventoryReaders.get(inventory)!)} imports its inventory`
+      : listingProblem(inventory, file);
+    if (!reason) continue;
+    warnings.add(`${rel(file)} counts as shared (${reason}): editing it repaints every scene`);
+    ownFiles.delete(file);
+    bag = shared;
+    walk(file);
+  }
+  // A demoted shot file may import another shot file; that one is now reached by shared code too.
+  for (const file of ownFiles.keys()) {
+    if (!shared.visited.has(file)) continue;
+    warnings.add(`${rel(file)} counts as shared (shared code imports it): editing it repaints every scene`);
+    ownFiles.delete(file);
+  }
+  for (const file of ownFiles.keys()) {
     bag = newBag();
     walk(file);
     for (const known of shared.files) bag.files.delete(known);
@@ -256,16 +336,17 @@ async function digest({root: requestedRoot, id, props}: Request) {
     for (const file of [...files].sort()) hash.update(path.relative(root, file)).update('\0').update(readFileSync(file)).update('\0');
     return hash.digest('hex');
   };
-  const scenes = timeline.map((_scene, i) => {
-    const files = new Set<string>(), pictureMedia = new Set<string>();
-    for (const [file, owned] of own) {
-      if (!ownerScenes.get(stem(file))?.has(i)) continue;
-      owned.files.forEach(f => files.add(f));
-      owned.media.forEach(f => pictureMedia.add(f));
+  const ownOf = timeline.map((_scene, i) => [...own.keys()].filter(file => ownerScenes.get(stem(file))?.has(i)));
+  const scenes = ownOf.map(files => {
+    const inputs = new Set<string>(), pictureMedia = new Set<string>();
+    for (const file of files) {
+      own.get(file)!.files.forEach(f => inputs.add(f));
+      own.get(file)!.media.forEach(f => pictureMedia.add(f));
     }
-    return files.size ? digestOf('scene-render-inputs-v1', files, pictureMedia) : '';
+    return inputs.size ? digestOf('scene-render-inputs-v1', inputs, pictureMedia) : '';
   });
-  return {hash: digestOf('project-render-inputs-v1', shared.files, shared.media), scenes};
+  return {hash: digestOf('project-render-inputs-v1', shared.files, shared.media), scenes,
+    own: ownOf.map(files => files.map(rel).sort()), warnings: [...warnings]};
 }
 
 async function main() {
