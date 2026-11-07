@@ -1,0 +1,10 @@
+{
+  "public/audio/edu/EDU-EP06-SHORT-review-stem-v2.wav": {
+    "store": "projects/EDU/audio/ep06/EDU-EP06-SHORT-review-stem-v2.wav",
+    "sha256": "86d2d3dbecacd4884c1151be507350d44e98ba748e27b7ad290712da4affcb82"
+  },
+  "public/narration/EDU-EP06-SHORT.wav": {
+    "store": "projects/EDU/narration/ep06/placed/EDU-EP06-SHORT-placed-v1.wav",
+    "sha256": "e48954ed24d1c3b2dd30e15c7f5c66d939773644e7536ee0bf8333cb360b08e0"
+  }
+}

@@ -16,7 +16,7 @@ import {mixColor} from './painter';
 
 export const OUTFIT_IDS = [
   'student-th-trousers', 'student-th-skirt', 'school-jp-sailor', 'school-jp-gakuran', 'office', 'police', 'nurse', 'doctor',
-  'monk', 'vendor', 'rider', 'hoodie', 'guard', 'yukata', 'kimono', 'kitchen-apron', 'park-casual',
+  'monk', 'vendor', 'rider', 'hoodie', 'guard', 'yukata', 'kimono', 'kitchen-apron', 'park-casual', 'home-lounge',
 ] as const;
 export type OutfitId = (typeof OUTFIT_IDS)[number];
 
@@ -94,6 +94,10 @@ export const WARDROBE: Record<OutfitId, Outfit> = {
   },
   // Kit intake (KIT-P01) from EDU-EP03-SHORT `man-crop + new: park-casual` (src/painted/edu03/cast.ts OWNER, copied, 6 Nov 2026): the
   // cream sling bag is not filed (a painted overlay `paintSlingBag`, not a `Gear` kind).
+  // Kit intake (KIT-P01) from EDU-EP06-SHORT `woman-curly + new: home-lounge` (Film's look-frame outfit, src/painted/edu06/cast.ts; Boss W5.2, 7 Nov 2026).
+  'home-lounge': {
+    shoulder: SHOULDER, shirt: '#c98b8b', sleeve: '#d9c7a8', longSleeves: true, jacket: '#d9c7a8', pants: '#8d8f96', shoes: '#f2ead8',
+  },
   'park-casual': {
     shoulder: SHOULDER, shirt: '#e3b23c', sleeve: '#e3b23c', longSleeves: false, pants: '#4a6f9e', shoes: '#f2f0ea', shorts: {sock: '#f4f1ea'},
     gear: {hat: {kind: 'cap', color: '#2f5fb8', band: mixColor('#2f5fb8', '#0b1a3a', 0.45)}},
@@ -127,6 +131,7 @@ export const WARDROBE_INFO: Record<OutfitId, OutfitInfo> = {
   yukata: {group: 'traditional', description: 'Japanese yukata: indigo summer robe with white crossover collar, wide sleeves, orange obi sash, ankle-length hem, geta.', bareLegs: true},
   kimono: {group: 'traditional', description: 'Japanese kimono: plum robe with white crossover collar, wide sleeves, wide gold obi, ankle-length hem.', bareLegs: true},
   'kitchen-apron': {group: 'casual', description: 'Home cook: mustard short-sleeve blouse, plum skirt just below the knee, brick-red bib apron from the chest to below the hip with a dark red waist tie, dark shoes.', bareLegs: true},
+  'home-lounge': {group: 'casual', description: 'At home in the evening: loose oatmeal knit cardigan over a dusty-rose T-shirt, grey lounge trousers, cream socks (EDU-EP06 owner; front, profile).'},
   'park-casual': {group: 'casual', description: 'Weekend park walk: mustard crew-neck tee, denim-blue knee-length shorts with bare shins and white socks, white sneakers, blue baseball cap (four views).'},
 };
 

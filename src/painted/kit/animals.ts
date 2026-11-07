@@ -1,4 +1,4 @@
-import {INK, ell, inkLine, solid} from './draw';
+import {INK, ell, inkLine, solid, washAt} from './draw';
 import {hash} from './hash';
 import {mixColor, type Painter, type Pt} from './painter';
 
@@ -41,6 +41,18 @@ export type AnimalPose = {
    * the tail attached to the rump. Uses `walk`/`gait`/`stride` for the run. `brake` 0..1 skids it: chest dip, forelegs braced wide and slid forward, hind legs trailing.
    */
   quarter?: number; brake?: number;
+  /**
+   * Cat controls (EDU-EP06 K1-K8; all opt-in, absent = the existing drawing byte for byte; dogs ignore them unless noted).
+   * `lid` 0..1 per eye (one number, or [screen-left, screen-right]): authored lid closure, 0 open, 0.5-0.6 the half-close, 1 shut; while set it overrides `animalBlink` (K1).
+   * `ears` 0..1: up and forward -> flat sideways "airplane", profile and front (K2).
+   * `headDown` 0..1: head lowered to bowl height while standing, held; not the stride `sniff` (K3, the EDU-EP09 consumer).
+   * `lean` 0..1 + `leanTo` [forward m, up m] from the ground point: neck stretched so the nose (`leanAnchor: 'nose'`, default) or the skull top ('top') reaches the target, body planted; `tilt` degrees tips the head nose-down about the skull (K4, K5; profile views).
+   * `curl` 0..1 (state 'lie', profile): curled lying state, head tucked, tail wrapped (K6). `tailTo` [forward m, up m]: the tail tip reaches that point in any profile state, with no sway (K6).
+   * `contact` 0..1: soft contact shadow of the paws on the surface under `g` (fabric, cushion, arm top); `g` itself is the ground height, so a raised seat is just a raised `g` (K8).
+   */
+  lid?: number | [number, number]; ears?: number; headDown?: number;
+  lean?: number; leanTo?: [number, number]; leanAnchor?: 'nose' | 'top'; tilt?: number;
+  curl?: number; tailTo?: [number, number]; contact?: number;
 };
 export type AnimalGait = 'walk' | 'run';
 
@@ -228,7 +240,7 @@ const TAILS: Record<AnimalDef['tail'], {stand: UV[]; sit: UV[]; lie: UV[]; w: [n
 };
 
 /** Optional out-parameter of `drawAnimal`: picture points (px) of the posed animal, written while it paints. `mouth` = where a carried ball sits (bottom-front of the muzzle; profile and front views), a pure function of the pose and clock (head bob, sniff, sit blend). */
-export type AnimalAnchors = {mouth?: Pt; /** Top of the skull (between the ears), for a hand that pats the head. */ top?: Pt};
+export type AnimalAnchors = {mouth?: Pt; /** Top of the skull (between the ears), for a hand that pats the head. */ top?: Pt; /** Tip of the tail (profile views). */ tailTip?: Pt; /** The visible eye centre (profile) or the screen-left eye (front). */ eye?: Pt};
 
 /**
  * Paints one animal. `g` ground point (px) under the body centre, `unit` px per metre, `pose` view/state/walk/wag/mouth,
@@ -239,7 +251,14 @@ export const drawAnimal = (p: Painter, seed: number, def: AnimalDef, g: Pt, unit
   const state = pose.state ?? 'stand';
   const dir = pose.view === 'left' ? -1 : 1;
   const front = pose.view === 'front';
-  const Q = (pts: UV[]): Pt[] => pts.map(([u, v]): Pt => [g[0] + (front ? u : dir * u) * s, g[1] - v * s]);
+  /** Head tilt (K4/K5): while `a` is non-zero, every point drawn is rotated about `c` (the skull centre) by `a` radians. */
+  const headRot: {c: UV; a: number} = {c: [0, 0], a: 0};
+  const Q = (pts: UV[]): Pt[] => pts.map(([u0, v0]): Pt => {
+    let u = u0, v = v0;
+    if (headRot.a) { const du = u0 - headRot.c[0], dv = v0 - headRot.c[1], c = Math.cos(headRot.a), sn = Math.sin(headRot.a); u = headRot.c[0] + du * c - dv * sn; v = headRot.c[1] + du * sn + dv * c; }
+    return [g[0] + (front ? u : dir * u) * s, g[1] - v * s];
+  });
+
   let n = 0;
   const outline = (c: string) => mixColor(c, INK, def.inkMix ?? 0.55);
   /** Legs and paws: a darker shade of the fur instead of the ink line (user, 2 Nov 2026). */
@@ -261,9 +280,26 @@ export const drawAnimal = (p: Painter, seed: number, def: AnimalDef, g: Pt, unit
   const points = def.pattern === 'points';
   const limbC = points ? dark : coat;
   const breathe = 1 + (pose.mouth === 'open' && !isCat ? 0.03 * Math.sin(t * 2 * Math.PI * 3) : 0.015 * Math.sin((t * 2 * Math.PI) / 2.6));
-  const blink = animalBlink(t, seed);
+  const blink = animalBlink(t, seed) && pose.lid === undefined; // K1: an authored `lid` replaces the auto blink
+  const lidAt = (i: number): number | undefined => (pose.lid === undefined ? undefined : clamp(Array.isArray(pose.lid) ? pose.lid[i] : pose.lid));
+  /** Cat eye under an authored lid: the almond is cut flat at the lid line (0 open, 0.5 half, 1 a closed curve). */
+  const lidEye = (E: UV, rx: number, ry: number, lid: number, pup: UV, prx: number, pry: number) => {
+    if (lid >= 0.95) { ink([[E[0] - rx, E[1]], [E[0], E[1] - ry * 0.3], [E[0] + rx, E[1]]], INK, 1.2, false, 0.4); return; }
+    const cut = E[1] + ry * (1 - 2 * lid), cl = (pts: UV[]): UV[] => pts.map(([u, v]): UV => [u, Math.min(v, cut)]);
+    const eye = cl(ellUV(E, rx, ry, 0, 12));
+    fill(def.eye, eye, 4);
+    fill(INK, cl(ellUV(pup, prx, pry, 0, 8)), 4);
+    ink(eye, INK, 1.0);
+    if (lid > 0.02) ink([[E[0] - rx * 1.06, cut], [E[0], cut - ry * 0.06], [E[0] + rx * 1.06, cut]], INK, 1.5, false, 0.3);
+  };
   const wagA = isCat ? 0.12 * Math.sin((t * 2 * Math.PI) / 2.2 + hash(seed) * 6) : (pose.wag ?? 0) * 0.45 * Math.sin(t * 2 * Math.PI * 3.2);
   const hs = def.head * (isCat ? 1.05 : 1);
+  if (pose.contact) {
+    // K8: a small soft shadow of the paws on whatever the animal stands on (g is the surface height).
+    const k = clamp(pose.contact), lieW = state === 'lie' ? 0.9 : state === 'sit' ? 0.62 : 0.7, cu = front ? 0 : 0.0;
+    washAt(p, seed * 1000 + 990, '#1e1612', 110 * k, Q(ellUV([cu - (front ? 0 : 0.04), 0.012], lieW * (front ? 0.55 : 1), 0.1, 0, 22)), 0.5, 0.2);
+    washAt(p, seed * 1000 + 991, '#1e1612', 70 * k, Q(ellUV([cu - (front ? 0 : 0.04), 0.01], lieW * (front ? 0.4 : 0.65), 0.06, 0, 18)), 0.4, 0.2);
+  }
 
   // ------------------------------------------------------------------------------------------ head (both views share it)
   const headSide = (H: UV) => {
@@ -275,9 +311,10 @@ export const drawAnimal = (p: Painter, seed: number, def: AnimalDef, g: Pt, unit
         if (!farEar) part(mixColor(coat, INK, 0.08), [add(H, [-0.06 * hs, 0.14 * hs]), add(H, [0.04 * hs, 0.12 * hs]), add(H, [0.0, -0.06 * hs]), add(H, [-0.08 * hs, -0.16 * hs]), add(H, [-0.14 * hs, -0.06 * hs])], true);
         return;
       }
-      const k = def.ears === 'big' ? 1.7 : isCat ? 0.95 : 1;
-      part(c, [add(H, add(o, [-0.13 * hs, 0.1 * hs])), add(H, add(o, [-0.08 * hs, (0.12 + 0.22 * k) * hs])), add(H, add(o, [0.04 * hs, 0.14 * hs]))]);
-      if (!farEar) fill(mixColor(c, '#e8a0a0', 0.45), [add(H, [-0.1 * hs, 0.13 * hs]), add(H, [-0.08 * hs, (0.12 + 0.17 * k) * hs]), add(H, [0.0, 0.15 * hs])], 3);
+      const k = def.ears === 'big' ? 1.7 : isCat ? 0.95 : 1, e = isCat ? clamp(pose.ears ?? 0) : 0; // K2: tip swings back and down to the flat "airplane"
+      const tip = lerpUV([-0.08, 0.12 + 0.22 * k], [-0.3, 0.17], e), tipIn = lerpUV([-0.08, 0.12 + 0.17 * k], [-0.24, 0.16], e);
+      part(c, [add(H, add(o, [-0.13 * hs, 0.1 * hs])), add(H, add(o, [tip[0] * hs, tip[1] * hs])), add(H, add(o, [0.04 * hs, 0.14 * hs]))]);
+      if (!farEar) fill(mixColor(c, '#e8a0a0', 0.45), [add(H, [-0.1 * hs, 0.13 * hs]), add(H, [tipIn[0] * hs, tipIn[1] * hs]), add(H, [0.0, 0.15 * hs])], 3);
     };
     ear(true);
     const mz = def.muzzle;
@@ -305,7 +342,10 @@ export const drawAnimal = (p: Painter, seed: number, def: AnimalDef, g: Pt, unit
     } else ink([add(tip, [-0.01 * hs, -0.04 * hs]), add(tip, [-0.05 * hs, (mouthY + 0.02) * hs]), add(tip, [-0.12 * hs, (mouthY + 0.03) * hs])], INK, 1.0, false, 0.4);
     if (isCat) for (const dy of [-0.01, -0.04]) ink([add(tip, [-0.04 * hs, (dy - 0.02) * hs]), add(tip, [0.14 * hs, (dy + 0.01) * hs])], '#f4efe6', 0.7, false, 0.3);
     const E = add(H, [(isCat ? 0.08 : 0.06) * hs, 0.04 * hs]);
-    if (blink) ink([add(E, [-0.04 * hs, 0]), add(E, [0.04 * hs, -0.005 * hs])], INK, 1.2, false, 0);
+    if (anchors) anchors.eye = Q([E])[0];
+    const lidP = isCat ? lidAt(dir < 0 ? 0 : 1) : undefined;
+    if (lidP !== undefined) lidEye(E, 0.045 * hs, 0.035 * hs, lidP, add(E, [0.01 * hs, 0]), 0.01 * hs, 0.03 * hs);
+    else if (blink) ink([add(E, [-0.04 * hs, 0]), add(E, [0.04 * hs, -0.005 * hs])], INK, 1.2, false, 0);
     else if (isCat) {
       const eye = ellUV(E, 0.045 * hs, 0.035 * hs, 0, 12);
       fill(def.eye, eye, 4);
@@ -326,9 +366,10 @@ export const drawAnimal = (p: Painter, seed: number, def: AnimalDef, g: Pt, unit
         continue;
       }
       const k = def.ears === 'big' ? 1.6 : isCat ? 0.9 : 1, spread = def.ears === 'big' ? 0.12 : 0.04;
-      const ear: UV[] = [[H[0] + sd * 0.04 * hs, H[1] + 0.15 * hs], [H[0] + sd * (0.18 + spread) * hs, H[1] + (0.14 + 0.22 * k) * hs], [H[0] + sd * 0.21 * hs, H[1] + 0.06 * hs]];
+      const e = isCat ? clamp(pose.ears ?? 0) : 0, tipU = lerpUV([(0.18 + spread), 0.14 + 0.22 * k], [0.42, 0.1], e), tipI = lerpUV([(0.17 + spread), 0.13 + 0.16 * k], [0.34, 0.105], e); // K2
+      const ear: UV[] = [[H[0] + sd * 0.04 * hs, H[1] + 0.15 * hs], [H[0] + sd * tipU[0] * hs, H[1] + tipU[1] * hs], [H[0] + sd * 0.21 * hs, H[1] + 0.06 * hs]];
       part(earC, ear);
-      fill(mixColor(earC, '#e8a0a0', 0.45), [[H[0] + sd * 0.08 * hs, H[1] + 0.14 * hs], [H[0] + sd * (0.17 + spread) * hs, H[1] + (0.13 + 0.16 * k) * hs], [H[0] + sd * 0.18 * hs, H[1] + 0.09 * hs]], 3);
+      if (e < 0.9) fill(mixColor(earC, '#e8a0a0', 0.45 * (1 - 0.6 * e)), [[H[0] + sd * 0.08 * hs, H[1] + 0.14 * hs], [H[0] + sd * tipI[0] * hs, H[1] + tipI[1] * hs], [H[0] + sd * 0.18 * hs, H[1] + 0.09 * hs]], 3);
     }
     if (def.feathered) part(coat, ellUV([H[0], H[1] - 0.01 * hs], r[0] * 0.97, r[1] * 1.04, 0, 24));
     else part(points ? light : coat, ellUV(H, r[0], r[1]), true);
@@ -350,7 +391,10 @@ export const drawAnimal = (p: Painter, seed: number, def: AnimalDef, g: Pt, unit
     if (isCat) for (const sd of [-1, 1]) for (const dy of [0, -0.03]) ink([[M[0] + sd * 0.06 * hs, M[1] + dy * hs], [M[0] + sd * 0.24 * hs, M[1] + (dy + 0.02 + dy) * hs]], '#f4efe6', 0.7, false, 0.3);
     for (const sd of [-1, 1]) {
       const E: UV = [H[0] + sd * 0.085 * hs, H[1] + (0.04 + 0.05 * down) * hs];
-      if (blink) ink([[E[0] - 0.035 * hs, E[1]], [E[0] + 0.035 * hs, E[1]]], INK, 1.2, false, 0);
+      if (anchors && sd < 0) anchors.eye = Q([E])[0];
+      const lidF = isCat ? lidAt(sd < 0 ? 0 : 1) : undefined;
+      if (lidF !== undefined) lidEye(E, 0.045 * hs, 0.038 * hs, lidF, E, 0.012 * hs, 0.032 * hs);
+      else if (blink) ink([[E[0] - 0.035 * hs, E[1]], [E[0] + 0.035 * hs, E[1]]], INK, 1.2, false, 0);
       else if (isCat) {
         const eye = ellUV(E, 0.045 * hs, 0.038 * hs, 0, 12);
         fill(def.eye, eye, 4);
@@ -388,14 +432,19 @@ export const drawAnimal = (p: Painter, seed: number, def: AnimalDef, g: Pt, unit
     }
     if (st === 'sit') {
       const hip: UV = [-0.26, 0.32], sh: UV = [0.12, isCat ? 0.88 : 0.92];
-      const fore: UV[] = [add(sh, [0.04, -0.12]), [sh[0] + 0.06, 0.4], [sh[0] + 0.07, 0.1], [sh[0] + 0.07, 0]];
+      // Cat: elbow tucked back, wrist a touch forward, so the sitting foreleg reads as a bent, tapering limb (EDU-EP06 LF01, user 7 Nov 2026).
+      const fore: UV[] = isCat ? [add(sh, [0.02, -0.12]), [sh[0] - 0.02, 0.5], [sh[0] + 0.05, 0.2], [sh[0] + 0.1, 0]] : [add(sh, [0.04, -0.12]), [sh[0] + 0.06, 0.4], [sh[0] + 0.07, 0.1], [sh[0] + 0.07, 0]];
       const hind: UV[] = [hip, [hip[0] + 0.2, 0.2], [hip[0] - 0.08, 0.05], [hip[0] + 0.2, 0]];
       return {hip, sh, H: add(sh, [0.2, isCat ? 0.34 : 0.4]), tail: tailLine(add(hip, [-0.2, -0.22]), 'sit'), fb: hind, ff: fore, nb: hind, nf: fore, haunch: 1};
     }
-    const hip: UV = [-0.42, 0.26], sh: UV = [0.3, 0.3];
-    const fore: UV[] = [add(sh, [-0.02, -0.12]), [sh[0] + 0.14, 0.07], [sh[0] + 0.3, 0.05], [sh[0] + 0.38, 0]];
+    const cu = isCat ? clamp(pose.curl ?? 0) : 0; // K6: curled lying state (cat, profile): a round mound, head tucked in, tail wrapped round the front
+    const hip: UV = lerpUV([-0.42, 0.26], [-0.28, 0.27], cu), sh: UV = lerpUV([0.3, 0.3], [0.1, 0.3], cu);
+    const fore: UV[] = [add(sh, [-0.02, -0.12]), [sh[0] + 0.14, 0.07], [sh[0] + 0.3 - 0.16 * cu, 0.05], [sh[0] + 0.38 - 0.2 * cu, 0]];
     const hind: UV[] = [hip, [hip[0] + 0.22, 0.16], [hip[0] - 0.06, 0.05], [hip[0] + 0.2, 0]];
-    return {hip, sh, H: add(sh, [0.26, isCat ? 0.28 : 0.32]), tail: tailLine(add(hip, [-0.24, -0.04]), 'lie'), fb: hind, ff: fore, nb: hind, nf: fore, haunch: 1};
+    const Hl = lerpUV(add(sh, [0.26, isCat ? 0.28 : 0.32]), add(sh, [0.17, 0.0]), cu);
+    const tl = tailLine(add(hip, [-0.24, -0.04]), 'lie');
+    const wrap: UV[] = [add(hip, [-0.2, -0.04]), add(hip, [-0.28, 0.0]), [hip[0] - 0.18, 0.02], [hip[0] + 0.1, 0.02], [sh[0] + 0.1, 0.03], [sh[0] + 0.26, 0.06], [sh[0] + 0.3, 0.1]];
+    return {hip, sh, H: Hl, tail: cu > 0 ? lerpRig(tl, resample(wrap, tl.length), cu) : tl, fb: hind, ff: fore, nb: hind, nf: fore, haunch: 1};
   };
   const frontRig = (st: AnimalState): FrontRig => {
     const lift = (sd: number) => (moving && st === 'stand' ? amp * Math.max(0, 0.08 * Math.sin(2 * Math.PI * ph + (sd > 0 ? Math.PI : 0))) : 0);
@@ -411,9 +460,9 @@ export const drawAnimal = (p: Painter, seed: number, def: AnimalDef, g: Pt, unit
     const [fl, fr] = legs(0.14, 0.09, 0.13, 0.14);
     return {chest: [0, 0.26], chestR: [0.42 * def.build, 0.26], H: [0, 0.6], tail: tailLine([0.3, 0.06], 'lie'), fl, fr, back: 0, haunch: 0};
   };
-  const tail = (line0: UV[]) => {
+  const tail = (line0: UV[], sway = true) => {
     const T = TAILS[def.tail];
-    const line = line0.map(rotAbout(line0[0], -wagA)).map(([u, v]): UV => [u, Math.max(0.04, v)]); // a tail never dips under the ground
+    const line = line0.map(rotAbout(line0[0], sway ? -wagA : 0)).map(([u, v]): UV => [u, Math.max(0.04, v)]); // a tail never dips under the ground
     const w = def.fluffy ? [T.w[0] * 1.5, T.w[1] * 1.6] : T.w;
     const poly = tube(line, taper(line.length, w[0], w[1]));
     part(points ? dark : def.pattern === 'tuxedo' || def.pattern === 'solid' ? def.coat : def.pattern === 'calico' ? def.coat : coat, poly, true);
@@ -500,12 +549,42 @@ export const drawAnimal = (p: Painter, seed: number, def: AnimalDef, g: Pt, unit
     const wR = (isCat ? 0.4 : 0.44) * def.build * breathe, wC = (isCat ? 0.38 : 0.5) * def.build * breathe;
     const R = lerpRig(profRig(from), profRig(state), u);
     if (sniff) R.H = lerpUV(R.H, [R.sh[0] + 0.42, 0.2], sniff * 0.9);
+    if (pose.headDown) R.H = lerpUV(R.H, [R.sh[0] + 0.3, 0.38], ease01(pose.headDown)); // K3: held at bowl height, no sniff dips
+    const tiltA = (-(pose.tilt ?? 0) * Math.PI) / 180, leanK = ease01(pose.lean ?? 0);
+    if (leanK > 0) {
+      // K4/K5: the head goes where the anchor (nose tip or skull top) meets the target; the neck stretches to it, the body stays planted.
+      const to = pose.leanTo ?? [0.3, 0.5], a: UV = pose.leanAnchor === 'top' ? [0, 0.18 * hs] : [0.23 * hs, -0.04 * hs];
+      const ra: UV = [a[0] * Math.cos(tiltA) - a[1] * Math.sin(tiltA), a[0] * Math.sin(tiltA) + a[1] * Math.cos(tiltA)];
+      R.H = lerpUV(R.H, [to[0] / def.height - ra[0], to[1] / def.height - ra[1]], leanK);
+    }
+    if (pose.tailTo) {
+      // K6: the tail tip goes to the target (m, forward and up from `g`), an arc rising over the chord; no sway.
+      const r0 = R.tail[0], tg: UV = [pose.tailTo[0] / def.height, pose.tailTo[1] / def.height], ch = Math.hypot(tg[0] - r0[0], tg[1] - r0[1]);
+      if ((pose.curl ?? 0) > 0.5 && isCat) {
+        // Curled cat (EDU-EP06 BOSS-2): keep the wrapped tail round the body and move only its end; the offset grows with the square of the distance
+        // along the tail, so the tip lands exactly on the target without a straight stick across the back.
+        const tip = R.tail[R.tail.length - 1], n = R.tail.length - 1;
+        const dist = Math.hypot(tg[0] - tip[0], tg[1] - tip[1]);
+        R.tail = R.tail.map(([u, v], i): UV => [u + (tg[0] - tip[0]) * (i / n) ** 2, v + (tg[1] - tip[1]) * (i / n) ** 2 + 0.3 * dist * Math.sin(Math.PI * (i / n) ** 1.5)]);
+      } else
+      R.tail = Array.from({length: 7}, (_, i): UV => { const f = i / 6; return [r0[0] + (tg[0] - r0[0]) * f, r0[1] + (tg[1] - r0[1]) * f + 0.12 * ch * Math.sin(Math.PI * f) * (1 - 0.5 * f)]; });
+      if (anchors) anchors.tailTip = Q([tg])[0];
+    } else if (anchors && R.tail.length) anchors.tailTip = Q([R.tail[R.tail.length - 1]])[0]; // the rest tip (before the sway), so a scene can ease `tailTo` from it
     const {hip, sh, H} = R;
 
     // Far legs, tail, body, near back leg, haunch, near front leg, neck, head.
     const limb = (pts: UV[], isFront: boolean, isFar: boolean) => {
       const q = pts.map((x) => add(x, [isFar ? 0.05 : 0, 0]));
       const w0 = isFront ? [0.24, 0.13, 0.09, 0.09] : [0.32, 0.17, 0.09, 0.09];
+      if (isCat && isFront && state === 'sit' && from === 'sit') {
+        // Sitting cat foreleg: smooth centreline, shoulder-to-wrist taper, rounded paw; far leg only a little darker than the coat.
+        const sm = smoothLine(q, 4), wf = [0.2, 0.17, 0.125, 0.092, 0.074, 0.068, 0.078];
+        const c = isFar ? mixColor(coat, '#3a2a40', 0.14) : limbC;
+        leg(c, tube(sm, sm.map((_, i) => { const x = (i / (sm.length - 1)) * (wf.length - 1), a = Math.floor(x), b = Math.min(wf.length - 1, a + 1); return wf[a] + (wf[b] - wf[a]) * (x - a); })), true);
+        leg(c, ellUV(add(q[3], [0.05, 0.035]), 0.1, 0.05, 0, 14));
+        if (!isFar) fill(coat, ellUV(add(sh, [0.0, -0.14]), 0.15, 0.2, 0.2, 16), 3); // shoulder: a soft rounded top instead of a cut-off column
+        return;
+      }
       if (def.smoothLimbs && moving) {
         const sm = smoothLine(q, 4);
         leg(isFar ? far : limbC, tube(sm, sm.map((_, i) => { const x = (i / (sm.length - 1)) * (w0.length - 1), a = Math.floor(x), b = Math.min(w0.length - 1, a + 1); return w0[a] + (w0[b] - w0[a]) * (x - a); })), true);
@@ -514,7 +593,8 @@ export const drawAnimal = (p: Painter, seed: number, def: AnimalDef, g: Pt, unit
     };
     limb(R.fb, false, true);
     limb(R.ff, true, true);
-    tail(R.tail);
+    const tailOver = !!pose.tailTo && isCat && (pose.curl ?? 0) > 0.5; // a curled cat's targeted tail lies over its body (EDU-EP06 B05-SH02), drawn just before the head
+    if (!tailOver) tail(R.tail, !pose.tailTo);
 
     const ang = Math.atan2(sh[1] - hip[1], sh[0] - hip[0]);
     const mid: UV = [(hip[0] + sh[0]) / 2, (hip[1] + sh[1]) / 2];
@@ -548,7 +628,10 @@ export const drawAnimal = (p: Painter, seed: number, def: AnimalDef, g: Pt, unit
     part(coat, neck, true);
     if (arch) { if (def.pattern === 'chest' || def.pattern === 'tuxedo') fill(mixColor(coat, light, 0.55), ellUV(add(sh, [0.16, -0.12]), 0.07, 0.15, -0.3, 14), 4); }
     else if (def.pattern === 'chest' || def.pattern === 'tuxedo') fill(light, tube([add(sh, [0.14, 0.02]), add(H, [0.04, -0.12])], [0.14, 0.1]), 3);
+    if (tailOver) tail(R.tail, false);
+    if (pose.tilt) { headRot.c = H; headRot.a = tiltA; }
     headSide(H);
+    headRot.a = 0;
     return;
   }
 
@@ -598,6 +681,7 @@ export const drawAnimal = (p: Painter, seed: number, def: AnimalDef, g: Pt, unit
     R.fl = R.fl.map(([x, y], i): UV => lerpUV([x, y], [x * (i === 0 ? 1.25 : 1.9), y * (i === 0 ? 0.8 : 0.9)], k));
     R.fr = R.fr.map(([x, y], i): UV => lerpUV([x, y], [x * (i === 0 ? 1.25 : 1.9), y * (i === 0 ? 0.8 : 0.9)], k));
   } else if (sniff) R.H = lerpUV(R.H, [0, 0.5], sniff * 0.85);
+  if (pose.headDown) R.H = lerpUV(R.H, [0, 0.64], ease01(pose.headDown)); // K3 (front)
   const {chest, H} = R;
   if (lowFront) {
     const k = ease01(sniff);

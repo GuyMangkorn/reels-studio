@@ -222,6 +222,61 @@ export const paintPovHand = (p: Painter, h: PovHand) => {
   return {wrist, knuckles: mid, thumbTip: T, palmCentre: P(Lp * 0.5, 0), indexTip: h.pinch ? P(h.pinch[0], h.pinch[1]) : undefined};
 };
 
+// ---------------------------------------------------------------------------------------------------------------- visitor hand
+// `new: visitor-hand` (EDU-EP06 N6; Boss W5.2, 2026-11-07): a stranger's forearm and open hand for a cutaway ("not hers" in one second): a
+// denim cuff, a wristwatch on the wrist and a skin tone that is a parameter (default lighter than the EP06 owner's deep brown). It is
+// `paintPovHand` with the long-sleeve forearm (cuff nearer the wrist) plus the watch; no face, no text. Hold it still: the pose is a pure
+// function of its arguments, so a still hand has no drift.
+export type VisitorSkin = 'light' | 'medium' | 'deep';
+const VISITOR_SKIN: Record<VisitorSkin, Pick<HandTone, 'skin' | 'shade' | 'deep' | 'nail' | 'crease'>> = {
+  light: {skin: '#f0cdb0', shade: '#d9ad8c', deep: '#c9987a', nail: '#f6e0d2', crease: '#b08868'},
+  medium: {skin: '#e2b084', shade: '#c99468', deep: '#b98257', nail: '#f1d6c2', crease: '#9c6f52'},
+  deep: {skin: '#a8714a', shade: '#8a5a3a', deep: '#744a2e', nail: '#d8b8a0', crease: '#5a3822'},
+};
+export const visitorTone = (skin: VisitorSkin | HandTone = 'light'): HandTone =>
+  typeof skin === 'string' ? {...VISITOR_SKIN[skin], sleeve: '#46648a', sleeveShade: '#34506f'} : skin;
+
+export type VisitorHand = {
+  /** Seed/ink id base (about 80 ids are used). */
+  base: number;
+  /** Wrist centre in plate px and the direction the fingers point (radians; screen: 0 right, -PI/2 up). */
+  wrist: Pt; dir: number;
+  side?: -1 | 1; size?: number; curl?: number; spread?: number;
+  /** Skin: a named tone or a full `HandTone` (its sleeve colours are then the cuff). Default 'light'. */
+  skin?: VisitorSkin | HandTone;
+  /** Wristwatch (default true). */
+  watch?: boolean;
+};
+
+export const paintVisitorHand = (p: Painter, h: VisitorHand) => {
+  const s = h.size ?? 1, tone = visitorTone(h.skin), fx = Math.cos(h.dir), fy = Math.sin(h.dir), nx = -fy, ny = fx;
+  const back = (d: number): Pt => [h.wrist[0] - fx * d * s, h.wrist[1] - fy * d * s];
+  const anchors = paintPovHand(p, {
+    base: h.base, side: h.side ?? 1, wrist: h.wrist, dir: h.dir, size: s, curl: h.curl ?? 0.12, spread: h.spread ?? 0.22, tone, crispFill: true,
+    elbow: back(520), sleeveFrom: back(1100), forearmElbowScale: 1.3, sleeveCuffFraction: 0.3,
+  });
+  // cuff band: a lighter, slightly wider band at the sleeve edge, with a stitch line
+  const cuffAt = back(520 * 0.3), cw = (128 + (150 * 1.3 - 128) * 0.3) * s * 1.12;
+  const band = capsule(cuffAt, back(520 * 0.3 + 46), cw * 0.98, cw);
+  hardFill(p, h.base + 60, '#5876a0', band);
+  inkLine(p, h.base + 61, band, 1.0, 0.2, true, tone.sleeveShade);
+  const wc = back(78);
+  if (h.watch !== false) {
+    // strap across the wrist, case and dial on the back of it
+    const sw = 138 * s, st = 30 * s, a: Pt = [wc[0] + nx * sw / 2, wc[1] + ny * sw / 2], b: Pt = [wc[0] - nx * sw / 2, wc[1] - ny * sw / 2];
+    const strap: Pt[] = [a, b, [b[0] - fx * st, b[1] - fy * st], [a[0] - fx * st, a[1] - fy * st]].map(([x, y]): Pt => [x + fx * st * 0.5, y + fy * st * 0.5]);
+    hardFill(p, h.base + 62, '#2a2d33', strap);
+    inkLine(p, h.base + 62, strap, 0.9, 0.1, true, '#15171b');
+    const cr = 38 * s;
+    hardFill(p, h.base + 63, '#b7bdc6', ring(wc[0], wc[1], cr, cr, 20));
+    inkLine(p, h.base + 63, ring(wc[0], wc[1], cr, cr, 20), 1.0, 0.1, true, '#4a4f58');
+    hardFill(p, h.base + 64, '#20242b', ring(wc[0], wc[1], cr * 0.78, cr * 0.78, 20));
+    inkLine(p, h.base + 65, [wc, [wc[0] + cr * 0.5 * Math.cos(-1.9), wc[1] + cr * 0.5 * Math.sin(-1.9)]], 1.4, 0, false, '#e8e4dc');
+    inkLine(p, h.base + 66, [wc, [wc[0] + cr * 0.62 * Math.cos(0.2), wc[1] + cr * 0.62 * Math.sin(0.2)]], 1.0, 0, false, '#e8e4dc');
+  }
+  return {...anchors, watch: wc, cuff: cuffAt};
+};
+
 /** A hand hooked over a cabinet's front lip: knuckles on the top face, the fingers turn over the lip and their tips hang
  * down the front face (drawn after the cabinet, so the tips are in front of it). Left or right by `side`. */
 export type EdgeGrip = {
