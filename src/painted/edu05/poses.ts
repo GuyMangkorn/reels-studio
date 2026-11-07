@@ -94,3 +94,24 @@ export const paintClamp = (p: Painter, at: Pt, u: number, skin: string) => {
   inkLine(p, 6121, ell(at[0], at[1] - 0.012 * u, w, h, 14), {weight: 0.9, color: mixColor(skin, '#7a4a30', 0.55), curve: 0.3});
   inkLine(p, 6122, [[at[0] + 0.02 * u, at[1] - 0.05 * u], [at[0] + 0.03 * u, at[1] - 0.005 * u]], {weight: 0.9, color: mixColor(skin, '#7a4a30', 0.55), closed: false});
 };
+
+const mixPt = (a: Pt, b: Pt, w: number): Pt => [a[0] + (b[0] - a[0]) * w, a[1] + (b[1] - a[1]) * w];
+const mixArm = (a: Arm | undefined, b: Arm | undefined, w: number): Arm | undefined => {
+  if (!a || !b) return w > 0.5 ? b : a;
+  const far = w > 0.5 ? b : a;
+  return {...far, to: mixPt(a.to, b.to, w), ...(a.via && b.via ? {via: mixPt(a.via, b.via, w)} : {})};
+};
+const BLEND_NUM = ['crouch', 'bend', 'lean', 'rise', 'floorSit', 'squat', 'kneel', 'run', 'lie', 'lift', 'walk', 'stride'] as const;
+/**
+ * Blend of two resolved pose fragments of the same view (`namedPose` or `poseFor` results) by `w` 0..1: the numeric body fields, `nod` and
+ * both arms' `to` / `via` interpolate (a missing field counts as 0), the rest (`behind`, holds) follows `b` after the midpoint. The shot
+ * spreads the result over the base pose, so a change of pose takes a few frames instead of popping (SHEETS-R1.8: B02-SH01, B02-SH04).
+ */
+export const blendFig = (a: Partial<FigPose>, b: Partial<FigPose>, w: number): Partial<FigPose> => {
+  const out: Partial<FigPose> = {...(w > 0.5 ? b : a)};
+  const o = out as Record<string, number | undefined>, ra = a as Record<string, number | undefined>, rb = b as Record<string, number | undefined>;
+  for (const k of BLEND_NUM) if (ra[k] !== undefined || rb[k] !== undefined) o[k] = (ra[k] ?? 0) + ((rb[k] ?? 0) - (ra[k] ?? 0)) * w;
+  if (a.nod || b.nod) out.nod = mixPt((a.nod as Pt) ?? [0, 0], (b.nod as Pt) ?? [0, 0], w);
+  out.rArm = mixArm(a.rArm, b.rArm, w); out.lArm = mixArm(a.lArm, b.lArm, w);
+  return out;
+};

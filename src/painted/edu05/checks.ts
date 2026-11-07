@@ -1,10 +1,11 @@
-import {ell, solid} from '../kit/draw';
+import {ell, solid, washAt} from '../kit/draw';
+import {poseMix} from '../kit/poses';
 import type {Painter, Pt} from '../kit/painter';
 import type {V3} from '../kit/space';
 import {camOf, MACRO_CAMS} from './cams';
-import {edgeShade, paintGarden, shadeEdgeAt} from './garden';
+import {edgeShade, paintGarden, paintPlanter, planterBlades, shadeEdgeAt} from './garden';
 import {paintTiny, tinyItem} from './cast';
-import {braceClamp, namedPose, NAMED_POSES, paintClamp, VIEW_OF} from './poses';
+import {blendFig, braceClamp, namedPose, NAMED_POSES, paintClamp, VIEW_OF} from './poses';
 import {TINY} from './cast';
 import {paintPuff} from './scenes';
 import {antItem, antWalk, ANT_SPEED} from './ant';
@@ -20,7 +21,7 @@ import type {Item} from './world';
 //   printf 'EDU5-CHK-EDGE 45 out/edu05/w52/g1/EDGE45.png\n' | node scripts/stills.mjs src/painted/edu05/check-index.ts
 // They show an element in its shot's camera and staging, not a finished shot (Editor assembles those).
 
-export const CHECK_FRAMES = {EDGE: 90, DROP2: 87, DROP3: 119, DROP4: 133, ANTW: 25, FX: 80, FAC: 97, SPECK: 32, DRIFT: 133, POSES: 210, CRUMB: 90, PUFF: 150, LIFT: 173} as const;
+export const CHECK_FRAMES = {EDGE: 90, DROP2: 87, DROP3: 119, DROP4: 133, ANTW: 25, FX: 80, FAC: 97, SPECK: 32, DRIFT: 133, POSES: 210, CRUMB: 90, PUFF: 150, LIFT: 173, LIFTOFF: 89, LANDING: 93} as const;
 const FPS = 30;
 
 /** G1: N2 shade edge sliding -0.5 -> -1.2 (S01-B05-SH01 L 0-89) with the shot camera, TINY cooled by `edgeShade` (K1), a gust (N1). */
@@ -234,3 +235,95 @@ const nullPainter = (): Painter => { const k: unknown = new Proxy(function () {}
 const smooth01 = (x: number) => { const k = Math.min(1, Math.max(0, x)); return k * k * (3 - 2 * k); };
 /** Inverse of the smoothstep k*k*(3-2k) on 0..1 (the leg solver's `ease`). */
 const easeInv = (y: number) => { const v = Math.min(1, Math.max(0, y)); return 0.5 - Math.sin(Math.asin(1 - 2 * v) / 3); };
+
+// ---- B02 stand-ins for the two shots that had only a spec (SHEETS-R1.8, Boss): S01-B02-SH01 (lift-off) and S01-B02-SH04 (soft landing).
+/** A key path through (frame, value) points, linear between keys and smoothed over +-2 frames so no key is a corner (deterministic). */
+const keyed = (keys: [number, number][], L: number): number => {
+  const at = (l: number) => {
+    if (l <= keys[0][0]) return keys[0][1];
+    for (let i = 1; i < keys.length; i++) if (l <= keys[i][0]) { const [a, va] = keys[i - 1], [b, vb] = keys[i]; return va + ((vb - va) * (l - a)) / (b - a); }
+    return keys[keys.length - 1][1];
+  };
+  return (at(L - 2) + at(L - 1) + at(L) + at(L + 1) + at(L + 2)) / 5;
+};
+/** Soft contact shadow under a figure that is `h` sm off the ground: the kit's two washes, faded out over 0.35 sm (R1.3 FR13: none when she is in the air). */
+const groundShadow = (p: Painter, c: YCam, at: V3, h: number, profile: boolean) => {
+  const f = 1 - smooth01(h / 0.35), g = camPoint(c, [at[0], 0, at[2]]), u = camUnit(c, [at[0], 0, at[2]]);
+  if (f <= 0.01 || !g) return;
+  washAt(p, 5101, '#3b3226', 60 * f, ell(g[0], g[1], 0.32 * u, 0.06 * u, 16), 0.15, 0.2);
+  washAt(p, 5102, '#1e2324', 70 * f, ell(g[0], g[1] + 0.01 * u, (profile ? 0.32 : 0.26) * u, 0.06 * u, 16), 0.5, 0.3);
+};
+/** TINY's feet anchor in S01-B02-SH01 at shot-local frame L: still at the lip (-0.4, 0, -6.0) to L 38, rising over the trough lip (wall top y 1.3 at z -6.4: she stays inside it until her feet pass 1.3, L 52), then out and up. */
+export const liftoffAt = (L: number): V3 => [
+  keyed([[0, -0.4], [38, -0.4], [54, -0.6], [88, -0.8]], L),
+  keyed([[0, 0], [38, 0], [42, 0.1], [48, 0.62], [54, 1.5], [88, 3.0]], L),
+  keyed([[0, -6.0], [38, -6.0], [50, -6.34], [62, -7.2], [88, -8.5]], L),
+];
+/**
+ * G15: S01-B02-SH01 stand-in (breeze and lift-off, SD05 camera, SET-MACRO-PLANTER). Shot-local L (0-88):
+ *  - L 4-30 breeze bends the tufts toward -z (tip deflection 0.22 of height, < 0.25, then holds); she stands at the lip, scared, leaning
+ *    into it L 22-38 (P01 -> P39 arms, lean; legs stay straight and planted until her feet leave the soil).
+ *  - L 38 lift-off: legs trail into the P39 stride only after the feet are off the ground (run ramps in L 38-46, no slide); she rises
+ *    gently (first 4 f 0.1 sm), over the lip by L 54 (feet 1.5), clear by L 62, drifting up and away to (-0.8, 3.0, -8.5).
+ *  - L 58-62 the profile P39 dissolves into the front `drift-spread` (arms open, soft roll fades in over L 60-72 and ends where SH02's
+ *    starts, ~0 deg): the figure is swapped by a 4 f cross-dissolve, the only way between the profile and the front rig.
+ *  - the ground shadow fades with her height (none from 0.35 sm up).
+ */
+export const paintLIFTOFF = (p: Painter, frame: number) => {
+  const L = frame, c = camOf(MACRO_CAMS['S01-B02-SH01'], L / 89), t = L / FPS + 100, at = liftoffAt(L), h = at[1];
+  const ramp = (a: number, b: number) => smooth01((L - a) / (b - a));
+  const g = camPoint(c, at), u = camUnit(c, at);
+  if (!g) return;
+  // profile phase: P01 -> P39 (the kit blend), the lean and arms come in L 22-38, the run (stride) only once she is off the soil
+  const w = ramp(22, 38), side = poseMix('P01', 'P39', w, TINY, g, u, 'left');
+  const sideFig: Partial<FigPose> = {...side, run: 0.3 * ramp(38, 46), lean: (side.lean ?? 0) * (L < 38 ? w : 1)};
+  // front phase: drift-spread arms with the SET-DRIFT roll
+  const roll = driftRoll(L) * ramp(60, 72), frontNamed = namedPose('drift-spread', L, TINY, g, u, 'front');
+  const fade = ramp(58, 62), facing = 'scared' as const;
+  const lipMat = L < 4 ? 0 : 0.22 * ramp(4, 30);
+  const sideOpts = {at, view: 'left' as const, pose: 'P39' as const, face: facing, t, shadow: false, fig: sideFig};
+  const frontOpts = {at, view: 'front' as const, named: {name: 'drift-spread' as const, L}, face: facing, t, shadow: false, fig: {...frontNamed, lie: roll}};
+  const lead: Item = {at, bias: 0, draw: (q, cc) => {
+    if (h <= 1e-4) MEASURE.LIFTOFF = paintTiny(q, cc, {...sideOpts, shadow: true});
+    else {
+      groundShadow(q, cc, at, h, true);
+      if (fade < 1) MEASURE.LIFTOFF = paintTiny(fade > 0 ? q.layer(1 - fade, 20000) : q, cc, sideOpts);
+      if (fade > 0) MEASURE.LIFTOFF = paintTiny(fade < 1 ? q.layer(fade, 21000) : q, cc, frontOpts);
+    }
+  }};
+  paintPlanter(p, c, {t, items: [lead], blades: planterBlades().filter((b) => b.root[2] < -5.3 || b.root[0] < -3.3 || b.root[0] > 3.4), wallItem: true, calm: [1150, 1370], bits: 110, gust: lipMat > 0 ? {dir: [0, -1], amt: lipMat} : undefined});
+};
+
+/**
+ * G16: S01-B02-SH04 stand-in (soft landing, "huh?", VD08; SET-GARDEN-GRASS sunlit clearing, T-TINY camera). Shot-local L (0-92):
+ *  - L 0-6 she settles from y 0.6 in `drift-spread` (arms level, small roll ends at 0), feet touch at L 6 (soft: zero speed); no dust, no shake.
+ *  - L 6-8 knees give (crouch 0.06 -> 0.30), L 8-16 one bounce of 0.3 sm (parabola, peak L 12), L 16-22 the knees keep folding to a squat (0.6).
+ *  - L 22-30 squat -> floor sit (the FR18 blend run backwards: crouch eases out as `floorSit` grows from the level that matches the squat hip),
+ *    arms travel from level to `sit-up-check` over L 16-30; no figure swap, one rig throughout.
+ *  - L 34-62 four pats (R on L forearm, L on R thigh, ...: `sit-up-check` 1 pat / 7 f), rest hold after.
+ *  - L 64-76 "huh": head tilts 14 deg (L 64-68 in, hold, out L 74-80) and the eyes drop to her hands; L 78 face surprised -> happy;
+ *    L 87-91 the giggle: two small shoulder bounces (8 mm), face happy.
+ */
+export const paintLANDING = (p: Painter, frame: number) => {
+  const L = frame, c = camOf(MACRO_CAMS['S01-B02-SH04'], L / 93), t = L / FPS + 30;
+  const ramp = (a: number, b: number) => smooth01((L - a) / (b - a));
+  const y = L < 6 ? 0.6 * (1 - smooth01(L / 6)) : L >= 8 && L < 16 ? 1.2 * ((L - 8) / 8) * (1 - (L - 8) / 8) : 0, at: V3 = [0, y, 0];
+  const g = camPoint(c, at), u = camUnit(c, at);
+  if (!g) return;
+  // body: crouch (knees), then the squat -> floor sit blend (TINY.height / hip geometry as in paintLIFT)
+  const crouch0 = keyed([[0, 0.06], [5, 0.06], [8, 0.3], [10, 0.1], [15, 0.1], [19, 0.45], [22, 0.6]], L);
+  const bb = 1 - ramp(22, 30), hip0 = legScale(TINY) * 0.672 + 0.038, aStar = easeInv((0.282 * (TINY.height / 1.7)) / (hip0 - 0.075));
+  const seat = L >= 22, crouch = L < 22 ? crouch0 : 0.6 * bb, floorSit = seat ? 1 - (1 - aStar) * bb : undefined;
+  const bob = L >= 87 ? 0.008 * Math.abs(Math.sin((Math.PI * (L - 87)) / 3)) : 0, rise = bob;
+  const body: Partial<FigPose> = {crouch, rise, ...(floorSit !== undefined ? {floorSit} : {}), lie: driftRoll(L) * (1 - ramp(0, 6)) * 0.6};
+  const pats = Math.max(0, Math.min(28, L - 34)), wa = ramp(16, 30);
+  const drift = namedPose('drift-spread', L, TINY, g, u, 'front', body), sit = namedPose('sit-up-check', pats, TINY, g, u, 'front', body);
+  const arms = blendFig(drift, sit, wa);
+  const tilt = 14 * (ramp(64, 68) - ramp(74, 80)), look: [number, number] = [0, 0.45 * (ramp(65, 68) - ramp(76, 80))];
+  const face = L < 78 ? 'surprised' : 'happy';
+  const lead: Item = {at, bias: 0, draw: (q, cc) => {
+    if (y > 1e-4) groundShadow(q, cc, at, y, false);
+    MEASURE.LANDING = paintTiny(q, cc, {at, view: 'front', named: {name: L < 22 ? 'drift-spread' : 'sit-up-check', L: L < 22 ? L : pats}, face, faceState: {look}, headCock: tilt, t, shadow: y <= 1e-4, fig: {...body, rArm: arms.rArm, lArm: arms.lArm}});
+  }};
+  paintGarden(p, c, {t, mode: 'sun', drop: false, sun: [180, 300], items: [lead], tips: {n: 7, h: [0.08, 0.2]}});
+};
