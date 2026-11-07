@@ -89,7 +89,7 @@ Every agent reads AGENTS.md plus its **core** documents, and any other document 
 | [cinematography-principles](docs/cinematography-principles.md) | Illustrated/cinematic shot language | on trigger |
 | [mark-storyboard-workflow](docs/mark-storyboard-workflow.md) | Scene sheets (Film); the [review page](docs/mark-storyboard-workflow.md#user-storyboard-review-page) (coordinator) | F |
 | [user-taste](docs/user-taste.md) | Painting thumbnails, look frames, plates; [viewer check](docs/sequence-workflow.md#viewer-check); a repeated user note | F S |
-| [cover-principles](docs/cover-principles.md) | Any cover or thumbnail (Film) | F |
+| [cover-principles](docs/cover-principles.md) / [cover-design skill](.agents/skills/cover-design/SKILL.md) | Any cover or thumbnail (Film); the skill is the procedure | F |
 | [storyboard-principles](docs/storyboard-principles.md) | Shot direction beyond routine staging | on trigger |
 | [boss-asset-workflow](docs/boss-asset-workflow.md) | Shared assets, renderer capabilities, contact bugs; its [QA](docs/boss-asset-workflow.md#visual-and-runtime-qa-before-push) and [production rules](docs/boss-asset-workflow.md#latest-production-rules) | S |
 | [render-rules](docs/render-rules.md) | Any video render, review clip or still | S E; F when rendering |
