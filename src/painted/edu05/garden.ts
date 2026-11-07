@@ -109,6 +109,8 @@ export type GardenOpts = {
   after?: (p: Painter, c: YCam) => void;
   /** Foreground tips (default 14 blades, height 0.25-0.6 sm); a shot with a lead low in the frame thins them (S01-B02-SH04). */
   tips?: {n: number; h: [number, number]};
+  /** Root the foreground tips in front of this camera (a shot's frame-0 camera) so they stay in the world while the camera moves; default: the drawing camera. */
+  tipsAt?: YCam;
 };
 
 export const paintGarden = (p: Painter, c: YCam, o: GardenOpts) => {
@@ -135,7 +137,7 @@ export const paintGarden = (p: Painter, c: YCam, o: GardenOpts) => {
   paintSorted(p, c, items);
   if (sunMode) paintShafts(p, [-120, 60, 260, 420], {top: -60, bottom: 1150, slant: 380, color: '#ffd9a0', level: 0.55, seed: 9700, t: o.t});
   o.after?.(p, c);
-  nearTips(c, {n: o.tips?.n ?? 14, h: o.tips?.h ?? [0.25, 0.6], seed: 77, color: sunMode ? '#55752e' : '#34504a'}).forEach((b) => bladeItem(b, o.t, dof).draw(p, c));
+  nearTips(o.tipsAt ?? c, {n: o.tips?.n ?? 14, h: o.tips?.h ?? [0.25, 0.6], seed: 77, color: sunMode ? '#55752e' : '#34504a'}).forEach((b) => bladeItem(b, o.t, dof).draw(p, c));
   (o.fore ?? []).forEach((b) => bladeItem(b, o.t, dof).draw(p, c));
 };
 const shadeOf = (pal: BladePal): BladePal => (pal === SUNLIT ? {...SHADE, body: '#4a7a62', edge: '#7aa08a'} : pal);
@@ -156,7 +158,7 @@ export const planterBlades = (): Blade[] => {
  * (default: a backdrop painted before everything). `calm` [y0, y1] veils the soil in that picture band (the caption band) with a flat
  * soil wash before the figure; `bits` sets the soil's pebble and thatch count (default 220). All absent = as before (LF02, B01 plates).
  */
-export const paintPlanter = (p: Painter, c: YCam, o: {t: number; items?: Item[]; fore?: Blade[]; sun?: Pt; blades?: Blade[]; gust?: Bend; wallItem?: boolean; calm?: [number, number]; bits?: number}) => {
+export const paintPlanter = (p: Painter, c: YCam, o: {t: number; items?: Item[]; fore?: Blade[]; sun?: Pt; blades?: Blade[]; gust?: Bend; wallItem?: boolean; calm?: [number, number]; bits?: number; tipsAt?: YCam}) => {
   paintAir(p, PLANTER_AIR, 9800);
   const hz = camPoint(c, [0, c.y, -4000]);
   const sun = o.sun ?? [880, (hz?.[1] ?? 900) - 160];
@@ -186,7 +188,7 @@ export const paintPlanter = (p: Painter, c: YCam, o: {t: number; items?: Item[];
   items.push(...(o.items ?? []));
   paintSorted(p, c, items);
   paintShafts(p, [520, 700, 860, 1000], {top: -60, bottom: 1100, slant: -420, color: '#ffd9a0', level: 0.5, seed: 9880, t: o.t});
-  nearTips(c, {n: 12, h: [0.25, 0.55], seed: 78, color: '#34502a'}).forEach((b) => bladeItem(b, o.t).draw(p, c));
+  nearTips(o.tipsAt ?? c, {n: 12, h: [0.25, 0.55], seed: 78, color: '#34502a'}).forEach((b) => bladeItem(b, o.t).draw(p, c));
   (o.fore ?? []).forEach((b) => bladeItem(b, o.t).draw(p, c));
   void ell;
 };

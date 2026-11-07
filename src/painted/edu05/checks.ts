@@ -298,7 +298,7 @@ export const paintLIFTOFF = (p: Painter, frame: number) => {
       MEASURE.LIFTOFF = paintTiny(q, cc, turn ? frontOpts : sideOpts);
     }
   }};
-  paintPlanter(p, c, {t, items: [lead], blades: planterBlades().filter((b) => b.root[2] < -5.3 || b.root[0] < -3.3 || b.root[0] > 3.4), wallItem: true, calm: [1150, 1370], bits: 110, gust: lipMat > 0 ? {dir: [0, -1], amt: lipMat} : undefined});
+  paintPlanter(p, c, {t, items: [lead], blades: planterBlades().filter((b) => b.root[2] < -5.3 || b.root[0] < -3.3 || b.root[0] > 3.4), wallItem: true, calm: [1150, 1370], bits: 110, gust: lipMat > 0 ? {dir: [0, -1], amt: lipMat} : undefined, tipsAt: camOf(MACRO_CAMS['S01-B02-SH01'], 0)});
 };
 
 /**
@@ -332,5 +332,5 @@ export const paintLANDING = (p: Painter, frame: number) => {
     if (y > 1e-4) groundShadow(q, cc, at, y, false);
     MEASURE.LANDING = paintTiny(q, cc, {at, view: 'front', named: {name: L < 22 ? 'drift-spread' : 'sit-up-check', L: L < 22 ? L : pats}, face, faceState: {look}, headCock: tilt, t, shadow: y <= 1e-4, fig: {...body, rArm: arms.rArm, lArm: arms.lArm}});
   }};
-  paintGarden(p, c, {t, mode: 'sun', drop: false, sun: [180, 300], items: [lead], tips: {n: 7, h: [0.08, 0.2]}});
+  paintGarden(p, c, {t, mode: 'sun', drop: false, sun: [180, 300], items: [lead], tips: {n: 7, h: [0.08, 0.2]}, tipsAt: camOf(MACRO_CAMS['S01-B02-SH04'], 0)});
 };
