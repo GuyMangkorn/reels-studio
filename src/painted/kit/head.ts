@@ -31,7 +31,9 @@ export type Cut = 'short' | 'tied' | 'bob' | 'hood' | 'long' | NewCut;
  * `KIT-FACE-LOOKS`, `KIT-FACE-CAST`) swaps the eye, nose, brow and closed-mouth drawing; absent = the legacy round eyes, no nose, bar brows (episode casts
  * only; every PEOPLE entry has a look).
  */
-export type HeadStyle = {skin: string; hair: string; cut: Cut; hood?: string; /** Profile hood only: a wide opening that leaves the whole face visible (set by the hood-up state, `back.ts` `hoodUpHead`); absent = the WFOG hood. */ hoodOpen?: boolean; lines?: boolean; accent?: string; facial?: 'stubble' | 'mustache' | 'beard'; glasses?: boolean; brows?: string; look?: FaceLook};
+export type HeadStyle = {skin: string; hair: string; cut: Cut; hood?: string; /** Profile hood only: a wide opening that leaves the whole face visible (set by the hood-up state, `back.ts` `hoodUpHead`); absent = the WFOG hood. */ hoodOpen?: boolean; lines?: boolean; accent?: string; facial?: 'stubble' | 'mustache' | 'beard'; glasses?: boolean; brows?: string; look?: FaceLook;
+  /** Profile views only (`paintHeadSide`): hair strands with a lit edge, an iris eye with lid line, crease, lash and catch-light, a nose wing and nostril, upper and lower lips with a corner crease. Follows `look` (iris colour, `lash: false`). Default absent = the plain WFOG profile; front, back and turned views ignore it. */
+  sideDetail?: boolean};
 
 /**
  * Front-view face drawing (user-approved for PEOPLE, 2 Nov 2026). `eye`: `almond` pointed corners with a lash line, `lidded` almond with a lid
@@ -721,6 +723,7 @@ export const paintHeadSide = (p: Painter, seed: number, cx: number, cy: number, 
   fill(skin, [[0.9, 0.1], [1.13, 0.34], [0.95, 0.43]], 4); // nose
   ink(head, 1.0, 0.15, true, lineOf(skin, L));
   ink([[0.9, 0.1], [1.13, 0.34], [0.95, 0.43]], 1.0, 0.15, false, lineOf(skin, L));
+  const det = style.sideDetail === true, lk = style.look, skinLine = lineOf(skin, L);
   part = 12;
   line = 10;
   if (cut === 'hood') {
@@ -732,7 +735,9 @@ export const paintHeadSide = (p: Painter, seed: number, cx: number, cy: number, 
     ink(hood);
     fill(style.hair, [[0.58, -0.78], [0.88, -0.5], [0.72, -0.42], [0.6, -0.42]], 6);
   } else if (cut === 'bob') {
-    const bob: Pt[] = [[0.8, -0.42], ...arc(1.12, -1.0, -Math.PI), [-1.14, 0.6], [-1.0, 0.8], [0.1, 0.8], [0.22, 0.3], [0.3, -0.3]];
+    // `sideDetail`: bangs cover the forehead down to the brow (the plain cap leaves a bare sliver that reads as a receding hairline).
+    const bangs: Pt[] = [[0.55, -0.4], [0.72, -0.43], [0.88, -0.45], [0.97, -0.39], [0.96, -0.5], [0.9, -0.65], [0.81, -0.8], [0.71, -0.92]]; // front edge eases out onto the crown arc
+    const bob: Pt[] = [...(det ? bangs : [[0.8, -0.42]] as Pt[]), ...arc(1.12, -1.0, -Math.PI), [-1.14, 0.6], [-1.0, 0.8], [0.1, 0.8], [0.22, 0.3], [0.3, -0.3]];
     fill(hairC, bob, 6);
     if (L) modelPart(p, seed * 100 + part, hairC, Q(bob), L);
     ink(bob, 1.0, 0.15, true, lineOf(hairC, L));
@@ -773,9 +778,32 @@ export const paintHeadSide = (p: Painter, seed: number, cx: number, cy: number, 
   line = 30;
   const eyes: Eyes = face.eyes !== 'none' && blinking(t, seed) ? 'shut' : face.eyes;
   const [lx, ly] = face.look;
+  const lash = det && lk !== undefined && lk.lash !== false;
   if (eyes === 'none') { /* the shot paints its own eye */ }
-  else if (eyes === 'shut') ink([[0.5, 0.05], [0.62, 0.1], [0.74, 0.05]], 1.4, 0.5, false);
-  else {
+  else if (eyes === 'shut') {
+    ink([[0.5, 0.05], [0.62, 0.1], [0.74, 0.05]], 1.4, 0.5, false);
+    if (lash) ink([[0.7, 0.08], [0.75, 0.13]], 1.1, 0.3, false, LID);
+  } else if (det) {
+    // Profile eye: white, coloured iris, pupil, catch-light, heavier upper lid, lid crease, lower lid, front lash (looks with lashes).
+    const sq = 1 - 0.6 * (face.squint ?? 0), ry = (eyes === 'wide' ? 0.15 : 0.12) * sq;
+    const white = ell(0.62, 0.05, 0.13, ry, 16), icx = 0.67 + 0.03 * lx, icy = 0.05 + 0.05 * ly;
+    fill(WHITE, white, 3);
+    fill(lk?.iris ?? IRIS, ell(icx, icy, 0.06, Math.min(0.085 * sq, ry - 0.012), 12), 5);
+    fill(INK, ell(icx + 0.005, icy, 0.032, 0.045 * sq, 10), 4);
+    if (sq > 0.6) fill(WHITE, ell(icx - 0.015, icy - 0.03 * sq, 0.016, 0.016, 8), 3);
+    ink(white, 1.0, 0.4);
+    const lid = (k: number, dy: number, a0: number, a1: number): Pt[] => Array.from({length: 9}, (_, i): Pt => {
+      const a = a0 + ((a1 - a0) * i) / 8;
+      return [0.62 + 0.13 * k * Math.cos(a), 0.05 + dy + ry * Math.sin(a)];
+    });
+    ink(lid(1, 0, Math.PI, 2 * Math.PI), lash ? 1.8 : 1.2, 0.4, false, LID);
+    if (lk?.eye !== 'round') ink(lid(0.9, -0.05, Math.PI + 0.45, 2 * Math.PI - 0.35), 0.8, 0.5, false, mixColor(skin, LID, 0.5));
+    ink([[0.58, 0.05 + ry + 0.025], [0.7, 0.05 + ry + 0.012]], 0.6, 0.4, false, skinLine);
+    if (lash) {
+      ink([[0.72, 0.05 - ry * 0.75], [0.78, 0.05 - ry * 1.05], [0.82, 0.05 - ry * 1.05]], 1.5, 0.4, false, LID);
+      ink([[0.68, 0.05 - ry * 0.95], [0.72, 0.05 - ry * 1.4]], 1.1, 0.3, false, LID);
+    }
+  } else {
     const sq = 1 - 0.6 * (face.squint ?? 0);
     const white = ell(0.62, 0.05, 0.13, (eyes === 'wide' ? 0.15 : 0.12) * sq, 16);
     fill(WHITE, white, 3);

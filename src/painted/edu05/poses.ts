@@ -1,0 +1,136 @@
+import type {Arm, CastDef, FigPose} from '../kit/cast';
+import {shoulderPoint} from '../kit/cast';
+import {ell, inkLine, solid} from '../kit/draw';
+import {mixColor, type Painter, type Pt} from '../kit/painter';
+import {poseBody, type AnyPoseId} from '../kit/poses';
+import type {View} from '../kit/poses';
+
+// N10 (EDU-EP05 scene sheets, pose bases R1.1): the seven `new:` TINY poses, episode-local until kit intake (W8.4). Each takes its base
+// kit pose, then overrides body fields and arms. Arm targets are metres from the shoulder (x toward the facing side, y up), as the kit
+// tables write them; `L` is the shot-local frame (event clock, seeded: a seek renders the same frame).
+
+export const NAMED_POSES = ['drift-spread', 'sit-up-check', 'brace-heave', 'nibble', 'drag-back', 'clutch-puff', 'lift-overhead'] as const;
+export type NamedPose = (typeof NAMED_POSES)[number];
+export const BASE_OF: Record<NamedPose, AnyPoseId> = {
+  'drift-spread': 'P45', 'sit-up-check': 'P33', 'brace-heave': 'P16', nibble: 'P34', 'drag-back': 'P26', 'clutch-puff': 'P42', 'lift-overhead': 'P45',
+};
+/** The view each pose is built for (sheet N10); the shot may flip it with `view`. */
+export const VIEW_OF: Record<NamedPose, 'front' | 'left' | 'right'> = {
+  'drift-spread': 'front', 'sit-up-check': 'front', 'brace-heave': 'right', nibble: 'left', 'drag-back': 'left', 'clutch-puff': 'front', 'lift-overhead': 'front',
+};
+
+type Spec = {to: Pt; via: Pt; behind?: Arm['behind']};
+export type Body = Pick<FigPose, 'squat' | 'crouch' | 'bend' | 'lean' | 'rise' | 'floorSit' | 'nod' | 'walk' | 'stride'>;
+const pulse = (L: number, period: number) => Math.abs(Math.sin((Math.PI * L) / period)); // 0..1, one bump per `period` frames
+const pat = (L: number, period: number) => Math.pow(pulse(L, period), 3); // sharp touch, long lift
+
+/**
+ * Body fields and both arms of one named pose at event frame `L`. Returns what `paintTiny` spreads between the base pose and `fig`.
+ * `extra` (shot staging: a dip, a breath) is merged over the pose's body before the shoulders are solved, so the arm targets ride it.
+ */
+export const namedPose = (name: NamedPose, L: number, def: CastDef, g: Pt, u: number, view: View, extra: Body = {}, heave?: number): Partial<FigPose> => {
+  let body: Body = {}, r: Spec, l: Spec;
+  switch (name) {
+    case 'drift-spread': // arms level at shoulder height and wide, soft knees (CP-P01)
+      body = {crouch: 0.06};
+      r = {to: [-0.5, 0.0], via: [-0.26, -0.02]}; l = {to: [0.5, 0.0], via: [0.26, -0.02]};
+      break;
+    case 'sit-up-check': { // alternate pats: right hand on the left forearm, then left hand on the right thigh (1 pat / 7 f)
+      body = {floorSit: 1};
+      const k = Math.floor(L / 7) % 2, d = pat(L, 7);
+      r = k === 0 ? {to: [0.2 - 0.04 * d, -0.2 - 0.04 * d], via: [-0.04, -0.2]} : {to: [0.03, -0.3], via: [-0.06, -0.22]};
+      l = k === 1 ? {to: [-0.1 + 0.03 * d, -0.3 - 0.03 * d], via: [0.06, -0.22]} : {to: [-0.03, -0.3], via: [0.06, -0.22]};
+      break;
+    }
+    case 'brace-heave': { // profile pull, lean away 15-20 deg, the far hand clamps the near forearm on each heave
+      const h = heave ?? pulse(L, 12); // R1.10 FR33: `heave` (0..1) replaces the 12 f pulse, so the pulls land on the grunts only
+      body = {crouch: 0.15, lean: -(0.24 + 0.14 * h), walk: 0.25, stride: 0.5};
+      r = {to: [0.3 + 0.07 * h, -0.02 - 0.06 * h], via: [0.14, -0.1]}; l = {to: [0.27 + 0.07 * h, -0.03 - 0.06 * h], via: [0.12, -0.12]};
+      break;
+    }
+    case 'nibble': { // both hands flat on the crumb face, head forward 0.05 sm per bite
+      const b = pat(L, 10);
+      body = {bend: 0.7, nod: [0.12 * b, -0.05 * b]};
+      r = {to: [0.3, -0.34], via: [0.14, -0.2]}; l = {to: [0.28, -0.36], via: [0.12, -0.22]};
+      break;
+    }
+    case 'drag-back': // profile, hands hooked on the crumb edge, lean away, walk clock reversed and slow (planted feet read)
+      body = {squat: 0.35, lean: 0.35, rise: -0.012 * pulse(L, 8)}; // squat mode has no walk: a dip per 8 f stands for the small backward steps (feet slide with the crumb, open)
+      r = {to: [0.3, -0.4], via: [0.12, -0.26]}; l = {to: [0.28, -0.42], via: [0.1, -0.27]};
+      break;
+    case 'clutch-puff': // hands cupped at the chest (CP-P02) as the puff squeezes out
+      r = {to: [0.1, -0.12], via: [-0.04, -0.22], behind: 'upper'}; l = {to: [-0.1, -0.12], via: [0.04, -0.22], behind: 'upper'};
+      break;
+    case 'lift-overhead': // lock-out: arms near vertical, palms under the load 0.26 sm apart, elbows back into depth (SHEETS-R1.5 FR17)
+      r = {to: [-0.13, 0.56], via: [-0.22, 0.28], behind: 'upper'}; l = {to: [0.13, 0.56], via: [0.22, 0.28], behind: 'upper'};
+      break;
+  }
+  body = {...body, ...extra};
+  const dir = view === 'left' ? -1 : 1, bodyView = {view: (view === 'back' ? 'front' : view) as FigPose['view'], ...poseBody(BASE_OF[name], view === 'front' ? 'front' : 'right'), ...body};
+  const arm = (side: 'r' | 'l', s: Spec): Arm => {
+    const sh = shoulderPoint(def, g, u, bodyView, side), k = def.armScale ?? 1;
+    const px = (p: Pt): Pt => [sh[0] + dir * p[0] * k * u, sh[1] - p[1] * k * u];
+    return {to: px(s.to), via: px(s.via), ...(s.behind ? {behind: s.behind} : {})};
+  };
+  return {...body, rArm: arm('r', r), lArm: arm('l', l), rHold: undefined, lHold: undefined};
+};
+
+/** Figure metres: the two bones of a reach, pull or brace arm in a profile shot (the `paintTOUCH` arm, R1.10 FR29c). */
+export const BONE_H = 0.2;
+/**
+ * Two-bone arm (R1.10 FR29c, extracted from `paintTOUCH`'s `ikArm`): both bones are exactly `bonePx`, the elbow is solved from the hand. The hand is
+ * clamped to `reach` x 2 bones from the shoulder (0.98: an arm never reads dead straight); when the target is farther the hand stops on the
+ * shoulder -> target line. `bend` picks the elbow side: `down` = the clockwise normal of the shoulder -> hand line in picture px (below the line for a
+ * hand reaching right, behind the body for a hand hanging), `out` = the other side. The rig's own reach IK (`{to, out}`) is not used for these arms.
+ */
+export const twoBoneArm = (shoulder: Pt, hand: Pt, bonePx: number, bend: 'down' | 'out' = 'down', reach = 0.98): Arm => {
+  const ex = hand[0] - shoulder[0], ey = hand[1] - shoulder[1], d = Math.hypot(ex, ey), k = Math.min(1, (reach * 2 * bonePx) / Math.max(d, 1e-6)), dd = d * k;
+  const h = Math.sqrt(Math.max(0, bonePx * bonePx - (dd / 2) ** 2)), s = bend === 'down' ? 1 : -1, n = Math.max(d, 1e-6);
+  const to: Pt = [shoulder[0] + ex * k, shoulder[1] + ey * k];
+  return {to, via: [shoulder[0] + (to[0] - shoulder[0]) / 2 - s * (ey / n) * h, shoulder[1] + (to[1] - shoulder[1]) / 2 + s * (ex / n) * h]};
+};
+/** The shoulder of a figure in `view` for body fields `fig` over the base pose `base` (px), so a shot can place its arm targets before drawing. */
+export const shoulderOf = (def: CastDef, g: Pt, u: number, view: View, base: AnyPoseId, fig: Partial<FigPose> = {}, side: 'r' | 'l' = 'r'): Pt =>
+  shoulderPoint(def, g, u, {view: (view === 'back' ? 'front' : view) as FigPose['view'], ...poseBody(base, view === 'front' ? 'front' : 'right'), ...fig} as Parameters<typeof shoulderPoint>[3], side);
+
+/**
+ * FR09 / R1.10 FR33 `brace-heave` with the right arm on a given wrist (the dew drop): the right arm is two bones of `BONE_H` from the shoulder to `wrist`
+ * (px; the hand stops short on the line when the wrist is out of reach), the left hand is a separate clamp at 0.6 of the way from the right elbow to the
+ * right hand. `fig` carries body fields the shot staged (lean, crouch, walk, stride) over the named pose. Returns the arms to spread over the named
+ * pose (`fig`) and the clamp point (px) where the shot draws the left mitten over the forearm (`paintClamp`).
+ */
+export const braceClamp = (L: number, def: CastDef, g: Pt, u: number, wrist: Pt, o: {heave?: number; fig?: Body} = {}): {rArm: Arm; lArm: Arm; clamp: Pt; shoulder: Pt} => {
+  const np = namedPose('brace-heave', L, def, g, u, 'right', o.fig ?? {}, o.heave), sh = shoulderOf(def, g, u, 'right', BASE_OF['brace-heave'], np);
+  const arm = twoBoneArm(sh, wrist, BONE_H * u, 'down'), el = arm.via!;
+  const clamp: Pt = [el[0] + (arm.to[0] - el[0]) * 0.6, el[1] + (arm.to[1] - el[1]) * 0.6];
+  const lsh = shoulderOf(def, g, u, 'right', BASE_OF['brace-heave'], np, 'l');
+  return {rArm: arm, lArm: twoBoneArm(lsh, clamp, BONE_H * u, 'down'), clamp, shoulder: sh};
+};
+/** The left mitten of the clamp, drawn after the figure (front layer) over the top edge of the right forearm. */
+export const paintClamp = (p: Painter, at: Pt, u: number, skin: string) => {
+  const w = 0.056 * u, h = 0.05 * u;
+  solid(p, 6120, skin, ell(at[0], at[1] - 0.012 * u, w, h, 14), 3);
+  inkLine(p, 6121, ell(at[0], at[1] - 0.012 * u, w, h, 14), {weight: 0.9, color: mixColor(skin, '#7a4a30', 0.55), curve: 0.3});
+  inkLine(p, 6122, [[at[0] + 0.02 * u, at[1] - 0.05 * u], [at[0] + 0.03 * u, at[1] - 0.005 * u]], {weight: 0.9, color: mixColor(skin, '#7a4a30', 0.55), closed: false});
+};
+
+const mixPt = (a: Pt, b: Pt, w: number): Pt => [a[0] + (b[0] - a[0]) * w, a[1] + (b[1] - a[1]) * w];
+const mixArm = (a: Arm | undefined, b: Arm | undefined, w: number): Arm | undefined => {
+  if (!a || !b) return w > 0.5 ? b : a;
+  const far = w > 0.5 ? b : a;
+  return {...far, to: mixPt(a.to, b.to, w), ...(a.via && b.via ? {via: mixPt(a.via, b.via, w)} : {})};
+};
+const BLEND_NUM = ['crouch', 'bend', 'lean', 'rise', 'floorSit', 'squat', 'kneel', 'run', 'lie', 'lift', 'walk', 'stride'] as const;
+/**
+ * Blend of two resolved pose fragments of the same view (`namedPose` or `poseFor` results) by `w` 0..1: the numeric body fields, `nod` and
+ * both arms' `to` / `via` interpolate (a missing field counts as 0), the rest (`behind`, holds) follows `b` after the midpoint. The shot
+ * spreads the result over the base pose, so a change of pose takes a few frames instead of popping (SHEETS-R1.8: B02-SH01, B02-SH04).
+ */
+export const blendFig = (a: Partial<FigPose>, b: Partial<FigPose>, w: number): Partial<FigPose> => {
+  const out: Partial<FigPose> = {...(w > 0.5 ? b : a)};
+  const o = out as Record<string, number | undefined>, ra = a as Record<string, number | undefined>, rb = b as Record<string, number | undefined>;
+  for (const k of BLEND_NUM) if (ra[k] !== undefined || rb[k] !== undefined) o[k] = (ra[k] ?? 0) + ((rb[k] ?? 0) - (ra[k] ?? 0)) * w;
+  if (a.nod || b.nod) out.nod = mixPt((a.nod as Pt) ?? [0, 0], (b.nod as Pt) ?? [0, 0], w);
+  out.rArm = mixArm(a.rArm, b.rArm, w); out.lArm = mixArm(a.lArm, b.lArm, w);
+  return out;
+};

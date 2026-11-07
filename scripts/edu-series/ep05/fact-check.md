@@ -119,3 +119,25 @@ Vocal sounds V01–V08 and L08: character/dramatization, pass; no real recording
 
 - Verdict: R1.3 L12 minor wording fix recommended; R1.2 L15 pass. Claim-status rows L12 (C08) and L15 (C14) still match.
 - Remaining uncertainties: unchanged (no primary paper; SRC008/SRC009 excerpts; N1 timing estimate for W1.4).
+
+## Wording update R1.4 (Preaw, 2026-11-07; not a Boat verdict)
+
+Rows L05 and L15 above keep the wording Boat checked (dated record). R1.4 changes wording only; claims are unchanged. The current text for those rows is the recommended candidate A in [script.md#r14-candidates-l05-l15](script.md#r14-candidates-l05-l15) (B is the alternative). Boat wording recheck: **done 2026-11-07, see Boat's verdict below**.
+
+| Row | Claim (unchanged) | R1.4 A wording (current) | Same claim? | For Boat |
+| --- | --- | --- | --- | --- |
+| L05 | C03 `verified-physics` | “แรงโน้มถ่วงเท่าเดิมนะ… แต่ตัวยิ่งเล็ก อากาศยิ่งต้านดี พอเทียบกับน้ำหนักตัว” | yes: "เท่าเดิม" kept; "ต้านดี" = "ต้านเก่ง" (user word); comparison to body weight kept | confirm wording only |
+| L15 | C14 `verified-physics` | “ไม่ใช่เพราะกล้ามมันเยอะหรอก… แต่พอตัวเล็กลง… น้ำหนักลดไปมากกว่าแรง… แรงก็เลยเหลือ ๆ” | yes for the mechanism (weight falls proportionally more than strength; spare strength relative to weight) | **check** the user word "กล้ามมันเยอะ": it denies *more muscle*, while the checked line denied *better muscle*; muscle mass fraction is not in research.md |
+
+### Boat's verdict on R1.4 wording (2026-11-07)
+
+Scope: wording only, against `research.md` C03 and C14 (both `verified-physics`; no new sources; evidence unchanged). Script text read from `script.md#r14-candidates-l05-l15`.
+
+| Row | Cand. | Verdict | Reason |
+| --- | --- | --- | --- |
+| L05 | A | pass | "เท่าเดิม" keeps gravity unchanged; "ต้านดี พอเทียบกับน้ำหนักตัว" is still drag relative to weight (C03), no "ตัวเบา". |
+| L05 | B | pass | "ไม่เปลี่ยนเลย" = "เท่าเดิม"; "ถ้าเทียบกับน้ำหนัก" keeps the same comparison. |
+| L15 | A | pass with note | Mechanism correct (weight falls more than strength, C14). Note: "แรงก็เลยเหลือ ๆ" must stay relative to weight (the preceding clause and the bars anchor it); "กล้ามมันเยอะ" see hedge below. |
+| L15 | B | pass with note | "น้ำหนักลดฮวบ ๆ แรงลดน้อยกว่า" is true (L^3 vs L^2, strength also drops); "ฮวบ ๆ" is emphatic but directional. Same "กล้ามมันเยอะ" note. |
+
+**"ไม่ใช่เพราะกล้ามมันเยอะ" (both L15 candidates):** C14 supports "muscle tissue is not stronger" and per-cross-section strength; it does not cover how much of an ant's body is muscle. A flat denial of "more muscle" is therefore not backed by an inspected source, although the claim that size (geometry) is the cause is. Verdict: not a fail (not a narrator assertion about a measured fact, and the next clause gives the real cause), but hedge it. Smallest spoken-Thai hedge keeping the user's word: **"ไม่ใช่เพราะกล้ามมันเยอะเป็นพิเศษหรอก"** (A) / **"ไม่ใช่เพราะกล้ามมันเยอะเป็นพิเศษนะ"** (B). Avoid "ไม่ใช่แค่เพราะ…" because it implies muscle amount contributes. Impact on premise/reveal/learning: none; adds about 3 syllables to L15a (caption `ไม่ใช่เพราะกล้ามมันเยอะเป็นพิเศษหรอก…` is about 33 glyphs, Editor to re-split). If Preaw/user keep the unhedged line, readiness stays `pass with note`, not blocked.

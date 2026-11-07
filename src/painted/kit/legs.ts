@@ -113,7 +113,7 @@ export const kneelSolution = (d: LegDims, a0: number): KneelSolution => {
  * Hip height, hip shift and legs of a mode. `ph` is the run phase in radians. Profile legs are IK or explicit angles from the
  * hip; front legs are foreshortened by hand (thighs toward the camera). The far leg of a profile is listed first (drawn first).
  */
-export const modeLegs = (d: LegDims, view: 'front' | 'profile', mode: {kind: ModeKind; amount: number}): ModeLegs => {
+export const modeLegs = (d: LegDims, view: 'front' | 'profile', mode: {kind: ModeKind; amount: number; mix?: number}): ModeLegs => {
   const {hip0, ankleV, L1, L2} = d, k = sc(d), a = mode.amount;
   const legs: ModeLeg[] = [];
   const prof = view === 'profile';
@@ -186,15 +186,25 @@ export const modeLegs = (d: LegDims, view: 'front' | 'profile', mode: {kind: Mod
     const ph = a;
     const fly = 0.03 * k * Math.max(0, Math.sin(2 * ph + 0.4));
     if (prof) {
+      // `mix` (default 1) blends the profile stride from a planted stance (both soles down, feet ~0.12 apart along the facing, legs straight) to the
+      // run phase `ph`; the pelvis shifts along u so the foot that is lowest in the stride stays where it stands (no slide). EDU-EP05 R1.9 FR28.
+      const m = mode.mix ?? 1, stanceSw = (far: boolean) => (far ? -0.077 : 0.077);
       const rel: {far: boolean; knee: Pt; ankle: Pt}[] = [];
       for (const far of [true, false]) {
         const th = ph + (far ? Math.PI : 0);
-        const sw = 0.2 + 0.78 * Math.sin(th), bend = 0.8 + 0.7 * Math.cos(th - 0.2), b2 = sw - bend;
+        const sw = stanceSw(far) + (0.2 + 0.78 * Math.sin(th) - stanceSw(far)) * m, bend = (0.8 + 0.7 * Math.cos(th - 0.2)) * m, b2 = sw - bend;
         const knee: Pt = [L1 * Math.sin(sw), -L1 * Math.cos(sw)];
         rel.push({far, knee, ankle: [knee[0] + L2 * Math.sin(b2), knee[1] - L2 * Math.cos(b2)]});
       }
-      hipV = ankleV - Math.min(...rel.map((r) => r.ankle[1])) + fly;
-      for (const r of rel) legs.push({hip: [r.far ? -0.02 : 0, hipV], knee: [r.knee[0] + (r.far ? -0.02 : 0), hipV + r.knee[1]], ankle: [r.ankle[0] + (r.far ? -0.02 : 0), hipV + r.ankle[1]], far: r.far});
+      hipV = ankleV - Math.min(...rel.map((r) => r.ankle[1])) + fly * m;
+      if (m < 1) {
+        // the stride's grounded leg (lowest ankle at m = 1) keeps its stance x
+        const full = [true, false].map((far) => { const th = ph + (far ? Math.PI : 0), sw = 0.2 + 0.78 * Math.sin(th), b2 = sw - (0.8 + 0.7 * Math.cos(th - 0.2)); return {far, y: -L1 * Math.cos(sw) - L2 * Math.cos(b2)}; });
+        const gFar = full[0].y < full[1].y, st = rel.find((r) => r.far === gFar)!;
+        const sw0 = stanceSw(gFar), x0 = L1 * Math.sin(sw0) + L2 * Math.sin(sw0);
+        hipU = x0 - st.ankle[0];
+      }
+      for (const r of rel) legs.push({hip: [hipU + (r.far ? -0.02 : 0), hipV], knee: [hipU + r.knee[0] + (r.far ? -0.02 : 0), hipV + r.knee[1]], ankle: [hipU + r.ankle[0] + (r.far ? -0.02 : 0), hipV + r.ankle[1]], far: r.far});
     } else {
       hipV = hip0 - 0.045 * k + 0.02 * k * Math.abs(Math.sin(ph));
       for (const sg of [-1, 1]) {

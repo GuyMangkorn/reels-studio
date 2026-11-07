@@ -22,12 +22,14 @@ export const shrinkAbout = (q: Pt, c: Pt, local: number): Pt => { const s = shri
 /** Puff ring progress 0..1 (1 = the peak on the cut). */
 export const popPeak = (local: number) => smooth(POP.ring[0], POP.ring[1], local);
 /** Puff ring + sparkle ticks centred on `c` (px), `r` px at the peak. */
-export const paintShrinkPop = (p: Painter, c: Pt, local: number, r = 150, seed = 11000) => {
+export const paintShrinkPop = (p: Painter, c: Pt, local: number, r = 150, seed = 11000, fade = 1) => {
   const k = popPeak(local);
-  if (k <= 0) return;
+  if (k <= 0 || fade <= 0.02) return;
+  if (fade < 1) p = p.layer(fade, seed); // S01-B01-SH04 L 0-10: the puff fades round her (painter layer, seeds kept)
   const rr = r * (0.25 + 0.75 * ease(k)), a = 0.6 + 0.4 * k;
   washAt(p, seed, '#fff1cf', 150 * a, ell(c[0], c[1], rr * 1.15, rr * 1.15, 28), 0.3, 0.1);
-  const ring = [...ell(c[0], c[1], rr, rr, 32), ...ell(c[0], c[1], rr * 0.72, rr * 0.72, 32).reverse()];
+  const o = ell(c[0], c[1], rr, rr, 32), i = ell(c[0], c[1], rr * 0.72, rr * 0.72, 32).reverse();
+  const ring = [...o, o[0], ...i, i[0]]; // closed seam: the open donut polygon left a C-shaped gap
   washAt(p, seed + 1, '#ffffff', 200 * a, ring, 0.15, 0.05);
   for (let i = 0; i < 7; i++) {
     const th = (i / 7) * 2 * Math.PI + hash(seed + i) * 0.6, d = rr * (1.05 + 0.35 * hash(seed + 20 + i)) * (0.6 + 0.4 * k), len = r * 0.07 * (0.6 + hash(seed + 40 + i));
@@ -68,24 +70,81 @@ export const crumbGrips = (c: YCam, at: V3, lift = 0): {l: Pt; r: Pt; centre: Pt
   const cy = g[1] - CRUMB.h * 0.5 * u;
   return {l: [g[0] - CRUMB.w * 0.5 * u, cy + CRUMB.h * 0.12 * u], r: [g[0] + CRUMB.w * 0.5 * u, cy + CRUMB.h * 0.12 * u], centre: [g[0], cy], u};
 };
-/** Paints the crumb at ground point `at`, lifted by `lift` sm. `bites` 0..2 (first bite mark from L 22 of S01-B04-SH03). */
-export const paintCrumb = (p: Painter, c: YCam, at: V3, o: {lift?: number; bites?: number; shade?: number} = {}) => {
+/** Torn edge: subdivides a closed local-unit polygon and pushes each new point by a seeded jitter (fixed per seed, so it never boils). */
+const tear = (poly: Pt[], seed: number, amt: number, sub = 3): Pt[] => {
+  const out: Pt[] = [];
+  poly.forEach((a, i) => {
+    const b = poly[(i + 1) % poly.length];
+    for (let k = 0; k < sub; k++) { const t = k / sub, j = k === 0 ? 0.4 : 1; out.push([a[0] + (b[0] - a[0]) * t + (hash(seed + i * 7 + k * 3) - 0.5) * amt * j, a[1] + (b[1] - a[1]) * t + (hash(seed + 50 + i * 7 + k * 3) - 0.5) * amt * j]); }
+  });
+  return out;
+};
+/** Paints the crumb at ground point `at`, lifted by `lift` sm. `bites` 0..2 (first bite mark from L 22 of S01-B04-SH03). Silhouette box, grips and
+ * cut-face box are fixed by CRUMB; torn edges, cracks, flour, pores and loose crumbs are seeded (13000-13999), never random.
+ * `shadow` 0..1 (default 1) scales the contact shadow painted under the base (FR19: the lift fades it out as the crumb leaves the ground,
+ * so no shadow hangs in the air across her face). */
+export const paintCrumb = (p: Painter, c: YCam, at: V3, o: {lift?: number; bites?: number; shade?: number; shadow?: number; loose?: 'on' | 'off' | 'only'} = {}) => {
   const gr = crumbGrips(c, at, o.lift ?? 0);
   if (!gr) return;
   const {centre, u} = gr, w = CRUMB.w * u, h = CRUMB.h * u, sh = o.shade ?? 0, col = (x: string) => mixColor(x, '#5f7fa4', sh);
-  const loaf: Pt[] = [[-0.5, 0.5], [-0.46, -0.08], [-0.2, -0.5], [0.3, -0.5], [0.5, -0.1], [0.5, 0.5]].map(([x, y]): Pt => [centre[0] + x * w, centre[1] + y * h]);
-  washAt(p, 13000, '#3b2a1c', 50, ell(centre[0], centre[1] + h * 0.52, w * 0.55, h * 0.07, 16), 0.1, 0.2);
+  const L = (pts: Pt[]): Pt[] => pts.map(([x, y]): Pt => [centre[0] + x * w, centre[1] + y * h]); // local units (x,y in -0.5..0.5, y down) to picture px
+  const lifted = (o.lift ?? 0) > 0.001;
+  // contact shadow: wide soft pool, tighter dark core under the loaf, thinner when lifted
+  const sA = (lifted ? 0.5 : 1) * Math.max(0, Math.min(1, o.shadow ?? 1));
+  if (sA > 0) {
+    washAt(p, 13000, '#3b2a1c', 55 * sA, ell(centre[0] + w * 0.04, centre[1] + h * 0.53, w * 0.72, h * 0.12, 20), 0.35, 0.3);
+    washAt(p, 13010, '#2c1e14', 110 * sA, ell(centre[0] + w * 0.02, centre[1] + h * 0.5, w * 0.54, h * 0.065, 18), 0.2, 0.25);
+  }
+  // loose crumbs at the base (skipped when lifted: they stay on the ground). `loose` 'off' skips them (the crumb is carried), 'only'
+  // paints just them (a ground stand-in left where the crumb stood, so they do not travel with the loaf)
+  const looseMode = o.loose ?? 'on';
+  if (looseMode !== 'off' && !lifted) for (let i = 0; i < 7; i++) {
+    const side = hash(13020 + i) < 0.5 ? -1 : 1, x = side * (0.5 + 0.02 + 0.28 * hash(13030 + i)) * (hash(13040 + i) < 0.3 ? 0.6 : 1), y = 0.5 + 0.03 + 0.08 * hash(13050 + i), r = (0.012 + 0.022 * hash(13060 + i)) * u;
+    const px = centre[0] + x * w, py = centre[1] + y * h;
+    solid(p, 13070 + i, col(hash(13080 + i) < 0.6 ? CRUMB.crumb : CRUMB.crust), ell(px, py, r, r * 0.65, 7, hash(13090 + i) - 0.5), 2);
+  }
+  if (looseMode === 'only') return;
+  // loaf: torn silhouette inside the fixed box (base edge stays straight on the ground)
+  const base: Pt[] = [[-0.5, 0.5], [-0.485, 0.12], [-0.46, -0.08], [-0.33, -0.32], [-0.2, -0.47], [0.05, -0.5], [0.3, -0.5], [0.44, -0.3], [0.5, -0.1], [0.5, 0.5]];
+  const torn = tear(base, 13100, 0.05, 2).map(([x, y]): Pt => [Math.max(-0.5, Math.min(0.5, x)), Math.min(0.5, Math.max(-0.5, y))]);
+  const loaf = L(torn);
   solid(p, 13001, col(CRUMB.crustDark), loaf, 4);
-  solid(p, 13002, col(CRUMB.crust), loaf.map(([x, y]): Pt => [centre[0] + (x - centre[0]) * 0.96, centre[1] + (y - centre[1]) * 0.96 - h * 0.02]), 3);
-  // cut face: the porous crumb on the +x side
-  const face = rect(centre[0] + w * 0.1, centre[1] - h * 0.38, centre[0] + w * 0.46, centre[1] + h * 0.46);
-  solid(p, 13003, col(CRUMB.crumb), face, 3);
-  for (let i = 0; i < 14; i++) {
-    const x = face[0][0] + hash(13100 + i) * (face[1][0] - face[0][0]), y = face[0][1] + hash(13200 + i) * (face[2][1] - face[0][1]), r = (0.015 + 0.03 * hash(13300 + i)) * u;
-    solid(p, 13400 + i, col(CRUMB.pore), ell(x, y, r, r * 0.7, 8), 2);
+  // crust body: thicker on top and the lit left side, thin at the base; inset varies per vertex
+  const cen: Pt = [0, 0.05];
+  const body = torn.map(([x, y], i): Pt => { const k = 0.9 + 0.06 * hash(13110 + i) + (y < -0.2 ? -0.015 : 0); return [cen[0] + (x - cen[0]) * k, y > 0.45 ? y : cen[1] + (y - cen[1]) * k - 0.012]; });
+  solid(p, 13002, col(CRUMB.crust), L(body), 3);
+  // dawn light: warm gold on the upper-left crust, cool brown shade low on the right under the cut face
+  washAt(p, 13120, '#e9b36a', 62, L([[-0.44, 0.05], [-0.38, -0.26], [-0.22, -0.43], [0.02, -0.46], [-0.1, -0.3], [-0.26, -0.12], [-0.34, 0.12]]), 0.35, 0.5);
+  washAt(p, 13130, '#6d3b1c', 70, L([[-0.48, 0.5], [-0.46, 0.2], [-0.3, 0.3], [-0.05, 0.42], [0.1, 0.5]]), 0.3, 0.5);
+  washAt(p, 13135, '#7a4a28', 40, L([[0.1, -0.5], [0.3, -0.5], [0.45, -0.3], [0.4, -0.2], [0.2, -0.38]]), 0.3, 0.5); // top edge turning toward the cut face
+  // flour speckle on the lit top
+  for (let i = 0; i < 16; i++) {
+    const x = -0.42 + 0.7 * hash(13140 + i), top = -0.46 + 0.1 * Math.abs(x + 0.1) * 2, y = top + (0.34 - 0.0) * hash(13160 + i) * (x < -0.1 ? 1 : 0.5), r = (0.006 + 0.009 * hash(13180 + i)) * u;
+    if (x > 0.08 && y > -0.38) continue;
+    solid(p, 13200 + i, col('#f3e2c0'), ell(centre[0] + x * w, centre[1] + y * h, r, r * 0.7, 6), 1);
+  }
+  // baked cracks: a few short dark strokes on the crust, left of the cut face
+  const cracks: Pt[][] = [[[-0.36, -0.18], [-0.3, -0.12], [-0.31, -0.03], [-0.24, 0.04]], [[-0.18, -0.4], [-0.14, -0.31], [-0.17, -0.22]], [[-0.4, 0.2], [-0.3, 0.24], [-0.27, 0.32], [-0.18, 0.34]], [[-0.1, -0.12], [-0.05, -0.04], [-0.07, 0.06]]];
+  cracks.forEach((cr, i) => inkLine(p, 13250 + i, L(cr), {weight: 0.9, color: col('#5a2f14'), curve: 0.3}));
+  // cut face: torn pale crumb on the +x side (box unchanged), rim of thin inner crust
+  const fb: Pt[] = [[0.1, -0.38], [0.28, -0.4], [0.46, -0.36], [0.465, 0.04], [0.46, 0.46], [0.28, 0.465], [0.1, 0.46], [0.095, 0.04]];
+  const ft = tear(fb, 13300, 0.025, 2).map(([x, y]): Pt => [Math.max(0.09, Math.min(0.47, x)), Math.max(-0.4, Math.min(0.47, y))]);
+  const face = L(ft);
+  solid(p, 13003, col(mixColor(CRUMB.crumb, CRUMB.crust, 0.35)), face, 3);
+  solid(p, 13004, col(CRUMB.crumb), L(ft.map(([x, y]): Pt => [0.28 + (x - 0.28) * 0.9, 0.04 + (y - 0.04) * 0.92])), 3);
+  washAt(p, 13310, '#fff1cf', 55, L([[0.14, -0.33], [0.3, -0.35], [0.28, -0.1], [0.14, -0.05]]), 0.3, 0.4); // lit upper-left of the face
+  washAt(p, 13320, '#b98a4a', 70, L([[0.3, 0.1], [0.44, 0.06], [0.45, 0.43], [0.14, 0.44]]), 0.3, 0.5); // shade low and right
+  // pores: varied size, a dark inner cavity with a pale lip below it
+  for (let i = 0; i < 20; i++) {
+    const x = 0.13 + 0.31 * hash(13100 + i * 3 + 1000), y = -0.34 + 0.78 * hash(13200 + i * 3 + 1000), big = hash(13330 + i), r = (0.01 + 0.032 * big * big) * u;
+    const px = centre[0] + x * w, py = centre[1] + y * h;
+    solid(p, 13400 + i, col(CRUMB.pore), ell(px, py, r, r * 0.72, 8, hash(13350 + i) - 0.5), 2);
+    solid(p, 13450 + i, col('#a8782f'), ell(px - r * 0.12, py - r * 0.12, r * 0.62, r * 0.42, 7), 1);
+    if (r > 0.02 * u) solid(p, 13480 + i, col('#fbeac0'), ell(px + r * 0.15, py + r * 0.62, r * 0.7, r * 0.12, 6), 1);
   }
   inkLine(p, 13500, loaf, {weight: 0.8, color: col('#5a3216')});
-  for (let b = 0; b < Math.min(2, o.bites ?? 0); b++) solid(p, 13600 + b, col(CRUMB.crumb), ell(centre[0] - w * (0.36 - 0.14 * b), centre[1] - h * 0.5 + h * 0.04 * b, w * 0.09, h * 0.07, 10), 2);
+  inkLine(p, 13510, face, {weight: 0.4, color: col('#9a6a34'), closed: true});
+  for (let b = 0; b < Math.min(2, o.bites ?? 0); b++) solid(p, 13600 + b, col(mixColor(CRUMB.crumb, '#8a5326', 0.45)), ell(centre[0] + w * (0.3 + 0.08 * b), centre[1] - h * 0.3 + h * 0.05 * b, w * 0.07, h * 0.06, 10), 2); // bite notch inside the cut face, near its top edge
 };
 
 // ---- N9 scale-bars (S01-B05-SH02, picture px): card, two bars, label slots, icon, shrink, surplus glow. No digits, axis, ticks or %.
@@ -126,7 +185,7 @@ export const paintScaleBars = (p: Painter, s: BarsState) => {
 // ---- N2 SET-DRIFT (S01-B02-SH02) and N10 `soft air streaks`: motes rising relative to her at 0.15 sm/s, a blurred slab band sliding up
 // the left, and 3-5 thin pale curved strokes hugging her outline on L 50-70 (air holding her, never radial speed lines).
 /** The sheet's 0.15 sm/s is quoted as ~27 px/s but at TINY's depth (692 px for 1.58 sm = 438 px/sm) it is 66 px/s: the rise is capped at `maxPx` px/s (spike 4: < 40). */
-export const DRIFT = {moteSpeed: 0.15, maxPx: 27, slab: [20, 132] as [number, number], streaks: [50, 70] as [number, number], band: [1176, 1344] as [number, number]};
+export const DRIFT = {moteSpeed: 0.15, maxPx: 27, slab: [20, 158] as [number, number], streaks: [81, 113] as [number, number], band: [1176, 1344] as [number, number]};
 export type Mote = {x: number; y: number; r: number; a: number};
 /** Motes at time `t` s for a camera that follows her: `u` px per sm; rise at 0.15 sm/s (px/s = 0.15 u), sparse, faded inside the caption band. */
 export const driftMotes = (t: number, u: number, n = 22, seed = 16000): Mote[] =>
@@ -143,7 +202,7 @@ export const paintDriftAir = (p: Painter, t: number, L: number, u: number) => {
   washAt(p, 16100, '#bcd0e0', 90, rect(-40, -40, 260, 1960), 0.3, 0.1); // facade as a soft vertical wash, screen left
   const y = slabBandY(L);
   washAt(p, 16101, '#9fb4c8', 80, rect(-40, y - 40, 300, y + 40), 0.3, 0.1);
-  driftMotes(t, u).forEach((m, i) => washAt(p, 16200 + i, '#fff6dc', 255 * m.a, ell(m.x, m.y, m.r, m.r, 8), 0.1, 0.05));
+  driftMotes(t, u).forEach((m, i) => washAt(p, 16200 + i, '#f2c27a', 255 * m.a, ell(m.x, m.y, m.r, m.r, 8), 0.1, 0.05));
 };
 /** Soft air streaks: curved pale strokes hugging an outline (a closed ring of points round the figure, px), drawn as an arc each, slowly
  * drifting along the outline; none radial. `k` 0..1 is the fade over L 50-70 (ramp in, hold). */
@@ -154,7 +213,59 @@ export const paintAirStreaks = (p: Painter, ring: Pt[], L: number, seed = 16400)
   for (let i = 0; i < 4; i++) {
     const start = Math.floor(((i / 4) * n + (L - DRIFT.streaks[0]) * 0.15 + hash(seed + i) * 3) % n), len = Math.floor(n * (0.12 + 0.06 * hash(seed + 9 + i)));
     const arc: Pt[] = Array.from({length: len}, (_, j) => { const q = ring[(start + j) % n], dx = q[0] - cx, dy = q[1] - cy, m = Math.hypot(dx, dy) || 1, off = 26 + 10 * i; return [q[0] + (dx / m) * off, q[1] + (dy / m) * off] as Pt; });
-    inkLine(p, seed + 20 + i, arc, {weight: 1.6, color: mixColor('#ffffff', '#cfe0ec', 0.3), closed: false, curve: 0.4});
-    washAt(p, seed + 40 + i, '#ffffff', 60 * k, arc.concat(arc.slice().reverse().map(([x, y]): Pt => [x + 4, y + 4])), 0.2, 0.05);
+    inkLine(p, seed + 20 + i, arc, {weight: 2.4, color: '#8aa5bb', closed: false, curve: 0.4});
+    washAt(p, seed + 40 + i, '#b9cfe0', 110 * k, arc.concat(arc.slice().reverse().map(([x, y]): Pt => [x + 4, y + 4])), 0.2, 0.05);
   }
+};
+
+/** N9 Thai bar labels as timeline items (`painted.shots[].items`, Remotion DOM, not painted): centred under each bar, in shot-local frames of S01-B05-SH02 (the label pops with its bar's grow). Editor spreads these into the shot cue. */
+export const BAR_LABELS: {kind: 'label'; text: string; x: number; y: number; atFrame: number}[] = (['force', 'weight'] as const).map((k) => {
+  const [x0, y0, x1, y1] = BARS.slots[k];
+  return {kind: 'label', text: k === 'force' ? 'แรง' : 'น้ำหนัก', x: (x0 + x1) / 2, y: (y0 + y1) / 2, atFrame: k === 'force' ? 20 : 26};
+});
+
+/**
+ * N8 emission for S01-B04-SH02, fed from the figure (`FigAnchors`, picture px; `u` px per sm): puff 1 from the shoulders at L 72, puff 2 from
+ * the top of the head at L 84, puffs 3-4 at L 92 / 100 (shoulders / head); all drift -x and up at 0.3 sm/s. Puff 2 is clutched to the chest
+ * L 96-106 (it follows the hands' midpoint) and squeezes out between the mittens L 106-116 (narrowed sideways, then re-inflates), then
+ * floats off. Anchors are read at the current frame (she is nearly still until the shiver at L 116).
+ */
+export const warmthPuffsAt = (L: number, a: {headTop: number; head: [number, number] | number[]; rShoulder: Pt; lShoulder: Pt; rHand: Pt; lHand: Pt}, u: number): {x: number; y: number; r: number; a: number; seed: number}[] => {
+  const sh: Pt = [(a.rShoulder[0] + a.lShoulder[0]) / 2, (a.rShoulder[1] + a.lShoulder[1]) / 2 - 0.05 * u], hd: Pt = [a.head[0], a.headTop - 0.08 * u];
+  const hands: Pt = [(a.rHand[0] + a.lHand[0]) / 2, (a.rHand[1] + a.lHand[1]) / 2];
+  const specs = [{t0: 72, src: sh, r: 0.2}, {t0: 84, src: hd, r: 0.24}, {t0: 92, src: sh, r: 0.17}, {t0: 100, src: hd, r: 0.19}];
+  const out: {x: number; y: number; r: number; a: number; seed: number}[] = [];
+  specs.forEach((e, i) => {
+    const s = (L - e.t0) / 30;
+    if (s < 0 || s > 3.2) return;
+    const f = s / 3.2, grow = 0.45 + 0.55 * ease(f), al = smooth(0, 0.18, f) * (1 - smooth(0.6, 1, f));
+    let x = e.src[0] - 0.3 * u * s, y = e.src[1] - 0.3 * u * s * 0.9, rx = e.r * u * grow;
+    if (i === 1 && L >= 96) { // clutched, squeezed out, floats off
+      const k = smooth(96, 106, L) * (1 - smooth(110, 130, L));
+      x += (hands[0] - x) * k; y += (hands[1] - y) * k;
+      if (L >= 106) rx *= 0.55 + 0.45 * smooth(106, 116, L);
+    }
+    out.push({x, y, r: rx, a: al, seed: 12500 + i * 10});
+  });
+  return out;
+};
+
+/** N5 parenting: the crumb ground point (same y, z as `at`) at which its +x grip sits on the hand point `hand` (px; the mean of her two hands). Two fixed-point steps (the camera yaw makes px per sm vary a little with x). */
+export const crumbFollowHand = (c: YCam, at: V3, hand: Pt): V3 => {
+  let a: V3 = at;
+  for (let i = 0; i < 2; i++) { const gr = crumbGrips(c, a); if (!gr) break; a = [a[0] + (hand[0] - gr.r[0]) / gr.u, a[1], a[2]]; }
+  return a;
+};
+
+// ---- R1.10 FR39 / D12: the far tower of S01-B05-SH04. At 9 600 sm it is at infinity at macro scale, so it is a screen-space haze silhouette (no parallax):
+// the tower x 500-600 from y 170 down, her balcony slab as a notch y 232-246 reaching x 640, '#c9b48a' at 18% fading to 0 by y 560. Drawn through `GardenOpts.back`.
+export const FAR_TOWER = {x: [500, 600] as [number, number], top: 170, fade: 560, slab: {y: [232, 246] as [number, number], x: 640}, color: '#c9b48a', alpha: 0.18};
+export const paintFarTower = (p: Painter) => {
+  const {x, top, fade, slab, color, alpha} = FAR_TOWER, n = 13, h = (fade - top) / n;
+  for (let i = 0; i < n; i++) {
+    const y0 = top + i * h, a = alpha * 255 * (1 - (i + 0.5) / n);
+    washAt(p, 15700 + i, color, a, rect(x[0], y0, x[1], y0 + h + 1), 0.02, 0.08);
+  }
+  const k = 1 - (((slab.y[0] + slab.y[1]) / 2 - top) / (fade - top));
+  washAt(p, 15720, color, alpha * 255 * k * 1.15, rect(x[1] - 1, slab.y[0], slab.x, slab.y[1]), 0.02, 0.08);
 };

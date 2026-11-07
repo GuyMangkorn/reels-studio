@@ -2,10 +2,10 @@
 // only the registry): render with `printf 'EDU5-LF01 20 out/edu05/look-frames/v1/LF01.png\n' | node scripts/stills.mjs src/painted/edu05/look-index.ts`.
 import {createElement, Fragment} from 'react';
 import {Composition, registerRoot} from 'remotion';
-import {ANT1, ANT2, ANT3, LF01, LF02, LF03, LF04, LF_FRAMES} from './look';
+import {ANT1, ANT2, ANT3, LF01, LF02, LF03, LF04, LF_FRAMES, COVERA} from './look';
 
 const size = {width: 1080, height: 1920, fps: 30};
-const comps = {ANT1, ANT2, ANT3, LF01, LF02, LF03, LF04} as const;
+const comps = {ANT1, ANT2, ANT3, LF01, LF02, LF03, LF04, COVERA} as const;
 registerRoot(() =>
   createElement(
     Fragment,
