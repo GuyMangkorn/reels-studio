@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """EDU-EP04-SHORT rough review mix (Editor, 2026-11-06): narration (VL-EDIT-01 + dialogue) and a library-only sound stem.
-Writes public/narration/EDU-EP04-SHORT.wav and public/audio/edu/EDU-EP04-SHORT-review-stem-v5.wav (1662 f, 48 kHz mono).
+Writes public/narration/EDU-EP04-SHORT.wav and public/audio/edu/EDU-EP04-SHORT-review-stem-v6.wav (1662 f, 48 kHz mono).
+v6 (7 Nov 2026, user): adds EP02's ending pizzicato strings tag (`_raw/edu2-pizz-tag_v2.wav`, 1.4 s, peak -10 dB, fade 0.6 s) 45 f before the end, as in EP02.
 v5 (6 Nov 2026): adds MUZ-A/B/C (sidechain-ducked by the narration), RT-STORE, SFX-SCAN, SFX-MEMSWELL; all generated sounds are "not listened". Run: python3 -I scripts/edu-series/ep04/review-mix.py"""
 import os, subprocess, sys
 S = os.path.expanduser('~/ReelsStore')
@@ -105,6 +106,9 @@ for fn, fr, db in (('sfx/reveal/reveal_memory-swell-muffled_01.wav', 1024+4, -14
                    ('sfx/electric/electric_scanner-beep-run_01.wav', 171+10, -16), ('sfx/electric/electric_scanner-beep-single_01.wav', 1525+105, -20)):
     i = add(sf(fn)); k = len(mix)
     g.append(f'[{i}:a]volume={db}dB,adelay={int(round(fr/FPS*1000))}:all=1[x{k}]'); mix.append(f'[x{k}]')
+# EP02 ending strings (user, 7 Nov 2026): pizz tag from 45 f before the end (EP02: c1726 of 1771), file peak -1 dB -> -10 dB, 1.4 s, fade-out 0.6 s
+i = add(sf('_raw/edu2-pizz-tag_v2.wav'))
+g.append(f'[{i}:a]atrim=0:1.4,afade=t=out:st=0.8:d=0.6,volume=-9dB,adelay={int(round((TOTAL-45)/FPS*1000))}:all=1[ptag]'); mix.append('[ptag]')
 # room tone RT-STORE (+ fridge hum partial): off f311-f745, low-passed in B05 (f1024-f1261)
 rt = sf('ambience/room/room_supermarket-hum-murmur_01.wav'); hum = sf('ambience/room/room_shop-fridge-hum_01.wav')
 for name, a, b, db, lp in (('r1', 0, 311, -26, ''), ('r2', 745, 1024, -26, ''), ('r3', 1024, 1261, -29, 'lowpass=f=800,'), ('r4', 1261, 1662, -26, '')):
@@ -126,5 +130,5 @@ g.append(f'{"".join(mus)}amix=inputs=3:normalize=0:duration=longest,apad=whole_d
 g.append('[musraw][key]sidechaincompress=threshold=0.02:ratio=6:attack=40:release=400:makeup=1[musd]'); mix.append('[musd]')
 g.append(f'{"".join(mix)}amix=inputs={len(mix)}:normalize=0:duration=longest,apad=whole_dur={DUR},atrim=0:{DUR},afade=t=out:st={DUR-1.0}:d=1.0,atrim=0:{DUR-1/FPS},apad=whole_dur={DUR}[out]')
 os.makedirs('public/audio/edu', exist_ok=True)
-run(ins, g, 'public/audio/edu/EDU-EP04-SHORT-review-stem-v5.wav')
+run(ins, g, 'public/audio/edu/EDU-EP04-SHORT-review-stem-v6.wav')
 print('ok')
