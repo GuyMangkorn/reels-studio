@@ -265,8 +265,9 @@ export const liftoffAt = (L: number): V3 => [
  *    into it L 22-38 (P01 -> P39 arms, lean; legs stay straight and planted until her feet leave the soil).
  *  - L 38 lift-off: legs trail into the P39 stride only after the feet are off the ground (run ramps in L 38-46, no slide); she rises
  *    gently (first 4 f 0.1 sm), over the lip by L 54 (feet 1.5), clear by L 62, drifting up and away to (-0.8, 3.0, -8.5).
- *  - L 58-62 the profile P39 dissolves into the front `drift-spread` (arms open, soft roll fades in over L 60-72 and ends where SH02's
- *    starts, ~0 deg): the figure is swapped by a 4 f cross-dissolve, the only way between the profile and the front rig.
+ *  - L 46-59 the profile settles toward the front pose (stride closes L 46-55, lean goes, arms ease to the profile `drift-spread` arms L 50-59),
+ *    then a 1 f hard swap at L 59 to the front `drift-spread` (no cross-dissolve, so no ghost double; soft roll fades in over L 60-72 and ends where
+ *    SH02's starts, ~0 deg).
  *  - the ground shadow fades with her height (none from 0.35 sm up).
  */
 export const paintLIFTOFF = (p: Painter, frame: number) => {
@@ -276,10 +277,13 @@ export const paintLIFTOFF = (p: Painter, frame: number) => {
   if (!g) return;
   // profile phase: P01 -> P39 (the kit blend), the lean and arms come in L 22-38, the run (stride) only once she is off the soil
   const w = ramp(22, 38), side = poseMix('P01', 'P39', w, TINY, g, u, 'left');
-  const sideFig: Partial<FigPose> = {...side, run: 0.3 * ramp(38, 46), lean: (side.lean ?? 0) * (L < 38 ? w : 1)};
+  // L 50-59 the profile settles toward the front pose (stride closes, lean goes, arms ease to the profile drift-spread arms), so the one-frame swap at L 59 has close silhouettes
+  const settle = ramp(50, 59), driftSide = namedPose('drift-spread', L, TINY, g, u, 'left');
+  const sideBase: Partial<FigPose> = {...side, run: 0.3 * ramp(38, 46) * (1 - ramp(46, 55)), lean: (side.lean ?? 0) * (L < 38 ? w : 1) * (1 - settle)};
+  const sideFig: Partial<FigPose> = settle > 0 ? {...sideBase, rArm: blendFig(sideBase, driftSide, settle).rArm, lArm: blendFig(sideBase, driftSide, settle).lArm} : sideBase;
   // front phase: drift-spread arms with the SET-DRIFT roll
   const roll = driftRoll(L) * ramp(60, 72), frontNamed = namedPose('drift-spread', L, TINY, g, u, 'front');
-  const fade = ramp(58, 62), facing = 'scared' as const;
+  const fade = L >= 59 ? 1 : 0, facing = 'scared' as const;
   const lipMat = L < 4 ? 0 : 0.22 * ramp(4, 30);
   const sideOpts = {at, view: 'left' as const, pose: 'P39' as const, face: facing, t, shadow: false, fig: sideFig};
   const frontOpts = {at, view: 'front' as const, named: {name: 'drift-spread' as const, L}, face: facing, t, shadow: false, fig: {...frontNamed, lie: roll}};
