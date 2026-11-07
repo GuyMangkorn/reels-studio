@@ -385,20 +385,30 @@ export const paintTOUCH = (p: Painter, frame: number) => {
   const dx = capHand[0] - shoulderS[0], dy = capHand[1] - shoulderS[1], dl = Math.hypot(dx, dy), drop = Math.sqrt(Math.max(0, (BONE_V * u) ** 2 - (dl / 2) ** 2));
   const heldElbow: Pt = [shoulderS[0] + dx / 2, shoulderS[1] + dy / 2 + drop];
   const carry = ramp(2, 6.5);
-  // the arm eases from the cap down to the hang along an arc about the shoulder (radius and angle blended), so it never folds toward the chest and keeps its length
-  const swing = (a: Pt, b: Pt, w: number): Pt => {
-    const ra = Math.hypot(a[0] - shoulderS[0], a[1] - shoulderS[1]), rb = Math.hypot(b[0] - shoulderS[0], b[1] - shoulderS[1]);
-    const aa = Math.atan2(a[1] - shoulderS[1], a[0] - shoulderS[0]), ab = Math.atan2(b[1] - shoulderS[1], b[0] - shoulderS[0]), r = ra + (rb - ra) * w, ang = aa + (ab - aa) * w;
-    return [shoulderS[0] + r * Math.cos(ang), shoulderS[1] + r * Math.sin(ang)];
+  // After the release (L >= 7) the arm is two bones of BONE_H, so its length never dips: the hand swings from the cap down along an arc about the CURRENT shoulder
+  // (front-view shoulder until the L13 swap to the profile, the profile shoulder after it, hand kept as an offset from it), the elbow is solved from the hand
+  // (chord < 2 bones, bent below / behind the line), then the hand goes on to the touch point the same way (the rig's own reach IK is not used, it changes the bone lengths).
+  const BONE_H = 0.2, HANG_LEN = 0.39; // figure metres: two bones of 0.2 m (near the 0.26 rig bone), hand about mid-thigh (0.66 m) at rest
+  const shoulderC: Pt = sh(profile ? -0.01 : -0.11, 1.05);
+  const ikArm = (hand: Pt, bone: number): Arm => {
+    const ex = hand[0] - shoulderC[0], ey = hand[1] - shoulderC[1], d = Math.hypot(ex, ey), h = Math.sqrt(Math.max(0, bone * bone - (Math.min(d, 2 * bone) / 2) ** 2));
+    const k = Math.min(1, (2 * bone) / Math.max(d, 1e-6)), to: Pt = [shoulderC[0] + ex * k, shoulderC[1] + ey * k];
+    return {to, via: [shoulderC[0] + (to[0] - shoulderC[0]) / 2 - (ey * k / Math.max(d * k, 1e-6)) * h, shoulderC[1] + (to[1] - shoulderC[1]) / 2 + (ex * k / Math.max(d * k, 1e-6)) * h]};
   };
-  // the rig draws its own hang when no arm is given; an explicit one is needed to blend from the cap and into the reach (figure metres from the feet point)
-  const hang: Arm = profile ? {to: sh(0.03, 0.72), via: sh(0.02, 0.89)} : {to: sh(-0.1, 0.72), via: sh(-0.13, 0.89)};
-  const reachPose: Partial<FigPose> = {rArm: {to: tp, out: -1}};
+  const capRel: Pt = [capHand[0] - shoulderS[0], capHand[1] - shoulderS[1]], hangRel: Pt = [0.04 * u, HANG_LEN * u];
+  const swing = (a: Pt, b: Pt, w: number): Pt => { // polar blend about the origin (shoulder)
+    const ra = Math.hypot(a[0], a[1]), rb = Math.hypot(b[0], b[1]), aa = Math.atan2(a[1], a[0]), ab = Math.atan2(b[1], b[0]), r = ra + (rb - ra) * w, ang = aa + (ab - aa) * w;
+    return [r * Math.cos(ang), r * Math.sin(ang)];
+  };
   const reach = ramp(18, 50);
   let rArm: Arm | undefined;
   if (L < 7) rArm = {...cradle, to: [cradle.to[0] + (capHand[0] - cradle.to[0]) * carry, cradle.to[1] + (capHand[1] - cradle.to[1]) * carry], via: [cradle.via[0] + (heldElbow[0] - cradle.via[0]) * carry, cradle.via[1] + (heldElbow[1] - cradle.via[1]) * carry]};
-  else if (L < 18) { const w = 1 - (1 - Math.min(1, Math.max(0, (L - 7) / 9))) ** 2; const rest = hang; rArm = {...rest, to: swing(capHand, rest.to, w), via: rest.via ? [heldElbow[0] + (rest.via[0] - heldElbow[0]) * w, heldElbow[1] + (rest.via[1] - heldElbow[1]) * w] : undefined}; }
-  else rArm = blendFig({rArm: hang}, reachPose, reach).rArm;
+  else {
+    const w = 1 - (1 - Math.min(1, Math.max(0, (L - 7) / 9))) ** 2, r0 = swing(capRel, hangRel, w);
+    let hand: Pt = [shoulderC[0] + r0[0], shoulderC[1] + r0[1]];
+    hand = [hand[0] + (tp[0] - hand[0]) * reach, hand[1] + (tp[1] - hand[1]) * reach];
+    rArm = ikArm(hand, (BONE_V + (BONE_H - BONE_V) * w) * u);
+  }
   const walk = L >= 4 && L < 19 ? ((L - 4) / 15) * 0.75 : undefined, stride = walk === undefined ? undefined : 0.7 * (1 - ramp(14, 19));
   const faceId = L < 53 ? 'neutral' : 'surprised';
   const faceState = L < 53 ? {look: [0.7 * ramp(10, 22) + 0.1, -0.2 * ramp(10, 22)] as [number, number]} : {look: [0.6, -0.3] as [number, number]};
