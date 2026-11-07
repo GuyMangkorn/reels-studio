@@ -17,6 +17,8 @@ export const parseRenderArgs = argv => {
     if (!Number.isInteger(number) || number < 1) throw new Error(`--${name} needs a positive integer, got "${raw}"`);
     return number;
   };
+  const unreviewed = value('unreviewed');
+  if (argv.includes('--unreviewed') || unreviewed === '') throw new Error('--unreviewed needs a reason quoting the user\'s choice, e.g. --unreviewed="user skipped the review, 7 Nov 2026"');
   const gl = value('gl') ?? 'angle';
   if (gl !== undefined && !GL.includes(gl)) throw new Error(`--gl must be one of ${GL.join(', ')}; got "${gl}"`);
   return {
@@ -29,10 +31,9 @@ export const parseRenderArgs = argv => {
     gl,
     timeoutInMilliseconds: positive('timeout'),
     concurrency: positive('concurrency') ?? 4,
-    // Quick look: half-size output and p5.brush canvas, written to out/<id>/preview/ and not archived.
-    preview: argv.includes('--preview'),
-    // Blocking draft: full size, cached, written to out/<id>/draft/. Since 6 Nov 2026 it paints the same flat fills as a final (BrushCanvas `drafted`).
-    draft: argv.includes('--draft'),
+    // Draft: half size (paintScale 0.5) with paintDraft, cached under its own variant, written to out/<id>/draft/; never reused for delivery.
+    // --preview is the old name of the same half-size render (user, 7 Nov 2026: one fast render, one cache).
+    draft: argv.includes('--draft') || argv.includes('--preview'),
     // Pinned finals (scripts/pin.mjs) whose inputs changed: keep the approved segments, or render these again (unpins them).
     keepPinned: argv.includes('--keep-pinned'),
     repaint: value('repaint')?.split(',').filter(Boolean) ?? [],
@@ -40,6 +41,8 @@ export const parseRenderArgs = argv => {
     noCache: argv.includes('--no-cache'),
     // Video frame range [from, to] (inclusive), e.g. --range=300-599; written to out/<id>/range/, not archived.
     range: parseRange(value('range')),
+    // Delivery render with unpinned scenes, only after the user chose to skip the review (docs/render-rules.md#render-stage).
+    unreviewed,
   };
 };
 
