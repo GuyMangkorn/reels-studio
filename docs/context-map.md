@@ -167,7 +167,7 @@ Episode-specific files are under [Episodes](#episodes); shared topics come first
 **Read when:** making or reviewing a cover image (Short/Reel cover, long-video thumbnail).
 
 - Docs: [cover-principles](cover-principles.md) (CV01–CV10, [platforms](cover-principles.md#cv-p-platforms)).
-- Source: [cover-overlay.tsx](../src/videos/cover-overlay.tsx) (`coversVideo`, `CoverOverlay` = overlay `covers` in [overlays.ts](../src/videos/overlays.ts)); cover data [covers/index.ts](../src/videos/covers/index.ts), [covers/wendigo.ts](../src/videos/covers/wendigo.ts), [covers/everyone-gone.ts](../src/videos/covers/everyone-gone.ts) (`WDG-EP01-SHORT-COVERS`, `EG-EP01-SHORT-COVERS`), [covers/edu-ep01.ts](../src/videos/covers/edu-ep01.ts) (`EDU-EP01-SHORT-COVERS`), [covers/edu-ep03.ts](../src/videos/covers/edu-ep03.ts) (`EDU-EP03-SHORT-COVERS`).
+- Source: [cover-overlay.tsx](../src/videos/cover-overlay.tsx) (`coversVideo`, `CoverOverlay` = overlay `covers` in [overlays.ts](../src/videos/overlays.ts)); cover data [covers/index.ts](../src/videos/covers/index.ts), [covers/wendigo.ts](../src/videos/covers/wendigo.ts), [covers/everyone-gone.ts](../src/videos/covers/everyone-gone.ts) (`WDG-EP01-SHORT-COVERS`, `EG-EP01-SHORT-COVERS`), [covers/edu-ep01.ts](../src/videos/covers/edu-ep01.ts) (`EDU-EP01-SHORT-COVERS`), [covers/edu-ep03.ts](../src/videos/covers/edu-ep03.ts) (`EDU-EP03-SHORT-COVERS`), [covers/edu-ep06.ts](../src/videos/covers/edu-ep06.ts) (`EDU-EP06-SHORT-COVERS`).
 - Scripts: [render.mjs](../scripts/render.mjs) renders `<ID>-COVERS` into `out/<ID>/covers/` with each delivery render; `--covers` for stills only.
 
 ## Delivery workflow

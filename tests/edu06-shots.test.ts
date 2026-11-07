@@ -9,7 +9,7 @@ import {seatedKnee, seatedPose} from '../src/painted/kit/poses-seated';
 import {OWN, paintOwn} from '../src/painted/edu06/cast';
 import {LR} from '../src/painted/edu06/room';
 import {
-  B04SH03_T, camB01SH04, camB02SH03, camB04SH03, camB05SH03, cardAt, catB01SH04, catB04SH03, glareB02SH03, paintB01SH04, paintB02SH03, paintB04SH03, paintB04SH05, paintB05SH02,
+  B01SH04_HOP, B04SH03_T, camB01SH04, camB02SH03, camB04SH03, camB05SH03, cardAt, catB01SH04, catB04SH03, glareB02SH03, paintB01SH04, paintB02SH03, paintB04SH03, paintB04SH05, paintB05SH02,
   paintB05SH03, SHOT_LEN,
 } from '../src/painted/edu06/shots';
 
@@ -28,10 +28,12 @@ test('RN01 S01-B01-SH04: the cat leaves frame right inside the shot; no paw slid
   let clear = -1;
   for (let L = 60; L < SHOT_LEN.B01SH04; L++) { const b = catBox(catB01SH04(L), camB01SH04(L), L / 30); if (b.x0 > 1080) { clear = L; break; } }
   assert.ok(clear > 0 && clear <= 127, `cat box fully right of frame by L${clear}`);
-  // ground speed while walking = kit walk speed (world m/f), after the 0.5 s start ramp
-  const w = world(catB01SH04, 75, 133), v = (i: number) => w[i + 1][0] - w[i][0];
-  assert.ok(Math.abs(v(40) - 0.37 / 30) < 1e-3, 'cruise = 0.37 m/s');
-  for (let i = 0; i < w.length - 1; i++) assert.ok(v(i) >= v(Math.max(0, i - 1)) - 1e-9, 'speed never drops once walking');
+  // after the step-up onto the arm the cat walks at the kit walk speed, never slowing; before the hop it stands (no walking through the arm)
+  const hopEnd = B01SH04_HOP + 10, w = world(catB01SH04, hopEnd, 133), v = (i: number) => w[i + 1][0] - w[i][0];
+  assert.ok(Math.abs(v(5) - 0.37 / 30) < 1e-3, 'cruise = 0.37 m/s');
+  for (let i = 0; i < w.length - 1; i++) assert.ok(Math.abs(v(i) - v(0)) < 1e-9, 'constant speed on the arm top');
+  for (let L = 60; L < B01SH04_HOP; L++) assert.equal(catB01SH04(L).at[0], 0.45, 'stays on its cushion until the hop');
+  for (let L = 60; L <= 133; L++) { const c = catB01SH04(L); if (c.layer === 'sofa') assert.ok(c.at[0] <= 0.6, 'sofa layer only until mid-hop'); }
   console.log('RN01 clear of frame at L', clear);
 });
 
@@ -81,12 +83,7 @@ test('RN05 + contact rule S01-B04-SH05: skull top stays on her palm through both
   assert.ok((e(66).lean ?? 1) < 0.02, 'release complete at the cut');
 });
 
-test('BOSS-3 seatedKnee, BOSS-2 tail: the tip lands on her knee within 1 px from L75 and holds, in SH02 and SH03', () => {
-  for (let L = 75; L < SHOT_LEN.B05SH02; L += 3) {
-    const r = recorder(L / 30), o = paintB05SH02(r.p, L);
-    assert.ok(o.tip && o.knee);
-    assert.ok(Math.hypot(o.tip![0] - o.knee![0], o.tip![1] - o.knee![1]) <= 1.5, `tip-knee at L${L}`);
-  }
+test('BOSS-3 seatedKnee: her left knee is screen-right of her feet, same height as the right (the tail reach was dropped, user 2026-11-07)', () => {
   const og = cardAt(camB05SH03(0), LR.ownFeet)!, k = seatedKnee(OWN, og.g, og.u, 'l', 'front'), r = seatedKnee(OWN, og.g, og.u, 'r', 'front');
   assert.ok(k[0] > og.g[0] && r[0] < og.g[0] && Math.abs(k[1] - r[1]) < 1e-9, 'left knee screen-right, same height');
 });

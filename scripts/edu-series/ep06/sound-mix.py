@@ -3,6 +3,7 @@
 files generated and filed 2026-11-07: cat mrrp/purr, night room tone, felt-piano M1/M2, single felt note). Every file is generated and unlistened;
 levels are by number, not ear. NG-S3..S8 foley (thump, paw steps, sniffs, rubs, creak, settle) are NOT generated: placeholders, silent. NG-M3 second note = the single note
 pitched up a fifth. Writes public/audio/edu/EDU-EP06-SHORT-review-stem-v2.wav (1685 f, 48 kHz mono). Needs public/narration/EDU-EP06-SHORT.wav as duck key.
+Closing: layers fade to zero from the last word's end G1612, then the EP02 pizz tag (stinger_pizz-tag-ending_01) rings from G1612.
 Policy: B04-SH01 (G787-847) music out, room tone + tick only, chime on G832; L13 clause G1522-1599 no one-shot, resolve onset G1606 on "รัก"; fade to silence G1661-1684.
 Run: python3 -I scripts/edu-series/ep06/sound-mix.py"""
 import os, subprocess
@@ -50,7 +51,12 @@ nar = len(ins); ins.append(['-i', 'public/narration/EDU-EP06-SHORT.wav'])
 g.append(f'[{nar}:a]asplit=1[key]')
 g.append(f'{"".join(mus)}amix=inputs={len(mus)}:normalize=0:duration=longest,apad=whole_dur={DUR},atrim=0:{DUR}[musraw]')
 g.append('[musraw][key]sidechaincompress=threshold=0.02:ratio=6:attack=40:release=400:makeup=1[musd]'); mix.append('[musd]')
-g.append(f'{"".join(mix)}amix=inputs={len(mix)}:normalize=0:duration=longest,apad=whole_dur={DUR},atrim=0:{DUR},volume=6dB,afade=t=out:st={DUR - 0.8}:d=0.8,atrim=0:{DUR - 1 / FPS},apad=whole_dur={DUR}[out]')
+# closing (user, 2026-11-07, "closing sound like EP02/EP03"): every layer above fades to zero from the last word's end (G1612, 53.75 s, measured), and the library tag
+# EP02 closes on (sfx/stinger/stinger_pizz-tag-ending_01.wav, peak -1 dB -> -10 dB, 2.2 s with a 0.5 s fade) starts on that frame; it is finished by G1682, before the A_fade black.
+END_F, TAG = 1612, 'sfx/stinger/stinger_pizz-tag-ending_01.wav'
+g.append(f'{"".join(mix)}amix=inputs={len(mix)}:normalize=0:duration=longest,apad=whole_dur={DUR},atrim=0:{DUR},volume=6dB,afade=t=out:st={END_F / FPS}:d={DUR - 1 / FPS - END_F / FPS}:curve=hsin,atrim=0:{DUR - 1 / FPS},apad=whole_dur={DUR}[body]')
+ti = add(TAG); g.append(f'[{ti}:a]atrim=0:2.2,volume=-9dB,afade=t=out:st=1.7:d=0.5,adelay={int(round(END_F / FPS * 1000))}:all=1,apad=whole_dur={DUR}[tag]')
+g.append(f'[body][tag]amix=inputs=2:normalize=0:duration=longest,atrim=0:{DUR - 1 / FPS},apad=whole_dur={DUR}[out]')
 cmd = ['ffmpeg', '-y', '-hide_banner', '-loglevel', 'error']
 for x in ins: cmd += x
 os.makedirs('public/audio/edu', exist_ok=True)
