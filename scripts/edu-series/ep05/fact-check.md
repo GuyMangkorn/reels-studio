@@ -119,3 +119,12 @@ Vocal sounds V01–V08 and L08: character/dramatization, pass; no real recording
 
 - Verdict: R1.3 L12 minor wording fix recommended; R1.2 L15 pass. Claim-status rows L12 (C08) and L15 (C14) still match.
 - Remaining uncertainties: unchanged (no primary paper; SRC008/SRC009 excerpts; N1 timing estimate for W1.4).
+
+## Wording update R1.4 (Preaw, 2026-11-07; not a Boat verdict)
+
+Rows L05 and L15 above keep the wording Boat checked (dated record). R1.4 changes wording only; claims are unchanged. The current text for those rows is the recommended candidate A in [script.md#r14-candidates-l05-l15](script.md#r14-candidates-l05-l15) (B is the alternative). Boat wording recheck: **pending**.
+
+| Row | Claim (unchanged) | R1.4 A wording (current) | Same claim? | For Boat |
+| --- | --- | --- | --- | --- |
+| L05 | C03 `verified-physics` | “แรงโน้มถ่วงเท่าเดิมนะ… แต่ตัวยิ่งเล็ก อากาศยิ่งต้านดี พอเทียบกับน้ำหนักตัว” | yes: "เท่าเดิม" kept; "ต้านดี" = "ต้านเก่ง" (user word); comparison to body weight kept | confirm wording only |
+| L15 | C14 `verified-physics` | “ไม่ใช่เพราะกล้ามมันเยอะหรอก… แต่พอตัวเล็กลง… น้ำหนักลดไปมากกว่าแรง… แรงก็เลยเหลือ ๆ” | yes for the mechanism (weight falls proportionally more than strength; spare strength relative to weight) | **check** the user word "กล้ามมันเยอะ": it denies *more muscle*, while the checked line denied *better muscle*; muscle mass fraction is not in research.md |
