@@ -6,7 +6,7 @@ Rule levels follow [AGENTS.md](../AGENTS.md#language-and-rule-conventions). Plat
 
 ## When
 
-**Requirement.** Covers come with the delivery render. Before the delivery render, Film registers `<ID>-COVERS` with **five candidates** (CV09); `scripts/render.mjs <ID>` then renders them into `out/<ID>/covers/` (`<ID>_cover-A.png` … `-E.png`), archived beside the MP4. The coordinator sends the sheet and the user picks one with the structured-question tool; the pick is copied beside the MP4 as `<ID>_cover.png` (`store.py put`), where the user takes files to upload, and recorded in the delivery record. A deliverable rendered before its covers existed gets them with `render.mjs <ID> --covers` (stills only, no video). A stage with no subject (for example a look-frame composition) is recorded `N/A`.
+**Requirement.** Covers come with the delivery render. Before the delivery render, Film registers `<ID>-COVERS` with **five candidates** (CV09); `scripts/render.mjs <ID>` then renders them into `out/<ID>/covers/` (`<ID>_cover-A.png` … `-E.png`), archived beside the MP4. The coordinator sends the sheet and the user picks one with the structured-question tool; the pick is published with `python3 -I scripts/store.py publish <ID> --cover <path> --reason "<why>"` into `publish/<PROJECT>/<ID>/<ID>_cover.png`, the one folder the user takes files from to upload ([publish folder](../README.md#publish-folder)), and recorded in the delivery record. A later cover fix is published the same way in the same turn; the old file is replaced there and kept in `history.tsv`. A deliverable rendered before its covers existed gets them with `render.mjs <ID> --covers` (stills only, no video). A stage with no subject (for example a look-frame composition) is recorded `N/A`.
 
 ## Rules
 

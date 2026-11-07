@@ -98,9 +98,9 @@ Episode-specific files are under [Episodes](#episodes); shared topics come first
 
 ## Asset store and media
 
-**Read when:** filing, fetching or locking media; a fresh checkout; user-supplied files.
+**Read when:** filing, fetching or locking media; a fresh checkout; user-supplied files; publishing the final MP4 and cover.
 
-- Docs: [asset store](../README.md#asset-store), [re-editing](../README.md#re-editing), [proposal](reviews/2026-10-31-asset-store-proposal.md)
+- Docs: [asset store](../README.md#asset-store), [re-editing](../README.md#re-editing), [publish folder](../README.md#publish-folder), [proposal](reviews/2026-10-31-asset-store-proposal.md), [publish proposal](reviews/2026-11-07-publish-folder-proposal.md)
 - Scripts: [store.py](../scripts/store.py), [episode-media.ts](../scripts/episode-media.ts), [setup.sh](../scripts/setup.sh); kit browse page `$REELS_STORE/index.html` (cast cards, people, poses, motions) built by [painted-kit/store-page.py](../scripts/painted-kit/store-page.py) from [store-page.html](../scripts/painted-kit/store-page.html) and [kit-data.ts](../scripts/painted-kit/kit-data.ts)
 - Data: per-video locks `src/videos/<episode>/assets.lock.json` (e.g. [world-fog](../src/videos/world-fog/assets.lock.json)); cached media under [public/](../public/fonts/)
 - Tests: [store](../tests/store.test.ts), [media](../tests/media.test.ts)

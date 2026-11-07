@@ -111,7 +111,8 @@ Concepts are pitches, not research: no claim in `concepts.md` counts as checked 
 
 - **Created** by the coordinator in the turn it first writes `delivery.md`, from the template below, one section per deliverable.
 - **Updated** by whoever finishes a step (role agent or coordinator), in the same change that updates the deliverable's `Stage / Next owner` cell. The two must agree; when they differ, `delivery.md` wins and `task.md` is corrected. Edit both with [`scripts/ep.py`](../scripts/ep.py) (`tick`, `now`, `cell`), not with one-off Python (usage review, 5 Nov 2026: about 600 inline scripts in five days edited these files and `review-rows.json`).
-- **Posted:** when the user says a video is on the channel, the coordinator ticks W8 and W8.3 in that turn, with the date, and marks any W8 step it cannot evidence `not recorded`.
+- **Published (W8.2):** the step is ticked only when the delivery render and the picked cover are in the [publish folder](../README.md#publish-folder) (`store.py publish <ID> --cover <pick> --reason "<why>"`). The note is the folder path `publish/<PROJECT>/<ID>/`. A later re-render or cover fix is published again in the same turn, and the reply gives the user that path.
+- **Posted:** when the user says a video is on the channel, the coordinator runs `store.py publish <ID> --posted <date>` and ticks W8 and W8.3 in that turn, with the date. It marks any W8 step it cannot evidence `not recorded`.
 - **Kit intake (W8.4):** Boss files the episode's new looks and sets into the kit after W8.2, under [KIT-P01](../src/painted/kit/README.md#kit-intake); the deliverable is not done until W8.4 is ticked or `N/A` with a reason.
 - **Read first** when the user asks for progress ("ทำถึงไหนแล้ว"): answer from the `Now` line and the open steps, and open `delivery.md` only for detail.
 - **Marks:** `[x]` done, `[ ]` open, `[x] … N/A — <reason>` for a step with no subject. Each line is one step plus at most one short note (revision, count, date); link instead of copying.
@@ -157,8 +158,8 @@ Record: [delivery.md](delivery.md) · Updated: <YYYY-MM-DD>, <role>
 - [ ] W7 Pinned (0/N shots)
 - [ ] W8 Deliver
   - [ ] W8.1 Assembled from the cache, picture lock
-  - [ ] W8.2 Delivery render archived
-  - [ ] W8.3 Posted to the channel (user, date)
+  - [ ] W8.2 Delivery render and cover published (`publish/<PROJECT>/<ID>/`)
+  - [ ] W8.3 Posted to the channel (user, date; `publish --posted`)
   - [ ] W8.4 Kit intake: new people, outfits, animals, poses, sets filed (KIT-P01)
 ```
 
