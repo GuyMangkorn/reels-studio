@@ -3,7 +3,7 @@ import type {PaintedShot} from '../shot';
 import {STILL_CAMERA} from '../kit/camera';
 import {Grain} from '../kit/screen';
 import {paintFacadeDown, lookDownCam} from '../edu05/facade';
-import {paintDRIFT, paintLANDING, paintLIFT, paintLIFTOFF, paintSPECK} from '../edu05/checks';
+import {paintDRIFT, paintLANDING, paintLIFT, paintLIFTOFF, paintSIP, paintSPECK, paintSTAND, paintTOUCH} from '../edu05/checks';
 
 // EDU-EP05-SHORT timeline adapter, Editor W5.3 (7 Nov 2026). One registry plate per finished shot, ID `EDU5-<shot id>`; the episode registry
 // (src/videos/edu-ep05/index.ts) mounts the plate when it exists and a placeholder card otherwise. Each plate is a pure function of the
@@ -12,6 +12,15 @@ const FPS = 30;
 const PAPER = '#ece6d6';
 /** S01-B01-SH02 length in frames (scene sheets: L 0-96; the camera ease runs over it, `lookDownCam(k)` k = L / 96). */
 export const EDU5_FAC_FRAMES = 96;
+
+/** S01-B01-SH01 length in frames (sip on the balcony, `paintSIP`). */
+export const EDU5_SIP_FRAMES = 41;
+
+/** S01-B01-SH03 length in frames (mug set down on the rail cap, `paintTOUCH`). */
+export const EDU5_TOUCH_FRAMES = 71;
+
+/** S01-B01-SH04 length in frames (she stands, `paintSTAND`). */
+export const EDU5_STAND_FRAMES = 32;
 
 /** S01-B02-SH02 length in frames (the follow camera runs over L 0-132, `paintDRIFT` k = L / 132). */
 export const EDU5_DRIFT_FRAMES = 132;
@@ -37,11 +46,38 @@ const screen = ({opacity}: {opacity: number}) => (
 
 export const edu05Shots: PaintedShot[] = [
   {
+    // S01-B01-SH01 (sip, `paintSIP` = EDU5-CHK-SIP), reused not copied.
+    id: 'EDU5-S01-B01-SH01',
+    serves: ['S01-B01-SH01'],
+    paper: PAPER,
+    camera: () => STILL_CAMERA,
+    paint: (p) => paintSIP(p, Math.min(p.frame, EDU5_SIP_FRAMES - 1)),
+    Overlay: screen,
+  },
+  {
     id: 'EDU5-S01-B01-SH02',
     serves: ['S01-B01-SH02'],
     paper: PAPER,
     camera: () => STILL_CAMERA,
     paint: (p) => paintFacadeDown(p, lookDownCam(Math.min(p.frame, EDU5_FAC_FRAMES) / EDU5_FAC_FRAMES), p.frame / FPS),
+    Overlay: screen,
+  },
+  {
+    // S01-B01-SH03 (mug set down, `paintTOUCH` = EDU5-CHK-TOUCH), reused not copied.
+    id: 'EDU5-S01-B01-SH03',
+    serves: ['S01-B01-SH03'],
+    paper: PAPER,
+    camera: () => STILL_CAMERA,
+    paint: (p) => paintTOUCH(p, Math.min(p.frame, EDU5_TOUCH_FRAMES - 1)),
+    Overlay: screen,
+  },
+  {
+    // S01-B01-SH04 (she stands, `paintSTAND` = EDU5-CHK-STAND), reused not copied.
+    id: 'EDU5-S01-B01-SH04',
+    serves: ['S01-B01-SH04'],
+    paper: PAPER,
+    camera: () => STILL_CAMERA,
+    paint: (p) => paintSTAND(p, Math.min(p.frame, EDU5_STAND_FRAMES - 1)),
     Overlay: screen,
   },
   {
