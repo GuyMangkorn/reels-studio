@@ -4,7 +4,7 @@
     "sha256": "c20f82a3f9ece1e12890b8017689d06822563777404eec4b1153b5756a19ad24"
   },
   "public/audio/bloop/bed_dark-drone-sub_01_lp400.wav": {
-    "store": "projects/BLOOP/audio/bed_dark-drone-sub_01_lp400.wav",
+    "store": "projects/BLOOP/audio/BLOOP-EP01-SHORT/bed_dark-drone-sub_01_lp400.wav",
     "sha256": "d07e4d7a731ffde6cab8e55cea8072cc8e089714c29d42a279136290aa90579f"
   },
   "public/audio/bloop/bed_underwater-mystery-sparse_01.wav": {
@@ -12,11 +12,11 @@
     "sha256": "c0cfe3ac495158af0969ff205bfb86c507a6cd41703cc3aaa52df63f5d398e8b"
   },
   "public/audio/bloop/creature_deep-swallow-gulp_01_distant.wav": {
-    "store": "projects/BLOOP/audio/creature_deep-swallow-gulp_01_distant.wav",
+    "store": "projects/BLOOP/audio/BLOOP-EP01-SHORT/creature_deep-swallow-gulp_01_distant.wav",
     "sha256": "4d8fd04431965473f2e81377daa128e2e6990e1ee82d8a134fde9167a228c533"
   },
   "public/audio/bloop/creature_deep-swallow-gulp_01_lp400.wav": {
-    "store": "projects/BLOOP/audio/creature_deep-swallow-gulp_01_lp400.wav",
+    "store": "projects/BLOOP/audio/BLOOP-EP01-SHORT/creature_deep-swallow-gulp_01_lp400.wav",
     "sha256": "762617cfcf5b285ee8fd5e8bd8984630d6554c60de5ff81787267605a3e7ec24"
   },
   "public/audio/bloop/hum_low-travelling-flat_01.wav": {
@@ -28,11 +28,11 @@
     "sha256": "98c1f9148244ba0fe62ab72bc44982d082efbfe475993416e72a51cb87a07fad"
   },
   "public/audio/bloop/noaa-bloop-b01-clip.wav": {
-    "store": "projects/BLOOP/audio/noaa-bloop-b01-clip.wav",
+    "store": "projects/BLOOP/audio/BLOOP-EP01-SHORT/noaa-bloop-b01-clip.wav",
     "sha256": "68404294396e60ba69cca4db9ba15012367c466e6f4228529f4b214ebb9b43af"
   },
   "public/audio/bloop/noaa-bloop-b03-clip.wav": {
-    "store": "projects/BLOOP/audio/noaa-bloop-b03-clip.wav",
+    "store": "projects/BLOOP/audio/BLOOP-EP01-SHORT/noaa-bloop-b03-clip.wav",
     "sha256": "fef36a5fb53ff370b34e8b1e3e9ce691d7f5b3c8b61f217aab19145ffa64b11f"
   },
   "public/audio/bloop/pulse_underwater-soft-thump_01.wav": {
@@ -60,11 +60,11 @@
     "sha256": "9cc63a038fcfcbee1fa942d267920148a4fb9fb00f5d4963485dca5c330eb287"
   },
   "public/audio/bloop/water_deep-ocean-roomtone_01_lp400.wav": {
-    "store": "projects/BLOOP/audio/water_deep-ocean-roomtone_01_lp400.wav",
+    "store": "projects/BLOOP/audio/BLOOP-EP01-SHORT/water_deep-ocean-roomtone_01_lp400.wav",
     "sha256": "25d89eed01494f277d84cc28b6f5d27c8c3af14fea4ab131c963dbed7dd2a5d2"
   },
   "public/audio/bloop/whoosh_heavy-cinematic_01_p5-muffled.wav": {
-    "store": "projects/BLOOP/audio/whoosh_heavy-cinematic_01_p5-muffled.wav",
+    "store": "projects/BLOOP/audio/BLOOP-EP01-SHORT/whoosh_heavy-cinematic_01_p5-muffled.wav",
     "sha256": "0f01edcc5e4e3d284f9baf048114ff6edad2924fdaeb9bc381d0514de916c188"
   }
 }

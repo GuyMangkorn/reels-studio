@@ -179,9 +179,9 @@ test('archive files out/<ID>/ by project and commit, skips scratch and repeats, 
   assert.match(run('archive', 'ZCPAINT-SHORT').out, /archived 1/);
   assert.equal(readdirSync(path.join(base, version)).filter((f) => f.endsWith('.mp4')).length, 2);
 
-  const takes = run('archive', '--path', path.join(path.dirname(store), 'repo/out/gemini-tts'), '--project', 'WFOG', '--kind', 'audio/gemini-tts');
+  const takes = run('archive', '--path', path.join(path.dirname(store), 'repo/out/gemini-tts'), '--id', 'WFOG-EP01-SHORT', '--kind', 'audio', '--label', 'gemini-tts');
   assert.match(takes.out, /archived 1/);
-  assert.ok(existsSync(path.join(store, 'projects/WFOG/audio/gemini-tts/take.wav')));
+  assert.ok(existsSync(path.join(store, 'projects/WFOG/audio/WFOG-EP01-SHORT/gemini-tts/take.wav')));
   assert.equal(run('archive', '--path', 'x').code, 2);
   assert.equal(run('verify').code, 0);
 });
@@ -210,7 +210,7 @@ test('prune deletes only stored copies and scratch, and refuses tracked folders'
   const {repo, run, write} = setup();
   spawnSync('git', ['init', '-q'], {cwd: repo});
   writeFileSync(path.join(repo, '.gitignore'), 'out/\n');
-  run('put', write('in/r.mp4', 'render'), 'projects/X/renders/r.mp4');
+  run('put', write('in/r.mp4', 'render'), 'projects/X/renders/X-SHORT/v1/r.mp4');
   write('repo/out/X-SHORT/r.mp4', 'render');
   write('repo/out/X-SHORT/unique.mp4', 'only-here');
   write('repo/out/qa/sheet.png', 'scratch');
@@ -241,7 +241,7 @@ test('publish keeps one MP4 and one cover per video, refuses review renders and 
   assert.equal(r.code, 0, r.out);
   assert.equal(readFileSync(path.join(folder, 'X-EP01-SHORT.mp4'), 'utf8'), 'cut-2');
   assert.equal(readFileSync(path.join(folder, 'X-EP01-SHORT_cover.png'), 'utf8'), 'cover-C');
-  assert.match(readFileSync(path.join(store, 'manifest.tsv'), 'utf8'), /projects\/X\/renders\/X-EP01-SHORT\/covers\/pick-C\.png/);
+  assert.match(readFileSync(path.join(store, 'manifest.tsv'), 'utf8'), /projects\/X\/covers\/X-EP01-SHORT\/pick-C\.png/);
 
   assert.equal(run('publish', 'X-EP01-SHORT', '--posted', '2026-11-07').code, 0);
   assert.match(readFileSync(path.join(store, 'publish/INDEX.md'), 'utf8'), /X-EP01-SHORT.*posted 2026-11-07/);
@@ -256,4 +256,36 @@ test('publish keeps one MP4 and one cover per video, refuses review renders and 
 
   assert.equal(run('put', write('in/x.mp4', 'x'), 'publish/X/x.mp4').code, 2);
   assert.equal(run('verify').code, 0);
+});
+
+test('project layout: put refuses ad-hoc folders, mv moves files and rewrites manifest and locks', () => {
+  const {store, repo, run, write} = setup();
+  const src = write('in/a.png', 'still');
+  for (const bad of ['projects/EDU-EP03/previews/a.png', 'projects/EDU/w53-ep03-clips/a.png', 'projects/EDU/previews/a.png',
+    'projects/EDU/previews/KSO-EP01-SHORT/a.png', 'projects/EDU/review/EDU-EP03-SHORT/qa/a.png']) {
+    assert.equal(run('put', src, bad).code, 2, bad);
+  }
+  for (const good of ['projects/EDU/previews/EDU-EP03-SHORT/look-frames/a.png', 'projects/EDU/audio/_series/a.png',
+    'projects/ZCONDO2/previews/ZC2-B01-SH01/a.png', 'projects/EDU/references/user/a.png', 'projects/KIT/plates/a.png']) {
+    assert.equal(run('put', src, good).code, 0, good);
+  }
+  assert.equal(run('archive', '--path', 'x', '--id', 'EDU-EP03-SHORT', '--kind', 'clips').code, 2);
+
+  // Old layout (written directly, as before the rule) is moved with mv; the lock follows the file.
+  mkdirSync(path.join(store, 'projects/EDU/w53-ep03-clips'), {recursive: true});
+  writeFileSync(path.join(store, 'projects/EDU/w53-ep03-clips/sh01.mp4'), 'clip');
+  writeFileSync(path.join(store, 'manifest.tsv'), readFileSync(path.join(store, 'manifest.tsv'), 'utf8')
+    + `${'0'.repeat(64)}\t4\tprojects/EDU/w53-ep03-clips/sh01.mp4\tx\tb\tc\tt\n`);
+  writeFileSync(path.join(repo, 'src/videos/demo/assets.lock.json'),
+    JSON.stringify({'public/x.mp4': {store: 'projects/EDU/w53-ep03-clips/sh01.mp4', sha256: '0'.repeat(64)}}));
+  assert.match(run('mv', 'projects/EDU/w53-ep03-clips', 'projects/EDU/clips').out, /problems/);
+  const dry = run('mv', 'projects/EDU/w53-ep03-clips', 'projects/EDU/review/EDU-EP03-SHORT/w53-ep03-clips');
+  assert.match(dry.out, /would move 1 files/);
+  assert.equal(run('mv', 'projects/EDU/w53-ep03-clips', 'projects/EDU/review/EDU-EP03-SHORT/w53-ep03-clips', '--apply').code, 0);
+  const moved = 'projects/EDU/review/EDU-EP03-SHORT/w53-ep03-clips/sh01.mp4';
+  assert.ok(existsSync(path.join(store, moved)));
+  assert.ok(!existsSync(path.join(store, 'projects/EDU/w53-ep03-clips')));
+  assert.match(readFileSync(path.join(store, 'manifest.tsv'), 'utf8'), new RegExp(moved));
+  assert.equal(JSON.parse(readFileSync(path.join(repo, 'src/videos/demo/assets.lock.json'), 'utf8'))['public/x.mp4'].store, moved);
+  assert.match(readFileSync(path.join(store, 'moves.tsv'), 'utf8'), /w53-ep03-clips\/sh01\.mp4\tprojects\/EDU\/review/);
 });

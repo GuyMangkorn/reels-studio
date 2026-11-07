@@ -102,7 +102,7 @@ The planned rig follows ton-sea's model, implemented in TypeScript under `src/pa
 
 ## Review loop (every shot, every fix)
 
-Logs go to `out/logs/`; images are viewed through `scripts/qa-sheet.sh` ([CB02/CB03](../../../AGENTS.md#context-budget)). Iteration frames under `out/` are scratch. File only the frames and sheets a handoff or review cites with `python3 -I scripts/store.py archive --path <dir> --project <PROJECT> --kind previews/<shot>` ([asset store](../../../README.md#asset-store)), and cite the store path.
+Logs go to `out/logs/`; images are viewed through `scripts/qa-sheet.sh` ([CB02/CB03](../../../AGENTS.md#context-budget)). Iteration frames under `out/` are scratch. File only the frames and sheets a handoff or review cites with `python3 -I scripts/store.py archive --path <dir> --id <CompositionId> --kind previews --label <shot>` ([project layout](../../../README.md#project-layout)) ([asset store](../../../README.md#asset-store)), and cite the store path.
 
 ```bash
 E=src/painted/spike/index.ts; ID=PAINTED-SPIKE-Short          # swap for the real entry and composition

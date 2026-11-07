@@ -1,42 +1,42 @@
 {
   "public/audio/bed/bed_pool-curious-sparse-52s_01.wav": {
-    "store": "projects/POOLDEPTH/audio/untracked/public/audio/bed/bed_pool-curious-sparse-52s_01.wav",
+    "store": "projects/POOLDEPTH/audio/_series/untracked/public/audio/bed/bed_pool-curious-sparse-52s_01.wav",
     "sha256": "3e82618855da165368b636c7ddf80ee59015d21887474df6c3e02d370a9db18a"
   },
   "public/audio/water/water_pool-hall-bed-52s_01.wav": {
-    "store": "projects/POOLDEPTH/audio/untracked/public/audio/water/water_pool-hall-bed-52s_01.wav",
+    "store": "projects/POOLDEPTH/audio/_series/untracked/public/audio/water/water_pool-hall-bed-52s_01.wav",
     "sha256": "157a8cd5ddc26645f905d6a48757b2b2294ac46aeaa011eb8d2870e16e7f2e4e"
   },
   "public/pool-depth/shot-01.mp4": {
-    "store": "projects/POOLDEPTH/renders/pooldepth-full/seamtest/sh01_c10k.mp4",
+    "store": "projects/_legacy/POOLDEPTH/renders/pooldepth-full/seamtest/sh01_c10k.mp4",
     "sha256": "a307f9f679ec5bcbfc0774943951bee66b07ccafca4b1822cd267bb2bf0d56c3"
   },
   "public/pool-depth/shot-02.mp4": {
-    "store": "projects/POOLDEPTH/shots/pool-depth/shot-02.mp4",
+    "store": "projects/_legacy/POOLDEPTH/shots/pool-depth/shot-02.mp4",
     "sha256": "eb30067e6b233cfbe5f60b09cbeff596b3ac6d2e69485816894af248d96ff99d"
   },
   "public/pool-depth/shot-03.mp4": {
-    "store": "projects/POOLDEPTH/shots/pool-depth/shot-03.mp4",
+    "store": "projects/_legacy/POOLDEPTH/shots/pool-depth/shot-03.mp4",
     "sha256": "d44ed31aae89cfc504ae070958bbd6210e94e5184f3de40ba5380ff435ef9c0c"
   },
   "public/pool-depth/shot-04.mp4": {
-    "store": "projects/POOLDEPTH/shots/pool-depth/shot-04.mp4",
+    "store": "projects/_legacy/POOLDEPTH/shots/pool-depth/shot-04.mp4",
     "sha256": "52ff510426ff792e9a3ef955e585ea911ca45e9f3f31b1e732124d297c97a3ab"
   },
   "public/pool-depth/shot-05.mp4": {
-    "store": "projects/POOLDEPTH/shots/pool-depth/shot-05.mp4",
+    "store": "projects/_legacy/POOLDEPTH/shots/pool-depth/shot-05.mp4",
     "sha256": "75e819bbf31d953619c8535ee255853599541c92f82c9babf9a26b3a6d2d1446"
   },
   "public/pool-depth/shot-06.mp4": {
-    "store": "projects/POOLDEPTH/shots/pool-depth/shot-06.mp4",
+    "store": "projects/_legacy/POOLDEPTH/shots/pool-depth/shot-06.mp4",
     "sha256": "e0c370b230f46bb24ac68bdbda3a3a69102160ec9ff54a2f1a0d7019fa8ca19e"
   },
   "public/pool-depth/shot-07.mp4": {
-    "store": "projects/POOLDEPTH/shots/pool-depth/shot-07.mp4",
+    "store": "projects/_legacy/POOLDEPTH/shots/pool-depth/shot-07.mp4",
     "sha256": "f26c6ebf9a7eec4213b88a930f3ce6c15efd45098681f2242905f836a8867cc7"
   },
   "public/pool-depth/shot-08.mp4": {
-    "store": "projects/POOLDEPTH/renders/pooldepth-full/seamtest/sh08_c10k.mp4",
+    "store": "projects/_legacy/POOLDEPTH/renders/pooldepth-full/seamtest/sh08_c10k.mp4",
     "sha256": "2476910bad1d35d9a669c582fa9947971fa96a52cf106b173f4d5266be7c4daf"
   },
   "public/sfx/reveal/reveal_glass-shimmer-soft_01.wav": {

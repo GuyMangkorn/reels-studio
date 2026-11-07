@@ -8,7 +8,7 @@
     "sha256": "d1281dbff844e860009d8d77cf38831728b183953a857e90e26464a873112fd8"
   },
   "public/audio/outdoor/outdoor_fog-forecourt-hush_glass_01.wav": {
-    "store": "projects/WFOG/audio/derived/outdoor_fog-forecourt-hush_glass_01.wav",
+    "store": "projects/WFOG/audio/WFOG-EP01-SHORT/derived/outdoor_fog-forecourt-hush_glass_01.wav",
     "sha256": "959f774b00bd4336d7ecff5e9e700289133606029607454c72cfc0be263cb866"
   },
   "public/audio/room/room_shop-fridge-hum_01.wav": {
