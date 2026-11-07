@@ -48,3 +48,8 @@ Why this file exists: in WDG-EP01-SHORT one look frame went through seven painte
 ## Medium
 
 - **UT11 — Painted, not flat SVG,** for pictures the user sees. Evidence: BLOOP ("paint, not SVG", 30 Oct 2026); [project defaults](delivery-workflow.md#project-defaults).
+
+## Sound
+
+<a id="ut-edu-end-tag"></a>
+- **UT15 — Education series close on the EP02 strings tag.** **Requirement** for every EDU-SERIES deliverable (user, 7 Nov 2026: "education series ตอนจบต้องใช้เสียงเครื่องสายแบบ ep02"). The ending carries the library file `sfx/stinger/stinger_pizz-tag-ending_01` (pizzicato strings and marimba resolving on a ringing chord, 2.5 s; raw `_raw/edu2-pizz-tag_v2`). Start it on the last word's end, peak about −10 dB (EP05 −8.5 dB), trimmed to 1.4–2.2 s with a 0.5–0.6 s fade, finished before the picture's black; other music layers fade out under it. Film names it in the scene sheet's sound plan and Editor places it in the stem from the first Draft, not as a fix. An episode-specific theme may resolve into it but does not replace it. Evidence: EDU-EP02 close (`scripts/edu-series/ep02/sound-mix.py`); added on user request to EP03 (W8.5, 6 Nov 2026), EP04 (`review-mix.py` v6), EP05 and EP06 (7 Nov 2026).
