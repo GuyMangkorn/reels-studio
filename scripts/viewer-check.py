@@ -132,7 +132,14 @@ def bundle(args):
           f'Write `{rel(os.path.join(out, "verdicts.json"))}` as `{{"<id>": "pass" | "fail"}}` for every shot listed under Shots, '
           f'and `{rel(os.path.join(rows_dir, f"viewer-check-{args.stage}-<round>.md"))}` with one table row per shot: '
           'reads as (one line, without the narration) | pass/fail against "what is seen" | each wrong pose, arm, hand or face against the poses below | '
-          'each user-taste entry it breaks, by ID. Reply with the table only.', '']
+          'each user-taste entry it breaks, by ID. Reply with the table only.', '',
+          'Tag every finding with a class and a severity, for example `A-C: left thumb bends backwards`. Classes: '
+          'P perspective (horizon or vanishing lines that disagree, scale against the set, floating or missing contact, the space reads as another kind of space); '
+          'A anatomy (hands, limbs, joints, clothes breaking the silhouette, face, facing); '
+          'H hero object (the object the shot is about is rough, unreadable or reads as something else); '
+          'R read (the shot does not read as its "what is seen"). '
+          'Severity: C critical, a viewer would notice it as wrong or unnatural; M minor, taste or polish. '
+          'A shot is `fail` when it has at least one C finding. Do not invent findings to look thorough.', '']
     if carried:
         md += [f'Carried over (frames unchanged since a recorded pass, not shown): {", ".join(carried)}.', '']
     md += ['## Sheets', '']
