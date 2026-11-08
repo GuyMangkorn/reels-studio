@@ -88,3 +88,52 @@ Rule: the read is NAR only. Non-speech items are inserted at the end of the line
 Video total **50.4 s** (estimate 48.5 s, +1.9 s; audio 42.43 s vs ~40.3 s); under the 60 s cap, 9.6 s slack. Beats: B01 0-11.36 (est 0-11.1), B02 11.36-20.21 (11.1-18.4), B03 20.21-39.02 (18.4-36.5), B04 39.02-43.00 (36.5-41.0), B05 43.00-50.40 (41.0-48.5). B02 grew most (+1.8 s: L04 commas and the 0.76/0.80 gaps around the V02 beat).
 
 **Shots where the speech (plus inserts) is longer than the row length** (speech durations, gap tails excluded): B02-SH01 L04 2.68 s + taps 0.6 = 3.28 s vs 2.8 s (+0.48); B03-SH01 L06 part ~3.36 vs 3.3 (+0.06); B03-SH04 L09 part ~3.63 vs 3.6 (+0.03, within anchor error). Every other line fits its row; shot windows longer than the row (B01-SH02, B02-SH02, B05-SH01) are the read's gaps after the inserts, which Film can trim. The sub-line cuts in B03 (~, +-0.2 s) should be re-measured on the final cut if the user keeps this read.
+
+## Full read R1.3 s2 (x0.9025, 2026-11-08)
+
+User, after listening to the x0.95 read: "too fast, slow it 5%". No new TTS request. Derived from the raw take `ep09-nar-kore-A-r13-full-raw.wav` with a single `atempo=0.9025` (0.95 x 0.95), then two-pass `loudnorm` (linear, I=-16, TP=-1.5; check -16.0 LUFS, -1.6 dBTP), 48 kHz mono. The previous x0.95 files are kept. Line times are the x0.95 anchors divided by 0.95 (exact for atempo), cross-checked with `silencedetect` (-40 dB; ends within ~0.04 s).
+
+Store (`projects/EDU/voice/`): `ep09-nar-kore-A-r13-full-s2.wav` (+ `.json`, 44.66 s) and per-line `ep09-nar-kore-A-r13-full-s2-L01.wav` ... `-L15.wav` (+ `.json` sidecars with source, factor, cut and speech times; 11 lines). Git candidate: `public/narration/EDU-EP09-SHORT.wav` replaced (not locked, no `store.py use`).
+
+| Line | Start | End | Dur (s) | Syl/s | Gap after |
+| --- | --- | --- | --- | --- | --- |
+| L01 | 0.26 | 3.95 | 3.68 | 4.61 | 0.44 |
+| L02 | 4.39 | 6.57 | 2.18 | 4.59 | 0.45 |
+| L03 | 7.02 | 8.76 | 1.74 | **5.18** | 0.46 |
+| L04 | 9.22 | 12.04 | 2.82 | 3.19 | 0.80 |
+| L05 | 12.84 | 15.48 | 2.64 | 4.92 | 0.84 |
+| L06 | 16.33 | 20.68 | 4.36 | 4.13 | 0.38 |
+| L07 | 21.06 | 24.98 | 3.92 | 4.09 | **0.20** |
+| L08 | 25.18 | 29.95 | 4.77 | 4.40 | 0.56 |
+| L09 | 30.51 | 35.51 | 5.00 | 4.20 | 0.62 |
+| L12 | 36.13 | 40.32 | 4.19 | 4.54 | 0.49 |
+| L15 | 40.81 | 44.42 | 3.61 | 4.71 | n/a |
+
+Audio 44.66 s (speech 38.91 s in lines, 4.37 syl/s; first sound to last 44.16 s). L03 is still the fastest line (5.18 syl/s, about 19 % above the average, 5 % above L05 4.92). No gap under 0.15 s; smallest L07/L08 0.20 s.
+
+### Per-shot timing for W5.1 (s2)
+
+Same insert lengths as the x0.95 table (try 2.0 + V01 0.6 after L01; taps 0.6 + V02 1.5 after L04; retry 1.0 after L12; hold 2.5).
+
+| Shot | Start | Length | Row | Diff |
+| --- | --- | --- | --- | --- |
+| B01-SH01 | 0.00 | 5.15 | 5.2 | -0.05 |
+| B01-SH02 | 5.15 | 1.84 | 1.4 | +0.44 |
+| B01-SH03 | 6.99 | 2.63 | 2.4 | +0.23 |
+| B01-SH04 | 9.62 | 2.20 | 2.1 | +0.10 |
+| B02-SH01 | 11.82 | 3.42 | 2.8 | **+0.62** |
+| B02-SH02 | 15.24 | 2.30 | 1.5 | +0.80 |
+| B02-SH03 | 17.54 | 3.48 | 3.0 | +0.48 |
+| B03-SH01 | 21.03 | 3.54 | 3.3 | +0.24 |
+| B03-SH07 | 24.56 | 1.20 | 1.0 | +0.20 |
+| B03-SH02 | 25.76 | 3.46 | 3.3 | +0.16 |
+| B03-SH08 | 29.23 | 0.95 | 1.0 | -0.05 |
+| B03-SH03 | 30.17 | 5.03 | 4.5 | +0.53 |
+| B03-SH09 | 35.21 | 1.18 | 1.4 | -0.22 |
+| B03-SH04 | 36.38 | 4.44 | 3.6 | +0.84 |
+| B04-SH01 | 40.83 | 4.19 | 4.5 | -0.31 |
+| B05-SH01 | 45.02 | 1.49 | 1.0 | +0.49 |
+| B05-SH02 | 46.51 | 3.61 | 4.0 | -0.39 |
+| B05-SH03 | 50.12 | 2.50 | 2.5 | 0.00 |
+
+Video total **52.62 s** (x0.95 table 50.4 s); 7.38 s slack under the 60 s cap. Speech longer than its row: B02-SH01 (L04 2.82 + taps 0.6 = 3.42 vs 2.8, +0.62), B03-SH01 (+0.24), B03-SH04 (L09 part ~3.82 vs 3.6, +0.22). Windows longer than the row by a gap tail: B01-SH02, B02-SH02, B03-SH04, B05-SH01. Anchors are scaled, not re-listened. Not approved; the user listens next.
