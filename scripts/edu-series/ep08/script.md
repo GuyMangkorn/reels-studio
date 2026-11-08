@@ -1,0 +1,152 @@
+# EDU-EP08-SHORT — ถอดหมวกกลางอวกาศ (helmet off in space)
+
+- Deliverable: `EDU-EP08-SHORT`; task file [task.md](task.md); series concepts [../concepts.md](../concepts.md) C18 (Preaw R3 concept, Film R3 annotation).
+- Script revision: **EDU-EP08-SCRIPT-R1.1** (Preaw, 2026-11-08). Boat W1.3 fixes 1–6 applied ([fact-check.md](fact-check.md)) with user decisions 2026-11-08; see [Revision log](#revision-log).
+- Inputs: fact-check [fact-check.md](fact-check.md) W1.3 (Boat, 2026-11-08; adds SRC014 vacuum flask); research [research.md](research.md) W1.1 (Boat, 2026-11-08; claims F001–F010, sources SRC001–SRC013, Thai hedge list 1–6); user decisions Q1–Q3 recorded in [task.md](task.md) (2026-11-08); safety limits in task.md.
+- Story mode: **fiction with factual knowledge, "what if" premise**. A fictional astronaut (stands in for "คุณ") loses the helmet on a spacewalk; real EVA helmets lock (F010b), and L03 says so aloud. Every action of the astronaut and crewmate, the slow-motion timer, the glitter at the lips and the airlock rescue are **dramatization**. The spoken facts are F001–F005, F007, F009, hedged as research.md lists. The 1966 case is told as reported, anonymous (user Q1).
+- Profile: educational (space survival myth-buster), painted 2D p5.brush, 4-head cast, Thai Short 1080×1920 30 fps, narrator Kore (edu default: deadpan, brisk, friend-telling-it), ending **`A_fade`** (concept C18; relief beat in the airlock).
+- Voices: NAR = Gemini TTS Kore. AST = the astronaut, one vocal sound inside the helmet (V01), then silent (no air, no sound; F010a). CREW = crewmate, one short line heard through the crewmate's own suit radio (V02; see [N5](#notes)).
+- Target 40–60 s (series). **Timing: estimated** ([N1](#notes)): NAR ~225 syllables ≈ 53.3 s at EP05's measured Kore pace; video ~59–62 s (about 60.3 s) with the vocal sounds, three silent show-first beats and the ~2 s closing fade. **Over the 60 s cap on the estimate**: the ready-to-apply cut set in N1 brings it to about 58.9 s. Not read aloud or audio-tested.
+- Status: R1.1 for Boat recheck of the changed items (fact-check.md recheck list 1–5). Not user-approved.
+
+## Story core
+
+- **Logline:** a spacewalker's helmet comes off. Films promise an explosion or an instant freeze; neither happens. Instead the moisture on the tongue starts to boil, there are only about 10–15 seconds of awareness, and the body's instinct (gasp and hold the breath) is the wrong move. The astronaut lets the air go; a crewmate hauls them into the airlock before the timer runs out.
+- **Central question:** what really happens to you without a helmet in space, and what should you do?
+- **Intention / obstacle:** AST wants to stay alive until help arrives; the obstacles are the vacuum and AST's own instinct to hold the breath.
+- **Feeling:** a jolt at the helmet drift and the sudden silence; relief and a grin as the movie myths fall away; "eh?" at the glitter on the lips; a chill at the real 1966 case; tension at the held breath; release when the glittering breath streams out; relief in the airlock.
+- **Takeaway:** in vacuum you do not explode or freeze on the spot (no air to carry heat away, like a vacuum flask); you may have only seconds of awareness (about 10–15 s in reports and animal tests), the water on your tongue can boil at body warmth, and you should breathe out, not hold your breath.
+- **The one rule (ER03 refrain):** "ไม่มีอากาศ" (no air around you). It explains every beat: no air to carry heat away (L05), no air pressing so water boils at body warmth (L06), no air pushing back so held air pushes the lungs (L10). The flip: the same "no air outside" tells you what to do, let your own air go (L11, L13).
+
+## Truth and ending
+
+- **Spoken as settled, plain:** no explosion (F001, L02/L04); no instant freeze, heat leaves slowly because there is no air to carry it (F002, L05), with the vacuum-flask comparison as an analogy only, not a claim that the body keeps heat like a flask (SRC014, fix 4); water boils at body warmth with no pressure (F004 mechanism, L06); held breath pushes against nothing outside, lungs may be injured (F007 physiology, L10).
+- **Spoken with hedges (research.md hedge list):** consciousness "อาจมีสติ… ประมาณ สิบถึงสิบห้าวินาที" (F003, hedge 1; L02 and the timer card, user Q3; "อาจ" per fact-check fix 1); swelling "อาจบวมขึ้น", no number, no imagery (F001, hedge 3; L04); saliva "เริ่มเดือด" (F004 timing; L06); the 1966 case "ตามรายงาน… เขาเล่าว่า", anonymous, neutral role "คนทดสอบชุดของนาซ่า" (fix 2), no repressurisation time, no "only survivor" (F005/F006, hedge 2; L07–L09); survival "ถ้าช่วยเร็วมาก… ก็อาจรอด" plus the evidence base "ข้อมูลส่วนใหญ่มาจากสัตว์ กับอุบัติเหตุไม่กี่ครั้ง" (F009, hedges 1 and 4; L12, fix 3; carries the not-tested-on-people limit); "what if" label (F010b, hedge 6; L03).
+- **Closing (user Q2):** L13 ends on "สิ่งที่ควรทำ คือหายใจออก". It does not say holding the breath is the most dangerous thing (F007: overstatement). The line is advice for a situation no viewer can be in, inside a stated "what if", so no extra not-advice line (hedge 5 applies only if it reads as instructions; Boat confirmed in W1.3 on two conditions: L03 "นี่แค่สมมติ" stays in the cut and L12 stays directly before L13).
+- **Dramatization only (no narrator fact):** the helmet clasp slipping, the drift, AST's gasp and mouthing, the glitter at the lips (stands for saliva/breath vapour; never a mouth close-up), the held breath and the exhale glitter stream, the slow-motion timer, the crewmate grab, the airlock. The flashback figure is anonymous, from behind, generic chamber.
+- **Not used:** "blood boils" (F008), any swelling number (F001), "only survivor" (F005), a repressurisation time (F005), eye/cornea chill (F002/SRC002; eye imagery banned and narration not needed), Jim LeBlanc's name or the retold quote in quotation marks (F006, SRC012), Landis "90 s" window (F009), ISS altitude (F010c), counter-pressure garments (F010d).
+- **Knowledge twist (myth reversal, ER03):** the viewer expects the danger to be the movie danger (explode, freeze). B02 removes both. The real problem turns out to be inside: the boiling tongue (B03) and, sharpest, the instinct to gasp and hold (B04). The fix is the opposite of instinct: breathe out. Fair clue: AST's sharp gasp and sealed lips are shown in B01 (CL01), read first as shock.
+- **Ending `A_fade`:** the crewmate (planted at the airlock in B01, CL02) grabs AST before the timer reaches its shaded band (CL03); the hatch shuts; L12 hedges survival and names the evidence base; L13 closes with the callback to the hook and the breath rule. Closing picture ~2 s: inside the airlock, the hiss starts and the pressure needle begins to rise, the crewmate's glove over AST's hand; fade out before the needle reaches the top (no instant-recovery image, F009).
+
+## Beat list (estimated video time; story time ≈ 9 s in slow motion, see N3)
+
+| Beat | Lines | Est. time | Purpose / causal link |
+| --- | --- | --- | --- |
+| `EDU-EP08-S01-B01` | L01, V01, L02, L03 | 0.0–11.2 | Hook: helmet comes off, sound cuts to silence, timer card appears; claim: no explosion, maybe only about 10–15 s awake; objection answered: real helmets lock, this is a "what if" |
+| `EDU-EP08-S01-B02` | L04–L05 | 11.2–18.6 | Myths paid (≈30 %): AST checks the body, whole; movie freeze-shell fails to form; like a vacuum flask, no air to carry heat away |
+| `EDU-EP08-S01-B03` | (show), L06–L09 | 18.6–39.6 | New problem "แต่…": glitter at the lips, saliva starts to boil (no air pressing); the 1966 case as reported proves it, and he woke when air returned |
+| `EDU-EP08-S01-B04` | (show), L10, (exhale), L11 | 39.6–48.5 | New problem: AST holds the breath (CL01 payoff); no air outside pushes back; AST lets the air go, glitter stream across the Earth |
+| `EDU-EP08-S01-B05` | V02, L12, L13 (+~2 s closing, fade) | 48.5–60.4 | Rescue before the timer band; survival hedge with the evidence base; closing callback "คุณไม่ระเบิดหรอก… สิ่งที่ควรทำ คือหายใจออก"; airlock hiss, fade |
+
+## Full spoken script
+
+`…` = short breath pause. Thai text is the TTS text; subtitles = VO unless noted. `V` rows are character sounds; bracketed English tags are sound direction, not text to speak.
+
+| ID | Spk | Thai (VO / dialogue) | Shot cue (picture) | Claim / note |
+| --- | --- | --- | --- | --- |
+| L01 | NAR | ถ้าคุณถอดหมวกกลางอวกาศ… | Low Earth orbit, blue limb below, black sky. AST (white suit) floats by the station truss; glove on the helmet ring, the clasp slips, the helmet lifts away. Background: CREW at the open airlock hatch, small, turning toward AST (**CL02**, not featured). | frame: hook, title promise, "คุณ" |
+| V01 | AST | [one sharp "เฮ้ย—!" inside the helmet, cut dead as the helmet clears the head] | The helmet drifts off slowly, turning. AST's chest lifts in a sharp gasp and the lips press shut (**CL01**). Silence. The timer card fades in: a painted ring with a shaded band at its end, label "ประมาณ 10–15 วินาที"; the ring starts at 0. | F010a (no sound in vacuum) dramatized; gasp = dramatization |
+| L02 | NAR | ตัวคุณจะไม่ระเบิดอย่างในหนัง… แต่อาจมีสติอยู่แค่ประมาณ สิบถึงสิบห้าวินาที | Small "ในหนัง" film-strip inset: a cartoon balloon pops, stamped with a red cross (balloon only, never a body). Back to AST, wide-eyed (normal expression only, medium or wide framing, no eye close-up), floating, whole. Timer ring creeps (story ~0:01). | F001 `settled` (no explosion); F003 `hedge` "อาจ… ประมาณ" (fix 1), matches card (user Q3) |
+| L03 | NAR | หมวกจริงล็อกแน่นนะ… นี่แค่สมมติ | Quick insert: the helmet's locking ring clicks shut (a real-suit style ring, generic); a small "สมมติ" stamp (Film's call whether on screen). Cut back to the drifting helmet. | F010b `settled` as premise label; hedge 6 |
+| L04 | NAR | ตัวอาจบวมขึ้น… แต่ผิวหนังยังรั้งไว้ได้ | AST pats chest and arms with the gloves, checking: all there. A small relieved breath of the shoulders (no puffed cheeks, no swelling shape at any size). | F001 `settled` (holds) / swelling `hedge`, no number, no imagery (user Q3; task.md safety) |
+| L05 | NAR | และไม่แข็งทันทีด้วย… เหมือนกระติกน้ำร้อน ไม่มีอากาศมาพาความร้อนไป | Movie gag: a cartoon ice shell tries to frost over AST's suit, then crumbles away like a failed effect. On "เหมือนกระติกน้ำร้อน" a small plain vacuum-flask inset (flask only, no body, no cutaway labels needed). Timer ~0:02–0:03. | F002 `settled`; flask = ER02 comparison, analogy only (SRC014, fix 4; not a body claim); refrain "ไม่มีอากาศ" #1 |
+| — | — | (no line, ~1 s) | AST frowns, lifts a glove toward the lips: a faint glitter sparkles at the lips (medium shot; never a mouth close-up). AST mouths a silent "หืม?". | dramatization of F004 (task.md: glitter at the lips only) |
+| L06 | NAR | แต่น้ำลายบนลิ้นคุณ… เริ่มเดือดจริง ๆ นะ… ไม่มีอากาศกด น้ำเลยเดือดได้ แค่ด้วยความอุ่นในตัว | The glitter keeps sparkling at the lips, drifting off in tiny points. Simple diagram inset: a water drop under a small "air pressing" arrow; the arrow fades and bubbles rise (no body part shown). Timer ~0:04. | F004 `settled` mechanism, "เริ่ม" for timing; refrain #2; never "เลือดเดือด" (F008) |
+| L07 | NAR | ตามรายงาน ปี 1966… คนทดสอบชุดของนาซ่า เจอชุดเสียแรงดันในห้องสุญญากาศ | Flashback, warm sepia grade, timer ring held on screen and paused: a generic test chamber, a suited figure seen **from behind** only, no face, no name, no caption; a hose at the suit pops loose, a pressure gauge needle drops (no gauge label or signage that reads like a NASA site photo). | F005 `hedge` ("ตามรายงาน"; year 1966 vs 1965); F006 anonymous, neutral role label (user Q1; fix 2). TTS reads "ปีหนึ่งเก้าหกหก" (N7) |
+| L08 | NAR | เขาเล่าว่า… สิ่งสุดท้ายที่จำได้ คือน้ำลายบนลิ้นเริ่มเป็นฟอง ก่อนจะหมดสติ | The figure from behind takes a slow step back; cut away before any fall to the chamber window and a second gauge, lights dimming. | F005 `hedge`: paraphrase, no quotation marks (user Q1; SRC012 not traced); no collapse shown |
+| L09 | NAR | แล้วเขาก็ฟื้น… ตอนห้องมีอากาศกลับมา | The gauge needle swings back up; chamber lights warm up; the sepia drains back to orbit. No time stated. | F005 `hedge` (regained consciousness during repressurisation; no repressurisation number) |
+| — | — | (no line, ~1 s) | Back in orbit, timer resumes (~0:06). AST, scared, keeps the lips sealed, shoulders hunched, glove pressed to the chest: holding the breath (**CL01** payoff begins). | dramatization |
+| L10 | NAR | แต่ถ้ากลั้นหายใจ… อากาศในปอดจะดันออก เพราะข้างนอกไม่มีอากาศดันกลับ… ปอดอาจบาดเจ็บได้ | Diagram inset over AST: a simple chest outline (no organs) with arrows pushing outward and no arrows outside; the outline glows a warning amber. No injury imagery. | F007 `settled` physiology ("อาจบาดเจ็บ"); refrain #3 |
+| — | — | (no line, ~1 s) | AST's shoulders drop; the lips part; a long stream of glitter flows out of the lips and drifts across the blue Earth (key reveal image). Timer ~0:07. | dramatization of F007 advice |
+| L11 | NAR | ปล่อยมันออกมา… | Hold on the glitter stream thinning out against the Earth limb. | F007 (rule flip; "มัน" = the air in the lungs, named in L10) |
+| V02 | CREW | (through the crewmate's suit radio, muffled) จับได้แล้ว! | CREW's glove closes on AST's wrist from frame edge; CREW tugs along the truss handrail to the airlock. Timer ~0:08. | dramatization; radio heard from CREW's own helmet (N5) |
+| L12 | NAR | ถ้าช่วยเร็วมาก… ก็อาจรอด แต่ข้อมูลส่วนใหญ่มาจากสัตว์ กับอุบัติเหตุไม่กี่ครั้งนะ | Both inside the airlock; the hatch swings shut; the timer ring stops **before** the shaded band (~0:09) and fades. | F009 `hedge` (hedges 1, 4; fix 3). Stays directly before L13 (fact-check N4f). Rescue = fiction; no instant repressurisation shown (N3) |
+| L13 | NAR | คุณไม่ระเบิดหรอก… สิ่งที่ควรทำ คือหายใจออก | Airlock interior, dim; AST, still helmetless, eyes open (normal expression, medium framing, no eye detail), holding CREW's glove; CREW leans in. | user Q2 closing; callback to L02; F007 |
+| — | — | (no line, ~2 s, end) | The airlock hiss begins; a small pressure needle starts to climb; CREW's glove settles over AST's hand. Fade out before the needle reaches the top. | `A_fade`; F009 (no instant recovery image) |
+
+Subtitle differences: L07 subtitle shows "ปี 1966" as digits. V01 no subtitle (cut-off sound). V02 subtitle "จับได้แล้ว!". On-screen text: timer card "ประมาณ 10–15 วินาที" (required, user Q3); optional "สมมติ" stamp at L03 (Film); no name, date card or source caption for the 1966 case.
+
+## Sound intent (English notes; narration unchanged)
+
+| Beat | Sound |
+| --- | --- |
+| B01 | Opens inside the helmet: close breathing, soft radio chatter hiss, a low ambient synth pad, medium energy. On the clasp slip a tiny mechanical click. V01 "เฮ้ย—" cuts off dead as the helmet clears: **hard cut to near-total silence** (music, radio and breath out). Only a low, felt heartbeat thud (sub, ~60 bpm) and a soft dry tick per timer step stay. L02 and L03 sit on that silence, dry and close. |
+| B02 | Heartbeat and tick continue; a light, almost playful pizzicato or muted synth pluck enters under the myth gags (balloon pop in the film inset is a cartoon "pop" with a record-scratch stop; the ice shell crumble a soft glassy crackle), low-mid energy. Everything stays quiet so it reads as "in a vacuum". |
+| B03 | Music thins back to heartbeat and tick for the lip glitter; a faint high shimmer (fine sparkle, very soft) rides the glitter. Flashback: a warmer, muffled room tone of a 1960s test chamber (fan hum), the hose pop as a sharp air hiss then a falling whoosh; a slow low drone under L08; drone releases into a rising air-return swell under L09 as the gauge needle climbs. Timer tick pauses during the flashback and resumes on the return to orbit. |
+| B04 | Tension: heartbeat slightly faster and closer, a thin sustained string harmonic rising (riser) under L10, no melody. On the exhale the riser releases into a long airy shimmer that follows the glitter stream (release, not a hit); L11 on near-silence with that shimmer tail. |
+| B05 | V02 radio crackle is the first "air" sound back: the stinger of rescue. Gentle pulse returns under the tow. The airlock is still vacuum when the hatch shuts, so there is no airborne clunk: the shut is a low felt thud through suit contact (heard via CREW's helmet), or no sound at all until the hiss starts (Film/Editor pick; fact-check fix 5); the timer tick stops on the shut. L12–L13 over soft warm pad, low energy; on "…หายใจออก" the series closing strings tag ([UT15](../../../docs/user-taste.md#ut-edu-end-tag)) lands softly. Closing picture: the airlock hiss (the first airborne sound in the airlock) rises under the strings tag, short and never at full volume, heartbeat fades out; strings, hiss and pad fade with the picture. No loop seam. |
+
+Sound never carries a fact alone: the vacuum silence illustrates F010a, which is shown, not narrated; no clue depends on audio.
+
+## Clue ledger (fictional dramatization, not evidence)
+
+| ID | Plant | Observable | First read | Payoff |
+| --- | --- | --- | --- | --- |
+| CL01 | V01 (B01) | AST's sharp gasp in and sealed lips as the helmet goes | Shock | B04: that instinct (hold the breath) is the real danger; AST lets the air go (L10–L11), closing rule L13 |
+| CL02 | L01 (B01, background, not featured) | CREW small at the open airlock hatch, turning toward AST | Scenery | B05: CREW grabs AST before the timer band |
+| CL03 | V01 (B01) | Timer card's shaded band at the end of the ring, label "ประมาณ 10–15 วินาที" | A countdown to the end | B05: the ring stops before the band; the band is a range, not an exact deadline (F003 hedge on screen) |
+
+## Claim status table
+
+| Line | Claim ID | Research status | Source / locator | How it is used |
+| --- | --- | --- | --- | --- |
+| L02 | F001 | `settled` (no explosion) | SRC001, SRC002 (ebullism, not bursting); SRC006/008/010 | "ตัวคุณจะไม่ระเบิดอย่างในหนัง" |
+| L02, card | F003 | `hedge` (range; not a promise per person) | SRC006 "ten to fifteen seconds"; F005 ~14–15 s; spread ~5–30 s (SRC005 excerpt, Data Book) | "แต่อาจมีสติอยู่แค่ประมาณ สิบถึงสิบห้าวินาที" (fix 1); card "ประมาณ 10–15 วินาที" (user Q3) |
+| L03 | F010b | `settled` as premise label | research.md F010(b) | "หมวกจริงล็อกแน่นนะ… นี่แค่สมมติ" |
+| L04 | F001 | `settled` holds / swelling `hedge` | SRC001, SRC002; SRC006/008/010 (dog-data "about twice", not used) | "ตัวอาจบวมขึ้น… แต่ผิวหนังยังรั้งไว้ได้"; no number, no picture; kept by the user 2026-11-08 |
+| L05 | F002 | `settled`; comparison cleared as analogy | SRC006 (no medium to carry heat away); SRC014 `inspected`, tertiary (flask gap blocks conduction and convection) | "ไม่แข็งทันทีด้วย… เหมือนกระติกน้ำร้อน ไม่มีอากาศมาพาความร้อนไป"; analogy for "no air to carry heat" only, not that the body keeps heat like a flask (radiation and evaporation still act) |
+| L06 | F004 | `settled` mechanism / `hedge` timing | SRC001 (≤ ~47 mmHg), SRC002, SRC013, SRC006 | "เริ่มเดือด… ไม่มีอากาศกด น้ำเลยเดือดได้ แค่ด้วยความอุ่นในตัว" |
+| L07 | F005, F006 | `hedge`; name `unsupported` | SRC006, SRC009, SRC010, SRC011; SRC003 lead-only | "ตามรายงาน ปี 1966… คนทดสอบชุดของนาซ่า เจอชุดเสียแรงดันในห้องสุญญากาศ"; anonymous; neutral role (sources split technician / engineer / test subject) |
+| L08 | F005 | `hedge` | as L07; SRC012 retold quote | Paraphrase "เขาเล่าว่า… สิ่งสุดท้ายที่จำได้ คือ…"; no quotation marks |
+| L09 | F005 | `hedge` | SRC006, SRC010, SRC011 | "ฟื้น… ตอนห้องมีอากาศกลับมา"; no time, no "only survivor" |
+| L10 | F007 | `settled` physiology | SRC006; SRC003 title (lung damage) | "ปอดอาจบาดเจ็บได้"; not "most dangerous" |
+| L11, L13 | F007 | `settled` / `hedge` as advice | as L10; aerospace-medicine consensus | "ปล่อยมันออกมา"; "สิ่งที่ควรทำ คือหายใจออก" (user Q2) |
+| L12 | F009 | `hedge` | SRC002 (animal studies, one prolonged and several anecdotal human exposures), SRC001 (literature very limited); SRC004/005 excerpts | "ถ้าช่วยเร็วมาก… ก็อาจรอด แต่ข้อมูลส่วนใหญ่มาจากสัตว์ กับอุบัติเหตุไม่กี่ครั้งนะ"; the not-tested-on-people limit is carried by naming the evidence base |
+| V01 silence | F010a | `settled` | research.md F010(a) | Sound design only, not narrated |
+| — | F008, F010c, F010d | — | — | Not used |
+
+No `needs-research` claims in R1.1.
+
+## Notes
+
+- <a id="n1"></a>**N1 Timing (estimated, R1.1):** my syllable count, NAR ~225 syllables (L01 8, L02 25, L03 10, L04 11, L05 20, L06 26, L07 25 with "ปีหนึ่งเก้าหกหก", L08 22, L09 11, L10 26, L11 4, L12 24, L13 13). R1.1 deltas: L05 flask comparison +4 ("เพราะ" 1 → "เหมือนกระติกน้ำร้อน" 5), L07 +2, L12 +5 ("อุบัติเหตุ" read as 4 syllables; Boat estimated +2), L02 ±0. Rate from EP05's measured Kore read ([../ep05/voice-measure.md](../ep05/voice-measure.md), ≈ 0.237 s per syllable including gaps) → **NAR ~53.3 s**. Add V01 ~0.6 s, post-helmet silence ~0.4 s, three silent show beats ~2.8 s, V02 ~1.0 s, closing ~2.2 s (7.0 s) → **video ~59–62 s, about 60.3 s: over the 60 s series cap on the estimate.** The edu Kore default has no atempo, so a real take may run slower; W1.4 must confirm with a read.
+  - **Ready-to-apply cut set (apply in order until W1.4 measures ≤ 60 s; together −6 syllables ≈ −1.4 s → about 58.9 s):**
+    - C1 L06 (−3; Boat W1.3 N4a: safe): "แต่น้ำลายบนลิ้นคุณ… เริ่มเดือด… ไม่มีอากาศกด น้ำเลยเดือดได้ แค่ด้วยความอุ่นในตัว" (drops "จริง ๆ นะ").
+    - C2 L05 (−1): "และไม่แข็งทันที… เหมือนกระติกน้ำร้อน ไม่มีอากาศมาพาความร้อนไป".
+    - C3 L08+L09 fold (−2; Boat recheck: F005 wording unchanged, joined): L08 "เขาเล่าว่า… สิ่งสุดท้ายที่จำได้ คือน้ำลายบนลิ้นเริ่มเป็นฟอง ก่อนจะหมดสติ แล้วฟื้นตอนห้องมีอากาศกลับมา"; L09 removed, its cue (needle swings back, sepia drains) moves under the end of L08.
+    - C4 (if still long, −1.0 s, no syllables): drop V02 (N5, no story loss).
+  - Do not trim: L12's hedge, L03's "what if", the "อาจ… ประมาณ" in L02, the L04 swelling clause (kept by the user 2026-11-08), or the L05 flask comparison (user decision 2026-11-08).
+- **N2 ER01 timing:** the counter-intuitive claim lands at ~3–9 s (L02) and the objection (L03) at ~9–11 s, a little after the ~7 s default, because the silence beat after the helmet drift is the episode's core sound idea. If W1.4 shows L03 late, shorten the silence rather than the hook.
+- **N3 Slow-motion timer (dramatization):** story time is ~9 s spread across ~58 s of video; the ring advances in story seconds and pauses during the flashback. The rescue lands before the shaded band (task.md safety). AST stays conscious on screen; unconsciousness is only spoken for the 1966 case and never shown. The airlock does not repressurise on screen; the closing fades as the needle starts to climb (F009: no implication that a crewmate can repressurise in seconds).
+- **N4 Boat fact-check W1.3, priority:**
+  - Answered in [fact-check.md](fact-check.md) W1.3 (all pass; fixes 1–6 applied in R1.1). Kept for traceability:
+  - (a) L06 "แค่ด้วยความอุ่นในตัว": is "water boils at body warmth with no pressure" stated fairly for saliva (F004)?
+  - (b) L07 "ชุด… เสียแรงดัน" for the hose detachment, and "ตามรายงาน ปี 1966" given the 1965/1966 conflict.
+  - (c) L08 paraphrase vs SRC012; L09 "ฟื้นตอนห้องมีอากาศกลับมา" without a time.
+  - (d) L10 "อากาศในปอดจะดันออก… ปอดอาจบาดเจ็บได้" vs F007.
+  - (e) L12 "ยังไม่เคยทดลองกับคนเต็มรูปแบบ" next to a real human accident (accident ≠ experiment): clear enough?
+  - (f) L13 as advice inside a "what if": is a not-advice line needed (hedge 5)?
+  - (g) L04 "ผิวหนังยังรั้งไว้ได้" as the plain wording of F001.
+- **N5 CREW radio (F010a note):** with AST's helmet off there is no comm link to AST; V02 is CREW speaking into CREW's own suit radio (to the station), heard as if from CREW's helmet. Editor/Film may drop V02 with no story loss.
+- **N6 Order change from the concept (routine):** the breath rule (concept beat 4) comes after the 1966 case so each beat opens a new problem (ER02); the consciousness window moves into the hook (L02) and the timer card. The concept's last line is replaced per user Q2.
+- **N7 Voice:** NAR Kore, deadpan and brisk, friend-telling-it ("หรอก", "นะ"); dry and close on the silence in B01; a touch lower and slower on L07–L09 (real case); calm and warm on L12–L13, letting "หายใจออก" settle. TTS reads "1966" as "หนึ่งเก้าหกหก"; Editor checks the pronunciation in the sample. AST V01 a short startled sound from the shared library or Gemini TTS; CREW one muffled radio line.
+- **N8 Film/kit (from R3 annotation):** spacesuit and helmet wardrobe class (helmet ring), zero-g float/drift motion, orbit set with Earth limb and truss, airlock set, glitter FX at the lips and the exhale stream, timer card with a shaded band, sepia flashback chamber with a back-view suited figure, diagram insets (water drop, chest outline with arrows; no organs). Safety limits in task.md bind every shot.
+- **N9 Comparison (R1.1, in the script):** ER02 body-known comparison at the hook payoff: L05 "เหมือนกระติกน้ำร้อน ไม่มีอากาศมาพาความร้อนไป", cleared by Boat W1.3 (SRC014) and added by user decision 2026-11-08. Analogy for "no air to carry heat" only; picture is a plain flask insert, no body.
+
+### Open questions
+
+- **Q1 (user): resolved 2026-11-08**, L04 swelling hedge kept.
+- **Q2 (Boat): resolved** in fact-check W1.3; R1.1 needs Boat recheck of the changed items (fact-check.md recheck list 1–5).
+- **Q3 (Film):** whether the "สมมติ" stamp appears on screen at L03 or the narration alone carries the label; staging of the diagram insets and the L05 flask insert within the safety limits; B05 hatch: felt thud or silent until the hiss (fix 5).
+- **Q4 (user/W1.4):** the estimate is ~60.3 s, over the 60 s cap; if the W1.4 read confirms, apply cuts C1–C3 (N1) first, C4 only if still long.
+
+## Revision log
+
+| Revision | Date | Author | Change | Reason |
+| --- | --- | --- | --- | --- |
+| R1 | 2026-11-08 | Preaw | First draft from C18, research W1.1 and user decisions Q1–Q3: technician anonymous, paraphrased memory without quotation marks (L07–L08); closing "สิ่งที่ควรทำ คือหายใจออก" (L13); timer card "ประมาณ 10–15 วินาที"; no swelling number, no "blood boils", no "only survivor"; "what if" label (L03); rescue before the timer band; survival hedge (L12). | W1.2 |
+| R1.1 | 2026-11-08 | Preaw | Boat W1.3 fixes with user decisions 2026-11-08: L02 "จะมีสติ" → "อาจมีสติ" (fix 1, required); L07 "ชุดของช่างเทคนิคนาซ่า เสียแรงดัน" → "คนทดสอบชุดของนาซ่า เจอชุดเสียแรงดัน" (fix 2); L12 "ยังไม่เคยทดลองกับคนเต็มรูปแบบ" → "ข้อมูลส่วนใหญ่มาจากสัตว์ กับอุบัติเหตุไม่กี่ครั้ง" (fix 3; L12 stays before L13); L05 adds "เหมือนกระติกน้ำร้อน" in place of "เพราะ" with a flask insert (fix 4, analogy only); B05 hatch clunk → felt thud through suit contact or silent until the hiss (fix 5); L04 hedge kept, Q1 resolved, removed from trim list (fix 6). Eye-framing cautions added to L02/L13 cues; no gauge signage at L07. Story core, truth, beat list, claim table, N1, N4, N9 and open questions updated. Timing re-estimated ~60.3 s, cut set C1–C4 added. | W1.3 |
+
+**Boat check scope (R1, whole script):** all lines and the timer card; priority N4. Facts: F001–F007, F009, F010a/b. Clues CL01–CL03 are fictional. Scenes: `EDU-EP08-S01-B01`–`B05`.
+
+**Boat recheck scope (R1.1):** lines L02 (F003), L05 (F002, SRC014 comparison and flask insert), L07 (F005/F006 role label), L12 (F009, SRC001/SRC002), plus the B05 sound note. Scenes `EDU-EP08-S01-B01`, `B02`, `B03`, `B05`. Clues unchanged (CL01–CL03; CL03 timer band unaffected). If cut C3 is applied later, L08–L09 (F005) also need a recheck.
