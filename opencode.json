@@ -9,6 +9,10 @@
           "PYTHONPATH": "/Users/mangkornkatawong/Developer/audio-studio-mcp/src",
           "AUDIO_STUDIO_OUTPUT_DIR": "/Users/mangkornkatawong/ReelsStore/library/sound/_raw"
         }
+      },
+      "youtube-analytics": {
+        "type": "local",
+        "command": ["/Users/mangkornkatawong/Developer/youtube-analytics-mcp/.venv/bin/python", "/Users/mangkornkatawong/Developer/youtube-analytics-mcp/server.py"]
       }
     }
   }
