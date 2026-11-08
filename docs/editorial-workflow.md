@@ -90,6 +90,8 @@ Verdicts: `supported` means the evidence supports this wording and scope; `needs
 
 Report errors affecting the premise, reveal or learning takeaway before minor details. Boat proposes accurate wording and beat/clue impact; Preaw rewrites the story. The final twist must preserve factual corrections so viewers do not leave with the wrong knowledge.
 
+<a id="clarity-pass"></a>**Clarity pass (Boat).** Flag each line that breaks [ER05](scriptwriting-principles.md#edu-short-retention-default-user-8-nov-2026) with verdict `too-technical` and a plain wording that stays true. Also flag an analogy that would leave a wrong idea (`misleading-analogy`). Preaw rewrites; Boat does not.
+
 Conclude for the named revision only: `revision-required`, `verification-incomplete`, or `ready-for-storyboard` when no story/knowledge-critical factual gaps remain and necessary qualifications appear in the script. The legacy verdict `ready-for-storyboard` means factual readiness for Film visual planning; it requires no drawn board. Readiness neither records user approval nor guarantees that no error remains.
 
 After a script revision, assess changes to factual wording and dependent claims. Recheck affected items and record coverage of the new revision. Synchronize the script header and delivery record with the resulting factual status while preserving dated history and separate user-approval/timing status. Reuse earlier results only after checking that the wording is unchanged and no new contrary evidence applies.
