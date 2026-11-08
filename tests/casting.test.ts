@@ -46,7 +46,7 @@ test('invalid lines throw with the line and the problem, never a partial member'
     ['man-crop + nope', /unknown outfit "nope"/],
     ['man-crop +', /empty outfit after "\+"/],
     ['man-crop + police + nurse', /more than one "\+"/],
-    ['man-crop, P46', /unknown pose "P46"/],
+    ['man-crop, P47', /unknown pose "P47"/],
     ['man-crop, P5', /unknown field "P5"/],
     ['man-crop, P07, P08', /second pose "P08"/],
     ['man-crop, scared, P07', /pose "P07" must come before the expression/],

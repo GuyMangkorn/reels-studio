@@ -1,6 +1,8 @@
 import {useId} from 'react';
 import {AbsoluteFill} from 'remotion';
 import {DEFAULT_SHADE_CENTRE_Y, shadeBandStops} from '../../scenes/captionLayout';
+import {STAMP} from './stamp';
+import {RING, RING_UNDER, ringGeom} from './timer-ring';
 
 // Shared screen-space layers of the painted episodes (S-P06 Grade/Grain, S-P08 ZC-CAPSHADE). They sit outside the
 // picture camera: a plate's `Overlay` (src/painted/shot.ts) renders them, in the order Grade -> Grain -> CaptionShade.
@@ -98,4 +100,75 @@ export const CaptionShade = ({tl, cues, mode = 'band', strength, fps = 30, botto
     ? `linear-gradient(to bottom, ${clear} ${ink.top - pad - feather}px, ${c} ${ink.top - pad}px, ${c} ${ink.bottom + pad}px, ${clear} ${ink.bottom + pad + feather}px)`
     : `radial-gradient(ellipse 560px ${(ink.bottom - ink.top) / 2 + pad + feather + 24 * scale}px at 540px ${ink.center}px, ${c} 0%, rgba(20,16,12,${peak * 0.7}) 55%, ${clear} 100%)`;
   return <AbsoluteFill style={{pointerEvents: 'none', background}} />;
+};
+
+// ---- Timer ring and stamp (EDU-EP08-SHORT N7 / N9, Boss pass B). Both are screen-fixed, outside the picture camera (like Grade and
+// CaptionShade); geometry and clocks are pure and live in `timer-ring.ts` / `stamp.ts`.
+
+/**
+ * `timer-ring` layer: the approved painted ring (flat polygons over a dark disc, hatched red end band, no digits) as SVG, plus the
+ * Thai label under it (Remotion type, edu stroke). `story` seconds of `full`; `paused` greys it with two bars; `opacity` from
+ * `ringOpacity` fades it in and out. Place it in the shot's overlay, never inside a camera transform.
+ */
+export const TimerRing = ({story, paused = false, opacity = 1, label = 'ประมาณ 10–15 วินาที'}: {story: number; paused?: boolean; opacity?: number; label?: string | false}) => {
+  if (opacity <= 0) return null;
+  const g = ringGeom(story, {paused}), pts = (a: readonly (readonly [number, number])[]) => a.map(([x, y]) => `${x.toFixed(2)},${y.toFixed(2)}`).join(' ');
+  return (
+    <AbsoluteFill style={{pointerEvents: 'none', opacity}}>
+      <svg width="100%" height="100%" viewBox="0 0 1080 1920">
+        {g.polys.filter((q) => q.id <= RING_UNDER).map((q) => <polygon key={q.id} points={pts(q.pts)} fill={q.fill} />)}
+        {g.ticks.map((t) => <line key={t.id} x1={t.a[0]} y1={t.a[1]} x2={t.b[0]} y2={t.b[1]} stroke={t.color} strokeWidth={0.8} />)}
+        {g.polys.filter((q) => q.id > RING_UNDER).map((q) => <polygon key={q.id} points={pts(q.pts)} fill={q.fill} />)}
+      </svg>
+      {label !== false && (
+        <div style={{position: 'absolute', left: RING.cx - 150, width: 300, top: RING.cy + RING.r + 10, textAlign: 'center', whiteSpace: 'nowrap', color: '#ffffff', opacity: paused ? 0.5 : 1,
+          fontFamily: "'Noto Sans Thai', sans-serif", fontWeight: 700, fontSize: 26, WebkitTextStroke: '6px #0b1020', paintOrder: 'stroke fill'}}>{label}</div>
+      )}
+    </AbsoluteFill>
+  );
+};
+
+/**
+ * `stamp` layer: a red rubber-stamp label (double rule, rough edge from a seeded displacement filter, a few ink dropouts) that lands at
+ * `at` (the box centre, picture px) with `scale`/`opacity` from `stampState`. `text` is the label; `mark="cross"` draws the red cross
+ * stamp instead (the film-strip cross in screen space). The roughness is fixed (seed), so every frame is the same stamp.
+ */
+export const Stamp = ({text = 'สมมติ', mark = 'text', at = [300, 560], size = [STAMP.w, STAMP.h], rot = STAMP.rot, scale = 1, opacity = 1, color = STAMP.red}:
+  {text?: string; mark?: 'text' | 'cross'; at?: [number, number]; size?: [number, number]; rot?: number; scale?: number; opacity?: number; color?: string}) => {
+  const id = useId().replace(/:/g, '');
+  if (opacity <= 0) return null;
+  const [w, h] = size, b = Math.max(5, h * 0.045);
+  return (
+    <AbsoluteFill style={{pointerEvents: 'none'}}>
+      <svg width="100%" height="100%" viewBox="0 0 1080 1920" style={{opacity, filter: 'drop-shadow(0 0 2px rgba(255,250,240,0.95)) drop-shadow(0 0 7px rgba(255,250,240,0.55))'}}>
+        <defs>
+          <filter id={`${id}r`} x="-10%" y="-10%" width="120%" height="120%">
+            <feTurbulence type="fractalNoise" baseFrequency="0.045" numOctaves={2} seed={11} result="n" />
+            <feDisplacementMap in="SourceGraphic" in2="n" scale={3.2} />
+          </filter>
+          <filter id={`${id}k`} x="-10%" y="-10%" width="120%" height="120%">
+            <feTurbulence type="fractalNoise" baseFrequency="0.55" numOctaves={2} seed={5} result="g" />
+            <feColorMatrix in="g" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 -9 6.4" result="m" />
+            <feComposite in="SourceGraphic" in2="m" operator="in" />
+          </filter>
+        </defs>
+        <g transform={`translate(${at[0]} ${at[1]}) rotate(${rot}) scale(${scale})`} filter={`url(#${id}k)`}>
+          <g filter={`url(#${id}r)`} fill="none" stroke={color} strokeLinejoin="round">
+            {mark === 'text' ? (
+              <>
+                <rect x={-w / 2} y={-h / 2} width={w} height={h} rx={h * 0.12} strokeWidth={b} />
+                <rect x={-w / 2 + b * 2.1} y={-h / 2 + b * 2.1} width={w - b * 4.2} height={h - b * 4.2} rx={h * 0.06} strokeWidth={b * 0.4} />
+                <text x={0} y={h * 0.22} textAnchor="middle" fill={color} stroke={color} strokeWidth={h * 0.022} fontFamily="'Noto Sans Thai', sans-serif" fontWeight={700} fontSize={h * 0.62} style={{paintOrder: 'stroke'}}>{text}</text>
+              </>
+            ) : (
+              <>
+                <line x1={-w / 2} y1={-h / 2} x2={w / 2} y2={h / 2} strokeWidth={h * 0.2} strokeLinecap="round" />
+                <line x1={w / 2} y1={-h / 2} x2={-w / 2} y2={h / 2} strokeWidth={h * 0.2} strokeLinecap="round" />
+              </>
+            )}
+          </g>
+        </g>
+      </svg>
+    </AbsoluteFill>
+  );
 };

@@ -1,0 +1,410 @@
+{
+ "deliverable": "EDU-EP08-SHORT",
+ "script": "EDU-EP08-SCRIPT-R1.3",
+ "read": "2026-11-08_ep08-nar-kore-A-fullread.wav",
+ "fps": 30,
+ "tempo": 0.95,
+ "tempo_note": "speech atempo per file, line gaps kept at the 1.0 length (user, 2026-11-08); times are on the atempo read",
+ "speech_end_tempo_s": 5.18,
+ "note_R12": "L12 = trimmed cut2 take, L13 = new comma take (own file time)",
+ "lines": {
+  "L01": {
+   "tempo_start": 0.186,
+   "tempo_end": 1.755,
+   "dur": 1.569,
+   "video_onset_frame": 4,
+   "video_end_frame": 51,
+   "file": "2026-11-08_ep08-nar-L01-kore-A-cut2.wav",
+   "atempo": 0.95,
+   "src_start": 0.136,
+   "src_end": 1.735,
+   "onset_in_file": 0.053,
+   "voiced_end_in_file": 1.622
+  },
+  "L02": {
+   "tempo_start": 2.207,
+   "tempo_end": 6.3,
+   "dur": 4.093,
+   "video_onset_frame": 106,
+   "video_end_frame": 229,
+   "file": "2026-11-08_ep08-nar-L02-kore-A-cut2.wav",
+   "atempo": 0.95,
+   "src_start": 2.053,
+   "src_end": 6.049,
+   "onset_in_file": 0.053,
+   "voiced_end_in_file": 4.146
+  },
+  "L03": {
+   "tempo_start": 6.57,
+   "tempo_end": 8.269,
+   "dur": 1.699,
+   "video_onset_frame": 238,
+   "video_end_frame": 289,
+   "file": "2026-11-08_ep08-nar-L03-kore-A-cut2.wav",
+   "atempo": 0.95,
+   "src_start": 6.208,
+   "src_end": 7.926,
+   "onset_in_file": 0.053,
+   "voiced_end_in_file": 1.752
+  },
+  "L04": {
+   "tempo_start": 8.885,
+   "tempo_end": 11.179,
+   "dur": 2.294,
+   "video_onset_frame": 298,
+   "video_end_frame": 367,
+   "file": "2026-11-08_ep08-nar-L04-kore-A-cut2.wav",
+   "atempo": 0.95,
+   "src_start": 8.406,
+   "src_end": 10.686,
+   "onset_in_file": 0.053,
+   "voiced_end_in_file": 2.347
+  },
+  "L05": {
+   "tempo_start": 11.624,
+   "tempo_end": 15.716,
+   "dur": 4.092,
+   "video_onset_frame": 376,
+   "video_end_frame": 499,
+   "file": "2026-11-08_ep08-nar-L05-kore-A-cut2.wav",
+   "atempo": 0.95,
+   "src_start": 11.009,
+   "src_end": 14.996,
+   "onset_in_file": 0.053,
+   "voiced_end_in_file": 4.145
+  },
+  "L06": {
+   "tempo_start": 16.208,
+   "tempo_end": 22.565,
+   "dur": 6.357,
+   "video_onset_frame": 533,
+   "video_end_frame": 724,
+   "file": "2026-11-08_ep08-nar-L06-kore-A-cut2.wav",
+   "atempo": 0.95,
+   "src_start": 15.363,
+   "src_end": 21.511,
+   "onset_in_file": 0.053,
+   "voiced_end_in_file": 6.41
+  },
+  "L07": {
+   "tempo_start": 23.228,
+   "tempo_end": 28.79,
+   "dur": 5.562,
+   "video_onset_frame": 736,
+   "video_end_frame": 903,
+   "file": "2026-11-08_ep08-nar-L07-kore-A-cut2.wav",
+   "atempo": 0.95,
+   "src_start": 22.029,
+   "src_end": 27.418,
+   "onset_in_file": 0.053,
+   "voiced_end_in_file": 5.615
+  },
+  "L08": {
+   "tempo_start": 29.481,
+   "tempo_end": 33.853,
+   "dur": 4.372,
+   "video_onset_frame": 912,
+   "video_end_frame": 1043,
+   "file": "2026-11-08_ep08-nar-L08-kore-A-cut2.wav",
+   "atempo": 0.95,
+   "src_start": 27.973,
+   "src_end": 32.223,
+   "onset_in_file": 0.053,
+   "voiced_end_in_file": 4.425
+  },
+  "L09": {
+   "tempo_start": 34.224,
+   "tempo_end": 36.603,
+   "dur": 2.379,
+   "video_onset_frame": 1052,
+   "video_end_frame": 1123,
+   "file": "2026-11-08_ep08-nar-L09-kore-A-cut2.wav",
+   "atempo": 0.95,
+   "src_start": 32.473,
+   "src_end": 34.847,
+   "onset_in_file": 0.053,
+   "voiced_end_in_file": 2.432
+  },
+  "L10": {
+   "tempo_start": 36.82,
+   "tempo_end": 42.771,
+   "dur": 5.951,
+   "video_onset_frame": 1157,
+   "video_end_frame": 1336,
+   "file": "2026-11-08_ep08-nar-L10-kore-A-cut2.wav",
+   "atempo": 0.95,
+   "src_start": 34.94,
+   "src_end": 40.699,
+   "onset_in_file": 0.053,
+   "voiced_end_in_file": 6.004
+  },
+  "L11": {
+   "tempo_start": 0.041,
+   "tempo_end": 1.242,
+   "dur": 1.201,
+   "video_onset_frame": 1364,
+   "video_end_frame": 1400,
+   "file": "2026-11-08_ep08-nar-L11-kore-A-r13-trim.wav",
+   "atempo": 0.95,
+   "src_start": 0.0,
+   "src_end": null,
+   "onset_in_file": 0.041,
+   "voiced_end_in_file": 1.242
+  },
+  "L12": {
+   "tempo_start": 44.585,
+   "tempo_end": 46.215,
+   "dur": 1.63,
+   "video_onset_frame": 1458,
+   "video_end_frame": 1507,
+   "file": "2026-11-08_ep08-nar-L12-kore-A-trim.wav",
+   "atempo": 0.95,
+   "src_start": 42.317,
+   "src_end": 22.059,
+   "onset_in_file": 0.053,
+   "voiced_end_in_file": 1.683
+  },
+  "L13": {
+   "tempo_start": 0.201,
+   "tempo_end": 5.18,
+   "dur": 4.979,
+   "video_onset_frame": 1526,
+   "video_end_frame": 1675,
+   "file": "2026-11-08_ep08-nar-L13-kore-A-comma.wav",
+   "atempo": 0.95,
+   "src_start": 0.0,
+   "src_end": null,
+   "onset_in_file": 0.201,
+   "voiced_end_in_file": 5.18,
+   "fade": {
+    "file_dur_s": 5.516,
+    "fade_start_in_file": 4.616,
+    "fade_s": 0.9,
+    "curve": "qsin",
+    "voiced_end_in_file_faded": 5.167
+   }
+  }
+ },
+ "anchors": {
+  "L02.balloon": {
+   "line": "L02",
+   "tempo_s": 2.73,
+   "kind": "whisper",
+   "text": "ไม่ระเบิด (balloon pops)",
+   "video_frame": 122
+  },
+  "L02.but": {
+   "line": "L02",
+   "tempo_s": 3.99,
+   "kind": "gap",
+   "text": "แต่อาจมีสติ",
+   "video_frame": 159
+  },
+  "L02.range": {
+   "line": "L02",
+   "tempo_s": 5.256,
+   "kind": "whisper",
+   "text": "สิบถึงสิบห้า (card text)",
+   "video_frame": 197
+  },
+  "L03a": {
+   "line": "L03",
+   "tempo_s": 6.57,
+   "kind": "gap",
+   "text": "หมวกจริงล็อกแน่นนะ (latch)",
+   "video_frame": 238
+  },
+  "L03b": {
+   "line": "L03",
+   "tempo_s": 7.802,
+   "kind": "gap",
+   "text": "นี่แค่สมมติ",
+   "video_frame": 275
+  },
+  "L03.stamp": {
+   "line": "L03",
+   "tempo_s": 7.941,
+   "kind": "whisper",
+   "text": "สมมติ (stamp lands)",
+   "video_frame": 279
+  },
+  "L04.puff": {
+   "line": "L04",
+   "tempo_s": 9.897,
+   "kind": "gap",
+   "text": "แต่ผิวหนังยังรั้งไว้ได้",
+   "video_frame": 328
+  },
+  "L05b": {
+   "line": "L05",
+   "tempo_s": 13.123,
+   "kind": "gap",
+   "text": "เหมือนกระติกน้ำร้อน (flask card)",
+   "video_frame": 421
+  },
+  "L06.boil": {
+   "line": "L06",
+   "tempo_s": 17.636,
+   "kind": "gap",
+   "text": "เริ่มเดือดจริง ๆ นะ",
+   "video_frame": 576
+  },
+  "L06b": {
+   "line": "L06",
+   "tempo_s": 18.993,
+   "kind": "gap",
+   "text": "ไม่มีอากาศกด (drop card)",
+   "video_frame": 617
+  },
+  "L06.warm": {
+   "line": "L06",
+   "tempo_s": 21.516,
+   "kind": "gap",
+   "text": "แค่ด้วยความอุ่นในตัว",
+   "video_frame": 692
+  },
+  "L07.year": {
+   "line": "L07",
+   "tempo_s": 23.882,
+   "kind": "whisper",
+   "text": "ปี 1966",
+   "video_frame": 756
+  },
+  "L07.tester": {
+   "line": "L07",
+   "tempo_s": 25.375,
+   "kind": "gap",
+   "text": "คนทดสอบชุดของนาซ่า",
+   "video_frame": 800
+  },
+  "L07.pop": {
+   "line": "L07",
+   "tempo_s": 26.938,
+   "kind": "gap",
+   "text": "เจอชุดเสียแรงดัน (hose pops)",
+   "video_frame": 847
+  },
+  "L08.last": {
+   "line": "L08",
+   "tempo_s": 30.303,
+   "kind": "gap",
+   "text": "สิ่งสุดท้ายที่จำได้",
+   "video_frame": 937
+  },
+  "L08.foam": {
+   "line": "L08",
+   "tempo_s": 31.583,
+   "kind": "whisper",
+   "text": "น้ำลายบนลิ้นเริ่มเป็นฟอง",
+   "video_frame": 975
+  },
+  "L08.out": {
+   "line": "L08",
+   "tempo_s": 33.267,
+   "kind": "whisper",
+   "text": "ก่อนจะหมดสติ",
+   "video_frame": 1026
+  },
+  "L09.air": {
+   "line": "L09",
+   "tempo_s": 35.363,
+   "kind": "gap",
+   "text": "ตอนห้องมีอากาศกลับมา",
+   "video_frame": 1086
+  },
+  "L10b": {
+   "line": "L10",
+   "tempo_s": 38.654,
+   "kind": "gap",
+   "text": "อากาศในปอดจะดันออก (chest card)",
+   "video_frame": 1212
+  },
+  "L10.outside": {
+   "line": "L10",
+   "tempo_s": 40.032,
+   "kind": "gap",
+   "text": "เพราะข้างนอกไม่มีอากาศดันกลับ",
+   "video_frame": 1253
+  },
+  "L10.hurt": {
+   "line": "L10",
+   "tempo_s": 41.746,
+   "kind": "gap",
+   "text": "ปอดอาจบาดเจ็บได้",
+   "video_frame": 1305
+  },
+  "L10.amber": {
+   "line": "L10",
+   "tempo_s": 42.178,
+   "kind": "whisper",
+   "text": "บาดเจ็บ (amber glow)",
+   "video_frame": 1318
+  },
+  "L12.maybe": {
+   "line": "L12",
+   "tempo_s": 45.657,
+   "kind": "gap",
+   "text": "ก็อาจรอด",
+   "video_frame": 1490
+  },
+  "L13.but": {
+   "line": "L13",
+   "tempo_s": 1.811,
+   "kind": "gap",
+   "text": "แต่ในที่ที่ไม่มีอากาศ",
+   "video_frame": 1574
+  },
+  "L13.help": {
+   "line": "L13",
+   "tempo_s": 3.115,
+   "kind": "gap",
+   "text": "สิ่งที่ช่วยปอดคุณ",
+   "video_frame": 1613
+  },
+  "L13.exhale": {
+   "line": "L13",
+   "tempo_s": 4.433,
+   "kind": "gap",
+   "text": "คือหายใจออก",
+   "video_frame": 1653
+  }
+ },
+ "vocal": {
+  "V01": {
+   "file": "projects/EDU/audio/EDU-EP08-SHORT/vocal-samples/2026-11-08_ep08-V01-aoede-B.wav",
+   "slot_start": 55,
+   "slot_end": 101,
+   "file_start_frame": 55,
+   "voiced_frames": [
+    59,
+    94
+   ],
+   "atempo": 0.95,
+   "voiced_s_in_file": [
+    0.136,
+    1.297
+   ],
+   "silence": [
+    95,
+    101
+   ],
+   "note": "zero G95-100 sample-exact (V01 voiced end + >= 25 ms, 6 f)"
+  },
+  "V02": {
+   "file": "projects/EDU/audio/EDU-EP08-SHORT/vocal-samples/2026-11-08_ep08-V02-algenib-A.wav",
+   "slot_start": 1412,
+   "slot_end": 1453,
+   "file_start_frame": 1412,
+   "voiced_frames": [
+    1421,
+    1440
+   ],
+   "note": "radio filter at mix time",
+   "atempo": 0.95,
+   "voiced_s_in_file": [
+    0.306,
+    0.919
+   ]
+  }
+ }
+}

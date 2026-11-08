@@ -16,7 +16,7 @@ import {timelineFrames} from '../src/scenes/timeline';
 import {collectEpisodes} from '../src/videos/registry';
 import kitMotions from '../src/videos/kit-motions';
 
-// Pose library P01-P45 in front and profile, the body modes (kit/legs.ts), the motion presets (kit/motions.ts) and the KIT-MOTIONS
+// Pose library P01-P46 in front and profile, the body modes (kit/legs.ts), the motion presets (kit/motions.ts) and the KIT-MOTIONS
 // reel. Added 1 Nov 2026 (pose library pass 2).
 const g: Pt = [540, 1500], unit = 540;
 const VIEWS: View[] = ['front', 'left', 'right'];
@@ -33,9 +33,9 @@ const recorder = () => {
 };
 const mute = new Proxy({}, {get: () => () => undefined}) as Brush;
 
-test('pose ids: P01-P30 stay the sheet, P31-P45 are new, ids are unique and every pose has metadata', () => {
+test('pose ids: P01-P30 stay the sheet, P31-P46 are new, ids are unique and every pose has metadata', () => {
   assert.deepEqual([...POSE_IDS], Array.from({length: 30}, (_, i) => `P${String(i + 1).padStart(2, '0')}`));
-  assert.deepEqual([...BODY_POSE_IDS], Array.from({length: 15}, (_, i) => `P${31 + i}`));
+  assert.deepEqual([...BODY_POSE_IDS], Array.from({length: 16}, (_, i) => `P${31 + i}`));
   assert.deepEqual([...ALL_POSE_IDS], [...POSE_IDS, ...BODY_POSE_IDS]);
   assert.equal(new Set(ALL_POSE_IDS).size, ALL_POSE_IDS.length);
   for (const id of ALL_POSE_IDS) {

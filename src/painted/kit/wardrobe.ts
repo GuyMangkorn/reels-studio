@@ -16,13 +16,28 @@ import {mixColor} from './painter';
 
 export const OUTFIT_IDS = [
   'student-th-trousers', 'student-th-skirt', 'school-jp-sailor', 'school-jp-gakuran', 'office', 'police', 'nurse', 'doctor',
-  'monk', 'vendor', 'rider', 'hoodie', 'guard', 'yukata', 'kimono', 'kitchen-apron', 'park-casual', 'home-lounge',
+  'monk', 'vendor', 'rider', 'hoodie', 'guard', 'yukata', 'kimono', 'kitchen-apron', 'park-casual', 'home-lounge', 'eva-suit',
 ] as const;
 export type OutfitId = (typeof OUTFIT_IDS)[number];
 
 /** The adult build `WARDROBE` hems are measured on, m. */
 export const REF_HEIGHT = 1.66;
 const SHOULDER = 0.38;
+
+/** EVA suit palette (kit intake from EDU-EP08 look lock, user 8 Nov 2026): body white, shade, pack, mitten glove, neck ring, blue lock collar,
+ * CREW leg stripe, gold visor, 1960s silver. `eva.ts` paints the neck ring, gloves and helmets with these. */
+export const EVA = {
+  white: '#eef0f2', shade: '#9eaec4', pack: '#dfe3e8', glove: '#c9ccd2', palm: '#5a5f68', ring: '#b8bec8', collar: '#3a6fb0',
+  stripe: '#c8342b', visor: '#d9a441', visorDeep: '#8a5a1e', silver: '#c9c6bc',
+};
+/** Shoulder width factor of the suit's bulk (applied to the wearer's `shoulder`, floor 0.34 m). */
+export const EVA_BULK = 1.22;
+/** The suit as an `Outfit`: white long sleeves, boots, backpack and belt through `gear`; `tint` recolours the white (1960s silver). */
+export const evaOutfit = (shoulder: number, tint: string = EVA.white): Outfit => ({
+  shoulder: Math.max(shoulder, 0.34) * EVA_BULK, shirt: tint, sleeve: mixColor(tint, EVA.shade, 0.08), longSleeves: true,
+  pants: mixColor(tint, EVA.shade, 0.12), shoes: mixColor(tint, '#8d95a1', 0.35), boots: true,
+  gear: {pack: mixColor(tint, '#c3c9d1', 0.5), belt: {color: mixColor(tint, '#7c8796', 0.45), h: 0.05}},
+});
 
 export const WARDROBE: Record<OutfitId, Outfit> = {
   'student-th-trousers': {
@@ -98,6 +113,9 @@ export const WARDROBE: Record<OutfitId, Outfit> = {
   'home-lounge': {
     shoulder: SHOULDER, shirt: '#c98b8b', sleeve: '#d9c7a8', longSleeves: true, jacket: '#d9c7a8', pants: '#8d8f96', shoes: '#f2ead8',
   },
+  // Kit intake from EDU-EP08-SHORT `new: eva-suit` (src/painted/edu08 look frames LF00-LF07, B2). `dress()` widens the wearer's shoulder
+  // by `EVA_BULK`; the neck ring, mitten gloves and helmets are painted by `paintEva` (`eva.ts`).
+  'eva-suit': evaOutfit(SHOULDER),
   'park-casual': {
     shoulder: SHOULDER, shirt: '#e3b23c', sleeve: '#e3b23c', longSleeves: false, pants: '#4a6f9e', shoes: '#f2f0ea', shorts: {sock: '#f4f1ea'},
     gear: {hat: {kind: 'cap', color: '#2f5fb8', band: mixColor('#2f5fb8', '#0b1a3a', 0.45)}},
@@ -112,6 +130,8 @@ export type OutfitInfo = {
   bareLegs?: boolean;
   /** `dress()` replaces the wearer's hair cut with `shaved` and drops facial hair. */
   shavesHead?: boolean;
+  /** `dress()` sets the shoulder to `max(wearer shoulder, 0.34) x bulk` instead of keeping it (EVA suit). */
+  bulk?: number;
 };
 
 export const WARDROBE_INFO: Record<OutfitId, OutfitInfo> = {
@@ -132,6 +152,7 @@ export const WARDROBE_INFO: Record<OutfitId, OutfitInfo> = {
   kimono: {group: 'traditional', description: 'Japanese kimono: plum robe with white crossover collar, wide sleeves, wide gold obi, ankle-length hem.', bareLegs: true},
   'kitchen-apron': {group: 'casual', description: 'Home cook: mustard short-sleeve blouse, plum skirt just below the knee, brick-red bib apron from the chest to below the hip with a dark red waist tie, dark shoes.', bareLegs: true},
   'home-lounge': {group: 'casual', description: 'At home in the evening: loose oatmeal knit cardigan over a dusty-rose T-shirt, grey lounge trousers, cream socks (EDU-EP06 owner; front, profile).'},
+  'eva-suit': {group: 'work', description: 'EVA spacesuit: white long-sleeve suit with boots, blue neck lock collar, backpack and belt; wider shoulder for the bulk. Gloves, neck ring and the bubble / visor / 1966 round helmet come from `paintEva` (eva.ts); `evaSuit()` adds the CREW / 1960s tints (four views and front three-quarter).', bulk: EVA_BULK},
   'park-casual': {group: 'casual', description: 'Weekend park walk: mustard crew-neck tee, denim-blue knee-length shorts with bare shins and white socks, white sneakers, blue baseball cap (four views).'},
 };
 
@@ -143,7 +164,7 @@ export const WARDROBE_INFO: Record<OutfitId, OutfitInfo> = {
 export const dress = (def: CastDef, outfitId: OutfitId): CastDef => {
   const spec = WARDROBE[outfitId], info = WARDROBE_INFO[outfitId];
   const k = def.height / REF_HEIGHT;
-  const outfit: Outfit = {...spec, shoulder: def.outfit.shoulder};
+  const outfit: Outfit = {...spec, shoulder: info.bulk ? Math.max(def.outfit.shoulder, 0.34) * info.bulk : def.outfit.shoulder};
   if (info.bareLegs) outfit.pants = def.head.skin;
   if (spec.skirtHem !== undefined) outfit.skirtHem = spec.skirtHem * k;
   if (spec.gear?.overcoat) outfit.gear = {...spec.gear, overcoat: {...spec.gear.overcoat, hem: spec.gear.overcoat.hem * k}};
