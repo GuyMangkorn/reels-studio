@@ -45,7 +45,8 @@ export const paintLF02 = (p: Painter, frame: number) => {
     t,
     // Fix round 2 (R1.4): elbows on the wood outside the shoulders, forearms angled in toward the hands (a visible elbow bend, foreshortened
     // toward the lens, UT06); left and right paired but not mirrored (the strain hand 3 cm further forward and nearer the centre).
-    boy: {t: t + 0.4, face: STRAIN, lHand: [-0.2, y, -0.09], lElbow: [-0.13, y + 0.026, -0.32], lPose: 'ring-strain', rHand: [-0.315, y, -0.12], rElbow: [-0.39, y + 0.026, -0.33]},
+    // R1.8: right hand and elbow 1.5 cm further left, so the wider-opening kit thumb (847c064) keeps about 30 px clear of the strain hand's thumb.
+    boy: {t: t + 0.4, face: STRAIN, lHand: [-0.2, y, -0.09], lElbow: [-0.13, y + 0.026, -0.32], lPose: 'ring-strain', rHand: [-0.33, y, -0.12], rElbow: [-0.405, y + 0.026, -0.33]},
     elder: {t: t + 1.1, face: {...EXPRESSIONS.happy, look: [-0.6, 0.2]}, lHand: [0.4, y, -0.16], lElbow: [0.47, y + 0.026, -0.38], rHand: [0.15, y, -0.15], rElbow: [0.16, y + 0.026, -0.37]},
   });
   MEASURE.LF02 = out;

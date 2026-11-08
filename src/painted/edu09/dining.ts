@@ -125,7 +125,12 @@ const paintTableArm = (p: Painter, c: YCam, base: number, hand: V3, elbow: V3, s
   const h = macroHand(pose, {side, size, unit: 0.01, base, tone, plane: TABLE_Y, at: wrist, yaw, elbow, shadowDir: [-0.1, -0.9, 0.25], shadowAlpha: 0.3, shadowColor: '#3a2212',
     ...(pose === 'ring-strain' ? {tremble: {finger: 'ring' as const, amp: 0.0008, hz: 10}} : {})});
   const out = paintHandMacro(p, c, h);
-  if (sleeve) paintCuffSleeve(p, c, base + 400, h.wrist, [elbow[0] - fx * 0.03, elbow[1], elbow[2] - fz * 0.03], 0.024 * size, sleeve);
+  if (sleeve) {
+    // R1.8 (user, LF02: "the hand looks covered by the sleeve"): the cuff sits behind the hand. Forearm skin first, then the sleeve, then the
+    // hand again without forearm or shadow on top, so the back of the hand, knuckles and thumb base stay whole and the cuff ends at the wrist.
+    paintCuffSleeve(p, c, base + 400, h.wrist, [elbow[0] - fx * 0.03, elbow[1], elbow[2] - fz * 0.03], 0.024 * size, sleeve);
+    paintHandMacro(p, c, {...h, base: base + 10000, elbow: undefined, plane: undefined});
+  }
   return out;
 };
 
@@ -137,8 +142,9 @@ const paintCuffSleeve = (p: Painter, c: YCam, id: number, wrist: V3, end: V3, r:
   // basis across the arm: u level (toward +x for an arm along z), v up
   const ul = Math.hypot(a[2], a[0]) || 1, u: V3 = [-a[2] / ul, 0, a[0] / ul], v: V3 = [a[1] * u[2] - a[2] * u[1], a[2] * u[0] - a[0] * u[2], a[0] * u[1] - a[1] * u[0]];
   const at = (t: number): V3 => [wrist[0] + ax[0] * t, wrist[1] + ax[1] * t, wrist[2] + ax[2] * t];
-  const ring = (o: V3, rr: number, wob = 0, n = 28): V3[] => Array.from({length: n}, (_, i) => { const th = (i / n) * Math.PI * 2, k = rr * (1 + wob * Math.sin(th * 5 + 0.7) + wob * 0.6 * Math.sin(th * 3)); return [o[0] + k * (Math.cos(th) * u[0] + Math.sin(th) * v[0]), o[1] + k * (Math.cos(th) * u[1] + Math.sin(th) * v[1]) + 0.004, o[2] + k * (Math.cos(th) * u[2] + Math.sin(th) * v[2])]; });
-  const cuff = at(0.5), rc = r * 1.22, re = r * 1.36;
+  const ring = (o: V3, rr: number, wob = 0, n = 28): V3[] => Array.from({length: n}, (_, i) => { const th = (i / n) * Math.PI * 2, k = rr * (1 + wob * Math.sin(th * 5 + 0.7) + wob * 0.6 * Math.sin(th * 3)); return [o[0] + k * (Math.cos(th) * u[0] + Math.sin(th) * v[0]), Math.max(TABLE_Y + 0.002, o[1] + k * (Math.cos(th) * u[1] + Math.sin(th) * v[1]) + 0.004), o[2] + k * (Math.cos(th) * u[2] + Math.sin(th) * v[2])]; });
+  // R1.8: the knit rests flat on the wood (ring points clamped to the table top, none below it) and the cuff is only a little wider than the wrist.
+  const cuff = at(0.62), rc = r * 1.12, re = r * 1.3;
   const cuffRing = ring(cuff, rc, 0.05), body = hull([...camPoly(c, cuffRing), ...camPoly(c, ring(end, re))]);
   if (body.length < 3) return;
   hardFill(p, id, s.color, body);
@@ -154,7 +160,7 @@ const paintCuffSleeve = (p: Painter, c: YCam, id: number, wrist: V3, end: V3, r:
     if (pts.length > 1) inkLine(p, id + 3 + k, pts, {weight: 1, closed: false, still: true, color: mixColor(s.shade, '#2a1a10', 0.3)});
   });
   // ribbed knit cuff: a darker band 2.2 cm deep from the cuff edge back, rib strokes along the arm, a soft wobbly rim over the wrist
-  const dt = 0.022 / al, edge = ring(cuff, rc * 1.03, 0.05), back = ring(at(0.5 + dt), rc * 1.0, 0.03);
+  const dt = 0.022 / al, edge = ring(cuff, rc * 1.03, 0.05), back = ring(at(0.62 + dt), rc * 1.0, 0.03);
   const band = hull([...camPoly(c, edge), ...camPoly(c, back)]);
   if (band.length > 2) hardFill(p, id + 5, mixColor(s.color, s.shade, 0.55), band);
   const lo = (i: number) => Math.sin((i / 28) * Math.PI * 2) < 0.25;
