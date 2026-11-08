@@ -137,3 +137,56 @@ Same insert lengths as the x0.95 table (try 2.0 + V01 0.6 after L01; taps 0.6 + 
 | B05-SH03 | 50.12 | 2.50 | 2.5 | 0.00 |
 
 Video total **52.62 s** (x0.95 table 50.4 s); 7.38 s slack under the 60 s cap. Speech longer than its row: B02-SH01 (L04 2.82 + taps 0.6 = 3.42 vs 2.8, +0.62), B03-SH01 (+0.24), B03-SH04 (L09 part ~3.82 vs 3.6, +0.22). Windows longer than the row by a gap tail: B01-SH02, B02-SH02, B03-SH04, B05-SH01. Anchors are scaled, not re-listened. Not approved; the user listens next.
+
+## Full read R1.4 s2 (x0.9025, 2026-11-08)
+
+Script EDU-EP09-SCRIPT-R1.4 (only L12 changed: `เล่นมาหลายปี แค่ควบคุมได้ดีกว่าคนทั่วไป`; user approved the wording, Boat recheck b1d4fce no change). Same process as R1.3 s2: **one Gemini request**, one attempt, exit 0, log `out/logs/ep09-r14-full.log`: `gemini-3.8-flash-tts`, Kore, the same style A prompt, L01 ban1 spacing, same 11 NAR lines (L01-L09, L12, L15), ellipses as commas (`out/ep09-voice/r14/lines-nar.txt`; only the L12 text differs from the r13 file). Raw 40.60 s (R1.3 raw 40.32 s), then a single `atempo=0.9025` and two-pass `loudnorm` (linear, I=-16, TP=-1.5; check -16.1 LUFS, -1.5 dBTP), 48 kHz mono = **44.98 s** (R1.3 s2 44.66 s). This is a **new take**, so every line differs slightly from the R1.3 read, not only L12; no L03 pace change beyond the process. **Not listened by me**; edges by `silencedetect -35 dB / 0.06 s` (+-0.1 s). faster-whisper failed to run here (av `metadata_errors` TypeError), so there is no transcript check.
+
+Store (`projects/EDU/voice/`): `ep09-nar-kore-A-r14-full-s2.wav` (+ `.json`), `ep09-nar-kore-A-r14-full-raw.wav` (+ `.json`, unslowed take), per-line `ep09-nar-kore-A-r14-full-s2-L01.wav` ... `-L15.wav` (+ `.json`; cut at the middle of each gap, 11 files). Not copied to `public/narration`, no `store.py use`; the locked-candidate file there is still the R1.3 s2 read.
+
+| Line | Start | End | Dur (s) | Syl | Syl/s | Gap after |
+| --- | --- | --- | --- | --- | --- | --- |
+| L01 | 0.20 | 3.96 | 3.75 | 17 | 4.53 | 0.62 |
+| L02 | 4.58 | 6.80 | 2.22 | 10 | 4.51 | 0.46 |
+| L03 | 7.26 | 8.88 | 1.63 | 9 | **5.54** | 0.65 |
+| L04 | 9.53 | 11.87 | 2.34 | 9 | 3.84 (commas) | 0.90 |
+| L05 | 12.78 | 15.56 | 2.78 | 13 | 4.67 | 0.92 |
+| L06 | 16.48 | 20.87 | 4.39 | 18 | 4.10 | 0.48 |
+| L07 | 21.35 | 24.91 | 3.57 | 16 | 4.49 | 0.63 |
+| L08 | 25.54 | 29.64 | 4.10 | 21 | 5.12 | 0.86 |
+| L09 | 30.50 | 35.34 | 4.84 | 21 | 4.34 | 0.88 |
+| **L12** | **36.22** | **40.59** | **4.37** | 19 | **4.35** | 0.58 |
+| L15 | 41.16 | 44.70 | 3.54 | 17 | 4.81 | n/a |
+
+Syllable counts are the R1.3 counts (R1.4 L12 has the same count: `นิ้วแยกกัน` and `แค่ควบคุม` are 3 syllables each).
+
+- Audio 44.98 s; speech 37.52 s in lines (4.53 syl/s in speech); first sound to last 44.50 s. No gap under 0.15 s; smallest gaps L02/L03 0.46 and L06/L07 0.48 (all gaps 0.46-0.92 s).
+- **L12 timing: 36.22-40.59 s, 4.37 s (R1.3 s2 4.19 s, +0.18 s), 4.35 syl/s**. That is 4 % under the other ten lines (4.55 syl/s) and the fourth slowest (L04 3.84, L06 4.10, L09 4.34), so **L12 is not fast**; no flag. Inside L12 there are two pauses: after `แล้วนักเปียโนล่ะ,` (37.09-37.59, 0.50 s) and a 0.32 s pause before `แค่ควบคุม` (38.52-38.84, at the former space; not a comma in the TTS text). Gap before L12 (after L09) 0.88 s, after L12 0.58 s.
+- **L03: 1.63 s, 5.54 syl/s**, still the fastest line (R1.3 s2 5.18); the next is L08 5.12, 8 % below, and L03 is 22 % above the 4.53 average. It is the same process, so the user's note (L03 as fast as other lines) is kept; listen to L03 first. L08 (5.12) is also quick in this take.
+
+### Per-shot timing for W5.1 (R1.4 s2)
+
+Same rule and inserts as R1.3 s2 (try 2.0 + V01 0.6 after L01; taps 0.6 + V02 1.5 after L04; retry 1.0 after L12; hold 2.5). Sub-line starts in B03 are re-estimated for this take: L09 "พอนิ้วกลางพับลง" 31.74 s (measured, end of the comma pause 31.42-31.74); L06 "เหมือนสายเชิดหุ่น" ~20.00 s, L07 "ไม่มี" ~24.40 s, L08 "ชุดเดียวกับ" ~25.83 s are proportional estimates (+-0.25 s; no pause marks them).
+
+| Shot | Start | Length | Row | Diff |
+| --- | --- | --- | --- | --- |
+| B01-SH01 | 0.00 | 5.16 | 5.2 | -0.04 |
+| B01-SH02 | 5.16 | 2.02 | 1.4 | +0.62 |
+| B01-SH03 | 7.18 | 2.67 | 2.4 | +0.27 |
+| B01-SH04 | 9.86 | 2.27 | 2.1 | +0.17 |
+| B02-SH01 | 12.13 | 2.94 | 2.8 | +0.14 |
+| B02-SH02 | 15.07 | 2.40 | 1.5 | +0.90 |
+| B02-SH03 | 17.48 | 3.71 | 3.0 | +0.71 |
+| B03-SH01 | 21.18 | 3.52 | 3.3 | +0.22 |
+| B03-SH07 | 24.70 | 1.35 | 1.0 | +0.35 |
+| B03-SH02 | 26.05 | 3.05 | 3.3 | -0.25 |
+| B03-SH08 | 29.10 | 1.43 | 1.0 | +0.43 |
+| B03-SH03 | 30.53 | 4.67 | 4.5 | +0.17 |
+| B03-SH09 | 35.20 | 1.24 | 1.4 | -0.16 |
+| B03-SH04 | 36.44 | 4.48 | 3.6 | +0.88 |
+| B04-SH01 | 40.92 | 4.37 | 4.5 | -0.13 |
+| B05-SH01 | 45.29 | 1.58 | 1.0 | +0.58 |
+| B05-SH02 | 46.87 | 3.54 | 4.0 | -0.46 |
+| B05-SH03 | 50.40 | 2.50 | 2.5 | 0.00 |
+
+Video total **52.90 s** (R1.3 s2 52.62 s); 7.10 s slack under the 60 s cap. Speech longer than its row (gap tails excluded): only B03-SH01 (L06 part ~3.5 vs 3.3, +0.2); B03-SH04's L09 part is ~3.6 vs 3.6 (0) after the 31.74 anchor. Windows longer than the row are gap tails after inserts (B01-SH02, B02-SH02, B02-SH03, B03-SH04, B05-SH01), which Film can trim. B04-SH01 (L12, 4.37 s) fits its 4.5 s row with 0.13 s spare. Not approved; the user listens next.
