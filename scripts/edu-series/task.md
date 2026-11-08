@@ -130,3 +130,11 @@ Record: [delivery.md](delivery.md) · Updated: 2026-11-05, Film
 ## EDU-EP10-SHORT
 
 **Now:** W0 done (C25 จมูกสองอัน, user pick 2026-11-08). W1.1 Boat research next. Detail: [ep10/task.md](ep10/task.md).
+
+## EDU-EP11-SHORT
+
+**Now:** W0 done (C32 ลิฟต์ขาด กระโดดตอนท้ายรอดมั้ย, user pick 2026-11-08). W1.4 passed 2026-11-08 (Kore A x0.92, 57–62 s projected); W1.5 user script approval waiting. Detail: [ep11/task.md](ep11/task.md)(ep11/task.md).
+
+## EDU-EP12-SHORT
+
+**Now:** W0 done (C35, user pick 2026-11-08). W1.2 script R1 done; W1.3 Boat fact-check next. Detail: [ep12/task.md](ep12/task.md).
