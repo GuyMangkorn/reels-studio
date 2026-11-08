@@ -16,6 +16,8 @@ export type PaintContext = {
   still: (id: number) => void;
   /** Seed the next marks so they redraw every `boilEvery` frames: the hand-drawn "boiling" ink line. */
   boil: (id: number) => void;
+  /** POC (EDU-EP07 shadow round 2): the brush without the flat-fill wrapper, so `fillBleed`/`fillTexture` paint real watercolour. Flickers under a moving camera; stills only until proven. */
+  textured?: Brush;
 };
 
 // p5.brush keeps one global WebGL runtime, so one canvas is shared by every mount on the page.
@@ -207,7 +209,7 @@ export const BrushCanvas = ({paint, paper = '#efe6d2', boilEvery = 2, brushScale
     deferred?.begin();
     profiler?.begin();
     reseed(1);
-    paint({brush: b, t: frame / fps, frame, width, height, still: (id) => reseed(id + 1), boil: (id) => reseed(id * 7919 + step + 1)});
+    paint({brush: b, t: frame / fps, frame, width, height, still: (id) => reseed(id + 1), boil: (id) => reseed(id * 7919 + step + 1), textured: inner});
     deferred?.end();
     brush.pop();
     if (profiler) console.log(`paint-profile ${JSON.stringify({frame, ...profiler.end()})}`);

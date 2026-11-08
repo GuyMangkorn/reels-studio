@@ -1,0 +1,10 @@
+{
+  "public/audio/edu/EDU-EP07-SHORT-draft-stem-v1.wav": {
+    "store": "projects/EDU/audio/EDU-EP07-SHORT/mix/2026-11-08_ep07-draft-stem-v1.wav",
+    "sha256": "7b0faae2a32373d524cd0d34d499261df01201a86ae73be4286608942e1f56b9"
+  },
+  "public/narration/EDU-EP07-SHORT.wav": {
+    "store": "projects/EDU/audio/EDU-EP07-SHORT/narration/2026-11-08_ep07-narration-placed-v1.wav",
+    "sha256": "a15c463baa39c5f7e1b287b9e85243b1dd57374f93bc6afbe75ec568e90692cc"
+  }
+}

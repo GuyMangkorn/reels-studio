@@ -1,0 +1,38 @@
+# EDU-EP07-SHORT — task
+
+Record: this file. Series context: [concepts.md](../concepts.md) (R3, C15) · series task list: [task.md](../task.md).
+
+**Now:** W0 done (C15 "ถ้าดวงอาทิตย์หายไปตอนนี้", user pick 2026-11-08). W1.1 done; W1.2 done ([script.md](script.md) EDU-EP07-SCRIPT-R1, 2026-11-08); W2.1–W2.2 done (Film brief EDU-EP07-BRIEF-R1, rows EDU-EP07-ROWS-R1, 2026-11-08); W2.3 review page next (coordinator), then W3 look frames LF01–LF04 (painted v1, awaiting user verdict).
+
+- Deliverable: `EDU-EP07-SHORT`, Short only (Thai), 1080×1920, 30 fps. Profile: educational (what-if physics, speed of light and gravity), painted 2D p5.brush, 4-head cast, Kore narrator (edu default), ending `B_loop` (per concepts.md), other fields = [project defaults](../../../docs/delivery-workflow.md#project-defaults).
+- Kit note (Film R3): new space set (star field, Earth on orbit line, Jupiter, Moon), street-food stall, split-frame layout, painted clock; people from `PEOPLE` + `vendor`; ENV-SKY and `glow.tsx` exist.
+
+- [x] W0 Ideation (C15, user pick 2026-11-08)
+- [x] W1 Script lock (R1.1 approved by user 2026-11-08)
+  - [x] W1.1 Boat research ([research.md](research.md), 2026-11-08; must fix C05 GW170817 wording and C08 Jupiter time before script)
+  - [x] W1.2 Preaw script ([script.md](script.md) EDU-EP07-SCRIPT-R1, 2026-11-08; timing estimated ~53–55 s; open Q1–Q4 in script)
+  - [x] W1.3 Boat fact-check
+- [ ] W2 Film brief and storyboard rows
+  - [x] W2.1 Film brief (text) (EDU-EP07-BRIEF-R1, 2026-11-08, [film-brief.md](film-brief.md); user Q4 "+1 ชม." card in VD07)
+  - [x] W2.2 Film storyboard rows (EDU-EP07-ROWS-R1, 2026-11-08, [storyboard.md](storyboard.md) + [review-rows.json](review-rows.json), untimed, 18 shots, est ~54.5 s; `build.py` validates; review page: pending)
+  - [x] W2.3 Storyboard page published (EDU-EP07-ROWS-R1, 2026-11-08, https://claude.ai/artifact/P5Sq6g3SMSMGpTwC2Enadc, v1, user verdicts 2026-11-08: storyboard tab 18/18 ok, no notes; verdicts in its db `reviews/<shot ID>@board`)
+- [x] W3 Look frames (v2: viewer check 4/4 pass; user 2026-11-08: pestle passed, flat shadows kept (watercolour/pencil POCs not adopted), ring kept, CUS size accepted; stills `out/edu07/look-frames/v2/`, store `projects/EDU/previews/EDU-EP07-SHORT/look-frames/ep07/`)
+  - [x] W3.1 LF01-LF04 painted v1 (2026-11-08, Boss for Film): source `src/painted/edu07/`, stills `out/edu07/look-frames/v1/`, store `projects/EDU/previews/EDU-EP07-SHORT/look-frames/ep07/v1/` (`sheet-v1.png`, `sheet-v1-540.png`); sheet viewed; LF03 luma 0.229 / 0.0 % under 0.05; VEN head unit 149 px (LF01); evidence and brief deviations in [build-notes.md](../build-notes.md) "ep07 W3 look frames v1"; user verdict on the look frames: pending; viewer check not run
+  - [x] W3.2 look frames v2 (2026-11-08, Boss for Film; user feedback on v1): krok-shaped pestle + fist grip (LF01, LF03), LF02 ring kept as v1 (user decision), LF04 Earth x1.4, brush-shadow POC `LF01-shadow-poc.png`; stills `out/edu07/look-frames/v2/`; user verdicts: pestle PASS; pencil-hatch shadow POC rejected; W3.3 watercolour shadow POC round 2 `LF01-shadow-watercolour.png` (2026-11-08), awaiting user verdict
+- [x] W4 Voice lock (user locked 2026-11-08: Kore A atempo 0.95, Aoede VEN, Algenib CUS; full read `audio/EDU-EP07-SHORT/narration/2026-11-08_ep07-nar-kore-A-slow95-fullread.wav`)
+  - [x] W4.1 Audition samples (2026-11-08, Editor): NAR A/B, VEN, CUS in store `projects/EDU/audio/EDU-EP07-SHORT/narr-samples/`; user picked; details in [voice-measure.md](voice-measure.md)
+  - [x] W4.2 Full read (2026-11-08, Editor): NAR Kore A + atempo 0.90 (superseded by 0.95, see decision log), D01-D03; 2 API requests; measured in [voice-measure.md](voice-measure.md) "W4.2 full read"; store `projects/EDU/audio/EDU-EP07-SHORT/narration/`. **W4 stays open:** not listened to, user ear check pending, and NAR+dialogue length flag (about 58-64 s vs 60 s Short limit) unresolved.
+- [ ] W5 Scene sheets, assets, Draft
+  - [x] W5.1 Film timed scene sheets (EDU-EP07-SHEETS-R1.1, 2026-11-08, [scene-sheets.md](scene-sheets.md); `ready-for-dev`, voice-timed from the W4.2 atempo 0.95 lock; R1.1 applies the user's Q1 = c (L01 at G16, opening shot 33 f), Q2 = a (D01 take kept), Q3 = b (clock returns at 00:30, visible 9.09×, 00:00 on "ศูนย์" G1002); **1798 f = 59.93 s** (≤ 60 s, 2 f margin) by placement only, no overlap/retime/trim; rows EDU-EP07-ROWS-R1.2 timed, text changed on S01-B01-SH01 (note), S01-B03-SH04 and S01-B04-SH05; D01/D02 in the store as the `narr-samples` audition takes, `nar95-lines.json` still missing; review page: pending)
+  - [x] W5.2 Boss plates (2026-11-08): 18 shots as stills-checked pure functions of frame, composition `EDU-EP07-SHORT` blockout (no captions or sound); seam G1797 vs G0 PSNR 36.8 dB; open questions in [build-notes](../build-notes.md#ep07-w52-shot-plates-2026-11-08-boss); not committed, no video render, no viewer check run yet
+  - [ ] W5.3 Draft (2026-11-08, Editor, in progress: assembled and drafted, not ticked): narration placed whole from the sheet table (`narration-place.py`, "ศูนย์" sibilant onset G1002 ±1 on the L08 waveform), 23 caption cues (`cues.ts`, edu stroke, @TamMaiLa), sound stem v1 (`sound-mix.py`; 10 new library files + older fallbacks, unlistened), half-size draft `out/EDU-EP07-SHORT/draft/EDU-EP07-SHORT_B_loop.mp4` (1798 f, 540x960 paint), store `projects/EDU/draft/EDU-EP07-SHORT-draft-v1.mp4`; seam G1797 vs G0 PSNR 39.0 dB; not listened, shot-by-shot draft review by the user pending; details in [build-notes](../build-notes.md) "EP07 W5.3"
+    - W5.3 fix round 1 (2026-11-08, Boss, not committed): F1-F6 fixed in `soi.ts`, `paintMoon`/`moonRim`/finger, stills only; seam G1797 vs G0 PSNR 36.80 dB; coordinator/Editor to re-cut the draft for S01-B02-SH03, B04-SH04, B04-SH05, B05-SH02, B05-SH03 and the other pestle shots. See [build-notes](../build-notes.md) 'EP07 W5.3 fix round 1'.
+    - W5.3 fix round 2 (2026-11-08, Boss, not committed): G1-G5 done as stills: fixed mid-handle grip, pestle stroke clamped to arm reach (hand-to-pestle drift 0 px, arm hand to fist <= 7.5 px except B02-SH03 16 px at 665 px/m), Sun, merger flash and stars, B04-SH05 finger; seam PSNR 36.81 dB; second pass on this group, a third needs the user's decision. See [build-notes](../build-notes.md) 'EP07 W5.3 fix round 2'.
+    - W5.3 fix round 3 (2026-11-08, Boss, not committed): G1 merger effects removed (plain merged star stays), G2 CUS mouth lip-synced to D03 in B04-SH02; G3 (B05-SH02) `armFront` forearm redraw added (Film staging): try 2 slants down-right across the hair, but the elbow end floats (no upper arm), needs Film's look; seam PSNR 36.81 dB. See [build-notes](../build-notes.md) 'EP07 W5.3 fix round 3'.
+- [ ] W6 Final
+- [ ] W7 Pinned
+- [ ] W8 Cover, delivery render, publish, posted
+
+- 2026-11-08 user decisions (structured question + chat): LF01 CUS 1.7x larger than VEN accepted; LF02 ring stays as in look frame v1 (exaggerated at 08:19, card unchanged); pestle grip/shape to fix; brush-shadow POC requested (LF01 v2).
+- 2026-11-08 user decision (after hearing atempo 0.90): NAR Kore A at **atempo 0.95** (slow only 5%). Redone from the raw read, 0 requests; NAR speech 46.89 s, serial estimate about 63 s vs 60 s; see [voice-measure.md](voice-measure.md). Not yet listened; W4 stays open.
+- 2026-11-08 user: new pestle (v2) passed; shadow: pencil-hatch POC not wanted, asks for watercolour p5.brush shadow POC (round 2 running).
