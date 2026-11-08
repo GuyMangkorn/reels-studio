@@ -368,7 +368,7 @@ export type HandMacro = {
   side: 1 | -1;
   /** Seed/ink id base; the hand uses ids base .. base + 230 (give each hand its own range of 240). */
   base: number;
-  /** Hand scale: 1 = BOY (middle finger 6.9 cm), 1.25 = ELDER, 1.2 = pianist. */
+  /** Hand scale: 1 = BOY (middle finger 7.2 cm), 1.25 = ELDER, 1.2 = pianist. */
   size?: number;
   /** World units per cm (default 1: set-cm; use 0.01 for a metre set). Wrist, `plane`, `elbow` and lifts are in world units. */
   unit?: number;
@@ -397,13 +397,13 @@ const D2R = Math.PI / 180;
 const LONG: readonly LongFingerId[] = ['index', 'middle', 'ring', 'little'];
 // cm at size 1: MCP lateral `v` (toward the thumb) and forward `f` from the wrist centre, length MCP -> tip, width, natural splay (deg), splay side.
 const FSPEC: Record<LongFingerId, {v: number; f: number; len: number; w: number; abd: number; sgn: 1 | -1}> = {
-  index: {v: 1.45, f: 6.4, len: 6.21, w: 1.55, abd: 4, sgn: 1},
-  middle: {v: -0.3, f: 6.5, len: 6.9, w: 1.7, abd: 0, sgn: 1},
-  ring: {v: -2.0, f: 6.25, len: 6.44, w: 1.6, abd: 4, sgn: -1},
+  index: {v: 1.45, f: 6.4, len: 6.48, w: 1.55, abd: 4, sgn: 1},
+  middle: {v: -0.3, f: 6.5, len: 7.2, w: 1.7, abd: 0, sgn: 1},
+  ring: {v: -2.0, f: 6.25, len: 6.72, w: 1.6, abd: 4, sgn: -1},
   little: {v: -3.6, f: 5.7, len: 4.7, w: 1.4, abd: 9, sgn: -1},
 };
 // Proportions (plan-view pass, 8 Nov 2026): wrist -> middle MCP 6.5 cm for a 6.0 cm middle finger (0.92), palm about 6.5 cm wide, wrist 4.5 cm, finger widths 1.4-1.7 cm with a slight splay so gaps show, little tip near the ring's DIP crease, ring >= index.
-// Phalanx share of the finger length per finger (proximal/middle/distal). User pick L3, 9 Nov 2026 ("longer still, every redraw looks the same length"): index, middle and ring 0.28/0.45/0.27 on a length +15 % (5.4/6.0/5.6 -> 6.21/6.9/6.44 cm, palm unchanged) so the middle phalanx reads long; the little finger keeps the measured 0.32/0.35/0.34 on 4.7 cm.
+// Phalanx share of the finger length per finger (proximal/middle/distal). User pick L3 then L4 (+20 %), 9 Nov 2026 ("longer still, every redraw looks the same length"): index, middle and ring 0.28/0.45/0.27 on a length +20 % (5.4/6.0/5.6 -> 6.48/7.2/6.72 cm, palm unchanged) so the middle phalanx reads long; the little finger keeps the measured 0.32/0.35/0.34 on 4.7 cm.
 const SPLIT: Record<LongFingerId, readonly [number, number, number]> = {
   index: [0.28, 0.45, 0.27], middle: [0.28, 0.45, 0.27], ring: [0.28, 0.45, 0.27], little: [0.32, 0.35, 0.34],
 };
@@ -764,16 +764,16 @@ export type HandPose = Pick<HandMacro, 'fingers' | 'thumb' | 'pitch' | 'roll'> &
   note: string;
 };
 const straight = (mcp = 0, pip = 0, dip = 0, abd = 0): FingerPose => ({mcp, pip, dip, abd});
-const FLAT_FINGERS: Record<LongFingerId, FingerPose> = {index: straight(1.6), middle: straight(0.7), ring: straight(1.32), little: straight(3.6)}; // MCP re-solved for the L3 lengths so every flat tip rests on the plane
+const FLAT_FINGERS: Record<LongFingerId, FingerPose> = {index: straight(1.47), middle: straight(0.61), ring: straight(1.2), little: straight(3.6)}; // MCP re-solved for the L4 lengths so every flat tip rests on the plane
 const FLAT: HandPose = {
   pitch: -1.5, roll: 0, wristRise: 1.2, fingers: FLAT_FINGERS, thumb: {cmc: 0, cmcAbd: 32, mcp: 0, ip: 0},
   note: 'flat on the table, fingers together (HAND-CLOSE flat)',
 };
 // FX01-03/06 (user, 9 Nov 2026): the old arch (pitch 16.5, PIP 28) stood the middle phalanx at 68 deg, so POV foreshortened it to 0.26 of the proximal one.
-// Now (user pick N, 9 Nov 2026): pitch 4, PIP/DIP 8/6 on index, ring and little, MCP solved per finger (5.44/4.82/8.28 at the L3 lengths) so each tip rests on the plane (the TP test holds every tip within 0.5 mm).
+// Now (user pick N, 9 Nov 2026): pitch 4, PIP/DIP 8/6 on index, ring and little, MCP solved per finger (5.06/4.48/8.28 at the L4 lengths) so each tip rests on the plane (the TP test holds every tip within 0.5 mm).
 // The folded middle (MCP 95, PIP 110, DIP 20) drops steeply at its knuckle and doubles back under the palm: only its knuckle shows at the palm's front edge, the rest is drawn before the palm; its tip sits on the table (gap 0).
 const TP_FINGERS: Record<LongFingerId, FingerPose> = {
-  index: straight(5.44, 8, 6), middle: straight(95, 110, 20), ring: straight(4.82, 8, 6), little: straight(8.28, 8, 6),
+  index: straight(5.06, 8, 6), middle: straight(95, 110, 20), ring: straight(4.48, 8, 6), little: straight(8.28, 8, 6),
 };
 const TP: HandPose = {
   pitch: 4, roll: 0, wristRise: 1.2, fingers: TP_FINGERS, thumb: {cmc: 3.34, cmcAbd: 30, mcp: 4, ip: 2}, // cmc 7.7 -> 3.34: the flatter pitch 4 would sink the thumb tip 4.8 mm
