@@ -209,6 +209,8 @@ const paintTable = (p: Painter, c: YCam) => {
   }
 };
 
+/** The milk box (the jug prop): table-plane footprint x 0..0.1 (handle to 0.125), z -0.39..-0.29, 0.2 m tall. Arm tracks keep elbow, forearm and hand out of it (FX04). */
+export const JUG = {x0: 0.0, x1: 0.125, z0: -0.39, z1: -0.29, h: 0.2};
 /** Props on the table (UT12): glasses, jug, mango plate, notebook + pencil, tissue box, each with a contact shadow. */
 const paintProps = (p: Painter, c: YCam) => {
   const y = TABLE_Y;
@@ -229,7 +231,7 @@ const paintProps = (p: Painter, c: YCam) => {
   glass(500, [0.52, y, -0.08]); glass(520, [-0.58, y, -0.1]);
   // jug (behind the hands)
   shadow(540, [0.05, y, -0.34], 0.07);
-  paintBox(p, c, 541, {x0: 0.0, x1: 0.1, y0: y, y1: y + 0.2, z0: -0.39, z1: -0.29}, '#e6efe9', {front: -0.06, left: -0.12, right: -0.12}, {ink: true});
+  paintBox(p, c, 541, {x0: 0.0, x1: 0.1, y0: y, y1: y + JUG.h, z0: JUG.z0, z1: JUG.z1}, '#e6efe9', {front: -0.06, left: -0.12, right: -0.12}, {ink: true});
   paintBox(p, c, 543, {x0: 0.002, x1: 0.098, y0: y, y1: y + 0.12, z0: -0.388, z1: -0.292}, '#b9d4d8', {front: -0.08, left: -0.14, right: -0.14}, {});
   paintBox(p, c, 545, {x0: 0.1, x1: 0.125, y0: y + 0.06, y1: y + 0.17, z0: -0.35, z1: -0.33}, '#d4ddd8', {}, {ink: true});
   // mango plate with a fork

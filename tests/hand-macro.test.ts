@@ -95,7 +95,7 @@ test('draw order: a finger folded under the palm is painted before the back of t
   assert.ok(idx(pov, mid) < idx(pov, palm), 'middle (under) before palm from above');
   const index = h.base + 10 + FINGER_IDS.indexOf('index') * 10;
   assert.ok(idx(pov, index) > idx(pov, palm), 'index after palm from above');
-  const front = record(h, HAND_CAMS.TRY);
+  const front = record(h, HAND_CAMS['FRONT-LOW']);
   assert.ok(idx(front, mid) > idx(front, palm) && idx(front, index) > idx(front, palm), 'from the front the palm is first');
 });
 
@@ -143,4 +143,14 @@ test('SP3 contract: the rig hand target is the macro palm centre in picture px; 
   const b = SP3.B01SH04.hand();
   assert.ok(Math.abs(b.wrist[1] - 0.732) < 1e-9, 'wrist 1.2 cm above the table at 0.72');
   assert.ok(macroAnchors(SP3.B01SH04.cam, b).fingers.middle.tip.p![1] > macroAnchors(SP3.B01SH04.cam, b).wrist.p![1] - 400);
+});
+
+test('FX01-03/06: the second phalanx of a flat finger is at least 0.33 of the finger and, in TP at CAM-POV, reads at least 0.45 of the proximal one (was 0.26)', () => {
+  const sk = macroSkeleton(HAND_SPECS.flat()), j = sk.fingers.ring.joints, len = (a: number) => Math.hypot(j[a + 1][0] - j[a][0], j[a + 1][1] - j[a][1], j[a + 1][2] - j[a][2]);
+  assert.ok(len(1) / (len(0) + len(1) + len(2)) >= 0.33);
+  const tp = macroSkeleton(HAND_SPECS.tp()).fingers;
+  for (const f of ['index', 'ring', 'little'] as const) {
+    const P = tp[f].joints.map((w) => camPoint(HAND_CAMS.POV, w)!), d = (a: number) => Math.hypot(P[a + 1][0] - P[a][0], P[a + 1][1] - P[a][1]);
+    assert.ok(d(1) / d(0) >= 0.45, `${f} ${(d(1) / d(0)).toFixed(2)}`);
+  }
 });

@@ -68,13 +68,17 @@ export const reachOwnHandAt = (f: number): {hand: V3; elbow: V3} => {
   const u = ramp(f, 6, 27), hand = mix3(REACH_FROM, REACH_TO, u), hover = 0.014 * ramp(f, 6, 12) * (1 - ramp(f, 27, 47));
   return {hand: [hand[0], hand[1] + hover, hand[2]], elbow: mix3(REACH_ELBOW_FROM, REACH_ELBOW_TO, u)};
 };
-const STOP_FROM: V3 = [0.16, TABLE_Y, -0.3], STOP_OVER: V3 = [-0.3, TABLE_Y, -0.205];
-const STOP_ELBOW_FROM: V3 = [0.13, TABLE_Y + 0.026, -0.37], STOP_ELBOW_OVER: V3 = [-0.1, TABLE_Y + 0.026, -0.37];
+const STOP_FROM: V3 = [0.2, TABLE_Y, -0.3], STOP_OVER: V3 = [-0.3, TABLE_Y, -0.205];
+const STOP_ELBOW_FROM: V3 = [0.17, TABLE_Y + 0.026, -0.37], STOP_ELBOW_OVER: V3 = [-0.1, TABLE_Y + 0.026, -0.37];
 /** ELDER's right hand: lifts from the table at L12, arcs over to settle palm-down on BOY's right wrist at L27 (6 cm short of BOY's left hand), then lowers L27-47 to rest on the wrist. */
 export const gentleStopAt = (f: number): {hand: V3; elbow: V3} => {
   const u = ramp(f, 12, 27), h = mix3(STOP_FROM, STOP_OVER, u), arc = 0.07 * Math.sin(Math.PI * clamp((f - 12) / 15)), rest = 0.03 + 0.04 * (1 - ramp(f, 27, 47));
   const lift = f < 27 ? arc + 0.03 * u : rest;
-  return {hand: [h[0], h[1] + lift, h[2]], elbow: mix3(STOP_ELBOW_FROM, STOP_ELBOW_OVER, u)};
+  // FX04: the straight path ran the elbow (z -0.37) and the forearm through the milk box (JUG, x 0..0.125, z -0.39..-0.29). Elbow and hand step toward the
+  // camera first (L12-16), then slide across in front of the box, and settle on the old end points: the hand returns by u 0.7-1, the elbow by u 0.8-1.
+  const fwd = ramp(f, 12, 16), ahead = fwd * (1 - ramp(u, 0.7, 1)), aheadE = fwd * (1 - ramp(u, 0.8, 1)), uE = ramp(f, 16, 27);
+  const e = mix3(STOP_ELBOW_FROM, STOP_ELBOW_OVER, u);
+  return {hand: [h[0], h[1] + lift, h[2] + 0.12 * ahead], elbow: [STOP_ELBOW_FROM[0] + (STOP_ELBOW_OVER[0] - STOP_ELBOW_FROM[0]) * uE, e[1], e[2] + 0.13 * aheadE]};
 };
 /** Both sitters of SH04 at local frame f (the tracks above plus the sheet's faces: ELDER `happy`, BOY `worried` -> `neutral` at L40). The ELDER head shake L30-40 and the camera are the composition's. */
 export const stopSitters = (f: number): {boy: Sitter; elder: Sitter} => {

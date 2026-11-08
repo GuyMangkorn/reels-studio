@@ -403,7 +403,7 @@ const FSPEC: Record<LongFingerId, {v: number; f: number; len: number; w: number;
   little: {v: -3.6, f: 5.7, len: 4.7, w: 1.4, abd: 9, sgn: -1},
 };
 // Proportions (plan-view pass, 8 Nov 2026): wrist -> middle MCP 6.5 cm for a 6.0 cm middle finger (0.92), palm about 6.5 cm wide, wrist 4.5 cm, finger widths 1.4-1.7 cm with a slight splay so gaps show, little tip near the ring's DIP crease, ring >= index.
-const SPLIT = [0.40, 0.29, 0.31] as const; // phalanx share of the finger length (distal 0.25 -> 0.28 -> 0.31, user notes 8 Nov 2026: still too short)
+const SPLIT = [0.35, 0.34, 0.31] as const; // phalanx share of the finger length (distal 0.25 -> 0.28 -> 0.31, user notes 8 Nov 2026: still too short; middle 0.29 -> 0.34, FX01-06 9 Nov 2026: second knuckle segment too short)
 const TAPER = [1, 0.97, 0.94, 0.9] as const;
 const THUMB_SPEC = {cmc: [1.2, 1.4, -0.16] as const, len: [2.6, 2.0, 1.8] as const, w: [2.4, 2.0, 1.8, 1.65] as const, twist: 50, nailW: 0.9, nailL: 0.8};
 // Thumb pass (8 Nov 2026, Boat thumb-compare): base width 1.85 -> 2.4 (thenar), MCP 2.0, IP 1.8, tip 1.65 (old 1.65/1.5/1.4 was 0.76 of the index); nail 0.9 x 0.8 cm turned 50 deg out of the fingers' nail plane.
@@ -572,6 +572,7 @@ const inPoly = (x: number, y: number, poly: readonly (readonly [number, number])
 
 // ids: fills base + 0 .. 119, shadows base + 120 .. 159, inks base + 160 .. 229
 const FILL = 0, SHADOW = 120, INK_ID = 160;
+const HIGHLIGHT = (skin: string, k = 0.2) => mixColor(skin, '#fff3e2', k);
 
 /**
  * Paint the macro hand through camera `cam` and return its anchors. Draw order: shadows on `plane`, forearm and sleeve, fingers folded
@@ -677,6 +678,9 @@ export const paintHandMacro = (p: Painter, cam: YCam, h: HandMacro): HandAnchors
         const d = unit2(P[k], P[k + 1]), n: Dir2 = [-d[1], d[0]], sg = n[0] * ls[0] + n[1] * ls[1] >= 0 ? 1 : -1, rr = Math.min(Rpx[k], Rpx[k + 1]) * 0.3;
         const seg = capsule(P[k], P[k + 1], 2 * Rpx[k], 2 * Rpx[k + 1]);
         fill(q, f0 + 6 + (k % 3), tone.shade, clipHalf(seg, [P[k][0] + sg * n[0] * rr, P[k][1] + sg * n[1] * rr], [sg * n[0], sg * n[1]]));
+        // volume (FX05): a lit stripe down the rounded phalanx (light skin, on the side away from the shade) so the finger reads as a tube, not a flat strip
+        const off = -sg * Math.min(Rpx[k], Rpx[k + 1]) * 0.3, hl = HIGHLIGHT(tone.skin);
+        if (id !== 'thumb' || k > 0) fill(q, FILL + 70 + fi * 4 + k, hl, capsule([P[k][0] + n[0] * off, P[k][1] + n[1] * off], [P[k + 1][0] + n[0] * off, P[k + 1][1] + n[1] * off], 0.7 * Rpx[k], 0.7 * Rpx[k + 1]));
       }
       if (id === 'thumb') {
         // The metacarpal lies in the palm: ink only the free part (MCP -> tip) and the outer edge of the metacarpal.
@@ -721,6 +725,7 @@ export const paintHandMacro = (p: Painter, cam: YCam, h: HandMacro): HandAnchors
     const cx = pts.reduce((s, v) => s + v[0], 0) / pts.length, cy = pts.reduce((s, v) => s + v[1], 0) / pts.length;
     const ext = Math.max(...pts.map((v) => Math.hypot(v[0] - cx, v[1] - cy)));
     fill(q, FILL + 61, tone.shade, clipHalf(pts, [cx + ls[0] * ext * 0.35, cy + ls[1] * ext * 0.35], ls));
+    fill(q, FILL + 95, HIGHLIGHT(tone.skin, 0.12), ring(cx - ls[0] * ext * 0.16, cy - ls[1] * ext * 0.16, ext * 0.34, ext * 0.24, 18)); // the bulge of the back of the hand (FX05)
     if (tone.spots) {
       const spots: [number, number, number][] = [[0.6, 2.8, 0.42], [-1.4, 4.4, 0.36], [1.1, 5.2, 0.3]];
       const sp = p.layer(0.4 * alpha, h.base * 16 + 9);
@@ -761,11 +766,13 @@ const FLAT: HandPose = {
   pitch: -1.5, roll: 0, wristRise: 1.2, fingers: FLAT_FINGERS, thumb: {cmc: 0, cmcAbd: 32, mcp: 0, ip: 0},
   note: 'flat on the table, fingers together (HAND-CLOSE flat)',
 };
+// FX01-03/06 (user, 9 Nov 2026): the old arch (pitch 16.5, PIP 28) stood the middle phalanx at 68 deg, so POV foreshortened it to 0.26 of the proximal one (30 px of 115).
+// Now pitch 8, MCP/PIP/DIP 9/16/12 (mcp solved per finger so each tip rests on the plane): 0.5 of the proximal. SPLIT 0.40/0.29/0.31 -> 0.35/0.34/0.31 so the flat shots read a longer second segment too; the folded middle (PIP 125 -> 135) re-solved so DIP and tip stay under the palm and within 1.3 mm of the table (hidden).
 const TP_FINGERS: Record<LongFingerId, FingerPose> = {
-  index: straight(23.6, 28, 8), middle: straight(58, 125, 12), ring: straight(21.8, 28, 8), little: straight(25.9, 28, 8),
+  index: straight(9.11, 16, 12), middle: straight(58, 135, 12), ring: straight(8.09, 16, 12), little: straight(10.99, 16, 12),
 };
 const TP: HandPose = {
-  pitch: 16.5, roll: 0, wristRise: 1.2, fingers: TP_FINGERS, thumb: {cmc: 17.1, cmcAbd: 30, mcp: 4, ip: 2},
+  pitch: 8, roll: 0, wristRise: 1.2, fingers: TP_FINGERS, thumb: {cmc: 7.7, cmcAbd: 30, mcp: 4, ip: 2},
   note: 'test pose TP: middle folded under, index, ring and little arched on their tips, thumb along the table',
 };
 // N11 `hand-lifted-dangle` (EDU-EP09 SH07, Boss W5.2): palm down, level, raised off the table (the caller sets the wrist height), fingers hanging relaxed.

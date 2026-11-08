@@ -5,6 +5,7 @@ import type {Brush} from '../src/painted/BrushCanvas';
 import {macroSkeleton, paintHandMacro} from '../src/painted/kit/hands';
 import {makePainter, type Pt} from '../src/painted/kit/painter';
 import {PEOPLE} from '../src/painted/kit/people';
+import {JUG} from '../src/painted/edu09/dining';
 import {boyHand, POV, povCam} from '../src/painted/edu09/handclose';
 import {BOY_TONE, ELDER_TONE} from '../src/painted/edu09/palette';
 import {camD01, D01_LAMP_Y, GRIN, MEASURE, paintQAGrin} from '../src/painted/edu09/scenes';
@@ -153,4 +154,16 @@ test('W5.2 N2: diagram tracks hit the sheet times; ring has no own cord; widths 
   assert.ok(Math.abs(diagramSH04(120).ringLiftCm - TP_LIFTS['ring-diagram']) < 1e-9);
   assert.ok(CORD_MIN_PX >= 6 && TIE_MIN_PX >= 20);
   const keys = new Set(Object.keys(diagramSH02(50).state.ownLit ?? {})); assert.deepEqual([...keys].sort(), ['index', 'little']);
+});
+
+test('FX04: the ELDER gentle-stop keeps elbow, forearm and hand 3.5 cm or more outside the milk box (JUG) on every frame, and the end points are unchanged', () => {
+  const rect = (x: number, z: number) => Math.hypot(Math.max(JUG.x0 - x, 0, x - JUG.x1), Math.max(JUG.z0 - z, 0, z - JUG.z1));
+  let worst = 9;
+  for (let f = 0; f <= 67; f++) {
+    const {hand, elbow} = gentleStopAt(f), L = Math.hypot(hand[0] - elbow[0], hand[2] - elbow[2]), ux = (hand[0] - elbow[0]) / L, uz = (hand[2] - elbow[2]) / L;
+    const wrist = [hand[0] - ux * 0.08, hand[2] - uz * 0.08], tip = [hand[0] + ux * 0.1, hand[2] + uz * 0.1];
+    for (let k = 0; k <= 40; k++) { const t = k / 40; for (const [a, b] of [[[elbow[0], elbow[2]], wrist], [wrist, tip]]) worst = Math.min(worst, rect(a[0] + (b[0] - a[0]) * t, a[1] + (b[1] - a[1]) * t)); }
+  }
+  assert.ok(worst >= 0.035, `closest approach ${(worst * 100).toFixed(1)} cm`);
+  assert.deepEqual(gentleStopAt(27).elbow, [-0.1, 0.746, -0.37]);
 });
