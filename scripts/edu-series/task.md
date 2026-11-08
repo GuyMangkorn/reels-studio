@@ -115,6 +115,10 @@ Record: [delivery.md](delivery.md) · Updated: 2026-11-05, Film
 
 **Now:** W0 done (C8, user pick 2026-11-07). W1.1 Boat research next. Detail: [ep06/task.md](ep06/task.md).
 
+## EDU-EP07-SHORT
+
+**Now:** W0 done (C15, user pick 2026-11-08). W1.1 Boat research next. Detail: [ep07/task.md](ep07/task.md).
+
 ## EDU-EP08-SHORT
 
-**Now:** W1.1–W1.4 done (C18, 2026-11-08). script R1.1 approved 2026-11-08. W2 Film brief next. Detail: [ep08/task.md](ep08/task.md).
+**Now:** W2 done 2026-11-08 (brief R1, storyboard rows R1); review page awaiting verdicts; BC1/BC2 brief fixes open. Detail: [ep08/task.md](ep08/task.md).

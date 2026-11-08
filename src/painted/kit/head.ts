@@ -20,7 +20,7 @@ export type Mouth = 'flat' | 'smile' | 'o' | 'wavy' | 'frown' | 'gasp' | 'talk' 
  * `tears` 0..1 paints tear streams under the eyes (0 or absent = none); `sweat` adds a sweat drop beside the forehead.
  * `bags` 0..1 paints dark under-eye bags (the `tired` expression, 2 Nov 2026).
  */
-export type FaceState = {brow: Brow; eyes: Eyes; look: Pt; mouth: Mouth; open?: number; squint?: number; browTo?: Brow; browMix?: number; tears?: number; sweat?: boolean; bags?: number; /** Near cheek bulge 0..1 (eating, chewing): profile and turned heads only, a soft push of the cheek and a short crease. */ chew?: number};
+export type FaceState = {brow: Brow; eyes: Eyes; look: Pt; mouth: Mouth; open?: number; squint?: number; browTo?: Brow; browMix?: number; tears?: number; sweat?: boolean; bags?: number; /** Near cheek bulge 0..1 (eating, chewing): profile and turned heads only, a soft push of the cheek and a short crease. */ chew?: number; /** Jaw drop scale 0..1 of profile and turned heads (default 1). 0 keeps the chin line still through a turn: the turned `talk` mouth then opens inside the face as in the front view. */ jaw?: number};
 /** The cuts of the WFOG/ZC cast (`short|tied|bob|hood|long`) and the people-library cuts (`hair.ts`, `NewCut`). */
 export type Cut = 'short' | 'tied' | 'bob' | 'hood' | 'long' | NewCut;
 /**
@@ -54,8 +54,9 @@ export const CHIN = 1.22;
 /**
  * Jaw opening 0..1 of a face (profile and turned heads, 7 Nov 2026): how far the lower jaw drops. `talk` and `shout` follow `open`; `o`, `gasp`
  * and an open `smile` are a fixed fraction of it; `grin` is a wide laugh. Closed mouths (flat, frown, smirk, wavy, small talk) are 0.
+ * `jawOpenOf` scales it by `face.jaw` when set.
  */
-export const jawOpenOf = (face: FaceState): number => {
+const jawOf = (face: FaceState): number => {
   const o = face.open, m = face.mouth;
   if (m === 'talk') return Math.max(0, Math.min(1, o ?? 0));
   if (m === 'shout') return Math.min(1, o ?? 1);
@@ -65,6 +66,7 @@ export const jawOpenOf = (face: FaceState): number => {
   if (m === 'smile') return o === undefined || o >= 0.3 ? 0.2 : 0;
   return 0;
 };
+export const jawOpenOf = (face: FaceState): number => (face.jaw === undefined ? jawOf(face) : Math.max(0, Math.min(1, face.jaw)) * jawOf(face));
 /** Chin drop in head units at full jaw opening. */
 const JAW_DROP = 0.24;
 /** Profile jaw: the point `[x, y]` of the head egg after the lower jaw drops by `jaw` (0..1): below the lip line it drops and swings back a little. */
@@ -644,7 +646,7 @@ export const paintHeadFront = (p: Painter, seed: number, cx: number, cy: number,
   if (m === 'o' || m === 'gasp' || (m === 'talk' && (face.open ?? 0) >= 0.08)) {
     const o = face.open ?? 1;
     const dj = turn ? JAW_DROP * 0.8 * jawT : 0; // turned head: the upper lip stays, the lower lip goes down with the chin
-    const pts = m === 'o' ? ell(0, my + 0.03 + dj / 2, 0.11, 0.13, 16) : m === 'gasp' ? ell(0, my + 0.02 + dj / 2, 0.15, 0.07, 16) : turn ? ell(0, my + 0.01 + 0.025 + dj / 2, 0.13, 0.025 + dj / 2, 16) : ell(0, my + 0.02, 0.13, 0.02 + 0.08 * o, 16);
+    const pts = m === 'o' ? ell(0, my + 0.03 + dj / 2, 0.11, 0.13, 16) : m === 'gasp' ? ell(0, my + 0.02 + dj / 2, 0.15, 0.07, 16) : turn ? ell(0, my + 0.01 + 0.025 + dj / 2, 0.13, 0.025 + dj / 2 + (face.jaw === undefined ? 0 : 0.08 * o * (1 - Math.max(0, Math.min(1, face.jaw)))), 16) : ell(0, my + 0.02, 0.13, 0.02 + 0.08 * o, 16);
     fill(MOUTH, pts, 4);
     ink(pts, 1.0, 0.4, true);
   }
