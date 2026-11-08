@@ -97,3 +97,89 @@ Check suggested for Boss (E): after changing, measure MP/DP too (not only mid/pr
 - One fetch of an unofficial mirror of the Haeri 2022 PDF was blocked by the tool's permission check and was not retried or worked around.
 - No source for the dorsal web edge position, the dorsal knuckle-to-PIP distance, finger tilts in an arched resting hand, or any child's phalanx ratios. PMC pages were behind a browser check.
 - No images were pulled or compared in this pass (numbers only), so the task is numeric research, not a frame comparison like `thumb-compare.md`. The next step if wanted: pull one open-licensed dorsal photo of a hand resting on a table and measure knuckle-to-PIP-to-DIP-to-tip, which would settle f.
+
+## 5. Measured from real photographs (9 Nov 2026, Boat)
+
+User choice: "วัดจากรูปมือจริง". Method: five open-licensed Wikimedia Commons photographs of the back of an adult hand, joints picked by eye on zoomed crops with a pixel grid (my picks, no automatic detection). The photos are measurement references only, not published and not in git (local copies in `out/edu09/hand-photos/<slug>/`, which is deleted with the worktree; the URLs refetch them). Licences all allow private measurement use; none is used in the video.
+
+| ID | File (Commons) | Author | Licence | Size | Pose |
+| --- | --- | --- | --- | --- | --- |
+| P1 | `File:Hand female 4.jpg` | Sciencia58 | CC BY-SA 4.0 | 2968x3632 | flat, spread, camera steep, creases sharp (best photo) |
+| P2 | `File:HandPhoto.jpg` | Smitty121981 | CC BY-SA 4.0 | 3272x2741 | flat, spread, index/middle/ring only, creases faint |
+| P3 | `File:Hand - Fingers.jpg` | Coolgirly88 | public domain | 2063x1523 | flat, spread, blurry, creases faint |
+| P4 | `File:Mână.jpg` | Bogdan29roman | CC0 | 2592x1936 | flat on a wall, blurry (low real resolution) |
+| P5 | `File:HK human being male 手背 hand back August 2023 Px3.jpg` | DNGOWM 655 Rusjamm | CC BY-SA 4.0 | 3000x4000 | arched: fingers curled over a seat back, camera oblique (not steeply above) |
+
+URLs: `https://commons.wikimedia.org/wiki/<File title above, spaces as underscores>`; downloaded from `upload.wikimedia.org` (sizes: P1 603 539 B, P2 404 255 B, P3 757 428 B, P4 813 431 B, P5 3 918 632 B). Rejected after viewing: `Hand on a table.jpg` (side-on, not top view), `Hand male 2`, `Hand female 5`, `Hand 06`, `A Hand`, `Hand 6604/6605`, `HumanHand` (palm side or not top-down). No second usable arched photo was found, so the arched pose rests on P5 alone.
+
+### 5a. Flat view (E, measured)
+
+Shares are of the **visible finger from the web notch to the tip** (web-to-PIP / PIP-to-DIP / DIP-to-tip), because the dorsal knuckle (MCP) is not identifiable on a flat hand in any of these photos. This is what the kit's shares describe (kit shares are of the visible finger). Distances are along the finger axis.
+
+| Photo | Finger | Prox (web-PIP) | Mid | Dist | Mid/Dist | Mid/Prox |
+| --- | --- | --- | --- | --- | --- | --- |
+| P1 | index | 0.36 | 0.37 | 0.28 | 1.33 | 1.02 |
+| P1 | middle | 0.32 | 0.40 | 0.28 | 1.45 | 1.25 |
+| P1 | ring | 0.32 | 0.38 | 0.30 | 1.19 | 1.26 |
+| P1 | little | 0.34 | 0.32 | 0.34 | 0.93 | 0.93 |
+| P2 | index | 0.45 | 0.30 | 0.26 | 1.15 | 0.67 |
+| P2 | middle | 0.41 | 0.33 | 0.26 | 1.26 | 0.81 |
+| P3 | index | 0.40 | 0.32 | 0.27 | 1.18 | 0.80 |
+| P3 | middle | 0.39 | 0.36 | 0.25 | 1.47 | 0.93 |
+| P4 | index | 0.39 | 0.36 | 0.25 | 1.44 | 0.93 |
+| P4 | middle | 0.33 | 0.38 | 0.29 | 1.34 | 1.17 |
+| P4 | ring | 0.29 | 0.43 | 0.28 | 1.55 | 1.50 |
+| P4 | little | 0.30 | 0.38 | 0.34 | 1.11 | 1.27 |
+| **Mean** | **index** (4) | **0.40** | **0.34** | **0.27** | **1.28** | 0.85 |
+| **Mean** | **middle** (4) | **0.36** | **0.37** | **0.27** | **1.38** | 1.04 |
+| **Mean** | **ring** (2) | **0.31** | **0.41** | **0.29** | **1.37** | 1.38 |
+| **Mean** | **little** (2) | **0.32** | **0.35** | **0.34** | **1.02** | 1.10 |
+
+Index, middle, ring pooled (10 readings): about **0.36 / 0.37 / 0.27**, mid/dist about 1.33.
+
+### 5b. Arched view (E, one oblique photo, P5)
+
+Here the knuckles (MCP) are visible, so shares are knuckle-to-tip (image-plane lengths, so foreshortening is included). My MCP picks are the weakest numbers (about +-10 percent of the finger length).
+
+| Finger | Prox (MCP-PIP) | Mid | Dist | Mid/Dist | Mid/Prox | Web-based prox / mid / dist |
+| --- | --- | --- | --- | --- | --- | --- |
+| index | 0.52 | 0.24 | 0.25 | 0.95 | 0.45 | 0.29 / 0.34 / 0.36 |
+| middle | 0.54 | 0.28 | 0.18 | 1.50 | 0.52 | not readable (web hidden) |
+| ring | 0.56 | 0.24 | 0.20 | 1.17 | 0.43 | not readable |
+| mean | 0.54 | 0.25 | 0.21 | 1.2 | 0.47 | |
+
+The curled fingers show the proximal segment long and the middle and distal short, as expected from foreshortening, but P5 is a grip over an edge with an oblique camera, not the slight arch with a steep top camera, so I treat this as direction only.
+
+### 5c. Hide fraction f (E, derived)
+
+Flat photos do not show the knuckle, so f is derived: the real middle phalanx length (measured) divided by the bone ratio MP/PP of 0.5625 (R2, section 2a) gives the full PP, and f = 1 - (visible web-to-PIP) / full PP. Per finger (P1 index 0.45, middle 0.55, ring 0.55; P2 index 0.16, middle 0.30; P3 index 0.30, middle 0.39; P4 middle 0.52, ring 0.62): **mean 0.43, range 0.16-0.62, spread about +-0.14**. Direct reading on P5 (index, knuckle to web to PIP): about 0.6 (arched, low confidence). So f is about **0.3-0.55, best single value 0.4-0.45**; this agrees with the earlier 0.3-0.5 and with `hand-proportions.md`'s 0.25 being low. It inherits the R2 bone ratio, so it is not independent of that source.
+
+### 5d. Candidate match (E)
+
+Flat visible shares, mean index/middle/ring about 0.36 / 0.37 / 0.27 (sum of absolute differences, lower is better):
+
+| Finger (measured) | A .35/.34/.31 | B .30/.40/.30 | E .27/.45/.28 | G .28/.43/.29 | F .25/.50/.25 |
+| --- | --- | --- | --- | --- | --- |
+| index .40/.34/.27 | 0.10 | 0.20 | 0.32 | 0.27 | 0.44 |
+| middle .36/.37/.27 | 0.08 | 0.13 | 0.25 | 0.20 | 0.35 |
+| ring .31/.41/.29 | 0.13 | 0.02 | 0.14 | 0.08 | 0.22 |
+| little .32/.35/.34 | 0.07 | 0.11 | 0.21 | 0.16 | 0.26 |
+| pooled idx/mid/ring .36/.37/.27 | **0.07** | 0.11 | 0.17 | 0.15 | 0.28 |
+
+- **Flat: A fits the visible shares best for index, middle and little; B fits ring.** E, G and F are clearly too long in the middle segment (they differ by 0.15-0.5 and sit well outside the error). A's weak point is the distal: A gives 0.31, measured 0.27-0.29, and mid/dist 1.10 against measured 1.3-1.4 for index/middle/ring (little about 1.0, A is fine there). The measured mid/dist of 1.3 matches section 1/R2; the best shape is about **0.36 / 0.37 / 0.27**, which is between A and B (prox as A, mid and dist as B-ish) and is not a kit candidate.
+- **This revises section 3**: that section ranked B first, from MP/DP and a hide fraction of 0.4-0.5. The photo shares put the proximal share at 0.36-0.40, higher than B's 0.30, so B's proximal is too short and A is closer overall. B is right only for the ring (n = 2).
+- **Arched: not decided.** P5 gives a long proximal (0.52-0.56 from the knuckle) and short mid/distal, which no candidate's web-based shares can be compared against without the knuckle; the one web-based reading (index 0.29 / 0.34 / 0.36) is a single oblique reading. I cannot rank candidates for the arched view from these photos.
+
+### 5e. Uncertainty (read this before acting)
+
+- Joint picking: about +-15 display pixels on a 600-700 px finger, +-2.5 percent of the finger per joint, so each share is about **+-0.03** and each ratio about +-0.15 (mid/dist), per reading. Blurry photos (P3, P4) are worse; P1 is the only sharp one. Dorsal DIP creases are faint, and I may have put them 10-20 px off.
+- Between-photo spread of the proximal share is about 0.05, with 4 photos per finger (2 for ring and little), so the mean has about +-0.03 standard error, plus systematic error from where I place the web notch.
+- Perspective: P1-P4 are near top-down but spread and tilted by about 0 to 15 degrees; I assume no correction. P5 is oblique.
+- Consequence: **A vs B for index and middle is favoured for A by about 0.05-0.1 in summed error, which is 1-3 times the uncertainty, so it is a moderate preference, not proof. The ring (B), the little, the arched view and all fine proportions below about +-0.03 are not decided.** A 0.01-0.03 change in any share cannot be told apart from reading error.
+- All five hands are adult; four are male or unknown, P1 is likely female; none child. The kit's 4-head cast is stylised, so the child/adult question remains open.
+
+### 5f. What I could not verify
+
+- The dorsal MCP position on a flat hand (no visible knuckle), so f is derived and depends on R2's bone ratio.
+- A clean "slightly arched, steep camera" photograph (none found among the Commons images I searched; search was a few Commons queries, not exhaustive).
+- Photos are web images of unknown lens and camera angle; no scale reference, no measurement of the real skew.
