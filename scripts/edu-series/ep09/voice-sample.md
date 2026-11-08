@@ -41,3 +41,5 @@ Earlier full read L03: 1.49 s speech (9 syl, 6.0 syl/s), 1.57 s after x0.95.
 Timing effect (arithmetic, not re-measured): R1.3 estimate audio ~40.3 s, video ~48.5 s, L03 slot 2.1 s (B01-SH04, 9.0-11.1 s). Speech at x0.95 needs 3.6 / 6.0 / 7.5 s, so the beat grows by about +1.5 / +3.9 / +5.4 s over the 2.1 s slot (the R1.3 estimate has no x0.95; applying x0.95 to the other lines adds about +2.0 s first). Projected video with x0.95 elsewhere: about 52.0 / 54.4 / 55.9 s; audio about 42.2 / 44.6 / 46.1 s. All under the 60 s cap; B01 shot lengths are estimates and Film retimes B01-SH04 after the pick (SH04 no longer fits 2.1 s in any candidate).
 
 Store: `~/ReelsStore/projects/EDU/voice/ep09-nar-kore-A-l03-{s1,s2,s3}.wav` (+ `.json`, + `-raw.wav`).
+
+**Superseded (user, 8 Nov 2026):** the slower L03 samples s1-s3 are discarded; the user wants L03 at the same pace as the other lines, so there is no separate L03 take. L03 is read inside the R1.3 full read ([voice-measure.md](voice-measure.md)).
