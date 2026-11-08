@@ -175,9 +175,9 @@ const paintCuffSleeve = (p: Painter, c: YCam, id: number, wrist: V3, end: V3, r:
 
 /** Pendant lamp (W3: shade centre lowered to y 1.45 (0.73 m over the table) so its rim enters the top of the close-ups): cord, a cream cone shade, the lit opening. */
 export const LAMP: V3 = [0, 1.45, -0.15];
-const paintLamp = (p: Painter, c: YCam) => {
-  const [x, y, z] = LAMP;
-  ink(p, c, 800, [[x, y + 0.1, z], [x, 2.6, z]], 1.4, '#3a2f28', false);
+const paintLamp = (p: Painter, c: YCam, lampY = LAMP[1]) => {
+  const [x, , z] = LAMP, y = lampY;
+  ink(p, c, 800, [[x, y + 0.1, z], [x, Math.max(2.6, y + 1), z]], 1.4, '#3a2f28', false);
   const ring = (yy: number, r: number, n = 24): V3[] => Array.from({length: n}, (_, i) => { const t = (i / n) * Math.PI * 2; return [x + r * Math.cos(t), yy, z + r * Math.sin(t)]; });
   const top = camPoly(c, ring(y + 0.1, 0.06)), bot = camPoly(c, ring(y - 0.08, 0.18));
   if (top.length < 3 || bot.length < 3) return;
@@ -193,7 +193,8 @@ const paintLamp = (p: Painter, c: YCam) => {
   void lx; void rx;
 };
 
-export type DiningOpts = {t: number; boy?: Sitter; elder?: Sitter; dim?: number};
+/** `lampY`: pendant shade centre height (default LAMP[1] = 1.45); S01-B05-SH04 (D01) raises it so the shade clears ELDER's eyes at its camera (W5.2). */
+export type DiningOpts = {t: number; boy?: Sitter; elder?: Sitter; dim?: number; lampY?: number};
 export type DiningOut = {boy: FigAnchors | null; elder: FigAnchors | null};
 
 /** The table (top, edge, legs) and its props; the props sit on the top in their brief positions. */
@@ -265,7 +266,7 @@ export const paintDining = (p: Painter, c: YCam, o: DiningOpts): DiningOut => {
     if (s.rHand) paintTableArm(p, c, 2240 + k * 480, s.rHand, s.rElbow ?? elbowFor(s.rHand, -1, def), 1, s.rPose ?? 'flat', size, tone, sleeve);
   });
   paintProps(p, c);
-  paintLamp(p, c);
+  paintLamp(p, c, o.lampY);
   void qz; void wInk; void camPoly;
   return {boy, elder};
 };

@@ -8,12 +8,12 @@ import type {YCam} from '../kit/ycam';
 import {paintDining, TABLE_Y} from './dining';
 import {boyHand, diagCam, paintHandTable, povCam} from './handclose';
 import {paintTendons} from './tendons';
-import {paintPianist, paintPiano, pianistHand, pianoCam} from './piano';
+import {keysOf, paintPianist, paintPiano, pianistHand, pianoCam, pressDepth, PIANO_TUNE, tuneAt, TUNE_END} from './piano';
 
 // EDU-EP09-SHORT look frames (brief EDU-EP09-BRIEF-R1.2, rows EDU-EP09-ROWS-R1.2, workflow W3). LOOK-FRAME CODE: pure paint functions of the frame.
 // LF01 HAND-CLOSE frame 0 (S01-B01-SH01, flat), LF01b the same shot's end (ring strain), LF02 SET-DINING (S01-B01-SH02), LF03 see-through
 // diagram (S01-B03-SH01), LF04 PIANO-CLOSE (S01-B04-SH01).
-export const LF_FRAMES = {LF01: 1, LF01m: 1, LF01b: 1, LF02: 1, LF03: 1, LF04: 1} as const;
+export const LF_FRAMES = {LF01: 1, LF01m: 1, LF01b: 1, LF02: 1, LF03: 1, LF04: 1, QAPIANO: TUNE_END + 1, QAGRIN: 1} as const;
 export const MEASURE: Record<string, {hand?: HandAnchors; boy?: FigAnchors | null; elder?: FigAnchors | null}> = {};
 
 export const paintLF01 = (p: Painter) => {
@@ -69,4 +69,27 @@ export const camLF04 = pianoCam(0.4);
 export const paintLF04 = (p: Painter) => {
   paintPiano(p, camLF04, {pressed: [2]});
   MEASURE.LF04 = {hand: paintPianist(p, camLF04, pianistHand('middle'))};
+};
+
+// ---- W5.2 QA stills (Boss, 8 Nov 2026): shot-local frame f of S01-B04-SH01 with the SD05 tune (dyad at L42-60, closing chord L108-140), and
+// ELDER's grin face for S01-B05-SH04 (D01) at its camera. Not look frames: they check the new multi-finger press and the FaceState.
+export const paintQAPiano = (p: Painter, frame: number) => {
+  const cam = pianoCam(frame / TUNE_END), press = tuneAt(frame);
+  const onset = [...PIANO_TUNE].reverse().find((n) => n.f <= frame)?.f ?? 0;
+  paintPiano(p, cam, {pressed: keysOf(press)});
+  MEASURE.QAPIANO = {hand: paintPianist(p, cam, pianistHand(press, 2000, press.length ? pressDepth(frame, onset) : 0))};
+};
+/** ELDER's grin (SHEETS-R2 SD09): brow up, eyes dot, mouth grin; a kit FaceState, no new asset. */
+export const GRIN: FaceState = {brow: 'up', eyes: 'dot', look: [-0.6, 0.5], mouth: 'grin'};
+export const D01_MOVE = camMove([-0.05, 0.86, -0.42], [-8, -7], [1.24, 1.22], 1.62, {pitch: [-30, -30], f: 1150, hy: 740});
+/** Pendant raised from 1.45 m so its shade clears ELDER's eyes at this camera (at 1.45 the shade covers his eyes and brows; Film SD09 est did not include the lamp). */
+export const D01_LAMP_Y = 1.85;
+export const camD01: YCam = camOf(D01_MOVE, 1);
+export const paintQAGrin = (p: Painter) => {
+  const y = TABLE_Y;
+  MEASURE.QAGRIN = paintDining(p, camD01, {
+    t: 0.5, lampY: D01_LAMP_Y,
+    boy: {t: 0.5, face: {...EXPRESSIONS.suspicious, look: [0.8, -0.1]}, lHand: [-0.2, y, -0.09], lElbow: [-0.13, y + 0.026, -0.32], lPose: 'flat', rHand: [-0.33, y, -0.12], rElbow: [-0.405, y + 0.026, -0.33]},
+    elder: {t: 0.9, face: GRIN, rHand: [0.15, y, -0.15], rElbow: [0.16, y + 0.026, -0.37]},
+  });
 };

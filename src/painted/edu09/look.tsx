@@ -7,7 +7,7 @@ import {camPoint, type YCam} from '../kit/ycam';
 import type {V3} from '../kit/space';
 import {LAMP} from './dining';
 import {povCam} from './handclose';
-import {camLF02, camLF03, paintLF01, paintLF01b, paintLF01m, paintLF02, paintLF03, paintLF04} from './scenes';
+import {camD01, D01_LAMP_Y, camLF02, camLF03, paintLF01, paintLF01b, paintLF01m, paintLF02, paintLF03, paintLF04, paintQAGrin, paintQAPiano} from './scenes';
 
 export {LF_FRAMES} from './scenes';
 
@@ -86,3 +86,6 @@ const TopLight = () => (
   </svg>
 );
 export const LF04 = () => <Painted paint={paintLF04} label paper="#2a2320"><TopLight /></Painted>;
+/** W5.2 QA stills: the SD05 tune at a shot-local frame (render frames 5, 50, 120) and ELDER's D01 grin. */
+export const QAPIANO = () => <Painted paint={paintQAPiano} label paper="#2a2320"><TopLight /></Painted>;
+export const QAGRIN = () => <Painted paint={paintQAGrin}><LampPool cam={camD01} at={[0, 0.72, -0.15]} r={700} squash={0.4} level={0.9} /><RoomLight cam={camD01} lamp={[LAMP[0], D01_LAMP_Y, LAMP[2]]} /></Painted>;
