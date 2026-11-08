@@ -87,7 +87,14 @@
      "in": 0,
      "out": 1.1,
      "cut": true,
-     "key": "a3e2cfae2fda5706"
+     "key": "8c31103a3b69cc1d"
+    },
+    "final": {
+     "src": "out/EDU-EP07-SHORT/clips/_final_cut.mp4",
+     "in": 0,
+     "out": 1.1,
+     "cut": true,
+     "key": "f13cc19e279630f5"
     }
    }
   },
@@ -119,7 +126,14 @@
      "in": 1.1,
      "out": 5.667,
      "cut": true,
-     "key": "11d356f4b082e00c"
+     "key": "c9d2fca907401d9f"
+    },
+    "final": {
+     "src": "out/EDU-EP07-SHORT/clips/_final_cut.mp4",
+     "in": 1.1,
+     "out": 5.667,
+     "cut": true,
+     "key": "e11e1eb4c6060c18"
     }
    }
   },
@@ -146,7 +160,14 @@
      "in": 5.667,
      "out": 9.067,
      "cut": true,
-     "key": "3ee8524f4f8342da"
+     "key": "d183536a193c3554"
+    },
+    "final": {
+     "src": "out/EDU-EP07-SHORT/clips/_final_cut.mp4",
+     "in": 5.667,
+     "out": 9.067,
+     "cut": true,
+     "key": "b5abc3ed380b853f"
     }
    }
   },
@@ -173,7 +194,14 @@
      "in": 9.067,
      "out": 11.4,
      "cut": true,
-     "key": "aadc1cb1c2db8ba7"
+     "key": "765d553bf3c77ae1"
+    },
+    "final": {
+     "src": "out/EDU-EP07-SHORT/clips/_final_cut.mp4",
+     "in": 9.067,
+     "out": 11.4,
+     "cut": true,
+     "key": "31a53c67e4344931"
     }
    }
   },
@@ -200,7 +228,14 @@
      "in": 11.4,
      "out": 13.167,
      "cut": true,
-     "key": "df22bac376cac795"
+     "key": "444e62dcba98982a"
+    },
+    "final": {
+     "src": "out/EDU-EP07-SHORT/clips/_final_cut.mp4",
+     "in": 11.4,
+     "out": 13.167,
+     "cut": true,
+     "key": "ff5f700ae1c88910"
     }
    }
   },
@@ -227,7 +262,14 @@
      "in": 13.167,
      "out": 19.267,
      "cut": true,
-     "key": "ff84a2bbeba59a25"
+     "key": "539a575242a1a5c6"
+    },
+    "final": {
+     "src": "out/EDU-EP07-SHORT/clips/_final_cut.mp4",
+     "in": 13.167,
+     "out": 19.267,
+     "cut": true,
+     "key": "1d216d36de3fdae0"
     }
    }
   },
@@ -255,6 +297,13 @@
      "out": 25.033,
      "cut": true,
      "key": "b797564d8a9fc794"
+    },
+    "final": {
+     "src": "out/EDU-EP07-SHORT/clips/_final_cut.mp4",
+     "in": 19.267,
+     "out": 25.033,
+     "cut": true,
+     "key": "dfb3db9d7a2c75b5"
     }
    }
   },
@@ -281,7 +330,14 @@
      "in": 25.033,
      "out": 30.1,
      "cut": true,
-     "key": "36897f927fe2880e"
+     "key": "aafdc74ae9da3237"
+    },
+    "final": {
+     "src": "out/EDU-EP07-SHORT/clips/_final_cut.mp4",
+     "in": 25.033,
+     "out": 30.1,
+     "cut": true,
+     "key": "7ddde2bd12067727"
     }
    }
   },
@@ -309,7 +365,14 @@
      "in": 30.1,
      "out": 32.6,
      "cut": true,
-     "key": "f05bfdfef927067a"
+     "key": "0ff2d3ffb87c5a4f"
+    },
+    "final": {
+     "src": "out/EDU-EP07-SHORT/clips/_final_cut.mp4",
+     "in": 30.1,
+     "out": 32.6,
+     "cut": true,
+     "key": "486201683d1ef04a"
     }
    }
   },
@@ -336,7 +399,14 @@
      "in": 32.6,
      "out": 35.167,
      "cut": true,
-     "key": "9cf46012db255e5c"
+     "key": "a2d261468b831c60"
+    },
+    "final": {
+     "src": "out/EDU-EP07-SHORT/clips/_final_cut.mp4",
+     "in": 32.6,
+     "out": 35.167,
+     "cut": true,
+     "key": "3b922b4bb0230982"
     }
    }
   },
@@ -363,7 +433,14 @@
      "in": 35.167,
      "out": 38.667,
      "cut": true,
-     "key": "3c8d2f3b292626f9"
+     "key": "ce1a63e14eb78a57"
+    },
+    "final": {
+     "src": "out/EDU-EP07-SHORT/clips/_final_cut.mp4",
+     "in": 35.167,
+     "out": 38.667,
+     "cut": true,
+     "key": "1bbdc20e804f3559"
     }
    }
   },
@@ -390,7 +467,14 @@
      "in": 38.667,
      "out": 41.5,
      "cut": true,
-     "key": "3aff9dd10c011d16"
+     "key": "77f54af5293aca39"
+    },
+    "final": {
+     "src": "out/EDU-EP07-SHORT/clips/_final_cut.mp4",
+     "in": 38.667,
+     "out": 41.5,
+     "cut": true,
+     "key": "1cf2da76aa0aeb2e"
     }
    }
   },
@@ -417,7 +501,14 @@
      "in": 41.5,
      "out": 44.367,
      "cut": true,
-     "key": "da540df1967d931c"
+     "key": "dc554a22005e29db"
+    },
+    "final": {
+     "src": "out/EDU-EP07-SHORT/clips/_final_cut.mp4",
+     "in": 41.5,
+     "out": 44.367,
+     "cut": true,
+     "key": "dd322495dcf12898"
     }
    }
   },
@@ -445,7 +536,14 @@
      "in": 44.367,
      "out": 47.667,
      "cut": true,
-     "key": "8e5babf0a8c90af9"
+     "key": "d4a22d852d44747c"
+    },
+    "final": {
+     "src": "out/EDU-EP07-SHORT/clips/_final_cut.mp4",
+     "in": 44.367,
+     "out": 47.667,
+     "cut": true,
+     "key": "5fadd32e7edc1e5d"
     }
    }
   },
@@ -472,7 +570,14 @@
      "in": 47.667,
      "out": 50.6,
      "cut": true,
-     "key": "9606ba075c66c373"
+     "key": "ddb735b6dd3bf9f9"
+    },
+    "final": {
+     "src": "out/EDU-EP07-SHORT/clips/_final_cut.mp4",
+     "in": 47.667,
+     "out": 50.6,
+     "cut": true,
+     "key": "30284a69cdb1d43b"
     }
    }
   },
@@ -499,7 +604,14 @@
      "in": 50.6,
      "out": 53.933,
      "cut": true,
-     "key": "a97646b9dc432e71"
+     "key": "0624f1825b1acf28"
+    },
+    "final": {
+     "src": "out/EDU-EP07-SHORT/clips/_final_cut.mp4",
+     "in": 50.6,
+     "out": 53.933,
+     "cut": true,
+     "key": "b2f738160da66a94"
     }
    }
   },
@@ -526,7 +638,14 @@
      "in": 53.933,
      "out": 56.033,
      "cut": true,
-     "key": "ed51c9bbc5858f71"
+     "key": "54eff57ba0518b0d"
+    },
+    "final": {
+     "src": "out/EDU-EP07-SHORT/clips/_final_cut.mp4",
+     "in": 53.933,
+     "out": 56.033,
+     "cut": true,
+     "key": "bd1acea48a975151"
     }
    }
   },
@@ -553,7 +672,14 @@
      "in": 56.033,
      "out": 59.933,
      "cut": true,
-     "key": "2c3a6500c8a8a55f"
+     "key": "eee98a20ddb631f2"
+    },
+    "final": {
+     "src": "out/EDU-EP07-SHORT/clips/_final_cut.mp4",
+     "in": 56.033,
+     "out": 59.933,
+     "cut": true,
+     "key": "599bc664e7bd1a8f"
     }
    }
   }
@@ -578,6 +704,10 @@
  },
  "draftCut": {
   "src": "out/EDU-EP07-SHORT/clips/_draft_cut.mp4",
+  "frames": 1798
+ },
+ "finalCut": {
+  "src": "out/EDU-EP07-SHORT/clips/_final_cut.mp4",
   "frames": 1798
  }
 }

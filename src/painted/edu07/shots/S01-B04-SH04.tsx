@@ -14,7 +14,7 @@ export const shot = makeShot(ID, {
   paper: '#101a38',
   paint: (p, L, G) => {
     const fade = 1 - ease(L, 63, 83);
-    paintSoi(p, cam(L), {t: G / 30, night: 1, stroke: 1, moon: fade, rim: fade,
+    paintSoi(p, cam(L), {t: G / 30, night: 1, stroke: 0, moon: fade, rim: fade,
       ven: {at: [0.5, 0, 0.4], view: 'back', pose: 'P01', pounding: false, front: true, fig: {headTilt: 0.5}},
       cus: {at: [1.3, 0, 0.55], view: 'back', pose: 'P01', fig: {headTilt: 0.5}}});
   },
