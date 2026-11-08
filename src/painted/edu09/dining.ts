@@ -8,11 +8,11 @@ import {EXPRESSIONS} from '../kit/expressions';
 import type {FaceState} from '../kit/head';
 import {mixColor, type Painter, type Pt} from '../kit/painter';
 import {PEOPLE} from '../kit/people';
-import {poseFor} from '../kit/poses';
+import {elbowOnTable, seatedHandsOnTable} from '../kit/poses-seated';
 import type {V3} from '../kit/space';
 import {flatCircle, hull, paintBox, qy, qz, wFill, wInk} from '../kit/world';
 import {camPoint, camPoly, camUnit, type YCam} from '../kit/ycam';
-import {paintHandMacro, macroHand, type HandPoseId, type MacroTone} from '../kit/hands';
+import {paintHandMacro, macroHand, type HandAnchors, type HandMacro, type HandPoseId, type MacroTone} from '../kit/hands';
 import {BOY_TONE, C, ELDER_TONE} from './palette';
 
 export const BOY: CastDef = PEOPLE['boy-school'];
@@ -90,40 +90,37 @@ const paintChairBack = (p: Painter, c: YCam, id: number, at: V3, w = 0.42) => {
   paintBox(p, c, id + 4, {x0: at[0] - w / 2, x1: at[0] + w / 2, y0: 0.82, y1: 0.95, z0: at[2] - 0.2, z1: at[2] - 0.16}, '#86583a', {}, {ink: true});
 };
 
-export type Sitter = {face?: FaceState; t: number; lHand?: V3; rHand?: V3; lPose?: HandPoseId; rPose?: HandPoseId; lElbow?: V3; rElbow?: V3; look?: Pt};
+/** `lMod` / `rMod` rewrite the macro hand each frame (lift tracks, the dangle lag; see `tracks.ts`). A hand point above `TABLE_Y` raises the hand
+ * (wrist height) while the elbow stays at its point on the wood: palm-down lifts (N5 gentle-stop, N11 dangle). */
+export type Sitter = {face?: FaceState; t: number; lHand?: V3; rHand?: V3; lPose?: HandPoseId; rPose?: HandPoseId; lElbow?: V3; rElbow?: V3; look?: Pt;
+  lMod?: (h: HandMacro) => HandMacro; rMod?: (h: HandMacro) => HandMacro; lYaw?: number; rYaw?: number};
 
-/** Elbow resting on the wood just inside the back edge (z -0.40): BOY's 0.025 m inside the hand's x (under the shoulder; his hands lie a little wider), ELDER's 0.03 m outside. */
-const ELBOW_Z = -0.37;
-const elbowFor = (hand: V3, side: 1 | -1, def: CastDef): V3 => [hand[0] + side * (def === ELDER ? 0.03 : -0.025), TABLE_Y + 0.026, ELBOW_Z];
+/** Elbow resting on the wood just inside the back edge: BOY's 0.025 m inside the hand's x (under the shoulder; his hands lie a little wider), ELDER's 0.03 m outside. */
+const elbowFor = (hand: V3, side: 1 | -1, def: CastDef): V3 => elbowOnTable(hand, side, TABLE_Y, def === ELDER ? 0.03 : -0.025);
 
-/** A seated person at the table: P31 on the seat, front view squared to the lens. Each arm resting on the table is drawn in two parts that meet at
+/** A seated person at the table: N4 `seated-hands-on-table` (kit `poses-seated.ts`) on the seat. Each arm resting on the table is drawn in two parts that meet at
  * the elbow (fix round 1, LF02): the rig draws the upper arm and sleeve from the shoulder down to the elbow on the wood (`via`), its forearm and
  * mitten fold down behind the table top (hidden); `paintTableArm` then draws the forearm on the wood from that elbow and the macro hand. */
 const paintSitter = (p: Painter, c: YCam, def: CastDef, at: V3, s: Sitter, seed: number): FigAnchors | null => {
   const g = camPoint(c, at), u = camUnit(c, at);
   if (!g) return null;
-  const pose = poseFor('P31', def, g as Pt, u, 'front');
+  const pose = seatedHandsOnTable(c, def, g as Pt, u, {tableY: TABLE_Y, lHand: s.lHand, rHand: s.rHand, lElbow: s.lElbow, rElbow: s.rElbow, elbowIn: def === ELDER ? 0.03 : -0.025});
   const face = s.face ?? EXPRESSIONS.neutral;
-  // character's left = screen right (+x) in the front view
-  const arm = (hand: V3 | undefined, elbow: V3 | undefined, side: 1 | -1) => {
-    if (!hand) return null;
-    const e = elbow ?? elbowFor(hand, side, def), ep = camPoint(c, e), down = camPoint(c, [e[0], e[1] - 0.25, e[2] - 0.02]);
-    return ep && down ? {to: down, via: ep} : null;
-  };
-  const l = arm(s.lHand, s.lElbow, 1), r = arm(s.rHand, s.rElbow, -1);
-  return drawFigure(p, def, g as Pt, u, {...pose, view: 'front', face, noShadow: true, ...(l ? {lArm: l} : {}), ...(r ? {rArm: r} : {})}, s.t, seed);
+  return drawFigure(p, def, g as Pt, u, {...pose, face, noShadow: true}, s.t, seed);
 };
 void drawChair;
 
 /** Forearm on the wood from the elbow to the wrist, and the five-finger macro hand (kit `paintHandMacro`, metre set: unit 0.01, yaw so the
  * fingers continue the forearm). Five fingers here, not body-scale mittens: the hand is about 100 px wide (fingers about 20 px) and it is the
  * same left hand that ends SH01 in `ring-strain`, so the try reads across the cut (Film decision, fix round 1). `hand` is the middle MCP. */
-const paintTableArm = (p: Painter, c: YCam, base: number, hand: V3, elbow: V3, side: 1 | -1, pose: HandPoseId, size: number, tone: MacroTone, sleeve?: {color: string; shade: string}) => {
+export const paintTableArm = (p: Painter, c: YCam, base: number, hand: V3, elbow: V3, side: 1 | -1, pose: HandPoseId, size: number, tone: MacroTone, sleeve?: {color: string; shade: string}, mod?: (h: HandMacro) => HandMacro, yawOverride?: number) => {
   const fwd0 = [hand[0] - elbow[0], hand[2] - elbow[2]], L = Math.hypot(fwd0[0], fwd0[1]) || 1, fx = fwd0[0] / L, fz = fwd0[1] / L;
   const back = 0.065 * size, wrist: [number, number] = [hand[0] - fx * back, hand[2] - fz * back];
-  const yaw = (Math.atan2(fx, -fz) * 180) / Math.PI;
-  const h = macroHand(pose, {side, size, unit: 0.01, base, tone, plane: TABLE_Y, at: wrist, yaw, elbow, shadowDir: [-0.1, -0.9, 0.25], shadowAlpha: 0.3, shadowColor: '#3a2212',
+  const yaw = yawOverride ?? (Math.atan2(fx, -fz) * 180) / Math.PI;
+  const h0 = macroHand(pose, {side, size, unit: 0.01, base, tone, plane: TABLE_Y, at: wrist, yaw, elbow, shadowDir: [-0.1, -0.9, 0.25], shadowAlpha: 0.3, shadowColor: '#3a2212',
     ...(pose === 'ring-strain' ? {tremble: {finger: 'ring' as const, amp: 0.0008, hz: 10}} : {})});
+  // a hand point above the table lifts the wrist (shadows stay on the table plane); `mod` applies lifts and the dangle lag
+  const rise = Math.max(0, hand[1] - TABLE_Y), lifted: HandMacro = {...h0, wrist: [h0.wrist[0], h0.wrist[1] + rise, h0.wrist[2]]}, h = mod ? mod(lifted) : lifted;
   const out = paintHandMacro(p, c, h);
   if (sleeve) {
     // R1.8 (user, LF02: "the hand looks covered by the sleeve"): the cuff sits behind the hand. Forearm skin first, then the sleeve, then the
@@ -195,7 +192,8 @@ const paintLamp = (p: Painter, c: YCam, lampY = LAMP[1]) => {
 
 /** `lampY`: pendant shade centre height (default LAMP[1] = 1.45); S01-B05-SH04 (D01) raises it so the shade clears ELDER's eyes at its camera (W5.2). */
 export type DiningOpts = {t: number; boy?: Sitter; elder?: Sitter; dim?: number; lampY?: number};
-export type DiningOut = {boy: FigAnchors | null; elder: FigAnchors | null};
+/** `hands`: macro anchors of each table hand (boy/elder, l/r) painted this frame, for measuring tips, gaps and bands. */
+export type DiningOut = {boy: FigAnchors | null; elder: FigAnchors | null; hands: Partial<Record<'boyL' | 'boyR' | 'elderL' | 'elderR', HandAnchors>>};
 
 /** The table (top, edge, legs) and its props; the props sit on the top in their brief positions. */
 const paintTable = (p: Painter, c: YCam) => {
@@ -260,13 +258,15 @@ export const paintDining = (p: Painter, c: YCam, o: DiningOpts): DiningOut => {
   // arms resting on the wood (character's left = +x); ELDER wears the cardigan's long sleeve to the cuff
   const elderSleeve = {color: ELDER_TONE.sleeve, shade: ELDER_TONE.sleeveShade};
   const arms: [Sitter | undefined, FigAnchors | null, CastDef, number, MacroTone, typeof elderSleeve | undefined][] = [[o.boy, boy, BOY, 1, BOY_TONE, undefined], [o.elder, elder, ELDER, 1.25, ELDER_TONE, elderSleeve]];
+  const hands: DiningOut['hands'] = {};
   arms.forEach(([s, fig, def, size, tone, sleeve], k) => {
     if (!s || !fig) return;
-    if (s.lHand) paintTableArm(p, c, 2000 + k * 480, s.lHand, s.lElbow ?? elbowFor(s.lHand, 1, def), -1, s.lPose ?? 'flat', size, tone, sleeve);
-    if (s.rHand) paintTableArm(p, c, 2240 + k * 480, s.rHand, s.rElbow ?? elbowFor(s.rHand, -1, def), 1, s.rPose ?? 'flat', size, tone, sleeve);
+    const who = k ? 'elder' : 'boy';
+    if (s.lHand) hands[`${who}L`] = paintTableArm(p, c, 2000 + k * 480, s.lHand, s.lElbow ?? elbowFor(s.lHand, 1, def), -1, s.lPose ?? 'flat', size, tone, sleeve, s.lMod, s.lYaw);
+    if (s.rHand) hands[`${who}R`] = paintTableArm(p, c, 2240 + k * 480, s.rHand, s.rElbow ?? elbowFor(s.rHand, -1, def), 1, s.rPose ?? 'flat', size, tone, sleeve, s.rMod, s.rYaw);
   });
   paintProps(p, c);
   paintLamp(p, c, o.lampY);
   void qz; void wInk; void camPoly;
-  return {boy, elder};
+  return {boy, elder, hands};
 };

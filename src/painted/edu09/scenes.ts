@@ -5,16 +5,17 @@ import type {FigAnchors} from '../kit/cast';
 import {EXPRESSIONS} from '../kit/expressions';
 import type {FaceState} from '../kit/head';
 import type {YCam} from '../kit/ycam';
-import {paintDining, TABLE_Y} from './dining';
-import {boyHand, diagCam, paintHandTable, povCam} from './handclose';
-import {paintTendons} from './tendons';
+import {paintDining, TABLE_Y, type DiningOut} from './dining';
+import {dangleHandAt, marionetteBoy, stopSitters, withLifts, liftB03SH08} from './tracks';
+import {boyHand, diagCam, look, paintHandTable, povCam} from './handclose';
+import {paintTendons, diagramSH03, diagramSH04} from './tendons';
 import {keysOf, paintPianist, paintPiano, pianistHand, pianoCam, pressDepth, PIANO_TUNE, tuneAt, TUNE_END} from './piano';
 
 // EDU-EP09-SHORT look frames (brief EDU-EP09-BRIEF-R1.2, rows EDU-EP09-ROWS-R1.2, workflow W3). LOOK-FRAME CODE: pure paint functions of the frame.
 // LF01 HAND-CLOSE frame 0 (S01-B01-SH01, flat), LF01b the same shot's end (ring strain), LF02 SET-DINING (S01-B01-SH02), LF03 see-through
 // diagram (S01-B03-SH01), LF04 PIANO-CLOSE (S01-B04-SH01).
-export const LF_FRAMES = {LF01: 1, LF01m: 1, LF01b: 1, LF02: 1, LF03: 1, LF04: 1, QAPIANO: TUNE_END + 1, QAGRIN: 1} as const;
-export const MEASURE: Record<string, {hand?: HandAnchors; boy?: FigAnchors | null; elder?: FigAnchors | null}> = {};
+export const LF_FRAMES = {LF01: 1, LF01m: 1, LF01b: 1, LF02: 1, LF03: 1, LF04: 1, QAPIANO: TUNE_END + 1, QAGRIN: 1, QADIAG3: 1, QADIAG4: 1, QASTOP: 68, QADANGLE: 41, QALIFTS: 46} as const;
+export const MEASURE: Record<string, {hand?: HandAnchors; boy?: FigAnchors | null; elder?: FigAnchors | null; hands?: DiningOut['hands']}> = {};
 
 export const paintLF01 = (p: Painter) => {
   const cam = povCam(0);
@@ -89,7 +90,51 @@ export const paintQAGrin = (p: Painter) => {
   const y = TABLE_Y;
   MEASURE.QAGRIN = paintDining(p, camD01, {
     t: 0.5, lampY: D01_LAMP_Y,
-    boy: {t: 0.5, face: {...EXPRESSIONS.suspicious, look: [0.8, -0.1]}, lHand: [-0.2, y, -0.09], lElbow: [-0.13, y + 0.026, -0.32], lPose: 'flat', rHand: [-0.33, y, -0.12], rElbow: [-0.405, y + 0.026, -0.33]},
+    boy: {t: 0.5, face: {...EXPRESSIONS.suspicious, look: [0.8, -0.1]}, lHand: [-0.2, y, -0.09], lElbow: [-0.13, y + 0.026, -0.32], lPose: 'test-fold-middle', rHand: [-0.33, y, -0.12], rElbow: [-0.405, y + 0.026, -0.33]},
     elder: {t: 0.9, face: GRIN, rHand: [0.15, y, -0.15], rElbow: [0.16, y + 0.026, -0.37]},
   });
+};
+
+// ---- W5.2 QA stills, room hands (Boss, 8 Nov 2026): shot-local frames of S01-B01-SH04 (N5 reach + gentle-stop), S01-B03-SH07 (N11 dangle) and
+// S01-B03-SH08 (flat + index/little lifts). Cameras are the sheet's (SH04 `T-PAIR-L03`, SH07 SD02, SH08 SD03) at the shot-local u.
+export const SH04_MOVE = camMove([-0.05, 0.86, -0.42], [-12, -8], [1.3, 1.24], 1.62, {pitch: [-30, -30], f: 1150, hy: 760});
+export const SH07_MOVE = camMove([-0.26, 1.0, -0.62], [6, 5], [1.56, 1.52], 0.98, {pitch: [-2, -2], f: 1650, hy: 760, cx: -245});
+export const SH08_MOVE = camMove([-0.26, 1.0, -0.62], [7, 6], [1.6, 1.56], 0.98, {pitch: [-2, -2], f: 1650, hy: 772, cx: -245});
+export const paintQAStop = (p: Painter, frame: number) => {
+  const sit = stopSitters(frame);
+  MEASURE.QASTOP = paintDining(p, camOf(SH04_MOVE, frame / 67), {t: frame / 30, boy: sit.boy, elder: sit.elder, lampY: D01_LAMP_Y});
+};
+export const paintQADangle = (p: Painter, frame: number) => {
+  const y = TABLE_Y;
+  MEASURE.QADANGLE = paintDining(p, camOf(SH07_MOVE, frame / 41), {
+    t: frame / 30, boy: {t: frame / 30, ...marionetteBoy(frame), rHand: [-0.33, y, -0.12], rElbow: [-0.405, y + 0.026, -0.33]},
+    elder: {t: frame / 30 + 1, face: EXPRESSIONS.happy, lHand: [0.4, y, -0.16], lElbow: [0.47, y + 0.026, -0.38], rHand: [0.15, y, -0.15], rElbow: [0.16, y + 0.026, -0.37]},
+  });
+  void dangleHandAt;
+};
+export const paintQALifts = (p: Painter, frame: number) => {
+  const y = TABLE_Y;
+  MEASURE.QALIFTS = paintDining(p, camOf(SH08_MOVE, frame / 46), {
+    t: frame / 30, boy: {t: frame / 30, face: {...EXPRESSIONS.suspicious, look: [0.8, 0.3]}, lHand: [-0.2, y, -0.09], lElbow: [-0.13, y + 0.026, -0.32], lPose: 'flat', lMod: (h) => withLifts(h, liftB03SH08(frame)),
+      rHand: [-0.33, y, -0.12], rElbow: [-0.405, y + 0.026, -0.33]},
+    elder: {t: frame / 30 + 1, face: EXPRESSIONS.happy, lHand: [0.4, y, -0.16], lElbow: [0.47, y + 0.026, -0.38], rHand: [0.15, y, -0.15], rElbow: [0.16, y + 0.026, -0.37]},
+  });
+};
+
+// N2 hardening QA stills: SH03's last frame (SD07 end camera, both ties) and SH04's L120 (CAM-TRY end, middle held, tie pulled, ring taut and 0.3 cm up).
+export const camSH03End = look([-1.2, 1.8, 3], 0, 16, 24, 2000, 640);
+export const camSH04End = look([0, 1.5, -1.5], 172, 24, 8, 2000, 760);
+export const paintQADiag3 = (p: Painter) => {
+  const d = diagramSH03(137), h = {...boyHand('flat'), skinAlpha: d.skinAlpha, shadowAlpha: 0.14};
+  paintHandTable(p, camSH03End, {dim: 1});
+  const hand = paintHandMacro(p, camSH03End, h);
+  paintTendons(p, camSH03End, h, d.state);
+  MEASURE.QADIAG3 = {hand};
+};
+export const paintQADiag4 = (p: Painter) => {
+  const d = diagramSH04(120), h = {...boyHand('test-fold-middle', {lift: {ring: d.ringLiftCm}}), skinAlpha: d.skinAlpha, shadowAlpha: 0.14};
+  paintHandTable(p, camSH04End, {dim: 1});
+  const hand = paintHandMacro(p, camSH04End, h);
+  paintTendons(p, camSH04End, h, d.state);
+  MEASURE.QADIAG4 = {hand};
 };

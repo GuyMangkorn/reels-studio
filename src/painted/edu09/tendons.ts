@@ -25,7 +25,16 @@ export type TendonState = {
   /** Puppet cross ghost over the shared muscle, 0..1 (VD14, 40 % at full). */
   cross?: number;
   taut?: Long;
+  /** W5.2 hardening (SH04): 0..1 darkening of a cord (the middle cord at its folded knuckle, L3-12) and the middle-ring tie pulled toward the middle (L26-38). */
+  cordDark?: Partial<Record<Long, number>>;
+  tiePull?: number;
+  /** Taut cord vibration in px (SH04 L89-95: 1-2 px); the sign follows the painter clock, so a seek repeats it. */
+  tautShake?: number;
 };
+
+/** SP2 minimum drawn widths (px): every shared cord at least 6 px wide, a tie at least 20 px tall at the SD07 end frame. */
+export const CORD_MIN_PX = 6;
+export const TIE_MIN_PX = 20;
 
 /** Catmull-Rom resample of a picture polyline, then a filled ribbon of width w with round caps (crisp, no brush lumps). */
 const smooth = (P: Pt[], k = 5): Pt[] => {
@@ -113,11 +122,12 @@ export const paintTendons = (p: Painter, cam: YCam, h: HandMacro, st: TendonStat
       onFinger(1), onFinger(2), lerp3(onFinger(2), onFinger(3), 0.55),
     ];
   };
-  const drawCord = (id: number, path: V3[], color: string, a: number, wcm = 0.35, highlight = false) => {
+  const drawCord = (id: number, path: V3[], color: string, a: number, wcm = 0.35, highlight = false, shake = 0) => {
     if (a <= 0.01) return;
-    const P = path.map(px);
+    const jitter = shake ? shake * Math.sin(p.t * 2 * Math.PI * 15) : 0;
+    const P = path.map(px).map((v, k) => (v && jitter && k > 1 ? ([v[0], v[1] + jitter] as Pt) : v));
     if (P.some((v) => !v)) return;
-    const w = Math.max(3, pxPerCm(path[4]) * wcm);
+    const w = Math.max(wcm < 0.3 ? 4 : CORD_MIN_PX, pxPerCm(path[4]) * wcm);
     const q = p.layer(a, base * 4 + 200 + id);
     if (highlight) hardFill(p.layer(0.5 * a, base * 4 + 260 + id), base + 300 + id, C.taut, ribbon(P as Pt[], w * 2.8));
     const rb = ribbon(P as Pt[], w);
@@ -135,8 +145,8 @@ export const paintTendons = (p: Painter, cam: YCam, h: HandMacro, st: TendonStat
   const cords = st.cords ?? 0;
   LONG.forEach((id, i) => {
     const lit = st.cordLit?.[id] ?? 0;
-    const col = mixColor(C.cord, id === 'ring' ? C.taut : C.muscleLit, lit);
-    drawCord(i, cordPath(id, SPREAD[i], 14.5), col, cords, 0.42, st.taut === id);
+    const col = mixColor(mixColor(C.cord, id === 'ring' ? C.taut : C.muscleLit, lit), C.cordInk, (st.cordDark?.[id] ?? 0) * 0.7);
+    drawCord(i, cordPath(id, SPREAD[i], 14.5), col, cords, 0.42, st.taut === id, st.taut === id ? st.tautShake ?? 0 : 0);
   });
   if (own > 0.01) {
     drawCord(10, cordPath('index', 2.1, 15, -0.5), mixColor(C.cord, C.own, st.ownLit?.index ?? 0), own, 0.28);
@@ -160,8 +170,8 @@ export const paintTendons = (p: Painter, cam: YCam, h: HandMacro, st: TendonStat
     const [f0, f1, z] = i === 0 ? (['middle', 'ring', 2.5] as const) : (['ring', 'little', 3.0] as const);
     const p0 = cordPath(f0, 0, 12), p1 = cordPath(f1, 0, 12);
     const at = (pp: V3[]) => lerp3(pp[2], pp[3], Math.max(0, Math.min(1, 1 - (z - 1.2) / 3)));
-    const A = at(p0), B = at(p1), mid = lerp3(A, B, 0.5), half = lerp3(A, B, 0.5 * a);
-    const ends = [lerp3(mid, A, a), lerp3(mid, B, a)].map(px), w = pxPerCm(mid) * 0.5;
+    const A0 = at(p0), B = at(p1), A = i === 0 && st.tiePull ? lerp3(A0, B, 0) : A0, mid = i === 0 && st.tiePull ? lerp3(A, B, 0.5 - 0.3 * st.tiePull) : lerp3(A, B, 0.5), half = lerp3(A, B, 0.5 * a);
+    const ends = [lerp3(mid, A, a), lerp3(mid, B, a)].map(px), w = Math.max(TIE_MIN_PX * 0.5, pxPerCm(mid) * 0.5);
     if (!ends[0] || !ends[1]) return;
     inkLine(p, base + 500 + i, ends as Pt[], {color: '#7a3a2c', weight: w + 3, closed: false, still: true});
     inkLine(p, base + 510 + i, ends as Pt[], {color: C.tie, weight: w, closed: false, still: true});
@@ -182,3 +192,16 @@ export const paintTendons = (p: Painter, cam: YCam, h: HandMacro, st: TendonStat
     });
   }
 };
+
+// ---- shot tracks (SHEETS-R2): TendonState at a shot-local frame. Colours are the state's own; `skinAlpha` is for the see-through hand (SH01 L0-17 fades to 28 %).
+const ramp = (f: number, a: number, b: number) => { const k = Math.max(0, Math.min(1, (f - a) / (b - a))); return k * k * (3 - 2 * k); };
+export type DiagramFrame = {state: TendonState; skinAlpha: number; ringLiftCm: number};
+/** S01-B03-SH01 (105 f): skin to 28 % L0-17, shared muscle lit L56, four cords pulse once L74-94, puppet cross L80. */
+export const diagramSH01 = (f: number): DiagramFrame => ({skinAlpha: 1 - 0.72 * ramp(f, 0, 17), ringLiftCm: 0, state: {shared: ramp(f, 4, 17), sharedLit: ramp(f, 56, 62), cords: ramp(f, 10, 20), pulse: f >= 74 && f <= 94 ? (f - 74) / 20 : undefined, cross: f >= 80 ? ramp(f, 80, 86) : 0}});
+/** S01-B03-SH02 (91 f): index own L3-9, little own L20-26, ring cord cream (taut colour) L78-83 and held to the cut; no ring own cord, thumb never drawn. */
+export const diagramSH02 = (f: number): DiagramFrame => ({skinAlpha: 0.28, ringLiftCm: 0, state: {shared: 1, sharedLit: 0, cords: 1, own: 1, ownLit: {index: ramp(f, 3, 9), little: ramp(f, 20, 26)}, cordLit: {ring: ramp(f, 78, 83)}}});
+/** S01-B03-SH03 (138 f): shared + middle/ring/little amber L3-13, middle-ring tie draws in L84-92, ring-little tie L99-107, held to L137. */
+export const diagramSH03 = (f: number): DiagramFrame => { const a = ramp(f, 3, 13); return {skinAlpha: 0.28, ringLiftCm: 0, state: {shared: 1, sharedLit: a, cords: 1, own: 1, ownLit: {index: 1, little: 1}, cordLit: {middle: a, ring: a, little: a}, ties: [ramp(f, 84, 92), ramp(f, 99, 107)]}}; };
+/** S01-B03-SH04 (134 f): middle cord darkens L3-12 (held), middle-ring tie pulls L26-38, ring cord taut L89-95 with a 1-2 px vibration, ring tip rises 0.3 cm L92-101. */
+export const diagramSH04 = (f: number): DiagramFrame => ({skinAlpha: 0.28, ringLiftCm: 0.3 * ramp(f, 92, 101), state: {shared: 1, sharedLit: 1, cords: 1, own: 1, ownLit: {index: 1, little: 1}, ties: [1, 1], cordDark: {middle: ramp(f, 3, 12)}, tiePull: ramp(f, 26, 38),
+  taut: f >= 89 ? 'ring' : undefined, cordLit: {ring: ramp(f, 89, 95)}, tautShake: f >= 89 ? 1.5 : 0}});

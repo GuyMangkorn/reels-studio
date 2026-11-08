@@ -768,10 +768,17 @@ const TP: HandPose = {
   pitch: 16.5, roll: 0, wristRise: 1.2, fingers: TP_FINGERS, thumb: {cmc: 17.1, cmcAbd: 30, mcp: 4, ip: 2},
   note: 'test pose TP: middle folded under, index, ring and little arched on their tips, thumb along the table',
 };
-export type HandPoseId = 'flat' | 'test-fold-middle' | 'ring-strain';
+// N11 `hand-lifted-dangle` (EDU-EP09 SH07, Boss W5.2): palm down, level, raised off the table (the caller sets the wrist height), fingers hanging relaxed.
+const DANGLE: HandPose = {
+  pitch: 0, roll: 0, wristRise: 1.2, fingers: {index: straight(15, 25, 10), middle: straight(15, 25, 10), ring: straight(15, 25, 10), little: straight(15, 25, 10)},
+  thumb: {cmc: 6, cmcAbd: 30, mcp: 10, ip: 8},
+  note: 'hand-lifted-dangle: palm down, fingers hanging (MCP 15, PIP 25, DIP 10), no tip touches the table; raise the wrist above `plane`',
+};
+export type HandPoseId = 'flat' | 'test-fold-middle' | 'ring-strain' | 'hand-lifted-dangle';
 export const HAND_POSES: Record<HandPoseId, HandPose> = {
   flat: FLAT,
   'test-fold-middle': TP,
+  'hand-lifted-dangle': DANGLE,
   'ring-strain': {...TP, strain: {ring: 1}, note: 'TP with the ring pressed down: knuckle skin tight; add `tremble` {finger: ring} from the shot'},
 };
 /** Tip rise (cm at size 1, above the pose's resting tip) of the lifts from TP the brief lists; the ring hair-lift is 0.4, the diagram lift 0.3. */
