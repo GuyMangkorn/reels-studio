@@ -84,6 +84,43 @@ Not the cause (measured): voice, length, cut rate, speech speed, frame 0, art st
 
 DD01–DD04 overlap ER01–ER04 and ER05; they are recorded here as tests, not new rules (DP01).
 
+<a id="api-pull"></a>
+## YouTube Analytics API pull (2026-11-08)
+
+Source: `youtube-analytics` MCP (read-only), data through 2026-11-05: the API lags Studio, so **EP03 (posted 6 Nov) and EP05 (7 Nov) return no rows yet**. Re-pull them on or after 2026-11-10. `engaged/views` = engagedViews ÷ views; public views include replays, so 1 − engaged/views runs a few points above Studio's swiped-away (EP02: 38.6 % vs 33.6 %).
+
+**EP02 retention curve** (100 points, 0.6 s each; `audienceWatchRatio`, and `relativeRetentionPerformance` against YouTube videos of similar length, 0.5 = median):
+
+| Time | Watch ratio | Relative | Script at that moment |
+| --- | --- | --- | --- |
+| 0.6 s | 1.19 | 0.59 | hook |
+| 6.0 s | 1.01 | 0.40 | "หัวหอมทั้งหัว วางไว้เฉย ๆ…" |
+| 12.0 s | 0.90 | 0.32 | "ในเซลล์ มีเอนไซม์ กับสารที่มีกำมะถัน" |
+| 16.2 s | 0.70 | **0.29** (lowest) | "ซึ่งปกติแยกกันอยู่" → "พอเซลล์แตก…" |
+| 30.0 s | 0.55 | 0.37 | "แล้วเคล็ดลับที่เขาว่ากัน?" → tips list |
+| 42.6 s | 0.45 | 0.61 (best) | "คือแว่นว่ายน้ำ" |
+| 60.0 s | 0.16 | 0.53 | end |
+
+- **Steepest 3 s drop outside the ending: 12.6–15.6 s (−0.17)**, inside the term block (L06–L07). Of all viewers lost before the ending (0–56 s), **59 %** are gone by 16.2 s. This confirms the ~15 s dip the user reported and ER02/ER05.
+- A second small step at 30.0–32.4 s (−0.05) where the tips list starts.
+- After ~40 s the viewers who stayed are better than the median for this length (0.6): the body's end is fine; the loss is in the first 16 s.
+
+**Channel Shorts (API, through 2026-11-05):**
+
+| Video | Length | Views | engaged/views | Avg % viewed |
+| --- | --- | --- | --- | --- |
+| EP02 onion (5 Nov) | 60 s | 1,304 | **0.61** | 60 % |
+| Pool depth (28 Oct) | 53 s | 1,564 | 0.54 | 46 % |
+| Hanako (1 Nov) | 87 s | 1,195 | 0.51 | 43 % |
+| The Bloop (30 Oct) | 71 s | 1,308 | 0.46 | **83 %** |
+| Oldest shipwreck (29 Oct) | 60 s | 984 | 0.45 | 57 % |
+| Wendigo (3 Nov) | 96 s | 950 | 0.38 | 30 % |
+| City story (4 Nov) | 65 s | 322 | 0.34 | 60 % |
+| Kuchisake-onna (1 Nov) | 83 s | 1,283 | 0.33 | 37 % |
+
+- **The hook and the hold are separate skills, as assumed above:** The Bloop holds best (83 %, an unanswered mystery in its title: "หรืออะไรกันแน่?") but loses more than half at the start; EP02 has the channel's best start (0.61) but loses 59 % of its leavers by 16 s.
+- EP05's 20 % swiped away (Studio) would put it near 0.75 on this proxy: well above every other Short on the channel.
+
 <a id="outside-evidence"></a>
 ## Outside evidence
 
