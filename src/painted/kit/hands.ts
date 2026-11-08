@@ -403,7 +403,7 @@ const FSPEC: Record<LongFingerId, {v: number; f: number; len: number; w: number;
   little: {v: -3.6, f: 5.7, len: 4.7, w: 1.4, abd: 9, sgn: -1},
 };
 // Proportions (plan-view pass, 8 Nov 2026): wrist -> middle MCP 6.5 cm for a 6.0 cm middle finger (0.92), palm about 6.5 cm wide, wrist 4.5 cm, finger widths 1.4-1.7 cm with a slight splay so gaps show, little tip near the ring's DIP crease, ring >= index.
-const SPLIT = [0.45, 0.3, 0.25] as const; // phalanx share of the finger length (brief)
+const SPLIT = [0.43, 0.29, 0.28] as const; // phalanx share of the finger length (distal raised from 0.25, user note 8 Nov 2026)
 const TAPER = [1, 0.97, 0.94, 0.9] as const;
 const THUMB_SPEC = {cmc: [1.2, 1.4, -0.3] as const, len: [2.6, 2.0, 1.8] as const, w: [1.85, 1.65, 1.5, 1.4] as const};
 // Back of the hand outline (v toward the thumb, f forward; cm at size 1), wrist edge first.
@@ -759,7 +759,7 @@ const FLAT: HandPose = {
   note: 'flat on the table, fingers together (HAND-CLOSE flat)',
 };
 const TP_FINGERS: Record<LongFingerId, FingerPose> = {
-  index: straight(25.6, 28, 8), middle: straight(55, 125, 12), ring: straight(23.8, 28, 8), little: straight(27.9, 28, 8),
+  index: straight(25.0, 28, 8), middle: straight(55, 125, 12), ring: straight(23.2, 28, 8), little: straight(27.3, 28, 8),
 };
 const TP: HandPose = {
   pitch: 16.5, roll: 0, wristRise: 1.2, fingers: TP_FINGERS, thumb: {cmc: 18.6, cmcAbd: 14, mcp: 4, ip: 2},
