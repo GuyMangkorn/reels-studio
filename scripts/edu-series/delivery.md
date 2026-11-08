@@ -31,6 +31,7 @@
 - 2026-11-08: Film W5.1 timed scene sheets EDU-EP07-SHEETS-R1.1 ([ep07/scene-sheets.md](ep07/scene-sheets.md), `ready-for-dev`, 1798 f = 59.93 s; user Q1 = c, Q2 = a, Q3 = b applied; R1 was 1795 f) + rows EDU-EP07-ROWS-R1.2 (timed). Next: coordinator republishes the review page; then Boss W5.2 plates, Editor narration placement and blockout.
 
 - Draft (W5.3) v1 viewer-checked 18/18 pass (round 1, minor findings in viewer-check-draft-1.md); review page republished v4 with sound draft cut: https://claude.ai/artifact/P5Sq6g3SMSMGpTwC2Enadc (2026-11-08)
+- 2026-11-08: W6 final cut (full size, 1798 f) + draft cut on a NEW review page (the earlier page P5Sq6g3SMSMGpTwC2Enadc was not readable from this session): https://claude.ai/artifact/1cL2rAyEnvB12TN7PEU1Pm (slug 04eec2c0-7acd-4f3f-a5f0-7e2f60b2c2f0, v1794123769-4b68, rows EDU-EP07-ROWS-R1.2, `db` empty; verdicts will live under `reviews/<shot ID>@<stage>`; the earlier storyboard 18/18 verdicts stay on the old page).
 
 ## Handoff log
 
