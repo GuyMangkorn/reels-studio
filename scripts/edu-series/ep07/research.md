@@ -20,6 +20,8 @@
 | SRC009 | Carlip S, "Aberration and the Speed of Gravity," Phys Lett A 267:81 (2000), arXiv:gr-qc/9909087; and the Usenet Physics FAQ "What is the speed of gravity?" https://math.ucr.edu/home/baez/physics/Relativity/GR/grav_speed.html | FAQ `inspected`; arXiv paper `lead-only` (PDF not extractable) | FAQ: in GR gravity propagates at c; binary pulsar PSR 1913+16 "confirms that the speed of gravity is equal to the speed of light to within 1%". FAQ does not discuss the Sun-vanishes scenario or GW170817. |
 | SRC010 | Forum threads (Physics Forums) and Big Think/Siegel "This is why the speed of gravity must equal the speed of light" | `lead-only` (search excerpts; Big Think 403) | Excerpts agree that Earth would keep orbiting ~8 min, and that the Sun cannot really vanish. Not primary; not used as evidence. |
 
+| SRC011 | Wikipedia, "Special relativity" https://en.wikipedia.org/wiki/Special_relativity | `inspected` (first 100k of 246k chars; causality section 7.8 unread) | Secondary but a standard summary. "Information about distant objects can arrive no faster than the speed of light"; light speed is "the maximum speed of information". Upstream: Einstein 1905 (not opened). Added W1.3 R1.2 for C12. |
+
 ## Claim ledger
 
 | ID | Claim (concept wording) | Status | Evidence and note |
@@ -35,6 +37,7 @@
 | C09 | Twist: "แสงแดดที่โดนตัวคุณอยู่ตอนนี้… ออกจากดวงอาทิตย์มาตั้งแต่ 8 นาทีที่แล้ว" (beat 5) | `supported, hedge` | True for the last leg from the Sun's surface (SRC001). The energy in that light was made in the core and took on the order of 170,000 years to get to the top of the convection zone (NASA Sun facts, search excerpt only; other NASA pages give 40,000 years to millions of years, a model-dependent spread). "ออกจากดวงอาทิตย์" (left the Sun) is accurate if read as left the surface; it is wrong as "was made 8 minutes ago". Do not say the light "was born" 8 minutes ago. This is also a possible extra reveal, flagged here only; not in the concept. |
 | C10 | "every star is a picture of its past" | `settled` | Light-travel time from any star is its distance in light-years; no source needed beyond the definition. Nearest star Proxima Centauri 4.2 years was not inspected. Keep "ภาพในอดีต" without numbers unless sourced. |
 | C11 | "gravity's news also travels at the speed of light" (logline) | `supported, hedge` | See C03. "News" is a narrator metaphor, acceptable. Avoid "gravity is faster/slower than light". |
+| C12 | Nothing, including a signal or warning, travels faster than light, so no alert could reach Earth before the darkness (L16, R1.2) | `settled` | SRC011 (max speed of information); SRC009 (gravity changes also at c, so a gravity-based warning arrives with the light). Phone/radio signals are light-speed. Hedge: say "ไม่มีอะไร" as a rule of the physics; do not add that nothing could ever detect the Sun early (neutrinos also arrive ~with the light). |
 
 ## Derived timing table (arithmetic, inputs SRC003/SRC004/SRC005/SRC006)
 

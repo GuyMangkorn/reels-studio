@@ -81,3 +81,19 @@ User picks (2026-11-08, final): NAR = Kore style A (prompt of `ep07-aud-NAR-A-br
 
 - **Totals.** NAR speech **46.89 s** (0.90: 49.48 s); line gaps sum 7.08 s; whole read 54.52 s (0.25 s lead, 0.30 s tail). Plus dialogue D01-D03 7.00 s, blackout 1.5 s, seam 0.5 s: **55.9 s** if nothing overlaps and gaps are ignored; **about 63 s** serial with the generated line gaps kept (46.89 + 7.08 + 7.00 + 1.5 + 0.5 = 62.97). Target 40-60 s: placement must overlap D01/D02 with picture or tighten gaps (about 3 s to save), or the user trims (script trim goes to Preaw).
 - **Not listened:** pace and the atempo 0.95 artifacts were not heard by me. The user's ear is the lock.
+
+## R1.2 samples (2026-11-08, Editor; script EDU-EP07-SCRIPT-R1.2; measured, NOT listened to)
+
+New lines L05 (reworded), L15, L16 and optional V01, for the user to pick A or B. Same voice and prompt as the locked read (Kore, style A: "fast-paced, quick brisk delivery with short pauses between phrases, playful deadpan female narrator, dry and matter-of-fact, speaking quickly without dragging"), ellipses as commas, `.` between L15 and L16, then `atempo=0.95` and two-pass loudnorm -16 LUFS / TP -1.5 (same chain as the locked 0.95 read; here per clip, since the new lines are separate calls, not part of the one full read). Store: `projects/EDU/audio/EDU-EP07-SHORT/narr-samples/2026-11-08_ep07-r12-*.wav`; scratch `out/ep07-voice/r12/` (`.json` sidecars hold voice, style, text).
+
+| File | Content | Dur (s) | LUFS | Speech rate (non-space chars / s, whole clip) |
+| --- | --- | --- | --- | --- |
+| `ep07-r12-L05-A` | L05 | 5.20 | -16.0 | 12.3 |
+| `ep07-r12-L05-B` | L05 | 4.91 | -16.0 | 13.0 |
+| `ep07-r12-L15L16-A` | L15 + L16 (pauses 0.57 s between phrases, 0.38 s before the last) | 5.67 | -15.8 | 11.8 |
+| `ep07-r12-L15L16-B` | L15 + L16 | 6.05 | -16.0 | 11.1 |
+| `ep07-r12-V01-CUS` | V01, Algenib, tag `<laugh>`, style "tired working man, casual, a short amused snort-laugh through the nose at his phone"; no atempo | 1.24 | -21.2 (not re-levelled) | - |
+
+- Locked neighbours for comparison (rate = chars / line seconds, digits not counted as spoken): L03 3.30 s file, L08 2.36 s file (about 11 chars / s). The new lines run about 11-13 chars / s, i.e. L05 slightly faster than the locked pace (L05-B fastest). All new clips sit at -16 LUFS like the locked read.
+- **Requests: 5** (L05 x2, L15+L16 x2, V01 x1). Total today about 13 of 100.
+- Pick by ear; not heard by me. V01 is a first guess (a `<laugh>` tag may not read as a snort); skip it if it does not sound right. After the pick, the chosen clips need cut-and-place (0.06 s head, 0.08 s tail like the locked lines).

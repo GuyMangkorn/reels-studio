@@ -3,8 +3,8 @@ import {makeShot} from '../shot';
 import {orbit, paintSoi, POSE_A} from '../soi';
 import type {YCam} from '../../kit/ycam';
 
-// S01-B05-SH03 (G1681-1798): back to frame 0 (L14b, tail). SD10 camera orbit((0.50, 1.05, -0.40), az 19 -> 23, r 3.50 -> 3.70, eye 1.30, pitch 5, f 1480, hy 770), ease-out over
-// L0-87, then exactly POSE_A, still, L87-117. Every ambient clock runs on G - 1797 (R09, B_loop), so the last frame G1797 is the first frame G0.
+// S01-B05-SH03 (G1463-1580): back to frame 0 (L14b, tail). SD10 camera orbit((0.50, 1.05, -0.40), az 19 -> 23, r 3.50 -> 3.70, eye 1.30, pitch 5, f 1480, hy 770), ease-out over
+// L0-87, then exactly POSE_A, still, L87-117. Every ambient clock runs on G - 1579 (R09, B_loop), so the last frame G1579 is the first frame G0.
 const ID = 'S01-B05-SH03', N = lenOf(ID);
 const cam = (L: number): YCam => {
   if (L >= 87) return POSE_A;
