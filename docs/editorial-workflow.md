@@ -65,7 +65,7 @@ The handoff contains:
 
 - **Story core:** logline, central question, character intention/obstacle, intended feeling and learning takeaway.
 - **Truth and ending:** what actually happens within the story, verified facts and remaining uncertainty. Choose the ending before planting clues; for real cases, preserve the evidence rather than bending it to a preferred ending.
-- **Scene / beat list:** IDs, scene purpose, causal links, what changes and estimated timing. Distinguish story-world time from elapsed video time.
+- **Scene / beat list:** IDs, scene purpose, causal links, what changes and estimated timing. Distinguish story-world time from elapsed video time. Edu Shorts add the open-question map ([ER06](scriptwriting-principles.md#edu-short-retention-default-user-8-nov-2026)).
 - **Full script:** the actual spoken Thai narration/dialogue, with pauses and necessary sound/story events. Identify subtitles that shorten or change VO wording separately. A synopsis is not a full script.
 - **Sound intent:** per beat, music mood/energy, silence, and any stinger/riser/effect that carries the beat, as English notes ([sound duties](sound-generation-workflow.md#role-responsibilities)). Narration text is unchanged; sound never replaces a clue.
 - **Clue ledger:** `CL01`, plant/beat, observable information, initial interpretation, post-reveal interpretation and payoff. Distinguish fictional clues from real evidence presented to viewers.
