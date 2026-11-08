@@ -55,6 +55,16 @@ Resolve [delivery selection](delivery-workflow.md) before writing. Give each sel
 - Reread to test the twist: clues remain present, causes still connect and the reveal changes the meaning of earlier information.
 - Write Thai for listening. Remove repeated explanation, leave pauses for information and emotion, and test audio before locking timing.
 
+<a id="edu-short-retention"></a>
+### Edu Short retention (Default; user, 8 Nov 2026)
+
+Evidence: three posted edu Shorts ([EP05 retrospective](../scripts/edu-series/ep05/lessons-learned.md)). EP05 "ถ้าคุณตัวเล็กเท่ามด": 24k views, 20.2 % swiped away, ~91 % average watched. EP02 and EP03: 1.3k–2.5k views, 34–37 % swiped away, 60–66 % watched. Three data points, so these are defaults to test, not proven causes; record each new episode's numbers in [channel performance](channel-performance.md).
+
+- **ER01 — Hook (Preaw).** Line 1 carries the title's promise and speaks to "คุณ". Within about 5 s comes one concrete claim that contradicts something the viewer is sure of, with stakes the picture can show (EP05 L02 "ตกจากตึกสิบชั้น… คุณจะแทบไม่เป็นอะไรเลย" over the drop). By about 7 s, answer the objection a sharp viewer would raise (EP05 L03 "สมมติว่าหดทั้งตัว… รวมทั้งน้ำหนักด้วย"). Avoid a hook whose answer the viewer thinks they already know (EP02 "หัวหอมไม่ได้ทำให้คุณร้องไห้…"). In ideation, Preaw states each concept's counter-intuitive claim in one line.
+- **ER02 — Levels (Preaw).** Pay the hook by about 30 % of the runtime with a comparison the body knows (EP05 "ราว ๆ กระโดดลงจากเก้าอี้"), and open the next problem in the same breath ("แต่…"). Then a new problem about every 10 s. The character stays on screen and meets each problem before the narrator names its cause (show, then tell). The mechanism is one everyday line after the character has felt it, never a block of terms with the character off screen (EP02 L06 "ในเซลล์ มีเอนไซม์ กับสารที่มีกำมะถัน…" sits on its sharpest retention drop, ~15 s).
+- **ER03 — One rule that flips (Preaw, Boat).** One spoken rule explains every beat and returns as a refrain (EP05 "ตัวยิ่งเล็ก…"); the twist turns the same rule from a cost into an advantage. Plant the twist's objects early as a burden or background (EP05 crumb CL01, ant CL02). Put the best moment last and let it land: a closed ending with a ~2 s hold when the reversal is the payoff. Boat keeps the hook strong and true with narrow hedges ("แทบ", "ราว ๆ", "บางชนิด") instead of turning the whole claim into a maybe.
+- **ER04 — A friend telling it (Preaw).** The character reacts with small vocal sounds (squeak, "huh?", sigh), and the narrator talks like a friend (particles "นะ", "หรอก"; EP05 R1.4 user rewrites), not a textbook.
+
 <a id="loop-friendly-writing"></a>
 ## Loop-friendly writing
 
