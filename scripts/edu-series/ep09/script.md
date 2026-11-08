@@ -1,13 +1,13 @@
 # EDU-EP09-SHORT — นิ้วนางที่ยกไม่ขึ้น (the ring finger that will not lift)
 
 - Deliverable: `EDU-EP09-SHORT`; task file [task.md](task.md); series concepts [../concepts.md](../concepts.md) C28 (Preaw R5 concept, Film R5 annotation).
-- Script revision: **EDU-EP09-SCRIPT-R1.3** (Preaw, 2026-11-08). R1.3 = cuts only (L10, L13; ER07, user decision 2026-11-08); see [Revision log](#revision-log).
+- Script revision: **EDU-EP09-SCRIPT-R1.4** (Preaw, 2026-11-08). R1.4 = L12 second half reworded to the user's wording (one line, same syllable count); R1.3 = cuts only (L10, L13; ER07, user decision 2026-11-08); see [Revision log](#revision-log).
 - Inputs: research [research.md](research.md) W1.1 (Boat, 2026-11-08; claims F001–F018, recommendations to the C28 beats); user decisions in [task.md](task.md) (2026-11-08): Q2 Schumann **cut**; Q1 user real try (one person): fold middle → ring cannot lift; fold index, fold little, fold ring → lift middle all lift.
 - Story mode: **fiction with factual knowledge** (open fictional brief, no mode specified). A grandfather (ELDER) and a boy (BOY) at a dining table stand in for the viewer; their tries, reactions and the see-through hand are **dramatization**. The see-through hand is a **diagram** ("ภาพประกอบ"), not a measured view of this posture (F007 `model`). Spoken facts: F001–F006, F007 (hedged), F012, F013, hedged as research.md lists (F008 and NEW-01 left unspoken since R1.3, ER07).
 - Profile: educational (anatomy, try-it-now), painted 2D p5.brush, 4-head cast, Thai Short 1080×1920 30 fps, narrator Kore (edu default: deadpan, brisk, friend-telling-it, no atempo), ending **`B_loop`** (concept C28).
 - Voices: NAR = Gemini TTS Kore. BOY = one frustrated "ไม่ขึ้น!" (V01). ELDER = one line, laughing (V02).
 - Target 40–60 s (series). **Timing: estimated** ([N1](#notes)): R1.3 NAR ~170 syllables ≈ 40.3 s at EP05's measured Kore pace; video about 48.5 s with the try-it silence, two character lines, finger taps and the ~2.5 s closing hold. R1.3 is not read aloud or audio-tested (the W1.4 full read [voice-measure.md](voice-measure.md) is of R1.1 with L10 and L13).
-- Status: R1.3 (cuts only) for Boat recheck of the cut scope ([R1.3 recheck scope](#revision-log)). Cuts decided by the user (2026-11-08); the R1.3 script as a whole is not user-approved.
+- Status: R1.4 for Boat recheck of L12/F013 ([R1.4 recheck scope](#revision-log)); R1.3 (cuts only) recheck of the cut scope still open ([R1.3 recheck scope](#revision-log)). Cuts decided by the user (2026-11-08); the R1.3 script as a whole is not user-approved.
 
 ## Story core
 
@@ -73,7 +73,7 @@ Times are estimated (R1.3, [N1](#notes)): 0.237 s per NAR syllable plus the fixe
 | L07 | NAR | นิ้วชี้กับนิ้วก้อย มีกล้ามเนื้อเสริมของตัวเอง… นิ้วนางไม่มี | The index and little finger each light up a second, separate cord of their own (CL02 payoff). The ring finger's cord stays single. | F005 `settled` (textbook; Boat verifies extensor digiti minimi at W1.3) |
 | L08 | NAR | ต้องใช้ชุดเดียวกับนิ้วกลางและนิ้วก้อย… แถมเส้นเอ็นยังมีแถบเล็ก ๆ ผูกกันอยู่ | Highlight the shared muscle; small bands appear across the back of the hand between the middle and ring cords **and** between the ring and little cords. | F006 safe wording (research.md); F004 `settled` (bands exist and link) |
 | L09 | NAR | มักอธิบายกันว่า… พอนิ้วกลางพับลง สายร่วมก็ถูกกดไว้ นิ้วนางเลยติด | Diagram: the folded middle finger holds its cord down; the band pulls on the ring cord, which goes taut but cannot rise. | F007 `model` ("มักอธิบายกันว่า"); picture labelled diagram |
-| L12 | NAR | แล้วนักเปียโนล่ะ… เล่นมาหลายปี นิ้วแยกกันได้ดีกว่าคนทั่วไป | Fictional insert, labelled as illustration: generic hands on piano keys (no face, no named player), fingers moving one by one; a guitar fretting hand. | F013 `settled` as group difference; "เล่นมาหลายปี" = playing, not an exercise tip |
+| L12 | NAR | แล้วนักเปียโนล่ะ… เล่นมาหลายปี แค่ควบคุมได้ดีกว่าคนทั่วไป | Fictional insert, labelled as illustration: generic hands on piano keys (no face, no named player), fingers moving one by one; a guitar fretting hand. | F013 `settled` as group difference; "เล่นมาหลายปี" = playing, not an exercise tip; R1.4 "แค่ควบคุม" implies same cords, better control (Boat recheck, [Q7](#open-questions)) |
 | (retry) | — | [~1.0 s, no speech] | Back at the table, see-through fades. BOY folds the middle finger again and tries; the ring finger trembles up a hair and drops (**CL03**). ELDER grins. | dramatization |
 | L15 | NAR | นิ้วนางคุณไม่ได้ขี้เกียจหรอก… มันแค่ใช้สายร่วมกับนิ้วข้าง ๆ | Top-down macro, plain hand, the faint ghost of the shared cord and the two bands glowing once across the ring finger's neighbours, then gone. Hold ~2.5 s, no speech; the loop seam returns to L01's flat hand. | F004/F006 as metaphor ("สายร่วม"); Boat's rewrite of the C28 last line ([N3](#notes)) |
 
@@ -108,12 +108,13 @@ Times are estimated (R1.3, [N1](#notes)): 0.237 s per NAR syllable plus the fixe
 | L07 | F005 | `settled` (textbook) | SRC002 (extensor indicis); extensor digiti minimi textbook only, verify at W1.3 | "นิ้วชี้กับนิ้วก้อย มีกล้ามเนื้อเสริมของตัวเอง… นิ้วนางไม่มี" |
 | L08 | F006, F004 | F006 `model` (Boat's safe wording used); F004 `settled` | SRC001, SRC002, SRC003 | "ต้องใช้ชุดเดียวกับนิ้วกลางและนิ้วก้อย… แถมเส้นเอ็นยังมีแถบเล็ก ๆ ผูกกันอยู่"; bands drawn middle–ring and ring–little |
 | L09 | F007 | `model` | research.md F007 (no paper tests the posture) | "มักอธิบายกันว่า…"; diagram only |
-| L12 | F013 | `settled` as group difference | SRC007 | "เล่นมาหลายปี นิ้วแยกกันได้ดีกว่าคนทั่วไป" |
+| L12 | F013 (R1.4 wording: recheck) | `settled` as group difference; "แค่" = same-cords inference (as NEW-01, Boat Q1a) | SRC007 | "เล่นมาหลายปี แค่ควบคุมได้ดีกว่าคนทั่วไป" |
 | L15 | F004, F006 | metaphor on `settled`/`model` | as L08 | "แค่ใช้สายร่วมกับนิ้วข้าง ๆ" (plural neighbours, covers middle and little; F004 note) |
 
 ## Notes
 
 - <a id="n1"></a>**N1 Timing (estimated, R1.3; not read aloud):** my syllable count, NAR ~170 syllables (L01 17, L02 10, L03 9, L04 9, L05 13, L06 18, L07 16, L08 21, L09 21, L12 19, L15 17) = R1.2's 203 minus L10 (20) and L13 (13). Rate from EP05's measured Kore read ([../ep05/voice-measure.md](../ep05/voice-measure.md), ≈ 0.237 s per syllable including gaps) → **NAR ~40.3 s** (R1.2: ~48.1 s). Add try silence ~2.0 s, V01 ~0.6 s, V02 ~1.5 s, taps ~0.6 s, retry ~1.0 s, closing hold ~2.5 s (8.2 s) → **video about 48.5 s** (range ~46–51 s). L03's slower separate re-read at W4 (R1.2) will add a little; not counted.
+  - **R1.4:** L12 stays 19 syllables (second half "นิ้วแยกกันได้ดีกว่า" 6 → "แค่ควบคุมได้ดีกว่า" 6; delta 0), so NAR ~170 and video ~48.5 s are unchanged (estimated). The W4 full reads (R1.3, s2) carry the old L12 and need a new L12 read before the voice lock.
   - Cross-check, arithmetic only (not a new read): the W1.4 Kore take of R1.1 ([voice-measure.md](voice-measure.md)) had L10 3.90 s + 0.62 s gap and L13 (measured row "L12*") 2.25 s + 0.58 s gap. Removing them gives as read ~41.6 s raw, ~43.8 s at the user's x0.95, so video as read ~52.0 s at x0.95 (R1.2 projection ~59.7 s). Still estimated until the W4 voice lock.
   - **Cut set (R1.3):** C1 (L13) and C3 (L10) are applied (ER07, user). C2 L06 drop "เหมือนสายเชิดหุ่น" (−4 ≈ −0.9 s) stays available but is not needed for length.
 - <a id="n2"></a>**N2 Hook (ER01):** the hook's "claim" is the viewer's own failure, felt in the first ~4–6 s; the objection a sharp viewer raises ("my ring finger is just weak") is answered at ~12–18 s by the three taps and L05, slightly later than ER01's ~7 s because the viewer needs the try window first. The ~30 % pay (ER02) lands at L05 (~18 s, 32 %).
@@ -131,6 +132,8 @@ Times are estimated (R1.3, [N1](#notes)): 0.237 s per NAR syllable plus the fixe
 - **Q5 (user, via coordinator; R1.3):** B04 is now L12 alone (~4.5 s, a question and its answer). It still works as a breather after the B03 explanation, but it no longer ties back to the shared-string rule (ER03) and can feed CL03's "he is getting stronger" misread. Keep L12 (Preaw's recommendation) or cut it too (video ~44 s)?
 - **Q6 (Boat, R1.3 recheck):** with L10 gone, L15 "มันแค่ใช้สายร่วม…" is the only cause the viewer hears; Boat's R1.1 R-1 flagged "แค่" against F008, and the user restored "แค่" in R1.2. Does L09's "มักอธิบายกันว่า" plus the omission keep L08–L09 and L15 within F006/F007/F008, or does the user need to choose again on "แค่"? (Report only; L15 text unchanged.)
 
+- **Q7 (user, R1.4):** L12 now uses your wording "เล่นมาหลายปี แค่ควบคุมได้ดีกว่าคนทั่วไป". Two things to weigh: (a) "แค่" comes again ~5 s later in L15 "มันแค่ใช้สายร่วม…", so the ear hears "just" twice and the second, the payoff, lands a little softer; (b) "ควบคุม" has no object, so the viewer infers "the fingers" from the piano picture. Alternative with the same 6 syllables: "เล่นมาหลายปี ควบคุมนิ้วได้ดีกว่าคนทั่วไป" (names the fingers, keeps "แค่" for L15 only, drops the "same cords, only control" hint). Keep your wording (applied) or take the alternative? Boat's L12/F013 recheck applies to either.
+
 ## Revision log
 
 | Revision | Date | Author | Change | Reason |
@@ -140,6 +143,10 @@ Times are estimated (R1.3, [N1](#notes)): 0.237 s per NAR syllable plus the fixe
 | R1.2 | 2026-11-08 | Coordinator | After the full read (user): (1) ending: "แค่" restored in L15 (user prefers "มันแค่ใช้สายร่วมกับนิ้วข้าง ๆ"; R-1 of R1.1 reverted); (2) L03 "เบา ๆ นะ อย่าเอามืออีกข้างดึง" was spoken too fast to follow: text unchanged and kept (F017 safety), to be re-read separately slower with clear gaps at the voice lock (W4). Other lines OK (user). | W1.3 |
 | R1.3 | 2026-11-08 | Preaw | Cuts only, no rewrite: L10 ("แต่ไม่ใช่แค่เส้นเอ็นนะ… ระบบประสาทก็มีส่วน และแต่ละคนไม่เท่ากัน") and L13 ("แต่สายในมือ ก็ยังเป็นชุดเดียวกันอยู่ดี") removed; IDs added to the skipped list. Pack made consistent: beat times (B03 L06–L09, B04 L12 only, B05 shifted), shot cues of the cut lines gone (L10 arm glow and three-hands row, L13 see-through pianist), CL03 payoff re-pointed to L15 without new speech, claim rows L10/L13 and F002-at-L10 dropped, Q1/Q2 resolved, Q5/Q6 added, sound B03/B04, N1 recount (estimated), ER06 open-question map added. No other Thai line changed (L03 re-read at W4 stays). | ER07 cuts per user (AskUserQuestion "ตัดอย่างเดียว", 2026-11-08) |
 
+| R1.4 | 2026-11-08 | Preaw | L12 only: "นิ้วแยกกันได้ดีกว่าคนทั่วไป" → "แค่ควบคุมได้ดีกว่าคนทั่วไป" (user's wording). L12 row, claim row and N1 note updated; syllables 19 → 19. No other line, ID or timing changed. Q7 added (alternative wording). | User request 2026-11-08 |
+
 **Boat check scope (R1, whole script):** all lines L01–L15 and V01–V02. Facts: F001–F008, F012, F013, F017, NEW-01. Clues CL01–CL03 are fictional. Scenes: `EDU-EP09-S01-B01`–`B05`.
 
 **Boat recheck scope (R1.3, cuts only):** removed facts F008 (L10), F002 at L10 ("แต่ละคนไม่เท่ากัน"), NEW-01 (L13); check that what remains does not now overclaim without them: L08–L09 (F006 `model`, F007 `model`), L12 (F013, now unanswered by any "same strings" line), L15 "แค่" (F008; Q6), CL03 payoff re-pointed to L15 (fictional, no new speech). Scenes: `EDU-EP09-S01-B03`, `B04`, `B05`. Unchanged lines need no recheck.
+
+**Boat recheck scope (R1.4, L12 only):** F013 new claim wording: pianists after years of playing control their fingers better than people in general, with the same tendons (the "แค่" carries the same-cords inference that Boat passed as NEW-01 in Q1a, now implied instead of spoken). Check: (1) "ควบคุมได้ดีกว่า" stays within SRC007 (faster, more independent movement, less spill-over); (2) F017: it describes musicians, not a method or a "free your ring finger" promise; (3) whether L12 "แค่ควบคุม" (better control, i.e. a control factor) next to L15 "แค่ใช้สายร่วม" (structure only) changes Q6 (F008). Scene: `EDU-EP09-S01-B04` (and `B05` for the L15 interaction). Not fact-checked yet.
