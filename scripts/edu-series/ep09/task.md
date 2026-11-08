@@ -2,7 +2,7 @@
 
 Record: this file. Series context: [concepts.md](../concepts.md) (R5, C28) · series task list: [task.md](../task.md).
 
-**Now:** W3.1 look frames LF01/LF01b/LF02/LF03/LF04 painted (Film, 2026-11-08); LF02 fix round 2 (last) after the viewer check (ROWS-R1.4, BRIEF-R1.4, still `out/edu09/look-frames/v3/LF02.png`; remaining findings go to the user as notes); review page: pending. **Next:** coordinator publishes the look-frame review page; user picks/notes, then W4 voice lock
+**Now:** script R1.3 cuts (L10, L13) carried into the plan: BRIEF-R1.5, ROWS-R1.5 (18 shots, est 48.5 s, three new picture-only reaction cutaways in B03); W3.1 look frames LF01/LF01b/LF02/LF03/LF04 painted (LF02 fix round 2 still `out/edu09/look-frames/v3/LF02.png`); review page: pending. **Next:** coordinator publishes the look-frame review page; user picks/notes, then W4 voice lock
 
 - Deliverable: `EDU-EP09-SHORT`, Short only (Thai), 1080×1920, 30 fps, target 40–60 s (estimate). Profile: educational, painted 2D p5.brush, 4-head cast, Kore narrator (edu default), ending per concept (the user may change it); other fields = project defaults.
 - Factual claims for Boat: see the C28 entry in concepts.md R5. All unchecked until research and fact-check. Every try-it-now result needs a real try before scripting.
@@ -15,7 +15,8 @@ Record: this file. Series context: [concepts.md](../concepts.md) (R5, C28) · se
   - [x] W1.3 Boat fact-check (2026-11-08, fact-check.md; pass, R-1/R-2 optional)
   - [x] W1.4 Length check (2026-11-08, voice-measure.md; Kore style A + ban1, one read, NAR 45.0 s re-gapped, video ~53-57 s, pass, no cuts)
   - [x] W1.5 User approves the script (EDU-EP09-SCRIPT-R1.2, ending B_loop, user approval 2026-11-08 after hearing the Kore A full read; narration x0.95 slower at user request; L03 to be re-read slower at W4)
-- [x] W2 Brief and storyboard — 2026-11-08: W2.1 EDU-EP09-BRIEF-R1 (film-brief.md), W2.2 EDU-EP09-ROWS-R1 (storyboard.md, review-rows.json, 19 shots, est 56.9 s). Open user questions: Q-F1 (separate fingers in macro shots, UT14 exception), Q-F2 (piano + guitar or piano only). Review page: pending (coordinator publishes).
+  - [x] W1.6 Script R1.3 cut (Preaw, 2026-11-08): L10 and L13 cut (ER07), cuts only, per the user's decision 2026-11-08 (L12 kept, "แค่" kept in L15); est video ~48.5 s, not read aloud; Boat rechecks the cut scope (script Q6); Film carried it into BRIEF-R1.5 / ROWS-R1.5
+- [x] W2 Brief and storyboard — 2026-11-08: W2.1 EDU-EP09-BRIEF-R1 (film-brief.md), W2.2 EDU-EP09-ROWS-R1 (storyboard.md, review-rows.json, 19 shots, est 56.9 s). Open user questions: Q-F1 (separate fingers in macro shots, UT14 exception), Q-F2 (piano + guitar or piano only). Review page: pending (coordinator publishes). **Revision 2026-11-08 (Film): BRIEF-R1.5 + ROWS-R1.5** after script R1.3: S01-B03-SH05, S01-B03-SH06, S01-B04-SH03 retired; S01-B03-SH07–SH09 added (reaction cutaways, no speech; user to keep or drop on the review page); retimed to the script R1.3 estimate, 18 shots, est 48.5 s; review page: pending.
 - [ ] W3 Look frames and storyboard pass
   - [x] W3.0 Boss hand macro (`paintHandMacro`, commit abec7e7)
   - [x] W3.1 Film look frames (2026-11-08): stills `out/edu09/look-frames/v1/` (store kind look-frames), code `src/painted/edu09/`, brief R1.2 + rows R1.2; user decisions of 2026-11-08 applied (rig skin, steeper CAM-POV, B02-SH02 f 1250); placeholder: LF04 pianist pose (W5)
