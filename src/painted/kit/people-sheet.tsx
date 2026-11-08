@@ -165,7 +165,7 @@ const WARD_WHO: Record<OutfitId, {adult: PersonId; child?: PersonId}> = {
   'school-jp-gakuran': {adult: 'man-crop', child: 'boy-school'},
   office: {adult: 'man-parted'}, police: {adult: 'man-buzz'}, nurse: {adult: 'woman-ponytail'}, doctor: {adult: 'woman-pixie'},
   monk: {adult: 'man-crop'}, vendor: {adult: 'woman-curly'}, rider: {adult: 'man-spiky'}, hoodie: {adult: 'woman-pixie'},
-  guard: {adult: 'man-elder'}, yukata: {adult: 'woman-ponytail'}, kimono: {adult: 'woman-curly'}, 'kitchen-apron': {adult: 'woman-curly'}, 'park-casual': {adult: 'man-crop'}, 'home-lounge': {adult: 'woman-curly'},
+  guard: {adult: 'man-elder'}, yukata: {adult: 'woman-ponytail'}, kimono: {adult: 'woman-curly'}, 'kitchen-apron': {adult: 'woman-curly'}, 'park-casual': {adult: 'man-crop'}, 'eva-suit': {adult: 'woman-bob'}, 'home-lounge': {adult: 'woman-curly'},
 };
 const wardCell = (i: number) => ({x: (i % WARD_COLS) * WARD_CELL_W, y: 130 + Math.floor(i / WARD_COLS) * WARD_CELL_H});
 

@@ -8,7 +8,7 @@ import {OUTFIT_IDS, type OutfitId} from './wardrobe';
 //
 //   person [+ outfit] [, pose] [, expression]        e.g.  man-parted + police, P15, scared
 //
-// - `person` is a `PEOPLE` id, `outfit` a `WARDROBE` id, `pose` P01-P45 (`poses.ts`), `expression` an `EXPRESSIONS` id. Each part is
+// - `person` is a `PEOPLE` id, `outfit` a `WARDROBE` id, `pose` P01-P46 (`poses.ts`), `expression` an `EXPRESSIONS` id. Each part is
 //   optional after the person, but the order is fixed: the pose comes before the expression. Spaces around `+` and `,` do not matter.
 // - `parseCasting` returns a `CastMember` (`shot-templates.ts`) or throws with the line, the field and the valid choices. Use it for
 //   every casting string a scene or a test writes; it does not look at the picture (a pose the figure's view lacks falls back to P01).
@@ -41,13 +41,13 @@ export const parseCasting = (line: string): CastMember => {
     if (POSE_TOKEN.test(token)) {
       if (m.expression !== undefined) throw fail(`pose "${token}" must come before the expression`);
       if (m.pose !== undefined) throw fail(`second pose "${token}"`);
-      if (!isPose(token)) throw fail(`unknown pose "${token}" (P01-P45 in poses.ts)`);
+      if (!isPose(token)) throw fail(`unknown pose "${token}" (P01-P46 in poses.ts)`);
       m.pose = token;
     } else if (isExpression(token)) {
       if (m.expression !== undefined) throw fail(`second expression "${token}"`);
       m.expression = token;
     } else {
-      throw fail(`unknown field "${token}": expected a pose (P01-P45) or an expression id`);
+      throw fail(`unknown field "${token}": expected a pose (P01-P46) or an expression id`);
     }
   }
   return m;
@@ -65,7 +65,7 @@ export const roleLabel = (id: PersonId): string => {
 
 /**
  * Three suggested poses per card (front view, no prop the kit lacks). Boss's picks for casting by age and gender; a scene may use any
- * P01-P45 pose the view has. Film or Mark overrides them by writing the pose into the casting line.
+ * P01-P46 pose the view has. Film or Mark overrides them by writing the pose into the casting line.
  */
 export const CARD_POSES: Record<PersonId, readonly [AnyPoseId, AnyPoseId, AnyPoseId]> = {
   'man-crop': ['P03', 'P09', 'P15'],

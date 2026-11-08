@@ -1,4 +1,4 @@
-import {legScale, shoulderPoint, type CastDef, type FigPose} from './cast';
+import {BONE, legScale, shoulderPoint, type CastDef, type FigPose} from './cast';
 import {EXPRESSIONS, type ExpressionId} from './expressions';
 import type {FaceState} from './head';
 import {hash} from './hash';
@@ -35,6 +35,7 @@ export const MOTION_IDS = [
   'idle-breathe', 'walk-in-from-left', 'walk-in-from-right', 'walk-out-to-left', 'walk-out-to-right', 'run-left-to-right', 'run-right-to-left',
   'nod', 'shake-head', 'startle-jump', 'look-around', 'turn-head-left', 'turn-head-right', 'turn-head-to-camera', 'shiver',
   'sit-down', 'stand-up', 'point-and-say', 'gasp-recoil', 'talk', 'kneel-down', 'stand-from-kneel', 'crouch-hide', 'hood-pull', 'coin-count', 'eat-chew',
+  'zero-g-drift', 'pat-check', 'rail-tow',
 ] as const;
 export type MotionId = (typeof MOTION_IDS)[number];
 
@@ -62,6 +63,10 @@ export type MotionBody = {
   head?: 'front' | 'left' | 'right';
 };
 
+/** One arm placed by hand (metres from its shoulder, screen right / up; in a profile `x` is toward the facing side, as the pose tables). `near`
+ * (m): how far the glove sits toward the lens, for the glove growth (`paintEva`, capped 1.3x). */
+export type Reach = {to: Pt; via: Pt; near?: number};
+
 export type MotionFrame = {
   /** Body view the motion needs (a walk is a profile). Default: the caller's view. */
   view?: View;
@@ -70,6 +75,10 @@ export type MotionFrame = {
   body?: MotionBody;
   /** Both arms and the body fields from pose `a` blended into `b` by `u` (`poseMix`). Omitted = the base pose's arms. */
   arms?: {a: PoseRef; b?: PoseRef; u?: number};
+  /** Arms authored per side, replacing the pose's arm on that side (hung from the shoulder of the body the motion makes; scaled by `armScale`). */
+  reach?: {r?: Reach; l?: Reach};
+  /** Whole-card roll about the hips, degrees (positive = head toward screen right) for a floating figure (`paintFigureAt` / `paintEva` `roll`). */
+  roll?: number;
   /** Replaces the layered expression. */
   face?: ExpressionId | FaceState;
   /** Eye look [x, y] (screen right and up positive), over whatever face is in force. */
@@ -184,6 +193,31 @@ const runAcross = (dir: 1 | -1): Motion => (t, c) => {
   return {view: dir > 0 ? 'right' : 'left', offset: [dir * (p - L / 2), 0], body: {run: p / (RUN_STEP * c.k), lean: 0.14 * dir}};
 };
 
+// ------------------------------------------------------------------ two-bone reach (zero-g motions)
+
+const mirror = ([x, y]: Pt): Pt => [-x, y];
+/** An arm to hand target `to` (metres from the shoulder, x right/forward, y up) with both bones exactly `BONE`: the hand is pulled back to
+ * 0.998 of full reach when out of range. `bend` +1 puts the elbow on the counter-clockwise side of the shoulder-hand line, -1 clockwise. */
+export const twoBone = (to: Pt, bend: 1 | -1, near?: number): Reach => {
+  const d0 = Math.hypot(to[0], to[1]), d = Math.min(d0, 2 * BONE * 0.998) || 1e-6, s = d / (d0 || 1);
+  const h: Pt = [to[0] * s, to[1] * s], half = d / 2, drop = Math.sqrt(Math.max(0, BONE * BONE - half * half));
+  const n: Pt = [-h[1] / d, h[0] / d];
+  const r = (v: number) => Math.round(v * 1e4) / 1e4;
+  return {to: [r(h[0]), r(h[1])], via: [r(h[0] / 2 + bend * drop * n[0]), r(h[1] / 2 + bend * drop * n[1])], ...(near ? {near} : {})};
+};
+/** One arm from a target given for the character's RIGHT arm; the left arm is its mirror image (x of every point negated). */
+const sideReach = (side: 'r' | 'l', to: Pt, bend: 1 | -1, near?: number): Reach => {
+  const m = twoBone(to, bend, near);
+  return side === 'r' ? m : {...m, to: mirror(m.to), via: mirror(m.via)};
+};
+const capLen = (v: Pt, max: number): Pt => { const L = Math.hypot(v[0], v[1]); return L > max ? [(v[0] * max) / L, (v[1] * max) / L] : v; };
+
+/** Zero-g neutral arm numbers (= `ZG_NEUTRAL` in `eva.ts`, pose P46): elbow, hand and glove depth for the character's `side`. */
+const zgArm = (side: 'r' | 'l'): Reach => { const s = side === 'r' ? -1 : 1; return {via: [s * 0.04, -0.25], to: [-s * 0.03, -0.41], near: 0.32}; };
+
+/** Zero-g drift: period (s) of the slow loop; every term is a whole number of cycles in it. */
+const ZG_PERIOD = 6;
+
 // ------------------------------------------------------------------ the motions
 
 const turnHead = (dir: 'left' | 'right'): Motion => (t) => {
@@ -198,7 +232,77 @@ const coinCount: Motion = (t) => {
   return {arms: {a: 'P01', b: 'P25', u: 1}, body: {rise: 0.01 * dip}};
 };
 
+// EDU-EP08 B4-B6 (kit intake, Boss pass A, 8 Nov 2026): weightless figures. They pair with `paintEva` / `paintFigureAt` (`roll`, no shadow).
+
+const zeroGDrift: Motion = (t) => {
+  const w = (2 * Math.PI * t) / ZG_PERIOD, w2 = 2 * w, w3 = 3 * w;
+  const drift = (side: 'r' | 'l', ph: number): Reach => {
+    const z = zgArm(side), sgn = side === 'r' ? 1 : -1;
+    const to = capLen([z.to[0] + sgn * 0.022 * Math.sin(w + ph) + 0.01 * Math.sin(w3 + ph), z.to[1] + 0.025 * Math.sin(w2 + ph + 1) ], 0.46);
+    const via = capLen([z.via[0] + 0.012 * Math.sin(w + ph + 2), z.via[1] + 0.014 * Math.sin(w2 + ph)], 0.255);
+    return {to, via, near: z.near};
+  };
+  return {
+    offset: [0.012 * Math.sin(w + 0.6), 0.03 * Math.sin(w)],
+    roll: 2.6 * Math.sin(w + 1.1) + 0.8 * Math.sin(w3),
+    reach: {r: drift('r', 0), l: drift('l', 2.1)},
+    body: {crouch: 0.22 + 0.035 * Math.sin(w2 + 0.4), lean: 0.012 * Math.sin(w + 2.2), rise: 0.004 * (1 - Math.cos(w2)), nod: [0.01 * Math.sin(w + 0.5), 0.015 * Math.sin(w2 - 0.6)], headCock: 1.2 * Math.sin(w + 0.2)},
+  };
+};
+
+// The self-check (storyboard S01-B02-SH01): both gloves pat the chest at 0.4 and 0.8 s, the right glove goes to the left upper arm at 1.4 s and
+// the left glove to the right upper arm at 1.9 s (two taps each), the shoulders drop 0.02 m on the breath out at 2.4 s. Hands are authored from
+// the shoulders (chest centre 0.176 m toward the body line for the EVA shoulder; the near depth tucks the elbows), two-bone exact.
+const PAT_CHEST: Pt = [0.17, -0.19], PAT_ARM: Pt = [0.4, -0.1];
+const patPulse = (t: number, at: number) => Math.exp(-(((t - at) / 0.09) ** 2)); // a tap: the hand is in contact at `at`, 0.14 s wide
+const patCheck: Motion = (t) => {
+  const chest = seg(t, 0.05, 0.3) * (1 - seg(t, 1.0, 1.25)), tap = patPulse(t, 0.4) + patPulse(t, 0.8);
+  const arm = (side: 'r' | 'l', tOn: number, tOff: number, taps: number[]): Reach => {
+    const z = zgArm(side), u = chest, v = seg(t, tOn - 0.3, tOn) * (1 - seg(t, tOff, tOff + 0.3));
+    const dip = taps.reduce((a, at) => a + patPulse(t, at), 0);
+    const toC: Pt = [PAT_CHEST[0] + 0.045 * (1 - tap * 0.9) * u - 0.02 * tap, PAT_CHEST[1] + 0.02 * (1 - tap)];
+    const toA: Pt = [PAT_ARM[0] + 0.05 * (1 - dip), PAT_ARM[1] + 0.025 * (1 - dip)];
+    const rest: Reach = {via: z.via, to: z.to, near: z.near}, c = sideReach(side, toC, -1, 0.1), a = sideReach(side, toA, -1, 0.16);
+    const mix = (p: Reach, q: Reach, k: number): Reach => ({to: [p.to[0] + (q.to[0] - p.to[0]) * k, p.to[1] + (q.to[1] - p.to[1]) * k], via: [p.via[0] + (q.via[0] - p.via[0]) * k, p.via[1] + (q.via[1] - p.via[1]) * k], near: (p.near ?? 0) + ((q.near ?? 0) - (p.near ?? 0)) * k});
+    return mix(mix(rest, c, u), a, v);
+  };
+  // the chest taps come first; each arm then leaves the chest for the opposite upper arm (the glove crosses the body)
+  return {
+    reach: {r: arm('r', 1.4, 1.95, [1.55, 1.8]), l: arm('l', 1.9, 2.45, [2.05, 2.3])},
+    face: t < 1.5 ? 'worried' : 'neutral',
+    body: {crouch: 0.22, rise: -0.02 * hump(t, 2.2, 2.9), nod: [0, -0.04 * hump(t, 2.2, 2.9)]},
+    roll: 1.2 * Math.sin(t * 2.1),
+  };
+};
+
+// Hand-over-hand tow along a handrail (storyboard S01-B05-SH01). The figure travels in the direction it faces (view right = screen right).
+// The near hand holds a target wrist behind the body (the caller places the towed person's wrist at this glove's anchor, so the lock is exact);
+// the far hand works the rail: one grip stays planted in the world while the body slides toward it (pull), then the hand lets go and re-grips
+// one stroke ahead (release). Constants are for a 1.7 m person and scale with `k`.
+const TOW_PERIOD = 0.7, TOW_STROKE = 0.34, TOW_PULL = 0.62, TOW_REACH = 0.44;
+export const TOW_GRAB_SEC = 0.2; // the wrist-hand closes on the target at 6 frames (30 fps)
+const railTow = (dir: 1 | -1): Motion => (t, c) => {
+  const k = c.k, A = TOW_STROKE * k, n = Math.floor(t / TOW_PERIOD), ph = (t - n * TOW_PERIOD) / TOW_PERIOD;
+  const prog = n * A + A * (0.88 * seg(ph, 0, TOW_PULL) + 0.12 * seg(ph, TOW_PULL, 1)); // body advance, metres: slides to the planted grip, coasts in the release
+  const gripX = n * A + TOW_REACH * k; // the planted grip (world x from the rest point, metres) until the release re-grips one stroke ahead
+  const rel = gripX - prog + (ph < TOW_PULL ? 0 : A * seg(ph, TOW_PULL, 1)); // grip relative to the shoulder, toward the facing side
+  const rail = twoBone([rel, -0.14 + 0.05 * hump(ph, TOW_PULL, 1)], 1, 0.05); // the rail is at chest height (under the helmet ring); the hand rises off it a little while it travels
+  const to0: Pt = [-0.5 * k, -0.2 * k], to1: Pt = [-0.46 * k, -0.12 * k], w0 = twoBone(to0, -1, 0.2), w1 = twoBone(to1, -1, 0.2), g = seg(t, 0, TOW_GRAB_SEC);
+  const lerp2 = (p: Pt, q: Pt): Pt => [p[0] + (q[0] - p[0]) * g, p[1] + (q[1] - p[1]) * g];
+  const hold: Reach = {to: lerp2(w0.to, w1.to), via: lerp2(w0.via, w1.via), near: 0.2}; // reaches back to the wrist and closes on it at 6 frames
+  return {
+    view: dir > 0 ? 'right' : 'left',
+    offset: [dir * prog, 0],
+    reach: dir > 0 ? {r: hold, l: rail} : {l: hold, r: rail}, // the near arm (r facing right, l facing left) holds the wrist, the far arm works the rail
+    roll: 3 * dir, // constant: a roll that changed would move a planted grip
+    body: {crouch: 0.22, lean: 0.1 * dir, nod: [0, 0.02]},
+  };
+};
+
 export const MOTIONS: Record<MotionId, Motion> = {
+  'zero-g-drift': zeroGDrift,
+  'pat-check': patCheck,
+  'rail-tow': (t, c) => railTow(c.view === 'left' ? -1 : 1)(t, c),
   'coin-count': coinCount,
   'idle-breathe': (t) => {
     const w = (2 * Math.PI * t) / 3;
@@ -320,6 +424,9 @@ export const MOTIONS: Record<MotionId, Motion> = {
 };
 
 export const MOTION_INFO: Record<MotionId, MotionInfo> = {
+  'zero-g-drift': {name: 'Zero-g drift', description: 'Weightless idle (EDU-EP08 B4): arms float on the zero-g neutral numbers (P46) with a slow drift, knees breathe, ambient bob 3 cm and whole-card roll of about 3 deg on a 6 s loop. Draw with `paintEva` / `paintFigureAt` (`shadow: false`, `roll: frame.roll`).', duration: 6, loop: true, views: ['front'], use: 'Any floating figure that is held still: orbit shots, cards with a floating person.'},
+  'pat-check': {name: 'Pat check', description: 'Self-check (EDU-EP08 B5): both gloves pat the chest at 0.4 and 0.8 s, the right glove crosses to the left upper arm at 1.4 s and the left to the right upper arm at 1.9 s (two taps each), shoulders drop 0.02 m at 2.4 s, worried then neutral. Elbows tucked, depth arms (`near`). Front body, 3.1 s.', duration: 3.1, loop: false, views: ['front'], use: 'Checking oneself after a scare; safe beat, no puff.'},
+  'rail-tow': {name: 'Rail tow', description: 'Hand-over-hand along a handrail (EDU-EP08 B6), floating: the far hand grips the rail (planted in the world), the body slides to it, the hand re-grips one stroke ahead (0.7 s cycle, 0.34 m per stroke); the near hand closes on a target wrist behind the body at 0.2 s and holds. The figure travels toward the side it faces (view right = screen right). Place the towed person at this figure`s glove anchor each frame.', duration: 1.3, loop: false, views: ['left', 'right'], use: 'Towing or being pulled along a rail in zero-g.'},
   'idle-breathe': {name: 'Idle breathe', description: 'Chest rise, a tiny weight shift and a head bob on a 3 s period.', duration: 3, loop: true, views: ['front', 'left', 'right'], use: 'Any held figure: put it under a still pose so nothing is frozen.'},
   'walk-in-from-left': {name: 'Walk in from the left', description: 'Enters from the screen left in profile facing right at 1.2 m/s, brakes and settles into standing at the rest point. Steps match the ground speed.', duration: 2.1, loop: false, views: ['right'], use: 'A person arrives into frame; `distance` = metres from the off-screen start to the rest point.'},
   'walk-in-from-right': {name: 'Walk in from the right', description: 'Mirror of walk-in-from-left: enters from the screen right facing left.', duration: 2.1, loop: false, views: ['left'], use: 'A person arrives from the right.'},
@@ -393,6 +500,10 @@ export type Layered = {
   /** The body view in force (a walk may have changed it): draw a chair with the same view. */
   view: View;
   frame: MotionFrame;
+  /** Whole-card roll about the hips in degrees (0 when the motion has none): pass to `paintFigureAt` / `paintEva` `roll`. */
+  roll: number;
+  /** Glove depth per side in metres from `MotionFrame.reach.near` (the glove growth); absent = flat. */
+  near: {r?: number; l?: number};
 };
 
 const asFace = (f: ExpressionId | FaceState): FaceState => (typeof f === 'string' ? EXPRESSIONS[f] : f);
@@ -433,10 +544,21 @@ export const layerMotion = (a: LayerArgs): Layered => {
   };
   pose.rArm = shift('r', src.rArm);
   pose.lArm = shift('l', src.lArm);
+  // Arms authored by hand (`reach`), from the shoulders of the body the motion makes (a profile `x` runs toward the facing side).
+  const near: {r?: number; l?: number} = {}, kA = def.armScale ?? 1, dirV = pv === 'front' ? 1 : pv === 'left' ? -1 : 1;
+  for (const side of ['r', 'l'] as const) {
+    const rc = frame.reach?.[side];
+    if (!rc) continue;
+    const sh = shoulderPoint(def, g, a.unit, {...pose, view: pv}, side);
+    const px = (q: Pt): Pt => [sh[0] + dirV * q[0] * kA * a.unit, sh[1] - q[1] * kA * a.unit];
+    const arm = {to: px(rc.to), via: px(rc.via)};
+    if (side === 'r') pose.rArm = arm; else pose.lArm = arm;
+    if (rc.near) near[side] = rc.near;
+  }
   let face = asFace(frame.face ?? a.expression ?? 'neutral');
   if (frame.look) face = {...face, look: frame.look};
   if (frame.talk !== undefined) face = {...face, mouth: 'talk', open: frame.talk};
   if (frame.chew !== undefined) face = {...face, chew: frame.chew};
   const hood = frame.hood === undefined ? {} : frame.hood >= 1 ? {hoodUp: true} : {hoodRise: frame.hood};
-  return {def, g, pose: {...pose, ...hood, view, face} as FigPose, seed, view, frame};
+  return {def, g, pose: {...pose, ...hood, view, face} as FigPose, seed, view, frame, roll: frame.roll ?? 0, near};
 };

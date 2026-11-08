@@ -4,7 +4,7 @@ import {FALL} from '../src/painted/kit/fall';
 import {PLATES, findPlates, plateStill} from '../src/painted/kit/plates';
 import {paintedShotIds} from '../src/painted/registry';
 
-const LAYER = new RegExp(`^(ENV-SKY|ENV-FOG|ENV-GLOW|ENV-SEA|ENV-FALL:(${Object.keys(FALL).join('|')}))$`);
+const LAYER = new RegExp(`^(ENV-SKY|ENV-FOG|ENV-GLOW|ENV-SEA|ENV-EARTH|ENV-GLITTER|ENV-FALL:(${Object.keys(FALL).join('|')}))$`);
 
 test('every plate entry is complete and points at a registered shot', () => {
   assert.ok(PLATES.length >= 20);

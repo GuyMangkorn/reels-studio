@@ -68,6 +68,10 @@ export const MOTION_REEL: ReelEntry[] = [
   {motion: 'hood-pull', cast: [{person: A, outfit: 'hoodie', x: 330, view: 'back'}, {person: B, outfit: 'hoodie', x: 770, view: 'back'}]},
   {motion: 'coin-count', cast: pair({expression: 'neutral'}, {expression: 'neutral'})},
   {motion: 'eat-chew', cast: pair({view: 'right', expression: 'neutral'}, {view: 'left', expression: 'neutral'})},
+  // EDU-EP08 kit intake (B4-B6): weightless figures in the EVA suit, no ground
+  {motion: 'zero-g-drift', cast: [{person: 'woman-bob', outfit: 'eva-suit', x: 330}, {person: 'man-crop', outfit: 'eva-suit', x: 770, expression: 'happy'}]},
+  {motion: 'pat-check', cast: [{person: 'woman-bob', outfit: 'eva-suit', x: 330, expression: 'worried'}, {person: 'man-crop', outfit: 'eva-suit', x: 770}]},
+  {motion: 'rail-tow', cast: [{person: 'man-crop', outfit: 'eva-suit', x: 420, view: 'right'}, {person: 'man-parted', outfit: 'eva-suit', x: 760, view: 'left'}]},
 ];
 
 /** Longest `motionDuration` among a scene's cast (walks and runs depend on height and distance), plus the hold, in whole frames. */
