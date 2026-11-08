@@ -6,6 +6,7 @@ import {EDU4_COVER_STYLE, EDU4_COVERS, EDU4_COVERS_V2} from './edu-ep04';
 import {EDU3_COVER_STYLE, EDU3_COVERS, EDU3_COVERS_V2} from './edu-ep03';
 import {EDU5_COVER_STYLE, EDU5_COVERS} from './edu-ep05';
 import {EDU6_COVER_STYLE, EDU6_COVERS, EDU6_COVERS_V2, EDU6_COVERS_V3, EDU6_PICS} from './edu-ep06';
+import {EDU7_COVER_STYLE, EDU7_COVERS, EDU7_PICS} from './edu-ep07';
 import {EG_COVER_STYLE, EG_COVERS} from './everyone-gone';
 import {EG2_A_LAYOUT, EG2_A_TYPE, EG2_COVER_STYLE, EG2_COVERS} from './everyone-gone-ep02';
 import {WDG_COVER_STYLE, WDG_COVERS} from './wendigo';
@@ -37,6 +38,8 @@ const covers: EpisodeVideos = {
     coversVideo('EDU-EP06-SHORT-V2', EDU6_COVERS_V2, EDU6_COVER_STYLE),
     coversVideo('EDU-EP06-SHORT-PIC', EDU6_PICS, EDU6_COVER_STYLE),
     coversVideo('EDU-EP06-SHORT-V3', EDU6_COVERS_V3, EDU6_COVER_STYLE),
+    coversVideo('EDU-EP07-SHORT-PIC', EDU7_PICS, EDU7_COVER_STYLE),
+    coversVideo('EDU-EP07-SHORT', EDU7_COVERS, EDU7_COVER_STYLE),
   ],
 };
 export default covers;
