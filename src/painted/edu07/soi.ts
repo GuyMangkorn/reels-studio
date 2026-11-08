@@ -129,6 +129,8 @@ export type SoiOpts = {
   moon?: number;
   /** Moon rim on the heads 0..1 (night only). */
   rim?: number;
+  /** How far the Moon rim floats above the head top, in head-half-heights (default 0 = on the hair edge; 0.24 was the old floating arc; B04-SH02 close view, the arc read as a shadow over the head). */
+  rimLift?: number;
   /** Star brightness override 0..1 (default from the night grade). */
   stars?: number;
   /** Faint Milky Way wash 0..1. */
@@ -216,9 +218,9 @@ const brushShadow = (p: Painter, id: number, col: string, poly: Pt[], gap = 22) 
 
 /** Cool Moon rim on the Moon side of a head (night): a thin crescent hugging the hair outline toward the Moon's screen position `toward`, from the figure's head anchors.
  *  W5.3 F3: it was a long band fixed to the right of every head (outside the hair on CUS, the wrong side for a Moon up-left). */
-const moonRim = (p: Painter, a: {head: Pt; headTop: number; chin: number} | null, seed: number, toward: Pt, k = 1) => {
+const moonRim = (p: Painter, a: {head: Pt; headTop: number; chin: number} | null, seed: number, toward: Pt, k = 1, lift = 0) => {
   if (!a) return;
-  const gap = a.head[1] - a.headTop, R = 0.86 * gap, cx = a.head[0], cy = a.headTop - 0.24 * gap + R;
+  const gap = a.head[1] - a.headTop, R = 0.86 * gap, cx = a.head[0], cy = a.headTop - lift * gap + R;
   const ang = Math.atan2(toward[1] - cy, toward[0] - cx), hw = 0.75;
   const arc = (rr: number, w: number): Pt[] => Array.from({length: 13}, (_, i) => { const t = -1 + (2 * i) / 12, aa = ang + t * hw * w; return [cx + rr * Math.cos(aa), cy + rr * Math.sin(aa)] as Pt; });
   const outer = arc(R * 0.99, 1), inner = Array.from({length: 13}, (_, i) => { const t = -1 + (2 * i) / 12, aa = ang + t * hw, th = (1 - t * t) * 0.07 * R + 0.5; return [cx + (R * 0.99 - th) * Math.cos(aa), cy + (R * 0.99 - th) * Math.sin(aa)] as Pt; }).reverse();
@@ -522,7 +524,7 @@ export const paintSoi = (p0: Painter, c: YCam, o: SoiOpts): {ven: ReturnType<typ
     out.cus = paintPerson(pf, c, CUS, {at, view: cu.view ?? 'front', pose: cu.pose ?? 'P31', face: cu.face ?? 'tired', faceState: cu.faceState, fig: cu.fig, hands: cu.hands, motion: cu.motion, t: o.t + 1.3});
     if (cu.fan !== undefined && cu.hands?.r) paintFan(pf, c, cu.hands.r.to, cu.fan); // t offset: the frame-0 blink of man-crop lands on t 0, so the look frame is taken between blinks
   }
-  if (n > 0.3 && (o.rim ?? 1) > 0.02) { const mpx: Pt = moon ?? [-300, -600]; moonRim(p0, out.ven, 900, mpx, o.rim ?? 1); moonRim(p0, out.cus, 901, mpx, o.rim ?? 1); }
+  if (n > 0.3 && (o.rim ?? 1) > 0.02) { const mpx: Pt = moon ?? [-300, -600]; moonRim(p0, out.ven, 900, mpx, o.rim ?? 1, o.rimLift); moonRim(p0, out.cus, 901, mpx, o.rim ?? 1, o.rimLift); }
   void wp;
   return out;
 };
