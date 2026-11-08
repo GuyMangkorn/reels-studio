@@ -5,7 +5,7 @@ import {camPoint, camUnit} from '../../kit/ycam';
 import type {V3} from '../../kit/space';
 import {dashRun, paintJupiter, paintSpace, spaceCam} from '../space';
 
-// S01-B04-SH06 (G1430-1518): the two legs of light (L12), a replay diagram, not the +1 h world. Empty spot at the origin; dark Earth just off its orbit at (0.90, 0, 0.55);
+// S01-B04-SH06 (G1212-1300): the two legs of light (L12), a replay diagram, not the +1 h world. Empty spot at the origin; dark Earth just off its orbit at (0.90, 0, 0.55);
 // Jupiter r 0.16 su, banded, lit only on its Sun-facing half at (-2.08, 0, -1.20). Both dash streams move at 0.030 su/f: the incoming tail is 1.77 su from the origin at L0 and
 // reaches Jupiter (2.40 su) on L21, Jupiter's lit half goes dark L21-29; the reflected dashes leave Jupiter toward Earth, their tail leaves Jupiter at L29 and is mid-way
 // (1.73 of 3.46 su) on L87. Card holds "+1 ชม.". Camera spaceCam((-0.60, 0, 0), az 0, el 40, r 5.40 -> 5.25, f 880, hy 1000).

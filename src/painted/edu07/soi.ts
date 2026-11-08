@@ -122,7 +122,11 @@ export type SoiOpts = {
   cus?: false | {face?: Parameters<typeof paintPerson>[3]['face']; faceState?: Parameters<typeof paintPerson>[3]['faceState']; view?: 'front' | 'back'; at?: V3; pose?: Parameters<typeof paintPerson>[3]['pose']; fig?: Parameters<typeof paintPerson>[3]['fig'];
     hands?: Parameters<typeof paintPerson>[3]['hands']; motion?: {id: MotionId; t: number};
     /** Folded paper menu in his hand: the flap angle (rad), drawn at the hand target `hands.r.to`. */
-    fan?: number};
+    fan?: number;
+    /** Drawn after his figure with its anchors (R1.2 phone close: the phone slab, screen and clip over the hand). */
+    /** Paint the stool's cast shadow before the stool (the shadow comes out from under its base; R1.2 repainted shots). */
+    shadowFirst?: boolean;
+    over?: (p: Painter, c: YCam, a: NonNullable<ReturnType<typeof paintPerson>>) => void};
   /** Stool 2 position (SD07: moved beside CUS for the +1 h state). */
   stool2?: V3;
   /** Moon fade 0..1 (1 = lit). */
@@ -441,7 +445,7 @@ export const paintSoi = (p0: Painter, c: YCam, o: SoiOpts): {ven: ReturnType<typ
   const rimF = frontHalf(mq(0.15, MORTAR[1] + 0.28), [MORTAR[0], 0, MORTAR[2]]), baseF = frontHalf(mq(0.1, MORTAR[1]), [MORTAR[0], 0, MORTAR[2]]);
   if (rimF.length > 2 && baseF.length > 2) hardFill(p, 540, mixColor(C.clay, '#1a1620', n * 0.3), [...rimF, ...baseF.slice().reverse()]);
   // armFront: the forearm next to the fist is nearer the lens than her head and the pestle; redraw it from a screen-space elbow (right of, below the fist) to the fist, under the mortar wall
-  if (out.ven && pounding && o.ven?.armFront) {
+  if (out.ven && pounding && (o.ven || undefined)?.armFront) {
     const fpA = camPoint(c, gripW);
     if (fpA) {
       const E: Pt = [fpA[0] + Math.sin(1.0) * 190, fpA[1] + Math.cos(1.0) * 190]; // drawn elbow in screen space, right of and a little below the fist: her left arm arrives from the screen-right (about 57 deg from vertical)
@@ -491,8 +495,8 @@ export const paintSoi = (p0: Painter, c: YCam, o: SoiOpts): {ven: ReturnType<typ
       hardFill(p, 555, mixColor(handCol, '#ffffff', 0.35), ell(...L(-0.023, -0.0425), 0.0065 * u, 0.0052 * u, 8, tilt - 0.25));
     }
     // steadying hand (her right): restHand draws it flat on the rim; otherwise the kit mitten is the hand
-    const rp = camPoint(c, o.ven?.restHand ? REST_HAND : [MORTAR[0] - 0.13, MORTAR[1] + 0.3, MORTAR[2] + 0.1]);
-    if (rp && o.ven?.restHand) {
+    const rp = camPoint(c, (o.ven || undefined)?.restHand ? REST_HAND : [MORTAR[0] - 0.13, MORTAR[1] + 0.3, MORTAR[2] + 0.1]);
+    if (rp && (o.ven || undefined)?.restHand) {
       const tilt = 0.18, ct = Math.cos(tilt), st = Math.sin(tilt), at2 = (x: number, y: number): Pt => [rp[0] + (x * ct - y * st) * u, rp[1] + (x * st + y * ct) * u];
       const back = ell(rp[0], rp[1], 0.046 * u, 0.03 * u, 14, tilt);
       hardFill(p, 556, handCol, back);
@@ -515,13 +519,19 @@ export const paintSoi = (p0: Painter, c: YCam, o: SoiOpts): {ven: ReturnType<typ
   if (o.ven && o.ven.front) placeVen();
   if (o.cus !== false) {
     const cu = o.cus ?? {}, at = cu.at ?? CUS_AT;
-    taper(p, c, 560, at, 0.2, 0.19, 0.45, mixColor(C.stool, '#1a1620', n * 0.3), {ink: true, topCol: mixColor(C.stool, '#ffd2bd', 0.2)});
+    // R1.2 (B04-SH01 note 'the shadow still floats'): `shadowFirst` paints the cast shadow BEFORE the stool, so the stool body covers its start and the shadow comes out from under the base (default: after, as approved for the carried shots)
+    const stoolShadow = () => {
     if (o.shadow !== 'brush' && o.shadow !== 'watercolour') {
       const sd = Array.from({length: 18}, (_, i) => { const a = (i / 18) * Math.PI * 2, along = 0.55 * Math.cos(a) + 0.5, across = 0.22 * Math.sin(a); return [at[0] + along * -0.8 + across * 0.6 - 0.0, 0.003, at[2] + along * -0.6 - across * 0.8] as V3; });
       const sdq = sd.map((v) => camPoint(c, v)).filter((q): q is Pt => !!q);
       if (sdq.length === sd.length) washAt(p, 565, sh, 160, sdq, 0.1, 0.3); // a close camera can put part of the shadow behind the near plane: skip it then
     }
+    };
+    if (cu.shadowFirst) stoolShadow();
+    taper(p, c, 560, at, 0.2, 0.19, 0.45, mixColor(C.stool, '#1a1620', n * 0.3), {ink: true, topCol: mixColor(C.stool, '#ffd2bd', 0.2)});
+    if (!cu.shadowFirst) stoolShadow();
     out.cus = paintPerson(pf, c, CUS, {at, view: cu.view ?? 'front', pose: cu.pose ?? 'P31', face: cu.face ?? 'tired', faceState: cu.faceState, fig: cu.fig, hands: cu.hands, motion: cu.motion, t: o.t + 1.3});
+    if (out.cus && cu.over) cu.over(pf, c, out.cus);
     if (cu.fan !== undefined && cu.hands?.r) paintFan(pf, c, cu.hands.r.to, cu.fan); // t offset: the frame-0 blink of man-crop lands on t 0, so the look frame is taken between blinks
   }
   if (n > 0.3 && (o.rim ?? 1) > 0.02) { const mpx: Pt = moon ?? [-300, -600]; moonRim(p0, out.ven, 900, mpx, o.rim ?? 1, o.rimLift); moonRim(p0, out.cus, 901, mpx, o.rim ?? 1, o.rimLift); }

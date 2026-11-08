@@ -79,3 +79,21 @@ Scope: F1 (L06 cue) plus the changed or kept items D02, D03, L14. No new sources
 - Dependent items: B03 sound intent and the L07 cue still agree with the fixed L06 cue. The timing estimate (~54-55 s with D03) is Preaw's, not checked here.
 - **Verdict: pass.** No premise, reveal or learning impact.
 - Readiness: EDU-EP07-SCRIPT-R1.1 is supported for hand-off to Film (W2). This is fact-check readiness only, not user approval, audio or visual validation.
+
+## Recheck of EDU-EP07-SCRIPT-R1.2 (W1.3 delta, Boat, 2026-11-08)
+
+Scope: L05 (reworded), L15/L16 + new claim C12, C05 removal, twist fairness with CL04. Unchanged lines keep their R1/R1.1 verdicts. New source SRC011 (research.md). Access gap: Wikipedia is secondary (causality section unread); primary Einstein 1905 not opened; Baez FTL/speed-limit pages returned 404, CERN 404, NASA timed out. Qualitative confidence: high on C12 (textbook SR), medium-high on L05 (GR consequence, unobserved for a Sun).
+
+| Item | Wording | Verdict | Note |
+| --- | --- | --- | --- |
+| 1a L05 hedge | "ไอน์สไตน์บอกว่า…" | pass | Attribution to a named theorist reads as "this is his theory", not a measured fact about the Sun; adequate. Slightly weaker than "ตามทฤษฎีของไอน์สไตน์" (it could read as a personal opinion), but nothing says "proven". Optional: "ตามทฤษฎีของไอน์สไตน์" (+2 syllables) if timing allows. |
+| 1b L05 simplification | "แรงดึงที่หายไป… ก็ต้องเดินทางมาเหมือนแสง" | pass, fix recommended (ER05) | Gist is true (the change in gravity propagates at c, SRC009), but "แรงดึงที่หายไป ... เดินทางมา" can read as the force itself travelling. Truer: "การที่แรงดึงหายไป… ก็ต้องเดินทางมาเหมือนแสง" (+2 syllables, Preaw's fallback). Use that if timing holds (+~0.5 s, before L08, shifts the estimate only). |
+| 1c L05 alone | no GW170817 line | pass | Stands as an attributed theory, with Earth sliding on its curve for 8 minutes shown 0.5 s before the line. The cut evidence is not needed for truth; it lowers support only (theory was never observed for the Sun, which the hedge already says). |
+| 2 L15 | "แล้วไม่มีใครเตือนเลยเหรอ" | pass | Question; no claim. |
+| 2 L16 / C12 | "ไม่มีหรอก… ไม่มีอะไรเร็วกว่าแสง… แม้แต่ข่าวร้าย" | pass, `settled` | SRC011: light speed is the maximum speed of information. Gravity changes also travel at c (SRC009), so no gravity-based warning arrives earlier either. "แม้แต่ข่าวร้าย" = a message is a signal; fair. Requirement for picture/sound: nothing may show an alert, a siren or a detector warning arriving before 00:00. Do not extend the line to "nothing can detect it earlier". |
+| 2 Picture | CUS phone: cat clip, no alert (V01, L15, L16) | pass | Phone signals are radio waves at c; an empty feed is true to the story. V01 is dramatization. |
+| 3 C05 removal | L06/L07 retired | pass | Grep of script.md: remaining C05/SRC007/SRC008/GW170817 mentions are record-only (Corrections row 1 history, claim-table struck row, revision log, N4 history, "Not used"). No spoken line, cue, on-screen text or sound depends on it. L05 no longer needs it. |
+| 3 Twist + CL04 | L16 rule, L13-L14 payoff | pass | The rule is true and planted before the twist; it explains why the news is late without saying that the present sunlight is old, so L14 is not spoiled. Fair-play holds. No premise or reveal change. |
+
+- Verdict: **pass**, with one recommended wording fix (L05 "การที่แรงดึงหายไป…"). Not blocking on facts; Preaw/coordinator decides, and the changed line would need a one-line recheck. W1.3 R1.2 tick left to the coordinator for that reason.
+- Readiness: EDU-EP07-SCRIPT-R1.2 is supported for hand-off to Film with the fix recommended, as fact-check readiness only (not user approval, audio or visual validation).

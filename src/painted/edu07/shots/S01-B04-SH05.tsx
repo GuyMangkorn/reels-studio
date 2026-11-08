@@ -5,7 +5,7 @@ import {CUS_AT, JUP_DIR, MOON_DIR, paintSoi, STOOL2_NIGHT} from '../soi';
 import type {V3} from '../../kit/space';
 import type {YCam} from '../../kit/ycam';
 
-// S01-B04-SH05 (G1331-1430): "+1 ชม." and Jupiter (L11). SD05/SD06 camera pos (1.10, 1.55, 2.70), pan right of SH04 (look az -0.8), pitch 4, f 950 -> 1007 (push 6 %), hy 820.
+// S01-B04-SH05 (G1113-1212): "+1 ชม." and Jupiter (L11). SD05/SD06 camera pos (1.10, 1.55, 2.70), pan right of SH04 (look az -0.8), pitch 4, f 950 -> 1007 (push 6 %), hy 820.
 // +1 h night: both seated, back to the lens: CUS on stool 1, VEN on stool 2 moved beside him (SD07), her right arm rising to point at Jupiter L36-48. Jupiter fades in L22-30
 // (R07: not drawn before). The card reappears at 00:00 on L0 and flips to "+1 ชม." L4-12.
 const ID = 'S01-B04-SH05', N = lenOf(ID);
