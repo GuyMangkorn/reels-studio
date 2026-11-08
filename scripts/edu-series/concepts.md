@@ -762,3 +762,218 @@ Ranking by reach vs cost:
 ## R4 — User pick (W0.3, 2026-11-07)
 
 User kept **C19, C20, C21, C23, C24** (structured question, two multi-select questions); **C22 not picked**. Episode order not yet chosen. Film ranking: C20 > C19 > C22 > C24 > C21 > C23. Context: user asked for unconventional ('ฉีก ๆ') concepts the viewer can feel, not necessarily famous.
+
+---
+
+## R5 — Preaw pitch (2026-11-08)
+
+- **Request (user, 2026-11-08, via coordinator):** "education series แพรวหา concept เพิ่มหน่อยอีก 6 อัน": six more concepts, no topic given, so Preaw proposes the topics.
+- **How Preaw read it:** no new direction was given, so R5 builds on what the user kept. R3 (all six kept) and R4 (five of six kept) say "sci-fi what-if" and "feel-it" both land. The one R4 concept dropped, C22 (one Thai word on a plain wall), was the only one without a painted inside-view of a physical mechanism. Film's R4 notes add a second lesson: a test that needs a mirror (C19) or a coffee (C21) cannot be done by a viewer lying in bed. R5 therefore keeps "feel-it" as the majority and tightens it: **every test uses only the viewer's own body (hands, breath, nose, mouth) and works lying down with a phone in one hand**, and every concept has one painted inside-view of the hidden mechanism.
+- **Topic direction:** five "try it now / felt" concepts from sub-genres R1–R4 have not touched: touch (C25), breath and air (C26), flavour and smell (C27), hand anatomy (C28), social contagion (C29). One wild card from atomic physics (C30). C25, C26 and C28 are true five-second tests; C27 needs a snack within reach; C29 is felt without trying (the viewer yawns, or fights it).
+- **Fixed (carried from R1–R4):** genre educational for all six; medium painted 2D p5.brush with the 4-head cast ([project defaults](../../docs/delivery-workflow.md#project-defaults)), default look the [painted 3D camera](../../docs/film-visual-brief-workflow.md#painted-3d-camera). The style-profile genre and medium spread does not apply; what varies is sub-genre and staging.
+  - **Sub-genres (6):** touch perception (C25); thermal physics of air (C26); chemical senses (C27); anatomy and biomechanics (C28); social behaviour (C29); atomic physics (C30).
+  - **Staging styles:** POV of the viewer's own crossed fingers with a painted "brain map" of the hand above (C25); two breaths painted as visible coloured air streams on a palm, then a Bangkok bedroom fan (C26); a candy dissolving inside a painted head cutaway with a back-door smell channel (C27); flat hand on a table under a desk lamp, the skin going see-through to show tendons (C28); a quiet classroom where one yawn travels from desk to desk, ending on the viewer (C29); a fingertip on a phone screen zooming down through skin and glass into atoms (C30).
+- **Wild card:** C30. Nothing in it can be felt as a test, its world is below any picture (atoms have no true look, so every image is a labelled model), and the kit has nothing at that scale; see its "Why it is the wild card" line.
+- **Channel default (mystery-educational in the WORLD FOG look):** none.
+- **Not re-pitched:** C1–C24 and the produced episodes (EP02 C1 onion, EP03 C5 dog colour, EP04 C4 queue, EP05 C6 ant, EP06 C8 slow blink, EP07 C15 Sun, EP08 C18 helmet; EP01 C2). Nearest neighbours, checked: C27 is not C1 (C1 is tears from an onion's gas; C27 is how smell makes flavour); C25 is not C11 or C19 (touch, not vision). Reserve ideas not written up: phantom phone vibration (still held from R4), brain freeze from cold drinks, being about a centimetre shorter at night than in the morning.
+- **Mode:** non-fiction explainers acted out by fictional 4-head characters; named studies are cited as studies and keep their documented status; C28's one historical figure (Robert Schumann) keeps his documented uncertainty. These are pitches, not research: every fact below is `unchecked` until Boat's research and fact-check; `settled`, `model` (depends on assumptions or a calculation) and `hypothesis` are Preaw's expectation for Boat to confirm, not findings. Each concept says where the evidence is thin, and every "try it now" line needs a real try (Boat or the coordinator, under a minute, with the body only) before the script promises the result.
+- **Duration:** every concept estimated at 40–60 s (five beats). Timing is not measured.
+- **Producibility:** each concept names its one key reveal image and a first kit check against `src/painted/kit/README.md` at `b71b192` (story first, kit second). C25 and C28 both need a finger-level hand macro that the kit's `hands.ts` (`paintPovHand`, `paintEdgeGrip`, `thumbShape`) may only partly cover; built once, it serves both. Film's W0.2 annotation owns buildability and cost.
+- **Try-it-now safety:** each viewer test must be safe to copy while holding a phone, in bed or on a bus. C26, C27 and C28 carry notes.
+- Film annotation (W0.2) is not done in this pass.
+
+### What R5 keeps from R3 and R4 (hypothesis)
+
+Hypothesis only, from the user's keeps and drops (no analytics supplied):
+
+- **The test is in the body, not in the room:** no mirror, cup, stairs or rain needed; hands, breath, nose or a yawn. The viewer can do it the second the hook ends.
+- **One painted inside-view per concept:** the dropped C22 had none; every kept R4 concept had one (film strip, ghost body, bubbles, light in a thread). R5 keeps that as a rule.
+- **"Wait, it has a name?" plus a twist that flips the obvious:** C23's "dry is the fake colour" and C24's GPS twist were kept; each R5 concept ends on a flip (the fan never cooled the room; you do touch things after all).
+
+### C25 — จมูกสองอัน
+
+- **Sub-genre:** touch perception (Aristotle's illusion; crossed-hands confusion as the second test).
+- **Staging:** POV of the viewer's own hand crossing the index and middle finger and touching the tip of the nose; above the hand, a painted "brain map" of the hand (a little hand drawn on a brain surface) shows where each touch is reported. `woman-bob + home-lounge` lying on a sofa does the test in a cut-in.
+- **Logline:** Cross your index and middle finger and run the gap between the tips along the tip of your nose: it feels like two noses. Your brain still assumes the fingers sit side by side, where the outer edges of two fingers can only touch two separate things. Aristotle wrote about it more than 2,000 years ago, and it still works on everyone.
+- **Hook (Thai):** "ไขว้นิ้วชี้กับนิ้วกลาง แล้วเอาไปแตะปลายจมูก… คุณจะรู้สึกว่ามีจมูกสองอัน"
+- **Hook claim status:** `unchecked`, `settled` (a classic textbook illusion; Aristotle's description and lab studies such as Benedetti, 1985). Boat confirms the source of the Aristotle attribution.
+- **Key reveal image:** split frame: below, the real crossed fingers on one nose; above, the brain's picture of the hand with the fingers uncrossed and two separate painted noses, one under each fingertip.
+- **Beats:**
+  1. Try it now: cross, touch the nose tip, rub gently side to side; "สองอัน?" from the woman on the sofa. `unchecked`, `settled`
+  2. Why: the brain keeps a map of the hand with the fingers in their normal order; normally the outside of the index finger and the outside of the middle finger cannot touch the same small thing. `unchecked`, `settled`
+  3. Reveal: the brain map; it never updates for the cross, so it reports two objects. `unchecked`, `settled` for the illusion, `model` for the "map does not update" wording (Boat checks how the literature puts it)
+  4. Second test: cross your arms, have a friend tap both hands quickly, and people often say the wrong hand was first (Yamamoto and Kitazawa, Nature Neuroscience, 2001). `unchecked`, `settled` (lab finding); the test needs a second person, so it is shown, not invited
+  5. Payoff: what you feel is not your skin, it is the brain's guess about where your skin is. Last line, back to the hook: "ลองอีกทีสิ… จมูกคุณยังมีอันเดียวจริงเหรอ" `unchecked`
+- **Ending:** `B_loop`.
+- **Voice / tone:** brisk, playful narrator (edu default Kore); the woman one short line and a laugh.
+- **Why it holds:** the test takes three seconds and works lying down; the result is funny and uncanny at once; "ส่งให้เพื่อนลอง" is built in, and Aristotle gives a "2,000 years" surprise.
+- **Evidence notes (thin spots):** the illusion is solid; the crossed-hands beat comes from a small set of lab studies, and its effect size depends on tap timing, so the narration says "หลายคน" and gives no percentage. The Aristotle attribution is widely repeated; Boat confirms the text.
+- **Research load:** general knowledge plus named studies (Benedetti 1985 or an equivalent review; Yamamoto and Kitazawa 2001; Aristotle's text).
+- **Try-it-now safety:** fingertips on the nose only, nothing near the eyes, no pen or object.
+- **Kit check:** person from `PEOPLE` + `home-lounge` (proposal `woman-bob + home-lounge, P?, surprised` then `laugh`); kit `hands.ts` `paintPovHand` as the POV base, `sit-down` for the sofa. New: finger-crossing hand macro (`new: crossed fingers`, the same finger-level hand Boss builds for C28), nose-tip close-up, brain-map layer (a small hand drawn on a brain surface with glowing touch points), crossed-arms tap insert with a second person.
+- **Sound intent:** quiet living-room tone; a soft double "pip" as the second nose appears (one touch, two sounds), then silence while the viewer tries; a light pizzicato bed under the explanation; a muffled tap pair for the crossed-arms beat with the second tap landing on the wrong side.
+
+### C26 — ลมหายใจเดียว ร้อนก็ได้ เย็นก็ได้
+
+- **Sub-genre:** thermal physics of air (jet mixing, convection and evaporation; the fan twist).
+- **Staging:** `man-spiky + home-lounge` in a hot Bangkok bedroom at night; he breathes "ฮ่า" on his palm, then "ฟู่"; the two breaths are painted as visible air streams, warm orange and cool blue; the camera ends on the ceiling fan.
+- **Logline:** Breathe on your palm with your mouth open and it feels warm; purse your lips and blow and it feels cool, though it is the same breath from the same lungs. The pursed-lip jet is fast and narrow, so it drags in room air on the way and sweeps heat and moisture off your skin; the open-mouth breath arrives slow and close to body heat. The same idea explains why a fan cools you without cooling the room at all.
+- **Hook (Thai):** "อ้าปากเป่ามือ 'ฮ่า' มันอุ่น… ห่อปากเป่า 'ฟู่' มันเย็น… ลมเดียวกันแท้ ๆ"
+- **Hook claim status:** `unchecked`, `settled` that the effect happens; `model` for the explanation (popular explainers often credit gas expansion, which is likely a minor part; Boat checks which mechanism the physics sources give most weight).
+- **Key reveal image:** a palm in close-up with two painted air streams side by side: a wide, slow orange cloud that lands on the skin still warm, and a thin fast blue jet that pulls swirls of room air into itself and strips a glowing heat layer off the skin.
+- **Beats:**
+  1. Try it now: "ฮ่า" on the palm, then "ฟู่". He frowns at his hand. `unchecked`, `settled`
+  2. The clue: both breaths leave the body at about the same temperature. `unchecked`, `settled`
+  3. Reveal: the two streams; the fast jet mixes with cooler room air and moves faster across the skin, carrying heat and sweat away; the slow breath barely mixes. `unchecked`, `model`
+  4. Use it: pursed lips to cool a spoon of hot tom yum, open mouth to warm cold hands. `unchecked`, `settled`
+  5. Twist and payoff: the ceiling fan never makes the room cooler (its motor even adds a little heat); it only blows away the warm layer around your body and dries your sweat. Last line: "พัดลมไม่เคยทำให้ห้องเย็นลงเลย… มันแค่เป่าความร้อนออกจากตัวคุณ" `unchecked`, `settled` (fan physics); the "adds a little heat" detail `unchecked`
+- **Ending:** `A_fade` (the fan keeps turning; a loop is possible if Film prefers, last line to first "ฮ่า").
+- **Voice / tone:** warm, conversational narrator; the man two breath sounds and one "เอ๊ะ".
+- **Why it holds:** the test is free, instant and works with the phone in the other hand; every Thai viewer sleeps under a fan, so the twist hits their own bedroom tonight; the tom yum line makes it useful.
+- **Evidence notes (thin spots):** the effect is everyday knowledge, but the explanation is often given wrongly online (expansion cooling as the main cause). Preaw expects mixing and convection to be the main story; this is the thinnest part and must follow Boat's source. The "fan heats the room" line depends on motor power and room size and may become "ไม่ได้ทำให้อากาศเย็นลง" only.
+- **Research load:** general physics (convection, evaporative cooling, jet entrainment) plus a source that addresses the breath demonstration directly, if one exists.
+- **Try-it-now safety:** two breaths only, no repeated fast blowing (light-headedness); nothing hot near the face (the tom yum spoon is shown, not invited).
+- **Kit check:** person from `PEOPLE` + `home-lounge` (proposal `man-spiky + home-lounge, P?, suspicious`); kit `hands.ts` `paintPovHand` for the palm; `ENV-FOG` `paintFogBank` puffs retinted may seed the breath clouds; `PL-ZCPAINT-ROOM-NIGHT` as a bedroom reference only. New: hot bedroom set with a ceiling fan (rotating blades in world metres), two-stream air layer (wide slow cloud vs narrow jet with entrained swirls), skin heat-layer glow, tom-yum spoon insert (first soup prop).
+- **Sound intent:** night insects and a slow fan hum; the two breaths are close-miked and different ("ฮ่า" breathy and low, "ฟู่" thin and hissy) but the colours carry the clue with sound off; a light lo-fi bed; the fan hum swells into the twist and then cuts to silence on the last line.
+
+### C27 — บีบจมูกแล้วลูกอมไม่มีรส
+
+- **Sub-genre:** chemical senses (flavour as retronasal smell).
+- **Staging:** `girl-school + school` at her desk after school, pinching her nose and chewing a strawberry candy; a painted head cutaway shows the mouth, the tongue and a hidden "back door" channel from the back of the mouth up into the nose.
+- **Logline:** Pinch your nose and eat a fruit candy: it is only sweet, with no strawberry at all. Let go and the strawberry floods in. Your tongue only tastes sweet, sour, salty, bitter and umami; most of what you call flavour is smell, rising through the back of your mouth into your nose while you chew.
+- **Hook (Thai):** "บีบจมูกไว้ แล้วกินลูกอมรสสตรอว์เบอร์รี… มันจะหวานเฉย ๆ ไม่มีรสอะไรเลย"
+- **Hook claim status:** `unchecked`, `settled` (retronasal olfaction; the nose-pinch demonstration is a standard classroom and lab demonstration). The candy type needs a real try: soft fruit candy or a jelly bean is the usual example.
+- **Key reveal image:** the head cutaway: candy in the mouth, a glowing pink scent stream rising behind the soft palate into the nose, blocked by the pinch like a closed door; the fingers let go and the stream rushes up and the head lights up pink.
+- **Beats:**
+  1. Try it now: pinch, chew, "หวาน… แค่หวาน". `unchecked`, `settled`
+  2. Let go: "สตรอว์เบอร์รี!" The taste arrives a second after the fingers open. `unchecked`, `settled`
+  3. Reveal: the cutaway; the tongue gets five basic tastes, the strawberry is a smell travelling up the back door while you chew and breathe out. `unchecked`, `settled`
+  4. Proof from life: food tastes of nothing when you have a blocked nose from a cold. `unchecked`, `settled`
+  5. Payoff and twist: you have two ways to smell, sniffing in from outside and breathing out from inside, and the brain files the inside one as "taste". Last line: "ลิ้นคุณไม่เคยรู้จักรสสตรอว์เบอร์รี… จมูกคุณต่างหากที่กินมัน" `unchecked`, `settled` (two-route smell); "files it as taste" is `model` wording
+- **Ending:** `B_loop`.
+- **Voice / tone:** bright, quick narrator; the girl two lines, the second a delighted surprise.
+- **Why it holds:** the result is total and instant (nothing, then everything); almost everyone has a snack within reach; the cold-nose beat explains a misery every viewer has had; the head cutaway is a clean painted inside-view.
+- **Evidence notes (thin spots):** the core is solid. The widely shared "80 % of flavour is smell" figure has no clear source and stays out unless Boat finds one. The list of basic tastes (five, with debate over fat and others) is said as "อย่างน้อยห้าอย่าง" unless Boat prefers otherwise. No COVID beat: smell loss is real but brings a health topic the channel does not need here.
+- **Research load:** general knowledge (retronasal olfaction, basic tastes) plus one review source for the demonstration.
+- **Try-it-now safety:** a small soft candy, sitting up, breathing through the mouth normally; no hard candy for young children, no talking or laughing with candy in the mouth while the nose is pinched; any allergy-free snack works.
+- **Kit check:** person from `PEOPLE` + `school` (proposal `girl-school + school, P?, neutral` then `surprised`); kit `eat-chew` motion (exists), `point-and-say`. New: desk set (classroom or bedroom; `PL-HANAKO-CLASSROOM` as a reference only), candy prop and wrapper, nose-pinch hand pose (`new: pinch nose`), head cutaway plate (profile head with mouth, tongue, soft palate and nasal channel, kept clean and diagrammatic), scent-stream layer with a "door" at the pinch.
+- **Sound intent:** after-school room tone, a crinkly wrapper as the hook stinger; muted, dull music while the nose is pinched (low-pass), and the music opens to full brightness the moment she lets go (the flavour arriving is heard as well as painted); a soft chime on the last line.
+
+### C28 — นิ้วนางที่ยกไม่ขึ้น
+
+- **Sub-genre:** anatomy and biomechanics (shared extensor tendons; finger independence).
+- **Staging:** `man-elder + office` and `boy-school` side by side at a dining table under a lamp, both with one hand flat; when the ring finger refuses to lift, the skin of the hand turns see-through and shows the tendons as painted cords.
+- **Logline:** Lay your hand flat, fold your middle finger under, then try to lift each finger: thumb, index and little finger lift easily, the ring finger stays stuck to the table. The index and little fingers each have an extra muscle of their own; the ring finger shares its lifting muscle with the middle finger, and the tendons are tied together by little bands, so with the middle finger held down it cannot rise.
+- **Hook (Thai):** "วางมือแบนบนโต๊ะ พับนิ้วกลางลงไป… แล้วลองยกนิ้วนางดูสิ"
+- **Hook claim status:** `unchecked`, `settled` anatomy (extensor digitorum with linked tendons; extensor indicis and extensor digiti minimi as independent extras). The test result varies a little between people; Boat or the coordinator tries it.
+- **Key reveal image:** the see-through hand: a single painted muscle in the forearm splitting into cords to the fingers, the middle and ring cords tied by small bands, the index and little fingers each with an extra cord of their own; the folded middle finger pins the shared cord and the ring finger's cord goes taut but stuck.
+- **Beats:**
+  1. Try it now: flat hand, fold the middle finger, lift thumb, index, little finger; ring finger: nothing. The grandfather laughs, the boy pushes harder. `unchecked`, `settled`
+  2. The clue: the other fingers lift without trouble, so it is not weakness. `unchecked`, `settled`
+  3. Reveal: the see-through hand; a shared muscle and linking bands for the middle fingers, private extra muscles for the index and little finger. `unchecked`, `settled`
+  4. Why it matters: piano and guitar players train ring-finger independence for years and still never get it fully free. Robert Schumann is often said to have damaged his hand with a device meant to strengthen his fingers; historians are not sure that is what happened. `unchecked`, `settled` for the training limit as a general claim (Boat finds a source); Schumann `unchecked`, documented uncertainty to keep (other explanations exist, and the narration says "เล่ากันว่า")
+  5. Payoff: your fingers are not ten separate parts; they are puppets on shared strings. Last line: "นิ้วนางคุณไม่ได้ขี้เกียจ… มันแค่ถูกมัดไว้กับนิ้วกลาง" `unchecked`
+- **Ending:** `B_loop`.
+- **Voice / tone:** warm, slightly cheeky narrator; the boy one frustrated "ไม่ขึ้น!", the grandfather one line.
+- **Why it holds:** every viewer will try it at once, and almost everyone fails; the failure is funny and personal; the see-through hand is a clear painted inside-view; musicians and gamers share it.
+- **Evidence notes (thin spots):** the anatomy is textbook. Thin parts: how much people vary (some can lift slightly), and the Schumann story, which is popular but not settled; it stays only with "เล่ากันว่า" and Boat's sourcing, or is cut.
+- **Research load:** general anatomy plus a hand-function or musician study source and one historical source on Schumann's injury.
+- **Try-it-now safety:** lift gently, do not force or pull the finger with the other hand; stop if it hurts.
+- **Kit check:** people from `PEOPLE` + `office` (proposal `man-elder + office, P?, laugh`, `boy-school + home-lounge, P?, worried`); kit `hands.ts` (`paintPovHand`, `thumbShape`, `twoBone` for finger segments) as the base; `PL-EDU-KITCHEN` as a table reference only. New: finger-level flat-hand macro with per-finger lift (`new: finger lift`, shared with C25's crossed fingers), see-through hand layer with tendon cords and linking bands (clean diagram style, no gore), dining-table set with a lamp, piano-keys insert.
+- **Sound intent:** quiet evening room tone, a clock far off; a soft "tap" each time a finger lifts and lands (three taps, then a held silence for the stuck ring finger as the stinger); a gentle piano phrase that stumbles on one note for the musician beat; plucked-string motif on the "shared strings" line.
+
+### C29 — อย่าหาวนะ
+
+- **Sub-genre:** social behaviour (contagious yawning).
+- **Staging:** a quiet afternoon classroom; one yawn passes from `girl-school` to the boy beside her, to the teacher (`woman-long + office`) (people only, no animals), then the camera turns to face the viewer.
+- **Logline:** Just reading or hearing about yawning makes many people yawn; you may yawn before this video ends. Contagious yawning appears in people from about the age of four or five, but babies yawn even before birth. Nobody knows for sure what a yawn is for: one idea is that it cools the brain.
+- **Hook (Thai):** "คลิปนี้มีภารกิจเดียว… ทำให้คุณหาวก่อนมันจบ"
+- **Hook claim status:** `unchecked`, `settled` that yawning is contagious for many people (seeing, hearing or reading about it); `unchecked` what share of people (figures vary by study; no number in the hook).
+- **Key reveal image:** the classroom from above: each yawn painted as a soft wave ring that spreads from one face to the next desk, the last ring rolling out of the screen toward the viewer.
+- **Beats:**
+  1. The challenge: "อย่าหาวนะ"; the girl yawns. `unchecked`
+  2. The chain: the boy catches it, then the teacher; seeing, hearing and even reading about a yawn can trigger one. `unchecked`, `settled`
+  3. When it starts: babies yawn in the womb, but catching yawns from others appears later in childhood. `unchecked`, `settled` for yawning before birth (ultrasound studies); age of onset `unchecked` (Helt and colleagues, 2010, about four to five years)
+  4. Why we yawn: nobody is sure; one hypothesis is that a yawn cools the brain (Gallup and colleagues); another links catching yawns to closeness with the person yawning; both are debated. `unchecked`, `hypothesis`
+  5. Payoff: the wave rolls off the screen to the viewer. Last line: "ถ้าคุณหาวไปแล้ว… ไม่ต้องอาย ส่งให้เพื่อนดูว่าเขาจะทนได้นานกว่าคุณไหม" `unchecked`
+- **Ending:** `A_fade` on the empty classroom (or `B_loop` with "อย่าหาวนะ" as the hook again; Preaw prefers the fade, the share line is the end).
+- **Voice / tone:** slow, sleepy narrator who fights a yawn once mid-video (a performance cue for Gemini TTS, not a fact); characters only yawn, no lines except the teacher's "ใครหาว…"
+- **Why it holds:** the viewer is the test without doing anything; the hook is a challenge that is fun to lose; the share line is a dare.
+- **Evidence notes (thin spots):** the thinnest of the round. Contagion is well documented, but how many people catch yawns varies widely between studies; the purpose of yawning is unknown; the "closeness / empathy" link has failed some replications, so the narration only says "บางงานวิจัยบอกว่า". No dog or animal contagion beat (mixed evidence and it would pull back toward R2 pets).
+- **Research load:** named studies (Provine's yawning work; Helt et al. 2010 on onset; Gallup's brain-cooling papers; one replication or review on the empathy link) plus general knowledge.
+- **Kit check:** people from `PEOPLE` (proposal `girl-school + school, P?, sleepy`, `boy-school + school, P?, sleepy`, `woman-long + office, P?, neutral` then `sleepy`); kit `idle-breathe`, `turn-head-to-camera`; `PL-HANAKO-CLASSROOM` as a classroom reference only (a horror set; repaint for a warm afternoon). New: warm afternoon classroom set with desks in world metres, yawn mouth and face shape (`new: yawn`, a wide open mouth with closing eyes; check `expressions.ts` for a `sleepy` face first), stretch-arm pose, wave-ring layer, top-down camera.
+- **Sound intent:** soft afternoon classroom ambience (a fan, distant traffic, pages); each yawn is a real breathy yawn sound (generated voice or recorded), and the wave ring carries it visually; a slow, drowsy music box bed; the music winds down like a toy losing power before the last line.
+
+### C30 — คุณไม่เคยแตะอะไรเลย (wild card)
+
+- **Sub-genre:** atomic physics (empty atoms, electric repulsion, what "touch" means).
+- **Staging:** a fingertip touching a phone screen; the camera dives through skin ridges, cells and glass down to atoms, painted as tiny nuclei inside soft electron clouds; two clouds meet and push back before they overlap.
+- **Logline:** Atoms are almost entirely empty: if an atom were a football stadium, its nucleus would be a small bead in the centre. When your finger "touches" your phone, the electrons in your finger and in the glass push each other away, so the nuclei never meet. Is that not touching? Physicists say that push is exactly what touching is, so you touch things all the time.
+- **Hook (Thai):** "คุณไม่เคยแตะอะไรเลยในชีวิต… แม้แต่มือถือที่คุณถืออยู่ตอนนี้"
+- **Hook claim status:** `unchecked`, `model` (true only for one definition of touching; the twist at beat 5 corrects the hook on screen, so the hook is a fair setup, not a false claim).
+- **Key reveal image:** the atomic scale: two soft electron clouds, one from the finger and one from the glass, flattening against each other like two balloons pressed together, a thin dark gap between them, the tiny nuclei far inside.
+- **Beats:**
+  1. The touch: a finger taps the phone; the camera dives. `unchecked`
+  2. Empty atoms: a nucleus is tiny compared with the whole atom; the stadium-and-bead comparison. `unchecked`, `settled` (ratio about 1 to 100,000 in size; the comparison object needs Boat's arithmetic)
+  3. Reveal: the clouds meet and push apart; the push comes from the electrons' electric charge and from a quantum rule that stops them from crowding into the same state. `unchecked`, `settled` (electromagnetism plus the Pauli exclusion principle; how much each contributes is a point Boat keeps simple)
+  4. What you feel: nerves in the fingertip read that push as pressure. `unchecked`, `settled`
+  5. Twist: so did you touch it? If touching means "atoms push on each other at a tiny distance", then that is all touching ever was, and you touch things all day. Last line: "คุณไม่เคยแตะอะไรเลย… หรือนี่แหละคือการแตะ ที่เป็นมาตลอด" `unchecked`, `model` (a definition question; the narration presents it as one)
+- **Ending:** `B_loop` (the camera pulls back up to the fingertip on the phone, matching the hook frame).
+- **Voice / tone:** wonder-filled, slower narrator; no character lines.
+- **Why it is the wild card:** it breaks the round's rule on purpose: there is nothing to try that gives a new result, only the phone in hand as an anchor, and the picture is entirely a model (electrons have no true look, so every frame is a labelled drawing). It is the most "sci-fi" of the round and matches the EP05 scale signal (a camera dive through scales), but it may feel abstract. The kit has nothing at cell or atomic scale, no dive-through-scales camera move, and no character on screen after beat 1.
+- **Evidence notes:** the physics is textbook and the best-established of the six. Thin parts: the comparison numbers (stadium and bead, how much of you is "empty") circulate without sources and must be recomputed; popular figures such as "you hover a fraction of a nanometre above your chair" stay out unless Boat finds a sourced value. The hook depends on fair framing: it must be answered by beat 5.
+- **Research load:** general physics (atomic structure, Pauli exclusion, electromagnetism, touch receptors) plus one authoritative explainer for the "do we ever touch" framing.
+- **Kit check:** person from `PEOPLE` for beat 1 only (proposal `woman-curly + home-lounge, P?, neutral`); kit `hands.ts` `paintPovHand` for the fingertip on the phone; kit phone prop (rig); `glow.tsx` for soft cloud glow. New: phone-screen macro, scale-dive sequence (skin ridges, cells, glass lattice, atoms), electron-cloud and nucleus layer (labelled as a model on screen, e.g. "ภาพจำลอง"), cloud-press deformation, dive camera move through scales (`new: scale dive`, likely screen-plane zoom cards rather than world metres).
+- **Sound intent:** a phone tap as the hook stinger; a deep whoosh riser through each scale step, the room tone thinning to near silence at the atomic scale; a soft low hum for the clouds pressing; a single warm chime on the twist, then the tap sound again as the camera returns.
+
+---
+
+## R5 — Summary
+
+| ID | Title | Sub-genre | Key reveal image | Hook (Thai) | Ending | Research | First kit check |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| C25 | จมูกสองอัน | touch perception (Aristotle's illusion) | crossed fingers on one nose below, brain's uncrossed hand with two noses above | "ไขว้นิ้วชี้กับนิ้วกลาง แล้วเอาไปแตะปลายจมูก… คุณจะรู้สึกว่ามีจมูกสองอัน" | B_loop | general + named studies | finger-level hand macro (shared with C28), brain-map layer |
+| C26 | ลมหายใจเดียว ร้อนก็ได้ เย็นก็ได้ | thermal physics of air (jet mixing; fan twist) | palm with a slow orange breath cloud vs a fast blue jet stripping heat | "อ้าปากเป่ามือ 'ฮ่า' มันอุ่น… ห่อปากเป่า 'ฟู่' มันเย็น… ลมเดียวกันแท้ ๆ" | A_fade | general physics; mechanism source needed | bedroom set with fan, two-stream air layer |
+| C27 | บีบจมูกแล้วลูกอมไม่มีรส | chemical senses (retronasal smell) | head cutaway, scent stream blocked at the pinch, then rushing up | "บีบจมูกไว้ แล้วกินลูกอมรสสตรอว์เบอร์รี… มันจะหวานเฉย ๆ ไม่มีรสอะไรเลย" | B_loop | general + review | `eat-chew` exists; head cutaway plate, pinch pose |
+| C28 | นิ้วนางที่ยกไม่ขึ้น | anatomy (shared extensor tendons) | see-through hand, middle and ring tendons tied, ring cord stuck | "วางมือแบนบนโต๊ะ พับนิ้วกลางลงไป… แล้วลองยกนิ้วนางดูสิ" | B_loop | general anatomy + Schumann (uncertain) | finger-lift hand macro (shared with C25), tendon layer |
+| C29 | อย่าหาวนะ | social behaviour (contagious yawning) | yawn waves spreading desk to desk, last one rolling to the viewer | "คลิปนี้มีภารกิจเดียว… ทำให้คุณหาวก่อนมันจบ" | A_fade | named studies, mixed evidence | classroom set, `new: yawn` face, wave-ring layer |
+| C30 | คุณไม่เคยแตะอะไรเลย (wild card) | atomic physics (what touch is) | two electron clouds pressing like balloons, nuclei far inside | "คุณไม่เคยแตะอะไรเลยในชีวิต… แม้แต่มือถือที่คุณถืออยู่ตอนนี้" | B_loop | general physics | nothing at atomic scale; scale-dive sequence |
+
+**Preaw's pick for the viewer (not a decision):** C28 and C25. C28 is the strongest felt moment of the round: nearly every viewer tries it on the spot and nearly every viewer fails, which is funny, personal and shareable, and the see-through hand is a clean inside-view. C25 is the fastest test (three seconds, lying down) with an uncanny result and a 2,000-year-old surprise; the two share one new asset (a finger-level hand macro), so building one makes the other cheaper. Runner-up: C26, the most useful in Thai daily life (the fan twist) but its explanation needs Boat's source first. C27 is a sure-fire test held fourth only because it needs a snack within reach.
+
+**Thinnest evidence:** C29 (contagion rates vary widely, the purpose of yawning is unknown, the empathy link has replication problems), C26 (the everyday effect is certain but the explanation is often given wrongly online; Preaw's mechanism is a `model` until sourced), and C28's Schumann beat (a popular story with documented uncertainty; keep with "เล่ากันว่า" or cut). C30's physics is solid; only its comparison numbers need recomputing. C25 and C27 rest on textbook demonstrations.
+
+---
+
+## R5 — Film annotation (W0.2, 2026-11-08)
+
+Engine fixed: painted 2D p5.brush, 4-head cast, default look the [painted 3D camera](../../docs/film-visual-brief-workflow.md#painted-3d-camera). Looks designed from each story first; kit checked afterwards against `src/painted/kit/README.md` at `b71b192`. Checked facts: `hands.ts` `paintPovHand` takes one global `curl`, `spread` and `press` for all four fingers (fixed `FINGER_LEN`/`FINGER_W`/`FINGER_V` tables), so there is **no per-finger curl, lift or crossing**; `twoBone` and `thumbShape` are the segment helpers a per-finger version would build on. `expressions.ts` has `sleepy`, `tired`, `asleep`, `shock` (mouth `shout`, open 0.6); no `yawn` id. `eat-chew` motion and the profile `KIT-CHEW-STRIPS` exist. Plates as references only: `PL-HANAKO-CLASSROOM` (horror, repaint), `PL-ZCPAINT-ROOM-NIGHT`, `PL-EDU-KITCHEN`, `PL-EDU-EYE` and `PL-EDU-ONION-CELLS` (flat-diagram precedent). EP05 `src/painted/edu05/macro.ts` (ant-scale world in set metres) is the only scale-change precedent, `exists-unintegrated` in the kit. Sound library checked at `$REELS_STORE/library/sound/INDEX.md`: `stinger_pizz-shrug_01`, `stinger_pizz-tag-ending_01`, `foley_soft-landing-tap_01`, `whoosh_air-swish-rising_01`, `whoosh_heavy-cinematic_01`, `reveal_glass-shimmer-soft_01`, `reveal_warmth-fwoop_01`, `foley_packaging-rustle_01`, `foley_umbrella-tap-glass_01`, `ui_notification-ding_01`, `foley_sleeper-breath-tent_01`; gaps named per concept. Numbers marked "est." are Film estimates, not Boat facts. Size: **S** one new set plus small additions; **M** one or two sets plus several new props/FX/motions or one small Boss extension; **L** a new capability with no precedent.
+
+**Shared hand macro (C25, C28).** One Boss extension of `hands.ts`: a finger-level hand with per-finger curl and lift (two segments each via `twoBone`), a draw-order switch so the middle finger can cross over the index (C25), and a flat-on-table view from a high three-quarter camera (C28). Est. cost: one Boss pass plus one look still for user approval, about the weight of the EP06 eye-macro extension. Built once, it moves the second concept from M to S. Risk: the existing hand is drawn as a POV phone grip; a palm-down hand on a table and crossed fingers seen from the side are new silhouettes, so the look still must pass before either episode's storyboard. Build order: C28 first (the harder pose set: five lift states), C25 reuses it.
+
+| ID | Medium / look | Key read at 9:16 and "try it now" on screen | Buildability | Size |
+| --- | --- | --- | --- | --- |
+| C25 | Painted 2D, warm living-room evening; POV crossed fingers at the nose tip in close-up, brain-map card above (screen-plane), sofa cut-in `woman-bob + home-lounge, P?, surprised` then `laugh` | Split frame reads if the brain map is upper half (est. y 240–760) and the real hand lower half above the band (est. y 780–860 tip, band kept clear); two noses must be two clear painted shapes, one under each uncrossed fingertip. Try-it works fully on screen; the result is felt, the picture only confirms it. Crossed-arms insert needs a second figure tapping both hands: shown, not invited | new assets: shared hand macro (crossed fingers), nose-tip close-up of the 4-head face at macro scale, brain-map layer (small hand on a brain surface, glowing touch points), crossed-arms tap insert. Sound: `foley_soft-landing-tap_01` for the taps, `stinger_pizz-shrug_01` / pizz bed; NEEDS-GEN soft double "pip" | M (S after C28) |
+| C26 | Painted 2D, hot Bangkok bedroom at night, lamp-warm vs blue moonlight; `man-spiky + home-lounge, P?, suspicious`; palm close-up with two painted air streams; end on the ceiling fan from below | Colour carries the clue with sound off: orange wide slow cloud vs thin blue jet with entrained swirls, side by side on one palm. Fan twist reads as a slow push-in on turning blades with a heat-layer glow peeling off his body. Try-it works on screen; no demo needed | new assets: bedroom set with ceiling fan (blades rotating in world metres; EP06 `room.ts` as a room base), two-stream air layer (seed from `ENV-FOG` `paintFogBank` puffs, retinted), skin heat-layer glow, tom-yum spoon insert (first soup prop). Palm uses `paintPovHand` as is (open palm). Sound: `reveal_warmth-fwoop_01` for the warm breath, `whoosh_air-swish-rising_01` for the jet; NEEDS-GEN night insects plus fan hum loop | M |
+| C27 | Painted 2D, after-school desk in late-afternoon light; `girl-school + school, P?, neutral` then `surprised`; profile head cutaway as a clean diagram (flat-diagram style of `PL-EDU-ONION-CELLS`) | Cutaway reads in profile at est. 700 px head height, upper frame; the "door" at the pinch and the pink stream rushing up are one bold shape each. The music opening on release (low-pass to full) is the best sound-picture match of the round. Try-it needs a snack; the screen carries the moment fully | ready: `eat-chew` motion and profile chew strips, `point-and-say`, `school` wardrobe. new assets: desk set (bedroom or classroom), candy and wrapper props, `new: pinch nose` hand-to-face pose, profile head cutaway plate (mouth, tongue, soft palate, nasal channel), scent-stream layer with a door. Sound: `foley_packaging-rustle_01` as interim wrapper, `ui_notification-ding_01` for the chime | M |
+| C28 | Painted 2D, dining table under one warm pendant lamp, evening; `man-elder + office, P?, laugh` and `boy-school + home-lounge, P?, worried`; hands from a high three-quarter camera, skin turning see-through to show tendon cords (diagram style, no gore) | Hands on a table sit low in a natural frame; the camera must tilt down so both flat hands sit above the band (est. y 300–820). Stuck ring finger reads only if the other three lifts are big and clear (est. lift ≥ 40 px at macro scale). Try-it: every viewer tries it at once; the screen shows the failure and the reason. Piano insert is a cutaway card | new assets: shared hand macro (flat palm-down, per-finger lift), see-through tendon layer riding on the same finger bones (one forearm muscle splitting to cords, linking bands, two extra cords), dining-table set with lamp, piano-keys insert. Sound: `foley_soft-landing-tap_01` for finger taps; NEEDS-GEN stumbling piano phrase, plucked-string motif | M |
+| C29 | Painted 2D, warm sleepy afternoon classroom, low sun through blinds; `girl-school`, `boy-school` (`school`), `woman-long + office`; top-down plan of desks with yawn rings | Yawn faces read at mid-shot if the mouth opens wider than `shock` (open about 1.0) with eyes closed; ring waves read as two or three thick soft rings, not many thin ones. The last ring rolling toward the lens is the payoff. Try-it is passive: the viewer either yawns or not, nothing to stage | ready: `sleepy`, `asleep` expressions (a `yawn` face is likely a new combination: `asleep` eyes plus a wide-open mouth), `idle-breathe`, seated poses (`poses-seated.ts`), `turn-head-to-camera`. new assets: classroom set with desks in world metres, `new: yawn` face, stretch-arm pose (check P01–P45 first), wave-ring layer. **missing capability (unknown status):** a straight top-down view; the yaw camera may only reach a high oblique, which is an acceptable fallback. Weakest inside-view: the rings show spread, not a mechanism. Sound: NEEDS-GEN yawn voice (Gemini TTS vocal sound), music-box bed winding down, classroom ambience | S |
+| C30 | Painted 2D throughout, flat-diagram look below skin scale with an on-screen "ภาพจำลอง" label; fingertip on a phone at the start and end | Each scale must read as one clear image (skin ridges, glass lattice, two clouds); the cloud press is a strong cover image. No character after beat 1 makes 40–60 s of model imagery the retention risk. Try-it: none by design | missing capability: scale-dive camera move (chained screen-plane zoom cards with cross-dissolves; EP05 `macro.ts` is only a two-scale precedent). new assets: phone-screen macro, four or five scale plates, electron-cloud and nucleus layer with press deformation, label card. Sound: `whoosh_heavy-cinematic_01` per scale step, `reveal_glass-shimmer-soft_01`, `foley_umbrella-tap-glass_01` as interim phone tap; NEEDS-GEN low hum | L |
+
+Safety and taste notes (Film): C25 fingertips stay on the nose tip in every frame, never near the eyes. C26 shows two breaths only and never a spoon of hot soup near a child's face. C27 the girl sits up in every chewing shot and never laughs with candy in her mouth while pinched. C28 no hand ever pulls a finger up. C30 the "ภาพจำลอง" label stays on screen at every scale below the skin.
+
+Ranking by reach vs cost:
+1. **C28**: the strongest felt moment (try and fail), clean inside-view, M; pays for the shared hand macro.
+2. **C25**: fastest test, uncanny result; S once C28's macro exists, so build it right after C28.
+3. **C27**: sure-fire result, the best sound-picture idea, M with `eat-chew` already in the kit.
+4. **C26**: most useful in daily life (fan twist), M; held back by the unsourced mechanism.
+5. **C29**: cheapest (S), but the evidence is thin and the inside-view shows spread, not a cause.
+6. **C30**: solid physics, but L (new scale-dive capability) and nothing to feel.
+
+**Film's recommendation: C28, then C25** (agrees with Preaw), produced back to back so the hand macro is built once. Claims and sound intent are unchanged from Preaw's R5; nothing here is checked fact.
+
+---
+
+## R5 — User pick (W0.3, 2026-11-08)
+
+User kept **C25, C26, C27, C28, C30** (structured question, two multi-select questions); **C29 not picked**. Episode order not yet chosen. Film ranking: C28 > C25 > C27 > C26 > C29 > C30 (Film recommends C28 and C25 back to back for the shared hand macro). Context: user asked Preaw for six more education concepts, no topic given.
