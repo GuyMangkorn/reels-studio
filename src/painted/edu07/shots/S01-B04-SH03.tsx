@@ -4,7 +4,7 @@ import {makeShot} from '../shot';
 import {dashRun, earthAt, paintSpace, spaceCam} from '../space';
 import type {V3} from '../../kit/space';
 
-// S01-B04-SH03 (G1160-1245): Earth goes straight (L09). Dark Earth (night side, city specks, blue rim) starts at earthAt(-45) on L0 and moves at constant speed along the
+// S01-B04-SH03 (G942-1027): Earth goes straight (L09). Dark Earth (night side, city specks, blue rim) starts at earthAt(-45) on L0 and moves at constant speed along the
 // tangent (0.707, 0, -0.707), 0.55 su over L0-85, leaving a faint straight dashed trail; the orbit line curves on, empty. Camera spaceCam((0.95, 0, 0.45), az 10 -> 14, el 28,
 // r 1.60 -> 1.75, f 880, hy 1000). The Sun is gone and the ring is beyond the frame.
 const ID = 'S01-B04-SH03', N = lenOf(ID);

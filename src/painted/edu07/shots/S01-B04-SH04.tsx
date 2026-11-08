@@ -3,7 +3,7 @@ import {makeShot} from '../shot';
 import {MOON_DIR, paintSoi} from '../soi';
 import type {YCam} from '../../kit/ycam';
 
-// S01-B04-SH04 (G1245-1331): the Moon goes dark (L10). SD05 camera pos (1.10, 1.55, 2.70) looking at the Moon (az 13.2), pitch 5 -> 8, f 950, hy 880. Both standing, back to the
+// S01-B04-SH04 (G1027-1113): the Moon goes dark (L10). SD05 camera pos (1.10, 1.55, 2.70) looking at the Moon (az 13.2), pitch 5 -> 8, f 950, hy 880. Both standing, back to the
 // lens, heads tilted up: CUS (1.30, 0, 0.55), VEN (0.50, 0, 0.40). The Moon fades to its unlit disc L63-83 and the moon rim on their hair fades with it.
 const ID = 'S01-B04-SH04', N = lenOf(ID);
 const DEG = Math.PI / 180;

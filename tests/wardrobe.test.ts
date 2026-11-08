@@ -107,7 +107,8 @@ test('dress() returns a new CastDef that keeps height, seed, build and head (the
       assert.equal(d.seed, def.seed);
       assert.equal(d.headScale, def.headScale);
       assert.equal(d.armScale, def.armScale);
-      assert.equal(d.outfit.shoulder, def.outfit.shoulder, `${pid} ${oid} build`);
+      const bulk = WARDROBE_INFO[oid].bulk;
+      assert.equal(d.outfit.shoulder, bulk ? Math.max(def.outfit.shoulder, 0.34) * bulk : def.outfit.shoulder, `${pid} ${oid} build`);
       if (WARDROBE_INFO[oid].shavesHead) {
         assert.equal(d.head.cut, 'shaved');
         assert.equal(d.head.facial, undefined);

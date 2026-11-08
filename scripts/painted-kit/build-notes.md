@@ -62,3 +62,12 @@
 - Finding: at 3.2x zoom the nurse cap reads as a flat white box; the close-up uses `office` clothing for now.
 - Finding: `store.py archive` stores media only (MEDIA extensions); text evidence stays in out/.
 - Not verified: Remotion Studio (cold load, play, scrub) was not opened for KIT-SHOT-TEMPLATES; seek evidence is fresh-session stills in non-sequential order plus MP4 frame comparison (PSNR ~40 dB, H.264).
+
+## EDU-EP08 kit intake record (8 Nov 2026, Boss, KIT-P01; uncommitted on claude/education-ep8-continue-39be3d)
+- Filed: `WARDROBE.eva-suit` + `WARDROBE_INFO` (`bulk`), `kit/eva.ts` (suit, gloves, neck ring, bubble / visor / 1966 helmets, detached helmet prop), pose P46 `zero-g-neutral`, motions `zero-g-drift`, `pat-check`, `rail-tow`, `paintFigureAt({roll})`, ENV-EARTH (`earth.ts`), ENV-GLITTER (`glitter.ts`), screen layers `TimerRing` / `Stamp`, sheets `ZEROG-*`, PLATES `PL-EDU-ORBIT`, `PL-EDU-RING-CLOSE`, `PL-EDU-CHAMBER-1966`, `PL-EDU-AIRLOCK` (stills in the store). Episode code under `src/painted/edu08/` is unchanged.
+- Review: `glitterMarks` `emit` is pure (the birth time reduces to `(cycle - base) * life`, no state, ignored in snapshot mode); the `MEAS` hook is episode-owned (`edu08/suit.ts`), writes a module global after painting and never feeds back into the picture; no kit module reads it.
+- Regression: `regress.mjs` HEAD vs the working tree, 36 frames, PSNR 69-90 dB (2 byte-identical), render noise level (see DF-20261030-render-run-noise); the same working-tree code run twice gives 2/36 byte-identical, PSNR min 69.0 dB, so the 69-90 dB differences are render noise.
+- Proposed (maintenance window, not implemented; status proposed):
+  - P1 `woman-bob` neutral mouth is upturned and reads as a smile; flatten the neutral mouth curve for that head (head change: user approval, recurring character "คุณ").
+  - P2 `dry(p)` in `edu08/stage.ts` builds a no-op painter from `makePainter` over a no-op Proxy; promote a shared `makeNullPainter` in `kit/painter.ts` for measuring anchors without drawing.
+  - P3 the kit `'o'` mouth is a fixed-size round hole whatever `open` is; scale it with `open` (and clamp to the lip width).

@@ -70,7 +70,7 @@ export const PROFILE_ARMS: Partial<Record<PoseId, SideArms>> = {
   P30: side(at([0.2, 0.12], [0.12, 0.34])),
 };
 
-export const BODY_POSE_IDS = ['P31', 'P32', 'P33', 'P34', 'P35', 'P36', 'P37', 'P38', 'P39', 'P40', 'P41', 'P42', 'P43', 'P44', 'P45'] as const;
+export const BODY_POSE_IDS = ['P31', 'P32', 'P33', 'P34', 'P35', 'P36', 'P37', 'P38', 'P39', 'P40', 'P41', 'P42', 'P43', 'P44', 'P45', 'P46'] as const;
 export type BodyPoseId = (typeof BODY_POSE_IDS)[number];
 
 export type BodyPoseSpec = {
@@ -178,5 +178,11 @@ export const BODY_POSES: Record<BodyPoseId, BodyPoseSpec> = {
     description: 'Both hands raised beside the head, palms open. Surrender, "don\'t shoot", being caught. Front and profile.',
     front: {body: {}, arms: arm2(at([-0.22, 0.14], [-0.3, 0.39]), at([0.22, 0.14], [0.3, 0.39]))},
     side: {body: {}, arms: side(at([0.2, 0.17], [0.2, 0.43]), at([0.18, 0.17], [0.18, 0.42]))},
+  },
+  P46: {
+    name: 'zero-g-neutral', face: 'neutral',
+    description: 'Weightless rest (EDU-EP08 B4, VD02): knees bent about 40 deg (crouch 0.22), upper arms 20 deg forward of hanging, forearms 65 deg forward toward the lens, gloves in front of the hips. No ground: paint with `shadow: false` (`paintFigureAt`) or `paintEva`. Front and profile.',
+    front: {body: {crouch: 0.22}, arms: arm2(at([-0.04, -0.25], [0.03, -0.41]), at([0.04, -0.25], [-0.03, -0.41]))},
+    side: {body: {crouch: 0.22}, arms: side(fk(20, 65), fk(18, 62))},
   },
 };

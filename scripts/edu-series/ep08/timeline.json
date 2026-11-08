@@ -1,0 +1,155 @@
+{
+ "fps": 30,
+ "tempo": 0.95,
+ "total_frames": 1745,
+ "total_s": 58.17,
+ "shots": [
+  {
+   "id": "S01-B01-SH01",
+   "start": 0,
+   "end": 55,
+   "frames": 55,
+   "covers": "L01"
+  },
+  {
+   "id": "S01-B01-SH02",
+   "start": 55,
+   "end": 101,
+   "frames": 46,
+   "covers": "V01 + silence"
+  },
+  {
+   "id": "S01-B01-SH03",
+   "start": 101,
+   "end": 233,
+   "frames": 132,
+   "covers": "L02"
+  },
+  {
+   "id": "S01-B01-SH04",
+   "start": 233,
+   "end": 272,
+   "frames": 39,
+   "covers": "L03a"
+  },
+  {
+   "id": "S01-B01-SH05",
+   "start": 272,
+   "end": 293,
+   "frames": 21,
+   "covers": "L03b"
+  },
+  {
+   "id": "S01-B02-SH01",
+   "start": 293,
+   "end": 371,
+   "frames": 78,
+   "covers": "L04"
+  },
+  {
+   "id": "S01-B02-SH02",
+   "start": 371,
+   "end": 416,
+   "frames": 45,
+   "covers": "L05a"
+  },
+  {
+   "id": "S01-B02-SH03",
+   "start": 416,
+   "end": 503,
+   "frames": 87,
+   "covers": "L05b"
+  },
+  {
+   "id": "S01-B03-SH01",
+   "start": 503,
+   "end": 610,
+   "frames": 107,
+   "covers": "show + L06a"
+  },
+  {
+   "id": "S01-B03-SH02",
+   "start": 610,
+   "end": 728,
+   "frames": 118,
+   "covers": "L06b"
+  },
+  {
+   "id": "S01-B03-SH03",
+   "start": 728,
+   "end": 907,
+   "frames": 179,
+   "covers": "L07"
+  },
+  {
+   "id": "S01-B03-SH04",
+   "start": 907,
+   "end": 1047,
+   "frames": 140,
+   "covers": "L08"
+  },
+  {
+   "id": "S01-B03-SH05",
+   "start": 1047,
+   "end": 1127,
+   "frames": 80,
+   "covers": "L09"
+  },
+  {
+   "id": "S01-B04-SH01",
+   "start": 1127,
+   "end": 1206,
+   "frames": 79,
+   "covers": "show + L10a"
+  },
+  {
+   "id": "S01-B04-SH02",
+   "start": 1206,
+   "end": 1340,
+   "frames": 134,
+   "covers": "L10b"
+  },
+  {
+   "id": "S01-B04-SH03",
+   "start": 1340,
+   "end": 1412,
+   "frames": 72,
+   "covers": "exhale + L11"
+  },
+  {
+   "id": "S01-B05-SH01",
+   "start": 1412,
+   "end": 1453,
+   "frames": 41,
+   "covers": "V02"
+  },
+  {
+   "id": "S01-B05-SH02",
+   "start": 1453,
+   "end": 1511,
+   "frames": 58,
+   "covers": "L12a"
+  },
+  {
+   "id": "S01-B05-SH03",
+   "start": 1511,
+   "end": 1610,
+   "frames": 99,
+   "covers": "silent beat + L13a"
+  },
+  {
+   "id": "S01-B05-SH04",
+   "start": 1610,
+   "end": 1679,
+   "frames": 69,
+   "covers": "L13b"
+  },
+  {
+   "id": "S01-B05-SH05",
+   "start": 1679,
+   "end": 1745,
+   "frames": 66,
+   "covers": "closing (no line)"
+  }
+ ]
+}

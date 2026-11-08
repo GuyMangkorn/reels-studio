@@ -1,6 +1,7 @@
 import amplitude from '../../amplitude.json';
 import {mouthAt} from '../../rig/drivers';
 import {drawFigure} from '../kit/cast';
+import {hipAnchor, withRoll} from '../kit/figure-at';
 import {rectPts, washAt} from '../kit/draw';
 import {layerMotion, motionDuration, MOTION_INFO} from '../kit/motions';
 import {MOTION_REEL, REEL_FPS, REEL_GROUND, REEL_UNIT, reelSceneSec, reelShotId, type ReelEntry} from '../kit/motion-reel';
@@ -25,7 +26,7 @@ const paintReel = (e: ReelEntry) => (p: Painter, {tl}: ShotContext) => {
       expression: c.expression, distance: c.distance, seed: c.seed, amp: c.narration ? (t) => mouthAt(amplitude, t * REEL_FPS, -A_OFFSET) : undefined,
     });
     if (e.chair) drawChair(p, 7100 + i, [c.x, REEL_GROUND], REEL_UNIT, f.def, f.view);
-    drawFigure(p, f.def, f.g, REEL_UNIT, f.pose, tl, f.seed);
+    withRoll(p, f.roll ? hipAnchor(f.def, f.g, REEL_UNIT, f.pose) : f.g, f.roll, () => drawFigure(p, f.def, f.g, REEL_UNIT, f.pose, tl, f.seed));
   });
 };
 

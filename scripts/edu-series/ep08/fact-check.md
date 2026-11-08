@@ -129,3 +129,28 @@ If fix 3 is taken, the L12 row of the claim table should cite SRC002 (animal stu
 | L01, L03, L04, L06, L08-L11, L13 | compared with the R1 wording quoted in W1.3 | unchanged, character for character; earlier verdicts stand. |
 
 - Carried, not blocking: cut set C3 (fold L08+L09) needs an F005 recheck if applied; W1.4 read must confirm length (estimate ~60.3 s, over the cap) and check "ปี 1966" pronunciation, audible "นี่แค่สมมติ" and no stress on "จริง ๆ" that reads as a guarantee. The 1966 details remain secondary-only (hedged, medium-low confidence).
+
+## Recheck R1.2 (Boat, 2026-11-08)
+
+- Script checked: `script.md` **EDU-EP08-SCRIPT-R1.2**, scope "Boat recheck scope (R1.2)": L12, L13 and the clarity pass (ER05) over L01–L13. L01–L11, V01, V02 compared with R1.1 as unchanged. Audit read: `script-audit-er.md`. No new sources opened; evidence base unchanged (SRC001, SRC002, SRC006, SRC009–SRC011, SRC014). `script.md`, `task.md`, voice and render files not edited.
+- **Verdict: pass, with one optional clarity change (L07 "เสียแรงดัน" to "ชุดรั่ว", needs a re-voice).** **Status: ready for voice of L13 (new take) and the L12 trim, and for the Film handoff, for EDU-EP08-SCRIPT-R1.2 at this wording.** Readiness is not user approval (R1.2 ending still needs it) and not audio validation.
+
+| Item | Wording in R1.2 | Result |
+| --- | --- | --- |
+| L12 (hedge 4) | “ถ้าช่วยเร็วมาก… ก็อาจรอด” | **pass; hedge 4's evidence clause may leave the narration (ER07).** The remaining claim is conditional ("ถ้า… เร็วมาก") and modal ("อาจ"), and is true: SRC001 "many exposures may be survivable", SRC002 animal work plus one prolonged and several anecdotal human exposures; L09 already tells the one reported case. The cut clause was an "evidence is thin" hedge, which ER07 removes by leaving it out; leaving it out does not make a false statement. Task.md safety limit "survival hedge stays in the narration" is met by "อาจ" plus "เร็วมาก". Residual risk: the viewer loses the cue that survival data are limited (medium confidence, qualitative). Guards instead: no on-screen "รอดได้" or "safe" caption; no instant repressurisation shown (N3); ring stops before the band as in the cue; the reader must not stress "รอด". The length fallback (keep the clause, ~61 s, cut L11) is therefore not needed for accuracy. |
+| L13 "ช่วยปอด" (F007) | “คุณจะอยากกลั้นหายใจไว้… แต่ในที่ที่ไม่มีอากาศ สิ่งที่ช่วยปอดคุณ คือหายใจออก” | **pass, wording "ช่วยปอด" approved; "ช่วยชีวิต" rejected.** Exhaling stops held air overexpanding the lungs (SRC006; SRC003 title), which is exactly "helps the lungs". "ช่วยชีวิต" would claim exhaling alone saves you, which is unsupported: ebullism and hypoxia remain and L12 says survival depends on fast rescue. "คุณจะอยากกลั้นหายใจไว้": a statement of the viewer's imagined urge inside the L03 "สมมติ", not a sourced physiology claim; no source tested what people feel (no evidence either way found; low confidence), so it is dramatic framing, narrator-voiced as an assumption, and it must not be shown as a proven reflex. "ที่ไม่มีอากาศ" is the script's refrain simplification of near-vacuum; accepted as in L05, L06, L10. Hedge 5: L03 "นี่แค่สมมติ" stays and L12 is directly before L13; the line states a fact and is not an instruction to try. Consistent with L10 "ปอดอาจบาดเจ็บได้". |
+| CL01 second payoff (fictional) | chest lift with lips closed, CREW glove tightens | pass: dramatization, no injury, swelling or skin imagery; no caption of "safe now". |
+
+### Clarity pass (ER05) over L01–L13
+
+| Line | Verdict | Plain true wording, if changed |
+| --- | --- | --- |
+| L07 "เจอชุดเสียแรงดัน" | `too-technical` (minor, optional): "แรงดัน" as a loss state is the one phrase a non-science friend may stumble on; the hose-pop picture carries it in the same beat, so ER05 is not failed. | **“คนทดสอบชุดของนาซ่า เจอชุดรั่วในห้องสุญญากาศ”.** "ชุดรั่ว" is true (SRC009, SRC011: hose or connection came off and the suit lost pressure). Plainer, same claim, no source change. **Needs a re-voice of L07** (5.28 s line in the lock). If the re-voice cost is not accepted, keep "เสียแรงดัน"; not a factual defect. |
+| L07 "ห้องสุญญากาศ" | borderline `too-technical`, pass: L06 has just said "ไม่มีอากาศ" and L07 pictures a chamber, so the term is explained by the previous beat. Alternative if re-voiced anyway: "ห้องที่ดูดอากาศออก" (true). Not required. | none |
+| L05 flask analogy | pass, not `misleading-analogy`: analogy for "no air to carry heat" only (SRC014); it does not say the body keeps heat like a flask. Keep the picture a plain flask. | none |
+| L02/L10 balloon trope | pass: film-strip balloon is the "ในหนัง" trope, labelled and crossed out; L10 "ปอดอาจบาดเจ็บได้" keeps the lung as an injury risk, not a popping balloon. Do not draw the lung as a balloon bursting. | none |
+| L01, L03, L04, L06, L08–L09, L11–L13 | pass: everyday words; L06 mechanism ("ไม่มีอากาศกด น้ำเลยเดือดได้ แค่ด้วยความอุ่นในตัว") is plain and true. | none |
+| `misleading-analogy` | none found. | none |
+
+- Dependent claims: premise, reveal, takeaway and the fictional rescue are unchanged; the L13 callback now points at CL01 (instinct to hold) instead of L02 (explosion), consistent with F007.
+- Carried, not blocking: the 1966 details remain secondary-only (medium-low confidence); L13 new take must keep "ช่วยปอด" and must not stress "คุณจะอยาก" as a claim; cut set C3 still needs an F005 recheck if applied; runtime (~60 s cap) is measured by the Editor, not by me.
