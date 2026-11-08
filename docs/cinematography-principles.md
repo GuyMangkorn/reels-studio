@@ -29,6 +29,12 @@ This section synthesizes the sources with channel requirements. It does not attr
 8. **Cut when action or meaning changes:** include preparation → action → result where needed for readability. Allow reactions and processing time. Place sound before/after visuals intentionally. Listen to narration or watch an animatic before claiming successful timing.
 9. **Compose for each selected deliverable:** follow its own script, timing and scene sheets under [delivery workflow](delivery-workflow.md). Adapt staging, camera aspect/FOV and crop so focal point/contact/reveal remain visible; reserve subtitle space. Preserve beat timing between aspect-ratio adaptations only when the same edit is explicitly requested.
 10. **Choose a technique that can make the image:** any element may be 2D, 3D or hybrid. Choose for needed views, occlusion, acting, light/shadow, reuse and integration risk. If a cut-out needs unseen sides, propose more views/poses or 3D rather than expecting billboarding to supply missing art. Use Film's technical handoff workflow.
+11. <a id="retention-camera"></a>**Camera for retention (Default for Shorts; user, 8 Nov 2026; evidence: [EP05 retrospective](../scripts/edu-series/ep05/lessons-learned.md), the best-held edu Short, ~91 % watched):**
+    - Frame 0 already shows the stakes or the strange thing; no near-static establishing shot before it (EP05's weakest second was its static opening medium shot; the vertigo drop came at 1.3 s).
+    - Every shot carries a small eased move (a yaw arc of about 6–10° and a slow push of about 5–15 % of the camera distance), so no frame is dead. Keep the large moves (tilt, crane) for the hook and the main reveal or scale change, and let trucks follow action, never wander.
+    - When scale is the subject, keep the camera at the protagonist's eye height so the world reads as giant, and show the size gap with one human-scale view after the change (EP05: the speck on the facade).
+    - Let light colour mark the chapters: a cool shift for the setback, warm again on the payoff (EP05 B04 blue shade → B05 sun on the lift).
+    - One readable subject per frame matters more than rendering richness (EP05's simple flat look held). An abstract line needs something to watch; avoid a plain empty background under it (EP05 drift shot on cream).
 
 <a id="ขอบเขตทางเทคนิคของกล้อง"></a>
 ## Technical camera boundaries
