@@ -32,14 +32,17 @@ export const paintLF01m = (p: Painter) => { paintHandMacro(p, povCam(0), {...boy
 
 // ---- LF02: S01-B01-SH02 frame 0. brief `T-BOY: cam: (-0.26, 1.00, -0.62), yaw 10 -> 6, r 1.05 -> 1.00, eye 1.05, pitch -3, f 1100, hy 700`.
 // W3 (R1.2): pulled back to r 1.60 with f 1650 (same head size) at eye 0.98, so the table reads as a strip with its props and the near edge.
-export const camLF02: YCam = camOf(camMove([-0.26, 1.0, -0.62], [10, 6], [1.6, 1.52], 0.98, {pitch: [-2, -2], f: 1650, hy: 780}), 0);
+// Fix round 1 (R1.3, viewer check): yaw 10 -> 6 narrowed to 7 -> 6 (inside the brief range; the near table edge tilts less) and a lens shift
+// cx -130 px, so ELDER's laughing face is whole at the right while BOY stays the lead (camera position and target unchanged).
+export const LF02_MOVE = camMove([-0.26, 1.0, -0.62], [7, 6], [1.6, 1.52], 0.98, {pitch: [-2, -2], f: 1650, hy: 780, cx: -130});
+export const camLF02: YCam = camOf(LF02_MOVE, 0);
 /** BOY's comic strain (brief VD09/VD10): brows down, eyes squeezed shut, mouth clenched in a wavy line, a sweat drop; never pained. */
 export const STRAIN: FaceState = {...EXPRESSIONS.neutral, brow: 'angry', eyes: 'shut', mouth: 'wavy', sweat: true, look: [0, 0]};
 export const paintLF02 = (p: Painter, frame: number) => {
-  const t = frame / 30, y = TABLE_Y + 0.012;
+  const t = frame / 30, y = TABLE_Y;
   const out = paintDining(p, camLF02, {
     t,
-    boy: {t: t + 0.4, face: STRAIN, lHand: [-0.14, y, -0.08], rHand: [-0.38, y, -0.12]},
+    boy: {t: t + 0.4, face: STRAIN, lHand: [-0.14, y, -0.08], lPose: 'ring-strain', rHand: [-0.38, y, -0.12]},
     elder: {t: t + 1.1, face: {...EXPRESSIONS.happy, look: [-0.6, 0.2]}, lHand: [0.42, y, -0.16], rHand: [0.16, y, -0.12]},
   });
   MEASURE.LF02 = out;

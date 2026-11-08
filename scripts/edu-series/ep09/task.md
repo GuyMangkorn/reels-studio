@@ -2,7 +2,7 @@
 
 Record: this file. Series context: [concepts.md](../concepts.md) (R5, C28) · series task list: [task.md](../task.md).
 
-**Now:** W3.1 look frames LF01/LF01b/LF02/LF03/LF04 painted (Film, 2026-11-08, ROWS-R1.2, BRIEF-R1.2); review page: pending. **Next:** coordinator publishes the look-frame review page; user picks/notes, then W4 voice lock
+**Now:** W3.1 look frames LF01/LF01b/LF02/LF03/LF04 painted (Film, 2026-11-08); LF02 fix round 1 after the viewer check (ROWS-R1.3, BRIEF-R1.3, still `out/edu09/look-frames/v2/LF02.png`); review page: pending. **Next:** coordinator publishes the look-frame review page; user picks/notes, then W4 voice lock
 
 - Deliverable: `EDU-EP09-SHORT`, Short only (Thai), 1080×1920, 30 fps, target 40–60 s (estimate). Profile: educational, painted 2D p5.brush, 4-head cast, Kore narrator (edu default), ending per concept (the user may change it); other fields = project defaults.
 - Factual claims for Boat: see the C28 entry in concepts.md R5. All unchecked until research and fact-check. Every try-it-now result needs a real try before scripting.
@@ -18,7 +18,8 @@ Record: this file. Series context: [concepts.md](../concepts.md) (R5, C28) · se
 - [x] W2 Brief and storyboard — 2026-11-08: W2.1 EDU-EP09-BRIEF-R1 (film-brief.md), W2.2 EDU-EP09-ROWS-R1 (storyboard.md, review-rows.json, 19 shots, est 56.9 s). Open user questions: Q-F1 (separate fingers in macro shots, UT14 exception), Q-F2 (piano + guitar or piano only). Review page: pending (coordinator publishes).
 - [ ] W3 Look frames and storyboard pass
   - [x] W3.0 Boss hand macro (`paintHandMacro`, commit abec7e7)
-  - [x] W3.1 Film look frames (2026-11-08): stills `out/edu09/look-frames/v1/` (store kind look-frames), code `src/painted/edu09/`, brief R1.2 + rows R1.2; user decisions of 2026-11-08 applied (rig skin, steeper CAM-POV, B02-SH02 f 1250); placeholders: LF02 seated forearms, LF04 pianist pose (W5)
+  - [x] W3.1 Film look frames (2026-11-08): stills `out/edu09/look-frames/v1/` (store kind look-frames), code `src/painted/edu09/`, brief R1.2 + rows R1.2; user decisions of 2026-11-08 applied (rig skin, steeper CAM-POV, B02-SH02 f 1250); placeholder: LF04 pianist pose (W5)
+  - [x] W3.1 fix round 1 (Film, 2026-11-08): viewer check failed LF02 (class A: plank forearms detached from the sleeves); forearms and hands rebuilt with the kit hand macro from an elbow on the wood, five fingers (Film call: hand about 100 px wide, same `ring-strain` hand as SH01's end), ELDER's laugh brought into frame (yaw 7→6, cx −130); still `out/edu09/look-frames/v2/LF02.png`, store `projects/EDU-EP09-SHORT/look-frames/LF02.c98e9601.png`; brief R1.3, rows R1.3
   - [ ] W3.2 User look-frame review (review page: pending)
 - [ ] W4 Voice lock
 - [ ] W5 Draft (W5.1 scene sheets, W5.2 Boss assets, W5.3 Editor draft)

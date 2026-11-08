@@ -12,7 +12,8 @@ import {poseFor} from '../kit/poses';
 import type {V3} from '../kit/space';
 import {flatCircle, paintBox, qy, qz, wFill, wInk} from '../kit/world';
 import {camPoint, camPoly, camUnit, type YCam} from '../kit/ycam';
-import {C} from './palette';
+import {paintHandMacro, macroHand, type HandPoseId, type MacroTone} from '../kit/hands';
+import {BOY_TONE, C, ELDER_TONE} from './palette';
 
 export const BOY: CastDef = PEOPLE['boy-school'];
 export const ELDER: CastDef = PEOPLE['man-elder'];
@@ -89,43 +90,42 @@ const paintChairBack = (p: Painter, c: YCam, id: number, at: V3, w = 0.42) => {
   paintBox(p, c, id + 4, {x0: at[0] - w / 2, x1: at[0] + w / 2, y0: 0.82, y1: 0.95, z0: at[2] - 0.2, z1: at[2] - 0.16}, '#86583a', {}, {ink: true});
 };
 
-export type Sitter = {face?: FaceState; t: number; lHand?: V3; rHand?: V3; look?: Pt};
+export type Sitter = {face?: FaceState; t: number; lHand?: V3; rHand?: V3; lPose?: HandPoseId; rPose?: HandPoseId; lElbow?: V3; rElbow?: V3; look?: Pt};
 
-/** A seated person at the table: P31 on the seat, front view squared to the lens; hands (world points on the table) are drawn after the table
- * by `paintForearms`, so the rig arm only needs to reach toward them. */
-/** Where a forearm lying on the table meets the table's back edge (z -0.40), for a hand at `hand`; `dy` below the top hides the rig mitten. */
-const elbowOf = (hand: V3, dy = 0.012): V3 => [hand[0], TABLE_Y + dy, -0.4];
+/** Elbow resting on the wood just inside the back edge (z -0.40): BOY's 0.025 m inside the hand's x (under the shoulder; his hands lie a little wider), ELDER's 0.03 m outside. */
+const ELBOW_Z = -0.37;
+const elbowFor = (hand: V3, side: 1 | -1, def: CastDef): V3 => [hand[0] + side * (def === ELDER ? 0.03 : -0.025), TABLE_Y + 0.026, ELBOW_Z];
+
+/** A seated person at the table: P31 on the seat, front view squared to the lens. Each arm resting on the table is drawn in two parts that meet at
+ * the elbow (fix round 1, LF02): the rig draws the upper arm and sleeve from the shoulder down to the elbow on the wood (`via`), its forearm and
+ * mitten fold down behind the table top (hidden); `paintTableArm` then draws the forearm on the wood from that elbow and the macro hand. */
 const paintSitter = (p: Painter, c: YCam, def: CastDef, at: V3, s: Sitter, seed: number): FigAnchors | null => {
   const g = camPoint(c, at), u = camUnit(c, at);
   if (!g) return null;
   const pose = poseFor('P31', def, g as Pt, u, 'front');
   const face = s.face ?? EXPRESSIONS.neutral;
-  const to = (v?: V3) => (v ? camPoint(c, elbowOf(v, -0.03)) : null);
-  const l = to(s.lHand), r = to(s.rHand);
-  return drawFigure(p, def, g as Pt, u, {...pose, view: 'front', face, noShadow: true, ...(l ? {lArm: {to: l, out: 1}} : {}), ...(r ? {rArm: {to: r, out: 1}} : {})}, s.t, seed);
+  // character's left = screen right (+x) in the front view
+  const arm = (hand: V3 | undefined, elbow: V3 | undefined, side: 1 | -1) => {
+    if (!hand) return null;
+    const e = elbow ?? elbowFor(hand, side, def), ep = camPoint(c, e), down = camPoint(c, [e[0], e[1] - 0.25, e[2] - 0.02]);
+    return ep && down ? {to: down, via: ep} : null;
+  };
+  const l = arm(s.lHand, s.lElbow, 1), r = arm(s.rHand, s.rElbow, -1);
+  return drawFigure(p, def, g as Pt, u, {...pose, view: 'front', face, noShadow: true, ...(l ? {lArm: l} : {}), ...(r ? {rArm: r} : {})}, s.t, seed);
 };
 void drawChair;
 
-/** Forearm lying on the table from the back edge to the hand, and a mitten flat on the table (body scale keeps mittens, UT14). World geometry,
- * so it foreshortens with the camera. */
-const paintForearm = (p: Painter, c: YCam, id: number, hand: V3, skin: string, shade: string) => {
-  const e = elbowOf(hand), dx = hand[0] - e[0], dz = hand[2] - e[2], L = Math.hypot(dx, dz) || 1, ax = dx / L, az = dz / L, nx = -az, nz = ax;
-  const w0 = 0.03, w1 = 0.024, y = hand[1];
-  const arm: V3[] = [[e[0] + nx * w0, y, e[2] + nz * w0], [hand[0] + nx * w1, y, hand[2] + nz * w1], [hand[0] - nx * w1, y, hand[2] - nz * w1], [e[0] - nx * w0, y, e[2] - nz * w0]];
-  const up: V3[] = arm.map(([x, yy, z]) => [x, yy + 0.022, z]);
-  const top = camPoly(c, up), side = camPoly(c, [arm[0], arm[1], up[1], up[0]]), side2 = camPoly(c, [arm[3], arm[2], up[2], up[3]]);
-  if (side.length > 2) hardFill(p, id, shade, side);
-  if (side2.length > 2) hardFill(p, id + 1, shade, side2);
-  if (top.length > 2) { hardFill(p, id + 2, skin, top); inkLine(p, id + 3, top, {weight: 1.1, still: true}); }
-  // mitten: a rounded pad on the table, fingers toward +z, two short finger strokes
-  const m: V3[] = Array.from({length: 18}, (_, i) => { const t = (i / 18) * Math.PI * 2; return [hand[0] + nx * 0.034 * Math.cos(t) + ax * 0.05 * Math.sin(t), y + 0.02, hand[2] + nz * 0.034 * Math.cos(t) + az * 0.05 * Math.sin(t) + az * 0.03] as V3; });
-  const mp = camPoly(c, m);
-  if (mp.length > 2) { hardFill(p, id + 4, skin, mp); inkLine(p, id + 5, mp, {weight: 1.1, still: true}); }
-  for (let k = -1; k <= 1; k += 2) {
-    const a = camPoint(c, [hand[0] + nx * k * 0.011 + ax * 0.055, y + 0.021, hand[2] + nz * k * 0.011 + az * 0.055]);
-    const b = camPoint(c, [hand[0] + nx * k * 0.011 + ax * 0.08, y + 0.021, hand[2] + nz * k * 0.011 + az * 0.08]);
-    if (a && b) inkLine(p, id + 6 + (k + 1) / 2, [a, b], {weight: 1, closed: false, still: true, color: '#85573a'});
-  }
+/** Forearm on the wood from the elbow to the wrist, and the five-finger macro hand (kit `paintHandMacro`, metre set: unit 0.01, yaw so the
+ * fingers continue the forearm). Five fingers here, not body-scale mittens: the hand is about 100 px wide (fingers about 20 px) and it is the
+ * same left hand that ends SH01 in `ring-strain`, so the try reads across the cut (Film decision, fix round 1). `hand` is the middle MCP. */
+const paintTableArm = (p: Painter, c: YCam, base: number, hand: V3, elbow: V3, side: 1 | -1, pose: HandPoseId, size: number, tone: MacroTone, sleeve?: {color: string; shade: string}) => {
+  const fwd0 = [hand[0] - elbow[0], hand[2] - elbow[2]], L = Math.hypot(fwd0[0], fwd0[1]) || 1, fx = fwd0[0] / L, fz = fwd0[1] / L;
+  const back = 0.065 * size, wrist: [number, number] = [hand[0] - fx * back, hand[2] - fz * back];
+  const yaw = (Math.atan2(fx, -fz) * 180) / Math.PI;
+  const h = macroHand(pose, {side, size, unit: 0.01, base, tone, plane: TABLE_Y, at: wrist, yaw, elbow, shadowDir: [-0.1, -0.9, 0.25], shadowAlpha: 0.3, shadowColor: '#3a2212',
+    ...(sleeve ? {sleeve: {to: [elbow[0] - fx * 0.03, elbow[1], elbow[2] - fz * 0.03] as V3, color: sleeve.color, shade: sleeve.shade, cuff: 0.45}} : {}),
+    ...(pose === 'ring-strain' ? {tremble: {finger: 'ring' as const, amp: 0.0008, hz: 10}} : {})});
+  return paintHandMacro(p, c, h);
 };
 
 /** Pendant lamp (W3: shade centre lowered to y 1.45 (0.73 m over the table) so its rim enters the top of the close-ups): cord, a cream cone shade, the lit opening. */
@@ -211,11 +211,14 @@ export const paintDining = (p: Painter, c: YCam, o: DiningOpts): DiningOut => {
   paintChairBack(p, c, 620, [SEAT.boy[0], 0, SEAT.boy[2]], 0.36);
   const boy = o.boy ? paintSitter(p, c, BOY, SEAT.boy, o.boy, BOY.seed) : null;
   paintTable(p, c);
-  const boySkin = BOY.head.skin, elderSkin = ELDER.head.skin;
-  if (boy && o.boy?.lHand) paintForearm(p, c, 700, o.boy.lHand, boySkin, mixColor(boySkin, '#6b3f22', 0.22));
-  if (boy && o.boy?.rHand) paintForearm(p, c, 710, o.boy.rHand, boySkin, mixColor(boySkin, '#6b3f22', 0.22));
-  if (elder && o.elder?.lHand) paintForearm(p, c, 720, o.elder.lHand, elderSkin, mixColor(elderSkin, '#6b3f22', 0.22));
-  if (elder && o.elder?.rHand) paintForearm(p, c, 730, o.elder.rHand, elderSkin, mixColor(elderSkin, '#6b3f22', 0.22));
+  // arms resting on the wood (character's left = +x); ELDER wears the cardigan's long sleeve to the cuff
+  const elderSleeve = {color: ELDER_TONE.sleeve, shade: ELDER_TONE.sleeveShade};
+  const arms: [Sitter | undefined, FigAnchors | null, CastDef, number, MacroTone, typeof elderSleeve | undefined][] = [[o.boy, boy, BOY, 1, BOY_TONE, undefined], [o.elder, elder, ELDER, 1.25, ELDER_TONE, elderSleeve]];
+  arms.forEach(([s, fig, def, size, tone, sleeve], k) => {
+    if (!s || !fig) return;
+    if (s.lHand) paintTableArm(p, c, 2000 + k * 480, s.lHand, s.lElbow ?? elbowFor(s.lHand, 1, def), -1, s.lPose ?? 'flat', size, tone, sleeve);
+    if (s.rHand) paintTableArm(p, c, 2240 + k * 480, s.rHand, s.rElbow ?? elbowFor(s.rHand, -1, def), 1, s.rPose ?? 'flat', size, tone, sleeve);
+  });
   paintProps(p, c);
   paintLamp(p, c);
   void qz; void wInk; void camPoly;
