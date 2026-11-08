@@ -129,7 +129,7 @@ export type SoiOpts = {
   moon?: number;
   /** Moon rim on the heads 0..1 (night only). */
   rim?: number;
-  /** How far the Moon rim floats above the head top, in head-half-heights (default 0.24; 0 = on the hair edge; B04-SH02 close view, the arc read as a shadow over the head). */
+  /** How far the Moon rim floats above the head top, in head-half-heights (default 0 = on the hair edge; 0.24 was the old floating arc; B04-SH02 close view, the arc read as a shadow over the head). */
   rimLift?: number;
   /** Star brightness override 0..1 (default from the night grade). */
   stars?: number;
@@ -218,7 +218,7 @@ const brushShadow = (p: Painter, id: number, col: string, poly: Pt[], gap = 22) 
 
 /** Cool Moon rim on the Moon side of a head (night): a thin crescent hugging the hair outline toward the Moon's screen position `toward`, from the figure's head anchors.
  *  W5.3 F3: it was a long band fixed to the right of every head (outside the hair on CUS, the wrong side for a Moon up-left). */
-const moonRim = (p: Painter, a: {head: Pt; headTop: number; chin: number} | null, seed: number, toward: Pt, k = 1, lift = 0.24) => {
+const moonRim = (p: Painter, a: {head: Pt; headTop: number; chin: number} | null, seed: number, toward: Pt, k = 1, lift = 0) => {
   if (!a) return;
   const gap = a.head[1] - a.headTop, R = 0.86 * gap, cx = a.head[0], cy = a.headTop - lift * gap + R;
   const ang = Math.atan2(toward[1] - cy, toward[0] - cx), hw = 0.75;

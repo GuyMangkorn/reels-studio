@@ -28,7 +28,7 @@ const talking = (L: number) => L >= 37 && L <= 95;
 export const shot = makeShot(ID, {
   paper: '#101a38',
   paint: (p, L, G) => {
-    paintSoi(p, cam(L), {t: G / 30, night: 1, stroke: 1, rimLift: 0, ven: {face: 'surprised'},
+    paintSoi(p, cam(L), {t: G / 30, night: 1, stroke: 1, ven: {face: 'surprised'},
       cus: L >= 38 ? {face: 'surprised', faceState: {eyes: 'wide', jaw: 0, ...(talking(L) ? {mouth: 'talk', open: mouthOpen(L)} : {})}, motion: {id: 'look-around', t: (L - 38) / 30}} : {face: 'surprised', faceState: {eyes: 'wide', look: [-0.8, 0.1]}}});
   },
 });

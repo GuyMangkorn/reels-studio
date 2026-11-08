@@ -87,14 +87,14 @@
      "in": 0,
      "out": 1.1,
      "cut": true,
-     "key": "8c31103a3b69cc1d"
+     "key": "39c7a23645bf53fc"
     },
     "final": {
      "src": "out/EDU-EP07-SHORT/clips/_final_cut.mp4",
      "in": 0,
      "out": 1.1,
      "cut": true,
-     "key": "f13cc19e279630f5"
+     "key": "4b2e7f54e4549fe1"
     }
    }
   },
@@ -126,14 +126,14 @@
      "in": 1.1,
      "out": 5.667,
      "cut": true,
-     "key": "c9d2fca907401d9f"
+     "key": "23dbb07d85facb3f"
     },
     "final": {
      "src": "out/EDU-EP07-SHORT/clips/_final_cut.mp4",
      "in": 1.1,
      "out": 5.667,
      "cut": true,
-     "key": "e11e1eb4c6060c18"
+     "key": "ede81a4c5a9fe452"
     }
    }
   },
@@ -160,14 +160,14 @@
      "in": 5.667,
      "out": 9.067,
      "cut": true,
-     "key": "d183536a193c3554"
+     "key": "5dc0c9033f90ac4a"
     },
     "final": {
      "src": "out/EDU-EP07-SHORT/clips/_final_cut.mp4",
      "in": 5.667,
      "out": 9.067,
      "cut": true,
-     "key": "b5abc3ed380b853f"
+     "key": "4ef79d9e78e881a2"
     }
    }
   },
@@ -194,14 +194,14 @@
      "in": 9.067,
      "out": 11.4,
      "cut": true,
-     "key": "765d553bf3c77ae1"
+     "key": "4e049adb04a086e9"
     },
     "final": {
      "src": "out/EDU-EP07-SHORT/clips/_final_cut.mp4",
      "in": 9.067,
      "out": 11.4,
      "cut": true,
-     "key": "31a53c67e4344931"
+     "key": "d4a6afb5a24fabef"
     }
    }
   },
@@ -228,14 +228,14 @@
      "in": 11.4,
      "out": 13.167,
      "cut": true,
-     "key": "444e62dcba98982a"
+     "key": "a50eb4f25818daff"
     },
     "final": {
      "src": "out/EDU-EP07-SHORT/clips/_final_cut.mp4",
      "in": 11.4,
      "out": 13.167,
      "cut": true,
-     "key": "ff5f700ae1c88910"
+     "key": "178d56a1feb37d51"
     }
    }
   },
@@ -262,14 +262,14 @@
      "in": 13.167,
      "out": 19.267,
      "cut": true,
-     "key": "539a575242a1a5c6"
+     "key": "dc86016f501e849d"
     },
     "final": {
      "src": "out/EDU-EP07-SHORT/clips/_final_cut.mp4",
      "in": 13.167,
      "out": 19.267,
      "cut": true,
-     "key": "1d216d36de3fdae0"
+     "key": "7530873eac9001b4"
     }
    }
   },
@@ -330,14 +330,14 @@
      "in": 25.033,
      "out": 30.1,
      "cut": true,
-     "key": "aafdc74ae9da3237"
+     "key": "d64f239fe293f08f"
     },
     "final": {
      "src": "out/EDU-EP07-SHORT/clips/_final_cut.mp4",
      "in": 25.033,
      "out": 30.1,
      "cut": true,
-     "key": "7ddde2bd12067727"
+     "key": "103e10098cc90aeb"
     }
    }
   },
@@ -365,14 +365,14 @@
      "in": 30.1,
      "out": 32.6,
      "cut": true,
-     "key": "0ff2d3ffb87c5a4f"
+     "key": "4321a5715dc4a2f2"
     },
     "final": {
      "src": "out/EDU-EP07-SHORT/clips/_final_cut.mp4",
      "in": 30.1,
      "out": 32.6,
      "cut": true,
-     "key": "486201683d1ef04a"
+     "key": "78281f3921ebbea3"
     }
    }
   },
@@ -399,14 +399,14 @@
      "in": 32.6,
      "out": 35.167,
      "cut": true,
-     "key": "a2d261468b831c60"
+     "key": "6a48ee78579b67f1"
     },
     "final": {
      "src": "out/EDU-EP07-SHORT/clips/_final_cut.mp4",
      "in": 32.6,
      "out": 35.167,
      "cut": true,
-     "key": "3b922b4bb0230982"
+     "key": "6d76aa7bd1e3a846"
     }
    }
   },
@@ -433,14 +433,14 @@
      "in": 35.167,
      "out": 38.667,
      "cut": true,
-     "key": "ce1a63e14eb78a57"
+     "key": "9179c3c7f71ddb19"
     },
     "final": {
      "src": "out/EDU-EP07-SHORT/clips/_final_cut.mp4",
      "in": 35.167,
      "out": 38.667,
      "cut": true,
-     "key": "1bbdc20e804f3559"
+     "key": "c5006c799a84bec2"
     }
    }
   },
@@ -467,14 +467,14 @@
      "in": 38.667,
      "out": 41.5,
      "cut": true,
-     "key": "77f54af5293aca39"
+     "key": "2c5567847360a5e1"
     },
     "final": {
      "src": "out/EDU-EP07-SHORT/clips/_final_cut.mp4",
      "in": 38.667,
      "out": 41.5,
      "cut": true,
-     "key": "1cf2da76aa0aeb2e"
+     "key": "b997d2fd3e0bdb34"
     }
    }
   },
@@ -501,14 +501,14 @@
      "in": 41.5,
      "out": 44.367,
      "cut": true,
-     "key": "dc554a22005e29db"
+     "key": "90d66035d76d4629"
     },
     "final": {
      "src": "out/EDU-EP07-SHORT/clips/_final_cut.mp4",
      "in": 41.5,
      "out": 44.367,
      "cut": true,
-     "key": "dd322495dcf12898"
+     "key": "0a96e1b8cc7669ec"
     }
    }
   },
@@ -536,14 +536,14 @@
      "in": 44.367,
      "out": 47.667,
      "cut": true,
-     "key": "d4a22d852d44747c"
+     "key": "bb17cbddd3fbbd60"
     },
     "final": {
      "src": "out/EDU-EP07-SHORT/clips/_final_cut.mp4",
      "in": 44.367,
      "out": 47.667,
      "cut": true,
-     "key": "5fadd32e7edc1e5d"
+     "key": "22246d39bdf9a6fe"
     }
    }
   },
@@ -570,14 +570,14 @@
      "in": 47.667,
      "out": 50.6,
      "cut": true,
-     "key": "ddb735b6dd3bf9f9"
+     "key": "d7b0602cc3eb4e94"
     },
     "final": {
      "src": "out/EDU-EP07-SHORT/clips/_final_cut.mp4",
      "in": 47.667,
      "out": 50.6,
      "cut": true,
-     "key": "30284a69cdb1d43b"
+     "key": "85395a50907f8502"
     }
    }
   },
@@ -604,14 +604,14 @@
      "in": 50.6,
      "out": 53.933,
      "cut": true,
-     "key": "0624f1825b1acf28"
+     "key": "b543e540c3a475a7"
     },
     "final": {
      "src": "out/EDU-EP07-SHORT/clips/_final_cut.mp4",
      "in": 50.6,
      "out": 53.933,
      "cut": true,
-     "key": "b2f738160da66a94"
+     "key": "a1b15d9da3e702c6"
     }
    }
   },
@@ -638,14 +638,14 @@
      "in": 53.933,
      "out": 56.033,
      "cut": true,
-     "key": "54eff57ba0518b0d"
+     "key": "6d5d718768779079"
     },
     "final": {
      "src": "out/EDU-EP07-SHORT/clips/_final_cut.mp4",
      "in": 53.933,
      "out": 56.033,
      "cut": true,
-     "key": "bd1acea48a975151"
+     "key": "2270ca10a7668c66"
     }
    }
   },
@@ -672,14 +672,14 @@
      "in": 56.033,
      "out": 59.933,
      "cut": true,
-     "key": "eee98a20ddb631f2"
+     "key": "423065488b2edc0b"
     },
     "final": {
      "src": "out/EDU-EP07-SHORT/clips/_final_cut.mp4",
      "in": 56.033,
      "out": 59.933,
      "cut": true,
-     "key": "599bc664e7bd1a8f"
+     "key": "f2f02a23e471d966"
     }
    }
   }

@@ -922,3 +922,8 @@ Input: user notes on the final cut, 2 shots. Stills `out/ep07-w6/fix-before.png`
 - **S01-B04-SH04 ("ดวงจันทร์ดับตาม", pestle floats):** cause: `stroke: 1` raised the pestle to the top of the stroke with nobody holding it. Now `stroke: 0` (tip down in the mortar, as in SH05).
 - **Checks:** eslint `src/painted/edu07` clean, `npm test` 549/549; final cut re-rendered at full size (17 of 18 segments, shared `soi.ts` changed); not listened to; seam not re-measured (SH06 not touched).
 - **Note:** the look-frame stills v2 were not in the store; they were re-rendered from the current source for the review page (the pestle there is the later one).
+
+## EP07 W6 fix round 2 (2026-11-08, coordinator)
+
+- **S01-B04-SH01 (user: the shadow over the head still floats):** same cause as round 1: `moonRim` default lift 0.24 floated the crescent above CUS and VEN at night. The default is now 0 (rim on the hair edge) for every shot; `SoiOpts.rimLift` stays as an opt-in and the per-shot `rimLift: 0` on B04-SH02 is removed. Stills G985/1020/1050/1100/1127/1290/1400/1620/1700 viewed (`out/ep07-w6/rim-after.png`): no floating arc. Other night shots (B04-SH04/SH05, B05-SH01) now carry a faint hair-edge rim (rim 0..0.15); not compared pixel by pixel.
+- Final cut and draft cut re-rendered; eslint clean; `npm test` run.
