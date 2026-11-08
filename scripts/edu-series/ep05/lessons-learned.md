@@ -69,6 +69,10 @@ User decision 2026-11-08 (structured question): approve all five, "ทำเป�
 
 - LL01–LL03 → [scriptwriting-principles: edu Short retention](../../../docs/scriptwriting-principles.md#edu-short-retention); LL04 → [cinematography-principles item 11](../../../docs/cinematography-principles.md#retention-camera); LL05 → [delivery-workflow: Performance](../../../docs/delivery-workflow.md#performance-record) and the record [channel-performance](../../../docs/channel-performance.md).
 
+## Deep dive
+
+- 2026-11-08: [retention-deep-dive.md](retention-deep-dive.md) compares the three posted videos (first 5 s, open-question map, ruled-out factors, tests DD01–DD05) with outside evidence in [retention-sources.md](retention-sources.md).
+
 ## Open questions for the user
 
 - The retention curve of EP05: where does it dip (the static first second, the drift at ~11–16 s, the bars at ~48–54 s)?
