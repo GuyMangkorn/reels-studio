@@ -405,9 +405,12 @@ const FSPEC: Record<LongFingerId, {v: number; f: number; len: number; w: number;
 // Proportions (plan-view pass, 8 Nov 2026): wrist -> middle MCP 6.5 cm for a 6.0 cm middle finger (0.92), palm about 6.5 cm wide, wrist 4.5 cm, finger widths 1.4-1.7 cm with a slight splay so gaps show, little tip near the ring's DIP crease, ring >= index.
 const SPLIT = [0.40, 0.29, 0.31] as const; // phalanx share of the finger length (distal 0.25 -> 0.28 -> 0.31, user notes 8 Nov 2026: still too short)
 const TAPER = [1, 0.97, 0.94, 0.9] as const;
-const THUMB_SPEC = {cmc: [1.2, 1.4, -0.3] as const, len: [2.6, 2.0, 1.8] as const, w: [1.85, 1.65, 1.5, 1.4] as const};
+const THUMB_SPEC = {cmc: [1.2, 1.4, -0.16] as const, len: [2.6, 2.0, 1.8] as const, w: [2.4, 2.0, 1.8, 1.65] as const, twist: 50, nailW: 0.9, nailL: 0.8};
+// Thumb pass (8 Nov 2026, Boat thumb-compare): base width 1.85 -> 2.4 (thenar), MCP 2.0, IP 1.8, tip 1.65 (old 1.65/1.5/1.4 was 0.76 of the index); nail 0.9 x 0.8 cm turned 50 deg out of the fingers' nail plane.
 // Back of the hand outline (v toward the thumb, f forward; cm at size 1), wrist edge first.
-const PALM: readonly (readonly [number, number])[] = [[2.2, 0], [2.6, 2.8], [2.4, 6.0], [1.45, 6.4], [-0.3, 6.5], [-2.0, 6.25], [-3.6, 5.7], [-4.2, 5.0], [-4.1, 2.6], [-2.6, 0]];
+const PALM: readonly (readonly [number, number])[] = [[2.2, 0], [2.95, 1.5], [3.45, 3.0], [3.1, 4.2], [2.55, 5.0], [2.2, 5.6], [2.1, 6.1], [1.45, 6.4], [-0.3, 6.5], [-2.0, 6.25], [-3.6, 5.7], [-4.2, 5.0], [-4.1, 2.6], [-2.6, 0]];
+
+const PALM_FRONT = PALM.findIndex(([v, f]) => v === 1.45 && f === 6.4); // the index-knuckle vertex: the thumb-side edge (thenar and web) runs before it
 
 const rotateHand = ([x0, y0, z0]: V3, yaw: number, pitch: number, roll: number): V3 => {
   const cr = Math.cos(roll), sr = Math.sin(roll), cp = Math.cos(pitch), sp = Math.sin(pitch), cy = Math.cos(yaw), sy = Math.sin(yaw);
@@ -465,7 +468,7 @@ export const macroSkeleton = (h: HandMacro, t = 0) => {
     out[id] = chain(at(sp.v, 0, sp.f), heading, SPLIT.map((s) => s * sp.len), TAPER.map((k) => (k * sp.w) / 2), [mcp, fp.pip, fp.dip]);
   }
   const tp = h.thumb, ab = tp.cmcAbd * D2R;
-  out.thumb = chain(at(THUMB_SPEC.cmc[0], THUMB_SPEC.cmc[2], THUMB_SPEC.cmc[1]), [tdir * Math.sin(ab), 0, -Math.cos(ab)], THUMB_SPEC.len, THUMB_SPEC.w.map((w) => w / 2), [tp.cmc, tp.mcp, tp.ip], 35 * D2R);
+  out.thumb = chain(at(THUMB_SPEC.cmc[0], THUMB_SPEC.cmc[2], THUMB_SPEC.cmc[1]), [tdir * Math.sin(ab), 0, -Math.cos(ab)], THUMB_SPEC.len, THUMB_SPEC.w.map((w) => w / 2), [tp.cmc, tp.mcp, tp.ip], THUMB_SPEC.twist * D2R);
   const palm = PALM.map(([v, f]) => at(v, 0, f));
   const wrist = h.wrist;
   const palmCentre = at(-0.8, 0, 3.3);
@@ -678,9 +681,7 @@ export const paintHandMacro = (p: Painter, cam: YCam, h: HandMacro): HandAnchors
       if (id === 'thumb') {
         // The metacarpal lies in the palm: ink only the free part (MCP -> tip) and the outer edge of the metacarpal.
         ink(q, i0, tubeOutline(P.slice(1), Rpx.slice(1), true), inkW, inkOf(INK));
-        const dm = unit2(P[0], P[1]), nm: Dir2 = [-dm[1], dm[0]], pc = toPx(sk.palmCentre)?.pt ?? P[0];
-        const so = (P[0][0] - pc[0]) * nm[0] + (P[0][1] - pc[1]) * nm[1] >= 0 ? 1 : -1;
-        ink(q, i0 + 6, [[P[0][0] + so * nm[0] * Rpx[0], P[0][1] + so * nm[1] * Rpx[0]], [P[1][0] + so * nm[0] * Rpx[1], P[1][1] + so * nm[1] * Rpx[1]]], inkW, inkOf(INK));
+        // the outer edge of the metacarpal is the palm outline's thenar edge (PALM), not a second line
       } else ink(q, i0, tubeOutline(P, Rpx, true), inkW, inkOf(INK));
       // knuckle creases (two strokes at pip and dip) where the back of the finger faces the camera
       for (let j = 1; j <= 2; j++) {
@@ -697,10 +698,12 @@ export const paintHandMacro = (p: Painter, cam: YCam, h: HandMacro): HandAnchors
       // nail on the distal phalanx (short natural nail), only when the back of the finger faces the camera
       const dorD = c.dorsal[2], seeNail = dot3(dorD, norm3(sub3(camPos, c.joints[3])));
       if (seeNail > 0.2) {
-        const rd = c.radii[3], a = add3(add3(c.joints[2], scale3(sub3(c.joints[3], c.joints[2]), 0.5)), scale3(dorD, rd * 0.55)), b = add3(add3(c.joints[2], scale3(sub3(c.joints[3], c.joints[2]), 0.95)), scale3(dorD, rd * 0.55));
+        const rd = c.radii[3], th = id === 'thumb', f0n = th ? 0.5 : 0.5, f1n = th ? 0.92 : 0.95;
+        const a = add3(add3(c.joints[2], scale3(sub3(c.joints[3], c.joints[2]), f0n)), scale3(dorD, rd * 0.55)), b = add3(add3(c.joints[2], scale3(sub3(c.joints[3], c.joints[2]), f1n)), scale3(dorD, rd * 0.55));
         const pa = toPx(a), pb = toPx(b);
         if (pa && pb) {
-          const nail = capsule(pa.pt, pb.pt, rd * pa.r * 1.1, rd * pb.r * 1.0);
+          // thumb: nail 0.9 cm wide (capsule width, ends included in the length 0.8 cm), seen at three quarters because the dorsal is turned out
+          const nail = th ? capsule(pa.pt, pb.pt, THUMB_SPEC.nailW * S * pa.r * 0.8, THUMB_SPEC.nailW * S * pb.r * 0.72) : capsule(pa.pt, pb.pt, rd * pa.r * 1.1, rd * pb.r * 1.0);
           fill(q, f0 + 9, tone.nail, nail);
           ink(q, i0 + 5, nail, inkW * 0.5, inkOf(tone.crease), true);
         }
@@ -724,8 +727,8 @@ export const paintHandMacro = (p: Painter, cam: YCam, h: HandMacro): HandAnchors
       spots.forEach(([v, f, r], i) => { const s = toPx(sk.at(v, 0.05, f)); if (s) hardFill(sp, h.base + FILL + 62 + i, tone.spots!, ring(s.pt[0], s.pt[1], r * S * s.r, r * S * s.r * 0.8, 10)); });
     }
     // outline: thumb edge down to the wrist and the little-finger edge (the wrist edge stays open into the forearm, the front edge under the fingers)
-    ink(q, 100, pts.slice(0, 4), inkW, inkOf(INK));
-    ink(q, 101, pts.slice(5), inkW, inkOf(INK));
+    ink(q, 100, pts.slice(0, PALM_FRONT + 1), inkW, inkOf(INK));
+    ink(q, 101, pts.slice(PALM_FRONT + 2), inkW, inkOf(INK));
   };
 
   const fingerOrder = (a: Group, b: Group) => {
@@ -755,14 +758,14 @@ export type HandPose = Pick<HandMacro, 'fingers' | 'thumb' | 'pitch' | 'roll'> &
 const straight = (mcp = 0, pip = 0, dip = 0, abd = 0): FingerPose => ({mcp, pip, dip, abd});
 const FLAT_FINGERS: Record<LongFingerId, FingerPose> = {index: straight(2.1), middle: straight(0.5), ring: straight(1.7), little: straight(3.7)};
 const FLAT: HandPose = {
-  pitch: -1.5, roll: 0, wristRise: 1.2, fingers: FLAT_FINGERS, thumb: {cmc: 0, cmcAbd: 14, mcp: 0, ip: 0},
+  pitch: -1.5, roll: 0, wristRise: 1.2, fingers: FLAT_FINGERS, thumb: {cmc: 0, cmcAbd: 32, mcp: 0, ip: 0},
   note: 'flat on the table, fingers together (HAND-CLOSE flat)',
 };
 const TP_FINGERS: Record<LongFingerId, FingerPose> = {
   index: straight(23.6, 28, 8), middle: straight(58, 125, 12), ring: straight(21.8, 28, 8), little: straight(25.9, 28, 8),
 };
 const TP: HandPose = {
-  pitch: 16.5, roll: 0, wristRise: 1.2, fingers: TP_FINGERS, thumb: {cmc: 18.6, cmcAbd: 14, mcp: 4, ip: 2},
+  pitch: 16.5, roll: 0, wristRise: 1.2, fingers: TP_FINGERS, thumb: {cmc: 17.1, cmcAbd: 30, mcp: 4, ip: 2},
   note: 'test pose TP: middle folded under, index, ring and little arched on their tips, thumb along the table',
 };
 export type HandPoseId = 'flat' | 'test-fold-middle' | 'ring-strain';
