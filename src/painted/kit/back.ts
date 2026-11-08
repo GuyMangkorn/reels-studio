@@ -1,4 +1,4 @@
-import {BONE, H, ikElbow, type CastDef, type FigAnchors, type FigPose, type Outfit} from './cast';
+import {BONE, H, bodyFrame, ikElbow, type CastDef, type FigAnchors, type FigPose, type Outfit} from './cast';
 import {INK, VD18, capsule, ell, glaze, inkLine, limb, lineOf, modelPart, solid, toneOf, washAt} from './draw';
 import {hatFront} from './gear';
 import {CHIN, HEAD_SPAN, headOutline, type HeadStyle} from './head';
@@ -15,7 +15,9 @@ import {mixColor, type Painter, type Pt} from './painter';
 // - Supported: standing, `walk`/`stride` (heel lift only), `lean`, `rise`, `nod`, both arms (IK, `via` elbows kept), hair of every
 //   cut seen from behind, hood down (bunch on the upper back) and hood up (`FigPose.hoodUp`), hats (cap, helmet, nurse), pack,
 //   belt, skirt, overcoat, `light`, `silhouette`. No face is drawn; `face`, `head` and holds are ignored.
-// - Not supported (cut to front or profile for these): crouch, bend, sit, floorSit, kneel, squat, run, lie, props in hand.
+// - `sit` (EDU-EP07 W5.2): seated on a stool or chair seen from behind: the whole figure drops to the seated hip height (`bodyFrame` sit hipV) and the legs are
+//   replaced by the pelvis block on the seat (the thighs run away from the lens, so none show). The caller draws the seat and the ground shadow stays off.
+// - Not supported (cut to front or profile for these): crouch, bend, floorSit, kneel, squat, run, lie, props in hand.
 // - No three-quarter back (user, 4 Nov 2026: the back-left/back-right views barely read, the hair covers the turn). `FigPose.quarter` is
 //   a front-view field; this view ignores it and draws the plain back. Depth from behind comes from camera moves in the set (`ycam.ts`).
 
@@ -50,7 +52,8 @@ export const drawFigureBack = (p: Painter, def: CastDef, g: Pt, unit: number, po
   const shV = shV0 + rise;
   const skin = def.head.skin, skinShade = mixColor(skin, VD18.shadow, 0.2);
 
-  const S = ([u, v]: Pt): Pt => [g[0] + u * unit, g[1] - (v + bob) * unit];
+  const sitK = Math.max(0, Math.min(1, pose.sit ?? 0)), drop = sitK ? sitK * (hip0 - bodyFrame(def, {view: 'front', sit: 1}).hipV) : 0;
+  const S = ([u, v]: Pt): Pt => [g[0] + u * unit, g[1] - (v + bob - drop) * unit];
   /** Upper body: breath rise above the hip, then lean about the hip (toward screen right). */
   const U = ([u, v]: Pt): Pt => {
     const dv = (v - hip0) + rise * Math.max(0, Math.min(1, (v - hip0) / (shV0 - hip0))), a = lean;
@@ -71,14 +74,19 @@ export const drawFigureBack = (p: Painter, def: CastDef, g: Pt, unit: number, po
 
   // Ground shadow like every figure (front and profile draw the same one).
   const sh = ell(g[0], g[1] + 0.01 * unit, 0.26 * (L ? 1.15 : 1) * unit, (L ? 0.07 : 0.06) * unit, 16);
-  if (!pose.seated && !L) washAt(p, seed * 1000 + 999, sil ?? '#1e2324', 70, sh, 0.5, 0.3);
-  if (!pose.seated && L) glaze(p, seed * 1000 + 999, '#0e1213', 120, sh, {border: 0.1, bleed: 0.15});
+  if (!pose.seated && !sitK && !L) washAt(p, seed * 1000 + 999, sil ?? '#1e2324', 70, sh, 0.5, 0.3);
+  if (!pose.seated && !sitK && L) glaze(p, seed * 1000 + 999, '#0e1213', 120, sh, {border: 0.1, bleed: 0.15});
 
   // ------------------------------------------------------------------ legs, skirt, feet
   const bodyC = o.coat ?? o.jacket ?? o.shirt;
   const hemV = o.skirt ? o.skirtHem ?? knee0 + 0.04 : undefined;
   const wv = (s: number) => Math.max(0, Math.sin(ph + (s > 0 ? 0 : Math.PI))) * 0.05 * stride;
-  for (const s of [-1, 1] as const) {
+  if (sitK) { // seated: the pelvis block on the seat, no legs (they run away from the lens)
+    const pc = o.skirt ?? o.pants;
+    fill(pc, Sq([[-hw - 0.024, hip0 - 0.05], [hw + 0.024, hip0 - 0.05], [hw + 0.03, hip0 - 0.12], [hw + 0.012, hip0 - 0.17], [-hw - 0.012, hip0 - 0.17], [-hw - 0.03, hip0 - 0.12]]));
+    stroke(pc, Sq([[0, hip0 - 0.07], [0, hip0 - 0.17]]), 0.8);
+  }
+  for (const s of sitK ? ([] as (-1 | 1)[]) : ([-1, 1] as const)) {
     const lift = pose.walk === undefined ? 0 : wv(s);
     const hip: Pt = [s * 0.0725 * sc, hip0], ankle: Pt = [s * 0.085 * sc, ankleV + lift], knee: Pt = [s * 0.08 * sc, (hip0 + ankleV) / 2 + lift / 2];
     const pc = mixColor(o.pants, '#000000', s > 0 ? 0.05 : 0);

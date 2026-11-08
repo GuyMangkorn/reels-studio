@@ -114,3 +114,7 @@ Record: [delivery.md](delivery.md) · Updated: 2026-11-05, Film
 ## EDU-EP06-SHORT
 
 **Now:** W0 done (C8, user pick 2026-11-07). W1.1 Boat research next. Detail: [ep06/task.md](ep06/task.md).
+
+## EDU-EP07-SHORT
+
+**Now:** W0 done (C15, user pick 2026-11-08). W1.1 Boat research next. Detail: [ep07/task.md](ep07/task.md).
