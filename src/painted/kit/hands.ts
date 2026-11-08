@@ -368,7 +368,7 @@ export type HandMacro = {
   side: 1 | -1;
   /** Seed/ink id base; the hand uses ids base .. base + 230 (give each hand its own range of 240). */
   base: number;
-  /** Hand scale: 1 = BOY (middle finger 6.0 cm), 1.25 = ELDER, 1.2 = pianist. */
+  /** Hand scale: 1 = BOY (middle finger 6.9 cm), 1.25 = ELDER, 1.2 = pianist. */
   size?: number;
   /** World units per cm (default 1: set-cm; use 0.01 for a metre set). Wrist, `plane`, `elbow` and lifts are in world units. */
   unit?: number;
@@ -397,13 +397,16 @@ const D2R = Math.PI / 180;
 const LONG: readonly LongFingerId[] = ['index', 'middle', 'ring', 'little'];
 // cm at size 1: MCP lateral `v` (toward the thumb) and forward `f` from the wrist centre, length MCP -> tip, width, natural splay (deg), splay side.
 const FSPEC: Record<LongFingerId, {v: number; f: number; len: number; w: number; abd: number; sgn: 1 | -1}> = {
-  index: {v: 1.45, f: 6.4, len: 5.4, w: 1.55, abd: 4, sgn: 1},
-  middle: {v: -0.3, f: 6.5, len: 6.0, w: 1.7, abd: 0, sgn: 1},
-  ring: {v: -2.0, f: 6.25, len: 5.6, w: 1.6, abd: 4, sgn: -1},
+  index: {v: 1.45, f: 6.4, len: 6.21, w: 1.55, abd: 4, sgn: 1},
+  middle: {v: -0.3, f: 6.5, len: 6.9, w: 1.7, abd: 0, sgn: 1},
+  ring: {v: -2.0, f: 6.25, len: 6.44, w: 1.6, abd: 4, sgn: -1},
   little: {v: -3.6, f: 5.7, len: 4.7, w: 1.4, abd: 9, sgn: -1},
 };
 // Proportions (plan-view pass, 8 Nov 2026): wrist -> middle MCP 6.5 cm for a 6.0 cm middle finger (0.92), palm about 6.5 cm wide, wrist 4.5 cm, finger widths 1.4-1.7 cm with a slight splay so gaps show, little tip near the ring's DIP crease, ring >= index.
-const SPLIT = [0.35, 0.34, 0.31] as const; // phalanx share of the finger length (distal 0.25 -> 0.28 -> 0.31, user notes 8 Nov 2026: still too short; middle 0.29 -> 0.34, FX01-06 9 Nov 2026: second knuckle segment too short)
+// Phalanx share of the finger length per finger (proximal/middle/distal). User pick L3, 9 Nov 2026 ("longer still, every redraw looks the same length"): index, middle and ring 0.28/0.45/0.27 on a length +15 % (5.4/6.0/5.6 -> 6.21/6.9/6.44 cm, palm unchanged) so the middle phalanx reads long; the little finger keeps the measured 0.32/0.35/0.34 on 4.7 cm.
+const SPLIT: Record<LongFingerId, readonly [number, number, number]> = {
+  index: [0.28, 0.45, 0.27], middle: [0.28, 0.45, 0.27], ring: [0.28, 0.45, 0.27], little: [0.32, 0.35, 0.34],
+};
 const TAPER = [1, 0.97, 0.94, 0.9] as const;
 const THUMB_SPEC = {cmc: [1.2, 1.4, -0.16] as const, len: [2.6, 2.0, 1.8] as const, w: [2.4, 2.0, 1.8, 1.65] as const, twist: 50, nailW: 0.9, nailL: 0.8};
 // Thumb pass (8 Nov 2026, Boat thumb-compare): base width 1.85 -> 2.4 (thenar), MCP 2.0, IP 1.8, tip 1.65 (old 1.65/1.5/1.4 was 0.76 of the index); nail 0.9 x 0.8 cm turned 50 deg out of the fingers' nail plane.
@@ -465,7 +468,7 @@ export const macroSkeleton = (h: HandMacro, t = 0) => {
     }
     const abd = (sp.abd + (fp.abd ?? 0)) * D2R;
     const heading: V3 = [tdir * sp.sgn * Math.sin(abd), 0, -Math.cos(abd)];
-    out[id] = chain(at(sp.v, 0, sp.f), heading, SPLIT.map((s) => s * sp.len), TAPER.map((k) => (k * sp.w) / 2), [mcp, fp.pip, fp.dip]);
+    out[id] = chain(at(sp.v, 0, sp.f), heading, SPLIT[id].map((s) => s * sp.len), TAPER.map((k) => (k * sp.w) / 2), [mcp, fp.pip, fp.dip]);
   }
   const tp = h.thumb, ab = tp.cmcAbd * D2R;
   out.thumb = chain(at(THUMB_SPEC.cmc[0], THUMB_SPEC.cmc[2], THUMB_SPEC.cmc[1]), [tdir * Math.sin(ab), 0, -Math.cos(ab)], THUMB_SPEC.len, THUMB_SPEC.w.map((w) => w / 2), [tp.cmc, tp.mcp, tp.ip], THUMB_SPEC.twist * D2R);
@@ -761,18 +764,19 @@ export type HandPose = Pick<HandMacro, 'fingers' | 'thumb' | 'pitch' | 'roll'> &
   note: string;
 };
 const straight = (mcp = 0, pip = 0, dip = 0, abd = 0): FingerPose => ({mcp, pip, dip, abd});
-const FLAT_FINGERS: Record<LongFingerId, FingerPose> = {index: straight(2.1), middle: straight(0.5), ring: straight(1.7), little: straight(3.7)};
+const FLAT_FINGERS: Record<LongFingerId, FingerPose> = {index: straight(1.6), middle: straight(0.7), ring: straight(1.32), little: straight(3.6)}; // MCP re-solved for the L3 lengths so every flat tip rests on the plane
 const FLAT: HandPose = {
   pitch: -1.5, roll: 0, wristRise: 1.2, fingers: FLAT_FINGERS, thumb: {cmc: 0, cmcAbd: 32, mcp: 0, ip: 0},
   note: 'flat on the table, fingers together (HAND-CLOSE flat)',
 };
-// FX01-03/06 (user, 9 Nov 2026): the old arch (pitch 16.5, PIP 28) stood the middle phalanx at 68 deg, so POV foreshortened it to 0.26 of the proximal one (30 px of 115).
-// Now pitch 8, MCP/PIP/DIP 9/16/12 (mcp solved per finger so each tip rests on the plane): 0.5 of the proximal. SPLIT 0.40/0.29/0.31 -> 0.35/0.34/0.31 so the flat shots read a longer second segment too; the folded middle (PIP 125 -> 135) re-solved so DIP and tip stay under the palm and within 1.3 mm of the table (hidden).
+// FX01-03/06 (user, 9 Nov 2026): the old arch (pitch 16.5, PIP 28) stood the middle phalanx at 68 deg, so POV foreshortened it to 0.26 of the proximal one.
+// Now (user pick N, 9 Nov 2026): pitch 4, PIP/DIP 8/6 on index, ring and little, MCP solved per finger (5.44/4.82/8.28 at the L3 lengths) so each tip rests on the plane (the TP test holds every tip within 0.5 mm).
+// The folded middle (MCP 95, PIP 110, DIP 20) drops steeply at its knuckle and doubles back under the palm: only its knuckle shows at the palm's front edge, the rest is drawn before the palm; its tip sits on the table (gap 0).
 const TP_FINGERS: Record<LongFingerId, FingerPose> = {
-  index: straight(9.11, 16, 12), middle: straight(58, 135, 12), ring: straight(8.09, 16, 12), little: straight(10.99, 16, 12),
+  index: straight(5.44, 8, 6), middle: straight(95, 110, 20), ring: straight(4.82, 8, 6), little: straight(8.28, 8, 6),
 };
 const TP: HandPose = {
-  pitch: 8, roll: 0, wristRise: 1.2, fingers: TP_FINGERS, thumb: {cmc: 7.7, cmcAbd: 30, mcp: 4, ip: 2},
+  pitch: 4, roll: 0, wristRise: 1.2, fingers: TP_FINGERS, thumb: {cmc: 3.34, cmcAbd: 30, mcp: 4, ip: 2}, // cmc 7.7 -> 3.34: the flatter pitch 4 would sink the thumb tip 4.8 mm
   note: 'test pose TP: middle folded under, index, ring and little arched on their tips, thumb along the table',
 };
 // N11 `hand-lifted-dangle` (EDU-EP09 SH07, Boss W5.2): palm down, level, raised off the table (the caller sets the wrist height), fingers hanging relaxed.
