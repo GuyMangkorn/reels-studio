@@ -122,3 +122,11 @@ Record: [delivery.md](delivery.md) · Updated: 2026-11-05, Film
 ## EDU-EP08-SHORT
 
 **Now:** W2 done 2026-11-08 (brief R1, storyboard rows R1); review page awaiting verdicts; BC1/BC2 brief fixes open. Detail: [ep08/task.md](ep08/task.md).
+
+## EDU-EP09-SHORT
+
+**Now:** W0 done (C28 นิ้วนางที่ยกไม่ขึ้น, user pick 2026-11-08). W1.1 Boat research next. Detail: [ep09/task.md](ep09/task.md).
+
+## EDU-EP10-SHORT
+
+**Now:** W0 done (C25 จมูกสองอัน, user pick 2026-11-08). W1.1 Boat research next. Detail: [ep10/task.md](ep10/task.md).
