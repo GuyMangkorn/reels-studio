@@ -118,7 +118,7 @@ export const paintTendons = (p: Painter, cam: YCam, h: HandMacro, st: TendonStat
     return [
       fore(uAt(startZ), startSide, 0.25), fore(uAt(9.5), startSide * 0.8 + lat * 0.12, 0.1),
       add([wr[0] + lat * 0.55 * S, wr[1] + 1.2 * S, wr[2] - 1.2 * S], toThumb, offset * S),
-      add(add(mcp, sk.forward, 2.2 * S), toThumb, offset * S), add(mcp, toThumb, offset * S),
+      add(add(mcp, sk.forward, -1.2 * S), toThumb, offset * S), add(mcp, toThumb, offset * S), // point 3 lies 1.2 cm BEFORE the knuckle (it was 2.2 cm past it: the cord ran over the finger and doubled back, a visible hook, 9 Nov 2026)
       onFinger(1), onFinger(2), lerp3(onFinger(2), onFinger(3), 0.55),
     ];
   };
@@ -169,7 +169,7 @@ export const paintTendons = (p: Painter, cam: YCam, h: HandMacro, st: TendonStat
     if (a <= 0.01) return;
     const [f0, f1, z] = i === 0 ? (['middle', 'ring', 2.5] as const) : (['ring', 'little', 3.0] as const);
     const p0 = cordPath(f0, 0, 12), p1 = cordPath(f1, 0, 12);
-    const at = (pp: V3[]) => lerp3(pp[2], pp[3], Math.max(0, Math.min(1, 1 - (z - 1.2) / 3)));
+    const at = (pp: V3[]) => lerp3(pp[2], add(pp[4], sk.forward, 2.2 * S), Math.max(0, Math.min(1, 1 - (z - 1.2) / 3)));
     const A0 = at(p0), B = at(p1), A = i === 0 && st.tiePull ? lerp3(A0, B, 0) : A0, mid = i === 0 && st.tiePull ? lerp3(A, B, 0.5 - 0.3 * st.tiePull) : lerp3(A, B, 0.5), half = lerp3(A, B, 0.5 * a);
     const ends = [lerp3(mid, A, a), lerp3(mid, B, a)].map(px), w = Math.max(TIE_MIN_PX * 0.5, pxPerCm(mid) * 0.5);
     if (!ends[0] || !ends[1]) return;
