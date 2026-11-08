@@ -55,7 +55,7 @@ Comparison with the series: EP04 opens with a question ("คุณเปลี�
 
 ## Proposed lessons per role
 
-User decision 2026-11-08 (structured question): approve all five, "ทำเป็น PR แก้แค่ docs". Status: `approved`, applied in the docs-only branch listed in the change note below (PR link added when opened).
+User decision 2026-11-08 (structured question): approve all five, "ทำเป็น PR แก้แค่ docs". Status: `approved`, applied in [PR #263](https://github.com/GuyMangkorn/reels-studio/pull/263).
 
 | ID | Role | Proposal | Where it would live |
 | --- | --- | --- | --- |
