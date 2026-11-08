@@ -928,6 +928,12 @@ Input: user notes on the final cut, 2 shots. Stills `out/ep07-w6/fix-before.png`
 - **S01-B04-SH01 (user: the shadow over the head still floats):** same cause as round 1: `moonRim` default lift 0.24 floated the crescent above CUS and VEN at night. The default is now 0 (rim on the hair edge) for every shot; `SoiOpts.rimLift` stays as an opt-in and the per-shot `rimLift: 0` on B04-SH02 is removed. Stills G985/1020/1050/1100/1127/1290/1400/1620/1700 viewed (`out/ep07-w6/rim-after.png`): no floating arc. Other night shots (B04-SH04/SH05, B05-SH01) now carry a faint hair-edge rim (rim 0..0.15); not compared pixel by pixel.
 - Final cut and draft cut re-rendered; eslint clean; `npm test` run.
 
+## EP09 W5.1 timed scene sheets (2026-11-08, Film)
+
+- **TL proposal (second repeat; tooling waits for the maintenance window):** EP07 and EP09 W5.1 both projected sheet points through a hand-written Python mirror of `kit/ycam.ts` (`orbitYCam`, `camSpace`, `camToPicture`) and `cam-moves.ts` `camOf`. `scripts/shot-projection.py` takes Blender/Three.js cameras, not the kit `camMove` fields (`hy`, `cx`, yaw/pitch). Proposal: a `--ycam` mode (or `scripts/ycam-projection.py`) reading `{at, yaw, r, eye, pitch, f, hy, cx, u}` plus named points, printing px, side and caption-band overlap.
+- **Finding:** the R1.4 room pushes (B01-SH02 r 1.60→1.52; B03-SH07, SH08) bring table fingertips about 25–35 px into the caption band at their end frames; look frames only measured frame 0. Fixed in SHEETS-R1 with `hy` drifts (SD01–SD03); measure end frames, not only look frames, for pushes over a table.
+- **Word anchors without ASR:** `silencedetect -32 dB / 0.04 s` on the per-line files finds most comma and phrase pauses; a 20 ms RMS print separates L04's listed words. faster-whisper still fails here (av `metadata_errors`).
+
 ## EP07 R1.2 W5.2 plates (2026-11-08, Boss)
 
 Input: EDU-EP07-SHEETS-R1.2 / ROWS-R1.3. Stills only (`render.mjs --stills`, `qa-sheet.sh`), no video render, not committed. Evidence: `out/ep07-w52r12/final-sheet.png` (18 frames, 6 columns), `c590.png` / `u.png` (SH05 and SH04 crops), `t.png` (stool shadow), logs `out/logs/{tsc,eslint,npm-test}-ep07-r12.txt`.
