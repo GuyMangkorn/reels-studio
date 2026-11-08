@@ -10,7 +10,7 @@ import {mixColor, type Painter, type Pt} from '../kit/painter';
 import {PEOPLE} from '../kit/people';
 import {poseFor} from '../kit/poses';
 import type {V3} from '../kit/space';
-import {flatCircle, paintBox, qy, qz, wFill, wInk} from '../kit/world';
+import {flatCircle, hull, paintBox, qy, qz, wFill, wInk} from '../kit/world';
 import {camPoint, camPoly, camUnit, type YCam} from '../kit/ycam';
 import {paintHandMacro, macroHand, type HandPoseId, type MacroTone} from '../kit/hands';
 import {BOY_TONE, C, ELDER_TONE} from './palette';
@@ -123,9 +123,48 @@ const paintTableArm = (p: Painter, c: YCam, base: number, hand: V3, elbow: V3, s
   const back = 0.065 * size, wrist: [number, number] = [hand[0] - fx * back, hand[2] - fz * back];
   const yaw = (Math.atan2(fx, -fz) * 180) / Math.PI;
   const h = macroHand(pose, {side, size, unit: 0.01, base, tone, plane: TABLE_Y, at: wrist, yaw, elbow, shadowDir: [-0.1, -0.9, 0.25], shadowAlpha: 0.3, shadowColor: '#3a2212',
-    ...(sleeve ? {sleeve: {to: [elbow[0] - fx * 0.03, elbow[1], elbow[2] - fz * 0.03] as V3, color: sleeve.color, shade: sleeve.shade, cuff: 0.45}} : {}),
     ...(pose === 'ring-strain' ? {tremble: {finger: 'ring' as const, amp: 0.0008, hz: 10}} : {})});
-  return paintHandMacro(p, c, h);
+  const out = paintHandMacro(p, c, h);
+  if (sleeve) paintCuffSleeve(p, c, base + 400, h.wrist, [elbow[0] - fx * 0.03, elbow[1], elbow[2] - fz * 0.03], 0.024 * size, sleeve);
+  return out;
+};
+
+/** Fix round 2 (LF02): ELDER's cardigan sleeve over the forearm as a soft tube instead of the macro's flat-ended sleeve (it read as a box):
+ * world rings at the cuff and the elbow, hulled; a ribbed knit cuff band with a wobbly rim over the wrist, two creases toward the elbow and
+ * a round elbow end. `r` is the wrist radius (m); the cuff edge sits halfway wrist -> elbow. */
+const paintCuffSleeve = (p: Painter, c: YCam, id: number, wrist: V3, end: V3, r: number, s: {color: string; shade: string}) => {
+  const ax = [end[0] - wrist[0], end[1] - wrist[1], end[2] - wrist[2]], al = Math.hypot(ax[0], ax[1], ax[2]) || 1, a: V3 = [ax[0] / al, ax[1] / al, ax[2] / al];
+  // basis across the arm: u level (toward +x for an arm along z), v up
+  const ul = Math.hypot(a[2], a[0]) || 1, u: V3 = [-a[2] / ul, 0, a[0] / ul], v: V3 = [a[1] * u[2] - a[2] * u[1], a[2] * u[0] - a[0] * u[2], a[0] * u[1] - a[1] * u[0]];
+  const at = (t: number): V3 => [wrist[0] + ax[0] * t, wrist[1] + ax[1] * t, wrist[2] + ax[2] * t];
+  const ring = (o: V3, rr: number, wob = 0, n = 28): V3[] => Array.from({length: n}, (_, i) => { const th = (i / n) * Math.PI * 2, k = rr * (1 + wob * Math.sin(th * 5 + 0.7) + wob * 0.6 * Math.sin(th * 3)); return [o[0] + k * (Math.cos(th) * u[0] + Math.sin(th) * v[0]), o[1] + k * (Math.cos(th) * u[1] + Math.sin(th) * v[1]) + 0.004, o[2] + k * (Math.cos(th) * u[2] + Math.sin(th) * v[2])]; });
+  const cuff = at(0.5), rc = r * 1.22, re = r * 1.36;
+  const cuffRing = ring(cuff, rc, 0.05), body = hull([...camPoly(c, cuffRing), ...camPoly(c, ring(end, re))]);
+  if (body.length < 3) return;
+  hardFill(p, id, s.color, body);
+  // shade: the half away from the lamp (lamp over the table centre, x 0), i.e. the +u side for an arm right of centre
+  const sg = wrist[0] >= 0 ? 1 : -1, half = (pts: V3[]) => pts.filter((q) => ((q[0] - cuff[0]) * u[0] + (q[2] - cuff[2]) * u[2]) * sg > -0.15 * r);
+  const sh = hull([...camPoly(c, half(cuffRing)), ...camPoly(c, half(ring(end, re)))]);
+  if (sh.length > 2) hardFill(p, id + 1, s.shade, sh);
+  inkLine(p, id + 2, body, {weight: 1.1, still: true, color: mixColor(s.shade, '#2a1a10', 0.4)});
+  // creases where the sleeve bunches toward the elbow (upper side only)
+  [0.74, 0.86].forEach((t, k) => {
+    const arc = ring(at(t), re * (1 + k * 0.02), 0.03, 28).slice(3 + k * 2, 11 + k);
+    const pts = camPoly(c, arc);
+    if (pts.length > 1) inkLine(p, id + 3 + k, pts, {weight: 1, closed: false, still: true, color: mixColor(s.shade, '#2a1a10', 0.3)});
+  });
+  // ribbed knit cuff: a darker band 2.2 cm deep from the cuff edge back, rib strokes along the arm, a soft wobbly rim over the wrist
+  const dt = 0.022 / al, edge = ring(cuff, rc * 1.03, 0.05), back = ring(at(0.5 + dt), rc * 1.0, 0.03);
+  const band = hull([...camPoly(c, edge), ...camPoly(c, back)]);
+  if (band.length > 2) hardFill(p, id + 5, mixColor(s.color, s.shade, 0.55), band);
+  const lo = (i: number) => Math.sin((i / 28) * Math.PI * 2) < 0.25;
+  for (let i = 0; i < 28; i += 2) {
+    if (!lo(i)) continue;
+    const q0 = camPoint(c, edge[i]), q1 = camPoint(c, back[i]);
+    if (q0 && q1) inkLine(p, id + 10 + i, [q0, q1], {weight: 0.9, closed: false, still: true, color: mixColor(s.shade, '#2a1a10', 0.25)});
+  }
+  const rim = camPoly(c, edge.filter((_, i) => lo(i)));
+  if (rim.length > 1) inkLine(p, id + 7, rim, {weight: 1.4, closed: false, still: true, color: mixColor(s.shade, '#2a1a10', 0.45)});
 };
 
 /** Pendant lamp (W3: shade centre lowered to y 1.45 (0.73 m over the table) so its rim enters the top of the close-ups): cord, a cream cone shade, the lit opening. */

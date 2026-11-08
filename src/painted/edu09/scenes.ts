@@ -34,7 +34,8 @@ export const paintLF01m = (p: Painter) => { paintHandMacro(p, povCam(0), {...boy
 // W3 (R1.2): pulled back to r 1.60 with f 1650 (same head size) at eye 0.98, so the table reads as a strip with its props and the near edge.
 // Fix round 1 (R1.3, viewer check): yaw 10 -> 6 narrowed to 7 -> 6 (inside the brief range; the near table edge tilts less) and a lens shift
 // cx -130 px, so ELDER's laughing face is whole at the right while BOY stays the lead (camera position and target unchanged).
-export const LF02_MOVE = camMove([-0.26, 1.0, -0.62], [7, 6], [1.6, 1.52], 0.98, {pitch: [-2, -2], f: 1650, hy: 780, cx: -130});
+// Fix round 2 (R1.4): cx -245, so both of ELDER's ears are in (v2 still cut his right cheek and far ear).
+export const LF02_MOVE = camMove([-0.26, 1.0, -0.62], [7, 6], [1.6, 1.52], 0.98, {pitch: [-2, -2], f: 1650, hy: 780, cx: -245});
 export const camLF02: YCam = camOf(LF02_MOVE, 0);
 /** BOY's comic strain (brief VD09/VD10): brows down, eyes squeezed shut, mouth clenched in a wavy line, a sweat drop; never pained. */
 export const STRAIN: FaceState = {...EXPRESSIONS.neutral, brow: 'angry', eyes: 'shut', mouth: 'wavy', sweat: true, look: [0, 0]};
@@ -42,8 +43,10 @@ export const paintLF02 = (p: Painter, frame: number) => {
   const t = frame / 30, y = TABLE_Y;
   const out = paintDining(p, camLF02, {
     t,
-    boy: {t: t + 0.4, face: STRAIN, lHand: [-0.14, y, -0.08], lPose: 'ring-strain', rHand: [-0.38, y, -0.12]},
-    elder: {t: t + 1.1, face: {...EXPRESSIONS.happy, look: [-0.6, 0.2]}, lHand: [0.42, y, -0.16], rHand: [0.16, y, -0.12]},
+    // Fix round 2 (R1.4): elbows on the wood outside the shoulders, forearms angled in toward the hands (a visible elbow bend, foreshortened
+    // toward the lens, UT06); left and right paired but not mirrored (the strain hand 3 cm further forward and nearer the centre).
+    boy: {t: t + 0.4, face: STRAIN, lHand: [-0.2, y, -0.09], lElbow: [-0.13, y + 0.026, -0.32], lPose: 'ring-strain', rHand: [-0.315, y, -0.12], rElbow: [-0.39, y + 0.026, -0.33]},
+    elder: {t: t + 1.1, face: {...EXPRESSIONS.happy, look: [-0.6, 0.2]}, lHand: [0.4, y, -0.16], lElbow: [0.47, y + 0.026, -0.38], rHand: [0.15, y, -0.15], rElbow: [0.16, y + 0.026, -0.37]},
   });
   MEASURE.LF02 = out;
 };

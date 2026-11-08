@@ -2,7 +2,7 @@
 
 Record: this file. Series context: [concepts.md](../concepts.md) (R5, C28) · series task list: [task.md](../task.md).
 
-**Now:** W3.1 look frames LF01/LF01b/LF02/LF03/LF04 painted (Film, 2026-11-08); LF02 fix round 1 after the viewer check (ROWS-R1.3, BRIEF-R1.3, still `out/edu09/look-frames/v2/LF02.png`); review page: pending. **Next:** coordinator publishes the look-frame review page; user picks/notes, then W4 voice lock
+**Now:** W3.1 look frames LF01/LF01b/LF02/LF03/LF04 painted (Film, 2026-11-08); LF02 fix round 2 (last) after the viewer check (ROWS-R1.4, BRIEF-R1.4, still `out/edu09/look-frames/v3/LF02.png`; remaining findings go to the user as notes); review page: pending. **Next:** coordinator publishes the look-frame review page; user picks/notes, then W4 voice lock
 
 - Deliverable: `EDU-EP09-SHORT`, Short only (Thai), 1080×1920, 30 fps, target 40–60 s (estimate). Profile: educational, painted 2D p5.brush, 4-head cast, Kore narrator (edu default), ending per concept (the user may change it); other fields = project defaults.
 - Factual claims for Boat: see the C28 entry in concepts.md R5. All unchecked until research and fact-check. Every try-it-now result needs a real try before scripting.
@@ -20,6 +20,7 @@ Record: this file. Series context: [concepts.md](../concepts.md) (R5, C28) · se
   - [x] W3.0 Boss hand macro (`paintHandMacro`, commit abec7e7)
   - [x] W3.1 Film look frames (2026-11-08): stills `out/edu09/look-frames/v1/` (store kind look-frames), code `src/painted/edu09/`, brief R1.2 + rows R1.2; user decisions of 2026-11-08 applied (rig skin, steeper CAM-POV, B02-SH02 f 1250); placeholder: LF04 pianist pose (W5)
   - [x] W3.1 fix round 1 (Film, 2026-11-08): viewer check failed LF02 (class A: plank forearms detached from the sleeves); forearms and hands rebuilt with the kit hand macro from an elbow on the wood, five fingers (Film call: hand about 100 px wide, same `ring-strain` hand as SH01's end), ELDER's laugh brought into frame (yaw 7→6, cx −130); still `out/edu09/look-frames/v2/LF02.png`, store `projects/EDU-EP09-SHORT/look-frames/LF02.c98e9601.png`; brief R1.3, rows R1.3
+  - [x] W3.1 fix round 2, last (Film, 2026-11-08): BOY's arms bent on the wood (visible elbows, forearms angled in, paired not mirrored), ELDER's hand at about 1.3× BOY's on screen with a ribbed cardigan cuff, lens shift cx −245 (both ELDER ears in); UT14 and "ELDER cropped" recorded in the brief (UT14 override needs the user's confirmation: Q-F1 text says body-scale keeps mittens); still `out/edu09/look-frames/v3/LF02.png`, before/after `out/edu09/look-frames/v3/LF02-vs-v2.png`, store `projects/EDU-EP09-SHORT/look-frames/LF02.f5996ed4.png`; brief R1.4, rows R1.4
   - [ ] W3.2 User look-frame review (review page: pending)
 - [ ] W4 Voice lock
 - [ ] W5 Draft (W5.1 scene sheets, W5.2 Boss assets, W5.3 Editor draft)
