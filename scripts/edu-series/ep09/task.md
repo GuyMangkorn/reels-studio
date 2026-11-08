@@ -44,3 +44,4 @@ Record: this file. Series context: [concepts.md](../concepts.md) (R5, C28) · se
 
 - Review page verdicts read 2026-11-08 (db `reviews/<shot>@board`): 18 of 18 shots `ok` on EDU-EP09-ROWS-R1.1, no notes. Storyboard pass confirmed on the page as well as in chat.
 - 2026-11-08: Review page republished (same URL https://claude.ai/artifact/6fizGegm4Yk5B7gtoHnZqg, version 1794141782-5762): ROWS-R1.5, script R1.3 basis, look frames LF01/LF01b/LF02/LF03/LF04, three new cutaway rows (B03-SH07/08/09). Awaiting user verdicts.
+- 2026-11-08: Review page republished again (same URL, version 1794142528-2033): ROWS-R1.6, longer distal phalanx (SPLIT 0.43/0.29/0.28), look frames re-rendered. Awaiting user verdicts.
