@@ -34,3 +34,5 @@ Record: this file. Series context: [concepts.md](../concepts.md) (R5, C28) · se
 - 2026-11-08: Film brief R1.1 + rows ROWS-R1.1 (18 shots, ~56.9 s; Q-F1 five-finger macro, Q-F2 piano only applied). Review page (new, private): https://claude.ai/artifact/6fizGegm4Yk5B7gtoHnZqg (slug 2de5d50c-72ad-415d-96fe-027e8567d68f, v1794133738-0e51, `db` declared, empty; verdicts under `reviews/<shot ID>@board`).
 
 - Storyboard pass: user said "ผ่าน" in chat (2026-11-08) for ROWS-R1.1, 18 shots. Per-shot verdicts were not entered on the review page (db empty); chat pass recorded here.
+
+- Review page verdicts read 2026-11-08 (db `reviews/<shot>@board`): 18 of 18 shots `ok` on EDU-EP09-ROWS-R1.1, no notes. Storyboard pass confirmed on the page as well as in chat.

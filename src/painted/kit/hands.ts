@@ -1,5 +1,8 @@
-import type {Painter, Pt} from './painter';
-import {hardFill} from './draw';
+import {mixColor, type Painter, type Pt} from './painter';
+import {hardFill, solid as drawSolid} from './draw';
+import {add3, scale3, sub3, type V3} from './space';
+import {camPoint, camSpace, type YCam} from './ycam';
+import {hash} from './hash';
 
 /** Ink colour of the outlines (same value as WORLD FOG FaceSheet INK; kept local so plates do not import the sheets). */
 const INK = '#2b211c';
@@ -332,3 +335,453 @@ export const paintEdgeGrip = (p: Painter, h: EdgeGrip) => {
   solid(p, base + 50, tone.skin, th);
   inkLine(p, base + 50, th, 1.0, 0.3);
 };
+
+// ---------------------------------------------------------------------------------------------------------------- hand macro
+// `new: hand-macro` (EDU-EP09 N1, VD05; Boss W3, 2026-11-08). UT14 exception at macro scale only (user Q-F1): a true 3D skeletal hand
+// with five separate fingers, for shots whose action is the fingers; body-scale rig hands stay mittens. The skeleton is posed by
+// joint angles in the shot's own units (set-cm for HAND-CLOSE, metres for a dining shot through `unit`), projected joint by joint
+// through the shot's `YCam` and painted with the kit's crisp fills: one capsule per phalanx, one ink line round each finger, one cel
+// shade, short nails, two crease strokes per knuckle. Fingers are depth-sorted as groups (a finger folded under the palm is drawn
+// before the palm), `order` overrides the sort (crossed fingers), fingertip and palm shadows fall on a named plane, a deterministic
+// tremble moves one finger, `skinAlpha` makes the skin see-through. Pure function of its arguments and the painter clock.
+//
+// Hand frame (fingers along -z, up +y at yaw/pitch/roll 0), all lengths in cm x `size` x `unit`: the left hand has its thumb toward +x, the
+// right hand toward -x (`side` -1 / +1 as `PovHand`). `yaw` turns the fingers toward +x, `pitch` raises them (negative lowers), `roll`
+// raises the +x side. Joint angles are RELATIVE per joint, degrees, + flexes toward the palm (down for a palm-down hand), - extends (lift).
+
+export type FingerId = 'thumb' | 'index' | 'middle' | 'ring' | 'little';
+export type LongFingerId = Exclude<FingerId, 'thumb'>;
+export const FINGER_IDS: readonly FingerId[] = ['thumb', 'index', 'middle', 'ring', 'little'];
+/** mcp/pip/dip flexion in degrees; `abd` adds to the finger's natural splay (+ spreads away from the middle finger). */
+export type FingerPose = {mcp: number; pip: number; dip: number; abd?: number};
+/** cmc flexes the metacarpal down, cmcAbd swings it away from the palm (in the palm plane), mcp and ip flex the two phalanges. */
+export type ThumbPose = {cmc: number; cmcAbd: number; mcp: number; ip: number};
+export type MacroTone = HandTone & {spots?: string};
+/** Hand tones from the EP09 brief colour table (the pianist uses `DEFAULT_HAND_TONE`). */
+export const MACRO_TONES: Record<'boy' | 'elder' | 'generic', MacroTone> = {
+  boy: {skin: '#f0c29a', shade: '#d9a073', deep: '#c48c62', nail: '#f6dcc8', crease: '#a8724f', sleeve: '#f4f4f0', sleeveShade: '#d8d8d2'},
+  elder: {skin: '#d9a77c', shade: '#b98257', deep: '#a67048', nail: '#ead2bd', crease: '#8f5f40', sleeve: '#7a5638', sleeveShade: '#5f432b', spots: '#b07a55'},
+  generic: {...DEFAULT_HAND_TONE, sleeve: '#2f3542', sleeveShade: '#242a35'},
+};
+
+export type HandMacro = {
+  side: 1 | -1;
+  /** Seed/ink id base; the hand uses ids base .. base + 230 (give each hand its own range of 240). */
+  base: number;
+  /** Hand scale: 1 = BOY (middle finger 6.0 cm), 1.25 = ELDER, 1.2 = pianist. */
+  size?: number;
+  /** World units per cm (default 1: set-cm; use 0.01 for a metre set). Wrist, `plane`, `elbow` and lifts are in world units. */
+  unit?: number;
+  tone?: MacroTone;
+  /** Skin opacity 0..1 (0.28 = see-through for the diagram). Outline and nails keep the same opacity multiplier x 1 (ink fades by mixing). */
+  skinAlpha?: number;
+  /** Crisp opaque fills (default true); false = the kit's seeded textured fill. */
+  crisp?: boolean;
+  /** Wrist centre, degrees of orientation (see above). */
+  wrist: V3; yaw: number; pitch: number; roll: number;
+  fingers: Record<LongFingerId, FingerPose>; thumb: ThumbPose;
+  /** Explicit back-to-front order of the finger groups (C25 crossing); fingers not listed keep their depth order, in front of the listed ones. */
+  order?: FingerId[];
+  /** Contact plane height (world y) and the light's travel direction, for the fingertip and palm shadows (omit `plane` = no shadows). */
+  plane?: number; shadowDir?: V3; shadowColor?: string; shadowAlpha?: number;
+  /** One finger trembles: `amp` is the tip lift amplitude (world units), `hz` the rate; hash-seeded on the painter clock, so a seek repeats it. */
+  tremble?: {finger: LongFingerId; amp: number; hz: number};
+  /** 0..1 per finger: skin tightening over the knuckles (the two crease strokes straighten). */
+  strain?: Partial<Record<FingerId, number>>;
+  /** Forearm end (world units): draws a forearm from the wrist; `sleeve` covers it from the cuff (fraction of wrist -> elbow, default 0.5) out to `to`. */
+  elbow?: V3;
+  sleeve?: {to: V3; color: string; shade?: string; cuff?: number};
+};
+
+const D2R = Math.PI / 180;
+const LONG: readonly LongFingerId[] = ['index', 'middle', 'ring', 'little'];
+// cm at size 1: MCP lateral `v` (toward the thumb) and forward `f` from the wrist centre, length MCP -> tip, width, natural splay (deg), splay side.
+const FSPEC: Record<LongFingerId, {v: number; f: number; len: number; w: number; abd: number; sgn: 1 | -1}> = {
+  index: {v: 1.45, f: 6.4, len: 5.4, w: 1.55, abd: 4, sgn: 1},
+  middle: {v: -0.3, f: 6.5, len: 6.0, w: 1.7, abd: 0, sgn: 1},
+  ring: {v: -2.0, f: 6.25, len: 5.6, w: 1.6, abd: 4, sgn: -1},
+  little: {v: -3.6, f: 5.7, len: 4.7, w: 1.4, abd: 9, sgn: -1},
+};
+// Proportions (plan-view pass, 8 Nov 2026): wrist -> middle MCP 6.5 cm for a 6.0 cm middle finger (0.92), palm about 6.5 cm wide, wrist 4.5 cm, finger widths 1.4-1.7 cm with a slight splay so gaps show, little tip near the ring's DIP crease, ring >= index.
+const SPLIT = [0.45, 0.3, 0.25] as const; // phalanx share of the finger length (brief)
+const TAPER = [1, 0.97, 0.94, 0.9] as const;
+const THUMB_SPEC = {cmc: [1.2, 1.4, -0.3] as const, len: [2.6, 2.0, 1.8] as const, w: [1.85, 1.65, 1.5, 1.4] as const};
+// Back of the hand outline (v toward the thumb, f forward; cm at size 1), wrist edge first.
+const PALM: readonly (readonly [number, number])[] = [[2.2, 0], [2.6, 2.8], [2.4, 6.0], [1.45, 6.4], [-0.3, 6.5], [-2.0, 6.25], [-3.6, 5.7], [-4.2, 5.0], [-4.1, 2.6], [-2.6, 0]];
+
+const rotateHand = ([x0, y0, z0]: V3, yaw: number, pitch: number, roll: number): V3 => {
+  const cr = Math.cos(roll), sr = Math.sin(roll), cp = Math.cos(pitch), sp = Math.sin(pitch), cy = Math.cos(yaw), sy = Math.sin(yaw);
+  const x1 = x0 * cr - y0 * sr, y1 = x0 * sr + y0 * cr;
+  const y2 = y1 * cp - z0 * sp, z2 = y1 * sp + z0 * cp;
+  return [x1 * cy - z2 * sy, y2, x1 * sy + z2 * cy];
+};
+const dot3 = (a: V3, b: V3) => a[0] * b[0] + a[1] * b[1] + a[2] * b[2];
+const norm3 = (a: V3): V3 => { const l = Math.hypot(a[0], a[1], a[2]) || 1; return [a[0] / l, a[1] / l, a[2] / l]; };
+
+export type Anchor = {w: V3; p: Pt | null};
+/** One finger chain: `mcp`, `pip`, `dip`, `tip` joint centres (the thumb: cmc, mcp, ip, tip), the pad (the underside of the tip), the dorsal (nail-side) direction at the tip, tip radius and the gap between the tip's lowest point and `plane`. */
+export type FingerAnchors = {mcp: Anchor; pip: Anchor; dip: Anchor; tip: Anchor; pad: Anchor; dorsal: V3; tipRadius: number; gap: number | null};
+export type HandAnchors = {
+  wrist: Anchor;
+  /** Back of the hand: centre and the unit normal (out of the back of the hand). */
+  palm: Anchor & {normal: V3};
+  fingers: Record<FingerId, FingerAnchors>;
+  elbow: Anchor | null;
+  /** Forward and lateral (toward the thumb) unit vectors of the hand frame, world. */
+  forward: V3; toThumb: V3;
+};
+
+/** The posed skeleton, world units: joints [base, 1, 2, tip] per finger, their radii, dorsal normals per segment, palm outline and axes. No painter, no camera. */
+export const macroSkeleton = (h: HandMacro, t = 0) => {
+  const S = (h.size ?? 1) * (h.unit ?? 1), tdir = -h.side;
+  const yaw = h.yaw * D2R, pitch = h.pitch * D2R, roll = h.roll * D2R;
+  const R = (v: V3): V3 => rotateHand(v, yaw, pitch, roll);
+  const at = (v: number, y: number, f: number): V3 => add3(h.wrist, scale3(R([tdir * v, y, -f]), S));
+  const forward = R([0, 0, -1]), up = R([0, 1, 0]), toThumb = R([tdir, 0, 0]);
+  const chain = (origin: V3, heading: V3, lens: readonly number[], rads: readonly number[], flex: number[], twist = 0) => {
+    const joints: V3[] = [origin], dorsal: V3[] = [];
+    let cum = 0;
+    for (let k = 0; k < 3; k++) {
+      cum += flex[k] * D2R;
+      const dl: V3 = [heading[0] * Math.cos(cum), -Math.sin(cum) + heading[1] * Math.cos(cum), heading[2] * Math.cos(cum)];
+      let nl: V3 = [heading[0] * Math.sin(cum), Math.cos(cum) + heading[1] * Math.sin(cum), heading[2] * Math.sin(cum)];
+      if (twist) nl = norm3([nl[0] * Math.cos(twist) + tdir * Math.sin(twist), nl[1] * Math.cos(twist), nl[2] * Math.cos(twist)]);
+      joints.push(add3(joints[k], scale3(R(dl), lens[k] * S)));
+      dorsal.push(R(nl));
+    }
+    return {joints, dorsal, radii: rads.map((r) => r * S)};
+  };
+  const out = {} as Record<FingerId, {joints: V3[]; dorsal: V3[]; radii: number[]}>;
+  for (const id of LONG) {
+    const sp = FSPEC[id], fp = h.fingers[id];
+    let mcp = fp.mcp;
+    if (h.tremble?.finger === id) {
+      const ph = t * h.tremble.hz, i = Math.floor(ph), fr = ph - i, e = fr * fr * (3 - 2 * fr);
+      const n = 2 * ((1 - e) * hash(i * 7 + 3) + e * hash((i + 1) * 7 + 3)) - 1;
+      mcp -= ((h.tremble.amp * n) / (sp.len * S)) / D2R;
+    }
+    const abd = (sp.abd + (fp.abd ?? 0)) * D2R;
+    const heading: V3 = [tdir * sp.sgn * Math.sin(abd), 0, -Math.cos(abd)];
+    out[id] = chain(at(sp.v, 0, sp.f), heading, SPLIT.map((s) => s * sp.len), TAPER.map((k) => (k * sp.w) / 2), [mcp, fp.pip, fp.dip]);
+  }
+  const tp = h.thumb, ab = tp.cmcAbd * D2R;
+  out.thumb = chain(at(THUMB_SPEC.cmc[0], THUMB_SPEC.cmc[2], THUMB_SPEC.cmc[1]), [tdir * Math.sin(ab), 0, -Math.cos(ab)], THUMB_SPEC.len, THUMB_SPEC.w.map((w) => w / 2), [tp.cmc, tp.mcp, tp.ip], 35 * D2R);
+  const palm = PALM.map(([v, f]) => at(v, 0, f));
+  const wrist = h.wrist;
+  const palmCentre = at(-0.8, 0, 3.3);
+  return {fingers: out, palm, palmCentre, wrist, normal: up, forward, toThumb, S, tdir, at, R};
+};
+
+type Sk = ReturnType<typeof macroSkeleton>;
+
+const anchorOf = (cam: YCam, w: V3): Anchor => ({w, p: camPoint(cam, w)});
+
+/** Anchors of a posed hand through a camera (no painting): the same numbers `paintHandMacro` returns. */
+export const macroAnchors = (cam: YCam, h: HandMacro, t = 0, sk: Sk = macroSkeleton(h, t)): HandAnchors => {
+  const fingers = {} as Record<FingerId, FingerAnchors>;
+  for (const id of FINGER_IDS) {
+    const c = sk.fingers[id], tip = c.joints[3], r = c.radii[3];
+    const dorsal = c.dorsal[2];
+    fingers[id] = {
+      mcp: anchorOf(cam, c.joints[0]), pip: anchorOf(cam, c.joints[1]), dip: anchorOf(cam, c.joints[2]), tip: anchorOf(cam, tip),
+      pad: anchorOf(cam, sub3(tip, scale3(dorsal, r))), dorsal, tipRadius: r,
+      gap: h.plane === undefined ? null : Math.min(tip[1] - r, c.joints[2][1] - c.radii[2]) - h.plane,
+    };
+  }
+  return {wrist: anchorOf(cam, h.wrist), palm: {...anchorOf(cam, sk.palmCentre), normal: sk.normal}, fingers, elbow: h.elbow ? anchorOf(cam, h.elbow) : null, forward: sk.forward, toThumb: sk.toThumb};
+};
+
+/** Raise (`rise` > 0) or lower one finger's tip by `rise` world units by solving its first joint (the thumb: cmc); the other joints keep their angles. Returns a new hand. */
+export const liftFinger = (h: HandMacro, finger: FingerId, rise: number): HandMacro => {
+  if (!rise) return h;
+  const tipY = (hh: HandMacro) => macroSkeleton(hh).fingers[finger].joints[3][1];
+  const set = (a: number): HandMacro => finger === 'thumb' ? {...h, thumb: {...h.thumb, cmc: a}} : {...h, fingers: {...h.fingers, [finger]: {...h.fingers[finger as LongFingerId], mcp: a}}};
+  const a0 = finger === 'thumb' ? h.thumb.cmc : h.fingers[finger as LongFingerId].mcp, y0 = tipY(h);
+  // The tip height falls with flexion over the usable range: bisect on [a0 - 90, a0 + 45].
+  let lo = a0 - 90, hi = a0 + 45;
+  for (let i = 0; i < 40; i++) {
+    const mid = (lo + hi) / 2;
+    if (tipY(set(mid)) > y0 + rise) lo = mid; else hi = mid;
+  }
+  return set((lo + hi) / 2);
+};
+
+/** Blend two hands' joint angles, wrist and orientation (numeric, eased by the caller: a track, never a string switch mid-rise). */
+export const blendHand = (a: HandMacro, b: HandMacro, u: number): HandMacro => {
+  const m = (x: number, y: number) => x + (y - x) * u;
+  const fingers = {} as Record<LongFingerId, FingerPose>;
+  for (const id of LONG) fingers[id] = {mcp: m(a.fingers[id].mcp, b.fingers[id].mcp), pip: m(a.fingers[id].pip, b.fingers[id].pip), dip: m(a.fingers[id].dip, b.fingers[id].dip), abd: m(a.fingers[id].abd ?? 0, b.fingers[id].abd ?? 0)};
+  return {
+    ...a, fingers, thumb: {cmc: m(a.thumb.cmc, b.thumb.cmc), cmcAbd: m(a.thumb.cmcAbd, b.thumb.cmcAbd), mcp: m(a.thumb.mcp, b.thumb.mcp), ip: m(a.thumb.ip, b.thumb.ip)},
+    wrist: [m(a.wrist[0], b.wrist[0]), m(a.wrist[1], b.wrist[1]), m(a.wrist[2], b.wrist[2])], yaw: m(a.yaw, b.yaw), pitch: m(a.pitch, b.pitch), roll: m(a.roll, b.roll),
+  };
+};
+
+// ---- screen-space outline of a tube (finger, forearm, sleeve)
+type Dir2 = [number, number];
+const unit2 = (a: Pt, b: Pt): Dir2 => { const dx = b[0] - a[0], dy = b[1] - a[1], l = Math.hypot(dx, dy) || 1; return [dx / l, dy / l]; };
+const arcPts = (c: Pt, r: number, a0: number, a1: number, n: number): Pt[] => Array.from({length: n + 1}, (_, i): Pt => { const a = a0 + ((a1 - a0) * i) / n; return [c[0] + r * Math.cos(a), c[1] + r * Math.sin(a)]; });
+const wrapPi = (a: number) => a - Math.round(a / (2 * Math.PI)) * 2 * Math.PI;
+/** Closed outline of a polyline tube with per-point radii (px): miter on the inner side of a bend, round on the outer side, round cap at the end (optional); the start is flat. */
+const tubeOutline = (P: Pt[], R: number[], cap: boolean): Pt[] => {
+  const n = P.length, d: Dir2[] = [], nm: Dir2[] = [];
+  for (let i = 0; i < n - 1; i++) { d.push(unit2(P[i], P[i + 1])); nm.push([-d[i][1], d[i][0]]); }
+  const side = (s: number): Pt[] => {
+    const out: Pt[] = [[P[0][0] + s * nm[0][0] * R[0], P[0][1] + s * nm[0][1] * R[0]]];
+    for (let j = 1; j < n - 1; j++) {
+      const na = nm[j - 1], nb = nm[j], inner = s * (na[0] * d[j][0] + na[1] * d[j][1]) > 0;
+      if (inner) {
+        const mx = s * (na[0] + nb[0]), my = s * (na[1] + nb[1]), ml = Math.hypot(mx, my) || 1, cos = Math.max(0.4, (mx / ml) * s * na[0] + (my / ml) * s * na[1]);
+        // A foreshortened segment shorter than the miter's reach would spike (a V at the joint): leave the point out and let the line run on.
+        const reach = R[j] * Math.sqrt(1 - cos * cos) / cos, la = Math.hypot(P[j][0] - P[j - 1][0], P[j][1] - P[j - 1][1]), lb = Math.hypot(P[j + 1][0] - P[j][0], P[j + 1][1] - P[j][1]);
+        if (reach < 0.9 * Math.min(la, lb)) out.push([P[j][0] + (mx / ml) * (R[j] / cos), P[j][1] + (my / ml) * (R[j] / cos)]);
+      } else {
+        const a0 = Math.atan2(s * na[1], s * na[0]), a1 = a0 + wrapPi(Math.atan2(s * nb[1], s * nb[0]) - a0);
+        out.push(...arcPts(P[j], R[j], a0, a1, 4));
+      }
+    }
+    out.push([P[n - 1][0] + s * nm[n - 2][0] * R[n - 1], P[n - 1][1] + s * nm[n - 2][1] * R[n - 1]]);
+    return out;
+  };
+  const L = side(1), Rr = side(-1);
+  const end = cap ? (() => { const a0 = Math.atan2(nm[n - 2][1], nm[n - 2][0]); return arcPts(P[n - 1], R[n - 1], a0, a0 - Math.PI, 8).slice(1, -1); })() : [];
+  return [...L, ...end, ...Rr.reverse()];
+};
+/** Keep the part of a convex polygon with (p - o) . n >= 0. */
+const clipHalf = (poly: Pt[], o: Pt, n: Dir2): Pt[] => {
+  const out: Pt[] = [];
+  for (let i = 0; i < poly.length; i++) {
+    const a = poly[i], b = poly[(i + 1) % poly.length];
+    const da = (a[0] - o[0]) * n[0] + (a[1] - o[1]) * n[1], db = (b[0] - o[0]) * n[0] + (b[1] - o[1]) * n[1];
+    if (da >= 0) out.push(a);
+    if ((da >= 0) !== (db >= 0)) { const k = da / (da - db); out.push([a[0] + (b[0] - a[0]) * k, a[1] + (b[1] - a[1]) * k]); }
+  }
+  return out;
+};
+const inPoly = (x: number, y: number, poly: readonly (readonly [number, number])[]) => {
+  let c = false;
+  for (let i = 0, j = poly.length - 1; i < poly.length; j = i++) {
+    const [xi, yi] = poly[i], [xj, yj] = poly[j];
+    if (yi > y !== yj > y && x < ((xj - xi) * (y - yi)) / (yj - yi) + xi) c = !c;
+  }
+  return c;
+};
+
+// ids: fills base + 0 .. 119, shadows base + 120 .. 159, inks base + 160 .. 229
+const FILL = 0, SHADOW = 120, INK_ID = 160;
+
+/**
+ * Paint the macro hand through camera `cam` and return its anchors. Draw order: shadows on `plane`, forearm and sleeve, fingers folded
+ * under the palm, the back of the hand, then the other fingers far to near (or `order`). Fingers behind the lens are skipped.
+ */
+export const paintHandMacro = (p: Painter, cam: YCam, h: HandMacro): HandAnchors => {
+  const sk = macroSkeleton(h, p.t), anchors = macroAnchors(cam, h, p.t, sk);
+  const tone = h.tone ?? MACRO_TONES.generic, alpha = h.skinAlpha ?? 1, S = sk.S;
+  const q = alpha < 1 ? p.layer(alpha, h.base * 16) : p;
+  const crisp = h.crisp ?? true;
+  const fill = (pp: Painter, id: number, color: string, pts: Pt[]) => {
+    if (pts.length < 3) return;
+    if (crisp) hardFill(pp, h.base + id, color, pts); else drawSolid(pp, h.base + id, color, pts, 4);
+  };
+  const toPx = (v: V3): {pt: Pt; r: number; d: number} | null => {
+    const c = camSpace(cam, v);
+    if (c.d < (cam.near ?? 0.3)) return null;
+    return {pt: [540 + (cam.cx ?? 0) + (cam.f * c.r) / c.d, cam.hy - (cam.f * c.u) / c.d], r: cam.f / c.d, d: c.d};
+  };
+  const midMcp = toPx(sk.fingers.middle.joints[0]);
+  const inkW = Math.max(1.1, Math.min(3, 0.06 * (midMcp ? midMcp.r * sk.fingers.middle.radii[0] : 20)));
+  const ink = (pp: Painter, id: number, pts: Pt[], w = inkW, color = INK, closed = false) => { if (pts.length >= 2) inkLine(pp, h.base + INK_ID + id, pts, w, 0.25, closed, color); };
+  const inkOf = (c: string) => (alpha < 1 ? mixColor(c, '#ffffff', 1 - Math.max(alpha, 0.55)) : c);
+  const camPos: V3 = [cam.x, cam.y, cam.z];
+  // Screen direction of the light, for the cel shade side.
+  const L3 = norm3(h.shadowDir ?? [0.14, -0.9, 0.11]);
+  const c0 = camSpace(cam, sk.palmCentre), c1 = camSpace(cam, add3(sk.palmCentre, L3));
+  const ls = unit2([0, 0], [c1.r - c0.r, -(c1.u - c0.u)]); // light travel direction on screen
+
+  // Shadows on the contact plane: a ground capsule per phalanx, the palm outline.
+  if (h.plane !== undefined) {
+    const sp = p.layer(Math.min(1, (h.shadowAlpha ?? 0.3) * (0.4 + 0.6 * alpha)), h.base * 16 + 7);
+    const col = h.shadowColor ?? '#2a1c14';
+    const drop = (v: V3): V3 => { const hgt = Math.max(0, v[1] - h.plane!); const k = hgt / Math.max(0.2, -L3[1]); return [v[0] + L3[0] * k, h.plane!, v[2] + L3[2] * k]; };
+    let sid = 0;
+    for (const id of FINGER_IDS) {
+      const c = sk.fingers[id];
+      for (let k = 0; k < 3; k++) {
+        const a = drop(c.joints[k]), b = drop(c.joints[k + 1]), ra = c.radii[k], rb = c.radii[k + 1];
+        const dx = b[0] - a[0], dz = b[2] - a[2], l = Math.hypot(dx, dz);
+        if (l < 1e-6) continue;
+        const ang = Math.atan2(dz, dx), pts: V3[] = [];
+        for (let i = 0; i <= 6; i++) { const t = ang - Math.PI / 2 + (Math.PI * i) / 6; pts.push([b[0] + rb * Math.cos(t), h.plane, b[2] + rb * Math.sin(t)]); }
+        for (let i = 0; i <= 6; i++) { const t = ang + Math.PI / 2 + (Math.PI * i) / 6; pts.push([a[0] + ra * Math.cos(t), h.plane, a[2] + ra * Math.sin(t)]); }
+        const poly = pts.map((v) => toPx(v)?.pt).filter((v): v is Pt => !!v);
+        if (poly.length === pts.length) hardFill(sp, h.base + SHADOW + sid, col, poly);
+        sid++;
+      }
+    }
+    const pal = sk.palm.map((v) => toPx(drop(sub3(v, scale3(sk.normal, S * 0.6)))));
+    if (pal.every(Boolean)) hardFill(sp, h.base + SHADOW + 40, col, pal.map((v) => v!.pt));
+  }
+
+  // Forearm and sleeve.
+  if (h.elbow) {
+    const w = toPx(h.wrist), e = toPx(h.elbow);
+    if (w && e) {
+      const fr = 2.4 * S, er = 2.8 * S;
+      const P: Pt[] = [w.pt, e.pt], Rr = [fr * w.r, er * e.r];
+      const arm = tubeOutline(P, Rr, true);
+      fill(q, FILL + 0, tone.skin, arm);
+      const sideN: Dir2 = (() => { const d = unit2(P[0], P[1]); return [-d[1], d[0]]; })();
+      const sgn = sideN[0] * ls[0] + sideN[1] * ls[1] >= 0 ? 1 : -1;
+      fill(q, FILL + 1, tone.shade, clipHalf(arm, [(P[0][0] + P[1][0]) / 2 + sgn * sideN[0] * Math.min(Rr[0], Rr[1]) * 0.35, (P[0][1] + P[1][1]) / 2 + sgn * sideN[1] * Math.min(Rr[0], Rr[1]) * 0.35], [sgn * sideN[0], sgn * sideN[1]]));
+      ink(q, 0, arm, inkW, inkOf(INK));
+      if (h.sleeve) {
+        const cu = h.sleeve.cuff ?? 0.5, cuffW = add3(h.wrist, scale3(sub3(h.elbow, h.wrist), cu)), rc = (2.4 + 0.4 * cu) * S * 1.18;
+        const cp = toPx(cuffW), tp = toPx(h.sleeve.to);
+        if (cp && tp) {
+          const sl = tubeOutline([cp.pt, tp.pt], [rc * cp.r, rc * 1.15 * tp.r], false);
+          fill(q, FILL + 2, h.sleeve.color, sl);
+          const d = unit2(cp.pt, tp.pt), n: Dir2 = [-d[1], d[0]], sg = n[0] * ls[0] + n[1] * ls[1] >= 0 ? 1 : -1, rr = rc * cp.r * 0.4;
+          fill(q, FILL + 3, h.sleeve.shade ?? mixColor(h.sleeve.color, '#000000', 0.16), clipHalf(sl, [(cp.pt[0] + tp.pt[0]) / 2 + sg * n[0] * rr, (cp.pt[1] + tp.pt[1]) / 2 + sg * n[1] * rr], [sg * n[0], sg * n[1]]));
+          ink(q, 1, sl, inkW, inkOf(tone.sleeveShade), true);
+          const half = rc * cp.r;
+          ink(q, 2, [[cp.pt[0] + n[0] * half, cp.pt[1] + n[1] * half], [cp.pt[0] - n[0] * half, cp.pt[1] - n[1] * half]], inkW, inkOf(tone.sleeveShade));
+        }
+      }
+    }
+  }
+
+  // Finger groups.
+  const camSide = dot3(sub3(camPos, sk.palmCentre), sk.normal) >= 0 ? 1 : -1;
+  type Group = {id: FingerId; fi: number; under: boolean; depth: number; draw: () => void};
+  const groups: Group[] = [];
+  FINGER_IDS.forEach((id, fi) => {
+    const c = sk.fingers[id], pts = c.joints.map(toPx);
+    if (pts.some((v) => !v)) return;
+    const P = pts.map((v) => v!.pt), Rpx = c.radii.map((r, i) => r * pts[i]!.r);
+    let nUnder = 0;
+    for (let j = 1; j < 4; j++) {
+      const rel = sub3(c.joints[j], sk.wrist), lat = dot3(rel, sk.toThumb) / S, fwd = dot3(rel, sk.forward) / S;
+      if (dot3(sub3(c.joints[j], sk.palmCentre), sk.normal) * camSide < -0.5 * c.radii[j] && inPoly(lat, fwd, PALM)) nUnder++;
+    }
+    const depth = c.joints.reduce((s, v) => s + camSpace(cam, v).d, 0) / 4;
+    const strain = h.strain?.[id] ?? 0;
+    const draw = () => {
+      const f0 = FILL + 10 + fi * 10, i0 = fi * 12;
+      for (let k = 0; k < 3; k++) fill(q, f0 + k, tone.skin, capsule(P[k], P[k + 1], 2 * Rpx[k], 2 * Rpx[k + 1]));
+      if (alpha >= 1) for (let k = 1; k < 3; k++) fill(q, f0 + 3 + k, tone.skin, ring(P[k][0], P[k][1], Rpx[k], Rpx[k], 12));
+      // cel shade on the side away from the light, clipped inside each phalanx
+      for (let k = 0; k < 3; k++) {
+        const d = unit2(P[k], P[k + 1]), n: Dir2 = [-d[1], d[0]], sg = n[0] * ls[0] + n[1] * ls[1] >= 0 ? 1 : -1, rr = Math.min(Rpx[k], Rpx[k + 1]) * 0.3;
+        const seg = capsule(P[k], P[k + 1], 2 * Rpx[k], 2 * Rpx[k + 1]);
+        fill(q, f0 + 6 + (k % 3), tone.shade, clipHalf(seg, [P[k][0] + sg * n[0] * rr, P[k][1] + sg * n[1] * rr], [sg * n[0], sg * n[1]]));
+      }
+      if (id === 'thumb') {
+        // The metacarpal lies in the palm: ink only the free part (MCP -> tip) and the outer edge of the metacarpal.
+        ink(q, i0, tubeOutline(P.slice(1), Rpx.slice(1), true), inkW, inkOf(INK));
+        const dm = unit2(P[0], P[1]), nm: Dir2 = [-dm[1], dm[0]], pc = toPx(sk.palmCentre)?.pt ?? P[0];
+        const so = (P[0][0] - pc[0]) * nm[0] + (P[0][1] - pc[1]) * nm[1] >= 0 ? 1 : -1;
+        ink(q, i0 + 6, [[P[0][0] + so * nm[0] * Rpx[0], P[0][1] + so * nm[1] * Rpx[0]], [P[1][0] + so * nm[0] * Rpx[1], P[1][1] + so * nm[1] * Rpx[1]]], inkW, inkOf(INK));
+      } else ink(q, i0, tubeOutline(P, Rpx, true), inkW, inkOf(INK));
+      // knuckle creases (two strokes at pip and dip) where the back of the finger faces the camera
+      for (let j = 1; j <= 2; j++) {
+        const dor = c.dorsal[j - 1], seg = sub3(c.joints[j + 1], c.joints[j - 1]), faces = dot3(dor, norm3(sub3(camPos, c.joints[j])));
+        if (faces < 0.18) continue;
+        const dirW = norm3(seg), side = norm3([dor[1] * dirW[2] - dor[2] * dirW[1], dor[2] * dirW[0] - dor[0] * dirW[2], dor[0] * dirW[1] - dor[1] * dirW[0]]);
+        const r = c.radii[j], bow = 0.35 * (1 - strain);
+        for (let s = -1; s <= 1; s += 2) {
+          const ctr = add3(add3(c.joints[j], scale3(dirW, s * 0.17 * r * 1.4)), scale3(dor, r * 0.78));
+          const pa = toPx(add3(ctr, scale3(side, r * 0.5))), pm = toPx(add3(add3(ctr, scale3(dirW, s * bow * r * 0.55)), scale3(dor, 0.0))), pb = toPx(sub3(ctr, scale3(side, r * 0.5)));
+          if (pa && pm && pb) ink(q, i0 + 1 + (j - 1) * 2 + (s > 0 ? 1 : 0), [pa.pt, pm.pt, pb.pt], inkW * 0.7, inkOf(tone.crease));
+        }
+      }
+      // nail on the distal phalanx (short natural nail), only when the back of the finger faces the camera
+      const dorD = c.dorsal[2], seeNail = dot3(dorD, norm3(sub3(camPos, c.joints[3])));
+      if (seeNail > 0.2) {
+        const rd = c.radii[3], a = add3(add3(c.joints[2], scale3(sub3(c.joints[3], c.joints[2]), 0.5)), scale3(dorD, rd * 0.55)), b = add3(add3(c.joints[2], scale3(sub3(c.joints[3], c.joints[2]), 0.95)), scale3(dorD, rd * 0.55));
+        const pa = toPx(a), pb = toPx(b);
+        if (pa && pb) {
+          const nail = capsule(pa.pt, pb.pt, rd * pa.r * 1.1, rd * pb.r * 1.0);
+          fill(q, f0 + 9, tone.nail, nail);
+          ink(q, i0 + 5, nail, inkW * 0.5, inkOf(tone.crease), true);
+        }
+      }
+    };
+    groups.push({id, fi, under: nUnder >= 2, depth, draw});
+  });
+
+  // Back of the hand.
+  const drawPalm = () => {
+    const pp = sk.palm.map(toPx);
+    if (pp.some((v) => !v)) return;
+    const pts = pp.map((v) => v!.pt);
+    fill(q, FILL + 60, tone.skin, pts);
+    const cx = pts.reduce((s, v) => s + v[0], 0) / pts.length, cy = pts.reduce((s, v) => s + v[1], 0) / pts.length;
+    const ext = Math.max(...pts.map((v) => Math.hypot(v[0] - cx, v[1] - cy)));
+    fill(q, FILL + 61, tone.shade, clipHalf(pts, [cx + ls[0] * ext * 0.35, cy + ls[1] * ext * 0.35], ls));
+    if (tone.spots) {
+      const spots: [number, number, number][] = [[0.6, 2.8, 0.42], [-1.4, 4.4, 0.36], [1.1, 5.2, 0.3]];
+      const sp = p.layer(0.4 * alpha, h.base * 16 + 9);
+      spots.forEach(([v, f, r], i) => { const s = toPx(sk.at(v, 0.05, f)); if (s) hardFill(sp, h.base + FILL + 62 + i, tone.spots!, ring(s.pt[0], s.pt[1], r * S * s.r, r * S * s.r * 0.8, 10)); });
+    }
+    // outline: thumb edge down to the wrist and the little-finger edge (the wrist edge stays open into the forearm, the front edge under the fingers)
+    ink(q, 100, pts.slice(0, 4), inkW, inkOf(INK));
+    ink(q, 101, pts.slice(5), inkW, inkOf(INK));
+  };
+
+  const fingerOrder = (a: Group, b: Group) => {
+    const o = h.order, ia = o ? o.indexOf(a.id) : -1, ib = o ? o.indexOf(b.id) : -1;
+    if (ia >= 0 && ib >= 0) return ia - ib;
+    if (ia >= 0) return -1;
+    if (ib >= 0) return 1;
+    return b.depth - a.depth;
+  };
+  // Seen from the palm's front or underside (camSide < 0) the back of the hand faces away: it is drawn first and every finger group over it.
+  const first = groups.filter((g) => camSide >= 0 && g.under).sort(fingerOrder), after = groups.filter((g) => camSide < 0 || !g.under).sort(fingerOrder);
+  first.forEach((g) => g.draw());
+  drawPalm();
+  after.forEach((g) => g.draw());
+  return anchors;
+};
+
+// ---- poses
+export type HandPose = Pick<HandMacro, 'fingers' | 'thumb' | 'pitch' | 'roll'> & {
+  /** Wrist centre height above the plane in cm at size 1 (multiply by size x unit). */
+  wristRise: number;
+  /** Per-finger strain 0..1 this pose implies. */
+  strain?: Partial<Record<FingerId, number>>;
+  /** What the pose is, and the brief it comes from. */
+  note: string;
+};
+const straight = (mcp = 0, pip = 0, dip = 0, abd = 0): FingerPose => ({mcp, pip, dip, abd});
+const FLAT_FINGERS: Record<LongFingerId, FingerPose> = {index: straight(2.1), middle: straight(0.5), ring: straight(1.7), little: straight(3.7)};
+const FLAT: HandPose = {
+  pitch: -1.5, roll: 0, wristRise: 1.2, fingers: FLAT_FINGERS, thumb: {cmc: 0, cmcAbd: 14, mcp: 0, ip: 0},
+  note: 'flat on the table, fingers together (HAND-CLOSE flat)',
+};
+const TP_FINGERS: Record<LongFingerId, FingerPose> = {
+  index: straight(25.6, 28, 8), middle: straight(55, 125, 12), ring: straight(23.8, 28, 8), little: straight(27.9, 28, 8),
+};
+const TP: HandPose = {
+  pitch: 16.5, roll: 0, wristRise: 1.2, fingers: TP_FINGERS, thumb: {cmc: 18.6, cmcAbd: 14, mcp: 4, ip: 2},
+  note: 'test pose TP: middle folded under, index, ring and little arched on their tips, thumb along the table',
+};
+export type HandPoseId = 'flat' | 'test-fold-middle' | 'ring-strain';
+export const HAND_POSES: Record<HandPoseId, HandPose> = {
+  flat: FLAT,
+  'test-fold-middle': TP,
+  'ring-strain': {...TP, strain: {ring: 1}, note: 'TP with the ring pressed down: knuckle skin tight; add `tremble` {finger: ring} from the shot'},
+};
+/** Tip rise (cm at size 1, above the pose's resting tip) of the lifts from TP the brief lists; the ring hair-lift is 0.4, the diagram lift 0.3. */
+export const TP_LIFTS = {thumb: 2.5, index: 4.0, little: 3.0, 'ring-hair': 0.4, 'ring-diagram': 0.3} as const;
+
+/** A full `HandMacro` from a named pose: `at` is the wrist on the plane [x, z]; lifts raise tips from the pose (cm x size x unit, so a 4 cm index lift stays 4 cm on a bigger hand's ground). */
+export const macroHand = (id: HandPoseId, o: Omit<HandMacro, 'wrist' | 'yaw' | 'pitch' | 'roll' | 'fingers' | 'thumb'> & {at: [number, number]; plane?: number; yaw?: number; lift?: Partial<Record<FingerId, number>>}): HandMacro => {
+  const pose = HAND_POSES[id], size = o.size ?? 1, unit = o.unit ?? 1, plane = o.plane ?? 0;
+  const {at, lift, yaw, ...rest} = o;
+  let hand: HandMacro = {...rest, plane: o.plane, yaw: yaw ?? 0, pitch: pose.pitch, roll: pose.roll, wrist: [at[0], plane + pose.wristRise * size * unit, at[1]], fingers: pose.fingers, thumb: pose.thumb, strain: {...pose.strain, ...o.strain}};
+  for (const [f, r] of Object.entries(lift ?? {}) as [FingerId, number][]) hand = liftFinger(hand, f, r * unit);
+  return hand;
+};
+
+/** Picture point for a rig hand target (`Arm.to`) so the rig's mitten sits under the macro hand: the palm centre. Null when behind the lens. */
+export const macroHandTarget = (cam: YCam, h: HandMacro): Pt | null => camPoint(cam, macroSkeleton(h).palmCentre);
