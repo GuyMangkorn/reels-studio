@@ -65,7 +65,7 @@ The handoff contains:
 
 - **Story core:** logline, central question, character intention/obstacle, intended feeling and learning takeaway.
 - **Truth and ending:** what actually happens within the story, verified facts and remaining uncertainty. Choose the ending before planting clues; for real cases, preserve the evidence rather than bending it to a preferred ending.
-- **Scene / beat list:** IDs, scene purpose, causal links, what changes and estimated timing. Distinguish story-world time from elapsed video time.
+- **Scene / beat list:** IDs, scene purpose, causal links, what changes and estimated timing. Distinguish story-world time from elapsed video time. Edu Shorts add the open-question map ([ER06](scriptwriting-principles.md#edu-short-retention-default-user-8-nov-2026)).
 - **Full script:** the actual spoken Thai narration/dialogue, with pauses and necessary sound/story events. Identify subtitles that shorten or change VO wording separately. A synopsis is not a full script.
 - **Sound intent:** per beat, music mood/energy, silence, and any stinger/riser/effect that carries the beat, as English notes ([sound duties](sound-generation-workflow.md#role-responsibilities)). Narration text is unchanged; sound never replaces a clue.
 - **Clue ledger:** `CL01`, plant/beat, observable information, initial interpretation, post-reveal interpretation and payoff. Distinguish fictional clues from real evidence presented to viewers.
@@ -89,6 +89,8 @@ Identify the deliverable ID, script path/revision and research revision reviewed
 Verdicts: `supported` means the evidence supports this wording and scope; `needs-qualification` requires weaker wording or conditions; `contradicted` means evidence conflicts with the assertion; `unverified` means it remains unconfirmed; `not-factual` covers fiction/judgment not asserted as fact, while still checking whether presentation misleads.
 
 Report errors affecting the premise, reveal or learning takeaway before minor details. Boat proposes accurate wording and beat/clue impact; Preaw rewrites the story. The final twist must preserve factual corrections so viewers do not leave with the wrong knowledge.
+
+<a id="clarity-pass"></a>**Clarity pass (Boat).** Flag each line that breaks [ER05](scriptwriting-principles.md#edu-short-retention-default-user-8-nov-2026) with verdict `too-technical` and a plain wording that stays true. Also flag an analogy that would leave a wrong idea (`misleading-analogy`). Preaw rewrites; Boat does not.
 
 Conclude for the named revision only: `revision-required`, `verification-incomplete`, or `ready-for-storyboard` when no story/knowledge-critical factual gaps remain and necessary qualifications appear in the script. The legacy verdict `ready-for-storyboard` means factual readiness for Film visual planning; it requires no drawn board. Readiness neither records user approval nor guarantees that no error remains.
 
