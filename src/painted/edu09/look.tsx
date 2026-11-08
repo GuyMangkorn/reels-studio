@@ -57,7 +57,7 @@ export const LF01 = () => <Painted paint={paintLF01}><LampPool cam={povCam(0)} a
 export const LF01b = () => <Painted paint={paintLF01b}><LampPool cam={povCam(1)} at={[-14, 0, -11]} /></Painted>;
 export const LF01m = () => <Painted paint={paintLF01m} paper="#ffffff" band={false} />;
 /** Room light of SET-DINING: a warm bloom round the lamp opening (screen) and a soft fall-off to the frame edges, so the pendant reads as the key. */
-const RoomLight = ({cam, lamp}: {cam: YCam; lamp: V3}) => {
+export const RoomLight = ({cam, lamp}: {cam: YCam; lamp: V3}) => {
   const c = camPoint(cam, [lamp[0], lamp[1] - 0.08, lamp[2]]) ?? [540, 0];
   return (
     <svg width={1080} height={1920} style={{position: 'absolute', inset: 0}}>
@@ -76,7 +76,7 @@ export const LF02 = () => <Painted paint={paintLF02}><LampPool cam={camLF02} at=
 const Dim = ({level = 0.3}: {level?: number}) => <div style={{position: 'absolute', inset: 0, background: `rgba(20,14,10,${level})`}} />;
 export const LF03 = () => <Painted paint={paintLF03} label><LampPool cam={camLF03} at={[-14, 0, -11]} level={0.5} /></Painted>;
 /** PIANO-CLOSE top light: a soft cool pool from above on the keys and the hand, the surround falling off to dark (brief B04 light). */
-const TopLight = () => (
+export const TopLight = () => (
   <svg width={1080} height={1920} style={{position: 'absolute', inset: 0}}>
     <defs>
       <radialGradient id="top" gradientUnits="userSpaceOnUse" cx={560} cy={820} r={900}><stop offset="0" stopColor="#e8eef6" stopOpacity={0.22} /><stop offset="1" stopColor="#e8eef6" stopOpacity={0} /></radialGradient>

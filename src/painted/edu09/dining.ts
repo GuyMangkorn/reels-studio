@@ -1,7 +1,7 @@
 // SET-DINING (brief EDU-EP09-BRIEF-R1.2 set plan, metres): origin on the floor under the table centre, +x right from the main camera side,
 // +y up, +z toward the camera side; BOY and ELDER sit on the -z side facing +z. A Thai home after dinner, about 19:30: one warm pendant lamp,
 // a cream wall, an evening-blue window. Look-frame code for LF02 (S01-B01-SH02); the scene sheets reuse it at W5.
-import {drawFigure, type CastDef, type FigAnchors} from '../kit/cast';
+import {drawFigure, type CastDef, type FigAnchors, type FigPose} from '../kit/cast';
 import {drawChair} from '../kit/props';
 import {ell, hardFill, inkLine} from '../kit/draw';
 import {EXPRESSIONS} from '../kit/expressions';
@@ -93,7 +93,9 @@ const paintChairBack = (p: Painter, c: YCam, id: number, at: V3, w = 0.42) => {
 /** `lMod` / `rMod` rewrite the macro hand each frame (lift tracks, the dangle lag; see `tracks.ts`). A hand point above `TABLE_Y` raises the hand
  * (wrist height) while the elbow stays at its point on the wood: palm-down lifts (N5 gentle-stop, N11 dangle). */
 export type Sitter = {face?: FaceState; t: number; lHand?: V3; rHand?: V3; lPose?: HandPoseId; rPose?: HandPoseId; lElbow?: V3; rElbow?: V3; look?: Pt;
-  lMod?: (h: HandMacro) => HandMacro; rMod?: (h: HandMacro) => HandMacro; lYaw?: number; rYaw?: number};
+  lMod?: (h: HandMacro) => HandMacro; rMod?: (h: HandMacro) => HandMacro; lYaw?: number; rYaw?: number;
+  /** W5.3 (Editor): extra `FigPose` fields spread after the seated pose: `nod` [dx, dy] (head shake / nod, head units), `headCock` (deg), `rise` (shoulder bounce, m). Existing kit fields only. */
+  fig?: Pick<FigPose, 'nod' | 'headCock' | 'rise'>};
 
 /** Elbow resting on the wood just inside the back edge: BOY's 0.025 m inside the hand's x (under the shoulder; his hands lie a little wider), ELDER's 0.03 m outside. */
 const elbowFor = (hand: V3, side: 1 | -1, def: CastDef): V3 => elbowOnTable(hand, side, TABLE_Y, def === ELDER ? 0.03 : -0.025);
@@ -106,7 +108,7 @@ const paintSitter = (p: Painter, c: YCam, def: CastDef, at: V3, s: Sitter, seed:
   if (!g) return null;
   const pose = seatedHandsOnTable(c, def, g as Pt, u, {tableY: TABLE_Y, lHand: s.lHand, rHand: s.rHand, lElbow: s.lElbow, rElbow: s.rElbow, elbowIn: def === ELDER ? 0.03 : -0.025});
   const face = s.face ?? EXPRESSIONS.neutral;
-  return drawFigure(p, def, g as Pt, u, {...pose, face, noShadow: true}, s.t, seed);
+  return drawFigure(p, def, g as Pt, u, {...pose, face, noShadow: true, ...s.fig}, s.t, seed);
 };
 void drawChair;
 
