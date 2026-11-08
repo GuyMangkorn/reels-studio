@@ -23,15 +23,24 @@ export type PersonOpts = {
   /** Cool/warm grade over the rig colours: [toward, u, mul?]. */
   grade?: [string, number, [number, number, number]?];
   /** Hand targets in world metres (override the pose's arms): the camera projects them. */
-  hands?: {r?: {to: V3; via?: V3; out?: -1 | 1}; l?: {to: V3; via?: V3; out?: -1 | 1}};
+  hands?: {r?: {to: V3; via?: V3; out?: -1 | 1; k?: number}; l?: {to: V3; via?: V3; out?: -1 | 1; k?: number}};
   /** A kit motion layered on `pose` (`layerMotion`), at motion time `t` seconds: the seated look-around, talk, point. */
   motion?: {id: MotionId; t: number};
 };
 
-const armAt = (c: YCam, h: {to: V3; via?: V3; out?: -1 | 1}, mirrorAbout?: number): Arm | undefined => {
+const armAt = (c: YCam, h: {to: V3; via?: V3; out?: -1 | 1; k?: number}, mirrorAbout?: number, base?: Arm): Arm | undefined => {
   const to = camPoint(c, h.to), via = h.via ? camPoint(c, h.via) : undefined;
   const m = (q: Pt): Pt => (mirrorAbout === undefined ? q : [2 * mirrorAbout - q[0], q[1]]); // the back view mirrors front-view arm targets about the centre line
-  return to ? {to: m(to as Pt), ...(via ? {via: m(via as Pt)} : {}), out: h.out} : undefined;
+  if (!to) return undefined;
+  const arm: Arm = {to: m(to as Pt), ...(via ? {via: m(via as Pt)} : {}), out: h.out};
+  // k (0..1): blend from the pose's own arm (k 0) to this target (k 1): a hand that leaves its resting place and returns to it (R1.2 pocket-phone)
+  if (h.k !== undefined && h.k < 1 && base) {
+    const k = Math.max(0, h.k), lp = (a: Pt, b: Pt): Pt => [a[0] + (b[0] - a[0]) * k, a[1] + (b[1] - a[1]) * k];
+    arm.to = lp(base.to, arm.to);
+    if (arm.via && base.via) arm.via = lp(base.via, arm.via);
+    else if (!arm.via && base.via) arm.via = base.via;
+  }
+  return arm;
 };
 
 /** One person through the yaw camera: a flat card at the ground point, view held square to `cam`. */
@@ -44,8 +53,8 @@ export const paintPerson = (p: Painter, c: YCam, def: CastDef, o: PersonOpts): F
   const face = {...EXPRESSIONS[o.face ?? 'neutral'], ...(o.faceState ?? {})} as FaceState;
   const arms: Partial<FigPose> = {};
   const mir = view === 'back' ? g[0] : undefined;
-  if (o.hands?.r) { const a2 = armAt(c, o.hands.r, mir); if (a2) arms.rArm = a2; }
-  if (o.hands?.l) { const a2 = armAt(c, o.hands.l, mir); if (a2) arms.lArm = a2; }
+  if (o.hands?.r) { const a2 = armAt(c, o.hands.r, mir, pose.rArm); if (a2) arms.rArm = a2; }
+  if (o.hands?.l) { const a2 = armAt(c, o.hands.l, mir, pose.lArm); if (a2) arms.lArm = a2; }
   const q = o.grade ? tintPainter(p, o.grade[0], o.grade[1], {brush: true, ...(o.grade[2] ? {mul: o.grade[2]} : {})}) : p;
   if (o.motion && view !== 'back') {
     const l = layerMotion({person: def, motion: o.motion.id, t: o.motion.t, g, unit: u, view, pose: o.pose ?? 'P01', expression: face});

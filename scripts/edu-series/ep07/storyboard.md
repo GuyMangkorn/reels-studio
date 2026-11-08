@@ -1,4 +1,6 @@
-# Storyboard EDU-EP07-ROWS-R1 — EDU-EP07-SHORT (first pass, untimed)
+# Storyboard EDU-EP07-ROWS-R1 — EDU-EP07-SHORT (first pass, untimed; R1.3 B03 update)
+
+- **Current revision: EDU-EP07-ROWS-R1.3** (Film W5.1, 2026-11-08, script **EDU-EP07-SCRIPT-R1.2**): B03 is rewritten below (S01-B03-SH02/SH03 retired, new S01-B03-SH05, S01-B03-SH04 restaged); 17 shots, 1580 f = 52.67 s; frames and every number in [scene-sheets.md](scene-sheets.md) EDU-EP07-SHEETS-R1.2, which wins over this file. Rows in [review-rows.json](review-rows.json) (`timingEstimated: false`). Review page: pending.
 
 - Revision **EDU-EP07-ROWS-R1** (Film W2.2, 2026-11-08). Inputs: script **EDU-EP07-SCRIPT-R1.1** ([script.md](script.md), user-approved and locked 2026-11-08, ending `B_loop`), brief **EDU-EP07-BRIEF-R1** ([film-brief.md](film-brief.md): SET-SOI, SET-SPACE, SET-GW, split frame, clock card, VD01–VD18, shot plan, N1–N10), fact-check [fact-check.md](fact-check.md) (W1.3 + recheck pass). No voice (W4 not run).
 - Status: `ready-for-dev` for the first storyboard review (camera and VO only). **Untimed**: the review page shows no times; the lengths below are the brief's `est` (total ≈ 54.5 s, 18 shots). W3 adds the look frames to the same rows; W5.1 writes timed scene sheets with integer frames from the voice-lock measure file. Not user-approved; no render, no runtime or visual validation.
@@ -17,10 +19,11 @@ Est s = brief shot-plan length. Check = the observable test the shot must pass a
 | S01-B02-SH01 | L03 | 3.7 | Split: space above (dashes still flowing to Earth, ring leaving the spot), sunny street below; card 08:19 racing | space `T-SPACE, yaw 0→+4, r 3.2, f 700, hy 480`; street `T-STALL, yaw +30→+28, r 4.2, eye 1.30, pitch +4°, f 900, hy 1250` | as B01 | ukulele back; `ui_click-tick_01` low | spikes 2, 3 | LF02 |
 | S01-B02-SH02 | D01 | 1.5 | CUS fans himself, sunlit arm, "ร้อนจังวันนี้" | `T-CUS, yaw +10→+14, r 1.60→1.50, eye 1.05, f 1050, hy 900` | `man-crop, P31 + fan-self, tired` | NG-S3 fan | face ≥ 280 px unit | LF02 |
 | S01-B02-SH03 | D02 | 1.7 | VEN grinning, pounding, "พรุ่งนี้ร้อนกว่านี้อีก" | `T-VEN, yaw +18→+14, r 1.70→1.60, eye 1.35, f 1050, hy 860` | `woman-ponytail + vendor, pound-pestle, talk` | NG-S1 | pestle contact | LF02 |
-| S01-B03-SH01 | L05 | 4.9 | Split: Earth keeps curving, ring grows; a motorbike passes below | split (space yaw +4→+8; street yaw +28→+26) | as B01 | tick a step up; NG-S4 motorbike | Earth on the orbit ±2 px | LF02 |
-| S01-B03-SH02 | L06 | 5.0 | 2017: two tiny stars spiral and merge; ripple ring first, gold flash a hair later | SET-GW `origin, yaw 0→+6, pitch −20°, r 2.0→1.8 gu, f 900, hy 900` | — | `impact_sub-hit-short_01`, NG-S5 whomp | ripple before flash | LF04 |
-| S01-B03-SH03 | L07a | 3.7 | The race: ripple touches a tiny Earth first, the flash a hair after | SET-GW truck x 0.5→5.6 gu, z 2.2, eye 0.3, f 900, hy 960 | — | NG-S6 ping on the flash | order, gap small | LF04 |
-| S01-B03-SH04 | L07b | 2.4 | Split again: ring almost at Earth; card under 00:30 | split (space yaw +8→+10) | as B01 | ukulele thins; `reveal_riser-tension_01` | card ≤ 00:30 | LF02 |
+| S01-B03-SH01 | L05 | 4.9 → 5.5 (R1.2) | Split: Earth keeps curving (seen 0.5 s before the line), ring grows fast; CUS still fanning below; card races 07:11 → 02:00 | split (space yaw +4→+7; street yaw +28→+26) | CUS `man-crop, P31 + new: fan-self, tired`; VEN as B01 | tick faster/louder; motorbike (sound only) | Earth on the orbit ±2 px | LF02 |
+| ~~S01-B03-SH02~~ | ~~L06~~ | — | **Retired in R1.2** (2017 merger; L06 cut). ID not reused. | — | — | — | — | — |
+| ~~S01-B03-SH03~~ | ~~L07a~~ | — | **Retired in R1.2** (race to Earth; L07 cut). ID not reused. | — | — | — | — | — |
+| S01-B03-SH05 | V01, L15 | 2.9 (R1.2, new) | Split: Earth on its curve above; below, close on CUS laughing (snort) at a cat clip on his phone, no alert on the screen; VEN pounding behind; card under 02:00 | space yaw +7→+8; street `orbit((1.40, 1.00, 0.35), az 8→11, r 1.55→1.50, eye 1.05, f 1000, hy 1010)` `est` | CUS `man-crop, P31 + new: phone-watch, amused → laugh`, kit phone + `new: phone-screen` (`cat-orange-tabby, startle-hop`) | ukulele on, steps down on L15; cat mrrp from the phone; V01 low | screen shows a cat clip only; head unit 260–300 px | LF02 |
+| S01-B03-SH04 | L16 + tick | 2.4 → 3.8 (R1.2) | Split wide: the last light front just short of Earth, the empty spot behind; CUS scrolling, oblivious, then pockets the phone; music out, tick alone, card races 00:30 → 00:22 | split (space yaw +8→+10; street static) | CUS `man-crop, P31 + P10 arms + kit phone`, `new: pocket-phone` | music out on "แม้แต่ข่าวร้าย"; tick alone 0.5 s; race ticks | ring outside Earth's disc; phone gone by L112 | LF02 |
 | S01-B04-SH01 | L08 | 2.4 | Card 00:00 on "ศูนย์"; Earth's day side darkens; the street sky darkens to stars; Moon still lit; silence | split, static | as B01, VEN `surprised` | **total silence from the 00:00 frame** | spikes 3, 4 | LF03 |
 | S01-B04-SH02 | silence, D03 | 3.0 | Night: pestle frozen mid-air; CUS looks around, "เอ้า… ไฟดับเหรอ"; far dog | `T-PAIR, yaw +20→+19, r 2.40→2.35, eye 1.25, f 1050, hy 940` | VEN `surprised` (held); CUS `surprised` + `look-around` | silence ~1.5 s; NG-A2; NG-S7 dog | spike 4 | LF03 |
 | S01-B04-SH03 | L09 | 2.4 | Space: dark Earth leaves straight along the tangent; the orbit curves on, empty | `T-EARTH-DEPART, yaw +10→+14, pitch −28°, r 1.60→1.75 su, f 900, hy 1000` | — | NG-M2 cold pad in | spike 5 | LF04 |
@@ -34,11 +37,12 @@ Est s = brief shot-plan length. Check = the observable test the shot must pass a
 ## Rules carried from the brief and fact-check (every shot)
 
 - **R01** On-screen text only: the clock digits (08:19 → 00:00), the ▸▸ glyph, "+1 ชม."; captions; `@TamMaiLa`. No "2017", "130", Moon or gap numbers, no labels, no title.
-- **R02** The clock card shows 08:19 on its first frame, races visibly, and hits 00:00 on "ศูนย์" (L08) ± 1 f; it is hidden in the 2017 cutaway and in B05; it holds 00:00 through L10, flips to "+1 ชม." on L11.
+- **R02** The clock card shows 08:19 on its first frame, races visibly, and hits 00:00 on "ศูนย์" (L08) ± 1 f; it is hidden in the 2017 cutaway and in B05; it holds 00:00 through L10, flips to "+1 ชม." on L11. **R1.2 amendment (SD08):** there is no cutaway; the card is visible in every frame from its first frame to the end of S01-B04-SH01, under 02:00 for the whole phone beat, and races (visibly faster) from 00:30 after "แม้แต่ข่าวร้าย".
 - **R03** Earth stays on its orbit (lit day side) until the ring reaches it at 00:00, then goes dark and leaves along the **tangent**; never outward.
 - **R04** The Moon is a first-quarter Moon, lit half toward the Sun's direction (upper half in pose A); it stays lit after 00:00 until L10.
-- **R05** The 2017 picture keeps the ripple first and the flash a hair later; never together; stylised, no data look.
-- **R06** The dark is a starry night, never flat black (UT03); no electric light at all (no lamps, no stall bulb); no frost or cold cue.
+- **R05** *(retired in R1.2 with L06–L07)* The 2017 picture keeps the ripple first and the flash a hair later; never together; stylised, no data look.
+- **R06** The dark is a starry night, never flat black (UT03); no electric light at all (no lamps, no stall bulb); no frost or cold cue. (R1.2: CUS pockets his phone before 00:00, so no screen glow in the night.)
+- **R10 (R1.2)** Nothing may warn before 00:00 (Boat): CUS's phone shows one cat clip only: no text, icon, badge, notification, alert or news; no ding or siren in the sound.
 - **R07** Jupiter is singled out only after "+1 ชม."; in L12 it is lit only on its Sun-facing side and never glows by itself.
 - **R08** Frame zones: caption band y 1176–1344 (`bottomEdgeY` 1344, ≤ 2 lines, edu stroke, no band); faces, the mortar, Earth, the Moon and diagram events above y 1160; nothing important above y 140; clock card box x 700–1020, y 160–280 kept clear. Street ↔ space is a cut or the split frame, never a zoom.
 - **R09** `B_loop`: B05-SH03's last frame equals B01-SH01 frame 0 (camera, poses, pestle phase, Moon, light); final ~0.5 s speech-free.
@@ -82,32 +86,28 @@ Each block: staging (SET-SOI metres, SET-SPACE su, SET-GW gu; `est`), camera, li
 - **Sound:** NG-S1 pestle on each stroke; tick.
 - **Check:** pestle tip meets the mortar mouth ±4 px; the face reads at 270 px.
 
-### S01-B03-SH01 — L05 "โลกยังโคจรต่อด้วย… ตามทฤษฎีของไอน์สไตน์ แรงโน้มถ่วงที่เปลี่ยนไป… ก็เร็วเท่าแสง"
-- **Staging:** split. Earth keeps sliding on its curve; the ring grows (to ≈ 0.45 by the shot's end, from the shared clock); dashes beyond the ring still flowing. Street: a motorbike passes along the road from x +8 to x −6 at z +3.5 in ~1.2 s mid-shot (`new: motorbike-pass`, small, no rider face needed; fallback: sound only).
-- **Camera:** split, space yaw +4→+8; street yaw +28→+26.
+### S01-B03-SH01 — L05 "โลกยังวนต่อ… ไอน์สไตน์บอกว่า แรงดึงที่หายไป… ก็ต้องเดินทางมาเหมือนแสง" (R1.2)
+- **Staging:** split. Earth keeps sliding on its curve from the shot's first frame, 0.5 s before the line (show, then tell); the ring grows fast with the racing clock (≈ 0.21 → 0.70) but never reaches Earth; dashes beyond the ring still flowing. Street: CUS still fanning himself with the menu in the sun (`fan-self`), VEN pounding. Motorbike: sound only (W5.2 build).
+- **Camera:** split, space yaw +4→+7; street yaw +28→+26.
 - **Light:** as B02-SH01.
-- **Sound:** tick a step louder and faster (~2/s); NG-S4 motorbike (fallback inside `crowd_murmur-close-bangkok_01`).
-- **Check:** Earth on the orbit polyline ±2 px; ring and Earth do not touch.
+- **Sound:** tick a step louder and faster; motorbike pass (sound).
+- **Check:** Earth on the orbit polyline ±2 px; ring and Earth do not touch; the card's minutes visibly race.
 
-### S01-B03-SH02 — L06 "ปี 2017 นักวิทย์จับคลื่นความโน้มถ่วงกับแสง… จากดาวนิวตรอนสองดวงชนกันได้" (LF04 family)
-- **Staging:** SET-GW: two neutron stars (r 0.05 gu) spiral in, separation 0.50 → 0, faster toward the end; faint ripple rings during the inspiral; merge on "ชนกัน"; a strong violet ripple ring leaves at the merge frame; a gold-white flash bursts 6 f later. No clock card.
-- **Camera:** `cam: origin, yaw 0→+6, pitch −20°, r 2.0→1.8 gu, f 900, hy 900`.
-- **Light:** deep blue field; the pair white-blue; flash the brightest frame.
-- **Sound:** NG-A3 pad; `impact_sub-hit-short_01` swell into the merge; NG-S5 whomp with the ripple ring.
-- **Check:** ripple visibly leaves before the flash (6 f); nothing in the caption band.
+### S01-B03-SH02, S01-B03-SH03 — retired (R1.2)
+- The 2017 merger and the race to Earth left with L06–L07 (user pick "A + R", script R1.2). SET-GW and NG-S5/NG-S6 are dropped. The IDs stay unused.
 
-### S01-B03-SH03 — L07 "เดินทางมา 130 ล้านปี… มาถึงห่างกันไม่ถึง 2 วินาที…"
-- **Staging:** the race: a violet ripple arc and a gold flash arc travel left → right across the star field toward a tiny Earth (r 0.04 gu) at x 6.0; spatial gap ≈ 2 % of the path; the ripple touches Earth on "มาถึง", the flash ≈ 6 f later on "ห่างกันไม่ถึง 2 วินาที".
-- **Camera:** `cam: truck x 0.5→5.6 gu with the fronts, z 2.2, eye y 0.3, yaw 0, f 900, hy 960` (ease-out into the arrival).
-- **Light:** as SH02.
-- **Sound:** soft whoosh of travel (pad swell); NG-S6 ping on the flash arrival (fallback `reveal_glass-shimmer-soft_01` trimmed).
-- **Check:** order ripple → flash; no number, no "together" frame.
+### S01-B03-SH05 — V01 (CUS snort-laugh), L15 "แล้วไม่มีใครเตือนเลยเหรอ" (new, R1.2)
+- **Staging:** split stays. Top: Earth on its curve, ring a little closer. Bottom: close on CUS seated, three-quarter front, holding his phone up at chin height; on the screen one cat clip (`cat-orange-tabby`, startle-hop), nothing else: no text, no notification, no news (R10). He snorts a laugh through his nose (V01), shoulders bounce, then keeps smiling at the screen while the narrator asks the question; he cannot hear it. VEN soft behind, pounding.
+- **Camera:** split; space yaw +7→+8; street close derived from the D01 close, shifted into the bottom panel (`est`, Boss measures).
+- **Light:** day; small cool screen glow on his chin.
+- **Sound:** ukulele plays on obliviously; a tiny tinny cat mrrp from the phone; V01 low under the music; on L15 the music steps down and the tick gets louder. No ding.
+- **Check:** at 540 px a viewer reads "he is laughing at a cat video"; the card is visible and under 02:00.
 
-### S01-B03-SH04 — L07 "แปลว่าคลื่นนี้เร็วเท่าแสงแทบเป๊ะ"
-- **Staging:** split: the ring at ≈ 0.94–0.97, just short of Earth; card under 00:30 (counting off screen during the cutaway); street unchanged.
+### S01-B03-SH04 — L16 "ไม่มีหรอก… ไม่มีอะไรเร็วกว่าแสง… แม้แต่ข่าวร้าย", tick alone (R1.2)
+- **Staging:** split wide (the two worlds). Top: the last light front just short of Earth, the empty spot behind it, Earth ahead on its curve (CL04). Bottom: CUS scrolling his phone, oblivious; after the line he pockets it (so no glow in the night); VEN pounding.
 - **Camera:** split, space yaw +8→+10; street static.
-- **Sound:** ukulele thins; `reveal_riser-tension_01` starts so its dead stop lands on the 00:00 frame (B04-SH01).
-- **Check:** card ≤ 00:30 on the first frame (R02).
+- **Sound:** the music falls out on "แม้แต่ข่าวร้าย"; the tick alone for 0.5 s; then the tick speeds up as the card races 00:30 → 00:00 (the riser starts on L08 in the next shot).
+- **Check:** ring outside Earth's disc; card 00:30 at the end of the line, then visibly faster; phone gone before the cut.
 
 ### S01-B04-SH01 — L08 "พอนาฬิกาถึงศูนย์… ฟ้าก็มืดลง"
 - **Staging:** split, cameras static. Card counts the last seconds and hits **00:00 on "ศูนย์"** (▸▸ off). On that frame the ring meets Earth; Earth's day side goes dark over 10 f (city specks appear); street sky darkens from day to night over 30 f (`day-night-grade` 0 → 1), stars fade in from 40 % of the grade; figures go to the night grade; the Moon stays lit; VEN's pestle stops at the top of its stroke and stays.
@@ -174,7 +174,7 @@ Each block: staging (SET-SOI metres, SET-SPACE su, SET-GW gu; `est`), camera, li
 
 ## Look frames (W3, from the brief)
 
-LF01 S01-B01-SH01 (soi, sunny afternoon; the loop frame) · LF02 S01-B02-SH01 (split frame, card 08:19) · LF03 S01-B04-SH02 (soi at night) · LF04 S01-B01-SH02 (space, frame just before the blink; SET-GW checked against it). Beat → look for the rows at W3: B01 LF01, B02 LF02, B03 LF04, B04 LF03, B05 LF01. The row `look` column above names the location family of each shot.
+LF01 S01-B01-SH01 (soi, sunny afternoon; the loop frame) · LF02 S01-B02-SH01 (split frame, card 08:19) · LF03 S01-B04-SH02 (soi at night) · LF04 S01-B01-SH02 (space, frame just before the blink; SET-GW checked against it). Beat → look for the rows at W3: B01 LF01, B02 LF02, B03 LF02 (R1.2: all split; was LF04 with the 2017 cutaway), B04 LF03, B05 LF01. The row `look` column above names the location family of each shot.
 
 ## Sound NEEDS-GEN list (from the brief; generated at W4+ by the Editor)
 
@@ -183,7 +183,7 @@ NG-M1 sunny ukulele + shaker loop 100 bpm, 30 s, seamless · NG-M2 cold sparse s
 ## Open items
 
 - **Missing evidence:** no voice (lengths `est`); no blockout; every `new:` asset `missing`; CUS seated eye line estimated; `unknown`: stool via `drawChair`, `look-around` seated, `back` view seated.
-- **Added beyond the brief's N-list:** `new: motorbike-pass` (B03-SH01, small; fallback: sound only).
+- **Added beyond the brief's N-list:** `new: motorbike-pass` (B03-SH01, small; fallback: sound only; built as sound only). R1.2: `new: phone-watch`, `new: phone-screen`, `new: pocket-phone` (B03-SH05/SH04).
 - **Boat picture checks at W3** (brief): news-front ring; Moon's lit half; Jupiter dark in the L12 diagram.
 
 ## Change log
@@ -191,3 +191,4 @@ NG-M1 sunny ukulele + shaker loop 100 bpm, 30 s, seamless · NG-M2 cold sparse s
 - **EDU-EP07-ROWS-R1 (2026-11-08, Film W2.2):** first untimed storyboard pass from script R1.1 and brief EDU-EP07-BRIEF-R1: 18 shots with the brief's IDs and est lengths, per-shot staging, camera lines, casting lines, light, sound (library IDs and NG-*) and checks; rules R01–R09; Thai rows in review-rows.json (`untimed: true`). No render, no paint.
 - **2026-11-08 (Film W5.1, EDU-EP07-SHEETS-R1):** timing moved to [scene-sheets.md](scene-sheets.md); R02 amended there (SD08: the card returns from the cutaway at 00:59, not under 00:30, at one constant rate); B04-SH05 pans right (SD06); the camera and staging values above are superseded where the sheet lists a deviation (SD01-SD10). Rows EDU-EP07-ROWS-R1.1.
 - **2026-11-08 (Film W5.1 revision, EDU-EP07-SHEETS-R1.1):** user answers Q1 = c (L01 at G16, S01-B01-SH01 33 f), Q2 = a (D01 take kept, caption "ร้อนจังวันนี้"), Q3 = b (the clock jumps in the hidden 2017 cutaway and returns at 00:30; visible rate 9.09×). R02 holds as written again (card ≤ 00:30 on S01-B03-SH04's first frame); the R1 SD08 amendment is withdrawn. Total 1798 f; ranges in [scene-sheets.md](scene-sheets.md). Rows EDU-EP07-ROWS-R1.2.
+- **2026-11-08 (Film W5.1, EDU-EP07-SHEETS-R1.2 / ROWS-R1.3, script R1.2):** L06–L07 retired, so S01-B03-SH02/SH03 (2017 merger, SET-GW) are retired (IDs not reused) and R05 with them; L05 re-voiced; new S01-B03-SH05 (V01 + L15: CUS laughs at a cat clip, no alert); S01-B03-SH04 restaged for L16 (last light front, phone pocketed, tick alone, the race); R02 amended (card always visible, under 02:00 in the phone beat, races from 00:30); R10 added (nothing warns before 00:00); B03 look LF02. 17 shots, 1580 f; every number in [scene-sheets.md](scene-sheets.md). Rows EDU-EP07-ROWS-R1.3 (ROWS-R1.2 was taken).
