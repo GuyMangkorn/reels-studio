@@ -2,6 +2,8 @@
 
 Deliverable: not selected yet (Short assumed, 1080×1920, 30 fps, until the user picks a concept). Stage W0 [ideation](../../docs/delivery-workflow.md#ideation).
 
+**Cleanup (user, 2026-11-08):** "มี concept ไหนของ education ยังไม่ทำมาก จะให้ลบออกไปก่อน ยกเว้นถ้าตัวใหญ่". The user chose to keep C13 and remove the others from the file. Removed: unmade C3, C7, C9, C10, C11, C14, C16, C17, C19, C20, C21, C23, C24, C26, C27, C30 and unpicked C12, C22, C29, with their summary and Film rows. They can be recovered from Git history (before this commit). The pick notes below still name them as history.
+
 ## R1 — Preaw pitch (2026-11-04)
 
 - **Request (user):** "คิดไอเดีคลิปให้ความรู้ที่เหมาะกับตัวละคร 4 หัวและการใช้ paint p5 หน่อย"
@@ -53,24 +55,6 @@ Deliverable: not selected yet (Short assumed, 1080×1920, 30 fps, until the user
 - **Why it holds:** almost everyone has felt it, so the hook is a recognition hit in under two seconds; the cliff fall is a showpiece for painted weather and light; the loop invites rewatching just before bed; honest "science doesn't fully know" is a shareable surprise.
 - **Research load:** general knowledge, with a documented-uncertainty duty (causes are theories).
 - **Sound intent:** low ambient pad and a ticking clock; wind rises during the fall; the jolt is a hard silence plus a single thump; the pad returns quietly for the loop seam.
-
-### C3 — 11 วันที่หายไปจากปฏิทิน
-
-- **Sub-genre:** history-as-story.
-- **Staging:** ensemble in an 18th-century English market town (period costumes on the 4-head cast), a giant painted wall calendar as the recurring set piece.
-- **Logline:** In 1752 a whole country went to bed on 2 September and woke on 14 September. Villagers act out the confusion over birthdays, rent and wages, while we explain why the calendar had drifted and why the famous "give us our eleven days" riots may be more legend than fact.
-- **Hook (Thai):** "ปี 1752 คนอังกฤษเข้านอนวันที่ 2 กันยา… แล้วตื่นมาเป็นวันที่ 14"
-- **Beats:**
-  1. Night: a villager tears off "2" on the wall calendar, blows out the candle. Morning: the calendar says "14". Exaggerated double-take across the whole street.
-  2. Why: the old calendar's year was a little too long, so over centuries the dates slid away from the seasons and Easter. Painted sun and season wheel slipping out of line. `unchecked`
-  3. The fix: switch to the calendar much of Europe already used, and skip the drifted days in one jump. `unchecked`
-  4. Comic ensemble: a landlord demands a full month's rent, a worker asks for full pay, someone's birthday "vanished". Then the turn: the story says people rioted for their lost days, but historians doubt the riots happened as told. `unchecked`, uncertainty kept.
-  5. Takeaway: the calendar on your phone today is the result of that jump. Last line: "เวลาไม่ได้หายไปไหน… แค่ปฏิทินเคยนับผิดมาเป็นพันปี"
-- **Ending:** `B_loop`.
-- **Voice / tone:** energetic male narrator (Orus) telling it like a tall tale, then a quieter honest turn on the riot myth; two or three villagers with short comic lines (Edge TTS is fine).
-- **Why it holds:** the hook sounds impossible yet is true; ensemble reaction gags are what the cute cast does best; the "it might be a myth" turn gives a second payoff and comment bait ("so did they riot or not?").
-- **Research load:** named real event (Calendar Act; the date jump; the riot story's documented status).
-- **Sound intent:** jaunty folk fiddle; a rooster at the morning reveal; a record-scratch stop on the double-take; music thins under the myth turn.
 
 ### C4 — ทำไมแถวข้าง ๆ เร็วกว่าเสมอ
 
@@ -136,7 +120,6 @@ Deliverable: not selected yet (Short assumed, 1080×1920, 30 fps, until the user
 | --- | --- | --- | --- | --- | --- | --- |
 | C1 | หัวหอมแก้แค้น | everyday science | one character, kitchen set | "หัวหอมไม่ได้ทำให้คุณร้องไห้… จนกว่าคุณจะทำร้ายมันก่อน" | B_loop | general |
 | C2 | ตกจากหน้าผาในความฝัน | body / sleep | one character, dreamscape | "เคยไหม… กำลังจะหลับ แล้วรู้สึกเหมือนตกจากที่สูงจนสะดุ้งตื่น" | C_seamless | general + uncertainty |
-| C3 | 11 วันที่หายไปจากปฏิทิน | history-as-story | period ensemble | "ปี 1752 คนอังกฤษเข้านอนวันที่ 2 กันยา… แล้วตื่นมาเป็นวันที่ 14" | B_loop | named real event |
 | C4 | ทำไมแถวข้าง ๆ เร็วกว่าเสมอ | psychology | ensemble + diagram | "คุณเปลี่ยนแถวกี่ครั้ง… แถวที่คุณย้ายไปก็ช้าทุกที" | B_loop | general |
 | C5 | ลูกบอลสีแดงที่หมามองไม่เห็น | animals | character + dog, palette flip | "ลูกบอลสีแดงที่คุณซื้อให้หมา… ในสายตามัน แทบกลืนไปกับหญ้า" | B_loop | general |
 | C6 | ถ้าคุณตัวเล็กเท่ามด (wild card) | what-if physics | tiny character, macro world | "ถ้าคุณตัวเล็กเท่ามด… ตกจากตึกสิบชั้น คุณจะไม่เป็นอะไรเลย" | B_loop | general |
@@ -151,7 +134,6 @@ Engine fixed by the user: painted 2D p5.brush, 4-head cast. Looks designed from 
 | --- | --- | --- | --- | --- |
 | C1 | Warm gouache kitchen in low window light, cook `woman-curly + new: apron`, `crying`/`disgusted`/`happy` | Push into the cut: onion cells as translucent watercolour chambers that burst, lilac mist (ENV-FOG retinted) rising to a giant wet eye | new assets: kitchen set (counter, window, board), onion whole/cut, knife, candle, bread, goggles, apron outfit, onion-cell macro plate, eye-surface close-up, comic waterfall-tear FX | M |
 | C2 | Blue-moonlight bedroom that bleeds wet-in-wet into a cloud dreamscape; `girl-school` (sleepwear new), `asleep`/`sleepy`/`shock`, lie + fall poses from P31–P45 | Fall through paint: washes streaming upward past the falling figure, then a hard cut to the bolt-upright jolt; limb "lights" going out | new assets: bedroom set with bed (PL-ZCPAINT-ROOM-NIGHT as reference only), sleepwear, cliff-edge plate, limb light-out overlay, room-to-cloud bleed transition, lie-to-sit-up jolt motion; kit ENV-SKY moon, ENV-FOG, ENV-GLOW. `C_seamless` needs first = last frame matched | M |
-| C3 | Hogarth-flavoured 1752 English market street, candle night then cold dawn; ensemble from PEOPLE in period dress | Giant wall calendar: page "2" torn at night, "14" at dawn, whole street double-takes; season wheel slipping out of line with the sun | new assets: 4–5 period outfits (waistcoat/tricorn, bonnet/apron dress, landlord coat), market street set, cottage interior with candle, wall calendar prop + tear, season-wheel diagram, rooster (no birds in ANIMALS); ensemble reaction staging reuses `startle-jump`, `turn-head-to-camera`, `surprised` | L |
 | C4 | Bright fluorescent supermarket checkouts, `man-parted` sulking, cashier `vendor` retint, shoppers from PEOPLE | Camera rises and the queues dissolve into a clean painted diagram (dots, arrows, a big 1/3) that locks to the same lane positions | new assets: checkout set (PL-EG-COUNTER / STORE-INSIDE as reference only), tills, baskets, trolleys, price-check sign, diagram overlay; missing capability: no top-down figure view in the cast rig, so the rise is a crossfade from side view to the diagram, not a true overhead of the cast | M |
 | C5 | Sunny morning park in fresh gouache greens; owner `man-crop` (casual), `dog-golden` with `run`/`sniff`/`happy-wag`/`startle-hop` | The whole painting re-tints into dog vision in one sweep: reds and greens collapse to ochre, blue stays vivid | new assets: park set (grass, trees; ENV-SKY), red and blue ball props with throw arc, dog jump-and-catch motion (not in `animalMotion`); missing capability: a dichromat palette map for the Painter (`tintPainter` only mixes toward one colour), small wrapper of the same shape | S |
 | C6 | Watercolour macro photography: backlit grass forest, shallow-focus bokeh, warm sun; one tiny character (`boy-school` or `woman-pixie`) | Hand pressed into a dew drop as big as the character, the surface bulging and holding like jelly, sun refracting through it | new assets: macro grass forest, dew drop with refraction and contact deform, breadcrumb, table-edge plate, shrink "pop" transition, slow-drift fall motion; missing capability: no insects (ant needs a new six-leg animal rig and walk), and a scale/projection contract for the macro world must be set before any set is drawn | L |
@@ -189,25 +171,6 @@ Hypothesis only: no view, retention or share analytics were supplied; these are 
 
 R2 concepts each try to keep at least three of these five.
 
-### C7 — หมารู้ว่าคุณจะกลับบ้านกี่โมง (dog sequel: smell)
-
-- **Sub-genre:** animal senses (dog smell and time).
-- **Staging:** an empty condo across one day in time-lapse; `dog-thai` waits by the door. Scent is painted as coloured mist trails (the owner's smell in warm amber) that thin out hour by hour.
-- **Logline:** The owner leaves at 8; the dog sleeps all day, then walks to the door minutes before the key turns. We paint smell visible and show one idea of how: the owner's scent in the room fades through the day, and the dog may read "how faded" as "almost home time".
-- **Hook (Thai):** "หมาของคุณไม่มีนาฬิกา… แต่มันรู้ว่าคุณจะกลับบ้านกี่โมง"
-- **Beats:**
-  1. Morning: owner leaves; the room is full of thick amber scent mist. Dog flops down.
-  2. Reveal: the painting switches to "nose view": every smell in the room becomes coloured mist, layered like a map. A dog's nose is many times more sensitive than ours. `unchecked`
-  3. Time-lapse: the amber mist thins hour by hour; the dog lifts its head at each step.
-  4. When the scent drops to "evening level", the dog goes to the door; the key turns. One hypothesis researchers have proposed, not proven; routine, sounds and light also play a part. `unchecked`
-  5. Payoff and tip: let your dog sniff on walks; for a dog, smelling is how it reads the news. Last line: "ครั้งหน้าที่หมาหยุดดมเสาไฟ… อย่าเพิ่งดึงมัน มันกำลังอ่านข่าวอยู่"
-- **Ending:** `B_loop`.
-- **Voice / tone:** same warm female narrator as EP03 (series continuity); dog only sighs, ear-flicks and one happy whine.
-- **Why it holds:** direct sequel to the viral dog episode; "my dog knows when I'm coming" is something owners already noticed and argue about; the nose-view mist is a second palette-flip-style reveal; the sniff-walk tip is shareable.
-- **Research load:** general knowledge plus uncertainty (dog olfaction is well documented; the scent-decay timekeeping idea is a hypothesis and must be framed that way).
-- **Sound intent:** soft ticking-clock pulse under light pizzicato strings; room tone thins with the mist; a breathy "inhale" whoosh carries the switch to nose view; silence just before the key-in-lock click, which is the stinger.
-- **Alternatives Preaw considered for a dog sequel:** hearing (high-pitched sounds, why dogs bark before the doorbell rings) and "guilty look" (the guilty face is a reaction to the owner, not guilt). Either could replace C7 if the user prefers.
-
 ### C8 — กะพริบตาช้า ๆ ใส่แมว
 
 - **Sub-genre:** animal communication (cats).
@@ -226,91 +189,11 @@ R2 concepts each try to keep at least three of these five.
 - **Research load:** general knowledge (slow-blink studies, cat eye-contact behaviour).
 - **Sound intent:** gentle lo-fi piano; a low tense drone under the stare; a soft "glass chime" on the slow blink carries the moment; purr fades in as the stinger.
 
-### C9 — ทำไมแมวเขี่ยอาหารออกจากชาม
-
-- **Sub-genre:** pet care / body (cat whiskers).
-- **Staging:** low floor-level camera in a kitchen, `cat-gray-tabby` at a deep narrow bowl; the whiskers light up as a painted sensor field.
-- **Logline:** The cat paws food out of the bowl and eats it off the floor, and the owner thinks it is being fussy. We light up the whiskers and show they are touch sensors: every bump against a deep, narrow rim may feel unpleasant, so the cat avoids it. A wide, shallow dish can fix it.
-- **Hook (Thai):** "แมวคุณไม่ได้เรื่องมาก… มันแค่ไม่อยากให้หนวดโดนขอบชาม"
-- **Beats:**
-  1. Cat paws kibble onto the floor; owner sighs, "เรื่องมากจริง ๆ".
-  2. Reveal: the whiskers glow, each one sending a spark to the brain when touched; a cat's whiskers are roughly as wide as its body and help it judge gaps. `unchecked`
-  3. Close-up: in the deep bowl, the rim strikes the whiskers again and again, sparks flashing. Some vets call this "whisker stress"; how much it bothers cats is still debated. `unchecked`
-  4. The owner swaps to a wide shallow plate; the cat eats calmly, whiskers dim.
-  5. Payoff, plus myth-buster: never trim a cat's whiskers, they are not decoration. Last line: "ชามใบเดียว… อาจเป็นเหตุผลที่แมวคุณไม่ยอมกินข้าว"
-- **Ending:** `B_loop`.
-- **Voice / tone:** brisk, friendly narrator; owner one line; cat sounds only.
-- **Why it holds:** almost every cat owner has seen the pawing; the cause is surprising and the fix is cheap and visible; whiskers-as-glowing-sensors is a strong painted image; owners tag each other with "this is your cat".
-- **Research load:** general knowledge plus uncertainty (whisker anatomy is solid; "whisker fatigue" is a vet-community term with limited evidence and must be labelled so).
-- **Sound intent:** playful marimba; crunchy kibble skitter on tile; each whisker spark is a tiny electric "tik"; the music drops out and comes back calm on the shallow plate.
-
-### C10 — ทำไมยุงกัดคุณคนเดียว
-
-- **Sub-genre:** everyday insects (non-pet animal).
-- **Staging:** evening condo balcony, an ensemble of three friends (`man-parted`, `woman-pixie`, `boy-school`); only one gets bitten. The frame flips to "mosquito view": a painted heat-and-breath map where people glow as plumes.
-- **Logline:** Three friends sit in the same spot and only one of them is covered in bites. In mosquito view, people are not faces but clouds of breath, heat and skin smell, and some people simply give off a louder signal. Sweet blood is not the reason.
-- **Hook (Thai):** "นั่งด้วยกันสามคน… ทำไมยุงกัดคุณอยู่คนเดียว"
-- **Beats:**
-  1. Balcony, dusk; slap, slap, only one friend; the others joke "เลือดหวาน".
-  2. Reveal: mosquito view: each person becomes a glowing plume of breath (carbon dioxide), body heat and skin smell. Mosquitoes track these from a distance. `unchecked`
-  3. Myth-buster: "sweet blood" is not it; differences in skin smell (from skin bacteria and chemicals) seem to make some people more attractive. `unchecked`
-  4. Extra clues: after exercise or a beer the plume grows; dark clothes may stand out more. `unchecked`
-  5. Tip: a fan on the balcony breaks up the plume and mosquitoes are weak flyers. Last line: "คืนนี้ถ้าโดนกัดอีก… ไม่ใช่เพราะเลือดหวาน แต่เพราะกลิ่นคุณดังกว่าคนอื่น"
-- **Ending:** `B_loop`.
-- **Voice / tone:** lively, joking narrator; three friends with short banter lines; one mosquito whine motif.
-- **Why it holds:** everyone in Thailand has lived this exact scene; it busts a common Thai saying (เลือดหวาน); "mosquito view" is a sibling of the palette flip; the fan tip is free and shareable in friend groups ("this is why they always bite you").
-- **Research load:** general knowledge (mosquito host-seeking cues, skin odour studies); the clothing and alcohol claims need care.
-- **Sound intent:** warm evening city ambience, cicadas; the thin mosquito whine is the recurring motif and stinger; a low "thermal" hum riser carries the switch to mosquito view; a fan whoosh blows the plume and the whine away.
-
-### C11 — จุดบอดในตาคุณ (outside pets)
-
-- **Sub-genre:** human perception (blind spot).
-- **Staging:** direct-to-camera; one character (`girl-school`) holds up a painted card and the viewer does the test on their own phone screen. The reveal is the painting itself "filling in" a hole.
-- **Logline:** Everyone has a blind spot in each eye where there are no light sensors, yet we never see a hole. With a simple test on screen, the viewer makes a dot vanish, then watches the painting show how the brain quietly paints over the gap with what is around it.
-- **Hook (Thai):** "ตอนนี้ในตาคุณมีรูอยู่หนึ่งรู… และสมองคุณกำลังระบายสีทับมันอยู่"
-- **Beats:**
-  1. The character grins at the camera: "ปิดตาซ้ายนะ"; a cross and a dot appear on a painted card.
-  2. Test: look at the cross, move the phone closer; at the right distance the dot vanishes. `unchecked` (the test geometry must be checked on a real phone at Shorts size)
-  3. Why: where the optic nerve leaves the eye there are no light sensors. `unchecked`
-  4. Reveal: the painted background flows into the hole and the gap is filled with matching brush strokes, the way the brain fills it in. `unchecked`
-  5. Payoff: "what you see" is partly painted by your brain. Last line, leading back into the hook: "ภาพที่คุณเห็นอยู่ตอนนี้… สมองคุณระบายเองไปครึ่งหนึ่งแล้ว"
-- **Ending:** `C_seamless` (last line flows back into the hook; Film and Editor to match first and last frame).
-- **Voice / tone:** playful, challenging narrator; the character mimes the steps.
-- **Why it holds:** the viewer does it themselves, and it works on the very phone they hold; "your brain paints the world" ties to the channel's painted look; people send it to friends as a "try this" challenge. It keeps the series from being only about pets.
-- **Research load:** general knowledge (optic disc blind spot, perceptual filling-in); the on-screen test needs a real-device check.
-- **Sound intent:** minimal plucked synth; near-silence during the test so the viewer concentrates; a soft "pop" when the dot vanishes carries the beat; a brush-stroke swish as the hole fills.
-
-### C12 — ปลาทองความจำ 3 วินาที? (wild card)
-
-- **Sub-genre:** animal memory myth (pet fish).
-- **Staging:** POV from inside a round fish tank: the living room curved through glass and water, the owner `man-crop` huge and bent at the edge; a goldfish in the foreground.
-- **Logline:** Everyone "knows" goldfish forget everything in three seconds. From inside the tank, we watch a goldfish learn: it swims to the same corner every time the owner walks over at feeding time, and it still remembers weeks later.
-- **Hook (Thai):** "ปลาทองความจำแค่ 3 วินาที… แล้วทำไมมันรอคุณอยู่ที่มุมเดิมทุกเช้า"
-- **Beats:**
-  1. Owner taps the glass: "ลืมแล้วล่ะสิ"; we drop into the fish's curved, rippled view of the room.
-  2. Day 1–3 montage: every morning the owner appears, food falls in the same corner.
-  3. Day 4: the fish is waiting in that corner before the food arrives. Studies suggest goldfish can learn and keep such patterns for weeks to months. `unchecked`
-  4. Myth-buster: the three-second figure has no good source behind it. `unchecked`
-  5. Tip and payoff: feed at the same time and place; a fish can learn your routine, so give it a little variety in the tank. Last line: "ปลาของคุณอาจจำคุณได้… นานกว่าที่คุณจำว่าให้อาหารมันหรือยัง"
-- **Ending:** `B_loop`.
-- **Voice / tone:** dry, gently funny narrator; owner one line; underwater sound bed instead of animal sounds.
-- **Why it holds:** a famous myth almost everyone repeats; the inside-the-tank view is a striking frame nobody expects from a 2D painting; the last line is a joke viewers quote.
-- **Research load:** general knowledge (fish learning and memory studies; origin of the three-second myth is unclear).
-- **Kit gap (why it is the wild card):** no fish in `ANIMALS`, no water or glass refraction treatment, and no fisheye / curved-glass camera for the painted 3D camera. Film and Boss would scope these in W0.2.
-- **Sound intent:** muffled underwater bed with slow bubbles; the owner's voice heard low-passed through water; a bright glass "tink" on the tap is the stinger; music is a soft music-box loop that returns each "morning".
-
----
-
 ## R2 — Summary
 
 | ID | Title | Sub-genre | Staging | Hook (Thai) | Ending | Research |
 | --- | --- | --- | --- | --- | --- | --- |
-| C7 | หมารู้ว่าคุณจะกลับบ้านกี่โมง | animal senses (dog sequel) | empty home time-lapse, painted scent mist | "หมาของคุณไม่มีนาฬิกา… แต่มันรู้ว่าคุณจะกลับบ้านกี่โมง" | B_loop | general + uncertainty |
 | C8 | กะพริบตาช้า ๆ ใส่แมว | animal communication | human + cat eye close-ups, stare-to-glare repaint | "จ้องตาแมวด้วยความรัก… ในภาษาแมว คุณอาจกำลังท้าตีมันอยู่" | B_loop | general |
-| C9 | ทำไมแมวเขี่ยอาหารออกจากชาม | pet care / body | floor-level cat at bowl, glowing whiskers | "แมวคุณไม่ได้เรื่องมาก… มันแค่ไม่อยากให้หนวดโดนขอบชาม" | B_loop | general + uncertainty |
-| C10 | ทำไมยุงกัดคุณคนเดียว | everyday insects | ensemble of three, mosquito-view heat map | "นั่งด้วยกันสามคน… ทำไมยุงกัดคุณอยู่คนเดียว" | B_loop | general |
-| C11 | จุดบอดในตาคุณ (outside pets) | human perception | direct-to-camera viewer test, painting fills the hole | "ตอนนี้ในตาคุณมีรูอยู่หนึ่งรู… และสมองคุณกำลังระบายสีทับมันอยู่" | C_seamless | general + device check |
-| C12 | ปลาทองความจำ 3 วินาที? (wild card) | animal memory myth | POV inside a fish tank, curved glass | "ปลาทองความจำแค่ 3 วินาที… แล้วทำไมมันรอคุณอยู่ที่มุมเดิมทุกเช้า" | B_loop | general |
 
 ---
 
@@ -320,12 +203,7 @@ Engine fixed: painted 2D p5.brush, 4-head cast, default look the [painted 3D cam
 
 | ID | Look (one line) | Signature painted moment | Buildability | Size |
 | --- | --- | --- | --- | --- |
-| C7 | Empty Bangkok condo living room, morning gold to evening amber through one window (ENV-SKY bands keyed to the clock); `dog-thai`, lie / get-up / walk-in, `asleep` then alert; owner `man-crop` (casual) only at the door | "Nose view": the EP03 pass generalised: room drops to a dim muted wash while every smell becomes coloured ENV-FOG mist, the owner's amber trail thinning per time-lapse step | new assets: condo living-room set with front door and key-turn insert, scent-mist layer (ENV-FOG retinted, per-scent colour and density driven by the clock), nose-view pass (reuse the `dogview.ts` matrix with a darker/desat preset), head-lift-from-lie motion (not in `animalMotion`), wall clock prop. Alternative cast `dog-golden` for series continuity with EP03 is a user choice | M |
 | C8 | Warm lamp-lit sofa in the evening, `woman-curly` (casual), `happy` then a calm `sleepy`-style half-lid; `cat-orange-tabby` sit / walk-in; alternating human and cat eye ECUs | Stare-to-glare repaint: her eyes harden into a predator glare (hard cast shadow, cooler key) as the frame shifts to "cat read", then a slow blink answered by the cat and a soft ENV-GLOW passing between them | new assets: sofa/living-room set, human-eye and cat-eye ECU plates (the face rig is untested at ECU scale), glare repaint layer; missing capability: authored eyelid control for animals (slow blink on a cue, not `animalBlink`), cat ear-flat and turn-away head pose | M |
-| C9 | Low floor-level kitchen at cat height, morning light on tile; `cat-gray-tabby`, owner `woman-pixie` mostly legs and one line | Whisker sensor field: each whisker lights up and sparks a thin line to the brain on every rim strike, dimming to calm on the shallow plate | new assets: kitchen floor-level set (EP02 kitchen in `src/painted/edu02/` and PL-EDU-KITCHEN as reference only), deep bowl, shallow plate, kibble scatter; missing capability: cat whisker geometry (none in `animals.ts`), head-down eating pose, paw-scoop motion (not in `animalMotion`) | M |
-| C10 | Dusk condo balcony with city lights and a fan; `man-parted`, `woman-pixie`, `boy-school` seated (sit legs in kit), `suspicious`/`laugh`; one painted mosquito | "Mosquito view": the scene collapses to a dark thermal ground while each friend becomes a glowing plume of breath and heat, one plume visibly louder; the fan blows it apart | new assets: balcony set, plastic stools, fan, slap and scratch motions, mosquito sprite (small, no rig needed at Shorts scale), breath plume layer (ENV-FOG based); missing capability: thermal-ramp pass (a luminance-to-ramp map, not the EP03 3x3 matrix; likely SVG `feComponentTransfer`, untested), three-figure seated staging not yet tried in the yaw camera | M |
-| C11 | Plain warm studio wall, `girl-school` direct to camera holding a painted card; the card goes full screen for the test | The painting fills the hole: background brush strokes flow into the vanished dot's place, the brain "painting over" the gap | new assets: test card prop and full-screen card plate, fill-in stroke animation (mask over the plate), close-one-eye pose (cover-eye hand, not in P01–P45); risk: the test's dot/cross spacing and size must be fixed in phone millimetres and checked on a real phone at Shorts size before scene sheets, and the caption zone must stay clear of the test card; `C_seamless` needs first = last frame matched | S |
-| C12 | Inside a round glass bowl: living room bent and rippled, owner `man-crop` huge at the curved edge, a goldfish foreground, morning light; music-box "mornings" montage | Fisheye glass POV: the room wraps around the bowl and ripples when food lands, the fish already waiting in the corner on day 4 | missing capability: fish (no fish in `ANIMALS`; needs a new rig plus swim/fin motion), curved-glass/fisheye projection for `YCam` (none), water refraction/ripple displacement (none in kit; SVG `feDisplacementMap` untested on painted plates); new assets: fish bowl/tank, living room seen through it, food flakes (ENV-FALL bubbles reuse for bubbles) | L |
 
 Notes for the pick:
 - Most reuse from EP03: C7 (dog from `ANIMALS` with kit motions, the `dogview.ts` palette-pass technique repurposed as nose view, same narrator). C10 reuses the flip idea but needs a different pass type.
@@ -387,27 +265,6 @@ R3 concepts each try to keep at least three of these five. Shared with EP03: "yo
 - **Kit check:** person from `PEOPLE` (casting proposal `man-crop + park-casual, P?, surprised`; Film picks the pose). EP05's condo facade (`src/painted/edu05/facade.ts`, episode module, not kit) is a reference for the towers. New: giant-scale street set from a low camera, X-ray leg overlay with crack, cube-stack diagram, heat-shimmer/steam layer, growth transition (EP05's shrink reversed, if it is reusable).
 - **Sound intent:** low brass and timpani swell on the growth, then comic tuba under each step; a dry bone "crack" stinger on beat 3 (no gore); cicada heat buzz rising with the steam; silence before the last line, then the EP05 tiny-sting motif as a callback.
 
-### C14 — หลุมทะลุโลก
-
-- **Sub-genre:** what-if physics (gravity, free fall).
-- **Staging:** a hole under a Bangkok house; the character jumps in; most of the film is a painted Earth cutaway (crust, mantle, glowing core) with a tiny figure on a dashed line through the centre, intercut with close-ups of the character floating inside the tunnel.
-- **Logline:** Someone jumps into a tunnel straight through the Earth. They float the whole way, pass the core faster than a rocket, slow to a stop on the far side about 40 minutes later, find nothing to grab, and fall all the way back home: forever, like a pendulum.
-- **Hook (Thai):** "ถ้าใต้บ้านคุณมีหลุมทะลุโลก แล้วคุณกระโดดลงไป… อีกประมาณ 40 นาที คุณจะโผล่อีกฝั่งของโลก"
-- **Hook claim status:** `unchecked`, `model`. About 42 minutes for a uniform-density Earth and about 38 minutes with the real density profile (no air, no spin); the hook says "ประมาณ 40 นาที" so either figure fits.
-- **Key reveal image:** the Earth cutaway with the tiny figure at the glowing core, arms out, perfectly weightless, a speed readout beside it.
-- **Beats:**
-  1. The jump; one honest line that this is impossible (heat, pressure, Earth's spin), "แต่สมมติว่าทำได้". `unchecked`
-  2. Weightless: from the first second the character floats inside the fall, because everything is falling together (free fall, not "zero gravity at the centre" only). `unchecked`, `settled`
-  3. Core: fastest at the centre, roughly 8 km per second; the core glows past. `unchecked`, `model`
-  4. Far side: gravity now pulls back, the character slows and stops exactly at the far exit. The point opposite Bangkok is open Pacific Ocean off Peru, so they peek out into the sea. `unchecked` (antipode location)
-  5. Nothing to grab: they fall back, pass the core again and arrive home at zero speed. Last line, leading back into the hook: "แล้วคุณก็จะกลับมาโผล่ที่หลุมเดิม… ใต้บ้านคุณ"
-- **Ending:** `C_seamless` (the return to the hole under the house is the opening frame; Film and Editor match first and last frame and line).
-- **Voice / tone:** wonder-filled narrator; the character only gasps, laughs while floating and says "ทะเล?!" at the far side.
-- **Why it holds:** a classic "what if" almost everyone wondered as a child, with three surprises (weightless all the way, the time, the endless return); the cutaway is a clean single image; the seamless loop rewards rewatching, which is how the story itself ends.
-- **Research load:** general knowledge (gravity tunnel, free fall, density profile; antipode of Bangkok).
-- **Kit check:** person from `PEOPLE` (proposal `girl-school + home-lounge, P?, surprised`), ENV-SEA for the far-side ocean, ENV-GLOW for the core. New: Earth cutaway diagram (layers, dashed path), tunnel-interior shot, house-with-hole set, floating pose (arms out, no kit pose for weightless), speed readout styled as painted card (or narration only; captions must stay clear).
-- **Sound intent:** airy pad and a slow pendulum pulse; wind whoosh fades to near-silence as weightlessness sets in; a deep rumble riser past the core; ocean wash at the far side; the riser reversed on the return so the loop seam is inaudible.
-
 ### C15 — ถ้าดวงอาทิตย์หายไปตอนนี้
 
 - **Sub-genre:** what-if physics (speed of light and of gravity).
@@ -428,48 +285,6 @@ R3 concepts each try to keep at least three of these five. Shared with EP03: "yo
 - **Research load:** general knowledge (light travel time, GW170817, Moon and Jupiter light-delay figures). Known trivia, so the Jupiter and gravity beats carry the novelty.
 - **Kit check:** people from `PEOPLE` + `vendor` outfit; ENV-SKY (`paintSkyDisc` for the Sun, bands for day and dark); `glow.tsx` for the afternoon key. New: space set (star field, Earth on an orbit line, Jupiter, Moon), street-food stall, split-frame layout, painted clock.
 - **Sound intent:** cheerful street ambience and a light ukulele loop that keeps playing obliviously; under it a slow clock tick that grows; total silence at the blackout as the stinger; one distant dog bark in the dark, then the soft music returns for the twist.
-
-### C16 — ถ้าตาคุณมองเห็น WiFi
-
-- **Sub-genre:** real science that sounds like sci-fi (electromagnetic spectrum).
-- **Staging:** a condo in dollhouse cutaway at night; the frame switches to "WiFi vision": rooms go dark, the router glows like a lamp sending rings through walls that turn half-transparent; a character sits in a dark wedge behind the fridge with one bar of signal.
-- **Logline:** WiFi is light, just a colour too long for our eyes. If we could see it, the router would light the home through the walls, and we would see the dark "shadows" that metal, water and our own bodies cast, which is exactly where the signal drops.
-- **Hook (Thai):** "สัญญาณ WiFi ในบ้านคุณ ก็คือแสงชนิดหนึ่ง… ถ้าตาคุณมองเห็นมัน บ้านคุณจะหน้าตาแบบนี้"
-- **Hook claim status:** `unchecked`, `settled` (radio waves and visible light are both electromagnetic waves). How bright it would "look" depends on an imagined eye, so the picture is a what-if and the narration says so.
-- **Key reveal image:** the dollhouse cutaway in WiFi vision: router rings rippling through glassy walls, the fridge and a fish tank throwing dark wedges, the character inside one wedge.
-- **Beats:**
-  1. `boy-school` at night, video buffering, phone one bar: "เน็ตห่วยอีกแล้ว".
-  2. Reveal: WiFi vision; walls fade to glass because these waves pass through them. `unchecked`, `settled`
-  3. Why: a WiFi wave is about 12 cm long (2.4 GHz), visible light under a thousandth of a millimetre; same kind of wave, different length. `unchecked`, `settled`
-  4. Shadows: metal reflects and water absorbs, so the fridge, the fish tank and people cast WiFi shadows; he is sitting in the fridge's. `unchecked`, `settled` in principle; the size of household effects needs Boat.
-  5. Tip: router high, central, out of cabinets and away from big metal and water. Last line: "เน็ตช้าไม่ใช่เพราะเน็ตเสมอไป… บางทีคุณแค่นั่งอยู่ในเงาของตู้เย็น" `unchecked`
-- **Ending:** `B_loop`.
-- **Voice / tone:** brisk, joking narrator; the boy two short lines; router hum as a character.
-- **Why it holds:** keeps EP03's "your own home, secretly different" and EP05's world-flip; the wavelength fact is genuinely surprising; the fix is free and people tag the family member who puts the router in the TV cabinet.
-- **Research load:** general knowledge (EM spectrum, 2.4/5 GHz wavelengths, attenuation by metal and water, router placement guidance).
-- **Kit check:** person from `PEOPLE` + `home-lounge`; `glow.tsx` (`Spot`, `Vignette`) for the router key. New: dollhouse cutaway condo set (two to three rooms, cut-away walls), WiFi-vision pass (dark grade plus glowing concentric rings; ENV-GLOW/ENV-FOG retinted may cover part), shadow wedges, router, fridge and fish-tank props.
-- **Sound intent:** quiet night room tone and a buffering "tick" loop; a low electric hum riser into WiFi vision, with the rings pulsing to a soft synth arpeggio; a muffled dip when he sits in the shadow; a bright clean chord when the router moves and the bars fill.
-
-### C17 — โลกเคยมีวงแหวน
-
-- **Sub-genre:** real science that sounds like sci-fi (planetary science; a recent hypothesis).
-- **Staging:** condo rooftop at blue hour, three friends sitting; the sky is repainted with a ring arch spanning east to west across the southern sky; a short globe-and-craters insert.
-- **Logline:** A 2024 study proposed that about 466 million years ago Earth had a ring like Saturn's, made from an asteroid torn apart by Earth's gravity. We paint what Bangkok's sky would look like with it, show the crater clue behind the idea, and end on the planet that is expected to get a ring next: Mars.
-- **Hook (Thai):** "เมื่อ 466 ล้านปีก่อน… โลกอาจเคยมีวงแหวนเหมือนดาวเสาร์"
-- **Hook claim status:** `unchecked`, `hypothesis` (one research group's interpretation, not settled); "อาจ" stays in the hook, and the narration says once that it is still debated.
-- **Key reveal image:** Bangkok's skyline at blue hour under a vast pale ring arch, its shadow band across the sky, friends tiny on the rooftop looking up.
-- **Beats:**
-  1. Rooftop, dusk, friends looking at a dull sky: "ท้องฟ้ากรุงเทพฯ ไม่มีอะไรให้ดูเลย".
-  2. Reveal: the ring arch paints across the sky; from Bangkok, north of the equator, it would rise from the east, arc across the south and set in the west. `unchecked`, `model`
-  3. The clue: craters from that period all lie close to where the equator was then, as if debris rained down from a ring. `unchecked`, `hypothesis` (Tomkins et al. 2024)
-  4. How a ring forms: a body that comes too close is pulled apart by tides (the Roche limit), spreads into a ring and slowly falls. `unchecked`, `settled` mechanism
-  5. Twist and payoff: Mars's moon Phobos is spiralling inward and may become a ring in tens of millions of years. Last line: "วงแหวนไม่ได้เป็นของดาวเสาร์ดวงเดียว… มันแค่มาแล้วก็ไป" `unchecked` (Phobos spiral `settled`; ring outcome `model`)
-- **Ending:** `A_fade` on the arch, or `B_loop` back to the dull sky; Film and Editor choose.
-- **Voice / tone:** wonder-filled, slower narrator; the three friends one line each and a group "ว้าว".
-- **Why it holds:** a fresh 2024 headline most viewers have not heard; the ring-over-Bangkok image is the most beautiful single frame of the six and works as a cover; the Mars twist gives a second "wait, really?".
-- **Research load:** general knowledge plus a named recent paper (Tomkins, Martin and Cawood, Earth and Planetary Science Letters, 2024; Boat confirms the citation and the crater count) and the Phobos studies.
-- **Kit check:** people from `PEOPLE` seated (kit sit legs); ENV-SKY bands for blue hour; EP05 balcony/facade modules as reference for the rooftop. New: ring-arch sky layer with shadow band, Bangkok skyline silhouette, globe-with-craters insert. Smallest build of the six (likely one set plus one sky layer); Film confirms.
-- **Sound intent:** soft city dusk ambience; a long rising string pad under the ring reveal (the riser carries the beat); low impact thuds, muted and distant, for the crater rain; a small glassy chime motif on the Mars twist.
 
 ### C18 — ถอดหมวกกลางอวกาศ (wild card)
 
@@ -499,10 +314,7 @@ R3 concepts each try to keep at least three of these five. Shared with EP03: "yo
 | ID | Title | Sub-genre | Key reveal image | Hook (Thai) | Ending | Research | First kit check |
 | --- | --- | --- | --- | --- | --- | --- | --- |
 | C13 | ถ้าคุณตัวใหญ่เท่าตึก (EP05 mirror) | scale / square-cube | giant mid-step between condos, X-ray leg with crack | "ถ้าคุณตัวสูงเท่าตึกหกชั้น… ก้าวแรกที่เดิน กระดูกขาคุณอาจหัก" | B_loop | general | new set + X-ray overlay; EP05 facade as reference |
-| C14 | หลุมทะลุโลก | gravity / free fall | Earth cutaway, tiny weightless figure at the core | "ถ้าใต้บ้านคุณมีหลุมทะลุโลก แล้วคุณกระโดดลงไป… อีกประมาณ 40 นาที คุณจะโผล่อีกฝั่งของโลก" | C_seamless | general | new cutaway diagram + float pose |
 | C15 | ถ้าดวงอาทิตย์หายไปตอนนี้ | light and gravity speed | split frame: empty space above, sunny street below, clock | "ถ้าดวงอาทิตย์หายไปตอนนี้… คุณจะยังไม่รู้ตัวไปอีก 8 นาที" | B_loop | general | new space set + street stall; ENV-SKY sun |
-| C16 | ถ้าตาคุณมองเห็น WiFi | EM spectrum (real science) | dollhouse condo in WiFi vision, fridge shadow | "สัญญาณ WiFi ในบ้านคุณ ก็คือแสงชนิดหนึ่ง… ถ้าตาคุณมองเห็นมัน บ้านคุณจะหน้าตาแบบนี้" | B_loop | general | new cutaway set + WiFi-vision pass |
-| C17 | โลกเคยมีวงแหวน | planetary science (hypothesis) | ring arch over Bangkok at blue hour | "เมื่อ 466 ล้านปีก่อน… โลกอาจเคยมีวงแหวนเหมือนดาวเสาร์" | A_fade or B_loop | general + named paper | smallest: one set + ring sky layer |
 | C18 | ถอดหมวกกลางอวกาศ (wild card) | space survival myth-buster | astronaut over Earth, helmet drifting, breath glitter | "ถ้าคุณถอดหมวกกลางอวกาศ… ตัวคุณจะไม่ระเบิดอย่างในหนัง แต่คุณมีเวลาแค่ 15 วินาที" | A_fade | general + named real case | spacesuit, zero-g, orbit set, vacuum FX all missing |
 
 **Preaw's pick for the viewer (not a decision):** C13 and C14. C13 is the direct mirror of EP05, keeps all five "why EP05 worked" points and its last line links the two episodes. C14 has the cleanest single image and three stacked surprises, and its seamless loop ending is the story itself. Runner-up: C15 (strongest raw hook and cheapest build, but the 8-minute fact is better known).
@@ -516,16 +328,12 @@ Engine fixed: painted 2D p5.brush, 4-head cast, default look the [painted 3D cam
 | ID | Look (one line) | Key reveal and phone read (9:16) | Scale / perspective risk | Kit reuse vs `new:` | Cost |
 | --- | --- | --- | --- | --- | --- |
 | C13 | Hot Bangkok afternoon soi between condo towers, worm's-eye street camera; `man-crop + park-casual`, `happy` then `scared` (P-pose picked at brief); tiny passers-by from `PEOPLE` | Giant mid-step between two towers, thigh in X-ray glowing red with a crack line. Reads strongly: the vertical frame suits a standing giant, the red bone is the only saturated element. The "rice-grain" street people will not read below about 25 px tall; treat them as texture and let cars/tuk-tuks carry the scale | Instance size 10× the cast baseline (est. 17 m if the adult reads 1.7 m; the 4-head cast's kit height must be measured first, it may be shorter, which changes "หกชั้น" vs `SLAB_PITCH` 2.9 m). Flat cards have a viewing-angle limit: a steep up-pitch on a flat giant gives no foreshortening, so keep the camera pitch moderate (est. ≤ 20°) and let tower verticals converge to sell height. The cube stack and bone slice are a screen-plane diagram card, not world space | reuse: PEOPLE + WARDROBE, `startle-jump`/`gasp-recoil`, EP05 shrink-pop run backwards as the growth pop, EP05 facade as tower base, `paintScaleBars`, ENV-FOG retinted as steam, ENV-SKY afternoon. `new:` giant-scale street set (two towers, soi, small cars), X-ray leg overlay with femur and crack (no gore: crack only on the X-ray layer, never on skin), cube-stack/bone-slice diagram card, heat-shimmer, giant step motion (stomp with slight wobble) | medium |
-| C14 | Thai house with a dark hole in the floor; then a clean painted Earth cutaway (crust, mantle, glowing core) as a diagram plate; intercut tunnel-interior close-ups; `girl-school + home-lounge`, `surprised`/`laugh` | Cutaway disc with a tiny arms-out figure at the glowing core. Reads at phone size only if the figure is an off-scale marker with a halo (est. ≥ 70 px) on a disc about 900 px wide; the core glow carries the eye. Far-side ocean peek and the return are clear single frames | The cutaway is a diagram (screen-plane XY, orthographic), not a world-metre shot: at true scale a 1.7 m figure on a 12,742 km Earth is invisible, so the figure is a labelled off-scale marker and the narration or a small card must not imply it is to scale. Tunnel interiors are world-metre shots (cylinder with radial vanishing point); the float is camera-relative, so cast and camera fall together and only the tunnel wall streaks | reuse: PEOPLE + WARDROBE, ENV-SEA (far side), ENV-GLOW (core), ENV-FALL dust in the tunnel. `new:` house-with-hole set, tunnel-interior set, Earth cutaway plate with dashed path, weightless float pose and drift motion (no kit pose: `new: float arms-out`), speed readout card (must sit outside the caption band). `C_seamless`: first and last frame both the hole under the house, which the story makes natural | medium |
 | C15 | Two stacked worlds: top, black star field with a small Earth on a thin orbit line; bottom, a sunny Bangkok soi with a somtam stall; `woman-ponytail + vendor` and a customer (`man-parted`), `neutral`/`talk`; painted clock card | Split frame, Sun gone above, street still sunny below, clock 04:59. Reads instantly; the blackout beat (whole frame goes dark in one move) is the strongest phone moment of the six. Keep the dark frame readable (star field, rim-lit silhouettes), never pure black | The space panel is schematic: Sun, Earth, Moon and Jupiter cannot share one frame at scale, so it is a labelled diagram, not world space. The split seam must not sit in the caption band (est. space panel y 0–760, street y 760–1920 with the street action above or below the band). The street is one world-metre set with a fixed yaw camera | reuse: PEOPLE + `vendor`, `talk`/`nod`, ENV-SKY bands for day and dark plus `paintSkyDisc` for the Sun and Moon, `glow.tsx` for the afternoon key and its cut-off. `new:` star-field/orbit panel with Earth, Moon, Jupiter discs, street-food stall set, split-frame layout, painted clock card | cheap |
-| C16 | Night condo as a dollhouse section (two rooms side by side), `boy-school + home-lounge` seated on the floor behind the fridge, `worried`; router on a TV cabinet | "WiFi vision": rooms drop to a dark grade, walls turn glassy, router rings pulse outward and the fridge throws a dark wedge with the boy inside it. Reads at phone size if the wedge is big and high-contrast; a three-room section makes the boy too small, so reveal wide on two rooms, then push in until he is ≥ 25% of the frame height | Section camera has a known workaround: [DF-20261029-zcondo-sp02-section-spike](../../docs/dev-findings.md#df-20261029-zcondo-sp02-section-spike) (seated lead ≥ 480 px passes; cut-plane magnification moves caps; a tail frame clipped a foot), so revalidate on the current checkout before the brief relies on it. Shadow wedges must be computed from the router point past each blocker's silhouette in one plan/section space, not hand-drawn, or they disagree with the rings during the push-in | reuse: PEOPLE + `home-lounge`, `sit`, `glow.tsx` (`Spot`, `Vignette`) for the router key, the EP03 `dogview.ts` matrix technique for the dark grade, ENV-GLOW retinted for ring glow. `new:` two-room section set, router, fridge, fish tank, glass-wall pass, concentric ring layer, shadow-wedge geometry (one new effect) | medium |
-| C17 | Condo rooftop at blue hour over the Bangkok skyline, three friends seated on the parapet (`man-parted`, `woman-pixie`, `boy-school`, `neutral` then `surprised`); short globe-with-craters insert | Pale ring arch across the southern sky with its shadow band, friends small at the bottom looking up. The most cover-ready frame of the six; reads even at thumbnail size because the arch is one large bright curve on a dark gradient | A 9:16 frame looking south shows only part of an east-to-west arch, so the arch is revealed with a `YCam` yaw sweep (east → south → west), which is exactly the painted 3D camera's move. The arch must be projected from a ring-plane model (points at infinity, rotation-only projection for latitude est. 13.7° N) so it stays consistent under yaw; a hand-drawn arch would slide wrongly. Arch elevation depends on the ring radius (Boat/model). Three seated figures in one yaw shot are untried (as noted for C10) | reuse: PEOPLE, kit sit legs, ENV-SKY blue-hour bands, `paintSkyDisc` for a moon, EP05 facade/balcony as rooftop reference. `new:` rooftop set with skyline silhouette, ring-arch sky layer with shadow band (one projection helper), look-up head pose (check P01–P45 first), globe-with-craters insert, Phobos/Mars insert | cheap |
 | C18 | Low Earth orbit, blue limb below, black sky; astronaut in a white suit beside a station truss; airlock interior for the rescue | Astronaut floating, helmet drifting, breath sparkling to glitter, timer 0:11. Reads well at phone size (white suit on black and blue). The "tongue bubbles" detail does not read at phone size without an extreme close-up of an open mouth, which is the least safe image; show it as glitter at the lips instead | Orbit is a world-metre set with a far Earth limb (curvature from altitude est. 400 km); float motion is camera-relative. A helmet around a 4-head head becomes a very large bubble; acceptable for the cartoon read but changes the silhouette and every head-attached part (hair, face) needs a helmet-on variant | reuse: PEOPLE (face), ENV-FALL dust as glitter base, `gasp-recoil`. `src/painted/diver.ts` is a faceless side-view suit silhouette, reference only. `new:` spacesuit + helmet wardrobe class (new gear, four views), zero-g float/drift motion, orbit set with Earth limb and truss, airlock set, vacuum FX (breath glitter, helmet drift), crewmate rig in a suit, timer card | heavy |
 
 Cartoon-safety notes:
 - **C18 (main concern).** Peril to the point of losing consciousness, in a "how long would you survive" frame. Keep it safe by: no swelling, eye, skin or injury imagery at any size; tongue boiling shown only as glitter at the lips, never a mouth close-up; the 1966 technician shown as an anonymous suited figure seen from behind in a generic chamber (no likeness, no on-screen name unless Boat clears it); the rescue lands on screen before the timer reaches its end; the narration's survival hedge stays. "Breathe out" is survival advice for a situation no viewer can be in, so it is not an imitable-risk issue. This lowers the risk; it does not remove the platform-sensitivity question, which is the user's call.
 - **C13.** Bone break as comedy: keep it on the X-ray layer only, a comic "เอ๊ะ… ขาฉัน!" and a wobble, no fall injury shown.
-- **C14.** Jumping into a hole is fine as fantasy (the impossibility line is in beat 1); avoid a real-looking well or sinkhole that a child could copy.
 - C15, C16, C17: no concern.
 
 Ranking by reach vs cost (reach is Film's judgment from the "why EP05 worked" points and the user's EP05 signal; no analytics):
@@ -571,153 +379,10 @@ Hypothesis only, carried from the "why EP05 worked" guesses (no analytics suppli
 - **A name for a private glitch:** "this has a name" is a share trigger ("ส่งให้เพื่อนที่เซบนบันไดเลื่อน").
 - **One painted inside-view:** each concept still has one image only painting does: the hidden mechanism made visible (deleted film frames, an autopilot ghost body, bubbles slowing sound).
 
-### C19 — คุณไม่เคยเห็นตาตัวเองขยับ
-
-- **Sub-genre:** visual perception (saccadic suppression; chronostasis as the second surprise).
-- **Staging:** `girl-school` at a bathroom mirror, direct to camera, then a phone selfie; the inside of her vision painted as a film strip that a tiny "editor" in her head is cutting.
-- **Logline:** Look at your left eye in a mirror, then your right. You never see your eyes move, because the brain switches off vision during each eye jump and splices the gap closed. Do it on the phone's selfie camera and you can see the move, because the screen shows it a moment late, after your vision is back on. The splice is also why the first tick of a clock seems to last too long.
-- **Hook (Thai):** "ส่องกระจก มองตาซ้าย แล้วมองตาขวา… คุณจะไม่มีวันเห็นตาตัวเองขยับ"
-- **Hook claim status:** `unchecked`, `settled` (the mirror demonstration is a classic one for saccadic suppression). Boat confirms a source for the demonstration itself.
-- **Key reveal image:** her view painted as a horizontal film strip: frames of the mirror face, with the frames during the eye jump cut out as black blanks and the frame before them stretched to fill the gap; a tiny editor with scissors at the splice.
-- **Beats:**
-  1. Try it now: mirror, left eye, right eye; nothing moves. A second girl watching from the side says "ขยับนะ ฉันเห็น". `unchecked`, `settled`
-  2. Why: the eyes jump about three times a second (saccades), and during each jump the brain suppresses vision so the world does not smear. `unchecked`, `settled` (rate is approximate)
-  3. Reveal: the film strip; the blanks are cut and the frame before is stretched backward, so the gap is never noticed. `unchecked`, `hypothesis` for the "stretched backward" mechanism (antedating), `settled` for the illusion it explains.
-  4. Proof you can feel: glance at a clock with a second hand; the first second looks longer than the next ones (the stopped-clock illusion, chronostasis; Yarrow et al., Nature, 2001). `unchecked`, `settled` (lab finding)
-  5. Twist: now try it on the selfie camera: you do see your eyes move, because the phone shows the picture a fraction of a second late, after the brain has switched vision back on. Last line: "กระจกไม่เคยโกหก… คนที่ตัดต่อภาพคือสมองคุณเอง" `unchecked`, `model` (depends on camera latency; needs a real-phone try on at least two phones)
-- **Ending:** `B_loop`.
-- **Voice / tone:** brisk, playful narrator (edu default Kore); the girl two short lines, her friend one.
-- **Why it holds:** the viewer does the test in the first three seconds and the result is uncanny; the selfie-camera twist is a second test that works the opposite way; the clock beat names a glitch everyone has seen and never explained.
-- **Evidence notes (thin spots):** popular claims that we are "blind for 40 minutes a day" are back-of-envelope sums and stay out of the script unless Boat finds a sourced figure. The selfie-camera beat is Preaw's reasoning from latency, not a cited finding: it must be tried before it is scripted, and dropped if it does not work reliably.
-- **Research load:** general knowledge (saccadic suppression, saccade rate) plus a named study (Yarrow, Haggard, Heal, Brown and Rothwell 2001, chronostasis; Boat confirms the citation) and a device test.
-- **Kit check:** person from `PEOPLE` (proposal `girl-school + home-lounge, P?, surprised`; friend `woman-pixie`); the kit `eye-macro` plate (`paintEyeMacro`, promoted for EP06) for eye close-ups, but it has `lid`/`lift` and no gaze-direction control in its exported state, so the eye jump is likely `new: iris shift`. New: bathroom mirror set (mirror image = flipped figure), film-strip layer with blank frames and splice, tiny editor figure, wall clock with second hand, phone-screen insert.
-- **Sound intent:** small bathroom room tone; a soft "snip" on each cut in the film strip and a short tape-stop when a frame stretches; the clock beat uses one tick held too long (the stinger is the delayed second tick); a bright pluck on the selfie twist. The mirror test itself is silent so the viewer can try it.
-
-### C20 — บันไดเลื่อนที่หยุดนิ่ง
-
-- **Sub-genre:** motor control (the broken escalator phenomenon; predictive movement).
-- **Staging:** a BTS station escalator with a "ปิดซ่อม" stand; `man-parted + office` steps on, lurches like on a moving one; his "autopilot" painted as a translucent ghost body one step ahead of him.
-- **Logline:** Stepping onto a stopped escalator makes you stumble, even when you can see it is stopped. Researchers recreated it in a lab and found the legs run a learned "moving floor" program that knowing better does not switch off. The same autopilot is why you stamp into empty air at a step that is not there in the dark.
-- **Hook (Thai):** "เคยก้าวขึ้นบันไดเลื่อนที่เสีย แล้วเซไหม… ทั้งที่ตาก็เห็นว่ามันไม่ขยับ"
-- **Hook claim status:** `unchecked`, `settled` that the stumble happens and has been measured in the lab (Reynolds and Bronstein, Experimental Brain Research, 2003, with a moving sled, not a real escalator).
-- **Key reveal image:** the man on the stopped steps with his ghost autopilot body leaning far forward and striding as if the steps were moving, the real body yanked a half-step behind it, a painted "อัตโนมัติ" switch glowing on his back that his hand cannot reach.
-- **Beats:**
-  1. The stumble: he steps on, lurches, grabs the rail, looks around to see if anyone saw. `unchecked`
-  2. It has a name: the broken escalator phenomenon; in a lab, people walked onto a moving platform a few times, then onto the same platform stopped, told in advance, and still lurched. `unchecked`, `settled` (lab)
-  3. Reveal: the ghost body; the brain stores a "moving floor" program and runs it the moment the foot sees escalator steps, faster than the thinking brain can veto it. `unchecked`, `model` (the authors' interpretation: a dissociation between knowing and moving)
-  4. The same autopilot in the dark: the foot stamps on a step that is not there at the top of the stairs. `unchecked`, `hypothesis` as a link (same idea of predictive motor control; Boat checks whether a source makes this link, otherwise the narration frames it as "คล้าย ๆ กัน")
-  5. Payoff: the stumble is proof that most of your walking is not you deciding; it is a program. Last line: "คุณไม่ได้เดินเอง… คุณแค่นั่งดูขาคุณเดิน" `unchecked`
-- **Ending:** `B_loop`.
-- **Voice / tone:** dry comic narrator; the man has one embarrassed "เอ๊ะ" and a fake cough; a station announcement as a gag.
-- **Why it holds:** almost every BTS and MRT rider has felt it and never knew it was studied; a physical body gag like EP05's; the share line ("แท็กเพื่อนที่เซ") is built in.
-- **Evidence notes (thin spots):** the evidence base is a small number of lab studies from one group (Bronstein's lab, 2003 onward); the phenomenon is solid but not huge. Beat 4's "step in the dark" link is Preaw's inference unless Boat finds a source.
-- **Research load:** named studies (Reynolds and Bronstein 2003 and follow-ups; Boat confirms citations and what "told in advance" means in the protocol) plus general motor-control background.
-- **Try-it-now safety:** no "go try it" line. The narration says once to hold the handrail, and the video never invites a test on stairs or escalators.
-- **Kit check:** person from `PEOPLE` + `office` (proposal `man-parted + office, P?, surprised` then `smug` as a cover-up); kit `gasp-recoil`, `look-around`, `walk`. New: BTS station escalator set (steps on a diagonal under the painted 3D camera, rail, "ปิดซ่อม" stand), ghost-body layer (the same figure at low opacity with a forward-lean stride offset), lurch-and-grab motion (`new: lurch`), dark staircase insert for beat 4.
-- **Sound intent:** station ambience and a distant train; the escalator motor hum is missing (an audible absence, the stopped machine); the lurch stinger is a short shoe scuff and a rail clang (no cartoon boing); a light jazzy bass walk under the explanation; a low thud for the phantom step in the dark.
-
-### C21 — แก้วกาแฟที่ร้องเพลงได้
-
-- **Sub-genre:** everyday physics (acoustics; the "hot chocolate effect").
-- **Staging:** a morning kitchen counter, `woman-ponytail + home-lounge` stirring a 3-in-1 coffee sachet and tapping the cup with the spoon; the cup goes to a painted cutaway full of tiny bubbles and slow sound waves.
-- **Logline:** Stir instant coffee, then tap the bottom of the cup with the spoon: the "tink" climbs higher by itself over a few seconds. Fresh stirring fills the drink with tiny air bubbles, and bubbly liquid carries sound much more slowly, so the cup rings low; as the bubbles rise and pop, sound speeds up and the note climbs. Physicist Frank Crawford wrote it up in 1982.
-- **Hook (Thai):** "ชงกาแฟซองแล้วเอาช้อนเคาะก้นแก้ว… ฟังดี ๆ เสียงมันจะค่อย ๆ สูงขึ้นเอง"
-- **Hook claim status:** `unchecked`, `settled` physics (bubbles lower the speed of sound in a liquid); `unchecked` whether a Thai 3-in-1 sachet shows it clearly (instant coffee, hot chocolate and salt in water are the usual examples). Needs a kitchen try with a phone recording before the hook is locked.
-- **Key reveal image:** the cup in cutaway: thousands of white bubbles, a painted sound wave crawling through them in short, bunched-up loops; as the bubbles thin, the same wave stretches long and fast.
-- **Beats:**
-  1. Try it: stir, tap, listen: "ติ๊ง… ติ๊ง… ติ๊ง" rising. The narration invites the viewer to try at their next coffee. `unchecked`
-  2. The clue: stirring fills the drink with tiny bubbles, which is why the coffee looks lighter and frothy for a moment. `unchecked`, `settled`
-  3. Reveal: sound through a bubbly liquid is far slower than through plain water, so the cup's note drops low; as bubbles escape, the speed comes back and the note climbs. `unchecked`, `settled` (Crawford, American Journal of Physics, 1982; size of the pitch rise `unchecked`)
-  4. Proof: stir again and the note drops to the bottom and climbs again; add the sugar or creamer and it drops. `unchecked`, `settled` principle; what a 3-in-1 sachet does needs the try.
-  5. Payoff: the same effect lets oceanographers hear bubbles from breaking waves, and it is why a fizzy drink just poured sounds "dull". Last line: "แก้วกาแฟคุณไม่ได้ร้องเพลง… มันแค่บอกว่าฟองหมดแล้ว" `unchecked` (the oceanography and fizzy-drink links are Preaw's expectations; Boat keeps or cuts)
-- **Ending:** `B_loop` (last tink to first tink).
-- **Voice / tone:** warm morning narrator; the woman one surprised "หืม?" and a second tap to test.
-- **Why it holds:** the most "ฉีก" topic of the six (almost nobody has heard of it) yet the viewer can test it tomorrow morning; a sound-led hook in a feed of visual hooks; the coffee sachet is pure Thai daily life.
-- **Evidence notes (thin spots):** the physics is solid but the literature is small and old (one 1982 paper plus later teaching papers); the pitch-rise figure varies by source and is not used in the script until Boat finds one. The 3-in-1 test is the real risk: if it does not work clearly, swap to hot water plus a spoon of instant cocoa or salt.
-- **Rule note:** sound must not replace the clue. The bubble density and the wave length are painted, so the rise is readable with the sound off (Film may add a small on-screen "ติ๊ง" that climbs in steps, outside the caption band).
-- **Try-it-now safety:** tap the cup on the counter, never while holding it; no hot-liquid close-up near the face.
-- **Kit check:** person from `PEOPLE` + `home-lounge` (proposal `woman-ponytail + home-lounge, P?, surprised`); EP02 kitchen (`src/painted/edu02/`, episode module) as a counter reference. New: mug and spoon props, coffee sachet, cup cutaway plate with bubble field (ENV-FALL bubbles retinted may seed it), sound-wave layer whose wavelength is driven by bubble density, tap motion (`new: spoon tap`).
-- **Sound intent:** the sound is the subject: recorded real taps on a real cup if possible (Editor), rising in steps; music minimal (a soft marimba bed that steps up a note with each tink); a bright "ding" as the final clean tink is the stinger. Silence under the first test so the viewer hears the rise.
-
-### C22 — พูดคำเดิมซ้ำจนคำพัง
-
-- **Sub-genre:** language and memory (semantic satiation; jamais vu).
-- **Staging:** typographic: a single Thai word large on a plain painted wall behind `boy-school`, who says it again and again; with each repeat the letters drift, crack and turn into abstract brush strokes.
-- **Logline:** Say one word thirty times and it stops meaning anything: it turns into a strange noise. This is semantic satiation; a 2023 Ig Nobel Prize went to researchers who turned it into a lab test for jamais vu, the opposite of déjà vu: something you know well suddenly feels new and wrong.
-- **Hook (Thai):** "ลองพูดคำว่า 'ข้าว' ซ้ำ ๆ ยี่สิบรอบ… แล้วคำนี้จะเริ่มฟังไม่เหมือนภาษาไทย"
-- **Hook claim status:** `unchecked`, `settled` that the effect is common (studied since the early 1900s, named in the 1960s); `unchecked` for Thai specifically (no Thai-language study known to Preaw; the chosen word needs a quick try with a few Thai speakers, and the hook may need a different word).
-- **Key reveal image:** the word "ข้าว" painted huge on the wall, half solid, half dissolving into loose strokes, the boy staring at it as if he has never seen it.
-- **Beats:**
-  1. Try it: the boy and the viewer say the word together; the on-screen count runs 1, 2, 3… `unchecked`
-  2. Somewhere around repeat 15 to 20 the word turns into a sound; the letters on the wall start to break. `unchecked` (the count varies by person; the narration says "ประมาณ")
-  3. Name and why: semantic satiation; one explanation is that the brain's link from sound to meaning tires with use, like a muscle. `unchecked`, `hypothesis` (mechanism debated)
-  4. Jamais vu: the opposite of déjà vu. In a 2021 study, most people who wrote the word "door" over and over felt it become strange, and the team won the 2023 Ig Nobel Prize for Literature. `unchecked`, `settled` for the prize; study details (share of people, how many repeats) `unchecked` (Moulin, O'Connor and colleagues, Memory, 2021)
-  5. Payoff: the strange feeling is useful: it may be the brain's alarm that something is stuck on repeat. Last line, back into the hook: "ลองพูดอีกทีสิ… ข้าว" `unchecked`, `hypothesis` (the authors' interpretation)
-- **Ending:** `C_seamless` (the wall rebuilds the word as the boy says it once fresh; Film and Editor match first and last frame).
-- **Voice / tone:** narrator brisk; the boy's repeats are the rhythm (Gemini voice, his pitch drifting flatter as the word "breaks").
-- **Why it holds:** cheapest test of all six (zero props, works on the bus); the viewer feels the meaning slip in real time; the Ig Nobel and jamais vu give a "wait, there's a name for this?" second beat.
-- **Evidence notes (thin spots):** the jamais vu numbers come from a small set of lab studies by one group; the Thai-word behaviour is untested. The mechanism is a hypothesis and the narration must say "อาจ".
-- **Research load:** named studies (Severance and Washburn 1907; Jakobovits/Lambert 1960s naming; Moulin et al. 2021; Ig Nobel 2023 Literature) plus a small Thai try.
-- **Kit check:** person from `PEOPLE` (proposal `boy-school + home-lounge, P?, neutral` then `worried`); kit `talk`. New: plain painted wall set, large Thai word layer with a dissolve-to-strokes animation (Thai glyph outlines as brush paths; the font and glyph rendering must keep Thai vowels and tone marks attached), on-screen counter. On-screen Thai text competes with subtitles: the word sits above the caption band and subtitles show the narration only, not the repeats.
-- **Sound intent:** dry room, no music for the repeats (the voice is the rhythm); a faint detuned drone fades in as the word breaks; a reverse-cymbal riser into the jamais vu name; the drone cuts to silence on the last fresh "ข้าว".
-
-### C23 — ทำไมของเปียกถึงสีเข้ม
-
-- **Sub-genre:** everyday physics (optics; scattering and total internal reflection).
-- **Staging:** a sudden Bangkok rain; `man-crop + park-casual` gets a wet patch on his shirt and stares at it; the camera dives into one thread of the fabric, painted as a macro world of fibres and light rays.
-- **Logline:** Water has no colour, yet a wet T-shirt, wet sand or a wet road turns darker. Dry fibres bounce light straight back out, which makes them look pale; a film of water lets light slip into the cloth and keeps bouncing it around inside, where each bounce absorbs a little more of it, so less comes back to your eye.
-- **Hook (Thai):** "เสื้อเปียกน้ำ สีถึงเข้มขึ้น… ทั้งที่น้ำไม่มีสีเลยสักนิด"
-- **Hook claim status:** `unchecked`, `settled` (Lekner and Dorf, Applied Optics, 1988, "Why some things are darker when wet").
-- **Key reveal image:** split macro of one thread: on the dry side, light rays hit the fibres and spray back out white; on the wet side, the same rays enter a water coat and ricochet inside it, fading at each bounce, the fibre underneath glowing its real deep colour.
-- **Beats:**
-  1. Rain drop, wet patch, he stares; "น้ำมันมีสีเหรอ". `unchecked`
-  2. Dry: rough fibres send light back out at their surfaces, mixing white into the colour, so dry cloth looks paler. `unchecked`, `settled`
-  3. Reveal: the macro split; water fills the gaps, so light goes into the cloth instead of bouncing off. `unchecked`, `settled`
-  4. Trapped light: at the water's surface much of the light reflects back inward and bounces again; each bounce gives the fibre another chance to absorb it. `unchecked`, `settled` (total internal reflection, Lekner and Dorf's model)
-  5. Payoff: wet sand, a wet road at night, wet hair: the same trap. Twist: the colour you see when wet is closer to the dye's real colour, and dry cloth is the one wearing a white haze. Last line: "เสื้อคุณไม่ได้สีเข้มขึ้นตอนเปียก… ตอนแห้งต่างหาก ที่มันซีดกว่าความจริง" `unchecked`, `model` (the wording of "real colour" needs Boat's care)
-- **Ending:** `B_loop`.
-- **Voice / tone:** calm, curious narrator; the man one line and a shrug.
-- **Why it holds:** a glitch everyone has seen a thousand times and never asked about; the twist ("dry is the fake one") flips the obvious; the macro thread is a new painted world in the EP05 way.
-- **Evidence notes (thin spots):** the core is one well-cited optics paper and textbook physics, so the base is solid but narrow; the "real colour" twist is an interpretation and may be softened.
-- **Taste note:** stay with coloured cotton, sand and roads; no "white shirt turns see-through" angle (same physics, wrong picture for the channel).
-- **Research load:** named paper (Lekner and Dorf 1988) plus general optics.
-- **Kit check:** person from `PEOPLE` + `park-casual` (proposal `man-crop + park-casual, P?, suspicious`); ENV-FALL as rain, ENV-SKY overcast bands. New: soi-in-rain set with a wet road sheen, wet-patch overlay on the shirt (spreading darker tone), macro fibre plate with light-ray layer (rays as painted strokes that fade per bounce), wet-sand and wet-road inserts.
-- **Sound intent:** sudden rain hiss and a single fat drop "plip" as the hook stinger; muffled underwater-like bed for the macro dive; a glassy ping on each internal bounce, quieter each time; rain fades back for the twist.
-
-### C24 — หัวคุณแก่เร็วกว่าเท้า (wild card)
-
-- **Sub-genre:** sci-fi that is real (general relativity, gravitational time dilation).
-- **Staging:** `woman-curly + office` rides a glass lift up a tall Bangkok tower; two painted clocks float on her, one at her head and one at her feet, the head clock ticking a hair faster; final beat on the map app in her hand.
-- **Logline:** Time runs slightly faster the higher you are from the Earth's centre, so your head ages a tiny bit faster than your feet. Optical clocks have measured it over a height of 33 cm and up Tokyo's Skytree; GPS satellites have to correct for the same effect every day, or the map on your phone would drift.
-- **Hook (Thai):** "ตอนนี้หัวคุณกำลังแก่เร็วกว่าเท้า… และมือถือในมือคุณรู้เรื่องนี้ดี"
-- **Hook claim status:** `unchecked`, `settled` (gravitational time dilation; measured with optical clocks at 33 cm, Chou et al., Science, 2010). The size for one body is a `model` (a calculation, well under a millionth of a second over a lifetime) and the narration says how tiny it is.
-- **Key reveal image:** the woman standing in the lift, the city falling away below, a clock above her head and a clock at her feet with the head clock a sliver ahead, painted "ripples" of time spacing tighter near the ground.
-- **Beats:**
-  1. Lift doors close; the two clocks appear; she squints: "นาฬิกาสองอันนี้เดินไม่เท่ากัน". `unchecked`
-  2. The rule: closer to a big mass, time runs slower; higher up, faster. Einstein predicted it; it has been measured many times. `unchecked`, `settled`
-  3. Tiny but real: clocks raised just 33 cm run measurably faster (2010); a clock at the top of Tokyo Skytree, about 450 m up, gains a few billionths of a second a day (2020). `unchecked`, `settled`; exact figures `unchecked`
-  4. Over a whole life the gap between head and feet is less than a microsecond; nobody can feel it. `unchecked`, `model` (Preaw's rough calculation; Boat or Film recomputes)
-  5. Twist and payoff: GPS satellites run high and fast, and their clocks are set to correct for both effects; without it, positions would drift by kilometres a day. Last line: "ทุกครั้งที่คุณเปิดแผนที่… คุณกำลังใช้ทฤษฎีของไอน์สไตน์" `unchecked`, `settled` for the correction (about 38 microseconds a day); the "kilometres a day" drift is a widely quoted `model` that Boat checks.
-- **Ending:** `B_loop`.
-- **Voice / tone:** wonder-filled, slower narrator; the woman one line in the lift and a small laugh at the end.
-- **Why it is the wild card:** it breaks the R4 rule on purpose: nobody can feel the effect, so the "feel-it" moment is borrowed (the phone in hand, the lift ride). It is also the most "sci-fi" of the round and may land like EP05 or fall flat because the effect is invisible. Taste risk: the "head ages faster" line can read as a health claim; the narration must say early that the difference is far too small to matter.
-- **Evidence notes:** the physics is the best-established of the six; the thin part is only the numbers (lifetime figure, GPS drift distance), which are calculations that commonly circulate without sources.
-- **Research load:** general relativity basics plus named measurements (Chou, Hume, Rosenband and Wineland 2010; Takamoto, Katori and colleagues, Nature Photonics, 2020, Skytree) and GPS clock correction references.
-- **Kit check:** person from `PEOPLE` + `office` (proposal `woman-curly + office, P?, suspicious` then `laugh`); ENV-SKY for the rising skyline; kit `nod`. New: glass lift set with a moving city behind (parallax plate under the yaw camera), two clock props attached to the figure (head and foot anchors), time-ripple layer, GPS satellite insert, phone-map insert.
-- **Sound intent:** lift chime and a soft rising hum; two clock ticks, one a hair ahead of the other, drifting into a flam (the sound tells the idea, but the clock hands also show it); a high shimmering pad as the lift tops out; a satellite "ping" motif on the GPS twist.
-
----
-
 ## R4 — Summary
 
 | ID | Title | Sub-genre | Key reveal image | Hook (Thai) | Ending | Research | First kit check |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| C19 | คุณไม่เคยเห็นตาตัวเองขยับ | visual perception (saccades, chronostasis) | her vision as a film strip, eye-jump frames cut out and spliced | "ส่องกระจก มองตาซ้าย แล้วมองตาขวา… คุณจะไม่มีวันเห็นตาตัวเองขยับ" | B_loop | general + named study + device test | mirror set, film-strip layer; `eye-macro` lacks gaze control |
-| C20 | บันไดเลื่อนที่หยุดนิ่ง | motor control (broken escalator) | man on stopped escalator, ghost autopilot body striding ahead | "เคยก้าวขึ้นบันไดเลื่อนที่เสีย แล้วเซไหม… ทั้งที่ตาก็เห็นว่ามันไม่ขยับ" | B_loop | named studies (one lab) | new BTS escalator set, ghost-body layer, lurch motion |
-| C21 | แก้วกาแฟที่ร้องเพลงได้ | acoustics (hot chocolate effect) | cup cutaway, sound wave slowed through bubbles | "ชงกาแฟซองแล้วเอาช้อนเคาะก้นแก้ว… ฟังดี ๆ เสียงมันจะค่อย ๆ สูงขึ้นเอง" | B_loop | named paper + kitchen test | small: props, cup cutaway, wave layer |
-| C22 | พูดคำเดิมซ้ำจนคำพัง | language / memory (semantic satiation, jamais vu) | Thai word on a wall dissolving into brush strokes | "ลองพูดคำว่า 'ข้าว' ซ้ำ ๆ ยี่สิบรอบ… แล้วคำนี้จะเริ่มฟังไม่เหมือนภาษาไทย" | C_seamless | named studies + Ig Nobel + Thai try | cheapest: one wall, Thai glyph dissolve |
-| C23 | ทำไมของเปียกถึงสีเข้ม | optics (wet = darker) | macro thread split dry vs wet, light trapped in water | "เสื้อเปียกน้ำ สีถึงเข้มขึ้น… ทั้งที่น้ำไม่มีสีเลยสักนิด" | B_loop | named paper | rain soi (ENV-FALL), macro fibre plate |
-| C24 | หัวคุณแก่เร็วกว่าเท้า (wild card) | relativity (gravitational time dilation) | woman in a rising glass lift, head clock a sliver ahead of foot clock | "ตอนนี้หัวคุณกำลังแก่เร็วกว่าเท้า… และมือถือในมือคุณรู้เรื่องนี้ดี" | B_loop | named measurements + GPS | glass lift set, two clock props, GPS insert |
 
 **Preaw's pick for the viewer (not a decision):** C19 and C20. C19 is the purest "feel-it": the viewer runs the test in the first three seconds, gets an uncanny result, then gets a second test (selfie camera) that works the other way; it is the strongest "your world, secretly different" since EP03. C20 names a glitch nearly every BTS and MRT rider has felt and never knew was studied, it plays as an EP05-style body gag, and the share line is built in. Runner-up: C22 (cheapest build, the test works anywhere, but it depends on a Thai-word try). C21 is the most "ฉีก" topic and a strong surprise, held third only because its hook is sound-led and the 3-in-1 test is unproven.
 
@@ -731,18 +396,8 @@ Engine fixed: painted 2D p5.brush, 4-head cast, default look the [painted 3D cam
 
 | ID | Look (one line) | Key reveal, phone read (9:16) and "try it now" on screen | Scale / perspective / caption risk | Kit reuse vs `new:` | Cost |
 | --- | --- | --- | --- | --- | --- |
-| C19 | Small Thai bathroom at night, warm mirror light; the camera **is** the mirror (she looks straight down the lens), so no reflection geometry is needed; friend `woman-pixie` in profile at the door. Casting `girl-school + home-lounge, P?, neutral` then `surprised` | Film strip reads at phone size only as three large frames (est. 300–330 px wide each) scrolling left in y 240–780, one frame blanked and the one before visibly stretched; a five-frame strip makes each face too small. The tiny editor needs a bold silhouette (scissors) at est. ≥ 90 px. The clock beat reads well (a big second hand that visibly hangs on its first tick). **Try it now:** works without a demo because the screen can show the friend's view (eyes do move) against the girl's view (nothing moves); the viewer's own test is off screen. Hook risk: the main test needs a mirror, which a viewer in bed does not have; the phone in hand only offers the selfie camera, which gives the opposite result, so the immediate try is the twist, not the hook | Eye jumps at figure scale are cheap (`FaceState.look` pupil offset). In the eye macro, a gaze shift must move iris, pupil and catch-light together on the globe, not slide a flat disc, or the jump looks pasted. Mirror-as-camera keeps one set in world metres with a fixed front camera; the film strip is a screen-plane card, not world space. The selfie insert is a phone-screen card above the band | reuse: PEOPLE + `home-lounge`, `turn-head-*`, `FaceState.look`, `paintEyeMacro` close-ups, `PL-ZCPAINT-BATHROOM` as reference, `tension_clock-pulse_01` for the clock bed, `ui_click-tick_01`. `new:` gaze control in the eye macro (`new: iris shift`, a Boss extension of `EyeState`, small), bathroom-at-mirror set, film-strip layer with blank and stretched frames, tiny editor figure with scissors (`new: editor sprite`), wall clock with second hand, phone selfie insert. Sound gaps: NEEDS-GEN scissor snip, tape-stop, bright pluck | medium |
-| C20 | Generic elevated-rail station (no BTS logo or trademark livery, a "ปิดซ่อม" stand), afternoon, escalator seen side-on; casting `man-parted + office, P?, surprised` then `smug`; ghost autopilot as the same card at low opacity, one stride ahead | The strongest single image of the six for a body gag: a 9:16 frame suits a rising diagonal, the ghost leaning far forward against the real body pulled back reads instantly at thumbnail size if the ghost is a cool tint (not just lower opacity) and the camera is side-on (profile view, `view: 'right'`). The "อัตโนมัติ" switch on his back needs est. ≥ 120 px. **Try it now:** deliberately absent (safety); "you did this last week" carries it and the screen shows it fully, so no demo is needed | Steps on a slope are new world-metre geometry (est. 30° incline, tread 0.40 m, rise 0.20 m, est. figures; Boat or a photo confirms). Foot contact on treads is the build risk: each planted foot must sit on a tread top in the set's metres, not hand-placed per frame, or feet float; the profile camera (yaw 90° to the escalator) keeps this one-plane. Stage the landing and his body above the band (est. head y 300, feet y 820 on the top landing); the diagonal may cross the band as background only. Beat 4 dark-stairs insert is a second small set | reuse: PEOPLE + `office`, `gasp-recoil`, `look-around`, walk cycle as the stride base, `vehicle_bts-viaduct-passby_01`, `foley_jump-scuff-sneakers_01`. `new:` station escalator set with rail and stand, ghost-body layer (tinted duplicate card, stride offset), `new: lurch` motion (step-on, pitch forward, rail grab), step-up foot placement on treads, dark-stairs insert with a phantom-step stamp. Sound gaps: NEEDS-GEN station room tone and PA chime, rail clang, low thud | medium |
-| C21 | Morning kitchen counter, warm window light; `woman-ponytail + home-lounge, P?, surprised`; mug and spoon on the counter, then a clean cutaway of the mug as a diagram | Cutaway reads if bubble density is shown as a whitening of the liquid with a few dozen visible bubbles near the glass, not thousands of dots (sub-pixel at phone size), and the wave is one thick bright stroke whose wavelength visibly lengthens. **Try it now:** the screen cannot let the viewer hear their own cup, and the hook is sound-led in a feed often watched muted: the climbing note must be visible (a stepped "ติ๊ง" glyph ladder or a pitch meter, as Preaw's rule note says), placed above the band. The viewer can only try it at their next coffee, so the immediate payoff is weaker than C19/C22 | Low risk: one set with a fixed counter camera plus a screen-plane cutaway card. The rising tink should come from one real recording pitch-stepped by Editor, matched to the painted wave steps, so sound and picture agree. Keep the mug and spoon above the band (counter top est. y 700–820) | reuse: PEOPLE + `home-lounge`, `PL-EDU-KITCHEN` and the EP02 kitchen module (`src/painted/edu02/`) as counter reference, `glow.tsx` `Bubbles` and ENV-FALL bubbles retinted for the bubble field, `water_ice-settle-tick_01` and `ui_notification-ding_01` as interim tinks. `new:` mug, spoon, coffee sachet props (first kitchen props in the rig), cup cutaway plate, density-driven wave layer, `new: spoon tap` motion, stepped-pitch glyph. Sound gap: a real spoon-on-mug recording (preferred over generation; Stable Audio does not follow a pitch climb reliably) | cheap |
-| C22 | Plain warm-plaster wall in a boy's room, late afternoon raking light; `boy-school + home-lounge, P?, neutral` then `worried`; the word "ข้าว" huge on the wall | The best phone read of the six: one huge Thai word, half solid, half loose strokes, reads at thumbnail size. **Try it now:** fully works on screen with no demo and no props; the viewer can even do it silently in public (saying it in the head). Risk is visual monotony: one wall for 40–60 s needs a camera progression (slow push-in, a yaw half-orbit around the boy so the word slides in parallax, letter fragments drifting into world space) or retention drops | The word must live on the wall plane in world metres so it holds perspective during the yaw; rendering Thai glyph outlines as brush paths in p5 (with vowels and tone marks attached) is **unknown** status in the painted engine. Fallback: an SVG/Remotion text layer projected onto the wall plane with a stroke-dissolve mask, which keeps Thai shaping exact. The word, counter and any repeat text sit above the band (word est. y 250–700); subtitles carry narration only. 20 Gemini TTS repeats with a drifting delivery cost several takes against the 100 req/day quota | reuse: PEOPLE + `home-lounge`, kit `talk` mouth, `idle-breathe`, `ui_click-tick_01` for the counter, `tone_thin-unresolved_01` as a seed for the drone. `new:` wall set (trivial), Thai word layer with dissolve-to-strokes (one new text effect, capability check first), on-screen counter, fragment drift layer. Sound gap: NEEDS-GEN reverse-cymbal riser | cheap |
-| C23 | Sudden Bangkok rain in a soi, overcast; `man-crop + park-casual, P?, suspicious`, coloured cotton shirt (not white); a dive into one thread as a macro diagram world | Wet patch spreading darker on the shirt reads well at mid-shot. The macro split reads only with two or three fibres and thick, few rays (est. ≤ 6 rays per side), fading per bounce; more rays become texture. **Try it now:** the screen carries it fully (everyone has seen it), and a safe instant test exists in the viewer's hand (a wet fingertip on a sleeve or tissue); that is Preaw's and Boat's call, not in the current beats. Hook is the weakest of the six for surprise: "why" curiosity without a felt glitch until the beat-5 twist | Rays must be traced in one 2D slab model (enter, reflect at the water surface past the critical angle, attenuate per bounce), not hand-drawn, or the diagram contradicts the narration. Macro plate is screen-plane XY. Rain soi is one world-metre set; ENV-FALL already thins rain to 1/3 in the band | reuse: PEOPLE + `park-casual`, ENV-FALL rain, ENV-SKY overcast, `sea.ts` `paintRain`, `PL-ALV-SEA-OVERCAST` as rain reference, `weather_rain-thunder-distant_01` (drop the thunder or NEEDS-GEN a thunder-free soi rain), `water_underwater-shallow-ambience_01` for the macro bed, `reveal_glass-shimmer-soft_01` for bounces. `new:` rain soi set with wet-road sheen, spreading wet-patch overlay, macro fibre plate with traced ray layer, wet-sand and wet-road inserts. Sound gap: NEEDS-GEN fat drop "plip" | medium |
-| C24 | Glass lift rising up a Bangkok tower at golden hour; `woman-curly + office, P?, suspicious` then `laugh`; two clocks floating at her head and feet; GPS and phone-map inserts | Full standing figure suits 9:16: head clock high (est. y 300–450), foot clock low (est. y 1400–1550, below the band), so the vertical frame itself is the idea. The difference cannot be seen; it must be shown as an openly labelled exaggeration (a caption card "ขยายให้เห็น" in the frame, not only in narration) or it misinforms. **Try it now:** none by design; the phone map is the only felt anchor and it reads as an insert | Lift rise is a vertical `YCam` translation with the skyline plate at depth, so near buildings pass faster than far ones (true parallax, not a slid backdrop). Time ripples are a diagram layer, screen-plane. Clocks hang from figure anchors (head top, feet), so they follow the figure without per-frame placement | reuse: PEOPLE + `office`, ENV-SKY golden-hour bands, `paintSkyDisc`, EP05 facade (`src/painted/edu05/facade.ts`, `exists-unintegrated`, promote on reuse) for tower faces, `nod`, `ui_notification-ding_01` as the GPS ping seed. `new:` glass lift set with skyline parallax plate, two clock props on anchors, time-ripple layer, GPS satellite insert, phone-map insert. Sound gaps: NEEDS-GEN lift chime and rising hum, high pad | medium |
 
 Safety and taste notes:
-- **C20 (main concern).** Stairs and escalators are a real fall risk. Keep it safe by: no line inviting a try; the lurch ends with a rail grab every time, never a fall, a tumble or an injury; the handrail line said once and shown (his hand on the rail in the final shot); the escalator is stopped and barriered in every shot, never moving with the gag on it; beat 4's dark-stairs phantom step ends with a flat-foot stamp and a hand on a wall or rail, no fall; no real operator logo or livery.
-- **C21.** Hot liquid: the cup stays on the counter in every tap shot, her hand only holds the spoon; steam light; no child character with the hot cup; no close-up of hot liquid near a face.
-- **C23.** Coloured cotton, sand and roads only (Preaw's taste note stands); no lightning, flooding or wading; the man shelters, he does not run on a wet road.
-- **C24.** The "head ages faster" line reads as a health claim unless the tiny size is said and shown early (on-screen card in beat 1 or 2).
 - C19, C22: no physical risk. C22 note: the repeated word is a staple food; keep it neutral, no mockery of the boy.
 
 "Feel-it" judgment (Film's read of the brief, no analytics): strongest felt moments are **C20** (lived by nearly every rail rider, best body gag, built-in tag line) and **C19** (uncanny instant result, two opposite tests), then **C22** (instant and free, but a quieter result and one wall). Weaker on hook or share: **C23** (curiosity without a felt glitch; the twist arrives late), **C21** (the most "ฉีก", but sound-led and only testable later, so muted viewers miss the hook), **C24** (strong sci-fi hook matching the EP05 signal, but nothing to feel by design).
@@ -813,52 +468,6 @@ Hypothesis only, from the user's keeps and drops (no analytics supplied):
 - **Kit check:** person from `PEOPLE` + `home-lounge` (proposal `woman-bob + home-lounge, P?, surprised` then `laugh`); kit `hands.ts` `paintPovHand` as the POV base, `sit-down` for the sofa. New: finger-crossing hand macro (`new: crossed fingers`, the same finger-level hand Boss builds for C28), nose-tip close-up, brain-map layer (a small hand drawn on a brain surface with glowing touch points), crossed-arms tap insert with a second person.
 - **Sound intent:** quiet living-room tone; a soft double "pip" as the second nose appears (one touch, two sounds), then silence while the viewer tries; a light pizzicato bed under the explanation; a muffled tap pair for the crossed-arms beat with the second tap landing on the wrong side.
 
-### C26 — ลมหายใจเดียว ร้อนก็ได้ เย็นก็ได้
-
-- **Sub-genre:** thermal physics of air (jet mixing, convection and evaporation; the fan twist).
-- **Staging:** `man-spiky + home-lounge` in a hot Bangkok bedroom at night; he breathes "ฮ่า" on his palm, then "ฟู่"; the two breaths are painted as visible air streams, warm orange and cool blue; the camera ends on the ceiling fan.
-- **Logline:** Breathe on your palm with your mouth open and it feels warm; purse your lips and blow and it feels cool, though it is the same breath from the same lungs. The pursed-lip jet is fast and narrow, so it drags in room air on the way and sweeps heat and moisture off your skin; the open-mouth breath arrives slow and close to body heat. The same idea explains why a fan cools you without cooling the room at all.
-- **Hook (Thai):** "อ้าปากเป่ามือ 'ฮ่า' มันอุ่น… ห่อปากเป่า 'ฟู่' มันเย็น… ลมเดียวกันแท้ ๆ"
-- **Hook claim status:** `unchecked`, `settled` that the effect happens; `model` for the explanation (popular explainers often credit gas expansion, which is likely a minor part; Boat checks which mechanism the physics sources give most weight).
-- **Key reveal image:** a palm in close-up with two painted air streams side by side: a wide, slow orange cloud that lands on the skin still warm, and a thin fast blue jet that pulls swirls of room air into itself and strips a glowing heat layer off the skin.
-- **Beats:**
-  1. Try it now: "ฮ่า" on the palm, then "ฟู่". He frowns at his hand. `unchecked`, `settled`
-  2. The clue: both breaths leave the body at about the same temperature. `unchecked`, `settled`
-  3. Reveal: the two streams; the fast jet mixes with cooler room air and moves faster across the skin, carrying heat and sweat away; the slow breath barely mixes. `unchecked`, `model`
-  4. Use it: pursed lips to cool a spoon of hot tom yum, open mouth to warm cold hands. `unchecked`, `settled`
-  5. Twist and payoff: the ceiling fan never makes the room cooler (its motor even adds a little heat); it only blows away the warm layer around your body and dries your sweat. Last line: "พัดลมไม่เคยทำให้ห้องเย็นลงเลย… มันแค่เป่าความร้อนออกจากตัวคุณ" `unchecked`, `settled` (fan physics); the "adds a little heat" detail `unchecked`
-- **Ending:** `A_fade` (the fan keeps turning; a loop is possible if Film prefers, last line to first "ฮ่า").
-- **Voice / tone:** warm, conversational narrator; the man two breath sounds and one "เอ๊ะ".
-- **Why it holds:** the test is free, instant and works with the phone in the other hand; every Thai viewer sleeps under a fan, so the twist hits their own bedroom tonight; the tom yum line makes it useful.
-- **Evidence notes (thin spots):** the effect is everyday knowledge, but the explanation is often given wrongly online (expansion cooling as the main cause). Preaw expects mixing and convection to be the main story; this is the thinnest part and must follow Boat's source. The "fan heats the room" line depends on motor power and room size and may become "ไม่ได้ทำให้อากาศเย็นลง" only.
-- **Research load:** general physics (convection, evaporative cooling, jet entrainment) plus a source that addresses the breath demonstration directly, if one exists.
-- **Try-it-now safety:** two breaths only, no repeated fast blowing (light-headedness); nothing hot near the face (the tom yum spoon is shown, not invited).
-- **Kit check:** person from `PEOPLE` + `home-lounge` (proposal `man-spiky + home-lounge, P?, suspicious`); kit `hands.ts` `paintPovHand` for the palm; `ENV-FOG` `paintFogBank` puffs retinted may seed the breath clouds; `PL-ZCPAINT-ROOM-NIGHT` as a bedroom reference only. New: hot bedroom set with a ceiling fan (rotating blades in world metres), two-stream air layer (wide slow cloud vs narrow jet with entrained swirls), skin heat-layer glow, tom-yum spoon insert (first soup prop).
-- **Sound intent:** night insects and a slow fan hum; the two breaths are close-miked and different ("ฮ่า" breathy and low, "ฟู่" thin and hissy) but the colours carry the clue with sound off; a light lo-fi bed; the fan hum swells into the twist and then cuts to silence on the last line.
-
-### C27 — บีบจมูกแล้วลูกอมไม่มีรส
-
-- **Sub-genre:** chemical senses (flavour as retronasal smell).
-- **Staging:** `girl-school + school` at her desk after school, pinching her nose and chewing a strawberry candy; a painted head cutaway shows the mouth, the tongue and a hidden "back door" channel from the back of the mouth up into the nose.
-- **Logline:** Pinch your nose and eat a fruit candy: it is only sweet, with no strawberry at all. Let go and the strawberry floods in. Your tongue only tastes sweet, sour, salty, bitter and umami; most of what you call flavour is smell, rising through the back of your mouth into your nose while you chew.
-- **Hook (Thai):** "บีบจมูกไว้ แล้วกินลูกอมรสสตรอว์เบอร์รี… มันจะหวานเฉย ๆ ไม่มีรสอะไรเลย"
-- **Hook claim status:** `unchecked`, `settled` (retronasal olfaction; the nose-pinch demonstration is a standard classroom and lab demonstration). The candy type needs a real try: soft fruit candy or a jelly bean is the usual example.
-- **Key reveal image:** the head cutaway: candy in the mouth, a glowing pink scent stream rising behind the soft palate into the nose, blocked by the pinch like a closed door; the fingers let go and the stream rushes up and the head lights up pink.
-- **Beats:**
-  1. Try it now: pinch, chew, "หวาน… แค่หวาน". `unchecked`, `settled`
-  2. Let go: "สตรอว์เบอร์รี!" The taste arrives a second after the fingers open. `unchecked`, `settled`
-  3. Reveal: the cutaway; the tongue gets five basic tastes, the strawberry is a smell travelling up the back door while you chew and breathe out. `unchecked`, `settled`
-  4. Proof from life: food tastes of nothing when you have a blocked nose from a cold. `unchecked`, `settled`
-  5. Payoff and twist: you have two ways to smell, sniffing in from outside and breathing out from inside, and the brain files the inside one as "taste". Last line: "ลิ้นคุณไม่เคยรู้จักรสสตรอว์เบอร์รี… จมูกคุณต่างหากที่กินมัน" `unchecked`, `settled` (two-route smell); "files it as taste" is `model` wording
-- **Ending:** `B_loop`.
-- **Voice / tone:** bright, quick narrator; the girl two lines, the second a delighted surprise.
-- **Why it holds:** the result is total and instant (nothing, then everything); almost everyone has a snack within reach; the cold-nose beat explains a misery every viewer has had; the head cutaway is a clean painted inside-view.
-- **Evidence notes (thin spots):** the core is solid. The widely shared "80 % of flavour is smell" figure has no clear source and stays out unless Boat finds one. The list of basic tastes (five, with debate over fat and others) is said as "อย่างน้อยห้าอย่าง" unless Boat prefers otherwise. No COVID beat: smell loss is real but brings a health topic the channel does not need here.
-- **Research load:** general knowledge (retronasal olfaction, basic tastes) plus one review source for the demonstration.
-- **Try-it-now safety:** a small soft candy, sitting up, breathing through the mouth normally; no hard candy for young children, no talking or laughing with candy in the mouth while the nose is pinched; any allergy-free snack works.
-- **Kit check:** person from `PEOPLE` + `school` (proposal `girl-school + school, P?, neutral` then `surprised`); kit `eat-chew` motion (exists), `point-and-say`. New: desk set (classroom or bedroom; `PL-HANAKO-CLASSROOM` as a reference only), candy prop and wrapper, nose-pinch hand pose (`new: pinch nose`), head cutaway plate (profile head with mouth, tongue, soft palate and nasal channel, kept clean and diagrammatic), scent-stream layer with a "door" at the pinch.
-- **Sound intent:** after-school room tone, a crinkly wrapper as the hook stinger; muted, dull music while the nose is pinched (low-pass), and the music opens to full brightness the moment she lets go (the flavour arriving is heard as well as painted); a soft chime on the last line.
-
 ### C28 — นิ้วนางที่ยกไม่ขึ้น
 
 - **Sub-genre:** anatomy and biomechanics (shared extensor tendons; finger independence).
@@ -882,62 +491,12 @@ Hypothesis only, from the user's keeps and drops (no analytics supplied):
 - **Kit check:** people from `PEOPLE` + `office` (proposal `man-elder + office, P?, laugh`, `boy-school + home-lounge, P?, worried`); kit `hands.ts` (`paintPovHand`, `thumbShape`, `twoBone` for finger segments) as the base; `PL-EDU-KITCHEN` as a table reference only. New: finger-level flat-hand macro with per-finger lift (`new: finger lift`, shared with C25's crossed fingers), see-through hand layer with tendon cords and linking bands (clean diagram style, no gore), dining-table set with a lamp, piano-keys insert.
 - **Sound intent:** quiet evening room tone, a clock far off; a soft "tap" each time a finger lifts and lands (three taps, then a held silence for the stuck ring finger as the stinger); a gentle piano phrase that stumbles on one note for the musician beat; plucked-string motif on the "shared strings" line.
 
-### C29 — อย่าหาวนะ
-
-- **Sub-genre:** social behaviour (contagious yawning).
-- **Staging:** a quiet afternoon classroom; one yawn passes from `girl-school` to the boy beside her, to the teacher (`woman-long + office`) (people only, no animals), then the camera turns to face the viewer.
-- **Logline:** Just reading or hearing about yawning makes many people yawn; you may yawn before this video ends. Contagious yawning appears in people from about the age of four or five, but babies yawn even before birth. Nobody knows for sure what a yawn is for: one idea is that it cools the brain.
-- **Hook (Thai):** "คลิปนี้มีภารกิจเดียว… ทำให้คุณหาวก่อนมันจบ"
-- **Hook claim status:** `unchecked`, `settled` that yawning is contagious for many people (seeing, hearing or reading about it); `unchecked` what share of people (figures vary by study; no number in the hook).
-- **Key reveal image:** the classroom from above: each yawn painted as a soft wave ring that spreads from one face to the next desk, the last ring rolling out of the screen toward the viewer.
-- **Beats:**
-  1. The challenge: "อย่าหาวนะ"; the girl yawns. `unchecked`
-  2. The chain: the boy catches it, then the teacher; seeing, hearing and even reading about a yawn can trigger one. `unchecked`, `settled`
-  3. When it starts: babies yawn in the womb, but catching yawns from others appears later in childhood. `unchecked`, `settled` for yawning before birth (ultrasound studies); age of onset `unchecked` (Helt and colleagues, 2010, about four to five years)
-  4. Why we yawn: nobody is sure; one hypothesis is that a yawn cools the brain (Gallup and colleagues); another links catching yawns to closeness with the person yawning; both are debated. `unchecked`, `hypothesis`
-  5. Payoff: the wave rolls off the screen to the viewer. Last line: "ถ้าคุณหาวไปแล้ว… ไม่ต้องอาย ส่งให้เพื่อนดูว่าเขาจะทนได้นานกว่าคุณไหม" `unchecked`
-- **Ending:** `A_fade` on the empty classroom (or `B_loop` with "อย่าหาวนะ" as the hook again; Preaw prefers the fade, the share line is the end).
-- **Voice / tone:** slow, sleepy narrator who fights a yawn once mid-video (a performance cue for Gemini TTS, not a fact); characters only yawn, no lines except the teacher's "ใครหาว…"
-- **Why it holds:** the viewer is the test without doing anything; the hook is a challenge that is fun to lose; the share line is a dare.
-- **Evidence notes (thin spots):** the thinnest of the round. Contagion is well documented, but how many people catch yawns varies widely between studies; the purpose of yawning is unknown; the "closeness / empathy" link has failed some replications, so the narration only says "บางงานวิจัยบอกว่า". No dog or animal contagion beat (mixed evidence and it would pull back toward R2 pets).
-- **Research load:** named studies (Provine's yawning work; Helt et al. 2010 on onset; Gallup's brain-cooling papers; one replication or review on the empathy link) plus general knowledge.
-- **Kit check:** people from `PEOPLE` (proposal `girl-school + school, P?, sleepy`, `boy-school + school, P?, sleepy`, `woman-long + office, P?, neutral` then `sleepy`); kit `idle-breathe`, `turn-head-to-camera`; `PL-HANAKO-CLASSROOM` as a classroom reference only (a horror set; repaint for a warm afternoon). New: warm afternoon classroom set with desks in world metres, yawn mouth and face shape (`new: yawn`, a wide open mouth with closing eyes; check `expressions.ts` for a `sleepy` face first), stretch-arm pose, wave-ring layer, top-down camera.
-- **Sound intent:** soft afternoon classroom ambience (a fan, distant traffic, pages); each yawn is a real breathy yawn sound (generated voice or recorded), and the wave ring carries it visually; a slow, drowsy music box bed; the music winds down like a toy losing power before the last line.
-
-### C30 — คุณไม่เคยแตะอะไรเลย (wild card)
-
-- **Sub-genre:** atomic physics (empty atoms, electric repulsion, what "touch" means).
-- **Staging:** a fingertip touching a phone screen; the camera dives through skin ridges, cells and glass down to atoms, painted as tiny nuclei inside soft electron clouds; two clouds meet and push back before they overlap.
-- **Logline:** Atoms are almost entirely empty: if an atom were a football stadium, its nucleus would be a small bead in the centre. When your finger "touches" your phone, the electrons in your finger and in the glass push each other away, so the nuclei never meet. Is that not touching? Physicists say that push is exactly what touching is, so you touch things all the time.
-- **Hook (Thai):** "คุณไม่เคยแตะอะไรเลยในชีวิต… แม้แต่มือถือที่คุณถืออยู่ตอนนี้"
-- **Hook claim status:** `unchecked`, `model` (true only for one definition of touching; the twist at beat 5 corrects the hook on screen, so the hook is a fair setup, not a false claim).
-- **Key reveal image:** the atomic scale: two soft electron clouds, one from the finger and one from the glass, flattening against each other like two balloons pressed together, a thin dark gap between them, the tiny nuclei far inside.
-- **Beats:**
-  1. The touch: a finger taps the phone; the camera dives. `unchecked`
-  2. Empty atoms: a nucleus is tiny compared with the whole atom; the stadium-and-bead comparison. `unchecked`, `settled` (ratio about 1 to 100,000 in size; the comparison object needs Boat's arithmetic)
-  3. Reveal: the clouds meet and push apart; the push comes from the electrons' electric charge and from a quantum rule that stops them from crowding into the same state. `unchecked`, `settled` (electromagnetism plus the Pauli exclusion principle; how much each contributes is a point Boat keeps simple)
-  4. What you feel: nerves in the fingertip read that push as pressure. `unchecked`, `settled`
-  5. Twist: so did you touch it? If touching means "atoms push on each other at a tiny distance", then that is all touching ever was, and you touch things all day. Last line: "คุณไม่เคยแตะอะไรเลย… หรือนี่แหละคือการแตะ ที่เป็นมาตลอด" `unchecked`, `model` (a definition question; the narration presents it as one)
-- **Ending:** `B_loop` (the camera pulls back up to the fingertip on the phone, matching the hook frame).
-- **Voice / tone:** wonder-filled, slower narrator; no character lines.
-- **Why it is the wild card:** it breaks the round's rule on purpose: there is nothing to try that gives a new result, only the phone in hand as an anchor, and the picture is entirely a model (electrons have no true look, so every frame is a labelled drawing). It is the most "sci-fi" of the round and matches the EP05 scale signal (a camera dive through scales), but it may feel abstract. The kit has nothing at cell or atomic scale, no dive-through-scales camera move, and no character on screen after beat 1.
-- **Evidence notes:** the physics is textbook and the best-established of the six. Thin parts: the comparison numbers (stadium and bead, how much of you is "empty") circulate without sources and must be recomputed; popular figures such as "you hover a fraction of a nanometre above your chair" stay out unless Boat finds a sourced value. The hook depends on fair framing: it must be answered by beat 5.
-- **Research load:** general physics (atomic structure, Pauli exclusion, electromagnetism, touch receptors) plus one authoritative explainer for the "do we ever touch" framing.
-- **Kit check:** person from `PEOPLE` for beat 1 only (proposal `woman-curly + home-lounge, P?, neutral`); kit `hands.ts` `paintPovHand` for the fingertip on the phone; kit phone prop (rig); `glow.tsx` for soft cloud glow. New: phone-screen macro, scale-dive sequence (skin ridges, cells, glass lattice, atoms), electron-cloud and nucleus layer (labelled as a model on screen, e.g. "ภาพจำลอง"), cloud-press deformation, dive camera move through scales (`new: scale dive`, likely screen-plane zoom cards rather than world metres).
-- **Sound intent:** a phone tap as the hook stinger; a deep whoosh riser through each scale step, the room tone thinning to near silence at the atomic scale; a soft low hum for the clouds pressing; a single warm chime on the twist, then the tap sound again as the camera returns.
-
----
-
 ## R5 — Summary
 
 | ID | Title | Sub-genre | Key reveal image | Hook (Thai) | Ending | Research | First kit check |
 | --- | --- | --- | --- | --- | --- | --- | --- |
 | C25 | จมูกสองอัน | touch perception (Aristotle's illusion) | crossed fingers on one nose below, brain's uncrossed hand with two noses above | "ไขว้นิ้วชี้กับนิ้วกลาง แล้วเอาไปแตะปลายจมูก… คุณจะรู้สึกว่ามีจมูกสองอัน" | B_loop | general + named studies | finger-level hand macro (shared with C28), brain-map layer |
-| C26 | ลมหายใจเดียว ร้อนก็ได้ เย็นก็ได้ | thermal physics of air (jet mixing; fan twist) | palm with a slow orange breath cloud vs a fast blue jet stripping heat | "อ้าปากเป่ามือ 'ฮ่า' มันอุ่น… ห่อปากเป่า 'ฟู่' มันเย็น… ลมเดียวกันแท้ ๆ" | A_fade | general physics; mechanism source needed | bedroom set with fan, two-stream air layer |
-| C27 | บีบจมูกแล้วลูกอมไม่มีรส | chemical senses (retronasal smell) | head cutaway, scent stream blocked at the pinch, then rushing up | "บีบจมูกไว้ แล้วกินลูกอมรสสตรอว์เบอร์รี… มันจะหวานเฉย ๆ ไม่มีรสอะไรเลย" | B_loop | general + review | `eat-chew` exists; head cutaway plate, pinch pose |
 | C28 | นิ้วนางที่ยกไม่ขึ้น | anatomy (shared extensor tendons) | see-through hand, middle and ring tendons tied, ring cord stuck | "วางมือแบนบนโต๊ะ พับนิ้วกลางลงไป… แล้วลองยกนิ้วนางดูสิ" | B_loop | general anatomy + Schumann (uncertain) | finger-lift hand macro (shared with C25), tendon layer |
-| C29 | อย่าหาวนะ | social behaviour (contagious yawning) | yawn waves spreading desk to desk, last one rolling to the viewer | "คลิปนี้มีภารกิจเดียว… ทำให้คุณหาวก่อนมันจบ" | A_fade | named studies, mixed evidence | classroom set, `new: yawn` face, wave-ring layer |
-| C30 | คุณไม่เคยแตะอะไรเลย (wild card) | atomic physics (what touch is) | two electron clouds pressing like balloons, nuclei far inside | "คุณไม่เคยแตะอะไรเลยในชีวิต… แม้แต่มือถือที่คุณถืออยู่ตอนนี้" | B_loop | general physics | nothing at atomic scale; scale-dive sequence |
 
 **Preaw's pick for the viewer (not a decision):** C28 and C25. C28 is the strongest felt moment of the round: nearly every viewer tries it on the spot and nearly every viewer fails, which is funny, personal and shareable, and the see-through hand is a clean inside-view. C25 is the fastest test (three seconds, lying down) with an uncanny result and a 2,000-year-old surprise; the two share one new asset (a finger-level hand macro), so building one makes the other cheaper. Runner-up: C26, the most useful in Thai daily life (the fan twist) but its explanation needs Boat's source first. C27 is a sure-fire test held fourth only because it needs a snack within reach.
 
@@ -954,11 +513,7 @@ Engine fixed: painted 2D p5.brush, 4-head cast, default look the [painted 3D cam
 | ID | Medium / look | Key read at 9:16 and "try it now" on screen | Buildability | Size |
 | --- | --- | --- | --- | --- |
 | C25 | Painted 2D, warm living-room evening; POV crossed fingers at the nose tip in close-up, brain-map card above (screen-plane), sofa cut-in `woman-bob + home-lounge, P?, surprised` then `laugh` | Split frame reads if the brain map is upper half (est. y 240–760) and the real hand lower half above the band (est. y 780–860 tip, band kept clear); two noses must be two clear painted shapes, one under each uncrossed fingertip. Try-it works fully on screen; the result is felt, the picture only confirms it. Crossed-arms insert needs a second figure tapping both hands: shown, not invited | new assets: shared hand macro (crossed fingers), nose-tip close-up of the 4-head face at macro scale, brain-map layer (small hand on a brain surface, glowing touch points), crossed-arms tap insert. Sound: `foley_soft-landing-tap_01` for the taps, `stinger_pizz-shrug_01` / pizz bed; NEEDS-GEN soft double "pip" | M (S after C28) |
-| C26 | Painted 2D, hot Bangkok bedroom at night, lamp-warm vs blue moonlight; `man-spiky + home-lounge, P?, suspicious`; palm close-up with two painted air streams; end on the ceiling fan from below | Colour carries the clue with sound off: orange wide slow cloud vs thin blue jet with entrained swirls, side by side on one palm. Fan twist reads as a slow push-in on turning blades with a heat-layer glow peeling off his body. Try-it works on screen; no demo needed | new assets: bedroom set with ceiling fan (blades rotating in world metres; EP06 `room.ts` as a room base), two-stream air layer (seed from `ENV-FOG` `paintFogBank` puffs, retinted), skin heat-layer glow, tom-yum spoon insert (first soup prop). Palm uses `paintPovHand` as is (open palm). Sound: `reveal_warmth-fwoop_01` for the warm breath, `whoosh_air-swish-rising_01` for the jet; NEEDS-GEN night insects plus fan hum loop | M |
-| C27 | Painted 2D, after-school desk in late-afternoon light; `girl-school + school, P?, neutral` then `surprised`; profile head cutaway as a clean diagram (flat-diagram style of `PL-EDU-ONION-CELLS`) | Cutaway reads in profile at est. 700 px head height, upper frame; the "door" at the pinch and the pink stream rushing up are one bold shape each. The music opening on release (low-pass to full) is the best sound-picture match of the round. Try-it needs a snack; the screen carries the moment fully | ready: `eat-chew` motion and profile chew strips, `point-and-say`, `school` wardrobe. new assets: desk set (bedroom or classroom), candy and wrapper props, `new: pinch nose` hand-to-face pose, profile head cutaway plate (mouth, tongue, soft palate, nasal channel), scent-stream layer with a door. Sound: `foley_packaging-rustle_01` as interim wrapper, `ui_notification-ding_01` for the chime | M |
 | C28 | Painted 2D, dining table under one warm pendant lamp, evening; `man-elder + office, P?, laugh` and `boy-school + home-lounge, P?, worried`; hands from a high three-quarter camera, skin turning see-through to show tendon cords (diagram style, no gore) | Hands on a table sit low in a natural frame; the camera must tilt down so both flat hands sit above the band (est. y 300–820). Stuck ring finger reads only if the other three lifts are big and clear (est. lift ≥ 40 px at macro scale). Try-it: every viewer tries it at once; the screen shows the failure and the reason. Piano insert is a cutaway card | new assets: shared hand macro (flat palm-down, per-finger lift), see-through tendon layer riding on the same finger bones (one forearm muscle splitting to cords, linking bands, two extra cords), dining-table set with lamp, piano-keys insert. Sound: `foley_soft-landing-tap_01` for finger taps; NEEDS-GEN stumbling piano phrase, plucked-string motif | M |
-| C29 | Painted 2D, warm sleepy afternoon classroom, low sun through blinds; `girl-school`, `boy-school` (`school`), `woman-long + office`; top-down plan of desks with yawn rings | Yawn faces read at mid-shot if the mouth opens wider than `shock` (open about 1.0) with eyes closed; ring waves read as two or three thick soft rings, not many thin ones. The last ring rolling toward the lens is the payoff. Try-it is passive: the viewer either yawns or not, nothing to stage | ready: `sleepy`, `asleep` expressions (a `yawn` face is likely a new combination: `asleep` eyes plus a wide-open mouth), `idle-breathe`, seated poses (`poses-seated.ts`), `turn-head-to-camera`. new assets: classroom set with desks in world metres, `new: yawn` face, stretch-arm pose (check P01–P45 first), wave-ring layer. **missing capability (unknown status):** a straight top-down view; the yaw camera may only reach a high oblique, which is an acceptable fallback. Weakest inside-view: the rings show spread, not a mechanism. Sound: NEEDS-GEN yawn voice (Gemini TTS vocal sound), music-box bed winding down, classroom ambience | S |
-| C30 | Painted 2D throughout, flat-diagram look below skin scale with an on-screen "ภาพจำลอง" label; fingertip on a phone at the start and end | Each scale must read as one clear image (skin ridges, glass lattice, two clouds); the cloud press is a strong cover image. No character after beat 1 makes 40–60 s of model imagery the retention risk. Try-it: none by design | missing capability: scale-dive camera move (chained screen-plane zoom cards with cross-dissolves; EP05 `macro.ts` is only a two-scale precedent). new assets: phone-screen macro, four or five scale plates, electron-cloud and nucleus layer with press deformation, label card. Sound: `whoosh_heavy-cinematic_01` per scale step, `reveal_glass-shimmer-soft_01`, `foley_umbrella-tap-glass_01` as interim phone tap; NEEDS-GEN low hum | L |
 
 Safety and taste notes (Film): C25 fingertips stay on the nose tip in every frame, never near the eyes. C26 shows two breaths only and never a spoon of hot soup near a child's face. C27 the girl sits up in every chewing shot and never laughs with candy in her mouth while pinched. C28 no hand ever pulls a finger up. C30 the "ภาพจำลอง" label stays on screen at every scale below the skin.
 
@@ -977,3 +532,225 @@ Ranking by reach vs cost:
 ## R5 — User pick (W0.3, 2026-11-08)
 
 User kept **C25, C26, C27, C28, C30** (structured question, two multi-select questions); **C29 not picked**. Episode order not yet chosen. Film ranking: C28 > C25 > C27 > C26 > C29 > C30 (Film recommends C28 and C25 back to back for the shared hand macro). Context: user asked Preaw for six more education concepts, no topic given.
+
+---
+
+## R6 — Preaw pitch (2026-11-08)
+
+- **Request (user, 2026-11-08, via coordinator):** "แพรว ใช้ rule การ pitch ใหม่ หาเรื่องมาให้ผม 6 เรื่อง": six concepts under the new pitch rule, no topic given, so Preaw proposes the topics.
+- **How Preaw read it:** "the new pitch rule" is [ER08](../../docs/scriptwriting-principles.md#edu-short-retention-default-user-8-nov-2026). Every concept below carries the four-line pitch check, a one-line counter-intuitive claim (ER01), the one rule that returns as a refrain and flips (ER03), and a beat chain where each beat opens the next with "แต่…" (ER06). A beat whose honest answer would be "evidence unclear" was cut at pitch stage, not hedged (ER07).
+- **What steers this round (measured only):** [channel performance](../../docs/channel-performance.md) has three posted edu Shorts. EP05 "ถ้าคุณตัวเล็กเท่ามด": 24k views, 20.2 % swiped away, ~91 % watched. EP02 and EP03: 1.3k–2.5k views, 34–37 % swiped away, 60–66 % watched. Three data points, so the only lesson R6 takes is the one ER01–ER03 already encode from that gap: a hook that breaks something the viewer is sure of, with stakes the picture can show, and a character who meets each problem before the narrator names it. EP06–EP08 have no numbers in the record yet, and the R2–R5 "why it worked" and "what R5 keeps" sections were built on user keeps, not analytics; per ER08 they are guesses and **do not steer R6**. That is why R6 drops R5's "body-only test" constraint: it was never measured.
+- **Topic direction:** three what-if concepts with physical stakes (C31 Earth stops, C32 falling lift, C36 black hole) and three everyday certainties that turn out false (C33 floating ice, C34 the seven-year body, C35 your height). Sub-genres R1–R5 have not touched: planetary motion, impact physics and engineering history, the chemistry of water, cell turnover and radiocarbon, spinal anatomy and spaceflight, relativity.
+- **Fixed (carried from R1–R5):** genre educational for all six; medium painted 2D p5.brush with the 4-head cast ([project defaults](../../docs/delivery-workflow.md#project-defaults)), default look the [painted 3D camera](../../docs/film-visual-brief-workflow.md#painted-3d-camera). The style-profile genre and medium spread does not apply to this series (same reading as R2–R5); what varies is sub-genre and staging.
+  - **Sub-genres (6):** planetary motion (C31); impact physics and engineering history (C32); chemistry of water (C33); cell biology and radiocarbon dating (C34); spinal anatomy and spaceflight (C35); general relativity (C36).
+  - **Staging styles:** a man asleep on a Bangkok condo bed that suddenly launches east, then a pull-back to the whole spinning Earth (C31); inside a falling lift car, a side cutaway of the shaft with a speed gauge (C32); a glass of Thai iced tea, then a frozen lake seen in cutaway from the side (C33); a woman after a break-up wanting to be "a new person", with her body lighting up by age like a map (C34); a doorframe pencil mark at morning and night, then an astronaut floating (C35); two friends, one at a safe distance watching the other fall toward a black hole, split screen (C36).
+- **Wild card:** C36. The kit has no space set, no warped-light (lensing) look, no colour shift with time and no way to paint a body stretching; see its "Why it is the wild card" line.
+- **Channel default (mystery-educational in the WORLD FOG look):** none.
+- **Not re-pitched:** C1–C30 and the produced or scheduled episodes (EP01 C2, EP02 C1, EP03 C5, EP04 C4, EP05 C6, EP06 C8, EP07 C15, EP08 C18, EP09 C28, EP10 C25). Nearest neighbours, checked: C31 is not C15 (Sun vanishes; C31 is Earth's spin); C36 is not C14 or C18 (no tunnel, no vacuum exposure); C35 is not C24 (C24 is time dilation by height; C35 is spinal discs). C35 uses R5's held reserve idea ("a centimetre shorter at night"). Still held, not pitched: phantom phone vibration and brain freeze, both left out under ER07 (the mechanism is not settled).
+- **Mode:** non-fiction explainers acted out by fictional 4-head characters; C32's one historical figure (Elisha Otis, 1854) and its one named survivor case keep their documented status. These are pitches, not research: every fact below is `unchecked` until Boat's research and fact-check; `settled`, `model` (depends on assumptions or a calculation) and `hypothesis` are Preaw's expectation for Boat to confirm, not findings.
+- **Duration:** every concept estimated at 40–60 s (five beats). Timing is not measured.
+- **Producibility:** each concept names its key reveal image and a first kit check against `src/painted/kit/README.md` at `c86e8e0` (story first, kit second). Film's W0.2 annotation owns buildability and cost.
+- Film annotation (W0.2) is not done in this pass.
+
+### C31 — ถ้าโลกหยุดหมุนหนึ่งวินาที
+
+- **Sub-genre:** planetary motion (inertia; the speed you never feel).
+- **Staging:** `man-spiky + home-lounge` asleep on a condo bed in Bangkok at night; the Earth stops; he, the bed, the air and the water in his glass keep going east. Pull-back to the whole Earth with a speed tag on Thailand.
+- **Counter-intuitive claim (ER01):** lying still in bed, you are moving at about 1,600 km/h right now.
+- **Logline:** If the Earth stopped spinning for one second, everything not bolted to the rock would keep moving east at the speed the ground had: in Bangkok, roughly one and a half times a jet airliner. The wind, the sea and you would all fly. The twist turns the disaster into the reason you never notice it: you are already moving that fast; you just move with everything else.
+- **Hook (Thai):** "ถ้าโลกหยุดหมุนแค่หนึ่งวินาที… คุณจะพุ่งออกจากเตียง เร็วกว่าเครื่องบินเจ็ท"
+- **Hook claim status:** `unchecked`, `model` (ground speed from Earth's rotation at Bangkok's latitude, about 13.7° N, is about 1,620 km/h; airliner cruise about 900 km/h; Boat recomputes both and picks the comparison).
+- **Rule that flips (ER03):** "อะไรที่วิ่งไปกับโลก… ก็ยังอยากวิ่งต่อ" (what moves with the Earth keeps moving). Cost in beats 1–3, advantage in beat 5.
+- **Key reveal image:** pull-back from the flying bed to the whole Earth: Thailand tagged "1,600 กม./ชม.", the man back in bed asleep, the tag still there.
+- **Beats:**
+  1. The stop: a jolt, he and the bed slide east and smash the wall; "เฮ้ย!" `unchecked`, `model`
+  2. แต่… the air did not stop either: wind faster than any storm ever recorded tears across the city. `unchecked`, `model` (Boat checks the strongest recorded gust as the comparison)
+  3. แต่… the sea keeps going too: the Gulf of Thailand climbs the east coasts. `unchecked`, `model` (keep it a picture, no wave height number unless sourced)
+  4. แต่… then why do you not feel it every day? Because the ground, the air and you all move at the same speed together, like a cup that stays still on a smooth flight. `unchecked`, `settled`
+  5. Flip and payoff: the Earth spins again, he is asleep in bed; the tag stays. Last line: "ตอนนี้คุณก็กำลังพุ่งไปที่พันหกร้อยกิโลต่อชั่วโมง… แค่ทุกอย่างพุ่งไปพร้อมคุณ" `unchecked`, `settled`
+- **Ending:** closed, ~2 s hold on the sleeping man with the speed tag (ER03).
+- **Voice / tone:** Kore, brisk deadpan narrator; the man a startled "เฮ้ย!" and a whimper.
+- **ER08 pitch check:** (1) Hook: breaks "I am lying still"; one picture (a bed flying), no term. Pass. (2) Who: everyone in bed or on a seat. Pass. (3) Beats: stop → แต่ air → แต่ sea → แต่ why not felt; beat 4's mechanism is shown with a cup on a plane, not a term block. Pass. (4) Ending: a flip (the disaster speed is your speed now). Pass. **4/4.**
+- **Why it holds:** stakes the picture can show in the first second; the last line makes the viewer feel the bed move. Shareable as "รู้มั้ยตอนนี้เราเร็วเท่าไหร่".
+- **Evidence notes (thin spots):** the physics is settled; every number is a calculation Boat redoes. Risk: the premise is known from English "what if" explainers, so some viewers know the answer; the Bangkok number and the "you right now" flip are the new part. The storm-wind comparison needs a sourced record.
+- **Research load:** general physics plus two numbers (Earth's rotation speed at 13.7° N; record wind gust).
+- **Kit check:** `man-spiky + home-lounge, P? (lying), asleep` then `shock`; `asleep`, `shock` expressions exist. New: condo bedroom set, bed-slide and wall-hit motion, wind-tear layer over a city (seed from `ENV-FOG` puffs), whole-Earth plate with a speed tag, sea-surge plate.
+- **Sound intent:** quiet night room tone and a fan; a hard silence for the stop, then a low impact and a rushing wind riser; the wind cuts out at the pull-back to space; a soft pizzicato tag on the last line, then the fan again.
+
+### C32 — ลิฟต์ขาด กระโดดตอนท้ายรอดมั้ย
+
+- **Sub-genre:** impact physics and engineering history (falling, stopping, the safety brake).
+- **Staging:** `woman-long + office` alone in a condo lift; a side cutaway of the shaft runs beside her with a floor counter and a speed gauge; a period insert of a man on a platform at a fair cuts the rope himself.
+- **Counter-intuitive claim (ER01):** jumping at the last second barely changes anything, and the fall itself almost cannot happen.
+- **Logline:** The popular trick is to jump just before a falling lift hits the bottom. But a jump takes off only a few kilometres per hour from a fall of a hundred or more, and you would have to time it to a split second in the dark. The real answer came before the passenger lift itself: in 1854 Elisha Otis showed a brake that grabs the rails when a cable breaks, cutting the rope under himself in public.
+- **Hook (Thai):** "ลิฟต์ขาด กำลังร่วงจากชั้นยี่สิบ… คุณกระโดดตอนจะถึงพื้น… รอดมั้ย"
+- **Hook claim status:** `unchecked`, `model` (fall speed from 20 floors, about 60 m, is about 120 km/h without air resistance; a standing jump is about 2–3 m/s, about 10 km/h; Boat recomputes).
+- **Rule that flips (ER03):** "ที่ทำร้ายคุณ ไม่ใช่ความเร็ว… แต่คือการหยุดกะทันหัน" (it is not the speed that hurts you, it is the sudden stop). Cost in beats 1–3; in beat 5 the same rule is what the brake solves: it stops the car before the bottom does.
+- **Key reveal image:** the shaft cutaway: the car dropping, then two steel jaws snapping onto the rails and the car stopping a metre down, the speed gauge falling to zero.
+- **Beats:**
+  1. The fall: the floor counter spins, she floats off the floor, then plans the jump. `unchecked`, `settled` (near-weightless in free fall)
+  2. แต่… her jump takes off about 10 km/h from about 120: the gauge barely moves. `unchecked`, `model`
+  3. แต่… she does not know when the bottom comes, and if she is in the air when the car stops, she still lands. `unchecked`, `settled`
+  4. แต่… do lifts even fall like this? 1854, a man on a platform at a New York fair has the rope cut; the platform drops a little and stops. `unchecked`, `settled` (Otis demonstration; Boat confirms year and place)
+  5. Flip and payoff: back in the shaft, the jaws grab, the car stops; her hair settles. Last line: "สิ่งที่คุณกลัวที่สุด… ถูกแก้ไว้ก่อนจะมีลิฟต์โดยสารตัวแรกในโลกซะอีก" `unchecked` (first passenger lift 1857, Boat confirms)
+- **Ending:** closed, ~2 s hold on her in the stopped car.
+- **Voice / tone:** Kore, brisk; the woman breathing hard, one "เอาไงดี…".
+- **ER08 pitch check:** (1) Hook: breaks the popular "jump at the end" belief; one picture, no term. Pass. (2) Who: everyone who rides a lift (condo, office, BTS station). Pass. (3) Beats: plan → แต่ the numbers → แต่ the timing → แต่ do lifts fall at all; no tips list (the "lie flat" advice is left out, ER07). Pass. (4) Ending: a payoff that flips the fear. Pass. **4/4.**
+- **Why it holds:** a shared fear, a myth almost everyone has heard, and a historical twist with a showman cutting his own rope.
+- **Evidence notes (thin spots):** the arithmetic is simple and settled. Kept out under ER07: "lie flat on the floor" advice (expert opinions differ) and the 1945 Empire State Building survivor story (true but the details are disputed, and it would turn the beat into a maybe). The claim that a modern car "almost cannot" free-fall needs Boat's source on safety brakes and multiple cables; on screen it stays "แทบ".
+- **Research load:** general physics plus named history (Otis 1854 demonstration, first passenger lift 1857) and one current lift-safety source.
+- **Kit check:** `woman-long + office, P?, scared` then `relieved`; float-up pose new. New: lift interior set, shaft cutaway with counter and gauge, safety-brake jaws, 1850s fair insert (period crowd, top hat; `new: 1850s showman`).
+- **Sound intent:** lift hum and a soft chime, then a cable snap stinger and a falling whoosh with the music cut out; ticking floor counter; a crowd gasp for the 1854 insert; a metal clamp hit for the brake, then silence and her exhale under the hold.
+
+### C33 — ถ้าน้ำแข็งจม
+
+- **Sub-genre:** chemistry of water (ice floats; most solids sink).
+- **Staging:** `girl-school + school` with a glass of Thai iced tea at a street stall; a frozen water bottle burst in a freezer; a cutaway of a cold lake from the side with fish under the ice.
+- **Counter-intuitive claim (ER01):** ice floating is the odd one out; frozen almost anything else sinks in its own liquid.
+- **Logline:** Ice floats in your iced tea and nobody finds that strange, but solid wax sinks in melted wax and solid metal in molten metal. Water swells when it freezes, which is also why a full bottle in the freezer cracks. If ice sank, cold lakes would freeze from the bottom up into solid blocks; because it floats, the ice becomes a lid that keeps the water under it liquid, and the fish alive.
+- **Hook (Thai):** "น้ำแข็งลอยอยู่ในชาเย็นคุณ… แต่ของแข็งเกือบทุกอย่างในโลก จมในของเหลวของตัวเอง"
+- **Hook claim status:** `unchecked`, `settled` for the general rule with exceptions (Boat names the few other exceptions and keeps "เกือบ").
+- **Rule that flips (ER03):** "น้ำแข็งตัวพองขึ้น" (water swells when it freezes). Cost: it cracks the bottle (beat 2); advantage: it lets the lid float (beat 5).
+- **Key reveal image:** the lake cutaway side by side: left, ice sinking layer after layer until the lake is one solid block with fish frozen in; right, a thin ice lid on top, dark liquid water below, fish swimming.
+- **Beats:**
+  1. The odd one: she drops a candle chip into melted wax; it sinks. Her ice floats. "ห๊ะ?" `unchecked`, `settled`
+  2. แต่… why? A water bottle left full in the freezer: it swells and cracks. Water takes more room frozen. `unchecked`, `settled`
+  3. แต่… what if it did not? The lake on the left: winter ice sinks, more forms on top, sinks, until the lake is ice to the bottom. `unchecked`, `model` (keep the picture qualitative)
+  4. แต่… real lakes: ice stays on top and the cold air cannot reach the water under it. `unchecked`, `settled`
+  5. Flip and payoff: the right-hand lake, fish under the lid. Last line: "สิ่งที่ทำขวดน้ำในตู้เย็นคุณแตก… คือสิ่งเดียวกับที่ทำให้ปลารอดหน้าหนาวมาได้" `unchecked`, `settled`
+- **Ending:** closed, ~2 s hold on the fish under the ice, cut back to the iced tea.
+- **Voice / tone:** Kore, friendly; the girl a "ห๊ะ?" and a sip.
+- **ER08 pitch check:** (1) Hook: breaks "ice floating is normal"; understood from the glass alone; no term (density is never named; "พอง" carries it). Pass. (2) Who: everyone with an iced drink. Pass. (3) Beats: odd one → แต่ why → แต่ what if → แต่ real lakes; the "why" is the bottle the viewer has cracked, not a mechanism block. Pass. (4) Ending: a flip that ties the broken bottle to living fish. Pass. **4/4.**
+- **Why it holds:** the most everyday object in Thailand (a glass with ice) becomes strange; the burst-bottle beat is something many viewers have done.
+- **Evidence notes (thin spots):** settled chemistry. Left out under ER07: big claims that floating ice "made life on Earth possible" or snowball-Earth stories (not one clean answer); the "water is densest at 4 °C" detail is true but is a term-heavy beat, so it stays out unless Boat thinks the lake picture needs it. Thailand has no frozen lakes, so the lake is shown as "ที่ที่หนาว" without a place name.
+- **Research load:** general chemistry (density of ice and water, other exceptions, lake ice).
+- **Kit check:** `girl-school + school, P?, neutral` then `surprised`; `PL-EDU-KITCHEN` as a reference only. New: street-stall set, iced-tea glass with floating ice, melted-wax insert, freezer with a cracked bottle, two-panel lake cutaway with fish (first fish in the kit; C12 was not built).
+- **Sound intent:** street-stall ambience and ice clinking; a small plop for the sinking wax; a crack stinger for the bottle; underwater muffled tone for the lake cutaway with a slow low pad; a light clink as the last line returns to the glass.
+
+### C34 — ส่วนของคุณที่อายุเท่าคุณเป๊ะ
+
+- **Sub-genre:** cell biology and radiocarbon dating (cell turnover; the bomb-pulse clock).
+- **Staging:** `woman-bob + home-lounge` after a break-up, wanting to be "คนใหม่"; her body shown as a glowing age map (skin bright new, bones older, eye lens oldest); a 1960s desert insert with a far mushroom cloud, painted small and quiet.
+- **Counter-intuitive claim (ER01):** you do not become a new person every seven years; part of your eye is as old as you are.
+- **Logline:** The saying goes that every cell in your body is replaced every seven years. Skin turns over in weeks, but bone takes years longer than seven, many brain cells are as old as you, and the centre of your eye lens was made before you were born and never replaced. Scientists know because the atomic bomb tests of the 1950s and 60s left a mark in the carbon of everyone alive, which works like a date stamp.
+- **Hook (Thai):** "ทุกเจ็ดปี ร่างกายคุณเปลี่ยนใหม่หมดทั้งตัว… ไม่จริงหรอก ตรงกลางตาคุณ มีส่วนที่อายุเท่าคุณเป๊ะ"
+- **Hook claim status:** `unchecked`, `settled` (lens core proteins formed before birth, dated by radiocarbon; Lynnerup et al. 2008; neuron dating Spalding et al. 2005).
+- **Rule that flips (ER03):** "ทุกชิ้นในตัวคุณ มีวันเกิดของมันเอง" (every part of you has its own birthday). Cost: she cannot become all new; advantage: the birthdays are readable, which is how we know.
+- **Key reveal image:** her body as an age map: skin glowing "สองสามอาทิตย์", blood "ไม่กี่เดือน", bones "สิบปี", and one tiny point in the centre of each eye labelled with her own birth year.
+- **Beats:**
+  1. She wants to be new: "อีกเจ็ดปี ฉันจะเป็นคนใหม่ทั้งตัว"; skin flakes away, new skin in weeks. `unchecked`, `settled`
+  2. แต่… blood takes months, bones about ten years: already past seven. `unchecked`, `settled` (Boat gives sourced ranges)
+  3. แต่… some parts never change: many brain cells, and the centre of the eye lens, made before birth. `unchecked`, `settled`
+  4. แต่… how would anyone know a cell's age? The bomb tests put extra carbon into the air; everything that grew then took some in, and the amount tells the year. `unchecked`, `settled` (the term "คาร์บอน-14" at most once, after the picture)
+  5. Flip and payoff: she looks in a mirror at her own eyes. Last line: "คุณอยากเป็นคนใหม่… แต่ตรงกลางตาคุณ ยังเป็นคุณคนเดิมตั้งแต่ก่อนเกิด" `unchecked`
+- **Ending:** closed, ~2 s hold on her eyes in the mirror.
+- **Voice / tone:** Kore, warm and a little teasing; the woman one wistful line and a sigh.
+- **ER08 pitch check:** (1) Hook: breaks the seven-year saying many viewers believe; no term. Pass. (2) Who: everyone (everyone has wanted a fresh start; everyone has eyes). Pass. (3) Beats: wish → แต่ blood and bone → แต่ never replaced → แต่ how do we know; beat 4 carries one term after the picture and is a question being answered, not a block. Pass, with Boat watching beat 4's length (ER06). (4) Ending: a flip that turns the science into her feeling. Pass. **4/4.**
+- **Why it holds:** a myth with a clear "no", a personal number (your birth year in your eye), and an unexpected link to nuclear tests.
+- **Evidence notes (thin spots):** the lens and neuron dating are published and well cited. Turnover figures for blood, bone and fat vary by source and by person; Boat gives ranges and the narration says "ราว ๆ". The bomb-test beat must stay calm (no destruction imagery) and accurate about who carries the mark (everyone alive since, at different levels).
+- **Research load:** named studies (Spalding et al. 2005 on neurons; Lynnerup et al. 2008 on lens crystallins) plus general turnover figures.
+- **Kit check:** `woman-bob + home-lounge, P?, sad` then `soft smile`; mirror shot new. New: body age-map layer (glow by age with labels), eye-lens cutaway (EP06 eye macro may be a base; Film checks `PL-EDU-EYE`), 1960s desert insert with a small distant cloud.
+- **Sound intent:** quiet evening room and rain on the window; soft piano bed; a gentle shimmer as each age label lights; near silence for the bomb insert (a far low rumble only); the piano resolves on the mirror hold.
+
+### C35 — ตอนนี้คุณเตี้ยกว่าตอนเช้า
+
+- **Sub-genre:** spinal anatomy and spaceflight (disc compression; astronauts grow).
+- **Staging:** `boy-school + school` marks his height on a doorframe with a pencil in the morning and again at night; a see-through spine with discs squeezing like sponges; an astronaut floating in a station, then back on Earth holding her back.
+- **Counter-intuitive claim (ER01):** your height is not fixed; you are about a centimetre shorter by evening, and astronauts come home taller and in pain.
+- **Logline:** Measure yourself when you wake and again before bed and you will be about a centimetre shorter at night. The soft pads between your spine bones get squeezed all day by your own weight, like a wet sponge under a book, and refill when you lie down. In space nothing squeezes them, so astronauts grow a few centimetres, and when they come home the spine settles back and their backs hurt.
+- **Hook (Thai):** "ตอนนี้คุณเตี้ยกว่าตอนตื่นนอนเมื่อเช้า… เกือบหนึ่งเซน"
+- **Hook claim status:** `unchecked`, `settled` (daily height loss about 1 % of stature in studies; Boat gives the sourced figure and hedges "ราว ๆ").
+- **Rule that flips (ER03):** "น้ำหนักตัวคุณบีบคุณให้เตี้ยลง" (your own weight squeezes you shorter). Cost on Earth all day; in space the rule switches off and becomes the astronaut's problem, and in bed it works in your favour.
+- **Key reveal image:** two pencil lines on the doorframe a finger's width apart; beside them the see-through spine, discs fat in the morning and flattened at night.
+- **Beats:**
+  1. Morning mark, night mark: the line is lower. "เดี๋ยวนะ…" `unchecked`, `settled`
+  2. แต่… he did not shrink bones; the see-through spine shows the soft pads squeezing like a sponge under a book. `unchecked`, `settled` (one term at most: "หมอนรองกระดูก", after the sponge)
+  3. แต่… then why is he tall again next morning? Lying down takes the weight off and the pads soak back up. `unchecked`, `settled`
+  4. แต่… what if nothing ever pressed down? An astronaut in orbit grows a few centimetres; her suit fits tight. `unchecked`, `settled` (NASA reports up to about 3 %; Boat confirms)
+  5. Flip and payoff: she lands, the spine settles back, she winces; cut to the boy falling into bed. Last line: "คนที่ตัวสูงที่สุดในบ้านคุณ… คือคนที่เพิ่งตื่นนอน" `unchecked`, `settled`
+- **Ending:** closed, ~2 s hold on the boy asleep, then the doorframe.
+- **Voice / tone:** Kore, playful; the boy a "เดี๋ยวนะ…" and a groan when measured.
+- **ER08 pitch check:** (1) Hook: breaks "my height is fixed"; one sentence, no term. Pass. (2) Who: everyone with a body. Pass. (3) Beats: the lower line → แต่ not bones → แต่ why tall again → แต่ space; the sponge is shown before any term. Pass. (4) Ending: a flip line that reframes the household. Pass. **4/4.**
+- **Why it holds:** the viewer can check it tonight against a doorframe; the astronaut beat gives the sci-fi scale jump that matched EP05's numbers; the last line is a fun fact people repeat.
+- **Evidence notes (thin spots):** daily variation is well measured (Tyrrell et al. 1985 and later studies); the exact centimetre figure depends on height, so "เกือบหนึ่งเซน" needs Boat's range. The astronaut back-pain link is documented by NASA; the precise cause in space includes muscle changes, so the narration keeps to "ตัวยืด" and "ปวดหลัง" without a mechanism claim.
+- **Research load:** general anatomy plus named studies (diurnal height change) and a NASA source for astronaut height.
+- **Kit check:** `boy-school + school, P?, suspicious` then `asleep`; a female astronaut needs `new: spacesuit` (EP08 helmet episode may have one; Film checks its delivered look). New: doorframe with pencil marks, see-through spine and sponge layer, station interior plate, landing-capsule insert.
+- **Sound intent:** morning birdsong and a pencil scratch; a soft squish for each disc squeeze; station hum and weightless high pad for space; a heavy landing thump and a wince; evening crickets and a soft pizz tag on the last line.
+
+### C36 — ตกหลุมดำ (wild card)
+
+- **Sub-genre:** general relativity (tidal stretching; time near a black hole).
+- **Staging:** `man-spiky` and `woman-curly` in spacesuits; she stays on a ship at a safe distance, he drifts toward a black hole; split screen of his view and hers.
+- **Counter-intuitive claim (ER01):** if you fell into a big black hole, you would feel nothing at the edge, and your friend watching would never see you fall in.
+- **Logline:** Near a small black hole, gravity pulls your feet so much harder than your head that you would stretch like a noodle. Near a giant one you would cross the edge without feeling anything. But the friend watching from far away sees you slow down, turn red and fade, and never sees you cross. Two true stories of one fall.
+- **Hook (Thai):** "ถ้าคุณตกลงไปในหลุมดำ… เพื่อนที่มองอยู่ จะไม่มีวันเห็นคุณตกลงไปเลย"
+- **Hook claim status:** `unchecked`, `settled` in general relativity (a distant observer never sees the crossing; the image redshifts and dims); Boat checks the plain wording, because "freezes at the edge forever" is a common overstatement (the image fades out quickly).
+- **Rule that flips (ER03):** "ยิ่งใกล้หลุมดำ… เวลาของคุณยิ่งช้า ในสายตาคนข้างนอก" (the closer you get, the slower your time looks from outside). Cost: his friend loses him; flip: for him, nothing strange happens at all.
+- **Key reveal image:** split screen: left, his calm view as he drifts past the edge; right, her view of him slowing, reddening and fading on the rim, his wave frozen mid-gesture.
+- **Beats:**
+  1. A small black hole: his feet pulled harder than his head; he starts to stretch. "เฮ้ย ๆ ๆ" `unchecked`, `settled`
+  2. แต่… a giant one is gentler at the edge: he drifts in, nothing pulls, he waves. `unchecked`, `settled`
+  3. แต่… on her screen he slows down, his wave takes longer and longer. `unchecked`, `settled`
+  4. แต่… he also turns red and dim, and fades out before he ever touches the edge. `unchecked`, `settled` (Boat keeps it one picture, no term "redshift")
+  5. Flip and payoff: split screen, his side calm, her side empty rim. Last line: "สำหรับคุณ… คุณตกลงไปแล้ว แต่สำหรับเพื่อน… คุณยังไม่เคยถึงเลย" `unchecked`, `settled` as wording that Boat checks
+- **Ending:** closed, ~2 s hold on the split screen.
+- **Voice / tone:** Kore, slower and quieter than the others; the man a stretched "เฮ้ย"; the woman one line, "…ได้ยินมั้ย".
+- **ER08 pitch check:** (1) Hook: breaks "falling in is just falling in"; "หลุมดำ" is an everyday word, no other term. Pass. (2) Who: anyone who can picture falling, but the setting is space, so it leans to sci-fi-curious viewers more than C31–C35. **Partial.** (3) Beats: stretch → แต่ big one → แต่ slow → แต่ fade; what happens inside is cut (ER07: no settled answer). Pass. (4) Ending: a flip (two true endings). Pass. **3/4: who = leans sci-fi-curious.**
+- **Why it holds:** it is EP05's kind of what-if with a body in danger, and the ending is the most quotable line in the round.
+- **Why it is the wild card:** the kit has no space set, no light-bending around a black hole, no colour shift and fade by time, and no way to stretch a 4-head body; two time rates must run in one split frame. The picture is a model throughout and needs a "ภาพจำลอง" label.
+- **Evidence notes (thin spots):** the physics is textbook but easy to say wrongly; everything past the edge is left out (ER07). The "small vs giant" scale needs one sourced example of each (a star-sized one and one like the centre of our galaxy).
+- **Research load:** general relativity explainers plus one authoritative source on what a distant observer sees.
+- **Kit check:** people from `PEOPLE` (`man-spiky`, `woman-curly`) with `new: spacesuit`; `shock`, `relieved`. Missing capability: lensing look around a dark disc, time-slowed playback of one character inside a normal-speed frame, stretch deformation of a figure. New: starfield and black-hole plate, ship interior with a screen.
+- **Sound intent:** deep space room tone, almost silent; a stretched low drone for the tidal pull; on her side his voice and the music slow and drop in pitch as he fades; silence on the empty rim under the last line.
+
+---
+
+## R6 — Summary
+
+| ID | Title | Sub-genre | Key reveal image | Hook (Thai) | Ending | Research | ER08 | First kit check |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| C31 | ถ้าโลกหยุดหมุนหนึ่งวินาที | planetary motion | pull-back to Earth, Thailand tagged 1,600 km/h, man asleep | "ถ้าโลกหยุดหมุนแค่หนึ่งวินาที… คุณจะพุ่งออกจากเตียง เร็วกว่าเครื่องบินเจ็ท" | closed hold | general physics + two numbers | 4/4 | condo bedroom, wind layer, whole-Earth plate |
+| C32 | ลิฟต์ขาด กระโดดตอนท้ายรอดมั้ย | impact physics + engineering history | shaft cutaway, brake jaws grab the rails | "ลิฟต์ขาด กำลังร่วงจากชั้นยี่สิบ… คุณกระโดดตอนจะถึงพื้น… รอดมั้ย" | closed hold | general physics + Otis 1854 | 4/4 | lift set, shaft cutaway, 1850s insert |
+| C33 | ถ้าน้ำแข็งจม | chemistry of water | two-panel lake: frozen solid vs ice lid with fish | "น้ำแข็งลอยอยู่ในชาเย็นคุณ… แต่ของแข็งเกือบทุกอย่างในโลก จมในของเหลวของตัวเอง" | closed hold | general chemistry | 4/4 | stall set, freezer insert, lake cutaway, fish |
+| C34 | ส่วนของคุณที่อายุเท่าคุณเป๊ะ | cell biology + radiocarbon | body age map, birth year in the eye lens | "ทุกเจ็ดปี ร่างกายคุณเปลี่ยนใหม่หมดทั้งตัว… ไม่จริงหรอก ตรงกลางตาคุณ มีส่วนที่อายุเท่าคุณเป๊ะ" | closed hold | named studies | 4/4 | age-map layer, eye macro (EP06 base?) |
+| C35 | ตอนนี้คุณเตี้ยกว่าตอนเช้า | spinal anatomy + spaceflight | two pencil lines, spine discs fat vs flat | "ตอนนี้คุณเตี้ยกว่าตอนตื่นนอนเมื่อเช้า… เกือบหนึ่งเซน" | closed hold | general + NASA | 4/4 | doorframe, see-through spine, spacesuit |
+| C36 | ตกหลุมดำ (wild card) | general relativity | split screen: he falls calmly, she sees him fade | "ถ้าคุณตกลงไปในหลุมดำ… เพื่อนที่มองอยู่ จะไม่มีวันเห็นคุณตกลงไปเลย" | closed hold | general relativity | 3/4: who = leans sci-fi-curious | missing: lensing, time-slow in frame, body stretch |
+
+**Preaw's pick for the viewer (not a decision):** C33 and C35. C33 turns the most everyday object in a Thai viewer's hand (an iced drink) into a puzzle, has a beat almost everyone has lived (the cracked freezer bottle), and ends on the round's cleanest flip, where the same rule that breaks the bottle saves the fish. C35 is checkable tonight on a doorframe, adds an astronaut for scale, and closes on a line people repeat. Runner-up: C31, the strongest stakes-in-the-first-second hook, held third only because the premise is known from English explainers. C34 is fourth: strong myth-bust, but beat 4 (carbon dating) is the longest explanation in the round.
+
+**Thinnest evidence:** C32 (the arithmetic is settled, but "modern lifts almost cannot free-fall" needs a current safety source, and the Otis and first-passenger-lift dates need Boat), C34 (turnover figures for blood, bone and fat vary by source; only the lens and neuron dating are firmly published), and C36 (settled physics that is easy to overstate; the hook wording depends on Boat's check). C31, C33 and C35 rest on textbook physics, chemistry and measured anatomy; their numbers need recomputing or sourcing, not new evidence.
+
+---
+
+## R6 — Film annotation (W0.2, 2026-11-08)
+
+Engine fixed: painted 2D p5.brush, 4-head cast, default look the [painted 3D camera](../../docs/film-visual-brief-workflow.md#painted-3d-camera). Looks designed from each story first; kit checked afterwards against `src/painted/kit/README.md` at `c86e8e0` (worktree base `cfbfd4b`). Checked facts: **EP08 built the spacesuit and filed it in the kit** (W8.4 KIT-P01): wardrobe `eva-suit` (`kit/wardrobe.ts`, `kit/eva.ts`: `evaSuit`, `paintEva`, `paintHelmetProp`), pose P46 `zero-g-neutral`, motions `zero-g-drift` / `pat-check` / `rail-tow`, floating `roll`, and ENV-EARTH (`kit/earth.ts` `paintEarth`: the Earth from **low orbit as a limb backdrop**, not a whole globe from far away). Plates as references only: `PL-EDU-ORBIT`, `PL-EDU-AIRLOCK` (exteriors/airlock, no station cabin), `PL-EDU-EYE` (outside of the eye only, no lens cutaway), `PL-EDU-ONION-CELLS` (flat-diagram precedent), `PL-ZCPAINT-ROOM-NIGHT` (night room). See-through precedent: EP09 `src/painted/edu09/tendons.ts` (episode-local, `exists-unintegrated` in the kit). Kit props today are torch, phone, umbrella only: **no glass, bottle or bed prop**; no fish in `ANIMALS`. Sound library checked at `$REELS_STORE/library/sound/INDEX.md`: `room_condo-night-quiet_01`, `nature_night-crickets_01`, `outdoor_park-birds-breeze_01`, `outdoor_wind-open-roundabout_01`, `nature_wind-eerie-street_01`, `impact_cinematic-boom_01`, `impact_door-slam-body_01`, `impact_sub-hit-short_01`, `whoosh_heavy-cinematic_01`, `stinger_low-muted-hit_01`, `stinger_pizz-tag-ending_01`, `stinger_pizz-shrug_01`, `crowd_murmur-close-bangkok_01`, `vocal_gasp-young-woman_01`, `foley_ceramic-crack-small_01`, `foley_wet-plop_01`, `water_ice-settle-tick_01`, `ice_iceberg-crack-groan-underwater_01`, `bed_underwater-mystery-sparse_01`, `water_deep-ocean-roomtone_01`, `reveal_glass-shimmer-soft_01`, `bed_eg2-solo-piano-sparse_01`, `tension_rumble-distant-muffled_01`, `space_thin-airy-pad_01`, `bed_dark-drone-sub_01`, `hum_low-travelling-flat_01`, `foley_sleeper-breath-tent_01`; gaps named per concept. Numbers marked "est." are Film estimates, not Boat facts. Size: **S** one new set plus small additions; **M** one or two sets plus several new props/FX/motions or one small Boss extension; **L** a new capability with no precedent.
+
+| ID | Medium / look | Signature painted moment and its 9:16 read | Buildability | Size |
+| --- | --- | --- | --- | --- |
+| C31 | Painted 2D, blue-black Bangkok condo night lit by the city through the window; `man-spiky + home-lounge, P? (lying), asleep` then `shock`; ends on a painted globe from deep space | The bed, the man and the glass of water sliding east into the wall in one wide (camera side-on, east = screen right so the slide reads left-to-right across the full 1080 width); then the pull-back: globe centred est. y 500–1100, Thailand tag "1,600 กม./ชม." above it est. y 380, band kept clear. The stop needs one frame where the room jolts and the actor does not (inertia read) | ready: person, `asleep`/`shock`. new: condo bedroom set (ref `PL-ZCPAINT-ROOM-NIGHT`), bed + glass props, bed-slide and wall-hit motion, wind-tear layer over the skyline (seed from `ENV-FOG` puffs), sea-surge plate (`ENV-SEA` `paintWater`), airliner-cabin cup insert (beat 4), screen-layer speed tag. Small Boss extension: whole-globe-from-far mode of `kit/earth.ts` (today low-orbit limb only). Sound: `room_condo-night-quiet_01`, `impact_door-slam-body_01` / `impact_sub-hit-short_01`, `outdoor_wind-open-roundabout_01` under a riser, `stinger_pizz-tag-ending_01`; NEEDS-GEN storm-force wind roar, ceiling-fan loop | M |
+| C32 | Painted 2D, cold fluorescent lift car with brushed-steel walls; side cutaway of the shaft as a flat diagram strip (rails, cables, counter, gauge); warm sepia 1854 fair insert; `woman-long + office, P?, scared` then `relieved` | Split frame: her in the car upper 60 % (est. y 200–1150), the shaft strip as a narrow right-hand column with the car dot falling and the gauge; the brake jaws snapping onto the rails is a close insert that fills the frame (est. jaws y 600–1200). Free-fall float: hair and bag rise, feet 10 cm (est.) off the floor | ready: person, `scared`/`relieved`, P46 `zero-g-neutral` + `zero-g-drift` reused for the free-fall float (EP08), sepia grade precedent `PL-EDU-CHAMBER-1966`. new: lift interior set, shaft-cutaway diagram layer, counter + gauge screen layer, safety-brake jaws prop, `new: 1850s showman` (top hat, frock coat) with a small period crowd (3–5 figures, est.), fair platform. Sound: `ui_click-tick_01` for the counter, `whoosh_heavy-cinematic_01`, `stinger_low-muted-hit_01` for the clamp, NEEDS-GEN 1850s crowd gasp (`crowd_murmur-close-bangkok_01` is modern Bangkok, wrong period); NEEDS-GEN cable snap, lift hum + chime | M |
+| C33 | Painted 2D, hot bright Bangkok street stall at noon (orange Thai iced tea as the colour key), then a cold blue two-panel lake cutaway; `girl-school + school, P?, neutral` then `surprised` | The two-panel lake: left solid ice to the bottom with fish locked in, right a thin white lid over dark water with fish swimming. Side by side is too narrow at 540 px each, so **stack them** (top "ถ้าน้ำแข็งจม" est. y 220–820, bottom "ของจริง" est. y 860–1460, band clear). The glass close-up with ice floating vs the wax chip sinking reads as one macro two-shot | ready: person and expressions; `ENV-SEA` water/seabed as a base for the lake. new: street-stall set, glass + ice props (first glass prop in the kit), melted-wax insert, freezer + cracked bottle insert, two-panel lake cutaway, `new: fish` (simple painted fish, 1–2 kinds, swim cycle; C12 was not built). Sound: `foley_wet-plop_01` (wax), `water_ice-settle-tick_01` (clinks), `ice_iceberg-crack-groan-underwater_01` + `bed_underwater-mystery-sparse_01` (lake), `foley_ceramic-crack-small_01` as a stand-in for the bottle; NEEDS-GEN street-stall ambience, plastic-bottle crack | M (low end) |
+| C34 | Painted 2D, rainy grey-blue evening room, one warm lamp; `woman-bob + home-lounge, P?, sad` then `soft smile`; her body as a glowing age map in a flat-diagram style over the figure | The age map: her standing full figure (est. head y 300, feet y 1350) with region glows and short Thai labels to the side, ending on one bright point at each eye; then the mirror close-up of her eyes with the lens core glowing and her birth year beside it. Labels must stay large (est. ≥ 56 px) and few (four), so the frame is not a chart | ready: person and expressions. new: age-map layer (regions clipped to the figure card, glow by age, labels on the screen plane), eye-lens cutaway (new macro; `PL-EDU-EYE` is outside only, `PL-EDU-ONION-CELLS` is the diagram precedent), mirror set (reflection as a second flipped figure), 1960s desert insert with a small far cloud. Sound: `bed_eg2-solo-piano-sparse_01`, `reveal_glass-shimmer-soft_01` per label, `tension_rumble-distant-muffled_01` for the far test; NEEDS-GEN rain-on-window room tone | M |
+| C35 | Painted 2D, soft morning gold then warm lamp-lit night in a Thai house hallway; `boy-school + school, P?, suspicious` then `asleep`; space beat on the EP08 orbit look; see-through spine as a flat diagram over the boy | The doorframe: two pencil lines a finger apart at the boy's head height in a tight vertical shot (doorframe edge fills the frame height, lines est. y 640 and 680 at macro scale, so the gap reads); beside them the see-through spine with discs fat (morning) and flat (night) in a two-state compare. Astronaut floating is a full figure in the cabin, then a wince on landing | ready: **`eva-suit` wardrobe (EP08, kit)** on a template woman, P46 `zero-g-neutral`, `zero-g-drift`, `paintEarth` through a window, `PL-EDU-ORBIT` / `PL-EDU-AIRLOCK` as references; `asleep` expression. new: hallway doorframe set with pencil marks, see-through spine + sponge-disc layer (method from EP09 `tendons.ts`), station cabin interior plate (EP08 has no cabin), landing insert (recommend the post-landing chair/medical tent beside the capsule over a full capsule set). Note for Boat: crew inside a station wear clothes, not the EVA suit; "her suit fits tight" holds only if the source is about EVA suit fit, otherwise the line moves to her clothes. Sound: `outdoor_park-birds-breeze_01` (morning), `nature_night-crickets_01`, `space_thin-airy-pad_01` + `hum_low-travelling-flat_01` (station), `impact_sub-hit-short_01` (landing), `stinger_pizz-tag-ending_01`; NEEDS-GEN pencil scratch, soft sponge squish | S |
+| C36 | Painted 2D, near-black starfield with one dark disc and a bright warped ring; `man-spiky` and `woman-curly` in `eva-suit`; split screen of two clocks; "ภาพจำลอง" on every frame | The split screen: top half his calm drift (normal speed), bottom half her ship screen showing him slowing, reddening and fading at the rim; 9:16 favours a horizontal split (top est. y 200–860, bottom est. y 900–1560), not left/right. The stretch beat must read in one figure, so the figure is large (est. 900 px tall) | ready: `eva-suit`, P46, `zero-g-drift`, `roll` (EP08); `shock`/`relieved`. new: starfield plate, ship interior with a screen. missing capability: lensing look around the dark disc (fallback: a painted static photon ring and smeared background stars, no real lensing); stretch deformation of a figure card (fallback: non-uniform vertical scale of the whole card, cartoon not anatomical); per-layer slowed clock inside a normal-speed frame plus red tint and fade (proposed, untested; expected cheap as a time-scaled motion clock per layer, but unverified). Sound: `space_thin-airy-pad_01`, `bed_dark-drone-sub_01` for the tidal pull, silence under the last line; NEEDS-GEN pitch-dropping voice/music treatment (or an Editor time-stretch of the takes) | L (M with all three fallbacks) |
+
+Safety and taste notes (Film): C31 the wall hit cuts away on contact, no injury shown; the sea surge stays a picture of water on empty streets, no people swept away. C32 the car never hits the bottom on screen, no "what to do" advice appears (ER07 already keeps "lie flat" out), and the close of the fall stays short for viewers with a lift phobia. C33 the burst bottle is a **plastic** bottle (no glass shards; no hint to freeze glass). C34 the break-up stays wistful, never despair; the bomb insert is small, far and quiet (no blast, no city, no victims). C36 the stretch is cartoon and painless in look, no gore; "ภาพจำลอง" stays on screen throughout. C35 none.
+
+Ranking by reach vs cost:
+1. **C35**: S; the suit, zero-g pose and motions are already in the kit from EP08; the viewer can check it tonight; the space jump gives EP05-style scale.
+2. **C31**: M; the strongest stakes-in-the-first-second hook and the only R6 concept shaped like EP05, the one measured winner; one small `earth.ts` extension.
+3. **C33**: M (low end); the cleanest flip of the round and an everyday object, but a quieter hook; pays for the first glass prop and the first fish.
+4. **C32**: M; a shared fear and a good history twist; free-fall float reuses EP08; costs a period insert.
+5. **C34**: M; strong myth-bust, but two new diagram layers (age map, lens cutaway) and the longest explanation beat.
+6. **C36**: L; three missing capabilities and the 3/4 "who" line; buildable only with flat fallbacks.
+
+**Film's recommendation: C35 first, then C31.** Agrees with Preaw on C35; differs on the second slot (Film puts C31 above C33 for the hook shape that matched EP05's numbers; C33 is cheaper only by one small Boss extension). Claims and sound intent are unchanged from Preaw's R6; nothing here is checked fact.
+
+---
+
+## R6 — User pick (W0.3, 2026-11-08)
+
+User kept **all six: C31, C32, C33, C34, C35, C36** (structured question, two multi-select questions C31–C33 and C34–C36). Episode order not yet chosen. Film ranking: C35 > C31 > C33 > C32 > C34 > C36; Preaw's picks C33 and C35. Context: user asked Preaw for six concepts under the new ER08 pitch rule, no topic given, after clearing the unmade backlog (C13 kept).
+
+**EP12 pick (2026-11-08):** user picked **C35 ตอนนี้คุณเตี้ยกว่าตอนเช้า** as the next episode, `EDU-EP12-SHORT` (Short Thai). Order so far: EP11 = C32; C31, C33, C34, C36 not yet scheduled.
