@@ -36,6 +36,8 @@ export type FleaOpts = {
   silhouette?: {fill?: string; rim?: string | false; rimPx?: number; u?: number};
   /** Whole-body pitch added to the pose (degrees, nose up positive): the giant's head tilting up to a mark (W5.2, B01-SH03, B04-SH01). */
   pitchAdd?: number;
+  /** Side view: the antenna lifts out of its groove and flicks (0..1 = angle sweep; 0 or absent = tucked). The giant's twitch in B01-SH05 (R2.1, SD07). */
+  antenna?: number;
   /** Force the airborne placement (body height `air`, toes free) while a grounded-to-airborne blend is still under half way (B04-SH02 take-off). */
   airborne?: boolean;
   /** N21 leg-length light (B04-SH01): a soft white line travels the near hind leg hip -> knee -> ankle -> toe (`u` 0..1), then stays as an even glow of strength `a` 0..1. Light only: no figure, tick or text. */
@@ -189,6 +191,10 @@ export const drawFlea = (p0: Painter, g: Pt, len: number, o: FleaOpts): FleaMeas
   [[-0.38, 0.1, -0.1], [-0.2, 0.235, -0.06], [-0.06, 0.245, -0.02], [0.1, 0.235, 0.02], [0.2, 0.2, 0.06]].forEach(([x, y, lean], i) =>
     band(p, 9370 + i, SP([[x, y - 0.01], [x + lean * 0.6, y + 0.03]]), 0.008 * len, 0.002 * len, tint(FLEA.ink)));
 
+  if (o.antenna && o.antenna > 0) { // lifted antenna: base at the groove, flicking up and forward
+    const a = (25 + 50 * o.antenna) * Math.PI / 180, base: Pt = [0.37, 0.068], tip: Pt = [base[0] + 0.13 * Math.cos(a), base[1] + 0.13 * Math.sin(a)], mid: Pt = [base[0] + 0.07 * Math.cos(a - 0.35), base[1] + 0.07 * Math.sin(a - 0.35)];
+    band(p, 9344, SP([base, mid, tip]), 0.02 * len, 0.008 * len, tint(FLEA.leg));
+  }
   drawLeg(pose.hind, HIP.hind, false, true, 9400);
   drawLeg(pose.mid, HIP.mid, false, false, 9460);
   drawLeg(pose.fore, HIP.fore, false, false, 9490);

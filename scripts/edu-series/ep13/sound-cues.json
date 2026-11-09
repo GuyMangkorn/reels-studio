@@ -497,10 +497,10 @@
       "shot": "S01-B05-SH02",
       "frame": 1463,
       "brief": "Ending settle tone (replaces the pizzicato tag, user 2026-11-09): one soft felt-mallet vibraphone note, motor off, warm low-mid (around A3), one light stroke, round attack without a click, clean natural decay about 2.0 s to nothing; dry small living room, close, quiet (about room-tone level, well under the voice); feeling: case closed, a small content smile; no pluck, no string, no chord, no melody; ducks -6 dB at G1474 under the dog sigh",
-      "id": "NEEDS-GEN",
-      "origin": "NEEDS-GEN",
-      "lenSec": 2.0,
-      "note": "Film SHEETS-R2.1 SD08; at the end of L14 (B05-SH02 +60); fallback if it competes with the dog sigh on the draft: drop it (room tone, jingle, sigh only)"
+      "id": "stinger_vibe-settle-tone_01",
+      "origin": "generated",
+      "lenSec": 2.3,
+      "note": "Film SHEETS-R2.1 SD08; at the end of L14 (B05-SH02 +60). Generated new: 4 candidates (seeds 134355556-9), v1 picked by measurement (no listening): 220 Hz = A3 in all four, single strike, monotone decay, slowest tail (-40 dB at 1.97 s after the strike; v2/v4 died in 1.65 s, v3 kept a -3 dB plateau for 0.3 s). 15 ms fade-in added to round the model's abrupt first sample, 250 ms fade-out at 2.3 s. listened: no. Mix: quiet, about room-tone level, accent layer, duck -6 dB at G1474 (49.13 s) so the dog sigh stays the button. Fallback: drop it if it competes with the sigh on the draft (room tone, jingle, sigh only)."
     },
     {
       "cue": "S1-jingle",
@@ -720,6 +720,26 @@
         "max": 3,
         "fromSec": 39.67,
         "toSec": 40.3
+      },
+      {
+        "beat": "B05",
+        "layer": "accent",
+        "when": "peak",
+        "min": 6,
+        "max": 24,
+        "fromSec": 48.77,
+        "toSec": 48.93,
+        "exception": "S24 settle tone alone before the dog moves (G1463-1468), quiet like room tone"
+      },
+      {
+        "beat": "B05",
+        "layer": "accent",
+        "when": "peak",
+        "min": -6,
+        "max": 3,
+        "fromSec": 49.13,
+        "toSec": 50.33,
+        "exception": "V03 dog sigh G1474-1510 is the ending button; S24 ducks -6 dB under it"
       }
     ]
   },

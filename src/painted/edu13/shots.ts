@@ -24,22 +24,22 @@ import {paintBox, qy, qz, wFill, wInk, wWash} from '../edu02/world';
 // icons, band, tag, inset) are in shot-layers.tsx and read the cameras and anchors exported here. Room, cast and flea are the locked look modules, unchanged.
 
 export const SHOTS = {
-  S01_B01_SH02: {start: 27, len: 49, cam: (l: number) => camS2(l, eye02(l))},
-  S01_B01_SH04: {start: 109, len: 20, cam: CAM_S4},
-  S01_B01_SH04B: {start: 129, len: 27, cam: CAM_S5},
-  S01_B01_SH04C: {start: 156, len: 39, cam: CAM_S6},
-  S01_B01_SH04D: {start: 195, len: 83, cam: CAM_S7},
-  S01_B02_SH03: {start: 425, len: 186, cam: CAM_S10},
-  S01_B03_SH01: {start: 611, len: 86, cam: CAM_S11},
-  S01_B01_SH01: {start: 0, len: 27, cam: CAM_S1},
-  S01_B02_SH01: {start: 332, len: 93, cam: CAM_S9},
-  S01_B03_SH03: {start: 697, len: 128, cam: CAM_S12},
-  S01_B05_SH01: {start: 1138, len: 116, cam: CAM_S15},
-  S01_B05_SH02: {start: 1254, len: 136, cam: CAM_S16},
-  S01_B01_SH03: {start: 76, len: 33, cam: CAM_S3},
-  S01_B01_SH05: {start: 278, len: 54, cam: CAM_S8},
-  S01_B04_SH01: {start: 825, len: 187, cam: CAM_S13},
-  S01_B04_SH02: {start: 1012, len: 126, cam: CAM_S14},
+  S01_B01_SH02: {start: 44, len: 52, cam: (l: number) => camS2(l, eye02(l))},
+  S01_B01_SH04: {start: 129, len: 23, cam: CAM_S4},
+  S01_B01_SH04B: {start: 152, len: 30, cam: CAM_S5},
+  S01_B01_SH04C: {start: 182, len: 46, cam: CAM_S6},
+  S01_B01_SH04D: {start: 228, len: 89, cam: CAM_S7},
+  S01_B02_SH03: {start: 478, len: 213, cam: CAM_S10},
+  S01_B03_SH01: {start: 691, len: 94, cam: CAM_S11},
+  S01_B01_SH01: {start: 0, len: 44, cam: CAM_S1},
+  S01_B02_SH01: {start: 380, len: 98, cam: CAM_S9},
+  S01_B03_SH03: {start: 785, len: 132, cam: CAM_S12},
+  S01_B05_SH01: {start: 1279, len: 124, cam: CAM_S15},
+  S01_B05_SH02: {start: 1403, len: 139, cam: CAM_S16},
+  S01_B01_SH03: {start: 96, len: 33, cam: CAM_S3},
+  S01_B01_SH05: {start: 317, len: 63, cam: CAM_S8},
+  S01_B04_SH01: {start: 917, len: 218, cam: CAM_S13},
+  S01_B04_SH02: {start: 1135, len: 144, cam: CAM_S14},
 } as const;
 export type ShotId = keyof typeof SHOTS;
 /** The shot's camera at local frame `l`. */
@@ -72,30 +72,33 @@ export const paintSH05 = (p: Painter, l: number) => {
   const c = shotCamera('S01_B01_SH05', l), t = l / 30;
   const talk = l >= 4 && l <= 46 ? 0.25 + 0.5 * Math.abs(Math.sin(l * 1.7)) : 0;
   const drop = seg(l, 36, 44);
-  const face = faceOf(drop > 0.5 ? 'neutral' : 'shock', {look: drop > 0 ? [0.55 * drop, -0.7 * drop] : [0.9, 0], ...(talk > 0 && drop < 0.5 ? {mouth: 'talk', open: talk} : {})});
+  const blink = l >= 54 && l < 58 ? (l === 54 || l === 57 ? 'half' : 'shut') as 'half' | 'shut' : undefined; // R2.1 SD07: slow blink +54..+57
+  const twitch = l >= 48 && l <= 52 ? Math.sin(Math.PI * (l - 48) / 4) : 0; // R2.1 SD07: giant antenna twitch +48..+52
+  const face = faceOf(drop > 0.5 ? 'neutral' : 'shock', {look: drop > 0 ? [0.55 * drop, -0.7 * drop] : [0.9, 0], ...(talk > 0 && drop < 0.5 ? {mouth: 'talk', open: talk} : {}), ...(blink ? {eyes: blink} : {})});
   const front = l >= 10 && l < 22;
   const cast: RoomItem[] = [
     {at: MAN_AT, draw: (q, cc) => {
       if (l < 6) paintManMotion(q, cc, {at: MAN_AT, motion: 'turn-head-right', mt: 0.6 * (l / 6), face: 'neutral', t, warm: 0.06});
       else paintManMotion(q, cc, {at: MAN_AT, motion: 'gasp-recoil', mt: ((l - 6) / 30) * 2, faceState: face, patch: {head: 'right', ...(drop > 0 ? {nod: [0, -0.1 - 0.12 * drop] as [number, number]} : {})}, t, warm: 0.06});
     }},
-    fleaItem(GIANT, {view: front ? 'front' : 'right', state: 'rest', t}),
+    fleaItem(GIANT, {view: front ? 'front' : 'right', state: 'rest', ...(twitch > 0 && !front ? {antenna: twitch} : {}), t}),
   ];
   paintRoom13(p, c, {t, cast});
 };
 
 // ---- S01-B04-SH01 (icon + leg light, L15/L16)
-/** N21 leg-light state at local frame l: travel +112..+130, even glow to +160, out by +172. */
+/** N21 leg-light state at local frame l (R2.1): travel +121..+139, even glow to +169, out by +181. */
 export const legLightAt = (l: number): {u: number; a: number} | undefined => {
-  if (l < 112) return undefined;
-  const a = l < 130 ? 1 : l < 160 ? 0.45 : 0.45 * (1 - seg(l, 160, 172));
-  return a > 0.01 ? {u: clamp01((l - 112) / 18), a} : undefined;
+  if (l < 121) return undefined;
+  const a = l < 139 ? 1 : l < 169 ? 0.45 : 0.45 * (1 - seg(l, 169, 181));
+  return a > 0.01 ? {u: clamp01((l - 121) / 18), a} : undefined;
 };
 export const paintSH13 = (p: Painter, l: number) => {
   const c = shotCamera('S01_B04_SH01', l), t = l / 30;
-  const glance = l >= 30 && l < 112 ? [0.8, 0.1] : l >= 112 && l < 159 ? [0.5, -0.55] : l >= 159 && l < 165 ? [0, 0] : l >= 165 && l < 172 ? [0.5, -0.55] : l >= 172 ? [0.3, -0.3] : [0, 0];
-  const settle = seg(l, 177, 187);
-  const tilt = 9 * (seg(l, 9, 17) - seg(l, 86, 94));
+  // R2.1: leg light +121..+139; MAN's eyes to the camera +168..+181; settle +208..+218; head tilt +8..+16, levels +90..+98
+  const glance = l >= 30 && l < 121 ? [0.8, 0.1] : l >= 121 && l < 168 ? [0.5, -0.55] : l >= 168 && l < 174 ? [0, 0] : l >= 174 && l < 181 ? [0.5, -0.55] : l >= 181 ? [0.3, -0.3] : [0, 0];
+  const settle = seg(l, 208, 218);
+  const tilt = 9 * (seg(l, 8, 16) - seg(l, 90, 98));
   const cast: RoomItem[] = [
     {at: MAN_AT, draw: (q, cc) => { paintMan(q, cc, {at: MAN_AT, view: 'front', pose: 'P01', face: 'neutral', faceState: {look: [glance[0], glance[1]]}, fig: {crouch: 0.06 * settle}, t, warm: 0.06}); }},
     fleaItem(GIANT, {view: 'right', state: 'rest', ...(settle > 0 ? {to: 'fold' as const, blend: 0.3 * settle} : {}), pitchAdd: tilt, legLight: legLightAt(l), t}),
@@ -104,7 +107,7 @@ export const paintSH13 = (p: Painter, l: number) => {
 };
 
 // ---- S01-B04-SH02 (the truth shot, V02, L12): matched crouch, take-off +8, apex +17, freeze to +47, landing +56
-export const JUMP = {crouchEnd: 8, takeoff: 8, leave: 10, apex: 17, resume: 47, land: 56, manApex: 0.42, giantApex: 0.36} as const;
+export const JUMP = {crouchEnd: 8, takeoff: 8, leave: 10, apex: 17, resume: 48, land: 57, manApex: 0.42, giantApex: 0.36} as const;
 /** Clearance (m) of the jumper at local frame l for apex height `h`: rises +10..+17, frozen to +47, falls to +56. */
 export const jumpHeight = (l: number, h: number) => {
   if (l < JUMP.leave || l >= JUMP.land) return 0;
@@ -134,7 +137,7 @@ export const manJumpOpts = (l: number): {mix: {a: AnyPoseId; b: AnyPoseId; u: nu
   const lift = jumpHeight(l, JUMP.manApex);
   if (l < 8) return {mix: {a: 'P01', b: 'P35', u: seg(l, 0, 8)}, lift};
   if (l < JUMP.leave) return {mix: {a: 'P35', b: 'P08', u: seg(l, 8, 10)}, lift};
-  if (l < JUMP.land) { const u = l < JUMP.apex ? 0.5 * seg(l, 10, 17) : l < JUMP.resume ? 0.5 : 0.5 + 0.3 * seg(l, 47, 56); return {mix: {a: 'P08', b: 'P01', u}, crouch: 0.25, lift}; }
+  if (l < JUMP.land) { const u = l < JUMP.apex ? 0.5 * seg(l, 10, 17) : l < JUMP.resume ? 0.5 : 0.5 + 0.3 * seg(l, JUMP.resume, JUMP.land); return {mix: {a: 'P08', b: 'P01', u}, crouch: 0.25, lift}; }
   return {mix: {a: 'P01', b: 'P35', u: 0.45 * (1 - seg(l, JUMP.land, JUMP.land + 10))}, lift};
 };
 /** The grey icon's world anchor at local frame l: it rides the giant's back. */
@@ -143,7 +146,7 @@ export const paintSH14 = (p: Painter, l: number) => {
   const c = shotCamera('S01_B04_SH02', l), t = l / 30, m = manJumpOpts(l);
   const v02 = l >= 8 && l <= 20 ? {mouth: 'talk' as const, open: 0.3 + 0.5 * Math.abs(Math.sin(l * 1.9))} : {};
   const cast: RoomItem[] = [
-    {at: MAN_AT, draw: (q, cc) => { paintMan(q, cc, {at: MAN_AT, view: 'front', mix: m.mix, face: 'neutral', faceState: {...v02, ...(l >= 100 && l < 112 ? {look: [0.7, 0] as [number, number]} : {})}, fig: m.crouch ? {crouch: m.crouch} : undefined, lift: m.lift, t, warm: 0.06}); }},
+    {at: MAN_AT, draw: (q, cc) => { paintMan(q, cc, {at: MAN_AT, view: 'front', mix: m.mix, face: 'neutral', faceState: {...v02, ...(l >= 105 && l < 117 ? {look: [0.7, 0] as [number, number]} : {})}, fig: m.crouch ? {crouch: m.crouch} : undefined, lift: m.lift, t, warm: 0.06}); }},
     fleaItem(GIANT, {...giantTruthOpts(l), t}),
   ];
   paintRoom13(p, c, {t, cast});
@@ -173,8 +176,8 @@ export const paintSH01 = (p: Painter, l: number) => {
   paintRoom13(p, c, {t, cast});
 };
 
-// ---- S01-B02-SH01 (strength up, weight up, L03): coral glow on the hind-leg muscle 0 -> 1 from +3 to +92; dial, arrow and "แรง ↑" are screen layers
-export const muscleGlowAt = (l: number) => ease(seg(l, 3, 92));
+// ---- S01-B02-SH01 (strength up, weight up, L03; R2.1): coral glow on the hind-leg muscle 0 -> 1 from +3 to +97; dial, arrow and "แรงดีด ↑" are screen layers
+export const muscleGlowAt = (l: number) => ease(seg(l, 3, 97));
 export const paintSH09 = (p: Painter, l: number) => {
   const c = shotCamera('S01_B02_SH01', l), t = l / 30;
   const cast: RoomItem[] = [
@@ -187,8 +190,8 @@ export const paintSH09 = (p: Painter, l: number) => {
 export const DIAL_AT: V3 = [1.85, 1.28, 0.35];
 export const ARROW_AT: V3 = [1.95, 0.3, 0.35];
 
-// ---- S01-B03-SH03 (the spring pad, L09): see-through thorax; squeeze +9..+37, catch +39, hold, release +65 (flea gone +66), pad glow fades in the air to +83
-export const SPRING = {squeeze: 9, squeezed: 37, catch: 39, release: 65, gone: 66, glowEnd: 83, icon: 99} as const;
+// ---- S01-B03-SH03 (the spring pad, L09): see-through thorax; squeeze +9..+37, catch +39, hold, release +71 (flea gone +72), pad glow fades in the air to +89 (R2.1)
+export const SPRING = {squeeze: 9, squeezed: 37, catch: 39, release: 71, gone: 72, glowEnd: 89, icon: 93} as const;
 /** Screen point (px) of the pad centre in the see-through rest drawing, from the camera and the rest-pose joints. */
 export const padPoint = (c: YCam): [number, number] => {
   const r = fleaJoints(POSES.rest, 0.5).w([-0.04, -0.07]), q = camPoint(c, [0, 0, 0]) ?? [540, 900];
@@ -213,24 +216,24 @@ export const paintSH12 = (p: Painter, l: number) => {
   }
 };
 
-// ---- S01-B05-SH01 (the real measure, L13): the giant shrinks away about its feet +0..+12; marks at 0.15 / 0.42 m; MAN glances down +54, hands on hips +69
+// ---- S01-B05-SH01 (the real measure, L13): the giant shrinks away about its feet +0..+12; marks at 0.15 / 0.42 m; MAN glances down +55, hands on hips +71
 export const MAN15: V3 = [0.95, 0, 0.3];
 export const GIANT15: V3 = [1.3, 0, 0.25];
 export const shrinkLen = (l: number) => GIANT * (1 - clamp01(l / 12)) ** 1.8;
-export const marksAt = (l: number) => [...(l >= 27 ? [{y: 0.15, color: '#ec8f78'}] : []), ...(l >= 51 ? [{y: 0.42, color: '#6fa3d0'}] : [])];
+export const marksAt = (l: number) => [...(l >= 21 ? [{y: 0.15, color: '#ec8f78'}] : []), ...(l >= 52 ? [{y: 0.42, color: '#6fa3d0'}] : [])];
 export const paintSH15 = (p: Painter, l: number) => {
   const c = shotCamera('S01_B05_SH01', l), t = l / 30;
-  const down = ease(seg(l, 54, 62)) * (1 - ease(seg(l, 66, 70))), smug = seg(l, 69, 75);
+  const down = ease(seg(l, 55, 63)) * (1 - ease(seg(l, 67, 71))), smug = seg(l, 71, 77), blink = l >= 112 && l < 115; // R2.1: glance +55..+69, smug +71, optional blink +112
   const cast: RoomItem[] = [
-    {at: MAN15, draw: (q, cc) => { paintMan(q, cc, {at: MAN15, view: 'front', mix: {a: 'P01', b: 'P09', u: ease(smug)}, face: smug > 0.3 ? 'smug' : 'neutral', faceState: smug > 0.3 ? {look: [0, 0]} : {look: [0.55 * down, -0.75 * down]}, t, warm: 0.06}); }},
+    {at: MAN15, draw: (q, cc) => { paintMan(q, cc, {at: MAN15, view: 'front', mix: {a: 'P01', b: 'P09', u: ease(smug)}, face: smug > 0.3 ? 'smug' : 'neutral', faceState: smug > 0.3 ? {look: [0, 0], ...(blink ? {eyes: 'shut' as const} : {})} : {look: [0.55 * down, -0.75 * down]}, t, warm: 0.06}); }},
     fleaItem(shrinkLen(l), {view: 'right', state: 'rest', t}, GIANT15),
   ];
   paintRoom13(p, c, {t, cast, marks: marksAt(l)});
 };
 
-// ---- S01-B05-SH02 (home, the dog sighs, L14 + hold): MAN sits down +0..+54, the dog lifts its head +62, sighs +68..+104, lies back +118
-export const SOFA16 = {sitEnd: 54, dogLift: 62, sigh: 68, sighEnd: 104, down: 118} as const;
-export const dogLift = (l: number) => ease(seg(l, 62, 72)) * (1 - ease(seg(l, 110, 122)));
+// ---- S01-B05-SH02 (home, the dog sighs, L14 + hold): MAN sits down +0..+54, the dog lifts its head +65, sighs +71..+107, lies back +121 (R2.1)
+export const SOFA16 = {sitEnd: 54, dogLift: 65, sigh: 71, sighEnd: 107, down: 121} as const;
+export const dogLift = (l: number) => ease(seg(l, 65, 75)) * (1 - ease(seg(l, 113, 125)));
 export const paintSH16 = (p: Painter, l: number) => {
   const c = shotCamera('S01_B05_SH02', l), t = l / 30, S = SOFA16, d = dogLift(l), sit = ease(seg(l, 0, S.sitEnd));
   const relieved = l < 40;
@@ -242,15 +245,15 @@ export const paintSH16 = (p: Painter, l: number) => {
 };
 
 // ======================= W5.2 asset group 3 =======================
-// ---- S01-B01-SH02 (macro leap and counter, L01 b): rest +0..+15; +16 the flea is gone (smear streak, contact shadow stays); the camera cranes up after it
-/** The flea's height above the sweep (mm) at local frame l: gone at +16, 20 mm at +21 (x10), 100 mm at +45 (x50), still rising at the cut. */
-export const leapHeight = (l: number) => (l < 16 ? 0 : l <= 21 ? 4 * (l - 16) : 20 + (10 / 3) * (l - 21));
-/** The counter step shown at local frame l (heights 20 ... 100 mm = x10 ... x50); none before +21; x50 only +45..+48 (B-P2). */
-export const counterAt = (l: number): string | undefined => (l < 21 ? undefined : `×${10 * (1 + Math.min(4, Math.floor((l - 21) / 6)))}`);
+// ---- S01-B01-SH02 (macro leap and counter, L01 b; R2.1): rest +0..+21 (22 f); +22 the flea is gone (smear streak, contact shadow stays); the camera cranes up after it
+/** The flea's height above the sweep (mm) at local frame l: gone at +22, 20 mm at +28 (x10), 100 mm at +48 (x50), still rising at the cut. */
+export const leapHeight = (l: number) => (l < 22 ? 0 : l <= 28 ? (20 / 6) * (l - 22) : 20 + 4 * (l - 28));
+/** The counter step shown at local frame l (heights 20 ... 100 mm = x10 ... x50, one step per 5 f from +28); none before +28; x50 only +48..+51 (B-P2). */
+export const counterAt = (l: number): string | undefined => (l < 28 ? undefined : `×${10 * (1 + Math.min(4, Math.floor((l - 28) / 5)))}`);
 /** Camera eye height (mm): the crane rides the flea, which re-enters from the top edge by about +26 and then sits near row 700 while it shrinks. */
 export const eye02 = (l: number) => {
-  if (l < 16) return 0.45;
-  const r = 4.0 + 36 * Math.min(1, (l - 16) / 33), k = 0.167 + 2.5 * (1 - ease(seg(l, 17, 31)));
+  if (l < 22) return 0.45;
+  const r = 4.0 + 36 * Math.min(1, (l - 22) / 33), k = 0.167 + 2.5 * (1 - ease(seg(l, 23, 37)));
   return Math.max(0.45, leapHeight(l) - r * k);
 };
 /** Picture point (px) of the flea's body centre and its length (px) at local frame l. */
@@ -262,16 +265,16 @@ export const flea02At = (l: number) => {
 export const paintSH02 = (p: Painter, l: number) => {
   const c = shotCamera('S01_B01_SH02', l), t = l / 30;
   paintStudio(p, c, {fibre: true});
-  if (l < 16) { paintFlea(p, c, [0, 0, 0], FLEA_MM, {view: 'right', state: 'rest', t}); return; }
-  const g = camPoint(c, [0, 0, 0]) ?? [540, 1030], u = camUnit(c, [0, 0, 0]), len = u * FLEA_MM, k = l - 16;
+  if (l < 22) { paintFlea(p, c, [0, 0, 0], FLEA_MM, {view: 'right', state: 'rest', t}); return; }
+  const g = camPoint(c, [0, 0, 0]) ?? [540, 1030], u = camUnit(c, [0, 0, 0]), len = u * FLEA_MM, k = l - 22;
   washAt(p, 9000, '#2a1a10', 70, ell(g[0] - 0.04 * len, g[1] + 0.005 * len, 0.55 * len, 0.045 * len, 20), 0.1, 0.2); // the contact shadow stays on the sweep
   if (k < 4) for (let i = 0; i < 3; i++) washAt(p, 9700 + i, '#6a4a30', 70 * (1 - k / 4), [[g[0] - 14 + i * 3, g[1] - 0.3 * u], [g[0] + 14 - i * 3, g[1] - 0.3 * u], [g[0] + 3, g[1] - (0.8 + k * 0.5 + i * 0.3) * u * 1.5], [g[0] - 3, g[1] - (0.8 + k * 0.5 + i * 0.3) * u * 1.5]], 0.3, 0.3); // smear streak
-  const h = leapHeight(l), air = h / FLEA_MM, b = ease(seg(l, 20, 40));
-  if (l >= 17) paintFlea(p, c, [0, 0, 0], FLEA_MM, {view: 'right', state: 'extend', to: 'apex', blend: b, airborne: true, air, shadow: false, t});
+  const h = leapHeight(l), air = h / FLEA_MM, b = ease(seg(l, 26, 46));
+  if (l >= 23) paintFlea(p, c, [0, 0, 0], FLEA_MM, {view: 'right', state: 'extend', to: 'apex', blend: b, airborne: true, air, shadow: false, t});
 };
 
-// ---- S01-B02-SH03 (backpack insert and refrain, L05/L06): MAN and his 40 % ghost in the studio; glow +5, pack +55, hop +90..+102 (0.20 m), deadpan +145
-export const HOP = {crouch: 85, leave: 90, apex: 96, land: 102, up: 112, pack: 55, glow: 5, deadpan: 145, h: 0.2} as const;
+// ---- S01-B02-SH03 (backpack insert and refrain, L05/L06; R2.1): MAN and his 40 % ghost in the studio; glow +5, pack +57, hop +105..+117 (0.20 m), deadpan +156, blink +196..+199
+export const HOP = {crouch: 100, leave: 105, apex: 111, land: 117, up: 127, pack: 57, glow: 5, deadpan: 156, blink: 196, h: 0.2} as const;
 const DM: V3 = [-0.4, 0, 0], DG: V3 = [0.4, 0, 0];
 export const hopLift = (l: number) => (l < HOP.leave || l >= HOP.land ? 0 : HOP.h * 4 * ((l - HOP.leave) / 12) * (1 - (l - HOP.leave) / 12));
 const hopMix = (l: number): {mix: {a: AnyPoseId; b: AnyPoseId; u: number}; crouch?: number} => {
@@ -304,10 +307,10 @@ export const paintSH10 = (p: Painter, l: number) => {
   const c = shotCamera('S01_B02_SH03', l), t = l / 30, m = hopMix(l), lift = hopLift(l), u = camUnit(c, DM);
   paintStudio(p, c);
   paintStrip(p, c);
-  const deadpan = l >= HOP.deadpan;
+  const deadpan = l >= HOP.deadpan, bl = l >= HOP.blink && l < HOP.blink + 4 ? (l === HOP.blink || l === HOP.blink + 3 ? 'half' : 'shut') as 'half' | 'shut' : undefined;
   const ghost = p.layer(0.4, 9800);
   paintMan(ghost, c, {at: DG, view: 'right', mix: m.mix, face: 'neutral', fig: m.crouch ? {crouch: m.crouch} : undefined, lift, t});
-  const fig = paintMan(p, c, {at: DM, view: 'right', mix: m.mix, face: 'neutral', faceState: deadpan ? {look: [0, 0]} : undefined, fig: {...(m.crouch ? {crouch: m.crouch} : {}), ...(deadpan ? {head: 'front' as const} : {})}, lift, t});
+  const fig = paintMan(p, c, {at: DM, view: 'right', mix: m.mix, face: 'neutral', faceState: deadpan ? {look: [0, 0], ...(bl ? {eyes: bl} : {})} : undefined, fig: {...(m.crouch ? {crouch: m.crouch} : {}), ...(deadpan ? {head: 'front' as const} : {})}, lift, t});
   if (fig) {
     const g = glowAt10(l), H = fig.feet[1] - fig.headTop;
     if (g > 0.02) for (const [dy, ry, rx] of [[0.36, 0.17, 0.06], [0.14, 0.12, 0.05]]) washAt(p, 9400 + Math.round(dy * 10), '#ff6f4f', 150 * g, ell(fig.feet[0], fig.feet[1] - dy * H, rx * H, ry * H, 22), 0.45, 0.3);
@@ -381,8 +384,8 @@ export const paintSH05T = (p: Painter, l: number) => {
   ]});
 };
 
-// ---- S01-B01-SH04C (trailer 3, money shot and the break): rise +0..+12, apex hold +12..+21, tape-stop +21 (6 f, drain, sag), droop +27..+36, card off +36
-export const SKY = {apex: 12, stop: 21, stopEnd: 27, droop: 27, off: 36, hold: 9} as const;
+// ---- S01-B01-SH04C (trailer 3, money shot and the break; R2.1): rise +0..+12, apex hold +12..+25 (13 f), tape-stop +25 (6 f, drain, sag), droop +31..+40, card off +40
+export const SKY = {apex: 12, stop: 25, stopEnd: 31, droop: 31, off: 40, hold: 13} as const;
 /** Arc parameter s (0 .. 0.5 at the apex; `arcPoint`) of the silhouette at local frame l. */
 export const skyS = (l: number) => 0.5 * (1 - (1 - Math.min(1, l / SKY.apex)) ** 2);
 /** World point of the silhouette: rises along the LF04 arc, hangs at `SKY_APEX`, then droops out of the frame bottom (leaning right, toward the lens). */
@@ -398,7 +401,7 @@ const risePoint = (l: number): V3 => {
   return [a[0] + (SKY_APEX[0] - 10) * k, a[1] + (SKY_APEX[1] - 130) * k, a[2]];
 };
 export const skyPos = (l: number): V3 => (l < SKY.apex ? risePoint(l) : skyPoint(l));
-/** Tape-stop clock (N19): the shot clock runs to +21, eases to a stop over the next 6 f (a half-second equivalent of 3 f travel), then holds. */
+/** Tape-stop clock (N19): the shot clock runs to the stop frame, eases to a stop over the next 6 f (a half-second equivalent of 3 f travel), then holds. */
 export const tapeClock = (l: number) => { if (l < SKY.stop) return l; const u = Math.min(1, (l - SKY.stop) / 6); return SKY.stop + 3 * (u * (2 - u)); };
 export const drainAt = (l: number) => seg(l, SKY.stop, SKY.stopEnd);
 /** The dotted trail behind the silhouette (px): arc samples 0.24..0.10 behind its parameter, kept to the rise; fades with the droop. */
@@ -418,8 +421,8 @@ export const paintSH06 = (p: Painter, l: number) => {
   ]});
 };
 
-// ---- S01-B01-SH04D (plain soi, knee-high hop): drop from y 3.0 over +0..+6, small deflated landing, one 0.36 m hop +36..+54, MAN's head tips down and turns +58..+70
-export const HOP7 = {drop: 6, fold: 30, leave: 36, land: 54, h: 0.36, look: 58} as const;
+// ---- S01-B01-SH04D (plain soi, knee-high hop): drop from y 3.0 over +0..+6, small deflated landing, one 0.36 m hop +32..+50 (R2.1), MAN's head tips down and turns +58..+70
+export const HOP7 = {drop: 6, fold: 26, leave: 32, land: 50, h: 0.36, look: 58} as const;
 export const hop7Y = (l: number) => {
   if (l < HOP7.drop) return 3.0 * (1 - (l / HOP7.drop) ** 2);
   if (l < HOP7.leave || l >= HOP7.land) return 0;

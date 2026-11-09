@@ -39,8 +39,8 @@ export const camShot = (s: ShotCam, l: number, len: number): YCam => ({...camOf(
 const CHART_2S_AT: V3 = [OX + 0.95, 1.0, 0.35]; // = (1.45, 1.00, 0.35)
 /** S01-B01-SH03 (fixed): floor row 1158, hy 740 (SD01). */
 export const CAM_S3 = shotCam(camMove(CHART_2S_AT, [0, 0], 6.6, 1.15, {f: 2400, hy: 740}), [740, 740]);
-/** S01-B01-SH05: push r 6.6 -> 5.8 on [0.11, 0.26] of the shot, hy 740 -> 682 (floor row 1158 throughout). */
-export const CAM_S8 = shotCam(camMove(CHART_2S_AT, [0, 0], [6.6, 5.8], 1.15, {f: 2400, hy: 740, ease: [0.11, 0.26]}), [740, 682]);
+/** S01-B01-SH05: push r 6.6 -> 5.8 on [0.095, 0.222] of the shot (R2.1: same +6..+14 over 63 f), hy 740 -> 682 (floor row 1158 throughout). */
+export const CAM_S8 = shotCam(camMove(CHART_2S_AT, [0, 0], [6.6, 5.8], 1.15, {f: 2400, hy: 740, ease: [0.095, 0.222]}), [740, 682]);
 /** S01-B04-SH01: yaw 0 -> -3, r 6.6 -> 6.3, hy 740 -> 716 (slow push, floor row 1158 held). */
 export const CAM_S13 = shotCam(camMove(CHART_2S_AT, [0, -3], [6.6, 6.3], 1.15, {f: 2400, hy: 740}), [740, 716]);
 /** S01-B04-SH02: CAM-TRUTH locked (floor row 1150; unchanged by SD01). */
@@ -69,10 +69,10 @@ export const CAM_S5 = shotCam(camMove([1.0, 1.4, 0], [-6, -6], 2.6, 0.45, {pitch
 export const CAM_S6 = shotCam(camMove([10, 70, -60], [-9, -9], 327, 25, {pitch: [8, 8], f: 3600, hy: 820}), [820, 820]);
 /** S01-B01-SH04D: CAM-MYTH plain, slow push yaw -6 -> -3, r 2.6 -> 2.45. */
 export const CAM_S7 = shotCam(camMove([1.0, 1.4, 0], [-6, -3], [2.6, 2.45], 0.45, {pitch: [30, 30], f: 820, hy: 900}), [900, 900]);
-/** S01-B01-SH02 (macro leap): static CAM-MACRO to +15, then the crane +16..+49: `eye` rides the flea (mm), r 4.0 -> 40 linear (the sheet's "target y rides the flea"). */
-export const CAM_S2_LEN = 49;
+/** S01-B01-SH02 (macro leap): static CAM-MACRO to +21, then the crane from +22 (R2.1): `eye` rides the flea (mm), r 4.0 -> 40 linear (the sheet's "target y rides the flea"). */
+export const CAM_S2_LEN = 52;
 export const camS2 = (l: number, eye: number): YCam => {
-  const r = l < 16 ? 4.0 : 4.0 + 36 * Math.min(1, (l - 16) / 33);
+  const r = l < 22 ? 4.0 : 4.0 + 36 * Math.min(1, (l - 22) / 33);
   return {...orbitYCam([0, 0.45, 0], r, 0, eye, 1200, 900)};
 };
 

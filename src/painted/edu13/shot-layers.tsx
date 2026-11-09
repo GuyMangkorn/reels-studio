@@ -53,10 +53,10 @@ export const SH03Layers = () => {
 export const S01_B01_SH03 = () => <Painted paint={(p, f) => paintSH03(p, f)} band><SH03Layers /></Painted>;
 export const S01_B01_SH05 = () => <Painted paint={(p, f) => paintSH05(p, f)} band />;
 
-// ---- S01-B04-SH01: icon + "?" pop at +5, "?" off at +80, icon greys +80..+92 and stays; re-projected every frame
+// ---- S01-B04-SH01 (R2.1): icon + "?" pop at +5, "?" off at +84, icon greys +84..+96 and stays; re-projected every frame
 export const SH13Layers = () => {
-  const l = useCurrentFrame(), q = at('S01_B04_SH01', l, ICON_AT), grey = seg(l, 80, 92);
-  const s = pop(l, 5), qs = l >= 80 ? 0 : s;
+  const l = useCurrentFrame(), q = at('S01_B04_SH01', l, ICON_AT), grey = seg(l, 84, 96);
+  const s = pop(l, 5), qs = l >= 84 ? 0 : s;
   return (
     <>
       {s > 0 && <SlingIcon x={q[0]} y={q[1]} size={90} grey={grey} scale={s} />}
@@ -66,12 +66,12 @@ export const SH13Layers = () => {
 };
 export const S01_B04_SH01 = () => <Painted paint={(p, f) => paintSH13(p, f)} band><SH13Layers /></Painted>;
 
-// ---- S01-B04-SH02: truth band (fade +18..+24, out +112..+124), tag with leader (pop +24), grey icon, trailer inset +86..+112
+// ---- S01-B04-SH02: truth band (fade +18..+24, out +123..+135), tag with leader (pop +24), grey icon, trailer inset +91..+123 (R2.1)
 const TRUTH_Z = 0.35;
 export const TruthLayers = () => {
   const l = useCurrentFrame(), c = shotCamera('S01_B04_SH02', l);
   const a = camPoint(c, [OX - 0.5, 0.1, TRUTH_Z]), b = camPoint(c, [OX + 2.42, 0.5, TRUTH_Z]), ic = camPoint(c, iconAt14(l));
-  const bandA = seg(l, 18, 24) * (1 - seg(l, 112, 124)), tag = pop(l, 24, 6) * (1 - seg(l, 112, 124));
+  const bandA = seg(l, 18, 24) * (1 - seg(l, 123, 135)), tag = pop(l, 24, 6) * (1 - seg(l, 123, 135));
   return (
     <>
       {a && b && bandA > 0 && (
@@ -95,8 +95,8 @@ export const TruthLayers = () => {
 };
 /** The shot-6 apex frame (SH04C), tape-stopped grey, with its card inside; upper right, clear of tag, band and the actors (rows 340-600). */
 export const TrailerInset = ({l}: {l: number}) => {
-  if (l < 86 || l >= 112) return null;
-  const s = 0.8 + 0.2 * Math.min(1, (l - 86) / 4), W = 440, H = 260;
+  if (l < 91 || l >= 123) return null;
+  const s = 0.8 + 0.2 * Math.min(1, (l - 91) / 4), W = 440, H = 260;
   return (
     <div style={{position: 'absolute', left: 600, top: 340, width: W, height: H, transform: `scale(${s})`, transformOrigin: '100% 0', border: '5px solid #fff', boxShadow: `0 0 0 3px ${INK}`, overflow: 'hidden', background: '#444'}}>
       <Img src={staticFile('edu13/tr-apex-f12.png')} style={{position: 'absolute', left: 0, top: 0, width: W, filter: 'grayscale(1) contrast(0.85) brightness(0.95)'}} />
@@ -109,14 +109,14 @@ export const S01_B04_SH02 = () => <Painted paint={(p, f) => paintSH14(p, f)} ban
 // ======================= W5.2 asset group 2 =======================
 export const S01_B01_SH01 = () => <Painted paint={(p, f) => paintSH01(p, f)} />;
 
-// ---- S01-B02-SH01: "แรง ↑" at +11, weight dial pops at +49 (needle +49..+85, no numerals), "heavier" down-arrow pops at +60
+// ---- S01-B02-SH01 (R2.1): "แรงดีด ↑" at +17 (on "ดีด"), weight dial pops at +55 (needle +55..+91, no numerals), "heavier" down-arrow pops at +65
 export const SH09Layers = () => {
   const l = useCurrentFrame(), c = shotCamera('S01_B02_SH01', l);
   const d = camPoint(c, DIAL_AT), ar = camPoint(c, ARROW_AT), lab = camPoint(c, [0.95, 0.95, 0.35]);
-  const ds = pop(l, 49, 6), as = pop(l, 60, 6), ls = pop(l, 11, 6), swing = seg(l, 49, 85), ang = -65 + 130 * swing * swing * (3 - 2 * swing), R = 70;
+  const ds = pop(l, 55, 6), as = pop(l, 65, 6), ls = pop(l, 17, 6), swing = seg(l, 55, 91), ang = -65 + 130 * swing * swing * (3 - 2 * swing), R = 70;
   return (
     <>
-      {lab && ls > 0 && <div style={{position: 'absolute', left: 0, top: 0, width: 1080, transform: `scale(${ls})`, transformOrigin: `${lab[0]}px ${lab[1]}px`}}><Text x={Math.max(24, lab[0] - 40)} y={lab[1] - 30} text="แรง ↑" size={54} /></div>}
+      {lab && ls > 0 && <div style={{position: 'absolute', left: 0, top: 0, width: 1080, transform: `scale(${ls})`, transformOrigin: `${lab[0]}px ${lab[1]}px`}}><Text x={Math.max(24, lab[0] - 40)} y={lab[1] - 30} text="แรงดีด ↑" size={54} /></div>}
       {d && ds > 0 && (
         <svg width={220} height={170} style={{position: 'absolute', left: d[0] - 110, top: d[1] - 110, transform: `scale(${ds})`, transformOrigin: '110px 110px', overflow: 'visible'}}>
           <g transform="translate(110 110)" strokeLinecap="round" fill="none">
@@ -137,7 +137,7 @@ export const SH09Layers = () => {
 };
 export const S01_B02_SH01 = () => <Painted paint={(p, f) => paintSH09(p, f)} band><SH09Layers /></Painted>;
 
-// ---- S01-B03-SH03: "ภาพจำลอง" throughout; slingshot icon (colour, the B04 drawing) pops at +99 beside the empty spot
+// ---- S01-B03-SH03: "ภาพจำลอง" throughout; slingshot icon (colour, the B04 drawing) pops at +93 (R2.1) beside the empty spot
 export const SH12Layers = () => {
   const l = useCurrentFrame(), c = shotCamera('S01_B03_SH03', l), pad = padPoint(c), s = pop(l, SPRING.icon, 6);
   return <>{s > 0 && <SlingIcon x={Math.min(960, pad[0] + 330)} y={pad[1] - 20} size={170} scale={s} />}<Lbl /></>;
@@ -157,14 +157,14 @@ export const SH15Layers = () => {
   return (
     <>
       {gb && l >= 4 && l < 21 && spark.map(([dx, dy, r], i) => <Sparkle key={i} x={gb[0] + dx * (40 + 60 * sp)} y={gb[1] + dy * (40 + 60 * sp) - 40} s={Math.max(0, (1 - sp) * (0.6 + 0.2 * i))} rot={r + 90 * sp} />)}
-      {f && l >= 27 && (
-        <svg width={64} height={44} viewBox="-32 -22 64 44" style={{position: 'absolute', left: f[0] - 32, top: f[1] - 22, transform: `scale(${pop(l, 27, 4)})`, overflow: 'visible'}}>
+      {f && l >= 21 && (
+        <svg width={64} height={44} viewBox="-32 -22 64 44" style={{position: 'absolute', left: f[0] - 32, top: f[1] - 22, transform: `scale(${pop(l, 21, 4)})`, overflow: 'visible'}}>
           <ellipse cx={0} cy={0} rx={22} ry={11} fill="#fff" opacity={0.85} /><ellipse cx={0} cy={0} rx={16} ry={8} fill={INK} /><ellipse cx={0} cy={0} rx={13} ry={5.6} fill="#c8643c" />
           <path d="M-12 4 L-22 12 L-26 4 M-4 6 L-8 15 M6 6 L8 15" stroke={INK} strokeWidth={4} fill="none" strokeLinecap="round" /><circle cx={11} cy={-2} r={2.2} fill="#fff" />
         </svg>
       )}
-      {m && l >= 51 && (
-        <svg width={50} height={72} viewBox="-25 -50 50 72" style={{position: 'absolute', left: m[0] - 25, top: m[1] - 50, transform: `scale(${pop(l, 51, 4)})`, transformOrigin: '25px 50px', overflow: 'visible'}}>
+      {m && l >= 52 && (
+        <svg width={50} height={72} viewBox="-25 -50 50 72" style={{position: 'absolute', left: m[0] - 25, top: m[1] - 50, transform: `scale(${pop(l, 52, 4)})`, transformOrigin: '25px 50px', overflow: 'visible'}}>
           <g strokeLinecap="round" fill="none"><path d="M0 -20 L0 6 M0 -10 L-12 0 M0 -10 L12 0 M0 6 L-9 22 M0 6 L9 22" stroke={INK} strokeWidth={13} /><path d="M0 -20 L0 6 M0 -10 L-12 0 M0 -10 L12 0 M0 6 L-9 22 M0 6 L9 22" stroke="#6fa3d0" strokeWidth={6} /></g>
           <circle cx={0} cy={-32} r={11} fill={INK} /><circle cx={0} cy={-32} r={8} fill="#f0d0b0" />
         </svg>
@@ -184,9 +184,9 @@ const Ring = ({x, y, r, a = 1}: {x: number; y: number; r: number; a?: number}) =
   </svg>
 );
 
-// ---- S01-B01-SH02: "2 มม." bar +0..+15 (fades +16..+21), "ภาพจำลอง" throughout, ring on the flea from +36, counter pill x10..x50 (x50 on +45..+48, no digit past it)
+// ---- S01-B01-SH02: "2 มม." bar +0..+21 (fades +22..+27), "ภาพจำลอง" throughout, ring on the flea from +42, counter pill x10..x50 at +28/33/38/43/48 (R2.1; x50 on +48..+51, no digit past it)
 export const SH02Layers = () => {
-  const l = useCurrentFrame(), f = flea02At(l), ring = pop(l, 36, 4), cnt = counterAt(l), barA = 1 - seg(l, 16, 21);
+  const l = useCurrentFrame(), f = flea02At(l), ring = pop(l, 42, 4), cnt = counterAt(l), barA = 1 - seg(l, 22, 27);
   return (
     <>
       {barA > 0.01 && <ScaleBar cam={shotCamera('S01_B01_SH02', 0)} opacity={barA} />}
@@ -216,20 +216,20 @@ export const SkyLayers = () => {
     </div>
   );
 };
-/** SH04C: the frame sags 2 % while the grade drains (tape-stop, N19); card off at +36. */
+/** SH04C: the frame sags 2 % while the grade drains (tape-stop, N19); card off at +40 (R2.1). */
 export const S01_B01_SH04C = () => {
   const l = useCurrentFrame(), sag = seg(l, SKY.stop, SKY.stopEnd);
   return (
     <AbsoluteFill style={{overflow: 'hidden', background: '#444'}}>
       <AbsoluteFill style={{transformOrigin: '50% 0', transform: `scaleY(${1 + 0.02 * sag})`}}>
-        <Painted paint={(p, f) => paintSH06(p, f)} band {...TR}><SkyLayers />{l < 36 && <TrailerCard />}</Painted>
+        <Painted paint={(p, f) => paintSH06(p, f)} band {...TR}><SkyLayers />{l < SKY.off && <TrailerCard />}</Painted>
       </AbsoluteFill>
     </AbsoluteFill>
   );
 };
 export const S01_B01_SH04D = () => <Painted paint={(p, f) => paintSH07(p, f)} band vignette="rgba(40,70,100,0.18)" />;
 
-// ---- S01-B02-SH03: "ภาพจำลอง" throughout; "x2" tags (legs +5, pack +55); dashed line at the apex feet row from +96 (pulses +145)
+// ---- S01-B02-SH03: "ภาพจำลอง" throughout; "x2" tags (legs +5, pack +57); dashed line at the apex feet row from +111 (pulses +156) (R2.1)
 export const SH10Layers = () => {
   const l = useCurrentFrame(), c = shotCamera('S01_B02_SH03', l), leg = camPoint(c, TAG10.leg), pk = camPoint(c, TAG10.pack), row = camPoint(c, [0, HOP.h, 0]);
   const ls = pop(l, HOP.glow, 6), ps = pop(l, HOP.pack, 6), pulse = l >= HOP.deadpan && l < HOP.deadpan + 10 ? Math.sin(Math.PI * (l - HOP.deadpan) / 10) : 0;
@@ -238,7 +238,7 @@ export const SH10Layers = () => {
       <Lbl />
       {leg && ls > 0 && <div style={{position: 'absolute', inset: 0, transform: `scale(${ls})`, transformOrigin: `${leg[0]}px ${leg[1]}px`}}><Text x={leg[0]} y={leg[1] - 40} text="×2" size={72} anchor="middle" /></div>}
       {pk && ps > 0 && <div style={{position: 'absolute', inset: 0, transform: `scale(${ps})`, transformOrigin: `${pk[0]}px ${pk[1]}px`}}><Text x={pk[0]} y={pk[1] - 40} text="×2" size={72} anchor="middle" /></div>}
-      {row && l >= 96 && (
+      {row && l >= HOP.apex && (
         <svg width={1080} height={1920} style={{position: 'absolute', left: 0, top: 0}}>
           <line x1={20} x2={1060} y1={row[1]} y2={row[1]} stroke={INK} strokeWidth={10 + 8 * pulse} strokeDasharray="26 18" strokeLinecap="round" />
           <line x1={20} x2={1060} y1={row[1]} y2={row[1]} stroke="#fff" strokeWidth={5 + 5 * pulse} strokeDasharray="26 18" strokeLinecap="round" />
