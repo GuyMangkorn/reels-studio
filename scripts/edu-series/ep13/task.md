@@ -18,7 +18,7 @@ Record: this file. Series context: [concepts.md](../concepts.md) (R7, C39) · se
   - [x] W1.4 Length check (estimate about 56 s, within 40–60; measured at voice lock)
   - [x] W1.5 User approves the script (user, 2026-11-09, R2)
 - [x] W2 Brief and storyboard (2026-11-09; Film: film-brief.md EDU-EP13-BRIEF-R1, storyboard.md + review-rows.json EDU-EP13-ROWS-R1.0, 16 shots est 57.6 s; F-C39-D1 decided as VD05; review page: pending)
-- [ ] W3 Look frames and storyboard pass (storyboard verdicts 16/16 ok; W3.1 and W3.2 done 2026-11-09; looks page republish pending)
+- [ ] W3 Look frames and storyboard pass (storyboard verdicts 16/16 ok; W3.1 and W3.2 done 2026-11-09; look lock by the user 2026-11-09 (chat), recorded in film-brief.md EDU-EP13-BRIEF-R1.2 and review-rows.json / storyboard.md EDU-EP13-ROWS-R1.2 (looks LF01–LF03, FL1–FL3; stills out/edu13/look-frames/v5/); page built, looks page republished 2026-11-09 as ROWS-R1.2, version 1794227051-73a3)
 - [ ] W4 Voice lock
 - [ ] W5 Draft (W5.1 scene sheets, W5.2 Boss assets, W5.3 Editor draft)
 - [ ] W6 Final

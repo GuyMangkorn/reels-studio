@@ -1,8 +1,10 @@
 # Storyboard — EDU-EP13-SHORT (first pass, untimed rows)
 
-Revision: **EDU-EP13-ROWS-R1.1** (Film, 2026-11-09, W2: first storyboard pass + Boat W2 picture recheck fixes B-P2, B-P6; rows untimed on the review page, estimated frames here for planning only).
-Inputs: [script.md](script.md) EDU-EP13-SCRIPT-R2 (user-approved 2026-11-09), [fact-check.md](fact-check.md) W1.3 + R2 recheck (FIX-1 to FIX-5, dog ruling, N4 e), [film-brief.md](film-brief.md) **EDU-EP13-BRIEF-R1.1** (decisions VD01–VD25, sets, cameras, slots, assets N1–N14, sound codes M1, A1–A3, S1–S20).
-Rows file: [review-rows.json](review-rows.json) EDU-EP13-ROWS-R1.1 (`"untimed": true`). Review page: pending (coordinator publishes).
+Revision: **EDU-EP13-ROWS-R1.2** (Film, 2026-11-09, W3: look frames added to the rows after the user's look lock; R1.1 was the first storyboard pass + Boat W2 picture recheck fixes B-P2, B-P6; rows untimed on the review page, estimated frames here for planning only).
+Inputs: [script.md](script.md) EDU-EP13-SCRIPT-R2 (user-approved 2026-11-09), [fact-check.md](fact-check.md) W1.3 + R2 recheck (FIX-1 to FIX-5, dog ruling, N4 e), [film-brief.md](film-brief.md) **EDU-EP13-BRIEF-R1.2** (decisions VD01–VD25, sets, cameras, slots, assets N1–N14, sound codes M1, A1–A3, S1–S20).
+Rows file: [review-rows.json](review-rows.json) EDU-EP13-ROWS-R1.2 (`"untimed": true`; `looks` LF01–LF03, FL1–FL3). Review page: pending (coordinator publishes).
+
+**R1.2 coordinate note:** the room and street numbers per shot below are the pre-lock plan. Read them with the brief's [R1.2 offsets](film-brief.md#look-lock-r12): in `R`, chart-group positions and chart-camera target x + 0.50 (OX), sofa-group positions + 0.15 (DS), CAM-SOFA unchanged; in `S`, MAN (0.20, 0, 0) and the giant (1.50, 0, −0.60). The W5.1 timed scene sheets carry the shifted numbers.
 
 ## Status
 
@@ -171,3 +173,4 @@ User-owned, non-blocking (the recommendation applies if unanswered; also on the 
 | --- | --- | --- | --- |
 | EDU-EP13-ROWS-R1.0 | 2026-11-09 | Film | First storyboard pass (W2) from script R2 and brief R1: 16 shots, est 57.6 s (1728 f), rules R01–R08, per-shot camera, staging and sound; rows file untimed; open questions Q-F1–Q-F4. |
 | EDU-EP13-ROWS-R1.1 | 2026-11-09 | Film | Boat W2 picture recheck: shot 2 crane runs to the cut still rising, counter ticks +24/+32/+40/+48/+56 so ×50 is never held (B-P2), S3/S4 cue frames moved to match; shot 8 gets "ภาพจำลอง" in LBL and R02 lists it (B-P6); shot 11 notes the B-P5 condition. 16 shots, 1728 f est unchanged. |
+| EDU-EP13-ROWS-R1.2 | 2026-11-09 | Film | W3 look lock (user, 2026-11-09): rows file gets `looks` LF01–LF03 + flea stills FL1–FL3 (F1, F2, F3 from `out/edu13/look-frames/v5/`) and `look` per beat (B01 LF03, B02 LF02, B03 FL2, B04 FL3, B05 LF01); eyebrow/lede updated; coordinate note points to brief R1.2 offsets (OX 0.50, DS 0.15, SOI marks). Shot IDs, text and timing unchanged. |
