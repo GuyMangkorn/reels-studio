@@ -76,3 +76,46 @@ Recheck: L07 and L12 wording; L11 wording and the B05 order and sound; the B04 s
 - SRC001 numbers and SRC004 mechanism: lead-only (PubMed cookie wall on 2026-11-09, no other copy opened). The script depends only on direction and the 1–2 cm range, so impact is low.
 - No sourced split between disc loss and curvature; no in-flight disc imaging; no sourced landing-day back-pain incidence.
 - Children are not covered by any inspected study; the script makes no claim about them.
+
+## R2 recheck (Boat, 2026-11-09)
+
+- Script reviewed: `scripts/edu-series/ep12/script.md` **EDU-EP12-SCRIPT-R2** (Preaw, 2026-11-09), recheck scope only: L07, L12, B05 order and sound, L09 picture limit, B04 sound, label tags, L11 after L10. No new sources opened this pass (no new factual claim was added); evidence stays as logged in R1 (SRC002, SRC005, SRC007, SRC008 inspected; SRC001, SRC004 lead-only). Wording checked as written in R2; L01–L06, L08, L10, L13, V01–V02 unchanged and not rechecked.
+- **Verdict for R2: pass** (conclusion `ready-for-storyboard` for matching R2 script and this review). Three non-blocking advisories below; none changes the premise, reveal or takeaway. No user-approval, audio or visual validation implied.
+
+### Recheck table
+
+| Item | R2 wording / picture / sound | Verdict | Note |
+| --- | --- | --- | --- |
+| L07 | "เพราะตอนนอนราบ แทบไม่มีอะไรกดตัว… หมอนรองกระดูกก็ดูดน้ำกลับ" | supported | "แทบ" removes the literal overstatement (FC-04). Mechanism still medium confidence (SRC004 lead-only), accepted for a Short. |
+| L12 | "ส่วนคุณ… แค่นอนหลับ ก็ได้ความสูงคืนทุกคืน" | supported | "นอนหลับ" = overnight recovery (SRC002); no longer reads as a short lie-down (FC-02). Picture (boy flops on bed, eyes closing) fits. |
+| B05 order | silent cabin stretch at about day 2, V03 wince mid-float, hand to lower back, then L11, no landing | supported | F014 pain is documented in flight, first days (SRC005, SABP, 53-68 %, resolves by about day 12). Landing, hit and crowd are gone. No spine diagram or height bar in the wince/L11 shots, no "เพราะ". |
+| B05 sound | no hit, stinger or crowd; space pad drops out under the wince; V03 and L11 dry | supported | Asserts no event, place or casualty. V03 is synthetic or library, labelled by the "ภาพจำลอง" tag; no real recording, no source needed. Closing tag and morning bird are mood only. |
+| L09 picture limit | no water, glow, plumping, swelling, sponge, no "pads unchanged" picture or label; pads not featured | supported | Meets FC-03 and F011 (`contradicted` claim not made in word, picture or sound). Film must carry it as a hard limit in the brief. The one glowing pad (L05) is Earth only; keep it from reappearing on the space diagram. |
+| B04 sound | thin pad, low hum, upward glide on lengthening, tick per day; no squish, swell, water or sponge | supported | Generic setting sound, stylised glide is not a measurement. |
+| Labels (FC-05) | "ภาพประกอบ": all spine diagrams (L03-L05, L07, L09) and sponge inset; "ภาพจำลอง": all astronaut shots L08-L11 incl. cabin show, V03, L11 | supported | Coverage complete. The doorframe/boy story shots carry none (acceptable, diegetic story). |
+| L11 after L10 (N4b/f) | "แต่… นักบินอวกาศหลายคนปวดหลัง" | needs-qualification (minor, optional) | See A1. |
+
+### FC status
+
+| ID | Status | Reason |
+| --- | --- | --- |
+| FC-01 | **closed** (picture); residual wording note A1 | Wince in flight; landing, hit removed. Literal "แต่…" adjacency to the growth line remains (A1). |
+| FC-02 | **closed** | L12 "นอนหลับ". |
+| FC-03 | **closed** at script level; carry to Film brief | Picture limit and B04 sound limit written; closes fully when Film's brief and Ton's cues repeat them. |
+| FC-04 | **closed** | L07 "แทบ"; L09 correctly keeps "ไม่มีอะไรกดตัว". |
+| FC-05 | **closed** | Tags cover every astronaut shot and every diagram/inset. |
+| FC-06 | **closed** | Hit and crowd removed; sound plan passes. |
+
+### N4b/f answer: does "แต่…" after L10 still read as "growing taller causes the pain"?
+
+Partly. In R2 the picture breaks the chain (no landing, no height bar or diagram in the L11 shot, no "เพราะ", no hit), and "แต่…" reads naturally as "taller sounds great, but space life has a catch". But L10 ("สูงขึ้นได้ สองสามเซน") flows straight into "แต่… หลายคนปวดหลัง", and a viewer listening without the picture can still infer growth to pain. The evidence does not support that causal reading (SABP mechanism unknown; F016 `unsupported`). Residual is low, because the narrator says nothing causal. Fixed best by wording, below.
+
+### Advisories (none blocking)
+
+- **A1 (recommended, one phrase, +4 syllables):** L11 "แต่… ตอนอยู่บนนั้น นักบินอวกาศหลายคนปวดหลัง". It ties the pain to the flight, not to the growth, and holds in audio alone. This is my FC-01 option A wording; the user kept L11 unchanged, so Preaw/user decide. If kept unchanged, accept the residual and keep the picture limits (no bar, no diagram, no "เพราะ", no hit) as hard rules for Film and Ton. Recheck needed only if the wording changes (a +4 syllable trim of N1 is immaterial).
+- **A2 (picture-timing note for Film):** L10 shows three or four day/night cycles, then the wince is "about day 2", i.e. earlier than L10's end. Not a factual error: SABP onset is the first days and persists to about day 12, so a wince at day 3-4 is equally true. Simplest: show the cabin stretch as "the first days" with no day count, or set it after L10's cycles. Film should avoid a visible "day 2" counter that contradicts the L10 bar.
+- **A3 (script hygiene):** the Takeaway (line 18) and logline ("astronauts grow a few centimetres… many get sore backs") are consistent with L10 and L11 and with F009/F014 as worded; keep them cause-free if the logline is reused for cover or description text.
+
+### Uncertainties (unchanged from R1)
+
+SRC001 and SRC004 lead-only (qualitative confidence limit: medium for "ส่วนใหญ่" and "ดูดน้ำกลับ"); no sourced disc/curvature split; no in-flight disc imaging; no sourced landing-day pain incidence (none claimed). Timing ≈ 55 s remains Preaw's estimate, not checked by me.
