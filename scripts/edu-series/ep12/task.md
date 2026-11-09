@@ -2,7 +2,7 @@
 
 Record: this file. Series context: [concepts.md](../concepts.md) (R6, C35) · series task list: [task.md](../task.md).
 
-**Now:** review page republished as ROWS-R1.1 (v1794217920-6ae8): Q-F2c change applied (Boat N1 plain smooth spine, N2 uneven tape steps). Waiting for the user to re-ok Q-F2c, B04-SH02, B04-SH03 (their verdicts reset). Then W3 look frames.
+**Now:** W3.1 done (look frames LF01–LF05 v7, viewer check round 3 all pass); review page republished as ROWS-R1.5 (v1794221441-1344). Waiting for the user's look verdicts (W3.2), then W3.3 storyboard pass.
 
 - Deliverable: `EDU-EP12-SHORT`, Short only (Thai), 1080×1920, 30 fps, target 40–60 s (estimate). Profile: educational, painted 2D p5.brush, 4-head cast, Kore narrator (edu default), ending per concept: closed, ~2 s hold on the boy asleep, then the doorframe (the user may change it); other fields = project defaults.
 - Factual claims for Boat: see the C35 entry in concepts.md R6. All unchecked until research and fact-check. Thin spots: daily height loss figure (about 1 cm / about 1 % of stature, range by height); NASA astronaut growth up to about 3 %; back-pain wording (no mechanism claim beyond "ตัวยืด" and "ปวดหลัง").
