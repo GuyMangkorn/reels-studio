@@ -2,7 +2,7 @@
 
 Record: this file. Series context: [concepts.md](../concepts.md) (R7, C39) · series task list: [task.md](../task.md).
 
-**Now:** W2 done 2026-11-09 (BRIEF-R1.1, ROWS-R1.1, 16 shots, ~57.6 s est.). Review page published https://claude.ai/artifact/SENeNYcT6JeU9hpdYXd8dT (user passed the storyboard 2026-11-09 in chat; per-shot verdicts and Q-F1–Q-F4 on the page not yet read, Film's recommendations apply). W3 look frames next after the storyboard pass.
+**Now:** W2 done 2026-11-09 (BRIEF-R1.1, ROWS-R1.1, 16 shots, ~57.6 s est.). Review page published https://claude.ai/artifact/SENeNYcT6JeU9hpdYXd8dT (user passed the storyboard 2026-11-09 in chat; per-shot verdicts and Q-F1–Q-F4 on the page not yet read, Film's recommendations apply). Storyboard pass: all 16 shots and Q-F1–Q-F4 marked ok on the page (read 2026-11-09, no notes; Film's recommendations apply). Look frames v5 painted (Boss, `src/painted/edu13/`; sheets `out/edu13/look-frames/v5/`) and look locked by the user 2026-11-09 in chat: original cameras VD08/VD11 kept (staging moved instead: room OX +0.5 m, DS +0.15 m; SOI MAN (0.2,0,0), giant (1.5,0,-0.6)), dog eyes shut built (kit `lid`), flea front head kept laterally thin (true to a cat flea). Brief SET-LR13/SOI coordinates still need Film's note of the shift; review page with look frames not yet republished.
 
 - Deliverable: `EDU-EP13-SHORT`, Short only (Thai), 1080×1920, 30 fps, target 40–60 s (estimate). Profile: educational, painted 2D, edu defaults (Kore narrator).
 - Factual claims for Boat: see the C39 entry in concepts.md R7 (flea length, flea jump height, person's standing jump, scaling argument; wording "พอ ๆ กัน", never "exactly the same"). All unchecked.
@@ -18,7 +18,7 @@ Record: this file. Series context: [concepts.md](../concepts.md) (R7, C39) · se
   - [x] W1.4 Length check (estimate about 56 s, within 40–60; measured at voice lock)
   - [x] W1.5 User approves the script (user, 2026-11-09, R2)
 - [x] W2 Brief and storyboard (2026-11-09; Film: film-brief.md EDU-EP13-BRIEF-R1, storyboard.md + review-rows.json EDU-EP13-ROWS-R1.0, 16 shots est 57.6 s; F-C39-D1 decided as VD05; review page: pending)
-- [ ] W3 Look frames and storyboard pass
+- [ ] W3 Look frames and storyboard pass (storyboard verdicts 16/16 ok; W3.1 and W3.2 done 2026-11-09; looks page republish pending)
 - [ ] W4 Voice lock
 - [ ] W5 Draft (W5.1 scene sheets, W5.2 Boss assets, W5.3 Editor draft)
 - [ ] W6 Final

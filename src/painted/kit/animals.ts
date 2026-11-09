@@ -44,6 +44,7 @@ export type AnimalPose = {
   /**
    * Cat controls (EDU-EP06 K1-K8; all opt-in, absent = the existing drawing byte for byte; dogs ignore them unless noted).
    * `lid` 0..1 per eye (one number, or [screen-left, screen-right]): authored lid closure, 0 open, 0.5-0.6 the half-close, 1 shut; while set it overrides `animalBlink` (K1).
+   * Dogs read `lid` too (EDU-EP13 N13 `dog-eyes-shut`): `lid` >= 0.5 draws the sleeping closed-eye arc, below 0.5 the normal open eye (no auto blink); cats as above.
    * `ears` 0..1: up and forward -> flat sideways "airplane", profile and front (K2).
    * `headDown` 0..1: head lowered to bowl height while standing, held; not the stride `sniff` (K3, the EDU-EP09 consumer).
    * `lean` 0..1 + `leanTo` [forward m, up m] from the ground point: neck stretched so the nose (`leanAnchor: 'nose'`, default) or the skull top ('top') reaches the target, body planted; `tilt` degrees tips the head nose-down about the skull (K4, K5; profile views).
@@ -345,8 +346,9 @@ export const drawAnimal = (p: Painter, seed: number, def: AnimalDef, g: Pt, unit
     if (isCat) for (const dy of [-0.01, -0.04]) ink([add(tip, [-0.04 * hs, (dy - 0.02) * hs]), add(tip, [0.14 * hs, (dy + 0.01) * hs])], '#f4efe6', 0.7, false, 0.3);
     const E = add(H, [(isCat ? 0.08 : 0.06) * hs, 0.04 * hs]);
     if (anchors) anchors.eye = Q([E])[0];
-    const lidP = isCat ? lidAt(dir < 0 ? 0 : 1) : undefined;
-    if (lidP !== undefined) lidEye(E, 0.045 * hs, 0.035 * hs, lidP, add(E, [0.01 * hs, 0]), 0.01 * hs, 0.03 * hs);
+    const lidP = lidAt(dir < 0 ? 0 : 1), dogShut = !isCat && lidP !== undefined && lidP >= 0.5;
+    if (isCat && lidP !== undefined) lidEye(E, 0.045 * hs, 0.035 * hs, lidP, add(E, [0.01 * hs, 0]), 0.01 * hs, 0.03 * hs);
+    else if (dogShut) ink([[E[0] - 0.04 * hs, E[1] + 0.008 * hs], [E[0], E[1] - 0.014 * hs], [E[0] + 0.04 * hs, E[1] + 0.006 * hs]], INK, 1.6, false, 0.4);
     else if (blink) ink([add(E, [-0.04 * hs, 0]), add(E, [0.04 * hs, -0.005 * hs])], INK, 1.2, false, 0);
     else if (isCat) {
       const eye = ellUV(E, 0.045 * hs, 0.035 * hs, 0, 12);
@@ -394,8 +396,9 @@ export const drawAnimal = (p: Painter, seed: number, def: AnimalDef, g: Pt, unit
     for (const sd of [-1, 1]) {
       const E: UV = [H[0] + sd * 0.085 * hs, H[1] + (0.04 + 0.05 * down) * hs];
       if (anchors && sd < 0) anchors.eye = Q([E])[0];
-      const lidF = isCat ? lidAt(sd < 0 ? 0 : 1) : undefined;
-      if (lidF !== undefined) lidEye(E, 0.045 * hs, 0.038 * hs, lidF, E, 0.012 * hs, 0.032 * hs);
+      const lidF = lidAt(sd < 0 ? 0 : 1);
+      if (isCat && lidF !== undefined) lidEye(E, 0.045 * hs, 0.038 * hs, lidF, E, 0.012 * hs, 0.032 * hs);
+      else if (!isCat && lidF !== undefined && lidF >= 0.5) ink([[E[0] - 0.035 * hs, E[1] + 0.008 * hs], [E[0], E[1] - 0.014 * hs], [E[0] + 0.035 * hs, E[1] + 0.008 * hs]], INK, 1.6, false, 0.4);
       else if (blink) ink([[E[0] - 0.035 * hs, E[1]], [E[0] + 0.035 * hs, E[1]]], INK, 1.2, false, 0);
       else if (isCat) {
         const eye = ellUV(E, 0.045 * hs, 0.038 * hs, 0, 12);
