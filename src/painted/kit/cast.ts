@@ -99,6 +99,8 @@ export type FigPose = {
    * The returned `head`, `headTop` and `chin` anchors follow the cock. A tilt with the eyes looking sideways (`face.look`) reads puzzled.
    */
   headCock?: number;
+  /** Front head turned about the vertical axis by this many radians (+ = the face toward screen right), head only, body square (opt-in, default absent = the exact front head; a `quarter` body turn wins). A one- or two-frame bridge between the front head and the profile swap (EDU-EP13 W5.3 fix round 2). */
+  headTurn?: number;
   /**
    * Front three-quarter view (default absent = the exact front view; an optional extra beside the default front, back, left and right,
    * user 4 Nov 2026): with `view: 'front'` the body is turned about the vertical axis by `quarterDeg` (default 45, valid 15..60) so the
@@ -945,7 +947,7 @@ export const drawFigure = (p: Painter, def: CastDef, g: Pt, unit: number, pose: 
       [-0.52,0.88],[-0.68,0.49],[-0.73,0.12],[-0.77,-0.28],[-0.73,-0.64],[-0.57,-0.91],[-0.28,-1.07]];
     solid(p, seed + 1, sil, outline.map(([u, v]): Pt => [hc[0] + u * Kpx, hc[1] + v * Kpx]), 8, 0.02, 0.03);
   }
-  else if (headView === 'front') paintHeadFront(p, seed + 1, hc[0], hc[1], Kpx, pose.face, headStyle, t, warm, L, pose.quarter ? qdir * qr : 0);
+  else if (headView === 'front') paintHeadFront(p, seed + 1, hc[0], hc[1], Kpx, pose.face, headStyle, t, warm, L, pose.quarter ? qdir * qr : (pose.headTurn ?? 0));
   else paintHeadSide(p, seed + 1, hc[0], hc[1], Kpx, pose.face, headStyle, headView === 'left' ? -1 : 1, t, warm, L);
   if (G?.hat) {
     // Headwear over the head (wardrobe.ts): parts in head units, mirrored for a left-facing profile.

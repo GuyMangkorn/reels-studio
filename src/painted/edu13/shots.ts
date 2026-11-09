@@ -74,12 +74,13 @@ export const paintSH05 = (p: Painter, l: number) => {
   const drop = seg(l, 36, 44);
   const blink = l >= 54 && l < 58 ? (l === 54 || l === 57 ? 'half' : 'shut') as 'half' | 'shut' : undefined; // R2.1 SD07: slow blink +54..+57
   const twitch = l >= 48 && l <= 52 ? Math.sin(Math.PI * (l - 48) / 4) : 0; // R2.1 SD07: giant antenna twitch +48..+52
-  // F1 (fix round 1): the profile jaw drop is capped (`jaw` 0.25 = at most 0.045 head units at the widest talk, was 0.18) so the chin does not grow past the front head's.
-  const face = faceOf(drop > 0.5 ? 'neutral' : 'shock', {look: drop > 0 ? [0.55 * drop, -0.7 * drop] : [0.9, 0], ...(talk > 0 && drop < 0.5 ? {mouth: 'talk', open: talk, jaw: 0.25} : {}), ...(blink ? {eyes: blink} : {})});
+  // F1 (rounds 1-2): the profile jaw drop is capped (`jaw` 0.25) and `chin: 1` brings the profile chin tip forward under the mouth (head.ts `FaceState.chin`): the skull height already matched the front head, the receding egg bottom made the chin read longer.
+  const face = faceOf(drop > 0.5 ? 'neutral' : 'shock', {chin: 1, look: drop > 0 ? [0.55 * drop, -0.7 * drop] : [0.9, 0], ...(talk > 0 && drop < 0.5 ? {mouth: 'talk', open: talk, jaw: 0.25} : {}), ...(blink ? {eyes: blink} : {})});
   const front = l >= 10 && l < 22;
   const cast: RoomItem[] = [
     {at: MAN_AT, draw: (q, cc) => {
-      if (l < 6) paintManMotion(q, cc, {at: MAN_AT, motion: 'turn-head-right', mt: 0.6 * (l / 6), face: 'neutral', t, warm: 0.06});
+      // F1 round 2: the front head turns through a head-only 3/4 (+3 +4 +5) before the profile swap at +6, so the swap does not pop.
+      if (l < 6) paintManMotion(q, cc, {at: MAN_AT, motion: 'turn-head-right', mt: 0.6 * (l / 6), face: 'neutral', ...(l >= 3 ? {patch: {headTurn: [0.35, 0.75, 1.1][l - 3]}} : {}), t, warm: 0.06});
       else paintManMotion(q, cc, {at: MAN_AT, motion: 'gasp-recoil', mt: ((l - 6) / 30) * 2, faceState: face, patch: {head: 'right', ...(drop > 0 ? {nod: [0, -0.1 - 0.12 * drop] as [number, number]} : {})}, t, warm: 0.06});
     }},
     fleaItem(GIANT, {view: front ? 'front' : 'right', state: 'rest', ...(twitch > 0 && !front ? {antenna: twitch} : {}), t}),
@@ -237,11 +238,11 @@ export const SOFA16 = {sitEnd: 54, dogLift: 65, sigh: 71, sighEnd: 107, down: 12
 export const dogLift = (l: number) => ease(seg(l, 65, 75)) * (1 - ease(seg(l, 113, 125)));
 export const paintSH16 = (p: Painter, l: number) => {
   const c = shotCamera('S01_B05_SH02', l), t = l / 30, S = SOFA16, d = dogLift(l), sit = ease(seg(l, 0, S.sitEnd));
-  // F2 (fix round 1): the head settles with the chin on the forepaws (nose target 0.43 m forward, 0.10 m up of the ground point, tipped 10 deg) instead of dropping back into the high lie rest that overlapped the torso.
-  const rest = ease(seg(l, 113, 125)), lean = 1 - (1 - d) * (1 - rest), leanTo: [number, number] = [0.1 + 0.33 * rest, 0.34 - 0.24 * rest];
+  // F2 (rounds 1-2): the head settles out in front of the shoulder (nose target 0.47 m forward, 0.17 m up of the ground point, tipped 6 deg): neck and ruff stay above the shoulder line with a gap to the torso, the muzzle just over the forepaws; lower or further back the ruff merged with the back fur.
+  const rest = ease(seg(l, 113, 125)), lean = 1 - (1 - d) * (1 - rest), leanTo: [number, number] = [0.1 + 0.37 * rest, 0.34 - 0.17 * rest];
   const relieved = l < 40;
   const cast: RoomItem[] = [
-    {at: LR13.dogAt, layer: 'sofa', draw: (q, cc) => paintDog(q, cc, LR13.dogAt, {view: 'left', state: 'lie', lid: d > 0.15 ? 0.2 : 1, ...(lean > 0 ? {lean, leanTo, tilt: 8 * Math.sin(Math.PI * seg(l, S.sigh, S.sighEnd)) * (1 - rest) + 10 * rest} : {}), mouth: l >= S.sigh + 2 && l < S.sighEnd - 10 ? 'open' : 'closed'}, t)},
+    {at: LR13.dogAt, layer: 'sofa', draw: (q, cc) => paintDog(q, cc, LR13.dogAt, {view: 'left', state: 'lie', lid: d > 0.15 ? 0.2 : 1, ...(lean > 0 ? {lean, leanTo, tilt: 8 * Math.sin(Math.PI * seg(l, S.sigh, S.sighEnd)) * (1 - rest) + 6 * rest} : {}), mouth: l >= S.sigh + 2 && l < S.sighEnd - 10 ? 'open' : 'closed'}, t)},
     {at: LR13.manSeatFeet, layer: 'sofa', draw: (q, cc) => { paintMan(q, cc, {at: LR13.manSeatFeet, view: 'front', mix: {a: 'P01', b: 'P31', u: sit}, face: relieved ? 'relieved' : 'neutral', faceState: {look: [0.3, 0.1]}, t, warm: 0.08}); }},
   ];
   paintRoom13(p, c, {t, cast});

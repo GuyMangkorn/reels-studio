@@ -20,7 +20,7 @@ export type Mouth = 'flat' | 'smile' | 'o' | 'wavy' | 'frown' | 'gasp' | 'talk' 
  * `tears` 0..1 paints tear streams under the eyes (0 or absent = none); `sweat` adds a sweat drop beside the forehead.
  * `bags` 0..1 paints dark under-eye bags (the `tired` expression, 2 Nov 2026).
  */
-export type FaceState = {brow: Brow; eyes: Eyes; look: Pt; mouth: Mouth; open?: number; squint?: number; browTo?: Brow; browMix?: number; tears?: number; sweat?: boolean; bags?: number; /** Near cheek bulge 0..1 (eating, chewing): profile and turned heads only, a soft push of the cheek and a short crease. */ chew?: number; /** Jaw drop scale 0..1 of profile and turned heads (default 1). 0 keeps the chin line still through a turn: the turned `talk` mouth then opens inside the face as in the front view. */ jaw?: number};
+export type FaceState = {brow: Brow; eyes: Eyes; look: Pt; mouth: Mouth; open?: number; squint?: number; browTo?: Brow; browMix?: number; tears?: number; sweat?: boolean; bags?: number; /** Near cheek bulge 0..1 (eating, chewing): profile and turned heads only, a soft push of the cheek and a short crease. */ chew?: number; /** Jaw drop scale 0..1 of profile and turned heads (default 1). 0 keeps the chin line still through a turn: the turned `talk` mouth then opens inside the face as in the front view. */ jaw?: number; /** Profile chin forward 0..1 (opt-in, default absent = the plain egg): the lower half of the profile head shears toward the face so the chin tip sits under the mouth as in the front view, instead of the egg's lowest point sitting at the head centre (a long receding jaw). Same skull height; EDU-EP13 W5.3 fix round 2. */ chin?: number};
 /** The cuts of the WFOG/ZC cast (`short|tied|bob|hood|long`) and the people-library cuts (`hair.ts`, `NewCut`). */
 export type Cut = 'short' | 'tied' | 'bob' | 'hood' | 'long' | NewCut;
 /**
@@ -780,8 +780,9 @@ export const paintHeadSide = (p: Painter, seed: number, cx: number, cy: number, 
   // The jaw follows `open` (the chin outline moves down and back with the lower lip), the near cheek bulges with `chew`.
   const jaw = jawOpenOf(face), chewK = Math.min(1, face.chew ?? 0);
   const jawQ = (pts: Pt[]): Pt[] => pts.map((q) => jawSide(jaw, q));
+  const chinK = Math.max(0, Math.min(1, face.chin ?? 0));
   const head = headOutline(120).map(([x, y]): Pt => {
-    const [jx, jy] = jawSide(jaw, [x, y]);
+    const [jx0, jy0] = jawSide(jaw, [x, y]), jx = chinK > 0 ? jx0 + 0.32 * chinK * smooth01(0.3, 1.22, y) : jx0, jy = chinK > 0 ? jy0 - 0.06 * chinK * smooth01(0.4, 1.22, y) : jy0;
     if (chewK <= 0) return [jx, jy];
     const d = Math.hypot(jx - 0.8, jy - 0.5), g = Math.max(0, 1 - d / 0.38), push = chewK * 0.09 * g * g * (3 - 2 * g), nx = jx + 0.1, ny = jy - 0.2, nl = Math.hypot(nx, ny) || 1;
     return [jx + (nx / nl) * push, jy + (ny / nl) * push];
