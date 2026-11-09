@@ -95,6 +95,13 @@
      "out": 5.167,
      "cut": true,
      "key": "3a74a58bf97b2e4c"
+    },
+    "final": {
+     "src": "out/EDU-EP09-SHORT/clips/_final_cut.mp4",
+     "in": 0,
+     "out": 5.167,
+     "cut": true,
+     "key": "33f855fdb3d4b058"
     }
    }
   },
@@ -123,6 +130,13 @@
      "out": 6.767,
      "cut": true,
      "key": "c310b498797c99af"
+    },
+    "final": {
+     "src": "out/EDU-EP09-SHORT/clips/_final_cut.mp4",
+     "in": 5.167,
+     "out": 6.767,
+     "cut": true,
+     "key": "0ebd7d556142d8f9"
     }
    }
   },
@@ -150,6 +164,13 @@
      "out": 9.433,
      "cut": true,
      "key": "3c4fcde236c0fff3"
+    },
+    "final": {
+     "src": "out/EDU-EP09-SHORT/clips/_final_cut.mp4",
+     "in": 6.767,
+     "out": 9.433,
+     "cut": true,
+     "key": "70ed085527da92dc"
     }
    },
    "changed": "มือมีเนื้อเหมือนมือนักเปียโน: หลังมือโค้งนูน มีเนื้อตรงง่ามนิ้วโป้งและสันมือ แสงไล่ลงเงาเนียน ๆ ข้อมือค่อย ๆ เรียวเข้าแล้วบานเป็นสันมือ ไม่เป็นแท่งแบน ความยาวนิ้วและจังหวะเดิม"
@@ -178,6 +199,13 @@
      "out": 11.7,
      "cut": true,
      "key": "cb3eeac879471823"
+    },
+    "final": {
+     "src": "out/EDU-EP09-SHORT/clips/_final_cut.mp4",
+     "in": 9.433,
+     "out": 11.7,
+     "cut": true,
+     "key": "31809ba39d2466b4"
     }
    },
    "changed": "เอากล่องนมออกจากโต๊ะแล้ว แขนขวาคุณตางอศอกวางบนโต๊ะตอนเอื้อมไปจับข้อมือเด็ก ไม่ดูยืด มือทั้งสองคนมีเนื้อเหมือนมือนักเปียโน จังหวะเดิม"
@@ -206,6 +234,13 @@
      "out": 14.667,
      "cut": true,
      "key": "02fad15d15b9cd7a"
+    },
+    "final": {
+     "src": "out/EDU-EP09-SHORT/clips/_final_cut.mp4",
+     "in": 11.7,
+     "out": 14.667,
+     "cut": true,
+     "key": "25ed669794f84c38"
     }
    },
    "changed": "ฝ่ามือมีเนื้อแบบมือนักเปียโน หลังมือโค้งนูนเหมือนช็อตมือใกล้อื่น ๆ"
@@ -235,6 +270,13 @@
      "out": 17.033,
      "cut": true,
      "key": "60d98df848447163"
+    },
+    "final": {
+     "src": "out/EDU-EP09-SHORT/clips/_final_cut.mp4",
+     "in": 14.667,
+     "out": 17.033,
+     "cut": true,
+     "key": "82564fcb6515b16a"
     }
    }
   },
@@ -263,6 +305,13 @@
      "out": 20.733,
      "cut": true,
      "key": "3b748d8116eac6c6"
+    },
+    "final": {
+     "src": "out/EDU-EP09-SHORT/clips/_final_cut.mp4",
+     "in": 17.033,
+     "out": 20.733,
+     "cut": true,
+     "key": "8ea5d1ec035596d7"
     }
    }
   },
@@ -291,6 +340,13 @@
      "out": 24.233,
      "cut": true,
      "key": "3161102c4961cbe7"
+    },
+    "final": {
+     "src": "out/EDU-EP09-SHORT/clips/_final_cut.mp4",
+     "in": 20.733,
+     "out": 24.233,
+     "cut": true,
+     "key": "c4099574fb8c5ab9"
     }
    }
   },
@@ -319,6 +375,13 @@
      "out": 25.6,
      "cut": true,
      "key": "a8e5eb2c11f66660"
+    },
+    "final": {
+     "src": "out/EDU-EP09-SHORT/clips/_final_cut.mp4",
+     "in": 24.233,
+     "out": 25.6,
+     "cut": true,
+     "key": "a8876911452c720d"
     }
    }
   },
@@ -347,6 +410,13 @@
      "out": 28.633,
      "cut": true,
      "key": "b2dc0c090c6c170d"
+    },
+    "final": {
+     "src": "out/EDU-EP09-SHORT/clips/_final_cut.mp4",
+     "in": 25.6,
+     "out": 28.633,
+     "cut": true,
+     "key": "8dc3ea224ca57cfa"
     }
    }
   },
@@ -376,6 +446,13 @@
      "out": 30.167,
      "cut": true,
      "key": "5ac66777bd7143d7"
+    },
+    "final": {
+     "src": "out/EDU-EP09-SHORT/clips/_final_cut.mp4",
+     "in": 28.633,
+     "out": 30.167,
+     "cut": true,
+     "key": "f8c7556161229c6b"
     }
    }
   },
@@ -404,6 +481,13 @@
      "out": 34.767,
      "cut": true,
      "key": "55f2c308a65a8f94"
+    },
+    "final": {
+     "src": "out/EDU-EP09-SHORT/clips/_final_cut.mp4",
+     "in": 30.167,
+     "out": 34.767,
+     "cut": true,
+     "key": "4d38c24c002a2c81"
     }
    }
   },
@@ -431,6 +515,13 @@
      "out": 36,
      "cut": true,
      "key": "1469dad041abeb1d"
+    },
+    "final": {
+     "src": "out/EDU-EP09-SHORT/clips/_final_cut.mp4",
+     "in": 34.767,
+     "out": 36,
+     "cut": true,
+     "key": "0f48049bd778a169"
     }
    }
   },
@@ -459,6 +550,13 @@
      "out": 40.467,
      "cut": true,
      "key": "3337fc6c2cd9eb42"
+    },
+    "final": {
+     "src": "out/EDU-EP09-SHORT/clips/_final_cut.mp4",
+     "in": 36,
+     "out": 40.467,
+     "cut": true,
+     "key": "b55b3f83fbfd6d2b"
     }
    }
   },
@@ -486,6 +584,13 @@
      "out": 45.167,
      "cut": true,
      "key": "4e1dfa3541646894"
+    },
+    "final": {
+     "src": "out/EDU-EP09-SHORT/clips/_final_cut.mp4",
+     "in": 40.467,
+     "out": 45.167,
+     "cut": true,
+     "key": "1ca84ea02d0cb84f"
     }
    }
   },
@@ -511,6 +616,13 @@
      "out": 47.167,
      "cut": true,
      "key": "d8f0150c980c9569"
+    },
+    "final": {
+     "src": "out/EDU-EP09-SHORT/clips/_final_cut.mp4",
+     "in": 45.167,
+     "out": 47.167,
+     "cut": true,
+     "key": "5438490cfff62726"
     }
    }
   },
@@ -538,6 +650,13 @@
      "out": 51.033,
      "cut": true,
      "key": "7be1489f5d0a9aa4"
+    },
+    "final": {
+     "src": "out/EDU-EP09-SHORT/clips/_final_cut.mp4",
+     "in": 47.167,
+     "out": 51.033,
+     "cut": true,
+     "key": "88c79a6c8966bd44"
     }
    }
   },
@@ -563,6 +682,13 @@
      "out": 53.533,
      "cut": true,
      "key": "e48a180bfdf72bdf"
+    },
+    "final": {
+     "src": "out/EDU-EP09-SHORT/clips/_final_cut.mp4",
+     "in": 51.033,
+     "out": 53.533,
+     "cut": true,
+     "key": "a3f12402afd01a18"
     }
    }
   }
@@ -592,6 +718,10 @@
  },
  "draftCut": {
   "src": "out/EDU-EP09-SHORT/clips/_draft_cut.mp4",
+  "frames": 1606
+ },
+ "finalCut": {
+  "src": "out/EDU-EP09-SHORT/clips/_final_cut.mp4",
   "frames": 1606
  }
 }
