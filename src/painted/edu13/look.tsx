@@ -20,6 +20,9 @@ if (typeof document !== 'undefined') loadFont({family: 'Noto Sans Thai', url: st
 const FPS = 30;
 const PAPER = '#efe8d8';
 
+/** QA caption-band overlay switch (rows 1176-1344): off in every composition render; the stills entries (look-index.ts, shots-index.ts) turn it on. */
+export const qaBand = {on: false};
+
 export const Painted = ({paint, band = false, vignette = 'rgba(60,40,20,0.2)', grain = 0.08, children}: {paint: (p: Painter, frame: number) => void; band?: boolean; vignette?: string; grain?: number; children?: ReactNode}) => {
   const fn = useCallback(({brush, frame}: PaintContext) => paint(makePainter(brush, {t: frame / FPS, frame, fade: PAPER}), frame), [paint]);
   return (
@@ -28,7 +31,7 @@ export const Painted = ({paint, band = false, vignette = 'rgba(60,40,20,0.2)', g
       <AbsoluteFill style={{pointerEvents: 'none', background: `radial-gradient(ellipse 95% 75% at 50% 42%, rgba(0,0,0,0) 58%, ${vignette} 100%)`}} />
       <Grain opacity={grain} />
       {children}
-      {band && <div style={{position: 'absolute', left: 0, right: 0, top: 1176, height: 168, borderTop: '3px dashed rgba(255,255,255,0.9)', borderBottom: '3px dashed rgba(255,255,255,0.9)', boxShadow: '0 0 0 1px rgba(0,0,0,0.35)'}} />}
+      {band && qaBand.on && <div style={{position: 'absolute', left: 0, right: 0, top: 1176, height: 168, borderTop: '3px dashed rgba(255,255,255,0.9)', borderBottom: '3px dashed rgba(255,255,255,0.9)', boxShadow: '0 0 0 1px rgba(0,0,0,0.35)'}} />}
     </AbsoluteFill>
   );
 };

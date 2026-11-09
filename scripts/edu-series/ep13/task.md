@@ -33,7 +33,7 @@ Record: this file. Series context: [concepts.md](../concepts.md) (R7, C39) · se
   - [ ] V01 / V02 MAN takes (Editor; user picks; V01 ≤ 1.40 s, V02 ≤ 0.40 s); V03 is Ton's dog sigh
   - [ ] W5.2 Boss assets (N1–N21, SP2–SP4) from SHEETS-R2.0
   - [x] W5.2s Ton sounds and cue sheet (2026-11-09): [sound-cues.json](sound-cues.json) vs SHEETS-R2.0, 52 cues = 30 generated + 22 library placements (28 new files filed, 11 library files reused, 39 locked in `src/videos/edu-ep13/assets.lock.json`); no NEEDS-GEN; not listened; models unloaded
-  - [ ] W5.3 Editor draft
+  - [~] W5.3 Editor draft (2026-11-09, draft cut rendered, not reviewed shot by shot by the user/Film): composition `EDU-EP13-SHORT` registered (`src/videos/edu-ep13/`), 16 scenes 1390 f, narration placed + MAN V01/V02, 52 cues mixed (`sound-cues.py` ok, `mix-levels.py` no FAIL, warns in build-notes), captions 29 cues, QA band removed; draft `out/EDU-EP13-SHORT/draft/EDU-EP13-SHORT_A_fade.mp4` (-14.0 LUFS, -1.5 dBTP); `npm test` 621/621; details [build-notes.md](build-notes.md); not committed; no user approval
 - [ ] W6 Final
 - [ ] W7 Pinned
 - [ ] W8 Deliver (render, cover, posting, kit intake)

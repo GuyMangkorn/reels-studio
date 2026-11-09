@@ -3,7 +3,8 @@
   "sceneSheets": "EDU-EP13-SHEETS-R2.0",
   "video": "src/videos/edu-ep13",
   "sources": [
-    "src/videos/edu-ep13"
+    "src/videos/edu-ep13",
+    "scripts/edu-series/ep13/sound-mix.py"
   ],
   "cues": [
     {
@@ -531,7 +532,9 @@
     }
   ],
   "swaps": [],
-  "exempt": [],
+  "exempt": [
+    {"src": "EDU-EP13-SHORT-draft-stem-v1.wav", "reason": "Editor's baked draft mix of exactly this sheet's 52 cues (scripts/edu-series/ep13/sound-mix.py); the composition plays it as its audio track, not a sound of its own"}
+  ],
   "levels": {
     "stems": {
       "voice": "out/stems/voice.wav",
