@@ -1,0 +1,90 @@
+{
+ "deliverable": "EDU-EP12-SHORT",
+ "script": "EDU-EP12-SCRIPT-R2",
+ "read": "ep12-nar-kore-slow65.wav",
+ "fps": 30,
+ "tempo": 0.939,
+ "note": "W1.4 length check read, raw Gemini Kore one call, no atempo, loudnorm -16 LUFS. Times in read seconds, line edges from ffmpeg silencedetect -35 dB / 0.10 s assigned by syllable and Whisper (Whisper garbled L08-L09, so those two edges are +-0.15 s). Not listened. Excludes V01/V02/V03 and the scripted no-line gaps (0.8 s, 1.0 s) and end holds (2 s + 1.5 s). USER 2026-11-09: slowed 6.5 % (atempo 0.939) on the same read; all times below x1.065 from the raw read, frames recomputed. Re-check L08-L09 edges (+-0.15 s raw).",
+ "read_duration_s": 46.52,
+ "speech_end_s": 46.156,
+ "lines": {
+  "L01": {
+   "start": 0.259,
+   "end": 3.424,
+   "dur": 3.165,
+   "onset_frame": 8
+  },
+  "L02": {
+   "start": 3.838,
+   "end": 8.274,
+   "dur": 4.436,
+   "onset_frame": 115
+  },
+  "L03": {
+   "start": 8.851,
+   "end": 13.206,
+   "dur": 4.355,
+   "onset_frame": 266
+  },
+  "L04": {
+   "start": 13.775,
+   "end": 19.687,
+   "dur": 5.912,
+   "onset_frame": 413
+  },
+  "L05": {
+   "start": 20.109,
+   "end": 21.869,
+   "dur": 1.759,
+   "onset_frame": 603
+  },
+  "L06": {
+   "start": 22.383,
+   "end": 24.664,
+   "dur": 2.281,
+   "onset_frame": 671
+  },
+  "L07": {
+   "start": 25.165,
+   "end": 28.596,
+   "dur": 3.431,
+   "onset_frame": 755
+  },
+  "L08": {
+   "start": 29.29,
+   "end": 30.675,
+   "dur": 1.386,
+   "onset_frame": 879
+  },
+  "L09": {
+   "start": 31.433,
+   "end": 34.46,
+   "dur": 3.027,
+   "onset_frame": 943
+  },
+  "L10": {
+   "start": 34.918,
+   "end": 37.305,
+   "dur": 2.387,
+   "onset_frame": 1048
+  },
+  "L11": {
+   "start": 37.803,
+   "end": 40.077,
+   "dur": 2.274,
+   "onset_frame": 1134
+  },
+  "L12": {
+   "start": 40.386,
+   "end": 42.987,
+   "dur": 2.601,
+   "onset_frame": 1212
+  },
+  "L13": {
+   "start": 43.403,
+   "end": 46.156,
+   "dur": 2.753,
+   "onset_frame": 1302
+  }
+ }
+}
