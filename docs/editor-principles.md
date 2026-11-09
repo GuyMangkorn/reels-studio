@@ -150,20 +150,23 @@ Treatment palette (Editor picks per beat; each must serve a mix intent):
 
 | Layer | Situation | Target dV | `when` | Basis | EP06–08 measured |
 | --- | --- | --- | --- | --- | --- |
-| Everything under the voice (`background`) | Voice speaking | **≥ 15**, aim 18 | `speech` | practitioner −18 to −20; 15 floor | 14.8–25.1 |
+| Everything under the voice (`background`) | Voice speaking | **≥ 15**, aim 18 | `speech` | practitioner −18 to −20; 15 floor | 14.1–26.5 |
 | `background` | Line that must be understood (number, easily misheard Thai word) | **≥ 20** over that line | `speech` | WCAG 1.4.7 (AAA, by analogy) | — |
-| Bed (music, or ambience as the bed) | Voice speaking | warn above **20** (the bed may vanish on a phone) | `speech` | user, 9 Nov 2026 | 14.8–25.1 |
+| Bed (music, or ambience as the bed) | Voice speaking | warn above **20** (the bed may vanish on a phone) | `speech` | user, 9 Nov 2026 | 14.1–26.5 |
 | SFX texture / foley | Voice speaking | **≥ 18** | `speech` | WCAG by analogy; practitioner | — |
-| Bed | Gap ≥ 0.5 s, `lift` swell | **6–12** at the gap's loudest step | `gap` | Boat proposal on EBU R 128 s4 | 5.5–8.2 |
+| Bed | Gap ≥ 0.5 s, `lift` swell | **6–12** at the gap's loudest step | `gap` | Boat proposal on EBU R 128 s4 | 5.7–6.7 |
 | Bed and ambience | `drop` window | **≥ 30** or silent | `peak` | EP08a | — |
-| Bed | `hit` / `release` return | **≥ 0** (never above the voice) | `peak` | Boat proposal | 3.8–6.2 |
-| SFX accent (hit, stinger, riser) | In a gap, not on a word | **−6 to 3** (at the voice level; at most 6 LU louder) | `peak` | Boat proposal; user, 9 Nov 2026 | 3.8–6.2 |
+| Bed | `hit` / `release` return | **≥ 0** (never above the voice) | `peak` | Boat proposal | 3.6–6.3 |
+| SFX accent (hit, stinger, riser) | In a gap, not on a word | **−6 to 3** (at the voice level; at most 6 LU louder) | `peak` | Boat proposal; user, 9 Nov 2026 | 3.6–6.3 |
 | SFX accent | Over speech (avoid) | **≥ 12**, cue ≤ 2 s | `speech` | practitioner −12 to −18; WCAG 1–2 s exception | — |
 | Whole mix | Whole video | mix minus voice **≤ +5 LU** (checked on every run), aim ≤ +2 | automatic | EBU R 128 s4 (standard) | 0.0–0.1 |
 | Master | Any | true peak ≤ −1 dBTP | `render.mjs` | EP08a | — |
 
 - **Tolerance:** 2 LU on `speech` and `gap` rows, 3 LU on `peak` rows. A value outside the target but within the tolerance warns; beyond it, it fails. A layer that is silent in the window passes.
-- **Measurement:** the script reads momentary loudness (400 ms) every 100 ms with ffmpeg `ebur128` and averages in energy. Speech is every step where the voice is within 15 LU of its own mean level. Hits are judged on momentary maxima, never the 3 s short-term meter, which reads a 0.3 s burst about 8.7 LU low (research, Q4).
+- **Measurement:** the script reads momentary loudness (400 ms) every 100 ms with ffmpeg `ebur128` and averages in energy. Speech is every 100 ms step where the voice's own level is within 30 dB of its mean, so whispers and breaths count as speech and short gaps keep their edges. A `speech` row compares the layer with the voice inside the row's own window. Hits are judged on momentary maxima, never the 3 s short-term meter, which reads a 0.3 s burst about 8.7 LU low (research, Q4).
+- **Exceptions from Film's brief** (user, 9 Nov 2026). The row carries `exception` naming the brief cue (`"exception": "brief SH07 scare hit"`), and the script marks it `ok*`. A sound that breaks a row with no Film brief behind it is a mix error, not an exception.
+  - **Scare hit** (jump scare, a sound that must startle): `accent` `peak` down to **−10** (at most 10 LU louder than the voice), at most two per Short, each after a `drop` ([EP08a](#ep08a-shape-audio-emphasis-by-story-beat)). True peak ≤ −1 dBTP stays a hard limit: at −14 LUFS the master has only about 10–12 dB above the voice, and a louder hit is flattened by the limiter instead of startling.
+  - **Whisper, tired or breathless line:** the quiet level is the performance, not a gain ride, so EP08a's −3 dB voice range does not apply. Measure the line's own window: everything under it stays **≥ 15** below the whisper itself. Intimacy comes from lowering the voice and the bed together, not from burying the line.
 - **Ducking values are not distances.** `duckUnderNarration` `0.35` and `0.15` are gain changes of −9.1 and −16.5 dB; the distance they give depends on the bed's own level, so the measured dV is the check.
 - **Stems:** Editor exports one WAV per layer at the draft mix gains, time-aligned and as long as the mix (`voice`, `bed`, `ambience`, `texture`, `accent`; merge layers an episode does not separate). A mix script that bakes the sound stem (`scripts/<episode>/sound-mix.py`) writes one stem per bus. **Runtime gap (9 Nov 2026):** a timeline that places sounds in `video.audio[]` or `scene.sfx[]` has no per-layer stem export (`missing`); until Boss adds one, bake the layers with a mix script, or measure the one non-voice stem as `background`.
 
