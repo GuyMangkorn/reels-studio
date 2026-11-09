@@ -573,9 +573,35 @@ const inPoly = (x: number, y: number, poly: readonly (readonly [number, number])
   return c;
 };
 
+
+/** R3 pianist-hand outline in hand-local (v, f) cm: PALM with the thumb-web bow (0.35 cm at f 3.8-6.2), the little-finger edge roll (0.25 cm), knuckle undulation on the front edge and a rounded heel behind the wrist (f < 0). Index ranges say which vertices carry ink. */
+const KNUCKLES: readonly (readonly [number, number])[] = [[1.45, 5.95], [-0.3, 6.05], [-2.0, 5.8], [-3.6, 5.3]];
+const outlineLocal = () => {
+  const pts: [number, number][] = [], seg = (a: readonly [number, number], b: readonly [number, number], n: number, fn: (v: number, f: number) => [number, number]) => {
+    for (let i = 0; i < n; i++) { const t = i / n; pts.push(fn(a[0] + (b[0] - a[0]) * t, a[1] + (b[1] - a[1]) * t)); }
+  };
+  const web = (f: number) => (f > 3.8 && f < 6.2 ? 0.35 * Math.sin((Math.PI * (f - 3.8)) / 2.4) : 0), roll = (f: number) => 0.25 * Math.sin((Math.PI * Math.max(0, Math.min(f, 5.2))) / 5.2);
+  const thumbStart = 0;
+  for (let i = 0; i < PALM_FRONT; i++) seg(PALM[i], PALM[i + 1], 4, (v, f) => [v + web(f), f]);
+  const thumbEnd = pts.length;
+  seg(PALM[PALM_FRONT], PALM[10], 12, (v, f) => [v, f + 0.2 * Math.cos(((v - 1.45) / 1.7) * Math.PI * 2) - 0.2]);
+  const littleStart = pts.length;
+  for (let i = 10; i < PALM.length - 1; i++) seg(PALM[i], PALM[i + 1], 4, (v, f) => [v - roll(f), f]);
+  pts.push([-2.6 - roll(0), 0]);
+  const littleEnd = pts.length - 1;
+  return {pts, thumbEnd: [thumbStart, thumbEnd] as [number, number], littleStart, littleEnd, knuckles: KNUCKLES};
+};
+
 // ids: fills base + 0 .. 119, shadows base + 120 .. 159, inks base + 160 .. 229
 const FILL = 0, SHADOW = 120, INK_ID = 160;
 const HIGHLIGHT = (skin: string, k = 0.2) => mixColor(skin, '#fff3e2', k);
+/** R3 tone ramp of the pianist hand, rim light -> core shadow -> shade -> mid -> skin -> lit -> peach crown, interpolated over the 11 band fractions `TONE_KS` (1 = the whole width, 0.24 = the crown). Shared by the hand and the forearm so they match at the wrist. */
+const TONE_KS = [1, 0.97, 0.94, 0.9, 0.86, 0.81, 0.76, 0.71, 0.65, 0.59, 0.53, 0.47, 0.41, 0.35, 0.29, 0.23];
+const TONE_RAMP = (t: {skin: string; shade: string; deep: string}) => [mixColor(t.shade, t.skin, 0.45), mixColor(t.shade, t.deep, 0.65), t.shade, mixColor(t.skin, t.shade, 0.45), t.skin, HIGHLIGHT(t.skin, 0.1), HIGHLIGHT(t.skin, 0.24)];
+const toneAt = (t: {skin: string; shade: string; deep: string}, i: number) => {
+  const r = TONE_RAMP(t), x = (i / (TONE_KS.length - 1)) * (r.length - 1), j = Math.min(r.length - 2, Math.floor(x));
+  return mixColor(r[j], r[j + 1], x - j);
+};
 
 /**
  * Paint the macro hand through camera `cam` and return its anchors. Draw order: shadows on `plane`, forearm and sleeve, fingers folded
@@ -629,17 +655,31 @@ export const paintHandMacro = (p: Painter, cam: YCam, h: HandMacro): HandAnchors
     if (pal.every(Boolean)) hardFill(sp, h.base + SHADOW + 40, col, pal.map((v) => v!.pt));
   }
 
+  // R3 pianist-hand geometry (the back-of-hand outline in the picture, the lit anchor of its tone bands), shared by the hand and the forearm so both carry the same gradient across the wrist.
+  const palmLo = outlineLocal(), at2 = (v: number, f: number) => toPx(sk.at(v, f < 0.05 ? 0 : 0.05, f))?.pt;
+  const palmPts = (() => { const r = palmLo.pts.map(([v, f]) => at2(v, f)); return r.some((v) => !v) ? null : (r as Pt[]); })();
+  const palmCtr: [number, number] = [palmLo.pts.reduce((s, v) => s + v[0], 0) / palmLo.pts.length, palmLo.pts.reduce((s, v) => s + v[1], 0) / palmLo.pts.length];
+  let litIdx = 0;
+  if (palmPts) palmPts.forEach((v, i) => { if (-(v[0] * ls[0] + v[1] * ls[1]) > -(palmPts[litIdx][0] * ls[0] + palmPts[litIdx][1] * ls[1])) litIdx = i; });
+  const palmAnchor: [number, number] = [(palmLo.pts[litIdx][0] + palmCtr[0]) / 2, (palmLo.pts[litIdx][1] + palmCtr[1]) / 2];
+  const V_WRIST: [number, number] = [palmLo.pts[0][0], palmLo.pts[palmLo.pts.length - 1][0]]; // wrist edge, local v: thumb side, little side
   // Forearm and sleeve.
+  let armCut: {bandPoly: (poly: Pt[], k: number) => Pt[]; wrist: Pt} | null = null; // the forearm's shade cut line, so the hand can blend into it
   if (h.elbow) {
     const w = toPx(h.wrist), e = toPx(h.elbow);
     if (w && e) {
       const fr = 2.4 * S, er = 2.8 * S;
-      const P: Pt[] = [w.pt, e.pt], Rr = [fr * w.r, er * e.r];
+      // R3: the forearm starts 1 cm under the palm (the back of the hand covers it), so no flat end shows at the wrist; its shading is the hand's own tone ramp laid across the tube, lit edge to shadow edge
+      const along0 = unit2(w.pt, e.pt), P: Pt[] = [[w.pt[0] - along0[0] * S * w.r, w.pt[1] - along0[1] * S * w.r], e.pt], Rr = [fr * w.r, er * e.r];
       const arm = tubeOutline(P, Rr, true);
-      fill(q, FILL + 0, tone.skin, arm);
-      const sideN: Dir2 = (() => { const d = unit2(P[0], P[1]); return [-d[1], d[0]]; })();
-      const sgn = sideN[0] * ls[0] + sideN[1] * ls[1] >= 0 ? 1 : -1;
-      fill(q, FILL + 1, tone.shade, clipHalf(arm, [(P[0][0] + P[1][0]) / 2 + sgn * sideN[0] * Math.min(Rr[0], Rr[1]) * 0.35, (P[0][1] + P[1][1]) / 2 + sgn * sideN[1] * Math.min(Rr[0], Rr[1]) * 0.35], [sgn * sideN[0], sgn * sideN[1]]));
+      fill(q, FILL + 0, TONE_RAMP(tone)[0], arm);
+      // band i = the strip of the tube between two lines parallel to the arm, the wrist outline's v-extent scaled by k about the lit anchor (what the palm bands do at the wrist, so the tones meet)
+      const perp: Dir2 = [-along0[1], along0[0]], pa = at2(0, 0), pb = at2(1, 0), vAx = pa && pb ? unit2(pa, pb) : perp, nrm: Dir2 = perp[0] * vAx[0] + perp[1] * vAx[1] >= 0 ? perp : [-perp[0], -perp[1]];
+      const vCut = (v: number): Pt => { const c = at2(v, 0) ?? w.pt; return c; };
+      const band = (k: number): [Pt, Pt] => [vCut(palmAnchor[0] + (V_WRIST[1] - palmAnchor[0]) * k), vCut(palmAnchor[0] + (V_WRIST[0] - palmAnchor[0]) * k)];
+      const bandPoly = (poly: Pt[], k: number) => { const [lo, hi] = band(k); return clipHalf(clipHalf(poly, lo, nrm), hi, [-nrm[0], -nrm[1]]); };
+      TONE_KS.forEach((k, i) => fill(q, 200 + i, toneAt(tone, i), bandPoly(arm, k)));
+      armCut = {bandPoly, wrist: w.pt};
       ink(q, 0, arm, inkW, inkOf(INK));
       if (h.sleeve) {
         const cu = h.sleeve.cuff ?? 0.5, cuffW = add3(h.wrist, scale3(sub3(h.elbow, h.wrist), cu)), rc = (2.4 + 0.4 * cu) * S * 1.18;
@@ -685,22 +725,27 @@ export const paintHandMacro = (p: Painter, cam: YCam, h: HandMacro): HandAnchors
     const strain = h.strain?.[id] ?? 0;
     const draw = () => {
       const f0 = FILL + 10 + fi * 10, i0 = fi * 12;
-      for (let k = 0; k < nk; k++) fill(q, f0 + k, tone.skin, capsule(P[k], P[k + 1], 2 * Rpx[k], 2 * Rpx[k + 1]));
+      // R3: each phalanx is a little fuller at mid-length than at its joints (+9 %, 12 % on the proximal), the joints keep their radii
+      const bulge = (k: number) => 1 + (k === 0 ? 0.12 : 0.09), rm = (k: number) => ((Rpx[k] + Rpx[k + 1]) / 2) * bulge(k);
+      const Pm: Pt[] = [], Rm: number[] = [];
+      for (let k = 0; k < nk; k++) { Pm.push(P[k], [(P[k][0] + P[k + 1][0]) / 2, (P[k][1] + P[k + 1][1]) / 2]); Rm.push(Rpx[k], rm(k)); }
+      Pm.push(P[nk]); Rm.push(Rpx[nk]);
+      for (let k = 0; k < nk; k++) fill(q, f0 + k, tone.skin, tubeOutline([P[k], [(P[k][0] + P[k + 1][0]) / 2, (P[k][1] + P[k + 1][1]) / 2], P[k + 1]], [Rpx[k], rm(k), Rpx[k + 1]], true));
       if (alpha >= 1) for (let k = 1; k < nk; k++) fill(q, f0 + 3 + k, tone.skin, ring(P[k][0], P[k][1], Rpx[k], Rpx[k], 12));
       // cel shade on the side away from the light, clipped inside each phalanx
       for (let k = 0; k < nk; k++) {
         const d = unit2(P[k], P[k + 1]), n: Dir2 = [-d[1], d[0]], sg = n[0] * ls[0] + n[1] * ls[1] >= 0 ? 1 : -1, rr = Math.min(Rpx[k], Rpx[k + 1]) * 0.3;
-        const seg = capsule(P[k], P[k + 1], 2 * Rpx[k], 2 * Rpx[k + 1]);
+        const seg = tubeOutline([P[k], Pm[2 * k + 1], P[k + 1]], [Rpx[k], rm(k), Rpx[k + 1]], true);
         fill(q, f0 + 6 + (k % 3), tone.shade, clipHalf(seg, [P[k][0] + sg * n[0] * rr, P[k][1] + sg * n[1] * rr], [sg * n[0], sg * n[1]]));
         // volume (FX05): a lit stripe down the rounded phalanx (light skin, on the side away from the shade) so the finger reads as a tube, not a flat strip
         const off = -sg * Math.min(Rpx[k], Rpx[k + 1]) * 0.3, hl = HIGHLIGHT(tone.skin);
-        if (id !== 'thumb' || k > 0) fill(q, FILL + 70 + fi * 4 + k, hl, capsule([P[k][0] + n[0] * off, P[k][1] + n[1] * off], [P[k + 1][0] + n[0] * off, P[k + 1][1] + n[1] * off], 0.7 * Rpx[k], 0.7 * Rpx[k + 1]));
+        fill(q, FILL + 70 + fi * 4 + k, hl, capsule([P[k][0] + n[0] * off, P[k][1] + n[1] * off], [P[k + 1][0] + n[0] * off, P[k + 1][1] + n[1] * off], 0.7 * Rpx[k], 0.7 * Rpx[k + 1]));
       }
       if (id === 'thumb') {
         // The metacarpal lies in the palm: ink only the free part (MCP -> tip) and the outer edge of the metacarpal.
-        ink(q, i0, tubeOutline(P.slice(1), Rpx.slice(1), true), inkW, inkOf(INK));
+        ink(q, i0, tubeOutline(Pm.slice(2), Rm.slice(2), true), inkW, inkOf(INK));
         // the outer edge of the metacarpal is the palm outline's thenar edge (PALM), not a second line
-      } else ink(q, i0, tubeOutline(P, Rpx, true), inkW, inkOf(INK));
+      } else ink(q, i0, tubeOutline(Pm, Rm, true), inkW, inkOf(INK));
       // knuckle creases (two strokes at pip and dip) where the back of the finger faces the camera
       for (let j = 1; j <= Math.min(2, nk - 1); j++) {
         const dor = c.dorsal[j - 1], seg = sub3(c.joints[j + 1], c.joints[j - 1]), faces = dot3(dor, norm3(sub3(camPos, c.joints[j])));
@@ -731,33 +776,63 @@ export const paintHandMacro = (p: Painter, cam: YCam, h: HandMacro): HandAnchors
     groups.push({id, fi, under: nUnder >= 2 || deepUnder, depth, draw});
   });
 
-  // Back of the hand.
+  // Back of the hand (R3 pianist hand, FX11/FX12): a domed form, not a flat polygon. The outline is the PALM outline with a thumb-web bow, a rolled little-finger edge, undulating knuckles and a rounded heel behind the wrist; the shading is a stack of copies of that outline scaled toward the lit edge (so every tone band follows the outline: lit crown, mid, shade, core shadow, reflected rim), then four knuckle bumps with dimples (back) or the thenar and hypothenar pads with three creases (palm side).
   const drawPalm = () => {
-    const pp = sk.palm.map(toPx);
-    if (pp.some((v) => !v)) return;
-    const pts = pp.map((v) => v!.pt);
-    fill(q, FILL + 60, tone.skin, pts);
+    if (sk.palm.some((v) => !toPx(v))) return;
+    const lo = palmLo;
+    if (!palmPts) return;
+    const pts = palmPts;
     const cx = pts.reduce((s, v) => s + v[0], 0) / pts.length, cy = pts.reduce((s, v) => s + v[1], 0) / pts.length;
     const ext = Math.max(...pts.map((v) => Math.hypot(v[0] - cx, v[1] - cy)));
-    fill(q, FILL + 61, tone.shade, clipHalf(pts, [cx + ls[0] * ext * 0.35, cy + ls[1] * ext * 0.35], ls));
-    fill(q, FILL + 95, HIGHLIGHT(tone.skin, 0.12), ring(cx - ls[0] * ext * 0.16, cy - ls[1] * ext * 0.16, ext * 0.34, ext * 0.24, 18)); // the bulge of the back of the hand (FX05)
-    // FX09 palm volume, the language of the finger stripes: a deeper band on the shaded edge, a soft rim light on the lit edge, and the two pads (thenar by the thumb, hypothenar by the little finger) each a soft lit crown
-    fill(q, FILL + 63, mixColor(tone.shade, tone.deep, 0.6), clipHalf(pts, [cx + ls[0] * ext * 0.5, cy + ls[1] * ext * 0.5], ls));
-    fill(q, FILL + 64, HIGHLIGHT(tone.skin, 0.2), clipHalf(pts, [cx - ls[0] * ext * 0.68, cy - ls[1] * ext * 0.68], [-ls[0], -ls[1]]));
-    ([[1.5, 2.0, 1.0, 1.5], [-2.2, 2.8, 0.85, 1.3]] as const).forEach(([v, f, rv, rf], i) => {
-      const a = toPx(sk.at(v, 0.05, f));
-      if (!a) return;
-      const rx = rv * S * a.r, ry = rf * S * a.r;
-      fill(q, FILL + 65 + i, HIGHLIGHT(tone.skin, 0.2), ring(a.pt[0] - ls[0] * rx * 0.1, a.pt[1] - ls[1] * rx * 0.1, rx * 0.85, ry * 0.85, 16)); // lit crown
-    });
+    const small = ext * 2 < 60, crown = HIGHLIGHT(tone.skin, 0.22);
+    // every tone band is the outline scaled about a point near the lit edge, so the bands hug the lit edge and open out toward the shadow side; the wrist vertices keep their f so no band closes across the wrist
+    const aL = palmAnchor;
+    const shrink = (k: number): Pt[] => lo.pts.map(([v, f]) => at2(aL[0] + (v - aL[0]) * k, f < 0.05 ? f : aL[1] + (f - aL[1]) * k) ?? [cx, cy]);
+    TONE_KS.forEach((k, i) => fill(q, FILL + 60 + i, toneAt(tone, i), shrink(k)));
+    // (the forearm carries the same bands, built on the same wrist extent, so the join needs no blend strip)
+    const padBase = toneAt(tone, 12); // the pad tones are pre-mixed with the mid tone under them (no extra translucent layers: an opaque hand adds none)
+    const pad = (id: number, v: number, f: number, rv: number, rf: number, col: string, a: number) => {
+      const c = toPx(sk.at(v, 0.05, f));
+      if (!c) return;
+      const rx = rv * S * c.r, ry = rf * S * c.r;
+      fill(q, FILL + 89 + id, mixColor(padBase, col, a), ring(c.pt[0] - ls[0] * rx * 0.12, c.pt[1] - ls[1] * rx * 0.12, rx, ry, 16));
+    };
+    if (camSide >= 0) {
+      // thumb web: lit dome of the first dorsal interosseous with a soft shadow just below it
+      pad(0, 2.0, 5.0, 0.9, 1.05, mixColor(tone.deep, tone.shade, 0.4), 0.14);
+      pad(1, 1.9, 4.8, 0.78, 0.9, crown, 0.2);
+      if (!small) {
+        // four knuckle bumps with dimples between them
+        lo.knuckles.forEach(([v, f], i) => {
+          pad(10 + i, v - 0.0, f - 0.25, 0.5, 0.42, mixColor(tone.deep, tone.shade, 0.5), 0.1); // tiny shadow downstream
+          pad(14 + i, v, f - 0.1, 0.62, 0.52, crown, 0.16);
+          if (i < 3) pad(18 + i, (v + lo.knuckles[i + 1][0]) / 2, f - 0.7, 0.42, 0.55, mixColor(tone.shade, tone.deep, 0.5), 0.12);
+        });
+      }
+    } else {
+      // palm side: thenar pad (by the thumb, the largest), hypothenar pad, soft hollow between them
+      pad(0, -0.9, 2.9, 1.7, 1.6, mixColor(tone.shade, tone.deep, 0.5), 0.3);
+      pad(1, 1.9, 2.6, 1.55, 2.0, crown, 0.7);
+      pad(2, -2.8, 3.0, 1.0, 1.9, crown, 0.55);
+      pad(3, -0.4, 5.3, 2.6, 0.7, crown, 0.4);
+      if (!small) {
+        const crease = (id: number, local: [number, number][]) => {
+          const cp = local.map(([v, f]) => toPx(sk.at(v, 0.05, f))?.pt);
+          if (cp.every(Boolean)) ink(q, 110 + id, cp as Pt[], inkW * 0.55, inkOf(tone.crease));
+        };
+        crease(0, [[2.2, 4.4], [1.2, 3.6], [0.4, 2.7], [0.0, 1.4]]); // thenar crease around the thumb pad
+        crease(1, [[-3.4, 4.6], [-2.0, 4.3], [-0.6, 4.3]]); // heart line
+        crease(2, [[-3.0, 3.8], [-1.6, 3.7], [0.2, 3.9]]); // head line
+      }
+    }
     if (tone.spots) {
       const spots: [number, number, number][] = [[0.6, 2.8, 0.42], [-1.4, 4.4, 0.36], [1.1, 5.2, 0.3]];
       const sp = p.layer(0.4 * alpha, h.base * 16 + 9);
-      spots.forEach(([v, f, r], i) => { const s = toPx(sk.at(v, 0.05, f)); if (s) hardFill(sp, h.base + FILL + 62 + i, tone.spots!, ring(s.pt[0], s.pt[1], r * S * s.r, r * S * s.r * 0.8, 10)); });
+      spots.forEach(([v, f, r], i) => { const s = toPx(sk.at(v, 0.05, f)); if (s) hardFill(sp, h.base + FILL + 67 + i, tone.spots!, ring(s.pt[0], s.pt[1], r * S * s.r, r * S * s.r * 0.8, 10)); });
     }
-    // outline: thumb edge down to the wrist and the little-finger edge (the wrist edge stays open into the forearm, the front edge under the fingers)
-    ink(q, 100, pts.slice(0, PALM_FRONT + 1), inkW, inkOf(INK));
-    ink(q, 101, pts.slice(PALM_FRONT + 2), inkW, inkOf(INK));
+    // outline: thumb edge down to the wrist and the little-finger edge (the wrist side stays open into the forearm, the front edge under the fingers)
+    ink(q, 100, pts.slice(lo.thumbEnd[0], lo.thumbEnd[1] + 1), inkW, inkOf(INK));
+    ink(q, 101, pts.slice(lo.littleStart, lo.littleEnd + 1), inkW, inkOf(INK));
   };
 
   const fingerOrder = (a: Group, b: Group) => {

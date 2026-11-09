@@ -212,18 +212,7 @@ const paintTable = (p: Painter, c: YCam) => {
   }
 };
 
-/** The milk box (the jug prop): table-plane footprint x 0.28..0.38 (handle on the left to 0.255), right of ELDER's right hand (moved from x 0..0.125 in FX08 third pass), z -0.39..-0.29, 0.2 m tall. Arm tracks keep elbow, forearm and hand out of it (FX04). */
-export const JUG = {x0: 0.255, x1: 0.38, z0: -0.39, z1: -0.29, h: 0.2};
-/** Props on the table (UT12): glasses, jug, mango plate, notebook + pencil, tissue box, each with a contact shadow. */
-/** The milk box. Painted after the sitters and the table but BEFORE the forearms and hands (FX08), so a hand in front of it covers it and an arm behind it is covered. */
-const paintJug = (p: Painter, c: YCam) => {
-  const y = TABLE_Y, q = flatCircle(c, [0.33 + 0.015, y + 0.001, -0.34 - 0.01], 0.07, 18);
-  if (q.length > 2) hardFill(p.layer(0.3, 3100 + 540), 540, '#3a2212', q);
-  paintBox(p, c, 541, {x0: 0.28, x1: 0.38, y0: y, y1: y + JUG.h, z0: JUG.z0, z1: JUG.z1}, '#e6efe9', {front: -0.06, left: -0.12, right: -0.12}, {ink: true});
-  paintBox(p, c, 543, {x0: 0.282, x1: 0.378, y0: y, y1: y + 0.12, z0: -0.388, z1: -0.292}, '#b9d4d8', {front: -0.08, left: -0.14, right: -0.14}, {});
-  paintBox(p, c, 545, {x0: 0.255, x1: 0.28, y0: y + 0.06, y1: y + 0.17, z0: -0.35, z1: -0.33}, '#d4ddd8', {}, {ink: true});
-};
-
+/** Props on the table (UT12): glasses, mango plate, notebook + pencil, tissue box, each with a contact shadow. (The milk box left the set in R3, FX13.) */
 const paintProps = (p: Painter, c: YCam) => {
   const y = TABLE_Y;
   const shadow = (id: number, v: V3, r: number) => { const q = flatCircle(c, [v[0] + 0.015, y + 0.001, v[2] - 0.01], r, 18); if (q.length > 2) hardFill(p.layer(0.3, 3100 + id), id, '#3a2212', q); };
@@ -266,7 +255,6 @@ export const paintDining = (p: Painter, c: YCam, o: DiningOpts): DiningOut => {
   paintChairBack(p, c, 620, [SEAT.boy[0], 0, SEAT.boy[2]], 0.36);
   const boy = o.boy ? paintSitter(p, c, BOY, SEAT.boy, o.boy, BOY.seed) : null;
   paintTable(p, c);
-  paintJug(p, c);
   // arms resting on the wood (character's left = +x); ELDER wears the cardigan's long sleeve to the cuff
   const elderSleeve = {color: ELDER_TONE.sleeve, shade: ELDER_TONE.sleeveShade};
   const arms: [Sitter | undefined, FigAnchors | null, CastDef, number, MacroTone, typeof elderSleeve | undefined][] = [[o.boy, boy, BOY, 1, BOY_TONE, undefined], [o.elder, elder, ELDER, 1.25, ELDER_TONE, elderSleeve]];

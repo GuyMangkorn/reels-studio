@@ -5,7 +5,8 @@ import type {Brush} from '../src/painted/BrushCanvas';
 import {blendHand, macroSkeleton, paintHandMacro} from '../src/painted/kit/hands';
 import {makePainter, type Pt} from '../src/painted/kit/painter';
 import {PEOPLE} from '../src/painted/kit/people';
-import {JUG} from '../src/painted/edu09/dining';
+import * as dining from '../src/painted/edu09/dining';
+import {measure as measureArm} from '../scripts/edu-series/ep09/r3-arm';
 import {boyHand, POV, povCam} from '../src/painted/edu09/handclose';
 import {BOY_TONE, ELDER_TONE} from '../src/painted/edu09/palette';
 import {camD01, D01_LAMP_Y, GRIN, MEASURE, paintQAGrin} from '../src/painted/edu09/scenes';
@@ -156,22 +157,16 @@ test('W5.2 N2: diagram tracks hit the sheet times; ring has no own cord; widths 
   const keys = new Set(Object.keys(diagramSH02(50).state.ownLit ?? {})); assert.deepEqual([...keys].sort(), ['index', 'little']);
 });
 
-test('FX04: the ELDER gentle-stop keeps elbow, forearm and hand 2 cm or more outside the milk box (JUG) on every frame (FX08 third pass: the box stands right of the ELDER hands at x 0.255-0.38; the hand slides straight across, elbow trailing over the back edge)', () => {
-  const rect = (x: number, z: number) => Math.hypot(Math.max(JUG.x0 - x, 0, x - JUG.x1), Math.max(JUG.z0 - z, 0, z - JUG.z1));
-  let worst = 9;
-  for (let f = 0; f <= 67; f++) {
-    const {hand, elbow} = gentleStopAt(f), L = Math.hypot(hand[0] - elbow[0], hand[2] - elbow[2]), ux = (hand[0] - elbow[0]) / L, uz = (hand[2] - elbow[2]) / L;
-    const wrist = [hand[0] - ux * 0.08, hand[2] - uz * 0.08], tip = [hand[0] + ux * 0.1, hand[2] + uz * 0.1];
-    for (let k = 0; k <= 40; k++) { const t = k / 40; for (const [a, b] of [[[elbow[0], elbow[2]], wrist], [wrist, tip]]) worst = Math.min(worst, rect(a[0] + (b[0] - a[0]) * t, a[1] + (b[1] - a[1]) * t)); }
+test('R3 FX13: with the milk box gone, ELDER right arm at L27 and L47 matches his left arm within 10 % per segment, elbow bent 25 deg or more, elbow on the wood, no box in the set', () => {
+  for (const L of [27, 47]) {
+    const m = measureArm(L);
+    assert.ok(Math.abs(m.upperR / m.upperL - 1) <= 0.1, `L${L} upper arm ratio ${(m.upperR / m.upperL).toFixed(2)}`);
+    assert.ok(Math.abs(m.foreR / m.foreL - 1) <= 0.1, `L${L} forearm ratio ${(m.foreR / m.foreL).toFixed(2)}`);
+    assert.ok(m.bendR >= 25, `L${L} elbow bend ${m.bendR.toFixed(0)}`);
   }
-  assert.ok(worst >= 0.02, `closest approach ${(worst * 100).toFixed(1)} cm`);
-  const e27 = gentleStopAt(27);
-  assert.ok(Math.abs(e27.elbow[0] + 0.13) < 0.01 && Math.abs(e27.elbow[2] + 0.45) < 0.01, 'elbow settles behind and left of the wrist');
-  // FX08: the forearm (elbow to hand) stays within 0.3 m so the arm cannot read longer than BOY's scaled by 1.25
-  for (let f = 0; f <= 67; f++) { const g = gentleStopAt(f); assert.ok(Math.hypot(g.hand[0] - g.elbow[0], g.hand[2] - g.elbow[2]) <= 0.3, `forearm at L${f}`); }
-  // FX08 third pass: at rest the elbow hangs well behind the wrist (forearm 0.15 m or more), not 7 cm, so the 0.32 m upper arm is not the whole arm
-  { const g = gentleStopAt(0); assert.ok(Math.hypot(g.hand[0] - g.elbow[0], g.hand[2] - g.elbow[2]) >= 0.15, 'rest forearm'); }
+  assert.equal(gentleStopAt(27).elbow[1], 0.746);
   assert.ok(Math.abs(elderLeanAt(0)[0]) < 1e-9 && elderLeanAt(27)[0] === ELDER_LEAN[0] && elderLeanAt(67)[1] === ELDER_LEAN[1]);
+  assert.ok(!('JUG' in dining), 'the milk box left SET-DINING');
 });
 
 test('FX07b: the folding middle finger (B01-SH01 L44-62) is cut at the table: no phalanx or shadow is drawn below the plane, and its draw state flips at most twice', () => {
