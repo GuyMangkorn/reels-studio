@@ -19,8 +19,8 @@
 | Film | Put a **sound direction** in the brief (checklist below), designed from the story ([fit beats reuse](#fit-beats-reuse)). | Brief `Sound direction` section |
 | Film | Write a `Sound` line in each shot block: ambience/music state, and each SFX cue with its shot-local frame and a **description** of the sound (source, action, material, space, length, what the viewer should feel), then a library ID only when that file fits the description, otherwise `NEEDS-GEN`; ducking or continuity notes. Cues support the written event frames; they do not replace them. | Scene sheet |
 | Boss | Own shared sound capability: registry/renderer fields, asset-attached sounds (contact, footsteps) and tests. Route generation requests to Ton; do not generate sound unless asked. | Shared modules |
-| Ton | After the timed scene sheets (W5.1), in parallel with Boss: make every cue's sound from its description ([fit beats reuse](#fit-beats-reuse)), choose candidates by measurement, file them into the library, lock them for the episode and write the [cue sheet](#sound-cue-sheet) (W5.2s). A cue Ton cannot make goes back to Film with the reason. | Cue sheet + library |
-| Editor | Place the cue sheet's sounds, mix with narration by beat ([EP08a](editor-principles.md#ep08a-shape-audio-emphasis-by-story-beat) hold/lift/drop/hit/release), run sound QA ([EP08](editor-principles.md#ep08--make-thai-captions-and-voice-lead-the-mix)) and pass `python3 -I scripts/sound-cues.py <cue sheet>` before every draft and final render. A cue that fails in the mix goes back to Ton through the round's [fix list](delivery-workflow.md#ai12); a different sound needs a swap in the cue sheet. | Timeline |
+| Ton | After the timed scene sheets (W5.1), in parallel with Boss: make every cue's sound from its description ([fit beats reuse](#fit-beats-reuse)), choose candidates by measurement, file them into the library, lock them for the episode and write the [cue sheet](#sound-cue-sheet) with its level targets ([EP08b](editor-principles.md#ep08b-keep-each-layer-at-its-distance-from-the-voice)) (W5.2s). A cue Ton cannot make goes back to Film with the reason. After each draft cut, measure the stems with `python3 -I scripts/mix-levels.py <cue sheet>` and send failing rows to Editor through the round's [fix list](delivery-workflow.md#ai12). | Cue sheet + library + level report |
+| Editor | Place the cue sheet's sounds, mix with narration by beat ([EP08a](editor-principles.md#ep08a-shape-audio-emphasis-by-story-beat) hold/lift/drop/hit/release), run sound QA ([EP08](editor-principles.md#ep08--make-thai-captions-and-voice-lead-the-mix)) and pass `python3 -I scripts/sound-cues.py <cue sheet>` before every draft and final render. Mix to the cue sheet's level targets and export the draft stems into its `levels.stems` ([EP08b](editor-principles.md#ep08b-keep-each-layer-at-its-distance-from-the-voice)). A cue that fails in the mix goes back to Ton through the round's [fix list](delivery-workflow.md#ai12); a different sound needs a swap in the cue sheet. | Timeline |
 
 ### Sound direction checklist
 
@@ -52,12 +52,21 @@
     {"cue": "B01-amb", "shot": "B01-SH01", "frame": 0, "brief": "…", "id": "room_condo-night-quiet_01", "origin": "library", "fit": "why this file matches the brief"}
   ],
   "swaps": [{"cue": "B02-SH01-hit", "to": "impact_sub-hit-short_03", "reason": "the first hit masks the stressed word", "approvedBy": "film"}],
-  "exempt": [{"src": "audio/edu/EDU-EP12-SHORT-stem-v1.wav", "reason": "stem baked by sound-mix.py"}]
+  "exempt": [{"src": "audio/edu/EDU-EP12-SHORT-stem-v1.wav", "reason": "stem baked by sound-mix.py"}],
+  "levels": {
+    "stems": {"voice": "out/stems/voice.wav", "bed": "out/stems/bed.wav", "accent": "out/stems/accent.wav"},
+    "checks": [
+      {"beat": "B01", "layer": "background", "when": "speech", "min": 15, "fromSec": 0, "toSec": 6.2},
+      {"beat": "B01", "layer": "bed", "when": "speech", "warnAbove": 20, "fromSec": 0, "toSec": 6.2},
+      {"beat": "B03", "layer": "accent", "when": "peak", "min": -6, "max": 3, "fromSec": 21.4, "toSec": 22.4}
+    ]
+  }
 }
 ```
 
 - `sources` lists what the check reads (default: the `video` folder); add a mix script that bakes a stem, and exempt the stem itself.
 - A cue is done when its `id` names a filed library sound (no `NEEDS-GEN` left), its `origin` is `generated` or `library`, and a `library` pick carries a `fit` note.
+- **Levels:** Ton writes one `checks` row per beat and layer from the [EP08b](editor-principles.md#ep08b-keep-each-layer-at-its-distance-from-the-voice) table, in dV (voice minus layer, LU), with the beat's window in seconds on the composition clock; Editor fills `stems` with the draft stems. `background` is the sum of all non-voice stems. `python3 -I scripts/mix-levels.py <cue sheet>` measures them.
 - **Swaps:** Editor or Ton may change a cue's sound only through `swaps`, with a reason and the approval of Film (a fresh Film pass) or the user.
 
 ### Common cue set

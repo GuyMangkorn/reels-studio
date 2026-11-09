@@ -137,7 +137,35 @@ Treatment palette (Editor picks per beat; each must serve a mix intent):
 
 **Runtime mapping (current checkout):** `video.audio[]` entries have a static `volume` with `fadeInSec`/`fadeOutSec` and `duckUnderNarration`; `scene.sfx[]` cues have a static `volume` ([toolkit 10a](remotion-toolkit.md#10a-footage-stills-music-entry-transitions-and-caption-styles)). Express a section level change by splitting the bed into consecutive entries of the same file with continuous `trimStartSec` and short overlapping fades; express `drop` as a fade-out/fade-in gap. As a gain reference, `0.5` ≈ −6 dB, `0.25` ≈ −12 dB, `0.1` = −20 dB. If a beat needs a keyframed volume envelope inside one entry, record it as a missing capability for Boss rather than faking it with many tiny entries.
 
-**Verification:** Listen to the full render at least once on ordinary speakers or a phone, focused only on the mix: is each `hit` the most noticeable sound in its section, is every stressed Thai word understandable, and do level changes sound motivated? Measure the master with ffmpeg `ebur128` (or `loudnorm` print mode) and record integrated loudness and true peak. **Default delivery check:** integrated around −14 LUFS with true peak at or below −1 dBTP; this is a project default for mobile-first upload, not a platform specification. `scripts/render.mjs` applies this automatically to every exported MP4 (`scripts/loudness.mjs`: two-pass `loudnorm`, limiter at −1.5 dBTP so AAC overshoot stays under −1, video stream copied, audio trimmed to the video length) and logs before/after levels; the beat-to-beat contrast in the cue sheet is kept, only the overall level moves, so a mix that is quiet before normalization still needs its own contrast. Record the logged `Loudness` line as the measurement. Renders made before 2026-10-28 are not re-normalized. Because platforms normalize playback loudness, a louder master does not play louder; it only loses contrast.
+**Verification:** Measure layer distances against [EP08b](#ep08b-keep-each-layer-at-its-distance-from-the-voice). Listen to the full render at least once on ordinary speakers or a phone, focused only on the mix: is each `hit` the most noticeable sound in its section, is every stressed Thai word understandable, and do level changes sound motivated? Measure the master with ffmpeg `ebur128` (or `loudnorm` print mode) and record integrated loudness and true peak. **Default delivery check:** integrated around −14 LUFS with true peak at or below −1 dBTP; this is a project default for mobile-first upload, not a platform specification. `scripts/render.mjs` applies this automatically to every exported MP4 (`scripts/loudness.mjs`: two-pass `loudnorm`, limiter at −1.5 dBTP so AAC overshoot stays under −1, video stream copied, audio trimmed to the video length) and logs before/after levels; the beat-to-beat contrast in the cue sheet is kept, only the overall level moves, so a mix that is quiet before normalization still needs its own contrast. Record the logged `Loudness` line as the measurement. Renders made before 2026-10-28 are not re-normalized. Because platforms normalize playback loudness, a louder master does not play louder; it only loses contrast.
+
+<a id="ep08b-keep-each-layer-at-its-distance-from-the-voice"></a>
+## EP08b — Keep each layer at its distance from the voice
+
+**Status:** Default (user, 9 Nov 2026) for deliverables whose Ton pass starts on or after 9 Nov 2026; open deliverables keep their rule set ([DP04](contributing.md#tools-and-document-improvements)). The numbers are starting values: research in [mix layer levels](research/2026-11-09-mix-layer-levels.md), checked against EDU-EP06, EP07 and EP08. A brief or cue sheet may override a row with a recorded reason. The ear check in [EP08a](#ep08a-shape-audio-emphasis-by-story-beat) still decides.
+
+**Ownership:** Ton writes the targets per beat in the cue sheet's [`levels`](sound-generation-workflow.md#sound-cue-sheet) and measures the draft mix with `python3 -I scripts/mix-levels.py <cue sheet>`. Editor mixes to them and exports the stems. A failing row goes to Editor through the round's [fix list](delivery-workflow.md#ai12). One role mixes and the other measures, so the mixer never grades their own mix ([AI03](delivery-workflow.md#agent-invocation)).
+
+**dV** is the voice's loudness minus the layer's, in LU, while the voice speaks: 18 means the layer sits 18 LU under the voice. A negative dV means the layer is louder than the voice.
+
+| Layer | Situation | Target dV | `when` | Basis | EP06–08 measured |
+| --- | --- | --- | --- | --- | --- |
+| Everything under the voice (`background`) | Voice speaking | **≥ 15**, aim 18 | `speech` | practitioner −18 to −20; 15 floor | 14.8–25.1 |
+| `background` | Line that must be understood (number, easily misheard Thai word) | **≥ 20** over that line | `speech` | WCAG 1.4.7 (AAA, by analogy) | — |
+| Bed (music, or ambience as the bed) | Voice speaking | warn above **20** (the bed may vanish on a phone) | `speech` | user, 9 Nov 2026 | 14.8–25.1 |
+| SFX texture / foley | Voice speaking | **≥ 18** | `speech` | WCAG by analogy; practitioner | — |
+| Bed | Gap ≥ 0.5 s, `lift` swell | **6–12** at the gap's loudest step | `gap` | Boat proposal on EBU R 128 s4 | 5.5–8.2 |
+| Bed and ambience | `drop` window | **≥ 30** or silent | `peak` | EP08a | — |
+| Bed | `hit` / `release` return | **≥ 0** (never above the voice) | `peak` | Boat proposal | 3.8–6.2 |
+| SFX accent (hit, stinger, riser) | In a gap, not on a word | **−6 to 3** (at the voice level; at most 6 LU louder) | `peak` | Boat proposal; user, 9 Nov 2026 | 3.8–6.2 |
+| SFX accent | Over speech (avoid) | **≥ 12**, cue ≤ 2 s | `speech` | practitioner −12 to −18; WCAG 1–2 s exception | — |
+| Whole mix | Whole video | mix minus voice **≤ +5 LU** (checked on every run), aim ≤ +2 | automatic | EBU R 128 s4 (standard) | 0.0–0.1 |
+| Master | Any | true peak ≤ −1 dBTP | `render.mjs` | EP08a | — |
+
+- **Tolerance:** 2 LU on `speech` and `gap` rows, 3 LU on `peak` rows. A value outside the target but within the tolerance warns; beyond it, it fails. A layer that is silent in the window passes.
+- **Measurement:** the script reads momentary loudness (400 ms) every 100 ms with ffmpeg `ebur128` and averages in energy. Speech is every step where the voice is within 15 LU of its own mean level. Hits are judged on momentary maxima, never the 3 s short-term meter, which reads a 0.3 s burst about 8.7 LU low (research, Q4).
+- **Ducking values are not distances.** `duckUnderNarration` `0.35` and `0.15` are gain changes of −9.1 and −16.5 dB; the distance they give depends on the bed's own level, so the measured dV is the check.
+- **Stems:** Editor exports one WAV per layer at the draft mix gains, time-aligned and as long as the mix (`voice`, `bed`, `ambience`, `texture`, `accent`; merge layers an episode does not separate). A mix script that bakes the sound stem (`scripts/<episode>/sound-mix.py`) writes one stem per bus. **Runtime gap (9 Nov 2026):** a timeline that places sounds in `video.audio[]` or `scene.sfx[]` has no per-layer stem export (`missing`); until Boss adds one, bake the layers with a mix script, or measure the one non-voice stem as `background`.
 
 ## EP09 — Choose effects and transitions by purpose
 
