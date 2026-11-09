@@ -28,7 +28,7 @@ export const measure = (L: number) => {
   const hR = g.hand, eR = g.elbow;
   const wr = (h: V3, e: V3): V3 => { const dx = h[0] - e[0], dz = h[2] - e[2], l = Math.hypot(dx, dz); return [h[0] - (dx / l) * 0.08, h[1], h[2] - (dz / l) * 0.08]; };
   const hl = wr(hL, eL), hr = wr(hR, eR);
-  return {L, upperR: dist(sR, eR), foreR: dist(eR, hr), upperL: dist(sL, eL), foreL: dist(eL, hl), bendR: bendDeg(sR, eR, hr), bendL: bendDeg(sL, eL, hl), sR, sL};
+  return {L, eR, eL, hr, hl, c, shR: out.elder!.rShoulder as [number, number], shL: out.elder!.lShoulder as [number, number], upperR: dist(sR, eR), foreR: dist(eR, hr), upperL: dist(sL, eL), foreL: dist(eL, hl), bendR: bendDeg(sR, eR, hr), bendL: bendDeg(sL, eL, hl), sR, sL};
 };
-if (process.argv[1]?.endsWith('r3-arm.ts')) for (const L of [0, 27, 47, 67]) { const m = measure(L); console.log(L, 'upper R/L', m.upperR.toFixed(3), m.upperL.toFixed(3), (m.upperR / m.upperL).toFixed(2), 'fore R/L', m.foreR.toFixed(3), m.foreL.toFixed(3), (m.foreR / m.foreL).toFixed(2), 'bend R/L', m.bendR.toFixed(0), m.bendL.toFixed(0), 'sR', m.sR.map((v) => v.toFixed(2)).join(','), 'sL', m.sL.map((v) => v.toFixed(2)).join(',')); }
+if (process.argv[1]?.endsWith('r3-arm.ts')) for (const L of [0, 12, 20, 27, 47, 67]) { const m = measure(L); console.log(L, 'upper R/L', m.upperR.toFixed(3), m.upperL.toFixed(3), (m.upperR / m.upperL).toFixed(2), 'fore R/L', m.foreR.toFixed(3), m.foreL.toFixed(3), (m.foreR / m.foreL).toFixed(2), 'bend R/L', m.bendR.toFixed(0), m.bendL.toFixed(0), 'sR', m.sR.map((v) => v.toFixed(2)).join(','), 'sL', m.sL.map((v) => v.toFixed(2)).join(',')); }
 void ELDER_LEAN;

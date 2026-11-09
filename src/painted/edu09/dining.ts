@@ -118,7 +118,7 @@ void drawChair;
 /** Forearm on the wood from the elbow to the wrist, and the five-finger macro hand (kit `paintHandMacro`, metre set: unit 0.01, yaw so the
  * fingers continue the forearm). Five fingers here, not body-scale mittens: the hand is about 100 px wide (fingers about 20 px) and it is the
  * same left hand that ends SH01 in `ring-strain`, so the try reads across the cut (Film decision, fix round 1). `hand` is the middle MCP. */
-export const paintTableArm = (p: Painter, c: YCam, base: number, hand: V3, elbow: V3, side: 1 | -1, pose: HandPoseId, size: number, tone: MacroTone, sleeve?: {color: string; shade: string}, mod?: (h: HandMacro) => HandMacro, yawOverride?: number) => {
+export const paintTableArm = (p: Painter, c: YCam, base: number, hand: V3, elbow: V3, side: 1 | -1, pose: HandPoseId, size: number, tone: MacroTone, sleeve?: {color: string; shade: string}, mod?: (h: HandMacro) => HandMacro, yawOverride?: number, shoulder?: V3) => {
   const fwd0 = [hand[0] - elbow[0], hand[2] - elbow[2]], L = Math.hypot(fwd0[0], fwd0[1]) || 1, fx = fwd0[0] / L, fz = fwd0[1] / L;
   const back = 0.065 * size, wrist: [number, number] = [hand[0] - fx * back, hand[2] - fz * back];
   const yaw = yawOverride ?? (Math.atan2(fx, -fz) * 180) / Math.PI;
@@ -130,39 +130,85 @@ export const paintTableArm = (p: Painter, c: YCam, base: number, hand: V3, elbow
   if (sleeve) {
     // R1.8 (user, LF02: "the hand looks covered by the sleeve"): the cuff sits behind the hand. Forearm skin first, then the sleeve, then the
     // hand again without forearm or shadow on top, so the back of the hand, knuckles and thumb base stay whole and the cuff ends at the wrist.
-    paintCuffSleeve(p, c, base + 400, h.wrist, [elbow[0] - fx * 0.03, elbow[1], elbow[2] - fz * 0.03], 0.024 * size, sleeve);
+    paintCuffSleeve(p, c, base + 400, h.wrist, elbow, 0.024 * size, sleeve, shoulder);
     paintHandMacro(p, c, {...h, base: base + 10000, elbow: undefined, plane: undefined});
   }
   return out;
 };
 
-/** Fix round 2 (LF02): ELDER's cardigan sleeve over the forearm as a soft tube instead of the macro's flat-ended sleeve (it read as a box):
- * world rings at the cuff and the elbow, hulled; a ribbed knit cuff band with a wobbly rim over the wrist, two creases toward the elbow and
- * a round elbow end. `r` is the wrist radius (m); the cuff edge sits halfway wrist -> elbow. */
-const paintCuffSleeve = (p: Painter, c: YCam, id: number, wrist: V3, end: V3, r: number, s: {color: string; shade: string}) => {
+/** Picture ray of a picture point onto the vertical plane z = `zPlane` (m): the 3D shoulder of a rig anchor that sits in the body plane. */
+export const unprojectToZ = (c: YCam, px: Pt, zPlane: number): V3 => {
+  const rp = (px[0] - 540 - (c.cx ?? 0)) / c.f, up = (c.hy - px[1]) / c.f, cs = Math.cos(c.pitch ?? 0), sn = Math.sin(c.pitch ?? 0);
+  const u = up * cs + sn, d = cs - up * sn, s = Math.sin(c.yaw), co = Math.cos(c.yaw), dx = rp * co + d * s, dz = rp * s - d * co, t = (zPlane - c.z) / dz;
+  return [c.x + dx * t, c.y + u * t, zPlane];
+};
+
+/** R3f (user: the elbow "against human nature"): one continuous limb outline for a sleeved arm, a polyline of picture points with a radius each (px).
+ * Round joins on the outside of every bend, a mitred inside, round caps: the shoulder, the upper arm, a domed elbow and the forearm are ONE polygon
+ * (no tube butted on a tube). Returns the outline and a side outline (`sgn` +1 / -1) for the shade. */
+const limbOutline = (P: Pt[], R: number[]): {outline: Pt[]; edge: (sgn: 1 | -1) => Pt[]; normals: Pt[]} => {
+  const n = P.length, dir = P.slice(1).map((q, i): Pt => { const dx = q[0] - P[i][0], dy = q[1] - P[i][1], l = Math.hypot(dx, dy) || 1; return [dx / l, dy / l]; });
+  const L = dir.map((d): Pt => [-d[1], d[0]]), normals = P.map((_, i): Pt => { const a = L[Math.max(0, i - 1)], b = L[Math.min(n - 2, i)], m: Pt = [a[0] + b[0], a[1] + b[1]], l = Math.hypot(...m) || 1; return [m[0] / l, m[1] / l]; });
+  const edge = (sgn: 1 | -1): Pt[] => {
+    const out: Pt[] = [];
+    for (let i = 0; i < n; i++) {
+      const a = L[Math.max(0, i - 1)], b = L[Math.min(n - 2, i)], na: Pt = [a[0] * sgn, a[1] * sgn], nb: Pt = [b[0] * sgn, b[1] * sgn], r = R[i];
+      const cross = a[0] * b[1] - a[1] * b[0]; // > 0: the path turns toward +L (L side is the inside)
+      const inner = cross * sgn > 1e-6;
+      if (i === 0 || i === n - 1 || Math.abs(cross) < 1e-3) { out.push([P[i][0] + nb[0] * r, P[i][1] + nb[1] * r]); continue; }
+      if (inner) {
+        const m: Pt = [na[0] + nb[0], na[1] + nb[1]], ml = Math.hypot(...m) || 1, u: Pt = [m[0] / ml, m[1] / ml], k = Math.min(2.2, 1 / Math.max(0.01, u[0] * na[0] + u[1] * na[1]));
+        out.push([P[i][0] + u[0] * r * k, P[i][1] + u[1] * r * k]);
+      } else {
+        const a0 = Math.atan2(na[1], na[0]);
+        let da = Math.atan2(nb[1], nb[0]) - a0;
+        while (da > Math.PI) da -= Math.PI * 2;
+        while (da < -Math.PI) da += Math.PI * 2;
+        for (let k = 0; k <= 8; k++) out.push([P[i][0] + Math.cos(a0 + (da * k) / 8) * r, P[i][1] + Math.sin(a0 + (da * k) / 8) * r]);
+      }
+    }
+    return out;
+  };
+  const cap = (i: number, d: Pt, from: Pt): Pt[] => {
+    const a0 = Math.atan2(from[1], from[0]), sgn = d[0] * -from[1] + d[1] * from[0] > 0 ? 1 : -1;
+    return Array.from({length: 9}, (_, k): Pt => [P[i][0] + Math.cos(a0 + sgn * (Math.PI * k) / 8) * R[i], P[i][1] + Math.sin(a0 + sgn * (Math.PI * k) / 8) * R[i]]);
+  };
+  const left = edge(1), right = edge(-1).reverse();
+  const outline = [...left, ...cap(n - 1, dir[n - 2], L[n - 2]).slice(1, -1), ...right, ...cap(0, [-dir[0][0], -dir[0][1]], [-L[0][0], -L[0][1]]).slice(1, -1)];
+  return {outline, edge, normals};
+};
+
+/** Fix round 2 (LF02) and R3f: ELDER's cardigan sleeve as one limb from the shoulder through a domed elbow to the wrist (`shoulder` given), else from the
+ * elbow only. World radii: shoulder 0.042, elbow 0.037 (the rig's upper arm is 0.080 and 0.068 wide), forearm tapering to the wrist radius `r` (m);
+ * a ribbed knit cuff band with a wobbly rim over the wrist, a fold crease on the inside of the elbow, the shade on the side away from the lamp. */
+const paintCuffSleeve = (p: Painter, c: YCam, id: number, wrist: V3, end: V3, r: number, s: {color: string; shade: string}, shoulder?: V3) => {
   const ax = [end[0] - wrist[0], end[1] - wrist[1], end[2] - wrist[2]], al = Math.hypot(ax[0], ax[1], ax[2]) || 1, a: V3 = [ax[0] / al, ax[1] / al, ax[2] / al];
   // basis across the arm: u level (toward +x for an arm along z), v up
   const ul = Math.hypot(a[2], a[0]) || 1, u: V3 = [-a[2] / ul, 0, a[0] / ul], v: V3 = [a[1] * u[2] - a[2] * u[1], a[2] * u[0] - a[0] * u[2], a[0] * u[1] - a[1] * u[0]];
   const at = (t: number): V3 => [wrist[0] + ax[0] * t, wrist[1] + ax[1] * t, wrist[2] + ax[2] * t];
   const ring = (o: V3, rr: number, wob = 0, n = 28): V3[] => Array.from({length: n}, (_, i) => { const th = (i / n) * Math.PI * 2, k = rr * (1 + wob * Math.sin(th * 5 + 0.7) + wob * 0.6 * Math.sin(th * 3)); return [o[0] + k * (Math.cos(th) * u[0] + Math.sin(th) * v[0]), Math.max(TABLE_Y + 0.002, o[1] + k * (Math.cos(th) * u[1] + Math.sin(th) * v[1]) + 0.004), o[2] + k * (Math.cos(th) * u[2] + Math.sin(th) * v[2])]; });
-  // R1.8: the knit rests flat on the wood (ring points clamped to the table top, none below it) and the cuff is only a little wider than the wrist.
-  // R3c: the sleeve is one tapered tube from the cuff at the wrist (0.14 of the way) to a domed elbow that matches the rig's upper-arm sleeve in width.
-  const cuff = at(0.14), rc = r * 0.96, re = r * 0.72; // R3d: thinner sleeve (matches the rig's upper-arm width), the cuff flares a little at its edge
-  const dome = [35, 65, 85].flatMap((d) => { const q = (d * Math.PI) / 180, o: V3 = [end[0] + a[0] * re * Math.sin(q), end[1] + a[1] * re * Math.sin(q), end[2] + a[2] * re * Math.sin(q)]; return camPoly(c, ring(o, re * Math.cos(q))); });
-  const lip = at(0.14 - 0.014 / al), cuffRing = ring(cuff, rc, 0.04), body = hull([...camPoly(c, cuffRing), ...camPoly(c, ring(lip, rc * 0.9, 0.03)), ...camPoly(c, ring(end, re)), ...dome]);
-  if (body.length < 3) return;
-  hardFill(p, id, s.color, body);
-  // shade: the half away from the lamp (lamp over the table centre, x 0), i.e. the +u side for an arm right of centre
-  const sg = wrist[0] >= 0 ? 1 : -1, half = (pts: V3[]) => pts.filter((q) => ((q[0] - cuff[0]) * u[0] + (q[2] - cuff[2]) * u[2]) * sg > -0.15 * r);
-  const sh = hull([...camPoly(c, half(cuffRing)), ...camPoly(c, half(ring(end, re)))]);
+  const cuff = at(0.14), rc = r * 0.96;
+  // limb path: shoulder -> elbow -> forearm (bulge near the elbow, taper to the wrist), picture points with picture radii
+  const pts3: V3[] = [...(shoulder ? [shoulder] : []), end, at(0.62), at(0.3), wrist], rad = [...(shoulder ? [0.042] : []), 0.037, r * 1.12, r * 1.02, r];
+  const P: Pt[] = [], Rp: number[] = [];
+  pts3.forEach((q, i) => { const pp = camPoint(c, q); if (pp) { P.push(pp); Rp.push(rad[i] * camUnit(c, q)); } });
+  if (P.length < 3) return;
+  const limb = limbOutline(P, Rp);
+  hardFill(p, id, s.color, limb.outline);
+  // shade: the side away from the lamp (lamp over the table centre, x 0) and down, from the centre line to that edge
+  const sg = wrist[0] >= 0 ? 1 : -1, score = (sgn: 1 | -1) => limb.normals.reduce((t, nn) => t + (nn[0] * sg + nn[1] * 0.6) * sgn, 0), sgn: 1 | -1 = score(1) >= score(-1) ? 1 : -1;
+  const inner0 = P.map((q, i): Pt => [q[0] + limb.normals[i][0] * sgn * Rp[i] * 0.45, q[1] + limb.normals[i][1] * sgn * Rp[i] * 0.45]);
+  const sh = [...limb.edge(sgn), ...inner0.reverse()];
   if (sh.length > 2) hardFill(p, id + 1, s.shade, sh);
-  inkLine(p, id + 2, body, {weight: 1.0, still: true, color: mixColor(s.shade, '#2a1a10', 0.18)});
-  // creases where the sleeve bunches toward the elbow (upper side only)
-  [0.5, 0.72].forEach((t, k) => {
-    const arc = ring(at(t), re * (1 + k * 0.02), 0.03, 28).slice(3 + k * 2, 11 + k);
-    const pts = camPoly(c, arc);
-    if (pts.length > 1) inkLine(p, id + 3 + k, pts, {weight: 1, closed: false, still: true, color: mixColor(s.shade, '#2a1a10', 0.3)});
-  });
+  inkLine(p, id + 2, limb.outline, {weight: 1.0, still: true, color: mixColor(s.shade, '#2a1a10', 0.18)});
+  // elbow fold: short strokes fanning from the inside of the bend toward the joint
+  if (shoulder && P.length >= 3) {
+    const e = P[1], d1: Pt = [e[0] - P[0][0], e[1] - P[0][1]], d2: Pt = [P[2][0] - e[0], P[2][1] - e[1]], m: Pt = [d2[0] / (Math.hypot(...d2) || 1) - d1[0] / (Math.hypot(...d1) || 1), d2[1] / (Math.hypot(...d2) || 1) - d1[1] / (Math.hypot(...d1) || 1)], ml = Math.hypot(...m) || 1, inn: Pt = [m[0] / ml, m[1] / ml];
+    [-0.5, 0, 0.5].forEach((spread, k) => {
+      const ang = Math.atan2(inn[1], inn[0]) + spread, q0: Pt = [e[0] + Math.cos(ang) * Rp[1] * 0.95, e[1] + Math.sin(ang) * Rp[1] * 0.95], q1: Pt = [e[0] + Math.cos(ang) * Rp[1] * 0.45, e[1] + Math.sin(ang) * Rp[1] * 0.45];
+      inkLine(p, id + 60 + k, [q0, [(q0[0] + q1[0]) / 2 + inn[1] * 1.5, (q0[1] + q1[1]) / 2 - inn[0] * 1.5], q1], {weight: 1, closed: false, still: true, color: mixColor(s.shade, '#2a1a10', 0.3)});
+    });
+  }
   // ribbed knit cuff: a darker band 2.2 cm deep from the cuff edge back, rib strokes along the arm, a soft wobbly rim over the wrist
   const dt = 0.022 / al, edge = ring(cuff, rc * 1.04, 0.04), back = ring(at(0.14 + dt), rc * 0.93, 0.03);
   const band = hull([...camPoly(c, edge), ...camPoly(c, back)]);
@@ -264,8 +310,10 @@ export const paintDining = (p: Painter, c: YCam, o: DiningOpts): DiningOut => {
   arms.forEach(([s, fig, def, size, tone, sleeve], k) => {
     if (!s || !fig) return;
     const who = k ? 'elder' : 'boy';
-    if (s.lHand) hands[`${who}L`] = paintTableArm(p, c, 2000 + k * 480, s.lHand, s.lElbow ?? elbowFor(s.lHand, 1, def), -1, s.lPose ?? 'flat', size, tone, sleeve, s.lMod, s.lYaw);
-    if (s.rHand) hands[`${who}R`] = paintTableArm(p, c, 2240 + k * 480, s.rHand, s.rElbow ?? elbowFor(s.rHand, -1, def), 1, s.rPose ?? 'flat', size, tone, sleeve, s.rMod, s.rYaw);
+    // R3f: ELDER's sleeve is one limb from the shoulder; the rig's shoulder (picture px) is unprojected onto the body plane
+    const zb = SEAT.elder[2] + (s.lean?.[1] ?? 0), sh = (px: Pt) => (sleeve ? unprojectToZ(c, px, zb) : undefined);
+    if (s.lHand) hands[`${who}L`] = paintTableArm(p, c, 2000 + k * 480, s.lHand, s.lElbow ?? elbowFor(s.lHand, 1, def), -1, s.lPose ?? 'flat', size, tone, sleeve, s.lMod, s.lYaw, sh(fig.lShoulder));
+    if (s.rHand) hands[`${who}R`] = paintTableArm(p, c, 2240 + k * 480, s.rHand, s.rElbow ?? elbowFor(s.rHand, -1, def), 1, s.rPose ?? 'flat', size, tone, sleeve, s.rMod, s.rYaw, sh(fig.rShoulder));
   });
   paintProps(p, c);
   paintLamp(p, c, o.lampY);

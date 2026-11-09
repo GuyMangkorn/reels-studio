@@ -157,15 +157,24 @@ test('W5.2 N2: diagram tracks hit the sheet times; ring has no own cord; widths 
   const keys = new Set(Object.keys(diagramSH02(50).state.ownLit ?? {})); assert.deepEqual([...keys].sort(), ['index', 'little']);
 });
 
-test('R3b: ELDER right arm at L27 and L47 is a natural arm: upper arm within 10 % of his left, forearm 0.6-0.85 of the upper arm, elbow interior angle 100-150 deg (no kink), elbow on the wood, no box in the set', () => {
-  for (const L of [27, 47]) {
+test('R3f: ELDER arms (SH04 L12/L27/L47) are natural limbs: segments 0.28-0.40 / 0.18-0.28 m, forearm 0.55-0.85 of the upper arm, right within 10 % of left, elbow interior angle 110-150 deg, elbow below the shoulder and outside the torso in the picture, elbow on the wood, no box', () => {
+  for (const L of [12, 27, 47]) {
     const m = measureArm(L);
-    assert.ok(Math.abs(m.upperR / m.upperL - 1) <= 0.1, `L${L} upper arm ratio ${(m.upperR / m.upperL).toFixed(2)}`);
-    assert.ok(m.foreR / m.upperR >= 0.6 && m.foreR / m.upperR <= 0.85, `L${L} forearm/upper ${(m.foreR / m.upperR).toFixed(2)}`);
-    const inner = 180 - m.bendR;
-    assert.ok(inner >= 100 && inner <= 150, `L${L} elbow interior angle ${inner.toFixed(0)}`);
+    for (const [side, up, fore, bend, sh, el, shPx, elPx] of [['R', m.upperR, m.foreR, m.bendR, m.sR, m.eR, m.shR, m.shL], ['L', m.upperL, m.foreL, m.bendL, m.sL, m.eL, m.shL, m.shR]] as const) {
+      void elPx; void shPx;
+      assert.ok(up >= 0.28 && up <= 0.4, `L${L}${side} upper ${up.toFixed(3)}`);
+      assert.ok(fore >= 0.18 && fore <= 0.28, `L${L}${side} forearm ${fore.toFixed(3)}`);
+      assert.ok(fore / up >= 0.55 && fore / up <= 0.85, `L${L}${side} forearm/upper ${(fore / up).toFixed(2)}`);
+      const inner = 180 - bend;
+      assert.ok(inner >= 110 && inner <= 150, `L${L}${side} elbow interior angle ${inner.toFixed(0)}`);
+      assert.ok(sh[1] - el[1] >= 0.15 && sh[1] - el[1] <= 0.3, `L${L}${side} elbow ${(sh[1] - el[1]).toFixed(2)} m below the shoulder (never above it)`);
+      assert.ok(el[2] - sh[2] >= 0.15, `L${L}${side} elbow ${(el[2] - sh[2]).toFixed(2)} m forward of the shoulder`);
+      const px = camPoint(m.c, el)!, shp = side === 'R' ? m.shR : m.shL, other = side === 'R' ? m.shL : m.shR;
+      assert.ok(Math.abs(px[0] - shp[0]) < 0.6 * Math.abs(other[0] - shp[0]) + 80 && px[1] > shp[1] + 150, `L${L}${side} elbow px ${px.map(Math.round)} vs shoulder ${shp.map(Math.round)}`);
+    }
+    assert.ok(Math.abs(m.upperR / m.upperL - 1) <= 0.1 && Math.abs(m.foreR / m.foreL - 1) <= 0.12, `L${L} right/left ${(m.upperR / m.upperL).toFixed(2)} ${(m.foreR / m.foreL).toFixed(2)}`);
+    assert.equal(m.eR[1], 0.746);
   }
-  assert.equal(gentleStopAt(27).elbow[1], 0.746);
   assert.ok(Math.abs(elderLeanAt(0)[0]) < 1e-9 && elderLeanAt(27)[0] === ELDER_LEAN[0] && elderLeanAt(67)[1] === ELDER_LEAN[1]);
   assert.ok(!('JUG' in dining), 'the milk box left SET-DINING');
 });
