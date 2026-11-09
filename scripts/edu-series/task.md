@@ -133,7 +133,9 @@ Record: [delivery.md](delivery.md) · Updated: 2026-11-05, Film
 
 ## EDU-EP11-SHORT
 
-**Now:** W0 done (C32 ลิฟต์ขาด กระโดดตอนท้ายรอดมั้ย, user pick 2026-11-08). W1.4 passed 2026-11-08 (Kore A x0.92, 57–62 s projected); W1.5 user script approval waiting. Detail: [ep11/task.md](ep11/task.md)(ep11/task.md).
+W2 done 2026-11-09: Film brief R1 (VD01–VD31), storyboard ROWS-R1.0 (25 shots, ~56.5 s est.), review page published https://claude.ai/artifact/R6h741PavXByTDZubUXLEK (awaiting user verdicts; Q-F1–Q-F3). Open: Boat B-P1/B-P2 + L10 recheck; Boss spikes before W3; Editor loudness fix; 1857 shot lead <480 px to accept at Draft.
+
+**Now:** W0–W8.2 and W8.4 done 2026-11-09 (Final passed by the user, cover C4, publish folder `ready`); W8.3 waits for the post date. Detail: [ep11/task.md](ep11/task.md).
 
 ## EDU-EP12-SHORT
 

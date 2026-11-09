@@ -33,7 +33,11 @@ export type Cut = 'short' | 'tied' | 'bob' | 'hood' | 'long' | NewCut;
  */
 export type HeadStyle = {skin: string; hair: string; cut: Cut; hood?: string; /** Profile hood only: a wide opening that leaves the whole face visible (set by the hood-up state, `back.ts` `hoodUpHead`); absent = the WFOG hood. */ hoodOpen?: boolean; lines?: boolean; accent?: string; facial?: 'stubble' | 'mustache' | 'beard'; glasses?: boolean; brows?: string; look?: FaceLook;
   /** Profile views only (`paintHeadSide`): hair strands with a lit edge, an iris eye with lid line, crease, lash and catch-light, a nose wing and nostril (no drawn lips in profile). Follows `look` (iris colour, `lash: false`). Default absent = the plain WFOG profile; front, back and turned views ignore it. */
-  sideDetail?: boolean};
+  sideDetail?: boolean;
+  /** `long` hair, front view only (EDU-EP11 N5 `hair-float`, spike SP1): 0..1 lifts the shoulder-length hair off the shoulders and fans it up round the head (free fall); 0 or absent = as before. */
+  hairRise?: number;
+  /** With `hairRise`: a calm fan (3 broad soft waves instead of 6 spikes, wider and lower), the weightless read (EDU-EP11 LF01b fix round 1). Absent = the spiky fan. */
+  hairCalm?: boolean};
 
 /**
  * Front-view face drawing (user-approved for PEOPLE, 2 Nov 2026). `eye`: `almond` pointed corners with a lash line, `lidded` almond with a lid
@@ -262,6 +266,28 @@ const legacyFrontHair = (cut: Cut): Pt[] => {
   return hair;
 };
 
+/** Back hair of the `long` cut as one polygon (skull arc then the lower edge). `rise` 0..1 (`HeadStyle.hairRise`, free fall): the arc grows into a fan of tapered strands
+ * standing up and out from the head (radius profile `fanR`, tips swaying slowly with `t`) and the shoulder-length tail lifts to the neck; 0 = the hanging hair as always. */
+const LONG_REST: Pt[] = [[1.2, 0.6], [1.26, 1.3], [1.12, 1.72], [0.72, 1.62], [-0.72, 1.62], [-1.12, 1.72], [-1.26, 1.3], [-1.2, 0.6]];
+const LONG_LIFTED: Pt[] = [[1.55, 0.35], [1.2, 0.95], [0.9, 1.05], [0.5, 1.02], [-0.5, 1.02], [-0.9, 1.05], [-1.2, 0.95], [-1.55, 0.35]];
+const longBack = (rise: number, t: number, calm = false): Pt[] => {
+  const e = Math.min(1, Math.max(0, rise));
+  if (e <= 0) return [...Array.from({length: 17}, (_, i): Pt => [1.16 * Math.cos(Math.PI + (i / 16) * Math.PI), 1.18 * Math.sin(Math.PI + (i / 16) * Math.PI) - 0.02]), ...LONG_REST];
+  const N = 56, K = calm ? 3 : 6;
+  const cap = Array.from({length: N + 1}, (_, i): Pt => {
+    const phi = (i / N) * Math.PI, th = Math.PI + phi;
+    const ph = phi * K / Math.PI + 0.35 * Math.sin(t * 1.4);
+    const tri0 = Math.sqrt(Math.sin(Math.PI * (((ph % 1) + 1) % 1))); // 0 at the valleys, 1 at the tips: rounded strand ends, narrow valleys
+    const tri = calm ? 0.6 + 0.4 * tri0 : tri0;
+    const side = Math.cos(2 * phi) ** 2; // longer toward the horizontal: hair streams out sideways
+    const amp = (0.9 + 0.3 * Math.sin(phi * 1.7 + 0.8) + 0.25 * side) * (0.55 + 0.45 * Math.sin(t * 1.1 + i * 0.7) ** 2);
+    const r = calm ? 1.17 + e * (0.5 + 0.55 * amp * tri) : 1.17 + e * (0.35 + amp * tri);
+    return [r * Math.cos(th), r * 1.03 * Math.sin(th) - 0.02];
+  });
+  const tail = LONG_REST.map(([x, y], i): Pt => [x + (LONG_LIFTED[i][0] - x) * e, y + (LONG_LIFTED[i][1] - y) * e]);
+  return [...cap, ...tail];
+};
+
 /**
  * Front decal head centred on (cx, cy), K px per head unit. `seed` keeps its fills apart from other heads; `t` is the
  * plate clock (blink); `warm` 0..1 tints the skin with the torch light.
@@ -415,7 +441,7 @@ export const paintHeadFront = (p: Painter, seed: number, cx: number, cy: number,
   const back: Pt[] | null =
     cut === 'hood' ? ell(0, 0.0, 1.3, 1.42, 28)
     : cut === 'bob' ? [...Array.from({length: 17}, (_, i): Pt => [1.14 * Math.cos(Math.PI + (i / 16) * Math.PI), 1.16 * Math.sin(Math.PI + (i / 16) * Math.PI) - 0.02]), [1.16, 0.7], [0.86, 0.78], [-0.86, 0.78], [-1.16, 0.7]]
-    : cut === 'long' ? [...Array.from({length: 17}, (_, i): Pt => [1.16 * Math.cos(Math.PI + (i / 16) * Math.PI), 1.18 * Math.sin(Math.PI + (i / 16) * Math.PI) - 0.02]), [1.2, 0.6], [1.26, 1.3], [1.12, 1.72], [0.72, 1.62], [-0.72, 1.62], [-1.12, 1.72], [-1.26, 1.3], [-1.2, 0.6]]
+    : cut === 'long' ? longBack(style.hairRise ?? 0, t, style.hairCalm)
     : cut === 'tied' ? ell(0.05, -1.12, 0.32, 0.22, 18)
     : null;
   // Turned head (7 Nov 2026): the lower jaw drops with `open` (the chin of the skull and of the face window move down), and `chew` bulges the near cheek.

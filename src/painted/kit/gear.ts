@@ -7,7 +7,8 @@ import type {Pt} from './painter';
 
 /** `main` the hat colour, `band` the band colour (the spec's `band`, else a dark shade), `dark` a dark shade of main (visor, strap), `white` a badge. */
 export type HatPart = {tone: 'main' | 'band' | 'dark' | 'white'; pts: Pt[]};
-export type HatKind = 'cap' | 'helmet' | 'nurse';
+/** `top` 1850s top hat, `bonnet` 1850s bonnet with a ribbon (EDU-EP11 look frames LF03/LF04, kit intake proposed). */
+export type HatKind = 'cap' | 'helmet' | 'nurse' | 'top' | 'bonnet';
 
 const arc = (cx: number, cy: number, rx: number, ry: number, a0: number, a1: number, n = 16): Pt[] =>
   Array.from({length: n + 1}, (_, i): Pt => {
@@ -35,6 +36,18 @@ export const hatFront = (kind: HatKind): HatPart[] => {
         {tone: 'main', pts: [[-0.66, -0.66], [0.66, -0.66], [0.76, -1.26], [0.4, -1.34], [0, -1.28], [-0.4, -1.34], [-0.76, -1.26]]},
         {tone: 'band', pts: [[-0.66, -0.66], [0.66, -0.66], [0.68, -0.78], [-0.68, -0.78]]},
       ];
+    case 'top':
+      return [
+        {tone: 'main', pts: [[-0.66, -0.82], [0.66, -0.82], [0.62, -2.0], [0.5, -2.08], [-0.5, -2.08], [-0.62, -2.0]]},
+        {tone: 'band', pts: [[-0.66, -0.82], [0.66, -0.82], [0.65, -1.1], [-0.65, -1.1]]},
+        {tone: 'dark', pts: ell(0, -0.82, 1.18, 0.11, 24)},
+      ];
+    case 'bonnet':
+      return [
+        {tone: 'main', pts: [...arc(0, -0.28, 1.1, 1.0, Math.PI, 2 * Math.PI, 20), [1.1, 0.5], [0.86, 0.5], [0.8, -0.1], [0.6, -0.5], [0, -0.6], [-0.6, -0.5], [-0.8, -0.1], [-0.86, 0.5], [-1.1, 0.5]]},
+        {tone: 'band', pts: [[-1.1, -0.2], [-0.86, -0.2], [-0.86, 0.5], [-1.1, 0.5]]},
+        {tone: 'dark', pts: [[0.86, -0.2], [1.1, -0.2], [1.1, 0.5], [0.86, 0.5]]},
+      ];
   }
 };
 
@@ -57,6 +70,18 @@ export const hatSide = (kind: HatKind): HatPart[] => {
       return [
         {tone: 'main', pts: [[-0.3, -0.7], [0.9, -0.66], [0.96, -1.22], [0.5, -1.34], [-0.06, -1.26], [-0.34, -1.2]]},
         {tone: 'band', pts: [[-0.3, -0.7], [0.9, -0.66], [0.9, -0.78], [-0.3, -0.82]]},
+      ];
+    case 'top':
+      return [
+        {tone: 'main', pts: [[-0.7, -0.84], [0.72, -0.84], [0.66, -2.0], [0.5, -2.08], [-0.54, -2.08], [-0.7, -2.0]]},
+        {tone: 'band', pts: [[-0.7, -0.84], [0.72, -0.84], [0.71, -1.1], [-0.7, -1.1]]},
+        {tone: 'dark', pts: ell(0.04, -0.84, 1.3, 0.11, 24)},
+      ];
+    case 'bonnet':
+      return [
+        {tone: 'main', pts: [[0.8, -0.4], [0.5, -1.1], [-0.2, -1.36], [-0.9, -1.0], [-1.1, -0.2], [-0.96, 0.62], [-0.5, 0.5], [-0.3, 0.1], [0.3, -0.1]]},
+        {tone: 'band', pts: [[-0.2, -0.66], [0.7, -0.52], [0.8, -0.34], [-0.2, -0.5]]},
+        {tone: 'dark', pts: [[-0.5, 0.5], [-0.3, 0.9], [-0.18, 0.88], [-0.34, 0.46]]},
       ];
   }
 };
