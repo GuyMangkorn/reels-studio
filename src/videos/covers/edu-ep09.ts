@@ -64,3 +64,42 @@ export const EDU9_PICS: Cover[] = [
 
 /** Lit-muscle amber accent (brief palette `#ffb84d`). No scrim: pick 1 is text-free. */
 export const EDU9_COVER_STYLE: CoverStyle = {accent: ACCENT};
+
+/**
+ * EDU-EP09-SHORT-COVERS: cover pick 2 (9 Nov 2026). The user picked P5-three-one (CV05 in pick 1): plate
+ * EDU9-S01-B01-SH01 @ 130 with the three amber up-chevrons and the coral no-lift sign over the ring tip. Five Thai texts
+ * CVT01-CVT05 on that same frame and cues, one text angle each (skill section 3), all in the headline band over the
+ * forearm (y 1150-1500, baselines 1300 and 1480-1490 (round 2: sizes up 10-25 px from round 1), last baseline < 1540; centred x 540, every line measured inside x 120-960).
+ * Title (working, script header): "นิ้วนางที่ยกไม่ขึ้น"; no headline uses "ยกไม่ขึ้น" (T3); "นิ้วนาง" recurs in CVT02/CVT05
+ * because the picture's no-lift sign alone does not name the finger in the question (T3 cost noted in the score).
+ * Copy checks (CV02, CV04, fact-check W1.3 verdicts, script R1.4): questions or the script's own instruction only, no
+ * flat claim; every word is said or shown: "อ่อนแอ" L05, "อะไรรั้ง…ไว้" L05, the see-through hand L06 (shown, labelled
+ * "ภาพประกอบ"), "พับนิ้วกลาง… ลองยก…ดูสิ" L01, the three lifting fingers L04 (shown as three taps, CL02; the cover's
+ * "3" counts the fingers the picture marks). Never shown: "สายร่วม", "ขี้เกียจ", "ชุดเดียวกัน", the shared set and bands,
+ * the ghost cords, the pianist answer, the retry hair-lift. Text colours: near-white, the amber accent, white ink on
+ * the coral sticker (CVT01) - three at most (CV05).
+ * Channel mark: the chrome draws "@TamMaiLa" at (120, 128) in day ink #49445c, which vanished under the dark top grade
+ * (pick 1 report). Each cover redraws the same mark at the same place and size in the chrome's night ink #fff1da over a
+ * dark under-stroke (cover-local; the shared chrome is unchanged).
+ */
+const PICK = {plate: 'EDU9-S01-B01-SH01', local: 130, scrim: false as const};
+const CUES = EDU9_PICS[4].layout!.elements!;
+const MARK = [
+  {kind: 'text' as const, text: '@TamMaiLa', x: 120, y: 151, size: 22, fill: INK, stroke: INK, sw: 6},
+  {kind: 'text' as const, text: '@TamMaiLa', x: 120, y: 151, size: 22, fill: '#fff1da'},
+];
+const L5 = {...PICK, layout: {grade: TOP, elements: [...CUES, ...MARK]}};
+export const EDU9_COVERS: Cover[] = [
+  // CVT01 misconception: "is the ring finger weak?" on a coral sticker (L05 "นิ้วนางไม่ได้อ่อนแอนะ" answers it; gap 2).
+  {id: 'CVT01-weak', ...L5, lines: [{text: 'นิ้วนาง', y: 1300, size: 175}, {text: 'อ่อนแอ?', y: 1490, size: 190, accent: true}],
+    look: {label: {color: RED, ink: '#ffffff', pad: 0.42}}},
+  // CVT02 question: what holds it back (L05 "มันโดนอะไรรั้งไว้"; answered L06-L09; gap 3).
+  {id: 'CVT02-holds', ...L5, lines: [{text: 'อะไรรั้ง', y: 1300, size: 160}, {text: 'นิ้วนางไว้?', y: 1480, size: 165, accent: true}]},
+  // CVT03 imagined view: "see through the hand, what is there?" (L06 see-through forearm, the muscle in the forearm and
+  // the cords; gap 3). Says the cause is inside, not which cord or band.
+  {id: 'CVT03-seethrough', ...L5, lines: [{text: 'มองทะลุมือ', y: 1300, size: 150}, {text: 'เห็นอะไร?', y: 1485, size: 160, accent: true}]},
+  // CVT04 try this: the L01 instruction in its own words, the no-lift sign names the finger (gap 1; L02 result).
+  {id: 'CVT04-try', ...L5, lines: [{text: 'พับนิ้วกลาง', y: 1300, size: 150}, {text: 'ลองยกดูสิ', y: 1485, size: 175, accent: true}]},
+  // CVT05 number: three fingers lift, the ring finger? (L04 three taps, CL02; answered L07 own extra muscle; gap 4).
+  {id: 'CVT05-three', ...L5, lines: [{text: '3 นิ้วขึ้น', y: 1300, size: 170, accent: true}, {text: 'นิ้วนางล่ะ?', y: 1480, size: 160}]},
+];
