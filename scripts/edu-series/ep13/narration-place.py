@@ -6,7 +6,7 @@ No gain, no atempo, no inner cut. 1542 f at 48 kHz mono. Writes public/narration
 Run: python3 -I scripts/edu-series/ep13/narration-place.py"""
 import array, os, wave
 FPS, SR, TOTAL = 30, 48000, 1542
-NAR = 'out/edu13/voice/full/ep13-nar-kore-r5b-B-slow10.wav'
+NAR = 'out/edu13/voice/full/ep13-nar-kore-r5b-B-slow10-l13t4.wav'
 MAN = 'out/edu13/voice/man-samples/'
 CUTS = [5.58, 9.97, 35.20]; SHIFTS = [10, 26, 72, 90]
 TAKES = [('V01', 321, 42, MAN + 'A_algenib_V01_t1.20.wav'), ('V02', 1143, 12, MAN + 'A_algenib_V02_t1.40.wav')]
