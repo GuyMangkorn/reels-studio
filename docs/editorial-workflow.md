@@ -49,7 +49,7 @@ Runtime timelines follow the current source contract linked from AGENTS.md. Writ
 1. Record the brief, story type, central question, learning takeaway, period/context and research date. For a named real case, investigate that case. For an open fictional brief without a specified mode, use and visibly label the default `fiction-with-factual-knowledge`.
 2. Open and inspect sources supporting important claims. Seek contrary evidence and limitations. Multiple sites copying one original remain one original source. Distinguish `documented fact`, `reported experience`, `folklore`, `hypothesis` and `fiction/dramatization` according to what the evidence establishes. A report of an experience does not establish its supernatural or scientific cause.
 3. Maintain a source registry, for example `SRC001`: title, author/organization, publication/update date, direct URL, section/page and access date. Mark `inspected` or `inaccessible/lead-only` and explain limitations. Quote only the short passages needed. Describe confidence qualitatively with reasons; do not invent numerical probabilities.
-4. Maintain a claim ledger, for example `F001`: assertion, scope/conditions, source and locator, supporting/contrary evidence and usable wording. Distinguish a possible mechanism from an explanation demonstrated in a specific case.
+4. Maintain a claim ledger, for example `F001`: assertion, scope/conditions, source and locator, supporting/contrary evidence and usable wording (narrow hedges only, [ER10](scriptwriting-principles.md#er10)). Distinguish a possible mechanism from an explanation demonstrated in a specific case.
 5. Summarize supported story angles and remaining research questions. Identify material gaps explicitly; never invent evidence or claim to have inspected an inaccessible source.
 
 Research is complete when every premise-critical claim has evidence and limitations or is visibly unresolved. Incomplete verification is not a passing factual review.
@@ -90,9 +90,19 @@ Verdicts: `supported` means the evidence supports this wording and scope; `needs
 
 Report errors affecting the premise, reveal or learning takeaway before minor details. Boat proposes accurate wording and beat/clue impact; Preaw rewrites the story. The final twist must preserve factual corrections so viewers do not leave with the wrong knowledge.
 
-<a id="clarity-pass"></a>**Clarity pass (Boat).** Flag each line that breaks [ER05](scriptwriting-principles.md#edu-short-retention-default-user-8-nov-2026) with verdict `too-technical` and a plain wording that stays true. Also flag an analogy that would leave a wrong idea (`misleading-analogy`). Preaw rewrites; Boat does not.
+<a id="finding-severity"></a>**Finding severity (Requirement; user, 9 Nov 2026).** Every finding is marked `must-fix` or `optional`. It is `must-fix` only when the line as written would:
 
-Conclude for the named revision only: `revision-required`, `verification-incomplete`, or `ready-for-storyboard` when no story/knowledge-critical factual gaps remain and necessary qualifications appear in the script. The legacy verdict `ready-for-storyboard` means factual readiness for Film visual planning; it requires no drawn board. Readiness neither records user approval nor guarantees that no error remains.
+1. leave the viewer with a wrong idea of the takeaway;
+2. make the hook, premise or reveal false;
+3. put the viewer's health or safety at risk;
+4. misrepresent a real person or case;
+5. be off by an order of magnitude.
+
+Everything else is `optional` and does not hold readiness: a `needs-qualification` on a simplification whose direction is true, extra precision, clarity-pass notes and preferred wording. Preaw may decline an optional finding without a reply. Boat never requires a hedge to stay unless its removal is `must-fix`, and a `must-fix` correction uses [ER10](scriptwriting-principles.md#er10) wording (a narrow hedge or a cut), never a source or method phrase in narration. Boat does not lengthen an answer past [ER09](scriptwriting-principles.md#er09)'s 10 s; when accuracy needs more words, it recommends cutting the beat (ER07). Evidence: the EP13 fact-check required "ตามแบบจำลอง" to stay ("do not cut"); EP08 L12, EP09 L09 and EP11 L12 carry similar on-screen qualifiers.
+
+<a id="clarity-pass"></a>**Clarity pass (Boat).** Flag each line that breaks [ER05](scriptwriting-principles.md#edu-short-retention-default-user-8-nov-2026) with verdict `too-technical` and a plain wording that stays true. Also flag an analogy that would leave a wrong idea (`misleading-analogy`). Preaw rewrites; Boat does not. Clarity findings are `optional` ([severity](#finding-severity)) except a `misleading-analogy` that meets a `must-fix` case.
+
+Conclude for the named revision only: `revision-required`, `verification-incomplete`, or `ready-for-storyboard` when no `must-fix` finding remains open. The legacy verdict `ready-for-storyboard` means factual readiness for Film visual planning; it requires no drawn board. Readiness neither records user approval nor guarantees that no error remains.
 
 After a script revision, assess changes to factual wording and dependent claims. Recheck affected items and record coverage of the new revision. Synchronize the script header and delivery record with the resulting factual status while preserving dated history and separate user-approval/timing status. Reuse earlier results only after checking that the wording is unchanged and no new contrary evidence applies.
 
