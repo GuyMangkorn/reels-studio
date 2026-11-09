@@ -1,7 +1,7 @@
 {
-  "public/audio/edu/EDU-EP09-SHORT-draft-stem-r4.wav": {
-    "store": "projects/EDU/audio/EDU-EP09-SHORT/EDU-EP09-SHORT-draft-stem-r4.wav",
-    "sha256": "14db6c2272e0620232e4b6f1ef1dc12b1b6f992070ff54d85318d51fbfadbae9"
+  "public/audio/edu/EDU-EP09-SHORT-draft-stem-r5.wav": {
+    "store": "projects/EDU/audio/EDU-EP09-SHORT/EDU-EP09-SHORT-draft-stem-r5.wav",
+    "sha256": "ee40c79202b8d80daba90c5879746fd30707ab10c6e3928ce03dc16bb791212a"
   },
   "public/narration/EDU-EP09-SHORT-draft.wav": {
     "store": "projects/EDU/audio/EDU-EP09-SHORT/EDU-EP09-SHORT-narration-draft-r2.wav",
