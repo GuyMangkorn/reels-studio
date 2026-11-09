@@ -110,7 +110,7 @@ Staging: | Entity/anchor | Space/unit | Start | Key/end + local frames | Facing/
 Camera: projection/bounds or position/target/FOV; start/key/end frames; transform owner; picture moves and their layers; painted shots write the camera line of the [painted 3D camera](film-visual-brief-workflow.md#painted-3d-camera), e.g. `cam: yaw 45, arc 35→55, r 3.0→2.0 m, eye 1.4, f 900`
 Look: only what differs from the brief (palette/value hierarchy, motivated lights, shadows, beat-driven changes)
 VO + subtitles: full Thai VO (or exact accessible source range); subtitle text + frame ranges; SFX asset/onset/clock/license or proposed
-Sound: ambience/music state; cues with shot-local frame + library ID or `NEEDS-GEN` request; ducking/continuity ([duties](sound-generation-workflow.md#role-responsibilities))
+Sound: ambience/music state; cues with shot-local frame + description of the sound + a fitting library ID or `NEEDS-GEN` ([fit beats reuse](sound-generation-workflow.md#fit-beats-reuse)); ducking/continuity
 Mix intent: hold / lift / drop / hit / release per beat ([EP08a](editor-principles.md#ep08a-shape-audio-emphasis-by-story-beat)); Editor sets levels
 Cut/transition: purpose, type, start/end frames, overlap, active subtitle/audio; existing implementation or Boss requirement
 Entry → exit: state at the first and last frame (actor/prop positions, pose/contact, set/light states, spanning audio)

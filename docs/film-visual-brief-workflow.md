@@ -126,7 +126,7 @@ Target checkout: <branch + commit>; scope / adjacent boundaries: ...
 Audience knowledge + mood; color/value key; camera language; conceal/reveal constraints
 
 ## Sound direction
-Music family/tempo/energy arc and ending plan; ambience per location; SFX language (transitions, UI, foley); silence policy; library IDs and generation gaps ([checklist](sound-generation-workflow.md#role-responsibilities))
+Music family/tempo/energy arc and ending plan; ambience per location; SFX language (transitions, UI, foley); silence policy; each cue designed from the story, with a library ID only where the file fits ([fit beats reuse](sound-generation-workflow.md#fit-beats-reuse), [checklist](sound-generation-workflow.md#role-responsibilities))
 
 ## Visual progression
 Scene/beat refs; visible action; information/emotional change; visual form/reason;

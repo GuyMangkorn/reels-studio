@@ -96,7 +96,7 @@
 <a id="ep08a-shape-audio-emphasis-by-story-beat"></a>
 ## EP08a — Shape audio emphasis by story beat
 
-**Ownership:** Editor decides and executes audio emphasis; no separate audio role is needed. Preaw's script and Film's handoff state *where* a beat matters (hook, clue, reveal, payoff, quiet hold) through the `mix intent` field; Editor chooses *how* it sounds. A missing level change that needs new runtime behavior goes to Boss.
+**Ownership:** Editor decides and executes audio emphasis with the sounds Ton supplies in the [cue sheet](sound-generation-workflow.md#sound-cue-sheet). Preaw's script and Film's handoff state *where* a beat matters (hook, clue, reveal, payoff, quiet hold) through the `mix intent` field; Editor chooses *how* it sounds through levels, fades, ducking and silence. A missing level change that needs new runtime behavior goes to Boss.
 
 **Default:** Emphasis comes from **contrast and change**, not absolute loudness. A beat feels important because the sound around it changed: it got quieter, emptier or denser just before, or the bed dropped out. Raising everything raises nothing.
 
