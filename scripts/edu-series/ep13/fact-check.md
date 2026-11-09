@@ -153,3 +153,17 @@
 | ER09 / ER10 | none | pass | No source or method phrase in narration; at most one hedge per line; one cause per problem. Estimated answer lengths in the script (OQ2 about 9.4 s is the closest to 10 s) are Preaw's own; not re-measured here. |
 
 - **Overall verdict: pass. No must-fix open.** No premise, reveal or learning-impact change. Factual readiness only for R4 wording and the picture plan with the limits above; no user approval (W1.5 still open), no audio or visual validation.
+
+## R5 light recheck (2026-11-09)
+
+- Checked: `script.md` **EDU-EP13-SCRIPT-R5**, "R5 changes for Boat" (L03, L05, B02-SH01 label "แรงดีด ↑") against research.md CL08/CL10 and the R3/R4 verdicts above; L09/L15/L16 read for lexical overlap. No new sources opened. Script not edited. Qualitative confidence medium-high (model-level claim, unchanged from R4).
+
+| Item | Severity | Verdict | Note / wording |
+| --- | --- | --- | --- |
+| L03 "ขามันดีดแรงขึ้นก็จริง… แต่ตัวก็หนักขึ้นตาม" (CL10) | none | pass | "ดีดแรง" = the leg pushes with more force: same claim as R4, and it keeps the force/work reading, not "กำลัง" (power). "ตาม" stays qualitative (force about by area, weight by volume; direction true). |
+| L05 "เหมือนขาคุณดีดแรงสองเท่า… แต่แบกเป้หนักสองเท่า" (CL08/CL10) | none | pass | Analogy unchanged; "เหมือน" and the "ภาพจำลอง" label keep "×2 / ×2" a picture of direction, not the model's exact scaling (force about x4, weight x8 for 2x length). |
+| "ดีด" vs spring or slingshot (L09, L15, L16) | none (watch) | pass | Narration of L09 uses "บีบ… ปล่อย… เหมือนหนังสติ๊ก" and L15/L16 "หนังสติ๊ก"; "ดีด" appears only in L03/L05 and attaches to the legs and the whole body ("ดีดตัว" of a jump), so it does not name the elastic pad. The two beats are 5+ lines apart. L16 "กล้ามดันพื้น" keeps muscle as the giant's mechanism. |
+| B02-SH01 label "แรงดีด ↑" | none | pass | Same R3 limits: no digits, no "×", no equal bars. Do not place the slingshot icon in SH01 or SH02. |
+
+- Optional alternatives only if the user hears a spring in "ดีด" after the re-read (not needed): "ขามันถีบแรงขึ้นก็จริง…" and "เหมือนขาคุณถีบแรงสองเท่า…" ("ถีบ" = push off, no spring sense; label "แรงถีบ ↑").
+- **Overall verdict: pass. No must-fix open.** No premise, reveal or learning-impact change. Factual readiness for R5 wording only; no user approval, no audio or visual validation (the L03/L05 takes and label still need redoing).

@@ -1,7 +1,7 @@
 # EDU-EP13-SHORT — ถ้าหมัดตัวเท่าคน (if a flea were the size of a person)
 
 - Deliverable: `EDU-EP13-SHORT`; task file [task.md](task.md); series concepts [../concepts.md](../concepts.md) C39 (Preaw R7 concept, Film R7 annotation and scale plan S1–S6); series delivery record [../delivery.md](../delivery.md).
-- Script revision: **EDU-EP13-SCRIPT-R4** (Preaw, 2026-11-09). Rewritten from scratch on the user's request of 2026-11-09 under the new rules [ER06 (amended)](../../../docs/scriptwriting-principles.md#edu-short-retention), [ER09 short answers](../../../docs/scriptwriting-principles.md#er09) and [ER10 narrow hedges](../../../docs/scriptwriting-principles.md#er10). R3 (user-approved 2026-11-09, Boat R3 recheck pass) is superseded once Boat rechecks R4 and the user approves it; R1–R3 stay in Git history.
+- Script revision: **EDU-EP13-SCRIPT-R5** (Preaw, 2026-11-09). R5 changes only L03 and L05 ("แรง" → "ดีดแรง", user note after the draft cut; see [R5 changes for Boat](#r5-changes-for-boat)); R4 (user-approved 2026-11-09, Boat R4 check pass) is otherwise unchanged. R4 was rewritten from scratch on the user's request of 2026-11-09 under the new rules [ER06 (amended)](../../../docs/scriptwriting-principles.md#edu-short-retention), [ER09 short answers](../../../docs/scriptwriting-principles.md#er09) and [ER10 narrow hedges](../../../docs/scriptwriting-principles.md#er10). R3 (user-approved 2026-11-09, Boat R3 recheck pass) is superseded once Boat rechecks R4 and the user approves it; R1–R3 stay in Git history.
 - Inputs: research [research.md](research.md) W1.1 (CL01–CL15, SRC001–SRC009); [fact-check.md](fact-check.md) W1.3 (FIX-1 to FIX-5, N4 answers, dog ruling, SRC010–SRC011), R2 recheck, W2 picture recheck (B-P1–B-P7) and R3 recheck (TR01 limits). [film-brief.md](film-brief.md) EDU-EP13-BRIEF-R1.3 and [storyboard.md](storyboard.md) / review-rows.json EDU-EP13-ROWS-R1.3 match R3 and are **not touched**; Film updates them after Boat's R4 recheck and the user's approval.
 - User decisions kept: Short Thai 40–60 s, edu defaults; hook "หลายสิบเท่า" (not "ร้อย"); honest closing (the real flea jumps about 2–3 times lower than a person; no "impossible" ending); "พอ ๆ กัน", never "exactly"; B02 explanation compact (two shots' worth); TR01 sci-fi trailer of a giant flea over a real city (picture, no speech, card "ถ้าคิดแบบง่าย ๆ", no title card, V02 callback kept) turned by "ไม่หรอก"; closed ending on the dog (V03). Boat's wording limits unchanged: plain "แรง" (never "กำลัง"); never say legs snap; no claim that a dog has fleas; no treatment advice; nothing gross.
 - **Changed user decision (needs confirmation, [Q2](#open-questions)):** W1.1 decision (3) kept beat 4 as a "ตามแบบจำลอง" line. ER10 (user, 9 Nov 2026) bans that phrase in narration, so beat 4 now carries one narrow hedge ("ไม่ค่อย") instead.
@@ -9,7 +9,7 @@
 - Profile: educational (scale what-if), painted 2D (painted 3D camera default), 4-head cast, Thai Short 1080×1920 30 fps, narrator Kore (edu default: deadpan, brisk, friend-telling-it, no atempo), ending **closed**: ~2.5 s hold on the man and the dog on the sofa.
 - Voices: NAR = Gemini TTS Kore. MAN = "เฮ้ย… ตัวเท่าเราเลย!" (V01) and "ฮึบ!" (V02). DOG = breathing and a sigh (V03, no words).
 - Target 40–60 s. **Timing: estimated** ([N1](#n1)): NAR ~175 syllables ≈ 41.5 s at EP05's measured Kore pace; video **≈ 53.0 s** (range 50–56 s; beat times ±0.3 s). Not read aloud or audio-tested.
-- Status: R4 draft for Boat's recheck of the items in [R4 changes for Boat](#r4-changes-for-boat); then the user approves (W1.5 again). Not user-approved. No new source needed; one new spoken model claim (L16, from CL11/SRC010).
+- Status (R5): L03/L05 wording awaits Boat's light recheck ([R5 changes for Boat](#r5-changes-for-boat)) and the user's OK; the narration takes for L03/L05 and the on-screen "แรง ↑" need redoing after that. Earlier status (R4, now met): R4 draft for Boat's recheck of the items in [R4 changes for Boat](#r4-changes-for-boat); then the user approves (W1.5 again). Not user-approved. No new source needed; one new spoken model claim (L16, from CL11/SRC010).
 
 ## Story core
 
@@ -67,8 +67,8 @@ Answer length = from the first explaining line to the start of the line that ope
 | TR01 | — | *(no speech)* | As R3 / ROWS-R1.3: monster-movie trailer grade; MAN tiny at street level looks up; the giant flea (body length = MAN's height, VD05) crouched between shophouses, hind legs folded (CL02 echo), launch; silhouette arcing over a ~30-floor tower against the skyline, card "ถ้าคิดแบบง่าย ๆ" whenever the leap shows; peak hold ≤ 0.5 s. No title card, no damage, no number. | Kept. Boat R3 limits stand (card on screen, ≤ 0.5 s hold, no numbers, no real macro flea in frame) |
 | L02 | NAR | ไม่หรอก… มันน่าจะกระโดดได้แค่หลักสิบเซน… พอ ๆ กับคุณนี่แหละ | On "ไม่หรอก" the trailer breaks: tape-stop freeze mid-air, the far arc fades, a droop arc drops the flea to the street; on "หลักสิบเซน" one small hop about knee height beside MAN; the card goes off. | Kept (FIX-1 text). CL09; one hedge "น่าจะ" |
 | V01 | MAN | เฮ้ย… ตัวเท่าเราเลย! | Back at the chart: MAN turns, finds the giant beside him, flinches; the flea looks at him. MAN's eyes go to its huge hind legs (sets up OQ2: "its legs would be giant too"). | Kept; dramatization |
-| L03 | NAR | ขามันแรงขึ้นก็จริง… แต่ตัวก็หนักขึ้นตาม | **B02-SH01:** at the chart, on "ขามันแรงขึ้น" the giant's hind-leg glow swells ("แรง ↑"); on "ตัวก็หนักขึ้นตาม" a weight dial under it swings up in step. No digits, no "×", no equal bars (Boat R3 limit). | **Changed.** CL10. "ก็จริง" grants the viewer's objection; "สมมติ" dropped (ER10, see Boat item) |
-| L05 | NAR | เหมือนขาคุณแรงสองเท่า… แต่แบกเป้หนักสองเท่า | **B02-SH02:** MAN with legs "×2" shoulders a backpack "×2", crouches, hops with his ghost, lands on the same chart line; "ภาพจำลอง" (B-P6). | **Changed (minor):** drops "ขึ้น" twice (−2 syll). CL08/CL10 analogy, N4 c |
+| L03 | NAR | ขามันดีดแรงขึ้นก็จริง… แต่ตัวก็หนักขึ้นตาม | **B02-SH01:** at the chart, on "ขามันดีดแรงขึ้น" the giant's hind-leg glow swells ("แรงดีด ↑", R5; was "แรง ↑"); on "ตัวก็หนักขึ้นตาม" a weight dial under it swings up in step. No digits, no "×", no equal bars (Boat R3 limit). | **Changed (R5):** "แรง" → "ดีดแรง" (+1 syll) so the word reads as the leg's push that throws the body up. CL10 unchanged. "ก็จริง" grants the viewer's objection |
+| L05 | NAR | เหมือนขาคุณดีดแรงสองเท่า… แต่แบกเป้หนักสองเท่า | **B02-SH02:** MAN with legs "×2" shoulders a backpack "×2", crouches, hops with his ghost, lands on the same chart line; "ภาพจำลอง" (B-P6). | **Changed (R5):** "แรง" → "ดีดแรง" (+1 syll), echoes L03. CL08/CL10 analogy, N4 c unchanged |
 | L06 | NAR | ตัวใหญ่ขึ้น… กระโดดไม่ได้สูงขึ้นตาม | Same shot as L05: the landing on the same line; if the giant is in frame it hops to the same band. | Kept words; refrain; CL08. Frame words around it changed (Boat item) |
 | L07 | NAR | แต่… แล้วหมัดตัวจิ๋ว กระโดดเก่งได้ยังไง | As R3: neutral macro backdrop, "ภาพจำลอง", real-size flea, short legs folded. | Kept |
 | L09 | NAR | มันบีบแผ่นยางยืดในตัวไว้… แล้วปล่อยทีเดียว เหมือนหนังสติ๊ก | See-through thorax "ภาพจำลอง": the pad above the folded hind legs squeezes (never stretched, B-P4), locks, snaps; the flea is gone in one frame; slingshot icon. If Film slows the snap, label "ภาพช้า · ภาพจำลอง" (FIX-4). | **Changed (minor):** drops "เลย" (no preceding cause line now). CL05 |
@@ -80,7 +80,7 @@ Answer length = from the first explaining line to the start of the line that ope
 | L14 | NAR | หมัดดูเก่ง… ก็เพราะตัวมันเล็กมาก | As R3: MAN sits back on the sofa beside the resting dog. | Kept (FIX-3); CL13 |
 | V03 | DOG | [a chest-drop sigh, no words] | As R3: dog lifts its head, sighs, lies back down. Hold ~2.5 s, end. | Kept; closed ending |
 
-Subtitle differences: none. V01, V02 subtitled; V03 and TR01 no subtitle. On-screen text: "2 มม.", "ภาพจำลอง" (macro L01, L07; backpack L05; thorax L09), "×10 … ×50" counter (L01), card "ถ้าคิดแบบง่าย ๆ" (TR01 and the V02 callback), "แรง ↑" (L03), weight dial without digits (L03), "×2" tags (L05), optional "ภาพช้า · ภาพจำลอง" (L09 if slowed), slingshot icon with "?" (L15, icon only), band "หลักสิบเซน" (V02/L12), "สูงพอ ๆ กัน" (L12). No title card.
+Subtitle differences: none. V01, V02 subtitled; V03 and TR01 no subtitle. On-screen text: "2 มม.", "ภาพจำลอง" (macro L01, L07; backpack L05; thorax L09), "×10 … ×50" counter (L01), card "ถ้าคิดแบบง่าย ๆ" (TR01 and the V02 callback), "แรงดีด ↑" (L03; R5, was "แรง ↑"), weight dial without digits (L03), "×2" tags (L05), optional "ภาพช้า · ภาพจำลอง" (L09 if slowed), slingshot icon with "?" (L15, icon only), band "หลักสิบเซน" (V02/L12), "สูงพอ ๆ กัน" (L12). No title card.
 
 ## Sound intent (English notes; narration unchanged)
 
@@ -109,8 +109,8 @@ Sound never carries a clue: CL01 and CL02 are visual. The trailer sound only sel
 | L01, TR01 | CL14, CL15 | `not claimed` | — | dog resting; neutral macro; no dog in the city |
 | TR01 | CL04 × body length (naive scale-up), picture only | pass (R3 recheck, B-P2) | SRC001, SRC006 | unchanged; R3 limits stand |
 | L02 | CL09, CL07, CL08 | pass (R2) | SRC005, SRC007, SRC011 | unchanged |
-| L03 | CL10 | `settled` as a model; **R4 wording** | SRC005, SRC009 | "ขามันแรงขึ้นก็จริง… แต่ตัวก็หนักขึ้นตาม" |
-| L05 | CL08, CL10 | analogy, N4 c pass; **R4 minor wording** | SRC005 | "เหมือนขาคุณแรงสองเท่า… แต่แบกเป้หนักสองเท่า" |
+| L03 | CL10 | `settled` as a model; **R5 wording** | SRC005, SRC009 | "ขามันดีดแรงขึ้นก็จริง… แต่ตัวก็หนักขึ้นตาม" (claim unchanged from R4) |
+| L05 | CL08, CL10 | analogy, N4 c pass; **R5 wording** | SRC005 | "เหมือนขาคุณดีดแรงสองเท่า… แต่แบกเป้หนักสองเท่า" (claim unchanged from R4) |
 | L06 | CL08 | N4 d pass; **R4 frame changed** | SRC005 | words unchanged; "สมมติ" (R3 L03) and "ตามแบบจำลอง" (R3 L10) no longer frame it |
 | L07 | — | question | — | unchanged |
 | L09 | CL05 | supported (W1.3, FIX-4) | SRC002, SRC003, SRC004, SRC008 | "เลย" dropped |
@@ -120,6 +120,19 @@ Sound never carries a clue: CL01 and CL02 are visual. The trailer sound only sel
 | — | CL02, CL06, CL12, CL14, CL15 | — | — | not used |
 
 No `needs-research` claim; L16 uses sources Boat already logged (SRC005, SRC010).
+
+<a id="r5-changes-for-boat"></a>
+## R5 changes for Boat
+
+User note (9 Nov 2026, after the W5.3 draft cut): the bare "แรง" in L03/L05 is unclear. User pick: say "ดีดแรง" / "แรงดีด" (the leg's push that throws the body up), not "แข็งแรง" (sturdy, wrong meaning). No other line changes.
+
+| Item | Change | R4 | R5 | Syllables | Claim / clue | Boat |
+| --- | --- | --- | --- | --- | --- | --- |
+| L03 | word added | "ขามันแรงขึ้นก็จริง… แต่ตัวก็หนักขึ้นตาม" | "ขามันดีดแรงขึ้นก็จริง… แต่ตัวก็หนักขึ้นตาม" | 12 → 13 | CL10, claim unchanged | **must-recheck (light):** "ดีดแรงขึ้น" = the legs push harder (more force), same CL10 claim as R4; your plain-"แรง" limit is kept ("แรง", never "กำลัง"). Check that "ดีด" does not suggest the giant uses the spring/slingshot of L09 (meant as the everyday "ดีดตัว" of a jump; L16 still says the giant hardly needs the slingshot) |
+| L05 | word added | "เหมือนขาคุณแรงสองเท่า… แต่แบกเป้หนักสองเท่า" | "เหมือนขาคุณดีดแรงสองเท่า… แต่แบกเป้หนักสองเท่า" | 13 → 14 | CL08/CL10 analogy, N4 c | **must-recheck (light):** analogy unchanged; "ดีดแรงสองเท่า" = pushes twice as hard |
+| B02-SH01 on-screen text | changed | "แรง ↑" | "แรงดีด ↑" | — | picture | Film/Boss redo the label; R3 limit stands (no digits, no "×", no equal bars) |
+
+**Unchanged:** every other line, cue, sound note and the R4 claims, including CL10 and CL08. **Scenes affected:** `EDU-EP13-S01-B02` only (SH01 narration and label; SH02 narration). **Downstream:** Editor re-reads L03/L05 (Kore A, atempo 0.94 as locked) and re-places them; Film/Boss change the "แรงดีด ↑" label. Timing estimated +0.5 s total until re-measured.
 
 <a id="r4-changes-for-boat"></a>
 ## R4 changes for Boat
@@ -153,13 +166,13 @@ Change table (R3 → R4):
 
 ## Notes
 
-- <a id="n1"></a>**N1 Timing (estimated, R4):** syllables NAR ~175 (L01 24, L02 18, L03 12, L05 13, L06 11, L07 12, L09 16, L15 11, L16 15, L12 12, L13 21, L14 10). Rate ≈ 0.237 s per syllable ([../ep05/voice-measure.md](../ep05/voice-measure.md)) → **NAR ≈ 41.5 s**. Add TR01 ~1.6 s, V01 ~1.0 s, V02 + apex ~1.5 s, slower L14 landing ~0.4 s, gaps ~0.3 s × 15 ≈ 4.5 s, closing hold ~2.5 s → **video ≈ 53.0 s** (range 50–56 s; R3 ≈ 56.2 s). Not read aloud; W4 measures.
+- <a id="n1"></a>**N1 Timing (estimated, R4):** syllables NAR ~177 (R5: L03 12 → 13, L05 13 → 14, ≈ +0.5 s at this rate; voice lock measures) (L01 24, L02 18, L03 13, L05 14, L06 11, L07 12, L09 16, L15 11, L16 15, L12 12, L13 21, L14 10). Rate ≈ 0.237 s per syllable ([../ep05/voice-measure.md](../ep05/voice-measure.md)) → **NAR ≈ 41.5 s**. Add TR01 ~1.6 s, V01 ~1.0 s, V02 + apex ~1.5 s, slower L14 landing ~0.4 s, gaps ~0.3 s × 15 ≈ 4.5 s, closing hold ~2.5 s → **video ≈ 53.0 s** (range 50–56 s; R3 ≈ 56.2 s). Not read aloud; W4 measures.
   - **Cuts if the read runs long (in order):** C1 L02 drop "นี่แหละ" (−2 syll ≈ −0.5 s). C2 TR01 VO-free part 1.6 → 1.0 s. Do not cut L01, L06, L13, L14 or L16's hedge "ไม่ค่อย".
   - **If OQ2 measures over 10 s at voice lock:** cut L06's gap first, then move L06 onto the L05 landing with no breath (ER09 is a speech-length rule; the refrain stays).
 - **N2 ER01 timing:** unchanged from R3 by the user's choice: stakes on screen from ~4 s (trailer), "ไม่หรอก" ~7.4 s, "หลักสิบเซน" ~9.0 s. The objection "its legs would be giant too" is answered at ~13.3 s (L03); V01's look at the legs makes the objection visible before it is answered.
 - **N3 Story time:** one afternoon in the living room; the giant, the city, the tower and the backpack are imagined inserts. B05 returns to real scale.
 - **N5 Voice:** Kore deadpan; "ข้ามตึกได้มั้ย" may lift slightly into the trailer; a dry flat "ไม่หรอก…" against the dead trailer is the joke. L15 a light, curious lift; L16 "ไม่ค่อยต้องแล้ว" casual, almost a shrug. MAN one surprised line and one grunt.
-- **N6 Film (for the brief update after recheck and approval):** B02 unchanged (two shots; only L03/L05 words change). B03 loses the L08 slow-motion muscle/clock shot (R1.3 B03-SH02); the thorax pad shot carries the beat. B04: L15 needs the giant at the chart with a slingshot "?" icon; L16 the lit long legs, icon greys, matched crouch (R1.3's L10 icon-fade and L11 crouch fold into this). TR01, the V02 callback, the looks and FIX-5 rules stand.
+- **N6 Film (R5):** B02-SH01 label "แรง ↑" → "แรงดีด ↑"; shots unchanged. **(R4, for the brief update after recheck and approval):** B02 unchanged (two shots; only L03/L05 words change). B03 loses the L08 slow-motion muscle/clock shot (R1.3 B03-SH02); the thorax pad shot carries the beat. B04: L15 needs the giant at the chart with a slingshot "?" icon; L16 the lit long legs, icon greys, matched crouch (R1.3's L10 icon-fade and L11 crouch fold into this). TR01, the V02 callback, the looks and FIX-5 rules stand.
 
 <a id="open-questions"></a>
 ### Open questions (returned to the coordinator; Preaw has no ask tool)
@@ -177,6 +190,7 @@ Change table (R3 → R4):
 | R2 | 2026-11-09 | Preaw | FIX-1 to FIX-5; V01 moved after L02. | W1.3 fact-check |
 | R3 | 2026-11-09 | Preaw | B02 to two shots (L03 merged, L04 removed); TR01 sci-fi trailer; V02 callback. | User request (shorter explanation; sci-fi spectacle) |
 | R4 | 2026-11-09 | Preaw | Rewrite under ER06 (amended), ER09, ER10: L03 "ขามันแรงขึ้นก็จริง… แต่ตัวก็หนักขึ้นตาม", L05 drops "ขึ้น", L08 removed, L09 drops "เลย", L10/L11 removed, new L15 (question) and L16 (one cause: long legs give muscle time; hedge "ไม่ค่อย"); no "ตามแบบจำลอง"/"สมมติ"; open-question map with answer lengths (all ≤ 10 s); V01 cue looks at the legs; B03/B04 sound and cues; N1 ≈ 53.0 s. | User request 2026-11-09 (rewrite under the new rules) |
+| R5 | 2026-11-09 | Preaw | L03 "ขามันดีดแรงขึ้นก็จริง…" and L05 "เหมือนขาคุณดีดแรงสองเท่า…" ("แรง" → "ดีดแรง", +1 syll each); B02-SH01 label "แรงดีด ↑". No claim change. | User note 2026-11-09 after the draft cut ("แรง" unclear; user picked "แรงดีด", not "แข็งแรง") |
 
 ## ER01–ER10 self-audit
 
