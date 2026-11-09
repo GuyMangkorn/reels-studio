@@ -1,13 +1,13 @@
 #!/usr/bin/env python3
-"""EDU-EP13-SHORT draft sound stems (Editor, W5.3 Draft, 2026-11-09): places exactly the 52 cues of scripts/edu-series/ep13/sound-cues.json (EDU-EP13-SHEETS-R2.0, G clock, 1390 f, 48 kHz mono)
+"""EDU-EP13-SHORT draft sound stems (Editor, W5.3 Draft v2, 2026-11-09): places exactly the 52 cues of scripts/edu-series/ep13/sound-cues.json (EDU-EP13-SHEETS-R2.1, G clock, 1542 f, 48 kHz mono)
 and mixes to the cue sheet's `levels` targets (docs/editor-principles.md#ep08b). Library/generated files come from the episode lock (src/videos/edu-ep13/assets.lock.json -> public/).
 Layers: bed (music, ambience, fiction trailer bed; ambience and M1 are ducked under the narration), texture (foley/ticks/whooshes under speech), accent (hits, stingers, tape-stop, launch, dog sigh).
-Needs public/narration/EDU-EP13-SHORT-narration-v1.wav (voice stem and duck key; scripts/edu-series/ep13/narration-place.py). Writes out/stems/{voice,bed,texture,accent}.wav (per-layer, for Ton's measure) and
-public/audio/edu/EDU-EP13-SHORT-draft-stem-v1.wav (their sum, the composition's audio track). Levels are by number and by `mix-levels.py`, not by ear; every generated file is unlistened.
+Needs public/narration/EDU-EP13-SHORT-narration-v2.wav (voice stem and duck key; scripts/edu-series/ep13/narration-place.py). Writes out/stems/{voice,bed,texture,accent}.wav (per-layer, for Ton's measure) and
+public/audio/edu/EDU-EP13-SHORT-draft-stem-v2.wav (their sum, the composition's audio track). Levels are by number and by `mix-levels.py`, not by ear; every generated file is unlistened.
 Run: python3 -I scripts/edu-series/ep13/sound-mix.py"""
 import array, math, os, subprocess, wave
 
-TOTAL, FPS, SR = 1390, 30, 48000
+TOTAL, FPS, SR = 1542, 30, 48000
 N = TOTAL * SR // FPS
 F = lambda fr: int(round(fr * SR / FPS))
 OFF = None
@@ -45,7 +45,7 @@ P = {  # cue sheet files (locked in assets.lock.json)
     'riser': 'public/sfx/reveal/reveal_riser-tension_01.wav',
     'fwoop': 'public/sfx/reveal/reveal_warmth-fwoop_01.wav',
     'shrug': 'public/sfx/stinger/stinger_pizz-shrug_01.wav',
-    'tag': 'public/sfx/stinger/stinger_pizz-tag-ending_01.wav',
+    'settle': 'public/sfx/stinger/stinger_vibe-settle-tone_01.wav',
     'tick': 'public/sfx/ui/ui_click-tick_01.wav',
     'swish': 'public/sfx/whoosh/whoosh_air-swish-rising_01.wav',
     'slide': 'public/sfx/whoosh/whoosh_fast-slide_01.wav',
@@ -105,72 +105,77 @@ SOI_LOW, SOI_FULL, FAN, HUSH, AIR, M1 = -37.0, -36.0, -36.0, -35.0, -36.0, -31.0
 TICK, WHOOSH, FOLEY = -24.0, -24.0, -25.0       # texture peaks
 HIT = -2.0                                       # accent peaks
 
-# ---- bed: room tone (soi + fan), studio hush, trailer air, M1 (restarts on its downbeat at every re-entry, phrase-end cuts per the cue sheet)
-ROOM = [(0, 27), (76, 109), (278, 425), (825, 1029)]
+# ---- bed: room tone (soi + fan), studio hush, trailer air, M1 (restarts on its downbeat at every re-entry, phrase-end cuts per the cue sheet; frames = SHEETS-R2.1)
+ROOM = [(0, 44), (96, 129), (317, 478), (917, 1152)]
 for a, b in ROOM:
     bed(bed_d, 'soi', seg(a, b, SOI_LOW, fin=3 if a else 1, fout=3), restart_at=a)    # B01-room-soi (low)
     bed(bed_d, 'fan', seg(a, b, FAN, fin=3 if a else 1, fout=3), restart_at=a)        # A1-fan
-bed(bed_d, 'soi', [(1068, OFF), (1071, SOI_LOW), (1325, SOI_LOW), (1390, OFF)], restart_at=1068)   # room tone back on the landing, B05-room-fade to zero at the last frame
-bed(bed_d, 'fan', [(1068, OFF), (1071, FAN), (1325, FAN), (1390, OFF)], restart_at=1068)           # B05-room-fade (second use of the A1 file)
-for a, b in [(27, 76), (425, 825)]:
+bed(bed_d, 'soi', [(1192, OFF), (1195, SOI_LOW), (1477, SOI_LOW), (1541, OFF)], restart_at=1192)   # room tone back on the landing (B04-SH02 +57), B05-room-fade: holds through the sigh (G1474 + 3), zero at the last frame
+bed(bed_d, 'fan', [(1192, OFF), (1195, FAN), (1477, FAN), (1541, OFF)], restart_at=1192)           # B05-room-fade (second use of the A1 file)
+for a, b in [(44, 96), (478, 917)]:
     bed(bed_d, 'hush', seg(a, b, HUSH, fin=3, fout=3), restart_at=a)                  # A2-hush-SH02, also B02-SH03 / B03-SH01 / B03-SH03
-bed(bed_n, 'soi', [(109, OFF), (112, SOI_LOW - 10.5), (192, SOI_LOW - 10.5), (195, SOI_FULL), (275, SOI_FULL), (278, OFF)], restart_at=109)   # B01-soi-trailer 30 %, SH04D full
-bed(bed_n, 'air', [(109, OFF), (115, AIR), (159, AIR), (162, AIR - 8), (192, AIR - 8), (195, AIR), (205, AIR), (207, OFF)], restart_at=109)    # A3-high-air (thinned in SH04C, breeze to SH04D +12)
-bed(bed_d, 'm1', seg(6, 109, M1, fin=4, fout=2, mid=[(76, M1), (80, M1 + 2)]), restart_at=6)                                                  # M1 in 6, lift in the grow, dead 109
-bed(bed_d, 'm1', seg(205, 278, M1 - 6, fin=3, fout=2), restart_at=205)                                                                       # back 205, energy 1, dropout 278-290
-bed(bed_d, 'm1', seg(290, 763, M1 - 6, fin=3, fout=2, mid=[(332, M1), (610, M1), (614, M1 - 2)]), restart_at=290)                           # B02 energy 2, thins 611, dead 763
-bed(bed_d, 'm1', seg(825, 1029, M1 + 1, fin=4, fout=4, mid=[(975, M1 + 1), (1012, M1 + 3)]), restart_at=825)                                 # back 825 (+1), builds into the cut, out 1029
-bed(bed_d, 'm1', seg(1068, 1320, M1, fin=3, fout=2, mid=[(1296, M1), (1318, M1 - 12)]), restart_at=1068)                                   # back 1068, ends under the tag
+bed(bed_n, 'soi', [(129, OFF), (132, SOI_LOW - 10.5), (225, SOI_LOW - 10.5), (228, SOI_FULL), (314, SOI_FULL), (317, OFF)], restart_at=129)   # B01-soi-trailer 30 %, SH04D full
+bed(bed_n, 'air', [(129, OFF), (135, AIR), (179, AIR), (182, AIR - 8), (225, AIR - 8), (228, AIR), (240, AIR), (242, OFF)], restart_at=129)    # A3-high-air (thinned in SH04C, breeze to SH04D +12)
+bed(bed_d, 'm1', seg(6, 129, M1, fin=4, fout=2, mid=[(96, M1), (100, M1 + 2)]), restart_at=6)                                                  # M1 in 6, lift in the grow, dead on G128
+bed(bed_d, 'm1', seg(238, 317, M1 - 6, fin=3, fout=2), restart_at=238)                                                                       # back 238, energy 1, dropout 317-329
+bed(bed_d, 'm1', seg(329, 857, M1 - 6, fin=3, fout=2, mid=[(380, M1), (690, M1), (694, M1 - 2)]), restart_at=329)                           # B02 energy 2, thins 691, dead 857 (snap)
+bed(bed_d, 'm1', seg(917, 1152, M1 + 1, fin=4, fout=4, mid=[(1098, M1 + 1), (1135, M1 + 3)]), restart_at=917)                                 # back 917 (+1), builds from 1098 into the cut, out 1152
+bed(bed_d, 'm1', [(1192, OFF), (1195, M1), (1403, M1), (1406, M1 - 4), (1433, M1 - 4), (1463, OFF)], restart_at=1192)                       # back 1192, dips under L14, fades to silence 1433-1463 (no tag, SD08)
 # ---- B01 room / macro / grow
-shot(texture, 'breath', 0, -34.0, t=0.9, fout=0.12)                                              # S1-breath (first breath; very quiet source)
-shot(texture, 'tick', 43, TICK + 2, af='asetrate=60480,aresample=48000')                          # S2-takeoff-tick (pitched up 1.26)
-shot(texture, 'swish', 43, WHOOSH)                                                               # S3-leap-whoosh
-for k, g in enumerate((48, 54, 60, 66, 72), 1):
+shot(texture, 'breath', 0, -34.0, t=1.47, fout=0.12)                                             # S1-breath (first slow breath, 0-44; very quiet source)
+shot(texture, 'tick', 66, TICK + 2, af='asetrate=60480,aresample=48000')                          # S2-takeoff-tick (pitched up 1.26)
+shot(texture, 'swish', 66, WHOOSH)                                                               # S3-leap-whoosh
+for k, g in enumerate((72, 77, 82, 87, 92), 1):
     shot(texture, 'tick', g, TICK, af=f'asetrate={SR * 2 ** ((k - 1) * 2 / 12):.1f},aresample={SR}')   # S4-tick-1..5, pitch rising
-shot(texture, 'grow', 80, WHOOSH + 3)                                                            # S5-grow
-# ---- trailer (fiction bed): braam, shadow pass, riser to 147, drums, launch, wind, tape-stop
-shot(bed_n, 'braam', 109, -23.0, fout=0.1)                                                       # TR1-braam
-shot(bed_n, 'shadow', 113, -27.0)                                                                # TR2-shadow-pass
-shot(bed_n, 'riser', 109, -27.0, ss=2.42, t=1.27, fout=0.02)                                     # riser, dead stop on 147
-shot(bed_n, 'taiko', 129, -24.0)                                                                 # TR3-drums (4 hits in the file)
-shot(accent, 'launch', 147, HIT)                                                             # TR4-launch
-shot(bed_n, 'wind', 156, -29.0, t=0.7, fout=0.1)                                                 # TR5-height-wind
-shot(accent, 'tapestop', 177, HIT - 10)                                                           # TR6-tape-stop
-shot(texture, 'droop', 183, WHOOSH - 1)                                                          # S7-droop (crosses the cut)
-shot(texture, 'tap', 201, FOLEY)                                                                 # SH04D-tap-1
-shot(texture, 'tap', 249, FOLEY, gain=0.6)                                                       # SH04D-tap-2
-shot(accent, 'flinch', 286, HIT - 2, drive=12.0)                                                             # S8-flinch (in the V01 gap)
-shot(texture, 'fwoop', 335, WHOOSH)                                                              # S9-glow
-shot(texture, 'groan', 392, FOLEY + 2)                                                           # S10-groan
-shot(texture, 'backpack', 480, FOLEY + 2)                                                        # S11-backpack
-shot(texture, 'slide', 515, WHOOSH)                                                              # S11-hop-whoosh
-shot(texture, 'tap', 527, FOLEY, gain=0.6)                                                       # S11-hop-tap
-shot(texture, 'shrug', 570, FOLEY + 1)                                                           # S12-shrug
-shot(texture, 'squeeze', 706, FOLEY + 1)                                                         # S15-squeeze
-shot(texture, 'lock', 736, FOLEY)                                                                # S15-lock-click
-shot(accent, 'snap', 763, HIT - 1, drive=8.0)                                                               # S16-snap
-shot(accent, 'whip', 763, HIT - 4, drive=4.0)                                                               # S16-whip
-shot(texture, 'question', 830, FOLEY + 1)                                                        # S21-question
-shot(texture, 'detune', 905, FOLEY + 1)                                                          # S23-detune
-shot(texture, 'glass', 937, FOLEY + 1)                                                           # S22-leg-tone
-shot(texture, 'crouch', 1012, FOLEY + 2)                                                         # S17-crouch
-shot(texture, 'jump', 1020, WHOOSH + 2)                                                          # S18-jump (with V02)
-shot(accent, 'thud', 1068, HIT, drive=14.0)                                                                  # S19-landing
-shot(bed_n, 'braam', 1098, -35.0, t=0.87, af='lowpass=f=700', fout=0.12)                         # TR7-braam-echo (-18 dB, low-passed, cut dead by 1124)
-shot(texture, 'tick', 1124, TICK, af='asetrate=40320,aresample=48000')                           # TR7-tick (pitched down 0.84)
-shot(texture, 'shrink', 1138, WHOOSH + 2)                                                        # B05-shrink-pop
-shot(texture, 'tick', 1165, TICK + 1, af='asetrate=60480,aresample=48000')                       # B05-tick-flea (up)
-shot(texture, 'tick', 1189, TICK + 1, af='asetrate=40320,aresample=48000')                       # B05-tick-man (down)
-shot(texture, 'sofa', 1294, FOLEY)                                                               # S20-sofa
-shot(accent, 'tag', 1311, HIT, fout=0.4)                                                     # tag-ending
-shot(texture, 'jingle', 1316, FOLEY + 1)                                                         # S1-jingle
-shot(accent, 'sigh', 1322, HIT - 6, fout=0.2, drive=4.0)                                                    # V03-dog-sigh (no voice, no subtitle)
+shot(texture, 'grow', 100, WHOOSH + 3)                                                           # S5-grow
+# ---- trailer (fiction bed): braam, shadow pass, riser to 170, drums, launch, wind, tape-stop
+shot(bed_n, 'braam', 129, -23.0, fout=0.1)                                                       # TR1-braam
+shot(bed_n, 'shadow', 133, -27.0)                                                                # TR2-shadow-pass
+shot(bed_n, 'riser', 129, -27.0, ss=2.32, t=1.37, fout=0.02)                                     # riser, last 1.37 s, dead stop on 170
+shot(bed_n, 'taiko', 152, -24.0)                                                                 # TR3-drums (4 hits in the file)
+shot(accent, 'launch', 170, HIT)                                                             # TR4-launch
+shot(bed_n, 'wind', 182, -29.0, t=0.7, fout=0.1)                                                 # TR5-height-wind
+shot(accent, 'tapestop', 207, HIT - 10)                                                           # TR6-tape-stop
+shot(texture, 'droop', 213, WHOOSH - 1)                                                          # S7-droop (crosses the cut)
+shot(texture, 'tap', 234, FOLEY)                                                                 # SH04D-tap-1
+shot(texture, 'tap', 278, FOLEY, gain=0.6)                                                       # SH04D-tap-2
+shot(accent, 'flinch', 325, HIT - 2, drive=12.0)                                                             # S8-flinch (in the V01 pre-roll gap)
+shot(texture, 'fwoop', 383, WHOOSH)                                                              # S9-glow
+shot(texture, 'groan', 445, FOLEY + 2)                                                           # S10-groan
+shot(texture, 'backpack', 535, FOLEY + 2)                                                        # S11-backpack
+shot(texture, 'slide', 583, WHOOSH)                                                              # S11-hop-whoosh
+shot(texture, 'tap', 595, FOLEY, gain=0.6)                                                       # S11-hop-tap
+shot(texture, 'shrug', 634, FOLEY + 1)                                                           # S12-shrug
+shot(texture, 'squeeze', 794, FOLEY + 1)                                                         # S15-squeeze
+shot(texture, 'lock', 824, FOLEY)                                                                # S15-lock-click
+shot(accent, 'snap', 857, HIT - 1, drive=8.0)                                                               # S16-snap
+shot(accent, 'whip', 857, HIT - 4, drive=4.0)                                                               # S16-whip
+shot(texture, 'question', 922, FOLEY + 1)                                                        # S21-question
+shot(texture, 'detune', 1001, FOLEY + 1)                                                         # S23-detune
+shot(texture, 'glass', 1038, FOLEY + 1)                                                          # S22-leg-tone
+shot(texture, 'crouch', 1135, FOLEY + 2)                                                         # S17-crouch
+shot(texture, 'jump', 1143, WHOOSH + 2)                                                          # S18-jump (with V02)
+shot(accent, 'thud', 1192, HIT, drive=14.0)                                                                  # S19-landing
+shot(bed_n, 'braam', 1226, -35.0, t=1.07, af='lowpass=f=700', fout=0.12)                         # TR7-braam-echo (-18 dB, low-passed, 1.07 s, cut dead at 1258)
+shot(texture, 'tick', 1258, TICK, af='asetrate=40320,aresample=48000')                           # TR7-tick (pitched down 0.84)
+shot(texture, 'shrink', 1279, WHOOSH + 2)                                                        # B05-shrink-pop
+shot(texture, 'tick', 1300, TICK + 1, af='asetrate=60480,aresample=48000')                       # B05-tick-flea (up)
+shot(texture, 'tick', 1331, TICK + 1, af='asetrate=40320,aresample=48000')                       # B05-tick-man (down)
+shot(texture, 'sofa', 1443, FOLEY)                                                               # S20-sofa
+shot(texture, 'jingle', 1468, FOLEY + 1)                                                         # S1-jingle
+shot(accent, 'sigh', 1474, HIT - 3, fout=0.2, drive=10.0)                                                    # V03-dog-sigh (no voice, no subtitle)
+# S24-settle (replaces the pizzicato tag, SD08): one felt-mallet vibraphone note at G1463, quiet at room-tone level (peak S24_PK, RMS of the played slice about -37 dBFS), ducked -6 dB over 80 ms from G1474 so the sigh is the button
+S24_PK = -27.0
+duck = lambda j: lin(-6.0 * min(1.0, max(0.0, (j - F(1474)) / (0.08 * SR))))
+shot(accent, 'settle', 1463, S24_PK, fin=0.015, fout=0.25)
+for j in range(F(1463), min(N, F(1463) + 2 * SR)):
+    accent[j] *= duck(j) if j > F(1474) else 1.0
 
 # ---- ducking: the narration (voice stem) keys a smooth gain on the ducked bed
 def read(p):
     w = wave.open(p); assert (w.getframerate(), w.getnchannels(), w.getsampwidth()) == (SR, 1, 2), p
     a = array.array('h'); a.frombytes(w.readframes(w.getnframes())); return a
-voice = read('public/narration/EDU-EP13-SHORT-narration-v1.wav'); assert len(voice) == N, (len(voice), N)
+voice = read('public/narration/EDU-EP13-SHORT-narration-v2.wav'); assert len(voice) == N, (len(voice), N)
 DUCK_DB, ATT, REL, THR = -4.0, 0.08, 0.35, 0.004
 win = SR // 100
 speech = [math.sqrt(sum(x * x for x in voice[i:i + win]) / win) / 32768 > THR for i in range(0, N, win)]
@@ -218,5 +223,5 @@ def wr(tr, p, dither=False):
 pk = {n: wr(t, f'out/stems/{n}' + SUF, True) for n, t in (('bed', bed), ('texture', texture), ('accent', accent))}
 wr(array.array('f', (x / 32768 for x in voice)), 'out/stems/voice' + SUF)
 total = array.array('f', (bed[j] + texture[j] + accent[j] for j in range(N)))
-pk['stem'] = wr(total, 'public/audio/edu/EDU-EP13-SHORT-draft-stem-v1' + SUF)
+pk['stem'] = wr(total, 'public/audio/edu/EDU-EP13-SHORT-draft-stem-v2' + SUF)
 print({k: f'{20 * math.log10(v or 1e-9):.1f} dBFS' for k, v in pk.items()})

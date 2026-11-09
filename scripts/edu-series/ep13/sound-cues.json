@@ -535,7 +535,7 @@
   "swaps": [],
   "exempt": [
     {
-      "src": "EDU-EP13-SHORT-draft-stem-v1.wav",
+      "src": "EDU-EP13-SHORT-draft-stem-v2.wav",
       "reason": "Editor's baked draft mix of exactly this sheet's cues (scripts/edu-series/ep13/sound-mix.py); the composition plays it as its audio track, not a sound of its own"
     }
   ],
