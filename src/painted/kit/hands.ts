@@ -550,7 +550,7 @@ const tubeOutline = (P: Pt[], R: number[], cap: boolean): Pt[] => {
     return out;
   };
   const L = side(1), Rr = side(-1);
-  const end = cap ? (() => { const a0 = Math.atan2(nm[n - 2][1], nm[n - 2][0]); return arcPts(P[n - 1], R[n - 1], a0, a0 - Math.PI, 8).slice(1, -1); })() : [];
+  const end = cap ? (() => { const a0 = Math.atan2(nm[n - 2][1], nm[n - 2][0]); return arcPts(P[n - 1], R[n - 1], a0, a0 - Math.PI, 12).slice(1, -1); })() : [];
   return [...L, ...end, ...Rr.reverse()];
 };
 /** Keep the part of a convex polygon with (p - o) . n >= 0. */
@@ -700,7 +700,7 @@ export const paintHandMacro = (p: Painter, cam: YCam, h: HandMacro): HandAnchors
         // The metacarpal lies in the palm: ink only the free part (MCP -> tip) and the outer edge of the metacarpal.
         ink(q, i0, tubeOutline(P.slice(1), Rpx.slice(1), true), inkW, inkOf(INK));
         // the outer edge of the metacarpal is the palm outline's thenar edge (PALM), not a second line
-      } else ink(q, i0, tubeOutline(P, Rpx, nk === 3), inkW, inkOf(INK));
+      } else ink(q, i0, tubeOutline(P, Rpx, true), inkW, inkOf(INK));
       // knuckle creases (two strokes at pip and dip) where the back of the finger faces the camera
       for (let j = 1; j <= Math.min(2, nk - 1); j++) {
         const dor = c.dorsal[j - 1], seg = sub3(c.joints[j + 1], c.joints[j - 1]), faces = dot3(dor, norm3(sub3(camPos, c.joints[j])));
