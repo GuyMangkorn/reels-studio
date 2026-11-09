@@ -21,7 +21,7 @@ export type Measure = {lead?: {top: number; bottom: number; left?: number; right
 export const MEASURE: Record<string, Measure> = {};
 
 /** The pencil (0.17 m, yellow body, pink eraser, graphite tip) held in a mitten at `hand`, pointing along `ang` (radians, picture). */
-const paintPencil = (p: Painter, hand: Pt, u: number, ang: number, seed: number) => {
+const paintPencil = (p: Painter, hand: Pt, u: number, ang: number, seed: number, skin: string) => {
   const L = 0.17 * u, w = Math.max(3, 0.008 * u), dx = Math.cos(ang), dy = Math.sin(ang), nx = -dy * w / 2, ny = dx * w / 2;
   const a: Pt = [hand[0] - dx * L * 0.35, hand[1] - dy * L * 0.35], b: Pt = [hand[0] + dx * L * 0.55, hand[1] + dy * L * 0.55], tip: Pt = [b[0] + dx * L * 0.1, b[1] + dy * L * 0.1];
   hardFill(p, seed, '#f2c230', [[a[0] + nx, a[1] + ny], [b[0] + nx, b[1] + ny], [b[0] - nx, b[1] - ny], [a[0] - nx, a[1] - ny]]);
@@ -30,6 +30,14 @@ const paintPencil = (p: Painter, hand: Pt, u: number, ang: number, seed: number)
   const e: Pt = [a[0] - dx * L * 0.08, a[1] - dy * L * 0.08];
   hardFill(p, seed + 3, '#e88a96', [[a[0] + nx, a[1] + ny], [e[0] + nx, e[1] + ny], [e[0] - nx, e[1] - ny], [a[0] - nx, a[1] - ny]]);
   inkLine(p, seed + 4, [[e[0] + nx, e[1] + ny], [b[0] + nx, b[1] + ny], tip, [b[0] - nx, b[1] - ny], [e[0] - nx, e[1] - ny]], {weight: 0.9, still: true});
+  // the fist closes over the middle of the pencil (fingers in front, thumb on top) so the pencil is gripped, not laid on the hand
+  const fist = ell(hand[0], hand[1], 0.034 * u, 0.026 * u, 18, ang + 1.2);
+  hardFill(p, seed + 5, skin, fist);
+  inkLine(p, seed + 6, fist, {weight: 0.9, still: true});
+  for (const k of [-0.5, 0, 0.5]) {
+    const c: Pt = [hand[0] - dx * 0.012 * u + nx * 0 + (-dy) * k * 0.026 * u, hand[1] - dy * 0.012 * u + dx * k * 0.026 * u];
+    inkLine(p, seed + 7 + Math.round(k * 2), [[c[0] - dx * 0.018 * u, c[1] - dy * 0.018 * u], [c[0] + dx * 0.018 * u, c[1] + dy * 0.018 * u]], {weight: 0.6, closed: false, still: true});
+  }
 };
 
 /** Morning bed hair: a few tufts sticking up and out of the bowl cut (ink + hair colour), from the head anchors. */
@@ -66,7 +74,7 @@ const paintHallShot = (p: Painter, c: YCam, key: 'LF01' | 'LF02') => {
   const a = paintFigureAt(p, c, def, {at: BOY_ASIDE, view: 'left', pose: 'P01', face: night ? 'suspicious' : 'surprised', faceState: {look: [-0.9, -0.25]}, t: 0.4, shadow: {op: night ? 70 : 55}});
   if (!a) return;
   const u = camUnit(c, BOY_ASIDE);
-  paintPencil(p, a.rHand, u, Math.PI * 1.15, 4200);
+  paintPencil(p, a.rHand, u, Math.PI * 1.15, 4200, def.head.skin);
   if (!night) messyHair(p, a, u, def.head.hair, -1);
   MEASURE[key] = {lead: {top: a.top, bottom: a.bottom}, word: wordAt(c), cam: c, extra: {handY: Math.round(a.rHand[1]), headY: Math.round(a.head[1])},
     gapPx: (() => { const m = camPoint(c, [0, 1.3, 0.021]), n = camPoint(c, [0, 1.285, 0.021]); return m && n ? n[1] - m[1] : 0; })()};

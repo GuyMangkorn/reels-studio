@@ -2,7 +2,7 @@
 
 Record: this file. Series context: [concepts.md](../concepts.md) (R6, C35) · series task list: [task.md](../task.md).
 
-**Now:** W3.1 done (look frames LF01–LF05 v7, viewer check round 3 all pass); review page republished as ROWS-R1.5 (v1794221441-1344). Waiting for the user's look verdicts (W3.2), then W3.3 storyboard pass.
+**Now:** W3.1 done; user approved look frames LF01–LF05 (2026-11-09; LF05 v8 seat smaller, LF01–02 v9 pencil gripped in fist). Next: W3.3 storyboard pass.
 
 - Deliverable: `EDU-EP12-SHORT`, Short only (Thai), 1080×1920, 30 fps, target 40–60 s (estimate). Profile: educational, painted 2D p5.brush, 4-head cast, Kore narrator (edu default), ending per concept: closed, ~2 s hold on the boy asleep, then the doorframe (the user may change it); other fields = project defaults.
 - Factual claims for Boat: see the C35 entry in concepts.md R6. All unchecked until research and fact-check. Thin spots: daily height loss figure (about 1 cm / about 1 % of stature, range by height); NASA astronaut growth up to about 3 %; back-pain wording (no mechanism claim beyond "ตัวยืด" and "ปวดหลัง").
