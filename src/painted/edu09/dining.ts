@@ -164,15 +164,15 @@ const paintCuffSleeve = (p: Painter, c: YCam, id: number, wrist: V3, end: V3, r:
   // ribbed knit cuff: a darker band 2.2 cm deep from the cuff edge back, rib strokes along the arm, a soft wobbly rim over the wrist
   const dt = 0.022 / al, edge = ring(cuff, rc * 1.03, 0.05), back = ring(at(0.62 + dt), rc * 1.0, 0.03);
   const band = hull([...camPoly(c, edge), ...camPoly(c, back)]);
-  if (band.length > 2) hardFill(p, id + 5, mixColor(s.color, s.shade, 0.55), band);
+  if (band.length > 2) hardFill(p, id + 5, mixColor(s.color, s.shade, 0.3), band);
   const lo = (i: number) => Math.sin((i / 28) * Math.PI * 2) < 0.25;
   for (let i = 0; i < 28; i += 2) {
     if (!lo(i)) continue;
     const q0 = camPoint(c, edge[i]), q1 = camPoint(c, back[i]);
-    if (q0 && q1) inkLine(p, id + 10 + i, [q0, q1], {weight: 0.9, closed: false, still: true, color: mixColor(s.shade, '#2a1a10', 0.25)});
+    if (q0 && q1) inkLine(p, id + 10 + i, [q0, q1], {weight: 0.9, closed: false, still: true, color: mixColor(s.shade, '#2a1a10', 0.1)});
   }
   const rim = camPoly(c, edge.filter((_, i) => lo(i)));
-  if (rim.length > 1) inkLine(p, id + 7, rim, {weight: 1.4, closed: false, still: true, color: mixColor(s.shade, '#2a1a10', 0.45)});
+  if (rim.length > 1) inkLine(p, id + 7, rim, {weight: 1.1, closed: false, still: true, color: mixColor(s.shade, '#2a1a10', 0.2)});
 };
 
 /** Pendant lamp (W3: shade centre lowered to y 1.45 (0.73 m over the table) so its rim enters the top of the close-ups): cord, a cream cone shade, the lit opening. */

@@ -157,12 +157,13 @@ test('W5.2 N2: diagram tracks hit the sheet times; ring has no own cord; widths 
   const keys = new Set(Object.keys(diagramSH02(50).state.ownLit ?? {})); assert.deepEqual([...keys].sort(), ['index', 'little']);
 });
 
-test('R3 FX13: with the milk box gone, ELDER right arm at L27 and L47 matches his left arm within 10 % per segment, elbow bent 25 deg or more, elbow on the wood, no box in the set', () => {
+test('R3b: ELDER right arm at L27 and L47 is a natural arm: upper arm within 10 % of his left, forearm 0.6-0.85 of the upper arm, elbow interior angle 100-150 deg (no kink), elbow on the wood, no box in the set', () => {
   for (const L of [27, 47]) {
     const m = measureArm(L);
     assert.ok(Math.abs(m.upperR / m.upperL - 1) <= 0.1, `L${L} upper arm ratio ${(m.upperR / m.upperL).toFixed(2)}`);
-    assert.ok(Math.abs(m.foreR / m.foreL - 1) <= 0.1, `L${L} forearm ratio ${(m.foreR / m.foreL).toFixed(2)}`);
-    assert.ok(m.bendR >= 25, `L${L} elbow bend ${m.bendR.toFixed(0)}`);
+    assert.ok(m.foreR / m.upperR >= 0.6 && m.foreR / m.upperR <= 0.85, `L${L} forearm/upper ${(m.foreR / m.upperR).toFixed(2)}`);
+    const inner = 180 - m.bendR;
+    assert.ok(inner >= 100 && inner <= 150, `L${L} elbow interior angle ${inner.toFixed(0)}`);
   }
   assert.equal(gentleStopAt(27).elbow[1], 0.746);
   assert.ok(Math.abs(elderLeanAt(0)[0]) < 1e-9 && elderLeanAt(27)[0] === ELDER_LEAN[0] && elderLeanAt(67)[1] === ELDER_LEAN[1]);
