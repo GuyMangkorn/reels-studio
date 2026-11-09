@@ -68,14 +68,15 @@ export const reachOwnHandAt = (f: number): {hand: V3; elbow: V3} => {
   const u = ramp(f, 6, 27), hand = mix3(REACH_FROM, REACH_TO, u), hover = 0.014 * ramp(f, 6, 12) * (1 - ramp(f, 27, 47));
   return {hand: [hand[0], hand[1] + hover, hand[2]], elbow: mix3(REACH_ELBOW_FROM, REACH_ELBOW_TO, u)};
 };
-const STOP_FROM: V3 = [0.17, TABLE_Y, -0.2], STOP_OVER: V3 = [-0.28, TABLE_Y, -0.205];
+const STOP_FROM: V3 = [0.17, TABLE_Y, -0.2], STOP_OVER: V3 = [-0.31, TABLE_Y, -0.205];
 // R3 / FX13 (Boss, 9 Nov 2026): the milk box is gone, so the elbow comes forward onto the wood instead of trailing over the back edge. Solved against the rig's unprojected shoulders (scripts/edu-series/ep09/r3-arm.ts):
+// R3c: elbow (-0.07, -0.39) (was 0.03, -0.35), lean x -0.09 (was -0.13), hand rest x -0.31 (was -0.28) so the upper arm angles outward from the shoulder.
 // R3b (user: "right arm bent strangely"): the forearm was a 0.15 m stub with a 75-84 deg turn. Now the forearm is ~0.26 m (0.73 of the 0.36 m upper arm), the elbow interior angle 104-109 deg: elbow (0.03, -0.35), lean [-0.13, 0.05] (was [-0.18, 0.1]), hand rest x -0.28 (was -0.25).
-const STOP_ELBOW_FROM: V3 = [0.24, TABLE_Y + 0.026, -0.42], STOP_ELBOW_OVER: V3 = [0.03, TABLE_Y + 0.026, -0.35];
+const STOP_ELBOW_FROM: V3 = [0.24, TABLE_Y + 0.026, -0.42], STOP_ELBOW_OVER: V3 = [-0.07, TABLE_Y + 0.026, -0.39];
 /** FX08 (second pass): ELDER leans in over the table L10-27 ([dx, dz] m) so his arm reaches BOY's wrist at a believable length (it was 285 px upper arm and 188 px forearm against BOY's 169 and 118 at the same head size). */
 /** ELDER's left hand rests where the other dining shots put it (stage `ELDER_REST`), so his left arm is the same seated arm in SH04. */
 const ELDER_REST_L = {hand: [0.4, TABLE_Y, -0.16] as V3, elbow: [0.47, TABLE_Y + 0.026, -0.38] as V3};
-export const ELDER_LEAN: [number, number] = [-0.13, 0.05];
+export const ELDER_LEAN: [number, number] = [-0.09, 0.05];
 export const elderLeanAt = (f: number): [number, number] => { const k = ramp(f, 10, 27); return [ELDER_LEAN[0] * k, ELDER_LEAN[1] * k]; };
 /** ELDER's right hand: lifts from the table at L12, slides straight across and settles palm-down on BOY's right wrist at L27, then lowers L27-47. The elbow slides forward on the wood to (-0.03, -0.27) (R3). */
 export const gentleStopAt = (f: number): {hand: V3; elbow: V3} => {
