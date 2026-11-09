@@ -351,7 +351,7 @@ Casting, set points, poses and looks not restated here are in [storyboard.md](st
 | Boss | R2.2: SD11 pianist hand (`hands.ts` `drawPalm`, `dining.ts` wrist join); SD12 box out + ELDER stop arm (`dining.ts`, `tracks.ts`) | missing |
 | Editor | R2.2: re-render the moved scenes, rewrite clips keys, frame check | open |
 | User (via coordinator) | FX14: S01-B02-SH01 verdict `change` with no note; what to change? | open |
-| Film / coordinator | R2.1: the LF02 still (`out/edu09/look-frames/v3/LF02.png`) shows the milk box at its old place between the sitters; the code (76fbd43) puts it beside ELDER. Re-render LF02 as v4 from `EDU9-LF02` (a refresh of a passed look frame, not a new look) so the review page matches the plates; R2.2: v4 still shows the box (now removed) and the old palm, re-render as v5 after SD11/SD12 | open |
+| Film / coordinator | R2.1: the LF02 still (`out/edu09/look-frames/v3/LF02.png`) shows the milk box at its old place between the sitters; the code (76fbd43) puts it beside ELDER. Re-render LF02 as v4 from `EDU9-LF02` (a refresh of a passed look frame, not a new look) so the review page matches the plates; R2.2: v4 still shows the box (now removed) and the old palm, re-render as v5 after SD11/SD12 | done (Editor 2026-11-09: v5 `out/edu09/look-frames/v5/LF02.png`, box removed, new hands, new ELDER arm) |
 
 - **Element captures:** look frames LF01, LF01b, LF02, LF03, LF04 (`out/edu09/look-frames/v1/`, LF02 `v3/`; store `projects/EDU-EP09-SHORT/look-frames/`), R1.8 kit thumb; LF04's key-contact pose is a placeholder. No new captures in this pass.
 - **Editor scene sample proposal:** B02-SH01 (taps on the words) and B03-SH04 → B04-SH01 (the dead-cut tone and the first piano note on one frame).
