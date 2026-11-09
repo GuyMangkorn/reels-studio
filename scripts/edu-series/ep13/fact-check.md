@@ -117,3 +117,21 @@
 | B-P7 flea look and CL14 | pass | VD06 cat-flea shape (flat body, comb ticks) with no on-screen text, caption or VO naming the species or saying it lives on dogs/cats; script avoids "หมัดแมว". CL14 stays `unchecked`; keep it out of labels, alt text and cover. The flea never appears on or near the dog. |
 
 - **Verdict: pass, with two small picture fixes for Film** (B-P2 no held "×50" apex frame; B-P6 label "ภาพจำลอง" on B02-SH03). No premise, reveal or learning-impact change. Factual readiness for the picture plan only after the two fixes; no user approval, no visual validation.
+
+## R3 recheck (2026-11-09)
+
+- Checked: `script.md` **EDU-EP13-SCRIPT-R3**, section "R3 changes for Boat" plus the L03, L05 and TR01 rows, against research.md CL10 (SRC005, SRC009) and the W2 B-P2 ruling. No new sources opened (SRC001/SRC011 stay `lead-only`). Script not edited. Qualitative confidence medium-high (model-level claims, picture only).
+
+| Item | Result | Note / exact wording |
+| --- | --- | --- |
+| L03 "สมมติมันโตทั้งตัว… ขาแรงขึ้น ตัวก็หนักขึ้นตาม" (CL10) | pass | Plain "แรง" is allowed (N4 c; no "กำลัง"). "สมมติ" frames the model and carries into L06. Merged meaning true: scaling up makes legs able to push harder and the body heavier. Precision note, no wording change: force grows slower (about by area) than weight (by volume), so "ตาม" must stay qualitative. Shot: the "แรง ↑" glow and weight dial move up together with no digits, no "×" figures and no equal-size bars in B02-SH01; "×2 / ×2" stays only in L05 as the labelled analogy ("ภาพจำลอง"). |
+| L04 removed | pass | Its content ("ตัวก็หนักขึ้นตาม") is in L03; nothing factual lost. |
+| L05 "…แต่แบกเป้หนักขึ้นสองเท่า" | pass | Dropping "ต้อง" only; CL08/CL10 analogy unchanged ("เหมือน" keeps it an analogy). |
+| TR01 sci-fi picture (naive scale-up) | pass | 1.80 m body with a ~130 m arc is about 72 lengths, inside 45–85 (B-P2). A ~30-floor tower is about 100 m, so a peak just over it stays inside the range. Body length = MAN's height (CL01) is a picture premise. Conditions: (1) the card "ถ้าคิดแบบง่าย ๆ" is on screen whenever the leap or arc shows; (2) no spoken or on-screen floor count, metre figure or counter digits; (3) no damage, crowd panic, sirens, screams or news-style sound (fictional trailer bed only, labelled fiction in the cue sheet); (4) the real macro flea and its "ภาพจำลอง" label never share the trailer frame. |
+| TR01 money-shot hold (ruling, item 3) | pass with limit | Allowed as a trailer beat: hold at most about 0.5 s at the peak, with the card still showing, no counter, no dotted-arc end marker or "ผล" label, and no apex tick that reads as "this is how high it gets". It may not be read as the measured apex; the B-P2 "no held ×50 frame" applies to the macro counter only and is unchanged. Right after, L02 "ไม่หรอก" must cut the picture, so the hold is not carried into the answer. |
+| TR01 optional title card (item 4) | pass with limit | A title such as "หมัดยักษ์" is fiction branding and has no factual content. Keep it to the title only: no "ความจริง", "ตัวจริง", "เกิดขึ้นได้" or "เป็นไปได้", no number, no subtitle claim. If it shares a frame with the naive-guess card, the card stays. |
+| V02 optional frozen TR01 callback | pass with limit | Contrast only. The frozen frame must keep the card "ถ้าคิดแบบง่าย ๆ" (or a "ภาพจินตนาการ" tag), sit beside, not on, the "หลักสิบเซน" band, and show no ruler or number tied to the tower. It must not suggest the real flea or the model reaches that height; "ไม่ใช่ร้อยเมตร" is unchanged. |
+| L02 position after TR01 | pass | Words unchanged (FIX-1 form); the answer to OQ1 is clearer after a spectacle that is labelled a guess. Factually no change. |
+| B01/B02/B04 trailer sound | pass | Fictional sound; no real event, place or casualty asserted, as long as TR01 condition (3) holds. |
+
+- **Overall verdict: pass, no wording FIX.** Four picture limits for Film: B02-SH01 dial and glow carry no numbers; the TR01 peak hold is at most about 0.5 s with the card on screen; the title card is title-only; V02 keeps the card. No premise, reveal or learning-impact change. Factual readiness only for R3 and the picture plan with these limits; no user approval, no audio or visual validation.

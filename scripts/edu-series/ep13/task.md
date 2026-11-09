@@ -10,15 +10,19 @@ Record: this file. Series context: [concepts.md](../concepts.md) (R7, C39) · se
 
 - Decisions after W1.1 (user, 2026-11-09, structured question): (1) hook says "หลายสิบเท่า", not "เป็นร้อยเท่า"; (2) closing line is rewritten by Preaw (the real flea jumps 2–3 times lower than a person, so "หมัดไม่ได้เก่งกว่าคุณ" is not kept as is); (3) beat 4 stays a hedged model line ("ตามแบบจำลอง", big body not needing a spring as much as a small one), no "impossible" ending.
 
+- Decisions R3 (user, 2026-11-09, structured questions): less explanation (B02 to 2 shots), add a sci-fi giant-flea-over-a-real-city trailer (TR01); accept the longer hook ("ไม่หรอก" at ~7.4 s); no trailer title card; keep the V02 trailer callback. Script R3 drafted by Preaw (est. ≈ 56.2 s), Boat recheck running; user must approve R3 (W1.5 again), then Film updates brief/storyboard (B01-SH04 to ~3 shots plus a skyline plate; B02 to 2 shots) and the looks gain a skyline frame.
+
 - [x] W0 Ideation (C39, user pick 2026-11-09; Short Thai)
 - [ ] W1 Script lock
   - [x] W1.1 Boat research (2026-11-09; research.md)
   - [x] W1.2 Preaw script (2026-11-09; script.md EDU-EP13-SCRIPT-R1; R2 2026-11-09 applies Boat FIX-1 to FIX-5 and N2 V01 move, est. video ≈ 56.3 s)
   - [x] W1.3 Boat fact-check (2026-11-09; fact-check.md, revision-required: FIX-1 to FIX-5; applied in R2, recheck of changed lines pending)
   - [x] W1.4 Length check (estimate about 56 s, within 40–60; measured at voice lock)
-  - [x] W1.5 User approves the script (user, 2026-11-09, R2)
+  - [x] W1.5 User approves the script (user, 2026-11-09, R2; **R3 approved by the user 2026-11-09 in chat** after Boat's R3 recheck pass, fact-check.md 'R3 recheck')
 - [x] W2 Brief and storyboard (2026-11-09; Film: film-brief.md EDU-EP13-BRIEF-R1, storyboard.md + review-rows.json EDU-EP13-ROWS-R1.0, 16 shots est 57.6 s; F-C39-D1 decided as VD05; review page: pending)
+  - [x] W2 update for script R3 (2026-11-09; Film: film-brief.md **EDU-EP13-BRIEF-R1.3**, storyboard.md + review-rows.json **EDU-EP13-ROWS-R1.3**: TR01 trailer SH04 changed + SH04B/SH04C/SH04D new, B02 two shots (SH01, SH03 changed; SH02, SH04 retired), B04-SH02 trailer inset; 17 shots est 1671 f ≈ 55.7 s; Boss gaps N15–N20 + SP4; look frame LF04/LF04b to paint; Q-F5 open; build.py exit 0; review page: pending, 6 shots ask again)
 - [ ] W3 Look frames and storyboard pass (storyboard verdicts 16/16 ok; W3.1 and W3.2 done 2026-11-09; look lock by the user 2026-11-09 (chat), recorded in film-brief.md EDU-EP13-BRIEF-R1.2 and review-rows.json / storyboard.md EDU-EP13-ROWS-R1.2 (looks LF01–LF03, FL1–FL3; stills out/edu13/look-frames/v5/); page built, looks page republished 2026-11-09 as ROWS-R1.2, version 1794227051-73a3)
+  - [ ] W3 R1.3: LF04 trailer look (CAM-TR-SKY apex) + LF04b (graded CAM-MYTH crouch) for the user's look check (brief R1.3 Look frames); storyboard verdicts for the 6 changed/new shots and Q-F5
 - [ ] W4 Voice lock
 - [ ] W5 Draft (W5.1 scene sheets, W5.2 Boss assets, W5.3 Editor draft)
 - [ ] W6 Final
