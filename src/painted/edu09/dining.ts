@@ -122,7 +122,7 @@ export const paintTableArm = (p: Painter, c: YCam, base: number, hand: V3, elbow
   const fwd0 = [hand[0] - elbow[0], hand[2] - elbow[2]], L = Math.hypot(fwd0[0], fwd0[1]) || 1, fx = fwd0[0] / L, fz = fwd0[1] / L;
   const back = 0.065 * size, wrist: [number, number] = [hand[0] - fx * back, hand[2] - fz * back];
   const yaw = yawOverride ?? (Math.atan2(fx, -fz) * 180) / Math.PI;
-  const h0 = macroHand(pose, {side, size, unit: 0.01, base, tone, plane: TABLE_Y, at: wrist, yaw, elbow, shadowDir: [-0.1, -0.9, 0.25], shadowAlpha: 0.3, shadowColor: '#3a2212',
+  const h0 = macroHand(pose, {side, size, unit: 0.01, base, tone, look: 'pianist', plane: TABLE_Y, at: wrist, yaw, elbow, shadowDir: [-0.1, -0.9, 0.25], shadowAlpha: 0.3, shadowColor: '#3a2212',
     ...(pose === 'ring-strain' ? {tremble: {finger: 'ring' as const, amp: 0.0008, hz: 10}} : {})});
   // a hand point above the table lifts the wrist (shadows stay on the table plane); `mod` applies lifts and the dangle lag
   const rise = Math.max(0, hand[1] - TABLE_Y), lifted: HandMacro = {...h0, wrist: [h0.wrist[0], h0.wrist[1] + rise, h0.wrist[2]]}, h = mod ? mod(lifted) : lifted;

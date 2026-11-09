@@ -377,6 +377,8 @@ export type HandMacro = {
   skinAlpha?: number;
   /** Crisp opaque fills (default true); false = the kit's seeded textured fill. */
   crisp?: boolean;
+  /** R3e: 'classic' (default, the bfa78a5 macro palm/forearm/phalanges) or 'pianist' (R3 domed hand, banded forearm, fuller phalanges; the dining set's hands). */
+  look?: 'classic' | 'pianist';
   /** Wrist centre, degrees of orientation (see above). */
   wrist: V3; yaw: number; pitch: number; roll: number;
   fingers: Record<LongFingerId, FingerPose>; thumb: ThumbPose;
@@ -666,12 +668,21 @@ export const paintHandMacro = (p: Painter, cam: YCam, h: HandMacro): HandAnchors
   if (palmPts) palmPts.forEach((v, i) => { if (-(v[0] * ls[0] + v[1] * ls[1]) > -(palmPts[litIdx][0] * ls[0] + palmPts[litIdx][1] * ls[1])) litIdx = i; });
   const palmAnchor: [number, number] = [(palmLo.pts[litIdx][0] + palmCtr[0]) / 2, (palmLo.pts[litIdx][1] + palmCtr[1]) / 2];
   const V_WRIST: [number, number] = [palmLo.pts[0][0], palmLo.pts[palmLo.littleEnd][0]]; // wrist edge, local v: thumb side, little side
+  const pianist = h.look === 'pianist';
   // Forearm and sleeve.
   let armCut: {bandPoly: (poly: Pt[], k: number) => Pt[]; wrist: Pt} | null = null; // the forearm's shade cut line, so the hand can blend into it
   if (h.elbow) {
     const w = toPx(h.wrist), e = toPx(h.elbow);
     if (w && e) {
       const fr = 2.4 * S, er = 2.8 * S;
+      if (!pianist) {
+        const P0: Pt[] = [w.pt, e.pt], R0 = [fr * w.r, er * e.r], arm0 = tubeOutline(P0, R0, true);
+        fill(q, FILL + 0, tone.skin, arm0);
+        const sideN: Dir2 = (() => { const d = unit2(P0[0], P0[1]); return [-d[1], d[0]]; })();
+        const sgn = sideN[0] * ls[0] + sideN[1] * ls[1] >= 0 ? 1 : -1;
+        fill(q, FILL + 1, tone.shade, clipHalf(arm0, [(P0[0][0] + P0[1][0]) / 2 + sgn * sideN[0] * Math.min(R0[0], R0[1]) * 0.35, (P0[0][1] + P0[1][1]) / 2 + sgn * sideN[1] * Math.min(R0[0], R0[1]) * 0.35], [sgn * sideN[0], sgn * sideN[1]]));
+        ink(q, 0, arm0, inkW, inkOf(INK));
+      } else {
       // R3: the forearm starts 1 cm under the palm (the back of the hand covers it), so no flat end shows at the wrist; its shading is the hand's own tone ramp laid across the tube, lit edge to shadow edge
       const along0 = unit2(w.pt, e.pt), P: Pt[] = [[w.pt[0] - along0[0] * S * w.r, w.pt[1] - along0[1] * S * w.r], e.pt], Rr = [fr * w.r, er * e.r];
       const arm = tubeOutline(P, Rr, true);
@@ -684,6 +695,7 @@ export const paintHandMacro = (p: Painter, cam: YCam, h: HandMacro): HandAnchors
       TONE_KS.forEach((k, i) => fill(q, 500 + i, toneAt(tone, i), bandPoly(arm, k)));
       armCut = {bandPoly, wrist: w.pt};
       ink(q, 0, arm, inkW, inkOf(INK));
+      }
       if (h.sleeve) {
         const cu = h.sleeve.cuff ?? 0.5, cuffW = add3(h.wrist, scale3(sub3(h.elbow, h.wrist), cu)), rc = (2.4 + 0.4 * cu) * S * 1.18;
         const cp = toPx(cuffW), tp = toPx(h.sleeve.to);
@@ -729,26 +741,26 @@ export const paintHandMacro = (p: Painter, cam: YCam, h: HandMacro): HandAnchors
     const draw = () => {
       const f0 = FILL + 10 + fi * 10, i0 = fi * 12;
       // R3: each phalanx is a little fuller at mid-length than at its joints (+9 %, 12 % on the proximal), the joints keep their radii
-      const bulge = (k: number) => 1 + (k === 0 ? 0.12 : 0.09), rm = (k: number) => ((Rpx[k] + Rpx[k + 1]) / 2) * bulge(k);
+      const bulge = (k: number) => (pianist ? 1 + (k === 0 ? 0.12 : 0.09) : 1), rm = (k: number) => ((Rpx[k] + Rpx[k + 1]) / 2) * bulge(k);
       const Pm: Pt[] = [], Rm: number[] = [];
       for (let k = 0; k < nk; k++) { Pm.push(P[k], [(P[k][0] + P[k + 1][0]) / 2, (P[k][1] + P[k + 1][1]) / 2]); Rm.push(Rpx[k], rm(k)); }
       Pm.push(P[nk]); Rm.push(Rpx[nk]);
-      for (let k = 0; k < nk; k++) fill(q, f0 + k, tone.skin, tubeOutline([P[k], [(P[k][0] + P[k + 1][0]) / 2, (P[k][1] + P[k + 1][1]) / 2], P[k + 1]], [Rpx[k], rm(k), Rpx[k + 1]], true));
+      for (let k = 0; k < nk; k++) fill(q, f0 + k, tone.skin, pianist ? tubeOutline([P[k], [(P[k][0] + P[k + 1][0]) / 2, (P[k][1] + P[k + 1][1]) / 2], P[k + 1]], [Rpx[k], rm(k), Rpx[k + 1]], true) : capsule(P[k], P[k + 1], 2 * Rpx[k], 2 * Rpx[k + 1]));
       if (alpha >= 1) for (let k = 1; k < nk; k++) fill(q, f0 + 3 + k, tone.skin, ring(P[k][0], P[k][1], Rpx[k], Rpx[k], 12));
       // cel shade on the side away from the light, clipped inside each phalanx
       for (let k = 0; k < nk; k++) {
         const d = unit2(P[k], P[k + 1]), n: Dir2 = [-d[1], d[0]], sg = n[0] * ls[0] + n[1] * ls[1] >= 0 ? 1 : -1, rr = Math.min(Rpx[k], Rpx[k + 1]) * 0.3;
-        const seg = tubeOutline([P[k], Pm[2 * k + 1], P[k + 1]], [Rpx[k], rm(k), Rpx[k + 1]], true);
+        const seg = pianist ? tubeOutline([P[k], Pm[2 * k + 1], P[k + 1]], [Rpx[k], rm(k), Rpx[k + 1]], true) : capsule(P[k], P[k + 1], 2 * Rpx[k], 2 * Rpx[k + 1]);
         fill(q, f0 + 6 + (k % 3), tone.shade, clipHalf(seg, [P[k][0] + sg * n[0] * rr, P[k][1] + sg * n[1] * rr], [sg * n[0], sg * n[1]]));
         // volume (FX05): a lit stripe down the rounded phalanx (light skin, on the side away from the shade) so the finger reads as a tube, not a flat strip
         const off = -sg * Math.min(Rpx[k], Rpx[k + 1]) * 0.3, hl = HIGHLIGHT(tone.skin);
-        fill(q, FILL + 70 + fi * 4 + k, hl, capsule([P[k][0] + n[0] * off, P[k][1] + n[1] * off], [P[k + 1][0] + n[0] * off, P[k + 1][1] + n[1] * off], 0.7 * Rpx[k], 0.7 * Rpx[k + 1]));
+        if (pianist || id !== 'thumb' || k > 0) fill(q, FILL + 70 + fi * 4 + k, hl, capsule([P[k][0] + n[0] * off, P[k][1] + n[1] * off], [P[k + 1][0] + n[0] * off, P[k + 1][1] + n[1] * off], 0.7 * Rpx[k], 0.7 * Rpx[k + 1]));
       }
       if (id === 'thumb') {
         // The metacarpal lies in the palm: ink only the free part (MCP -> tip) and the outer edge of the metacarpal.
-        ink(q, i0, tubeOutline(Pm.slice(2), Rm.slice(2), true), inkW, inkOf(INK));
+        ink(q, i0, pianist ? tubeOutline(Pm.slice(2), Rm.slice(2), true) : tubeOutline(P.slice(1), Rpx.slice(1), true), inkW, inkOf(INK));
         // the outer edge of the metacarpal is the palm outline's thenar edge (PALM), not a second line
-      } else ink(q, i0, tubeOutline(Pm, Rm, true), inkW, inkOf(INK));
+      } else ink(q, i0, pianist ? tubeOutline(Pm, Rm, true) : tubeOutline(P, Rpx, true), inkW, inkOf(INK));
       // knuckle creases (two strokes at pip and dip) where the back of the finger faces the camera
       for (let j = 1; j <= Math.min(2, nk - 1); j++) {
         const dor = c.dorsal[j - 1], seg = sub3(c.joints[j + 1], c.joints[j - 1]), faces = dot3(dor, norm3(sub3(camPos, c.joints[j])));
@@ -780,7 +792,34 @@ export const paintHandMacro = (p: Painter, cam: YCam, h: HandMacro): HandAnchors
   });
 
   // Back of the hand (R3 pianist hand, FX11/FX12): a domed form, not a flat polygon. The outline is the PALM outline with a thumb-web bow, a rolled little-finger edge, undulating knuckles and a rounded heel behind the wrist; the shading is a stack of copies of that outline scaled toward the lit edge (so every tone band follows the outline: lit crown, mid, shade, core shadow, reflected rim), then four knuckle bumps with dimples (back) or the thenar and hypothenar pads with three creases (palm side).
+  const drawPalmClassic = () => {
+    const pp = sk.palm.map(toPx);
+    if (pp.some((v) => !v)) return;
+    const pts = pp.map((v) => v!.pt);
+    fill(q, FILL + 60, tone.skin, pts);
+    const cx = pts.reduce((s, v) => s + v[0], 0) / pts.length, cy = pts.reduce((s, v) => s + v[1], 0) / pts.length;
+    const ext = Math.max(...pts.map((v) => Math.hypot(v[0] - cx, v[1] - cy)));
+    fill(q, FILL + 61, tone.shade, clipHalf(pts, [cx + ls[0] * ext * 0.35, cy + ls[1] * ext * 0.35], ls));
+    fill(q, FILL + 95, HIGHLIGHT(tone.skin, 0.12), ring(cx - ls[0] * ext * 0.16, cy - ls[1] * ext * 0.16, ext * 0.34, ext * 0.24, 18)); // the bulge of the back of the hand (FX05)
+    // FX09 palm volume, the language of the finger stripes: a deeper band on the shaded edge, a soft rim light on the lit edge, and the two pads (thenar by the thumb, hypothenar by the little finger) each a soft lit crown
+    fill(q, FILL + 63, mixColor(tone.shade, tone.deep, 0.6), clipHalf(pts, [cx + ls[0] * ext * 0.5, cy + ls[1] * ext * 0.5], ls));
+    fill(q, FILL + 64, HIGHLIGHT(tone.skin, 0.2), clipHalf(pts, [cx - ls[0] * ext * 0.68, cy - ls[1] * ext * 0.68], [-ls[0], -ls[1]]));
+    ([[1.5, 2.0, 1.0, 1.5], [-2.2, 2.8, 0.85, 1.3]] as const).forEach(([v, f, rv, rf], i) => {
+      const a = toPx(sk.at(v, 0.05, f));
+      if (!a) return;
+      const rx = rv * S * a.r, ry = rf * S * a.r;
+      fill(q, FILL + 65 + i, HIGHLIGHT(tone.skin, 0.2), ring(a.pt[0] - ls[0] * rx * 0.1, a.pt[1] - ls[1] * rx * 0.1, rx * 0.85, ry * 0.85, 16)); // lit crown
+    });
+    if (tone.spots) {
+      const spots: [number, number, number][] = [[0.6, 2.8, 0.42], [-1.4, 4.4, 0.36], [1.1, 5.2, 0.3]];
+      const sp = p.layer(0.4 * alpha, h.base * 16 + 9);
+      spots.forEach(([v, f, r], i) => { const s = toPx(sk.at(v, 0.05, f)); if (s) hardFill(sp, h.base + FILL + 62 + i, tone.spots!, ring(s.pt[0], s.pt[1], r * S * s.r, r * S * s.r * 0.8, 10)); });
+    }
+    ink(q, 100, pts.slice(0, PALM_FRONT + 1), inkW, inkOf(INK));
+    ink(q, 101, pts.slice(PALM_FRONT + 2), inkW, inkOf(INK));
+  };
   const drawPalm = () => {
+    if (!pianist) return drawPalmClassic();
     if (sk.palm.some((v) => !toPx(v))) return;
     const lo = palmLo;
     if (!palmPts) return;
