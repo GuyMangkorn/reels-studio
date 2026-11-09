@@ -2,7 +2,7 @@
 
 Record: this file. Series context: [concepts.md](../concepts.md) (R6, C35) · series task list: [task.md](../task.md).
 
-**Now:** W1.3 done (R2 passes). Next: user decision on advisory A1 (L11 wording), W1.4 length check, W1.5 user approves the script.
+**Now:** W1.3 done (R2 passes). Next: W1.4 length check, W1.5 user approves the script.
 
 - Deliverable: `EDU-EP12-SHORT`, Short only (Thai), 1080×1920, 30 fps, target 40–60 s (estimate). Profile: educational, painted 2D p5.brush, 4-head cast, Kore narrator (edu default), ending per concept: closed, ~2 s hold on the boy asleep, then the doorframe (the user may change it); other fields = project defaults.
 - Factual claims for Boat: see the C35 entry in concepts.md R6. All unchecked until research and fact-check. Thin spots: daily height loss figure (about 1 cm / about 1 % of stature, range by height); NASA astronaut growth up to about 3 %; back-pain wording (no mechanism claim beyond "ตัวยืด" and "ปวดหลัง").
@@ -14,7 +14,7 @@ Record: this file. Series context: [concepts.md](../concepts.md) (R6, C35) · se
 - [ ] W1 Script lock
   - [x] W1.1 Boat research (2026-11-08)
   - [x] W1.2 Preaw script (EDU-EP12-SCRIPT-R2, est. ~55 s, 2026-11-09, sound intent per beat added)
-  - [x] W1.3 Boat fact-check (2026-11-09: R1 pass with changes, R2 recheck pass; [factcheck.md](factcheck.md); advisory A1 on L11 open)
+  - [x] W1.3 Boat fact-check (2026-11-09: R1 pass with changes, R2 recheck pass; [factcheck.md](factcheck.md); advisory A1 declined by user 2026-11-09: L11 stays)
   - [ ] W1.4 Length check
   - [ ] W1.5 User approves the script
 - [ ] W2 Brief and storyboard (Film brief carries `Sound direction`)
