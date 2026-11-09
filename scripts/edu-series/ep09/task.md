@@ -35,7 +35,7 @@ Record: this file. Series context: [concepts.md](../concepts.md) (R5, C28) · se
 - [x] W7 Pinned (2026-11-09: pin.mjs pin-rows --ending=B_loop, 18 of 18 shots)
 - [ ] W8 Deliver (render, cover, posting, kit intake)
   - [x] W8.1 Delivery render (2026-11-09): out/EDU-EP09-SHORT/EDU-EP09-SHORT_B_loop.mp4, 1080x1920, 30 fps, 1606 f, -14.1 LUFS, -1.6 dBTP (from cached pinned scenes, 35 s); not yet in publish folder, cover not picked
-  - [ ] W8.2 Cover: pick 1 done 2026-11-09 (Film): `EDU-EP09-SHORT-PIC-COVERS` ([src/videos/covers/edu-ep09.ts](../../../src/videos/covers/edu-ep09.ts)), five textless pictures CV01-CV05 in out/EDU-EP09-SHORT/cover/pick1/; awaiting the user's pick, then pick 2 (five texts)
+  - [ ] Cover (before W8.2 publish): pick 1 done 2026-11-09 (Film): `EDU-EP09-SHORT-PIC-COVERS` ([src/videos/covers/edu-ep09.ts](../../../src/videos/covers/edu-ep09.ts)), five textless pictures CV01-CV05 in out/EDU-EP09-SHORT/cover/pick1/; awaiting the user's pick, then pick 2 (five texts)
 
 - User decision 2026-11-08 (W1.1): **Q2** Schumann cut from the script entirely (Boat recommendation accepted). **Q1** (user tries the fold-middle, fold-index, fold-little, fold-ring variants and reports) open; Preaw waits for it.
 
