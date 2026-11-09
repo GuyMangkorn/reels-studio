@@ -2,7 +2,7 @@
 
 Record: this file. Series context: [concepts.md](../concepts.md) (R6, C35) · series task list: [task.md](../task.md).
 
-**Now:** W2.1 brief R1 done. Next: W2.2 Film storyboard rows, W2.3 review page. Optional: Boat recheck of Q-F2 picture changes (tape strip, cabin lights, spine without pads).
+**Now:** W2.2 rows done. Next: W2.3 build and publish the review page (user vetoes Q-F2a/b/c and two more flags).
 
 - Deliverable: `EDU-EP12-SHORT`, Short only (Thai), 1080×1920, 30 fps, target 40–60 s (estimate). Profile: educational, painted 2D p5.brush, 4-head cast, Kore narrator (edu default), ending per concept: closed, ~2 s hold on the boy asleep, then the doorframe (the user may change it); other fields = project defaults.
 - Factual claims for Boat: see the C35 entry in concepts.md R6. All unchecked until research and fact-check. Thin spots: daily height loss figure (about 1 cm / about 1 % of stature, range by height); NASA astronaut growth up to about 3 %; back-pain wording (no mechanism claim beyond "ตัวยืด" and "ปวดหลัง").
@@ -19,7 +19,7 @@ Record: this file. Series context: [concepts.md](../concepts.md) (R6, C35) · se
   - [x] W1.5 User approves the script (R2, user 2026-11-09; voice Kore at 6.5 % slower is the pending W4.3 pick)
 - [ ] W2 Brief and storyboard (Film brief carries `Sound direction`)
   - [x] W2.1 Film brief EDU-EP12-BRIEF-R1 `ready-for-mark` (2026-11-09, [brief.md](brief.md), 17 shots est. 53.6 s, SND-01..14); ending = closed hard end per C35 (Editor confirms runtime value, Q-F1)
-  - [ ] W2.2 Film storyboard rows (review-rows.json)
+  - [x] W2.2 Film storyboard rows EDU-EP12-ROWS-R1.0 `ready-for-review` (2026-11-09, [review-rows.json](review-rows.json), [storyboard.md](storyboard.md), 18 shots, sound cell per shot)
   - [ ] W2.3 Storyboard page published
 - [ ] W3 Look frames and storyboard pass
 - [ ] W4 Voice lock
