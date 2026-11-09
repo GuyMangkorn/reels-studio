@@ -169,5 +169,7 @@ test('FX04: the ELDER gentle-stop keeps elbow, forearm and hand 2 cm or more out
   assert.ok(Math.abs(e27.elbow[0] + 0.13) < 0.01 && Math.abs(e27.elbow[2] + 0.45) < 0.01, 'elbow settles behind and left of the wrist');
   // FX08: the forearm (elbow to hand) stays within 0.3 m so the arm cannot read longer than BOY's scaled by 1.25
   for (let f = 0; f <= 67; f++) { const g = gentleStopAt(f); assert.ok(Math.hypot(g.hand[0] - g.elbow[0], g.hand[2] - g.elbow[2]) <= 0.3, `forearm at L${f}`); }
+  // FX08 third pass: at rest the elbow hangs well behind the wrist (forearm 0.15 m or more), not 7 cm, so the 0.32 m upper arm is not the whole arm
+  { const g = gentleStopAt(0); assert.ok(Math.hypot(g.hand[0] - g.elbow[0], g.hand[2] - g.elbow[2]) >= 0.15, 'rest forearm'); }
   assert.ok(Math.abs(elderLeanAt(0)[0]) < 1e-9 && elderLeanAt(27)[0] === ELDER_LEAN[0] && elderLeanAt(67)[1] === ELDER_LEAN[1]);
 });

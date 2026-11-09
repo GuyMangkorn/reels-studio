@@ -80,8 +80,8 @@ export const gentleStopAt = (f: number): {hand: V3; elbow: V3} => {
   const lift = f < 27 ? arc + 0.03 * u : rest;
   const w1 = ramp(u, 0, 0.25), w2 = ramp(u, 0.55, 1);
   const x = STOP_FROM[0] + (STOP_OVER[0] - STOP_FROM[0]) * ramp(u, 0.2, 1); // back first at x 0.2 (right of the box), then across behind it
-  const z = (STOP_FROM[2] - 0.2 * w1) + (STOP_OVER[2] - (STOP_FROM[2] - 0.2 * w1)) * w2;
-  const trailX = 0.03 + 0.14 * ramp(u, 0.3, 0.7) - 0.05 * w2, trailZ = 0.07 + 0.0 * w1 + (0.245 - 0.07) * w2;
+  const z = (STOP_FROM[2] - 0.23 * w1) + (STOP_OVER[2] - (STOP_FROM[2] - 0.23 * w1)) * w2;
+  const trailX = 0.03 + 0.14 * ramp(u, 0.3, 0.7) - 0.05 * w2, trailZ = 0.17 - 0.07 * w1 + (0.245 - 0.1) * w2; // FX08 third pass: at rest the elbow hangs 0.17 m behind the wrist over the table's back edge (it sat 0.07 behind: no forearm, a 0.40 m upper arm)
   return {hand: [x, TABLE_Y + lift, z], elbow: [x + trailX, STOP_ELBOW_FROM[1], z - trailZ]};
 };
 /** Both sitters of SH04 at local frame f (the tracks above plus the sheet's faces: ELDER `happy`, BOY `worried` -> `neutral` at L40). The ELDER head shake L30-40 and the camera are the composition's. */
