@@ -11,10 +11,10 @@ import episode from '../src/videos/edu-ep09/index';
 // EDU-EP09-SHORT W5.3 draft assembly (Editor): the timeline against SHEETS-R2 and the draft's runtime contract.
 const video = episode.videos[0];
 
-test('W5.3 timeline: 19 scenes, 1606 f, contiguous, one registered plate per shot, B_loop with no freeze', () => {
-  assert.equal(SHOT_RANGES.length, 19);
+test('W5.3 timeline: 18 scenes, 1606 f, contiguous, one registered plate per shot, B_loop with no freeze', () => {
+  assert.equal(SHOT_RANGES.length, 18);
   assert.equal(TOTAL, 1606);
-  assert.equal(video.timeline.length, 19);
+  assert.equal(video.timeline.length, 18);
   assert.equal(video.id, 'EDU-EP09-SHORT');
   assert.equal(video.ending, 'B_loop');
   assert.equal(video.endHoldSec, 0);
