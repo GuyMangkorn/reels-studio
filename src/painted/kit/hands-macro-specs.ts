@@ -12,6 +12,8 @@ const look = (at: V3, yaw: number, r: number, eye: number, f: number, hy: number
 export const HAND_CAMS: Record<string, YCam> = {
   POV: look([0, 1.5, 1.0], 0, 30, 24, 2300, 640),
   TRY: look([0, 1.5, -1.5], 168, 26, 8, 2000, 760),
+  /** From the front below the palm plane (the TP arch is now flatter, so TRY at eye 8 sees the back of the hand): the palm is the first fill. */
+  'FRONT-LOW': look([0, 1.5, -1.5], 168, 26, 3, 2000, 760),
   'DIAG-W': look([0.3, 1.5, 12], 0, 40, 58, 2050, 700),
   /** Neutral check: straight top-down (pitch -90), no foreshortening of the fingers. */
   PLAN: look([0.3, 0, 0.5], 0, 0, 40, 3000, 960),

@@ -1,12 +1,21 @@
 import {test} from 'node:test';
+import {camPoint} from '../src/painted/kit/ycam';
 import assert from 'node:assert/strict';
 import type {Brush} from '../src/painted/BrushCanvas';
-import {macroSkeleton, paintHandMacro} from '../src/painted/kit/hands';
+import {blendHand, macroSkeleton, paintHandMacro} from '../src/painted/kit/hands';
 import {makePainter, type Pt} from '../src/painted/kit/painter';
 import {PEOPLE} from '../src/painted/kit/people';
+import * as dining from '../src/painted/edu09/dining';
+import {measure as measureArm} from '../scripts/edu-series/ep09/r3-arm';
 import {boyHand, POV, povCam} from '../src/painted/edu09/handclose';
 import {BOY_TONE, ELDER_TONE} from '../src/painted/edu09/palette';
-import {pianistHand, DROP} from '../src/painted/edu09/piano';
+import {camD01, D01_LAMP_Y, GRIN, MEASURE, paintQAGrin} from '../src/painted/edu09/scenes';
+import {macroHand, macroSkeleton as skel, TP_LIFTS} from '../src/painted/kit/hands';
+import {camSH03End, MEASURE as M2, paintQADangle, paintQALifts, paintQAStop} from '../src/painted/edu09/scenes';
+import {BOB_AMP, bobAt, dangleHandAt, gentleStopAt, elderLeanAt, ELDER_LEAN, liftB01SH03, liftB02SH01, liftB03SH04, liftB03SH08, reachOwnHandAt, withLifts, BOY_TEST_HAND, DANGLE_UP} from '../src/painted/edu09/tracks';
+import {CORD_MIN_PX, TIE_MIN_PX, diagramSH01, diagramSH02, diagramSH03, diagramSH04} from '../src/painted/edu09/tendons';
+import {elbowOnTable, seatedHandsOnTable} from '../src/painted/kit/poses-seated';
+import {pianistHand, DROP, FINGER_KEY, keysOf, PIANO_TUNE, tuneAt, type PianoFinger} from '../src/painted/edu09/piano';
 
 // EDU-EP09-SHORT W3.1 look frames (brief EDU-EP09-BRIEF-R1.2): numeric checks behind the viewed stills out/edu09/look-frames/v1/.
 const recorder = () => { const pts: Pt[] = []; const brush = new Proxy({}, {get: (_t, n) => (...a: unknown[]) => { if ((n === 'polygon' || n === 'spline') && Array.isArray(a[0])) for (const q of a[0] as Pt[]) pts.push(q); }}) as Brush; return {p: makePainter(brush, {t: 0, frame: 0}), pts}; };
@@ -30,4 +39,162 @@ test('LF04 placeholder: the resting fingertips touch the key tops and the playin
   const pad = (f: 'index' | 'middle' | 'ring') => sk.fingers[f].joints[3][1] - sk.fingers[f].radii[3];
   assert.ok(Math.abs(Math.min(pad('index'), pad('ring'))) < 1e-6);
   assert.ok(pad('middle') <= 0 && pad('middle') >= -DROP - 0.5, `middle pad ${pad('middle').toFixed(2)}`);
+});
+
+test('W5.2 SD05: multi-finger piano press (dyad, chord): every pressing tip is on its dropped key, resting tips stay up, the wrist does not move', () => {
+  const rest = pianistHand(null), tipPad = (h: ReturnType<typeof pianistHand>, f: PianoFinger) => { const sk = macroSkeleton(h); return sk.fingers[f].joints[3][1] - sk.fingers[f].radii[3]; };
+  const restPad = Object.fromEntries((['thumb', 'index', 'middle', 'ring', 'little'] as const).map((f) => [f, tipPad(rest, f)]));
+  for (const set of [['ring'], ['thumb'], ['little'], ['thumb', 'middle'], ['thumb', 'middle', 'little']] as PianoFinger[][]) {
+    const h = pianistHand(set);
+    assert.deepEqual(h.wrist, rest.wrist, `wrist moved for ${set}`);
+    for (const f of ['thumb', 'index', 'middle', 'ring', 'little'] as const) {
+      const drop = restPad[f] - tipPad(h, f);
+      if (set.includes(f)) assert.ok(drop >= 0.4 && drop <= DROP + 0.6, `${set}: ${f} dropped ${drop.toFixed(2)} cm`);
+      else assert.ok(Math.abs(drop) < 1e-9, `${set}: ${f} moved`);
+    }
+  }
+});
+
+test('W5.2 SD05 tune: onsets match the sheet, a dyad and a closing chord exist, a ring (F) press exists, no five-finger run, keys stay inside C-G', () => {
+  assert.deepEqual(PIANO_TUNE.map((n) => n.f), [0, 10, 20, 30, 42, 64, 74, 84, 96, 108]);
+  assert.ok(PIANO_TUNE.some((n) => n.press.length === 2) && PIANO_TUNE[PIANO_TUNE.length - 1].press.length === 3);
+  assert.ok(PIANO_TUNE.some((n) => n.press.includes('ring')));
+  for (const n of PIANO_TUNE) for (const k of keysOf(n.press)) assert.ok(k >= 0 && k <= 4);
+  const order = PIANO_TUNE.filter((n) => n.press.length === 1).map((n) => FINGER_KEY[n.press[0]]);
+  for (let i = 0; i + 4 < order.length; i++) { const w = order.slice(i, i + 5); assert.notDeepEqual([...w].sort(), [0, 1, 2, 3, 4], 'five-finger run'); }
+  assert.deepEqual(tuneAt(0), ['middle']); assert.deepEqual(tuneAt(9), ['middle']); assert.deepEqual(tuneAt(10), ['little']);
+  assert.deepEqual(tuneAt(60), ['thumb', 'middle']); assert.deepEqual(tuneAt(62), []); assert.deepEqual(tuneAt(140), ['thumb', 'middle', 'little']); assert.deepEqual(tuneAt(141), []);
+});
+
+test('W5.2 D01: ELDER grin FaceState {brow up, eyes dot, mouth grin} paints at the D01 camera and BOY keeps his ring flat', () => {
+  assert.deepEqual({brow: GRIN.brow, eyes: GRIN.eyes, mouth: GRIN.mouth}, {brow: 'up', eyes: 'dot', mouth: 'grin'});
+  const {p, pts} = recorder();
+  paintQAGrin(p);
+  assert.ok(pts.length > 500);
+  const out = MEASURE.QAGRIN;
+  assert.ok(out.elder && out.boy, 'both seated figures painted');
+  const [ex, ey] = out.elder!.head ?? [0, 0];
+  assert.ok(ex > 540 && ey < 800, `elder head at ${ex},${ey}`);
+});
+
+test('W5.2 D01: the raised pendant (lampY) keeps the shade clear of ELDER eyes at the D01 camera', () => {
+  const {p} = recorder();
+  paintQAGrin(p);
+  const head = MEASURE.QAGRIN.elder!.head;
+  const lampBottom = camPoint(camD01, [0, D01_LAMP_Y - 0.08 - 0.0, -0.15]);
+  assert.ok(lampBottom && lampBottom[1] < head[1] - 40, `lamp rim y ${lampBottom?.[1]} vs ELDER head ${head[1]}`);
+});
+
+// ---- W5.2 (second pass): N2 tendons, N4 seated-hands-on-table, N5 reach/stop, N11 dangle, lift tracks, D01 measures.
+const tipRise = (a: ReturnType<typeof macroHand>, b: ReturnType<typeof macroHand>, f: 'thumb' | 'index' | 'little' | 'ring') => skel(b).fingers[f].joints[3][1] - skel(a).fingers[f].joints[3][1];
+const boyTP = () => macroHand('test-fold-middle', {side: -1, base: 1000, at: [0, 0]});
+
+test('W5.2 lift tracks: peaks equal TP_LIFTS (cm), start and end at 0, ring never moves in the taps', () => {
+  assert.equal(liftB01SH03(0).ring, 0); assert.ok(Math.abs(liftB01SH03(30).ring! - TP_LIFTS['ring-hair']) < 1e-9); assert.ok(Math.abs(liftB01SH03(42).ring!) < 1e-9);
+  assert.ok(Math.abs(liftB02SH01(21).thumb! - TP_LIFTS.thumb) < 1e-9 && liftB02SH01(26).thumb! < 1e-9);
+  assert.ok(Math.abs(liftB02SH01(40).index! - TP_LIFTS.index) < 1e-9 && Math.abs(liftB02SH01(52).little! - TP_LIFTS.little) < 1e-9);
+  const hold = liftB02SH01(80); assert.deepEqual([hold.thumb, hold.index, hold.little], [TP_LIFTS.thumb, TP_LIFTS.index, TP_LIFTS.little]); assert.equal(hold.ring, undefined);
+  assert.ok(Math.abs(liftB03SH04(101).ring! - TP_LIFTS['ring-diagram']) < 1e-9 && liftB03SH04(91).ring! < 1e-9);
+  const h0 = boyTP(), h1 = withLifts(h0, liftB02SH01(40));
+  assert.ok(Math.abs(tipRise(h0, h1, 'index') - TP_LIFTS.index) < 0.02, `index rise ${tipRise(h0, h1, 'index')}`);
+  assert.ok(Math.abs(tipRise(h0, h1, 'ring')) < 1e-9);
+  const fl = macroHand('flat', {side: -1, base: 1000, at: [0, 0]}), l8 = withLifts(fl, liftB03SH08(10));
+  assert.ok(Math.abs(tipRise(fl, l8, 'index') - 2) < 0.02 && Math.abs(tipRise(fl, l8, 'little') - 2) < 0.02 && Math.abs(tipRise(fl, l8, 'ring')) < 1e-9);
+});
+
+test('W5.2 N11 dangle: pose hangs the fingers (15/25/10), the lift reaches DANGLE_UP, the bob is +-0.012 at 10 f, the fingers lag the wrist', () => {
+  const h = macroHand('hand-lifted-dangle', {side: -1, base: 1000, at: [0, 0]});
+  assert.deepEqual(h.fingers.middle, {mcp: 15, pip: 25, dip: 10, abd: 0});
+  assert.deepEqual(dangleHandAt(7), DANGLE_UP); assert.equal(dangleHandAt(0)[1], 0.72);
+  const bobs = Array.from({length: 33}, (_, i) => bobAt(8 + i)); assert.ok(Math.max(...bobs) <= BOB_AMP + 1e-9 && Math.max(...bobs) > BOB_AMP * 0.9 && Math.min(...bobs) < -BOB_AMP * 0.9);
+  assert.ok(Math.abs(bobAt(20) - bobAt(30)) < 1e-9);
+  const {p} = recorder(); paintQADangle(p, 18);
+  const a = M2.QADANGLE.hands!.boyL!; for (const f of ['index', 'middle', 'ring', 'little'] as const) assert.ok(a.fingers[f].gap! > 0.05, `${f} gap ${a.fingers[f].gap}`);
+});
+
+test('W5.2 N4: seated-hands-on-table gives arms to the given hands only, elbows on the wood', () => {
+  const {p} = recorder(); paintQAStop(p, 0);
+  const pose = seatedHandsOnTable(camSH03End, PEOPLE['boy-school'], [540, 1000], 300, {tableY: 0.72, lHand: [-0.2, 0.72, -0.09]});
+  const ev = camPoint(camSH03End, elbowOnTable([-0.2, 0.72, -0.09], 1, 0.72))!; assert.equal(pose.view, 'front'); assert.deepEqual(pose.lArm!.via, ev);
+  assert.equal(elbowOnTable([-0.2, 0.72, -0.09], 1, 0.72)[1], 0.746);
+});
+
+test('W5.2 N5: reach-own-hand starts at (-0.38, -0.28), stops 6+ cm short of BOY test hand; gentle-stop settles palm-down on the wrist at L27 and rests; no fingertip touches the test hand', () => {
+  const r0 = reachOwnHandAt(0), r27 = reachOwnHandAt(27), r67 = reachOwnHandAt(67);
+  assert.deepEqual([r0.hand[0], r0.hand[2]], [-0.38, -0.28]);
+  assert.ok(BOY_TEST_HAND[0] - (r27.hand[0] + 0.065) > 0.02, 'right hand tips stay clear of the left hand');
+  assert.deepEqual(r67.hand, reachOwnHandAt(47).hand); assert.equal(r67.hand[1], 0.72);
+  const s0 = gentleStopAt(0), s12 = gentleStopAt(12), s27 = gentleStopAt(27), s67 = gentleStopAt(67);
+  assert.equal(s0.hand[1], 0.72); assert.deepEqual(s12.hand, s0.hand); assert.ok(s27.hand[1] > 0.72);
+  assert.ok(Math.hypot(s27.hand[0] - r27.hand[0], s27.hand[2] - r27.hand[2]) < 0.1, 'ELDER hand over BOY right wrist');
+  assert.ok(s67.hand[1] < s27.hand[1] && s67.hand[1] > 0.72);
+  const {p} = recorder(); paintQAStop(p, 27);
+  const h = M2.QASTOP.hands!;
+  for (const f of ['thumb', 'index', 'middle', 'ring', 'little'] as const) {
+    const q = h.elderR!.fingers[f].tip.w, left = h.boyL!.fingers.ring.tip.w;
+    assert.ok(Math.hypot(q[0] - left[0], q[2] - left[2]) > 0.05, `${f} within 5 cm of the test hand`);
+  }
+});
+
+test('W5.2 D01 measures: BOY TP ring gap 0, every fingertip band y <= 1160, heads on sheet', () => {
+  const {p} = recorder(); paintQAGrin(p);
+  const h = MEASURE.QAGRIN.hands!;
+  assert.ok(Math.abs(h.boyL!.fingers.ring.gap!) < 0.0005, `ring gap ${h.boyL!.fingers.ring.gap}`);
+  for (const a of Object.values(h)) for (const f of Object.values(a!.fingers)) assert.ok(f.tip.p![1] + 14 <= 1160, `tip y ${f.tip.p![1]}`);
+  const m = MEASURE.QAGRIN;
+  assert.ok(m.boy!.head[0] > 300 && m.boy!.head[0] < 500 && m.elder!.head[0] > 640 && m.elder!.head[0] < 780);
+  void paintQALifts;
+});
+
+test('W5.2 N2: diagram tracks hit the sheet times; ring has no own cord; widths meet SP2', () => {
+  assert.ok(diagramSH01(0).skinAlpha === 1 && Math.abs(diagramSH01(17).skinAlpha - 0.28) < 1e-9);
+  assert.equal(diagramSH01(73).state.pulse, undefined); assert.equal(diagramSH01(94).state.pulse, 1); assert.equal(diagramSH01(79).state.cross, 0); assert.ok(diagramSH01(86).state.cross === 1);
+  assert.ok(diagramSH02(9).state.ownLit!.index === 1 && diagramSH02(2).state.ownLit!.index === 0 && diagramSH02(25).state.ownLit!.little! > 0.9 && diagramSH02(83).state.cordLit!.ring === 1 && diagramSH02(77).state.cordLit!.ring === 0);
+  assert.deepEqual(diagramSH03(137).state.ties, [1, 1]); assert.deepEqual(diagramSH03(83).state.ties, [0, 0]);
+  const s4 = diagramSH04(120).state; assert.equal(s4.taut, 'ring'); assert.equal(s4.cordDark!.middle, 1); assert.equal(s4.tiePull, 1); assert.equal(diagramSH04(88).state.taut, undefined);
+  assert.ok(Math.abs(diagramSH04(120).ringLiftCm - TP_LIFTS['ring-diagram']) < 1e-9);
+  assert.ok(CORD_MIN_PX >= 6 && TIE_MIN_PX >= 20);
+  const keys = new Set(Object.keys(diagramSH02(50).state.ownLit ?? {})); assert.deepEqual([...keys].sort(), ['index', 'little']);
+});
+
+test('R3f: ELDER arms (SH04 L12/L27/L47) are natural limbs: segments 0.28-0.40 / 0.18-0.28 m, forearm 0.55-0.85 of the upper arm, right within 10 % of left, elbow interior angle 110-150 deg, elbow below the shoulder and outside the torso in the picture, elbow on the wood, no box', () => {
+  for (const L of [12, 27, 47]) {
+    const m = measureArm(L);
+    for (const [side, up, fore, bend, sh, el, shPx, elPx] of [['R', m.upperR, m.foreR, m.bendR, m.sR, m.eR, m.shR, m.shL], ['L', m.upperL, m.foreL, m.bendL, m.sL, m.eL, m.shL, m.shR]] as const) {
+      void elPx; void shPx;
+      assert.ok(up >= 0.28 && up <= 0.4, `L${L}${side} upper ${up.toFixed(3)}`);
+      assert.ok(fore >= 0.18 && fore <= 0.28, `L${L}${side} forearm ${fore.toFixed(3)}`);
+      assert.ok(fore / up >= 0.55 && fore / up <= 0.85, `L${L}${side} forearm/upper ${(fore / up).toFixed(2)}`);
+      const inner = 180 - bend;
+      assert.ok(inner >= 110 && inner <= 150, `L${L}${side} elbow interior angle ${inner.toFixed(0)}`);
+      assert.ok(sh[1] - el[1] >= 0.15 && sh[1] - el[1] <= 0.3, `L${L}${side} elbow ${(sh[1] - el[1]).toFixed(2)} m below the shoulder (never above it)`);
+      assert.ok(el[2] - sh[2] >= 0.15, `L${L}${side} elbow ${(el[2] - sh[2]).toFixed(2)} m forward of the shoulder`);
+      const px = camPoint(m.c, el)!, shp = side === 'R' ? m.shR : m.shL, other = side === 'R' ? m.shL : m.shR;
+      assert.ok(Math.abs(px[0] - shp[0]) < 0.6 * Math.abs(other[0] - shp[0]) + 80 && px[1] > shp[1] + 150, `L${L}${side} elbow px ${px.map(Math.round)} vs shoulder ${shp.map(Math.round)}`);
+    }
+    assert.ok(Math.abs(m.upperR / m.upperL - 1) <= 0.1 && Math.abs(m.foreR / m.foreL - 1) <= 0.12, `L${L} right/left ${(m.upperR / m.upperL).toFixed(2)} ${(m.foreR / m.foreL).toFixed(2)}`);
+    assert.equal(m.eR[1], 0.746);
+  }
+  assert.ok(Math.abs(elderLeanAt(0)[0]) < 1e-9 && elderLeanAt(27)[0] === ELDER_LEAN[0] && elderLeanAt(67)[1] === ELDER_LEAN[1]);
+  assert.ok(!('JUG' in dining), 'the milk box left SET-DINING');
+});
+
+test('FX07b: the folding middle finger (B01-SH01 L44-62) is cut at the table: no phalanx or shadow is drawn below the plane, and its draw state flips at most twice', () => {
+  const seeds = (L: number) => {
+    const got = new Set<number>();
+    const brush = new Proxy({}, {get: (_t, n) => (...a: unknown[]) => { if (n === 'seed') got.add(a[0] as number); return undefined; }}) as Brush;
+    const k = Math.min(1, Math.max(0, (L - 46) / 14)), h = blendHand(boyHand('flat'), boyHand('test-fold-middle'), k * k * (3 - 2 * k));
+    paintHandMacro(makePainter(brush, {t: 0, frame: 0}), povCam(L / 154), {...h, base: 0});
+    return {got, sk: macroSkeleton(h)};
+  };
+  let flips = 0, prev: boolean | null = null;
+  for (let L = 44; L <= 62; L++) {
+    const {got, sk} = seeds(L), m = sk.fingers.middle, pl = boyHand('flat').plane!;
+    const tipDrawn = got.has(32), tipBelow = m.joints[3][1] < pl;
+    if (tipBelow) assert.ok(!tipDrawn, `L${L}: middle tip phalanx drawn below the table`);
+    m.joints.forEach((v, j) => { if (j >= 1 && v[1] < pl) assert.ok(!got.has(120 + 6 + j - 1), `L${L}: shadow of a phalanx below the table (${j})`); });
+    if (prev !== null && prev !== tipDrawn) flips++;
+    prev = tipDrawn;
+  }
+  assert.ok(flips <= 2, `draw state flips ${flips} times`);
 });

@@ -5,9 +5,10 @@ import {makePainter, type Painter} from '../kit/painter';
 import {Grain} from '../kit/screen';
 import {camPoint, type YCam} from '../kit/ycam';
 import type {V3} from '../kit/space';
+import {camOf} from '../kit/cam-moves';
 import {LAMP} from './dining';
 import {povCam} from './handclose';
-import {camLF02, camLF03, paintLF01, paintLF01b, paintLF01m, paintLF02, paintLF03, paintLF04} from './scenes';
+import {camD01, D01_LAMP_Y, camLF02, camLF03, paintLF01, paintLF01b, paintLF01m, paintLF02, paintLF03, paintLF04, paintQAGrin, paintQAPiano, paintQAStop, paintQADangle, paintQALifts, paintQADiag3, paintQADiag4, camSH03End, camSH04End, SH04_MOVE, SH07_MOVE, SH08_MOVE} from './scenes';
 
 export {LF_FRAMES} from './scenes';
 
@@ -56,7 +57,7 @@ export const LF01 = () => <Painted paint={paintLF01}><LampPool cam={povCam(0)} a
 export const LF01b = () => <Painted paint={paintLF01b}><LampPool cam={povCam(1)} at={[-14, 0, -11]} /></Painted>;
 export const LF01m = () => <Painted paint={paintLF01m} paper="#ffffff" band={false} />;
 /** Room light of SET-DINING: a warm bloom round the lamp opening (screen) and a soft fall-off to the frame edges, so the pendant reads as the key. */
-const RoomLight = ({cam, lamp}: {cam: YCam; lamp: V3}) => {
+export const RoomLight = ({cam, lamp}: {cam: YCam; lamp: V3}) => {
   const c = camPoint(cam, [lamp[0], lamp[1] - 0.08, lamp[2]]) ?? [540, 0];
   return (
     <svg width={1080} height={1920} style={{position: 'absolute', inset: 0}}>
@@ -75,7 +76,7 @@ export const LF02 = () => <Painted paint={paintLF02}><LampPool cam={camLF02} at=
 const Dim = ({level = 0.3}: {level?: number}) => <div style={{position: 'absolute', inset: 0, background: `rgba(20,14,10,${level})`}} />;
 export const LF03 = () => <Painted paint={paintLF03} label><LampPool cam={camLF03} at={[-14, 0, -11]} level={0.5} /></Painted>;
 /** PIANO-CLOSE top light: a soft cool pool from above on the keys and the hand, the surround falling off to dark (brief B04 light). */
-const TopLight = () => (
+export const TopLight = () => (
   <svg width={1080} height={1920} style={{position: 'absolute', inset: 0}}>
     <defs>
       <radialGradient id="top" gradientUnits="userSpaceOnUse" cx={560} cy={820} r={900}><stop offset="0" stopColor="#e8eef6" stopOpacity={0.22} /><stop offset="1" stopColor="#e8eef6" stopOpacity={0} /></radialGradient>
@@ -86,3 +87,11 @@ const TopLight = () => (
   </svg>
 );
 export const LF04 = () => <Painted paint={paintLF04} label paper="#2a2320"><TopLight /></Painted>;
+/** W5.2 QA stills: the SD05 tune at a shot-local frame (render frames 5, 50, 120) and ELDER's D01 grin. */
+export const QAPIANO = () => <Painted paint={paintQAPiano} label paper="#2a2320"><TopLight /></Painted>;
+export const QAGRIN = () => <Painted paint={paintQAGrin}><LampPool cam={camD01} at={[0, 0.72, -0.15]} r={700} squash={0.4} level={0.9} /><RoomLight cam={camD01} lamp={[LAMP[0], D01_LAMP_Y, LAMP[2]]} /></Painted>;
+export const QASTOP = () => <Painted paint={paintQAStop}><LampPool cam={camOf(SH04_MOVE, 0.5)} at={[0, 0.72, -0.15]} r={700} squash={0.4} level={0.9} /><RoomLight cam={camOf(SH04_MOVE, 0.5)} lamp={[LAMP[0], D01_LAMP_Y, LAMP[2]]} /></Painted>;
+export const QADANGLE = () => <Painted paint={paintQADangle} label><LampPool cam={camOf(SH07_MOVE, 0.5)} at={[0, 0.72, -0.15]} r={700} squash={0.4} level={0.9} /><RoomLight cam={camOf(SH07_MOVE, 0.5)} lamp={LAMP} /></Painted>;
+export const QALIFTS = () => <Painted paint={paintQALifts} label><LampPool cam={camOf(SH08_MOVE, 0.5)} at={[0, 0.72, -0.15]} r={700} squash={0.4} level={0.9} /><RoomLight cam={camOf(SH08_MOVE, 0.5)} lamp={LAMP} /></Painted>;
+export const QADIAG3 = () => <Painted paint={paintQADiag3} label><LampPool cam={camSH03End} at={[-14, 0, -11]} level={0.5} /></Painted>;
+export const QADIAG4 = () => <Painted paint={paintQADiag4} label><LampPool cam={camSH04End} at={[-14, 0, -11]} level={0.5} /></Painted>;

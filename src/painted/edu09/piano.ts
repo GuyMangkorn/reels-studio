@@ -55,11 +55,44 @@ export const paintPiano = (p: Painter, c: YCam, o: PianoOpts = {}) => {
   }
 };
 
-/** Placeholder pianist pose (W3): right hand, size 1.2, curved fingers over C-G (thumb C, index D, middle E, ring F, little G); `press` is
- * the finger playing now (its key is dropped by `paintPiano`): it flexes a little more so its tip sits 1 cm lower, on the dropped key. */
-export const pianistHand = (press: LongFingerId | 'thumb' | null, base = 2000): HandMacro => {
+/** The five playing fingers over the C-G position of the right hand (thumb C, index D, middle E, ring F, little G); value = white-key index
+ * (middle C = 0) for `paintPiano({pressed})`. */
+export type PianoFinger = LongFingerId | 'thumb';
+export const FINGER_KEY: Record<PianoFinger, number> = {thumb: 0, index: 1, middle: 2, ring: 3, little: 4};
+/** Fingers to keys for a press set (W5.2, SD05: dyads and the closing chord press several fingers at once). */
+export const keysOf = (press: readonly PianoFinger[]): number[] => press.map((f) => FINGER_KEY[f]);
+
+/** SD05 provisional tune (SHEETS-R2 S01-B04-SH01, shot-local frames): mixed finger order, a dyad (C+E) and the closing C+E+G chord, all inside C-G.
+ * Each entry holds from `f` until 1 f before the next onset (the last until `END`); the held dyad and chord keep their press sets. Editor re-times
+ * `f` onto M2's note onsets, one press per audible note; the rules (no five-finger run, no stretch) stay. */
+export const TUNE_END = 140;
+export const PIANO_TUNE: readonly {f: number; press: readonly PianoFinger[]}[] = [
+  {f: 0, press: ['middle']}, {f: 10, press: ['little']}, {f: 20, press: ['ring']}, {f: 30, press: ['index']},
+  {f: 42, press: ['thumb', 'middle']}, {f: 64, press: ['index']}, {f: 74, press: ['ring']}, {f: 84, press: ['middle']},
+  {f: 96, press: ['little']}, {f: 108, press: ['thumb', 'middle', 'little']},
+];
+/** Press set at shot-local frame `f`: [] before the first note, between notes, and after TUNE_END; keys are down for 1 f less than the gap (legato). */
+export const tuneAt = (f: number, tune = PIANO_TUNE): readonly PianoFinger[] => {
+  for (let i = tune.length - 1; i >= 0; i--) {
+    if (f < tune[i].f) continue;
+    const last = i === tune.length - 1, end = last ? TUNE_END : tune[i + 1].f - 1;
+    // the dyad is held to L60 (SHEETS-R2), then a short gap before D at L64
+    const held = tune[i].press.length === 2 ? 60 : end;
+    return f <= held ? tune[i].press : [];
+  }
+  return [];
+};
+/** Key-depress fraction 0..1 with a 2 f travel (key down 1.0 cm in 2 f); `PIANO_TUNE` onsets are the press start. */
+export const pressDepth = (f: number, onset: number): number => Math.max(0, Math.min(1, (f - onset + 1) / 2));
+
+const PRESS_FLEX = 10;
+/** Pianist's right hand, size 1.2, curved fingers over C-G. `press` is one finger, a set of fingers (dyad, chord) or null; each pressing finger
+ * flexes a little more so its tip sits about 1 cm lower, on its dropped key (`paintPiano({pressed: keysOf(press)})`). The wrist height is solved
+ * from the RESTING pose (index and ring tips on the key tops), so it does not move when different fingers press. `depth` (0..1) eases the press. */
+export const pianistHand = (press: PianoFinger | readonly PianoFinger[] | null, base = 2000, depth = 1): HandMacro => {
+  const set: readonly PianoFinger[] = press === null ? [] : typeof press === 'string' ? [press] : press;
   const curved = {mcp: 14, pip: 34, dip: 12, abd: 0};
-  let h: HandMacro = {
+  const rest: HandMacro = {
     ...macroHand('flat', {side: 1, size: 1.2, base, tone: PIANIST_TONE, plane: 0, at: [6.6, 8.5], shadowDir: [0.05, -1, 0.18], shadowAlpha: 0.3, shadowColor: '#1d2230'}),
     pitch: 2, roll: 0,
     fingers: {index: {...curved, abd: 1}, middle: curved, ring: {...curved, abd: -1}, little: {...curved, mcp: 18, abd: -3}},
@@ -67,11 +100,14 @@ export const pianistHand = (press: LongFingerId | 'thumb' | null, base = 2000): 
     elbow: [11, 8, 31],
     sleeve: {to: [11, 8, 31], color: PIANIST_TONE.sleeve, shade: PIANIST_TONE.sleeveShade, cuff: 0.14},
   };
-  if (press && press !== 'thumb') h = {...h, fingers: {...h.fingers, [press]: {...h.fingers[press], mcp: h.fingers[press].mcp + 10}}};
-  if (press === 'thumb') h = {...h, thumb: {...h.thumb, cmc: h.thumb.cmc + 8}};
   // solve the wrist height so the resting fingertips (index, ring) touch the key tops (y 0): lowest tip pad at 0
-  const sk = macroSkeleton(h), tipLow = Math.min(...(['index', 'ring'] as const).map((f) => sk.fingers[f].joints[3][1] - sk.fingers[f].radii[3]));
-  return {...h, wrist: [h.wrist[0], h.wrist[1] - tipLow, h.wrist[2]]};
+  const sk = macroSkeleton(rest), tipLow = Math.min(...(['index', 'ring'] as const).map((f) => sk.fingers[f].joints[3][1] - sk.fingers[f].radii[3]));
+  let h: HandMacro = {...rest, wrist: [rest.wrist[0], rest.wrist[1] - tipLow, rest.wrist[2]]};
+  for (const f of set) {
+    if (f === 'thumb') h = {...h, thumb: {...h.thumb, cmc: h.thumb.cmc + 8 * depth}};
+    else h = {...h, fingers: {...h.fingers, [f]: {...h.fingers[f], mcp: h.fingers[f].mcp + PRESS_FLEX * depth}}};
+  }
+  return h;
 };
 
 export const paintPianist = (p: Painter, c: YCam, h: HandMacro): HandAnchors => paintHandMacro(p, c, h);

@@ -1,10 +1,10 @@
-# Timed scene sheets and index — EDU-EP09-SHORT (EDU-EP09-SHEETS-R2)
+# Timed scene sheets and index — EDU-EP09-SHORT (EDU-EP09-SHEETS-R2.2)
 
-- **Deliverable:** `EDU-EP09-SHORT` · **Revision:** EDU-EP09-SHEETS-R2 (Film W5.1, 2026-11-08: user answers Q-S1 accepted, D01 added as S01-B05-SH04; R1 first timed sheets) · **Status:** `ready-for-dev`, voice-timed: Boss may build plates from this revision (W5.2), Editor may place the narration and assemble the blockout (W5.3). · **Timing:** `checked-with-audio` for the narration (line onsets and ends `meas` on the locked read). Word anchors inside a line are `meas-e` where an energy pause or segment locates them (±3 f) and `est` where only syllable proportion does (B03 sub-line cuts ±8 f, **re-measure on the draft**). V01 and V02 are not generated yet: their slots are `est` and end-anchored (PL05).
-- **Evidence:** runtime: none (no composition `src/videos/EDU-EP09-SHORT`, no blockout) · audio: locked read measured from [voice-measure.md](voice-measure.md) "Full read R1.4 s2" plus a Film energy pass on the per-line files (ffmpeg `silencedetect` −32 dB / 0.04 s; 20 ms RMS on L04; no ASR, faster-whisper does not run here); placed on paper, not assembled · render/samples: none · projection: look-frame values as measured in W3 (LF01m, LF02, LF03, LF04); the three changed room cameras (SD01–SD03) come from a Python mirror of `kit/ycam.ts` `orbitYCam`/`camSpace` + `cam-moves.ts` `camOf` (Film scratch, not committed) with estimated fingertip points, so they are `est` · audio/subtitle sync: none (frames computed, not rendered) · user approval: script R1.4 L12 wording (user), storyboard ROWS-R1.8 18/18 ok, look frames R1.8 passed (W3.2), voice lock 2026-11-08 (`ep09-nar-kore-A-r14-full-s2.wav`), **Q-S1 B04 picture change (SD05) accepted** (user via coordinator, 2026-11-08), **D01 ADD** (user via coordinator, 2026-11-08). Not approved: this timing, the new shot S01-B05-SH04 itself (SD09; on the review page as a new row).
+- **Deliverable:** `EDU-EP09-SHORT` · **Revision:** EDU-EP09-SHEETS-R2.2 (Film, Draft fix round 3, 2026-11-09: milk box removed from SET-DINING and ELDER's stop arm re-routed (FX13, SD12); pianist-hand look for every macro and dining hand (FX11, FX12, SD11, [fixlist-r3.md](fixlist-r3.md#pianist-hand)); R2.1 Film, Draft fix round 2, 2026-11-09: milk box moved right of ELDER's hands to match Boss 76fbd43 (FX08); S01-B05-SH04 dropped by the user (FX10), its 24 f carried by S01-B05-SH01 (Editor task, SD10); R2 Film W5.1, 2026-11-08: user answers Q-S1 accepted, D01 added as S01-B05-SH04; R1 first timed sheets) · **Status:** `ready-for-dev`, voice-timed: Boss may build plates from this revision (W5.2), Editor may place the narration and assemble the blockout (W5.3). · **Timing:** `checked-with-audio` for the narration (line onsets and ends `meas` on the locked read). Word anchors inside a line are `meas-e` where an energy pause or segment locates them (±3 f) and `est` where only syllable proportion does (B03 sub-line cuts ±8 f, **re-measure on the draft**). V01 and V02 are not generated yet: their slots are `est` and end-anchored (PL05).
+- **Evidence:** runtime: none (no composition `src/videos/EDU-EP09-SHORT`, no blockout) · audio: locked read measured from [voice-measure.md](voice-measure.md) "Full read R1.4 s2" plus a Film energy pass on the per-line files (ffmpeg `silencedetect` −32 dB / 0.04 s; 20 ms RMS on L04; no ASR, faster-whisper does not run here); placed on paper, not assembled · render/samples: none · projection: look-frame values as measured in W3 (LF01m, LF02, LF03, LF04); the three changed room cameras (SD01–SD03) come from a Python mirror of `kit/ycam.ts` `orbitYCam`/`camSpace` + `cam-moves.ts` `camOf` (Film scratch, not committed) with estimated fingertip points, so they are `est` · audio/subtitle sync: none (frames computed, not rendered) · user approval: script R1.4 L12 wording (user), storyboard ROWS-R1.8 18/18 ok, look frames R1.8 passed (W3.2), voice lock 2026-11-08 (`ep09-nar-kore-A-r14-full-s2.wav`), **Q-S1 B04 picture change (SD05) accepted** (user via coordinator, 2026-11-08), **D01 ADD** (user via coordinator, 2026-11-08). Not approved: this timing. R2.1: S01-B05-SH04 dropped by the user (fixlist-r2 FX10, 2026-11-09, "ไม่ต้องมีก็ได้", confirmed); the B05-SH01 extension that carries its frames is not user-reviewed yet.
 - **Inputs (by revision):** script **EDU-EP09-SCRIPT-R1.4** ([script.md](script.md)); fact-check [fact-check.md](fact-check.md) W1.3 plus the **R1.4 recheck of L12/F013** (Boat, picture rule: the pianist insert is generic hands playing, no finger drill or stretching, no "ฝึกได้" line); brief **EDU-EP09-BRIEF-R1.9** ([film-brief.md](film-brief.md): set plans, VD01–VD27, N1–N11, SP1–SP4, sound direction); storyboard **EDU-EP09-ROWS-R1.8** ([storyboard.md](storyboard.md): rules R01–R09, untimed staging); voice lock [voice-measure.md](voice-measure.md) "Full read R1.4 s2" (store `projects/EDU/voice/ep09-nar-kore-A-r14-full-s2.wav`, 44.98 s; git copy `public/narration/EDU-EP09-SHORT.wav`); look frames and built cameras `src/painted/edu09/` (`scenes.ts`, `handclose.ts`, `dining.ts`, `tendons.ts`, `piano.ts`).
 - **Target:** worktree `check-project-pipeline-4ec3f9`, branch `claude/education-series-ep09-storyboard-d3ed3b` at `4cac7ce` (R1 at `8c3755c`) · 30 fps · `durationFrames` **1606** (53.53 s; R1 1582) · 1080×1920 · composition offset 0 (not registered; Editor, never in `src/Root.tsx`) · `video.ending: 'B_loop'`, `endHoldSec: 0`.
-- **Baseline (link, not copied):** SET-DINING metres, HAND-CLOSE set-cm (and its dining mapping), PIANO-CLOSE set-cm, axes and scale per the [brief](film-brief.md#projection-contract-and-scale-baseline) and the units line of [storyboard.md](storyboard.md); built anchors win: `SEAT` boy (−0.26, 0.17, −0.62), elder (0.3, 0.06, −0.7), `TABLE_Y` 0.72, `LAMP` (0, 1.45, −0.15) (`dining.ts`); `BOY_WRIST` HAND (0.3, 6.5), `POV`, `DIAG_W` (`handclose.ts`); `pianoCam` (`piano.ts`).
+- **Baseline (link, not copied):** SET-DINING metres, HAND-CLOSE set-cm (and its dining mapping), PIANO-CLOSE set-cm, axes and scale per the [brief](film-brief.md#projection-contract-and-scale-baseline) and the units line of [storyboard.md](storyboard.md); built anchors win: `SEAT` boy (−0.26, 0.17, −0.62), elder (0.3, 0.06, −0.7), `TABLE_Y` 0.72, `LAMP` (0, 1.45, −0.15) (`dining.ts`); **milk box** removed (R2.2, user FX13): no `JUG` in SET-DINING; ELDER's hands rest at (0.15–0.17, 0.72, −0.15…−0.20) right and (0.4, 0.72, −0.16) left with nothing between or beside them (R2.1 had the box at x 0.255–0.38, R2 and earlier at x 0–0.125; LF02 v4 still shows it, see [Dependencies](#dependencies)); `BOY_WRIST` HAND (0.3, 6.5), `POV`, `DIAG_W` (`handclose.ts`); `pianoCam` (`piano.ts`).
 - **Camera lines:** `cam: target, yaw a→b, r, eye, pitch, f, hy, cx` = one kit `camMove` (as [storyboard.md](storyboard.md) units line). A move runs linearly over the whole shot unless the block gives `ease [u0, u1]` (smoothstep between those shot fractions, `camMoveK`).
 - **Clocks:** `G` composition frame; shot-local `L` = G − shot start; ranges half-open `[start, end)`. Every event is a pure function of G or L (seek-safe); trembles from `hash(frame)` (brief, Motion / clock).
 - **One shot = one timeline scene** (scene ID = shot ID). Every join is a hard cut; S01-B05-SH02 → SH03 continues the same camera path, so that cut is invisible.
@@ -12,12 +12,12 @@
 <a id="placement-rules"></a>
 ## Placement rules
 
-- **PL01 Stable:** shot IDs, order, beats, line assignment (`lines`), casting, looks and checks of ROWS-R1.8 stay. Ranges, event frames and the deviations SD01–SD09 change. R2 adds one shot, **S01-B05-SH04** (D01, SD09), between S01-B05-SH01 and S01-B05-SH02; no ID is renumbered or reused.
+- **PL01 Stable:** shot IDs, order, beats, line assignment (`lines`), casting, looks and checks of ROWS-R1.8 stay. Ranges, event frames and the deviations SD01–SD09 change. R2 added one shot, **S01-B05-SH04** (D01, SD09), between S01-B05-SH01 and S01-B05-SH02; **R2.1 drops it** (user, FX10, 2026-11-09): the ID is retired, not reused; no ID is renumbered.
 - **PL02 The read is not retimed:** the locked file is placed in four pieces (A–D below), cut inside silences only. Inside a piece every line and gap is exactly as the user locked it (no atempo, no inner cut, no gap edit).
-- **PL03 Inserts sit between pieces:** try + V01 between A and B; L04 hold + V02 between B and C; retry + D01 grin between C and D; the closing hold after D.
+- **PL03 Inserts sit between pieces:** try + V01 between A and B; L04 hold + V02 between B and C; retry between C and D (R2.1: the D01 grin is dropped; the retry shot carries its frames, SD10); the closing hold after D.
 - **PL04 Shot starts:** a voice-led shot starts 3 f before the onset frame of its first word (onset frame = floor of the onset in G; last voiced frame = floor of the end). In-line cuts follow the same rule on their word ("เหมือน", "ไม่มี", "ชุด", "พอ").
 - **PL05 Character slots are end-anchored:** V01 must end by G197 and V02 by G503. A take shorter than its slot starts later; a take up to 3 f longer starts earlier inside its shot. A take that does not fit goes back to Film (retime), never pushes the later frames.
-- **PL06 Rows:** [review-rows.json](review-rows.json) **EDU-EP09-ROWS-R2.0** carries `start`/`end` (G frames) and `untimed: false`; Thai text unchanged except the new row S01-B05-SH04 (D01, asks the user). S01-B04-SH01 (R1.9 change) is user-passed (Q-S1, 2026-11-08) and carries no `changed` note.
+- **PL06 Rows:** [review-rows.json](review-rows.json) **EDU-EP09-ROWS-R2.1** carries `start`/`end` (G frames) and `untimed: false`, 18 rows; R2.1 removes the S01-B05-SH04 row and gives S01-B05-SH01 1355–1415 with a Thai `changed` note; Thai VO text unchanged. S01-B04-SH01 (R1.9 change) is user-passed (Q-S1, 2026-11-08) and carries no `changed` note.
 
 <a id="narration-placement"></a>
 ## Narration placement (Editor)
@@ -31,7 +31,7 @@ Source = `public/narration/EDU-EP09-SHORT.wav` (= the locked store file). Source
 | C | 370–1226 | 12.333–40.867 | 501 | L05 514 → 597 · L06 625 → 757 · L07 771 → 878 · L08 897 → 1020 · L09 1046 → 1191 · L12 1217 → 1348 |
 | D | 1226–end (1349.3) | 40.867–44.978 | **1410** (R1 1386) | L15 1418 → 1525 |
 
-- G = source frame + offset (A 0, B +69, C +131, D **+184**; R1 +160, moved by the 24 f D01 insert). Gaps inside a piece are the read's (0.46–0.92 s).
+- G = source frame + offset (A 0, B +69, C +131, D **+184**; R1 +160, moved by the 24 f D01 insert; R2.1 keeps +184: dropping D01 moves no audio, SD10). Gaps inside a piece are the read's (0.46–0.92 s).
 - **Word anchors (G):** L01 "พับนิ้วกลาง" 46 `meas-e`, "ยก" 92 `est`; L02 "นิดเดียว" 222, "หรือไม่ขึ้นเลย" 240 `meas-e`; L03 "อย่า" 302 `est`; L04 "นิ้วโป้ง" 365, "นิ้วชี้" 384, "นิ้วก้อย" 398, "ขึ้นหมด" 409 (`meas-e`: energy segments assigned by order, ±3 f); L05 "มันโดน" 564 `meas-e`; L06 "ปลายแขน" 678 `est`, "ดึงนิ้ว" 696 `meas-e`, "เส้นเอ็น" 716 `est`, **"เหมือน" 730 `est` ±8**; L07 "นิ้วก้อย" 788 `est`, "นิ้วนาง" 846 `meas-e`, **"ไม่มี" 862 `est` ±8**; L08 **"ชุด" 908 `est` ±8**, "แถม" 963 `meas-e`, "แถบ" 989 `est`, "ผูก" 1004 `meas-e`; L09 "พอ" 1083 `meas`, "สายร่วม" 1106, "นิ้วนางเลยติด" 1169 `meas-e`; L12 "เล่นมา" 1258, "แค่ควบคุม" 1296 `meas-e`; L15 "มันแค่" 1474 `meas-e`, "สายร่วม" 1491 `est`.
 
 <a id="total-runtime"></a>
@@ -48,14 +48,13 @@ Source = `public/narration/EDU-EP09-SHORT.wav` (= the locked store file). Source
 | B02-SH02 lead-in + V02 slot | 63 | 2.10 |
 | V02 → L05 onset (piece C lead-in) | 11 | 0.37 |
 | L05 onset → L12 end (read) | 835 | 27.83 |
-| B04 tail + retry | 42 | 1.40 |
-| D01 grin insert (S01-B05-SH04, R2) | 24 | 0.80 |
+| B04 tail + retry (R2.1: + the 24 f of the dropped D01 shot, held stuck ring) | 66 | 2.20 |
 | L15 lead-in | 3 | 0.10 |
 | L15 (read) + 6 f tail | 113 | 3.77 |
 | Closing hold (S01-B05-SH03) | 75 | 2.50 |
-| **Total, 19 shots** | **1606** | **53.53** |
+| **Total, 18 shots (R2.1; R2 19)** | **1606** | **53.53** |
 
-R2: 6.47 s under the 60 s cap (R1 1582 f = 52.73 s, 7.27 s under; D01 takes 0.80 s of that spare time, no voice piece changes). R1 note: 5 f shorter than the coordinator's estimate table (52.90 s). Differences: V01 → L02 0.30 s instead of the read's 0.62 s gap, the taps sit on the words with a 14 f hold after L04 (was a 0.6 s insert), V02 slot 2.0 s (was 1.5), retry 1.2 s with a 0.2 s B04 tail (was 1.0 + the 0.58 s read gap).
+R2.1: same length, 18 shots (D01 dropped, its 0.80 s kept as the retry hold, SD10). R2: 6.47 s under the 60 s cap (R1 1582 f = 52.73 s, 7.27 s under; D01 takes 0.80 s of that spare time, no voice piece changes). R1 note: 5 f shorter than the coordinator's estimate table (52.90 s). Differences: V01 → L02 0.30 s instead of the read's 0.62 s gap, the taps sit on the words with a 14 f hold after L04 (was a 0.6 s insert), V02 slot 2.0 s (was 1.5), retry 1.2 s with a 0.2 s B04 tail (was 1.0 + the 0.58 s read gap).
 
 <a id="sound-plan"></a>
 ## Sound plan (whole video; per-shot cues in the shot blocks)
@@ -105,7 +104,7 @@ White captions with the edu stroke, no band (series default, user 2026-11-06), `
 | L15a | 1418–1474 | นิ้วนางคุณไม่ได้ขี้เกียจหรอก… |
 | L15b | 1474–1531 | มันแค่ใช้สายร่วมกับนิ้วข้าง ๆ |
 
-- No cue during the try window (124–179), the retry and D01 grin (1355–1418) or the closing hold (1531–1606). V01 and V02 cues move with their takes inside the slots (PL05).
+- No cue during the try window (124–179), the retry (1355–1418; R2.1, D01 dropped) or the closing hold (1531–1606). V01 and V02 cues move with their takes inside the slots (PL05).
 - **Open check (Editor, W5.3):** stroke legibility on the bright wood of the macro plates (B01-SH01, B02-SH01, B05-SH02): `scripts/caption-zone.py --band 1176:1344` and a viewed sheet; if a cue is not legible, report to Film and the user (no darkening or band move on your own).
 
 <a id="staging-deviations"></a>
@@ -119,7 +118,10 @@ White captions with the edu stroke, no band (series default, user 2026-11-06), `
 - **SD06 S01-B02-SH01 taps on the words.** The taps land inside L04 on each word (they were a 0.6 s insert after it); the hold after L04 is the three-fingers-up frame (14 f).
 - **SD07 Camera eases.** B02-SH03 push `ease [0.2, 1.0]` now ends on the cut; B03-SH03 push `ease [0.30, 0.72]` so the ties arrive as the camera settles; B03-SH04 `ease [0, 0.75]`, still for the held stuck frame; B05-SH03 `ease [0, 0.6]`, still for the last 30 f.
 - **SD08 B05-SH02 tail.** SH02 ends 6 f after L15's last voiced frame so the tag's attack lands in SH02; the closing hold stays 2.5 s.
-- **SD09 S01-B05-SH04 ELDER's grin (D01, R2; user ADD 2026-11-08).** The script cue "ELDER grins" in the retry, dropped for time in BRIEF-R1 (D01), is restored as a 24 f (0.80 s) high two-shot between the retry and L15, taken from the 7.27 s spare time. Reasons: the try ends with the grandpa who shares the stuck finger (CL01) reacting warmly to BOY's failed retry, the script's beat; the two-shot is the only frame that shows BOY's stuck hand and ELDER's face together; it reuses B01-SH04's camera, so no new set or look. Effect: piece D and S01-B05-SH02, SH03 move +24 f; nothing before G1391 moves; the retry stays 36 f.
+- **SD09 S01-B05-SH04 ELDER's grin (D01, R2; user ADD 2026-11-08).** The script cue "ELDER grins" in the retry, dropped for time in BRIEF-R1 (D01), is restored as a 24 f (0.80 s) high two-shot between the retry and L15, taken from the 7.27 s spare time. Reasons: the try ends with the grandpa who shares the stuck finger (CL01) reacting warmly to BOY's failed retry, the script's beat; the two-shot is the only frame that shows BOY's stuck hand and ELDER's face together; it reuses B01-SH04's camera, so no new set or look. Effect: piece D and S01-B05-SH02, SH03 move +24 f; nothing before G1391 moves; the retry stays 36 f. **R2.1: dropped** (user, FX10, 2026-11-09); see SD10.
+- **SD10 S01-B05-SH01 carries the dropped D01 frames (R2.1; Editor task).** The 24 f G1391–1415 go to the shot before: S01-B05-SH01 becomes **1355–1415 (60 f, 2.00 s)**; S01-B05-SH02 keeps 1415–1531 and SH03 1531–1606. Reason: nothing is voiced or captioned in G1355–1417 (`cues.ts`: L12b ends 1354, L15a starts 1418; piece D is placed at G1410 and its first voiced frame is 1418), so extending SH01 leaves every narration piece, word anchor, caption, the tag at 1525 and the B_loop seam (G1582–1605 → G0) where they are. Rejected: (a) starting SH02 at 1391 would open the L15 POV 27 f before the voice and break PL04 (voice-led shots start 3 f before the first word); (b) cutting the 24 f out would pull piece D, the L15 captions, the tag and the closing hold 24 f earlier and change the ending timing.
+- **SD11 Pianist hand look (R2.2, user FX11/FX12).** Every macro and dining hand (BOY, ELDER; the B04 pianist already is one) gets the full, soft hand body of [fixlist-r3.md](fixlist-r3.md#pianist-hand): back-of-hand dome with a rolled light-to-core-shadow gradient, thumb-web and little-finger edges bowing outward, knuckle bumps, a tapered wrist flaring into a rounded heel; palm side with full thenar/hypothenar pads and soft creases. Volume only: lengths, SPLIT, poses and every event frame unchanged. Owner: kit `drawPalm` (`hands.ts`), dining `paintTableArm` wrist join (`dining.ts`).
+- **SD12 Milk box removed, ELDER's stop arm re-routed (R2.2, user FX13).** `JUG` leaves the set. S01-B01-SH04: hand path and frames kept; elbow forward on the wood (0.20, 0.746, −0.36) → (−0.04, 0.746, −0.34) (`est`, solved against `man-elder` limb lengths), lean up to −0.22 m, stop point may shift up to +0.04 m in x; acceptance in [fixlist-r3.md](fixlist-r3.md#fx13-staging).
 
 <a id="shot-map"></a>
 ## Shot map
@@ -141,8 +143,8 @@ White captions with the edu stroke, no band (series default, user 2026-11-06), `
 | S01-B03-SH09 | B03 | 1043–1080 | 37 / 1.23 | 1.4 | L09 "มักอธิบายกันว่า" · F007 | (LF02) |
 | S01-B03-SH04 | B03 | 1080–1214 | 134 / 4.47 | 3.6 | L09 from "พอนิ้วกลางพับลง" · F007 | (LF03) |
 | S01-B04-SH01 | B04 | 1214–1355 | 141 / 4.70 | 4.5 | L12 · F013, F017 | LF04 |
-| S01-B05-SH01 | B05 | 1355–1391 | 36 / 1.20 | 1.0 | retry · CL03 | (LF01) |
-| **S01-B05-SH04** (new R2, D01) | B05 | 1391–1415 | 24 / 0.80 | — | retry reaction (script cue "ELDER grins") · CL01, CL03 | (LF02) |
+| S01-B05-SH01 | B05 | 1355–1415 (R2 1355–1391) | 60 / 2.00 | 1.0 | retry · CL03 | (LF01) |
+| ~~S01-B05-SH04~~ (R2 D01; **dropped R2.1**, FX10) | — | — (was 1391–1415) | — | — | frames carried by B05-SH01 (SD10) | — |
 | S01-B05-SH02 | B05 | 1415–1531 (R1 1391–1507) | 116 / 3.87 | 4.0 | L15 · F004, F006 | (LF01) |
 | S01-B05-SH03 | B05 | 1531–1606 (R1 1507–1582) | 75 / 2.50 | 2.5 | hold, seam | (LF01) |
 
@@ -178,16 +180,17 @@ Casting, set points, poses and looks not restated here are in [storyboard.md](st
 - **Sound:** M1 enters soft at L3; NG-S1 tremble at L19 (fallback: silence). Mix: lift (small).
 - **Captions:** L02.
 - **Entry → exit:** TP, ring flat → TP, ring flat (lift on camera).
-- **Accept:** SP1 hair-lift ≥ 25 px with a visible shadow gap at L27; gap 0 px from L42.
+- **Look (R2.2, SD11):** pianist hand body, wrist tapering into a rounded heel (no flat tube seam).
+- **Accept:** SP1 hair-lift ≥ 25 px with a visible shadow gap at L27; gap 0 px from L42; R2.2: at L30 the hand body rolls light to core shadow in ≥ 3 tone steps, no edged highlight.
 
 ### S01-B01-SH04 · 283–351 · the stop (L03)
 - **Time:** L03 onset L3, "อย่า" L19 (`est`), last voiced L52.
-- **Staging (SET-DINING):** BOY's left hand TP at (−0.14, 0.72, −0.26); right hand from (−0.38, 0.72, −0.28) moves toward his left ring finger from L6; ELDER's right hand lifts from (0.16, 0.72, −0.30) at L12 and settles palm-down over BOY's right wrist at L27, 6 cm short of BOY's left hand; both hands lower to the table L27–47; ELDER `happy`, a small head shake L30–40; BOY `worried` → `neutral` at L40. Casting: BOY **`new: reach-own-hand`**, ELDER **`new: gentle-stop`**.
+- **Staging (SET-DINING):** BOY's left hand TP at (−0.14, 0.72, −0.26); right hand from (−0.38, 0.72, −0.28) moves toward his left ring finger from L6; ELDER's right hand lifts from (0.17, 0.72, −0.20) at L12 and slides straight across (built `gentleStopAt` 76fbd43: arc peak +0.07 m mid-move; R2.2: no milk box in the set) to settle palm-down over BOY's right wrist at (−0.25, 0.72, −0.205) at L27 (R2.2 may move up to +0.04 m in x, still over the wrist, ≥ 4 cm short of the left hand); R2.2 (SD12): his elbow comes forward on the wood, (0.20, 0.746, −0.36) → (−0.04, 0.746, −0.34) `est` (R2.1 trailed over the back edge, (0.19, 0.746, −0.46) → (−0.13, 0.746, −0.45), and read stretched); ELDER's body leans in (−0.18, 0, +0.10) m over L10–27 (`ELDER_LEAN`; R2.2 up to −0.22 m in x if the solve needs it); his left hand rests at (0.4, 0.72, −0.16), elbow (0.47, 0.746, −0.38), as in the other dining shots; both hands lower to the table L27–47; ELDER `happy`, a small head shake L30–40; BOY `worried` → `neutral` at L40. Casting: BOY **`new: reach-own-hand`**, ELDER **`new: gentle-stop`**.
 - **Camera:** `cam: (−0.05, 0.86, −0.42), yaw −12→−8, r 1.30→1.24, eye 1.62, pitch −30°, f 1150, hy 760`. Est: BOY head 485–731 at x ≈ 350, ELDER head 371–665 at x ≈ 745, hands y ≈ 856–945.
 - **Sound:** M1 low. Mix: hold.
 - **Captions:** L03.
 - **Entry → exit:** BOY right hand flat at (−0.38, 0.72, −0.28) → under ELDER's palm on the table; BOY's left hand TP throughout.
-- **Accept:** no finger touched (R02); the stop lands at L27, after "อย่า"; ELDER's cuff ends at his wrist behind the hand (R1.8); SP3.
+- **Accept:** no finger touched (R02); the stop lands at L27, after "อย่า"; ELDER's cuff ends at his wrist behind the hand (R1.8); SP3; R2.2: no milk box; at L27 and L47 ELDER's right upper arm and forearm each within ±10% of his left arm's segments, elbow bent ≥ 25°; both characters' hands show the SD11 dome and thumb web.
 
 ### S01-B02-SH01 · 351–440 · three taps (L04)
 - **Time:** L04 onset L3; "นิ้วโป้ง" L14, "นิ้วชี้" L33, "นิ้วก้อย" L47, "ขึ้นหมด" L58 (`meas-e`, ±3 f); last voiced L74; hold L75–88.
@@ -214,7 +217,8 @@ Casting, set points, poses and looks not restated here are in [storyboard.md](st
 - **Sound:** M1; `stinger_pizz-shrug_01` at L87 (right on the end of "ไว้", rings into the pause); M1 thins under the pause. Mix: hit, then hold.
 - **Captions:** L05a, L05b.
 - **Entry → exit:** both hands TP, both rings flat → the same, framed on BOY's hand.
-- **Accept:** both hands fully in frame at L0; the stinger starts after the last word, not under it.
+- **Look (R2.2, SD11):** both hands get the pianist hand body (ELDER older surface, spots kept; BOY smoother).
+- **Accept:** both hands fully in frame at L0; the stinger starts after the last word, not under it; R2.2: at L0 and L110 each hand body rolls light to core shadow in ≥ 3 tone steps, thumb-web and little-finger outlines bow outward, no edged highlight.
 
 ### S01-B03-SH01 · 622–727 · see-through, the forearm muscle (L06 to "เส้นเอ็น")
 - **Time:** L06 onset L3, "ปลายแขน" L56 (`est`), "ดึงนิ้ว" L74, "เส้นเอ็น" L94 (`est`); cut at L104 = 3 f before "เหมือน" (`est` ±8).
@@ -294,24 +298,18 @@ Casting, set points, poses and looks not restated here are in [storyboard.md](st
 - **Entry → exit:** cut in on a key press → the closing chord held; music stops on the cut to B05-SH01.
 - **Accept:** R05 (generic, faceless, no logo); the picture rule above; at least one press with the ring finger (F); label on in its slot; no wrong-sounding note in M2.
 
-### S01-B05-SH01 · 1355–1391 · the retry
-- **Time:** no speech; 36 f.
-- **Staging (HAND-CLOSE):** from `flat`, the middle folds to TP L0–9; L14–18 the ring trembles up 0.4 cm, drops by L27 (CL03); still L28–35.
-- **Camera:** CAM-TRY `r 26→25`, yaw 168, eye 8, f 2000, hy 760.
+### S01-B05-SH01 · 1355–1415 (R2 1355–1391) · the retry
+- **Time:** no speech; 60 f (R2.1, SD10: + the 24 f of the dropped S01-B05-SH04).
+- **Staging (HAND-CLOSE):** from `flat`, the middle folds to TP L0–9; L14–18 the ring trembles up 0.4 cm, drops by L27 (CL03); still L28–35; R2.1: L36–59 the stuck TP holds (ring tip gap 0, ring micro-tremble ±0.05 cm from `hash(frame)` as in S01-B05-SH03, nothing else moves). Event frames L0–35 unchanged.
+- **Camera:** CAM-TRY `r 26→25`, yaw 168, eye 8, f 2000, hy 760, `ease [0, 0.6]` (R2.1: the push keeps about its R2 speed and lands by L36, then holds L36–59).
 - **Look:** room 100 %, warm.
-- **Sound:** music out at L0; bed and clock back at the B01 level; NG-S1 tremble at L14. Mix: drop.
-- **Entry → exit:** flat → TP, ring down after the hair-lift; R2: hard cut to S01-B05-SH04 (D01) at G1391.
-- **Accept:** hair-lift visible and ≤ 0.4 cm; no music in G1355–1390.
+- **Sound:** music out at L0; bed and clock back at the B01 level; NG-S1 tremble at L14, its tail decays into room tone and clock; no SFX L36–59; piece D's lead-in silence starts at G1410 (L55, room tone only). Mix: drop, then hold.
+- **Entry → exit:** flat → TP, ring stuck after the hair-lift; R2.1: hard cut to S01-B05-SH02 at G1415 (L15 onset at SH02 L3), pose change hidden by the cut as before.
+- **Accept:** hair-lift visible and ≤ 0.4 cm; ring gap 0 px L28–59; no music, caption or label in G1355–1414.
+- **Editor (R2.1, Draft fix round 2):** set the scene to 1355–1415 (60 f) and remove S01-B05-SH04 from the timeline; leave SH02, SH03, narration, captions and sound frames as they are; re-cut the B05 clips for the review page.
 
-### S01-B05-SH04 · 1391–1415 · grandpa grins at the retry (D01, new R2)
-- **Time:** no speech; 24 f (0.80 s). Hard cut in from the retry's still frame, hard cut out to the L15 POV (L15 onset at SH02 L3).
-- **Staging (SET-DINING, `est`; seating and hand points as S01-B01-SH02 R1.8):** BOY seat (−0.26, 0.17, −0.62), ELDER seat (0.3, 0.06, −0.7), both `front` (+z), seated cards squared to the lens. BOY's left hand TP (middle MCP) at (−0.20, 0.72, −0.09), ring flat, gap 0 (the retry's exit pose, held); right hand flat (−0.33, 0.72, −0.12). ELDER's right hand flat at (0.15, 0.72, −0.15), cardigan cuff behind the hand (R1.8). **BOY:** `suspicious` L0–23, look vector at his left hand L0–11; L12–15 eyes flick up to ELDER (look vector screen-right [0.8, −0.1]), held to L23; head still. **ELDER:** L0–3 `happy` (smile), look at BOY's left hand; L4–9 the smile opens to a grin (face `{brow: up, eyes: dot, mouth: grin}`, eyes open on BOY's hand) and the head tilts 6° toward BOY; L10–23 grin held, one silent shoulder chuckle (0.01 m down-up over 6 f) at L14. Casting: BOY **`boy-school, new: seated-hands-on-table, suspicious`**; ELDER **`man-elder (own cardigan), new: seated-hands-on-table, happy → grin face`** (grin face = kit parts, see Boss handoff; `laugh` is not used: its shut eyes read as laughing at BOY).
-- **Camera:** `cam: (−0.05, 0.86, −0.42), yaw −8→−7, r 1.24→1.22, eye 1.62, pitch −30°, f 1150, hy 740` (T-PAIR-L03's end camera from S01-B01-SH04, a 2 % drift; hy 760 → 740 so the test hand, which sits 0.17 m nearer the camera than in B01-SH04, stays clear of the band). Est (hand-computed from the camera formula, not mirrored or rendered, ±40 px): BOY's test-hand MCP y ≈ 1053 at x ≈ 444, its fingertips y ≈ 1112; ELDER's hand y ≈ 984 at x ≈ 746; heads as B01-SH04's end shifted up 20 px (BOY ≈ 465–711 at x ≈ 350, ELDER ≈ 351–645 at x ≈ 745).
-- **Look:** room 100 %, warm lamp, window rim (LF02 room look; no new look frame, not still-checked). Label off (not a diagram or musician shot).
-- **Sound:** dining bed and far clock at the B01 level, continuous from SH01; SH01's NG-S1 tremble tail decays; no SFX, no music, no voice (the voice pieces are locked; ELDER's chuckle is silent). Mix: hold.
-- **Captions:** none.
-- **Entry → exit:** BOY's hand TP, ring flat (SH01's exit) → the same; ELDER grinning, BOY looking up at him. SH02 opens on the flat POV hand (pose change hidden by the cut, as R1's SH01 → SH02 cut).
-- **Accept:** ELDER's grin reads on a 270 px sheet (open grin, eyes open, aimed at BOY's hand); warm, not mocking (R02); BOY's ring gap 0 px; fingertips ≤ y 1160 every frame; no caption and no label in G1391–1414; no music in G1391–1414.
+### ~~S01-B05-SH04~~ · dropped R2.1 (was 1391–1415, D01 grin)
+- **Dropped** by the user on the Draft review (fixlist-r2 FX10, 2026-11-09: "ไม่ต้องมีก็ได้อันนี้ผมว่า", confirmed). ID retired, not reused. Its 24 f are carried by S01-B05-SH01 (SD10; Editor closes the gap). The R2 staging, camera and sound block is in Git history (SHEETS-R2).
 
 ### S01-B05-SH02 · 1415–1531 (R1 1391–1507) · not lazy, shared string (L15)
 - **Time:** L15 onset L3, "มันแค่" L59 (`meas-e`), "สายร่วม" L76 (`est`), last voiced L110; tail L111–115.
@@ -334,8 +332,8 @@ Casting, set points, poses and looks not restated here are in [storyboard.md](st
 <a id="handoff"></a>
 ## Boss and Editor handoff (W5.2 / W5.3)
 
-- **Boss (W5.2), from this revision:** N2 tendon diagram hardening (Film look asset in `tendons.ts`), N3 SET-DINING (`dining.ts`), N4 seated-hands-on-table (episode `paintTableArm` exists; the kit pose is missing), N5 reach-own-hand / gentle-stop, N6 strain face, N8 piano: `pianistHand` presses one finger only, so **dyads and the closing chord need a multi-finger press** (SD05), N11 hand-lifted-dangle; lift tracks per finger from `TP_LIFTS` and `liftFinger`; SP1–SP4. Shot groups of 3–5 (AI01): suggested G1 B01-SH01..SH04, G2 B02 + B05-SH01, G3 B03 diagram shots (SH01, SH02, SH03, SH04), G4 room cutaways (B03-SH07, SH08, SH09) + B05-SH04 (D01, R2: same set, B01-SH04's camera) + B04-SH01, G5 B05-SH02, SH03 + seam. **R2 kit note (D01):** no named `grin` expression exists in `src/painted/kit/expressions.ts` (`laugh` has the `grin` mouth with shut eyes; `happy` has `smile`); ELDER's face in B05-SH04 is the FaceState `{brow: 'up', eyes: 'dot', mouth: 'grin'}`, built from existing kit parts (`head.ts` mouth `grin`), so it is **not a new asset**; Boss may file it as a named `grin` expression at kit intake (optional).
-- **Editor (W5.3):** composition `src/videos/EDU-EP09-SHORT` (then `store.py use` for `public/narration/EDU-EP09-SHORT.wav`, pending since W4); narration pieces A–D; V01 and V02 TTS within their slots (PL05); NG-M1, NG-M2, NG-S1; captions per the plan; re-measure the B03 cut words ("เหมือน", "ไม่มี", "ชุด") and the L04 tap words on the draft and send the frames to Film if any moves by more than 3 f.
+- **Boss (W5.2), from this revision:** N2 tendon diagram hardening (Film look asset in `tendons.ts`), N3 SET-DINING (`dining.ts`), N4 seated-hands-on-table (episode `paintTableArm` exists; the kit pose is missing), N5 reach-own-hand / gentle-stop, N6 strain face, N8 piano: `pianistHand` presses one finger only, so **dyads and the closing chord need a multi-finger press** (SD05), N11 hand-lifted-dangle; lift tracks per finger from `TP_LIFTS` and `liftFinger`; SP1–SP4. Shot groups of 3–5 (AI01): suggested G1 B01-SH01..SH04, G2 B02 + B05-SH01, G3 B03 diagram shots (SH01, SH02, SH03, SH04), G4 room cutaways (B03-SH07, SH08, SH09) + B04-SH01 (R2 also B05-SH04, dropped R2.1), G5 B05-SH02, SH03 + seam. **R2 kit note (D01):** no named `grin` expression exists in `src/painted/kit/expressions.ts` (`laugh` has the `grin` mouth with shut eyes; `happy` has `smile`); ELDER's face in B05-SH04 is the FaceState `{brow: 'up', eyes: 'dot', mouth: 'grin'}`, built from existing kit parts (`head.ts` mouth `grin`), so it is **not a new asset**; Boss may file it as a named `grin` expression at kit intake (optional). R2.1: B05-SH04 dropped, so nothing in this deliverable uses the grin face. **R2.2 (Draft fix round 3, [fixlist-r3.md](fixlist-r3.md)):** SD11 pianist hand in kit `drawPalm` + `paintTableArm` wrist join; SD12 remove `JUG`/`paintJug` from `dining.ts`, re-solve ELDER's stop arm in `tracks.ts` `gentleStopAt` (elbow forward, lean, stop x within the limits).
+- **Editor (W5.3):** composition `src/videos/EDU-EP09-SHORT` (then `store.py use` for `public/narration/EDU-EP09-SHORT.wav`, pending since W4); narration pieces A–D; V01 and V02 TTS within their slots (PL05); NG-M1, NG-M2, NG-S1; captions per the plan; re-measure the B03 cut words ("เหมือน", "ไม่มี", "ชุด") and the L04 tap words on the draft and send the frames to Film if any moves by more than 3 f. **R2.1 (Draft fix round 2, Editor task):** drop S01-B05-SH04 from the timeline and extend S01-B05-SH01 to 1355–1415 (SD10); `durationFrames` stays 1606, no audio or caption frame moves. **R2.2 (Draft fix round 3):** after Boss lands SD11/SD12, re-render every scene whose cache key moves (kit `hands.ts` touches all hand shots), no timing change; rewrite the review-rows clips keys; frame check B01-SH03 L30, B01-SH04 L27/L47, B02-SH03 L0/L110 against bfa78a5.
 
 <a id="dependencies"></a>
 ## Dependencies and open items
@@ -345,14 +343,19 @@ Casting, set points, poses and looks not restated here are in [storyboard.md](st
 | Boss | N1 hand macro (`hands.ts`, 847c064): flat, TP, ring-strain, lifts | existing, exists-unintegrated (no composition) |
 | Boss | N2 `tendons.ts`, N3 `dining.ts`, N8 `piano.ts` (Film look assets, LF02–LF04) | exists-unintegrated; Boss hardens |
 | Boss | N4, N5, N6, N11; multi-finger piano press (SD05) | missing |
-| Boss | B05-SH04 ELDER grin face (FaceState from kit parts; optional named `grin` at intake); N3, N4 cover it | existing parts; N3/N4 missing |
+| Boss | ~~B05-SH04 ELDER grin face~~ | N/A (shot dropped R2.1) |
 | Editor | V01, V02 TTS; NG-M1, NG-M2, NG-S1; composition | missing |
 | Editor | Re-measure B03 sub-line cuts and L04 taps on the draft (±8 f / ±3 f) | open |
-| Film | Check SD01–SD03 and B05-SH04 tip heights on the first draft frames (mirror / hand estimates, not renders) | open |
+| Film | Check SD01–SD03 tip heights on the first draft frames (mirror / hand estimates, not renders); B05-SH04 dropped R2.1 | open |
+| Editor | R2.1: remove S01-B05-SH04, extend S01-B05-SH01 to 1355–1415 (SD10); re-cut its review clip | open |
+| Boss | R2.2: SD11 pianist hand (`hands.ts` `drawPalm`, `dining.ts` wrist join); SD12 box out + ELDER stop arm (`dining.ts`, `tracks.ts`) | missing |
+| Editor | R2.2: re-render the moved scenes, rewrite clips keys, frame check | open |
+| User (via coordinator) | FX14: S01-B02-SH01 verdict `change` with no note; what to change? | open |
+| Film / coordinator | R2.1: the LF02 still (`out/edu09/look-frames/v3/LF02.png`) shows the milk box at its old place between the sitters; the code (76fbd43) puts it beside ELDER. Re-render LF02 as v4 from `EDU9-LF02` (a refresh of a passed look frame, not a new look) so the review page matches the plates; R2.2: v4 still shows the box (now removed) and the old palm, re-render as v5 after SD11/SD12 | done (Editor 2026-11-09: v5 `out/edu09/look-frames/v5/LF02.png`, box removed, new hands, new ELDER arm) |
 
 - **Element captures:** look frames LF01, LF01b, LF02, LF03, LF04 (`out/edu09/look-frames/v1/`, LF02 `v3/`; store `projects/EDU-EP09-SHORT/look-frames/`), R1.8 kit thumb; LF04's key-contact pose is a placeholder. No new captures in this pass.
 - **Editor scene sample proposal:** B02-SH01 (taps on the words) and B03-SH04 → B04-SH01 (the dead-cut tone and the first piano note on one frame).
-- **D01 — added (user ADD, 2026-11-08, via coordinator):** S01-B05-SH04, G1391–1415, 24 f (SD09). On the review page as a new row that asks the user.
+- **D01 — added (user ADD, 2026-11-08, via coordinator):** S01-B05-SH04, G1391–1415, 24 f (SD09). **Dropped R2.1** (user, Draft fix round 2 FX10, 2026-11-09); frames carried by S01-B05-SH01 (SD10).
 - **Q-S1 — accepted (user, 2026-11-08, via coordinator):** the B04 picture plays a short tune with a closing chord (SD05). Row S01-B04-SH01 is user-passed; its `changed` note is removed in ROWS-R2.0 (coordinator records `pass` for `reviews/S01-B04-SH01@board` if the page does not hold it yet).
 
 <a id="change-log"></a>
@@ -362,3 +365,5 @@ Casting, set points, poses and looks not restated here are in [storyboard.md](st
 | --- | --- | --- | --- |
 | EDU-EP09-SHEETS-R1 | 2026-11-08 | Film | First timed scene sheets (W5.1) from the W4 voice lock (R1.4 s2, 44.98 s): 18 shots, 1582 f = 52.73 s; narration in four pieces with the read's gaps kept; SD01–SD08 (band-safe hy drifts on B01-SH02, B03-SH07, B03-SH08; lengths of the five flagged shots; pianist picture per Boat's R1.4 rule; taps on the words; eases; SH02 tail); caption plan; ROWS-R1.9 timed; brief R1.9. |
 | EDU-EP09-SHEETS-R2 | 2026-11-08 | Film | User answers 2026-11-08 (via coordinator): Q-S1 accepted (B04 tune picture, SD05; row user-passed); D01 ADD: new shot S01-B05-SH04 (ELDER's grin, T-PAIR-L03 end camera, 24 f) at G1391–1415 from the spare time (SD09). Piece D +24 f (placed G1410); S01-B05-SH02 → 1415–1531, S01-B05-SH03 → 1531–1606; L15 captions, word anchors, label ghost, tag and seam frames +24; 19 shots, 1606 f = 53.53 s; voice pieces unchanged. ROWS-R2.0, BRIEF-R2.0. |
+| EDU-EP09-SHEETS-R2.1 | 2026-11-09 | Film | Draft fix round 2 (fixlist-r2): FX08 milk box position synced to Boss 76fbd43 (`JUG` x 0.255–0.38, right of ELDER's right hand, beside his body in close-ups; baseline line); S01-B01-SH04 ELDER stop restated from the built `gentleStopAt` (hand straight across from (0.17, 0.72, −0.20), elbow over the back edge, left arm at rest, lean); FX10 S01-B05-SH04 dropped (ID retired), its 24 f G1391–1415 carried by S01-B05-SH01 → 1355–1415 (SD10, Editor task); 18 shots, 1606 f unchanged, no narration, caption, tag or seam frame moves; LF02 still flagged for a refresh (old box place). ROWS-R2.1, BRIEF-R2.1. |
+| EDU-EP09-SHEETS-R2.2 | 2026-11-09 | Film | Draft fix round 3 ([fixlist-r3.md](fixlist-r3.md) FX11–FX14): SD11 pianist hand look for every macro and dining hand (B01-SH03, B02-SH03 look/accept lines; volume only, no length, pose or frame change); SD12 milk box removed from SET-DINING (baseline line), S01-B01-SH04 ELDER elbow forward on the wood, lean and stop-x limits, arm-length acceptance; Boss/Editor handoff and dependencies; FX14 B02-SH01 open question for the user; LF02 v5 needed. 18 shots, 1606 f, no narration, caption or event frame moves. |

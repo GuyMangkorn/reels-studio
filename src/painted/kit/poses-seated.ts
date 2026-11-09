@@ -2,6 +2,8 @@ import type {PoseFigure} from './poses';
 import {poseFor} from './poses';
 import {bodyFrame, shoulderPoint, type CastDef} from './cast';
 import type {Pt} from './painter';
+import type {V3} from './space';
+import {camPoint, type YCam} from './ycam';
 
 // Two seated poses for EDU-EP06-SHORT (brief N7; Boss W5.2, 2026-11-07), built on P31 (`sit_chair_hands_lap`) and kept OUTSIDE the numbered
 // pose sheet (P01-P45 stays as the user's sheet; promote them into it only on request). Use like a sheet pose:
@@ -47,4 +49,25 @@ export const seatedKnee = (def: CastDef, g: Pt, unit: number, side: 'r' | 'l', v
   const leg = view === 'front' ? legs.find((l) => (side === 'l' ? l.knee[0] > 0 : l.knee[0] < 0)) : legs[0];
   if (!leg) return [g[0], g[1]];
   return [g[0] + (view === 'left' ? -1 : 1) * leg.knee[0] * unit, g[1] - leg.knee[1] * unit];
+};
+
+// ---- N4 `seated-hands-on-table` (EDU-EP09 SET-DINING; Boss W5.2, 2026-11-08). P31 body, front view squared to the lens, each arm that rests on a
+// table drawn to a world elbow on the wood (`via`) and down behind the table top (`to`); the forearm and hand on the wood are then painted by the
+// caller (the hand macro). Kept outside the numbered pose sheet like the two above. World metres, `tableY` = table top height.
+export const SEATED_HANDS_ON_TABLE = 'seated-hands-on-table' as const;
+/** Elbow z on the wood just inside the back edge of a 0.8 m table whose centre is z 0. */
+export const TABLE_ELBOW_Z = -0.37;
+export type TableHands = {tableY: number; lHand?: V3; rHand?: V3; lElbow?: V3; rElbow?: V3; /** Elbow x offset from the hand toward the body (m): BOY -0.025 (under the shoulder), ELDER +0.03 (outside it). */ elbowIn?: number};
+/** Default elbow on the wood for a hand: `side` +1 = the character's left arm (screen right in the front view). */
+export const elbowOnTable = (hand: V3, side: 1 | -1, tableY: number, elbowIn = -0.025): V3 => [hand[0] + side * elbowIn, tableY + 0.026, TABLE_ELBOW_Z];
+/** `PoseFigure` of a seated figure with forearms on a table; `cam` projects the world elbows. Spread into `drawFigure`'s pose with `view: 'front'`. */
+export const seatedHandsOnTable = (cam: YCam, def: CastDef, g: Pt, unit: number, o: TableHands): PoseFigure => {
+  const base = poseFor('P31', def, g, unit, 'front');
+  const arm = (hand: V3 | undefined, elbow: V3 | undefined, side: 1 | -1): NonNullable<PoseFigure['lArm']> | null => {
+    if (!hand) return null;
+    const e = elbow ?? elbowOnTable(hand, side, o.tableY, o.elbowIn), via = camPoint(cam, e), to = camPoint(cam, [e[0], e[1] - 0.25, e[2] - 0.02]);
+    return via && to ? {to, via} : null;
+  };
+  const l = arm(o.lHand, o.lElbow, 1), r = arm(o.rHand, o.rElbow, -1);
+  return {...base, view: 'front', ...(l ? {lArm: l} : {}), ...(r ? {rArm: r} : {})};
 };
