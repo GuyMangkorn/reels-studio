@@ -16,7 +16,7 @@ import {AST, BOY_PJ, BOY_UNIFORM, C} from './palette';
 import {paintSpineEarth, paintSpineSpace} from './spine';
 import {paintSpongeCard} from './sponge';
 
-export const LF_FRAMES = {LF01: 1, LF02: 1, LF03: 1, LF04: 1, LF05: 1} as const;
+export const LF_FRAMES = {LF01: 1, LF02: 1, LF03: 1, LF04: 1, LF04S: 1, LF05: 1} as const;
 export type Measure = {lead?: {top: number; bottom: number; left?: number; right?: number}; word?: ReturnType<typeof wordAt>; gapPx?: number; cam?: YCam; spine?: {top: Pt; bottom: Pt}; extra?: Record<string, number>};
 export const MEASURE: Record<string, Measure> = {};
 
@@ -101,12 +101,14 @@ export const paintLF03 = (p: Painter) => {
 
 // ---- LF04: S01-B03-SH03 mid (u 0.5). brief `target T-BED, camera on the bed's open side (yaw ~ +90), r 2.0 -> 1.8, eye 1.0, truck +x 0.15`;
 // lens f 1100, horizon 575 (W3: the lying body centre near y 900 for the VD09 match cut).
-export const camB03SH03 = camMove([[-2.08, 0.55, -2.4], [-2.08, 0.55, -2.25]], [90, 90], [2.0, 1.8], 1.0, {f: 1100, hy: 575});
-export const camLF04 = camOf(camB03SH03, 0.5);
+// R1.4 (viewer check UT03/UT02): the camera comes down to eye 0.75 (the bed side fills the lower frame instead of the floor) and the shot
+// becomes a push-in toward the neck for the diagram half: start r 1.5 on the whole boy, end r 0.85 on the chest. LF04 is the END (diagram half).
+export const camB03SH03 = camMove([[-2.08, 0.5, -2.45], [-2.08, 0.5, -2.85]], [90, 90], [1.5, 0.85], [1.05, 0.95], {pitch: [-4, -20], f: 1100, hy: 640, ease: [0.35, 0.8]});
+export const camLF04 = camOf(camB03SH03, 1);
+export const camLF04S = camOf(camB03SH03, 0);
 /** Feet end of the lying boy (P36 on the mattress, head on the pillow toward -z = screen right). */
 export const BOY_BED: V3 = [-2.08, MATTRESS_Y - 0.04, -2.08];
-export const paintLF04 = (p: Painter) => {
-  const c = camLF04;
+const paintB03SH03 = (p: Painter, c: YCam, key: string) => {
   paintBedroomSet(p, c, 'moon');
   const a = paintFigureAt(p, c, BOY_PJ, {at: BOY_BED, view: 'left', pose: 'P36', face: 'asleep', t: 0.3, shadow: false});
   // quilt to the chest (z of the chest line ~ the pillow + 0.42 m)
@@ -114,24 +116,52 @@ export const paintLF04 = (p: Painter) => {
   if (a) {
     const u = camUnit(c, BOY_BED), ends = spineEnds(BOY_PJ, a, u, [0, 1], 'left');
     paintSpineEarth(p, 4600, ends.bottom, ends.top, [0, 1], {pad: 0.65, drops: -0.5, u});
-    MEASURE.LF04 = {lead: {top: a.top, bottom: a.bottom, left: Math.min(a.feet[0], a.head[0]), right: Math.max(a.feet[0], a.head[0])}, spine: ends, cam: c};
+    MEASURE[key] = {lead: {top: a.top, bottom: a.bottom, left: Math.min(a.feet[0], a.head[0]), right: Math.max(a.feet[0], a.head[0])}, spine: ends, cam: c};
   }
-  void BED; void ell; void mixColor;
+  void BED; void mixColor;
 };
+export const paintLF04 = (p: Painter) => paintB03SH03(p, camLF04, 'LF04');
+/** B03-SH03 start framing (reference still for the brief's camera note; not a look frame). */
+export const paintLF04S = (p: Painter) => paintB03SH03(p, camLF04S, 'LF04S');
 
 // ---- LF05: S01-B04-SH02 at u 0.6. brief `target T-SPINE, yaw -8 -> 0, r 1.6 -> 1.4, eye 1.15`; lens f 900, horizon 760 (W3).
+// R1.4 (viewer check): free float, read without narration: card lifted off the deck (no contact, no shadow), rolled back 9 deg, legs in a
+// loose drift (profile `run` legs at a low mix: one knee forward, toes down, never a planted stance), P46 arms; a floating pen beside her;
+// a small earring stud and the lashed profile eye carry `woman-pixie`. Space spine without the veil (FC-03: no glow).
 export const camB04SH02 = camMove([-0.3, 1.05, -0.25], [-8, 0], [1.6, 1.4], 1.15, {f: 900, hy: 760});
 export const camLF05 = camOf(camB04SH02, 0.6);
-/** AST "ground point" for the floating card (hips at (-0.30, 0.95, -0.25), P46 crouch); drift +0.02 m/s in +y over the shot. */
-export const AST_AT: V3 = [-0.3, 0.27, -0.25];
+/** AST card point for the free float (hips about (-0.30, 0.95, -0.25)); the feet end 0.2+ m above the deck. Drift +0.02 m/s in +y over the shot. */
+export const AST_AT: V3 = [-0.3, 0.62, -0.25];
+const AST_DRIFT = {squat: 0.42, noShadow: true} as const;
+/** `new: pen-float` (brief SET-CABIN, optional prop): a navy pen turning slowly in mid-air, no contact, no shadow. */
+const paintFloatPen = (p: Painter, c: YCam, at: V3, ang: number) => {
+  const g = camPoint(c, at);
+  if (!g) return;
+  const u = camUnit(c, at), L = 0.14 * u, w = Math.max(3, 0.011 * u), d: Pt = [Math.cos(ang), Math.sin(ang)], n: Pt = [-d[1] * w / 2, d[0] * w / 2];
+  const a: Pt = [g[0] - d[0] * L / 2, g[1] - d[1] * L / 2], b: Pt = [g[0] + d[0] * L / 2, g[1] + d[1] * L / 2], tip: Pt = [b[0] + d[0] * w, b[1] + d[1] * w];
+  const body: Pt[] = [[a[0] + n[0], a[1] + n[1]], [b[0] + n[0], b[1] + n[1]], tip, [b[0] - n[0], b[1] - n[1]], [a[0] - n[0], a[1] - n[1]]];
+  hardFill(p, 4750, '#24365e', body);
+  const clip: Pt[] = [[a[0] + d[0] * L * 0.08 + n[0] * 1.4, a[1] + d[1] * L * 0.08 + n[1] * 1.4], [a[0] + d[0] * L * 0.38 + n[0] * 1.4, a[1] + d[1] * L * 0.38 + n[1] * 1.4]];
+  inkLine(p, 4751, clip, {color: '#c9ccd4', weight: 1.4, closed: false, still: true});
+  inkLine(p, 4752, body, {weight: 0.9, still: true});
+};
+/** Small gold ear stud (`woman-pixie` read, viewer check A-M): on the visible ear of a left profile, from the head anchor. */
+const earStud = (p: Painter, a: FigAnchors, u: number) => {
+  const e: Pt = [a.head[0] + 0.035 * u, a.head[1] + 0.085 * u];
+  hardFill(p, 4760, '#e2b84a', ell(e[0], e[1], 0.014 * u, 0.014 * u, 12));
+  inkLine(p, 4761, ell(e[0], e[1], 0.014 * u, 0.014 * u, 12), {weight: 0.7, still: true});
+};
 export const paintLF05 = (p: Painter) => {
   const c = camLF05;
   paintCabin(p, c, {marks: 1});
+  paintFloatPen(p, c, [-0.5, 1.4, 0.05], -0.45);
   const at: V3 = [AST_AT[0], AST_AT[1] + 0.02 * 3.6 * 0.6, AST_AT[2]];
-  const a = paintFigureAt(p, c, AST, {at, view: 'left', pose: 'P46', face: 'neutral', faceState: {look: [0.2, -0.1]}, t: 0.6, shadow: false});
+  const a = paintFigureAt(p, c, AST, {at, view: 'left', pose: 'P46', face: 'neutral', faceState: {look: [0.2, -0.1]}, t: 0.6, shadow: false, roll: 14, fig: AST_DRIFT, held: earStud});
   if (!a) return;
-  const u = camUnit(c, at), ends = spineEnds(AST, a, u, [1, 0], 'left', 0.22, 0.035);
+  const u = camUnit(c, at), ends = spineEnds(AST, a, u, [1, 0], 'left', 0, 0.045);
   const axis: Pt = [ends.top[0] - ends.bottom[0], ends.top[1] - ends.bottom[1]], arc = Math.hypot(axis[0], axis[1]) * 1.02;
-  const top = paintSpineSpace(p, 4700, ends.bottom, axis, [1, 0], arc, {straight: 0.3, u});
-  MEASURE.LF05 = {lead: {top: a.top, bottom: a.bottom}, spine: {top, bottom: ends.bottom}, cam: c, extra: {headY: Math.round(a.head[1]), headX: Math.round(a.head[0])}};
+  const back: Pt = (() => { const L = Math.hypot(axis[0], axis[1]) || 1; return [-axis[1] / L, axis[0] / L]; })();
+  const top = paintSpineSpace(p, 4700, ends.bottom, axis, back[0] > 0 ? back : [-back[0], -back[1]], arc, {straight: 0.3, u});
+  const deck = camPoint(c, [at[0], 0, at[2]]);
+  MEASURE.LF05 = {lead: {top: a.top, bottom: a.bottom}, spine: {top, bottom: ends.bottom}, cam: c, extra: {headY: Math.round(a.head[1]), headX: Math.round(a.head[0]), feetY: Math.round(a.feet[1]), deckY: deck ? Math.round(deck[1]) : -1}};
 };

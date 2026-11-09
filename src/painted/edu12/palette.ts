@@ -25,7 +25,7 @@ export const BOY_PJ: CastDef = {...BOY0, outfit: {shoulder: BOY0.outfit.shoulder
   gear: {collar: {kind: 'v', color: '#f4f7fb', depth: 0.06}}}};
 /** VD16 `woman-pixie + new: station-wear`: navy polo (white collar piping), khaki cargo trousers, grey socks; no patch, flag or name. */
 export const AST: CastDef = {...PEOPLE['woman-pixie'], outfit: {shoulder: PEOPLE['woman-pixie'].outfit.shoulder, shirt: '#2e4a78', sleeve: '#2e4a78', longSleeves: false,
-  pants: '#b8a27a', shoes: '#9a9ca3', gear: {collar: {kind: 'v', color: '#2a4270', depth: 0.07}, belt: {color: '#5d5340', h: 0.03}}}};
+  pants: '#b8a27a', shoes: '#ece8de', gear: {collar: {kind: 'v', color: '#2a4270', depth: 0.07}, belt: {color: '#5d5340', h: 0.03}}}};
 /** VD16 `man-crop + new: station-wear` (teal polo). */
 export const CREW: CastDef = {...PEOPLE['man-crop'], outfit: {...AST.outfit, shoulder: PEOPLE['man-crop'].outfit.shoulder, shirt: '#2f7f7a', sleeve: '#2f7f7a',
   gear: {collar: {kind: 'v', color: '#28706b', depth: 0.07}, belt: {color: '#5d5340', h: 0.03}}}};

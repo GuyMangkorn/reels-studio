@@ -80,8 +80,9 @@ export const paintCabin = (p: Painter, c: YCam, o: CabinOpts = {}) => {
   wFill(p, c, 1880, o.dim ? mixColor(C.led, '#3a4f7a', 0.7 * o.dim) : C.led, [[XL, YC - 0.05, ZF + 0.18], [XR, YC - 0.05, ZF + 0.18], [XR, YC - 0.02, ZF + 0.23], [XL, YC - 0.02, ZF + 0.23]]);
   glz(p, c, 1881, '#ffffff', 0.35 * (1 - (o.dim ?? 0)), [[XL, YC - 0.25, ZF], [XR, YC - 0.25, ZF], [XR, YC - 0.55, ZF], [XL, YC - 0.55, ZF]]);
   // vent grille and a cargo net with small items (left, low)
-  wFill(p, c, 1882, T('#cfd6de'), qz(ZF + 0.003, -0.75, -0.35, 0.42, 0.58));
-  for (let k = 0; k < 6; k++) wInk(p, c, 1883 + k, [[-0.73, 0.45 + k * 0.022, ZF + 0.004], [-0.37, 0.45 + k * 0.022, ZF + 0.004]], {color: T('#7d8894'), weight: 0.6, closed: false});
+  // R1.4: the grille moved from x -0.75..-0.35 to +0.15..+0.55 (in LF05 it sat right under AST's floating feet and read as a step)
+  wFill(p, c, 1882, T('#cfd6de'), qz(ZF + 0.003, 0.15, 0.55, 0.42, 0.58));
+  for (let k = 0; k < 6; k++) wInk(p, c, 1883 + k, [[0.17, 0.45 + k * 0.022, ZF + 0.004], [0.53, 0.45 + k * 0.022, ZF + 0.004]], {color: T('#7d8894'), weight: 0.6, closed: false});
   paintBox(p, c, 1890, {x0: -1.75, x1: -1.45, y0: 0.4, y1: 0.62, z0: ZF, z1: ZF + 0.12}, T('#e0b25a'), {}, {ink: true});
   paintBox(p, c, 1896, {x0: -1.42, x1: -1.22, y0: 0.4, y1: 0.7, z0: ZF, z1: ZF + 0.1}, T('#8fb3d9'), {}, {ink: true});
   for (let k = 0; k < 5; k++) wInk(p, c, 1920 + k, [[-1.8 + k * 0.15, 0.36, ZF + 0.14], [-1.75 + k * 0.15, 0.78, ZF + 0.14]], {color: T('#3c4048'), weight: 0.8, closed: false});

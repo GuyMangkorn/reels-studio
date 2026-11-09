@@ -11,3 +11,17 @@ Classes P/A/H/R, severity C/M. Taste IDs per docs/user-taste.md. Read: sheet-01 
 
 Summary: LF01 pass, LF02 pass, LF03 pass, LF04 fix, LF05 fix (floating cue plus halo).
 Hard limits (no pads, water, glow, sponge in the space spine; labels): met except the halo around the LF05 torso, which I count as a glow.
+
+## Round 2 (v6, rows R1.4)
+
+Read: bundle sheet-01 plus LF04 and LF05 at full size. Classes P/A/H/R, severity C/M.
+
+| ID | Reads as (no narration) | Verdict | Findings |
+| --- | --- | --- | --- |
+| LF01 | A barefoot schoolboy by a bedroom doorframe in a warm hallway, bed visible through the door. | pass | Unchanged from round 1. R-M: reads warm, not night (UT04). H-M: the pencil marks and label are tiny. |
+| LF02 | The same hallway, bright morning, boy in pale-blue pyjamas, sun glow at left. | pass | Unchanged. R-M: the "อ้าว?" face reads near-neutral. |
+| LF03 | Boy in profile with a spine on his back beside a sponge pressed under three books, water dripping. | pass | Unchanged. M: the spine is small beside the sponge card. |
+| LF04 | A boy asleep in a blue night room, a small spine with water drops glowing on his chest. | pass | Round 1 fixed: the lower area now holds the bed side, a drawer rail and a brown floor, so no empty dark 35% (UT03 met); the spine is larger and readable with its drops. M-P: top-down bed with the head and blanket not clearly joined to a body. M-H: the glow ellipse is a grey disc; the blue pad is faint. M: the top 30% is plain wall (UT12). |
+| LF05 | A short-haired person in a navy top and khaki trousers floats in a pale lab with a round Earth window, a pen and objects drifting. | fail | Fixed: it now reads as floating (knees bent, no floor shadow, loose pen and objects), no halo on the torso. Still wrong: A-C / UT08: reads male (boxy torso, no waist, hips or bust; only the earring and glasses hint at a woman). H-C / UT02: the spine is a cream S-ribbon at the chest that reads as a scarf or towel, and its bracket is thin and hard to read; the separate ruler on the wall at right is still far from the spine. A-M: the head is large against the torso and the arm sprouts from the chest. |
+
+Summary: LF01 pass, LF02 pass, LF03 pass, LF04 pass (fixed), LF05 fail (floating, halo fixed; gender cue and spine/ruler readability not).

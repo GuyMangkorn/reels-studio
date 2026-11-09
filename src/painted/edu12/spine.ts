@@ -133,7 +133,8 @@ export const paintSpineSpace = (p: Painter, seed: number, bottom: V, axis: V, ba
   const amp = 0.1 + (0.02 - 0.1) * Math.max(0, Math.min(1, s.straight));
   const chord = arc * chordOf(amp), ax = unit(axis), w = Math.max(10, 0.045 * s.u);
   const top = add(bottom, ax, chord);
-  paintVeil(q, seed, top, bottom, Math.max(w * 4.2, 0.24 * s.u), 0.42);
+  // No veil in space (viewer check R1.2: the soft charcoal oval read as a glow/halo; FC-03 forbids glow on the space spine). The column sits
+  // straight on the figure card with its own ink line.
   const N = 40, cl: V[] = [];
   for (let i = 0; i <= N; i++) { const f = i / N; cl.push(add(add(bottom, ax, chord * f), back, amp * arc * Math.sin(f * Math.PI * 2))); }
   const left: Pt[] = [], right: Pt[] = [];
@@ -148,11 +149,12 @@ export const paintSpineSpace = (p: Painter, seed: number, bottom: V, axis: V, ba
   hardFill(q.layer(0.5, seed * 7), seed + 2, mixColor(C.bone, '#b9a98a', 0.6), shade);
   inkLine(q, seed + 3, tube, {color: C.boneInk, weight: 1.2, curve: 0.05, still: true});
   if (s.bracket !== false) {
-    // bracket on the front side (away from the back), from the pelvis line to the column top: grows only with the straightening
-    const off = add([0, 0], back, -(w * 2.4 + amp * arc));
-    const b0 = add(bottom, off), b1 = add(top, off), cap = add([0, 0], back, w * 0.6);
-    inkLine(q, seed + 4, [add(b0, cap), b0, b1, add(b1, cap)], {color: '#f6f1e6', weight: 2.2, closed: false, curve: 0, still: true});
-    inkLine(q, seed + 5, [add(b0, cap), b0, b1, add(b1, cap)], {color: C.boneInk, weight: 0.9, closed: false, curve: 0, still: true});
+    // bracket on the BACK side, just outside the column's widest bend (R1.4: the viewer read the far wall tape as the measure; the bracket now
+    // sits next to the column, off the torso), from the pelvis line to the column top: grows only with the straightening
+    const off = add([0, 0], back, w * 1.6 + amp * arc);
+    const b0 = add(bottom, off), b1 = add(top, off), cap = add([0, 0], back, -w * 0.7);
+    inkLine(q, seed + 4, [add(b0, cap), b0, b1, add(b1, cap)], {color: '#f6f1e6', weight: 4.2, closed: false, curve: 0, still: true});
+    inkLine(q, seed + 5, [add(b0, cap), b0, b1, add(b1, cap)], {color: C.boneInk, weight: 1.6, closed: false, curve: 0, still: true});
   }
   return top;
 };

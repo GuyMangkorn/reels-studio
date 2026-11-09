@@ -7,7 +7,7 @@ import {Grain} from '../kit/screen';
 import {camPoint, type YCam} from '../kit/ycam';
 import type {V3} from '../kit/space';
 import {LAMP, wordAt} from './home';
-import {camLF01, camLF02, camLF03, camLF04, paintLF01, paintLF02, paintLF03, paintLF04, paintLF05} from './scenes';
+import {camLF01, camLF02, camLF03, camLF04, camLF04S, paintLF01, paintLF02, paintLF03, paintLF04, paintLF04S, paintLF05} from './scenes';
 
 export {LF_FRAMES} from './scenes';
 
@@ -82,6 +82,12 @@ export const LF03 = () => (
 export const LF04 = () => (
   <Painted paint={paintLF04} tags={['ภาพประกอบ']}>
     <Pool cam={camLF04} at={[-3.38, 1.4, -1.9]} r={700} color="#9fb6dc" level={0.5} id="moonwin" />
+    <Edge color="#26355e" level={0.75} inner={0.45} id="memory" />
+  </Painted>
+);
+export const LF04S = () => (
+  <Painted paint={paintLF04S} tags={['ภาพประกอบ']}>
+    <Pool cam={camLF04S} at={[-3.38, 1.4, -1.9]} r={700} color="#9fb6dc" level={0.5} id="moonwin" />
     <Edge color="#26355e" level={0.75} inner={0.45} id="memory" />
   </Painted>
 );
