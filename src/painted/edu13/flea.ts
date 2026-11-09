@@ -16,7 +16,8 @@ import type {V3} from '../kit/space';
 export const FLEA = {plate: '#8f4824', plateB: '#a85c30', shade: '#5a2a14', gloss: '#efb07c', leg: '#7a3a1c', legFar: '#4a2412', eye: '#1b0d08',
   ink: '#2a120a', glint: '#fff6e8', window: '#f1e6cf', windowEdge: '#b98a5a', pad: '#f0a62c', padHi: '#ffe08e', muscle: '#e0705a', catch: '#3a2a22'} as const;
 
-export type FleaState = 'rest' | 'fold' | 'extend' | 'apex' | 'land';
+export const SIL_FILL = '#1b1420', SIL_RIM = '#ffc27a';
+export type FleaState = 'rest' | 'fold' | 'crouch' | 'extend' | 'apex' | 'land';
 export type FleaView = 'right' | 'left' | 'front';
 export type FleaOpts = {
   view: FleaView;
@@ -31,6 +32,8 @@ export type FleaOpts = {
   shadow?: boolean;
   /** Colour-mix toward a light colour (warm sun key). */
   tint?: {to: string; u: number};
+  /** `new: flea silhouette` (N17): every colour mixes toward `fill` by `u` (1 = flat dark), then a warm `rim` copy shows along the upper edge, `rimPx` wide. */
+  silhouette?: {fill?: string; rim?: string | false; rimPx?: number; u?: number};
   t?: number;
 };
 
@@ -44,6 +47,8 @@ export const POSES: Record<FleaState, Pose> = {
   rest: {pitch: -5, grounded: true, hind: hindL([-0.43, -0.04], [-0.25, -0.31], [-0.45, -0.36]), mid: {k: [0.2, -0.24], t: [0.12, -0.36]}, fore: {k: [0.4, -0.24], t: [0.36, -0.36]}},
   // crouch: body low, nose down, the Z folded tight
   fold: {pitch: -14, grounded: true, hind: hindL([-0.42, 0.08], [-0.16, -0.2], [-0.4, -0.27]), mid: {k: [0.18, -0.2], t: [0.04, -0.27]}, fore: {k: [0.36, -0.22], t: [0.3, -0.29]}},
+  // launch crouch (LF04b, SH04B): hind Z folded tight under the thorax, nose up and aimed, fore legs bent with the head clear of the floor
+  crouch: {pitch: 14, grounded: true, hind: hindL([-0.34, 0.1], [-0.08, -0.2], [-0.26, -0.3]), mid: {k: [0.14, -0.2], t: [0.04, -0.32]}, fore: {k: [0.34, -0.2], t: [0.26, -0.32]}},
   // push-off: hind legs fully extended back and down, toes still on the floor, nose up, fore legs reaching
   extend: {pitch: 28, grounded: true, hind: hindL([-0.42, -0.3], [-0.7, -0.48], [-0.86, -0.56]), mid: {k: [0.22, -0.2], t: [0.34, -0.1]}, fore: {k: [0.42, -0.14], t: [0.58, -0.2]}},
   // apex tuck: everything pulled in against the body
@@ -91,7 +96,12 @@ export type FleaMeasure = {head: Pt; rump: Pt; eye: Pt; thorax: Pt; hindHip: Pt;
 /** Paints the flea with its ground point (body centre, floor) at screen `g` and `len` px per body length. Returns key points (px). */
 export const drawFlea = (p0: Painter, g: Pt, len: number, o: FleaOpts): FleaMeasure => {
   const dir = o.view === 'left' ? -1 : 1;
-  const tint = (c: string) => (o.tint ? mixColor(c, o.tint.to, o.tint.u) : c);
+  const sil = o.silhouette;
+  if (sil && sil.rim !== false) { // rim pass: the same flea flat warm, nudged up and toward the sun; the dark copy below covers all but the upper edge
+    const r = sil.rimPx ?? Math.max(1.2, len * 0.012);
+    drawFlea(p0, [g[0] - dir * r * 0.35, g[1] - r], len, {...o, silhouette: {fill: sil.rim ?? SIL_RIM, u: 1, rim: false}});
+  }
+  const tint = (c: string) => (sil ? mixColor(c, sil.fill ?? SIL_FILL, sil.u ?? 1) : o.tint ? mixColor(c, o.tint.to, o.tint.u) : c);
   if (o.view === 'front') return drawFront(p0, g, len, o, tint);
   const base = POSES[o.state ?? 'rest'];
   const pose = o.to ? blendPose(base, POSES[o.to], o.blend ?? 0) : base;
@@ -158,7 +168,7 @@ export const drawFlea = (p0: Painter, g: Pt, len: number, o: FleaOpts): FleaMeas
   // head details: eye, glint, tucked antenna groove, genal and pronotal combs, bristles
   const eye = S([0.41, -0.025]);
   solid(p, 9340, tint(FLEA.eye), SP(ellL(0.41, -0.025, 0.04, 0.034, 0.2, 14)), 3);
-  washAt(p, 9341, FLEA.glint, 230, SP(ellL(0.42, -0.012, 0.012, 0.01, 0, 8)), 0, 0);
+  washAt(p, 9341, sil ? tint(FLEA.glint) : FLEA.glint, 230, SP(ellL(0.42, -0.012, 0.012, 0.01, 0, 8)), 0, 0);
   ink(9342, SP([[0.28, 0.02], [0.32, 0.075], [0.37, 0.08]]), 0.9, false);
   band(p, 9343, SP([[0.3, 0.03], [0.33, 0.065], [0.36, 0.068]]), 0.02 * len, 0.012 * len, tint(FLEA.leg));
   for (let i = 0; i < 7; i++) { const x = 0.26 + 0.036 * i, y = -0.162 + 0.012 * Math.sin(i * 0.5); band(p, 9350 + i, SP([[x, y], [x - 0.03, y - 0.05]]), 0.012 * len, 0.004 * len, tint(FLEA.ink)); }

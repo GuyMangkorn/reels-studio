@@ -6,7 +6,8 @@ import {makePainter, type Painter} from '../kit/painter';
 import {Grain} from '../kit/screen';
 import {camPoint, camUnit} from '../kit/ycam';
 import {LR13, OX} from './room';
-import {arcPoint, CAM_MACRO, CAM_MYTH as CAM_MYTH_REF, CAM_TRUTH, FLEA_MM, LF_FRAMES, paintF1, paintF2, paintF3, paintF3b, paintF4, paintF5, paintF6, paintLF01, paintLF02, paintLF03} from './scenes';
+import {arcPoint, CAM_MACRO, CAM_MYTH as CAM_MYTH_REF, CAM_TRUTH, FLEA_MM, LF_FRAMES, paintF1, paintF2, paintF3, paintF3b, paintF4, paintF5, paintF6, paintLF01, paintLF02, paintLF03, paintLF04, paintLF04b, CAM_TR_SKY, SKY_APEX, skyTrail} from './scenes';
+import {TRAILER_GRADE} from './trailer';
 
 export {LF_FRAMES} from './scenes';
 
@@ -19,13 +20,13 @@ if (typeof document !== 'undefined') loadFont({family: 'Noto Sans Thai', url: st
 const FPS = 30;
 const PAPER = '#efe8d8';
 
-const Painted = ({paint, band = false, vignette = 'rgba(60,40,20,0.2)', children}: {paint: (p: Painter, frame: number) => void; band?: boolean; vignette?: string; children?: ReactNode}) => {
+const Painted = ({paint, band = false, vignette = 'rgba(60,40,20,0.2)', grain = 0.08, children}: {paint: (p: Painter, frame: number) => void; band?: boolean; vignette?: string; grain?: number; children?: ReactNode}) => {
   const fn = useCallback(({brush, frame}: PaintContext) => paint(makePainter(brush, {t: frame / FPS, frame, fade: PAPER}), frame), [paint]);
   return (
     <AbsoluteFill style={{background: PAPER}}>
       <BrushCanvas paint={fn} paper={PAPER} />
       <AbsoluteFill style={{pointerEvents: 'none', background: `radial-gradient(ellipse 95% 75% at 50% 42%, rgba(0,0,0,0) 58%, ${vignette} 100%)`}} />
-      <Grain opacity={0.08} />
+      <Grain opacity={grain} />
       {children}
       {band && <div style={{position: 'absolute', left: 0, right: 0, top: 1176, height: 168, borderTop: '3px dashed rgba(255,255,255,0.9)', borderBottom: '3px dashed rgba(255,255,255,0.9)', boxShadow: '0 0 0 1px rgba(0,0,0,0.35)'}} />}
     </AbsoluteFill>
@@ -88,9 +89,29 @@ const TruthBand = () => {
   );
 };
 
+/** Trailer card "ถ้าคิดแบบง่าย ๆ" (VD26): series caption font, bold, wide tracking, white with a soft warm glow, slot TC (rows 1010-1100). */
+const TrailerCard = ({y = 1010}: {y?: number}) => (
+  <div lang="th" style={{position: 'absolute', left: 0, width: 1080, top: y, height: 90, display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: 'Noto Sans Thai', fontWeight: 800, fontSize: 64, letterSpacing: 6, color: '#fff'}}>
+    <span style={{WebkitTextStroke: '8px #1d2129', paintOrder: 'stroke fill', textShadow: `0 0 26px ${TRAILER_GRADE.sunGlow}, 0 3px 0 #1d2129`}}>ถ้าคิดแบบง่าย ๆ</span>
+  </div>
+);
+/** SH04C ring marker at the silhouette (true scale, about 20 px) with a short dotted trail behind it (VD29). */
+const SkyMarker = () => {
+  const a = camPoint(CAM_TR_SKY, SKY_APEX), trail = skyTrail();
+  return (
+    <svg width={1080} height={1920} style={{position: 'absolute', left: 0, top: 0}}>
+      {trail.map(([x, y], i) => <g key={i}><circle cx={x} cy={y} r={7} fill="#1d2129" /><circle cx={x} cy={y} r={4.2} fill="#fff" /></g>)}
+      {a && <g><circle cx={a[0]} cy={a[1]} r={34} fill="none" stroke="#1d2129" strokeWidth={13} /><circle cx={a[0]} cy={a[1]} r={34} fill="none" stroke="#ff5a3c" strokeWidth={6.5} /></g>}
+    </svg>
+  );
+};
+const TRAILER_VIGNETTE = 'rgba(10,22,40,0.5)';
+
 export const LF01 = () => <Painted paint={paintLF01} />;
 export const LF02 = () => <Painted paint={paintLF02}><Lbl /><ScaleBar /></Painted>;
 export const LF03 = () => <Painted paint={paintLF03} vignette="rgba(40,70,100,0.18)"><MythArc /></Painted>;
+export const LF04 = () => <Painted paint={paintLF04} vignette={TRAILER_VIGNETTE} grain={0.13}><SkyMarker /><TrailerCard /></Painted>;
+export const LF04b = () => <Painted paint={paintLF04b} vignette={TRAILER_VIGNETTE} grain={0.13}><TrailerCard /></Painted>;
 export const F1 = () => <Painted paint={paintF1} band><Lbl /><ScaleBar /></Painted>;
 export const F2 = () => <Painted paint={paintF2} band><Lbl /></Painted>;
 export const F3 = () => <Painted paint={paintF3} band />;

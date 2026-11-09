@@ -11,7 +11,8 @@ import {paintBox, qx, qy, qz, wFill, wInk, wWash, type Box} from '../edu02/world
 // and blue glass bands, a roof parapet and water tank. MAN at (0.20, 0, 0) facing -z; the giant flea feet centre (1.50, 0, -0.60) (re-staged from (0, 0, 0) and (1.70, 0, 0.20) so both are fully in the original CAM-MYTH frame, user 2026-11-09).
 export const SOI = {storey: 3.3, tower: {x: 10, z: -60, w: 24, floors: 30}, towerH: 100, man: [0.2, 0, 0] as V3, flea: [1.5, 0, -0.6] as V3, houseH: 13.2} as const;
 const HAZE = '#e8f0f0';
-const hz = (color: string, dist: number) => mixColor(color, HAZE, Math.min(0.75, dist / 160));
+let haze = HAZE; // the haze colour of the plate being painted (paintSoi sets it from `o.haze`; the trailer plates use teal)
+export const hz = (color: string, dist: number) => mixColor(color, haze, Math.min(0.75, dist / 160));
 
 const skyBands = (p: Painter) => {
   const cols = ['#86bde4', '#9ccbe8', '#b4d8ec', '#cde6f0', '#e0eef0'];
@@ -61,10 +62,14 @@ const ground = (p: Painter, c: YCam) => {
 };
 
 /** SET-SOI (back to front: sky, tower, shophouses far to near, ground), then `cast` near the lens. */
-export const paintSoi = (p: Painter, c: YCam, o: {cast?: ((p: Painter, c: YCam) => void)[]} = {}) => {
-  skyBands(p);
-  washAt(p, 6995, '#ffffff', 90, ell(300, 170, 230, 55, 20), 0.4, 0.6);
-  washAt(p, 6996, '#ffffff', 80, ell(850, 460, 200, 45, 20), 0.4, 0.6);
+export const paintSoi = (p: Painter, c: YCam, o: {cast?: ((p: Painter, c: YCam) => void)[]; sky?: (p: Painter, c: YCam) => void; haze?: string} = {}) => {
+  haze = o.haze ?? HAZE;
+  if (o.sky) o.sky(p, c); // trailer plates (trailer.ts): dusk sky, sun disc and the skyline instead of the afternoon sky
+  else {
+    skyBands(p);
+    washAt(p, 6995, '#ffffff', 90, ell(300, 170, 230, 55, 20), 0.4, 0.6);
+    washAt(p, 6996, '#ffffff', 80, ell(850, 460, 200, 45, 20), 0.4, 0.6);
+  }
   ground(p, c);
   tower(p, c);
   const colors = ['#d9a85a', '#6aa89f', '#efe2c4', '#d98a6a', '#a9c46a'];
@@ -75,5 +80,6 @@ export const paintSoi = (p: Painter, c: YCam, o: {cast?: ((p: Painter, c: YCam) 
   }
   boxes.sort((a, b) => camDist(c, [(b.b.x0 + b.b.x1) / 2, 0, (b.b.z0 + b.b.z1) / 2]) - camDist(c, [(a.b.x0 + a.b.x1) / 2, 0, (a.b.z0 + a.b.z1) / 2]));
   boxes.forEach((q) => house(p, c, q.b, q.color, q.side, q.seed));
+  haze = HAZE;
   (o.cast ?? []).forEach((f) => f(p, c));
 };

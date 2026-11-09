@@ -1,12 +1,13 @@
 import type {FigAnchors} from '../kit/cast';
 import type {Painter} from '../kit/painter';
 import type {V3} from '../kit/space';
-import {orbitYCam, type YCam} from '../kit/ycam';
+import {camPoint, orbitYCam, type YCam} from '../kit/ycam';
 import {paintDog, paintMan} from './cast';
 import {fleaJoints, paintFlea, POSES, type FleaMeasure, type FleaOpts} from './flea';
 import {LR13, OX, paintRoom13, type RoomItem} from './room';
 import {paintSoi, SOI} from './soi';
 import {paintStudio} from './studio';
+import {duskSky, horizonRow, paintSkyline, TRAILER_GRADE, towerRim, trailerPainter} from './trailer';
 
 // EDU-EP13-SHORT look frames (W3.1): LF01 room (S01-B01-SH01 f0), LF02 macro flea (S01-B01-SH02 f0), LF03 myth (S01-B01-SH04 at the arc apex),
 // and the six SP1 flea look-check stills F1-F6. Pure paint functions; cameras follow the brief's shot plan (est values; changes marked "W3").
@@ -61,6 +62,38 @@ export const paintLF03 = (p: Painter, frame: number) => {
   MEASURE.LF03 = out;
 };
 
+// ---- LF04 / LF04b: the trailer look (TR01, brief R1.4 VD26-VD29): dusk grade, sun disc behind the tower, skyline plate, flea silhouette.
+// CAM-TR-SKY (VD29, locked values): the money shot at true scale. The apex point is the arc's top, put at picture row ~160 (VD29) by `SKY_APEX`.
+export const CAM_TR_SKY: YCam = {...orbit([10, 70, -60], -9, 327, 25, 3600, 820), pitch: 8 * DEG};
+/** Giant true-scale length (m) and the apex world point (x over the roof, height set so the silhouette sits near row 160). */
+export const SKY_APEX: V3 = [10.8, 134, -60];
+/** The dotted trail behind the silhouette: the last stretch of the arc (arcPoint s 0.30..0.5), reprojected through CAM-TR-SKY. */
+export const skyTrail = (): [number, number][] => {
+  const out: [number, number][] = [];
+  for (let i = 0; i <= 5; i++) { const s = 0.26 + 0.14 * (i / 5), k = 4 * s * (1 - s), a = ARC.from; const q = camPoint(CAM_TR_SKY, [a[0] + (SKY_APEX[0] - a[0]) * 2 * s, a[1] + (SKY_APEX[1] - a[1]) * k, a[2] + (SKY_APEX[2] - a[2]) * 2 * s]); if (q) out.push(q); }
+  return out;
+};
+const sunAt = (c: YCam, r: number): [number, number] => { const t = camPoint(c, [SOI.tower.x, 0, SOI.tower.z + SOI.tower.w / 2]) ?? [540, 1500]; return [t[0] - 10, horizonRow(c) - r * 1.9]; };
+export const SKY_SUN_R = 200;
+export const paintLF04 = (p: Painter, frame: number, drain = 0) => {
+  const c = CAM_TR_SKY, g = trailerPainter(p, drain), out: {flea?: FleaMeasure | null} = {};
+  paintSoi(g, c, {haze: TRAILER_GRADE.haze, sky: (_q, cc) => { duskSky(sunAt(cc, SKY_SUN_R), SKY_SUN_R)(p, cc); paintSkyline(g, cc); }, cast: [
+    (_q, cc) => towerRim(p, cc),
+    (_q, cc) => { out.flea = paintFlea(p, cc, SKY_APEX, 1.8, {view: 'right', state: 'apex', air: 0, shadow: false, silhouette: {u: 1}, t: frame / 30}); },
+  ]});
+  MEASURE.LF04 = out;
+};
+/** LF04b (SH04B +10): the locked CAM-MYTH composition under the trailer grade, the giant mid-fold, near-silhouette and rim-lit. */
+export const paintLF04b = (p: Painter, frame: number) => {
+  const t = frame / 30, c = CAM_MYTH, g = trailerPainter(p), out: {fig?: FigAnchors | null; flea?: FleaMeasure | null} = {};
+  const sun = camPoint(c, [SOI.tower.x, 0, SOI.tower.z]) ?? [900, 700];
+  paintSoi(g, c, {haze: TRAILER_GRADE.haze, sky: (_q, cc) => duskSky([sun[0], horizonRow(cc) - 150], 120)(p, cc), cast: [
+    (_q, cc) => { out.flea = paintFlea(p, cc, SOI.flea, 1.8, {view: 'right', state: 'crouch', silhouette: {u: 0.82, rimPx: 4}, t}); },
+    (_q, cc) => { out.fig = paintMan(g, cc, {at: SOI.man, view: 'back', pose: 'P30', face: 'neutral', t, warm: 0}); },
+  ]});
+  MEASURE.LF04b = out;
+};
+
 // ---- SP1 flea look-check stills
 const GIANT = 1.8;
 const sunTint = {to: '#ffe2a0', u: 0.08};
@@ -94,4 +127,4 @@ export const paintF5 = (p: Painter) => roomWith(p, CAM_TRUTH, {
 /** F6 shrink midpoint (B05-SH01): the giant caught mid-shrink, body about 0.5 m, standing by MAN at the chart. */
 export const paintF6 = (p: Painter) => roomWith(p, CAM_CHART_LOW, {man: {at: [OX + 0.3, 0, 0.3], pose: 'P09', face: 'smug'}, flea: {at: [OX + 0.85, 0, 0.3], len: 0.5, opts: {view: 'right', state: 'rest'}}}, 'F6');
 
-export const LF_FRAMES = {LF01: 30, LF02: 30, LF03: 30, F1: 30, F2: 30, F3: 30, F3b: 30, F4: 30, F5: 30, F6: 30} as const;
+export const LF_FRAMES = {LF01: 30, LF02: 30, LF03: 30, LF04: 30, LF04b: 30, F1: 30, F2: 30, F3: 30, F3b: 30, F4: 30, F5: 30, F6: 30} as const;
