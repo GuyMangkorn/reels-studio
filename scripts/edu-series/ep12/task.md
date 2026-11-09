@@ -2,7 +2,7 @@
 
 Record: this file. Series context: [concepts.md](../concepts.md) (R6, C35) · series task list: [task.md](../task.md).
 
-**Now:** W1.3 done (R2 passes). Next: W1.4 length check, W1.5 user approves the script.
+**Now:** W1.4 done (PASS, 43.68 s read). Next: W1.5 user approves the script.
 
 - Deliverable: `EDU-EP12-SHORT`, Short only (Thai), 1080×1920, 30 fps, target 40–60 s (estimate). Profile: educational, painted 2D p5.brush, 4-head cast, Kore narrator (edu default), ending per concept: closed, ~2 s hold on the boy asleep, then the doorframe (the user may change it); other fields = project defaults.
 - Factual claims for Boat: see the C35 entry in concepts.md R6. All unchecked until research and fact-check. Thin spots: daily height loss figure (about 1 cm / about 1 % of stature, range by height); NASA astronaut growth up to about 3 %; back-pain wording (no mechanism claim beyond "ตัวยืด" and "ปวดหลัง").
@@ -15,7 +15,7 @@ Record: this file. Series context: [concepts.md](../concepts.md) (R6, C35) · se
   - [x] W1.1 Boat research (2026-11-08)
   - [x] W1.2 Preaw script (EDU-EP12-SCRIPT-R2, est. ~55 s, 2026-11-09, sound intent per beat added)
   - [x] W1.3 Boat fact-check (2026-11-09: R1 pass with changes, R2 recheck pass; [factcheck.md](factcheck.md); advisory A1 declined by user 2026-11-09: L11 stays)
-  - [ ] W1.4 Length check
+  - [x] W1.4 Length check (2026-11-09: PASS. One Gemini Kore read of L01-L13, 1 request, no atempo, no retry: 43.68 s raw, speech ends 43.34 s; with scripted no-line gaps, V01-V03 and end holds about 50 s video, target 40-60 s, limit 63 s. Measure [measure.json](measure.json); store `projects/EDU/audio/2026-11-09_ep12-nar-kore-fullread.wav`; not listened, L08-L09 edges +-0.15 s; unchanged R2 so it is also the voice-lock read pending W4.3 user approval)
   - [ ] W1.5 User approves the script
 - [ ] W2 Brief and storyboard (Film brief carries `Sound direction`)
 - [ ] W3 Look frames and storyboard pass
@@ -23,8 +23,8 @@ Record: this file. Series context: [concepts.md](../concepts.md) (R6, C35) · se
 - [ ] W5 Draft
   - [ ] W5.1 Film timed scene sheets, a `Sound` line per shot
   - [ ] W5.2 Boss assets and plates
-  - [ ] W5.2s Ton sounds and cue sheet (0/C cues; generated/library), parallel with W5.2
-  - [ ] W5.3 Editor draft: places the cue sheet, mixes, passes `scripts/sound-cues.py`
+  - [ ] W5.2s Ton sounds and cue sheet (0/C cues; generated/library) with per-beat `levels` checks from [EP08b](../../../docs/editor-principles.md#ep08b-keep-each-layer-at-its-distance-from-the-voice) (Default for Ton passes from 9 Nov 2026), parallel with W5.2
+  - [ ] W5.3 Editor draft: places the cue sheet, mixes to the levels, exports stems, Ton measures with `scripts/mix-levels.py`, passes `scripts/sound-cues.py`
 - [ ] W6 Final
 - [ ] W7 Pinned
 - [ ] W8 Deliver (render, cover, posting, kit intake)
