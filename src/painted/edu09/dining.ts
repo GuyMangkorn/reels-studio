@@ -147,16 +147,16 @@ const paintCuffSleeve = (p: Painter, c: YCam, id: number, wrist: V3, end: V3, r:
   const ring = (o: V3, rr: number, wob = 0, n = 28): V3[] => Array.from({length: n}, (_, i) => { const th = (i / n) * Math.PI * 2, k = rr * (1 + wob * Math.sin(th * 5 + 0.7) + wob * 0.6 * Math.sin(th * 3)); return [o[0] + k * (Math.cos(th) * u[0] + Math.sin(th) * v[0]), Math.max(TABLE_Y + 0.002, o[1] + k * (Math.cos(th) * u[1] + Math.sin(th) * v[1]) + 0.004), o[2] + k * (Math.cos(th) * u[2] + Math.sin(th) * v[2])]; });
   // R1.8: the knit rests flat on the wood (ring points clamped to the table top, none below it) and the cuff is only a little wider than the wrist.
   // R3c: the sleeve is one tapered tube from the cuff at the wrist (0.14 of the way) to a domed elbow that matches the rig's upper-arm sleeve in width.
-  const cuff = at(0.14), rc = r * 1.05, re = r * 0.88;
+  const cuff = at(0.14), rc = r * 0.96, re = r * 0.72; // R3d: thinner sleeve (matches the rig's upper-arm width), the cuff flares a little at its edge
   const dome = [35, 65, 85].flatMap((d) => { const q = (d * Math.PI) / 180, o: V3 = [end[0] + a[0] * re * Math.sin(q), end[1] + a[1] * re * Math.sin(q), end[2] + a[2] * re * Math.sin(q)]; return camPoly(c, ring(o, re * Math.cos(q))); });
-  const cuffRing = ring(cuff, rc, 0.05), body = hull([...camPoly(c, cuffRing), ...camPoly(c, ring(end, re)), ...dome]);
+  const lip = at(0.14 - 0.014 / al), cuffRing = ring(cuff, rc, 0.04), body = hull([...camPoly(c, cuffRing), ...camPoly(c, ring(lip, rc * 0.9, 0.03)), ...camPoly(c, ring(end, re)), ...dome]);
   if (body.length < 3) return;
   hardFill(p, id, s.color, body);
   // shade: the half away from the lamp (lamp over the table centre, x 0), i.e. the +u side for an arm right of centre
   const sg = wrist[0] >= 0 ? 1 : -1, half = (pts: V3[]) => pts.filter((q) => ((q[0] - cuff[0]) * u[0] + (q[2] - cuff[2]) * u[2]) * sg > -0.15 * r);
   const sh = hull([...camPoly(c, half(cuffRing)), ...camPoly(c, half(ring(end, re)))]);
   if (sh.length > 2) hardFill(p, id + 1, s.shade, sh);
-  inkLine(p, id + 2, body, {weight: 1.1, still: true, color: mixColor(s.shade, '#2a1a10', 0.4)});
+  inkLine(p, id + 2, body, {weight: 1.0, still: true, color: mixColor(s.shade, '#2a1a10', 0.18)});
   // creases where the sleeve bunches toward the elbow (upper side only)
   [0.5, 0.72].forEach((t, k) => {
     const arc = ring(at(t), re * (1 + k * 0.02), 0.03, 28).slice(3 + k * 2, 11 + k);
@@ -164,17 +164,17 @@ const paintCuffSleeve = (p: Painter, c: YCam, id: number, wrist: V3, end: V3, r:
     if (pts.length > 1) inkLine(p, id + 3 + k, pts, {weight: 1, closed: false, still: true, color: mixColor(s.shade, '#2a1a10', 0.3)});
   });
   // ribbed knit cuff: a darker band 2.2 cm deep from the cuff edge back, rib strokes along the arm, a soft wobbly rim over the wrist
-  const dt = 0.022 / al, edge = ring(cuff, rc * 1.03, 0.05), back = ring(at(0.14 + dt), rc * 1.0, 0.03);
+  const dt = 0.022 / al, edge = ring(cuff, rc * 1.04, 0.04), back = ring(at(0.14 + dt), rc * 0.93, 0.03);
   const band = hull([...camPoly(c, edge), ...camPoly(c, back)]);
-  if (band.length > 2) hardFill(p, id + 5, mixColor(s.color, s.shade, 0.3), band);
+  if (band.length > 2) hardFill(p, id + 5, mixColor(s.color, '#d9bf9c', 0.26), band);
   const lo = (i: number) => Math.sin((i / 28) * Math.PI * 2) < 0.25;
   for (let i = 0; i < 28; i += 2) {
     if (!lo(i)) continue;
     const q0 = camPoint(c, edge[i]), q1 = camPoint(c, back[i]);
-    if (q0 && q1) inkLine(p, id + 10 + i, [q0, q1], {weight: 0.9, closed: false, still: true, color: mixColor(s.shade, '#2a1a10', 0.1)});
+    if (q0 && q1) inkLine(p, id + 10 + i, [q0, q1], {weight: 0.8, closed: false, still: true, color: mixColor(s.color, s.shade, 0.7)});
   }
   const rim = camPoly(c, edge.filter((_, i) => lo(i)));
-  if (rim.length > 1) inkLine(p, id + 7, rim, {weight: 1.1, closed: false, still: true, color: mixColor(s.shade, '#2a1a10', 0.2)});
+  if (rim.length > 1) inkLine(p, id + 7, rim, {weight: 1.0, closed: false, still: true, color: mixColor(s.color, '#f1e4cf', 0.35)});
 };
 
 /** Pendant lamp (W3: shade centre lowered to y 1.45 (0.73 m over the table) so its rim enters the top of the close-ups): cord, a cream cone shade, the lit opening. */

@@ -580,15 +580,17 @@ const outlineLocal = () => {
   const pts: [number, number][] = [], seg = (a: readonly [number, number], b: readonly [number, number], n: number, fn: (v: number, f: number) => [number, number]) => {
     for (let i = 0; i < n; i++) { const t = i / n; pts.push(fn(a[0] + (b[0] - a[0]) * t, a[1] + (b[1] - a[1]) * t)); }
   };
-  const web = (f: number) => (f > 3.8 && f < 6.2 ? 0.35 * Math.sin((Math.PI * (f - 3.8)) / 2.4) : 0), roll = (f: number) => 0.25 * Math.sin((Math.PI * Math.max(0, Math.min(f, 5.2))) / 5.2);
+  const web = (f: number) => (f > 3.8 && f < 6.2 ? 0.6 * Math.sin((Math.PI * (f - 3.8)) / 2.4) : 0), roll = (f: number) => 0.42 * Math.sin((Math.PI * Math.max(0, Math.min(f, 5.2))) / 5.2);
+  const neck = (f: number) => (f > 0 && f < 1.8 ? 0.2 * Math.sin((Math.PI * f) / 1.8) : 0); // R3d: the outline tapers in just above the wrist
   const thumbStart = 0;
-  for (let i = 0; i < PALM_FRONT; i++) seg(PALM[i], PALM[i + 1], 4, (v, f) => [v + web(f), f]);
+  for (let i = 0; i < PALM_FRONT; i++) seg(PALM[i], PALM[i + 1], 4, (v, f) => [v + web(f) - neck(f), f]);
   const thumbEnd = pts.length;
-  seg(PALM[PALM_FRONT], PALM[10], 12, (v, f) => [v, f + 0.2 * Math.cos(((v - 1.45) / 1.7) * Math.PI * 2) - 0.2]);
+  seg(PALM[PALM_FRONT], PALM[10], 12, (v, f) => [v, f + 0.1 * Math.cos(((v - 1.45) / 1.7) * Math.PI * 2) - 0.1]);
   const littleStart = pts.length;
-  for (let i = 10; i < PALM.length - 1; i++) seg(PALM[i], PALM[i + 1], 4, (v, f) => [v - roll(f), f]);
+  for (let i = 10; i < PALM.length - 1; i++) seg(PALM[i], PALM[i + 1], 4, (v, f) => [v - roll(f) + neck(f), f]);
   pts.push([-2.6 - roll(0), 0]);
   const littleEnd = pts.length - 1;
+  for (const [v, f] of [[-2.2, -0.12], [-1.2, -0.2], [0, -0.22], [1.2, -0.2], [2.0, -0.1]] as const) pts.push([v, f]); // R3d: rounded heel behind the wrist (fill only, no ink)
   return {pts, thumbEnd: [thumbStart, thumbEnd] as [number, number], littleStart, littleEnd, knuckles: KNUCKLES};
 };
 
@@ -596,7 +598,8 @@ const outlineLocal = () => {
 const FILL = 0, SHADOW = 120, INK_ID = 160;
 const HIGHLIGHT = (skin: string, k = 0.2) => mixColor(skin, '#fff3e2', k);
 /** R3 tone ramp of the pianist hand, rim light -> core shadow -> shade -> mid -> skin -> lit -> peach crown, interpolated over the 11 band fractions `TONE_KS` (1 = the whole width, 0.24 = the crown). Shared by the hand and the forearm so they match at the wrist. */
-const TONE_KS = [1, 0.97, 0.94, 0.9, 0.86, 0.81, 0.76, 0.71, 0.65, 0.59, 0.53, 0.47, 0.41, 0.35, 0.29, 0.23];
+const TONE_KS0 = [1, 0.97, 0.94, 0.9, 0.86, 0.81, 0.76, 0.71, 0.65, 0.59, 0.53, 0.47, 0.41, 0.35, 0.29, 0.23];
+const TONE_KS: number[] = Array.from({length: 40}, (_, i) => { const x = (i / 39) * 15, j = Math.min(14, Math.floor(x)); return TONE_KS0[j] + (TONE_KS0[j + 1] - TONE_KS0[j]) * (x - j); }); // R3d: 40 bands of small tone steps (was 16) so the dome reads as a gradient
 const TONE_RAMP = (t: {skin: string; shade: string; deep: string}) => [mixColor(t.shade, t.skin, 0.45), mixColor(t.shade, t.deep, 0.65), t.shade, mixColor(t.skin, t.shade, 0.45), t.skin, HIGHLIGHT(t.skin, 0.1), HIGHLIGHT(t.skin, 0.24)];
 const toneAt = (t: {skin: string; shade: string; deep: string}, i: number) => {
   const r = TONE_RAMP(t), x = (i / (TONE_KS.length - 1)) * (r.length - 1), j = Math.min(r.length - 2, Math.floor(x));
@@ -662,7 +665,7 @@ export const paintHandMacro = (p: Painter, cam: YCam, h: HandMacro): HandAnchors
   let litIdx = 0;
   if (palmPts) palmPts.forEach((v, i) => { if (-(v[0] * ls[0] + v[1] * ls[1]) > -(palmPts[litIdx][0] * ls[0] + palmPts[litIdx][1] * ls[1])) litIdx = i; });
   const palmAnchor: [number, number] = [(palmLo.pts[litIdx][0] + palmCtr[0]) / 2, (palmLo.pts[litIdx][1] + palmCtr[1]) / 2];
-  const V_WRIST: [number, number] = [palmLo.pts[0][0], palmLo.pts[palmLo.pts.length - 1][0]]; // wrist edge, local v: thumb side, little side
+  const V_WRIST: [number, number] = [palmLo.pts[0][0], palmLo.pts[palmLo.littleEnd][0]]; // wrist edge, local v: thumb side, little side
   // Forearm and sleeve.
   let armCut: {bandPoly: (poly: Pt[], k: number) => Pt[]; wrist: Pt} | null = null; // the forearm's shade cut line, so the hand can blend into it
   if (h.elbow) {
@@ -678,7 +681,7 @@ export const paintHandMacro = (p: Painter, cam: YCam, h: HandMacro): HandAnchors
       const vCut = (v: number): Pt => { const c = at2(v, 0) ?? w.pt; return c; };
       const band = (k: number): [Pt, Pt] => [vCut(palmAnchor[0] + (V_WRIST[1] - palmAnchor[0]) * k), vCut(palmAnchor[0] + (V_WRIST[0] - palmAnchor[0]) * k)];
       const bandPoly = (poly: Pt[], k: number) => { const [lo, hi] = band(k); return clipHalf(clipHalf(poly, lo, nrm), hi, [-nrm[0], -nrm[1]]); };
-      TONE_KS.forEach((k, i) => fill(q, 200 + i, toneAt(tone, i), bandPoly(arm, k)));
+      TONE_KS.forEach((k, i) => fill(q, 500 + i, toneAt(tone, i), bandPoly(arm, k)));
       armCut = {bandPoly, wrist: w.pt};
       ink(q, 0, arm, inkW, inkOf(INK));
       if (h.sleeve) {
@@ -788,14 +791,15 @@ export const paintHandMacro = (p: Painter, cam: YCam, h: HandMacro): HandAnchors
     // every tone band is the outline scaled about a point near the lit edge, so the bands hug the lit edge and open out toward the shadow side; the wrist vertices keep their f so no band closes across the wrist
     const aL = palmAnchor;
     const shrink = (k: number): Pt[] => lo.pts.map(([v, f]) => at2(aL[0] + (v - aL[0]) * k, f < 0.05 ? f : aL[1] + (f - aL[1]) * k) ?? [cx, cy]);
-    TONE_KS.forEach((k, i) => fill(q, FILL + 60 + i, toneAt(tone, i), shrink(k)));
+    TONE_KS.forEach((k, i) => fill(q, i === 0 ? FILL + 60 : FILL + 300 + i, toneAt(tone, i), shrink(k)));
     // (the forearm carries the same bands, built on the same wrist extent, so the join needs no blend strip)
     const padBase = toneAt(tone, 12); // the pad tones are pre-mixed with the mid tone under them (no extra translucent layers: an opaque hand adds none)
     const pad = (id: number, v: number, f: number, rv: number, rf: number, col: string, a: number) => {
       const c = toPx(sk.at(v, 0.05, f));
       if (!c) return;
       const rx = rv * S * c.r, ry = rf * S * c.r;
-      fill(q, FILL + 89 + id, mixColor(padBase, col, a), ring(c.pt[0] - ls[0] * rx * 0.12, c.pt[1] - ls[1] * rx * 0.12, rx, ry, 16));
+      // R3d: a soft pad is three nested ellipses (1, 0.7, 0.4 of the radius) of a third of the strength each, so no single hard disc edge shows
+      [1, 0.7, 0.4].forEach((k, j) => fill(q, FILL + 89 + id + j * 30, mixColor(padBase, col, a * (0.45 + 0.3 * j)), ring(c.pt[0] - ls[0] * rx * 0.12, c.pt[1] - ls[1] * rx * 0.12, rx * k, ry * k, 16)));
     };
     if (camSide >= 0) {
       // thumb web: lit dome of the first dorsal interosseous with a soft shadow just below it
@@ -804,9 +808,9 @@ export const paintHandMacro = (p: Painter, cam: YCam, h: HandMacro): HandAnchors
       if (!small) {
         // four knuckle bumps with dimples between them
         lo.knuckles.forEach(([v, f], i) => {
-          pad(10 + i, v - 0.0, f - 0.25, 0.5, 0.42, mixColor(tone.deep, tone.shade, 0.5), 0.1); // tiny shadow downstream
-          pad(14 + i, v, f - 0.1, 0.62, 0.52, crown, 0.16);
-          if (i < 3) pad(18 + i, (v + lo.knuckles[i + 1][0]) / 2, f - 0.7, 0.42, 0.55, mixColor(tone.shade, tone.deep, 0.5), 0.12);
+          pad(10 + i, v - 0.0, f - 0.65, 0.7, 0.35, mixColor(tone.deep, tone.shade, 0.5), 0.05); // tiny shadow downstream
+          pad(14 + i, v, f - 0.5, 0.85, 0.42, crown, 0.09);
+          if (i < 3) pad(18 + i, (v + lo.knuckles[i + 1][0]) / 2, f - 0.9, 0.5, 0.4, mixColor(tone.shade, tone.deep, 0.5), 0.05);
         });
       }
     } else {
