@@ -752,3 +752,5 @@ Ranking by reach vs cost:
 ## R6 — User pick (W0.3, 2026-11-08)
 
 User kept **all six: C31, C32, C33, C34, C35, C36** (structured question, two multi-select questions C31–C33 and C34–C36). Episode order not yet chosen. Film ranking: C35 > C31 > C33 > C32 > C34 > C36; Preaw's picks C33 and C35. Context: user asked Preaw for six concepts under the new ER08 pitch rule, no topic given, after clearing the unmade backlog (C13 kept).
+
+**EP12 pick (2026-11-08):** user picked **C35 ตอนนี้คุณเตี้ยกว่าตอนเช้า** as the next episode, `EDU-EP12-SHORT` (Short Thai). Order so far: EP11 = C32; C31, C33, C34, C36 not yet scheduled.

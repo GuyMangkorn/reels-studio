@@ -11,5 +11,5 @@ Use stable IDs in implementation/QA notes and handoffs. Scenes reference shared 
 
 Render video in stage order (docs/render-rules.md#render-stage): the half-size draft cut reviewed shot by shot, then the final cut, then delivery; name the stage before each render. Complete selected-deliverable and affected-consumer sequence/seek QA before pushing visual/runtime work, reporting exact coverage and unverified tooling/neighbors. Finish via its issue/branch/PR process with reusable assets, integration status, shared consumers and Editor handoff mapping, code checks, Studio/render evidence, contact-sheet paths, findings and limitations. Added instructions alone do not establish a repaired or visually verified scene.
 
-Sound: own shared sound capability (registry/renderer fields, asset-attached contact sounds, their tests); route sound generation requests to Editor rather than generating (docs/sound-generation-workflow.md#role-responsibilities).
+Sound: own shared sound capability (registry/renderer fields, asset-attached contact sounds, their tests); route sound generation requests to Ton rather than generating (docs/sound-generation-workflow.md#role-responsibilities).
 """

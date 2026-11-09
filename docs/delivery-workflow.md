@@ -21,7 +21,7 @@ Selection is complete when the record identifies the selected deliverables and t
 | Visual medium | illustrated 2D/3D/hybrid (existing library), user footage, stock/licensed footage, still images, typography/kinetic text, screen recording, mixed |
 | Visual engine | for illustrated/animated media: painted 2D (p5.brush) with the [painted 3D camera](film-visual-brief-workflow.md#painted-3d-camera) + Remotion SVG (project default), a mix of these, Film's choice, or the user's own answer ([visual engine](#visual-engine)) |
 | Voice | Gemini TTS ([project default](#project-defaults)), Niwat TTS (male, Edge), Premwadee TTS (female, Edge), user-supplied recording, on-camera audio, no voice |
-| Music / SFX | none, user-supplied, licensed library (record the license), shared sound library / locally generated ([`sound-generation` skill](../.agents/skills/sound-generation/SKILL.md)), sparse SFX; ducking under voice |
+| Music / SFX | none, user-supplied, licensed library (record the license), generated for the shot by Ton or a fitting shared-library file ([fit beats reuse](sound-generation-workflow.md#fit-beats-reuse)), sparse SFX; ducking under voice |
 | Captions | outline (default), box, none; position; burned-in or SRT only |
 | Chrome | channel label and progress bar on/off |
 | Ending | `A_fade` / `B_loop` (default), `C_seamless` (seamless Reels loop: the last frame blends into the first, see [production requirements](production-requirements.md#outputs-and-story-timing)), hard cut, end card |
@@ -74,7 +74,7 @@ Selecting several options means a mix; the brief then states which engine owns e
 
 **Requirement (user, 2 Nov 2026):** every video deliverable runs the full pipeline. There are no lighter tiers: the Light and Edit-only tiers are retired.
 
-[Ideation](#ideation) (Preaw pitch → Film annotation → user pick) → Boat research → Preaw script → Boat fact-check → Film brief → Film storyboard pass (VO-relative timing) + first [storyboard page](mark-storyboard-workflow.md#user-storyboard-review-page) → Editor [voice lock](#voice-lock) → Film timed scene sheets → Boss assets → Editor
+[Ideation](#ideation) (Preaw pitch → Film annotation → user pick) → Boat research → Preaw script → Boat fact-check → Film brief → Film storyboard pass (VO-relative timing) + first [storyboard page](mark-storyboard-workflow.md#user-storyboard-review-page) → Editor [voice lock](#voice-lock) → Film timed scene sheets → Boss assets and Ton sounds ([cue sheet](sound-generation-workflow.md#sound-cue-sheet)) → Editor
 
 - Record `Full` in `delivery.md`. A stage is `N/A` only when it has no subject at all (for example no narration, so no voice lock), with the reason recorded. A fictional profile still gets Boat research (the legend's sources) and a fact-check of the fact-versus-fiction boundary.
 - Media the user supplies (footage, images, audio) is source material for the stages above, filed and inventoried as in Editor's [direct intake](editor-workflow.md#direct-intake); it does not skip Film's brief or scene sheets.
@@ -154,6 +154,7 @@ Record: [delivery.md](delivery.md) · Updated: <YYYY-MM-DD>, <role>
 - [ ] W5 Draft
   - [ ] W5.1 Film timed scene sheets
   - [ ] W5.2 Boss assets and plates (shot groups 0/G)
+  - [ ] W5.2s Ton sounds and cue sheet (0/C cues; generated/library)
   - [ ] W5.3 Draft passed (0/N shots)
 - [ ] W6 Final passed (0/N shots)
 - [ ] W7 Pinned (0/N shots)

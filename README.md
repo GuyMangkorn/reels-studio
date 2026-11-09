@@ -15,7 +15,7 @@ Pick a [style profile and pipeline tier](docs/delivery-workflow.md#style-profile
 
 1. **Film brief:** select the visual approach, coordinate/physical baseline and projection per selected deliverable.
 2. **Film scene sheets:** specify stable shot/key-state IDs, numeric placement/paths with spaces/units, camera, acting, light, frame timing, Thai narration/subtitles and acceptance criteria. Capture useful existing elements with source/revision labels when available.
-3. **Boss shared assets:** implement missing reusable art/rigs/props/sets and renderer capabilities once; verify contracts and affected consumers.
+3. **Boss shared assets:** implement missing reusable art/rigs/props/sets and renderer capabilities once; verify contracts and affected consumers. In parallel, **Ton** makes each cue's sound from the scene sheets' Sound lines and writes the [sound cue sheet](docs/sound-generation-workflow.md#sound-cue-sheet).
 4. **Editor blockout and edit:** assemble a deterministic timeline from those sheets and supported assets; review action, pacing, contact, reveals and continuity before polish, then integrate audio/captions/effects/transitions under [editing principles](docs/editor-principles.md).
 5. **Samples and QA:** Editor sends one inspected actual Remotion frame per story scene per selected deliverable, with composition/frame/revision metadata. Complete motion/seek/continuity QA separately before delivery.
 

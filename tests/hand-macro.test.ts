@@ -95,7 +95,7 @@ test('draw order: a finger folded under the palm is painted before the back of t
   assert.ok(idx(pov, mid) < idx(pov, palm), 'middle (under) before palm from above');
   const index = h.base + 10 + FINGER_IDS.indexOf('index') * 10;
   assert.ok(idx(pov, index) > idx(pov, palm), 'index after palm from above');
-  const front = record(h, HAND_CAMS.TRY);
+  const front = record(h, HAND_CAMS['FRONT-LOW']);
   assert.ok(idx(front, mid) > idx(front, palm) && idx(front, index) > idx(front, palm), 'from the front the palm is first');
 });
 
@@ -117,8 +117,8 @@ test('skinAlpha draws the hand on a translucent layer; opaque by default', () =>
   assert.deepEqual(layers, []);
 });
 
-test('hand scale: size 1.25 and 1.2 make the middle finger 7.5 and 7.2 cm; BOY 6.0 cm', () => {
-  for (const [size, cm] of [[1, 6.0], [1.25, 7.5], [1.2, 7.2]] as const) {
+test('hand scale: size 1.25 and 1.2 make the middle finger 9.0 and 8.64 cm; BOY 7.2 cm (L4, +20 %)', () => {
+  for (const [size, cm] of [[1, 7.2], [1.25, 9.0], [1.2, 8.64]] as const) {
     const sk = macroSkeleton({...HAND_SPECS.flat(), size, wrist: [0, 1.2 * size, 0]});
     const j = sk.fingers.middle.joints, len = [0, 1, 2].reduce((s, k) => s + Math.hypot(j[k + 1][0] - j[k][0], j[k + 1][1] - j[k][1], j[k + 1][2] - j[k][2]), 0);
     assert.ok(Math.abs(len - cm) < 1e-9, `${size}: ${len}`);
@@ -126,7 +126,7 @@ test('hand scale: size 1.25 and 1.2 make the middle finger 7.5 and 7.2 cm; BOY 6
 });
 
 test('named poses and tones exist; the right hand mirrors the left (thumb on the other side)', () => {
-  assert.deepEqual(Object.keys(HAND_POSES).sort(), ['flat', 'ring-strain', 'test-fold-middle']);
+  assert.deepEqual(Object.keys(HAND_POSES).sort(), ['flat', 'hand-lifted-dangle', 'ring-strain', 'test-fold-middle']);
   assert.equal(MACRO_TONES.boy.skin, '#f0c29a');
   const l = macroSkeleton(macroHand('flat', {side: -1, base: 0, at: [0, 0]})), r = macroSkeleton(macroHand('flat', {side: 1, base: 0, at: [0, 0]}));
   assert.ok(l.fingers.thumb.joints[3][0] > 0 && r.fingers.thumb.joints[3][0] < 0);
@@ -143,4 +143,32 @@ test('SP3 contract: the rig hand target is the macro palm centre in picture px; 
   const b = SP3.B01SH04.hand();
   assert.ok(Math.abs(b.wrist[1] - 0.732) < 1e-9, 'wrist 1.2 cm above the table at 0.72');
   assert.ok(macroAnchors(SP3.B01SH04.cam, b).fingers.middle.tip.p![1] > macroAnchors(SP3.B01SH04.cam, b).wrist.p![1] - 400);
+});
+
+test('L4 (9 Nov 2026): shares per finger, flatter TP arch, every resting tip within 0.5 mm of the plane, folded middle hidden', () => {
+  const sk = macroSkeleton(HAND_SPECS.flat()), seg = (f: 'index' | 'middle' | 'ring' | 'little', a: number) => {
+    const j = sk.fingers[f].joints;
+    return Math.hypot(j[a + 1][0] - j[a][0], j[a + 1][1] - j[a][1], j[a + 1][2] - j[a][2]);
+  };
+  const LEN = {index: 6.48, middle: 7.2, ring: 6.72, little: 4.7};
+  const want = {index: [0.28, 0.45, 0.27], middle: [0.28, 0.45, 0.27], ring: [0.28, 0.45, 0.27], little: [0.32, 0.35, 0.34]} as const;
+  for (const f of ['index', 'middle', 'ring', 'little'] as const) {
+    want[f].forEach((s, a) => assert.ok(Math.abs(seg(f, a) - s * LEN[f]) < 1e-9, `${f} share ${a}`));
+  }
+  assert.ok(Math.abs(seg('ring', 0) + seg('ring', 1) + seg('ring', 2) - 6.72) < 1e-9);
+  const tp = HAND_SPECS.tp();
+  assert.equal(tp.pitch, 4);
+  for (const f of ['index', 'ring', 'little'] as const) assert.deepEqual([tp.fingers[f].pip, tp.fingers[f].dip], [8, 6]);
+  for (const id of ['flat', 'tp'] as const) {
+    const a = macroAnchors(HAND_CAMS.POV, HAND_SPECS[id]()).fingers;
+    for (const f of ['index', 'middle', 'ring', 'little'] as const) {
+      if (id === 'tp' && f === 'middle') { assert.ok(a[f].gap! > -0.05, 'folded tip does not sink through the table'); continue; }
+      assert.ok(Math.abs(a[f].gap!) <= 0.05, `${id} ${f} gap ${(a[f].gap! * 10).toFixed(2)} mm`);
+    }
+  }
+  const P = macroSkeleton(tp).fingers;
+  for (const f of ['index', 'ring', 'little'] as const) {
+    const q = P[f].joints.map((w) => camPoint(HAND_CAMS.POV, w)!), d = (a: number) => Math.hypot(q[a + 1][0] - q[a][0], q[a + 1][1] - q[a][1]);
+    assert.ok(d(1) / d(0) >= 0.45, `${f} ${(d(1) / d(0)).toFixed(2)}`);
+  }
 });
