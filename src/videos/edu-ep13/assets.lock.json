@@ -127,10 +127,6 @@
     "store": "library/sound/sfx/stinger/stinger_pizz-tag-ending_01.wav",
     "sha256": "45f8d7001a16dfdfc29b81f2af713c7ef064d4a2e157abe0e8d89ebc6e0e14b6"
   },
-  "public/sfx/stinger/stinger_vibe-settle-tone_01.wav": {
-    "store": "library/sound/sfx/stinger/stinger_vibe-settle-tone_01.wav",
-    "sha256": "6e456ed71925098eb3e7a349711aea6c85d27b13d49faeffebfe24594bdbe314"
-  },
   "public/sfx/ui/ui_click-tick_01.wav": {
     "store": "library/sound/sfx/ui/ui_click-tick_01.wav",
     "sha256": "edfafbe6bfb91e1c01aa9b3e13ca051dcf257406ae63d3ac54178aaf3991babb"

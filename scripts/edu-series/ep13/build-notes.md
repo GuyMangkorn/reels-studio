@@ -32,3 +32,11 @@
 10. Caption cue `L12 b` ("แค่หลักสิบเซน ไม่ใช่ร้อยเมตร") shows from G1068 as one cue; "ไม่ใช่ร้อยเมตร" is spoken at G1098, so the second line is visible 30 f early. Split if Film wants it on the word.
 
 **Open:** Thai words per `est` list unmeasured inside runs; full read not heard by the user; mix not listened (levels by number).
+
+## Ending reversal, 2026-11-10 (user: "do it like ep02")
+After hearing the closing melody the user chose the ep02 ending: `stinger_pizz-tag-ending_01` (library, 2.5 s, rings out) replaces `S24-closing-melody` (and the earlier `S24-settle`, SD08 of 2026-11-09 is reversed at the user's instruction). Mechanical mix change, narration untouched.
+- `sound-cues.json`: cue `tag-ending` at G1463 (end of "เล็กมาก"); B05 accent level rows re-labelled (tag before the sigh, sigh = button with the tag ducked -6 dB, tag ring-out); closing-melody tail rows gone; V03 sigh (G1474) and room fade unchanged.
+- `sound-mix.py`: `tag` at HIT (-2 dBFS peak), fout 0.4 s, ducked -6 dB over 80 ms from G1474; M1 final segment now ends under the tag (-12 dB from G1463, out by G1480) instead of fading to silence by G1463. Tag ring-out is below -40 dB by G1540 and finishes inside the 1542 f (no cut).
+- `assets.lock.json`: closing-melody and settle-tone entries removed (nothing else uses them); files stay in the library. Tag entry already locked.
+- Checks: `sound-cues.py` 52 cues 0 FAIL; `mix-levels.py` 0 FAIL (B05 accent tag dV -1.7, sigh -2.8, tail 16.5; B05 background 17.6), log `out/logs/mix-levels-tag.txt`; `npm test` 621 pass. Draft render -14.0 LUFS, -1.5 dBTP.
+- Open: nobody has listened. Tag at HIT may be loud next to the quiet sigh (by number the sigh sits 1.1 LU under it); Film/user to judge.

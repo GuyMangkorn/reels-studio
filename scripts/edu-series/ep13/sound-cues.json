@@ -493,14 +493,13 @@
       "note": "slot 0.8 s; file trimmed to the sit (0.66 s)"
     },
     {
-      "cue": "S24-settle",
+      "cue": "tag-ending",
       "shot": "S01-B05-SH02",
       "frame": 1463,
-      "brief": "Ending settle tone (replaces the pizzicato tag, user 2026-11-09): one soft felt-mallet vibraphone note, motor off, warm low-mid (around A3), one light stroke, round attack without a click, clean natural decay about 2.0 s to nothing; dry small living room, close, quiet (about room-tone level, well under the voice); feeling: case closed, a small content smile; no pluck, no string, no chord, no melody; ducks -6 dB at G1474 under the dog sigh",
-      "id": "stinger_vibe-settle-tone_01",
-      "origin": "generated",
-      "lenSec": 2.3,
-      "note": "Film SHEETS-R2.1 SD08; at the end of L14 (B05-SH02 +60). Generated new: 4 candidates (seeds 134355556-9), v1 picked by measurement (no listening): 220 Hz = A3 in all four, single strike, monotone decay, slowest tail (-40 dB at 1.97 s after the strike; v2/v4 died in 1.65 s, v3 kept a -3 dB plateau for 0.3 s). 15 ms fade-in added to round the model's abrupt first sample, 250 ms fade-out at 2.3 s. listened: no. Mix: quiet, about room-tone level, accent layer, duck -6 dB at G1474 (49.13 s) so the dog sigh stays the button. Fallback: drop it if it competes with the sigh on the draft (room tone, jingle, sigh only)."
+      "brief": "Warm playful pizzicato and marimba tag resolving on a ringing chord (2.5 s, rings out by G1538); at the end of \"เล็กมาก\" (speech end G1463); ducks -6 dB under the dog sigh G1474",
+      "id": "stinger_pizz-tag-ending_01",
+      "origin": "library",
+      "fit": "User 2026-11-10 after hearing the closing melody: \"do it like ep02\"; restores the ep02 tag, reversing SD08 (settle tone) and the closing melody; M1 ends under it; not listened"
     },
     {
       "cue": "S1-jingle",
@@ -725,11 +724,11 @@
         "beat": "B05",
         "layer": "accent",
         "when": "peak",
-        "min": 6,
-        "max": 24,
+        "min": -6,
+        "max": 3,
         "fromSec": 48.77,
-        "toSec": 48.93,
-        "exception": "S24 settle tone alone before the dog moves (G1463-1468), quiet like room tone"
+        "toSec": 49.13,
+        "exception": "tag-ending G1463-1474 before the sigh (HIT peak), ep02 ending"
       },
       {
         "beat": "B05",
@@ -739,9 +738,19 @@
         "max": 3,
         "fromSec": 49.13,
         "toSec": 50.33,
-        "exception": "V03 dog sigh G1474-1510 is the ending button; S24 ducks -6 dB under it"
+        "exception": "V03 dog sigh G1474-1510 is the ending button; tag ducks -6 dB under it"
+      },
+      {
+        "beat": "B05",
+        "layer": "accent",
+        "when": "peak",
+        "min": 6,
+        "max": 30,
+        "fromSec": 50.33,
+        "toSec": 51.4,
+        "exception": "tag ring-out after the sigh, ducked, fades to zero by G1538"
       }
     ]
   },
-  "retime": "Film 2026-11-09: frames and level windows re-derived for SHEETS-R2.1 (Take B voice, 1542 f); tag-ending cue dropped (user), S24-settle added NEEDS-GEN; B05 accent row (tag window) removed: S24 is a quiet tone, Ton sets its layer and level row. Files unchanged otherwise; Ton to confirm."
+  "retime": "Film 2026-11-09: frames and level windows re-derived for SHEETS-R2.1 (Take B voice, 1542 f); tag-ending cue dropped (user), S24-settle added NEEDS-GEN; B05 accent row (tag window) removed: S24 is a quiet tone, Ton sets its layer and level row. Files unchanged otherwise; Ton to confirm. User 2026-11-10: closing melody replaced by the ep02 pizzicato tag (tag-ending, G1463) at the user's instruction, reversing SD08."
 }

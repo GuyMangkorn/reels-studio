@@ -45,7 +45,7 @@ P = {  # cue sheet files (locked in assets.lock.json)
     'riser': 'public/sfx/reveal/reveal_riser-tension_01.wav',
     'fwoop': 'public/sfx/reveal/reveal_warmth-fwoop_01.wav',
     'shrug': 'public/sfx/stinger/stinger_pizz-shrug_01.wav',
-    'settle': 'public/sfx/stinger/stinger_vibe-settle-tone_01.wav',
+    'tag': 'public/sfx/stinger/stinger_pizz-tag-ending_01.wav',
     'tick': 'public/sfx/ui/ui_click-tick_01.wav',
     'swish': 'public/sfx/whoosh/whoosh_air-swish-rising_01.wav',
     'slide': 'public/sfx/whoosh/whoosh_fast-slide_01.wav',
@@ -120,7 +120,7 @@ bed(bed_d, 'm1', seg(6, 129, M1, fin=4, fout=2, mid=[(96, M1), (100, M1 + 2)]), 
 bed(bed_d, 'm1', seg(238, 317, M1 - 6, fin=3, fout=2), restart_at=238)                                                                       # back 238, energy 1, dropout 317-329
 bed(bed_d, 'm1', seg(329, 857, M1 - 6, fin=3, fout=2, mid=[(380, M1), (690, M1), (694, M1 - 2)]), restart_at=329)                           # B02 energy 2, thins 691, dead 857 (snap)
 bed(bed_d, 'm1', seg(917, 1152, M1 + 1, fin=4, fout=4, mid=[(1098, M1 + 1), (1135, M1 + 3)]), restart_at=917)                                 # back 917 (+1), builds from 1098 into the cut, out 1152
-bed(bed_d, 'm1', [(1192, OFF), (1195, M1), (1403, M1), (1406, M1 - 4), (1433, M1 - 4), (1463, OFF)], restart_at=1192)                       # back 1192, dips under L14, fades to silence 1433-1463 (no tag, SD08)
+bed(bed_d, 'm1', [(1192, OFF), (1195, M1), (1403, M1), (1406, M1 - 4), (1433, M1 - 4), (1463, M1 - 12), (1474, M1 - 12), (1480, OFF)], restart_at=1192)   # back 1192, dips under L14, ends under the tag (tag G1463, user 2026-11-10 'do it like ep02' reverses SD08)
 # ---- B01 room / macro / grow
 shot(texture, 'breath', 0, -34.0, t=1.47, fout=0.12)                                             # S1-breath (first slow breath, 0-44; very quiet source)
 shot(texture, 'tick', 66, TICK + 2, af='asetrate=60480,aresample=48000')                          # S2-takeoff-tick (pitched up 1.26)
@@ -164,12 +164,11 @@ shot(texture, 'tick', 1331, TICK + 1, af='asetrate=40320,aresample=48000')      
 shot(texture, 'sofa', 1443, FOLEY)                                                               # S20-sofa
 shot(texture, 'jingle', 1468, FOLEY + 1)                                                         # S1-jingle
 shot(accent, 'sigh', 1474, HIT - 3, fout=0.2, drive=10.0)                                                    # V03-dog-sigh (no voice, no subtitle)
-# S24-settle (replaces the pizzicato tag, SD08): one felt-mallet vibraphone note at G1463, quiet at room-tone level (peak S24_PK, RMS of the played slice about -37 dBFS), ducked -6 dB over 80 ms from G1474 so the sigh is the button
-S24_PK = -27.0
+# tag-ending (user 2026-11-10 "do it like ep02", reverses SD08): warm pizzicato+marimba tag at G1463 = end of "เล็กมาก", rings out 2.5 s to G1538; ducked -6 dB over 80 ms from G1474 so the dog sigh stays the button
 duck = lambda j: lin(-6.0 * min(1.0, max(0.0, (j - F(1474)) / (0.08 * SR))))
-shot(accent, 'settle', 1463, S24_PK, fin=0.015, fout=0.25)
-for j in range(F(1463), min(N, F(1463) + 2 * SR)):
-    accent[j] *= duck(j) if j > F(1474) else 1.0
+shot(accent, 'tag', 1463, HIT, fout=0.4)
+for j in range(F(1474), min(N, F(1463) + 3 * SR)):
+    accent[j] *= duck(j)
 
 # ---- ducking: the narration (voice stem) keys a smooth gain on the ducked bed
 def read(p):
