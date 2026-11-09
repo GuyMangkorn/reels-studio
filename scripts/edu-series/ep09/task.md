@@ -34,6 +34,7 @@ Record: this file. Series context: [concepts.md](../concepts.md) (R5, C28) · se
 - [x] W6 Final (2026-11-09: user passed the Final tab after M1 level r5, acc7545 to cadfbd5)
 - [x] W7 Pinned (2026-11-09: pin.mjs pin-rows --ending=B_loop, 18 of 18 shots)
 - [ ] W8 Deliver (render, cover, posting, kit intake)
+  - [x] W8.2 Published (2026-11-09): publish/EDU/EDU-EP09-SHORT/ holds EDU-EP09-SHORT.mp4 and cover CVT02 (user pick); posting W8.3 and kit intake open
   - [x] W8.1 Delivery render (2026-11-09): out/EDU-EP09-SHORT/EDU-EP09-SHORT_B_loop.mp4, 1080x1920, 30 fps, 1606 f, -14.1 LUFS, -1.6 dBTP (from cached pinned scenes, 35 s); not yet in publish folder, cover not picked
   - [ ] Cover (before W8.2 publish): pick 1 done 2026-11-09 (Film): `EDU-EP09-SHORT-PIC-COVERS` ([src/videos/covers/edu-ep09.ts](../../../src/videos/covers/edu-ep09.ts)), five textless pictures CV01-CV05 in out/EDU-EP09-SHORT/cover/pick1/; user picked CV05 P5-three-one; pick 2 done 2026-11-09 (Film): `EDU-EP09-SHORT-COVERS` (same file, `EDU9_COVERS`), five Thai texts CVT01-CVT05 on EDU9-S01-B01-SH01 @130 in out/EDU-EP09-SHORT/cover/pick2/ (sheet-270, sheet-120, sheet-3x4 from real ffmpeg crops); channel mark redrawn light per cover (cover-local); awaiting the user's pick, then `render.mjs EDU-EP09-SHORT --covers` and W8.2 publish
 
