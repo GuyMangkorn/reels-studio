@@ -2,7 +2,7 @@ import {test} from 'node:test';
 import {camPoint} from '../src/painted/kit/ycam';
 import assert from 'node:assert/strict';
 import type {Brush} from '../src/painted/BrushCanvas';
-import {macroSkeleton, paintHandMacro} from '../src/painted/kit/hands';
+import {blendHand, macroSkeleton, paintHandMacro} from '../src/painted/kit/hands';
 import {makePainter, type Pt} from '../src/painted/kit/painter';
 import {PEOPLE} from '../src/painted/kit/people';
 import {JUG} from '../src/painted/edu09/dining';
@@ -172,4 +172,24 @@ test('FX04: the ELDER gentle-stop keeps elbow, forearm and hand 2 cm or more out
   // FX08 third pass: at rest the elbow hangs well behind the wrist (forearm 0.15 m or more), not 7 cm, so the 0.32 m upper arm is not the whole arm
   { const g = gentleStopAt(0); assert.ok(Math.hypot(g.hand[0] - g.elbow[0], g.hand[2] - g.elbow[2]) >= 0.15, 'rest forearm'); }
   assert.ok(Math.abs(elderLeanAt(0)[0]) < 1e-9 && elderLeanAt(27)[0] === ELDER_LEAN[0] && elderLeanAt(67)[1] === ELDER_LEAN[1]);
+});
+
+test('FX07b: the folding middle finger (B01-SH01 L44-62) is cut at the table: no phalanx or shadow is drawn below the plane, and its draw state flips at most twice', () => {
+  const seeds = (L: number) => {
+    const got = new Set<number>();
+    const brush = new Proxy({}, {get: (_t, n) => (...a: unknown[]) => { if (n === 'seed') got.add(a[0] as number); return undefined; }}) as Brush;
+    const k = Math.min(1, Math.max(0, (L - 46) / 14)), h = blendHand(boyHand('flat'), boyHand('test-fold-middle'), k * k * (3 - 2 * k));
+    paintHandMacro(makePainter(brush, {t: 0, frame: 0}), povCam(L / 154), {...h, base: 0});
+    return {got, sk: macroSkeleton(h)};
+  };
+  let flips = 0, prev: boolean | null = null;
+  for (let L = 44; L <= 62; L++) {
+    const {got, sk} = seeds(L), m = sk.fingers.middle, pl = boyHand('flat').plane!;
+    const tipDrawn = got.has(32), tipBelow = m.joints[3][1] < pl;
+    if (tipBelow) assert.ok(!tipDrawn, `L${L}: middle tip phalanx drawn below the table`);
+    m.joints.forEach((v, j) => { if (j >= 1 && v[1] < pl) assert.ok(!got.has(120 + 6 + j - 1), `L${L}: shadow of a phalanx below the table (${j})`); });
+    if (prev !== null && prev !== tipDrawn) flips++;
+    prev = tipDrawn;
+  }
+  assert.ok(flips <= 2, `draw state flips ${flips} times`);
 });

@@ -616,7 +616,7 @@ export const paintHandMacro = (p: Painter, cam: YCam, h: HandMacro): HandAnchors
       for (let k = 0; k < 3; k++) {
         const a = drop(c.joints[k]), b = drop(c.joints[k + 1]), ra = c.radii[k], rb = c.radii[k + 1];
         const dx = b[0] - a[0], dz = b[2] - a[2], l = Math.hypot(dx, dz);
-        if (l < 1e-6) continue;
+        if (l < 1e-6 || c.joints[k][1] < h.plane! || c.joints[k + 1][1] < h.plane!) { sid++; continue; } // FX07b: nothing below the table casts a shadow on it
         const ang = Math.atan2(dz, dx), pts: V3[] = [];
         for (let i = 0; i <= 6; i++) { const t = ang - Math.PI / 2 + (Math.PI * i) / 6; pts.push([b[0] + rb * Math.cos(t), h.plane, b[2] + rb * Math.sin(t)]); }
         for (let i = 0; i <= 6; i++) { const t = ang + Math.PI / 2 + (Math.PI * i) / 6; pts.push([a[0] + ra * Math.cos(t), h.plane, a[2] + ra * Math.sin(t)]); }
@@ -664,22 +664,31 @@ export const paintHandMacro = (p: Painter, cam: YCam, h: HandMacro): HandAnchors
   FINGER_IDS.forEach((id, fi) => {
     const c = sk.fingers[id], pts = c.joints.map(toPx);
     if (pts.some((v) => !v)) return;
-    const P = pts.map((v) => v!.pt), Rpx = c.radii.map((r, i) => r * pts[i]!.r);
+    let P = pts.map((v) => v!.pt), Rpx = c.radii.map((r, i) => r * pts[i]!.r), nk = 3;
     let nUnder = 0, deepUnder = false;
+    const dBelow = c.joints.map((v, j) => -dot3(sub3(v, sk.palmCentre), sk.normal) * camSide / c.radii[j]);
     for (let j = 1; j < 4; j++) {
       const rel = sub3(c.joints[j], sk.wrist), lat = dot3(rel, sk.toThumb) / S, fwd = dot3(rel, sk.forward) / S;
       const depthBelow = -dot3(sub3(c.joints[j], sk.palmCentre), sk.normal) * camSide / c.radii[j];
       if (depthBelow > 0.5 && inPoly(lat, fwd, PALM)) { nUnder++; if (j >= 2) deepUnder = true; }
       else if (j >= 2 && depthBelow > 3) deepUnder = true; // far below the palm plane (a fold passing through the table): never drawn over the palm
     }
+    // FX07b: a finger folding down past the contact plane goes through the table; what is below it is hidden, not drawn (the folded tip used to show as an arc past the wrist edge of the palm, and its shadow as a ghost disc beyond the finger). The phalanx that crosses the plane is cut where its axis reaches it, the cut end left open.
+    const yRel = c.joints.map((v, j) => (h.plane === undefined ? Infinity : (v[1] - h.plane) / c.radii[j]));
+    const j0 = yRel.findIndex((d, i) => i >= 2 && d < 0);
+    if (j0 > 0) {
+      const t = Math.max(0, Math.min(1, yRel[j0 - 1] / (yRel[j0 - 1] - yRel[j0])));
+      if (t > 0.2) { nk = j0; P = P.slice(0, j0 + 1); Rpx = Rpx.slice(0, j0 + 1); P[j0] = [P[j0 - 1][0] + (pts[j0]!.pt[0] - P[j0 - 1][0]) * t, P[j0 - 1][1] + (pts[j0]!.pt[1] - P[j0 - 1][1]) * t]; }
+      else { nk = j0 - 1; P = P.slice(0, j0); Rpx = Rpx.slice(0, j0); }
+    }
     const depth = c.joints.reduce((s, v) => s + camSpace(cam, v).d, 0) / 4;
     const strain = h.strain?.[id] ?? 0;
     const draw = () => {
       const f0 = FILL + 10 + fi * 10, i0 = fi * 12;
-      for (let k = 0; k < 3; k++) fill(q, f0 + k, tone.skin, capsule(P[k], P[k + 1], 2 * Rpx[k], 2 * Rpx[k + 1]));
-      if (alpha >= 1) for (let k = 1; k < 3; k++) fill(q, f0 + 3 + k, tone.skin, ring(P[k][0], P[k][1], Rpx[k], Rpx[k], 12));
+      for (let k = 0; k < nk; k++) fill(q, f0 + k, tone.skin, capsule(P[k], P[k + 1], 2 * Rpx[k], 2 * Rpx[k + 1]));
+      if (alpha >= 1) for (let k = 1; k < nk; k++) fill(q, f0 + 3 + k, tone.skin, ring(P[k][0], P[k][1], Rpx[k], Rpx[k], 12));
       // cel shade on the side away from the light, clipped inside each phalanx
-      for (let k = 0; k < 3; k++) {
+      for (let k = 0; k < nk; k++) {
         const d = unit2(P[k], P[k + 1]), n: Dir2 = [-d[1], d[0]], sg = n[0] * ls[0] + n[1] * ls[1] >= 0 ? 1 : -1, rr = Math.min(Rpx[k], Rpx[k + 1]) * 0.3;
         const seg = capsule(P[k], P[k + 1], 2 * Rpx[k], 2 * Rpx[k + 1]);
         fill(q, f0 + 6 + (k % 3), tone.shade, clipHalf(seg, [P[k][0] + sg * n[0] * rr, P[k][1] + sg * n[1] * rr], [sg * n[0], sg * n[1]]));
@@ -691,9 +700,9 @@ export const paintHandMacro = (p: Painter, cam: YCam, h: HandMacro): HandAnchors
         // The metacarpal lies in the palm: ink only the free part (MCP -> tip) and the outer edge of the metacarpal.
         ink(q, i0, tubeOutline(P.slice(1), Rpx.slice(1), true), inkW, inkOf(INK));
         // the outer edge of the metacarpal is the palm outline's thenar edge (PALM), not a second line
-      } else ink(q, i0, tubeOutline(P, Rpx, true), inkW, inkOf(INK));
+      } else ink(q, i0, tubeOutline(P, Rpx, nk === 3), inkW, inkOf(INK));
       // knuckle creases (two strokes at pip and dip) where the back of the finger faces the camera
-      for (let j = 1; j <= 2; j++) {
+      for (let j = 1; j <= Math.min(2, nk - 1); j++) {
         const dor = c.dorsal[j - 1], seg = sub3(c.joints[j + 1], c.joints[j - 1]), faces = dot3(dor, norm3(sub3(camPos, c.joints[j])));
         if (faces < 0.18) continue;
         const dirW = norm3(seg), side = norm3([dor[1] * dirW[2] - dor[2] * dirW[1], dor[2] * dirW[0] - dor[0] * dirW[2], dor[0] * dirW[1] - dor[1] * dirW[0]]);
@@ -706,7 +715,7 @@ export const paintHandMacro = (p: Painter, cam: YCam, h: HandMacro): HandAnchors
       }
       // nail on the distal phalanx (short natural nail), only when the back of the finger faces the camera
       const dorD = c.dorsal[2], seeNail = dot3(dorD, norm3(sub3(camPos, c.joints[3])));
-      if (seeNail > 0.2) {
+      if (seeNail > 0.2 && nk === 3) {
         const rd = c.radii[3], th = id === 'thumb', f0n = th ? 0.5 : 0.5, f1n = th ? 0.92 : 0.95;
         const a = add3(add3(c.joints[2], scale3(sub3(c.joints[3], c.joints[2]), f0n)), scale3(dorD, rd * 0.55)), b = add3(add3(c.joints[2], scale3(sub3(c.joints[3], c.joints[2]), f1n)), scale3(dorD, rd * 0.55));
         const pa = toPx(a), pb = toPx(b);
