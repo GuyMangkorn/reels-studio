@@ -1,0 +1,728 @@
+{
+  "deliverable": "EDU-EP13-SHORT",
+  "sceneSheets": "EDU-EP13-SHEETS-R2.0",
+  "video": "src/videos/edu-ep13",
+  "sources": [
+    "src/videos/edu-ep13"
+  ],
+  "cues": [
+    {
+      "cue": "M1",
+      "shot": "S01-B01-SH01",
+      "frame": 6,
+      "brief": "Comic explainer pulse (pizzicato + marimba, 104 bpm), energy 2 under the voice; segments cut by Editor: in 6, dead 109; back 205; dropout 278-290; thins 611; dead 763; back 825; out 1029-1068; back 1068; ends under the tag",
+      "id": "bed_comic-pizz-marimba-pulse_01",
+      "origin": "generated",
+      "lenSec": 56,
+      "note": "one 56 s file, cut and re-entered by Editor at the listed frames; 4-bar phrase ends for the dead stops; energy per Film brief; not listened"
+    },
+    {
+      "cue": "B01-room-soi",
+      "shot": "S01-B01-SH01",
+      "frame": 0,
+      "brief": "Room tone: sunny soi afternoon bed, low, under the standing fan (UT01: room reads before the first word)",
+      "id": "city_soi-afternoon-day_01",
+      "origin": "library",
+      "fit": "Sunny Bangkok soi afternoon with far traffic and birds is exactly the window/street bed Film described; 12 s loop; Film named it and the description fits as a new generation would.",
+      "lenSec": 12,
+      "loop": true,
+      "note": "low; returns at SH05 +0 and B04-SH01 +0 and B04-SH02 +56; soi at full level in SH04D; 30 % in trailer SH04-SH04C"
+    },
+    {
+      "cue": "A1-fan",
+      "shot": "S01-B01-SH01",
+      "frame": 0,
+      "brief": "Standing fan on medium, soft motor hum and gentle blade whirr, small living room",
+      "id": "room_standing-fan-hum_01",
+      "origin": "generated",
+      "lenSec": 13,
+      "loop": true,
+      "note": "loop 1 s crossfade; sits under room tone in the room shots"
+    },
+    {
+      "cue": "S1-breath",
+      "shot": "S01-B01-SH01",
+      "frame": 0,
+      "brief": "Large dog asleep, slow deep breathing, first breath only in shot 1",
+      "id": "creature_dog-sleep-breathing_01",
+      "origin": "generated",
+      "lenSec": 3,
+      "note": "3 breaths in the file; shot 1 uses the first 0-27 f (0.9 s); first breath starts at file 0; very quiet source, peak-normalised: Editor sets the level"
+    },
+    {
+      "cue": "A2-hush-SH02",
+      "shot": "S01-B01-SH02",
+      "frame": 27,
+      "brief": "Studio hush replaces room tone; breath-holding over a specimen",
+      "id": "room_studio-hush_01",
+      "origin": "generated",
+      "lenSec": 11,
+      "loop": true,
+      "note": "A2 also at B02-SH03 425, B03-SH01 611, B03-SH03 697 (to 825); room tone out on each studio cut, back on the cut out; output about -27 LUFS (very quiet by design)"
+    },
+    {
+      "cue": "S2-takeoff-tick",
+      "shot": "S01-B01-SH02",
+      "frame": 43,
+      "brief": "Flea take-off: one crisp dry tick, pitched up",
+      "id": "ui_click-tick_01",
+      "origin": "library",
+      "fit": "Film named it: a single dry tick is the take-off the description asks for; 0.08 s, pitched up by Editor (playbackRate about 1.3)",
+      "pitch": "up"
+    },
+    {
+      "cue": "S3-leap-whoosh",
+      "shot": "S01-B01-SH02",
+      "frame": 43,
+      "brief": "Leap and crane: short rising air swish, mono",
+      "id": "whoosh_air-swish-rising_01",
+      "origin": "library",
+      "fit": "0.8 s rising swish with sharp peak and airy decay matches the leap; Editor folds to mono so the pan does not fight the vertical move",
+      "mono": true
+    },
+    {
+      "cue": "S4-tick-1",
+      "shot": "S01-B01-SH02",
+      "frame": 48,
+      "brief": "Counter step x10: dry tick, pitch rising with each step",
+      "id": "ui_click-tick_01",
+      "origin": "library",
+      "fit": "Film named it: dry tick per counter step; pitch rises x10 to x50 (Editor playbackRate 1.0, 1.1, 1.2, 1.35, 1.5)",
+      "pitchStep": 1
+    },
+    {
+      "cue": "S4-tick-2",
+      "shot": "S01-B01-SH02",
+      "frame": 54,
+      "brief": "Counter step x20: dry tick, pitch rising with each step",
+      "id": "ui_click-tick_01",
+      "origin": "library",
+      "fit": "Film named it: dry tick per counter step; pitch rises x10 to x50 (Editor playbackRate 1.0, 1.1, 1.2, 1.35, 1.5)",
+      "pitchStep": 2
+    },
+    {
+      "cue": "S4-tick-3",
+      "shot": "S01-B01-SH02",
+      "frame": 60,
+      "brief": "Counter step x30: dry tick, pitch rising with each step",
+      "id": "ui_click-tick_01",
+      "origin": "library",
+      "fit": "Film named it: dry tick per counter step; pitch rises x10 to x50 (Editor playbackRate 1.0, 1.1, 1.2, 1.35, 1.5)",
+      "pitchStep": 3
+    },
+    {
+      "cue": "S4-tick-4",
+      "shot": "S01-B01-SH02",
+      "frame": 66,
+      "brief": "Counter step x40: dry tick, pitch rising with each step",
+      "id": "ui_click-tick_01",
+      "origin": "library",
+      "fit": "Film named it: dry tick per counter step; pitch rises x10 to x50 (Editor playbackRate 1.0, 1.1, 1.2, 1.35, 1.5)",
+      "pitchStep": 4
+    },
+    {
+      "cue": "S4-tick-5",
+      "shot": "S01-B01-SH02",
+      "frame": 72,
+      "brief": "Counter step x50: dry tick, pitch rising with each step",
+      "id": "ui_click-tick_01",
+      "origin": "library",
+      "fit": "Film named it: dry tick per counter step; pitch rises x10 to x50 (Editor playbackRate 1.0, 1.1, 1.2, 1.35, 1.5)",
+      "pitchStep": 5
+    },
+    {
+      "cue": "S5-grow",
+      "shot": "S01-B01-SH03",
+      "frame": 80,
+      "brief": "Comic rising slide-whistle glissando with rubber squeak, lands on a bright top note (\"uh-oh, getting big\"); M1 cuts dead on the last frame (G109)",
+      "id": "comedy_slide-whistle-grow_01",
+      "origin": "generated",
+      "lenSec": 0.9,
+      "note": "slot 22 f (80-106); measured rise 1320 to 3500 Hz"
+    },
+    {
+      "cue": "TR1-braam",
+      "shot": "S01-B01-SH04",
+      "frame": 109,
+      "brief": "Fiction trailer bed: deep low-brass and synth braam, sub tail, runs under SH04-SH04B, -10 dB under the voice",
+      "id": "impact_trailer-braam_01",
+      "origin": "generated",
+      "lenSec": 2.5,
+      "fiction": true,
+      "note": "picked of 4 by early energy and sub tail (end30 2.45 s); Boat R3: no siren, scream or damage sound"
+    },
+    {
+      "cue": "TR2-shadow-pass",
+      "shot": "S01-B01-SH04",
+      "frame": 113,
+      "brief": "Fiction trailer: low air mass passing overhead (the shadow)",
+      "id": "whoosh_shadow-pass-overhead_01",
+      "origin": "generated",
+      "lenSec": 0.5,
+      "fiction": true,
+      "note": "slot 113-125 (0.5 s)"
+    },
+    {
+      "cue": "riser",
+      "shot": "S01-B01-SH04",
+      "frame": 109,
+      "brief": "Dark rising riser, its last 1.27 s from 109 to a dead stop at G147 (SH04B +18)",
+      "id": "reveal_riser-tension_01",
+      "origin": "library",
+      "fit": "Film named it: dark tension riser that stops dead at its peak, fits the trailer build to the launch; measured: the last 1.27 s of the 3.69 s file rises -22 to -16 dB and ends on the file end",
+      "fiction": true,
+      "inSec": 2.42,
+      "lenSec": 1.27,
+      "note": "Editor starts the file at 2.42 s (startFrom) so the dead stop lands on G147"
+    },
+    {
+      "cue": "TR3-drums",
+      "shot": "S01-B01-SH04B",
+      "frame": 129,
+      "brief": "Fiction trailer: four low taiko-like drum hits accelerating, the crouch winding up; hits at +0,+7,+12,+15 (G129,136,141,144)",
+      "id": "impact_taiko-pulse-4_01",
+      "origin": "generated",
+      "lenSec": 0.62,
+      "fiction": true,
+      "note": "built from the first hit of the best of 4 (clean attack, short tail) repeated at 0/233/400/500 ms with rising gain; one cue at G129; no per-hit placement needed"
+    },
+    {
+      "cue": "TR4-launch",
+      "shot": "S01-B01-SH04B",
+      "frame": 147,
+      "brief": "Fiction trailer: heavy upward whoosh with soft deep boom under it, no crash, no debris",
+      "id": "whoosh_launch-boom-up_01",
+      "origin": "generated",
+      "lenSec": 1.0,
+      "fiction": true,
+      "note": "attack is fast but not instant (starts about -9 dB under peak and swells); Editor may place 2 f early"
+    },
+    {
+      "cue": "A3-high-air",
+      "shot": "S01-B01-SH04",
+      "frame": 109,
+      "brief": "High open air breeze, the feeling of looking up; soi bed at 30 %; SH04C thinned to high air only",
+      "id": "outdoor_high-air-breeze_01",
+      "origin": "generated",
+      "lenSec": 7,
+      "loop": true,
+      "note": "SH04 to SH04C; breeze again from SH04D +0 (G195) to SH04D +12; 1 s loop crossfade"
+    },
+    {
+      "cue": "B01-soi-trailer",
+      "shot": "S01-B01-SH04",
+      "frame": 109,
+      "brief": "Soi bed drops to 30 % under the trailer (SH04-SH04C), back at full in SH04D",
+      "id": "city_soi-afternoon-day_01",
+      "origin": "library",
+      "fit": "Sunny Bangkok soi afternoon with far traffic and birds is exactly the window/street bed Film described; 12 s loop; Film named it and the description fits as a new generation would.",
+      "lenSec": 12,
+      "loop": true,
+      "gain": 0.3
+    },
+    {
+      "cue": "TR5-height-wind",
+      "shot": "S01-B01-SH04C",
+      "frame": 156,
+      "brief": "Fiction trailer: fast high-altitude wind rise, 0.4 s, then thin to near-silence to +21",
+      "id": "whoosh_height-wind-rush_01",
+      "origin": "generated",
+      "lenSec": 0.7,
+      "fiction": true,
+      "note": "rise 0.4 s then fade to G177; near-silence +12-+21 is the file tail"
+    },
+    {
+      "cue": "TR6-tape-stop",
+      "shot": "S01-B01-SH04C",
+      "frame": 177,
+      "brief": "Tape stop: pitch and speed dragging to nothing, kills the bed on the first frame of \"ไม่หรอก\"",
+      "id": "mechanical_tape-stop_01",
+      "origin": "generated",
+      "lenSec": 0.4,
+      "fiction": true
+    },
+    {
+      "cue": "S7-droop",
+      "shot": "S01-B01-SH04C",
+      "frame": 183,
+      "brief": "Deflating slide-whistle droop, runs across the cut into SH04D +12 (lands on \"ไม่หรอก\")",
+      "id": "comedy_slide-whistle-droop_01",
+      "origin": "generated",
+      "lenSec": 0.8
+    },
+    {
+      "cue": "SH04D-tap-1",
+      "shot": "S01-B01-SH04D",
+      "frame": 201,
+      "brief": "Soft landing tap as the flea drops beside MAN",
+      "id": "foley_soft-landing-tap_01",
+      "origin": "library",
+      "fit": "Film named it: soft muffled landing tap with no low thump, 0.09 s, suits a small drop on paper-light feet; not listened (Ton cannot audition)"
+    },
+    {
+      "cue": "SH04D-tap-2",
+      "shot": "S01-B01-SH04D",
+      "frame": 249,
+      "brief": "Small landing tap after the knee-high hop (quieter than the first)",
+      "id": "foley_soft-landing-tap_01",
+      "origin": "library",
+      "fit": "same file at lower gain",
+      "gain": 0.6
+    },
+    {
+      "cue": "S8-flinch",
+      "shot": "S01-B01-SH05",
+      "frame": 286,
+      "brief": "Tiny comic stab: one pizzicato pluck plus hollow woodblock knock, startled giggle",
+      "id": "comedy_pluck-knock-flinch_01",
+      "origin": "generated",
+      "lenSec": 0.19,
+      "note": "M1 half-beat dropout 278-290 around it"
+    },
+    {
+      "cue": "S9-glow",
+      "shot": "S01-B02-SH01",
+      "frame": 335,
+      "brief": "Leg glow swelling: soft warm fwoop",
+      "id": "reveal_warmth-fwoop_01",
+      "origin": "library",
+      "fit": "Film named it; 0.87 s warm swell matches the glow exactly; not listened"
+    },
+    {
+      "cue": "S10-groan",
+      "shot": "S01-B02-SH01",
+      "frame": 392,
+      "brief": "Low teak floorboard groan under a heavy load (weight dial), 1.0 s",
+      "id": "foley_floor-groan-heavy_01",
+      "origin": "generated",
+      "lenSec": 1.0,
+      "note": "slot 392-422"
+    },
+    {
+      "cue": "S11-backpack",
+      "shot": "S01-B02-SH03",
+      "frame": 480,
+      "brief": "Canvas backpack swung onto shoulders: dull thump and strap jingle",
+      "id": "foley_backpack-thump-strap_01",
+      "origin": "generated",
+      "lenSec": 0.5,
+      "note": "file starts on the thump (the swing is trimmed)"
+    },
+    {
+      "cue": "S11-hop-whoosh",
+      "shot": "S01-B02-SH03",
+      "frame": 515,
+      "brief": "Very short light whoosh on the hop take-off (man and ghost on one frame)",
+      "id": "whoosh_fast-slide_01",
+      "origin": "library",
+      "fit": "Film named it: 0.27 s very short light whoosh fits a small hop; not listened"
+    },
+    {
+      "cue": "S11-hop-tap",
+      "shot": "S01-B02-SH03",
+      "frame": 527,
+      "brief": "Soft landing tap on the hop (quieter than shot 14 thud)",
+      "id": "foley_soft-landing-tap_01",
+      "origin": "library",
+      "fit": "soft muffled tap without low thump fits socked feet on paper",
+      "gain": 0.6
+    },
+    {
+      "cue": "S12-shrug",
+      "shot": "S01-B02-SH03",
+      "frame": 570,
+      "brief": "Two plucked pizzicato notes, low then questioning higher, under \"ไม่ได้สูงขึ้นตาม\"",
+      "id": "stinger_pizz-shrug_01",
+      "origin": "library",
+      "fit": "Film named it: deadpan questioning two-note shrug, 1.2 s; matches M1 colour; not listened"
+    },
+    {
+      "cue": "S15-squeeze",
+      "shot": "S01-B03-SH03",
+      "frame": 706,
+      "brief": "Tight rubber squeeze creak rising in pitch, tension loading (706-734)",
+      "id": "foley_rubber-squeeze-creak_01",
+      "origin": "generated",
+      "lenSec": 0.9
+    },
+    {
+      "cue": "S15-lock-click",
+      "shot": "S01-B03-SH03",
+      "frame": 736,
+      "brief": "Catch locking: single firm plastic click with spring tick",
+      "id": "foley_flashlight-click_01",
+      "origin": "library",
+      "fit": "Film named it: single firm click with spring tick, 1.0 s file with energy only in the first 0.2 s; fits a catch locking"
+    },
+    {
+      "cue": "S16-snap",
+      "shot": "S01-B03-SH03",
+      "frame": 763,
+      "brief": "Release: tight dry springy snap, nearly no ring, then nothing; M1 stops dead here",
+      "id": "foley_rubber-snap-release_01",
+      "origin": "generated",
+      "lenSec": 0.29
+    },
+    {
+      "cue": "S16-whip",
+      "shot": "S01-B03-SH03",
+      "frame": 763,
+      "brief": "One-frame whip-zip, very fast upward air rip",
+      "id": "whoosh_whip-zip-up_01",
+      "origin": "generated",
+      "lenSec": 0.17
+    },
+    {
+      "cue": "S21-question",
+      "shot": "S01-B04-SH01",
+      "frame": 830,
+      "brief": "Pizzicato pluck whose tail bends upward like a question (still need it?)",
+      "id": "comedy_pluck-question-bend_01",
+      "origin": "generated",
+      "lenSec": 0.4,
+      "note": "measured pitch 500, 372, then up to 743 Hz"
+    },
+    {
+      "cue": "S23-detune",
+      "shot": "S01-B04-SH01",
+      "frame": 905,
+      "brief": "Short soft synth pluck sagging flat as it decays, a shrug as the \"?\" goes and the icon greys",
+      "id": "comedy_blip-detune-sag_01",
+      "origin": "generated",
+      "lenSec": 0.4,
+      "note": "source steady in pitch; pitch sag x1.0 to x0.75 applied in post (numpy resample) and recorded in the sidecar"
+    },
+    {
+      "cue": "S22-leg-tone",
+      "shot": "S01-B04-SH01",
+      "frame": 937,
+      "brief": "Soft clean glassy tone rising with the light and stopping as it reaches the foot (937-955)",
+      "id": "reveal_glass-rise-tone_01",
+      "origin": "generated",
+      "lenSec": 0.7,
+      "note": "source steady in pitch; rising glide x0.70 to x1.0 applied in post and recorded in the sidecar; measured 543 to 680 Hz in the file"
+    },
+    {
+      "cue": "S17-crouch",
+      "shot": "S01-B04-SH02",
+      "frame": 1012,
+      "brief": "Crouch pair: soft cotton rustle (man) and tiny dry chitin creak (flea) on one frame",
+      "id": "foley_crouch-cotton-chitin_01",
+      "origin": "generated",
+      "lenSec": 0.4,
+      "note": "peak-normalised from a very quiet source: Editor sets the level"
+    },
+    {
+      "cue": "S18-jump",
+      "shot": "S01-B04-SH02",
+      "frame": 1020,
+      "brief": "Jump pair: two matched short upward whooshes on one frame, with V02",
+      "id": "whoosh_jump-pair-lift_01",
+      "origin": "generated",
+      "lenSec": 0.4
+    },
+    {
+      "cue": "S19-landing",
+      "shot": "S01-B04-SH02",
+      "frame": 1068,
+      "brief": "One shared soft landing thud of socked and light hard feet on teak; Editor may move it earlier, never later than +56",
+      "id": "foley_teak-landing-thud_01",
+      "origin": "generated",
+      "lenSec": 0.4
+    },
+    {
+      "cue": "TR7-braam-echo",
+      "shot": "S01-B04-SH02",
+      "frame": 1098,
+      "brief": "Braam echo: TR1 low-passed and far (-18 dB) under the trailer inset, cut dead at 1124",
+      "id": "impact_trailer-braam_01",
+      "origin": "generated",
+      "fiction": true,
+      "lenSec": 0.87,
+      "note": "same file as TR1, Editor low-passes it and cuts dead at G1124 (0.87 s audible); no new file",
+      "lowpass": true
+    },
+    {
+      "cue": "TR7-tick",
+      "shot": "S01-B04-SH02",
+      "frame": 1124,
+      "brief": "Inset snaps off: pitched-down click",
+      "id": "ui_click-tick_01",
+      "origin": "library",
+      "fit": "Film named it: dry tick, pitched down by Editor (playbackRate about 0.6)",
+      "pitch": "down"
+    },
+    {
+      "cue": "B05-shrink-pop",
+      "shot": "S01-B05-SH01",
+      "frame": 1138,
+      "brief": "Giant shrinks away: shrink pop with sparkle glissando",
+      "id": "comedy_shrink-pop-gliss_01",
+      "origin": "library",
+      "fit": "Film named it: shrink pop with sparkle glissando, 1.05 s, fits the shrink-away exactly; not listened"
+    },
+    {
+      "cue": "B05-tick-flea",
+      "shot": "S01-B05-SH01",
+      "frame": 1165,
+      "brief": "Flea mark appears: dry tick pitched up",
+      "id": "ui_click-tick_01",
+      "origin": "library",
+      "fit": "dry tick as the mark lands",
+      "pitch": "up"
+    },
+    {
+      "cue": "B05-tick-man",
+      "shot": "S01-B05-SH01",
+      "frame": 1189,
+      "brief": "MAN mark appears: dry tick pitched down",
+      "id": "ui_click-tick_01",
+      "origin": "library",
+      "fit": "dry tick as the mark lands",
+      "pitch": "down"
+    },
+    {
+      "cue": "S20-sofa",
+      "shot": "S01-B05-SH02",
+      "frame": 1294,
+      "brief": "Soft sofa cushion compressing as the man sits, a little fabric sigh",
+      "id": "foley_sofa-sit-sigh_01",
+      "origin": "generated",
+      "lenSec": 0.66,
+      "note": "slot 0.8 s; file trimmed to the sit (0.66 s)"
+    },
+    {
+      "cue": "tag-ending",
+      "shot": "S01-B05-SH02",
+      "frame": 1311,
+      "brief": "Warm playful pizzicato and marimba tag resolving on a ringing chord (2.5 s, rings out by 1386); at the end of \"เล็กมาก\"",
+      "id": "stinger_pizz-tag-ending_01",
+      "origin": "library",
+      "fit": "Film named it: warm pizzicato and marimba tag, 2.5 s, matches M1 colour and the smug close; not listened"
+    },
+    {
+      "cue": "S1-jingle",
+      "shot": "S01-B05-SH02",
+      "frame": 1316,
+      "brief": "One soft collar-tag jingle as the dog lifts its head",
+      "id": "foley_dog-collar-jingle_01",
+      "origin": "generated",
+      "lenSec": 0.27
+    },
+    {
+      "cue": "V03-dog-sigh",
+      "shot": "S01-B05-SH02",
+      "frame": 1322,
+      "brief": "Big dog chest-drop sigh through the nose, one long exhale, no whine (V03)",
+      "id": "creature_dog-sigh-exhale_01",
+      "origin": "generated",
+      "lenSec": 1.2,
+      "note": "slot 1.2 s; room tone fades to zero at 1390 (Editor)"
+    },
+    {
+      "cue": "B05-room-fade",
+      "shot": "S01-B05-SH02",
+      "frame": 1254,
+      "brief": "Room tone (soi + fan) back, fading to zero at the last frame; no loop seam",
+      "id": "room_standing-fan-hum_01",
+      "origin": "generated",
+      "lenSec": 13,
+      "note": "second use of A1 file; fade 1325-1390"
+    }
+  ],
+  "swaps": [],
+  "exempt": [],
+  "levels": {
+    "stems": {
+      "voice": "out/stems/voice.wav",
+      "bed": "out/stems/bed.wav",
+      "texture": "out/stems/texture.wav",
+      "accent": "out/stems/accent.wav"
+    },
+    "checks": [
+      {
+        "beat": "B01",
+        "layer": "background",
+        "when": "speech",
+        "min": 15,
+        "fromSec": 0,
+        "toSec": 3.63
+      },
+      {
+        "beat": "B01",
+        "layer": "background",
+        "when": "speech",
+        "min": 10,
+        "fromSec": 3.63,
+        "toSec": 6.5,
+        "exception": "brief Sound direction: trailer bed -10 dB under the voice (TR1-TR6)"
+      },
+      {
+        "beat": "B01",
+        "layer": "background",
+        "when": "speech",
+        "min": 15,
+        "fromSec": 6.5,
+        "toSec": 11.07
+      },
+      {
+        "beat": "B01",
+        "layer": "bed",
+        "when": "speech",
+        "warnAbove": 20,
+        "fromSec": 0.0,
+        "toSec": 11.07
+      },
+      {
+        "beat": "B01",
+        "layer": "texture",
+        "when": "speech",
+        "min": 18,
+        "fromSec": 0.0,
+        "toSec": 11.07
+      },
+      {
+        "beat": "B02",
+        "layer": "background",
+        "when": "speech",
+        "min": 15,
+        "fromSec": 11.07,
+        "toSec": 20.37
+      },
+      {
+        "beat": "B02",
+        "layer": "bed",
+        "when": "speech",
+        "warnAbove": 20,
+        "fromSec": 11.07,
+        "toSec": 20.37
+      },
+      {
+        "beat": "B02",
+        "layer": "texture",
+        "when": "speech",
+        "min": 18,
+        "fromSec": 11.07,
+        "toSec": 20.37
+      },
+      {
+        "beat": "B03",
+        "layer": "background",
+        "when": "speech",
+        "min": 15,
+        "fromSec": 20.37,
+        "toSec": 27.5
+      },
+      {
+        "beat": "B03",
+        "layer": "bed",
+        "when": "speech",
+        "warnAbove": 20,
+        "fromSec": 20.37,
+        "toSec": 27.5
+      },
+      {
+        "beat": "B03",
+        "layer": "texture",
+        "when": "speech",
+        "min": 18,
+        "fromSec": 20.37,
+        "toSec": 27.5
+      },
+      {
+        "beat": "B04",
+        "layer": "background",
+        "when": "speech",
+        "min": 15,
+        "fromSec": 27.5,
+        "toSec": 37.93
+      },
+      {
+        "beat": "B04",
+        "layer": "bed",
+        "when": "speech",
+        "warnAbove": 20,
+        "fromSec": 27.5,
+        "toSec": 37.93
+      },
+      {
+        "beat": "B04",
+        "layer": "texture",
+        "when": "speech",
+        "min": 18,
+        "fromSec": 27.5,
+        "toSec": 37.93
+      },
+      {
+        "beat": "B05",
+        "layer": "background",
+        "when": "speech",
+        "min": 15,
+        "fromSec": 37.93,
+        "toSec": 46.33
+      },
+      {
+        "beat": "B05",
+        "layer": "bed",
+        "when": "speech",
+        "warnAbove": 20,
+        "fromSec": 37.93,
+        "toSec": 46.33
+      },
+      {
+        "beat": "B05",
+        "layer": "texture",
+        "when": "speech",
+        "min": 18,
+        "fromSec": 37.93,
+        "toSec": 46.33
+      },
+      {
+        "beat": "B01",
+        "layer": "accent",
+        "when": "peak",
+        "min": -6,
+        "max": 3,
+        "fromSec": 4.83,
+        "toSec": 5.83,
+        "exception": "brief TR4 launch (trailer peak)"
+      },
+      {
+        "beat": "B01",
+        "layer": "accent",
+        "when": "peak",
+        "min": -6,
+        "max": 3,
+        "fromSec": 9.47,
+        "toSec": 10.0
+      },
+      {
+        "beat": "B03",
+        "layer": "accent",
+        "when": "peak",
+        "min": -6,
+        "max": 3,
+        "fromSec": 25.37,
+        "toSec": 26.0
+      },
+      {
+        "beat": "B04",
+        "layer": "accent",
+        "when": "peak",
+        "min": -6,
+        "max": 3,
+        "fromSec": 35.53,
+        "toSec": 36.17
+      },
+      {
+        "beat": "B05",
+        "layer": "accent",
+        "when": "peak",
+        "min": -6,
+        "max": 3,
+        "fromSec": 43.63,
+        "toSec": 46.33
+      }
+    ]
+  }
+}
