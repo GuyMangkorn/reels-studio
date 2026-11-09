@@ -35,7 +35,7 @@ export const Painted = ({paint, band = false, vignette = 'rgba(60,40,20,0.2)', g
 
 export const stroke = {WebkitTextStroke: '6px #1d2129', paintOrder: 'stroke fill', textShadow: '0 3px 0 #1d2129'} as const;
 /** LBL slot (816-1020, 148-204): "ภาพจำลอง" on every macro shot (VD04). */
-const Lbl = ({text = 'ภาพจำลอง'}: {text?: string}) => (
+export const Lbl = ({text = 'ภาพจำลอง'}: {text?: string}) => (
   <div lang="th" style={{position: 'absolute', left: 816, top: 148, width: 204, height: 56, display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: 'Noto Sans Thai', fontWeight: 700, fontSize: 34, color: '#fff'}}>
     <span style={stroke}>{text}</span>
   </div>

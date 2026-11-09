@@ -27,7 +27,7 @@ export type FleaOpts = {
   /** Airborne states only: the body centre height above the ground (bl). */
   air?: number;
   /** See-through mode (B03-SH03): translucent plates, the thorax window shows the amber pad (squeeze 0..1) and the catch (locked). */
-  see?: {squeeze: number; locked?: boolean};
+  see?: {squeeze: number; locked?: boolean; /** Translucency 0..1 (default 1): the cut-in at the start of B03-SH03. */ u?: number};
   /** Soft contact shadow on the ground (default true when grounded). */
   shadow?: boolean;
   /** Colour-mix toward a light colour (warm sun key). */
@@ -40,6 +40,8 @@ export type FleaOpts = {
   airborne?: boolean;
   /** N21 leg-length light (B04-SH01): a soft white line travels the near hind leg hip -> knee -> ankle -> toe (`u` 0..1), then stays as an even glow of strength `a` 0..1. Light only: no figure, tick or text. */
   legLight?: {u: number; a?: number};
+  /** N22 muscle glow (B02-SH01): a coral glow on the near hind thigh, 0..1 (light only; the flea is otherwise unchanged). */
+  muscleGlow?: number;
   t?: number;
 };
 
@@ -168,13 +170,13 @@ export const drawFlea = (p0: Painter, g: Pt, len: number, o: FleaOpts): FleaMeas
     {id: 9330, pts: ellL(0.35, -0.05, 0.15, 0.13, -0.15), col: FLEA.plate, cut: -0.05},
   ];
   plates.forEach(({id, pts, col, cut}) => {
-    const fill = see ? mixColor(col, FLEA.window, 0.62) : col, shade = see ? mixColor(FLEA.shade, FLEA.window, 0.5) : FLEA.shade;
+    const fill = see ? mixColor(col, FLEA.window, 0.62 * (see.u ?? 1)) : col, shade = see ? mixColor(FLEA.shade, FLEA.window, 0.5 * (see.u ?? 1)) : FLEA.shade;
     solid(p, id, tint(shade), SP(pts), 5);
     solid(p, id + 1, tint(fill), SP(pts.map(([x, y]): Pt => [x, y > cut ? y : cut + (y - cut) * 0.4])), 3);
     ink(id + 2, SP(pts), 0.9);
     if (!see) washAt(p, id + 3, tint(FLEA.gloss), 120, SP(ellL(pts.reduce((s, q) => s + q[0], 0) / pts.length - 0.02, Math.max(...pts.map((q) => q[1])) - 0.06, 0.1, 0.022, -0.1, 10)), 0.05, 0.1);
   });
-  if (see) seeThrough(p, SP, S, len, see, tint);
+  if (see && (see.u ?? 1) >= 0.5) seeThrough(p, SP, S, len, see, tint);
 
   // head details: eye, glint, tucked antenna groove, genal and pronotal combs, bristles
   const eye = S([0.41, -0.025]);
@@ -199,6 +201,13 @@ export const drawFlea = (p0: Painter, g: Pt, len: number, o: FleaOpts): FleaMeas
     const a = o.legLight.a ?? 1, head = o.legLight.u < 1 ? 1 : a;
     washAt(p, 9600, '#bfe3ff', 230 * a, bandPoly(cut, 0.05 * len, 0.05 * len), 0.3, 0.1);
     band(p, 9601, cut, Math.max(3, 0.016 * len), Math.max(3, 0.016 * len), mixColor(FLEA.leg, '#fff6e0', 0.35 + 0.65 * head));
+  }
+  if (o.muscleGlow && o.muscleGlow > 0) { // N22: coral glow on the near hind thigh (hip -> knee), light only: soft ellipses along the thigh
+    const g = Math.min(1, o.muscleGlow), th = SP([HIP.hind, pose.hind.k]), mx = (th[0][0] + th[1][0]) / 2, my = (th[0][1] + th[1][1]) / 2;
+    const L = Math.hypot(th[1][0] - th[0][0], th[1][1] - th[0][1]), ang = Math.atan2(th[1][1] - th[0][1], th[1][0] - th[0][0]);
+    washAt(p, 9610, '#ff6a4a', 150 * g, ell(mx, my, L * 0.62, 0.17 * len, 26, ang), 0.5, 0.2);
+    washAt(p, 9611, '#ff9a78', 190 * g, ell(mx, my, L * 0.45, 0.09 * len, 22, ang), 0.5, 0.2);
+    washAt(p, 9612, '#ffe0c8', 210 * g, ell(mx, my, L * 0.25, 0.04 * len, 18, ang), 0.4, 0.2);
   }
   const pts = SP(plates.flatMap((q) => q.pts)), toes = [pose.hind.t, pose.mid.t, pose.fore.t].map(S);
   const all = [...pts, ...toes];

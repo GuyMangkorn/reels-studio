@@ -1,3 +1,4 @@
+import {ell, washAt} from '../kit/draw';
 import type {Painter} from '../kit/painter';
 import {EXPRESSIONS, type ExpressionId} from '../kit/expressions';
 import {clamp01, seg} from '../kit/motions';
@@ -5,16 +6,24 @@ import type {FaceState} from '../kit/head';
 import type {AnyPoseId} from '../kit/poses';
 import type {V3} from '../kit/space';
 import {camPoint, type YCam} from '../kit/ycam';
-import {paintMan, paintManMotion} from './cast';
+import {FLEA_MM} from './scenes';
+import {paintDog, paintMan, paintManMotion} from './cast';
 import {blendPose, fleaJoints, paintFlea, POSES, type FleaOpts} from './flea';
 import {LR13, paintRoom13, type RoomItem} from './room';
-import {CAM_S13, CAM_S14, CAM_S3, CAM_S8, camShot, type ShotCam} from './scenes';
+import {CAM_S1, CAM_S12, CAM_S13, CAM_S14, CAM_S15, CAM_S16, CAM_S3, CAM_S8, CAM_S9, camShot, type ShotCam} from './scenes';
+import {paintStudio} from './studio';
+import {paintBox} from '../edu02/world';
 
-// EDU-EP13-SHORT timed shot content (W5.2 asset group 1, SHEETS-R2.0): S01-B01-SH03 (the grow), S01-B01-SH05 (V01), S01-B04-SH01 (icon and leg light),
+// EDU-EP13-SHORT timed shot content (W5.2 asset groups 1 and 2: group 2 = S01-B01-SH01, B02-SH01, B03-SH03, B05-SH01, B05-SH02; group 1, SHEETS-R2.0): S01-B01-SH03 (the grow), S01-B01-SH05 (V01), S01-B04-SH01 (icon and leg light),
 // S01-B04-SH02 (the truth jump). Every function is a pure function of the shot-local frame `l` (L in the sheets), so it seeks. Screen layers (ring marker,
 // icons, band, tag, inset) are in shot-layers.tsx and read the cameras and anchors exported here. Room, cast and flea are the locked look modules, unchanged.
 
 export const SHOTS = {
+  S01_B01_SH01: {start: 0, len: 27, cam: CAM_S1},
+  S01_B02_SH01: {start: 332, len: 93, cam: CAM_S9},
+  S01_B03_SH03: {start: 697, len: 128, cam: CAM_S12},
+  S01_B05_SH01: {start: 1138, len: 116, cam: CAM_S15},
+  S01_B05_SH02: {start: 1254, len: 136, cam: CAM_S16},
   S01_B01_SH03: {start: 76, len: 33, cam: CAM_S3},
   S01_B01_SH05: {start: 278, len: 54, cam: CAM_S8},
   S01_B04_SH01: {start: 825, len: 187, cam: CAM_S13},
@@ -135,4 +144,87 @@ export const anchorsAt = (id: ShotId, l: number) => {
     manFeet: camPoint(c, MAN_AT), manHead: camPoint(c, [MAN_AT[0], 1.7, MAN_AT[2]]), giantFeet: camPoint(c, GIANT_AT),
     icon: camPoint(c, id === 'S01_B04_SH02' ? iconAt14(l) : ICON_AT),
   };
+};
+
+// ======================= W5.2 asset group 2 =======================
+const ease = (u: number) => u * u * (3 - 2 * u);
+
+// ---- S01-B01-SH01 (the room, L01 a): LF01 picture, MAN seated eyes on the dog, phone face-down on his thigh, eyes drift to the window +18..+26
+export const paintSH01 = (p: Painter, l: number) => {
+  const c = shotCamera('S01_B01_SH01', l), t = l / 30, drift = ease(seg(l, 18, 26));
+  const look: [number, number] = [0.6 + 0.2 * drift, 0.2 + 0.55 * drift];
+  const cast: RoomItem[] = [
+    {at: LR13.dogAt, layer: 'sofa', draw: (q, cc) => paintDog(q, cc, LR13.dogAt, {view: 'left', state: 'lie', lid: 1}, t)},
+    {at: LR13.manSeatFeet, layer: 'sofa', draw: (q, cc) => { paintMan(q, cc, {at: LR13.manSeatFeet, view: 'front', pose: 'P31', face: 'neutral', faceState: {look}, t, warm: 0.08}); }},
+    {at: LR13.manSeatFeet, layer: 'sofa', draw: (q, cc) => paintBox(q, cc, 9900, {x0: 3.4, x1: 3.5, y0: 0.52, y1: 0.535, z0: 0.62, z1: 0.8}, '#2c3036', {}, {ink: true})},
+  ];
+  paintRoom13(p, c, {t, cast});
+};
+
+// ---- S01-B02-SH01 (strength up, weight up, L03): coral glow on the hind-leg muscle 0 -> 1 from +3 to +92; dial, arrow and "แรง ↑" are screen layers
+export const muscleGlowAt = (l: number) => ease(seg(l, 3, 92));
+export const paintSH09 = (p: Painter, l: number) => {
+  const c = shotCamera('S01_B02_SH01', l), t = l / 30;
+  const cast: RoomItem[] = [
+    {at: MAN_AT, draw: (q, cc) => { paintMan(q, cc, {at: MAN_AT, view: 'front', pose: 'P01', face: 'neutral', faceState: {look: [0.8, 0.1]}, t, warm: 0.06}); }},
+    fleaItem(GIANT, {view: 'right', state: 'rest', muscleGlow: muscleGlowAt(l), t}),
+  ];
+  paintRoom13(p, c, {t, cast});
+};
+/** World anchor of the weight dial (above the back) and of the "heavier" arrow (under the belly), R m. */
+export const DIAL_AT: V3 = [1.85, 1.28, 0.35];
+export const ARROW_AT: V3 = [1.95, 0.3, 0.35];
+
+// ---- S01-B03-SH03 (the spring pad, L09): see-through thorax; squeeze +9..+37, catch +39, hold, release +65 (flea gone +66), pad glow fades in the air to +83
+export const SPRING = {squeeze: 9, squeezed: 37, catch: 39, release: 65, gone: 66, glowEnd: 83, icon: 99} as const;
+/** Screen point (px) of the pad centre in the see-through rest drawing, from the camera and the rest-pose joints. */
+export const padPoint = (c: YCam): [number, number] => {
+  const r = fleaJoints(POSES.rest, 0.5).w([-0.04, -0.07]), q = camPoint(c, [0, 0, 0]) ?? [540, 900];
+  const u = (camPoint(c, [1, 0, 0]) ?? [q[0] + 1, q[1]])[0] - q[0];
+  return [q[0] + r[0] * FLEA_MM * u, q[1] - r[1] * FLEA_MM * u];
+};
+export const paintSH12 = (p: Painter, l: number) => {
+  const c = shotCamera('S01_B03_SH03', l), t = l / 30, S = SPRING;
+  paintStudio(p, c, {fibre: true});
+  if (l < S.gone) {
+    const sq = l < S.squeeze ? 0 : l < S.squeezed ? ease((l - S.squeeze) / (S.squeezed - S.squeeze)) : l < S.release ? 1 : 0;
+    paintFlea(p, c, [0, 0, 0], FLEA_MM, {view: 'right', state: 'rest', see: {squeeze: sq, locked: l >= S.catch && l < S.release, u: seg(l, 0, 6)}, t});
+  }
+  if (l >= S.gone) { // smear streak up from the flea's spot (4 f), then the pad's amber glow fading in the air to +83
+    const q = camPoint(c, [0, 0, 0]) ?? [540, 900], u = (camPoint(c, [1, 0, 0]) ?? [q[0] + 1, 0])[0] - q[0], pad = padPoint(c), k = l - S.gone;
+    if (k < 4) for (let i = 0; i < 3; i++) washAt(p, 9700 + i, '#6a4a30', 70 * (1 - k / 4), [[q[0] - 14 + i * 3, q[1] - 0.3 * u], [q[0] + 14 - i * 3, q[1] - 0.3 * u], [q[0] + 3, q[1] - (0.8 + k * 0.35 + i * 0.25) * u], [q[0] - 3, q[1] - (0.8 + k * 0.35 + i * 0.25) * u]], 0.3, 0.3);
+    const a = 1 - clamp01((l - S.gone) / (S.glowEnd - S.gone)), rise = (l - S.gone) * 1.6;
+    if (a > 0.02) {
+      washAt(p, 9710, '#ffc65a', 200 * a, ell(pad[0], pad[1] - rise, 130, 70, 24), 0.4, 0.3);
+      washAt(p, 9711, '#fff3c8', 230 * a, ell(pad[0], pad[1] - rise, 60, 32, 20), 0.4, 0.3);
+    }
+  }
+};
+
+// ---- S01-B05-SH01 (the real measure, L13): the giant shrinks away about its feet +0..+12; marks at 0.15 / 0.42 m; MAN glances down +54, hands on hips +69
+export const MAN15: V3 = [0.95, 0, 0.3];
+export const GIANT15: V3 = [1.3, 0, 0.25];
+export const shrinkLen = (l: number) => GIANT * (1 - clamp01(l / 12)) ** 1.8;
+export const marksAt = (l: number) => [...(l >= 27 ? [{y: 0.15, color: '#ec8f78'}] : []), ...(l >= 51 ? [{y: 0.42, color: '#6fa3d0'}] : [])];
+export const paintSH15 = (p: Painter, l: number) => {
+  const c = shotCamera('S01_B05_SH01', l), t = l / 30;
+  const down = ease(seg(l, 54, 62)) * (1 - ease(seg(l, 66, 70))), smug = seg(l, 69, 75);
+  const cast: RoomItem[] = [
+    {at: MAN15, draw: (q, cc) => { paintMan(q, cc, {at: MAN15, view: 'front', mix: {a: 'P01', b: 'P09', u: ease(smug)}, face: smug > 0.3 ? 'smug' : 'neutral', faceState: smug > 0.3 ? {look: [0, 0]} : {look: [0.55 * down, -0.75 * down]}, t, warm: 0.06}); }},
+    fleaItem(shrinkLen(l), {view: 'right', state: 'rest', t}, GIANT15),
+  ];
+  paintRoom13(p, c, {t, cast, marks: marksAt(l)});
+};
+
+// ---- S01-B05-SH02 (home, the dog sighs, L14 + hold): MAN sits down +0..+54, the dog lifts its head +62, sighs +68..+104, lies back +118
+export const SOFA16 = {sitEnd: 54, dogLift: 62, sigh: 68, sighEnd: 104, down: 118} as const;
+export const dogLift = (l: number) => ease(seg(l, 62, 72)) * (1 - ease(seg(l, 110, 122)));
+export const paintSH16 = (p: Painter, l: number) => {
+  const c = shotCamera('S01_B05_SH02', l), t = l / 30, S = SOFA16, d = dogLift(l), sit = ease(seg(l, 0, S.sitEnd));
+  const relieved = l < 40;
+  const cast: RoomItem[] = [
+    {at: LR13.dogAt, layer: 'sofa', draw: (q, cc) => paintDog(q, cc, LR13.dogAt, {view: 'left', state: 'lie', lid: d > 0.15 ? 0.2 : 1, ...(d > 0 ? {lean: d, leanTo: [0.1, 0.34], tilt: 8 * Math.sin(Math.PI * seg(l, S.sigh, S.sighEnd))} : {}), mouth: l >= S.sigh + 2 && l < S.sighEnd - 10 ? 'open' : 'closed'}, t)},
+    {at: LR13.manSeatFeet, layer: 'sofa', draw: (q, cc) => { paintMan(q, cc, {at: LR13.manSeatFeet, view: 'front', mix: {a: 'P01', b: 'P31', u: sit}, face: relieved ? 'relieved' : 'neutral', faceState: {look: [0.3, 0.1]}, t, warm: 0.08}); }},
+  ];
+  paintRoom13(p, c, {t, cast});
 };

@@ -2,8 +2,8 @@ import {Img, staticFile, useCurrentFrame} from 'remotion';
 import {seg} from '../kit/motions';
 import {camPoint} from '../kit/ycam';
 import {OX} from './room';
-import {ICON_AT, iconAt14, paintSH03, paintSH05, paintSH13, paintSH14, shotCamera} from './shots';
-import {Painted, stroke, Text} from './look';
+import {ARROW_AT, DIAL_AT, ICON_AT, iconAt14, padPoint, paintSH01, paintSH03, paintSH05, paintSH09, paintSH12, paintSH13, paintSH14, paintSH15, paintSH16, shotCamera, SPRING} from './shots';
+import {Lbl, Painted, stroke, Text} from './look';
 
 // EDU-EP13-SHORT timed shots, group 1 (W5.2): React wrappers of shots.ts. One component = one timeline scene (scene ID = shot ID); the local frame
 // is `useCurrentFrame()`, so Editor mounts each in a Sequence at its G start. Screen layers here are the sheets' DOM layers (ring marker, slingshot
@@ -13,18 +13,26 @@ const INK = '#1d2129';
 /** Pop curve: 0 -> 1.1 -> 1 over `n` frames from `at` (scale 0 before). */
 const pop = (l: number, at: number, n = 6) => { const u = (l - at) / n; return u < 0 ? 0 : u >= 1 ? 1 : u < 0.6 ? 1.1 * (u / 0.6) : 1.1 - 0.1 * ((u - 0.6) / 0.4); };
 
-/** The slingshot icon (N10, "the B04 drawing"): a wooden Y-fork with a coral elastic and a pebble in the pouch. `grey` 0..1 desaturates it (R10: it stays on, never crossed out). */
-export const SlingIcon = ({x, y, size, grey = 0, scale = 1}: {x: number; y: number; size: number; grey?: number; scale?: number}) => (
-  <svg width={size} height={size} viewBox="0 0 100 100" style={{position: 'absolute', left: x - size / 2, top: y - size / 2, transform: `scale(${scale})`, filter: `grayscale(${grey}) ${grey > 0 ? `brightness(${1 - 0.1 * grey})` : ''}`, overflow: 'visible'}}>
-    <g strokeLinecap="round" strokeLinejoin="round" fill="none">
-      <path d="M50 94 L50 56 L24 16 M50 56 L76 16" stroke={INK} strokeWidth={17} />
-      <path d="M50 94 L50 56 L24 16 M50 56 L76 16" stroke="#b9824f" strokeWidth={10} />
-      <path d="M24 16 Q50 74 76 16" stroke={INK} strokeWidth={9} />
-      <path d="M24 16 Q50 74 76 16" stroke="#ec8f78" strokeWidth={4.5} />
-    </g>
-    <circle cx={50} cy={46} r={9} fill={INK} /><circle cx={50} cy={46} r={6} fill="#d9d4c8" />
-  </svg>
-);
+/** The slingshot icon (N10, "the B04 drawing"): a wooden Y-fork with a coral elastic band pulled back to a leather pouch holding a pebble. Readable at 60 px and in grey (R10: it stays on, never crossed out):
+ * a white halo under the ink, a light wood against a darker, saturated elastic (so the two grey apart), thick tips and a distinct pouch. `grey` 0..1 desaturates it. */
+export const SlingIcon = ({x, y, size, grey = 0, scale = 1}: {x: number; y: number; size: number; grey?: number; scale?: number}) => {
+  const fork = 'M50 95 L50 58 L22 14 M50 58 L78 14', band = 'M22 14 L50 66 L78 14';
+  return (
+    <svg width={size} height={size} viewBox="0 0 100 100" style={{position: 'absolute', left: x - size / 2, top: y - size / 2, transform: `scale(${scale})`, filter: `grayscale(${grey}) ${grey > 0 ? `brightness(${1 - 0.08 * grey})` : ''}`, overflow: 'visible'}}>
+      <g strokeLinecap="round" strokeLinejoin="round" fill="none">
+        <path d={fork} stroke="#fff" strokeWidth={30} opacity={0.85} /><path d={band} stroke="#fff" strokeWidth={22} opacity={0.85} />
+        <path d={fork} stroke={INK} strokeWidth={22} />
+        <path d={fork} stroke="#e0b077" strokeWidth={14} />
+        <path d="M50 88 L50 60" stroke="#c78f55" strokeWidth={5} />
+        <path d={band} stroke={INK} strokeWidth={14} />
+        <path d={band} stroke="#d93f2c" strokeWidth={8.5} />
+      </g>
+      <circle cx={22} cy={14} r={9} fill={INK} /><circle cx={78} cy={14} r={9} fill={INK} /><circle cx={22} cy={14} r={5.5} fill="#8a5a3a" /><circle cx={78} cy={14} r={5.5} fill="#8a5a3a" />
+      <ellipse cx={50} cy={66} rx={14} ry={9} fill={INK} /><ellipse cx={50} cy={66} rx={11} ry={6.5} fill="#7a4a2a" />
+      <circle cx={50} cy={62} r={8.5} fill={INK} /><circle cx={50} cy={62} r={5.8} fill="#f2efe6" />
+    </svg>
+  );
+};
 
 /** World anchor -> picture point at local frame l of the shot. */
 const at = (id: Parameters<typeof shotCamera>[0], l: number, w: [number, number, number]) => camPoint(shotCamera(id, l), w) ?? [540, 960];
@@ -95,3 +103,73 @@ export const TrailerInset = ({l}: {l: number}) => {
   );
 };
 export const S01_B04_SH02 = () => <Painted paint={(p, f) => paintSH14(p, f)} band><TruthLayers /></Painted>;
+
+// ======================= W5.2 asset group 2 =======================
+export const S01_B01_SH01 = () => <Painted paint={(p, f) => paintSH01(p, f)} />;
+
+// ---- S01-B02-SH01: "แรง ↑" at +11, weight dial pops at +49 (needle +49..+85, no numerals), "heavier" down-arrow pops at +60
+export const SH09Layers = () => {
+  const l = useCurrentFrame(), c = shotCamera('S01_B02_SH01', l);
+  const d = camPoint(c, DIAL_AT), ar = camPoint(c, ARROW_AT), lab = camPoint(c, [0.95, 0.95, 0.35]);
+  const ds = pop(l, 49, 6), as = pop(l, 60, 6), ls = pop(l, 11, 6), swing = seg(l, 49, 85), ang = -65 + 130 * swing * swing * (3 - 2 * swing), R = 70;
+  return (
+    <>
+      {lab && ls > 0 && <div style={{position: 'absolute', left: 0, top: 0, width: 1080, transform: `scale(${ls})`, transformOrigin: `${lab[0]}px ${lab[1]}px`}}><Text x={Math.max(24, lab[0] - 40)} y={lab[1] - 30} text="แรง ↑" size={54} /></div>}
+      {d && ds > 0 && (
+        <svg width={220} height={170} style={{position: 'absolute', left: d[0] - 110, top: d[1] - 110, transform: `scale(${ds})`, transformOrigin: '110px 110px', overflow: 'visible'}}>
+          <g transform="translate(110 110)" strokeLinecap="round" fill="none">
+            <path d={`M${-R} 0 A${R} ${R} 0 0 1 ${R} 0`} stroke="#fff" strokeWidth={30} /><path d={`M${-R} 0 A${R} ${R} 0 0 1 ${R} 0`} stroke={INK} strokeWidth={24} />
+            <path d={`M${-R} 0 A${R} ${R} 0 0 1 ${-R * 0.35} ${-R * 0.94}`} stroke="#8fd6a8" strokeWidth={14} /><path d={`M${-R * 0.35} ${-R * 0.94} A${R} ${R} 0 0 1 ${R * 0.35} ${-R * 0.94}`} stroke="#f2d97a" strokeWidth={14} /><path d={`M${R * 0.35} ${-R * 0.94} A${R} ${R} 0 0 1 ${R} 0`} stroke="#ec8f78" strokeWidth={14} />
+            <g transform={`rotate(${ang})`}><line x1={0} y1={0} x2={0} y2={-R + 6} stroke="#fff" strokeWidth={13} /><line x1={0} y1={0} x2={0} y2={-R + 6} stroke={INK} strokeWidth={8} /></g>
+            <circle r={13} fill={INK} /><circle r={7} fill="#fff" />
+          </g>
+        </svg>
+      )}
+      {ar && as > 0 && (
+        <svg width={80} height={120} style={{position: 'absolute', left: ar[0] - 40, top: ar[1] - 60, transform: `scale(${as})`, overflow: 'visible'}}>
+          <path d="M40 8 L40 70 M12 56 L40 98 L68 56" stroke="#fff" strokeWidth={26} strokeLinecap="round" strokeLinejoin="round" fill="none" /><path d="M40 8 L40 70 M12 56 L40 98 L68 56" stroke={INK} strokeWidth={20} strokeLinecap="round" strokeLinejoin="round" fill="none" /><path d="M40 8 L40 70 M12 56 L40 98 L68 56" stroke="#ec8f78" strokeWidth={10} strokeLinecap="round" strokeLinejoin="round" fill="none" />
+        </svg>
+      )}
+    </>
+  );
+};
+export const S01_B02_SH01 = () => <Painted paint={(p, f) => paintSH09(p, f)} band><SH09Layers /></Painted>;
+
+// ---- S01-B03-SH03: "ภาพจำลอง" throughout; slingshot icon (colour, the B04 drawing) pops at +99 beside the empty spot
+export const SH12Layers = () => {
+  const l = useCurrentFrame(), c = shotCamera('S01_B03_SH03', l), pad = padPoint(c), s = pop(l, SPRING.icon, 6);
+  return <>{s > 0 && <SlingIcon x={Math.min(960, pad[0] + 330)} y={pad[1] - 20} size={170} scale={s} />}<Lbl /></>;
+};
+export const S01_B03_SH03 = () => <Painted paint={(p, f) => paintSH12(p, f)} band><SH12Layers /></Painted>;
+
+// ---- S01-B05-SH01: shrink sparkle +4..+20; marks' tiny icons at the chart's left, no digits
+const Sparkle = ({x, y, s, rot}: {x: number; y: number; s: number; rot: number}) => (
+  <svg width={60} height={60} viewBox="-30 -30 60 60" style={{position: 'absolute', left: x - 30, top: y - 30, transform: `scale(${s}) rotate(${rot}deg)`}}>
+    <path d="M0 -26 L5 -5 L26 0 L5 5 L0 26 L-5 5 L-26 0 L-5 -5 Z" fill="#fff" stroke={INK} strokeWidth={4} strokeLinejoin="round" />
+  </svg>
+);
+export const SH15Layers = () => {
+  const l = useCurrentFrame(), c = shotCamera('S01_B05_SH01', l), gb = camPoint(c, [1.3, 0.25, 0.25]);
+  const f = camPoint(c, [0.14, 0.15, 0.012]), m = camPoint(c, [0.14, 0.42, 0.012]), sp = seg(l, 4, 20);
+  const spark = [[-1, -0.8, 0], [0.6, -1.1, 30], [1.1, 0.2, 60], [-0.4, 0.5, 15], [0.1, -0.2, 45]] as const;
+  return (
+    <>
+      {gb && l >= 4 && l < 21 && spark.map(([dx, dy, r], i) => <Sparkle key={i} x={gb[0] + dx * (40 + 60 * sp)} y={gb[1] + dy * (40 + 60 * sp) - 40} s={Math.max(0, (1 - sp) * (0.6 + 0.2 * i))} rot={r + 90 * sp} />)}
+      {f && l >= 27 && (
+        <svg width={64} height={44} viewBox="-32 -22 64 44" style={{position: 'absolute', left: f[0] - 32, top: f[1] - 22, transform: `scale(${pop(l, 27, 4)})`, overflow: 'visible'}}>
+          <ellipse cx={0} cy={0} rx={22} ry={11} fill="#fff" opacity={0.85} /><ellipse cx={0} cy={0} rx={16} ry={8} fill={INK} /><ellipse cx={0} cy={0} rx={13} ry={5.6} fill="#c8643c" />
+          <path d="M-12 4 L-22 12 L-26 4 M-4 6 L-8 15 M6 6 L8 15" stroke={INK} strokeWidth={4} fill="none" strokeLinecap="round" /><circle cx={11} cy={-2} r={2.2} fill="#fff" />
+        </svg>
+      )}
+      {m && l >= 51 && (
+        <svg width={50} height={72} viewBox="-25 -50 50 72" style={{position: 'absolute', left: m[0] - 25, top: m[1] - 50, transform: `scale(${pop(l, 51, 4)})`, transformOrigin: '25px 50px', overflow: 'visible'}}>
+          <g strokeLinecap="round" fill="none"><path d="M0 -20 L0 6 M0 -10 L-12 0 M0 -10 L12 0 M0 6 L-9 22 M0 6 L9 22" stroke={INK} strokeWidth={13} /><path d="M0 -20 L0 6 M0 -10 L-12 0 M0 -10 L12 0 M0 6 L-9 22 M0 6 L9 22" stroke="#6fa3d0" strokeWidth={6} /></g>
+          <circle cx={0} cy={-32} r={11} fill={INK} /><circle cx={0} cy={-32} r={8} fill="#f0d0b0" />
+        </svg>
+      )}
+    </>
+  );
+};
+export const S01_B05_SH01 = () => <Painted paint={(p, f) => paintSH15(p, f)} band><SH15Layers /></Painted>;
+
+export const S01_B05_SH02 = () => <Painted paint={(p, f) => paintSH16(p, f)} />;

@@ -32,7 +32,7 @@ Record: this file. Series context: [concepts.md](../concepts.md) (R7, C39) · se
   - [x] W5.1 Timed scene sheets (2026-11-09; Film: [scene-sheets.md](scene-sheets.md) **EDU-EP13-SHEETS-R2.0**, `ready-for-dev`, timing `checked-with-audio` from [measure.json](measure.json); storyboard.md + review-rows.json **EDU-EP13-ROWS-R2.0** timed, title/VO/seen/sound unchanged (hash-identical, verdicts hold); narration in four pieces shifted +10/+26/+72/+90 f; **16 shots, 1390 f = 46.33 s** (was 1561 f est); TR01 37 f no speech, V01 slot 42 f at G282, V02 slot 12 f at G1020, apex freeze 30 f, end hold 79 f; SD01 lowers `hy` on CAM-CHART-2S, CAM-CHART-LOW, CAM-FLEA-LEGS so feet stay out of the caption band; Ton cue lengths changed for S5, TR2, riser, TR3, TR5, S10; build.py exit 0; review page: pending)
   - [ ] V01 / V02 MAN takes (Editor; user picks; V01 ≤ 1.40 s, V02 ≤ 0.40 s); V03 is Ton's dog sigh
   - [ ] W5.2 Boss assets (N1–N21, SP2–SP4) from SHEETS-R2.0
-  - [ ] Ton cues (brief codes, lengths per SHEETS-R2.0 cue table)
+  - [x] W5.2s Ton sounds and cue sheet (2026-11-09): [sound-cues.json](sound-cues.json) vs SHEETS-R2.0, 52 cues = 30 generated + 22 library placements (28 new files filed, 11 library files reused, 39 locked in `src/videos/edu-ep13/assets.lock.json`); no NEEDS-GEN; not listened; models unloaded
   - [ ] W5.3 Editor draft
 - [ ] W6 Final
 - [ ] W7 Pinned

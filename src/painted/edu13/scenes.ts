@@ -45,6 +45,12 @@ export const CAM_S8 = shotCam(camMove(CHART_2S_AT, [0, 0], [6.6, 5.8], 1.15, {f:
 export const CAM_S13 = shotCam(camMove(CHART_2S_AT, [0, -3], [6.6, 6.3], 1.15, {f: 2400, hy: 740}), [740, 716]);
 /** S01-B04-SH02: CAM-TRUTH locked (floor row 1150; unchanged by SD01). */
 export const CAM_S14 = shotCam(camMove(CHART_2S_AT, [0, 0], 10.0, 1.0, {f: 3600, hy: 790}), [790, 790]);
+/** S01-B01-SH01: CAM-SOFA (LF01 values), slow push yaw 40 -> 39, r 2.80 -> 2.75. */
+export const CAM_S1 = shotCam(camMove([3.3, 0.7, 0.55], [40, 39], [2.8, 2.75], 1.15, {f: 1200, hy: 850}), [850, 850]);
+/** S01-B03-SH03: CAM-MACRO-THORAX (F2 still), r 2.9 -> 2.7. */
+export const CAM_S12 = shotCam(camMove([0, 0.55, 0], [0, 0], [2.9, 2.7], 0.55, {f: 1200, hy: 900}), [900, 900]);
+/** S01-B05-SH02: CAM-SOFA, very slow push yaw 37 -> 35, r 2.65 -> 2.55. */
+export const CAM_S16 = shotCam(camMove([3.3, 0.7, 0.55], [37, 35], [2.65, 2.55], 1.15, {f: 1200, hy: 850}), [850, 850]);
 /** S01-B05-SH01 (SD01 listed here, shot built later): CAM-CHART-LOW hy 659 -> 625. */
 export const CAM_S15 = shotCam(camMove([OX + 0.05, 0.85, 0.3], [-8, -4], [2.75, 2.6], 1.0, {f: 1400, hy: 659}), [659, 625]);
 /** S01-B02-SH01 (SD01 listed here, shot built later): CAM-FLEA-LEGS target (1.70, 0.55, 0.35), hy 759 -> 719. */
