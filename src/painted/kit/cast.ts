@@ -1,6 +1,6 @@
 import {lerp, mixColor, type Painter, type Pt} from './painter';
 import {INK, palOf, capsule, ell, fistParts, formDir, openHandParts, planeBand, shapedLimb, glaze, hardFill, inkLine, limb, lineOf, modelPart, solid, toneOf, washAt, type InteriorLight} from './draw';
-import {hatFront, hatSide} from './gear';
+import {hatFront, hatSide, type HatKind} from './gear';
 import {CHIN, HEAD_SPAN, paintHeadFront, paintHeadSide, turnU, type FaceState, type HeadStyle} from './head';
 import {clamp01} from './space';
 import {modeLegs, modeOf, type ModeLegs} from './legs';
@@ -40,7 +40,7 @@ export type Gear = {
   /** Monk's outer robe fold: a darker diagonal band across the chest. Combine with `shirt`, `sleeve` and a long `skirt`. */
   drape?: string;
   /** Headwear drawn over the head: `cap` peaked cap with a band, `helmet` open-face helmet, `nurse` nurse's cap. */
-  hat?: {kind: 'cap' | 'helmet' | 'nurse'; color: string; band?: string};
+  hat?: {kind: HatKind; color: string; band?: string};
   /** Box or bag on the back (delivery), seen beside the shoulders in front view and behind the back in profile. */
   pack?: string;
   /** Chest badge or name tag (front view). */

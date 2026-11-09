@@ -14,6 +14,7 @@ import {PEOPLE, PEOPLE_INFO, PERSON_IDS, type PersonId} from './people';
 import {poseArms} from './poses';
 import {inkLine} from './draw';
 import {OUTFIT_IDS, WARDROBE_INFO, dress, tintHoodie, type OutfitId} from './wardrobe';
+import {PERIOD_OUTFIT_IDS, WARDROBE_1850S_INFO, dressPeriod, type PeriodOutfitId} from './wardrobe-1850s';
 
 const h = createElement;
 const LINEUP_W = 2400, LINEUP_H = 1120;
@@ -155,10 +156,10 @@ const Expressions = () => (
 );
 
 // ------------------------------------------------------------------------------------------------ KIT-WARDROBE
-const WARD_COLS = 5, WARD_CELL_W = 620, WARD_CELL_H = 760, WARD_W = WARD_COLS * WARD_CELL_W, WARD_H = 130 + Math.ceil(OUTFIT_IDS.length / WARD_COLS) * WARD_CELL_H;
+const WARD_COLS = 5, WARD_CELL_W = 620, WARD_CELL_H = 760, WARD_W = WARD_COLS * WARD_CELL_W, WARD_H = 130 + Math.ceil((OUTFIT_IDS.length + PERIOD_OUTFIT_IDS.length) / WARD_COLS) * WARD_CELL_H;
 const WARD_UNIT = 290, WARD_GROUND = 645;
 /** Who wears each outfit on the sheet (any PEOPLE adult fits) and, for the school uniforms, the child who wears it too. */
-const WARD_WHO: Record<OutfitId, {adult: PersonId; child?: PersonId}> = {
+const WARD_WHO: Record<OutfitId | PeriodOutfitId, {adult: PersonId; child?: PersonId}> = {
   'student-th-trousers': {adult: 'man-spiky', child: 'boy-school'},
   'student-th-skirt': {adult: 'woman-ponytail', child: 'girl-school'},
   'school-jp-sailor': {adult: 'woman-pixie', child: 'girl-school'},
@@ -166,21 +167,25 @@ const WARD_WHO: Record<OutfitId, {adult: PersonId; child?: PersonId}> = {
   office: {adult: 'man-parted'}, police: {adult: 'man-buzz'}, nurse: {adult: 'woman-ponytail'}, doctor: {adult: 'woman-pixie'},
   monk: {adult: 'man-crop'}, vendor: {adult: 'woman-curly'}, rider: {adult: 'man-spiky'}, hoodie: {adult: 'woman-pixie'},
   guard: {adult: 'man-elder'}, yukata: {adult: 'woman-ponytail'}, kimono: {adult: 'woman-curly'}, 'kitchen-apron': {adult: 'woman-curly'}, 'park-casual': {adult: 'man-crop'}, 'eva-suit': {adult: 'woman-bob'}, 'home-lounge': {adult: 'woman-curly'},
+  'frock-1850s': {adult: 'man-parted'}, 'bonnet-1850s': {adult: 'woman-curly'},
 };
+const WARD_ALL: (OutfitId | PeriodOutfitId)[] = [...OUTFIT_IDS, ...PERIOD_OUTFIT_IDS];
+const wardInfo = (oid: OutfitId | PeriodOutfitId) => (WARDROBE_INFO as Record<string, typeof WARDROBE_INFO[OutfitId]>)[oid] ?? WARDROBE_1850S_INFO[oid as PeriodOutfitId];
+const wardDress = (def: CastDef, oid: OutfitId | PeriodOutfitId) => ((PERIOD_OUTFIT_IDS as readonly string[]).includes(oid) ? dressPeriod(def, oid as PeriodOutfitId) : dress(def, oid as OutfitId));
 const wardCell = (i: number) => ({x: (i % WARD_COLS) * WARD_CELL_W, y: 130 + Math.floor(i / WARD_COLS) * WARD_CELL_H});
 
 const Wardrobe = () => (
   <AbsoluteFill>
     <BrushCanvas paint={({brush}) => {
       const p = makePainter(brush, {t: 0, frame: 0});
-      OUTFIT_IDS.forEach((oid, i) => {
+      WARD_ALL.forEach((oid, i) => {
         const {x, y} = wardCell(i), who = WARD_WHO[oid], ground = y + WARD_GROUND;
         hLine(p, 9300 + i, x + 20, x + WARD_CELL_W - 20, ground + 6, '#b9ad9d');
         const figs: {def: CastDef; view: FigPose['view']; cx: number}[] = [
-          {def: dress(PEOPLE[who.adult], oid), view: 'front', cx: x + (who.child ? 120 : 160)},
-          {def: dress(PEOPLE[who.adult], oid), view: 'right', cx: x + (who.child ? 300 : 420)},
+          {def: wardDress(PEOPLE[who.adult], oid), view: 'front', cx: x + (who.child ? 120 : 160)},
+          {def: wardDress(PEOPLE[who.adult], oid), view: 'right', cx: x + (who.child ? 300 : 420)},
         ];
-        if (who.child) figs.push({def: dress(PEOPLE[who.child], oid), view: 'front', cx: x + 490});
+        if (who.child) figs.push({def: wardDress(PEOPLE[who.child], oid), view: 'front', cx: x + 490});
         figs.forEach(({def, view, cx}, f) => {
           const g: Pt = [cx, ground], pose: FigPose = view === 'front' ? {view, face: EXPRESSIONS.neutral, ...poseArms('P01', def, g, WARD_UNIT)} : {view, face: EXPRESSIONS.neutral};
           const seed = 5000 + i * 10 + f;
@@ -189,14 +194,14 @@ const Wardrobe = () => (
       });
     }} />
     <Text x={36} y={18} w={2600} size={40} weight={700}>src/painted/kit/wardrobe.ts: WARDROBE outfits</Text>
-    <Text x={36} y={66} w={3000} size={20} color="#4a3f38">{`${OUTFIT_IDS.length} outfits, front (P01 idle arms down) and right profile on a PEOPLE adult, ${WARD_UNIT} px per metre; school uniforms also on a child. Use: dress(PEOPLE['woman-pixie'], 'nurse') returns a new CastDef (same height, build and head; the monk's head is shaved).`}</Text>
-    {OUTFIT_IDS.map((oid, i) => {
+    <Text x={36} y={66} w={3000} size={20} color="#4a3f38">{`${WARD_ALL.length} outfits, front (P01 idle arms down) and right profile on a PEOPLE adult, ${WARD_UNIT} px per metre; school uniforms also on a child. Use: dress(PEOPLE['woman-pixie'], 'nurse') returns a new CastDef (same height, build and head; the monk's head is shaved).`}</Text>
+    {WARD_ALL.map((oid, i) => {
       const {x, y} = wardCell(i), who = WARD_WHO[oid];
       return (
         <Fragment key={oid}>
           <Text x={x + 20} y={y - 2} w={WARD_CELL_W - 40} size={28} weight={700}>{oid}</Text>
-          <Text x={x + 20} y={y + 32} w={WARD_CELL_W - 40} size={14} color="#4a3f38">{WARDROBE_INFO[oid].description}</Text>
-          <Text x={x + 20} y={y + WARD_GROUND + 14} w={WARD_CELL_W - 40} size={15} color="#7a6f64">{`${who.adult}${who.child ? ` + ${who.child}` : ''} · ${WARDROBE_INFO[oid].group}`}</Text>
+          <Text x={x + 20} y={y + 32} w={WARD_CELL_W - 40} size={14} color="#4a3f38">{wardInfo(oid).description}</Text>
+          <Text x={x + 20} y={y + WARD_GROUND + 14} w={WARD_CELL_W - 40} size={15} color="#7a6f64">{`${who.adult}${who.child ? ` + ${who.child}` : ''} · ${wardInfo(oid).group}`}</Text>
         </Fragment>
       );
     })}
