@@ -111,8 +111,9 @@ Episode-specific files are under [Episodes](#episodes); shared topics come first
 
 - Docs: [sound-generation-workflow](sound-generation-workflow.md) ([role duties](sound-generation-workflow.md#role-responsibilities), [library index](sound-generation-workflow.md#library-index)); [audio emphasis EP08a](editor-principles.md#ep08a-shape-audio-emphasis-by-story-beat)
 - Skill: [sound-generation](../.agents/skills/sound-generation/SKILL.md) ([library.md](../.agents/skills/sound-generation/library.md))
-- Scripts: [sound-library.py](../scripts/sound-library.py), [loudness.mjs](../scripts/loudness.mjs)
-- Tests: [loudness](../tests/loudness.test.ts)
+- Docs: [fit beats reuse](sound-generation-workflow.md#fit-beats-reuse), [sound cue sheet](sound-generation-workflow.md#sound-cue-sheet); role: Ton ([.claude/agents/ton.md](../.claude/agents/ton.md))
+- Scripts: [sound-library.py](../scripts/sound-library.py), [sound-cues.py](../scripts/sound-cues.py), [loudness.mjs](../scripts/loudness.mjs)
+- Tests: [loudness](../tests/loudness.test.ts), [sound-cues](../tests/sound-cues.test.ts)
 
 ## TTS and voice
 
