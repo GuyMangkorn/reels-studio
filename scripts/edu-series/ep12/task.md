@@ -2,7 +2,7 @@
 
 Record: this file. Series context: [concepts.md](../concepts.md) (R6, C35) · series task list: [task.md](../task.md).
 
-**Now:** W1.4 done (PASS, 43.68 s read). Next: W1.5 user approves the script.
+**Now:** W1.4 done (PASS, 43.68 s raw read; user asked 2026-11-09 for 5-8 % slower, picked 6.5 %: atempo 0.939, read 46.5 s, measure.json rescaled, store `projects/EDU/audio/2026-11-09_ep12-nar-kore-slow65.wav`, video about 53 s). Next: W1.5 user approves the script.
 
 - Deliverable: `EDU-EP12-SHORT`, Short only (Thai), 1080×1920, 30 fps, target 40–60 s (estimate). Profile: educational, painted 2D p5.brush, 4-head cast, Kore narrator (edu default), ending per concept: closed, ~2 s hold on the boy asleep, then the doorframe (the user may change it); other fields = project defaults.
 - Factual claims for Boat: see the C35 entry in concepts.md R6. All unchecked until research and fact-check. Thin spots: daily height loss figure (about 1 cm / about 1 % of stature, range by height); NASA astronaut growth up to about 3 %; back-pain wording (no mechanism claim beyond "ตัวยืด" and "ปวดหลัง").
