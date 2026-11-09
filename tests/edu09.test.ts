@@ -156,7 +156,7 @@ test('W5.2 N2: diagram tracks hit the sheet times; ring has no own cord; widths 
   const keys = new Set(Object.keys(diagramSH02(50).state.ownLit ?? {})); assert.deepEqual([...keys].sort(), ['index', 'little']);
 });
 
-test('FX04: the ELDER gentle-stop keeps elbow, forearm and hand 2 cm or more outside the milk box (JUG) on every frame (FX08: the hand goes behind the box, trailing elbow, ELDER leans in)', () => {
+test('FX04: the ELDER gentle-stop keeps elbow, forearm and hand 2 cm or more outside the milk box (JUG) on every frame (FX08 third pass: the box stands right of the ELDER hands at x 0.255-0.38; the hand slides straight across, elbow trailing over the back edge)', () => {
   const rect = (x: number, z: number) => Math.hypot(Math.max(JUG.x0 - x, 0, x - JUG.x1), Math.max(JUG.z0 - z, 0, z - JUG.z1));
   let worst = 9;
   for (let f = 0; f <= 67; f++) {
