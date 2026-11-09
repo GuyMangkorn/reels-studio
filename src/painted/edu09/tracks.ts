@@ -61,30 +61,34 @@ export const marionetteBoy = (f: number): Pick<Sitter, 'lHand' | 'lElbow' | 'lPo
 
 // ---- N5 reach-own-hand + gentle-stop (S01-B01-SH04, local frames 0-67). BOY's left hand is TP at BOY_TEST_HAND for the whole shot.
 export const BOY_TEST_HAND: V3 = [-0.14, TABLE_Y, -0.26];
-const REACH_FROM: V3 = [-0.38, TABLE_Y, -0.28], REACH_TO: V3 = [-0.255, TABLE_Y, -0.2];
-const REACH_ELBOW_FROM: V3 = [-0.405, TABLE_Y + 0.026, -0.37], REACH_ELBOW_TO: V3 = [-0.32, TABLE_Y + 0.026, -0.37];
+const REACH_FROM: V3 = [-0.38, TABLE_Y, -0.28], REACH_TO: V3 = [-0.235, TABLE_Y, -0.2];
+const REACH_ELBOW_FROM: V3 = [-0.405, TABLE_Y + 0.026, -0.37], REACH_ELBOW_TO: V3 = [-0.31, TABLE_Y + 0.026, -0.37];
 /** BOY's right hand: from L6 it slides toward his left ring finger (L6-27 eased), is stopped at L27, lowers to the wood L27-47 and stays. */
 export const reachOwnHandAt = (f: number): {hand: V3; elbow: V3} => {
   const u = ramp(f, 6, 27), hand = mix3(REACH_FROM, REACH_TO, u), hover = 0.014 * ramp(f, 6, 12) * (1 - ramp(f, 27, 47));
   return {hand: [hand[0], hand[1] + hover, hand[2]], elbow: mix3(REACH_ELBOW_FROM, REACH_ELBOW_TO, u)};
 };
-const STOP_FROM: V3 = [0.2, TABLE_Y, -0.3], STOP_OVER: V3 = [-0.3, TABLE_Y, -0.205];
-const STOP_ELBOW_FROM: V3 = [0.17, TABLE_Y + 0.026, -0.37], STOP_ELBOW_OVER: V3 = [-0.1, TABLE_Y + 0.026, -0.37];
-/** ELDER's right hand: lifts from the table at L12, arcs over to settle palm-down on BOY's right wrist at L27 (6 cm short of BOY's left hand), then lowers L27-47 to rest on the wrist. */
+const STOP_FROM: V3 = [0.2, TABLE_Y, -0.3], STOP_OVER: V3 = [-0.25, TABLE_Y, -0.205];
+const STOP_ELBOW_FROM: V3 = [0.17, TABLE_Y + 0.026, -0.37];
+/** FX08 (second pass): ELDER leans in over the table L10-27 ([dx, dz] m) so his arm reaches BOY's wrist at a believable length (it was 285 px upper arm and 188 px forearm against BOY's 169 and 118 at the same head size). */
+export const ELDER_LEAN: [number, number] = [-0.18, 0.1];
+export const elderLeanAt = (f: number): [number, number] => { const k = ramp(f, 10, 27); return [ELDER_LEAN[0] * k, ELDER_LEAN[1] * k]; };
+/** ELDER's right hand: lifts from the table at L12 and goes BEHIND the milk box (z -0.50, the box hides it for a few frames), comes round its left side and settles palm-down on BOY's right wrist at L27, then lowers L27-47 to rest on the wrist.
+ *  The elbow trails the hand on the far side of the box (0.17-0.03 m to its right, 0.04-0.245 m behind), so no part of the arm crosses the box (FX04, FX08). */
 export const gentleStopAt = (f: number): {hand: V3; elbow: V3} => {
-  const u = ramp(f, 12, 27), h = mix3(STOP_FROM, STOP_OVER, u), arc = 0.07 * Math.sin(Math.PI * clamp((f - 12) / 15)), rest = 0.03 + 0.04 * (1 - ramp(f, 27, 47));
+  const u = ramp(f, 12, 27), arc = 0.07 * Math.sin(Math.PI * clamp((f - 12) / 15)), rest = 0.03 + 0.04 * (1 - ramp(f, 27, 47));
   const lift = f < 27 ? arc + 0.03 * u : rest;
-  // FX04: the straight path ran the elbow (z -0.37) and the forearm through the milk box (JUG, x 0..0.125, z -0.39..-0.29). Elbow and hand step toward the
-  // camera first (L12-16), then slide across in front of the box, and settle on the old end points: the hand returns by u 0.7-1, the elbow by u 0.8-1.
-  const fwd = ramp(f, 12, 16), ahead = fwd * (1 - ramp(u, 0.7, 1)), aheadE = fwd * (1 - ramp(u, 0.8, 1)), uE = ramp(f, 16, 27);
-  const e = mix3(STOP_ELBOW_FROM, STOP_ELBOW_OVER, u);
-  return {hand: [h[0], h[1] + lift, h[2] + 0.12 * ahead], elbow: [STOP_ELBOW_FROM[0] + (STOP_ELBOW_OVER[0] - STOP_ELBOW_FROM[0]) * uE, e[1], e[2] + 0.13 * aheadE]};
+  const w1 = ramp(u, 0, 0.25), w2 = ramp(u, 0.55, 1);
+  const x = STOP_FROM[0] + (STOP_OVER[0] - STOP_FROM[0]) * ramp(u, 0.2, 1); // back first at x 0.2 (right of the box), then across behind it
+  const z = (STOP_FROM[2] - 0.2 * w1) + (STOP_OVER[2] - (STOP_FROM[2] - 0.2 * w1)) * w2;
+  const trailX = 0.03 + 0.14 * ramp(u, 0.3, 0.7) - 0.05 * w2, trailZ = 0.07 + 0.0 * w1 + (0.245 - 0.07) * w2;
+  return {hand: [x, TABLE_Y + lift, z], elbow: [x + trailX, STOP_ELBOW_FROM[1], z - trailZ]};
 };
 /** Both sitters of SH04 at local frame f (the tracks above plus the sheet's faces: ELDER `happy`, BOY `worried` -> `neutral` at L40). The ELDER head shake L30-40 and the camera are the composition's. */
 export const stopSitters = (f: number): {boy: Sitter; elder: Sitter} => {
   const r = reachOwnHandAt(f), s = gentleStopAt(f), t = f / 30;
   return {
     boy: {t, face: f < 40 ? EXPRESSIONS.worried : EXPRESSIONS.neutral, lHand: BOY_TEST_HAND, lElbow: [-0.13, TABLE_Y + 0.026, -0.37], lPose: 'test-fold-middle', rHand: r.hand, rElbow: r.elbow, rPose: 'flat'},
-    elder: {t: t + 0.7, face: EXPRESSIONS.happy, rHand: s.hand, rElbow: s.elbow, rPose: 'flat'},
+    elder: {t: t + 0.7, face: EXPRESSIONS.happy, rHand: s.hand, rElbow: s.elbow, rPose: 'flat', lean: elderLeanAt(f)},
   };
 };

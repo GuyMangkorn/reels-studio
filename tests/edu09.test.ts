@@ -11,7 +11,7 @@ import {BOY_TONE, ELDER_TONE} from '../src/painted/edu09/palette';
 import {camD01, D01_LAMP_Y, GRIN, MEASURE, paintQAGrin} from '../src/painted/edu09/scenes';
 import {macroHand, macroSkeleton as skel, TP_LIFTS} from '../src/painted/kit/hands';
 import {camSH03End, MEASURE as M2, paintQADangle, paintQALifts, paintQAStop} from '../src/painted/edu09/scenes';
-import {BOB_AMP, bobAt, dangleHandAt, gentleStopAt, liftB01SH03, liftB02SH01, liftB03SH04, liftB03SH08, reachOwnHandAt, withLifts, BOY_TEST_HAND, DANGLE_UP} from '../src/painted/edu09/tracks';
+import {BOB_AMP, bobAt, dangleHandAt, gentleStopAt, elderLeanAt, ELDER_LEAN, liftB01SH03, liftB02SH01, liftB03SH04, liftB03SH08, reachOwnHandAt, withLifts, BOY_TEST_HAND, DANGLE_UP} from '../src/painted/edu09/tracks';
 import {CORD_MIN_PX, TIE_MIN_PX, diagramSH01, diagramSH02, diagramSH03, diagramSH04} from '../src/painted/edu09/tendons';
 import {elbowOnTable, seatedHandsOnTable} from '../src/painted/kit/poses-seated';
 import {pianistHand, DROP, FINGER_KEY, keysOf, PIANO_TUNE, tuneAt, type PianoFinger} from '../src/painted/edu09/piano';
@@ -156,7 +156,7 @@ test('W5.2 N2: diagram tracks hit the sheet times; ring has no own cord; widths 
   const keys = new Set(Object.keys(diagramSH02(50).state.ownLit ?? {})); assert.deepEqual([...keys].sort(), ['index', 'little']);
 });
 
-test('FX04: the ELDER gentle-stop keeps elbow, forearm and hand 3.5 cm or more outside the milk box (JUG) on every frame, and the end points are unchanged', () => {
+test('FX04: the ELDER gentle-stop keeps elbow, forearm and hand 2 cm or more outside the milk box (JUG) on every frame (FX08: the hand goes behind the box, trailing elbow, ELDER leans in)', () => {
   const rect = (x: number, z: number) => Math.hypot(Math.max(JUG.x0 - x, 0, x - JUG.x1), Math.max(JUG.z0 - z, 0, z - JUG.z1));
   let worst = 9;
   for (let f = 0; f <= 67; f++) {
@@ -164,6 +164,10 @@ test('FX04: the ELDER gentle-stop keeps elbow, forearm and hand 3.5 cm or more o
     const wrist = [hand[0] - ux * 0.08, hand[2] - uz * 0.08], tip = [hand[0] + ux * 0.1, hand[2] + uz * 0.1];
     for (let k = 0; k <= 40; k++) { const t = k / 40; for (const [a, b] of [[[elbow[0], elbow[2]], wrist], [wrist, tip]]) worst = Math.min(worst, rect(a[0] + (b[0] - a[0]) * t, a[1] + (b[1] - a[1]) * t)); }
   }
-  assert.ok(worst >= 0.035, `closest approach ${(worst * 100).toFixed(1)} cm`);
-  assert.deepEqual(gentleStopAt(27).elbow, [-0.1, 0.746, -0.37]);
+  assert.ok(worst >= 0.02, `closest approach ${(worst * 100).toFixed(1)} cm`);
+  const e27 = gentleStopAt(27);
+  assert.ok(Math.abs(e27.elbow[0] + 0.13) < 0.01 && Math.abs(e27.elbow[2] + 0.45) < 0.01, 'elbow settles behind and left of the wrist');
+  // FX08: the forearm (elbow to hand) stays within 0.3 m so the arm cannot read longer than BOY's scaled by 1.25
+  for (let f = 0; f <= 67; f++) { const g = gentleStopAt(f); assert.ok(Math.hypot(g.hand[0] - g.elbow[0], g.hand[2] - g.elbow[2]) <= 0.3, `forearm at L${f}`); }
+  assert.ok(Math.abs(elderLeanAt(0)[0]) < 1e-9 && elderLeanAt(27)[0] === ELDER_LEAN[0] && elderLeanAt(67)[1] === ELDER_LEAN[1]);
 });

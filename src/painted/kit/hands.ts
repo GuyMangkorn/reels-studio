@@ -665,10 +665,12 @@ export const paintHandMacro = (p: Painter, cam: YCam, h: HandMacro): HandAnchors
     const c = sk.fingers[id], pts = c.joints.map(toPx);
     if (pts.some((v) => !v)) return;
     const P = pts.map((v) => v!.pt), Rpx = c.radii.map((r, i) => r * pts[i]!.r);
-    let nUnder = 0;
+    let nUnder = 0, deepUnder = false;
     for (let j = 1; j < 4; j++) {
       const rel = sub3(c.joints[j], sk.wrist), lat = dot3(rel, sk.toThumb) / S, fwd = dot3(rel, sk.forward) / S;
-      if (dot3(sub3(c.joints[j], sk.palmCentre), sk.normal) * camSide < -0.5 * c.radii[j] && inPoly(lat, fwd, PALM)) nUnder++;
+      const depthBelow = -dot3(sub3(c.joints[j], sk.palmCentre), sk.normal) * camSide / c.radii[j];
+      if (depthBelow > 0.5 && inPoly(lat, fwd, PALM)) { nUnder++; if (j >= 2) deepUnder = true; }
+      else if (j >= 2 && depthBelow > 3) deepUnder = true; // far below the palm plane (a fold passing through the table): never drawn over the palm
     }
     const depth = c.joints.reduce((s, v) => s + camSpace(cam, v).d, 0) / 4;
     const strain = h.strain?.[id] ?? 0;
@@ -716,7 +718,8 @@ export const paintHandMacro = (p: Painter, cam: YCam, h: HandMacro): HandAnchors
         }
       }
     };
-    groups.push({id, fi, under: nUnder >= 2, depth, draw});
+    // FX07: a finger folding under the palm has its middle or tip joint beneath it from the first frame it goes under to the last; counting joints 1-3 alone let one frame (DIP under, tip not yet 0.5 r) draw the whole finger over the palm.
+    groups.push({id, fi, under: nUnder >= 2 || deepUnder, depth, draw});
   });
 
   // Back of the hand.
@@ -729,6 +732,15 @@ export const paintHandMacro = (p: Painter, cam: YCam, h: HandMacro): HandAnchors
     const ext = Math.max(...pts.map((v) => Math.hypot(v[0] - cx, v[1] - cy)));
     fill(q, FILL + 61, tone.shade, clipHalf(pts, [cx + ls[0] * ext * 0.35, cy + ls[1] * ext * 0.35], ls));
     fill(q, FILL + 95, HIGHLIGHT(tone.skin, 0.12), ring(cx - ls[0] * ext * 0.16, cy - ls[1] * ext * 0.16, ext * 0.34, ext * 0.24, 18)); // the bulge of the back of the hand (FX05)
+    // FX09 palm volume, the language of the finger stripes: a deeper band on the shaded edge, a soft rim light on the lit edge, and the two pads (thenar by the thumb, hypothenar by the little finger) each a soft lit crown
+    fill(q, FILL + 63, mixColor(tone.shade, tone.deep, 0.6), clipHalf(pts, [cx + ls[0] * ext * 0.5, cy + ls[1] * ext * 0.5], ls));
+    fill(q, FILL + 64, HIGHLIGHT(tone.skin, 0.2), clipHalf(pts, [cx - ls[0] * ext * 0.68, cy - ls[1] * ext * 0.68], [-ls[0], -ls[1]]));
+    ([[1.5, 2.0, 1.0, 1.5], [-2.2, 2.8, 0.85, 1.3]] as const).forEach(([v, f, rv, rf], i) => {
+      const a = toPx(sk.at(v, 0.05, f));
+      if (!a) return;
+      const rx = rv * S * a.r, ry = rf * S * a.r;
+      fill(q, FILL + 65 + i, HIGHLIGHT(tone.skin, 0.2), ring(a.pt[0] - ls[0] * rx * 0.1, a.pt[1] - ls[1] * rx * 0.1, rx * 0.85, ry * 0.85, 16)); // lit crown
+    });
     if (tone.spots) {
       const spots: [number, number, number][] = [[0.6, 2.8, 0.42], [-1.4, 4.4, 0.36], [1.1, 5.2, 0.3]];
       const sp = p.layer(0.4 * alpha, h.base * 16 + 9);

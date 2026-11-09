@@ -95,7 +95,9 @@ const paintChairBack = (p: Painter, c: YCam, id: number, at: V3, w = 0.42) => {
 export type Sitter = {face?: FaceState; t: number; lHand?: V3; rHand?: V3; lPose?: HandPoseId; rPose?: HandPoseId; lElbow?: V3; rElbow?: V3; look?: Pt;
   lMod?: (h: HandMacro) => HandMacro; rMod?: (h: HandMacro) => HandMacro; lYaw?: number; rYaw?: number;
   /** W5.3 (Editor): extra `FigPose` fields spread after the seated pose: `nod` [dx, dy] (head shake / nod, head units), `headCock` (deg), `rise` (shoulder bounce, m). Existing kit fields only. */
-  fig?: Pick<FigPose, 'nod' | 'headCock' | 'rise'>};
+  fig?: Pick<FigPose, 'nod' | 'headCock' | 'rise'>;
+  /** FX08: the sitter leans in over the table: the whole body moves by this offset (m, [dx, dz]) off the chair (the chair stays); shoulders and arms follow. */
+  lean?: [number, number]};
 
 /** Elbow resting on the wood just inside the back edge: BOY's 0.025 m inside the hand's x (under the shoulder; his hands lie a little wider), ELDER's 0.03 m outside. */
 const elbowFor = (hand: V3, side: 1 | -1, def: CastDef): V3 => elbowOnTable(hand, side, TABLE_Y, def === ELDER ? 0.03 : -0.025);
@@ -104,7 +106,8 @@ const elbowFor = (hand: V3, side: 1 | -1, def: CastDef): V3 => elbowOnTable(hand
  * the elbow (fix round 1, LF02): the rig draws the upper arm and sleeve from the shoulder down to the elbow on the wood (`via`), its forearm and
  * mitten fold down behind the table top (hidden); `paintTableArm` then draws the forearm on the wood from that elbow and the macro hand. */
 const paintSitter = (p: Painter, c: YCam, def: CastDef, at: V3, s: Sitter, seed: number): FigAnchors | null => {
-  const g = camPoint(c, at), u = camUnit(c, at);
+  const body: V3 = s.lean ? [at[0] + s.lean[0], at[1], at[2] + s.lean[1]] : at;
+  const g = camPoint(c, body), u = camUnit(c, body);
   if (!g) return null;
   const pose = seatedHandsOnTable(c, def, g as Pt, u, {tableY: TABLE_Y, lHand: s.lHand, rHand: s.rHand, lElbow: s.lElbow, rElbow: s.rElbow, elbowIn: def === ELDER ? 0.03 : -0.025});
   const face = s.face ?? EXPRESSIONS.neutral;
@@ -212,6 +215,15 @@ const paintTable = (p: Painter, c: YCam) => {
 /** The milk box (the jug prop): table-plane footprint x 0..0.1 (handle to 0.125), z -0.39..-0.29, 0.2 m tall. Arm tracks keep elbow, forearm and hand out of it (FX04). */
 export const JUG = {x0: 0.0, x1: 0.125, z0: -0.39, z1: -0.29, h: 0.2};
 /** Props on the table (UT12): glasses, jug, mango plate, notebook + pencil, tissue box, each with a contact shadow. */
+/** The milk box. Painted after the sitters and the table but BEFORE the forearms and hands (FX08), so a hand in front of it covers it and an arm behind it is covered. */
+const paintJug = (p: Painter, c: YCam) => {
+  const y = TABLE_Y, q = flatCircle(c, [0.05 + 0.015, y + 0.001, -0.34 - 0.01], 0.07, 18);
+  if (q.length > 2) hardFill(p.layer(0.3, 3100 + 540), 540, '#3a2212', q);
+  paintBox(p, c, 541, {x0: 0.0, x1: 0.1, y0: y, y1: y + JUG.h, z0: JUG.z0, z1: JUG.z1}, '#e6efe9', {front: -0.06, left: -0.12, right: -0.12}, {ink: true});
+  paintBox(p, c, 543, {x0: 0.002, x1: 0.098, y0: y, y1: y + 0.12, z0: -0.388, z1: -0.292}, '#b9d4d8', {front: -0.08, left: -0.14, right: -0.14}, {});
+  paintBox(p, c, 545, {x0: 0.1, x1: 0.125, y0: y + 0.06, y1: y + 0.17, z0: -0.35, z1: -0.33}, '#d4ddd8', {}, {ink: true});
+};
+
 const paintProps = (p: Painter, c: YCam) => {
   const y = TABLE_Y;
   const shadow = (id: number, v: V3, r: number) => { const q = flatCircle(c, [v[0] + 0.015, y + 0.001, v[2] - 0.01], r, 18); if (q.length > 2) hardFill(p.layer(0.3, 3100 + id), id, '#3a2212', q); };
@@ -229,11 +241,6 @@ const paintProps = (p: Painter, c: YCam) => {
     inkLine(p, id + 6, [[b[0] - r * 0.5, b[1] + 6], [a[0] - rb * 0.5, a[1] - 6]], {weight: 1.6, closed: false, still: true, color: '#ffffff'});
   };
   glass(500, [0.52, y, -0.08]); glass(520, [-0.58, y, -0.1]);
-  // jug (behind the hands)
-  shadow(540, [0.05, y, -0.34], 0.07);
-  paintBox(p, c, 541, {x0: 0.0, x1: 0.1, y0: y, y1: y + JUG.h, z0: JUG.z0, z1: JUG.z1}, '#e6efe9', {front: -0.06, left: -0.12, right: -0.12}, {ink: true});
-  paintBox(p, c, 543, {x0: 0.002, x1: 0.098, y0: y, y1: y + 0.12, z0: -0.388, z1: -0.292}, '#b9d4d8', {front: -0.08, left: -0.14, right: -0.14}, {});
-  paintBox(p, c, 545, {x0: 0.1, x1: 0.125, y0: y + 0.06, y1: y + 0.17, z0: -0.35, z1: -0.33}, '#d4ddd8', {}, {ink: true});
   // mango plate with a fork
   shadow(550, [0.48, y, 0.2], 0.11);
   const pl = flatCircle(c, [0.48, y + 0.006, 0.2], 0.1, 24);
@@ -259,6 +266,9 @@ export const paintDining = (p: Painter, c: YCam, o: DiningOpts): DiningOut => {
   paintChairBack(p, c, 620, [SEAT.boy[0], 0, SEAT.boy[2]], 0.36);
   const boy = o.boy ? paintSitter(p, c, BOY, SEAT.boy, o.boy, BOY.seed) : null;
   paintTable(p, c);
+  // FX08: the box goes under a hand in front of it, over a hand behind it (z of either ELDER hand against the box's middle)
+  const behind = [o.elder?.rHand, o.elder?.lHand].some((h) => h && h[2] < (JUG.z0 + JUG.z1) / 2);
+  if (!behind) paintJug(p, c);
   // arms resting on the wood (character's left = +x); ELDER wears the cardigan's long sleeve to the cuff
   const elderSleeve = {color: ELDER_TONE.sleeve, shade: ELDER_TONE.sleeveShade};
   const arms: [Sitter | undefined, FigAnchors | null, CastDef, number, MacroTone, typeof elderSleeve | undefined][] = [[o.boy, boy, BOY, 1, BOY_TONE, undefined], [o.elder, elder, ELDER, 1.25, ELDER_TONE, elderSleeve]];
@@ -269,6 +279,7 @@ export const paintDining = (p: Painter, c: YCam, o: DiningOpts): DiningOut => {
     if (s.lHand) hands[`${who}L`] = paintTableArm(p, c, 2000 + k * 480, s.lHand, s.lElbow ?? elbowFor(s.lHand, 1, def), -1, s.lPose ?? 'flat', size, tone, sleeve, s.lMod, s.lYaw);
     if (s.rHand) hands[`${who}R`] = paintTableArm(p, c, 2240 + k * 480, s.rHand, s.rElbow ?? elbowFor(s.rHand, -1, def), 1, s.rPose ?? 'flat', size, tone, sleeve, s.rMod, s.rYaw);
   });
+  if (behind) paintJug(p, c);
   paintProps(p, c);
   paintLamp(p, c, o.lampY);
   void qz; void wInk; void camPoly;
