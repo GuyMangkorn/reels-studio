@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 """EDU-EP09-SHORT sound stem (Editor, W5.3 Draft, 2026-11-08), per scene-sheets.md EDU-EP09-SHEETS-R2 "Sound plan" and the per-shot cues. 1606 f, 48 kHz mono.
-Library files only, all generated and unlistened (levels by number, not by ear). NEEDS-GEN in this draft: M1 = FALLBACK `bed_curious-explainer-light_01`; M2 = SYNTHESISED here in code
+Library files only, all generated and unlistened (levels by number, not by ear). NEEDS-GEN in this draft: M1 = generated `bed_edu09-puppet-pizz-marimba_01` (r3); M2 = SYNTHESISED here in code
 (additive piano, note onsets = PIANO_TUNE of src/painted/edu09/piano.ts so the audible notes equal the visual presses; C-G position, no wrong notes, ends on C+E+G); S1 = silence (sheet fallback).
 Seam: bed and clock are read as loops and the last 12 f crossfade into their own continuation (bed(j-N)), so G1605 -> G0 is continuous. Tag silent from G1582.
-Needs public/narration/EDU-EP09-SHORT-draft.wav (narration-place.py) as the sidechain key. Writes public/audio/edu/EDU-EP09-SHORT-draft-stem-r2.wav. Run: python3 -I scripts/edu-series/ep09/sound-mix.py"""
+Needs public/narration/EDU-EP09-SHORT-draft.wav (narration-place.py) as the sidechain key. Writes public/audio/edu/EDU-EP09-SHORT-draft-stem-r3.wav. Run: python3 -I scripts/edu-series/ep09/sound-mix.py"""
 import array, math, os, subprocess
 L = os.path.expanduser('~/ReelsStore/library/sound')
 FPS, SR, TOTAL = 30, 48000, 1606
@@ -37,8 +37,9 @@ roomLP = load('ambience/room/room_condo-night-quiet_01.wav', af='lowpass=f=1100'
 bed(mix, room, [(0, -26), (621, -26), (622, -32), (1213, -32), (1214, OFF), (1355, OFF), (1356, -26), (TOTAL, -26)], seam=True)
 bed(mix, clock, [(0, -34), (621, -34), (622, -40), (1213, -40), (1214, OFF), (1355, OFF), (1356, -34), (TOTAL, -34)], seam=True)
 bed(mix, roomLP, [(1214, -30), (1354, -30), (1355, OFF)])   # piano room: low-passed, lower, no clock
-# ---- M1 (fallback bed): in soft from L02 (G206), out on the cut to the diagram (G622)
-bed(mus, load('music/bed/bed_curious-explainer-light_01.wav'), [(203, OFF), (206, -24), (230, -20), (618, -20), (622, OFF)], at=F(203))
+# ---- M1 = library `bed_edu09-puppet-pizz-marimba_01` (generated 2026-11-09, 90 bpm, 18.5 s loop; the loop is crossfaded inside the file). Brief energy plan: nothing under L01/try/V01 (silent until G203,
+# V01 ends G196), B01 L02-L03 soft (1.5), B02 louder (2); out with a 12 f fade ending on G622 (no music on the see-through, silence policy 3). Gains are before the narration sidechain (~-3 dB under speech).
+bed(mus, load('music/bed/bed_edu09-puppet-pizz-marimba_01.wav'), [(203, OFF), (233, -18), (351, -18), (371, -16), (610, -16), (622, OFF)], at=F(203))
 # ---- B02: taps on the words (SD06), shrug on the end of "ไว้" (L87 of SH03)
 tap = load('sfx/foley/foley_soft-landing-tap_01.wav')
 for g in (351 + 26, 351 + 45, 351 + 56): shot(mix, tap, g, -14)
@@ -78,8 +79,8 @@ os.makedirs('out/EDU-EP09-SHORT/audio', exist_ok=True); os.makedirs('public/audi
 wr(mus, 'out/EDU-EP09-SHORT/audio/mus.raw'); wr(mix, 'out/EDU-EP09-SHORT/audio/mix.raw')
 DUR = TOTAL / FPS
 g = ('[0:a]aformat=sample_fmts=fltp[mus];[1:a]aformat=sample_fmts=fltp[mx];[2:a]aformat=sample_fmts=fltp,asplit=1[key];'
-     '[mus][key]sidechaincompress=threshold=0.02:ratio=6:attack=40:release=400:makeup=1[musd];'
+     '[mus][key]sidechaincompress=threshold=0.02:ratio=2.5:attack=40:release=400:makeup=1[musd];'
      f'[musd][mx]amix=inputs=2:normalize=0:duration=longest,apad=whole_dur={DUR},atrim=0:{DUR},volume=4dB,alimiter=limit=0.89:level=disabled[out]')
 subprocess.run(['ffmpeg', '-y', '-v', 'error', '-f', 's16le', '-ar', str(SR), '-ac', '1', '-i', 'out/EDU-EP09-SHORT/audio/mus.raw', '-f', 's16le', '-ar', str(SR), '-ac', '1', '-i', 'out/EDU-EP09-SHORT/audio/mix.raw',
-               '-i', 'public/narration/EDU-EP09-SHORT-draft.wav', '-filter_complex', g, '-map', '[out]', '-ar', str(SR), '-ac', '1', '-t', str(DUR), 'public/audio/edu/EDU-EP09-SHORT-draft-stem-r2.wav'], check=True)
+               '-i', 'public/narration/EDU-EP09-SHORT-draft.wav', '-filter_complex', g, '-map', '[out]', '-ar', str(SR), '-ac', '1', '-t', str(DUR), 'public/audio/edu/EDU-EP09-SHORT-draft-stem-r3.wav'], check=True)
 print('ok')

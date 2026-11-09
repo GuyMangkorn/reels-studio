@@ -26,7 +26,7 @@ const videos: EpisodeVideos = {
   videos: [{
     id: 'EDU-EP09-SHORT', format: 'short', timeline, ending: 'B_loop', endHoldSec: 0,
     narration: {src: 'narration/EDU-EP09-SHORT-draft.wav', amplitude: [], fps: FPS},
-    audio: [{src: 'audio/edu/EDU-EP09-SHORT-draft-stem-r2.wav', volume: 1}],
+    audio: [{src: 'audio/edu/EDU-EP09-SHORT-draft-stem-r3.wav', volume: 1}],
     captionStyle: {preset: 'outline', bottomEdgeY: 1344, ...CAPTION_OUTLINE},
     chrome: {channelLabel: '@TamMaiLa', progressBar: false},
   }],
