@@ -5,22 +5,24 @@ Usage:
   python3 -I scripts/mix-levels.py --voice V.wav --layer bed=B.wav [--layer sfx=S.wav ...]   # measure only
 
 Each stem is one layer rendered alone at its mix gains (time-aligned, same length as the mix). The script reads momentary
-loudness (M, 400 ms, every 100 ms) with ffmpeg ebur128. Speech is every 100 ms step where the voice's M is within 15 LU
-of its mean level; a gap is a run of non-speech of at least 0.5 s. dV = voice minus layer in LU (positive: the layer is
+loudness (M, 400 ms, every 100 ms) with ffmpeg ebur128. Speech is every 100 ms step where the voice's own 100 ms level is within
+30 dB of its mean, so a whisper or a tired breath still counts as speech while the 400 ms meter does not blur short gaps; a gap is a run of non-speech of at least 0.5 s. dV = voice minus layer in LU (positive: the layer is
 quieter). Per layer it prints dV while the voice speaks (energy mean over speech steps), dV at the loudest step in a gap,
 dV at the loudest step anywhere, and true peak. `background` is the sum of all layers; `mix` adds the voice and reports
 mix integrated minus voice speech level (EBU R 128 s4 caps it at 5 LU).
 
 `levels.checks` rows: {"beat", "layer", "when": "speech"|"gap"|"peak", "min"?, "max"?, "warnAbove"?, "fromSec"?, "toSec"?}
 in dV. A value outside min..max fails beyond the tolerance (2 LU for speech and gap, 3 LU for peak) and warns inside it;
-above `warnAbove` it only warns. A layer silent in the window passes. Exit 1 on a failed check or on mix minus voice
+above `warnAbove` it only warns. A row with an `exception` (the Film brief cue it follows) prints `ok*` with that text
+when it passes. A `speech` row compares the layer with the voice in its own window, so a whisper is its own reference.
+A layer silent in the window passes. Exit 1 on a failed check or on mix minus voice
 above 5 LU.
 """
-import json, math, os, re, subprocess, sys, tempfile
+import array, json, math, os, re, subprocess, sys, tempfile
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SILENT = -70.0
-SPEECH_RANGE = 15.0
+SPEECH_RANGE = 30.0
 MIN_GAP = 5
 TOLERANCE = {'speech': 2.0, 'gap': 2.0, 'peak': 3.0}
 LDR_CAP = 5.0
@@ -58,10 +60,23 @@ def energy_mean(values):
     return 10 * math.log10(sum(10 ** (v / 10) for v in loud) / len(values))
 
 
-def speech_mask(voice_m):
-    level = energy_mean(voice_m)
+def step_levels(path):
+    """Unweighted level of each 100 ms step in dBFS (mono, 16 kHz)."""
+    r = subprocess.run(['ffmpeg', '-hide_banner', '-loglevel', 'error', '-i', path, '-ac', '1', '-ar', '16000', '-f', 's16le', '-'], capture_output=True)
+    samples = array.array('h', r.stdout)
+    levels = []
+    for i in range(0, len(samples) - 1599, 1600):
+        power = sum(x * x for x in samples[i:i + 1600]) / 1600
+        levels.append(10 * math.log10(power / 32768 ** 2) if power else -120.0)
+    return levels
+
+
+def speech_mask(voice_path, steps):
+    levels = step_levels(voice_path)
+    level = energy_mean(levels)
     if level is None: sys.exit('the voice stem is silent')
-    return [v > SILENT and v >= level - SPEECH_RANGE for v in voice_m]
+    mask = [v > SILENT and v >= level - SPEECH_RANGE for v in levels]
+    return (mask + [False] * steps)[:steps]
 
 
 def gap_mask(speech):
@@ -95,7 +110,7 @@ def fmt(v): return '   —  ' if v is None else f'{v:6.1f}'
 
 def report(voice_path, layers, checks=()):
     voice_m, voice_i, voice_tp = measure(voice_path)
-    speech = speech_mask(voice_m)
+    speech = speech_mask(voice_path, len(voice_m))
     voice_level = energy_mean([v for v, s in zip(voice_m, speech) if s])
     measured = {name: measure(path) for name, path in layers.items()}
     if len(layers) > 1: measured['background'] = summed(list(layers.values()))
@@ -121,6 +136,7 @@ def report(voice_path, layers, checks=()):
         if miss > TOLERANCE[when]: print(f'FAIL {label}'); failed = True
         elif miss: print(f'warn {label}: within ±{TOLERANCE[when]:.0f} LU')
         elif dv > c.get('warnAbove', math.inf): print(f'warn {label}: above {c["warnAbove"]}, the layer may vanish')
+        elif c.get('exception'): print(f'ok*  {label}: exception, {c["exception"]}')
         else: print(f'ok   {label}')
     return failed
 
