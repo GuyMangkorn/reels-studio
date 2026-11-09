@@ -158,3 +158,59 @@ export const paintSpineSpace = (p: Painter, seed: number, bottom: V, axis: V, ba
   }
   return top;
 };
+
+/** Inset card of the space spine (R1.5, viewer check round 2 H-C: the S-ribbon on her back read as a scarf, the bracket was thin). */
+export type SpaceCard = {x0: number; y0: number; w: number; h: number; r: number};
+export const SPACE_CARD: SpaceCard = {x0: 744, y0: 440, w: 300, h: 580, r: 26};
+
+const rrect = (x0: number, y0: number, x1: number, y1: number, r: number): Pt[] => {
+  const out: Pt[] = [], cs: [number, number, number][] = [[x1 - r, y1 - r, 0], [x0 + r, y1 - r, 1], [x0 + r, y0 + r, 2], [x1 - r, y0 + r, 3]];
+  for (const [cx, cy, i] of cs) for (let k = 0; k <= 5; k++) { const a = (i + k / 5) * (Math.PI / 2); out.push([cx + r * Math.cos(a), cy + r * Math.sin(a)]); }
+  return out;
+};
+
+/**
+ * `new: spine-diagram` space variant as an inset card (ภาพประกอบ): a pale outline of her upper body facing left (the back toward the
+ * card's right edge), the plain ivory column (lower curve toward the front, upper toward the back) inside along the back (paintSpineSpace: one smooth column, no rings, pads, blue, glow or
+ * water; constant arc length), and a heavy measure bracket outside the body with dashed guides from the column ends, growing only with
+ * the straightening (no ticks, no numbers). `leader`: a point on her back (picture px) the card points to. Returns the column ends.
+ */
+export const paintSpaceSpineCard = (p: Painter, seed: number, s: {straight: number; pop?: number; leader?: Pt}, card: SpaceCard = SPACE_CARD) => {
+  const {x0, y0, w, h, r} = card, x1 = x0 + w, y1 = y0 + h, k = s.pop ?? 1, cx = x0 + w / 2, cy = y0 + h / 2;
+  const T = ([x, y]: Pt): Pt => [cx + (x - cx) * k, cy + (y - cy) * k];
+  const P = (pts: Pt[]) => pts.map(T);
+  // leader first (under the card): white under-stroke, ink over, a solid dot on her back
+  const bx = x0 + 0.47 * w, colBottom: Pt = [bx, y0 + 0.8 * h];
+  if (s.leader && k > 0.98) {
+    const from: Pt = [x0 + 4, y0 + 0.52 * h], to = s.leader;
+    inkLine(p, seed + 20, [from, to], {color: '#f6f1e6', weight: 5, closed: false, curve: 0, still: true});
+    inkLine(p, seed + 21, [from, to], {color: C.cardInk, weight: 2, closed: false, curve: 0, still: true});
+    hardFill(p, seed + 22, '#f6f1e6', ell(to[0], to[1], 11, 11, 16));
+    hardFill(p, seed + 23, C.cardInk, ell(to[0], to[1], 7, 7, 16));
+  }
+  hardFill(p.layer(0.35, seed * 3 + 1), seed + 1, '#0d0f14', P(rrect(x0 + 8, y0 + 12, x1 + 8, y1 + 12, r)));
+  hardFill(p, seed + 2, C.card, P(rrect(x0, y0, x1, y1, r)));
+  inkLine(p, seed + 3, P(rrect(x0, y0, x1, y1, r)), {color: C.cardInk, weight: 1.6, still: true, curve: 0.02});
+  // body outline facing left: head, neck, chest (bust), waist, hip and seat; the back on the right
+  const X = (fx: number) => x0 + fx * w, Y = (fy: number) => y0 + fy * h;
+  const body: Pt[] = P([
+    [X(0.40), Y(0.19)], [X(0.31), Y(0.255)], [X(0.25), Y(0.3)], [X(0.215), Y(0.36)], [X(0.235), Y(0.42)], [X(0.29), Y(0.47)],
+    [X(0.31), Y(0.56)], [X(0.27), Y(0.7)], [X(0.25), Y(0.84)], [X(0.25), Y(0.97)], [X(0.73), Y(0.97)], [X(0.76), Y(0.82)],
+    [X(0.72), Y(0.68)], [X(0.63), Y(0.56)], [X(0.66), Y(0.42)], [X(0.67), Y(0.3)], [X(0.6), Y(0.22)], [X(0.56), Y(0.17)],
+  ]);
+  hardFill(p, seed + 4, '#e2d6bf', body);
+  const head = P(ell(X(0.45), Y(0.11), 0.14 * w, 0.075 * h, 24));
+  hardFill(p, seed + 6, '#e2d6bf', head);
+  inkLine(p, seed + 5, body, {color: '#8a7d68', weight: 1.1, still: true, curve: 0.35});
+  inkLine(p, seed + 7, head, {color: '#8a7d68', weight: 1.1, still: true});
+  // column: bottom fixed at the pelvis, axis up, back = +x
+  const arc = 0.6 * h * k, bottom = T(colBottom);
+  const top = paintSpineSpace(p, seed + 30, bottom, [0, -1], [-1, 0], arc, {straight: s.straight, u: 26 / 0.045 * k, bracket: false});
+  // measure bracket outside the body, at the card's right, from the pelvis line to the column top
+  const bxr = T([X(0.88), 0])[0], cap = 16 * k;
+  const br: Pt[] = [[bxr - cap, bottom[1]], [bxr, bottom[1]], [bxr, top[1]], [bxr - cap, top[1]]];
+  for (const yy of [bottom[1], top[1]]) for (let xx = bx + 30 * k; xx < bxr - cap - 4; xx += 16 * k)
+    inkLine(p, seed + 40 + Math.round(xx), [[xx, yy], [Math.min(xx + 8 * k, bxr - cap - 4), yy]], {color: C.cardInk, weight: 1.0, closed: false, curve: 0, still: true});
+  inkLine(p, seed + 8, br, {color: C.cardInk, weight: 5.5, closed: false, curve: 0, still: true});
+  return {top, bottom};
+};

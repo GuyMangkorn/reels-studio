@@ -25,3 +25,17 @@ Read: bundle sheet-01 plus LF04 and LF05 at full size. Classes P/A/H/R, severity
 | LF05 | A short-haired person in a navy top and khaki trousers floats in a pale lab with a round Earth window, a pen and objects drifting. | fail | Fixed: it now reads as floating (knees bent, no floor shadow, loose pen and objects), no halo on the torso. Still wrong: A-C / UT08: reads male (boxy torso, no waist, hips or bust; only the earring and glasses hint at a woman). H-C / UT02: the spine is a cream S-ribbon at the chest that reads as a scarf or towel, and its bracket is thin and hard to read; the separate ruler on the wall at right is still far from the spine. A-M: the head is large against the torso and the arm sprouts from the chest. |
 
 Summary: LF01 pass, LF02 pass, LF03 pass, LF04 pass (fixed), LF05 fail (floating, halo fixed; gender cue and spine/ruler readability not).
+
+## Round 3 (v7, rows R1.5)
+
+Read: bundle sheet-01 plus LF05 v7 at full size. Classes P/A/H/R, severity C/M.
+
+| ID | Reads as (no narration) | Verdict | Findings |
+| --- | --- | --- | --- |
+| LF01 | A barefoot schoolboy by a bedroom doorframe in a warm hallway, bed visible through the door. | pass | Unchanged. R-M: reads warm, not night (UT04). H-M: pencil marks and label tiny (UT02). |
+| LF02 | The same hallway, bright morning, boy in pale-blue pyjamas, sun glow at left. | pass | Unchanged. R-M: the "อ้าว?" face reads near-neutral. |
+| LF03 | Boy in profile with a spine on his back beside a sponge pressed under three books, water dripping. | pass | Unchanged. M: spine small beside the sponge card. |
+| LF04 | A boy asleep in a blue night room, a small spine with drops on his chest. | pass | Unchanged from round 2. M-P: top-down bed, head and blanket not clearly joined. M-H: grey glow disc. |
+| LF05 | A woman with a ponytail and round glasses, in a navy top and khaki trousers, floats with knees bent in a space-station room with an Earth window; a card beside her shows a body outline with a pale S-curved bar and a length bracket. | pass | Round-2 failures fixed. Female: bust, waist, hip curve and ponytail read at once (UT08 met). Spine: a pale bar inside a torso outline, with a bracket and dashed ends and a leader line to her back; reads as a spine measured against a ruler, not a scarf or thin bracket (UT02 met). Arm now starts at a sleeve cap on the shoulder, not the chest; head is large but fits the 4-head cast. Remaining: A-M: no neck, head sits straight on the torso. A-M: the gold earring sits on the cheek and reads as a spot. A-M: hands are two plain lumps (UT14 ok but unrefined). M-H: the bar is low contrast ivory on cream; a slightly darker outline would help. M-P: the lower 40% is empty grey floor and pad, and the figure is mid-frame (UT03, mild). |
+
+Summary: LF01 pass, LF02 pass, LF03 pass, LF04 pass, LF05 pass (UT08, spine read and arm origin fixed; minor polish only).

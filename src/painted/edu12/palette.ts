@@ -23,8 +23,12 @@ export const BOY_UNIFORM: CastDef = (() => { const d = dress(BOY0, 'student-th-t
 /** VD01 `boy-school + new: kid-pyjamas`: pale blue long sleeves and long trousers, bare feet; messy hair is drawn by `messyHair`. */
 export const BOY_PJ: CastDef = {...BOY0, outfit: {shoulder: BOY0.outfit.shoulder, shirt: '#a9c7e3', sleeve: '#a9c7e3', longSleeves: true, pants: '#a9c7e3', shoes: BOY0.head.skin,
   gear: {collar: {kind: 'v', color: '#f4f7fb', depth: 0.06}}}};
-/** VD16 `woman-pixie + new: station-wear`: navy polo (white collar piping), khaki cargo trousers, grey socks; no patch, flag or name. */
-export const AST: CastDef = {...PEOPLE['woman-pixie'], outfit: {shoulder: PEOPLE['woman-pixie'].outfit.shoulder, shirt: '#2e4a78', sleeve: '#2e4a78', longSleeves: false,
+/** VD16 `woman-pixie + new: station-wear-fitted`: navy polo (white collar piping), khaki cargo trousers, grey socks; no patch, flag or name.
+ * R1.5 (viewer check round 2, A-M / UT08): head 0.88 of the cast head (the 4-head head read large against her torso; the profile torso
+ * slims with it); the fitted cut (bust, waist taper, seat) and the floating ponytail are painted over the rig in `scenes.ts` (`fittedTop`,
+ * `floatPonytail`); sleeves a lighter navy `#4a6da3` so the upper arm reads against the torso in profile (the same navy hid the
+ * shoulder and the forearm looked like it grew from the chest). Episode copy; Boss decides at kit intake whether a `headScale` and fitted profile torso belong in the kit. */
+export const AST: CastDef = {...PEOPLE['woman-pixie'], headScale: 0.88, outfit: {shoulder: PEOPLE['woman-pixie'].outfit.shoulder, shirt: '#2e4a78', sleeve: '#4a6da3', longSleeves: false,
   pants: '#b8a27a', shoes: '#ece8de', gear: {collar: {kind: 'v', color: '#2a4270', depth: 0.07}, belt: {color: '#5d5340', h: 0.03}}}};
 /** VD16 `man-crop + new: station-wear` (teal polo). */
 export const CREW: CastDef = {...PEOPLE['man-crop'], outfit: {...AST.outfit, shoulder: PEOPLE['man-crop'].outfit.shoulder, shirt: '#2f7f7a', sleeve: '#2f7f7a',

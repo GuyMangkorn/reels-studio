@@ -1,22 +1,22 @@
 {
  "LF01": {
-  "hash": "73a68057f7db940a",
+  "hash": "2424286b657f6f2c",
   "result": "pass"
  },
  "LF02": {
-  "hash": "aa4a4b85719660dd",
+  "hash": "07cbc7724391f72e",
   "result": "pass"
  },
  "LF03": {
-  "hash": "9e8e50a5ebed04d4",
+  "hash": "8df98cec95144228",
   "result": "pass"
  },
  "LF04": {
-  "hash": "f83b8de81b9cbab6",
+  "hash": "d970a590a782261b",
   "result": "pass"
  },
  "LF05": {
-  "hash": "55f1ad98761847d1",
-  "result": "fail"
+  "hash": "e93f5c1be5997472",
+  "result": "pass"
  }
 }
