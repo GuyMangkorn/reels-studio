@@ -2,7 +2,7 @@
 
 Record: this file. Series context: [concepts.md](../concepts.md) (R6, C35) · series task list: [task.md](../task.md).
 
-**Now:** W2 done, waiting for the user's storyboard verdicts on the review page (https://claude.ai/artifact/FAZn7KHyyxBit72SSZbvmL); decide Q-F2a/b/c, B01-SH03, B05-SH03. Then W3 look frames.
+**Now:** Boat Q-F2 picture recheck done 2026-11-09 (a,b,d,e ok; c ok once N1 applied: no even rings on the space spine; N2: uneven tape steps, largest first; both Film edits, pending). W2 done, waiting for the user's storyboard verdicts on the review page (https://claude.ai/artifact/FAZn7KHyyxBit72SSZbvmL); decide Q-F2a/b/c, B01-SH03, B05-SH03. Then W3 look frames.
 
 - Deliverable: `EDU-EP12-SHORT`, Short only (Thai), 1080×1920, 30 fps, target 40–60 s (estimate). Profile: educational, painted 2D p5.brush, 4-head cast, Kore narrator (edu default), ending per concept: closed, ~2 s hold on the boy asleep, then the doorframe (the user may change it); other fields = project defaults.
 - Factual claims for Boat: see the C35 entry in concepts.md R6. All unchecked until research and fact-check. Thin spots: daily height loss figure (about 1 cm / about 1 % of stature, range by height); NASA astronaut growth up to about 3 %; back-pain wording (no mechanism claim beyond "ตัวยืด" and "ปวดหลัง").
