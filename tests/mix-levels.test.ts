@@ -49,6 +49,21 @@ test('mix-levels judges an accent in a gap by its momentary peak', () => {
   assert.match(r.stdout, /ok {3}B02 accent speech .*silent/);
 });
 
+test('mix-levels measures a whispered line against the whisper itself', () => {
+  const whisper = tone('whisper', 1000, 0, 'if(lt(t,3),1,if(gt(t,4.5),0.08,0))');
+  const r = run(sheet([{beat: 'B04', layer: 'bed', when: 'speech', min: 15, fromSec: 4.5, toSec: 7.5}], {voice: whisper, bed}));
+  assert.equal(r.status, 1, r.stdout);
+  assert.match(r.stdout, /FAIL B04 bed speech dV -?\d/);
+});
+
+test('mix-levels marks a scare hit from the brief as an exception', () => {
+  const scare = tone('scare', 1500, 8, 'between(t,3.6,3.9)');
+  const r = run(sheet([{beat: 'B05', layer: 'accent', when: 'peak', min: -10, max: 3, fromSec: 3, toSec: 4.5, exception: 'brief SH07 scare hit'}],
+    {voice, accent: scare}));
+  assert.equal(r.status, 0, r.stdout);
+  assert.match(r.stdout, /ok\* {2}B05 accent peak .*brief SH07 scare hit/);
+});
+
 test('mix-levels fails a mix more than 5 LU above the voice', () => {
   const r = run('--voice', voice, '--layer', `bed=${loud}`);
   assert.equal(r.status, 1, r.stdout);
