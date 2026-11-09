@@ -13,14 +13,18 @@ Record: this file. Series context: [concepts.md](../concepts.md) (R6, C35) · se
 - [x] W0 Ideation (C35, user pick 2026-11-08; Short Thai)
 - [ ] W1 Script lock
   - [x] W1.1 Boat research (2026-11-08)
-  - [x] W1.2 Preaw script (EDU-EP12-SCRIPT-R1, est. ~55 s, 2026-11-08)
-  - [ ] W1.3 Boat fact-check
+  - [x] W1.2 Preaw script (EDU-EP12-SCRIPT-R1, est. ~55 s, 2026-11-08); sound intent per beat (Preaw) still to add to script.md
+  - [ ] W1.3 Boat fact-check (incl. sound implications: no sound asserts an unchecked fact)
   - [ ] W1.4 Length check
   - [ ] W1.5 User approves the script
-- [ ] W2 Brief and storyboard
+- [ ] W2 Brief and storyboard (Film brief carries `Sound direction`)
 - [ ] W3 Look frames and storyboard pass
 - [ ] W4 Voice lock
-- [ ] W5 Draft (W5.1 scene sheets, W5.2 Boss assets, W5.3 Editor draft)
+- [ ] W5 Draft
+  - [ ] W5.1 Film timed scene sheets, a `Sound` line per shot
+  - [ ] W5.2 Boss assets and plates
+  - [ ] W5.2s Ton sounds and cue sheet (0/C cues; generated/library), parallel with W5.2
+  - [ ] W5.3 Editor draft: places the cue sheet, mixes, passes `scripts/sound-cues.py`
 - [ ] W6 Final
 - [ ] W7 Pinned
 - [ ] W8 Deliver (render, cover, posting, kit intake)
