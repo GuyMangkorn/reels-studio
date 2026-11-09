@@ -4,7 +4,7 @@ import {AbsoluteFill, staticFile} from 'remotion';
 import {BrushCanvas, type PaintContext} from '../BrushCanvas';
 import {makePainter, type Painter} from '../kit/painter';
 import {Grain} from '../kit/screen';
-import {camPoint, camUnit} from '../kit/ycam';
+import {camPoint, camUnit, type YCam} from '../kit/ycam';
 import {LR13, OX} from './room';
 import {arcPoint, CAM_MACRO, CAM_MYTH as CAM_MYTH_REF, CAM_TRUTH, FLEA_MM, LF_FRAMES, paintF1, paintF2, paintF3, paintF3b, paintF4, paintF5, paintF6, paintLF01, paintLF02, paintLF03, paintLF04, paintLF04b, CAM_TR_SKY, SKY_APEX, skyTrail} from './scenes';
 import {TRAILER_GRADE} from './trailer';
@@ -47,16 +47,16 @@ export const Text = ({x, y, text, size = 44, anchor = 'start'}: {x: number; y: n
 );
 
 /** Scale bar "2 มม." (SH02, before take-off): a flat screen bar exactly the drawn body length (2.0 mm = camera px/mm x 2). */
-const ScaleBar = ({y = 1100}: {y?: number}) => {
-  const px = camUnit(CAM_MACRO, [0, 0, 0]) * FLEA_MM, x0 = 540 - px / 2, x1 = 540 + px / 2;
+export const ScaleBar = ({y = 1100, cam = CAM_MACRO, opacity = 1}: {y?: number; cam?: YCam; opacity?: number}) => {
+  const px = camUnit(cam, [0, 0, 0]) * FLEA_MM, x0 = 540 - px / 2, x1 = 540 + px / 2;
   return (
-    <>
+    <div style={{opacity}}>
       <svg width={1080} height={1920} style={{position: 'absolute', left: 0, top: 0}}>
         <g stroke="#1d2129" strokeWidth={14} strokeLinecap="round"><line x1={x0} x2={x1} y1={y} y2={y} /><line x1={x0} x2={x0} y1={y - 22} y2={y + 22} /><line x1={x1} x2={x1} y1={y - 22} y2={y + 22} /></g>
         <g stroke="#fff" strokeWidth={6} strokeLinecap="round"><line x1={x0} x2={x1} y1={y} y2={y} /><line x1={x0} x2={x0} y1={y - 22} y2={y + 22} /><line x1={x1} x2={x1} y1={y - 22} y2={y + 22} /></g>
       </svg>
       <Text x={x1 + 26} y={y - 36} text="2 มม." size={48} />
-    </>
+    </div>
   );
 };
 
@@ -90,8 +90,8 @@ const TruthBand = () => {
 };
 
 /** Trailer card "ถ้าคิดแบบง่าย ๆ" (VD26): series caption font, bold, wide tracking, white with a soft warm glow, slot TC (rows 1010-1100). */
-const TrailerCard = ({y = 1010}: {y?: number}) => (
-  <div lang="th" style={{position: 'absolute', left: 0, width: 1080, top: y, height: 90, display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: 'Noto Sans Thai', fontWeight: 800, fontSize: 64, letterSpacing: 6, color: '#fff'}}>
+export const TrailerCard = ({y = 1010, opacity = 1}: {y?: number; opacity?: number}) => (
+  <div lang="th" style={{opacity, position: 'absolute', left: 0, width: 1080, top: y, height: 90, display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: 'Noto Sans Thai', fontWeight: 800, fontSize: 64, letterSpacing: 6, color: '#fff'}}>
     <span style={{WebkitTextStroke: '8px #1d2129', paintOrder: 'stroke fill', textShadow: `0 0 26px ${TRAILER_GRADE.sunGlow}, 0 3px 0 #1d2129`}}>ถ้าคิดแบบง่าย ๆ</span>
   </div>
 );
@@ -105,7 +105,7 @@ const SkyMarker = () => {
     </svg>
   );
 };
-const TRAILER_VIGNETTE = 'rgba(10,22,40,0.5)';
+export const TRAILER_VIGNETTE = 'rgba(10,22,40,0.5)';
 
 export const LF01 = () => <Painted paint={paintLF01} />;
 export const LF02 = () => <Painted paint={paintLF02}><Lbl /><ScaleBar /></Painted>;

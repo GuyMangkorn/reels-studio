@@ -2,8 +2,10 @@ import {Img, staticFile, useCurrentFrame} from 'remotion';
 import {seg} from '../kit/motions';
 import {camPoint} from '../kit/ycam';
 import {OX} from './room';
-import {ARROW_AT, DIAL_AT, ICON_AT, iconAt14, padPoint, paintSH01, paintSH03, paintSH05, paintSH09, paintSH12, paintSH13, paintSH14, paintSH15, paintSH16, shotCamera, SPRING} from './shots';
-import {Lbl, Painted, stroke, Text} from './look';
+import {AbsoluteFill} from 'remotion';
+import {CAM_TR_SKY} from './scenes';
+import {ARROW_AT, counterAt, DIAL_AT, drainAt, flea02At, HOP, ICON_AT, iconAt14, padPoint, paintSH01, paintSH02, paintSH03, paintSH04, paintSH05, paintSH05T, paintSH06, paintSH07, paintSH09, paintSH10, paintSH11, paintSH12, paintSH13, paintSH14, paintSH15, paintSH16, shotCamera, SKY, skyPos, SPRING, TAG10, trailAt} from './shots';
+import {Lbl, Painted, ScaleBar, stroke, Text, TRAILER_VIGNETTE, TrailerCard} from './look';
 
 // EDU-EP13-SHORT timed shots, group 1 (W5.2): React wrappers of shots.ts. One component = one timeline scene (scene ID = shot ID); the local frame
 // is `useCurrentFrame()`, so Editor mounts each in a Sequence at its G start. Screen layers here are the sheets' DOM layers (ring marker, slingshot
@@ -173,3 +175,80 @@ export const SH15Layers = () => {
 export const S01_B05_SH01 = () => <Painted paint={(p, f) => paintSH15(p, f)} band><SH15Layers /></Painted>;
 
 export const S01_B05_SH02 = () => <Painted paint={(p, f) => paintSH16(p, f)} />;
+
+// ======================= W5.2 asset group 3 =======================
+/** Ring marker (ink + coral), the series marker of the LF03 arc. */
+const Ring = ({x, y, r, a = 1}: {x: number; y: number; r: number; a?: number}) => (
+  <svg width={1080} height={1920} style={{position: 'absolute', left: 0, top: 0, opacity: a, overflow: 'visible'}}>
+    <circle cx={x} cy={y} r={r} fill="none" stroke={INK} strokeWidth={13} /><circle cx={x} cy={y} r={r} fill="none" stroke="#ff5a3c" strokeWidth={6.5} />
+  </svg>
+);
+
+// ---- S01-B01-SH02: "2 มม." bar +0..+15 (fades +16..+21), "ภาพจำลอง" throughout, ring on the flea from +36, counter pill x10..x50 (x50 on +45..+48, no digit past it)
+export const SH02Layers = () => {
+  const l = useCurrentFrame(), f = flea02At(l), ring = pop(l, 36, 4), cnt = counterAt(l), barA = 1 - seg(l, 16, 21);
+  return (
+    <>
+      {barA > 0.01 && <ScaleBar cam={shotCamera('S01_B01_SH02', 0)} opacity={barA} />}
+      <Lbl />
+      {ring > 0 && <div style={{transform: `scale(${ring})`, transformOrigin: `${f.x}px ${f.y}px`, position: 'absolute', inset: 0}}><Ring x={f.x} y={f.y} r={Math.max(40, f.len * 0.8)} /></div>}
+      {cnt && (
+        <div lang="th" style={{position: 'absolute', left: 540 - 130, top: 1010, width: 260, height: 110, borderRadius: 55, background: 'rgba(255,255,255,0.94)', border: `7px solid ${INK}`, display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: 'Noto Sans Thai', fontWeight: 800, fontSize: 78, color: INK, letterSpacing: 2}}>{cnt}</div>
+      )}
+    </>
+  );
+};
+export const S01_B01_SH02 = () => <Painted paint={(p, f) => paintSH02(p, f)} band><SH02Layers /></Painted>;
+
+// ---- trailer shots: grain 0.13 + the deep-blue vignette on the trailer plates only; card in TC
+const TR = {vignette: TRAILER_VIGNETTE, grain: 0.13} as const;
+export const S01_B01_SH04 = () => { const l = useCurrentFrame(); return <Painted paint={(p, f) => paintSH04(p, f)} band {...TR}><TrailerCard opacity={seg(l, 0, 4)} /></Painted>; };
+export const S01_B01_SH04B = () => <Painted paint={(p, f) => paintSH05T(p, f)} band {...TR}><TrailerCard /></Painted>;
+/** SH04C marker: ring at the silhouette's point plus the dotted trail behind it; greys with the drain. */
+export const SkyLayers = () => {
+  const l = useCurrentFrame(), a = camPoint(CAM_TR_SKY, skyPos(l)), tr = trailAt(l), dr = drainAt(l);
+  return (
+    <div style={{position: 'absolute', inset: 0, filter: `grayscale(${dr})`}}>
+      <svg width={1080} height={1920} style={{position: 'absolute', left: 0, top: 0, opacity: tr.a}}>
+        {tr.pts.map(([x, y], i) => <g key={i}><circle cx={x} cy={y} r={7} fill={INK} /><circle cx={x} cy={y} r={4.2} fill="#fff" /></g>)}
+      </svg>
+      {a && a[1] < 1960 && <Ring x={a[0]} y={a[1]} r={34} a={tr.a} />}
+    </div>
+  );
+};
+/** SH04C: the frame sags 2 % while the grade drains (tape-stop, N19); card off at +36. */
+export const S01_B01_SH04C = () => {
+  const l = useCurrentFrame(), sag = seg(l, SKY.stop, SKY.stopEnd);
+  return (
+    <AbsoluteFill style={{overflow: 'hidden', background: '#444'}}>
+      <AbsoluteFill style={{transformOrigin: '50% 0', transform: `scaleY(${1 + 0.02 * sag})`}}>
+        <Painted paint={(p, f) => paintSH06(p, f)} band {...TR}><SkyLayers />{l < 36 && <TrailerCard />}</Painted>
+      </AbsoluteFill>
+    </AbsoluteFill>
+  );
+};
+export const S01_B01_SH04D = () => <Painted paint={(p, f) => paintSH07(p, f)} band vignette="rgba(40,70,100,0.18)" />;
+
+// ---- S01-B02-SH03: "ภาพจำลอง" throughout; "x2" tags (legs +5, pack +55); dashed line at the apex feet row from +96 (pulses +145)
+export const SH10Layers = () => {
+  const l = useCurrentFrame(), c = shotCamera('S01_B02_SH03', l), leg = camPoint(c, TAG10.leg), pk = camPoint(c, TAG10.pack), row = camPoint(c, [0, HOP.h, 0]);
+  const ls = pop(l, HOP.glow, 6), ps = pop(l, HOP.pack, 6), pulse = l >= HOP.deadpan && l < HOP.deadpan + 10 ? Math.sin(Math.PI * (l - HOP.deadpan) / 10) : 0;
+  return (
+    <>
+      <Lbl />
+      {leg && ls > 0 && <div style={{position: 'absolute', inset: 0, transform: `scale(${ls})`, transformOrigin: `${leg[0]}px ${leg[1]}px`}}><Text x={leg[0]} y={leg[1] - 40} text="×2" size={72} anchor="middle" /></div>}
+      {pk && ps > 0 && <div style={{position: 'absolute', inset: 0, transform: `scale(${ps})`, transformOrigin: `${pk[0]}px ${pk[1]}px`}}><Text x={pk[0]} y={pk[1] - 40} text="×2" size={72} anchor="middle" /></div>}
+      {row && l >= 96 && (
+        <svg width={1080} height={1920} style={{position: 'absolute', left: 0, top: 0}}>
+          <line x1={20} x2={1060} y1={row[1]} y2={row[1]} stroke={INK} strokeWidth={10 + 8 * pulse} strokeDasharray="26 18" strokeLinecap="round" />
+          <line x1={20} x2={1060} y1={row[1]} y2={row[1]} stroke="#fff" strokeWidth={5 + 5 * pulse} strokeDasharray="26 18" strokeLinecap="round" />
+        </svg>
+      )}
+    </>
+  );
+};
+export const S01_B02_SH03 = () => <Painted paint={(p, f) => paintSH10(p, f)} band><SH10Layers /></Painted>;
+
+// ---- S01-B03-SH01: "2 มม." bar (follows the push) and "ภาพจำลอง"
+export const SH11Layers = () => { const l = useCurrentFrame(); return <><ScaleBar cam={shotCamera('S01_B03_SH01', l)} /><Lbl /></>; };
+export const S01_B03_SH01 = () => <Painted paint={(p, f) => paintSH11(p, f)} band><SH11Layers /></Painted>;

@@ -56,6 +56,26 @@ export const CAM_S15 = shotCam(camMove([OX + 0.05, 0.85, 0.3], [-8, -4], [2.75, 
 /** S01-B02-SH01 (SD01 listed here, shot built later): CAM-FLEA-LEGS target (1.70, 0.55, 0.35), hy 759 -> 719. */
 export const CAM_S9 = shotCam(camMove([1.7, 0.55, 0.35], [6, 10], [3.4, 3.1], 0.9, {f: 1500, hy: 759}), [759, 719]);
 
+// ---- W5.2 group 3 shot cameras (SHEETS-R2.0). Trailer plates keep the look-frame cameras (CAM-MYTH, CAM-TR-SKY) as locked; SH04 and SH04D are the sheets' moves.
+/** S01-B02-SH03: CAM-INSERT (metres): yaw 0 -> 3, r 2.9 -> 2.7, eye 1.0, f 1300, hy 690 (MAN feet row 1138 at r 2.9). */
+export const CAM_S10 = shotCam(camMove([0, 0.95, 0], [0, 3], [2.9, 2.7], 1.0, {f: 1300, hy: 690}), [690, 690]);
+/** S01_B03_SH01: CAM-MACRO slow push yaw 0 -> 4, r 4.0 -> 3.6, eye 0.5 (mm). */
+export const CAM_S11 = shotCam(camMove([0, 0.45, 0], [0, 4], [4.0, 3.6], 0.5, {f: 1200, hy: 900}), [900, 900]);
+/** S01-B01-SH04 CAM-TR-SOI (trailer 1): target (1.0, 8.0, -30), yaw 0, r 46 -> 45.7, eye 1.6, pitch +8, f 1100, hy 900. */
+export const CAM_S4 = shotCam(camMove([1.0, 8.0, -30], [0, 0], [46, 45.7], 1.6, {pitch: [8, 8], f: 1100, hy: 900}), [900, 900]);
+/** S01-B01-SH04B: CAM-MYTH locked, no push (identical values to `CAM_MYTH`). */
+export const CAM_S5 = shotCam(camMove([1.0, 1.4, 0], [-6, -6], 2.6, 0.45, {pitch: [30, 30], f: 820, hy: 900}), [900, 900]);
+/** S01-B01-SH04C: CAM-TR-SKY locked (identical values to `CAM_TR_SKY`). */
+export const CAM_S6 = shotCam(camMove([10, 70, -60], [-9, -9], 327, 25, {pitch: [8, 8], f: 3600, hy: 820}), [820, 820]);
+/** S01-B01-SH04D: CAM-MYTH plain, slow push yaw -6 -> -3, r 2.6 -> 2.45. */
+export const CAM_S7 = shotCam(camMove([1.0, 1.4, 0], [-6, -3], [2.6, 2.45], 0.45, {pitch: [30, 30], f: 820, hy: 900}), [900, 900]);
+/** S01-B01-SH02 (macro leap): static CAM-MACRO to +15, then the crane +16..+49: `eye` rides the flea (mm), r 4.0 -> 40 linear (the sheet's "target y rides the flea"). */
+export const CAM_S2_LEN = 49;
+export const camS2 = (l: number, eye: number): YCam => {
+  const r = l < 16 ? 4.0 : 4.0 + 36 * Math.min(1, (l - 16) / 33);
+  return {...orbitYCam([0, 0.45, 0], r, 0, eye, 1200, 900)};
+};
+
 // ---- LF01 room: MAN seated P31 on the left seat, dog asleep on the right seats, chart in the background
 export const paintLF01 = (p: Painter, frame: number) => {
   const t = frame / 30, c = CAM_SOFA, out: {fig?: FigAnchors | null} = {};
