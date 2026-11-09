@@ -187,7 +187,7 @@ const fittedTop = (p: Painter, def: CastDef, g: Pt, u: number) => {
   // seat: from the torso back above the belt, out behind the hip joint and under into the thigh (legs frame: the hip anchor, back = +x for
   // a left profile), so the back line runs waist -> seat without a step
   const H: Pt = [g[0] - f.hipU * u, g[1] - (f.hipV + f.lift) * u], at = ([x, y]: Pt): Pt => [H[0] + x * u, H[1] + y * u];
-  const seat: Pt[] = [U([-0.074, hip0 + 0.04]), at([0.105, -0.03]), at([0.14, 0.02]), at([0.135, 0.075]), at([0.09, 0.115]), at([0.03, 0.11]), at([0.0, 0.03]), U([-0.02, hip0 + 0.04])];
+  const seat: Pt[] = [U([-0.074, hip0 + 0.04]), at([0.07, -0.02]), at([0.088, 0.015]), at([0.084, 0.05]), at([0.055, 0.08]), at([0.02, 0.08]), at([0.0, 0.03]), U([-0.02, hip0 + 0.04])];
   const seatC = smooth(seat.slice(0, 7));
   hardFill(p, 4774, def.outfit.pants, [...seatC, seat[7]]);
   inkLine(p, 4775, seatC.slice(0, -4), {color: ink, weight: 1.0, closed: false, curve: 0.45, still: true});
