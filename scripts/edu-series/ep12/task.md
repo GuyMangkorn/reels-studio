@@ -2,7 +2,7 @@
 
 Record: this file. Series context: [concepts.md](../concepts.md) (R6, C35) · series task list: [task.md](../task.md).
 
-**Now:** W1.2 script R1 written ([script.md](script.md), est. ~55 s, unread). W1.3 Boat fact-check next (questions N4 a–g).
+**Now:** W1.3 Boat verdict on R1: pass with changes ([factcheck.md](factcheck.md)). FC-01 (landing wince) needs a user pick, then Preaw R2 and a Boat recheck.
 
 - Deliverable: `EDU-EP12-SHORT`, Short only (Thai), 1080×1920, 30 fps, target 40–60 s (estimate). Profile: educational, painted 2D p5.brush, 4-head cast, Kore narrator (edu default), ending per concept: closed, ~2 s hold on the boy asleep, then the doorframe (the user may change it); other fields = project defaults.
 - Factual claims for Boat: see the C35 entry in concepts.md R6. All unchecked until research and fact-check. Thin spots: daily height loss figure (about 1 cm / about 1 % of stature, range by height); NASA astronaut growth up to about 3 %; back-pain wording (no mechanism claim beyond "ตัวยืด" and "ปวดหลัง").
@@ -14,7 +14,7 @@ Record: this file. Series context: [concepts.md](../concepts.md) (R6, C35) · se
 - [ ] W1 Script lock
   - [x] W1.1 Boat research (2026-11-08)
   - [x] W1.2 Preaw script (EDU-EP12-SCRIPT-R1, est. ~55 s, 2026-11-08); sound intent per beat (Preaw) still to add to script.md
-  - [ ] W1.3 Boat fact-check (incl. sound implications: no sound asserts an unchecked fact)
+  - [~] W1.3 Boat fact-check 2026-11-09: pass with changes, [factcheck.md](factcheck.md) FC-01..FC-06; Preaw R2 + recheck next (incl. sound implications: no sound asserts an unchecked fact)
   - [ ] W1.4 Length check
   - [ ] W1.5 User approves the script
 - [ ] W2 Brief and storyboard (Film brief carries `Sound direction`)
