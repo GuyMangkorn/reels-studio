@@ -2,7 +2,7 @@
 
 Record: this file. Series context: [concepts.md](../concepts.md) (R6, C35) · series task list: [task.md](../task.md).
 
-**Now:** Boat Q-F2 picture recheck done 2026-11-09 (a,b,d,e ok; c ok once N1 applied: no even rings on the space spine; N2: uneven tape steps, largest first; both Film edits, pending). W2 done, waiting for the user's storyboard verdicts on the review page (https://claude.ai/artifact/FAZn7KHyyxBit72SSZbvmL); decide Q-F2a/b/c, B01-SH03, B05-SH03. Then W3 look frames.
+**Now:** review page republished as ROWS-R1.1 (v1794217920-6ae8): Q-F2c change applied (Boat N1 plain smooth spine, N2 uneven tape steps). Waiting for the user to re-ok Q-F2c, B04-SH02, B04-SH03 (their verdicts reset). Then W3 look frames.
 
 - Deliverable: `EDU-EP12-SHORT`, Short only (Thai), 1080×1920, 30 fps, target 40–60 s (estimate). Profile: educational, painted 2D p5.brush, 4-head cast, Kore narrator (edu default), ending per concept: closed, ~2 s hold on the boy asleep, then the doorframe (the user may change it); other fields = project defaults.
 - Factual claims for Boat: see the C35 entry in concepts.md R6. All unchecked until research and fact-check. Thin spots: daily height loss figure (about 1 cm / about 1 % of stature, range by height); NASA astronaut growth up to about 3 %; back-pain wording (no mechanism claim beyond "ตัวยืด" and "ปวดหลัง").
@@ -20,7 +20,7 @@ Record: this file. Series context: [concepts.md](../concepts.md) (R6, C35) · se
 - [ ] W2 Brief and storyboard (Film brief carries `Sound direction`)
   - [x] W2.1 Film brief EDU-EP12-BRIEF-R1 `ready-for-mark` (2026-11-09, [brief.md](brief.md), 17 shots est. 53.6 s, SND-01..14); ending = closed hard end per C35 (Editor confirms runtime value, Q-F1)
   - [x] W2.2 Film storyboard rows EDU-EP12-ROWS-R1.0 `ready-for-review` (2026-11-09, [review-rows.json](review-rows.json), [storyboard.md](storyboard.md), 18 shots, sound cell per shot)
-  - [x] W2.3 Storyboard page published 2026-11-09 (https://claude.ai/artifact/FAZn7KHyyxBit72SSZbvmL, ROWS-R1.0, artifact v1794216740-2c0e, slug 72b5d5cd-aac9-43cb-b967-9d78e3c0992f, private; verdicts in its `db` under `reviews/<shot ID>@board`)
+  - [x] W2.3 Storyboard page published 2026-11-09 (https://claude.ai/artifact/FAZn7KHyyxBit72SSZbvmL, ROWS-R1.0, artifact v1794216740-2c0e; republished as ROWS-R1.1 v1794217920-6ae8 after user verdicts: 18 shots ok, Q-F2a/b ok, Q-F2c change applied as Boat N1 + N2, slug 72b5d5cd-aac9-43cb-b967-9d78e3c0992f, private; verdicts in its `db` under `reviews/<shot ID>@board`)
 - [ ] W3 Look frames and storyboard pass
 - [ ] W4 Voice lock
 - [ ] W5 Draft
