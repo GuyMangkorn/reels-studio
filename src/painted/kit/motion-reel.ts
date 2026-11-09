@@ -72,6 +72,8 @@ export const MOTION_REEL: ReelEntry[] = [
   {motion: 'zero-g-drift', cast: [{person: 'woman-bob', outfit: 'eva-suit', x: 330}, {person: 'man-crop', outfit: 'eva-suit', x: 770, expression: 'happy'}]},
   {motion: 'pat-check', cast: [{person: 'woman-bob', outfit: 'eva-suit', x: 330, expression: 'worried'}, {person: 'man-crop', outfit: 'eva-suit', x: 770}]},
   {motion: 'rail-tow', cast: [{person: 'man-crop', outfit: 'eva-suit', x: 420, view: 'right'}, {person: 'man-parted', outfit: 'eva-suit', x: 760, view: 'left'}]},
+  // EDU-EP13 kit intake (N5): the on-the-spot jump
+  {motion: 'standing-jump', cast: pair({expression: 'neutral'}, {expression: 'happy'})},
 ];
 
 /** Longest `motionDuration` among a scene's cast (walks and runs depend on height and distance), plus the hold, in whole frames. */

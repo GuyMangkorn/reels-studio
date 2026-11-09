@@ -37,8 +37,12 @@ Record: this file. Series context: [concepts.md](../concepts.md) (R7, C39) · se
   - [x] W5.2s Ton sounds and cue sheet (2026-11-09): [sound-cues.json](sound-cues.json) vs SHEETS-R2.0, 52 cues = 30 generated + 22 library placements (28 new files filed, 11 library files reused, 39 locked in `src/videos/edu-ep13/assets.lock.json`); no NEEDS-GEN; not listened; models unloaded
   - [~] W5.3 Editor draft (2026-11-09, draft cut rendered, not reviewed shot by shot by the user/Film): composition `EDU-EP13-SHORT` registered (`src/videos/edu-ep13/`), 16 scenes 1390 f, narration placed + MAN V01/V02, 52 cues mixed (`sound-cues.py` ok, `mix-levels.py` no FAIL, warns in build-notes), captions 29 cues, QA band removed; draft `out/EDU-EP13-SHORT/draft/EDU-EP13-SHORT_A_fade.mp4` (-14.0 LUFS, -1.5 dBTP); `npm test` 621/621; details [build-notes.md](build-notes.md); not committed; no user approval
   - [~] W5.3 Editor draft v2 (2026-11-09, SHEETS-R2.1, 1542 f, script R5, Take B): re-placed narration/mix/captions, draft `out/EDU-EP13-SHORT/draft/EDU-EP13-SHORT_A_fade.mp4` (-14.1 LUFS, -1.5 dBTP), `sound-cues.py` 0 FAIL, `mix-levels` 1 FAIL (V03 sigh row, to Ton), `npm test` 621/621, est anchors beyond 3 f listed in [build-notes.md](build-notes.md); not listened, not approved, not committed
-- [ ] W6 Final
-- [ ] W7 Pinned
+- [x] W6 Final (final cut full size, user passed 2026-11-10)
+- [x] W7 Pinned (16 of 16 shots, 2026-11-10)
 - [ ] W8 Deliver (render, cover, posting, kit intake)
+  - [x] W8.1 Assembled from the cache, picture lock
+  - [x] W8.2 Delivery render and cover published (~/ReelsStore/publish/EDU/EDU-EP13-SHORT/, cover C3)
+  - [ ] W8.3 Posted (not recorded)
+  - [x] W8.4 Kit intake (src/painted/kit/README.md#kit-intake, EDU-EP13 intake block; Freeze plates verified, plate gallery fixed by composition length)
 
 - MAN voice V01/V02 picked (user, 2026-11-09): A Algenib; files out/edu13/voice/man-samples/A_algenib_V01_t1.20.wav (1.376 s) and A_algenib_V02_t1.40.wav (0.396 s), atempo 1.20/1.40 as heard. Editor places them at SHEETS-R2.0 slots (V01 from G282, V02 from G1020) at W5.3.
