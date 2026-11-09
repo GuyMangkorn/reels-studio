@@ -109,11 +109,11 @@ Episode-specific files are under [Episodes](#episodes); shared topics come first
 
 **Read when:** music, ambience, SFX, loudness or the shared sound library.
 
-- Docs: [sound-generation-workflow](sound-generation-workflow.md) ([role duties](sound-generation-workflow.md#role-responsibilities), [library index](sound-generation-workflow.md#library-index)); [audio emphasis EP08a](editor-principles.md#ep08a-shape-audio-emphasis-by-story-beat)
+- Docs: [sound-generation-workflow](sound-generation-workflow.md) ([role duties](sound-generation-workflow.md#role-responsibilities), [library index](sound-generation-workflow.md#library-index)); [audio emphasis EP08a](editor-principles.md#ep08a-shape-audio-emphasis-by-story-beat), [layer levels EP08b](editor-principles.md#ep08b-keep-each-layer-at-its-distance-from-the-voice) ([research](research/2026-11-09-mix-layer-levels.md))
 - Skill: [sound-generation](../.agents/skills/sound-generation/SKILL.md) ([library.md](../.agents/skills/sound-generation/library.md))
 - Docs: [fit beats reuse](sound-generation-workflow.md#fit-beats-reuse), [sound cue sheet](sound-generation-workflow.md#sound-cue-sheet); role: Ton ([.claude/agents/ton.md](../.claude/agents/ton.md))
-- Scripts: [sound-library.py](../scripts/sound-library.py), [sound-cues.py](../scripts/sound-cues.py), [loudness.mjs](../scripts/loudness.mjs)
-- Tests: [loudness](../tests/loudness.test.ts), [sound-cues](../tests/sound-cues.test.ts)
+- Scripts: [sound-library.py](../scripts/sound-library.py), [sound-cues.py](../scripts/sound-cues.py), [mix-levels.py](../scripts/mix-levels.py), [loudness.mjs](../scripts/loudness.mjs)
+- Tests: [loudness](../tests/loudness.test.ts), [sound-cues](../tests/sound-cues.test.ts), [mix-levels](../tests/mix-levels.test.ts)
 
 ## TTS and voice
 
