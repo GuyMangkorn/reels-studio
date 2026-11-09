@@ -27,7 +27,7 @@
 | EDU-EP09-SHORT | **W5.1 R2 done 2026-11-08** (Film: SHEETS-R2 `ready-for-dev`, Q-S1 accepted, D01 added as S01-B05-SH04, 19 shots, 1606 f = 53.53 s; brief R2.0, rows R2.0; R1 1582 f from the W4 voice lock R1.4 s2); next: coordinator republishes the review page https://claude.ai/artifact/6fizGegm4Yk5B7gtoHnZqg, then W5.2 Boss | — | [ep09/task.md](ep09/task.md) |
 | EDU-EP10-SHORT | W0 done 2026-11-08 (C25 จมูกสองอัน, user pick; Short Thai); build after EP09 (shared hand macro); W1.1-W1.3 done (script R2 Boat-passed); W1.4 length check PASS 2026-11-09 (Kore one read 43.68 s, speech end 43.34 s, about 50 s with gaps and holds, limit 63 s; [measure](ep12/measure.json), store `projects/EDU/audio/2026-11-09_ep12-nar-kore-fullread.wav`); W1.5 user approval next | — | [ep10/task.md](ep10/task.md) |
 | EDU-EP11-SHORT | W0 done 2026-11-08 (C32 ลิฟต์ขาด กระโดดตอนท้ายรอดมั้ย, user pick; Short Thai); W1.4 passed 2026-11-08 (Kore A x0.92, 57–62 s projected); W1.5 user script approval waiting | — | [ep11/task.md](ep11/task.md) |
-| EDU-EP12-SHORT | W0, W1 done 2026-11-09 (script R2, Boat pass, Kore read 46.5 s at 6.5 % slower, user approved W1.5); W2.1 Film brief R1 done 2026-11-09 (ending: closed hard end per C35); W2.2 storyboard rows next | — | [ep12/task.md](ep12/task.md) |
+| EDU-EP12-SHORT | W0, W1 done 2026-11-09 (script R2, Boat pass, Kore read 46.5 s at 6.5 % slower, user approved W1.5); W2.1 Film brief R1 done 2026-11-09 (ending: closed hard end per C35); W2.2 rows R1.0 done; W2.3 review page published 2026-11-09 https://claude.ai/artifact/FAZn7KHyyxBit72SSZbvmL (artifact v1794216740-2c0e, verdicts in db reviews/<shot>@board), waiting for user verdicts | — | [ep12/task.md](ep12/task.md) |
 
 ## EDU-EP07-SHORT (ถ้าดวงอาทิตย์หายไปตอนนี้, C15)
 
