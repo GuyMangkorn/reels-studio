@@ -34,6 +34,12 @@ export type FleaOpts = {
   tint?: {to: string; u: number};
   /** `new: flea silhouette` (N17): every colour mixes toward `fill` by `u` (1 = flat dark), then a warm `rim` copy shows along the upper edge, `rimPx` wide. */
   silhouette?: {fill?: string; rim?: string | false; rimPx?: number; u?: number};
+  /** Whole-body pitch added to the pose (degrees, nose up positive): the giant's head tilting up to a mark (W5.2, B01-SH03, B04-SH01). */
+  pitchAdd?: number;
+  /** Force the airborne placement (body height `air`, toes free) while a grounded-to-airborne blend is still under half way (B04-SH02 take-off). */
+  airborne?: boolean;
+  /** N21 leg-length light (B04-SH01): a soft white line travels the near hind leg hip -> knee -> ankle -> toe (`u` 0..1), then stays as an even glow of strength `a` 0..1. Light only: no figure, tick or text. */
+  legLight?: {u: number; a?: number};
   t?: number;
 };
 
@@ -59,7 +65,7 @@ export const POSES: Record<FleaState, Pose> = {
 
 const lerp = (a: number, b: number, k: number) => a + (b - a) * k;
 const lp = (a: Pt, b: Pt, k: number): Pt => [lerp(a[0], b[0], k), lerp(a[1], b[1], k)];
-const blendPose = (a: Pose, b: Pose, k: number): Pose => ({
+export const blendPose = (a: Pose, b: Pose, k: number): Pose => ({
   pitch: lerp(a.pitch, b.pitch, k), grounded: k < 0.5 ? a.grounded : b.grounded,
   hind: {h: HIP.hind, k: lp(a.hind.k, b.hind.k, k), a: lp(a.hind.a, b.hind.a, k), t: lp(a.hind.t, b.hind.t, k)},
   mid: {k: lp(a.mid.k, b.mid.k, k), t: lp(a.mid.t, b.mid.t, k)}, fore: {k: lp(a.fore.k, b.fore.k, k), t: lp(a.fore.t, b.fore.t, k)},
@@ -69,15 +75,19 @@ const ellL = (cx: number, cy: number, rx: number, ry: number, a = 0, n = 20): Pt
   Array.from({length: n}, (_, i) => { const th = (i / n) * 2 * Math.PI, x = rx * Math.cos(th), y = ry * Math.sin(th); return [cx + x * Math.cos(a) - y * Math.sin(a), cy + x * Math.sin(a) + y * Math.cos(a)]; });
 
 /** A tapered solid stroke (polyline as a filled band, width w0 -> w1 in px). */
-const band = (p: Painter, seed: number, pts: Pt[], w0: number, w1: number, color: string) => {
-  if (pts.length < 2) return;
+const bandPoly = (pts: Pt[], w0: number, w1: number): Pt[] => {
+  if (pts.length < 2) return [];
   const L: Pt[] = [], R: Pt[] = [];
   pts.forEach((q, i) => {
     const a = pts[Math.max(0, i - 1)], b = pts[Math.min(pts.length - 1, i + 1)], dx = b[0] - a[0], dy = b[1] - a[1], n = Math.hypot(dx, dy) || 1;
     const w = (w0 + (w1 - w0) * (i / (pts.length - 1))) / 2;
     L.push([q[0] - (dy / n) * w, q[1] + (dx / n) * w]); R.push([q[0] + (dy / n) * w, q[1] - (dx / n) * w]);
   });
-  solid(p, seed, color, [...L, ...R.reverse()], 3);
+  return [...L, ...R.reverse()];
+};
+const band = (p: Painter, seed: number, pts: Pt[], w0: number, w1: number, color: string) => {
+  const poly = bandPoly(pts, w0, w1);
+  if (poly.length) solid(p, seed, color, poly, 3);
 };
 
 /** World-frame joints of the pose (bl, ground y 0, body centre x 0): used by the painter and by checks that a foot touches the floor. */
@@ -104,7 +114,8 @@ export const drawFlea = (p0: Painter, g: Pt, len: number, o: FleaOpts): FleaMeas
   const tint = (c: string) => (sil ? mixColor(c, sil.fill ?? SIL_FILL, sil.u ?? 1) : o.tint ? mixColor(c, o.tint.to, o.tint.u) : c);
   if (o.view === 'front') return drawFront(p0, g, len, o, tint);
   const base = POSES[o.state ?? 'rest'];
-  const pose = o.to ? blendPose(base, POSES[o.to], o.blend ?? 0) : base;
+  const pose0 = o.to ? blendPose(base, POSES[o.to], o.blend ?? 0) : base;
+  const pose: Pose = o.pitchAdd || o.airborne ? {...pose0, pitch: pose0.pitch + (o.pitchAdd ?? 0), grounded: o.airborne ? false : pose0.grounded} : pose0;
   const J = fleaJoints(pose, o.air ?? 0.5);
   const S = (q: Pt): Pt => { const r = J.w(q); return [g[0] + dir * r[0] * len, g[1] - r[1] * len]; };
   const SP = (pts: Pt[]) => pts.map(S);
@@ -180,6 +191,15 @@ export const drawFlea = (p0: Painter, g: Pt, len: number, o: FleaOpts): FleaMeas
   drawLeg(pose.mid, HIP.mid, false, false, 9460);
   drawLeg(pose.fore, HIP.fore, false, false, 9490);
 
+  if (o.legLight && o.legLight.u > 0) { // N21: the near hind leg's joints, cut at the travelled fraction
+    const path = SP([HIP.hind, pose.hind.k, pose.hind.a, pose.hind.t]), seg = path.slice(1).map((q, i) => Math.hypot(q[0] - path[i][0], q[1] - path[i][1])), total = seg.reduce((a, b) => a + b, 0);
+    let rest = Math.min(1, o.legLight.u) * total;
+    const cut: Pt[] = [path[0]];
+    for (let i = 0; i < seg.length && rest > 0; i++) { const k = Math.min(1, rest / seg[i]); cut.push(lp(path[i], path[i + 1], k)); rest -= seg[i]; }
+    const a = o.legLight.a ?? 1, head = o.legLight.u < 1 ? 1 : a;
+    washAt(p, 9600, '#bfe3ff', 230 * a, bandPoly(cut, 0.05 * len, 0.05 * len), 0.3, 0.1);
+    band(p, 9601, cut, Math.max(3, 0.016 * len), Math.max(3, 0.016 * len), mixColor(FLEA.leg, '#fff6e0', 0.35 + 0.65 * head));
+  }
   const pts = SP(plates.flatMap((q) => q.pts)), toes = [pose.hind.t, pose.mid.t, pose.fore.t].map(S);
   const all = [...pts, ...toes];
   return {head: S([0.5, -0.04]), rump: S([-0.53, -0.04]), eye, thorax: S([0.12, 0.01]), hindHip: S(HIP.hind), toes,

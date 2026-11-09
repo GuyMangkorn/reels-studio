@@ -37,3 +37,5 @@ Record: this file. Series context: [concepts.md](../concepts.md) (R7, C39) · se
 - [ ] W6 Final
 - [ ] W7 Pinned
 - [ ] W8 Deliver (render, cover, posting, kit intake)
+
+- MAN voice V01/V02 picked (user, 2026-11-09): A Algenib; files out/edu13/voice/man-samples/A_algenib_V01_t1.20.wav (1.376 s) and A_algenib_V02_t1.40.wav (0.396 s), atempo 1.20/1.40 as heard. Editor places them at SHEETS-R2.0 slots (V01 from G282, V02 from G1020) at W5.3.

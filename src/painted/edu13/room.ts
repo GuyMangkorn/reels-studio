@@ -5,9 +5,11 @@ import type {V3} from '../kit/space';
 import {camDist, camPoint, camUnit, type YCam} from '../kit/ycam';
 import {flatCircle, paintBox, qx, qy, qz, wFill, wInk, wp, wWash, type Box} from '../edu02/world';
 
-// SET-LR13 (brief EDU-EP13-BRIEF-R1 "Set plan — SET-LR13", metres; Film's W3.1 look-frame room, built from the EP06 SET-LIVINGROOM methods and
-// palette as a copy, ENV-P01). Origin on the floor at the foot of the height chart's centre line; +x screen-right (seen from the room),
-// +y up, +z from the back wall toward the room/camera; the chart wall is the plane z 0. Warm afternoon sun from the window at screen right.
+// SET-LR13 (brief EDU-EP13-BRIEF-R1.5 "Set plan - SET-LR13" with the R1.2 offsets below, metres; the look-frame room of LF01-F6, now also the room of the timed
+// shots S01-B01-SH01/03/05, S01-B02-SH01, S01-B04-SH01/02 and S01-B05, painted by `shots.ts`; built from the EP06 SET-LIVINGROOM methods and palette as a
+// copy, ENV-P01). Origin on the floor at the foot of the wall line the chart was first planned on (the chart itself now stands at x = OX, see below);
+// +x screen-right (seen from the room), +y up, +z from the back wall toward the room/camera; the chart wall is the plane z 0.
+// Warm afternoon sun from the window at screen right.
 
 export const R = {
   wall: '#efdfc2', wallShade: '#d3bf9e', floor: '#b07a4c', floorDark: '#7d5232', sofa: '#4f6f6a', sofaShade: '#2f4648', throw: '#d9a43c', rug: '#b8795a',

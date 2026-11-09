@@ -1,6 +1,7 @@
 import type {FigAnchors} from '../kit/cast';
 import type {Painter} from '../kit/painter';
 import type {V3} from '../kit/space';
+import {camMove, camMoveK, camOf, type CamMove} from '../kit/cam-moves';
 import {camPoint, orbitYCam, type YCam} from '../kit/ycam';
 import {paintDog, paintMan} from './cast';
 import {fleaJoints, paintFlea, POSES, type FleaMeasure, type FleaOpts} from './flea';
@@ -21,12 +22,33 @@ export const MEASURE: Record<string, {fig?: FigAnchors | null; flea?: FleaMeasur
 // Original brief cameras (user verdict 2026-11-09); the staging moved instead (OX/DS in room.ts, SOI marks below)
 export const CAM_SOFA = orbit([3.3, 0.7, 0.55], 40, 2.8, 1.15, 1200, 850);
 export const CAM_MACRO = orbit([0, 0.45, 0], 0, 4.0, 0.45, 1200, 900);
-export const CAM_MACRO_THORAX = orbit([0.0, 0.55, 0], 0, 2.9, 0.55, 1200, 900); // W3: B03-SH03 has no camera in the brief; thorax window about 560 px
+export const CAM_MACRO_THORAX = orbit([0.0, 0.55, 0], 0, 2.9, 0.55, 1200, 900); // B03-SH03 start value (SHEETS-R2.0 B03-SH03: r 2.9 -> 2.7, same target/eye/lens, F2 still); thorax window about 560 px
 export const CAM_CHART_2S = orbit([OX + 0.95, 1.0, 0.35], 0, 6.6, 1.15, 2400, 770);
 export const CAM_TRUTH = orbit([OX + 0.95, 1.0, 0.35], 0, 10.0, 1.0, 3600, 790);
 export const CAM_CHART_LOW = orbit([OX + 0.05, 0.85, 0.3], -8, 2.75, 1.0, 1400, 700);
 // Original brief camera (target x 1.0, r 2.6); the steep pitch magnifies the near ground, so MAN and the giant are re-staged in soi.ts (MAN x 0.2, giant behind-right at z -0.6) to stay fully in frame
 export const CAM_MYTH: YCam = {...orbit([1.0, 1.4, 0], -6, 2.6, 0.45, 820, 900), pitch: 30 * DEG};
+
+// ---- timed-shot cameras (SHEETS-R2.0, W5.2). The look-frame constants above stay as locked for the stills (F3/F4/F6, LF*); these are the shot cameras with the
+// SD01 `hy` tilt-downs applied (framing only: target, yaw, r, eye and lens as in the look cameras). Every shot camera is a pure function of the shot-local frame.
+/** A shot camera: the kit `camMove` plus `hy` as a range (the sheets' `hy a -> b` follows the move's ease). */
+export type ShotCam = {move: CamMove; hy: [number, number]};
+const shotCam = (move: Omit<CamMove, 'hy'>, hy: [number, number]): ShotCam => ({move: {...move, hy: hy[0]}, hy});
+/** The shot's camera at local frame `l` of `len` frames (u = l / len, as the kit camMove). */
+export const camShot = (s: ShotCam, l: number, len: number): YCam => ({...camOf(s.move, Math.min(1, Math.max(0, l / len))), hy: s.hy[0] + (s.hy[1] - s.hy[0]) * camMoveK(s.move, Math.min(1, Math.max(0, l / len)))});
+const CHART_2S_AT: V3 = [OX + 0.95, 1.0, 0.35]; // = (1.45, 1.00, 0.35)
+/** S01-B01-SH03 (fixed): floor row 1158, hy 740 (SD01). */
+export const CAM_S3 = shotCam(camMove(CHART_2S_AT, [0, 0], 6.6, 1.15, {f: 2400, hy: 740}), [740, 740]);
+/** S01-B01-SH05: push r 6.6 -> 5.8 on [0.11, 0.26] of the shot, hy 740 -> 682 (floor row 1158 throughout). */
+export const CAM_S8 = shotCam(camMove(CHART_2S_AT, [0, 0], [6.6, 5.8], 1.15, {f: 2400, hy: 740, ease: [0.11, 0.26]}), [740, 682]);
+/** S01-B04-SH01: yaw 0 -> -3, r 6.6 -> 6.3, hy 740 -> 716 (slow push, floor row 1158 held). */
+export const CAM_S13 = shotCam(camMove(CHART_2S_AT, [0, -3], [6.6, 6.3], 1.15, {f: 2400, hy: 740}), [740, 716]);
+/** S01-B04-SH02: CAM-TRUTH locked (floor row 1150; unchanged by SD01). */
+export const CAM_S14 = shotCam(camMove(CHART_2S_AT, [0, 0], 10.0, 1.0, {f: 3600, hy: 790}), [790, 790]);
+/** S01-B05-SH01 (SD01 listed here, shot built later): CAM-CHART-LOW hy 659 -> 625. */
+export const CAM_S15 = shotCam(camMove([OX + 0.05, 0.85, 0.3], [-8, -4], [2.75, 2.6], 1.0, {f: 1400, hy: 659}), [659, 625]);
+/** S01-B02-SH01 (SD01 listed here, shot built later): CAM-FLEA-LEGS target (1.70, 0.55, 0.35), hy 759 -> 719. */
+export const CAM_S9 = shotCam(camMove([1.7, 0.55, 0.35], [6, 10], [3.4, 3.1], 0.9, {f: 1500, hy: 759}), [759, 719]);
 
 // ---- LF01 room: MAN seated P31 on the left seat, dog asleep on the right seats, chart in the background
 export const paintLF01 = (p: Painter, frame: number) => {

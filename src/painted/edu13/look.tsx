@@ -20,7 +20,7 @@ if (typeof document !== 'undefined') loadFont({family: 'Noto Sans Thai', url: st
 const FPS = 30;
 const PAPER = '#efe8d8';
 
-const Painted = ({paint, band = false, vignette = 'rgba(60,40,20,0.2)', grain = 0.08, children}: {paint: (p: Painter, frame: number) => void; band?: boolean; vignette?: string; grain?: number; children?: ReactNode}) => {
+export const Painted = ({paint, band = false, vignette = 'rgba(60,40,20,0.2)', grain = 0.08, children}: {paint: (p: Painter, frame: number) => void; band?: boolean; vignette?: string; grain?: number; children?: ReactNode}) => {
   const fn = useCallback(({brush, frame}: PaintContext) => paint(makePainter(brush, {t: frame / FPS, frame, fade: PAPER}), frame), [paint]);
   return (
     <AbsoluteFill style={{background: PAPER}}>
@@ -33,14 +33,14 @@ const Painted = ({paint, band = false, vignette = 'rgba(60,40,20,0.2)', grain = 
   );
 };
 
-const stroke = {WebkitTextStroke: '6px #1d2129', paintOrder: 'stroke fill', textShadow: '0 3px 0 #1d2129'} as const;
+export const stroke = {WebkitTextStroke: '6px #1d2129', paintOrder: 'stroke fill', textShadow: '0 3px 0 #1d2129'} as const;
 /** LBL slot (816-1020, 148-204): "ภาพจำลอง" on every macro shot (VD04). */
 const Lbl = ({text = 'ภาพจำลอง'}: {text?: string}) => (
   <div lang="th" style={{position: 'absolute', left: 816, top: 148, width: 204, height: 56, display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: 'Noto Sans Thai', fontWeight: 700, fontSize: 34, color: '#fff'}}>
     <span style={stroke}>{text}</span>
   </div>
 );
-const Text = ({x, y, text, size = 44, anchor = 'start'}: {x: number; y: number; text: string; size?: number; anchor?: 'start' | 'middle'}) => (
+export const Text = ({x, y, text, size = 44, anchor = 'start'}: {x: number; y: number; text: string; size?: number; anchor?: 'start' | 'middle'}) => (
   <div lang="th" style={{position: 'absolute', left: anchor === 'middle' ? x - 400 : x, top: y, width: anchor === 'middle' ? 800 : undefined, textAlign: anchor === 'middle' ? 'center' : 'left', whiteSpace: 'nowrap', fontFamily: 'Noto Sans Thai', fontWeight: 700, fontSize: size, color: '#fff'}}>
     <span style={stroke}>{text}</span>
   </div>
