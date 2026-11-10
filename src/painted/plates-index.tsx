@@ -21,8 +21,12 @@ const Plate = ({entry}: {entry: PlateEntry}) => {
   );
 };
 
+// Remotion clamps every clock (a Freeze inside a shot too) to the composition range, so a plate whose Overlay freezes a shot at its local frame
+// round(t x 30) (src/painted/shots/edu13.tsx) needs a composition at least that long; the still itself is frame 0.
+const plateFrames = (t: number) => Math.max(1, Math.round(t * 30) + 1);
+
 registerRoot(() =>
   createElement(Fragment, null, ...PLATES.map((entry) =>
-    createElement(Composition, {key: entry.id, id: entry.id, component: () => createElement(Plate, {entry}), width: 1080, height: 1920, fps: 30, durationInFrames: 1}),
+    createElement(Composition, {key: entry.id, id: entry.id, component: () => createElement(Plate, {entry}), width: 1080, height: 1920, fps: 30, durationInFrames: plateFrames(entry.t)}),
   )),
 );

@@ -35,7 +35,7 @@ export const MOTION_IDS = [
   'idle-breathe', 'walk-in-from-left', 'walk-in-from-right', 'walk-out-to-left', 'walk-out-to-right', 'run-left-to-right', 'run-right-to-left',
   'nod', 'shake-head', 'startle-jump', 'look-around', 'turn-head-left', 'turn-head-right', 'turn-head-to-camera', 'shiver',
   'sit-down', 'stand-up', 'point-and-say', 'gasp-recoil', 'talk', 'kneel-down', 'stand-from-kneel', 'crouch-hide', 'hood-pull', 'coin-count', 'eat-chew',
-  'zero-g-drift', 'pat-check', 'rail-tow',
+  'zero-g-drift', 'pat-check', 'rail-tow', 'standing-jump',
 ] as const;
 export type MotionId = (typeof MOTION_IDS)[number];
 
@@ -102,6 +102,8 @@ export type MotionCtx = {
   seed: number;
   /** Travel distance in metres for walk-in/out and run (default per motion). */
   distance?: number;
+  /** Amplitude in metres for motions that take one: `standing-jump` apex clearance (default 0.42). */
+  amount?: number;
   /** Mouth openness 0..1 at shot time `t` (e.g. `(t) => mouthAt(amplitude, t * fps)`); the seeded syllable envelope when absent. */
   amp?: (t: number) => number;
 };
@@ -299,10 +301,25 @@ const railTow = (dir: 1 | -1): Motion => (t, c) => {
   };
 };
 
+/**
+ * `standing-jump` (EDU-EP13 N5, KIT-P01 10 Nov 2026): crouch from the P35 body (0-0.27 s), take-off arms up (P08) at 0.33 s, rise to the apex at
+ * 0.57 s, fall and a knees-bent landing at 0.97 s, recover to standing by 1.3 s. Front view. `lift` rises with the arc (`amount` m, default 0.42,
+ * apex clearance); the freeze at the apex in EDU-EP13 is the episode's own clock, not part of the motion.
+ */
+const JUMP_LEAVE = 10 / 30, JUMP_APEX = 17 / 30, JUMP_LAND = JUMP_APEX + 0.4, JUMP_END = JUMP_LAND + 10 / 30;
+const standingJump: Motion = (t, c) => {
+  const h = c.amount ?? 0.42, lift = t < JUMP_LEAVE || t >= JUMP_LAND ? 0 : t < JUMP_APEX ? (() => { const s = (t - JUMP_LEAVE) / (JUMP_APEX - JUMP_LEAVE); return h * (1 - (1 - s) * (1 - s)); })() : (() => { const s = (t - JUMP_APEX) / (JUMP_LAND - JUMP_APEX); return h * (1 - s * s); })();
+  if (t < 8 / 30) return {arms: {a: 'P01', b: 'P35', u: seg(t, 0, 8 / 30)}, body: {lift}};
+  if (t < JUMP_LEAVE) return {arms: {a: 'P35', b: 'P08', u: seg(t, 8 / 30, JUMP_LEAVE)}, body: {lift}};
+  if (t < JUMP_LAND) return {arms: {a: 'P08', b: 'P01', u: t < JUMP_APEX ? 0.5 * seg(t, JUMP_LEAVE, JUMP_APEX) : 0.5 + 0.3 * seg(t, JUMP_APEX, JUMP_LAND)}, body: {crouch: 0.25, lift}};
+  return {arms: {a: 'P01', b: 'P35', u: 0.45 * (1 - seg(t, JUMP_LAND, JUMP_END))}, body: {lift}};
+};
+
 export const MOTIONS: Record<MotionId, Motion> = {
   'zero-g-drift': zeroGDrift,
   'pat-check': patCheck,
   'rail-tow': (t, c) => railTow(c.view === 'left' ? -1 : 1)(t, c),
+  'standing-jump': standingJump,
   'coin-count': coinCount,
   'idle-breathe': (t) => {
     const w = (2 * Math.PI * t) / 3;
@@ -426,6 +443,7 @@ export const MOTIONS: Record<MotionId, Motion> = {
 export const MOTION_INFO: Record<MotionId, MotionInfo> = {
   'zero-g-drift': {name: 'Zero-g drift', description: 'Weightless idle (EDU-EP08 B4): arms float on the zero-g neutral numbers (P46) with a slow drift, knees breathe, ambient bob 3 cm and whole-card roll of about 3 deg on a 6 s loop. Draw with `paintEva` / `paintFigureAt` (`shadow: false`, `roll: frame.roll`).', duration: 6, loop: true, views: ['front'], use: 'Any floating figure that is held still: orbit shots, cards with a floating person.'},
   'pat-check': {name: 'Pat check', description: 'Self-check (EDU-EP08 B5): both gloves pat the chest at 0.4 and 0.8 s, the right glove crosses to the left upper arm at 1.4 s and the left to the right upper arm at 1.9 s (two taps each), shoulders drop 0.02 m at 2.4 s, worried then neutral. Elbows tucked, depth arms (`near`). Front body, 3.1 s.', duration: 3.1, loop: false, views: ['front'], use: 'Checking oneself after a scare; safe beat, no puff.'},
+  'standing-jump': {name: 'Standing jump', description: 'A two-footed jump from standing (EDU-EP13 N5): crouch with arms back (P35), arms up at take-off (P08), a slight tuck at the apex, a knees-bent landing, 1.3 s. `amount` is the apex clearance (default 0.42 m; 0.20 m for a small hop).', duration: 1.3, loop: false, views: ['front'], use: 'A person jumping on the spot to show a height: jump comparisons, a victory jump, a deliberate leap. Not the reflex startle-jump.'},
   'rail-tow': {name: 'Rail tow', description: 'Hand-over-hand along a handrail (EDU-EP08 B6), floating: the far hand grips the rail (planted in the world), the body slides to it, the hand re-grips one stroke ahead (0.7 s cycle, 0.34 m per stroke); the near hand closes on a target wrist behind the body at 0.2 s and holds. The figure travels toward the side it faces (view right = screen right). Place the towed person at this figure`s glove anchor each frame.', duration: 1.3, loop: false, views: ['left', 'right'], use: 'Towing or being pulled along a rail in zero-g.'},
   'idle-breathe': {name: 'Idle breathe', description: 'Chest rise, a tiny weight shift and a head bob on a 3 s period.', duration: 3, loop: true, views: ['front', 'left', 'right'], use: 'Any held figure: put it under a still pose so nothing is frozen.'},
   'walk-in-from-left': {name: 'Walk in from the left', description: 'Enters from the screen left in profile facing right at 1.2 m/s, brakes and settles into standing at the rest point. Steps match the ground speed.', duration: 2.1, loop: false, views: ['right'], use: 'A person arrives into frame; `distance` = metres from the off-screen start to the rest point.'},
@@ -487,6 +505,8 @@ export type LayerArgs = {
   /** The face under the motion (default neutral). */
   expression?: ExpressionId | FaceState;
   distance?: number;
+  /** `standing-jump`: apex clearance in metres (default 0.42; EDU-EP13 used 0.20 and 0.42). */
+  amount?: number;
   amp?: (t: number) => number;
   /** Overrides the figure seed (default: the person's seed). */
   seed?: number;
@@ -518,7 +538,7 @@ export const layerMotion = (a: LayerArgs): Layered => {
   const base = typeof a.person === 'string' ? PEOPLE[a.person] : a.person;
   const def = a.outfit ? dress(base, a.outfit) : base;
   const seed = a.seed ?? def.seed;
-  const ctx: MotionCtx = {view: a.view ?? 'front', k: def.height / 1.7, legK: legScale(def), seed, distance: a.distance, amp: a.amp};
+  const ctx: MotionCtx = {view: a.view ?? 'front', k: def.height / 1.7, legK: legScale(def), seed, distance: a.distance, amount: a.amount, amp: a.amp};
   const frame = motionFrame(a.motion, a.t, ctx);
   const view = frame.view ?? ctx.view;
   const pv: View = view === 'back' ? 'front' : view; // the pose library has no back targets: arms are the front-view ones, mirrored by the back figure
