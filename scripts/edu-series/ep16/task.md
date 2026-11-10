@@ -1,0 +1,11 @@
+# EDU-EP16-SHORT — task
+
+Record: this file. Series context: [concepts.md](../concepts.md) (R7, C38) · series task list: [task.md](../task.md).
+
+**Now:** W0 done 2026-11-10 (C38 ถ้าคนทั้งโลกมายืนในกรุงเทพฯ, R7 concept, user asked to start it). W1.1 Boat research done 2026-11-10 ([research.md](research.md)). W1.2 Preaw script EDU-EP16-SCRIPT-R1 done 2026-11-10 ([script.md](script.md), est. read ≈49.4 s, video ≈55.8 s, not read aloud). W1.3 Boat fact-check done 2026-11-10 ([fact-check.md](fact-check.md), pass, no must-fix); script R2 2026-11-10 (user chose O1+O2, L13 wording only) and approved W1.5. W2 done 2026-11-10 (Film: [film-brief.md](film-brief.md) EDU-EP16-BRIEF-R1, [storyboard.md](storyboard.md) ROWS-R1.0, 22 shots, est. ≈55.4 s; review page https://claude.ai/artifact/9RScrR5cKZD2eF3CLqQprK). Waiting for the user's storyboard verdicts (incl. Q-F1 district lines), then voice sample; voice sample (≤10 s, user picks) before the full read.
+
+- Deliverable: `EDU-EP16-SHORT`, Short only (Thai), 1080×1920, 30 fps, target 40–60 s (estimate). Profile: educational, painted 2D, edu defaults (Kore narrator, no atempo). Scope assumed from EP01–EP15.
+- Factual claims for Boat: see the C38 entry in concepts.md R7 (hook claim: all ~8.2 billion people at a sourced standing density fit in Bangkok plus Nonthaburi, ~2,050 km²; mass-ratio jump claim; Seattle 2011 and a 2023 stadium concert recorded by seismometers). All unchecked. Boat picks a sourced density (0.25 vs 0.5 m² changes the answer) and the hook follows it.
+- Casting from the pitch (Film confirms): `man-spiky + home-lounge`; crowd from `PEOPLE` at small scale. New: top-down Bangkok and Nonthaburi map plate, stadium insert with sensor trace, whole-globe far view.
+
+- Decisions after W1.1 (user, 2026-11-10, structured question): (1) density 4 people/m² (about 2,050 km²), hook says "เบียดกันแน่น" and an on-screen tag "ยืนแน่นประมาณ 4 คน/ตร.ม. · ภาพจำลอง"; (2) crowd-quake beat names no team or singer ("เกมฟุตบอลอเมริกัน / คอนเสิร์ตในสนามกีฬา"), wording "พื้นสั่นจนเครื่องวัดจับได้", not "แผ่นดินไหว"; (3) Seattle only, no Edinburgh, distance said as "ใกล้สนาม"; (4) "กว่าแปดพันล้านคน". Boat must-fix: the map fill ends inside Nonthaburi (about 77 % full at 4/m²), not at its border; the jump stays inside the packed crowd.
