@@ -13,7 +13,7 @@ import {promisify} from 'node:util';
 const run = promisify(execFile);
 const ffmpeg = globSync('node_modules/@remotion/compositor-*/ffmpeg')[0] ?? 'ffmpeg';
 const env = {...process.env, DYLD_LIBRARY_PATH: path.dirname(path.resolve(ffmpeg))};
-const TARGET = {I: -14, TP: -1.5, LRA: 20};
+const TARGET = {I: -14, TP: Number(process.env.LOUDNESS_TP ?? -1.5), LRA: 20}; // LOUDNESS_TP: per-run limiter ceiling override
 
 const loudnorm = async (args, filter) => {
   // Dynamic loudnorm can stretch a packet timestamp while draining its final window (WFOG SS-R6).

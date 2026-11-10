@@ -1,4 +1,4 @@
-// EDU-EP13-SHORT caption cues (W5.3 Draft v2, Editor, 2026-11-09; 31 cues). Pure data. Source: scripts/edu-series/ep13/scene-sheets.md (EDU-EP13-SHEETS-R2.1 "Captions": one cue per line, split at the "…"),
+// EDU-EP13-SHORT caption cues (W5.3 Draft v2, Editor, 2026-11-09; 32 cues). Pure data. Source: scripts/edu-series/ep13/scene-sheets.md (EDU-EP13-SHEETS-R2.1 "Captions": one cue per line, split at the "…"),
 // Thai verbatim from script R5 / review-rows.json. Cue = [phrase onset, last voiced frame + 6) capped at the next cue's onset; onsets and ends are the voiced runs (-38 dB, 10 ms, gaps < 80 ms merged)
 // of the placed narration public/narration/EDU-EP13-SHORT-narration-v2.wav (scripts/edu-series/ep13/narration-place.py). V01 is subtitled from its "เฮ้ย" (G330), V02 from G1144; V03 and TR01 have no caption.
 export type Edu13Cue = {from: number; to: number; text: string};
@@ -30,9 +30,10 @@ const raw: [number, number, string][] = [
   [874, 898, 'เหมือนหนังสติ๊ก'],                         // L09 c (874-892, est)
   [920, 951, 'แล้วหมัดยักษ์ล่ะ…'],                       // L15 a (920-945)
   [952, 991, 'ยังต้องพึ่งหนังสติ๊กมั้ย'],                // L15 b (952-985)
-  [1003, 1035, 'ไม่ค่อยต้องแล้ว…'],                      // L16 a (1003-1029)
-  [1037, 1068, 'ขามันยาว'],                              // L16 b (1037-1062)
-  [1070, 1121, 'มีเวลาให้กล้ามดันพื้นทัน'],               // L16 c (1070-1115)
+  [1004, 1029, 'ใช้ก็ได้…'],                             // L16 a (1004-1023; R6 Take A, script R6)
+  [1031, 1061, 'แต่ไม่ได้สูงขึ้นหรอก'],                  // L16 b (1031-1056)
+  [1061, 1091, 'แผ่นยางโต'],                             // L16 c (1061-1085)
+  [1092, 1123, 'ตัวก็หนักตาม'],                          // L16 d (1092-1117)
   [1144, 1159, 'ฮึบ!'],                                  // V02 (1144-1154)
   [1159, 1194, 'สูงพอ ๆ กัน…'],                          // L12 a (1159-1190)
   [1194, 1226, 'แค่หลักสิบเซน'],                         // L12 b 1 (1194-1220)
