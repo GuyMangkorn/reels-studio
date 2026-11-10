@@ -1,0 +1,90 @@
+{
+ "deliverable": "EDU-EP15-SHORT",
+ "step": "W1.4",
+ "script_revision": "EDU-EP15-SCRIPT-R2",
+ "date": "2026-11-10",
+ "read": {
+  "store": "projects/EDU/audio/2026-11-10_ep15-nar-kore-fullread.wav",
+  "sidecar": "projects/EDU/audio/2026-11-10_ep15-nar-kore-fullread.json",
+  "lines_text": "projects/EDU/audio/2026-11-10_ep15-nar-lines.txt",
+  "model": "gemini-3.8-flash-tts",
+  "voice": "Kore",
+  "style": "fast-paced, quick brisk delivery with short pauses between phrases, playful deadpan female narrator, dry and matter-of-fact, speaking quickly without dragging",
+  "atempo": null,
+  "requests": 1,
+  "retries": 0,
+  "lines": "L01-L05, L07-L16 (15 NAR rows; L06 retired); '…' sent as ','",
+  "listened": false,
+  "note": "NOT LISTENED"
+ },
+ "measured": {
+  "raw_s": 49.2,
+  "speech_start_s": 0.253,
+  "speech_end_s": 48.918,
+  "method": "ffmpeg silencedetect -35 dB / 0.25 s for runs; faster-whisper large-v3-turbo word times for line onsets (Thai word times rough, +-0.3 s)"
+ },
+ "line_onsets_s": {
+  "L01": 0.25,
+  "L02": 3.9,
+  "L03": 6.47,
+  "L04": 9.04,
+  "L05": 11.96,
+  "L07": 15.6,
+  "L08": 19.91,
+  "L09": 22.77,
+  "L10": 27.58,
+  "L11": 30.51,
+  "L12": 34.9,
+  "L13": 37.14,
+  "L14": 39.94,
+  "L15": 42.4,
+  "L16": 45.44
+ },
+ "line_end_s": {
+  "L16": 48.918,
+  "L12": 36.55,
+  "L10": 30.03
+ },
+ "estimate_vs_measured": {
+  "raw_estimate_s": 49.3,
+  "raw_measured_s": 49.2,
+  "delta_s": -0.1
+ },
+ "video": {
+  "allowances_s": {
+   "V01": 0.5,
+   "W-HANG_V02": 2.5,
+   "W-MOTH": 1.0,
+   "V03": 0.8,
+   "beat_gaps": 1.5,
+   "end_hold": 2.0,
+   "total": 8.3
+  },
+  "estimate_s": 57.5,
+  "range_s": [
+   57.2,
+   58.0
+  ],
+  "target_s": [
+   40,
+   60
+  ],
+  "hard_limit_s": 63,
+  "within_target": true
+ },
+ "answers": {
+  "longest_answer_s": 9.56,
+  "definition": "L10 onset 27.58 to L13 onset 37.14 (script.md OQ table: answer window to L13); L10 onset to L12 end = 8.97 s",
+  "limit_s": 10,
+  "under_10": true,
+  "margin_s": 0.44,
+  "oq2_oq6_same_window": true
+ },
+ "verdict": "PASS: video within 40-60 s, longest answer under 10 s; no trim needed (T1-T3 not requested)",
+ "trims_if_needed": {
+  "T1": -2.1,
+  "T2": -2.3,
+  "T3": -1.0
+ },
+ "timing_status": "audio-measured (length check only, not a voice lock)"
+}
