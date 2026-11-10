@@ -148,3 +148,7 @@ W2 done 2026-11-09: Film brief R1 (VD01–VD31), storyboard ROWS-R1.0 (25 shots,
 ## EDU-EP14-SHORT
 
 **Now:** W1 done 2026-11-09 (script R4 approved by user). W2 Film brief and storyboard next. Detail: [ep14/task.md](ep14/task.md).
+
+## EDU-EP15-SHORT
+
+**Now:** W0, W1 done 2026-11-10 (script R2 approved, read 49.2 s, video ≈57.5 s); W2 done 2026-11-10 (20 shots, review page https://claude.ai/artifact/Pn33VzZ1qBhBJwmjXvhAXn). Waiting for the user's storyboard verdicts, then W3. Detail: [ep15/task.md](ep15/task.md).
