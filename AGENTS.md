@@ -46,7 +46,7 @@ These apply to every role; agent configs link here instead of repeating them.
 The **coordinator** is the chat session the user talks to (Claude Code or Codex). It does the following:
 
 - selects deliverables, style profile and tier;
-- invokes role agents for the assigned scope (Claude Code: the `Agent` tool with `subagent_type` set to the role name; Codex: the custom agent of that name); Boss runs as an Orca Codex worker first, falling back to Claude on a usage limit ([AI14](docs/delivery-workflow.md#ai14));
+- invokes role agents for the assigned scope (Claude Code: the `Agent` tool with `subagent_type` set to the role name; Codex: the custom agent of that name);
 - passes matching revisions;
 - publishes the [user storyboard review page](docs/mark-storyboard-workflow.md#user-storyboard-review-page) whenever Film returns a `ready-for-dev` scene-sheet revision or Film adds look frames, built with `scripts/storyboard-page/build.py` from Film's `review-rows.json`, and relays the verdicts back;
 - follows the [agent invocation defaults](docs/delivery-workflow.md#agent-invocation): whole stage per call (shot groups for painting and rendering), inline mechanical edits, separate checking.
