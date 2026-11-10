@@ -88,22 +88,16 @@ export const paintSH05 = (p: Painter, l: number) => {
   paintRoom13(p, c, {t, cast});
 };
 
-// ---- S01-B04-SH01 (icon + leg light, L15/L16)
-/** N21 leg-light state at local frame l (R2.1): travel +121..+139, even glow to +169, out by +181. */
-export const legLightAt = (l: number): {u: number; a: number} | undefined => {
-  if (l < 121) return undefined;
-  const a = l < 139 ? 1 : l < 169 ? 0.45 : 0.45 * (1 - seg(l, 169, 181));
-  return a > 0.01 ? {u: clamp01((l - 121) / 18), a} : undefined;
-};
+// ---- S01-B04-SH01 (icon, pad and weight dial, L15/L16; R6: the icon stays lit, no leg light; pad and dial are screen layers in shot-layers.tsx)
 export const paintSH13 = (p: Painter, l: number) => {
   const c = shotCamera('S01_B04_SH01', l), t = l / 30;
-  // R2.1: leg light +121..+139; MAN's eyes to the camera +168..+181; settle +208..+218; head tilt +8..+16, levels +90..+98
-  const glance = l >= 30 && l < 121 ? [0.8, 0.1] : l >= 121 && l < 168 ? [0.5, -0.55] : l >= 168 && l < 174 ? [0, 0] : l >= 174 && l < 181 ? [0.5, -0.55] : l >= 181 ? [0.3, -0.3] : [0, 0];
+  // R6: MAN watches the giant to +181 then glances toward the lens; settle +208..+218; head tilt +8..+16, levels +90..+98
+  const glance = l >= 30 && l < 181 ? [0.8, 0.1] : l >= 181 ? [0.3, -0.3] : [0, 0];
   const settle = seg(l, 208, 218);
   const tilt = 9 * (seg(l, 8, 16) - seg(l, 90, 98));
   const cast: RoomItem[] = [
     {at: MAN_AT, draw: (q, cc) => { paintMan(q, cc, {at: MAN_AT, view: 'front', pose: 'P01', face: 'neutral', faceState: {look: [glance[0], glance[1]]}, fig: {crouch: 0.06 * settle}, t, warm: 0.06}); }},
-    fleaItem(GIANT, {view: 'right', state: 'rest', ...(settle > 0 ? {to: 'fold' as const, blend: 0.3 * settle} : {}), pitchAdd: tilt, legLight: legLightAt(l), t}),
+    fleaItem(GIANT, {view: 'right', state: 'rest', ...(settle > 0 ? {to: 'fold' as const, blend: 0.3 * settle} : {}), pitchAdd: tilt, t}),
   ];
   paintRoom13(p, c, {t, cast});
 };

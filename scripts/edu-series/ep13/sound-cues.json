@@ -384,24 +384,24 @@
       "note": "measured pitch 500, 372, then up to 743 Hz"
     },
     {
-      "cue": "S23-detune",
+      "cue": "S25-pad-swell",
       "shot": "S01-B04-SH01",
-      "frame": 1001,
-      "brief": "Short soft synth pluck sagging flat as it decays, a shrug as the \"?\" goes and the icon greys",
-      "id": "comedy_blip-detune-sag_01",
+      "frame": 1061,
+      "brief": "R6 L16 \"แผ่นยางโต\": soft stretchy rubber swell as the see-through pad grows with the giant's body (1061-1085); replaces S23 de-tune blip and S22 rising tone (icon stays lit, no grey-out)",
+      "id": "foley_rubber-squeeze-creak_01",
       "origin": "generated",
-      "lenSec": 0.4,
-      "note": "source steady in pitch; pitch sag x1.0 to x0.75 applied in post (numpy resample) and recorded in the sidecar"
+      "lenSec": 0.9,
+      "note": "R6 (2026-11-10): same file as S15-squeeze (tight rubber creak rising in pitch, 0.9 s), placed lower as the stand-in swell; no stretch-swell file exists in the library; Ton may swap it for a NEEDS-GEN stretchy rubber swell (needs Film's or the user's OK as a swap); not listened"
     },
     {
-      "cue": "S22-leg-tone",
+      "cue": "S26-weight-callback",
       "shot": "S01-B04-SH01",
-      "frame": 1038,
-      "brief": "Soft clean glassy tone rising with the light and stopping as it reaches the foot (1038-1056)",
-      "id": "reveal_glass-rise-tone_01",
+      "frame": 1098,
+      "brief": "R6 L16 \"ตัวก็หนักตาม\": the same low heavy thump as B02-SH01 S10 as the weight dial swings (callback to B02, no grey-out blip)",
+      "id": "foley_floor-groan-heavy_01",
       "origin": "generated",
-      "lenSec": 0.7,
-      "note": "source steady in pitch; rising glide x0.70 to x1.0 applied in post and recorded in the sidecar; measured 543 to 680 Hz in the file"
+      "lenSec": 1.0,
+      "note": "R6 (2026-11-10): same file as S10-groan (445); \"หนัก\" est G1098 (run 1092-1104); slot 1098-1128 ends before the crouch S17 at 1135; not listened"
     },
     {
       "cue": "S17-crouch",

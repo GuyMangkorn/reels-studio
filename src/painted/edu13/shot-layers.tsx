@@ -53,14 +53,32 @@ export const SH03Layers = () => {
 export const S01_B01_SH03 = () => <Painted paint={(p, f) => paintSH03(p, f)} band><SH03Layers /></Painted>;
 export const S01_B01_SH05 = () => <Painted paint={(p, f) => paintSH05(p, f)} band />;
 
-// ---- S01-B04-SH01 (R2.1): icon + "?" pop at +5, "?" off at +84, icon greys +84..+96 and stays; re-projected every frame
+// ---- S01-B04-SH01 (R6, L16): icon + "?" pop at +5, "?" off at +84, icon stays lit to the cut (no grey-out); the see-through pad ("ภาพจำลอง") pops +PAD.pop and swells with the body,
+// the weight dial (B02-SH01 drawing, no numerals) pops +DIAL.pop and swings up. Both are screen layers anchored at fixed picture points clear of the icon, window, clock and caption band.
+/** The see-through elastic pad (B03-SH03 amber pad as a ghost): a flat, wide squeezed ellipse that only swells uniformly with `k` (aspect fixed, never stretched thin: B-P4). */
+export const PadGhost = ({x, y, k, a = 1}: {x: number; y: number; k: number; a?: number}) => (
+  <svg width={240} height={170} style={{position: 'absolute', left: x - 120, top: y - 85, transform: `scale(${k})`, opacity: a, overflow: 'visible'}}>
+    <g transform="translate(120 85)" fill="none" strokeLinecap="round">
+      <ellipse rx={84} ry={56} stroke="#fff" strokeWidth={20} opacity={0.8} />
+      <ellipse rx={84} ry={56} fill="#ffc65a" fillOpacity={0.5} stroke={INK} strokeWidth={9} strokeDasharray="22 12" />
+      <ellipse rx={50} ry={33} fill="#fff3c8" fillOpacity={0.6} />
+      <path d="M-34 -4 Q0 -22 34 -4" stroke="#fff" strokeWidth={6} opacity={0.8} />
+    </g>
+  </svg>
+);
+/** Local-frame keys of the L16 layers (re-keyed to the spliced voice, shot start 917: "แผ่นยางโต" G1061 = +144, "ตัวก็หนักตาม" G1098 = +181, speech ends G1117 = +200). */
+export const L16 = {qOff: 84, pad: 144, padEnd: 172, dial: 181, dialEnd: 200, padFrom: 0.55} as const;
 export const SH13Layers = () => {
-  const l = useCurrentFrame(), q = at('S01_B04_SH01', l, ICON_AT), grey = seg(l, 84, 96);
-  const s = pop(l, 5), qs = l >= 84 ? 0 : s;
+  const l = useCurrentFrame(), q = at('S01_B04_SH01', l, ICON_AT);
+  const s = pop(l, 5), qs = l >= L16.qOff ? 0 : s;
+  const ps = pop(l, L16.pad, 6), swell = L16.padFrom + (1 - L16.padFrom) * seg(l, L16.pad, L16.padEnd), ds = pop(l, L16.dial, 6), sw = seg(l, L16.dial, L16.dialEnd), ang = -65 + 130 * sw * sw * (3 - 2 * sw);
   return (
     <>
-      {s > 0 && <SlingIcon x={q[0]} y={q[1]} size={90} grey={grey} scale={s} />}
+      {s > 0 && <SlingIcon x={q[0]} y={q[1]} size={90} scale={s} />}
       {qs > 0 && <div style={{position: 'absolute', left: q[0] + 36, top: q[1] - 76, width: 40, height: 52, transform: `scale(${qs})`, fontFamily: 'Noto Sans Thai', fontWeight: 800, fontSize: 52, color: INK, textAlign: 'center', lineHeight: '52px'}}>?</div>}
+      {ps > 0 && <PadGhost x={q[0] - 200} y={q[1] - 150} k={1.03 * ps * swell} />}
+      {ds > 0 && <WeightDial x={q[0] + 270} y={q[1] - 10} scale={ds} ang={ang} />}
+      {l >= L16.pad && <Lbl />}
     </>
   );
 };
@@ -109,24 +127,30 @@ export const S01_B04_SH02 = () => <Painted paint={(p, f) => paintSH14(p, f)} ban
 // ======================= W5.2 asset group 2 =======================
 export const S01_B01_SH01 = () => <Painted paint={(p, f) => paintSH01(p, f)} />;
 
+/** The weight dial (B02-SH01, reused in B04-SH01): a half-round gauge, green/yellow/red bands and a needle, no numerals. `ang` is the needle angle in degrees (-65 light .. +65 heavy). */
+export const WeightDial = ({x, y, scale, ang}: {x: number; y: number; scale: number; ang: number}) => {
+  const R = 70;
+  return (
+    <svg width={220} height={170} style={{position: 'absolute', left: x - 110, top: y - 110, transform: `scale(${scale})`, transformOrigin: '110px 110px', overflow: 'visible'}}>
+      <g transform="translate(110 110)" strokeLinecap="round" fill="none">
+        <path d={`M${-R} 0 A${R} ${R} 0 0 1 ${R} 0`} stroke="#fff" strokeWidth={30} /><path d={`M${-R} 0 A${R} ${R} 0 0 1 ${R} 0`} stroke={INK} strokeWidth={24} />
+        <path d={`M${-R} 0 A${R} ${R} 0 0 1 ${-R * 0.35} ${-R * 0.94}`} stroke="#8fd6a8" strokeWidth={14} /><path d={`M${-R * 0.35} ${-R * 0.94} A${R} ${R} 0 0 1 ${R * 0.35} ${-R * 0.94}`} stroke="#f2d97a" strokeWidth={14} /><path d={`M${R * 0.35} ${-R * 0.94} A${R} ${R} 0 0 1 ${R} 0`} stroke="#ec8f78" strokeWidth={14} />
+        <g transform={`rotate(${ang})`}><line x1={0} y1={0} x2={0} y2={-R + 6} stroke="#fff" strokeWidth={13} /><line x1={0} y1={0} x2={0} y2={-R + 6} stroke={INK} strokeWidth={8} /></g>
+        <circle r={13} fill={INK} /><circle r={7} fill="#fff" />
+      </g>
+    </svg>
+  );
+};
+
 // ---- S01-B02-SH01 (R2.1): "แรงดีด ↑" at +17 (on "ดีด"), weight dial pops at +55 (needle +55..+91, no numerals), "heavier" down-arrow pops at +65
 export const SH09Layers = () => {
   const l = useCurrentFrame(), c = shotCamera('S01_B02_SH01', l);
   const d = camPoint(c, DIAL_AT), ar = camPoint(c, ARROW_AT), lab = camPoint(c, [0.95, 0.95, 0.35]);
-  const ds = pop(l, 55, 6), as = pop(l, 65, 6), ls = pop(l, 17, 6), swing = seg(l, 55, 91), ang = -65 + 130 * swing * swing * (3 - 2 * swing), R = 70;
+  const ds = pop(l, 55, 6), as = pop(l, 65, 6), ls = pop(l, 17, 6), swing = seg(l, 55, 91), ang = -65 + 130 * swing * swing * (3 - 2 * swing);
   return (
     <>
       {lab && ls > 0 && <div style={{position: 'absolute', left: 0, top: 0, width: 1080, transform: `scale(${ls})`, transformOrigin: `${lab[0]}px ${lab[1]}px`}}><Text x={Math.max(24, lab[0] - 40)} y={lab[1] - 30} text="แรงดีด ↑" size={54} /></div>}
-      {d && ds > 0 && (
-        <svg width={220} height={170} style={{position: 'absolute', left: d[0] - 110, top: d[1] - 110, transform: `scale(${ds})`, transformOrigin: '110px 110px', overflow: 'visible'}}>
-          <g transform="translate(110 110)" strokeLinecap="round" fill="none">
-            <path d={`M${-R} 0 A${R} ${R} 0 0 1 ${R} 0`} stroke="#fff" strokeWidth={30} /><path d={`M${-R} 0 A${R} ${R} 0 0 1 ${R} 0`} stroke={INK} strokeWidth={24} />
-            <path d={`M${-R} 0 A${R} ${R} 0 0 1 ${-R * 0.35} ${-R * 0.94}`} stroke="#8fd6a8" strokeWidth={14} /><path d={`M${-R * 0.35} ${-R * 0.94} A${R} ${R} 0 0 1 ${R * 0.35} ${-R * 0.94}`} stroke="#f2d97a" strokeWidth={14} /><path d={`M${R * 0.35} ${-R * 0.94} A${R} ${R} 0 0 1 ${R} 0`} stroke="#ec8f78" strokeWidth={14} />
-            <g transform={`rotate(${ang})`}><line x1={0} y1={0} x2={0} y2={-R + 6} stroke="#fff" strokeWidth={13} /><line x1={0} y1={0} x2={0} y2={-R + 6} stroke={INK} strokeWidth={8} /></g>
-            <circle r={13} fill={INK} /><circle r={7} fill="#fff" />
-          </g>
-        </svg>
-      )}
+      {d && ds > 0 && <WeightDial x={d[0]} y={d[1]} scale={ds} ang={ang} />}
       {ar && as > 0 && (
         <svg width={80} height={120} style={{position: 'absolute', left: ar[0] - 40, top: ar[1] - 60, transform: `scale(${as})`, overflow: 'visible'}}>
           <path d="M40 8 L40 70 M12 56 L40 98 L68 56" stroke="#fff" strokeWidth={26} strokeLinecap="round" strokeLinejoin="round" fill="none" /><path d="M40 8 L40 70 M12 56 L40 98 L68 56" stroke={INK} strokeWidth={20} strokeLinecap="round" strokeLinejoin="round" fill="none" /><path d="M40 8 L40 70 M12 56 L40 98 L68 56" stroke="#ec8f78" strokeWidth={10} strokeLinecap="round" strokeLinejoin="round" fill="none" />
