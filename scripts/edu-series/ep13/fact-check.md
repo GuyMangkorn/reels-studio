@@ -117,3 +117,53 @@
 | B-P7 flea look and CL14 | pass | VD06 cat-flea shape (flat body, comb ticks) with no on-screen text, caption or VO naming the species or saying it lives on dogs/cats; script avoids "หมัดแมว". CL14 stays `unchecked`; keep it out of labels, alt text and cover. The flea never appears on or near the dog. |
 
 - **Verdict: pass, with two small picture fixes for Film** (B-P2 no held "×50" apex frame; B-P6 label "ภาพจำลอง" on B02-SH03). No premise, reveal or learning-impact change. Factual readiness for the picture plan only after the two fixes; no user approval, no visual validation.
+
+## R3 recheck (2026-11-09)
+
+- Checked: `script.md` **EDU-EP13-SCRIPT-R3**, section "R3 changes for Boat" plus the L03, L05 and TR01 rows, against research.md CL10 (SRC005, SRC009) and the W2 B-P2 ruling. No new sources opened (SRC001/SRC011 stay `lead-only`). Script not edited. Qualitative confidence medium-high (model-level claims, picture only).
+
+| Item | Result | Note / exact wording |
+| --- | --- | --- |
+| L03 "สมมติมันโตทั้งตัว… ขาแรงขึ้น ตัวก็หนักขึ้นตาม" (CL10) | pass | Plain "แรง" is allowed (N4 c; no "กำลัง"). "สมมติ" frames the model and carries into L06. Merged meaning true: scaling up makes legs able to push harder and the body heavier. Precision note, no wording change: force grows slower (about by area) than weight (by volume), so "ตาม" must stay qualitative. Shot: the "แรง ↑" glow and weight dial move up together with no digits, no "×" figures and no equal-size bars in B02-SH01; "×2 / ×2" stays only in L05 as the labelled analogy ("ภาพจำลอง"). |
+| L04 removed | pass | Its content ("ตัวก็หนักขึ้นตาม") is in L03; nothing factual lost. |
+| L05 "…แต่แบกเป้หนักขึ้นสองเท่า" | pass | Dropping "ต้อง" only; CL08/CL10 analogy unchanged ("เหมือน" keeps it an analogy). |
+| TR01 sci-fi picture (naive scale-up) | pass | 1.80 m body with a ~130 m arc is about 72 lengths, inside 45–85 (B-P2). A ~30-floor tower is about 100 m, so a peak just over it stays inside the range. Body length = MAN's height (CL01) is a picture premise. Conditions: (1) the card "ถ้าคิดแบบง่าย ๆ" is on screen whenever the leap or arc shows; (2) no spoken or on-screen floor count, metre figure or counter digits; (3) no damage, crowd panic, sirens, screams or news-style sound (fictional trailer bed only, labelled fiction in the cue sheet); (4) the real macro flea and its "ภาพจำลอง" label never share the trailer frame. |
+| TR01 money-shot hold (ruling, item 3) | pass with limit | Allowed as a trailer beat: hold at most about 0.5 s at the peak, with the card still showing, no counter, no dotted-arc end marker or "ผล" label, and no apex tick that reads as "this is how high it gets". It may not be read as the measured apex; the B-P2 "no held ×50 frame" applies to the macro counter only and is unchanged. Right after, L02 "ไม่หรอก" must cut the picture, so the hold is not carried into the answer. |
+| TR01 optional title card (item 4) | pass with limit | A title such as "หมัดยักษ์" is fiction branding and has no factual content. Keep it to the title only: no "ความจริง", "ตัวจริง", "เกิดขึ้นได้" or "เป็นไปได้", no number, no subtitle claim. If it shares a frame with the naive-guess card, the card stays. |
+| V02 optional frozen TR01 callback | pass with limit | Contrast only. The frozen frame must keep the card "ถ้าคิดแบบง่าย ๆ" (or a "ภาพจินตนาการ" tag), sit beside, not on, the "หลักสิบเซน" band, and show no ruler or number tied to the tower. It must not suggest the real flea or the model reaches that height; "ไม่ใช่ร้อยเมตร" is unchanged. |
+| L02 position after TR01 | pass | Words unchanged (FIX-1 form); the answer to OQ1 is clearer after a spectacle that is labelled a guess. Factually no change. |
+| B01/B02/B04 trailer sound | pass | Fictional sound; no real event, place or casualty asserted, as long as TR01 condition (3) holds. |
+
+- **Overall verdict: pass, no wording FIX.** Four picture limits for Film: B02-SH01 dial and glow carry no numbers; the TR01 peak hold is at most about 0.5 s with the card on screen; the title card is title-only; V02 keeps the card. No premise, reveal or learning-impact change. Factual readiness only for R3 and the picture plan with these limits; no user approval, no audio or visual validation.
+
+## R4 check (2026-11-09)
+
+- Checked: `script.md` **EDU-EP13-SCRIPT-R4**, "R4 changes for Boat" (L03, L05, L06, L09, L15, L16, TR01 limits), against research.md CL08/CL09/CL10/CL11 and SRC005/SRC009/SRC010, under editorial-workflow finding severity and ER09/ER10. Script not edited. One web search for SRC010 (below); qualitative confidence medium-high for model-level claims.
+- **SRC010 web check (lead upgraded to partly inspected):** the JEB 211:1317 (2008) leafhopper paper (cob.silverchair.com/jeb/article/211/8/1317) reports that under the elastic-recoil (catapult) model leg length should not change take-off velocity but should lengthen take-off time, and that across leafhopper species leg length correlated strongly with take-off time and not with velocity. Sutton et al. 2016 (PMC4958293) says direct muscle output is power-limited (about 100-500 W/kg) while catapults avoid that limit. Abstract-level only; Bennet-Clark's 1990 original not opened. Enough for an ER05-level line.
+
+| Item | Severity | Verdict | Note / wording |
+| --- | --- | --- | --- |
+| L16 "ไม่ค่อยต้องแล้ว… ขามันยาว มีเวลาให้กล้ามดันพื้นทัน" (CL11, SRC010) | none open (optional note) | pass as written, no wording change | Direction true: longer legs mean a longer push, and muscle can deliver more work when the push is not very short; "ไม่ค่อย" is a narrow hedge matching CL11 (a giant could still keep a pad; icon greyed, not removed). Not "never", no Haldane or "giant could exist" claim. Optional only: the line implies the flea's short legs leave no time, which is the R3 L08 idea by contrast and is true in direction. It must not gain "muscle is slow" or a timing figure (no 1 ms). Keeping "ไม่ค่อย" is not required by this check, but cutting it to "ไม่ต้องแล้ว" would be must-fix (CL11 overclaim, wrong takeaway on "needs an elastic pad because legs are short"). |
+| L03 "ขามันแรงขึ้นก็จริง… แต่ตัวก็หนักขึ้นตาม" (CL10) | none | pass | "สมมติ" removal is harmless: the hypothetical frame comes from L01 "ถ้า…" and TR01. "ตาม" stays qualitative (force about by area, weight by volume; direction true). R3 B02-SH01 limit stands: no digits, no equal-size bars. |
+| L06 "ตัวใหญ่ขึ้น… กระโดดไม่ได้สูงขึ้นตาม" (CL08) | none open (optional) | pass | Bare rule is a true simplification in direction: across animals of similar build, jump height is roughly size-independent (flea tens of cm, person about half a metre). It follows L03/L05 (same animal scaled up) and L01 "ถ้า…", so not read as a law for every species. Optional: keep it adjacent to L05. |
+| L05 "เหมือนขาคุณแรงสองเท่า… แต่แบกเป้หนักสองเท่า" | none | pass | Analogy unchanged; "เหมือน" keeps it an analogy; "×2 / ×2" only in L05 as labelled "ภาพจำลอง". |
+| L09 "มันบีบแผ่นยางยืดในตัวไว้… แล้วปล่อยทีเดียว เหมือนหนังสติ๊ก" (CL05) | none | pass | Dropping "เลย" removes the causal tie to the removed L08, which is fine. FIX-4 label rule kept ("ภาพช้า ·" only if slowed; pad squeezed, never stretched). |
+| L15 "แล้วหมัดยักษ์ล่ะ… ยังต้องพึ่งหนังสติ๊กมั้ย" | none | pass | Question only; no claim. |
+| TR01 and picture limits (R3 recheck) | none | still stand | (1) card "ถ้าคิดแบบง่าย ๆ" on screen whenever leap or arc shows; no floor count, metre figure or counter; (2) peak hold at most about 0.5 s, no apex marker; (3) title card title-only; (4) V02 callback keeps the card; fictional trailer sound, no sirens, screams or damage; macro flea never in the trailer frame. B02-SH01 dial and glow carry no numbers. B04 new pictures: the greyed slingshot icon stays on screen (not removed); lit long legs carry no figure or "ความจริง" label. |
+| ER09 / ER10 | none | pass | No source or method phrase in narration; at most one hedge per line; one cause per problem. Estimated answer lengths in the script (OQ2 about 9.4 s is the closest to 10 s) are Preaw's own; not re-measured here. |
+
+- **Overall verdict: pass. No must-fix open.** No premise, reveal or learning-impact change. Factual readiness only for R4 wording and the picture plan with the limits above; no user approval (W1.5 still open), no audio or visual validation.
+
+## R5 light recheck (2026-11-09)
+
+- Checked: `script.md` **EDU-EP13-SCRIPT-R5**, "R5 changes for Boat" (L03, L05, B02-SH01 label "แรงดีด ↑") against research.md CL08/CL10 and the R3/R4 verdicts above; L09/L15/L16 read for lexical overlap. No new sources opened. Script not edited. Qualitative confidence medium-high (model-level claim, unchanged from R4).
+
+| Item | Severity | Verdict | Note / wording |
+| --- | --- | --- | --- |
+| L03 "ขามันดีดแรงขึ้นก็จริง… แต่ตัวก็หนักขึ้นตาม" (CL10) | none | pass | "ดีดแรง" = the leg pushes with more force: same claim as R4, and it keeps the force/work reading, not "กำลัง" (power). "ตาม" stays qualitative (force about by area, weight by volume; direction true). |
+| L05 "เหมือนขาคุณดีดแรงสองเท่า… แต่แบกเป้หนักสองเท่า" (CL08/CL10) | none | pass | Analogy unchanged; "เหมือน" and the "ภาพจำลอง" label keep "×2 / ×2" a picture of direction, not the model's exact scaling (force about x4, weight x8 for 2x length). |
+| "ดีด" vs spring or slingshot (L09, L15, L16) | none (watch) | pass | Narration of L09 uses "บีบ… ปล่อย… เหมือนหนังสติ๊ก" and L15/L16 "หนังสติ๊ก"; "ดีด" appears only in L03/L05 and attaches to the legs and the whole body ("ดีดตัว" of a jump), so it does not name the elastic pad. The two beats are 5+ lines apart. L16 "กล้ามดันพื้น" keeps muscle as the giant's mechanism. |
+| B02-SH01 label "แรงดีด ↑" | none | pass | Same R3 limits: no digits, no "×", no equal bars. Do not place the slingshot icon in SH01 or SH02. |
+
+- Optional alternatives only if the user hears a spring in "ดีด" after the re-read (not needed): "ขามันถีบแรงขึ้นก็จริง…" and "เหมือนขาคุณถีบแรงสองเท่า…" ("ถีบ" = push off, no spring sense; label "แรงถีบ ↑").
+- **Overall verdict: pass. No must-fix open.** No premise, reveal or learning-impact change. Factual readiness for R5 wording only; no user approval, no audio or visual validation (the L03/L05 takes and label still need redoing).

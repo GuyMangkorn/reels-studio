@@ -1,167 +1,208 @@
 # EDU-EP13-SHORT — ถ้าหมัดตัวเท่าคน (if a flea were the size of a person)
 
 - Deliverable: `EDU-EP13-SHORT`; task file [task.md](task.md); series concepts [../concepts.md](../concepts.md) C39 (Preaw R7 concept, Film R7 annotation and scale plan S1–S6); series delivery record [../delivery.md](../delivery.md).
-- Script revision: **EDU-EP13-SCRIPT-R2** (Preaw, 2026-11-09, W1.2 revision after Boat W1.3 [fact-check.md](fact-check.md) FIX-1 to FIX-5; R1 superseded).
-- Inputs: research [research.md](research.md) W1.1 (Boat, 2026-11-09; claims CL01–CL15, sources SRC001–SRC009, Thai hedge list); user decisions after W1.1 in [task.md](task.md) Decisions line (2026-11-09: hook "หลายสิบเท่า"; new closing line because the real flea jumps about 2–3 times lower than a person; beat 4 a hedged model line "ตามแบบจำลอง", no "impossible" ending). Boat's wording limits (coordinator brief, 2026-11-09): "พอ ๆ กัน" only as same order of size; "แรงที่ออกได้" or "งาน", never "กำลัง"; never say legs snap; no claim that a dog has fleas; no treatment advice; nothing gross.
-- Story mode: **scale what-if thought experiment with dramatized stand-ins.** The person-sized flea, the man's reactions, the tower arc, the backpack insert, the slingshot cutaway and the side-by-side jump are **fiction / diagram**. The dog only rests and sleeps on the sofa (no scratching, FIX-5); the macro flea sits on a neutral backdrop with no home or pet link, labelled "ภาพจำลอง"; neither words nor picture say the dog has fleas (CL14, CL15). Spoken facts: CL01/CL03/CL04 (flea size and jump, as "หลายสิบเท่า"), CL05 (elastic pad and release), CL07 (person's jump, implied by "หลักสิบเซน"), CL08–CL11 (scaling model, hedged), CL13 (reworded closing).
+- Script revision: **EDU-EP13-SCRIPT-R5** (Preaw, 2026-11-09). R5 changes only L03 and L05 ("แรง" → "ดีดแรง", user note after the draft cut; see [R5 changes for Boat](#r5-changes-for-boat)); R4 (user-approved 2026-11-09, Boat R4 check pass) is otherwise unchanged. R4 was rewritten from scratch on the user's request of 2026-11-09 under the new rules [ER06 (amended)](../../../docs/scriptwriting-principles.md#edu-short-retention), [ER09 short answers](../../../docs/scriptwriting-principles.md#er09) and [ER10 narrow hedges](../../../docs/scriptwriting-principles.md#er10). R3 (user-approved 2026-11-09, Boat R3 recheck pass) is superseded once Boat rechecks R4 and the user approves it; R1–R3 stay in Git history.
+- Inputs: research [research.md](research.md) W1.1 (CL01–CL15, SRC001–SRC009); [fact-check.md](fact-check.md) W1.3 (FIX-1 to FIX-5, N4 answers, dog ruling, SRC010–SRC011), R2 recheck, W2 picture recheck (B-P1–B-P7) and R3 recheck (TR01 limits). [film-brief.md](film-brief.md) EDU-EP13-BRIEF-R1.3 and [storyboard.md](storyboard.md) / review-rows.json EDU-EP13-ROWS-R1.3 match R3 and are **not touched**; Film updates them after Boat's R4 recheck and the user's approval.
+- User decisions kept: Short Thai 40–60 s, edu defaults; hook "หลายสิบเท่า" (not "ร้อย"); honest closing (the real flea jumps about 2–3 times lower than a person; no "impossible" ending); "พอ ๆ กัน", never "exactly"; B02 explanation compact (two shots' worth); TR01 sci-fi trailer of a giant flea over a real city (picture, no speech, card "ถ้าคิดแบบง่าย ๆ", no title card, V02 callback kept) turned by "ไม่หรอก"; closed ending on the dog (V03). Boat's wording limits unchanged: plain "แรง" (never "กำลัง"); never say legs snap; no claim that a dog has fleas; no treatment advice; nothing gross.
+- **Changed user decision (needs confirmation, [Q2](#open-questions)):** W1.1 decision (3) kept beat 4 as a "ตามแบบจำลอง" line. ER10 (user, 9 Nov 2026) bans that phrase in narration, so beat 4 now carries one narrow hedge ("ไม่ค่อย") instead.
+- Story mode: **scale what-if thought experiment with dramatized stand-ins.** The person-sized flea, the man's reactions, the city trailer, the backpack insert, the pad cutaway and the side-by-side jump are **fiction / diagram**. The dog only rests and sleeps on the sofa (FIX-5); the macro flea sits on a neutral backdrop labelled "ภาพจำลอง"; neither words nor picture say the dog has fleas (CL14, CL15).
 - Profile: educational (scale what-if), painted 2D (painted 3D camera default), 4-head cast, Thai Short 1080×1920 30 fps, narrator Kore (edu default: deadpan, brisk, friend-telling-it, no atempo), ending **closed**: ~2.5 s hold on the man and the dog on the sofa.
-- Voices: NAR = Gemini TTS Kore. MAN = one "เฮ้ย… ตัวเท่าเราเลย!" (V01) and one jump grunt "ฮึบ!" (V02). DOG = breathing and a sigh (sound, V03, no words; no scratch, FIX-5).
-- Target 40–60 s (series). **Timing: estimated** ([N1](#n1)): NAR ~202 syllables ≈ 47.9 s at EP05's measured Kore pace; video **≈ 56.3 s** (range 53–60 s). Not read aloud or audio-tested.
-- Status: R2 applies Boat's FIX-1 to FIX-5 and N2; Boat's W1.3 recheck of the changed lines (L02, L12, L13, L14, dog cues L01/L07/V03, B01/B05 sound, FIX-4 labels) is pending; Boat states R2 is `ready-for-storyboard` once the five fixes are applied (factual readiness only). Not user-approved (W1.5 pending).
+- Voices: NAR = Gemini TTS Kore. MAN = "เฮ้ย… ตัวเท่าเราเลย!" (V01) and "ฮึบ!" (V02). DOG = breathing and a sigh (V03, no words).
+- Target 40–60 s. **Timing: estimated** ([N1](#n1)): NAR ~175 syllables ≈ 41.5 s at EP05's measured Kore pace; video **≈ 53.0 s** (range 50–56 s; beat times ±0.3 s). Not read aloud or audio-tested.
+- Status (R5): L03/L05 wording awaits Boat's light recheck ([R5 changes for Boat](#r5-changes-for-boat)) and the user's OK; the narration takes for L03/L05 and the on-screen "แรง ↑" need redoing after that. Earlier status (R4, now met): R4 draft for Boat's recheck of the items in [R4 changes for Boat](#r4-changes-for-boat); then the user approves (W1.5 again). Not user-approved. No new source needed; one new spoken model claim (L16, from CL11/SRC010).
 
 ## Story core
 
-- **Logline:** a flea jumps tens of times its own height, so a person-sized flea should clear a tower. It would not: grow a body and its muscle grows, but so does the weight that muscle has to lift, like legs twice as strong carrying a backpack twice as heavy. The tiny flea even needs a trick a big body does not need as much: its legs are so short that muscle cannot push in time, so it squeezes an elastic pad and lets go like a slingshot. The giant flea, in the model, jumps tens of centimetres, the same order as you. And measured in centimetres, you usually out-jump the real flea.
+- **Logline:** a flea jumps tens of times its own height, so a person-sized flea should leap over a city tower like a movie monster. It would not: its legs get stronger, but its body gets heavier with them, like legs twice as strong carrying a backpack twice as heavy. The tiny flea cheats with an elastic pad it squeezes and lets go like a slingshot; the giant, with long legs, hardly needs it and just pushes like you. Both land in tens of centimetres. And in plain centimetres, you usually out-jump the real flea.
 - **Central question:** would a person-sized flea jump over a building, and if not, why not?
-- **Intention / obstacle:** the giant flea "wants" its super-jump; the obstacle is its own weight growing with it.
-- **Feeling:** awe at the tower arc; a comic deflation; "oh" at the backpack; surprise at the slingshot; a smug little win for the viewer at the end.
-- **Takeaway:** if an animal grows in every direction, its muscle and its weight grow together, so, in the simple model, jump height hardly changes with size; big and small jumpers land in tens of centimetres. The flea looks like a champion because it is tiny (FIX-3: not "only"), and it uses an elastic pad (not plain muscle) because its legs are too short to push in time.
-- **The one rule (ER03 refrain):** "ตัวใหญ่ขึ้น… กระโดดไม่ได้สูงขึ้นตาม" (bigger body, jump no higher). Cost to the giant flea (L02, L06, L12); flipped into the viewer's win in L13–L14: being big costs you nothing, and in centimetres you usually beat the flea.
+- **Intention / obstacle:** the giant flea "wants" its super-jump (the trailer); the obstacle is its own weight growing with it.
+- **Feeling:** spectacle at the skyline leap; comic deflation ("ไม่หรอก"); "oh" at the backpack; surprise at the slingshot; a smug little win for the viewer at the end.
+- **Takeaway:** grow an animal all over and its strength and its weight grow together, so it jumps no higher; big and small jumpers land in tens of centimetres. The flea looks like a champion only next to its tiny body, and it needs an elastic pad because its legs are short.
+- **The one rule (ER03 refrain):** "ตัวใหญ่ขึ้น… กระโดดไม่ได้สูงขึ้นตาม" (L06). Cost to the giant flea (L02, L06, L12); flipped into the viewer's win in L13–L14.
 
 ## Truth and ending
 
-- **Spoken as settled, plain:** a flea jumps tens of times its own height (CL04 hedged form, L01); muscle alone is too slow for the flea, so it squeezes an elastic pad and releases it (CL05 mechanism, L08–L09).
-- **Spoken with hedges / as a model:** "สมมติว่ามันโตทั้งตัว" frames the thought experiment (L03); muscle and weight grow together, "แรงที่ออกได้" (CL10, L03–L05); "กระโดดไม่ได้สูงขึ้นตาม" (CL08 as model, L06), never "เท่ากันเป๊ะ"; "ตามแบบจำลอง… ตัวใหญ่ไม่ต้องพึ่งหนังสติ๊กเท่าตัวเล็ก" (CL11 Boat's form, user decision 3, L10); "ใช้กล้ามดันแบบคุณ ก็ได้" (could, not "has no spring", L11); "มันน่าจะกระโดดได้แค่หลักสิบเซน" and "สูงพอ ๆ กัน… แค่หลักสิบเซน ไม่ใช่ร้อยเมตร" (CL09 as same order of size, L02 and L12, FIX-1); closing "ปกติ คุณก็กระโดดสูงกว่าหมัดตัวจริงอีกนะ" (FIX-2) and "หมัดดูเก่ง… ก็เพราะตัวมันเล็กมาก" (FIX-3) (CL13, user decision 2, L13–L14).
-- **Dramatization only (no narrator fact):** the dog resting on the sofa (no scratching, no flea on or near the dog, FIX-5); the macro flea on a neutral backdrop ("ภาพจำลอง"); the flea growing; the man's "เฮ้ย"; the dotted tower arc (labelled on screen as the naive guess, see N6); the backpack insert; the slingshot cutaway ("ภาพช้า · ภาพจำลอง", FIX-4) and see-through thorax ("ภาพจำลอง"); the matched jump and apex freeze.
-- **Not used:** "เป็นร้อยเท่า" (CL04 refuted for height); any flea mass (CL02); take-off acceleration in g (CL06, optional, left out for time and ER07); exact flea or person centimetres in VO (CL03, CL07: kept as "หลักสิบเซน"); any scratching, itching, bite, bare-skin or close-fur shot (FIX-5); "หมัดแมว" or which flea lives on dogs (CL14); the giant collapsing, failing to breathe, legs snapping or "impossible" (CL12; user decision 3); any pest, health, check-your-pet or treatment line (CL15); "1 ms" (optional spare, N1).
-- **Knowledge twist (rule flip, ER03):** "bigger body, jump no higher" reads as the giant flea's loss (B01–B02, B04). B03 shows why the small flea needed a slingshot at all; B04 lets the giant drop it and jump like a person. B05 turns the same rule toward the viewer: being big did not cost you height either, so in plain centimetres you usually jump higher than the real flea, and its "super-jump" looks big because it is so small (its spring is still real). Fair clues: the wall height chart (CL01) and the flea's big folded hind legs (CL02), both on screen from the first shots.
+- **Spoken as settled, plain:** a flea jumps tens of times its own height (CL04, L01); legs stronger and body heavier together (CL10, L03); the backpack analogy (L05); the rule (CL08, L06); the flea squeezes an elastic pad and releases it (CL05, L09); "สูงพอ ๆ กัน… แค่หลักสิบเซน ไม่ใช่ร้อยเมตร" (CL09, L12); "หมัดดูเก่ง… ก็เพราะตัวมันเล็กมาก" (CL13, L14).
+- **Spoken with one narrow hedge each (ER10):** L02 "น่าจะ" (CL09); L16 "ไม่ค่อย" (CL11: a big body hardly needs the slingshot; it could still keep one); L13 "ปกติ" (CL13, FIX-2). The hypothetical frame comes from L01 "ถ้ามันตัวเท่าคุณ" and the trailer card, not from a source phrase.
+- **Dropped from narration (ER10):** "ตามแบบจำลอง" (R3 L10) and "สมมติ" as a frame word (R3 L03). No source, method or evidence-quality phrase anywhere.
+- **Dramatization only (no narrator fact):** the dog resting; the macro flea ("ภาพจำลอง"); the flea growing; TR01 (giant flea crouching in a city soi, leaping over a ~30-floor tower against the skyline under the card "ถ้าคิดแบบง่าย ๆ"; no spoken number, no damage); the trailer breaking on "ไม่หรอก"; the man's "เฮ้ย"; the backpack insert ("ภาพจำลอง", B-P6); the see-through thorax pad ("ภาพจำลอง"); the matched jump and apex freeze; the V02 frozen-trailer callback.
+- **Not used:** "เป็นร้อยเท่า"; any flea mass (CL02); take-off acceleration or "1 ms" (CL06); exact centimetres in VO (CL03, CL07); any spoken or shown building height, floor count or metre figure for the naive leap; "muscle is slow" as a general claim; scratching, itching, bite, bare skin, close fur; "หมัดแมว" (CL14); the giant collapsing, failing to breathe, legs snapping or "impossible" (CL12); pest, health or treatment lines (CL15).
+- **Knowledge twist (rule flip, ER03):** the trailer stages the naive "yes"; "ไม่หรอก" breaks it. "Bigger body, jump no higher" reads as the giant flea's loss (B01–B02, B04). B03 shows the small flea's trick; B04 shows the giant does not need it and lands where a person lands. B05 turns the rule toward the viewer: in plain centimetres you usually jump higher than the real flea. Fair clues: the wall height chart (CL01) and the flea's big folded hind legs (CL02), both on screen from the first shots; the legs pay off twice (the pad sits above them in B03; scaled up, they are long enough to push in B04).
 - **Ending (closed):** L14 lands over the man back on the sofa beside the dog; the dog sighs; hold ~2.5 s. No call to action, no tip.
 
-## Beat list (estimated video time; story time = one afternoon, the giant is imagined)
+## Beat list (estimated video time; story time = one afternoon, the giant and the city are imagined)
 
 | Beat | Lines | Est. time | Purpose / causal link |
 | --- | --- | --- | --- |
-| `EDU-EP13-S01-B01` | L01, L02, V01 | 0.0–11.3 | Hook: flea jumps tens of times its height; "ถ้ามันตัวเท่าคุณ… ข้ามตึกได้มั้ย"; the flea grows; dotted tower arc, then the counter-claim "ไม่หรอก… หลักสิบเซน… พอ ๆ กับคุณ" right after L01 (N2); back at the chart the man notices the giant beside him (V01) |
-| `EDU-EP13-S01-B02` | L03, L04, L05, L06 | 11.4–24.5 | Objection answered ("สมมติว่ามันโตทั้งตัว"): muscle grows, "แต่…" weight grows with it; backpack comparison (body-known); refrain #1 "ตัวใหญ่ขึ้น… กระโดดไม่ได้สูงขึ้นตาม" |
-| `EDU-EP13-S01-B03` | L07, L08, L09 | 24.8–35.0 | New problem "แต่…": then how does the tiny flea jump so well? Legs too short, muscle too slow; it squeezes an elastic pad and lets go like a slingshot |
-| `EDU-EP13-S01-B04` | L10, L11, (show) V02, L12 | 35.3–45.6 | The giant: by the model a big body needs the slingshot less; crouch and muscle push like you; matched jump, apex freeze; "สูงพอ ๆ กัน… ไม่กี่สิบเซน ไม่ใช่ร้อยเมตร" (refrain #2) |
-| `EDU-EP13-S01-B05` | L13, L14, V03 (+ closing hold) | 45.9–56.3 | Flip "แต่…": measured in centimetres you usually jump higher than the real flea; closing payoff: it looks like a champion because it is tiny; hold on the sofa |
+| `EDU-EP13-S01-B01` | L01, TR01, L02, V01 | 0.0–13.0 | Hook: tens of times its height; "ถ้ามันตัวเท่าคุณ… ข้ามตึกได้มั้ย"; the flea grows; the sci-fi trailer stages the naive "yes" (TR01, ~1.6 s with no VO); "ไม่หรอก… หลักสิบเซน… พอ ๆ กับคุณ" breaks it and opens "why not?"; the man finds the giant beside him (V01) |
+| `EDU-EP13-S01-B02` | L03, L05, L06 | 13.3–22.4 | **Two shots, one cause.** SH01: legs stronger, body heavier in the same breath (L03). SH02: backpack analogy (L05) and refrain over the landing on the same chart line (L06) |
+| `EDU-EP13-S01-B03` | L07, L09 | 22.7–29.6 | New problem "แต่…": then how does the tiny flea jump so well? One cause: it squeezes an elastic pad and lets go, like a slingshot |
+| `EDU-EP13-S01-B04` | L15, L16, V02, L12 | 29.9–41.3 | New problem: does the giant still need the slingshot? One cause: its legs are long, so muscle has time to push. Matched crouch and jump, apex freeze, trailer callback; "สูงพอ ๆ กัน… ไม่ใช่ร้อยเมตร" |
+| `EDU-EP13-S01-B05` | L13, L14, V03 (+ hold) | 41.6–53.0 | Flip "แต่…": in centimetres you usually jump higher than the real flea; payoff; hold on the sofa |
 
-### Open-question map (ER06; estimated times)
+<a id="open-question-map"></a>
+### Open-question map (ER06 with ER09 answer lengths; estimated times)
 
-| ID | Question the viewer is waiting on | Opened by (time) | Answered by (time) |
-| --- | --- | --- | --- |
-| OQ1 | "Would a person-sized flea clear a building?" | L01 (0.0–5.7) | L02 (5.9–10.2) |
-| OQ2 | "Why not? Its legs would be giant too." | L02 "ไม่หรอก" (5.9) | L03–L06 (11.4–24.5) |
-| OQ3 | "Then how does the tiny flea jump so well?" | L07 (24.8) | L08–L09 (27.8–35.0) |
-| OQ4 | "So how would the giant jump, and how high?" | L10 "ตามแบบจำลอง… ตัวใหญ่" (35.3) | L11 + jump + L12 (39.0–45.6) |
-| OQ5 | "So who really jumps higher, me or a flea?" | L12 "…พอ ๆ กัน" (42.8) | L13–L14 (45.9–53.8) |
+Answer length = from the first explaining line to the start of the line that opens the next problem or the payoff (ER09), gaps included.
 
-Longest stretch with no open question: none over ~2 s (V01 at 10.3–11.3 sits inside OQ2). Longest explanation: L03–L06 ≈ 13 s, split into a claim (L03), an "แต่…" turn (L04), the backpack picture (L05) and the rule (L06); the giant flea and the man stay on screen throughout (N6).
+| ID | Question the viewer is waiting on | Opened by (time) | Answered by (time) | Answer length |
+| --- | --- | --- | --- | --- |
+| OQ1 | "Would a person-sized flea clear a building?" | L01 (0.0–5.7); TR01 (≈4.2–7.3) seems to say yes | L02 (7.4–11.7) | ≈ 4.3 s |
+| OQ2 | "Why not? Its legs would be giant too." | L02 "ไม่หรอก" (7.4), V01 (12.0) | L03, L05, L06 (13.3–22.4) | ≈ 9.4 s (to L07 at 22.7) |
+| OQ3 | "Then how does the tiny flea jump so well?" | L07 (22.7) | L09 (25.8–29.6) | ≈ 4.1 s (to L15 at 29.9) |
+| OQ4 | "Does the giant still need that slingshot? How does it jump?" | L15 (29.9) | L16, V02 + apex, L12 (32.8–41.3) | ≈ 8.8 s (to L13 at 41.6); the cause itself (L16) ≈ 3.9 s |
+| OQ5 | "So who really jumps higher, me or a flea?" | L12 "…พอ ๆ กัน" (38.5), L13 "แต่ถ้าวัดเป็นเซน" (41.6) | L13–L14 (41.6–49.7) | ≈ 8.1 s (payoff, then the hold) |
+
+- Longest stretch with no open question: the closing hold after L14 (≈ 49.7–53.0, ≈ 3.3 s), by design (ER03 hold). Elsewhere every gap between an answer and the next opener is ≈ 0.3 s.
+- Longest stretch with no speech: TR01 ≈ 1.6 s (inside OQ1, carried by picture and sound); apex freeze ≈ 0.7 s (inside OQ4).
+- Every answer ≤ 10 s (ER09). Longest: OQ2 ≈ 9.4 s (one cause, its analogy and the refrain). If the read runs long here, cut per [N1](#n1) C1 first.
 
 ## Full spoken script
 
-`…` = short breath pause. Thai text is the TTS text; subtitles = VO unless noted. `V` rows are character sounds; bracketed English tags are sound direction, not text to speak.
+`…` = short breath pause. Thai text is the TTS text; subtitles = VO unless noted. `V` rows are character sounds; `TR` is a picture-and-sound beat with no speech. Shot cues give story intent; Film owns the shots.
 
-| ID | Spk | Thai (VO / dialogue) | Shot cue (picture) | Claim / note |
+| ID | Spk | Thai (VO / dialogue) | Shot cue (picture intent) | Claim / note |
 | --- | --- | --- | --- | --- |
-| L01 | NAR | หมัดกระโดดได้สูงกว่าตัวมันหลายสิบเท่า… ถ้ามันตัวเท่าคุณ จะกระโดดข้ามตึกได้มั้ย | Warm afternoon Thai living room. `dog-golden` asleep or resting its head on the sofa beside MAN (no scratching, FIX-5). A wall height chart on the wall behind (**CL01**, background). Macro cut, not on the dog: a cartoon flea on a neutral backdrop (plain studio-style macro backdrop or a leaf on the window sill, Film's call), big hind legs folded (**CL02**), "2 มม." scale bar, on-screen "ภาพจำลอง"; it leaps and the camera cranes up with it, a counter "×10 … ×50". On "ถ้ามันตัวเท่าคุณ" back in the room: the flea grows beside MAN at the chart, away from the dog (camera fixed). No itching, bite, bare-skin or close-fur shot. | CL04 hedged ("หลายสิบเท่า", user decision 1); CL01 picture only; "คุณ", no term; no claim about the dog in words or picture (FIX-5) |
-| L02 | NAR | ไม่หรอก… มันน่าจะกระโดดได้แค่หลักสิบเซน… พอ ๆ กับคุณนี่แหละ | Starts right after L01 (N2; V01 moved after this line). Myth shot: low angle behind MAN, a 30-storey tower; a dotted arc from beside him over the roof, labelled on screen as the naive guess (N6); on "ไม่หรอก" the arc droops and falls back to the street. | CL09 (same order of size, "หลักสิบเซน", hedge "น่าจะ", FIX-1); counter-intuitive claim (ER01) |
-| V01 | MAN | เฮ้ย… ตัวเท่าเราเลย! | Back at the chart: MAN turns from the tower, finds the giant flea standing beside him (body length past his height) and flinches; the flea turns its head to look at him (front view, one comic beat). Bridges into L03 at the chart. | dramatization |
-| L03 | NAR | สมมติว่ามันโตทั้งตัวนะ… กล้ามใหญ่ขึ้น แรงที่ออกได้ก็มากขึ้น | Back at the chart: a see-through glow on the giant flea's big hind legs swells (muscle); a small "แรง ↑" arrow. | CL10 model, Boat's wording "แรงที่ออกได้"; ER01 objection (it grows all over) |
-| L04 | NAR | แต่… ตัวก็หนักขึ้นตามกัน | A weight tag or a sinking floor-scale under the flea swells in step with the leg glow. | CL10 model |
-| L05 | NAR | เหมือนขาคุณแรงขึ้นสองเท่า… แต่ต้องแบกเป้หนักขึ้นสองเท่า | Insert: MAN with legs glowing "×2" shoulders a backpack tagged "×2"; he crouches, hops, and lands at the same chart line as before. | body-known comparison (ER02/ER05); illustrates CL08/CL10 (idealized model) |
-| L06 | NAR | ตัวใหญ่ขึ้น… กระโดดไม่ได้สูงขึ้นตาม | Hold on the giant flea and MAN side by side at the chart; MAN shrugs. | CL08 as model, refrain #1; no "เท่ากันเป๊ะ" |
-| L07 | NAR | แต่… แล้วหมัดตัวจิ๋ว กระโดดเก่งได้ยังไง | Cut back to the neutral macro backdrop (same as L01, "ภาพจำลอง"): the real-size flea, legs folded (CL02 recalled). | question line |
-| L08 | NAR | ขามันสั้น ดันพื้นเสร็จในพริบตา… กล้ามหดไม่ทัน | Slow-motion diagram cutaway, on-screen "ภาพช้า · ภาพจำลอง" (FIX-4): the short leg pushes; a muscle icon lags behind a tiny clock. | CL05 `settled` (muscle alone too slow); "ขาสั้น" link is from SRC005 secondary (N4 b) |
-| L09 | NAR | มันเลยบีบแผ่นยางยืดในตัวไว้… แล้วปล่อยทีเดียว เหมือนหนังสติ๊ก | See-through thorax, on-screen "ภาพจำลอง" (FIX-4): a glowing pad squeezes and locks, then snaps; the flea is gone in one frame, a smear streak; a small slingshot icon beside it. | CL05 `settled` mechanism; "แผ่นยางยืด" + slingshot (not a metal coil, Boat note) |
-| L10 | NAR | ตามแบบจำลอง… ตัวใหญ่ไม่ต้องพึ่งหนังสติ๊กเท่าตัวเล็ก | Back to the room at the chart: the giant flea's slingshot icon fades to grey (not removed). | CL11 `hedge`, Boat's form, user decision 3 |
-| L11 | NAR | ย่อตัว แล้วใช้กล้ามดันแบบคุณ ก็ได้ | MAN and the giant flea crouch together (matched 8-frame crouch, same depth plane). | CL11 ("ก็ได้": could, not "has no spring") |
-| V02 | MAN | ฮึบ! | Both jump; apex freeze ~0.7 s with feet over the chart's band labelled "หลักสิบเซน" (FIX-1, N6). | dramatization |
-| L12 | NAR | สูงพอ ๆ กัน… แค่หลักสิบเซน ไม่ใช่ร้อยเมตร | Tag on the wall "สูงพอ ๆ กัน" with a leader to the band; landing resumes, one shared thud. | CL09 same order of size (Boat's suggested "ไม่ใช่ร้อยเมตร"); refrain #2; FIX-1 |
-| L13 | NAR | แต่ถ้าวัดเป็นเซน… ปกติ คุณก็กระโดดสูงกว่าหมัดตัวจริงอีกนะ | The giant flea is gone. Real scale at the chart: a tiny flea mark low on the chart (about 15 cm) beside MAN's own standing-jump mark clearly higher (about 35–45 cm); no digits, or "ราว ๆ" if Film wants digits (FIX-2); MAN looks at both, smug (P06). | CL13/CL03/CL07 (cat flea median ~13 cm, best ~17 cm vs typical adult medians ~32–49 cm, SRC011); "ปกติ" qualifier, FIX-2; user decision 2 |
-| L14 | NAR | หมัดดูเก่ง… ก็เพราะตัวมันเล็กมาก | MAN sits back on the sofa beside the resting dog. | CL13 reworded closing (user decision 2); no "แค่", so the spring beat stays true (FIX-3); payoff line |
-| V03 | DOG | [a chest-drop sigh, no words] | The dog lifts its head, sighs and lies back down (no scratch, FIX-5). Hold ~2.5 s, end. | dramatization; closed ending |
+| L01 | NAR | หมัดกระโดดได้สูงกว่าตัวมันหลายสิบเท่า… ถ้ามันตัวเท่าคุณ จะกระโดดข้ามตึกได้มั้ย | As R3: warm Thai living room, `dog-golden` resting/asleep beside MAN on the sofa (FIX-5), wall height chart behind (**CL01**). Macro on the neutral backdrop, "2 มม.", "ภาพจำลอง", big folded hind legs (**CL02**), leap, counter ×10 … ×50 (never held, B-P2). On "ถ้ามันตัวเท่าคุณ" the flea grows beside MAN at the chart (away from the dog). On "ข้ามตึก" cut into the city: TR01 starts under the line's tail. | Kept. CL04; CL01/CL02 picture only |
+| TR01 | — | *(no speech)* | As R3 / ROWS-R1.3: monster-movie trailer grade; MAN tiny at street level looks up; the giant flea (body length = MAN's height, VD05) crouched between shophouses, hind legs folded (CL02 echo), launch; silhouette arcing over a ~30-floor tower against the skyline, card "ถ้าคิดแบบง่าย ๆ" whenever the leap shows; peak hold ≤ 0.5 s. No title card, no damage, no number. | Kept. Boat R3 limits stand (card on screen, ≤ 0.5 s hold, no numbers, no real macro flea in frame) |
+| L02 | NAR | ไม่หรอก… มันน่าจะกระโดดได้แค่หลักสิบเซน… พอ ๆ กับคุณนี่แหละ | On "ไม่หรอก" the trailer breaks: tape-stop freeze mid-air, the far arc fades, a droop arc drops the flea to the street; on "หลักสิบเซน" one small hop about knee height beside MAN; the card goes off. | Kept (FIX-1 text). CL09; one hedge "น่าจะ" |
+| V01 | MAN | เฮ้ย… ตัวเท่าเราเลย! | Back at the chart: MAN turns, finds the giant beside him, flinches; the flea looks at him. MAN's eyes go to its huge hind legs (sets up OQ2: "its legs would be giant too"). | Kept; dramatization |
+| L03 | NAR | ขามันดีดแรงขึ้นก็จริง… แต่ตัวก็หนักขึ้นตาม | **B02-SH01:** at the chart, on "ขามันดีดแรงขึ้น" the giant's hind-leg glow swells ("แรงดีด ↑", R5; was "แรง ↑"); on "ตัวก็หนักขึ้นตาม" a weight dial under it swings up in step. No digits, no "×", no equal bars (Boat R3 limit). | **Changed (R5):** "แรง" → "ดีดแรง" (+1 syll) so the word reads as the leg's push that throws the body up. CL10 unchanged. "ก็จริง" grants the viewer's objection |
+| L05 | NAR | เหมือนขาคุณดีดแรงสองเท่า… แต่แบกเป้หนักสองเท่า | **B02-SH02:** MAN with legs "×2" shoulders a backpack "×2", crouches, hops with his ghost, lands on the same chart line; "ภาพจำลอง" (B-P6). | **Changed (R5):** "แรง" → "ดีดแรง" (+1 syll), echoes L03. CL08/CL10 analogy, N4 c unchanged |
+| L06 | NAR | ตัวใหญ่ขึ้น… กระโดดไม่ได้สูงขึ้นตาม | Same shot as L05: the landing on the same line; if the giant is in frame it hops to the same band. | Kept words; refrain; CL08. Frame words around it changed (Boat item) |
+| L07 | NAR | แต่… แล้วหมัดตัวจิ๋ว กระโดดเก่งได้ยังไง | As R3: neutral macro backdrop, "ภาพจำลอง", real-size flea, short legs folded. | Kept |
+| L09 | NAR | มันบีบแผ่นยางยืดในตัวไว้… แล้วปล่อยทีเดียว เหมือนหนังสติ๊ก | See-through thorax "ภาพจำลอง": the pad above the folded hind legs squeezes (never stretched, B-P4), locks, snaps; the flea is gone in one frame; slingshot icon. If Film slows the snap, label "ภาพช้า · ภาพจำลอง" (FIX-4). | **Changed (minor):** drops "เลย" (no preceding cause line now). CL05 |
+| L15 | NAR | แล้วหมัดยักษ์ล่ะ… ยังต้องพึ่งหนังสติ๊กมั้ย | Back at the chart: the giant beside MAN; a slingshot icon pops over its back with a small "?". | **New** (question; replaces R3 L10's job opener) |
+| L16 | NAR | ไม่ค่อยต้องแล้ว… ขามันยาว มีเวลาให้กล้ามดันพื้นทัน | The giant's long hind legs light up along their length (CL02 payoff); the slingshot icon greys out (not removed, CL11); MAN and the giant crouch together, matched. | **New** (replaces R3 L08's short-leg reason, L10 and L11). CL11 + SRC010 (leg length sets push time); one hedge "ไม่ค่อย" |
+| V02 | MAN | ฮึบ! | As R3: both jump; apex freeze ~0.7 s in the broad "หลักสิบเซน" band, giant a little below MAN (N4 e). Trailer callback kept: a brief cut-in of the frozen TR01 frame beside (not on) the band, card "ถ้าคิดแบบง่าย ๆ" kept (Boat R3 limit). | Kept; dramatization |
+| L12 | NAR | สูงพอ ๆ กัน… แค่หลักสิบเซน ไม่ใช่ร้อยเมตร | As R3: tag "สูงพอ ๆ กัน" to the band; one shared thud. | Kept; CL09 |
+| L13 | NAR | แต่ถ้าวัดเป็นเซน… ปกติ คุณก็กระโดดสูงกว่าหมัดตัวจริงอีกนะ | As R3: giant gone; flea mark low (~15 cm) vs MAN's mark clearly higher (~35–45 cm), no digits; MAN smug. | Kept (FIX-2); CL13/CL03/CL07; one hedge "ปกติ" |
+| L14 | NAR | หมัดดูเก่ง… ก็เพราะตัวมันเล็กมาก | As R3: MAN sits back on the sofa beside the resting dog. | Kept (FIX-3); CL13 |
+| V03 | DOG | [a chest-drop sigh, no words] | As R3: dog lifts its head, sighs, lies back down. Hold ~2.5 s, end. | Kept; closed ending |
 
-Subtitle differences: none required. L12 may write "แค่หลักสิบเซน ไม่ใช่ร้อยเมตร" as spoken (no digits, so no single number is claimed). V01 and V02 subtitled; V03 no subtitle. On-screen text: "2 มม." scale bar, "ภาพจำลอง" on the macro flea and the "×10 … ×50" counter (L01, L07; the counter stops at ×50, inside the "หลายสิบเท่า" range), the naive-arc label (L02, N6), "แรง ↑" (L03), "×2" tags (L05), "ภาพช้า · ภาพจำลอง" (L08), "ภาพจำลอง" (L09), band label "หลักสิบเซน" (V02/L12), "สูงพอ ๆ กัน" (L12). No source captions.
+Subtitle differences: none. V01, V02 subtitled; V03 and TR01 no subtitle. On-screen text: "2 มม.", "ภาพจำลอง" (macro L01, L07; backpack L05; thorax L09), "×10 … ×50" counter (L01), card "ถ้าคิดแบบง่าย ๆ" (TR01 and the V02 callback), "แรงดีด ↑" (L03; R5, was "แรง ↑"), weight dial without digits (L03), "×2" tags (L05), optional "ภาพช้า · ภาพจำลอง" (L09 if slowed), slingshot icon with "?" (L15, icon only), band "หลักสิบเซน" (V02/L12), "สูงพอ ๆ กัน" (L12). No title card.
 
 ## Sound intent (English notes; narration unchanged)
 
 | Beat | Sound |
 | --- | --- |
-| B01 | Afternoon living-room tone, a soi far outside through the window (`city_soi-afternoon-day_01`, low) and a NEEDS-GEN room fan. NEEDS-GEN dog slow breathing with a soft collar-tag jingle as it settles, under L01's first half; a light curious pizzicato pulse, low-mid energy. Macro leap: a tiny dry tick, then a rising whoosh up the crane. Grow: NEEDS-GEN comic rising glissando (stretch riser) peaking as the flea passes MAN's height. Myth shot: a hopeful upward string swell along the dotted arc, then a deflating slide-whistle-style droop on "ไม่หรอก" (comic, short). Back at the chart (V01, now after L02): music drops out for half a beat so "เฮ้ย" reads, a tiny comic sting on the flinch. |
-| B02 | Pulse returns, a touch lighter. A soft swell tone as the leg glow grows (L03), a low "heavy" thump-step as the weight swells in step (L04); the backpack hop: one small hop whoosh and a soft landing, same as the man's later thud but quieter. A small shrug pluck on L06. |
-| B03 | Hard switch to macro: room tone ducks, a close airy studio hush (neutral backdrop; no fur sound, FIX-5). L08 slow-motion: music thins to a held pad, a slowed creak as the leg pushes. L09: a tight elastic stretch-creak as the pad squeezes, a click on the lock, then a short dry springy snap on release (`comedy_soft-boing_01` only if a listen confirms short and dry, otherwise NEEDS-GEN tight snap); a 1-frame whip on the smear. |
-| B04 | Back to room tone; pulse resumes at mid energy. Matched crouch: two soft cloth creaks. V02 and two matched NEEDS-GEN jump whooshes on one frame; **silence** for the apex freeze (music and room tone out); one shared NEEDS-GEN barefoot landing thud on a wooden floor as L12 lands. |
-| B05 | Pulse returns, warm and a bit smug, low energy. A tiny high tick for the flea mark and a fuller tick for the man's mark (L13; pitch difference only decorates, the picture carries the comparison). On "…ตัวเล็กมาก" the series closing tag lands softly (`stinger_pizz-tag-ending_01` / [UT15](../../../docs/user-taste.md#ut-edu-end-tag), Film's or Editor's pick). Under the hold: a soft collar jingle as the dog lifts its head, NEEDS-GEN dog sigh as it lies down, room tone fading, end. No loop seam. |
+| B01 | As R3: afternoon room tone (`city_soi-afternoon-day_01` low, NEEDS-GEN fan), NEEDS-GEN dog breathing with a soft collar jingle, light curious pizzicato pulse (low-mid energy); macro tick and rising whoosh; NEEDS-GEN comic grow glissando. TR01: pizzicato cuts on "ข้ามตึก"; NEEDS-GEN trailer bed: deep sub braam on the cut to the city, low drum pulse and short riser under the crouch, heavy launch whoosh-boom, wind rush past the tower, ~0.5 s near-silence at the peak. Energy 2 → 5. No sirens, screams or news sound (Boat R3). L02: tape-stop pitch-down kills the bed on "ไม่หรอก", comic slide-whistle droop, tiny tap on the knee-high hop; pulse back at energy 1. V01: half-beat dropout so "เฮ้ย" reads, small comic flinch sting. |
+| B02 | Pulse returns lighter. SH01: soft swell as the leg glow grows, low heavy thump as the weight dial swings (one gesture, L03). SH02: one hop whoosh and soft landing (quieter than B04's thud); small pluck on the landing under L06. |
+| B03 | Macro hush (no fur sound). L09: elastic stretch-creak while the pad squeezes, click on the lock, short dry snap on release, 1-frame whip on the smear. Pulse drops out for the snap so it carries the beat. |
+| B04 | Room tone, pulse mid energy. L15: small "boing?" pluck on the slingshot icon. L16: a soft rising tone along the lit legs, a dull de-tune blip as the icon greys; two cloth creaks on the crouch. V02 and two matched jump whooshes; **silence** for the apex freeze; muffled echo of the TR01 braam under the callback cut-in, cut short by one shared barefoot thud on L12. |
+| B05 | Warm, slightly smug pulse, low energy; small high tick for the flea mark, fuller tick for MAN's mark (decoration only); series closing tag on "…ตัวเล็กมาก" (`stinger_pizz-tag-ending_01` / [UT15](../../../docs/user-taste.md#ut-edu-end-tag)); collar jingle, NEEDS-GEN dog sigh, room tone fades. No loop seam. |
 
-Sound never carries a clue: CL01 and CL02 are both visual.
+Sound never carries a clue: CL01 and CL02 are visual. The trailer sound only sells the naive guess; the turn is spoken (L02).
 
 ## Clue ledger (fictional dramatization, not evidence)
 
 | ID | Plant | Observable | First read | Payoff |
 | --- | --- | --- | --- | --- |
-| CL01 | L01 (B01, background, not featured) | Wall height chart in the living room | Scenery (a family height chart) | B02 backpack hop lands on the same line (L05); B04 apex band (L12); B05 the real flea mark low vs the man's mark higher (L13) |
-| CL02 | L01 (B01, macro on a neutral backdrop) | The flea's big folded hind legs | "That is how it jumps so high" (strong legs) | B03: the legs are short and muscle is too slow; the folded legs hide the squeezed pad (L08–L09) |
+| CL01 | L01 (B01, background) | Wall height chart in the living room | Scenery | B02-SH02 backpack hop lands on the same line (L05–L06); B04 apex band (L12); B05 flea mark low vs MAN's mark higher (L13) |
+| CL02 | L01 (macro), echoed in TR01 (the giant's crouch) and V01 (MAN stares at the legs) | The flea's big folded hind legs | "That is how it jumps so high" | B03: the pad sits above the short folded legs (L09); B04: scaled up, the legs are long enough for muscle to push (L16) |
 
-## Claim status table (R2; Boat W1.3 verdicts from fact-check.md applied)
+## Claim status table (R4)
 
 | Line | Claim ID | Research status | Source / locator | How it is used |
 | --- | --- | --- | --- | --- |
-| L01 | CL04 (hedged), CL01, CL03 | `refuted` "เป็นร้อยเท่า" → "หลายสิบเท่า" (user decision 1); CL01/CL03 `hedge` | SRC001 (`lead-only`), SRC006 | "หมัดกระโดดได้สูงกว่าตัวมันหลายสิบเท่า"; picture counter to ×50 and "2 มม." scale bar |
-| L01 | CL14, CL15 | `not claimed` | — | No narration about the dog or which flea; picture: dog resting, macro flea on a neutral backdrop labelled "ภาพจำลอง", no scratching (FIX-5, Boat dog ruling) |
-| L02 | CL09, CL07, CL08 | `hedge` / `settled` as model; W1.3 needs-qualification → FIX-1 applied | SRC005, SRC007, SRC011 | "มันน่าจะกระโดดได้แค่หลักสิบเซน… พอ ๆ กับคุณนี่แหละ" (same order of size; "หลักสิบ" covers flea and person; "น่าจะ" hedge) |
-| L03 | CL10 | `settled` as a model | SRC005, SRC009 | "สมมติว่ามันโตทั้งตัวนะ… กล้ามใหญ่ขึ้น แรงที่ออกได้ก็มากขึ้น" |
-| L04 | CL10 | `settled` as a model | SRC005, SRC009 | "ตัวก็หนักขึ้นตามกัน" |
-| L05 | CL08, CL10 | model analogy | SRC005 | "ขาคุณแรงขึ้นสองเท่า… แบกเป้หนักขึ้นสองเท่า" (N4 c: fair simplification of work per kg constant?) |
-| L06 | CL08 | `settled` as model, `hedge` as fact | SRC005 | "ตัวใหญ่ขึ้น… กระโดดไม่ได้สูงขึ้นตาม" (no "ตามแบบจำลอง" in this line; framed by L03 "สมมติ"; N4 d) |
-| L07 | — | question, no claim | — | — |
-| L08 | CL05 | `settled` (mechanism); W1.3 supported, label FIX-4 | SRC002, SRC003, SRC008, SRC010 | "ขามันสั้น ดันพื้นเสร็จในพริบตา… กล้ามหดไม่ทัน"; insert labelled "ภาพช้า · ภาพจำลอง" |
-| L09 | CL05 | `settled` (mechanism) | SRC002, SRC003, SRC004, SRC008 | "บีบแผ่นยางยืดในตัวไว้… แล้วปล่อยทีเดียว เหมือนหนังสติ๊ก" (pad + catch; slingshot analogy); thorax insert labelled "ภาพจำลอง" (FIX-4) |
-| L10 | CL11 | `hedge` | SRC005 | "ตามแบบจำลอง… ตัวใหญ่ไม่ต้องพึ่งหนังสติ๊กเท่าตัวเล็ก" (Boat's form) |
-| L11 | CL11 | `hedge` | SRC005 | "ใช้กล้ามดันแบบคุณ ก็ได้" ("could"; giant may still keep its spring) |
-| L12 | CL09 | `hedge`; W1.3 needs-qualification → FIX-1 applied | SRC005, SRC007 | "สูงพอ ๆ กัน… แค่หลักสิบเซน ไม่ใช่ร้อยเมตร"; band label "หลักสิบเซน" |
-| L13 | CL13, CL03, CL07 | `hedge`; W1.3 needs-qualification → FIX-2 applied | SRC001, SRC007 (`lead-only`), SRC011 | "ปกติ คุณก็กระโดดสูงกว่าหมัดตัวจริงอีกนะ" (typical adults; picture flea ~15 cm vs man ~35–45 cm, no digits) |
-| L14 | CL13 | `hedge` (reworded); W1.3 needs-qualification → FIX-3 applied | SRC001 | "หมัดดูเก่ง… ก็เพราะตัวมันเล็กมาก" (no "แค่"; user decision 2) |
-| — | CL02, CL06, CL12, CL14, CL15 | — | — | Not used |
+| L01 | CL04, CL01 | supported (W1.3) | SRC001, SRC006 | unchanged |
+| L01, TR01 | CL14, CL15 | `not claimed` | — | dog resting; neutral macro; no dog in the city |
+| TR01 | CL04 × body length (naive scale-up), picture only | pass (R3 recheck, B-P2) | SRC001, SRC006 | unchanged; R3 limits stand |
+| L02 | CL09, CL07, CL08 | pass (R2) | SRC005, SRC007, SRC011 | unchanged |
+| L03 | CL10 | `settled` as a model; **R5 wording** | SRC005, SRC009 | "ขามันดีดแรงขึ้นก็จริง… แต่ตัวก็หนักขึ้นตาม" (claim unchanged from R4) |
+| L05 | CL08, CL10 | analogy, N4 c pass; **R5 wording** | SRC005 | "เหมือนขาคุณดีดแรงสองเท่า… แต่แบกเป้หนักสองเท่า" (claim unchanged from R4) |
+| L06 | CL08 | N4 d pass; **R4 frame changed** | SRC005 | words unchanged; "สมมติ" (R3 L03) and "ตามแบบจำลอง" (R3 L10) no longer frame it |
+| L07 | — | question | — | unchanged |
+| L09 | CL05 | supported (W1.3, FIX-4) | SRC002, SRC003, SRC004, SRC008 | "เลย" dropped |
+| L15 | CL11 (implied: the giant might keep a slingshot) | question | — | new |
+| L16 | CL11 + SRC010 | `hedge` (CL11); SRC010 `lead-only` | SRC005, SRC010 | **new spoken model claim**: "ไม่ค่อยต้องแล้ว… ขามันยาว มีเวลาให้กล้ามดันพื้นทัน" |
+| L12–L14 | CL09, CL13, CL03, CL07 | pass (R2) | as R2 | unchanged |
+| — | CL02, CL06, CL12, CL14, CL15 | — | — | not used |
 
-No `needs-research` claims in R2. Lines L03–L07, L09–L11 carry over from R1 with Boat's W1.3 verdicts unchanged.
+No `needs-research` claim; L16 uses sources Boat already logged (SRC005, SRC010).
+
+<a id="r5-changes-for-boat"></a>
+## R5 changes for Boat
+
+User note (9 Nov 2026, after the W5.3 draft cut): the bare "แรง" in L03/L05 is unclear. User pick: say "ดีดแรง" / "แรงดีด" (the leg's push that throws the body up), not "แข็งแรง" (sturdy, wrong meaning). No other line changes.
+
+| Item | Change | R4 | R5 | Syllables | Claim / clue | Boat |
+| --- | --- | --- | --- | --- | --- | --- |
+| L03 | word added | "ขามันแรงขึ้นก็จริง… แต่ตัวก็หนักขึ้นตาม" | "ขามันดีดแรงขึ้นก็จริง… แต่ตัวก็หนักขึ้นตาม" | 12 → 13 | CL10, claim unchanged | **must-recheck (light):** "ดีดแรงขึ้น" = the legs push harder (more force), same CL10 claim as R4; your plain-"แรง" limit is kept ("แรง", never "กำลัง"). Check that "ดีด" does not suggest the giant uses the spring/slingshot of L09 (meant as the everyday "ดีดตัว" of a jump; L16 still says the giant hardly needs the slingshot) |
+| L05 | word added | "เหมือนขาคุณแรงสองเท่า… แต่แบกเป้หนักสองเท่า" | "เหมือนขาคุณดีดแรงสองเท่า… แต่แบกเป้หนักสองเท่า" | 13 → 14 | CL08/CL10 analogy, N4 c | **must-recheck (light):** analogy unchanged; "ดีดแรงสองเท่า" = pushes twice as hard |
+| B02-SH01 on-screen text | changed | "แรง ↑" | "แรงดีด ↑" | — | picture | Film/Boss redo the label; R3 limit stands (no digits, no "×", no equal bars) |
+
+**Unchanged:** every other line, cue, sound note and the R4 claims, including CL10 and CL08. **Scenes affected:** `EDU-EP13-S01-B02` only (SH01 narration and label; SH02 narration). **Downstream:** Editor re-reads L03/L05 (Kore A, atempo 0.94 as locked) and re-places them; Film/Boss change the "แรงดีด ↑" label. Timing estimated +0.5 s total until re-measured.
+
+<a id="r4-changes-for-boat"></a>
+## R4 changes for Boat
+
+Change table (R3 → R4):
+
+| Item | Change | R3 | R4 | Claim / clue | Boat |
+| --- | --- | --- | --- | --- | --- |
+| L01 | kept | — | — | CL04, CL01, CL02 | unchanged |
+| TR01 | kept | — | — | naive scale-up, B-P2 | unchanged (R3 limits stand) |
+| L02 | kept | — | — | CL09 | unchanged |
+| V01 | kept (cue adds MAN's look at the legs) | — | — | CL02 echo, fiction | unchanged |
+| L03 | changed | "สมมติมันโตทั้งตัว… ขาแรงขึ้น ตัวก็หนักขึ้นตาม" | "ขามันแรงขึ้นก็จริง… แต่ตัวก็หนักขึ้นตาม" | CL10 | **must-recheck**: "สมมติ" frame word removed (ER10 / ER09 length); "ก็จริง" grants the objection; "ตาม" stays qualitative (your R3 note). The hypothetical frame now comes from L01 "ถ้ามันตัวเท่าคุณ" and the picture |
+| L05 | changed (minor) | "เหมือนขาคุณแรงขึ้นสองเท่า… แต่แบกเป้หนักขึ้นสองเท่า" | "เหมือนขาคุณแรงสองเท่า… แต่แบกเป้หนักสองเท่า" | CL08/CL10 | **must-recheck** (light): "ขึ้น" dropped twice; analogy unchanged |
+| L06 | kept words, frame changed | framed by L03 "สมมติ" and L10 "ตามแบบจำลอง" | framed by L01's "ถ้า…" and L03 only | CL08 | **must-recheck**: N4 d relied on those two frames; is the bare rule still fine (your N4 d said "roughly true across real jumpers")? |
+| L07 | kept | — | — | question | unchanged |
+| L08 | **removed** | "ขามันสั้น ดันพื้นเสร็จในพริบตา… กล้ามหดไม่ทัน" | — | CL05 (why a spring) | ER09: second cause chained before L09. Its idea survives by contrast in L16. Picture: the B03 slow-motion muscle/clock diagram (B-P5) goes away |
+| L09 | changed (minor) | "มันเลยบีบแผ่นยางยืดในตัวไว้…" | "มันบีบแผ่นยางยืดในตัวไว้…" | CL05 | **must-recheck** (light): "เลย" dropped; label rule FIX-4 kept, "ภาพช้า ·" only if slowed |
+| L10 | **removed** | "ตามแบบจำลอง… ตัวใหญ่ไม่ต้องพึ่งหนังสติ๊กเท่าตัวเล็ก" | — | CL11 | ER10 source phrase; content moved to L16 |
+| L11 | **removed** | "ย่อตัว แล้วใช้กล้ามดันแบบคุณ ก็ได้" | — | CL11 | content moved to L16 + the matched-crouch picture |
+| L15 | **new** | — | "แล้วหมัดยักษ์ล่ะ… ยังต้องพึ่งหนังสติ๊กมั้ย" | question | **must-recheck** (light): question only; "ยัง" leaves open that the giant could keep a slingshot |
+| L16 | **new** | — | "ไม่ค่อยต้องแล้ว… ขามันยาว มีเวลาให้กล้ามดันพื้นทัน" | CL11, SRC010 (CL02 payoff) | **must-recheck**: (1) "ไม่ค่อยต้อง" = hardly needs (not "never"), matching CL11 "ไม่จำเป็นต้องพึ่งสปริงเท่าตัวเล็ก" and the greyed, not removed, icon; (2) "ขามันยาว มีเวลาให้กล้ามดันพื้นทัน" from Bennet-Clark via SRC010 (take-off time grows with leg length; at short times muscle cannot deliver its work); (3) it implies, without saying, that the tiny flea's short legs leave no time; (4) not a claim that the giant could exist (no Haldane line) |
+| V02 | kept | — | — | callback, R3 limits | unchanged |
+| L12 | kept | — | — | CL09 | unchanged |
+| L13 | kept | — | — | CL13, FIX-2 | unchanged |
+| L14 | kept | — | — | CL13, FIX-3 | unchanged |
+| V03 | kept | — | — | fiction | unchanged |
+| Sound B03/B04 | changed | slow creak under L08; crouch under L11 | snap carries B03; icon pluck (L15), rising tone and grey-out blip (L16) | none | fictional sound only |
+
+**Must-recheck claims:** L03 (CL10), L05 (CL08/CL10, light), L06 (CL08 frame), L09 (CL05, light), L15 (question, light), L16 (CL11 + SRC010, the only new spoken model claim). **Unchanged:** L01, TR01, L02, V01–V03, L07, L12–L14 and FIX-1 to FIX-5; R3 picture limits for TR01, B02-SH01 and the V02 callback stand. **Scenes affected:** `EDU-EP13-S01-B02` (L03, L05 words; shots unchanged), `EDU-EP13-S01-B03` (L08 removed: one shot fewer), `EDU-EP13-S01-B04` (L10/L11 replaced by L15/L16; slingshot "?" and lit-legs cues). B01 and B05 unchanged except V01's look at the legs.
 
 ## Notes
 
-- <a id="n1"></a>**N1 Timing (estimated, R2):** my syllable count, NAR ~202 (L01 24, L02 18, L03 19, L04 7, L05 16, L06 11, L07 12, L08 13, L09 17, L10 15, L11 9, L12 12, L13 21, L14 10). R2 deltas: L02 0 ("น่าจะ" +1, "หลักสิบ" for "ไม่กี่สิบ" −1), L12 0 ("แค่หลักสิบ" for "ไม่กี่สิบ"), L13 +4 ("ปกติ" counted ปะ-กะ-ติ, plus "ก็"; Boat estimated +2), L14 −1. Rate from EP05's measured Kore read ([../ep05/voice-measure.md](../ep05/voice-measure.md), ≈ 0.237 s per syllable including gaps) → **NAR ≈ 47.9 s**. Add V01 ~1.0 s, V02 + apex freeze ~1.5 s, a slower landing of L14 ~0.4 s, inter-line gaps ~2.5 s, closing hold ~2.5 s → **video ≈ 56.3 s** (range 53–60 s). Inside 40–60 s on the estimate, but the top of the range touches 60 s; a no-atempo Kore take may run slower, W1.4 confirms with a read and uses the cuts below if needed.
-  - **Cuts if W1.4 runs long (in order):** C1 L02 drop "นี่แหละ" (−2 syll). C2 L11 cut, picture only (crouch shown; L10 already carries the claim) (−9 syll ≈ −2.1 s). C3 L05 trim to "เหมือนขาแรงขึ้นสองเท่า… แต่แบกเป้หนักขึ้นสองเท่า" (−2 syll). Do not cut L06, L10's "ตามแบบจำลอง", L13 or L14.
-  - **Spare if short (Boat-cleared hedges only):** after L09, "ปล่อยเสร็จในราว ๆ หนึ่งในพันวินาที" (CL05 numbers `hedge`, ~12 syll ≈ 2.8 s).
-- **N2 ER01 timing (R2 fix applied):** title promise, "คุณ" and the premise land in L01 (0–5.7 s). V01 now follows L02, so L02 starts right after L01: "ไม่หรอก" lands at ~5.9 s and "หลักสิบเซน" at ~7.5 s (R1: 6.9 s and ~8.5 s). This is about 1 s past the ~5 s default because L01 alone runs ~5.7 s; reaching 5.0 s would need L01 words cut, which R2 does not do. V01 still reacts to the grown flea, now as the cut back from the tower to the chart (10.3–11.3 s), and bridges into L03. Overlapping V01 with L01's tail was rejected: MAN's line would mask "ข้ามตึกได้มั้ย" and save only ~0.5 s. The objection ("but it grew all over") is answered in L03 at ~11.4 s.
-- **N3 Story time:** one afternoon in the living room; the giant flea, the tower and the backpack are imagined inserts. B05 returns to real scale.
-- **N4 Boat fact-check W1.3, priority (R1 questions; answered in [fact-check.md](fact-check.md) "N4 answers" and the dog ruling; R2 applies FIX-1 to FIX-5; kept for the record):**
-  - (a) Dog picture: the dog scratching and a flea on its fur with no narration about the dog. Is that within "no dog-has-fleas claim", or should the macro flea sit on sofa fabric instead?
-  - (b) L08 "ขามันสั้น ดันพื้นเสร็จในพริบตา… กล้ามหดไม่ทัน": CL05 supports "muscle alone too slow"; the short-legs-short-push-time link is from SRC005 secondary excerpts. Fair at ER05 level?
-  - (c) L05 backpack "แรงขึ้นสองเท่า… เป้หนักขึ้นสองเท่า": a fair picture of constant work per kilogram (CL08/CL10), or does "แรง" vs "งาน" need a different word here?
-  - (d) L06 "กระโดดไม่ได้สูงขึ้นตาม" carries no "ตามแบบจำลอง" in-line (it sits under L03's "สมมติ", and L10 says "ตามแบบจำลอง"). Enough?
-  - (e) L12 and the picture (Film S3/S4): the model says the giant would land in the same order as both a flea (~13–17 cm) and a person (~25–55 cm), and L13 says you beat the real flea. I suggest the apex band reads "tens of centimetres" as a broad band, with the giant flea allowed to peak a little below the man, rather than both feet on one 10 cm band. Boat to confirm the wording, Film to decide the picture.
-  - (f) L13 "คุณกระโดดสูงกว่าหมัดตัวจริงอีกนะ": supported for typical adults (SRC007 lead-only vs SRC001); is a generic "คุณ" acceptable without "ส่วนใหญ่"?
-  - (g) L02 "ไม่กี่สิบเซน" said before the model is explained: OK as the hook's counter-claim?
-  - (h) ER05 clarity pass on the whole script (no term used; "แผ่นยางยืด" and "หนังสติ๊ก" stand in for resilin and catapult).
-- **N5 Voice:** NAR Kore, deadpan and brisk, friend-telling-it ("นะ", "หรอก", "นี่แหละ"); a dry beat on "ไม่หรอก…" (L02); a touch of play on L07's question; flat and pleased on L13; L14 slightly slower, letting "ตัวเล็กมาก" settle. MAN (Algenib or the edu MAN voice, Editor's call) one surprised line and one grunt. DOG sounds from Ton (NEEDS-GEN sigh).
-- **N6 Film/kit (from R7 annotation, for the brief):** F-C39-D1 (flea body length = man's height) fits V01 "ตัวเท่าเราเลย". The myth arc in L02 needs a short on-screen label that marks it as the naive guess (suggested "ถ้าคิดแบบง่าย ๆ", Film's call; research.md hedges). The hook counter stops at ×50 (not ×100). The backpack insert (L05) replaces the concept's seesaw insert; Film may keep the seesaw if it reads faster, the words stay. Apex band per N4 (e). Casting unchanged from the R7 annotation, plus `man-parted + home-lounge` with a backpack for L05 (new prop). FIX-5 for the brief: `dog-golden` resting or asleep (never scratching), V03 lifts its head, sighs, lies down; the macro flea on a neutral backdrop or window-sill leaf with "ภาพจำลอง", never on fur, sofa fabric or near the dog; the giant flea never appears on or jumps from the dog.
+- <a id="n1"></a>**N1 Timing (estimated, R4):** syllables NAR ~177 (R5: L03 12 → 13, L05 13 → 14, ≈ +0.5 s at this rate; voice lock measures) (L01 24, L02 18, L03 13, L05 14, L06 11, L07 12, L09 16, L15 11, L16 15, L12 12, L13 21, L14 10). Rate ≈ 0.237 s per syllable ([../ep05/voice-measure.md](../ep05/voice-measure.md)) → **NAR ≈ 41.5 s**. Add TR01 ~1.6 s, V01 ~1.0 s, V02 + apex ~1.5 s, slower L14 landing ~0.4 s, gaps ~0.3 s × 15 ≈ 4.5 s, closing hold ~2.5 s → **video ≈ 53.0 s** (range 50–56 s; R3 ≈ 56.2 s). Not read aloud; W4 measures.
+  - **Cuts if the read runs long (in order):** C1 L02 drop "นี่แหละ" (−2 syll ≈ −0.5 s). C2 TR01 VO-free part 1.6 → 1.0 s. Do not cut L01, L06, L13, L14 or L16's hedge "ไม่ค่อย".
+  - **If OQ2 measures over 10 s at voice lock:** cut L06's gap first, then move L06 onto the L05 landing with no breath (ER09 is a speech-length rule; the refrain stays).
+- **N2 ER01 timing:** unchanged from R3 by the user's choice: stakes on screen from ~4 s (trailer), "ไม่หรอก" ~7.4 s, "หลักสิบเซน" ~9.0 s. The objection "its legs would be giant too" is answered at ~13.3 s (L03); V01's look at the legs makes the objection visible before it is answered.
+- **N3 Story time:** one afternoon in the living room; the giant, the city, the tower and the backpack are imagined inserts. B05 returns to real scale.
+- **N5 Voice:** Kore deadpan; "ข้ามตึกได้มั้ย" may lift slightly into the trailer; a dry flat "ไม่หรอก…" against the dead trailer is the joke. L15 a light, curious lift; L16 "ไม่ค่อยต้องแล้ว" casual, almost a shrug. MAN one surprised line and one grunt.
+- **N6 Film (R5):** B02-SH01 label "แรง ↑" → "แรงดีด ↑"; shots unchanged. **(R4, for the brief update after recheck and approval):** B02 unchanged (two shots; only L03/L05 words change). B03 loses the L08 slow-motion muscle/clock shot (R1.3 B03-SH02); the thorax pad shot carries the beat. B04: L15 needs the giant at the chart with a slingshot "?" icon; L16 the lit long legs, icon greys, matched crouch (R1.3's L10 icon-fade and L11 crouch fold into this). TR01, the V02 callback, the looks and FIX-5 rules stand.
 
-### Open questions
+<a id="open-questions"></a>
+### Open questions (returned to the coordinator; Preaw has no ask tool)
 
-- **Q1 (Boat, W1.3 recheck):** L02, L12, L13, L14 wording; the dog and macro cues (L01, L07, V03) and B01/B03/B05 sound notes; the FIX-4 labels (L08, L09). Everything else carries over (fact-check.md "Impact and handoff").
-- **Q2 (Film):** neutral macro backdrop (studio-style vs window-sill leaf, FIX-5); naive-arc label wording; backpack vs seesaw insert; apex band width and whether the giant peaks a little below the man (N4 e).
-- **Q3 (user, W1.4/W1.5):** script approval; if the read runs long, cuts C1–C3 (N1); whether ~5.9 s for "ไม่หรอก" is close enough to the 5 s hook default or L01 should be trimmed (N2).
+- **Q1 (user):** R4 removes the short-leg line "ขามันสั้น… กล้ามหดไม่ทัน" (R3 L08) to keep one cause per problem; the idea returns by contrast in L16 "ขามันยาว มีเวลาให้กล้ามดันพื้นทัน". Accept, or keep L08 and shorten L16 to "ไม่ค่อยต้องแล้ว… ใช้กล้ามดันแบบคุณก็ได้" (two hedges would then need one dropped)?
+- **Q2 (user):** W1.1 decision (3) asked for "ตามแบบจำลอง" in beat 4; ER10 now bans it. R4 uses the narrow hedge "ไม่ค่อยต้องแล้ว". Confirm.
+- **Q3 (Boat):** the must-recheck items in [R4 changes for Boat](#r4-changes-for-boat), mainly L16 and the bare L06 without its R3 frames.
+- **Q4 (user, W1.5):** approve R4 after Boat's recheck.
 
 ## Revision log
 
 | Revision | Date | Author | Change | Reason |
 | --- | --- | --- | --- | --- |
-| R1 | 2026-11-09 | Preaw | First draft from C39, research W1.1 and user decisions 2026-11-09: hook "หลายสิบเท่า" and no "บนตัวหมาคุณ" (L01); counter-claim "ไม่กี่สิบเซน… พอ ๆ กับคุณ" (L02); "แรงที่ออกได้" (L03); backpack comparison replaces the seesaw (L05); refrain "ตัวใหญ่ขึ้น… กระโดดไม่ได้สูงขึ้นตาม" (L06); slingshot for the resilin pad (L09); beat 4 "ตามแบบจำลอง… ตัวใหญ่ไม่ต้องพึ่งหนังสติ๊กเท่าตัวเล็ก" (L10); new closing pair "คุณกระโดดสูงกว่าหมัดตัวจริงอีกนะ" + "หมัดดูเก่ง… ก็แค่เพราะมันตัวเล็กมาก" (L13–L14) replacing "หมัดไม่ได้เก่งกว่าคุณหรอก". Haldane / impossible-giant beat left out (user decision 3, ER07). | W1.2 |
-| R2 | 2026-11-09 | Preaw | FIX-1: L02 "ไม่หรอก… มันน่าจะกระโดดได้แค่หลักสิบเซน… พอ ๆ กับคุณนี่แหละ", L12 "สูงพอ ๆ กัน… แค่หลักสิบเซน ไม่ใช่ร้อยเมตร", chart band label "หลักสิบเซน". FIX-2: L13 "แต่ถ้าวัดเป็นเซน… ปกติ คุณก็กระโดดสูงกว่าหมัดตัวจริงอีกนะ"; picture flea mark ~15 cm, man clearly higher, no digits. FIX-3: L14 "หมัดดูเก่ง… ก็เพราะตัวมันเล็กมาก". FIX-4: labels "ภาพช้า · ภาพจำลอง" (L08) and "ภาพจำลอง" (L09). FIX-5: dog rests/sleeps in L01; macro flea on a neutral backdrop or leaf labelled "ภาพจำลอง" (L01, L07); no scratching, skin, bite or close-fur shots; V03 = dog lifts head, sighs, lies down; "dog fur scratching" removed from B01, "one scratch" removed from B05, fur rustle in B03 replaced. N2: V01 moved after L02 so "ไม่หรอก" lands at ~5.9 s (was 6.9 s). Claim table, N1 timing (NAR ~202 syll, video ≈ 56.3 s), open-question map, beat times, on-screen text list and ER01 audit updated. Lines L03–L11 words unchanged. | W1.3 fact-check (revision-required) and N2 |
+| R1 | 2026-11-09 | Preaw | First draft from C39, research W1.1 and user decisions. | W1.2 |
+| R2 | 2026-11-09 | Preaw | FIX-1 to FIX-5; V01 moved after L02. | W1.3 fact-check |
+| R3 | 2026-11-09 | Preaw | B02 to two shots (L03 merged, L04 removed); TR01 sci-fi trailer; V02 callback. | User request (shorter explanation; sci-fi spectacle) |
+| R4 | 2026-11-09 | Preaw | Rewrite under ER06 (amended), ER09, ER10: L03 "ขามันแรงขึ้นก็จริง… แต่ตัวก็หนักขึ้นตาม", L05 drops "ขึ้น", L08 removed, L09 drops "เลย", L10/L11 removed, new L15 (question) and L16 (one cause: long legs give muscle time; hedge "ไม่ค่อย"); no "ตามแบบจำลอง"/"สมมติ"; open-question map with answer lengths (all ≤ 10 s); V01 cue looks at the legs; B03/B04 sound and cues; N1 ≈ 53.0 s. | User request 2026-11-09 (rewrite under the new rules) |
+| R5 | 2026-11-09 | Preaw | L03 "ขามันดีดแรงขึ้นก็จริง…" and L05 "เหมือนขาคุณดีดแรงสองเท่า…" ("แรง" → "ดีดแรง", +1 syll each); B02-SH01 label "แรงดีด ↑". No claim change. | User note 2026-11-09 after the draft cut ("แรง" unclear; user picked "แรงดีด", not "แข็งแรง") |
 
-**Boat recheck scope (R2):** L02, L12, L13, L14 wording; L01/L07/V01/V03 shot cues (dog resting, neutral macro, V01 order); FIX-4 labels on L08/L09; B01/B03/B05 sound notes; band label. Facts touched: CL09, CL07, CL13, CL03. Scenes: `EDU-EP13-S01-B01`, `B03` (label and macro only), `B04` (L12, band label), `B05`. Everything else is unchanged from R1 as checked.
-
-**Boat check scope (R1, whole script):** all lines L01–L14, V01–V03 and on-screen text; priority N4. Facts: CL01, CL03–CL05, CL07–CL11, CL13; CL02, CL06, CL12, CL14, CL15 checked as absent from words. Clues CL01–CL02 (clue ledger) are fictional. Scenes: `EDU-EP13-S01-B01`–`B05`.
-
-## ER01–ER08 self-audit
+## ER01–ER10 self-audit
 
 | Rule | Result | Note |
 | --- | --- | --- |
-| ER01 Hook | Pass, counter-claim ~1 s past default | L01 speaks to "คุณ", carries the title promise, no term; R2 moves V01 after L02 so "ไม่หรอก" lands at ~5.9 s and "หลักสิบเซน" at ~7.5 s (N2); objection "it grows all over" answered at ~11 s |
-| ER02 Levels | Pass | Hook paid at ~11–24 s (≈20–44 %) with the backpack comparison and an "แต่…" turn; new problems at ~25 s, ~35 s, ~46 s; the man or the flea is on screen and reacts before each cause is named |
-| ER03 One rule that flips | Pass | "ตัวใหญ่ขึ้น… กระโดดไม่ได้สูงขึ้นตาม" in L06, echoed by L02/L12; cost to the giant, flipped to the viewer's win (L13) and the payoff last (L14) with a closed ~2.5 s hold; CL01/CL02 planted in shot 1; hedges narrow ("หลายสิบเท่า", "น่าจะ… หลักสิบเซน", "ตามแบบจำลอง", "ก็ได้", "ปกติ") |
-| ER04 Friend telling it | Pass | "นะ", "หรอก", "นี่แหละ"; MAN "เฮ้ย…", "ฮึบ!"; dog sigh |
-| ER05 Audience level | Pass (Boat checks) | Hook middle-school level, no term; no term in the whole script (resilin = "แผ่นยางยืด", catapult = "หนังสติ๊ก", scaling = the backpack) |
-| ER06 Open-question map | Pass | Map above; no gap over ~2 s; the 13 s explanation is split into claim, "แต่…", picture and rule with both characters on screen |
-| ER07 Only what has an answer | Pass | Acceleration figures, flea species on dogs, giant-body failure modes (Haldane) left out; one light qualifier "ปกติ" on L13 (FIX-2) |
-| ER08 Pitch check | 4/4 (unchanged from concept) | Hook breaks "a giant flea would clear a tower"; who: everyone who has seen a flea or a pet; beats chained by "แต่…"; ending is a payoff line, not a tip |
+| ER01 Hook | Pass with the recorded R3 cost | L01 unchanged; trailer stakes from ~4 s; "ไม่หรอก" ~7.4 s by the user's choice (N2) |
+| ER02 Levels | Pass | Body-known comparison L05 at ~16.4 s (≈ 31 % of 53 s); new problems at ~7.4, ~22.7, ~29.9, ~41.6 s (the 7.4 → 22.7 span keeps OQ2 open throughout); characters on screen before each cause |
+| ER03 One rule that flips | Pass | Refrain L06, echoed by L02/L12; flipped to the viewer in L13, payoff L14, ~2.5 s hold |
+| ER04 Friend telling it | Pass | "หรอก", "นี่แหละ", "ก็จริง", "ล่ะ", "นะ"; MAN and dog sounds |
+| ER05 Audience level | Pass | No term; "แผ่นยางยืด", "หนังสติ๊ก", "เป้"; L16 uses only everyday words |
+| ER06 Open-question map | Pass | Map with answer lengths above; no stretch over ~5 s without an open question (closing hold ≈ 3.3 s) |
+| ER07 Only what has an answer | Pass | No Haldane failure, no acceleration, no spoken naive height |
+| ER08 Pitch check | 4/4 (unchanged) | |
+| ER09 Short answers | Pass (estimated) | One cause per problem; answers ≈ 4.3 / 9.4 / 4.1 / 8.8 / 8.1 s; OQ2 closest to the limit (N1 fallback) |
+| ER10 Hedges | Pass | No source/method phrase; at most one hedge per line (L02 "น่าจะ", L16 "ไม่ค่อย", L13 "ปกติ") |

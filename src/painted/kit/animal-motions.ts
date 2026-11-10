@@ -15,7 +15,7 @@ export const ANIMAL_MOTION_IDS = [
   'idle', 'happy-wag', 'speak', 'sniff', 'startle-hop',
   'walk-in-from-left', 'walk-in-from-right', 'walk-out-to-left', 'walk-out-to-right', 'run-left-to-right', 'run-right-to-left',
   'sit-down', 'stand-up', 'lie-down', 'get-up',
-  'step-up', 'head-rub',
+  'step-up', 'head-rub', 'head-lift-sigh',
 ] as const;
 export type AnimalMotionId = (typeof ANIMAL_MOTION_IDS)[number];
 
@@ -51,6 +51,7 @@ export const ANIMAL_MOTION_INFO: Record<AnimalMotionId, {description: string; lo
   'lie-down': {description: 'Stand to lying down.'},
   'get-up': {description: 'Lying down to stand.'},
   'step-up': {description: 'A small hop onto a higher surface (0.18 m rise by default, over 0.33 s = 10 frames; the arc clears the edge by 0.06 m), landing mid-stride so a walk can follow. Offset carries the rise. A negative `rise` is a step DOWN: no arc, the drop accelerates and lands on the contact frame.'},
+  'head-lift-sigh': {description: 'A lying dog (EDU-EP13 N13b, `lie` state, any profile): eyes open (lid 0.2) and the nose up 5 degrees over 0.33 s, a slow nose-down sigh with the mouth open (0.2-1.4 s, 7 degrees), then eyes shut at the rest angle by 2 s. The head only rotates about the skull: no `lean`, no neck stretch, nothing leaves the body outline. Eyes start shut (lid 1).'},
   'head-rub': {description: 'Neck stretches, skull top meets a hand point; head tilt and two cheek-pushes along it, eyes at half-close (lid 0.5); releases.'},
 };
 
@@ -58,7 +59,7 @@ const defOf = (c: AnimalMotionCtx) => (typeof c.animal === 'string' ? ANIMALS[c.
 const STOP = 0.5;
 const walkDistance = (def: AnimalDef, c: AnimalMotionCtx) => c.distance ?? Math.max(1.2, 4 * def.height);
 const runDistance = (c: AnimalMotionCtx) => c.distance ?? 1.5;
-const TRANSITION: Partial<Record<AnimalMotionId, number>> = {'sit-down': 0.8, 'stand-up': 0.7, 'lie-down': 1.1, 'get-up': 0.9, 'step-up': 0.7, 'head-rub': 2.6};
+const TRANSITION: Partial<Record<AnimalMotionId, number>> = {'sit-down': 0.8, 'stand-up': 0.7, 'lie-down': 1.1, 'get-up': 0.9, 'step-up': 0.7, 'head-rub': 2.6, 'head-lift-sigh': 2};
 /** `step-up`: the hop lasts this long (10 frames at 30 fps); the rest of the motion is the landing hold. */
 export const STEP_UP_HOP = 1 / 3;
 
@@ -136,6 +137,11 @@ export const animalMotion = (id: AnimalMotionId, t: number, c: AnimalMotionCtx):
       const stride = ease((tt - 0.04) / (STEP_UP_HOP * 0.7)) * 0.8 + 0.2 * ease((tt - STEP_UP_HOP) / 0.3);
       return {pose: {view: sgn > 0 ? 'right' : 'left', state: 'stand', walk: gaitClock(def, across * u, 'walk'), stride, contact: tt >= STEP_UP_HOP ? 1 : 0}, offset: [sgn * across * u, rise * v + arc]};
     }
+    case 'head-lift-sigh': {
+      // N13b: the dog lifts its head a little, eyes open, sighs and settles. Rotation about the skull only (a `lean` pulled the head back into the ruff).
+      const d = ease(ease(tt / (10 / 30))) * (1 - ease(ease((tt - 1.6) / 0.4))), sigh = ease((tt - 0.2) / 1.2);
+      return {pose: {view, state: 'lie', lid: d > 0.15 ? 0.2 : 1, tilt: -5 * d + 7 * Math.sin(Math.PI * sigh), mouth: tt >= 0.27 && tt < 1.07 ? 'open' : 'closed'}, offset: [0, 0]};
+    }
     case 'head-rub': {
       // K5: lean in over 0.5 s, two rubs (0.7 s each) pushing the skull top along the hand, release over 0.4 s. `tilt` follows the push.
       const to = c.target ?? [0.2, 0.3], lean = ease(tt / 0.5) * ease((dur - tt) / 0.4), ph = Math.max(0, Math.min(1, (tt - 0.6) / 1.4)), rub = Math.sin(2 * Math.PI * 2 * ph) * Math.sin(Math.PI * ph) ** 0.5;
@@ -174,6 +180,7 @@ export const ANIMAL_REEL: AnimalReelEntry[] = [
   {motion: 'get-up', cast: lanes('right', 'front', 'dog-black-lab', 'cat-calico')},
   {motion: 'step-up', cast: lanes('right', 'right', 'dog-thai', 'cat-orange-tabby')},
   {motion: 'head-rub', cast: lanes('right', 'right', 'dog-pom', 'cat-orange-tabby')},
+  {motion: 'head-lift-sigh', cast: lanes('left', 'left', 'dog-golden', 'cat-calico')},
 ];
 export const ANIMAL_REEL_HOLD = 0.5;
 export const animalReelSceneSec = (e: AnimalReelEntry): number => {

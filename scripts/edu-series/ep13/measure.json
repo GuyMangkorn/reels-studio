@@ -1,0 +1,1229 @@
+{
+ "deliverable": "EDU-EP13-SHORT",
+ "script": "EDU-EP13-SCRIPT-R4",
+ "timing_status": "audio-measured",
+ "read": "ep13-nar-kore-slow6.wav",
+ "fps": 30,
+ "tempo": 0.94,
+ "voice": "gemini-3.8-flash-tts Kore, style from A_kore_deadpan (user pick 2026-11-09), one continuous call, loudnorm -16 LUFS 48 kHz mono, then atempo 0.94 (user, 6 % slower, from the raw take)",
+ "read_duration_s": 41.142,
+ "speech_end_s": 40.71,
+ "note": "W4 voice lock read. Times in read seconds (after atempo 0.94); NAR lines only, in script order L01 L02 L03 L05 L06 L07 L09 L15 L16 L12 L13 L14, joined by newlines, ellipsis -> comma. Excludes TR01 (no speech), V01, V02 (MAN), V03 (dog) and the scripted gaps and end hold. Edges = first/last frame above -30 dB in 10 ms steps (sound runs merged across gaps < 0.10 s), assigned to lines with Whisper large-v3-turbo + difflib; Whisper alone was off by up to 0.3 s on L07 and L12. Not listened. Anchor onsets inside a line are +-0.1 s. L07 \"แต่\" 17.88 follows a soft 17.45-17.75 breath/tail (-36..-42 dB) that is not counted. Video times add the non-speech inserts (TR01, V01, V02, apex, hold) on top of these. Re-measured on slow6 (2026-11-09): same 10 ms/-30 dB edge method on the new file; line edges snapped to the measured sound-run edges nearest the slow5 times x 0.95/0.94 (within 0.08 s, all matched); anchor onsets are the slow5 values x 0.95/0.94, snapped to a measured run start within 0.05 s where one exists (snapped=true), else the scaled time (+-0.1 s). Whisper not re-run.",
+ "lines": {
+  "L01": {
+   "start": 0.19,
+   "end": 4.35,
+   "dur": 4.16,
+   "onset_frame": 6,
+   "anchors": [
+    {
+     "phrase": "หมัดกระโดดได้สูงกว่า",
+     "onset": 0.19,
+     "onset_frame": 6,
+     "snapped": true
+    },
+    {
+     "phrase": "ถ้ามันตัวเท่าคุณ",
+     "onset": 2.3,
+     "onset_frame": 69,
+     "snapped": true
+    }
+   ]
+  },
+  "L02": {
+   "start": 5.03,
+   "end": 8.28,
+   "dur": 3.25,
+   "onset_frame": 151,
+   "anchors": [
+    {
+     "phrase": "ไม่หรอก",
+     "onset": 5.03,
+     "onset_frame": 151,
+     "snapped": true
+    },
+    {
+     "phrase": "มันน่าจะกระโดดได้",
+     "onset": 5.75,
+     "onset_frame": 172,
+     "snapped": true
+    },
+    {
+     "phrase": "พอ ๆ กับคุณ",
+     "onset": 7.56,
+     "onset_frame": 227,
+     "snapped": true
+    }
+   ]
+  },
+  "L03": {
+   "start": 8.77,
+   "end": 11.28,
+   "dur": 2.51,
+   "onset_frame": 263,
+   "anchors": [
+    {
+     "phrase": "ขามันแรงขึ้น",
+     "onset": 8.77,
+     "onset_frame": 263,
+     "snapped": true
+    },
+    {
+     "phrase": "แต่ตัวก็หนักขึ้นตาม",
+     "onset": 10.23,
+     "onset_frame": 307,
+     "snapped": true
+    }
+   ]
+  },
+  "L05": {
+   "start": 11.85,
+   "end": 14.61,
+   "dur": 2.76,
+   "onset_frame": 356,
+   "anchors": [
+    {
+     "phrase": "เหมือนขาคุณแรงสองเท่า",
+     "onset": 11.85,
+     "onset_frame": 356,
+     "snapped": true
+    },
+    {
+     "phrase": "แต่แบกเป้หนักสองเท่า",
+     "onset": 13.45,
+     "onset_frame": 404,
+     "snapped": true
+    }
+   ]
+  },
+  "L06": {
+   "start": 15.22,
+   "end": 17.38,
+   "dur": 2.16,
+   "onset_frame": 457,
+   "anchors": [
+    {
+     "phrase": "ตัวใหญ่ขึ้น",
+     "onset": 15.22,
+     "onset_frame": 457,
+     "snapped": true
+    },
+    {
+     "phrase": "กระโดดไม่ได้สูงขึ้นตาม",
+     "onset": 16.27,
+     "onset_frame": 488,
+     "snapped": true
+    }
+   ]
+  },
+  "L07": {
+   "start": 18.06,
+   "end": 20.42,
+   "dur": 2.36,
+   "onset_frame": 542,
+   "anchors": [
+    {
+     "phrase": "แต่",
+     "onset": 18.06,
+     "onset_frame": 542,
+     "snapped": true
+    },
+    {
+     "phrase": "แล้วหมัดตัวจิ๋ว",
+     "onset": 18.83,
+     "onset_frame": 565,
+     "snapped": true
+    }
+   ]
+  },
+  "L09": {
+   "start": 20.95,
+   "end": 24.46,
+   "dur": 3.51,
+   "onset_frame": 628,
+   "anchors": [
+    {
+     "phrase": "มันบีบแผ่นยางยืด",
+     "onset": 20.95,
+     "onset_frame": 628,
+     "snapped": true
+    },
+    {
+     "phrase": "แล้วปล่อยทีเดียว",
+     "onset": 22.84,
+     "onset_frame": 685,
+     "snapped": true
+    },
+    {
+     "phrase": "เหมือนหนังสติ๊ก",
+     "onset": 23.93,
+     "onset_frame": 718,
+     "snapped": true
+    }
+   ]
+  },
+  "L15": {
+   "start": 25.21,
+   "end": 27.33,
+   "dur": 2.12,
+   "onset_frame": 756,
+   "anchors": [
+    {
+     "phrase": "แล้วหมัดยักษ์ล่ะ",
+     "onset": 25.21,
+     "onset_frame": 756,
+     "snapped": true
+    },
+    {
+     "phrase": "ยังต้องพึ่งหนังสติ๊กมั้ย",
+     "onset": 26.38,
+     "onset_frame": 791,
+     "snapped": true
+    }
+   ]
+  },
+  "L16": {
+   "start": 27.83,
+   "end": 31.08,
+   "dur": 3.25,
+   "onset_frame": 835,
+   "anchors": [
+    {
+     "phrase": "ไม่ค่อยต้องแล้ว",
+     "onset": 27.83,
+     "onset_frame": 835,
+     "snapped": true
+    },
+    {
+     "phrase": "ขามันยาว",
+     "onset": 28.83,
+     "onset_frame": 865,
+     "snapped": true
+    }
+   ]
+  },
+  "L12": {
+   "start": 31.55,
+   "end": 34.3,
+   "dur": 2.75,
+   "onset_frame": 946,
+   "anchors": [
+    {
+     "phrase": "สูงพอ ๆ กัน",
+     "onset": 31.55,
+     "onset_frame": 946,
+     "snapped": true
+    },
+    {
+     "phrase": "แค่หลักสิบเซน",
+     "onset": 32.65,
+     "onset_frame": 980,
+     "snapped": true
+    },
+    {
+     "phrase": "ไม่ใช่ร้อยเมตร",
+     "onset": 33.61,
+     "onset_frame": 1008,
+     "snapped": true
+    }
+   ]
+  },
+  "L13": {
+   "start": 35.02,
+   "end": 38.3,
+   "dur": 3.28,
+   "onset_frame": 1051,
+   "anchors": [
+    {
+     "phrase": "แต่ถ้าวัดเป็นเซน",
+     "onset": 35.02,
+     "onset_frame": 1051,
+     "snapped": true
+    },
+    {
+     "phrase": "ปกติ คุณก็กระโดดสูงกว่า",
+     "onset": 36.16,
+     "onset_frame": 1085,
+     "snapped": true
+    }
+   ]
+  },
+  "L14": {
+   "start": 38.9,
+   "end": 40.71,
+   "dur": 1.81,
+   "onset_frame": 1167,
+   "anchors": [
+    {
+     "phrase": "หมัดดูเก่ง",
+     "onset": 38.9,
+     "onset_frame": 1167,
+     "snapped": true
+    },
+    {
+     "phrase": "ก็เพราะตัวมันเล็กมาก",
+     "onset": 39.81,
+     "onset_frame": 1194,
+     "snapped": true
+    }
+   ]
+  }
+ },
+ "placed_w53": {
+  "note": "Editor W5.3 (2026-11-09): placed narration public/narration/EDU-EP13-SHORT-narration-v1.wav (narration-place.py; pieces N1-N4 cut at read 4.680/8.460/31.315 s, shifts +10/+26/+72/+90 f; V01 G282, V02 G1020). Voiced runs = -38 dBFS, 10 ms, gaps < 80 ms merged, in G frames. Whisper (scripts/transcribe.py) failed here (faster-whisper/av 'metadata_errors' TypeError), so est anchors inside a run were not individually measured: only anchors at a run start are confirmed.",
+  "voiced_runs_G": "16-70 79-106 112-141 | 177-186 198-241 247-248 251-276 | V01 291-298 307-323 | 334-370 379-381 384-411 | 428-469 476-511 | 529-553 560-594 | 602-607 614-627 637-647 650-685 | 700-751 757-783 790-806 | 827-854 863-892 902-904 907-928 | 936-959 965-1005 | V02 1021-1030 | 1036-1059 | 1068-1093 1098-1119 | 1132-1136 1140-1167 1174-1240 | 1257-1280 1283-1312",
+  "est_anchor_vs_run_start": {
+   "พอ ๆ กับคุณ": [
+    253,
+    251
+   ],
+   "แต่ตัวก็หนักขึ้นตาม": [
+    379,
+    379
+   ],
+   "แต่แบกเป้หนักสองเท่า": [
+    476,
+    476
+   ],
+   "กระโดดไม่ได้สูงขึ้นตาม": [
+    560,
+    560
+   ],
+   "แล้วปล่อยทีเดียว": [
+    757,
+    757
+   ],
+   "เหมือนหนังสติ๊ก": [
+    790,
+    790
+   ],
+   "ขามันยาว": [
+    937,
+    936
+   ],
+   "มีเวลา": [
+    964,
+    965
+   ],
+   "แค่หลักสิบเซน": [
+    1070,
+    1068
+   ],
+   "แต่ถ้าวัดเป็นเซน": [
+    1141,
+    1140
+   ],
+   "ปกติ": [
+    1175,
+    1174
+   ],
+   "ก็เพราะตัวมันเล็กมาก": [
+    1284,
+    1283
+   ]
+  },
+  "est_result": "every checked anchor within 2 f of the estimate (PL05 tolerance 3 f); no tied key moves; unmeasured (inside a run): สูงกว่า 30, หลายสิบเท่า 43, คุณ 102, จะกระโดด 112, ข้ามตึก 122, ได้มั้ย 132, หลักสิบเซน 231, ก็จริง 359, หนัก 392, แบกเป้ 480, ไม่ได้สูงขึ้นตาม 570, บีบ 706, ปล่อย 762, หนังสติ๊ก 796, หมัดยักษ์ 834, กล้าม 984, ดันพื้น 989, เซน 1165, คุณ 1189, สูงกว่า 1207, เล็กมาก 1302"
+ },
+ "r5_slow10": {
+  "script": "EDU-EP13-SCRIPT-R5",
+  "read": "ep13-nar-kore-r5-slow10.wav",
+  "fps": 30,
+  "tempo": 0.9,
+  "voice": "gemini-3.8-flash-tts Kore, same style/settings as the locked read (style string of ep13-nar-kore-raw.json, A_kore_deadpan), one continuous call (--fresh) on the R5 text, two-pass loudnorm -16 LUFS 48 kHz mono, then atempo 0.90 on that normalised raw (user pick 2026-11-09: take-1 style, 10 % slower than the raw take)",
+  "raw_duration_s": 38.44,
+  "read_duration_s": 42.699,
+  "speech_end_s": 42.36,
+  "note": "Re-lock read for script R5 (L03/L05 \"ดีด\"). Times in read seconds after atempo 0.90; NAR lines only, script order L01 L02 L03 L05 L06 L07 L09 L15 L16 L12 L13 L14. Edges = first/last 10 ms step above -30 dB, sound runs merged across gaps < 0.10 s (same as the slow6 block). Whisper is broken here (faster-whisper/av TypeError), so lines were assigned to the 33 sound runs by gap structure (line gaps 0.35-0.75 s, in-line pauses 0.10-0.30 s) and by run durations against the slow6 read scaled x1.044; phrase anchors = run starts, assigned by position within the line (+-0.1 s; phrase-to-run assignment inside multi-run lines is structural, not recognised). Not listened. This is a new take with different prosody, so all times changed; do not reuse slow6 anchors.",
+  "lines": {
+   "L01": {
+    "start": 0.28,
+    "end": 5.03,
+    "dur": 4.75,
+    "onset_frame": 8,
+    "anchors": [
+     {
+      "phrase": "หมัดกระโดดได้สูงกว่า",
+      "onset": 0.28,
+      "onset_frame": 8,
+      "snapped": true
+     },
+     {
+      "phrase": "ถ้ามันตัวเท่าคุณ",
+      "onset": 2.75,
+      "onset_frame": 82,
+      "snapped": true
+     }
+    ]
+   },
+   "L02": {
+    "start": 5.58,
+    "end": 8.93,
+    "dur": 3.35,
+    "onset_frame": 167,
+    "anchors": [
+     {
+      "phrase": "ไม่หรอก",
+      "onset": 5.58,
+      "onset_frame": 167,
+      "snapped": true
+     },
+     {
+      "phrase": "มันน่าจะกระโดดได้",
+      "onset": 6.31,
+      "onset_frame": 189,
+      "snapped": true
+     },
+     {
+      "phrase": "พอ ๆ กับคุณ",
+      "onset": 8.09,
+      "onset_frame": 243,
+      "snapped": true
+     }
+    ]
+   },
+   "L03": {
+    "start": 9.58,
+    "end": 12.47,
+    "dur": 2.89,
+    "onset_frame": 287,
+    "anchors": [
+     {
+      "phrase": "ขามันดีดแรงขึ้น",
+      "onset": 9.58,
+      "onset_frame": 287,
+      "snapped": true
+     },
+     {
+      "phrase": "แต่ตัวก็หนักขึ้นตาม",
+      "onset": 11.21,
+      "onset_frame": 336,
+      "snapped": true
+     }
+    ]
+   },
+   "L05": {
+    "start": 12.99,
+    "end": 16.08,
+    "dur": 3.09,
+    "onset_frame": 390,
+    "anchors": [
+     {
+      "phrase": "เหมือนขาคุณดีดแรงสองเท่า",
+      "onset": 12.99,
+      "onset_frame": 390,
+      "snapped": true
+     },
+     {
+      "phrase": "แต่แบกเป้หนักสองเท่า",
+      "onset": 14.77,
+      "onset_frame": 443,
+      "snapped": true
+     }
+    ]
+   },
+   "L06": {
+    "start": 16.64,
+    "end": 18.71,
+    "dur": 2.07,
+    "onset_frame": 499,
+    "anchors": [
+     {
+      "phrase": "ตัวใหญ่ขึ้น",
+      "onset": 16.64,
+      "onset_frame": 499,
+      "snapped": true
+     },
+     {
+      "phrase": "กระโดดไม่ได้สูงขึ้นตาม",
+      "onset": 17.53,
+      "onset_frame": 526,
+      "snapped": true
+     }
+    ]
+   },
+   "L07": {
+    "start": 19.32,
+    "end": 21.62,
+    "dur": 2.3,
+    "onset_frame": 580,
+    "anchors": [
+     {
+      "phrase": "แต่",
+      "onset": 19.32,
+      "onset_frame": 580,
+      "snapped": true
+     },
+     {
+      "phrase": "แล้วหมัดตัวจิ๋ว",
+      "onset": 19.82,
+      "onset_frame": 595,
+      "snapped": true
+     }
+    ]
+   },
+   "L09": {
+    "start": 22.18,
+    "end": 25.91,
+    "dur": 3.73,
+    "onset_frame": 665,
+    "anchors": [
+     {
+      "phrase": "มันบีบแผ่นยางยืด",
+      "onset": 22.18,
+      "onset_frame": 665,
+      "snapped": true
+     },
+     {
+      "phrase": "แล้วปล่อยทีเดียว",
+      "onset": 24.12,
+      "onset_frame": 724,
+      "snapped": true
+     },
+     {
+      "phrase": "เหมือนหนังสติ๊ก",
+      "onset": 25.31,
+      "onset_frame": 759,
+      "snapped": true
+     }
+    ]
+   },
+   "L15": {
+    "start": 26.66,
+    "end": 28.69,
+    "dur": 2.03,
+    "onset_frame": 800,
+    "anchors": [
+     {
+      "phrase": "แล้วหมัดยักษ์ล่ะ",
+      "onset": 26.66,
+      "onset_frame": 800,
+      "snapped": true
+     },
+     {
+      "phrase": "ยังต้องพึ่งหนังสติ๊กมั้ย",
+      "onset": 27.6,
+      "onset_frame": 828,
+      "snapped": true
+     }
+    ]
+   },
+   "L16": {
+    "start": 29.16,
+    "end": 32.85,
+    "dur": 3.69,
+    "onset_frame": 875,
+    "anchors": [
+     {
+      "phrase": "ไม่ค่อยต้องแล้ว",
+      "onset": 29.16,
+      "onset_frame": 875,
+      "snapped": true
+     },
+     {
+      "phrase": "ขามันยาว",
+      "onset": 30.24,
+      "onset_frame": 907,
+      "snapped": true
+     }
+    ]
+   },
+   "L12": {
+    "start": 33.2,
+    "end": 36.07,
+    "dur": 2.87,
+    "onset_frame": 996,
+    "anchors": [
+     {
+      "phrase": "สูงพอ ๆ กัน",
+      "onset": 33.2,
+      "onset_frame": 996,
+      "snapped": true
+     },
+     {
+      "phrase": "แค่หลักสิบเซน",
+      "onset": 34.32,
+      "onset_frame": 1030,
+      "snapped": true
+     },
+     {
+      "phrase": "ไม่ใช่ร้อยเมตร",
+      "onset": 35.28,
+      "onset_frame": 1058,
+      "snapped": true
+     }
+    ]
+   },
+   "L13": {
+    "start": 36.78,
+    "end": 39.87,
+    "dur": 3.09,
+    "onset_frame": 1103,
+    "anchors": [
+     {
+      "phrase": "แต่ถ้าวัดเป็นเซน",
+      "onset": 36.78,
+      "onset_frame": 1103,
+      "snapped": true
+     },
+     {
+      "phrase": "ปกติ คุณก็กระโดดสูงกว่า",
+      "onset": 37.81,
+      "onset_frame": 1134,
+      "snapped": true
+     }
+    ]
+   },
+   "L14": {
+    "start": 40.33,
+    "end": 42.36,
+    "dur": 2.03,
+    "onset_frame": 1210,
+    "anchors": [
+     {
+      "phrase": "หมัดดูเก่ง",
+      "onset": 40.33,
+      "onset_frame": 1210,
+      "snapped": true
+     },
+     {
+      "phrase": "ก็เพราะตัวมันเล็กมาก",
+      "onset": 41.33,
+      "onset_frame": 1240,
+      "snapped": true
+     }
+    ]
+   }
+  },
+  "superseded_by": "r5b_B_slow10"
+ },
+ "live": "r5b_B_slow10",
+ "live_note": "Live voice lock = block r5b_B_slow10 (Take B, user pick 2026-11-09); top-level lines = slow6 (R4, superseded, timed SHEETS-R2.0); r5_slow10 superseded by r5b_B_slow10 before use.",
+ "r5b_B_slow10": {
+  "script": "EDU-EP13-SCRIPT-R5",
+  "read": "ep13-nar-kore-r5b-B-slow10.wav",
+  "read_path": "out/edu13/voice/full/ep13-nar-kore-r5b-B-slow10.wav",
+  "store_path": "projects/EDU-EP13-SHORT/voice/ep13-nar-kore-r5b-B-slow10.wav",
+  "fps": 30,
+  "tempo": 0.9,
+  "voice": "gemini-3.8-flash-tts Kore, Take B of the r5b pair (user pick 2026-11-09 for the clearer \"ไม่หรอก\"), loudnorm, then atempo 0.90 on the raw (as r5_slow10)",
+  "read_duration_s": 46.167,
+  "speech_end_s": 45.77,
+  "timing_status": "audio-measured",
+  "note": "W4 re-lock read (Editor) promoted by Film at W5.1 R2.1 (2026-11-09). Line edges = out/edu13/voice/full/ep13-nar-kore-r5b-B-measure.json (-30 dB, 10 ms, runs merged < 0.10 s; re-run by Film with the same method: same 34 runs, two extra splits at 2.20-2.30 and 44.20-44.30 inside L01/L14). Phrase anchors = measured run starts assigned by position within the line (snapped=true). Two phrase anchors are not run starts (snapped=false, +-0.1 s): L06 \"กระโดดไม่ได้สูงขึ้นตาม\" (onset after the -57 dB dip at 18.35) and L09 \"เหมือนหนังสติ๊ก\" (nasal onset, no dip). Whisper large-v3-turbo now runs here when audio is passed as a 16 kHz numpy array (bypassing the av decoder that fails); its Thai token times run about 0.08 s early against the run starts, so words_est = Whisper token time + 0.08 s, moved to an adjacent energy dip when one lies within 0.08 s; +-0.1 s (est). Not listened.",
+  "runs": [
+   [
+    0.24,
+    2.64
+   ],
+   [
+    2.98,
+    3.86
+   ],
+   [
+    4.05,
+    5.13
+   ],
+   [
+    6.04,
+    6.48
+   ],
+   [
+    6.82,
+    8.48
+   ],
+   [
+    8.66,
+    9.56
+   ],
+   [
+    10.38,
+    11.76
+   ],
+   [
+    12.04,
+    12.56
+   ],
+   [
+    12.67,
+    13.2
+   ],
+   [
+    13.64,
+    15.18
+   ],
+   [
+    15.3,
+    15.56
+   ],
+   [
+    15.68,
+    16.61
+   ],
+   [
+    17.51,
+    17.91
+   ],
+   [
+    18.05,
+    19.78
+   ],
+   [
+    20.75,
+    21.04
+   ],
+   [
+    21.48,
+    23.3
+   ],
+   [
+    23.88,
+    25.67
+   ],
+   [
+    25.91,
+    26.02
+   ],
+   [
+    26.14,
+    27.3
+   ],
+   [
+    28.28,
+    29.08
+   ],
+   [
+    29.32,
+    30.42
+   ],
+   [
+    31.04,
+    31.9
+   ],
+   [
+    32.19,
+    32.98
+   ],
+   [
+    33.25,
+    34.77
+   ],
+   [
+    35.62,
+    36.52
+   ],
+   [
+    36.8,
+    37.67
+   ],
+   [
+    37.88,
+    38.76
+   ],
+   [
+    39.74,
+    40.64
+   ],
+   [
+    40.9,
+    41.25
+   ],
+   [
+    41.36,
+    43.12
+   ],
+   [
+    43.86,
+    43.97
+   ],
+   [
+    44.09,
+    44.5
+   ],
+   [
+    44.76,
+    45.4
+   ],
+   [
+    45.55,
+    45.77
+   ]
+  ],
+  "lines": {
+   "L01": {
+    "start": 0.24,
+    "end": 5.13,
+    "dur": 4.89,
+    "onset_frame": 7,
+    "anchors": [
+     {
+      "phrase": "หมัดกระโดดได้สูงกว่า",
+      "onset": 0.24,
+      "onset_frame": 7,
+      "snapped": true
+     },
+     {
+      "phrase": "ถ้ามันตัวเท่าคุณ",
+      "onset": 2.98,
+      "onset_frame": 89,
+      "snapped": true
+     }
+    ]
+   },
+   "L02": {
+    "start": 6.04,
+    "end": 9.56,
+    "dur": 3.52,
+    "onset_frame": 181,
+    "anchors": [
+     {
+      "phrase": "ไม่หรอก",
+      "onset": 6.04,
+      "onset_frame": 181,
+      "snapped": true
+     },
+     {
+      "phrase": "มันน่าจะกระโดดได้",
+      "onset": 6.82,
+      "onset_frame": 205,
+      "snapped": true
+     },
+     {
+      "phrase": "พอ ๆ กับคุณ",
+      "onset": 8.66,
+      "onset_frame": 260,
+      "snapped": true
+     }
+    ]
+   },
+   "L03": {
+    "start": 10.38,
+    "end": 13.2,
+    "dur": 2.82,
+    "onset_frame": 311,
+    "anchors": [
+     {
+      "phrase": "ขามันดีดแรงขึ้น",
+      "onset": 10.38,
+      "onset_frame": 311,
+      "snapped": true
+     },
+     {
+      "phrase": "แต่ตัวก็หนักขึ้นตาม",
+      "onset": 12.04,
+      "onset_frame": 361,
+      "snapped": true
+     }
+    ]
+   },
+   "L05": {
+    "start": 13.64,
+    "end": 16.61,
+    "dur": 2.97,
+    "onset_frame": 409,
+    "anchors": [
+     {
+      "phrase": "เหมือนขาคุณดีดแรงสองเท่า",
+      "onset": 13.64,
+      "onset_frame": 409,
+      "snapped": true
+     },
+     {
+      "phrase": "แต่แบกเป้หนักสองเท่า",
+      "onset": 15.3,
+      "onset_frame": 459,
+      "snapped": true
+     }
+    ]
+   },
+   "L06": {
+    "start": 17.51,
+    "end": 19.78,
+    "dur": 2.27,
+    "onset_frame": 525,
+    "anchors": [
+     {
+      "phrase": "ตัวใหญ่ขึ้น",
+      "onset": 17.51,
+      "onset_frame": 525,
+      "snapped": true
+     },
+     {
+      "phrase": "กระโดดไม่ได้สูงขึ้นตาม",
+      "onset": 18.38,
+      "onset_frame": 551,
+      "snapped": false
+     }
+    ]
+   },
+   "L07": {
+    "start": 20.75,
+    "end": 23.3,
+    "dur": 2.55,
+    "onset_frame": 622,
+    "anchors": [
+     {
+      "phrase": "แต่",
+      "onset": 20.75,
+      "onset_frame": 622,
+      "snapped": true
+     },
+     {
+      "phrase": "แล้วหมัดตัวจิ๋ว",
+      "onset": 21.48,
+      "onset_frame": 644,
+      "snapped": true
+     }
+    ]
+   },
+   "L09": {
+    "start": 23.88,
+    "end": 27.3,
+    "dur": 3.42,
+    "onset_frame": 716,
+    "anchors": [
+     {
+      "phrase": "มันบีบแผ่นยางยืด",
+      "onset": 23.88,
+      "onset_frame": 716,
+      "snapped": true
+     },
+     {
+      "phrase": "แล้วปล่อยทีเดียว",
+      "onset": 25.91,
+      "onset_frame": 777,
+      "snapped": true
+     },
+     {
+      "phrase": "เหมือนหนังสติ๊ก",
+      "onset": 26.72,
+      "onset_frame": 802,
+      "snapped": false
+     }
+    ]
+   },
+   "L15": {
+    "start": 28.28,
+    "end": 30.42,
+    "dur": 2.14,
+    "onset_frame": 848,
+    "anchors": [
+     {
+      "phrase": "แล้วหมัดยักษ์ล่ะ",
+      "onset": 28.28,
+      "onset_frame": 848,
+      "snapped": true
+     },
+     {
+      "phrase": "ยังต้องพึ่งหนังสติ๊กมั้ย",
+      "onset": 29.32,
+      "onset_frame": 880,
+      "snapped": true
+     }
+    ]
+   },
+   "L16": {
+    "start": 31.04,
+    "end": 34.77,
+    "dur": 3.73,
+    "onset_frame": 931,
+    "anchors": [
+     {
+      "phrase": "ไม่ค่อยต้องแล้ว",
+      "onset": 31.04,
+      "onset_frame": 931,
+      "snapped": true
+     },
+     {
+      "phrase": "ขามันยาว",
+      "onset": 32.19,
+      "onset_frame": 966,
+      "snapped": true
+     },
+     {
+      "phrase": "มีเวลา",
+      "onset": 33.25,
+      "onset_frame": 998,
+      "snapped": true
+     }
+    ]
+   },
+   "L12": {
+    "start": 35.62,
+    "end": 38.76,
+    "dur": 3.14,
+    "onset_frame": 1069,
+    "anchors": [
+     {
+      "phrase": "สูงพอ ๆ กัน",
+      "onset": 35.62,
+      "onset_frame": 1069,
+      "snapped": true
+     },
+     {
+      "phrase": "แค่หลักสิบเซน",
+      "onset": 36.8,
+      "onset_frame": 1104,
+      "snapped": true
+     },
+     {
+      "phrase": "ไม่ใช่ร้อยเมตร",
+      "onset": 37.88,
+      "onset_frame": 1136,
+      "snapped": true
+     }
+    ]
+   },
+   "L13": {
+    "start": 39.74,
+    "end": 43.12,
+    "dur": 3.38,
+    "onset_frame": 1192,
+    "anchors": [
+     {
+      "phrase": "แต่ถ้าวัดเป็นเซน",
+      "onset": 39.74,
+      "onset_frame": 1192,
+      "snapped": true
+     },
+     {
+      "phrase": "ปกติ คุณก็กระโดดสูงกว่า",
+      "onset": 40.9,
+      "onset_frame": 1227,
+      "snapped": true
+     }
+    ]
+   },
+   "L14": {
+    "start": 43.86,
+    "end": 45.77,
+    "dur": 1.91,
+    "onset_frame": 1316,
+    "anchors": [
+     {
+      "phrase": "หมัดดูเก่ง",
+      "onset": 43.86,
+      "onset_frame": 1316,
+      "snapped": true
+     },
+     {
+      "phrase": "ก็เพราะตัวมันเล็กมาก",
+      "onset": 44.76,
+      "onset_frame": 1343,
+      "snapped": true
+     }
+    ]
+   }
+  },
+  "words_est": [
+   {
+    "line": "L01",
+    "word": "สูงกว่า",
+    "onset": 1.22,
+    "onset_frame": 37,
+    "G": 47,
+    "kind": "est"
+   },
+   {
+    "line": "L01",
+    "word": "หลายสิบเท่า",
+    "onset": 1.86,
+    "onset_frame": 56,
+    "G": 66,
+    "kind": "est"
+   },
+   {
+    "line": "L01",
+    "word": "คุณ",
+    "onset": 3.64,
+    "onset_frame": 109,
+    "G": 119,
+    "kind": "est"
+   },
+   {
+    "line": "L01",
+    "word": "จะกระโดด",
+    "onset": 4.05,
+    "onset_frame": 122,
+    "G": 132,
+    "kind": "measured run start"
+   },
+   {
+    "line": "L01",
+    "word": "ข้ามตึก",
+    "onset": 4.45,
+    "onset_frame": 134,
+    "G": 144,
+    "kind": "est"
+   },
+   {
+    "line": "L01",
+    "word": "ได้มั้ย",
+    "onset": 4.83,
+    "onset_frame": 145,
+    "G": 155,
+    "kind": "est"
+   },
+   {
+    "line": "L02",
+    "word": "หลักสิบเซน",
+    "onset": 7.8,
+    "onset_frame": 234,
+    "G": 260,
+    "kind": "est"
+   },
+   {
+    "line": "L03",
+    "word": "ดีด",
+    "onset": 10.84,
+    "onset_frame": 325,
+    "G": 397,
+    "kind": "est"
+   },
+   {
+    "line": "L03",
+    "word": "ก็จริง",
+    "onset": 11.32,
+    "onset_frame": 340,
+    "G": 412,
+    "kind": "est"
+   },
+   {
+    "line": "L03",
+    "word": "หนัก",
+    "onset": 12.44,
+    "onset_frame": 373,
+    "G": 445,
+    "kind": "est"
+   },
+   {
+    "line": "L05",
+    "word": "แบกเป้",
+    "onset": 15.42,
+    "onset_frame": 463,
+    "G": 535,
+    "kind": "est"
+   },
+   {
+    "line": "L06",
+    "word": "ไม่ได้สูงขึ้นตาม",
+    "onset": 18.75,
+    "onset_frame": 562,
+    "G": 634,
+    "kind": "est"
+   },
+   {
+    "line": "L09",
+    "word": "บีบ",
+    "onset": 24.08,
+    "onset_frame": 722,
+    "G": 794,
+    "kind": "est"
+   },
+   {
+    "line": "L09",
+    "word": "ปล่อย",
+    "onset": 26.14,
+    "onset_frame": 784,
+    "G": 856,
+    "kind": "measured run start"
+   },
+   {
+    "line": "L09",
+    "word": "หนังสติ๊ก",
+    "onset": 26.86,
+    "onset_frame": 806,
+    "G": 878,
+    "kind": "est"
+   },
+   {
+    "line": "L15",
+    "word": "หมัดยักษ์",
+    "onset": 28.44,
+    "onset_frame": 853,
+    "G": 925,
+    "kind": "est"
+   },
+   {
+    "line": "L16",
+    "word": "กล้าม",
+    "onset": 33.76,
+    "onset_frame": 1013,
+    "G": 1085,
+    "kind": "est"
+   },
+   {
+    "line": "L16",
+    "word": "ดันพื้น",
+    "onset": 34.02,
+    "onset_frame": 1021,
+    "G": 1093,
+    "kind": "est"
+   },
+   {
+    "line": "L12",
+    "word": "สูงพอ ๆ กัน (end)",
+    "onset": 36.52,
+    "onset_frame": 1096,
+    "G": 1186,
+    "kind": "measured run start"
+   },
+   {
+    "line": "L13",
+    "word": "เซน",
+    "onset": 40.34,
+    "onset_frame": 1210,
+    "G": 1300,
+    "kind": "est"
+   },
+   {
+    "line": "L13",
+    "word": "คุณ",
+    "onset": 41.36,
+    "onset_frame": 1241,
+    "G": 1331,
+    "kind": "measured run start"
+   },
+   {
+    "line": "L13",
+    "word": "สูงกว่า",
+    "onset": 42.0,
+    "onset_frame": 1260,
+    "G": 1350,
+    "kind": "est"
+   },
+   {
+    "line": "L14",
+    "word": "เล็กมาก",
+    "onset": 45.3,
+    "onset_frame": 1359,
+    "G": 1449,
+    "kind": "est"
+   }
+  ],
+  "placement_R2_1": {
+   "sheets": "EDU-EP13-SHEETS-R2.1",
+   "cuts_read_s": [
+    5.58,
+    9.97,
+    35.2
+   ],
+   "shifts_f": [
+    10,
+    26,
+    72,
+    90
+   ],
+   "rule": "G = round(read s x 30) + shift of its piece; Editor snaps each cut to the quietest 5 ms within +-60 ms (narration-place.py)",
+   "inserted_f": {
+    "lead-in": 10,
+    "TR01": 16,
+    "V01": 46,
+    "crouch+V02": 18
+   },
+   "V01_slot_G": 321,
+   "V02_slot_G": 1143,
+   "speech_end_G": 1463,
+   "durationFrames": 1542
+  }
+ }
+}
