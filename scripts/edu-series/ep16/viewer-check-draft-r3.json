@@ -1,0 +1,16 @@
+{
+ "S01-B01-SH01": "fail",
+ "S01-B01-SH03": "pass",
+ "S01-B01-SH05": "pass",
+ "S01-B01-SH06": "pass",
+ "S01-B01-SH07": "fail",
+ "S01-B02-SH01": "pass",
+ "S01-B03-SH01": "fail",
+ "S01-B03-SH02": "pass",
+ "S01-B03-SH03": "fail",
+ "S01-B04-SH01": "pass",
+ "S01-B05-SH01": "pass",
+ "S01-B05-SH02": "pass",
+ "S01-B05-SH03": "pass",
+ "S01-B05-SH04": "pass"
+}
