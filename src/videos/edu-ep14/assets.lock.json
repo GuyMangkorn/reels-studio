@@ -1,0 +1,110 @@
+{
+  "public/audio/bed/bed_kalimba-rain-explainer_02.wav": {
+    "store": "library/sound/music/bed/bed_kalimba-rain-explainer_02.wav",
+    "sha256": "7f2aa22a70d672e4a9dcdc638ab49110dd6509ee383b11b65fd724d73a82b939"
+  },
+  "public/audio/city/city_wet-road-rain-bus_01.wav": {
+    "store": "library/sound/ambience/city/city_wet-road-rain-bus_01.wav",
+    "sha256": "d5ecbc4d6b06803807b510429a0aa2d6f21d329eda268f164772b4e6431282d9"
+  },
+  "public/audio/edu/EDU-EP14-SHORT-draft-stem-v1.wav": {
+    "store": "projects/EDU/audio/EDU-EP14-SHORT/EDU-EP14-SHORT-draft-stem-r41-v1.wav",
+    "sha256": "e3b18549b1209242eb08883a9db007ca9d8fd04b9f173d1b33615b4623540fb9"
+  },
+  "public/audio/stinger/stinger_kalimba-drops-tag_01.wav": {
+    "store": "library/sound/music/stinger/stinger_kalimba-drops-tag_01.wav",
+    "sha256": "84439a204f46d9905df7d854422edc621821e9bcc880c1d3ddaac6703718df40"
+  },
+  "public/audio/tension/tension_airless-glass-drone_01.wav": {
+    "store": "library/sound/ambience/tension/tension_airless-glass-drone_01.wav",
+    "sha256": "e6702fd71e75778b220b92947eb492746afaa96afea0bed3343aed9ff79fe8de"
+  },
+  "public/audio/weather/weather_tin-roof-rain-shelter_01.wav": {
+    "store": "library/sound/ambience/weather/weather_tin-roof-rain-shelter_01.wav",
+    "sha256": "f56c6350d02641788b9de2985971ba226ca61e3127f14819787ef4745d09bfea"
+  },
+  "public/audio/whoosh/whoosh_shaft-fall-air-rush_01.wav": {
+    "store": "library/sound/ambience/whoosh/whoosh_shaft-fall-air-rush_01.wav",
+    "sha256": "feaedc70538d77acfebede52e2d8ff6d785d4f477cddf079cc68d4164335d9a5"
+  },
+  "public/narration/EDU-EP14-SHORT-narration-v1.wav": {
+    "store": "projects/EDU/audio/EDU-EP14-SHORT/EDU-EP14-SHORT-narration-r41-v1.wav",
+    "sha256": "7011b4741fa823af1582347b22d98a36709f0b65bf40c11f4c4a0979493d797a"
+  },
+  "public/sfx/comedy/comedy_kalimba-nope_01.wav": {
+    "store": "library/sound/sfx/comedy/comedy_kalimba-nope_01.wav",
+    "sha256": "5b9ff4854931fbaa4e1b34d95106142f981121547ab31b908d8f9c51a5ae05c3"
+  },
+  "public/sfx/foley/foley_cotton-sleeve-rustle_01.wav": {
+    "store": "library/sound/sfx/foley/foley_cotton-sleeve-rustle_01.wav",
+    "sha256": "0c80d9977334433290ff76fedb17ba10ef8568f719ac7889b85b4ca4853047d8"
+  },
+  "public/sfx/foley/foley_water-balloon-squash_01.wav": {
+    "store": "library/sound/sfx/foley/foley_water-balloon-squash_01.wav",
+    "sha256": "03783da964b9554565355937cc9179bcdb6680f8c11cd2ba2191b37d3ae46fcd"
+  },
+  "public/sfx/foley/foley_water-balloon-wobble_01.wav": {
+    "store": "library/sound/sfx/foley/foley_water-balloon-wobble_01.wav",
+    "sha256": "8be47e3c4ce00b3e86ab1da2ca5d077997d0a6edd9da1766853c2e08eaf201f9"
+  },
+  "public/sfx/foley/foley_water-drop-skin-sting_01.wav": {
+    "store": "library/sound/sfx/foley/foley_water-drop-skin-sting_01.wav",
+    "sha256": "8213d3ea65cab8a9e06cb19b8594709410f4c67da80826acd601a20619f004bb"
+  },
+  "public/sfx/foley/foley_wet-film-creak-rise_01.wav": {
+    "store": "library/sound/sfx/foley/foley_wet-film-creak-rise_01.wav",
+    "sha256": "6d7f489a86a1fbfed5fe1fd2dbbec323997ed5e314fd39d494d6b53361c64ce1"
+  },
+  "public/sfx/impact/impact_bb-pellet-tick_01.wav": {
+    "store": "library/sound/sfx/impact/impact_bb-pellet-tick_01.wav",
+    "sha256": "d37385c988b8569164bcac4d0003194c37eda47c70c14182558948515a4c5abc"
+  },
+  "public/sfx/reveal/reveal_glass-pluck-ring_01.wav": {
+    "store": "library/sound/sfx/reveal/reveal_glass-pluck-ring_01.wav",
+    "sha256": "d9a754917d6c260c17e2f23247f3d17803f673ab2af44aafc65aca181920163b"
+  },
+  "public/sfx/reveal/reveal_rewind-whirr_01.wav": {
+    "store": "library/sound/sfx/reveal/reveal_rewind-whirr_01.wav",
+    "sha256": "74c7713827180850c2aca70eda77c6135f2852f5c3133be657d2ab9ef418da9a"
+  },
+  "public/sfx/stinger/stinger_pizz-shrug_01.wav": {
+    "store": "library/sound/sfx/stinger/stinger_pizz-shrug_01.wav",
+    "sha256": "dc48cad0cc57e793ad94c206a698a81913d32c47f3016b0aa984aa48b9345743"
+  },
+  "public/sfx/stinger/stinger_pizz-tag-ending_01.wav": {
+    "store": "library/sound/sfx/stinger/stinger_pizz-tag-ending_01.wav",
+    "sha256": "45f8d7001a16dfdfc29b81f2af713c7ef064d4a2e157abe0e8d89ebc6e0e14b6"
+  },
+  "public/sfx/tension/tension_dark-riser-sub-pulse_01.wav": {
+    "store": "library/sound/sfx/tension/tension_dark-riser-sub-pulse_01.wav",
+    "sha256": "501987cd9370f64db8190c2028432169175700d4a3d8dc46458311a4d5aecdca"
+  },
+  "public/sfx/ui/ui_click-tick_01.wav": {
+    "store": "library/sound/sfx/ui/ui_click-tick_01.wav",
+    "sha256": "edfafbe6bfb91e1c01aa9b3e13ca051dcf257406ae63d3ac54178aaf3991babb"
+  },
+  "public/sfx/ui/ui_pop_01.wav": {
+    "store": "library/sound/sfx/ui/ui_pop_01.wav",
+    "sha256": "d598317eb71eb636cab3e6d45f234ecb060b23ecb9c4d8dd826a9c3c7bd43b57"
+  },
+  "public/sfx/vehicle/vehicle_bike-pass-rain_01.wav": {
+    "store": "library/sound/sfx/vehicle/vehicle_bike-pass-rain_01.wav",
+    "sha256": "4d5052d3683246d54ff120f7958a3b8b0e6c3c101c7519c01bbb83fdbfbbfc0a"
+  },
+  "public/sfx/water/water_drop-plip-puddle_01.wav": {
+    "store": "library/sound/sfx/water/water_drop-plip-puddle_01.wav",
+    "sha256": "fec439ecbda4e0d670e20fa6f60f4bcfae51dcfc1c4bfea0e9fa3889bb8bf9dd"
+  },
+  "public/sfx/water/water_film-burst-scatter_01.wav": {
+    "store": "library/sound/sfx/water/water_film-burst-scatter_01.wav",
+    "sha256": "7e5de53a8abb7cb1262a58f28aa9fd6642d156937eeea6b6e3212ca5fb16c3a0"
+  },
+  "public/sfx/water/water_palm-raindrop-pats_01.wav": {
+    "store": "library/sound/sfx/water/water_palm-raindrop-pats_01.wav",
+    "sha256": "7fd01fa075e08410bed1ab75d3703bcab5d8c5983cd3fdc77eb05683f01c711a"
+  },
+  "public/sfx/whoosh/whoosh_parachute-ease-out_01.wav": {
+    "store": "library/sound/sfx/whoosh/whoosh_parachute-ease-out_01.wav",
+    "sha256": "55117ff217bcd25ba0626778d95d8544c1183e0d5ab770644373b390fb39292c"
+  }
+}

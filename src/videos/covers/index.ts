@@ -9,6 +9,7 @@ import {EDU6_COVER_STYLE, EDU6_COVERS, EDU6_COVERS_V2, EDU6_COVERS_V3, EDU6_PICS
 import {EDU7_COVER_STYLE, EDU7_COVERS, EDU7_PICS} from './edu-ep07';
 import {EDU8_COVER_STYLE, EDU8_COVERS, EDU8_PICS} from './edu-ep08';
 import {EDU11_COVER_STYLE, EDU11_COVERS, EDU11_PICS} from './edu-ep11';
+import {EDU14_COVER_STYLE, EDU14_COVERS, EDU14_PICS} from './edu-ep14';
 import {EDU9_COVER_STYLE, EDU9_COVERS, EDU9_PICS} from './edu-ep09';
 import {EG_COVER_STYLE, EG_COVERS} from './everyone-gone';
 import {EG2_A_LAYOUT, EG2_A_TYPE, EG2_COVER_STYLE, EG2_COVERS} from './everyone-gone-ep02';
@@ -49,6 +50,8 @@ const covers: EpisodeVideos = {
     coversVideo('EDU-EP11-SHORT', EDU11_COVERS, EDU11_COVER_STYLE),
     coversVideo('EDU-EP09-SHORT-PIC', EDU9_PICS, EDU9_COVER_STYLE),
     coversVideo('EDU-EP09-SHORT', EDU9_COVERS, EDU9_COVER_STYLE),
+    coversVideo('EDU-EP14-SHORT-PIC', EDU14_PICS, EDU14_COVER_STYLE),
+    coversVideo('EDU-EP14-SHORT', EDU14_COVERS, EDU14_COVER_STYLE),
   ],
 };
 export default covers;

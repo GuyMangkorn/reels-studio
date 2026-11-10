@@ -1,0 +1,732 @@
+{
+ "deliverable": "EDU-EP14-SHORT",
+ "sceneSheets": "EDU-EP14-ROWS-R4.1",
+ "video": "src/videos/edu-ep14",
+ "fps": 30,
+ "totalFrames": 1815,
+ "sources": [
+  "src/videos/edu-ep14",
+  "scripts/edu-series/ep14/sound-mix.py"
+ ],
+ "frameClock": "global composition frames at 30 fps (shot start + shot-local offset, R4.1 shot map)",
+ "cues": [
+  {
+   "cue": "A1-open",
+   "shot": "S01-B01-SH01",
+   "frame": 0,
+   "brief": "A1 rain on the tin roof from +0, no music",
+   "id": "weather_tin-roof-rain-shelter_01",
+   "origin": "generated",
+   "lengthFrames": 55,
+   "level": "full gap level; -12 dB under NAR, -6 dB in gaps",
+   "loop": true,
+   "fade": "none: hard cut on f55, no tail (the hit)"
+  },
+  {
+   "cue": "A2-open",
+   "shot": "S01-B01-SH01",
+   "frame": 0,
+   "brief": "A2 wet road from +0",
+   "id": "city_wet-road-rain-bus_01",
+   "origin": "generated",
+   "lengthFrames": 55,
+   "level": "below A1; -12 dB under NAR, -6 dB in gaps",
+   "loop": true,
+   "fade": "none: hard cut on f55, no tail (the hit)"
+  },
+  {
+   "cue": "S11-plip-hook",
+   "shot": "S01-B01-SH01",
+   "frame": 10,
+   "brief": "S11 plip on the middle drop",
+   "id": "water_drop-plip-puddle_01",
+   "origin": "generated",
+   "lengthFrames": 9,
+   "level": "accent, in a syllable gap"
+  },
+  {
+   "cue": "D1-a",
+   "shot": "S01-B01-SH01",
+   "frame": 58,
+   "brief": "D1 no-air drone fades in from +58, under to the W700 silence",
+   "id": "tension_airless-glass-drone_01",
+   "origin": "generated",
+   "lengthFrames": 496,
+   "level": "-24 dB; L02a (f179-282) -30 dB; fully out at f553 (silence policy 4)",
+   "loop": true,
+   "fade": "fade in 0.5 s from f58; out on f553 with R1 (dead silence f554-564)",
+   "note": "the file is an 11 s (330 f) loop: Editor loops it with its own crossfade"
+  },
+  {
+   "cue": "S9-pop-dial",
+   "shot": "S01-B01-SH02",
+   "frame": 78,
+   "brief": "S9 dial icon in",
+   "id": "ui_pop_01",
+   "origin": "library",
+   "fit": "ui_pop_01 'Soft round bubble pop; text or overlay appearing' (0.075 s): the brief asks a soft round pop for an icon appearing; not listened, checked by sidecar description",
+   "lengthFrames": 3,
+   "level": "SFX texture"
+  },
+  {
+   "cue": "S1-run-hook",
+   "shot": "S01-B01-SH02",
+   "frame": 144,
+   "brief": "S1 fast tick run +76-+80",
+   "id": "ui_click-tick_01",
+   "origin": "library",
+   "fit": "ui_click-tick_01 'Crisp dry tick; counters' (0.08 s): a counter tick, the gauge language of the brief",
+   "lengthFrames": 5,
+   "level": "SFX texture, 5 ticks one per frame, Editor builds the run"
+  },
+  {
+   "cue": "S2-rewind",
+   "shot": "S01-B01-SH02",
+   "frame": 158,
+   "brief": "S2 needle rewinding to 0",
+   "id": "reveal_rewind-whirr_01",
+   "origin": "library",
+   "fit": "reveal_rewind-whirr_01 'fast reverse sweep rising, stops abruptly, 0.44 s' (generated for EP11): a rewind that stops abruptly is the brief's needle rewind; not listened",
+   "lengthFrames": 14,
+   "level": "accent, in a gap"
+  },
+  {
+   "cue": "S3-pluck-letgo",
+   "shot": "S01-B01-SH04",
+   "frame": 302,
+   "brief": "S3 drop lets go: single soft glass-harmonic pluck",
+   "id": "reveal_glass-pluck-ring_01",
+   "origin": "generated",
+   "lengthFrames": 19,
+   "level": "accent, over D1 near silence; NAR only otherwise"
+  },
+  {
+   "cue": "S1-tick-pin",
+   "shot": "S01-B01-SH05",
+   "frame": 360,
+   "brief": "S1 soft tick (pin)",
+   "id": "ui_click-tick_01",
+   "origin": "library",
+   "fit": "same tick as S1; counter tick",
+   "lengthFrames": 3,
+   "level": "soft"
+  },
+  {
+   "cue": "S1-tick-label",
+   "shot": "S01-B01-SH05",
+   "frame": 364,
+   "brief": "S1 tick (label)",
+   "id": "ui_click-tick_01",
+   "origin": "library",
+   "fit": "same tick as S1; counter tick",
+   "lengthFrames": 3,
+   "level": "soft"
+  },
+  {
+   "cue": "S1-run-accel",
+   "shot": "S01-B01-SH06",
+   "frame": 392,
+   "brief": "S1 tick run accelerating with the needle (one tick per 25 km/h) to f553",
+   "id": "ui_click-tick_01",
+   "origin": "library",
+   "fit": "counter tick, one per gauge step",
+   "lengthFrames": 161,
+   "level": "SFX texture; Editor builds the accelerating run, last tick at f553"
+  },
+  {
+   "cue": "R1-riser",
+   "shot": "S01-B01-SH06",
+   "frame": 411,
+   "brief": "R1 fall riser from +19 [f411]; the file is 4.75 s = 142.5 f, so it stops dead at its peak on the slam f553 (shot 7 +95) with no time-stretch",
+   "id": "tension_dark-riser-sub-pulse_01",
+   "origin": "generated",
+   "lengthFrames": 143,
+   "level": "accent, builds to -6..3 dV peak at the stop",
+   "loop": true,
+   "note": "F553 = shot 7 +95; hard cut at the f553/f554 boundary; D1 and every layer out f554-564"
+  },
+  {
+   "cue": "S4-double-tick",
+   "shot": "S01-B01-SH07",
+   "frame": 484,
+   "brief": "S4 low double tick at the 1 km marker",
+   "id": "ui_click-tick_01",
+   "origin": "library",
+   "fit": "ui_click-tick_01 doubled low, as the brief names it",
+   "lengthFrames": 6,
+   "level": "low double (Editor pitches the tick down, two hits 3 f apart)"
+  },
+  {
+   "cue": "S1-hard-tick",
+   "shot": "S01-B01-SH07",
+   "frame": 553,
+   "brief": "S1 hard tick as R1 stops dead",
+   "id": "ui_click-tick_01",
+   "origin": "library",
+   "fit": "counter tick; brief +95",
+   "lengthFrames": 3,
+   "level": "hard, at the accent level"
+  },
+  {
+   "cue": "D1-b",
+   "shot": "S01-B01-SH08",
+   "frame": 565,
+   "brief": "D1 thin only through the bullet-time freeze and V01",
+   "id": "tension_airless-glass-drone_01",
+   "origin": "generated",
+   "lengthFrames": 121,
+   "level": "-24 dB (thin: Editor low-passes if it competes with S5)",
+   "loop": true,
+   "fade": "fade in 0.2 s from f565; out at f686 on the colour cut",
+   "note": "restarts after the silence f554-564"
+  },
+  {
+   "cue": "S5-bb-1",
+   "shot": "S01-B01-SH08",
+   "frame": 589,
+   "brief": "S5 BB tick",
+   "id": "impact_bb-pellet-tick_01",
+   "origin": "generated",
+   "lengthFrames": 5,
+   "level": "accent"
+  },
+  {
+   "cue": "S5-bb-2",
+   "shot": "S01-B01-SH08",
+   "frame": 621,
+   "brief": "S5 BB tick",
+   "id": "impact_bb-pellet-tick_01",
+   "origin": "generated",
+   "lengthFrames": 5,
+   "level": "accent"
+  },
+  {
+   "cue": "S6-sting",
+   "shot": "S01-B01-SH09",
+   "frame": 650,
+   "brief": "S6 skin sting",
+   "id": "foley_water-drop-skin-sting_01",
+   "origin": "generated",
+   "lengthFrames": 7,
+   "level": "accent, in the silence (no ambience)"
+  },
+  {
+   "cue": "A1-back",
+   "shot": "S01-B02-SH01",
+   "frame": 686,
+   "brief": "A1 back on +0 at full gap level (release), then -12 dB under NAR; plays to the end",
+   "id": "weather_tin-roof-rain-shelter_01",
+   "origin": "generated",
+   "lengthFrames": 1128,
+   "level": "full gap level at f686, then -12 under NAR / -6 in gaps; B02-SH02 -10 dB; macro B03-B04 low-passed ~800 Hz at -10 dB (Editor makes it from A1); B05 -4 dB",
+   "loop": true,
+   "fade": "fade to zero by f1814",
+   "note": "the file is 8 s (240 f): Editor loops it with its crossfade"
+  },
+  {
+   "cue": "A2-back",
+   "shot": "S01-B02-SH01",
+   "frame": 686,
+   "brief": "A2 back on +0, lower than A1 from B02-SH03; plays to the end",
+   "id": "city_wet-road-rain-bus_01",
+   "origin": "generated",
+   "lengthFrames": 1128,
+   "level": "below A1; in B05 lower than A1",
+   "loop": true,
+   "fade": "fade to zero by f1814",
+   "note": "the file is 10.5 s (315 f): Editor loops it"
+  },
+  {
+   "cue": "M1-bed",
+   "shot": "S01-B02-SH01",
+   "frame": 686,
+   "brief": "M1 rain explainer bed enters on the colour cut f686; thinned/lifted by Editor per shot energy",
+   "id": "bed_kalimba-rain-explainer_02",
+   "origin": "generated",
+   "lengthFrames": 1040,
+   "level": "-14 dB under NAR; thin to energy 1.5 in B03 macro, lift to 2.5 at the burst (f1484)",
+   "fade": "none; the file ends on its own phrase end at file 34.65 s = f1725 (inside the sheet window f1723-1728, under E1 on f1723); 30 ms taper in the file, 40 ms anti-click in the mix. Fallback if Editor hears a clash: fade over f1708-1716",
+   "note": "_02 = the _01 take (seed 1810836893) with its natural ending kept: _01 was trimmed at 34.4 s and stopped 81 f short of the R4.1 phrase end; play the whole file, no time-stretch; file 34.65 s (1040 f)"
+  },
+  {
+   "cue": "S3-pluck-warm",
+   "shot": "S01-B02-SH01",
+   "frame": 710,
+   "brief": "S3 pluck, warmer (Editor adds a little room)",
+   "id": "reveal_glass-pluck-ring_01",
+   "origin": "generated",
+   "lengthFrames": 19,
+   "level": "accent, release"
+  },
+  {
+   "cue": "whoosh-fall",
+   "shot": "S01-B02-SH02",
+   "frame": 751,
+   "brief": "whoosh_shaft-fall-air-rush_01 from +0, gain up through C11, steady from +119",
+   "id": "whoosh_shaft-fall-air-rush_01",
+   "origin": "library",
+   "fit": "'Hollow air rush past at speed in a shaft, 4.0 s loop; ride gain up for acceleration': a falling drop's air rush, loop for the 163 f shot; not listened",
+   "lengthFrames": 178,
+   "level": "texture, gain rides up to +119 then steady",
+   "loop": true
+  },
+  {
+   "cue": "S1-ticks-slow",
+   "shot": "S01-B02-SH02",
+   "frame": 751,
+   "brief": "S1 ticks slowing +0-+148",
+   "id": "ui_click-tick_01",
+   "origin": "library",
+   "fit": "counter tick",
+   "lengthFrames": 148,
+   "level": "texture"
+  },
+  {
+   "cue": "S9-pop-arrow",
+   "shot": "S01-B02-SH02",
+   "frame": 852,
+   "brief": "S9 arrow icon",
+   "id": "ui_pop_01",
+   "origin": "library",
+   "fit": "soft round pop for an icon appearing",
+   "lengthFrames": 3,
+   "level": "texture"
+  },
+  {
+   "cue": "S7-brake",
+   "shot": "S01-B02-SH02",
+   "frame": 899,
+   "brief": "S7 brake whoosh-out",
+   "id": "whoosh_parachute-ease-out_01",
+   "origin": "generated",
+   "lengthFrames": 38,
+   "level": "accent, tail runs about 10 f into shot 12"
+  },
+  {
+   "cue": "S8-bike",
+   "shot": "S01-B02-SH03",
+   "frame": 956,
+   "brief": "S8 road bike pass +27-+63, centre +54 (file peak at 0.9 s)",
+   "id": "vehicle_bike-pass-rain_01",
+   "origin": "generated",
+   "lengthFrames": 39,
+   "level": "texture/accent, centre of the pass on f983"
+  },
+  {
+   "cue": "S1-ticks-needleA",
+   "shot": "S01-B02-SH03",
+   "frame": 934,
+   "brief": "S1 ticks on needle A +5-+54",
+   "id": "ui_click-tick_01",
+   "origin": "library",
+   "fit": "counter tick",
+   "lengthFrames": 49,
+   "level": "softer"
+  },
+  {
+   "cue": "S1-ticks-needleB",
+   "shot": "S01-B02-SH03",
+   "frame": 994,
+   "brief": "S1 ticks on needle B +65-+98 (softer)",
+   "id": "ui_click-tick_01",
+   "origin": "library",
+   "fit": "counter tick",
+   "lengthFrames": 33,
+   "level": "softer"
+  },
+  {
+   "cue": "S9-pop-bun",
+   "shot": "S01-B03-SH01",
+   "frame": 1039,
+   "brief": "S9 bun/bag icon pop",
+   "id": "ui_pop_01",
+   "origin": "library",
+   "fit": "soft round pop",
+   "lengthFrames": 3,
+   "level": "texture"
+  },
+  {
+   "cue": "S10-nope",
+   "shot": "S01-B03-SH01",
+   "frame": 1066,
+   "brief": "S10 nope pluck on the cross-out",
+   "id": "comedy_kalimba-nope_01",
+   "origin": "generated",
+   "lengthFrames": 21,
+   "level": "accent"
+  },
+  {
+   "cue": "S11-plip-offscreen",
+   "shot": "S01-B03-SH02",
+   "frame": 1104,
+   "brief": "S11 plip, off-screen landing",
+   "id": "water_drop-plip-puddle_01",
+   "origin": "generated",
+   "lengthFrames": 9,
+   "level": "accent"
+  },
+  {
+   "cue": "S12-squash",
+   "shot": "S01-B03-SH03",
+   "frame": 1130,
+   "brief": "S12 squash +17-+43",
+   "id": "foley_water-balloon-squash_01",
+   "origin": "generated",
+   "lengthFrames": 27,
+   "level": "accent/texture"
+  },
+  {
+   "cue": "S9-pop-bag",
+   "shot": "S01-B03-SH03",
+   "frame": 1193,
+   "brief": "S9 pop",
+   "id": "ui_pop_01",
+   "origin": "library",
+   "fit": "soft round pop",
+   "lengthFrames": 3,
+   "level": "texture"
+  },
+  {
+   "cue": "S13-shrug",
+   "shot": "S01-B04-SH01",
+   "frame": 1234,
+   "brief": "S13 question figure on L08 (on 'แต่...')",
+   "id": "stinger_pizz-shrug_01",
+   "origin": "library",
+   "fit": "'Two plucked pizzicato notes, low then questioning higher, comic shrug sting, 1.2 s': the brief's 'why?' figure; not listened",
+   "lengthFrames": 36,
+   "level": "accent, in a gap"
+  },
+  {
+   "cue": "S9-pop-bubble",
+   "shot": "S01-B04-SH01",
+   "frame": 1292,
+   "brief": "S9 thought bubble pop",
+   "id": "ui_pop_01",
+   "origin": "library",
+   "fit": "soft round pop",
+   "lengthFrames": 3,
+   "level": "texture"
+  },
+  {
+   "cue": "S14-wobble",
+   "shot": "S01-B04-SH01",
+   "frame": 1293,
+   "brief": "S14 wobble +72-+102",
+   "id": "foley_water-balloon-wobble_01",
+   "origin": "generated",
+   "lengthFrames": 33,
+   "level": "texture"
+  },
+  {
+   "cue": "S15-creak",
+   "shot": "S01-B04-SH02",
+   "frame": 1352,
+   "brief": "S15 hollowing creak +20-+64",
+   "id": "foley_wet-film-creak-rise_01",
+   "origin": "generated",
+   "lengthFrames": 45,
+   "level": "texture, rises through the shot"
+  },
+  {
+   "cue": "S9-pop-17",
+   "shot": "S01-B04-SH02",
+   "frame": 1404,
+   "brief": "S9 pop",
+   "id": "ui_pop_01",
+   "origin": "library",
+   "fit": "soft round pop",
+   "lengthFrames": 3,
+   "level": "texture"
+  },
+  {
+   "cue": "S17-ruler",
+   "shot": "S01-B04-SH03",
+   "frame": 1457,
+   "brief": "S17 ruler appearing tick",
+   "id": "ui_click-tick_01",
+   "origin": "library",
+   "fit": "counter tick",
+   "lengthFrames": 3,
+   "level": "texture"
+  },
+  {
+   "cue": "S16-burst",
+   "shot": "S01-B04-SH03",
+   "frame": 1484,
+   "brief": "S16 burst: soft wet snap, then scattering pieces over about 0.4 s",
+   "id": "water_film-burst-scatter_01",
+   "origin": "generated",
+   "lengthFrames": 16,
+   "level": "accent, -6..3 dV at the burst; M1 lifts to 2.5 here",
+   "note": "composite of two SA3 takes; about 12 resolved pieces, not the 16 of the picture"
+  },
+  {
+   "cue": "S19-sleeve",
+   "shot": "S01-B05-SH01",
+   "frame": 1535,
+   "brief": "S19 sleeve rustle",
+   "id": "foley_cotton-sleeve-rustle_01",
+   "origin": "generated",
+   "lengthFrames": 8,
+   "level": "texture, quiet (file is tiny)"
+  },
+  {
+   "cue": "S18-first-pat",
+   "shot": "S01-B05-SH01",
+   "frame": 1584,
+   "brief": "S18 first single pat (first 0.3 s of the file)",
+   "id": "water_palm-raindrop-pats_01",
+   "origin": "generated",
+   "lengthFrames": 9,
+   "level": "texture",
+   "note": "play file 0-0.3 s only"
+  },
+  {
+   "cue": "S18-pats",
+   "shot": "S01-B05-SH02",
+   "frame": 1610,
+   "brief": "S18 palm pats +5-+136",
+   "id": "water_palm-raindrop-pats_01",
+   "origin": "generated",
+   "lengthFrames": 132,
+   "level": "texture, light",
+   "fade": "loop point: file is 105 f, Editor crossfades a repeat for the last 12 f"
+  },
+  {
+   "cue": "E1-tag",
+   "shot": "S01-B05-SH02",
+   "frame": 1723,
+   "brief": "E1 ending tag, rings out through the hold; M1 ends under it",
+   "id": "stinger_kalimba-drops-tag_01",
+   "origin": "generated",
+   "lengthFrames": 71,
+   "level": "accent at -6..3 dV; rings out to about f1794, inside the 55 f hold",
+   "loop": true
+  },
+  {
+   "cue": "S19-pizz-tag",
+   "shot": "S01-B05-SH03",
+   "frame": 1757,
+   "brief": "User review note 10 Nov 2026: bring EP02's closing string (pizzicato) tag back on the giggle ending; lands as V02 ends (voice silent from f1757), rings through the hold",
+   "id": "stinger_pizz-tag-ending_01",
+   "origin": "library",
+   "fit": "'Warm playful pizzicato and marimba tag ending resolving on a ringing final chord, 2.5 s' is the file EP02 used at its ending (raw edu2-pizz-tag_v2, c1726, 1.4 s); chord reads C major 7, same centre as M1's last chord and E1; short plucked resolve answers the giggle; not listened, checked by sidecar and measured envelope (loud 1.0 s, decaying to -20 dB by 1.25 s)",
+   "lengthFrames": 57,
+   "level": "accent at dV 0 (M max -10.2), 0.5 s fade to the f1814 silence; under E1's decay, after the V02 giggle",
+   "fade": "0.5 s fade out ending f1814 (silence policy)"
+  },
+  {
+   "cue": "S18-pats-sparse",
+   "shot": "S01-B05-SH03",
+   "frame": 1742,
+   "brief": "S18 pats sparser through shot 21",
+   "id": "water_palm-raindrop-pats_01",
+   "origin": "generated",
+   "lengthFrames": 55,
+   "level": "-6 dB vs shot 20, fading out",
+   "fade": "fade out over the shot, zero by f1814"
+  }
+ ],
+ "swaps": [],
+ "exempt": [
+  {
+   "src": "audio/edu/EDU-EP14-SHORT-draft-stem-v1.wav",
+   "reason": "stem baked by sound-mix.py (Editor W5.3)"
+  },
+  {
+   "src": "out/stems/bed.wav",
+   "reason": "per-layer stem written by sound-mix.py for mix-levels.py"
+  },
+  {
+   "src": "out/stems/texture.wav",
+   "reason": "per-layer stem written by sound-mix.py for mix-levels.py"
+  },
+  {
+   "src": "out/stems/accent.wav",
+   "reason": "per-layer stem written by sound-mix.py for mix-levels.py"
+  },
+  {
+   "src": "out/stems/voice.wav",
+   "reason": "voice stem (narration copy) written by sound-mix.py for mix-levels.py"
+  }
+ ],
+ "levels": {
+  "stems": {
+   "voice": "out/stems/voice.wav",
+   "bed": "out/stems/bed.wav",
+   "texture": "out/stems/texture.wav",
+   "accent": "out/stems/accent.wav"
+  },
+  "checks": [
+   {
+    "beat": "B01",
+    "layer": "background",
+    "when": "speech",
+    "min": 15,
+    "fromSec": 0,
+    "toSec": 22.867
+   },
+   {
+    "beat": "B01",
+    "layer": "bed",
+    "when": "speech",
+    "warnAbove": 20,
+    "fromSec": 0,
+    "toSec": 22.867
+   },
+   {
+    "beat": "B01",
+    "layer": "texture",
+    "when": "speech",
+    "min": 18,
+    "fromSec": 0,
+    "toSec": 22.867
+   },
+   {
+    "beat": "B02",
+    "layer": "background",
+    "when": "speech",
+    "min": 15,
+    "fromSec": 22.867,
+    "toSec": 34.633
+   },
+   {
+    "beat": "B02",
+    "layer": "bed",
+    "when": "speech",
+    "warnAbove": 20,
+    "fromSec": 22.867,
+    "toSec": 34.633
+   },
+   {
+    "beat": "B02",
+    "layer": "texture",
+    "when": "speech",
+    "min": 18,
+    "fromSec": 22.867,
+    "toSec": 34.633
+   },
+   {
+    "beat": "B03",
+    "layer": "background",
+    "when": "speech",
+    "min": 15,
+    "fromSec": 34.633,
+    "toSec": 40.7
+   },
+   {
+    "beat": "B03",
+    "layer": "bed",
+    "when": "speech",
+    "warnAbove": 20,
+    "fromSec": 34.633,
+    "toSec": 40.7
+   },
+   {
+    "beat": "B03",
+    "layer": "texture",
+    "when": "speech",
+    "min": 18,
+    "fromSec": 34.633,
+    "toSec": 40.7
+   },
+   {
+    "beat": "B04",
+    "layer": "background",
+    "when": "speech",
+    "min": 15,
+    "fromSec": 40.7,
+    "toSec": 50.667
+   },
+   {
+    "beat": "B04",
+    "layer": "bed",
+    "when": "speech",
+    "warnAbove": 20,
+    "fromSec": 40.7,
+    "toSec": 50.667
+   },
+   {
+    "beat": "B04",
+    "layer": "texture",
+    "when": "speech",
+    "min": 18,
+    "fromSec": 40.7,
+    "toSec": 50.667
+   },
+   {
+    "beat": "B05",
+    "layer": "background",
+    "when": "speech",
+    "min": 15,
+    "fromSec": 50.667,
+    "toSec": 60.5
+   },
+   {
+    "beat": "B05",
+    "layer": "bed",
+    "when": "speech",
+    "warnAbove": 20,
+    "fromSec": 50.667,
+    "toSec": 60.5
+   },
+   {
+    "beat": "B05",
+    "layer": "texture",
+    "when": "speech",
+    "min": 18,
+    "fromSec": 50.667,
+    "toSec": 60.5
+   },
+   {
+    "beat": "B01",
+    "layer": "bed",
+    "when": "peak",
+    "min": 30,
+    "fromSec": 6.57,
+    "toSec": 9.5,
+    "note": "L02a near silence, drop window"
+   },
+   {
+    "beat": "B01",
+    "layer": "accent",
+    "when": "peak",
+    "min": -6,
+    "max": 3,
+    "fromSec": 17.03,
+    "toSec": 18.53,
+    "note": "R1 dead stop f553, in a gap"
+   },
+   {
+    "beat": "B02",
+    "layer": "bed",
+    "when": "peak",
+    "min": 0,
+    "fromSec": 22.87,
+    "toSec": 24.37,
+    "note": "release: M1 and A1/A2 back, never above the voice"
+   },
+   {
+    "beat": "B04",
+    "layer": "accent",
+    "when": "peak",
+    "min": -6,
+    "max": 3,
+    "fromSec": 49.4,
+    "toSec": 50.3,
+    "note": "S16 burst f1484"
+   },
+   {
+    "beat": "B05",
+    "layer": "accent",
+    "when": "peak",
+    "min": -6,
+    "max": 3,
+    "fromSec": 57.33,
+    "toSec": 59.93,
+    "note": "E1 tag and ring-out"
+   }
+  ]
+ }
+}

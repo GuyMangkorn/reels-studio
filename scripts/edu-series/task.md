@@ -144,3 +144,7 @@ W2 done 2026-11-09: Film brief R1 (VD01–VD31), storyboard ROWS-R1.0 (25 shots,
 ## EDU-EP13-SHORT
 
 **Now:** W1 done 2026-11-09 (script R2 approved). W2 Film brief and storyboard next. Detail: [ep13/task.md](ep13/task.md).
+
+## EDU-EP14-SHORT
+
+**Now:** W1 done 2026-11-09 (script R4 approved by user). W2 Film brief and storyboard next. Detail: [ep14/task.md](ep14/task.md).

@@ -358,10 +358,12 @@ export type FingerPose = {mcp: number; pip: number; dip: number; abd?: number};
 export type ThumbPose = {cmc: number; cmcAbd: number; mcp: number; ip: number};
 export type MacroTone = HandTone & {spots?: string};
 /** Hand tones from the EP09 brief colour table (the pianist uses `DEFAULT_HAND_TONE`). */
-export const MACRO_TONES: Record<'boy' | 'elder' | 'generic', MacroTone> = {
+export const MACRO_TONES: Record<'boy' | 'elder' | 'generic' | 'girl', MacroTone> = {
   boy: {skin: '#f0c29a', shade: '#d9a073', deep: '#c48c62', nail: '#f6dcc8', crease: '#a8724f', sleeve: '#f4f4f0', sleeveShade: '#d8d8d2'},
   elder: {skin: '#d9a77c', shade: '#b98257', deep: '#a67048', nail: '#ead2bd', crease: '#8f5f40', sleeve: '#7a5638', sleeveShade: '#5f432b', spots: '#b07a55'},
   generic: {...DEFAULT_HAND_TONE, sleeve: '#2f3542', sleeveShade: '#242a35'},
+  // EDU-EP14 N14 (Boss W5.2): the school girl's hand, lighter and warmer than boy; white short sleeve (the uniform blouse)
+  girl: {skin: '#f2c8a2', shade: '#dea87d', deep: '#cb9468', nail: '#f8e0d0', crease: '#b07a58', sleeve: '#f6f6f2', sleeveShade: '#dcdcd6'},
 };
 
 export type HandMacro = {
@@ -924,11 +926,18 @@ const DANGLE: HandPose = {
   thumb: {cmc: 6, cmcAbd: 30, mcp: 10, ip: 8},
   note: 'hand-lifted-dangle: palm down, fingers hanging (MCP 15, PIP 25, DIP 10), no tip touches the table; raise the wrist above `plane`',
 };
-export type HandPoseId = 'flat' | 'test-fold-middle' | 'ring-strain' | 'hand-lifted-dangle';
+// EDU-EP14 N14 `palm-up-open` (Boss W5.2): palm up (roll 180), level, fingers together and slightly cupped (MCP 8, PIP 14, DIP 6), thumb relaxed out; raise the wrist above `plane`.
+const PALM_UP: HandPose = {
+  pitch: 0, roll: 180, wristRise: 1.2, fingers: {index: straight(8, 14, 6), middle: straight(8, 14, 6), ring: straight(9, 14, 6), little: straight(10, 14, 6)},
+  thumb: {cmc: 6, cmcAbd: 38, mcp: 8, ip: 6},
+  note: 'palm-up-open: palm up, fingers together and slightly cupped, thumb relaxed out (catching rain)',
+};
+export type HandPoseId = 'flat' | 'test-fold-middle' | 'ring-strain' | 'hand-lifted-dangle' | 'palm-up-open';
 export const HAND_POSES: Record<HandPoseId, HandPose> = {
   flat: FLAT,
   'test-fold-middle': TP,
   'hand-lifted-dangle': DANGLE,
+  'palm-up-open': PALM_UP,
   'ring-strain': {...TP, strain: {ring: 1}, note: 'TP with the ring pressed down: knuckle skin tight; add `tremble` {finger: ring} from the shot'},
 };
 /** Tip rise (cm at size 1, above the pose's resting tip) of the lifts from TP the brief lists; the ring hair-lift is 0.4, the diagram lift 0.3. */
