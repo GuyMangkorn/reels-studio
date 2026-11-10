@@ -1,0 +1,1067 @@
+{
+  "deliverable": "EDU-EP16-SHORT",
+  "sceneSheets": "EDU-EP16-ROWS-R2.0",
+  "video": "src/videos/edu-ep16",
+  "fps": 30,
+  "totalFrames": 1632,
+  "frameClock": "global composition frames at 30 fps (shot start + shot-local offset, ROWS-R2.0 shot map)",
+  "sources": [
+    "src/videos/edu-ep16",
+    "scripts/edu-series/ep16/sound-mix.py"
+  ],
+  "cues": [
+    {
+      "cue": "B01-A1",
+      "shot": "S01-B01-SH01",
+      "frame": 0,
+      "brief": "A1 morning songbirds and leaf breeze from +0 (loops to f1260)",
+      "id": "outdoor_park-birds-breeze_01",
+      "origin": "library",
+      "lengthFrames": 1260,
+      "level": "-14 dB under NAR, -8 dB in gaps; thin and dipped at B04-SH03 aerial (Editor low-passes) and thin in winter B05-SH01 +0-+36; fade into A2 over f1250-f1260",
+      "loop": true,
+      "layer": "bed",
+      "fit": "Film candidate tested: library prompt is \"small songbirds in a park with leaves rustling, gentle birdsong, light breeze, no traffic, park morning\", no corvid word, which is what a campus morning needs; checked from the sidecar prompt and not listened, so Editor/user confirm no crow call in the first listen"
+    },
+    {
+      "cue": "B01-A1b",
+      "shot": "S01-B01-SH01",
+      "frame": 6,
+      "brief": "A1b one distant crow caw far across the lawns, single, light reverb",
+      "id": "creature_crow-far-caw_01",
+      "origin": "generated",
+      "lengthFrames": 33,
+      "level": "far: about 6 dB under A1 peak, no music yet",
+      "layer": "accent"
+    },
+    {
+      "cue": "B01-S10",
+      "shot": "S01-B01-SH01",
+      "frame": 0,
+      "brief": "S10 MAN leather steps faint below, 6 m away, one step per 14 f",
+      "id": "foley_walk-leather-concrete_01",
+      "origin": "generated",
+      "lengthFrames": 80,
+      "level": "faint: well under A1, foley layer",
+      "layer": "texture"
+    },
+    {
+      "cue": "B02-C3-pop",
+      "shot": "S01-B01-SH02",
+      "frame": 88,
+      "brief": "C3 short tiny rough fledgling squeak as it pops up, close, 0.2 s",
+      "id": "creature_crow-young-squeak_01",
+      "origin": "generated",
+      "lengthFrames": 10,
+      "level": "accent in a syllable gap",
+      "layer": "accent"
+    },
+    {
+      "cue": "B02-M0",
+      "shot": "S01-B01-SH02",
+      "frame": 88,
+      "brief": "M0 soft low muted double thump like a slow heartbeat, one rise, no hit, 2 s",
+      "id": "tension_heartbeat-uneasy-rise_01",
+      "origin": "generated",
+      "lengthFrames": 63,
+      "level": "bed layer, never above the voice",
+      "layer": "bed"
+    },
+    {
+      "cue": "B02-C3",
+      "shot": "S01-B01-SH02",
+      "frame": 105,
+      "brief": "C3 young begging-scold \"aah\", higher, rough, wobbly, close, 0.5 s",
+      "id": "creature_crow-young-scold_01",
+      "origin": "generated",
+      "lengthFrames": 23,
+      "level": "accent, -18 dB under NAR or in a gap",
+      "layer": "accent"
+    },
+    {
+      "cue": "B03-M1a",
+      "shot": "S01-B01-SH03",
+      "frame": 150,
+      "brief": "M1 sly campus bed enters (energy 2), plays file 0-9.93 s, cut dead by f448 (phrase end at 10 s)",
+      "id": "bed_sly-campus-pizz-kalimba_01",
+      "origin": "generated",
+      "lengthFrames": 298,
+      "level": "M1 -16 dB under NAR, -18 dB under the chorus",
+      "fade": "none: cut dead on f448 (B02-SH01 +0), no tail",
+      "fromSec": 0.0,
+      "layer": "bed"
+    },
+    {
+      "cue": "B03-S1s",
+      "shot": "S01-B01-SH03",
+      "frame": 154,
+      "brief": "S1 short: two crows small hop-flaps, feathers and air, close-medium, 0.3 s",
+      "id": "action_crow-hop-flaps_01",
+      "origin": "generated",
+      "lengthFrames": 8,
+      "level": "accent, texture-quiet",
+      "layer": "accent"
+    },
+    {
+      "cue": "B03-S5",
+      "shot": "S01-B01-SH03",
+      "frame": 191,
+      "brief": "S5 soft nylon net lowering on a pole and settling on grass, hushed swish, 0.7 s",
+      "id": "foley_net-swish-grass_01",
+      "origin": "generated",
+      "lengthFrames": 33,
+      "level": "texture, under NAR (net-down anchor f199)",
+      "layer": "texture"
+    },
+    {
+      "cue": "B04-S4",
+      "shot": "S01-B01-SH04",
+      "frame": 243,
+      "brief": "S4 plastic leg band snapping shut, one tiny crisp click, 0.15 s",
+      "id": "foley_leg-band-click_01",
+      "origin": "generated",
+      "lengthFrames": 6,
+      "level": "accent in a gap on the ring-closes frame f243",
+      "layer": "accent"
+    },
+    {
+      "cue": "B04-S1",
+      "shot": "S01-B01-SH04",
+      "frame": 259,
+      "brief": "S1 a crow springing up, three or four strong wingbeats, 0.6 s",
+      "id": "action_crow-takeoff-flaps_01",
+      "origin": "generated",
+      "lengthFrames": 20,
+      "level": "accent",
+      "layer": "accent"
+    },
+    {
+      "cue": "B05-S10",
+      "shot": "S01-B01-SH05",
+      "frame": 278,
+      "brief": "S10 leather steps close, one per 14 f",
+      "id": "foley_walk-leather-concrete_01",
+      "origin": "generated",
+      "lengthFrames": 61,
+      "level": "foley, 18 dV under NAR",
+      "layer": "texture"
+    },
+    {
+      "cue": "B05-C2",
+      "shot": "S01-B01-SH05",
+      "frame": 333,
+      "brief": "C2 one harsh adult caw with a short burst after it, loud, close, 0.6 s (the mob about to start)",
+      "id": "creature_crow-adult-scold_01",
+      "origin": "generated",
+      "lengthFrames": 24,
+      "level": "accent at the end of the shot; sits before the next narration phrase",
+      "layer": "accent"
+    },
+    {
+      "cue": "B06-C1",
+      "shot": "S01-B01-SH06",
+      "frame": 339,
+      "brief": "C1 crow mob chorus enters (energy 3), loop, near and far in the trees",
+      "id": "creature_crow-mob-chorus_01",
+      "origin": "generated",
+      "lengthFrames": 109,
+      "level": "C1 -10 dB under NAR, up to -4 dB in the gaps (Film brief ducking)",
+      "loop": true,
+      "fade": "none: cut dead on f448",
+      "layer": "chorus"
+    },
+    {
+      "cue": "B06-C1L",
+      "shot": "S01-B01-SH06",
+      "frame": 339,
+      "brief": "C1 near-left stem, panned with the row",
+      "id": "creature_crow-mob-chorus-left_01",
+      "origin": "generated",
+      "lengthFrames": 109,
+      "level": "-6 dB under C1",
+      "loop": true,
+      "fade": "none: cut dead on f448",
+      "layer": "chorus"
+    },
+    {
+      "cue": "B06-C1R",
+      "shot": "S01-B01-SH06",
+      "frame": 339,
+      "brief": "C1 near-right stem, panned with the row",
+      "id": "creature_crow-mob-chorus-right_01",
+      "origin": "generated",
+      "lengthFrames": 109,
+      "level": "-6 dB under C1",
+      "loop": true,
+      "fade": "none: cut dead on f448",
+      "layer": "chorus"
+    },
+    {
+      "cue": "B06-C2-f353",
+      "shot": "S01-B01-SH06",
+      "frame": 353,
+      "brief": "C2 accent (row scolding) at +14",
+      "id": "creature_crow-adult-scold_02",
+      "origin": "generated",
+      "lengthFrames": 26,
+      "level": "accent in the chorus",
+      "layer": "accent"
+    },
+    {
+      "cue": "B06-C2-f369",
+      "shot": "S01-B01-SH06",
+      "frame": 369,
+      "brief": "C2 accent at +30",
+      "id": "creature_crow-adult-scold_03",
+      "origin": "generated",
+      "lengthFrames": 12,
+      "level": "accent in the chorus",
+      "layer": "accent"
+    },
+    {
+      "cue": "B06-S1",
+      "shot": "S01-B01-SH06",
+      "frame": 379,
+      "brief": "S1 two birds take-off flaps on the leapfrog lift, 0.6 s",
+      "id": "action_crow-takeoff-flaps_01",
+      "origin": "generated",
+      "lengthFrames": 20,
+      "level": "accent",
+      "layer": "accent"
+    },
+    {
+      "cue": "B06-S3b-f393",
+      "shot": "S01-B01-SH06",
+      "frame": 393,
+      "brief": "S3 branch variant: wings braking onto leafy twigs, soft leaf rustle, no wire creak, 0.4 s",
+      "id": "action_crow-land-branch_01",
+      "origin": "generated",
+      "lengthFrames": 18,
+      "level": "texture, medium distance",
+      "layer": "texture"
+    },
+    {
+      "cue": "B06-S3b-f397",
+      "shot": "S01-B01-SH06",
+      "frame": 397,
+      "brief": "S3 branch variant second landing",
+      "id": "action_crow-land-branch_02",
+      "origin": "generated",
+      "lengthFrames": 16,
+      "level": "texture, medium distance",
+      "layer": "texture"
+    },
+    {
+      "cue": "B06-S3w-f401",
+      "shot": "S01-B01-SH06",
+      "frame": 401,
+      "brief": "S3 wire variant: short flutter and tiny grip creak, 0.4 s",
+      "id": "action_crow-land-wire_01",
+      "origin": "generated",
+      "lengthFrames": 15,
+      "level": "texture",
+      "layer": "texture"
+    },
+    {
+      "cue": "B06-S3w-f405",
+      "shot": "S01-B01-SH06",
+      "frame": 405,
+      "brief": "S3 wire variant second landing (tail runs 12 f into shot 7)",
+      "id": "action_crow-land-wire_02",
+      "origin": "generated",
+      "lengthFrames": 18,
+      "level": "texture",
+      "layer": "texture"
+    },
+    {
+      "cue": "B07-S2",
+      "shot": "S01-B01-SH07",
+      "frame": 408,
+      "brief": "S2 one large bird passing half a metre over a head, feathery whoosh with doppler, no call",
+      "id": "action_bird-pass-low_01",
+      "origin": "generated",
+      "lengthFrames": 23,
+      "level": "accent just before V01 (file f412); keep clear of V01 onset f420",
+      "layer": "accent"
+    },
+    {
+      "cue": "B07-S9",
+      "shot": "S01-B01-SH07",
+      "frame": 417,
+      "brief": "S9 hot coffee sloshing in a lidded cup as he ducks, small splash, 0.4 s",
+      "id": "foley_coffee-cup-slosh_01",
+      "origin": "generated",
+      "lengthFrames": 15,
+      "level": "accent, in the clear before V01 voice",
+      "layer": "accent"
+    },
+    {
+      "cue": "B08-S6",
+      "shot": "S01-B02-SH01",
+      "frame": 486,
+      "brief": "S6 rubber latex mask pulled up and off a head, stretchy squeak and soft slap, 0.7 s (_02: _01 with its 0.22 s quiet lead trimmed so the rip lands in the voice gap f499-517)",
+      "id": "foley_latex-mask-peel_02",
+      "origin": "generated",
+      "lengthFrames": 25,
+      "level": "alone in the gap: A1 only, -8 dB; accent at voice level",
+      "layer": "accent"
+    },
+    {
+      "cue": "B09-M1b",
+      "shot": "S01-B02-SH02",
+      "frame": 508,
+      "brief": "M1 resumes softly (energy 1.5) from file 10.0 s (phrase start), runs through f1034",
+      "id": "bed_sly-campus-pizz-kalimba_01",
+      "origin": "generated",
+      "lengthFrames": 526,
+      "level": "M1 -16 dB under NAR; energy steps: 1.5 at f508, a step faster at f612 (+0 of B03-SH01), 2.5 at f733, thin 1.5 at f838, out by f1034 (phrase end) with a short fade",
+      "fade": "fade out f1020-f1034 at a phrase end",
+      "fromSec": 10.0,
+      "layer": "bed"
+    },
+    {
+      "cue": "B09-S11",
+      "shot": "S01-B02-SH02",
+      "frame": 518,
+      "brief": "S11 perched crow fluffing feathers and running its bill through them, 0.6 s",
+      "id": "foley_crow-preen-ruffle_01",
+      "origin": "generated",
+      "lengthFrames": 31,
+      "level": "texture, calm indifference",
+      "layer": "texture"
+    },
+    {
+      "cue": "B09-S10",
+      "shot": "S01-B02-SH02",
+      "frame": 508,
+      "brief": "S10 leather steps",
+      "id": "foley_walk-leather-concrete_01",
+      "origin": "generated",
+      "lengthFrames": 38,
+      "level": "foley",
+      "layer": "texture"
+    },
+    {
+      "cue": "B10-S8",
+      "shot": "S01-B02-SH03",
+      "frame": 548,
+      "brief": "S8 stiff paper plate mask lifted to a face, papery rustle and elastic twang, 0.4 s",
+      "id": "foley_paper-mask-lift_01",
+      "origin": "generated",
+      "lengthFrames": 17,
+      "level": "accent, light",
+      "layer": "accent"
+    },
+    {
+      "cue": "B10-C4",
+      "shot": "S01-B02-SH03",
+      "frame": 585,
+      "brief": "C4 one flat low short adult caw, no follow-up, medium distance (\"meh\")",
+      "id": "creature_crow-bored-caw_01",
+      "origin": "generated",
+      "lengthFrames": 27,
+      "level": "accent, dry; no follow-up",
+      "layer": "accent"
+    },
+    {
+      "cue": "B11-S7",
+      "shot": "S01-B03-SH01",
+      "frame": 660,
+      "brief": "S7 rubber latex mask pulled down over a head, stretchy rub and a snap at the neck, 0.6 s",
+      "id": "foley_latex-mask-on_01",
+      "origin": "generated",
+      "lengthFrames": 29,
+      "level": "accent near \"หน้ากากอันนี้\" f660: speech >=12 dV or nudge +-3 f into a syllable gap",
+      "layer": "accent"
+    },
+    {
+      "cue": "B11-S10w1",
+      "shot": "S01-B03-SH01",
+      "frame": 680,
+      "brief": "F17 / R2.1: WOMAN's first sneaker step as she turns right and walks off (shot-local +68), head of the library footfall cut to 6 f; the same sound as shot 12's steps",
+      "id": "foley_walk-sneakers-asphalt_01",
+      "origin": "library",
+      "lengthFrames": 6,
+      "level": "foley, as B12-S10w",
+      "layer": "texture",
+      "fit": "Same file as B12-S10w: sidecar \"Unhurried walking sneakers on dry asphalt, close and dry\" fits the brief (a sneaker step on dry asphalt, close); only its first footfall is used, cut to 6 f; not listened"
+    },
+    {
+      "cue": "B11-S10w2",
+      "shot": "S01-B03-SH01",
+      "frame": 686,
+      "brief": "F17 / R2.1: WOMAN's second sneaker step as she turns right and walks off (shot-local +74), head of the library footfall cut to 6 f; the same sound as shot 12's steps",
+      "id": "foley_walk-sneakers-asphalt_01",
+      "origin": "library",
+      "lengthFrames": 6,
+      "level": "foley, as B12-S10w",
+      "layer": "texture",
+      "fit": "Same file as B12-S10w: sidecar \"Unhurried walking sneakers on dry asphalt, close and dry\" fits the brief (a sneaker step on dry asphalt, close); only its first footfall is used, cut to 6 f; not listened"
+    },
+    {
+      "cue": "B12-C1",
+      "shot": "S01-B03-SH02",
+      "frame": 688,
+      "brief": "C1 chorus back (same sound as B06: the same face), -10 dB under V02, runs to f1050 (distant from f838, rolls off from f989)",
+      "id": "creature_crow-mob-chorus_01",
+      "origin": "generated",
+      "lengthFrames": 362,
+      "level": "C1 -10 dB under V02/NAR, distant -14 dB from f838; roll off with widening reverb from f989 (Editor)",
+      "loop": true,
+      "fade": "roll-off and out by f1050",
+      "layer": "chorus"
+    },
+    {
+      "cue": "B12-S2",
+      "shot": "S01-B03-SH02",
+      "frame": 688,
+      "brief": "S2 one low pass (as shot 7)",
+      "id": "action_bird-pass-low_02",
+      "origin": "generated",
+      "lengthFrames": 14,
+      "level": "accent",
+      "layer": "accent"
+    },
+    {
+      "cue": "B12-S18",
+      "shot": "S01-B03-SH02",
+      "frame": 694,
+      "brief": "S18 canvas tote swung up over a head, cloth flap and rattle of keys, 0.5 s",
+      "id": "foley_tote-bag-lift_01",
+      "origin": "generated",
+      "lengthFrames": 13,
+      "level": "accent; V02 file starts f692, onset f700",
+      "layer": "accent"
+    },
+    {
+      "cue": "B12-S10w",
+      "shot": "S01-B03-SH02",
+      "frame": 692,
+      "brief": "WOMAN sneakers steps from +4 (Editor W5.3 R1: moved from f688 so the first footfall is 6 f after B11-S10w2 at f686, not a 2 f flam; library, fits \"unhurried walking sneakers on dry asphalt, close and dry\")",
+      "id": "foley_walk-sneakers-asphalt_01",
+      "origin": "library",
+      "lengthFrames": 41,
+      "level": "foley",
+      "layer": "texture",
+      "fit": "Film named it and the sidecar description \"Unhurried walking sneakers on dry asphalt, five or six even footfalls, close and dry, then silence\" matches the brief word for word; 3.8 s, cut to the shot, not listened"
+    },
+    {
+      "cue": "B13-S10",
+      "shot": "S01-B03-SH03",
+      "frame": 733,
+      "brief": "MAN leather steps calm in the clear on the left",
+      "id": "foley_walk-leather-concrete_01",
+      "origin": "generated",
+      "lengthFrames": 105,
+      "level": "foley, panned left",
+      "layer": "texture"
+    },
+    {
+      "cue": "B13-C1R",
+      "shot": "S01-B03-SH03",
+      "frame": 733,
+      "brief": "C1 kept on her side (screen right)",
+      "id": "creature_crow-mob-chorus-right_01",
+      "origin": "generated",
+      "lengthFrames": 105,
+      "level": "C1 -10 dB under NAR; stereo right, Editor pans",
+      "loop": true,
+      "layer": "chorus"
+    },
+    {
+      "cue": "B13-S12",
+      "shot": "S01-B03-SH03",
+      "frame": 796,
+      "brief": "S12 short low muted stinger under \"มันจำหน้า\"",
+      "id": "stinger_low-muted-hit_01",
+      "origin": "library",
+      "lengthFrames": 31,
+      "level": "accent over speech: >=12 dV, <= 2 s",
+      "layer": "accent",
+      "fit": "Film named it; sidecar \"Short low muted stinger hit with fast decay\" matches the brief (\"short low muted hit, fast decay\"); 1.0 s, not listened; kept as library because a dull low hit is generic and a new generation would not fit better"
+    },
+    {
+      "cue": "B14-S3w-f851",
+      "shot": "S01-B04-SH01",
+      "frame": 851,
+      "brief": "S3 wire landing at +13",
+      "id": "action_crow-land-wire_04",
+      "origin": "generated",
+      "lengthFrames": 18,
+      "level": "texture, close",
+      "layer": "texture"
+    },
+    {
+      "cue": "B14-S3w-f881",
+      "shot": "S01-B04-SH01",
+      "frame": 881,
+      "brief": "S3 wire landing at +43",
+      "id": "action_crow-land-wire_01",
+      "origin": "generated",
+      "lengthFrames": 18,
+      "level": "texture, close",
+      "layer": "texture"
+    },
+    {
+      "cue": "B14-S3w-f885",
+      "shot": "S01-B04-SH01",
+      "frame": 885,
+      "brief": "S3 wire landing at +47",
+      "id": "action_crow-land-wire_02",
+      "origin": "generated",
+      "lengthFrames": 18,
+      "level": "texture, close",
+      "layer": "texture"
+    },
+    {
+      "cue": "B14-S3w-f889",
+      "shot": "S01-B04-SH01",
+      "frame": 889,
+      "brief": "S3 wire landing at +51",
+      "id": "action_crow-land-wire_03",
+      "origin": "generated",
+      "lengthFrames": 18,
+      "level": "texture, close",
+      "layer": "texture"
+    },
+    {
+      "cue": "B14-S3w-f895",
+      "shot": "S01-B04-SH01",
+      "frame": 895,
+      "brief": "S3 wire landing at +57",
+      "id": "action_crow-land-wire_04",
+      "origin": "generated",
+      "lengthFrames": 18,
+      "level": "texture, close",
+      "layer": "texture"
+    },
+    {
+      "cue": "B14-S13-f853",
+      "shot": "S01-B04-SH01",
+      "frame": 853,
+      "brief": "S13 tiny dry talon ticks on a wire with a faint plastic tick on the band (the ringed one)",
+      "id": "foley_wire-talon-ticks_03",
+      "origin": "generated",
+      "lengthFrames": 9,
+      "level": "texture, quiet",
+      "layer": "texture"
+    },
+    {
+      "cue": "B14-S13-f883",
+      "shot": "S01-B04-SH01",
+      "frame": 883,
+      "brief": "S13 tiny dry talon ticks on a wire",
+      "id": "foley_wire-talon-ticks_01",
+      "origin": "generated",
+      "lengthFrames": 9,
+      "level": "texture, quiet",
+      "layer": "texture"
+    },
+    {
+      "cue": "B14-S13-f887",
+      "shot": "S01-B04-SH01",
+      "frame": 887,
+      "brief": "S13 tiny dry talon ticks on a wire",
+      "id": "foley_wire-talon-ticks_02",
+      "origin": "generated",
+      "lengthFrames": 9,
+      "level": "texture, quiet",
+      "layer": "texture"
+    },
+    {
+      "cue": "B14-S13-f891",
+      "shot": "S01-B04-SH01",
+      "frame": 891,
+      "brief": "S13 tiny dry talon ticks on a wire",
+      "id": "foley_wire-talon-ticks_01",
+      "origin": "generated",
+      "lengthFrames": 9,
+      "level": "texture, quiet",
+      "layer": "texture"
+    },
+    {
+      "cue": "B14-S13-f897",
+      "shot": "S01-B04-SH01",
+      "frame": 897,
+      "brief": "S13 tiny dry talon ticks on a wire",
+      "id": "foley_wire-talon-ticks_02",
+      "origin": "generated",
+      "lengthFrames": 9,
+      "level": "texture, quiet",
+      "layer": "texture"
+    },
+    {
+      "cue": "B15-C2-f948",
+      "shot": "S01-B04-SH02",
+      "frame": 948,
+      "brief": "C2 the ringed bird scold, background, medium distance",
+      "id": "creature_crow-adult-scold_02",
+      "origin": "generated",
+      "lengthFrames": 26,
+      "level": "background: about -8 dB under the close answer",
+      "layer": "accent"
+    },
+    {
+      "cue": "B15-C2-f965",
+      "shot": "S01-B04-SH02",
+      "frame": 965,
+      "brief": "C2 the ringless bird answer, close",
+      "id": "creature_crow-adult-scold_03",
+      "origin": "generated",
+      "lengthFrames": 12,
+      "level": "accent, close",
+      "layer": "accent"
+    },
+    {
+      "cue": "B16-A3",
+      "shot": "S01-B04-SH03",
+      "frame": 999,
+      "brief": "A3 high open air over a town, soft steady wind, far traffic wash, no birds, 6 s (lifted and far)",
+      "id": "outdoor_aerial-town-air_01",
+      "origin": "generated",
+      "lengthFrames": 100,
+      "level": "bed, -14 dB under NAR; A1 low-passed under it; fades out by f1094",
+      "loop": true,
+      "layer": "bed"
+    },
+    {
+      "cue": "B16-S15",
+      "shot": "S01-B04-SH03",
+      "frame": 1019,
+      "brief": "S15 gentle wind swell through full leaves, thinner through bare branches, soft again, 3 s, into shot 17 to +44",
+      "id": "weather_wind-season-swell_01",
+      "origin": "generated",
+      "lengthFrames": 75,
+      "level": "texture, 18 dV under NAR; the file fades its last 0.4 s",
+      "layer": "texture"
+    },
+    {
+      "cue": "B17-S14",
+      "shot": "S01-B05-SH01",
+      "frame": 1050,
+      "brief": "S14 soft airy whoosh that swells and eases out then settles, a gentle time jump",
+      "id": "whoosh_parachute-ease-out_01",
+      "origin": "library",
+      "lengthFrames": 38,
+      "level": "accent in the 0.60 s bridge gap",
+      "layer": "accent",
+      "fit": "Film named it; sidecar \"Soft airy whoosh that swells and eases out like a parachute filling, then settles, 1.26 s\" is the brief word for word (gentle time jump); 1.26 s fills the bridge gap; not listened"
+    },
+    {
+      "cue": "B17-M2a",
+      "shot": "S01-B05-SH01",
+      "frame": 1050,
+      "brief": "M2 slow low cool pad enters (energy 1.5); plays to f1539 then fades; the file falls lower in its second half on its own",
+      "id": "tone_cool-time-pad_01",
+      "origin": "generated",
+      "lengthFrames": 489,
+      "level": "bed -16 dB under NAR; energy 2 at L11 young caws, 0.5 at L12 (f1325+), holds a low note, lift a hair at +86 of shot 20 (f1480), out f1524-f1539 before V03",
+      "fade": "fade out f1524-f1539 (out before V03 at f1549)",
+      "layer": "bed"
+    },
+    {
+      "cue": "B17-S16",
+      "shot": "S01-B05-SH01",
+      "frame": 1092,
+      "brief": "S16 a crow pushing a dry twig into a stick nest, small woody crackle, 0.4 s",
+      "id": "foley_twig-nest-place_01",
+      "origin": "generated",
+      "lengthFrames": 12,
+      "level": "texture, close in a tree",
+      "layer": "texture"
+    },
+    {
+      "cue": "B18-C1s",
+      "shot": "S01-B05-SH02",
+      "frame": 1148,
+      "brief": "C1 small (two adults) from +0, quieter to read as a few birds, to f1250",
+      "id": "creature_crow-mob-chorus_01",
+      "origin": "generated",
+      "lengthFrames": 102,
+      "level": "C1 small: -16 dB under NAR; use the left stem only if the near-left stem fits the screen",
+      "loop": true,
+      "layer": "chorus"
+    },
+    {
+      "cue": "B18-C3-f1196",
+      "shot": "S01-B05-SH02",
+      "frame": 1196,
+      "brief": "C3 young call joins in the parent's rhythm, higher, rougher, close in a tree",
+      "id": "creature_crow-young-scold_01",
+      "origin": "generated",
+      "lengthFrames": 23,
+      "level": "accent, -18 dB under NAR",
+      "layer": "accent"
+    },
+    {
+      "cue": "B18-C3-f1204",
+      "shot": "S01-B05-SH02",
+      "frame": 1204,
+      "brief": "C3 young call joins in the parent's rhythm, higher, rougher, close in a tree",
+      "id": "creature_crow-young-scold_02",
+      "origin": "generated",
+      "lengthFrames": 23,
+      "level": "accent, -18 dB under NAR",
+      "layer": "accent"
+    },
+    {
+      "cue": "B18-C3-f1212",
+      "shot": "S01-B05-SH02",
+      "frame": 1212,
+      "brief": "C3 young call joins in the parent's rhythm, higher, rougher, close in a tree",
+      "id": "creature_crow-young-scold_03",
+      "origin": "generated",
+      "lengthFrames": 23,
+      "level": "accent, -18 dB under NAR",
+      "layer": "accent"
+    },
+    {
+      "cue": "B18-C3-f1220",
+      "shot": "S01-B05-SH02",
+      "frame": 1220,
+      "brief": "C3 young call joins in the parent's rhythm, higher, rougher, close in a tree",
+      "id": "creature_crow-young-scold_01",
+      "origin": "generated",
+      "lengthFrames": 23,
+      "level": "accent, -18 dB under NAR",
+      "layer": "accent"
+    },
+    {
+      "cue": "B19-A2",
+      "shot": "S01-B05-SH03",
+      "frame": 1250,
+      "brief": "A2 dusk on a quiet campus path, low breeze, very distant traffic, one far dog bark, no songbirds, 12 s loop (emptier, the day ending); crosses from A1 over f1250-f1260; fades to -inf over the last 30 f (f1602-f1632)",
+      "id": "outdoor_dusk-campus-path_01",
+      "origin": "generated",
+      "lengthFrames": 382,
+      "level": "-14 dB under NAR, -8 dB in gaps; very quiet source, A2 gain is mostly noise floor: set by ear",
+      "loop": true,
+      "fade": "fade out f1602-f1632; no loop seam audible at the end",
+      "layer": "bed"
+    },
+    {
+      "cue": "B19-C3-f1356",
+      "shot": "S01-B05-SH03",
+      "frame": 1356,
+      "brief": "C3 soft distant young call (thin, far)",
+      "id": "creature_crow-young-scold_02",
+      "origin": "generated",
+      "lengthFrames": 23,
+      "level": "far: -24 dB under NAR; low-pass with reverb (Editor)",
+      "layer": "accent"
+    },
+    {
+      "cue": "B19-C3-f1368",
+      "shot": "S01-B05-SH03",
+      "frame": 1368,
+      "brief": "C3 soft distant young call (thin, far)",
+      "id": "creature_crow-young-scold_03",
+      "origin": "generated",
+      "lengthFrames": 23,
+      "level": "far: -24 dB under NAR; low-pass with reverb (Editor)",
+      "layer": "accent"
+    },
+    {
+      "cue": "B19-C3-f1381",
+      "shot": "S01-B05-SH03",
+      "frame": 1381,
+      "brief": "C3 soft distant young call (thin, far)",
+      "id": "creature_crow-young-scold_01",
+      "origin": "generated",
+      "lengthFrames": 23,
+      "level": "far: -24 dB under NAR; low-pass with reverb (Editor)",
+      "layer": "accent"
+    },
+    {
+      "cue": "B20-S10w",
+      "shot": "S01-B05-SH04",
+      "frame": 1394,
+      "brief": "WALKER sneakers faint, receding (+0 to +25)",
+      "id": "foley_walk-sneakers-asphalt_01",
+      "origin": "library",
+      "lengthFrames": 25,
+      "level": "faint then out by f1419",
+      "layer": "texture",
+      "fit": "Same file as B12, sidecar \"Unhurried walking sneakers on dry asphalt, close and dry\"; used faint and receding, which is a level and fade matter, not a different sound; not listened"
+    },
+    {
+      "cue": "B20-V03",
+      "shot": "S01-B05-SH04",
+      "frame": 1549,
+      "brief": "V03 one sharp single young-crow caw, close and dry, slight rasp at the end, no echo, 0.5 s (it looks at you); onset on f1549",
+      "id": "creature_crow-young-caw-close_01",
+      "origin": "generated",
+      "lengthFrames": 12,
+      "level": "accent in the clear: no other sound but A2/S17 under it",
+      "layer": "accent",
+      "note": "file 0.384 s, onset at 0.04 s: Editor places the file start at f1548 so the caw sounds on f1549"
+    },
+    {
+      "cue": "B20-S17",
+      "shot": "S01-B05-SH04",
+      "frame": 1549,
+      "brief": "S17 perched bird feathers ruffling softly in a breeze, close, 3 s loop, fades to -inf over the last 30 f",
+      "id": "nature_feather-breeze-loop_01",
+      "origin": "generated",
+      "lengthFrames": 83,
+      "level": "very quiet; set by ear under A2",
+      "loop": true,
+      "fade": "fade out f1602-f1632",
+      "layer": "texture"
+    }
+  ],
+  "swaps": [],
+  "exempt": [
+    {
+      "src": "audio/edu/EDU-EP16-SHORT-draft-stem-v1.wav",
+      "reason": "stem baked by sound-mix.py (Editor W5.3)"
+    },
+    {
+      "src": "out/stems/voice.wav",
+      "reason": "voice stem (narration copy) written by sound-mix.py for mix-levels.py"
+    },
+    {
+      "src": "out/stems/bed.wav",
+      "reason": "per-layer stem written by sound-mix.py for mix-levels.py"
+    },
+    {
+      "src": "out/stems/chorus.wav",
+      "reason": "per-layer stem written by sound-mix.py for mix-levels.py"
+    },
+    {
+      "src": "out/stems/texture.wav",
+      "reason": "per-layer stem written by sound-mix.py for mix-levels.py"
+    },
+    {
+      "src": "out/stems/accent.wav",
+      "reason": "per-layer stem written by sound-mix.py for mix-levels.py"
+    }
+  ],
+  "levels": {
+    "stems": {
+      "voice": "out/stems/voice.wav",
+      "bed": "out/stems/bed.wav",
+      "chorus": "out/stems/chorus.wav",
+      "texture": "out/stems/texture.wav",
+      "accent": "out/stems/accent.wav"
+    },
+    "checks": [
+      {
+        "beat": "B01",
+        "layer": "background",
+        "when": "speech",
+        "min": 15,
+        "fromSec": 0,
+        "toSec": 11.3
+      },
+      {
+        "beat": "B01",
+        "layer": "bed",
+        "when": "speech",
+        "warnAbove": 20,
+        "fromSec": 0,
+        "toSec": 11.3
+      },
+      {
+        "beat": "B01",
+        "layer": "texture",
+        "when": "speech",
+        "min": 18,
+        "fromSec": 0,
+        "toSec": 11.3
+      },
+      {
+        "beat": "B02",
+        "layer": "background",
+        "when": "speech",
+        "min": 15,
+        "fromSec": 14.93,
+        "toSec": 16.6
+      },
+      {
+        "beat": "B02-S6",
+        "layer": "background",
+        "when": "speech",
+        "min": -2,
+        "fromSec": 16.6,
+        "toSec": 17.3,
+        "exception": "S6 mask peel sits alone in the voice gap f498-517 (Film Sound line: accent at voice level, A1 only); the meter counts the -45 dBFS breath steps at 16.9 and 17.1 s as speech"
+      },
+      {
+        "beat": "B02",
+        "layer": "background",
+        "when": "speech",
+        "min": 15,
+        "fromSec": 17.3,
+        "toSec": 20.4
+      },
+      {
+        "beat": "B02",
+        "layer": "bed",
+        "when": "speech",
+        "warnAbove": 20,
+        "fromSec": 14.93,
+        "toSec": 20.4
+      },
+      {
+        "beat": "B02",
+        "layer": "texture",
+        "when": "speech",
+        "min": 18,
+        "fromSec": 14.93,
+        "toSec": 20.4
+      },
+      {
+        "beat": "B03",
+        "layer": "background",
+        "when": "speech",
+        "min": 15,
+        "fromSec": 20.4,
+        "toSec": 22.93
+      },
+      {
+        "beat": "B03",
+        "layer": "bed",
+        "when": "speech",
+        "warnAbove": 20,
+        "fromSec": 20.4,
+        "toSec": 22.93
+      },
+      {
+        "beat": "B03",
+        "layer": "texture",
+        "when": "speech",
+        "min": 18,
+        "fromSec": 20.4,
+        "toSec": 22.93
+      },
+      {
+        "beat": "B04",
+        "layer": "background",
+        "when": "speech",
+        "min": 15,
+        "fromSec": 27.93,
+        "toSec": 35.0
+      },
+      {
+        "beat": "B04",
+        "layer": "bed",
+        "when": "speech",
+        "warnAbove": 20,
+        "fromSec": 27.93,
+        "toSec": 35.0
+      },
+      {
+        "beat": "B04",
+        "layer": "texture",
+        "when": "speech",
+        "min": 18,
+        "fromSec": 27.93,
+        "toSec": 35.0
+      },
+      {
+        "beat": "B05",
+        "layer": "background",
+        "when": "speech",
+        "min": 15,
+        "fromSec": 35.0,
+        "toSec": 54.4
+      },
+      {
+        "beat": "B05",
+        "layer": "bed",
+        "when": "speech",
+        "warnAbove": 20,
+        "fromSec": 35.0,
+        "toSec": 54.4
+      },
+      {
+        "beat": "B05",
+        "layer": "texture",
+        "when": "speech",
+        "min": 18,
+        "fromSec": 35.0,
+        "toSec": 54.4
+      },
+      {
+        "beat": "B01-mob",
+        "layer": "chorus",
+        "when": "speech",
+        "min": 10,
+        "fromSec": 11.3,
+        "toSec": 14.93,
+        "exception": "Film brief ducking: C1 -10 dB under NAR (the chorus is the story noise)"
+      },
+      {
+        "beat": "B01-mob",
+        "layer": "background",
+        "when": "speech",
+        "min": 8,
+        "fromSec": 11.3,
+        "toSec": 14.93,
+        "exception": "Film brief ducking: C1 -10 dB under NAR (the chorus is the story noise)"
+      },
+      {
+        "beat": "B03-mob",
+        "layer": "chorus",
+        "when": "speech",
+        "min": 10,
+        "fromSec": 22.93,
+        "toSec": 27.93,
+        "exception": "Film brief ducking: C1 -10 dB under NAR / V02 (the chorus is the story noise)"
+      },
+      {
+        "beat": "B03-mob",
+        "layer": "background",
+        "when": "speech",
+        "min": 8,
+        "fromSec": 22.93,
+        "toSec": 27.93,
+        "exception": "Film brief ducking: C1 -10 dB under NAR / V02 (the chorus is the story noise)"
+      },
+      {
+        "beat": "B05-C1small",
+        "layer": "chorus",
+        "when": "speech",
+        "min": 15,
+        "fromSec": 38.27,
+        "toSec": 41.67
+      },
+      {
+        "beat": "B05-C1small",
+        "layer": "background",
+        "when": "speech",
+        "min": 15,
+        "fromSec": 38.27,
+        "toSec": 41.67
+      },
+      {
+        "beat": "B02-S6",
+        "layer": "accent",
+        "when": "peak",
+        "min": -6,
+        "max": 3,
+        "fromSec": 16.1,
+        "toSec": 17.3
+      },
+      {
+        "beat": "B03-S12",
+        "layer": "accent",
+        "when": "speech",
+        "min": 12,
+        "fromSec": 26.4,
+        "toSec": 27.0,
+        "exception": "S12 under \"มันจำหน้า\" (Film brief), cue <= 2 s"
+      },
+      {
+        "beat": "B05-V03",
+        "layer": "accent",
+        "when": "peak",
+        "min": -6,
+        "max": 3,
+        "fromSec": 51.6,
+        "toSec": 52.2
+      }
+    ]
+  }
+}

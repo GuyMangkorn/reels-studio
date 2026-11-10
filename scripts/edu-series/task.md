@@ -152,3 +152,7 @@ W2 done 2026-11-09: Film brief R1 (VD01–VD31), storyboard ROWS-R1.0 (25 shots,
 ## EDU-EP15-SHORT
 
 **Now:** W0, W1 done 2026-11-10 (script R2 approved, read 49.2 s, video ≈57.5 s); W2 done 2026-11-10 (20 shots, review page https://claude.ai/artifact/Pn33VzZ1qBhBJwmjXvhAXn). Waiting for the user's storyboard verdicts, then W3. Detail: [ep15/task.md](ep15/task.md).
+
+## EDU-EP16-SHORT
+
+**Now:** W0 done 2026-11-10 (C45 อีกาจำหน้าคุณได้, user pick). W1 done 2026-11-10 (script R3 approved by user, video ≈54.2 s). W2 done 2026-11-10 (20 shots, review page https://claude.ai/artifact/SyqSUDmjKSdtEwuN1kNPSK). Verdicts in (all 20 ok; Q-F2/Q-F3 changed); ROWS-R1.1 written and republished at the same URL. User approved R1.1 (2026-11-10). W3 done (look frames passed 2026-11-10); W4 voice lock in progress. Detail: [ep16/task.md](ep16/task.md).

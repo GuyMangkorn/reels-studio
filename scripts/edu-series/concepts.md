@@ -1195,3 +1195,5 @@ User chose **C39 ถ้าหมัดตัวเท่าคน** (animal conc
 ## R8 — User pick (W0.3, 2026-11-10)
 
 User kept **C43, C44, C45, C46, C47** (structured question, two multi-select questions); **C48 not picked**. Episode order not yet chosen. Preaw's order: C46 > C45 > C43 > C44 > C47 (C48 last). Context: user asked Preaw for six more concepts, three about animals (C43–C45).
+
+**EP16 pick (2026-11-10):** user picked **C45 อีกาจำหน้าคุณได้ และบอกลูกมันด้วย** as the next episode, `EDU-EP16-SHORT` (Short Thai, assumed). Order so far: EP15 = C43; C44, C46, C47 not yet scheduled.
