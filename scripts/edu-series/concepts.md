@@ -1002,3 +1002,196 @@ All numbers are est. until Boat's research (flea body length and jump height, ma
 User chose **C39 ถ้าหมัดตัวเท่าคน** (animal concept) as the next episode, `EDU-EP13-SHORT` (Short Thai, assumed from EP01–EP12). The user said Film's annotation could be added, but C39 is wanted regardless of rank. Film ranked C39 first (size M). C38, C40, C41, C42 are not scheduled (C37 picked for EP14 below). Open for the brief: F-C39-D1 (flea body length = man's height, Film's recommendation).
 
 **EP14 pick (2026-11-09):** user picked **C37 ถ้าฝนตกโดยไม่มีอากาศ** as the next episode, `EDU-EP14-SHORT` (Short Thai, assumed). Order so far: EP13 = C39; C38, C40, C41, C42 not yet scheduled.
+
+---
+
+## R8 — Preaw pitch (2026-11-10)
+
+- **Request (user, 2026-11-10, via coordinator):** six new edu concepts; exactly three about animals (not dogs, cats or fleas as the main subject), the other three free genre, mixed across body, physics, space and psychology.
+- **How Preaw read it:** same contract as R6–R7: every concept carries the [ER08](../../docs/scriptwriting-principles.md#edu-short-retention-default-user-8-nov-2026) four-line pitch check, a one-line counter-intuitive claim (ER01), one rule that returns and flips (ER03), a beat chain where each beat opens the next with "แต่…" (ER06), one cause per problem in about 10 s at most ([ER09](../../docs/scriptwriting-principles.md#er09)), and no source or method phrase in narration ([ER10](../../docs/scriptwriting-principles.md#er10)); experiments are acted out as story, never narrated as "นักวิจัยพบว่า". Beats whose honest answer would be "evidence unclear" were cut at pitch stage (ER07). Animal concepts: **C43, C44, C45**. Free: C46 (physics and scale), C47 (psychology and body), C48 (space, wild card).
+- **What steers this round (measured only):** [channel performance](../../docs/channel-performance.md) still holds the same three posted edu Shorts as R7 (EP05 scale what-if: 24k views, 20.2 % swiped away, ~91 % watched; EP03 pet: 2.5k, 36.6 %, ~66 %; EP02: 1.3k, 33.6 %, ~60 %). No new rows since R7, so the steer is unchanged: **scale what-if** is supported by the numbers (C43's hold-a-person reveal and C46's paper to the Moon are built on it); "animals" is used because the user asked for it, not because the numbers favour it.
+- **Topic direction:** three animals from different body plans and places a Thai viewer knows: the จิ้งจก on the ceiling (reptile, the house), the กั้ง on a seafood plate (crustacean, the market), the อีกา on the wire (bird, the street). Three free: a sheet of paper folded to the Moon (doubling and scale), why you cannot tickle yourself (the brain's self-prediction), the Moon drifting away (space, deep time; wild card). Sub-genres R1–R7 have not touched: dry adhesion, strike mechanics and cavitation, animal cognition and social learning, exponential growth, self-generated touch, tidal braking.
+- **Fixed (carried from R1–R7):** genre educational for all six; medium painted 2D p5.brush with the 4-head cast ([project defaults](../../docs/delivery-workflow.md#project-defaults)), default look the [painted 3D camera](../../docs/film-visual-brief-workflow.md#painted-3d-camera). The style-profile genre and medium spread does not apply to this series (same reading as R2–R7).
+  - **Sub-genres (6):** dry adhesion (C43); strike mechanics and cavitation (C44); bird face memory and social learning (C45); doubling and the paper-folding limit (C46); self-generated touch (C47); tidal braking and eclipses (C48).
+  - **Staging styles:** a Thai house at night with a จิ้งจก over a ceiling lamp, then a macro of its toe and an imagined man hanging from it (C43); a seafood stall tank, then a slow-motion underwater strike on a snail shell with a flash of light (C44); a man in a rubber mask walking a campus path under crows, then the same path years later (C45); a schoolgirl folding an A4 sheet at her desk, then a stack that rises past a tower, the sky and the Moon (C46); two sisters on a sofa tickling, then a slow push-in on a "guess" bubble over her head (C47); a beach at night under a full Moon, then a run back through deep time to a dinosaur and forward to a ring-shaped eclipse (C48).
+- **Wild card:** C48. The kit has no Earth–Moon system seen from far, no tide bulge, no eclipse alignment and no deep-time run; see its "Why it is the wild card" line.
+- **Channel default (mystery-educational in the WORLD FOG look):** none.
+- **Not re-pitched:** made C1, C2, C4, C5, C6, C8, C15, C18, C25, C28, C32, C35, C37, C39; open C13, C31, C33, C34, C36, C38, C40, C41, C42; deleted C3, C7, C9–C12, C14, C16, C17, C19–C24, C26, C27, C29, C30. Nearest neighbours, checked: C43 is not C39 (C39 is jump scaling and ends "it is just small"; C43 is grip and ends on how strong it is, no size flip); C44 is not C39 (both have fast animals, but C44's story is the bubble that hits a second time and the fist that does not break, not a spring; the spring is kept out); C45 is not C8 (cats and a human signal; C45 is wild birds remembering a face and teaching it); C46 is not C13 or C38 (no body or crowd; a doubling sheet); C47 is not C25 or C27 (C25 is a crossed-finger touch illusion, C27 smell and taste; C47 is the brain muting its own touch) and not C19 (eye movement); C48 is not C31 (a sudden stop of Earth's spin; C48 is the Moon's slow brake over millions of years) and not C15 (the Sun vanishing). Deleted C10 (mosquitoes) and C12 (goldfish memory) were not re-offered for the animal slots. Still held, not pitched: the cicada's loudness (good sound, weak flip), the chicken as a dinosaur (strong picture, but the flip is a well-known fact).
+- **Mode:** non-fiction explainers acted out by fictional 4-head characters. C45's mask experiment is a real, named line of research and keeps its documented status (species, place and years confirmed by Boat before any detail is scripted); it is acted out by kit characters, not presented as footage. These are pitches, not research: every fact below is `unchecked` until Boat's research and fact-check; `settled`, `model` (depends on assumptions or a calculation) and `hypothesis` are Preaw's expectation for Boat to confirm, not findings.
+- **Duration:** every concept estimated at 40–60 s (five beats). Timing is not measured.
+- **Producibility:** each concept names its key reveal image and a first kit check against `src/painted/kit/README.md` at `e29c616` (story first, kit second). The kit holds no bird, lizard or crustacean; `flea.ts` (EP13 intake) is the only arthropod card. Film's W0.2 annotation owns buildability and cost; it is not done in this pass.
+
+### C43 — จิ้งจกบนเพดาน ห้อยคุณไว้ได้ทั้งตัว (animal)
+
+- **Sub-genre:** dry adhesion (how a gecko sticks upside down).
+- **Staging:** `woman-curly + home-lounge` on a Thai house sofa at night, a จิ้งจก upside down by the ceiling lamp; macro of its toe down to rows of tiny hairs; an imagined shot of `man-spiky` hanging from the ceiling by one จิ้งจก, labelled "ภาพจำลอง".
+- **Counter-intuitive claim (ER01):** a จิ้งจก uses no glue and no suction; its dry feet, if every tiny hair gripped at once, could hold up about a person.
+- **Logline:** Everyone thinks a gecko's feet are sticky or work like suction cups. They are neither: each toe carries huge numbers of hairs so fine that they touch the ceiling closer than anything you can see, and at that distance a tiny pull between any two surfaces adds up. If all of them gripped at once, one gecko could hang a grown person. The real trick is letting go: it peels its toes from the tip like tape, many times a second.
+- **Hook (Thai):** "จิ้งจกบนเพดานบ้านคุณ… เท้ามันไม่มีกาว ไม่มีแรงดูด แต่แรงพอจะห้อยตัวคุณไว้ได้ทั้งตัว"
+- **Hook claim status:** `unchecked`, `model` (Boat sources the setae adhesion study and its whole-animal estimate, confirms whether the figure is for the tokay gecko ตุ๊กแก or the house gecko จิ้งจก, and the hook names whichever species the number belongs to).
+- **Rule that flips (ER03):** "ยิ่งแนบชิด… ยิ่งเกาะแน่น" (the closer it touches, the harder it holds). Beats 1–3 it is why it sticks; beat 4 it flips into how it lets go (lift the edge, lose the closeness, let go in an instant).
+- **Key reveal image:** the man hanging under the ceiling by one gecko's four feet, the gecko calm, a tag "ภาพจำลอง".
+- **Beats:**
+  1. Suction cup? Her guess bubble shows a plunger; the gecko walks across a dusty, rough ceiling where a plunger would fall. `unchecked`, `settled`
+  2. แต่… no glue either: its feet are dry and leave nothing behind; zoom into the toe: rows of hairs, each split into finer tips. `unchecked`, `settled`
+  3. แต่… hairs that fine touch the ceiling so closely that a tiny pull between any two things adds up, like dust that clings to a TV screen turned upside down. `unchecked`, `settled` (everyday example first; "van der Waals" never said; ER09 one cause)
+  4. แต่… if it holds that hard, how does it walk? It curls its toes up from the tip, like peeling tape, and lets go at once. `unchecked`, `settled`
+  5. Flip and payoff: the imagined man hanging from it; back to the real gecko catching a moth. Last line: "สัตว์ที่เกาะเก่งที่สุดในบ้านคุณ… ไม่ได้ใช้กาวสักหยดเลย" `unchecked`, `model`
+- **Ending:** closed, ~2 s hold on the gecko on the ceiling with the moth gone.
+- **Voice / tone:** Kore, brisk deadpan; the woman a "เอ๊ะ" at the dusty ceiling; the man an "อย่าปล่อยนะ" in the imagined shot; the gecko one จิ๊กจ๊ก chirp.
+- **ER08 pitch check:** (1) Hook: breaks "geckos are sticky"; one picture (a person hanging from a gecko), no term. Pass. (2) Who: everyone in a Thai house. Pass. (3) Beats: suction → แต่ not glue → แต่ the hairs → แต่ letting go; beat 3 is the one explanation beat, carried by the dust-on-screen example, under 10 s. Pass. (4) Ending: a payoff on the viewer's own ceiling. Pass. **4/4.**
+- **Why it holds:** the most familiar animal in a Thai home with a scale reveal (EP05 shape) that sounds impossible, and a "look up tonight" share.
+- **Evidence notes (thin spots):** the "could hold a person" figure is an extrapolation from single-hair measurements, so on screen it stays "พอจะ… ได้" and is labelled "ภาพจำลอง"; the species behind the number must match the hook. Kept out: why geckos sometimes fall on people (ER07, no clean answer), tail-dropping (a different story), gecko-inspired tape products (tips, not a flip).
+- **Research load:** one setae adhesion source with the whole-animal estimate, one source on toe peeling, one confirming house-gecko foot structure.
+- **Kit check:** `woman-curly + home-lounge, P31/seatedPose, neutral` then `surprised`; `man-spiky + home-lounge, P?, scared` for the hang. New: `new: house gecko` (four views, ceiling-walk and toe-peel motions), toe macro with hair rows (EP05 `macro.ts` ribbon method), night living room with a ceiling lamp (EP06 sofa room relit as a base), plunger guess bubble, dust-on-screen insert, moth.
+- **Sound intent:** night house tone, a ceiling fan and far soi traffic; a soft tick per gecko step; a short zoom whoosh into the toe; a creak and a held breath under the imagined hang, then silence before the last line; the gecko's chirp as the closing stinger.
+
+### C44 — กั้งในจาน หมัดเร็วจนน้ำระเบิดเป็นแสง (animal)
+
+- **Sub-genre:** strike mechanics and cavitation (the mantis shrimp's punch).
+- **Staging:** `man-crop + vendor` at a Thai seafood stall tank, a กั้ง tapping the glass; cut into the tank: slow motion of its club hitting a snail shell, a bubble, a flash; the club's inside as layered fibres.
+- **Counter-intuitive claim (ER01):** a กั้ง punches so fast that the water around its fist tears open into a bubble, and when the bubble collapses it hits the shell a second time with a flash of light.
+- **Logline:** The กั้ง on a seafood plate is one of the hardest punchers in the sea. Its club moves so fast the water cannot keep up; it tears into a bubble that collapses with a second blow, hot and bright for an instant. So even a miss can crack a shell. And its own fist does not shatter because it is built in layers that turn each crack aside, and it grows a new one anyway.
+- **Hook (Thai):** "กั้งที่คุณกินในร้านซีฟู้ด… ต่อยเร็วจนน้ำรอบหมัด ระเบิดเป็นแสง"
+- **Hook claim status:** `unchecked`, `settled` for the cavitation bubble and its flash in peacock mantis shrimp strikes (Boat sources the strike-speed and cavitation papers and confirms that the กั้งตั๊กแตน sold in Thailand is a mantis shrimp; if the studied species differs, the hook says "กั้งบางชนิด" or names the group).
+- **Rule that flips (ER03):** "เร็วเกินไป… น้ำตามไม่ทัน" (too fast for the water to follow). Beats 1–3 it is the weapon; beat 4 the same violence threatens its own fist; beat 5 the plate.
+- **Key reveal image:** frozen slow-motion frame: the club a finger's width from the shell, a silver bubble between them, a pinpoint of light in its centre, tag "ภาพช้า".
+- **Beats:**
+  1. Tap on the glass; the vendor jokes it can break the tank. Slow motion: the club flicks out faster than a blink. `unchecked`, `model` (Boat gives the strike speed and duration; the vendor's line stays a joke, not a claim)
+  2. แต่… water is thick; at that speed it cannot flow out of the way, so it tears open into a bubble. `unchecked`, `settled` (everyday example: pulling a spoon fast through water leaves a hole; "cavitation" never said)
+  3. แต่… the bubble does not just vanish: it collapses with a second blow and a flash of light, so even a near miss cracks the shell. `unchecked`, `settled`
+  4. แต่… a fist hitting that hard should shatter itself; inside it, layers twist like a spiral staircase, and every crack is turned aside before it spreads. `unchecked`, `settled` (Boat sources the club structure)
+  5. Flip and payoff: back at the stall, the vendor lifts it to a customer's plate. Last line: "หมัดที่แรงที่สุดในทะเล… อาจอยู่ในจานข้าวคุณเย็นนี้" `unchecked`, `model`
+- **Ending:** closed, ~2 s hold on the plate on the stall counter.
+- **Voice / tone:** Kore, brisk; the vendor "ระวังนะ มันต่อยตู้แตกได้" (a joke), a customer's "หา?".
+- **ER08 pitch check:** (1) Hook: breaks "a shrimp is soft food"; one picture (a punch that flashes), no term. Pass. (2) Who: everyone who eats seafood; strongest for Thai viewers who know กั้ง. Pass. (3) Beats: fast → แต่ water tears → แต่ second blow → แต่ its fist should break; beat 2 is the one mechanism beat, carried by the spoon example. Pass. (4) Ending: a payoff that lands on the viewer's dinner. Pass. **4/4.**
+- **Why it holds:** a "the food on your plate is a weapon" surprise with a single slow-motion picture worth pausing on; local, shareable at a seafood dinner.
+- **Evidence notes (thin spots):** the strike speed and acceleration figures differ between papers and species; on screen it stays a comparison ("เร็วกว่ากะพริบตา"), not a precise number. The bubble's heat is reported as very high for an instant; the script says "ร้อนแวบเดียว" only if Boat finds a sourced figure, otherwise heat is dropped (ER07). "Breaks aquarium glass" stays the vendor's joke unless Boat sources it. Kept out: its many-colour vision (a separate story with contested claims), the spring-and-latch mechanism (overlaps EP13's catapult).
+- **Research load:** one strike-speed source, one cavitation and flash source, one club-structure source, one confirming the Thai กั้งตั๊กแตน is a mantis shrimp.
+- **Kit check:** `man-crop + vendor, P?, happy` (check the vendor outfit used in EP01), a customer from `PEOPLE`. ENV-SEA `sea.ts` and ENV-FALL `bubbles` for the tank. New: `new: mantis shrimp` (side view with folded club, strike motion), snail shell with crack states, slow-motion bubble grow-collapse-flash FX, club cross-section with twisting layers, seafood stall set with tank and ice tray, spoon-in-water insert.
+- **Sound intent:** busy market evening, ice clatter, a tank pump hum; a glass tap; the slow-motion beat drops to a low muffled underwater bed; a tight double crack (strike, then bubble) with a bright tick on the flash; a soft grind for the twisting layers; the market returns and a pizzicato tag under the last line.
+
+### C45 — อีกาจำหน้าคุณได้ และบอกลูกมันด้วย (animal)
+
+- **Sub-genre:** bird face memory and social learning.
+- **Staging:** `man-parted + office` in a rubber mask catches a crow in a net and lets it go unharmed; later he walks the same path in the mask and the crows dive and scold; `woman-bob` walks past in the same mask; then a time jump with new young crows.
+- **Counter-intuitive claim (ER01):** crows remember a human face for years, and crows that never met that face learn to hate it from the others.
+- **Logline:** Scientists in a mask caught a few crows and let them go. From then on, whoever wore that mask was scolded and dive-bombed, while the same people bare-faced walked by in peace, so the crows were tracking the face, not the person. Then crows that had never been caught joined in, and so did crows hatched years later. One bad day with you became the neighbourhood's memory.
+- **Hook (Thai):** "อีกาจำหน้าคุณได้… และมันจะสอนลูกมันให้เกลียดหน้าคุณด้วย"
+- **Hook claim status:** `unchecked`, `settled` as a documented long-running field study on American crows (Boat confirms species, place, years, the "never caught" crows and the multi-year follow-up). Thai crows (อีกาบ้าน, อีกาปากหนา) were not the studied species, so the hook either names "อีกา" with Boat's species wording or uses the narrow hedge "อีกาบางชนิด" (ER10).
+- **Rule that flips (ER03):** "มันจำหน้า… ไม่ได้จำคน" (it remembers the face, not the person). Beats 2–3 it is the test; beat 5 it flips into time: the face outlives the event.
+- **Key reveal image:** the woman in the same mask on the same path, crows scolding her, while the man walks behind her bare-faced, ignored.
+- **Beats:**
+  1. The man in a mask nets a crow and lets it go; next week, in the mask, he is mobbed. `unchecked`, `settled` (acted out; narration tells the event, not "นักวิจัยพบว่า")
+  2. แต่… is it him? Bare-faced, he walks by: nothing. `unchecked`, `settled`
+  3. แต่… the woman wears the mask: she is scolded. It is the face. `unchecked`, `settled`
+  4. แต่… crows that were never caught join in; they learned from the ones that were. `unchecked`, `settled`
+  5. Flip and payoff: years later, the mask comes out again; young crows that were not born then scold it. Last line: "คุณอาจลืมไปแล้ว… แต่อีกาแถวบ้านคุณยังจำได้" `unchecked`, `settled` (Boat confirms the longest documented span; wording stays general if numbers vary)
+- **Ending:** closed, ~2 s hold on a crow on a wire looking at the camera.
+- **Voice / tone:** Kore, brisk deadpan with a creepy edge; the man "เอ้ย! อะไรเนี่ย"; the woman "ทำไมเป็นฉัน"; crow calls.
+- **ER08 pitch check:** (1) Hook: breaks "birds don't know who you are"; one line, no term. Pass. (2) Who: everyone who walks past crows on a Thai street. Pass. (3) Beats: mask → แต่ is it him → แต่ the face → แต่ others join; every beat is a test acted out, no mechanism beat. Pass. (4) Ending: a flip into time, aimed at the viewer. Pass. **4/4.**
+- **Why it holds:** a story with a villain (the mask), a twist (it is the face) and a slightly unnerving last line about the viewer's own street; the test structure is the C40 shape that keeps every beat visible.
+- **Evidence notes (thin spots):** the study is on American crows in one city; transfer to Thai crows is not claimed. Kept out: crows bringing "gifts" to people (anecdotes, ER07), crows holding funerals (interpretation disputed), any advice on feeding crows. Animal welfare (Film): the catch is gentle, the crow is released unharmed, no struggle close-up.
+- **Research load:** one named real case (the mask study and its follow-up), plus one species note on Thai crows.
+- **Kit check:** `man-parted + office, P?, scared`, `woman-bob + home-lounge, P?, scared`; the mask as a prop. New: `new: crow` (perched, flying, diving and scolding motions; several at once), `new: rubber mask` (one distinct face, not a real person's likeness), campus path set with trees and wires, hand net, time-jump title card.
+- **Sound intent:** campus morning, light breeze; a net swish; a growing crow chorus and wing flaps on each mob, with a sharp caw stinger as they dive; silence when he walks bare-faced; the same caws for the woman; a slow low pad for the time jump and a single caw under the last line.
+
+### C46 — พับกระดาษ 42 ครั้ง ถึงดวงจันทร์
+
+- **Sub-genre:** doubling and the paper-folding limit (exponential growth).
+- **Staging:** `girl-school + school` at her desk folding an A4 sheet; the folded stack climbs out of the window past a condo tower, past the clouds, into space, to the Moon; then a long toilet-paper roll laid down a road.
+- **Counter-intuitive claim (ER01):** fold a sheet in half 42 times and its thickness would reach the Moon, but to do it the sheet would need to be about as long as the whole galaxy.
+- **Logline:** Each fold doubles the thickness, so a thin sheet reaches a tower after about twenty folds, space after thirty and the Moon after forty-two. People say you can only fold paper seven times, but that is not a law: each fold wraps the paper round a curve, and the curve eats paper faster than the thickness grows. With a long enough roll, a student folded twelve times. For forty-two, the paper would have to stretch across the galaxy.
+- **Hook (Thai):** "กระดาษแผ่นเดียว… ถ้าพับครึ่งได้ 42 ครั้ง มันจะหนาจนถึงดวงจันทร์"
+- **Hook claim status:** `unchecked`, `model` (0.1 mm × 2⁴² ≈ 440,000 km, Moon mean distance about 384,400 km; Boat recomputes with a sourced paper thickness and fold counts for tower, space and Moon).
+- **Rule that flips (ER03):** "พับทีนึง… หนาขึ้นสองเท่า" (one fold, double the thickness). Beat 1 it is the rocket; beats 3–5 the same doubling is what makes the paper run out.
+- **Key reveal image:** the stack touching the Moon, then the cut to the needed sheet: a strip running off the Earth, past the Sun, out across the Milky Way, tag "กระดาษที่ต้องใช้".
+- **Beats:**
+  1. Fold by fold the stack doubles; about twenty folds it passes the condo roof, about thirty it leaves the sky, forty-two it touches the Moon. `unchecked`, `model`
+  2. แต่… she cannot fold it an eighth time; the sheet will not bend. `unchecked`, `settled` (the "seven times" limit as a belief; Boat sources the usual count for A4)
+  3. แต่… it is not the paper being stiff: each fold wraps round a curve, and the outside needs more paper every time, much faster than the thickness grows. `unchecked`, `settled` (shown as a folded edge with the outer layer stretching; ER09 one cause)
+  4. แต่… give it a long enough sheet and it works: a student folded a roll over a kilometre long twelve times. `unchecked`, `settled` as a documented record (Boat confirms name, year, length and count; the name is used only if sourced)
+  5. Flip and payoff: for forty-two folds, the sheet would have to be about as long as the galaxy is wide. Last line: "ไม่ใช่กระดาษแข็งเกินไปหรอก… จักรวาลต่างหากที่เล็กเกินไป" `unchecked`, `model` (Gallivan's length formula for 42 folds of 0.1 mm paper gives roughly 10²¹ m, about 100,000 light-years; Boat recomputes; if it lands nearer another scale, the comparison follows the number)
+- **Ending:** closed, ~2 s hold on her flattened sheet on the desk.
+- **Voice / tone:** Kore, brisk, rising with the stack; the girl grunting on the eighth fold, "ไม่ไหวแล้ว".
+- **ER08 pitch check:** (1) Hook: breaks "a sheet of paper is nothing"; one picture (a stack to the Moon), no term. Pass. (2) Who: everyone; testable with any sheet right now. Pass. (3) Beats: Moon → แต่ she can't → แต่ the curve eats paper → แต่ a long roll works; beat 3 is the one explanation beat, shown, under 10 s. Pass. (4) Ending: a flip of scale onto the universe. Pass. **4/4.**
+- **Why it holds:** the clearest scale what-if in the round (the measured winner shape), a hook the viewer can try with the paper in front of them, two scale jumps (Moon, then galaxy) and a last line that gets quoted.
+- **Evidence notes (thin spots):** all numbers are calculations; Boat redoes the doubling and the length formula and picks the honest comparison (Milky Way width differs by source). The "seven folds" limit is presented as a common belief, not a fact. Kept out: TV-show fold records (the student's record is enough), "paper to the Sun" escalations.
+- **Research load:** general maths plus one sourced paper thickness, Moon distance, Milky Way width, and one documented folding record with its formula.
+- **Kit check:** `girl-school + school, P?, neutral` then strain and `surprised`; `space.ts` and `earth.ts` for the space stretch (whole-globe-from-far still untested, R7 Film). New: folding-hands close (`hands-macro`), A4 sheet fold states, stack-column climb shot with a fold counter, condo tower, Moon plate, galaxy plate with a strip, curved-edge cutaway, toilet-roll-down-a-road shot.
+- **Sound intent:** quiet room and a paper crease per fold, each crease a step up in a rising pluck sequence; wind as the stack passes the clouds, then space hush; a soft bell at the Moon; the strain beat is a creak and silence; a long swelling pad for the galaxy reveal, then the desk room tone and a pizzicato tag.
+
+### C47 — ทำไมคุณจั๊กจี้ตัวเองไม่ได้
+
+- **Sub-genre:** self-generated touch (the brain predicting its own movement).
+- **Staging:** two sisters (`girl-school` and `woman-bob + home-lounge`) on a sofa: the older one tickles, the younger squirms; she tries on herself: nothing; a "guess" bubble over her head shows the touch arriving before it lands; a small machine with a delay knob.
+- **Counter-intuitive claim (ER01):** your skin feels your own tickle perfectly well; your brain switches it down because it already knew it was coming.
+- **Logline:** The same finger on the same rib is unbearable from your sister and nothing from you. The skin is not different; the brain guesses every touch your own hand will make and turns it down before it lands. Add a tiny delay between your hand and the touch, through a machine, and the guess misses, so the tickle comes back. The brain mutes you so it can hear the world: a touch you did not make is the one that matters.
+- **Hook (Thai):** "ลองจั๊กจี้ตัวเองดูสิ… ไม่ขำเลยใช่มั้ย ทั้งที่มือก็มือเดียวกัน"
+- **Hook claim status:** `unchecked`, `settled` (self-tickle attenuation and the delay result are classic studies; Boat sources them and confirms the delay effect size and range).
+- **Rule that flips (ER03):** "สมองเดาได้… ก็ไม่รู้สึก" (if the brain can guess it, you do not feel it). Beats 2–3 it is the cause; beat 5 it flips into why that is useful: you can never surprise yourself.
+- **Key reveal image:** split: her own hand on her ribs with the guess bubble already showing the same touch (grey, muted); her sister's hand with an empty bubble and the touch exploding in colour.
+- **Beats:**
+  1. Her sister tickles: she squirms. She tries the same move on herself: nothing. `unchecked`, `settled`
+  2. แต่… the skin is the same; her brain plays the touch in advance, like knowing the punchline of a joke you tell yourself, and turns it down. `unchecked`, `settled` (everyday example before any term; "efference copy" never said; ER09 one cause)
+  3. แต่… what if the guess is late? She moves a lever, a machine strokes her palm a split second later: the tickle comes back. `unchecked`, `settled` (acted out; narration tells the result, not the study)
+  4. แต่… why would a brain do this? So a touch you did not make stands out: an ant on her arm while she scratches her other arm. `unchecked`, `settled`
+  5. Flip and payoff: she tries to make herself jump with "บู้!": nothing. Last line: "คุณจั๊กจี้ตัวเองไม่ได้… เพราะคุณไม่เคยทำให้ตัวเองตกใจได้เลย" `unchecked`, `model` (the scare line is an analogy; Boat checks it does not overclaim)
+- **Ending:** closed, ~2 s hold on her deadpan face, then the sister pokes her and she squeals.
+- **Voice / tone:** Kore, brisk deadpan; sisters' giggles and squeals, one "อ้าว ไม่ขำ".
+- **ER08 pitch check:** (1) Hook: a challenge the viewer tries at once, breaking "my skin must be the same"; no term. Pass. (2) Who: everyone. Pass. (3) Beats: no tickle → แต่ the guess → แต่ the delay → แต่ why; beat 2 is the one explanation beat, carried by the self-told joke. Pass. (4) Ending: a flip with a laugh. Pass. **4/4.**
+- **Why it holds:** the viewer does the experiment in the first two seconds; giggles and a sibling relationship carry warmth; the delay-machine beat is a surprise most people have never heard.
+- **Evidence notes (thin spots):** settled cognitive neuroscience; the delay result is from a small lab study, so it stays general ("ช้าไปนิดเดียว"). Kept out under ER07 and taste: tickling and mental illness (sensitive, overclaim risk), "some people can tickle themselves" (anecdote), why tickling makes you laugh (no clean answer).
+- **Research load:** two classic studies (self-tickle attenuation; the delay machine) and one review.
+- **Kit check:** `girl-school + home-lounge`, `woman-bob + home-lounge`, sofa seats (`seatedPose`), expressions `happy`, `neutral`, `surprised`. New: tickle squirm motion, guess-bubble screen layer, delay-machine prop with a lever and a soft brush arm, ant on an arm close (`hands-macro`), living room by day.
+- **Sound intent:** bright afternoon room; giggles and a soft squeak on the sofa; dead silence on her self-tickle; a gentle "ping" for the guess bubble; a mechanical whirr and click for the machine, then a burst of laughter; a quiet room under the last line and a squeal as the button.
+
+### C48 — ดวงจันทร์กำลังหนีเรา (wild card)
+
+- **Sub-genre:** tidal braking and eclipses (the Moon receding, the day lengthening).
+- **Staging:** `man-spiky + home-lounge` on a Thai beach at night under a full Moon, the tide coming in; a pull-back to the Earth and Moon from far; a run back through time to a dinosaur on a shore with a clock; forward to a sky where the Moon no longer covers the Sun.
+- **Counter-intuitive claim (ER01):** the Moon moves about four centimetres further from us every year, the Earth's day gets longer because of it, and one day there will be no more total solar eclipses.
+- **Logline:** The Moon is not fixed in place: it drifts away about as fast as your fingernails grow. The tides it raises drag on the spinning Earth and slowly push it outward, so the Earth's day gets longer; in the dinosaurs' time the day was shorter than now. Today the Moon is just the right size in the sky to cover the Sun exactly. As it drifts away it will cover less, and total eclipses will end. We happen to live in the window when it fits.
+- **Hook (Thai):** "ดวงจันทร์กำลังหนีออกจากโลก… ปีละประมาณเท่าเล็บคุณงอก"
+- **Hook claim status:** `unchecked`, `settled` (laser ranging gives about 3.8 cm per year; fingernail growth about 3–4 cm per year; Boat confirms both and the comparison holds only if the numbers match).
+- **Rule that flips (ER03):** "ทะเลดึงดวงจันทร์… ดวงจันทร์ดึงวันของเรา" (the sea pulls the Moon, the Moon pulls our day). Beats 2–3 it is the cost (a longer day); beat 5 it is the gift (perfect eclipses, for now).
+- **Key reveal image:** two eclipses stacked: today's black disc exactly covering the Sun with the bright ring of the Sun's edge-glow (corona), and the far future's smaller Moon leaving a bright ring of Sun round it, tag "อนาคต".
+- **Beats:**
+  1. The Moon moves away, about a fingernail's growth a year; pull back to the Earth and Moon. `unchecked`, `settled`
+  2. แต่… why? The tide bulge it raises is carried ahead by the Earth's spin and tugs the Moon forward, so it climbs outward. `unchecked`, `settled` (shown, not named; ER09 one cause; Boat checks the plain wording)
+  3. แต่… the Earth pays for it: its spin slows, the day gets longer; a dinosaur on a beach has a clock with a shorter day. `unchecked`, `settled` (Boat sources one dated day-length figure from the deep past)
+  4. แต่… today the Moon looks exactly as big as the Sun; as it drifts away it will look smaller, and it will stop covering the Sun completely. `unchecked`, `model` (Boat sources the rough time when total eclipses end, and on screen it stays "อีกนานมาก" unless the number is firm)
+  5. Flip and payoff: back on the beach, he looks up. Last line: "คุณเกิดมาในช่วงเดียว… ที่ดวงจันทร์บังดวงอาทิตย์ได้พอดี" `unchecked`, `model` ("the only window" is a simplification; Boat checks how wide the window is and whether "ช่วงเดียว" is fair)
+- **Ending:** closed, ~2 s hold on the man and the Moon over the sea.
+- **Voice / tone:** Kore, slower and warmer, like R7's C42; the man one "หา… หนีไปไหน".
+- **ER08 pitch check:** (1) Hook: breaks "the Moon is fixed"; the fingernail makes it concrete; no term. Pass. (2) Who: everyone who has looked at the Moon. Pass. (3) Beats: drifts → แต่ why (tide) → แต่ the day lengthens → แต่ eclipses end; beat 2 leans on explanation (the tide bulge is hard to show in one picture). **Partial.** (4) Ending: a flip onto the viewer's lucky timing. Pass. **3/4: beat 2 leans on explanation.**
+- **Why it holds:** a fingernail-sized fact with a huge consequence and a quotable last line that makes the viewer feel lucky; strongest around eclipse news.
+- **Why it is the wild card:** the kit has no Earth–Moon system from far, no tide bulge, no eclipse alignment with a corona, and no deep-time run with a dinosaur; every space frame is a model and needs a "ภาพจำลอง" label.
+- **Evidence notes (thin spots):** the recession rate is settled; past day length rests on fossil growth bands and models (one dated figure, stated simply); the end of total eclipses is a model estimate, so no exact year on screen. Kept out: "the Moon will escape" (it will not, in the Sun's lifetime; overclaim), "the Moon causes earthquakes" (ER07), any number of years for "our window".
+- **Research load:** one lunar-ranging source, one fingernail growth source, one deep-past day-length source, one eclipse-ending estimate.
+- **Kit check:** `man-spiky + home-lounge, P30, neutral` then `surprised`; `sea.ts` for the night tide, `sky.ts`, `space.ts`, `earth.ts` (whole globe from far untested, R7 Film). New: Thai beach at night plate, Earth–Moon wide plate with a tide-bulge diagram, dinosaur on a shore with a clock (`new: dinosaur`), eclipse pair plate with corona and ring, fingernail close (`hands-macro`).
+- **Sound intent:** waves and night insects on the beach; a slow drifting pad as the Moon moves; a deep tidal swell sound under the bulge; a ticking clock that slows for the longer day and a distant dinosaur call; total silence at today's eclipse, a soft shimmer for the ring, then the waves return under the last line.
+
+---
+
+## R8 — Summary
+
+| ID | Title | Sub-genre | Key reveal image | Hook (Thai) | Ending | Research | ER08 | First kit check |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| C43 | จิ้งจกบนเพดาน ห้อยคุณไว้ได้ทั้งตัว (animal) | dry adhesion | a man hanging from the ceiling by one gecko, "ภาพจำลอง" | "จิ้งจกบนเพดานบ้านคุณ… เท้ามันไม่มีกาว ไม่มีแรงดูด แต่แรงพอจะห้อยตัวคุณไว้ได้ทั้งตัว" | closed hold | three sources | 4/4 | new gecko, toe macro (EP05 method), EP06 room relit |
+| C44 | กั้งในจาน หมัดเร็วจนน้ำระเบิดเป็นแสง (animal) | strike mechanics + cavitation | slow-motion club, bubble and flash before the shell | "กั้งที่คุณกินในร้านซีฟู้ด… ต่อยเร็วจนน้ำรอบหมัด ระเบิดเป็นแสง" | closed hold | four sources | 4/4 | `sea.ts`, `bubbles`; new mantis shrimp, stall tank, bubble FX |
+| C45 | อีกาจำหน้าคุณได้ และบอกลูกมันด้วย (animal) | bird face memory + social learning | the woman in the mask mobbed, the bare-faced man ignored | "อีกาจำหน้าคุณได้… และมันจะสอนลูกมันให้เกลียดหน้าคุณด้วย" | closed hold | one named real case + species note | 4/4 | cast ready; new crow flock, mask, campus path |
+| C46 | พับกระดาษ 42 ครั้ง ถึงดวงจันทร์ | doubling + folding limit | stack touching the Moon, then a strip across the galaxy | "กระดาษแผ่นเดียว… ถ้าพับครึ่งได้ 42 ครั้ง มันจะหนาจนถึงดวงจันทร์" | closed hold | maths + one record | 4/4 | `space.ts`, `earth.ts`; new stack climb, Moon and galaxy plates |
+| C47 | ทำไมคุณจั๊กจี้ตัวเองไม่ได้ | self-generated touch | split: muted guessed touch vs the sister's touch in colour | "ลองจั๊กจี้ตัวเองดูสิ… ไม่ขำเลยใช่มั้ย ทั้งที่มือก็มือเดียวกัน" | closed hold | two classic studies | 4/4 | cast and sofa ready; new squirm, guess bubble, delay machine |
+| C48 | ดวงจันทร์กำลังหนีเรา (wild card) | tidal braking + eclipses | today's exact eclipse over the future ring eclipse | "ดวงจันทร์กำลังหนีออกจากโลก… ปีละประมาณเท่าเล็บคุณงอก" | closed hold | four sources | 3/4: beat 2 leans on explanation | missing: Earth–Moon from far, tide bulge, eclipse, deep-time run |
+
+**Animal concepts (user's ask):** C43, C44, C45.
+
+**Preaw's pick for the viewer (not a decision):** **C46** first. It is the cleanest scale what-if in the round, the one shape the channel numbers support (EP05); the viewer can test the hook with any sheet of paper in the first two seconds; and it pays twice (the Moon, then the galaxy) with a quotable last line. Among the animals, **C45** (crows): a story with a villain, a twist that is acted out rather than explained (it is the face), and an unnerving last line about the viewer's own street. Then C43 (scale reveal on the most familiar Thai house animal), C44 (strongest single slow-motion picture, more research), C47 (warm, testable, but no scale), C48 (wild card, 3/4).
+
+**Thinnest evidence:** C43 (the "hold a person" figure is an extrapolation and must match the species named in the hook), C44 (strike figures vary by species and paper; the flash's heat needs a sourced number or is dropped), C45 (one study on American crows; no transfer to Thai crows is claimed) and C48 (the end-of-eclipses time is a model estimate). C46 and C47 rest on arithmetic and classic studies that need recomputing or sourcing, not new evidence.
+
+---
+## R8 — User pick (W0.3, 2026-11-10)
+
+User kept **C43, C44, C45, C46, C47** (structured question, two multi-select questions); **C48 not picked**. Episode order not yet chosen. Preaw's order: C46 > C45 > C43 > C44 > C47 (C48 last). Context: user asked Preaw for six more concepts, three about animals (C43–C45).
