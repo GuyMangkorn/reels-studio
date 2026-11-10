@@ -999,4 +999,6 @@ All numbers are est. until Boat's research (flea body length and jump height, ma
 
 ## R7 — User pick (W0.3, 2026-11-09)
 
-User chose **C39 ถ้าหมัดตัวเท่าคน** (animal concept) as the next episode, `EDU-EP13-SHORT` (Short Thai, assumed from EP01–EP12). The user said Film's annotation could be added, but C39 is wanted regardless of rank. Film ranked C39 first (size M). C37, C38, C40, C41, C42 are not scheduled. Open for the brief: F-C39-D1 (flea body length = man's height, Film's recommendation).
+User chose **C39 ถ้าหมัดตัวเท่าคน** (animal concept) as the next episode, `EDU-EP13-SHORT` (Short Thai, assumed from EP01–EP12). The user said Film's annotation could be added, but C39 is wanted regardless of rank. Film ranked C39 first (size M). C38, C40, C41, C42 are not scheduled (C37 picked for EP14 below). Open for the brief: F-C39-D1 (flea body length = man's height, Film's recommendation).
+
+**EP14 pick (2026-11-09):** user picked **C37 ถ้าฝนตกโดยไม่มีอากาศ** as the next episode, `EDU-EP14-SHORT` (Short Thai, assumed). Order so far: EP13 = C39; C38, C40, C41, C42 not yet scheduled.

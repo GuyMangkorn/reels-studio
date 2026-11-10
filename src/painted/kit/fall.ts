@@ -49,6 +49,8 @@ export type FallOptions = {
   captionBand?: [number, number] | null;
   /** Share of marks kept inside the caption band (default 1/3). */
   captionKeep?: number;
+  /** Keep only marks whose start x (px) lies in [x0, x1] (EDU-EP14 B05-SH01: rain on the left half only); absent = the full width. */
+  xRange?: [number, number];
 };
 
 export type FallMark = {x: number; y: number; x2: number; y2: number};
@@ -67,6 +69,7 @@ export const fallMarks = (kind: FallKind, o: FallOptions): FallMark[] => {
     const sway = s.sway[0] * Math.sin(o.t * s.sway[1] + r(3) * 6.283);
     const y = (((r(4) * h + o.t * vy) % h) + h) % h - MARGIN;
     const x = (((r(5) * w + o.t * vx) % w) + w) % w - MARGIN + sway;
+    if (o.xRange && (x < o.xRange[0] || x > o.xRange[1])) continue;
     if (band && y > band[0] && y < band[1] && r(6) >= keep) continue;
     const speed = Math.hypot(vx, vy) || 1, l = pick(s.len, r(7));
     // Slow marks (dust, snow) read as specks with a random tilt; fast ones point along their velocity.

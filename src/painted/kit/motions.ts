@@ -492,7 +492,8 @@ export type LayerArgs = {
   person: PersonId | CastDef;
   /** A wardrobe outfit put on the person (`wardrobe.ts`). */
   outfit?: OutfitId;
-  motion: MotionId;
+  /** A catalog id, or a `Motion` function an episode authored with these helpers (EDU-EP14 N13, intake proposed): used as it is, no catalog entry. */
+  motion: MotionId | Motion;
   /** Shot-local time in seconds (frame / fps). */
   t: number;
   /** Rest ground point in plate px and px per metre, as drawFigure takes them. */
@@ -539,7 +540,7 @@ export const layerMotion = (a: LayerArgs): Layered => {
   const def = a.outfit ? dress(base, a.outfit) : base;
   const seed = a.seed ?? def.seed;
   const ctx: MotionCtx = {view: a.view ?? 'front', k: def.height / 1.7, legK: legScale(def), seed, distance: a.distance, amount: a.amount, amp: a.amp};
-  const frame = motionFrame(a.motion, a.t, ctx);
+  const frame = typeof a.motion === 'function' ? a.motion(Math.max(0, a.t), ctx) : motionFrame(a.motion, a.t, ctx);
   const view = frame.view ?? ctx.view;
   const pv: View = view === 'back' ? 'front' : view; // the pose library has no back targets: arms are the front-view ones, mirrored by the back figure
   const off = frame.offset ?? [0, 0];

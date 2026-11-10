@@ -1,0 +1,1598 @@
+{
+ "deliverable": "EDU-EP14-SHORT",
+ "previous": {
+  "w1_4_r4_length_check": {
+   "script": "EDU-EP14-SCRIPT-R4",
+   "read": "ep14-r4-nar-kore-fullread.wav",
+   "store": "projects/EDU/audio/2026-11-09_ep14-r4-nar-kore-fullread.wav",
+   "fps": 30,
+   "tempo": 1.0,
+   "note": "W1.4 length check read of R4, raw Gemini Kore one call (1 request, no retry), no atempo, loudnorm -16 LUFS; style string as ep12/R3. Text = R4 table NAR rows in play order (L01 L02a L02 L02b L02c L03 L04 L05 L06 L07 L10 L11 L08 L12 L13 L14 L15; L09 retired), '…' sent as ', ' as in R3, one line per newline. Times in read seconds; silencedetect -35 dB / 0.10 s gave 35 speech segments, assigned to lines by a syllable-weighted monotone fit (no Whisper), so every line edge is approximate (+-0.3 s; L14-L15, L10 (0.12 s blip at 29.945), L12 (3 segments) and L02b-L02c least sure). Not listened. Excludes V01/V02, wordless W700 and scripted no-line gaps. Video estimate = speech end 51.11 + W700 0.8 + V01 0.6 + V02 0.7 + beat gaps 1.5 + end hold 2.0 = about 56.7 s (range 56-58; V02 laugh and hold may overlap): PASS vs target 40-60 s and limit 63 s. Script N1 predicted raw 53.2 / video 58.8; measured 51.44 / 56.7.",
+   "read_duration_s": 51.44,
+   "speech_end_s": 51.106,
+   "lines": {
+    "L01": {
+     "start": 0.152,
+     "end": 5.25,
+     "dur": 5.098,
+     "onset_frame": 5,
+     "syll": 27
+    },
+    "L02a": {
+     "start": 5.627,
+     "end": 7.887,
+     "dur": 2.26,
+     "onset_frame": 169,
+     "syll": 10
+    },
+    "L02": {
+     "start": 8.555,
+     "end": 11.354,
+     "dur": 2.799,
+     "onset_frame": 257,
+     "syll": 13
+    },
+    "L02b": {
+     "start": 11.757,
+     "end": 13.291,
+     "dur": 1.534,
+     "onset_frame": 353,
+     "syll": 9
+    },
+    "L02c": {
+     "start": 13.998,
+     "end": 15.95,
+     "dur": 1.952,
+     "onset_frame": 420,
+     "syll": 10
+    },
+    "L03": {
+     "start": 16.293,
+     "end": 18.424,
+     "dur": 2.131,
+     "onset_frame": 489,
+     "syll": 11
+    },
+    "L04": {
+     "start": 19.091,
+     "end": 20.625,
+     "dur": 1.534,
+     "onset_frame": 573,
+     "syll": 6
+    },
+    "L05": {
+     "start": 21.107,
+     "end": 22.972,
+     "dur": 1.865,
+     "onset_frame": 633,
+     "syll": 9
+    },
+    "L06": {
+     "start": 23.567,
+     "end": 25.907,
+     "dur": 2.34,
+     "onset_frame": 707,
+     "syll": 13
+    },
+    "L07": {
+     "start": 26.274,
+     "end": 29.386,
+     "dur": 3.112,
+     "onset_frame": 788,
+     "syll": 15
+    },
+    "L10": {
+     "start": 29.945,
+     "end": 31.662,
+     "dur": 1.717,
+     "onset_frame": 898,
+     "syll": 9
+    },
+    "L11": {
+     "start": 32.174,
+     "end": 34.969,
+     "dur": 2.795,
+     "onset_frame": 965,
+     "syll": 14
+    },
+    "L08": {
+     "start": 35.752,
+     "end": 38.262,
+     "dur": 2.51,
+     "onset_frame": 1073,
+     "syll": 12
+    },
+    "L12": {
+     "start": 38.957,
+     "end": 41.456,
+     "dur": 2.499,
+     "onset_frame": 1169,
+     "syll": 11
+    },
+    "L13": {
+     "start": 41.837,
+     "end": 44.066,
+     "dur": 2.229,
+     "onset_frame": 1255,
+     "syll": 11
+    },
+    "L14": {
+     "start": 44.856,
+     "end": 46.841,
+     "dur": 1.985,
+     "onset_frame": 1346,
+     "syll": 9
+    },
+    "L15": {
+     "start": 47.034,
+     "end": 51.106,
+     "dur": 4.072,
+     "onset_frame": 1411,
+     "syll": 18
+    }
+   }
+  },
+  "w1_3_r3_read": {
+   "script": "EDU-EP14-SCRIPT-R3",
+   "read": "ep14-nar-kore-fullread.wav",
+   "read_duration_s": 62.2,
+   "speech_end_s": 61.882,
+   "video_estimate_s": "about 67.5 (range 66-68)",
+   "result": "OVER limit 63 s; trim request to Preaw; Preaw rewrote as R4"
+  },
+  "lock_R2.0": {
+   "status": "audio-measured",
+   "script": "EDU-EP14-SCRIPT-R4",
+   "storyboard": "EDU-EP14-ROWS-R2.0",
+   "read_reused_from_w1_4": true,
+   "gemini_requests_in_w4_for_narration": 0,
+   "method": "Line edges: ffmpeg silencedetect -35 dB / 0.06 s plus a 5 ms RMS envelope (onset = first level above -30 dB held 50 ms; breaths at -37..-41 dB before L07, L10, L15 skipped; L13 and L15 onsets set to the Whisper word start, the plosive attack is quiet). Word anchors: faster-whisper large-v3-turbo word_timestamps on the same WAV (venv of the main checkout; scripts/transcribe.py fails on the installed av, so the WAV was passed as an array), +-0.1 s. Not listened.",
+   "offsets_s": {
+    "lead_in_A": 0.35,
+    "after_W700_B": 0.8633,
+    "after_V01_C": 2.1433,
+    "B03_D": 2.4433,
+    "B04_E": 2.7433,
+    "B05_F": 3.0433
+   },
+   "cuts_read_s": {
+    "W700": 16.26,
+    "V01": 18.75,
+    "B03": 29.78,
+    "B04": 35.36,
+    "B05": 44.435
+   },
+   "timeline": {
+    "fps": 30,
+    "total_frames": 1701,
+    "total_s": 56.7,
+    "speech_end_global_frame": 1624,
+    "limit_s": 63,
+    "target_s": "40-60"
+   },
+   "picture_beats_global_frames": {
+    "W700": [
+     489,
+     519
+    ],
+    "V01_sound": 600,
+    "V02_sound": 1631,
+    "end_hold": [
+     1652,
+     1701
+    ]
+   },
+   "lines": {
+    "L01": {
+     "read_onset_s": 0.152,
+     "read_end_s": 5.25,
+     "global_onset_frame": 15,
+     "global_end_frame": 168
+    },
+    "L02a": {
+     "read_onset_s": 5.815,
+     "read_end_s": 7.885,
+     "global_onset_frame": 185,
+     "global_end_frame": 247
+    },
+    "L02": {
+     "read_onset_s": 8.555,
+     "read_end_s": 11.335,
+     "global_onset_frame": 267,
+     "global_end_frame": 351
+    },
+    "L02b": {
+     "read_onset_s": 11.76,
+     "read_end_s": 13.235,
+     "global_onset_frame": 363,
+     "global_end_frame": 408
+    },
+    "L02c": {
+     "read_onset_s": 13.995,
+     "read_end_s": 15.95,
+     "global_onset_frame": 430,
+     "global_end_frame": 489
+    },
+    "L03": {
+     "read_onset_s": 16.57,
+     "read_end_s": 18.405,
+     "global_onset_frame": 523,
+     "global_end_frame": 578
+    },
+    "L04": {
+     "read_onset_s": 19.09,
+     "read_end_s": 20.585,
+     "global_onset_frame": 637,
+     "global_end_frame": 682
+    },
+    "L05": {
+     "read_onset_s": 21.11,
+     "read_end_s": 22.96,
+     "global_onset_frame": 698,
+     "global_end_frame": 753
+    },
+    "L06": {
+     "read_onset_s": 23.57,
+     "read_end_s": 25.91,
+     "global_onset_frame": 771,
+     "global_end_frame": 842
+    },
+    "L07": {
+     "read_onset_s": 26.57,
+     "read_end_s": 29.36,
+     "global_onset_frame": 861,
+     "global_end_frame": 945
+    },
+    "L10": {
+     "read_onset_s": 30.2,
+     "read_end_s": 31.65,
+     "global_onset_frame": 979,
+     "global_end_frame": 1023
+    },
+    "L11": {
+     "read_onset_s": 32.175,
+     "read_end_s": 34.965,
+     "global_onset_frame": 1039,
+     "global_end_frame": 1122
+    },
+    "L08": {
+     "read_onset_s": 35.755,
+     "read_end_s": 38.235,
+     "global_onset_frame": 1155,
+     "global_end_frame": 1229
+    },
+    "L12": {
+     "read_onset_s": 38.96,
+     "read_end_s": 41.455,
+     "global_onset_frame": 1251,
+     "global_end_frame": 1326
+    },
+    "L13": {
+     "read_onset_s": 41.92,
+     "read_end_s": 44.01,
+     "global_onset_frame": 1340,
+     "global_end_frame": 1403
+    },
+    "L14": {
+     "read_onset_s": 44.86,
+     "read_end_s": 46.825,
+     "global_onset_frame": 1437,
+     "global_end_frame": 1496
+    },
+    "L15": {
+     "read_onset_s": 47.3,
+     "read_end_s": 51.105,
+     "global_onset_frame": 1510,
+     "global_end_frame": 1624
+    }
+   },
+   "words": {
+    "L01.akat": {
+     "read_s": 1.36,
+     "global_frame": 51
+    },
+    "L01b.med": {
+     "read_s": 1.847,
+     "global_frame": 66
+    },
+    "L01b.jetroi": {
+     "read_s": 4.02,
+     "global_frame": 131
+    },
+    "L02.lud": {
+     "read_s": 8.86,
+     "global_frame": 276
+    },
+    "L02.songkilo": {
+     "read_s": 10.72,
+     "global_frame": 332
+    },
+    "L02c.kilodiao": {
+     "read_s": 14.42,
+     "global_frame": 443
+    },
+    "L02c.harroi": {
+     "read_s": 14.94,
+     "global_frame": 459
+    },
+    "L03.saep": {
+     "read_s": 17.18,
+     "global_frame": 541
+    },
+    "L03.ying": {
+     "read_s": 18.12,
+     "global_frame": 570
+    },
+    "L06.phodi": {
+     "read_s": 24.6,
+     "global_frame": 802
+    },
+    "L10.maidai": {
+     "read_s": 30.58,
+     "global_frame": 991
+    },
+    "L10.yot": {
+     "read_s": 30.9,
+     "global_frame": 1000
+    },
+    "L11.konbaen": {
+     "read_s": 33.28,
+     "global_frame": 1072
+    },
+    "L11.burger": {
+     "read_s": 34.44,
+     "global_frame": 1106
+    },
+    "L08.yai-tha-luk": {
+     "read_s": 37.48,
+     "global_frame": 1207
+    },
+    "L12.bum": {
+     "read_s": 40.36,
+     "global_frame": 1293
+    },
+    "L12.thungkwam": {
+     "read_s": 40.92,
+     "global_frame": 1310
+    },
+    "L13.kreungsen": {
+     "read_s": 42.52,
+     "global_frame": 1358
+    },
+    "L13.taek": {
+     "read_s": 43.32,
+     "global_frame": 1382
+    },
+    "L15.paikwanee": {
+     "read_s": 50.64,
+     "global_frame": 1610
+    }
+   },
+   "shots": [
+    {
+     "shot": "S01-B01-SH01",
+     "lines": "L01 a",
+     "start_frame": 0,
+     "end_frame": 63,
+     "len_frames": 63,
+     "start_s": 0.0,
+     "len_s": 2.1
+    },
+    {
+     "shot": "S01-B01-SH02",
+     "lines": "L01 b",
+     "start_frame": 63,
+     "end_frame": 180,
+     "len_frames": 117,
+     "start_s": 2.1,
+     "len_s": 3.9
+    },
+    {
+     "shot": "S01-B01-SH03",
+     "lines": "L02a",
+     "start_frame": 180,
+     "end_frame": 260,
+     "len_frames": 80,
+     "start_s": 6.0,
+     "len_s": 2.67
+    },
+    {
+     "shot": "S01-B01-SH04",
+     "lines": "L02 a",
+     "start_frame": 260,
+     "end_frame": 303,
+     "len_frames": 43,
+     "start_s": 8.67,
+     "len_s": 1.43
+    },
+    {
+     "shot": "S01-B01-SH05",
+     "lines": "L02 b",
+     "start_frame": 303,
+     "end_frame": 358,
+     "len_frames": 55,
+     "start_s": 10.1,
+     "len_s": 1.83
+    },
+    {
+     "shot": "S01-B01-SH06",
+     "lines": "L02b",
+     "start_frame": 358,
+     "end_frame": 418,
+     "len_frames": 60,
+     "start_s": 11.93,
+     "len_s": 2.0
+    },
+    {
+     "shot": "S01-B01-SH07",
+     "lines": "L02c, W700",
+     "start_frame": 418,
+     "end_frame": 519,
+     "len_frames": 101,
+     "start_s": 13.93,
+     "len_s": 3.37
+    },
+    {
+     "shot": "S01-B01-SH08",
+     "lines": "L03",
+     "start_frame": 519,
+     "end_frame": 591,
+     "len_frames": 72,
+     "start_s": 17.3,
+     "len_s": 2.4
+    },
+    {
+     "shot": "S01-B01-SH09",
+     "lines": "V01",
+     "start_frame": 591,
+     "end_frame": 633,
+     "len_frames": 42,
+     "start_s": 19.7,
+     "len_s": 1.4
+    },
+    {
+     "shot": "S01-B02-SH01",
+     "lines": "L04",
+     "start_frame": 633,
+     "end_frame": 693,
+     "len_frames": 60,
+     "start_s": 21.1,
+     "len_s": 2.0
+    },
+    {
+     "shot": "S01-B02-SH02",
+     "lines": "L05, L06",
+     "start_frame": 693,
+     "end_frame": 856,
+     "len_frames": 163,
+     "start_s": 23.1,
+     "len_s": 5.43
+    },
+    {
+     "shot": "S01-B02-SH03",
+     "lines": "L07",
+     "start_frame": 856,
+     "end_frame": 965,
+     "len_frames": 109,
+     "start_s": 28.53,
+     "len_s": 3.63
+    },
+    {
+     "shot": "S01-B03-SH01",
+     "lines": "L10 a",
+     "start_frame": 965,
+     "end_frame": 1000,
+     "len_frames": 35,
+     "start_s": 32.17,
+     "len_s": 1.17
+    },
+    {
+     "shot": "S01-B03-SH02",
+     "lines": "L10 b",
+     "start_frame": 1000,
+     "end_frame": 1034,
+     "len_frames": 34,
+     "start_s": 33.33,
+     "len_s": 1.13
+    },
+    {
+     "shot": "S01-B03-SH03",
+     "lines": "L11",
+     "start_frame": 1034,
+     "end_frame": 1142,
+     "len_frames": 108,
+     "start_s": 34.47,
+     "len_s": 3.6
+    },
+    {
+     "shot": "S01-B04-SH01",
+     "lines": "L08",
+     "start_frame": 1142,
+     "end_frame": 1244,
+     "len_frames": 102,
+     "start_s": 38.07,
+     "len_s": 3.4
+    },
+    {
+     "shot": "S01-B04-SH02",
+     "lines": "L12",
+     "start_frame": 1244,
+     "end_frame": 1336,
+     "len_frames": 92,
+     "start_s": 41.47,
+     "len_s": 3.07
+    },
+    {
+     "shot": "S01-B04-SH03",
+     "lines": "L13",
+     "start_frame": 1336,
+     "end_frame": 1425,
+     "len_frames": 89,
+     "start_s": 44.53,
+     "len_s": 2.97
+    },
+    {
+     "shot": "S01-B05-SH01",
+     "lines": "L14",
+     "start_frame": 1425,
+     "end_frame": 1505,
+     "len_frames": 80,
+     "start_s": 47.5,
+     "len_s": 2.67
+    },
+    {
+     "shot": "S01-B05-SH02",
+     "lines": "L15",
+     "start_frame": 1505,
+     "end_frame": 1628,
+     "len_frames": 123,
+     "start_s": 50.17,
+     "len_s": 4.1
+    },
+    {
+     "shot": "S01-B05-SH03",
+     "lines": "V02, hold",
+     "start_frame": 1628,
+     "end_frame": 1701,
+     "len_frames": 73,
+     "start_s": 54.27,
+     "len_s": 2.43
+    }
+   ]
+  },
+  "lock_R3.0": {
+   "status": "audio-measured",
+   "script": "EDU-EP14-SCRIPT-R4",
+   "storyboard": "EDU-EP14-ROWS-R3.0",
+   "read_reused_from_w1_4": true,
+   "gemini_requests_in_w4_for_narration": 0,
+   "method": "Line edges: ffmpeg silencedetect -35 dB / 0.06 s plus a 5 ms RMS envelope (onset = first level above -30 dB held 50 ms; breaths at -37..-41 dB before L07, L10, L15 skipped; L13 and L15 onsets set to the Whisper word start, the plosive attack is quiet). Word anchors: faster-whisper large-v3-turbo word_timestamps on the same WAV (venv of the main checkout; scripts/transcribe.py fails on the installed av, so the WAV was passed as an array), +-0.1 s. Not listened.",
+   "offsets_s": {
+    "lead_in_A": 0.35,
+    "after_W700_B": 0.8633,
+    "after_V01_C": 2.1433,
+    "B03_D": 2.1433,
+    "B04_E": 2.1433,
+    "B05_F": 2.1433
+   },
+   "cuts_read_s": {
+    "W700": 16.26,
+    "V01": 18.75,
+    "B03": 29.78,
+    "B04": 35.36,
+    "B05": 44.435
+   },
+   "timeline": {
+    "fps": 30,
+    "total_frames": 1674,
+    "total_s": 55.8,
+    "speech_end_global_frame": 1597,
+    "limit_s": 63,
+    "target_s": "40-60"
+   },
+   "picture_beats_global_frames": {
+    "W700": [
+     489,
+     519
+    ],
+    "V01_sound": 600,
+    "V02_sound": 1604,
+    "end_hold": [
+     1619,
+     1674
+    ]
+   },
+   "girl_takes": {
+    "V01": {
+     "store": "projects/EDU/audio/2026-11-09_ep14-girl-v01-a-leda.wav",
+     "file_s": 0.88,
+     "voice_s": [
+      0.204,
+      0.625
+     ],
+     "voice_frames": 13,
+     "voice_onset_global_frame": 600
+    },
+    "V02": {
+     "store": "projects/EDU/audio/2026-11-09_ep14-girl-v02-a-leda.wav",
+     "file_s": 2.12,
+     "voice_s": [
+      0.19,
+      0.678
+     ],
+     "voice_frames": 15,
+     "voice_onset_global_frame": 1604
+    }
+   },
+   "lines": {
+    "L01": {
+     "read_onset_s": 0.152,
+     "read_end_s": 5.25,
+     "global_onset_frame": 15,
+     "global_end_frame": 168
+    },
+    "L02a": {
+     "read_onset_s": 5.815,
+     "read_end_s": 7.885,
+     "global_onset_frame": 185,
+     "global_end_frame": 247
+    },
+    "L02": {
+     "read_onset_s": 8.555,
+     "read_end_s": 11.335,
+     "global_onset_frame": 267,
+     "global_end_frame": 351
+    },
+    "L02b": {
+     "read_onset_s": 11.76,
+     "read_end_s": 13.235,
+     "global_onset_frame": 363,
+     "global_end_frame": 408
+    },
+    "L02c": {
+     "read_onset_s": 13.995,
+     "read_end_s": 15.95,
+     "global_onset_frame": 430,
+     "global_end_frame": 489
+    },
+    "L03": {
+     "read_onset_s": 16.57,
+     "read_end_s": 18.405,
+     "global_onset_frame": 523,
+     "global_end_frame": 578
+    },
+    "L04": {
+     "read_onset_s": 19.09,
+     "read_end_s": 20.585,
+     "global_onset_frame": 637,
+     "global_end_frame": 682
+    },
+    "L05": {
+     "read_onset_s": 21.11,
+     "read_end_s": 22.96,
+     "global_onset_frame": 698,
+     "global_end_frame": 753
+    },
+    "L06": {
+     "read_onset_s": 23.57,
+     "read_end_s": 25.91,
+     "global_onset_frame": 771,
+     "global_end_frame": 842
+    },
+    "L07": {
+     "read_onset_s": 26.57,
+     "read_end_s": 29.36,
+     "global_onset_frame": 861,
+     "global_end_frame": 945
+    },
+    "L10": {
+     "read_onset_s": 30.2,
+     "read_end_s": 31.65,
+     "global_onset_frame": 970,
+     "global_end_frame": 1014
+    },
+    "L11": {
+     "read_onset_s": 32.175,
+     "read_end_s": 34.965,
+     "global_onset_frame": 1030,
+     "global_end_frame": 1113
+    },
+    "L08": {
+     "read_onset_s": 35.755,
+     "read_end_s": 38.235,
+     "global_onset_frame": 1137,
+     "global_end_frame": 1211
+    },
+    "L12": {
+     "read_onset_s": 38.96,
+     "read_end_s": 41.455,
+     "global_onset_frame": 1233,
+     "global_end_frame": 1308
+    },
+    "L13": {
+     "read_onset_s": 41.92,
+     "read_end_s": 44.01,
+     "global_onset_frame": 1322,
+     "global_end_frame": 1385
+    },
+    "L14": {
+     "read_onset_s": 44.86,
+     "read_end_s": 46.825,
+     "global_onset_frame": 1410,
+     "global_end_frame": 1469
+    },
+    "L15": {
+     "read_onset_s": 47.3,
+     "read_end_s": 51.105,
+     "global_onset_frame": 1483,
+     "global_end_frame": 1597
+    }
+   },
+   "words": {
+    "L01.akat": {
+     "read_s": 1.36,
+     "global_frame": 51
+    },
+    "L01b.med": {
+     "read_s": 1.847,
+     "global_frame": 66
+    },
+    "L01b.jetroi": {
+     "read_s": 4.02,
+     "global_frame": 131
+    },
+    "L02.lud": {
+     "read_s": 8.86,
+     "global_frame": 276
+    },
+    "L02.songkilo": {
+     "read_s": 10.72,
+     "global_frame": 332
+    },
+    "L02c.kilodiao": {
+     "read_s": 14.42,
+     "global_frame": 443
+    },
+    "L02c.harroi": {
+     "read_s": 14.94,
+     "global_frame": 459
+    },
+    "L03.saep": {
+     "read_s": 17.18,
+     "global_frame": 541
+    },
+    "L03.ying": {
+     "read_s": 18.12,
+     "global_frame": 570
+    },
+    "L06.phodi": {
+     "read_s": 24.6,
+     "global_frame": 802
+    },
+    "L10.maidai": {
+     "read_s": 30.58,
+     "global_frame": 982
+    },
+    "L10.yot": {
+     "read_s": 30.9,
+     "global_frame": 991
+    },
+    "L11.konbaen": {
+     "read_s": 33.28,
+     "global_frame": 1063
+    },
+    "L11.burger": {
+     "read_s": 34.44,
+     "global_frame": 1097
+    },
+    "L08.yai-tha-luk": {
+     "read_s": 37.48,
+     "global_frame": 1189
+    },
+    "L12.bum": {
+     "read_s": 40.36,
+     "global_frame": 1275
+    },
+    "L12.thungkwam": {
+     "read_s": 40.92,
+     "global_frame": 1292
+    },
+    "L13.kreungsen": {
+     "read_s": 42.52,
+     "global_frame": 1340
+    },
+    "L13.taek": {
+     "read_s": 43.32,
+     "global_frame": 1364
+    },
+    "L15.paikwanee": {
+     "read_s": 50.64,
+     "global_frame": 1584
+    },
+    "L01b.reo": {
+     "read_s": 3.26,
+     "global_frame": 108
+    },
+    "L02.loisung": {
+     "read_s": 10.14,
+     "global_frame": 315
+    },
+    "L04.lokjing": {
+     "read_s": 19.68,
+     "global_frame": 655
+    },
+    "L05.akat": {
+     "read_s": 21.88,
+     "global_frame": 721
+    },
+    "L05.danklab": {
+     "read_s": 22.32,
+     "global_frame": 734
+    },
+    "L06.namnak": {
+     "read_s": 24.04,
+     "global_frame": 786
+    },
+    "L06.loekreng": {
+     "read_s": 25.46,
+     "global_frame": 828
+    },
+    "L07.samsip": {
+     "read_s": 28.02,
+     "global_frame": 905
+    },
+    "L10.yot2": {
+     "read_s": 30.9,
+     "global_frame": 991
+    },
+    "L11.baen": {
+     "read_s": 33.46,
+     "global_frame": 1068
+    },
+    "L08.lukbon": {
+     "read_s": 37.8,
+     "global_frame": 1198
+    },
+    "L12.yingyai": {
+     "read_s": 38.86,
+     "global_frame": 1230
+    },
+    "L13.ko": {
+     "read_s": 42.98,
+     "global_frame": 1354
+    },
+    "L14.akat": {
+     "read_s": 45.68,
+     "global_frame": 1435
+    },
+    "L14.danklab": {
+     "read_s": 46.18,
+     "global_frame": 1450
+    },
+    "L15.muekhun": {
+     "read_s": 48.22,
+     "global_frame": 1511
+    },
+    "L15.thuk": {
+     "read_s": 49.02,
+     "global_frame": 1535
+    },
+    "L15.brake": {
+     "read_s": 49.58,
+     "global_frame": 1552
+    }
+   },
+   "shots": [
+    {
+     "shot": "S01-B01-SH01",
+     "lines": "L01 a",
+     "start_frame": 0,
+     "end_frame": 63,
+     "len_frames": 63,
+     "start_s": 0.0,
+     "len_s": 2.1
+    },
+    {
+     "shot": "S01-B01-SH02",
+     "lines": "L01 b",
+     "start_frame": 63,
+     "end_frame": 180,
+     "len_frames": 117,
+     "start_s": 2.1,
+     "len_s": 3.9
+    },
+    {
+     "shot": "S01-B01-SH03",
+     "lines": "L02a",
+     "start_frame": 180,
+     "end_frame": 260,
+     "len_frames": 80,
+     "start_s": 6.0,
+     "len_s": 2.67
+    },
+    {
+     "shot": "S01-B01-SH04",
+     "lines": "L02 a",
+     "start_frame": 260,
+     "end_frame": 303,
+     "len_frames": 43,
+     "start_s": 8.67,
+     "len_s": 1.43
+    },
+    {
+     "shot": "S01-B01-SH05",
+     "lines": "L02 b",
+     "start_frame": 303,
+     "end_frame": 358,
+     "len_frames": 55,
+     "start_s": 10.1,
+     "len_s": 1.83
+    },
+    {
+     "shot": "S01-B01-SH06",
+     "lines": "L02b",
+     "start_frame": 358,
+     "end_frame": 418,
+     "len_frames": 60,
+     "start_s": 11.93,
+     "len_s": 2.0
+    },
+    {
+     "shot": "S01-B01-SH07",
+     "lines": "L02c, W700",
+     "start_frame": 418,
+     "end_frame": 519,
+     "len_frames": 101,
+     "start_s": 13.93,
+     "len_s": 3.37
+    },
+    {
+     "shot": "S01-B01-SH08",
+     "lines": "L03",
+     "start_frame": 519,
+     "end_frame": 591,
+     "len_frames": 72,
+     "start_s": 17.3,
+     "len_s": 2.4
+    },
+    {
+     "shot": "S01-B01-SH09",
+     "lines": "V01",
+     "start_frame": 591,
+     "end_frame": 633,
+     "len_frames": 42,
+     "start_s": 19.7,
+     "len_s": 1.4
+    },
+    {
+     "shot": "S01-B02-SH01",
+     "lines": "L04",
+     "start_frame": 633,
+     "end_frame": 693,
+     "len_frames": 60,
+     "start_s": 21.1,
+     "len_s": 2.0
+    },
+    {
+     "shot": "S01-B02-SH02",
+     "lines": "L05, L06",
+     "start_frame": 693,
+     "end_frame": 856,
+     "len_frames": 163,
+     "start_s": 23.1,
+     "len_s": 5.43
+    },
+    {
+     "shot": "S01-B02-SH03",
+     "lines": "L07",
+     "start_frame": 856,
+     "end_frame": 956,
+     "len_frames": 100,
+     "start_s": 28.53,
+     "len_s": 3.33
+    },
+    {
+     "shot": "S01-B03-SH01",
+     "lines": "L10 a",
+     "start_frame": 956,
+     "end_frame": 991,
+     "len_frames": 35,
+     "start_s": 31.87,
+     "len_s": 1.17
+    },
+    {
+     "shot": "S01-B03-SH02",
+     "lines": "L10 b",
+     "start_frame": 991,
+     "end_frame": 1025,
+     "len_frames": 34,
+     "start_s": 33.03,
+     "len_s": 1.13
+    },
+    {
+     "shot": "S01-B03-SH03",
+     "lines": "L11",
+     "start_frame": 1025,
+     "end_frame": 1124,
+     "len_frames": 99,
+     "start_s": 34.17,
+     "len_s": 3.3
+    },
+    {
+     "shot": "S01-B04-SH01",
+     "lines": "L08",
+     "start_frame": 1124,
+     "end_frame": 1226,
+     "len_frames": 102,
+     "start_s": 37.47,
+     "len_s": 3.4
+    },
+    {
+     "shot": "S01-B04-SH02",
+     "lines": "L12",
+     "start_frame": 1226,
+     "end_frame": 1318,
+     "len_frames": 92,
+     "start_s": 40.87,
+     "len_s": 3.07
+    },
+    {
+     "shot": "S01-B04-SH03",
+     "lines": "L13",
+     "start_frame": 1318,
+     "end_frame": 1398,
+     "len_frames": 80,
+     "start_s": 43.93,
+     "len_s": 2.67
+    },
+    {
+     "shot": "S01-B05-SH01",
+     "lines": "L14",
+     "start_frame": 1398,
+     "end_frame": 1478,
+     "len_frames": 80,
+     "start_s": 46.6,
+     "len_s": 2.67
+    },
+    {
+     "shot": "S01-B05-SH02",
+     "lines": "L15",
+     "start_frame": 1478,
+     "end_frame": 1601,
+     "len_frames": 123,
+     "start_s": 49.27,
+     "len_s": 4.1
+    },
+    {
+     "shot": "S01-B05-SH03",
+     "lines": "V02, hold",
+     "start_frame": 1601,
+     "end_frame": 1674,
+     "len_frames": 73,
+     "start_s": 53.37,
+     "len_s": 2.43
+    }
+   ]
+  }
+ },
+ "lock": {
+  "status": "audio-measured",
+  "script": "EDU-EP14-SCRIPT-R4",
+  "storyboard": "EDU-EP14-ROWS-R4.0",
+  "narration": {
+   "file": "projects/EDU/audio/2026-11-09_ep14-r4-nar-kore-s090-g095.wav",
+   "length_s": 56.147,
+   "recipe": "locked R4 Kore read; speech atempo 0.90, gaps and lead-in 0.95, tail unchanged (scripts/edu-series/ep14/narration-slow.py); 0 new Gemini requests"
+  },
+  "read_reused_from_w1_4": true,
+  "gemini_requests_in_w4_for_narration": 0,
+  "method": "Line edges: ffmpeg silencedetect -35 dB / 0.06 s plus a 5 ms RMS envelope (onset = first level above -30 dB held 50 ms; breaths at -37..-41 dB before L07, L10, L15 skipped; L13 and L15 onsets set to the Whisper word start, the plosive attack is quiet). Word anchors: faster-whisper large-v3-turbo word_timestamps on the same WAV (venv of the main checkout; scripts/transcribe.py fails on the installed av, so the WAV was passed as an array), +-0.1 s. Not listened. R4.0 re-lock on the slowed file: line edges re-measured by the same energy method (L01 0.152 = silencedetect end; L13 and L15 onsets = Whisper word start); word anchors = the R3.x anchors mapped linearly between the old and new line edges and checked against faster-whisper on the slowed file (29 of 38 within 0.02 s, 36 within 0.07 s, +0.17 and +0.19 s at L03.saep and L04.lokjing where the token starts mid-word). Picture pins kept as offsets: W700 slot 30 f from the L02c end, L03 onset +4 f, V01 shot = L03 end +13 f, L04 onset = V01 shot +46 f.",
+  "offsets_s": {
+   "lead_in_A": 0.35,
+   "after_W700_B": 0.8567,
+   "after_V01_C": 2.14,
+   "B03_D": 2.14,
+   "B04_E": 2.14,
+   "B05_F": 2.14
+  },
+  "cuts_read_s": {
+   "W700": 17.7925,
+   "V01": 20.5125,
+   "B03": 32.54,
+   "B04": 38.6075,
+   "B05": 48.515
+  },
+  "timeline": {
+   "fps": 30,
+   "total_frames": 1815,
+   "total_s": 60.5,
+   "speech_end_global_frame": 1738,
+   "limit_s": 63,
+   "target_s": "40-60"
+  },
+  "picture_beats_global_frames": {
+   "W700": [
+    535,
+    565
+   ],
+   "V01_sound": 653,
+   "V02_sound": 1745,
+   "end_hold": [
+    1760,
+    1815
+   ]
+  },
+  "girl_takes": {
+   "V01": {
+    "store": "projects/EDU/audio/2026-11-09_ep14-girl-v01-a-leda.wav",
+    "file_s": 0.88,
+    "voice_s": [
+     0.204,
+     0.625
+    ],
+    "voice_frames": 13,
+    "voice_onset_global_frame": 653
+   },
+   "V02": {
+    "store": "projects/EDU/audio/2026-11-09_ep14-girl-v02-a-leda.wav",
+    "file_s": 2.12,
+    "voice_s": [
+     0.19,
+     0.678
+    ],
+    "voice_frames": 15,
+    "voice_onset_global_frame": 1745
+   }
+  },
+  "lines": {
+   "L01": {
+    "read_onset_s": 0.152,
+    "read_end_s": 5.815,
+    "global_onset_frame": 15,
+    "global_end_frame": 185
+   },
+   "L02a": {
+    "read_onset_s": 6.395,
+    "read_end_s": 8.69,
+    "global_onset_frame": 202,
+    "global_end_frame": 271
+   },
+   "L02": {
+    "read_onset_s": 9.38,
+    "read_end_s": 12.47,
+    "global_onset_frame": 292,
+    "global_end_frame": 385
+   },
+   "L02b": {
+    "read_onset_s": 12.895,
+    "read_end_s": 14.525,
+    "global_onset_frame": 397,
+    "global_end_frame": 446
+   },
+   "L02c": {
+    "read_onset_s": 15.31,
+    "read_end_s": 17.475,
+    "global_onset_frame": 470,
+    "global_end_frame": 535
+   },
+   "L03": {
+    "read_onset_s": 18.11,
+    "read_end_s": 20.165,
+    "global_onset_frame": 569,
+    "global_end_frame": 631
+   },
+   "L04": {
+    "read_onset_s": 20.86,
+    "read_end_s": 22.505,
+    "global_onset_frame": 690,
+    "global_end_frame": 739
+   },
+   "L05": {
+    "read_onset_s": 23.05,
+    "read_end_s": 25.11,
+    "global_onset_frame": 756,
+    "global_end_frame": 818
+   },
+   "L06": {
+    "read_onset_s": 25.725,
+    "read_end_s": 28.315,
+    "global_onset_frame": 836,
+    "global_end_frame": 914
+   },
+   "L07": {
+    "read_onset_s": 29.0,
+    "read_end_s": 32.115,
+    "global_onset_frame": 934,
+    "global_end_frame": 1028
+   },
+   "L10": {
+    "read_onset_s": 32.965,
+    "read_end_s": 34.575,
+    "global_onset_frame": 1053,
+    "global_end_frame": 1101
+   },
+   "L11": {
+    "read_onset_s": 35.115,
+    "read_end_s": 38.205,
+    "global_onset_frame": 1118,
+    "global_end_frame": 1210
+   },
+   "L08": {
+    "read_onset_s": 39.01,
+    "read_end_s": 41.765,
+    "global_onset_frame": 1234,
+    "global_end_frame": 1317
+   },
+   "L12": {
+    "read_onset_s": 42.495,
+    "read_end_s": 45.255,
+    "global_onset_frame": 1339,
+    "global_end_frame": 1422
+   },
+   "L13": {
+    "read_onset_s": 45.74,
+    "read_end_s": 48.105,
+    "global_onset_frame": 1436,
+    "global_end_frame": 1507
+   },
+   "L14": {
+    "read_onset_s": 48.925,
+    "read_end_s": 51.105,
+    "global_onset_frame": 1532,
+    "global_end_frame": 1597
+   },
+   "L15": {
+    "read_onset_s": 51.54,
+    "read_end_s": 55.81,
+    "global_onset_frame": 1610,
+    "global_end_frame": 1738
+   }
+  },
+  "words": {
+   "L01.akat": {
+    "read_s": 1.49,
+    "global_frame": 55
+   },
+   "L01b.med": {
+    "read_s": 2.03,
+    "global_frame": 71
+   },
+   "L01b.jetroi": {
+    "read_s": 4.45,
+    "global_frame": 144
+   },
+   "L02.lud": {
+    "read_s": 9.72,
+    "global_frame": 302
+   },
+   "L02.songkilo": {
+    "read_s": 11.79,
+    "global_frame": 364
+   },
+   "L02c.kilodiao": {
+    "read_s": 15.78,
+    "global_frame": 484
+   },
+   "L02c.harroi": {
+    "read_s": 16.36,
+    "global_frame": 501
+   },
+   "L03.saep": {
+    "read_s": 18.79,
+    "global_frame": 589
+   },
+   "L03.ying": {
+    "read_s": 19.85,
+    "global_frame": 621
+   },
+   "L06.phodi": {
+    "read_s": 26.87,
+    "global_frame": 870
+   },
+   "L10.maidai": {
+    "read_s": 33.39,
+    "global_frame": 1066
+   },
+   "L10.yot": {
+    "read_s": 33.74,
+    "global_frame": 1076
+   },
+   "L11.konbaen": {
+    "read_s": 36.34,
+    "global_frame": 1154
+   },
+   "L11.burger": {
+    "read_s": 37.62,
+    "global_frame": 1193
+   },
+   "L08.yai-tha-luk": {
+    "read_s": 40.93,
+    "global_frame": 1292
+   },
+   "L12.bum": {
+    "read_s": 44.04,
+    "global_frame": 1385
+   },
+   "L12.thungkwam": {
+    "read_s": 44.66,
+    "global_frame": 1404
+   },
+   "L13.kreungsen": {
+    "read_s": 46.42,
+    "global_frame": 1457
+   },
+   "L13.taek": {
+    "read_s": 47.32,
+    "global_frame": 1484
+   },
+   "L15.paikwanee": {
+    "read_s": 55.29,
+    "global_frame": 1723
+   },
+   "L01b.reo": {
+    "read_s": 3.6,
+    "global_frame": 118
+   },
+   "L02.loisung": {
+    "read_s": 11.14,
+    "global_frame": 345
+   },
+   "L04.lokjing": {
+    "read_s": 21.51,
+    "global_frame": 710
+   },
+   "L05.akat": {
+    "read_s": 23.91,
+    "global_frame": 782
+   },
+   "L05.danklab": {
+    "read_s": 24.4,
+    "global_frame": 796
+   },
+   "L06.namnak": {
+    "read_s": 26.25,
+    "global_frame": 852
+   },
+   "L06.loekreng": {
+    "read_s": 27.82,
+    "global_frame": 899
+   },
+   "L07.samsip": {
+    "read_s": 30.62,
+    "global_frame": 983
+   },
+   "L10.yot2": {
+    "read_s": 33.74,
+    "global_frame": 1076
+   },
+   "L11.baen": {
+    "read_s": 36.54,
+    "global_frame": 1160
+   },
+   "L08.lukbon": {
+    "read_s": 41.28,
+    "global_frame": 1303
+   },
+   "L12.yingyai": {
+    "read_s": 42.38,
+    "global_frame": 1336
+   },
+   "L13.ko": {
+    "read_s": 46.94,
+    "global_frame": 1472
+   },
+   "L14.akat": {
+    "read_s": 49.83,
+    "global_frame": 1559
+   },
+   "L14.danklab": {
+    "read_s": 50.39,
+    "global_frame": 1576
+   },
+   "L15.muekhun": {
+    "read_s": 52.57,
+    "global_frame": 1641
+   },
+   "L15.thuk": {
+    "read_s": 53.47,
+    "global_frame": 1668
+   },
+   "L15.brake": {
+    "read_s": 54.1,
+    "global_frame": 1687
+   }
+  },
+  "shots": [
+   {
+    "shot": "S01-B01-SH01",
+    "lines": "L01 a",
+    "start_frame": 0,
+    "end_frame": 68,
+    "len_frames": 68,
+    "start_s": 0.0,
+    "len_s": 2.27
+   },
+   {
+    "shot": "S01-B01-SH02",
+    "lines": "L01 b",
+    "start_frame": 68,
+    "end_frame": 197,
+    "len_frames": 129,
+    "start_s": 2.27,
+    "len_s": 4.3
+   },
+   {
+    "shot": "S01-B01-SH03",
+    "lines": "L02a",
+    "start_frame": 197,
+    "end_frame": 285,
+    "len_frames": 88,
+    "start_s": 6.57,
+    "len_s": 2.93
+   },
+   {
+    "shot": "S01-B01-SH04",
+    "lines": "L02 a",
+    "start_frame": 285,
+    "end_frame": 331,
+    "len_frames": 46,
+    "start_s": 9.5,
+    "len_s": 1.53
+   },
+   {
+    "shot": "S01-B01-SH05",
+    "lines": "L02 b",
+    "start_frame": 331,
+    "end_frame": 392,
+    "len_frames": 61,
+    "start_s": 11.03,
+    "len_s": 2.03
+   },
+   {
+    "shot": "S01-B01-SH06",
+    "lines": "L02b",
+    "start_frame": 392,
+    "end_frame": 458,
+    "len_frames": 66,
+    "start_s": 13.07,
+    "len_s": 2.2
+   },
+   {
+    "shot": "S01-B01-SH07",
+    "lines": "L02c, W700",
+    "start_frame": 458,
+    "end_frame": 565,
+    "len_frames": 107,
+    "start_s": 15.27,
+    "len_s": 3.57
+   },
+   {
+    "shot": "S01-B01-SH08",
+    "lines": "L03",
+    "start_frame": 565,
+    "end_frame": 644,
+    "len_frames": 79,
+    "start_s": 18.83,
+    "len_s": 2.63
+   },
+   {
+    "shot": "S01-B01-SH09",
+    "lines": "V01",
+    "start_frame": 644,
+    "end_frame": 686,
+    "len_frames": 42,
+    "start_s": 21.47,
+    "len_s": 1.4
+   },
+   {
+    "shot": "S01-B02-SH01",
+    "lines": "L04",
+    "start_frame": 686,
+    "end_frame": 751,
+    "len_frames": 65,
+    "start_s": 22.87,
+    "len_s": 2.17
+   },
+   {
+    "shot": "S01-B02-SH02",
+    "lines": "L05, L06",
+    "start_frame": 751,
+    "end_frame": 929,
+    "len_frames": 178,
+    "start_s": 25.03,
+    "len_s": 5.93
+   },
+   {
+    "shot": "S01-B02-SH03",
+    "lines": "L07",
+    "start_frame": 929,
+    "end_frame": 1039,
+    "len_frames": 110,
+    "start_s": 30.97,
+    "len_s": 3.67
+   },
+   {
+    "shot": "S01-B03-SH01",
+    "lines": "L10 a",
+    "start_frame": 1039,
+    "end_frame": 1076,
+    "len_frames": 37,
+    "start_s": 34.63,
+    "len_s": 1.23
+   },
+   {
+    "shot": "S01-B03-SH02",
+    "lines": "L10 b",
+    "start_frame": 1076,
+    "end_frame": 1113,
+    "len_frames": 37,
+    "start_s": 35.87,
+    "len_s": 1.23
+   },
+   {
+    "shot": "S01-B03-SH03",
+    "lines": "L11",
+    "start_frame": 1113,
+    "end_frame": 1221,
+    "len_frames": 108,
+    "start_s": 37.1,
+    "len_s": 3.6
+   },
+   {
+    "shot": "S01-B04-SH01",
+    "lines": "L08",
+    "start_frame": 1221,
+    "end_frame": 1332,
+    "len_frames": 111,
+    "start_s": 40.7,
+    "len_s": 3.7
+   },
+   {
+    "shot": "S01-B04-SH02",
+    "lines": "L12",
+    "start_frame": 1332,
+    "end_frame": 1432,
+    "len_frames": 100,
+    "start_s": 44.4,
+    "len_s": 3.33
+   },
+   {
+    "shot": "S01-B04-SH03",
+    "lines": "L13",
+    "start_frame": 1432,
+    "end_frame": 1520,
+    "len_frames": 88,
+    "start_s": 47.73,
+    "len_s": 2.93
+   },
+   {
+    "shot": "S01-B05-SH01",
+    "lines": "L14",
+    "start_frame": 1520,
+    "end_frame": 1605,
+    "len_frames": 85,
+    "start_s": 50.67,
+    "len_s": 2.83
+   },
+   {
+    "shot": "S01-B05-SH02",
+    "lines": "L15",
+    "start_frame": 1605,
+    "end_frame": 1742,
+    "len_frames": 137,
+    "start_s": 53.5,
+    "len_s": 4.57
+   },
+   {
+    "shot": "S01-B05-SH03",
+    "lines": "V02, hold",
+    "start_frame": 1742,
+    "end_frame": 1815,
+    "len_frames": 73,
+    "start_s": 58.07,
+    "len_s": 2.43
+   }
+  ]
+ },
+ "timing_status": "audio-measured"
+}
