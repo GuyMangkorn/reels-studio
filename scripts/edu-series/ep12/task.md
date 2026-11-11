@@ -2,7 +2,7 @@
 
 Record: this file. Series context: [concepts.md](../concepts.md) (R6, C35) · series task list: [task.md](../task.md).
 
-**Now:** W3 done (look lock + 18/18 shots ok). Next: W4 voice lock (user approves Kore 6.5 %-slower voice, W4.3), then W5.1 timed sheets, W5.2 Boss assets and W5.2s Ton cue sheet.
+**Now:** W3 done (look lock + 18/18 shots ok). Next: W4 voice lock with the new edu default (2026-11-11, [channel voice](../../../channels/edu/channel.md#voice): Kore warm style, **atempo 1.08, user pick 2026-11-11** from the L01–L02 sample, store `projects/edu/EDU/samples/ep12_kore-warm_x1.08.wav`; this replaces the pending "Kore 6.5 % slower" pick), then W5.1 timed sheets, W5.2 Boss assets and W5.2s Ton cue sheet.
 
 - Deliverable: `EDU-EP12-SHORT`, Short only (Thai), 1080×1920, 30 fps, target 40–60 s (estimate). Profile: educational, painted 2D p5.brush, 4-head cast, Kore narrator (edu default), ending per concept: closed, ~2 s hold on the boy asleep, then the doorframe (the user may change it); other fields = project defaults.
 - Factual claims for Boat: see the C35 entry in concepts.md R6. All unchecked until research and fact-check. Thin spots: daily height loss figure (about 1 cm / about 1 % of stature, range by height); NASA astronaut growth up to about 3 %; back-pain wording (no mechanism claim beyond "ตัวยืด" and "ปวดหลัง").
