@@ -5,7 +5,7 @@
 | Channel | ID | Folder | Status |
 | --- | --- | --- | --- |
 | Education (`@TamMaiLa`) | `edu` | [edu/](edu/channel.md) | active |
-| Fiction (invented stories) | `fiction` | not created yet | planned; first file is `channel.md`, the style files grow from a pilot episode |
+| Fiction (`@mg.fiction`) | `fiction` | [fiction/](fiction/channel.md) | active, identity only; the style files grow from a pilot episode |
 
 ## What a channel folder holds
 
@@ -22,7 +22,7 @@ Each file is created when the channel has a rule to put in it. A missing file me
 
 ## Rules
 
-- **CH01 — One channel per deliverable.** `delivery.md` names the channel ID in the [style profile](../docs/delivery-workflow.md#style-profile) block. A request that does not name a channel takes `edu` while it is the only active channel; once a second channel is active, the coordinator asks in the selection call.
+- **CH01 — One channel per deliverable.** `delivery.md` names the channel ID in the [style profile](../docs/delivery-workflow.md#style-profile) block. When the request does not make the channel clear, the coordinator asks in the selection call. An episode of an existing series keeps its series' channel without a question.
 - **CH02 — Channel over shared default.** Where a channel file sets a value, it replaces the shared Default for that channel's deliverables without a recorded reason per episode. A shared **Requirement** (safety, licensing, Thai readability, deterministic output, render and store rules) is not a channel's to override.
 - **CH03 — One home.** A rule that only one channel follows lives in that channel's folder; a rule both channels follow lives in `docs/`. When a rule turns out to be channel-specific, move it and leave the old anchor pointing to the new home.
 - **CH04 — Paths, not memory.** The coordinator passes the channel folder's files to each role by path and revision with the other inputs ([AI11](../docs/delivery-workflow.md#agent-invocation)). A role reads `channel.md` and the file for its own stage.

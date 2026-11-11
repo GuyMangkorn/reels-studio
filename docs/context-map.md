@@ -188,6 +188,7 @@ Episode-specific files are under [Episodes](#episodes); shared topics come first
 
 - Docs: [channels](../channels/README.md) (folder layout, [CH01–CH05](../channels/README.md#rules), [adding a channel](../channels/README.md#adding-a-channel)); the `Channel` row of the [style profile](delivery-workflow.md#style-profile)
 - Edu (`@TamMaiLa`): [channel file](../channels/edu/channel.md) (identity, [voice](../channels/edu/channel.md#voice), [ending sound UT15](../channels/edu/channel.md#ut-edu-end-tag)), [script rules ER01–ER10](../channels/edu/script.md#edu-short-retention), [performance](../channels/edu/performance.md)
+- Fiction (`@mg.fiction`): [channel file](../channels/fiction/channel.md) (identity only; style `open` until the pilot)
 - Code: channel mark default `defaultChrome` in [media.ts](../src/scenes/media.ts); per-channel default `missing`
 
 ## Agents, roles and tooling
