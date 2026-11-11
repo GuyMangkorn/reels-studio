@@ -32,6 +32,6 @@ Each file is created when the channel has a rule to put in it. A missing file me
 
 1. Create `channels/<id>/channel.md` with the same headings as [edu/channel.md](edu/channel.md) and add a row to the table above.
 2. Add the channel to the `Channel` row of the [style profile](../docs/delivery-workflow.md#style-profile).
-3. Check the runtime: the channel mark is one code default today (`defaultChrome` in `src/scenes/media.ts`), so a second mark is set per video through `video.chrome.channelLabel` until a per-channel default exists (runtime status `missing`, 11 Nov 2026).
+3. Add the mark to `CHANNEL_MARKS` in `src/videos/types.ts`. An episode of the channel exports `channel: '<id>'` from `src/videos/<episode>/index.ts`; the registry then gives every video that leaves `chrome.channelLabel` unset the channel's mark. An episode with no `channel` keeps the `edu` code default (`defaultChrome`).
 4. Register the channel's first series in `SERIES` in `scripts/store.py` with the channel as its folder, so its media is stored under `projects/<channel>/<SERIES>/` and posted from `publish/<channel>/<SERIES>/<ID>/` ([asset store](../README.md#asset-store)).
 5. Make one pilot episode, then write `script.md`, `look.md` and `edit.md` from what the pilot showed. Do not write them in advance.

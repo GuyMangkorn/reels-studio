@@ -7,7 +7,7 @@
 | Field | Value |
 | --- | --- |
 | Channel ID | `fiction` |
-| Channel mark | `@mg.fiction` (user, 11 Nov 2026), top-left in the same place as the shared [channel label](../../docs/production-requirements.md#thai-subtitles-narration-and-channel-label). Runtime: the code default is still `@TamMaiLa`, so every video of this channel sets `video.chrome.channelLabel: '@mg.fiction'` until a per-channel default exists (`missing`, 11 Nov 2026) |
+| Channel mark | `@mg.fiction` (user, 11 Nov 2026), top-left in the same place as the shared [channel label](../../docs/production-requirements.md#thai-subtitles-narration-and-channel-label). Runtime: the episode's `src/videos/<episode>/index.ts` exports `channel: 'fiction'`, and every video that leaves `chrome.channelLabel` unset takes this mark (`existing-integrated`, 11 Nov 2026: `CHANNEL_MARKS` in `src/videos/types.ts`, applied in `src/videos/registry.ts`, test `tests/videos.test.ts`) |
 | Direction | Invented stories told as stories (user, 11 Nov 2026: "สไตล์เล่าเรื่องไม่มีอยู่จริงไปเลย เรื่องแต่ง") |
 | Genre / purpose | `open`: narrative fiction; the sub-genres are chosen in the pilot's [ideation](../../docs/delivery-workflow.md#ideation) |
 | Factual claims | None: the stories are invented and are not presented as real cases. Boat's research and fact-check have no factual subject and are recorded `N/A` unless a script borrows a real place, person or event |
