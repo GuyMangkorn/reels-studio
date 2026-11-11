@@ -31,9 +31,9 @@
 - **Note:** scripts/sound-cues.py does not exist in this checkout, so the cue-sheet check could not run. Unlistened: tuned by number, needs the user's ear.
 
 ## 2026-11-09 re-pin after lock fix (Editor)
-- **Cause:** `src/videos/edu-ep11/assets.lock.json` inset entry was re-pointed (13f4cb69... -> `projects/EDU-EP11/sources/inset-g977-r2.png`, ab1574b2...) after the delivery render; the lock is a segment-key input, so source hash ec2822fb -> 483f3c59 and all 25 pins stopped matching.
+- **Cause:** `src/videos/edu-ep11/assets.lock.json` inset entry was re-pointed (13f4cb69... -> `projects/EDU/sources/EDU-EP11-SHORT/inset-g977-r2.png`, ab1574b2...) after the delivery render; the lock is a segment-key input, so source hash ec2822fb -> 483f3c59 and all 25 pins stopped matching.
 - **What the pinned scenes were rendered with:** r2 (ab1574b2...). `public/edu11/inset-g977.png` mtime 14:19 and sha = r2; the 25 pinned segments were written 16:16-16:19. The old file (13f4...) differs from r2 by PSNR 82 dB (a few pixels), so a pixel compare of F977 against pinned scene 14 cannot tell them apart (PSNR 40.58 either way); the timestamps decide.
 - **Fix:** no repaint. The 25 pinned segments were copied to the current manifest keys (cache aliases, bytes identical) and re-pinned with `pin.mjs EDU-EP11-SHORT pin-rows scripts/edu-series/ep11/review-rows.json`. Backups of pins.json/manifest.json were taken before.
 - **Evidence:** delivery re-render (`out/logs/edu11-delivery-repin.log`): 0 of 25 rendered, 25 reused; MP4 sha256 identical to `publish/EDU/EDU-EP11-SHORT/EDU-EP11-SHORT.mp4` (3021fcd3a95b...), video framemd5 identical, -14.0 LUFS. Publish folder untouched.
-- **Store:** removed the stray manifest row `projects/EDU-EP11-SHORT/sources/inset-g977.png` (wrong project folder, file never existed) from `$REELS_STORE/manifest.tsv` (backup `manifest.tsv.bak-ep11-inset`); `store.py verify` shows no EDU-EP11 problems (40 remain, other projects).
+- **Store:** removed the stray manifest row `projects/EDU/sources/EDU-EP11-SHORT/inset-g977.png` (wrong project folder, file never existed) from `$REELS_STORE/manifest.tsv` (backup `manifest.tsv.bak-ep11-inset`); `store.py verify` shows no EDU-EP11 problems (40 remain, other projects).
 - **Lesson:** change a lock entry only before pinning, or re-pin in the same turn.

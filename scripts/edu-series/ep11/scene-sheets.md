@@ -453,7 +453,7 @@ Each action is possible with its state: the press (right hand) comes after the p
 | Coordinator / user | read Q-F1–Q-F3 verdicts on the page; accept the B04-SH06 lead-size exception (VD24) at Draft | open (non-blocking; recommendations applied) |
 | Film | viewer check of the first Draft shots against LF01–LF05; compare frames to these sheets | at W5.3 |
 
-Element captures: look frames `out/edu11/lf/LF01.png`, `LF01b.png`, `LF02.png`, `LF03.png`, `LF04.png`, `sheet-lf05.png` (store `projects/EDU-EP11/look-frames/`), built from uncommitted `src/painted/edu11/lf.tsx` (fix round 3). Proposed first Editor sample: S01-B01-SH01 → SH03 (G0–242: snap split, float, grab) against the voice.
+Element captures: look frames `out/edu11/lf/LF01.png`, `LF01b.png`, `LF02.png`, `LF03.png`, `LF04.png`, `sheet-lf05.png` (store `projects/EDU/look-frames/EDU-EP11-SHORT/`), built from uncommitted `src/painted/edu11/lf.tsx` (fix round 3). Proposed first Editor sample: S01-B01-SH01 → SH03 (G0–242: snap split, float, grab) against the voice.
 
 <a id="change-log"></a>
 ## Change log

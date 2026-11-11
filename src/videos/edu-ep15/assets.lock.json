@@ -12,7 +12,7 @@
     "sha256": "6498098eb8628affcb6e97132305184def87dd2054ebd2b2916c83b599e96d44"
   },
   "public/audio/edu/EDU-EP15-tokay-call-ref-cut.wav": {
-    "store": "projects/EDU-EP15-SHORT/audio/2026-11-10_tokay-call-ref-cut.wav",
+    "store": "projects/EDU/audio/EDU-EP15-SHORT/2026-11-10_tokay-call-ref-cut.wav",
     "sha256": "6e6d51f7b4c91dad9dddb674fa4b96164cea7d18ec5fcaf1dee96ee581193950"
   },
   "public/audio/electric/electric_streetlamp-hum-loop_01.wav": {
