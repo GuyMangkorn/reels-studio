@@ -179,8 +179,17 @@ Episode-specific files are under [Episodes](#episodes); shared topics come first
 
 - Docs: [delivery-workflow](delivery-workflow.md) ([style profile](delivery-workflow.md#style-profile), [visual engine](delivery-workflow.md#visual-engine), [pipeline](delivery-workflow.md#pipeline-tiers), [task file](delivery-workflow.md#task-file), [agent invocation](delivery-workflow.md#agent-invocation), [delivery record](delivery-workflow.md#delivery-record-and-handoff-checks)), [production-requirements](production-requirements.md), [editor-workflow](editor-workflow.md), [editor-principles](editor-principles.md), [contributing](contributing.md); original design [spec](superpowers/specs/2026-10-27-video-delivery-workflow-design.md) and [plan](superpowers/plans/2026-10-27-video-delivery-workflow.md)
 - Script: [ep.py](../scripts/ep.py) (task.md steps, table cells, review-rows.json); test [ep](../tests/ep.test.ts)
-- Performance after posting: [channel-performance](channel-performance.md) (views, swiped-away %, retention per video); retrospectives `scripts/<episode>/lessons-learned.md` (first: [EDU EP05](../scripts/edu-series/ep05/lessons-learned.md))
+- Performance after posting: [edu performance](../channels/edu/performance.md) (views, swiped-away %, retention per video); retrospectives `scripts/<episode>/lessons-learned.md` (first: [EDU EP05](../scripts/edu-series/ep05/lessons-learned.md))
 - Per episode: `scripts/<episode>/delivery.md`, `build-notes.md`
+
+## Channels
+
+**Read when:** starting a deliverable, asking which channel's style applies, or adding or moving a channel-specific rule.
+
+- Docs: [channels](../channels/README.md) (folder layout, [CH01–CH05](../channels/README.md#rules), [adding a channel](../channels/README.md#adding-a-channel)); the `Channel` row of the [style profile](delivery-workflow.md#style-profile)
+- Edu (`@TamMaiLa`): [channel file](../channels/edu/channel.md) (identity, [voice](../channels/edu/channel.md#voice), [ending sound UT15](../channels/edu/channel.md#ut-edu-end-tag)), [script rules ER01–ER10](../channels/edu/script.md#edu-short-retention), [performance](../channels/edu/performance.md)
+- Fiction (`@mg.fiction`): [channel file](../channels/fiction/channel.md) (identity only; style `open` until the pilot)
+- Code: `CHANNEL_MARKS`, `ChannelId` and `EpisodeVideos.channel` in [videos/types.ts](../src/videos/types.ts), applied by `collectEpisodes` in [videos/registry.ts](../src/videos/registry.ts); the `edu` mark is also `defaultChrome` in [media.ts](../src/scenes/media.ts); test [videos](../tests/videos.test.ts)
 
 ## Agents, roles and tooling
 
