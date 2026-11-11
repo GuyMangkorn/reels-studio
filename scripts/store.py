@@ -64,7 +64,7 @@ ALIASES = {'ZCPAINT': 'ZCONDO'}  # composition ID prefix -> project folder, only
 # series made before the channels were split, shared holds material both channels use.
 CHANNELS = ('edu', 'fiction', 'legacy', 'shared')
 # Series (project folder) -> channel folder. A new series is added here before its first file is stored.
-SERIES = {'EDU': 'edu', 'KIT': 'shared', '_shared': 'shared',
+SERIES = {'EDU': 'edu', 'MGF': 'fiction', 'KIT': 'shared', '_shared': 'shared',
           **{name: 'legacy' for name in ('ALVARENGA', 'BLOOP', 'CATBOX', 'EG', 'HANAKO', 'KSO', 'LAKENYOS', 'POOLDEPTH', 'SHIPWRECK',
                                          'WDG', 'WFOG', 'ZCONDO', 'ZCONDO2', '_legacy', '_unsorted')}}
 
