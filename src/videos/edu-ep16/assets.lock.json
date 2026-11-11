@@ -36,7 +36,7 @@
     "sha256": "b1fa4cebd07faf46dfcb216017d93b3d9df2a767e370391b04c0360acf044298"
   },
   "public/narration/EDU-EP16-SHORT-narration-v2.wav": {
-    "store": "projects/EDU/audio/2026-11-10_ep16-narration-v2-placed.wav",
+    "store": "projects/edu/EDU/audio/2026-11-10_ep16-narration-v2-placed.wav",
     "sha256": "5f41985de8c43771e9703e03fc681ee0a9894dd8c2cc1e541de76ea27ace53bd"
   },
   "public/sfx/action/action_bird-pass-low_01.wav": {

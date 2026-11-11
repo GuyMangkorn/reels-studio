@@ -51,7 +51,7 @@
 ## Revalidation history
 
 - 1 Nov 2026: first measurement (base `4568c05` + uncommitted `src/painted/kuchisake/`). Method: `scripts/stills.mjs src/painted/kuchisake/look-index.ts` (one Chrome, `--gl=angle`), `scripts/caption-zone.py`, `scripts/qa-sheet.sh`, magenta-paper lead measure, kit anchors through a stub painter.
-- 1 Nov 2026 (round 3, LF03 only): open grin with wide eyes, angry brows, asymmetry and interior details; the same method (stills through one Chrome, caption-zone, mouth-box red share, repeat render, LF02 md5). Round-2 frames archived as `LF03-v2` in `~/ReelsStore/projects/KSO/previews/look-stills/`; round-3 set in `~/ReelsStore/projects/KSO/previews/look-stills-r3/`.
+- 1 Nov 2026 (round 3, LF03 only): open grin with wide eyes, angry brows, asymmetry and interior details; the same method (stills through one Chrome, caption-zone, mouth-box red share, repeat render, LF02 md5). Round-2 frames archived as `LF03-v2` in `~/ReelsStore/projects/legacy/KSO/previews/look-stills/`; round-3 set in `~/ReelsStore/projects/legacy/KSO/previews/look-stills-r3/`.
 
 ## Round 4: LF04 back room and LF05 dark room (1 Nov 2026, Boss)
 
@@ -67,7 +67,7 @@
 
 ## Round 5: LF04 izakaya, narrator from behind (1 Nov 2026, Boss)
 
-- Status: workaround (episode files only). New: `izakaya.tsx` (the LF04 scene; replaces `backroom.tsx`, deleted; composition IDs unchanged) and `narrator-back.ts` (the back of the narrator's head, nape, hair, collar, shoulders and arms: new episode art, not kit). Edited: `room-qa-index.tsx` (lead entry), `look-index.ts` (import, comment), `rooms.ts` (comment only). No change to `src/painted/kit`, LF01–LF03, LF05 or Root. Not user-approved as a look (W2 look lock pending for LF04). Frames: `out/kuchisake/review/LF04_S01-B02-SH01_f81.png` and `_540.png`; store copies in `~/ReelsStore/projects/KSO/previews/LF04_S01-B02-SH01_*` (nine files, filed with `store.py archive --kind previews`).
+- Status: workaround (episode files only). New: `izakaya.tsx` (the LF04 scene; replaces `backroom.tsx`, deleted; composition IDs unchanged) and `narrator-back.ts` (the back of the narrator's head, nape, hair, collar, shoulders and arms: new episode art, not kit). Edited: `room-qa-index.tsx` (lead entry), `look-index.ts` (import, comment), `rooms.ts` (comment only). No change to `src/painted/kit`, LF01–LF03, LF05 or Root. Not user-approved as a look (W2 look lock pending for LF04). Frames: `out/kuchisake/review/LF04_S01-B02-SH01_f81.png` and `_540.png`; store copies in `~/ReelsStore/projects/legacy/KSO/previews/LF04_S01-B02-SH01_*` (nine files, filed with `store.py archive --kind previews`).
 - User decisions (chat, 1 Nov 2026): izakaya; coworker tells the story at a table, half-body (waist up); warm orange lamp-light, brighter and more orange; narrator seen from behind with new back-of-head art, dark work jacket as `NARRATOR_DARK`; keep the weak under-chin read, the kit head and the cast skin tone.
 - Layout on the one street lens (`roomP`/`roomUnit`: camera z 4.7 m, eye 1.5 m, f 1410 px·m; table top 0.75 m):
   - Coworker stands behind the table at z 2.0 m: 522 px/m (round 4: z 0, 300 px/m). At 300 px/m a waist-up figure leaves about 250 px of artwork, under the 480 px rule, so she is placed nearer on the same lens; her scale is not raised.
@@ -96,7 +96,7 @@
   - Film: VD04 (izakaya, table, half-body, table lamp); the `S01-B02-SH01` row ("narrator in profile at left" → narrator from behind, seated at the near side, left foreground); VD05's "missing: a back view" is closed for this shot by the episode art; the coworker stands behind the table.
   - Mark: the `S01-B02-SH01` scene sheet (izakaya set, table cut at the hip line, lantern on the table, narrator from behind).
   - Editor: no timeline change. Consumers: `KSO-LF04`, `KSO-LF04-RAW`, `KSO-QA-LEAD-04`. `KSO-LF05` is unchanged.
-- Tooling note: `store.py archive --path DIR` stores each file at `prefix/<relpath>`, so a subfolder needs the parent folder as `--path`; this round's files sit at the top of `projects/KSO/previews/`.
+- Tooling note: `store.py archive --path DIR` stores each file at `prefix/<relpath>`, so a subfolder needs the parent folder as `--path`; this round's files sit at the top of `projects/legacy/KSO/previews/`.
 
 ## Round 6: W5 draft build, 26 shot plates (1 Nov 2026, Boss)
 
@@ -115,7 +115,7 @@
   5. `S03-B01-SH05` is now a close profile (scale 1.9–2.2); the band fails (p95 0.43–0.50) and the body is still lit.
   6. Lip-sync is not wired: `S02-B03-SH01` and `SH06` hold a static talk or gasp mouth. Editor can pass amplitude later (`open` on the talk mouth).
 - Known limits: head tilt rotates the whole figure about the head (brush rotation), not the head alone (`S02-B03-SH05`, `S03-B01-SH01`). The ear-loop hand is one painted card (`paintEarHook`, pinch-solved) and is a CP-P12 deviation from the pose sheet, as the brief records. `S03-B01-SH02` insert A (feet, profile, 0.1 cycles/f) crops the head and is a walk, not a run. `B_loop` hold is not built (Editor).
-- Per-shot status: 17 done, 9 weak (`S01-B02-SH03`, `S01-B02-SH04`, `S02-B02-SH03`, `S02-B03-SH02`, `S02-B03-SH03`, `S02-B03-SH04`, `S02-B03-SH05`, `S03-B01-SH02`, `S03-B01-SH05`), 0 blocked. Contact sheets: out/kuchisake/sheets/ and ~/ReelsStore/projects/KSO/previews/kso-w5-shots/.
+- Per-shot status: 17 done, 9 weak (`S01-B02-SH03`, `S01-B02-SH04`, `S02-B02-SH03`, `S02-B03-SH02`, `S02-B03-SH03`, `S02-B03-SH04`, `S02-B03-SH05`, `S03-B01-SH02`, `S03-B01-SH05`), 0 blocked. Contact sheets: out/kuchisake/sheets/ and ~/ReelsStore/projects/legacy/KSO/previews/kso-w5-shots/.
 - Checks: `node --import tsx --test tests/kuchisake-shots.test.ts` 8/8; `tests/painted.test.ts` 5/5; eslint clean on the new and changed files; `tsc --noEmit` one pre-existing error (`tests/loudness.test.ts`, already recorded in Round 5).
 
 ### Round 6 addendum: two user decisions on S01-B02-SH04 and S02-B02-SH03 (1 Nov 2026, Boss)
@@ -198,4 +198,4 @@ Measured (full-size stills through one Chrome, `--gl=angle`; `scripts/caption-zo
 - S02-B03-SH02: chin shade 800 -> 890, peak `0.36 * sstep((f - 12) / 12)`, comes in f12-24 while the hand draws the mask down into the band (the top lamp's chin shadow). Worst p95 0.551 -> 0.383; f0-11 bit-identical. The mask still reads white above y 860; the face and mouth (y < 800) are untouched, so the reveal read is unchanged.
 - S02-B03-SH03: the chin shade carries over the cut (peak 0.38 at f0-1) and lifts f1-6 as the mask leaves frame (`revealShade`). f0 p95 0.579 -> 0.383; from f6 bit-identical (the tear, f2+, is above the band).
 - Margins are thin by design (smallest change): SH03 0.365-0.389, SH04 0.331-0.383, S02-B03 0.327-0.383.
-- Evidence: `out/kuchisake/r12/` (`pre/`, `post/` 52 caption-free stills, `cz-pre.json`, `cz-post.json`, `sheet_pre.png`, `sheet_izakaya_pre_post.png`, `sheet_reveal_pre_post.png`, `zsheet_band_1548_596.png`, `run.sh`), store `$REELS_STORE/projects/KSO/qa/` (4 sheets); `out/logs/r12-test.log` (25/25), `r12-eslint.log` (clean), `r12-tsc.log` (only the known loudness error).
+- Evidence: `out/kuchisake/r12/` (`pre/`, `post/` 52 caption-free stills, `cz-pre.json`, `cz-post.json`, `sheet_pre.png`, `sheet_izakaya_pre_post.png`, `sheet_reveal_pre_post.png`, `zsheet_band_1548_596.png`, `run.sh`), store `$REELS_STORE/projects/legacy/KSO/qa/` (4 sheets); `out/logs/r12-test.log` (25/25), `r12-eslint.log` (clean), `r12-tsc.log` (only the known loudness error).

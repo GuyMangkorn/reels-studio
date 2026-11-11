@@ -7,7 +7,7 @@ import type {EpisodeVideos} from '../types';
 
 /**
  * EDU-EP02-SHORT (หัวหอมแก้แค้น, C1) Draft timeline (W5.3, Editor, 5 Nov 2026): scene sheets SS-R2 (scripts/edu-series/ep02/scenes/), script R1.1,
- * brief EDU-BRIEF-R1.5, voice = Gemini Kore fast read (store projects/EDU/narration/ep02/2026-11-05_ep02-narration-kore-fast.wav). 23 shots = 23 scenes, 1771 f at 30 fps (59.03 s).
+ * brief EDU-BRIEF-R1.5, voice = Gemini Kore fast read (store projects/edu/EDU/narration/ep02/2026-11-05_ep02-narration-kore-fast.wav). 23 shots = 23 scenes, 1771 f at 30 fps (59.03 s).
  * Each scene mounts the registry plate `EDU2-<shot id>` (src/painted/shots/edu02.tsx over Boss's `plateOf`). Narration = the read placed as segments N1-N7 with the
  * six gaps G1..G7 (scripts/edu-series/ep02/narration-place.py -> public/narration/EDU-EP02-SHORT.wav, 1771 f). Sound stem (scripts/edu-series/ep02/sound-mix.py):
  * bed, ambience, SFX, cook vocal takes and stings as one track. Captions bottomEdgeY 1344 with an outline shade (no dark band). The `ภาพจำลอง` tag covers B03-B04 from c 333 (cue `labelAtSec`, 9 f into

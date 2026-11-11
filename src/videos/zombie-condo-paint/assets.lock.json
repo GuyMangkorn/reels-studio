@@ -24,7 +24,7 @@
     "sha256": "f61ba6eb1a3021b4f57b46979b501495d95040516a208594254f03d6b94dd0ae"
   },
   "public/narration/ZCPAINT-SHORT-TH.mp3": {
-    "store": "projects/ZCONDO/audio/gemini-tts/zcpaint-th-call/candidate/ZCPAINT-SHORT-TH.candidate-call.mp3",
+    "store": "projects/legacy/ZCONDO/audio/gemini-tts/zcpaint-th-call/candidate/ZCPAINT-SHORT-TH.candidate-call.mp3",
     "sha256": "e979a7319ec6dca9de1977ec2ae9fd68916c87e8df375c00aab88e09ff111f10"
   },
   "public/sfx/creature/creature_neck-creak-wet_01.wav": {

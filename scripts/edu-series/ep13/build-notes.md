@@ -17,7 +17,7 @@
 
 ## W5.3 draft, 2026-11-09 (SHEETS-R2.0, uncommitted over 829d86e)
 
-**Built:** composition `EDU-EP13-SHORT` (`src/videos/edu-ep13/index.ts`, `cues.ts`), plates `EDU13-<shot id>` (`src/painted/shots/edu13.tsx`, registered in `src/painted/registry.ts`), narration (`narration-place.py`), sound stems (`sound-mix.py`). 16 scenes = 16 shots, 1390 f. Store copies: `projects/EDU/voice/EDU-EP13-SHORT/` (locked read, placed narration, MAN V01/V02) and `audio/` (stem).
+**Built:** composition `EDU-EP13-SHORT` (`src/videos/edu-ep13/index.ts`, `cues.ts`), plates `EDU13-<shot id>` (`src/painted/shots/edu13.tsx`, registered in `src/painted/registry.ts`), narration (`narration-place.py`), sound stems (`sound-mix.py`). 16 scenes = 16 shots, 1390 f. Store copies: `projects/edu/EDU/voice/EDU-EP13-SHORT/` (locked read, placed narration, MAN V01/V02) and `audio/` (stem).
 
 **Findings**
 1. **QA band removed at the owner:** `Painted` (look.tsx) draws the dashed caption band only when `qaBand.on`; `shots-index.ts` and `look-index.ts` set it, compositions never do. Boss to confirm (minimal change, no shot component touched).

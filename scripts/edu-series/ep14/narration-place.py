@@ -6,7 +6,7 @@ V02 file start f1739 (voice onset f1745); the 34 ms blip at 1.233-1.275 s is cut
 No gain, no atempo. Total 1815 f at 48 kHz mono. Writes public/narration/EDU-EP14-SHORT-narration-v1.wav and out/EDU-EP14-SHORT/audio/placements.txt.
 Run: python3 -I scripts/edu-series/ep14/narration-place.py"""
 import array, json, os, wave
-R = os.path.expanduser('~/ReelsStore/projects/EDU/audio/')
+R = os.path.expanduser('~/ReelsStore/projects/edu/EDU/audio/')
 FPS, SR, TOTAL = 30, 48000, 1815
 lock = json.load(open('scripts/edu-series/ep14/measure.json'))['lock']
 off = lock['offsets_s']; cuts = lock['cuts_read_s']

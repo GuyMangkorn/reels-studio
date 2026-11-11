@@ -21,7 +21,7 @@
 
 ## Voice-lock defect VL-DEF-01 (Editor; blocks audio placement only) [RESOLVED 2026-11-06 by coordinator: all 16 NAR line files re-split from the full read at fileStart/fileDur, volumedetect max -1.5 to -1.7 dB each, store manifest hashes updated; Editor can place audio.]
 
-Film measured the split files on 2026-11-06 (`ffmpeg volumedetect`): `projects/EDU/narration/ep05/lines/2026-11-06_ep05-nar-L03…L17-kore-x110.wav` are **digital silence** (max −91.0 dB) in the store and in `out/edu05/voice/final/`; `…-L02-…` holds speech only to 1.19 s of its 3.03 s (the source ran out at ~2.86 s of the read); `…-L01-…` is fine. The full read `2026-11-06_ep05-nar-kore-brisk-fullread-x110.wav` is fine (55.50 s, −16.0 dB mean, −1.5 dB peak) and is the source of every frame in this sheet. **Request:** Editor re-splits L02–L17 from the full read at `fileStart`/`fileDur` in voice-measure.json (0 Gemini requests), checks each split by ear and `volumedetect`, and re-files them before any audio placement. The TINY files (`tiny/`) were measured and are fine. This sheet does not change with the re-split.
+Film measured the split files on 2026-11-06 (`ffmpeg volumedetect`): `projects/edu/EDU/narration/ep05/lines/2026-11-06_ep05-nar-L03…L17-kore-x110.wav` are **digital silence** (max −91.0 dB) in the store and in `out/edu05/voice/final/`; `…-L02-…` holds speech only to 1.19 s of its 3.03 s (the source ran out at ~2.86 s of the read); `…-L01-…` is fine. The full read `2026-11-06_ep05-nar-kore-brisk-fullread-x110.wav` is fine (55.50 s, −16.0 dB mean, −1.5 dB peak) and is the source of every frame in this sheet. **Request:** Editor re-splits L02–L17 from the full read at `fileStart`/`fileDur` in voice-measure.json (0 Gemini requests), checks each split by ear and `volumedetect`, and re-files them before any audio placement. The TINY files (`tiny/`) were measured and are fine. This sheet does not change with the re-split.
 
 ## Uncertain boundaries
 
@@ -466,7 +466,7 @@ Story first (AGENTS.md): every item was designed from the script; kit entries ar
 | Film | review Editor's blockout frames against these sheets (W5.3) | waiting |
 | User (non-blocking) | the open questions below | open |
 
-Element captures: the approved look stills are the element captures (store `~/ReelsStore/projects/EDU/previews/look-frames/ep05/v3/` LF01, `v1/` LF02, `v7/` LF03, LF04, ANT1–3; asset/source revision `src/painted/edu05/` uncommitted at `713812b`; limitations: stills only, no motion, deform states and gait not shown). No new captures made in this pass.
+Element captures: the approved look stills are the element captures (store `~/ReelsStore/projects/edu/EDU/previews/look-frames/ep05/v3/` LF01, `v1/` LF02, `v7/` LF03, LF04, ANT1–3; asset/source revision `src/painted/edu05/` uncommitted at `713812b`; limitations: stills only, no motion, deform states and gait not shown). No new captures made in this pass.
 
 **Open questions for the user (non-blocking; Film defaults applied):**
 1. ~~Length 65.4 s~~ Resolved 2026-11-07: the user approved 66.3 s (1989 f, R1.11 FR40) for the R1.4 L05 take; the listed tightenings (up to −0.75 s) remain available, none applied.

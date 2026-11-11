@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """EDU-EP03-SHORT W5.3 sound stem (Editor, 5 Nov 2026): the whole non-narration sound as ONE 52.367 s stereo 48 kHz stem, per scene sheets SS-R3.1
 ("Sound" lines of scenes/*.md) on the composition clock (1571 f at 30 fps). Library sounds and the Draft generations are generated, not listened (measured only).
-New sounds are filed in the library (edu3 generations, see build-notes); owner lines O1/O2 (store projects/EDU/narration/owner-o*.wav, Algenib) sit in the stem, trimmed per the sheet index.
+New sounds are filed in the library (edu3 generations, see build-notes); owner lines O1/O2 (store projects/edu/EDU/narration/owner-o*.wav, Algenib) sit in the stem, trimmed per the sheet index.
 Level reference: the placed narration plays at about -16 LUFS; beds sit 12-20 dB under it, one-shots are set by peak (dB re full scale).
 
 Usage (numpy + soundfile, e.g. ~/Developer/reels-creator/out/voice-venv/bin/python):
@@ -127,8 +127,8 @@ birds_lp = lowpass(birds, 1800)
 bed_at(birds, [(0, -30), (466, -30), (478, None), (1061, None), (1068, -30), (1260, -30), (1266, None), (1365, None), (1372, -30), (1571, -30)], 'birds normal')
 bed_at(birds_lp, [(0, None), (466, None), (478, -36), (1055, -36), (1068, None), (1260, None), (1266, -36), (1362, -36), (1372, None)], 'birds dog view (low-passed, -6 dB)')
 
-# ---- owner lines (Algenib, store projects/EDU/narration/owner-o1.wav, owner-o2.wav), trimmed per the sheet index
-OWN = os.path.expanduser('~/ReelsStore/projects/EDU/narration/')
+# ---- owner lines (Algenib, store projects/edu/EDU/narration/owner-o1.wav, owner-o2.wav), trimmed per the sheet index
+OWN = os.path.expanduser('~/ReelsStore/projects/edu/EDU/narration/')
 put(shape(load(OWN + 'owner-o1.wav', 0.10, 1.85), fade_in=0.01, fade_out=0.03), 164, 0, 'O1 B02-SH01')
 put(shape(load(OWN + 'owner-o2.wav', 0.25, 2.15), fade_in=0.01, fade_out=0.03), 316, 0, 'O2 B02-SH03')
 

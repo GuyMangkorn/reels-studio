@@ -2,7 +2,7 @@
 
 Deliverable: `EG-EP02-SHORT` · Revision: `SS-R2.6` (scene sheets `EG2-SC-R2.5`) · Status: **ready-for-dev** · Timing: **checked-with-audio** (voice T-v3, locked 2026-11-03; word edges inside a line are `est`, +-8 f)
 Inputs: script `EG2-SCRIPT-R1.2` (L01–L19) · Film brief `EG2-BRIEF-FILM-R1.3` (VD01–VD13, CL01–CL06) · storyboard rows `SS-R1.1` (19 shots, user ok 19/19) · look frames LF01–LF05 (v3, LF04 v2) locked · viewer check [viewer-check.md](viewer-check.md) · delivery [delivery.md](../delivery.md#eg-ep02-short)
-Voice: `~/ReelsStore/projects/EG/narration/EG-EP02-SHORT-narration-B-x108-tight-v3.wav` + `…-v3-meta.json` (rows line, start, end, dur, gap; 61.25 s). [voice-timing.md](voice-timing.md) is older; T-v3 supersedes it.
+Voice: `~/ReelsStore/projects/legacy/EG/narration/EG-EP02-SHORT-narration-B-x108-tight-v3.wav` + `…-v3-meta.json` (rows line, start, end, dur, gap; 61.25 s). [voice-timing.md](voice-timing.md) is older; T-v3 supersedes it.
 Target: branch `claude/eg-ideal-remaining-c19f75` · 30 fps (project) · 1080×1920 · **durationFrames 1939** (voice T-v4; live timeline `src/videos/everyone-gone/index.ts`) = narration 1849 + 3 s end hold 90 · composition offset 0 · ranges are half-open `[start, endExclusive)` in composition-global frames; shot-local `f` = global − shot start.
 Evidence: runtime unverified · render/samples none · audio sync: frames computed from the meta (round(sec×30)) · user approval of the timing: pending (page rows SS-R2.0)
 Sheets: [sc01](sc01.md) S01-B01 + S01-B02 (5 shots) · [sc02](sc02.md) S02-B01 (4) · [sc03](sc03.md) S03-B01 (2) · [sc04](sc04.md) S04-B01 (7) · [sc05](sc05.md) S05-B01 (1 + hold). Page rows: [review-rows.json](review-rows.json).

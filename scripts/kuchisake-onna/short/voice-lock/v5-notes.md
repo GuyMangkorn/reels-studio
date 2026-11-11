@@ -57,12 +57,12 @@ Amplitude (repo JSON, 30 fps): 22 frames differ from v3 (2317–2369), largest 0
 ## Files
 
 - Store (`$REELS_STORE` = `~/ReelsStore`):
-  - `projects/KSO/audio/voice-lock-v5/final/KSO-EP01-SHORT_narration_voicelock-v5.mp3` (sha256 c25dc1b5…; this is the public lock).
+  - `projects/legacy/KSO/audio/voice-lock-v5/final/KSO-EP01-SHORT_narration_voicelock-v5.mp3` (sha256 c25dc1b5…; this is the public lock).
   - `…/final/KSO-EP01-SHORT_narration_voicelock-v5.amplitude.json` (d7cdc003…).
   - `…/segments-v5/B06.wav` (01e02624…).
   - `…/qa/pitch-fix-v5.json`, `…/qa/v5-check.json`, `…/qa/v5-spectrum.json`, `…/qa/loudness-v5.jsonl`.
   - `…/measure/voice-measure-v4.json` (the v4 measure, base for this revision; sha 8867d45e…).
-- v4, untouched: `projects/KSO/audio/voice-lock-v4/` (9 files, sha256 identical to the baseline taken before this run; `store.py verify`: 0 problems).
+- v4, untouched: `projects/legacy/KSO/audio/voice-lock-v4/` (9 files, sha256 identical to the baseline taken before this run; `store.py verify`: 0 problems).
 - Public lock: `public/narration/KSO-EP01-SHORT.mp3` = v5 (`store.py use --replace`, episode `kuchisake-onna`; `src/videos/kuchisake-onna/assets.lock.json` points to the v5 store path).
 - Repo amplitude input: `scripts/kuchisake-onna/short/KSO-EP01-SHORT.amplitude.json` = v5 (copy of the store file, same sha). Composition and the timeline test read it.
 - Measure: `scripts/kuchisake-onna/short/voice-measure.json` (revision v5; slots and beats equal v4).
@@ -83,9 +83,9 @@ Amplitude (repo JSON, 30 fps): 22 frames differ from v3 (2317–2369), largest 0
 
 ## What to listen to
 
-- Track 76.5–79.1 s: compare v4 (`projects/KSO/audio/voice-lock-v4/final/…v4.mp3`) and v5 at 77.21–77.66 s, `โทษ` in `ขอโทษนะ`.
+- Track 76.5–79.1 s: compare v4 (`projects/legacy/KSO/audio/voice-lock-v4/final/…v4.mp3`) and v5 at 77.21–77.66 s, `โทษ` in `ขอโทษนะ`.
 - Sharper without a squeak at the end of `โทษ` (rising end 270 Hz), same narrator, and no extra brightness or sizzle on the word against the rest of the track.
-- To go back to v4 for listening: `python3 -I scripts/store.py use projects/KSO/audio/voice-lock-v4/final/KSO-EP01-SHORT_narration_voicelock-v4.mp3 public/narration/KSO-EP01-SHORT.mp3 --episode kuchisake-onna --replace`, and copy `projects/KSO/audio/voice-lock-v4/final/KSO-EP01-SHORT_narration_voicelock-v4.amplitude.json` over `scripts/kuchisake-onna/short/KSO-EP01-SHORT.amplitude.json` (the picture and the timeline test read it).
+- To go back to v4 for listening: `python3 -I scripts/store.py use projects/legacy/KSO/audio/voice-lock-v4/final/KSO-EP01-SHORT_narration_voicelock-v4.mp3 public/narration/KSO-EP01-SHORT.mp3 --episode kuchisake-onna --replace`, and copy `projects/legacy/KSO/audio/voice-lock-v4/final/KSO-EP01-SHORT_narration_voicelock-v4.amplitude.json` over `scripts/kuchisake-onna/short/KSO-EP01-SHORT.amplitude.json` (the picture and the timeline test read it).
 
 ## Open
 

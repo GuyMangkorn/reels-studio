@@ -10,8 +10,8 @@
 
 Rendered `node scripts/render.mjs EDU-EP05-SHORT-COVERS --stills --frames=15,45,75,105,135,165` (cover = scene frame 15 of each 1 s scene).
 
-- Covers: `out/edu05/covers/EDU-EP05-SHORT_cover-{A..F}.png` (1080×1920); store `projects/EDU/covers/EDU-EP05-SHORT_cover-{A..F}.png`.
-- Sheets: `out/edu05/covers/sheet-270.png` and `sheet-120.png` (CV10 phone grid); store `projects/EDU/covers/sheet-270.dd506b14.png`, `sheet-120.2c75865e.png` (renamed by the store: an older EP sheet holds the plain name).
+- Covers: `out/edu05/covers/EDU-EP05-SHORT_cover-{A..F}.png` (1080×1920); store `projects/edu/EDU/covers/EDU-EP05-SHORT_cover-{A..F}.png`.
+- Sheets: `out/edu05/covers/sheet-270.png` and `sheet-120.png` (CV10 phone grid); store `projects/edu/EDU/covers/sheet-270.dd506b14.png`, `sheet-120.2c75865e.png` (renamed by the store: an older EP sheet holds the plain name).
 - Viewed by Film: both sheets. All six headlines read at 120 px wide. Sub-lines read at 270 px; at 120 px they are soft but the headline carries each idea alone (CV10 exception). F's premise tag "ถ้าตัวเท่ามด" does not read at 120 px (see F).
 - Not viewed: the 3:4 centre crop as a separate image (by layout: all text sits in y 1250–1470 and every subject in y 300–1100, both inside y 240–1680); full-size pixel check. No Route N art exists yet, so none of the Route N layouts is viewed.
 

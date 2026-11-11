@@ -399,7 +399,7 @@ Rows that change in SS-R6; VO-01…VO-15 and every cue before G3330 stay as in t
 
 | Line | Speaker (engine) | Clip start G | Speech G | Caption pieces (G, half-open) | Shot / lock |
 | --- | --- | --- | --- | --- | --- |
-| **VO-17** (new) | worker (Gemini Orus **t1**, user-approved 31 Oct; `~/ReelsStore/projects/WFOG/audio/lines/VO-17.wav`) | **3365** | 3368–3487 (segments 3368–3419, 3424–3433, 3437–3487) | `ของพวกนี้ลูกค้าสั่งไว้ครับ…` [3368, 3424) · `เขาบอกว่าจะมารับเองที่นี่` [3424, 3493) | S04-SH01 f459 clip, speech f462–f580 on camera; pat 1 on `ของ` (G3368); 38 f after VO-15 (G3330); cut G3501. `gain` 1.0 provisional: match VO-15 at compose |
+| **VO-17** (new) | worker (Gemini Orus **t1**, user-approved 31 Oct; `~/ReelsStore/projects/legacy/WFOG/audio/lines/VO-17.wav`) | **3365** | 3368–3487 (segments 3368–3419, 3424–3433, 3437–3487) | `ของพวกนี้ลูกค้าสั่งไว้ครับ…` [3368, 3424) · `เขาบอกว่าจะมารับเองที่นี่` [3424, 3493) | S04-SH01 f459 clip, speech f462–f580 on camera; pat 1 on `ของ` (G3368); 38 f after VO-15 (G3330); cut G3501. `gain` 1.0 provisional: match VO-15 at compose |
 | VO-16 | narrator (t1) | **3624** (+161) | 3627–3716, 3721–3761, 3774–3827, 3834–3875 | `สิ่งที่ฉันกลัวเมื่อกี้…` [3627, 3717) · `เป็นแค่คนคนหนึ่ง` [3721, 3765) · `แต่หมอกนี่ยังไม่ไปไหน…` [3774, 3829) · `แล้วเราก็ไปไหนไม่ได้` [3834, 3875) | S04-SH03; captions off from G3875 to the end; last light G3881–G3899 |
 
 | Sound cue | Library ID | G (transient / range) | Shot-local | Notes |
@@ -417,7 +417,7 @@ Silences: G3487 → G3627 (VO-17 end → VO-16; captions off G3493–G3627); **G
 <a id="ss-r6-element-captures"></a>
 ## SS-R6 element captures
 
-Reference frames cut from the stored r4 render (`~/ReelsStore/projects/WFOG/renders/WFOG-EP01-SHORT_C_seamless_r4.mp4`, SS-R5.1 timing, 3766 frames; `ffmpeg select=eq(n,G)`), in `out/handoffs/world-fog/WFOG-EP01-SHORT/elements/ss-r6/` (gitignored, regenerable): `r4_G1293.png`, `r4_G1311.png` (S02-SH07 taps: the view and rhythm S04-SH04 rhymes with), `r4_G3100.png`, `r4_G3330.png` (S04-SH01: worker beside the stack before SS-R6; the pat moves him back to the stack), `r4_G3700.png` (S04-SH03 last ember, SS-R5.1 frame), `r4_G3765.png` (empty FS3 view = S04-SH04 f0 look); tiled sheet `sheet_r4_refs.png`. They predate SS-R6; `FIG-KNOCK` has no capture (missing).
+Reference frames cut from the stored r4 render (`~/ReelsStore/projects/legacy/WFOG/renders/WFOG-EP01-SHORT_C_seamless_r4.mp4`, SS-R5.1 timing, 3766 frames; `ffmpeg select=eq(n,G)`), in `out/handoffs/world-fog/WFOG-EP01-SHORT/elements/ss-r6/` (gitignored, regenerable): `r4_G1293.png`, `r4_G1311.png` (S02-SH07 taps: the view and rhythm S04-SH04 rhymes with), `r4_G3100.png`, `r4_G3330.png` (S04-SH01: worker beside the stack before SS-R6; the pat moves him back to the stack), `r4_G3700.png` (S04-SH03 last ember, SS-R5.1 frame), `r4_G3765.png` (empty FS3 view = S04-SH04 f0 look); tiled sheet `sheet_r4_refs.png`. They predate SS-R6; `FIG-KNOCK` has no capture (missing).
 
 ## Open items and questions
 

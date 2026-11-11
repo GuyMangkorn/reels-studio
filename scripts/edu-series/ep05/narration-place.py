@@ -3,7 +3,7 @@
 speech onset lands on the frame stated in scene-sheets.md (EDU-EP05-SHEETS-R1). Writes public/narration/EDU-EP05-SHORT.wav (1989 f, 48 kHz mono)
 and out/EDU-EP05-SHORT/audio/placements.txt. Run: python3 -I scripts/edu-series/ep05/narration-place.py"""
 import os, subprocess
-S = os.path.expanduser('~/ReelsStore/projects/EDU/narration/ep05')
+S = os.path.expanduser('~/ReelsStore/projects/edu/EDU/narration/ep05')
 FPS, TOTAL = 30, 1989
 DUR = TOTAL / FPS
 # (file, start of the FILE in global frames, gain dB). NAR: file start = onset frame - 0.05 s (in-file onset); TINY: file start as stated per shot.

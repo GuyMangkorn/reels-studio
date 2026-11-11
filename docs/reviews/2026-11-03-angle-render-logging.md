@@ -43,7 +43,7 @@ Caption-zone measurements were taken for both sets. The bright exterior fails th
 
 Raw local logs: `out/logs/render-angle-eg-check.log`, `render-angle-pixels.log`, `render-angle-caption-zone.json`, plus the experiment's `render-eg-check-*.jsonl` files under the EG worktree's `out/logs/`. A sandboxed Chrome launch failed with a socket error; its JSONL correctly recorded the failed browser stage and failed run. The authorized unsandboxed rerun completed.
 
-The seven review images are filed in `$REELS_STORE/projects/EG/previews/angle-backend-check/` (three PNGs per backend plus `comparison.png`). The contact sheet's top row is Chromium default/SwiftShader; the bottom row is ANGLE. The raw benchmark JSONL logs were also copied into the root checkout's `out/logs/` for inspection.
+The seven review images are filed in `$REELS_STORE/projects/legacy/EG/previews/angle-backend-check/` (three PNGs per backend plus `comparison.png`). The contact sheet's top row is Chromium default/SwiftShader; the bottom row is ANGLE. The raw benchmark JSONL logs were also copied into the root checkout's `out/logs/` for inspection.
 
 Both changed entrypoints were then exercised on copied EG source/review inputs under `out/angle-check/cli/`, with a separate store and no `--gl` flag:
 

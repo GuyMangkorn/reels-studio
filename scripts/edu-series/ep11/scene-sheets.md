@@ -13,7 +13,7 @@
 ## Placement rules
 
 - **PL01 Stable:** shot IDs, order, beats, line assignment, casting, looks, clue IDs CL01–CL03, deviations D02–D06 of ROWS-R1.2 / BRIEF-R1.2 stay. Ranges, event frames and the staging deviations SD01–SD14 below change.
-- **PL02 Voice is placed, not retimed:** narration file = store `projects/EDU/voice/ep11-nar-kore-A-r3-x0.92-regap028-L16t1.wav` (49.64 s; every line gap 0.28 s; L01 speech at 0.00 s). Woman's lines = store `projects/EDU/voice/ep11-v-V0{1..4}-Leda.wav`, exhale `ep11-v-V05hold-Leda.wav`. No atempo, no inner cut.
+- **PL02 Voice is placed, not retimed:** narration file = store `projects/edu/EDU/voice/ep11-nar-kore-A-r3-x0.92-regap028-L16t1.wav` (49.64 s; every line gap 0.28 s; L01 speech at 0.00 s). Woman's lines = store `projects/edu/EDU/voice/ep11-v-V0{1..4}-Leda.wav`, exhale `ep11-v-V05hold-Leda.wav`. No atempo, no inner cut.
 - **PL03 Timeline rule (voice lock):** lead 0.10 s; each slot is `0.14 s + slot + 0.14 s` replacing one 0.28 s line gap. So G(s) of a narration point = NAR s + 0.10 + the sum of the R2.1 lengths of earlier slots (V01 0.895, V02 2.784, V03 1.766, V04 0.917, black 0.4, gasp 0.6, clamp 0.6), × 30, rounded half up.
 - **PL04 Shot starts:** an in-line or narration-led cut sits **3 f before the onset frame** of the shot's first word; a slot-led shot starts on its slot start frame. Exceptions with reasons in the shot blocks: S01-B03-SH05 and S01-B04-SH01 (black and fade-up start on the black slot edges), S01-B05-SH04 (starts on the clamp slot, D04).
 - **PL05 Slots:** a slot take is placed at its slot start. If Editor's final trim differs by ≤ 3 f, it stays start-anchored and the shot end holds; > 3 f goes back to Film (retime), never pushes later frames.
@@ -453,7 +453,7 @@ Each action is possible with its state: the press (right hand) comes after the p
 | Coordinator / user | read Q-F1–Q-F3 verdicts on the page; accept the B04-SH06 lead-size exception (VD24) at Draft | open (non-blocking; recommendations applied) |
 | Film | viewer check of the first Draft shots against LF01–LF05; compare frames to these sheets | at W5.3 |
 
-Element captures: look frames `out/edu11/lf/LF01.png`, `LF01b.png`, `LF02.png`, `LF03.png`, `LF04.png`, `sheet-lf05.png` (store `projects/EDU/look-frames/EDU-EP11-SHORT/`), built from uncommitted `src/painted/edu11/lf.tsx` (fix round 3). Proposed first Editor sample: S01-B01-SH01 → SH03 (G0–242: snap split, float, grab) against the voice.
+Element captures: look frames `out/edu11/lf/LF01.png`, `LF01b.png`, `LF02.png`, `LF03.png`, `LF04.png`, `sheet-lf05.png` (store `projects/edu/EDU/look-frames/EDU-EP11-SHORT/`), built from uncommitted `src/painted/edu11/lf.tsx` (fix round 3). Proposed first Editor sample: S01-B01-SH01 → SH03 (G0–242: snap split, float, grab) against the voice.
 
 <a id="change-log"></a>
 ## Change log

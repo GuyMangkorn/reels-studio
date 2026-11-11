@@ -619,7 +619,7 @@
       "origin": "generated",
       "lengthFrames": 33,
       "level": "quiet gecko in the closing room tone: user-chosen cut placed 5 dB below the earlier tokay call level (momentary max 19 LU under the voice), audible in the clear, no music, no caption",
-      "note": "swapped 2026-11-10 to the user's own cut (file EDU-EP15-tokay-call-ref-cut.wav, 1.1 s = 33 f, store projects/EDU/audio/EDU-EP15-SHORT/2026-11-10_tokay-call-ref-cut.wav; cut of user sample gecko-sound-ref.mp3 3.25-4.35 s, rights unknown, user decides); onset f1700, 5 dB quieter than the generated call placement; generated creature_tokay-call-single_01 kept in the library, not used"
+      "note": "swapped 2026-11-10 to the user's own cut (file EDU-EP15-tokay-call-ref-cut.wav, 1.1 s = 33 f, store projects/edu/EDU/audio/EDU-EP15-SHORT/2026-11-10_tokay-call-ref-cut.wav; cut of user sample gecko-sound-ref.mp3 3.25-4.35 s, rights unknown, user decides); onset f1700, 5 dB quieter than the generated call placement; generated creature_tokay-call-single_01 kept in the library, not used"
     },
     {
       "cue": "A1A2-fade",

@@ -8,7 +8,7 @@ The user posts from `~/ReelsStore` and cannot tell which MP4 and which cover are
 
 - 1,010 MP4 files under `projects/`. Delivery, final-cut, draft and per-scene clips share `renders/<ID>/<commit>/`. `EDU-EP05-SHORT` alone has many commit folders.
 - `EDU-EP03-SHORT_cover.png` exists in **four** commit folders. Nothing says which one was posted.
-- Covers also sit in ad-hoc folders (`projects/EDU/covers/`, `covers/ep04/`), next to drafts such as `cover-A.2884e4d7.png`.
+- Covers also sit in ad-hoc folders (`projects/edu/EDU/covers/`, `covers/ep04/`), next to drafts such as `cover-A.2884e4d7.png`.
 - Project folders are mixed: `EDU`, `EDU-EP03`, `EDU-EP03-SHORT` and `EDU-EP05` all exist.
 - Six posted videos have W8.2 marked `not recorded` (hanako, kuchisake-onna, the-bloop, wendigo …).
 
@@ -52,7 +52,7 @@ A new delivery render, a cover pick or a cover fix counts as done only after `st
 
 ### PF04: task file
 
-- W8.2 becomes "Delivery render **published**: `publish/<PROJECT>/<ID>/`".
+- W8.2 becomes "Delivery render **published**: `publish/<channel>/<PROJECT>/<ID>/`".
 - W8.3 is ticked together with `--posted`.
 
 ### PF05: backfill once
@@ -67,7 +67,7 @@ For each delivered ID, the user picks the posted MP4 and cover from a short list
 | `README.md#asset-store` | Add `publish/` and its exception to immutability. Point to `store.py publish`. |
 | `docs/cover-principles.md` (intro) | Replace "copied beside the MP4 … `store.py put`" with `store.py publish <ID> --cover`. A later cover fix republishes. |
 | `docs/delivery-workflow.md` (task file) | Update the W8.2 and W8.3 wording and the "Posted" bullet (`--posted`). |
-| `docs/sequence-workflow.md` W8 row | Output: `publish/<PROJECT>/<ID>/`. |
+| `docs/sequence-workflow.md` W8 row | Output: `publish/<channel>/<PROJECT>/<ID>/`. |
 | `docs/render-rules.md` (Delivery stage) | Add: after delivery, publish (PF03). |
 | `scripts/store.py`, `scripts/README.md`, `docs/context-map.md`, tests | Add the `publish` subcommand, a test, and map entries. |
 

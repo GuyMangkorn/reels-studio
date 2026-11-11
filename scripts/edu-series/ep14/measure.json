@@ -4,7 +4,7 @@
   "w1_4_r4_length_check": {
    "script": "EDU-EP14-SCRIPT-R4",
    "read": "ep14-r4-nar-kore-fullread.wav",
-   "store": "projects/EDU/audio/2026-11-09_ep14-r4-nar-kore-fullread.wav",
+   "store": "projects/edu/EDU/audio/2026-11-09_ep14-r4-nar-kore-fullread.wav",
    "fps": 30,
    "tempo": 1.0,
    "note": "W1.4 length check read of R4, raw Gemini Kore one call (1 request, no retry), no atempo, loudnorm -16 LUFS; style string as ep12/R3. Text = R4 table NAR rows in play order (L01 L02a L02 L02b L02c L03 L04 L05 L06 L07 L10 L11 L08 L12 L13 L14 L15; L09 retired), '…' sent as ', ' as in R3, one line per newline. Times in read seconds; silencedetect -35 dB / 0.10 s gave 35 speech segments, assigned to lines by a syllable-weighted monotone fit (no Whisper), so every line edge is approximate (+-0.3 s; L14-L15, L10 (0.12 s blip at 29.945), L12 (3 segments) and L02b-L02c least sure). Not listened. Excludes V01/V02, wordless W700 and scripted no-line gaps. Video estimate = speech end 51.11 + W700 0.8 + V01 0.6 + V02 0.7 + beat gaps 1.5 + end hold 2.0 = about 56.7 s (range 56-58; V02 laugh and hold may overlap): PASS vs target 40-60 s and limit 63 s. Script N1 predicted raw 53.2 / video 58.8; measured 51.44 / 56.7.",
@@ -604,7 +604,7 @@
    },
    "girl_takes": {
     "V01": {
-     "store": "projects/EDU/audio/2026-11-09_ep14-girl-v01-a-leda.wav",
+     "store": "projects/edu/EDU/audio/2026-11-09_ep14-girl-v01-a-leda.wav",
      "file_s": 0.88,
      "voice_s": [
       0.204,
@@ -614,7 +614,7 @@
      "voice_onset_global_frame": 600
     },
     "V02": {
-     "store": "projects/EDU/audio/2026-11-09_ep14-girl-v02-a-leda.wav",
+     "store": "projects/edu/EDU/audio/2026-11-09_ep14-girl-v02-a-leda.wav",
      "file_s": 2.12,
      "voice_s": [
       0.19,
@@ -1080,7 +1080,7 @@
   "script": "EDU-EP14-SCRIPT-R4",
   "storyboard": "EDU-EP14-ROWS-R4.0",
   "narration": {
-   "file": "projects/EDU/audio/2026-11-09_ep14-r4-nar-kore-s090-g095.wav",
+   "file": "projects/edu/EDU/audio/2026-11-09_ep14-r4-nar-kore-s090-g095.wav",
    "length_s": 56.147,
    "recipe": "locked R4 Kore read; speech atempo 0.90, gaps and lead-in 0.95, tail unchanged (scripts/edu-series/ep14/narration-slow.py); 0 new Gemini requests"
   },
@@ -1124,7 +1124,7 @@
   },
   "girl_takes": {
    "V01": {
-    "store": "projects/EDU/audio/2026-11-09_ep14-girl-v01-a-leda.wav",
+    "store": "projects/edu/EDU/audio/2026-11-09_ep14-girl-v01-a-leda.wav",
     "file_s": 0.88,
     "voice_s": [
      0.204,
@@ -1134,7 +1134,7 @@
     "voice_onset_global_frame": 653
    },
    "V02": {
-    "store": "projects/EDU/audio/2026-11-09_ep14-girl-v02-a-leda.wav",
+    "store": "projects/edu/EDU/audio/2026-11-09_ep14-girl-v02-a-leda.wav",
     "file_s": 2.12,
     "voice_s": [
      0.19,

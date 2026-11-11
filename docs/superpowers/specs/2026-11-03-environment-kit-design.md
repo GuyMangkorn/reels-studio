@@ -76,7 +76,7 @@ These two rules were applied (user, 3 Nov 2026) to [src/painted/kit/README.md](.
 ### Phase 2 build notes
 
 - **Clean plates, not episode frames.** Delivered compositions bake captions into every frame, and adding a caption switch would touch the shared scene renderer that every pinned segment hashes. Each entry therefore names a registered shot and a shot-local time; `src/painted/plates-index.tsx` paints that plate with its `Overlay`, with no timeline, captions or labels.
-- **Store is immutable.** The script renders only plates the store lacks, and files them at `projects/KIT/plates/<id>.png`. The sheet is not stored; `--sheet-only` rebuilds it from the stored stills (verified: a second default run renders 0, and `--sheet-only` redraws all 27).
+- **Store is immutable.** The script renders only plates the store lacks, and files them at `projects/shared/KIT/plates/<id>.png`. The sheet is not stored; `--sheet-only` rebuilds it from the stored stills (verified: a second default run renders 0, and `--sheet-only` redraws all 27).
 - **Curation.** 45 candidates (about one per scene) were rendered and viewed; duplicates, diagrams, and character close-ups that showed no set were dropped, leaving 27. The palette is the script's ffmpeg suggestion; ids, titles, kind, time, mood and layers were tagged by hand from the sheet.
 
 ## Evidence

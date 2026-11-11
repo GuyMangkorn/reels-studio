@@ -78,12 +78,12 @@ Scene IDs B01-B09 follow the registry header order (one scene per beat). Frames 
 
 ## Store paths (asset store `/Users/mangkornkatawong/ReelsStore`)
 
-- MP4 (run 1 archive, the delivered render): `projects/HANAKO/renders/HANAKO-SHORT/f8788d1a17c4-dirty-202610312212/HANAKO-SHORT.mp4` (SHA-256 `6b6709c4911d254ca974d313c32bc0c214b7a5a801805020103420a138ea91ad`, 25,101,198 bytes). Archive output run 1: archived 79, already stored 1 (the second MP4 name). Run 2 archive: archived 0, already stored 80 (identical bytes).
+- MP4 (run 1 archive, the delivered render): `projects/legacy/HANAKO/renders/HANAKO-SHORT/f8788d1a17c4-dirty-202610312212/HANAKO-SHORT.mp4` (SHA-256 `6b6709c4911d254ca974d313c32bc0c214b7a5a801805020103420a138ea91ad`, 25,101,198 bytes). Archive output run 1: archived 79, already stored 1 (the second MP4 name). Run 2 archive: archived 0, already stored 80 (identical bytes).
 - Run 1 archive also filed the 78 E2 stills under the same label (`.../stills/`).
-- E2 stills filed earlier by hand: `projects/HANAKO/stills-e2/` (78 files, `--project hanako` path; the store folder is case-insensitive, so this is the same folder). These 78 PNGs are now stored twice (here and under the render label), because archive dedupe is per render prefix.
-- Reference set: `projects/HANAKO/reference/HANAKO-SHORT/f8788d1a17c4-dirty-202610312216/` (19 PNG, `hashes.tsv`, PSNR vs MP4 min 48.1 dB).
-- Per-scene samples: `projects/HANAKO/samples/` (`S01_B01_f0152.png` … `S09_B09_f2448.png`, `manifest.tsv`, `sheet-scenes.png`). Older HANAKO sample files already there (different names) were not touched.
-- QA sheets: `projects/HANAKO/qa-sheets/` (`run1-every5s-19frames.png`, `run1-seam-F2595-then-F0.png`); caption-zone overlays: `projects/HANAKO/qa-capzone/` (19 files).
+- E2 stills filed earlier by hand: `projects/legacy/HANAKO/stills-e2/` (78 files, `--project hanako` path; the store folder is case-insensitive, so this is the same folder). These 78 PNGs are now stored twice (here and under the render label), because archive dedupe is per render prefix.
+- Reference set: `projects/legacy/HANAKO/reference/HANAKO-SHORT/f8788d1a17c4-dirty-202610312216/` (19 PNG, `hashes.tsv`, PSNR vs MP4 min 48.1 dB).
+- Per-scene samples: `projects/legacy/HANAKO/samples/` (`S01_B01_f0152.png` … `S09_B09_f2448.png`, `manifest.tsv`, `sheet-scenes.png`). Older HANAKO sample files already there (different names) were not touched.
+- QA sheets: `projects/legacy/HANAKO/qa-sheets/` (`run1-every5s-19frames.png`, `run1-seam-F2595-then-F0.png`); caption-zone overlays: `projects/legacy/HANAKO/qa-capzone/` (19 files).
 
 ## Sheet image paths (local, absolute)
 

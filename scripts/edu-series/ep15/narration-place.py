@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
 """EDU-EP15-SHORT narration placement (Editor, W5.3 Draft) on EDU-EP15-ROWS-R2.3 (storyboard.md "Units, clocks and conventions" + "Voice and subtitle cues").
-The user-approved C1 Kore read (store projects/EDU/audio/2026-11-10_ep15-nar-kore-c1-fullread.wav, 51.40 s, 48 kHz mono, no atempo) is cut in real pauses at 9.48 / 16.09 / 23.99 / 38.70 s; the breath 38.70-38.99 s before L13 is NOT placed
+The user-approved C1 Kore read (store projects/edu/EDU/audio/2026-11-10_ep15-nar-kore-c1-fullread.wav, 51.40 s, 48 kHz mono, no atempo) is cut in real pauses at 9.48 / 16.09 / 23.99 / 38.70 s; the breath 38.70-38.99 s before L13 is NOT placed
 (cut out), then 47.21 s. Segment offsets: 0.30 s (L01-L03), 1.00 s (L04-L05), 1.40 s (L07-L08), 1.70 s (L09-L12), 1.41 s (L13-L15), 5.5577 s (L16). V01 Despina: file start f285 (voice onset f293); V02 Algenib: file start f1491
 (voice f1498-1539). No gain, no atempo, no edits to the takes. Total 1793 f at 48 kHz mono. Writes public/narration/EDU-EP15-SHORT-narration-v1.wav and out/EDU-EP15-SHORT/audio/placements.txt.
 Run: python3 -I scripts/edu-series/ep15/narration-place.py"""
 import array, os, wave
-R = os.path.expanduser('~/ReelsStore/projects/EDU/audio/')
+R = os.path.expanduser('~/ReelsStore/projects/edu/EDU/audio/')
 FPS, SR, TOTAL = 30, 48000, 1793
 def load(n):
     w = wave.open(R + n); assert w.getframerate() == SR and w.getnchannels() == 1 and w.getsampwidth() == 2, n

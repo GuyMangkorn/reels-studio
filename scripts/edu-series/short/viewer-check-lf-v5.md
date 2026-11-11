@@ -1,7 +1,7 @@
 # Viewer check — EDU-EP01-SHORT look frame LF02 v5
 
 - **Check:** [viewer check](../../../docs/sequence-workflow.md#viewer-check), fresh Film invocation (Opus, medium), 2026-11-04. The checker did not paint the frame.
-- **Inputs:** store `projects/EDU/previews/look-frames/ep01/v5/` LF02.png, viewed through `scripts/qa-sheet.sh` at 270 px and at `--width 540`, plus the stored `LF02-head-crop.png` and `LF02-feet-crop.png` (tiled at 400 px); row S01-B03-SH02 "seen" in [review-rows.json](review-rows.json); v3 findings in [viewer-check-lf-v3](viewer-check-lf-v3.md); [user taste](../../../docs/user-taste.md) UT01–UT12.
+- **Inputs:** store `projects/edu/EDU/previews/look-frames/ep01/v5/` LF02.png, viewed through `scripts/qa-sheet.sh` at 270 px and at `--width 540`, plus the stored `LF02-head-crop.png` and `LF02-feet-crop.png` (tiled at 400 px); row S01-B03-SH02 "seen" in [review-rows.json](review-rows.json); v3 findings in [viewer-check-lf-v3](viewer-check-lf-v3.md); [user taste](../../../docs/user-taste.md) UT01–UT12.
 - **Scope:** a single still. Motion in the row (the lean forward and the drop out of frame) and the "ภาพจำลอง" corner label (an overlay, not in the still) are not judged here; both belong to the Draft. The dreamier v4 is not reopened (user chose v3's look).
 - **Result:** **pass**, fit to go to the user. Two minor findings go in the row note.
 

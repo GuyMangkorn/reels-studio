@@ -1,5 +1,5 @@
 // Plate gallery (src/painted/kit/plates.ts): render one still per PLATES entry that the asset store does not hold yet,
-// file it at projects/KIT/plates/<id>.png (stored files are immutable, so the stored still is the gallery record), and
+// file it at projects/shared/KIT/plates/<id>.png (stored files are immutable, so the stored still is the gallery record), and
 // render the labelled KIT-PLATES sheet from the stills. Prints a suggested palette per rendered plate. The sheet is not stored: --sheet-only rebuilds it in seconds.
 // Usage: npx tsx scripts/painted-kit/plates.ts [--only=PL-A,PL-B] [--sheet-only] [--no-store]
 //   --only        render these ids even when stored (a stored still that differs is reported and kept)

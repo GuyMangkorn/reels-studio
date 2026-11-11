@@ -41,9 +41,9 @@ Files (all uncommitted):
 - `scripts/hanako/short/poster-redact.py` (new), `src/videos/hanako/assets.lock.json` (one entry), `.gitignore` (`public/images/hanako/`), `docs/dev-findings/DF-20261031-painted-raster-card.md` (new, r2 revalidation) and its index row, `scripts/hanako/build-notes.md` (appended section).
 
 Store:
-- `projects/HANAKO/reference/2026-10-31_b07-film-card-poster-redacted.png` (+ `.json` sidecar). Unchanged in r2. The user's original stays in `projects/HANAKO/references/user/`.
-- r2 QA set: `projects/HANAKO/previews/B07-SH03-r2/` (16 images).
-- r1 QA set (superseded): `projects/HANAKO/previews/B07-SH03/`. Its scan-versus-redacted comparison is still current: `projects/HANAKO/previews/B07-SH03/2026-10-31_b07-film-card-poster-scan-vs-redacted.png`.
+- `projects/legacy/HANAKO/reference/2026-10-31_b07-film-card-poster-redacted.png` (+ `.json` sidecar). Unchanged in r2. The user's original stays in `projects/legacy/HANAKO/references/user/`.
+- r2 QA set: `projects/legacy/HANAKO/previews/B07-SH03-r2/` (16 images).
+- r1 QA set (superseded): `projects/legacy/HANAKO/previews/B07-SH03/`. Its scan-versus-redacted comparison is still current: `projects/legacy/HANAKO/previews/B07-SH03/2026-10-31_b07-film-card-poster-scan-vs-redacted.png`.
 
 ## Redaction (unchanged in r2)
 
@@ -75,7 +75,7 @@ Clock: `F` composition-global (review page time), `f` shot-local.
 
 Subtitle text (F1952 frame, bright rows in the band): y 1176–1220. The card's bottom edge is above that from F1941 on (1153.9 at F1941, higher each frame after), so the card and the subtitle text do not overlap. The clearance at F1941 is 22 px.
 
-Images (absolute paths; store copies in `~/ReelsStore/projects/HANAKO/previews/B07-SH03-r2/`):
+Images (absolute paths; store copies in `~/ReelsStore/projects/legacy/HANAKO/previews/B07-SH03-r2/`):
 - Labelled sheet, six frames (Chrome, preview labels): `/Users/mangkornkatawong/Developer/reels-creator/.claude/worktrees/hanako-next-437b9b/out/qa/hanako/B07-SH03-r2/sheet-B07-SH03-r2-F1940-2040.png`
 - `scripts/qa-sheet.sh`, 3 × 2 at 270 px: `/Users/mangkornkatawong/Developer/reels-creator/.claude/worktrees/hanako-next-437b9b/out/qa/hanako/B07-SH03-r2/qa-sheet-B07-SH03-r2-F1940-2040.png`
 - Full-resolution top-left crop, F1952 (DATE overlap, card top, backdrop edge): `/Users/mangkornkatawong/Developer/reels-creator/.claude/worktrees/hanako-next-437b9b/out/qa/hanako/B07-SH03-r2/B07-SH03_F1952_card-top-left-1x.png`
@@ -135,11 +135,11 @@ Commands and logs (`out/logs/`):
 
 | Item | Path (store root `~/ReelsStore`) |
 | --- | --- |
-| Source (user, unchanged) | `projects/HANAKO/references/user/2026-10-31_b07-film-poster-toire-no-hanako-san-1995.jpg` (1000 × 1500) |
-| Derived (r3) | `projects/HANAKO/reference/2026-10-31_b07-film-card-poster-1995-redacted.png` (1000 × 1500, 502 KB) + `.json` sidecar (regions, sigmas, source sha256 `48467f6b…`) |
+| Source (user, unchanged) | `projects/legacy/HANAKO/references/user/2026-10-31_b07-film-poster-toire-no-hanako-san-1995.jpg` (1000 × 1500) |
+| Derived (r3) | `projects/legacy/HANAKO/reference/2026-10-31_b07-film-card-poster-1995-redacted.png` (1000 × 1500, 502 KB) + `.json` sidecar (regions, sigmas, source sha256 `48467f6b…`) |
 | Lock | `public/images/hanako/film-card-poster-1995-redacted.png` → the derived file (sha256 `75809926…`) |
 | Script | `scripts/hanako/short/poster-redact.py --poster 1995-r3` (presets `1995-r3`, `1998-r2`; `1998-r2` regions unchanged) |
-| QA set | `projects/HANAKO/previews/B07-SH03-r3/` (20 files) |
+| QA set | `projects/legacy/HANAKO/previews/B07-SH03-r3/` (20 files) |
 
 Superseded: the 1998 derived file stays in the store (immutable) and its lock entry and `public/` cache copy are removed.
 
@@ -227,7 +227,7 @@ Sheets (viewed):
 - `scripts/qa-sheet.sh`, 270 px, 4 × 2: `out/qa/hanako/B07-SH03-r3/qa-sheet-B07-SH03-r3-F1940-2040.png`
 - Full-res card, F1952 (600 × 880 crop, x 240–840, y 0–880): `out/qa/hanako/B07-SH03-r3/B07-SH03_F1952_card-full-1x.png`
 - Full-res band edges: F1941 subtitle margin (y 1080–1260) above F2040 band edge (y 760–900): `out/qa/hanako/B07-SH03-r3/B07-SH03_F1941-F2040_band-edge-1x.png`
-- Store copy: `projects/HANAKO/previews/B07-SH03-r3/`
+- Store copy: `projects/legacy/HANAKO/previews/B07-SH03-r3/`
 
 ## Unverified
 

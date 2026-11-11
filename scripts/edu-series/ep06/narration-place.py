@@ -4,7 +4,7 @@ lines.json fileStart/fileDur) and places it, with the OWN Leda takes L03/L03b, s
 "Line onsets on the timeline"). Writes public/narration/EDU-EP06-SHORT.wav (1685 f, 48 kHz mono) and out/EDU-EP06-SHORT/audio/placements.txt.
 Run: python3 -I scripts/edu-series/ep06/narration-place.py"""
 import json, os, subprocess
-S = os.path.expanduser('~/ReelsStore/projects/EDU/narration/ep06')
+S = os.path.expanduser('~/ReelsStore/projects/edu/EDU/narration/ep06')
 FPS, TOTAL = 30, 1685
 DUR = TOTAL / FPS
 FULL = f'{S}/2026-11-07_ep06-nar-kore-A-slow92-r13-e-fullread.wav'

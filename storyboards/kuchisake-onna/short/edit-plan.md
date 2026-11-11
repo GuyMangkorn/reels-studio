@@ -10,7 +10,7 @@ Owner: Editor. Stage: integration and the Draft tab (W5, [sequence workflow](../
 | Script | `KSO-SCRIPT-R4` ([script](../../../scripts/kuchisake-onna/short/script.md)); spoken text unchanged since R3 |
 | Film brief | `KSO-BRIEF-FILM-R2.2` (timed shot list, 26 shots) — [brief](../../../scripts/kuchisake-onna/short/film-brief.md) |
 | Storyboard rows | `SB-R2.2`, all 26 shots marked ok by the user on the page (no re-review asked) — [review-rows.json](../../../scripts/kuchisake-onna/short/review-rows.json) |
-| Voice lock | v3, `KSO-EP01-SHORT_narration_voicelock-v3.mp3`, 2461 f (82.03 s), store `projects/KSO/audio/voice-lock-r3/final/`, sha256 `9e6e7f5fa1ab92bec766033142febe4a88d6376dd7b1ae0d9b426ae133dd8f1c` (from [voice-measure.json](../../../scripts/kuchisake-onna/short/voice-measure.json)); the measure file is the timing source |
+| Voice lock | v3, `KSO-EP01-SHORT_narration_voicelock-v3.mp3`, 2461 f (82.03 s), store `projects/legacy/KSO/audio/voice-lock-r3/final/`, sha256 `9e6e7f5fa1ab92bec766033142febe4a88d6376dd7b1ae0d9b426ae133dd8f1c` (from [voice-measure.json](../../../scripts/kuchisake-onna/short/voice-measure.json)); the measure file is the timing source |
 | Look | `LF01`–`LF05` approved by the user; plates `KSO-<shot ID>` in `src/painted/shots/kuchisake.tsx` (`KSO_SHOT_INDEX`, 26 contiguous rows 0–2461) |
 | Plate code at render | checksums in `out/logs/kso-plate-revision-at-render.sha256` (taken before the draft pass; Boss is revising `S01-B02-SH04` and `S02-B02-SH03` in parallel, see open items) |
 

@@ -1,7 +1,7 @@
 // Plate gallery index (ENV phase 2, docs/superpowers/specs/2026-11-03-environment-kit-design.md#plate-gallery-phase-2):
 // one entry per finished set from a delivered episode, for reference before a look frame. Never a default, no reuse
 // requirement. Agents filter this table (grep or `findPlates`) and only then look at the stills: the KIT-PLATES sheet or
-// the store files projects/KIT/plates/<id>.png. Stills render from the registered shot at `t` (no captions) with
+// the store files projects/shared/KIT/plates/<id>.png. Stills render from the registered shot at `t` (no captions) with
 // `npx tsx scripts/painted-kit/plates.ts`. Add an entry when an episode is delivered.
 
 export type PlateKind = 'interior' | 'exterior' | 'vehicle' | 'underwater' | 'sea' | 'diagram';
@@ -28,7 +28,7 @@ export type PlateEntry = {
   t: number;
 };
 
-export const plateStill = (id: string) => `projects/KIT/plates/${id}.png`;
+export const plateStill = (id: string) => `projects/shared/KIT/plates/${id}.png`;
 
 export const PLATES: PlateEntry[] = [
   {id: 'PL-EG-STORE-FRONT', episode: 'EG', title: 'Convenience store front, empty forecourt, grey daylight', kind: 'exterior', time: 'day', mood: ['empty', 'eerie', 'flat'], palette: ['#8d8182', '#8c979c', '#97a0a5', '#c0bfb6', '#d4d5cc'], kitLayers: ['ENV-SKY'], shot: 'EG-S01-B01-SH01', t: 1.5},

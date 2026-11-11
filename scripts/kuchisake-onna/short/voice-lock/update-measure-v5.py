@@ -3,10 +3,10 @@
 v5 = v4 with the same one-word edit (โทษ in NARR ขอโทษนะ, S03-B02, KSO-A16, B06 clip) shifted +3.0 semitones from v3
 instead of +1.5. Length, anchors, beats, slots and budget are carried from v4 unchanged, and this script asserts that.
 Everything v5-specific is read from the QA files (pitch-fix-v5.py, v5-check.py, measure-loudness.mjs). v4 stays in the
-store (projects/KSO/audio/voice-lock-v4) as the A/B baseline; its measure file is kept in the v5 store folder.
+store (projects/legacy/KSO/audio/voice-lock-v4) as the A/B baseline; its measure file is kept in the v5 store folder.
 
 Run (worktree root): python3 -I scripts/kuchisake-onna/short/voice-lock/update-measure-v5.py \
-    --base "$HOME/ReelsStore/projects/KSO/audio/voice-lock-v5/measure/voice-measure-v4.json" \
+    --base "$HOME/ReelsStore/projects/legacy/KSO/audio/voice-lock-v5/measure/voice-measure-v4.json" \
     --pitch-qa out/kso-ep01-short/voice-lock-v5/qa/pitch-fix-v5.json \
     --check-qa out/kso-ep01-short/voice-lock-v5/qa/v5-check.json \
     --loudness out/kso-ep01-short/voice-lock-v5/qa/loudness-v5.jsonl
@@ -17,7 +17,7 @@ from pathlib import Path
 OUT = Path('scripts/kuchisake-onna/short/voice-measure.json')
 V5_TRACK = Path('out/kso-ep01-short/voice-lock-v5/final/KSO-EP01-SHORT_narration_voicelock-v5.mp3')
 V5_CLIP = Path('out/kso-ep01-short/voice-lock-v5/segments-v5/B06.wav')
-STORE = 'projects/KSO/audio/voice-lock-v5'
+STORE = 'projects/legacy/KSO/audio/voice-lock-v5'
 # measure-loudness.mjs order (run by hand, see reproduce): v5 track, v4 track, v3 track, v5 B06, v4 B06, v3 B06
 LOUD_ORDER = [('KSO-EP01-SHORT_narration_voicelock-v5.mp3', 'track'), ('KSO-EP01-SHORT_narration_voicelock-v4.mp3', 'track'),
               ('KSO-EP01-SHORT_narration_voicelock-v3.mp3', 'track'), ('B06.wav', 'clip'), ('B06.wav', 'clip'), ('B06.wav', 'clip')]
@@ -54,8 +54,8 @@ def main():
 
     track_sha, clip_sha = sha(V5_TRACK), sha(V5_CLIP)
     d['revision'] = 'v5'
-    d['supersedes'] = ('v4 (+1.5 st on โทษ; store projects/KSO/audio/voice-lock-v4, measure kept in '
-                       f'{STORE}/measure/voice-measure-v4.json), itself v3 (projects/KSO/audio/voice-lock-r3/voice-measure-v3.json)')
+    d['supersedes'] = ('v4 (+1.5 st on โทษ; store projects/legacy/KSO/audio/voice-lock-v4, measure kept in '
+                       f'{STORE}/measure/voice-measure-v4.json), itself v3 (projects/legacy/KSO/audio/voice-lock-r3/voice-measure-v3.json)')
     d['voice_lock'] = ('v5: NARR Erinome read (B01-B05, v2) and the B06 read (v3 chunk) unchanged except one pitch fix on '
                        'โทษ in the NARR apology ขอโทษนะ (B06, S03-B02, KSO-A16), +3.0 st from v3; WOMAN Despina takes and the '
                        'panic slip unchanged. Script text unchanged (KSO-SCRIPT-R3).')
@@ -70,7 +70,7 @@ def main():
         'repo_amplitude': 'scripts/kuchisake-onna/short/KSO-EP01-SHORT.amplitude.json',
         'sha256': track_sha, 'lengthFrames': 2461, 'lengthS': 82.033,
         'v4_sha256': base['track']['sha256'], 'v3_sha256': base['track'].get('v3_sha256'),
-        'v4_store': 'projects/KSO/audio/voice-lock-v4/final/KSO-EP01-SHORT_narration_voicelock-v4.mp3',
+        'v4_store': 'projects/legacy/KSO/audio/voice-lock-v4/final/KSO-EP01-SHORT_narration_voicelock-v4.mp3',
     }
     d['takes'] = [t for t in base['takes'] if t['id'] != 'TAKE-NARR-B06-V5'] + [
         {'id': 'TAKE-NARR-B06-V5', 'what': ('NARR B06 clip v5 = the v3 B06 clip (take2) with the pitch fix on โทษ at +3.0 st '
@@ -145,7 +145,7 @@ def main():
         ('V5 PROXY LIMIT: Whisper letters ratio 0.961 (v3 0.982 in the v5 run; v4 0.982). The v3 read in asr-r3.json already scores '
          '0.961 with the same flip (หยุด reads อยู่), so the drop is not from v5. Not a pitch test.'),
         ('V4 ANSWERED (user, 1 Nov 2026): v4 is "not sharp at all"; the user asked for more pitch on โทษ, so v5 (+3.0 st). '
-         'v4 stays in the store as the A/B baseline (projects/KSO/audio/voice-lock-v4).'),
+         'v4 stays in the store as the A/B baseline (projects/legacy/KSO/audio/voice-lock-v4).'),
     ] + [o for o in base['open_items'] if not o.startswith(SUPERSEDED)]
     OUT.write_text(json.dumps(d, ensure_ascii=False, indent=1) + '\n', encoding='utf-8')
     print(f'wrote {OUT}: revision v5, track sha {track_sha[:12]}, clip sha {clip_sha[:12]}, frames {d["track"]["lengthFrames"]}')

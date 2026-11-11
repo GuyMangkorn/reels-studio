@@ -5,7 +5,7 @@
  "voice": "Gemini TTS Kore, style \"fast-paced, quick brisk delivery with short pauses between phrases, playful deadpan female narrator, dry and matter-of-fact, speaking quickly without dragging\", one continuous read, model speaks faster itself (no atempo, no pause shortening)",
  "processing": "ellipses to commas (tts-text.txt); no atempo, no gap shortening; gemini-tts.py say loudnorm -16 LUFS, then per-line gain (17 slices, step at the gap centres, 40 ms smoothing) to -16 LUFS, alimiter limit 0.82; 48 kHz mono",
  "file": "out/edu02/narration/narration-ep02.wav",
- "store": "projects/EDU/narration/ep02/2026-11-05_ep02-narration-kore-fast.wav",
+ "store": "projects/edu/EDU/narration/ep02/2026-11-05_ep02-narration-kore-fast.wav",
  "fileDurationSec": 54.16,
  "speechOnSec": 0.25,
  "speechEndSec": 53.97,
@@ -311,7 +311,7 @@
  "revision": "gemini-fast",
  "estimatedVideoSec": "about 59.5 (speech end 53.97 + ~4 s sob/sting gaps + ~1.5 s hold/fade)",
  "previous": "tempo 1.16: speech 0.20-54.07 s, store 2026-11-05_ep02-narration-kore-t1.16.wav; tempo 1.05: 59.32 s",
- "rawStore": "projects/EDU/narration/ep02/2026-11-05_ep02-raw-kore-fast.wav (cache key 9dbf16b6f1921118 in $REELS_STORE/cache/tts)",
+ "rawStore": "projects/edu/EDU/narration/ep02/2026-11-05_ep02-raw-kore-fast.wav (cache key 9dbf16b6f1921118 in $REELS_STORE/cache/tts)",
  "integratedLufs": -16.3,
  "peakDbfs": -1.7
 }

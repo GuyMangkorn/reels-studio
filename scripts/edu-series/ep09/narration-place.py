@@ -3,7 +3,7 @@
 public/narration/EDU-EP09-SHORT.wav (never edited) is cut into pieces A-D inside silences and placed at G 0 / 197 / 501 / 1410 (offsets 0 / +69 / +131 / +184), so every gap inside a piece
 is the read's. V01 (BOY "ไม่ขึ้น!", voice-preset child-boy +10 %) is end-anchored at G196 (PL05, slot G179-196); V02 (ELDER, Gemini Algenib, <laugh>, take 3, atempo 1.12 to fit the 59 f slot)
 starts at G441 and ends by G502. V01/V02 are levelled to the Kore mean RMS (capped +-12 dB). Writes public/narration/EDU-EP09-SHORT-draft.wav (1606 f, 48 kHz mono) and out/EDU-EP09-SHORT/audio/placements.txt.
-Takes: out/EDU-EP09-SHORT/audio/takes/ (store projects/EDU/audio/EDU-EP09-SHORT/). Run: python3 -I scripts/edu-series/ep09/narration-place.py"""
+Takes: out/EDU-EP09-SHORT/audio/takes/ (store projects/edu/EDU/audio/EDU-EP09-SHORT/). Run: python3 -I scripts/edu-series/ep09/narration-place.py"""
 import array, math, os, subprocess, wave
 FPS, SR, TOTAL = 30, 48000, 1606
 SRC = 'public/narration/EDU-EP09-SHORT.wav'

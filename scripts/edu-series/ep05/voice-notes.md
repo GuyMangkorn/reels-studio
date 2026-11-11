@@ -2,7 +2,7 @@
 
 Status: **generated, `audio-measured` (provisional), NOT user-passed. CURRENT narrator read = section 2b (Kore brisk, x1.10, user decision 2026-11-06); sections 1-3 are the earlier teasing A/B history.** Nobody has listened yet; every pick below is by measurement, and the user chooses by ear. Script EDU-EP05-SCRIPT-R1.3a; wording unchanged, `…` became `,` in the TTS text only. Model gemini-tts `gemini-3.8-flash-tts`, no atempo (1.00x).
 
-Store prefix `S/` = `~/ReelsStore/projects/EDU/narration/ep05/`. Local copies and reproduction inputs (style text, `lines-nar.txt`, tsv, alignment scripts) in `out/edu05/voice/` (ignored).
+Store prefix `S/` = `~/ReelsStore/projects/edu/EDU/narration/ep05/`. Local copies and reproduction inputs (style text, `lines-nar.txt`, tsv, alignment scripts) in `out/edu05/voice/` (ignored).
 
 ## 1. Kore A/B audition (L01-L02, text "ถ้าคุณตัวเล็กเท่ามด, ตกจากตึกสิบชั้น, คุณจะแทบไม่เป็นอะไรเลย")
 

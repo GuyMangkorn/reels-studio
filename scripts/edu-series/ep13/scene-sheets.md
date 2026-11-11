@@ -13,7 +13,7 @@
 ## Placement rules
 
 - **PL01 Stable:** shot IDs, order, beats, line-to-shot assignment (the rows' per-shot VO split is kept exactly), casting, looks, clue IDs CL01–CL02, deviations D01–D14, rules R01–R10 and SD01–SD05 stay. R2.1 changes ranges, event frames and the cue frames only, plus the B02-SH01 label text (script R5), the SH05 camera ease fractions (same frames) and the ending cue (S24, [SD08](#sd01)).
-- **PL02 Voice is placed, not retimed:** narration = `out/edu13/voice/full/ep13-nar-kore-r5b-B-slow10.wav` (store `projects/EDU/voice/EDU-EP13-SHORT/ep13-nar-kore-r5b-B-slow10.wav`). It is cut only at three silent points inside line gaps and each piece is shifted whole; no atempo, no inner cut:
+- **PL02 Voice is placed, not retimed:** narration = `out/edu13/voice/full/ep13-nar-kore-r5b-B-slow10.wav` (store `projects/edu/EDU/voice/EDU-EP13-SHORT/ep13-nar-kore-r5b-B-slow10.wav`). It is cut only at three silent points inside line gaps and each piece is shifted whole; no atempo, no inner cut:
 
   | Piece | Read range (s) | Shift | Holds |
   | --- | --- | --- | --- |
