@@ -10,6 +10,7 @@ import {Grain} from '../kit/screen';
 import {camPoint, camUnit, type YCam} from '../kit/ycam';
 import type {V3} from '../kit/space';
 import {paintDrop14} from '../kit/water-drop';
+import {lookCam} from './cams';
 import {drawMosquito, MOSQ_BL_M, MOSQ_BL_SM, paintMosquito, type MosqMeasure, type MosqOpts} from './mosquito';
 
 if (typeof document !== 'undefined') loadFont({family: 'Noto Sans Thai', url: staticFile('fonts/NotoSansThai.ttf'), weight: '100 900'});
@@ -21,17 +22,17 @@ if (typeof document !== 'undefined') loadFont({family: 'Noto Sans Thai', url: st
 
 const FPS = 30;
 const PAPER = '#7d868d';
-export type Grade = 'neutral' | 'cold' | 'coldest';
+export type Grade = 'neutral' | 'cold' | 'coldest' | 'warm';
 /** Chapter grades (brief "Light"): B03-B04 cool = -8 % warmth and #7f93a8 multiply 12 % (one multiply rgb(221,237,245)); coldest
  * (B04-SH02) adds -20 % saturation. DOM layers over the canvas, as the episode's screen grade will be. */
-const gradeLayer = (g: Grade) => g === 'neutral' ? null : <AbsoluteFill style={{background: 'rgb(221,237,245)', mixBlendMode: 'multiply', pointerEvents: 'none'}} />;
+const gradeLayer = (g: Grade) => g === 'neutral' ? null : <AbsoluteFill style={{background: g === 'warm' ? 'rgb(255,243,226)' : 'rgb(221,237,245)', mixBlendMode: 'multiply', pointerEvents: 'none'}} />;
 
-export const Painted = ({paint, grade = 'neutral', children}: {paint: (p: Painter, frame: number) => void; grade?: Grade; children?: ReactNode}) => {
+export const Painted = ({paint, grade = 'neutral', push, children}: {paint: (p: Painter, frame: number) => void; grade?: Grade; /** Brush-space push of a fixed-plane diagram (SH06): scale `s` about the picture point `at`. */ push?: {s: number; at: Pt}; children?: ReactNode}) => {
   const fn = useCallback(({brush, frame}: PaintContext) => paint(makePainter(brush, {t: frame / FPS, frame, fade: PAPER}), frame), [paint]);
   return (
     <AbsoluteFill style={{background: PAPER}}>
       <AbsoluteFill style={{filter: grade === 'coldest' ? 'saturate(0.8)' : undefined}}>
-        <BrushCanvas paint={fn} paper={PAPER} />
+        <AbsoluteFill style={push ? {transform: `scale(${push.s})`, transformOrigin: `${push.at[0]}px ${push.at[1]}px`} : undefined}><BrushCanvas paint={fn} paper={PAPER} /></AbsoluteFill>
         <Grain opacity={0.05} />
       </AbsoluteFill>
       {gradeLayer(grade)}
@@ -80,10 +81,7 @@ export const LF00Cold = () => <LF00 grade="cold" />;
 
 // ---------------------------------------------------------------- SP2A: B01-SH01 @ +0, full size, 50 px body
 /** Storyboard SH01 camera at +0 (`H`, metres): pos (1.13, 0.16, 0.66), look-at (1.85, 0.34, 1.45), f 1000, near 0.02. */
-export const lookCam = (pos: V3, at: V3, f: number, near?: number): YCam => {
-  const dx = at[0] - pos[0], dy = at[1] - pos[1], dz = at[2] - pos[2];
-  return {x: pos[0], y: pos[1], z: pos[2], yaw: Math.atan2(dx, -dz), pitch: Math.atan2(dy, Math.hypot(dx, dz)), f, hy: 960, near};
-};
+export {lookCam};
 export const CAM_SH01 = lookCam([1.13, 0.16, 0.66], [1.85, 0.34, 1.45], 1000, 0.02);
 export const MOSQ_SH01: V3 = [1.19, 0.2, 0.71];
 const HEEL: V3 = [1.62, 0, 1.22], KNEE: V3 = [1.62, 0.47, 1.22], HIP: V3 = [1.62, 0.84, 1.22];

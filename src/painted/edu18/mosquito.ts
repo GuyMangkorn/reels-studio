@@ -122,8 +122,12 @@ export const legJoints = (hip: Pt, leg: Leg, lens: readonly number[]): Pt[] => {
 export const wingAngle = (t: number, hz = MOSQ_BEAT_HZ) => 118 + 42 * Math.sin(2 * Math.PI * hz * t);
 
 /** Paints the mosquito with its body centre (waist) at screen `g` and `len` px per body length. Returns key points (px). */
-export const drawMosquito = (p: Painter, g: Pt, len: number, o: MosqOpts): MosqMeasure =>
-  o.view === 'below' ? drawBelow(p, g, len / BODY_SPAN, o) : drawSide(p, g, len / BODY_SPAN, o);
+export const drawMosquito = (p: Painter, g: Pt, len: number, o: MosqOpts): MosqMeasure => {
+  // hardening (W5.2): a card behind the lens or a degenerate scale draws nothing and measures as a point, never NaN geometry in the brush calls
+  if (!Number.isFinite(g[0]) || !Number.isFinite(g[1]) || !Number.isFinite(len) || len < 0.5) return {head: g, tail: g, centre: g, toes: [], left: g[0], right: g[0], top: g[1], bottom: g[1]};
+  const q = o.squash === undefined ? o : {...o, squash: Math.min(1, Math.max(0.2, o.squash))};
+  return q.view === 'below' ? drawBelow(p, g, len / BODY_SPAN, q) : drawSide(p, g, len / BODY_SPAN, q);
+};
 
 const drawSide = (p: Painter, g: Pt, len: number, o: MosqOpts): MosqMeasure => {
   const dir = o.view === 'left' ? -1 : 1, state = o.state ?? 'hover', pose = SIDE_POSES[state], fine = len >= 120, t = o.t ?? 0;
@@ -353,3 +357,15 @@ export const mosqReachBelow = (state: MosqState, pitchAdd = 0) => {
 /** R04 contact guard: the lowest anchor height (world units) at which every part of the card clears the water by `clearance`
  * (storyboard R04: 1.0 sm in `M`, 0.15 m in `H`). `bl` = one body length in the same units. */
 export const minAnchorHeight = (state: MosqState, bl: number, clearance: number, pitchAdd = 0) => clearance + mosqReachBelow(state, pitchAdd) * bl;
+
+/** How far (bl) the dorsal outline (thorax top, scutellum, head) reaches above the anchor in a state: where a drop's bottom face meets the back
+ * (SH04 contact at +17, SH15 hit at +50). Wings are excluded (folded or crushed at contact). */
+export const mosqReachAbove = (state: MosqState, pitchAdd = 0) => {
+  const a = (SIDE_POSES[state].pitch + pitchAdd) * DEG, c = Math.cos(a), s = Math.sin(a);
+  const tops: Pt[] = [[0.15, 0.14], [0.035, 0.085], [0.36, 0.065], [0.04, 0.062]];
+  return Math.max(...tops.map(([x0, y]) => (x0 + X0) * s + y * c)) / BODY_SPAN;
+};
+/** Anchor height (world units) at which the side-view back just touches a face at `faceY` above it: the passenger of a drop (R04 contact: within 0.02 sm). */
+export const anchorUnderFace = (faceY: number, bl: number, state: MosqState = 'pressed', pitchAdd = 0) => faceY - mosqReachAbove(state, pitchAdd) * bl;
+/** R04 check on a drawn card: true when every drawn part (body, legs) is at least `clearance` px above `waterPx` (screen y of the water under it). */
+export const clearsWater = (m: MosqMeasure, waterPx: number, clearancePx: number) => m.bottom + clearancePx <= waterPx;
