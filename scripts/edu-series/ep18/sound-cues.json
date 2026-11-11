@@ -1,510 +1,1075 @@
 {
-  "deliverable": "EDU-EP18-SHORT",
-  "sceneSheets": "EDU-EP18-ROWS-R2.0",
-  "status": "Film draft for Ton (W5.1, 2026-11-12): cues designed from the timed sheet; every NEEDS-GEN is generated from its brief, every candidate is tested against its brief (fit beats reuse); Ton sets ids, origins, fit notes and levels (W5.2s)",
-  "video": "src/videos/edu-ep18",
-  "fps": 30,
-  "totalFrames": 1468,
-  "frameClock": "frame = global composition frame at 30 fps = shot start (ROWS-R2.0 shot map) + local; repeatLocal lists extra shot-local hits of the same cue",
-  "silence": [
-    {
-      "from": 980,
-      "to": 992,
-      "what": "hard silence, every track off (SH15 cut to SH16 +12)"
-    },
-    {
-      "from": 324,
-      "to": 339,
-      "what": "near-silence before W-HIT: A3 -30 dB, W2 out, no music"
-    }
-  ],
-  "voicesNotHere": "Narration (nine segments, storyboard Units) and V01-V03 (Editor casting, slots f226, f718, f1358) are voice tracks, not cues.",
-  "sources": [
-    "src/videos/edu-ep18"
-  ],
-  "cues": [
-    {
-      "cue": "B01-A1",
-      "shot": "S01-B01-SH01",
-      "local": 0,
-      "frame": 0,
-      "lengthFrames": 50,
-      "layer": "bed",
-      "brief": "heavy rain drumming on a corrugated tin awning, dense metallic patter, water pouring off the lip, heard from under or just outside it; steady; tin and water; close, slightly enclosed; wet, cosy-annoying. Full level, smears into S1 and is gone by the f50 cut.",
-      "id": "NEEDS-GEN",
-      "candidate": "weather_tin-roof-rain-shelter_01",
-      "loop": true
-    },
-    {
-      "cue": "B01-A2",
-      "shot": "S01-B01-SH01",
-      "local": 0,
-      "frame": 0,
-      "lengthFrames": 50,
-      "layer": "bed",
-      "brief": "the soi floor in heavy rain: rain hissing on wet concrete, the drip curtain splattering into a filling puddle (deep plops among the hiss), a gutter gurgling, no traffic, no voices, no thunder; steady 14 s loop; water on concrete and water; a narrow lane between low walls; wet, close. Full level with A1; smears into S1.",
-      "id": "NEEDS-GEN",
-      "loop": true
-    },
-    {
-      "cue": "B01-W1",
-      "shot": "S01-B01-SH01",
-      "local": 0,
-      "frame": 0,
-      "lengthFrames": 50,
-      "layer": "texture",
-      "brief": "a thin high mosquito whine close to the ear (fundamental near 600 Hz, buzzy harmonics), slow doppler sways as it circles near an ankle, intermittent; 4 s loopable; wings; close, slightly dry under the rain; annoying, intimate. Centre-left, swaying; smears into S1.",
-      "id": "NEEDS-GEN",
-      "loop": true
-    },
-    {
-      "cue": "B01-FS",
-      "shot": "S01-B01-SH01",
-      "local": 4,
-      "frame": 4,
-      "lengthFrames": 36,
-      "layer": "accent",
-      "brief": "flip-flops running on wet concrete through shallow water: rubber slaps and small splashes, footfalls on +4, +14, +24 (one file with three steps 10 f apart, or three hits); 1.2 s; rubber, water, concrete; close, outdoors; hurry",
-      "id": "NEEDS-GEN",
-      "repeatLocal": [
-        4,
-        14,
-        24
-      ]
-    },
-    {
-      "cue": "B01-S1",
-      "shot": "S01-B01-SH02",
-      "local": 8,
-      "frame": 38,
-      "lengthFrames": 27,
-      "layer": "accent",
-      "brief": "shrink: a fast pitch zip, the full-size rain and whine stretch and smear upward as she shrinks, ending in a soft round pop and a breath of air on the puff peak (+19), then the slowed world opens; 0.9 s; air, glassy smear; from close soi to vast; uncanny, \"the world just got huge\" (not a cartoon sparkle)",
-      "id": "NEEDS-GEN"
-    },
-    {
-      "cue": "B01-A3",
-      "shot": "S01-B01-SH03",
-      "local": 0,
-      "frame": 50,
-      "lengthFrames": 930,
-      "layer": "bed",
-      "brief": "slowed giant rain: a low soft hush of air and every 1-2 s one deep, soft, distant boom of a huge drop landing far off (a slowed splash, low and round, long reverb tail), no patter, no hiss; 16 s loop; water mass and air; vast open space; the world slowed and enormous. Runs f50-f980: -6 dB under SH06, -30 dB over SH07 +0..+14, low-passed ~500 Hz and -4 dB in SH15, hard off at f980.",
-      "id": "NEEDS-GEN",
-      "loop": true
-    },
-    {
-      "cue": "B01-W2",
-      "shot": "S01-B01-SH03",
-      "local": 0,
-      "frame": 50,
-      "lengthFrames": 117,
-      "layer": "texture",
-      "brief": "the same insect slowed to its own scale: a deep soft rhythmic thrum-thrum of large membranes at 1.3 strokes per second (locked to the drawn flap), each stroke an airy whoosh with a faint resonant low hum and a dry hinge tick; 6 s loop; membrane, air; close, huge; alive, slightly creepy. To her right; in SH04 it drops away with the mosquito +17..+31 falling slightly in pitch.",
-      "id": "NEEDS-GEN",
-      "loop": true
-    },
-    {
-      "cue": "B01-M0",
-      "shot": "S01-B01-SH03",
-      "local": 16,
-      "frame": 66,
-      "lengthFrames": 66,
-      "layer": "music",
-      "brief": "one low bowed double-bass note with a soft swell and a faint high air harmonic; 2.2 s; ominous but not horror; under \"ฝนเม็ดใหญ่ที่สุด\"",
-      "id": "NEEDS-GEN"
-    },
-    {
-      "cue": "B01-D1",
-      "shot": "S01-B01-SH03",
-      "local": 24,
-      "frame": 74,
-      "lengthFrames": 90,
-      "layer": "accent",
-      "brief": "a vast mass of water descending overhead: a deep slow wobbling \"wub... wub\" of the water body oscillating, a soft low roar of air pushed ahead of it, growing; 3 s; water, air; close above, big; dread",
-      "id": "NEEDS-GEN"
-    },
-    {
-      "cue": "B01-H1",
-      "shot": "S01-B01-SH04",
-      "local": 17,
-      "frame": 153,
-      "lengthFrames": 18,
-      "layer": "accent",
-      "brief": "the drop swallows the mosquito: a deep soft wet \"gloomp\", a huge water body swallowing something small, muffled, round, no crack, short wet tail; 0.6 s; water; close; surprising, not violent",
-      "id": "NEEDS-GEN"
-    },
-    {
-      "cue": "B01-W2-back",
-      "shot": "S01-B01-SH04",
-      "local": 40,
-      "frame": 176,
-      "lengthFrames": 148,
-      "layer": "texture",
-      "brief": "W2 returns unbroken as the mosquito flies back up into frame (the joke), runs to f324 where W-HIT takes it out. the same insect slowed to its own scale: a deep soft rhythmic thrum-thrum of large membranes at 1.3 strokes per second (locked to the drawn flap), each stroke an airy whoosh with a faint resonant low hum and a dry hinge tick; 6 s loop; membrane, air; close, huge; alive, slightly creepy",
-      "id": "NEEDS-GEN",
-      "loop": true
-    },
-    {
-      "cue": "B01-D1-close",
-      "shot": "S01-B01-SH05",
-      "local": 0,
-      "frame": 222,
-      "lengthFrames": 40,
-      "layer": "accent",
-      "brief": "D1 continued, closer (+3 dB) right over her raised hands; same sound as B01-D1, its later part",
-      "id": "NEEDS-GEN"
-    },
-    {
-      "cue": "B01-B1",
-      "shot": "S01-B01-SH06",
-      "local": 4,
-      "frame": 252,
-      "lengthFrames": 24,
-      "layer": "accent",
-      "brief": "a tiny brass balance: a light clink as the pans take the weight, a soft beam wobble with two small ticks, settling level; 0.8 s; thin brass, fine chain; dry, small; \"equal\"",
-      "id": "NEEDS-GEN"
-    },
-    {
-      "cue": "B01-M1-thin",
-      "shot": "S01-B01-SH06",
-      "local": 33,
-      "frame": 281,
-      "lengthFrames": 43,
-      "layer": "music",
-      "brief": "M1-thin enters on \"คุณก็...\": small curious pluck motif: kalimba lead, pizzicato strings, soft marimba, muted upright bass, light shaker, 96 bpm, phrases end cleanly every 2 bars (2.5 s per bar); curious and friendly, never cute-silly; three states as stems or takes (thin = kalimba + bass; relief = + pizzicato; bright = + marimba). Ends at its phrase end at f324 (W-HIT near-silence).",
-      "id": "NEEDS-GEN",
-      "candidate": "bed_kalimba-rain-explainer_01 (fallback only: EP14 identity, one flat take, no states)"
-    },
-    {
-      "cue": "B02-H2",
-      "shot": "S01-B02-SH01",
-      "local": 15,
-      "frame": 339,
-      "lengthFrames": 36,
-      "layer": "accent",
-      "brief": "W-HIT after 15 f of near-silence: one soft, heavy, watery \"whump\" with a slow low swell under it and the hush returning; 1.2 s; water; all around; the big moment, no crash",
-      "id": "NEEDS-GEN"
-    },
-    {
-      "cue": "B02-F1",
-      "shot": "S01-B02-SH02",
-      "local": 0,
-      "frame": 359,
-      "lengthFrames": 472,
-      "layer": "bed",
-      "brief": "a steady broadband low-mid air rush at constant pitch (the drop does not slow), slight flutter; 6 s loop; air; falling, open; momentum. Enters -12 dB at f359, -6 dB in SH09-SH11, 0 dB with a +4 dB low shelf from f610 (SH12 +3), -4 dB in SH14, cut to an 8 f room tail on the SH14 freeze (f823).",
-      "id": "NEEDS-GEN",
-      "loop": true
-    },
-    {
-      "cue": "B02-W2-muffled",
-      "shot": "S01-B02-SH02",
-      "local": 0,
-      "frame": 359,
-      "lengthFrames": 61,
-      "layer": "texture",
-      "brief": "W2 faint and muffled (wings pinned under the drop). the same insect slowed to its own scale: a deep soft rhythmic thrum-thrum of large membranes at 1.3 strokes per second (locked to the drawn flap), each stroke an airy whoosh with a faint resonant low hum and a dry hinge tick; 6 s loop; membrane, air; close, huge; alive, slightly creepy",
-      "id": "NEEDS-GEN",
-      "loop": true
-    },
-    {
-      "cue": "B02-M1-relief",
-      "shot": "S01-B02-SH02",
-      "local": 27,
-      "frame": 386,
-      "lengthFrames": 117,
-      "layer": "music",
-      "brief": "M1-relief (+ pizzicato) from the \"...\" pause after \"โดนเต็ม ๆ\", through SH09. small curious pluck motif: kalimba lead, pizzicato strings, soft marimba, muted upright bass, light shaker, 96 bpm, phrases end cleanly every 2 bars (2.5 s per bar); curious and friendly, never cute-silly; three states as stems or takes (thin = kalimba + bass; relief = + pizzicato; bright = + marimba)",
-      "id": "NEEDS-GEN"
-    },
-    {
-      "cue": "B02-M1-bright",
-      "shot": "S01-B02-SH04",
-      "local": 0,
-      "frame": 503,
-      "lengthFrames": 91,
-      "layer": "music",
-      "brief": "M1-bright (+ marimba, a step up) from the feather insert, plays to its phrase end at f594 and stops clean. small curious pluck motif: kalimba lead, pizzicato strings, soft marimba, muted upright bass, light shaker, 96 bpm, phrases end cleanly every 2 bars (2.5 s per bar); curious and friendly, never cute-silly; three states as stems or takes (thin = kalimba + bass; relief = + pizzicato; bright = + marimba)",
-      "id": "NEEDS-GEN"
-    },
-    {
-      "cue": "B02-A1-insert",
-      "shot": "S01-B02-SH04",
-      "local": 0,
-      "frame": 503,
-      "lengthFrames": 46,
-      "layer": "bed",
-      "brief": "A1 low-passed far behind: full size under the awning, the tin rain heard softly. heavy rain drumming on a corrugated tin awning, dense metallic patter, water pouring off the lip, heard from under or just outside it; steady; tin and water; close, slightly enclosed; wet, cosy-annoying",
-      "id": "NEEDS-GEN",
-      "candidate": "weather_tin-roof-rain-shelter_01",
-      "loop": true
-    },
-    {
-      "cue": "B02-K1",
-      "shot": "S01-B02-SH04",
-      "local": 6,
-      "frame": 509,
-      "lengthFrames": 30,
-      "layer": "accent",
-      "brief": "the rubber ball's light air pass left to right: short airy swish, sharp peak then quick decay, dry close-up; no impact sound at the contact (D06)",
-      "id": "NEEDS-GEN",
-      "candidate": "whoosh_air-swish-rising_01"
-    },
-    {
-      "cue": "B02-KF",
-      "shot": "S01-B02-SH04",
-      "local": 23,
-      "frame": 526,
-      "lengthFrames": 12,
-      "layer": "accent",
-      "brief": "a tiny soft feather flutter as it folds onto the ball; 0.4 s; feather barbs, air; dry, close; gentle (the silence where a \"tock\" would be is the rule)",
-      "id": "NEEDS-GEN"
-    },
-    {
-      "cue": "B02-S4",
-      "shot": "S01-B02-SH05",
-      "local": 31,
-      "frame": 580,
-      "lengthFrames": 30,
-      "layer": "accent",
-      "brief": "a light airy riser: breath and a thin rising tone, not dark; 1.0 s; air; close; lift into the reveal; stops dead on f610 (\"แต่...\", SH12 +3)",
-      "id": "NEEDS-GEN"
-    },
-    {
-      "cue": "B04-M1b",
-      "shot": "S01-B04-SH01",
-      "local": 0,
-      "frame": 758,
-      "lengthFrames": 222,
-      "layer": "music",
-      "brief": "M1b tension variant, same key and tempo: a low muted pizzicato ostinato in eighths with a soft clock-like tick, no melody, rising slightly in level; 8 s (loop or extend); plays on through the SH14 freeze, swells +3 dB over SH15, hard off at f980",
-      "id": "NEEDS-GEN",
-      "loop": true
-    },
-    {
-      "cue": "B04-T1",
-      "shot": "S01-B04-SH01",
-      "local": 0,
-      "frame": 758,
-      "lengthFrames": 3,
-      "layer": "accent",
-      "brief": "one soft dry wooden tick like a fine clock, 0.08 s, four slight variations; one per ruler mark passing the drop's face; sits inside M1b's pulse",
-      "id": "NEEDS-GEN",
-      "repeatLocal": [
-        0,
-        5,
-        11,
-        16,
-        22,
-        27,
-        32,
-        38,
-        43,
-        49,
-        54,
-        59
-      ]
-    },
-    {
-      "cue": "B04-T1-20",
-      "shot": "S01-B04-SH01",
-      "local": 65,
-      "frame": 823,
-      "lengthFrames": 6,
-      "layer": "accent",
-      "brief": "the 20th mark: the same tick family as a soft glass tick, a touch brighter; lands with the freeze",
-      "id": "NEEDS-GEN"
-    },
-    {
-      "cue": "B04-F1-if",
-      "shot": "S01-B04-SH02",
-      "local": 0,
-      "frame": 866,
-      "lengthFrames": 114,
-      "layer": "bed",
-      "brief": "F1 in the hypothetical, rising over the shot; hard off at f980. a steady broadband low-mid air rush at constant pitch (the drop does not slow), slight flutter; 6 s loop; air; falling, open; momentum",
-      "id": "NEEDS-GEN",
-      "loop": true
-    },
-    {
-      "cue": "B04-H3",
-      "shot": "S01-B04-SH02",
-      "local": 50,
-      "frame": 916,
-      "lengthFrames": 9,
-      "layer": "accent",
-      "brief": "optional: a small soft wet tap as D2 takes the mosquito, H1's family, smaller and colder; 0.3 s; water; close; Editor drops it if it masks \"ใกล้\"",
-      "id": "NEEDS-GEN",
-      "optional": true
-    },
-    {
-      "cue": "B05-S3",
-      "shot": "S01-B05-SH01",
-      "local": 12,
-      "frame": 992,
-      "lengthFrames": 13,
-      "layer": "accent",
-      "brief": "rewind: a fast reverse sweep rising, stops abruptly on +25 (the replay contact); 13 f; tape-like reverse air; close; \"back to that hit\"",
-      "id": "NEEDS-GEN",
-      "candidate": "reveal_rewind-whirr_01 (0.44 s: pad or stretch to 13 f)"
-    },
-    {
-      "cue": "B05-H1-replay",
-      "shot": "S01-B05-SH01",
-      "local": 25,
-      "frame": 1005,
-      "lengthFrames": 18,
-      "layer": "accent",
-      "brief": "H1 again at -6 dB: the same hit, remembered (same file as B01-H1)",
-      "id": "NEEDS-GEN",
-      "sameAs": "B01-H1"
-    },
-    {
-      "cue": "B05-F1-replay",
-      "shot": "S01-B05-SH01",
-      "local": 25,
-      "frame": 1005,
-      "lengthFrames": 178,
-      "layer": "bed",
-      "brief": "F1 gentler (-8 dB) through the replay; falls away with D0 over SH17 +52..+87. a steady broadband low-mid air rush at constant pitch (the drop does not slow), slight flutter; 6 s loop; air; falling, open; momentum",
-      "id": "NEEDS-GEN",
-      "loop": true
-    },
-    {
-      "cue": "B05-M1-thin",
-      "shot": "S01-B05-SH01",
-      "local": 27,
-      "frame": 1007,
-      "lengthFrames": 88,
-      "layer": "music",
-      "brief": "M1-thin returns after the rewind, calm. small curious pluck motif: kalimba lead, pizzicato strings, soft marimba, muted upright bass, light shaker, 96 bpm, phrases end cleanly every 2 bars (2.5 s per bar); curious and friendly, never cute-silly; three states as stems or takes (thin = kalimba + bass; relief = + pizzicato; bright = + marimba)",
-      "id": "NEEDS-GEN"
-    },
-    {
-      "cue": "B05-M1-relief",
-      "shot": "S01-B05-SH02",
-      "local": 0,
-      "frame": 1095,
-      "lengthFrames": 88,
-      "layer": "music",
-      "brief": "M1-relief rising to its last phrase; hard stop on f1183 (the splash cut). small curious pluck motif: kalimba lead, pizzicato strings, soft marimba, muted upright bass, light shaker, 96 bpm, phrases end cleanly every 2 bars (2.5 s per bar); curious and friendly, never cute-silly; three states as stems or takes (thin = kalimba + bass; relief = + pizzicato; bright = + marimba)",
-      "id": "NEEDS-GEN"
-    },
-    {
-      "cue": "B05-S5",
-      "shot": "S01-B05-SH02",
-      "local": 34,
-      "frame": 1129,
-      "lengthFrames": 18,
-      "layer": "accent",
-      "brief": "slide-off: a soft wet peel, a thin water film letting go of a small body with a tiny \"shlip\", then a light air swish as it tips away; 0.6 s; water film, air; close; release, relief",
-      "id": "NEEDS-GEN"
-    },
-    {
-      "cue": "B05-W2-flyoff",
-      "shot": "S01-B05-SH02",
-      "local": 54,
-      "frame": 1149,
-      "lengthFrames": 34,
-      "layer": "texture",
-      "brief": "W2 wingbeat returns as the mosquito flies off to the right, doppler down. the same insect slowed to its own scale: a deep soft rhythmic thrum-thrum of large membranes at 1.3 strokes per second (locked to the drawn flap), each stroke an airy whoosh with a faint resonant low hum and a dry hinge tick; 6 s loop; membrane, air; close, huge; alive, slightly creepy",
-      "id": "NEEDS-GEN"
-    },
-    {
-      "cue": "B05-P1",
-      "shot": "S01-B05-SH03",
-      "local": 0,
-      "frame": 1183,
-      "lengthFrames": 30,
-      "layer": "accent",
-      "brief": "the drop lands in the puddle heard from above at mosquito scale: a deep round splash with a crown of droplets, slowed, short low tail; 1.0 s; water on water; below, big; the end of the what-if; transient on the cut frame f1183, M1 hard stop on the same frame",
-      "id": "NEEDS-GEN"
-    },
-    {
-      "cue": "B05-S2",
-      "shot": "S01-B05-SH03",
-      "local": 0,
-      "frame": 1183,
-      "lengthFrames": 15,
-      "layer": "accent",
-      "brief": "return: a low slowed rumble zipping up to normal speed and pitch in 0.5 s, landing exactly on the full-size rain; air, smear; from vast back to the soi; \"snap back\"; over P1's tail",
-      "id": "NEEDS-GEN"
-    },
-    {
-      "cue": "B05-A1",
-      "shot": "S01-B05-SH03",
-      "local": 0,
-      "frame": 1183,
-      "lengthFrames": 285,
-      "layer": "bed",
-      "brief": "A1 back at full by f1198; ducked under NAR in SH19-SH20; fades with the strings tag over f1438-f1467. heavy rain drumming on a corrugated tin awning, dense metallic patter, water pouring off the lip, heard from under or just outside it; steady; tin and water; close, slightly enclosed; wet, cosy-annoying",
-      "id": "NEEDS-GEN",
-      "candidate": "weather_tin-roof-rain-shelter_01",
-      "loop": true
-    },
-    {
-      "cue": "B05-A2",
-      "shot": "S01-B05-SH03",
-      "local": 0,
-      "frame": 1183,
-      "lengthFrames": 285,
-      "layer": "bed",
-      "brief": "A2 back with A1; puddle plops forward +2 dB from f1262 (SH20 +5); fades with A1 over f1438-f1467. the soi floor in heavy rain: rain hissing on wet concrete, the drip curtain splattering into a filling puddle (deep plops among the hiss), a gutter gurgling, no traffic, no voices, no thunder; steady 14 s loop; water on concrete and water; a narrow lane between low walls; wet, close",
-      "id": "NEEDS-GEN",
-      "loop": true
-    },
-    {
-      "cue": "B05-W1",
-      "shot": "S01-B05-SH03",
-      "local": 10,
-      "frame": 1193,
-      "lengthFrames": 237,
-      "layer": "texture",
-      "brief": "W1 faint from f1193, close and steady in SH19, above the puddle in SH20; after E1 heard alone f1391-f1410 rising slightly as the mosquito settles at her ankle (the whine's return); fades under the strings tag f1410-f1430. a thin high mosquito whine close to the ear (fundamental near 600 Hz, buzzy harmonics), slow doppler sways as it circles near an ankle, intermittent; 4 s loopable; wings; close, slightly dry under the rain; annoying, intimate",
-      "id": "NEEDS-GEN",
-      "loop": true
-    },
-    {
-      "cue": "B05-SL",
-      "shot": "S01-B05-SH06",
-      "local": 18,
-      "frame": 1356,
-      "lengthFrames": 9,
-      "layer": "accent",
-      "brief": "a palm slapping a bare damp ankle: a flip-flop scuff 3 f before, then a sharp crisp skin slap with a tiny wet note; 0.3 s; skin, water; close, under an awning in rain; annoyed and funny. Frame = the slap transient; the scuff pre-rolls from f1353",
-      "id": "NEEDS-GEN",
-      "preroll": 3
-    },
-    {
-      "cue": "B05-E1",
-      "shot": "S01-B05-SH06",
-      "local": 32,
-      "frame": 1370,
-      "lengthFrames": 21,
-      "layer": "accent",
-      "brief": "two quick descending kalimba plucks, a playful \"nope\", dry, 0.7 s, in M1's colour; must end by f1391 so the whine is heard alone before the tag",
-      "id": "NEEDS-GEN",
-      "candidate": "comedy_kalimba-nope_01"
-    },
-    {
-      "cue": "B05-tag",
-      "shot": "S01-B05-SH06",
-      "local": 72,
-      "frame": 1410,
-      "lengthFrames": 57,
-      "layer": "music",
-      "brief": "the closing strings tag (user, 2026-11-11, EP14 style): warm playful pizzicato and marimba resolving on a ringing final chord; lands after the last line, after E1 and after 19 f of the whine alone, rings through the hold; 0.5 s fade over f1452-f1467 to silence on the last frame",
-      "id": "stinger_pizz-tag-ending_01",
-      "origin": "library",
-      "fit": "User-chosen ending (task.md 2026-11-11; UT15 allows it); the file EP02/EP14 closed on (EP14 sound-mix.py f1757, 57 f used, 0.5 s fade). Not listened: Ton checks its key against M1 and E1 (EP14 noted C major 7, C-centred) and that it does not mask the whine before f1410",
-      "fade": "0.5 s fade out ending f1467"
-    }
-  ],
-  "swaps": [],
-  "exempt": [],
-  "levels": {
-    "stems": {},
-    "checks": []
+ "deliverable": "EDU-EP18-SHORT",
+ "sceneSheets": "EDU-EP18-ROWS-R2.0",
+ "status": "Ton W5.2s done 2026-11-12: every cue has a filed library sound (30 sounds generated for this episode, 3 library); measured, not listened",
+ "video": "src/videos/edu-ep18",
+ "fps": 30,
+ "totalFrames": 1468,
+ "frameClock": "frame = global composition frame at 30 fps = shot start (ROWS-R2.0 shot map) + local; repeatLocal lists extra shot-local hits of the same cue",
+ "silence": [
+  {
+   "from": 980,
+   "to": 992,
+   "what": "hard silence, every track off (SH15 cut to SH16 +12)"
+  },
+  {
+   "from": 324,
+   "to": 339,
+   "what": "near-silence before W-HIT: A3 -30 dB, W2 out, no music"
   }
+ ],
+ "voicesNotHere": "Narration (nine segments, storyboard Units) and V01-V03 (Editor casting, slots f226, f718, f1358) are voice tracks, not cues.",
+ "sources": [
+  "src/videos/edu-ep18"
+ ],
+ "cues": [
+  {
+   "cue": "B01-A1",
+   "shot": "S01-B01-SH01",
+   "local": 0,
+   "frame": 0,
+   "lengthFrames": 50,
+   "layer": "bed",
+   "brief": "heavy rain drumming on a corrugated tin awning, dense metallic patter, water pouring off the lip, heard from under or just outside it; steady; tin and water; close, slightly enclosed; wet, cosy-annoying. Full level, smears into S1 and is gone by the f50 cut.",
+   "id": "weather_tin-awning-rain-alley_01",
+   "loop": true,
+   "origin": "generated"
+  },
+  {
+   "cue": "B01-A2",
+   "shot": "S01-B01-SH01",
+   "local": 0,
+   "frame": 0,
+   "lengthFrames": 50,
+   "layer": "bed",
+   "brief": "the soi floor in heavy rain: rain hissing on wet concrete, the drip curtain splattering into a filling puddle (deep plops among the hiss), a gutter gurgling, no traffic, no voices, no thunder; steady 14 s loop; water on concrete and water; a narrow lane between low walls; wet, close. Full level with A1; smears into S1.",
+   "id": "city_soi-floor-rain-puddle_01",
+   "loop": true,
+   "origin": "generated"
+  },
+  {
+   "cue": "B01-W1",
+   "shot": "S01-B01-SH01",
+   "local": 0,
+   "frame": 0,
+   "lengthFrames": 50,
+   "layer": "texture",
+   "brief": "a thin high mosquito whine close to the ear (fundamental near 600 Hz, buzzy harmonics), slow doppler sways as it circles near an ankle, intermittent; 4 s loopable; wings; close, slightly dry under the rain; annoying, intimate. Centre-left, swaying; smears into S1.",
+   "id": "creature_mosquito-whine-circling_01",
+   "loop": true,
+   "origin": "generated"
+  },
+  {
+   "cue": "B01-FS",
+   "shot": "S01-B01-SH01",
+   "local": 4,
+   "frame": 4,
+   "lengthFrames": 36,
+   "layer": "accent",
+   "brief": "flip-flops running on wet concrete through shallow water: rubber slaps and small splashes, footfalls on +4, +14, +24 (one file with three steps 10 f apart, or three hits); 1.2 s; rubber, water, concrete; close, outdoors; hurry",
+   "id": "foley_flipflop-run-wet_01",
+   "repeatLocal": [
+    4,
+    14,
+    24
+   ],
+   "origin": "generated"
+  },
+  {
+   "cue": "B01-S1",
+   "shot": "S01-B01-SH02",
+   "local": 8,
+   "frame": 38,
+   "lengthFrames": 27,
+   "layer": "accent",
+   "brief": "shrink: a fast pitch zip, the full-size rain and whine stretch and smear upward as she shrinks, ending in a soft round pop and a breath of air on the puff peak (+19), then the slowed world opens; 0.9 s; air, glassy smear; from close soi to vast; uncanny, \"the world just got huge\" (not a cartoon sparkle)",
+   "id": "whoosh_shrink-zip-pop_01",
+   "origin": "generated",
+   "inSec": 0.35,
+   "syncNote": "pop at 0.74 s in the file; start playback at 0.35 s so the pop lands about +12 f after the cue frame (puff peak +19 local = f49)"
+  },
+  {
+   "cue": "B01-A3",
+   "shot": "S01-B01-SH03",
+   "local": 0,
+   "frame": 50,
+   "lengthFrames": 930,
+   "layer": "bed",
+   "brief": "slowed giant rain: a low soft hush of air and every 1-2 s one deep, soft, distant boom of a huge drop landing far off (a slowed splash, low and round, long reverb tail), no patter, no hiss; 16 s loop; water mass and air; vast open space; the world slowed and enormous. Runs f50-f980: -6 dB under SH06, -30 dB over SH07 +0..+14, low-passed ~500 Hz and -4 dB in SH15, hard off at f980.",
+   "id": "weather_giant-rain-slowed-hush_01",
+   "loop": true,
+   "origin": "generated"
+  },
+  {
+   "cue": "B01-W2",
+   "shot": "S01-B01-SH03",
+   "local": 0,
+   "frame": 50,
+   "lengthFrames": 117,
+   "layer": "texture",
+   "brief": "the same insect slowed to its own scale: a deep soft rhythmic thrum-thrum of large membranes at 1.3 strokes per second (locked to the drawn flap), each stroke an airy whoosh with a faint resonant low hum and a dry hinge tick; 6 s loop; membrane, air; close, huge; alive, slightly creepy. To her right; in SH04 it drops away with the mosquito +17..+31 falling slightly in pitch.",
+   "id": "creature_mosquito-wingbeat-slowed_01",
+   "loop": true,
+   "origin": "generated"
+  },
+  {
+   "cue": "B01-M0",
+   "shot": "S01-B01-SH03",
+   "local": 16,
+   "frame": 66,
+   "lengthFrames": 66,
+   "layer": "music",
+   "brief": "one low bowed double-bass note with a soft swell and a faint high air harmonic; 2.2 s; ominous but not horror; under \"ฝนเม็ดใหญ่ที่สุด\"",
+   "id": "tone_bowed-bass-swell_01",
+   "origin": "generated"
+  },
+  {
+   "cue": "B01-D1",
+   "shot": "S01-B01-SH03",
+   "local": 24,
+   "frame": 74,
+   "lengthFrames": 90,
+   "layer": "accent",
+   "brief": "a vast mass of water descending overhead: a deep slow wobbling \"wub... wub\" of the water body oscillating, a soft low roar of air pushed ahead of it, growing; 3 s; water, air; close above, big; dread",
+   "id": "water_mass-descend-wobble_01",
+   "origin": "generated"
+  },
+  {
+   "cue": "B01-H1",
+   "shot": "S01-B01-SH04",
+   "local": 17,
+   "frame": 153,
+   "lengthFrames": 18,
+   "layer": "accent",
+   "brief": "the drop swallows the mosquito: a deep soft wet \"gloomp\", a huge water body swallowing something small, muffled, round, no crack, short wet tail; 0.6 s; water; close; surprising, not violent",
+   "id": "water_drop-swallow-gloomp_01",
+   "origin": "generated",
+   "syncSec": 0.17,
+   "syncNote": "the gloomp event is 0.17 s into the file: start 5 f before the cue frame"
+  },
+  {
+   "cue": "B01-W2-back",
+   "shot": "S01-B01-SH04",
+   "local": 40,
+   "frame": 176,
+   "lengthFrames": 148,
+   "layer": "texture",
+   "brief": "W2 returns unbroken as the mosquito flies back up into frame (the joke), runs to f324 where W-HIT takes it out. the same insect slowed to its own scale: a deep soft rhythmic thrum-thrum of large membranes at 1.3 strokes per second (locked to the drawn flap), each stroke an airy whoosh with a faint resonant low hum and a dry hinge tick; 6 s loop; membrane, air; close, huge; alive, slightly creepy",
+   "id": "creature_mosquito-wingbeat-slowed_01",
+   "loop": true,
+   "origin": "generated"
+  },
+  {
+   "cue": "B01-D1-close",
+   "shot": "S01-B01-SH05",
+   "local": 0,
+   "frame": 222,
+   "lengthFrames": 40,
+   "layer": "accent",
+   "brief": "D1 continued, closer (+3 dB) right over her raised hands; same sound as B01-D1, its later part",
+   "id": "water_mass-descend-wobble_01",
+   "origin": "generated",
+   "inSec": 2.0,
+   "gainDb": 3,
+   "syncNote": "later part of the D1 file (loudest wobble at 1.85 s), +3 dB"
+  },
+  {
+   "cue": "B01-B1",
+   "shot": "S01-B01-SH06",
+   "local": 4,
+   "frame": 252,
+   "lengthFrames": 24,
+   "layer": "accent",
+   "brief": "a tiny brass balance: a light clink as the pans take the weight, a soft beam wobble with two small ticks, settling level; 0.8 s; thin brass, fine chain; dry, small; \"equal\"",
+   "id": "foley_brass-balance-settle_01",
+   "origin": "generated",
+   "syncSec": 0.15,
+   "syncNote": "first clink at 0.15 s: start 4-5 f before the cue frame"
+  },
+  {
+   "cue": "B01-M1-thin",
+   "shot": "S01-B01-SH06",
+   "local": 33,
+   "frame": 281,
+   "lengthFrames": 43,
+   "layer": "music",
+   "brief": "M1-thin enters on \"คุณก็...\": small curious pluck motif: kalimba lead, pizzicato strings, soft marimba, muted upright bass, light shaker, 96 bpm, phrases end cleanly every 2 bars (2.5 s per bar); curious and friendly, never cute-silly; three states as stems or takes (thin = kalimba + bass; relief = + pizzicato; bright = + marimba). Ends at its phrase end at f324 (W-HIT near-silence).",
+   "id": "bed_kalimba-curious-thin_01",
+   "origin": "generated"
+  },
+  {
+   "cue": "B02-H2",
+   "shot": "S01-B02-SH01",
+   "local": 15,
+   "frame": 339,
+   "lengthFrames": 36,
+   "layer": "accent",
+   "brief": "W-HIT after 15 f of near-silence: one soft, heavy, watery \"whump\" with a slow low swell under it and the hush returning; 1.2 s; water; all around; the big moment, no crash",
+   "id": "impact_water-whump-soft_01",
+   "origin": "generated",
+   "syncSec": 0.14,
+   "syncNote": "the whump is 0.14 s into the file: start 4 f before f339, inside the near-silence"
+  },
+  {
+   "cue": "B02-F1",
+   "shot": "S01-B02-SH02",
+   "local": 0,
+   "frame": 359,
+   "lengthFrames": 472,
+   "layer": "bed",
+   "brief": "a steady broadband low-mid air rush at constant pitch (the drop does not slow), slight flutter; 6 s loop; air; falling, open; momentum. Enters -12 dB at f359, -6 dB in SH09-SH11, 0 dB with a +4 dB low shelf from f610 (SH12 +3), -4 dB in SH14, cut to an 8 f room tail on the SH14 freeze (f823).",
+   "id": "whoosh_falling-air-rush-steady_01",
+   "loop": true,
+   "origin": "generated"
+  },
+  {
+   "cue": "B02-W2-muffled",
+   "shot": "S01-B02-SH02",
+   "local": 0,
+   "frame": 359,
+   "lengthFrames": 61,
+   "layer": "texture",
+   "brief": "W2 faint and muffled (wings pinned under the drop). the same insect slowed to its own scale: a deep soft rhythmic thrum-thrum of large membranes at 1.3 strokes per second (locked to the drawn flap), each stroke an airy whoosh with a faint resonant low hum and a dry hinge tick; 6 s loop; membrane, air; close, huge; alive, slightly creepy",
+   "id": "creature_mosquito-wingbeat-slowed_01",
+   "loop": true,
+   "origin": "generated",
+   "syncNote": "muffling (low-pass about 400 Hz, gain) by Editor"
+  },
+  {
+   "cue": "B02-M1-relief",
+   "shot": "S01-B02-SH02",
+   "local": 27,
+   "frame": 386,
+   "lengthFrames": 117,
+   "layer": "music",
+   "brief": "M1-relief (+ pizzicato) from the \"...\" pause after \"โดนเต็ม ๆ\", through SH09. small curious pluck motif: kalimba lead, pizzicato strings, soft marimba, muted upright bass, light shaker, 96 bpm, phrases end cleanly every 2 bars (2.5 s per bar); curious and friendly, never cute-silly; three states as stems or takes (thin = kalimba + bass; relief = + pizzicato; bright = + marimba)",
+   "id": "bed_kalimba-curious-relief_01",
+   "origin": "generated"
+  },
+  {
+   "cue": "B02-M1-bright",
+   "shot": "S01-B02-SH04",
+   "local": 0,
+   "frame": 503,
+   "lengthFrames": 91,
+   "layer": "music",
+   "brief": "M1-bright (+ marimba, a step up) from the feather insert, plays to its phrase end at f594 and stops clean. small curious pluck motif: kalimba lead, pizzicato strings, soft marimba, muted upright bass, light shaker, 96 bpm, phrases end cleanly every 2 bars (2.5 s per bar); curious and friendly, never cute-silly; three states as stems or takes (thin = kalimba + bass; relief = + pizzicato; bright = + marimba)",
+   "id": "bed_kalimba-curious-bright_01",
+   "origin": "generated"
+  },
+  {
+   "cue": "B02-A1-insert",
+   "shot": "S01-B02-SH04",
+   "local": 0,
+   "frame": 503,
+   "lengthFrames": 46,
+   "layer": "bed",
+   "brief": "A1 low-passed far behind: full size under the awning, the tin rain heard softly. heavy rain drumming on a corrugated tin awning, dense metallic patter, water pouring off the lip, heard from under or just outside it; steady; tin and water; close, slightly enclosed; wet, cosy-annoying",
+   "id": "weather_tin-awning-rain-alley_01",
+   "loop": true,
+   "origin": "generated"
+  },
+  {
+   "cue": "B02-K1",
+   "shot": "S01-B02-SH04",
+   "local": 6,
+   "frame": 509,
+   "lengthFrames": 30,
+   "layer": "accent",
+   "brief": "the rubber ball's light air pass left to right: short airy swish, sharp peak then quick decay, dry close-up; no impact sound at the contact (D06)",
+   "id": "whoosh_air-swish-rising_01",
+   "origin": "library",
+   "fit": "Library description (short rising air swish, sharp peak then quick airy decay, dry close-up, 0.80 s) is the brief; measured: onset 0.45 s, peak at 0.50 s (swish 0.40 s long), decay to -31 dB by 0.65 s, no impact transient. Place the peak (0.50 s into the file = 15 f) near f524, 2 f before the feather at f526. Pan measured right-heavy throughout (R over L by about 6 dB early, 1.5 dB at the peak), so it is not a left-to-right pass: Editor pans it. Not listened.",
+   "syncSec": 0.5,
+   "syncNote": "peak 0.50 s into the file; start about 15 f before the peak frame"
+  },
+  {
+   "cue": "B02-KF",
+   "shot": "S01-B02-SH04",
+   "local": 23,
+   "frame": 526,
+   "lengthFrames": 12,
+   "layer": "accent",
+   "brief": "a tiny soft feather flutter as it folds onto the ball; 0.4 s; feather barbs, air; dry, close; gentle (the silence where a \"tock\" would be is the rule)",
+   "id": "foley_feather-flutter-tiny_01",
+   "origin": "generated"
+  },
+  {
+   "cue": "B02-S4",
+   "shot": "S01-B02-SH05",
+   "local": 31,
+   "frame": 580,
+   "lengthFrames": 30,
+   "layer": "accent",
+   "brief": "a light airy riser: breath and a thin rising tone, not dark; 1.0 s; air; close; lift into the reveal; stops dead on f610 (\"แต่...\", SH12 +3)",
+   "id": "reveal_light-air-riser_01",
+   "origin": "generated",
+   "syncNote": "file is 0.9 s: start at f583 so it ends on f610 (brief: stops dead on f610)"
+  },
+  {
+   "cue": "B04-M1b",
+   "shot": "S01-B04-SH01",
+   "local": 0,
+   "frame": 758,
+   "lengthFrames": 222,
+   "layer": "music",
+   "brief": "M1b tension variant, same key and tempo: a low muted pizzicato ostinato in eighths with a soft clock-like tick, no melody, rising slightly in level; 8 s (loop or extend); plays on through the SH14 freeze, swells +3 dB over SH15, hard off at f980",
+   "id": "tension_pizz-ostinato-tick_01",
+   "loop": true,
+   "origin": "generated"
+  },
+  {
+   "cue": "B04-T1",
+   "shot": "S01-B04-SH01",
+   "local": 0,
+   "frame": 758,
+   "lengthFrames": 3,
+   "layer": "accent",
+   "brief": "one soft dry wooden tick like a fine clock, 0.08 s, four slight variations; one per ruler mark passing the drop's face; sits inside M1b's pulse",
+   "id": "ui_wood-tick-fine_01",
+   "repeatLocal": [
+    0,
+    22,
+    43
+   ],
+   "syncNote": "one of four tick variations; hits cycle _01,_02,_03,_04 on the 12 ruler marks",
+   "origin": "generated"
+  },
+  {
+   "cue": "B04-T1-b",
+   "shot": "S01-B04-SH01",
+   "local": 5,
+   "frame": 763,
+   "lengthFrames": 3,
+   "layer": "accent",
+   "brief": "one soft dry wooden tick like a fine clock, 0.08 s, four slight variations; one per ruler mark passing the drop's face; sits inside M1b's pulse",
+   "id": "ui_wood-tick-fine_02",
+   "repeatLocal": [
+    5,
+    27,
+    49
+   ],
+   "syncNote": "one of four tick variations; hits cycle _01,_02,_03,_04 on the 12 ruler marks",
+   "origin": "generated"
+  },
+  {
+   "cue": "B04-T1-c",
+   "shot": "S01-B04-SH01",
+   "local": 11,
+   "frame": 769,
+   "lengthFrames": 3,
+   "layer": "accent",
+   "brief": "one soft dry wooden tick like a fine clock, 0.08 s, four slight variations; one per ruler mark passing the drop's face; sits inside M1b's pulse",
+   "id": "ui_wood-tick-fine_03",
+   "repeatLocal": [
+    11,
+    32,
+    54
+   ],
+   "syncNote": "one of four tick variations; hits cycle _01,_02,_03,_04 on the 12 ruler marks",
+   "origin": "generated"
+  },
+  {
+   "cue": "B04-T1-d",
+   "shot": "S01-B04-SH01",
+   "local": 16,
+   "frame": 774,
+   "lengthFrames": 3,
+   "layer": "accent",
+   "brief": "one soft dry wooden tick like a fine clock, 0.08 s, four slight variations; one per ruler mark passing the drop's face; sits inside M1b's pulse",
+   "id": "ui_wood-tick-fine_04",
+   "repeatLocal": [
+    16,
+    38,
+    59
+   ],
+   "syncNote": "one of four tick variations; hits cycle _01,_02,_03,_04 on the 12 ruler marks",
+   "origin": "generated"
+  },
+  {
+   "cue": "B04-T1-20",
+   "shot": "S01-B04-SH01",
+   "local": 65,
+   "frame": 823,
+   "lengthFrames": 6,
+   "layer": "accent",
+   "brief": "the 20th mark: the same tick family as a soft glass tick, a touch brighter; lands with the freeze",
+   "id": "ui_glass-tick-soft_01",
+   "origin": "generated"
+  },
+  {
+   "cue": "B04-F1-if",
+   "shot": "S01-B04-SH02",
+   "local": 0,
+   "frame": 866,
+   "lengthFrames": 114,
+   "layer": "bed",
+   "brief": "F1 in the hypothetical, rising over the shot; hard off at f980. a steady broadband low-mid air rush at constant pitch (the drop does not slow), slight flutter; 6 s loop; air; falling, open; momentum",
+   "id": "whoosh_falling-air-rush-steady_01",
+   "loop": true,
+   "origin": "generated",
+   "syncNote": "same loop as B02-F1, gain ramp by Editor"
+  },
+  {
+   "cue": "B04-H3",
+   "shot": "S01-B04-SH02",
+   "local": 50,
+   "frame": 916,
+   "lengthFrames": 9,
+   "layer": "accent",
+   "brief": "optional: a small soft wet tap as D2 takes the mosquito, H1's family, smaller and colder; 0.3 s; water; close; Editor drops it if it masks \"ใกล้\"",
+   "id": "water_small-cold-tap_01",
+   "optional": true,
+   "origin": "generated"
+  },
+  {
+   "cue": "B05-S3",
+   "shot": "S01-B05-SH01",
+   "local": 12,
+   "frame": 992,
+   "lengthFrames": 13,
+   "layer": "accent",
+   "brief": "rewind: a fast reverse sweep rising, stops abruptly on +25 (the replay contact); 13 f; tape-like reverse air; close; \"back to that hit\"",
+   "id": "reveal_rewind-whirr_01",
+   "origin": "library",
+   "fit": "EP11 file, 0.439 s against the 13 f (0.433 s) slot; the last 0.05 s window is its loudest (-11 dB vs about -20 dB earlier), so it stops at its peak, as the brief wants; description \"fast reverse sweep rising, stops abruptly\" matches Film's; sweep direction not confirmed by measurement, not listened. Trim 0.006 s from the head or tail."
+  },
+  {
+   "cue": "B05-H1-replay",
+   "shot": "S01-B05-SH01",
+   "local": 25,
+   "frame": 1005,
+   "lengthFrames": 18,
+   "layer": "accent",
+   "brief": "H1 again at -6 dB: the same hit, remembered (same file as B01-H1)",
+   "id": "water_drop-swallow-gloomp_01",
+   "sameAs": "B01-H1",
+   "origin": "generated"
+  },
+  {
+   "cue": "B05-F1-replay",
+   "shot": "S01-B05-SH01",
+   "local": 25,
+   "frame": 1005,
+   "lengthFrames": 178,
+   "layer": "bed",
+   "brief": "F1 gentler (-8 dB) through the replay; falls away with D0 over SH17 +52..+87. a steady broadband low-mid air rush at constant pitch (the drop does not slow), slight flutter; 6 s loop; air; falling, open; momentum",
+   "id": "whoosh_falling-air-rush-steady_01",
+   "loop": true,
+   "origin": "generated"
+  },
+  {
+   "cue": "B05-M1-thin",
+   "shot": "S01-B05-SH01",
+   "local": 27,
+   "frame": 1007,
+   "lengthFrames": 88,
+   "layer": "music",
+   "brief": "M1-thin returns after the rewind, calm. small curious pluck motif: kalimba lead, pizzicato strings, soft marimba, muted upright bass, light shaker, 96 bpm, phrases end cleanly every 2 bars (2.5 s per bar); curious and friendly, never cute-silly; three states as stems or takes (thin = kalimba + bass; relief = + pizzicato; bright = + marimba)",
+   "id": "bed_kalimba-curious-thin_01",
+   "origin": "generated"
+  },
+  {
+   "cue": "B05-M1-relief",
+   "shot": "S01-B05-SH02",
+   "local": 0,
+   "frame": 1095,
+   "lengthFrames": 88,
+   "layer": "music",
+   "brief": "M1-relief rising to its last phrase; hard stop on f1183 (the splash cut). small curious pluck motif: kalimba lead, pizzicato strings, soft marimba, muted upright bass, light shaker, 96 bpm, phrases end cleanly every 2 bars (2.5 s per bar); curious and friendly, never cute-silly; three states as stems or takes (thin = kalimba + bass; relief = + pizzicato; bright = + marimba)",
+   "id": "bed_kalimba-curious-relief_01",
+   "origin": "generated"
+  },
+  {
+   "cue": "B05-S5",
+   "shot": "S01-B05-SH02",
+   "local": 34,
+   "frame": 1129,
+   "lengthFrames": 18,
+   "layer": "accent",
+   "brief": "slide-off: a soft wet peel, a thin water film letting go of a small body with a tiny \"shlip\", then a light air swish as it tips away; 0.6 s; water film, air; close; release, relief",
+   "id": "water_film-slide-off-shlip_01",
+   "origin": "generated"
+  },
+  {
+   "cue": "B05-W2-flyoff",
+   "shot": "S01-B05-SH02",
+   "local": 54,
+   "frame": 1149,
+   "lengthFrames": 34,
+   "layer": "texture",
+   "brief": "W2 wingbeat returns as the mosquito flies off to the right, doppler down. the same insect slowed to its own scale: a deep soft rhythmic thrum-thrum of large membranes at 1.3 strokes per second (locked to the drawn flap), each stroke an airy whoosh with a faint resonant low hum and a dry hinge tick; 6 s loop; membrane, air; close, huge; alive, slightly creepy",
+   "id": "creature_mosquito-wingbeat-slowed_01",
+   "origin": "generated",
+   "syncNote": "doppler down by Editor (playbackRate ramp); file is a loop"
+  },
+  {
+   "cue": "B05-P1",
+   "shot": "S01-B05-SH03",
+   "local": 0,
+   "frame": 1183,
+   "lengthFrames": 30,
+   "layer": "accent",
+   "brief": "the drop lands in the puddle heard from above at mosquito scale: a deep round splash with a crown of droplets, slowed, short low tail; 1.0 s; water on water; below, big; the end of the what-if; transient on the cut frame f1183, M1 hard stop on the same frame",
+   "id": "water_puddle-splash-below_01",
+   "origin": "generated",
+   "inSec": 0.05,
+   "syncNote": "transient at 0.06 s; start at 0.05 s so it lands on the cut frame f1183"
+  },
+  {
+   "cue": "B05-S2",
+   "shot": "S01-B05-SH03",
+   "local": 0,
+   "frame": 1183,
+   "lengthFrames": 15,
+   "layer": "accent",
+   "brief": "return: a low slowed rumble zipping up to normal speed and pitch in 0.5 s, landing exactly on the full-size rain; air, smear; from vast back to the soi; \"snap back\"; over P1's tail",
+   "id": "whoosh_snapback-rumble-zip_01",
+   "origin": "generated",
+   "syncNote": "rise peaks at 0.54 s = f1199 (the full-size rain returns at f1198)"
+  },
+  {
+   "cue": "B05-A1",
+   "shot": "S01-B05-SH03",
+   "local": 0,
+   "frame": 1183,
+   "lengthFrames": 285,
+   "layer": "bed",
+   "brief": "A1 back at full by f1198; ducked under NAR in SH19-SH20; fades with the strings tag over f1438-f1467. heavy rain drumming on a corrugated tin awning, dense metallic patter, water pouring off the lip, heard from under or just outside it; steady; tin and water; close, slightly enclosed; wet, cosy-annoying",
+   "id": "weather_tin-awning-rain-alley_01",
+   "loop": true,
+   "origin": "generated"
+  },
+  {
+   "cue": "B05-A2",
+   "shot": "S01-B05-SH03",
+   "local": 0,
+   "frame": 1183,
+   "lengthFrames": 285,
+   "layer": "bed",
+   "brief": "A2 back with A1; puddle plops forward +2 dB from f1262 (SH20 +5); fades with A1 over f1438-f1467. the soi floor in heavy rain: rain hissing on wet concrete, the drip curtain splattering into a filling puddle (deep plops among the hiss), a gutter gurgling, no traffic, no voices, no thunder; steady 14 s loop; water on concrete and water; a narrow lane between low walls; wet, close",
+   "id": "city_soi-floor-rain-puddle_01",
+   "loop": true,
+   "origin": "generated"
+  },
+  {
+   "cue": "B05-W1",
+   "shot": "S01-B05-SH03",
+   "local": 10,
+   "frame": 1193,
+   "lengthFrames": 237,
+   "layer": "texture",
+   "brief": "W1 faint from f1193, close and steady in SH19, above the puddle in SH20; after E1 heard alone f1391-f1410 rising slightly as the mosquito settles at her ankle (the whine's return); fades under the strings tag f1410-f1430. a thin high mosquito whine close to the ear (fundamental near 600 Hz, buzzy harmonics), slow doppler sways as it circles near an ankle, intermittent; 4 s loopable; wings; close, slightly dry under the rain; annoying, intimate",
+   "id": "creature_mosquito-whine-circling_01",
+   "loop": true,
+   "origin": "generated"
+  },
+  {
+   "cue": "B05-SL",
+   "shot": "S01-B05-SH06",
+   "local": 18,
+   "frame": 1356,
+   "lengthFrames": 9,
+   "layer": "accent",
+   "brief": "a palm slapping a bare damp ankle: a flip-flop scuff 3 f before, then a sharp crisp skin slap with a tiny wet note; 0.3 s; skin, water; close, under an awning in rain; annoyed and funny. Frame = the slap transient; the scuff pre-rolls from f1353",
+   "id": "foley_palm-ankle-slap_01",
+   "preroll": 3,
+   "origin": "generated",
+   "syncNote": "slap at 0.02 s; this take has no scuff pre-roll (brief wanted one from f1353): Editor or a swap if Film wants it"
+  },
+  {
+   "cue": "B05-E1",
+   "shot": "S01-B05-SH06",
+   "local": 32,
+   "frame": 1370,
+   "lengthFrames": 21,
+   "layer": "accent",
+   "brief": "two quick descending kalimba plucks, a playful \"nope\", dry, 0.7 s, in M1's colour; must end by f1391 so the whine is heard alone before the tag",
+   "id": "comedy_kalimba-nope-gc_01",
+   "origin": "generated",
+   "syncNote": "file is 0.7 s (21 f), ends with a 60 ms fade by f1391"
+  },
+  {
+   "cue": "B05-tag",
+   "shot": "S01-B05-SH06",
+   "local": 72,
+   "frame": 1410,
+   "lengthFrames": 57,
+   "layer": "music",
+   "brief": "the closing strings tag (user, 2026-11-11, EP14 style): warm playful pizzicato and marimba resolving on a ringing final chord; lands after the last line, after E1 and after 19 f of the whine alone, rings through the hold; 0.5 s fade over f1452-f1467 to silence on the last frame",
+   "id": "stinger_pizz-tag-ending_01",
+   "origin": "library",
+   "fit": "User-chosen ending (2026-11-11/12; UT15 allows it): EP14 closed on this file (EP14 sound-mix.py f1757, 57 f used, 0.5 s fade). Key check (Goertzel chroma, 250 ms windows): ringing G3/G4 then C4, chroma G 67 %, C 21 %, the C-major family; M1 is C-centred (thin C 51 %, bright C 64 %) and E1 plays G5 C5 G4, so no key clash (the earlier candidate comedy_kalimba-nope_01 measures D#/B, a semitone off that chord, and was not used). It starts on an immediate pluck (envelope -12 dB at 0 s), so its onset at f1410 is clear of the whine heard alone from f1391. Not listened.",
+   "fade": "0.5 s fade out ending f1467 (Editor)"
+  }
+ ],
+ "swaps": [],
+ "exempt": [],
+ "levels": {
+  "stems": {
+   "voice": "out/stems/voice.wav",
+   "bed": "out/stems/bed.wav",
+   "texture": "out/stems/texture.wav",
+   "accent": "out/stems/accent.wav"
+  },
+  "checks": [
+   {
+    "beat": "B01",
+    "layer": "background",
+    "when": "speech",
+    "min": 15,
+    "fromSec": 0,
+    "toSec": 10.8
+   },
+   {
+    "beat": "B01",
+    "layer": "bed",
+    "when": "speech",
+    "warnAbove": 20,
+    "fromSec": 0,
+    "toSec": 10.8
+   },
+   {
+    "beat": "B01",
+    "layer": "texture",
+    "when": "speech",
+    "min": 18,
+    "fromSec": 0,
+    "toSec": 10.8
+   },
+   {
+    "beat": "B02",
+    "layer": "background",
+    "when": "speech",
+    "min": 15,
+    "fromSec": 10.8,
+    "toSec": 20.233
+   },
+   {
+    "beat": "B02",
+    "layer": "bed",
+    "when": "speech",
+    "warnAbove": 20,
+    "fromSec": 10.8,
+    "toSec": 20.233
+   },
+   {
+    "beat": "B02",
+    "layer": "texture",
+    "when": "speech",
+    "min": 18,
+    "fromSec": 10.8,
+    "toSec": 20.233
+   },
+   {
+    "beat": "B03",
+    "layer": "background",
+    "when": "speech",
+    "min": 15,
+    "fromSec": 20.233,
+    "toSec": 25.267
+   },
+   {
+    "beat": "B03",
+    "layer": "bed",
+    "when": "speech",
+    "warnAbove": 20,
+    "fromSec": 20.233,
+    "toSec": 25.267
+   },
+   {
+    "beat": "B03",
+    "layer": "texture",
+    "when": "speech",
+    "min": 18,
+    "fromSec": 20.233,
+    "toSec": 25.267
+   },
+   {
+    "beat": "B04",
+    "layer": "background",
+    "when": "speech",
+    "min": 15,
+    "fromSec": 25.267,
+    "toSec": 32.667
+   },
+   {
+    "beat": "B04",
+    "layer": "bed",
+    "when": "speech",
+    "warnAbove": 20,
+    "fromSec": 25.267,
+    "toSec": 32.667
+   },
+   {
+    "beat": "B04",
+    "layer": "texture",
+    "when": "speech",
+    "min": 18,
+    "fromSec": 25.267,
+    "toSec": 32.667
+   },
+   {
+    "beat": "B05",
+    "layer": "background",
+    "when": "speech",
+    "min": 15,
+    "fromSec": 32.667,
+    "toSec": 48.933
+   },
+   {
+    "beat": "B05",
+    "layer": "bed",
+    "when": "speech",
+    "warnAbove": 20,
+    "fromSec": 32.667,
+    "toSec": 48.933
+   },
+   {
+    "beat": "B05",
+    "layer": "texture",
+    "when": "speech",
+    "min": 18,
+    "fromSec": 32.667,
+    "toSec": 48.933
+   },
+   {
+    "beat": "B01",
+    "layer": "accent",
+    "when": "peak",
+    "fromSec": 1.267,
+    "toSec": 2.167,
+    "note": "S1 shrink zip and pop, lands in the gap after L01",
+    "min": -6,
+    "max": 3
+   },
+   {
+    "beat": "B01",
+    "layer": "bed",
+    "when": "peak",
+    "fromSec": 10.8,
+    "toSec": 11.3,
+    "note": "near-silence before W-HIT: A3 -30 dB, W2 out, no music",
+    "min": 30
+   },
+   {
+    "beat": "B02",
+    "layer": "accent",
+    "when": "peak",
+    "fromSec": 11.3,
+    "toSec": 11.8,
+    "note": "H2 W-HIT whump before L05 starts at f354",
+    "min": -6,
+    "max": 3
+   },
+   {
+    "beat": "B02",
+    "layer": "accent",
+    "when": "speech",
+    "min": 12,
+    "fromSec": 19.333,
+    "toSec": 20.333,
+    "note": "S4 riser under L07b, 1 s, stops on f610"
+   },
+   {
+    "beat": "B04",
+    "layer": "accent",
+    "when": "speech",
+    "min": 12,
+    "fromSec": 25.267,
+    "toSec": 28.8,
+    "note": "T1 ticks over L09, each 0.08 s"
+   },
+   {
+    "beat": "B05",
+    "layer": "bed",
+    "when": "peak",
+    "fromSec": 32.667,
+    "toSec": 33.067,
+    "note": "hard silence f980-992: every track off",
+    "min": 30
+   },
+   {
+    "beat": "B05",
+    "layer": "texture",
+    "when": "peak",
+    "fromSec": 32.667,
+    "toSec": 33.067,
+    "note": "hard silence f980-992: every track off",
+    "min": 30
+   },
+   {
+    "beat": "B05",
+    "layer": "accent",
+    "when": "peak",
+    "fromSec": 32.667,
+    "toSec": 33.067,
+    "note": "hard silence f980-992: every track off",
+    "min": 30
+   },
+   {
+    "beat": "B05",
+    "layer": "accent",
+    "when": "peak",
+    "fromSec": 39.433,
+    "toSec": 39.933,
+    "note": "P1 splash and S2 return in the gap between G and H",
+    "min": -6,
+    "max": 3
+   },
+   {
+    "beat": "B05",
+    "layer": "accent",
+    "when": "peak",
+    "fromSec": 45.067,
+    "toSec": 45.5,
+    "note": "SL slap, after speech ends f1341",
+    "min": -6,
+    "max": 3
+   },
+   {
+    "beat": "B05",
+    "layer": "accent",
+    "when": "peak",
+    "fromSec": 45.667,
+    "toSec": 46.367,
+    "note": "E1 kalimba nope",
+    "min": -6,
+    "max": 3
+   },
+   {
+    "beat": "B05",
+    "layer": "texture",
+    "when": "peak",
+    "fromSec": 46.367,
+    "toSec": 47.0,
+    "note": "W1 heard alone before the tag: audible, never above the voice",
+    "min": 0,
+    "max": 14
+   },
+   {
+    "beat": "B05",
+    "layer": "accent",
+    "when": "peak",
+    "fromSec": 47.0,
+    "toSec": 48.9,
+    "note": "closing strings tag and ring-out",
+    "min": -6,
+    "max": 3
+   }
+  ]
+ },
+ "sounds": {
+  "weather_tin-awning-rain-alley_01": {
+   "take": "ep18_A1_awning-rain_v2",
+   "seed": 1802,
+   "measured": "8.0 s loop (1.0 s crossfade), -14.5 LUFS, peak -1 dBFS; level steady across thirds (-17.0/-16.7/-15.8 dB RMS); bands spread 200 Hz-8 kHz; seam: head -16.3 vs tail -18.3 dB (0.3 s RMS)",
+   "pickedOver": "v1 (decays -24.8 to -29.8 over 9 s), v3 (4 events, decays to -34)",
+   "listened": "no"
+  },
+  "city_soi-floor-rain-puddle_01": {
+   "take": "ep18_A2_soi-floor-rain_v3",
+   "seed": 1813,
+   "measured": "11.0 s loop (1.0 s crossfade), -14.3 LUFS; steadiest raw take (thirds -38.6/-37.5/-38.6), 23 transient events (plops); seam: head -24.6 vs tail -17.5 dB (7 dB step, mix may need a longer crossfade)",
+   "pickedOver": "v1 (3 events, uneven), v2 (rises to -32.9 late)",
+   "listened": "no"
+  },
+  "creature_mosquito-whine-circling_01": {
+   "take": "ep18_W1_mosquito-whine_v3",
+   "seed": 1823,
+   "measured": "4.5 s loop (0.5 s crossfade); dominant frequency 605-660 Hz in every 0.5 s window (Goertzel); steady across thirds; seam: head -32.0 vs tail -15.7 dB, a 16 dB step inside the loop, so start at an offset or crossfade longer",
+   "pickedOver": "v1 (fades -23.6 to -48 dB), v2 (appears at 1.6 s, second partial at 1285 Hz), v4 (-15.8 dBFS peak, 325 Hz from 2.5 s)",
+   "listened": "no"
+  },
+  "weather_giant-rain-slowed-hush_01": {
+   "take": "ep18_A3b_giant-rain-slow_v2",
+   "seed": 2102,
+   "measured": "16.0 s loop (2.0 s crossfade), -17.5 LUFS (peak-limited), thirds -7.7/-8.6/-8.0 dB; energy almost all below 200 Hz (band -8 dB vs -28 dB at 200 Hz-1 kHz and -39 dB at 1-4 kHz): will vanish on a phone speaker; booms not evenly 1-2 s (about 60 envelope events in 18 s)",
+   "pickedOver": "round-1 take (cfg 1) and A3b v1, v3: all decay by 25-40 dB over the clip, not loopable",
+   "listened": "no"
+  },
+  "creature_mosquito-wingbeat-slowed_01": {
+   "take": "ep18_W2b_wingbeat-slow_v3 x1.5 atempo (_raw/ep18_W2b_wingbeat-slow_v3_x1.5.wav)",
+   "seed": 2123,
+   "measured": "4.49 s loop = six strokes, stroke period 0.76-0.78 s = 1.28-1.32 /s (envelope autocorrelation 0.55), raw take 0.86 /s so sped x1.5 (pitch kept); bands <200 Hz -13, 200-1k -21, >4k -27: low hum, some air, hinge tick not confirmed",
+   "pickedOver": "round-1 takes (cfg 1: 0.88 /s, almost no energy above 200 Hz); W2b v1/v2/v4 (stroke lags 0.3-0.5 s)",
+   "listened": "no"
+  },
+  "whoosh_falling-air-rush-steady_01": {
+   "take": "ep18_F1b_air-rush_v3",
+   "seed": 2113,
+   "measured": "5.5 s loop (0.5 s crossfade), -14.0 LUFS, trimmed 1.0-7.0 s of the raw take; steady (-17.3/-15.5/-18.4); broadband (200 Hz-8 kHz about equal), not low-mid only: Editor adds the low shelf the brief asks for; seam head -21.3 vs tail -21.9 dB",
+   "pickedOver": "round-1 takes (cfg 1: energy below 200 Hz only, rise and decay envelope), F1b v1/v2 (fade out)",
+   "listened": "no"
+  },
+  "foley_flipflop-run-wet_01": {
+   "take": "ep18_FS_flipflop-run_v1",
+   "seed": 1831,
+   "measured": "1.0 s; three steps at 0.01, 0.36, 0.71 s (10.8 and 10.5 frames apart; brief wants 10); the raw take has a fourth step at 1.08 s, trimmed",
+   "pickedOver": "v3 (steps 0.38/0.72/1.10, fourth at -9), v2/v4 (uneven)",
+   "listened": "no"
+  },
+  "whoosh_shrink-zip-pop_01": {
+   "take": "ep18_S1_shrink-zip_v2",
+   "seed": 1842,
+   "measured": "0.82 s; final pop/peak at 0.74 s, energy rises across the clip (thirds -45/-29/-22 raw), bands >4k -43 dB so no sparkle; play from inSec 0.35 so the pop lands 11-12 frames after the cue frame (brief +19 local)",
+   "pickedOver": "v1/v4 (pop 0.7 s after a 0.45 s onset, longer lead), v3 (quieter)",
+   "listened": "no"
+  },
+  "tone_bowed-bass-swell_01": {
+   "take": "ep18_M0_bass-note_v1",
+   "seed": 2011,
+   "measured": "2.4 s with 0.3 s fade, -14 LUFS; fundamental C (chroma 100 % C), peak of swell at 1.8 s; energy <200 Hz -12 dB, almost nothing above 1 kHz (faint high harmonic not confirmed)",
+   "pickedOver": "v2/v3/v4 (5-6 envelope events)",
+   "listened": "no"
+  },
+  "water_mass-descend-wobble_01": {
+   "take": "ep18_D1_water-mass-descend_v3",
+   "seed": 1873,
+   "measured": "4.0 s with 0.2 s fade; envelope wobbles (about 16 events, 0.2-0.3 s apart) with the loudest part at 1.85 s then decay; <200 Hz -16, 200-1k -20 dB",
+   "pickedOver": "v1/v2 (peak 0.9-1.15 s, earlier decay), v4 (7 events)",
+   "listened": "no"
+  },
+  "water_drop-swallow-gloomp_01": {
+   "take": "ep18_H1_drop-swallow_v1",
+   "seed": 1881,
+   "measured": "0.85 s; single loud event at 0.17 s (processed file), decay to -40 dB by 0.55 s; bands 200 Hz-1 kHz -31, <200 Hz -37, >4k -46 (round, muffled)",
+   "pickedOver": "v2 (-14 dBFS), v3/v4 (several events)",
+   "listened": "no"
+  },
+  "foley_brass-balance-settle_01": {
+   "take": "ep18_B1_brass-balance_v4",
+   "seed": 1894,
+   "measured": "0.78 s; two events at 0.15 s (clink) and 0.65 s (-4 dB, tick), tail by 0.78 s; energy 1-8 kHz (-41/-39 dB), <1 kHz below -55 dB",
+   "pickedOver": "v1 (one event at 0.78 s), v2/v3",
+   "listened": "no"
+  },
+  "impact_water-whump-soft_01": {
+   "take": "ep18_H2_whump_v1",
+   "seed": 1901,
+   "measured": "1.8 s with 0.1 s fade; single event at 0.14 s then decay (thirds -21.5/-40/-49 raw): the \"slow swell under it\" is not present in the envelope; <200 Hz -30, 200-1k -29",
+   "pickedOver": "v4 (tail 0.5 s only), v2/v3 (peak -11 dBFS, weaker)",
+   "listened": "no"
+  },
+  "foley_feather-flutter-tiny_01": {
+   "take": "ep18_KF_feather-flutter_v4",
+   "seed": 1924,
+   "measured": "0.35 s; onset at 0.01 s then three small events at 0.07, 0.18, 0.26 s (-12 to -14 dB); all bands -42 to -45 dB (flat, soft)",
+   "pickedOver": "v2 (one loud event, then fewer), v1/v3 (no resolved events)",
+   "listened": "no"
+  },
+  "reveal_light-air-riser_01": {
+   "take": "ep18_S4_light-riser_v2",
+   "seed": 1932,
+   "measured": "0.9 s (raw take trimmed from 0.3 s), peak near the end then stops with a 20 ms fade; bands 1-4 kHz -19, 200 Hz-1 kHz -27, <200 Hz -47 (thin, not dark)",
+   "pickedOver": "v1 (energy <200 Hz, dark rumble), v3/v4 (>4 kHz hiss, low level)",
+   "listened": "no"
+  },
+  "ui_wood-tick-fine_01": {
+   "take": "ep18_T1_wood-tick_v1",
+   "seed": 1941,
+   "measured": "0.08 s peak-normalised dry tick; 1-4 kHz dominant",
+   "pickedOver": "family of four (_01 to _04)",
+   "listened": "no"
+  },
+  "ui_wood-tick-fine_02": {
+   "take": "ep18_T1_wood-tick_v2",
+   "seed": 1942,
+   "measured": "0.035 s dry tick",
+   "pickedOver": "family",
+   "listened": "no"
+  },
+  "ui_wood-tick-fine_03": {
+   "take": "ep18_T1_wood-tick_v3",
+   "seed": 1943,
+   "measured": "0.035 s dry tick, raw take 7 dB quieter and peak-normalised up",
+   "pickedOver": "family",
+   "listened": "no"
+  },
+  "ui_wood-tick-fine_04": {
+   "take": "ep18_T1_wood-tick_v4",
+   "seed": 1944,
+   "measured": "0.06 s dry tick",
+   "pickedOver": "family",
+   "listened": "no"
+  },
+  "ui_glass-tick-soft_01": {
+   "take": "ep18_T1-20_glass-tick_v2",
+   "seed": 1952,
+   "measured": "0.08 s; energy 1-4 kHz -31 and >4 kHz -34 dB (brighter than the wooden family, about 15 dB more top end); tiny ring not resolved at 0.1 s tail",
+   "pickedOver": "v1, v3",
+   "listened": "no"
+  },
+  "water_small-cold-tap_01": {
+   "take": "ep18_H3_small-tap_v1",
+   "seed": 1961,
+   "measured": "0.4 s; tap at 0.03 s, a faint second event at 0.31 s (-27 dB)",
+   "pickedOver": "v2, v3",
+   "listened": "no"
+  },
+  "water_film-slide-off-shlip_01": {
+   "take": "ep18_S5_slide-off_v2",
+   "seed": 1972,
+   "measured": "0.28 s after silence trim (brief 0.6 s: shorter); one event at 0.11 s, energy >4 kHz -35, 1-4 kHz -41",
+   "pickedOver": "v1, v3, v4 (similar, shorter tail)",
+   "listened": "no"
+  },
+  "water_puddle-splash-below_01": {
+   "take": "ep18_P1_puddle-splash_v1",
+   "seed": 1981,
+   "measured": "1.8 s with 60 ms fade; transient at 0.06 s, secondary at 0.34 s (-9 dB), tail by about 1.0 s; <200 Hz -19 dB",
+   "pickedOver": "v2/v3 (clipped above ceiling, +0.7/+2 dB raw), v4",
+   "listened": "no"
+  },
+  "whoosh_snapback-rumble-zip_01": {
+   "take": "ep18_S2_snapback-zip_v3",
+   "seed": 1993,
+   "measured": "1.0 s; envelope peaks at 0.54 s (brief: lands at 0.5 s), thirds -12.7/-10.3/-46.8, <200 Hz -14 dB",
+   "pickedOver": "v1/v4 (peak 0.25 s), v2 (no decay)",
+   "listened": "no"
+  },
+  "foley_palm-ankle-slap_01": {
+   "take": "ep18_SL_ankle-slap_v1",
+   "seed": 2001,
+   "measured": "0.2 s after silence trim (brief 0.3 s); one slap at 0.02 s plus a -16 dB wet note at 0.09 s; no flip-flop scuff before the slap in this take (brief wants one 3 frames earlier)",
+   "pickedOver": "v2 (single event, brighter), v3/v4",
+   "listened": "no"
+  },
+  "comedy_kalimba-nope-gc_01": {
+   "take": "ep18_E1_kalimba-nope_v2",
+   "seed": 2132,
+   "measured": "0.7 s with 60 ms fade; three plucks at 0.01, 0.12, 0.25 s, pitches G5, C5, G4 (Goertzel, 0.1 s windows), chroma G 65 %, C 19 %; ring at -41 dB by 0.55 s",
+   "pickedOver": "v1 (G5 C5 G4 E4 flurry of four), v3 (E, F#: out of key), v4 (F5 C5 G4)",
+   "listened": "no"
+  },
+  "bed_kalimba-curious-thin_01": {
+   "take": "ep18_M1-thin_v1",
+   "seed": 2021,
+   "measured": "10.0 s = four 2.5 s bars, -14.0 LUFS; pulse accent every 1.25 s (envelope autocorrelation 0.82 at 1.26 s); chroma C 51 %, G 14, F 14; continuous (no silence between phrases): cut on a 2.5 s multiple",
+   "pickedOver": "v2 (E 18), v3 (F 30)",
+   "listened": "no"
+  },
+  "bed_kalimba-curious-relief_01": {
+   "take": "ep18_M1-relief_v1",
+   "seed": 2031,
+   "measured": "10.0 s, -14.0 LUFS; chroma A 28, C 27, G 17, E 17 (A minor / C major family); pulse 0.94-1.26 s; continuous",
+   "pickedOver": "v2 (E 59: E-centred), v3 (E 34, A 33)",
+   "listened": "no"
+  },
+  "bed_kalimba-curious-bright_01": {
+   "take": "ep18_M1-bright_v3",
+   "seed": 2043,
+   "measured": "10.0 s, -14.0 LUFS, loudest raw take (peak -1.5 dBFS); chroma C 64 %, A 14, G 9; pulse 0.94 s; continuous; marimba presence not confirmed by measurement",
+   "pickedOver": "v1/v2 (G 40: G-centred)",
+   "listened": "no"
+  },
+  "tension_pizz-ostinato-tick_01": {
+   "take": "ep18_M1b-tension_v1",
+   "seed": 2051,
+   "measured": "10.0 s, -14.0 LUFS; steady level (thirds -23.4/-22.6/-23.9: does not rise by itself, Editor ramps it); eighth-note pulse not resolved by envelope (autocorrelation 0.45 at 1.25 s); chroma G 27, C 25, E 20, F 18; <1 kHz only",
+   "pickedOver": "v2 (G 37, E 31), v3 (E-centred)",
+   "listened": "no"
+  }
+ },
+ "syncConvention": "cue.frame = Film's sync frame. syncSec = where the sync event sits in the file (start the file syncSec*30 frames earlier); inSec = start playback this many seconds into the file; gainDb = extra gain over the layer's mix level."
 }
