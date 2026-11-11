@@ -33,11 +33,11 @@
    "detail": "เงาจางตามค่าเริ่มต้นของ kit (soft 0.5, band 0.62) ยังทำให้พื้นหลังหลังคำบรรยายสว่างเกินเกณฑ์ ตัวเลขวัดที่ y 1080–1248 (บรรทัดคำบรรยายจริง) ที่ภาพห้องน้ำ B05-SH01: ไม่มีเงา 0.78, soft 0.57, band 0.62 = 0.34, band 0.75 = 0.24 ผ่านเกณฑ์ 0.25 ภาพครัว B04-SH01: 0.72, 0.53, 0.31, 0.24 (band 0.73) ผ่านเช่นกัน เงาติดเฉพาะตอนมีคำบรรยายและไม่กินส่วนบนของภาพ ดูภาพของสองช็อตนี้ในแถวของมัน",
    "images": [
     {
-     "src": "/Users/mangkornkatawong/ReelsStore/projects/ZCONDO2/previews/ZC2-SB-R3/shade/SBX-B05-SH01.png",
+     "src": "/Users/mangkornkatawong/ReelsStore/projects/legacy/ZCONDO2/previews/ZC2-SB-R3/shade/SBX-B05-SH01.png",
      "caption": "B05-SH01 พร้อมเงา band 0.75 (เบาที่สุดที่ผ่าน)"
     },
     {
-     "src": "/Users/mangkornkatawong/ReelsStore/projects/ZCONDO2/previews/ZC2-SB-R3/shade/SBX-B04-SH01.png",
+     "src": "/Users/mangkornkatawong/ReelsStore/projects/legacy/ZCONDO2/previews/ZC2-SB-R3/shade/SBX-B04-SH01.png",
      "caption": "B04-SH01 พร้อมเงา band 0.73 (เบาที่สุดที่ผ่าน)"
     }
    ]
@@ -112,7 +112,7 @@
    "kit": "kit: back view, FigPose.silhouette, camera push",
    "previews": [
     {
-     "src": "/Users/mangkornkatawong/ReelsStore/projects/ZCONDO2/previews/ZC2-SB-R3/ZC2-B01-SH01-sb-r3.png",
+     "src": "/Users/mangkornkatawong/ReelsStore/projects/legacy/ZCONDO2/previews/ZC2-SB-R3/ZC2-B01-SH01-sb-r3.png",
      "caption": "ข้างไหล่คุณ ประตูเปิดเห็นทางเดิน ซอมบี้ยืนไกลที่ปลายทาง"
     }
    ],
@@ -152,7 +152,7 @@
    "kit": "kit: pushCamera; set new (corridor); lead off screen (POV)",
    "previews": [
     {
-     "src": "/Users/mangkornkatawong/ReelsStore/projects/ZCONDO2/previews/ZC2-SB-R3/ZC2-B01-SH02-sb-r3.png",
+     "src": "/Users/mangkornkatawong/ReelsStore/projects/legacy/ZCONDO2/previews/ZC2-SB-R3/ZC2-B01-SH02-sb-r3.png",
      "caption": "ทางเดินเลนส์ยาว ซอมบี้ยืนหันเข้าประตูห้องตัวเอง (ภาพที่ผู้ใช้อนุมัติ)"
     }
    ],
@@ -193,7 +193,7 @@
    "changed": "ซอมบี้มีเลือดที่หน้าและปาก ตามคำตอบ Q-ZC2-F2 (ออกแบบใหม่บนตัวละคร kit)",
    "previews": [
     {
-     "src": "/Users/mangkornkatawong/ReelsStore/projects/ZCONDO2/previews/ZC2-SB-R3/ZC2-B01-SH03-sb-r3.png",
+     "src": "/Users/mangkornkatawong/ReelsStore/projects/legacy/ZCONDO2/previews/ZC2-SB-R3/ZC2-B01-SH03-sb-r3.png",
      "caption": "ซอมบี้หันมา เลือดที่ปาก คาง และคอเสื้อ (ภาพที่ผู้ใช้อนุมัติ)"
     }
    ],
@@ -233,7 +233,7 @@
    "kit": "kit: motion gasp-recoil on the hit; new: bag drop, shake in picture stage",
    "previews": [
     {
-     "src": "/Users/mangkornkatawong/ReelsStore/projects/ZCONDO2/previews/ZC2-SB-R3/ZC2-B02-SH01-sb-r3.png",
+     "src": "/Users/mangkornkatawong/ReelsStore/projects/legacy/ZCONDO2/previews/ZC2-SB-R3/ZC2-B02-SH01-sb-r3.png",
      "caption": "ปิด! ชนไหล่และกำปั้นใส่ประตู ถุงขยะหล่น"
     }
    ],
@@ -273,7 +273,7 @@
    "kit": "kit: mitten hand (openHandParts, UT14: no drawn fingers); paintPovHand not used; new: deadbolt set piece",
    "previews": [
     {
-     "src": "/Users/mangkornkatawong/ReelsStore/projects/ZCONDO2/previews/ZC2-SB-R3/ZC2-B02-SH02-sb-r3.png",
+     "src": "/Users/mangkornkatawong/ReelsStore/projects/legacy/ZCONDO2/previews/ZC2-SB-R3/ZC2-B02-SH02-sb-r3.png",
      "caption": "มือ POV บิดกลอนเดดโบลต์ ประตูทึบไม่มีตาแมว"
     }
    ],
@@ -313,7 +313,7 @@
    "kit": "kit: back view, motion gasp-recoil; set new (unit, door vantage)",
    "previews": [
     {
-     "src": "/Users/mangkornkatawong/ReelsStore/projects/ZCONDO2/previews/ZC2-SB-R3/ZC2-B02-SH03-sb-r3.png",
+     "src": "/Users/mangkornkatawong/ReelsStore/projects/legacy/ZCONDO2/previews/ZC2-SB-R3/ZC2-B02-SH03-sb-r3.png",
      "caption": "มุมประตูจากกลางห้อง ฝุ่นร่วงจากวงกบ คุณถอยหลัง"
     }
    ],
@@ -357,7 +357,7 @@
    "kit": "kit: layerMotion walk-out-to-left is the nearest; set new",
    "previews": [
     {
-     "src": "/Users/mangkornkatawong/ReelsStore/projects/ZCONDO2/previews/ZC2-SB-R3/ZC2-B02-SH04-sb-r3.png",
+     "src": "/Users/mangkornkatawong/ReelsStore/projects/legacy/ZCONDO2/previews/ZC2-SB-R3/ZC2-B02-SH04-sb-r3.png",
      "caption": "ลากตู้รองเท้าชั้นโล่งมาขวางประตู (ภาพที่ผู้ใช้อนุมัติ)"
     }
    ],
@@ -397,7 +397,7 @@
    "kit": "set new; sun bands flat tint",
    "previews": [
     {
-     "src": "/Users/mangkornkatawong/ReelsStore/projects/ZCONDO2/previews/ZC2-SB-R3/ZC2-B02-SH05-sb-r3.png",
+     "src": "/Users/mangkornkatawong/ReelsStore/projects/legacy/ZCONDO2/previews/ZC2-SB-R3/ZC2-B02-SH05-sb-r3.png",
      "caption": "นั่งพิงตู้ มือปิดปาก ตาเงยไปทางกลอน (ภาพที่ผู้ใช้อนุมัติ)"
     }
    ],
@@ -437,7 +437,7 @@
    "kit": "kit: motion idle-breathe; lights are new overlays",
    "previews": [
     {
-     "src": "/Users/mangkornkatawong/ReelsStore/projects/ZCONDO2/previews/ZC2-SB-R3/ZC2-B03-SH01-sb-r3.png",
+     "src": "/Users/mangkornkatawong/ReelsStore/projects/legacy/ZCONDO2/previews/ZC2-SB-R3/ZC2-B03-SH01-sb-r3.png",
      "caption": "ไฟดับ เหลือแสงกลางวัน คุณนั่งเล็ก ๆ ที่ตู้ แอร์ ตู้เย็น ไฟเพดานดับ"
     }
    ],
@@ -477,11 +477,11 @@
    "kit": "new: tap, sink; kit ENV-GLOW not needed",
    "previews": [
     {
-     "src": "/Users/mangkornkatawong/ReelsStore/projects/ZCONDO2/previews/ZC2-SB-R3/ZC2-B04-SH01-sb-r3.png",
+     "src": "/Users/mangkornkatawong/ReelsStore/projects/legacy/ZCONDO2/previews/ZC2-SB-R3/ZC2-B04-SH01-sb-r3.png",
      "caption": "ก๊อกในครัวยังไหล แสงจากหน้าต่างสะท้อนน้ำ"
     },
     {
-     "src": "/Users/mangkornkatawong/ReelsStore/projects/ZCONDO2/previews/ZC2-SB-R3/shade/SBX-B04-SH01.png",
+     "src": "/Users/mangkornkatawong/ReelsStore/projects/legacy/ZCONDO2/previews/ZC2-SB-R3/shade/SBX-B04-SH01.png",
      "caption": "พร้อม CaptionShade แบบ band เบาที่สุดที่ผ่านของช็อตนี้ (ดูคำถาม Q-ZC2-S1)"
     }
    ],
@@ -521,7 +521,7 @@
    "kit": "new: diagram set; text in Remotion",
    "previews": [
     {
-     "src": "/Users/mangkornkatawong/ReelsStore/projects/ZCONDO2/previews/ZC2-SB-R3/ZC2-B04-SH02-sb-r3.png",
+     "src": "/Users/mangkornkatawong/ReelsStore/projects/legacy/ZCONDO2/previews/ZC2-SB-R3/ZC2-B04-SH02-sb-r3.png",
      "caption": "แผนภาพตึกผ่าซีก ปั๊มชั้นล่าง ท่อขึ้นถังบนดาดฟ้า น้ำไหลลงทุกชั้น ป้ายเป็นข้อความ Remotion (ภาพใหม่ แยกจากเดิม)"
     }
    ],
@@ -570,7 +570,7 @@
    "kit": "new: diagram set; text in Remotion",
    "previews": [
     {
-     "src": "/Users/mangkornkatawong/ReelsStore/projects/ZCONDO2/previews/ZC2-SB-R3/ZC2-B04-SH02b-sb-r3.png",
+     "src": "/Users/mangkornkatawong/ReelsStore/projects/legacy/ZCONDO2/previews/ZC2-SB-R3/ZC2-B04-SH02b-sb-r3.png",
      "caption": "ภาพใกล้ห้องปั๊ม สายไฟขาด ฟ้าผ่าแดง ป้าย ปั๊ม / ไฟดับ เป็นข้อความ Remotion"
     }
    ],
@@ -610,7 +610,7 @@
    "kit": "new props: bucket, pot, bottle, lids (kit has torch/phone/umbrella only)",
    "previews": [
     {
-     "src": "/Users/mangkornkatawong/ReelsStore/projects/ZCONDO2/previews/ZC2-SB-R3/ZC2-B04-SH03-sb-r3.png",
+     "src": "/Users/mangkornkatawong/ReelsStore/projects/legacy/ZCONDO2/previews/ZC2-SB-R3/ZC2-B04-SH03-sb-r3.png",
      "caption": "มองลงจากด้านบน ถัง หม้อ ขวด ฝาปิด บนพื้นครัว"
     }
    ],
@@ -650,11 +650,11 @@
    "kit": "reference only: PL-ZCPAINT-BATHROOM (plate gallery); new set",
    "previews": [
     {
-     "src": "/Users/mangkornkatawong/ReelsStore/projects/ZCONDO2/previews/ZC2-SB-R3/ZC2-B05-SH01-sb-r3.png",
+     "src": "/Users/mangkornkatawong/ReelsStore/projects/legacy/ZCONDO2/previews/ZC2-SB-R3/ZC2-B05-SH01-sb-r3.png",
      "caption": "ห้องน้ำจากหน้าประตู ขวดน้ำบนอ่างล้างหน้า ถังแดงกับขันข้างโถ"
     },
     {
-     "src": "/Users/mangkornkatawong/ReelsStore/projects/ZCONDO2/previews/ZC2-SB-R3/shade/SBX-B05-SH01.png",
+     "src": "/Users/mangkornkatawong/ReelsStore/projects/legacy/ZCONDO2/previews/ZC2-SB-R3/shade/SBX-B05-SH01.png",
      "caption": "พร้อม CaptionShade แบบ band เบาที่สุดที่ผ่านของช็อตนี้ (ดูคำถาม Q-ZC2-S1)"
     }
    ],
@@ -694,7 +694,7 @@
    "kit": "kit: P26 carry; new: pour",
    "previews": [
     {
-     "src": "/Users/mangkornkatawong/ReelsStore/projects/ZCONDO2/previews/ZC2-SB-R3/ZC2-B05-SH02-sb-r3.png",
+     "src": "/Users/mangkornkatawong/ReelsStore/projects/legacy/ZCONDO2/previews/ZC2-SB-R3/ZC2-B05-SH02-sb-r3.png",
      "caption": "ยกถังเทน้ำลงโถทีเดียว (ท่าเทเป็นท่าใหม่ที่เสนอให้บอส)"
     }
    ],
@@ -734,7 +734,7 @@
    "kit": "kit: two mitten hands (openHandParts) under the lid ends; paintEdgeGrip not used (drawn fingers, UT14)",
    "previews": [
     {
-     "src": "/Users/mangkornkatawong/ReelsStore/projects/ZCONDO2/previews/ZC2-SB-R3/ZC2-B05-SH03-sb-r3.png",
+     "src": "/Users/mangkornkatawong/ReelsStore/projects/legacy/ZCONDO2/previews/ZC2-SB-R3/ZC2-B05-SH03-sb-r3.png",
      "caption": "สองมือยกฝาถังพักน้ำ น้ำใสรับแสงจากหน้าต่าง"
     }
    ],
@@ -779,7 +779,7 @@
    "kit": "new: top-down toilet; marks in Remotion",
    "previews": [
     {
-     "src": "/Users/mangkornkatawong/ReelsStore/projects/ZCONDO2/previews/ZC2-SB-R3/ZC2-B05-SH04-sb-r3.png",
+     "src": "/Users/mangkornkatawong/ReelsStore/projects/legacy/ZCONDO2/previews/ZC2-SB-R3/ZC2-B05-SH04-sb-r3.png",
      "caption": "มองลงจากด้านบน ถังพักน้ำเปิดมีเครื่องหมายถูก โถมีกากบาท (ข้อความและเครื่องหมายเป็น Remotion)"
     }
    ],
@@ -823,7 +823,7 @@
    "kit": "new: fridge set, clock chips in Remotion",
    "previews": [
     {
-     "src": "/Users/mangkornkatawong/ReelsStore/projects/ZCONDO2/previews/ZC2-SB-R3/ZC2-B06-SH01-sb-r3.png",
+     "src": "/Users/mangkornkatawong/ReelsStore/projects/legacy/ZCONDO2/previews/ZC2-SB-R3/ZC2-B06-SH01-sb-r3.png",
      "caption": "ตู้เย็นดับ มือแนบประตู ป้ายเวลาวาดขึ้นทีหลัง"
     }
    ],
@@ -864,7 +864,7 @@
    "kit": "kit: CP-P arm depth (toCam); new: fridge interior",
    "previews": [
     {
-     "src": "/Users/mangkornkatawong/ReelsStore/projects/ZCONDO2/previews/ZC2-SB-R3/ZC2-B06-SH02-sb-r3.png",
+     "src": "/Users/mangkornkatawong/ReelsStore/projects/legacy/ZCONDO2/previews/ZC2-SB-R3/ZC2-B06-SH02-sb-r3.png",
      "caption": "มองจากในตู้เย็น คุณหยิบโยเกิร์ตกับนมจากชั้นประตู"
     }
    ],
@@ -904,7 +904,7 @@
    "kit": "kit: mitten fist (fistParts) setting the can; new: can, food props",
    "previews": [
     {
-     "src": "/Users/mangkornkatawong/ReelsStore/projects/ZCONDO2/previews/ZC2-SB-R3/ZC2-B06-SH03-sb-r3.png",
+     "src": "/Users/mangkornkatawong/ReelsStore/projects/legacy/ZCONDO2/previews/ZC2-SB-R3/ZC2-B06-SH03-sb-r3.png",
      "caption": "ของจากตู้เย็นเรียงก่อน ปลากระป๋องวางท้ายสุด"
     }
    ],
@@ -944,7 +944,7 @@
    "kit": "kit: mitten fist (fistParts) holding the canister (new prop); new: stove case",
    "previews": [
     {
-     "src": "/Users/mangkornkatawong/ReelsStore/projects/ZCONDO2/previews/ZC2-SB-R3/ZC2-B07-SH01-sb-r3.png",
+     "src": "/Users/mangkornkatawong/ReelsStore/projects/legacy/ZCONDO2/previews/ZC2-SB-R3/ZC2-B07-SH01-sb-r3.png",
      "caption": "กล่องเตาปิกนิกเปิด มือถือกระป๋องแก๊สค้างกลางอากาศ เตาไม่ถูกจุด"
     }
    ],
@@ -984,7 +984,7 @@
    "kit": "new: unit wide set",
    "previews": [
     {
-     "src": "/Users/mangkornkatawong/ReelsStore/projects/ZCONDO2/previews/ZC2-SB-R3/ZC2-B07-SH02-sb-r3.png",
+     "src": "/Users/mangkornkatawong/ReelsStore/projects/legacy/ZCONDO2/previews/ZC2-SB-R3/ZC2-B07-SH02-sb-r3.png",
      "caption": "ภาพกว้างทั้งห้อง คุณเก็บกล่องเตาขึ้นชั้นบน ตู้ขวางประตู ประตูระเบียงปิด (ท่าเอื้อมชั้นเป็นท่าใหม่ที่เสนอให้บอส)"
     }
    ],
@@ -1024,7 +1024,7 @@
    "kit": "kit: two mitten fists (fistParts) tearing the bread bag; new: bread, banana, nuts, can",
    "previews": [
     {
-     "src": "/Users/mangkornkatawong/ReelsStore/projects/ZCONDO2/previews/ZC2-SB-R3/ZC2-B07-SH03-sb-r3.png",
+     "src": "/Users/mangkornkatawong/ReelsStore/projects/legacy/ZCONDO2/previews/ZC2-SB-R3/ZC2-B07-SH03-sb-r3.png",
      "caption": "โต๊ะเตี้ย ฉีกถุงขนมปัง กล้วย ถั่ว ปลากระป๋อง"
     }
    ],
@@ -1064,7 +1064,7 @@
    "kit": "kit: back view lean, FigPose.silhouette; ENV-SKY night, ENV-GLOW for the fire; new: city layers",
    "previews": [
     {
-     "src": "/Users/mangkornkatawong/ReelsStore/projects/ZCONDO2/previews/ZC2-SB-R3/ZC2-B08-SH01-sb-r3.png",
+     "src": "/Users/mangkornkatawong/ReelsStore/projects/legacy/ZCONDO2/previews/ZC2-SB-R3/ZC2-B08-SH01-sb-r3.png",
      "caption": "กลางคืน คุณเป็นเงาที่ราวระเบียง เมืองมืดมีไฟไหม้ส้ม"
     }
    ],
@@ -1108,7 +1108,7 @@
    "kit": "kit: ENV-SKY, ENV-FALL:ash optional, ENV-FOG; new: smoke columns, fires",
    "previews": [
     {
-     "src": "/Users/mangkornkatawong/ReelsStore/projects/ZCONDO2/previews/ZC2-SB-R3/ZC2-B08-SH02-sb-r3.png",
+     "src": "/Users/mangkornkatawong/ReelsStore/projects/legacy/ZCONDO2/previews/ZC2-SB-R3/ZC2-B08-SH02-sb-r3.png",
      "caption": "ภาพกว้างเหนือราว ตึกมืด ควัน เปลวไฟ คุณตัวเล็กที่ราว"
     }
    ],
@@ -1160,7 +1160,7 @@
    "kit": "kit: phone prop; new: buckets x2, cans x4, numerals in Remotion",
    "previews": [
     {
-     "src": "/Users/mangkornkatawong/ReelsStore/projects/ZCONDO2/previews/ZC2-SB-R3/ZC2-B09-SH01-sb-r3.png",
+     "src": "/Users/mangkornkatawong/ReelsStore/projects/legacy/ZCONDO2/previews/ZC2-SB-R3/ZC2-B09-SH01-sb-r3.png",
      "caption": "วันที่ 3 มองลงจากด้านบน ถังสองใบ กระป๋องสี่กระป๋อง มือถือ 12% (ตัวเลขเป็น Remotion)"
     }
    ],
@@ -1201,7 +1201,7 @@
    "changed": "ตัวเอกเป็นผู้ชาย เคราขึ้นนิดหน่อย (Q-ZC2-F1)",
    "previews": [
     {
-     "src": "/Users/mangkornkatawong/ReelsStore/projects/ZCONDO2/previews/ZC2-SB-R3/ZC2-B09-SH02-sb-r3.png",
+     "src": "/Users/mangkornkatawong/ReelsStore/projects/legacy/ZCONDO2/previews/ZC2-SB-R3/ZC2-B09-SH02-sb-r3.png",
      "caption": "วันที่ 3 นั่งพื้นหน้าโซฟา ห่มผ้า เคราขึ้น หันไปทางประตู"
     }
    ],
@@ -1241,7 +1241,7 @@
    "kit": "set reuse: unit door vantage, day-3 light",
    "previews": [
     {
-     "src": "/Users/mangkornkatawong/ReelsStore/projects/ZCONDO2/previews/ZC2-SB-R3/ZC2-B09-SH03-sb-r3.png",
+     "src": "/Users/mangkornkatawong/ReelsStore/projects/legacy/ZCONDO2/previews/ZC2-SB-R3/ZC2-B09-SH03-sb-r3.png",
      "caption": "มุมประตูเดิม แสงทางเดินเป็นเส้นใต้ประตู ถุงขยะยังอยู่ ไม่มีใคร"
     }
    ],
@@ -1281,7 +1281,7 @@
    "kit": "kit: template talkingCloseUp (no talk), face look toward the door",
    "previews": [
     {
-     "src": "/Users/mangkornkatawong/ReelsStore/projects/ZCONDO2/previews/ZC2-SB-R3/ZC2-B09-SH04-sb-r3.png",
+     "src": "/Users/mangkornkatawong/ReelsStore/projects/legacy/ZCONDO2/previews/ZC2-SB-R3/ZC2-B09-SH04-sb-r3.png",
      "caption": "ใกล้มาก ตาเลื่อนไปทางประตู เคราขึ้นนิดหน่อย"
     }
    ],
@@ -1325,7 +1325,7 @@
    "kit": "kit: depth stack; choice labels in Remotion",
    "previews": [
     {
-     "src": "/Users/mangkornkatawong/ReelsStore/projects/ZCONDO2/previews/ZC2-SB-R3/ZC2-B10-SH01-sb-r3.png",
+     "src": "/Users/mangkornkatawong/ReelsStore/projects/legacy/ZCONDO2/previews/ZC2-SB-R3/ZC2-B10-SH01-sb-r3.png",
      "caption": "คุณอยู่หน้าซ้าย ประตูกับตู้ลึกเข้าไป ป้ายตัวเลือกเป็น Remotion"
     }
    ],
@@ -1350,11 +1350,11 @@
  ],
  "looks": {
   "L1": {
-   "src": "/Users/mangkornkatawong/ReelsStore/projects/ZCONDO2/previews/ZC2-SB-R3/ZC2-B01-SH02-sb-r3.png",
+   "src": "/Users/mangkornkatawong/ReelsStore/projects/legacy/ZCONDO2/previews/ZC2-SB-R3/ZC2-B01-SH02-sb-r3.png",
    "caption": "ทางเดินคอนโด ลุค kit (อนุมัติแล้ว)"
   },
   "L2": {
-   "src": "/Users/mangkornkatawong/ReelsStore/projects/ZCONDO2/previews/ZC2-SB-R3/ZC2-B02-SH05-sb-r3.png",
+   "src": "/Users/mangkornkatawong/ReelsStore/projects/legacy/ZCONDO2/previews/ZC2-SB-R3/ZC2-B02-SH05-sb-r3.png",
    "caption": "ห้องพัก ตู้กั้นประตู แสงเช้า ลุค kit (อนุมัติแล้ว)"
   }
  },

@@ -2,7 +2,7 @@
 
 ## W4.1 audition samples (2026-11-08, Editor; script EDU-EP07-SCRIPT-R1.1)
 
-All samples are at most 10 s, Gemini `gemini-3.8-flash-tts`, no atempo, levelled to -16 LUFS by `scripts/gemini-tts.py`. Not judged by ear by the agent: for the user's pick. Store: `~/ReelsStore/projects/EDU/audio/EDU-EP07-SHORT/narr-samples/` (scratch `out/ep07-voice/audition/`, `.json` sidecars hold voice, style and text).
+All samples are at most 10 s, Gemini `gemini-3.8-flash-tts`, no atempo, levelled to -16 LUFS by `scripts/gemini-tts.py`. Not judged by ear by the agent: for the user's pick. Store: `~/ReelsStore/projects/edu/EDU/audio/EDU-EP07-SHORT/narr-samples/` (scratch `out/ep07-voice/audition/`, `.json` sidecars hold voice, style and text).
 
 | File | Voice | Content | Dur (s) | LUFS | Peak dBFS |
 | --- | --- | --- | --- | --- | --- |
@@ -22,7 +22,7 @@ User picks (2026-11-08, final): NAR = Kore style A (prompt of `ep07-aud-NAR-A-br
 - **Method.** One Gemini call for all 13 NAR lines (one narrator, one style; ellipses as commas, `.` between lines, text in `out/ep07-voice/full/nar-text.txt`), raw 51.80 s -> `atempo=0.90` -> 57.55 s -> two-pass loudnorm to -16 LUFS / TP -1.5 (measured **-16.0 LUFS, peak -1.5 dBFS**). Lines cut at the midpoint of the silence between lines (Whisper large-v3-turbo transcript used only to place the cuts; local numpy energy floor -40 dBFS for voiced start/end), 10 ms in / 20 ms out fades, 0.06 s head and 0.08 s tail of silence kept. Whisper transcript matched every line in order; it spelled "ไอน์สไตน์" in Latin letters (its own habit), no line missing or repeated.
 - **Requests: 2 new** (1 NAR full read, 1 D03). D01 and D02 came from the cache (the audition takes, same voice, style and text; 0 requests). Earlier today: 6. Total today about 8 of 100.
 - Dialogue styles: D01 "tired working man, mildly whiny, fanning himself in the heat, casual" (Algenib); D02 "cheerful bright breezy street food vendor woman, friendly, a little teasing, casual and quick" (Aoede); D03 "tired working man, puzzled, looking around in the sudden dark, casual" (Algenib), text "เอ้า, ไฟดับเหรอ". D03 measured -17.2 LUFS (one take of 2.32 s; D01/D02 -16.0); not re-levelled.
-- Store: `projects/EDU/audio/EDU-EP07-SHORT/narration/2026-11-08_ep07-nar-kore-A-slow90-fullread.wav` (the locked-candidate full read), `..._ep07-nar-kore-A-raw-pre-atempo.wav` (+ `.json`), `..._ep07-D01/D02/D03.wav`, `lines/2026-11-08_ep07-nar-<ID>.wav`, `lines.json`. Scratch `out/ep07-voice/full/`.
+- Store: `projects/edu/EDU/audio/EDU-EP07-SHORT/narration/2026-11-08_ep07-nar-kore-A-slow90-fullread.wav` (the locked-candidate full read), `..._ep07-nar-kore-A-raw-pre-atempo.wav` (+ `.json`), `..._ep07-D01/D02/D03.wav`, `lines/2026-11-08_ep07-nar-<ID>.wav`, `lines.json`. Scratch `out/ep07-voice/full/`.
 
 ### NAR lines (positions in the slowed full read, s; speech = voiced run above -40 dBFS)
 
@@ -61,7 +61,7 @@ User picks (2026-11-08, final): NAR = Kore style A (prompt of `ep07-aud-NAR-A-br
 
 - **Method.** Same raw read (`out/ep07-voice/full/nar-raw.wav`, 51.80 s, 0 new Gemini requests) -> `atempo=0.95` -> 54.52 s -> two-pass loudnorm -16 LUFS / TP -1.5 (re-measured **-16.1 LUFS, peak -1.5 dBFS**). Line cuts at the midpoint of the silence between lines (boundaries taken from the 0.90 cuts scaled by 0.90/0.95, snapped to the silence they fall in; energy floor -40 dBFS), 10 ms in / 20 ms out fades, 0.06 s head and 0.08 s tail kept. Cut positions come from energy only; no new Whisper pass (cuts fall in silence, not verified by transcript).
 - **D03 re-levelled** to **-16.0 LUFS** (was -17.2): the take already peaked at -1.5 dBFS, so loudnorm could not raise it; +1.4 dB gain plus a peak limiter (alimiter limit 0.84) gives -16.04 LUFS, peak -1.49 dBFS. A limiter was used, so listen for pumping on D03.
-- Store (`projects/EDU/audio/EDU-EP07-SHORT/narration/`): `2026-11-08_ep07-nar-kore-A-slow95-fullread.wav`, `2026-11-08_ep07-D03-lvl16.wav`, `2026-11-08_ep07-nar95-lines.json`, `lines/2026-11-08_ep07-nar95-<ID>.wav`. D01/D02 unchanged (already -16.0). Scratch `out/ep07-voice/full95/` (script reproduces from `nar-raw.wav` + the commands above).
+- Store (`projects/edu/EDU/audio/EDU-EP07-SHORT/narration/`): `2026-11-08_ep07-nar-kore-A-slow95-fullread.wav`, `2026-11-08_ep07-D03-lvl16.wav`, `2026-11-08_ep07-nar95-lines.json`, `lines/2026-11-08_ep07-nar95-<ID>.wav`. D01/D02 unchanged (already -16.0). Scratch `out/ep07-voice/full95/` (script reproduces from `nar-raw.wav` + the commands above).
 
 | Line | Start | End | Dur (s) | Gap before (s) | File start | File dur (s) | Onset in file |
 | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -84,7 +84,7 @@ User picks (2026-11-08, final): NAR = Kore style A (prompt of `ep07-aud-NAR-A-br
 
 ## R1.2 samples (2026-11-08, Editor; script EDU-EP07-SCRIPT-R1.2; measured, NOT listened to)
 
-New lines L05 (reworded), L15, L16 and optional V01, for the user to pick A or B. Same voice and prompt as the locked read (Kore, style A: "fast-paced, quick brisk delivery with short pauses between phrases, playful deadpan female narrator, dry and matter-of-fact, speaking quickly without dragging"), ellipses as commas, `.` between L15 and L16, then `atempo=0.95` and two-pass loudnorm -16 LUFS / TP -1.5 (same chain as the locked 0.95 read; here per clip, since the new lines are separate calls, not part of the one full read). Store: `projects/EDU/audio/EDU-EP07-SHORT/narr-samples/2026-11-08_ep07-r12-*.wav`; scratch `out/ep07-voice/r12/` (`.json` sidecars hold voice, style, text).
+New lines L05 (reworded), L15, L16 and optional V01, for the user to pick A or B. Same voice and prompt as the locked read (Kore, style A: "fast-paced, quick brisk delivery with short pauses between phrases, playful deadpan female narrator, dry and matter-of-fact, speaking quickly without dragging"), ellipses as commas, `.` between L15 and L16, then `atempo=0.95` and two-pass loudnorm -16 LUFS / TP -1.5 (same chain as the locked 0.95 read; here per clip, since the new lines are separate calls, not part of the one full read). Store: `projects/edu/EDU/audio/EDU-EP07-SHORT/narr-samples/2026-11-08_ep07-r12-*.wav`; scratch `out/ep07-voice/r12/` (`.json` sidecars hold voice, style, text).
 
 | File | Content | Dur (s) | LUFS | Speech rate (non-space chars / s, whole clip) |
 | --- | --- | --- | --- | --- |

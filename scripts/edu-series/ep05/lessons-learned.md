@@ -1,7 +1,7 @@
 # EDU-EP05-SHORT — lessons learned (retrospective, 2026-11-08)
 
 - Trigger: user, 2026-11-08: EP05 "ถ้าคุณตัวเล็กเท่ามด" got very high reach and an **average view duration of 60+ s** on a 66.3 s video (≈ 90 %+ average watched). The user expected low interest because "what if you were tiny" content is common.
-- Inputs read: [script.md](script.md) R1.3a/R1.4, [brief.md](brief.md) (visual intent, sound direction, visual progression), [scene-sheets.md](scene-sheets.md) (shot map, camera rows, sound plan), the posted MP4 `publish/EDU/EDU-EP05-SHORT/EDU-EP05-SHORT.mp4` (frames sampled: 8 in the first 7.2 s, one per shot; sheets `out/ep05-lesson/hook.png`, `out/ep05-lesson/shots.png`, not filed).
+- Inputs read: [script.md](script.md) R1.3a/R1.4, [brief.md](brief.md) (visual intent, sound direction, visual progression), [scene-sheets.md](scene-sheets.md) (shot map, camera rows, sound plan), the posted MP4 `publish/edu/EDU/EDU-EP05-SHORT/EDU-EP05-SHORT.mp4` (frames sampled: 8 in the first 7.2 s, one per shot; sheets `out/ep05-lesson/hook.png`, `out/ep05-lesson/shots.png`, not filed).
 - **Evidence level:** one episode, one user-reported metric, no retention curve, no swipe-away rate and no numbers for EP01–EP04/EP06. Every lesson below is a **hypothesis** to test on the next episodes, not a proven cause. Status of each proposal: `proposed` (DP01: rule documents are not edited from here).
 
 ## 0. The numbers (user, 2026-11-08, rough, YouTube Shorts)
@@ -63,7 +63,7 @@ User decision 2026-11-08 (structured question): approve all five, "ทำเป�
 | LL02 | Preaw | Level structure for edu Shorts: pay the hook by ~30 % of runtime and open the next problem in the same line ("แต่…"); a new problem every ~10 s; show the problem before explaining it. | scriptwriting-principles |
 | LL03 | Preaw, Boat | One rule as a refrain that explains every beat; the twist flips its valence. Boat keeps hedges that protect the claim without softening the hook ("แทบ", "ราว ๆ"). | scriptwriting-principles; editorial-workflow |
 | LL04 | Film | Micro-motion on every shot (small arc + slow push), signature moves only on the hook and the main reveal; camera at the protagonist's eye height when scale is the subject; light changes mark chapters. Frame 0 should already be the stakes picture (test: open on the vertigo shot). | cinematography-principles / film-visual-brief-workflow |
-| LL05 | Coordinator | Record per-episode analytics (views, % viewed vs swiped away, average view duration, retention dips with timestamps) in `publish/<PROJECT>/<ID>/publish.json` or the delivery record, so the next retrospective compares episodes instead of guessing. | README publish folder; delivery-workflow |
+| LL05 | Coordinator | Record per-episode analytics (views, % viewed vs swiped away, average view duration, retention dips with timestamps) in `publish/<channel>/<PROJECT>/<ID>/publish.json` or the delivery record, so the next retrospective compares episodes instead of guessing. | README publish folder; delivery-workflow |
 
 ## Applied
 

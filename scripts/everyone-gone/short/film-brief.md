@@ -1,7 +1,7 @@
 # Visual brief — EG-EP01-SHORT "ประตูที่ไม่เปิดให้คุณ"
 
 Deliverable: `EG-EP01-SHORT` (Short, 1080×1920, 30 fps); delivery record: [../delivery.md](../delivery.md); target duration / timing status: about 52–55 s total, `estimated` (script says speech about 3 s shorter than its 55–57 s estimate; Editor's narration read at voice lock decides).
-Revision: `EG-BRIEF-FILM-R1.3` (supersedes `EG-BRIEF-FILM-R1.2` < `R1.1` < `R1`); status: **draft, look frames in review** (W3.1 revision after the user's storyboard-page review; review rows `SS-R2` in [review-rows.json](review-rows.json); look stills in `$REELS_STORE/projects/EG/previews/look-frames/` and `.../look-frames/ss-r2/`)
+Revision: `EG-BRIEF-FILM-R1.3` (supersedes `EG-BRIEF-FILM-R1.2` < `R1.1` < `R1`); status: **draft, look frames in review** (W3.1 revision after the user's storyboard-page review; review rows `SS-R2` in [review-rows.json](review-rows.json); look stills in `$REELS_STORE/projects/legacy/EG/previews/look-frames/` and `.../look-frames/ss-r2/`)
 Script: [script.md](script.md) `EG-SCRIPT-R1.1` (approved 2026-11-03; no loop, ends on `L20b`, `L21` removed, no fact tag); fact-check: [fact-check.md](fact-check.md) (Boat W1.3, fixes FC-01..FC-06 applied inline; FC-07 safeguard adopted as VD08)
 Concept: [C1 + Film annotation W0.2](../concepts.md#c1--ประตูที่ไม่เปิดให้คุณ)
 Target checkout: `claude/world-everyone-disappeared-bebed4` @ `ff7dcfa` (kit inspected there, class `existing-integrated`); scope: this Short only; EP02+ reuse the shared kit pieces below but get their own briefs.

@@ -7,7 +7,7 @@ Voice Gemini Kore, `gemini-3.8-flash-tts`, no atempo, 3 requests (one attempt ea
 
 **Cap note:** all three samples run over the 10 s audition cap (L01-L03 together are longer than EP09's); one attempt each was the quota rule, so none was trimmed or regenerated. Ask the user whether to accept or shorten to L01-L02.
 
-Store: `~/ReelsStore/projects/EDU/voice/ep11-nar-kore-{A,B,C}.wav` (+ `.json`).
+Store: `~/ReelsStore/projects/edu/EDU/voice/ep11-nar-kore-{A,B,C}.wav` (+ `.json`).
 
 | Cand | Style | Dur |
 | --- | --- | --- |

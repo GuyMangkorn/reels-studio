@@ -1,6 +1,6 @@
 # EDU-EP02-S01 — scene-sheet index (หัวหอมแก้แค้น)
 Deliverable: `EDU-EP02-SHORT` · Revision: **SS-R3** (timed; SS-R3 changes S01-B05-SH03 only, every other shot as SS-R2) · Status: `ready-for-dev` · Timing: checked-with-audio (voice-lock measure, ±0.15 s; interpolated anchors ±0.2 s; syllable-estimated word frames marked `est`)
-Inputs: script [EDU-SCRIPT-R1.1](../script.md) + fact-check [R1.1](../fact-check.md) (L01–L18, ALT-A out) · brief [EDU-BRIEF-R1.5](../brief.md) (VD01–VD16, SET-KITCHEN, `CELL`, `EYE`) · voice measure [`gemini-fast`](../voice-measure.md) ([json](../voice-measure.json); store `projects/EDU/narration/ep02/2026-11-05_ep02-narration-kore-fast.wav`, user-approved 2026-11-05) · storyboard rows SS-R1 → [review-rows.json](../review-rows.json) (SS-R2 now) · delivery record [../../delivery.md](../../delivery.md#edu-ep02-short-หัวหอมแก้แค้น-c1) · task file [../../task.md](../../task.md)
+Inputs: script [EDU-SCRIPT-R1.1](../script.md) + fact-check [R1.1](../fact-check.md) (L01–L18, ALT-A out) · brief [EDU-BRIEF-R1.5](../brief.md) (VD01–VD16, SET-KITCHEN, `CELL`, `EYE`) · voice measure [`gemini-fast`](../voice-measure.md) ([json](../voice-measure.json); store `projects/edu/EDU/narration/ep02/2026-11-05_ep02-narration-kore-fast.wav`, user-approved 2026-11-05) · storyboard rows SS-R1 → [review-rows.json](../review-rows.json) (SS-R2 now) · delivery record [../../delivery.md](../../delivery.md#edu-ep02-short-หัวหอมแก้แค้น-c1) · task file [../../task.md](../../task.md)
 Target: branch `claude/education-topic-b84776` at `4b230f9` + uncommitted W5.2 v6 (`src/painted/edu02/kitchen.ts`, `eye.ts`) · 30 fps · **durationFrames 1771 (59.03 s)** · 1080×1920 · one composition, composition offset 0 (composition ID: Editor's choice under `src/videos/<episode>/index.ts`)
 Evidence: runtime unverified (no timeline yet) · plates: look frames only (LF01 v6, LF02 v2, LF03 v6; user look lock 2026-11-05) · audio/subtitle sync: frames computed from the measure file, not yet checked in a blockout · user approval: storyboard SS-R1 0/23 verdicts; look frames approved
 
@@ -92,7 +92,7 @@ Dev findings linked: DF-20261029-painted-timeline-dissolve (B03-SH01), DF-202610
 | Editor | Word-level check of the `est` word frames (L06, L14 "แว่น", L16) with a listen; Whisper dropped L08–L11 on this read | open |
 | Film | Fresh-pass review of Boss/Editor frames against these sheets (W5.3) | later |
 
-Element captures: look frames `projects/EDU/previews/look-frames/ep02/v6/` (`EDU2-LF01_f{0,24,47}`, `EDU2-LF03_f{0…101}`, sheets) and `.../v2/` (`EDU2-LF02`); illustrative only, from `src/painted/edu02/look-index.ts`. Editor scene sample proposal: B01-SH02 c 86 (LF01 framing with the caption block) and B04-SH02 c 735 (eye + bottom caption).
+Element captures: look frames `projects/edu/EDU/previews/look-frames/ep02/v6/` (`EDU2-LF01_f{0,24,47}`, `EDU2-LF03_f{0…101}`, sheets) and `.../v2/` (`EDU2-LF02`); illustrative only, from `src/painted/edu02/look-index.ts`. Editor scene sample proposal: B01-SH02 c 86 (LF01 framing with the caption block) and B04-SH02 c 735 (eye + bottom caption).
 
 Review page: rows updated to SS-R2 in [../review-rows.json](../review-rows.json) (timed, Thai); **review page: pending** (coordinator builds and republishes to the same URL).
 

@@ -1,6 +1,6 @@
 # Fiction channel
 
-**Status:** channel file ([channels](../README.md)); Default for every deliverable whose `delivery.md` names channel `fiction`. Set up on 11 Nov 2026 with the identity only. No episode exists yet: a value marked `open` takes the shared Default until the pilot episode settles it ([adding a channel](../README.md#adding-a-channel), step 4).
+**Status:** channel file ([channels](../README.md)); Default for every deliverable whose `delivery.md` names channel `fiction`. Set up on 11 Nov 2026 with the identity only. No episode exists yet: a value marked `open` takes the shared Default until the pilot episode settles it ([adding a channel](../README.md#adding-a-channel), step 5).
 
 ## Identity
 
@@ -11,7 +11,7 @@
 | Direction | Invented stories told as stories (user, 11 Nov 2026: "สไตล์เล่าเรื่องไม่มีอยู่จริงไปเลย เรื่องแต่ง") |
 | Genre / purpose | `open`: narrative fiction; the sub-genres are chosen in the pilot's [ideation](../../docs/delivery-workflow.md#ideation) |
 | Factual claims | None: the stories are invented and are not presented as real cases. Boat's research and fact-check have no factual subject and are recorded `N/A` unless a script borrows a real place, person or event |
-| Episode records | `open`: one `scripts/<series>/` folder and a deliverable ID prefix, chosen when the pilot starts |
+| Episode records | `open`: one `scripts/<series>/` folder and a deliverable ID prefix, chosen when the pilot starts and registered under `fiction` in the store (`projects/fiction/<SERIES>/`, `publish/fiction/<SERIES>/<ID>/`) |
 
 ## Rules of this channel
 

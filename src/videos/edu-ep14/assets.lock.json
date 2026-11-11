@@ -8,7 +8,7 @@
     "sha256": "d5ecbc4d6b06803807b510429a0aa2d6f21d329eda268f164772b4e6431282d9"
   },
   "public/audio/edu/EDU-EP14-SHORT-draft-stem-v1.wav": {
-    "store": "projects/EDU/audio/EDU-EP14-SHORT/EDU-EP14-SHORT-draft-stem-r41-v1.wav",
+    "store": "projects/edu/EDU/audio/EDU-EP14-SHORT/EDU-EP14-SHORT-draft-stem-r41-v1.wav",
     "sha256": "e3b18549b1209242eb08883a9db007ca9d8fd04b9f173d1b33615b4623540fb9"
   },
   "public/audio/stinger/stinger_kalimba-drops-tag_01.wav": {
@@ -28,7 +28,7 @@
     "sha256": "feaedc70538d77acfebede52e2d8ff6d785d4f477cddf079cc68d4164335d9a5"
   },
   "public/narration/EDU-EP14-SHORT-narration-v1.wav": {
-    "store": "projects/EDU/audio/EDU-EP14-SHORT/EDU-EP14-SHORT-narration-r41-v1.wav",
+    "store": "projects/edu/EDU/audio/EDU-EP14-SHORT/EDU-EP14-SHORT-narration-r41-v1.wav",
     "sha256": "7011b4741fa823af1582347b22d98a36709f0b65bf40c11f4c4a0979493d797a"
   },
   "public/sfx/comedy/comedy_kalimba-nope_01.wav": {

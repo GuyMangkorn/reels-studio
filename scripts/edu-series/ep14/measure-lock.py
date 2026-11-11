@@ -2,7 +2,7 @@
 Usage: python3 -I scripts/edu-series/ep14/measure-lock.py [--write]
 W5.1 (Film, EDU-EP14-ROWS-R3.0): beat gaps 0 (the natural 0.79-0.85 s pauses carry the beat changes), V02 shot = L15 end + 4 f,
 more word anchors from the same Whisper pass, and the picked girl takes measured (GIRL_TAKES).
-Inputs are the numbers below, taken from the locked read (store `projects/EDU/audio/2026-11-09_ep14-r4-nar-kore-fullread.wav`):
+Inputs are the numbers below, taken from the locked read (store `projects/edu/EDU/audio/2026-11-09_ep14-r4-nar-kore-fullread.wav`):
   LINES  speech run edges (ffmpeg silencedetect -35 dB / 0.06 s, plus a 5 ms RMS envelope: onset = first level above -30 dB held 50 ms; breaths at -37..-41 dB skipped)
   WORDS  word onsets from faster-whisper large-v3-turbo (word_timestamps, array input), +-0.1 s; Whisper mis-spells some words, so only times are used
 Mapping raw read second t -> global timeline second g(t) = t + offset of the segment that holds t; picture beats Film planned
@@ -10,7 +10,7 @@ Mapping raw read second t -> global timeline second g(t) = t + offset of the seg
 (lead = Film's shot-local line onset in ROWS-R1.0), except within-line splits, which cut at the mid-point of the real gap.
 With --write the result is merged into measure.json under "lock" and the old numbers kept under "previous".
 W4 re-lock (Editor, EDU-EP14-ROWS-R4.0, user pick 2026-11-09): the narration is the same locked read slowed (speech atempo 0.90, gaps 0.95; scripts/edu-series/ep14/narration-slow.py,
-store `projects/EDU/audio/2026-11-09_ep14-r4-nar-kore-s090-g095.wav`, 56.15 s). `--read slow` (default) uses the SLOW tables, `--read r4` reproduces the R3.0/R3.1 numbers on the unslowed read.
+store `projects/edu/EDU/audio/2026-11-09_ep14-r4-nar-kore-s090-g095.wav`, 56.15 s). `--read slow` (default) uses the SLOW tables, `--read r4` reproduces the R3.0/R3.1 numbers on the unslowed read.
 SLOW tables: line edges re-measured on the slowed file (5 ms RMS envelope, -35 dB, runs of the 17 lines picked in order by expected duration; L01 onset = silencedetect end 0.152, L13/L15 onsets = Whisper word start as before);
 word anchors = the R3.1 Whisper anchors mapped linearly between the old and new edges of their line (the speech is uniformly stretched), checked against faster-whisper large-v3-turbo on the slowed file (nearest token within 0.02 s for 29 of 38 and 0.07 s for 36, 0.17 and 0.19 s on the 2 anchors whose word starts mid-token).
 The picture structure is kept: the W700 slot (30 f from the L02c end) then L03 onset +4 f, V01 shot = L03 end +13 f (42 f slot, V01 file start +3, voice +9), L04 onset = V01 shot +46 f, beat gaps 0, V02 shot = L15 end +4 f (73 f)."""
@@ -47,8 +47,8 @@ WORDS_SLOW = {"L01.akat": 1.49, "L01b.med": 2.03, "L01b.jetroi": 4.45, "L02.lud"
     "L15.thuk": 53.47, "L15.brake": 54.1}
 # picked girl takes (user, 2026-11-09), measured with ffmpeg silencedetect -35 dB / 0.06 s: (file length, voice onset, voice end) in file seconds
 GIRL_TAKES = {
-    'V01': ('projects/EDU/audio/2026-11-09_ep14-girl-v01-a-leda.wav', 0.880, 0.204, 0.625),  # 0.000-0.054 s click/blip before the voice: trim
-    'V02': ('projects/EDU/audio/2026-11-09_ep14-girl-v02-a-leda.wav', 2.120, 0.190, 0.678)}  # 1.239-1.273 s short blip after: Editor listens, trims if a click
+    'V01': ('projects/edu/EDU/audio/2026-11-09_ep14-girl-v01-a-leda.wav', 0.880, 0.204, 0.625),  # 0.000-0.054 s click/blip before the voice: trim
+    'V02': ('projects/edu/EDU/audio/2026-11-09_ep14-girl-v02-a-leda.wav', 2.120, 0.190, 0.678)}  # 1.239-1.273 s short blip after: Editor listens, trims if a click
 LEAD_IN = 0.35
 READ = sys.argv[sys.argv.index('--read') + 1] if '--read' in sys.argv else 'slow'
 LINES, WORDS = (LINES_R4, WORDS_R4) if READ == 'r4' else (LINES_SLOW, WORDS_SLOW)
@@ -139,7 +139,7 @@ def build():
     words = {k: {'read_s': v, 'global_frame': gf(v)} for k, v in WORDS.items()}
     return {
         'status': 'audio-measured', 'script': 'EDU-EP14-SCRIPT-R4', 'storyboard': 'EDU-EP14-ROWS-R3.0' if READ == 'r4' else 'EDU-EP14-ROWS-R4.0',
-        'narration': {'file': 'projects/EDU/audio/2026-11-09_ep14-r4-nar-kore-fullread.wav' if READ == 'r4' else 'projects/EDU/audio/2026-11-09_ep14-r4-nar-kore-s090-g095.wav', 'length_s': 51.44 if READ == 'r4' else 56.147,
+        'narration': {'file': 'projects/edu/EDU/audio/2026-11-09_ep14-r4-nar-kore-fullread.wav' if READ == 'r4' else 'projects/edu/EDU/audio/2026-11-09_ep14-r4-nar-kore-s090-g095.wav', 'length_s': 51.44 if READ == 'r4' else 56.147,
                       'recipe': 'locked R4 Kore read, no atempo' if READ == 'r4' else 'locked R4 Kore read; speech atempo 0.90, gaps and lead-in 0.95, tail unchanged (scripts/edu-series/ep14/narration-slow.py); 0 new Gemini requests'},
         'read_reused_from_w1_4': True, 'gemini_requests_in_w4_for_narration': 0,
         'method': 'Line edges: ffmpeg silencedetect -35 dB / 0.06 s plus a 5 ms RMS envelope (onset = first level above -30 dB held 50 ms; breaths at -37..-41 dB before L07, L10, L15 skipped; L13 and L15 onsets set to the Whisper word start, the plosive attack is quiet). Word anchors: faster-whisper large-v3-turbo word_timestamps on the same WAV (venv of the main checkout; scripts/transcribe.py fails on the installed av, so the WAV was passed as an array), +-0.1 s. Not listened.' + ('' if READ == 'r4' else ' R4.0 re-lock on the slowed file: line edges re-measured by the same energy method (L01 0.152 = silencedetect end; L13 and L15 onsets = Whisper word start); word anchors = the R3.x anchors mapped linearly between the old and new line edges and checked against faster-whisper on the slowed file (29 of 38 within 0.02 s, 36 within 0.07 s, +0.17 and +0.19 s at L03.saep and L04.lokjing where the token starts mid-word). Picture pins kept as offsets: W700 slot 30 f from the L02c end, L03 onset +4 f, V01 shot = L03 end +13 f, L04 onset = V01 shot +46 f.'),

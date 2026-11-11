@@ -15,7 +15,7 @@ Record: this file. Series context: [concepts.md](../concepts.md) (R6, C35) · se
   - [x] W1.1 Boat research (2026-11-08)
   - [x] W1.2 Preaw script (EDU-EP12-SCRIPT-R2, est. ~55 s, 2026-11-09, sound intent per beat added)
   - [x] W1.3 Boat fact-check (2026-11-09: R1 pass with changes, R2 recheck pass; [factcheck.md](factcheck.md); advisory A1 declined by user 2026-11-09: L11 stays)
-  - [x] W1.4 Length check (2026-11-09: PASS. One Gemini Kore read of L01-L13, 1 request, no atempo, no retry: 43.68 s raw, speech ends 43.34 s; with scripted no-line gaps, V01-V03 and end holds about 50 s video, target 40-60 s, limit 63 s. Measure [measure.json](measure.json); store `projects/EDU/audio/2026-11-09_ep12-nar-kore-fullread.wav`; not listened, L08-L09 edges +-0.15 s; unchanged R2 so it is also the voice-lock read pending W4.3 user approval)
+  - [x] W1.4 Length check (2026-11-09: PASS. One Gemini Kore read of L01-L13, 1 request, no atempo, no retry: 43.68 s raw, speech ends 43.34 s; with scripted no-line gaps, V01-V03 and end holds about 50 s video, target 40-60 s, limit 63 s. Measure [measure.json](measure.json); store `projects/edu/EDU/audio/2026-11-09_ep12-nar-kore-fullread.wav`; not listened, L08-L09 edges +-0.15 s; unchanged R2 so it is also the voice-lock read pending W4.3 user approval)
   - [x] W1.5 User approves the script (R2, user 2026-11-09; voice Kore at 6.5 % slower is the pending W4.3 pick)
 - [ ] W2 Brief and storyboard (Film brief carries `Sound direction`)
   - [x] W2.1 Film brief EDU-EP12-BRIEF-R1 `ready-for-mark` (2026-11-09, [brief.md](brief.md), 17 shots est. 53.6 s, SND-01..14); ending = closed hard end per C35 (Editor confirms runtime value, Q-F1)

@@ -2,7 +2,7 @@
 
 Measured 4 Nov 2026 by Editor against storyboard ZC2-SB-R3 (29 shots; now ZC2-SB-R3.1, 30 shots after the B04-SH02 split, `storyboards/zombie-condo2/short/review-rows.json`, untimed). Script ZCONDO-SHORT-TH-R5 (reused).
 
-- **Narration (final, reused, not regenerated):** ZCPAINT TH Gemini Kore +5 % (atempo 1.05), B09 call, no comment line. File `public/narration/ZCPAINT-SHORT-TH.mp3` (committed, 93.151 s). Store copies: `~/ReelsStore/projects/ZCONDO/audio/gemini-tts/zcpaint-th-approved-read/kore-measured-nocomment.wav` (source read). Note: `~/ReelsStore/projects/ZCONDO/audio/narration/ZCPAINT-SHORT-TH.mp3` (71.2 s) is the old Edge stand-in, do not use.
+- **Narration (final, reused, not regenerated):** ZCPAINT TH Gemini Kore +5 % (atempo 1.05), B09 call, no comment line. File `public/narration/ZCPAINT-SHORT-TH.mp3` (committed, 93.151 s). Store copies: `~/ReelsStore/projects/legacy/ZCONDO/audio/gemini-tts/zcpaint-th-approved-read/kore-measured-nocomment.wav` (source read). Note: `~/ReelsStore/projects/legacy/ZCONDO/audio/narration/ZCPAINT-SHORT-TH.mp3` (71.2 s) is the old Edge stand-in, do not use.
 - **Measure file:** `short/ZCPAINT-SHORT-TH.lines.json` (40 lines, TH-01..TH-39 + TH-36a). Re-checked with ffmpeg silencedetect (-38 dB, 0.18 s): 38 of 40 onsets within 0.15 s; TH-02 (2.665 vs 2.90 detected, soft onset) and TH-18 (38.422 vs 38.19, breath before) are within one word-edge, measure file kept. Last speech ends 92.870 s.
 - **Total:** timeline 95.9 s (2877 frames at 30 fps) kept; audio 93.151 s; tail after last word 3.03 s (B10 hold, silence/room tone).
 
@@ -54,4 +54,4 @@ Pace: speech 0.0-92.87 s, longest inter-line gap 1.43 s (TH-31 to TH-32, B08 to 
 
 ## Status
 
-W4.2 measured. W4.3 (user listens) is open. Listening file: `~/ReelsStore/projects/ZCONDO2/previews/ZC2-voice/ZCPAINT-SHORT-TH.mp3`.
+W4.2 measured. W4.3 (user listens) is open. Listening file: `~/ReelsStore/projects/legacy/ZCONDO2/previews/ZC2-voice/ZCPAINT-SHORT-TH.mp3`.

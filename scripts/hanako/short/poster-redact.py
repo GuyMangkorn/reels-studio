@@ -2,7 +2,7 @@
 """B07-SH03 FILM-CARD: store copy of the user's flyer with the title, tagline and credits blurred (and, for the 1995 poster, the child's face).
 
 Usage: python3 -I scripts/hanako/short/poster-redact.py [--poster 1995-r3|1998-r2] [--source SRC.jpg] [--out OUT.png]
-Input: the user's scan in the asset store (default $REELS_STORE/projects/HANAKO/references/user/...). The scan is never
+Input: the user's scan in the asset store (default $REELS_STORE/projects/legacy/HANAKO/references/user/...). The scan is never
 modified. Output: OUT.png (RGB, the scan's size) and OUT.json beside it (sidecar for `store.py put`).
 
 Presets: 1995-r3 is the 1995 Shochiku poster (1000 x 1500, 2:3) used from r3 (31 Oct 2026). 1998-r2 is the 1998 flyer
@@ -25,7 +25,7 @@ STORE = os.path.expanduser(os.environ.get('REELS_STORE') or '~/ReelsStore')
 FEATHER = 6
 PRESETS = {
     '1995-r3': {
-        'source': 'projects/HANAKO/references/user/2026-10-31_b07-film-poster-toire-no-hanako-san-1995.jpg',
+        'source': 'projects/legacy/HANAKO/references/user/2026-10-31_b07-film-poster-toire-no-hanako-san-1995.jpg',
         'size': (1000, 1500),
         'out': 'out/hanako/film-card-poster-1995-redacted.png',
         # name, x0, y0, x1, y1 in source pixels, Gaussian sigma. Edge boxes run past the frame so no edge stays sharp.
@@ -40,7 +40,7 @@ PRESETS = {
         'identification': 'Shochiku 1995 film 『トイレの花子さん』, dir. 松岡錠司 (credits, read on the unblurred scan; not readable on the card)',
     },
     '1998-r2': {
-        'source': 'projects/HANAKO/references/user/2026-10-31_b07-film-poster-shinsei-toire-no-hanako-san.jpg',
+        'source': 'projects/legacy/HANAKO/references/user/2026-10-31_b07-film-poster-shinsei-toire-no-hanako-san.jpg',
         'size': (420, 600),
         'out': 'out/hanako/film-card-poster-redacted.png',
         'regions': [

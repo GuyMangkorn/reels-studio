@@ -1,14 +1,14 @@
 {
   "public/audio/edu/EDU-EP09-SHORT-draft-stem-r5.wav": {
-    "store": "projects/EDU/audio/EDU-EP09-SHORT/EDU-EP09-SHORT-draft-stem-r5.wav",
+    "store": "projects/edu/EDU/audio/EDU-EP09-SHORT/EDU-EP09-SHORT-draft-stem-r5.wav",
     "sha256": "ee40c79202b8d80daba90c5879746fd30707ab10c6e3928ce03dc16bb791212a"
   },
   "public/narration/EDU-EP09-SHORT-draft.wav": {
-    "store": "projects/EDU/audio/EDU-EP09-SHORT/EDU-EP09-SHORT-narration-draft-r2.wav",
+    "store": "projects/edu/EDU/audio/EDU-EP09-SHORT/EDU-EP09-SHORT-narration-draft-r2.wav",
     "sha256": "720d8439c4c06c6ad7f3c144df61cacb23237f5c8cedd572a1dfa4f695035d17"
   },
   "public/narration/EDU-EP09-SHORT.wav": {
-    "store": "projects/EDU/voice/ep09-nar-kore-A-r14-full-s2.wav",
+    "store": "projects/edu/EDU/voice/ep09-nar-kore-A-r14-full-s2.wav",
     "sha256": "181bb77d83765c7e93e6ca9914ce4b702d69b672692987bcae586d499b5abb03"
   }
 }

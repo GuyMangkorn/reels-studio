@@ -4,7 +4,7 @@ S/lines/2026-11-07_ep05-nar-<L>-kore-x110-r14.wav (48 kHz mono, 0.05 s lead like
 Pause rule: every silence (<= -35 dB, >= 0.08 s) longer than CAP is cut from its middle down to CAP; the first pause of L05 (the "..." break) and
 all L15 "..." breaks use CAP_BREAK. Run: python3 -I scripts/edu-series/ep05/r14-trim.py [cap_other cap_break]"""
 import os, re, subprocess, sys
-S = os.path.expanduser('~/ReelsStore/projects/EDU/narration/ep05/lines')
+S = os.path.expanduser('~/ReelsStore/projects/edu/EDU/narration/ep05/lines')
 SRC = 'out/edu05/voice-r14'
 cap_other = float(sys.argv[1]) if len(sys.argv) > 1 else 0.10
 cap_break = float(sys.argv[2]) if len(sys.argv) > 2 else 0.22

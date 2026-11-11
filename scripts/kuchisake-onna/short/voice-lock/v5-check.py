@@ -5,7 +5,7 @@ amplitude JSON diff, the โทษ F0 contour (autocorrelation 70-450 Hz, so a r
 pitch-fix-v5.py's QA is not cut off), the largest F0 step between 10 ms frames (semitones), the splice residuals at both
 crossfades, 4-8 kHz and 8-16 kHz energy of the word, the residual timing lag of the word and its edges, and the B06 proxy
 ASR (Whisper large-v3-turbo, letters ratio as in v4-check.py) for v3, v4 and v5.
-v4 is read from the store (projects/KSO/audio/voice-lock-v4), so the A/B baseline is the stored file itself.
+v4 is read from the store (projects/legacy/KSO/audio/voice-lock-v4), so the A/B baseline is the stored file itself.
 Proxy only: nobody listened. Thai ASR is rough; a matching transcript does not prove the pitch is right.
 
 Run (worktree root, Whisper venv): HF_HUB_OFFLINE=1 out/whisper-venv/bin/python -I \
@@ -17,13 +17,13 @@ import numpy as np
 
 STORE = Path(os.environ.get('REELS_STORE') or Path.home() / 'ReelsStore')
 V3_TRACK = Path('out/kso-ep01-short/voice-lock-r3/final/KSO-EP01-SHORT_narration_voicelock-v3.mp3')
-V4_TRACK = STORE / 'projects/KSO/audio/voice-lock-v4/final/KSO-EP01-SHORT_narration_voicelock-v4.mp3'
+V4_TRACK = STORE / 'projects/legacy/KSO/audio/voice-lock-v4/final/KSO-EP01-SHORT_narration_voicelock-v4.mp3'
 V5_TRACK = Path('out/kso-ep01-short/voice-lock-v5/final/KSO-EP01-SHORT_narration_voicelock-v5.mp3')
 V3_AMP = Path('out/kso-ep01-short/voice-lock-r3/final/KSO-EP01-SHORT_narration_voicelock-v3.amplitude.json')
-V4_AMP = STORE / 'projects/KSO/audio/voice-lock-v4/final/KSO-EP01-SHORT_narration_voicelock-v4.amplitude.json'
+V4_AMP = STORE / 'projects/legacy/KSO/audio/voice-lock-v4/final/KSO-EP01-SHORT_narration_voicelock-v4.amplitude.json'
 V5_AMP = Path('out/kso-ep01-short/voice-lock-v5/final/KSO-EP01-SHORT_narration_voicelock-v5.amplitude.json')
 V3_CLIP = Path('out/kso-ep01-short/voice-lock-r3/segments/B06.wav')
-V4_CLIP = STORE / 'projects/KSO/audio/voice-lock-v4/segments-v4/B06.wav'
+V4_CLIP = STORE / 'projects/legacy/KSO/audio/voice-lock-v4/segments-v4/B06.wav'
 V5_CLIP = Path('out/kso-ep01-short/voice-lock-v5/segments-v5/B06.wav')
 VM = Path('scripts/narration/voice-match.py')
 TAG = re.compile(r'<[^>]+>')

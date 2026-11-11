@@ -18,7 +18,7 @@ Status: **E2 and registration done in the working tree (uncommitted, by instruct
 
 Registration fields: `ending: 'A_fade'`, `endHoldSec: 0`, `endFadeSec: 0`; `narration: {src: 'narration/HANAKO-SHORT.mp3', amplitude, fps: 30, startFrame: 45}`; `captionStyle: {preset: 'outline', position: 'lower'}` (bottom edge y 1240, inside the caption-safe box). No `audio`, no `sfx`, no `chrome` override (default channel label `ทำไมล่ะ`, top-left, as the other shorts).
 
-Narration files: `public/narration/HANAKO-SHORT.mp3` = store `projects/HANAKO/audio/final/s3-tail-reread/HANAKO-SHORT-tail.mp3` (sha256 `ed3a339f…`, 82.033 s, 48 kHz mono, matches the committed file). `public/narration/HANAKO-SHORT.amplitude.json` = store `projects/HANAKO/audio/final/lock-v3/HANAKO-SHORT.amplitude.json` (filed by this pass, sha256 `fdfe80f9…`, 2461 values). Both were already committed in Git; the lock adds the store path.
+Narration files: `public/narration/HANAKO-SHORT.mp3` = store `projects/legacy/HANAKO/audio/final/s3-tail-reread/HANAKO-SHORT-tail.mp3` (sha256 `ed3a339f…`, 82.033 s, 48 kHz mono, matches the committed file). `public/narration/HANAKO-SHORT.amplitude.json` = store `projects/legacy/HANAKO/audio/final/lock-v3/HANAKO-SHORT.amplitude.json` (filed by this pass, sha256 `fdfe80f9…`, 2461 values). Both were already committed in Git; the lock adds the store path.
 
 ## 2. Decisions and why
 

@@ -5,7 +5,7 @@ slot start; the hold exhale at G1732. No gain on the lines, no atempo, no inner 
 Writes public/narration/EDU-EP11-SHORT-narration-v2.wav and out/EDU-EP11-SHORT/audio/placements.txt (slot start G, narration anchors after the shift).
 Run: python3 -I scripts/edu-series/ep11/narration-place.py"""
 import array, os, re, subprocess, wave
-R = os.path.expanduser('~/ReelsStore/projects/EDU/voice/')
+R = os.path.expanduser('~/ReelsStore/projects/edu/EDU/voice/')
 FPS, SR, TOTAL, LEAD = 30, 48000, 1788, 0.10
 NAR = R + 'ep11-nar-kore-A-r3-x0.92-regap028-L16t1.wav'
 # (name, nominal gap centre in NAR s from the R2 line table, slot length s, take file or None for a silent/SFX slot)

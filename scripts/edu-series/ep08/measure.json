@@ -371,7 +371,7 @@
  },
  "vocal": {
   "V01": {
-   "file": "projects/EDU/audio/EDU-EP08-SHORT/vocal-samples/2026-11-08_ep08-V01-aoede-B.wav",
+   "file": "projects/edu/EDU/audio/EDU-EP08-SHORT/vocal-samples/2026-11-08_ep08-V01-aoede-B.wav",
    "slot_start": 55,
    "slot_end": 101,
    "file_start_frame": 55,
@@ -391,7 +391,7 @@
    "note": "zero G95-100 sample-exact (V01 voiced end + >= 25 ms, 6 f)"
   },
   "V02": {
-   "file": "projects/EDU/audio/EDU-EP08-SHORT/vocal-samples/2026-11-08_ep08-V02-algenib-A.wav",
+   "file": "projects/edu/EDU/audio/EDU-EP08-SHORT/vocal-samples/2026-11-08_ep08-V02-algenib-A.wav",
    "slot_start": 1412,
    "slot_end": 1453,
    "file_start_frame": 1412,

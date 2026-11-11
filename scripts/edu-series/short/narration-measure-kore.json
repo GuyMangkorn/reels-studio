@@ -2,7 +2,7 @@
  "deliverable": "EDU-EP01-SHORT",
  "script": "EDU-SCRIPT-R1.1",
  "timingStatus": "audio-measured (alternative voice take, not user-approved)",
- "take": "projects/EDU/audio/voice-lock-v1/EDU-EP01-SHORT-narration-kore-v1.wav",
+ "take": "projects/edu/EDU/audio/voice-lock-v1/EDU-EP01-SHORT-narration-kore-v1.wav",
  "voice": "Gemini TTS Kore",
  "style": "natural everyday storytelling, soft and warm but clear and conversational, calm quiet wonder, awake, steady brisk pace, short natural pauses, no audible breathing; same narrator throughout, do not speed up",
  "post": "scripts/edu-series/short/voice-regap.py (4th arg = lineGaps table below): gaps >= 0.15 s tightened (line gap 0.28 s, comma 0.14 s, reveal pauses 0.55 s before L09 and L12, jolt gap 3.2 s placeholder before L07, 0.5 s tail), atempo 1.08, loudnorm -16 LUFS / TP -1.5",

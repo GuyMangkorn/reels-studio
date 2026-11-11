@@ -16,7 +16,7 @@ import numpy as np
 STORE = Path(os.environ.get('REELS_STORE') or Path.home() / 'ReelsStore')
 CLIPS = {
     'v3': Path('out/kso-ep01-short/voice-lock-r3/segments/B06.wav'),
-    'v4': STORE / 'projects/KSO/audio/voice-lock-v4/segments-v4/B06.wav',
+    'v4': STORE / 'projects/legacy/KSO/audio/voice-lock-v4/segments-v4/B06.wav',
     'v5': Path('out/kso-ep01-short/voice-lock-v5/segments-v5/B06.wav'),
 }
 RATE = 48000

@@ -132,7 +132,7 @@ SRC015–SRC018 are registered in [signoff-boat-r5.md](signoff-boat-r5.md#source
 
 | ID | Source | What it supports | Limits |
 | --- | --- | --- | --- |
-| SRC019 | Poster 『トイレの花子さん』 (Shochiku, 1995), user-supplied scan, store `projects/HANAKO/references/user/2026-10-31_b07-film-poster-toire-no-hanako-san-1995.jpg` | F012 / `B07-SH03`: title without 新生; credits 松岡錠司監督作品, 河野由佳, 井上孝幸, 前田愛, 大塚寧々, 豊川悦司, 音楽 矢倉邦晃, 松竹株式会社, 百年松竹. Identified as the 1995 film, high confidence | Inspected unblurred by Boat. No year printed (year from SRC015/SRC020). Provenance user-only (IMDb-style download); rights the user's |
+| SRC019 | Poster 『トイレの花子さん』 (Shochiku, 1995), user-supplied scan, store `projects/legacy/HANAKO/references/user/2026-10-31_b07-film-poster-toire-no-hanako-san-1995.jpg` | F012 / `B07-SH03`: title without 新生; credits 松岡錠司監督作品, 河野由佳, 井上孝幸, 前田愛, 大塚寧々, 豊川悦司, 音楽 矢倉邦晃, 松竹株式会社, 百年松竹. Identified as the 1995 film, high confidence | Inspected unblurred by Boat. No year printed (year from SRC015/SRC020). Provenance user-only (IMDb-style download); rights the user's |
 | SRC020 | Jorudan movie database, https://movie.jorudan.co.jp/film/27930/ | F012: 公開日 1995年7月1日, 監督 松岡錠司, 配給 松竹, 音楽 矢倉邦晃, cast matching SRC019 | Fetch-tool summary; database, not a studio record |
 
 F012 status unchanged in the R2 table (`unverified` — safe on leads); the claim now has a primary artifact plus two independent databases and no contrary evidence. Overall status stays **`verification-incomplete`** (F001/F004/F008).

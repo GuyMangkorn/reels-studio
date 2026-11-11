@@ -11,18 +11,18 @@ Usage:
   python3 -I scripts/store.py adopt EP --project P [PUBLIC_PATH...] [--source CHECKOUT]
                                                              # lock media already in public/ (paths also from stdin)
   python3 -I scripts/store.py backfill-chat GLOB...          # store images the user attached in past chat transcripts
-  python3 -I scripts/store.py archive ID... | --all-worktrees # out/<ID>/ -> projects/<PROJECT>/renders/<ID>/<commit>/
-  python3 -I scripts/store.py archive --path DIR --project P --kind K   # takes, previews, samples -> projects/P/K/
+  python3 -I scripts/store.py archive ID... | --all-worktrees # out/<ID>/ -> projects/<channel>/<PROJECT>/renders/<ID>/<commit>/
+  python3 -I scripts/store.py archive --path DIR --project P --kind K   # takes, previews, samples -> projects/<channel>/P/K/
   python3 -I scripts/store.py prune PATH... [--delete]       # free gitignored folders: drop stored copies and scratch
   python3 -I scripts/store.py publish ID [--video STORE_PATH] [--cover PATH] [--posted DATE] [--title T] --reason R
                                                              # publish/<PROJECT>/<ID>/: the one MP4 + cover the user posts
 
 $REELS_STORE sets the store root (default ~/ReelsStore). STORE_PATH is relative to it, for example
-library/sound/sfx/water/water_pool-splash-small_01.wav or projects/WFOG/renders/... . A sidecar FILE.json or
+library/sound/sfx/water/water_pool-splash-small_01.wav or projects/legacy/WFOG/renders/... . A sidecar FILE.json or
 FILE-without-extension.json is stored next to the file as <name>.json. Stored files are never overwritten: putting
 the same content again is a no-op, different content at an existing path is refused. Metadata (.json sidecars, .md
 indexes) may be replaced and is not hash-checked by verify. publish/ is the one mutable folder: only `publish` writes
-it, with copies of stored files, and it is not in the manifest (each folder's history.tsv records every change). PROJECT is the composition ID's first segment (ALIASES). Exit 0 ok, 1 problems found,
+it, with copies of stored files, and it is not in the manifest (each folder's history.tsv records every change). PROJECT is the composition ID's first segment (ALIASES); it sits under its channel folder (SERIES): projects/<channel>/<PROJECT>/ and publish/<channel>/<PROJECT>/. Exit 0 ok, 1 problems found,
 2 bad arguments. Prints one summary line plus any problems.
 """
 import argparse, base64, datetime, fnmatch, glob, hashlib, json, os, re, shutil, subprocess, sys
@@ -42,8 +42,11 @@ def sha256(path):
 def store_path(rel):
     """Return the absolute path for a store-relative path, or exit 2 if it leaves the store or hits the manifest."""
     norm = os.path.normpath(rel)
-    if os.path.isabs(rel) or norm.startswith('..') or norm in ('.', MANIFEST) or norm.split(os.sep)[0] == 'publish':
+    parts = norm.split(os.sep)
+    if os.path.isabs(rel) or norm.startswith('..') or norm in ('.', MANIFEST) or parts[0] == 'publish':
         sys.exit(f'bad store path: {rel}')  # main() maps 'bad ...' exits to code 2
+    if parts[0] == 'projects' and (len(parts) < 3 or parts[1] not in CHANNELS):
+        sys.exit(f"bad store path: {rel} (projects/<channel>/<SERIES>/...; channels: {', '.join(CHANNELS)})")
     return norm, os.path.join(STORE, norm)
 
 
@@ -57,6 +60,22 @@ METADATA = ('.json', '.md')  # sidecars and indexes: edited in place (selection 
 MEDIA = {'.mp4', '.mov', '.webm', '.mp3', '.wav', '.m4a', '.ogg', '.flac', '.png', '.jpg', '.jpeg', '.webp', '.gif'}
 SKIP_PARTS = ('bundle', 'venv', 'node_modules', 'logs', 'tmp', 'qa')  # scratch under out/ that is never archived
 ALIASES = {'ZCPAINT': 'ZCONDO'}  # composition ID prefix -> project folder, only where they differ
+# Channel folders under projects/ and publish/ (channels/README.md): edu and fiction are the two channels, legacy holds
+# series made before the channels were split, shared holds material both channels use.
+CHANNELS = ('edu', 'fiction', 'legacy', 'shared')
+# Series (project folder) -> channel folder. A new series is added here before its first file is stored.
+SERIES = {'EDU': 'edu', 'KIT': 'shared', '_shared': 'shared',
+          **{name: 'legacy' for name in ('ALVARENGA', 'BLOOP', 'CATBOX', 'EG', 'HANAKO', 'KSO', 'LAKENYOS', 'POOLDEPTH', 'SHIPWRECK',
+                                         'WDG', 'WFOG', 'ZCONDO', 'ZCONDO2', '_legacy', '_unsorted')}}
+
+
+def series_dir(project):
+    """'<channel>/<SERIES>' for a series, e.g. 'edu/EDU'; exits 2 for a name that is not a registered series."""
+    table = dict(SERIES, **dict(pair.split('=') for pair in os.environ.get('REELS_STORE_SERIES', '').split(',') if pair))  # tests add series
+    if project not in table:
+        sys.exit(f'bad series: {project} is not in SERIES (scripts/store.py). A series is the ID prefix (EDU), not a composition ID; '
+                 'add a new series with its channel there first')
+    return f'{table[project]}/{project}'
 _rows = None
 
 
@@ -134,7 +153,7 @@ def rank(rel):
 
 def adopt(a):
     """Lock media an episode already has in public/: reuse a stored file with the same bytes, else store it under
-    projects/PROJECT/public/<path>. Paths come from the arguments or one per line on stdin."""
+    projects/<channel>/PROJECT/public/<path>. Paths come from the arguments or one per line on stdin."""
     by_hash = {}
     for rel, row in manifest().items(): by_hash.setdefault(row['sha256'], []).append(rel)
     paths = a.paths or [l.strip() for l in sys.stdin if l.strip()]
@@ -146,7 +165,7 @@ def adopt(a):
         digest = sha256(src); same = sorted(by_hash.get(digest, []), key=rank)
         if same: rel = same[0]; counts['reused'] += 1
         else:
-            rel = os.path.join('projects', a.project, pub)
+            rel = os.path.join('projects', series_dir(a.project), pub)
             if store_file(src, rel, sidecar=False) == 'conflict': return fail(f'{rel} exists with other content')
             by_hash[digest] = [rel]; counts['stored'] += 1
         lock[pub] = {'store': rel, 'sha256': digest}
@@ -158,7 +177,7 @@ def adopt(a):
 
 def backfill_chat(a):
     """Store images the user attached in chat (user turns only, not tool screenshots) from Claude Code and Codex
-    transcripts as projects/_unsorted/references/user/<date>_<session>_<n>.<ext> with a .json sidecar."""
+    transcripts as projects/legacy/_unsorted/references/user/<date>_<session>_<n>.<ext> with a .json sidecar."""
     found = []
     for pattern in a.transcripts:
         for t in sorted(glob.glob(os.path.expanduser(pattern), recursive=True)):
@@ -171,7 +190,7 @@ def backfill_chat(a):
         json.dump({'date': stamp, 'session': session, 'harness': harness, 'transcript': t, 'user_text': text,
                    'use': 'user-supplied, internal reference only'}, open(src[:-len(ext) - 1] + '.json', 'w', encoding='utf-8'),
                   ensure_ascii=False, indent=2)
-        counts[store_file(src, f'projects/_unsorted/references/user/{name}')] += 1
+        counts[store_file(src, f'projects/legacy/_unsorted/references/user/{name}')] += 1
     shutil.rmtree(tmp)
     print(f"chat images {len(found)}: stored {counts['stored']}, already {counts['already']}, conflicts {counts['conflict']}")
     return 1 if counts['conflict'] else 0
@@ -252,7 +271,7 @@ def archive(a):
     counts = {'stored': 0, 'already': 0, 'cloud': 0}; skipped = []; known = None
     if a.path:
         if not (a.project and a.kind): sys.exit('bad arguments: --path needs --project and --kind')
-        archive_folder(a.path, f'projects/{a.project}/{a.kind}', f'projects/{a.project}/', GIT[1], counts)
+        archive_folder(a.path, f'projects/{series_dir(a.project)}/{a.kind}', f'projects/{series_dir(a.project)}/', GIT[1], counts)
     trees = [l[9:] for l in git('worktree', 'list', '--porcelain').splitlines() if l.startswith('worktree ')] if a.all_worktrees else ['.']
     for tree in trees:
         out = os.path.join(tree, 'out')
@@ -271,7 +290,7 @@ def archive(a):
                     skipped.append(f'{folder} ({new} of {len(files)} media files not in the store' + (f', {len(cloud)} iCloud-only not checked' if cloud else '')
                                    + '; archive with --path DIR --project P --kind K)')
                 continue
-            base = f'projects/{project_of(name)}/renders/{name}'
+            base = f'projects/{series_dir(project_of(name))}/renders/{name}'
             archive_folder(folder, f'{base}/{version}', base + '/', version.split('-dirty')[0], counts)
     print(f"archived {counts['stored']}, already stored {counts['already']}, not archived {len(skipped)}"
           + (f", iCloud-only skipped {counts['cloud']} (download with `brctl download <folder>`, then rerun)" if counts['cloud'] else ''))
@@ -310,7 +329,7 @@ def prune(a):
 
 
 PUBLISH = 'publish'  # the files the user posts: one mutable folder per deliverable (docs/reviews/2026-11-07-publish-folder-proposal.md)
-DELIVERY = re.compile(r'^projects/[^/]+/renders/(?P<id>[^/]+)/[^/]+/(?P=id)(_[A-Za-z0-9_]+)?\.mp4$')
+DELIVERY = re.compile(r'^projects/[^/]+/[^/]+/renders/(?P<id>[^/]+)/[^/]+/(?P=id)(_[A-Za-z0-9_]+)?\.mp4$')
 
 
 def delivery_renders(composition_id):
@@ -348,7 +367,7 @@ def place(src, dest):
 def publish(a):
     cid = a.id
     if not COMPOSITION_ID.match(cid): sys.exit(f'bad composition ID: {cid}')
-    project = project_of(cid); folder = os.path.join(STORE, PUBLISH, project, cid)
+    project = project_of(cid); home = series_dir(project); folder = os.path.join(STORE, PUBLISH, home, cid)
     meta_path = os.path.join(folder, 'publish.json')
     meta = json.load(open(meta_path, encoding='utf-8')) if os.path.exists(meta_path) else {'id': cid, 'project': project}
     today = datetime.date.today().isoformat(); changed = []
@@ -358,11 +377,11 @@ def publish(a):
         if not rel and not a.cover: return fail(f'{cid}: no delivery render in the store (render.mjs {cid} archives one)')
         m = DELIVERY.match(rel or '')
         if rel and (not m or m['id'] != cid or rel not in manifest()):
-            return fail(f'{rel}: not a stored delivery render of {cid} (projects/<P>/renders/{cid}/<version>/{cid}[_ending].mp4); '
+            return fail(f'{rel}: not a stored delivery render of {cid} (projects/<channel>/<P>/renders/{cid}/<version>/{cid}[_ending].mp4); '
                         'draft, final-cut, range and clip renders are never published')
         if rel: changed.append(('video', f'{cid}.mp4', rel))
     if a.cover:
-        rel = stored_or_put(a.cover, f'projects/{project}/renders/{cid}/covers')
+        rel = stored_or_put(a.cover, f'projects/{home}/renders/{cid}/covers')
         if os.path.splitext(rel)[1].lower() not in ('.png', '.jpg', '.jpeg', '.webp'): return fail(f'{rel}: a cover is a picture')
         changed.append(('cover', f'{cid}_cover{os.path.splitext(rel)[1].lower()}', rel))
     if not changed and not a.posted and a.title is None: return fail(f'{cid}: nothing to publish (give --video, --cover, --posted or --title)')
@@ -389,20 +408,20 @@ def publish(a):
     with open(meta_path, 'w', encoding='utf-8') as f: json.dump(meta, f, ensure_ascii=False, indent=2); f.write('\n')
     write_publish_index()
     missing = [k for k in ('video', 'cover') if not meta.get(k)]
-    print(f"{cid}: {meta['status']} -> {os.path.join(PUBLISH, project, cid)}/ "
+    print(f"{cid}: {meta['status']} -> {os.path.join(PUBLISH, home, cid)}/ "
           + ' '.join(f'{k}={n} (from {r})' for k, n, r in changed) + (f" missing: {', '.join(missing)}" if missing else ''))
     return 0
 
 
 def write_publish_index():
     rows = []
-    for meta_path in sorted(glob.glob(os.path.join(STORE, PUBLISH, '*', '*', 'publish.json'))):
-        m = json.load(open(meta_path, encoding='utf-8'))
-        rows.append(f"| {m['project']} | [{m['id']}]({m['project']}/{m['id']}/) | {m.get('status', '')} | {m.get('updated', '')} "
+    for meta_path in sorted(glob.glob(os.path.join(STORE, PUBLISH, '*', '*', '*', 'publish.json'))):
+        m = json.load(open(meta_path, encoding='utf-8')); channel = os.path.relpath(meta_path, os.path.join(STORE, PUBLISH)).split(os.sep)[0]
+        rows.append(f"| {channel} | {m['project']} | [{m['id']}]({channel}/{m['project']}/{m['id']}/) | {m.get('status', '')} | {m.get('updated', '')} "
                     f"| {'yes' if m.get('video') else '**missing**'} | {'yes' if m.get('cover') else '**missing**'} | {m.get('title', '')} |")
     text = ('# Publish\n\nThe files to post: one folder per video, written only by `python3 -I scripts/store.py publish`. '
-            'A file outside this folder is not final.\n\n| Series | Video | Status | Updated | MP4 | Cover | Title |\n'
-            '| --- | --- | --- | --- | --- | --- | --- |\n' + '\n'.join(rows) + '\n')
+            'A file outside this folder is not final.\n\n| Channel | Series | Video | Status | Updated | MP4 | Cover | Title |\n'
+            '| --- | --- | --- | --- | --- | --- | --- | --- |\n' + '\n'.join(rows) + '\n')
     with open(os.path.join(STORE, PUBLISH, 'INDEX.md'), 'w', encoding='utf-8') as f: f.write(text)
 
 

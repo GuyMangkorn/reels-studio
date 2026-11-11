@@ -13,7 +13,7 @@ every edge is RE-MEASURED with the same silencedetect (-35 dB / 0.08 s) on the r
 silent beats, CLOSE) are unchanged, so line-to-line gaps keep their 1.0 length. Without --tempo the output is byte-identical to the W4 lock."""
 import json, os, subprocess, sys, re, math
 FPS = 30
-READ = os.path.expanduser('~/ReelsStore/projects/EDU/narration/ep08/2026-11-08_ep08-nar-kore-A-fullread.wav')
+READ = os.path.expanduser('~/ReelsStore/projects/edu/EDU/narration/ep08/2026-11-08_ep08-nar-kore-A-fullread.wav')
 HERE = os.path.dirname(os.path.abspath(__file__))
 OUT = 'out/ep08-voice/lines'
 # line -> (voiced start, voiced end) in the read, seconds (energy edges)
@@ -114,9 +114,9 @@ def silences(path, af='', d=0.08, join=None):
             if st[i + 1] - en[i] >= join: E.append(en[i]); S.append(st[i + 1])
         E.append(en[-1]); st, en = S, E
     return st, en
-V01_FILE = os.path.expanduser('~/ReelsStore/projects/EDU/audio/EDU-EP08-SHORT/vocal-samples/2026-11-08_ep08-V01-aoede-B.wav')
-V02_FILE = os.path.expanduser('~/ReelsStore/projects/EDU/audio/EDU-EP08-SHORT/vocal-samples/2026-11-08_ep08-V02-algenib-A.wav')
-LD = os.path.expanduser('~/ReelsStore/projects/EDU/narration/ep08/lines')
+V01_FILE = os.path.expanduser('~/ReelsStore/projects/edu/EDU/audio/EDU-EP08-SHORT/vocal-samples/2026-11-08_ep08-V01-aoede-B.wav')
+V02_FILE = os.path.expanduser('~/ReelsStore/projects/edu/EDU/audio/EDU-EP08-SHORT/vocal-samples/2026-11-08_ep08-V02-algenib-A.wav')
+LD = os.path.expanduser('~/ReelsStore/projects/edu/EDU/narration/ep08/lines')
 NEW_FILES = {'L11': f'{LD}/2026-11-08_ep08-nar-L11-kore-A-r13-trim.wav', 'L12': f'{LD}/2026-11-08_ep08-nar-L12-kore-A-trim.wav', 'L13': f'{LD}/2026-11-08_ep08-nar-L13-kore-A-comma.wav'}
 L13_FILE = NEW_FILES['L13']
 V01_MARGIN, V01_SIL, V02_TAIL = 0.025, 6, 13   # 1.0 values: V01 voiced end 1.2415 s, silence frame L38 (G91 = end + 25 ms), 6 f silence; V02 L26 + 13 = 39
@@ -162,9 +162,9 @@ if __name__ == '__main__':
     total = S[-1][2]
     v1 = dict(silent)['V01'] if False else [c for k, c in silent if k == 'V01'][0]; v2 = [c for k, c in silent if k == 'V02'][0]
     w1 = rep['V01']['voiced_frames_in_file'] if rep else [4, 38]; w2 = rep['V02']['voiced_frames_in_file'] if rep else [9, 26]
-    vocal = {'V01': {'file': 'projects/EDU/audio/EDU-EP08-SHORT/vocal-samples/2026-11-08_ep08-V01-aoede-B.wav', 'slot_start': v1, 'slot_end': v1 + V01, 'file_start_frame': v1,
+    vocal = {'V01': {'file': 'projects/edu/EDU/audio/EDU-EP08-SHORT/vocal-samples/2026-11-08_ep08-V01-aoede-B.wav', 'slot_start': v1, 'slot_end': v1 + V01, 'file_start_frame': v1,
                      'voiced_frames': [v1 + w1[0], v1 + w1[1]]},
-             'V02': {'file': 'projects/EDU/audio/EDU-EP08-SHORT/vocal-samples/2026-11-08_ep08-V02-algenib-A.wav', 'slot_start': v2, 'slot_end': v2 + V02, 'file_start_frame': v2,
+             'V02': {'file': 'projects/edu/EDU/audio/EDU-EP08-SHORT/vocal-samples/2026-11-08_ep08-V02-algenib-A.wav', 'slot_start': v2, 'slot_end': v2 + V02, 'file_start_frame': v2,
                      'voiced_frames': [v2 + w2[0], v2 + w2[1]], 'note': 'radio filter at mix time'}}
     if rep:
         sil = v1 + rep['V01']['silence_frame_in_slot']

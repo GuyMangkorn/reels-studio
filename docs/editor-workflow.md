@@ -25,7 +25,7 @@ Media the user supplies (footage, images, audio) enters the [full pipeline](deli
 
 | Input | Record |
 | --- | --- |
-| Source media: paths, durations, rights/license of every clip, image, music and font | Each file is filed into the [asset store](../README.md#asset-store) (`store.py put` to `projects/<PROJECT>/references/user/` or `.../sources/`, then `store.py use` for files the timeline plays). Inventory in `delivery.md` with store paths; unlicensed or unknown-rights media is flagged, not shipped silently |
+| Source media: paths, durations, rights/license of every clip, image, music and font | Each file is filed into the [asset store](../README.md#asset-store) (`store.py put` to `projects/<channel>/<PROJECT>/references/user/` or `.../sources/`, then `store.py use` for files the timeline plays). Inventory in `delivery.md` with store paths; unlicensed or unknown-rights media is flagged, not shipped silently |
 | Goal and platform: purpose, audience, target length, aspect ratio(s), ending | [Style profile](delivery-workflow.md#style-profile) values |
 | Voice and captions: supplied recording or TTS, transcript/SRT if any, caption style, language | Cue source and revision; do not invent Thai wording the user did not supply (ask Preaw). For a supplied recording with no transcript, `scripts/transcribe.py` gives a draft transcript/SRT; record it as machine-drafted and have it reviewed before captions use it |
 | Mood and pacing: reference clips, music feel, cut rhythm, must-keep moments | Editing intent for [editing principles](editor-principles.md) |

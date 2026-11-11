@@ -4,7 +4,7 @@
  "timingStatus": "audio-measured, user-passed by ear 2026-11-06 (tone, takes); lengths accepted over 60 s",
  "voice": "Gemini TTS Kore, style nar-kore-brisk, atempo 1.10, 48 kHz mono, -15.95 LUFS",
  "requests": 0,
- "source": "projects/EDU/narration/ep05/2026-11-06_ep05-nar-kore-brisk-fullread-x110.wav",
+ "source": "projects/edu/EDU/narration/ep05/2026-11-06_ep05-nar-kore-brisk-fullread-x110.wav",
  "readSec": 55.5,
  "method": "Whisper large-v3-turbo alignment (out/edu05/voice/nar-kore-brisk-x110-lines.json) snapped to ffmpeg silencedetect -35 dB / 0.15 s edges; split files carry 0.05 s lead and 0.08 s tail, 10/20 ms fades; speech times are positions in the x1.10 read",
  "speechOnlySec": 47.21,
@@ -17,7 +17,7 @@
    "fileStart": 0.174,
    "fileDur": 1.12,
    "onsetInFile": 0.05,
-   "file": "projects/EDU/narration/ep05/lines/2026-11-06_ep05-nar-L01-kore-x110.wav",
+   "file": "projects/edu/EDU/narration/ep05/lines/2026-11-06_ep05-nar-L01-kore-x110.wav",
    "uncertain": null
   },
   {
@@ -28,7 +28,7 @@
    "fileStart": 1.666,
    "fileDur": 3.03,
    "onsetInFile": 0.05,
-   "file": "projects/EDU/narration/ep05/lines/2026-11-06_ep05-nar-L02-kore-x110.wav",
+   "file": "projects/edu/EDU/narration/ep05/lines/2026-11-06_ep05-nar-L02-kore-x110.wav",
    "uncertain": null
   },
   {
@@ -39,7 +39,7 @@
    "fileStart": 5.097,
    "fileDur": 2.35,
    "onsetInFile": 0.05,
-   "file": "projects/EDU/narration/ep05/lines/2026-11-06_ep05-nar-L03-kore-x110.wav",
+   "file": "projects/edu/EDU/narration/ep05/lines/2026-11-06_ep05-nar-L03-kore-x110.wav",
    "uncertain": null
   },
   {
@@ -50,7 +50,7 @@
    "fileStart": 7.942,
    "fileDur": 2.83,
    "onsetInFile": 0.05,
-   "file": "projects/EDU/narration/ep05/lines/2026-11-06_ep05-nar-L04-kore-x110.wav",
+   "file": "projects/edu/EDU/narration/ep05/lines/2026-11-06_ep05-nar-L04-kore-x110.wav",
    "uncertain": null
   },
   {
@@ -61,7 +61,7 @@
    "fileStart": 11.166,
    "fileDur": 3.88,
    "onsetInFile": 0.05,
-   "file": "projects/EDU/narration/ep05/lines/2026-11-06_ep05-nar-L05-kore-x110.wav",
+   "file": "projects/edu/EDU/narration/ep05/lines/2026-11-06_ep05-nar-L05-kore-x110.wav",
    "uncertain": null
   },
   {
@@ -72,7 +72,7 @@
    "fileStart": 15.495,
    "fileDur": 2.98,
    "onsetInFile": 0.05,
-   "file": "projects/EDU/narration/ep05/lines/2026-11-06_ep05-nar-L06-kore-x110.wav",
+   "file": "projects/edu/EDU/narration/ep05/lines/2026-11-06_ep05-nar-L06-kore-x110.wav",
    "uncertain": null
   },
   {
@@ -83,7 +83,7 @@
    "fileStart": 18.953,
    "fileDur": 2.44,
    "onsetInFile": 0.05,
-   "file": "projects/EDU/narration/ep05/lines/2026-11-06_ep05-nar-L07-kore-x110.wav",
+   "file": "projects/edu/EDU/narration/ep05/lines/2026-11-06_ep05-nar-L07-kore-x110.wav",
    "uncertain": null
   },
   {
@@ -94,7 +94,7 @@
    "fileStart": 21.75,
    "fileDur": 3.81,
    "onsetInFile": 0.05,
-   "file": "projects/EDU/narration/ep05/lines/2026-11-06_ep05-nar-L09-kore-x110.wav",
+   "file": "projects/edu/EDU/narration/ep05/lines/2026-11-06_ep05-nar-L09-kore-x110.wav",
    "uncertain": null
   },
   {
@@ -105,7 +105,7 @@
    "fileStart": 25.758,
    "fileDur": 2.08,
    "onsetInFile": 0.05,
-   "file": "projects/EDU/narration/ep05/lines/2026-11-06_ep05-nar-L10-kore-x110.wav",
+   "file": "projects/edu/EDU/narration/ep05/lines/2026-11-06_ep05-nar-L10-kore-x110.wav",
    "uncertain": null
   },
   {
@@ -116,7 +116,7 @@
    "fileStart": 28.299,
    "fileDur": 2.42,
    "onsetInFile": 0.05,
-   "file": "projects/EDU/narration/ep05/lines/2026-11-06_ep05-nar-L11-kore-x110.wav",
+   "file": "projects/edu/EDU/narration/ep05/lines/2026-11-06_ep05-nar-L11-kore-x110.wav",
    "uncertain": null
   },
   {
@@ -127,7 +127,7 @@
    "fileStart": 31.026,
    "fileDur": 3.73,
    "onsetInFile": 0.05,
-   "file": "projects/EDU/narration/ep05/lines/2026-11-06_ep05-nar-L12-kore-x110.wav",
+   "file": "projects/edu/EDU/narration/ep05/lines/2026-11-06_ep05-nar-L12-kore-x110.wav",
    "uncertain": null
   },
   {
@@ -138,7 +138,7 @@
    "fileStart": 35.032,
    "fileDur": 2.18,
    "onsetInFile": 0.05,
-   "file": "projects/EDU/narration/ep05/lines/2026-11-06_ep05-nar-L13-kore-x110.wav",
+   "file": "projects/edu/EDU/narration/ep05/lines/2026-11-06_ep05-nar-L13-kore-x110.wav",
    "uncertain": null
   },
   {
@@ -149,7 +149,7 @@
    "fileStart": 37.746,
    "fileDur": 2.12,
    "onsetInFile": 0.05,
-   "file": "projects/EDU/narration/ep05/lines/2026-11-06_ep05-nar-L14-kore-x110.wav",
+   "file": "projects/edu/EDU/narration/ep05/lines/2026-11-06_ep05-nar-L14-kore-x110.wav",
    "uncertain": "boundary L14/L15 (Whisper merged them; silence gap 39.79-40.23 used; +-0.3 s)"
   },
   {
@@ -160,7 +160,7 @@
    "fileStart": 40.177,
    "fileDur": 5.6,
    "onsetInFile": 0.05,
-   "file": "projects/EDU/narration/ep05/lines/2026-11-06_ep05-nar-L15-kore-x110.wav",
+   "file": "projects/edu/EDU/narration/ep05/lines/2026-11-06_ep05-nar-L15-kore-x110.wav",
    "uncertain": "start (same gap) and end (45.52 Whisper vs 45.70 silence)"
   },
   {
@@ -171,7 +171,7 @@
    "fileStart": 46.362,
    "fileDur": 4.86,
    "onsetInFile": 0.05,
-   "file": "projects/EDU/narration/ep05/lines/2026-11-06_ep05-nar-L16-kore-x110.wav",
+   "file": "projects/edu/EDU/narration/ep05/lines/2026-11-06_ep05-nar-L16-kore-x110.wav",
    "uncertain": "opens with a 0.5 s 'แล้วคุณล่ะ' (46.41-46.91) then a 0.55 s pause; assigned to L16, not L15"
   },
   {
@@ -182,7 +182,7 @@
    "fileStart": 51.455,
    "fileDur": 3.86,
    "onsetInFile": 0.05,
-   "file": "projects/EDU/narration/ep05/lines/2026-11-06_ep05-nar-L17-kore-x110.wav",
+   "file": "projects/edu/EDU/narration/ep05/lines/2026-11-06_ep05-nar-L17-kore-x110.wav",
    "uncertain": null
   }
  ],
@@ -232,8 +232,8 @@
  },
  "v04": {
   "original": "V04-t2 4.16 s: grunt 0.29-0.87, gap 1.15, grunt 2.01-2.73, gap 0.60, gasp 3.34-3.74",
-  "trim": "projects/EDU/narration/ep05/tiny/2026-11-06_ep05-V04-t2-trim.wav (0-3.90 s, tail cut, original gaps kept)",
-  "tight": "projects/EDU/narration/ep05/tiny/2026-11-06_ep05-V04-t2-tight.wav (2.75 s, both gaps set to 0.30 s)"
+  "trim": "projects/edu/EDU/narration/ep05/tiny/2026-11-06_ep05-V04-t2-trim.wav (0-3.90 s, tail cut, original gaps kept)",
+  "tight": "projects/edu/EDU/narration/ep05/tiny/2026-11-06_ep05-V04-t2-tight.wav (2.75 s, both gaps set to 0.30 s)"
  },
  "v03": "t2 chosen by measurement: 1.48 s vs 1.88 s, same huh+giggle structure (huh 0.26-0.60, giggle 0.94-1.37); Whisper heard t2 as 'อ่ะ?' (puzzled question) and t1 as 'เฮ้' (exclamation)"
 }

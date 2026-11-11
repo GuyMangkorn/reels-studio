@@ -5,7 +5,7 @@ F = measured on the reference photos or on our render by pixel position (by eye 
 
 ## Picture
 
-`~/ReelsStore/projects/EDU-EP09-SHORT/references/boat/2026-11-08_thumb-compare-sheet.png` (local copy `out/thumb-compare/thumb-compare-sheet.png`, a 1800 px view `thumb-compare-sheet-view.png` beside it). Four panels, palm width (little-finger outer edge to index outer edge at the knuckles) scaled to the same 250 px, all thumb-right, fingers up:
+`~/ReelsStore/projects/edu/EDU/references/EDU-EP09-SHORT/boat/2026-11-08_thumb-compare-sheet.png` (local copy `out/thumb-compare/thumb-compare-sheet.png`, a 1800 px view `thumb-compare-sheet-view.png` beside it). Four panels, palm width (little-finger outer edge to index outer edge at the knuckles) scaled to the same 250 px, all thumb-right, fingers up:
 
 1. Our macro, `PLAN-flat` rendered 8 Nov 2026 from `scripts/painted-kit/hand-macro.mjs` at commit 46b05a2.
 2. R1 dorsal (rotated, flipped to put the thumb on the right).
@@ -14,7 +14,7 @@ F = measured on the reference photos or on our render by pixel position (by eye 
 
 ## References (asset store, with sidecars)
 
-| ID | Store file (`projects/EDU-EP09-SHORT/references/boat/`) | Source | Licence |
+| ID | Store file (`projects/edu/EDU/references/EDU-EP09-SHORT/boat/`) | Source | Licence |
 | --- | --- | --- | --- |
 | R1 | `2026-11-08_hands-back-front-evanamos.jpg` | https://commons.wikimedia.org/wiki/File:Human-Hands-Back-Front.jpg (Evan-Amos), dorsal and palmar, relaxed, thumb free | CC BY-SA 3.0 |
 | R2 | `2026-11-08_hand-back-genusfotografen.jpg` | https://commons.wikimedia.org/wiki/File:Hand,_fingers_-_back.jpg (Genusfotografen), dorsal, open | CC BY-SA 4.0 |

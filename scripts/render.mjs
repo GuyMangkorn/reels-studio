@@ -21,7 +21,7 @@
 // out/<CompositionId>/, so renders of different videos can run at the same time.
 // Each exported MP4 is loudness-normalized in place (scripts/loudness.mjs) and its before/after levels are logged.
 // After the MP4s are exported, out/<CompositionId>/ is copied into the asset store ($REELS_STORE, default
-// ~/ReelsStore/projects/<PROJECT>/renders/<CompositionId>/<commit>/) by scripts/store.py archive, outside every worktree.
+// ~/ReelsStore/projects/<channel>/<PROJECT>/renders/<CompositionId>/<commit>/) by scripts/store.py archive, outside every worktree.
 // Cover candidates (docs/cover-principles.md): a delivery render of <id> also renders `<id>-COVERS`, when registered
 // (src/videos/covers/), as stills into out/<id>/covers/ (scene frame 15 of each 1 s scene, named <id>_cover-A.png ...),
 // so they are archived beside the MP4. --covers renders only those stills, for a deliverable rendered earlier.

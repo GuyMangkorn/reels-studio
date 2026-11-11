@@ -1,6 +1,6 @@
 # EDU-EP11-SHORT voice lock measure (W4.2)
 
-- **Revision EDU-EP11-VOICE-LOCK-R2 (Editor, 2026-11-09): current.** Locked NAR file: store `projects/EDU/voice/ep11-nar-kore-A-r3-x0.92-regap028-L16t1.wav` (local `out/ep11-voice/l16/nar-regap028-L16t1.wav`, 49.64 s, 48 kHz mono): L01-L15 unchanged audio from the approved file, every line gap 0.28 s (user accepted re-gap), lead trimmed so L01 speech starts at 0.00 s, L16 = new take 1 (user pick). The R1 sections below are **superseded** (R1 as-read file, L16 old take) and kept as history; the R1 V01-V04 sample plan and slot table (lengths) still apply.
+- **Revision EDU-EP11-VOICE-LOCK-R2 (Editor, 2026-11-09): current.** Locked NAR file: store `projects/edu/EDU/voice/ep11-nar-kore-A-r3-x0.92-regap028-L16t1.wav` (local `out/ep11-voice/l16/nar-regap028-L16t1.wav`, 49.64 s, 48 kHz mono): L01-L15 unchanged audio from the approved file, every line gap 0.28 s (user accepted re-gap), lead trimmed so L01 speech starts at 0.00 s, L16 = new take 1 (user pick). The R1 sections below are **superseded** (R1 as-read file, L16 old take) and kept as history; the R1 V01-V04 sample plan and slot table (lengths) still apply.
 - Method R2: `ffmpeg silencedetect -35 dB 0.12 s` (`out/logs/ep11-sil-r2.txt`) for line edges, `faster_whisper` large-v3-turbo directly (`out/logs/ep11-whisper-r2.txt`, char timings, not scripts/transcribe.py). L01-L15 anchors = R1 anchor offsets inside each line (audio identical) rebased to the new line onset; spot-checked against the R2 Whisper run (L01 "ขาด" 0.64 s, L02 "แทบ" 5.52 vs 5.54, L13 "แทบ" 37.24 vs 37.23). L16 anchors measured on the new take. Precision +-0.1 s (+-3 f); L16 "ไม่ต้องกระโดดเลย" and "แล้วรอ" Whisper only (+-0.15 s), "กดปุ่มฉุกเฉิน" from the silence edge. Frames = round(s x 30). Line off edges use silence_start (L12 off 36.14 reads 0.08 s earlier than R1 duration; tail fade).
 - Timeline rule: lead 0.10 s + NAR time + slots; each slot is `0.14 + slot + 0.14` which replaces one 0.28 s gap, so timeline s = NAR s + 0.10 + sum of earlier slot lengths. **Total 56.44 s (1693 f)** (R1 projected 56.51 s / 1695 f; -0.07 s). Speech ends f1633 (54.44 s), hold [1633, 1693). Series cap 60 s and Film target 53-57 s pass.
 - NAR-only duration: 49.54 s speech end (file 49.64 s; 0.10 s tail).
@@ -91,7 +91,7 @@
 
 Model gemini-3.8-flash-tts, one request per voice with all four lines in one clip: `<gasp> เฮ้ย! <short pause> เอาไงดี, <short pause> โดดสวนขึ้นไป! <short pause> ห๊ะ... <sigh> <short pause> โอ๊ย!` (V02 ellipsis written as a comma for the TTS). Style (identical): "young Thai woman in her twenties, bright and breathy; startled gasp, then panicked and fast, then deflated and sighing, then a small pained yelp; natural acting, not a narrator". Post-edit: runs of speech separated by silences >= 0.15 s re-joined with 0.30 s gaps (so inner breath pauses are also 0.30 s); raw takes in `out/ep11-voice/v/raw-<voice>.wav` (-16 LUFS). Not checked by ear by the Editor; lines are not individually verified, the user judges.
 
-| Choice | Voice (docs descriptor) | Sample (local `out/ep11-voice/v/`, store `projects/EDU/voice/`) | Length |
+| Choice | Voice (docs descriptor) | Sample (local `out/ep11-voice/v/`, store `projects/edu/EDU/voice/`) | Length |
 |---|---|---|---|
 | W1 | Leda (Youthful) | ep11-v-W-Leda.wav, ep11-v-woman-sample-Leda.wav | 5.70 s |
 | W2 | Aoede (Breezy) | ep11-v-W-Aoede.wav, ep11-v-woman-sample-Aoede.wav | 5.76 s |
@@ -104,7 +104,7 @@ Next: user picks W1/W2/W3/regenerate. Only after the pick: full V01-V04 takes (4
 ## R1 (superseded: as-read file, old L16)
 
 - Revision: **EDU-EP11-VOICE-LOCK-R1** (Editor, 2026-11-09). Script EDU-EP11-SCRIPT-R3; storyboard EDU-EP11-ROWS-R1.2; brief EDU-EP11-BRIEF-R1.2. Timing status: NAR **audio-measured**; V01-V04 and non-speech slots **estimated** (not generated). **0 Gemini requests** in this step.
-- Source: store `projects/EDU/voice/ep11-nar-kore-A-r3-x0.92-lvl-gap.wav` (already filed; byte-identical to local `out/ep11-voice/full/ep11-nar-kore-A-r3-x0.92-lvl-gap.wav`), 52.649 s, Kore A, atempo 0.92, level fix and L16 gap 0.59 -> 0.22 s baked in. User-approved 2026-11-09 (W4.3).
+- Source: store `projects/edu/EDU/voice/ep11-nar-kore-A-r3-x0.92-lvl-gap.wav` (already filed; byte-identical to local `out/ep11-voice/full/ep11-nar-kore-A-r3-x0.92-lvl-gap.wav`), 52.649 s, Kore A, atempo 0.92, level fix and L16 gap 0.59 -> 0.22 s baked in. User-approved 2026-11-09 (W4.3).
 - Method: silencedetect (-35 dB, 0.12 s) gives line on/off edges; faster-whisper large-v3-turbo (word times, run with `faster_whisper` directly because `scripts/transcribe.py` fails on the venv's `av`: `open() got an unexpected keyword argument 'metadata_errors'`, setup finding) gives anchor onsets. Whisper mis-spells Thai (log `out/logs/ep11-whisper.txt`), so its words only locate anchors inside silence-bounded lines. Precision about +-0.1 s (+-3 f); anchors inside a line (no silence edge) +-0.15 s. Silence logs `out/logs/ep11-sil.txt`. Frames = round(s x 30).
 - Uncertain: L07 onset (Whisper 20.96 vs silence edge 21.07: edge used); L05 "ชั้นสิบเจ็ด" and L04 "ราวสิบ" (no silence edge inside, +-0.15 s); L10 year words (Whisper spelled "18 54", onset 27.82 +-0.15 s).
 
@@ -240,5 +240,5 @@ Slot lengths are Film's (brief header). Positions are in the table above. V01-V0
 | V04 | โอ๊ย! | 0.917 | 28 | -3.5 / -16.7 | 0.4 |
 | hold exhale | `<sigh>` (breath held, released) | 1.570 | 47 | -1.5 / -19.2 | inside hold 2.0 |
 
-- Files: local `out/ep11-voice/v/ep11-v-<slot>-Leda.wav`, store `projects/EDU/voice/ep11-v-<slot>-Leda.wav` (slot V01..V04, V05hold).
+- Files: local `out/ep11-voice/v/ep11-v-<slot>-Leda.wav`, store `projects/edu/EDU/voice/ep11-v-<slot>-Leda.wav` (slot V01..V04, V05hold).
 - **Projected timeline total (slot = 0.14 + slot + 0.14 replaces a 0.28 s gap): 56.44 + (6.362 - 3.2) = 59.60 s (about 1788 f)**: under the 60 s cap, **over the 53-57 s target by 2.6 s**. Slots are 3.16 s longer than Film's estimate (V03 +1.27, V02 +1.08, V04 +0.52, V01 +0.30). Cutting to target needs tighter takes (V03 sigh, V02 inner pause) or a shorter hold; the coordinator decides. Slot positions after V01 shift later by the cumulative extra (V01 +0.30 s, V02 +1.38 s, V03 +2.65 s, V04 +3.16 s); Film retimes at W5.1.

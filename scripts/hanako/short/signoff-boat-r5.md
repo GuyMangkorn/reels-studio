@@ -55,7 +55,7 @@ Not affected: F012's rule "never 『学校の怪談』 on the film card" is met;
 | SRC017 | AsianWiki, "Shinsei Toire no Hanako-san", https://asianwiki.com/Shinsei_toire_no_Hanako-san | release 4 Jul 1998, dir. Yukihiko Tsutsumi | search summary only, lead |
 | SRC018 | MovieWalker press article on 『トイレの花子さん 新劇場版』 (2013), https://press.moviewalker.jp/news/article/38784/ | "第2弾『新生 トイレの花子さん』(98)以来15年ぶり" | search summary only; page returned 404 on fetch, lead |
 
-SRC016–SRC018 are separate databases/outlets, not copies of one report, but none is a primary studio record. What would settle P2b fully: the flyer's own credits block at full resolution (the unblurred original in `projects/HANAKO/references/user/`, read by a human or Boat), or a Toei/Shochiku catalogue entry.
+SRC016–SRC018 are separate databases/outlets, not copies of one report, but none is a primary studio record. What would settle P2b fully: the flyer's own credits block at full resolution (the unblurred original in `projects/legacy/HANAKO/references/user/`, read by a human or Boat), or a Toei/Shochiku catalogue entry.
 
 ## Readiness
 
@@ -63,7 +63,7 @@ SRC016–SRC018 are separate databases/outlets, not copies of one report, but no
 
 ## B-R5-S follow-up: the 1995 poster (1 Nov 2026)
 
-- Input: the user's unblurred scan `projects/HANAKO/references/user/2026-10-31_b07-film-poster-toire-no-hanako-san-1995.jpg` (1000 × 1500, sidecar beside it), viewed downscaled to 540 px and as a 500 × 450 crop of the credits block (scratchpad only, nothing written to the store). Also viewed: the derived card `projects/HANAKO/reference/2026-10-31_b07-film-card-poster-1995-redacted.png` at 400 px. Not viewed: a rendered `B07-SH03` frame; the label position is from boss-b07-poster-report.md r3.
+- Input: the user's unblurred scan `projects/legacy/HANAKO/references/user/2026-10-31_b07-film-poster-toire-no-hanako-san-1995.jpg` (1000 × 1500, sidecar beside it), viewed downscaled to 540 px and as a 500 × 450 crop of the credits block (scratchpad only, nothing written to the store). Also viewed: the derived card `projects/legacy/HANAKO/reference/2026-10-31_b07-film-card-poster-1995-redacted.png` at 400 px. Not viewed: a rendered `B07-SH03` frame; the label position is from boss-b07-poster-report.md r3.
 - Text read off the poster: tagline (top right, vertical) 「あっ 花子さんだ…。」; title (bottom left, red frame) 『トイレの花子さん』 with romaji "Hanako-san", **no 新生**; credits (bottom right) 「松岡 錠司監督作品 / 河野 由佳　井上 孝幸 / 前田 愛 / 大塚 寧々・豊川 悦司 / 音楽／矢倉 邦晃 (モダンチョキチョキズ) キューン・ソニーレコード / 松竹株式会社」 and the 「百年松竹」 logo. No year printed.
 - Identification: **confirmed**, high confidence. Every credit matches the 1995 film record: SRC020 (Jorudan, film 27930) gives 公開日 1995年7月1日, 監督 松岡錠司, 配給 松竹, 音楽 矢倉邦晃 (モダンチョキチョキズ), cast 河野由佳 井上孝幸 前田愛 大塚寧々 豊川悦司…; SRC015 (en.wikipedia) agrees on date, director, distributor and the leads. Director, studio and music differ from the 1998 『新生』 (堤幸彦, SRC016). Supporting, Boat inference only: 「百年松竹」 is Shochiku's centenary mark (founded 1895), consistent with a 1995 release. Doubt left: the year comes from databases, not the poster itself; the scan is an IMDb-style download (provenance user-only), so whether it is the theatrical B2 or a flyer/variant is unknown. That does not affect the identification.
 - Card text vs narration: the only text on the delivered card is «ยุค 90» (DATE, from F1941); title, tagline, credits and the face are blurred and unreadable at 400 px. 1 Jul 1995 is mid-90s, so «ยุค 90» and «พอกลางยุค 90… ฮานาโกะซังก็มีหนังของตัวเอง» are both true for this artifact, and the picture now shows the film the VO refers to. No 『学校の怪談』 on the card (F012 rule met). No fact label needed.
@@ -72,5 +72,5 @@ SRC016–SRC018 are separate databases/outlets, not copies of one report, but no
 
 | ID | Source | What it supports | Access |
 | --- | --- | --- | --- |
-| SRC019 | Poster 『トイレの花子さん』 (Shochiku, 1995), user-supplied scan, store `projects/HANAKO/references/user/2026-10-31_b07-film-poster-toire-no-hanako-san-1995.jpg` | Title without 新生; credits 松岡錠司監督作品, cast, 音楽 矢倉邦晃, 松竹株式会社, 百年松竹. Identification: 1995 film, high confidence; year not printed (from SRC015/SRC020) | inspected by Boat (unblurred, readable size); provenance user-only; rights the user's |
+| SRC019 | Poster 『トイレの花子さん』 (Shochiku, 1995), user-supplied scan, store `projects/legacy/HANAKO/references/user/2026-10-31_b07-film-poster-toire-no-hanako-san-1995.jpg` | Title without 新生; credits 松岡錠司監督作品, cast, 音楽 矢倉邦晃, 松竹株式会社, 百年松竹. Identification: 1995 film, high confidence; year not printed (from SRC015/SRC020) | inspected by Boat (unblurred, readable size); provenance user-only; rights the user's |
 | SRC020 | Jorudan movie database, 『トイレの花子さん（1995）』, https://movie.jorudan.co.jp/film/27930/ | 公開日 1995年7月1日; 監督 松岡錠司; 配給 松竹; 音楽 矢倉邦晃; cast list matching SRC019 | opened through a fetch tool (model summary), database |

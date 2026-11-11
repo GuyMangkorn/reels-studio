@@ -210,7 +210,7 @@ Kit intake (KIT-P01) at delivery: `park-casual` into `WARDROBE`, cap and sling b
 <a id="r2-look-frame-deviations-and-corrections"></a>
 ## R2 — Look-frame deviations and corrections (Film, 2026-11-05)
 
-**Evidence read** (no repaint, no render by Film): store `projects/EDU/previews/look-frames/ep03/` v1 (`S1-measure.json`, S1 stills), v2 (`LF01.png`, `qa-sheet-v2.png`), v3 (`LF02.png`, `qa-sheet-v3.png`); worktree `out/edu03/look/LF02.png` is byte-identical to store v3. Worktree `out/edu03/look/LF01.png` (21:37) differs in bytes from store v2 (21:33): **LF01 v2 in the store is the reviewed revision**; the later worktree file is unreviewed. Episode module read: `src/painted/edu03/dogview.ts`, `dog-view-pass.tsx` (uncommitted on `claude/education-remaining-topics-092333`).
+**Evidence read** (no repaint, no render by Film): store `projects/edu/EDU/previews/look-frames/ep03/` v1 (`S1-measure.json`, S1 stills), v2 (`LF01.png`, `qa-sheet-v2.png`), v3 (`LF02.png`, `qa-sheet-v3.png`); worktree `out/edu03/look/LF02.png` is byte-identical to store v3. Worktree `out/edu03/look/LF01.png` (21:37) differs in bytes from store v2 (21:33): **LF01 v2 in the store is the reviewed revision**; the later worktree file is unreviewed. Episode module read: `src/painted/edu03/dogview.ts`, `dog-view-pass.tsx` (uncommitted on `claude/education-remaining-topics-092333`).
 
 **Look-frame status:** **user pass on LF02 v3; LF01 v2 verdict pending.** The sniff neck in LF02 v3 is user-passed.
 

@@ -4,9 +4,9 @@
  "script_revision": "EDU-EP15-SCRIPT-R2",
  "date": "2026-11-10",
  "read": {
-  "store": "projects/EDU/audio/2026-11-10_ep15-nar-kore-fullread.wav",
-  "sidecar": "projects/EDU/audio/2026-11-10_ep15-nar-kore-fullread.json",
-  "lines_text": "projects/EDU/audio/2026-11-10_ep15-nar-lines.txt",
+  "store": "projects/edu/EDU/audio/2026-11-10_ep15-nar-kore-fullread.wav",
+  "sidecar": "projects/edu/EDU/audio/2026-11-10_ep15-nar-kore-fullread.json",
+  "lines_text": "projects/edu/EDU/audio/2026-11-10_ep15-nar-lines.txt",
   "model": "gemini-3.8-flash-tts",
   "voice": "Kore",
   "style": "fast-paced, quick brisk delivery with short pauses between phrases, playful deadpan female narrator, dry and matter-of-fact, speaking quickly without dragging",

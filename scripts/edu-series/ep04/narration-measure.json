@@ -28,8 +28,8 @@
  },
  "method": "ffmpeg silencedetect n=-35dB d=0.18; segments rejoined with 0.28 s gaps. Same filter on the R1.1 file gives speech 50.05 s / 45 segments / 62.37 s regap (R1.1 figures below used a slightly different threshold: 50.5 / 64.0), so R1.2 may read ~1.5 s low against R1.1 numbers (~50.4 s video).",
  "audio": {
-  "raw": "projects/EDU/narration/ep04/2026-11-05_ep04-r12-charon-raw-provisional.wav",
-  "regap028": "projects/EDU/narration/ep04/2026-11-05_ep04-r12-charon-regap028-provisional.wav"
+  "raw": "projects/edu/EDU/narration/ep04/2026-11-05_ep04-r12-charon-raw-provisional.wav",
+  "regap028": "projects/edu/EDU/narration/ep04/2026-11-05_ep04-r12-charon-regap028-provisional.wav"
  },
  "lengthCheck": {
   "target": [

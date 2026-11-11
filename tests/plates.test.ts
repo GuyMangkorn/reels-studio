@@ -28,5 +28,5 @@ test('findPlates filters by every field and plateStill names the store path', ()
   assert.ok(snow.every((p) => p.kitLayers.some((l) => l.startsWith('ENV-FALL:'))));
   const first = PLATES[0];
   assert.deepEqual(findPlates({episode: first.episode, kind: first.kind, time: first.time, mood: first.mood[0]}).map((p) => p.id).includes(first.id), true);
-  assert.equal(plateStill('PL-X-Y'), 'projects/KIT/plates/PL-X-Y.png');
+  assert.equal(plateStill('PL-X-Y'), 'projects/shared/KIT/plates/PL-X-Y.png');
 });

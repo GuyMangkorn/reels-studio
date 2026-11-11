@@ -49,11 +49,11 @@ Proxy QA only: nobody listened. The user's ear decides.
 
 ## Files
 
-- Track: `projects/KSO/audio/voice-lock-v4/final/KSO-EP01-SHORT_narration_voicelock-v4.mp3` (sha256 64d8eb15…); amplitude JSON beside it.
-- B06 v4 clip: `projects/KSO/audio/voice-lock-v4/segments-v4/B06.wav`.
-- Alternative tail takes (not in the lock): `projects/KSO/audio/voice-lock-v4/takes/B06-tail_take{1,2,3}.wav`.
-- QA: `projects/KSO/audio/voice-lock-v4/qa/pitch-fix-v4.json`, `qa/v4-check.json`; loudness in `out/kso-ep01-short/voice-lock-v4/qa/loudness-v4.jsonl`.
-- v3 measure (base): `projects/KSO/audio/voice-lock-r3/voice-measure-v3.json`.
+- Track: `projects/legacy/KSO/audio/voice-lock-v4/final/KSO-EP01-SHORT_narration_voicelock-v4.mp3` (sha256 64d8eb15…); amplitude JSON beside it.
+- B06 v4 clip: `projects/legacy/KSO/audio/voice-lock-v4/segments-v4/B06.wav`.
+- Alternative tail takes (not in the lock): `projects/legacy/KSO/audio/voice-lock-v4/takes/B06-tail_take{1,2,3}.wav`.
+- QA: `projects/legacy/KSO/audio/voice-lock-v4/qa/pitch-fix-v4.json`, `qa/v4-check.json`; loudness in `out/kso-ep01-short/voice-lock-v4/qa/loudness-v4.jsonl`.
+- v3 measure (base): `projects/legacy/KSO/audio/voice-lock-r3/voice-measure-v3.json`.
 - Public narration lock: `public/narration/KSO-EP01-SHORT.mp3` is the v4 file (`store.py use`, episode `kuchisake-onna`). Both `KSO-EP01-SHORT-C` and `-B` import this one file.
 - Repo amplitude input: `scripts/kuchisake-onna/short/KSO-EP01-SHORT.amplitude.json` (v4).
 

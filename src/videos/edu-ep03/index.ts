@@ -7,7 +7,7 @@ import type {EpisodeVideos} from '../types';
 
 /**
  * EDU-EP03-SHORT (ลูกบอลสีแดงที่หมามองไม่เห็น, C5) Draft timeline (W5.3, Editor, 5 Nov 2026): scene sheets SS-R3.1 (scripts/edu-series/ep03/scenes/),
- * script R1.1, brief EDU-BRIEF-R2.2, voice = Gemini Kore v1 (store projects/EDU/narration/narration-ep03-kore.wav) + owner Algenib O1/O2.
+ * script R1.1, brief EDU-BRIEF-R2.2, voice = Gemini Kore v1 (store projects/edu/EDU/narration/narration-ep03-kore.wav) + owner Algenib O1/O2.
  * 15 shots = 15 scenes, 1571 f at 30 fps (52.37 s), hard cuts only. Each scene mounts the registry plate `EDU3-<shot id>` (src/painted/shots/edu03.tsx over
  * Boss's `plateOf`; dog view = backdrop-filter colour matrix in the adapter's Overlay). Narration = the read placed as segments N1-N6 with gaps G1..G5
  * (scripts/edu-series/ep03/narration-place.py -> public/narration/EDU-EP03-SHORT.wav, 1571 f). Sound stem (scripts/edu-series/ep03/sound-mix.py): bed,
