@@ -67,7 +67,7 @@ User decision 2026-11-08 (structured question): approve all five, "ทำเป�
 
 ## Applied
 
-- LL01–LL03 → [scriptwriting-principles: edu Short retention](../../../docs/scriptwriting-principles.md#edu-short-retention); LL04 → [cinematography-principles item 11](../../../docs/cinematography-principles.md#retention-camera); LL05 → [delivery-workflow: Performance](../../../docs/delivery-workflow.md#performance-record) and the record [channel-performance](../../../docs/channel-performance.md).
+- LL01–LL03 → [scriptwriting-principles: edu Short retention](../../../docs/scriptwriting-principles.md#edu-short-retention); LL04 → [cinematography-principles item 11](../../../docs/cinematography-principles.md#retention-camera); LL05 → [delivery-workflow: Performance](../../../docs/delivery-workflow.md#performance-record) and the record [channel-performance](../../../channels/edu/performance.md).
 
 ## Deep dive
 

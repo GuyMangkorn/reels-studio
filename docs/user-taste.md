@@ -52,4 +52,4 @@ Why this file exists: in WDG-EP01-SHORT one look frame went through seven painte
 ## Sound
 
 <a id="ut-edu-end-tag"></a>
-- **UT15 — Education series ending sound is Film's choice.** **Default** for every EDU-SERIES deliverable (user, 9 Nov 2026: "education project ไม่จำเป็นต้องมีเสียงเครื่องสายตอนจบคลิปแบบ ep2 ก๋ได้ เอาที่ฟีมอยากใช้เลย"; replaces the 7 Nov 2026 Requirement to close on the EP02 strings tag). Film designs the closing sound for the episode's story and mood and names it in the scene sheet's sound plan; Editor places it in the stem from the first Draft. The EP02 tag `sfx/stinger/stinger_pizz-tag-ending_01` (pizzicato and marimba, 2.5 s) stays in the library as one option, not a requirement. Evidence of the old rule: EP02 close (`scripts/edu-series/ep02/sound-mix.py`); EP03–EP06 carried the tag (6–7 Nov 2026).
+- **UT15 — Education series ending sound** moved (11 Nov 2026) to the edu channel: [channels/edu/channel.md](../channels/edu/channel.md#ut-edu-end-tag).

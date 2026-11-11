@@ -1,7 +1,7 @@
 # EDU-EP05-SHORT — retention deep dive (2026-11-08)
 
 - Trigger: user, 2026-11-08: "แกะลงไปลึก ๆ" why EP05 had 20.2 % swiped away against 33.6–36.6 % for EP02/EP03, and why viewers stuck with it. Follows [lessons-learned.md](lessons-learned.md) (LL01–LL05, applied as ER01–ER04).
-- Inputs: the three posted MP4s in `$REELS_STORE/publish/EDU/EDU-EP0{2,3,5}-SHORT/` (only covers changed after posting); caption events and cuts from the compositions (`edu2CaptionEvents`, `edu3CaptionEvents`, `edu5CaptionEvents`); [channel-performance](../../../docs/channel-performance.md); outside sources in [Sources](#sources).
+- Inputs: the three posted MP4s in `$REELS_STORE/publish/EDU/EDU-EP0{2,3,5}-SHORT/` (only covers changed after posting); caption events and cuts from the compositions (`edu2CaptionEvents`, `edu3CaptionEvents`, `edu5CaptionEvents`); [channel-performance](../../../channels/edu/performance.md); outside sources in [Sources](#sources).
 - Frame sheets in `$REELS_STORE/projects/EDU/research/`: `hook-first3s.png` (0, 0.5, 1, 1.5, 2, 3 s, rows EP02/EP03/EP05), `ep02-shots.png`, `03-shots.png`, `05-shots.png` (one frame per shot).
 - **Evidence level:** n = 3 videos, no retention curve for EP05, different post dates and channel age. Everything below is a ranked hypothesis, not a proven cause.
 
