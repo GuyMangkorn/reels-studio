@@ -13,7 +13,7 @@ const setup = () => {
   const repo = path.join(root, 'repo');
   mkdirSync(path.join(repo, 'src/videos/demo'), {recursive: true});
   const run = (...args: string[]) => {
-    const r = spawnSync('python3', ['-I', script, ...args], {cwd: repo, env: {...process.env, REELS_STORE: store}, encoding: 'utf8'});
+    const r = spawnSync('python3', ['-I', script, ...args], {cwd: repo, env: {...process.env, REELS_STORE: store, REELS_STORE_SERIES: 'X=legacy,DEMO=legacy'}, encoding: 'utf8'});
     return {code: r.status, out: r.stdout + r.stderr};
   };
   const write = (rel: string, text: string) => {
@@ -132,8 +132,8 @@ test('adopt reuses stored bytes, stores the rest under the project and reports m
   assert.match(r.out, /reused 1, stored 1, missing 1/);
   const lock = JSON.parse(readFileSync(path.join(repo, 'src/videos/demo/assets.lock.json'), 'utf8'));
   assert.equal(lock['public/sfx/impact/hit.wav'].store, 'library/sound/sfx/impact/impact_hit_01.wav');
-  assert.equal(lock['public/pool-depth/shot.png'].store, 'projects/DEMO/public/pool-depth/shot.png');
-  assert.ok(existsSync(path.join(store, 'projects/DEMO/public/pool-depth/shot.png')));
+  assert.equal(lock['public/pool-depth/shot.png'].store, 'projects/legacy/DEMO/public/pool-depth/shot.png');
+  assert.ok(existsSync(path.join(store, 'projects/legacy/DEMO/public/pool-depth/shot.png')));
   assert.equal(run('verify').code, 0);
 });
 
@@ -150,7 +150,7 @@ test('backfill-chat stores user-attached images with the user text, not tool scr
   const r = run('backfill-chat', t);
   assert.equal(r.code, 0, r.out);
   assert.match(r.out, /chat images 1: stored 1/);
-  const dir = path.join(store, 'projects/_unsorted/references/user');
+  const dir = path.join(store, 'projects/legacy/_unsorted/references/user');
   const side = JSON.parse(readFileSync(path.join(dir, readdirSync(dir).find((f) => f.endsWith('.json'))!), 'utf8'));
   assert.equal(side.user_text, 'ทำแบบนี้');
   assert.match(run('backfill-chat', t).out, /stored 0, already 1/);
@@ -168,7 +168,7 @@ test('archive files out/<ID>/ by project and commit, skips scratch and repeats, 
   assert.equal(r.code, 0, r.out);
   assert.match(r.out, /archived 2, already stored 0, not archived 2/);
   assert.match(r.out, /gemini-tts \(1 of 1 media files not in the store/);
-  const base = path.join(store, 'projects/ZCONDO/renders/ZCPAINT-SHORT');
+  const base = path.join(store, 'projects/legacy/ZCONDO/renders/ZCPAINT-SHORT');
   const [version] = readdirSync(base);
   assert.equal(readFileSync(path.join(base, version, 'ZCPAINT-SHORT.mp4'), 'utf8'), 'mp4-a');
   assert.ok(!existsSync(path.join(base, version, 'qa')));
@@ -181,7 +181,7 @@ test('archive files out/<ID>/ by project and commit, skips scratch and repeats, 
 
   const takes = run('archive', '--path', path.join(path.dirname(store), 'repo/out/gemini-tts'), '--project', 'WFOG', '--kind', 'audio/gemini-tts');
   assert.match(takes.out, /archived 1/);
-  assert.ok(existsSync(path.join(store, 'projects/WFOG/audio/gemini-tts/take.wav')));
+  assert.ok(existsSync(path.join(store, 'projects/legacy/WFOG/audio/gemini-tts/take.wav')));
   assert.equal(run('archive', '--path', 'x').code, 2);
   assert.equal(run('verify').code, 0);
 });
@@ -210,7 +210,7 @@ test('prune deletes only stored copies and scratch, and refuses tracked folders'
   const {repo, run, write} = setup();
   spawnSync('git', ['init', '-q'], {cwd: repo});
   writeFileSync(path.join(repo, '.gitignore'), 'out/\n');
-  run('put', write('in/r.mp4', 'render'), 'projects/X/renders/r.mp4');
+  run('put', write('in/r.mp4', 'render'), 'projects/legacy/X/renders/r.mp4');
   write('repo/out/X-SHORT/r.mp4', 'render');
   write('repo/out/X-SHORT/unique.mp4', 'only-here');
   write('repo/out/qa/sheet.png', 'scratch');
@@ -226,12 +226,12 @@ test('prune deletes only stored copies and scratch, and refuses tracked folders'
 
 test('publish keeps one MP4 and one cover per video, refuses review renders and records every change', () => {
   const {store, run, write} = setup();
-  run('put', write('in/v1.mp4', 'cut-1'), 'projects/X/renders/X-EP01-SHORT/aaa/X-EP01-SHORT.mp4');
-  run('put', write('in/v2.mp4', 'cut-2'), 'projects/X/renders/X-EP01-SHORT/bbb/X-EP01-SHORT.mp4');
-  run('put', write('in/clip.mp4', 'clip'), 'projects/X/renders/X-EP01-SHORT/bbb/clips/sh01.mp4');
-  const folder = path.join(store, 'publish/X/X-EP01-SHORT');
+  run('put', write('in/v1.mp4', 'cut-1'), 'projects/legacy/X/renders/X-EP01-SHORT/aaa/X-EP01-SHORT.mp4');
+  run('put', write('in/v2.mp4', 'cut-2'), 'projects/legacy/X/renders/X-EP01-SHORT/bbb/X-EP01-SHORT.mp4');
+  run('put', write('in/clip.mp4', 'clip'), 'projects/legacy/X/renders/X-EP01-SHORT/bbb/clips/sh01.mp4');
+  const folder = path.join(store, 'publish/legacy/X/X-EP01-SHORT');
 
-  const clip = run('publish', 'X-EP01-SHORT', '--video', 'projects/X/renders/X-EP01-SHORT/bbb/clips/sh01.mp4', '--reason', 'r');
+  const clip = run('publish', 'X-EP01-SHORT', '--video', 'projects/legacy/X/renders/X-EP01-SHORT/bbb/clips/sh01.mp4', '--reason', 'r');
   assert.equal(clip.code, 1, clip.out);
   assert.match(clip.out, /never published/);
 
@@ -241,7 +241,7 @@ test('publish keeps one MP4 and one cover per video, refuses review renders and 
   assert.equal(r.code, 0, r.out);
   assert.equal(readFileSync(path.join(folder, 'X-EP01-SHORT.mp4'), 'utf8'), 'cut-2');
   assert.equal(readFileSync(path.join(folder, 'X-EP01-SHORT_cover.png'), 'utf8'), 'cover-C');
-  assert.match(readFileSync(path.join(store, 'manifest.tsv'), 'utf8'), /projects\/X\/renders\/X-EP01-SHORT\/covers\/pick-C\.png/);
+  assert.match(readFileSync(path.join(store, 'manifest.tsv'), 'utf8'), /projects\/legacy\/X\/renders\/X-EP01-SHORT\/covers\/pick-C\.png/);
 
   assert.equal(run('publish', 'X-EP01-SHORT', '--posted', '2026-11-07').code, 0);
   assert.match(readFileSync(path.join(store, 'publish/INDEX.md'), 'utf8'), /X-EP01-SHORT.*posted 2026-11-07/);

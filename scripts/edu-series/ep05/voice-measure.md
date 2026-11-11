@@ -1,7 +1,7 @@
 # EDU-EP05-SHORT voice measure (W4 lock, 2026-11-06)
 
 - Script EDU-EP05-SCRIPT-R1.3a. NAR = Gemini TTS Kore brisk, atempo 1.10 (user passed by ear 2026-11-06). TINY = Leda picks per [voice-notes.md](voice-notes.md) section 4 plus V03 t2. **0 Gemini requests** in this step.
-- Source read `projects/EDU/narration/ep05/2026-11-06_ep05-nar-kore-brisk-fullread-x110.wav`, 55.50 s. Speech alone 47.21 s over 16 lines; re-gapped at 0.28 s (15 gaps) = 51.41 s (note only; placement is Film W5, the user accepted the video slightly over 60 s).
+- Source read `projects/edu/EDU/narration/ep05/2026-11-06_ep05-nar-kore-brisk-fullread-x110.wav`, 55.50 s. Speech alone 47.21 s over 16 lines; re-gapped at 0.28 s (15 gaps) = 51.41 s (note only; placement is Film W5, the user accepted the video slightly over 60 s).
 - Method: Whisper alignment snapped to silencedetect edges (-35 dB, 0.15 s). Start/End are positions in the x1.10 read. Split files `lines/` carry 0.05 s lead (onset in file = 0.05 s) and 0.08 s tail. Machine-readable: [voice-measure.json](voice-measure.json).
 
 | Line | Start | End | Dur (s) | File dur (s) | Note |
@@ -23,21 +23,21 @@
 | L16 | 46.41 | 51.14 | 4.73 | 4.86 | UNCERTAIN: opens with a 0.5 s 'แล้วคุณล่ะ' (46.41-46.91) then a 0.55 s pause; assigned to L16, not L15 |
 | L17 | 51.51 | 55.23 | 3.73 | 3.86 |  |
 
-Store: `projects/EDU/narration/ep05/lines/2026-11-06_ep05-nar-<L>-kore-x110.wav` (48 kHz mono, 16-bit). L08 is TINY, not in the NAR read.
+Store: `projects/edu/EDU/narration/ep05/lines/2026-11-06_ep05-nar-<L>-kore-x110.wav` (48 kHz mono, 16-bit). L08 is TINY, not in the NAR read.
 
 ## TINY picks (durations)
 
 | ID | Take | Dur (s) | Store |
 | --- | --- | --- | --- |
-| L08 | t1 | 3.24 | `projects/EDU/narration/ep05/tiny/L08-t1.wav` |
-| V01 | t1 | 0.60 | `projects/EDU/narration/ep05/tiny/V01-t1.wav` |
-| V02 | t2 | 2.16 | `projects/EDU/narration/ep05/tiny/V02-t2.wav` |
-| V03 | t2 | 1.48 | `projects/EDU/narration/ep05/tiny/V03-t2.wav` |
-| V04 | t2 trimmed | 3.90 | `projects/EDU/narration/ep05/tiny/2026-11-06_ep05-V04-t2-trim.wav` |
-| V05 | t1 | 1.32 | `projects/EDU/narration/ep05/tiny/V05-t1.wav` |
-| V06 | t2 | 2.24 | `projects/EDU/narration/ep05/tiny/V06-t2.wav` |
-| V07 | t1 | 0.72 | `projects/EDU/narration/ep05/tiny/V07-t1.wav` |
-| V08 | t1 | 1.00 | `projects/EDU/narration/ep05/tiny/V08-t1.wav` |
+| L08 | t1 | 3.24 | `projects/edu/EDU/narration/ep05/tiny/L08-t1.wav` |
+| V01 | t1 | 0.60 | `projects/edu/EDU/narration/ep05/tiny/V01-t1.wav` |
+| V02 | t2 | 2.16 | `projects/edu/EDU/narration/ep05/tiny/V02-t2.wav` |
+| V03 | t2 | 1.48 | `projects/edu/EDU/narration/ep05/tiny/V03-t2.wav` |
+| V04 | t2 trimmed | 3.90 | `projects/edu/EDU/narration/ep05/tiny/2026-11-06_ep05-V04-t2-trim.wav` |
+| V05 | t1 | 1.32 | `projects/edu/EDU/narration/ep05/tiny/V05-t1.wav` |
+| V06 | t2 | 2.24 | `projects/edu/EDU/narration/ep05/tiny/V06-t2.wav` |
+| V07 | t1 | 0.72 | `projects/edu/EDU/narration/ep05/tiny/V07-t1.wav` |
+| V08 | t1 | 1.00 | `projects/edu/EDU/narration/ep05/tiny/V08-t1.wav` |
 
 - V03: **t2** chosen by measurement (no new request): 1.48 s vs t1 1.88 s, same structure (huh 0.26-0.60 s, giggle 0.94-1.37 s); Whisper heard t2 as a puzzled "อ่ะ?" and t1 as an exclamation "เฮ้". The user found both fine.
 - V04: original t2 (4.16 s) kept. Trim `...V04-t2-trim.wav` = 0-3.90 s, grunt 0.29-0.87, gap 1.15, grunt 2.01-2.73, gap 0.60, gasp 3.34-3.74, tail cut (3.90 s). Optional `...V04-t2-tight.wav` = the same three sounds with both gaps set to 0.30 s (2.75 s) if the release needs to be shorter. Film/Editor choose at W5.

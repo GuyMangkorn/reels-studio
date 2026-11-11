@@ -4,7 +4,7 @@ the frame of scene-sheets.md (SHEETS-R1.2 "Narration placement"; L06/L07 retired
 Writes public/narration/EDU-EP07-SHORT.wav (1798 f, 48 kHz mono) and out/EDU-EP07-SHORT/audio/placements.txt.
 Run: python3 -I scripts/edu-series/ep07/narration-place.py"""
 import os, subprocess, wave, struct, array
-S = os.path.expanduser('~/ReelsStore/projects/EDU/audio/EDU-EP07-SHORT/narration')
+S = os.path.expanduser('~/ReelsStore/projects/edu/EDU/audio/EDU-EP07-SHORT/narration')
 FPS, TOTAL = 30, 1580
 DUR = TOTAL / FPS
 N = lambda k: f'{S}/lines/2026-11-08_ep07-nar95-{k}.wav'

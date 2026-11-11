@@ -51,7 +51,7 @@ Modern phones are taller than 9:16. An iPhone 15/16 Pro is 393×852 pt, about 19
 
 ## 3. What our released Shorts put near the top
 
-Code at this checkout (`claude/eg-ideal-remaining-c19f75`). Measured frames were taken from the stored delivery renders with ffmpeg: EG-EP01-SHORT_A_fade.mp4 (`~/ReelsStore/projects/EG/renders/EG-EP01-SHORT/52a5a269e2c4-dirty-202611031603/`) frame 300, and WDG-EP01-SHORT.mp4 (`~/ReelsStore/projects/WDG/renders/WDG-EP01-SHORT/094d9082b774-dirty-202611031623/`) frame 1300.
+Code at this checkout (`claude/eg-ideal-remaining-c19f75`). Measured frames were taken from the stored delivery renders with ffmpeg: EG-EP01-SHORT_A_fade.mp4 (`~/ReelsStore/projects/legacy/EG/renders/EG-EP01-SHORT/52a5a269e2c4-dirty-202611031603/`) frame 300, and WDG-EP01-SHORT.mp4 (`~/ReelsStore/projects/legacy/WDG/renders/WDG-EP01-SHORT/094d9082b774-dirty-202611031623/`) frame 1300.
 
 | Element | Where | y range (px) | x range (px) | Problem |
 | --- | --- | --- | --- | --- |

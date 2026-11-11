@@ -1,7 +1,7 @@
 # EDU-EP04-SHORT voice measure (W1.4, provisional)
 
 - Script EDU-EP04-SCRIPT-R1.1 (wording unchanged; `…` became `,` in the TTS text only). Voice: Gemini TTS **Charon**, provisional (the user picks the real voice at W4). Style: "dry, knowing, deadpan male narrator, matter-of-fact with a hint of amusement, natural brisk pace, short natural pauses between lines, same narrator throughout, do not speed up". Tempo 1.00x (no atempo applied). **1 Gemini request**, one read of all 25 lines (NAR, MAN and CSH all in the one voice).
-- File: `out/edu04/narration/ep04-raw-charon.wav`; store `projects/EDU/narration/ep04/2026-11-05_ep04-raw-charon-provisional.wav`. Lines text: `out/edu04/narration/lines.txt`.
+- File: `out/edu04/narration/ep04-raw-charon.wav`; store `projects/edu/EDU/narration/ep04/2026-11-05_ep04-raw-charon-provisional.wav`. Lines text: `out/edu04/narration/lines.txt`.
 - As read: **78.88 s** (speech ends 78.64 s). Speech without pauses: ~50.5 s. The model left 48 gaps (0.15-1.2 s) totalling ~27.9 s.
 - Assumption: EP01 gap convention (0.28 s per gap, 48 gaps) gives **~64.0 s** at 1.00x, **~60.9 s** at atempo 1.05; plus ~1.5 s silent gag and ~2.5 s end hold the video is ~68 s (~65 s at 1.05).
 - Loudness: -16.5 LUFS integrated, LRA 3.3.
@@ -11,7 +11,7 @@
 ## R1.2 measure (W1.4 re-do, provisional)
 
 - Script EDU-EP04-SCRIPT-R1.2 (wording unchanged; 20 spoken lines = R1.1 minus cut L06, L08, L13, L18, L20; `…` became `,` in the TTS text only). Same voice (Charon), model, style, 1.00x. **1 Gemini request**, one read of all lines. Text `out/edu04/narration/lines-r12.txt`.
-- Files: `out/edu04/narration/ep04-r12-charon.wav` (raw read, 52.88 s); store `projects/EDU/narration/ep04/2026-11-05_ep04-r12-charon-raw-provisional.wav`, re-gapped `projects/EDU/narration/ep04/2026-11-05_ep04-r12-charon-regap028-provisional.wav`.
+- Files: `out/edu04/narration/ep04-r12-charon.wav` (raw read, 52.88 s); store `projects/edu/EDU/narration/ep04/2026-11-05_ep04-r12-charon-raw-provisional.wav`, re-gapped `projects/edu/EDU/narration/ep04/2026-11-05_ep04-r12-charon-regap028-provisional.wav`.
 - Speech without pauses **36.4 s**; with 0.28 s gaps (30) **44.8 s** at 1.00x, **42.6 s** at atempo 1.05. Plus ~1.5 s silent gag and ~2.5 s end hold: video **~48.8 s** at 1.00x, **~46.6 s** at 1.05.
 - Threshold note: the silence filter here (-35 dB, 0.18 s) gives R1.1 as 62.4 s regap versus 64.0 s earlier, so against the R1.1 figures R1.2 is up to ~1.6 s higher (~50.4 s video).
 - Loudness: -16.9 LUFS integrated, LRA 3.0 (-16.9 / 2.4 after re-gap).
@@ -24,7 +24,7 @@
 - **1 Gemini request** (one read of all 16 NAR lines).
 - Raw read 44.56 s. Speech without pauses **37.87 s**; with 0.28 s gaps (21, every silence over 0.18 s at -35 dB, commas included as in the Charon measure) **43.75 s** at 1.00x. Plus ~1.5 s silent gag and ~2.5 s end hold: video **~47.75 s** at 1.00x.
 - Loudness (re-gapped): -16.3 LUFS integrated, LRA 2.4. Not listened to: gap count not matched to line count, line order and wording unchecked by ear.
-- Store: `projects/EDU/narration/ep04/2026-11-05_ep04-r12-kore-regap028.wav` (raw: `..._ep04-r12-kore-raw.wav`). Local: `out/edu04/narration/ep04-r12-kore-regap028.wav`.
+- Store: `projects/edu/EDU/narration/ep04/2026-11-05_ep04-r12-kore-regap028.wav` (raw: `..._ep04-r12-kore-raw.wav`). Local: `out/edu04/narration/ep04-r12-kore-regap028.wav`.
 
 ## R1.2 Kore take 2 (crackle check, same prompt and settings)
 
@@ -40,7 +40,7 @@
 | take 2 regap | 27572 | 0 | 2425 | 57.7 |
 
 - Reading: no clipping in either. Take 2 has about 10x the large sample jumps per second, so the roughness is a property of the generation (varies per take), not of the re-gap. A high count may be bright fricatives/energetic delivery rather than crackle; not listened to, unverified by ear.
-- Store: `projects/EDU/narration/ep04/2026-11-05_ep04-r12-kore-take2-raw.wav`, `..._kore-take2-regap028.wav` (sidecars `.sidecar.json`). Local: `out/edu04/narration/ep04-r12-kore-take2-*.wav`. Earlier takes untouched.
+- Store: `projects/edu/EDU/narration/ep04/2026-11-05_ep04-r12-kore-take2-raw.wav`, `..._kore-take2-regap028.wav` (sidecars `.sidecar.json`). Local: `out/edu04/narration/ep04-r12-kore-take2-*.wav`. Earlier takes untouched.
 
 ## R1.3 Kore read (W4, same prompt and settings)
 
@@ -55,11 +55,11 @@
 | R1.3 regap | 27573 | 0 | 3083 | 68.6 |
 
 - Compare: take 1 5.5/s, take 2 58/s; this read is higher than both. Not listened to; crackle unverified by ear.
-- Store: `projects/EDU/narration/ep04/2026-11-05_ep04-r13-kore-raw.wav`, `..._kore-regap028.wav` (sidecars `.sidecar.json`). Local: `out/edu04/narration/ep04-r13-kore-*.wav`.
+- Store: `projects/edu/EDU/narration/ep04/2026-11-05_ep04-r13-kore-raw.wav`, `..._kore-regap028.wav` (sidecars `.sidecar.json`). Local: `out/edu04/narration/ep04-r13-kore-*.wav`.
 
 ## R1.3 Kore take 3 (same EP02 style prompt, new read)
 
-- Why: user words "ขอ kore ใหม่อีกครั้ง prompt style เดียวกับ ep2". Script EDU-EP04-SCRIPT-R1.3, same 17 NAR lines (`out/edu04/narration/lines-r13-nar.txt`, identical to take 1's text). Voice Kore, gemini-3.8-flash-tts, 1.00x. Style string copied from `projects/EDU/narration/ep02/2026-11-05_ep02-raw-kore-fast.json`; it is byte-identical to the style in the R1.2 take 1, R1.2 take 2 and R1.3 take 1 sidecars. **1 Gemini request** (`--fresh`).
+- Why: user words "ขอ kore ใหม่อีกครั้ง prompt style เดียวกับ ep2". Script EDU-EP04-SCRIPT-R1.3, same 17 NAR lines (`out/edu04/narration/lines-r13-nar.txt`, identical to take 1's text). Voice Kore, gemini-3.8-flash-tts, 1.00x. Style string copied from `projects/edu/EDU/narration/ep02/2026-11-05_ep02-raw-kore-fast.json`; it is byte-identical to the style in the R1.2 take 1, R1.2 take 2 and R1.3 take 1 sidecars. **1 Gemini request** (`--fresh`).
 - Raw 49.36 s. Re-gap (0.28 s, every interior silence over 0.18 s at -35 dB): 29 interior silences (take 1 had 13), file 47.00 s. Speech without pauses **38.62 s** (take 1: 40.80 s); speech + gaps **46.74 s** (take 1: 44.44 s) at 1.00x; video **~50.7 s** (+1.5 s gag, +2.5 s hold; MAN/CSH not included, see N1) against take 1 ~48.4 s.
 - Loudness -16.2 LUFS (LRA 2.2); take 1 -16.2 (LRA 2.3). Peak 27578 (take 1 27573). Clipped 0 in both.
 
@@ -71,7 +71,7 @@
 | take 1 regap | 27573 | 0 | 3083 | 68.6 |
 
 - Reading: lower jump rate than R1.3 take 1 but far above R1.2 take 1 (5.6/s); more pauses, so a different pacing. Not listened to; crackle and wording unverified by ear.
-- Store: `projects/EDU/narration/ep04/2026-11-05_ep04-r13-kore-take3-raw.wav`, `..._kore-take3-regap028.wav` (sidecars `.json`). Local: `out/edu04/narration/ep04-r13-kore-take3-*.wav`. Earlier takes untouched.
+- Store: `projects/edu/EDU/narration/ep04/2026-11-05_ep04-r13-kore-take3-raw.wav`, `..._kore-take3-regap028.wav` (sidecars `.json`). Local: `out/edu04/narration/ep04-r13-kore-take3-*.wav`. Earlier takes untouched.
 
 ## R1.3 MAN and CSH lines (W4.x, Film casting: MAN Algenib, CSH Charon)
 
@@ -89,4 +89,4 @@
 - Fit: use L05 **take 2**; take 1 (2.67 s) is too long for a sulk turn. Spoken MAN/CSH speech adds about 4.1 s (1.47 + 1.72 + 0.90) in B02 plus 2.14 s in B06. Video estimate ~50.7 s (NAR take 3) + 4.1 + 2.14 = **~57 s**, inside 40-60 s but above the ~55 s trim target.
 - Fit problem: the estimated B02 window (3.2-10.0 s, 6.8 s) holds L03 + L04 + 1.5 s gag + L05 + NAR L06 ~ 7.1 s of speech plus gaps (~8 s), so B02 runs ~1-1.5 s over its estimate; later beat times shift by the same amount at the voice lock. L18a (2.14 s with edge silence) sits in B06 and needs checking against the till "ding".
 - Gain: MAN/CSH clips need +3-4 dB at the mix; clips carry ~0.25-0.4 s leading silence to trim at cut.
-- Store (flat under `projects/EDU/narration/`, sidecars `.json`): `ep04-r13-man-l03-algenib.wav`, `ep04-r13-csh-l04-charon.wav`, `ep04-r13-man-l05-algenib.wav` (take 1), `ep04-r13-man-l05-algenib-take2.wav`, `ep04-r13-man-l18a-algenib.wav`. Local: `out/edu04/narration/`.
+- Store (flat under `projects/edu/EDU/narration/`, sidecars `.json`): `ep04-r13-man-l03-algenib.wav`, `ep04-r13-csh-l04-charon.wav`, `ep04-r13-man-l05-algenib.wav` (take 1), `ep04-r13-man-l05-algenib-take2.wav`, `ep04-r13-man-l18a-algenib.wav`. Local: `out/edu04/narration/`.

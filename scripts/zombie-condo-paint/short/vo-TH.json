@@ -262,7 +262,7 @@
     "model": "gemini-3.8-flash-tts",
     "voice": "Kore",
     "style": "documentary narrator, compact but not rushed, steady measured pace, clearly stress the key words and numbers, calm and tense",
-    "approvedRead": "out/gemini-narr/zcpaint-th/kore-measured-nocomment.wav (store: projects/ZCONDO/audio/gemini-tts/zcpaint-th-approved-read/kore-measured-nocomment.wav)",
+    "approvedRead": "out/gemini-narr/zcpaint-th/kore-measured-nocomment.wav (store: projects/legacy/ZCONDO/audio/gemini-tts/zcpaint-th-approved-read/kore-measured-nocomment.wav)",
     "pace": "ffmpeg atempo=1.05 on the approved read (narrator default, user memory 31 Oct 2026); raw approved read = measured x 1.05",
     "trackZero": "TH-01 first audible sample (threshold 300 of 32767); all onsetSec and speechEndSec are track-relative",
     "measureFile": "scripts/zombie-condo-paint/short/ZCPAINT-SHORT-TH.measure.json"
@@ -281,8 +281,8 @@
       "chosen": "take-3 (Whisper exact text on raw and muffled; the shortest audible body; take-2 0.69, take-1 0.42 muffled, proxy only)"
     },
     "mix": "muffled: ffmpeg lowpass=f=2500:poles=2, aecho=0.8:0.5:24|37:0.22|0.14, volume=-3dB; clip = first to last sample >= 300",
-    "clipStore": "projects/ZCONDO/audio/gemini-tts/zcpaint-th-call/muffled/take-3.muffled.wav",
-    "candidateStore": "projects/ZCONDO/audio/gemini-tts/zcpaint-th-call/candidate/ZCPAINT-SHORT-TH.candidate-call.mp3",
+    "clipStore": "projects/legacy/ZCONDO/audio/gemini-tts/zcpaint-th-call/muffled/take-3.muffled.wav",
+    "candidateStore": "projects/legacy/ZCONDO/audio/gemini-tts/zcpaint-th-call/candidate/ZCPAINT-SHORT-TH.candidate-call.mp3",
     "callOnsetSec": 85.0,
     "callEndSec": 86.222,
     "callLengthSec": 1.2219,

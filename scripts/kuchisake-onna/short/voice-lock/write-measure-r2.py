@@ -13,7 +13,7 @@ OUT = Path('out/kso-ep01-short/voice-lock-r2')
 VL = Path('scripts/kuchisake-onna/short/voice-lock')
 MEASURE = Path('scripts/kuchisake-onna/short/voice-measure.json')
 MP3 = OUT / 'final/KSO-EP01-SHORT_narration_voicelock-v2.mp3'
-STORE_V2 = 'projects/KSO/audio/voice-lock-r2'  # where `store.py archive --path out/kso-ep01-short/voice-lock-r2 --kind audio/voice-lock-r2` files the folder
+STORE_V2 = 'projects/legacy/KSO/audio/voice-lock-r2'  # where `store.py archive --path out/kso-ep01-short/voice-lock-r2 --kind audio/voice-lock-r2` files the folder
 PLAN = json.loads((OUT / 'align/plan-slots.json').read_text(encoding='utf-8'))
 ALIGN = json.loads((OUT / 'align/measure-read-take1.json').read_text(encoding='utf-8'))
 EDITS = {e['clip']: e for e in json.loads((OUT / 'align/clip-edits.json').read_text(encoding='utf-8'))}
@@ -119,15 +119,15 @@ def main():
          'file': f'{OUT}/takes/NARR-Erinome_slip_take1.wav', 'store': f'{STORE_V2}/takes/NARR-Erinome_slip_take1.wav',
          'new': True, 'sha256': sha(OUT / 'takes/NARR-Erinome_slip_take1.wav')},
         {'id': 'TAKE-W-HOOK', 'what': 'WOMAN hook (Despina, reused: v1 take, line unchanged)', 'file': f'{OUT}/takes/WOMAN-B-Despina_HOOK_take1.wav',
-         'store': 'projects/KSO/audio/WOMAN-B-Despina_HOOK_take1.wav', 'new': False, 'sha256': sha(OUT / 'takes/WOMAN-B-Despina_HOOK_take1.wav')},
+         'store': 'projects/legacy/KSO/audio/WOMAN-B-Despina_HOOK_take1.wav', 'new': False, 'sha256': sha(OUT / 'takes/WOMAN-B-Despina_HOOK_take1.wav')},
         {'id': 'TAKE-W-JP', 'what': 'WOMAN JP question (Despina, reused)', 'file': f'{OUT}/takes/WOMAN-B-Despina_JP_take1.wav',
-         'store': 'projects/KSO/audio/lines/WOMAN-B-Despina_JP_take1.wav', 'new': False, 'sha256': sha(OUT / 'takes/WOMAN-B-Despina_JP_take1.wav')},
+         'store': 'projects/legacy/KSO/audio/lines/WOMAN-B-Despina_JP_take1.wav', 'new': False, 'sha256': sha(OUT / 'takes/WOMAN-B-Despina_JP_take1.wav')},
         {'id': 'TAKE-W-TH', 'what': 'WOMAN TH question (Despina, reused)', 'file': f'{OUT}/takes/WOMAN-B-Despina_TH_take1.wav',
-         'store': 'projects/KSO/audio/lines/WOMAN-B-Despina_TH_take1.wav', 'new': False, 'sha256': sha(OUT / 'takes/WOMAN-B-Despina_TH_take1.wav')},
+         'store': 'projects/legacy/KSO/audio/lines/WOMAN-B-Despina_TH_take1.wav', 'new': False, 'sha256': sha(OUT / 'takes/WOMAN-B-Despina_TH_take1.wav')},
         {'id': 'TAKE-W-MASK', 'what': 'WOMAN mask line (Despina, reused)', 'file': f'{OUT}/takes/WOMAN-B-Despina_MASK_take1.wav',
-         'store': 'projects/KSO/audio/WOMAN-B-Despina_MASK_take1.wav', 'new': False, 'sha256': sha(OUT / 'takes/WOMAN-B-Despina_MASK_take1.wav')},
+         'store': 'projects/legacy/KSO/audio/WOMAN-B-Despina_MASK_take1.wav', 'new': False, 'sha256': sha(OUT / 'takes/WOMAN-B-Despina_MASK_take1.wav')},
         {'id': 'TAKE-W-FINAL', 'what': 'WOMAN final line (Despina, reused)', 'file': f'{OUT}/takes/WOMAN-B-Despina_FINAL_take1.wav',
-         'store': 'projects/KSO/audio/WOMAN-B-Despina_FINAL_take1.wav', 'new': False, 'sha256': sha(OUT / 'takes/WOMAN-B-Despina_FINAL_take1.wav')},
+         'store': 'projects/legacy/KSO/audio/WOMAN-B-Despina_FINAL_take1.wav', 'new': False, 'sha256': sha(OUT / 'takes/WOMAN-B-Despina_FINAL_take1.wav')},
     ]
     asr_lines = []
     for r in ASR['lines']:
@@ -140,7 +140,7 @@ def main():
     measure = {
         'deliverable': 'KSO-EP01-SHORT',
         'revision': 'v2',
-        'supersedes': 'v1 (KSO-SCRIPT-R1, NARR Sulafat): projects/KSO/audio/voice-lock-r1/voice-measure-v1.json',
+        'supersedes': 'v1 (KSO-SCRIPT-R1, NARR Sulafat): projects/legacy/KSO/audio/voice-lock-r1/voice-measure-v1.json',
         'script_revision': 'KSO-SCRIPT-R2',
         'film_brief_at_lock': 'KSO-BRIEF-FILM-R1.1',
         'voice_lock': 'v2: NARR Erinome (replaces Sulafat), WOMAN Despina (five v1 takes reused, byte-identical, lines unchanged), user decisions 2026-11-01',

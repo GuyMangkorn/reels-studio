@@ -5,8 +5,8 @@ v6 (7 Nov 2026, user): adds EP02's ending pizzicato strings tag (`_raw/edu2-pizz
 v5 (6 Nov 2026): adds MUZ-A/B/C (sidechain-ducked by the narration), RT-STORE, SFX-SCAN, SFX-MEMSWELL; all generated sounds are "not listened". Run: python3 -I scripts/edu-series/ep04/review-mix.py"""
 import os, subprocess, sys
 S = os.path.expanduser('~/ReelsStore')
-N = f'{S}/projects/EDU/narration/ep04/2026-11-05_ep04-r13-kore-take3-regap028.wav'
-D = f'{S}/projects/EDU/narration'
+N = f'{S}/projects/edu/EDU/narration/ep04/2026-11-05_ep04-r13-kore-take3-regap028.wav'
+D = f'{S}/projects/edu/EDU/narration'
 L = f'{S}/library/sound'
 FPS, TOTAL = 30, 1662  # VL-RT-01 (R1.4, H11): 1657 -> 1662
 DUR = TOTAL / FPS

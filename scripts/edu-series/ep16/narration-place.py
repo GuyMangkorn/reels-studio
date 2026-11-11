@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
 """EDU-EP16-SHORT narration placement (Editor, W5.3 Draft, 2026-11-10) per EDU-EP16-ROWS-R2.0 "Narration placement".
-The locked R3 Kore read (48.32 s, 48 kHz mono, no atempo; store projects/EDU/audio/2026-11-10_ep16-nar-kore-fullread-r3.wav) is cut at the middle of the real pause before L04, L07, L08, L10 and L12
+The locked R3 Kore read (48.32 s, 48 kHz mono, no atempo; store projects/edu/EDU/audio/2026-11-10_ep16-nar-kore-fullread-r3.wav) is cut at the middle of the real pause before L04, L07, L08, L10 and L12
 (read 13.77 / 22.08 / 25.56 / 32.16 / 38.49 s) and placed with offsets 0 / 0.90 / 2.10 / 2.40 / 3.00 / 3.30 s. V01 Charon file start f412 (voice onset f420), V02 Aoede file start f692 (voice onset f700).
 No gain; 6 ms fades at every cut (all cuts sit in silence). Total 1632 f = 54.40 s at 48 kHz mono. Writes public/narration/EDU-EP16-SHORT-narration-v2.wav (the placed track replaces the raw copy; the raw read stays in the store)
 and out/EDU-EP16-SHORT/audio/placements-v2.txt. NOT LISTENED. Run: python3 -I scripts/edu-series/ep16/narration-place.py"""
 import array, os, wave
-R = os.path.expanduser('~/ReelsStore/projects/EDU/audio/')
+R = os.path.expanduser('~/ReelsStore/projects/edu/EDU/audio/')
 FPS, SR, TOTAL = 30, 48000, 1632
 def load(n):
     w = wave.open(R + n); assert w.getframerate() == SR and w.getnchannels() == 1 and w.getsampwidth() == 2, n

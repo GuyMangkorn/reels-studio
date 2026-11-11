@@ -4,15 +4,15 @@ Status: **candidate, awaiting user ear-approval** (W4); **current file: T-v2 (be
 
 | Take | Style | Store raw read (80.0 s / 77.1 s, -16 LUFS) |
 | --- | --- | --- |
-| A | `soft close whisper, melancholy, slow` | `projects/EG/narration/EG-EP02-SHORT-narration-raw-A-whisper.wav` |
-| B (recommended) | `warm, quiet, intimate, a little more awake` | `projects/EG/narration/EG-EP02-SHORT-narration-raw-B-warm.wav` |
+| A | `soft close whisper, melancholy, slow` | `projects/legacy/EG/narration/EG-EP02-SHORT-narration-raw-A-whisper.wav` |
+| B (recommended) | `warm, quiet, intimate, a little more awake` | `projects/legacy/EG/narration/EG-EP02-SHORT-narration-raw-B-warm.wav` |
 
 Assembled from B: each line cut at the real energy gap (silencedetect -36 dB mapped on Whisper large-v3-turbo segments), internal pauses compressed to <= 0.35 s, `atempo=1.08`, written gaps per line ID. Accuracy about +-0.1 s. Loudness: B-x108-pauses -16.0 LUFS, B-x108-tight -16.1 LUFS (ebur128, integrated; mix to delivery level later).
 
 | Version | Store | Speech end s | + 3 s hold |
 | --- | --- | --- | --- |
-| **P: chosen pauses, x1.08** | `projects/EG/narration/EG-EP02-SHORT-narration-B-x108-pauses.wav` | 64.98 | 67.98 |
-| T: pauses x0.7, x1.08 | `projects/EG/narration/EG-EP02-SHORT-narration-B-x108-tight.wav` | 61.73 | 64.73 |
+| **P: chosen pauses, x1.08** | `projects/legacy/EG/narration/EG-EP02-SHORT-narration-B-x108-pauses.wav` | 64.98 | 67.98 |
+| T: pauses x0.7, x1.08 | `projects/legacy/EG/narration/EG-EP02-SHORT-narration-B-x108-tight.wav` | 61.73 | 64.73 |
 | T112: pauses x0.7, x1.12 (not filed) | n/a | 59.82 | 62.82 |
 
 Gap plan P (seconds after the line): default 0.35; L01 0.45, L05 0.50, L09 0.60, L17 0.50; beat turns L04 0.95, L08 0.85, L11 1.25 (carries the 0.6 s wind SFX gap before L12), L12 0.75, L14 0.95, L18 1.05; L19 0 (then the 3 s hold). Version T multiplies every gap by 0.7.
@@ -53,9 +53,9 @@ User feedback after listening: switch to T (tight: atempo 1.08, every gap x0.7);
 
 | File | Store | Speech end s | + 3 s hold |
 | --- | --- | --- | --- |
-| **T-v2 (use)** | `projects/EG/narration/EG-EP02-SHORT-narration-B-x108-tight-v2.wav` | 61.24 | 64.24 |
-| T-v2alt (L19 = processed original, listen-compare only) | `projects/EG/narration/EG-EP02-SHORT-narration-B-x108-tight-v2alt-L19processed.wav` | 61.45 | 64.45 |
-| Regenerated L18+L19 raw (1 API request) | `projects/EG/narration/EG-EP02-SHORT-narration-raw-B-L18L19-regen.wav` | n/a | n/a |
+| **T-v2 (use)** | `projects/legacy/EG/narration/EG-EP02-SHORT-narration-B-x108-tight-v2.wav` | 61.24 | 64.24 |
+| T-v2alt (L19 = processed original, listen-compare only) | `projects/legacy/EG/narration/EG-EP02-SHORT-narration-B-x108-tight-v2alt-L19processed.wav` | 61.45 | 64.45 |
+| Regenerated L18+L19 raw (1 API request) | `projects/legacy/EG/narration/EG-EP02-SHORT-narration-raw-B-L18L19-regen.wav` | n/a | n/a |
 
 Loudness of both: -16.2 LUFS integrated, true peak about -1.5 dBFS (ebur128).
 

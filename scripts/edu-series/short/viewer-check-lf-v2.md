@@ -1,7 +1,7 @@
 # Viewer check — EDU-EP01-SHORT look frames v2
 
 - **Check:** [viewer check](../../../docs/sequence-workflow.md#viewer-check), fresh Film invocation (Opus, medium), 2026-11-04. The checker did not paint the frames.
-- **Inputs:** store `projects/EDU/previews/look-frames/ep01/v2/` LF01–LF05.png, viewed as one `scripts/qa-sheet.sh` sheet at 270 px (5 columns) and LF01, LF02, LF04, LF05 singly at 540 px; rows in [review-rows.json](review-rows.json) ("seen" of S01-B01-SH01, S01-B03-SH02, S01-B05-SH01, S01-B06-SH01, S01-B07-SH03); v2 casting lines and changes in [build-notes](../build-notes.md#w31-look-frames-v2-2026-11-04-film); v1 verdicts in [viewer-check-lf-v1](viewer-check-lf-v1.md); [user taste](../../../docs/user-taste.md) UT01–UT12.
+- **Inputs:** store `projects/edu/EDU/previews/look-frames/ep01/v2/` LF01–LF05.png, viewed as one `scripts/qa-sheet.sh` sheet at 270 px (5 columns) and LF01, LF02, LF04, LF05 singly at 540 px; rows in [review-rows.json](review-rows.json) ("seen" of S01-B01-SH01, S01-B03-SH02, S01-B05-SH01, S01-B06-SH01, S01-B07-SH03); v2 casting lines and changes in [build-notes](../build-notes.md#w31-look-frames-v2-2026-11-04-film); v1 verdicts in [viewer-check-lf-v1](viewer-check-lf-v1.md); [user taste](../../../docs/user-taste.md) UT01–UT12.
 - **Scope:** single stills; motion in the rows (push, lids closing, lean, nod) is not judged. The v1 fails have had their one repaint, so open findings below go into the row notes for the user to decide on ([viewer check](../../../docs/sequence-workflow.md#viewer-check)). Another repaint is the coordinator's call.
 - **Result:** 4 pass (LF01, LF03, LF04, LF05; LF01 and LF05 with notes), 1 fail (LF02: the bowed head).
 

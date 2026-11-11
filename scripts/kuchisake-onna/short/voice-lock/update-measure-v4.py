@@ -5,7 +5,7 @@ slots and budget are carried from v3 unchanged, and this script asserts that. Ev
 QA files written by pitch-fix-v4.py, v4-check.py and measure-loudness.mjs (see the reproduce list in the file).
 
 Run (worktree root): python3 -I scripts/kuchisake-onna/short/voice-lock/update-measure-v4.py \
-    --base "$REELS_STORE/projects/KSO/audio/voice-lock-r3/voice-measure-v3.json" \
+    --base "$REELS_STORE/projects/legacy/KSO/audio/voice-lock-r3/voice-measure-v3.json" \
     --pitch-qa out/kso-ep01-short/voice-lock-v4/qa/pitch-fix-v4.json \
     --check-qa out/kso-ep01-short/voice-lock-v4/qa/v4-check.json \
     --loudness out/kso-ep01-short/voice-lock-v4/qa/loudness-v4.jsonl
@@ -16,7 +16,7 @@ from pathlib import Path
 OUT = Path('scripts/kuchisake-onna/short/voice-measure.json')
 V4_TRACK = Path('out/kso-ep01-short/voice-lock-v4/final/KSO-EP01-SHORT_narration_voicelock-v4.mp3')
 V4_CLIP = Path('out/kso-ep01-short/voice-lock-v4/segments-v4/B06.wav')
-STORE = 'projects/KSO/audio/voice-lock-v4'
+STORE = 'projects/legacy/KSO/audio/voice-lock-v4'
 
 
 def sha(path):
@@ -43,7 +43,7 @@ def main():
 
     track_sha, clip_sha = sha(V4_TRACK), sha(V4_CLIP)
     d['revision'] = 'v4'
-    d['supersedes'] = 'v3 (KSO-SCRIPT-R3): projects/KSO/audio/voice-lock-r3/voice-measure-v3.json'
+    d['supersedes'] = 'v3 (KSO-SCRIPT-R3): projects/legacy/KSO/audio/voice-lock-r3/voice-measure-v3.json'
     d['voice_lock'] = ('v4: NARR Erinome read (B01-B05, v2) and the B06 read (v3 chunk) unchanged except one pitch fix on '
                        'โทษ in the NARR apology ขอโทษนะ (B06, S03-B02, KSO-A16); WOMAN Despina takes and the panic slip '
                        'unchanged. Script text unchanged (KSO-SCRIPT-R3).')

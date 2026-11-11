@@ -8,7 +8,7 @@
   "processed": "atempo=1.05 -> 91.436 s",
   "trackZeroAbsSecProcessed": 0.2521,
   "trackLenSec": 91.184,
-  "store": "projects/ZCONDO/audio/gemini-tts/zcpaint-th-approved-read/"
+  "store": "projects/legacy/ZCONDO/audio/gemini-tts/zcpaint-th-approved-read/"
  },
  "method": "split_lines.py: beat cuts from cut-gaps.py (measure-v2); intra-beat cuts at energy gaps nearest the Whisper midpoint (gap >= 0.1 s, else quietest 10 ms within +-0.3 s); onsets/speechEnd = first/last sample >= 300 of 32767 (narration.py THRESHOLD), relative to TH-01 first audible sample",
  "alignment": {
@@ -29,7 +29,7 @@
    ],
    "clipStartSec": -0.252,
    "clipEndSec": 6.883,
-   "clip": "projects/ZCONDO/audio/gemini-tts/zcpaint-th-split/beats/B01.wav"
+   "clip": "projects/legacy/ZCONDO/audio/gemini-tts/zcpaint-th-split/beats/B01.wav"
   },
   "B02": {
    "onsetSec": 7.227,
@@ -44,7 +44,7 @@
    ],
    "clipStartSec": 6.883,
    "clipEndSec": 16.953,
-   "clip": "projects/ZCONDO/audio/gemini-tts/zcpaint-th-split/beats/B02.wav"
+   "clip": "projects/legacy/ZCONDO/audio/gemini-tts/zcpaint-th-split/beats/B02.wav"
   },
   "B03": {
    "onsetSec": 17.423,
@@ -54,7 +54,7 @@
    ],
    "clipStartSec": 16.953,
    "clipEndSec": 18.853,
-   "clip": "projects/ZCONDO/audio/gemini-tts/zcpaint-th-split/lines/TH-10.wav (identical bytes)"
+   "clip": "projects/legacy/ZCONDO/audio/gemini-tts/zcpaint-th-split/lines/TH-10.wav (identical bytes)"
   },
   "B04": {
    "onsetSec": 19.318,
@@ -69,7 +69,7 @@
    ],
    "clipStartSec": 18.853,
    "clipEndSec": 35.468,
-   "clip": "projects/ZCONDO/audio/gemini-tts/zcpaint-th-split/beats/B04.wav"
+   "clip": "projects/legacy/ZCONDO/audio/gemini-tts/zcpaint-th-split/beats/B04.wav"
   },
   "B05": {
    "onsetSec": 35.938,
@@ -83,7 +83,7 @@
    ],
    "clipStartSec": 35.468,
    "clipEndSec": 48.868,
-   "clip": "projects/ZCONDO/audio/gemini-tts/zcpaint-th-split/beats/B05.wav"
+   "clip": "projects/legacy/ZCONDO/audio/gemini-tts/zcpaint-th-split/beats/B05.wav"
   },
   "B06": {
    "onsetSec": 49.334,
@@ -96,7 +96,7 @@
    ],
    "clipStartSec": 48.868,
    "clipEndSec": 59.888,
-   "clip": "projects/ZCONDO/audio/gemini-tts/zcpaint-th-split/beats/B06.wav"
+   "clip": "projects/legacy/ZCONDO/audio/gemini-tts/zcpaint-th-split/beats/B06.wav"
   },
   "B07": {
    "onsetSec": 60.348,
@@ -108,7 +108,7 @@
    ],
    "clipStartSec": 59.888,
    "clipEndSec": 68.103,
-   "clip": "projects/ZCONDO/audio/gemini-tts/zcpaint-th-split/beats/B07.wav"
+   "clip": "projects/legacy/ZCONDO/audio/gemini-tts/zcpaint-th-split/beats/B07.wav"
   },
   "B08": {
    "onsetSec": 68.631,
@@ -120,7 +120,7 @@
    ],
    "clipStartSec": 68.103,
    "clipEndSec": 75.663,
-   "clip": "projects/ZCONDO/audio/gemini-tts/zcpaint-th-split/beats/B08.wav"
+   "clip": "projects/legacy/ZCONDO/audio/gemini-tts/zcpaint-th-split/beats/B08.wav"
   },
   "B09": {
    "onsetSec": 76.344,
@@ -978,11 +978,11 @@
   7
  ],
  "store": {
-  "lines": "projects/ZCONDO/audio/gemini-tts/zcpaint-th-split/lines/TH-01..TH-39.wav",
-  "beats": "projects/ZCONDO/audio/gemini-tts/zcpaint-th-split/beats/",
-  "candidateMp3": "projects/ZCONDO/audio/gemini-tts/zcpaint-th-split/candidate/ZCPAINT-SHORT-TH.candidate.mp3 (not in public/; timeline not swapped)",
-  "candidateCallMp3": "projects/ZCONDO/audio/gemini-tts/zcpaint-th-call/candidate/ZCPAINT-SHORT-TH.candidate-call.mp3",
-  "callClip": "projects/ZCONDO/audio/gemini-tts/zcpaint-th-call/muffled/take-3.muffled.wav"
+  "lines": "projects/legacy/ZCONDO/audio/gemini-tts/zcpaint-th-split/lines/TH-01..TH-39.wav",
+  "beats": "projects/legacy/ZCONDO/audio/gemini-tts/zcpaint-th-split/beats/",
+  "candidateMp3": "projects/legacy/ZCONDO/audio/gemini-tts/zcpaint-th-split/candidate/ZCPAINT-SHORT-TH.candidate.mp3 (not in public/; timeline not swapped)",
+  "candidateCallMp3": "projects/legacy/ZCONDO/audio/gemini-tts/zcpaint-th-call/candidate/ZCPAINT-SHORT-TH.candidate-call.mp3",
+  "callClip": "projects/legacy/ZCONDO/audio/gemini-tts/zcpaint-th-call/muffled/take-3.muffled.wav"
  },
  "callCandidate": {
   "status": "candidate, not swapped into public/narration: the user picks the take by ear, then the swap",
@@ -998,8 +998,8 @@
    "chosen": "take-3 (Whisper exact text on raw and muffled; the shortest audible body; take-2 0.69, take-1 0.42 muffled, proxy only)"
   },
   "mix": "muffled: ffmpeg lowpass=f=2500:poles=2, aecho=0.8:0.5:24|37:0.22|0.14, volume=-3dB; clip = first to last sample >= 300",
-  "clipStore": "projects/ZCONDO/audio/gemini-tts/zcpaint-th-call/muffled/take-3.muffled.wav",
-  "candidateStore": "projects/ZCONDO/audio/gemini-tts/zcpaint-th-call/candidate/ZCPAINT-SHORT-TH.candidate-call.mp3",
+  "clipStore": "projects/legacy/ZCONDO/audio/gemini-tts/zcpaint-th-call/muffled/take-3.muffled.wav",
+  "candidateStore": "projects/legacy/ZCONDO/audio/gemini-tts/zcpaint-th-call/candidate/ZCPAINT-SHORT-TH.candidate-call.mp3",
   "callOnsetSec": 85.0,
   "callEndSec": 86.222,
   "callLengthSec": 1.2219,

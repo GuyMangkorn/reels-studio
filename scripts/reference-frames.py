@@ -2,7 +2,7 @@
 """Reference stills per composition, so a later re-render can be checked against the delivered picture.
 
 Renders one PNG every 5 s plus the last frame (`render.mjs --stills --gl=angle`) at the current commit and files them
-in the asset store ($REELS_STORE, scripts/store.py) as projects/<PROJECT>/reference/<ID>/<commit>/ with hashes.tsv (frame, sha256, PSNR in dB
+in the asset store ($REELS_STORE, scripts/store.py) as projects/<channel>/<PROJECT>/reference/<ID>/<commit>/ with hashes.tsv (frame, sha256, PSNR in dB
 against the delivered MP4 when --mp4 is given). When an earlier reference set exists, prints how many frames are
 byte-identical to it.
 
@@ -53,7 +53,7 @@ def main():
         if r.returncode != 0:
             print(f'{cid}: render failed, see {log}')
             continue
-        rel_base = f'projects/{store.project_of(cid)}/reference/{cid}'
+        rel_base = f'projects/{store.series_dir(store.project_of(cid))}/reference/{cid}'
         earlier = sorted(glob.glob(os.path.join(store.STORE, rel_base, '*', 'hashes.tsv')), key=os.path.getmtime)
         dest = os.path.join('out', 'reference', cid, commit)  # staged here, then filed into the store
         os.makedirs(dest, exist_ok=True)

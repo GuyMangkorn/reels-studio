@@ -1,14 +1,14 @@
 {
   "public/audio/edu/EDU-EP11-SHORT-draft-stem-v5.wav": {
-    "store": "projects/EDU/audio/EDU-EP11-SHORT/EDU-EP11-SHORT-draft-stem-v5.wav",
+    "store": "projects/edu/EDU/audio/EDU-EP11-SHORT/EDU-EP11-SHORT-draft-stem-v5.wav",
     "sha256": "2d8344e2a92c2f8394eb899f6f73cc35763877fd560e328413169647f188da0d"
   },
   "public/edu11/inset-g977.png": {
-    "store": "projects/EDU-EP11/sources/inset-g977-r2.png",
+    "store": "projects/edu/EDU/sources/EDU-EP11-SHORT/inset-g977-r2.png",
     "sha256": "ab1574b256c76ecb72da238b92b8a040299f74c5d71c7511be39822963e6face"
   },
   "public/narration/EDU-EP11-SHORT-narration-v2.wav": {
-    "store": "projects/EDU/audio/EDU-EP11-SHORT/EDU-EP11-SHORT-narration-v2.wav",
+    "store": "projects/edu/EDU/audio/EDU-EP11-SHORT/EDU-EP11-SHORT-narration-v2.wav",
     "sha256": "61c410d57c54748b0a50b85bc97c595569f5608628b17eed6e7630f6e128ba90"
   }
 }

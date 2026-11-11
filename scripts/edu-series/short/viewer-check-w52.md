@@ -1,7 +1,7 @@
 # Viewer check — EDU-EP01-SHORT W5.2 picture draft
 
 - **Check:** [viewer check](../../../docs/sequence-workflow.md#viewer-check), fresh Film invocation (Opus, medium), 2026-11-04. The checker did not paint the draft.
-- **Inputs:** `out/edu01/w52/` G1, G2, G3, G45 (69 key stills, start+2 / mid / end-2 per shot, 270 px tiles) and `sit.png`; raw stills `out/EDU-EP01-SHORT/stills/<frame>.png` cropped full-size for 142, 371, 450, 512, 564, 611, 1580, 1691, 2 vs 1858; locked look frames LF01 v2, LF02 v5, LF03 v2, LF04 v3, LF05 v2 (store `projects/EDU/previews/look-frames/ep01/`) tiled beside the matching draft frame; timed sheet [scene-sheets.md](scene-sheets.md) R1.1; row "seen" in [review-rows.json](review-rows.json); [user taste](../../../docs/user-taste.md) UT01–UT12.
+- **Inputs:** `out/edu01/w52/` G1, G2, G3, G45 (69 key stills, start+2 / mid / end-2 per shot, 270 px tiles) and `sit.png`; raw stills `out/EDU-EP01-SHORT/stills/<frame>.png` cropped full-size for 142, 371, 450, 512, 564, 611, 1580, 1691, 2 vs 1858; locked look frames LF01 v2, LF02 v5, LF03 v2, LF04 v3, LF05 v2 (store `projects/edu/EDU/previews/look-frames/ep01/`) tiled beside the matching draft frame; timed sheet [scene-sheets.md](scene-sheets.md) R1.1; row "seen" in [review-rows.json](review-rows.json); [user taste](../../../docs/user-taste.md) UT01–UT12.
 - **Scope:** stills only. Captions, the "ภาพจำลอง" tag and the "hypnic jerk" name card are Editor overlays and are not in these stills.
 - **Result:** **repaint-needed.** Two blockers (the sit-up figure and the faller's ground shadow) and six should-fix items. The look matches all five locked frames (bedroom, cliff, thought room, icons and doctor are close to identical to LF01–LF05), and the loop seam holds.
 

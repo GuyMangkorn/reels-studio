@@ -64,7 +64,7 @@ Sum of frames = 1945. Gaps used for beat changes: L13→L14 (0.94 s, frames 1138
 | Film | After Draft: revalidate CL04/CL07 on the first plates | open |
 | Coordinator | Publish `review-rows.json` `SS-R3` (timed) to the existing page URL; record URL in delivery.md | pending |
 
-Element captures: look stills only (`$REELS_STORE/projects/EG/previews/look-frames/ss-r2/`: LF01 + LF01-WAVE + LF01-REACH + LF05-START + LF05-GLASS; `LF02` soi, `LF03` stall, `LF04` card); they are look evidence, not plate evidence. Editor scene sample proposal: frame 1018 (S02-B01-SH04 open door at B) and frame 1881 (S04-B01-SH04 end of pull-back).
+Element captures: look stills only (`$REELS_STORE/projects/legacy/EG/previews/look-frames/ss-r2/`: LF01 + LF01-WAVE + LF01-REACH + LF05-START + LF05-GLASS; `LF02` soi, `LF03` stall, `LF04` card); they are look evidence, not plate evidence. Editor scene sample proposal: frame 1018 (S02-B01-SH04 open door at B) and frame 1881 (S04-B01-SH04 end of pull-back).
 
 ## Change log
 

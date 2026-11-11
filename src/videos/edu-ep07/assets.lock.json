@@ -1,14 +1,14 @@
 {
   "public/audio/edu/EDU-EP07-SHORT-draft-stem-v1.wav": {
-    "store": "projects/EDU/audio/EDU-EP07-SHORT/mix/2026-11-08_ep07-draft-stem-v1.wav",
+    "store": "projects/edu/EDU/audio/EDU-EP07-SHORT/mix/2026-11-08_ep07-draft-stem-v1.wav",
     "sha256": "7b0faae2a32373d524cd0d34d499261df01201a86ae73be4286608942e1f56b9"
   },
   "public/audio/edu/EDU-EP07-SHORT-draft-stem-v2.wav": {
-    "store": "projects/EDU/audio/EDU-EP07-SHORT/mix/2026-11-08_ep07-draft-stem-v2.wav",
+    "store": "projects/edu/EDU/audio/EDU-EP07-SHORT/mix/2026-11-08_ep07-draft-stem-v2.wav",
     "sha256": "fd2fc4a4576afe78ae52aeb6eaa6282d8d9ea7e41753cfeaa566b87ec115a6e3"
   },
   "public/narration/EDU-EP07-SHORT.wav": {
-    "store": "projects/EDU/audio/EDU-EP07-SHORT/narration/2026-11-08_ep07-narration-placed-r12.wav",
+    "store": "projects/edu/EDU/audio/EDU-EP07-SHORT/narration/2026-11-08_ep07-narration-placed-r12.wav",
     "sha256": "aad78d027dbb53d3832d69d203faed6bb42f4cdf6c25b9e3eed39fe401288625"
   }
 }

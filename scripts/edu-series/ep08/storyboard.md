@@ -196,7 +196,7 @@ Each block: staging (`est`), camera, light, sound, check. Seconds are into the s
 
 ## Look frames (W3, from the brief)
 
-v1 painted 2026-11-08 (measurements, sources and W3 tuning in the brief R1.1 [Look frames](film-brief.md#look-frames-w3-painted-after-the-w22-storyboard-pass-is-on-the-review-page)): LF00 VD25 suit/helmet look check (AST helmet on front; AST helmet off ¾ with glitter; CREW visor down, profile) · LF01 S01-B01-SH01 · LF02 S01-B03-SH01 · LF03 S01-B03-SH03 · LF04 S01-B04-SH03 · LF05 S01-B05-SH04 · LF06 S01-B01-SH03 (film strip + ring, BC2) · LF07 S01-B02-SH03 (flask card + ring). Rows: beat looks B01 LF01, B02 LF07, B03 LF02, B04 LF04, B05 LF05; LF00, LF03, LF06 as page questions Q-LF00, Q-LF03, Q-LF06. Stills `out/edu08/look-frames/v1/`, store `projects/EDU/previews/EDU-EP08-SHORT/look-frames/`.
+v1 painted 2026-11-08 (measurements, sources and W3 tuning in the brief R1.1 [Look frames](film-brief.md#look-frames-w3-painted-after-the-w22-storyboard-pass-is-on-the-review-page)): LF00 VD25 suit/helmet look check (AST helmet on front; AST helmet off ¾ with glitter; CREW visor down, profile) · LF01 S01-B01-SH01 · LF02 S01-B03-SH01 · LF03 S01-B03-SH03 · LF04 S01-B04-SH03 · LF05 S01-B05-SH04 · LF06 S01-B01-SH03 (film strip + ring, BC2) · LF07 S01-B02-SH03 (flask card + ring). Rows: beat looks B01 LF01, B02 LF07, B03 LF02, B04 LF04, B05 LF05; LF00, LF03, LF06 as page questions Q-LF00, Q-LF03, Q-LF06. Stills `out/edu08/look-frames/v1/`, store `projects/edu/EDU/previews/EDU-EP08-SHORT/look-frames/`.
 
 ## Sound NEEDS-GEN list (from the brief; generated at W4+ by the Editor)
 

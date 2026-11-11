@@ -155,7 +155,7 @@ Not built (not needed by a still): N10 and N15 poses beyond the stand-ins, N16 f
 
 The assistant now faces **left** (left view: head, gaze and body consistent) and the rope he cuts is on his left. Staging: shift −0.45 m (feet x −1.00), rope cut 0.3 m to his left at **(97.3, 1061.9)** (in frame, outside INSET x 760–1040), wind-up with hands behind the head and a shorter haft (head extension 0.40 m), so the axe clears his face; the blade points left, at the rope. Assistant head (196.6, 986.1), lead 629.2 px (feet 1538.8), fully in frame; showman unchanged (607.5 px); caption mean 0.521 (p95 0.743). The axe head ends beside the showman's left coat edge without covering him. Rerender: `LF03.png`, `LF03-noinset.png` (the round-1 numbers for LF03 above are superseded by these).
 
-Review-page source: rebuild from `out/edu11/lf/LF03.png` (also in the store at `$REELS_STORE/projects/EDU-EP11/look-frames/LF03.17c18903.png` (the store keeps earlier rounds under the plain and older hashed names)).
+Review-page source: rebuild from `out/edu11/lf/LF03.png` (also in the store at `$REELS_STORE/projects/edu/EDU/look-frames/EDU-EP11-SHORT/LF03.17c18903.png` (the store keeps earlier rounds under the plain and older hashed names)).
 
 ## Fix round 3 (user note, 2026-11-09): LF03 axe on the rope side
 

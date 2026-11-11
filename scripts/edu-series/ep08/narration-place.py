@@ -10,7 +10,7 @@ import json, os, subprocess, wave, array, math
 HERE = os.path.dirname(os.path.abspath(__file__))
 M = json.load(open(os.path.join(HERE, 'measure.json')))
 R = os.path.expanduser('~/ReelsStore')
-LINES = f'{R}/projects/EDU/narration/ep08/lines'
+LINES = f'{R}/projects/edu/EDU/narration/ep08/lines'
 FPS, SR, T = 30, 48000, 0.95
 TOTAL = json.load(open(os.path.join(HERE, 'timeline.json')))['total_frames']   # R1.3 re-lock: 1745 f (R1.2 1731, R1.1 1762)
 OUT = 'public/narration/EDU-EP08-SHORT-narration-v3.wav'

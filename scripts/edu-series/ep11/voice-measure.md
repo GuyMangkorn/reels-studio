@@ -31,7 +31,7 @@ User pick (2026-11-08): Gemini Kore, style A, then slowed 8 % (atempo=0.92, samp
 - **Verdict (cap 60 s, tolerance 5 % = 63 s):** re-gapped 57.1 s is under the cap; as read 61.7 s is 1.7 s over the cap (+2.9 %) but inside the 5 % rule. **Pass, no Preaw cut required**; the margin is thin (2.9 s under the cap re-gapped, 1.3 s under 63 s as read), so the 0.28 s re-gap is assumed in W2 timing.
 - **Proposal only (not applied; script.md untouched):** if Film's retime runs over 60 s, N1 cut set C1 (L07 + V04, about -2.3 s nominal, -1.35 s measured L07 plus gap and V04 0.4), C2 (L09 shortened, about -0.7 s), C3 (L12 shortened, about -1.4 s). C1 first.
 - For the user's ear: "ถ้าสลิงลิฟต์ขาด" start, "หนึ่งพันแปดร้อยห้าสิบสี่" (L10), "ซะอีก" (L12), whether L16 ends on a clean "แล้วรอ".
-- Store: `projects/EDU/voice/ep11-nar-kore-A-fullread.wav` (raw, 50.88 s) and `ep11-nar-kore-A-fullread-x0.92.wav` (55.29 s) with `.json` sidecar. Local reproduction inputs `out/ep11-voice/full/` (ignored). Per-line split is not done (W4 voice lock).
+- Store: `projects/edu/EDU/voice/ep11-nar-kore-A-fullread.wav` (raw, 50.88 s) and `ep11-nar-kore-A-fullread-x0.92.wav` (55.29 s) with `.json` sidecar. Local reproduction inputs `out/ep11-voice/full/` (ignored). Per-line split is not done (W4 voice lock).
 
 ## Full read R3 (text-only re-read, 2026-11-08)
 
@@ -59,7 +59,7 @@ Script EDU-EP11-SCRIPT-R3 changed two lines only: L02 (dropped นะ) and L16 (
 - Speech alone **45.95 s** (209 syl); NAR as read (0.25-52.75) **52.5 s**; re-gapped at 0.28 s (15 gaps) = **50.15 s NAR**.
 - **Projected video** (+ 6.8 s non-NAR items from N1): re-gapped **56.95 s**; as read **59.3 s**. Both under the 60 s cap; the 5 % rule (63 s) is not needed. Margin 3.0 s re-gapped (cap). No Preaw cut required.
 - L16 now has a 0.4 s pause after เลย (the comma) and runs 4.65 s; ending "กดปุ่มฉุกเฉิน แล้วรอ" 51.7-52.75.
-- Store: `projects/EDU/voice/ep11-nar-kore-A-r3-x0.92.wav` (53.02 s) with `.json` sidecar, raw `ep11-nar-kore-A-r3.wav` (48.80 s), beside the first take (kept). Local `out/ep11-voice/r3/`.
+- Store: `projects/edu/EDU/voice/ep11-nar-kore-A-r3-x0.92.wav` (53.02 s) with `.json` sidecar, raw `ep11-nar-kore-A-r3.wav` (48.80 s), beside the first take (kept). Local `out/ep11-voice/r3/`.
 
 ## R3 loudness note (user, 2026-11-08, after hearing the R3 read)
 

@@ -1,6 +1,6 @@
 """EP08 pace 0.95 preview (coordinator, 2026-11-08): speech atempo 0.95 per line, gaps unchanged, L13 afade 0.9 s qsin. User picked this version. Run from repo root after narration-place.py."""
 import re,subprocess,os,json
-R=os.path.expanduser('~/ReelsStore');L=f'{R}/projects/EDU/narration/ep08/lines'
+R=os.path.expanduser('~/ReelsStore');L=f'{R}/projects/edu/EDU/narration/ep08/lines'
 M=json.load(open('scripts/edu-series/ep08/measure.json'))
 items=[]
 for l in open('out/EDU-EP08-SHORT/audio/placements.txt'):

@@ -29,17 +29,17 @@ User picked style A (2026-11-08) and the ban1 treatment. **One Gemini request**,
 - **Projected video** = NAR + non-NAR beats from N1 (try silence 2.0, V01 0.6, V02 1.5, taps 0.6, retry 1.0, closing hold 2.5 = 8.2 s): re-gapped **53.2 s**, as read (raw gaps) **57.1 s**. Both under the 60 s cap (63 s with the 5 % tolerance); slack 2.9-6.8 s. Caveat: the try window and V01 may overlap the raw L01/L02 gap (0.79 s), so the real total can be slightly lower; estimate until Film retimes the shots.
 - **Verdict: pass, no Preaw cuts needed.** Script N1 cuts C1 (drop L13, about -2.2 s measured: L13 as read is the script's L13 "แต่สายในมือ…", 2.25 s + 0.28 gap), C2 (L06 "เหมือนสายเชิดหุ่น") and C3 (L10) are **not needed**; all three stay available if Film's retime runs long.
 - For the user's ear: "แบน" in L01 (spaced), "เบา ๆ นะ", "ระบบประสาท", "สายเชิดหุ่น"; whether the L04 list "นิ้วโป้ง, นิ้วชี้, นิ้วก้อย" has even beats for the three taps.
-- Store: `projects/EDU/voice/ep09-nar-kore-A-fullread.wav` (+ `.json`). Local reproduction inputs `out/ep09-voice/full/` (ignored). Per-line split is not done yet (W4 voice lock).
+- Store: `projects/edu/EDU/voice/ep09-nar-kore-A-fullread.wav` (+ `.json`). Local reproduction inputs `out/ep09-voice/full/` (ignored). Per-line split is not done yet (W4 voice lock).
 
 ## User tweak 2026-11-08: 5% slower
 
-User asked for the full read 5% slower. Take `~/ReelsStore/projects/EDU/voice/ep09-nar-kore-A-fullread-x0.95.wav` (ffmpeg atempo=0.95 of the same Gemini take, no new request): raw 49.48 s -> 52.07 s. Projection (arithmetic, not re-measured): speech 41.66 s -> about 43.9 s, video as read 57.1 s -> about 59.7 s, re-gapped 53.2 s -> about 55.4 s. Under 60 s but with about 0.3 s margin as read; cut C1 (L13) if W6 timing runs over. This overrides the series "no atempo" default for EP09 only, at the user's request.
+User asked for the full read 5% slower. Take `~/ReelsStore/projects/edu/EDU/voice/ep09-nar-kore-A-fullread-x0.95.wav` (ffmpeg atempo=0.95 of the same Gemini take, no new request): raw 49.48 s -> 52.07 s. Projection (arithmetic, not re-measured): speech 41.66 s -> about 43.9 s, video as read 57.1 s -> about 59.7 s, re-gapped 53.2 s -> about 55.4 s. Under 60 s but with about 0.3 s margin as read; cut C1 (L13) if W6 timing runs over. This overrides the series "no atempo" default for EP09 only, at the user's request.
 
 ## Full read R1.3 (W4 step 2, 2026-11-08)
 
 User decision 2026-11-08: L03 at the same pace as the other lines; no separate slow L03 take (s1-s3 discarded). **One Gemini request**, one attempt, exit 0, log `out/logs/ep09-r13-full.log`: `gemini-3.8-flash-tts`, Kore, **the same style prompt as the W1.4 read** (style A, "fast-paced ... pronounce every word clearly"), L01 ban1 spacing, ellipses as commas. Text `out/ep09-voice/r13/lines-nar.txt`: the 11 NAR lines of script EDU-EP09-SCRIPT-R1.3 (L01-L09, L12, L15 with "แค่"; L10, L13 cut). Raw 40.32 s, then ffmpeg atempo=0.95 (48 kHz mono, -16.0 LUFS, -1.5 dBTP) = **42.43 s**. **Not listened by me.** Edges: ffmpeg `silencedetect -35 dB / 0.10 s` assigned by line order and comma pauses; faster-whisper gave a usable check on L01-L02 (L01 first half ends about 2.3 s, "แล้วลองยก..." 2.3-3.7 s) and on the L07/L08/L09 starts, but is garbled elsewhere, so edges are +-0.1 s and sub-line anchors (marked ~) +-0.2 s.
 
-Store (`projects/EDU/voice/`): `ep09-nar-kore-A-r13-full.wav` (+ `.json`, slowed full read), `ep09-nar-kore-A-r13-full-raw.wav` (+ `.json`, unslowed), per-line `ep09-nar-kore-A-r13-full-L01.wav` ... `-L15.wav` (+ `.json`; cut at the middle of each inter-line gap, 11 files). Git copy of the full read: `public/narration/EDU-EP09-SHORT.wav` (candidate, not locked).
+Store (`projects/edu/EDU/voice/`): `ep09-nar-kore-A-r13-full.wav` (+ `.json`, slowed full read), `ep09-nar-kore-A-r13-full-raw.wav` (+ `.json`, unslowed), per-line `ep09-nar-kore-A-r13-full-L01.wav` ... `-L15.wav` (+ `.json`; cut at the middle of each inter-line gap, 11 files). Git copy of the full read: `public/narration/EDU-EP09-SHORT.wav` (candidate, not locked).
 
 | Line | Start | End | Dur (s) | Syl | Syl/s | Gap after |
 | --- | --- | --- | --- | --- | --- | --- |
@@ -93,7 +93,7 @@ Video total **50.4 s** (estimate 48.5 s, +1.9 s; audio 42.43 s vs ~40.3 s); unde
 
 User, after listening to the x0.95 read: "too fast, slow it 5%". No new TTS request. Derived from the raw take `ep09-nar-kore-A-r13-full-raw.wav` with a single `atempo=0.9025` (0.95 x 0.95), then two-pass `loudnorm` (linear, I=-16, TP=-1.5; check -16.0 LUFS, -1.6 dBTP), 48 kHz mono. The previous x0.95 files are kept. Line times are the x0.95 anchors divided by 0.95 (exact for atempo), cross-checked with `silencedetect` (-40 dB; ends within ~0.04 s).
 
-Store (`projects/EDU/voice/`): `ep09-nar-kore-A-r13-full-s2.wav` (+ `.json`, 44.66 s) and per-line `ep09-nar-kore-A-r13-full-s2-L01.wav` ... `-L15.wav` (+ `.json` sidecars with source, factor, cut and speech times; 11 lines). Git candidate: `public/narration/EDU-EP09-SHORT.wav` replaced (not locked, no `store.py use`).
+Store (`projects/edu/EDU/voice/`): `ep09-nar-kore-A-r13-full-s2.wav` (+ `.json`, 44.66 s) and per-line `ep09-nar-kore-A-r13-full-s2-L01.wav` ... `-L15.wav` (+ `.json` sidecars with source, factor, cut and speech times; 11 lines). Git candidate: `public/narration/EDU-EP09-SHORT.wav` replaced (not locked, no `store.py use`).
 
 | Line | Start | End | Dur (s) | Syl/s | Gap after |
 | --- | --- | --- | --- | --- | --- |
@@ -142,7 +142,7 @@ Video total **52.62 s** (x0.95 table 50.4 s); 7.38 s slack under the 60 s cap. S
 
 Script EDU-EP09-SCRIPT-R1.4 (only L12 changed: `เล่นมาหลายปี แค่ควบคุมได้ดีกว่าคนทั่วไป`; user approved the wording, Boat recheck b1d4fce no change). Same process as R1.3 s2: **one Gemini request**, one attempt, exit 0, log `out/logs/ep09-r14-full.log`: `gemini-3.8-flash-tts`, Kore, the same style A prompt, L01 ban1 spacing, same 11 NAR lines (L01-L09, L12, L15), ellipses as commas (`out/ep09-voice/r14/lines-nar.txt`; only the L12 text differs from the r13 file). Raw 40.60 s (R1.3 raw 40.32 s), then a single `atempo=0.9025` and two-pass `loudnorm` (linear, I=-16, TP=-1.5; check -16.1 LUFS, -1.5 dBTP), 48 kHz mono = **44.98 s** (R1.3 s2 44.66 s). This is a **new take**, so every line differs slightly from the R1.3 read, not only L12; no L03 pace change beyond the process. **Not listened by me**; edges by `silencedetect -35 dB / 0.06 s` (+-0.1 s). faster-whisper failed to run here (av `metadata_errors` TypeError), so there is no transcript check.
 
-Store (`projects/EDU/voice/`): `ep09-nar-kore-A-r14-full-s2.wav` (+ `.json`), `ep09-nar-kore-A-r14-full-raw.wav` (+ `.json`, unslowed take), per-line `ep09-nar-kore-A-r14-full-s2-L01.wav` ... `-L15.wav` (+ `.json`; cut at the middle of each gap, 11 files). Not copied to `public/narration`, no `store.py use`; the locked-candidate file there is still the R1.3 s2 read.
+Store (`projects/edu/EDU/voice/`): `ep09-nar-kore-A-r14-full-s2.wav` (+ `.json`), `ep09-nar-kore-A-r14-full-raw.wav` (+ `.json`, unslowed take), per-line `ep09-nar-kore-A-r14-full-s2-L01.wav` ... `-L15.wav` (+ `.json`; cut at the middle of each gap, 11 files). Not copied to `public/narration`, no `store.py use`; the locked-candidate file there is still the R1.3 s2 read.
 
 | Line | Start | End | Dur (s) | Syl | Syl/s | Gap after |
 | --- | --- | --- | --- | --- | --- | --- |

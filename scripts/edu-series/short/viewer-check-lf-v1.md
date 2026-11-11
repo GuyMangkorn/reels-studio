@@ -1,7 +1,7 @@
 # Viewer check — EDU-EP01-SHORT look frames v1
 
 - **Check:** [viewer check](../../../docs/sequence-workflow.md#viewer-check), fresh Film invocation (Opus, medium), 2026-11-04. The checker did not paint the frames.
-- **Inputs:** store `projects/EDU/previews/look-frames/ep01/v1/` LF01–LF05.png, viewed as one `scripts/qa-sheet.sh` sheet at 270 px and single frames at 540 px; rows in [review-rows.json](review-rows.json) `SS-R1` ("seen" of S01-B01-SH01, S01-B03-SH02, S01-B05-SH01, S01-B06-SH01, S01-B07-SH03); [brief](brief.md) VD03, VD04, VD07, VD08, VD09; casting lines from [build-notes](../build-notes.md#w31-look-frames-v1-2026-11-04-film); [user taste](../../../docs/user-taste.md) UT01–UT12.
+- **Inputs:** store `projects/edu/EDU/previews/look-frames/ep01/v1/` LF01–LF05.png, viewed as one `scripts/qa-sheet.sh` sheet at 270 px and single frames at 540 px; rows in [review-rows.json](review-rows.json) `SS-R1` ("seen" of S01-B01-SH01, S01-B03-SH02, S01-B05-SH01, S01-B06-SH01, S01-B07-SH03); [brief](brief.md) VD03, VD04, VD07, VD08, VD09; casting lines from [build-notes](../build-notes.md#w31-look-frames-v1-2026-11-04-film); [user taste](../../../docs/user-taste.md) UT01–UT12.
 - **Scope:** look frames are single stills, so the start/middle/end sheet is one frame each. Motion in the rows (push, eyes closing, lean, nod) is not judged here.
 - **Result:** 2 pass, 3 fail. Each fail goes back to the painter (Film) once; after the repaint, findings still open go into the row note for the user.
 
@@ -22,4 +22,4 @@
 ## Change log
 
 - 2026-11-04 (Film, viewer check): first check of LF01–LF05 v1. LF01, LF02, LF05 fail; LF03, LF04 pass with notes.
-- 2026-11-04 (Film, W3.1 v2): LF01, LF02, LF05 repainted from the fixes above and LF04 dumbbell redrawn; store `projects/EDU/previews/look-frames/ep01/v2/`; notes in [build-notes](../build-notes.md#w31-look-frames-v2-2026-11-04-film). Not re-checked: a fresh viewer check is the coordinator's call.
+- 2026-11-04 (Film, W3.1 v2): LF01, LF02, LF05 repainted from the fixes above and LF04 dumbbell redrawn; store `projects/edu/EDU/previews/look-frames/ep01/v2/`; notes in [build-notes](../build-notes.md#w31-look-frames-v2-2026-11-04-film). Not re-checked: a fresh viewer check is the coordinator's call.

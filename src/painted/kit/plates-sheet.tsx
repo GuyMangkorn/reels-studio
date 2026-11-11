@@ -12,7 +12,7 @@ const label: CSSProperties = {position: 'absolute', fontFamily: 'Noto Sans Thai,
 const Sheet = () => (
   <AbsoluteFill style={{background: '#efe6d2'}}>
     <div style={{...label, left: 24, top: 18, fontSize: 36, fontWeight: 700}}>src/painted/kit — plate gallery</div>
-    <div style={{...label, left: 24, top: 68, fontSize: 17, color: '#4a3f38'}}>Finished sets from delivered episodes, for reference only (never a default). Index: src/painted/kit/plates.ts · stills: store projects/KIT/plates/</div>
+    <div style={{...label, left: 24, top: 68, fontSize: 17, color: '#4a3f38'}}>Finished sets from delivered episodes, for reference only (never a default). Index: src/painted/kit/plates.ts · stills: store projects/shared/KIT/plates/</div>
     {PLATES.map((p, i) => {
       const x = (i % COLS) * CELL + (CELL - TW) / 2, y = TOP + Math.floor(i / COLS) * ROW;
       return (
