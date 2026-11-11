@@ -167,3 +167,19 @@
 
 - Optional alternatives only if the user hears a spring in "ดีด" after the re-read (not needed): "ขามันถีบแรงขึ้นก็จริง…" and "เหมือนขาคุณถีบแรงสองเท่า…" ("ถีบ" = push off, no spring sense; label "แรงถีบ ↑").
 - **Overall verdict: pass. No must-fix open.** No premise, reveal or learning-impact change. Factual readiness for R5 wording only; no user approval, no audio or visual validation (the L03/L05 takes and label still need redoing).
+
+## R6 recheck (2026-11-10)
+
+- Checked: `script.md` **EDU-EP13-SCRIPT-R6**, L16 row, "R6 changes for Boat" and the L16 claim row, against research.md CL05/CL10/CL11 and SRC005 (`lead-only`: open-access review excerpts of Borelli's law and Bennet-Clark 1977). No web search needed (SRC005 already settles the model-level question). Script not edited. Qualitative confidence medium-high for the model claim.
+- L16 "ใช้ก็ได้… แต่ไม่ได้สูงขึ้นหรอก แผ่นยางโต ตัวก็หนักตาม":
+
+| Item | Severity | Verdict | Note |
+| --- | --- | --- | --- |
+| (1) "ใช้ก็ได้" | none | pass | CL11: a giant could still keep a spring; nothing says it cannot. L15 asks "ยังต้องพึ่ง…มั้ย" and L16 answers "can, not needed". |
+| (2) "ไม่ได้สูงขึ้นหรอก" unhedged | none (optional) | pass | Scaling model: spring energy follows pad volume, mass follows body volume, so energy per kilogram, and so jump height, stays the same at any size (SRC005; same unhedged rule as L06). The beat itself says "แผ่นยางโต ตัวก็หนักตาม", so the model frame is carried by the line. No wording fix. Optional only, if Preaw wants a hedge: "ก็ไม่น่าสูงขึ้นหรอก" (one hedge, same length); not required. |
+| (3) "แผ่นยางโต ตัวก็หนักตาม" | none | pass | Qualitative, no factor; "ตาม" = grows together (direction true, CL10 style). |
+| (4) Leftover muscle or leg-length claim | none | pass | None in L16. R4/R5 "ขามันยาว…กล้าม" is gone. Rows still mentioning it (changelog, R4 section, N5/N6/Q1/Q3 history) are dated history; N5 voice note "ไม่ค่อยต้องแล้ว" and N6 "lit long legs, icon greys" are stale for R6: Preaw to tidy (optional, not audience-facing). CL02 row already updated. |
+| (5) Cue | none | pass with limits | Icon stays lit, pad "ภาพจำลอง" swells with body, weight dial echo of B02-SH01: no digits, no equal-size bars. Pad must show squeezed/compressed, never stretched (B-P4/FIX-4); the swell is growth in size, not stretching. Rubber-swell and thump SFX are fictional, fine. |
+
+- Flow note: L16 now leads straight into L12 "สูงพอ ๆ กัน… ไม่ใช่ร้อยเมตร"; consistent (same order of size, tens of centimetres), no premise or reveal change.
+- **R6 verdict: pass. No must-fix, no wording FIX.** Factual readiness for L16 and its cue only; no user approval, no audio or visual validation.

@@ -1,0 +1,343 @@
+{
+  "deliverable": "EDU-EP16-SHORT",
+  "step": "W4.2",
+  "script_revision": "EDU-EP16-SCRIPT-R3",
+  "date": "2026-11-10",
+  "read": {
+    "store": "projects/EDU/audio/2026-11-10_ep16-nar-kore-fullread-r3.wav",
+    "sidecar": "projects/EDU/audio/2026-11-10_ep16-nar-kore-fullread-r3.json",
+    "lines_text": "projects/EDU/audio/2026-11-10_ep16-nar-lines-r3.txt",
+    "model": "gemini-3.8-flash-tts",
+    "voice": "Kore",
+    "style": "fast-paced, quick brisk delivery with short pauses between phrases, playful deadpan female narrator, dry and matter-of-fact, speaking quickly without dragging",
+    "atempo": null,
+    "requests": 1,
+    "retries": 0,
+    "lines": "L01-L13 (13 NAR rows); '…' sent as ','",
+    "listened": false,
+    "note": "NOT LISTENED; R3 differs from R2 in L05 and L09 only"
+  },
+  "measured": {
+    "raw_s": 48.32,
+    "speech_start_s": 0.27,
+    "speech_end_s": 47.99,
+    "method": "ffmpeg silencedetect -35 dB / 0.25 s; faster-whisper large-v3-turbo word times for line onsets (Thai word times rough, +-0.3 s); L04-L06 onsets (whisper garbled there) set from silencedetect gaps"
+  },
+  "line_onsets_s": {
+    "L01": 0.27,
+    "L02": 5.06,
+    "L03": 9.32,
+    "L04": 14.04,
+    "L05": 16.07,
+    "L06": 19.69,
+    "L07": 22.32,
+    "L08": 25.72,
+    "L09": 28.6,
+    "L10": 32.34,
+    "L11": 35.38,
+    "L12": 38.76,
+    "L13": 43.34
+  },
+  "r2_delta": {
+    "raw_s": 2.52,
+    "note": "R2 45.8 -> R3 48.32; two restored phrases (L05, L09)"
+  },
+  "video": {
+    "allowances_s": {
+      "V01": 0.8,
+      "V02": 0.8,
+      "V03": 0.8,
+      "beat_gaps": 1.5,
+      "end_hold": 2.0,
+      "total": 5.9
+    },
+    "estimate_s": 54.22,
+    "target_s": [
+      40,
+      60
+    ],
+    "hard_limit_s": 63,
+    "within_target": true
+  },
+  "answers": {
+    "longest_answer_s": 4.72,
+    "definition": "OQ3: L03 onset 9.32 to L04 onset 14.04 (+0.8 s V01 = 5.5 s)",
+    "limit_s": 10,
+    "under_10": true
+  },
+  "verdict": "PASS: video 54.2 s within 40-60 s (5.8 s margin), longest answer under 10 s; no trim needed",
+  "timing_status": "audio-measured (length check only, not a voice lock)",
+  "prior": {
+    "script_revision": "EDU-EP16-SCRIPT-R2",
+    "date": "2026-11-10",
+    "read": {
+      "store": "projects/EDU/audio/2026-11-10_ep16-nar-kore-fullread.wav",
+      "sidecar": "projects/EDU/audio/2026-11-10_ep16-nar-kore-fullread.json",
+      "lines_text": "projects/EDU/audio/2026-11-10_ep16-nar-lines.txt",
+      "model": "gemini-3.8-flash-tts",
+      "voice": "Kore",
+      "style": "fast-paced, quick brisk delivery with short pauses between phrases, playful deadpan female narrator, dry and matter-of-fact, speaking quickly without dragging",
+      "atempo": null,
+      "requests": 1,
+      "retries": 0,
+      "lines": "L01-L13 (13 NAR rows); '…' sent as ','",
+      "listened": false,
+      "note": "NOT LISTENED"
+    },
+    "measured": {
+      "raw_s": 45.8,
+      "speech_start_s": 0.219,
+      "speech_end_s": 45.47,
+      "method": "ffmpeg silencedetect -35 dB / 0.25 s; faster-whisper large-v3-turbo word times for line onsets (Thai word times rough, +-0.3 s)"
+    },
+    "line_onsets_s": {
+      "L01": 0.22,
+      "L02": 5.08,
+      "L03": 9.42,
+      "L04": 14.1,
+      "L05": 15.82,
+      "L06": 18.42,
+      "L07": 21.32,
+      "L08": 24.32,
+      "L09": 27.48,
+      "L10": 29.84,
+      "L11": 32.64,
+      "L12": 36.64,
+      "L13": 41.16
+    },
+    "line_end_s": {
+      "L03": 13.72,
+      "L10": 32.3,
+      "L11": 36.3,
+      "L12": 40.72,
+      "L13": 45.47
+    },
+    "estimate_vs_measured": {
+      "raw_estimate_s": 52.3,
+      "raw_measured_s": 45.8,
+      "delta_s": -6.5
+    },
+    "video": {
+      "allowances_s": {
+        "V01": 0.8,
+        "V02": 0.8,
+        "V03": 0.8,
+        "beat_gaps": 1.5,
+        "end_hold": 2.0,
+        "total": 5.9
+      },
+      "estimate_s": 51.7,
+      "target_s": [
+        40,
+        60
+      ],
+      "hard_limit_s": 63,
+      "within_target": true
+    },
+    "answers": {
+      "longest_answer_s": 4.68,
+      "definition": "OQ3: L03 onset 9.42 to L04 onset 14.10 (+0.8 s V01 = 5.5 s); onset to next onset for each OQ",
+      "limit_s": 10,
+      "under_10": true
+    },
+    "restore_trims": {
+      "T2_s": 1.0,
+      "T1_s": 1.4,
+      "video_with_T2_s": 52.7,
+      "video_with_T2_T1_s": 54.1,
+      "fits_under_57": true
+    },
+    "verdict": "PASS: video 51.7 s within 40-60 s, longest answer under 10 s; no trim needed; T2 then T1 can be restored (54.1 s)",
+    "timing_status": "audio-measured (length check only, not a voice lock)"
+  },
+  "lock": {
+    "step": "W4.2",
+    "date": "2026-11-10",
+    "script_revision": "EDU-EP16-SCRIPT-R3",
+    "timing_status": "audio-measured (voice lock)",
+    "narration": {
+      "locked_read": "projects/EDU/audio/2026-11-10_ep16-nar-kore-fullread-r3.wav",
+      "committed": "public/narration/EDU-EP16-SHORT-narration-v1.wav (byte copy of the store file)",
+      "voice": "Kore",
+      "atempo": null,
+      "new_requests": 0,
+      "raw_s": 48.32,
+      "speech_start_s": 0.27,
+      "speech_end_s": 47.97,
+      "listened": false
+    },
+    "line_onsets_s": {
+      "L01": 0.27,
+      "L02": 5.225,
+      "L03": 9.45,
+      "L04": 14.04,
+      "L05": 16.295,
+      "L06": 19.8,
+      "L07": 22.325,
+      "L08": 25.845,
+      "L09": 28.72,
+      "L10": 32.445,
+      "L11": 35.455,
+      "L12": 38.815,
+      "L13": 43.425
+    },
+    "line_ends_s": {
+      "L01": 4.615,
+      "L02": 9.08,
+      "L03": 13.5,
+      "L04": 15.635,
+      "L05": 19.245,
+      "L06": 21.83,
+      "L07": 25.27,
+      "L08": 28.335,
+      "L09": 31.875,
+      "L10": 35.075,
+      "L11": 38.17,
+      "L12": 42.885,
+      "L13": 47.97
+    },
+    "method": "5 ms RMS envelope (16 kHz mono), speech = level above -35 dB, gaps < 0.2 s merged; runs assigned to lines by order and by faster-whisper segment text (array input). Replaces the W1.4 line_onsets_s (whisper + silencedetect, +-0.3 s); differences up to +0.22 s (L02 +0.17, L05 +0.22).",
+    "characters": {
+      "V01": {
+        "speaker": "MAN",
+        "voice": "Charon",
+        "text": "เอ้ย! อะไรเนี่ย",
+        "store": "projects/EDU/audio/2026-11-10_ep16-char-v01-man-charon-final.wav",
+        "file_s": 1.28,
+        "speech_start_s": 0.27,
+        "speech_end_s": 1.0,
+        "internal_gap_s": 0.23,
+        "requests": 3,
+        "note": "takes 1-2 had a 1.09 s / 0.60 s gap between the phrases and were dropped; take 3 kept"
+      },
+      "V02": {
+        "speaker": "WOMAN",
+        "voice": "Aoede",
+        "text": "ทำไมเป็นฉันล่ะ!",
+        "store": "projects/EDU/audio/2026-11-10_ep16-char-v02-woman-aoede-final.wav",
+        "file_s": 1.48,
+        "speech_start_s": 0.28,
+        "speech_end_s": 1.17,
+        "requests": 1
+      },
+      "V03": {
+        "speaker": "CROW",
+        "note": "Ton's designed sound, not TTS"
+      },
+      "listened": false
+    },
+    "gemini_requests_total": 4,
+    "video": {
+      "allowances_s": {
+        "V01": 0.8,
+        "V02": 1.0,
+        "V03": 0.8,
+        "beat_gaps": 1.5,
+        "end_hold": 2.0,
+        "total": 6.1
+      },
+      "estimate_s": 54.42,
+      "target_s": [
+        40,
+        60
+      ],
+      "hard_limit_s": 63,
+      "within_target": true,
+      "note": "raw 48.32 + 6.1; V02 slot 1.0 s because its speech is 0.89 s (was 0.8 s)"
+    },
+    "narration_v2": {
+      "date": "2026-11-10",
+      "accepted_read": "projects/EDU/audio/2026-11-10_ep16-nar-kore-fullread-r9.wav",
+      "raw_s": 46.52,
+      "prompt": "A",
+      "change": "L08 without the spoken 'แต่' (script R3.1); L04, L06, L13 keep theirs",
+      "placed": "public/narration/EDU-EP16-SHORT-narration-v2.wav (narration-place.py, 13 segments; store projects/EDU/audio/2026-11-10_ep16-narration-v2-placed.wav, locked via store.py use --episode edu-ep16); v1 (r3, six segments) kept",
+      "total_s": 54.4,
+      "listened": false,
+      "placed_onsets_s": {
+        "L01": 0.225,
+        "L02": 5.155,
+        "L03": 9.52,
+        "L04": 14.965,
+        "L05": 17.09,
+        "L06": 20.55,
+        "L07": 24.42,
+        "L08": 28.195,
+        "L09": 31.125,
+        "L10": 35.455,
+        "L11": 38.45,
+        "L12": 42.115,
+        "L13": 46.725
+      },
+      "placed_ends_s": {
+        "L01": 4.725,
+        "L02": 9.265,
+        "L03": 13.595,
+        "L04": 16.365,
+        "L05": 20.25,
+        "L06": 22.865,
+        "L07": 26.935,
+        "L08": 30.345,
+        "L09": 34.295,
+        "L10": 37.75,
+        "L11": 41.315,
+        "L12": 46.31,
+        "L13": 50.715
+      },
+      "v1_target_onsets_s": {
+        "L01": 0.27,
+        "L02": 5.225,
+        "L03": 9.45,
+        "L04": 14.94,
+        "L05": 17.195,
+        "L06": 20.7,
+        "L07": 24.425,
+        "L08": 28.245,
+        "L09": 31.12,
+        "L10": 35.445,
+        "L11": 38.455,
+        "L12": 42.115,
+        "L13": 46.725
+      },
+      "segments_r9_cut_s": [
+        0,
+        9.45,
+        13.92,
+        15.8,
+        19.4,
+        22.14,
+        25.15,
+        27.75,
+        29.61,
+        31.29,
+        34.02,
+        37.35,
+        42.0,
+        46.52
+      ],
+      "segment_offsets_s": [
+        0,
+        -0.12,
+        0.85,
+        1.005,
+        0.98,
+        2.03,
+        2.8,
+        3.16,
+        3.27,
+        3.9,
+        4.25,
+        4.48,
+        4.525
+      ],
+      "method": "5 ms RMS envelope on the placed file, -35 dB, gaps < 0.2 s merged",
+      "L08_internal_pegs": {
+        "note": "no 'แต่'; word onsets from the r9 envelope gaps (26.50-26.60 s and 27.31-27.37 s read), not whisper (not installed in this checkout)",
+        "อีกาที่รุมด่า": "f846",
+        "หลายตัว": "f882 (est)",
+        "ไม่เคยโดนจับ": "f893 (est)"
+      },
+      "L13_note": "speech ends f1521 (was f1538); second phrase 'แต่ความจำนี้' starts f1444 (was f1451); V03 at f1549 unchanged"
+    }
+  }
+}

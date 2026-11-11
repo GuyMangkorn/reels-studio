@@ -20,7 +20,6 @@ P = {  # cue sheet files (locked in assets.lock.json)
     'air': 'public/audio/outdoor/outdoor_high-air-breeze_01.wav',
     'fan': 'public/audio/room/room_standing-fan-hum_01.wav',
     'hush': 'public/audio/room/room_studio-hush_01.wav',
-    'detune': 'public/sfx/comedy/comedy_blip-detune-sag_01.wav',
     'flinch': 'public/sfx/comedy/comedy_pluck-knock-flinch_01.wav',
     'question': 'public/sfx/comedy/comedy_pluck-question-bend_01.wav',
     'shrink': 'public/sfx/comedy/comedy_shrink-pop-gliss_01.wav',
@@ -41,7 +40,6 @@ P = {  # cue sheet files (locked in assets.lock.json)
     'taiko': 'public/sfx/impact/impact_taiko-pulse-4_01.wav',
     'braam': 'public/sfx/impact/impact_trailer-braam_01.wav',
     'tapestop': 'public/sfx/mechanical/mechanical_tape-stop_01.wav',
-    'glass': 'public/sfx/reveal/reveal_glass-rise-tone_01.wav',
     'riser': 'public/sfx/reveal/reveal_riser-tension_01.wav',
     'fwoop': 'public/sfx/reveal/reveal_warmth-fwoop_01.wav',
     'shrug': 'public/sfx/stinger/stinger_pizz-shrug_01.wav',
@@ -151,8 +149,8 @@ shot(texture, 'lock', 824, FOLEY)                                               
 shot(accent, 'snap', 857, HIT - 1, drive=8.0)                                                               # S16-snap
 shot(accent, 'whip', 857, HIT - 4, drive=4.0)                                                               # S16-whip
 shot(texture, 'question', 922, FOLEY + 1)                                                        # S21-question
-shot(texture, 'detune', 1001, FOLEY + 1)                                                         # S23-detune
-shot(texture, 'glass', 1038, FOLEY + 1)                                                          # S22-leg-tone
+shot(texture, 'squeeze', 1061, FOLEY - 3)                                                         # S25-pad-swell (R6: L16 "แผ่นยางโต", same file as S15, lower)
+shot(texture, 'groan', 1098, FOLEY + 1)                                                          # S26-weight-callback (R6: L16 "ตัวก็หนัก", same file as S10, 1 dB under it)
 shot(texture, 'crouch', 1135, FOLEY + 2)                                                         # S17-crouch
 shot(texture, 'jump', 1143, WHOOSH + 2)                                                          # S18-jump (with V02)
 shot(accent, 'thud', 1192, HIT, drive=14.0)                                                                  # S19-landing
