@@ -489,7 +489,8 @@
    "layer": "accent",
    "brief": "slide-off: a soft wet peel, a thin water film letting go of a small body with a tiny \"shlip\", then a light air swish as it tips away; 0.6 s; water film, air; close; release, relief",
    "id": "water_film-slide-off-shlip_01",
-   "origin": "generated"
+   "origin": "generated",
+   "syncNote": "R2.1 (fixlist.md D-S5): this 0.28 s take is too short for the +34..+52 slide; Ton regenerates at 0.6 s to the brief"
   },
   {
    "cue": "B05-W2-flyoff",
@@ -571,11 +572,10 @@
    "frame": 1356,
    "lengthFrames": 9,
    "layer": "accent",
-   "brief": "a palm slapping a bare damp ankle: a flip-flop scuff 3 f before, then a sharp crisp skin slap with a tiny wet note; 0.3 s; skin, water; close, under an awning in rain; annoyed and funny. Frame = the slap transient; the scuff pre-rolls from f1353",
+   "brief": "a palm slapping a bare damp ankle: a sharp crisp skin slap with a tiny wet note; 0.2 s; skin, water; close, under an awning in rain; annoyed and funny. Frame = the slap transient (Film R2.1, D-SL: no flip-flop scuff)",
    "id": "foley_palm-ankle-slap_01",
-   "preroll": 3,
    "origin": "generated",
-   "syncNote": "slap at 0.02 s; this take has no scuff pre-roll (brief wanted one from f1353): Editor or a swap if Film wants it"
+   "syncNote": "slap at 0.02 s; accepted as is at R2.1 (fixlist.md D-SL)"
   },
   {
    "cue": "B05-E1",
