@@ -9,6 +9,10 @@ export const FORMATS = {
 } as const;
 export type VideoFormat = keyof typeof FORMATS;
 
+/** Channel marks, one per channel in `channels/<id>/channel.md`. `edu` equals `defaultChrome.channelLabel` (tests/videos.test.ts). */
+export const CHANNEL_MARKS = {edu: '@TamMaiLa', fiction: '@mg.fiction'} as const;
+export type ChannelId = keyof typeof CHANNEL_MARKS;
+
 /** One registered composition. Each episode owns its list in `src/videos/<episode>/index.ts`. */
 export type VideoDefinition = {
   /** Remotion composition ID; must be unique across every episode. */
@@ -36,4 +40,9 @@ export type VideoDefinition = {
 };
 
 /** Default export shape of `src/videos/<episode>/index.ts`. */
-export type EpisodeVideos = {episode: string; videos: VideoDefinition[]};
+export type EpisodeVideos = {
+  episode: string;
+  /** The episode's channel; sets the mark of every video that does not set `chrome.channelLabel` itself. Absent = `edu`. */
+  channel?: ChannelId;
+  videos: VideoDefinition[];
+};
