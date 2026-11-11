@@ -11,7 +11,7 @@
 | Direction | Invented stories told as stories (user, 11 Nov 2026: "สไตล์เล่าเรื่องไม่มีอยู่จริงไปเลย เรื่องแต่ง") |
 | Genre / purpose | `open`: narrative fiction; the sub-genres are chosen in the pilot's [ideation](../../docs/delivery-workflow.md#ideation) |
 | Factual claims | None: the stories are invented and are not presented as real cases. Boat's research and fact-check have no factual subject and are recorded `N/A` unless a script borrows a real place, person or event |
-| Episode records | `open`: one `scripts/<series>/` folder and a deliverable ID prefix, chosen when the pilot starts and registered under `fiction` in the store (`projects/fiction/<SERIES>/`, `publish/fiction/<SERIES>/<ID>/`) |
+| Episode records | Series prefix `MGF` (user, 11 Nov 2026): deliverable IDs `MGF-EPnn-SHORT`; records in `scripts/mgf-series/` (created with the pilot); store folders `projects/fiction/MGF/` and `publish/fiction/MGF/<ID>/` (`SERIES` in `scripts/store.py`) |
 
 ## Rules of this channel
 
