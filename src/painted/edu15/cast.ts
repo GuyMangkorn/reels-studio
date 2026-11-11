@@ -3,6 +3,7 @@ import {shoulderPoint, type Arm, type CastDef, type FigAnchors} from '../kit/cas
 import type {ExpressionId} from '../kit/expressions';
 import {paintFigureAt} from '../kit/figure-at';
 import type {FaceState} from '../kit/head';
+import type {FigPose} from '../kit/cast';
 import type {Painter, Pt} from '../kit/painter';
 import {PEOPLE} from '../kit/people';
 import type {V3} from '../kit/space';
@@ -50,7 +51,7 @@ export const paintWomanPhone = (p: Painter, c: YCam, o: WomanOpts): FigAnchors |
   return a;
 };
 
-export type ManHangOpts = {wrists: V3; face?: ExpressionId; faceState?: Partial<FaceState>; t: number; tint?: {to: string; u: number}};
+export type ManHangOpts = {wrists: V3; /** Metres the whole figure (hands included) hangs lower than the wrist anchor: W5-F3 shot 2 grips the hind legs / pelvis. Default 0. */ handDrop?: number; legKick?: FigPose['legKick']; face?: ExpressionId; faceState?: Partial<FaceState>; t: number; tint?: {to: string; u: number}};
 // W3: wrists held together (brief #hang-rig-h) without crossed forearms: hands 0.06 m apart, each on its own side.
 export const HANG_ARM = {via: [-0.01, 0.29] as Pt, to: [0.115, 0.58] as Pt};
 /** Where the feet hang for a wrist anchor (metres): the figure's ground point. */
@@ -62,19 +63,43 @@ export const manHangFeet = (wrists: V3): V3 => {
 };
 /** MAN hanging by the wrists (`new: hang-held-wrists`), front view squared to the lens, no ground shadow. */
 export const paintManHang = (p: Painter, c: YCam, o: ManHangOpts): (FigAnchors & {feetM: V3}) | null => {
-  const feet = manHangFeet(o.wrists);
+  const wrists: V3 = [o.wrists[0], o.wrists[1] - (o.handDrop ?? 0), o.wrists[2]];   // handDrop lowers the whole figure (arms keep their reach) so the fists land lower on the tokay
+  const feet = manHangFeet(wrists);
   // Close up-tilted cameras (LF05B, TK7) put his true feet behind the lens: hang the figure in the picture plane through the wrists instead
   // (billboard anchor = wrists minus the camera's up vector times the wrist-to-feet drop), so hands, arms and head stay on the wrist depth.
-  const ss = Math.sin(c.yaw), co = Math.cos(c.yaw), sn = Math.sin(c.pitch ?? 0), cs = Math.cos(c.pitch ?? 0), drop = o.wrists[1] - feet[1];
-  const at: V3 = camPoint(c, feet) ? feet : [o.wrists[0] + sn * ss * drop, o.wrists[1] - cs * drop, o.wrists[2] - sn * co * drop];
+  const ss = Math.sin(c.yaw), co = Math.cos(c.yaw), sn = Math.sin(c.pitch ?? 0), cs = Math.cos(c.pitch ?? 0), drop = wrists[1] - feet[1];
+  const at: V3 = camPoint(c, feet) ? feet : [wrists[0] + sn * ss * drop, wrists[1] - cs * drop, wrists[2] - sn * co * drop];
   const g = camPoint(c, at), u = camUnit(c, at);
   if (!g) return null;
   const rArm = arm(MAN, g, u, {}, 'r', HANG_ARM.via, HANG_ARM.to);
   const lArm = arm(MAN, g, u, {}, 'l', [-HANG_ARM.via[0], HANG_ARM.via[1]], [-HANG_ARM.to[0], HANG_ARM.to[1]]);
-  const a = paintFigureAt(p, c, MAN, {at, view: 'front', pose: 'P45', face: o.face ?? 'scared', faceState: o.faceState, fig: {rArm, lArm}, t: o.t, shadow: false, tint: o.tint});
+  const a = paintFigureAt(p, c, MAN, {at, view: 'front', pose: 'P45', face: o.face ?? 'scared', faceState: o.faceState, fig: {rArm, lArm, legKick: o.legKick}, t: o.t, shadow: false, tint: o.tint});
   if (!a) return null;
   // closed hands at the wrists (fists round the tokay's grip)
   for (const [h, id] of [[a.rHand, 76200], [a.lHand, 76201]] as const) { hardFill(p, id, MAN.head.skin, ell(h[0], h[1] - 0.022 * u, 0.03 * u, 0.036 * u, 12)); inkLine(p, id + 10, [[h[0] - 0.022 * u, h[1] - 0.04 * u], [h[0], h[1] - 0.05 * u], [h[0] + 0.022 * u, h[1] - 0.04 * u]], {closed: false, weight: 1.2, color: '#5a3a2a', still: true, curve: 0.5}); }
   void capsule;
   return {...a, feetM: feet};
+};
+
+export type WomanBackOpts = {at: V3; t: number; /** Head cock in degrees toward screen right (shot 10 tilt, 0 -> +12). */ headCock?: number; tint?: number};
+/** WOMAN seen from behind on the sofa (`new: sit-phone`, P31 back, phone lowered to her lap, head up): the back of her head and shoulders. */
+export const paintWomanBack = (p: Painter, c: YCam, o: WomanBackOpts): FigAnchors | null =>
+  paintFigureAt(p, c, WOMAN, {at: o.at, view: 'back', pose: 'P31', face: 'neutral', fig: {headCock: o.headCock ?? 0}, t: o.t, shadow: {op: 60}, tint: o.tint ? {to: '#ffcf8a', u: o.tint} : undefined});
+
+export type WomanProfileOpts = {at: V3; t: number; /** Lean 0..1 (0 = sitting back, 1 = P32 leaning in with the head raised). */ lean: number; face?: ExpressionId; faceState?: Partial<FaceState>; tint?: number};
+/** WOMAN seated in profile facing screen left, leaning in (`new: sit-lean-in`, B04-SH01): P32's body with the bend eased in and the head kept raised (nod 0). */
+export const paintWomanProfile = (p: Painter, c: YCam, o: WomanProfileOpts): FigAnchors | null =>
+  paintFigureAt(p, c, WOMAN, {at: o.at, view: 'left', pose: 'P32', face: o.face ?? 'suspicious', faceState: o.faceState, fig: {bend: 0.4 * o.lean, nod: [0, 0]}, t: o.t, shadow: {op: 70}, tint: o.tint ? {to: '#ffcf8a', u: o.tint} : undefined});
+
+export type WomanLapOpts = {at: V3; t: number; face?: ExpressionId; faceState?: Partial<FaceState>; tint?: number};
+/** WOMAN seated facing the lens (`new: sit-lap-phone`, B05-SH04): P31 with the hands on the thighs, the phone dark on her lap, the face upturned. */
+export const paintWomanLap = (p: Painter, c: YCam, o: WomanLapOpts): FigAnchors | null => {
+  const a = paintFigureAt(p, c, WOMAN, {at: o.at, view: 'front', pose: 'P31', face: o.face ?? 'neutral', faceState: o.faceState, t: o.t, shadow: {op: 70}, tint: o.tint ? {to: '#ffcf8a', u: o.tint} : undefined});
+  if (!a) return null;
+  const u = camUnit(c, o.at), h = a.lHand;
+  const ph = [[h[0] - 0.05 * u, h[1] - 0.012 * u], [h[0] + 0.0 * u, h[1] - 0.02 * u], [h[0] + 0.0 * u, h[1] + 0.085 * u], [h[0] - 0.055 * u, h[1] + 0.09 * u]] as Pt[];
+  hardFill(p, 76150, '#1f2326', ph);
+  inkLine(p, 76151, ph, {weight: 0.5, color: '#5d646a', still: true});
+  hardFill(p, 76152, '#7f5236', ell(h[0], h[1], 0.028 * u, 0.03 * u, 12));
+  return a;
 };

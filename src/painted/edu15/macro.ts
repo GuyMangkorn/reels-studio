@@ -16,11 +16,11 @@ const HAIR = 0.11;
 /** LF03: S01-B03-SH01 @ +80, over the hair carpet of toe 3 (camera 0.3 mm above the carpet, pitch -12 deg, before the +86 rise). */
 export const camLF03: YCam = {...lookCam([0, HAIR + 0.3, 0.32], [0, HAIR, -1.1], 1000, {hy: 900}), near: 0.02};
 
-export const paintMacroCarpet = (p: Painter, o: {t: number}): Record<string, number> => {
-  const c = camLF03;
+export const paintMacroCarpet = (p: Painter, o: {t: number; /** Camera (default LF03). */ cam?: YCam; /** Fraction 0..1 of the hair tips lit by a contact glint (shot 12). */ glow?: number}): Record<string, number> => {
+  const c = o.cam ?? camLF03, cz = c.z, glow = o.glow ?? 0;
   // backdrop: warm room bokeh above the horizon, a dark warm field below it
   p.flat(mixColor(C.bokeh, '#2a2420', 0.35), [[0, 0], [1080, 0], [1080, 1920], [0, 1920]]);
-  const horizon = camPoint(c, [0, HAIR * 0.6, -60])?.[1] ?? 700;
+  const horizon = camPoint(c, [0, HAIR * 0.6, cz - 60])?.[1] ?? 700;
   washAt(p, 62000, '#8a7a62', 160, [[0, 0], [1080, 0], [1080, horizon + 40], [0, horizon + 40]], 0.3, 0.2);
   for (let i = 0; i < 16; i++) { // bokeh discs: the lamp (big, warm), the cream ceiling, a cool window
     const x = hash(62010 + i) * 1080, y = hash(62030 + i) * (horizon - 60) + 20, r = 40 + 120 * hash(62050 + i);
@@ -33,7 +33,7 @@ export const paintMacroCarpet = (p: Painter, o: {t: number}): Record<string, num
   const R = 13;
   for (let k = R - 1; k >= 0; k--) {
     const z1 = -k * 0.5, z0 = z1 - 0.42, zt = z1 + 0.08; // band [z0, z1], trough to zt
-    const d = Math.max(0.05, 0.32 - (z0 + z1) / 2), far = Math.min(1, (d - 0.4) / 5);
+    const d = Math.max(0.05, cz - (z0 + z1) / 2), far = Math.min(1, (d - 0.4) / 5);
     const halfW = 0.06 + d * 0.58;
     const band = (y: number, a: number, b: number) => [[-halfW, y, a], [halfW, y, a], [halfW, y, b], [-halfW, y, b]].map((v) => camPoint(c, v as V3, 0.02)).filter((x): x is Pt => !!x);
     const tq = band(-0.03, z1, zt); if (tq.length > 2) hardFill(p, 62200 + k, '#1e1915', tq);
@@ -41,7 +41,7 @@ export const paintMacroCarpet = (p: Painter, o: {t: number}): Record<string, num
     const {step} = ridgeHairs(k);
     const rows = Math.floor((z1 - z0) / step);
     for (let r = 0; r <= rows; r++) {
-      const z = z0 + r * step, dd = 0.32 - z, u = camUnit(c, [0, 0, z], 0.02);
+      const z = z0 + r * step, dd = cz - z, u = camUnit(c, [0, 0, z], 0.02);
       const blurRow = Math.max(0, Math.min(1, (0.75 - dd) / 0.45));
       const st = blurRow > 0.3 ? step * 2 : step, xs = Math.ceil(halfW / st);
       if (blurRow > 0.3 && r % 2) continue;
@@ -65,6 +65,12 @@ export const paintMacroCarpet = (p: Painter, o: {t: number}): Record<string, num
             for (let s = -1; s <= 1; s++) inkLine(p, id + 5000000 + s, [b2, [b2[0] + s * w * 2.2 - w, b2[1] - w * 1.6]], {closed: false, weight: 0.5, color: C.hairRim, still: true});
           }
         }
+        if (glow > 0 && fog < 0.5 && blur < 0.3 && hash(id + 9) < glow) { // contact glint on the tip (shot 12): halo, point, short amber pull-line down the hair
+          const gr = Math.max(1.4, w * 1.6);
+          washAt(p, id + 6000000, C.glint, 90, ell(b2[0], b2[1], gr * 2.2, gr * 1.8, 8), 0.3, 0.2);
+          inkLine(p, id + 7000000, [b2, [b2[0], b2[1] + gr * 4]], {closed: false, weight: Math.max(0.6, gr * 0.5), color: C.pull, still: true});
+          hardFill(p, id + 8000000, '#fffdf2', ell(b2[0], b2[1], gr * 0.7, gr * 0.7, 6));
+        }
         drawn++;
       }
     }
@@ -79,8 +85,8 @@ export const paintMacroCarpet = (p: Painter, o: {t: number}): Record<string, num
 
 /** TK5 / B03-SH01 +0: the lifted front-left foot, pad toward the lens (~420 px across, 16.8 px/mm): five splayed toes with about 15 pale transverse
  * ridges each, the palm pad, the leg leaving the top of frame; the room as warm bokeh. Screen-space macro drawing (one plane, no perspective). */
-export const paintPadUnderside = (p: Painter, o: {t: number}): Record<string, number> => {
-  const S = 16.8, cx = 540, cy = 760;
+export const paintPadUnderside = (p: Painter, o: {t: number; /** Pixels per mm (default 16.8). */ S?: number; cx?: number; cy?: number; glow?: number}): Record<string, number> => {
+  const S = o.S ?? 16.8, cx = o.cx ?? 540, cy = o.cy ?? 760, wk = Math.max(1, Math.sqrt(S / 16.8));
   p.flat('#3b332b', [[0, 0], [1080, 0], [1080, 1920], [0, 1920]]);
   for (let i = 0; i < 12; i++) { const x = hash(62300 + i) * 1080, y = hash(62320 + i) * 1500, r = 60 + 160 * hash(62340 + i); washAt(p, 62360 + i, i === 0 ? C.halo : i % 3 ? '#8a7a62' : '#c9b48e', i === 0 ? 140 : 70, ell(i === 0 ? 820 : x, i === 0 ? 300 : y, i === 0 ? 240 : r, i === 0 ? 240 : r, 22), 0.2, 0.15); }
   // leg (wrist) from the top of frame
@@ -108,11 +114,16 @@ export const paintPadUnderside = (p: Painter, o: {t: number}): Record<string, nu
     for (let r = 0; r < n; r++) {
       const u = 0.22 + (r / n) * 0.68, w = wAt(u) * 0.92, bow = 0.2 * S;
       const pts = [at(u - bow / L, -w), at(u, 0), at(u - bow / L, w)];
-      inkLine(p, 62600 + i * 20 + r, pts, {closed: false, weight: 1.6, color: C.tkRidge, still: true, curve: 0.5});
-      inkLine(p, 62700 + i * 20 + r, pts.map(([x, y]) => [x + dx * 2.4, y + dy * 2.4] as Pt), {closed: false, weight: 1.1, color: '#f3f1ea', still: true, curve: 0.5});
+      inkLine(p, 62600 + i * 20 + r, pts, {closed: false, weight: 1.6 * wk, color: C.tkRidge, still: true, curve: 0.5});
+      inkLine(p, 62700 + i * 20 + r, pts.map(([x, y]) => [x + dx * 2.4, y + dy * 2.4] as Pt), {closed: false, weight: 1.1 * wk, color: '#f3f1ea', still: true, curve: 0.5});
+      if (o.glow && hash(62900 + i * 20 + r) < o.glow) { // contact glints along the ridges (shot 12 pull-back)
+        const g = at(u, (hash(62950 + i * 20 + r) - 0.5) * w);
+        washAt(p, 62960 + i * 20 + r, C.glint, 110, ell(g[0], g[1], 0.5 * S, 0.5 * S, 8), 0.3, 0.2);
+        hardFill(p, 62961 + i * 20 + r, '#fffdf2', ell(g[0], g[1], 0.12 * S, 0.12 * S, 6));
+      }
       ridges++;
     }
-    inkLine(p, 62800 + i, outline, {weight: 1.0, color: mixColor(C.tkShade, C.tkInk, 0.4), still: true});
+    inkLine(p, 62800 + i, outline, {weight: 1.0 * wk, color: mixColor(C.tkShade, C.tkInk, 0.4), still: true});
     // tiny claw at the tip
     const tip = at(1.0, 0);
     hardFill(p, 62820 + i, '#3a3530', [[tip[0] - nx * 3, tip[1] - ny * 3], [tip[0] + dx * 8, tip[1] + dy * 8], [tip[0] + nx * 3, tip[1] + ny * 3]]);

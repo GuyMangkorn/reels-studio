@@ -1,0 +1,894 @@
+{
+  "deliverable": "EDU-EP15-SHORT",
+  "sceneSheets": "EDU-EP15-ROWS-R2.3",
+  "video": "src/videos/edu-ep15",
+  "fps": 30,
+  "totalFrames": 1793,
+  "sources": [
+    "src/videos/edu-ep15",
+    "scripts/edu-series/ep15/sound-mix.py"
+  ],
+  "frameClock": "global composition frames at 30 fps (shot start + shot-local offset, ROWS-R2.3 shot map); lengthFrames is the file length at 30 fps",
+  "cues": [
+    {
+      "cue": "A1-open",
+      "shot": "S01-B01-SH01",
+      "frame": 0,
+      "brief": "A1 night living room, slow ceiling fan, far traffic, from +0, no music",
+      "id": "room_ceiling-fan-night-living_01",
+      "origin": "generated",
+      "lengthFrames": 384,
+      "level": "-14 dB under NAR, -8 dB in gaps",
+      "loop": true,
+      "note": "12.8 s (384 f) loop with 1 s crossfade; Editor loops it. One tiny moped inside the file"
+    },
+    {
+      "cue": "A2-open",
+      "shot": "S01-B01-SH01",
+      "frame": 0,
+      "brief": "A2 crickets outside the window from +0, no owl, no gecko",
+      "id": "nature_crickets-garden-sparse_01",
+      "origin": "generated",
+      "lengthFrames": 396,
+      "level": "below A1; -14 dB under NAR, -8 dB in gaps",
+      "loop": true,
+      "note": "13.2 s loop; a distant dog may sit near the start"
+    },
+    {
+      "cue": "S17-moth-open",
+      "shot": "S01-B01-SH01",
+      "frame": 0,
+      "brief": "S17 moth flutter loop from +0, low, panned to the lamp",
+      "id": "creature_moth-flutter-loop_01",
+      "origin": "generated",
+      "lengthFrames": 81,
+      "level": "texture, very low; faint again from f204 and in shot 3",
+      "loop": true,
+      "note": "2.7 s loop; keep it out of speech by level; cut at f1570 in shot 19 (S17 up from f1550)"
+    },
+    {
+      "cue": "S4-snap-in",
+      "shot": "S01-B01-SH02",
+      "frame": 140,
+      "brief": "S4 swish snapping into the imagined shot (Editor may pre-roll 3 f)",
+      "id": "whoosh_air-swish-rising_01",
+      "origin": "library",
+      "lengthFrames": 24,
+      "level": "accent",
+      "fit": "0.80 s dry rising air swish, peak at 0.55 s (about +16 f), centroid 3.2 kHz: a quick air swish into a cut, as brief; peak lands after the cut like a snap-in. Measured, not listened",
+      "peakOffsetFrames": 16
+    },
+    {
+      "cue": "S3-held-breath",
+      "shot": "S01-B01-SH02",
+      "frame": 140,
+      "brief": "S3 held-breath swell, cut dead at +64 (f204)",
+      "id": "tension_airy-swell-stop-dead_02",
+      "origin": "generated",
+      "lengthFrames": 65,
+      "level": "under NAR (bed-level swell), hard cut on f204",
+      "note": "2.16 s (65 f) swell that ends dead at its peak, no tail; R2.3 re-edit of _01 (x1.14 slower, no new generation; measured, not heard); Editor places it so it ends on f204; imagined layer, cut with A1 imagined on the snap back"
+    },
+    {
+      "cue": "S2-grip-a",
+      "shot": "S01-B01-SH02",
+      "frame": 162,
+      "brief": "S2 grip strain, first stretch",
+      "id": "foley_leather-grip-strain_01",
+      "origin": "generated",
+      "lengthFrames": 26,
+      "level": "texture, held strain under NAR"
+    },
+    {
+      "cue": "S2-grip-b",
+      "shot": "S01-B01-SH02",
+      "frame": 180,
+      "brief": "S2 grip strain, second stretch",
+      "id": "foley_leather-grip-strain_01",
+      "origin": "generated",
+      "lengthFrames": 26,
+      "level": "texture, held strain under NAR",
+      "note": "same file, second use; Editor may pitch it down 2 semitones for variety"
+    },
+    {
+      "cue": "A1-imagined",
+      "shot": "S01-B01-SH02",
+      "frame": 140,
+      "brief": "A1 imagined: -10 dB and low-passed about 2 kHz, A2 out until f204",
+      "id": "room_ceiling-fan-night-living_01",
+      "origin": "generated",
+      "lengthFrames": 64,
+      "level": "-10 dB, LP 2 kHz",
+      "note": "Editor treatment of the A1 cue, not a new sound; A1 and A2 return full at f204"
+    },
+    {
+      "cue": "A1A2-return",
+      "shot": "S01-B01-SH03",
+      "frame": 204,
+      "brief": "A1 + A2 back on +0 (one frame)",
+      "id": "room_ceiling-fan-night-living_01",
+      "origin": "generated",
+      "lengthFrames": 1,
+      "level": "as A1-open",
+      "note": "return point of A1/A2 after the imagined shot; Editor keeps the loops running from the open"
+    },
+    {
+      "cue": "M1-enter",
+      "shot": "S01-B01-SH03",
+      "frame": 223,
+      "brief": "M1 enters on +19 with a light pizzicato pick-up (energy 1.5)",
+      "id": "bed_pizzicato-tiptoe-curious_03",
+      "origin": "generated",
+      "lengthFrames": 1364,
+      "level": "-16 dB under NAR; energy per film-brief arc (0.5 at W-HANG, 3 at S13)",
+      "note": "45.48 s file (1364 f), R2.3 re-edit of _02 by piecewise time-stretch at the sync points (file f299 thin-out, f655 question, f864 lift, f966 S13 downbeat, f996 faster figure; local tempo -8% to +30%, 92 bpm nominal); not heard. Plays to its last note at about f1583 (shot 19 +33), final second decays to silence; fallback fade over f1576-1588; Editor thins and lifts the bed with gain, not new files. Ends before L16 at f1592 (silence policy 5)"
+    },
+    {
+      "cue": "S5-pop-1",
+      "shot": "S01-B01-SH04",
+      "frame": 299,
+      "brief": "S5 thought bubble appears",
+      "id": "ui_pop_01",
+      "origin": "library",
+      "lengthFrames": 2,
+      "level": "accent",
+      "fit": "0.075 s soft round bubble pop, centroid 1.1 kHz: a bubble appearing as the brief says; measured, not listened"
+    },
+    {
+      "cue": "S6-thwop",
+      "shot": "S01-B02-SH01",
+      "frame": 325,
+      "brief": "S6 plunger thwop",
+      "id": "comedy_plunger-thwop_01",
+      "origin": "generated",
+      "lengthFrames": 11,
+      "level": "accent over the word start (cue under 2 s); Editor may nudge into the syllable gap"
+    },
+    {
+      "cue": "S7-leak",
+      "shot": "S01-B02-SH01",
+      "frame": 359,
+      "brief": "S7 plunger fails: hiss from +42, slip +60, drop away +65 to +85",
+      "id": "comedy_plunger-leak-slip_01",
+      "origin": "generated",
+      "lengthFrames": 29,
+      "level": "texture",
+      "note": "0.97 s file: hiss, slip near 0.55 s, hollow drop at the end; shorter than the +42 to +85 window, so it ends about +71; Editor may stretch the tail by fade, not a new cut. R2.3: whole cue shifted +6 f with the shot"
+    },
+    {
+      "cue": "S5-pop-2",
+      "shot": "S01-B02-SH01",
+      "frame": 405,
+      "brief": "S5 bubble pops",
+      "id": "ui_pop_01",
+      "origin": "library",
+      "lengthFrames": 2,
+      "level": "accent",
+      "fit": "same pop file as S5-pop-1, round bubble pop as the bubble bursts; measured, not listened"
+    },
+    {
+      "cue": "S1-step-1",
+      "shot": "S01-B02-SH02",
+      "frame": 426,
+      "brief": "S1 tokay step tick",
+      "id": "foley_gecko-foot-tap_01",
+      "origin": "generated",
+      "lengthFrames": 6,
+      "level": "texture, soft, 18 dB under NAR",
+      "note": "alternates the two variations (_01, _02)"
+    },
+    {
+      "cue": "S1-step-2",
+      "shot": "S01-B02-SH02",
+      "frame": 435,
+      "brief": "S1 tokay step tick",
+      "id": "foley_gecko-foot-tap_02",
+      "origin": "generated",
+      "lengthFrames": 6,
+      "level": "texture, soft, 18 dB under NAR"
+    },
+    {
+      "cue": "S1-step-3",
+      "shot": "S01-B02-SH02",
+      "frame": 444,
+      "brief": "S1 tokay step tick",
+      "id": "foley_gecko-foot-tap_01",
+      "origin": "generated",
+      "lengthFrames": 6,
+      "level": "texture, soft, 18 dB under NAR"
+    },
+    {
+      "cue": "S1-step-4",
+      "shot": "S01-B02-SH02",
+      "frame": 453,
+      "brief": "S1 tokay step tick",
+      "id": "foley_gecko-foot-tap_02",
+      "origin": "generated",
+      "lengthFrames": 6,
+      "level": "texture, soft, 18 dB under NAR"
+    },
+    {
+      "cue": "S1-step-5",
+      "shot": "S01-B02-SH02",
+      "frame": 462,
+      "brief": "S1 tokay step tick",
+      "id": "foley_gecko-foot-tap_01",
+      "origin": "generated",
+      "lengthFrames": 6,
+      "level": "texture, soft, 18 dB under NAR"
+    },
+    {
+      "cue": "S1-step-6",
+      "shot": "S01-B02-SH02",
+      "frame": 471,
+      "brief": "S1 tokay step tick",
+      "id": "foley_gecko-foot-tap_02",
+      "origin": "generated",
+      "lengthFrames": 6,
+      "level": "texture, soft, 18 dB under NAR"
+    },
+    {
+      "cue": "S1-step-7",
+      "shot": "S01-B02-SH02",
+      "frame": 480,
+      "brief": "S1 tokay step tick",
+      "id": "foley_gecko-foot-tap_01",
+      "origin": "generated",
+      "lengthFrames": 6,
+      "level": "texture, soft, 18 dB under NAR"
+    },
+    {
+      "cue": "S1-step-8",
+      "shot": "S01-B02-SH02",
+      "frame": 489,
+      "brief": "S1 tokay step tick",
+      "id": "foley_gecko-foot-tap_02",
+      "origin": "generated",
+      "lengthFrames": 6,
+      "level": "texture, soft, 18 dB under NAR"
+    },
+    {
+      "cue": "S1-step-9",
+      "shot": "S01-B02-SH02",
+      "frame": 497,
+      "brief": "S1 tokay step tick",
+      "id": "foley_gecko-foot-tap_01",
+      "origin": "generated",
+      "lengthFrames": 6,
+      "level": "texture, soft, 18 dB under NAR"
+    },
+    {
+      "cue": "S8-dust-1",
+      "shot": "S01-B02-SH02",
+      "frame": 462,
+      "brief": "S8 dust falls with the step",
+      "id": "foley_dust-grains-fall_01",
+      "origin": "generated",
+      "lengthFrames": 13,
+      "level": "texture, delicate, with its step"
+    },
+    {
+      "cue": "S8-dust-2",
+      "shot": "S01-B02-SH02",
+      "frame": 471,
+      "brief": "S8 dust falls with the step",
+      "id": "foley_dust-grains-fall_02",
+      "origin": "generated",
+      "lengthFrames": 13,
+      "level": "texture, delicate, with its step"
+    },
+    {
+      "cue": "S8-dust-3",
+      "shot": "S01-B02-SH02",
+      "frame": 480,
+      "brief": "S8 dust falls with the step",
+      "id": "foley_dust-grains-fall_01",
+      "origin": "generated",
+      "lengthFrames": 13,
+      "level": "texture, delicate, with its step"
+    },
+    {
+      "cue": "S8-dust-4",
+      "shot": "S01-B02-SH02",
+      "frame": 489,
+      "brief": "S8 dust falls with the step",
+      "id": "foley_dust-grains-fall_02",
+      "origin": "generated",
+      "lengthFrames": 13,
+      "level": "texture, delicate, with its step"
+    },
+    {
+      "cue": "S8-dust-5",
+      "shot": "S01-B02-SH02",
+      "frame": 497,
+      "brief": "S8 dust falls with the step",
+      "id": "foley_dust-grains-fall_01",
+      "origin": "generated",
+      "lengthFrames": 13,
+      "level": "texture, delicate, with its step"
+    },
+    {
+      "cue": "S9-dive",
+      "shot": "S01-B03-SH01",
+      "frame": 522,
+      "brief": "S9 dive whoosh +0 to +30, starting in the gap before the VO at +12",
+      "id": "whoosh_micro-dive-shimmer_01",
+      "origin": "generated",
+      "lengthFrames": 33,
+      "level": "accent in the gap before the voice"
+    },
+    {
+      "cue": "H1-macro",
+      "shot": "S01-B03-SH01",
+      "frame": 532,
+      "brief": "A1 ducks to H1 room tone from +10 (macro hush, A1 at -18 dB low-passed about 600 Hz); H1 holds to f775",
+      "id": "room_studio-hush_01",
+      "origin": "library",
+      "lengthFrames": 243,
+      "level": "-20 dB under NAR",
+      "fit": "11 s loop, very quiet small-room tone with soft air, no events, centroid 1.7 kHz: an airy macro hush as the brief says; measured, not listened",
+      "loop": true
+    },
+    {
+      "cue": "S10-fan",
+      "shot": "S01-B03-SH02",
+      "frame": 708,
+      "brief": "S10 hair tips fanning out",
+      "id": "reveal_glass-shimmer-soft_01",
+      "origin": "library",
+      "lengthFrames": 42,
+      "level": "accent on the word",
+      "fit": "1.39 s soft glassy shimmer, immediate onset and smooth decay, centroid 8.2 kHz: a shimmer for tips fanning out as the brief says; measured, not listened"
+    },
+    {
+      "cue": "A1-tv",
+      "shot": "S01-B03-SH03",
+      "frame": 775,
+      "brief": "A1 full at +0 (TV glass close)",
+      "id": "room_ceiling-fan-night-living_01",
+      "origin": "generated",
+      "lengthFrames": 1,
+      "level": "full, as A1-open",
+      "note": "return from the macro hush (H1 out)"
+    },
+    {
+      "cue": "hum-tv",
+      "shot": "S01-B03-SH03",
+      "frame": 775,
+      "brief": "mains hum layer at about -30 dB under A1 (decoration only, no static)",
+      "id": "electric_streetlamp-hum-loop_01",
+      "origin": "library",
+      "lengthFrames": 62,
+      "level": "-30 dB",
+      "fit": "11 s steady low hum, no events, centroid 1.2 kHz, no crackle: a faint mains hum as the brief says (it is a streetlamp hum; at -30 dB under the room only its steady low tone reads). Measured, not listened",
+      "loop": true
+    },
+    {
+      "cue": "M1-question",
+      "shot": "S01-B03-SH04",
+      "frame": 878,
+      "brief": "M1 question figure (two plucks rising) on +41",
+      "id": "bed_pizzicato-tiptoe-curious_03",
+      "origin": "generated",
+      "lengthFrames": 1,
+      "level": "as M1",
+      "note": "a point inside the M1 file (file f655), not a new sound; Editor lifts or ducks the existing bed here"
+    },
+    {
+      "cue": "H1-hush-2",
+      "shot": "S01-B03-SH05",
+      "frame": 928,
+      "brief": "H1 room tone under the settle shots (A1 at -18 dB, low-passed)",
+      "id": "room_studio-hush_01",
+      "origin": "library",
+      "lengthFrames": 227,
+      "level": "-20 dB under NAR",
+      "fit": "same H1 file as H1-macro; see that cue. Holds f928 to f1155",
+      "loop": true
+    },
+    {
+      "cue": "S11-settle",
+      "shot": "S01-B03-SH05",
+      "frame": 950,
+      "brief": "S11 tips settling +22 to +64",
+      "id": "foley_bristle-settle-velvet_01",
+      "origin": "generated",
+      "lengthFrames": 38,
+      "level": "texture, 18 dB under NAR"
+    },
+    {
+      "cue": "S12-glints",
+      "shot": "S01-B03-SH06",
+      "frame": 1043,
+      "brief": "S12 glints gathering +34 to +140, the swell firming at +121",
+      "id": "reveal_glints-gather-swell_02",
+      "origin": "generated",
+      "lengthFrames": 106,
+      "level": "texture/swell under NAR, rises to the firming point",
+      "note": "3.53 s (106 f) R2.3 re-edit of _01 (ticks to wash x1.145, final swell x1.46, firming at file +87 = shot +121); not heard. Starts f1043, stops at its peak about +140 (f1149); Film hang: one strong line +121"
+    },
+    {
+      "cue": "S19-zoomout-1",
+      "shot": "S01-B03-SH06",
+      "frame": 1087,
+      "brief": "S19 zoom-out whoosh on the first loupe-out",
+      "id": "whoosh_micro-zoom-out_01",
+      "origin": "generated",
+      "lengthFrames": 27,
+      "level": "accent in a gap"
+    },
+    {
+      "cue": "S19-zoomout-2",
+      "shot": "S01-B03-SH06",
+      "frame": 1120,
+      "brief": "S19 zoom-out whoosh on the second loupe-out",
+      "id": "whoosh_micro-zoom-out_01",
+      "origin": "generated",
+      "lengthFrames": 27,
+      "level": "accent in a gap"
+    },
+    {
+      "cue": "A1-refrain",
+      "shot": "S01-B03-SH07",
+      "frame": 1155,
+      "brief": "A1 back at +0 (full)",
+      "id": "room_ceiling-fan-night-living_01",
+      "origin": "generated",
+      "lengthFrames": 1,
+      "level": "full"
+    },
+    {
+      "cue": "S13-refrain-hit",
+      "shot": "S01-B03-SH07",
+      "frame": 1189,
+      "brief": "S13 refrain landing on M1's downbeat on the word ยิ่งเกาะ",
+      "id": "stinger_low-muted-hit_01",
+      "origin": "library",
+      "lengthFrames": 30,
+      "level": "hit; sits on a stressed word: Editor nudges into a syllable gap (EP08b accent over speech needs 12 dV)",
+      "fit": "1.01 s short low muted hit, centroid 330 Hz, fast decay, peak -11 dBFS: a soft solid thud as the brief says; measured, not listened"
+    },
+    {
+      "cue": "S1-step-b1",
+      "shot": "S01-B04-SH01",
+      "frame": 1265,
+      "brief": "S1 tokay step tick as it starts to walk",
+      "id": "foley_gecko-foot-tap_01",
+      "origin": "generated",
+      "lengthFrames": 6,
+      "level": "texture, soft, 18 dB under NAR"
+    },
+    {
+      "cue": "S1-step-b2",
+      "shot": "S01-B04-SH01",
+      "frame": 1275,
+      "brief": "S1 tokay step tick as it starts to walk",
+      "id": "foley_gecko-foot-tap_02",
+      "origin": "generated",
+      "lengthFrames": 6,
+      "level": "texture, soft, 18 dB under NAR"
+    },
+    {
+      "cue": "S1-step-b3",
+      "shot": "S01-B04-SH01",
+      "frame": 1285,
+      "brief": "S1 tokay step tick as it starts to walk",
+      "id": "foley_gecko-foot-tap_01",
+      "origin": "generated",
+      "lengthFrames": 6,
+      "level": "texture, soft, 18 dB under NAR"
+    },
+    {
+      "cue": "S14-peel",
+      "shot": "S01-B04-SH02",
+      "frame": 1303,
+      "brief": "S14 tape peel, slowed, +10 to +70",
+      "id": "foley_tape-peel-slow_02",
+      "origin": "generated",
+      "lengthFrames": 60,
+      "level": "texture, A1 -4 dB; 18 dB under NAR",
+      "note": "2.0 s (60 f) R2.3 re-edit of _01 (x1.05); the peel tick in shot 17 (S14-head-tick) keeps the first 7 f of _01"
+    },
+    {
+      "cue": "H1-snap",
+      "shot": "S01-B04-SH03",
+      "frame": 1376,
+      "brief": "H1 room tone +0 to +39 (A1 low)",
+      "id": "room_studio-hush_01",
+      "origin": "library",
+      "lengthFrames": 39,
+      "level": "-20 dB under NAR",
+      "fit": "same H1 file; see H1-macro",
+      "loop": true
+    },
+    {
+      "cue": "S12-glints-out",
+      "shot": "S01-B04-SH03",
+      "frame": 1376,
+      "brief": "glints going out +0 to +32: Editor reverses the head of S12",
+      "id": "reveal_glints-gather-swell_01",
+      "origin": "generated",
+      "lengthFrames": 32,
+      "level": "texture, going out",
+      "note": "the first 1.1 s of the same S12 file reversed by Editor gives dense-to-sparse fade out"
+    },
+    {
+      "cue": "S15-snap-free",
+      "shot": "S01-B04-SH03",
+      "frame": 1415,
+      "brief": "S15 foot comes free",
+      "id": "foley_rubber-snap-release_01",
+      "origin": "library",
+      "lengthFrames": 9,
+      "level": "accent on the word หลุด",
+      "fit": "0.29 s dry springy rubber-and-shell snap, no ring, centroid 4.7 kHz, one event: a crisp release as the brief says; measured, not listened"
+    },
+    {
+      "cue": "S19-zoomout-out",
+      "shot": "S01-B04-SH03",
+      "frame": 1415,
+      "brief": "S19 whoosh-out +39 to +50",
+      "id": "whoosh_micro-zoom-out_01",
+      "origin": "generated",
+      "lengthFrames": 27,
+      "level": "accent"
+    },
+    {
+      "cue": "S1-step-c",
+      "shot": "S01-B04-SH03",
+      "frame": 1436,
+      "brief": "S1 step as it steps on",
+      "id": "foley_gecko-foot-tap_01",
+      "origin": "generated",
+      "lengthFrames": 6,
+      "level": "texture, soft"
+    },
+    {
+      "cue": "S4-snap-hang",
+      "shot": "S01-B05-SH01",
+      "frame": 1454,
+      "brief": "S4 swish +0 into the hang",
+      "id": "whoosh_air-swish-rising_01",
+      "origin": "library",
+      "lengthFrames": 24,
+      "level": "accent (no speech)",
+      "fit": "same swish file as S4-snap-in; rising air swish into the imagined shot, measured, not listened",
+      "peakOffsetFrames": 16
+    },
+    {
+      "cue": "S2-grip-hang",
+      "shot": "S01-B05-SH01",
+      "frame": 1458,
+      "brief": "S2 grip strain +4 (hang, near silent)",
+      "id": "foley_leather-grip-strain_01",
+      "origin": "generated",
+      "lengthFrames": 26,
+      "level": "texture, near silent bed, forward in the room"
+    },
+    {
+      "cue": "S14-head-tick",
+      "shot": "S01-B05-SH01",
+      "frame": 1472,
+      "brief": "S14 head (0.25 s) tick on the curl, then near silence +18 to +36",
+      "id": "foley_tape-peel-slow_01",
+      "origin": "generated",
+      "lengthFrames": 7,
+      "level": "accent, in the clear",
+      "note": "uses only the first 7 f of the S14 file; Editor cuts it"
+    },
+    {
+      "cue": "S16-relief",
+      "shot": "S01-B05-SH02",
+      "frame": 1541,
+      "brief": "S16 relieved pluck after V02 (V02 ends f1539)",
+      "id": "pluck_relief-two-notes_01",
+      "origin": "generated",
+      "lengthFrames": 30,
+      "level": "accent in the gap after V02"
+    },
+    {
+      "cue": "S17-moth-flutter",
+      "shot": "S01-B05-SH03",
+      "frame": 1550,
+      "brief": "S17 moth flutter up from +0, cut at +20",
+      "id": "creature_moth-flutter-loop_01",
+      "origin": "generated",
+      "lengthFrames": 20,
+      "level": "texture, rising, hard cut at f1570",
+      "loop": true,
+      "note": "same S17 file as S17-moth-open, raised"
+    },
+    {
+      "cue": "S18-lunge",
+      "shot": "S01-B05-SH03",
+      "frame": 1555,
+      "brief": "S18 lunge and jaw tick (jaw tick on +20); no chew sound",
+      "id": "creature_gecko-lunge-jaw-tick_01",
+      "origin": "generated",
+      "lengthFrames": 21,
+      "level": "accent in the gap before L16",
+      "note": "file start +5 so the jaw tick (0.5 s in) lands on f1570 (+20); 0.7 s ticks, swish, one tick",
+      "peakOffsetFrames": 15
+    },
+    {
+      "cue": "V03-call",
+      "shot": "S01-B05-SH04",
+      "frame": 1700,
+      "brief": "V03 tokay call in the clear, onset at f1700",
+      "id": "creature_tokay-call-single_01",
+      "origin": "generated",
+      "lengthFrames": 33,
+      "level": "quiet gecko in the closing room tone: user-chosen cut placed 5 dB below the earlier tokay call level (momentary max 19 LU under the voice), audible in the clear, no music, no caption",
+      "note": "swapped 2026-11-10 to the user's own cut (file EDU-EP15-tokay-call-ref-cut.wav, 1.1 s = 33 f, store projects/EDU-EP15-SHORT/audio/2026-11-10_tokay-call-ref-cut.wav; cut of user sample gecko-sound-ref.mp3 3.25-4.35 s, rights unknown, user decides); onset f1700, 5 dB quieter than the generated call placement; generated creature_tokay-call-single_01 kept in the library, not used"
+    },
+    {
+      "cue": "A1A2-fade",
+      "shot": "S01-B05-SH04",
+      "frame": 1763,
+      "brief": "A1 + A2 fade to -inf over +175 to +204 (f1763 to f1792), no loop seam",
+      "id": "room_ceiling-fan-night-living_01",
+      "origin": "generated",
+      "lengthFrames": 30,
+      "level": "fade to silence",
+      "note": "Editor fade of the running A1 and A2 loops"
+    }
+  ],
+  "swaps": [
+    {
+      "cue": "V03-call",
+      "to": "EDU-EP15-tokay-call-ref-cut",
+      "reason": "user picked a cut of their own gecko sample over the generated call (shot 20, 2026-11-10) and asked for it about 5 dB quieter",
+      "approvedBy": "user"
+    }
+  ],
+  "exempt": [
+    {
+      "src": "audio/edu/EDU-EP15-SHORT-draft-stem-v1.wav",
+      "reason": "stem baked by sound-mix.py (Editor W5.3)"
+    },
+    {
+      "src": "public/audio/edu/EDU-EP15-SHORT-draft-stem-v1.wav",
+      "reason": "stem baked by sound-mix.py (Editor W5.3)"
+    },
+    {
+      "src": "out/stems/bed.wav",
+      "reason": "per-layer stem written by sound-mix.py for mix-levels.py"
+    },
+    {
+      "src": "out/stems/texture.wav",
+      "reason": "per-layer stem written by sound-mix.py for mix-levels.py"
+    },
+    {
+      "src": "out/stems/accent.wav",
+      "reason": "per-layer stem written by sound-mix.py for mix-levels.py"
+    },
+    {
+      "src": "out/stems/voice.wav",
+      "reason": "voice stem (narration copy) written by sound-mix.py for mix-levels.py"
+    }
+  ],
+  "levels": {
+    "stems": {
+      "voice": "out/stems/voice.wav",
+      "bed": "out/stems/bed.wav",
+      "texture": "out/stems/texture.wav",
+      "accent": "out/stems/accent.wav"
+    },
+    "checks": [
+      {
+        "beat": "B01",
+        "layer": "background",
+        "when": "speech",
+        "min": 15,
+        "fromSec": 0.6,
+        "toSec": 9.5
+      },
+      {
+        "beat": "B01",
+        "layer": "bed",
+        "when": "speech",
+        "warnAbove": 20,
+        "fromSec": 0.6,
+        "toSec": 9.5
+      },
+      {
+        "beat": "B01",
+        "layer": "texture",
+        "when": "speech",
+        "min": 18,
+        "fromSec": 4.7,
+        "toSec": 6.87
+      },
+      {
+        "beat": "B01",
+        "layer": "accent",
+        "when": "speech",
+        "min": 12,
+        "fromSec": 4.6,
+        "toSec": 5.1
+      },
+      {
+        "beat": "B02",
+        "layer": "accent",
+        "when": "speech",
+        "min": 12,
+        "fromSec": 9.9,
+        "toSec": 10.4,
+        "note": "S5 pop-1 (f299) lands as V01 begins: over speech, needs 12"
+      },
+      {
+        "beat": "B02",
+        "layer": "background",
+        "when": "speech",
+        "min": 15,
+        "fromSec": 10.7,
+        "toSec": 16.7
+      },
+      {
+        "beat": "B02",
+        "layer": "bed",
+        "when": "speech",
+        "warnAbove": 20,
+        "fromSec": 10.7,
+        "toSec": 16.7
+      },
+      {
+        "beat": "B02",
+        "layer": "texture",
+        "when": "speech",
+        "min": 18,
+        "fromSec": 14.23,
+        "toSec": 16.73
+      },
+      {
+        "beat": "B02",
+        "layer": "accent",
+        "when": "speech",
+        "min": 12,
+        "fromSec": 10.77,
+        "toSec": 11.27
+      },
+      {
+        "beat": "B02",
+        "layer": "accent",
+        "when": "peak",
+        "min": -6,
+        "max": 6,
+        "fromSec": 13.33,
+        "toSec": 13.83,
+        "note": "S5 pop-2 is a 2 f (42 ms) click capped at -3 dBFS: a 400 ms momentary meter reads it about 14 LU under its peak, so the -6..3 row is unreachable at the cap; max 6 (fail above 9). Ear check decides."
+      },
+      {
+        "beat": "B03",
+        "layer": "background",
+        "when": "speech",
+        "min": 15,
+        "fromSec": 17.8,
+        "toSec": 40.2
+      },
+      {
+        "beat": "B03",
+        "layer": "background",
+        "when": "speech",
+        "min": 20,
+        "fromSec": 17.8,
+        "toSec": 21.73
+      },
+      {
+        "beat": "B03",
+        "layer": "background",
+        "when": "speech",
+        "min": 20,
+        "fromSec": 33.73,
+        "toSec": 38.13
+      },
+      {
+        "beat": "B03",
+        "layer": "bed",
+        "when": "speech",
+        "warnAbove": 20,
+        "fromSec": 17.8,
+        "toSec": 40.2
+      },
+      {
+        "beat": "B03",
+        "layer": "texture",
+        "when": "speech",
+        "min": 18,
+        "fromSec": 34.73,
+        "toSec": 38.33
+      },
+      {
+        "beat": "B03",
+        "layer": "accent",
+        "when": "peak",
+        "min": -6,
+        "max": 3,
+        "fromSec": 17.4,
+        "toSec": 17.73
+      },
+      {
+        "beat": "B03",
+        "layer": "accent",
+        "when": "speech",
+        "min": 12,
+        "fromSec": 23.47,
+        "toSec": 23.97
+      },
+      {
+        "beat": "B03",
+        "layer": "accent",
+        "when": "speech",
+        "min": 12,
+        "fromSec": 39.5,
+        "toSec": 40.0
+      },
+      {
+        "beat": "B04",
+        "layer": "background",
+        "when": "speech",
+        "min": 15,
+        "fromSec": 40.6,
+        "toSec": 48.33
+      },
+      {
+        "beat": "B04",
+        "layer": "bed",
+        "when": "speech",
+        "warnAbove": 20,
+        "fromSec": 40.6,
+        "toSec": 48.33
+      },
+      {
+        "beat": "B04",
+        "layer": "texture",
+        "when": "speech",
+        "min": 18,
+        "fromSec": 42.1,
+        "toSec": 45.3
+      },
+      {
+        "beat": "B04",
+        "layer": "accent",
+        "when": "speech",
+        "min": 12,
+        "fromSec": 47.1,
+        "toSec": 47.6
+      },
+      {
+        "beat": "B05",
+        "layer": "background",
+        "when": "speech",
+        "min": 15,
+        "fromSec": 53.1,
+        "toSec": 56.53
+      },
+      {
+        "beat": "B05",
+        "layer": "bed",
+        "when": "speech",
+        "warnAbove": 20,
+        "fromSec": 53.1,
+        "toSec": 56.53
+      },
+      {
+        "beat": "B05",
+        "layer": "accent",
+        "when": "peak",
+        "min": -6,
+        "max": 3,
+        "fromSec": 51.3,
+        "toSec": 52.6
+      },
+      {
+        "beat": "B05",
+        "layer": "accent",
+        "when": "peak",
+        "min": -6,
+        "max": 3,
+        "fromSec": 56.63,
+        "toSec": 57.83
+      }
+    ]
+  }
+}

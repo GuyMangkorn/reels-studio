@@ -166,6 +166,8 @@ export type FigPose = {
   noShadow?: boolean;
   /** Profile `run` only: 0..1 (default 1) blends the legs from a planted two-foot stance to the stride, the grounded foot staying put (EDU-EP05 R1.9 FR28). */
   runMix?: number;
+  /** Front view, standing legs only (EDU-EP15 shot 2 knee kicks): flex per leg in degrees, `r`/`l` = the character's right/left (screen left/right). The thigh shortens by cos(hip), the shank folds by hip+knee; the other fields stay as the standing leg. Absent = straight legs. */
+  legKick?: {r?: {hip: number; knee: number}; l?: {hip: number; knee: number}};
   /** Ground shadow held at its own floor spot (picture px `g`, `unit` px per metre) with opacity factor `k` 0..1, for a figure drawn scaled about a point (EDU-EP05 shrink: the shadow fades instead of riding the shrinking card). Absent = under the feet. */
   shadowFloor?: {g: Pt; unit: number; k: number};
   /** Neck in the face skin tone with a soft jaw shade and no outline, flaring into the collar (default absent = the VD18 shaded neck block, grey beside a lit face). EDU-EP01 W5.4. */
@@ -450,6 +452,13 @@ export const drawFigure = (p: Painter, def: CastDef, g: Pt, unit: number, pose: 
       const hip: Pt = [s * 0.0725 * kp, hipV];
       const ankle: Pt = [s * (0.08 + 0.05 * c) * kp + qdir * st, ankleV + lift + rs];
       const knee: Pt = [s * (0.077 + 0.17 * c) * kp + qdir * st * 0.5, lerp((hipV + ankle[1]) / 2, 0.46, c)];
+      const kk = pose.legKick?.[s > 0 ? 'l' : 'r'];
+      if (kk && !qg) {
+        const h = (kk.hip * Math.PI) / 180, sh = ((kk.hip + kk.knee) * Math.PI) / 180, L1 = hipV - knee[1], L2 = knee[1] - ankle[1];
+        knee[1] = hipV - L1 * Math.cos(h);
+        ankle[1] = knee[1] - L2 * Math.cos(sh);
+        ankle[0] = knee[0] + (ankle[0] - knee[0]) * Math.cos(sh);
+      }
       legs.push({hip, knee, ankle, far: farLeg});
     }
     if (qg) legs.sort((a, b) => Number(b.far) - Number(a.far));

@@ -126,7 +126,7 @@ test('hand scale: size 1.25 and 1.2 make the middle finger 9.0 and 8.64 cm; BOY 
 });
 
 test('named poses and tones exist; the right hand mirrors the left (thumb on the other side)', () => {
-  assert.deepEqual(Object.keys(HAND_POSES).sort(), ['flat', 'hand-lifted-dangle', 'ring-strain', 'test-fold-middle']);
+  assert.deepEqual(Object.keys(HAND_POSES).sort(), ['flat', 'hand-lifted-dangle', 'palm-up-open', 'ring-strain', 'test-fold-middle']);
   assert.equal(MACRO_TONES.boy.skin, '#f0c29a');
   const l = macroSkeleton(macroHand('flat', {side: -1, base: 0, at: [0, 0]})), r = macroSkeleton(macroHand('flat', {side: 1, base: 0, at: [0, 0]}));
   assert.ok(l.fingers.thumb.joints[3][0] > 0 && r.fingers.thumb.joints[3][0] < 0);

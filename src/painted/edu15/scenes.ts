@@ -20,23 +20,23 @@ export const LF_IDS = ['LF01', 'LF02', 'LF03', 'LF04', 'LF05A', 'LF05B', 'TK1', 
 export type LfId = (typeof LF_IDS)[number];
 export type Measure = {lead?: {top: number; bottom: number}; extra?: Record<string, number | string>; cam?: YCam};
 export const MEASURE: Record<string, Measure> = {};
-const T = 0.4;
+export const T = 0.4;
 
 // ---- shared pieces
-const restPose = (o: Partial<TokayPose> = {}): TokayPose => ({legs: restLegs(), tips: {hl: 0.6, hr: 0.6, fl: 0.15, fr: 0.15}, ...o});
-const T0F = ceilingFrame(T0.at, T0.heading);
-const roomBack = (p: Painter, c: YCam, o: {focus?: V3; stippleR?: number; stippleStep?: number; halo?: number} = {}) => {
+export const restPose = (o: Partial<TokayPose> = {}): TokayPose => ({legs: restLegs(), tips: {hl: 0.6, hr: 0.6, fl: 0.15, fr: 0.15}, ...o});
+export const T0F = ceilingFrame(T0.at, T0.heading);
+export const roomBack = (p: Painter, c: YCam, o: {focus?: V3; stippleR?: number; stippleStep?: number; halo?: number} = {}) => {
   paintShell(p, c);
   paintCeiling(p, c, {focus: o.focus, stippleR: o.stippleR, stippleStep: o.stippleStep});
   paintLamp(p, c, {halo: o.halo ?? 1, t: T});
   paintBackWall(p, c);
 };
-const tok = (p: Painter, c: YCam, f: Frame, pose: TokayPose, shadow = true): TokayMeasure => {
+export const tok = (p: Painter, c: YCam, f: Frame, pose: TokayPose, shadow = true): TokayMeasure => {
   if (shadow) paintTokayShadow(p, c, f, 61990, [0.004, 0.006]);
   return paintTokay(p, c, f, pose, {t: T});
 };
-const mFig = (a: FigAnchors | null) => (a ? {top: a.top, bottom: a.bottom} : undefined);
-const tkExtra = (m: TokayMeasure, pre = 'tk'): Record<string, number> => ({[`${pre}Len`]: m.lengthPx, [`${pre}Top`]: m.box[1], [`${pre}Bottom`]: m.box[3], [`${pre}Left`]: m.box[0], [`${pre}Right`]: m.box[2], [`${pre}PxPerM`]: m.pxPerM,
+export const mFig = (a: FigAnchors | null) => (a ? {top: a.top, bottom: a.bottom} : undefined);
+export const tkExtra = (m: TokayMeasure, pre = 'tk'): Record<string, number> => ({[`${pre}Len`]: m.lengthPx, [`${pre}Top`]: m.box[1], [`${pre}Bottom`]: m.box[3], [`${pre}Left`]: m.box[0], [`${pre}Right`]: m.box[2], [`${pre}PxPerM`]: m.pxPerM,
   ...Object.fromEntries((['fl', 'fr', 'hl', 'hr'] as FootId[]).flatMap((k) => [[`${pre}Foot_${k}`, m.footPx[k]], [`${pre}FootY_${k}`, Math.round(m.feet[k]?.[1] ?? -1)]]))});
 
 // ---- LF01: S01-B01-SH01 @ +20 (hold +0-+40 at the start camera). Brief camera; W3: hy 960 -> 860 lifts the frame so the phone and her chest clear
@@ -76,8 +76,8 @@ export const paintTK4 = (p: Painter) => grazing(p, camLF02, restPose({roll: {fl:
 // W3.1 (Q-F6): the rig and its three cameras (LF05A, LF05B, TK7) moved +0.5 m in z together, so the framings keep their distances.
 const HANG_VENT: V3 = [0.33, 2.53, RIG_Z];
 const DZ = 0.5;
-const hangPose = (o: Partial<TokayPose> = {}): TokayPose => ({legs: hangLegs(), headPitch: -22, tail: [0, 0.03], legsOver: true, roll: {hl: 0.75, hr: 0.75}, ...o});
-const hangShot = (p: Painter, c: YCam, key: string, pose: TokayPose) => {
+export const hangPose = (o: Partial<TokayPose> = {}): TokayPose => ({legs: hangLegs(), headPitch: -22, tail: [0, 0.03], legsOver: true, roll: {hl: 0.75, hr: 0.75}, ...o});
+export const hangShot = (p: Painter, c: YCam, key: string, pose: TokayPose) => {
   roomBack(p, c);
   paintSofaSide(p, c);
   // his shadow straight under the lamp onto the floor in front of the sofa (the floor-gap cue; W3)
