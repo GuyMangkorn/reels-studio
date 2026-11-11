@@ -1197,3 +1197,195 @@ User chose **C39 ถ้าหมัดตัวเท่าคน** (animal conc
 User kept **C43, C44, C45, C46, C47** (structured question, two multi-select questions); **C48 not picked**. Episode order not yet chosen. Preaw's order: C46 > C45 > C43 > C44 > C47 (C48 last). Context: user asked Preaw for six more concepts, three about animals (C43–C45).
 
 **EP16 pick (2026-11-10):** user picked **C45 อีกาจำหน้าคุณได้ และบอกลูกมันด้วย** as the next episode, `EDU-EP16-SHORT` (Short Thai, assumed). Order so far: EP15 = C43; C44, C46, C47 not yet scheduled.
+
+---
+
+## R9 — Preaw pitch (2026-11-11)
+
+- **Request (user, 2026-11-11, via coordinator):** six concepts close to everyday life, in the spirit of viral online content without copying it. Exactly three animal concepts (everyday or viral animals, one of them a ตุ๊กแก-in-a-lift or similar close-to-home angle, reshaping allowed), three on anything everyday (objects, places, body, routines, Thai daily life). At least one may use the "if you were small" scale lens.
+- **How Preaw read it:** same contract as R6–R8 under the channel's [script rules](../../channels/edu/script.md#edu-short-retention): ER08 four-line pitch check, a one-line counter-intuitive claim (ER01), one rule that returns and flips (ER03), a beat chain where each beat opens the next with "แต่…" (ER06), one cause per problem in about 10 s at most (ER09), no source or method phrase in narration (ER10). New this round, per the request: each concept carries an **Everyday-close** line (where the viewer meets it this week).
+- **What steers this round (measured only):** [channel performance](../../channels/edu/performance.md) holds the same three posted edu Shorts as R7–R8 (EP05 scale what-if: 24k views, 20.2 % swiped away, ~91 % watched; EP03: 2.5k, 36.6 %, ~66 %; EP02: 1.3k, 33.6 %, ~60 %). The scale lens is used once (C50) because the numbers support it; "viral animal" and "everyday object" are the user's direction, not a measured lesson.
+- **Topic direction:** animals the viewer meets at home: the ตุ๊กแก on the lift door (C49, reshaped from the user's example), the ยุง in the rain (C50, the scale lens), the แมลงสาบ under the slipper (C51). Everyday other: wrinkled fingers after a long shower (C52, body), the mechanical rice cooker (C53, kitchen object), your own voice in a clip (C54, self; wild card).
+- **Fixed (carried from R1–R8):** genre educational for all six; medium painted 2D p5.brush with the 4-head cast ([project defaults](../../docs/delivery-workflow.md#project-defaults)), default look the [painted 3D camera](../../docs/film-visual-brief-workflow.md#painted-3d-camera). The genre and medium spread does not apply to this series (same reading as R2–R8).
+  - **Sub-genres (6):** air righting and tail autotomy (C49); collision at small mass (C50); distributed body systems in insects (C51); nerve-controlled skin wrinkling (C52); boiling point as a timer and a heat-released magnet (C53); bone-conducted hearing (C54).
+  - **Staging styles:** a condo lift lobby at night with a slow-motion fall down the door gap (C49); a Thai soi in a downpour, then the narrator's person shrunk to mosquito size under a van-sized drop (C50); a kitchen floor at night, slipper in hand, then a body diagram with lit "windows" (C51); a bathroom and a doctor's basin, then a fingertip cross-section (C52); a mother's kitchen counter with a rice cooker cut open like a toy (C53); a girl cringing at her phone, then a head cutaway where sound travels through bone (C54).
+- **Wild card:** C54. It is carried by sound: the same line heard "inside the head" and "on the recording", which needs a designed two-voice audio treatment the kit and project defaults do not have (Kore is one narrator voice; the character's two voice versions are new), plus a head cutaway with sound travelling through bone.
+- **Channel default (mystery-educational in the WORLD FOG look):** none.
+- **Not re-pitched, nearest neighbours checked:** C49 is not C43/EP15 (C43 is how gecko feet stick; C49 is what happens after it lets go: turning in mid-air with the tail, and losing that ability with the tail) and not C6/EP05 (C49 makes no survive-the-fall claim; height is set dressing) and not C32 (C32 is the lift car falling; here only the gecko falls). C50 is not C37/EP14 (C37 is how fast a raindrop falls; C50 is what a drop does to what it hits) and not C6 (C6 is drag on a falling body; C50 is a collision; its refrain is about going with the drop, not "smaller is safer", and the flip makes the ground, not size, the danger). C51, C52, C53, C54 have no neighbour in C1–C48 or EP01–EP17. Made, open and deleted concepts listed in R8 are not re-pitched.
+- **Mode:** non-fiction explainers acted out by fictional 4-head characters. No named real case. These are pitches, not research: every fact below is `unchecked` until Boat's research and fact-check; `settled`, `model` and `hypothesis` are Preaw's expectation for Boat to confirm, not findings.
+- **Duration:** every concept estimated at 40–60 s (five beats). Timing is not measured.
+- **Producibility:** each concept names its key reveal image and a first kit guess against `src/painted/kit/README.md` at `31220e7` (story first, kit second). The kit `ANIMALS` holds dogs and cats; the EP13 flea card is the only insect-like card; the EP15 house gecko is not yet filed. Film's W0.2 annotation owns buildability and cost; it is not done in this pass.
+
+### C49 — ตุ๊กแกตกช่องลิฟต์ พลิกตัวกลางอากาศด้วยหาง (animal)
+
+- **Sub-genre:** air righting and tail autotomy.
+- **Staging:** `woman-bob + office` waiting at a condo lift at night; a ตุ๊กแก on the door frame slips as the doors open and drops into the gap; side cutaway of the shaft in slow motion; later a cat swipe in a garden and a dropped, wriggling tail.
+- **Counter-intuitive claim (ER01):** with nothing to push against, a falling gecko turns itself feet-down in a split second by swinging its tail, and without its tail it cannot.
+- **Logline:** A tokay slips off the lift door and falls upside down into the shaft. You cannot turn over in the air with nothing to push on, yet it does: it whips its tail one way and its body swings the other, like spinning an office chair by swinging your arms. But geckos drop their tails to escape a cat, and a gecko without a tail falls the way it started. The tail it throws away to live is the wheel it steers with.
+- **Hook (Thai):** "ตุ๊กแกตกลงช่องลิฟต์ หงายท้อง… แต่มันพลิกตัวกลางอากาศได้ ทั้งที่ไม่มีอะไรให้ยันเลย"
+- **Hook claim status:** `unchecked`, `settled` for tail-driven air righting in some geckos (Boat sources the gecko air-righting study and confirms the species; if it is not the tokay, the hook says "ตุ๊กแก" only if Boat finds tokay evidence, otherwise the animal becomes the studied house gecko and the lift stays).
+- **Everyday-close:** condo and office lifts every day; the ตุ๊กแก is the loudest, most-shared house animal on Thai social media; every Thai child has seen a dropped gecko tail still wriggling.
+- **Rule that flips (ER03):** "หางคือพวงมาลัย" (the tail is the steering wheel). Beats 1–2 it saves the fall; beat 3 the same tail is what it gives up to live; beat 4 the cost.
+- **Key reveal image:** slow-motion frame in the shaft: tail swung hard left, body half-turned right, feet coming round to face the lift roof.
+- **Beats:**
+  1. The doors open, the gecko slips, falls belly-up into the gap; her "อ๊ะ!". `unchecked`, `settled`
+  2. แต่… nothing to push on, yet it rolls over: the tail swings one way, the body turns the other, like spinning an office chair by swinging your arms. Lands on the lift roof on four feet. `unchecked`, `settled` (one cause, the chair example first; no physics term)
+  3. แต่… geckos drop that tail on purpose: a cat grabs it, the tail comes off and keeps wriggling while the gecko runs. `unchecked`, `settled`
+  4. แต่… a tailless gecko falls the same way and stays belly-up. `unchecked`, `hypothesis` (Boat confirms that tailless geckos fail to right or right much worse; if unsupported, beat 4 is cut and the ending moves to the regrown tail)
+  5. Flip and payoff: the tailless gecko on the lift roof, a stub where the tail was. Last line: "หางที่มันยอมทิ้งเพื่อเอาชีวิตรอด… คือพวงมาลัยตอนมันร่วง" `unchecked`, `model`
+- **Ending:** closed, ~2 s hold on the gecko's stub tail as the lift hums away.
+- **Voice / tone:** Kore, brisk deadpan; the woman's "อ๊ะ!" and "รอดมั้ยเนี่ย"; one ตุ๊กแก call as a button.
+- **ER08 pitch check:** (1) Hook: breaks "you cannot turn without pushing on something"; one picture (a gecko rolling in mid-air), no term. Pass. (2) Who: everyone who rides a lift and has a gecko at home. Pass. (3) Beats: fall → แต่ it turns → แต่ it drops the tail → แต่ without it; beat 2 is the one mechanism beat, carried by the office chair. Pass. (4) Ending: a flip of the same tail. Pass. **4/4.**
+- **Why it holds:** the user's viral-animal hook in a place everyone uses; an office-chair test the viewer can do at their desk; a sad-funny flip.
+- **Evidence notes (thin spots):** the righting study may be on a smaller house gecko, not the tokay; beat 4 rests on one finding and is cut if it does not hold. Kept out: how high a gecko can fall and live (EP05's mechanism, and no clean figure), why geckos fall on people (ER07), regrowth details beyond one line.
+- **Research load:** one gecko air-righting source, one tail autotomy source, species check for the tokay.
+- **Kit check:** `woman-bob + office, P?, surprised`; lift lobby and shaft cutaway from C32 / EP11 if filed. New: `new: tokay gecko` (spotted blue-grey, falling, rolling, tailless states; may extend the EP15 house gecko once filed), tail wriggle FX, office-chair insert, cat swipe (`ANIMALS` cat).
+- **Sound intent:** quiet lobby hum and the lift chime; the slip is a soft scrape, then music drops out for a slow-motion air whoosh with the tail swing as a rising swish; a light tap landing; for the cat beat a quick pounce and a dry twitchy rattle under the wriggling tail; the last line over silence, then a single ตุ๊ก-แก call as the closing stinger.
+
+### C50 — ถ้าคุณตัวเท่ายุง เม็ดฝนหนักเท่ารถตู้ (animal, scale lens)
+
+- **Sub-genre:** collision at small mass (why rain does not kill mosquitoes).
+- **Staging:** `woman-curly + street` running under an awning in a Thai soi downpour while a mosquito keeps flying; "ถ้าคุณตัวเท่ายุง": she shrinks to mosquito size in the air, a raindrop the size of a van above her; macro slow motion of the hit.
+- **Counter-intuitive claim (ER01):** a raindrop can weigh many times more than a mosquito, and a direct hit still does not hurt it, because it does not stop the drop; it rides it.
+- **Logline:** Shrink to a mosquito and every raindrop weighs about as much as a van. A direct hit should crush you, but you are so light the drop barely slows down: it just carries you along, and you slip off the side. That trick needs room. Hit close to the ground, there is nowhere left to ride, and the drop pins you. Rain does not kill mosquitoes; the ground does.
+- **Hook (Thai):** "ถ้าคุณตัวเท่ายุง… ฝนหนึ่งเม็ด หนักเท่ารถตู้ตกใส่คุณ แต่ยุงบินกลางฝนได้สบาย"
+- **Hook claim status:** `unchecked`, `model` (Boat sources the mosquito-in-rain study and its drop-to-mosquito mass ratio, then recomputes the "รถตู้" comparison for a person of about 60 kg; the vehicle changes to whatever the ratio supports).
+- **Everyday-close:** Thai rainy season and mosquitoes every evening; everyone has wondered why rain does not clear them.
+- **Rule that flips (ER03):** "ไม่ต้าน… แต่ไปกับมัน" (do not resist the drop, go with it). Beats 2–3 it saves her; beat 4 it fails where there is no room to go; payoff names the ground.
+- **Key reveal image:** the tiny woman riding the underside of a van-sized drop, hair flat, then peeling off sideways while the drop rushes on.
+- **Beats:**
+  1. Rain; she runs for cover, the mosquito does not. Shrink: she hangs in the air at mosquito size as a drop the size of a van falls on her. `unchecked`, `model`
+  2. แต่… it hits and she is not crushed: she is so light the drop hardly slows, like a feather hit by a thrown ball, which just gets pushed along. `unchecked`, `settled` (one cause, the feather first; no term)
+  3. แต่… now she is riding the drop toward the ground; she tilts and slides off its side, wet but flying. `unchecked`, `settled`
+  4. แต่… a drop that hits her low, just above a puddle, has nowhere to carry her, and she is pressed into the water. `unchecked`, `hypothesis` (Boat confirms the near-ground danger from the same study; if unsupported, beat 4 becomes the drop-ride distance and the ending is the ride)
+  5. Flip and payoff: back to full size under the awning, the mosquito still buzzing at her ankle. Last line: "ฝนไม่ได้ฆ่ายุงหรอก… พื้นต่างหาก" `unchecked`, `model`
+- **Ending:** closed, ~2 s hold on her slapping her ankle and missing.
+- **Voice / tone:** Kore, brisk deadpan; the woman squeaks at mosquito size ("ไม่นะ!"), a relieved "รอด" after sliding off.
+- **ER08 pitch check:** (1) Hook: breaks "a heavy hit crushes a small thing"; one picture (a van-sized drop), no term. Pass. (2) Who: everyone in a rainy country. Pass. (3) Beats: the drop → แต่ not crushed → แต่ riding it down → แต่ near the ground; beat 2 the one mechanism, carried by the feather. Pass. (4) Ending: a flip from rain to ground. Pass. **4/4.**
+- **Why it holds:** the one shape the channel numbers support (EP05 scale what-if) on the most hated everyday animal; a quotable last line.
+- **Evidence notes (thin spots):** the mass ratio and the near-ground result come from one lab study with high-speed video; the van comparison is a calculation, labelled "ภาพจำลอง" in the shrink shot. Kept out: which people mosquitoes prefer (ER07), whether mosquitoes fly less in rain (not needed).
+- **Research load:** one mosquito-in-rain source (mass ratio, ride, near-ground result), one raindrop mass figure for the recompute.
+- **Kit check:** `woman-curly + street, P?, scared` then `relieved`; soi in rain (EP14 rain layers if filed). New: `new: mosquito` (flying, riding a drop), van-sized drop with the tiny woman, shrink transition (EP05 method), awning and puddle set.
+- **Sound intent:** heavy rain on tin awnings, a mosquito whine panned close; the shrink is a pitch-up whoosh and the rain becomes a slow deep rumble; the hit is a soft, heavy watery thud, not a crash; a slide-off swish; music gone and only the whine under the last line; a slap with no hit as the button.
+
+### C51 — แมลงสาบหัวขาด ยังเดินต่อได้เป็นอาทิตย์ (animal)
+
+- **Sub-genre:** distributed body systems in insects.
+- **Staging:** `man-spiky + home` in a Thai kitchen at night, slipper raised; the slipper lands, the head stays, the body runs; a see-through body diagram with lit "windows" along its sides; a calendar flipping days beside it.
+- **Counter-intuitive claim (ER01):** a cockroach without its head can keep walking for about a week, and what finally kills it is thirst.
+- **Logline:** You hit a cockroach and its head comes off, but the body runs away. It does not breathe through its head: air goes in through holes along its sides. It does not bleed out, because its blood is not pushed hard and the wound seals. Its legs do not wait for a brain; small nerve knots along the body run them. It lives on for days until it needs the one thing only a head does: drink.
+- **Hook (Thai):** "แมลงสาบหัวขาด… ยังเดินต่อได้เป็นอาทิตย์ แล้วรู้มั้ยว่าสุดท้ายมันตายเพราะอะไร"
+- **Hook claim status:** `unchecked`, `settled` as widely reported entomology (Boat sources the headless survival time and the cause of death; if the time is shorter, the hook keeps its shape with the sourced number).
+- **Everyday-close:** every Thai kitchen, the slipper, the viral "it is still moving" clip.
+- **Rule that flips (ER03):** "มันไม่ได้ใช้หัว…" (it does not use its head for that). Beats 2–4: breathing, bleeding, walking all run without a head; payoff flips it: drinking is the one thing that needs the head.
+- **Key reveal image:** the headless body standing next to a full water drop, unable to drink, the calendar on day 7.
+- **Beats:**
+  1. Slipper, head off, body runs; his "อ้าว!". `unchecked`, `settled`
+  2. แต่… how does it breathe? holes all along its sides, like a house with a window in every room instead of one front door. `unchecked`, `settled`
+  3. แต่… it should bleed to death; its blood is not pumped hard like ours, so the cut neck seals itself. `unchecked`, `settled`
+  4. แต่… no brain to walk with; small nerve knots in each part of the body run the legs on their own. `unchecked`, `settled`
+  5. Flip and payoff: days pass; it stands by a drop of water it cannot drink. Last line: "แมลงสาบหัวขาด ไม่ได้ตายเพราะหัวขาด… มันตายเพราะหิวน้ำ" `unchecked`, `settled`
+- **Ending:** closed, ~2 s hold on the still body by the water drop.
+- **Voice / tone:** Kore, brisk deadpan with a touch of disgust; the man "อ้าว!" and "ยังไม่ตายอีก?".
+- **ER08 pitch check:** (1) Hook: breaks "no head means dead"; understood instantly, no term. Pass. (2) Who: everyone. Pass. (3) Beats: runs → แต่ breathing → แต่ bleeding → แต่ walking; each one short cause with an everyday picture. Pass. (4) Ending: a payoff with a punchline. Pass. **4/4.**
+- **Why it holds:** a gross-funny viral fact with a closed question in the hook ("ตายเพราะอะไร") that only the last line answers; shareable as a dare.
+- **Evidence notes (thin spots):** the "about a week" figure and the thirst cause are often cited from one entomologist's explanation; Boat confirms with a primary or textbook source. The gore stays cartoon-level (no fluid shown). Kept out: "cockroaches survive nuclear war" (contested, ER07), radiation tolerance numbers.
+- **Research load:** two sources (insect breathing and open circulation, headless survival time and cause).
+- **Kit check:** `man-spiky + home, P?, disgusted` then `surprised`; kitchen from EP02 relit to night. New: `new: cockroach` (running, headless states), body diagram with spiracle glows, calendar insert, slipper prop.
+- **Sound intent:** night kitchen fridge hum; a slipper smack stinger with a beat of silence, then tiny frantic leg skitters; a light glassy ping per lit "window"; a ticking clock under the days; a single water drip before the last line, then silence and a small comic pluck.
+
+### C52 — นิ้วเหี่ยวตอนอาบน้ำ ไม่ใช่เพราะน้ำซึมเข้า
+
+- **Sub-genre:** nerve-controlled skin wrinkling.
+- **Staging:** `woman-long + home` after a long bath and a sink of dishes, staring at pruney fingertips; fingertip cross-section where vessels under the skin shrink; a doctor's basin where a patient soaks one hand.
+- **Counter-intuitive claim (ER01):** your fingers do not wrinkle because water soaks in; your nerves tell them to.
+- **Logline:** Everyone thinks the skin swells with water. But only your fingers and toes wrinkle, never your arm. The wrinkles come from your body: nerves squeeze the blood vessels under the fingertip, the cushion shrinks and the skin on top folds. A finger whose nerve is cut stays smooth after any bath, which is why doctors once soaked a hand to see if a nerve was alive.
+- **Hook (Thai):** "นิ้วเหี่ยวตอนอาบน้ำนาน… ไม่ได้เพราะน้ำซึมเข้าผิวนะ ร่างกายคุณสั่งให้มันเหี่ยวเอง"
+- **Hook claim status:** `unchecked`, `settled` (Boat sources the nerve dependence and the vessel narrowing; the soaking test as a clinical nerve check).
+- **Everyday-close:** every long shower, Songkran, washing dishes; the viewer can look at their own hands tonight.
+- **Rule that flips (ER03):** "ไม่ใช่น้ำ… ร่างกายสั่ง" (not the water, your body decides). Beats 2–3 explain the wrinkles; beat 4 flips it: no command, no wrinkle; payoff turns a curiosity into a medical test.
+- **Key reveal image:** two hands from the same soak side by side: one wrinkled, one finger smooth, a faint line where its nerve was cut.
+- **Beats:**
+  1. Fingers pruned after a long bath; she guesses "น้ำซึมเข้าไป". `unchecked`, `settled`
+  2. แต่… then her arm should wrinkle too; it is the same skin in the same water, and it stays smooth. `unchecked`, `settled` (Boat confirms wrinkling is limited to hands and feet)
+  3. แต่… if not water, what? Nerves squeeze the tiny blood vessels under the fingertip, the cushion shrinks, and the skin folds, like a sheet over a balloon letting out air. `unchecked`, `settled` (one cause, under 10 s)
+  4. แต่… proof: a finger whose nerve is cut stays smooth however long it soaks. `unchecked`, `settled`
+  5. Flip and payoff: a doctor soaks a patient's hand to check a nerve. Last line: "นิ้วที่ไม่เหี่ยวหลังแช่น้ำ… ต่างหากที่น่าห่วง" `unchecked`, `settled`
+- **Ending:** closed, ~2 s hold on her flexing her wrinkled fingers, reassured.
+- **Voice / tone:** Kore, brisk deadpan; the woman "เอ๊ะ" at her smooth arm.
+- **ER08 pitch check:** (1) Hook: breaks "water soaked in"; one look at your own hands, no term. Pass. (2) Who: everyone. Pass. (3) Beats: guess → แต่ the arm → แต่ the cause → แต่ the proof; one mechanism beat with the balloon. Pass. (4) Ending: a flip from curiosity to a warning sign. Pass. **4/4.**
+- **Why it holds:** a myth nearly everyone believes, a check the viewer does in the next bath, and an ending that makes the boring thing reassuring.
+- **Evidence notes (thin spots):** *why* we evolved it (better grip on wet things) has mixed results, so it is cut, not narrated (ER07). Whether doctors still use the soak test widely is unclear; the line says "doctors used it" only as Boat's source allows.
+- **Research load:** two sources (nerve dependence and vessel narrowing; the clinical soak test).
+- **Kit check:** `woman-long + home, P?, curious`; bathroom new or EP lounge relit; hand macro from EP09 (`macroHand`) for the fingertips. New: wrinkle overlay on the hand macro, fingertip cross-section, doctor's basin set (`new: clinic corner`, doctor outfit from EP01 if filed).
+- **Sound intent:** bathroom echo, a dripping tap; a soft squeak as she rubs pruney fingers; a gentle deflating hiss for the cushion shrinking; a calm clinic room tone for the doctor beat; a warm two-note close.
+
+### C53 — หม้อหุงข้าวรู้ได้ไงว่าข้าวสุก
+
+- **Sub-genre:** boiling point as a timer and a magnet that lets go when hot.
+- **Staging:** `woman-bob` (mother) and `boy` at a Thai kitchen counter; she presses the switch down; the pot opens like a toy cutaway: water, rice, the plate underneath, a small magnet holding the switch; a thermometer pinned at 100 while water bubbles.
+- **Counter-intuitive claim (ER01):** a basic rice cooker has no chip and no timer; one magnet that stops working when it gets too hot tells it the rice is done.
+- **Logline:** The old rice cooker at home cannot see the rice and has no clock, yet it clicks to "warm" right on time. While there is water in the pot, it cannot get hotter than boiling, however hard it heats. Under the pot a magnet holds the switch down, and that magnet lets go once it gets hotter than boiling. That only happens when the last water is soaked up. It never knows the rice is cooked; it only knows the water is gone.
+- **Hook (Thai):** "หม้อหุงข้าวบ้านคุณ ไม่มีชิป ไม่มีนาฬิกา… แต่รู้ว่าข้าวสุกตอนไหน เพราะแม่เหล็กก้อนเดียว"
+- **Hook claim status:** `unchecked`, `settled` for the classic mechanical rice cooker's heat-sensitive magnet switch (Boat confirms the mechanism and that it applies to the common basic Thai models; modern fuzzy-logic cookers are excluded by "หม้อหุงข้าวแบบธรรมดา" if needed).
+- **Everyday-close:** a rice cooker in almost every Thai home, pressed every day; the "click" everyone knows.
+- **Rule that flips (ER03):** "มีน้ำอยู่… ร้อนเกินเดือดไม่ได้" (while there is water, it cannot get hotter than boiling). Beat 2 it seems like a limit; beat 4 the same limit is the timer.
+- **Key reveal image:** the cutaway at the instant of the click: pot dry, thermometer jumping past 100, the magnet dropping away, the switch popping up.
+- **Beats:**
+  1. Mum presses the switch; the boy asks how it knows. Click, "warm". `unchecked`, `settled`
+  2. แต่… it cannot see rice; it only feels heat, and while there is water the pot stays at boiling, like a kettle that never gets hotter however high the flame. `unchecked`, `settled` (one cause, kettle first; no term)
+  3. แต่… what feels the heat? a magnet under the pot holds the switch down, and this magnet loses its grip once it gets hotter than boiling. `unchecked`, `settled` ("Curie point" never said)
+  4. แต่… why does that wait for the rice? Because the last water goes into the rice; then the pot climbs past boiling, the magnet lets go, click. `unchecked`, `settled`
+  5. Flip and payoff: the boy lifts the lid on steaming rice. Last line: "หม้อหุงข้าวไม่เคยรู้ว่าข้าวสุก… มันรู้แค่ว่าน้ำหมดแล้ว" `unchecked`, `settled`
+- **Ending:** closed, ~2 s hold on the steaming rice and the "warm" light.
+- **Voice / tone:** Kore, brisk deadpan; the boy "หม้อมันรู้ได้ไง"; the mother a shrug.
+- **ER08 pitch check:** (1) Hook: breaks "machines that know need a chip"; one object every viewer owns, no term. Pass. (2) Who: every Thai household. Pass. (3) Beats: click → แต่ it only feels heat → แต่ the magnet → แต่ why it waits for the rice; beats 2–3 are explanation-leaning but each opens a new question and runs under 10 s. Pass, watch in the script. (4) Ending: a flip that reframes the machine. Pass. **4/4.**
+- **Why it holds:** "I use this every day and never knew" is the strongest everyday-object share; a single click as the reveal; a quotable last line.
+- **Evidence notes (thin spots):** the mechanism is standard engineering, but the exact switch temperature and whether a viewer's model is mechanical or electronic vary; the script avoids numbers and names "แบบธรรมดา". Kept out: why rice burns at the bottom, water-ratio advice (tips, ER03).
+- **Research load:** one engineering source on the thermostat magnet; one confirming the boiling-point plateau in plain terms.
+- **Kit check:** `woman-bob + home, P?, neutral`, `boy` from `PEOPLE`; kitchen from EP02. New: `new: rice cooker` (closed, cutaway, warm light), magnet and switch cutaway, thermometer insert, kettle insert, steam FX.
+- **Sound intent:** quiet morning kitchen, a gentle bubbling bed that rises; a soft pulse under the cutaway; a held tension tone as the thermometer climbs, then the switch *click* as the main stinger and a beat of silence; lid lift steam hiss; a warm light chime as the button.
+
+### C54 — เสียงในคลิปคือเสียงจริงของคุณ (wild card)
+
+- **Sub-genre:** bone-conducted hearing.
+- **Staging:** `woman-curly + student` hears her own voice note on her phone and cringes; her friend `man-parted` says it sounds normal; a head cutaway where her voice reaches her ear two ways: through the air and through the skull; she plugs her ears and talks.
+- **Counter-intuitive claim (ER01):** the voice you hate in your recordings is the one everyone hears; the voice in your head is the one nobody else hears.
+- **Logline:** Your recorded voice sounds wrong, thinner and higher. Same mouth, so why? You hear yourself through the air like everyone else, and also through the bones of your own head, which carries the deep tones better. Plug your ears and talk: the voice gets louder and deeper. Everyone around you has heard the recording version all your life.
+- **Hook (Thai):** "เสียงตัวเองในคลิปที่คุณเกลียด… นั่นแหละเสียงจริงของคุณ เสียงในหัวต่างหากที่ไม่มีใครได้ยิน"
+- **Hook claim status:** `unchecked`, `settled` (Boat sources bone conduction of one's own voice and its low-frequency boost).
+- **Everyday-close:** voice notes, LINE voice messages, TikTok clips; nearly everyone has cringed at their own voice this month.
+- **Rule that flips (ER03):** "คุณได้ยินตัวเองผ่านกระดูก" (you hear yourself through bone). Beats 2–3 it explains the gap; payoff flips who hears the real voice.
+- **Key reveal image:** split head cutaway: everyone else's ear gets one thin wave through the air; her ear gets that wave plus a thick, deep one through the skull.
+- **Beats:**
+  1. Voice note plays; "นี่เสียงฉันเหรอ!"; the friend: "ก็เสียงเธอปกติ". `unchecked`, `settled`
+  2. แต่… same mouth, why different? Plug your ears and talk: your voice is still there, louder, because it reaches your ear through your own head. `unchecked`, `settled` (viewer test, one cause)
+  3. แต่… why deeper inside? the head carries low sounds better than high ones, so the inner voice gets extra bass. `unchecked`, `settled`
+  4. แต่… so which is real? Everyone around her, all her life, heard the thin one. `unchecked`, `settled`
+  5. Flip and payoff: she plays the clip again and listens differently. Last line: "คนเดียวในโลก ที่ไม่เคยได้ยินเสียงจริงของคุณ… คือตัวคุณเอง" `unchecked`, `settled`
+- **Ending:** closed, ~2 s hold on her face as the clip ends.
+- **Voice / tone:** Kore, brisk deadpan; the woman needs two versions of one line: an "inside the head" warmer, bassier take and a thinner "phone speaker" take of the same words (designed audio, the reason this is the wild card).
+- **ER08 pitch check:** (1) Hook: breaks "the voice I hear is my voice"; understood at once, no term. Pass. (2) Who: everyone with a phone. Pass. (3) Beats: cringe → แต่ same mouth → แต่ why deeper → แต่ which is real; beat 3 is explanation-leaning but short and opens beat 4. Pass. (4) Ending: a flip of who hears the real voice. Pass. **4/4.**
+- **Why it holds:** universal, testable in two seconds (plug your ears), and an ending line people send to a friend.
+- **Evidence notes (thin spots):** *why* people dislike their recorded voice (familiarity, self-image) has mixed explanations and is cut (ER07); the script claims only the hearing paths. Phone microphones also colour the sound; the script does not say the recording is perfect, only that it is what others hear through the air.
+- **Research load:** one or two hearing-science sources on bone conduction and self-voice perception.
+- **Kit check:** `woman-curly + student, P?, embarrassed`, `man-parted + student, P?, neutral`; classroom or canteen set from earlier episodes. New: head cutaway with two sound paths, phone voice-note UI, plugged-ears pose (`new: P? plug ears`), two-version voice treatment (Editor/Ton).
+- **Sound intent:** busy canteen room tone; the voice note through a tinny phone speaker; the inside-head version warm and close with a low-frequency boost; the plugged-ears beat drops the room out to a muffled boom; silence after "แต่… อันไหนจริง"; the last line clean and dry, a soft single tone as the button.
+
+---
+## R9 — Summary
+
+| ID | Title | Type | Hook (Thai) | Surprising fact / mechanism (one line) | Everyday-close | Ending | ER08 |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| C49 | ตุ๊กแกตกช่องลิฟต์ พลิกตัวกลางอากาศด้วยหาง | animal | "ตุ๊กแกตกลงช่องลิฟต์ หงายท้อง… แต่มันพลิกตัวกลางอากาศได้ ทั้งที่ไม่มีอะไรให้ยันเลย" | the tail swings one way, the body turns the other; drop the tail and it cannot turn (unchecked) | lifts, the viral ตุ๊กแก, dropped tails | closed hold, tail flip | 4/4 |
+| C50 | ถ้าคุณตัวเท่ายุง เม็ดฝนหนักเท่ารถตู้ | animal (scale lens) | "ถ้าคุณตัวเท่ายุง… ฝนหนึ่งเม็ด หนักเท่ารถตู้ตกใส่คุณ แต่ยุงบินกลางฝนได้สบาย" | too light to stop the drop, it rides it and slips off; near the ground it is pinned (unchecked) | rainy season, mosquitoes nightly | closed hold, "พื้นต่างหาก" | 4/4 |
+| C51 | แมลงสาบหัวขาด ยังเดินต่อได้เป็นอาทิตย์ | animal | "แมลงสาบหัวขาด… ยังเดินต่อได้เป็นอาทิตย์ แล้วรู้มั้ยว่าสุดท้ายมันตายเพราะอะไร" | breathes through side holes, seals the wound, nerve knots walk it; dies of thirst (unchecked) | every kitchen, the slipper | closed hold, thirst punchline | 4/4 |
+| C52 | นิ้วเหี่ยวตอนอาบน้ำ ไม่ใช่เพราะน้ำซึมเข้า | other (body) | "นิ้วเหี่ยวตอนอาบน้ำนาน… ไม่ได้เพราะน้ำซึมเข้าผิวนะ ร่างกายคุณสั่งให้มันเหี่ยวเอง" | nerves shrink the vessels under the fingertip; a cut nerve means no wrinkles (unchecked) | every shower, dishes, Songkran | closed hold, warning-sign flip | 4/4 |
+| C53 | หม้อหุงข้าวรู้ได้ไงว่าข้าวสุก | other (object) | "หม้อหุงข้าวบ้านคุณ ไม่มีชิป ไม่มีนาฬิกา… แต่รู้ว่าข้าวสุกตอนไหน เพราะแม่เหล็กก้อนเดียว" | water pins the pot at boiling; a magnet lets go once it gets hotter (unchecked) | a rice cooker in every Thai home | closed hold, "รู้แค่ว่าน้ำหมด" | 4/4 |
+| C54 | เสียงในคลิปคือเสียงจริงของคุณ (wild card) | other (self) | "เสียงตัวเองในคลิปที่คุณเกลียด… นั่นแหละเสียงจริงของคุณ เสียงในหัวต่างหากที่ไม่มีใครได้ยิน" | you hear yourself through your skull too, which adds bass (unchecked) | voice notes and clips | closed hold, "คือตัวคุณเอง" | 4/4 |
+
+**Animal concepts (user's ask):** C49, C50, C51. **Scale lens:** C50. **Wild card:** C54 (designed two-voice audio and a bone-path cutaway).
+
+**Preaw's pick for the viewer (not a decision):** **C53** first: the object is in every Thai home, the hook is testable tomorrow morning, and the last line reframes something the viewer touches daily. Then **C50** (the scale what-if, the one shape the channel numbers support), **C54** (universal, a two-second self-test), **C51** (strongest viral pull, gross-funny), **C49** (the user's example; depends on species evidence), **C52** (solid but quieter picture).
+
+**Thinnest evidence:** C49 (righting study species and the tailless result), C50 (the near-ground result and the mass ratio come from one study), C51 (survival time and thirst often cited from one expert). C52, C53 and C54 rest on standard physiology or engineering that needs sourcing, not new evidence.
