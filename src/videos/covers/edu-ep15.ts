@@ -102,5 +102,30 @@ export const EDU15_COVERS: Cover[] = [
     layout: {grade: P1_GRADE, elements: HEAD_RING}},
 ];
 
+/**
+ * EDU-EP15-SHORT-V2-COVERS: redo of pick 2 (user, 11 Nov 2026: the published C2 "กลับหัวได้ยังไง?" does not connect to the title
+ * "ถ้าตุ๊กแกจับเต็มแรง ห้อยคนได้ทั้งตัว"; change the text only, same picture P1). Five new text angles that sit beside the title
+ * (its promise: a tokay could hang a person) and open a gap the film closes; every word is in the script (line IDs per
+ * candidate), the hang stays hedged or a question (CL05), nothing names or draws the hairs, tips or toe peel.
+ */
+export const EDU15_COVERS_V2: Cover[] = [
+  // V1 misconception, orange sticker: L03 "ไม่มีกาว ไม่มีแรงดูด" (CL01, CL02 settled). Gap: no glue, no suction, so how? Answer L10-L12.
+  {id: 'V1-no-glue', ...P1, lines: [{text: 'ไม่มีกาว', y: 1280, size: 190}, {text: 'ไม่มีแรงดูด', y: 1480, size: 150, accent: true}],
+    look: {label: {color: ACCENT, ink: INK, pad: 0.42}}, layout: {grade: P1_GRADE, elements: HEAD_RING}},
+  // V2 number: L02 "แรงพอจะห้อยคนได้ประมาณหนึ่งคน" (model, CL05) as a question, never a flat claim. Answer L02 / W-HANG.
+  {id: 'V2-one-person', ...P1, lines: [{text: 'แรงเท่า', y: 1290, size: 185}, {text: 'หนึ่งคน?', y: 1490, size: 205, accent: true}],
+    layout: {grade: P1_GRADE, elements: HEAD_RING}},
+  // V3 question: L13 "เกาะแน่นขนาดนี้ มันเดินยังไง" (gap 5). Answer L14-L15.
+  {id: 'V3-how-walk', ...P1, lines: [{text: 'แน่นขนาดนี้', y: 1290, size: 170, x: 70, anchor: 'start'}, {text: 'เดินยังไง?', y: 1490, size: 195, accent: true, x: 70, anchor: 'start'}],
+    layout: {grade: P1_GRADE, elements: HEAD_RING}},
+  // V4 you: L01 "ตุ๊กแกบนเพดานบ้านคุณ" (the one over your head). Answer: the whole film.
+  {id: 'V4-your-ceiling', ...P1, lines: [{text: 'บนเพดาน', y: 1290, size: 190}, {text: 'บ้านคุณ', y: 1490, size: 205, accent: true}],
+    layout: {grade: P1_GRADE, elements: HEAD_RING}},
+  // V5 imagined view: V02 "อย่าปล่อยนะ!" from the model hang, tagged "ภาพจำลอง" (CL05). Answer W-HANG / V02.
+  {id: 'V5-dont-let-go', ...P1, lines: [{text: 'อย่าปล่อย', y: 1310, size: 196}, {text: 'นะ!', y: 1500, size: 200, accent: true}],
+    layout: {grade: P1_GRADE, elements: [...HEAD_RING, {kind: 'rect', x: 410, y: 1012, w: 260, h: 66, rx: 14, fill: '#0b0d16', opacity: 0.85},
+      {kind: 'text', text: 'ภาพจำลอง', x: 540, y: 1059, size: 42, anchor: 'middle', fill: '#f4efe6', weight: 700}]}},
+];
+
 /** Tokay orange (the spots). No scrim: pick 1 is text-free. */
 export const EDU15_COVER_STYLE: CoverStyle = {accent: ACCENT};
