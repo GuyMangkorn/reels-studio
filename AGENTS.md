@@ -44,7 +44,7 @@ These apply to every role; agent configs link here instead of repeating them.
 <a id="coordinator-and-agent-parity"></a><a id="coordinator-duties"></a>
 ## Coordinator and agent parity
 
-The **coordinator** is the chat session the user talks to (Claude Code or Codex). **Requirement:** before coordinating a deliverable, invoking a role agent or editing a role config, the coordinator reads [docs/coordinator.md](docs/coordinator.md) (duties, selection, review page, publish, fix rounds, invocation rules AI01–AI08 and AI12, role-config parity). Role agents do not read it.
+The **coordinator** is the chat session the user talks to (Claude Code or Codex). **Requirement:** before coordinating a deliverable, invoking a role agent or editing a role config, the coordinator reads [docs/coordinator.md](docs/coordinator.md) (duties, selection, publishing and reading the review page, publish folder, fix rounds, invocation rules AI01–AI08 and AI12, role-config parity). Role agents do not read it.
 
 Role configs describe roles. They install no automatic runner and authorize no cross-chat messaging. A role agent never invokes the next role on its own.
 
