@@ -38,6 +38,12 @@ export type TokayPose = {
   legsOver?: boolean;
   /** Prey held across the jaws (W-MOTH `catch`): wing span in metres. */
   moth?: number;
+  /** Flank breath: body lateral scale 0 = 1.00, 0.05 = 1.05 (shot 20 hold). */
+  flank?: number;
+  /** Tail tip sway in degrees about the last 0.03 m (shot 20 hold). */
+  tailTip?: number;
+  /** Moth wing fold in degrees (0 = spread flat; the flutter of shot 19). */
+  mothFold?: number;
   /** Eyes closed 0..1 (the slow blink). */
   blink?: number;
 };
@@ -46,6 +52,7 @@ export type TokayMeasure = {box: [number, number, number, number]; feet: Record<
 const add = (a: V3, b: V3): V3 => [a[0] + b[0], a[1] + b[1], a[2] + b[2]];
 const sc = (a: V3, s: number): V3 => [a[0] * s, a[1] * s, a[2] * s];
 const sub = (a: V3, b: V3): V3 => [a[0] - b[0], a[1] - b[1], a[2] - b[2]];
+const sub2 = (a: Pt, b: Pt): Pt => [a[0] - b[0], a[1] - b[1]];
 const dot = (a: V3, b: V3) => a[0] * b[0] + a[1] * b[1] + a[2] * b[2];
 const cross = (a: V3, b: V3): V3 => [a[1] * b[2] - a[2] * b[1], a[2] * b[0] - a[0] * b[2], a[0] * b[1] - a[1] * b[0]];
 const nrm = (a: V3): V3 => { const l = Math.hypot(a[0], a[1], a[2]) || 1; return [a[0] / l, a[1] / l, a[2] / l]; };
@@ -97,7 +104,7 @@ const TIP_BEND = [0, 0, 14, 24];
 
 type Toe = {pts: V3[]; nrm: V3[]};
 /** One toe chain (5 points) from the palm: segments bend toward the pad normal by the roll (tips first). */
-const toeChain = (palm: V3, dir: V3, pn: V3, len: number, roll: number, tip: number): Toe => {
+export const toeChain = (palm: V3, dir: V3, pn: V3, len: number, roll: number, tip: number): Toe => {
   const pts: V3[] = [palm], nrms: V3[] = [], side = nrm(cross(pn, dir));
   let phi = 0, at = palm;
   for (let j = 0; j < 4; j++) {
@@ -119,7 +126,7 @@ export const paintTokay = (p: Painter, c: YCam, f: Frame, pose: TokayPose, o: {s
   const hp = (pose.headPitch ?? 0) * DEG, hy = (pose.headYaw ?? 0) * DEG, [tv, tn] = pose.tail ?? [0, 0];
   // local -> local (head pitch/yaw about the neck, tail curve)
   const bendL = ([u, v, n]: V3): V3 => {
-    if (u < 0) { const k = (-u / 0.14) ** 2; return [u, v + tv * k, n + tn * k]; }
+    if (u < 0) { const k = (-u / 0.14) ** 2; return [u, v + tv * k + (pose.tailTip && u < -0.11 ? (-u - 0.11) * Math.tan(pose.tailTip * DEG) : 0), n + tn * k]; }
     const k = Math.min(1, Math.max(0, (u - (NECK_U - 0.008)) / 0.016));
     if (k <= 0) return [u, v, n];
     const a = hp * k, b = hy * k, du = u - NECK_U, dn = n - BODY_C;
@@ -140,7 +147,7 @@ export const paintTokay = (p: Painter, c: YCam, f: Frame, pose: TokayPose, o: {s
   // section rings in world space (with the head bend)
   const ring = (i: number, k = 1, dv = 0, dn = 0, n = 14): V3[] => {
     const [u, w, t] = SECT[i];
-    return Array.from({length: n}, (_, j) => { const a = (j / n) * Math.PI * 2; return wl([u, dv + w * k * Math.sin(a), BODY_C + dn + t * k * Math.cos(a)]); });
+    return Array.from({length: n}, (_, j) => { const a = (j / n) * Math.PI * 2; return wl([u, dv + w * k * (1 + (pose.flank ?? 0)) * Math.sin(a), BODY_C + dn + t * k * Math.cos(a)]); });
   };
   const tube = (seedId: number, color: string, from: number, to: number, k = 1, dv = 0, dn = 0) => {
     for (let i = from; i < to; i++) {
@@ -300,28 +307,42 @@ export const paintTokay = (p: Painter, c: YCam, f: Frame, pose: TokayPose, o: {s
     if (q.length > 1 && o.ink !== false) inkLine(p, seed + 820 + (s > 0 ? 0 : 5), q, {closed: false, weight: 0.6, color: mixColor(C.tkShade, C.tkInk, 0.55), still: true});
   }
   if (jaw > 0) {
-    const open = jaw * 0.009;
-    const up: V3[] = [-1, -0.6, 0, 0.6, 1].map((k) => wl([0.148 - Math.abs(k) * 0.03, k * 0.016, BODY_C - 0.004]));
-    const lo: V3[] = [1, 0.6, 0, -0.6, -1].map((k) => wl([0.146 - Math.abs(k) * 0.03, k * 0.015, BODY_C - 0.004 - open * (1 - 0.6 * Math.abs(k))]));
-    const q = [...up, ...lo].map(P).filter((x): x is Pt => !!x);
-    if (q.length > 3) { hardFill(p, seed + 830, '#4a2226', q); }
-    const tq = [wl([0.14, -0.006, BODY_C - 0.004 - open * 0.7]), wl([0.14, 0.006, BODY_C - 0.004 - open * 0.7]), wl([0.125, 0.007, BODY_C - 0.004 - open * 0.45]), wl([0.125, -0.007, BODY_C - 0.004 - open * 0.45])].map(P).filter((x): x is Pt => !!x);
-    if (tq.length > 2) hardFill(p, seed + 831, '#d98a8a', hull(tq));
-    // lower jaw rim (the chin) so the open mouth reads as a mouth, not a hole
-    const lq = lo.map(P).filter((x): x is Pt => !!x);
-    if (lq.length > 1) inkLine(p, seed + 832, lq, {closed: false, weight: 0.7, color: C.tkInk, still: true});
+    // W5-F4: the gape is a wedge along the head's long axis, drawn in screen space (the world-space z drop is foreshortened to a slit when the lens looks up at the ceiling):
+    // both jaw lines leave the mouth corner (back of the head) and diverge toward the snout tip; upper jaw stays on the head axis, lower jaw swings to the side the real lower jaw drops to (screen down as fallback)
+    const cor = P(wl([0.108, 0, BODY_C - 0.004])), tip = P(wl([0.15, 0, BODY_C - 0.004]));
+    if (cor && tip) {
+      const ax = sub2(tip, cor), len = Math.hypot(ax[0], ax[1]) || 1, ux: Pt = [ax[0] / len, ax[1] / len];
+      let pn: Pt = [-ux[1], ux[0]];
+      const sd = pn[1] >= 0 ? 1 : -1; // lower jaw toward screen down (the belly side of the head)
+      pn = [pn[0] * sd, pn[1] * sd];
+      const gap = len * 0.24 * jaw, off = len * 0.06, at = (t: number, g: number): Pt => [cor[0] + ux[0] * len * t + pn[0] * (off + gap * g * t), cor[1] + ux[1] * len * t + pn[1] * (off + gap * g * t)];
+      const upL: Pt[] = [0, 0.35, 0.7, 1].map((t) => at(t, 0)), loL: Pt[] = [1, 0.7, 0.35, 0].map((t) => at(t, 1));
+      hardFill(p, seed + 830, '#4a2226', [...upL, ...loL]);
+      // tongue: a pink lens lying in the wedge, narrower than it, ending short of the tip
+      const tg = [0.3, 0.55, 0.8, 0.55].map((t, i) => at(t, [0.35, 0.18, 0.4, 0.7][i]));
+      hardFill(p, seed + 831, '#d98a8a', hull(tg));
+      // both jaw rims so the open mouth reads as a mouth, not a hole
+      if (o.ink !== false) { inkLine(p, seed + 832, loL, {closed: false, weight: 0.9, color: C.tkInk, still: true}); inkLine(p, seed + 833, upL, {closed: false, weight: 0.7, color: C.tkInk, still: true}); }
+    }
   }
   for (const s of [1, -1] as const) { // nostrils
     const q = P(wl([0.1465, 0.0045 * s, BODY_C + 0.0022]));
     if (q) { const r = 0.0006 * camUnit(c, wl([0.1465, 0, BODY_C]), c.near ?? 0.005); if (r > 0.6) hardFill(p, seed + 840 + (s > 0 ? 0 : 1), C.tkInk, ell(q[0], q[1], r, r, 8)); }
   }
-  // prey across the jaws (W-MOTH catch): body along v, wings out both sides, pale, still
+  // prey across the jaws (W-MOTH catch, W5-F2 item 4): body 0.008 x 0.022 m across the jaw tip, centre 0.006 m ahead of the snout tip along the heading; wings in the ceiling plane along the head's lateral axis, flat to the lens
+  // (span `pose.moth` = 0.098 m in shot 19, scale base 0.065: forewing 0.028 m long and broad, hindwing 60 % of it), fold `pose.mothFold` degrees shrinks the lateral reach (the flutter); 3 px ink outline, two veins on the forewing
   if (pose.moth) {
-    const span = pose.moth, mc = wl([0.143, 0, BODY_C - 0.005]);
-    const wing = (s: 1 | -1) => [wl([0.143, 0.003 * s, BODY_C - 0.004]), wl([0.15, span * 0.5 * s, BODY_C - 0.002]), wl([0.137, span * 0.46 * s, BODY_C - 0.008]), wl([0.137, 0.004 * s, BODY_C - 0.007])].map(P).filter((x): x is Pt => !!x);
-    for (const s of [1, -1] as const) { const q = wing(s); if (q.length > 2) { hardFill(p, seed + 850 + (s > 0 ? 0 : 1), C.mothWing, q); if (o.ink !== false) inkLine(p, seed + 852 + (s > 0 ? 0 : 1), q, {weight: 0.5, color: mixColor(C.moth, C.tkInk, 0.4), still: true}); } }
-    const b0 = P(wl([0.143, -0.004, BODY_C - 0.006])), b1 = P(wl([0.143, 0.004, BODY_C - 0.006]));
-    if (b0 && b1) hardFill(p, seed + 854, C.moth, capsule(b0, b1, 0.0028 * camUnit(c, mc), 0.0028 * camUnit(c, mc)));
+    const k = Math.cos(((pose.mothFold ?? 0) * Math.PI) / 180), cu = 0.156, zz = BODY_C - 0.004, ink = '#3b2e22', sc = pose.moth / 0.065, Lf = 0.028 * sc * k, Lh = 0.6 * Lf, mc = wl([cu, 0, BODY_C - 0.005]);
+    const fore = (s: 1 | -1) => ([[cu + 0.004, 0.005], [cu + 0.010, 0.4 * Lf], [cu + 0.009, 0.8 * Lf], [cu + 0.002, Lf], [cu - 0.005, 0.85 * Lf], [cu - 0.006, 0.4 * Lf], [cu - 0.002, 0.004]] as [number, number][]).map(([u, v]) => P(wl([u, v * s, zz]))).filter((x): x is Pt => !!x);
+    const hind = (s: 1 | -1) => ([[cu - 0.002, 0.005], [cu - 0.005, 0.55 * Lh], [cu - 0.011, Lh], [cu - 0.017, 0.7 * Lh], [cu - 0.014, 0.3 * Lh], [cu - 0.006, 0.004]] as [number, number][]).map(([u, v]) => P(wl([u, v * s, zz - 0.0005]))).filter((x): x is Pt => !!x);
+    for (const s of [1, -1] as const) {
+      const n = s > 0 ? 0 : 1, qh = hind(s), qf = fore(s);
+      if (qh.length > 2) { hardFill(p, seed + 870 + n, '#e8dcc0', qh); if (o.ink !== false) inkLine(p, seed + 872 + n, qh, {weight: 3, color: ink, still: true}); }
+      if (qf.length > 2) { hardFill(p, seed + 850 + n, '#e8dcc0', qf); if (o.ink !== false) inkLine(p, seed + 852 + n, qf, {weight: 3, color: ink, still: true}); }
+      if (o.ink !== false) [[0.008, 0.9], [-0.001, 0.8]].forEach(([du, kk], i) => { const a = P(wl([cu + 0.002, 0.005 * s, zz])), b = P(wl([cu + du, Lf * kk * s, zz])); if (a && b) inkLine(p, seed + 860 + n * 4 + i, [a, b], {closed: false, weight: 1.2, color: '#5a4636', still: true}); });
+    }
+    const b0 = P(wl([cu, -0.007, zz - 0.001])), b1 = P(wl([cu, 0.007, zz - 0.001]));
+    if (b0 && b1) hardFill(p, seed + 854, '#4a3a2a', capsule(b0, b1, 0.004 * camUnit(c, mc), 0.004 * camUnit(c, mc)));
   }
 
   // ---- body contour ink (left and right edges of the tube on screen)

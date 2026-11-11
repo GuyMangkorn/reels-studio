@@ -1,0 +1,130 @@
+{
+  "public/audio/bed/bed_pizzicato-tiptoe-curious_02.wav": {
+    "store": "library/sound/music/bed/bed_pizzicato-tiptoe-curious_02.wav",
+    "sha256": "3d8758cf78b5d31399cd0ef95249174916219e88a57aff15aeb3e3911634b813"
+  },
+  "public/audio/bed/bed_pizzicato-tiptoe-curious_03.wav": {
+    "store": "library/sound/music/bed/bed_pizzicato-tiptoe-curious_03.wav",
+    "sha256": "3aa62e7f6cee563d5e5d8d5847b19aebd48a8e62bfaa04bdae6ce3c6a7aee942"
+  },
+  "public/audio/creature/creature_moth-flutter-loop_01.wav": {
+    "store": "library/sound/ambience/creature/creature_moth-flutter-loop_01.wav",
+    "sha256": "6498098eb8628affcb6e97132305184def87dd2054ebd2b2916c83b599e96d44"
+  },
+  "public/audio/edu/EDU-EP15-tokay-call-ref-cut.wav": {
+    "store": "projects/EDU-EP15-SHORT/audio/2026-11-10_tokay-call-ref-cut.wav",
+    "sha256": "6e6d51f7b4c91dad9dddb674fa4b96164cea7d18ec5fcaf1dee96ee581193950"
+  },
+  "public/audio/electric/electric_streetlamp-hum-loop_01.wav": {
+    "store": "library/sound/ambience/electric/electric_streetlamp-hum-loop_01.wav",
+    "sha256": "0b2735d0d08fceaca9c5f4f5faaaa4abe57f064744f31e95592c2b1f31a45b76"
+  },
+  "public/audio/nature/nature_crickets-garden-sparse_01.wav": {
+    "store": "library/sound/ambience/nature/nature_crickets-garden-sparse_01.wav",
+    "sha256": "89b3e5fa3e2868fbe4d14c3108f5a508942f33542f29e62daaa62089dc706e48"
+  },
+  "public/audio/room/room_ceiling-fan-night-living_01.wav": {
+    "store": "library/sound/ambience/room/room_ceiling-fan-night-living_01.wav",
+    "sha256": "793e6da4621e2b7f88ff65421e14769680940bfb3942fb3b2ca96a808ba84a5a"
+  },
+  "public/audio/room/room_studio-hush_01.wav": {
+    "store": "library/sound/ambience/room/room_studio-hush_01.wav",
+    "sha256": "27c285e72a0d3a5daf1b78e0b76e7a69ec5d196d84067a81cb616dcbaadfc7cf"
+  },
+  "public/sfx/comedy/comedy_plunger-leak-slip_01.wav": {
+    "store": "library/sound/sfx/comedy/comedy_plunger-leak-slip_01.wav",
+    "sha256": "89fd8b12df6875ce3f7159c4ed459171dd242b1200aa38c372f26fbe551f24f5"
+  },
+  "public/sfx/comedy/comedy_plunger-thwop_01.wav": {
+    "store": "library/sound/sfx/comedy/comedy_plunger-thwop_01.wav",
+    "sha256": "082a19c0adb564a194125d689902ff7dabd965c0cbee24cfbd15934803e9710c"
+  },
+  "public/sfx/creature/creature_gecko-lunge-jaw-tick_01.wav": {
+    "store": "library/sound/sfx/creature/creature_gecko-lunge-jaw-tick_01.wav",
+    "sha256": "daea05c2430448e8131e10ea772a0a309404ad5d58e44e2e021fed2bdc090f95"
+  },
+  "public/sfx/creature/creature_tokay-call-single_01.wav": {
+    "store": "library/sound/sfx/creature/creature_tokay-call-single_01.wav",
+    "sha256": "930f48addcec57fe9a55593d3e61d416c6ac3ea6cf8f07aaf59cd67022d88a85"
+  },
+  "public/sfx/foley/foley_bristle-settle-velvet_01.wav": {
+    "store": "library/sound/sfx/foley/foley_bristle-settle-velvet_01.wav",
+    "sha256": "c4a69d895010bc825b54cde4fa74d99f150bc753dd108cf615dfd21c9413ae38"
+  },
+  "public/sfx/foley/foley_dust-grains-fall_01.wav": {
+    "store": "library/sound/sfx/foley/foley_dust-grains-fall_01.wav",
+    "sha256": "3d32bd9223ccc395ea19efe31ebc50c6ede888fb9b000ae5c90d486af8b456a1"
+  },
+  "public/sfx/foley/foley_dust-grains-fall_02.wav": {
+    "store": "library/sound/sfx/foley/foley_dust-grains-fall_02.wav",
+    "sha256": "7ce259e9f398eaf439e910bebd25e601837f6f2d9d3f93c330ca704ce875fb02"
+  },
+  "public/sfx/foley/foley_gecko-foot-tap_01.wav": {
+    "store": "library/sound/sfx/foley/foley_gecko-foot-tap_01.wav",
+    "sha256": "ad1930250af9466a70a624feebd4b62970409b456354b6c88bec5b3567440332"
+  },
+  "public/sfx/foley/foley_gecko-foot-tap_02.wav": {
+    "store": "library/sound/sfx/foley/foley_gecko-foot-tap_02.wav",
+    "sha256": "1d3c96319303ee6164b1f3b6073d280e24c8db2c3b3b60e74517768dcc5d804a"
+  },
+  "public/sfx/foley/foley_leather-grip-strain_01.wav": {
+    "store": "library/sound/sfx/foley/foley_leather-grip-strain_01.wav",
+    "sha256": "44399ce9cebf469d2189209b288ced81e10e430acd847511d1fa3e88c24760ea"
+  },
+  "public/sfx/foley/foley_rubber-snap-release_01.wav": {
+    "store": "library/sound/sfx/foley/foley_rubber-snap-release_01.wav",
+    "sha256": "78a20144c36708766ad2ffaf49cb2f1c09c80183cc82acecd337e59abeb3e607"
+  },
+  "public/sfx/foley/foley_tape-peel-slow_01.wav": {
+    "store": "library/sound/sfx/foley/foley_tape-peel-slow_01.wav",
+    "sha256": "6fbe3479cd100798c75867e69e60d69558751ce0faa513e998c8995162f0999b"
+  },
+  "public/sfx/foley/foley_tape-peel-slow_02.wav": {
+    "store": "library/sound/sfx/foley/foley_tape-peel-slow_02.wav",
+    "sha256": "7ed2160cbe5be0ed247ad5e8f6b083ac959401f33f6483004c58bbbbd35925a1"
+  },
+  "public/sfx/instrument/pluck_relief-two-notes_01.wav": {
+    "store": "library/sound/instrument/pluck/pluck_relief-two-notes_01.wav",
+    "sha256": "3677f3f1003e2aeef144d98aad8565cf3f01c4b83fec705c48672bcb26ad777f"
+  },
+  "public/sfx/reveal/reveal_glass-shimmer-soft_01.wav": {
+    "store": "library/sound/sfx/reveal/reveal_glass-shimmer-soft_01.wav",
+    "sha256": "89ff0fa14a783ff3b312762d7a00d391edf5df4f49cd01389238cbc9367901c7"
+  },
+  "public/sfx/reveal/reveal_glints-gather-swell_01.wav": {
+    "store": "library/sound/sfx/reveal/reveal_glints-gather-swell_01.wav",
+    "sha256": "deafdef43988e212b62f216c01cc96b30bd21f3500667215554b06d3cff100aa"
+  },
+  "public/sfx/reveal/reveal_glints-gather-swell_02.wav": {
+    "store": "library/sound/sfx/reveal/reveal_glints-gather-swell_02.wav",
+    "sha256": "468fa2b37f19fed4be69f95a67b654d0734a67b1911704f62add11d0fd521bc1"
+  },
+  "public/sfx/stinger/stinger_low-muted-hit_01.wav": {
+    "store": "library/sound/sfx/stinger/stinger_low-muted-hit_01.wav",
+    "sha256": "47d98153c9092e3de68697db7369b266cad3c1ab0a6d37af71a6bad601b22cc0"
+  },
+  "public/sfx/tension/tension_airy-swell-stop-dead_01.wav": {
+    "store": "library/sound/sfx/tension/tension_airy-swell-stop-dead_01.wav",
+    "sha256": "ebd644610e556f4a1c81e3ccae1f607eff8300a46142bf7f290250762fb09f74"
+  },
+  "public/sfx/tension/tension_airy-swell-stop-dead_02.wav": {
+    "store": "library/sound/sfx/tension/tension_airy-swell-stop-dead_02.wav",
+    "sha256": "17dd162a3ccca90735c81351831398346049d086932d2bfa1ca604d315e00c41"
+  },
+  "public/sfx/ui/ui_pop_01.wav": {
+    "store": "library/sound/sfx/ui/ui_pop_01.wav",
+    "sha256": "d598317eb71eb636cab3e6d45f234ecb060b23ecb9c4d8dd826a9c3c7bd43b57"
+  },
+  "public/sfx/whoosh/whoosh_air-swish-rising_01.wav": {
+    "store": "library/sound/sfx/whoosh/whoosh_air-swish-rising_01.wav",
+    "sha256": "68745877099d0962c4f7f23eb76cee0b5901760969d5ef1ec54d4ec6e6ea813a"
+  },
+  "public/sfx/whoosh/whoosh_micro-dive-shimmer_01.wav": {
+    "store": "library/sound/sfx/whoosh/whoosh_micro-dive-shimmer_01.wav",
+    "sha256": "ec87f64fe656336029631422fd84d756f13dad83353c1053468db291db7d1d1d"
+  },
+  "public/sfx/whoosh/whoosh_micro-zoom-out_01.wav": {
+    "store": "library/sound/sfx/whoosh/whoosh_micro-zoom-out_01.wav",
+    "sha256": "1260ce10c08e07ed99e9b4de514727945fde9a96051fbab01a72a654d3ee9f49"
+  }
+}
