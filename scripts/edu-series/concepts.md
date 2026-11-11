@@ -1389,3 +1389,9 @@ User kept **C43, C44, C45, C46, C47** (structured question, two multi-select que
 **Preaw's pick for the viewer (not a decision):** **C53** first: the object is in every Thai home, the hook is testable tomorrow morning, and the last line reframes something the viewer touches daily. Then **C50** (the scale what-if, the one shape the channel numbers support), **C54** (universal, a two-second self-test), **C51** (strongest viral pull, gross-funny), **C49** (the user's example; depends on species evidence), **C52** (solid but quieter picture).
 
 **Thinnest evidence:** C49 (righting study species and the tailless result), C50 (the near-ground result and the mass ratio come from one study), C51 (survival time and thirst often cited from one expert). C52, C53 and C54 rest on standard physiology or engineering that needs sourcing, not new evidence.
+
+---
+
+## R9 — User pick (W0.3, 2026-11-11)
+
+User picked **C50 ถ้าคุณตัวเท่ายุง เม็ดฝนหนักเท่ารถตู้** (scale lens) as the next episode, `EDU-EP18-SHORT` (Short Thai, assumed from EP01–EP17), and asked to start it at once. C49, C51–C54 are not scheduled. No Film annotation for R9; Film confirms the look at the brief.
