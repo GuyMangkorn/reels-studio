@@ -14,7 +14,7 @@ Record: this file. Series context: [concepts.md](../concepts.md) (R9, C50) · se
   - [x] W1.2 Preaw script (2026-11-11, EDU-EP18-SCRIPT-R1)
   - [x] W1.3 Boat fact-check (2026-11-11, EDU-EP18-SCRIPT-R1, M1 title pending)
   - [x] W1.4 Length check (2026-11-11, EDU-EP18-SCRIPT-R1 + 2026-11-11 coordinator change log; Boat recheck pending): **PASS**. One Gemini Kore read of the 13 NAR rows (L01-L13; 1 request, no retry, no atempo; style = channel default "fast-paced, quick brisk delivery with short pauses between phrases, playful deadpan female narrator, dry and matter-of-fact, speaking quickly without dragging"; "…" sent as ","). Store `projects/edu/EDU/audio/2026-11-11_ep18-nar-kore-fullread.wav` (+ `.json`, `2026-11-11_ep18-nar-lines.txt`). Raw **41.44 s** (N1 estimate 39.9 s, +1.5 s), speech 0.34-41.05 s, integrated **-16.1 LUFS**, true peak -1.5 dBFS, LRA 3.0 LU (ffmpeg ebur128). Video by the N1 model: 41.44 + 7.3 (V01 0.7, W-HIT 1.0, V02 0.8, W-BACK 0.8, beat gaps 1.2, W-END slap and hold 2.8) = **48.7 s** (target 40-60 s, limit 63 s: 11.3 s under 60). V01/V02/V03 not generated (voice lock later); gaps assumed at the script's N1 values. Not listened (length check, not the voice lock). No trim needed.
-  - [ ] W1.5 User approves the script
+  - [x] W1.5 User approves the script (2026-11-11, EDU-EP18-SCRIPT-R1 + change log; Boat recheck of the change log still owed)
 - [ ] W2 Film brief and rows
 - [ ] W3–W8 per pipeline (see [EP17 task](../ep17/task.md) for the shape)
 
@@ -22,3 +22,4 @@ Record: this file. Series context: [concepts.md](../concepts.md) (R9, C50) · se
 
 - 2026-11-11 new NARR default (user: apply the warm Kore narrator, `channels/edu/channel.md#voice`): W1.4 length check used the old deadpan style. Estimate under the warm style (raw 5.1 syl/s vs 6.0 before): raw about 48.8 s, x1.08 about 45.2 s, x1.15 about 42.4 s; video +7.3 s = about 52.5 s / 49.7 s (limit 60 s, so both fit; estimate, not measured on the full read). Sample of L01-L02 (one read, both paces) in store `projects/edu/EDU/samples/ep18-raw.wav`, `ep18_kore-warm_x1.08.wav`, `ep18_kore-warm_x1.15.wav`; **awaiting the user's pace pick** (1.08 or 1.15), then one full warm read at the W4 voice lock. Tool note: a fresh `out/gemini-venv` needs `google-genai>=2.25,<3` (3.1.0 returns 404 for `gemini-3.8-flash-tts`).
 - 2026-11-11 pace pick (user, from the L01-L02 sample): **warm Kore, atempo 1.08**. Video estimate about 52.5 s. Full read follows at the W4 voice lock; W1.5 script approval and the Boat recheck are still open.
+- 2026-11-11 W1.5 done: user approved the script. **Next:** Boat recheck of the change log (title, L13, D2), then W2 Film brief and rows.
