@@ -94,3 +94,23 @@ No `too-technical` line: "หนัก", "เบา", "ไม่ช้าลง"
 
 - Factual readiness `ready-for-storyboard` for EDU-EP18-SCRIPT-R1 once M1 is applied (a title change; it touches no beat, clue, twist or timing, so it qualifies as an [inline fix](../../../docs/editorial-workflow.md#inline-fact-fixes) with `correction applied, recheck pending`). No R2 script revision required. O1 is a picture note for Film (W2). Not provided: user approval (W1.5), read-aloud timing (W1.4), audio, visual or runtime validation.
 - Recheck owed: M1 (title) and any of O1–O3 Preaw takes, at the next scheduled recheck.
+
+## Recheck (Boat, 2026-11-11, after coordinator inline fixes; script revision EDU-EP18-SCRIPT-R1 + change log)
+
+Read: script.md (header, full script table, on-screen text, claim table, self-audit, change log), this file's W1.3 rulings R3, R5, R6 and O1-O2, research.md CL01-CL12. No new source opened; no claim in this recheck needs one. Narration not edited by Boat.
+
+| Change | Check | Verdict |
+| --- | --- | --- |
+| (1) Title "ถ้าคุณตัวเท่ายุง ฝนเม็ดใหญ่หนักเท่ารถตู้" (M1) | Matches the W1.3 replacement verbatim. "ฝนเม็ดใหญ่" limits it to the biggest drops, same family as L02 "ฝนเม็ดใหญ่ที่สุด"; still conditional ("ถ้า"). No "ราว" in the title: acceptable, since the 50x/3,000 kg figure is a model comparison and "รถตู้" holds within about 15 % of a loaded van (R2); ER10 binds spoken lines, not the title. Script line 1 and the change log carry it. | **pass** (M1 closed) |
+| (2) L13 "เม็ดฝนฆ่ายุงไม่ได้หรอก… ที่อาจเล่นงานมัน คือพื้นข้างล่าง" | Matches the W1.3 O2 wording verbatim, in the table (line 78) and claim table (line 127). First half: survival of 17 of 17 drop hits and 6 of 6 jet hits, lab (CL02); "ฆ่า...ไม่ได้" is the observed outcome, not "ไม่ทำร้าย". Second half: CL10/CL12 author-stated, untested, one hedge "อาจ". ER10: one hedge ("อาจ"; "หรอก" is a particle, not a hedge), no source or method phrase. | **pass** (O2 closed) |
+| (3) D2: near-ground shown, cut before contact; L10 and L13 keep "อาจ" | L10 "ถ้าโดนตอนบินต่ำ ๆ ใกล้พื้น… ก็อาจหลุดออกไม่ทัน" is the authors' stated risk (R3); cue shows no impact, pinning, puddle contact or death; K01/K02 staging stays within O6 (mosquito never touches the puddle). One hedge per line (L02 "ราว", L06 "แทบ", L10 "อาจ", L13 "อาจ"). ER07 holds for the weaker form (a hedged risk), as ruled in R3. L12 cue now "long legs, spread" (O1 closed). | **pass** |
+
+New-claim check: no line or cue gained a number, mechanism, death, puddle pin or wings claim. OT01-OT03 unchanged and still adequate. L12 "ก่อนถึงพื้น" remains Hu's press logic (optional, W1.3).
+
+Optional (no hold on readiness):
+- **O8 (record hygiene):** the concept title without "ฝนเม็ดใหญ่" still stands in `scripts/edu-series/delivery.md` (line 34), `concepts.md` (C50 heading, table, line 1397) and script N5 (as the old working title). These are history and fine as is, but the cover, publish folder name, description and any viewer-facing title must use the M1 title. Cosmetic: the change log says "(2 place(s))".
+- Cover note (unchanged): if the cover shows the shrunk woman it must carry "ภาพจำลอง".
+
+**Verdict: pass on all three changes; no must-fix.** M1, O1, O2 closed; W1.3 O3-O7 unchanged and optional. Factual readiness `ready-for-storyboard` for EDU-EP18-SCRIPT-R1 as changed stands, and the matching script/review handoff to Film is supported. Still not provided: user approval (W1.5, per git log already recorded by the coordinator), read-aloud timing, audio, visual or runtime validation. Qualitative confidence on the near-ground beat stays low-medium (author inference, untested).
+
+Open questions for the user: none new. (W1.3 Q4, Thai van kerb weight, stays an accepted access gap since no kg is spoken or shown.)
