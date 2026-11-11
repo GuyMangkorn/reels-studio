@@ -1,10 +1,10 @@
 # Storyboard — EDU-EP18-SHORT (first pass, estimated timing)
 
-Deliverable: `EDU-EP18-SHORT` (channel `edu`) · Revision: **EDU-EP18-ROWS-R1** (Film, 2026-11-11, W2: first storyboard pass) · Status: **draft for the user's storyboard review**; timing **estimated** until the W4 voice lock, so not `ready-for-dev` for plates (W5.1 re-pegs every frame on the locked read). Readiness is not user approval, runtime or visual proof.
-Inputs: [script.md](script.md) EDU-EP18-SCRIPT-R1 + 2026-11-11 change log (user-approved W1.5) · [fact-check.md](fact-check.md) W1.3 + Recheck (pass; O1, O3, O4, O6, O8 as picture notes) · [film-brief.md](film-brief.md) **EDU-EP18-BRIEF-R1** (VD01–VD14, D01–D10) · task record [task.md](task.md).
+Deliverable: `EDU-EP18-SHORT` (channel `edu`) · Revision: **EDU-EP18-ROWS-R1.1** (Film, 2026-11-11, W2 revision: Q-F1 striped ยุงลาย applied, Q-F2 kept; [change log](#change-log)); R1 was the first storyboard pass · Status: **draft for the user's storyboard review**; timing **estimated** until the W4 voice lock, so not `ready-for-dev` for plates (W5.1 re-pegs every frame on the locked read). Readiness is not user approval, runtime or visual proof.
+Inputs: [script.md](script.md) EDU-EP18-SCRIPT-R1 + 2026-11-11 change log (user-approved W1.5) · [fact-check.md](fact-check.md) W1.3 + Recheck (pass; O1, O3, O4, O6, O8 as picture notes) · [film-brief.md](film-brief.md) **EDU-EP18-BRIEF-R1.1** (VD01–VD14, D01–D10) · task record [task.md](task.md).
 Target: this worktree, branch `claude/yung-to-principle-sound-f742cb` at `279b31c` · 30 fps · **durationFrames 1575 (52.5 s, estimated)** · 1080×1920 · composition offset 0 (one scene, S01).
 Evidence: nothing painted or rendered; projections computed with `scripts/shot-projection.py` (pinhole, f 1000 px ⇒ vfov 87.7°, f 1300 ⇒ 72.9°, hy 960) on the brief's estimated anchors; the balance numbers are fixed-plane design values; no audio exists (timing from the script's N1 model scaled to the warm Kore read at atempo 1.08).
-Rows file: [review-rows.json](review-rows.json) **EDU-EP18-ROWS-R1** (Thai, `untimed: true`, first-pass rule). Review page: pending.
+Rows file: [review-rows.json](review-rows.json) **EDU-EP18-ROWS-R1.1** (Thai, `untimed: true`, first-pass rule). Review page: pending.
 
 ## Units, clocks and conventions
 
@@ -20,7 +20,7 @@ Rows file: [review-rows.json](review-rows.json) **EDU-EP18-ROWS-R1** (Thai, `unt
 | --- | --- | --- |
 | WOMAN | `woman-curly, P38, worried` + `new: tote-bag` (held over her head, `new: bag-over-head` arms), flip-flops | 1.62 m / 1.62 sm. Own kit outfit (brief D01). Poses by shot: P38 run (SH01–SH02) → hanging, head tilted up, `scared` (B01-SH03) → P45, `terrified` (B01-SH05) → P01 `surprised` → `relieved` (B01-SH06) → P45 at contact (B02-SH01) → `new: pressed-spread`, `scared` / `terrified` / `worried` (B02-SH02 → B04-SH01) → P09 hands on hips, `tired`, `idle-breathe` ×1.8 (B05-SH03) → `new: slap-ankle`, `angry` → `suspicious` (B05-SH06) |
 | WOMAN voice | V01 "ไม่นะ!" (squeak of panic), V02 "อ๊ะ… อ๊ะ!" (short breathless yelps), V03 slap grunt (optional) | Editor's casting at the voice lock |
-| Mosquito | `new: mosquito` (generic, Q-F1), states hover / pressed / tip / clear | Body 1 bl = 4.0 mm = her height. Look-defining asset, Film at W3 (brief N1) |
+| Mosquito | `new: mosquito` as the striped Thai ยุงลาย (Q-F1, user 2026-11-11: black body and legs, white abdomen bands, white leg rings, thorax lyre; palette in the brief's VD03 table), states hover / pressed / tip / clear; no species name on screen ([species limit](film-brief.md#species-limit)) | Body 1 bl = 4.0 mm = her height. Look-defining asset, Film at W3 (brief N1) |
 | Kit layers | ENV-FALL rain (`kit/fall.ts`) at full size; ENV-SKY; `water-drop.ts` bun | ENV-P02 |
 
 ## Shot map
@@ -81,7 +81,7 @@ Rows file: [review-rows.json](review-rows.json) **EDU-EP18-ROWS-R1** (Thai, `unt
 ## Rules for every shot
 
 - **R01 Labels.** OT01 visible in every frame from f 38 to f 1326, per the brief's [truth limits](film-brief.md#truth-limits); none before the shrink or after W-BACK.
-- **R02 Truth limits.** As the brief: her fate never shown (off screen from B04-SH02 to W-BACK), the mosquito never touches the puddle, no bounce at L03, legs not wings at L12, bun-shaped drops at true relative size, no slow-down at the hit, the ride never beyond 20 units with anyone on it, no number except OT02/OT03.
+- **R02 Truth limits.** As the brief: her fate never shown (off screen from B04-SH02 to W-BACK), the mosquito never touches the puddle, no bounce at L03, legs not wings at L12, bun-shaped drops at true relative size, no slow-down at the hit, the ride never beyond 20 units with anyone on it, no number except OT02/OT03; the mosquito drawn as the striped ยุงลาย with no species name or study wording on screen, OT01 exactly "ภาพจำลอง" ([species limit](film-brief.md#species-limit)).
 - **R03 Size reference.** Every shot keeps one: her or the awning (`H`), the drop or her (`M`), the ruler (B04-SH01), the puddle (B04-SH02), the ball (B02-SH04), the pans (B01-SH06).
 - **R04 Contact.** At full size her feet on the lane (y 0) or the step (y 0.10); in `Dl` the passengers within 0.02 sm of the drop's face; the mosquito ≥ 1.0 sm above the puddle in `M` and ≥ 0.15 m above it in `H`.
 - **R05 Screen.** Faces, the mosquito and the hero details above y 1160; the caption band calm per the brief's rule.
@@ -94,7 +94,7 @@ Key frames shot-local `+n`, all estimated. Sound lines give the shot-local frame
 
 **1. S01-B01-SH01** [0, 30), 30 f. VO C01 +10–+30 ("ถ้าคุณตัวเท่า").
 - Camera: `ycam (H): pos (1.13, 0.16, 0.66) → (1.15, 0.165, 0.69), look-at (1.85, 0.34, 1.45) → (1.70, 0.30, 1.30), f 1000, near 0.02`; push and pan +0–+29. Computed at +0: the mosquito (1.19, 0.20, 0.71) at (411, 639), 0.08 m from the lens, body ≈ 50 px, leg span ≈ 140 px; her leading heel at (1.62, 0, 1.22) → (561, 1358), knee (559, 716), hip (558, 356): her leg fills the frame centre behind it.
-- Staging: `H`. The mosquito `hover`, `left` view (head toward −x), steady in place while rain streaks (ENV-FALL, near streaks 4–6 px wide) pour past it and splash on the concrete below; behind it her flip-flop feet run in from the frame right toward the awning (P38 `run`, `left`), one splash crown per footfall (+4, +14, +24); the puddle is behind the camera. The shop glow warms the far left edge; the mosquito's wings are a soft blur fan with a warm rim.
+- Staging: `H`. The mosquito (striped ยุงลาย: black body with white abdomen bands, white rings on the long hanging legs; the white marks catch the cool sky) `hover`, `left` view (head toward −x), steady in place while rain streaks (ENV-FALL, near streaks 4–6 px wide) pour past it and splash on the concrete below; behind it her flip-flop feet run in from the frame right toward the awning (P38 `run`, `left`), one splash crown per footfall (+4, +14, +24); the puddle is behind the camera. The shop glow warms the far left edge; the mosquito's wings are a soft blur fan with a warm rim.
 - Key frames: +0 reads "a mosquito hanging steady in a downpour at ankle height" (UT01, K02); +24 her foot lands 0.3 m behind it.
 - Sound: rain A1 (tin awning, behind) and A2 (soi floor) at full from +0; W1 whine close and centre-left from +0, swaying; flip-flop footsteps (running flip-flops on wet concrete through shallow water: slaps and splashes, four quick steps, 1.2 s, close, hurry) on the footfalls +4, +14, +24. No music.
 - Entry → exit: +0 the mosquito close → +29 her leg passing behind it.
@@ -243,7 +243,7 @@ Key frames shot-local `+n`, all estimated. Sound lines give the shot-local frame
 
 | Check | Shots | Pass condition |
 | --- | --- | --- |
-| A01 First frame | 1 | Reads "a mosquito steady in pouring rain at ankle height" without narration (viewer check); mosquito body ≥ 45 px |
+| A01 First frame | 1 | Reads "a mosquito steady in pouring rain at ankle height" without narration (viewer check); mosquito body ≥ 45 px; black-and-white stripes legible at 270 px (reads as ยุงลาย) |
 | A02 Shrink match | 2–3 | The puff centre at the same screen point ±40 px across the cut (SP1); OT01 from f 38 |
 | A03 Drop size | 3, 5, 7 | The bun's width ≈ 1.5 × her height (±10 %) at the same depth; bun shape, never a teardrop |
 | A04 Not a bounce | 4 | The mosquito carried down out of frame before it flies back up |
@@ -253,7 +253,7 @@ Key frames shot-local `+n`, all estimated. Sound lines give the shot-local frame
 | A08 Cut before contact | 15 | The last frame's gap between the drop's face and the water ≥ 1.0 sm; no splash, no woman |
 | A09 Replay and slide-off | 16, 17 | No woman in frame after SH16 +25; legs spread before the roll; separation at 14 bl; the splash with no one on the drop |
 | A10 Callback | 19–21 | The mosquito ≥ 15 cm above the puddle in every frame; untouched by the slap; above y 1160 |
-| A11 Labels | all | OT01 on [38, 1327) only; no number except OT02/OT03 |
+| A11 Labels | all | OT01 on [38, 1327) only, text exactly "ภาพจำลอง"; no number except OT02/OT03; no species name anywhere on screen |
 | A12 Zones | all | Hero details above y 1160; caption band mean ≤ 0.25, p95 ≤ 0.40 |
 
 ## Dependencies and open items
@@ -262,10 +262,12 @@ Key frames shot-local `+n`, all estimated. Sound lines give the shot-local frame
 - Boss: N2–N13 in the brief ([new assets](film-brief.md#new-assets-and-missing-capability-boss-dependencies-w52)); spikes SP1 and SP3 before plates.
 - Ton: the cue list in the brief's [sound direction](film-brief.md#sound-direction) (NEEDS-GEN M0, M1, M1b, A2, A3, S1, S2, S4, W1, W2, D1, H1, H2, F1, K1 flutter, B1, T1, S5, P1, SL, footsteps; library candidates A1 `weather_tin-roof-rain-shelter_01`, S3 `reveal_rewind-whirr_01`, K1 pass `whoosh_air-swish-rising_01`, E1 `comedy_kalimba-nope_01`).
 - Editor: V01–V03 casting and the W4 voice lock; then Film re-pegs this sheet (W5.1).
-- **Q-F1, Q-F2 (user):** mosquito look; drop size on screen (brief [open questions](film-brief.md#open-questions)).
+- **Q-F1, Q-F2: answered** (user, 2026-11-11): striped ยุงลาย; drop at true relative size (brief [open questions](film-brief.md#open-questions)). No open user question in this sheet.
+- Boat: picture checks B-P1–B-P6 (brief), B-P6 = the striped look under OT01 does not imply the study's species.
 
 ## Change log
 
 | Revision | Date | Author | Change |
 | --- | --- | --- | --- |
 | EDU-EP18-ROWS-R1 | 2026-11-11 | Film | First storyboard pass (W2) from brief EDU-EP18-BRIEF-R1: 21 shots, estimated 1575 f = 52.5 s (warm Kore at atempo 1.08, scaled from N1); projections computed for the `H`, `M` and `Dl` shots; Sound line per shot; review-rows.json written untimed. |
+| EDU-EP18-ROWS-R1.1 | 2026-11-11 | Film | From brief EDU-EP18-BRIEF-R1.1: Q-F1 striped ยุงลาย applied (casting, R02, SH01 staging, A01, A11), Q-F2 kept; no species name on screen; Q-F1/Q-F2 closed and removed from review-rows.json (lede and character fact updated, SH01 and SH17 `seen` mention the stripes). Timings, beat IDs, shot IDs and Sound lines unchanged. |
