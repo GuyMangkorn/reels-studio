@@ -24,7 +24,7 @@ Before format-dependent research/writing, resolve the [delivery selection and re
 | Shared assets/capabilities | Boss | Verified reusable assets/rigs/renderer APIs and affected-consumer evidence |
 | Scene integration / editing | Editor | Executable scenes/audio/effects/transitions checked against script and handoff; actual scene-frame samples |
 
-Boat performs two separate passes. Research before writing does not establish that the final wording has been checked. The coordinator (see [AGENTS.md](../AGENTS.md#coordinator-and-agent-parity)) supplies files and assignments within the user's requested scope; these configs do not install automatic execution or cross-chat messaging.
+Boat performs two separate passes. Research before writing does not establish that the final wording has been checked. The coordinator (see [coordinator](coordinator.md#coordinator-and-agent-parity)) supplies files and assignments within the user's requested scope; these configs do not install automatic execution or cross-chat messaging.
 
 Example requests:
 
