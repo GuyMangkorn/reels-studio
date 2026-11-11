@@ -86,7 +86,7 @@ Handoff checks apply to every stage: matching revisions, deliverable ID, covered
 <a id="length-check"></a>
 ### Length check at script lock
 
-**Requirement (user, 3 Nov 2026):** before the user approves a script (W1.5), Editor reads the whole script once with the user-picked voice and records the measured length in `delivery.md`. A read more than 5 % over the target goes back to Preaw for trims before approval; an estimate does not count. The voice is picked from ≤ 10 s samples first ([sample before every full read](#sample-before-full-read)); never read the whole script in a default voice just to measure. When the script passes unchanged, this read also serves as the [voice lock](#voice-lock) read instead of a second call. Evidence: `ZOMBIE-7ELEVEN` was approved at an estimated ≈116 s while a sample read paced it at ≈130–140 s, and `WFOG-EP01-SHORT` went to script R6 and scene sheets SS-R6 after the picture was built.
+**Requirement (user, 3 Nov 2026; projection in place of a full read: user, 12 Nov 2026):** before the user approves a script (W1.5), its length is projected and recorded in `delivery.md`. Preaw counts the narration's syllables and pauses, multiplies them by the rate of the voice setting the episode will use and adds the planned time without narration (example: [EP18 N1](../scripts/edu-series/ep18/script.md#n1)). The rate comes from a measured read in that same voice, style and pace (the channel's latest locked read), or from a ≤ 10 s sample when the setting is new; a word count or a rate from another setting does not count. A projection more than 5 % over the target goes back to Preaw for trims before approval. No full narration is read at this step: the one full read is the [voice lock](#voice-lock) (W4), after the first storyboard page is published (W2.3). When that read measures more than 5 % over the target, Preaw trims and the lock re-opens for the affected beats. Evidence: `ZOMBIE-7ELEVEN` was approved at an estimated ≈116 s while a sample read paced it at ≈130–140 s, and `WFOG-EP01-SHORT` went to script R6 and scene sheets SS-R6 after the picture was built. A full read at W1.4 pulled the voice pick and re-tune rounds ahead of the storyboard (`EDU-EP18-SHORT`, 11 Nov 2026), where the projection was within 4 % of the read (39.9 s against 41.44 s); on `EDU-EP16-SHORT` a projection at another style's rate ran 14 % long (52.3 s against 45.80 s).
 
 <a id="ideation"></a>
 ### Ideation
@@ -133,7 +133,7 @@ Record: [delivery.md](delivery.md) · Updated: <YYYY-MM-DD>, <role>
   - [ ] W1.1 Boat research
   - [ ] W1.2 Preaw script
   - [ ] W1.3 Boat fact-check
-  - [ ] W1.4 Length check: measured read ≤ target + 5 % (s)
+  - [ ] W1.4 Length check: projected length ≤ target + 5 % (s; no full read)
   - [ ] W1.5 User approves the script
 - [ ] W2 Brief and storyboard
   - [ ] W2.1 Film brief (text)
@@ -167,7 +167,7 @@ Record: [delivery.md](delivery.md) · Updated: <YYYY-MM-DD>, <role>
 **Requirement** for every deliverable with narration or dialogue whose picture is timed in frames. Integer event frames come from the final read, not from an estimate.
 
 1. The user has chosen the voice ([hear the voice](#style-profile)) and the script revision has passed its fact-check.
-2. Editor generates the final narration with the chosen engine (`scripts/narration.py`, or the [gemini-tts skill](../.agents/skills/gemini-tts/SKILL.md#narration-one-narrator) for one continuous Gemini read). Editor measures each beat's anchor-phrase onsets and the speech end into a committed measure file next to the timeline, and records it with the script revision in `delivery.md` (timing status `audio-measured`).
+2. After the first storyboard page is published (W2.3), Editor generates the final narration, the deliverable's first full read ([length check](#length-check)), with the chosen engine (`scripts/narration.py`, or the [gemini-tts skill](../.agents/skills/gemini-tts/SKILL.md#narration-one-narrator) for one continuous Gemini read). Editor measures each beat's anchor-phrase onsets and the speech end into a committed measure file next to the timeline, and records it with the script revision in `delivery.md` (timing status `audio-measured`).
 3. Film may write staging, shot order and VO-relative timing ("on the word X", "+0.5 s after the line") before the lock, labelled `estimated`. Film writes the timed scene sheet (integer frames) from the measure file. Boss builds plates from timed sheets only.
 
 A script or voice change after the lock re-opens it for the affected beats: regenerate, re-measure, then retime those beats once. The BLOOP-EP01-SHORT sheets went R1 → R8 because timing came before the read (30 Oct 2026).
