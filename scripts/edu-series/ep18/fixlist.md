@@ -169,6 +169,58 @@ Fix in `src/painted/edu18/*` (kit untouched). After the pass: stills of every to
 
 SH09 streaming, SH14 freeze, SH16 rewind and SH17 roll/fall are motion checks for the W5.3 draft; caption check once captions exist (SH15 +113 reflected dome bottom at y 1243 sits in the band at 30 % opacity: measure it).
 
+## Pass 3
+
+Film plate review of Boss's pass 2 (commit ce788bc), 2026-11-12, fresh invocation. Sheet unchanged: **EDU-EP18-ROWS-R2.2**.
+
+Evidence: 30 stills re-rendered by Film from ce788bc on one Chrome (`node scripts/stills.mjs src/painted/edu18/shots-index.ts`, 27 s), viewed as three `qa-sheet.sh` sheets at 270 px plus two 540 px pairs; Boss's `boss-p3-a/b/c` sheets compared. Store: `projects/edu/EDU/previews/film3sheet-a.png` (SH01 +0/+15/+29, SH03 +0/+85, SH05 +0/+12/+25, SH07 +15/+22/+34), `film3sheet-b.png` (SH12 +50/+75/+106, SH15 +0/+50/+97/+113, SH17 +66/+87), `film3sheet-c.png` (SH19 +0/+24/+51, SH20 +0/+20/+35/+36/+50/+80, SH21 +18), `film3-sh05-pair.png` (pass-2 vs pass-3 SH05 +0), `film3-sh17-540.png`. Measured on the SH05 frames (rgb dump): drop pixels y 156–870 at +0 and 156–880 at +25, drop x 380–1008. Other positions are read off the 270/540 px sheets (est., ±10 px at 1080).
+
+### Per-shot verdict (pass 3)
+
+| Shot | Verdict | What the frames show |
+| --- | --- | --- |
+| SH01 (B01-SH01) | pass | ≈ 50+ streaks, splash puffs on the lane at y ≈ 1380 (≈ 30 px). At phone size they read as rain hitting the lane; their exact shape is not seen |
+| SH03 (B01-SH03) | pass | Feet flat: at +0 they sit behind the bubble, at +85 they are ≈ 20 px. The floor edge is at y ≈ 1500 |
+| SH05 (B01-SH05) | **fix F3-B05** | Drop: a lens 592 px wide, top ≈ 690, lowest 870 (+0) / 880 (+25), palms ≈ 912. That meets the sheet. Mosquito: head ≈ (724, 1160), thorax ≈ (924, 1120). The proboscis runs down-left to ≈ (484, 1480), **onto her shin**, so it reads as a bite. The F2-B05 target of a centre ≈ (1069, 1076) with only leg tips at x < 700 is not met |
+| SH07 (B02-SH01) | pass | From +16 she is drawn over the legs. At +22 and +34 no leg crosses her face or hands |
+| SH12 (B03-SH01) | **fix F3-B12** | Rings, wet edge and the riders softened through the bun all pass. The shop streak is one olive band ≈ 120–180 px wide with hard edges, a paler halo band and evenly spaced dark cross-bars. It reads as a segmented road or bamboo stalk, not light on water |
+| SH15 (B04-SH02) | pass | The mirrored mosquito and dome sit at 30 % with ripple bands. At +113 the mosquito's lowest point is ≈ 545 and the reflection's top ≈ 1044, so ≈ 500 px of clear water shows the gap (A08). The edges are unfeathered, but a viewer at phone size does not notice that |
+| SH17 (B05-SH02) | **fix F3-B12** | Same band as SH12, ≈ 160 px wide, running the full frame height and taking more space than the landing (+87 drop ≈ 60 px with a ≈ 120 px crown) |
+| SH19 (B05-SH04) | pass | Streams are falling elongated drops with no strings or beads. The near drops over the skirt are soft pink ovals (defocused), which is acceptable |
+| SH20 (B05-SH05) | pass (streak per F3-B12 if the helper is shared) | Crowns ≥ 4 once the puddle is in frame (+35 onward), with ticked rims ≈ 20–25 px. The streak is the same segmented-band style at a smaller size (≈ 60 px) |
+| SH21 (B05-SH06) | pass | Unchanged |
+
+Totals: 7 pass, 2 fix items covering 3 shots (SH05, SH12/SH17 shared; SH20 follows the shared helper).
+
+### Decisions on Boss's open items (Film, pass 3)
+
+| ID | Item | Decision | Reason (numbers) |
+| --- | --- | --- | --- |
+| D3-05 | SH05 true 3D face vs flat lens | **Accept the flat lens; neither the check nor the camera changes** | At this 60–61° up-pitch the dome hides almost entirely behind the bottom face. The sheet's projected dome top (642, 689) and the rendered lens top (≈ 690) agree to within 5 px, so the lens is the 3D projection to a viewer, not a cheat. Lowest 870/880 vs palms ≈ 912 keeps ≥ 32 px of air until SH07 +15, the beat that matters. Changing the camera would undo the 501 px figure fit |
+| D3-20 | SH20 no crowns before the puddle is in frame | **Accept** (crowns only while water is in frame) | +0..+34 frames the dry step and ankles. Splashes on dry concrete are not part of the beat, and the falling stream drops already carry the rain |
+| D3-03 | SH03 toes down needs a kit foot-angle option | **Accept flat feet; no kit change** | The feet are ≈ 20 px at +85 and hidden by the bubble at +0. One shot does not justify a change to `cast.ts` |
+| D3-15 | SH15 reflection without edge feathering | **Accept** | At 30 % opacity with ripple bands the hard edge does not read at phone size. The gap cue (≈ 500 px) works |
+| D3-01 | SH01 crowns as ≈ 34 px puffs | **Accept** | In a 30-frame hook they read as splashes. Their shape is below what a viewer notices |
+| D3-12 | SH12/SH17 streak reads as a broad ribbon | **Fix** (F3-B12) | Film's F2-B12 spec was wrong: widths given in sm became 120–180 px in these close shots, and painting the gaps over a halo band made dark bars. The fix gives screen-px caps and makes the gaps breaks rather than paint |
+
+### Fix list — Boss (pass 3, one pass)
+
+Fix in `src/painted/edu18/*` (kit untouched). After the pass: stills of the frames named below, one `qa-sheet.sh` sheet viewed, then hand to Editor.
+
+- **F3-B05 SH05 mosquito** (unmet part of F2-B05): refit the mosquito so its head is at x ≥ 900 and thorax centre ≈ (1069, 1076) ± 30 px, mostly off the right edge. **No mosquito pixel (proboscis, legs, wing) inside her silhouette** (her x ≈ 440–630, y ≈ 900–1480 est.). Leg tips may reach x < 700 only below y 1500 or above y 900. Rotate the proboscis to point down-right or forward rather than at her, or let it end before x 700. Leave the drop untouched. Frames +0, +25.
+- **F3-B12 shop streak** (SH12, SH17 lake; SH20 puddle if it uses the same helper, else its own streak with the same rules), replacing F2-B12 (1)'s widths:
+  - Full width on screen ≤ 40 px at the shop end and ≤ 16 px at the near end in every frame, computed per segment from the projected width with the px cap applied.
+  - Peak opacity 0.30–0.35. No halo or outer band.
+  - Soft edge without blur: three stacked strokes at width × 1.0 / 0.6 / 0.3, each at alpha ≈ 0.12.
+  - **Gaps are breaks, not paint:** leave the streak out over 8–12 irregular lengths (6–24 px on screen, ±40 % spacing). Draw nothing in the water colour over it.
+  - Keep the one brighter core on the far 40 % (≤ 4 px wide).
+  - Frames SH12 +75, SH17 +66 and +87, SH20 +80.
+  - Acceptance: at 270 px no band and no cross-bars are visible, only a thin broken warm line, and the SH17 landing crown is the brightest thing in its area.
+
+### Editor (unchanged)
+
+The SH09/SH14/SH16/SH17 motion checks and the caption check from pass 2 still apply at the W5.3 draft.
+
 ## Questions for the user (coordinator asks with the structured-question tool)
 
 - **Q1 SH21 ending, mosquito visibility.** At the medium-wide ending the mosquito is about 2 px (true size at 2.4 m). Options: (A, Film's default, applied in R2.1) keep the framing, add a tiny wing glint 4 times plus her gaze and the whine; (B) during the hold (+72–+129) push down to an ankle close like SH19 so the mosquito is about 44 px, losing her face; (C) leave as is (the whine and her glare carry it).
@@ -179,3 +231,4 @@ SH09 streaming, SH14 freeze, SH16 rewind and SH17 roll/fall are motion checks fo
 | --- | --- | --- |
 | 2026-11-12 | Film | First fix list from the W5.2 plate review (sheet ROWS-R2.1). |
 | 2026-11-12 | Film | Pass 2 after Boss's W5.3 fixes: 14 pass, 7 fix (F2-B05, F2-B07, F2-B12, F2-B15, F2-B19, F2-B20; minors F2-B01, F2-B03); decisions D-07L, D-12R, D-CU, D-17C, D-15R; sheet ROWS-R2.2. |
+| 2026-11-12 | Film | Pass 3 after Boss pass 2 (ce788bc): 7 pass, fix F3-B05 (SH05 mosquito off her shin) and F3-B12 (shop streak px caps, breaks not paint; SH12/SH17/SH20); accepted D3-05 flat lens, D3-20, D3-03, D3-15, D3-01; sheet stays ROWS-R2.2. |
