@@ -173,7 +173,7 @@ put(bed, mixf, 359, 831, ramp([(359, f1g - 12), (420, f1g - 12), (428, f1g - 6),
 f1i = S('B04-F1-if'); put(bed, loopfill(f1i, F(980) - F(866), 0.5), 866, 980, ramp([(866, f1g - 8), (978, f1g - 1), (979.5, f1g - 1), (980, -60)]), 0.1, 0.0005)
 m1bo = S('B04-M1b', t=222 / FPS); mbg = lvl('B04-M1b', m1bo, DV['M1b'], 'I') + DUCK
 bedtrack(bed, m1bo, 758, 980, [(758, mbg - 3), (860, mbg), (870, mbg + 3), (979, mbg + 3), (980, -60)], loop=False, fade_in=0.15, fade_out=0.0005)   # plays through the freeze, +3 dB over SH15, hard off f980
-f1r = S('B05-F1-replay'); put(bed, loopfill(f1r, F(1183) - F(1005), 0.5), 1005, 1183, ramp([(1005, f1g - 8 - 12), (1020, f1g - 8), (1147, f1g - 8), (1182, f1g - 8 - 40)]), 0.05, 0.0005)
+f1r = S('B05-F1-replay'); put(bed, loopfill(f1r, F(1167) - F(1005), 0.5), 1005, 1167, ramp([(1005, f1g - 8 - 12), (1020, f1g - 8), (1147, f1g - 8), (1167, f1g - 8 - 40)]), 0.05, 0.0005)   # F4-E17: fall-away ramp f1147-f1167, -40 dB at the SH17 touch, off there
 m1t2 = S('B05-M1-thin'); m1r2 = S('B05-M1-relief')
 bedtrack(bed, m1t2, 1007, 1095, [(1007, m1g - 2), (1095, m1g - 1)], loop=False, fade_in=0.1, fade_out=0.05)
 bedtrack(bed, m1r2, 1095, 1183, [(1095, m1g - 3), (1182, m1g)], loop=False, fade_in=0.05, fade_out=0.0005)            # hard stop f1183 (the splash cut)
@@ -222,7 +222,7 @@ s, g = A('B04-H3', 'H3'); shot(acc, s, 916, g, fout=0.05)                       
 s3 = S('B05-S3'); s3 = s3[:int(13 * SR / FPS)]; s3g = lvl('B05-S3', s3, DV['S3'], 'M'); shot(acc, s3, 992, s3g, fout=0.002, until=1005)   # trimmed to its 13 f slot (0.006 s)
 s, g = A('B05-H1-replay', 'H1r'); shot(acc, s, 1005 - 0.17 * FPS, g, fout=0.05)                   # H1 again, -6 dB under H1 at the same file sync (gain via dV)
 s, g = A('B05-S5', 'S5'); shot(acc, s, 1129, g, fout=0.05)
-s, g = A('B05-P1', 'P1'); shot(acc, s, 1183 - 0.05 * FPS, g, fout=0.1)
+s, g = A('B05-P1', 'P1'); shot(acc, s, 1167 - 0.05 * FPS, g, fout=0.1)   # F4-E17: transient (0.06 s) on the touch f1167 (SH17 +72); the 1.0 s tail runs across the f1183 cut under S2
 s, g = A('B05-S2', 'S2'); shot(acc, s, 1183, g, fout=0.05)
 s, g = A('B05-SL', 'SL', load={'af': 'alimiter=level_in=3:limit=0.5:attack=0.5:release=15:level=0'}); shot(acc, s, 1356 - 0.02 * FPS, g, fin=0.0005, fout=0.02)               # slap transient (0.02 s into the file) on f1356, no pre-roll
 s, g = A('B05-E1', 'E1'); shot(acc, s, 1370, g, fout=0.05, until=1391)
