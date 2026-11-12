@@ -108,6 +108,67 @@ LF01–LF06 look frames, thumbnails first ([look thumbnails](../../../docs/seque
 
 Then the viewer check (fresh Sonnet critic) on the thumbnail sheets, the coordinator asks the user to pick, Film paints the finished LFs and adds `looks`/`look` to review-rows.json. LF00 (mosquito) is approved and not repainted.
 
+## Pass 2
+
+Film plate review of Boss's W5.3 pass (commit 5425b5b) and the kit skirt fix (5bea119), 2026-11-12, fresh invocation. Sheet **EDU-EP18-ROWS-R2.2** (this pass: SH07 layer cheat, SH12 riders through the water, SH15 mirrored reflection; [change log](#change-log)).
+
+Evidence: 67 stills re-rendered by Film from the current checkout on one Chrome (`node scripts/stills.mjs src/painted/edu18/shots-index.ts`, 35 s; Boss's `out/edu18/fix/` frames predate 5bea119 and the SH15 softening, so they were not used), 2–5 frames per shot, viewed as six `scripts/qa-sheet.sh` sheets at 270 px and four at 540 px. Store: `projects/edu/EDU/previews/film2sheet-a.png` … `film2sheet-j.png` (frames: `out/edu18/film2/<beat-shot>-<frame>.png`, cache). Pixel values read off the 540 px sheets are ±20 px. SH15 reflection points computed with `scripts/shot-projection.py` (f 1000 ⇒ vfov 87.7°), this pass. Not checked: motion (SH09 streaming, SH14 freeze, SH16 rewind, SH17 roll and fall) and `scripts/caption-zone.py` (no captions yet): Editor at the W5.3 draft. Readiness is not user approval, runtime or visual proof.
+
+### Per-shot verdict (pass 2)
+
+| # | Shot | Verdict | What the frames show |
+| --- | --- | --- | --- |
+| 1 | B01-SH01 | pass (minor F2-B01) | Mosquito (≈ 340, 720) against the grey lane, ≥ 47 px; her run right → left, heel marks with crowns, no leg through the skirt. The downpour reads light (≈ 25 streaks, no splashes on the lane) for the hook frame |
+| 2 | B01-SH02 | pass | Run, tote, puddle (≈ 400, 1140), puff at +19; skirt hem correct after 5bea119 |
+| 3 | B01-SH03 | pass (minor F2-B03) | Bun at +85 x ≈ 344–792, y ≈ 544–836 (sheet 335–798); her 487 px. F-B03 not applied: feet flat together, a hard dark floor band ≈ 60 px below them |
+| 4 | B01-SH04 | pass | Unchanged: contact +17, gone +31, back +53 |
+| 5 | B01-SH05 | **fix F2-B05** | Her 501 px and P45 are right. The drop is the side-view card centred on the projected centre: x ≈ 408–902 (494 px), top ≈ 543, bottom ≈ 891, **resting on her palms (≈ 913)**, so the contact reads here instead of SH07 +15. Mosquito head at x ≈ 760 crowds her (sheet: centre ≈ 1069, at the right edge) |
+| 6 | B01-SH06 | pass | Beam ≈ 620 px, level at +45, both ≈ 260–280 px, six tips on the pan, D1 band at the top |
+| 7 | B02-SH01 | **fix F2-B07** | Camera follows the drop, both under the face at +22/+34. The mosquito's splayed legs cross her eyes and face at +22 and +34 |
+| 8 | B02-SH02 | pass | Unchanged |
+| 9 | B02-SH03 | pass (motion: Editor) | Unchanged |
+| 10 | B02-SH04 | pass | Ball ≈ 200 px, feather with quill at x ≈ 344 at +23, ball ≈ (688, 960) at +45; drip-curtain streaks faint behind |
+| 11 | B02-SH05 | pass | Anchors within 30 px of the sheet; she is drawn over the mosquito's legs, face clear |
+| 12 | B03-SH01 | **fix F2-B12** | Camera, drop, riders and lake placement match (+75 riders ≈ (424, 344) → (784, 484)). The shop reflection is 11 separate warm ovals ("leaves"), rings are faint polygons, the lake edge is a pale wedge with no edge; the bun's opaque cyan rim band cuts across her where she is seen through the water |
+| 13 | B03-SH02 | pass | Unchanged |
+| 14 | B04-SH01 | pass | Bar continuous from +0, passes ≈ (900, 920), ends at tick 20 (≈ 868, 888) at +65, tick 20 gold, OT03 left of it inside x ≤ 1020 |
+| 15 | B04-SH02 | **fix F2-B15** | Camera, hit at +50 and mosquito clearance match (+113 mosquito lowest ≈ y 553–585). The D2 "reflection" is a large pale parallelogram with straight hard edges (+97, +113, still after the softening), and the water has almost no rings: the clear gap under the mosquito (A08) cannot be seen |
+| 16 | B05-SH01 | pass (motion: Editor) | +0 frozen SH04 +31, +25 contact, +70 and +114 close ride |
+| 17 | B05-SH02 | **fix F2-B12 (shared lake)** | No facing flip, tilt down lands, crown at ≈ (536, 1132), ≈ 110 px. The lake around it is the same warm ovals and pale wedge as SH12, plus dark polygon rings 300–500 px across: the splash does not read as landing in a puddle. Crown width accepted (D-17C) |
+| 18 | B05-SH03 | pass | P09 hands on hips, 740 px, tote on the shoulder |
+| 19 | B05-SH04 | **fix F2-B19** | Mosquito ≈ (412–560, 1000–1040), ≈ 60 px, between her calves. The curtain is three full-height uniform pale lines with round bead dots: strings, not water |
+| 20 | B05-SH05 | **fix F2-B20** | Mosquito (544, 420), step, toe right. The water: the warm reflection is diagonal yellow dashes (reads as road paint), rings faint polygons, no crowns visible; the streams the same strings as SH19 |
+| 21 | B05-SH06 | pass | +18 right hand at her left ankle ≈ (564, 1085) (sheet 526, 1081, inside ±0.02 m), glint at +23 ≈ (575, 1070), gaze up from +30. The bend reads as a deep squat rather than 35°: accepted (the slap reads). Mosquito visibility stays Q1 |
+
+Totals: 14 pass (2 with a minor), 7 fix (SH05, SH07, SH12, SH15, SH17, SH19, SH20), all Boss's.
+
+### Decisions on Boss's open items (Film, pass 2)
+
+| ID | Item | Decision | Reason |
+| --- | --- | --- | --- |
+| D-07L | SH07 legs across her face at +22/+34 | **Layer cheat, same as SH11:** after contact she is drawn over every mosquito leg segment inside her silhouette | By depth the mosquito (z +0.40) is nearer the lens than her (z −0.42), so the legs are in front; but her face at the hit is the beat's read. SH11 already records the same cheat, so the two shots match |
+| D-12R | SH12 warm dashes; riders show through the bun | **Dashes: fix** (one continuous streak, F2-B12). **Riders through the bun: accept**, softened (F2-B12 (4)) | From +20 the camera is above the bottom face (pos y 0.30 vs face y −0.875), so riders on the underside are seen through clear water: physically right and it keeps them in the reveal. Separate ovals are not how a light reflects in rippled water (one elongated streak broken by ripples) |
+| D-CU | SH19/SH20 curtain streams crude | **Fix** (F2-B19) | At 0.09 m a 2.5 mm stream is a column of falling elongated drops with a thin top thread, not a uniform line; the close streams are out of focus |
+| D-17C | SH17 crown 6.5 sm wide vs drop 2.51 sm | **Accept** | A mm-scale drop hitting deep water at near-terminal speed opens a crater and crown several drop diameters wide; 6.5 / 2.51 = 2.6 diameters is inside that and at the small end. At 64 sm it is ≈ 110–124 px, the size that reads from above |
+| D-15R | SH15 hard-edged D2 reflection patch | **Replace** with the mirrored drop and mosquito (F2-B15) | With the camera falling over flat water the only cue for "not touching" (A08, R04) is the gap between the mosquito and its reflection; a lit quad gives no gap and its straight edges read as a graphic |
+
+### Fix list — Boss (pass 2, one pass)
+
+Fix in `src/painted/edu18/*` (kit untouched). After the pass: stills of every touched shot (frames named per item) through `scripts/stills.mjs`, one `qa-sheet.sh` sheet viewed, numbers checked by `camPoint`/`scripts/shot-projection.py`, then hand to Editor.
+
+- **F2-B05 SH05** (F-B05 (3) re-issued) Draw D1 from its 3D shape under this up-pitch (an option on `paintBun`, used by SH05 only, so SH12/SH15/SH17 do not move): the bottom face is the projected rim ring (r 1.255 sm at y_c − 0.875) filled as water, the dome's silhouette from the projected ring at y_c plus the top point behind it, the inverted shop glow inside the bottom-face ellipse, the rim highlight on its near edge. Targets at +0: bottom face centre (679, 786), bun x 391–979 (593 px), top (642, 689); **lowest drop pixel ≤ y 870 at +0 and ≤ 880 at +25** (palms y 915: at least 35 px of air until SH07). Mosquito fitted by its projected head → tail span (as the woman, F-B05 (1)) with its centre at ≈ (1069, 1076): most of the body off the right edge, nothing but leg tips at x < 700. Frames +0, +12, +25.
+- **F2-B07 SH07** From +16 draw her over the mosquito's legs where they cross her silhouette (D-07L); at +22 and +34 no leg crosses her head or hands. Frames +15, +22, +34.
+- **F2-B12 SH12 + SH17** (`paintLakeDetail`/`paintLake`, shared): (1) replace the 11 warm ovals with **one continuous streak** on the water along x = PUDDLE.c.x + 60 + 4·sin(0.08·z + 2t) sm from z = c.z − 0.8·rz to c.z + 0.8·rz: half-width 6 sm at the shop end (−z), 3 sm at the near end, `MC.shop` at 0.35, feather 0.25, cut by 10 ripple gaps of 1.0 sm (±30 % jitter) in the water colour, one brighter core (half-width 1 sm, `#f3d9a0` at 0.5) along its far 40 %; no other warm shapes on the lake. (2) Rings: ≥ 32 segments, always lighter than the water (`#e0eef2`, alpha fading to 0, not mixing toward the puddle colour), 1.4–2 px; no dark outlines (SH17 +87). (3) The lake's outline gets a 3 px wet-edge highlight (`#cfe0e6` at 0.5) so the pale wedge reads as the puddle's edge against the ground. (4) SH12 riders through the bun (D-12R): where the bun's bottom-face rim band crosses a rider it is ≤ 12 px and ≤ 40 % opacity; rider parts inside the bun silhouette at 70 % with a cool tint (`#9fc4d4`, multiply 30 %), parts outside sharp. Frames SH12 +50, +75, +106; SH17 +66, +87.
+- **F2-B15 SH15** Remove the quad reflection (`paintWaterPlane` `reflect`, id 42403). Draw D2 and the pressed mosquito **mirrored about the water plane** (`Mh` y′ = −43.9 − y) at 30 % opacity, cool tint (`#cfe0e8`), edges feathered 16 px, cut by 4–6 horizontal ripple bands (2–4 px, water colour). Computed (this pass): **+113** real bottom face centre (540, 488), mosquito lowest (540, 585), water under it (540, 863), **mosquito reflection's lowest point (540, 1056)**, reflected bottom face x 379–717 centred (540, 1099), reflected dome bottom (540, 1243): ≈ 470 px of clear water between the mosquito and its reflection; **+97** water under (540, 1342), mosquito reflection (540, 1610), reflected face (540, 1622). Water surface: 6–10 far-drop rings in frame (lighter than the water, ≥ 32 segments, 1.5 px, 40–120 px across), none within 150 px of the point under the mosquito (B-P3); no straight edge longer than 80 px on the water. Frames +0, +50, +97, +113.
+- **F2-B19 SH19–SH21 drip curtain** (`soi.ts` curtain): no continuous full-height line and no round bead dots. Each valley's stream = falling elongated drops (width from the existing `wpx`, length 3 × width, core alpha 0.45, edge 0.15, 2 px highlight on the shop side), 3–5 per stream in frame at irregular spacing on the ambient clock; a thread ≤ 3 px at alpha ≤ 0.18 only within 0.15 m below the lip; streams nearer than 0.06 m to the lens defocused (width × 2, alpha × 0.4, no highlight). Keep one stream ≈ 2 cm left of the mosquito (≈ 180–220 px left of it in SH19) and the landing crowns. Frames SH19 +0, +24, +51; SH21 +18.
+- **F2-B20 SH20 puddle** (`soi.ts` rich puddle): the warm reflection as one continuous streak (centre x P.c.x − 0.15 ± 0.006 m sine, z P.c.z − 0.36 → P.c.z, half-width 0.015 m, 6 ripple gaps of 0.005 m, no separate dashes); rings as F2-B12 (2) at 1.8 px; **crowns: ≥ 4 in frame at every frame, each ≥ 18 px tall**, `#e4f0f4` at 0.8, 6–8 f lifetime, on the curtain's landing line and in the puddle; streams per F2-B19. Frames +0, +50, +80.
+- **F2-B01 SH01** (minor) Downpour density for the hook: ≥ 50 streaks in frame (near ones 4–6 px), 8–12 splash crowns on the lane at y ≥ 1350, renewed every 4–8 f. Frames +0, +29.
+- **F2-B03 SH03** (minor, F-B03 re-issued) Toes pointed down ≈ 30°, feet 0.1 sm apart; the dark floor band blurred (24 px edge) and below y 1500 at +0, or dropped. Frames +0, +85.
+
+### Editor (unchanged from pass 1)
+
+SH09 streaming, SH14 freeze, SH16 rewind and SH17 roll/fall are motion checks for the W5.3 draft; caption check once captions exist (SH15 +113 reflected dome bottom at y 1243 sits in the band at 30 % opacity: measure it).
+
 ## Questions for the user (coordinator asks with the structured-question tool)
 
 - **Q1 SH21 ending, mosquito visibility.** At the medium-wide ending the mosquito is about 2 px (true size at 2.4 m). Options: (A, Film's default, applied in R2.1) keep the framing, add a tiny wing glint 4 times plus her gaze and the whine; (B) during the hold (+72–+129) push down to an ankle close like SH19 so the mosquito is about 44 px, losing her face; (C) leave as is (the whine and her glare carry it).
@@ -117,3 +178,4 @@ Then the viewer check (fresh Sonnet critic) on the thumbnail sheets, the coordin
 | Date | Author | Change |
 | --- | --- | --- |
 | 2026-11-12 | Film | First fix list from the W5.2 plate review (sheet ROWS-R2.1). |
+| 2026-11-12 | Film | Pass 2 after Boss's W5.3 fixes: 14 pass, 7 fix (F2-B05, F2-B07, F2-B12, F2-B15, F2-B19, F2-B20; minors F2-B01, F2-B03); decisions D-07L, D-12R, D-CU, D-17C, D-15R; sheet ROWS-R2.2. |
