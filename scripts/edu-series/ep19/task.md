@@ -2,7 +2,7 @@
 
 Record: this file. Series context: [concepts.md](../concepts.md) (R10, C55) · series task list: [task.md](../task.md).
 
-**Now:** W2.1 brief and W2.2 rows done (2026-11-12, Film); review page pending **Next:** Coordinator — publish the storyboard page (W2.3); then Boss look frames LF01/LF02 (W3) and Editor voice lock W4
+**Now:** W2.3 review page built locally (out/review-pages/EDU-EP19-SHORT/index.html; rebuild: python3 -I scripts/storyboard-page/build.py scripts/edu-series/ep19/review-rows.json) but NOT published: this session had no Artifact tool. User answered Q-F1 yes (depth mark 2.0 ม.) and Q-F2 yes (cloud shade SH03–SH13) on 2026-11-12; not yet written into review-rows.json. **Next:** Coordinator in a new session with Artifact — publish the page (capabilities db), record URL in delivery.md, mark Q-F1/Q-F2 answered; then Boss N1–N12 + LF01/LF02, Ton cues, Editor W4 voice lock
 
 - Decisions (user, 2026-11-12): picked C55 "คนที่กำลังจมน้ำ ดูเหมือนกำลังเล่นน้ำ" ("ทำ c55"). User worried the word "ตาย" could be banned on YouTube: Boat checks the policy in W1.1 (title/cover wording, narration use).
 - Deliverable: `EDU-EP19-SHORT`, Short only (Thai), 1080×1920, 30 fps, target 40–60 s (estimate). Profile: educational, painted 2D, edu defaults (Kore narrator, pace picked per episode). Scope assumed from EP01–EP18.
