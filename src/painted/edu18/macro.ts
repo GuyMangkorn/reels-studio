@@ -6,6 +6,7 @@ import {camDepth, camPoint, camPoly, camUnit, type YCam} from '../kit/ycam';
 import type {V3} from '../kit/space';
 import {paintDrop14, bounds, dropOutline, type DropState} from '../kit/water-drop';
 import {lookCam} from './cams';
+import {gapsOf, paintRing, paintStreak} from './ripple';
 
 // N7 `new: macro world M` (brief EDU-EP18-BRIEF-R1.4 "Set plan - macro world M and drops"; EP05 macro.ts k-scaling method). UNITS: set metres
 // `sm`, k = 405 sm per real metre (1 real mm = 0.405 sm), so the 1.62 m woman keeps her rig height 1.62 sm = 4.0 mm real. Origin O_M = H (1.02, 0.22,
@@ -37,9 +38,10 @@ export const wobble = (t: number, phase = 0): {size: number; flat: number} => {
 };
 
 /** Paints one hero bun (D0 / D1 / D2) with its centre at `at` (sm). Returns the screen centre and the px width, or null behind the lens. */
-export const paintBun = (p: Painter, c: YCam, at: V3, o: {t: number; phase?: number; seed?: number; glow?: boolean} = {t: 0}): {g: Pt; widthPx: number; heightPx: number; bottom: number} | null => {
+export const paintBun = (p: Painter, c: YCam, at: V3, o: {t: number; phase?: number; seed?: number; glow?: boolean; up?: {maxBottom: number}} = {t: 0}): {g: Pt; widthPx: number; heightPx: number; bottom: number} | null => {
   const g = camPoint(c, at);
   if (!g) return null;
+  if (o.up) return paintBunUp(p, c, at, {...o, maxBottom: o.up.maxBottom});
   const u = camUnit(c, at) * SM_PER_MM, w = wobble(o.t, o.phase ?? 0), st: DropState = {...BUN, ...w};
   paintDrop14(p, g, u, st, {seed: o.seed ?? 40000, light: -1});
   const b = bounds(dropOutline(st));
@@ -49,6 +51,37 @@ export const paintBun = (p: Painter, c: YCam, at: V3, o: {t: number; phase?: num
     washAt(p, (o.seed ?? 40000) + 41, mixColor(MC.shop, '#ffffff', 0.35), 140, ell(g[0] + 0.02 * b.w * u, g[1] + 0.23 * b.h * u, 0.11 * b.w * u, 0.05 * b.h * u, 16), 0.2, 0.1);
   }
   return {g, widthPx: b.w * u, heightPx: b.h * u, bottom: g[1] - b.y0 * u};
+};
+
+/** F2-B05 (SH05 only): the bun drawn from its 3D shape under the up-pitch. The bottom face is the projected rim ring (r 1.255 sm at y_c - 0.875) filled as water with the
+ * inverted shop glow inside it and the rim highlight on its near edge; the dome's silhouette is the projected widest ring plus the top point behind it. The ring's
+ * own foreshortening under the 61 deg look would drop the near edge to y ~1020 (over her hands); Film's hard check is a lowest pixel <= `maxBottom` (870 at +0,
+ * 880 at +25), so the vertical semi-axis of the face is capped to meet it (the picture reads as the drop seen from a lower angle than the true 61 deg). */
+const paintBunUp = (p: Painter, c: YCam, at: V3, o: {t: number; phase?: number; seed?: number; glow?: boolean; maxBottom: number}): {g: Pt; widthPx: number; heightPx: number; bottom: number} | null => {
+  const s = o.seed ?? 40000, w = wobble(o.t, o.phase ?? 0), k = w.size / 6.2, R = 1.255 * k, fy = at[1] - 0.875;
+  const ring = Array.from({length: 72}, (_, i) => camPoint(c, [at[0] + R * Math.cos((i / 72) * 2 * Math.PI), fy, at[2] + R * Math.sin((i / 72) * 2 * Math.PI)], 0.3)).filter((q): q is Pt => !!q);
+  const fc = camPoint(c, [at[0], fy, at[2]], 0.3), top = camPoint(c, [at[0], at[1] + BUN_SM.top * k, at[2]], 0.3);
+  if (ring.length < 8 || !fc || !top) return null;
+  const xs = ring.map((q) => q[0]), x0 = Math.min(...xs), x1 = Math.max(...xs), hw = (x1 - x0) / 2, cx = (x0 + x1) / 2, bottom = fc[1];
+  const vTrue = (Math.max(...ring.map((q) => q[1])) - Math.min(...ring.map((q) => q[1]))) / 2, v = Math.min(vTrue, Math.max(20, o.maxBottom - bottom));
+  const dome = Math.max(10, bottom - top[1]);
+  const half = (rx: number, ry: number, a0: number, a1: number, n: number, ox = 0): Pt[] => Array.from({length: n + 1}, (_, i) => { const a = a0 + ((a1 - a0) * i) / n; return [cx + ox + rx * Math.cos(a), bottom - ry * Math.sin(a)] as Pt; });
+  const face = ell(cx, bottom, hw, v, 48), outline = [...half(hw, dome, 0, Math.PI, 28), ...half(hw, v, Math.PI, 2 * Math.PI, 28).slice(1, -1)];
+  const L = hw * 2;
+  washAt(p, s, '#a9cfe0', 0.35 * 255, outline, 0, 0);
+  washAt(p, s + 1, '#5d8796', 110, ell(cx, bottom + v * 0.05, hw * 0.96, v * 0.92, 40), 0.1, 0.05); // the flat face seen from beneath: darker water
+  washAt(p, s + 2, '#b4d4d8', 170, ell(cx, bottom, hw * 0.78, v * 0.74, 36), 0.15, 0.05);
+  if (o.glow !== false) { // the inverted shop glow inside the bottom-face ellipse
+    washAt(p, s + 40, MC.shop, 150, ell(cx + 0.06 * hw, bottom + 0.08 * v, hw * 0.42, v * 0.34, 22), 0.25, 0.1);
+    washAt(p, s + 41, mixColor(MC.shop, '#ffffff', 0.35), 140, ell(cx + 0.02 * hw, bottom + 0.1 * v, hw * 0.18, v * 0.14, 16), 0.2, 0.1);
+  }
+  washAt(p, s + 3, '#bfe6f2', 200, outline.map(([x, y]): Pt => [x, y]), 0, 0);
+  washAt(p, s + 4, '#a9cfe0', 0.35 * 255, outline.map(([x, y]): Pt => [cx + (x - cx) * 0.965, bottom + (y - bottom) * 0.9 - (y < bottom ? 0 : 0)]), 0, 0); // inner water over the cyan edge band
+  inkLine(p, s + 5, [...half(hw * 0.97, v * 0.97, Math.PI * 1.06, Math.PI * 1.94, 24)].map(([x, y]): Pt => [x, 2 * bottom - y]), {weight: Math.max(1.6, L / 220), color: '#ffffff', closed: false, curve: 0.2, still: true}); // rim highlight on the near (lower, toward the lens) edge
+  inkLine(p, s + 6, outline, {weight: Math.max(1, L / 260), color: '#4f8fa6', curve: 0.1});
+  inkLine(p, s + 7, face, {weight: Math.max(1, L / 400), color: '#d7ecef', curve: 0.2, still: true});
+  washAt(p, s + 8, '#ffffff', 230, ell(cx - hw * 0.3, bottom - dome * 0.55, hw * 0.16, dome * 0.14, 14, -0.4), 0, 0);
+  return {g: fc, widthPx: L, heightPx: dome + v, bottom: bottom + v};
 };
 
 // ---------------------------------------------------------------- backdrop card (infinity)
@@ -64,7 +97,7 @@ export const paintMacroBackdrop = (p: Painter, c: YCam, o: {glow?: number; haze?
   washAt(p, 40100, MC.lane, 255, [[-60, -60], [1140, -60], [1140, 1980], [-60, 1980]], 0, 0);
   washAt(p, 40101, MC.sky, 200, [[-60, -60], [1140, -60], [1140, hy - 20], [-60, hy + 30]], 0.3, 0.2);
   if (o.haze) { // F-B03: the far ground is a soft haze, not a hard band: the sky wash steps down into the lane over 200 px
-    [[60, 150], [110, 105], [160, 70], [210, 38]].forEach(([d, a], i) => washAt(p, 40140 + i, MC.sky, a, [[-60, hy - 20], [1140, hy - 20], [1140, hy + d], [-60, hy + d]], 0.5, 0.4));
+    [[60, 150], [110, 105], [160, 70], [210, 38], [260, 20], [310, 10]].forEach(([d, a], i) => washAt(p, 40140 + i, MC.sky, a, [[-60, hy - 20], [1140, hy - 20], [1140, hy + d], [-60, hy + d]], 0.5, 0.4));
   } else washAt(p, 40102, MC.laneHi, 150, [[-60, hy], [1140, hy - 30], [1140, hy + 260], [-60, hy + 300]], 0.4, 0.3);
   const k = o.glow ?? 1;
   BOKEH.forEach((b, i) => { const q = farPoint(c, b.az, b.el); if (q) washAt(p, 40110 + i, b.color, b.a * k, ell(q[0], q[1], b.r * c.f / 1000, b.r * c.f / 1000, 26), 0.35, 0.1); });
@@ -117,28 +150,25 @@ export const paintLake = (p: Painter, c: YCam, t: number, o: {grade?: number} = 
   const lake = ringPts(c, PUDDLE.c[0], PUDDLE.c[1], PUDDLE.rx, PUDDLE.rz, PUDDLE.y, 44);
   if (lake.length >= 3) {
     washAt(p, 42101, MC.puddle, 255, lake, 0.05, 0.1);
-    const streak = ringPts(c, PUDDLE.c[0] + 90, PUDDLE.c[1] + 20, PUDDLE.rx * 0.07, PUDDLE.rz * 0.8, PUDDLE.y, 20);
-    if (streak.length >= 3) washAt(p, 42102, MC.shop, 70 * (1 - (o.grade ?? 0)), streak, 0.3, 0.1);
-    lakeRipples(t).forEach((r, i) => { const q = ringPts(c, r.x, r.z, r.r, r.r * 0.8, PUDDLE.y, 16); if (q.length >= 3) inkLine(p, 42200 + i, q, {weight: 1.1, color: mixColor('#c9dde4', MC.puddle, 1 - r.a * 0.8), curve: 0.2, still: true}); });
+    inkLine(p.layer(0.5, 42190), 42190, lake, {weight: 3, color: '#cfe0e6', curve: 0.2, still: true}); // F2-B12 (3): the wet edge, so the pale lake reads as a puddle against the ground
+    lakeRipples(t).forEach((r, i) => paintRing(p, c, PUDDLE.y, {x: r.x, z: r.z, r: r.r, a: r.a * 0.8}, {seed: 42200 + i, weight: 1.6}));
   }
 };
 
-/** F-B12 lake detail seen from above: a broad warm shop-reflection streak broken by ripples, cool lamp glints, and crowns where the slow drops land (smaller with distance). */
+/** F-B12 lake detail seen from above (F2-B12): one continuous warm shop-reflection streak cut by ripple gaps, cool lamp glints, and ripple rings lighter than the water. */
 export const paintLakeDetail = (p: Painter, c: YCam, t: number) => {
-  const pt = (x: number, z: number): Pt | null => camPoint(c, [x, PUDDLE.y, z], 0.3);
-  // the lake reads brighter than the ground (cold sky reflection), with the shop's reflection as a broken warm streak of ripple-cut dashes and cool lamp glints
   const sky = ringPts(c, PUDDLE.c[0], PUDDLE.c[1], PUDDLE.rx, PUDDLE.rz, PUDDLE.y, 44);
   if (sky.length >= 3) washAt(p, 42300, '#7f9aa6', 95, sky, 0.1, 0.1);
-  for (let i = 0; i < 11; i++) {
-    const z = PUDDLE.c[1] - PUDDLE.rz * 0.8 + i * (PUDDLE.rz * 1.6 / 10), x = PUDDLE.c[0] + 60 + 14 * Math.sin(i * 1.7 + t * 2), w = 2.5 + 4 * hash(42320 + i), q = ringPts(c, x, z, w, 2.4, PUDDLE.y, 12);
-    if (q.length >= 3) washAt(p, 42310 + i, MC.shop, 150, q, 0.3, 0.1);
-  }
+  const z0 = PUDDLE.c[1] - 0.8 * PUDDLE.rz, z1 = PUDDLE.c[1] + 0.8 * PUDDLE.rz;
+  paintStreak(p, c, {
+    seed: 42310, y: PUDDLE.y, z0, z1, xOf: (z) => PUDDLE.c[0] + 60 + 4 * Math.sin(0.08 * z + 2 * t), hw: (u) => 6 - 3 * u, color: MC.shop, alpha: 0.35 * 255, bleed: 0.25,
+    gaps: gapsOf(z0, z1, 10, 1.0, 42350), core: {u0: 0, u1: 0.4, hw: 1, color: '#f3d9a0', alpha: 0.5 * 255},
+  });
   for (let i = 0; i < 6; i++) { const q = ringPts(c, PUDDLE.c[0] - 100 + 30 * i, PUDDLE.c[1] - 60 + 25 * i, 0.9, 0.9, PUDDLE.y, 8); if (q.length >= 3) washAt(p, 42330 + i, MC.lamp, 190, q, 0.1, 0); }
-  // landings: ring pairs where far drops reach the water, widening with the ambient clock
+  // landings: rings where far drops reach the water, widening with the ambient clock, always lighter than the water and fading out
   for (let i = 0; i < 26; i++) {
     const ph = (t * 1.3 + hash(42310 + i)) % 1, x = PUDDLE.c[0] + (hash(42340 + i) * 2 - 1) * PUDDLE.rx * 0.85, z = PUDDLE.c[1] + (hash(42370 + i) * 2 - 1) * PUDDLE.rz * 0.85;
-    [0.6, 1].forEach((k, j) => { const r = (2 + ph * 20) * k, q = ringPts(c, x, z, r, r * 0.8, PUDDLE.y, 14); if (q.length >= 3) inkLine(p, 42400 + i * 2 + j, q, {weight: 1.4, color: mixColor('#e0eef2', MC.puddle, 1 - (1 - ph) * 0.85), curve: 0.2, still: true}); });
-    void pt;
+    [0.6, 1].forEach((k, j) => paintRing(p, c, PUDDLE.y, {x, z, r: (2 + ph * 20) * k, a: (1 - ph) * 0.85}, {seed: 42400 + i * 2 + j, weight: 1.6}));
   }
 };
 
@@ -151,20 +181,22 @@ export const paintMacro = (p: Painter, c: YCam, w: MacroWorld) => {
   if (w.rain !== false) paintSlowRain(p, c, w.t);
 };
 
-/** A flat water plane at world height `y` (the hypothetical `Mh` puddle, SH15): a wide wash, a cold-able warm streak and ripple rings from far drops only. */
-export const paintWaterPlane = (p: Painter, c: YCam, y: number, t: number, o: {cold?: number; reflect?: number} = {}) => {
+/** A flat water plane at world height `y` (the hypothetical `Mh` puddle, SH15): a wide wash, a cold-able warm streak and ripple rings from far drops only.
+ * F2-B15: no reflection quad (the shot draws the mirrored drop and mosquito); 6-10 far-drop rings 40-120 px across, lighter than the water, none within
+ * 150 px of the point under the mosquito (B-P3), and the sky-light sheen is an ellipse so no long straight edge shows on the water. */
+export const paintWaterPlane = (p: Painter, c: YCam, y: number, t: number, o: {cold?: number} = {}) => {
   wWash(p, c, 42400, MC.puddle, 255, qy(y, -900, 900, -900, 600), 0.02, 0.05);
-  wWash(p, c, 42401, '#8fb0c0', 80, qy(y, -300, 300, -400, 80), 0.1, 0.1); // cold sky reflection: the water reads lighter than the dark ground
-  wWash(p, c, 42402, MC.shop, 90 * (1 - (o.cold ?? 0)), qy(y, -22, 22, -400, -60), 0.3, 0.1);
-  if (o.reflect) wWash(p, c, 42403, '#dfeaf0', 50 * Math.min(1, o.reflect), qy(y, -1.2 - 2.2 * o.reflect, 1.2 + 2.2 * o.reflect, -1.2 - 2.2 * o.reflect, 1.2 + 2.2 * o.reflect), 0.6, 0.5); // the falling drop's reflection grows as it nears
-  for (let i = 0; i < 18; i++) {
-    const cx = (hash(42420 + i) - 0.5) * 320, cz = -140 + hash(42430 + i) * 130;
-    if (Math.hypot(cx, cz) < 30) continue; // no ring under the mosquito (B-P3)
-    const ph = (t * 1.1 + hash(42410 + i)) % 1, r = 4 + ph * 20;
-    [0.62, 1].forEach((k, j) => {
-      const q: Pt[] = [];
-      for (let m = 0; m < 16; m++) { const a = (m / 16) * 2 * Math.PI, v = camPoint(c, [cx + r * k * Math.cos(a), y, cz + r * k * 0.8 * Math.sin(a)], 0.3); if (v) q.push(v); }
-      if (q.length >= 3) inkLine(p, 42440 + i * 2 + j, q, {weight: 1.3, color: mixColor('#e0eef2', MC.puddle, 1 - (1 - ph) * 0.85), curve: 0.2, still: true});
-    });
+  const sheen = camPoly(c, Array.from({length: 40}, (_, i): V3 => [330 * Math.cos((i / 40) * 2 * Math.PI), y, -100 + 260 * Math.sin((i / 40) * 2 * Math.PI)]), 0.3);
+  if (sheen.length >= 3) washAt(p, 42401, '#8fb0c0', 80, sheen, 0.5, 0.3); // cold sky reflection: the water reads lighter than the dark ground
+  const warm = camPoly(c, Array.from({length: 28}, (_, i): V3 => [22 * Math.cos((i / 28) * 2 * Math.PI), y, -230 + 170 * Math.sin((i / 28) * 2 * Math.PI)]), 0.3);
+  if (warm.length >= 3) washAt(p, 42402, MC.shop, 90 * (1 - (o.cold ?? 0)), warm, 0.5, 0.2);
+  const under = camPoint(c, [0, y, 0], 0.3);
+  let n = 0;
+  for (let i = 0; i < 300 && n < 9; i++) { // candidates at three scales about the point under the mosquito: the falling camera sees a wide, then a close lake
+    const sc = [1, 0.25, 0.06][i % 3], at: V3 = [(hash(42420 + i) - 0.5) * 220 * sc, y, (hash(42430 + i) - 0.6) * 200 * sc], q = camPoint(c, at, 0.3);
+    if (!q || q[0] < 60 || q[0] > 1020 || q[1] < 120 || q[1] > 1850 || (under && Math.hypot(q[0] - under[0], q[1] - under[1]) < 150)) continue;
+    const ph = (t * 1.1 + hash(42410 + i)) % 1, px = 40 + 80 * ph, r = px / 2 / camUnit(c, at, 0.3);
+    paintRing(p, c, y, {x: at[0], z: at[2], r, a: (1 - ph) * 0.85}, {seed: 42440 + n * 2, weight: 1.5});
+    n++;
   }
 };

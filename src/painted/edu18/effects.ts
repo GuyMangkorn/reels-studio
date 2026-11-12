@@ -46,20 +46,20 @@ export const paintSplashCrown = (p: Painter, c: YCam, at: V3, f: number, o: {wid
   if (f < 0) return;
   const w = o.width ?? 2.51, cr = crownAt(f, w), s = o.seed ?? 52500, g = camPoint(c, at), u = camUnit(c, at);
   if (!g) return;
-  const ring = (rad: number, n = 28): Pt[] => Array.from({length: n}, (_, i) => { const a = (i / n) * 2 * Math.PI, q = camPoint(c, [at[0] + rad * Math.cos(a), at[1], at[2] + rad * Math.sin(a)], 0.3); return q ?? g; });
+  const ring = (rad: number, n = 28): Pt[] => Array.from({length: n}, (_, i) => { const a = (i / n) * 2 * Math.PI, q = camPoint(c, [at[0] + rad * Math.cos(a), at[1], at[2] + rad * Math.sin(a)], c.near ?? 0.3); return q ?? g; });
   washAt(p, s, '#c9dde4', 70 * cr.alpha, ring(cr.r * 1.2), 0.2, 0.1);
-  inkLine(p, s + 1, ring(cr.r), {weight: Math.max(1, u * 0.05), color: '#e8f4f6', curve: 0.2, still: true});
-  inkLine(p, s + 2, ring(cr.r * 1.35), {weight: Math.max(0.8, u * 0.03), color: mixColor('#e8f4f6', '#6a7a82', 0.5), curve: 0.2, still: true});
+  inkLine(p, s + 1, ring(cr.r), {weight: Math.min(6, Math.max(1, u * 0.05)), color: '#e8f4f6', curve: 0.2, still: true});
+  inkLine(p, s + 2, ring(cr.r * 1.35), {weight: Math.min(4, Math.max(0.8, u * 0.03)), color: mixColor('#e8f4f6', '#6a7a82', 0.5), curve: 0.2, still: true});
   if (o.jets === false) return;
   for (let i = 0; i < 12; i++) {
-    const a = (i / 12) * 2 * Math.PI + 0.2 * hash(s + i), h = cr.h * (0.7 + 0.5 * hash(s + 20 + i)), base = camPoint(c, [at[0] + cr.r * Math.cos(a), at[1], at[2] + cr.r * Math.sin(a)], 0.3), tip = camPoint(c, [at[0] + cr.r * 1.1 * Math.cos(a), at[1] + h, at[2] + cr.r * 1.1 * Math.sin(a)], 0.3);
+    const a = (i / 12) * 2 * Math.PI + 0.2 * hash(s + i), h = cr.h * (0.7 + 0.5 * hash(s + 20 + i)), base = camPoint(c, [at[0] + cr.r * Math.cos(a), at[1], at[2] + cr.r * Math.sin(a)], c.near ?? 0.3), tip = camPoint(c, [at[0] + cr.r * 1.1 * Math.cos(a), at[1] + h, at[2] + cr.r * 1.1 * Math.sin(a)], c.near ?? 0.3);
     if (!base || !tip) continue;
-    inkLine(p, s + 40 + i, [base, tip], {weight: Math.max(1, u * 0.05), color: '#eaf6f8', closed: false, curve: 0.2, still: true});
-    washAt(p, s + 60 + i, '#f4fbfc', 200 * cr.alpha, ell(tip[0], tip[1], Math.max(1.5, u * 0.07), Math.max(1.5, u * 0.07), 8), 0, 0);
+    inkLine(p, s + 40 + i, [base, tip], {weight: Math.min(6, Math.max(1, u * 0.05)), color: '#eaf6f8', closed: false, curve: 0.2, still: true});
+    washAt(p, s + 60 + i, '#f4fbfc', 200 * cr.alpha, ell(tip[0], tip[1], Math.min(6, Math.max(1.5, u * 0.07)), Math.min(6, Math.max(1.5, u * 0.07)), 8), 0, 0);
   }
   for (let i = 0; i < 7; i++) {
     const a = hash(s + 80 + i) * 2 * Math.PI, d = cr.r * (0.9 + 1.6 * hash(s + 100 + i)) * (0.4 + 0.6 * clamp01(f / 10)), hh = cr.h * (1.1 + 1.4 * hash(s + 120 + i)) * Math.sin(Math.PI * clamp01(f / 18));
-    const q = camPoint(c, [at[0] + d * Math.cos(a), at[1] + hh, at[2] + d * Math.sin(a)], 0.3);
-    if (q) washAt(p, s + 140 + i, '#e8f4f6', 190 * cr.alpha, ell(q[0], q[1], Math.max(1.4, u * 0.06), Math.max(1.4, u * 0.06), 8), 0, 0);
+    const q = camPoint(c, [at[0] + d * Math.cos(a), at[1] + hh, at[2] + d * Math.sin(a)], c.near ?? 0.3);
+    if (q) washAt(p, s + 140 + i, '#e8f4f6', 190 * cr.alpha, ell(q[0], q[1], Math.min(5, Math.max(1.4, u * 0.06)), Math.min(5, Math.max(1.4, u * 0.06)), 8), 0, 0);
   }
 };

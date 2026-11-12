@@ -4,7 +4,8 @@ import {mixColor, type Painter, type Pt} from '../kit/painter';
 import {paintSkyBands} from '../kit/sky';
 import type {V3} from '../kit/space';
 import {paintBox, qx, qy, qz, wFill, wInk, wWash} from '../kit/world';
-import {camPoint, camUnit, type YCam} from '../kit/ycam';
+import {gapsOf, paintRing, paintStreak, unproject} from './ripple';
+import {camDepth, camPoint, camUnit, type YCam} from '../kit/ycam';
 
 // N6 `new: SET-SOI18` (brief EDU-EP18-BRIEF-R1.4 "Set plan - SET-SOI18"; metres). Origin O on the soi surface directly under the centre of the awning's lip
 // (the drip line), x = 0 at the shop door's centre line; +x right along the shopfront as seen from the lane, +y up, +z out into the lane (toward the main
@@ -111,21 +112,36 @@ const paintAwning = (p: Painter, c: YCam) => {
 };
 
 export type DripOpts = {t: number; density?: number; span?: [number, number]};
-/** Drip curtain off the lip: one stream per corrugation valley landing at z 0.02-0.12, drops falling on the ambient clock, splash crowns where it lands. */
+/**
+ * F2-B19 / D-CU: one drip-curtain stream at (x, z) as falling elongated drops, not a line: 3-5 drops in the column [y0, y1] at irregular spacing on the ambient clock
+ * (width from the 2.5 mm drop in px, length 3 x width, core alpha 0.45, edge 0.15, a 2 px highlight on the shop side), plus a thread of <= 3 px at alpha <= 0.18 only within
+ * 0.15 m below the lip. A stream nearer than 0.06 m to the lens is out of focus: width x 2, alpha x 0.4, no highlight.
+ */
+export const paintStream = (p: Painter, c: YCam, t: number, x: number, z: number, i: number, o: {y0?: number; y1?: number; speed?: number; thread?: boolean} = {}) => {
+  const y0 = o.y0 ?? 0.02, y1 = o.y1 ?? SOI.lipY - 0.2, mid: V3 = [x, (y0 + y1) / 2, z], uw = camUnit(c, mid), blur = camDepth(c, mid) < 0.06;
+  const w = Math.min(36, Math.max(1.1, uw * 0.0025)) * (blur ? 2 : 1), k = blur ? 0.4 : 1, n = 3 + Math.floor(3 * hash(50710 + i * 7));
+  const speed = o.speed ?? 1.8 + 1.4 * hash(50720 + i);
+  if (o.thread !== false) {
+    const a = camPoint(c, [x, SOI.lipY - 0.03, z]), b = camPoint(c, [x, SOI.lipY - 0.18, z]), tw = Math.min(3, Math.max(1, w * 0.5)) / 2;
+    if (a && b) washAt(p, 50800 + i, SC.rain, 0.18 * 255 * k, [[a[0] - tw, a[1]], [a[0] + tw, a[1]], [b[0] + tw, b[1]], [b[0] - tw, b[1]]], 0, 0);
+  }
+  for (let d = 0; d < n; d++) {
+    const base = (d + 0.7 * hash(50730 + i * 7 + d)) / n, fr = (base + t * speed * 0.35 + hash(50740 + i)) % 1, y = y1 - fr * (y1 - y0), q = camPoint(c, [x, y, z]);
+    if (!q || q[0] < -60 || q[0] > 1140 || q[1] < -60 || q[1] > 1980) continue;
+    washAt(p, 51500 + i * 8 + d, SC.rain, 0.15 * 255 * k, ell(q[0], q[1], w * 0.85, w * 1.9 * 1.5, 10), 0, 0); // soft edge
+    washAt(p, 51600 + i * 8 + d, '#eef6fa', 0.45 * 255 * k, ell(q[0], q[1], w * 0.5, w * 1.5, 10), 0, 0); // core: length 3 x width
+    if (!blur && w >= 5) inkLine(p, 51700 + i * 8 + d, [[q[0] - w * 0.35, q[1] - w * 1.1], [q[0] - w * 0.4, q[1] + w * 0.9]], {weight: 2, color: '#ffffff', closed: false, curve: 0, still: true}); // highlight on the shop (left) side
+  }
+};
+
+/** Drip curtain off the lip: one stream per corrugation valley landing at z 0.02-0.12 (F2-B19: falling drops, see `paintStream`), splash crowns where it lands. */
 export const paintCurtain = (p: Painter, c: YCam, o: DripOpts) => {
   const [x0, x1] = o.span ?? [-4, 4], step = SOI.pitch / (o.density ?? 1);
-  const streak = (w = 1.1) => p.inkStill(50700, 'pen', mixColor(SC.rain, '#ffffff', 0.45), w);
   let i = 0;
   for (let x = x0; x < x1; x += step, i++) {
     const zl = 0.02 + 0.1 * hash(50710 + i);
-    if (!onScreen(c, [x, SOI.lipY, zl], 60)) continue;
-    const ph = (o.t * (1.8 + 1.4 * hash(50720 + i)) + hash(50730 + i)) % 1, len = 0.18 + 0.2 * hash(50740 + i);
-    const y1 = SOI.lipY - 0.04 - ph * (SOI.lipY - 0.04), a = camPoint(c, [x, Math.min(SOI.lipY - 0.03, y1 + len), zl]), b = camPoint(c, [x, Math.max(0, y1), zl]);
-    const uw = camUnit(c, [x, SOI.lipY, zl]), wpx = Math.min(36, Math.max(1.1, uw * 0.0025)); // a drop 2.5 mm across: close lenses (SH19-SH21) see it as a real streak
-    if (a && b && Math.abs(b[1] - a[1]) > 1) { streak(wpx); p.brush.line(a[0], a[1], b[0], b[1]); }
-    // the continuous stream core: a thin pale line from the lip down (every valley carries one)
-    const s0 = camPoint(c, [x, SOI.lipY - 0.03, zl]), s1 = camPoint(c, [x, 0.01, zl]);
-    if (s0 && s1 && i % 2 === 0) washAt(p, 50800 + i, SC.rain, 55, [[s0[0] - Math.max(1.2, wpx * 0.5), s0[1]], [s0[0] + Math.max(1.2, wpx * 0.5), s0[1]], [s1[0] + Math.max(1.2, wpx * 0.5), s1[1]], [s1[0] - Math.max(1.2, wpx * 0.5), s1[1]]], 0, 0);
+    if (!onScreen(c, [x, SOI.lipY, zl], 60) && !onScreen(c, [x, 0.3, zl], 60)) continue;
+    paintStream(p, c, o.t, x, zl, i);
   }
   for (let j = 0; j < 36; j++) { // splash crowns where the curtain lands
     const sx = x0 + hash(50900 + j) * (x1 - x0), q = camPoint(c, [sx, 0.012, 0.07]);
@@ -157,15 +173,44 @@ export const paintPuddle = (p: Painter, c: YCam, t: number, o: {cold?: number; r
   if (o.rich) washAt(p, 51300, '#9db4be', 70, lake, 0.2, 0.1); // sky-light sheen under the rings
   const streak = ring(P.c[0] - 0.15, P.c[1] - 0.12, 0.09, 0.2, 18);
   if (streak.length >= 3 && !o.rich) washAt(p, 51201, SC.glowWarm, 120 * (1 - (o.cold ?? 0)), streak, 0.3, 0.1);
-  (o.rich ? richRipples(t) : ripples(t)).forEach((r, i) => { const q = ring(r.x, r.z, r.r, r.r * 0.8, 14); if (q.length >= 3) inkLine(p, 51210 + i, q, {weight: o.rich ? 1.8 : 1.0, color: mixColor(o.rich ? '#eef8fa' : '#c9dde4', SC.puddle, 1 - r.a * 0.9), curve: 0.2, still: true}); });
-  if (o.rich) { // F-B20: the puddle as water: a sky-light sheen, the warm streak broken into ripple-cut dashes, cool lamp glints, and crowns where the curtain lands on it
-    for (let i = 0; i < 9; i++) { const q = ring(P.c[0] - 0.15 + 0.03 * Math.sin(i * 1.9 + t * 3), P.c[1] - 0.36 + i * 0.04, 0.035 + 0.04 * hash(51310 + i), 0.008, 10); if (q.length >= 3) washAt(p, 51320 + i, SC.glowWarm, 150, q, 0.3, 0.1); }
+  if (o.rich) richRipples(t).forEach((r, i) => paintRing(p, c, P.y, {x: r.x, z: r.z, r: r.r, a: r.a * 0.85}, {seed: 51210 + i, weight: 1.8}));
+  else ripples(t).forEach((r, i) => { const q = ring(r.x, r.z, r.r, r.r * 0.8, 14); if (q.length >= 3) inkLine(p, 51210 + i, q, {weight: 1.0, color: mixColor('#c9dde4', SC.puddle, 1 - r.a * 0.9), curve: 0.2, still: true}); });
+  if (o.rich) { // F2-B20: one continuous warm streak cut by 6 ripple gaps, cool lamp glints, and >= 4 crowns of >= 18 px in frame at every frame
+    const z0 = P.c[1] - 0.36, z1 = P.c[1];
+    paintStreak(p, c, {seed: 51320, y: P.y, z0, z1, xOf: (z) => P.c[0] - 0.15 + 0.006 * Math.sin(40 * z + 2 * t), hw: () => 0.015, color: SC.glowWarm, alpha: 0.3 * 255, bleed: 0.4, gaps: gapsOf(z0, z1, 6, 0.005, 51330)});
     for (let i = 0; i < 7; i++) { const q = ring(P.c[0] + 0.15 + 0.07 * i - 0.2, P.c[1] - 0.12 + 0.05 * i, 0.008, 0.006, 8); if (q.length >= 3) washAt(p, 51340 + i, '#f2fbff', 230, q, 0.1, 0); }
-    for (let i = 0; i < 16; i++) { // crowns: small arcs standing on the surface where drops land
-      const a = hash(51360 + i) * 6.283, rr = Math.sqrt(hash(51380 + i)) * 0.9, x = P.c[0] + Math.cos(a) * rr * P.rx, z = P.c[1] + Math.sin(a) * rr * P.rz, k = (t * 2.2 + hash(51400 + i)) % 1, r = 0.012 + 0.03 * k;
-      const b = camPoint(c, [x, P.y, z]), u = camUnit(c, [x, P.y, z]);
-      if (b) inkLine(p, 51420 + i, [[b[0] - r * u, b[1]], [b[0] - r * u * 0.4, b[1] - r * u * 0.9], [b[0] + r * u * 0.4, b[1] - r * u * 0.9], [b[0] + r * u, b[1]]], {color: SC.crown, weight: 1.6, closed: false, still: true});
+    richCrowns(c, t, P.y).forEach((cr, i) => paintCrown(p, c, cr, 51420 + i * 16));
+  }
+};
+
+/** Crowns on the puddle (F2-B20): 12 crowns on a 14 f cycle, each alive 7-8 f, at picture-fixed random places on the water per cycle, so at least 4 stand in frame at every frame. */
+export type Crown = {at: V3; k: number; h: number; r: number};
+export const richCrowns = (c: YCam, t: number, y: number): Crown[] => {
+  const F = Math.round(t * 30), out: Crown[] = [];
+  for (let i = 0; i < 12; i++) {
+    const off = i * (14 / 12), cyc = Math.floor((F + off) / 14), age = (F + off) % 14, life = 7 + Math.floor(2 * hash(51450 + i));
+    if (age >= life) continue;
+    let at: V3 | null = null;
+    for (let tr = 0; tr < 8 && !at; tr++) { // a place on the water (inside the puddle), picture-fixed for this cycle
+      const seed = 51460 + i * 31 + cyc * 7 + tr * 1013, q = unproject(c, 90 + hash(seed) * 900, 700 + hash(seed + 1) * 1200, y);
+      if (q && ((q[0] - SOI.puddle.c[0]) / (SOI.puddle.rx * 0.92)) ** 2 + ((q[2] - SOI.puddle.c[1]) / (SOI.puddle.rz * 0.92)) ** 2 < 1) at = q;
     }
+    if (!at) continue;
+    const k = age / life, u = camUnit(c, at);
+    out.push({at, k, h: 18 + 12 * Math.sin(Math.PI * k), r: Math.max(14, (0.008 + 0.012 * k) * u)});
+  }
+  return out;
+};
+const paintCrown = (p: Painter, c: YCam, cr: Crown, id: number) => {
+  const b = camPoint(c, cr.at);
+  if (!b) return;
+  const q = p.layer(0.8, id), arc = Array.from({length: 7}, (_, j): Pt => { const a = Math.PI * (j / 6); return [b[0] - Math.cos(a) * cr.r, b[1] - Math.sin(a) * cr.h * 0.55]; });
+  inkLine(q, id, arc, {color: SC.crown, weight: 2.2, closed: false, curve: 0.3, still: true});
+  inkLine(q, id + 1, ell(b[0], b[1], cr.r * 1.15, cr.r * 0.4, 20), {color: SC.crown, weight: 1.6, curve: 0.2, still: true});
+  for (let j = 0; j < 5; j++) { // rim jets with a bead at the tip, up to the crown height
+    const a = Math.PI * ((j + 0.5) / 5), x = b[0] - Math.cos(a) * cr.r, tip: Pt = [x + (j - 2) * 2, b[1] - cr.h * (0.7 + 0.3 * Math.sin(a))];
+    inkLine(q, id + 2 + j, [[x, b[1]], tip], {color: SC.crown, weight: 2.2, closed: false, curve: 0, still: true});
+    washAt(q, id + 8 + j, SC.crown, 220, ell(tip[0], tip[1], 3, 3, 8), 0, 0);
   }
 };
 
