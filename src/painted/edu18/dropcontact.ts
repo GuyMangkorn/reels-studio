@@ -14,8 +14,9 @@ export const dimpleDepth = (L: number, contactL: number) => FACE.dimple * ease(c
 /** Height (`Dl` y shifted by the drop's centre) of the face a passenger lies on: the passenger's contact surface sits here (R04, within 0.02 sm). The
  * dimple is a shading of the face under the body, not a move of the body, so passengers keep this height through the contact. */
 export const passengerY = (centreY: number) => centreY + BUN_SM.bottom;
-/** Gap (sm) between a passenger's contact surface and the face: must be <= FACE.tol (R04). */
-export const contactGap = (surfaceY: number, centreY: number) => Math.abs(surfaceY - (centreY + BUN_SM.bottom));
+/** Gap (sm) between a passenger's contact surface and the face: must be <= FACE.tol (R04). `dip` (sm, + = toward the lens / down) is the pass-5 move of the face under a
+ * reacting passenger (D5-02: the face gives, the body rides it); 0 at rest. */
+export const contactGap = (surfaceY: number, centreY: number, dip = 0) => Math.abs(surfaceY - (centreY + BUN_SM.bottom - dip));
 
 const ringAt = (c: YCam, ctr: V3, y: number, r: number, n = 40, rz = r): Pt[] => {
   const out: Pt[] = [];
@@ -75,4 +76,19 @@ export const paintBunWithRiders = (p: Painter, c: YCam, ctr: V3, o: {t: number; 
   riders();
   paintFilm(p, c, ctr, {t: o.t});
   return b;
+};
+
+/** One ring on the bottom face plane (pass 5, F5-B01/B02: the drop's surface tension answering a touch): centre `at` (world; only x and z are used, the ring lies on the face of the drop
+ * centred `ctr`), radius `r` sm, 2 px `#e8f2f4` at `alpha`, clipped to the face radius 0.9 sm (the parts of the circle outside the face are not drawn). */
+export const paintFaceRing = (p: Painter, c: YCam, ctr: V3, at: V3, r: number, alpha: number, seed: number) => {
+  if (alpha <= 0.004 || r <= 0) return;
+  const n = 64, runs: Pt[][] = [];
+  let run: Pt[] = [];
+  for (let i = 0; i <= n; i++) {
+    const a = (i / n) * 2 * Math.PI, x = at[0] + r * Math.cos(a), z = at[2] + r * Math.sin(a), q = Math.hypot(x - ctr[0], z - ctr[2]) <= FACE.r ? camPoint(c, [x, ctr[1] + BUN_SM.bottom, z], 0.3) : null;
+    if (q) run.push(q); else { if (run.length >= 2) runs.push(run); run = []; }
+  }
+  if (run.length >= 2) runs.push(run);
+  const q = p.layer(Math.min(1, alpha), seed);
+  runs.forEach((pts, i) => inkLine(q, seed + 1 + i, pts, {weight: 2, color: '#e8f2f4', curve: 0.25, closed: false, still: true}));
 };

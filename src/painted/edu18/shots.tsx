@@ -11,14 +11,14 @@ import {paintDrop14} from '../kit/water-drop';
 import {balanceAngle, paintBalance} from './balance';
 import {lookCam, mix3, moveCam} from './cams';
 import {clockOf, FALL_D2, FALL_REPLAY, FALL_SM_PER_F, lenOf, lerp, SH04, SH14, SH16, sh16Fall, sh17Fall, SH17, sm, SHOT_TABLE, type ShotId} from './clock';
-import {paintDimple, paintFilm, paintUnderface, dimpleDepth, passengerY} from './dropcontact';
+import {paintDimple, paintFaceRing, paintFilm, paintUnderface, dimpleDepth, passengerY} from './dropcontact';
 import {CROWN_W, paintCrownRipple, paintShrinkPop, paintSplashCrown, shrinkAbout, shrinkScale} from './effects';
 import {paintFeatherBall} from './feather';
 import {Ot01, Ot02, Ot03} from './labels';
 import {hash} from '../kit/hash';
 import {unproject} from './ripple';
 import {GROUND_Y, MC, paintLakeDetail, BUN_SM, paintBun, paintMacro, paintMacroBackdrop, paintStreamMotes, paintSlowRain, paintWaterPlane, PUDDLE, wobble} from './macro';
-import {anchorUnderFace, BODY_SPAN, drawMosquito, MOSQ_BL_M, MOSQ_BL_SM, mosqReachAbove, mosqReachBelow, paintMosquito, type MosqState} from './mosquito';
+import {anchorUnderFace, BODY_SPAN, drawMosquito, MOSQ_BL_M, MOSQ_BL_SM, mosqReachAbove, mosqReachBelow, paintMosquito, rcPulse, springS, thoraxAt, type MosqOpts, type MosqState} from './mosquito';
 import {Painted, type Grade} from './look';
 import {paintRuler, RULER, tickY} from './ruler';
 import {paintCurtain, paintSoi, paintStream, SOI} from './soi';
@@ -207,14 +207,54 @@ const d1ctr = (id: ShotId, L: number): V3 => [D1_X, D1_Y0[id] - FALL_SM_PER_F * 
 const dlCam = (ctr: V3, pos: V3, at: V3, f = 1000): YCam => lookCam([ctr[0] + pos[0], ctr[1] + pos[1], ctr[2] + pos[2]], [ctr[0] + at[0], ctr[1] + at[1], ctr[2] + at[2]], f);
 const HER: V3 = [0, RIDER_Y - 0.04, -0.42], BUGPOS: V3 = [0, RIDER_Y, 0.4];
 
-const paintUnder = (p: Painter, c: YCam, ctr: V3, t: number, L: number, o: {face: Parameters<typeof paintWoman>[2]['face']; cold?: number; hair?: boolean; legsAlive?: boolean; mosqPhase?: number; skipMosq?: boolean; bg?: () => void; skipBg?: boolean; ridersOnly?: boolean; place?: {wHead: Pt; wFeet: Pt; mHead: Pt; mTail: Pt}}) => {
+// ---- Pass 5 F5-B01 (D5-02, D5-03): SH02 settles from the cut and flexes on "ไม่แบน". Everything is a pure function of the shot-local frame n.
+const easeIn01 = (u: number) => u * u, easeOutCubic = (u: number) => 1 - (1 - clamp01(u)) ** 3, lin01 = (a: number, b: number, n: number) => clamp01((n - a) / (b - a));
+/** Face ride (sm, + = toward the lens, `Dl` -y): the drop's face under the mosquito gives and recovers; 0.07 sm at +0 (D5-03: the cut catches the rebound 20 f after SH07's touch). */
+export const sh02Ride = (n: number) => (n > 36 ? 0 : 0.07 * springS(n, 12, 12));
+/** The mosquito's contact surface in SH02 (Dl y): the anchor rides the face, the belly stays on it (the rest offset is the anchor-to-belly constant of the card). */
+export const SH02_BELLY = BUN_SM.bottom - (RIDER_Y);
+export const sh02Anchor = (n: number) => RIDER_Y - sh02Ride(n);
+export const sh02Surface = (n: number) => sh02Anchor(n) + SH02_BELLY;
+/** The `drawMosquito` options of the SH02 ventral card at frame n and ambient seconds t (D5-01: abdomen >= 1, no axis below rest). */
+export const sh02Opts = (n: number, t: number): MosqOpts => {
+  const flex = n < 35 ? 0 : n <= 40 ? 16 * ease(lin01(35, 40, n)) : n <= 43 ? 16 : 16 * springS(n - 43, 10, 8);
+  const settle = (k: number) => 18 * springS(n - k, 10, 9);
+  const env = n <= 30 ? 1 - 0.5 * ease(lin01(0, 30, n)) : 0.5;
+  const breath = n >= 20 ? 1 + 0.05 * rcPulse((n - 20) % 30, 30) : 1, round = n >= 38 && n <= 50 ? 1 + 0.12 * rcPulse(n - 38, 12) : 1;
+  return {view: 'below', state: 'pressed', mirror: true, t, squash: 0.85, rimColor: '#e9b46a', blur: false,
+    legBend: {fore: settle(0) + flex, mid: settle(2) + flex, hind: settle(4) + flex}, legFan: -5 * springS(n, 10, 9),
+    wingQuiver: 3 * Math.sin(2 * Math.PI * 2.6 * t) * env,
+    probeAng: 6 * springS(n - 2, 12, 12) + 6 * rcPulse(n - 38, 10), antAng: 10 * springS(n - 2, 12, 10) + 10 * rcPulse(n - 37, 12),
+    abdomen: Math.max(breath, round), sheen: 0.35 + (0.08 * n) / 60};
+};
+/** Face rings of SH02 (surface tension of the drop): [radius sm, alpha] pairs at frame n. */
+export const sh02Rings = (n: number): [number, number][] => {
+  const out: [number, number][] = [];
+  if (n >= 0 && n <= 16) { const a = 0.4 * (1 - (n / 16) ** 2); // ease-out fade: Film's linear 0.40 -> 0 gives 0.15 at +10 against the acceptance's >= 0.2 (this gives 0.244)
+    out.push([0.25 + 0.05 * n, a], [0.1 + 0.05 * n, a]); }
+  if (n >= 40 && n <= 52) out.push([0.15 + 0.04 * (n - 40), 0.3 * (1 - (n - 40) / 12)]);
+  return out;
+};
+
+/** The SH02 ventral card at frame n (the one place the shot and its measurements share). */
+export const paintSH02Mosq = (p: Painter, c: YCam, ctr: V3, n: number, t: number) => {
+  const at: V3 = [ctr[0] + BUGPOS[0], ctr[1] + sh02Anchor(n), ctr[2] + BUGPOS[2]], g = camPoint(c, at), ub = camUnit(c, at);
+  return g ? {m: drawMosquito(p, g, ub * MOSQ_BL_SM, sh02Opts(n, t)), unit: ub} : null;
+};
+const paintUnder = (p: Painter, c: YCam, ctr: V3, t: number, L: number, o: {face: Parameters<typeof paintWoman>[2]['face']; cold?: number; hair?: boolean; legsAlive?: boolean; mosqPhase?: number; skipMosq?: boolean; bg?: () => void; skipBg?: boolean; ridersOnly?: boolean; place?: {wHead: Pt; wFeet: Pt; mHead: Pt; mTail: Pt}; mq?: {n: number}}) => {
   if (!o.skipBg && !o.ridersOnly) skyUp(p, o.cold ?? 0);
   if (!o.ridersOnly) o.bg?.();
   if (!o.ridersOnly) paintUnderface(p, c, ctr, {t, cold: o.cold});
   const dl = (v: V3): V3 => [ctr[0] + v[0], ctr[1] + v[1], ctr[2] + v[2]];
   const face = ctr[1] + BUN_SM.bottom, dep = dimpleDepth(L + 10, 0);
   if (!o.ridersOnly) paintDimple(p, c, ctr, dl([0, 0, -0.42]), 0.85, 0.28, dep, 43100);
-  if (!o.ridersOnly) paintDimple(p, c, ctr, dl([0, 0, 0.4]), 0.75, 0.2, dep, 43150);
+  const ride = o.mq ? sh02Ride(o.mq.n) : 0; // F5-B01: the ring's alpha follows depth FACE.dimple + d
+  if (!o.ridersOnly) paintDimple(p, c, ctr, dl([0, 0, 0.4]), 0.75, 0.2, dep + ride, 43150);
+  if (o.mq && !o.ridersOnly) { // surface-tension rings from the thorax point, on the drop's face only (F5-B01)
+    const g0 = camPoint(c, dl([0, sh02Anchor(o.mq.n), 0.4])), ub0 = camUnit(c, dl([0, sh02Anchor(o.mq.n), 0.4]));
+    const th = g0 ? thoraxAt(g0, ub0 * MOSQ_BL_SM, true) : null, at = th ? unproject(c, th[0], th[1], face) : null;
+    if (at) sh02Rings(o.mq.n).forEach(([r, a], i) => paintFaceRing(p, c, ctr, at, r, a, 43300 + i * 10));
+  }
   const hp = camPoint(c, dl([-0.07, passengerY(0) - 0.04 + 0.0, -0.42])), u = camUnit(c, dl(HER)) ;
   void face;
   if (o.place) { // F-B11: both laid by their projected head -> feet / head -> tail anchors (rolled in the picture plane), the mosquito first so her hair and face draw over its legs
@@ -226,14 +266,16 @@ const paintUnder = (p: Painter, c: YCam, ctr: V3, t: number, L: number, o: {face
   }
   if (hp) paintPressedWoman(p, hp, u, t, o.face);
   if (!o.skipMosq) {
-    const g = camPoint(c, dl(BUGPOS)), ub = camUnit(c, dl(BUGPOS));
-    if (g) drawMosquito(p, g, ub * MOSQ_BL_SM, {view: 'below', state: 'pressed', mirror: true, t, squash: 0.85, rimColor: '#e9b46a', pitchAdd: 0});
+    if (o.mq) paintSH02Mosq(p, c, ctr, o.mq.n, t);
+    else { const g = camPoint(c, dl(BUGPOS)), ub = camUnit(c, dl(BUGPOS)); if (g) drawMosquito(p, g, ub * MOSQ_BL_SM, {view: 'below', state: 'pressed', mirror: true, t, squash: 0.85, rimColor: '#e9b46a', pitchAdd: 0}); }
   }
 };
 export const camSH08 = (L: number) => (ctr: V3) => dlCam(ctr, mix3([0.1, -3.0, 1.6], [0.05, -2.75, 1.45], sm(0, 60, L)), [0, -0.95, 0]);
+/** SH02 camera and drop centre at shot-local n (for the measurements). */
+export const sh02Frame = (n: number) => { const ctr = d1ctr('S01-B02-SH02', n); return {ctr, c: camSH08(n)(ctr)}; };
 def({id: 'S01-B02-SH02', grade: 'neutral', paint: (p, L) => {
   const ctr = d1ctr('S01-B02-SH02', L), c = camSH08(L)(ctr), t = ambT('S01-B02-SH02', L);
-  paintUnder(p, c, ctr, t, L, {face: 'scared'});
+  paintUnder(p, c, ctr, t, L, {face: 'scared', mq: {n: L}});
   paintSlowRain(p, c, t, {alpha: 0.7, skip: (d) => d.at[1] > ctr[1] - 1});
 }});
 
@@ -325,33 +367,71 @@ const glowAt = (L: number) => (L < SH14.glow[0] ? 0 : L < SH14.glow[1] ? 0.6 + 0
 const D2_HIT = 50, MH_WATER = -21.95;
 const d2s = (n: number) => FALL_D2 * Math.max(0, n - D2_HIT);
 // F-B15: pitch 31 deg from +0; from +50 the camera falls with D2 and tilts to 40 deg, so the water is under the mosquito (+113: 278 px clear band)
-const camSH15 = (n: number) => {
+export const camSH15 = (n: number) => {
   const s = d2s(n);
   return n < D2_HIT ? lookCam([1.6, 0.4, 4.4], [0, -2.4, 0], 1000) : lookCam([1.6, 0.4 - s, 4.4], [0, -2.4 - s - 1.2 * sm(0, 63, n - D2_HIT), 0], 1000);
 };
+// ---- Pass 5 F5-B02 (D5-02, D5-04): hit, absorb, struggle, try and fail. `m` = n - 50. Pure functions of the shot-local frame n and the ambient seconds t.
+/** Face dip (sm, + = down): the face and the body move together; 0.12 sm at +53, springs back (R04: the body stays within 0.02 sm of the displaced face). */
+export const sh15Dip = (n: number) => { const m = n - D2_HIT; return m < 0 ? 0 : m <= 3 ? 0.12 * Math.sin((Math.PI * m) / 6) : 0.12 * springS(m - 3, 10, 6); };
+/** Drop squeeze (screen-height factor delta of the bun): -4 % at +52, about +1.5 % at +57, rest by +64. */
+export const sh15Squeeze = (n: number) => -0.04 * springS(n - D2_HIT - 2, 10, 6);
+export const sh15Quiver = (n: number) => n < D2_HIT ? 0 : n < 94 ? (n <= 54 ? 1 : Math.max(0.4, Math.exp(-(n - 54) / 20))) : n <= 100 ? 0.4 + 0.6 * ease(lin01(94, 100, n)) : n <= 110 ? 1 - 0.6 * ease(lin01(100, 110, n)) : 0.4;
+/** The reaction of the SH15 mosquito at frame n: pose state, blend, offsets and the hit pitch. `base` is the options every call shares (view, state, t, rimColor). */
+/** Leg sweep 0 -> 1 from hover to pressed. Film's ease-out cubic over +50-+55 moves the hind tip 350 px in one frame (acceptance 1: <= 70 px), because the tips cross about 800 px
+ * in the pose change. A constant-speed sweep (trapezoid: 3 f ramps) that still arrives pressed at +55 therefore starts at SWEEP0, ahead of the contact. */
+export const SWEEP0 = 38;
+export const sh15Sweep = (n: number) => { const a = SWEEP0, b = 55, r = 3, T = b - a, v = 1 / (T - r); const x = n - a; return x <= 0 ? 0 : x >= T ? 1 : x < r ? (v * x * x) / (2 * r) : x <= T - r ? v * (r / 2 + (x - r)) : 1 - (v * (T - x) * (T - x)) / (2 * r); };
+/** The try's nose-up lift (deg): the start of the B05 tip, +4 deg peak at +102, 0 by +110. */
+export const sh15Try = (n: number) => 4 * rcPulse(n - 94, 16);
+export const sh15Opts = (n: number, t: number): MosqOpts => {
+  const m = n - D2_HIT, hit = n >= D2_HIT;
+  const air = lin01(46, 49, n) ** 2, airW = hit ? 1 - lin01(49, 51, n) : 1; // air push: +46-+49, over by +51
+  const swing = n < 46 ? 0 : n < D2_HIT ? 6 * air : 6 * (1 - lin01(D2_HIT, 55, n));
+  const rebound = 7 * rcPulse(m - 3, 8) + 3 * rcPulse(m - 12, 6);
+  const paddle = (n0: number, a: number) => a * rcPulse(n - n0, 12), push = 12 * rcPulse(n - 94, 14);
+  const lb = (k: number, a: number, b: number) => rebound + paddle(a + k, 8) + paddle(b + k, 6) + push;
+  return {view: 'right', state: 'hover', t, rimColor: '#a8bcd0', blend: {to: 'pressed', k: sh15Sweep(n), kWing: hit ? easeOutCubic(lin01(D2_HIT, 53, n)) : 0},
+    legSwing: swing, antAng: -12 * air * airW + 10 * springS(m - 1, 10, 5), probeAng: 10 * springS(m - 1, 10, 5),
+    pitchAdd: -5 * springS(m - 1, 10, 6) * ease(lin01(0, 4, m)) + sh15Try(n), legBend: {fore: lb(0, 64, 80), mid: lb(3, 64, 80), hind: lb(6, 64, 80)},
+    wingQuiver: 5 * Math.sin(2 * Math.PI * 2.6 * t) * sh15Quiver(n), abdomen: 1 + 0.06 * (rcPulse(n - 64, 16) + rcPulse(n - 80, 16))};
+};
+/** SH15 geometry at frame n: the drop centre (displaced by the dip), the mosquito anchor under its face (the back just touches it), and the frame's options. */
+/** The try's lift pivots about the waist, which would lower the thorax's back 0.026 sm under the face (contact gap limit 0.02) or, if the anchor followed it fully, move the body centre
+ * 4.9 px (Film: within 2 px of rest): the anchor follows 30 % of it, leaving a gap of 0.018 sm and a centre move of 1.8 px (Film's two limits cannot both be met at 0 or 100 %). */
+const TRY_PIVOT = 0.7;
+export const sh15Frame = (n: number, t: number) => {
+  const s = d2s(n), dip = sh15Dip(n), o = sh15Opts(n, t), hit = n >= D2_HIT;
+  const ctr: V3 = [0, (n < D2_HIT ? FALL_D2 * (D2_HIT - n) : -s) - dip, 0];
+  // the anchor follows the blended pose's back so the dorsal line stays on the face through the sweep (state 'pressed' + the pitch the hover blend still carries)
+  const pitchRest = -15 * (1 - (o.blend?.k ?? 0)), ay = hit ? anchorUnderFace(ctr[1] + BUN_SM.bottom, MOSQ_BL_SM, 'pressed', pitchRest + (o.pitchAdd ?? 0) - TRY_PIVOT * sh15Try(n)) : RIDER_Y;
+  return {ctr, dip, ay, opts: o, hit, squeeze: sh15Squeeze(n)};
+};
+
 def({id: 'S01-B04-SH02', grade: 'coldest', paint: (p, L) => {
   const c = camSH15(L), t = ambT('S01-B04-SH02', L), s = d2s(L);
   skyUp(p, 1);
   paintWaterPlane(p, c, MH_WATER, t, {cold: 1});
   paintSlowRain(p, c, t, {alpha: 0.6, skip: (d) => d.at[1] < MH_WATER + 2});
-  const ctr: V3 = [0, L < D2_HIT ? FALL_D2 * (D2_HIT - L) : -s, 0]; // D2 falls onto the mosquito's back at +50 (R04), from above
-  const hit = L >= D2_HIT, ay = hit ? anchorUnderFace(ctr[1] + BUN_SM.bottom, MOSQ_BL_SM, 'pressed') : RIDER_Y;
+  void s;
+  const {ctr, ay, opts: mo, hit, squeeze} = sh15Frame(L, t); // D2 falls onto the mosquito's back at +50 (R04), from above; the dip moves the face and the body together (D5-02)
   // F2-B15 / D-15R: D2 and the mosquito mirrored about the water plane (y' = 2 * MH_WATER - y) at 30 %, cool tint, cut by 5 horizontal ripple bands: the gap between the
   // mosquito and its reflection is the cue that it does not touch the water (A08, R04). Rolled 180 deg about its own projected centre = a vertical flip.
   const my = (y: number) => 2 * MH_WATER - y, rctr: V3 = [ctr[0], my(ctr[1]), ctr[2]], rg = camPoint(c, rctr, 0.3);
   if (rg) {
     const rp = tintPainter(p.layer(0.3, 57300), '#cfe0e8', 0.5, {brush: true});
-    withRoll(rp, rg, 180, () => paintBun(rp, c, rctr, {t, seed: 40700, glow: false}));
+    withRoll(rp, rg, 180, () => paintBun(rp, c, rctr, {t, seed: 40700, glow: false, squeeze}));
     const ma: V3 = [0, my(ay), 0], mg = camPoint(c, ma, 0.3);
-    if (mg) withRoll(rp, mg, 180, () => paintMosquito(rp, c, ma, MOSQ_BL_SM, {view: 'left', state: hit ? 'pressed' : 'hover', t, rimColor: '#a8bcd0'}));
+    if (mg) withRoll(rp, mg, 180, () => paintMosquito(rp, c, ma, MOSQ_BL_SM, {...mo, view: 'left'}));
     const u = camUnit(c, rctr, 0.3), hw = BUN_SM.w * u * 0.8, top = camPoint(c, [rctr[0], rctr[1] + BUN_SM.top, rctr[2]], 0.3), bot = camPoint(c, [rctr[0], rctr[1] + BUN_SM.bottom, rctr[2]], 0.3);
     if (top && bot) for (let i = 0; i < 5; i++) { // ripple bands in the water colour across the reflection
       const y0 = Math.min(top[1], bot[1]) + ((i + 0.5) / 5) * Math.abs(bot[1] - top[1]), h = 2 + 2 * hash(57320 + i);
       washAt(p, 57330 + i, mixColor(MC.puddle, '#8fb0c0', 0.25), 255, [[rg[0] - hw, y0], [rg[0] + hw, y0], [rg[0] + hw, y0 + h], [rg[0] - hw, y0 + h]], 0.2, 0.05);
     }
   }
-  paintBun(p, c, ctr, {t, seed: 40700});
-  paintMosquito(p, c, [0, ay, 0], MOSQ_BL_SM, {view: 'right', state: hit ? 'pressed' : 'hover', t, rimColor: '#a8bcd0'});
+  paintBun(p, c, ctr, {t, seed: 40700, squeeze});
+  if (hit && L <= D2_HIT + 10) paintFaceRing(p, c, ctr, [0, 0, 0], 0.2 + 0.07 * (L - D2_HIT), 0.5 * (1 - (L - D2_HIT) / 10), 43400); // the drop's surface answers the touch, seen through the drop
+  paintMosquito(p, c, [0, ay, 0], MOSQ_BL_SM, mo);
   if (hit) paintFilm(p, c, ctr, {t});
 }});
 

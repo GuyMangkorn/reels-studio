@@ -38,11 +38,26 @@ export const wobble = (t: number, phase = 0): {size: number; flat: number} => {
 };
 
 /** Paints one hero bun (D0 / D1 / D2) with its centre at `at` (sm). Returns the screen centre and the px width, or null behind the lens. */
-export const paintBun = (p: Painter, c: YCam, at: V3, o: {t: number; phase?: number; seed?: number; glow?: boolean; up?: {maxBottom: number}} = {t: 0}): {g: Pt; widthPx: number; heightPx: number; bottom: number} | null => {
-  const g = camPoint(c, at);
+/** Pass 5 (F5-B02, D5-02): the bun squeezed by `sq` (screen-height factor delta, negative = lower): height x (1 + sq), width x (1 - 0.5 sq) so the volume holds within +-2 %.
+ * Solved on the bun's own `flat` (the outline stays the bun shape); the bottom face stays where it was (the top gives, the face is pinned). */
+export const squeezeBun = (st: DropState, sq: number): DropState => {
+  const h0 = bounds(dropOutline(st)).h, size = st.size * (1 - 0.5 * sq), target = h0 * (1 + sq);
+  let lo = 0.05, hi = 1.2;
+  for (let i = 0; i < 24; i++) { const mid = (lo + hi) / 2; if (bounds(dropOutline({...st, size, flat: mid})).h > target) lo = mid; else hi = mid; } // the outline's height falls as `flat` rises
+  return {...st, size, flat: (lo + hi) / 2};
+};
+
+export const paintBun = (p: Painter, c: YCam, at: V3, o: {t: number; phase?: number; seed?: number; glow?: boolean; up?: {maxBottom: number}; squeeze?: number} = {t: 0}): {g: Pt; widthPx: number; heightPx: number; bottom: number} | null => {
+  let g = camPoint(c, at);
   if (!g) return null;
   if (o.up) return paintBunUp(p, c, at, {...o, maxBottom: o.up.maxBottom});
-  const u = camUnit(c, at) * SM_PER_MM, w = wobble(o.t, o.phase ?? 0), st: DropState = {...BUN, ...w};
+  const u = camUnit(c, at) * SM_PER_MM, w = wobble(o.t, o.phase ?? 0);
+  let st: DropState = {...BUN, ...w};
+  if (o.squeeze) { // bottom face pinned: g moves by the change of the outline's lowest point
+    const y0 = bounds(dropOutline(st)).y0;
+    st = squeezeBun(st, o.squeeze);
+    g = [g[0], g[1] + (bounds(dropOutline(st)).y0 - y0) * u];
+  }
   paintDrop14(p, g, u, st, {seed: o.seed ?? 40000, light: -1});
   const b = bounds(dropOutline(st));
   if (o.glow !== false) {

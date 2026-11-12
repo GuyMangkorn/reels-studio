@@ -47,9 +47,33 @@ export type MosqOpts = {
   rimColor?: string;
   /** `below` only: head toward screen left instead of right. */
   mirror?: boolean;
+  // ---- pass 5 reaction options (F5-B01 / F5-B02; D5-01 life from reaction, never damage); all default to today's drawing
+  /** Per-joint lerp of every angle (legs, pitch, wing) from `state` to `to`, k 0-1; `kWing` (default k) times the wing alone. */
+  blend?: {to: MosqState; k: number; kWing?: number};
+  /** Added knee bend per pair (deg, -10..+20). Side: added to `tib` and 1.3 x to `tar`, + = tips away from the face (downward, toward the belly). Below: + = knees fold in. */
+  legBend?: {fore: number; mid: number; hind: number};
+  /** Side only: rotation of each whole leg at the hip (deg, +-10), + = tips toward the tail. */
+  legSwing?: number;
+  /** Below only: added to each fan angle (deg, +-8). */
+  legFan?: number;
+  /** Added to the folded wing angle (side 172 + q; below `wings` 6 + q, never past 10). */
+  wingQuiver?: number;
+  /** Rotation of the proboscis with palps, and of each antenna, about the head front (deg, +-12; + = nose-up in the body frame). */
+  probeAng?: number;
+  antAng?: number;
+  /** Abdomen width (below) / depth (side) factor, 1.00-1.12; asserts >= 1.00 (D5-01: nothing is squashed). */
+  abdomen?: number;
+  /** Below, len >= 120 only: a volume highlight strip (30 % of the body width) placed 0-1 across the body from the light side, plus a darker core. */
+  sheen?: number;
 };
 
-export type MosqMeasure = {head: Pt; tail: Pt; centre: Pt; toes: Pt[]; left: number; right: number; top: number; bottom: number};
+export type MosqMeasure = {head: Pt; tail: Pt; centre: Pt; toes: Pt[]; left: number; right: number; top: number; bottom: number;
+  /** Abdomen width (px, below) / depth (px, side) at this frame. */
+  abdW?: number;
+  /** The six knee angles (deg, tibia minus femur direction): near fore, mid, hind, then far fore, mid, hind (side); below: pairs + side, then - side. */
+  bends?: number[];
+  /** Midpoint (px) of each of the six tibiae, same order as `bends`. */
+  tibMid?: Pt[]};
 
 const DEG = Math.PI / 180;
 type Leg = {fem: number; tib: number; tar: number; curl?: number};
@@ -94,6 +118,14 @@ const BELOW_POSES: Record<MosqState, {fore: number; mid: number; hind: number; b
   stand: {fore: 42, mid: 96, hind: 150, bend: -16, wings: 6},
 };
 
+const lerpN = (a: number, b: number, k: number) => a + (b - a) * k;
+/** Angle lerp by the short way round (hover's hind femur at -100 deg and pressed's at 160 deg are 100 deg apart, not 260: a plain lerp windmills the leg through the front). */
+const lerpA = (a: number, b: number, k: number) => a + ((((b - a + 180) % 360) + 360) % 360 - 180) * k;
+const lerpLeg = (a: Leg, b: Leg, k: number): Leg => ({fem: lerpA(a.fem, b.fem, k), tib: lerpA(a.tib, b.tib, k), tar: lerpA(a.tar, b.tar, k), curl: lerpN(a.curl ?? 0, b.curl ?? 0, k)});
+/** The side pose a state has for one leg (near or the far set: explicit, or the near angles plus 7 / 6 / 5 deg). */
+const legOf = (pose: SidePose, key: 'fore' | 'mid' | 'hind', far: boolean): Leg => far ? (pose.far?.[key] ?? {...pose[key], fem: pose[key].fem + 7, tib: pose[key].tib + 6, tar: pose[key].tar + 5}) : pose[key];
+const rotAbout = (q: Pt, c: Pt, deg: number): Pt => { const a = deg * DEG, x = q[0] - c[0], y = q[1] - c[1]; return [c[0] + x * Math.cos(a) - y * Math.sin(a), c[1] + x * Math.sin(a) + y * Math.cos(a)]; };
+const checkAbdomen = (a: number) => { if (!(a >= 1 - 1e-9)) throw new Error(`mosquito abdomen factor ${a} < 1.00: the mosquito is never squashed (D5-01)`); return Math.max(1, a); };
 const lp = (a: Pt, b: Pt, k: number): Pt => [a[0] + (b[0] - a[0]) * k, a[1] + (b[1] - a[1]) * k];
 const dirv = (deg: number): Pt => [Math.cos(deg * DEG), Math.sin(deg * DEG)];
 const add = (a: Pt, d: Pt, l: number): Pt => [a[0] + d[0] * l, a[1] + d[1] * l];
@@ -123,6 +155,13 @@ export const legJoints = (hip: Pt, leg: Leg, lens: readonly number[]): Pt[] => {
   return out;
 };
 
+/** Pass 5 motion helpers (F5 shared definitions). `m` = frames since an event. Damped spring S = e^(-m / tau) cos(2 pi m / P), 0 for m < 0 and (snapped, < 0.04 %) beyond 8 tau so a
+ * reaction ends exactly at rest. Raised-cosine pulse RC = 0.5 (1 - cos(2 pi m / W)) for 0 <= m <= W: 0 -> 1 -> 0, never negative. Kit intake may lift these. */
+export const springS = (m: number, P: number, tau: number) => (m < 0 || m > 8 * tau ? 0 : Math.exp(-m / tau) * Math.cos((2 * Math.PI * m) / P));
+export const rcPulse = (m: number, W: number) => (m < 0 || m > W ? 0 : 0.5 * (1 - Math.cos((2 * Math.PI * m) / W)));
+/** The thorax point (px) of a `below` card laid by `drawMosquito` at `g` with `len` px per bl and no tilt (pitchAdd 0): where a face ring is centred (F5-B01). */
+export const thoraxAt = (g: Pt, len: number, mirror = false): Pt => [g[0] + (mirror ? -1 : 1) * (0.15 + X0) * (len / BODY_SPAN), g[1]];
+
 /** Wing angle (deg, body frame) on the wingbeat clock: a slow visible flap between up-back and level-back. */
 export const wingAngle = (t: number, hz = MOSQ_BEAT_HZ) => 118 + 42 * Math.sin(2 * Math.PI * hz * t);
 
@@ -135,8 +174,10 @@ export const drawMosquito = (p: Painter, g: Pt, len: number, o: MosqOpts): MosqM
 };
 
 const drawSide = (p: Painter, g: Pt, len: number, o: MosqOpts): MosqMeasure => {
-  const dir = o.view === 'left' ? -1 : 1, state = o.state ?? 'hover', pose = SIDE_POSES[state], fine = len >= 120, t = o.t ?? 0;
-  const pitch = (pose.pitch + (o.pitchAdd ?? 0)) * DEG, c = Math.cos(pitch), s = Math.sin(pitch);
+  const dir = o.view === 'left' ? -1 : 1, state = o.state ?? 'hover', pose0 = SIDE_POSES[state], fine = len >= 120, t = o.t ?? 0;
+  const bl = o.blend, kb = bl ? Math.min(1, Math.max(0, bl.k)) : 0, kw = bl ? Math.min(1, Math.max(0, bl.kWing ?? bl.k)) : 0, to = bl ? SIDE_POSES[bl.to] : pose0;
+  const abd = checkAbdomen(o.abdomen ?? 1), qv = o.wingQuiver ?? 0, lb = o.legBend ?? {fore: 0, mid: 0, hind: 0}, swing = o.legSwing ?? 0;
+  const pitch = (lerpN(pose0.pitch, to.pitch, kb) + (o.pitchAdd ?? 0)) * DEG, c = Math.cos(pitch), s = Math.sin(pitch);
   const S = ([x0, y]: Pt): Pt => { const x = x0 + X0, rx = x * c - y * s, ry = x * s + y * c; return [g[0] + dir * rx * len, g[1] - ry * len]; };
   const SP = (pts: Pt[]) => pts.map(S);
   const W = Math.max(0.5, len / 600), px = (v: number, min: number) => Math.max(min, v * len);
@@ -161,8 +202,14 @@ const drawSide = (p: Painter, g: Pt, len: number, o: MosqOpts): MosqMeasure => {
       [0.03, -0.015, -0.045].forEach((off, i) => inkLine(p, seed + 2 + i, SP([[root[0] + n[0] * off * 0.3, root[1] + n[1] * off * 0.3], [root[0] + d[0] * 0.72 + n[0] * off, root[1] + d[1] * 0.72 + n[1] * off]]), {weight: 0.5 * W, color: MOSQ.vein, closed: false, curve: 0.3}));
     }
   };
-  if (pose.wing === 'fold') {
-    paintWing(176, 20100, 1);
+  // wing mode: folded (state or fully blended), beating, or mid-blend (both wings drawn sharp at the lerped angle)
+  const wingMode = bl && kw > 0 ? (kw >= 1 ? (to.wing === 'fold' ? 'fold' : 'beat') : 'mix') : (pose0.wing === 'fold' ? 'fold' : 'beat');
+  const beatNear = wingAngle(t, o.beatHz) + (state === 'clear' ? 12 : 0);
+  const mixNear = lerpN(pose0.wing === 'fold' ? 172 : beatNear, to.wing === 'fold' ? 172 : beatNear, kw), mixFar = lerpN(pose0.wing === 'fold' ? 176 : beatNear + 9, to.wing === 'fold' ? 176 : beatNear + 9, kw);
+  if (wingMode === 'fold') {
+    paintWing(176 + qv, 20100, 1);
+  } else if (wingMode === 'mix') {
+    paintWing(mixFar + qv * kw, 20100, 1);
   } else if (blur) {
     // blur fan: the swept stroke as a soft translucent wedge, one faint wing at the beat's position
     const a0 = 76, a1 = 160, fan: Pt[] = [root];
@@ -176,10 +223,15 @@ const drawSide = (p: Painter, g: Pt, len: number, o: MosqOpts): MosqMeasure => {
   }
 
   // ---- far legs (offset up and back, slightly lighter so the near set reads in front)
+  const bendOf: Record<string, number> = {}, tibOf: Record<string, Pt> = {};
   const paintLeg = (key: 'fore' | 'mid' | 'hind', far: boolean, seed: number) => {
     const hip0 = HIP[key], hip: Pt = far ? [hip0[0] + FAR_OFF[0], hip0[1] + FAR_OFF[1]] : hip0;
-    const leg = far ? (pose.far?.[key] ?? {...pose[key], fem: pose[key].fem + 7, tib: pose[key].tib + 6, tar: pose[key].tar + 5}) : pose[key];
+    const l0 = lerpLeg(legOf(pose0, key, far), legOf(to, key, far), kb), b = lb[key], sg = Math.cos(l0.tib * DEG) >= 0 ? -1 : 1;
+    // pass 5: knee bend (tips away from the face, i.e. downward) and whole-leg swing at the hip (tips toward the tail)
+    const leg: Leg = {fem: l0.fem - swing, tib: l0.tib + sg * b - swing, tar: l0.tar + sg * 1.3 * b - swing, curl: l0.curl};
+    bendOf[(far ? 'f' : 'n') + key] = leg.tib - leg.fem;
     const J = legJoints(hip, leg, LEN[key]), P = SP(J);
+    tibOf[(far ? 'f' : 'n') + key] = [(P[1][0] + P[2][0]) / 2, (P[1][1] + P[2][1]) / 2];
     const col = far ? mixColor(MOSQ.body, '#4a4e5a', 0.35) : MOSQ.body, wc = far ? mixColor(white, '#9aa0aa', 0.3) : white;
     const w = fine ? [px(0.022, 1.6), px(0.017, 1.4), px(0.011, 1.2)] : [px(0.03, 1.6), px(0.022, 1.4), px(0.014, 1.2)];
     band(p, seed, [P[0], P[1]], w[0], w[0] * 0.8, col);
@@ -203,7 +255,7 @@ const drawSide = (p: Painter, g: Pt, len: number, o: MosqOpts): MosqMeasure => {
   const segs = 7, ab: {x0: number; x1: number; h0: number; h1: number}[] = [];
   for (let i = 0; i < segs; i++) {
     const u0 = i / segs, u1 = (i + 1) / segs, x0 = -0.02 - 0.58 * u0, x1 = -0.02 - 0.58 * u1;
-    ab.push({x0, x1, h0: 0.062 - 0.03 * u0 ** 1.4, h1: 0.062 - 0.03 * u1 ** 1.4});
+    ab.push({x0, x1, h0: (0.062 - 0.03 * u0 ** 1.4) * abd, h1: (0.062 - 0.03 * u1 ** 1.4) * abd});
   }
   const droop = (x: number) => -0.025 * ((-x) / 0.6) ** 2;
   const abOut: Pt[] = [...ab.map((q): Pt => [q.x0, q.h0 + droop(q.x0)]), [-0.6, droop(-0.6) + 0.01], [-0.615, droop(-0.6)], [-0.6, droop(-0.6) - 0.012],
@@ -213,14 +265,15 @@ const drawSide = (p: Painter, g: Pt, len: number, o: MosqOpts): MosqMeasure => {
   solid(p, 20401, MOSQ.body, SP(thorax), 5);
   solid(p, 20402, MOSQ.body, SP(ellL(0.035, 0.065, 0.045, 0.02, 0.2)), 3); // scutellum lobe
   // proboscis (long, forward and down) with one white band at 2/3; palps short, white-tipped; antennae thin
-  const pb0: Pt = [0.42, -0.03], pd = dirv(-38), pb1 = add(pb0, pd, 0.5);
+  const pb0: Pt = [0.42, -0.03], pa = o.probeAng ?? 0, pd = dirv(-38 + pa), pb1 = add(pb0, pd, 0.5);
   band(p, 20410, [pb0, add(pb0, pd, 0.25), pb1].map(S), px(0.026, 1.6), px(0.012, 1), MOSQ.body);
   band(p, 20411, [add(pb0, pd, 0.32), add(pb0, pd, 0.37)].map(S), px(0.026, 1.8), px(0.024, 1.6), white, 2);
-  const pp0: Pt = [0.42, -0.01], ppd = dirv(-22);
+  const pp0: Pt = [0.42, -0.01], ppd = dirv(-22 + pa);
   band(p, 20412, [pp0, add(pp0, ppd, 0.12)].map(S), px(0.022, 1.2), px(0.018, 1), MOSQ.body);
   band(p, 20413, [add(pp0, ppd, 0.1), add(pp0, ppd, 0.135)].map(S), px(0.022, 1.2), px(0.016, 1), white, 2);
   const an0: Pt = [0.4, 0.04];
-  band(p, 20414, [an0, add(an0, dirv(48), 0.12), add(add(an0, dirv(48), 0.12), dirv(62), 0.12)].map(S), px(0.012, 0.9), px(0.006, 0.7), MOSQ.body);
+  const aa = o.antAng ?? 0;
+  band(p, 20414, [an0, add(an0, dirv(48 + aa), 0.12), add(add(an0, dirv(48 + aa), 0.12), dirv(62 + aa), 0.12)].map(S), px(0.012, 0.9), px(0.006, 0.7), MOSQ.body);
   solid(p, 20403, MOSQ.body, SP(head), 5);
   // abdomen white bands: the base of each segment (6 bands at full detail; 3 broad bands at small size)
   const bandIdx = fine ? [0, 1, 2, 3, 4, 5] : [1, 3, 5];
@@ -256,20 +309,26 @@ const drawSide = (p: Painter, g: Pt, len: number, o: MosqOpts): MosqMeasure => {
   if (fine) inkLine(p, 20452, SP([...abOut]), {weight: 0.7 * W, color: MOSQ.ink, curve: 0.2});
 
   // ---- near wing over the body when beating (sharp, full-size only) or folded (over the abdomen)
-  if (pose.wing === 'fold') paintWing(172, 20460, 1);
-  else if (!blur) paintWing(wingAngle(t, o.beatHz) + (state === 'clear' ? 12 : 0), 20470, 1);
+  if (wingMode === 'fold') paintWing(172 + qv, 20460, 1);
+  else if (wingMode === 'mix') paintWing(mixNear + qv * kw, 20460, 1);
+  else if (!blur) paintWing(beatNear, 20470, 1);
 
   // ---- near legs
   (['fore', 'mid', 'hind'] as const).forEach((k, i) => toes.push(paintLeg(k, false, 20500 + i * 40)));
 
   const all = [...SP(abOut), ...SP(head), ...toes, S(pb1)];
-  return {head: S([0.43, 0]), tail: S([-0.615, droop(-0.6)]), centre: g, toes,
+  const ord = ['nfore', 'nmid', 'nhind', 'ffore', 'fmid', 'fhind'];
+  return {head: S([0.43, 0]), tail: S([-0.615, droop(-0.6)]), centre: g, toes, abdW: 2 * 0.062 * abd * len, bends: ord.map((k) => bendOf[k]), tibMid: ord.map((k) => tibOf[k]),
     left: Math.min(...all.map((q) => q[0])), right: Math.max(...all.map((q) => q[0])), top: Math.min(...all.map((q) => q[1])), bottom: Math.max(...all.map((q) => q[1]))};
 };
 
 /** Ventral view: the rider pressed on a drop's underside, seen from beneath (head toward screen right for `dir` +1). */
 const drawBelow = (p: Painter, g: Pt, len: number, o: MosqOpts): MosqMeasure => {
-  const state = o.state ?? 'pressed', pose = BELOW_POSES[state], fine = len >= 120, t = o.t ?? 0, sq = o.squash ?? 1;
+  const state = o.state ?? 'pressed', pose0 = BELOW_POSES[state], fine = len >= 120, t = o.t ?? 0, sq = o.squash ?? 1;
+  const bl = o.blend, kb = bl ? Math.min(1, Math.max(0, bl.k)) : 0, to = bl ? BELOW_POSES[bl.to] : pose0;
+  const pose = {fore: lerpN(pose0.fore, to.fore, kb), mid: lerpN(pose0.mid, to.mid, kb), hind: lerpN(pose0.hind, to.hind, kb), bend: lerpN(pose0.bend, to.bend, kb), wings: lerpN(pose0.wings, to.wings, kb)};
+  const abd = checkAbdomen(o.abdomen ?? 1), lb = o.legBend ?? {fore: 0, mid: 0, hind: 0}, fan = o.legFan ?? 0, qv = o.wingQuiver ?? 0, pa = o.probeAng ?? 0, aa = o.antAng ?? 0;
+  const HEAD: Pt = [0.43, 0], bendsOut: number[] = [], tibOut: Pt[] = [];
   const tilt = (o.pitchAdd ?? 0) * DEG, c = Math.cos(tilt), s = Math.sin(tilt), m = o.mirror ? -1 : 1;
   const S = ([x0, y]: Pt): Pt => { const x = x0 + X0, yy = y * sq, rx = x * c - yy * s, ry = x * s + yy * c; return [g[0] + m * rx * len, g[1] - ry * len]; };
   const SP = (pts: Pt[]) => pts.map(S);
@@ -277,7 +336,7 @@ const drawBelow = (p: Painter, g: Pt, len: number, o: MosqOpts): MosqMeasure => 
 
   // wings (dorsal, behind the body from beneath): folded = a narrow V along the abdomen; open = spread to the sides on the beat clock
   const wing = (side: 1 | -1, seed: number) => {
-    const open = pose.wings > 20, ang = open ? 180 - side * (pose.wings + (state === 'clear' || state === 'hover' ? 18 * Math.sin(2 * Math.PI * (o.beatHz ?? MOSQ_BEAT_HZ) * t) : 0)) : 180 - side * pose.wings;
+    const open = pose.wings > 20, ang = open ? 180 - side * (pose.wings + (state === 'clear' || state === 'hover' ? 18 * Math.sin(2 * Math.PI * (o.beatHz ?? MOSQ_BEAT_HZ) * t) : 0)) : 180 - side * Math.min(10, Math.max(0, pose.wings + qv));
     const r: Pt = [0.12, side * 0.04], d = dirv(ang), n: Pt = [-d[1], d[0]], pts: Pt[] = [];
     for (let i = 0; i <= 12; i++) { const u = i / 12, w = 0.09 * Math.sin(Math.PI * Math.min(1, u * 1.08)); pts.push([r[0] + d[0] * 0.8 * u + n[0] * w * side, r[1] + d[1] * 0.8 * u + n[1] * w * side]); }
     for (let i = 12; i >= 0; i--) { const u = i / 12, w = 0.05 * Math.sin(Math.PI * Math.min(1, u * 1.08)); pts.push([r[0] + d[0] * 0.8 * u - n[0] * w * side, r[1] + d[1] * 0.8 * u - n[1] * w * side]); }
@@ -290,9 +349,11 @@ const drawBelow = (p: Painter, g: Pt, len: number, o: MosqOpts): MosqMeasure => 
   const toes: Pt[] = [];
   const legs = (side: 1 | -1, seed: number) => (['fore', 'mid', 'hind'] as const).forEach((k, i) => {
     const hipX = HIP[k][0], hip: Pt = [hipX, side * (k === 'mid' ? 0.075 : 0.06)];
-    const base = pose[k], a0 = side * base, bend = pose.bend * (k === 'hind' ? -1 : 1) * side;
+    const base = pose[k] + fan, a0 = side * base, bend = (pose.bend - lb[k]) * (k === 'hind' ? -1 : 1) * side;
+    bendsOut[(side === 1 ? 0 : 3) + i] = Math.abs(pose.bend - lb[k]);
     const J = legJoints(hip, {fem: a0, tib: a0 + bend, tar: a0 + bend * 1.4, curl: bend * 0.12}, LEN[k]), P = SP(J);
     const w = [px(0.03, 1.6), px(0.022, 1.4), px(0.014, 1.2)];
+    tibOut[(side === 1 ? 0 : 3) + i] = [(P[1][0] + P[2][0]) / 2, (P[1][1] + P[2][1]) / 2];
     band(p, seed + i * 30, [P[0], P[1]], w[0], w[0] * 0.8, MOSQ.body);
     band(p, seed + i * 30 + 1, [P[1], P[2]], w[1], w[1] * 0.8, MOSQ.body);
     band(p, seed + i * 30 + 2, P.slice(2), w[2], w[2] * 0.6, MOSQ.body);
@@ -309,24 +370,24 @@ const drawBelow = (p: Painter, g: Pt, len: number, o: MosqOpts): MosqMeasure => 
 
   // body from beneath: abdomen tapering, thorax broad, head round; proboscis straight forward, palps beside it
   const abOut: Pt[] = [];
-  for (let i = 0; i <= 14; i++) { const u = i / 14, x = -0.02 - 0.59 * u; abOut.push([x, 0.07 - 0.04 * u ** 1.3]); }
-  for (let i = 14; i >= 0; i--) { const u = i / 14, x = -0.02 - 0.59 * u; abOut.push([x, -(0.07 - 0.04 * u ** 1.3)]); }
+  for (let i = 0; i <= 14; i++) { const u = i / 14, x = -0.02 - 0.59 * u; abOut.push([x, (0.07 - 0.04 * u ** 1.3) * abd]); }
+  for (let i = 14; i >= 0; i--) { const u = i / 14, x = -0.02 - 0.59 * u; abOut.push([x, -(0.07 - 0.04 * u ** 1.3) * abd]); }
   solid(p, 21300, MOSQ.body, SP(abOut), 5);
   solid(p, 21301, MOSQ.body, SP(ellL(0.15, 0, 0.16, 0.115)), 5);
-  const pb0: Pt = [0.42, 0], pb1: Pt = [0.92, 0];
+  const pb0: Pt = [0.42, 0], pb1: Pt = rotAbout([0.92, 0], HEAD, pa), rq = (q: Pt): Pt => rotAbout(q, HEAD, pa);
   band(p, 21310, [pb0, pb1].map(S), px(0.026, 1.6), px(0.012, 1), MOSQ.body);
-  band(p, 21311, [[0.74, 0] as Pt, [0.79, 0] as Pt].map(S), px(0.028, 1.8), px(0.026, 1.6), white, 2);
+  band(p, 21311, [[0.74, 0] as Pt, [0.79, 0] as Pt].map(rq).map(S), px(0.028, 1.8), px(0.026, 1.6), white, 2);
   [1, -1].forEach((k, i) => {
-    band(p, 21312 + i, [[0.42, k * 0.02] as Pt, [0.55, k * 0.035] as Pt].map(S), px(0.022, 1.2), px(0.018, 1), MOSQ.body);
-    band(p, 21314 + i, [[0.53, k * 0.033] as Pt, [0.57, k * 0.037] as Pt].map(S), px(0.022, 1.2), px(0.018, 1), white, 2);
-    band(p, 21316 + i, [[0.4, k * 0.04] as Pt, [0.5, k * 0.12] as Pt, [0.58, k * 0.2] as Pt].map(S), px(0.012, 0.9), px(0.006, 0.7), MOSQ.body);
+    band(p, 21312 + i, [[0.42, k * 0.02] as Pt, [0.55, k * 0.035] as Pt].map(rq).map(S), px(0.022, 1.2), px(0.018, 1), MOSQ.body);
+    band(p, 21314 + i, [[0.53, k * 0.033] as Pt, [0.57, k * 0.037] as Pt].map(rq).map(S), px(0.022, 1.2), px(0.018, 1), white, 2);
+    band(p, 21316 + i, [[0.4, k * 0.04] as Pt, [0.5, k * 0.12] as Pt, [0.58, k * 0.2] as Pt].map((q) => rotAbout(q, [0.4, k * 0.04], k * aa)).map(S), px(0.012, 0.9), px(0.006, 0.7), MOSQ.body);
   });
   solid(p, 21302, MOSQ.body, SP(ellL(0.36, 0, 0.075, 0.08)), 5);
   // white abdomen bands across each segment (6 full detail, 3 broad small) and white side patches on the thorax
   const idx = fine ? [0, 1, 2, 3, 4, 5] : [1, 3, 5];
   idx.forEach((i, j) => {
     const u0 = i / 7, x0 = -0.02 - 0.59 * u0 - 0.004, wd = fine ? 0.59 / 7 * 0.22 : Math.max(0.59 / 7 * 0.42, 2.2 / len), x1 = x0 - wd;
-    const h = (u: number) => 0.07 - 0.04 * u ** 1.3, ha = h(u0) * 0.96, hb = h(u0 + wd / 0.59) * 0.96;
+    const h = (u: number) => (0.07 - 0.04 * u ** 1.3) * abd, ha = h(u0) * 0.96, hb = h(u0 + wd / 0.59) * 0.96;
     solid(p, 21320 + j, white, SP([[x0, ha], [x1, hb], [x1, -hb], [x0, -ha]]), 3);
   });
   [[0.16, 0.07], [0.16, -0.07], [0.08, 0.05], [0.08, -0.05]].forEach(([x, y], i) => solid(p, 21330 + i, white, SP(ellL(x, y, fine ? 0.026 : 0.034, fine ? 0.016 : 0.022, 0, 10)), 2));
@@ -335,10 +396,19 @@ const drawBelow = (p: Painter, g: Pt, len: number, o: MosqOpts): MosqMeasure => 
     solid(p, 21340 + i, MOSQ.eye, SP(ellL(0.37, k * 0.05, 0.045, 0.035, 0, 14)), 3);
     if (len >= 40) washAt(p, 21342 + i, MOSQ.glint, 220, SP(ellL(0.385, k * 0.058, 0.012, 0.01, 0, 8)), 0, 0);
   });
+  // pass 5 volume (F5-B01): a soft highlight strip, 30 % of the body width, placed 0-1 across the body from the light side, over a darker core along the midline
+  if (fine && o.sheen !== undefined) {
+    const hb = (x: number) => Math.max(x < -0.02 ? 0 : 0.115 * Math.sqrt(Math.max(0, 1 - ((x - 0.15) / 0.16) ** 2)), x < 0.02 ? (0.07 - 0.04 * (Math.min(0.59, Math.max(0, -0.02 - x)) / 0.59) ** 1.3) * abd : 0), xs = Array.from({length: 17}, (_, i) => 0.3 - (0.9 * i) / 16);
+    const strip = (c0: number, hw: number): Pt[] => [...xs.map((x): Pt => [x, hb(x) * Math.min(1, c0 + hw)]), ...xs.slice().reverse().map((x): Pt => [x, hb(x) * Math.max(-1, c0 - hw)])];
+    washAt(p, 21360, '#05050a', 80, SP(strip(0, 0.14)), 0.1, 0.05);
+    washAt(p, 21361, MOSQ.sheen, 0.45 * 255, SP(strip(1 - 2 * o.sheen, 0.3)), 0.1, 0.05);
+    // the strip alone is 13 grey levels over the black body (invisible at 270 px): a narrower rim-coloured core inside it makes the volume read
+    washAt(p, 21362, MOSQ.rim, 0.5 * 255, SP(strip(1 - 2 * o.sheen, 0.1)), 0.1, 0.05);
+  }
   if (len >= 40) inkLine(p, 21350, SP(abOut), {weight: Math.max(0.5, len / 340), color: o.rimColor ?? MOSQ.rim, curve: 0.2});
 
   const all = [...SP(abOut), ...toes, S(pb1)];
-  return {head: S([0.43, 0]), tail: S([-0.61, 0]), centre: g, toes,
+  return {head: S([0.43, 0]), tail: S([-0.61, 0]), centre: g, toes, abdW: 2 * 0.07 * abd * len, bends: bendsOut, tibMid: tibOut,
     left: Math.min(...all.map((q) => q[0])), right: Math.max(...all.map((q) => q[0])), top: Math.min(...all.map((q) => q[1])), bottom: Math.max(...all.map((q) => q[1]))};
 };
 
