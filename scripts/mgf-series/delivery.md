@@ -19,3 +19,8 @@
 - 2026-11-11 user decisions on script R2 (structured question): R2 approved; keep the old "ลุก" typo text (L07e / P9) as a rewatch clue; ending = **A_fade** (not B_loop), so L47 closes with a fade-out and no loop seam is required (the L47→L01 echo may stay as a story echo). Fon acting samples: `~/ReelsStore/projects/fiction/MGF/samples/` (acting set), pick pending.
 - 2026-11-11 user pick "A" from the acting samples = file A `a-opening-acted.wav` (moderate intensity, R2 Acting column styles as written; not the "strong" variant). Full acted read authorized.
 - 2026-11-12 storyboard review page published (W2.3): https://claude.ai/artifact/J8pzU8RSTYAoeLBaYPYyMf , slug 8ac32395-d86c-4e6e-8a6c-ae89af650966, version 1794417228-60e7, rows MGF-EP01-ROWS-R1 (71 shots), brief MGF-EP01-BRIEF-R1. Verdicts live in the artifact `db` under `reviews/<shot ID>@board` (fields incl. `rev`). Republish with `python3 -I scripts/storyboard-page/build.py scripts/mgf-series/ep01/review-rows.json` then publish_files to the same slug; local build `out/review-pages/MGF-EP01-LONG/`.
+
+## Storyboard review round 1 (user, 12 Nov 2026)
+- Rev MGF-EP01-ROWS-R1: 17 shots marked pass on the page (S1-B01-SH01 to S2-B05-SH02); the other 54 pass by `default (round 2026-11-12)`. No change notes.
+- Q1 Mom's look: as Film proposed (woman-pixie, round glasses, sage knit top, vendor apron in the flashback).
+- Q2 last shot: pink glow stays in the kitchen.

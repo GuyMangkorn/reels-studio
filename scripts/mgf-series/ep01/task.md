@@ -40,3 +40,5 @@ Record: [delivery.md](../delivery.md) · Updated: 2026-11-12, Film
   - [ ] W8.2 Delivery render and cover published (`publish/fiction/MGF/MGF-EP01-LONG/`)
   - [ ] W8.3 Posted to the channel (user, date; `publish --posted`)
   - [ ] W8.4 Kit intake: new people, outfits, animals, poses, sets filed (KIT-P01)
+
+- [x] W2.3 review round 1 done (12 Nov 2026): all 71 shots pass, Q1 and Q2 as Film proposed. Next: Boss DEP01 16:9 spike, then W3 look frames LF01-LF05; W4.2/W4.3 voice lock after.
