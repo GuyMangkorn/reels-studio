@@ -24,7 +24,7 @@ python3 -I scripts/store.py use library/sound/sfx/ui/ui_wood-tick-fine_02.wav pu
 python3 -I scripts/store.py use library/sound/sfx/ui/ui_wood-tick-fine_03.wav public/sfx/ui/ui_wood-tick-fine_03.wav --episode edu-ep18
 python3 -I scripts/store.py use library/sound/sfx/ui/ui_wood-tick-fine_04.wav public/sfx/ui/ui_wood-tick-fine_04.wav --episode edu-ep18
 python3 -I scripts/store.py use library/sound/sfx/water/water_drop-swallow-gloomp_01.wav public/sfx/water/water_drop-swallow-gloomp_01.wav --episode edu-ep18
-python3 -I scripts/store.py use library/sound/sfx/water/water_film-slide-off-shlip_01.wav public/sfx/water/water_film-slide-off-shlip_01.wav --episode edu-ep18
+python3 -I scripts/store.py use library/sound/sfx/water/water_film-slide-off-shlip_02.wav public/sfx/water/water_film-slide-off-shlip_02.wav --episode edu-ep18
 python3 -I scripts/store.py use library/sound/sfx/water/water_mass-descend-wobble_01.wav public/sfx/water/water_mass-descend-wobble_01.wav --episode edu-ep18
 python3 -I scripts/store.py use library/sound/sfx/water/water_puddle-splash-below_01.wav public/sfx/water/water_puddle-splash-below_01.wav --episode edu-ep18
 python3 -I scripts/store.py use library/sound/sfx/water/water_small-cold-tap_01.wav public/sfx/water/water_small-cold-tap_01.wav --episode edu-ep18

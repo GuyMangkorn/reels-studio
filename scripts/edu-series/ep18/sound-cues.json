@@ -488,9 +488,9 @@
    "lengthFrames": 18,
    "layer": "accent",
    "brief": "slide-off: a soft wet peel, a thin water film letting go of a small body with a tiny \"shlip\", then a light air swish as it tips away; 0.6 s; water film, air; close; release, relief",
-   "id": "water_film-slide-off-shlip_01",
+   "id": "water_film-slide-off-shlip_02",
    "origin": "generated",
-   "syncNote": "R2.1 (fixlist.md D-S5): this 0.28 s take is too short for the +34..+52 slide; Ton regenerates at 0.6 s to the brief"
+   "syncNote": "R2.1 D-S5: regenerated at 0.6 s (0.6 s = 18 f at 30 fps); shlip peak at 0.05 s, air swish decaying to 0.6 s, covers the +34..+52 slide"
   },
   {
    "cue": "B05-W2-flyoff",
@@ -1007,11 +1007,11 @@
    "pickedOver": "v2, v3",
    "listened": "no"
   },
-  "water_film-slide-off-shlip_01": {
-   "take": "ep18_S5_slide-off_v2",
-   "seed": 1972,
-   "measured": "0.28 s after silence trim (brief 0.6 s: shorter); one event at 0.11 s, energy >4 kHz -35, 1-4 kHz -41",
-   "pickedOver": "v1, v3, v4 (similar, shorter tail)",
+  "water_film-slide-off-shlip_02": {
+   "take": "ep18_S5_slide-off_r21b_v1",
+   "seed": 2030,
+   "measured": "0.6 s with 60 ms fade, cfg 4; shlip peak at 0.05 s (50 ms RMS -17 dB raw), air swish -25 to -36 dB to 0.55 s; >4 kHz -24.5 dB, <200 Hz -34.6 dB, no tonal content by band",
+   "pickedOver": "v2 (ends 0.45 s), v3 (ends 0.3 s), v4 (second bump at 0.4 s); first batch cfg 1 all ended by 0.5 s",
    "listened": "no"
   },
   "water_puddle-splash-below_01": {
