@@ -15,6 +15,9 @@ Why this file exists: in WDG-EP01-SHORT one look frame went through seven painte
 <a id="ut-set-detail"></a>
 - **UT12 — Sets are lived-in and detailed.** Every set has three depth layers (foreground, midground, background) and painted surface texture with brush marks: wall stains, tile grout, wood grain, floor wear. A room set carries 5–8 named props that tell who lives there and what happened, each with a contact shadow, not flat scattered shapes. No flat-fill walls or floors; empty space only where the brief names it as story. The [viewer check](sequence-workflow.md#viewer-check) checks this on every set. Evidence: ZCONDO2 kit frames r1–r2 ("detail น้อยมาก", user asked for this rule directly, 3 Nov 2026).
 
+<a id="ut-set-under-subject"></a>
+- **UT12a — Set detail stays under the subject.** UT12's lived-in detail is painted at the value of the surface it sits on: never brighter than the subject's lit side, never more saturated than the subject's face (region p95 chroma at or below the face's), and never with denser edges than the subject's hands or hero object. Within one head-width of the face or hands, and inside the caption band, set props are pulled toward their surface colour, moved or cut; no prop overlaps the subject's key gesture. Colour accents (the one red, the one saturated cloth) belong to the subject or to a story prop the brief names. The foreground layer is darker and lower in contrast than the midground and has no light edge strokes. Film judges each set against this rule. Evidence: EDU-EP15 LF01 detail study, Film pass and user review (`scripts/edu-series/build-notes.md`, store `projects/edu/EDU/detail-study/`; user, 12 Nov 2026).
+
 ## Frame and light
 
 <a id="ut-frame"></a>
