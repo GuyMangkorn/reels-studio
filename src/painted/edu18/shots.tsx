@@ -18,7 +18,7 @@ import {Ot01, Ot02, Ot03} from './labels';
 import {hash} from '../kit/hash';
 import {unproject} from './ripple';
 import {GROUND_Y, MC, paintLakeDetail, BUN_SM, paintBun, paintMacro, paintMacroBackdrop, paintSlowRain, paintWaterPlane, PUDDLE, wobble} from './macro';
-import {anchorUnderFace, drawMosquito, MOSQ_BL_M, MOSQ_BL_SM, mosqReachAbove, mosqReachBelow, paintMosquito, type MosqState} from './mosquito';
+import {anchorUnderFace, BODY_SPAN, drawMosquito, MOSQ_BL_M, MOSQ_BL_SM, mosqReachAbove, mosqReachBelow, paintMosquito, type MosqState} from './mosquito';
 import {Painted, type Grade} from './look';
 import {paintRuler, RULER, tickY} from './ruler';
 import {paintCurtain, paintSoi, paintStream, SOI} from './soi';
@@ -145,6 +145,12 @@ export const paintSH04 = (p: Painter, n: number, c: YCam, t: number) => {
 def({id: 'S01-B01-SH04', grade: 'neutral', paint: (p, L) => paintSH04(p, L, camSH04(L), ambT('S01-B01-SH04', L))});
 
 // SH05 low angle: her drop right above, arms up
+const MQ05_LEN = 740, MQ05_PITCH = -40;
+/** Card anchor that puts the thorax (waist-frame (0.2, 0.04) bl) of a side-view mosquito at `target`, given its total pitch (deg, nose up positive). */
+const mosqThoraxAt = (target: Pt, len: number, pitchDeg: number, view: 'left' | 'right'): Pt => {
+  const L = len / BODY_SPAN, a = (pitchDeg * Math.PI) / 180, x = 0.2 + 0.0925, y = 0.04, dir = view === 'left' ? -1 : 1;
+  return [target[0] - dir * (x * Math.cos(a) - y * Math.sin(a)) * L, target[1] + (x * Math.sin(a) + y * Math.cos(a)) * L];
+};
 const camSH05 = (L: number) => moveCam(L, 0, 25, [-0.55, -1.8, 1.45], [-0.55, -1.72, 1.32], [-0.75, 0.9, 0], [-0.75, 0.9, 0]);
 def({id: 'S01-B01-SH05', grade: 'neutral', paint: (p, L) => {
   const c = camSH05(L), t = ambT('S01-B01-SH05', L);
@@ -152,9 +158,10 @@ def({id: 'S01-B01-SH05', grade: 'neutral', paint: (p, L) => {
   // F-B05: card fitted to the projected feet -> head span (501 px under the 61 deg pitch), P45 hands up with the palms at (540, 915)
   womanM(p, c, t, {face: 'terrified', palms: {r: [506, 915], l: [574, 915]}});
   paintBun(p, c, [D1_X, lerp(3.30, 3.18, L / 25), 0], {t, phase: 2, up: {maxBottom: 870 + 10 * (L / 25)}}); // F2-B05: the bottom face from below, lowest pixel <= 870 at +0 and 880 at +25
-  // F2-B05: the mosquito fitted by its projected head -> tail span (as the woman) and placed with its centre at (1069, 1076): the body mostly off the right edge, leg tips only left of x 700
-  const mh = camPoint(c, [0.45 - 0.43 * MOSQ_BL_SM, 0.05, 0]), mt = camPoint(c, [0.45 + 0.61 * MOSQ_BL_SM, 0.05, 0]);
-  if (mh && mt) drawMosquito(p, [1069, 1076], Math.hypot(mt[0] - mh[0], mt[1] - mh[1]), {view: 'left', state: 'hover', t, rimColor: '#e9b46a'});
+  // F3-B05: head toward the left, turned away from her: nose pitched steeply down so the proboscis points down and the body rises to the right; the card is placed by its thorax
+  // (1069, 1076) +-30 (the waist-frame point (0.2, 0.04) bl), the head stays at x >= 900 and nothing crosses her silhouette (x 440-635)
+  const MQ = {len: MQ05_LEN, pitchAdd: MQ05_PITCH}, th = mosqThoraxAt([1069, 1076], MQ.len, -15 + MQ.pitchAdd, 'left');
+  drawMosquito(p, th, MQ.len, {view: 'left', state: 'hover', t, pitchAdd: MQ.pitchAdd, rimColor: '#e9b46a'});
 }});
 
 // SH06 balance diagram on the fixed plane

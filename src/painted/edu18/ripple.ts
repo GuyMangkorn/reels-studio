@@ -30,31 +30,56 @@ export type StreakSpec = {
   /** A brighter core along part of the streak. */
   core?: {u0: number; u1: number; hw: number; color: string; alpha: number};
 };
-const strip = (c: YCam, s: StreakSpec, u0: number, u1: number, k: number, n: number): Pt[] => {
-  const left: Pt[] = [], right: Pt[] = [];
-  for (let i = 0; i <= n; i++) {
-    const u = u0 + ((u1 - u0) * i) / n, z = s.z0 + (s.z1 - s.z0) * u, x = s.xOf(z), w = k < 0 ? -k : s.hw(u) * k;
-    const a = camPoint(c, [x - w, s.y, z], c.near ?? 0.3), b = camPoint(c, [x + w, s.y, z], c.near ?? 0.3);
-    if (a) left.push(a);
-    if (b) right.push(b);
-  }
-  return [...left, ...right.reverse()];
-};
-/** One continuous streak on a water plane (ribbon along z) with a soft halo, cut by ripple gaps (the water shows through them), and an optional brighter core. */
+/** Screen-px caps of the streak (F3-B12): full width at the shop (far) end and at the near end; the far end is the one higher in the picture. */
+export const STREAK_PX = {far: 40, near: 16};
+/** Gap lengths on screen (px) and the number of breaks (F3-B12). */
+const GAP_PX: [number, number] = [6, 24], GAP_N = 10;
+const STROKES: [number, number][] = [[1, 0.12], [0.6, 0.12], [0.3, 0.12]];
+/**
+ * One shop-reflection streak on a water plane (F3-B12, replaces the F2-B12 band): projected ribbon with the width capped in screen px (<= 40 at the shop end,
+ * <= 16 at the near end), three stacked soft strokes (width x 1.0 / 0.6 / 0.3, alpha 0.12 each, peak ~0.32, no halo), 8-12 irregular unpainted breaks of 6-24 px
+ * (nothing is painted over them), and a <= 4 px brighter core on the far 40 %. `hw`, `bleed` and `gaps` are kept for callers but the px caps rule.
+ */
 export const paintStreak = (p: Painter, c: YCam, s: StreakSpec) => {
-  const span = s.z1 - s.z0, gs = [...(s.gaps ?? [])].sort((a, b) => a.z - b.z).map((g) => [(g.z - g.w / 2 - s.z0) / span, (g.z + g.w / 2 - s.z0) / span] as [number, number]);
-  const segs: [number, number][] = [];
-  let u = 0;
-  gs.forEach(([a, b]) => { if (a > u) segs.push([u, a]); u = Math.max(u, b); });
-  if (u < 1) segs.push([u, 1]);
-  segs.forEach(([a, b], i) => {
-    const n = Math.max(2, Math.round((b - a) * 28));
-    const halo = strip(c, s, a, b, 1.5, n), body = strip(c, s, a, b, 1, n);
-    if (halo.length >= 3) washAt(p, s.seed + 10 + i * 3, s.color, s.alpha * 0.4, halo, 0.4, 0.1);
-    if (body.length >= 3) washAt(p, s.seed + 11 + i * 3, s.color, s.alpha, body, s.bleed ?? 0.25, 0.1);
+  const N = 400, pts: {q: Pt; w: number; u: number}[] = [];
+  for (let i = 0; i <= N; i++) {
+    const u = i / N, z = s.z0 + (s.z1 - s.z0) * u, x = s.xOf(z), h = s.hw(u);
+    const m = camPoint(c, [x, s.y, z], c.near ?? 0.3), a = camPoint(c, [x - h, s.y, z], c.near ?? 0.3), b = camPoint(c, [x + h, s.y, z], c.near ?? 0.3);
+    if (m && a && b) pts.push({q: m, w: Math.hypot(b[0] - a[0], b[1] - a[1]), u});
+  }
+  if (pts.length < 4) return;
+  const far0 = pts[0].q[1] <= pts[pts.length - 1].q[1]; // the shop end is the higher one in the picture
+  const arc: number[] = [0];
+  for (let i = 1; i < pts.length; i++) arc.push(arc[i - 1] + Math.hypot(pts[i].q[0] - pts[i - 1].q[0], pts[i].q[1] - pts[i - 1].q[1]));
+  const total = arc[arc.length - 1];
+  const cap = (i: number) => { const f = total > 0 ? arc[i] / total : 0, k = far0 ? f : 1 - f; return STREAK_PX.far + (STREAK_PX.near - STREAK_PX.far) * k; };
+  const wOf = (i: number) => Math.min(pts[i].w, cap(i));
+  // 8-12 irregular breaks of 6-24 px, spacing +-40 % about an even spread, no break at the ends
+  const nGap = GAP_N, spacing = total / (nGap + 1), breaks: [number, number][] = [];
+  for (let g = 0; g < nGap; g++) {
+    const mid = spacing * (g + 1) + (hash(s.seed + 7 + g) - 0.5) * 0.8 * spacing, len = GAP_PX[0] + (GAP_PX[1] - GAP_PX[0]) * hash(s.seed + 61 + g);
+    breaks.push([mid - len / 2, mid + len / 2]);
+  }
+  const inGap = (i: number) => breaks.some(([a, b]) => arc[i] >= a && arc[i] <= b);
+  const runs: number[][] = [];
+  let cur: number[] = [];
+  for (let i = 0; i < pts.length; i++) { if (inGap(i)) { if (cur.length) runs.push(cur); cur = []; } else cur.push(i); }
+  if (cur.length) runs.push(cur);
+  const poly = (idx: number[], k: number, fixed?: number): Pt[] => {
+    const L: Pt[] = [], R: Pt[] = [];
+    idx.forEach((i, j) => {
+      const a = pts[idx[Math.max(0, j - 1)]].q, b = pts[idx[Math.min(idx.length - 1, j + 1)]].q, dx = b[0] - a[0], dy = b[1] - a[1], n = Math.hypot(dx, dy) || 1;
+      const h = (fixed ?? wOf(i) * k) / 2, q = pts[i].q;
+      L.push([q[0] - (dy / n) * h, q[1] + (dx / n) * h]); R.push([q[0] + (dy / n) * h, q[1] - (dx / n) * h]);
+    });
+    return [...L, ...R.reverse()];
+  };
+  runs.forEach((idx, r) => {
+    if (idx.length < 2) return;
+    STROKES.forEach(([k, al], j) => washAt(p, s.seed + 10 + r * 5 + j, s.color, al * 255, poly(idx, k), 0.15, 0.1));
     if (s.core) {
-      const k0 = Math.max(a, s.core.u0), k1 = Math.min(b, s.core.u1);
-      if (k1 - k0 > 0.002) { const q = strip(c, s, k0, k1, -s.core.hw, Math.max(2, Math.round((k1 - k0) * 28))); if (q.length >= 3) washAt(p, s.seed + 12 + i * 3, s.core.color, s.core.alpha, q, 0.2, 0.1); }
+      const ci = idx.filter((i) => pts[i].u >= s.core!.u0 && pts[i].u <= s.core!.u1);
+      if (ci.length >= 2) washAt(p, s.seed + 14 + r * 5, s.core.color, Math.min(s.core.alpha, 0.2 * 255), poly(ci, 1, 4), 0.1, 0.1);
     }
   });
 };
