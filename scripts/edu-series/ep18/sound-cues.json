@@ -1,6 +1,6 @@
 {
  "deliverable": "EDU-EP18-SHORT",
- "sceneSheets": "EDU-EP18-ROWS-R2.0",
+ "sceneSheets": "EDU-EP18-ROWS-R2.3 (B05-P1 and B05-F1-replay re-pegged by Film, pass 4; other cues unchanged since ROWS-R2.0)",
  "status": "Ton W5.2s done 2026-11-12: every cue has a filed library sound (30 sounds generated for this episode, 3 library); measured, not listened",
  "video": "src/videos/edu-ep18",
  "fps": 30,
@@ -454,7 +454,7 @@
    "frame": 1005,
    "lengthFrames": 178,
    "layer": "bed",
-   "brief": "F1 gentler (-8 dB) through the replay; falls away with D0 over SH17 +52..+87. a steady broadband low-mid air rush at constant pitch (the drop does not slow), slight flutter; 6 s loop; air; falling, open; momentum",
+   "brief": "F1 gentler (-8 dB) through the replay; falls away with D0 over SH17 +52..+72 (ROWS-R2.3: D0 touches the water at +72, f1167). a steady broadband low-mid air rush at constant pitch (the drop does not slow), slight flutter; 6 s loop; air; falling, open; momentum",
    "id": "whoosh_falling-air-rush-steady_01",
    "loop": true,
    "origin": "generated"
@@ -477,7 +477,7 @@
    "frame": 1095,
    "lengthFrames": 88,
    "layer": "music",
-   "brief": "M1-relief rising to its last phrase; hard stop on f1183 (the splash cut). small curious pluck motif: kalimba lead, pizzicato strings, soft marimba, muted upright bass, light shaker, 96 bpm, phrases end cleanly every 2 bars (2.5 s per bar); curious and friendly, never cute-silly; three states as stems or takes (thin = kalimba + bass; relief = + pizzicato; bright = + marimba)",
+   "brief": "M1-relief rising to its last phrase; hard stop on f1183 (the cut to full size; the splash itself is f1167 from ROWS-R2.3). small curious pluck motif: kalimba lead, pizzicato strings, soft marimba, muted upright bass, light shaker, 96 bpm, phrases end cleanly every 2 bars (2.5 s per bar); curious and friendly, never cute-silly; three states as stems or takes (thin = kalimba + bass; relief = + pizzicato; bright = + marimba)",
    "id": "bed_kalimba-curious-relief_01",
    "origin": "generated"
   },
@@ -507,16 +507,16 @@
   },
   {
    "cue": "B05-P1",
-   "shot": "S01-B05-SH03",
-   "local": 0,
-   "frame": 1183,
+   "shot": "S01-B05-SH02",
+   "local": 72,
+   "frame": 1167,
    "lengthFrames": 30,
    "layer": "accent",
-   "brief": "the drop lands in the puddle heard from above at mosquito scale: a deep round splash with a crown of droplets, slowed, short low tail; 1.0 s; water on water; below, big; the end of the what-if; transient on the cut frame f1183, M1 hard stop on the same frame",
+   "brief": "the drop lands in the puddle heard from above at mosquito scale: a deep round splash with a crown of droplets, slowed, short low tail; 1.0 s; water on water; below, big; the end of the what-if; transient on the picture's touch f1167 (SH17 +72; ROWS-R2.3, D4-17S, was the cut frame f1183); the 1.0 s tail runs across the cut under S2; M1 hard stop stays on the cut f1183",
    "id": "water_puddle-splash-below_01",
    "origin": "generated",
    "inSec": 0.05,
-   "syncNote": "transient at 0.06 s; start at 0.05 s so it lands on the cut frame f1183"
+   "syncNote": "transient at 0.06 s; start at 0.05 s so it lands on f1167 (SH17 +72, the touch; ROWS-R2.3)"
   },
   {
    "cue": "B05-S2",

@@ -221,9 +221,78 @@ Fix in `src/painted/edu18/*` (kit untouched). After the pass: stills of the fram
 
 The SH09/SH14/SH16/SH17 motion checks and the caption check from pass 2 still apply at the W5.3 draft.
 
+## Pass 4
+
+Film review of the Editor's W5.3 half-size draft cut (commit 8865fd7; store `projects/edu/EDU/w53-draft/EDU-EP18-SHORT-draft.mp4`, 540 × 960, 1468 f), 2026-11-12, fresh invocation. Only fixes worth making before the final cut. Sheet: **EDU-EP18-ROWS-R2.3** (this pass; every number below is also in the sheet). The caption-zone luma failures (13 of 14 cues) are a user-recorded exception (no overlay band; white fill and dark stroke read) and are not reopened here.
+
+Evidence: the Editor's sheets `sheet0`…`sheet5`, `sheet_m1`, `sheet_v` viewed. 44 frames extracted from the draft MP4 with ffmpeg (no render) and viewed as `scripts/qa-sheet.sh` sheets at 270 px, plus native-size (540 px) crops of the OT02 slot (f80, f84; f86–f112 every 2 f), the caption band (f100, f125, f160, f190, f560, f590, f1225, f1245, f1280, f1320; f1180–f1187; f1334–f1341) and the SH21 ankle area (f1362, f1384, f1385, f1412, f1439, f1464, ×3 nearest-neighbour). Scratch frames only (session scratchpad, not filed). Positions below are full-size pixels read off the half-size draft (×2, est. ±6 px). Projections in this pass: pinhole, y-up look-at, f 1300 (SH17) and f 1000 (SH21), computed by Film (same model as `scripts/shot-projection.py`). Readiness is not user approval, runtime or visual proof.
+
+### Verdicts (pass 4)
+
+| # | Item | Verdict | Owner | What the draft shows |
+| --- | --- | --- | --- | --- |
+| 1 | SH09 (B02-SH03) streaming | **fix F4-B09** | Boss | At +0, +20, +40, +60, +82 the frame is the same picture: the bokeh and the drops barely move (Editor: ≈ 0.5 px/f), and a hard horizontal ground edge stays still across the frame, so the drop reads as parked, not falling. Honest parallax at ≈ 405 sm is ≈ 0.7 px/f, below what anyone sees. No speed-guide drops are visible |
+| 2 | SH17 (B05-SH02) landing | **fix F4-B17 + F4-E17** | Boss, Editor | From +65 to +87 the drop is a 40–60 px dome sitting almost still at ≈ (540, 1108) (seen from above, falling away = only shrinking). Impact is on the last frame +87, so the crown never opens (+87 shows one faint ring); the landing point sits 44 px above the caption band, under C14 |
+| 3 | SH21 (B05-SH06) mosquito | **fix F4-B21** | Boss | The body is not visible in any frame. The glint (≈ 12–16 px) shows at +23–+26 and +46–+49 on her shin edge and at +74 and +100 on the dark flip-flop, where it reads as a highlight on the sandal, not an insect. Her eyes look at the camera from +30 to +129, not at the mosquito, so the gaze half of Q1 = A is missing |
+| 4 | SH03 (B01-SH03) OT02 | **fix F4-B03** | Boss (`labels.tsx`) | The drop's bun crosses the LBL-W slot from f67 to ≈ f105, which is more than half of OT02's [72, 136): its cyan rim runs through the letters at f84 and "ภาพจำลอง" sits inside the bun. The text still reads, but the label sits on the subject it describes. No camera change can clear the slot in time (the drop moves ≈ 17 px/f there and the tilt is pegged to the words) |
+| 5 | Mosquito legs under captions (SH03, SH04, SH11, SH19, SH20) | **accept** | — | At native size, legs and white leg bands pass behind C02, C03 and C08 (SH03 f100/f125, SH04 f160/f190, SH11 f560/f590); every word reads, because the white fill and the 6–7 px dark stroke sit above the legs. At SH03 +55–+85 the mosquito's thorax is behind "รถตู้" (the sheet's own point (751, 1311) is in the band): the wings and abdomen above the band carry it; recorded exception. SH19/SH20: no mosquito part near the captions (it is at y ≈ 1000 and ≈ 420–850) |
+| 6 | SH10 (B02-SH04) impact | **fix F4-B10 (minor)** | Boss | The "no impact" design (D06: no bounce, no impact sound) stays. What is wrong is that nothing changes at +23: the white card just sticks to the ball's front with the same shape. The card also reads as a leaf (pointed oval, midrib, side veins), not a feather, which weakens the "ขนนก" analogy |
+| 7 | C15 caption across the SH20 → SH21 cut | **fix F4-E15** | Editor | C15 is still on screen at f1338, the first frame of SH21 (one frame across the cut). C14 ends cleanly at f1182 |
+
+### Decisions (pass 4)
+
+| ID | Item | Decision | Reason (numbers) |
+| --- | --- | --- | --- |
+| D4-09 | SH09 parallax | **Cheat the streaming** (recorded): the background layers move at a fixed screen speed, not by true parallax | The beat is "the drop does not slow"; a constant visible stream is the only picture of that. Truth limits are untouched: the drop still falls at 0.30 sm/f and nothing slows |
+| D4-17 | SH17 landing frame | **Land at +72 (f1167) instead of +87**; the cut at f1183 lands on the open crown (15 f later) | The crown needs 14 f to open (`crownAt`). Landing at +72 puts the touch on "ถึงพื้น" (+65–+84 est) and leaves 16 f of splash before the cut. The fall from s 22.7 to 87.6 sm over 20 f needs v1 = 6.33 sm/f (190 sm/s, about 1/19 of real speed), which replaces D-17's 106 sm/s and is still a slow-motion end. Timing, narration and shot length unchanged |
+| D4-17S | P1 splash sound | **P1 moves to the picture's impact, SH17 +72 (f1167)**. M1's hard stop stays on the cut f1183 | The sound follows the visible touch. The music carries the line to its end and stops with the hard cut to full size; P1's 1.0 s tail runs across the cut under S2, as before |
+| D4-21 | SH21 visibility within Q1 = A | **Keep the framing and Q1 = A; make the mosquito findable**: it settles against the pale step riser beside her ankle instead of over the flip-flop, its body is drawn at 3× true size (≈ 6 px body, ≈ 14 px leg span; recorded cheat, extends D-50's SH21 exception), it wanders a little, the glint becomes a wing pair, and her eyes aim at it | At 2.3 m a true 4 mm body is 2 px. Over skin or a dark sandal the glint reads as a highlight. A dark speck that moves against a pale ground is what a phone viewer finds. Q1 = A's ingredients (glint 4×, gaze, whine) are all kept |
+| D4-03 | OT02 over the drop | **Move OT02 to a new left slot LBL-L** (three lines, left-aligned), same text, font and range | The drop occupies x ≈ 340–880 through OT02's range, so only the left margin is free (the mosquito and bokeh hold the right). Text, timing and wording unchanged; line breaks only at word boundaries |
+| D4-10 | SH10 impact | **Accept "no impact", fix the reaction**: the feather visibly yields (wraps) at +23 and is drawn as a feather | "ไม่ต้าน แค่ไปกับมัน" needs one visible change at "โดน", and a yielding shape change is not an impact |
+| D4-L | Mosquito legs under captions | **Accept** | No caption word is hidden in any of the five shots (item 5) |
+
+### Fix list — Boss (pass 4, one pass)
+
+Fix in `src/painted/edu18/*` (kit untouched). After the pass: stills of the frames named per item, one `qa-sheet.sh` sheet viewed, the measured numbers asked for below, then hand to Editor.
+
+- **F4-B09 SH09 streaming** (`shots.tsx` SH09; a screen-space stream helper in `macro.ts` that SH08/SH11 may reuse, not required there). Recorded cheat D4-09. Every layer moves straight up the screen at a **constant** speed from +0 to +82 (no easing, no change at +50 "ไม่ช้าลง"):
+  - **N, near motes:** 8–10 suspended mist motes and drizzle specks (round, soft, 20–60 px, size by depth), at Dl depth 4–8 sm from the lens, speed 38–75 px/f by depth (0.30 sm/f at that depth, f 1000). Each carries a trail below it: 3 fading copies at 0.3 / 0.6 / 0.9 × its per-frame step, alpha 0.35 / 0.20 / 0.10 (no blur filter). Spawn under the frame bottom, leave at the top; **≥ 5 in frame at every frame**; none crosses the bun or the passengers (keep 40 px clear of the bun silhouette or pass behind it).
+  - **G, speed guide (sheet):** the 3 cream far drops in one column at x 900 ± 20, 600 px apart, 24 px discs with a 60 px trail, speed 24 px/f (each crosses the 1920 px frame in 80 f, so one leaves as the next arrives).
+  - **F, far:** the shop bokeh discs at 8 px/f. **No static horizontal edge in frame**: the ground band gets a 200 px soft vertical gradient instead of its hard edge and scrolls up with F (or is removed).
+  - Drop, passengers, camera arc and push unchanged.
+  - Measured (report): one N mote's displacement +40 → +41 (expect 38–75 px), one G drop +0 → +30 (720 ± 30 px), the count of N motes in frame at +0, +41, +82 (≥ 5 each). Frames +0, +40, +41, +82. Acceptance: at 270 px, +0 and +40 show different backgrounds, and a viewer of +40/+41 side by side sees the world moving up.
+- **F4-B17 SH17 landing** (`clock.ts` SH17, the SH17 plate, `effects.ts` crown call). D4-17:
+  - **Fall:** `SH17.ramp` [52, 72], `landS` 87.6 unchanged, so v1 = 6.33 sm/f; the bun's bottom touches the water on **+72 (f1167)**. Check by projection: D0 enters the frame top at ≈ +58 (s ≈ 27), ≈ 570 px wide at +60, ≈ 210 px at s 40 (+64), ≈ 92 px at s 60 (+67), ≈ 52 px at the touch.
+  - **Camera:** hold position (3.05, −22.4, 2.2) from +52; tilt **+54–+66** (eased) to **look-at = pos + (−0.202, −5.743, −0.372)** (pitch −85.8°, same azimuth as R2.2), hold +66–+87. Computed: the landing (1.75, −85.9, −0.2) at **(540, 1000)** (R2.2: (540, 1132), 44 px above the band). The mosquito still leaves the frame top right, now by ≈ +62.
+  - **Crown:** starts at +72 (`f = L − 72`); at full open (+86) the outer ring is **6.5 sm across (D-17C) ≈ 118 px**, spanning y ≈ 942–1058; lobes and the 7 flung drops visible; crown and lobes `#eef6f8` at alpha ≥ 0.85 over +72–+80, ≥ 0.5 at +87, outlines 2.5 px. Plus one ripple ring from the crown edge, radius 3.25 → 8 sm over +76–+87 (≈ 118 → 290 px across, bottom y ≤ 1145), 2 px, `#e0eef2`, alpha 0.6 → 0.2. Nothing of the splash at y ≥ 1160.
+  - Acceptance: frames +60, +66, +72, +76, +80, +87. At 270 px the drop is seen plunging (+60 → +72 shrinking) and the crown is the brightest thing on the water at +76, +80 and +87; the touch at (540, 1000) ± 20 px.
+- **F4-B21 SH21 mosquito** (`shots.tsx` SH21, `mosquito.ts` draw size if needed). D4-21; camera, her pose timing and the slap point unchanged:
+  - **Path:** +0–+12 at (0.666, 0.206, 0.053) (548, 1094) as now (the slap's target); +12–+22 it dodges up and right to **(0.84, 0.34, 0.11) ≈ (622, 1050)**; +40–+72 it settles to **(0.80, 0.30, 0.10) ≈ (607, 1070)** at the end camera (602, 1064 at +0), against the pale step riser **≥ 30 px right of her shin and sandal** (her right shin edge ≈ x 564, sandal ≈ x 524–580, y ≈ 1092–1116 in the draft), and hovers there to +129. Never over skin or the sandal after +22.
+  - **Wander** from +72: ±10 px in x and ±6 px in y about that point, on the ambient clock (two sines at 0.9 Hz and 1.4 Hz), so it moves like a hovering insect.
+  - **Body:** drawn at 3× true size: dark `#1b1d22` body ≈ 6 px long, legs as hairlines to a ≈ 14 px span, wing blur as now (recorded cheat).
+  - **Glint (Q1 = A, 4×):** replace the 4-point star with a wing pair: two soft white ovals 12 × 5 px, ±35° from the body axis, core alpha 0.9, 4 f each at +23, +46, +74, +100 (unchanged frames).
+  - **Gaze:** from +30 to +129 her pupils aim at the mosquito, offset ≥ 40 % of the eye's half-width toward screen right-down, head cocked 8° toward it, brows `suspicious` (`faceState.look` is there; scale it up). If the head-down tilt is not in `woman.ts`, the cock alone is fine.
+  - Acceptance: frames +23, +46, +74, +100, +129 at 270 px: a viewer can point to the mosquito in each (a dark speck clear of her, without the glint at +129), and in a 540 px view of +46 and +129 her eyes visibly point at it.
+- **F4-B03 OT02 slot** (`labels.tsx`): new slot **LBL-L x 48–330, y 236–380**, left-aligned, three lines "เม็ดใหญ่สุด" / "หนักได้ถึง" / "50 เท่าของยุง", the same 40 px edu style, range [72, 136) and fade-in unchanged. If any line is wider than 282 px, use 36 px. Acceptance: frames f72, f84, f100, f120, f135, with ≥ 24 px between the text's ink and the bun at each, and the `@TamMaiLa` mark (y < 140) untouched.
+- **F4-B10 SH10 feather** (`feather.ts`, SH10 plate; minor):
+  - **Feather shape:** a shaft (calamus) that runs 22 % of the length below the vane, 3 px, cream. Asymmetric vane, 35 % on the leading side and 65 % trailing, with a rounded tip. Two splits in the wide vane at 40 % and 65 % of the length (6–10 px gaps angled with the barbs). 5–7 soft down curls (20–30 px) at the base. Length stays ≈ 200 px.
+  - **Contact:** at +23 the ball's front meets the vane's centre. Over +23–+27 both ends of the vane swing back (toward −x) by 25–35° and wrap the ball's front, with a curve radius ≈ 1.3 × the ball's radius. From +27 to +45 it holds that wrap, with a 2 px flutter at 5 Hz on the trailing barbs. No bounce, no deflection, no debris; the ball's speed is unchanged (D06).
+  - Acceptance: frames +21, +27, +36. At 270 px the shape changes between +21 and +27, and +36 reads as a feather (shaft and split vane), not a leaf.
+
+### Fix list — Editor (after Boss pass 4, one pass)
+
+- **F4-E17 P1 and F1 at the SH17 impact** (`sound-mix.py`; cue sheet updated by Film): place `water_puddle-splash-below_01` with its transient on **f1167** (SH17 +72; keep `inSec` 0.05); its tail runs across the cut under S2. F1-replay's fall-away ramp now ends at f1167 (−40 dB at the touch) instead of f1182. M1's hard stop stays on f1183. No new sound for Ton.
+- **F4-E15 C15 end:** end the C15 caption by **f1337** (the SH21 cut is f1338); every caption ends on or before the last frame of its shot unless the line itself crosses the cut (C01 and C08 do by design).
+- Then the motion checks on the new plates (SH09 streaming per F4-B09's acceptance, the SH17 plunge and crown, the SH21 wander) at the next draft or the final cut, as the coordinator schedules.
+
+### Not changed
+
+SH14 freeze, SH16 rewind and the SH17 roll and slide read in the draft and need no fix. The faint `@TamMaiLa` mark is the shared default (`defaultChrome`), not an episode fix.
+
 ## Questions for the user (coordinator asks with the structured-question tool)
 
-- **Q1 SH21 ending, mosquito visibility.** At the medium-wide ending the mosquito is about 2 px (true size at 2.4 m). Options: (A, Film's default, applied in R2.1) keep the framing, add a tiny wing glint 4 times plus her gaze and the whine; (B) during the hold (+72–+129) push down to an ankle close like SH19 so the mosquito is about 44 px, losing her face; (C) leave as is (the whine and her glare carry it).
+- **Q1 SH21 ending, mosquito visibility.** **Answered 2026-11-12: A** (task.md). Pass 4 keeps A and adds the findability fixes of D4-21.
+- *(Original wording)* **Q1 SH21 ending, mosquito visibility.** At the medium-wide ending the mosquito is about 2 px (true size at 2.4 m). Options: (A, Film's default, applied in R2.1) keep the framing, add a tiny wing glint 4 times plus her gaze and the whine; (B) during the hold (+72–+129) push down to an ankle close like SH19 so the mosquito is about 44 px, losing her face; (C) leave as is (the whine and her glare carry it).
 
 ## Change log
 
@@ -232,3 +301,4 @@ The SH09/SH14/SH16/SH17 motion checks and the caption check from pass 2 still ap
 | 2026-11-12 | Film | First fix list from the W5.2 plate review (sheet ROWS-R2.1). |
 | 2026-11-12 | Film | Pass 2 after Boss's W5.3 fixes: 14 pass, 7 fix (F2-B05, F2-B07, F2-B12, F2-B15, F2-B19, F2-B20; minors F2-B01, F2-B03); decisions D-07L, D-12R, D-CU, D-17C, D-15R; sheet ROWS-R2.2. |
 | 2026-11-12 | Film | Pass 3 after Boss pass 2 (ce788bc): 7 pass, fix F3-B05 (SH05 mosquito off her shin) and F3-B12 (shop streak px caps, breaks not paint; SH12/SH17/SH20); accepted D3-05 flat lens, D3-20, D3-03, D3-15, D3-01; sheet stays ROWS-R2.2. |
+| 2026-11-12 | Film | Pass 4 on the Editor's W5.3 draft cut (8865fd7): Boss F4-B09 (SH09 streaming), F4-B17 (SH17 lands at +72, camera to (540, 1000), crown 6.5 sm), F4-B21 (SH21 findable mosquito, gaze), F4-B03 (OT02 to LBL-L), F4-B10 (feather wrap and shape); Editor F4-E17 (P1 to f1167), F4-E15 (C15 ends f1337); accepted the mosquito legs under captions (D4-L); decisions D4-09, D4-17, D4-17S, D4-21, D4-03, D4-10; sheet ROWS-R2.3. |
