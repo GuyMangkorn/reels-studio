@@ -67,6 +67,16 @@ export type WomanOpts = {
   /** Contact shadow (default true). */
   shadow?: boolean;
   scale?: number;
+  /** Fit the card to the projected feet-to-head span (F-B05): default true when |pitch| > 25 deg (the feet-depth `camUnit` is wrong under a steep look), false otherwise. */
+  fit?: boolean;
+  /** `slap-ankle` (F-B21): the right palm lands on this picture point (the ankle) at the hit; the left hand rests on `knee` (picture point). */
+  slap?: {ankle: Pt; knee: Pt};
+  /** Face-state overrides (eye `look` in head units). */
+  faceState?: Parameters<typeof paintFigureAt>[3]['faceState'];
+  /** Kit pose id of an unnamed placement (default P01; P09 hands on hips for SH18). */
+  pose?: 'P01' | 'P09';
+  /** Both palms at picture points (px): the arms are placed from the shoulders to these (P45 hands up). */
+  palms?: {r: Pt; l: Pt};
   tint?: {to: string; u: number; mul?: [number, number, number]};
   /** Draw the tote over the head from the hands (`bag-over-head`) and its slope in degrees (run bounce). Default true with that pose. */
   tote?: boolean;
@@ -79,10 +89,19 @@ const shoulderOf = (g: Pt, u: number, view: 'front' | 'left' | 'right', body: Bo
 const poseBaseView = {P01: 1, P38: 1, P45: 1, P35: 1} as const;
 
 /** WOMAN through the yaw camera: kit figure squared to the lens plus the named looks. Returns the anchors, or null behind the lens. */
+/** Rig height (m / sm): the head top above her feet. */
+export const WOMAN_H = 1.62;
+/** Card scale (px per metre) fitted to the projected feet-to-head span: `|dy feet - head| / 1.62`; null when the head point is behind the lens. */
+export const fitUnit = (c: YCam, at: V3): number | null => {
+  const g = camPoint(c, at), h = camPoint(c, [at[0], at[1] + WOMAN_H, at[2]]);
+  return g && h ? (g[1] - h[1]) / WOMAN_H : null;
+};
 export const paintWoman = (p: Painter, c: YCam, o: WomanOpts): FigAnchors | null => {
   const g = camPoint(c, o.at), u0 = camUnit(c, o.at);
   if (!g) return null;
-  const u = u0 * (o.scale ?? 1);
+  const steep = Math.abs(c.pitch ?? 0) > (25 * Math.PI) / 180, fitted = (o.fit ?? steep) && !o.roll ? fitUnit(c, o.at) : null;
+  const u = fitted ? fitted * (o.scale ?? 1) : u0 * (o.scale ?? 1);
+  const uScale = u / u0;
   let fig: Partial<FigPose> = {...o.fig}, pose: 'P01' | 'P38' | 'P45' | 'P35' = 'P01', spec: ReturnType<typeof namedSpec> | undefined;
   // resolve the view the card will be drawn in, to hang the arms from the right shoulders
   const probe = paintViewOf(c, o);
@@ -96,11 +115,23 @@ export const paintWoman = (p: Painter, c: YCam, o: WomanOpts): FigAnchors | null
       return {to: px(s.to), via: px(s.via), ...(s.behind ? {behind: s.behind} : {})};
     };
     fig = {...spec.body, rArm: mk('r', spec.r), lArm: mk('l', spec.l), ...o.fig};
+    if (o.slap && o.named.name === 'slap-ankle') {
+      const sp = slapPhase(o.named.L), r = fig.rArm as {to: Pt; via: Pt; behind?: Arm['behind']}, la = fig.lArm as {to: Pt; via: Pt}, mixk = o.named.L < SLAP.hold ? sp.strike : 1 - sp.palm, m = (a: Pt, b: Pt, k: number): Pt => [a[0] + (b[0] - a[0]) * k, a[1] + (b[1] - a[1]) * k];
+      const to = m(r.to, o.slap.ankle, mixk);
+      fig = {...fig, rArm: {...r, to, via: m(r.via, [(to[0] + r.via[0]) / 2, (to[1] + r.via[1]) / 2 - 0.1 * u], mixk)}, lArm: {...la, to: m(la.to, o.slap.knee, sp.bend), via: m(la.via, [o.slap.knee[0] + 0.12 * u, (o.slap.knee[1] + la.via[1]) / 2], sp.bend)}};
+    }
+  }
+  if (o.palms) {
+    const pb = poseBody('P45', 'front'), pick = (side: 'r' | 'l'): Arm => {
+      const sh = shoulderPoint(WOMAN, g, u, {view: 'front', ...pb, ...fig} as Parameters<typeof shoulderPoint>[3], side), to = o.palms![side], out = side === 'r' ? -1 : 1;
+      return {to, via: [(sh[0] + to[0]) / 2 + out * 0.1 * u, (sh[1] + to[1]) / 2], behind: 'upper'};
+    };
+    fig = {...fig, rArm: pick('r'), lArm: pick('l')};
   }
   let anchors: FigAnchors | null = null;
   const withTote = (o.tote ?? o.named?.name === 'bag-over-head') && o.named?.name === 'bag-over-head';
   anchors = paintFigureAt(p, c, WOMAN, {
-    at: o.at, view: o.view ?? 'front', pose, face: o.face ?? 'neutral', t: o.t, fig, shadow: o.shadow === false ? false : undefined, scale: o.scale, tint: o.tint,
+    at: o.at, view: o.view ?? 'front', pose: o.palms && !o.named ? 'P45' : !o.named && o.pose ? o.pose : pose, face: o.face ?? 'neutral', faceState: o.faceState, t: o.t, fig, shadow: o.shadow === false ? false : undefined, scale: uScale, tint: o.tint,
     roll: o.roll, held: (q, a, uu) => { if (withTote) paintTote(q, a.lHand, a.rHand, uu, o.named!.L); o.held?.(q, a, uu); },
   });
   return anchors;

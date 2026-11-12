@@ -28,7 +28,7 @@ export const MOSQ_BEAT_HZ = 1.3;
 /** Body length in the two worlds (brief: 4.0 mm real; 1.62 sm in `M`). */
 export const MOSQ_BL_M = 0.004, MOSQ_BL_SM = 1.62;
 
-export type MosqState = 'hover' | 'pressed' | 'tip' | 'clear';
+export type MosqState = 'hover' | 'pressed' | 'tip' | 'clear' | 'stand';
 export type MosqView = 'left' | 'right' | 'below';
 export type MosqOpts = {
   view: MosqView;
@@ -53,7 +53,7 @@ export type MosqMeasure = {head: Pt; tail: Pt; centre: Pt; toes: Pt[]; left: num
 
 const DEG = Math.PI / 180;
 type Leg = {fem: number; tib: number; tar: number; curl?: number};
-type SidePose = {pitch: number; wing: 'beat' | 'fold' | 'open'; fore: Leg; mid: Leg; hind: Leg};
+type SidePose = {pitch: number; wing: 'beat' | 'fold' | 'open'; fore: Leg; mid: Leg; hind: Leg; /** Explicit far-side legs (default: the near angles plus 7 / 6 / 5 deg). */ far?: {fore: Leg; mid: Leg; hind: Leg}};
 
 // Segment lengths (bl): femur, tibia, tarsus. Hind leg 2.0 bl (8 mm), fore 1.5, mid 1.6 (brief sizes).
 const LEN = {fore: [0.42, 0.45, 0.63], mid: [0.45, 0.5, 0.65], hind: [0.5, 0.55, 0.95]} as const;
@@ -79,6 +79,10 @@ export const SIDE_POSES: Record<MosqState, SidePose> = {
   tip: {pitch: 4, wing: 'fold', fore: {fem: 40, tib: 22, tar: 8, curl: -4}, mid: {fem: -70, tib: -78, tar: -84}, hind: {fem: -150, tib: -168, tar: -178, curl: 4}},
   // clear: wings open and beating, legs trailing back, nose a little up
   clear: {pitch: 6, wing: 'beat', fore: {fem: -110, tib: -138, tar: -152, curl: -4}, mid: {fem: -128, tib: -152, tar: -164, curl: -4}, hind: {fem: -150, tib: -166, tar: -176, curl: 6}},
+  // stand (SH06 pan, F-B06): body level, six legs bent at the knee (femur up and out, tibia down, tarsus vertical) with every tip on one line 0.72 bl
+  // below the waist anchor (near and far sets solved to the same line); wings folded back
+  stand: {pitch: 0, wing: 'fold', fore: {fem: 72, tib: -62.6, tar: -90}, mid: {fem: 62, tib: -134.4, tar: -90}, hind: {fem: 70, tib: -165.3, tar: -90},
+    far: {fore: {fem: 77, tib: -77.4, tar: -90}, mid: {fem: 58, tib: -132, tar: -90}, hind: {fem: 66, tib: -163.4, tar: -90}}},
 };
 
 /** Below-view leg fans: angle of each leg from +x (deg) on the near (+) side, and a knee bend (deg). */
@@ -87,6 +91,7 @@ const BELOW_POSES: Record<MosqState, {fore: number; mid: number; hind: number; b
   pressed: {fore: 42, mid: 96, hind: 150, bend: -16, wings: 6},
   tip: {fore: 28, mid: 90, hind: 162, bend: -5, wings: 6},
   clear: {fore: 70, mid: 115, hind: 150, bend: -20, wings: 75},
+  stand: {fore: 42, mid: 96, hind: 150, bend: -16, wings: 6},
 };
 
 const lp = (a: Pt, b: Pt, k: number): Pt => [a[0] + (b[0] - a[0]) * k, a[1] + (b[1] - a[1]) * k];
@@ -173,7 +178,7 @@ const drawSide = (p: Painter, g: Pt, len: number, o: MosqOpts): MosqMeasure => {
   // ---- far legs (offset up and back, slightly lighter so the near set reads in front)
   const paintLeg = (key: 'fore' | 'mid' | 'hind', far: boolean, seed: number) => {
     const hip0 = HIP[key], hip: Pt = far ? [hip0[0] + FAR_OFF[0], hip0[1] + FAR_OFF[1]] : hip0;
-    const leg = far ? {...pose[key], fem: pose[key].fem + 7, tib: pose[key].tib + 6, tar: pose[key].tar + 5} : pose[key];
+    const leg = far ? (pose.far?.[key] ?? {...pose[key], fem: pose[key].fem + 7, tib: pose[key].tib + 6, tar: pose[key].tar + 5}) : pose[key];
     const J = legJoints(hip, leg, LEN[key]), P = SP(J);
     const col = far ? mixColor(MOSQ.body, '#4a4e5a', 0.35) : MOSQ.body, wc = far ? mixColor(white, '#9aa0aa', 0.3) : white;
     const w = fine ? [px(0.022, 1.6), px(0.017, 1.4), px(0.011, 1.2)] : [px(0.03, 1.6), px(0.022, 1.4), px(0.014, 1.2)];
@@ -350,7 +355,7 @@ export const paintMosquito = (p: Painter, c: YCam, at: V3, bl: number, o: MosqOp
 export const mosqReachBelow = (state: MosqState, pitchAdd = 0) => {
   const pose = SIDE_POSES[state], a = (pose.pitch + pitchAdd) * DEG, c = Math.cos(a), s = Math.sin(a);
   const sets = (['fore', 'mid', 'hind'] as const).flatMap((k) => [legJoints(HIP[k], pose[k], LEN[k]),
-    legJoints([HIP[k][0] + FAR_OFF[0], HIP[k][1] + FAR_OFF[1]], {...pose[k], fem: pose[k].fem + 7, tib: pose[k].tib + 6, tar: pose[k].tar + 5}, LEN[k])]);
+    legJoints([HIP[k][0] + FAR_OFF[0], HIP[k][1] + FAR_OFF[1]], pose.far?.[k] ?? {...pose[k], fem: pose[k].fem + 7, tib: pose[k].tib + 6, tar: pose[k].tar + 5}, LEN[k])]);
   const ys = sets.flat().map(([x0, y]) => { const x = x0 + X0; return x * s + y * c; });
   return Math.max(0, -Math.min(...ys, -0.07)) / BODY_SPAN;
 };

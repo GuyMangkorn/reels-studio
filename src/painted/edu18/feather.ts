@@ -14,6 +14,7 @@ export const FEATHER_X = ballX(FB.hit) + FB.r;
 export const featherFold = (L: number) => ease(clamp01((L - FB.hit) / 8));
 /** Feather centre x (m): hangs at FEATHER_X until the hit, then rides the ball's front (the ball's speed). */
 export const featherX = (L: number) => (L <= FB.hit ? FEATHER_X : ballX(L) + FB.r - 0.004 * featherFold(L));
+const lp2 = (a: Pt, b: Pt, k: number): Pt => [a[0] + (b[0] - a[0]) * k, a[1] + (b[1] - a[1]) * k];
 export const paintFeatherBall = (p: Painter, c: YCam, L: number, tAmb: number) => {
   const at = (x: number, y = 0): Pt | null => camPoint(c, [x, y, 0]);
   const u = camUnit(c, [0, 0, 0]);
@@ -31,10 +32,14 @@ export const paintFeatherBall = (p: Painter, c: YCam, L: number, tAmb: number) =
   const top = at(fx - 0.003, FB.len / 2), bot = at(fx + 0.004 * (1 - fold), -FB.len / 2 * (1 - 0.35 * fold));
   if (top && bot) {
     const mid: Pt = [(top[0] + bot[0]) / 2 + sway * u * 0.01 + fold * 0.012 * u, (top[1] + bot[1]) / 2], len = Math.hypot(bot[0] - top[0], bot[1] - top[1]);
-    const wv = Math.max(0.25, Math.abs(turn)) * 0.012 * u * (1 - 0.2 * fold), shaft: Pt[] = [top, mid, bot];
+    const wv = Math.max(0.6, Math.abs(turn)) * 0.026 * u * (1 - 0.2 * fold), shaft: Pt[] = [top, mid, bot];
     const lobe = (side: 1 | -1): Pt[] => [top, ...[0.25, 0.5, 0.75].map((k, i): Pt => [top[0] + (bot[0] - top[0]) * k + side * wv * Math.sin(Math.PI * (0.15 + 0.7 * k)) * (i === 1 ? 1.15 : 1) + (mid[0] - (top[0] + bot[0]) / 2) * Math.sin(Math.PI * k), top[1] + (bot[1] - top[1]) * k]), bot];
     [1, -1].forEach((s, i) => { const P = lobe(s as 1 | -1); solid(p, 55100 + i * 5, mixColor(FB.feather, '#c9d2d8', i * 0.25), P, 3); inkLine(p, 55101 + i * 5, P, {weight: 0.7, color: '#9aa5ad', curve: 0.3}); });
-    inkLine(p, 55120, shaft, {weight: 1.2, color: '#cfd6da', closed: false, curve: 0.4});
-    for (let k = 1; k < 8; k++) { const q: Pt = [top[0] + (bot[0] - top[0]) * (k / 8), top[1] + (bot[1] - top[1]) * (k / 8)]; [1, -1].forEach((s, i) => inkLine(p, 55130 + k * 2 + i, [q, [q[0] + s * wv * 0.9, q[1] + len * 0.07]], {weight: 0.5, color: '#aeb8bf', closed: false, curve: 0.2})); }
+    inkLine(p, 55120, shaft, {weight: 2, color: '#b9c2c8', closed: false, curve: 0.4});
+    // quill: the bare shaft below the vane, thicker, with a darker tip (F-B10: a readable quill, not a sliver)
+    const qd: Pt = [(bot[0] - top[0]) / Math.max(1, len), (bot[1] - top[1]) / Math.max(1, len)], qe: Pt = [bot[0] + qd[0] * len * 0.18, bot[1] + qd[1] * len * 0.18];
+    inkLine(p, 55121, [bot, qe], {weight: 4.5, color: '#e8e2d0', closed: false, curve: 0});
+    inkLine(p, 55122, [lp2(bot, qe, 0.7), qe], {weight: 4.5, color: '#a89c80', closed: false, curve: 0});
+    for (let k = 1; k < 14; k++) { const q: Pt = [top[0] + (bot[0] - top[0]) * (k / 14), top[1] + (bot[1] - top[1]) * (k / 14)]; [1, -1].forEach((s, i) => inkLine(p, 55130 + k * 2 + i, [q, [q[0] + s * wv * 0.95 * Math.sin(Math.PI * (0.1 + 0.8 * k / 14)), q[1] + len * 0.06]], {weight: 0.9, color: '#8f9aa2', closed: false, curve: 0.2})); }
   }
 };

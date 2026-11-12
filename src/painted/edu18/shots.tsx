@@ -2,10 +2,11 @@ import type {ReactNode} from 'react';
 import {useCurrentFrame} from 'remotion';
 import {ell, washAt} from '../kit/draw';
 import {paintFall} from '../kit/fall';
-import {hipAnchor} from '../kit/figure-at';
+import {hipAnchor, withRoll} from '../kit/figure-at';
 import {mixColor, type Painter, type Pt} from '../kit/painter';
 import {ease, clamp01, type V3} from '../kit/space';
 import {camPoint, camUnit, type YCam} from '../kit/ycam';
+import {paintBox} from '../kit/world';
 import {paintDrop14} from '../kit/water-drop';
 import {balanceAngle, paintBalance} from './balance';
 import {lookCam, mix3, moveCam} from './cams';
@@ -14,12 +15,12 @@ import {paintDimple, paintFilm, paintUnderface, dimpleDepth, passengerY} from '.
 import {paintShrinkPop, paintSplashCrown, shrinkAbout, shrinkScale} from './effects';
 import {paintFeatherBall} from './feather';
 import {Ot01, Ot02, Ot03} from './labels';
-import {BUN_SM, paintBun, paintMacro, paintMacroBackdrop, paintSlowRain, paintWaterPlane, PUDDLE, wobble} from './macro';
-import {anchorUnderFace, drawMosquito, MOSQ_BL_M, MOSQ_BL_SM, mosqReachAbove, paintMosquito, type MosqState} from './mosquito';
+import {GROUND_Y, paintLakeDetail, BUN_SM, paintBun, paintMacro, paintMacroBackdrop, paintSlowRain, paintWaterPlane, PUDDLE, wobble} from './macro';
+import {anchorUnderFace, drawMosquito, MOSQ_BL_M, MOSQ_BL_SM, mosqReachAbove, mosqReachBelow, paintMosquito, type MosqState} from './mosquito';
 import {Painted, type Grade} from './look';
-import {paintRuler, tickY} from './ruler';
+import {paintRuler, RULER, tickY} from './ruler';
 import {paintCurtain, paintSoi, SOI} from './soi';
-import {paintTote, paintWoman, withShrink, WOMAN} from './woman';
+import {paintTote, paintWoman, withShrink, WOMAN, WOMAN_H} from './woman';
 
 // EDU-EP18-SHORT shot plates (W5.2 Boss, ROWS-R2.0): one `ShotFrame` per shot, a pure function of the shot-local frame L (= the composition frame inside the plate's
 // Freeze). Boss's blockout with the final assets: cameras, clocks and contact numbers from the scene sheet, painted by the library modules (soi, macro, mosquito,
@@ -56,11 +57,11 @@ const womanM = (p: Painter, c: YCam, t: number, o: Partial<Parameters<typeof pai
 const rider = (c: YCam, ctr: V3, dl: V3): Pt | null => camPoint(c, [ctr[0] + dl[0], ctr[1] + dl[1], ctr[2] + dl[2]], 0.3);
 
 /** Lays WOMAN as `pressed-spread` (head toward screen left, face to the lens from beneath) with her hip at `hip` (px), `u` px per metre. */
-const paintPressedWoman = (p: Painter, hip: Pt, u: number, t: number, face: Parameters<typeof paintWoman>[2]['face'], o: {legs?: boolean} = {}) => {
+const paintPressedWoman = (p: Painter, hip: Pt, u: number, t: number, face: Parameters<typeof paintWoman>[2]['face'], o: {legs?: boolean; roll?: number} = {}) => {
   const base = hipAnchor(WOMAN, [0, 0], u, {view: 'front'}), g: Pt = [hip[0] - base[0], hip[1] - base[1]];
   const kick = o.legs === false ? undefined : {r: {hip: -28, knee: 0}, l: {hip: -28, knee: 0}};
   void kick;
-  return paintWoman(p, PX(u), {at: [(g[0] - 540) / u, -g[1] / u, 0], view: 'front', named: {name: 'pressed-spread', L: 0}, face, t, roll: -90, shadow: false});
+  return paintWoman(p, PX(u), {at: [(g[0] - 540) / u, -g[1] / u, 0], view: 'front', named: {name: 'pressed-spread', L: 0}, face, t, roll: o.roll ?? -90, shadow: false, fit: false});
 };
 
 // ---------------------------------------------------------------- the shots
@@ -69,18 +70,24 @@ const SH: Record<string, ShotDef> = {};
 const def = (d: ShotDef) => { SH[d.id] = d; };
 const ambT = (id: ShotId, L: number) => clockOf(id, L).amb / 30;
 
-// SH01 ankle height, a mosquito hanging steady in the downpour; her feet run in from the right
-const camSH01 = (L: number) => moveCam(L, 0, 29, [1.13, 0.16, 0.66], [1.15, 0.165, 0.69], [1.85, 0.34, 1.45], [1.7, 0.3, 1.3], 1000, 1000, 0.02);
+// SH01 ankle height (F-B01): the lens 0.085 m from the mosquito, which hangs against the rain-lit lane (47 px); her run (D-01: 1.5 m/s, 0.05 m/f) comes in from the right
+const camSH01 = (L: number) => moveCam(L, 0, 29, [0.85, 0.16, 0.36], [0.87, 0.165, 0.38], [2.0, 0.4, 1.3], [2.0, 0.4, 1.3], 1000, 1000, 0.02);
+export const MOSQ_H: V3 = [0.923, 0.195, 0.398];
+const HEEL0: V3 = [1.8, 0, 2.6], HEEL29: V3 = [1.52, 0, 1.15];
+/** Her feet point (m): SH01 runs HEEL0 -> HEEL29 at 0.05 m/f; SH02 decelerates from that speed to rest (ease-out, D-01/F-B02). */
 const runAt = (id: ShotId, L: number): V3 => {
-  if (id === 'S01-B01-SH01') return [lerp(1.62, 1.45, L / 30), 0, lerp(1.22, 1.15, L / 30)];
-  return [lerp(1.45, 1.25, sm(0, 8, L)), 0, lerp(1.15, 0.95, sm(0, 8, L))];
+  if (id === 'S01-B01-SH01') return mix3(HEEL0, HEEL29, Math.min(1, L / 29));
+  const e = 1 - (1 - clamp01(L / 8)) ** 1.45; // initial speed 0.05 m/f, rest at +8
+  return mix3([1.47, 0, 1.12], [1.25, 0, 0.95], e);
 };
+const HEEL_MARKS: [number, V3][] = [[4, [1.8, 0, 2.4]], [14, [1.62, 0, 1.9]], [24, [1.62, 0, 1.4]]];
 def({id: 'S01-B01-SH01', grade: 'neutral', paint: (p, L) => {
   const c = camSH01(L), t = ambT('S01-B01-SH01', L);
   paintSoi(p, c, {t, puddle: false});
+  HEEL_MARKS.forEach(([n, at], i) => paintSplashCrown(p, c, [at[0], 0.012, at[2]], L - n, {width: 0.16, seed: 52800 + i * 200}));
   paintWoman(p, c, {at: runAt('S01-B01-SH01', L), view: 'left', named: {name: 'bag-over-head', L}, face: 'worried', t});
   paintCurtain(p, c, {t, span: [0.2, 2.4], density: 0.6});
-  paintMosquito(p, c, [1.19, 0.2, 0.71], MOSQ_BL_M, {view: 'left', state: 'hover', t, blur: true, rimColor: '#9aa8b8'});
+  paintMosquito(p, c, MOSQ_H, MOSQ_BL_M, {view: 'left', state: 'hover', t, blur: true, rimColor: '#9aa8b8'});
   paintFall(p, 'rain', {width: 1080, height: 1920, t, seed: 7, style: {count: 22, weight: 4, len: [180, 260]}, captionBand: [1176, 1344]});
 }});
 
@@ -107,8 +114,9 @@ const camSH03 = (L: number) => {
 const d1Sh03 = (L: number) => lerp(5.6, 3.3, L / 85);
 def({id: 'S01-B01-SH03', grade: 'neutral', paint: (p, L) => {
   const c = camSH03(L), t = ambT('S01-B01-SH03', L);
-  paintMacro(p, c, {t});
-  womanM(p, c, t, {face: 'scared', fig: {headCock: -6 * sm(16, 34, L)}, named: undefined});
+  paintMacro(p, c, {t, haze: 220});
+  // F-B03: she hangs from the sky, not on a ground line: feet apart, one knee up, toes down, off any horizon
+  womanM(p, c, t, {face: 'scared', fig: {headCock: -6 * sm(16, 34, L), legKick: {r: {hip: 10, knee: 26}, l: {hip: -6, knee: 8}}}, named: undefined});
   paintMosquito(p, c, [0.45, 0.05, 0], MOSQ_BL_SM, {view: 'left', state: 'hover', t, blur: false, rimColor: '#e9b46a'});
   paintBun(p, c, [D1_X, d1Sh03(L), 0], {t, phase: 1});
   const centre = camPoint(c, [W_M[0], W_M[1] + 0.81, 0]);
@@ -133,9 +141,10 @@ const camSH05 = (L: number) => moveCam(L, 0, 25, [-0.55, -1.8, 1.45], [-0.55, -1
 def({id: 'S01-B01-SH05', grade: 'neutral', paint: (p, L) => {
   const c = camSH05(L), t = ambT('S01-B01-SH05', L);
   paintMacro(p, c, {t});
-  womanM(p, c, t, {face: 'terrified', fig: {lArm: undefined}, named: undefined, pose: undefined} as never);
-  paintBun(p, c, [-0.75, 3.2 - 0.003 * L, 0], {t, phase: 2});
-  paintMosquito(p, c, [0.6, 0.9, 0.3], MOSQ_BL_SM, {view: 'left', state: 'hover', t, rimColor: '#e9b46a'});
+  // F-B05: card fitted to the projected feet -> head span (501 px under the 61 deg pitch), P45 hands up with the palms at (540, 915)
+  womanM(p, c, t, {face: 'terrified', palms: {r: [506, 915], l: [574, 915]}});
+  paintBun(p, c, [D1_X, lerp(3.30, 3.18, L / 25), 0], {t, phase: 2});
+  paintMosquito(p, c, [0.45, 0.05, 0], MOSQ_BL_SM, {view: 'left', state: 'hover', t, rimColor: '#e9b46a'});
 }});
 
 // SH06 balance diagram on the fixed plane
@@ -143,26 +152,33 @@ def({id: 'S01-B01-SH06', grade: 'neutral', push: (L) => ({s: 1 + 0.08 * clamp01(
   const t = ambT('S01-B01-SH06', L), c = lookCam([0, 0, 5.4], [0, 0, 0], 1000);
   paintMacroBackdrop(p, c, {glow: 0.8});
   paintSlowRain(p, lookCam([0, 0, 6], [0, 0, 0], 1000), t, {alpha: 0.8});
-  paintDrop14(p, [540, 60], 190, {kind: 'bun', ...wobble(t)}, {seed: 40900, light: -1});
+  paintDrop14(p, [540, -150], 190, {kind: 'bun', ...wobble(t)}, {seed: 40900, light: -1}); // F-B06: only a soft band y 0-260 shows
   const bal = paintBalance(p, L);
   const drop = (L0: number) => -520 * (1 - ease(clamp01(L / L0)));
-  const u = 185;
-  if (L >= 1) paintWoman(p, PX(u), {at: [(bal.left[0] - 540) / u, -(bal.left[1] + drop(4)) / u, 0], view: 'front', named: undefined, face: L >= 55 ? 'relieved' : 'surprised', t, shadow: false});
-  if (L >= 1) drawMosquito(p, [bal.right[0], bal.right[1] + drop(8) - 0.62 * 300 * 0.95], 300, {view: 'right', state: 'hover', t, blur: false, rimColor: '#e9b46a'});
+  const u = 260 / 1.62; // both figures 260 px: her height and the mosquito's body length
+  if (L >= 1) paintWoman(p, PX(u), {at: [(bal.left[0] - 540) / u, -(bal.left[1] + drop(4)) / u, 0], view: 'front', named: undefined, face: L >= 55 ? 'relieved' : 'surprised', t, shadow: false, fit: false});
+  if (L >= 1) { // standing, facing her, all six tips on the right pan (the legs reach 0.72 bl below the waist)
+    const len = 260, m = drawMosquito(p, [872, bal.right[1] + drop(8) - mosqReachBelow('stand') * len], len, {view: 'left', state: 'stand', t, blur: false, rimColor: '#e9b46a'});
+    void m;
+  }
 }});
 
-// SH07 slow motion: D1 meets her raised palms at +15 and the mosquito's back at +18
+// SH07 slow motion (F-B07): D1 enters at 6.595 falling 0.30 sm/f (the D1 track), meets her raised palms (y 1.22) at +15 and the mosquito's back at +18; after contact the
+// camera falls with D1 (cut-on-action into SH08) and she and the mosquito are carried under the face, both in frame at +34
 export const D1_HANDS = W_M[1] + 2.02;
-export const d1Sh07 = (L: number) => D1_HANDS + 0.0 - BUN_SM.bottom + FALL_SM_PER_F * (15 - L);
-const camSH07 = (L: number) => moveCam(L, 0, 34, [0.2, 0.6, 3.1], [0.15, 0.62, 2.8], [-0.2, 0.9, 0], [-0.2, 0.9, 0]);
+export const d1Sh07 = (L: number) => 6.595 - FALL_SM_PER_F * L;
+const fallAfter = (L: number) => FALL_SM_PER_F * Math.max(0, L - 15);
+const camSH07 = (L: number) => {
+  const b = moveCam(L, 0, 34, [0.2, 0.6, 3.1], [0.15, 0.62, 2.8], [-0.2, 0.9, 0], [-0.2, 0.9, 0]), d = fallAfter(L);
+  return lookCam([b.x, 0.62 - d + (L < 15 ? b.y - 0.62 : 0), b.z], [-0.2 + (b.x - 0.2) * 0, 0.9 - d, 0], 1000);
+};
 def({id: 'S01-B02-SH01', grade: 'neutral', paint: (p, L) => {
-  const c = camSH07(L), t = ambT('S01-B02-SH01', L), y = d1Sh07(L), ctr: V3 = [D1_X, y, 0];
+  const c = camSH07(L), t = ambT('S01-B02-SH01', L), y = d1Sh07(L), ctr: V3 = [D1_X, y, 0], d = fallAfter(L);
   paintMacro(p, c, {t});
-  const lean = ease(clamp01((L - 15) / 19));
-  womanM(p, c, t, {face: L < 15 ? 'terrified' : 'scared', named: undefined, fig: {lean: 0.0}} as never);
-  void lean;
+  const pm = (x: number): Pt => camPoint(c, [x, D1_HANDS - d, 0]) ?? [540, 900];
+  womanM(p, c, t, {face: L < 15 ? 'terrified' : 'scared', named: undefined, at: [W_M[0], W_M[1] - d, 0], palms: {r: pm(-0.82), l: pm(-0.68)}} as never);
   const my = L < 18 ? 0.3 : y + BUN_SM.bottom - 0.235 * 0.9;
-  paintMosquito(p, c, [0.25, Math.min(0.3, my), 0], MOSQ_BL_SM, {view: 'left', state: L < 18 ? 'hover' : 'pressed', t, rimColor: '#e9b46a'});
+  paintMosquito(p, c, [0.55, Math.min(0.3, my), 0], MOSQ_BL_SM, {view: 'left', state: L < 18 ? 'hover' : 'pressed', t, rimColor: '#e9b46a'});
   paintBun(p, c, ctr, {t, phase: 2});
   if (L >= 15) paintFilm(p, c, ctr, {t});
 }});
@@ -173,8 +189,8 @@ const d1ctr = (id: ShotId, L: number): V3 => [D1_X, D1_Y0[id] - FALL_SM_PER_F * 
 const dlCam = (ctr: V3, pos: V3, at: V3, f = 1000): YCam => lookCam([ctr[0] + pos[0], ctr[1] + pos[1], ctr[2] + pos[2]], [ctr[0] + at[0], ctr[1] + at[1], ctr[2] + at[2]], f);
 const HER: V3 = [0, RIDER_Y - 0.04, -0.42], BUGPOS: V3 = [0, RIDER_Y, 0.4];
 
-const paintUnder = (p: Painter, c: YCam, ctr: V3, t: number, L: number, o: {face: Parameters<typeof paintWoman>[2]['face']; cold?: number; hair?: boolean; legsAlive?: boolean; mosqPhase?: number; skipMosq?: boolean; bg?: () => void}) => {
-  skyUp(p, o.cold ?? 0);
+const paintUnder = (p: Painter, c: YCam, ctr: V3, t: number, L: number, o: {face: Parameters<typeof paintWoman>[2]['face']; cold?: number; hair?: boolean; legsAlive?: boolean; mosqPhase?: number; skipMosq?: boolean; bg?: () => void; skipBg?: boolean; place?: {wHead: Pt; wFeet: Pt; mHead: Pt; mTail: Pt}}) => {
+  if (!o.skipBg) skyUp(p, o.cold ?? 0);
   o.bg?.();
   paintUnderface(p, c, ctr, {t, cold: o.cold});
   const dl = (v: V3): V3 => [ctr[0] + v[0], ctr[1] + v[1], ctr[2] + v[2]];
@@ -183,6 +199,13 @@ const paintUnder = (p: Painter, c: YCam, ctr: V3, t: number, L: number, o: {face
   paintDimple(p, c, ctr, dl([0, 0, 0.4]), 0.75, 0.2, dep, 43150);
   const hp = camPoint(c, dl([-0.07, passengerY(0) - 0.04 + 0.0, -0.42])), u = camUnit(c, dl(HER)) ;
   void face;
+  if (o.place) { // F-B11: both laid by their projected head -> feet / head -> tail anchors (rolled in the picture plane), the mosquito first so her hair and face draw over its legs
+    const {wHead, wFeet, mHead, mTail} = o.place, mc: Pt = [(mHead[0] + mTail[0]) / 2, (mHead[1] + mTail[1]) / 2], mLen = Math.hypot(mTail[0] - mHead[0], mTail[1] - mHead[1]), mAng = (Math.atan2(mTail[1] - mHead[1], mTail[0] - mHead[0]) * 180) / Math.PI;
+    withRoll(p, mc, mAng, () => drawMosquito(p, mc, mLen, {view: 'below', state: 'pressed', mirror: true, t, squash: 0.85, rimColor: '#e9b46a'}));
+    const span = Math.hypot(wFeet[0] - wHead[0], wFeet[1] - wHead[1]), ang = (Math.atan2(wFeet[1] - wHead[1], wFeet[0] - wHead[0]) * 180) / Math.PI;
+    paintPressedWoman(p, [wHead[0] + 0.44 * (wFeet[0] - wHead[0]), wHead[1] + 0.44 * (wFeet[1] - wHead[1])], span / WOMAN_H, t, o.face, {roll: -90 + ang});
+    return;
+  }
   if (hp) paintPressedWoman(p, hp, u, t, o.face);
   if (!o.skipMosq) {
     const g = camPoint(c, dl(BUGPOS)), ub = camUnit(c, dl(BUGPOS));
@@ -208,29 +231,47 @@ def({id: 'S01-B02-SH03', grade: 'neutral', paint: (p, L) => {
 
 // SH10 feather insert
 def({id: 'S01-B02-SH04', grade: 'neutral', paint: (p, L) => {
-  const t = ambT('S01-B02-SH04', L), c = moveCam(L, 0, 45, [0, 0.05, 0.45], [0.18, 0.05, 0.45], [0, 0, 0], [0.18, 0, 0]);
+  const t = ambT('S01-B02-SH04', L), c = moveCam(L, 0, 45, [0, 0.05, 0.3], [0.18, 0.05, 0.3], [0, 0, 0], [0.18, 0, 0], 1000, 1000, 0.02); // F-B10: 0.30 m, ball 6.5 cm = 217 px, feather 6 cm = 200 px
   washAt(p, 56200, '#5b4a3c', 255, [[0, 0], [1080, 0], [1080, 1920], [0, 1920]], 0, 0);
   [[250, 520, 260], [760, 820, 220], [540, 300, 180]].forEach(([x, y, r], i) => washAt(p, 56210 + i, '#f2b866', 80, ell(x, y, r, r, 22), 0.3, 0.1));
+  // out-of-focus drip-curtain streaks behind the insert (soft pale columns that fall on the ambient clock)
+  for (let i = 0; i < 9; i++) {
+    const x = 70 + i * 120 + 30 * Math.sin(i * 2.1), ph = (t * (0.9 + 0.12 * i) + i * 0.37) % 1, y0 = -200 + ph * 2300, len = 260 + 70 * (i % 3);
+    washAt(p, 56250 + i, '#d6e4ec', 34, [[x - 7, y0], [x + 7, y0], [x + 4, y0 + len], [x - 4, y0 + len]], 0.3, 0.1);
+  }
   paintFeatherBall(p, c, L, t);
 }});
 
 // SH11 back: both riding loose
+// F-B11 anchors (+0, Film's projection of Dl her z -0.42, mosquito z +0.40; they ride together, so the pair drifts with the camera arc to +57)
+const SH11_PLACE = (L: number) => { const k = L / 57; return {wHead: [415 + 30 * k, 1085 - 10 * k] as Pt, wFeet: [899 + 25 * k, 950 - 8 * k] as Pt, mHead: [209 + 20 * k, 988 - 8 * k] as Pt, mTail: [780 + 25 * k, 759 - 5 * k] as Pt}; };
 def({id: 'S01-B02-SH05', grade: 'neutral', paint: (p, L) => {
   const ctr = d1ctr('S01-B02-SH05', L), c = dlCam(ctr, mix3([1.35, -2.2, 1.9], [0.9, -2.35, 2.4], sm(0, 57, L)), [0, -0.95, 0]), t = ambT('S01-B02-SH05', L);
-  paintUnder(p, c, ctr, t, L, {face: L < 20 ? 'worried' : 'neutral'});
+  paintUnder(p, c, ctr, t, L, {face: L < 20 ? 'worried' : 'neutral', place: SH11_PLACE(L)});
 }});
 
-// SH12 the reveal: over the rim, tilt down to the ground and the puddle
+// SH12 the reveal (F-B12): hold over the rim, then swing +20..+75 to a 50 deg look-down at the lake and hold; D1 centre y = 2.095 - (9.0 + 0.03 L) (D1 track)
+const d1Sh12 = (L: number): V3 => [D1_X, 2.095 - (9.0 + 0.03 * L), 0];
+export const camSH12 = (L: number): YCam => {
+  const k = sm(20, 75, L);
+  return dlCam(d1Sh12(L), mix3([1.9, -0.6, 1.4], [2.2, 0.3, 1.7], k), mix3([0, -1.0, 0], [1.41, -0.89, 1.09], k));
+};
+const paintStepAndCrate = (p: Painter, c: YCam) => { // far edge of the lake: the concrete step edge and a crate corner (M, sm)
+  const z0 = PUDDLE.c[1] - PUDDLE.rz - 12;
+  paintBox(p, c, 42600, {x0: -330, x1: 190, y0: GROUND_Y, y1: GROUND_Y + 7, z0: z0 - 30, z1: z0}, '#6f736f', {top: -0.08}, {ink: true});
+  paintBox(p, c, 42620, {x0: -40, x1: 22, y0: GROUND_Y, y1: GROUND_Y + 26, z0: z0 - 8, z1: z0 + 50}, '#4f7f9a', {}, {ink: true});
+};
 def({id: 'S01-B03-SH01', grade: 'cold', paint: (p, L) => {
-  const ctr = d1ctr('S01-B03-SH01', Math.min(L, 75)), t = ambT('S01-B03-SH01', L);
-  const k = sm(20, 75, L), pos = mix3([1.9, -0.6, 1.4], [1.75, -0.2, 1.3], sm(0, 20, L)), at = mix3([0, -1, 0], [0.3, -40, 0.6], k);
-  const ctrL = d1ctr('S01-B03-SH01', L), c = dlCam(ctrL, pos, at);
-  void ctr;
+  const t = ambT('S01-B03-SH01', L), ctrL = d1Sh12(L), c = camSH12(L);
   paintMacroBackdrop(p, c, {glow: 0.7});
   paintMacro(p, c, {t, look: 'down', lake: true, glow: 0.7});
+  paintStepAndCrate(p, c);
+  paintLakeDetail(p, c, t);
+  // riders under the face (head -> feet / mosquito head -> tail by projection), drawn under the drop
+  const fy = ctrL[1] + BUN_SM.bottom, W = (x: number, z: number) => camPoint(c, [ctrL[0] + x, fy - 0.04, ctrL[2] + z]);
+  const wh = W(-0.88, -0.42), wf = W(0.74, -0.42), mh = W(-0.8, 0.4), mt = W(0.8, 0.4);
+  if (wh && wf && mh && mt) paintUnder(p, c, ctrL, t, L, {face: 'terrified', skipBg: true, place: {wHead: wh, wFeet: wf, mHead: mh, mTail: mt}} as never);
   paintBun(p, c, ctrL, {t, phase: 1});
-  const g = camPoint(c, [ctrL[0], ctrL[1] + BUN_SM.bottom, ctrL[2]]);
-  void g;
 }});
 
 // SH13 close on her from below
@@ -248,29 +289,27 @@ const sh14Frame = (L: number) => {
 def({id: 'S01-B04-SH01', grade: 'cold', paint: (p, L) => {
   const {k, ctr, c} = sh14Frame(L), t = k.amb / 30;
   paintUnder(p, c, ctr, t, k.ev, {face: 'worried', cold: 0.7});
-  paintRuler(p, c, {ev: k.ev, glow: glowAt(L), z: 0.6, faceY: ctr[1] + BUN_SM.bottom});
-}, ot03: (L) => {
+  paintRuler(p, c, {ev: k.ev, glow: glowAt(L), z: 0, faceY: ctr[1] + BUN_SM.bottom});
+}, ot03: (L) => { // OT03 sits left of tick 20, on the bar's left edge, so the label stays inside x 1020 (F-B14)
   const {k, ctr, c} = sh14Frame(L);
-  void k;
-  const r = tickY(20, clockOf('S01-B04-SH01', L).ev, ctr[1] + BUN_SM.bottom);
-  void r;
-  return camPoint(c, [ctr[0] + 2.15 - 0.15 + 0.6, ctr[1] + BUN_SM.bottom, 0.6], 0.3);
+  return camPoint(c, [RULER.x - 0.09 - 0.12, tickY(20, k.ev, ctr[1] + BUN_SM.bottom), 0], 0.3);
 }});
 const glowAt = (L: number) => (L < SH14.glow[0] ? 0 : L < SH14.glow[1] ? 0.6 + 0.4 * ease(clamp01((L - SH14.glow[0]) / 7.5)) : 0.8);
 
 // SH15 hypothetical `Mh`: a mosquito alone low over a puddle; D2 hits it at +50 and carries it down; cut before contact with the water
 const D2_HIT = 50, MH_WATER = -21.95;
 const d2s = (n: number) => FALL_D2 * Math.max(0, n - D2_HIT);
+// F-B15: pitch 31 deg from +0; from +50 the camera falls with D2 and tilts to 40 deg, so the water is under the mosquito (+113: 278 px clear band)
 const camSH15 = (n: number) => {
   const s = d2s(n);
-  return n < D2_HIT ? lookCam([1.6, 2.2, 3.2], [0, -4, 0], 1000) : lookCam([1.6, 2.2 - s, 3.2], [0, -4 - s - 6 * sm(0, 63, n - D2_HIT), 0], 1000);
+  return n < D2_HIT ? lookCam([1.6, 0.4, 4.4], [0, -2.4, 0], 1000) : lookCam([1.6, 0.4 - s, 4.4], [0, -2.4 - s - 1.2 * sm(0, 63, n - D2_HIT), 0], 1000);
 };
 def({id: 'S01-B04-SH02', grade: 'coldest', paint: (p, L) => {
   const c = camSH15(L), t = ambT('S01-B04-SH02', L), s = d2s(L);
   skyUp(p, 1);
-  paintWaterPlane(p, c, MH_WATER, t, {cold: 1});
+  paintWaterPlane(p, c, MH_WATER, t, {cold: 1, reflect: clamp01(d2s(L) / 20)});
   paintSlowRain(p, c, t, {alpha: 0.6, skip: (d) => d.at[1] < MH_WATER + 2});
-  const ctr: V3 = [0, L < D2_HIT ? 3.0 + FALL_D2 * (L - D2_HIT) : -s, 0];
+  const ctr: V3 = [0, L < D2_HIT ? FALL_D2 * (D2_HIT - L) : -s, 0]; // D2 falls onto the mosquito's back at +50 (R04), from above
   const hit = L >= D2_HIT, ay = hit ? anchorUnderFace(ctr[1] + BUN_SM.bottom, MOSQ_BL_SM, 'pressed') : RIDER_Y;
   paintBun(p, c, ctr, {t, seed: 40700});
   paintMosquito(p, c, [0, ay, 0], MOSQ_BL_SM, {view: 'right', state: hit ? 'pressed' : 'hover', t, rimColor: '#a8bcd0'});
@@ -300,25 +339,33 @@ def({id: 'S01-B05-SH01', grade: 'warm', paint: (p, L) => {
 }});
 
 // SH17 it tips, slides off the side and flies; D0 rushes on and splashes in the puddle on the last frame
-const camSH17 = (L: number): YCam => {
+// F-B17: +0..+52 as R2.0; +52..+70 the camera holds its `M` position and tilts down to pitch -80 deg toward the landing azimuth, held to +87
+const camSH17pos = (L: number): {pos: V3; at: V3} => {
   const k = sm(12, 52, L), ctrY = D0_C17 - sh17Fall(Math.min(L, 52));
   const rel = mix3([0.45, -1.55, 2.35], [1.3, -1.2, 2.4], k), at = mix3([0, -0.95, 0], [1, -1.1, 0], k);
-  return lookCam([D0_X + rel[0], ctrY + rel[1], D0_Z + rel[2]], [D0_X + at[0], ctrY + at[1], D0_Z + at[2]], 1300);
+  return {pos: [D0_X + rel[0], ctrY + rel[1], D0_Z + rel[2]], at: [D0_X + at[0], ctrY + at[1], D0_Z + at[2]]};
+};
+export const camSH17 = (L: number): YCam => {
+  const m = camSH17pos(Math.min(L, 52));
+  if (L <= 52) return lookCam(m.pos, m.at, 1300);
+  const down: V3 = [m.pos[0] - 0.476, m.pos[1] - 5.671, m.pos[2] - 0.879];
+  return lookCam(m.pos, mix3(m.at, down, sm(52, 70, L)), 1300);
 };
 const LAND: V3 = [D0_X, PUDDLE.y, D0_Z];
 def({id: 'S01-B05-SH02', grade: 'warm', paint: (p, L) => {
   const c = camSH17(L), t = ambT('S01-B05-SH02', L), ctr: V3 = [D0_X, D0_C17 - sh17Fall(L), D0_Z];
   paintMacro(p, c, {t, lake: true, glow: 1.15});
+  if ((c.pitch ?? 0) < -0.6) paintLakeDetail(p, c, t); // once the camera looks down at the puddle it must read as water
   paintBun(p, c, ctr, {t, seed: 40500});
   const face = ctr[1] + BUN_SM.bottom;
   let at: V3 = [ctr[0], anchorUnderFace(face, MOSQ_BL_SM, 'pressed'), ctr[2]], state: MosqState = L < 12 ? 'pressed' : 'tip', pitch = 0;
   if (L >= 12) pitch = 35 * sm(12, 34, L);
   const slide = 1.9 * sm(34, 52, L);
   at = [ctr[0] + slide, L <= 52 ? at[1] : D0_C17 - sh17Fall(52) + BUN_SM.bottom - 0.235, ctr[2]];
-  if (L > 52) { const u = sm(54, 84, L); state = 'clear'; pitch = 6; at = [at[0] + 3.5 * u, at[1] + 2.4 * u, at[2]]; }
-  paintMosquito(p, c, at, MOSQ_BL_SM, {view: L < 12 ? 'left' : 'right', state, pitchAdd: pitch, t, rimColor: '#e9b46a'});
+  if (L > 52) { const u = sm(54, 70, L); state = 'clear'; pitch = 6; at = [at[0] + 3.5 * u, at[1] + 2.4 * u, at[2]]; }
+  paintMosquito(p, c, at, MOSQ_BL_SM, {view: L <= 54 ? 'left' : 'right', state, pitchAdd: pitch, t, rimColor: '#e9b46a'});
   if (L <= 52) paintFilm(p, c, ctr, {t});
-  paintSplashCrown(p, c, LAND, L - 87 + 2, {width: 2.51});
+  paintSplashCrown(p, c, LAND, L >= 87 ? 4 : -1, {width: 6.5}); // F-B17: the crown ~124 px at (540, 1132) on the last frame
 }});
 
 // SH18-SH21 full size `H`
@@ -331,33 +378,60 @@ const toteShoulder = (p: Painter, a: {lShoulder: Pt; head: Pt}, u: number) => {
 def({id: 'S01-B05-SH03', grade: 'warm', paint: (p, L) => {
   const c = moveCam(L, 0, 21, [0.8, 1.32, 2.05], [0.78, 1.3, 1.9], [0.55, 1.02, -0.12], [0.55, 1.02, -0.12]), t = ambT('S01-B05-SH03', L);
   paintSoi(p, c, {t});
-  paintWoman(p, c, {at: SOI.W, view: 'front', face: 'tired', t, fig: {rise: 0.012 * Math.sin(t * Math.PI * 2 * 1.8 * 0.9)}, held: (q, a, u) => toteShoulder(q, a, u)});
+  paintWoman(p, c, {at: SOI.W, view: 'front', face: 'tired', pose: 'P09', t, fig: {rise: 0.012 * Math.sin(t * Math.PI * 2 * 1.8 * 0.9)}, // F-B18: P09 hands on hips, idle-breathe x1.8
+     held: (q, a, u) => toteShoulder(q, a, u)});
   paintCurtain(p, c, {t, span: [-1.2, 2.2], density: 0.7});
   paintFall(p, 'rain', {width: 1080, height: 1920, t, captionBand: [1176, 1344]});
 }});
-const W_END: V3 = [0.66, 0.17, 0.06];
+export const MOSQ_END: V3 = [0.666, 0.206, 0.053]; // SH19-SH21 anchor: >= 0.198 m above the lane water (F-B19)
 const mosqHeld = (p: Painter, c: YCam, t: number, at: V3, o: {view?: 'left' | 'right'} = {}) => paintMosquito(p, c, at, MOSQ_BL_M, {view: o.view ?? 'left', state: 'hover', t, blur: true, rimColor: '#e9b46a'});
+// SH19 (F-B19): the lens 0.09 m from the mosquito, which hangs against the lit shop between her calves; one stream 2 cm to its left, the drip curtain around it
+/** Drip-curtain streams seen from a few cm: pale vertical ribbons (a drop 2.5 mm across is 20+ px at 0.1 m) with bright beads falling down them on the ambient clock. */
+const paintCloseStreams = (p: Painter, c: YCam, t: number, xs: number[], z: number, top = 0.6) => xs.forEach((x, i) => {
+  const a = camPoint(c, [x, top, z]), b = camPoint(c, [x, 0.01, z]), u = camUnit(c, [x, 0.3, z]);
+  if (!a || !b) return;
+  const w = Math.min(34, Math.max(2, u * 0.0022));
+  washAt(p, 56500 + i * 6, '#d6e4ec', 120, [[a[0] - w / 2, a[1]], [a[0] + w / 2, a[1]], [b[0] + w / 2, b[1]], [b[0] - w / 2, b[1]]], 0.2, 0);
+  washAt(p, 56501 + i * 6, '#ffffff', 90, [[a[0] - w * 0.15, a[1]], [a[0] + w * 0.15, a[1]], [b[0] + w * 0.15, b[1]], [b[0] - w * 0.15, b[1]]], 0.1, 0);
+  for (let k = 0; k < 3; k++) { // beads
+    const ph = (t * (2.4 + 0.3 * i) + k / 3 + i * 0.21) % 1, yy = a[1] + (b[1] - a[1]) * ph;
+    washAt(p, 56502 + i * 6 + k, '#ffffff', 210, ell(a[0] + (b[0] - a[0]) * ph, yy, w * 0.65, w * 0.95, 10), 0, 0);
+  }
+});
+const camSH19 = (L: number) => moveCam(L, 0, 51, [0.71, 0.19, 0.13], [0.74, 0.19, 0.12], [0.55, 0.26, -0.14], [0.57, 0.26, -0.14], 1000, 1000, 0.02);
 def({id: 'S01-B05-SH04', grade: 'warm', paint: (p, L) => {
-  const c = moveCam(L, 0, 51, [0.71, 0.19, 0.13], [0.74, 0.19, 0.12], [0.55, 0.14, -0.14], [0.57, 0.14, -0.14], 1000, 1000, 0.02), t = ambT('S01-B05-SH04', L);
+  const c = camSH19(L), t = ambT('S01-B05-SH04', L);
   paintSoi(p, c, {t});
   paintWoman(p, c, {at: SOI.W, view: 'front', face: 'tired', t, shadow: false});
-  paintCurtain(p, c, {t, span: [0.3, 1.1], density: 0.35});
-  mosqHeld(p, c, t, W_END);
+  paintCloseStreams(p, c, t, [MOSQ_END[0] - 0.02, MOSQ_END[0] + 0.035, MOSQ_END[0] + 0.09, MOSQ_END[0] - 0.075], 0.02); // one stream 2 cm to its left, more around and past it
+  mosqHeld(p, c, t, MOSQ_END);
 }});
+// SH20 (F-B20): the camera tips down over the puddle (pitch 56 deg), the mosquito 0.095 m from the lens, the water filling y ~830-1920
+const camSH20 = (L: number) => { const u = sm(5, 50, L); return lookCam(mix3([0.74, 0.19, 0.12], [0.70, 0.25, 0.13], u), mix3([0.57, 0.26, -0.14], [0.6595, 0.1017, 0.0383], u), 1000, 0.02); };
 def({id: 'S01-B05-SH05', grade: 'warm', paint: (p, L) => {
-  const u = sm(5, 50, L), c = lookCam(mix3([0.74, 0.19, 0.12], [0.74, 0.26, 0.2], u), mix3([0.57, 0.14, -0.14], [0.66, 0.02, 0.1], u), 1000, 0.02), t = ambT('S01-B05-SH05', L);
-  paintSoi(p, c, {t});
+  const c = camSH20(L), t = ambT('S01-B05-SH05', L);
+  paintSoi(p, c, {t, richPuddle: true});
   paintWoman(p, c, {at: SOI.W, view: 'front', face: 'tired', t, shadow: false});
-  paintCurtain(p, c, {t, span: [0.3, 1.1], density: 0.35});
-  mosqHeld(p, c, t, W_END);
+  paintCloseStreams(p, c, t, [0.52, 0.6, 0.72, 0.79], 0.02, 0.2);
+  mosqHeld(p, c, t, MOSQ_END);
 }});
+// SH21 (F-B21): slap-ankle, the right palm on her left ankle (0.58, 0.18, -0.12) = (526, 1081) at +18, the left hand on her left knee; the mosquito dodges and returns,
+// with a soft wing glint (<= 14 px, 4 f at +23, +46, +74, +100: Q1 default A) and her gaze on it from +30
+const GLINT = [23, 46, 74, 100];
+const camSH21 = (L: number) => moveCam(L, 0, 129, [1.05, 0.95, 2.3], [1.0, 0.93, 2.18], [0.62, 0.5, -0.1], [0.62, 0.5, -0.1]);
+const mosqSH21 = (L: number): V3 => L < 12 ? MOSQ_END : L < 22 ? lerpV(MOSQ_END, [0.726, 0.266, 0.093], sm(12, 22, L)) : L < 40 ? [0.726, 0.266, 0.093] : lerpV([0.726, 0.266, 0.093], [0.68, 0.2, 0.07], sm(40, 72, L));
 def({id: 'S01-B05-SH06', grade: 'warm', paint: (p, L) => {
-  const c = moveCam(L, 0, 129, [1.05, 0.95, 2.3], [1.0, 0.93, 2.18], [0.62, 0.5, -0.1], [0.62, 0.5, -0.1]), t = ambT('S01-B05-SH06', L);
+  const c = camSH21(L), t = ambT('S01-B05-SH06', L), m = mosqSH21(L), mp = camPoint(c, m);
+  const ankle = camPoint(c, [0.58, 0.18, -0.12]) ?? [526, 1081] as Pt, feet = camPoint(c, SOI.W) ?? [540, 1300] as Pt, u = camUnit(c, SOI.W);
   paintSoi(p, c, {t});
-  paintWoman(p, c, {at: SOI.W, view: 'front', named: {name: 'slap-ankle', L: L}, face: L < 22 ? 'angry' : 'suspicious', t, shadow: true});
+  paintWoman(p, c, {at: SOI.W, view: 'front', named: {name: 'slap-ankle', L}, face: L < 22 ? 'angry' : 'suspicious', faceState: L >= 30 && mp ? {look: [(mp[0] - feet[0]) / (0.7 * u) * 0.6, 0.8]} : undefined, t, shadow: true,
+    slap: {ankle, knee: [feet[0] + 0.13 * u, feet[1] - 0.43 * u]}});
   paintCurtain(p, c, {t, span: [-1.2, 2.2], density: 0.7});
-  const m: V3 = L < 12 ? W_END : L < 22 ? lerpV(W_END, [0.72, 0.23, 0.1], sm(12, 22, L)) : L < 40 ? [0.72, 0.23, 0.1] : lerpV([0.72, 0.23, 0.1], [0.68, 0.18, 0.08], sm(40, 72, L));
   mosqHeld(p, c, t, m);
+  if (mp && GLINT.some((g) => L >= g && L < g + 4)) { // the wing glint locator: a soft white star <= 14 px on the mosquito
+    washAt(p, 56400, '#ffffff', 200, ell(mp[0], mp[1] - 2, 7, 5, 12), 0.2, 0);
+    washAt(p, 56401, '#ffffff', 110, ell(mp[0], mp[1] - 2, 14, 2, 10), 0, 0);
+  }
   paintFall(p, 'rain', {width: 1080, height: 1920, t, captionBand: [1176, 1344]});
 }});
 

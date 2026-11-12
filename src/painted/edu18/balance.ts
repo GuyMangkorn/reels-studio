@@ -3,10 +3,10 @@ import {mixColor, type Painter, type Pt} from '../kit/painter';
 import {clamp01, ease} from '../kit/space';
 
 // N9 `new: balance` (brief N9 + "balance D (px)"): a small brass apothecary balance on the fixed 1080 x 1920 diagram plane: pivot (540, 640) on a slim column down
-// to a base at y 1500; beam 700 px; pans 260 px wide hanging 300 px below each end (left pan centre (190, 940), right (890, 940)). The beam wobbles +-4 deg
+// to a base at y 1500; beam 600 px (F-B06); pans 240 px wide hanging 300 px below each end (left pan centre (240, 940), right (840, 940)). The beam wobbles +-4 deg
 // at 1.4 Hz with decaying amplitude and settles level by +45 (SH06). The pans stay horizontal (they hang from the beam ends). Straight bars sit on a flat
 // underlayer (DF-20261030-painted-straight-bars). EP17 N11 is the same design but has no code in this checkout (`src/painted/edu17` absent), so this is the first.
-export const BAL = {pivot: [540, 640] as Pt, beam: 700, base: 1500, drop: 300, panW: 260, hz: 1.4, amp: 4, settle: 45, drops: {left: 4, right: 8}, brass: '#c8a24a', brassDk: '#8a6a24', brassHi: '#f0d98a'};
+export const BAL = {pivot: [540, 640] as Pt, beam: 600, base: 1500, drop: 300, panW: 240, hz: 1.4, amp: 4, settle: 45, drops: {left: 4, right: 8}, brass: '#c8a24a', brassDk: '#8a6a24', brassHi: '#f0d98a'};
 /** Beam angle in degrees at SH06 event frame `L` (positive = right end down): empty = level; an impulse at each landing (+4 left, +8 right), decaying, 0 from +45. */
 export const balanceAngle = (L: number): number => {
   const imp = (t0: number, sign: number) => (L <= t0 ? 0 : sign * Math.exp(-(L - t0) / 9) * Math.sin(2 * Math.PI * BAL.hz * (L - t0) / 30));

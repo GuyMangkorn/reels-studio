@@ -114,17 +114,18 @@ export type DripOpts = {t: number; density?: number; span?: [number, number]};
 /** Drip curtain off the lip: one stream per corrugation valley landing at z 0.02-0.12, drops falling on the ambient clock, splash crowns where it lands. */
 export const paintCurtain = (p: Painter, c: YCam, o: DripOpts) => {
   const [x0, x1] = o.span ?? [-4, 4], step = SOI.pitch / (o.density ?? 1);
-  const streak = () => p.inkStill(50700, 'pen', mixColor(SC.rain, '#ffffff', 0.45), 1.1);
+  const streak = (w = 1.1) => p.inkStill(50700, 'pen', mixColor(SC.rain, '#ffffff', 0.45), w);
   let i = 0;
   for (let x = x0; x < x1; x += step, i++) {
     const zl = 0.02 + 0.1 * hash(50710 + i);
     if (!onScreen(c, [x, SOI.lipY, zl], 60)) continue;
     const ph = (o.t * (1.8 + 1.4 * hash(50720 + i)) + hash(50730 + i)) % 1, len = 0.18 + 0.2 * hash(50740 + i);
     const y1 = SOI.lipY - 0.04 - ph * (SOI.lipY - 0.04), a = camPoint(c, [x, Math.min(SOI.lipY - 0.03, y1 + len), zl]), b = camPoint(c, [x, Math.max(0, y1), zl]);
-    if (a && b && Math.abs(b[1] - a[1]) > 1) { streak(); p.brush.line(a[0], a[1], b[0], b[1]); }
+    const uw = camUnit(c, [x, SOI.lipY, zl]), wpx = Math.min(36, Math.max(1.1, uw * 0.0025)); // a drop 2.5 mm across: close lenses (SH19-SH21) see it as a real streak
+    if (a && b && Math.abs(b[1] - a[1]) > 1) { streak(wpx); p.brush.line(a[0], a[1], b[0], b[1]); }
     // the continuous stream core: a thin pale line from the lip down (every valley carries one)
     const s0 = camPoint(c, [x, SOI.lipY - 0.03, zl]), s1 = camPoint(c, [x, 0.01, zl]);
-    if (s0 && s1 && i % 2 === 0) washAt(p, 50800 + i, SC.rain, 55, [[s0[0] - 1.2, s0[1]], [s0[0] + 1.2, s0[1]], [s1[0] + 1.2, s1[1]], [s1[0] - 1.2, s1[1]]], 0, 0);
+    if (s0 && s1 && i % 2 === 0) washAt(p, 50800 + i, SC.rain, 55, [[s0[0] - Math.max(1.2, wpx * 0.5), s0[1]], [s0[0] + Math.max(1.2, wpx * 0.5), s0[1]], [s1[0] + Math.max(1.2, wpx * 0.5), s1[1]], [s1[0] - Math.max(1.2, wpx * 0.5), s1[1]]], 0, 0);
   }
   for (let j = 0; j < 36; j++) { // splash crowns where the curtain lands
     const sx = x0 + hash(50900 + j) * (x1 - x0), q = camPoint(c, [sx, 0.012, 0.07]);
@@ -139,7 +140,12 @@ export const ripples = (t: number, n = 12, seed = 51100) => Array.from({length: 
   const ph = (t * 1.4 + hash(seed + i * 3)) % 1, a = hash(seed + i * 3 + 1) * 6.283, rr = Math.sqrt(hash(seed + i * 3 + 2)) * 0.85;
   return {x: SOI.puddle.c[0] + Math.cos(a) * rr * SOI.puddle.rx, z: SOI.puddle.c[1] + Math.sin(a) * rr * SOI.puddle.rz, r: 0.01 + ph * 0.09, a: 1 - ph};
 });
-export const paintPuddle = (p: Painter, c: YCam, t: number, o: {cold?: number} = {}) => {
+/** Ripples across the near footprint of the puddle (SH20 looks down at its far edge: x 0.4-0.95, z 0-0.3), 34 rings, each growing over the ambient clock. */
+const richRipples = (t: number, n = 34, seed = 51600) => Array.from({length: n}, (_, i) => {
+  const ph = (t * 1.4 + hash(seed + i * 3)) % 1, x = 0.4 + hash(seed + i * 3 + 1) * 0.55, z = 0.02 + hash(seed + i * 3 + 2) * 0.3;
+  return {x, z, r: 0.01 + ph * 0.08, a: 1 - ph};
+}).filter((r) => ((r.x - SOI.puddle.c[0]) / (SOI.puddle.rx - 0.1)) ** 2 + ((r.z - SOI.puddle.c[1]) / (SOI.puddle.rz - 0.08)) ** 2 < 1);
+export const paintPuddle = (p: Painter, c: YCam, t: number, o: {cold?: number; rich?: boolean} = {}) => {
   const P = SOI.puddle, ring = (cx: number, cz: number, rx: number, rz: number, n = 30): Pt[] => {
     const out: Pt[] = [];
     for (let i = 0; i < n; i++) { const a = (i / n) * 2 * Math.PI, q = camPoint(c, [cx + rx * Math.cos(a), P.y, cz + rz * Math.sin(a)]); if (q) out.push(q); }
@@ -148,12 +154,22 @@ export const paintPuddle = (p: Painter, c: YCam, t: number, o: {cold?: number} =
   const lake = ring(P.c[0], P.c[1], P.rx, P.rz, 36);
   if (lake.length < 3) return;
   washAt(p, 51200, SC.puddle, 255, lake, 0.05, 0.1);
+  if (o.rich) washAt(p, 51300, '#9db4be', 70, lake, 0.2, 0.1); // sky-light sheen under the rings
   const streak = ring(P.c[0] - 0.15, P.c[1] - 0.12, 0.09, 0.2, 18);
-  if (streak.length >= 3) washAt(p, 51201, SC.glowWarm, 120 * (1 - (o.cold ?? 0)), streak, 0.3, 0.1);
-  ripples(t).forEach((r, i) => { const q = ring(r.x, r.z, r.r, r.r * 0.8, 14); if (q.length >= 3) inkLine(p, 51210 + i, q, {weight: 1.0, color: mixColor('#c9dde4', SC.puddle, 1 - r.a * 0.85), curve: 0.2, still: true}); });
+  if (streak.length >= 3 && !o.rich) washAt(p, 51201, SC.glowWarm, 120 * (1 - (o.cold ?? 0)), streak, 0.3, 0.1);
+  (o.rich ? richRipples(t) : ripples(t)).forEach((r, i) => { const q = ring(r.x, r.z, r.r, r.r * 0.8, 14); if (q.length >= 3) inkLine(p, 51210 + i, q, {weight: o.rich ? 1.8 : 1.0, color: mixColor(o.rich ? '#eef8fa' : '#c9dde4', SC.puddle, 1 - r.a * 0.9), curve: 0.2, still: true}); });
+  if (o.rich) { // F-B20: the puddle as water: a sky-light sheen, the warm streak broken into ripple-cut dashes, cool lamp glints, and crowns where the curtain lands on it
+    for (let i = 0; i < 9; i++) { const q = ring(P.c[0] - 0.15 + 0.03 * Math.sin(i * 1.9 + t * 3), P.c[1] - 0.36 + i * 0.04, 0.035 + 0.04 * hash(51310 + i), 0.008, 10); if (q.length >= 3) washAt(p, 51320 + i, SC.glowWarm, 150, q, 0.3, 0.1); }
+    for (let i = 0; i < 7; i++) { const q = ring(P.c[0] + 0.15 + 0.07 * i - 0.2, P.c[1] - 0.12 + 0.05 * i, 0.008, 0.006, 8); if (q.length >= 3) washAt(p, 51340 + i, '#f2fbff', 230, q, 0.1, 0); }
+    for (let i = 0; i < 16; i++) { // crowns: small arcs standing on the surface where drops land
+      const a = hash(51360 + i) * 6.283, rr = Math.sqrt(hash(51380 + i)) * 0.9, x = P.c[0] + Math.cos(a) * rr * P.rx, z = P.c[1] + Math.sin(a) * rr * P.rz, k = (t * 2.2 + hash(51400 + i)) % 1, r = 0.012 + 0.03 * k;
+      const b = camPoint(c, [x, P.y, z]), u = camUnit(c, [x, P.y, z]);
+      if (b) inkLine(p, 51420 + i, [[b[0] - r * u, b[1]], [b[0] - r * u * 0.4, b[1] - r * u * 0.9], [b[0] + r * u * 0.4, b[1] - r * u * 0.9], [b[0] + r * u, b[1]]], {color: SC.crown, weight: 1.6, closed: false, still: true});
+    }
+  }
 };
 
-export type SoiOpts = {t: number; glow?: number; puddle?: boolean; curtain?: boolean; cold?: number};
+export type SoiOpts = {t: number; glow?: number; puddle?: boolean; curtain?: boolean; cold?: number; richPuddle?: boolean};
 /** The whole soi: sky, across-lane, shopfront, step and lane, props, puddle, then (after the people) the shot calls `paintCurtain` and the rain. */
 export const paintSoi = (p: Painter, c: YCam, o: SoiOpts) => {
   paintSky(p, c);
@@ -161,7 +177,7 @@ export const paintSoi = (p: Painter, c: YCam, o: SoiOpts) => {
   paintShop(p, c, o.t);
   paintStepAndLane(p, c);
   paintProps(p, c);
-  if (o.puddle !== false) paintPuddle(p, c, o.t, {cold: o.cold});
+  if (o.puddle !== false) paintPuddle(p, c, o.t, {cold: o.cold, rich: o.richPuddle});
   paintAwning(p, c);
 };
 void qx; void paintBox; void ell;
