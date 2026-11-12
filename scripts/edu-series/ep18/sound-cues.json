@@ -20,7 +20,8 @@
  ],
  "voicesNotHere": "Narration (nine segments, storyboard Units) and V01-V03 (Editor casting, slots f226, f718, f1358) are voice tracks, not cues.",
  "sources": [
-  "src/videos/edu-ep18"
+  "src/videos/edu-ep18",
+  "scripts/edu-series/ep18/sound-mix.py"
  ],
  "cues": [
   {
@@ -604,7 +605,13 @@
   }
  ],
  "swaps": [],
- "exempt": [],
+ "exempt": [
+  {"src": "audio/edu/EDU-EP18-SHORT-draft-stem-v1.wav", "reason": "stem baked by sound-mix.py (Editor W5.3)"},
+  {"src": "out/stems/voice.wav", "reason": "voice stem (narration copy) written by sound-mix.py for mix-levels.py"},
+  {"src": "out/stems/bed.wav", "reason": "per-layer stem written by sound-mix.py for mix-levels.py"},
+  {"src": "out/stems/texture.wav", "reason": "per-layer stem written by sound-mix.py for mix-levels.py"},
+  {"src": "out/stems/accent.wav", "reason": "per-layer stem written by sound-mix.py for mix-levels.py"}
+ ],
  "levels": {
   "stems": {
    "voice": "out/stems/voice.wav",
