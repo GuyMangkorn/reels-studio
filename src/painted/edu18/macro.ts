@@ -91,17 +91,47 @@ const BOKEH: {az: number; el: number; r: number; color: string; a: number}[] = [
   {az: -0.55, el: 0.02, r: 190, color: MC.shop, a: 95}, {az: -0.2, el: 0.12, r: 130, color: MC.shop, a: 80}, {az: 0.12, el: -0.01, r: 220, color: MC.shop, a: 100},
   {az: 0.4, el: 0.08, r: 110, color: MC.shop, a: 70}, {az: -0.8, el: 0.2, r: 90, color: '#f6d6a0', a: 60}, {az: 0.62, el: -0.03, r: 150, color: '#e9a85a', a: 70},
 ];
+// ---- F4-B09 (D4-09, recorded cheat): screen-space streaming layers, constant speed, no easing. N near motes, G speed guide, F far layer (px per frame).
+export const STREAM_F = 8, STREAM_G = 24;
+const STREAM_PERIOD = 2400; // far layer wrap (frame 1920 + margins)
+const streamWrap = (q: Pt, up: number): Pt => [q[0], ((((q[1] - up + 400) % STREAM_PERIOD) + STREAM_PERIOD) % STREAM_PERIOD) - 400];
+/** N near motes: 9 suspended mist motes at Dl depth 4-8 sm: size 20-60 px, speed 38-75 px/f (nearer = bigger and faster); wrap below the frame bottom to above the top. */
+export const STREAM_N = Array.from({length: 9}, (_, i) => {
+  const d = hash(52900 + i * 3), side = i % 2 === 0 ? -1 : 1;
+  const x = side < 0 ? 40 + hash(52901 + i * 3) * 250 : 790 + hash(52901 + i * 3) * 250; // the edge margins, clear of the bun
+  return {x, v: 38 + 37 * d, r: (20 + 40 * d) / 2, y0: ((i * 0.618 + hash(52902 + i * 3) * 0.2) % 1) * 2120 - 100};
+});
+const NY = 1920 + 200; // wrap span: from 100 px under the bottom to 100 px above the top
+/** Mote `i` centre y (px) at stream frame `L`. */
+export const streamNY = (i: number, L: number) => 1920 + 100 - ((((STREAM_N[i].y0 + 100 + STREAM_N[i].v * L) % NY) + NY) % NY);
+/** G speed guide: 3 cream far drops at x 900 +- 20, 600 px apart, 24 px/f; centre y (px) of drop `i` at `L`. */
+export const streamGY = (i: number, L: number) => 1700 - 600 * i - STREAM_G * L + (1700 - 600 * i - STREAM_G * L < -120 ? 2160 : 0);
+export const streamGX = (i: number) => 900 + [-20, 15, 5][i];
+export const paintStreamMotes = (p: Painter, L: number, o: {guide?: boolean} = {}) => {
+  STREAM_N.forEach((m, i) => {
+    const y = streamNY(i, L);
+    [[0.9, 26], [0.6, 51], [0.3, 89]].forEach(([k, a], j) => washAt(p, 52950 + i * 4 + j, '#dbe8ee', a, ell(m.x, y + k * m.v, m.r, m.r, 14), 0.3, 0)); // trail below: 3 copies at 0.9/0.6/0.3 x the step
+    washAt(p, 52950 + i * 4 + 3, '#e8f1f5', 140, ell(m.x, y, m.r, m.r, 18), 0.4, 0.05);
+  });
+  if (o.guide === false) return;
+  [0, 1, 2].forEach((i) => {
+    const x = streamGX(i), y = streamGY(i, L);
+    washAt(p, 53000 + i * 2, '#f3e6c4', 70, [[x - 6, y], [x + 6, y], [x + 3, y + 60], [x - 3, y + 60]], 0.2, 0); // 60 px trail
+    washAt(p, 53001 + i * 2, '#f6ecd0', 215, ell(x, y, 12, 12, 16), 0.2, 0.05);
+  });
+};
+
 /** Backdrop card: dark lane below the horizon, a cool dusk band above it, the shop glow as large warm bokeh and the LED lamp as a cool disc. */
-export const paintMacroBackdrop = (p: Painter, c: YCam, o: {glow?: number; haze?: number} = {}) => {
-  const hz = farPoint(c, 0, 0), hy0 = hz ? hz[1] : c.hy, hy = hy0 + (o.haze ?? 0);
+export const paintMacroBackdrop = (p: Painter, c: YCam, o: {glow?: number; haze?: number; stream?: {L: number; speed?: number}} = {}) => {
+  const hz = farPoint(c, 0, 0), hy0 = hz ? hz[1] : c.hy, up = o.stream ? (o.stream.speed ?? STREAM_F) * o.stream.L : 0, hy = hy0 + (o.haze ?? 0) - up;
   washAt(p, 40100, MC.lane, 255, [[-60, -60], [1140, -60], [1140, 1980], [-60, 1980]], 0, 0);
   washAt(p, 40101, MC.sky, 200, [[-60, -60], [1140, -60], [1140, hy - 20], [-60, hy + 30]], 0.3, 0.2);
-  if (o.haze) { // F-B03: the far ground is a soft haze, not a hard band: the sky wash steps down into the lane over 200 px
+  if (o.haze || o.stream) { // F-B03 (and F4-B09: the streaming horizon is the same 200 px gradient, scrolling up with the far layer): the far ground is a soft haze, not a hard band: the sky wash steps down into the lane over 200 px
     [[60, 150], [110, 105], [160, 70], [210, 38], [260, 20], [310, 10]].forEach(([d, a], i) => washAt(p, 40140 + i, MC.sky, a, [[-60, hy - 20], [1140, hy - 20], [1140, hy + d], [-60, hy + d]], 0.5, 0.4));
   } else washAt(p, 40102, MC.laneHi, 150, [[-60, hy], [1140, hy - 30], [1140, hy + 260], [-60, hy + 300]], 0.4, 0.3);
   const k = o.glow ?? 1;
-  BOKEH.forEach((b, i) => { const q = farPoint(c, b.az, b.el); if (q) washAt(p, 40110 + i, b.color, b.a * k, ell(q[0], q[1], b.r * c.f / 1000, b.r * c.f / 1000, 26), 0.35, 0.1); });
-  const lamp = farPoint(c, -0.95, 0.16);
+  BOKEH.forEach((b, i) => { const q0 = farPoint(c, b.az, b.el), q = q0 && o.stream ? streamWrap(q0, up) : q0; if (q) washAt(p, 40110 + i, b.color, b.a * k, ell(q[0], q[1], b.r * c.f / 1000, b.r * c.f / 1000, 26), 0.35, 0.1); });
+  const lamp0 = farPoint(c, -0.95, 0.16), lamp = lamp0 && o.stream ? streamWrap(lamp0, up) : lamp0;
   if (lamp) washAt(p, 40130, MC.lamp, 70, ell(lamp[0], lamp[1], 80 * c.f / 1000, 80 * c.f / 1000, 22), 0.3, 0.1);
 };
 
@@ -173,10 +203,10 @@ export const paintLakeDetail = (p: Painter, c: YCam, t: number) => {
 };
 
 // ---------------------------------------------------------------- full world
-export type MacroWorld = {t: number; look?: 'level' | 'down'; rain?: boolean; lake?: boolean; glow?: number; haze?: number};
+export type MacroWorld = {t: number; stream?: {L: number; speed?: number}; look?: 'level' | 'down'; rain?: boolean; lake?: boolean; glow?: number; haze?: number};
 /** Backdrop, optional lake, then the slow rain (far to near is by depth inside `paintSlowRain`). The shot draws drops and people after it. */
 export const paintMacro = (p: Painter, c: YCam, w: MacroWorld) => {
-  paintMacroBackdrop(p, c, {glow: w.glow, haze: w.haze});
+  paintMacroBackdrop(p, c, {glow: w.glow, haze: w.haze, stream: w.stream});
   if (w.lake || w.look === 'down') paintLake(p, c, w.t);
   if (w.rain !== false) paintSlowRain(p, c, w.t);
 };

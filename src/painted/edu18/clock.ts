@@ -70,10 +70,9 @@ export const sh16Clock = (L: number): ShotClock => {
 /** D0's replay fall coordinate (sm below the replay contact): `s(n) = 0.16 (n - 25)`, 0 before contact. */
 export const sh16Fall = (L: number) => FALL_REPLAY * Math.max(0, L - SH16.contact);
 /** SH17 continues the replay fall: `s(n) = 0.16 (n + 90)` sm at SH17-local n (s 14.4 at +0); from +52 the speed ramps out of slow motion (smoothstep of the
- * speed) so that the drop's bottom lands on the puddle on the LAST frame +87 (the cut lands on the splash). The distance is fixed by the world: D0's contact
- * centre is 89.1 sm (22 cm) above the ground, so s(87) is about 87.6 sm. That needs a final speed of about 3.5 sm/f (106 sm/s), twice the brief's "about 50 sm/s"
- * (storyboard ROWS-R2.0 numbers disagree: reported in the W5.2 handoff for Film). */
-export const SH17 = {ramp: [52, 87] as const, landS: 87.6, v0: FALL_REPLAY};
+ * speed) so that the drop's bottom lands on the puddle at +72 = f1167 (pass 4, D4-17: the crown opens over the 15 f before the cut at f1183). The distance is fixed by the world: D0's contact
+ * centre is 89.1 sm (22 cm) above the ground, so s(87) is about 87.6 sm. That needs a final speed of about 6.33 sm/f (190 sm/s, about 1/19 of real speed) over the 20 f ramp [52, 72] (D4-17; was 3.5 sm/f over [52, 87]). */
+export const SH17 = {ramp: [52, 72] as const, landS: 87.6, v0: FALL_REPLAY};
 const ramp = SH17.ramp[1] - SH17.ramp[0];
 const s52 = FALL_REPLAY * (SH17.ramp[0] + 90);
 /** Final speed (sm/f) at +87 that lands the drop: integral of the speed ramp = T (v0 + (v1 - v0) / 2). */
@@ -81,7 +80,7 @@ export const SH17_V1 = (2 * (SH17.landS - s52)) / ramp - SH17.v0;
 export const sh17Fall = (L: number) => {
   if (L <= SH17.ramp[0]) return FALL_REPLAY * (L + 90);
   const n = L - SH17.ramp[0], u = Math.min(1, n / ramp), v0 = SH17.v0, v1 = SH17_V1;
-  return s52 + ramp * (v0 * u + (v1 - v0) * (u ** 3 - u ** 4 / 2)) + (n > ramp ? v1 * (n - ramp) : 0);
+  return s52 + ramp * (v0 * u + (v1 - v0) * (u ** 3 - u ** 4 / 2)); // held at landS from +72 (the drop is the splash)
 };
 
 /** Shot-local clocks of any shot (default: both clocks = L). The one entry the plates call. */

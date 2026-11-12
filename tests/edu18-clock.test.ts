@@ -1,6 +1,6 @@
 import {test} from 'node:test';
 import assert from 'node:assert/strict';
-import {clockOf, FALL_REPLAY, SH04, SH14, SH16, SHOT_TABLE, sh14TickFrame, sh16Clock, sh17Fall, SH17, TOTAL_FRAMES, shotAt} from '../src/painted/edu18/clock';
+import {clockOf, FALL_REPLAY, SH04, SH14, SH16, SHOT_TABLE, sh14TickFrame, sh16Clock, sh17Fall, SH17, SH17_V1, TOTAL_FRAMES, shotAt} from '../src/painted/edu18/clock';
 import {balanceAngle} from '../src/painted/edu18/balance';
 import {tickY} from '../src/painted/edu18/ruler';
 import {BUN_SM, SM_PER_MM, K_SM} from '../src/painted/edu18/macro';
@@ -38,7 +38,10 @@ test('SH16 rewind: frozen on SH04 +31, reverse to +17, replay from +25', () => {
   assert.equal(sh16Clock(25).src, 'S01-B05-SH01');
 });
 
-test('SH17 lands on the puddle on the last frame and never goes backwards', () => {
+test('SH17 lands on the puddle at +72 (f1167) at 6.33 sm/f and never goes backwards (D4-17)', () => {
+  assert.deepEqual([...SH17.ramp], [52, 72]);
+  assert.ok(Math.abs(SH17_V1 - 6.33) < 0.01);
+  assert.ok(Math.abs(sh17Fall(87) - SH17.landS) < 1e-6);
   assert.ok(Math.abs(sh17Fall(SH17.ramp[1]) - SH17.landS) < 1e-6);
   assert.ok(Math.abs(sh17Fall(0) - FALL_REPLAY * 90) < 1e-9);
   for (let L = 1; L < 88; L++) assert.ok(sh17Fall(L) >= sh17Fall(L - 1));

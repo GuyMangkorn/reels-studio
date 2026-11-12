@@ -10,6 +10,9 @@ export const INK_EDGE = '#1d2129';
 const edu = (size: number, color = '#ffffff', stroke = 7): CSSProperties => ({fontFamily: FONT, fontWeight: 800, fontSize: size, color, lineHeight: 1.05, WebkitTextStroke: `${stroke}px ${INK_EDGE}`, paintOrder: 'stroke fill', whiteSpace: 'nowrap', textAlign: 'center'});
 export const LBL = {x: 816, y: 148, w: 204, h: 56} as const;
 export const LBL_W = {x: 300, y: 236, w: 720, h: 94} as const;
+/** LBL-L (pass 4, D4-03): the left margin slot, x 48-330 y 236-380, three left-aligned lines; the drop holds x 340-880 through OT02's range. */
+export const LBL_L = {x: 48, y: 236, w: 282, h: 144} as const;
+export const OT02_LINES = ['เม็ดใหญ่สุด', 'หนักได้ถึง', '50 เท่าของยุง'] as const;
 export const OT = {
   OT01: {text: 'ภาพจำลอง', range: [38, 1183] as const},
   OT02: {text: 'เม็ดใหญ่สุด หนักได้ถึง 50 เท่าของยุง', range: [72, 136] as const},
@@ -25,7 +28,9 @@ export const Ot01 = ({f}: {f: number}) => !otVisible('OT01', f) ? null : (
   <div lang="th" style={{position: 'absolute', left: LBL.x, top: LBL.y, width: LBL.w, height: LBL.h, display: 'flex', alignItems: 'center', justifyContent: 'center', ...edu(40, '#ffffff', 6)}}>{OT.OT01.text}</div>
 );
 export const Ot02 = ({f}: {f: number}) => !otVisible('OT02', f) ? null : (
-  <div lang="th" style={{position: 'absolute', left: LBL_W.x, top: LBL_W.y, width: LBL_W.w, height: LBL_W.h, display: 'flex', alignItems: 'center', justifyContent: 'flex-end', opacity: pop(f, OT.OT02.range[0]), ...edu(40, '#ffffff', 6), whiteSpace: 'normal', textAlign: 'right'}}>{OT.OT02.text}</div>
+  <div lang="th" style={{position: 'absolute', left: LBL_L.x, top: LBL_L.y, width: LBL_L.w, height: LBL_L.h, display: 'flex', flexDirection: 'column', alignItems: 'flex-start', justifyContent: 'flex-start', opacity: pop(f, OT.OT02.range[0]), ...edu(40, '#ffffff', 6), textAlign: 'left'}}>
+    {OT02_LINES.map((t) => <div key={t}>{t}</div>)}
+  </div>
 );
 /** OT03 anchored at the pixel `at` (the ruler's 20 mark): text to the left of the mark, a 1 px leader from the text's edge to the mark. */
 export const Ot03 = ({f, at}: {f: number; at: [number, number] | null}) => {
