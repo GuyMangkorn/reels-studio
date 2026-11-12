@@ -289,6 +289,72 @@ Fix in `src/painted/edu18/*` (kit untouched). After the pass: stills of the fram
 
 SH14 freeze, SH16 rewind and the SH17 roll and slide read in the draft and need no fix. The faint `@TamMaiLa` mark is the shared default (`defaultChrome`), not an episode fix.
 
+## Pass 5
+
+Film design for the user's note on the W5.3 pass-4 draft (12 Nov 2026: the mosquito hit by water looks plain and flat; store `projects/edu/EDU/previews/EDU-EP18-SHORT-draft-w53b.mp4`, sheet `out/qa/edu-ep18/mq/mq.png`, frames f362/380/399/409/416 and f905/916/925/940/975 viewed). User decision: Film designs, Boss builds. Fresh invocation, one owner (Boss). Sheet stays **EDU-EP18-ROWS-R2.3**: no row text changes (SH02's "+35 legs flex once" is kept and given numbers here; SH15's rest state "pressed flat against the face, legs splayed, wings folded" still holds outside the reaction windows). Shot ranges, cameras, captions, narration and sound unchanged. Readiness is not user approval, runtime or visual proof.
+
+What the draft shows: **SH02** the ventral card is the same picture in all five frames (no bob, no leg, wing or antenna motion; even body shading, so it reads as a flat sticker on the line "ไม่แบน"). **SH15** at +50 the pose switches in one frame from `hover` (legs hanging) to `pressed` (legs flat out), then nothing moves to +113; the drop does not react to the hit.
+
+### Decisions (pass 5)
+
+| ID | Decision | Reason |
+| --- | --- | --- |
+| D5-01 | **Life from reaction, never damage.** The mosquito keeps its body length and outline; no axis is scaled below rest (the abdomen may only round out, factor 1.00–1.12). Motion comes from the face it rides, the legs, the wings, the proboscis and antennae, and the abdomen pumping | C06 "โดนเต็ม ๆ… ยุงก็ไม่แบนนะ", R02. A springy reaction reads alive and unhurt; any squash reads as damage |
+| D5-02 | **The body rides the face.** Every bob is a move of the drop's face under it (its dimple deepens and recovers); the body keeps R04's 0.02 sm contact every frame | R04; the dimple is already "the bun gives a little under the weight" (`dropcontact.ts`) |
+| D5-03 | **SH02 settles from the cut** (recorded cheat): the settle starts at full amplitude on +0, 20 f after SH07's touch, as if the cut caught the rebound | Cut on action; SH07 shows the touch, SH02 the settle |
+| D5-04 | **SH15 tries and fails.** After the hit it paddles, then at "หลุดออกไม่ทัน" it starts the tip it uses in B05 and runs out of time; pitch is back to 0 by +110, so the +113 key frame numbers stay exact | Story: the B05 escape exists, but low over the ground there is no time. No contact, no splash, the puddle untouched (R04, Boat B-P3) |
+| D5-05 | **All new, episode modules only** (`mosquito.ts`, `macro.ts`, `dropcontact.ts`, `shots.tsx`); kit untouched. Kit intake may later lift the spring helper | `new: mosquito` is this episode's card |
+
+**Shared definitions.** `m` = frames since the named event. Damped spring `S(m; P, τ) = e^(−m/τ) · cos(2π m / P)`, 0 for m < 0. Raised cosine pulse `RC(m; W) = 0.5 · (1 − cos(2π m / W))` for 0 ≤ m ≤ W, else 0 (0 → 1 → 0, never negative). `ease` = smoothstep. Quiver runs on the **ambient** clock `t` (R06); envelopes, springs and pulses on the **shot-local** clock. Pixel values are full-size 1080 × 1920, estimated with the storyboard's projections (est ±15 %); Boss reports measured values.
+
+**New mosquito options** (`MosqOpts` in `mosquito.ts`; side and below views unless noted; all default to today's drawing):
+
+| Option | Meaning | Range |
+| --- | --- | --- |
+| `blend: {to: MosqState; k: number}` | Per-joint lerp of every angle (legs, pitch, wing) from `state` to `to`, k 0–1 | k 0–1 |
+| `legBend: {fore; mid; hind}` (deg) | Added knee bend. Side: added to `tib` and 1.3 × to `tar`, + = tips away from the face (downward, toward the belly). Below: added to the pair's `bend`, + = knees fold in | −10 to +20 |
+| `legSwing` (deg) | Side only: rotation of each whole leg at the hip, + = tips toward the tail | ±10 |
+| `legFan` (deg) | Below only: added to each fan angle, + = legs splay outward | ±8 |
+| `wingQuiver` (deg) | Added to the folded wing angle (side 172 + q; below `wings` 6 + q) | ±6; below never opens past 10° |
+| `probeAng`, `antAng` (deg) | Rotation of the proboscis with palps, and of each antenna, about the head front | ±12 |
+| `abdomen` | Abdomen width (below) / depth (side) factor; asserts ≥ 1.00 (D5-01) | 1.00–1.12 |
+| `sheen` | Below, len ≥ 120 only: a volume highlight, a soft strip `MOSQ.sheen` 30 % of the body width at alpha 0.45, plus a soft darker core along the midline; `sheen` 0–1 places the strip across the body from the light side | 0–1 |
+
+`MosqMeasure` gains `abdW` (px) and `bends` (the six knee angles in deg) so the acceptance numbers can be logged. `paintBun` (`macro.ts`) gains `squeeze?: number` (screen-height factor delta; width gets −0.5 × it, so the volume holds within ±2 %). `dropcontact.ts` gains `paintFaceRing(p, c, ctr, at, r, alpha, seed)`: one ring on the bottom face plane (`ringAt`), 2 px, `#e8f2f4`, clipped to the face radius 0.9 sm.
+
+### Fix list — Boss (pass 5, one pass)
+
+- **F5-B01 SH02 (S01-B02-SH02, [359, 420), 61 f): the settle and the "ไม่แบน" flex** (`shots.tsx` `paintUnder` for this shot only (later shots unchanged), `mosquito.ts`, `dropcontact.ts`). The mosquito is ≈ 690 px per bl here (storyboard head (191, 845) → tail (877, 808)); 0.01 sm of face move ≈ 2 px of screen shift plus 0.35 % of scale.
+  - **Ride (D5-02, D5-03):** the mosquito's anchor and its dimple ring move together along Dl −y by `d(n) = 0.07 sm · S(n; 12, 12)` for n = 0–36 (+0 deepest, toward the lens). Est. on screen: centre +14 px and scale +2.5 % at +0, −8 px at +6, +4 px at +12, < 1 px from +30. The dimple ring's alpha follows depth `FACE.dimple + d`. Her dimple and pose unchanged.
+  - **Legs settle:** `legBend` per pair = `18° · S(n − k; 10, 9)` with k = 0 fore, 2 mid, 4 hind (a front-to-back wave); `legFan = −5° · S(n; 10, 9)` (the legs draw in as the knees fold, then splay back).
+  - **Wings pinned:** `wingQuiver = 3° · sin(2π · 2.6 Hz · t) · env`, env 1.0 at +0, easing to 0.5 by +30, held to +60 (2 × the 1.3 Hz beat; the wings tremble against the face and never open past 10°).
+  - **Lag:** `probeAng` = 1.5 × the ride's angle-equivalent, 2 f late: `6° · S(n − 2; 12, 12)`; `antAng = 10° · S(n − 2; 12, 10)` (antennae swing outward first).
+  - **Breathing:** from +20, `abdomen = 1 + 0.05 · RC(n − 20; 30)` repeating (1 Hz).
+  - **"ไม่แบน" flex (+35–+55, on the +40–+50 peg):** all six `legBend` ease 0 → 16° over +35–+40, hold to +43, then `16° · S(n − 43; 10, 8)` (back within ±2° by +55). `abdomen` one big round-out `1 + 0.12 · RC(n − 38; 12)` (peak 1.12 at +44) replacing the breath for +38–+50. `probeAng` swings `6° · RC(n − 38; 10)` (a feeling probe) and `antAng` `+10° · RC(n − 37; 12)`.
+  - **Volume:** `sheen` from 0.35 at +0 to 0.43 at +60 (linear, with the camera push), so the highlight slides across a round body.
+  - **Face ring (surface tension of the drop):** two `paintFaceRing` at the mosquito's thorax point, radii 0.25 and 0.10 sm at +0, growing 0.05 sm/f, alpha 0.40 → 0 linear to +16; plus one ring at +40 (r 0.15 sm, +0.04 sm/f, alpha 0.30 → 0 by +52) from the flex. Rings on the drop's face only, nothing on any other water.
+  - **Acceptance** (log per frame from `MosqMeasure`, report the numbers): (1) centre moves ≥ 18 px peak to peak over +0–+6, with the sign changing; ≤ 2 px/f over +24–+34 and +56–+60. (2) Knee Δ: fore ≥ 15° at +0, mid peak +2–+4, hind peak +4–+6; all within ±2° of rest by +22; all six ≥ 14° over +40–+43; within ±2° by +55. (3) The mid-point of each in-frame tibia moves ≥ 30 px between +35 and +41. (4) `abdW` / rest = 1.12 ± 0.02 at +44 ± 1; never < 1.00; head–tail length ÷ `camUnit` constant within ±1 % (no squash). (5) Wing angle stays in 3°–9°, ≥ 5 quiver cycles over the shot. (6) Rings at +4 and +10 at alpha ≥ 0.2, none at +18. (7) `contactGap` ≤ 0.02 sm every frame (test). (8) Stills +0, +3, +6, +12, +30, +35, +42, +50, +60 as one `qa-sheet.sh` sheet at 270 px: +0/+3/+6 show the body bob and legs bend, +35 vs +42 the legs flex, +42 the body reads round, not a flat card.
+- **F5-B02 SH15 (S01-B04-SH02, [866, 980), 114 f; hit +50 = f916): hit, absorb, struggle, try** (`shots.tsx` SH15, `mosquito.ts`, `macro.ts` `paintBun`, `dropcontact.ts`). The mosquito is ≈ 333 px per bl (camera 4.87 sm away); 0.1 sm of `Mh` y ≈ 20 px on screen. The reflection call gets the **same** options every frame (mirrored, as now).
+  - **Before the hit, the air push (+46–+49):** the hanging legs swing back by `legSwing` +6° ease-in (tips toward the tail; 0 again by +55 under the blend) and `antAng` −12° (flattened back); wings keep beating. Visual only, no claim.
+  - **Contact (+50–+55), no snap:** `blend {to: 'pressed', k}` with k = ease-out cubic over +50–+55 (the legs are swept up and out onto the face); wings go from their beat angle to fold 172° over +50–+53, ease-out.
+  - **Dip (D5-02):** the face and the body move down together, `d(m) = 0.12 sm · sin(π m / 6)` for m = n − 50 in 0–3, then `0.12 sm · S(m − 3; 10, 6)`. Est. on screen: +53 ≈ 24 px down, +58 ≈ 9 px up, rest ±2 px from +66.
+  - **Drop squeeze (the water gives, not the insect):** `paintBun squeeze` = `−0.04 · S(m − 2; 10, 6)` from +50: height −4 % at +52, about +1.5 % at +57, rest by +64 (then the ambient wobble as now). One `paintFaceRing` from the contact point, r 0.2 → 0.9 sm over +50–+60, alpha 0.5 → 0 (seen through the drop). **The puddle is not touched**: no ring, bulge or spray under the mosquito (R04, Boat B-P3).
+  - **Spring back:** body pitch `−5° · S(m − 1; 10, 6)` (nose dips with the hit, rocks back); `probeAng` and `antAng` `+10° · S(m − 1; 10, 5)` (they lag up, swing back once, rest by +62); `legBend` (side, + = tips down off the face) `7° · RC(m − 3; 8)` then `3° · RC(m − 12; 6)`: two springy rebounds peaking at +57 and +65.
+  - **Pinned quiver:** `wingQuiver = 5° · sin(2π · 2.6 Hz · t) · env`, env 1.0 at +54 decaying (τ 20 f) to 0.4, held 0.4 (±2°) to +113.
+  - **Struggle (+64–+93):** two paddle cycles, `legBend` 8° · RC(n − n0; 12) with n0 = 64 fore, 67 mid, 70 hind, and again at 80 / 83 / 86 (6°); `abdomen = 1 + 0.06 · RC(n − 64; 16)` twice.
+  - **The try (+94–+110, on "หลุดออกไม่ทัน" +99–+111):** all `legBend` 12° · RC(n − 94; 14) (push, peak +101); `pitchAdd` +4° · RC(n − 94; 16) (the start of the B05 tip, peak +102, 0 by +110); `wingQuiver` env up to 1.0 over +94–+100, back to 0.4 by +110. +111–+113 rest pose, so the +113 key frame (face gap 2.0 sm, mosquito clearance 1.575 sm) is exact.
+  - **Truth guards:** body within 0.02 sm of the (displaced) face every frame from +50; nothing of the mosquito below `Dl` y −1.30 at any frame (the leg rebounds stay ≤ 0.20 sm below the face; the dip and the rebound peaks do not coincide); ≥ 1.0 sm above the water at every frame (R04).
+  - **Acceptance** (log per frame, report): (1) No snap: the largest one-frame move of any in-frame leg tip over +49–+56 ≤ 70 px (today several hundred px at +49 → +50); the pressed pose reached by +55. (2) Mosquito centre y: +53 ≥ 16 px below +50; +58 between 3 and 12 px above rest; within 2 px of rest from +66. (3) Bun screen height: −4 % ± 1 at +52, +1.5 % ± 0.5 at +57, rest ± 0.5 % from +64. (4) Wings folded by +53; quiver ≥ 4° at +56, 1.5–2.5° at +90, ≥ 5 cycles over +54–+113. (5) Leg Δ: 7° ± 1 at +57; paddle peaks at +70/+73/+76 and +86/+89/+92 (RC peaks at n0 + 6); push 12° ± 1 at +101. (6) Lowest point `Dl` y ≥ −1.30 every frame; at +113 clearance 1.575 sm ± 0.02 and face gap 2.0 sm. (7) Reflection pose equals the main pose (mirrored) at +53, +101. (8) Stills +44, +49, +50, +51, +53, +55, +57, +60, +70, +101, +113 as one sheet at 270 px: from +49 to +55 the legs visibly sweep (not a cut), +53 shows the drop and mosquito dipped together, +70 and +101 show legs working.
+- **Tests:** add to the episode tests: `abdomen` ≥ 1.00 and head–tail length constant (D5-01); `contactGap` ≤ 0.02 every frame of SH02 and SH15 +50–+113; SH15 lowest point ≥ the R04 and −1.30 limits; SH15 max one-frame leg-tip move ≤ 70 px over +49–+56.
+
+### Sound (no change this pass)
+
+None required. The existing cues already sit on these events (SH15 H3 wet tap at +50; SH02 W2 muffled whine). Optional hint for Ton, not this pass: if the user later wants more, a dry tremble in W2 matching the 2.6 Hz wing quiver.
+
+### Not changed
+
+Shot ranges, cameras, captions C06/C12, narration, the woman in SH02, the SH21 3× cheat, OT01 "ภาพจำลอง", no species name.
+
 ## Questions for the user (coordinator asks with the structured-question tool)
 
 - **Q1 SH21 ending, mosquito visibility.** **Answered 2026-11-12: A** (task.md). Pass 4 keeps A and adds the findability fixes of D4-21.
@@ -302,3 +368,4 @@ SH14 freeze, SH16 rewind and the SH17 roll and slide read in the draft and need 
 | 2026-11-12 | Film | Pass 2 after Boss's W5.3 fixes: 14 pass, 7 fix (F2-B05, F2-B07, F2-B12, F2-B15, F2-B19, F2-B20; minors F2-B01, F2-B03); decisions D-07L, D-12R, D-CU, D-17C, D-15R; sheet ROWS-R2.2. |
 | 2026-11-12 | Film | Pass 3 after Boss pass 2 (ce788bc): 7 pass, fix F3-B05 (SH05 mosquito off her shin) and F3-B12 (shop streak px caps, breaks not paint; SH12/SH17/SH20); accepted D3-05 flat lens, D3-20, D3-03, D3-15, D3-01; sheet stays ROWS-R2.2. |
 | 2026-11-12 | Film | Pass 4 on the Editor's W5.3 draft cut (8865fd7): Boss F4-B09 (SH09 streaming), F4-B17 (SH17 lands at +72, camera to (540, 1000), crown 6.5 sm), F4-B21 (SH21 findable mosquito, gaze), F4-B03 (OT02 to LBL-L), F4-B10 (feather wrap and shape); Editor F4-E17 (P1 to f1167), F4-E15 (C15 ends f1337); accepted the mosquito legs under captions (D4-L); decisions D4-09, D4-17, D4-17S, D4-21, D4-03, D4-10; sheet ROWS-R2.3. |
+| 2026-11-12 | Film | Pass 5 on the user's note (the mosquito hit by water looks flat; draft w53b): Boss F5-B01 (SH02 settle from the cut, leg wave, pinned wing quiver, "ไม่แบน" flex and round-out, volume sheen, face rings) and F5-B02 (SH15 air push, blended hit, face-and-body dip, drop squeeze, springs, struggle, the failed try at +94–+110); decisions D5-01–D5-05 (reaction not damage, body rides the face, settle cheat, try and fail, episode modules only); new MosqOpts listed; sheet stays ROWS-R2.3; no sound change. |
