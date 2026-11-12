@@ -247,7 +247,13 @@ def wr(L, R, p, dither=False):
     pk = max(abs(x) for x in out) / 32767; print(p, 'peak %.1f dBFS' % (20 * math.log10(pk + 1e-9)))
 def wm(tr, p, dither):
     wr(array.array('f', (x * S2 for x in tr)), array.array('f', (x * S2 for x in tr)), p, dither)
-import shutil; shutil.copy(VOICE_PATH, 'out/stems/voice.wav')
+def dither_copy(src, dst):   # voice stem carries the same +-1 LSB dither as the layer stems, so mix-levels.py meters all stems on the same time base
+    rd = wave.open(src, 'rb'); assert rd.getsampwidth() == 2
+    a = array.array('h'); a.frombytes(rd.readframes(rd.getnframes())); par = rd.getparams(); rd.close()
+    rnd = random.Random(18)
+    for i in range(len(a)): a[i] = max(-32767, min(32767, a[i] + rnd.choice((-1, 0, 1))))
+    w = wave.open(dst, 'wb'); w.setparams(par); w.writeframes(a.tobytes()); w.close()
+dither_copy(VOICE_PATH, 'out/stems/voice.wav')
 wm(bed, 'out/stems/bed.wav', True); wm(tex, 'out/stems/texture.wav', True)
 accL = array.array('f', (a * S2 + l for a, l in zip(acc, pnL))); accR = array.array('f', (a * S2 + r for a, r in zip(acc, pnR)))
 wr(accL, accR, 'out/stems/accent.wav', True)
