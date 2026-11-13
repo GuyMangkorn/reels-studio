@@ -6,7 +6,7 @@ import {tintPainter, type Painter, type Pt} from './painter';
 import {poseFor, type AnyPoseId} from './poses';
 import type {V3} from './space';
 import {figureView, figureView4, squareToCam, viewFields, type View4, type ViewFields, type ViewName} from './views';
-import {camPoint, camUnit, type YCam} from './ycam';
+import {camPoint, camUnit, viewAngle, type YCam} from './ycam';
 import type {Item} from './world';
 
 // Place a kit figure (`CastDef`) in a world-metre set seen through the yaw camera (painted 3D camera): the feet at a ground point,
@@ -25,6 +25,11 @@ export type FigureAtOpts = {
   facing?: [number, number];
   /** With `facing`: the previous view and a hysteresis in degrees, so a slow orbit does not flicker between views. */
   prevView?: ViewName; hysteresis?: number;
+  /**
+   * With `facing` (KIT-VIEW-AUDIT VA04, opt-in): a three-quarter view turns by the real camera angle (`quarterDeg` = the angle off the
+   * front, held to 15..60) instead of the fixed 45, so an orbit turns the figure step by step through the quarter sector. Default false = 45.
+   */
+  quarterFollow?: boolean;
   /** Pose sheet id (default P01). A pose missing a side view falls back to P01 (kit `poseFor`). */
   pose?: AnyPoseId;
   face?: ExpressionId; faceState?: Partial<FaceState>;
@@ -38,6 +43,13 @@ export type FigureAtOpts = {
   /** Whole-card roll in degrees about the hips (B1, floating figures; positive = the head tips toward screen right, as `headCock`). The body,
    * head, arms and `held` props rotate together and the returned anchors are the rotated ones. Use with `shadow: false`. Default 0 = as before. */
   roll?: number;
+  /**
+   * High and low cameras (KIT-VIEW-AUDIT VA03, opt-in): the head takes its perspective size (larger from above, smaller from below,
+   * `headPerspective`), the card is squashed vertically to the height the camera really sees between
+   * the feet and the head top when seen from above, and the face shifts on the head sphere by the elevation at the head (`FigPose.headPitch`; an 8 deg dead
+   * zone keeps eye-level shots as they are). Default false = as before.
+   */
+  pitchCue?: boolean;
   /** Size factor on the lens scale (a child of the same rig, a shrink pop). */
   scale?: number;
   /** Props drawn after the figure from its anchors (`u` px per metre). */
@@ -65,6 +77,23 @@ export const withRoll = (p: Painter, c: Pt, deg: number, draw: () => void) => {
   draw();
   p.brush.pop();
 };
+/** Run `draw` with the brush squashed vertically by `sy` about the ground point `g` (no-op at 1). */
+export const withSquash = (p: Painter, g: Pt, sy: number, draw: () => void) => {
+  if (sy === 1) { draw(); return; }
+  p.brush.push();
+  p.brush.translate(g[0], g[1]);
+  p.brush.scale(1, sy);
+  p.brush.translate(-g[0], -g[1]);
+  draw();
+  p.brush.pop();
+};
+/** Anchors squashed vertically by `sy` about `g`. */
+export const squashAnchors = <T extends FigAnchors>(a: T, g: Pt, sy: number): T => {
+  if (sy === 1) return a;
+  const Y = (y: number) => g[1] + (y - g[1]) * sy, P = (q: Pt): Pt => [q[0], Y(q[1])];
+  return {...a, head: P(a.head), headTop: Y(a.headTop), chin: Y(a.chin), feet: P(a.feet), rHand: P(a.rHand), lHand: P(a.lHand), rShoulder: P(a.rShoulder), lShoulder: P(a.lShoulder),
+    rUpper: P(a.rUpper), lUpper: P(a.lUpper), lens: a.lens && P(a.lens), top: Y(a.top), bottom: Y(a.bottom)};
+};
 /** The anchors of a figure rolled by `deg` about `c`: points rotate, `top` and `bottom` become the rotated extremes, `lensDir` turns. */
 export const rollAnchors = <T extends FigAnchors>(a: T, c: Pt, deg: number): T => {
   if (!deg) return a;
@@ -77,11 +106,38 @@ export const rollAnchors = <T extends FigAnchors>(a: T, c: Pt, deg: number): T =
   };
 };
 
+/** Elevation (radians, + = camera above) at which camera `c` sees the head of a figure `height` m tall standing at `at`. */
+export const headElevation = (c: YCam, at: V3, height: number): number => Math.atan2(c.y - (at[1] + height - 0.2), Math.max(0.01, Math.hypot(at[0] - c.x, at[2] - c.z)));
+/** The face shift a placement with `pitchCue` uses: the elevation past an 8 deg dead zone, capped at 35 deg. */
+export const headPitchOf = (e: number): number => {
+  const dz = (8 * Math.PI) / 180, cap = (35 * Math.PI) / 180;
+  return Math.sign(e) * Math.min(cap, Math.max(0, Math.abs(e) - dz));
+};
+/**
+ * Vertical squash of the card seen from above: the projected feet-to-head-top height over the drawn one, never below 0.75. Seen from
+ * level or below it is 1: a flat card squashed from below reads stumpy, not tall (VA03 check, 13 Nov 2026).
+ */
+export const cardSquash = (c: YCam, at: V3, height: number, g: Pt, u: number): number => {
+  if (c.y <= at[1] + height) return 1;
+  const top = camPoint(c, [at[0], at[1] + height, at[2]]);
+  return top ? Math.max(0.75, Math.min(1, (g[1] - top[1]) / (height * u))) : 1;
+};
+/** Perspective head size: px per metre at the head over px per metre at the feet, 0.85..1.25 (>1 seen from above: the head is nearer). */
+export const headPerspective = (c: YCam, at: V3, height: number): number => {
+  const uf = camUnit(c, at), uh = camUnit(c, [at[0], at[1] + height - 0.2, at[2]]);
+  return Math.max(0.85, Math.min(1.25, uh / uf));
+};
 /** The view fields a placement resolves to for this camera (four-view squared to the lens, or six-view from a world facing). */
-export const viewAtCam = (c: YCam, o: Pick<FigureAtOpts, 'at' | 'view' | 'facing' | 'prevView' | 'hysteresis'>): ViewFields =>
-  o.facing
-    ? viewFields(figureView(c, o.at, o.facing, {prev: o.prevView, hysteresis: o.hysteresis}))
-    : {view: figureView4(c, o.at, squareToCam(c, o.at, o.view ?? 'front'))};
+export const viewAtCam = (c: YCam, o: Pick<FigureAtOpts, 'at' | 'view' | 'facing' | 'prevView' | 'hysteresis' | 'quarterFollow'>): ViewFields => {
+  if (!o.facing) return {view: figureView4(c, o.at, squareToCam(c, o.at, o.view ?? 'front'))};
+  const name = figureView(c, o.at, o.facing, {prev: o.prevView, hysteresis: o.hysteresis});
+  return viewFields(name, o.quarterFollow ? quarterDegAt(viewAngle(c, o.at, o.facing)) : 45);
+};
+/** VA04: the three-quarter turn for a view angle (degrees, `viewAngle`): its distance from the front, held to the valid 15..60. */
+export const quarterDegAt = (deg: number): number => {
+  const d = ((deg % 360) + 360) % 360, off = d > 180 ? 360 - d : d;
+  return Math.min(60, Math.max(15, off));
+};
 
 /** Paint `def` standing at `o.at` through camera `c`. Returns the figure's picture anchors, or null when the feet are behind the lens. */
 export const paintFigureAt = (p: Painter, c: YCam, def: CastDef, o: FigureAtOpts): FigAnchors | null => {
@@ -90,17 +146,20 @@ export const paintFigureAt = (p: Painter, c: YCam, def: CastDef, o: FigureAtOpts
   const u = camUnit(c, o.at) * (o.scale ?? 1);
   const vf = viewAtCam(c, o);
   if (o.shadow !== false) washAt(p, (o.seed ?? def.seed) + 5101, o.shadow?.color ?? '#3b3226', o.shadow?.op ?? 60, ell(g[0], g[1], 0.32 * u, 0.06 * u, 16), 0.15, 0.2);
+  // pitchCue (VA03): the head takes its own perspective size (`headPerspective`), the body keeps the height; the rig shares it out.
   const pose = poseFor(o.pose ?? 'P01', def, g as Pt, u, vf.view === 'back' ? 'front' : vf.view);
   const face = {...EXPRESSIONS[o.face ?? 'neutral'], ...(o.faceState ?? {})} as FaceState;
   const q = o.tint ? tintPainter(p, o.tint.to, o.tint.u, {mul: o.tint.mul, brush: true}) : p;
-  const fp = {...pose, ...vf, face, ...(o.shadow === false ? {noShadow: true} : {}), ...o.fig} as FigPose;
+  const pitch = o.pitchCue ? headPitchOf(headElevation(c, o.at, def.height * (o.scale ?? 1))) : 0;
+  const fp = {...pose, ...vf, face, ...(o.shadow === false ? {noShadow: true} : {}), ...(pitch ? {headPitch: pitch} : {}), ...(o.pitchCue ? {headSize: headPerspective(c, o.at, def.height * (o.scale ?? 1))} : {}), ...o.fig} as FigPose;
   const pivot = o.roll ? hipAnchor(def, g as Pt, u, fp) : (g as Pt);
+  const sy = o.pitchCue ? cardSquash(c, o.at, def.height * (o.scale ?? 1), g as Pt, u) : 1;
   let a!: FigAnchors;
-  withRoll(p, pivot, o.roll ?? 0, () => {
+  withSquash(p, g as Pt, sy, () => withRoll(p, pivot, o.roll ?? 0, () => {
     a = drawFigure(q, def, g, u, fp, o.t, o.seed ?? def.seed);
     o.held?.(q, a, u);
-  });
-  return rollAnchors(a, pivot, o.roll ?? 0);
+  }));
+  return squashAnchors(rollAnchors(a, pivot, o.roll ?? 0), g as Pt, sy);
 };
 
 /** The placement as a depth-sorted set item (kit `paintSorted`); `out.a` receives the anchors when it is painted. */
