@@ -1,6 +1,6 @@
 # EDU-EP06-SHORT — กะพริบตาช้า ๆ ใส่แมว (slow-blink at your cat)
 
-- Deliverable: `EDU-EP06-SHORT`; task file [task.md](task.md); series concepts [../concepts.md](../concepts.md) C8 (Preaw R2 concept, Film R2 annotation).
+- Deliverable: `EDU-EP06-SHORT`; task file [task.md](task.md); series concepts [concepts](../concepts/index.md) C8 (Preaw R2 concept, Film R2 annotation).
 - Script revision: **EDU-EP06-SCRIPT-R1.3** (Preaw, 2026-11-07). Rewords L13 for one-hearing clarity (user request 2026-11-07); R1.2 applied the user's ending decision (2026-11-07: no loop, `A_fade`, option 1) to R1.1, which carried Boat's W1.3 fixes ([fact-check.md](fact-check.md), inline fixes 1–4); see [Revision log](#revision-log).
 - Inputs: research [research.md](research.md) W1.1 (Boat, 2026-11-07; claim IDs C01–C17, sources SRC001–SRC007); user wording decision on the stare claim (2026-11-07, via coordinator; see [N2](#notes)).
 - Story mode: **fiction with factual knowledge**. A fictional owner (`woman-curly`) and her cat (`cat-orange-tabby`) on a sofa at night; every action of the cat (ears flat, turning away, the blink back, walking over, purring), the "cat read" glare repaint, the glow and the chime are **dramatization**. The spoken facts are hedged behaviour knowledge (C03/C04) and one small study (SRC001, C07/C08), with its limits said aloud.

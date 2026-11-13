@@ -1,6 +1,6 @@
 # EDU-EP05-SHORT — ถ้าคุณตัวเล็กเท่ามด (if you were the size of an ant)
 
-- Deliverable: `EDU-EP05-SHORT`; task file [task.md](task.md); series concepts [../concepts.md](../concepts.md) C6.
+- Deliverable: `EDU-EP05-SHORT`; task file [task.md](task.md); series concepts [concepts](../concepts/index.md) C6.
 - Script revision: **EDU-EP05-SCRIPT-R1.1** (Preaw, 2026-11-06). Applies Boat's fact-check W1.3 ([fact-check.md](fact-check.md)); see [Revision log](#revision-log).
 - Inputs: research [research.md](research.md) W1.1 (Boat, 2026-11-06; claim IDs C01–C15, X01–X05, assumption A1); fact-check [fact-check.md](fact-check.md) W1.3 on R1 (Boat, 2026-11-06; SRC008, SRC009).
 - Story mode: **fiction with factual knowledge**. A fictional tiny 4-head character in a painted macro world; every event (the breeze, the fall, the dew drop, the crumb lift) is **dramatization**. The spoken facts are scale-physics directions plus a few hedged `calc` numbers from Boat's arithmetic, never measurements.

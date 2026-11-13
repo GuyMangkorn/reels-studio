@@ -1,6 +1,6 @@
 # EDU-EP05-SHORT — task
 
-Record: this file. Series context: [concepts.md](../concepts.md) · series task list: [task.md](../task.md).
+Record: this file. Series context: [concepts](../concepts/index.md) · series task list: [task.md](../task.md).
 
 **Now:** posted. User uploaded the EP05 clip ("EP05 upload คลิปไปแล้ว", 2026-11-07). Stages W5-W8 are ticked from that statement; the Final/pin/delivery-render/cover evidence (store paths, commit, LUFS, cover pick) was not re-read this turn, so add it here when the delivery record is back-filled.
 

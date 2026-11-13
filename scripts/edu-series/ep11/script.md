@@ -1,6 +1,6 @@
 # EDU-EP11-SHORT — ลิฟต์ขาด กระโดดตอนท้ายรอดมั้ย (the falling-lift jump)
 
-- Deliverable: `EDU-EP11-SHORT`; task file [task.md](task.md); series concepts [../concepts.md](../concepts.md) C32 (Preaw R6 concept, Film R6 annotation).
+- Deliverable: `EDU-EP11-SHORT`; task file [task.md](task.md); series concepts [concepts](../concepts/index.md) C32 (Preaw R6 concept, Film R6 annotation).
 - Script revision: **EDU-EP11-SCRIPT-R3** (R1 Preaw; R2 and R3 coordinator edits 2026-11-08). First draft R1; see [Revision log](#revision-log).
 - Inputs: research [research.md](research.md) W1.1 (Boat, 2026-11-08; claims F001–F018, corrections 1–9 to the C32 entry); coordinator W1.2 brief (2026-11-08) restating Boat's required changes.
 - Story mode: **fiction with factual knowledge**. A woman (WOMAN, `woman-long + office`) alone in a condo lift stands in for the viewer. The fall is a **hypothetical** ("ถ้า…ร่วงจริง", F018): her float, the shaft cutaway, the floor counter and the speed gauge are dramatization. The brake jaws are a **diagram** labelled "ภาพประกอบ" (F013). The 1854 insert is a **reconstruction**, no period photograph claimed (research correction 8).

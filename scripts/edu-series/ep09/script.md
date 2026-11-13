@@ -1,6 +1,6 @@
 # EDU-EP09-SHORT — นิ้วนางที่ยกไม่ขึ้น (the ring finger that will not lift)
 
-- Deliverable: `EDU-EP09-SHORT`; task file [task.md](task.md); series concepts [../concepts.md](../concepts.md) C28 (Preaw R5 concept, Film R5 annotation).
+- Deliverable: `EDU-EP09-SHORT`; task file [task.md](task.md); series concepts [concepts](../concepts/index.md) C28 (Preaw R5 concept, Film R5 annotation).
 - Script revision: **EDU-EP09-SCRIPT-R1.4** (Preaw, 2026-11-08). R1.4 = L12 second half reworded to the user's wording (one line, same syllable count); R1.3 = cuts only (L10, L13; ER07, user decision 2026-11-08); see [Revision log](#revision-log).
 - Inputs: research [research.md](research.md) W1.1 (Boat, 2026-11-08; claims F001–F018, recommendations to the C28 beats); user decisions in [task.md](task.md) (2026-11-08): Q2 Schumann **cut**; Q1 user real try (one person): fold middle → ring cannot lift; fold index, fold little, fold ring → lift middle all lift.
 - Story mode: **fiction with factual knowledge** (open fictional brief, no mode specified). A grandfather (ELDER) and a boy (BOY) at a dining table stand in for the viewer; their tries, reactions and the see-through hand are **dramatization**. The see-through hand is a **diagram** ("ภาพประกอบ"), not a measured view of this posture (F007 `model`). Spoken facts: F001–F006, F007 (hedged), F012, F013, hedged as research.md lists (F008 and NEW-01 left unspoken since R1.3, ER07).
