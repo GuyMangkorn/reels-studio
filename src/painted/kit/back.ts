@@ -4,6 +4,7 @@ import {hatFront} from './gear';
 import {CHIN, HEAD_SPAN, headOutline, type HeadStyle} from './head';
 import {hairFront, isNewCut} from './hair';
 import {lerp, mixColor, type Painter, type Pt} from './painter';
+import {clipHalf, quarterGeo} from './quarter';
 
 // BACK view of the recurring cast (kit view `'back'`, added 3 Nov 2026 for EG-EP02 `คุณ`; generalised from the EP01 episode figure
 // `everyone-gone/figure-back.ts`). `drawFigure` dispatches `pose.view === 'back'` here, so a back figure takes the same `CastDef`,
@@ -22,8 +23,10 @@ import {lerp, mixColor, type Painter, type Pt} from './painter';
 //   drops to that hip and foreshortens like the front; the seat (pelvis block) shows under the back when the hips are low, and kneeling soles face the
 //   lens below the knees. A pose with none of these fields draws exactly as before.
 // - Not supported (cut to front or profile for these): bend, lie, props in hand.
-// - No three-quarter back (user, 4 Nov 2026: the back-left/back-right views barely read, the hair covers the turn). `FigPose.quarter` is
-//   a front-view field; this view ignores it and draws the plain back. Depth from behind comes from camera moves in the set (`ycam.ts`).
+// - Back three-quarter (KIT-VIEW-AUDIT VA02, 13 Nov 2026; replaces the 4 Nov "no back three-quarter" rule at the user's request):
+//   `FigPose.quarter` with view 'back' turns the back block away toward that screen side by `quarterDeg` (15..60, default 45). The
+//   body takes the turned width `kt`, the side plane shows in shade on that side, the arm on that side is painted over the torso, and
+//   for hair that ends above the jaw the cheek and jaw swell past the skull there (lost profile). Absent = the plain back as before.
 
 const mirrorX = (g: Pt, q: Pt): Pt => [2 * g[0] - q[0], q[1]];
 
@@ -61,15 +64,28 @@ export const drawFigureBack = (p: Painter, def: CastDef, g: Pt, unit: number, po
   const fr = sitK ? undefined : bodyFrame(def, {...pose, view: 'front'});
   const pm = fr && (fr.mode || fr.c > 0) ? fr : undefined;
   const pmDrop = pm ? hip0 - pm.hipV + (pm.mode ? 0 : pm.bob) : 0, tS = pm ? pm.tScale : 1;
-  const S = ([u, v]: Pt): Pt => [g[0] + u * unit, g[1] - (v + bob - drop - pmDrop) * unit];
+  // Back three-quarter (VA02, `FigPose.quarter` with view 'back'): the body is the back block turned by `quarterDeg` so it faces away and
+  // toward the screen side named. Its width takes the turned footprint `kt` (as the front three-quarter); the side of the block shows on
+  // that side in shade, the arm on that side is nearer the lens, and the head turns with a sliver of cheek past the hair (lost profile).
+  const qb = quarterGeo(pose), kq = qb ? qb.kt : 1, qd = qb?.qdir ?? 1;
+  /** Edge between the back plane and the side plane at half-width w (local u, before `kq`). */
+  const udiv = (w: number) => (qb ? qd * w * (2 * qb.sf - 1) : 0);
+  const S = ([u, v]: Pt): Pt => [g[0] + u * kq * unit, g[1] - (v + bob - drop - pmDrop) * unit];
   /** Picture point of an absolute body-frame point (the `pm` legs carry their own hip height). */
-  const S0 = ([u, v]: Pt): Pt => [g[0] + u * unit, g[1] - v * unit];
+  const S0 = ([u, v]: Pt): Pt => [g[0] + u * kq * unit, g[1] - v * unit];
   /** Upper body: breath rise above the hip, then lean about the hip (toward screen right). */
   const U = ([u, v]: Pt): Pt => {
     const dv = (v - hip0) * tS + rise * Math.max(0, Math.min(1, (v - hip0) / (shV0 - hip0))), a = lean;
     return S([u * Math.cos(a) + dv * Math.sin(a), hip0 + dv * Math.cos(a) - u * Math.sin(a)]);
   };
   const Uq = (pts: Pt[]) => pts.map(U), Sq = (pts: Pt[]) => pts.map(S);
+  /** Shoe at the ankle (local u, v): from behind the heel oval; turned (VA02) the foot points away toward the turned side, so the toe reaches
+   *  past the heel on that side and a little up (farther from the lens). Built in picture proportions, then un-squeezed by `kq`. */
+  const shoe = (x: number, y: number, s: number, k = 1): Pt[] => {
+    if (!qb) return ell(x + s * 0.01, y - 0.012, 0.062 * k, 0.032 * k, 14);
+    const rx = (0.062 * qb.cos + 0.1 * qb.sin) * k;
+    return ell(0, 0, rx, 0.032 * k, 14, qd * 0.12).map(([u, v]): Pt => [x + (qd * (rx - 0.062 * k) * 0.85 + u) / kq, y - 0.012 + v]);
+  };
 
   let part = 0, line = 0;
   const fill = (color: string, pts: Pt[], outline = true, passes = 4) => {
@@ -92,17 +108,67 @@ export const drawFigureBack = (p: Painter, def: CastDef, g: Pt, unit: number, po
   // Skirt (VA05): the front view's straight cut, seen from behind: hip +-(hw + 0.0085), hem at the knee width +-(0.077 + 0.06) and 0.19 below the knee.
   const hemV = o.skirt ? o.skirtHem ?? knee0 - 0.19 : undefined, skTop = hw + 0.0085, skHem = 0.137;
   const wv = (s: number) => Math.max(0, Math.sin(ph + (s > 0 ? 0 : Math.PI))) * 0.05 * stride;
+  /** Run legs of the back three-quarter (VA02): the front run only lifts the feet (no depth), so turned they spread at hip width like a
+   *  straddle. Each leg takes its stride from the profile run at the same phase: side-to-side shrinks by cos(turn), the forward offset
+   *  shows by sin(turn) toward the turned side (forward is away from the lens), heights blend toward the profile by sin(turn). The stride is
+   *  kept to RUN_DEPTH of the profile's (the full sprint stride read as a lunge out of the skirt at 60 deg). Painted far leg first. */
+  const RUN_DEPTH = 0.55;
+  /** Skirt of a body pose seen from behind: hem height (absolute) and hem half-widths; the turned run (VA02) opens the hem over the knees. */
+  const poseSkirt = () => {
+    if (hemV === undefined || !pm) return undefined;
+    // Running in a skirt keeps the standing hem below the dropped hip (a hem raised to the knee let the shins swing out of the sides).
+    const h2 = pm.mode?.kind === 'run' ? hemV - pmDrop : Math.max(0.01, pm.hipV - 0.19);
+    const kx = pm.mode?.kind === 'run' ? runLegs(pm.mode.legs).map((l) => l.knee[0]) : [];
+    return {h2, hR: Math.max(skHem, ...kx.map((x) => x + 0.06)), hL: Math.min(-skHem, ...kx.map((x) => x - 0.06))};
+  };
+  function turnRun(legs0: PoseLeg[]) {
+    const pr = bodyFrame(def, {...pose, view: 'right'}), pmode = pr.mode;
+    if (!qb || !pm || !pmode) return legs0;
+    // A straight skirt (sarong) holds the stride short.
+    const depth = o.skirt ? RUN_DEPTH * 0.6 : RUN_DEPTH;
+    const out = legs0.map((l) => {
+      const sg = l.hip[0] >= 0 ? 1 : -1, lp = pmode.legs.find((q) => q.far === sg > 0) ?? pmode.legs[0];
+      const pt = (f: Pt, q: Pt): Pt => [(f[0] * qb.cos + qd * qb.sin * depth * (q[0] - lp.hip[0])) / kq, f[1] + qb.sin * (q[1] - pr.hipV - (f[1] - pm.hipV))];
+      const near = sg * qd * 0.0725 * qb.sin - (lp.knee[0] - lp.hip[0]) * qb.cos;
+      return {leg: {...l, hip: pt(l.hip, lp.hip), knee: pt(l.knee, lp.knee), ankle: pt(l.ankle, lp.ankle)}, near};
+    });
+    // The lowest foot stays where the front run puts it (on the ground): the shift goes to the ankles in full and the knees in half.
+    const dv = Math.min(...legs0.map((l) => l.ankle[1])) - Math.min(...out.map((x) => x.leg.ankle[1]));
+    return out.map((x) => ({...x, leg: {...x.leg, knee: [x.leg.knee[0], x.leg.knee[1] + dv / 2] as Pt, ankle: [x.leg.ankle[0], x.leg.ankle[1] + dv] as Pt}}))
+      .sort((x, y) => x.near - y.near).map((x) => x.leg);
+  }
+  type PoseLeg = {hip: Pt; knee: Pt; ankle: Pt; far: boolean; hide?: boolean};
+  /** Run legs as painted: turned (VA02) and, in a skirt, held in: a sarong lets the feet step and lift only a little, so each ankle
+   *  comes in toward under its hip and toward the ground, and the knee follows (the full stride swung the shins out of the cloth). */
+  const runLegs = (legs0: PoseLeg[]): PoseLeg[] => {
+    const legs = qb ? turnRun(legs0) : legs0;
+    if (!o.skirt) return legs;
+    const gV = Math.min(...legs.map((l) => l.ankle[1]));
+    return legs.map((l) => {
+      const ankle: Pt = [lerp(l.hip[0], l.ankle[0], 0.6), lerp(gV, l.ankle[1], 0.35)];
+      const mid: Pt = [(l.hip[0] + ankle[0]) / 2, (l.hip[1] + ankle[1]) / 2], knee0: Pt = [(l.hip[0] + l.ankle[0]) / 2, (l.hip[1] + l.ankle[1]) / 2];
+      return {...l, ankle, knee: [mid[0] + (l.knee[0] - knee0[0]) * 0.5, mid[1] + (l.knee[1] - knee0[1]) * 0.5]};
+    });
+  };
   /** Legs of a body pose seen from behind (VA01): the front frame's hip, knee and ankle per leg (crouch legs as the front view draws them). */
   function paintPoseLegs() {
     if (!pm) return;
-    const legs = pm.mode ? pm.mode.legs : ([-1, 1] as const).map((s) => {
+    const legs0 = pm.mode ? pm.mode.legs : ([-1, 1] as const).map((s) => {
       const ankle: Pt = [s * (0.08 + 0.05 * pm.c), ankleV];
       return {hip: [s * 0.0725, pm.hipV] as Pt, knee: [s * (0.077 + 0.17 * pm.c), lerp((pm.hipV + ankle[1]) / 2, 0.46, pm.c)] as Pt, ankle, far: false, hide: false};
     });
+    const legs = pm.mode?.kind === 'run' ? runLegs(legs0) : legs0;
     // The torso back (translucent wash) reaches down to this height and out to this half-width: a thigh starts where it leaves that block, so no
     // trouser colour shows through the cloth (the same reason as the standing thigh top below).
     const hemAbs = pm.hipV - 0.07 * tS, halfW = hw + 0.024;
-    const inside = ([u, v]: Pt) => Math.abs(u) < halfW && v > hemAbs;
+    // Running in a skirt: the skirt cloth is translucent too, so the leg starts where it leaves the skirt (a leg under it showed through).
+    const sk = pm.mode?.kind === 'run' ? poseSkirt() : undefined, skTopAbs = hip0 + 0.034 - pmDrop;
+    const inSkirt = ([u, v]: Pt) => {
+      if (!sk || v < sk.h2 || v > skTopAbs) return false;
+      const k = (v - sk.h2) / Math.max(0.01, skTopAbs - sk.h2);
+      return u > lerp(sk.hL, -skTop, k) && u < lerp(sk.hR, skTop, k);
+    };
+    const inside = ([u, v]: Pt) => (Math.abs(u) < halfW && v > hemAbs) || inSkirt([u, v]);
     const sole = mixColor(o.shoes, '#d8ccb6', 0.45);
     for (const l of legs) {
       const s = l.hip[0] >= 0 ? 1 : -1;
@@ -111,7 +177,10 @@ export const drawFigureBack = (p: Painter, def: CastDef, g: Pt, unit: number, po
       while (k0 < 1 && inside([l.hip[0] + (l.knee[0] - l.hip[0]) * k0, l.hip[1] + (l.knee[1] - l.hip[1]) * k0])) k0 += 0.05;
       const top: Pt = [l.hip[0] + (l.knee[0] - l.hip[0]) * k0, l.hip[1] + (l.knee[1] - l.hip[1]) * k0];
       if (k0 < 0.95) fill(pc, limb(top, l.knee, 0.105, 0.095).map(S0));
-      fill(pc, ell(l.knee[0], l.knee[1], 0.052, 0.052, 12).map((q) => S0(q as Pt)), false);
+      if (!inSkirt(l.knee)) fill(pc, ell(l.knee[0], l.knee[1], 0.052, 0.052, 12).map((q) => S0(q as Pt)), false);
+      let k1 = 0;
+      while (k1 < 1 && inSkirt([l.knee[0] + (l.ankle[0] - l.knee[0]) * k1, l.knee[1] + (l.ankle[1] - l.knee[1]) * k1])) k1 += 0.05;
+      const shinTop: Pt = [l.knee[0] + (l.ankle[0] - l.knee[0]) * k1, l.knee[1] + (l.ankle[1] - l.knee[1]) * k1];
       if (l.hide) {
         // Kneeling: the shin lies on the ground toward the lens, so it shows as a short block under the knee ending in the sole.
         // The soles face the lens, heels up and toes pointing in: tall pale ovals with a heel line, so they do not read as standing shoes.
@@ -125,10 +194,16 @@ export const drawFigureBack = (p: Painter, def: CastDef, g: Pt, unit: number, po
         const at = (k: number): Pt => [l.knee[0] + (l.ankle[0] - l.knee[0]) * k, l.knee[1] + (l.ankle[1] - l.knee[1]) * k];
         fill(skin, limb(at(0.1), l.ankle, 0.088, 0.066).map(S0));
         fill(o.shorts.sock, limb(at(0.84), [l.ankle[0], l.ankle[1] - 0.005], 0.07, 0.066).map(S0));
-      } else fill(pc, limb(l.knee, l.ankle, 0.095, 0.08).map(S0));
-      fill(o.shoes, ell(l.ankle[0] + s * 0.01, l.ankle[1] - 0.012, 0.062, 0.032, 14).map((q) => S0(q as Pt)));
+      } else if (k1 < 0.95) fill(pc, limb(shinTop, l.ankle, lerp(0.095, 0.08, k1), 0.08).map(S0));
+      fill(o.shoes, shoe(l.ankle[0], l.ankle[1], s).map(S0));
       // A foot off the ground (run) shows its sole from behind.
       if (l.ankle[1] > ankleV + 0.04) fill(sole, ell(l.ankle[0] + s * 0.01, l.ankle[1] - 0.03, 0.05, 0.03, 12).map((q) => S0(q as Pt)), false);
+    }
+    // Run in trousers (VA02): the seat joins the striding thigh tops below the hem (without it the legs hung off the hem apart).
+    if (pm.mode?.kind === 'run' && !o.skirt) {
+      const G0 = (pts: Pt[]) => pts.map(([u, v]) => S0([u, Math.max(0.005, v - pmDrop)]));
+      fill(o.pants, G0([[-hw - 0.02, hip0 - 0.06], [hw + 0.02, hip0 - 0.06], [hw + 0.016, hip0 - 0.14], [0.02, hip0 - 0.185], [-0.02, hip0 - 0.185], [-hw - 0.016, hip0 - 0.14]]));
+      stroke(o.pants, G0([[0, hip0 - 0.075], [0, hip0 - 0.18]]), 0.7);
     }
     // Low hips (crouch, kneel, floor): the seat shows below the back, over the thigh tops.
     if (pm.mode?.kind !== 'run' && (pm.c > 0.3 || pm.mode)) {
@@ -145,7 +220,7 @@ export const drawFigureBack = (p: Painter, def: CastDef, g: Pt, unit: number, po
     stroke(pc, Sq([[0, hip0 - 0.07], [0, hip0 - 0.17]]), 0.8);
   }
   if (pm) paintPoseLegs();
-  for (const s of sitK || pm ? ([] as (-1 | 1)[]) : ([-1, 1] as const)) {
+  for (const s of sitK || pm ? ([] as (-1 | 1)[]) : qb ? ([-qd, qd] as (-1 | 1)[]) : ([-1, 1] as const)) {
     const lift = pose.walk === undefined ? 0 : wv(s);
     const hip: Pt = [s * 0.0725 * sc, hip0], ankle: Pt = [s * 0.085 * sc, ankleV + lift], knee: Pt = [s * 0.08 * sc, (hip0 + ankleV) / 2 + lift / 2];
     const pc = mixColor(o.pants, '#000000', s > 0 ? 0.05 : 0);
@@ -161,7 +236,7 @@ export const drawFigureBack = (p: Painter, def: CastDef, g: Pt, unit: number, po
     } else fill(pc, Sq(limb(knee, ankle, 0.095 * sc, 0.08 * sc)));
     const sc2 = o.boots ? mixColor(o.shoes, '#000000', 0.1) : o.shoes;
     if (o.boots) fill(sc2, Sq(limb([ankle[0], ankle[1] + 0.1], ankle, 0.085 * sc, 0.08 * sc)));
-    fill(o.shoes, Sq(ell(ankle[0] + s * 0.01, ankle[1] - 0.012, 0.062 * sc, 0.032 * sc, 14).map((q) => q as Pt)));
+    fill(o.shoes, Sq(shoe(ankle[0], ankle[1], s, sc)));
   }
   // The pelvis block (hip0 + 0.03 down to the crotch) lies wholly under the torso (which reaches hip0 - 0.07): painted, it showed the trouser
   // colour through the translucent hoodie as a dark band across the hem (4 Nov 2026, bug: YOU2 back; the thigh tops below were the other half).
@@ -171,15 +246,19 @@ export const drawFigureBack = (p: Painter, def: CastDef, g: Pt, unit: number, po
 
   // ------------------------------------------------------------------ arms
   // Right arm = screen right. Arms that stay below the shoulder line go under the torso and hood; raised ones are painted last.
-  const shoulderOf = (s: -1 | 1): Pt => U([s * (sw - 0.02), shV0 - 0.03]);
+  // Back three-quarter (VA02): the arms sit on the turned body's shoulder axis (width cos, not the block's `kt`): the near arm (turned side)
+  // hangs over the side plane, the far one is pulled in behind the back so only its edge and hand show.
+  const armK = (s: -1 | 1) => (qb ? qb.kr * (s === qd ? 1 : 0.85) : 1);
+  const shoulderOf = (s: -1 | 1): Pt => U([s * (sw - 0.02) * armK(s), shV0 - 0.03]);
   const armGeom = (s: -1 | 1, a?: FigPose['rArm']) => {
     const Sh = shoulderOf(s), Lpx = AB * unit;
     let T: Pt, E: Pt;
     if (a) {
       T = mirrorX(g, a.to);
+      if (qb) T = [g[0] + (T[0] - g[0]) * kq * armK(s), T[1]];
       const d = Math.hypot(T[0] - Sh[0], T[1] - Sh[1]), m = 2 * Lpx - 0.5;
       if (d > m) T = [Sh[0] + ((T[0] - Sh[0]) * m) / d, Sh[1] + ((T[1] - Sh[1]) * m) / d];
-      E = a.via ? mirrorX(g, a.via) : ikElbow(Sh, T, Lpx, s);
+      E = a.via ? ((q: Pt): Pt => [g[0] + (q[0] - g[0]) * kq * armK(s), q[1]])(mirrorX(g, a.via)) : ikElbow(Sh, T, Lpx, s);
     } else if (pm?.mode?.kind === 'run') {
       // Run from behind (VA06): the arms pump opposite to the legs, as the front `runArm` (same phase; the character's right is screen
       // right here). The arm swinging forward goes away from the lens: the upper arm hangs, the forearm rises into the chest and hides
@@ -187,12 +266,20 @@ export const drawFigureBack = (p: Painter, def: CastDef, g: Pt, unit: number, po
       const th = (pose.run ?? 0) * Math.PI * 2 + (s > 0 ? Math.PI : 0), fw0 = 0.5 + 0.5 * Math.sin(th), fw = fw0 * fw0 * (3 - 2 * fw0);
       E = [Sh[0] + s * lerp(0.07, 0.035, fw) * unit, Sh[1] + lerp(0.72, 0.86, fw) * AB * unit];
       T = [E[0] + s * lerp(0.01, -0.07, fw) * unit, E[1] + lerp(0.6, 0.2, fw) * AB * unit];
-      return {Sh, E, T, raised: false, near: fw < 0.5};
+      if (!qb) return {Sh, E, T, raised: false, near: fw < 0.5};
+      // Back three-quarter (VA02): the swing is forward and back, as the profile `runArm` at a jog (upper arm al, forearm be from the vertical; the sprint angles lifted the hand over the shoulder), so
+      // turned it shows sideways by sin(turn) toward the turned side; the back-only drawing above only shortened it (the arm read short at 240).
+      const al = 0.6 * Math.sin(th), be = al + 1.1 + 0.2 * Math.max(0, Math.sin(th)), fx = qd * Math.sign(U([1, shV0])[0] - U([0, shV0])[0]) * qb.sin;
+      const E2: Pt = [Sh[0] + (s * 0.04 * armK(s) + fx * AB * Math.sin(al)) * unit, Sh[1] + AB * Math.cos(al) * unit];
+      const T2: Pt = [E2[0] + fx * AB * Math.sin(be) * unit, E2[1] + AB * Math.cos(be) * unit];
+      const w = Math.min(1, qb.sin * 2);
+      return {Sh, E: [lerp(E[0], E2[0], w), lerp(E[1], E2[1], w)] as Pt, T: [lerp(T[0], T2[0], w), lerp(T[1], T2[1], w)] as Pt, raised: false, near: s === qd};
     } else {
-      T = U([s * (sw + 0.015), shV0 - 0.49 * (AB / BONE)]);
+      T = U([s * (sw + 0.015) * armK(s), shV0 - 0.49 * (AB / BONE)]);
       E = ikElbow(Sh, T, Lpx, s);
     }
-    return {Sh, E, T, raised: T[1] < U([0, shV0])[1] - 0.12 * unit, near: false};
+    // Back three-quarter: the arm on the turned side hangs beside the side plane, nearer the lens than the back.
+    return {Sh, E, T, raised: T[1] < U([0, shV0])[1] - 0.12 * unit, near: !!qb && s === qd};
   };
   const paintArm = (s: -1 | 1, a: ReturnType<typeof armGeom>) => {
     const M: Pt = [(a.Sh[0] + a.E[0]) / 2, (a.Sh[1] + a.E[1]) / 2];
@@ -212,14 +299,24 @@ export const drawFigureBack = (p: Painter, def: CastDef, g: Pt, unit: number, po
   // ------------------------------------------------------------------ torso back
   const bodyPts: Pt[] = [[-sw + 0.017, shV0 - 0.02], [-0.07, shV0 + 0.005], [0.07, shV0 + 0.005], [sw - 0.017, shV0 - 0.02], [sw + 0.005, shV0 - 0.07], [hw + 0.02, hip0 - 0.02], [hw + 0.024, hip0 - 0.07], [-hw - 0.024, hip0 - 0.07], [-hw - 0.02, hip0 - 0.02], [-sw - 0.005, shV0 - 0.07]];
   fill(bodyC, Uq(bodyPts));
-  if (hemV !== undefined && !pm) fill(o.skirt!, [U([-skTop, hip0 + 0.034]), U([skTop, hip0 + 0.034]), S([skHem, hemV]), S([-skHem, hemV])]);
+  // The shirt below the skirt top is covered by the skirt (painted after it), so its shaded side stops there.
+  const shirtPlane = hemV === undefined ? bodyPts : [...bodyPts.slice(0, 5), [hw + 0.02, hip0 + 0.034] as Pt, [-hw - 0.02, hip0 + 0.034] as Pt, bodyPts[9]];
+  const planeShapes: {pts: Pt[]; color: string}[] = [{pts: Uq(shirtPlane), color: bodyC}];
+  if (hemV !== undefined && !pm) {
+    const sk = [U([-skTop, hip0 + 0.034]), U([skTop, hip0 + 0.034]), S([skHem, hemV]), S([-skHem, hemV])];
+    fill(o.skirt!, sk);
+    planeShapes.push({pts: sk, color: o.skirt!});
+  }
   if (hemV !== undefined && pm) {
     // Low hips: the skirt covers the seat; running: it keeps its length below the dropped hip.
-    const h2 = pm.mode?.kind === 'run' ? (o.skirtHem !== undefined ? hemV - pmDrop : Math.max(pm.mode.legs[0].knee[1] - 0.19 * (1 - pm.c), 0.3 * pm.c + 0.2)) : Math.max(0.01, pm.hipV - 0.19);
-    fill(o.skirt!, [U([-skTop, hip0 + 0.034]), U([skTop, hip0 + 0.034]), S0([skHem, h2]), S0([-skHem, h2])]);
+    const {h2, hR, hL} = poseSkirt()!;
+    const sk = [U([-skTop, hip0 + 0.034]), U([skTop, hip0 + 0.034]), S0([hR, h2]), S0([hL, h2])];
+    fill(o.skirt!, sk);
+    planeShapes.push({pts: sk, color: o.skirt!});
   }
   stroke(bodyC, Uq([[-sw + 0.03, shV0 - 0.08], [0, shV0 - 0.1], [sw - 0.03, shV0 - 0.08]]));
-  stroke(bodyC, Uq([[0, shV0 - 0.1], [0.004, hip0 - 0.05]]), 0.7);
+  const spine = qb ? qd * sw * (qb.sf - 1) * 0.5 : 0;
+  stroke(bodyC, Uq([[spine, shV0 - 0.1], [spine + 0.004, hip0 - 0.05]]), 0.7);
   if (G?.overcoat) {
     const hem = Math.min(G.overcoat.hem, knee0 + 0.12);
     // With a body pose the hem drops with the hip (absolute height, never below the ground).
@@ -234,6 +331,15 @@ export const drawFigureBack = (p: Painter, def: CastDef, g: Pt, unit: number, po
   }
   if (o.apron) stroke(o.apron, Uq([[-hw, hip0 + 0.01], [0, hip0 - 0.01], [hw, hip0 + 0.01]]), 1.2);
   if (G?.pack) fill(G.pack, Uq([[-0.2 * sc, shV0 - 0.02], [0.2 * sc, shV0 - 0.02], [0.2 * sc, shV0 - 0.3], [-0.2 * sc, shV0 - 0.3]]));
+  // Back three-quarter (VA02): the side of the block beyond the edge between the planes is in shade (each cloth in its own colour), with a fold line.
+  if (qb && !sil) {
+    const D1 = U([udiv(sw), shV0 - 0.034]), D2 = U([udiv(hw + 0.013), hip0]), N = U([qd * sw, shV0 - 0.034]);
+    planeShapes.forEach(({pts, color}, i) => {
+      const part2 = clipHalf(pts, D1, D2, N);
+      if (part2.length > 2) glaze(p, 7_710_000 + seed * 1000 + i, mixColor(color, '#0a0d12', 0.3), 140 + 60 * qb.sin, part2, {border: 0.12, bleed: 0.02});
+    });
+    inkLine(p, seed * 1000 + 451, [D1, D2], {closed: false, weight: 0.8, curve: 0.2, color: mixColor(toneOf(bodyC, L), INK, 0.55)});
+  }
   // Run (VA06): the arm swinging back is nearer the lens than the torso.
   if (rG.near) rHand = paintArm(1, rG);
   if (lG.near) lHand = paintArm(-1, lG);
@@ -259,7 +365,9 @@ export const drawFigureBack = (p: Painter, def: CastDef, g: Pt, unit: number, po
   const cock = pose.headCock ? (pose.headCock * Math.PI) / 180 : 0;
   const pivot: Pt = [hcH[0], hcH[1] + (CHIN * hs - 0.051 / K) * k];
   const rotHead = ([x, y]: Pt): Pt => cock === 0 ? [x, y] : [pivot[0] + (x - pivot[0]) * Math.cos(cock) - (y - pivot[1]) * Math.sin(cock), pivot[1] + (x - pivot[0]) * Math.sin(cock) + (y - pivot[1]) * Math.cos(cock)];
-  const head = ([u, v]: Pt): Pt => rotHead([hcH[0] + (u * cy + 0.3 * Math.sin(yaw)) * kh, hcH[1] + (v - lift) * kh]);
+  // Back three-quarter (VA02): the skull sits behind the neck, so it slides away from the turn (the neck shows on the turned side).
+  const qShift = qb ? -qd * 0.07 * qb.sin : 0;
+  const head = ([u, v]: Pt): Pt => rotHead([hcH[0] + (u * cy + 0.3 * Math.sin(yaw) + qShift) * kh, hcH[1] + (v - lift) * kh]);
   const H2 = (pts: Pt[]) => pts.map(head);
   // softNeck (EDU-EP01 W5.4): the caller paints its own nape and collar, so the rig's neck block (its lower edge showed as a bar on the shirt) is skipped
   if (!pose.softNeck) fill(pose.hoodUp && pose.cowl !== 'drape' ? (hoodColorOf(o) ?? mixColor(o.shirt, INK, 0.2)) : o.coat ?? skinShade, pts4(neck, [[-0.5, 0.5], [0.5, 0.5], [0.46, neckLow], [-0.46, neckLow]]), true, 4);
@@ -280,9 +388,49 @@ export const drawFigureBack = (p: Painter, def: CastDef, g: Pt, unit: number, po
   const nc = isNewCut(cut) ? hairFront(cut) : null;
   const coveredHair = hoodUp || cut === 'hood';
   const earSides: (-1 | 1)[] = coveredHair || cut === 'bob' || cut === 'long' ? [] : nc ? nc.ears : cut === 'short' || cut === 'tied' ? [-1, 1] : [];
-  for (const s of earSides) fill(s < 0 ? skin : skinShade, H2(ell(s * 0.98, 0.16, 0.17, 0.3, 12).map((q) => q as Pt)), true, 4);
+  // Back three-quarter (VA02): the near ear is painted on the hairline after the hair (below).
+  for (const s of earSides) if (!qb) fill(s < 0 ? skin : skinShade, H2(ell(s * 0.98, 0.16, 0.17, 0.3, 12).map((q) => q as Pt)), true, 4);
   fill(skin, H2(headOutline(40).map(([u, v]): Pt => [u * 0.99, v])), true, 8);
   const hairBase = nc?.tone ? mixColor(style.hair, skin, nc.tone) : style.hair;
+  // Lost profile (VA02): the hair covers the back of the skull only. On the turned side it stops at the hairline in front of the ear, which
+  // the turn carries in to cos(turn) of the skull width; the face beyond it shows as skin. The crown (above the temple) and, for hair that
+  // falls past the jaw, the hang below it keep their full shape. `hq` clamps a hair polygon to that line (densified so the cut is a curve).
+  const rhoH = (v: number) => Math.sqrt(Math.max(0, 1 - (v / 1.22) ** 2));
+  const hairX = (v: number, hang: boolean) => {
+    const free = Math.min(1, Math.max(0, (-0.2 - v) / 0.4));
+    // Hair that hangs past the jaw falls straight below it on the turned side (the neck and shoulder show in front of it).
+    const r = hang ? Math.max(rhoH(v), rhoH(0.9)) : rhoH(v);
+    return lerp(r * (qb?.cos ?? 1) * 0.97, 3, free);
+  };
+  const hq = (pts: Pt[], hang = false, open = false, vol = false): Pt[] => {
+    if (!qb) return pts;
+    // Volume hair (curly, perm): the turned-side half of the cloud is squeezed toward the centre, smoothly from the crown down (a cut would
+    // stack its scallops onto one line, and the brush spline hooks there); it keeps its scallops and stays a little off the hairline.
+    if (vol) {
+      const fMin = (rhoH(0.2) * qb.cos * 0.97 + 0.12) / 1.3, sm = (x: number) => (x <= 0 ? 0 : x >= 1 ? 1 : x * x * (3 - 2 * x));
+      return pts.map(([u, v]): Pt => (qd * u > 0 ? [u * (1 - (1 - fMin) * sm((v + 1.0) / 1.3)), v] : [u, v]));
+    }
+    const d = open ? pts : pts.flatMap((a, i) => {
+      const b = pts[(i + 1) % pts.length];
+      // Only edges on the turned side are split: extra points elsewhere change how the brush outline boils (a pale ghost edge, 13 Nov 2026).
+      if (qd * a[0] <= 0 && qd * b[0] <= 0) return [a];
+      return [0, 1, 2, 3].map((j): Pt => [a[0] + ((b[0] - a[0]) * j) / 4, a[1] + ((b[1] - a[1]) * j) / 4]);
+    });
+    const cut0 = d.map(([u, v]) => qd * u > hairX(v, hang));
+    const out = d.map(([u, v], i): Pt => (cut0[i] ? [qd * hairX(v, hang), v] : [u, v]));
+    if (open) return out;
+    // The closed outline starts on the hairline: started on the far side, the brush spline drew a pale ghost edge there (13 Nov 2026).
+    const i0 = Math.max(0, cut0.indexOf(true));
+    return [...out.slice(i0), ...out.slice(0, i0)];
+  };
+  /** A hair shape, clamped to the hairline when turned. Its outline is one open stroke along the clamped shape: the closed brush spline
+   *  drew a pale ghost edge on the far side of some clamped shapes (13 Nov 2026). */
+  const hairFill = (color: string, pts: Pt[], hang = false, vol = false) => {
+    if (!qb) return fill(color, H2(pts), true, 6);
+    const c = H2(hq(pts, hang, false, vol));
+    fill(color, c, false, 6);
+    if (!sil) inkLine(p, seed * 1000 + ++line, [...c, c[0]], {closed: false, weight: L ? VD18.lineOuter : 1.0, color: lineOf(sil ?? toneOf(color, L), L)});
+  };
   if (hoodUp) {
     const hc2 = hoodColorOf(o) ?? mixColor(o.shirt, INK, 0.2);
     const hood: Pt[] = [...arcBack(1.32, 1.46).map(([u, v]): Pt => [u, v - 0.02]), [1.3, 0.55], [1.16, 1.12], [0.7, 1.3], [0, 1.34], [-0.7, 1.3], [-1.16, 1.12], [-1.3, 0.55]];
@@ -316,18 +464,18 @@ export const drawFigureBack = (p: Painter, def: CastDef, g: Pt, unit: number, po
     fill(hc2, H2([...arcBack(1.32, 1.46), [1.3, 0.55], [1.16, 1.12], [0.7, 1.3], [0, 1.34], [-0.7, 1.3], [-1.16, 1.12], [-1.3, 0.55]]), true, 8);
     stroke(hc2, H2([[0, -1.4], [0.04, -0.4], [0, 0.5], [0, 1.28]]), 1.0);
   } else if (cut === 'balding') {
-    fill(style.hair, H2([[-0.98, -0.1], [-0.92, 0.5], [-0.5, 0.88], [0.5, 0.88], [0.92, 0.5], [0.98, -0.1], [0.84, 0.3], [0.5, 0.62], [-0.5, 0.62], [-0.84, 0.3]]), true, 6);
+    hairFill(style.hair, [[-0.98, -0.1], [-0.92, 0.5], [-0.5, 0.88], [0.5, 0.88], [0.92, 0.5], [0.98, -0.1], [0.84, 0.3], [0.5, 0.62], [-0.5, 0.62], [-0.84, 0.3]]);
   } else if (cut === 'bob') {
-    fill(style.hair, H2([...arcBack(1.14, 1.16), [1.16, 0.7], [0.86, 0.84], [0, 0.88], [-0.86, 0.84], [-1.16, 0.7]]), true, 6);
+    hairFill(style.hair, [...arcBack(1.14, 1.16), [1.16, 0.7], [0.86, 0.84], [0, 0.88], [-0.86, 0.84], [-1.16, 0.7]], true);
   } else if (cut === 'long') {
-    fill(style.hair, H2([...arcBack(1.16, 1.18), [1.2, 0.6], [1.26, 1.3], [1.12, 1.72], [0.72, 1.62], [0, 1.66], [-0.72, 1.62], [-1.12, 1.72], [-1.26, 1.3], [-1.2, 0.6]]), true, 6);
+    hairFill(style.hair, [...arcBack(1.16, 1.18), [1.2, 0.6], [1.26, 1.3], [1.12, 1.72], [0.72, 1.62], [0, 1.66], [-0.72, 1.62], [-1.12, 1.72], [-1.26, 1.3], [-1.2, 0.6]], true);
   } else {
     // Cap over the skull down to a low nape hairline; big-volume cuts (curly, perm) use their own cloud outline; tails go on top.
     const volume = nc?.back && (cut === 'curly' || cut === 'perm') ? nc.back[0] : null;
     const crown: Pt[] = cut === 'bowl' ? [...cap(1.1, 1.14, -0.04), [0.99, 0.3], [0.8, 0.5], [0, 0.54], [-0.8, 0.5], [-0.99, 0.3]]
       : cut === 'pixie' ? [...cap(1.08, 1.13, -0.04), ...NAPE(0.9)]
       : [...cap(1.06, 1.1, -0.03), ...NAPE(1.0)];
-    fill(hairBase, H2(volume ?? crown), true, 6);
+    hairFill(hairBase, volume ?? crown, false, !!volume);
     if (cut === 'tied') fill(style.hair, H2(ell(0.05, -1.12, 0.32, 0.22, 18).map((q) => q as Pt)), true, 6);
     if (cut === 'ponytail') {
       fill(style.hair, H2([[-0.28, 0.2], [0.28, 0.2], [0.42, 1.2], [0.22, 1.74], [0, 1.84], [-0.22, 1.74], [-0.42, 1.2]]), true, 6);
@@ -340,7 +488,7 @@ export const drawFigureBack = (p: Painter, def: CastDef, g: Pt, unit: number, po
     if (!volume) {
       const hairC = toneOf(hairBase, L);
       const strokes: Pt[][] = [[[-0.62, -0.6], [-0.8, 0.0]], [[-0.3, -0.75], [-0.4, 0.1]], [[0, -0.8], [0, 0.2]], [[0.3, -0.75], [0.4, 0.1]], [[0.62, -0.6], [0.8, 0.0]], [[-0.45, 0.35], [-0.38, 0.88]], [[0.45, 0.35], [0.38, 0.88]]];
-      strokes.forEach((s, i) => inkLine(p, seed * 1000 + 600 + i, H2(s), {closed: false, weight: 0.6, curve: 0.4, color: mixColor(hairC, '#9aa7ae', 0.3)}));
+      strokes.forEach((s, i) => inkLine(p, seed * 1000 + 600 + i, H2(hq(s, false, true)), {closed: false, weight: 0.6, curve: 0.4, color: mixColor(hairC, '#9aa7ae', 0.3)}));
     }
   }
   // Hood on its way up (`hoodRise` 0..1): the full hood shape squeezed vertically about the nape hem (v 1.34 in head units), so its rim
@@ -351,6 +499,22 @@ export const drawFigureBack = (p: Painter, def: CastDef, g: Pt, unit: number, po
     const hood: Pt[] = [...arcBack(1.32, 1.46).map(([u, v]): Pt => [u, v - 0.02]), [1.3, 0.55], [1.16, 1.12], [0.7, 1.3], [0, 1.34], [-0.7, 1.3], [-1.16, 1.12], [-1.3, 0.55]];
     fill(hc2, H2(sq(hood)), true, 8);
     stroke(hc2, H2(sq([[0, -1.4], [0.04, -0.4], [0, 0.5], [0, 1.28]])), 1.0);
+  }
+  if (qb && !coveredHair) {
+    // Lost profile (VA02): cheek and jaw swell past the skull on the turned side (most at the jaw, with the turn), the jaw line runs from
+    // under the ear to the chin, and the near ear sits on the hairline. Long and bob hair hang over the jaw, so they keep only the ear-less cheek.
+    const bulge = (v: number) => 0.2 * qb.sin * Math.max(0, 1 - ((v - 0.78) / 0.5) ** 2);
+    const outerX = (v: number) => rhoH(v) * 0.99 * (1 - 0.07 * Math.max(0, v / 1.22)) + bulge(v);
+    const vs = [0.25, 0.4, 0.55, 0.7, 0.85, 0.98, 1.08, 1.16];
+    const outer = vs.map((v): Pt => [qd * outerX(v), v]), inner = vs.map((v): Pt => [qd * rhoH(v) * 0.85, v]).reverse();
+    fill(skin, H2([...outer, ...inner]), false, 6);
+    inkLine(p, seed * 1000 + 452, H2(outer), {closed: false, weight: 0.9, curve: 0.3, color: lineOf(toneOf(skin, L), L)});
+    const hang = cut === 'long' || cut === 'bob';
+    if (!hang) {
+      const xe = hairX(0.16, false);
+      inkLine(p, seed * 1000 + 453, H2([[qd * (xe + 0.02), 0.44], [qd * lerp(xe, outerX(0.92), 0.45), 0.86], [qd * outerX(1.1) * 0.97, 1.1]]), {closed: false, weight: 0.7, curve: 0.4, color: mixColor(lineOf(toneOf(skin, L), L), toneOf(skin, L), 0.35)});
+      fill(skinShade, H2(ell(qd * (xe + 0.03), 0.16, 0.12, 0.27, 12).map((q) => q as Pt)), true, 4);
+    }
   }
   // Headwear from behind: the same hat parts as the front, taken without face-side details (dome over the crown).
   if (G?.hat) {

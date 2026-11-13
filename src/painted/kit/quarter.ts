@@ -1,7 +1,7 @@
 import type {Pt} from './painter';
 
-// Front three-quarter geometry for the front body (`cast.ts`) and head (`head.ts`), see `FigPose.quarter`. The back three-quarter
-// views were removed on 4 Nov 2026 (user: the hair covers the turn), so nothing here serves `back.ts`.
+// Three-quarter geometry for the front body (`cast.ts`) and head (`head.ts`), see `FigPose.quarter`; `back.ts` uses `quarterGeo`
+// and `clipHalf` for the back three-quarter (VA02, 13 Nov 2026).
 //
 // The torso is read as a block turned by `theta` about the vertical axis: a front plane `kp = cos theta` wide and a side plane
 // `QUARTER_DEPTH * sin theta` wide, joined at a vertical edge. The whole silhouette is `kt` times the flat width, so the picture keeps
