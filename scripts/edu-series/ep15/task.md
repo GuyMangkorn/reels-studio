@@ -1,6 +1,6 @@
 # EDU-EP15-SHORT — task
 
-Record: this file. Series context: [concepts.md](../concepts.md) (R8, C43) · series task list: [task.md](../task.md).
+Record: this file. Series context: [concepts](../concepts/index.md) (R8, C43) · series task list: [task.md](../task.md).
 
 **Now:** W0 done 2026-11-10 (C43 จิ้งจกบนเพดาน ห้อยคุณไว้ได้ทั้งตัว, kept in the R8 user pick; user asked to start it). W1.1 Boat research done 2026-11-10 ([research.md](research.md)). W1.2 Preaw script EDU-EP15-SCRIPT-R1 done 2026-11-10 ([script.md](script.md), est. ≈57 s, not read aloud). W1.3 Boat fact-check R1 done 2026-11-10 ([fact-check.md](fact-check.md), no must-fix line; title needed a condition). Script R2 2026-11-10 applies the user-approved edits (L05, L09, L11; title/cover "ถ้าตุ๊กแกจับเต็มแรง ห้อยคนได้ทั้งตัว"), est. ≈57.6 s. Boat R2 recheck pass 2026-11-10 (no must-fix). W1.5 user approved script R2 2026-11-10 (structured question). **Next:** W1.4 Editor Kore read (length check).
 

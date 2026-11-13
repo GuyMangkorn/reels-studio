@@ -1,7 +1,7 @@
 # EDU-SERIES delivery
 
 - Series: educational clips for the 4-head painted cast (p5.brush). Request (user's words, 2026-11-04): "คิดไอเดีคลิปให้ความรู้ที่เหมาะกับตัวละคร 4 หัวและการใช้ paint p5 หน่อย".
-- Ideation: W0 done. [concepts.md](concepts.md) R1 (Preaw pitch + Film annotation). User picked **C2 ตกจากหน้าผาในความฝัน** for EP01 (structured question, 2026-11-04) and said: "เก็บ concept ทั้ง 6 ไว้ผมเลือกทำฝันก่อน อาจจะทำ 6 episode". C1, C3–C6 stay in concepts.md as the series bank. Layout: this folder, one deliverable ID per episode (`EDU-EP01-SHORT`, …), each with its own full pipeline.
+- Ideation: W0 done. [concepts](concepts/index.md) R1 (Preaw pitch + Film annotation). User picked **C2 ตกจากหน้าผาในความฝัน** for EP01 (structured question, 2026-11-04) and said: "เก็บ concept ทั้ง 6 ไว้ผมเลือกทำฝันก่อน อาจจะทำ 6 episode". C1, C3–C6 stay in concepts.md as the series bank. Layout: this folder, one deliverable ID per episode (`EDU-EP01-SHORT`, …), each with its own full pipeline.
 - Deliverable: `EDU-EP01-SHORT`; selection: **Short only (Thai)**, 1080×1920, 30 fps (user, structured question "Short ไทย (แนะนำ)", 2026-11-04). Target duration from C2: 40–60 s (estimate).
 - Profile from C2: educational (body / sleep), painted 2D (p5.brush), 4-head cast, ending `C_seamless` per the concept; other fields = [project defaults](../../docs/delivery-workflow.md#project-defaults).
 - Pipeline: `Full`.

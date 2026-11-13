@@ -1,6 +1,6 @@
 # EDU-EP04-SHORT — task
 
-Record: this file. Series context: [concepts.md](../concepts.md) · series task list: [task.md](../task.md). Kept in its own file so it does not collide with the EP03 section that another worktree (`claude/education-remaining-topics-092333`) is still writing in `task.md`.
+Record: this file. Series context: [concepts](../concepts/index.md) · series task list: [task.md](../task.md). Kept in its own file so it does not collide with the EP03 section that another worktree (`claude/education-remaining-topics-092333`) is still writing in `task.md`.
 
 **Now:** delivered. W5-W7 passed and W8.1 delivery render, W8.2 cover and W8.4 kit intake done (2026-11-06); user confirmed EP04 finished ("EP4 จบแล้ว", 2026-11-07). Open: W8.3 posting date (user). W5.2 box ticked to match the passed Draft/Final (the old line was stale).
 
@@ -40,5 +40,5 @@ Record: this file. Series context: [concepts.md](../concepts.md) · series task 
 
 - Concept sub-genre: psychology (perception and memory bias) with simple probability. Staging: ensemble at a supermarket checkout; camera rises to a top-down painted diagram (dots, arrows, a big "1/3").
 - Factual claims are `unchecked` in the concept. Boat's research and fact-check decide what the narration may say.
-- Film annotation for C4 exists in [concepts.md](../concepts.md) (R1, buildability: checkout set `PL-EG-COUNTER` / `STORE-I`-style assets are new).
+- Film annotation for C4 exists in [concepts](../concepts/index.md) (R1, buildability: checkout set `PL-EG-COUNTER` / `STORE-I`-style assets are new).
 - 2026-11-07 (W8.0 cover): user picked **N2-feel** "ทำไมรู้สึก / แพ้ทุกที?" (plate `EDU4-S01-B05-SH01` l60) from `EDU-EP04-SHORT-V2-COVERS` (cover-design skill). Copied as `EDU-EP04-SHORT_cover.png` beside the MP4 (store `projects/edu/EDU/renders/EDU-EP04-SHORT/d79951c20814-dirty-202611061433/`).

@@ -1,6 +1,6 @@
 # EDU-EP04-SHORT — ทำไมแถวข้าง ๆ เร็วกว่าเสมอ (why the next queue always seems faster)
 
-- Deliverable: `EDU-EP04-SHORT`; task file [task.md](task.md); series concepts [../concepts.md](../concepts.md) C4.
+- Deliverable: `EDU-EP04-SHORT`; task file [task.md](task.md); series concepts [concepts](../concepts/index.md) C4.
 - Script revision: **EDU-EP04-SCRIPT-R1.3** (Preaw, 2026-11-05): closed ending instead of the loop, on the coordinator's brief (the R1.2 loop line L19 handed back to the hook; drop it). Target ~55 s video at 1.00x. R1.2 text is kept below in [R1.2 (superseded)](#r12-superseded); R1.1 below that in [R1.1 (superseded)](#r11-superseded).
 - Inputs: R1.2 (user-approved W1.5, 2026-11-05); fact-check [fact-check.md](fact-check.md) (R1.1 verdicts + R1.2 re-check); research [research.md](research.md) W1.1; measure [voice-measure.md](voice-measure.md) (Kore take 2).
 - Story mode: educational explainer on a real everyday phenomenon, acted by fictional 4-head characters. Every switch, price check and slow line is **dramatization**, not a test result. The top-down diagram is a **model drawing** (O5).
@@ -113,7 +113,7 @@ Kept unchanged for review of the R1.3 ending change; headings demoted. Its link 
 
 ### EDU-EP04-SHORT — ทำไมแถวข้าง ๆ เร็วกว่าเสมอ (why the next queue always seems faster)
 
-- Deliverable: `EDU-EP04-SHORT`; task file [task.md](task.md); series concepts [../concepts.md](../concepts.md) C4.
+- Deliverable: `EDU-EP04-SHORT`; task file [task.md](task.md); series concepts [concepts](../concepts/index.md) C4.
 - Script revision: **EDU-EP04-SCRIPT-R1.2** (Preaw, 2026-11-05): length trim of the user-approved R1.1 after the W1.4 measured read ([voice-measure.md](voice-measure.md): ~64 s speech at 0.28 s gaps, ~68 s video, target 40–60 s; user chose ~55 s). Whole lines cut only; no line reworded, no claim added. Every kept line keeps its R1.1 wording. R1.1 text is kept below in [R1.1 (superseded)](#r11-superseded).
 - Inputs: R1.1 (approved by the user, W1.5); fact-check [fact-check.md](fact-check.md) (R1.1); research [research.md](research.md) W1.1; measure [narration-measure.json](narration-measure.json).
 - Story mode: educational explainer on a real everyday phenomenon, acted by fictional 4-head characters. Every switch, price check and slow line is **dramatization**, not a test result. The top-down diagram is a **model drawing** (O5).
@@ -232,7 +232,7 @@ Kept unchanged for review of the R1.2 trim; headings demoted two levels.
 
 ### EDU-EP04-SHORT — ทำไมแถวข้าง ๆ เร็วกว่าเสมอ (why the next queue always seems faster)
 
-- Deliverable: `EDU-EP04-SHORT`; task file [task.md](task.md); series concepts [../concepts.md](../concepts.md) C4.
+- Deliverable: `EDU-EP04-SHORT`; task file [task.md](task.md); series concepts [concepts](../concepts/index.md) C4.
 - Script revision: **EDU-EP04-SCRIPT-R1.1** (R1 by Preaw, W1.2; wording/hedge fixes by Boat, W1.3, 2026-11-05; see [fact-check.md](fact-check.md)). Changed lines are marked `[R1.1]` in the Note column.
 - Inputs: concept C4 (concepts.md R1, Preaw pitch + Film annotation); research [research.md](research.md) W1.1 (Boat, 2026-11-05; F001–F014, open points O1–O6); coordinator brief W1.2 (hard rules: no press percentages, 1/3 labelled "แบบจำลอง", single queue = "หลายที่ใช้" + fairness only, no variance claim F011).
 - Story mode: educational explainer on a real everyday phenomenon, acted by fictional 4-head characters. Every switch, price check and slow line is **dramatization**, not a test result. The top-down diagram is a **model drawing** (O5).

@@ -1,6 +1,6 @@
 # EDU-EP11-SHORT — task
 
-Record: this file. Series context: [concepts.md](../concepts.md) (R6, C32) · series task list: [task.md](../task.md).
+Record: this file. Series context: [concepts](../concepts/index.md) (R6, C32) · series task list: [task.md](../task.md).
 
 **Now:** W1 done 2026-11-08: script R3 approved by the user ("อนุมัติ"). W2 Film brief and storyboard next (Film notes: FIX-2 gauge reset near zero at L13/L14; jaws "ภาพประกอบ"; draw the 1854 catch and the modern jaws differently). Voice: Kore A x0.92 (user pick); Editor applies the loudness fix from [voice-measure.md](voice-measure.md) at placement.
 

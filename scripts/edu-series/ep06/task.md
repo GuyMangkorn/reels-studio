@@ -1,6 +1,6 @@
 # EDU-EP06-SHORT — task
 
-Record: this file. Series context: [concepts.md](../concepts.md) (R2, C8) · series task list: [task.md](../task.md).
+Record: this file. Series context: [concepts](../concepts/index.md) (R2, C8) · series task list: [task.md](../task.md).
 
 **Now:** finished. User confirmed EP06 done ("EP06 ก็เสร็จแล้ว", 2026-11-07); W5-W8 ticked from that statement. Final/pin/delivery-render evidence (store paths, commit, LUFS) and posting were not re-read or confirmed this turn: back-fill them, and W8.3 posting stays open until the user gives a date.
 

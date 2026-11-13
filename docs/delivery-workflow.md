@@ -98,7 +98,9 @@ Handoff checks apply to every stage: matching revisions, deliverable ID, covered
 3. **The coordinator asks the user** to pick with the structured-question tool, after a summary table (ID, title, genre, medium, hook line, size; for edu concepts the ER08 pitch check, e.g. `4/4` or `3/4: who = dog owners`) in the reply. Where the tool caps options at four, ask two questions, `C1`–`C3` and `C4`–`C6`, each with a "none of these" option. The user may pick one, merge two, or ask for another round with a direction; a new round is a new revision of `concepts.md` (`R2`, …) and earlier rounds stay in the file.
 4. `delivery.md` records the chosen concept ID, revision and the user's words, and the style profile fields the concept names. The [project defaults](#project-defaults) fill only what the concept leaves open.
 
-Concepts are pitches, not research: no claim in `concepts.md` counts as checked until Boat's research and fact-check.
+A series with a concepts folder (`scripts/edu-series/concepts/`, user 13 Nov 2026) files the same passes as one file per concept plus a row in its `index.md`, following that index; Film annotates inside each concept file.
+
+Concepts are pitches, not research: no claim in `concepts.md` or a concept file counts as checked until Boat's research and fact-check.
 
 <a id="task-file"></a>
 ### Task file

@@ -11,7 +11,7 @@
 | Direction | Education (user, 11 Nov 2026: the channel's direction is education from here on) |
 | Genre / purpose | Educational Shorts in Thai: one surprising, true answer told through a character who meets each problem on screen ([script rules](script.md)) |
 | Factual claims | General knowledge or a named real case, so Boat researches, fact-checks and runs the [clarity pass](../../docs/editorial-workflow.md#clarity-pass) on every script |
-| Episode records | `scripts/edu-series/` (series `delivery.md`, `task.md`, `concepts.md`; one folder per episode); deliverable IDs `EDU-EPnn-SHORT`; store folders `projects/edu/EDU/` and `publish/edu/EDU/` ([asset store](../../README.md#asset-store)) |
+| Episode records | `scripts/edu-series/` (series `delivery.md`, `task.md`, [`concepts/`](../../scripts/edu-series/concepts/index.md) with one file per concept; one folder per episode); deliverable IDs `EDU-EPnn-SHORT`; store folders `projects/edu/EDU/` and `publish/edu/EDU/` ([asset store](../../README.md#asset-store)) |
 | Earlier work | Mystery and horror episodes made under the same mark before 11 Nov 2026 (WORLD FOG, KSO and others) keep their own records and are not re-labelled |
 
 ## Rules of this channel

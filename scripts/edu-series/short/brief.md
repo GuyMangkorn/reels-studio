@@ -2,7 +2,7 @@
 
 Deliverable: `EDU-EP01-SHORT`; delivery record [../delivery.md](../delivery.md); task file [../task.md](../task.md); target 40–60 s, **timing estimated** (voice not locked; shot lengths below are `est`).
 Revision: **EDU-BRIEF-R1**; status: `ready-for-storyboard` (text brief; no stills; look frames come at W3 after the storyboard page).
-Script: [script.md](script.md) **EDU-SCRIPT-R1.1** (approved by the user at W1.5, 2026-11-04); fact-check [fact-check.md](fact-check.md) (Boat W1.3, 4 inline fixes applied; recheck pending). Concept: [../concepts.md](../concepts.md) R1 C2 + Film W0.2 annotation.
+Script: [script.md](script.md) **EDU-SCRIPT-R1.1** (approved by the user at W1.5, 2026-11-04); fact-check [fact-check.md](fact-check.md) (Boat W1.3, 4 inline fixes applied; recheck pending). Concept: [concepts](../concepts/index.md) R1 C2 + Film W0.2 annotation.
 Target checkout: branch `worktree-bridge-cse_01Y1EhffSX82UqHL4R67KDX1` at `e38187e` (kit README read at this commit). Scope: this Short only; sibling episodes (C1, C3–C6) are not touched.
 Rows file: [review-rows.json](review-rows.json) (SS-R1, 23 shots, untimed-by-voice: times are `est`).
 

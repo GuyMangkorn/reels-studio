@@ -1,6 +1,6 @@
 # EDU-EP08-SHORT — task
 
-Record: this file. Series context: [concepts.md](../concepts.md) (R3, C18) · series task list: [task.md](../task.md).
+Record: this file. Series context: [concepts](../concepts/index.md) (R3, C18) · series task list: [task.md](../task.md).
 
 **Now:** W1.1–W1.4 done 2026-11-08 (script R1.1 rechecked, read measured 55.7–57.2 s). Script R1.1 approved (W1.5). W2 passed; W3.1–W3.2 look frames LF00–LF07 passed 2026-11-08 (look lock). W3.3 and W5.2 done; W4 voice lock done 2026-11-08 (1684 f = 56.13 s). W5.1 timed scene sheets done (EDU-EP08-SHEETS-R1, `ready-for-dev`; rows R2.0, review page: pending). **2026-11-08 re-time (user: narration 0.95, gaps kept, L13 fade 0.9 s): SHEETS-R2 / ROWS-R2.1, 1762 f = 58.73 s, review page: pending; the W5.3 draft (1684 f) is now on the old timing.** Next: coordinator republishes the review page (times only), then Editor re-runs W5.3 on R2 (narration at 0.95, shot ranges and clocks). EP07 is not assigned; the user numbered this episode EP08 on purpose, so keep the ID.
 

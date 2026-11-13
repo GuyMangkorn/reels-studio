@@ -1,6 +1,6 @@
 # EDU-EP07-SHORT — task
 
-Record: this file. Series context: [concepts.md](../concepts.md) (R3, C15) · series task list: [task.md](../task.md).
+Record: this file. Series context: [concepts](../concepts/index.md) (R3, C15) · series task list: [task.md](../task.md).
 
 **Now:** W0 done (C15 "ถ้าดวงอาทิตย์หายไปตอนนี้", user pick 2026-11-08). W1.1 done; W1.2 done ([script.md](script.md) EDU-EP07-SCRIPT-R1, 2026-11-08); W2.1–W2.2 done (Film brief EDU-EP07-BRIEF-R1, rows EDU-EP07-ROWS-R1, 2026-11-08); W2.3 review page next (coordinator), then W3 look frames LF01–LF04 (painted v1, awaiting user verdict).
 
