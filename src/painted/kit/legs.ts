@@ -208,7 +208,7 @@ export const modeLegs = (d: LegDims, view: 'front' | 'profile', mode: {kind: Mod
     } else {
       hipV = hip0 - 0.045 * k + 0.02 * k * Math.abs(Math.sin(ph));
       for (const sg of [-1, 1]) {
-        const lift = 0.14 * k * Math.max(0, Math.sin(ph + (sg > 0 ? Math.PI : 0)));
+        const lift = 0.14 * k * (mode.mix ?? 1) * Math.max(0, Math.sin(ph + (sg > 0 ? Math.PI : 0)));
         const hip: Pt = [sg * 0.0725, hipV], ankle: Pt = [sg * 0.08, ankleV + lift];
         legs.push({hip, knee: [sg * 0.077, (hipV + ankle[1]) / 2 + 0.35 * lift], ankle, far: false});
       }

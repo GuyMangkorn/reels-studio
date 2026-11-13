@@ -269,6 +269,9 @@ export type BodyFrame = {
  * and shift, torso scale, lean and bend, lift, and the leg mode. For a pose with none of the mode fields this is the arithmetic
  * `drawFigure` always used. Metres in the figure's frame.
  */
+/** Run in a skirt (sarong): the straight cloth holds the step to this share of the full stride, in every view (VA02 follow-up, 13 Nov 2026:
+ *  the full stride swung the shins out of the cloth and the front, side and back no longer matched once the back was held in). */
+const SARONG_STEP = 0.4;
 export const bodyFrame = (def: CastDef, pose: BodyFields & {view: FigPose['view']}): BodyFrame => {
   const Ht = def.height, HD = H * (def.headScale ?? 1);
   const chin = Ht - HD, shV = chin - 0.16 * HD;
@@ -287,7 +290,7 @@ export const bodyFrame = (def: CastDef, pose: BodyFields & {view: FigPose['view'
   const walk = pose.walk;
   const ph = walk === undefined ? 0 : walk * Math.PI * 2;
   const bob = walk === undefined ? 0 : 0.018 * Math.abs(Math.sin(ph)) * (pose.stride ?? 1);
-  const mode = m ? modeLegs({hip0, ankleV, L1: hip0 - knee0, L2: knee0 - ankleV}, profile ? 'profile' : 'front', m.kind === 'run' ? {kind: 'run', amount: m.amount * Math.PI * 2, mix: pose.runMix} : m) : undefined;
+  const mode = m ? modeLegs({hip0, ankleV, L1: hip0 - knee0, L2: knee0 - ankleV}, profile ? 'profile' : 'front', m.kind === 'run' ? {kind: 'run', amount: m.amount * Math.PI * 2, mix: def.outfit.skirt ? Math.min(pose.runMix ?? 1, SARONG_STEP) : pose.runMix} : m) : undefined;
   const hipDrop = 0.47 * c * (Ht / 1.7) + bob;
   return {
     hip0, shV, c, bend, ph, bob, mode,
@@ -490,12 +493,14 @@ export const drawFigure = (p: Painter, def: CastDef, g: Pt, unit: number, pose: 
   }
   // Three-quarter front: a skirt or coat hides what is under it. The legs start at the cloth hem and the far arm stops at the cloth top, so
   // the translucent wash never shows a thigh or a hand through it (4 Nov 2026). Old views are untouched (qg only).
-  const clothHem = qg && !profile && !mode && (o.skirt || coat)
-    ? Math.min(o.skirt ? o.skirtHem ?? Math.max(legs[0].knee[1] - 0.19 * (1 - c), 0.3 * c + 0.2) : 9, coat ? Math.max(legs[0].knee[1] - 0.05, 0.12) : 9) - (coat ? 0.035 : 0.03) * sinq * 0.9
+  // Running in a skirt keeps the standing hem below the dropped hip in every view (as the back); the legs start at that hem.
+  const runHem = mode?.kind === 'run' && o.skirt ? knee0 - 0.19 - (hip0 - fr.hipV) : undefined;
+  const clothHem = !profile && (qg ? !mode || runHem !== undefined : runHem !== undefined) && (o.skirt || coat)
+    ? Math.min(o.skirt ? o.skirtHem ?? runHem ?? Math.max(legs[0].knee[1] - 0.19 * (1 - c), 0.3 * c + 0.2) : 9, coat ? Math.max(legs[0].knee[1] - 0.05, 0.12) : 9) - (coat ? 0.035 : 0.03) * sinq * 0.9
     : undefined;
   // Side view with a skirt (walking or standing): the legs come out of the hem, never through the cloth's outer edge. The leg is cut at the hem line and
   // the hem spreads to cover the swung legs where they cross it (12 Nov 2026, EDU-EP18-SHORT: the trailing thigh left the skirt's side at a bent angle).
-  const pHem = profile && (!mode || mode.kind === 'run') && o.skirt ? o.skirtHem ?? legs[0].knee[1] - 0.19 : undefined;
+  const pHem = profile && (!mode || mode.kind === 'run') && o.skirt ? o.skirtHem ?? runHem ?? legs[0].knee[1] - 0.19 : undefined;
   let pHemX: [number, number] = [-0.32 * HD, 0.3 * HD];
   if (pHem !== undefined) {
     for (const l of legs) {
@@ -763,7 +768,7 @@ export const drawFigure = (p: Painter, def: CastDef, g: Pt, unit: number, pose: 
       const kx = Math.abs(legs[0].knee[0]);
       // Seated, kneeling or on the floor the skirt drapes over the thighs to the knee instead of hanging to a fixed height.
       const lap = mode && mode.kind !== 'run' && mode.kind !== 'squat' ? Math.min(o.skirtHem ?? 9, kneeV + (mode.kind === 'floor' ? 0.02 : -0.03)) : undefined;
-      const hemF = lap ?? o.skirtHem ?? Math.max(kneeV - 0.19 * (1 - c), 0.3 * c + 0.2);
+      const hemF = lap ?? o.skirtHem ?? runHem ?? Math.max(kneeV - 0.19 * (1 - c), 0.3 * c + 0.2);
       const skirtPts = [...Uq([[-hw - 0.0085, hip0 + 0.034], [hw + 0.0085, hip0 + 0.034]]), ...(qg ? Sq(curvedEdge(kx + 0.06, -kx - 0.06, hemF, udiv(kx + 0.06), 0.03 * sinq, 8)) : Sq([[kx + 0.06, hemF], [-kx - 0.06, hemF]]))];
       fill(o.skirt, skirtPts);
       if (qg) planeShapes.push({pts: skirtPts, color: o.skirt});
