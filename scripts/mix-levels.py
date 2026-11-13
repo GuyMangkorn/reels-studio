@@ -11,8 +11,8 @@ quieter). Per layer it prints dV while the voice speaks (energy mean over speech
 dV at the loudest step anywhere, and true peak. `background` is the sum of all layers; `mix` adds the voice and reports
 mix integrated minus voice speech level (EBU R 128 s4 caps it at 5 LU).
 
-`levels.checks` rows: {"beat", "layer", "when": "speech"|"gap"|"peak", "min"?, "max"?, "warnAbove"?, "fromSec"?, "toSec"?}
-in dV. A value outside min..max fails beyond the tolerance (2 LU for speech and gap, 3 LU for peak) and warns inside it;
+`levels.checks` rows: {"beat", "layer", "when": "speech"|"gap"|"peak"|"drop", "min"?, "max"?, "warnAbove"?, "fromSec"?, "toSec"?}
+in dV. A `drop` row (EP08a: the bed pulled out before a reveal) is judged on the layer's loudest step in the window against the voice's speech level, like `peak`, with a 2 LU tolerance. A value outside min..max fails beyond the tolerance (2 LU for speech and gap, 3 LU for peak) and warns inside it;
 above `warnAbove` it only warns. A row with an `exception` (the Film brief cue it follows) prints `ok*` with that text
 when it passes. A `speech` row compares the layer with the voice in its own window, so a whisper is its own reference.
 A layer silent in the window passes. Exit 1 on a failed check or on mix minus voice
@@ -24,7 +24,7 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SILENT = -70.0
 SPEECH_RANGE = 30.0
 MIN_GAP = 5
-TOLERANCE = {'speech': 2.0, 'gap': 2.0, 'peak': 3.0}
+TOLERANCE = {'speech': 2.0, 'gap': 2.0, 'peak': 3.0, 'drop': 2.0}
 LDR_CAP = 5.0
 
 

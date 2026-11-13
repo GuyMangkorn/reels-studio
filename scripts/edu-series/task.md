@@ -159,4 +159,4 @@ W2 done 2026-11-09: Film brief R1 (VD01–VD31), storyboard ROWS-R1.0 (25 shots,
 
 ## EDU-EP17-SHORT
 
-**Now:** W0, W1.1 done 2026-11-10 (user decisions recorded). W1 done 2026-11-10 (script R2 approved by user). W2 done 2026-11-10 (22 shots, review page https://claude.ai/artifact/9RScrR5cKZD2eF3CLqQprK). Waiting for the user's storyboard verdicts, then voice sample. Detail: [ep17/task.md](ep17/task.md).
+**Now:** W0-W4 done (script R2, voice lock, timed rows ROWS-R2.1 1561 f). W5.2 Ton sounds done; **W5.2 Boss group 1 of 5 done 2026-11-11** (gcam, map bake, labels, SP1-SP3; BLOCKOUT only); groups still to do: (2) street + crowds + squeezed, (3) map plate + fill layer, (4) stadium + instrument, (5) atom/loupe + balance + phone map screen. Detail: [ep17/task.md](ep17/task.md), [build-notes](ep17/build-notes.md).

@@ -69,3 +69,12 @@ test('mix-levels fails a mix more than 5 LU above the voice', () => {
   assert.equal(r.status, 1, r.stdout);
   assert.match(r.stdout, /FAIL mix minus voice/);
 });
+
+test('mix-levels judges a drop row by the bed\'s loudest step in its window', () => {
+  const pass = run(sheet([{beat: 'B03', layer: 'bed', when: 'drop', min: 10, fromSec: 3, toSec: 4.5}]));
+  assert.equal(pass.status, 0, pass.stdout);
+  assert.match(pass.stdout, /ok {3}B03 bed drop/);
+  const fail = run(sheet([{beat: 'B03', layer: 'bed', when: 'drop', min: 30, fromSec: 0, toSec: 3}]));
+  assert.equal(fail.status, 1, fail.stdout);
+  assert.match(fail.stdout, /FAIL B03 bed drop/);
+});
