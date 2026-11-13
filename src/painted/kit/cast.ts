@@ -518,6 +518,14 @@ export const drawFigure = (p: Painter, def: CastDef, g: Pt, unit: number, pose: 
     const cx = pts.reduce((a, q) => a + q[0], 0) / pts.length;
     return cx > clothX0 && cx < clothX1 ? clipHalf(pts, [-1e5, clothTopY], [1e5, clothTopY], [0, clothTopY - 1e5]) : pts;
   };
+  // Three-quarter front, standing in trousers: the far arm hangs behind the hip, so its part below the shirt hem inside the body is hidden
+  // (KIT-ARM-DEPTH F, 13 Nov 2026: the far hand showed as a loose ball at the crotch). A hand out past the hip stays.
+  const farHip = !!qg && !mode && c < 0.05 && clothHem === undefined;
+  const farHipY = U([0, hip0 + 0.0255])[1], farHipX0 = X(-(hw + 0.013)), farHipX1 = X(hw + 0.013);
+  const clipFarHip = (pts: Pt[]): Pt[] => {
+    const cx = pts.reduce((a, q) => a + q[0], 0) / pts.length;
+    return cx > farHipX0 && cx < farHipX1 ? clipHalf(pts, [-1e5, farHipY], [1e5, farHipY], [0, farHipY - 1e5]) : pts;
+  };
   const legColor = (far: boolean) => (far ? mixColor(o.pants, '#000000', qg ? 0.1 : 0.18) : o.pants); // turned body (R1.9 FR22): far leg at most ~0.12 luma under the near one
   // Front view, thighs toward the camera (sitting, knees up): the legs are painted over the torso, after the head.
   const legsOver = !!mode && !profile && (mode.kind === 'sit' || mode.kind === 'floor');
@@ -571,6 +579,8 @@ export const drawFigure = (p: Painter, def: CastDef, g: Pt, unit: number, pose: 
   const hang = (s: number): Pt => (profile ? U([0.01 + 0.02 * Math.sin(ph + (s > 0 ? Math.PI : 0)) * (walk === undefined ? 0 : 6 * (pose.stride ?? 1)), shV - 0.03 - 2 * AB + 0.02]) : U([qg ? (s === qdir ? s * (sw - 0.0255 + 0.02 + hangX) * kr * 0.62 : s * (sw - 0.0255 + 0.04 + hangX)) : s * (sw - 0.0255 + 0.034 + hangX) * kr, shV - 0.0255 - 2 * AB + 0.02]));
   /** Run: arms pump opposite to the leg on their side (profile: elbow ~80 deg; front: hands rise to the chest and drop to the hip). */
   type ArmGeo = {Sh: Pt; E: Pt; T: Pt; cam?: number; finger?: boolean; fist?: 1 | -1; open?: 1 | -1; noThumb?: boolean};
+  /** Three-quarter front, an arm pointing at the lens (`toCam`, not `behind`): drawn turned forward and over the torso (KIT-ARM-DEPTH A). */
+  const qFwd = (a?: Arm): boolean => !!(qg && a?.toCam && !a.behind);
   const runArm = (s: number, Sh: Pt): ArmGeo => {
     const th = ph0 + (profile ? (s * dir < 0 ? Math.PI : 0) : s > 0 ? 0 : Math.PI);
     if (profile) {
@@ -595,6 +605,17 @@ export const drawFigure = (p: Painter, def: CastDef, g: Pt, unit: number, pose: 
       const dx = (q[0] - g[0]) / unit, ext = clamp01((Math.abs(dx) - (sw + 0.1)) / 0.25);
       return [g[0] + (q[0] - g[0]) * lerp(s === qdir ? 0.55 * kt : kt, kp, ext), q[1]];
     };
+    if (a0 && qFwd(a0)) {
+      // Three-quarter, arm at the lens (`toCam`; KIT-ARM-DEPTH A, 13 Nov 2026): the reach turns with the body. The front pose's shoulder-hand
+      // offset is the arm's sideways and vertical part; the rest of the arm's length goes forward, which the turn shows by sin(turn) toward the
+      // facing side and keeps foreshortened by cos(turn). The arm is painted over the torso (it is in front of the chest), the elbow on the line.
+      const S0: Pt = a0.via ? [2 * a0.via[0] - a0.to[0], 2 * a0.via[1] - a0.to[1]] : Sh;
+      const ox = (a0.to[0] - S0[0]) / unit, oy = (a0.to[1] - S0[1]) / unit, reach = 2 * AB * 0.95;
+      const z = Math.sqrt(Math.max(0, reach * reach - ox * ox - oy * oy)) * Math.min(1, a0.toCam ?? 0);
+      const T: Pt = [Sh[0] + (ox * kp + qdir * sinq * z) * unit, Sh[1] + oy * unit];
+      const E: Pt = [(Sh[0] + T[0]) / 2, (Sh[1] + T[1]) / 2 + 0.015 * unit];
+      return {Sh, E, T, cam: Math.max(0, Math.min(1, a0.toCam ?? 0)) * kp, finger: a0.finger};
+    }
     const a = a0 && pose.quarter ? {...a0, to: qx(a0.to), via: a0.via && qx(a0.via)} : a0;
     if (!a && mode?.kind === 'run') return runArm(s, Sh);
     const T = a?.via ? a.to : reachTo(Sh, a?.to ?? hang(s), Lpx);
@@ -605,7 +626,7 @@ export const drawFigure = (p: Painter, def: CastDef, g: Pt, unit: number, pose: 
   const drawArm = (A: ArmGeo, hold: Prop | undefined, k: number, far: boolean, only?: 'upper' | 'lower') => {
     part = 70 + k * 10;
     const fillA = (color: string, pts: Pt[], outline = true, passes = 4) => {
-      const q = far && clothHem !== undefined ? clipArmCloth(pts) : pts;
+      const q = far && clothHem !== undefined ? clipArmCloth(pts) : far && farHip ? clipFarHip(pts) : pts;
       if (q.length > 2) fill(color, q, outline, passes);
     };
     line = 70 + k * 10;
@@ -697,9 +718,24 @@ export const drawFigure = (p: Painter, def: CastDef, g: Pt, unit: number, pose: 
       strokes(R0.creases);
       return [A.T[0] + ux * 0.045 * hu, A.T[1] + uy * 0.045 * hu] as Pt;
     }
-    if (only !== 'lower') fillA(slc, capsule(A.Sh, A.E, 0.08 * unit, (cam ? 0.068 + 0.03 * cam : 0.068) * unit), true);
-    if (only === 'upper') return A.T;
-    fillA(o.longSleeves ? slc : skinHand, capsule(A.E, A.T, (cam ? 0.066 + 0.04 * cam : 0.066) * unit, (cam ? 0.056 + 0.06 * cam : 0.056) * unit), true);
+    const upper = () => fillA(slc, capsule(A.Sh, A.E, 0.08 * unit, (cam ? 0.068 + 0.03 * cam : 0.068) * unit), true);
+    const fore = () => fillA(o.longSleeves ? slc : skinHand, capsule(A.E, A.T, (cam ? 0.066 + 0.04 * cam : 0.066) * unit, (cam ? 0.056 + 0.06 * cam : 0.056) * unit), true);
+    // Elbow joint (KIT-ARM-DEPTH D, 13 Nov 2026): a whole arm paints the forearm first and the sleeve over it, so the sleeve's round end
+    // (0.068 U) covers the forearm's start cap (0.066 U) on the same elbow point: one round elbow, no skin cap and outline over the cloth.
+    // The brush seeds of both parts are the ones they had before. An arm at the lens (`cam`) keeps its nearer forearm on top; a split arm
+    // (`only`, behind the torso) is unchanged.
+    const b0 = 70 + k * 10;
+    if (!only && !cam) {
+      part = line = b0 + 1;
+      fore();
+      part = line = b0;
+      upper();
+      part = line = b0 + 2;
+    } else {
+      if (only !== 'lower') upper();
+      if (only === 'upper') return A.T;
+      fore();
+    }
     if (o.gear?.wideSleeves) {
       // Kimono sleeve: the cloth hangs in a wide flap round the forearm, the hand comes out of its opening.
       part = 70 + k * 10 + 5;
@@ -723,7 +759,9 @@ export const drawFigure = (p: Painter, def: CastDef, g: Pt, unit: number, pose: 
     if (A.finger && cam) {
       // The pointing finger seen end-on: a small round tip on the fist, toward the viewer.
       part = 70 + k * 10 + 9;
-      fillA(o.coat ? '#26292c' : mixColor(skinHand, '#7a4a30', 0.18), ell(hand[0], hand[1] - 0.03 * unit * hs, 0.022 * unit * hs, 0.024 * unit * hs, 10), true, 4);
+      // Less than fully end-on (three-quarter, `cam` < 1): the finger also shows its length along the arm (KIT-ARM-DEPTH A).
+      const fl = 1 - cam, tip = ell(hand[0] + Math.cos(ang) * 0.04 * unit * hs * fl, hand[1] - 0.03 * unit * hs * cam + Math.sin(ang) * 0.04 * unit * hs * fl, (0.022 + 0.03 * fl) * unit * hs, 0.024 * unit * hs, 10, fl > 0 ? ang : undefined);
+      fillA(o.coat ? '#26292c' : mixColor(skinHand, '#7a4a30', 0.18), tip, true, 4);
     }
     return hand;
   };
@@ -740,9 +778,9 @@ export const drawFigure = (p: Painter, def: CastDef, g: Pt, unit: number, pose: 
     if (farUnder && !legsOver) paintLegs();
   } else {
     if (pose.rArm?.behind) rHand = drawArm(R, pose.rHold, 0, true, pose.rArm.behind === 'upper' ? 'upper' : undefined);
-    else if (quarterFar === 'r') rHand = drawArm(R, pose.rHold, 0, true);
+    else if (quarterFar === 'r' && !qFwd(pose.rArm)) rHand = drawArm(R, pose.rHold, 0, true);
     if (pose.lArm?.behind) lHand = drawArm(Lm, pose.lHold, 1, true, pose.lArm.behind === 'upper' ? 'upper' : undefined);
-    else if (quarterFar === 'l') lHand = drawArm(Lm, pose.lHold, 1, true);
+    else if (quarterFar === 'l' && !qFwd(pose.lArm)) lHand = drawArm(Lm, pose.lHold, 1, true);
   }
 
   // ----------------------------------------------------------------- torso layers
@@ -1003,7 +1041,7 @@ export const drawFigure = (p: Painter, def: CastDef, g: Pt, unit: number, pose: 
   };
   if (!profile) {
     // A `behind: 'all'` arm is already painted under the torso; 'upper' adds its forearm and hand here, over the torso.
-    const front = (a?: Arm, side?: 'r' | 'l') => (a?.behind === 'all' || (!a?.behind && quarterFar === side) ? null : a?.behind === 'upper' ? ('lower' as const) : undefined);
+    const front = (a?: Arm, side?: 'r' | 'l') => (a?.behind === 'all' || (!a?.behind && quarterFar === side && !qFwd(a)) ? null : a?.behind === 'upper' ? ('lower' as const) : undefined);
     if (front(pose.rArm, 'r') !== null) rHand = drawArm(R, pose.rHold, 0, false, front(pose.rArm, 'r') ?? undefined);
     if (front(pose.lArm, 'l') !== null) lHand = drawArm(Lm, pose.lHold, 1, false, front(pose.lArm, 'l') ?? undefined);
     torchOf(pose.rHold, rHand);

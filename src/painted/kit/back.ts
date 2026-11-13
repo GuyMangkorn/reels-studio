@@ -272,8 +272,17 @@ export const drawFigureBack = (p: Painter, def: CastDef, g: Pt, unit: number, po
   };
   const paintArm = (s: -1 | 1, a: ReturnType<typeof armGeom>) => {
     const M: Pt = [(a.Sh[0] + a.E[0]) / 2, (a.Sh[1] + a.E[1]) / 2];
-    fill(o.sleeve, capsule(a.Sh, a.E, 0.078 * unit * sc, 0.07 * unit * sc));
+    // Elbow joint (KIT-ARM-DEPTH D, 13 Nov 2026): the forearm first, then the sleeve over it, so the sleeve's round end covers the forearm's
+    // start cap on the elbow point (one round elbow). Each part keeps the brush seed it had before.
+    const p0 = part, l0 = line;
+    part = p0 + 1;
+    line = l0 + 1;
     fill(o.longSleeves ? o.sleeve : skin, capsule(a.E, a.T, 0.056 * unit * sc, 0.046 * unit * sc), true, 4);
+    part = p0;
+    line = l0;
+    fill(o.sleeve, capsule(a.Sh, a.E, 0.078 * unit * sc, 0.07 * unit * sc));
+    part = p0 + 2;
+    line = l0 + 2;
     const dx = a.T[0] - a.E[0], dy = a.T[1] - a.E[1], d = Math.hypot(dx, dy) || 1;
     const hand: Pt = [a.T[0] + (dx / d) * 0.03 * unit * sc, a.T[1] + (dy / d) * 0.03 * unit * sc];
     fill(skinShade, ell(hand[0], hand[1], 0.036 * unit * sc, 0.046 * unit * sc, 14, Math.atan2(dy, dx) - Math.PI / 2), true, 4);
