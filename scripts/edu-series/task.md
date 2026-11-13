@@ -127,19 +127,11 @@ Record: [delivery.md](delivery.md) · Updated: 2026-11-05, Film
 
 **Now:** W0 done (C28 นิ้วนางที่ยกไม่ขึ้น, user pick 2026-11-08). W1.1 Boat research next. Detail: [ep09/task.md](ep09/task.md).
 
-## EDU-EP10-SHORT
-
-**Now:** W0 done (C25 จมูกสองอัน, user pick 2026-11-08). W1.1 Boat research next. Detail: [ep10/task.md](ep10/task.md).
-
 ## EDU-EP11-SHORT
 
 W2 done 2026-11-09: Film brief R1 (VD01–VD31), storyboard ROWS-R1.0 (25 shots, ~56.5 s est.), review page published https://claude.ai/artifact/R6h741PavXByTDZubUXLEK (awaiting user verdicts; Q-F1–Q-F3). Open: Boat B-P1/B-P2 + L10 recheck; Boss spikes before W3; Editor loudness fix; 1857 shot lead <480 px to accept at Draft.
 
 **Now:** W0–W8.2 and W8.4 done 2026-11-09 (Final passed by the user, cover C4, publish folder `ready`); W8.3 waits for the post date. Detail: [ep11/task.md](ep11/task.md).
-
-## EDU-EP12-SHORT
-
-**Now:** W0 done (C35, user pick 2026-11-08). W1.2 script R1 done; W1.3 Boat fact-check next. Detail: [ep12/task.md](ep12/task.md).
 
 ## EDU-EP13-SHORT
 
@@ -153,10 +145,3 @@ W2 done 2026-11-09: Film brief R1 (VD01–VD31), storyboard ROWS-R1.0 (25 shots,
 
 **Now:** W0, W1 done 2026-11-10 (script R2 approved, read 49.2 s, video ≈57.5 s); W2 done 2026-11-10 (20 shots, review page https://claude.ai/artifact/Pn33VzZ1qBhBJwmjXvhAXn). Waiting for the user's storyboard verdicts, then W3. Detail: [ep15/task.md](ep15/task.md).
 
-## EDU-EP16-SHORT
-
-**Now:** W0 done 2026-11-10 (C45 อีกาจำหน้าคุณได้, user pick). W1 done 2026-11-10 (script R3 approved by user, video ≈54.2 s). W2 done 2026-11-10 (20 shots, review page https://claude.ai/artifact/SyqSUDmjKSdtEwuN1kNPSK). Verdicts in (all 20 ok; Q-F2/Q-F3 changed); ROWS-R1.1 written and republished at the same URL. User approved R1.1 (2026-11-10). W3 done (look frames passed 2026-11-10); W4 voice lock in progress. Detail: [ep16/task.md](ep16/task.md).
-
-## EDU-EP17-SHORT
-
-**Now:** W0-W4 done (script R2, voice lock, timed rows ROWS-R2.1 1561 f). W5.2 Ton sounds done; **W5.2 Boss group 1 of 5 done 2026-11-11** (gcam, map bake, labels, SP1-SP3; BLOCKOUT only); groups still to do: (2) street + crowds + squeezed, (3) map plate + fill layer, (4) stadium + instrument, (5) atom/loupe + balance + phone map screen. Detail: [ep17/task.md](ep17/task.md), [build-notes](ep17/build-notes.md).
