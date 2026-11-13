@@ -76,3 +76,18 @@ test('tintHoodie recolours through the outfit spread and keeps everything else',
   // a def without a hood collar only gets the body colour
   assert.equal(tintHoodie(dress(PEOPLE['woman-bob'], 'office'), '#123456').outfit.gear?.collar, undefined);
 });
+
+// Body poses from behind (KIT-VIEW-AUDIT VA01, 13 Nov 2026): crouch, squat, kneel, floorSit and run use the front frame's legs.
+test('body poses lower the figure from behind; zero amounts draw exactly as standing', () => {
+  const def = PEOPLE['woman-curly'];
+  const stand = draw(def, {});
+  assert.equal(draw(def, {crouch: 0}).calls, stand.calls, 'crouch 0 = standing');
+  assert.equal(draw(def, {kneel: 0, floorSit: 0, squat: 0}).calls, stand.calls, 'zero modes = standing');
+  const low = (extra: Partial<FigPose>) => draw(def, extra).a.top - stand.a.top;
+  for (const [name, extra] of [['crouch', {crouch: 0.9}], ['squat', {squat: 1}], ['kneel', {kneel: 1}], ['floorSit', {floorSit: 1}]] as const) {
+    assert.ok(low(extra) > 0.15 * unit, `${name}: head top drops by more than 0.15 m (got ${(low(extra) / unit).toFixed(2)} m)`);
+  }
+  // Run: the body stays near standing height, and one foot is off the ground (a lifted sole is drawn).
+  assert.ok(Math.abs(low({run: 0.25})) < 0.1 * unit, 'run keeps the standing height');
+  assert.notEqual(draw(def, {run: 0.25}).calls, stand.calls);
+});

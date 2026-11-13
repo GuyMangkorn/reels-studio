@@ -79,7 +79,7 @@ export type Prop =
   | {kind: 'umbrella'; tip: Pt};
 
 export type FigPose = {
-  /** `back`: seen from behind (`back.ts`; standing, walk, lean, arms, no face); the character's right is screen right and front-view arm targets are mirrored. */
+  /** `back`: seen from behind (`back.ts`; standing, walk, lean, arms, sit, crouch/squat, kneel, floorSit, run; no face); the character's right is screen right and front-view arm targets are mirrored. */
   view: 'front' | 'left' | 'right' | 'back';
   /** Hood up (`gear.collar.kind` `hood`; any view): the hair is covered by a hood in the collar colour. Default absent = hood down, bunched at the neck. */
   hoodUp?: boolean;
