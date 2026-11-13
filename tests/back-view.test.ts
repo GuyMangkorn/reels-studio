@@ -99,3 +99,13 @@ test('run from behind pumps the arms with the phase: the back-swinging hand hang
   assert.ok(Math.sign(a.rHand[1] - a.lHand[1]) === -Math.sign(b.rHand[1] - b.lHand[1]), 'half a cycle later the arms swap');
   assert.ok(a.rHand[0] > g[0] - 0.05 * unit && a.lHand[0] < g[0] + 0.05 * unit, 'each hand stays on its own side');
 });
+
+test('back three-quarter (VA02): narrower than the plain back, finite anchors, hands on their sides; no quarter draws exactly as before', () => {
+  const def = PEOPLE['man-parted'];
+  const plain = draw(def, {}), q = draw(def, {quarter: 'left', quarterDeg: 60});
+  for (const v of [...q.a.head, ...q.a.rHand, ...q.a.lHand, q.a.top, q.a.bottom]) assert.ok(Number.isFinite(v));
+  assert.ok(Math.abs(q.a.rShoulder[0] - q.a.lShoulder[0]) < Math.abs(plain.a.rShoulder[0] - plain.a.lShoulder[0]), 'turned shoulders are narrower');
+  assert.ok(q.a.rHand[0] > g[0] && q.a.lHand[0] < g[0]);
+  assert.notEqual(q.calls, plain.calls);
+  assert.equal(draw(def, {quarter: undefined}).calls, plain.calls);
+});

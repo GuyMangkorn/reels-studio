@@ -103,8 +103,8 @@ export type FigPose = {
    * Front three-quarter view (default absent = the exact front view; an optional extra beside the default front, back, left and right,
    * user 4 Nov 2026): with `view: 'front'` the body is turned about the vertical axis by `quarterDeg` (default 45, valid 15..60) so the
    * figure faces toward the screen side named here: `{view: 'front', quarter: 'left'}` is front-left (face toward the viewer and the
-   * screen left). Valid only with `view: 'front'`; `drawFigure` ignores it for the back and profile views (the back three-quarter views
-   * were removed on 4 Nov 2026: the hair covers the turn, so they barely read). The near shoulder is the character's left for `left`,
+   * screen left). Valid with `view: 'front'` and, since 13 Nov 2026 (VA02), `view: 'back'` (facing away and toward that screen side,
+   * `back.ts`); `drawFigure` ignores it for the profile views. In the front view the near shoulder is the character's left for `left`,
    * right for `right`. Drawn from the front figure: shoulders and hips foreshorten (torso width follows an ellipse of depth 0.62 of the
    * width, limb centres follow cos), the far arm goes behind the torso, shoes turn toward the facing side, chest details shift toward
    * it. The head is one solid (pass 4): its silhouette (skull, hair cap, volume, hood) keeps the unturned outline, and only the face
@@ -320,8 +320,8 @@ export const shoulderPoint = (def: CastDef, g: Pt, unit: number, pose: BodyField
  * (blink). Returns world anchors in plate px (head, hands, torch lens) for props, glows and other characters.
  */
 export const drawFigure = (p: Painter, def: CastDef, g: Pt, unit: number, pose: FigPose, t: number, seed = def.seed): FigAnchors => {
-  // Three-quarter is a front-view field (user, 4 Nov 2026): with any other view it is ignored and the plain view is drawn.
-  if (pose.quarter && pose.view !== 'front') pose = {...pose, quarter: undefined, quarterDeg: undefined};
+  // Three-quarter is a front- and back-view field (back added 13 Nov 2026, VA02): with a profile view it is ignored and the plain view is drawn.
+  if (pose.quarter && pose.view !== 'front' && pose.view !== 'back') pose = {...pose, quarter: undefined, quarterDeg: undefined};
   if (pose.view === 'back') return drawFigureBack(p, def, g, unit, pose, t, seed);
   const o = def.outfit;
   const Ht = def.height;

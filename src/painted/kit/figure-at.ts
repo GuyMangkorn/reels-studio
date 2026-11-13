@@ -30,6 +30,8 @@ export type FigureAtOpts = {
    * front, held to 15..60) instead of the fixed 45, so an orbit turns the figure step by step through the quarter sector. Default false = 45.
    */
   quarterFollow?: boolean;
+  /** With `facing` (VA02, opt-in): eight views, adding the back three-quarter views between the profiles and the back (`VIEW_SECTORS8`). Default false = six. */
+  backQuarter?: boolean;
   /** Pose sheet id (default P01). A pose missing a side view falls back to P01 (kit `poseFor`). */
   pose?: AnyPoseId;
   face?: ExpressionId; faceState?: Partial<FaceState>;
@@ -128,10 +130,12 @@ export const headPerspective = (c: YCam, at: V3, height: number): number => {
   return Math.max(0.85, Math.min(1.25, uh / uf));
 };
 /** The view fields a placement resolves to for this camera (four-view squared to the lens, or six-view from a world facing). */
-export const viewAtCam = (c: YCam, o: Pick<FigureAtOpts, 'at' | 'view' | 'facing' | 'prevView' | 'hysteresis' | 'quarterFollow'>): ViewFields => {
+export const viewAtCam = (c: YCam, o: Pick<FigureAtOpts, 'at' | 'view' | 'facing' | 'prevView' | 'hysteresis' | 'quarterFollow' | 'backQuarter'>): ViewFields => {
   if (!o.facing) return {view: figureView4(c, o.at, squareToCam(c, o.at, o.view ?? 'front'))};
-  const name = figureView(c, o.at, o.facing, {prev: o.prevView, hysteresis: o.hysteresis});
-  return viewFields(name, o.quarterFollow ? quarterDegAt(viewAngle(c, o.at, o.facing)) : 45);
+  const name = figureView(c, o.at, o.facing, {prev: o.prevView, hysteresis: o.hysteresis, eight: o.backQuarter});
+  const a = viewAngle(c, o.at, o.facing);
+  // A back three-quarter turns away from the back (180), a front one away from the front (0).
+  return viewFields(name, o.quarterFollow ? quarterDegAt(name.startsWith('back-') ? a + 180 : a) : 45);
 };
 /** VA04: the three-quarter turn for a view angle (degrees, `viewAngle`): its distance from the front, held to the valid 15..60. */
 export const quarterDegAt = (deg: number): number => {

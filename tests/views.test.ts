@@ -17,7 +17,7 @@ test('figureView follows the orbit angle through the six views (figure faces -z,
   const names = orbit.map((deg) => figureView(orbitYCam([0, 0, 0], 3, (deg * Math.PI) / 180, 1.5, 900, 880), [0, 0, 0], [0, -1]));
   assert.deepEqual(names, ['back', 'back', 'right', 'right', 'front-right', 'front', 'front-left', 'left', 'left', 'back']);
   assert.equal(viewNameAt(-90), 'left');
-  assert.deepEqual([0, 22.5, 67.5, 134.9, 135, 224.9, 225, 292.5, 337.5, 360].map(viewNameAt), ['front', 'front-right', 'right', 'right', 'back', 'back', 'left', 'front-left', 'front', 'front']);
+  assert.deepEqual([0, 22.5, 67.5, 134.9, 135, 224.9, 225, 292.5, 337.5, 360].map((d) => viewNameAt(d)), ['front', 'front-right', 'right', 'right', 'back', 'back', 'left', 'front-left', 'front', 'front']);
   assert.deepEqual(viewFields('front-left'), {view: 'front', quarter: 'left', quarterDeg: 45});
   assert.deepEqual(viewFields('back'), {view: 'back'});
   // Hysteresis keeps the previous view a few degrees past its edge, then lets go.
@@ -97,12 +97,12 @@ test('a cap seen from behind has no badge and no visor shade (4 Nov 2026 bug); t
   // the badge colour is #e8dcb0 (hatFront 'white'); it appears in the front draw only
   assert.ok(front.toLowerCase().includes('#e8dcb0'));
   assert.ok(!back.toLowerCase().includes('#e8dcb0'));
-  assert.equal(backQ, back);
+  assert.ok(!backQ.toLowerCase().includes('#e8dcb0'), 'the turned back (VA02) shows no badge either');
 });
 
-test('quarter is a front-view field: back and profile views ignore it (back three-quarter views removed, user 4 Nov 2026)', () => {
+test('quarter is a front- and back-view field: the profile views ignore it (back three-quarter added 13 Nov 2026, VA02)', () => {
   for (const def of [dress(PEOPLE['man-parted'], 'police'), PEOPLE['woman-long']]) {
-    for (const view of ['back', 'left', 'right'] as const) {
+    for (const view of ['left', 'right'] as const) {
       const plain = drawView(def, view, {}).calls;
       for (const quarter of ['left', 'right'] as const) assert.equal(drawView(def, view, {quarter, quarterDeg: 30}).calls, plain, `${view} ${quarter}`);
     }
@@ -135,4 +135,11 @@ test('four views: squareToCam shows the asked view to the camera at any set angl
     for (const v of ['front', 'right', 'back', 'left'] as const) assert.equal(figureView4(cam, [0, 0, 0], squareToCam(cam, [0, 0, 0], v)), v, `az ${az} ${v}`);
   }
   assert.deepEqual([0, 44, 46, 134, 136, -46, -44, 200].map(view4At), ['front', 'front', 'right', 'right', 'back', 'left', 'front', 'back']);
+});
+
+test('eight views (VA02): back three-quarter sectors between the profiles and the back; six views unchanged by default', () => {
+  assert.deepEqual([90, 113, 135, 157, 158, 180, 202, 203, 225, 247, 248].map((d) => viewNameAt(d, true)),
+    ['right', 'back-right', 'back-right', 'back-right', 'back', 'back', 'back', 'back-left', 'back-left', 'back-left', 'left']);
+  assert.equal(viewNameAt(135), 'back');
+  assert.deepEqual(viewFields('back-left', 30), {view: 'back', quarter: 'left', quarterDeg: 30});
 });
