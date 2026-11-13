@@ -101,7 +101,7 @@ export type FigPose = {
   headCock?: number;
   /**
    * Front three-quarter view (default absent = the exact front view; an optional extra beside the default front, back, left and right,
-   * user 4 Nov 2026): with `view: 'front'` the body is turned about the vertical axis by `quarterDeg` (default 45, valid 15..60) so the
+   * user 4 Nov 2026): with `view: 'front'` the body is turned about the vertical axis by `quarterDeg` (default 45, valid 15..75; `QUARTER_MIN`/`QUARTER_MAX`) so the
    * figure faces toward the screen side named here: `{view: 'front', quarter: 'left'}` is front-left (face toward the viewer and the
    * screen left). Valid with `view: 'front'` and, since 13 Nov 2026 (VA02), `view: 'back'` (facing away and toward that screen side,
    * `back.ts`); `drawFigure` ignores it for the profile views. In the front view the near shoulder is the character's left for `left`,
@@ -269,6 +269,8 @@ export type BodyFrame = {
  * and shift, torso scale, lean and bend, lift, and the leg mode. For a pose with none of the mode fields this is the arithmetic
  * `drawFigure` always used. Metres in the figure's frame.
  */
+/** Late turn (75 deg): skirt hem width over the turned torso's (kt) width, so the hem meets the profile skirt at the cut (13 Nov 2026). */
+export const SKIRT_LATE = 1.35;
 /** Run in a skirt (sarong): the straight cloth holds the step to this share of the full stride, in every view (VA02 follow-up, 13 Nov 2026:
  *  the full stride swung the shins out of the cloth and the front, side and back no longer matched once the back was held in). */
 const SARONG_STEP = 0.4;
@@ -377,7 +379,23 @@ export const drawFigure = (p: Painter, def: CastDef, g: Pt, unit: number, pose: 
   /** Chest-front marks (collar, tie, buttons, lapels) lie on the face of the torso, which a turned body brings toward the facing side. */
   const chestShift = pose.quarter && pose.view === 'front' ? (qdir * 0.1 * sinq) / kt : 0;
   // The shift tapers toward the cloth edge, so an outer corner (a jacket half, a collar tip) never leaves the silhouette.
-  const Uqf = (pts: Pt[]) => (chestShift ? pts.map(([u, v]): Pt => U([u + chestShift * (1 - Math.min(1, Math.abs(u) / sw) ** 3), v])) : pts.map(U));
+  // Late turn (60..75 deg, `QuarterGeo.late`): the marks move on to where they lie on the turned torso, read as an elliptic section
+  // (depth QUARTER_DEPTH, the same ellipse as its width kt): a mark at u sits at angle asin(u / sw) round it; past the silhouette edge on
+  // the facing side it is out of sight (held at the edge), and on the far side the cloth edge is pulled on to the silhouette edge, so a
+  // jacket half still covers the flank. At 75 deg the old shift left a front-on shirt (13 Nov 2026).
+  const late = qg?.late ?? 0;
+  const chestLate = (u: number) => {
+    if (!qg) return u;
+    const pe = qdir * Math.atan2(qg.cos, QUARTER_DEPTH * qg.sin);
+    const ph0 = Math.asin(Math.max(-1, Math.min(1, u / sw))), ph = qdir < 0 ? Math.max(ph0, pe) : Math.min(ph0, pe);
+    const x = (sw * (Math.sin(ph) * qg.cos + qdir * QUARTER_DEPTH * Math.cos(ph) * qg.sin)) / kt;
+    return Math.sign(u) === -qdir ? x - qdir * sw * (1 - kr) * Math.min(1, Math.abs(u) / sw) ** 3 : x;
+  };
+  const chestU = (u: number) => {
+    const early = u + chestShift * (1 - Math.min(1, Math.abs(u) / sw) ** 3);
+    return late ? lerp(early, chestLate(u), late) : early;
+  };
+  const Uqf = (pts: Pt[]) => (chestShift ? pts.map(([u, v]): Pt => U([chestU(u), v])) : pts.map(U));
 
   const L = pose.light;
   const sil = pose.silhouette;
@@ -454,8 +472,8 @@ export const drawFigure = (p: Painter, def: CastDef, g: Pt, unit: number, pose: 
     for (const s of [-1, 1]) {
       const lift = walk === undefined ? 0 : 0.06 * Math.max(0, Math.sin(ph + (s > 0 ? Math.PI : 0))) * (pose.stride ?? 1);
       // Turned body: the leg on the facing side of the screen is the far one: a step behind and a little higher (it stands farther back on
-      // the ground), the near one a step toward the turn.
-      const farLeg = !!qg && s === qdir, st = qg ? (farLeg ? -0.035 : 0.07) * sinq : 0, rs = qg && farLeg ? 0.03 * sinq : 0;
+      // the ground), the near one a step toward the turn. Late turn: the step closes, as the profile it cuts to stands with the feet together.
+      const farLeg = !!qg && s === qdir, st = qg ? (farLeg ? -0.035 : 0.07) * sinq * (1 - (qg.late ?? 0)) : 0, rs = qg && farLeg ? 0.03 * sinq * (1 - qg.late) : 0;
       const hip: Pt = [s * 0.0725 * kp, hipV];
       const ankle: Pt = [s * (0.08 + 0.05 * c) * kp + qdir * st, ankleV + lift + rs];
       const knee: Pt = [s * (0.077 + 0.17 * c) * kp + qdir * st * 0.5, lerp((hipV + ankle[1]) / 2, 0.46, c)];
@@ -563,12 +581,14 @@ export const drawFigure = (p: Painter, def: CastDef, g: Pt, unit: number, pose: 
   // ----------------------------------------------------------------- arms
   // Turned body (`qg`): the arm on the screen side away from the facing direction is the near one (shoulder at the silhouette edge, so it overlaps
   // the side plane); the one on the facing side is the far arm, tucked behind the chest (shoulder pulled in).
-  const shU = (s: number) => (qg ? (s === qdir ? s * (sw - 0.0255) * kr * 0.8 : s * (sw - 0.014)) : s * (sw - 0.0255) * kr);
+  // Late turn: the near shoulder comes in from the silhouette edge to where the joint projects (kr of its offset), toward the profile's
+  // shoulder over the middle of the torso (at 75 deg an arm on the edge widened the figure by about half against the profile it cuts to).
+  const shU = (s: number) => (qg ? (s === qdir ? s * (sw - 0.0255) * kr * 0.8 : s * lerp(sw - 0.014, (sw - 0.0255) * kr, late)) : s * (sw - 0.0255) * kr);
   const shR: Pt = profile ? U([-0.0043, shV - 0.03]) : U([shU(-1), shV - 0.0255]);
   const shL: Pt = profile ? U([-0.0043, shV - 0.03]) : U([shU(1), shV - 0.0255]);
   const Lpx = AB * unit;
   const hangX = childHangExtra(def);
-  const hang = (s: number): Pt => (profile ? U([0.01 + 0.02 * Math.sin(ph + (s > 0 ? Math.PI : 0)) * (walk === undefined ? 0 : 6 * (pose.stride ?? 1)), shV - 0.03 - 2 * AB + 0.02]) : U([qg ? (s === qdir ? s * (sw - 0.0255 + 0.02 + hangX) * kr * 0.62 : s * (sw - 0.0255 + 0.04 + hangX)) : s * (sw - 0.0255 + 0.034 + hangX) * kr, shV - 0.0255 - 2 * AB + 0.02]));
+  const hang = (s: number): Pt => (profile ? U([0.01 + 0.02 * Math.sin(ph + (s > 0 ? Math.PI : 0)) * (walk === undefined ? 0 : 6 * (pose.stride ?? 1)), shV - 0.03 - 2 * AB + 0.02]) : U([qg ? (s === qdir ? s * (sw - 0.0255 + 0.02 + hangX) * kr * 0.62 : s * lerp(sw - 0.0255 + 0.04 + hangX, (sw - 0.0255 + 0.034 + hangX) * kr, late)) : s * (sw - 0.0255 + 0.034 + hangX) * kr, shV - 0.0255 - 2 * AB + 0.02]));
   /** Run: arms pump opposite to the leg on their side (profile: elbow ~80 deg; front: hands rise to the chest and drop to the hip). */
   type ArmGeo = {Sh: Pt; E: Pt; T: Pt; cam?: number; finger?: boolean; fist?: 1 | -1; open?: 1 | -1; noThumb?: boolean};
   const runArm = (s: number, Sh: Pt): ArmGeo => {
@@ -765,11 +785,14 @@ export const drawFigure = (p: Painter, def: CastDef, g: Pt, unit: number, pose: 
   if (!profile) {
     if (!o.skirt && !o.coat) fill(o.pants, Uq([[-hw - 0.0085, hip0 + 0.0255], [hw + 0.0085, hip0 + 0.0255], [hw, crotch0], [-hw, crotch0]]), false);
     if (o.skirt) {
-      const kx = Math.abs(legs[0].knee[0]);
+      // Late turn: the hem takes the width of the turned cloth tube (the knee spread unforeshortened, then kt like the torso) instead of
+      // the knee centres, which are already foreshortened, so at 75 deg the skirt read as a pencil-thin pair of trousers (13 Nov 2026).
+      // The hem also flares to the profile skirt's width (a skirt is rounder than the torso: about 1.35 times its kt width at 75 deg).
+      const kx = lerp(Math.abs(legs[0].knee[0]), Math.abs(legs[0].knee[0]) / Math.max(kp, 0.2), late), hk = lerp(1, SKIRT_LATE, late);
       // Seated, kneeling or on the floor the skirt drapes over the thighs to the knee instead of hanging to a fixed height.
       const lap = mode && mode.kind !== 'run' && mode.kind !== 'squat' ? Math.min(o.skirtHem ?? 9, kneeV + (mode.kind === 'floor' ? 0.02 : -0.03)) : undefined;
       const hemF = lap ?? o.skirtHem ?? runHem ?? Math.max(kneeV - 0.19 * (1 - c), 0.3 * c + 0.2);
-      const skirtPts = [...Uq([[-hw - 0.0085, hip0 + 0.034], [hw + 0.0085, hip0 + 0.034]]), ...(qg ? Sq(curvedEdge(kx + 0.06, -kx - 0.06, hemF, udiv(kx + 0.06), 0.03 * sinq, 8)) : Sq([[kx + 0.06, hemF], [-kx - 0.06, hemF]]))];
+      const skirtPts = [...Uq([[-hw - 0.0085, hip0 + 0.034], [hw + 0.0085, hip0 + 0.034]]), ...(qg ? Sq(curvedEdge(hk * (kx + 0.06), -hk * (kx + 0.06), hemF, udiv(hk * (kx + 0.06)), 0.03 * sinq, 8)) : Sq([[kx + 0.06, hemF], [-kx - 0.06, hemF]]))];
       fill(o.skirt, skirtPts);
       if (qg) planeShapes.push({pts: skirtPts, color: o.skirt});
     }
@@ -786,9 +809,17 @@ export const drawFigure = (p: Painter, def: CastDef, g: Pt, unit: number, pose: 
       if (pose.wet && !sil) for (let i = 0; i < 6; i++) inkLine(p, seed * 1000 + 60 + i, [U([-0.12 + i * 0.05, shV - 0.06 - 0.07 * (i % 3)]), U([-0.12 + i * 0.05, shV - 0.12 - 0.07 * (i % 3)])], {color: '#8fa6b8', weight: 0.8, closed: false});
     } else {
       fill(o.shirt, Uq(top));
-      if (qg) planeShapes.push({pts: Uq(top), color: o.shirt});
+      const jacketHalf = (s: number) => Uqf([[s * (sw - 0.017), shV], [s * 0.051, shV], [s * 0.0425, hip0 - 0.0255], [s * (hw + 0.021), hip0 - 0.0255], [s * sw, shV - 0.034]]);
+      // Side plane under a jacket: each cloth takes the shade in its own colour. The shirt shade only covers the shirt left showing (the
+      // opening and the hem below the jacket); laid over the jacket too it washed the navy flank light grey (orbit turn, 13 Nov 2026).
+      if (qg && !o.jacket) planeShapes.push({pts: Uq(top), color: o.shirt});
+      if (qg && o.jacket) {
+        planeShapes.push({pts: Uqf([[-0.051, shV], [0.051, shV], [0.0425, hip0 - 0.0255], [-0.0425, hip0 - 0.0255]]), color: o.shirt});
+        planeShapes.push({pts: [...Uq([[-hw - 0.021, hip0 - 0.0255], [hw + 0.021, hip0 - 0.0255]]), ...curvedEdge(hw + 0.013, -hw - 0.013, hip0, udiv(hw + 0.013), 0.016 * sinq).map(U)], color: o.shirt});
+        for (const s of [-1, 1]) planeShapes.push({pts: jacketHalf(s), color: o.jacket});
+      }
       if (o.jacket) {
-        for (const s of [-1, 1]) fill(o.jacket, Uqf([[s * (sw - 0.017), shV], [s * 0.051, shV], [s * 0.0425, hip0 - 0.0255], [s * (hw + 0.021), hip0 - 0.0255], [s * sw, shV - 0.034]]));
+        for (const s of [-1, 1]) fill(o.jacket, jacketHalf(s));
       }
       if (o.apron) fill(o.apron, Uqf([[-0.085, shV - 0.0935], [0.085, shV - 0.0935], [0.11, hip0 - 0.136], [-0.11, hip0 - 0.136]]), true, 8);
       // VD18 drape: the shirt sags under the collar; a crouch bunches it at the waist.
