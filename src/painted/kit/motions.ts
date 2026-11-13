@@ -1,7 +1,7 @@
+import {activityFace, syllableOpen, type ActivityOpts} from './activity-mouths';
 import {BONE, legScale, shoulderPoint, type CastDef, type FigPose} from './cast';
 import {EXPRESSIONS, type ExpressionId} from './expressions';
 import type {FaceState} from './head';
-import {hash} from './hash';
 import type {Pt} from './painter';
 import {PEOPLE, type PersonId} from './people';
 import {poseFor, poseMix, type AnyPoseId, type PoseFigure, type View} from './poses';
@@ -142,17 +142,7 @@ export const keys = (t: number, ks: readonly (readonly [number, number])[]): num
   return ks[ks.length - 1][1];
 };
 
-/**
- * Mouth openness 0..1 of a seeded speech-like syllable envelope: about 5 syllables a second in words of 4, a pause after some
- * words, a level per syllable. Deterministic in `(t, seed)`.
- */
-export const syllableOpen = (t: number, seed: number): number => {
-  if (t < 0) return 0;
-  const SL = 0.2, i = Math.floor(t / SL), f = t / SL - i;
-  if (i % 4 === 3 && hash(seed + Math.floor(i / 4) * 31 + 7) < 0.3) return 0; // a pause after some words
-  const level = 0.35 + 0.65 * hash(seed * 3 + i * 13.7);
-  return Math.pow(Math.sin(Math.PI * f), 0.6) * level;
-};
+export {syllableOpen} from './activity-mouths';
 
 // ------------------------------------------------------------------ travel
 
@@ -511,6 +501,10 @@ export type LayerArgs = {
   amp?: (t: number) => number;
   /** Overrides the figure seed (default: the person's seed). */
   seed?: number;
+  /** Activity mouth (`activity-mouths.ts`): undefined = the default (a run motion or P38 pants, P26 clenches, the `talk` expression cycles); an id forces it; false = off. */
+  activity?: ActivityOpts['activity'];
+  /** `surprise`: shot seconds when it lands. */
+  activityAt?: number;
 };
 export type Layered = {
   def: CastDef;
@@ -576,7 +570,10 @@ export const layerMotion = (a: LayerArgs): Layered => {
     if (side === 'r') pose.rArm = arm; else pose.lArm = arm;
     if (rc.near) near[side] = rc.near;
   }
-  let face = asFace(frame.face ?? a.expression ?? 'neutral');
+  const faceSrc = frame.face ?? a.expression ?? 'neutral';
+  let face = asFace(faceSrc);
+  face = activityFace(face, {activity: a.activity, activityAt: a.activityAt, pose: basePose, motion: typeof a.motion === 'string' ? a.motion : undefined, t: a.t, seed,
+    preset: typeof faceSrc === 'string' ? faceSrc : undefined, sceneMouth: frame.talk !== undefined || frame.chew !== undefined});
   if (frame.look) face = {...face, look: frame.look};
   if (frame.talk !== undefined) face = {...face, mouth: 'talk', open: frame.talk};
   if (frame.chew !== undefined) face = {...face, chew: frame.chew};
