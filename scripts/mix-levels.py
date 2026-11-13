@@ -37,7 +37,10 @@ def ebur128(inputs, graph):
         args += ['-filter_complex', f"{graph};[a]ebur128=metadata=1:peak=true,ametadata=print:key=lavfi.r128.M:file='{out}'", '-f', 'null', '-']
         r = subprocess.run(args, capture_output=True, text=True)
         if r.returncode: sys.exit(f'ffmpeg failed on {inputs}: {r.stderr[-400:]}')
-        with open(out) as f: m = [float(v) for v in re.findall(r'lavfi\.r128\.M=(-?[\d.]+|-inf)', f.read().replace('-inf', '-120'))]
+        with open(out) as f: txt = f.read()
+        nan = len(re.findall(r'lavfi\.r128\.M=nan', txt))
+        if nan: sys.exit(f'{inputs}: {nan} ebur128 steps are nan (all-zero 400 ms windows); dither the stem (+-1 LSB) so every stem keeps the same time base')
+        m = [float(v) for v in re.findall(r'lavfi\.r128\.M=(-?[\d.]+|-inf)', txt.replace('-inf', '-120'))]
     summary = r.stderr[r.stderr.rfind('Summary:'):]
     integrated = float(re.search(r'I:\s+(-?[\d.]+|-inf)', summary).group(1).replace('-inf', '-120'))
     peak = re.search(r'Peak:\s+(-?[\d.]+|-inf)', summary)

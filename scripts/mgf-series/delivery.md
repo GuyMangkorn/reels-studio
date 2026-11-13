@@ -1,0 +1,21 @@
+# MGF-SERIES delivery
+
+- Channel: `fiction` ([channel.md](../../channels/fiction/channel.md)), mark `@mg.fiction`.
+- Request (user's words, 2026-11-11): "เราทำ fiction กันดีกว่า แพรวหาเรื่องให้หน่อยเป็นเรื่องยาวได้โดย ความยาว short ยาวได้ถึง 60-90 วิเลย หรือหยิบ world fog มา remake ทีโดย ใช้ flow แบบ hook => question + delay #1 => rehook => question +delay#2 => answer ให้หน่อย remake wordfog ได้เริ่มใหม่หมดเลย"
+- Ideation: W0 done. [concepts.md](concepts.md) R1 (Preaw pitch + Film annotation W0.2). User picked **C1 ข้อความจากแม่ (Mom's Texts), remake: WORLD FOG** (structured question, 2026-11-11). C2–C6 stay in concepts.md as the series bank.
+- Deliverable: **`MGF-EP01-LONG`** (user, 2026-11-11: "เปลี่ยนเป็น full long video size แทนละกัน"; structured question: **3–5 min, expand the story**). Format: Long, 16:9, 1920×1080, 30 fps per [production requirements](../../docs/production-requirements.md). Replaces `MGF-EP01-LONG` (migration map: SHORT script R1.1, voice picks, samples and the 124 s measured read carry over as inputs; no SHORT is produced). Earlier selection Short 60–90 s is superseded.
+- Required structure (user, 2026-11-11): HOOK → QUESTION + DELAY #1 → REHOOK → QUESTION + DELAY #2 → ANSWER.
+- Profile from C1: fog thriller, painted 3D camera with SVG phone inserts (Film W0.2, size M); other fields = [project defaults](../../docs/delivery-workflow.md#project-defaults). WORLD FOG remake: only the fog world and the voice-copying threat carry over; plot, characters and twist are new (old record [scripts/world-fog](../world-fog/delivery.md) is reference only).
+- Voices (user pick from ≤10 s samples, structured question, 2026-11-11): FON = Gemini TTS **Leda** (pace 1.0, character, not narrator +5 %); MOM = **Sulafat**; RADIO = **Charon** + radio filter (hp 400 / lp 3400 / acrusher 0.25). Samples: `~/ReelsStore/projects/fiction/MGF/samples/`.
+- Note (superseded by LONG scope): W1.5 approval (2026-11-11) came before the W1.4 measured read; a measured read > 94.5 s (90 s + 5 %) reopens W1.5 with Preaw trims (cuts listed in script.md Length estimate).
+- Pipeline: `Full`.
+- Factual claims: none (invented story); Boat research and fact-check `N/A` unless the script borrows a real place, person or event.
+
+| Deliverable | Stage / Next owner | Evidence / open items |
+| --- | --- | --- |
+| MGF-EP01-LONG | W2.1–W2.2 done (Film, 2026-11-12); next coordinator — publish storyboard page (W2.3); Boss DEP01 16:9 spike before look frames | [ep01/script.md](ep01/script.md) MGF-EP01-SCRIPT-R1, est. ≈84 s (estimated); W1.3 expected N/A; voice audition samples (7 takes + 2 radio-filtered copies, ≤10 s, 2026-11-11): ~/ReelsStore/projects/fiction/MGF/samples/; Film brief [ep01/film-brief.md](ep01/film-brief.md) MGF-EP01-BRIEF-R1 (16:9 rules, pink-glow rule PG01–PG07, VD01–VD14, DEP01–DEP04; size L) and rows [ep01/review-rows.json](ep01/review-rows.json) MGF-EP01-ROWS-R1 (71 shots, untimed, est 281 s from voice-measure R2), 2026-11-12; review page: pending |
+
+- Voice acting (user, 2026-11-11: Fon sounded flat, no shock or suspicion): Fon is a character, not a neutral narrator. Generate Fon line by line with per-line style and tags (gemini-tts, acted dialogue path), Leda stays; sample ≤10 s of the acted style before any full read.
+- 2026-11-11 user decisions on script R2 (structured question): R2 approved; keep the old "ลุก" typo text (L07e / P9) as a rewatch clue; ending = **A_fade** (not B_loop), so L47 closes with a fade-out and no loop seam is required (the L47→L01 echo may stay as a story echo). Fon acting samples: `~/ReelsStore/projects/fiction/MGF/samples/` (acting set), pick pending.
+- 2026-11-11 user pick "A" from the acting samples = file A `a-opening-acted.wav` (moderate intensity, R2 Acting column styles as written; not the "strong" variant). Full acted read authorized.
+- 2026-11-12 storyboard review page published (W2.3): https://claude.ai/artifact/J8pzU8RSTYAoeLBaYPYyMf , slug 8ac32395-d86c-4e6e-8a6c-ae89af650966, version 1794417228-60e7, rows MGF-EP01-ROWS-R1 (71 shots), brief MGF-EP01-BRIEF-R1. Verdicts live in the artifact `db` under `reviews/<shot ID>@board` (fields incl. `rev`). Republish with `python3 -I scripts/storyboard-page/build.py scripts/mgf-series/ep01/review-rows.json` then publish_files to the same slug; local build `out/review-pages/MGF-EP01-LONG/`.
