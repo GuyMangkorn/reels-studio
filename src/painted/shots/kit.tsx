@@ -14,6 +14,7 @@ import {motionShots} from './kit-motions';
 import {activityMouthShots} from './kit-activity-mouths';
 import {viewOrbitShots} from './kit-view-orbit';
 import {viewRunShots} from './kit-view-run';
+import {runArmsShots} from './kit-run-arms';
 import {templateShots} from './kit-templates';
 
 // Kit plates: not an episode, a proof clip for the people library (`kit/people.ts`). Registered so scripts/render.mjs can render it
@@ -74,4 +75,4 @@ export const kitShots: PaintedShot[] = [{
   paper: '#efe6d2',
   camera: (tl) => pushCamera(tl, 3.5, {s0: 1, s1: 1.04, fx: 540, fy: 1100}),
   paint: talk,
-}, ...motionShots, ...templateShots, ...animalMotionShots, ...viewRunShots, ...viewOrbitShots, ...activityMouthShots];
+}, ...motionShots, ...templateShots, ...animalMotionShots, ...viewRunShots, ...viewOrbitShots, ...activityMouthShots, ...runArmsShots];

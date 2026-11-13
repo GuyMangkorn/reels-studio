@@ -168,6 +168,10 @@ export type FigPose = {
   lift?: number;
   /** Skip the soft ground shadow (and its dark core): a figure with no ground under it (the dream fall). Default absent = shadow as before. */
   noShadow?: boolean;
+  /** Front and three-quarter `run` with no arm target: false = the arm pump before 13 Nov 2026 (the forward arm a fist pointed at the camera). Default true: elbow low, fist to the chest (KIT-RUN-ARMS). */
+  runPump?: boolean;
+  /** Three-quarter front: false = the side plane glaze before 13 Nov 2026 (a light glaze that lifted dark cloth pale). Default true: the side is painted as the cloth itself a shade darker (KIT-RUN-ARMS). The open jacket's side in the jacket colour is the orbit-turn fix and has no opt-out. */
+  sideCloth?: boolean;
   /** Profile `run` only: 0..1 (default 1) blends the legs from a planted two-foot stance to the stride, the grounded foot staying put (EDU-EP05 R1.9 FR28). */
   runMix?: number;
   /** Front view, standing legs only (EDU-EP15 shot 2 knee kicks): flex per leg in degrees, `r`/`l` = the character's right/left (screen left/right). The thigh shortens by cos(hip), the shank folds by hip+knee; the other fields stay as the standing leg. Absent = straight legs. */
@@ -202,6 +206,16 @@ export const H = 0.425; // one head, m
 export {QUARTER_DEPTH};
 /** Upper-arm and forearm length, m (both bones; the pose library and its test use it). */
 export const BONE = 0.26;
+type V3 = [number, number, number];
+/**
+ * Front and three-quarter run arm pump (KIT-RUN-ARMS, user 13 Nov 2026): elbow and wrist offsets from the shoulder in metres for the adult
+ * arm (`BONE` per bone; a child's `armScale` scales them), x outward, y up, z toward the facing direction. Forward: the elbow low by the ribs, the
+ * fist up at the chest just inside the centre of its side. Back: the elbow out behind, the hand beside the hip.
+ */
+export const RUN_PUMP: {elbowFwd: V3; handFwd: V3; elbowBack: V3; handBack: V3} = {
+  elbowFwd: [0.025, -0.235, 0.08], handFwd: [-0.085, -0.1, 0.22],
+  elbowBack: [0.04, -0.21, -0.15], handBack: [0.035, -0.44, -0.04],
+};
 
 /** Short-sleeve hem of the shaped front-view arm, as a fraction of the on-screen upper arm (shoulder -> elbow); ZC2-SB-R3 sleeve fix. */
 export const SLEEVE_HEM = 0.6;
@@ -538,7 +552,8 @@ export const drawFigure = (p: Painter, def: CastDef, g: Pt, unit: number, pose: 
   };
   // Three-quarter front, standing in trousers: the far arm hangs behind the hip, so its part below the shirt hem inside the body is hidden
   // (KIT-ARM-DEPTH F, 13 Nov 2026: the far hand showed as a loose ball at the crotch). A hand out past the hip stays.
-  const farHip = !!qg && !mode && c < 0.05 && clothHem === undefined;
+  // A run's pump (KIT-RUN-ARMS) swings the far hand back behind the hip too, so the run gets the same clip unless `runPump: false`.
+  const farHip = !!qg && (!mode || (mode.kind === 'run' && pose.runPump !== false)) && c < 0.05 && clothHem === undefined;
   const farHipY = U([0, hip0 + 0.0255])[1], farHipX0 = X(-(hw + 0.013)), farHipX1 = X(hw + 0.013);
   const clipFarHip = (pts: Pt[]): Pt[] => {
     const cx = pts.reduce((a, q) => a + q[0], 0) / pts.length;
@@ -608,12 +623,23 @@ export const drawFigure = (p: Painter, def: CastDef, g: Pt, unit: number, pose: 
       const e: Pt = [-0.0043 + AB * Math.sin(al), shV - 0.03 - AB * Math.cos(al)];
       return {Sh, E: U(e), T: U([e[0] + AB * Math.sin(be), e[1] - AB * Math.cos(be)])};
     }
-    // The arm swinging forward points at the camera (`toCam`): its hand comes in toward the chest, large, on a short cone, and the
-    // elbow goes onto the shoulder-hand line; the arm swinging back hangs low and outward as before.
-    const fw = 0.5 + 0.5 * Math.sin(th), x0 = s * (sw - 0.0255), cam = fw * fw * (3 - 2 * fw);
-    const T: Pt = [x0 + s * (0.05 - 0.02 * fw - 0.09 * cam), shV - 0.0255 - AB * (1.18 - 0.62 * fw)];
-    const bent: Pt = [x0 + s * 0.075, shV - 0.0255 - AB * 0.72];
-    return {Sh, E: U([lerp(bent[0], (x0 + T[0]) / 2, cam), lerp(bent[1], (shV - 0.0255 + T[1]) / 2, cam)]), T: U(T), cam};
+    if (pose.runPump === false) {
+      // The drawing before KIT-RUN-ARMS (13 Nov 2026): the arm swinging forward points at the camera (`toCam`): its hand comes in toward the
+      // chest, large, on a short cone, and the elbow goes onto the shoulder-hand line; the arm swinging back hangs low and outward.
+      const fw = 0.5 + 0.5 * Math.sin(th), x0 = s * (sw - 0.0255), cam = fw * fw * (3 - 2 * fw);
+      const T: Pt = [x0 + s * (0.05 - 0.02 * fw - 0.09 * cam), shV - 0.0255 - AB * (1.18 - 0.62 * fw)];
+      const bent: Pt = [x0 + s * 0.075, shV - 0.0255 - AB * 0.72];
+      return {Sh, E: U([lerp(bent[0], (x0 + T[0]) / 2, cam), lerp(bent[1], (shV - 0.0255 + T[1]) / 2, cam)]), T: U(T), cam};
+    }
+    // Arm pump (KIT-RUN-ARMS, user 13 Nov 2026): the elbow stays low by the ribs, bent about 90 deg, and the fist rises to the chest near the
+    // centre line; swinging back, the elbow goes out behind and the hand drops beside the hip. Both arms swing the same amount, at the
+    // normal hand size and sleeve colour. Keys are joint offsets from the shoulder in metres (x outward, y up, z forward, scaled by the
+    // arm length); a turned body (`quarter`) shows x by cos and z by sin toward the facing side.
+    const fw = 0.5 + 0.5 * Math.sin(th), k = fw * fw * (3 - 2 * fw), a = AB / BONE;
+    const key = (b: V3, f: V3): V3 => [lerp(b[0], f[0], k) * a, lerp(b[1], f[1], k) * a, lerp(b[2], f[2], k) * a];
+    const e = key(RUN_PUMP.elbowBack, RUN_PUMP.elbowFwd), t = key(RUN_PUMP.handBack, RUN_PUMP.handFwd);
+    const at = ([x, y, z]: V3): Pt => U([shU(s) + (s * x * kp + qdir * sinq * z) / kt, shV - 0.0255 + y]);
+    return {Sh, E: at(e), T: at(t)};
   };
   const arm = (side: 'r' | 'l') => {
     const s = side === 'r' ? -1 : 1;
@@ -996,7 +1022,12 @@ export const drawFigure = (p: Painter, def: CastDef, g: Pt, unit: number, pose: 
     const ext = (t: number): Pt => [D1[0] + (D2[0] - D1[0]) * t, D1[1] + (D2[1] - D1[1]) * t];
     planeShapes.forEach(({pts, color}, i) => {
       const part2 = clipHalf(pts, D1, D2, N);
-      if (part2.length > 2) glaze(p, 7_700_000 + seed * 1000 + i, mixColor(color, '#0a0d12', 0.22), 110 + 60 * sinq, part2, {border: 0.25, bleed: 0.02});
+      if (part2.length < 3) return;
+      const side = mixColor(color, '#0a0d12', 0.22);
+      // KIT-RUN-ARMS (13 Nov 2026): a translucent glaze lifted dark cloth (a navy jacket's side came out lighter than its front), so the side
+      // is painted as the cloth itself in the darker shade (with the light's tone, as `fill`); `sideCloth: false` keeps the glaze.
+      if (pose.sideCloth === false) glaze(p, 7_700_000 + seed * 1000 + i, side, 110 + 60 * sinq, part2, {border: 0.25, bleed: 0.02});
+      else solid(p, 7_700_000 + seed * 1000 + i, toneOf(side, L), part2, 4, L ? 0 : 0.07, 0.2);
     });
     inkLine(p, seed * 1000 + 450, [ext(0.04), ext(1)], {closed: false, weight: 0.8, curve: 0.2, color: mixColor(toneOf(coat ?? o.shirt, L), INK, 0.55)});
   }

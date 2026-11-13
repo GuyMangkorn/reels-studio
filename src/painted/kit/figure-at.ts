@@ -56,6 +56,8 @@ export type FigureAtOpts = ActivityOpts & {
    * zone keeps eye-level shots as they are). Default true (13 Nov 2026); false = the flat card as before.
    */
   pitchCue?: boolean;
+  /** Run arm pump and turned-side cloth shade (KIT-RUN-ARMS, `FigPose.runPump` / `sideCloth`). Default true (13 Nov 2026); false = the drawing before. */
+  runPump?: boolean; sideCloth?: boolean;
   /** Size factor on the lens scale (a child of the same rig, a shrink pop). */
   scale?: number;
   /** Props drawn after the figure from its anchors (`u` px per metre). */
@@ -133,9 +135,10 @@ export const headPerspective = (c: YCam, at: V3, height: number): number => {
   const uf = camUnit(c, at), uh = camUnit(c, [at[0], at[1] + height - 0.2, at[2]]);
   return Math.max(0.85, Math.min(1.25, uh / uf));
 };
-/** All view cues off (`pitchCue`, `quarterFollow`, `backQuarter`): the drawing before they became the default on 13 Nov 2026. Spread it into
- *  the options of episodes made before then (edu11, edu14, edu15), so a re-render matches what was delivered. */
-export const VIEW_CUES_OFF = {pitchCue: false, quarterFollow: false, backQuarter: false} as const;
+/** All view cues off (`pitchCue`, `quarterFollow`, `backQuarter`) and the KIT-RUN-ARMS body fixes off (`runPump`, `sideCloth`): the drawing before
+ *  they became the default on 13 Nov 2026. Spread it into the options of episodes made before then (edu11, edu14, edu15), so a re-render
+ *  matches what was delivered. */
+export const VIEW_CUES_OFF = {pitchCue: false, quarterFollow: false, backQuarter: false, runPump: false, sideCloth: false} as const;
 export {ACTIVITY_MOUTHS_OFF} from './activity-mouths';
 /** The view fields a placement resolves to for this camera (four-view squared to the lens, or six-view from a world facing). */
 export const viewAtCam = (c: YCam, o: Pick<FigureAtOpts, 'at' | 'view' | 'facing' | 'prevView' | 'hysteresis' | 'quarterFollow' | 'backQuarter'>): ViewFields => {
@@ -166,7 +169,7 @@ export const paintFigureAt = (p: Painter, c: YCam, def: CastDef, o: FigureAtOpts
   const q = o.tint ? tintPainter(p, o.tint.to, o.tint.u, {mul: o.tint.mul, brush: true}) : p;
   const cue = o.pitchCue ?? true;
   const pitch = cue ? headPitchOf(headElevation(c, o.at, def.height * (o.scale ?? 1))) : 0;
-  const fp = {...pose, ...vf, face, ...(o.shadow === false ? {noShadow: true} : {}), ...(pitch ? {headPitch: pitch} : {}), ...(cue ? {headSize: headPerspective(c, o.at, def.height * (o.scale ?? 1))} : {}), ...o.fig} as FigPose;
+  const fp = {...pose, ...vf, face, ...(o.shadow === false ? {noShadow: true} : {}), ...(pitch ? {headPitch: pitch} : {}), ...(cue ? {headSize: headPerspective(c, o.at, def.height * (o.scale ?? 1))} : {}), ...(o.runPump === false ? {runPump: false} : {}), ...(o.sideCloth === false ? {sideCloth: false} : {}), ...o.fig} as FigPose;
   const pivot = o.roll ? hipAnchor(def, g as Pt, u, fp) : (g as Pt);
   const sy = cue ? cardSquash(c, o.at, def.height * (o.scale ?? 1), g as Pt, u) : 1;
   let a!: FigAnchors;

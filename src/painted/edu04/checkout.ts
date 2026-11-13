@@ -83,7 +83,7 @@ const whoItem = (w: Who, o: CheckoutOpts): Item => ({
     const pose = w.mix ? poseMix(w.pose ?? 'P01', w.mix.to, w.mix.u, w.def, g, u, pv) : poseFor(w.pose ?? 'P01', w.def, g, u, pv);
     const face = {...(w.faceState ?? EXPRESSIONS[w.face ?? 'neutral']), ...(w.look ? {look: w.look} : {})};
     if (w.trolley) paintTrolley(p, c, w.at);
-    const a = drawFigure(p, w.def, g, u, {...pose, ...(auto ? {view: auto.view, quarter: auto.quarter, quarterDeg: auto.quarterDeg} : {}), face, headCock: w.headCock, ...w.fig}, o.t);
+    const a = drawFigure(p, w.def, g, u, {...pose, ...(auto ? {view: auto.view, quarter: auto.quarter, quarterDeg: auto.quarterDeg} : {}), face, headCock: w.headCock, sideCloth: false, ...w.fig}, o.t); // sideCloth: false keeps the delivered turned side (KIT-RUN-ARMS)
     if (o.out) o.out[w.key] = a;
     if (w.basket && view !== 'back') paintBasket(p, [a.rHand[0], a.rHand[1]], u, 5300 + w.key.length * 11);
     w.held?.(p, a, u);
