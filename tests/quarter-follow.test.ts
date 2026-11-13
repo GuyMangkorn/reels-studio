@@ -16,12 +16,13 @@ test('quarterDegAt is the angle off the front, held to 15..60, the same on both 
   assert.equal(quarterDegAt(10), 15);
 });
 
-test('quarterFollow: 30 and 60 deg orbit cells differ; off they are both 45', () => {
+test('quarterFollow (default on): 30 and 60 deg orbit cells differ; off they are both 45', () => {
   const o = {at: [0, 0, 0] as [number, number, number], facing: [0, 1] as [number, number]};
   const a = viewAtCam(orbit(30), {...o, quarterFollow: true}), b = viewAtCam(orbit(60), {...o, quarterFollow: true});
   assert.ok(a.quarter && b.quarter && a.quarter === b.quarter);
   assert.ok(Math.abs((a.quarterDeg ?? 0) - 30) < 1 && Math.abs((b.quarterDeg ?? 0) - 60) < 1);
-  assert.equal(viewAtCam(orbit(30), o).quarterDeg, 45);
-  assert.equal(viewAtCam(orbit(60), o).quarterDeg, 45);
+  assert.equal(viewAtCam(orbit(30), o).quarterDeg, a.quarterDeg);
+  assert.equal(viewAtCam(orbit(30), {...o, quarterFollow: false}).quarterDeg, 45);
+  assert.equal(viewAtCam(orbit(60), {...o, quarterFollow: false}).quarterDeg, 45);
   assert.equal(viewAtCam(orbit(0), {...o, quarterFollow: true}).quarterDeg, undefined);
 });

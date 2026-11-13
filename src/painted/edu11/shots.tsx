@@ -1,5 +1,5 @@
 import {AbsoluteFill, Img, staticFile} from 'remotion';
-import {paintFigureAt} from '../kit/figure-at';
+import {paintFigureAt, VIEW_CUES_OFF} from '../kit/figure-at';
 import {Stamp} from '../kit/screen';
 import {stampState} from '../kit/stamp';
 import type {Painter} from '../kit/painter';
@@ -32,7 +32,7 @@ const sectionFigure = (g: number) => (p: Painter, cam: YCam, yCar: number) => {
   const gh = ghostAt(g);
   if (gh.lift > 0 && g < 540) { // 60 % tint copy standing at the jump's apex (a demonstration, not a second woman)
     const crouchFeet = planAt(Math.min(g, 893)).feet;
-    paintFigureAt(p, cam, woman(1, true), {at: [crouchFeet[0], yCar + gh.lift, -0.32], pose: 'P01', face: 'neutral', t: s / 30, shadow: false, tint: {to: '#dfe9f2', u: 0.6}});
+    paintFigureAt(p, cam, woman(1, true), {...VIEW_CUES_OFF, at: [crouchFeet[0], yCar + gh.lift, -0.32], pose: 'P01', face: 'neutral', t: s / 30, shadow: false, tint: {to: '#dfe9f2', u: 0.6}});
   }
   return a;
 };

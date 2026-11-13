@@ -1,7 +1,7 @@
 import {camMove, camOf} from '../kit/cam-moves';
 import type {FigAnchors} from '../kit/cast';
 import type {Painter} from '../kit/painter';
-import {paintFigureAt} from '../kit/figure-at';
+import {paintFigureAt, VIEW_CUES_OFF} from '../kit/figure-at';
 import {camPoint, camUnit, type YCam} from '../kit/ycam';
 import {paintCar, paintFloat, paintPhone, woman} from './car';
 
@@ -25,7 +25,7 @@ export const paintSP1 = (rise: number, name: string) => (p: Painter, frame: numb
 /** LF01 / frame 0: P10 hold_phone_chest, phone in hand, neutral, display 20. */
 export const paintF0 = (p: Painter) => {
   paintCar(p, F0_CAM, {light: 1, display: '20', bell: 0.3});
-  const a = paintFigureAt(p, F0_CAM, woman(0), {at: FEET, pose: 'P10', face: 'neutral', t: 0});
+  const a = paintFigureAt(p, F0_CAM, woman(0), {...VIEW_CUES_OFF, at: FEET, pose: 'P10', face: 'neutral', t: 0});
   const g = camPoint(F0_CAM, FEET);
   MEASURE.F0 = {a, floorY: g?.[1], unit: camUnit(F0_CAM, FEET)};
 };

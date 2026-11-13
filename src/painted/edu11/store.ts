@@ -1,7 +1,7 @@
 import {camMove, camOf} from '../kit/cam-moves';
 import type {CastDef, FigAnchors} from '../kit/cast';
 import {ell, hardFill, washAt} from '../kit/draw';
-import {paintFigureAt} from '../kit/figure-at';
+import {paintFigureAt, VIEW_CUES_OFF} from '../kit/figure-at';
 import {mixColor, type Painter, type Pt} from '../kit/painter';
 import {PEOPLE} from '../kit/people';
 import type {V3} from '../kit/space';
@@ -81,7 +81,7 @@ export const passengers = (yCar = Y_CAR): {def: CastDef; at: V3}[] => [
 /** Cage car height (m) in B04-SH06: rises 4.6 -> 6.2 over G1210-1316. */
 export const cageY = (g: number): number => 4.6 + 1.6 * Math.max(0, Math.min(1, (g - 1210) / 106));
 export const paintPassengers = (p: Painter, c: YCam, yCar = Y_CAR): (FigAnchors | null)[] =>
-  passengers(yCar).map(({def, at}) => paintFigureAt(p, c, def, {at, view: 'front', pose: 'P01', face: 'neutral', t: 0, tint: sepia, shadow: {color: '#3b2f20', op: 40}}));
+  passengers(yCar).map(({def, at}) => paintFigureAt(p, c, def, {...VIEW_CUES_OFF, at, view: 'front', pose: 'P01', face: 'neutral', t: 0, tint: sepia, shadow: {color: '#3b2f20', op: 40}}));
 export const paintStoreGrade = (p: Painter) => {
   washAt(p, 43000, SEP.shadow, 16, [[0, 0], [1080, 0], [1080, 1920], [0, 1920]], 0.2, 0.2);
   washAt(p, 43001, SEP.paper, 14, ell(540, 820, 500, 640, 24), 0.3, 0.1);

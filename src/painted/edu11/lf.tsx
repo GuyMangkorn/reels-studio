@@ -1,6 +1,6 @@
 import type {ComponentType} from 'react';
 import {camMove, camOf} from '../kit/cam-moves';
-import {paintFigureAt} from '../kit/figure-at';
+import {paintFigureAt, VIEW_CUES_OFF} from '../kit/figure-at';
 import type {Painter} from '../kit/painter';
 import type {V3} from '../kit/space';
 import {camPoint, camUnit, type YCam} from '../kit/ycam';
@@ -26,7 +26,7 @@ export {Cap, Pill};
 export const LF01_CAM: YCam = camOf(camMove([0, 0.95, -0.3], [10, 10], [2.5, 2.5], 1.6, {f: 1200, hy: 740}), 0);
 export const paintLF01 = (p: Painter) => {
   paintCar(p, LF01_CAM, {light: 1, display: '20', bell: 0.3});
-  return paintFigureAt(p, LF01_CAM, woman(0), {at: FEET, pose: 'P10', face: 'neutral', t: 0});
+  return paintFigureAt(p, LF01_CAM, woman(0), {...VIEW_CUES_OFF, at: FEET, pose: 'P10', face: 'neutral', t: 0});
 };
 
 export const LF01B_CAM: YCam = camOf(camMove([0, 1.0, -0.3], [3.1, 3.1], [2.21, 2.21], 1.6, {f: 1200, hy: 740}), 0);

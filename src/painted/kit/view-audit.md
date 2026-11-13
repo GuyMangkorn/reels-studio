@@ -18,3 +18,5 @@ Status of each finding is **Reference** (observed), not a rule. Fixes need the u
 
 Suggested order for step 2+: VA01 (back body poses) and VA03 (pitch cues) first, since both turn on in every orbit or high/low
 shot; VA02 needs the user to revisit the 4 Nov "no back three-quarter" decision; VA04-VA06 are smaller fixes in the owning modules.
+
+Defaults (13 Nov 2026, user): the VA02-VA04 cues (`backQuarter`, `pitchCue`, `quarterFollow`) are on by default in `paintFigureAt`; episodes made before then spread `VIEW_CUES_OFF` (`figure-at.ts`) so re-renders match delivery. Rule: [view cues](../../../docs/film-visual-brief-workflow.md#view-cues).

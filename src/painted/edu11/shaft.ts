@@ -1,7 +1,7 @@
 import {camMove, camOf} from '../kit/cam-moves';
 import type {FigAnchors} from '../kit/cast';
 import {ell, hardFill, inkLine, washAt} from '../kit/draw';
-import {paintFigureAt} from '../kit/figure-at';
+import {paintFigureAt, VIEW_CUES_OFF} from '../kit/figure-at';
 import {hash} from '../kit/hash';
 import {mixColor, type Painter, type Pt} from '../kit/painter';
 import type {V3} from '../kit/space';
@@ -120,7 +120,7 @@ export const paintShaft = (p: Painter, cam: YCam, yCar: number, o: ShaftOpts = {
   let a: FigAnchors | null | undefined;
   const at: V3 = [o.feetX ?? -0.2, yCar, -0.3];
   if (o.figure) a = o.figure(p, cam, yCar) ?? undefined;
-  else if (o.inside === 'crouch') { const gp = o.grip ? camPoint(cam, o.grip) : null; a = paintFigureAt(p, cam, woman(o.rise ?? 0.3), {at, pose: 'P35', face: o.face ?? 'worried', t: o.t ?? 0, shadow: false, fig: gp ? {rArm: {to: gp as Pt, out: -1}} : undefined}); }
+  else if (o.inside === 'crouch') { const gp = o.grip ? camPoint(cam, o.grip) : null; a = paintFigureAt(p, cam, woman(o.rise ?? 0.3), {...VIEW_CUES_OFF, at, pose: 'P35', face: o.face ?? 'worried', t: o.t ?? 0, shadow: false, fig: gp ? {rArm: {to: gp as Pt, out: -1}} : undefined}); }
   else if (o.inside === 'float') a = paintFloat(p, cam, {at: [-0.1, yCar, -0.3], t: o.t ?? 0, lift: 0.4, rise: 1, face: 'scared', roll: o.roll ?? 160});
   const edge = Q(cam, box(-0.75, 0.75, yCar - 0.1, yCar + 2.4, 0));
   if (edge.length >= 3) inkLine(p, 12900, edge, {weight: 1.6, color: '#2a2c30', still: true});

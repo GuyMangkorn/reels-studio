@@ -4,7 +4,7 @@
 import {hash} from '../kit/hash';
 import {camMove, camOf} from '../kit/cam-moves';
 import {paintFall} from '../kit/fall';
-import {paintFigureAt} from '../kit/figure-at';
+import {paintFigureAt, VIEW_CUES_OFF} from '../kit/figure-at';
 import {poseArms} from '../kit/poses';
 import type {FigAnchors} from '../kit/cast';
 import type {Painter} from '../kit/painter';
@@ -37,7 +37,7 @@ export const paintBusShot = (p: Painter, c: YCam, w: World, key: string, face: '
   // P30's hand (the kit table is for the 1.66 m adult) lands on the child's eye: raise the visor hand to the brow (`lArm`, 0.05 m up) so it shades the eyes instead of rubbing one
   const g = camPoint(c, GIRL_AT), u = camUnit(c, GIRL_AT), base = g ? poseArms('P30', GIRL, g, u, 'front') : null;
   const lArm = base?.lArm ? {...base.lArm, to: [base.lArm.to[0] + 0.012 * u, base.lArm.to[1] - 0.055 * u] as [number, number], via: base.lArm.via ? [base.lArm.via[0], base.lArm.via[1] - 0.02 * u] as [number, number] : undefined} : undefined;
-  const a: FigAnchors | null = paintFigureAt(p, c, GIRL, {at: GIRL_AT, view: 'front', pose: 'P30', face, faceState: {look: [0.0, -0.8]}, fig: lArm ? {lArm} : undefined, t: 0.4, shadow: {op: 70}});
+  const a: FigAnchors | null = paintFigureAt(p, c, GIRL, {...VIEW_CUES_OFF, at: GIRL_AT, view: 'front', pose: 'P30', face, faceState: {look: [0.0, -0.8]}, fig: lArm ? {lArm} : undefined, t: 0.4, shadow: {op: 70}});
   paintLipDrips(p, c, o);
   rain(p, w, o.t);
   if (a) MEASURE[key] = {lead: {top: a.top, bottom: a.bottom}, cam: c, extra: {feetY: Math.round(a.feet[1]), headTop: Math.round(a.headTop), pxPerM: Math.round(camUnit(c, GIRL_AT)), lipY: Math.round(camPoint(c, [0.25, 2.4, 0.1])?.[1] ?? 0)}};

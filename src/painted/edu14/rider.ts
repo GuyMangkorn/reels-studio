@@ -2,7 +2,7 @@
 // (wheel spin, spray off both wheels). Profile facing screen right; picture only, never labelled. Painted from the rig's hip anchor so the bike follows the rider.
 import {ell, hardFill, inkLine, washAt} from '../kit/draw';
 import {hash} from '../kit/hash';
-import {paintFigureAt, hipAnchor} from '../kit/figure-at';
+import {paintFigureAt, hipAnchor, VIEW_CUES_OFF} from '../kit/figure-at';
 import type {CastDef, FigPose} from '../kit/cast';
 import {PEOPLE} from '../kit/people';
 import {mixColor, type Painter, type Pt} from '../kit/painter';
@@ -46,7 +46,7 @@ export const paintRider = (p: Painter, c: YCam, o: {at: [number, number, number]
   line(p, seed + 111, head, [bars[0] - 0.02 * u, bars[1]], fw * 0.8, RIDER_KIT.frame);
   line(p, seed + 112, [bars[0] - 0.02 * u, bars[1]], [bars[0] + 0.07 * u, bars[1] + 0.05 * u], fw * 0.8, RIDER_KIT.frame);
   // rider: arms on the bars (the drops), legs seated on the pedals
-  const a = paintFigureAt(p, c, RIDER, {at: o.at, view: 'right', pose: 'P01', face: 'neutral', t: o.t, shadow: false, seed: o.seed, fig: {...TUCK, rArm: {to: [bars[0] + 0.05 * u, bars[1] + 0.04 * u], via: [bars[0] - 0.12 * u, bars[1] - 0.14 * u]}, lArm: {to: [bars[0] + 0.05 * u, bars[1] + 0.04 * u], via: [bars[0] - 0.12 * u, bars[1] - 0.14 * u]}}});
+  const a = paintFigureAt(p, c, RIDER, {...VIEW_CUES_OFF, at: o.at, view: 'right', pose: 'P01', face: 'neutral', t: o.t, shadow: false, seed: o.seed, fig: {...TUCK, rArm: {to: [bars[0] + 0.05 * u, bars[1] + 0.04 * u], via: [bars[0] - 0.12 * u, bars[1] - 0.14 * u]}, lArm: {to: [bars[0] + 0.05 * u, bars[1] + 0.04 * u], via: [bars[0] - 0.12 * u, bars[1] - 0.14 * u]}}});
   // spray off both wheels (the rain: pale streaks flung up and back), ground splash
   if (o.spray !== false) for (const w of [rear, front]) for (let i = 0; i < 9; i++) {
     const k = hash(seed + 300 + i + (w === rear ? 0 : 20)), len = (0.18 + 0.42 * k) * u, x0 = w[0] - 0.04 * u * i, y0 = w[1] - R * u * (0.6 + 0.4 * hash(seed + 330 + i));

@@ -1,6 +1,6 @@
 import {AbsoluteFill, Img, staticFile, useCurrentFrame} from 'remotion';
 import {camMove, camOf} from '../kit/cam-moves';
-import {paintFigureAt} from '../kit/figure-at';
+import {paintFigureAt, VIEW_CUES_OFF} from '../kit/figure-at';
 import type {Painter} from '../kit/painter';
 import {Stamp} from '../kit/screen';
 import {stampState} from '../kit/stamp';
@@ -42,8 +42,8 @@ export const paintStory = (p: Painter, cam: YCam, s: number) => {
   const st = storyAt(s), t = s / 30;
   paintCar(p, cam, {light: st.light, display: st.display, bell: 0.3});
   const at: V3 = [FEET[0], 0, FEET[2]];
-  if (st.mode === 'stand') paintFigureAt(p, cam, woman(st.rise), {at: [at[0], st.lift, at[2]], pose: 'P10', face: st.face, t, shadow: st.lift > 0.005 ? false : undefined});
-  else if (st.mode === 'crouch') paintFigureAt(p, cam, woman(st.rise), {at, pose: 'P35', face: st.face, t});
+  if (st.mode === 'stand') paintFigureAt(p, cam, woman(st.rise), {...VIEW_CUES_OFF, at: [at[0], st.lift, at[2]], pose: 'P10', face: st.face, t, shadow: st.lift > 0.005 ? false : undefined});
+  else if (st.mode === 'crouch') paintFigureAt(p, cam, woman(st.rise), {...VIEW_CUES_OFF, at, pose: 'P35', face: st.face, t});
   else paintFloat(p, cam, {at, t, lift: st.lift, rise: st.rise, face: st.face, roll: st.roll});
   if (st.phone) paintPhone(p, cam, st.phone, 40 * t);
 };

@@ -1,7 +1,7 @@
 // EDU-EP14 bus-stop shots (N1, N2, N15): the set (busstop.ts) + the GIRL on her mark + the K01 pendants drawn with `drop.ts` + ENV-FALL rain. One paint function for
 // every shot that stands in SET-BUSSTOP (B01-SH01/02/03/09, B02-SH03, B03-SH02, B04-SH01, B05-SH01/03), parameterised by pose, view, face, world and extras.
 import {paintFall} from '../kit/fall';
-import {paintFigureAt, type FigureAtOpts} from '../kit/figure-at';
+import {paintFigureAt, type FigureAtOpts, VIEW_CUES_OFF} from '../kit/figure-at';
 import {poseArms} from '../kit/poses';
 import {layerMotion, type LayerArgs} from '../kit/motions';
 import type {FigAnchors} from '../kit/cast';
@@ -75,7 +75,7 @@ export const paintBus = (p: Painter, c: YCam, s: BusShot): FigAnchors | null => 
   let a: FigAnchors | null = null;
   if (s.girl !== false) {
     const fig = s.fig ?? (!s.pose || s.pose === 'P30' ? p30Fix(c, s.at ?? GIRL_AT) : undefined);
-    a = paintFigureAt(p, c, GIRL, {at: s.at ?? GIRL_AT, view: s.view ?? 'front', pose: s.pose ?? 'P30', face: s.face ?? 'neutral', faceState: s.faceState ?? {look: [0.0, -0.8]}, fig, t, shadow: s.shadow ?? {op: 70}, held: s.held, seed: s.seed});
+    a = paintFigureAt(p, c, GIRL, {...VIEW_CUES_OFF, at: s.at ?? GIRL_AT, view: s.view ?? 'front', pose: s.pose ?? 'P30', face: s.face ?? 'neutral', faceState: s.faceState ?? {look: [0.0, -0.8]}, fig, t, shadow: s.shadow ?? {op: 70}, held: s.held, seed: s.seed});
   }
   s.extra?.(p, c);
   if (s.lips !== false) paintLipDrips(p, c, o);
