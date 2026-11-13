@@ -31,5 +31,5 @@ export const paintOwn = (p: Painter, c: YCam, o: OwnOpts): FigAnchors | null => 
   const pose = poseFor(o.pose ?? 'P31', OWN, g, u, view === 'back' ? 'front' : view);
   const face = {...EXPRESSIONS[o.face ?? 'neutral'], ...(o.faceState ?? {})} as FaceState;
   const q = o.warm ? tintPainter(p, '#ffcf8a', o.warm, {brush: true}) : p;
-  return drawFigure(q, OWN, g, u, {...pose, view, face, ...o.fig}, o.t);
+  return drawFigure(q, OWN, g, u, {...pose, view, face, sideCloth: false, ...o.fig}, o.t); // sideCloth: false keeps the delivered turned side (KIT-RUN-ARMS)
 };

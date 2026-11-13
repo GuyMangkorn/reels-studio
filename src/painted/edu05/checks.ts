@@ -252,7 +252,7 @@ export const paintLIFTOFF = (p: Painter, frame: number) => {
   const facing = 'scared' as const;
   const lipMat = L < 4 ? 0 : 0.22 * ramp(4, 30);
   const sideOpts = {at, view: 'left' as const, pose: 'P39' as const, face: facing, t, shadow: false, fig: sideFig};
-  const frontFig: Partial<FigPose> = {...frontNamed, rArm: armsOpen.rArm, lArm: armsOpen.lArm, ...(L < 60 ? {quarter: 'left' as const, quarterDeg: qDeg} : {lie: roll})};
+  const frontFig: Partial<FigPose> = {...frontNamed, sideCloth: false, rArm: armsOpen.rArm, lArm: armsOpen.lArm, ...(L < 60 ? {quarter: 'left' as const, quarterDeg: qDeg} : {lie: roll})};
   const frontOpts = {at, view: 'front' as const, named: {name: 'drift-spread' as const, L}, face: facing, t, shadow: false, fig: frontFig};
   const lead: Item = {at, bias: 0, draw: (q, cc) => {
     if (h <= 1e-4) MEASURE.LIFTOFF = paintTiny(q, cc, {...sideOpts, shadow: true});

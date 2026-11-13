@@ -8,7 +8,7 @@ export {evaSuit, ZG_NEUTRAL, type Helmet, type ArmM};
 /** Measurement hook (QA scripts, not painting): the anchors of the last figure painted per cast member. */
 export const MEAS: {ast?: EvaAnchors | null; crew?: EvaAnchors | null; tech?: EvaAnchors | null} = {};
 export const paintSuited: typeof paintEva = (p, c, def, o) => {
-  const a = paintEva(p, c, def, o);
+  const a = paintEva(p, c, def, {...o, fig: {sideCloth: false, ...o.fig}}); // keeps the delivered turned side (KIT-RUN-ARMS, 13 Nov 2026)
   if (def === AST_DEF) MEAS.ast = a; else if (def === CREW_DEF) MEAS.crew = a; else if (def === TECH_DEF) MEAS.tech = a;
   return a;
 };
