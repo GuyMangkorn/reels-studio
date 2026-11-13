@@ -10,10 +10,12 @@ import type {Pt} from './painter';
 
 /** Torso depth over width (a real torso is about 0.6 as deep as it is wide). */
 export const QUARTER_DEPTH = 0.62;
-export const QUARTER_MIN = 15, QUARTER_MAX = 60;
+/** Valid turn in degrees. 15..60 was the original range; the orbit (`quarterFollow`) runs on to 75 so the cut to the profile is a 15 degree
+ *  step, not 30 (13 Nov 2026). Past about 75 the face and the turned arms no longer read. */
+export const QUARTER_MIN = 15, QUARTER_MAX = 75;
 
 export type QuarterGeo = {
-  /** Turn in radians (clamped to 15..60 degrees). */
+  /** Turn in radians (clamped to `QUARTER_MIN`..`QUARTER_MAX`, 15..75 degrees). */
   qr: number;
   /** Screen side the figure faces: -1 left, +1 right. */
   qdir: 1 | -1;
@@ -22,14 +24,21 @@ export type QuarterGeo = {
   kp: number; kt: number; kr: number;
   /** Share of the silhouette width taken by the front plane. */
   sf: number;
+  /** Late turn 0..1 (`quarterLate`): 0 up to 60 degrees, 1 at 75. */
+  late: number;
 };
+
+/** Late turn (orbit turn, 13 Nov 2026): 0 up to 60 degrees (the approved 15..60 drawing is untouched), easing to 1 at 75. Over it the turned
+ *  body and head move toward the profile they cut to: chest marks to the front edge, the near arm in from the silhouette edge, the hair round
+ *  the back of the head. `deg` is the turn in degrees (sign ignored). */
+export const quarterLate = (deg: number): number => smooth01(60, 75, Math.abs(deg));
 
 /** Geometry of a three-quarter pose; undefined when the pose has no `quarter`. */
 export const quarterGeo = (pose: {quarter?: 'left' | 'right'; quarterDeg?: number}): QuarterGeo | undefined => {
   if (!pose.quarter) return undefined;
   const qr = (Math.max(QUARTER_MIN, Math.min(QUARTER_MAX, pose.quarterDeg ?? 45)) * Math.PI) / 180;
   const sin = Math.sin(qr), cos = Math.cos(qr), kt = Math.hypot(cos, QUARTER_DEPTH * sin);
-  return {qr, qdir: pose.quarter === 'left' ? -1 : 1, sin, cos, kp: cos, kt, kr: cos / kt, sf: cos / (cos + QUARTER_DEPTH * sin)};
+  return {qr, qdir: pose.quarter === 'left' ? -1 : 1, sin, cos, kp: cos, kt, kr: cos / kt, sf: cos / (cos + QUARTER_DEPTH * sin), late: quarterLate((qr * 180) / Math.PI)};
 };
 
 /** Keep the part of polygon `pts` on the same side of the line a-b as the point `ref` (Sutherland-Hodgman against one half-plane). */

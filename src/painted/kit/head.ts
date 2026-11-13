@@ -1,8 +1,8 @@
 import {hairFront, hairSide, isNewCut, type NewCut} from './hair';
 import {hash} from './hash';
-import {mixColor, type Painter, type Pt} from './painter';
+import {lerp, mixColor, type Painter, type Pt} from './painter';
 import {INK, palOf, ell, glaze, hardFill, inkLine, lineOf, modelPart, planeBand, rimScaleOf, solid, toneOf, type InteriorLight} from './draw';
-import {densify, polarUnion, simplify, smooth01, splitByCurve} from './quarter';
+import {densify, polarUnion, quarterLate, simplify, smooth01, splitByCurve} from './quarter';
 
 // Flat-face decal heads (front and profile) for the WFOG cast (brief VD03; user-approved look 29 Oct 2026), ported
 // from the spike sheets `FaceSheet.tsx` / `SideSheet.tsx` into the plate Painter: egg head, cap of hair, almond eyes
@@ -497,8 +497,10 @@ export const paintHeadFront = (p: Painter, seed: number, cx: number, cy: number,
     const vT = hl ? (sg > 0 ? hl[hl.length - 1][1] : hl[0][1]) : 0.02;
     // Side hairline (x = position toward the facing side): at the face window's far edge (the ear line, -cos theta) it is the temple, at
     // the far silhouette the nape height behind the ear. Bob, curly and perm end at their cut; long hair and the hood cover the head.
-    const xw = -0.99 * ct;
-    const hSide = (u: number) => vT + (0.45 - vT) * smooth01(xw, -1.02, sg * u);
+    // Late turn (60..75 deg, `quarterLate`): the hair drops to the nape just behind the ear, as in the profile it cuts to (at 75 deg the slow
+    // ramp left the back of the head bare skin; 13 Nov 2026).
+    const xw = -0.99 * ct, xn = lerp(-1.02, xw - 0.22, quarterLate((turn * 180) / Math.PI));
+    const hSide = (u: number) => vT + (0.45 - vT) * smooth01(xw, xn, sg * u);
     const h = cut === 'hood' || cut === 'long' ? () => 9
       : cut === 'bob' ? (u: number) => 0.7 + 0.08 * Math.max(0, Math.min(1, (1.16 - Math.abs(u)) / 0.3))
       : cut === 'curly' ? (u: number) => 0.8 + 0.2 * Math.max(0, Math.min(1, (1.15 - Math.abs(u)) / 0.25))
@@ -567,7 +569,9 @@ export const paintHeadFront = (p: Painter, seed: number, cx: number, cy: number,
     const vs = [-0.2, 0, 0.2, 0.4, 0.6, 0.8, 1.0, 1.12];
     const far = vs.map((v): Pt => [turnU(turn, -sg * headRho(v) * 0.995, v), v]);
     const inn = vs.map((v, i): Pt => [far[i][0] + sg * 0.36 * sn * Math.max(0.06, 1 - ((v - 0.45) / 0.85) ** 2), v]).reverse();
-    glaze(p, 7_650_000 + seed, mixColor(skin, '#6a3f2c', 0.3), 95, R([...far, ...inn]), {border: 0.3, bleed: 0.1});
+    // Late turn: the far cheek edge has swung to the middle of the head and the shade read as a stripe down it; it fades out by 75 deg.
+    const cheekOp = 95 * (1 - quarterLate((turn * 180) / Math.PI));
+    if (cheekOp > 1) glaze(p, 7_650_000 + seed, mixColor(skin, '#6a3f2c', 0.3), cheekOp, R([...far, ...inn]), {border: 0.3, bleed: 0.1});
     // Chewing: the facing cheek swells (a warm round shade over the cheek and a short crease round its lower edge).
     const chewT = Math.min(1, face.chew ?? 0);
     if (chewT > 0) {

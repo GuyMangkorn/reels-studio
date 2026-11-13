@@ -4,6 +4,7 @@ import {EXPRESSIONS, type ExpressionId} from './expressions';
 import type {FaceState} from './head';
 import {tintPainter, type Painter, type Pt} from './painter';
 import {poseFor, type AnyPoseId} from './poses';
+import {QUARTER_MAX, QUARTER_MIN} from './quarter';
 import type {V3} from './space';
 import {figureView, figureView4, squareToCam, viewFields, type View4, type ViewFields, type ViewName} from './views';
 import {camPoint, camUnit, viewAngle, type YCam} from './ycam';
@@ -27,7 +28,7 @@ export type FigureAtOpts = {
   prevView?: ViewName; hysteresis?: number;
   /**
    * With `facing` (KIT-VIEW-AUDIT VA04, opt-in): a three-quarter view turns by the real camera angle (`quarterDeg` = the angle off the
-   * front, held to 15..60) instead of the fixed 45, so an orbit turns the figure step by step through the quarter sector. Default true (13 Nov 2026); false = the fixed 45.
+   * front, held to 15..75) instead of the fixed 45, so an orbit turns the figure step by step through the quarter sector. Default true (13 Nov 2026); false = the fixed 45.
    */
   quarterFollow?: boolean;
   /** With `facing` (VA02): eight views, adding the back three-quarter views between the profiles and the back (`VIEW_SECTORS8`). Default true (13 Nov 2026); false = six. */
@@ -135,15 +136,16 @@ export const VIEW_CUES_OFF = {pitchCue: false, quarterFollow: false, backQuarter
 /** The view fields a placement resolves to for this camera (four-view squared to the lens, or six-view from a world facing). */
 export const viewAtCam = (c: YCam, o: Pick<FigureAtOpts, 'at' | 'view' | 'facing' | 'prevView' | 'hysteresis' | 'quarterFollow' | 'backQuarter'>): ViewFields => {
   if (!o.facing) return {view: figureView4(c, o.at, squareToCam(c, o.at, o.view ?? 'front'))};
-  const name = figureView(c, o.at, o.facing, {prev: o.prevView, hysteresis: o.hysteresis, eight: o.backQuarter ?? true});
+  const follow = o.quarterFollow ?? true, eight = o.backQuarter ?? true;
+  const name = figureView(c, o.at, o.facing, {prev: o.prevView, hysteresis: o.hysteresis, eight, follow: follow && eight});
   const a = viewAngle(c, o.at, o.facing);
   // A back three-quarter turns away from the back (180), a front one away from the front (0).
-  return viewFields(name, (o.quarterFollow ?? true) ? quarterDegAt(name.startsWith('back-') ? a + 180 : a) : 45);
+  return viewFields(name, follow ? quarterDegAt(name.startsWith('back-') ? a + 180 : a) : 45);
 };
-/** VA04: the three-quarter turn for a view angle (degrees, `viewAngle`): its distance from the front, held to the valid 15..60. */
+/** VA04: the three-quarter turn for a view angle (degrees, `viewAngle`): its distance from the front, held to the valid 15..75 (`QUARTER_MIN`, `QUARTER_MAX`). */
 export const quarterDegAt = (deg: number): number => {
   const d = ((deg % 360) + 360) % 360, off = d > 180 ? 360 - d : d;
-  return Math.min(60, Math.max(15, off));
+  return Math.min(QUARTER_MAX, Math.max(QUARTER_MIN, off));
 };
 
 /** Paint `def` standing at `o.at` through camera `c`. Returns the figure's picture anchors, or null when the feet are behind the lens. */

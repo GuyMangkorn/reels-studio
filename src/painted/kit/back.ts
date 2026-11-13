@@ -1,4 +1,4 @@
-import {BONE, H, bodyFrame, ikElbow, type CastDef, type FigAnchors, type FigPose, type Outfit} from './cast';
+import {BONE, H, SKIRT_LATE, bodyFrame, ikElbow, type CastDef, type FigAnchors, type FigPose, type Outfit} from './cast';
 import {INK, VD18, capsule, ell, glaze, inkLine, limb, lineOf, modelPart, solid, toneOf, washAt} from './draw';
 import {hatFront} from './gear';
 import {CHIN, HEAD_SPAN, headOutline, type HeadStyle} from './head';
@@ -24,7 +24,7 @@ import {clipHalf, quarterGeo} from './quarter';
 //   lens below the knees. A pose with none of these fields draws exactly as before.
 // - Not supported (cut to front or profile for these): bend, lie, props in hand.
 // - Back three-quarter (KIT-VIEW-AUDIT VA02, 13 Nov 2026; replaces the 4 Nov "no back three-quarter" rule at the user's request):
-//   `FigPose.quarter` with view 'back' turns the back block away toward that screen side by `quarterDeg` (15..60, default 45). The
+//   `FigPose.quarter` with view 'back' turns the back block away toward that screen side by `quarterDeg` (15..75, default 45). The
 //   body takes the turned width `kt`, the side plane shows in shade on that side, the arm on that side is painted over the torso, and
 //   for hair that ends above the jaw the cheek and jaw swell past the skull there (lost profile). Absent = the plain back as before.
 
@@ -211,18 +211,21 @@ export const drawFigureBack = (p: Painter, def: CastDef, g: Pt, unit: number, po
   if (pm) paintPoseLegs();
   for (const s of sitK || pm ? ([] as (-1 | 1)[]) : qb ? ([-qd, qd] as (-1 | 1)[]) : ([-1, 1] as const)) {
     const lift = pose.walk === undefined ? 0 : wv(s);
-    const hip: Pt = [s * 0.0725 * sc, hip0], ankle: Pt = [s * 0.085 * sc, ankleV + lift], knee: Pt = [s * 0.08 * sc, (hip0 + ankleV) / 2 + lift / 2];
+    // Late turn (60..75 deg, `QuarterGeo.late`): the legs are round, so their centres close in by cos (kr after kt) and their width stops
+    // foreshortening, toward the profile's legs together (at 75 deg two thin legs stood apart with a gap; 13 Nov 2026).
+    const lb = qb?.late ?? 0, cS = lerp(1, qb?.kr ?? 1, lb), wS = lerp(1, 1 / kq, lb);
+    const hip: Pt = [s * 0.0725 * sc * cS, hip0], ankle: Pt = [s * 0.085 * sc * cS, ankleV + lift], knee: Pt = [s * 0.08 * sc * cS, (hip0 + ankleV) / 2 + lift / 2];
     const pc = mixColor(o.pants, '#000000', s > 0 ? 0.05 : 0);
     // The thigh starts where the torso hem ends (hip0 - 0.07), not at hip0: the 7 cm above lay under the translucent torso and showed through it
     // as two dark blocks across the hem (4 Nov 2026, bug: YOU2 back). The visible edges are the same lines; the ids and the lower part are unchanged.
     const tt = 0.07 / Math.max(0.1, hip[1] - knee[1]), top: Pt = [hip[0] + (knee[0] - hip[0]) * tt, hip[1] + (knee[1] - hip[1]) * tt];
-    fill(pc, Sq(limb(top, knee, (0.11 + (0.095 - 0.11) * tt) * sc, 0.095 * sc)));
+    fill(pc, Sq(limb(top, knee, (0.11 + (0.095 - 0.11) * tt) * sc * wS, 0.095 * sc * wS)));
     if (o.shorts) {
       const at = (k: number): Pt => [knee[0] + (ankle[0] - knee[0]) * k, knee[1] + (ankle[1] - knee[1]) * k];
       fill(skin, Sq(limb(at(0.1), ankle, 0.088 * sc, 0.066 * sc)));
       fill(o.shorts.sock, Sq(limb(at(0.84), [ankle[0], ankle[1] - 0.005], 0.07 * sc, 0.066 * sc)));
       fill(pc, Sq(limb(knee, at(0.16), 0.095 * sc, 0.1 * sc)));
-    } else fill(pc, Sq(limb(knee, ankle, 0.095 * sc, 0.08 * sc)));
+    } else fill(pc, Sq(limb(knee, ankle, 0.095 * sc * wS, 0.08 * sc * wS)));
     const sc2 = o.boots ? mixColor(o.shoes, '#000000', 0.1) : o.shoes;
     if (o.boots) fill(sc2, Sq(limb([ankle[0], ankle[1] + 0.1], ankle, 0.085 * sc, 0.08 * sc)));
     fill(o.shoes, Sq(shoe(ankle[0], ankle[1], s, sc)));
@@ -247,7 +250,16 @@ export const drawFigureBack = (p: Painter, def: CastDef, g: Pt, unit: number, po
       if (qb) T = [g[0] + (T[0] - g[0]) * kq * armK(s), T[1]];
       const d = Math.hypot(T[0] - Sh[0], T[1] - Sh[1]), m = 2 * Lpx - 0.5;
       if (d > m) T = [Sh[0] + ((T[0] - Sh[0]) * m) / d, Sh[1] + ((T[1] - Sh[1]) * m) / d];
-      E = a.via ? ((q: Pt): Pt => [g[0] + (q[0] - g[0]) * kq * armK(s), q[1]])(mirrorX(g, a.via)) : ikElbow(Sh, T, Lpx, s);
+      // Back three-quarter: the elbow is solved on the flat arm and foreshortened with it, so the arm keeps its shape. Solved on the pulled-in
+      // points, a hanging arm came out shorter than its bones and the IK bent both elbows out like hands on hips (70-75 deg, 13 Nov 2026).
+      const fx = (q: Pt): Pt => [g[0] + (q[0] - g[0]) * kq * armK(s), q[1]];
+      if (a.via) E = fx(mirrorX(g, a.via));
+      else if (qb) {
+        const k = kq * armK(s), Sh0: Pt = [g[0] + (Sh[0] - g[0]) / k, Sh[1]], T0 = mirrorX(g, a.to);
+        const d0 = Math.hypot(T0[0] - Sh0[0], T0[1] - Sh0[1]), T1: Pt = d0 > m ? [Sh0[0] + ((T0[0] - Sh0[0]) * m) / d0, Sh0[1] + ((T0[1] - Sh0[1]) * m) / d0] : T0;
+        E = fx(ikElbow(Sh0, T1, Lpx, s));
+        T = fx(T1);
+      } else E = ikElbow(Sh, T, Lpx, s);
     } else if (pm?.mode?.kind === 'run') {
       // Run from behind (VA06): the arms pump opposite to the legs, as the front `runArm` (same phase; the character's right is screen
       // right here). The arm swinging forward goes away from the lens: the upper arm hangs, the forearm rises into the chest and hides
@@ -292,7 +304,8 @@ export const drawFigureBack = (p: Painter, def: CastDef, g: Pt, unit: number, po
   const shirtPlane = hemV === undefined ? bodyPts : [...bodyPts.slice(0, 5), [hw + 0.02, hip0 + 0.034] as Pt, [-hw - 0.02, hip0 + 0.034] as Pt, bodyPts[9]];
   const planeShapes: {pts: Pt[]; color: string}[] = [{pts: Uq(shirtPlane), color: bodyC}];
   if (hemV !== undefined && !pm) {
-    const sk = [U([-skTop, hip0 + 0.034]), U([skTop, hip0 + 0.034]), S([skHem, hemV]), S([-skHem, hemV])];
+    const hk = lerp(1, SKIRT_LATE, qb?.late ?? 0); // late turn: the hem flares to the profile skirt's width (cast.ts SKIRT_LATE)
+    const sk = [U([-skTop, hip0 + 0.034]), U([skTop, hip0 + 0.034]), S([hk * skHem, hemV]), S([-hk * skHem, hemV])];
     fill(o.skirt!, sk);
     planeShapes.push({pts: sk, color: o.skirt!});
   }

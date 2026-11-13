@@ -33,9 +33,9 @@ test('camPoly clips at the near plane and camPoint drops points behind the lens'
   assert.ok(quad.length >= 4 && quad.every(([x, y]) => Number.isFinite(x) && Number.isFinite(y)));
 });
 
-test('quarterGeo clamps the turn to 15..60 degrees and splits the silhouette into front and side plane', () => {
+test('quarterGeo clamps the turn to 15..75 degrees and splits the silhouette into front and side plane', () => {
   assert.equal(quarterGeo({}), undefined);
-  assert.ok(Math.abs(quarterGeo({quarter: 'left', quarterDeg: 90})!.qr - (60 * Math.PI) / 180) < 1e-9);
+  assert.ok(Math.abs(quarterGeo({quarter: 'left', quarterDeg: 90})!.qr - (75 * Math.PI) / 180) < 1e-9);
   assert.ok(Math.abs(quarterGeo({quarter: 'right', quarterDeg: 1})!.qr - (15 * Math.PI) / 180) < 1e-9);
   const g45 = quarterGeo({quarter: 'left'})!;
   assert.equal(g45.qdir, -1);
@@ -142,4 +142,10 @@ test('eight views (VA02): back three-quarter sectors between the profiles and th
     ['right', 'back-right', 'back-right', 'back-right', 'back', 'back', 'back', 'back-left', 'back-left', 'back-left', 'left']);
   assert.equal(viewNameAt(135), 'back');
   assert.deepEqual(viewFields('back-left', 30), {view: 'back', quarter: 'left', quarterDeg: 30});
+});
+
+test('follow sectors (orbit turn): profiles narrowed to 82.5..97.5, three-quarters widened; plain eight views unchanged', () => {
+  assert.deepEqual([22.4, 22.5, 82.4, 82.5, 97.5, 157.4, 157.5, 202.5, 262.4, 262.5, 277.5, 337.4, 337.5].map((d) => viewNameAt(d, true, true)),
+    ['front', 'front-right', 'front-right', 'right', 'back-right', 'back-right', 'back', 'back-left', 'back-left', 'left', 'front-left', 'front-left', 'front']);
+  assert.equal(viewNameAt(75, true), 'right');
 });

@@ -38,7 +38,23 @@ export const VIEW_SECTORS8: Record<ViewName, [number, number]> = {
   'left': [247.5, 292.5],
   'front-left': [292.5, 337.5],
 };
-const sectorsOf = (eight?: boolean) => (eight ? VIEW_SECTORS8 : VIEW_SECTORS);
+/**
+ * Eight views with the three-quarters following the camera (`quarterFollow` + `backQuarter`, 13 Nov 2026): the three-quarters run to
+ * 75 degrees (`QUARTER_MAX`), so the cut to the profile sits halfway between 75 and 90 and the orbit steps 15 degrees there instead of
+ * jumping from 60 to 90. The profiles keep a 15 degree band.
+ */
+export const VIEW_SECTORS8_FOLLOW: Record<ViewName, [number, number]> = {
+  'front': [337.5, 22.5],
+  'front-right': [22.5, 82.5],
+  'right': [82.5, 97.5],
+  'back-right': [97.5, 157.5],
+  'back': [157.5, 202.5],
+  'back-left': [202.5, 262.5],
+  'left': [262.5, 277.5],
+  'front-left': [277.5, 337.5],
+};
+type SectorOpts = {eight?: boolean; follow?: boolean};
+const sectorsOf = (eight?: boolean, follow?: boolean) => (eight ? (follow ? VIEW_SECTORS8_FOLLOW : VIEW_SECTORS8) : VIEW_SECTORS);
 const namesOf = (eight?: boolean): ViewName[] => (eight ? ['front', 'front-right', 'right', 'back-right', 'back', 'back-left', 'left', 'front-left'] : VIEW_NAMES);
 /** The `FigPose` fields that select a view. Spread them over a pose: `{...pose, ...viewFields(name)}`. */
 export type ViewFields = Pick<FigPose, 'view' | 'quarter' | 'quarterDeg'>;
@@ -55,15 +71,15 @@ export const viewFields = (name: ViewName, quarterDeg = 45): ViewFields => {
 };
 const norm = (deg: number) => ((deg % 360) + 360) % 360;
 /** Signed distance in degrees from `deg` into the sector (positive inside, negative outside; the margin to the nearer edge). */
-const sectorMargin = (name: ViewName, deg: number, eight?: boolean) => {
-  const [a, b] = sectorsOf(eight)[name], w = norm(b - a), x = norm(deg - a);
+const sectorMargin = (name: ViewName, deg: number, eight?: boolean, follow?: boolean) => {
+  const [a, b] = sectorsOf(eight, follow)[name], w = norm(b - a), x = norm(deg - a);
   return x < w ? Math.min(x, w - x) : -Math.min(x - w, 360 - x);
 };
 /** View of the sector holding an angle in degrees (0 = facing the camera, +90 = facing the screen right, see `viewAngle`). */
-export const viewNameAt = (deg: number, eight?: boolean): ViewName => {
+export const viewNameAt = (deg: number, eight?: boolean, follow?: boolean): ViewName => {
   const d = norm(deg);
   return namesOf(eight).find((n) => {
-    const [a, b] = sectorsOf(eight)[n];
+    const [a, b] = sectorsOf(eight, follow)[n];
     return a < b ? d >= a && d < b : d >= a || d < b;
   })!;
 };
@@ -71,9 +87,9 @@ export const viewNameAt = (deg: number, eight?: boolean): ViewName => {
  * The view of a figure at `at` facing `facing` ([x, z] horizontal world direction) as seen by camera `cam`. `hysteresis` (degrees,
  * default 0) with `prev` keeps the previous view until the angle has left its sector by that much (no flicker on a slow orbit).
  */
-export const figureView = (cam: YCam, at: V3, facing: [number, number], opts: {prev?: ViewName; hysteresis?: number; eight?: boolean} = {}): ViewName => {
-  const a = viewAngle(cam, at, facing), next = viewNameAt(a, opts.eight);
-  if (opts.prev && opts.hysteresis && next !== opts.prev && sectorMargin(opts.prev, a, opts.eight) > -opts.hysteresis) return opts.prev;
+export const figureView = (cam: YCam, at: V3, facing: [number, number], opts: {prev?: ViewName; hysteresis?: number} & SectorOpts = {}): ViewName => {
+  const a = viewAngle(cam, at, facing), next = viewNameAt(a, opts.eight, opts.follow);
+  if (opts.prev && opts.hysteresis && next !== opts.prev && sectorMargin(opts.prev, a, opts.eight, opts.follow) > -opts.hysteresis) return opts.prev;
   return next;
 };
 
