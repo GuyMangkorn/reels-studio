@@ -170,7 +170,7 @@ export const BODY_POSES: Record<BodyPoseId, BodyPoseSpec> = {
   P44: {
     name: 'hands_behind_back', face: 'neutral',
     description: 'Standing with both hands clasped behind the back (CP-P04). Waiting, hesitating, hiding something, a stern officer. Front and profile.',
-    front: {body: {rise: 0.01}, arms: arm2({to: [0.08, -0.4], via: [0.04, -0.255], behind: 'all'}, {to: [-0.08, -0.4], via: [-0.04, -0.255], behind: 'all'})},
+    front: {body: {rise: 0.01}, arms: arm2({to: [0.08, -0.4], via: [-0.05, -0.24], behind: 'all'}, {to: [-0.08, -0.4], via: [0.05, -0.24], behind: 'all'})},
     side: {body: {}, arms: side(fk(-20, -10), fk(-18, -8))},
   },
   P45: {

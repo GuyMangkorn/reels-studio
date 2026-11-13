@@ -25,8 +25,8 @@ Episode-specific files are under [Episodes](#episodes); shared topics come first
 
 - Docs: [pose sheet P01–P45](character-proportion-principles.md#cp-p-pose-sheet), [front-view arm depth](character-proportion-principles.md#cp-p-arm-depth)
 - Code: [kit/poses.ts](../src/painted/kit/poses.ts) (`POSES`, `poseArms`), [kit/pose-sheet.json](../src/painted/kit/pose-sheet.json); episode pose tracks [zcpaint/pose.ts](../src/painted/zcpaint/pose.ts); legacy SVG rig [rig/poses.ts](../src/rig/poses.ts)
-- Compositions: `KIT-POSES`, `KIT-POSES-CLOSE`, `WFOG-ARMBACK-SAMPLE` ([spike/ArmBackSheet.tsx](../src/painted/spike/ArmBackSheet.tsx))
-- Tests: [pose-library](../tests/pose-library.test.ts), [pov-forearm](../tests/pov-forearm.test.ts)
+- Compositions: `KIT-POSES`, `KIT-POSES-CLOSE`, `WFOG-ARMBACK-SAMPLE` ([spike/ArmBackSheet.tsx](../src/painted/spike/ArmBackSheet.tsx)), `KIT-ARM-DEPTH` ([kit/arm-depth-sheet.tsx](../src/painted/kit/arm-depth-sheet.tsx): arms at or away from the lens and bent elbows and knees, front, 3/4, profile and back, three people)
+- Tests: [pose-library](../tests/pose-library.test.ts), [pov-forearm](../tests/pov-forearm.test.ts), [arm-depth](../tests/arm-depth.test.ts)
 - Kit library: [poses-more.ts](../src/painted/kit/poses-more.ts), [poses-sheet.tsx](../src/painted/kit/poses-sheet.tsx) (`KIT-POSES`), [poses.mjs](../scripts/painted-kit/poses.mjs), [poses-motions.test.ts](../tests/poses-motions.test.ts)
 
 ## Expressions and faces
