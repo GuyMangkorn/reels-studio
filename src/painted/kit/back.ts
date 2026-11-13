@@ -124,8 +124,7 @@ export const drawFigureBack = (p: Painter, def: CastDef, g: Pt, unit: number, po
   function turnRun(legs0: PoseLeg[]) {
     const pr = bodyFrame(def, {...pose, view: 'right'}), pmode = pr.mode;
     if (!qb || !pm || !pmode) return legs0;
-    // A straight skirt (sarong) holds the stride short.
-    const depth = o.skirt ? RUN_DEPTH * 0.6 : RUN_DEPTH;
+    const depth = RUN_DEPTH;
     const out = legs0.map((l) => {
       const sg = l.hip[0] >= 0 ? 1 : -1, lp = pmode.legs.find((q) => q.far === sg > 0) ?? pmode.legs[0];
       const pt = (f: Pt, q: Pt): Pt => [(f[0] * qb.cos + qd * qb.sin * depth * (q[0] - lp.hip[0])) / kq, f[1] + qb.sin * (q[1] - pr.hipV - (f[1] - pm.hipV))];
@@ -138,18 +137,8 @@ export const drawFigureBack = (p: Painter, def: CastDef, g: Pt, unit: number, po
       .sort((x, y) => x.near - y.near).map((x) => x.leg);
   }
   type PoseLeg = {hip: Pt; knee: Pt; ankle: Pt; far: boolean; hide?: boolean};
-  /** Run legs as painted: turned (VA02) and, in a skirt, held in: a sarong lets the feet step and lift only a little, so each ankle
-   *  comes in toward under its hip and toward the ground, and the knee follows (the full stride swung the shins out of the cloth). */
-  const runLegs = (legs0: PoseLeg[]): PoseLeg[] => {
-    const legs = qb ? turnRun(legs0) : legs0;
-    if (!o.skirt) return legs;
-    const gV = Math.min(...legs.map((l) => l.ankle[1]));
-    return legs.map((l) => {
-      const ankle: Pt = [lerp(l.hip[0], l.ankle[0], 0.6), lerp(gV, l.ankle[1], 0.35)];
-      const mid: Pt = [(l.hip[0] + ankle[0]) / 2, (l.hip[1] + ankle[1]) / 2], knee0: Pt = [(l.hip[0] + l.ankle[0]) / 2, (l.hip[1] + l.ankle[1]) / 2];
-      return {...l, ankle, knee: [mid[0] + (l.knee[0] - knee0[0]) * 0.5, mid[1] + (l.knee[1] - knee0[1]) * 0.5]};
-    });
-  };
+  /** Run legs as painted: turned in the back three-quarter (VA02). A skirt's short step comes from `bodyFrame` (SARONG_STEP), as in every view. */
+  const runLegs = (legs0: PoseLeg[]): PoseLeg[] => (qb ? turnRun(legs0) : legs0);
   /** Legs of a body pose seen from behind (VA01): the front frame's hip, knee and ankle per leg (crouch legs as the front view draws them). */
   function paintPoseLegs() {
     if (!pm) return;
