@@ -88,7 +88,11 @@ export const sourceInputs = (root = '.', composition, inputProps = {}) => {
       return {hash: result.hash, scenes: result.scenes, own: result.own ?? result.scenes.map(() => []), warnings: result.warnings ?? []};
     }
     console.warn(`Scene cache reuse bypassed: ${result.error ?? 'render input discovery failed'}`);
-  } catch {console.warn('Scene cache reuse bypassed: render input helper did not complete');}
+  } catch {
+    // A helper that never printed JSON (spawn refused in a sandbox, 60 s timeout under load, killed, tsx missing) looked like a bare "did not complete"; say which.
+    const why = [run.error ? `spawn error ${run.error.code ?? run.error.message}` : '', run.signal ? `signal ${run.signal}` : '', run.status != null ? `exit ${run.status}` : '', String(run.stderr ?? '').trim().split('\n').slice(-2).join(' | ').slice(0, 300)].filter(Boolean).join('; ');
+    console.warn(`Scene cache reuse bypassed: render input helper did not complete${why ? ` (${why})` : ''}`);
+  }
   return null;
 };
 /**

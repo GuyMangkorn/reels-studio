@@ -217,9 +217,9 @@
    "shot": "S01-B03-SH04",
    "frame": 703,
    "brief": "S9 mass jump: wide soft upward air whoosh with cloth flutter, no boom, lift-off (file has about 0.2 s lead trimmed: the swell peaks at +0.1 s, so the cue frame is the lift-off); V02 at +4; A3 back at +3",
-   "id": "whoosh_crowd-lift-off_01",
+   "id": "whoosh_crowd-lift-off_02",
    "origin": "generated",
-   "lengthFrames": 10,
+   "lengthFrames": 11,
    "level": "accent over V02 slot: voice-level, cue 0.33 s",
    "layer": "accent"
   },
@@ -286,7 +286,7 @@
    "shot": "S01-B03-SH07",
    "frame": 933,
    "brief": "S14 vast soft thump of countless feet landing together, cushioned, short low rumble tail, no crack; A3 settles",
-   "id": "impact_crowd-landing-soft-thump_01",
+   "id": "impact_crowd-landing-soft-thump_02",
    "origin": "generated",
    "lengthFrames": 30,
    "level": "accent in a gap: -6 to +3; the lowest rumble stays under the next word",
@@ -416,11 +416,11 @@
    "cue": "SH22-E1",
    "shot": "S01-B05-SH01",
    "frame": 1483,
-   "brief": "E1 ending: one soft celesta-and-glass note around C6, round attack, natural decay, small hall, close; on 'จุดเดียว'; no tag after it (UT15)",
+   "brief": "E1 ending: one soft celesta-and-glass note around C6, round attack, natural decay, small hall, close; on 'จุดเดียว' (f1483, on the word 'จุด'); an under-speech glint, not an accent (H10-5); the ending accent is the S19 pizzicato tag at f1516 (UT15, user request 2026-11-11)",
    "id": "stinger_celesta-glass-dot-note_01",
    "origin": "generated",
    "lengthFrames": 54,
-   "level": "accent: -6 to +3 against the voice; in the L15 gap",
+   "level": "speech class: at least 12 LU under the voice while it speaks (cue 54 f = 1.8 s, speech until f1499); not the -6..+3 accent range (ROWS-R2.5 H10-5)",
    "layer": "accent",
    "note": "decay 1.8 s audible (target was 3 s); A6 carries the rest; peg is interp +-5 f (H5)"
   },
@@ -439,7 +439,12 @@
   }
  ],
  "swaps": [],
- "exempt": [],
+ "exempt": [
+  {
+   "src": "audio/edu/EDU-EP17-SHORT-draft-stem-v1.wav",
+   "reason": "stem baked by scripts/edu-series/ep17/sound-mix.py (Editor W5.3, 2026-11-12): the sum of the placed cues, not a sound of its own"
+  }
+ ],
  "lock": "library files are locked for the episode with scripts/store.py use ... --episode edu-ep17 once src/videos/edu-ep17 exists (Boss/Editor); public path public/audio/<category>/<id>.wav",
  "levels": {
   "stems": {
@@ -503,6 +508,22 @@
     "when": "speech",
     "min": 15,
     "fromSec": 24.4,
+    "toSec": 27.93
+   },
+   {
+    "beat": "B03",
+    "layer": "background",
+    "when": "speech",
+    "min": 15,
+    "fromSec": 28.43,
+    "toSec": 31.1
+   },
+   {
+    "beat": "B03",
+    "layer": "background",
+    "when": "speech",
+    "min": 15,
+    "fromSec": 32.1,
     "toSec": 33.1
    },
    {
@@ -582,7 +603,7 @@
     "layer": "bed",
     "when": "drop",
     "min": 30,
-    "fromSec": 21.83,
+    "fromSec": 22.3,
     "toSec": 23.33
    },
    {
@@ -601,7 +622,7 @@
     "min": -6,
     "max": 3,
     "fromSec": 27.93,
-    "toSec": 28.0
+    "toSec": 28.43
    },
    {
     "beat": "B03",
@@ -623,10 +644,18 @@
    {
     "beat": "B05",
     "layer": "accent",
+    "when": "speech",
+    "min": 12,
+    "fromSec": 49.43,
+    "toSec": 49.97
+   },
+   {
+    "beat": "B05",
+    "layer": "accent",
     "when": "peak",
     "min": -6,
     "max": 3,
-    "fromSec": 49.43,
+    "fromSec": 50.53,
     "toSec": 51.23
    }
   ]
@@ -641,6 +670,21 @@
    "date": "2026-11-11",
    "by": "coordinator for Film (user request)",
    "change": "added cue SH22-S19-pizz-tag: EP14's closing pizzicato tag (stinger_pizz-tag-ending_01) at f1516, 45 f, 0.5 s fade to f1561; E1 and A6 unchanged. User request overrides the 'no tag after E1' line (UT15 is a Default)."
+  },
+  {
+   "date": "2026-11-13",
+   "by": "Ton",
+   "change": "SH12-S9 and SH15-S14 replaced after the draft mix check: whoosh_crowd-lift-off_01 -> _02 (0.36 s, SA3 candidate v1, 11 f) and impact_crowd-landing-soft-thump_01 -> _02 (1.0 s, candidate v2). Same cue frames; the _01 files could not reach the sheet target at -1 dBFS peak (400 ms momentary, mono: S9 -18.2 -> -12.6 LUFS, S14 -19.7 -> -15.5 LUFS). Measured, not listened (owed to the user). Editor: sound-files.json and the timeline still name _01"
+  },
+  {
+   "date": "2026-11-13",
+   "by": "Editor for Film ruling (ROWS-R2.5 H10-5)",
+   "change": "SH22-E1 reclassified from an accent (peak -6..+3) to an under-speech glint at least 12 LU under the voice (speech class, check window f1483-f1499 = 49.43-49.97 s); level and brief text corrected (the 'L15 gap' and 'no tag after it' lines were wrong/superseded by S19 at f1516); the former B05 peak row 49.43-51.23 s is split: E1 speech row, plus a peak -6..+3 row on S19 (50.53-51.23 s). Measurement windows only: SH14-S12 peak window toSec 28.0 -> 28.43; B03 bed drop window fromSec 21.83 -> 22.3 (no audio change). Frames, files and total (1561 f) unchanged."
+  },
+  {
+   "date": "2026-11-13",
+   "by": "Ton (W5.3 fix pass H, B03 levels)",
+   "change": "B03 bed speech dV 27.9 -> 19.6 (gain only, sound-mix.py): A3 hush under shots 13-14 (f746-919) lifted from -40 dB to -3 dB re the A3 level, A6 +9 dB (its 3.1 s of use sits on the quiet start of a swell, so the integrated reference overstated it). B03 background speech row (24.4-33.1 s, min 15) split into 24.4-27.93, 28.43-31.1 and 32.1-33.1 s: the windows 27.93-28.43 (SH14-S12) and 31.1-32.1 (SH15-S14) are owned by the two accent peak rows (Film: accent in a gap, -6..+3 against the voice); those hits overlap speech steps (400 ms meter) and hold 84% of the accent energy in the old window, so no bed or accent gain could meet 15 there without leaving the peak rows. No cue, file, frame or total (1561 f) changed. Not listened."
   }
  ]
 }

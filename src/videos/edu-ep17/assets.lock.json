@@ -1,0 +1,114 @@
+{
+  "public/audio/bed/bed_playful-count-pizz-marimba_01.wav": {
+    "store": "library/sound/music/bed/bed_playful-count-pizz-marimba_01.wav",
+    "sha256": "eb82f98425249f9f5aecd1d2bcee6590c5e1be552f2518c476dfa05207abe0bf"
+  },
+  "public/audio/city/city_still-night-air_01.wav": {
+    "store": "library/sound/ambience/city/city_still-night-air_01.wav",
+    "sha256": "e23ad796b110223bf868caf1b184aee0d5012d0ae60f5ebc78a9227cc9f7d4d1"
+  },
+  "public/audio/crowd/crowd_murmur-far-bangkok_01.wav": {
+    "store": "library/sound/ambience/crowd/crowd_murmur-far-bangkok_01.wav",
+    "sha256": "a63eec260f0b9baa19a81cd13ea6aeb82ab379ba577b3899ea87f532c9e524dd"
+  },
+  "public/audio/crowd/crowd_packed-street-shuffle_01.wav": {
+    "store": "library/sound/ambience/crowd/crowd_packed-street-shuffle_01.wav",
+    "sha256": "337d7cd0e9056760f3560231809be4432144280dae284f48c41f3f3195f023e4"
+  },
+  "public/audio/crowd/crowd_stadium-day-roar_01.wav": {
+    "store": "library/sound/ambience/crowd/crowd_stadium-day-roar_01.wav",
+    "sha256": "08f7939e2f2d74a173fe5facf9cdc8e2719aa1762e6b0b040c5c1ffb0a739ee2"
+  },
+  "public/audio/crowd/crowd_stadium-night-bass-cheer_01.wav": {
+    "store": "library/sound/ambience/crowd/crowd_stadium-night-bass-cheer_01.wav",
+    "sha256": "77864c9d32460fb34d0688de6e2c7f2b1b1031e11b3619b3bd9082540d718a63"
+  },
+  "public/audio/outdoor/outdoor_aerial-town-air_01.wav": {
+    "store": "library/sound/ambience/outdoor/outdoor_aerial-town-air_01.wav",
+    "sha256": "59a6fc2fe134762cf01000636cf75faa4154c24cd852eb7e7615dc3b9928a51f"
+  },
+  "public/audio/space/space_thin-airy-pad_01.wav": {
+    "store": "library/sound/ambience/space/space_thin-airy-pad_01.wav",
+    "sha256": "3df67c9b1a138a733092d981657ae78a44e0cd443f4c5d9366ad361bf7f5a878"
+  },
+  "public/sfx/action/action_brass-pan-fling-tink_01.wav": {
+    "store": "library/sound/sfx/action/action_brass-pan-fling-tink_01.wav",
+    "sha256": "d864e6424310aa5e86e6e6dc5a3ce2b42afcc20e3425f68f5db81ceded1fff61"
+  },
+  "public/sfx/action/action_clave-count-knock_01.wav": {
+    "store": "library/sound/sfx/action/action_clave-count-knock_01.wav",
+    "sha256": "9ef1edee031e59a1b4c13413d900ed5f9bf4dec680476516c251dc1ac4fc7bd3"
+  },
+  "public/sfx/action/action_clave-count-knock_02.wav": {
+    "store": "library/sound/sfx/action/action_clave-count-knock_02.wav",
+    "sha256": "36537359de1ec46dc9a4bf685f227105e8a682ac26754f168b285975b899669c"
+  },
+  "public/sfx/action/action_clave-count-knock_03.wav": {
+    "store": "library/sound/sfx/action/action_clave-count-knock_03.wav",
+    "sha256": "52cab95bd16b80bbf33c37eb759da90638218208da7e47927eac18a0baac8a13"
+  },
+  "public/sfx/comedy/comedy_pluck-knock-flinch_01.wav": {
+    "store": "library/sound/sfx/comedy/comedy_pluck-knock-flinch_01.wav",
+    "sha256": "6363c810931d41c478048c9b3bc5ccecd45cc163eb23034a4f0d9691b1e2748c"
+  },
+  "public/sfx/crowd/crowd_arrival-wave-feet_01.wav": {
+    "store": "library/sound/sfx/crowd/crowd_arrival-wave-feet_01.wav",
+    "sha256": "3a1d586cedff859decf8a79ee300ca52291cac9f15a7804f8fdcd4e56fde71ef"
+  },
+  "public/sfx/crowd/crowd_stands-bounce-thud_01.wav": {
+    "store": "library/sound/sfx/crowd/crowd_stands-bounce-thud_01.wav",
+    "sha256": "744a3963f58a26cae6fc1be54dcd52d3ab1cc5bacd6a61313fcdaf21d39c031b"
+  },
+  "public/sfx/foley/foley_crowd-crouch-dip_01.wav": {
+    "store": "library/sound/sfx/foley/foley_crowd-crouch-dip_01.wav",
+    "sha256": "abe225d9a1335bd60445435d46c6ebf39a14160246921a3f407c082cc65fb1ce"
+  },
+  "public/sfx/foley/foley_pen-recorder-scratch_01.wav": {
+    "store": "library/sound/sfx/foley/foley_pen-recorder-scratch_01.wav",
+    "sha256": "6e49e231938328545b26c0d89f2950b2011a7b0eac58475ea8070a1532ad323d"
+  },
+  "public/sfx/foley/foley_shoulder-squeeze_01.wav": {
+    "store": "library/sound/sfx/foley/foley_shoulder-squeeze_01.wav",
+    "sha256": "ce995944c8f4ef16dc19beb6ca7b9f1e5c6ce4fbd25a23125499d0660b901afd"
+  },
+  "public/sfx/impact/impact_brass-pan-stop-thud_01.wav": {
+    "store": "library/sound/sfx/impact/impact_brass-pan-stop-thud_01.wav",
+    "sha256": "5751d487e0ff8989d924b24db581a0204a5a6bfa7ebcaf73d87456d2147a2770"
+  },
+  "public/sfx/impact/impact_crowd-landing-soft-thump_02.wav": {
+    "store": "library/sound/sfx/impact/impact_crowd-landing-soft-thump_02.wav",
+    "sha256": "6eee76769ef650e7348de9abd20bc7c92dd7db94bc070a3287c007a65c9c4a83"
+  },
+  "public/sfx/reveal/reveal_glass-shimmer-soft_01.wav": {
+    "store": "library/sound/sfx/reveal/reveal_glass-shimmer-soft_01.wav",
+    "sha256": "89ff0fa14a783ff3b312762d7a00d391edf5df4f49cd01389238cbc9367901c7"
+  },
+  "public/sfx/stinger/stinger_celesta-glass-dot-note_01.wav": {
+    "store": "library/sound/sfx/stinger/stinger_celesta-glass-dot-note_01.wav",
+    "sha256": "c49f7d85fe2471335cb3557f080c30d1cd8be660f508b1c5f0319844222b154c"
+  },
+  "public/sfx/stinger/stinger_pizz-tag-ending_01.wav": {
+    "store": "library/sound/sfx/stinger/stinger_pizz-tag-ending_01.wav",
+    "sha256": "45f8d7001a16dfdfc29b81f2af713c7ef064d4a2e157abe0e8d89ebc6e0e14b6"
+  },
+  "public/sfx/water/water_ice-settle-tick_01.wav": {
+    "store": "library/sound/sfx/water/water_ice-settle-tick_01.wav",
+    "sha256": "b5b95b9fc45dc5c62c2134852e8d5f175403f99dbe8455db1d6b0a8c2cbc297a"
+  },
+  "public/sfx/whoosh/whoosh_crowd-lift-off_02.wav": {
+    "store": "library/sound/sfx/whoosh/whoosh_crowd-lift-off_02.wav",
+    "sha256": "710771bf07cd11cd8c9443eaa9746035da1de98fe858173709bc2354d4db07fd"
+  },
+  "public/sfx/whoosh/whoosh_fast-slide_01.wav": {
+    "store": "library/sound/sfx/whoosh/whoosh_fast-slide_01.wav",
+    "sha256": "08c11e905c504a34de88b161a52d1cecb1f461503af25a588e0718db10af0986"
+  },
+  "public/sfx/whoosh/whoosh_height-wind-rush_01.wav": {
+    "store": "library/sound/sfx/whoosh/whoosh_height-wind-rush_01.wav",
+    "sha256": "3b7dab7960e0528930b87184a63a635d6245d283e08ee56caaf657e13b0e6b3a"
+  },
+  "public/sfx/whoosh/whoosh_sky-dive-descend_01.wav": {
+    "store": "library/sound/sfx/whoosh/whoosh_sky-dive-descend_01.wav",
+    "sha256": "5f2ad1f87112f5b2e0b6ccd3edb77733422b2fb09176303d5e3b7eec901692e3"
+  }
+}
