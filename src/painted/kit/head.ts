@@ -11,8 +11,11 @@ import {densify, polarUnion, quarterLate, simplify, smooth01, splitByCurve} from
 export type Brow = 'flat' | 'up' | 'worry' | 'angry' | 'quirk';
 /** `none` draws no eye at all (the shot paints its own eyes over a plain face, e.g. a blind-white infected). */
 export type Eyes = 'dot' | 'wide' | 'half' | 'shut' | 'none';
-/** `grin`, `smirk` and `shout` were added for the expression presets (`expressions.ts`, 1 Nov 2026); the first seven are the WFOG/ZC set. */
-export type Mouth = 'flat' | 'smile' | 'o' | 'wavy' | 'frown' | 'gasp' | 'talk' | 'grin' | 'smirk' | 'shout';
+/**
+ * `grin`, `smirk` and `shout` were added for the expression presets (`expressions.ts`, 1 Nov 2026); the first seven are the WFOG/ZC set.
+ * `gape` (an open oval whose height follows `open`: panting, a gasp) and `clench` (gritted teeth) are the activity mouths (`activity-mouths.ts`, 13 Nov 2026).
+ */
+export type Mouth = 'flat' | 'smile' | 'o' | 'wavy' | 'frown' | 'gasp' | 'talk' | 'grin' | 'smirk' | 'shout' | 'gape' | 'clench';
 /**
  * `open` 0..1 opens a `talk` mouth (pose tracks drive it; TTS amplitude can replace it later) or sizes a `shout` mouth;
  * `squint` closes the lids.
@@ -66,6 +69,7 @@ const jawOf = (face: FaceState): number => {
   if (m === 'shout') return Math.min(1, o ?? 1);
   if (m === 'o') return 0.4 * Math.min(1, o ?? 1);
   if (m === 'gasp') return 0.6 * Math.min(1, o ?? 1);
+  if (m === 'gape') return 0.15 + 0.55 * Math.max(0, Math.min(1, o ?? 1));
   if (m === 'grin') return 0.5;
   if (m === 'smile') return o === undefined || o >= 0.3 ? 0.2 : 0;
   return 0;
@@ -699,6 +703,21 @@ export const paintHeadFront = (p: Painter, seed: number, cx: number, cy: number,
     fill(MOUTH, pts, 4);
     ink(pts, 1.0, 0.4, true);
   }
+  if (m === 'gape') {
+    // Activity mouth (13 Nov 2026): an open oval, wider than tall, whose height follows `open` (a pant cycle, a gasp); the turned head drops the lower edge with the jaw.
+    const o = Math.max(0, Math.min(1, face.open ?? 1)), dj = turn ? JAW_DROP * 0.8 * jawT : 0;
+    const pts = ell(0, my + 0.03 + dj / 2, 0.17, 0.035 + (turn ? 0.05 : 0.11) * o + dj / 2, 16);
+    fill(MOUTH, pts, 4);
+    ink(pts, 1.0, 0.4, true);
+  }
+  if (m === 'clench') {
+    // Activity mouth (13 Nov 2026): gritted teeth, a wide flat band of teeth with the corners pulled down, the bite line across and three tooth gaps.
+    const pts: Pt[] = [[-0.25, my + 0.03], [-0.19, my - 0.045], [0, my - 0.055], [0.19, my - 0.045], [0.25, my + 0.03], [0.17, my + 0.065], [0, my + 0.07], [-0.17, my + 0.065]];
+    fill(WHITE, pts, 4);
+    ink(pts, 1.1, 0.4, true);
+    ink([[-0.22, my + 0.012], [0, my + 0.008], [0.22, my + 0.012]], 0.8, 0.3);
+    for (const x of [-0.1, 0, 0.1]) ink([[x, my - 0.04], [x, my + 0.055]], 0.6, 0);
+  }
   if (m === 'grin') {
     // Wide open laugh: a deep D with a strip of teeth along the top.
     const pts: Pt[] = [[-0.42, my - 0.1], [0.42, my - 0.1]];
@@ -924,6 +943,14 @@ export const paintHeadSide = (p: Painter, seed: number, cx: number, cy: number, 
       fill(MOUTH, J([[0.58, 0.52], [0.94, 0.5], [0.9, 0.7], [0.78, 0.8], [0.64, 0.74]]), 4);
       fill(WHITE, [[0.62, 0.53], [0.92, 0.51], [0.91, 0.6], [0.64, 0.62]], 3);
     } else if (m === 'smirk') ink([[0.7, 0.66], [0.84, 0.66], [0.96, 0.58]], 1.3, 0.5, false);
+    else if (m === 'gape') fill(MOUTH, J(ell(0.83, 0.61, 0.095, 0.03 + 0.05 * Math.max(0, Math.min(1, face.open ?? 1)), 12)), 4); // the jaw adds the height
+    else if (m === 'clench') {
+      // Gritted teeth in profile: a plain strip of teeth with the bite line, no drawn lips (7 Nov 2026 rule); the jaw stays shut.
+      const pts: Pt[] = [[0.72, 0.6], [0.95, 0.59], [0.94, 0.655], [0.73, 0.665]];
+      fill(WHITE, pts, 4);
+      ink(pts, 1.1, 0.3, true);
+      ink([[0.73, 0.628], [0.945, 0.622]], 0.8, 0, false);
+    }
     else if (m === 'shout') fill(MOUTH, J(ell(0.76, 0.64, 0.07 + 0.03 * (face.open ?? 1), 0.08, 14)), 4); // the jaw adds the height
     else if (m === 'frown') ink([[0.7, 0.66], [0.8, 0.6], [0.92, 0.64]], 1.4, 0.6, false);
     else if (m === 'wavy') ink([[0.7, 0.62], [0.76, 0.59], [0.82, 0.63], [0.88, 0.59], [0.93, 0.62]], 1.1, 0.5, false);

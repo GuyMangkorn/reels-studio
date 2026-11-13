@@ -1,3 +1,4 @@
+import {activityFace, type ActivityOpts} from './activity-mouths';
 import {bodyFrame, drawFigure, type CastDef, type FigAnchors, type FigPose} from './cast';
 import {ell, washAt} from './draw';
 import {EXPRESSIONS, type ExpressionId} from './expressions';
@@ -17,7 +18,7 @@ import type {Item} from './world';
 // `edu04/checkout.ts` whoItem, `edu03/park.ts` ownerItem; 7 Nov 2026). A placement tool: which person, pose and face is the
 // scene sheet's casting line.
 
-export type FigureAtOpts = {
+export type FigureAtOpts = ActivityOpts & {
   /** Ground point under the feet (metres). */
   at: V3;
   /** Four-view figure squared to the lens: 'front' faces the camera, 'back' faces away, 'left'/'right' side-on (default 'front'). */
@@ -35,6 +36,8 @@ export type FigureAtOpts = {
   backQuarter?: boolean;
   /** Pose sheet id (default P01). A pose missing a side view falls back to P01 (kit `poseFor`). */
   pose?: AnyPoseId;
+  /** Expression id (default neutral). The mouth follows the activity (`activity-mouths.ts`): P38 pants, P26 clenches, a `talk` face cycles, unless
+   *  `faceState` sets `mouth` or `open`; `activity` forces one (`surprise` at `activityAt`) or turns it off (false, `ACTIVITY_MOUTHS_OFF`). */
   face?: ExpressionId; faceState?: Partial<FaceState>;
   /** Any other `FigPose` fields (lean, headCock, hand targets, warm ...), applied last. */
   fig?: Partial<FigPose>;
@@ -133,6 +136,7 @@ export const headPerspective = (c: YCam, at: V3, height: number): number => {
 /** All view cues off (`pitchCue`, `quarterFollow`, `backQuarter`): the drawing before they became the default on 13 Nov 2026. Spread it into
  *  the options of episodes made before then (edu11, edu14, edu15), so a re-render matches what was delivered. */
 export const VIEW_CUES_OFF = {pitchCue: false, quarterFollow: false, backQuarter: false} as const;
+export {ACTIVITY_MOUTHS_OFF} from './activity-mouths';
 /** The view fields a placement resolves to for this camera (four-view squared to the lens, or six-view from a world facing). */
 export const viewAtCam = (c: YCam, o: Pick<FigureAtOpts, 'at' | 'view' | 'facing' | 'prevView' | 'hysteresis' | 'quarterFollow' | 'backQuarter'>): ViewFields => {
   if (!o.facing) return {view: figureView4(c, o.at, squareToCam(c, o.at, o.view ?? 'front'))};
@@ -157,7 +161,8 @@ export const paintFigureAt = (p: Painter, c: YCam, def: CastDef, o: FigureAtOpts
   if (o.shadow !== false) washAt(p, (o.seed ?? def.seed) + 5101, o.shadow?.color ?? '#3b3226', o.shadow?.op ?? 60, ell(g[0], g[1], 0.32 * u, 0.06 * u, 16), 0.15, 0.2);
   // pitchCue (VA03): the head takes its own perspective size (`headPerspective`), the body keeps the height; the rig shares it out.
   const pose = poseFor(o.pose ?? 'P01', def, g as Pt, u, vf.view === 'back' ? 'front' : vf.view);
-  const face = {...EXPRESSIONS[o.face ?? 'neutral'], ...(o.faceState ?? {})} as FaceState;
+  const preset = o.face ?? 'neutral', fs = o.faceState ?? {};
+  const face = activityFace({...EXPRESSIONS[preset], ...fs} as FaceState, {activity: o.activity, activityAt: o.activityAt, pose: o.pose ?? 'P01', t: o.t, seed: o.seed ?? def.seed, preset, sceneMouth: fs.mouth !== undefined || fs.open !== undefined});
   const q = o.tint ? tintPainter(p, o.tint.to, o.tint.u, {mul: o.tint.mul, brush: true}) : p;
   const cue = o.pitchCue ?? true;
   const pitch = cue ? headPitchOf(headElevation(c, o.at, def.height * (o.scale ?? 1))) : 0;
