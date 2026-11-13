@@ -3,7 +3,7 @@ import {INK, VD18, capsule, ell, glaze, inkLine, limb, lineOf, modelPart, solid,
 import {hatFront} from './gear';
 import {CHIN, HEAD_SPAN, headOutline, type HeadStyle} from './head';
 import {hairFront, isNewCut} from './hair';
-import {mixColor, type Painter, type Pt} from './painter';
+import {lerp, mixColor, type Painter, type Pt} from './painter';
 
 // BACK view of the recurring cast (kit view `'back'`, added 3 Nov 2026 for EG-EP02 `คุณ`; generalised from the EP01 episode figure
 // `everyone-gone/figure-back.ts`). `drawFigure` dispatches `pose.view === 'back'` here, so a back figure takes the same `CastDef`,
@@ -17,7 +17,11 @@ import {mixColor, type Painter, type Pt} from './painter';
 //   belt, skirt, overcoat, `light`, `silhouette`. No face is drawn; `face`, `head` and holds are ignored.
 // - `sit` (EDU-EP07 W5.2): seated on a stool or chair seen from behind: the whole figure drops to the seated hip height (`bodyFrame` sit hipV) and the legs are
 //   replaced by the pelvis block on the seat (the thighs run away from the lens, so none show). The caller draws the seat and the ground shadow stays off.
-// - Not supported (cut to front or profile for these): crouch, bend, floorSit, kneel, squat, run, lie, props in hand.
+// - Body poses (KIT-VIEW-AUDIT VA01, 13 Nov 2026): `crouch` (and `squat`, which the front takes as crouch), `kneel`, `floorSit` and `run` take the
+//   front frame's legs (`bodyFrame` with view 'front'; they are left-right symmetric, so the same picture points serve from behind). The upper body
+//   drops to that hip and foreshortens like the front; the seat (pelvis block) shows under the back when the hips are low, and kneeling soles face the
+//   lens below the knees. A pose with none of these fields draws exactly as before.
+// - Not supported (cut to front or profile for these): bend, lie, props in hand.
 // - No three-quarter back (user, 4 Nov 2026: the back-left/back-right views barely read, the hair covers the turn). `FigPose.quarter` is
 //   a front-view field; this view ignores it and draws the plain back. Depth from behind comes from camera moves in the set (`ycam.ts`).
 
@@ -53,10 +57,16 @@ export const drawFigureBack = (p: Painter, def: CastDef, g: Pt, unit: number, po
   const skin = def.head.skin, skinShade = mixColor(skin, VD18.shadow, 0.2);
 
   const sitK = Math.max(0, Math.min(1, pose.sit ?? 0)), drop = sitK ? sitK * (hip0 - bodyFrame(def, {view: 'front', sit: 1}).hipV) : 0;
-  const S = ([u, v]: Pt): Pt => [g[0] + u * unit, g[1] - (v + bob - drop) * unit];
+  // Body pose from behind (VA01): the front frame when crouch, kneel, floorSit or run is set; undefined = the old standing / walking / seated drawing.
+  const fr = sitK ? undefined : bodyFrame(def, {...pose, view: 'front'});
+  const pm = fr && (fr.mode || fr.c > 0) ? fr : undefined;
+  const pmDrop = pm ? hip0 - pm.hipV + (pm.mode ? 0 : pm.bob) : 0, tS = pm ? pm.tScale : 1;
+  const S = ([u, v]: Pt): Pt => [g[0] + u * unit, g[1] - (v + bob - drop - pmDrop) * unit];
+  /** Picture point of an absolute body-frame point (the `pm` legs carry their own hip height). */
+  const S0 = ([u, v]: Pt): Pt => [g[0] + u * unit, g[1] - v * unit];
   /** Upper body: breath rise above the hip, then lean about the hip (toward screen right). */
   const U = ([u, v]: Pt): Pt => {
-    const dv = (v - hip0) + rise * Math.max(0, Math.min(1, (v - hip0) / (shV0 - hip0))), a = lean;
+    const dv = (v - hip0) * tS + rise * Math.max(0, Math.min(1, (v - hip0) / (shV0 - hip0))), a = lean;
     return S([u * Math.cos(a) + dv * Math.sin(a), hip0 + dv * Math.cos(a) - u * Math.sin(a)]);
   };
   const Uq = (pts: Pt[]) => pts.map(U), Sq = (pts: Pt[]) => pts.map(S);
@@ -81,12 +91,60 @@ export const drawFigureBack = (p: Painter, def: CastDef, g: Pt, unit: number, po
   const bodyC = o.coat ?? o.jacket ?? o.shirt;
   const hemV = o.skirt ? o.skirtHem ?? knee0 + 0.04 : undefined;
   const wv = (s: number) => Math.max(0, Math.sin(ph + (s > 0 ? 0 : Math.PI))) * 0.05 * stride;
+  /** Legs of a body pose seen from behind (VA01): the front frame's hip, knee and ankle per leg (crouch legs as the front view draws them). */
+  function paintPoseLegs() {
+    if (!pm) return;
+    const legs = pm.mode ? pm.mode.legs : ([-1, 1] as const).map((s) => {
+      const ankle: Pt = [s * (0.08 + 0.05 * pm.c), ankleV];
+      return {hip: [s * 0.0725, pm.hipV] as Pt, knee: [s * (0.077 + 0.17 * pm.c), lerp((pm.hipV + ankle[1]) / 2, 0.46, pm.c)] as Pt, ankle, far: false, hide: false};
+    });
+    // The torso back (translucent wash) reaches down to this height and out to this half-width: a thigh starts where it leaves that block, so no
+    // trouser colour shows through the cloth (the same reason as the standing thigh top below).
+    const hemAbs = pm.hipV - 0.07 * tS, halfW = hw + 0.024;
+    const inside = ([u, v]: Pt) => Math.abs(u) < halfW && v > hemAbs;
+    const sole = mixColor(o.shoes, '#d8ccb6', 0.45);
+    for (const l of legs) {
+      const s = l.hip[0] >= 0 ? 1 : -1;
+      const pc = mixColor(o.pants, '#000000', s > 0 ? 0.05 : 0);
+      let k0 = 0;
+      while (k0 < 1 && inside([l.hip[0] + (l.knee[0] - l.hip[0]) * k0, l.hip[1] + (l.knee[1] - l.hip[1]) * k0])) k0 += 0.05;
+      const top: Pt = [l.hip[0] + (l.knee[0] - l.hip[0]) * k0, l.hip[1] + (l.knee[1] - l.hip[1]) * k0];
+      if (k0 < 0.95) fill(pc, limb(top, l.knee, 0.105, 0.095).map(S0));
+      fill(pc, ell(l.knee[0], l.knee[1], 0.052, 0.052, 12).map((q) => S0(q as Pt)), false);
+      if (l.hide) {
+        // Kneeling: the shin lies on the ground toward the lens, so it shows as a short block under the knee ending in the sole.
+        // The soles face the lens, heels up and toes pointing in: tall pale ovals with a heel line, so they do not read as standing shoes.
+        const foot: Pt = [l.knee[0] * 0.75, -0.005];
+        fill(pc, limb(l.knee, [foot[0], foot[1] + 0.05], 0.095, 0.085).map(S0));
+        fill(sole, ell(foot[0], foot[1], 0.046, 0.08, 14, s * 0.18).map((q) => S0(q as Pt)));
+        stroke(sole, [S0([foot[0] - 0.03, foot[1] + 0.035]), S0([foot[0] + 0.03, foot[1] + 0.035])], 0.7);
+        continue;
+      }
+      if (o.shorts) {
+        const at = (k: number): Pt => [l.knee[0] + (l.ankle[0] - l.knee[0]) * k, l.knee[1] + (l.ankle[1] - l.knee[1]) * k];
+        fill(skin, limb(at(0.1), l.ankle, 0.088, 0.066).map(S0));
+        fill(o.shorts.sock, limb(at(0.84), [l.ankle[0], l.ankle[1] - 0.005], 0.07, 0.066).map(S0));
+      } else fill(pc, limb(l.knee, l.ankle, 0.095, 0.08).map(S0));
+      fill(o.shoes, ell(l.ankle[0] + s * 0.01, l.ankle[1] - 0.012, 0.062, 0.032, 14).map((q) => S0(q as Pt)));
+      // A foot off the ground (run) shows its sole from behind.
+      if (l.ankle[1] > ankleV + 0.04) fill(sole, ell(l.ankle[0] + s * 0.01, l.ankle[1] - 0.03, 0.05, 0.03, 12).map((q) => S0(q as Pt)), false);
+    }
+    // Low hips (crouch, kneel, floor): the seat shows below the back, over the thigh tops.
+    if (pm.mode?.kind !== 'run' && (pm.c > 0.3 || pm.mode)) {
+      const pc = o.skirt ?? o.pants;
+      // Never below the ground (floor sit): the seat flattens onto it.
+      const G0 = (pts: Pt[]) => pts.map(([u, v]) => S0([u, Math.max(0.005, v - pmDrop)]));
+      fill(pc, G0([[-hw - 0.024, hip0 - 0.05], [hw + 0.024, hip0 - 0.05], [hw + 0.03, hip0 - 0.12], [hw + 0.012, hip0 - 0.17], [-hw - 0.012, hip0 - 0.17], [-hw - 0.03, hip0 - 0.12]]));
+      stroke(pc, G0([[0, hip0 - 0.07], [0, hip0 - 0.17]]), 0.8);
+    }
+  }
   if (sitK) { // seated: the pelvis block on the seat, no legs (they run away from the lens)
     const pc = o.skirt ?? o.pants;
     fill(pc, Sq([[-hw - 0.024, hip0 - 0.05], [hw + 0.024, hip0 - 0.05], [hw + 0.03, hip0 - 0.12], [hw + 0.012, hip0 - 0.17], [-hw - 0.012, hip0 - 0.17], [-hw - 0.03, hip0 - 0.12]]));
     stroke(pc, Sq([[0, hip0 - 0.07], [0, hip0 - 0.17]]), 0.8);
   }
-  for (const s of sitK ? ([] as (-1 | 1)[]) : ([-1, 1] as const)) {
+  if (pm) paintPoseLegs();
+  for (const s of sitK || pm ? ([] as (-1 | 1)[]) : ([-1, 1] as const)) {
     const lift = pose.walk === undefined ? 0 : wv(s);
     const hip: Pt = [s * 0.0725 * sc, hip0], ankle: Pt = [s * 0.085 * sc, ankleV + lift], knee: Pt = [s * 0.08 * sc, (hip0 + ankleV) / 2 + lift / 2];
     const pc = mixColor(o.pants, '#000000', s > 0 ? 0.05 : 0);
@@ -145,13 +203,20 @@ export const drawFigureBack = (p: Painter, def: CastDef, g: Pt, unit: number, po
   // ------------------------------------------------------------------ torso back
   const bodyPts: Pt[] = [[-sw + 0.017, shV0 - 0.02], [-0.07, shV0 + 0.005], [0.07, shV0 + 0.005], [sw - 0.017, shV0 - 0.02], [sw + 0.005, shV0 - 0.07], [hw + 0.02, hip0 - 0.02], [hw + 0.024, hip0 - 0.07], [-hw - 0.024, hip0 - 0.07], [-hw - 0.02, hip0 - 0.02], [-sw - 0.005, shV0 - 0.07]];
   fill(bodyC, Uq(bodyPts));
-  if (hemV !== undefined) fill(o.skirt!, [U([-hw - 0.02, hip0 + 0.02]), U([hw + 0.02, hip0 + 0.02]), S([hw + 0.1 * sc, hemV]), S([-hw - 0.1 * sc, hemV])]);
+  if (hemV !== undefined && !pm) fill(o.skirt!, [U([-hw - 0.02, hip0 + 0.02]), U([hw + 0.02, hip0 + 0.02]), S([hw + 0.1 * sc, hemV]), S([-hw - 0.1 * sc, hemV])]);
+  if (hemV !== undefined && pm) {
+    // Low hips: the skirt covers the seat; running: it keeps its length below the dropped hip.
+    const h2 = pm.mode?.kind === 'run' ? hemV - pmDrop : Math.max(0.01, pm.hipV - 0.19);
+    fill(o.skirt!, [U([-hw - 0.02, hip0 + 0.02]), U([hw + 0.02, hip0 + 0.02]), S0([hw + 0.1 * sc, h2]), S0([-hw - 0.1 * sc, h2])]);
+  }
   stroke(bodyC, Uq([[-sw + 0.03, shV0 - 0.08], [0, shV0 - 0.1], [sw - 0.03, shV0 - 0.08]]));
   stroke(bodyC, Uq([[0, shV0 - 0.1], [0.004, hip0 - 0.05]]), 0.7);
   if (G?.overcoat) {
     const hem = Math.min(G.overcoat.hem, knee0 + 0.12);
-    fill(G.overcoat.color, [...Uq([[-sw + 0.017, shV0 - 0.02], [sw - 0.017, shV0 - 0.02], [sw + 0.0085, shV0 - 0.0425]]), S([hw + 0.1, hem]), S([-hw - 0.1, hem]), U([-sw - 0.0085, shV0 - 0.0425])]);
-    stroke(G.overcoat.color, [U([0, shV0 - 0.1]), S([0, hem])], 0.7);
+    // With a body pose the hem drops with the hip (absolute height, never below the ground).
+    const SH = pm ? ([u, v]: Pt) => S0([u, Math.max(0.02, v - pmDrop)]) : S;
+    fill(G.overcoat.color, [...Uq([[-sw + 0.017, shV0 - 0.02], [sw - 0.017, shV0 - 0.02], [sw + 0.0085, shV0 - 0.0425]]), SH([hw + 0.1, hem]), SH([-hw - 0.1, hem]), U([-sw - 0.0085, shV0 - 0.0425])]);
+    stroke(G.overcoat.color, [U([0, shV0 - 0.1]), SH([0, hem])], 0.7);
   }
   if (G?.drape) fill(G.drape, Uq([[-sw + 0.017, shV0], [0.04, shV0 - 0.005], [sw - 0.017, shV0 - 0.05], [0.05, hip0 - 0.02], [-hw - 0.01, hip0 + 0.02]]));
   if (G?.belt) {
@@ -169,7 +234,11 @@ export const drawFigureBack = (p: Painter, def: CastDef, g: Pt, unit: number, po
   // Head turn / tilt (`headYaw` radians toward screen right, `headTilt` radians up): the skull narrows by cos(yaw) and slides toward
   // the turn, the whole head lifts with the tilt (hood top rises, the nape gap opens); the neck and shoulders stay put.
   const yaw = pose.headYaw ?? 0, tilt = pose.headTilt ?? 0, cy = Math.cos(yaw), lift = tilt * 0.62;
-  const neck = ([u, v]: Pt): Pt => [hc[0] + u * k, hc[1] + v * k];
+  // Body pose (VA01): the neck stays on the collar when the head bows (P35 nods down); the head alone moves. Old poses: the neck follows the nod as before.
+  const hcN = pm ? hcBase : hc;
+  const neck = ([u, v]: Pt): Pt => [hcN[0] + u * k, hcN[1] + v * k];
+  // A crouched torso is shorter, so the neck block would reach past the collar onto the back: it stops at the collar (body poses only).
+  const neckLow = pm ? Math.min(1.6, Math.max(0.6, (U([0, shV0 + 0.02])[1] - hcN[1]) / k)) : 1.6;
   // Head cock (FigPose.headCock, degrees toward screen right): the head points rotate about the neck top (0.051 m above the chin on the
   // centre line, as the front view); neck(), the cowl's lower edge and the shoulders stay. Absent or 0 = the unrotated mapping.
   const cock = pose.headCock ? (pose.headCock * Math.PI) / 180 : 0;
@@ -178,7 +247,7 @@ export const drawFigureBack = (p: Painter, def: CastDef, g: Pt, unit: number, po
   const head = ([u, v]: Pt): Pt => rotHead([hc[0] + (u * cy + 0.3 * Math.sin(yaw)) * k, hc[1] + (v - lift) * k]);
   const H2 = (pts: Pt[]) => pts.map(head);
   // softNeck (EDU-EP01 W5.4): the caller paints its own nape and collar, so the rig's neck block (its lower edge showed as a bar on the shirt) is skipped
-  if (!pose.softNeck) fill(pose.hoodUp && pose.cowl !== 'drape' ? (hoodColorOf(o) ?? mixColor(o.shirt, INK, 0.2)) : o.coat ?? skinShade, pts4(neck, [[-0.5, 0.5], [0.5, 0.5], [0.46, 1.6], [-0.46, 1.6]]), true, 4);
+  if (!pose.softNeck) fill(pose.hoodUp && pose.cowl !== 'drape' ? (hoodColorOf(o) ?? mixColor(o.shirt, INK, 0.2)) : o.coat ?? skinShade, pts4(neck, [[-0.5, 0.5], [0.5, 0.5], [0.46, neckLow], [-0.46, neckLow]]), true, 4);
   fill(mixColor(o.shirt, '#ffffff', 0.08), Uq([[-0.075, shV0 - 0.005], [0.075, shV0 - 0.005], [0.07, shV0 + 0.025], [-0.07, shV0 + 0.025]]), true, 4);
 
   // Hood down: the hood bunched on the upper back, seam down the middle.
