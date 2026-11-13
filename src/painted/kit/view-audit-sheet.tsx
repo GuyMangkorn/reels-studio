@@ -1,7 +1,7 @@
 // KIT-VIEW-AUDIT check sheet (standalone entry, not a deliverable): how a kit figure reads as the yaw camera orbits it. One frame =
 // one pose at one camera height; the 12 cells are azimuths 0..330 deg in 30 deg steps around a figure with a fixed world facing
 // (six-view `figureView`, no hysteresis), each cell labelled with the azimuth and the view the kit picks. Camera heights: eye level,
-// high (looking down 30 deg) and low (looking up 20 deg). Frames 18-35 repeat 0-17 with `pitchCue` on. Used to list where views jump or break before improving them.
+// high (looking down 30 deg) and low (looking up 20 deg). Frames 18-35 repeat 0-17 with `pitchCue` and `quarterFollow` on. Used to list where views jump or break before improving them.
 // Render: for f in $(seq 0 35); do printf "KIT-VIEW-AUDIT $f out/view-audit/f$f.png\n"; done | node scripts/stills.mjs src/painted/kit/view-audit-sheet.tsx
 import {createElement, useCallback} from 'react';
 import {AbsoluteFill, Composition, registerRoot, useCurrentFrame} from 'remotion';
@@ -49,7 +49,7 @@ const Sheet = () => {
     const p = makePainter(brush, {t: 0, frame: f, fade: PAPER});
     for (let i = 0; i < 12; i++) {
       const c = cellCam(i, height.eye);
-      paintFigureAt(p, c, PEOPLE['woman-curly'], {at: AT, facing: FACING, pose: pose.id, t: 0, seed: 400 + i, pitchCue: cue});
+      paintFigureAt(p, c, PEOPLE['woman-curly'], {at: AT, facing: FACING, pose: pose.id, t: 0, seed: 400 + i, pitchCue: cue, quarterFollow: cue});
     }
   }, [f, pose, height, cue]);
   return (
@@ -57,15 +57,15 @@ const Sheet = () => {
       <BrushCanvas paint={paint} paper={PAPER} />
       {Array.from({length: 12}, (_, i) => {
         const c = cellCam(i, height.eye), col = i % COLS, row = Math.floor(i / COLS);
-        const v = figureView(c, AT, FACING), vf = viewAtCam(c, {at: AT, facing: FACING});
+        const v = figureView(c, AT, FACING), vf = viewAtCam(c, {at: AT, facing: FACING, quarterFollow: cue});
         return (
           <div key={i} style={{position: 'absolute', left: col * CW, top: row * CH, width: CW, height: CH, boxSizing: 'border-box', border: '1px solid #cbbfa9', fontFamily: 'sans-serif', fontSize: 22, color: '#3b3226', padding: 8}}>
-            {i * 30}° · {v}{vf.quarter ? ` (${vf.quarter})` : ''}
+            {i * 30}° · {v}{vf.quarter ? ` (${vf.quarter}${cue ? ` ${Math.round(vf.quarterDeg ?? 45)}°` : ''})` : ''}
           </div>
         );
       })}
       <div style={{position: 'absolute', left: 0, right: 0, bottom: 8, textAlign: 'center', fontFamily: 'sans-serif', fontSize: 30, color: '#7a2e1d'}}>
-        {pose.label} · {height.label}{cue ? ' · pitchCue' : ''}
+        {pose.label} · {height.label}{cue ? ' · pitchCue + quarterFollow' : ''}
       </div>
     </AbsoluteFill>
   );

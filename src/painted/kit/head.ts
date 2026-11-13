@@ -575,10 +575,13 @@ export const paintHeadFront = (p: Painter, seed: number, cx: number, cy: number,
       glaze(p, 7_660_000 + seed, mixColor(skin, '#d9806a', 0.4), 70 + 60 * chewT, R(bulge), {border: 0.3, bleed: 0.08});
       inkLine(p, seed * 100 + 97, R(Array.from({length: 7}, (_, i): Pt => [cc + sg * (0.04 + 0.17 * Math.cos(0.4 + (i / 6) * 1.7)), 0.52 + 0.17 * Math.sin(0.4 + (i / 6) * 1.7)])), {weight: 0.7 + 0.3 * chewT, curve: 0.5, closed: false, color: mixColor(lineOf(skin, L), '#a4504a', 0.3)});
     }
-    const u0 = turnU(turn, 0, 0.3), tip = u0 + sg * (0.2 + 0.2 * sn);
+    // The tip stands at most 0.09 past the cheek line (0.14 past 50 deg, where it is the only nose; VA04): unchanged up to 45 deg, no beak at 60.
+    const u0 = turnU(turn, 0, 0.3), tip = sg * Math.min(Math.abs(u0 + sg * (0.2 + 0.2 * sn)), headRho(0.36) + (Math.abs(turn) > (50 * Math.PI) / 180 ? 0.14 : 0.09));
     const nose: Pt[] = [[u0, 0.14], [tip, 0.36], [tip - sg * 0.05, 0.42], [u0 + sg * 0.04, 0.45]];
     solid(p, seed * 100 + 98, skin, R(nose), 3, L ? 0 : 0.04, 0.2);
     inkLine(p, seed * 100 + 98, R(nose.slice(1)), {weight: 0.9, curve: 0.3, closed: false, color: lineOf(skin, L)});
+    // Past 50 deg the front nose marks are off (above): the turned nose carries a nostril, as the profile nose does.
+    if (Math.abs(turn) > (50 * Math.PI) / 180) inkLine(p, seed * 100 + 99, R([[tip - sg * 0.1, 0.39], [tip - sg * 0.18, 0.415]]), {weight: 0.9, curve: 0.3, closed: false, color: lineOf(skin, L)});
   };
   if (turn) {
     paintTurnedShell();
@@ -658,7 +661,8 @@ export const paintHeadFront = (p: Painter, seed: number, cx: number, cy: number,
   if (lk) {
     part = 56;
     line = 56;
-    lookNose(lk, fill, ink, skin, lineOf(skin, L));
+    // Past 50 deg the turned nose at the cheek line is the nose (VA04): the front marks would sit inside it as a second nose.
+    if (Math.abs(turn) <= (50 * Math.PI) / 180) lookNose(lk, fill, ink, skin, lineOf(skin, L));
     line = 50;
   }
   if (style.facial) {

@@ -6,7 +6,7 @@ import {tintPainter, type Painter, type Pt} from './painter';
 import {poseFor, type AnyPoseId} from './poses';
 import type {V3} from './space';
 import {figureView, figureView4, squareToCam, viewFields, type View4, type ViewFields, type ViewName} from './views';
-import {camPoint, camUnit, type YCam} from './ycam';
+import {camPoint, camUnit, viewAngle, type YCam} from './ycam';
 import type {Item} from './world';
 
 // Place a kit figure (`CastDef`) in a world-metre set seen through the yaw camera (painted 3D camera): the feet at a ground point,
@@ -25,6 +25,11 @@ export type FigureAtOpts = {
   facing?: [number, number];
   /** With `facing`: the previous view and a hysteresis in degrees, so a slow orbit does not flicker between views. */
   prevView?: ViewName; hysteresis?: number;
+  /**
+   * With `facing` (KIT-VIEW-AUDIT VA04, opt-in): a three-quarter view turns by the real camera angle (`quarterDeg` = the angle off the
+   * front, held to 15..60) instead of the fixed 45, so an orbit turns the figure step by step through the quarter sector. Default false = 45.
+   */
+  quarterFollow?: boolean;
   /** Pose sheet id (default P01). A pose missing a side view falls back to P01 (kit `poseFor`). */
   pose?: AnyPoseId;
   face?: ExpressionId; faceState?: Partial<FaceState>;
@@ -123,10 +128,16 @@ export const headPerspective = (c: YCam, at: V3, height: number): number => {
   return Math.max(0.85, Math.min(1.25, uh / uf));
 };
 /** The view fields a placement resolves to for this camera (four-view squared to the lens, or six-view from a world facing). */
-export const viewAtCam = (c: YCam, o: Pick<FigureAtOpts, 'at' | 'view' | 'facing' | 'prevView' | 'hysteresis'>): ViewFields =>
-  o.facing
-    ? viewFields(figureView(c, o.at, o.facing, {prev: o.prevView, hysteresis: o.hysteresis}))
-    : {view: figureView4(c, o.at, squareToCam(c, o.at, o.view ?? 'front'))};
+export const viewAtCam = (c: YCam, o: Pick<FigureAtOpts, 'at' | 'view' | 'facing' | 'prevView' | 'hysteresis' | 'quarterFollow'>): ViewFields => {
+  if (!o.facing) return {view: figureView4(c, o.at, squareToCam(c, o.at, o.view ?? 'front'))};
+  const name = figureView(c, o.at, o.facing, {prev: o.prevView, hysteresis: o.hysteresis});
+  return viewFields(name, o.quarterFollow ? quarterDegAt(viewAngle(c, o.at, o.facing)) : 45);
+};
+/** VA04: the three-quarter turn for a view angle (degrees, `viewAngle`): its distance from the front, held to the valid 15..60. */
+export const quarterDegAt = (deg: number): number => {
+  const d = ((deg % 360) + 360) % 360, off = d > 180 ? 360 - d : d;
+  return Math.min(60, Math.max(15, off));
+};
 
 /** Paint `def` standing at `o.at` through camera `c`. Returns the figure's picture anchors, or null when the feet are behind the lens. */
 export const paintFigureAt = (p: Painter, c: YCam, def: CastDef, o: FigureAtOpts): FigAnchors | null => {

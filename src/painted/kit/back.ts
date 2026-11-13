@@ -89,7 +89,8 @@ export const drawFigureBack = (p: Painter, def: CastDef, g: Pt, unit: number, po
 
   // ------------------------------------------------------------------ legs, skirt, feet
   const bodyC = o.coat ?? o.jacket ?? o.shirt;
-  const hemV = o.skirt ? o.skirtHem ?? knee0 + 0.04 : undefined;
+  // Skirt (VA05): the front view's straight cut, seen from behind: hip +-(hw + 0.0085), hem at the knee width +-(0.077 + 0.06) and 0.19 below the knee.
+  const hemV = o.skirt ? o.skirtHem ?? knee0 - 0.19 : undefined, skTop = hw + 0.0085, skHem = 0.137;
   const wv = (s: number) => Math.max(0, Math.sin(ph + (s > 0 ? 0 : Math.PI))) * 0.05 * stride;
   /** Legs of a body pose seen from behind (VA01): the front frame's hip, knee and ankle per leg (crouch legs as the front view draws them). */
   function paintPoseLegs() {
@@ -179,11 +180,19 @@ export const drawFigureBack = (p: Painter, def: CastDef, g: Pt, unit: number, po
       const d = Math.hypot(T[0] - Sh[0], T[1] - Sh[1]), m = 2 * Lpx - 0.5;
       if (d > m) T = [Sh[0] + ((T[0] - Sh[0]) * m) / d, Sh[1] + ((T[1] - Sh[1]) * m) / d];
       E = a.via ? mirrorX(g, a.via) : ikElbow(Sh, T, Lpx, s);
+    } else if (pm?.mode?.kind === 'run') {
+      // Run from behind (VA06): the arms pump opposite to the legs, as the front `runArm` (same phase; the character's right is screen
+      // right here). The arm swinging forward goes away from the lens: the upper arm hangs, the forearm rises into the chest and hides
+      // under the torso. The arm swinging back comes toward the lens: it hangs low and out and is painted over the torso (`near`).
+      const th = (pose.run ?? 0) * Math.PI * 2 + (s > 0 ? Math.PI : 0), fw0 = 0.5 + 0.5 * Math.sin(th), fw = fw0 * fw0 * (3 - 2 * fw0);
+      E = [Sh[0] + s * lerp(0.07, 0.035, fw) * unit, Sh[1] + lerp(0.72, 0.86, fw) * AB * unit];
+      T = [E[0] + s * lerp(0.01, -0.07, fw) * unit, E[1] + lerp(0.6, 0.2, fw) * AB * unit];
+      return {Sh, E, T, raised: false, near: fw < 0.5};
     } else {
       T = U([s * (sw + 0.015), shV0 - 0.49 * (AB / BONE)]);
       E = ikElbow(Sh, T, Lpx, s);
     }
-    return {Sh, E, T, raised: T[1] < U([0, shV0])[1] - 0.12 * unit};
+    return {Sh, E, T, raised: T[1] < U([0, shV0])[1] - 0.12 * unit, near: false};
   };
   const paintArm = (s: -1 | 1, a: ReturnType<typeof armGeom>) => {
     const M: Pt = [(a.Sh[0] + a.E[0]) / 2, (a.Sh[1] + a.E[1]) / 2];
@@ -197,17 +206,17 @@ export const drawFigureBack = (p: Painter, def: CastDef, g: Pt, unit: number, po
   };
   const rG = armGeom(1, pose.rArm), lG = armGeom(-1, pose.lArm);
   let rHand: Pt = rG.T, lHand: Pt = lG.T;
-  if (!rG.raised) rHand = paintArm(1, rG);
-  if (!lG.raised) lHand = paintArm(-1, lG);
+  if (!rG.raised && !rG.near) rHand = paintArm(1, rG);
+  if (!lG.raised && !lG.near) lHand = paintArm(-1, lG);
 
   // ------------------------------------------------------------------ torso back
   const bodyPts: Pt[] = [[-sw + 0.017, shV0 - 0.02], [-0.07, shV0 + 0.005], [0.07, shV0 + 0.005], [sw - 0.017, shV0 - 0.02], [sw + 0.005, shV0 - 0.07], [hw + 0.02, hip0 - 0.02], [hw + 0.024, hip0 - 0.07], [-hw - 0.024, hip0 - 0.07], [-hw - 0.02, hip0 - 0.02], [-sw - 0.005, shV0 - 0.07]];
   fill(bodyC, Uq(bodyPts));
-  if (hemV !== undefined && !pm) fill(o.skirt!, [U([-hw - 0.02, hip0 + 0.02]), U([hw + 0.02, hip0 + 0.02]), S([hw + 0.1 * sc, hemV]), S([-hw - 0.1 * sc, hemV])]);
+  if (hemV !== undefined && !pm) fill(o.skirt!, [U([-skTop, hip0 + 0.034]), U([skTop, hip0 + 0.034]), S([skHem, hemV]), S([-skHem, hemV])]);
   if (hemV !== undefined && pm) {
     // Low hips: the skirt covers the seat; running: it keeps its length below the dropped hip.
-    const h2 = pm.mode?.kind === 'run' ? hemV - pmDrop : Math.max(0.01, pm.hipV - 0.19);
-    fill(o.skirt!, [U([-hw - 0.02, hip0 + 0.02]), U([hw + 0.02, hip0 + 0.02]), S0([hw + 0.1 * sc, h2]), S0([-hw - 0.1 * sc, h2])]);
+    const h2 = pm.mode?.kind === 'run' ? (o.skirtHem !== undefined ? hemV - pmDrop : Math.max(pm.mode.legs[0].knee[1] - 0.19 * (1 - pm.c), 0.3 * pm.c + 0.2)) : Math.max(0.01, pm.hipV - 0.19);
+    fill(o.skirt!, [U([-skTop, hip0 + 0.034]), U([skTop, hip0 + 0.034]), S0([skHem, h2]), S0([-skHem, h2])]);
   }
   stroke(bodyC, Uq([[-sw + 0.03, shV0 - 0.08], [0, shV0 - 0.1], [sw - 0.03, shV0 - 0.08]]));
   stroke(bodyC, Uq([[0, shV0 - 0.1], [0.004, hip0 - 0.05]]), 0.7);
@@ -225,6 +234,9 @@ export const drawFigureBack = (p: Painter, def: CastDef, g: Pt, unit: number, po
   }
   if (o.apron) stroke(o.apron, Uq([[-hw, hip0 + 0.01], [0, hip0 - 0.01], [hw, hip0 + 0.01]]), 1.2);
   if (G?.pack) fill(G.pack, Uq([[-0.2 * sc, shV0 - 0.02], [0.2 * sc, shV0 - 0.02], [0.2 * sc, shV0 - 0.3], [-0.2 * sc, shV0 - 0.3]]));
+  // Run (VA06): the arm swinging back is nearer the lens than the torso.
+  if (rG.near) rHand = paintArm(1, rG);
+  if (lG.near) lHand = paintArm(-1, lG);
   // Neck, nape and collar band.
   const pts4 = (f: (q: Pt) => Pt, a: Pt[]) => a.map(f);
   const hcBase = U([0, chin + CHIN * K]);

@@ -91,3 +91,11 @@ test('body poses lower the figure from behind; zero amounts draw exactly as stan
   assert.ok(Math.abs(low({run: 0.25})) < 0.1 * unit, 'run keeps the standing height');
   assert.notEqual(draw(def, {run: 0.25}).calls, stand.calls);
 });
+
+test('run from behind pumps the arms with the phase: the back-swinging hand hangs lower, then the sides swap (VA06)', () => {
+  const def = PEOPLE['woman-curly'];
+  const a = draw(def, {run: 0.25}).a, b = draw(def, {run: 0.75}).a;
+  assert.ok(Math.abs(a.rHand[1] - a.lHand[1]) > 0.04 * unit, 'one hand forward (high, hidden), one back (low)');
+  assert.ok(Math.sign(a.rHand[1] - a.lHand[1]) === -Math.sign(b.rHand[1] - b.lHand[1]), 'half a cycle later the arms swap');
+  assert.ok(a.rHand[0] > g[0] - 0.05 * unit && a.lHand[0] < g[0] + 0.05 * unit, 'each hand stays on its own side');
+});
