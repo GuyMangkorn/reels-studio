@@ -489,7 +489,20 @@ export const drawFigure = (p: Painter, def: CastDef, g: Pt, unit: number, pose: 
   const clothHem = qg && !profile && !mode && (o.skirt || coat)
     ? Math.min(o.skirt ? o.skirtHem ?? Math.max(legs[0].knee[1] - 0.19 * (1 - c), 0.3 * c + 0.2) : 9, coat ? Math.max(legs[0].knee[1] - 0.05, 0.12) : 9) - (coat ? 0.035 : 0.03) * sinq * 0.9
     : undefined;
-  const clipLeg = (pts: Pt[]): Pt[] => (clothHem === undefined ? pts : clipHalf(pts, [-1e5, Y(clothHem)], [1e5, Y(clothHem)], [0, Y(clothHem) + 1e5]));
+  // Side view with a skirt (walking or standing): the legs come out of the hem, never through the cloth's outer edge. The leg is cut at the hem line and
+  // the hem spreads to cover the swung legs where they cross it (12 Nov 2026, EDU-EP18-SHORT: the trailing thigh left the skirt's side at a bent angle).
+  const pHem = profile && (!mode || mode.kind === 'run') && o.skirt ? o.skirtHem ?? legs[0].knee[1] - 0.19 : undefined;
+  let pHemX: [number, number] = [-0.32 * HD, 0.3 * HD];
+  if (pHem !== undefined) {
+    for (const l of legs) {
+      for (const [p0, p1] of [[l.hip, l.knee], [l.knee, l.ankle]] as [Pt, Pt][]) {
+        if ((p0[1] - pHem) * (p1[1] - pHem) > 0 || p0[1] === p1[1]) continue;
+        const x = p0[0] + ((p1[0] - p0[0]) * (pHem - p0[1])) / (p1[1] - p0[1]);
+        pHemX = [Math.min(pHemX[0], x - 0.04), Math.max(pHemX[1], x + 0.04)];
+      }
+    }
+  }
+  const clipLeg = (pts: Pt[]): Pt[] => (pHem !== undefined ? clipHalf(pts, [-1e5, Y(pHem)], [1e5, Y(pHem)], [0, Y(pHem) + 1e5]) : clothHem === undefined ? pts : clipHalf(pts, [-1e5, Y(clothHem)], [1e5, Y(clothHem)], [0, Y(clothHem) + 1e5]));
   const clothW = coat ? hw + 0.085 + 0.08 * c : Math.abs(legs[0].knee[0]) + 0.06;
   const clothTopY = clothHem === undefined ? 0 : U([0, hip0 + 0.034])[1], clothX0 = X(-clothW), clothX1 = X(clothW);
   const clipArmCloth = (pts: Pt[]): Pt[] => {
@@ -519,7 +532,7 @@ export const drawFigure = (p: Painter, def: CastDef, g: Pt, unit: number, pose: 
       fillL(legColor(far), SLq(limb(knee, at(0.16), 0.095, 0.1)), true);
     } else if (!hide) fillL(legColor(far), SLq(limb(knee, ankle, 0.095, 0.08)), true);
     if (c > 0.2 || mode) fillL(legColor(far), SLq(ell(knee[0], knee[1], near ? 0.064 : hide || legsOver ? 0.056 : 0.05, near ? 0.064 : hide || legsOver ? 0.056 : 0.05, 12)), false);
-    if (hide) continue;
+    if (hide || (pHem !== undefined && ankle[1] > pHem)) continue; // a foot lifted behind a skirt is under the cloth, not beside it
     if (c > 0.4) {
       // Crouched: the cloth bunches behind the knee (two short creases on the thigh just above it).
       const kx = knee[0] - hip[0], ky = knee[1] - hip[1], kl = Math.hypot(kx, ky) || 1, ux = kx / kl, uy = ky / kl;
@@ -789,7 +802,7 @@ export const drawFigure = (p: Painter, def: CastDef, g: Pt, unit: number, pose: 
       const kn = legs[legs.length - 1].knee;
       const front: Pt = [Math.max(0.3 * HD, kn[0] + 0.03), Math.min(kn[1] - 0.03, o.skirtHem ?? 9)], back: Pt = [-0.32 * HD + hipU, Math.min(hipV - 0.06, kn[1])];
       fill(o.skirt, [...Uq([[-0.24 * HD, hip0 + 0.034], [0.2 * HD, hip0 + 0.034]]), S(front), S(back)], true, 8);
-    } else if (o.skirt) fill(o.skirt, [...Uq([[-0.24 * HD, hip0 + 0.034], [0.2 * HD, hip0 + 0.034]]), ...Sq([[0.3 * HD, o.skirtHem ?? kneeV - 0.19], [-0.32 * HD, o.skirtHem ?? kneeV - 0.19]])], true, 8);
+    } else if (o.skirt) fill(o.skirt, [...Uq([[-0.24 * HD, hip0 + 0.034], [0.2 * HD, hip0 + 0.034]]), ...Sq([[pHemX[1], o.skirtHem ?? kneeV - 0.19], [pHemX[0], o.skirtHem ?? kneeV - 0.19]])], true, 8);
     if (coat) {
       // The hem hangs to the knee when standing and follows the torso when bent (hands on knees), blended by `bend`:
       // a hem pinned to the knee in plate space reads as a kicked leg (SS-R3.2 S04-SH01 defect).
