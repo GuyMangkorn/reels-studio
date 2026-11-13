@@ -1,7 +1,7 @@
 import {capsule, ell, hardFill, inkLine, washAt} from '../kit/draw';
 import {shoulderPoint, type Arm, type CastDef, type FigAnchors} from '../kit/cast';
 import type {ExpressionId} from '../kit/expressions';
-import {paintFigureAt} from '../kit/figure-at';
+import {paintFigureAt, VIEW_CUES_OFF} from '../kit/figure-at';
 import type {FaceState} from '../kit/head';
 import type {FigPose} from '../kit/cast';
 import type {Painter, Pt} from '../kit/painter';
@@ -33,7 +33,7 @@ export const paintWomanPhone = (p: Painter, c: YCam, o: WomanOpts): FigAnchors |
   if (!g) return null;
   const rArm = arm(WOMAN, g, u, {sit: 1}, 'r', [-0.045, -0.235], [0.135, -0.19]);
   const lArm = arm(WOMAN, g, u, {sit: 1}, 'l', [0.045, -0.235], [-0.135, -0.19]);
-  const a = paintFigureAt(p, c, WOMAN, {at: o.at, view: 'front', pose: 'P31', face: o.face ?? 'neutral', faceState: o.faceState, fig: {rArm, lArm, headCock: o.headCock}, t: o.t, shadow: {op: 70}, tint: o.tint ? {to: '#ffcf8a', u: o.tint} : undefined});
+  const a = paintFigureAt(p, c, WOMAN, {...VIEW_CUES_OFF, at: o.at, view: 'front', pose: 'P31', face: o.face ?? 'neutral', faceState: o.faceState, fig: {rArm, lArm, headCock: o.headCock}, t: o.t, shadow: {op: 70}, tint: o.tint ? {to: '#ffcf8a', u: o.tint} : undefined});
   if (!a) return null;
   // phone between the hands (we see its dark back), a thin pale edge
   const m: Pt = [(a.rHand[0] + a.lHand[0]) / 2, (a.rHand[1] + a.lHand[1]) / 2 - 0.035 * u];
@@ -73,7 +73,7 @@ export const paintManHang = (p: Painter, c: YCam, o: ManHangOpts): (FigAnchors &
   if (!g) return null;
   const rArm = arm(MAN, g, u, {}, 'r', HANG_ARM.via, HANG_ARM.to);
   const lArm = arm(MAN, g, u, {}, 'l', [-HANG_ARM.via[0], HANG_ARM.via[1]], [-HANG_ARM.to[0], HANG_ARM.to[1]]);
-  const a = paintFigureAt(p, c, MAN, {at, view: 'front', pose: 'P45', face: o.face ?? 'scared', faceState: o.faceState, fig: {rArm, lArm, legKick: o.legKick}, t: o.t, shadow: false, tint: o.tint});
+  const a = paintFigureAt(p, c, MAN, {...VIEW_CUES_OFF, at, view: 'front', pose: 'P45', face: o.face ?? 'scared', faceState: o.faceState, fig: {rArm, lArm, legKick: o.legKick}, t: o.t, shadow: false, tint: o.tint});
   if (!a) return null;
   // closed hands at the wrists (fists round the tokay's grip)
   for (const [h, id] of [[a.rHand, 76200], [a.lHand, 76201]] as const) { hardFill(p, id, MAN.head.skin, ell(h[0], h[1] - 0.022 * u, 0.03 * u, 0.036 * u, 12)); inkLine(p, id + 10, [[h[0] - 0.022 * u, h[1] - 0.04 * u], [h[0], h[1] - 0.05 * u], [h[0] + 0.022 * u, h[1] - 0.04 * u]], {closed: false, weight: 1.2, color: '#5a3a2a', still: true, curve: 0.5}); }
@@ -84,17 +84,17 @@ export const paintManHang = (p: Painter, c: YCam, o: ManHangOpts): (FigAnchors &
 export type WomanBackOpts = {at: V3; t: number; /** Head cock in degrees toward screen right (shot 10 tilt, 0 -> +12). */ headCock?: number; tint?: number};
 /** WOMAN seen from behind on the sofa (`new: sit-phone`, P31 back, phone lowered to her lap, head up): the back of her head and shoulders. */
 export const paintWomanBack = (p: Painter, c: YCam, o: WomanBackOpts): FigAnchors | null =>
-  paintFigureAt(p, c, WOMAN, {at: o.at, view: 'back', pose: 'P31', face: 'neutral', fig: {headCock: o.headCock ?? 0}, t: o.t, shadow: {op: 60}, tint: o.tint ? {to: '#ffcf8a', u: o.tint} : undefined});
+  paintFigureAt(p, c, WOMAN, {...VIEW_CUES_OFF, at: o.at, view: 'back', pose: 'P31', face: 'neutral', fig: {headCock: o.headCock ?? 0}, t: o.t, shadow: {op: 60}, tint: o.tint ? {to: '#ffcf8a', u: o.tint} : undefined});
 
 export type WomanProfileOpts = {at: V3; t: number; /** Lean 0..1 (0 = sitting back, 1 = P32 leaning in with the head raised). */ lean: number; face?: ExpressionId; faceState?: Partial<FaceState>; tint?: number};
 /** WOMAN seated in profile facing screen left, leaning in (`new: sit-lean-in`, B04-SH01): P32's body with the bend eased in and the head kept raised (nod 0). */
 export const paintWomanProfile = (p: Painter, c: YCam, o: WomanProfileOpts): FigAnchors | null =>
-  paintFigureAt(p, c, WOMAN, {at: o.at, view: 'left', pose: 'P32', face: o.face ?? 'suspicious', faceState: o.faceState, fig: {bend: 0.4 * o.lean, nod: [0, 0]}, t: o.t, shadow: {op: 70}, tint: o.tint ? {to: '#ffcf8a', u: o.tint} : undefined});
+  paintFigureAt(p, c, WOMAN, {...VIEW_CUES_OFF, at: o.at, view: 'left', pose: 'P32', face: o.face ?? 'suspicious', faceState: o.faceState, fig: {bend: 0.4 * o.lean, nod: [0, 0]}, t: o.t, shadow: {op: 70}, tint: o.tint ? {to: '#ffcf8a', u: o.tint} : undefined});
 
 export type WomanLapOpts = {at: V3; t: number; face?: ExpressionId; faceState?: Partial<FaceState>; tint?: number};
 /** WOMAN seated facing the lens (`new: sit-lap-phone`, B05-SH04): P31 with the hands on the thighs, the phone dark on her lap, the face upturned. */
 export const paintWomanLap = (p: Painter, c: YCam, o: WomanLapOpts): FigAnchors | null => {
-  const a = paintFigureAt(p, c, WOMAN, {at: o.at, view: 'front', pose: 'P31', face: o.face ?? 'neutral', faceState: o.faceState, t: o.t, shadow: {op: 70}, tint: o.tint ? {to: '#ffcf8a', u: o.tint} : undefined});
+  const a = paintFigureAt(p, c, WOMAN, {...VIEW_CUES_OFF, at: o.at, view: 'front', pose: 'P31', face: o.face ?? 'neutral', faceState: o.faceState, t: o.t, shadow: {op: 70}, tint: o.tint ? {to: '#ffcf8a', u: o.tint} : undefined});
   if (!a) return null;
   const u = camUnit(c, o.at), h = a.lHand;
   const ph = [[h[0] - 0.05 * u, h[1] - 0.012 * u], [h[0] + 0.0 * u, h[1] - 0.02 * u], [h[0] + 0.0 * u, h[1] + 0.085 * u], [h[0] - 0.055 * u, h[1] + 0.09 * u]] as Pt[];

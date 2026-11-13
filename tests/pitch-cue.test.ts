@@ -32,8 +32,8 @@ test('head perspective: larger from above, smaller from below; squash only from 
   assert.ok(headPitchOf(30 * DEG) > 0 && headPitchOf(-30 * DEG) < 0);
 });
 
-test('pitchCue off draws exactly as before; on changes a high shot', () => {
+test('pitchCue is on by default (13 Nov 2026) and off changes a high shot', () => {
   const high = cam(3.16, -30);
-  assert.equal(calls(false, high), calls(undefined, high));
-  assert.notEqual(calls(true, high), calls(undefined, high));
+  assert.equal(calls(true, high), calls(undefined, high));
+  assert.notEqual(calls(false, high), calls(undefined, high));
 });

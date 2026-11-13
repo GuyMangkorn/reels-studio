@@ -27,10 +27,10 @@ export type FigureAtOpts = {
   prevView?: ViewName; hysteresis?: number;
   /**
    * With `facing` (KIT-VIEW-AUDIT VA04, opt-in): a three-quarter view turns by the real camera angle (`quarterDeg` = the angle off the
-   * front, held to 15..60) instead of the fixed 45, so an orbit turns the figure step by step through the quarter sector. Default false = 45.
+   * front, held to 15..60) instead of the fixed 45, so an orbit turns the figure step by step through the quarter sector. Default true (13 Nov 2026); false = the fixed 45.
    */
   quarterFollow?: boolean;
-  /** With `facing` (VA02, opt-in): eight views, adding the back three-quarter views between the profiles and the back (`VIEW_SECTORS8`). Default false = six. */
+  /** With `facing` (VA02): eight views, adding the back three-quarter views between the profiles and the back (`VIEW_SECTORS8`). Default true (13 Nov 2026); false = six. */
   backQuarter?: boolean;
   /** Pose sheet id (default P01). A pose missing a side view falls back to P01 (kit `poseFor`). */
   pose?: AnyPoseId;
@@ -49,7 +49,7 @@ export type FigureAtOpts = {
    * High and low cameras (KIT-VIEW-AUDIT VA03, opt-in): the head takes its perspective size (larger from above, smaller from below,
    * `headPerspective`), the card is squashed vertically to the height the camera really sees between
    * the feet and the head top when seen from above, and the face shifts on the head sphere by the elevation at the head (`FigPose.headPitch`; an 8 deg dead
-   * zone keeps eye-level shots as they are). Default false = as before.
+   * zone keeps eye-level shots as they are). Default true (13 Nov 2026); false = the flat card as before.
    */
   pitchCue?: boolean;
   /** Size factor on the lens scale (a child of the same rig, a shrink pop). */
@@ -129,13 +129,16 @@ export const headPerspective = (c: YCam, at: V3, height: number): number => {
   const uf = camUnit(c, at), uh = camUnit(c, [at[0], at[1] + height - 0.2, at[2]]);
   return Math.max(0.85, Math.min(1.25, uh / uf));
 };
+/** All view cues off (`pitchCue`, `quarterFollow`, `backQuarter`): the drawing before they became the default on 13 Nov 2026. Spread it into
+ *  the options of episodes made before then (edu11, edu14, edu15), so a re-render matches what was delivered. */
+export const VIEW_CUES_OFF = {pitchCue: false, quarterFollow: false, backQuarter: false} as const;
 /** The view fields a placement resolves to for this camera (four-view squared to the lens, or six-view from a world facing). */
 export const viewAtCam = (c: YCam, o: Pick<FigureAtOpts, 'at' | 'view' | 'facing' | 'prevView' | 'hysteresis' | 'quarterFollow' | 'backQuarter'>): ViewFields => {
   if (!o.facing) return {view: figureView4(c, o.at, squareToCam(c, o.at, o.view ?? 'front'))};
-  const name = figureView(c, o.at, o.facing, {prev: o.prevView, hysteresis: o.hysteresis, eight: o.backQuarter});
+  const name = figureView(c, o.at, o.facing, {prev: o.prevView, hysteresis: o.hysteresis, eight: o.backQuarter ?? true});
   const a = viewAngle(c, o.at, o.facing);
   // A back three-quarter turns away from the back (180), a front one away from the front (0).
-  return viewFields(name, o.quarterFollow ? quarterDegAt(name.startsWith('back-') ? a + 180 : a) : 45);
+  return viewFields(name, (o.quarterFollow ?? true) ? quarterDegAt(name.startsWith('back-') ? a + 180 : a) : 45);
 };
 /** VA04: the three-quarter turn for a view angle (degrees, `viewAngle`): its distance from the front, held to the valid 15..60. */
 export const quarterDegAt = (deg: number): number => {
@@ -154,10 +157,11 @@ export const paintFigureAt = (p: Painter, c: YCam, def: CastDef, o: FigureAtOpts
   const pose = poseFor(o.pose ?? 'P01', def, g as Pt, u, vf.view === 'back' ? 'front' : vf.view);
   const face = {...EXPRESSIONS[o.face ?? 'neutral'], ...(o.faceState ?? {})} as FaceState;
   const q = o.tint ? tintPainter(p, o.tint.to, o.tint.u, {mul: o.tint.mul, brush: true}) : p;
-  const pitch = o.pitchCue ? headPitchOf(headElevation(c, o.at, def.height * (o.scale ?? 1))) : 0;
-  const fp = {...pose, ...vf, face, ...(o.shadow === false ? {noShadow: true} : {}), ...(pitch ? {headPitch: pitch} : {}), ...(o.pitchCue ? {headSize: headPerspective(c, o.at, def.height * (o.scale ?? 1))} : {}), ...o.fig} as FigPose;
+  const cue = o.pitchCue ?? true;
+  const pitch = cue ? headPitchOf(headElevation(c, o.at, def.height * (o.scale ?? 1))) : 0;
+  const fp = {...pose, ...vf, face, ...(o.shadow === false ? {noShadow: true} : {}), ...(pitch ? {headPitch: pitch} : {}), ...(cue ? {headSize: headPerspective(c, o.at, def.height * (o.scale ?? 1))} : {}), ...o.fig} as FigPose;
   const pivot = o.roll ? hipAnchor(def, g as Pt, u, fp) : (g as Pt);
-  const sy = o.pitchCue ? cardSquash(c, o.at, def.height * (o.scale ?? 1), g as Pt, u) : 1;
+  const sy = cue ? cardSquash(c, o.at, def.height * (o.scale ?? 1), g as Pt, u) : 1;
   let a!: FigAnchors;
   withSquash(p, g as Pt, sy, () => withRoll(p, pivot, o.roll ?? 0, () => {
     a = drawFigure(q, def, g, u, fp, o.t, o.seed ?? def.seed);

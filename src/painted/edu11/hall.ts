@@ -2,7 +2,7 @@ import {camMove, camOf} from '../kit/cam-moves';
 import type {CastDef, FigAnchors} from '../kit/cast';
 import {ell, hardFill, inkLine, washAt} from '../kit/draw';
 import {paintFogCone} from '../kit/fog';
-import {paintFigureAt} from '../kit/figure-at';
+import {paintFigureAt, VIEW_CUES_OFF} from '../kit/figure-at';
 import {mixColor, type Painter, type Pt} from '../kit/painter';
 import {PEOPLE} from '../kit/people';
 import type {V3} from '../kit/space';
@@ -194,7 +194,7 @@ export const paintShowman = (p: Painter, c: YCam, m: 1 | -1 = 1): FigAnchors | n
   const at: V3 = [0, 2.4, 0.3], pt = {to: up(c, at, 0.44 * m, 0.3), via: up(c, at, 0.26 * m, 1.0), out: m};
   const hip = {to: up(c, at, -0.22 * m, 0.98), via: up(c, at, -0.36 * m, 1.2), out: -m};
   const arms = m > 0 ? {lArm: pt, rArm: hip} : {rArm: pt, lArm: hip}; // screen-right arm is his left
-  return paintFigureAt(p, c, showmanDef(), {at, pose: 'P05', face: 'neutral', t: 0, tint: sepiaTint, shadow: WORLD_SHADOW, fig: arms});
+  return paintFigureAt(p, c, showmanDef(), {...VIEW_CUES_OFF, at, pose: 'P05', face: 'neutral', t: 0, tint: sepiaTint, shadow: WORLD_SHADOW, fig: arms});
 };
 export const paintAssistant = (p: Painter, c: YCam, sx = 0, m: 1 | -1 = 1): FigAnchors | null => {
   const at: V3 = [m * (1.45 + sx), 1.2, 0.55], g = camPoint(c, at) as Pt, u = camUnit(c, at), f = -1 as 1 | -1; // f: facing sign: he always looks toward -x, at the rope (mirrored it is on his left)
@@ -202,7 +202,7 @@ export const paintAssistant = (p: Painter, c: YCam, sx = 0, m: 1 | -1 = 1): FigA
   const outfit = {...PEOPLE['man-buzz'].outfit, gear: {hat: {kind: 'cap' as const, color: '#6a5a46', band: '#2b2420'}}};
   // axe raised in FRONT of him over the rope (the rope is on the side he faces): hands forward and up, haft rising toward the rope, clear of his face and of the showman
   const fig = {lArm: {to: up2(f * -0.04, 1.3), via: up2(f * 0.12, 1.1), out: f}, rArm: {to: up2(f * -0.3, 1.74), via: up2(f * -0.12, 1.56), out: f}};
-  return paintFigureAt(p, c, {...PEOPLE['man-buzz'], outfit}, {at, view: 'left', pose: 'P01', face: 'neutral', t: 0, tint: sepiaTint, shadow: WORLD_SHADOW, fig, held: (q, an, uu) => paintAxe(q, an, uu, f)});
+  return paintFigureAt(p, c, {...PEOPLE['man-buzz'], outfit}, {...VIEW_CUES_OFF, at, view: 'left', pose: 'P01', face: 'neutral', t: 0, tint: sepiaTint, shadow: WORLD_SHADOW, fig, held: (q, an, uu) => paintAxe(q, an, uu, f)});
 };
 export const CROWD: {at: V3; height: number; kind: 'man' | 'woman'; id: keyof typeof PEOPLE; tone: string}[] = [
   {at: [-0.6, 0, 3.0], height: 1.72, kind: 'man', id: 'man-crop', tone: '#463a30'},
@@ -211,7 +211,7 @@ export const CROWD: {at: V3; height: number; kind: 'man' | 'woman'; id: keyof ty
   {at: [1.6, 0, 3.4], height: 1.78, kind: 'man', id: 'man-spiky', tone: '#3a3a40'},
 ];
 export const paintCrowd = (p: Painter, c: YCam): (FigAnchors | null)[] =>
-  CROWD.map((q, i) => paintFigureAt(p, c, crowdDef(q.id, q.height, q.kind, q.tone, 900 + i), {at: q.at, view: 'back', pose: 'P01', t: 0, tint: {...sepiaTint, u: 0.22}, shadow: false}));
+  CROWD.map((q, i) => paintFigureAt(p, c, crowdDef(q.id, q.height, q.kind, q.tone, 900 + i), {...VIEW_CUES_OFF, at: q.at, view: 'back', pose: 'P01', t: 0, tint: {...sepiaTint, u: 0.22}, shadow: false}));
 /** Warm sepia grade and vignette over the whole frame (the hall is a 1854 reconstruction). */
 export const paintSepiaGrade = (p: Painter) => {
   washAt(p, 34000, SEP.shadow, 20, [[0, 0], [1080, 0], [1080, 1920], [0, 1920]], 0.2, 0.2);
@@ -241,7 +241,7 @@ export const paintShowmanAt = (p: Painter, c: YCam, m: 1 | -1, g: number): FigAn
   const arms = m > 0 ? {lArm: ptArm, rArm: hip} : {rArm: ptArm, lArm: hip}; // screen-right arm is his left
   // the hat comes off the head while the hand lifts it: the figure is drawn hatless from the first frame of the lift
   const hatless = {...def, outfit: {...def.outfit, gear: {...def.outfit.gear, hat: undefined}}};
-  const a = paintFigureAt(p, c, useHat ? hatless : def, {at, pose: 'P05', face: st.face, t: 0, tint: sepiaTint, shadow: WORLD_SHADOW, fig: arms as never});
+  const a = paintFigureAt(p, c, useHat ? hatless : def, {...VIEW_CUES_OFF, at, pose: 'P05', face: st.face, t: 0, tint: sepiaTint, shadow: WORLD_SHADOW, fig: arms as never});
   if (a && useHat) paintTopHat(p, c, at, a, seg1((k - HAT_GRAB) / (HAT_HOLD - HAT_GRAB)), m, brim.to);
   return a;
 };
@@ -290,7 +290,7 @@ const paintAssistantHero = (p: Painter, c: YCam, g: number): FigAnchors | null =
   const at = SH03_ASSISTANT, k = heroAxeAt(g), P = (v: V3) => camPoint(c, v) as Pt, f = -1;
   const outfit = {...PEOPLE['man-buzz'].outfit, gear: {hat: {kind: 'cap' as const, color: '#6a5a46', band: '#2b2420'}}};
   const fig = {lArm: {to: P(k.rear), via: P(k.elbR), out: f}, rArm: {to: P(k.front), via: P(k.elbF), out: f}, lean: SH03_LEAN * (1 - sg(g, 1095, 1110))};
-  return paintFigureAt(p, c, {...PEOPLE['man-buzz'], outfit}, {at, view: 'left', pose: 'P01', face: 'neutral', t: 0, tint: sepiaTint, shadow: WORLD_SHADOW, fig, held: (q, an) => paintAxeHero(q, c, an, k.edge)});
+  return paintFigureAt(p, c, {...PEOPLE['man-buzz'], outfit}, {...VIEW_CUES_OFF, at, view: 'left', pose: 'P01', face: 'neutral', t: 0, tint: sepiaTint, shadow: WORLD_SHADOW, fig, held: (q, an) => paintAxeHero(q, c, an, k.edge)});
 };
 export const paintAssistantAt = (p: Painter, c: YCam, sx: number, m: 1 | -1, g: number): FigAnchors | null => {
   const at: V3 = [m * (1.45 + sx) - m * 0.2, 1.2, 0.55], g0 = camPoint(c, at) as Pt, u = camUnit(c, at), f = -1 as 1 | -1; // 0.2 m back from the rope so the swing clears his face
@@ -310,7 +310,7 @@ export const paintAssistantAt = (p: Painter, c: YCam, sx: number, m: 1 | -1, g: 
     lArm: {to: mix(lo.l, hi.l, ch.l, st.raise, st.chop), via: mix(lo.lv, hi.lv, ch.lv, st.raise, st.chop), out: f},
     rArm: {to: mix(lo.r, hi.r, ch.r, st.raise, st.chop), via: mix(lo.rv, hi.rv, ch.rv, st.raise, st.chop), out: f},
   };
-  return paintFigureAt(p, c, {...PEOPLE['man-buzz'], outfit}, {at, view: 'left', pose: 'P01', face: 'neutral', t: 0, tint: sepiaTint, shadow: WORLD_SHADOW, fig, held: (q, an, uu) => paintAxe(q, an, uu, f)});
+  return paintFigureAt(p, c, {...PEOPLE['man-buzz'], outfit}, {...VIEW_CUES_OFF, at, view: 'left', pose: 'P01', face: 'neutral', t: 0, tint: sepiaTint, shadow: WORLD_SHADOW, fig, held: (q, an, uu) => paintAxe(q, an, uu, f)});
 };
 /** Crowd gasp (B04-SH03, from G1092): a hop of 3 cm, a lean and both hands up (P01 -> P15), 14 f up, 10 f settle (back view, so no kit motion: `gasp-recoil` has no back view). */
 export const crowdRecoil = (g: number): number => (g < 1092 ? 0 : Math.sin(Math.PI * Math.min(1, ln(g, 1092, 1106))) * (g < 1106 ? 1 : 1 - sg(g, 1106, 1116)));
@@ -332,7 +332,7 @@ export const paintCrowdAt = (p: Painter, c: YCam, g: number, hero = false): (Fig
         ? {lArm: arm(r0.lArm as never, hp(0.34, 2.05), hp(0.42, 1.55)), rArm: arm(r0.rArm as never, hp(-0.34, 2.05), hp(-0.42, 1.55)), lean: 0.08 * k, rise: 0.02 * k}
         : {lArm: arm(r0.lArm as never, hp(0.13, 1.33), hp(0.3, 1.0)), rArm: arm(r0.rArm as never, hp(-0.13, 1.33), hp(-0.3, 1.0)), lean: 0.08 * k, rise: 0.02 * k};
     }
-    return paintFigureAt(p, c, def, {at: [pos[0], pos[1] + 0.03 * k, pos[2]], view: 'back', pose: 'P01', t: 0, tint: {...sepiaTint, u: 0.22}, shadow: false, fig: fig as never});
+    return paintFigureAt(p, c, def, {...VIEW_CUES_OFF, at: [pos[0], pos[1] + 0.03 * k, pos[2]], view: 'back', pose: 'P01', t: 0, tint: {...sepiaTint, u: 0.22}, shadow: false, fig: fig as never});
   });
 };
 /** SH03 fibre flecks off the bite (6, 3-5 px, #efd9a0): burst up-left of the cut point 0.10-0.25 m, shrinking, gone by G1096. */
