@@ -143,6 +143,10 @@ export type FigPose = {
   wet?: boolean;
   /** Head nod/shake: [dx, dy] in head units. */
   nod?: Pt;
+  /** Front and three-quarter heads: camera elevation in radians (+ = seen from above), features shift on the head sphere (`head.ts` `pitchV`). Set by `figure-at.ts` `pitchCue`; absent = as before. */
+  headPitch?: number;
+  /** Head-only size factor (perspective: the head is nearer a high camera than the feet). Scales the head, face and hat about the chin; body, neck and shoulders keep their size. Set by `figure-at.ts` `pitchCue`; absent = 1. */
+  headSize?: number;
   /** Seated (driver): no legs or ground shadow; the car hides the lap. */
   seated?: boolean;
   /**
@@ -339,7 +343,7 @@ export const drawFigure = (p: Painter, def: CastDef, g: Pt, unit: number, pose: 
   // The front plane takes the facing side, the side plane (a darker shade) the other; `udiv(w)` is the edge between them at half-width w.
   const udiv = (w: number) => qdir * (1 - 2 * (qg?.sf ?? 1)) * w;
   /** Turned-body marks: shapes that get the side-plane shade (px polygons). */
-  const planeShapes: Pt[][] = [];
+  const planeShapes: {pts: Pt[]; color: string}[] = []; // each cloth shape with its own colour, so the side plane shades it in that cloth
   const headStyle = pose.hoodUp ? hoodUpHead(def.head, o) : def.head;
   const walk = pose.walk;
   const warm = pose.warm ?? 0;
@@ -762,7 +766,7 @@ export const drawFigure = (p: Painter, def: CastDef, g: Pt, unit: number, pose: 
       const hemF = lap ?? o.skirtHem ?? Math.max(kneeV - 0.19 * (1 - c), 0.3 * c + 0.2);
       const skirtPts = [...Uq([[-hw - 0.0085, hip0 + 0.034], [hw + 0.0085, hip0 + 0.034]]), ...(qg ? Sq(curvedEdge(kx + 0.06, -kx - 0.06, hemF, udiv(kx + 0.06), 0.03 * sinq, 8)) : Sq([[kx + 0.06, hemF], [-kx - 0.06, hemF]]))];
       fill(o.skirt, skirtPts);
-      if (qg) planeShapes.push(skirtPts);
+      if (qg) planeShapes.push({pts: skirtPts, color: o.skirt});
     }
     // The hem of a turned body curves: lowest at the edge between the planes (the nearest part), rising toward both ends.
     const top: Pt[] = qg
@@ -772,12 +776,12 @@ export const drawFigure = (p: Painter, def: CastDef, g: Pt, unit: number, pose: 
       const hem = Math.max(kneeV - 0.05, 0.12);
       const coatPts = [...Uq([[-sw + 0.017, shV], [sw - 0.017, shV], [sw + 0.0085, shV - 0.0425]]), ...(qg ? curvedEdge(hw + 0.085 + 0.08 * c, -hw - 0.085 - 0.08 * c, hem, udiv(hw + 0.085 + 0.08 * c), 0.035 * sinq).map(S) : [S([hw + 0.085 + 0.08 * c, hem]), S([-hw - 0.085 - 0.08 * c, hem])]), U([-sw - 0.0085, shV - 0.0425])];
       fill(coat, coatPts);
-      if (qg) planeShapes.push(coatPts);
+      if (qg) planeShapes.push({pts: coatPts, color: coat});
       if (!sil) inkLine(p, seed * 1000 + ++line, [U([0, shV - 0.05]), U([0, hip0 - 0.02]), S([0, hem])], {closed: false, weight: 0.9, curve: 0.1});
       if (pose.wet && !sil) for (let i = 0; i < 6; i++) inkLine(p, seed * 1000 + 60 + i, [U([-0.12 + i * 0.05, shV - 0.06 - 0.07 * (i % 3)]), U([-0.12 + i * 0.05, shV - 0.12 - 0.07 * (i % 3)])], {color: '#8fa6b8', weight: 0.8, closed: false});
     } else {
       fill(o.shirt, Uq(top));
-      if (qg) planeShapes.push(Uq(top));
+      if (qg) planeShapes.push({pts: Uq(top), color: o.shirt});
       if (o.jacket) {
         for (const s of [-1, 1]) fill(o.jacket, Uqf([[s * (sw - 0.017), shV], [s * 0.051, shV], [s * 0.0425, hip0 - 0.0255], [s * (hw + 0.021), hip0 - 0.0255], [s * sw, shV - 0.034]]));
       }
@@ -916,9 +920,9 @@ export const drawFigure = (p: Painter, def: CastDef, g: Pt, unit: number, pose: 
   if (qg && !sil && !profile) {
     const D1 = U([udiv(sw), shV - 0.034]), D2 = U([udiv(hw + 0.013), hip0]), N = U([-qdir * sw, shV - 0.034]);
     const ext = (t: number): Pt => [D1[0] + (D2[0] - D1[0]) * t, D1[1] + (D2[1] - D1[1]) * t];
-    planeShapes.forEach((shape, i) => {
-      const part2 = clipHalf(shape, D1, D2, N);
-      if (part2.length > 2) glaze(p, 7_700_000 + seed * 1000 + i, mixColor(coat ?? o.shirt, '#0a0d12', 0.22), 110 + 60 * sinq, part2, {border: 0.25, bleed: 0.02});
+    planeShapes.forEach(({pts, color}, i) => {
+      const part2 = clipHalf(pts, D1, D2, N);
+      if (part2.length > 2) glaze(p, 7_700_000 + seed * 1000 + i, mixColor(color, '#0a0d12', 0.22), 110 + 60 * sinq, part2, {border: 0.25, bleed: 0.02});
     });
     inkLine(p, seed * 1000 + 450, [ext(0.04), ext(1)], {closed: false, weight: 0.8, curve: 0.2, color: mixColor(toneOf(coat ?? o.shirt, L), INK, 0.55)});
   }
@@ -946,12 +950,13 @@ export const drawFigure = (p: Painter, def: CastDef, g: Pt, unit: number, pose: 
     fill(neckC, Uq([[nx - nw, chin + 0.051], [nx + nw, chin + 0.051], [nx + nw + 0.0043, shV - 0.013], [nx - nw - 0.0043, shV - 0.013]]), false, 6);
   }
   const nod = pose.nod ?? [0, 0];
-  const hc = U([nx + nod[0] * K, chin + CHIN * K - nod[1] * K]);
-  const Kpx = K * unit;
+  const Kh = K * (pose.headSize ?? 1);
+  const hc = U([nx + nod[0] * K, chin + CHIN * Kh - nod[1] * K]);
+  const Kpx = Kh * unit;
   // The head stays upright (decal), only its centre follows the body transform. Head cock (FigPose.headCock): the head and hat rotate
   // about the neck top (0.051 m above the chin on the head's centre line); absent or 0 = no transform, so the strokes are unchanged.
   const cock = pose.headCock ? (pose.headCock * Math.PI) / 180 : 0;
-  const pivot: Pt = [hc[0], hc[1] + (CHIN * K - 0.051) * unit];
+  const pivot: Pt = [hc[0], hc[1] + (CHIN * Kh - 0.051) * unit];
   const rotHead = ([x, y]: Pt): Pt => cock === 0 ? [x, y] : [pivot[0] + (x - pivot[0]) * Math.cos(cock) - (y - pivot[1]) * Math.sin(cock), pivot[1] + (x - pivot[0]) * Math.sin(cock) + (y - pivot[1]) * Math.cos(cock)];
   if (cock !== 0) {
     p.brush.push();
@@ -967,7 +972,7 @@ export const drawFigure = (p: Painter, def: CastDef, g: Pt, unit: number, pose: 
       [-0.52,0.88],[-0.68,0.49],[-0.73,0.12],[-0.77,-0.28],[-0.73,-0.64],[-0.57,-0.91],[-0.28,-1.07]];
     solid(p, seed + 1, sil, outline.map(([u, v]): Pt => [hc[0] + u * Kpx, hc[1] + v * Kpx]), 8, 0.02, 0.03);
   }
-  else if (headView === 'front') paintHeadFront(p, seed + 1, hc[0], hc[1], Kpx, pose.face, headStyle, t, warm, L, pose.quarter ? qdir * qr : 0);
+  else if (headView === 'front') paintHeadFront(p, seed + 1, hc[0], hc[1], Kpx, pose.face, headStyle, t, warm, L, pose.quarter ? qdir * qr : 0, pose.headPitch ?? 0);
   else paintHeadSide(p, seed + 1, hc[0], hc[1], Kpx, pose.face, headStyle, headView === 'left' ? -1 : 1, t, warm, L);
   if (G?.hat) {
     // Headwear over the head (wardrobe.ts): parts in head units, mirrored for a left-facing profile.

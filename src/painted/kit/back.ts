@@ -231,6 +231,9 @@ export const drawFigureBack = (p: Painter, def: CastDef, g: Pt, unit: number, po
   const nod = pose.nod ?? [0, 0];
   const hc: Pt = [hcBase[0] + nod[0] * K * unit, hcBase[1] - nod[1] * K * unit];
   const k = K * unit;
+  // Head-only size (FigPose.headSize, pitchCue perspective): the head grows about the chin; neck, collar and shoulders keep their size.
+  const hs = pose.headSize ?? 1, kh = k * hs;
+  const hcH: Pt = hs === 1 ? hc : (([x, y]: Pt): Pt => [x + nod[0] * K * unit, y - nod[1] * K * unit])(U([0, chin + CHIN * K * hs]));
   // Head turn / tilt (`headYaw` radians toward screen right, `headTilt` radians up): the skull narrows by cos(yaw) and slides toward
   // the turn, the whole head lifts with the tilt (hood top rises, the nape gap opens); the neck and shoulders stay put.
   const yaw = pose.headYaw ?? 0, tilt = pose.headTilt ?? 0, cy = Math.cos(yaw), lift = tilt * 0.62;
@@ -242,9 +245,9 @@ export const drawFigureBack = (p: Painter, def: CastDef, g: Pt, unit: number, po
   // Head cock (FigPose.headCock, degrees toward screen right): the head points rotate about the neck top (0.051 m above the chin on the
   // centre line, as the front view); neck(), the cowl's lower edge and the shoulders stay. Absent or 0 = the unrotated mapping.
   const cock = pose.headCock ? (pose.headCock * Math.PI) / 180 : 0;
-  const pivot: Pt = [hc[0], hc[1] + (CHIN - 0.051 / K) * k];
+  const pivot: Pt = [hcH[0], hcH[1] + (CHIN * hs - 0.051 / K) * k];
   const rotHead = ([x, y]: Pt): Pt => cock === 0 ? [x, y] : [pivot[0] + (x - pivot[0]) * Math.cos(cock) - (y - pivot[1]) * Math.sin(cock), pivot[1] + (x - pivot[0]) * Math.sin(cock) + (y - pivot[1]) * Math.cos(cock)];
-  const head = ([u, v]: Pt): Pt => rotHead([hc[0] + (u * cy + 0.3 * Math.sin(yaw)) * k, hc[1] + (v - lift) * k]);
+  const head = ([u, v]: Pt): Pt => rotHead([hcH[0] + (u * cy + 0.3 * Math.sin(yaw)) * kh, hcH[1] + (v - lift) * kh]);
   const H2 = (pts: Pt[]) => pts.map(head);
   // softNeck (EDU-EP01 W5.4): the caller paints its own nape and collar, so the rig's neck block (its lower edge showed as a bar on the shirt) is skipped
   if (!pose.softNeck) fill(pose.hoodUp && pose.cowl !== 'drape' ? (hoodColorOf(o) ?? mixColor(o.shirt, INK, 0.2)) : o.coat ?? skinShade, pts4(neck, [[-0.5, 0.5], [0.5, 0.5], [0.46, neckLow], [-0.46, neckLow]]), true, 4);
@@ -351,9 +354,9 @@ export const drawFigureBack = (p: Painter, def: CastDef, g: Pt, unit: number, po
   if (rG.raised) rHand = paintArm(1, rG);
   if (lG.raised) lHand = paintArm(-1, lG);
 
-  const headTop = rotHead([hc[0], hc[1] - (hoodUp || cut === 'hood' ? 1.46 : 1.17 + 0.29 * hoodR) * k])[1];
+  const headTop = rotHead([hcH[0], hcH[1] - (hoodUp || cut === 'hood' ? 1.46 : 1.17 + 0.29 * hoodR) * kh])[1];
   return {
-    head: rotHead(hc), headTop, chin: rotHead([hc[0], hc[1] + CHIN * k])[1], feet: g, rHand, lHand, rShoulder: rG.Sh, lShoulder: lG.Sh,
+    head: rotHead(hcH), headTop, chin: rotHead([hcH[0], hcH[1] + CHIN * kh])[1], feet: g, rHand, lHand, rShoulder: rG.Sh, lShoulder: lG.Sh,
     rUpper: [(rG.Sh[0] + rG.E[0]) / 2, (rG.Sh[1] + rG.E[1]) / 2], lUpper: [(lG.Sh[0] + lG.E[0]) / 2, (lG.Sh[1] + lG.E[1]) / 2],
     top: headTop, bottom: g[1],
   };

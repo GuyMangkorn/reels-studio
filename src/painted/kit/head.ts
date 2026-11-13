@@ -113,6 +113,19 @@ export const turnU = (theta: number, u: number, v: number): number => {
   const up = r * Math.sin(Math.max(-Math.PI / 2, Math.min(Math.PI / 2, al)));
   return Math.abs(a) > 1 ? up + Math.sign(a) * (Math.abs(u) - r) : up;
 };
+/**
+ * Head seen from above or below (KIT-VIEW-AUDIT VA03, 13 Nov 2026): `e` radians of camera elevation (+ = seen from above). A point on
+ * the face is moved along the vertical as if the head were a sphere tipped toward the lens: features near the centre slide down from
+ * above (more crown, fringe lower) and up from below (more under the chin); the outline and anything outside it (hair volume) stay, so
+ * the silhouette is unchanged. `e` 0 returns `v`.
+ */
+export const pitchV = (e: number, u: number, v: number): number => {
+  if (!e) return v;
+  // Depth on the egg at (u, v): zero on the outline (half width r at height v, the same egg as `headOutline`), 1 at the centre.
+  const s = v < 0 ? v / 1.05 : v / 1.22, r = Math.sqrt(Math.max(0, 1 - s * s)) * (1 - 0.07 * Math.max(0, s));
+  const z = Math.sqrt(Math.max(0, r * r - u * u));
+  return v + z * (v * (Math.cos(e) - 1) + 1.12 * Math.sin(e));
+};
 /** False when the point is on the hidden side of the turned head. */
 export const turnVisible = (theta: number, u: number, v: number): boolean => {
   const r = headRho(v), a = u / r;
@@ -413,8 +426,10 @@ const lookMouth = (lk: FaceLook, m: Mouth, open: number, my: number, fill: Fill,
   return true;
 };
 
-export const paintHeadFront = (p: Painter, seed: number, cx: number, cy: number, K: number, face: FaceState, style: HeadStyle, t: number, warm = 0, L?: InteriorLight, turn = 0) => {
-  const P = turn ? ([u, v]: Pt): Pt => [cx + turnU(turn, u, v) * K, cy + v * K] : ([u, v]: Pt): Pt => [cx + u * K, cy + v * K];
+export const paintHeadFront = (p: Painter, seed: number, cx: number, cy: number, K: number, face: FaceState, style: HeadStyle, t: number, warm = 0, L?: InteriorLight, turn = 0, pitch = 0) => {
+  const P0 = turn ? ([u, v]: Pt): Pt => [cx + turnU(turn, u, v) * K, cy + v * K] : ([u, v]: Pt): Pt => [cx + u * K, cy + v * K];
+  // `pitch` (VA03): the vertical sphere shift on top of the turn; 0 = the old mapping exactly.
+  const P = pitch ? ([u, v]: Pt): Pt => { const q = P0([u, v]); return [q[0], cy + pitchV(pitch, u, v) * K]; } : P0;
   /** Turned head: a mark with every point on the hidden side is not drawn. */
   const hidden = (pts: Pt[]) => turn !== 0 && !pts.some(([u, v]) => turnVisible(turn, u, v));
   const Q = (pts: Pt[]) => pts.map(P);

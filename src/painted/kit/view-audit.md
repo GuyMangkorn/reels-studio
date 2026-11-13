@@ -10,10 +10,11 @@ Status of each finding is **Reference** (observed), not a rule. Fixes need the u
 | --- | --- | --- | --- |
 | VA01 **fixed 13 Nov 2026** (`back.ts` body poses; test `tests/back-view.test.ts`) | Back view, P35 crouch, P31 sit, P38 run (150-210 deg) | Back view ignores body poses: crouch and run draw a full standing back, sit draws a standing back cut short. The figure "stands up" when the camera passes behind. Matches the README limit (back: no crouch/sit/kneel/run/lie). | High |
 | VA02 | 120 deg and 240 deg | Body is turned 120 deg away, the kit still draws a clean profile with the face showing, then snaps to a full back at 135 deg. Largest visual jump of the orbit (about 90 deg in one cut). No back three-quarter by user decision (views.ts, 4 Nov 2026: hair covers the turn). | High |
-| VA03 | High and low cameras | The figure is the same vertical card at every pitch: no crown of the head or shoulder tops from above, no shorter legs or larger feet; from below no underside of chin, no longer legs. Only size and position change, so high/low shots read as a cardboard standee. | High |
+| VA03 **opt-in fix 13 Nov 2026** (`FigureAtOpts.pitchCue`; test `tests/pitch-cue.test.ts`) | High and low cameras | The figure is the same vertical card at every pitch: no crown of the head or shoulder tops from above, no shorter legs or larger feet; from below no underside of chin, no longer legs. Only size and position change, so high/low shots read as a cardboard standee. | High |
 | VA04 | 30 and 60 deg (and 300/330) | Front three-quarter is fixed at 45 deg: two cells 30 deg apart are identical, then jump to profile at 67.5 deg. No continuous turn or cross-fade. | Medium |
 | VA05 | Skirt, back vs front/profile | Back view skirt is a flared A-line; front and profile are straight. Same outfit reads as two garments across a cut. | Medium |
 | VA06 | Back view arms | P01 and P38 back arms mirror the front pose (`poseFor` gets 'front'): run reads as hands on hips from behind. | Medium |
+| VA07 **fixed 13 Nov 2026** | Three-quarter side plane | The shaded side of the turned body glazed every cloth shape with the shirt colour, so a skirt's side read tan like skin. Each shape now shades in its own cloth colour (`cast.ts` `planeShapes`). | High |
 
 Suggested order for step 2+: VA01 (back body poses) and VA03 (pitch cues) first, since both turn on in every orbit or high/low
 shot; VA02 needs the user to revisit the 4 Nov "no back three-quarter" decision; VA04-VA06 are smaller fixes in the owning modules.
