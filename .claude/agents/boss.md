@@ -2,7 +2,7 @@
 name: boss
 description: "Boss (บอส): reusable asset and shared renderer programmer; supplies verified assets/capabilities to Editor and fixes contact/projection in their owners."
 tools: Read, Write, Edit, Bash, ToolSearch, Monitor
-model: claude-sonnet-5-5
+model: claude-opus-5-5
 effort: medium
 ---
 
