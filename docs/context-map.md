@@ -74,6 +74,16 @@ Episode-specific files are under [Episodes](#episodes); shared topics come first
 - SVG cut-out rig (retired for new work): [src/rig/](../src/rig/index.ts), [character-toolkit](character-toolkit.md); legacy SVG scene assets [src/assets/](../src/assets/visuals/VisualStage.tsx)
 - Blender `char_base` (deactivated): [assets/blender/](../assets/blender/char_base/build.py), [blender-mcp-workflow](blender-mcp-workflow.md)
 
+## Creature kit (lofted creatures)
+
+**Read when:** building, posing or animating a lofted-volume creature (dinosaurs and other animals outside `ANIMALS`) or checking its joints.
+
+- Code: [beast.ts](../src/painted/survival/beast.ts) (skeleton rig, `limb`, `ik2`, `gaitFoot`, `paintBeast`, `checkJoints`), [beast-kit.ts](../src/painted/survival/beast-kit.ts) (`BEAST_KIT` registry), [beast-check.ts](../src/painted/survival/beast-check.ts) (`checkBuild`), [beast-raptor.ts](../src/painted/survival/beast-raptor.ts) (`RAPTOR`: `buildRaptor`, `RAPTOR_POSES`, walk and pounce), card frame [frame.tsx](../src/painted/survival/frame.tsx)
+- Scripts: [creature-kit/](../scripts/edu-series/ep16/creature-kit/render.sh) comp cards (`render.sh <version> <CREATURE>`) and [joint-report.mts](../scripts/edu-series/ep16/creature-kit/joint-report.mts)
+- Compositions: `KIT-<CREATURE>-TURN|RIG|<ANIM>[-SIDE]` (stills entry [index.tsx](../scripts/edu-series/ep16/creature-kit/index.tsx)), `KIT-RAPTOR-MOTION` ([kit-raptor-motion.tsx](../src/painted/shots/kit-raptor-motion.tsx), [video](../src/videos/kit-raptor-motion/index.ts))
+- Tests: [beast-joints](../tests/beast-joints.test.ts)
+- References: store `projects/shared/KIT/references/web/2026-11-14_raptor-*`
+
 ## Painted 2D engine
 
 **Read when:** any p5.brush shot, plate, kit module or painted review.
