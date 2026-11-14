@@ -6,7 +6,7 @@ One row per concept the channel has made. Each concept has its own file `C<nn>.m
 
 ## How a new round is filed
 
-1. Preaw writes one file per concept, `C61.md` onward (next free ID: **C67**), with the pitch and the [ER08](../../../channels/edu/script.md) pitch check, and adds a row here with status `pitched` and the round ID (`R11`, ...).
+1. Preaw writes one file per concept, `C61.md` onward (next free ID: **C69**), with the pitch and the [ER08](../../../channels/edu/script.md) pitch check, and adds a row here with status `pitched` and the round ID (`R11`, ...).
 2. Film adds a `## Film annotation (W0.2)` section to each concept file of the round.
 3. After the user picks, the coordinator sets each row: `picked` (with the episode ID), `dropped`, or leaves `pitched`. Write the round's pick note (user's words, date) in `../delivery.md`.
 4. When the episode is published, set the row to `made`.
@@ -32,5 +32,7 @@ One row per concept the channel has made. Each concept has its own file `C<nn>.m
 | C64 | คืนแรกในยุคไดโนเสาร์ ฟ้าไม่ใช่ฟ้าเดิม (2-ep series) | pitched | - | R11 | [C64.md](C64.md) |
 | C65 | ไดโนเสาร์ข้างบ้านคุณ (อีสาน) (3-ep series) | pitched | - | R11 | [C65.md](C65.md) |
 | C66 | กลุ่มไลน์หมู่บ้าน หลังหลุดไปยุคไดโนเสาร์ (wild card, 3-ep series) | pitched | - | R11 | [C66.md](C66.md) |
+| C67 | ป่าเงียบ: ทำไมคนฉลาดถึงไม่ตอบ | picked | EDU-EP19-SHORT | R12 | [C67.md](C67.md) |
+| C68 | ถ้าการซ่อนคือทางรอด โลกเราซ่อนไม่ทันแล้ว | pitched | - | R12 | [C68.md](C68.md) |
 
 Pitch lessons from past rounds: [lessons.md](lessons.md).
