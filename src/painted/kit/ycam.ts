@@ -62,7 +62,8 @@ export const mixYCam = (a: YCam, b: YCam, e: number): YCam => {
   const m = (p: number, q: number) => p + (q - p) * e;
   let dy = b.yaw - a.yaw;
   dy = dy - Math.round(dy / (2 * Math.PI)) * 2 * Math.PI;
-  return {x: m(a.x, b.x), y: m(a.y, b.y), z: m(a.z, b.z), yaw: a.yaw + dy * e, f: m(a.f, b.f), hy: m(a.hy, b.hy), pitch: m(a.pitch ?? 0, b.pitch ?? 0), cx: m(a.cx ?? 0, b.cx ?? 0)};
+  return {x: m(a.x, b.x), y: m(a.y, b.y), z: m(a.z, b.z), yaw: a.yaw + dy * e, f: m(a.f, b.f), hy: m(a.hy, b.hy), pitch: m(a.pitch ?? 0, b.pitch ?? 0), cx: m(a.cx ?? 0, b.cx ?? 0),
+    ...(a.near !== undefined || b.near !== undefined ? {near: m(a.near ?? YCAM_NEAR, b.near ?? YCAM_NEAR)} : {})};
 };
 
 /**

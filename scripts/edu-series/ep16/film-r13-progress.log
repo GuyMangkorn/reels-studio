@@ -1,0 +1,23 @@
+13:28:01 START reading inputs (Film R13)
+13:28:43 END reading (brief, sheet R1.1, rows R1.2, fixlist, draft sheets a-c viewed); START dinosaur audit (creatures/pterosaur modules, UT16, refs)
+13:30:38 DECISION audit: readable dinosaur screen time in draft ~3 s of 61 s (SH08 flat neck card, SH10 56 px head, SH16 ptero <1 s, none in hook SH02); long-neck is a flat card (fails UT16 at hero size) -> need a volume sauropod build; pterosaur volume exists
+13:31:28 INPUT coordinator: new user refs ankylosaurus-ref.jpg + triceratops-ref.jpg (store references/user, UT10/UT16); folding into the species plan
+13:32:23 DECISION species plan: sauropod (recurring long-neck, volume rebuild) SH02/03/08/10/21; ankylosaurus SH05; triceratops SH11/SH15; pterosaur hero SH16 (+SH02 sky); far herds SH12 night. SH16 uncle 'windmill' = laughing villager lean ~90deg (draft frames viewed)
+13:32:29 INPUT coordinator: user ref dragonfly-ref.webp (giant dragonfly, watermark = ref only); folding in as a giant-dragonfly hero candidate
+13:33:50 END dinosaur audit; START per-shot design + prototype volume builds (sauropod, triceratops, ankylosaurus, dragonfly) in scripts/edu-series/ep16/r13-looks/ (look-frame code only, no src edits)
+13:33:58 INPUT coordinator: user refs longneck-brachiosaur-ref.jpg (eats conifer top; SH10 read) + longneck-herd-forest-ref.jpg (herd in misty conifers, pterosaurs; wide mood). Checking AS-LONGNECK against them
+13:34:12 DECISION long-neck rebuilt from the brachiosaur ref (blue-grey, wrinkled neck folds, nasal arch, long column front legs, sloping back); SH03 adds the giant dragonfly (ref) hovering at Keng's face
+13:36:36 INPUT coordinator: T. rex refs (front34 + side). DECISION: no T. rex in EP16 - every EP16 dino shot is daylight (predators only in firelight per user rule), EP16 is the food/herbivore episode, and a predator here would spend EP17's spinosaurus reveal; SH17 night stays on the koi beat. Refs kept for a later episode
+13:41:24 look frames v1 rendered (8 stills); reviewing
+13:49:39 LOOK FRAMES: SH02 decision - long-neck moved to (-4,-17) heading east, frame at +73; rendering v5 (all frames, one Chrome)
+13:50:34 END look frames (v5: SH02 long-neck at gate reads; 8 frames + AS-BEASTS viewed). START rows/storyboard/brief update
+13:54:39 DECISION: rows R1.3 keep the locked timing (1839 f); the stretch (SH10 +20, SH11 +36, SH16 +69 = 1964 f) goes to the user as Q1 with in-time fallbacks written in the rows/sheet. Era mix is fixed fiction (script, user 13 Nov), so no dragonfly era question. SH16 look camera hy 1000->800 so K's face clears the caption band.
+13:57:58 COORDINATOR: new user request - 'remember who you are' T. rex-in-the-clouds gag at the hen-is-dinosaur line; evaluating fit
+14:00:36 DECISION (cloud T. rex gag): FIT WITH CHANGE - SH22 after the hen's cluck V06 (f1779), +45 f end stretch (1839->1884, no voice onset moves); look frame LF-SH22SKY v5 rendered and viewed; Q6 to user; Q5 updated (real T. rex still kept out of EP16)
+14:03:57 END rows/storyboard/brief update: ROWS-R1.3 (15 changed shots, Q1-Q6, 10 R1.3 looks), SHEET-R1.3, BRIEF-R1.3 written with change logs. END per-shot design.
+14:24:06 START Film R14 (user answers Q1 yes, Q2 triceratops out, Q3 yes, Q6 yes + "Remember who you are" + normal T. rex at reduced opacity; Q4 open, Q5 dropped); inputs read (sheet/brief/rows R1.3, measure.json, sound-cues.json, narration-place.py, T. rex refs viewed)
+14:24:06 INPUT coordinator: Boat R1.3 visual check ok (SH10, SH22); guards RV-10a, RV-10b, RV-22a to apply; SH22 R1.4 text + opacity T. rex need Boat recheck
+14:24:06 DECISION species: SH11 ankylosaur (same animal as SH05, walks the flooded paddy; stretch keeps the proposed foot-plant + mud splat on K), SH15 far long-neck browsing a conifer beyond the paddy (in frame the whole crane, probe), SH21 long-neck steps out at the forest edge beyond the fence; SH21 camera yaw 10->22 -> -10->-24 because the coop hid the family (draft and look frame)
+14:24:06 DECISION SH22: T. rex = buildTRex volume (user refs), apparition at 50 % (look frame: haze toward the sky in one canvas; two BrushCanvas layers do not composite, v1 black / v2 lost); caption "Remember who you are" in the edu caption stroke, bottom edge y 1344, +132..+170; E-TAG +166
+14:24:06 LOOK FRAMES R14 viewed: out/ep16/r14/looks/v4/ (LF-SH11, LF-SH15, LF-SH21, LF-SH22SKY-R14; sheet v4-sheet.png). START timing recompute + rows/sheet/brief R1.4
+14:30:08 END R14: SHEET-R1.4 (2009 f, R1.4 section, voice/peg/acceptance tables, Boss/Editor/Ton lists), BRIEF-R1.4, ROWS-R1.4 (Q4 open + new Q7 look approval) written with change logs; build.py validated (22 shots, exit 0; not published)

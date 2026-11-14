@@ -3,7 +3,7 @@ import {INK, palOf, capsule, ell, fistParts, formDir, openHandParts, planeBand, 
 import {hatFront, hatSide, type HatKind} from './gear';
 import {CHIN, HEAD_SPAN, paintHeadFront, paintHeadSide, turnU, type FaceState, type HeadStyle} from './head';
 import {clamp01} from './space';
-import {modeLegs, modeOf, type ModeLegs} from './legs';
+import {crouchLeg, modeLegs, modeOf, type ModeLegs} from './legs';
 import {drawFigureBack, hoodUpHead} from './back';
 import {QUARTER_DEPTH, clipHalf, curvedEdge, quarterGeo, turnedCap} from './quarter';
 
@@ -34,7 +34,9 @@ export type Gear = {
   /** `v` lapels / crossover collar (`depth` m below the shoulder line), `sailor` square collar with a `trim` stripe, `hood` hood bunched at the neck. */
   collar?: {kind: 'v' | 'sailor' | 'hood'; color: string; trim?: string; depth?: number};
   /** Waist band `h` m tall (default 0.035); `buckle` adds a plate in front view. */
-  belt?: {color: string; h?: number; buckle?: string};
+  belt?: {color: string; h?: number; buckle?: string;
+    /** Checked cloth (pha khao ma, EDU-EP16..18): colour of the check squares, a two-row chequer that follows the band in front and back view (absent = plain). */
+    checks?: string};
   /** Open long coat (lab coat): panels from the shoulders down to `hem` m above the ground. Set `sleeve` to the coat colour. */
   overcoat?: {color: string; hem: number};
   /** Monk's outer robe fold: a darker diagonal band across the chest. Combine with `shirt`, `sleeve` and a long `skirt`. */
@@ -49,6 +51,14 @@ export type Gear = {
   pockets?: boolean;
   /** Kimono / yukata sleeves: the forearm cloth hangs in a wide flap. */
   wideSleeves?: boolean;
+};
+/** Two-row chequer on a belt band: calls `put` with each white square (u across, v up) between v0 - h and v0, `half` wide each side of the centre. */
+export const beltChecks = (h: number, half: number, v0: number, put: (pts: Pt[]) => void, n = 8) => {
+  const w = (2 * half) / n, hh = h / 2;
+  for (let r = 0; r < 2; r++) for (let i = 0; i < n; i++) if ((i + r) % 2 === 0) {
+    const x = -half + w * i, y = v0 - r * hh;
+    put([[x, y], [x + w, y], [x + w, y - hh], [x, y - hh]]);
+  }
 };
 /**
  * `headScale` and `armScale` (default 1) shrink the head and the arm bones of the 4-head adult rig for children (people library);
@@ -490,7 +500,7 @@ export const drawFigure = (p: Painter, def: CastDef, g: Pt, unit: number, pose: 
       const farLeg = !!qg && s === qdir, st = qg ? (farLeg ? -0.035 : 0.07) * sinq * (1 - (qg.late ?? 0)) : 0, rs = qg && farLeg ? 0.03 * sinq * (1 - qg.late) : 0;
       const hip: Pt = [s * 0.0725 * kp, hipV];
       const ankle: Pt = [s * (0.08 + 0.05 * c) * kp + qdir * st, ankleV + lift + rs];
-      const knee: Pt = [s * (0.077 + 0.17 * c) * kp + qdir * st * 0.5, lerp((hipV + ankle[1]) / 2, 0.46, c)];
+      const cl = crouchLeg(s, c, hipV, hip0, kp, ankleV), knee: Pt = [cl.knee[0] + qdir * st * 0.5, cl.knee[1]];
       const kk = pose.legKick?.[s > 0 ? 'l' : 'r'];
       if (kk && !qg) {
         const h = (kk.hip * Math.PI) / 180, sh = ((kk.hip + kk.knee) * Math.PI) / 180, L1 = hipV - knee[1], L2 = knee[1] - ankle[1];
@@ -977,6 +987,7 @@ export const drawFigure = (p: Painter, def: CastDef, g: Pt, unit: number, pose: 
           fill(G.belt.color, [...curvedEdge(-edge(v0), edge(v0), v0, ub, a1).map(U), ...curvedEdge(edge(bandV1), -edge(bandV1), bandV1, ub, a1).map(U)]);
         } else fill(G.belt.color, Uqf([[-edge(v0), v0], [edge(v0), v0], [edge(bandV1), bandV1], [-edge(bandV1), bandV1]]));
         if (G.belt.buckle) fill(G.belt.buckle, Uqf([[-0.03, v0 - 0.004], [0.03, v0 - 0.004], [0.03, bandV1 + 0.004], [-0.03, bandV1 + 0.004]]), true, 6);
+        if (G.belt.checks) beltChecks(h, edge((v0 + bandV1) / 2) * 0.96, v0, (pts) => fill(G.belt!.checks!, Uqf(pts), false, 3));
       }
       if (G.overcoat) {
         const hem = Math.min(G.overcoat.hem, kneeV + 0.12);

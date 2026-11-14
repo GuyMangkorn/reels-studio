@@ -44,6 +44,9 @@ Why this file exists: in WDG-EP01-SHORT one look frame went through seven painte
 - **UT09 — Dread over jump scares.** Imply the ghost (a look, a sound, a shadow); avoid a heavy jump scare. Evidence: HANAKO ("not too much jumpscare", Hanako never shown as a body, 31 Oct 2026); KSO ("implication only", 1 Nov 2026).
 - **UT10 — A monster design starts from the user's reference.** Ask for or find a reference before designing a creature the user names; do not invent its look. Evidence: WDG untildawn wendigo (reference supplied after SB-R2, 2 Nov 2026).
 
+<a id="ut-creature-volume"></a>
+- **UT16 — Creatures and big animals are drawn as volume, never as a paper cut-out.** Build the body from round cross-sections with form shading, limbs with real mass (thigh, knee, shin, foot; upper arm and hand) at the proportions of the user's reference, far-side limbs behind the near ones in a darker value, and enough depth order and overlap that the shape holds when it turns. Show it in front-3/4 or rear-3/4 as well as side-on, squared to the lens; a single flat side profile with thin limbs reads as a paper doll and fails. Check with a turnaround sheet (front-3/4, side, rear-3/4) before a shot frame. Evidence: EDU-EP17 spinosaurus (user, 14 Nov 2026: "looks like a paper doll: side-on but the legs and arms look tiny, like paper"; the volume rebuild R1.2 passed). Applies to every creature, flying ones too: the EDU-EP16 pterosaur follows it (user, 14 Nov 2026).
+
 ## Captions
 
 - **UT12 — The caption shade is as light as it can be.** The dark overlay behind captions uses the lowest opacity at which the text still reads on the brightest background of that video; a heavier overlay than needed dulls the picture. Evidence: EG-EP02-SHORT (user preferred 0.3 over 0.62 on the first comparison, 4 Nov 2026; 0.3 failed on the cream paper at f1075-1160, so 0.4 was kept). Rule: [production-requirements](production-requirements.md#caption-backdrop).

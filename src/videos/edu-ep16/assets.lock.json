@@ -1,0 +1,234 @@
+{
+  "public/audio/bed/bed_isan-cheeky-phin-100bpm_01.wav": {
+    "store": "library/sound/music/bed/bed_isan-cheeky-phin-100bpm_01.wav",
+    "sha256": "9272d8b7c310a2286c0e185cd1f7d04f6ed860e1a240bc723b58ebd0add446bb"
+  },
+  "public/audio/nature/nature_campfire-night-crackle_01.wav": {
+    "store": "library/sound/ambience/nature/nature_campfire-night-crackle_01.wav",
+    "sha256": "7c4fb8fefb7deae746a567bdf44ad857614ded5b4b43443f37d60b4f4cf7db48"
+  },
+  "public/audio/nature/nature_forest-edge-insects_01.wav": {
+    "store": "library/sound/ambience/nature/nature_forest-edge-insects_01.wav",
+    "sha256": "499204e4cc912d43fe37358dc6fd06ec07a028575ec636fe02cf9b18c775031e"
+  },
+  "public/audio/nature/nature_village-morning-hens_01.wav": {
+    "store": "library/sound/ambience/nature/nature_village-morning-hens_01.wav",
+    "sha256": "867ff5067439af6d7ed654799f4d206e82cc95782b18978322e9560df2f45e07"
+  },
+  "public/audio/nature/nature_village-night-insects_01.wav": {
+    "store": "library/sound/ambience/nature/nature_village-night-insects_01.wav",
+    "sha256": "8edf1d4a57845bf718714e65c2105aebf56c41256b30079d08e7127dda23656e"
+  },
+  "public/audio/stinger/stinger_isan-series-tag_01.wav": {
+    "store": "library/sound/music/stinger/stinger_isan-series-tag_01.wav",
+    "sha256": "d59aa9d44a25293af70016c89efc29bb3f3f0f0a0342467c7b60574b978ccda0"
+  },
+  "public/audio/stinger/stinger_phin-low-note_01.wav": {
+    "store": "library/sound/music/stinger/stinger_phin-low-note_01.wav",
+    "sha256": "5b02c00640f81c2913ccfbb8e1c4958694f2364a92d296df7a656dd95121db4c"
+  },
+  "public/audio/stinger/stinger_phin-upward-run_01.wav": {
+    "store": "library/sound/music/stinger/stinger_phin-upward-run_01.wav",
+    "sha256": "069e784ac99f39b2fa96e9d9c799a4903aa4dfb15ad876e6deb2d7a2e29621e3"
+  },
+  "public/audio/stinger/stinger_pizz-button-comic_01.wav": {
+    "store": "library/sound/music/stinger/stinger_pizz-button-comic_01.wav",
+    "sha256": "228701dbcee2f10ed5e91e2c8f837757787c3222598cc5849b0d04b9086787f0"
+  },
+  "public/audio/stinger/stinger_pong-lang-tada_01.wav": {
+    "store": "library/sound/music/stinger/stinger_pong-lang-tada_01.wav",
+    "sha256": "5a48c94390ccbe4732342ff125e7bcc1f241adc7108569cb598e2935071f8da6"
+  },
+  "public/audio/water/water_river-pebbles-babble_01.wav": {
+    "store": "library/sound/ambience/water/water_river-pebbles-babble_01.wav",
+    "sha256": "5c45914ae903f0570558193539e6349147d5cff469da05c5df2a1f19f7aaa85d"
+  },
+  "public/sfx/action/action_hoe-thunk-mud_01.wav": {
+    "store": "library/sound/sfx/action/action_hoe-thunk-mud_01.wav",
+    "sha256": "96acabbfb1e76b133bcb582c7721f1ce7e02db2bc744280e76b2c489b432f93f"
+  },
+  "public/sfx/action/action_slap-back-of-hand_01.wav": {
+    "store": "library/sound/sfx/action/action_slap-back-of-hand_01.wav",
+    "sha256": "18c302e2a7fd701aaf4130828d0f3ebe284ecd471f8e24eeadbe6ef9b639ebd3"
+  },
+  "public/sfx/creature/creature_ankylosaur-forest-steps_01.wav": {
+    "store": "library/sound/sfx/creature/creature_ankylosaur-forest-steps_01.wav",
+    "sha256": "cfc3036d2c7b3c855fb54c58700aa2255e5634c81ce32840ffd93ddfe681543e"
+  },
+  "public/sfx/creature/creature_ankylosaur-huff-shake_01.wav": {
+    "store": "library/sound/sfx/creature/creature_ankylosaur-huff-shake_01.wav",
+    "sha256": "e4cf67d9a70e9ac3bd8c0df8d97e7bb020220da222ba8fa257e6ab005419cc0f"
+  },
+  "public/sfx/creature/creature_ankylosaur-paddy-step_01.wav": {
+    "store": "library/sound/sfx/creature/creature_ankylosaur-paddy-step_01.wav",
+    "sha256": "6e2d98f3b4d55ea208a2316fd8ec627bc6af8d680d520d1a3f613431c562f975"
+  },
+  "public/sfx/creature/creature_dragonfly-giant-pass_01.wav": {
+    "store": "library/sound/sfx/creature/creature_dragonfly-giant-pass_01.wav",
+    "sha256": "5c8c53e39d0ebecaee6462f4fc657bdb57456183810b797a79b4310033078fda"
+  },
+  "public/sfx/creature/creature_giant-nasal-breath_01.wav": {
+    "store": "library/sound/sfx/creature/creature_giant-nasal-breath_01.wav",
+    "sha256": "b572c431e1cce2d67ca40d3dd3e1bee986a3d63c3379190a677366da24e5e6a6"
+  },
+  "public/sfx/creature/creature_hen-claw-scratch_01.wav": {
+    "store": "library/sound/sfx/creature/creature_hen-claw-scratch_01.wav",
+    "sha256": "1ba2346272a393584ab38fdf68dc2aa29d4aaf594a77c4185ae8dff1c57a14a7"
+  },
+  "public/sfx/creature/creature_hen-cluck-single_02.wav": {
+    "store": "library/sound/sfx/creature/creature_hen-cluck-single_02.wav",
+    "sha256": "d0adaf237bbedea5cfff5c1eeb1a48338bc2499e45cf8dd8483317449c85aca0"
+  },
+  "public/sfx/creature/creature_hen-purr-trill_01.wav": {
+    "store": "library/sound/sfx/creature/creature_hen-purr-trill_01.wav",
+    "sha256": "aad99371c90f9f6c3b24f23cb95ef5de06f4e0aca2edbb64d206af6fc668c8a9"
+  },
+  "public/sfx/creature/creature_hens-content-coop_01.wav": {
+    "store": "library/sound/sfx/creature/creature_hens-content-coop_01.wav",
+    "sha256": "ec325139b9f63dba1be1b24c79cff3722e02b3a56f6095d232647c5b6d0ae502"
+  },
+  "public/sfx/creature/creature_hens-squawk-startled_01.wav": {
+    "store": "library/sound/sfx/creature/creature_hens-squawk-startled_01.wav",
+    "sha256": "9753647eb89d278ef628703a9921d48fcd716aeda37fb44987a59121c4247f8d"
+  },
+  "public/sfx/creature/creature_longneck-breath-rumble_01.wav": {
+    "store": "library/sound/sfx/creature/creature_longneck-breath-rumble_01.wav",
+    "sha256": "9381ede496060b873fcacfbcb940da0e68250fee8e2d132ba86fcdef8653dd6b"
+  },
+  "public/sfx/creature/creature_longneck-chew-leaves_01.wav": {
+    "store": "library/sound/sfx/creature/creature_longneck-chew-leaves_01.wav",
+    "sha256": "9f7df3cd8b33cccb299967d9af6174b1a91f64c43570634dc4942c00b198046c"
+  },
+  "public/sfx/creature/creature_pterosaur-flock-takeoff_01.wav": {
+    "store": "library/sound/sfx/creature/creature_pterosaur-flock-takeoff_01.wav",
+    "sha256": "bd7708fbe1f68c6e2cffdf888f1a6c8f9d7a1276f77a60257a78d322b9d8707d"
+  },
+  "public/sfx/creature/creature_pterosaur-gulp-far_01.wav": {
+    "store": "library/sound/sfx/creature/creature_pterosaur-gulp-far_01.wav",
+    "sha256": "1e3fafaef00d3000c9c06cc67021ade2c6506b07d5393c20066a9852847eb4e6"
+  },
+  "public/sfx/creature/creature_pterosaur-wing-rush_01.wav": {
+    "store": "library/sound/sfx/creature/creature_pterosaur-wing-rush_01.wav",
+    "sha256": "869234b8acb55c63035d7fe873d679d2d86f9a1f3a9c24fa154cdb8709e95594"
+  },
+  "public/sfx/creature/creature_theropod-footfall-mid_01.wav": {
+    "store": "library/sound/sfx/creature/creature_theropod-footfall-mid_01.wav",
+    "sha256": "e29b1721498cf31913af3b7dfd99f9701bcfb2b50087f468cb4650fd707ee0eb"
+  },
+  "public/sfx/creature/creature_theropod-sniffs-deep_01.wav": {
+    "store": "library/sound/sfx/creature/creature_theropod-sniffs-deep_01.wav",
+    "sha256": "c523f96d656dd16497237f19c399a4f0aadc399e313df32f97387f95edc7974e"
+  },
+  "public/sfx/crowd/crowd_villagers-laugh-warm_01.wav": {
+    "store": "library/sound/sfx/crowd/crowd_villagers-laugh-warm_01.wav",
+    "sha256": "c3f82273068671e600c1ebb1a312f3b907e35328cdc592a71e47d8a673243141"
+  },
+  "public/sfx/foley/foley_boy-relief-exhale_01.wav": {
+    "store": "library/sound/sfx/foley/foley_boy-relief-exhale_01.wav",
+    "sha256": "180c8110fa6ceefb1ffbed1043aaad7c0401f56efade251f0a46bc12d93aa3e4"
+  },
+  "public/sfx/foley/foley_burlap-string-pull_01.wav": {
+    "store": "library/sound/sfx/foley/foley_burlap-string-pull_01.wav",
+    "sha256": "4e0c0e1b7a94e9f453477b232f77a9989c95b6c8cca8c66970d67f0008c8ed54"
+  },
+  "public/sfx/foley/foley_calendar-page-rips_02.wav": {
+    "store": "library/sound/sfx/foley/foley_calendar-page-rips_02.wav",
+    "sha256": "242a6fe3fbc96f94384c55989e714721ce9d69cee6deb430a02d04de2a8ed9d0"
+  },
+  "public/sfx/foley/foley_clay-bowl-slide-mat_01.wav": {
+    "store": "library/sound/sfx/foley/foley_clay-bowl-slide-mat_01.wav",
+    "sha256": "0294cf584c1b915ba019a1677f7d884b7413ff0f523b25b13caf0fbc66b37dcb"
+  },
+  "public/sfx/foley/foley_eggs-clink-apron_01.wav": {
+    "store": "library/sound/sfx/foley/foley_eggs-clink-apron_01.wav",
+    "sha256": "5bfdd283c542525cdfeb869889843505654d935e91e26789ad01e423ea1e8f10"
+  },
+  "public/sfx/foley/foley_fern-body-push-far_01.wav": {
+    "store": "library/sound/sfx/foley/foley_fern-body-push-far_01.wav",
+    "sha256": "92dcb4f7a27ffd4688c73a37d50a94e2d3f47d62a256fa77cf26055a2daeebc2"
+  },
+  "public/sfx/foley/foley_fern-frond-push_01.wav": {
+    "store": "library/sound/sfx/foley/foley_fern-frond-push_01.wav",
+    "sha256": "30d13e8f89ce356decacaac8001283b14634d956ca12a8e0d34f05b2daec820a"
+  },
+  "public/sfx/foley/foley_fish-grill-sizzle_01.wav": {
+    "store": "library/sound/sfx/foley/foley_fish-grill-sizzle_01.wav",
+    "sha256": "92cf36d65c915f693c7aa46282de4e22dcb1e9f9103dd35dd7ac7c4630fd0da4"
+  },
+  "public/sfx/foley/foley_flipflop-run-dirt_01.wav": {
+    "store": "library/sound/sfx/foley/foley_flipflop-run-dirt_01.wav",
+    "sha256": "a09039c512b564193cc1d889b232c8aedbeafae7c6495b579da50163a8d0d0e8"
+  },
+  "public/sfx/foley/foley_hen-beak-peck-single_01.wav": {
+    "store": "library/sound/sfx/foley/foley_hen-beak-peck-single_01.wav",
+    "sha256": "b9bd8ce0b9787baba084b0c02ae027ae1097f8b5fb5d552185325a5d2c380885"
+  },
+  "public/sfx/foley/foley_reed-wade-scramble_01.wav": {
+    "store": "library/sound/sfx/foley/foley_reed-wade-scramble_01.wav",
+    "sha256": "f8c1168fee41fbb5fb87a6a9c036a19383092785ec03ecd82eba117f59adcd65"
+  },
+  "public/sfx/foley/foley_rice-grain-trickle-sill_01.wav": {
+    "store": "library/sound/sfx/foley/foley_rice-grain-trickle-sill_01.wav",
+    "sha256": "bb9d147e2da43c4f923000665364d548ccf2ac456b95ff36180a5b17c94f679b"
+  },
+  "public/sfx/foley/foley_rice-pour-shell_01.wav": {
+    "store": "library/sound/sfx/foley/foley_rice-pour-shell_01.wav",
+    "sha256": "53666dea78d1831b840d7eb719cd1ef61051f9133a91fd5282a0f7b8a3be5cc3"
+  },
+  "public/sfx/foley/foley_rice-sack-thud_01.wav": {
+    "store": "library/sound/sfx/foley/foley_rice-sack-thud_01.wav",
+    "sha256": "fdf01c8dcc5541cd6d739972d71aff0f90dcbd07d63ed08aaa72ab366b5450a3"
+  },
+  "public/sfx/foley/foley_seedcone-crunch-jaws_01.wav": {
+    "store": "library/sound/sfx/foley/foley_seedcone-crunch-jaws_01.wav",
+    "sha256": "1b0e6a3672bdf36ce5dbb64ec33057bc357042018121735110e26e36fae148f8"
+  },
+  "public/sfx/foley/foley_seeds-patter-leaves_01.wav": {
+    "store": "library/sound/sfx/foley/foley_seeds-patter-leaves_01.wav",
+    "sha256": "94e24230ccf8f4680036783a8a1df8da2582d1a4032cb2c6e8cf4376718898ad"
+  },
+  "public/sfx/foley/foley_seeds-rattle-palm_01.wav": {
+    "store": "library/sound/sfx/foley/foley_seeds-rattle-palm_01.wav",
+    "sha256": "83d8f76d7c813113a4c9ff6b830132a4cf92657b975275395e9bd1046eb8dbdd"
+  },
+  "public/sfx/foley/foley_sleeve-swish_01.wav": {
+    "store": "library/sound/sfx/foley/foley_sleeve-swish_01.wav",
+    "sha256": "f1dfcc94a98d4e6913161592cc8c609bbb9719d972f24478a1c1f9f54de06e0c"
+  },
+  "public/sfx/foley/foley_teak-door-creak_01.wav": {
+    "store": "library/sound/sfx/foley/foley_teak-door-creak_01.wav",
+    "sha256": "bdaf7c3bb7f0973d0c8ec69d06ab36529481f873ce3c14043212c04e70582bac"
+  },
+  "public/sfx/foley/foley_villagers-relief-sigh_01.wav": {
+    "store": "library/sound/sfx/foley/foley_villagers-relief-sigh_01.wav",
+    "sha256": "fbcac591b108b5bf5d54c66382adc87de3312bc66cf55b6b5ae2a053f855bb92"
+  },
+  "public/sfx/nature/nature_paddy-day-night-cycle_01.wav": {
+    "store": "library/sound/sfx/nature/nature_paddy-day-night-cycle_01.wav",
+    "sha256": "0ae09754d931e2468c59be97e263f09003044a12390b1e5ce40a9deab305daa8"
+  },
+  "public/sfx/tension/tension_heartbeat-soft-rise-72_01.wav": {
+    "store": "library/sound/sfx/tension/tension_heartbeat-soft-rise-72_01.wav",
+    "sha256": "3c6ee22e5989f5a06bfdf845190b501cb8f54fac3c8a998d91f943d3e7d1bac7"
+  },
+  "public/sfx/ui/ui_pong-lang-tick_01.wav": {
+    "store": "library/sound/sfx/ui/ui_pong-lang-tick_01.wav",
+    "sha256": "b2aaea4fbec936a6dfc1a554e0c020794588f75bc06fe2e881622b67e9c8f482"
+  },
+  "public/sfx/water/water_net-splash-river_01.wav": {
+    "store": "library/sound/sfx/water/water_net-splash-river_01.wav",
+    "sha256": "3c7675bf3e4d12ef8777995618cb13ab6ab5692fd1f28551e0127452289ef46c"
+  },
+  "public/sfx/whoosh/whoosh_reverse-shimmer-petal_01.wav": {
+    "store": "library/sound/sfx/whoosh/whoosh_reverse-shimmer-petal_01.wav",
+    "sha256": "cb6c01ab1d3cd3e292e071751b49deb49525e086e8bcf369acd19332536e6f2e"
+  },
+  "public/sfx/whoosh/whoosh_seed-toss-small_01.wav": {
+    "store": "library/sound/sfx/whoosh/whoosh_seed-toss-small_01.wav",
+    "sha256": "9268f4ba0009815ab8d61efe8862d4b331c08cbe621a50c121e057a4f9df1ba1"
+  },
+  "public/sfx/whoosh/whoosh_sky-ripple-wormhole_01.wav": {
+    "store": "library/sound/sfx/whoosh/whoosh_sky-ripple-wormhole_01.wav",
+    "sha256": "3e28859259937301ca6d860d4875bca58ad97a9cf27c3658f06d0cb5feb2f3a3"
+  }
+}
