@@ -1,9 +1,10 @@
-import {BONE, H, SKIRT_LATE, bodyFrame, ikElbow, type CastDef, type FigAnchors, type FigPose, type Outfit} from './cast';
+import {BONE, H, beltChecks, SKIRT_LATE, bodyFrame, ikElbow, type CastDef, type FigAnchors, type FigPose, type Outfit} from './cast';
 import {INK, VD18, capsule, ell, glaze, inkLine, limb, lineOf, modelPart, solid, toneOf, washAt} from './draw';
 import {hatFront} from './gear';
 import {CHIN, HEAD_SPAN, headOutline, type HeadStyle} from './head';
 import {hairFront, isNewCut} from './hair';
 import {lerp, mixColor, type Painter, type Pt} from './painter';
+import {crouchLeg} from './legs';
 import {clipHalf, quarterGeo} from './quarter';
 
 // BACK view of the recurring cast (kit view `'back'`, added 3 Nov 2026 for EG-EP02 `คุณ`; generalised from the EP01 episode figure
@@ -143,8 +144,8 @@ export const drawFigureBack = (p: Painter, def: CastDef, g: Pt, unit: number, po
   function paintPoseLegs() {
     if (!pm) return;
     const legs0 = pm.mode ? pm.mode.legs : ([-1, 1] as const).map((s) => {
-      const ankle: Pt = [s * (0.08 + 0.05 * pm.c), ankleV];
-      return {hip: [s * 0.0725, pm.hipV] as Pt, knee: [s * (0.077 + 0.17 * pm.c), lerp((pm.hipV + ankle[1]) / 2, 0.46, pm.c)] as Pt, ankle, far: false, hide: false};
+      const l = crouchLeg(s, pm.c, pm.hipV, hip0, 1, ankleV);
+      return {hip: l.hip, knee: l.knee, ankle: l.ankle, far: false, hide: false};
     });
     const legs = pm.mode?.kind === 'run' ? runLegs(legs0) : legs0;
     // The torso back (translucent wash) reaches down to this height and out to this half-width: a thigh starts where it leaves that block, so no
@@ -339,6 +340,7 @@ export const drawFigureBack = (p: Painter, def: CastDef, g: Pt, unit: number, po
   if (G?.belt) {
     const h = G.belt.h ?? 0.035, v0 = hip0 - 0.015 + h, v1 = hip0 - 0.015;
     fill(G.belt.color, Uq([[-hw - 0.012, v0], [hw + 0.012, v0], [hw + 0.012, v1], [-hw - 0.012, v1]]));
+    if (G.belt.checks) beltChecks(G.belt.h ?? 0.035, hw * 0.96, v0, (pts) => fill(G.belt!.checks!, Uq(pts), false, 3));
   }
   if (o.apron) stroke(o.apron, Uq([[-hw, hip0 + 0.01], [0, hip0 - 0.01], [hw, hip0 + 0.01]]), 1.2);
   if (G?.pack) fill(G.pack, Uq([[-0.2 * sc, shV0 - 0.02], [0.2 * sc, shV0 - 0.02], [0.2 * sc, shV0 - 0.3], [-0.2 * sc, shV0 - 0.3]]));

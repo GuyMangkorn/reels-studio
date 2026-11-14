@@ -1,0 +1,126 @@
+{
+  "public/audio/bed/bed_isan-tender-calm-pad_02.wav": {
+    "store": "library/sound/music/bed/bed_isan-tender-calm-pad_02.wav",
+    "sha256": "ee07f07812d8f68acca02a6f9d7ff07fde2f256a76f8e49a15e5bac57d03f0aa"
+  },
+  "public/audio/bed/bed_isan-tender-kalimba-72bpm_01.wav": {
+    "store": "library/sound/music/bed/bed_isan-tender-kalimba-72bpm_01.wav",
+    "sha256": "1bd769ad6a45f73e8cf06cace7b91da2616aba0a15101b2c0f58aecaceef561c"
+  },
+  "public/audio/bed/bed_isan-tender-resolve_01.wav": {
+    "store": "library/sound/music/bed/bed_isan-tender-resolve_01.wav",
+    "sha256": "ae96e308969086e1ec052a59cdf170231b057bd701108c81082c17a42444c134"
+  },
+  "public/audio/stinger/stinger_isan-series-tag_01.wav": {
+    "store": "library/sound/music/stinger/stinger_isan-series-tag_01.wav",
+    "sha256": "d59aa9d44a25293af70016c89efc29bb3f3f0f0a0342467c7b60574b978ccda0"
+  },
+  "public/audio/stinger/stinger_kalimba-descending-three_01.wav": {
+    "store": "library/sound/music/stinger/stinger_kalimba-descending-three_01.wav",
+    "sha256": "92039458e45be934b69b99b490477ffc97696277c7a4f3c051736c75b1458470"
+  },
+  "public/audio/stinger/stinger_kalimba-low-note_01.wav": {
+    "store": "library/sound/music/stinger/stinger_kalimba-low-note_01.wav",
+    "sha256": "67a70280d06288806a23a5347f477250bb4e18eac46950d79661ea27a3e68854"
+  },
+  "public/audio/stinger/stinger_kalimba-rising-run_01.wav": {
+    "store": "library/sound/music/stinger/stinger_kalimba-rising-run_01.wav",
+    "sha256": "b910cc322e11654da7881870ce6421615eed0bcf1348c8b253351a06a4c44c80"
+  },
+  "public/sfx/creature/creature_hen-cluck-single_02.wav": {
+    "store": "library/sound/sfx/creature/creature_hen-cluck-single_02.wav",
+    "sha256": "d0adaf237bbedea5cfff5c1eeb1a48338bc2499e45cf8dd8483317449c85aca0"
+  },
+  "public/sfx/creature/creature_longneck-far-moan_01.wav": {
+    "store": "library/sound/sfx/creature/creature_longneck-far-moan_01.wav",
+    "sha256": "94587ddf763beffd77344aef44bb89e9341691d9604a0500c8eee1231fd4df26"
+  },
+  "public/sfx/electric/electric_phone-error-beeps-soft_01.wav": {
+    "store": "library/sound/sfx/electric/electric_phone-error-beeps-soft_01.wav",
+    "sha256": "d51e4b7eacf1c6926ab3acd355bf75159f303dc2ab982715b0619e5a4039ebd8"
+  },
+  "public/sfx/electric/electric_phone-torch-click_01.wav": {
+    "store": "library/sound/sfx/electric/electric_phone-torch-click_01.wav",
+    "sha256": "078a8caca8403d7ee55bcdf62c76339fdab326666d03260a27a68e5b021fefdc"
+  },
+  "public/sfx/electric/electric_phone-wake-click_01.wav": {
+    "store": "library/sound/sfx/electric/electric_phone-wake-click_01.wav",
+    "sha256": "d7a68ed9af9b6ecaf657ad56f54d44386be6dece8389ac40ba93b1602e564df5"
+  },
+  "public/sfx/foley/foley_bamboo-ladder-creak_02.wav": {
+    "store": "library/sound/sfx/foley/foley_bamboo-ladder-creak_02.wav",
+    "sha256": "f273716c87edf63f55a767b8a08e28315893b9a0aca191dd1bdb88e83719604c"
+  },
+  "public/sfx/foley/foley_bead-curtain-brush_01.wav": {
+    "store": "library/sound/sfx/foley/foley_bead-curtain-brush_01.wav",
+    "sha256": "871804ccb583b230f8f294fb4eb4f4ff58c3d8e6fc77ea4140016867d8fda3d2"
+  },
+  "public/sfx/foley/foley_cardboard-box-slide-glass_01.wav": {
+    "store": "library/sound/sfx/foley/foley_cardboard-box-slide-glass_01.wav",
+    "sha256": "1faf61aad87c31ac00e6cbd15cf4c85b9a8d09d463d0bf22c0511b62ea26274f"
+  },
+  "public/sfx/foley/foley_glass-jar-ring-soft_01.wav": {
+    "store": "library/sound/sfx/foley/foley_glass-jar-ring-soft_01.wav",
+    "sha256": "ffc5e2918b8411bc8e661196851a3a3a3bf7b955f7f368c2e54962770a4c1d3d"
+  },
+  "public/sfx/foley/foley_salt-scrape-fall_01.wav": {
+    "store": "library/sound/sfx/foley/foley_salt-scrape-fall_01.wav",
+    "sha256": "b9b8c44aa71714bb25580508bc782f46d3a6f0c17c2bbfb8b9f3401e46b004f7"
+  },
+  "public/sfx/foley/foley_spoon-stir-bottle_01.wav": {
+    "store": "library/sound/sfx/foley/foley_spoon-stir-bottle_01.wav",
+    "sha256": "4bf038314441c829956a0fb9136cf254f708729c264ca8c69ee5506c144506bf"
+  },
+  "public/sfx/foley/foley_spoon-taps-rim-knife_02.wav": {
+    "store": "library/sound/sfx/foley/foley_spoon-taps-rim-knife_02.wav",
+    "sha256": "eddf4e99ac3a2baffb5cef21977da8adae38b42b2d6c31aaaf91ab65185fbee5"
+  },
+  "public/sfx/nature/nature_village-morning-hens_01.wav": {
+    "store": "library/sound/ambience/nature/nature_village-morning-hens_01.wav",
+    "sha256": "867ff5067439af6d7ed654799f4d206e82cc95782b18978322e9560df2f45e07"
+  },
+  "public/sfx/nature/nature_village-night-insects_01.wav": {
+    "store": "library/sound/ambience/nature/nature_village-night-insects_01.wav",
+    "sha256": "8edf1d4a57845bf718714e65c2105aebf56c41256b30079d08e7127dda23656e"
+  },
+  "public/sfx/room/room_shop-night-moths_01.wav": {
+    "store": "library/sound/ambience/room/room_shop-night-moths_01.wav",
+    "sha256": "fdcc0f0a5d9914ba31aed81ccfff26054cf8b2f6148006946ff2294e81c8b234"
+  },
+  "public/sfx/room/room_stilt-house-night-quiet_01.wav": {
+    "store": "library/sound/ambience/room/room_stilt-house-night-quiet_01.wav",
+    "sha256": "c3c8620a08e62213fe8954a27dfe599617629eb55d204ae4e2508a9af1e8cdb4"
+  },
+  "public/sfx/water/water_cloth-wring-bowl_01.wav": {
+    "store": "library/sound/sfx/water/water_cloth-wring-bowl_01.wav",
+    "sha256": "323a25a696a74fb3adddd9a2f5897f4cdaac4b7dbf1e7bd5b2203b910954b9ca"
+  },
+  "public/sfx/water/water_giant-wade-far_01.wav": {
+    "store": "library/sound/sfx/water/water_giant-wade-far_01.wav",
+    "sha256": "337c19b5c034981e436165d33e15f958b4f3820a1fdf81508211b75427384de6"
+  },
+  "public/sfx/water/water_hands-slurp-small_01.wav": {
+    "store": "library/sound/sfx/water/water_hands-slurp-small_01.wav",
+    "sha256": "e9a93ad06bfce8450b845aaa174811ef0c9a24decf052d098b4b666f9f62bfda"
+  },
+  "public/sfx/water/water_pour-bottle-glug_01.wav": {
+    "store": "library/sound/sfx/water/water_pour-bottle-glug_01.wav",
+    "sha256": "34d6cfad0497365e17ea79788c9ecfae90603a24656a381533b9527203d94940"
+  },
+  "public/sfx/water/water_river-pebbles-babble_01.wav": {
+    "store": "library/sound/ambience/water/water_river-pebbles-babble_01.wav",
+    "sha256": "5c45914ae903f0570558193539e6349147d5cff469da05c5df2a1f19f7aaa85d"
+  },
+  "public/sfx/water/water_sips-soft_01.wav": {
+    "store": "library/sound/sfx/water/water_sips-soft_01.wav",
+    "sha256": "12f0d5b0e243c4d29408cf10e84cd1413461863779949850b1aeff110fb09060"
+  },
+  "public/sfx/whoosh/whoosh_hand-fan-loop_01.wav": {
+    "store": "library/sound/sfx/whoosh/whoosh_hand-fan-loop_01.wav",
+    "sha256": "791a400a7fde5f145e259096dffa667495544516fbf1a0b4a2e59567b8d42397"
+  },
+  "public/sfx/whoosh/whoosh_sky-ripple-wormhole_01.wav": {
+    "store": "library/sound/sfx/whoosh/whoosh_sky-ripple-wormhole_01.wav",
+    "sha256": "3e28859259937301ca6d860d4875bca58ad97a9cf27c3658f06d0cb5feb2f3a3"
+  }
+}

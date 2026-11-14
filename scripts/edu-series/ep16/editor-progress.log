@@ -1,0 +1,9 @@
+18:26:52 start editor R1.5b draft assembly
+18:27:54 read sheet R1.3-R1.5b, Boat RV-23..33; next: APIs, clock, shots
+18:29:28 narration re-placed 2100f ok; next clock/cues/shots
+18:38:49 shots-river.tsx written (16A-16D, 16); rendering stills
+18:52:18 river shots 16A-16D,16 + SH22 hen gag staged and viewed; next sound-mix, remaining shot upgrades, draft
+18:59:07 sound-mix.py 83 cues placed; sound-cues.py 0 FAIL; mix-levels: B05 bed drop 22.1 (target 30) open; stems exported
+19:01:26 Render stage: draft cut half-size; starting clips.mjs --full --draft
+19:37:25 draft cut timed out at scene 18 (16C, 183 s page timeout; another worktree rendering concurrently); retry with --timeout=600000
+20:28:54 16C frame costs ~30 s (T. rex slabs); rerun draft with --timeout=1200000, cached segments 1-17 kept
