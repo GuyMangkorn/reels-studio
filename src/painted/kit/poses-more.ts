@@ -118,7 +118,7 @@ export const BODY_POSES: Record<BodyPoseId, BodyPoseSpec> = {
   P35: {
     name: 'crouch_hide', face: 'scared',
     description: 'Crouched low behind cover, hands on the knees, head down. Hiding, sneaking, listening at a door. Front and profile.',
-    front: {body: {crouch: 0.9, nod: [0, -0.1]}, arms: arm2(at([-0.2, -0.13], [-0.15, -0.27]), at([0.2, -0.13], [0.15, -0.27]))},
+    front: {body: {crouch: 0.9, nod: [0, -0.1]}, arms: arm2(at([-0.15, -0.2], [-0.07, -0.17]), at([0.15, -0.2], [0.07, -0.17]))},
     side: {body: {squat: 1, bend: 0.35, nod: [0, -0.1]}, arms: side(at([0.016, -0.246], [0.156, -0.376]), at([0.016, -0.246], [0.14, -0.38]))},
   },
   P36: {

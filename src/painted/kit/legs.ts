@@ -25,22 +25,6 @@ export const modeOf = (pose: Pick<FigPose, 'sit' | 'floorSit' | 'kneel' | 'squat
   return undefined;
 };
 
-/**
- * Knee height of the front/back-view crouch (`crouch` 0..1; EDU-EP16 R1.5b "legs deformed when he crouches"). The knee spreads out and rises toward the lens: its height is
- * blended from the standing mid-leg to the height where the shin keeps its true length L2 for the sideways offset to the ankle (the thigh then foreshortens toward the
- * camera instead of the shin stretching to 1.6x as the old fixed 0.46 m did on a 1.3 m child).
- */
-export const crouchKneeV = (hipV: number, ankleV: number, dx: number, L2: number, c: number): number => {
-  const mid = (hipV + ankleV) / 2, shinUp = ankleV + Math.sqrt(Math.max(0, L2 * L2 - dx * dx));
-  return mid + (Math.max(mid, Math.min(shinUp, mid + 0.25)) - mid) * c;
-};
-
-/** One leg (side `s` = -1 / 1) of the front/back-view crouch `c` in the figure frame: hip, knee (spread, foreshortened thigh, shin at its true length) and ankle; `kp` the quarter-turn narrowing, `hip0` the standing hip height. */
-export const crouchLeg = (s: number, c: number, hipV: number, hip0: number, kp = 1, ankleV = 0.038): {hip: Pt; knee: Pt; ankle: Pt} => {
-  const ankle: Pt = [s * (0.08 + 0.05 * c) * kp, ankleV];
-  return {hip: [s * 0.0725 * kp, hipV], ankle, knee: [s * (0.077 + 0.17 * c) * kp, crouchKneeV(hipV, ankleV, (0.12 * c - 0.003) * kp, (hip0 - ankleV) / 2, c)]};
-};
-
 /** Two-bone IK in (u, v): knee for hip H and ankle target A, bending toward +u (forward). The ankle is pulled in when out of reach. */
 export const kneeFor = (H: Pt, A: Pt, L1: number, L2: number): {knee: Pt; ankle: Pt} => {
   const dx = A[0] - H[0], dy = A[1] - H[1];
