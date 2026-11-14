@@ -10,6 +10,7 @@ import {poseArms} from '../kit/poses';
 import {smoothstep} from '../kit/space';
 import type {PaintedShot} from '../shot';
 import {animalMotionShots} from './kit-animal-motions';
+import {raptorMotionShots} from './kit-raptor-motion';
 import {motionShots} from './kit-motions';
 import {activityMouthShots} from './kit-activity-mouths';
 import {viewOrbitShots} from './kit-view-orbit';
@@ -75,4 +76,4 @@ export const kitShots: PaintedShot[] = [{
   paper: '#efe6d2',
   camera: (tl) => pushCamera(tl, 3.5, {s0: 1, s1: 1.04, fx: 540, fy: 1100}),
   paint: talk,
-}, ...motionShots, ...templateShots, ...animalMotionShots, ...viewRunShots, ...viewOrbitShots, ...activityMouthShots, ...runArmsShots];
+}, ...motionShots, ...templateShots, ...animalMotionShots, ...viewRunShots, ...viewOrbitShots, ...activityMouthShots, ...runArmsShots, ...raptorMotionShots];
