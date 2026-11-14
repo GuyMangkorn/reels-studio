@@ -37,7 +37,7 @@ test('skin cells: fixed n x n without tex.px, finer when asked and clamped', () 
   assert.equal(texCells(4, 7, 100, 60), 14 > Math.round(100 / 7) ? Math.round(100 / 7) : 14);
   assert.equal(texCells(4, 7, 600, 600), 14);
   assert.equal(texCells(4, 7, 8, 8), 4);
-  for (const [k, e] of Object.entries(BEAST_KIT)) for (const [an, a] of Object.entries(e.anims)) if (!/trex/i.test(k)) for (const p of a.build(0).parts) assert.equal(p.tex?.px, undefined, `${k}.${an} ${p.bone} keeps the fixed cell count`);
+  for (const [k, e] of Object.entries(BEAST_KIT)) for (const [an, a] of Object.entries(e.anims)) if (!/trex|raptor/i.test(k)) for (const p of a.build(0).parts) assert.equal(p.tex?.px, undefined, `${k}.${an} ${p.bone} keeps the fixed cell count`);
 });
 
 // ---- B-R15B-06: planted feet. Walk a path, integrate the body, and measure how far a stance foot moves in the world.

@@ -233,7 +233,7 @@ export const band = (base: string, back: string, belly: string, k = 0.5) => (_u:
 
 /** Leg of three bones `<id>.thigh` (joint `<id>.hip`), `<id>.shin` (joint `<id>.knee`), `<id>.foot` (joint `<id>.ankle`); every joint is a ball so a bent leg never opens a wedge. The hip joint is `hip` (on the
  * parent's loft, from `onLoft`). Radii r = [hip, knee, ankle, pad]. Toes are two-sided facets of the foot bone rooted on the pad. */
-export const limb = (R: Rig, o: {id: string; parent: string; hip: L3; knee: L3; foot: L3; r: [number, number, number, number]; col: Part['col']; side: 1 | -1; toes?: number; toeCol?: string; toeLen?: number; fwd?: L3; /** digitigrade foot: the ball of the foot on the ground, the `foot` joint being the raised ankle (the foot bone is then a long metatarsus from the ankle to here) */ pad?: L3; /** skin texture on every part of the limb */ tex?: Part['tex']}) => {
+export const limb = (R: Rig, o: {id: string; parent: string; hip: L3; knee: L3; foot: L3; r: [number, number, number, number]; col: Part['col']; side: 1 | -1; toes?: number; toeCol?: string; toeLen?: number; fwd?: L3; /** digitigrade foot: the ball of the foot on the ground, the `foot` joint being the raised ankle (the foot bone is then a long metatarsus from the ankle to here) */ pad?: L3; /** skin texture on every part of the limb */ tex?: Part['tex']; /** least half-height (m) of the foot at the pad; default 0.06 (pad) / 0.05 (no pad), sized for the large creatures; a small creature passes its own */ padMin?: number}) => {
   const loft = (b: string, part: Omit<Part, 'bone'>) => R.loft(b, {...part, tex: o.tex});
   const {id, hip, knee, foot, r, col, side} = o, fwd = o.fwd ?? [1, 0, 0];
   const th = R.bone(`${id}.thigh`, o.parent, `${id}.hip`, hip), sh = R.bone(`${id}.shin`, th, `${id}.knee`, knee), ft = R.bone(`${id}.foot`, sh, `${id}.ankle`, foot);
@@ -243,7 +243,7 @@ export const limb = (R: Rig, o: {id: string; parent: string; hip: L3; knee: L3; 
   loft(sh, {m: 10, col, side, fold: 3, keys: spline([{p: knee, a: r[1], b: r[1]}, {p: lerp(knee, foot, 0.5), a: (r[1] + r[2]) * 0.5, b: (r[1] + r[2]) * 0.5}, {p: foot, a: r[2], b: r[2]}], 3)});
   const padc = o.pad ?? add(foot, add(mul(fwd, r[3] * 0.55), [0, -0.0, 0]));
   loft(ft, {m: 8, col, side, keys: ballKeys(foot, r[2] * 1.1, [0, 1, 0])});
-  loft(ft, {m: 10, col, side, keys: o.pad ? spline([{p: foot, a: r[2], b: r[2]}, {p: lerp(foot, padc, 0.5), a: (r[2] + r[3]) * 0.5, b: (r[2] + r[3]) * 0.5}, {p: padc, a: r[3], b: Math.max(0.06, r[3] * 0.45)}], 3) : spline([{p: foot, a: r[2], b: r[2]}, {p: add(foot, [0, -0.0, 0]), a: r[3] * 0.95, b: r[3] * 0.6}, {p: padc, a: r[3] * 1.0, b: Math.max(0.05, r[3] * 0.32)}], 2)});
+  loft(ft, {m: 10, col, side, keys: o.pad ? spline([{p: foot, a: r[2], b: r[2]}, {p: lerp(foot, padc, 0.5), a: (r[2] + r[3]) * 0.5, b: (r[2] + r[3]) * 0.5}, {p: padc, a: r[3], b: Math.max(o.padMin ?? 0.06, r[3] * 0.45)}], 3) : spline([{p: foot, a: r[2], b: r[2]}, {p: add(foot, [0, -0.0, 0]), a: r[3] * 0.95, b: r[3] * 0.6}, {p: padc, a: r[3] * 1.0, b: Math.max(o.padMin ?? 0.05, r[3] * 0.32)}], 2)});
   if (o.toes && o.toeCol) for (let t = 0; t < o.toes; t++) {
     const ang = (t - (o.toes - 1) / 2) * 0.5, L = o.toeLen ?? r[3], base = add(padc, [r[3] * 0.4 * Math.cos(ang), 0.02, r[3] * 0.9 * Math.sin(ang) * 0.7]);
     R.flat(ft, {pts: [foot, add(base, [0, 0.1, -0.07 * L / 0.3]), add(base, [0.45 * L, 0.0, 0.0 + 0.9 * L * Math.sin(ang) * 0.4]), add(base, [0, 0.0, 0.07 * L / 0.3])], col: o.toeCol, two: true});
