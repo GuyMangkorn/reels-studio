@@ -1,0 +1,624 @@
+{
+  "revision": "AB-HOOK-PITCH-R1",
+  "round": "R15",
+  "research_revision": "AB-HOOK-SCOUT-R1",
+  "channel": "edu",
+  "recommended_first_pilot": "C82",
+  "status": "EP20 C82 and EP21 C83 full scripts and portable Hook Guides complete; independent FACT-R1 verdicts ready-for-storyboard, no must-fix findings",
+  "scope": "Two distinct-topic Thai Shorts: C82 helium balloon and C83 lightning car, with different opening approaches. Current pass: compact independent research and one editorial checkpoint.",
+  "concepts": [
+    {
+      "id": "C82",
+      "title": "รถเร่งแล้ว ทำไมลูกโป่งฮีเลียมเอนไปหน้ารถ",
+      "source_candidate": "P01",
+      "category": "Everyday physics / prediction comedy",
+      "hook_a": "รถคุณเร่งออกตัว… ทำไมลูกโป่งฮีเลียมกลับเอนไปข้างหน้า?",
+      "hook_b": "รถคุณเร่งออกตัว… ลูกโป่งฮีเลียมเอนไปข้างหน้า ทั้งที่คุณเอนไปหลัง",
+      "shared_opening": "ภาพเดียวกัน: ผู้โดยสารเอนเข้าพนักเบาะ ข้างลูกโป่งฮีเลียมผูกเชือก ในรถปิดกระจกที่กำลังเร่ง",
+      "shared_body": [
+        "คุณเดาว่าของในรถต้องเอนไปหลังเหมือนกัน แต่ลูกโป่งฮีเลียมกลับเอนไปหน้า",
+        "ห้อยของชิ้นเล็กข้างกันในภาพจำลอง ของชิ้นนั้นเอนไปหลัง ทำไมลูกโป่งต่างออกไป?",
+        "เผยอากาศที่มองไม่เห็น: มันก็ตอบสนองตอนรถเร่ง และดันลูกโป่งที่เบากว่าให้เอนไปหน้า",
+        "รถชะลอในภาพจำลอง คราวนี้ลูกโป่งจะเอนไปไหน?",
+        "ทิศเอนกลับด้าน กฎเดิมเฉลยทั้งตอนเร่งและตอนชะลอ"
+      ],
+      "payoff": "ลูกโป่งไม่ได้ทำตรงข้ามกับกฎ… อากาศรอบมันก็อยู่ในเกมเดียวกัน",
+      "why_test": "ทั้งสอง hook ชวนทายเหตุการณ์เดียวกัน ใช้ภาพเปิดเดียวและเนื้อเรื่องเดียวได้ ความต่างอยู่ที่ถามก่อนหรือบอกผลที่ไม่น่าเชื่อก่อน",
+      "source_ids": [
+        "F001",
+        "SRC001",
+        "SRC002"
+      ],
+      "source_urls": [
+        "https://labdemos.physics.sunysb.edu/c.-kinematics-and-dynamics/c4.-second-law-of-motion/helium-balloon-accelerated-box",
+        "https://cdaweb.gsfc.nasa.gov/pub/documents/archived_websites/pwg.gsfc.nasa.gov/stargaze/StarFAQ23.htm"
+      ],
+      "factual_boundary": "ต้องเป็นลูกโป่งฮีเลียมในห้องโดยสารปิด ไม่ใช่ลูกโป่งทุกแบบ และเป็นช่วงเร่งหรือชะลอ ไม่ใช่ช่วงวิ่งด้วยความเร็วคงที่",
+      "medium": "Painted 3D camera + crisp SVG air/force insert",
+      "experimental_variable": "Opening narration wording: question versus counter-intuitive result; matched 5 s opening slot",
+      "logline": "A passenger expects everything to lean backward as the car accelerates. A helium balloon contradicts the prediction; a hanging object and a reversed acceleration reveal the invisible air as the missing actor.",
+      "counter": "In an enclosed accelerating vehicle, a tethered helium balloon leans toward the direction of acceleration rather than copying the passenger's initial backward lean.",
+      "cast": "A curious Thai adult passenger in a normal closed car; an off-screen driver is incidental. No audience driving challenge.",
+      "rule": "The balloon responds to the air around it; that same rule predicts the reversal when acceleration changes direction.",
+      "clues": "CL01 a hanging object leans differently from the balloon; CL02 the balloon remains upright at a steady-speed interval before the final change.",
+      "ending": "Closed prediction payoff, A_fade, about 2 s hold on the opposite balloon lean.",
+      "beats": [
+        [
+          "B01",
+          "0–5",
+          "The matched opening shows the anomalous lean.",
+          "Why does helium go forward when the passenger goes back?",
+          "Shared anomaly, no explaining line."
+        ],
+        [
+          "B02",
+          "5–15",
+          "A little hanging object does lean backward; the first prediction fails for the balloon alone.",
+          "Why does the balloon behave differently?",
+          "~4 s comparison answer, not a mechanism block."
+        ],
+        [
+          "B03",
+          "15–27",
+          "The passenger notices a formerly invisible layer of air in the explanatory insert; air moves/presses differently under acceleration.",
+          "What else inside the car responds to acceleration?",
+          "~7 s single-cause air/buoyancy explanation."
+        ],
+        [
+          "B04",
+          "27–40",
+          "In the fictional/controlled sequence the car now slows; the passenger looks at the balloon before its new lean is shown.",
+          "Does the rule reverse the result when acceleration reverses?",
+          "~6 s application of the same cause."
+        ],
+        [
+          "B05",
+          "40–52",
+          "The opposite lean pays the prediction, then air and passenger views line up in one comparison.",
+          "Can one rule explain both directions?",
+          "~5 s reframe; final 2 s hold."
+        ]
+      ],
+      "er08": [
+        "Hook: a familiar car movement gets a visibly opposite balloon result; helium is named, no technical term.",
+        "Who: anyone who has ridden in a car can adopt the passenger's prediction.",
+        "Beats: wrong prediction → contrast → invisible air → reversed prediction; every explanation changes the next event.",
+        "Ending: the same rule resolves the opposite lean; no tip or call to action."
+      ],
+      "sound": [
+        "B01: soft road/engine bed; passenger breath and one balloon-string tick, identical across variants.",
+        "B02: tiny pendulum tap; curious sparse pulse under the failed prediction.",
+        "B03: gentle air swish only as an explanatory graphic, not a claim that cabin air audibly rushes.",
+        "B04: road tone eases down; brief anticipatory quiet before the lean.",
+        "B05: small comic resolution, then space for the visual payoff; final tag is Film's choice."
+      ],
+      "notes": "Recommended first pilot: straightforward shared-body design and bodily prediction; this is editorial judgment, not a forecast. Braking reversal is a mechanism-based prediction in Boat's packet, not a separately inspected car experiment. Ordinary hanging-object behavior and the exact temporary steady-speed setup need Boat review in the selected script.",
+      "revision": "AB-HOOK-PITCH-R1",
+      "round": "R15",
+      "research_revision": "AB-HOOK-SCOUT-R1",
+      "production_size": "M",
+      "film_status": "annotated-not-visual-tested",
+      "film_note_th": "ใช้ภาพผู้โดยสารกับลูกโป่งชุดเดียวกันได้ทั้งสองฮุก ต้องทำห้องโดยสารและจังหวะเอนเพิ่ม เหมาะเริ่มคู่ทดลองแรก"
+    },
+    {
+      "id": "C83",
+      "title": "ฟ้าผ่ารถ ทำไมเปลือกโลหะถึงช่วยป้องกันคุณ",
+      "source_candidate": "P02",
+      "category": "Electricity / personal-stakes misconception",
+      "hook_a": "ฟ้าผ่ารถหลังคาโลหะปิดกระจก… ทำไมถึงช่วยป้องกันคุณได้?",
+      "hook_b": "รถหลังคาโลหะปิดกระจก… ใช้เปลือกที่นำไฟ ช่วยป้องกันคุณตอนฟ้าผ่า",
+      "shared_opening": "ภาพเดียวกัน: คนอยู่ในรถหลังคาโลหะ ปิดกระจกครบ แสงฟ้าผ่ากระทบภายนอก ไม่แสดงผลว่าใครปลอดภัยแน่นอน",
+      "shared_body": [
+        "ฟ้าผ่ารถ ตัวละครนึกถึงล้อยาง แต่ภาพย้อนพาไปดูเปลือกโลหะ",
+        "ไฟมีทางผ่านรอบนอกของรถ แทนที่จะต้องตัดผ่านตัวผู้โดยสาร",
+        "แต่รถยังเสียหายได้ กระจก ยาง และอุปกรณ์ไม่ได้ถูกป้องกันแบบเดียวกับคนข้างใน",
+        "กลับมาที่เปลือกโลหะ สิ่งที่ดูน่ากลัวเพราะนำไฟ กลับเป็นส่วนสำคัญของการป้องกัน"
+      ],
+      "payoff": "สิ่งที่ช่วยป้องกันคุณ… คือทางที่พาไฟอ้อมคุณไป",
+      "why_test": "ทดสอบคำถามเอาตัวรอดกับคำบอกข้อเท็จจริงสวนความเชื่อ โดยเก็บเงื่อนไขรถและภาพเหตุการณ์เดียวกันไว้ทั้งคู่",
+      "source_ids": [
+        "F002",
+        "SRC003"
+      ],
+      "source_urls": [
+        "https://www.weather.gov/safety/lightning-cars"
+      ],
+      "factual_boundary": "จำกัดรถหลังคาโลหะที่ปิดกระจก ไม่รับประกันรอดหรือรถไม่เสียหาย ไม่ขยายไปถึงรถเปิดประทุนหรือคนที่ยืนแตะรถอยู่ข้างนอก",
+      "medium": "Painted 3D camera + schematic exterior-route insert",
+      "experimental_variable": "Opening narration wording only; matched 6 s opening slot and identical visible vehicle conditions",
+      "logline": "A passenger credits the tires after a fictional strike. The car's damaged exterior exposes the misconception: the conducting shell can provide a route around occupants while the vehicle itself still suffers damage.",
+      "counter": "For the scoped enclosed hard-topped metal vehicle, conducting metal rather than rubber tires is central to the protection described by NWS.",
+      "cast": "A Thai adult passenger in a fictional enclosed metal-roof sedan, with hands at rest away from explanatory route graphics.",
+      "rule": "A path around an occupant can protect without leaving the vehicle untouched.",
+      "clues": "CL01 the metal exterior is prominent from frame 0; CL02 an inactive dashboard/glass damage is withheld until the second question.",
+      "ending": "Closed reframe, A_fade, about 2 s hold on the route around the occupant; no survival guarantee.",
+      "beats": [
+        [
+          "B01",
+          "0–6",
+          "The two opening readings share the same scoped enclosed-car strike image.",
+          "How can conducting metal help protect the person?",
+          "Opening makes no promise of invulnerability."
+        ],
+        [
+          "B02",
+          "6–18",
+          "The passenger's rubber guess is contrasted with the exterior route.",
+          "Is the rubber the important protection?",
+          "~6 s answer: metal exterior provides the route, not the tires as a barrier."
+        ],
+        [
+          "B03",
+          "18–31",
+          "A route insert returns immediately to the passenger in the intact enclosure.",
+          "Where does the discharge travel relative to the person?",
+          "~7 s one-cause route explanation, not a charge-physics lesson."
+        ],
+        [
+          "B04",
+          "31–43",
+          "Vehicle damage appears, contradicting the passenger's second guess that protection means nothing was harmed.",
+          "If it protects, why is the car damaged?",
+          "~6 s distinction between routing around an occupant and protecting all vehicle parts."
+        ],
+        [
+          "B05",
+          "43–55",
+          "The exterior route and occupant share the final frame; the initial scary conductor is re-read.",
+          "What exactly was doing the protecting?",
+          "~5 s reframe; 2 s hold."
+        ]
+      ],
+      "er08": [
+        "Hook: conducting metal as part of protection challenges the intuitive rubber explanation; the extra vehicle scope makes this a longer opening.",
+        "Who: anyone who has ridden in an enclosed car can imagine the passenger; the claim remains conditional.",
+        "Beats: rubber guess → exterior route → damaged-car objection → same route reframe; no tips list.",
+        "Ending: conductor changes from threat to protective route; no promise or call to action."
+      ],
+      "sound": [
+        "B01: one exterior thunder strike over rain, matched across variants; no hearing-damage volume gag.",
+        "B02: soft rubber squeak dropped as the guess fails.",
+        "B03: restrained electrical trace tone tracks the graphic, never a current-through-body sound.",
+        "B04: dashboard click with no response, rain remains; do not add an unsourced fire incident.",
+        "B05: storm bed recedes under the concise reframe; final tag is Film's choice."
+      ],
+      "notes": "Strong stakes alternative, with higher wording risk than C82. Both hooks include metal roof/closed windows and say help protect, never guaranteed survival. The exterior current path is an explanatory simplification; the final script and visible contact/path need Boat review. No named accident or casualty is asserted.",
+      "revision": "AB-HOOK-PITCH-R1",
+      "round": "R15",
+      "research_revision": "AB-HOOK-SCOUT-R1",
+      "production_size": "M",
+      "film_status": "annotated-not-visual-tested",
+      "film_note_th": "ใช้ภาพรถและฟ้าผ่าร่วมกันได้ ต้องเห็นหลังคาโลหะกับกระจกปิดชัด และเผื่อเวลาพูดเงื่อนไขให้ครบ"
+    },
+    {
+      "id": "C84",
+      "title": "ดินไหวแล้ว ทำไมตึกบนทรายชุ่มน้ำถึงเอียง",
+      "source_candidate": "P03",
+      "category": "Earth science / foundation mystery",
+      "hook_a": "ตึกคุณตั้งบนทรายชุ่มน้ำ… ทำไมดินไหวแล้วตึกถึงเอียงทั้งหลัง?",
+      "hook_b": "แผ่นดินไหวอาจทำตึกบนทรายชุ่มน้ำเอียงทั้งหลัง… ก่อนที่ตัวตึกจะแตก",
+      "shared_opening": "ภาพจำลองเดียวกัน: ตึกเล็กเริ่มเอียง เห็นชั้นทรายหลวมที่มีน้ำใต้ฐาน ไม่มีพื้นแยกเป็นเหวหรือจุดบอกตำแหน่งบ้านจริง",
+      "shared_body": [
+        "ตึกเริ่มเอียง แต่กล้องยังเห็นโครงตึกเป็นชิ้นเดียว ปัญหาเริ่มตรงไหน?",
+        "ใต้ตึกมีเม็ดทรายกับน้ำ เม็ดทรายช่วยรับน้ำหนักผ่านการสัมผัสกัน",
+        "เมื่อสั่นเร็ว น้ำระหว่างเม็ดทรายทำให้แรงสัมผัสที่ช่วยพยุงลดลง",
+        "พื้นยังดูเป็นพื้น แต่รับน้ำหนักได้แย่ลง ตึกจึงเสียฐานรองรับ",
+        "ภาพย้อนกลับไปที่ฐาน สิ่งที่เคยคิดว่าเป็นก้อนแข็ง คือเม็ดทรายจำนวนมากที่ต้องช่วยกันรับแรง"
+      ],
+      "payoff": "ตึกไม่ได้ต้องแตกก่อนเสมอ… บางครั้งสิ่งที่ยอมแพ้ก่อน คือพื้นข้างใต้",
+      "why_test": "ทั้ง hook แบบคำถามและแบบผลลัพธ์ใช้ตึกเอียงภาพเดียวกันได้ แล้วเฉลยกลไกฐานรองรับชุดเดียวกัน",
+      "source_ids": [
+        "F003",
+        "SRC004",
+        "SRC005"
+      ],
+      "source_urls": [
+        "https://www.usgs.gov/faqs/what-liquefaction",
+        "https://depts.washington.edu/liquefy/html/why/why1.html"
+      ],
+      "factual_boundary": "จำกัดทรายหรือชั้นตะกอนหลวมอิ่มน้ำที่เหมาะกับกระบวนการนี้ ไม่ใช่ดินทุกแห่ง ไม่ใช่ดินละลายหรือกลายเป็นน้ำ และไม่ใช่การวินิจฉัยพื้นที่จริง",
+      "medium": "Painted 3D camera + graphic grain-and-water cross-section",
+      "experimental_variable": "Opening narration wording only; matched 6 s opening slot and identical hypothetical ground conditions",
+      "logline": "A fictional building tilts while remaining visibly in one piece. The apparent building mystery becomes a ground-support mystery when the grain-and-water view shows why a firm-looking base can lose strength during shaking.",
+      "counter": "Some loose saturated ground can lose support in an earthquake, so an apparently unbroken building can tilt through failure of its foundation material.",
+      "cast": "One adult observer in a fictional schematic site, not a reconstruction of a sourced casualty event or a diagnosis of the viewer's home.",
+      "rule": "Support depends on the contacts between grains; an apparently solid base is a working arrangement, not a single solid block.",
+      "clues": "CL01 the building remains one piece at the beginning; CL02 water is visible between loose grains in the first explanatory cutaway.",
+      "ending": "Closed foundation reframe, A_fade, about 2 s hold on the wide building/cutaway comparison.",
+      "beats": [
+        [
+          "B01",
+          "0–6",
+          "The same fictional building starts to tilt over the same water-filled loose sand.",
+          "Why is the building tilting before breaking apart?",
+          "No universal claim about all buildings or earthquakes."
+        ],
+        [
+          "B02",
+          "6–17",
+          "The observer searches the wall for the problem; the view instead reaches the foundation.",
+          "Is the first failure in the building or under it?",
+          "~5 s answer locates the lost support below."
+        ],
+        [
+          "B03",
+          "17–29",
+          "A grain-contact close-up shows how the loose material carried a load before shaking.",
+          "How could loose grains carry a building at all?",
+          "~6 s everyday contact/support explanation."
+        ],
+        [
+          "B04",
+          "29–42",
+          "Rapid shaking and trapped pore water reduce the grain-contact support; return to the observer as the base yields.",
+          "What changes during the shaking?",
+          "~8 s cause; exact analogy and pressure wording require Boat review."
+        ],
+        [
+          "B05",
+          "42–55",
+          "The unbroken building and failed base are seen together; the viewer re-reads the first frame.",
+          "Which thing gave way first?",
+          "~5 s reframe; 2 s hold."
+        ]
+      ],
+      "er08": [
+        "Hook: contradicts the expectation that a tilting building must first break; everyday waterlogged-sand condition is named.",
+        "Who: anyone who has stood on ground or seen a building can understand the support question.",
+        "Beats: intact wall → foundation → grain support → support loss → reframe; the character's search drives each insert.",
+        "Ending: the apparent building failure becomes a ground failure, not a safety tip."
+      ],
+      "sound": [
+        "B01: brief restrained ground rumble and furniture rattle, identical across variants; no screams of an invented casualty.",
+        "B02: low searching pulse, one light structural creak.",
+        "B03: quiet grain-contact foley as an explanatory analogy.",
+        "B04: muted water/grain texture, not a magical liquid splash implying literal melting.",
+        "B05: rumble stops and leaves the changed silhouette; final tag is Film's choice."
+      ],
+      "notes": "The visual should show reduced support and fluid-like behavior, not a water transformation. Hook B's before-breaking phrasing is conditional through อาจ and needs exact final-wording review. The local loose-sand scenario is dramatization; no location-level earthquake prediction is being made.",
+      "revision": "AB-HOOK-PITCH-R1",
+      "round": "R15",
+      "research_revision": "AB-HOOK-SCOUT-R1",
+      "production_size": "L",
+      "film_status": "annotated-not-visual-tested",
+      "film_note_th": "ภาพตึกเอียงดึงสายตาได้ แต่ต้องทำชั้นทรายกับน้ำให้เข้าใจว่าฐานเสียแรงพยุง ไม่ใช่ดินกลายเป็นน้ำ"
+    },
+    {
+      "id": "C85",
+      "title": "โตเต็มวัยแล้ว ทำไมไปอวกาศถึงสูงขึ้นได้",
+      "source_candidate": "P04",
+      "category": "Body in space / temporary-growth reframe",
+      "hook_a": "ไปอวกาศ… ทำไมคุณสูงขึ้นได้ ทั้งที่โตเต็มวัยแล้ว?",
+      "hook_b": "โตเต็มวัยแล้ว… คุณก็สูงขึ้นได้ ตอนอยู่อวกาศ",
+      "shared_opening": "ภาพเดียวกัน: นักบินอวกาศผู้ใหญ่เทียบขีดวัดส่วนสูงบนผนังห้องทดลอง ขีดใหม่สูงกว่าขีดอ้างอิงเล็กน้อย ไม่มีตัวเลขรับประกัน",
+      "shared_body": [
+        "นักบินอวกาศวัดตัวแล้วสูงขึ้น เธอคิดว่าตัวเองโตอีกครั้งหรือเปล่า",
+        "ภาพร่างกายเผยกระดูกสันหลังที่รับน้ำหนักต่างจากตอนอยู่บนโลก",
+        "ความสูงที่เปลี่ยนไม่ใช่การโตแบบเด็ก แต่เกี่ยวกับการยืดและรูปทรงกระดูกสันหลัง",
+        "กลับโลกแล้ววัดอีกครั้ง ขีดส่วนสูงกลับมาใกล้เดิม",
+        "ขีดที่เพิ่มในอวกาศเฉลยว่า สูงขึ้นชั่วคราว ไม่ได้แปลว่าโตขึ้นถาวร"
+      ],
+      "payoff": "ความสูงเพิ่มขึ้นได้… โดยที่คุณไม่ได้โตขึ้นแบบเด็กอีกครั้ง",
+      "why_test": "คนดูมีร่างกายเป็นจุดเทียบ ทั้งสอง hook สัญญาคำตอบเดียวกัน และใช้ภาพไม้บรรทัด/ร่างกายชุดเดียวกันได้",
+      "source_ids": [
+        "F004",
+        "SRC006",
+        "SRC007"
+      ],
+      "source_urls": [
+        "https://www.nasa.gov/reference/risk-of-spaceflight-induced-bone-changes/",
+        "https://www.nasa.gov/directorates/esdmd/hhp/lifetime-surveillance-of-astronaut-health-lsah/"
+      ],
+      "factual_boundary": "เป็นการเปลี่ยนส่วนสูงชั่วคราวในอวกาศ ไม่รับประกันจำนวนเซนติเมตรหรือเวลาคืนตัว ไม่ใช่วิธีเพิ่มความสูง และไม่ได้แปลว่าในอวกาศไม่มีแรงโน้มถ่วง",
+      "medium": "Painted 3D camera + simplified body silhouette insert",
+      "experimental_variable": "Opening narration wording only; matched 5 s opening slot with same height-measurement picture",
+      "logline": "An adult astronaut celebrates a higher height mark. The spine reveal explains why the apparent growth is reversible; the return measurement turns the boast into a distinction between height and permanent growth.",
+      "counter": "Adults can measure taller during spaceflight without undergoing ordinary childhood growth, and the additional height is temporary.",
+      "cast": "One fictional adult astronaut with a recurring height mark and a friend at the later Earth measurement; no named astronaut anecdote.",
+      "rule": "A body's measured height can change when spinal loading and shape change; height gained is not automatically permanent growth.",
+      "clues": "CL01 the old ruler mark stays visible throughout; CL02 the character's adult photo/ID remains unchanged rather than becoming a child-to-adult montage.",
+      "ending": "Closed return-to-the-mark payoff, A_fade, about 2 s on the same old height mark after the return.",
+      "beats": [
+        [
+          "B01",
+          "0–5",
+          "The same adult character notices a slightly higher measurement.",
+          "Can a fully grown person become taller in space?",
+          "No number or growth guarantee in either opening."
+        ],
+        [
+          "B02",
+          "5–16",
+          "The character checks the mark again; it is a height change, not a new age.",
+          "What changed if ordinary growth is not the cause?",
+          "~5 s distinction before a new body question."
+        ],
+        [
+          "B03",
+          "16–28",
+          "A simple spine view stays connected to the character's measurement.",
+          "How can the body measure longer without growing new length like a child?",
+          "~7 s loading/elongation explanation; omit bone-density claims."
+        ],
+        [
+          "B04",
+          "28–41",
+          "The character returns to the Earth measurement spot; the original mark becomes the unresolved test.",
+          "Will the added height stay?",
+          "~5 s answer: normal height returns, with no exact recovery time."
+        ],
+        [
+          "B05",
+          "41–53",
+          "The old mark is re-used as the final visual punchline.",
+          "Was this permanent growth or a temporary change?",
+          "~4 s reframe; 2 s hold."
+        ]
+      ],
+      "er08": [
+        "Hook: adult height change challenges the expectation that an adult's height is fixed; no unexplained term.",
+        "Who: everyone has been measured and can picture the ruler mark, even if spaceflight is unusual.",
+        "Beats: higher mark → growth guess → spine cause → return test → same-mark payoff; no medical tips.",
+        "Ending: height and permanent growth are separated in one familiar picture."
+      ],
+      "sound": [
+        "B01: pencil/ruler tick and a small surprised breath; identical ambient station bed in both versions.",
+        "B02: playful tiny celebration cut short by the new question.",
+        "B03: restrained stretch-like musical glide as a metaphor, no bone-cracking sound.",
+        "B04: warm ordinary room ambience replaces station hum, marking the return.",
+        "B05: the same ruler tick on the original mark, then quiet satisfaction; final tag is Film's choice."
+      ],
+      "notes": "Do not turn NASA's up-to-about-3% observation into a per-character prediction. No measured recovery interval is given. The exact visual representation of spinal change must retain the distinction between microgravity loading and gravity being absent.",
+      "revision": "AB-HOOK-PITCH-R1",
+      "round": "R15",
+      "research_revision": "AB-HOOK-SCOUT-R1",
+      "production_size": "M",
+      "film_status": "annotated-not-visual-tested",
+      "film_note_th": "ใช้ขีดวัดส่วนสูงชุดเดียวกันได้ ต้องทำห้องสองสภาพและภาพอธิบายร่างกาย โดยให้ความต่างของขีดอ่านออก"
+    },
+    {
+      "id": "C86",
+      "title": "พริกทำคุณเผ็ด ทำไมไก่ไม่แสบแบบเดียวกัน",
+      "source_candidate": "P05",
+      "category": "Food / comparative sensory biology",
+      "hook_a": "พริกทำคุณเผ็ด… แล้วทำไมไก่ไม่แสบแบบเดียวกัน?",
+      "hook_b": "พริกที่ทำคุณเผ็ด… ไม่ได้ทำให้ไก่แสบแบบเดียวกัน",
+      "shared_opening": "ภาพเดียวกัน: คนทำหน้าร้อนปากคู่กับไก่และผลพริกในภาพเปรียบเทียบ ไม่แสดงผู้ชมป้อนพริกให้สัตว์ และไม่ใช้ไก่ทดลองที่เราสร้างขึ้น",
+      "shared_body": [
+        "คนรู้สึกเผ็ด แต่ภาพเปรียบเทียบกับไก่ทำให้คำว่า ร้อน เริ่มน่าสงสัย",
+        "พริกไม่ได้ต้องมีอุณหภูมิร้อน ความเผ็ดเกิดจากสิ่งที่ระบบรับความรู้สึกตอบสนอง",
+        "ระบบรับสารเผ็ดของไก่ไม่ได้ตอบสนองเหมือนของเรา จึงไม่แสบแบบเดียวกัน",
+        "แต่นั่นไม่ได้แปลว่าไก่ไม่รู้สึกร้อนหรือเจ็บทุกอย่าง",
+        "กลับมาที่พริกผลเดียวกัน สิ่งที่ต่างคือผู้รับ ไม่ใช่อุณหภูมิของผลพริก"
+      ],
+      "payoff": "พริกผลเดียวกัน… ไม่ได้ถูกอ่านว่าแสบ เหมือนกันทุกตัว",
+      "why_test": "วัตถุคุ้นเคยและภาพเปรียบเทียบเหมือนกันทั้งคู่ จึงทดสอบการตั้งคำถามกับการบอกความต่างตรง ๆ ได้โดยไม่เปลี่ยนแก่นเรื่อง",
+      "source_ids": [
+        "F005",
+        "SRC008"
+      ],
+      "source_urls": [
+        "https://scholars.duke.edu/publication/1003152"
+      ],
+      "factual_boundary": "จำกัดการตอบสนองต่อสารเผ็ดในพริกของไก่ที่ต่างจากสัตว์เลี้ยงลูกด้วยนม ไม่กล่าวว่านกทุกชนิดไม่เจ็บหรือไม่รับรู้ความร้อน และไม่ชวนป้อนพริกให้สัตว์",
+      "medium": "Practical/documentary split-screen food-and-animal footage + crisp explanatory graphics",
+      "experimental_variable": "Opening narration wording only; matched 5 s split-screen opening and common body",
+      "logline": "A familiar human reaction to chilli is paired with the chicken receptor contrast. What looked like a hot fruit becomes a story about different readers of the same chemical signal, without implying immunity to heat or pain.",
+      "counter": "The chemical that gives people a chilli burn is not sensed the same way by the studied chicken receptor counterpart; heat sensation still exists.",
+      "cast": "A fictional human kitchen observer and ordinary non-feeding chicken footage; the split screen is a comparison, not a new animal experiment.",
+      "rule": "The same object can produce different experiences when the sensory receiver is different.",
+      "clues": "CL01 a room-temperature chilli stays on the same plate; CL02 the split-screen chicken is never treated as proof it cannot feel a genuinely hot surface.",
+      "ending": "Closed same-fruit/different-reader reframe, A_fade, about 2 s hold. Seed dispersal is not an extra evolutionary answer in this version.",
+      "beats": [
+        [
+          "B01",
+          "0–5",
+          "Same split-screen juxtaposition, with only narration changed.",
+          "Why does chilli affect the human and chicken differently?",
+          "The visual is a comparison, not a fabricated test."
+        ],
+        [
+          "B02",
+          "5–16",
+          "The observer's idea of hot is challenged by the ordinary-temperature fruit.",
+          "Is the fruit physically hot, or does it feel burning?",
+          "~6 s everyday sensation/temperature distinction."
+        ],
+        [
+          "B03",
+          "16–28",
+          "Simple receiver shapes are attached to the two visible subjects; avoid molecular detail.",
+          "What receives the chilli signal differently?",
+          "~7 s one-cause receptor sensitivity explanation; term optional."
+        ],
+        [
+          "B04",
+          "28–41",
+          "The observer's next inference, no heat sensation at all, is rejected with a clean heat-versus-chilli distinction.",
+          "Does less chilli response mean no heat or pain response?",
+          "~5 s answer: no; these are not a universal immunity."
+        ],
+        [
+          "B05",
+          "41–53",
+          "Return to the same fruit and different observers rather than adding an unrelated plant-evolution lecture.",
+          "What actually differed in the opening?",
+          "~4 s reframe; 2 s hold."
+        ]
+      ],
+      "er08": [
+        "Hook: the familiar personal chilli sensation is contrasted with the studied chicken difference; no receptor name in opening.",
+        "Who: anyone who knows chilli heat can enter; chickens are a comparison, not a pet-owner requirement.",
+        "Beats: felt heat → temperature objection → different receiver → false-immunity objection → same-fruit reframe.",
+        "Ending: the viewer reinterprets burning as a receiver response, without a feeding tip or call to action."
+      ],
+      "sound": [
+        "B01: human intake of breath, light kitchen room tone and ordinary chicken ambience; same mix across versions.",
+        "B02: spoon/plate click; brief pause on the ordinary fruit.",
+        "B03: two restrained signal tones distinguish the metaphorical receivers; no false pain cry from the chicken.",
+        "B04: one questioning musical lift; no footage or sound of heat being applied to an animal.",
+        "B05: return to the opening plate sound with a gentler resolution; final tag is Film's choice."
+      ],
+      "notes": "Medium departure is deliberate: close food texture and a factual comparison can work through safe existing/original licensed footage rather than building a full animal rig. No suitable clip or license is claimed acquired. The ordinary-temperature visual and final Thai receptor simplification need Boat's selected-script review. The draft avoids the uninspected sole-evolutionary-purpose claim.",
+      "revision": "AB-HOOK-PITCH-R1",
+      "round": "R15",
+      "research_revision": "AB-HOOK-SCOUT-R1",
+      "production_size": "M",
+      "film_status": "annotated-not-visual-tested",
+      "film_note_th": "ใช้ภาพคน พริก และไก่เปรียบเทียบร่วมกันได้ แต่ยังต้องหาภาพที่เหมาะและตรวจสิทธิ์ใช้ ไม่ทำให้เหมือนทดลองป้อนสัตว์"
+    },
+    {
+      "id": "C87",
+      "title": "ทำไมไฟในห้องทดลองอวกาศถึงกลม",
+      "source_candidate": "P08",
+      "category": "Space experiment / visual wildcard",
+      "hook_a": "ทำไมไฟที่คุณเห็นในห้องทดลองอวกาศที่มีอากาศ… ถึงกลมแทนที่จะชี้ขึ้น?",
+      "hook_b": "ไฟที่คุณเห็นในห้องทดลองอวกาศที่มีอากาศ… อาจกลม แทนที่จะชี้ขึ้น",
+      "shared_opening": "ภาพเปรียบเทียบเดียวกัน: เปลวเทียนบนโลกคู่กับไฟทรงกลมในห้องทดลองปิดที่มีอากาศ ระบุว่าเป็นการทดลอง ไม่ใช่จุดไฟกลางสุญญากาศ",
+      "shared_body": [
+        "คุณคุ้นกับไฟที่ชี้ขึ้น แต่ตัวอย่างทดลองในอวกาศกลับมีเปลวมน",
+        "บนโลก แก๊สร้อนลอยขึ้นและอากาศใหม่เข้ามา รูปเปลวจึงถูกกระแสนี้ดึง",
+        "ในสภาวะทดลองไมโครกราวิตี กระแสลอยขึ้นแบบเดิมหายไป รูปเปลวจึงเปลี่ยน",
+        "แต่พัดลมหรือการไหลก็เปลี่ยนรูปไฟได้ อวกาศไม่ได้ทำให้ไฟทุกก้อนเหมือนกัน",
+        "กลับมาที่เทียนบนโลก รูปที่เราคิดว่าเป็นธรรมชาติของไฟ เผยร่องรอยของแรงโน้มถ่วงด้วย"
+      ],
+      "payoff": "รูปไฟที่คุณคุ้นมาตลอด… มีแรงโน้มถ่วงช่วยวาดอยู่ด้วย",
+      "why_test": "ภาพเปรียบเทียบเดียวกันให้ทั้งคำถามและข้อเท็จจริงขัดความคุ้นเคยได้ แต่ต้องลงทุนตรวจรูปลักษณ์และหลักฐานภาพมากกว่าคู่ทดลองแรก",
+      "source_ids": [
+        "F008",
+        "SRC013",
+        "SRC014"
+      ],
+      "source_urls": [
+        "https://www.nasa.gov/missions/station/studying-combustion-and-fire-safety/",
+        "https://www.nasa.gov/image-article/candle-flame-1g-vs-microgravity/"
+      ],
+      "factual_boundary": "เป็นไฟในสภาพทดลองที่มีอากาศหรือสารออกซิไดซ์และการไหลต่ำ ไม่ใช่ไฟกลางสุญญากาศ ไม่ใช่ไฟอวกาศทุกแบบต้องเป็นลูกกลม และสีฟ้าไม่ได้แปลว่าเย็นหรือปลอดภัย",
+      "medium": "Evidence-led experiment footage/still comparison + graphic flow visualization (visual wildcard)",
+      "experimental_variable": "Opening narration wording only; matched 6 s factual comparison and common licensed/source-verified body",
+      "logline": "A familiar upward-pointing candle is compared with a rounded controlled microgravity flame. Following the airflow turns the question around: the Earth flame was also being shaped by its environment all along.",
+      "counter": "A flame need not be a familiar upward teardrop; low-flow microgravity experiments can produce rounded flames in an oxygen-containing chamber.",
+      "cast": "A curious viewer represented by an off-screen narrator and one restrained observer insert; no astronaut casually lighting an open cabin candle.",
+      "rule": "Combustion gives the fire; the surrounding flow helps draw its shape.",
+      "clues": "CL01 the experimental enclosure and air label appear from the first frame; CL02 the Earth flame's moving hot-gas trace returns in the final comparison.",
+      "ending": "Closed reversal of the original comparison, A_fade, about 2 s on the Earth flame with its invisible flow made legible.",
+      "beats": [
+        [
+          "B01",
+          "0–6",
+          "The same verified Earth/experiment comparison appears in both variants.",
+          "Why can this experimental flame be round?",
+          "Opening explicitly remains inside an air-containing experiment."
+        ],
+        [
+          "B02",
+          "6–18",
+          "The viewer follows a normal candle's hot-gas rise rather than receiving an abstract combustion lecture.",
+          "What pulls the familiar shape upward on Earth?",
+          "~7 s buoyancy/flow answer in plain language."
+        ],
+        [
+          "B03",
+          "18–31",
+          "The controlled microgravity comparison removes that familiar rising pattern.",
+          "What changes when the usual rising flow is absent?",
+          "~7 s same-cause comparison; microgravity is not absent gravity."
+        ],
+        [
+          "B04",
+          "31–43",
+          "A flow/ventilation qualification is posed as a prediction about the visible experiment, not a long list.",
+          "Would moving air change the shape again?",
+          "~5 s answer; no unverified fan experiment or perfect-sphere claim."
+        ],
+        [
+          "B05",
+          "43–55",
+          "Return to the Earth candle and re-read its silhouette as gravity-shaped.",
+          "Was the Earth shape ever only a property of fire?",
+          "~5 s reframe; 2 s hold."
+        ]
+      ],
+      "er08": [
+        "Hook: the shape everyone associates with fire is challenged by a real experimental comparison; air condition is explicit.",
+        "Who: anyone who has seen a candle can make the wrong shape prediction; no space expertise needed.",
+        "Beats: known shape → rising-flow cause → experimental contrast → flow objection → Earth-shape reversal.",
+        "Ending: familiar Earth fire becomes the surprising image; no safety tips or call to action."
+      ],
+      "sound": [
+        "B01: restrained experiment-room hum, identical in both versions; avoid a large terrestrial fire roar.",
+        "B02: a small candle texture is representational and kept below the narrator.",
+        "B03: remove the rising-flow swish rather than imply vacuum or total silence.",
+        "B04: a soft controlled airflow tone only if the eventual sourced image supports it.",
+        "B05: curious sustained resolution on the returning Earth candle; final tag is Film's choice."
+      ],
+      "notes": "Wildcard: evidence-led experimental imagery and a physically checked low-flow flame/flow visualization go beyond the default character-and-set pitch. The required look, reusable capability and source-media permissions are unknown until Film/Boss inspect them; no runtime support is asserted. Do not reuse blue/round as a shorthand for harmless fire.",
+      "revision": "AB-HOOK-PITCH-R1",
+      "round": "R15",
+      "research_revision": "AB-HOOK-SCOUT-R1",
+      "production_size": "L",
+      "film_status": "annotated-not-visual-tested",
+      "film_note_th": "ภาพไฟเปรียบเทียบสะดุดตา แต่ต้องตรวจภาพทดลองและสิทธิ์ใช้ พร้อมคงเงื่อนไขว่ามีอากาศ จึงเหมาะเก็บเป็นตัวเลือกที่ใช้แรงผลิตมากกว่า"
+    }
+  ],
+  "film_revision": "AB-FILM-C82-R1 through AB-FILM-C87-R1",
+  "stage": "EP20/EP21 writing handoff complete; timing/user approval pending",
+  "presentation_recommendation": "C82",
+  "presentation_shortlist": [
+    "C82",
+    "C83",
+    "C86"
+  ],
+  "coordination_revision": "AB-HOOK-DISCOVERY-R3",
+  "selected_concepts": [
+    "C82",
+    "C83"
+  ],
+  "second_topic": "C83",
+  "original_scope": "Topic selection for two matched-body Thai Shorts with opening narration wording as the single proposed variable",
+  "current_plan": {
+    "content": "different topics: C82 and C83",
+    "hooks": "EP20 question/prediction; EP21 declarative rubber myth reversal; exact SCRIPT-R1/HOOK-R1 wording fact-checked, user approval pending",
+    "causal_limit": "Content-strategy comparison; topic/hook/audience effects confounded; no randomized split",
+    "scope_now": "two independent full scripts plus portable Hook Guides and named factual reviews",
+    "script_started": true
+  },
+  "selected_pair_checkpoint": {
+    "revision": "PAIR-EDITORIAL-CHECKPOINT-R1",
+    "path": "editorial-checkpoint.md",
+    "research": {
+      "C82": {
+        "revision": "C82-RESEARCH-R1",
+        "path": "research-c82.md",
+        "verdict": "ready-for-editorial-development"
+      },
+      "C83": {
+        "revision": "C83-RESEARCH-R1",
+        "path": "research-c83.md",
+        "verdict": "ready-for-editorial-development"
+      }
+    },
+    "proposed_openings": {
+      "C82": "question/prediction",
+      "C83": "counter-intuitive result/myth reversal"
+    },
+    "exact_words_selected": false,
+    "final_script_fact_check": false
+  },
+  "script_assignment": {
+    "revision": "PAIR-SCRIPT-HANDOFF-R1",
+    "path": "script-handoff.md",
+    "episodes": {
+      "C82": "EDU-EP20-SHORT",
+      "C83": "EDU-EP21-SHORT"
+    },
+    "user_approved_scripts": false,
+    "runtime_registered": false,
+    "factual_reviews": {
+      "EDU-EP20-SHORT": "EDU-EP20-FACT-R1",
+      "EDU-EP21-SHORT": "EDU-EP21-FACT-R1"
+    },
+    "verdict": "ready-for-storyboard",
+    "timing_locked": false
+  }
+}

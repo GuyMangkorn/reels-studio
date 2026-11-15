@@ -6,7 +6,7 @@ One row per concept the channel has made. Each concept has its own file `C<nn>.m
 
 ## How a new round is filed
 
-1. Preaw writes one file per concept, `C61.md` onward (next free ID: **C82**), with the pitch and the [ER08](../../../channels/edu/script.md) pitch check, and adds a row here with status `pitched` and the round ID (`R11`, ...).
+1. Preaw writes one file per concept, `C61.md` onward (next free ID: **C88**), with the pitch and the [ER08](../../../channels/edu/script.md) pitch check, and adds a row here with status `pitched` and the round ID (`R11`, ...).
 2. Film adds a `## Film annotation (W0.2)` section to each concept file of the round.
 3. After the user picks, the coordinator sets each row: `picked` (with the episode ID), `dropped`, or leaves `pitched`. Write the round's pick note (user's words, date) in `../delivery.md`.
 4. When the episode is published, set the row to `made`.
@@ -42,5 +42,11 @@ One row per concept the channel has made. Each concept has its own file `C<nn>.m
 | C79 | ทำไมแมวตกจากที่สูงแล้วลงสี่ขาได้ทุกที (animal) | pitched | - | R14 | [C79.md](C79.md) |
 | C80 | ทำไมยีราฟก้มหัวกินน้ำแล้วไม่เป็นลม (animal) | pitched | - | R14 | [C80.md](C80.md) |
 | C81 | ทำไมวัวกระทิงพุ่งใส่ผ้าแดง ทั้งที่มันไม่ได้เกลียดสีแดง (animal) | pitched | - | R14 | [C81.md](C81.md) |
+| C82 | รถเร่งแล้ว ทำไมลูกโป่งฮีเลียมเอนไปหน้ารถ | picked | EP20 | R15 | [C82.md](C82.md) |
+| C83 | ฟ้าผ่ารถ ทำไมเปลือกโลหะถึงช่วยป้องกันคุณ | picked | EP21 | R15 | [C83.md](C83.md) |
+| C84 | ดินไหวแล้ว ทำไมตึกบนทรายชุ่มน้ำถึงเอียง | pitched | - | R15 | [C84.md](C84.md) |
+| C85 | โตเต็มวัยแล้ว ทำไมไปอวกาศถึงสูงขึ้นได้ | pitched | - | R15 | [C85.md](C85.md) |
+| C86 | พริกทำคุณเผ็ด ทำไมไก่ไม่แสบแบบเดียวกัน | pitched | - | R15 | [C86.md](C86.md) |
+| C87 | ทำไมไฟในห้องทดลองอวกาศถึงกลม | pitched | - | R15 | [C87.md](C87.md) |
 
 Pitch lessons from past rounds: [lessons.md](lessons.md).
