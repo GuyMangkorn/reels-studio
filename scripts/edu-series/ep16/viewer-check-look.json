@@ -1,0 +1,58 @@
+{
+ "LF-FOREST": {
+  "hash": "82d9554f0efdc1fc",
+  "result": "pass"
+ },
+ "LF-ROOF": {
+  "hash": "a09b79a2106202ed",
+  "result": "pass"
+ },
+ "LF-THOUGHT": {
+  "hash": "82fb8bd0457f1efc",
+  "result": "pass"
+ },
+ "SH03": {
+  "hash": "b19380a5a72ab07b",
+  "result": "pass"
+ },
+ "SH07-A21": {
+  "hash": "a2647f3a4b52e7e9",
+  "result": "pass"
+ },
+ "SH07-A50": {
+  "hash": "bf327e8f3597f8cb",
+  "result": "pass"
+ },
+ "SH07-A81": {
+  "hash": "3f30da936ff91a27",
+  "result": "pass"
+ },
+ "SH13-KIND": {
+  "hash": "4f2a35442dc12e6b",
+  "result": "pass"
+ },
+ "SH15-END": {
+  "hash": "fa7c55035af9d4e2",
+  "result": "pass"
+ },
+ "SH21": {
+  "hash": "025136238851e140",
+  "result": "pass"
+ },
+ "SH21-ON": {
+  "hash": "947ab572c3c0b406",
+  "result": "pass"
+ },
+ "SH22": {
+  "hash": "7cc8e55d36c70c14",
+  "result": "pass"
+ },
+ "SH23": {
+  "hash": "fea68e05a34719ff",
+  "result": "pass"
+ },
+ "STRIKE": {
+  "hash": "338928c3cb01723f",
+  "result": "pass"
+ }
+}

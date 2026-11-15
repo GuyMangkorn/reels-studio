@@ -1,0 +1,362 @@
+{
+ "deliverable": "EDU-EP16-SHORT",
+ "step": "W4.2",
+ "script_revision": "EDU-EP16-SCRIPT-R3",
+ "date": "2026-11-15",
+ "timing_status": "audio-measured (final read, voice lock step 2; NOT LISTENED)",
+ "read": {
+  "final_track": "public/narration/EDU-EP16-SHORT-narration-v1.wav",
+  "store": "projects/edu/EDU/audio (archived, see delivery.md)",
+  "raw": "out/edu16/narr/full_raw.wav",
+  "text_file": "out/edu16/narr/text.txt (18 lines in play order, '…' sent as ','; V01 read in the same Kore voice)",
+  "model": "gemini-3.8-flash-tts",
+  "voice": "Kore",
+  "style": "a calm, natural, matter-of-fact narrator reading at a brisk, steady pace, no smile in the voice, no whisper, no dramatic pauses, one smooth continuous read",
+  "atempo": 1.08,
+  "gemini_calls": 1,
+  "retries": 0,
+  "tail_regeneration": false,
+  "listened": false,
+  "note": "NOT LISTENED; no late-drift check by ear (Whisper reads the whole take, see mishearings)"
+ },
+ "measured": {
+  "raw_s": 56.6,
+  "final_s": 52.402,
+  "speech_start_s": 0.22,
+  "speech_end_s": 52.11,
+  "method": "atempo 1.08, ffmpeg 10 ms peak blocks >=300/32767 for audible runs; faster-whisper large-v3-turbo char times aligned to script text (difflib), snapped to the nearest energy gap (>=0.12 s) within 0.25 s; times in seconds on the final x1.08 track, rough +-0.1 s where no gap exists (L09/L10 and phrase onsets inside a line)"
+ },
+ "line_onsets_s": {
+  "L01": 0.22,
+  "L02": 3.13,
+  "V01": 4.54,
+  "L03": 6.77,
+  "L04": 9.46,
+  "L05": 12.07,
+  "L06": 14.98,
+  "L17": 17.48,
+  "L14": 19.55,
+  "L18": 21.53,
+  "L07": 23.87,
+  "L09": 27.18,
+  "L10": 28.7,
+  "L08": 32.6,
+  "L11": 34.89,
+  "L13": 39.71,
+  "L15": 43.92,
+  "L16": 48.18
+ },
+ "line_end_s": {
+  "L01": 2.86,
+  "L02": 3.95,
+  "V01": 6.16,
+  "L03": 8.87,
+  "L04": 11.88,
+  "L05": 14.54,
+  "L06": 17.04,
+  "L17": 19.26,
+  "L14": 21.16,
+  "L18": 23.31,
+  "L07": 26.82,
+  "L09": 28.7,
+  "L10": 31.97,
+  "L08": 34.42,
+  "L11": 39.17,
+  "L13": 43.42,
+  "L15": 47.55,
+  "L16": 52.11
+ },
+ "phrase_onsets_s": {
+  "L01": {
+   "0": 0.22,
+   "1": 0.88
+  },
+  "L02": {
+   "0": 3.13
+  },
+  "V01": {
+   "0": 4.54,
+   "1": 5.12
+  },
+  "L03": {
+   "0": 6.77,
+   "1": 7.66
+  },
+  "L04": {
+   "0": 9.46,
+   "1": 9.84
+  },
+  "L05": {
+   "0": 12.07,
+   "1": 13.11
+  },
+  "L06": {
+   "0": 14.98,
+   "1": 16.04
+  },
+  "L17": {
+   "0": 17.48,
+   "1": 17.64
+  },
+  "L14": {
+   "0": 19.55,
+   "1": 20.02
+  },
+  "L18": {
+   "0": 21.53,
+   "1": 22.16
+  },
+  "L07": {
+   "0": 23.87,
+   "1": 25.1
+  },
+  "L09": {
+   "0": 27.18,
+   "1": 27.38
+  },
+  "L10": {
+   "0": 28.7,
+   "1": 30.42
+  },
+  "L08": {
+   "0": 32.6,
+   "1": 33.34
+  },
+  "L11": {
+   "0": 34.89,
+   "1": 35.86
+  },
+  "L13": {
+   "0": 39.71,
+   "1": 40.38,
+   "2": 42.62
+  },
+  "L15": {
+   "0": 43.92,
+   "1": 46.34
+  },
+  "L16": {
+   "0": 48.18,
+   "1": 49.4,
+   "2": 51.11
+  }
+ },
+ "beats": {
+  "B01": {
+   "start_s": 0.0,
+   "end_s": 4.245,
+   "lines": [
+    "L01",
+    "L02"
+   ],
+   "file": "out/edu16/narr/beats/B01.wav (store archive)",
+   "line_onsets_rel_s": {
+    "L01": 0.22,
+    "L02": 3.13
+   }
+  },
+  "B02": {
+   "start_s": 4.245,
+   "end_s": 17.26,
+   "lines": [
+    "V01",
+    "L03",
+    "L04",
+    "L05",
+    "L06"
+   ],
+   "file": "out/edu16/narr/beats/B02.wav (store archive)",
+   "line_onsets_rel_s": {
+    "V01": 0.29,
+    "L03": 2.52,
+    "L04": 5.22,
+    "L05": 7.83,
+    "L06": 10.73
+   }
+  },
+  "B03": {
+   "start_s": 17.26,
+   "end_s": 21.345,
+   "lines": [
+    "L17",
+    "L14"
+   ],
+   "file": "out/edu16/narr/beats/B03.wav (store archive)",
+   "line_onsets_rel_s": {
+    "L17": 0.22,
+    "L14": 2.29
+   }
+  },
+  "B04": {
+   "start_s": 21.345,
+   "end_s": 32.285,
+   "lines": [
+    "L18",
+    "L07",
+    "L09",
+    "L10"
+   ],
+   "file": "out/edu16/narr/beats/B04.wav (store archive)",
+   "line_onsets_rel_s": {
+    "L18": 0.19,
+    "L07": 2.53,
+    "L09": 5.84,
+    "L10": 7.36
+   }
+  },
+  "B05": {
+   "start_s": 32.285,
+   "end_s": 52.402,
+   "lines": [
+    "L08",
+    "L11",
+    "L13",
+    "L15",
+    "L16"
+   ],
+   "file": "out/edu16/narr/beats/B05.wav (store archive)",
+   "line_onsets_rel_s": {
+    "L08": 0.32,
+    "L11": 2.61,
+    "L13": 7.43,
+    "L15": 11.64,
+    "L16": 15.9
+   }
+  }
+ },
+ "cut_gaps_s": {
+  "B01|B02": [
+   3.95,
+   4.54
+  ],
+  "B02|B03": [
+   17.04,
+   17.48
+  ],
+  "B03|B04": [
+   21.16,
+   21.53
+  ],
+  "B04|B05": [
+   31.97,
+   32.6
+  ]
+ },
+ "pauses_over_0.5s": [
+  {
+   "from_s": 3.95,
+   "to_s": 4.54,
+   "len_s": 0.59,
+   "between": "L02 > V01"
+  },
+  {
+   "from_s": 23.31,
+   "to_s": 23.87,
+   "len_s": 0.56,
+   "between": "L18 > L07"
+  },
+  {
+   "from_s": 31.97,
+   "to_s": 32.6,
+   "len_s": 0.63,
+   "between": "L10 > L08"
+  },
+  {
+   "from_s": 39.17,
+   "to_s": 39.71,
+   "len_s": 0.54,
+   "between": "L11 > L13"
+  },
+  {
+   "from_s": 47.55,
+   "to_s": 48.18,
+   "len_s": 0.63,
+   "between": "L15 > L16"
+  }
+ ],
+ "rate": {
+  "syllables": 215,
+  "speech_span_s": 51.89,
+  "syll_per_s_overall": 4.14,
+  "syll_per_s_articulation": 5.1,
+  "note": "overall = syllables / (first to last audible); articulation = excluding gaps >=0.12 s. Script N1 assumed 5.5 syll/s plus 0.45 s pauses (raw 58 s at 1.08)."
+ },
+ "video": {
+  "allowances_s": {
+   "W-PING": 0.8,
+   "W-STOP": 1.0,
+   "W-STRIKE": 0.8,
+   "W-OFF": 1.2,
+   "end_hold": 2.0,
+   "source": "script.md N1; allowances are Film estimates, not measured"
+  },
+  "estimate_additive_s": {
+   "user_formula_ping_stop_strike_hold": 56.71,
+   "with_W_OFF": 57.91,
+   "net_of_read_gaps_without_W_OFF": 55.71,
+   "net_of_read_gaps_with_W_OFF": 56.41
+  },
+  "range_s": [
+   55.7,
+   57.9
+  ],
+  "target_s": [
+   40,
+   60
+  ],
+  "hard_limit_s": 63,
+  "within_target": true,
+  "within_hard_limit": true,
+  "note": "read gaps in the take: L14>L18 0.37, L10>L08 0.63, L13>L15 0.50 s; the slower-payoff +0.8 s of N1 is not included (+0.8 gives <= 58.7)"
+ },
+ "answers": {
+  "limit_s": 10,
+  "OQ1_L08_to_L13_onset": 7.11,
+  "OQ2_L04_to_L17_onset": 8.02,
+  "OQ4_L13_onset_to_W-OFF_end": 4.91,
+  "OQ5": 2.08,
+  "OQ6_L10_to_L08_plus_W-STRIKE": 3.9,
+  "OQ7_L16": 3.93,
+  "longest_s": 8.02,
+  "under_10": true
+ },
+ "verdict": "PASS: video estimate 55.7-57.9 s, under the 60 s target and the 63 s cap; longest answer 8.02 s (OQ2) under 10 s; L06 trim (T1) not needed",
+ "ear_check_watchlist": [
+  {
+   "line": "L05",
+   "word": "ผมหงอก",
+   "t_s": "13.9-14.5",
+   "whisper": "ผมงอก / ผมออก (ห swallowed?)"
+  },
+  {
+   "line": "L11",
+   "word": "จักรวาล",
+   "t_s": "35.86-36.6",
+   "whisper": "จากกระวาง / จักรวาง (ว-า-ล slurred?)"
+  },
+  {
+   "line": "L15",
+   "word": "ฟ้าจริง ๆ",
+   "t_s": "45.1-45.9",
+   "whisper": "ฝาจริง ๆ (large) vs ฟ้าจริงๆ (medium)"
+  },
+  {
+   "line": "L14",
+   "word": "ป่านนี้",
+   "t_s": "19.55-20.0",
+   "whisper": "ตอนนี้ (both models) - listen: ป่านนี้ vs ตอนนี้ changes the meaning"
+  },
+  {
+   "line": "L01",
+   "word": "ส่งมาถึงคุณ",
+   "t_s": "1.9-2.8",
+   "whisper": "ส่องมา (minor)"
+  },
+  {
+   "line": "L13",
+   "word": "อาจเป็นใครสักคน",
+   "t_s": "40.4-42.0",
+   "whisper": "garbled in full pass, clean in a clipped pass"
+  }
+ ]
+}

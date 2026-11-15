@@ -1,0 +1,382 @@
+{
+ "deliverable": "EDU-EP16-SHORT",
+ "step": "W4.2-v2",
+ "script_revision": "EDU-EP16-SCRIPT-R3",
+ "date": "2026-11-15",
+ "timing_status": "audio-measured (voice lock v2, Whisper re-alignment of the x1.029 track; NOT LISTENED by Editor; user picked by ear)",
+ "read": {
+  "final_track": "public/narration/EDU-EP16-SHORT-narration-v2.wav",
+  "store": "projects/edu/EDU/narration/full_x1.029.wav",
+  "raw": "out/edu16/narr/full_raw.wav",
+  "text_file": "out/edu16/narr/text.txt (18 lines in play order, '…' sent as ','; V01 read in the same Kore voice)",
+  "model": "gemini-3.8-flash-tts",
+  "voice": "Kore",
+  "style": "a calm, natural, matter-of-fact narrator reading at a brisk, steady pace, no smile in the voice, no whisper, no dramatic pauses, one smooth continuous read",
+  "atempo": 1.028571,
+  "gemini_calls": 1,
+  "retries": 0,
+  "tail_regeneration": false,
+  "listened": "user (A/B sample, by ear)",
+  "note": "User picked 5% slower than v1 by ear after an A/B sample (15 Nov 2026); same Gemini take (out/edu16/narr/full_raw.wav, no new call); no L06 trim. Pronunciation recheck in delivery.md."
+ },
+ "measured": {
+  "raw_s": 56.6,
+  "final_s": 55.045,
+  "speech_start_s": 0.23,
+  "speech_end_s": 54.71,
+  "method": "atempo 1.028571 on full_raw.wav; same procedure as v1 (10 ms peak blocks >=300/32767; faster-whisper large-v3-turbo word times aligned to script text by difflib, snapped to energy gaps >=0.12 s within 0.25 s). Whisper outliers (11 of 73 values) replaced by the exact x1.05 scaling of v1 (atempo is a pure time scale; every energy gap scales exactly: checked v1 15.17-15.39 -> 15.93-16.16, 46.37-46.75 -> 48.69-49.09 in v2). Values in seconds on the x1.029 track."
+ },
+ "line_onsets_s": {
+  "L01": 0.23,
+  "L02": 3.29,
+  "V01": 4.77,
+  "L03": 7.11,
+  "L04": 9.93,
+  "L05": 12.67,
+  "L06": 15.73,
+  "L17": 18.35,
+  "L14": 20.53,
+  "L18": 22.61,
+  "L07": 25.06,
+  "L09": 28.54,
+  "L10": 30.14,
+  "L08": 34.23,
+  "L11": 36.63,
+  "L13": 41.7,
+  "L15": 46.12,
+  "L16": 50.59
+ },
+ "line_end_s": {
+  "L01": 3.0,
+  "L02": 4.15,
+  "V01": 6.47,
+  "L03": 9.31,
+  "L04": 12.47,
+  "L05": 15.27,
+  "L06": 17.89,
+  "L17": 20.22,
+  "L14": 22.22,
+  "L18": 24.48,
+  "L07": 28.16,
+  "L09": 30.14,
+  "L10": 33.57,
+  "L08": 36.14,
+  "L11": 41.13,
+  "L13": 45.59,
+  "L15": 49.93,
+  "L16": 54.72
+ },
+ "phrase_onsets_s": {
+  "L01": {
+   "0": 0.23,
+   "1": 0.92
+  },
+  "L02": {
+   "0": 3.29
+  },
+  "V01": {
+   "0": 4.77,
+   "1": 5.38
+  },
+  "L03": {
+   "0": 7.11,
+   "1": 8.04
+  },
+  "L04": {
+   "0": 9.93,
+   "1": 10.33
+  },
+  "L05": {
+   "0": 12.67,
+   "1": 13.77
+  },
+  "L06": {
+   "0": 15.73,
+   "1": 16.84
+  },
+  "L17": {
+   "0": 18.35,
+   "1": 18.52
+  },
+  "L14": {
+   "0": 20.53,
+   "1": 21.02
+  },
+  "L18": {
+   "0": 22.61,
+   "1": 23.27
+  },
+  "L07": {
+   "0": 25.06,
+   "1": 26.36
+  },
+  "L09": {
+   "0": 28.54,
+   "1": 28.75
+  },
+  "L10": {
+   "0": 30.14,
+   "1": 31.94
+  },
+  "L08": {
+   "0": 34.23,
+   "1": 35.01
+  },
+  "L11": {
+   "0": 36.63,
+   "1": 37.65
+  },
+  "L13": {
+   "0": 41.7,
+   "1": 42.4,
+   "2": 44.75
+  },
+  "L15": {
+   "0": 46.12,
+   "1": 48.66
+  },
+  "L16": {
+   "0": 50.59,
+   "1": 51.87,
+   "2": 53.67
+  }
+ },
+ "beats": {
+  "B01": {
+   "start_s": 0.0,
+   "end_s": 4.455,
+   "lines": [
+    "L01",
+    "L02"
+   ],
+   "file": "(not cut for v2; v1 beat files are v1-timed; cut from the v2 track on demand)",
+   "line_onsets_rel_s": {
+    "L01": 0.23,
+    "L02": 3.29
+   }
+  },
+  "B02": {
+   "start_s": 4.455,
+   "end_s": 18.125,
+   "lines": [
+    "V01",
+    "L03",
+    "L04",
+    "L05",
+    "L06"
+   ],
+   "file": "(not cut for v2; v1 beat files are v1-timed; cut from the v2 track on demand)",
+   "line_onsets_rel_s": {
+    "V01": 0.31,
+    "L03": 2.66,
+    "L04": 5.47,
+    "L05": 8.21,
+    "L06": 11.28
+   }
+  },
+  "B03": {
+   "start_s": 18.125,
+   "end_s": 22.412,
+   "lines": [
+    "L17",
+    "L14"
+   ],
+   "file": "(not cut for v2; v1 beat files are v1-timed; cut from the v2 track on demand)",
+   "line_onsets_rel_s": {
+    "L17": 0.23,
+    "L14": 2.41
+   }
+  },
+  "B04": {
+   "start_s": 22.412,
+   "end_s": 33.899,
+   "lines": [
+    "L18",
+    "L07",
+    "L09",
+    "L10"
+   ],
+   "file": "(not cut for v2; v1 beat files are v1-timed; cut from the v2 track on demand)",
+   "line_onsets_rel_s": {
+    "L18": 0.2,
+    "L07": 2.65,
+    "L09": 6.13,
+    "L10": 7.73
+   }
+  },
+  "B05": {
+   "start_s": 33.899,
+   "end_s": 55.045,
+   "lines": [
+    "L08",
+    "L11",
+    "L13",
+    "L15",
+    "L16"
+   ],
+   "file": "(not cut for v2; v1 beat files are v1-timed; cut from the v2 track on demand)",
+   "line_onsets_rel_s": {
+    "L08": 0.33,
+    "L11": 2.73,
+    "L13": 7.8,
+    "L15": 12.22,
+    "L16": 16.69
+   }
+  }
+ },
+ "cut_gaps_s": {
+  "B01|B02": [
+   4.15,
+   4.77
+  ],
+  "B02|B03": [
+   17.89,
+   18.35
+  ],
+  "B03|B04": [
+   22.22,
+   22.61
+  ],
+  "B04|B05": [
+   33.57,
+   34.23
+  ]
+ },
+ "pauses_over_0.5s": [
+  {
+   "from_s": 4.15,
+   "to_s": 4.77,
+   "len_s": 0.62,
+   "between": "L02 > V01"
+  },
+  {
+   "from_s": 24.48,
+   "to_s": 25.06,
+   "len_s": 0.59,
+   "between": "L18 > L07"
+  },
+  {
+   "from_s": 33.57,
+   "to_s": 34.23,
+   "len_s": 0.66,
+   "between": "L10 > L08"
+  },
+  {
+   "from_s": 41.13,
+   "to_s": 41.7,
+   "len_s": 0.57,
+   "between": "L11 > L13"
+  },
+  {
+   "from_s": 49.93,
+   "to_s": 50.59,
+   "len_s": 0.66,
+   "between": "L15 > L16"
+  }
+ ],
+ "rate": {
+  "syllables": 215,
+  "speech_span_s": 54.48,
+  "syll_per_s_overall": 3.95,
+  "syll_per_s_articulation": 4.86,
+  "note": "overall = syllables / (first to last audible); articulation scaled from v1 (x1/1.05)."
+ },
+ "video": {
+  "allowances_s": {
+   "W-PING": 0.8,
+   "W-STOP": 1.0,
+   "W-STRIKE": 0.8,
+   "W-OFF": 1.2,
+   "end_hold": 2.0,
+   "source": "script.md N1; allowances are Film estimates, not measured"
+  },
+  "estimate_additive_s": {
+   "user_formula_ping_stop_strike_hold": 59.31,
+   "with_W_OFF": 60.52,
+   "net_of_read_gaps_without_W_OFF": 58.27,
+   "net_of_read_gaps_with_W_OFF": 58.94
+  },
+  "range_s": [
+   58.27,
+   60.52
+  ],
+  "target_s": [
+   40,
+   60
+  ],
+  "hard_limit_s": 63,
+  "within_target": false,
+  "within_hard_limit": true,
+  "note": "allowances are Film estimates (same as v1); read gaps scaled x1.05. Additive with W-OFF is over the 60 s target by ~0.5 s and under the 63 s cap; Film retimes the sheet on this track (real sheet length decides)."
+ },
+ "answers": {
+  "limit_s": 10,
+  "OQ1_L08_to_L13_onset": 7.47,
+  "OQ2_L04_to_L17_onset": 8.42,
+  "OQ4_L13_onset_to_W-OFF_end": 5.16,
+  "OQ5": 2.18,
+  "OQ6_L10_to_L08_plus_W-STRIKE": 4.09,
+  "OQ7_L16": 4.13,
+  "longest_s": 8.42,
+  "under_10": true
+ },
+ "verdict": "PASS vs hard cap: estimate 58.3-60.5 s, under the 63 s cap; additive with W-OFF 60.5 s is about 0.5 s over the 60 s target (net of read gaps 58.9 s); longest answer 8.42 s (OQ2) under 10 s; L06 trim not applied (user, 15 Nov 2026)",
+ "ear_check_watchlist": [
+  {
+   "line": "L05",
+   "word": "ผมหงอก",
+   "t_s": "14.6-15.2",
+   "whisper": "ผมงอก / ผมออก (ห swallowed?)"
+  },
+  {
+   "line": "L11",
+   "word": "จักรวาล",
+   "t_s": "37.7-38.4",
+   "whisper": "จากกระวาง / จักรวาง (ว-า-ล slurred?)"
+  },
+  {
+   "line": "L15",
+   "word": "ฟ้าจริง ๆ",
+   "t_s": "47.4-48.2",
+   "whisper": "ฝาจริง ๆ (large) vs ฟ้าจริงๆ (medium)"
+  },
+  {
+   "line": "L14",
+   "word": "ป่านนี้",
+   "t_s": "20.5-21.0",
+   "whisper": "ตอนนี้ (both models) - listen: ป่านนี้ vs ตอนนี้ changes the meaning"
+  },
+  {
+   "line": "L01",
+   "word": "ส่งมาถึงคุณ",
+   "t_s": "2.0-2.9",
+   "whisper": "ส่องมา (minor)"
+  },
+  {
+   "line": "L13",
+   "word": "อาจเป็นใครสักคน",
+   "t_s": "42.4-44.1",
+   "whisper": "garbled in full pass, clean in a clipped pass"
+  }
+ ],
+ "supersedes": "narration-measure.json (v1, atempo 1.08, 52.40 s; kept untouched)",
+ "re_alignment": {
+  "whisper_values_matching_scale_within_1_frame": "62 of 73 (line onsets/ends, phrase onsets) within 1.5 frames (mean 0.27, max 1.23 f at 30 fps)",
+  "max_diff_frames_vs_x1.05_scaled": 1.23,
+  "outliers_replaced_by_scale": "11 of 73 (>7 frames): L01 ph1, V01 ph1 (in-line phrase onsets, no gap), L05 end, L06 onset, L17 onset, L10 onset, L15 end and ph1: Whisper word-time noise, no energy gap supports them (L06/L10 onsets fall in a continuous run); scaled values used",
+  "cut_points_energy_gap_s": {
+   "22.412": [
+    22.23,
+    22.6
+   ],
+   "33.899": [
+    33.56,
+    34.24
+   ],
+   "45.854": [
+    45.6,
+    46.14
+   ]
+  }
+ }
+}

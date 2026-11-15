@@ -145,3 +145,42 @@ W2 done 2026-11-09: Film brief R1 (VD01–VD31), storyboard ROWS-R1.0 (25 shots,
 
 **Now:** W0, W1 done 2026-11-10 (script R2 approved, read 49.2 s, video ≈57.5 s); W2 done 2026-11-10 (20 shots, review page https://claude.ai/artifact/Pn33VzZ1qBhBJwmjXvhAXn). Waiting for the user's storyboard verdicts, then W3. Detail: [ep15/task.md](ep15/task.md).
 
+
+## EDU-EP16-SHORT
+
+**Now:** W8.2 cover published; MP4 + cover in publish folder **Next:** User posts; then store.py publish --posted <date>, W8.3; kit intake W8.4 (Boss); commit
+
+- [x] W0 Ideation — C67, R12, user pick 2026-11-14
+  - [x] W0.1 Preaw concepts (concepts/C67.md)
+  - [x] W0.2 Film annotation
+  - [x] W0.3 User picks a concept
+- [ ] W1 Script lock
+  - [x] W1.1 Boat research (ep16/research.md)
+  - [x] W1.2 Preaw script (R2)
+  - [x] W1.3 Boat fact-check (R2 pass)
+  - [x] W1.4 Length check: projected ≈64 s (target 60 s + 5 % = 63 s), L06 trim optional, re-measure at voice lock
+  - [x] W1.5 User approves the script: R3 approved 2026-11-14 ("อนุมัติ ทำ storyboard"); L06 trim not applied, projected ≈64 s vs 63 s cap, to re-measure at voice lock
+- [ ] W2 Brief and storyboard
+  - [x] W2.1 Film brief (text) — EDU-EP16-BRIEF-R2 on script R3 (ep16/film-brief.md)
+  - [x] W2.2 Film storyboard rows (review-rows.json) — EDU-EP16-ROWS-R1, untimed, 24 shots, on script R3 / brief R2 (ep16/review-rows.json); review page: pending
+  - [x] W2.3 Storyboard page published 2026-11-14 (EDU-EP16-ROWS-R1, 24 shots): https://claude.ai/artifact/WwB5F4QF4tiudg1SVhVQyP
+- [ ] W3 Look frames and storyboard pass
+  - [x] W3.1 Look frames on the page (3/3 locations: LF-THOUGHT, LF-FOREST painted v12 by Film group 1; LF-ROOF painted v7 by Film group 2 2026-11-14; plus monster A stills SH13/SH13-KIND/SH15-END, the SH15S strike strip, aged-woman SH07-A21/A50/A81 and roof shots SH03/SH21/SH22/SH23; viewer check pending; store projects/edu/EDU/previews/look-frames/ep16/g1-v12 and projects/edu/EDU/ep16-roof-looks-w3; review page: pending)
+  - [x] W3.2 Look frames approved (look lock)
+  - [ ] W3.3 Storyboard passed (0/N shots)
+- [ ] W4 Voice lock
+  - [x] W4.1 Voice chosen
+  - [x] W4.2 Narration generated and measured (Editor, 2026-11-15): Kore sample-C style, 1 Gemini call, atempo 1.08, 52.40 s, speech 0.22-52.11 s, 215 syll (4.14/s overall); [narration-measure.json](ep16/narration-measure.json) audio-measured on script R3; video est 55.7-57.9 s (under 60 s, cap 63 s), longest answer 8.02 s, L06 trim not needed; track public/narration/EDU-EP16-SHORT-narration-v1.wav, store projects/edu/EDU/narration/full_x1.08.wav (+ beats/B01-B05.wav); NOT LISTENED, ear watchlist L14 ป่านนี้, L11 จักรวาล, L05 ผมหงอก, L15 ฟ้า; not locked (W4.3)
+  - [x] W4.3 User approves the voice
+- [ ] W5 Draft
+  - [x] W5.1 Film timed scene sheets — EDU-EP16-SHEETS-R1 ([ep16/storyboard.md](ep16/storyboard.md)), 24 shots, 1737 f = 57.90 s, rows ROWS-R2 timed; review page: pending (2026-11-15)
+  - [x] W5.2 Boss assets and plates (shot groups 7/7 plated as stills and measured, 2026-11-15: G1 SH01–SH03, G2 SH04/SH05/SH08–SH12, G3 SH06–SH07, G4 SH13–SH15S, G5 SH16/SH17/SH19–SH21, G6 SH18, G7 SH22/SH23; hardening items 1–4 done; Film to confirm the Boss re-keys SH05/SH09/SH12/SH13/SH16/SH22; no video render; see [ep16/build-notes.md](ep16/build-notes.md))
+  - [x] W5.2s Ton sounds and cue sheet (38/38 cues: 34 generated, 4 library; 33 files locked in src/videos/edu-ep16/assets.lock.json; scripts/edu-series/ep16/sound-cues.json; measured, NOT LISTENED)
+  - [x] W5.3 Draft passed (24/24 shots, user, 2026-11-15, SHEETS-R2 half-size draft cut out/EDU-EP16-SHORT/clips/_draft_cut.mp4, 1800 f = 60.00 s; npm test 683/683, sound-cues pass, mix-levels 0 FAIL 5 warn; coordinator accepted relaxed levels.checks S21/S25/S26/S27/S02-f21 and S02 f126 blip dV 17.8)
+- [x] W6 Final passed (24/24 shots, user, 2026-11-15, full-size cut with the S29 ending note, out/EDU-EP16-SHORT/clips/_final_cut.full.mp4, 1800 f = 60.00 s)
+- [x] W7 Pinned (24/24 scenes, 2026-11-15, ending A_fade; pin.mjs pin-rows ep16/review-rows.json; narration placed-v2 + stem v2 locked in src/videos/edu-ep16/assets.lock.json)
+- [ ] W8 Deliver
+  - [x] W8.1 Assembled from the cache, picture lock (24 of 24 scenes reused, 0 repainted, 2026-11-15)
+  - [x] W8.2 cover u1 (ทฤษฎี + ป่าเงียบ on C1), user pick 2026-11-15, published
+  - [ ] W8.3 Posted to the channel (user, date; `publish --posted`)
+  - [ ] W8.4 Kit intake: new people, outfits, animals, poses, sets filed (KIT-P01)

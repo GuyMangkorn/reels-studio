@@ -1,0 +1,9 @@
+{
+  "about": "EDU-EP16-SHORT blip clock (storyboard EDU-EP16-SHEETS-R2 'Blip clock'; Film re-time to the 5 % slower read, 2026-11-15; R1 values kept in blip-clock-r1.json). One clock for the trace picture (src/painted/edu16/clock.ts reads this file) and the BLIP sound S02 (Ton/Editor place one blip at each spike frame). Frames are composition frames (scene offset 0, 30 fps). Each spike is drawn for 3 frames (1, 0.62, 0.28). Period unchanged (21 f, PING = spike 0 at f0); one more spike than R1 (n = 0..32). The last spike f672 lands inside L14's last phrase 'คนส่งยังอยู่ไหม' (f655-691); the trace is flat from flatFrom; missing (f693) is the first blip that never comes, 2 f after L14 ends, where riser S12 cuts dead (W-STOP); L18 starts f735.",
+  "fps": 30,
+  "period": 21,
+  "spikes": [0, 21, 42, 63, 84, 105, 126, 147, 168, 189, 210, 231, 252, 273, 294, 315, 336, 357, 378, 399, 420, 441, 462, 483, 504, 525, 546, 567, 588, 609, 630, 651, 672],
+  "spikeFrames": 3,
+  "flatFrom": 675,
+  "missing": 693
+}
