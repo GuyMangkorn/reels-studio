@@ -15,3 +15,4 @@
 
 ## Revalidation history
 - 2026-10-30, worktree `usage-check-agent-tuning-16bd9b` (uncommitted pass 12, G1): the sheet above rendered at 1704 × 2880 px with Chrome headless; checked by viewing the downscaled screenshot.
+- 2026-11-15, `claude/dev-finding-review-b2efff` (working tree): the labelled sheet is scripted as `scripts/zombie-condo-paint/label-sheet.py` (HTML tiles with label lines, headless Chrome; `4a64dd3`, listed in `scripts/README.md`). Presence checked, not re-run. Status fixed.

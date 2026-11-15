@@ -1,7 +1,7 @@
 # DF-20261030-projectpoly-two-point-line — `projectPoly` returns nothing for two points; sedan lines never drew
 
 - Owner: Boss; first observed: 2026-10-30 (WFOG r6 far-door trim line left no pixels); last checked: 2026-10-30
-- Status: workaround (project a line's points one by one with `proj.P` and call `inkLine`; r6 trim line uses this)
+- Status: fixed (see the 2026-11-15 revalidation line)
 - Type: tool-limitation (shared helper contract; the drop is silent, no error)
 - Tags: 2D / painted / p5.brush / projection / thin lines / WORLD FOG S01-SH02
 - Scope: `src/painted/worldfog/draw.ts` (`projectPoly` ends with `return out.length >= 3 ? clipScreen(...) : []`); `src/painted/worldfog/car.ts` (`paintCabin`, `paintSedanBody`)
@@ -22,3 +22,4 @@
 
 ## Revalidation history
 - 2026-10-30, worktree `claude/world-fog-next-steps-2817bc` (uncommitted r6): two-point and three-point behaviour checked by scratch run; trim line drawn after the fix (luma and crop checked).
+- 2026-11-15, `claude/dev-finding-review-b2efff` (working tree): `projectLine(proj, a, b)` added to `src/painted/kit/draw.ts` (near-clips and projects a two-point line); `projectPoly` now throws on fewer than three points, so the drop is no longer silent (`tests/draw-project-line.test.ts`, 3 of 3). The six `car.ts` calls that never drew were removed as dead code, so the S01-SH02 picture is unchanged by construction (no still re-rendered). To add them after a Film look decision, use `projectLine` with: head top edge `[dx-1.75,1.32,4.5]→[dx-1.25,1.32,4.5]` (w 1.0, `#4a5254`); dash `[dx-1.90,1.0,4.6]→[dx-0.95,1.0,4.6]` (w 1.5, `#3a4144`); crease `onSide([[-3.40,0.62],[0.25,0.62]])` (w 0.8, `#4d5457`); chrome `onSide([[-3.30,0.91],[0.25,0.91]])` (w 0.8, `#a6acae`); shut-door seams `onSide([[-0.90,0.30],[-0.90,0.98]])` and `onSide([[-1.92,0.30],[-1.92,1.40]])` (w 0.8, `#23292b`). Status fixed.

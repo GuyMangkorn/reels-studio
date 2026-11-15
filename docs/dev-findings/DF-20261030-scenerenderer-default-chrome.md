@@ -1,7 +1,7 @@
 # DF-20261030-scenerenderer-default-chrome — painted scenes draw the default chrome unless `chrome` is set
 
 - Owner: Editor (composition option); Boss (review harness)
-- Status: workaround
+- Status: fixed (see the 2026-11-15 revalidation line)
 - Type: integration default
 - Tags: Remotion / chrome / painted / composition
 - Scope: `src/scenes/SceneRenderer.tsx` (`chrome` prop; progress bar and channel label), `src/scenes/media.ts` (`defaultChrome` = progress bar on, channel label `ทำไมล่ะ`); `src/painted/PaintedStage.tsx` draws no chrome
@@ -21,3 +21,4 @@
 
 ## Revalidation history
 - 30 Oct 2026, Boss pass 6 → measured on the review compositions → workaround (per-composition prop) → fix PR: none.
+- 2026-11-15, `claude/dev-finding-review-b2efff` (working tree): `defaultChrome` in `src/scenes/media.ts` is now `{channelLabel: '@TamMaiLa', progressBar: false}` (progress bar off since `5b55f85`, 2026-10-30). The channel mark top-left is the intended Default on every deliverable ([channels](../../channels/README.md)), so the remaining label is by design; a review composition that must match a bare plate still passes `chrome={{channelLabel: false}}`. Read from code, no frame re-measured. Status fixed.

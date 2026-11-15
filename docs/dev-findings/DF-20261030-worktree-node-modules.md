@@ -1,7 +1,7 @@
 # DF-20261030-worktree-node-modules — a worktree's `node_modules` can be partial; stills fail at bundle time
 
 - Owner: Boss; first observed: 2026-10-30 (WFOG r6 stills in this worktree); last checked: 2026-10-30
-- Status: workaround (`npm ci` in the worktree; `npm ls --depth=0` clean afterwards)
+- Status: fixed (see the 2026-11-15 revalidation line)
 - Type: environment blocker (install state, not code)
 - Tags: npm / worktree / Remotion bundler / p5.brush
 - Scope: this worktree's `node_modules` (`npm ls` listed extraneous packages; `p5.brush` absent)
@@ -19,3 +19,4 @@
 ## Revalidation history
 - 2026-10-30, worktree `claude/world-fog-next-steps-2817bc`: reinstalled with `npm ci`; stills, typecheck, lint and tests run.
 - 2026-10-30, worktree `usage-check-agent-tuning-16bd9b` (Boss pass 11): the untracked `node_modules` symlink pointed to the main checkout's partial install (no `p5.brush`). Re-pointed the symlink to the sibling `world-frog-main-6920cb/node_modules` (contains `p5.brush`; `node_modules/.bin/remotion versions` 4.0.538), not `npm ci`. The main checkout's install is unchanged; the symlink is never committed. Stills render with `--gl=angle`.
+- 2026-11-15, `claude/dev-finding-review-b2efff` (working tree): `scripts/setup.sh` now runs `npm ls --depth=0` and reinstalls with `npm ci` when the install is partial; a symlinked `node_modules` with a partial install is reported as a failure instead of being reinstalled through the link. Run `bash scripts/setup.sh --no-venvs` in a new worktree. Checked on a complete install only (npm step ok); the partial and symlink branches were not exercised. Status fixed.
