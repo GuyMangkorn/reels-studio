@@ -102,7 +102,7 @@ Episode-specific files are under [Episodes](#episodes); shared topics come first
 
 **Read when:** rendering anything, taking QA stills, pinning approved shots or re-editing.
 
-- Rules: [render by scene / review renders / stills on one Chrome](render-rules.md); [painted shot-by-shot review](sequence-workflow.md#painted-shot-by-shot); [README render and verify](../README.md#render-and-verify), [permanent render folder](../README.md#permanent-render-folder)
+- Rules: [render skill](../.agents/skills/render/SKILL.md) (render by scene, stage order, review renders, stills on one Chrome; old anchors at [render-rules](render-rules.md)); [painted shot-by-shot review](sequence-workflow.md#painted-shot-by-shot); [README render and verify](../README.md#render-and-verify), [permanent render folder](../README.md#permanent-render-folder)
 - Scripts: [render.mjs](../scripts/render.mjs), [render-options.mjs](../scripts/render-options.mjs), [render-inputs.ts](../scripts/render-inputs.ts), [segments.mjs](../scripts/segments.mjs), [new-shot.mjs](../scripts/new-shot.mjs), [pin.mjs](../scripts/pin.mjs), [stills.mjs](../scripts/stills.mjs), [qa-sheet.sh](../scripts/qa-sheet.sh), [reference-frames.py](../scripts/reference-frames.py)
 - Findings: [render speed](dev-findings/DF-20261031-render-speed.md), [segment cache key](dev-findings/DF-20261101-segment-cache-key.md); design [project render cache](reviews/2026-11-01-project-render-cache.md)
 - Tests: [segments](../tests/segments.test.ts), [render-options](../tests/render-options.test.ts), [render-inputs](../tests/render-inputs.test.ts), [new-shot](../tests/new-shot.test.ts)
@@ -157,7 +157,7 @@ Episode-specific files are under [Episodes](#episodes); shared topics come first
 
 **Read when:** writing or reviewing a scene sheet, publishing the user storyboard review page, shot-by-shot approval.
 
-- Docs: [mark-storyboard-workflow](mark-storyboard-workflow.md) ([scene-sheet contract](mark-storyboard-workflow.md#scene-sheet-contract), [user review page](mark-storyboard-workflow.md#user-storyboard-review-page); the coordinator's part: [publishing and reading the page](coordinator.md#review-page)), [storyboard-principles](storyboard-principles.md), [sequence-workflow](sequence-workflow.md); [shot-by-shot proposal](reviews/2026-11-01-shot-by-shot-workflow-proposal.md)
+- Docs: [mark-storyboard-workflow](mark-storyboard-workflow.md) ([scene-sheet contract](mark-storyboard-workflow.md#scene-sheet-contract), [review-page skill](../.agents/skills/review-page/SKILL.md) (rows, publishing, verdicts, review rounds); the coordinator's part: [publishing and reading the page](coordinator.md#review-page)), [storyboard-principles](storyboard-principles.md), [sequence-workflow](sequence-workflow.md); [shot-by-shot proposal](reviews/2026-11-01-shot-by-shot-workflow-proposal.md)
 - Scripts: [storyboard-page/build.py](../scripts/storyboard-page/build.py), [storyboard-page/clips.mjs](../scripts/storyboard-page/clips.mjs), [template.html](../scripts/storyboard-page/template.html), [example.json](../scripts/storyboard-page/example.json), [shot-projection.py](../scripts/shot-projection.py), [viewer-check.py](../scripts/viewer-check.py) (one-file input bundle and carried-over passes for the [viewer check](sequence-workflow.md#viewer-check))
 - Per episode: `scripts/<episode>/short/` scene sheets, `review-rows.json` and `viewer-check-<stage>.json`
 - Tests: [storyboard-page](../tests/storyboard-page.test.ts)
@@ -166,7 +166,7 @@ Episode-specific files are under [Episodes](#episodes); shared topics come first
 
 **Read when:** ideation concepts, Boat research, Preaw script, fact-check.
 
-- Docs: [editorial-workflow](editorial-workflow.md), [scriptwriting-principles](scriptwriting-principles.md)
+- Docs: [editorial skill](../.agents/skills/editorial/SKILL.md) (old anchors at [editorial-workflow](editorial-workflow.md)), [scriptwriting-principles](scriptwriting-principles.md)
 - Per episode: `scripts/<episode>/research.md`, `topic-brief.md`, script files under `short/` or `long/`
 
 ## Visual brief, look and findings
