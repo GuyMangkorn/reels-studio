@@ -22,9 +22,7 @@ def module(path):
     prefix = max((p for p in DEPTH if path.startswith(p)), key=len)
     unit = '/'.join(path.split('/')[:DEPTH[prefix]])
     real = os.path.relpath(os.path.realpath(unit), ROOT)  # a symlinked skill counts as its target
-    if not real.startswith('..'): return real
-    # Linked from the home repo, which mirrors these paths: the target's own tail names the module.
-    return '/'.join(os.path.realpath(unit).split('/')[-len(unit.split('/')):])
+    return real if not real.startswith('..') else unit
 
 
 def mentions(text):
