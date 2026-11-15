@@ -8,9 +8,9 @@
 | --- | --- |
 | Channel ID | `fiction` |
 | Channel mark | `@mg.fiction` (user, 11 Nov 2026), top-left in the same place as the shared [channel label](../../docs/production-requirements.md#thai-subtitles-narration-and-channel-label). Runtime: the episode's `src/videos/<episode>/index.ts` exports `channel: 'fiction'`, and every video that leaves `chrome.channelLabel` unset takes this mark (`existing-integrated`, 11 Nov 2026: `CHANNEL_MARKS` in `src/videos/types.ts`, applied in `src/videos/registry.ts`, test `tests/videos.test.ts`) |
-| Direction | Invented stories told as stories (user, 11 Nov 2026: "สไตล์เล่าเรื่องไม่มีอยู่จริงไปเลย เรื่องแต่ง") |
+| Direction | **Changed 15 Nov 2026 (user):** long-form storytelling, Long over 9 minutes, optional Shorts cut from it; subjects are historical events or notable people, real or taken from novels. Earlier direction (11 Nov 2026): invented stories told as stories |
 | Genre / purpose | `open`: narrative fiction; the sub-genres are chosen in the pilot's [ideation](../../docs/delivery-workflow.md#ideation) |
-| Factual claims | None: the stories are invented and are not presented as real cases. Boat's research and fact-check have no factual subject and are recorded `N/A` unless a script borrows a real place, person or event |
+| Factual claims | Real-case subjects now carry factual claims, so Boat researches and fact-checks them; an invented story has none: the stories are invented and are not presented as real cases. Boat's research and fact-check have no factual subject and are recorded `N/A` unless a script borrows a real place, person or event |
 | Episode records | Series prefix `MGF` (user, 11 Nov 2026): deliverable IDs `MGF-EPnn-SHORT`; records in `scripts/mgf-series/` (created with the pilot); store folders `projects/fiction/MGF/` and `publish/fiction/MGF/<ID>/` (`SERIES` in `scripts/store.py`) |
 
 ## Rules of this channel
