@@ -1,0 +1,9 @@
+{
+  "about": "EDU-EP16-SHORT blip clock (storyboard EDU-EP16-SHEETS-R1 'Blip clock'; Boss W5.2, 2026-11-15). One clock for the trace picture (src/painted/edu16/clock.ts reads this file) and the BLIP sound S02 (Ton/Editor place one blip at each spike frame). Frames are composition frames (scene offset 0, 30 fps). Each spike is drawn for 3 frames (1, 0.62, 0.28). The trace is flat from flatFrom; missing is the first blip that never comes (W-STOP, riser S12 cuts dead there).",
+  "fps": 30,
+  "period": 21,
+  "spikes": [0, 21, 42, 63, 84, 105, 126, 147, 168, 189, 210, 231, 252, 273, 294, 315, 336, 357, 378, 399, 420, 441, 462, 483, 504, 525, 546, 567, 588, 609, 630, 651],
+  "spikeFrames": 3,
+  "flatFrom": 654,
+  "missing": 672
+}

@@ -50,6 +50,10 @@ export function validateScenePainted(s: Record<string, unknown>, path: string, p
       if (cue.label === undefined) fail(`${cp}.${key}`, 'needs a label on the same cue');
       if (!finite(cue[key]) || (cue[key] as number) < 0) fail(`${cp}.${key}`, key === 'labelTop' ? 'expected non-negative px' : 'expected non-negative seconds');
     }
+    if (cue.labelSide !== undefined) {
+      if (cue.label === undefined) fail(`${cp}.labelSide`, 'needs a label on the same cue');
+      if (cue.labelSide !== 'left' && cue.labelSide !== 'right') fail(`${cp}.labelSide`, "expected 'left' or 'right'");
+    }
     if (cue.items !== undefined) {
       if (!Array.isArray(cue.items) || cue.items.length > 8) fail(`${cp}.items`, 'expected up to eight items');
       (cue.items as unknown[]).forEach((raw2, k) => {
@@ -85,7 +89,7 @@ export function validateScenePainted(s: Record<string, unknown>, path: string, p
 }
 
 /** One painted cue on the composition clock. */
-export type PaintedSpan = {shot: string; startFrame: number; endFrame: number; fromFrame: number; dissolveFrames: number; label?: PaintedLabel; labelFrames: number; labelTop?: number; items?: PaintedItem[]; scene: number};
+export type PaintedSpan = {shot: string; startFrame: number; endFrame: number; fromFrame: number; dissolveFrames: number; label?: PaintedLabel; labelFrames: number; labelTop?: number; labelSide?: 'left' | 'right'; items?: PaintedItem[]; scene: number};
 
 /** Flatten every painted cue into composition frames; a cue ends at the next cue or its scene end. */
 export const paintedSpans = (timeline: Timeline, fps: number): PaintedSpan[] => {
@@ -105,6 +109,7 @@ export const paintedSpans = (timeline: Timeline, fps: number): PaintedSpan[] => 
         label: cue.label,
         labelFrames: Math.round((cue.labelAtSec ?? 0) * fps),
         ...(cue.labelTop !== undefined ? {labelTop: cue.labelTop} : {}),
+        ...(cue.labelSide !== undefined ? {labelSide: cue.labelSide} : {}),
         ...(cue.items?.length ? {items: cue.items} : {}),
         scene: index,
       });
@@ -115,7 +120,7 @@ export const paintedSpans = (timeline: Timeline, fps: number): PaintedSpan[] => 
 };
 
 /** A plate to paint this frame: `tl` on its shot clock (before the shot's own clock remap), plate and glow opacity. */
-export type PaintedPlate = {shot: string; tl: number; frame: number; alpha: number; overlayOpacity: number; label?: PaintedLabel; /** Slot-0 top in px (cue `labelTop`). */ labelTop?: number; /** Positioned items of the cue (cue `items`). */ items?: PaintedItem[]; /** A frame-0 plate laid by the C_seamless loop blend. */ incoming?: boolean};
+export type PaintedPlate = {shot: string; tl: number; frame: number; alpha: number; overlayOpacity: number; label?: PaintedLabel; /** Slot-0 top in px (cue `labelTop`). */ labelTop?: number; /** Label side (cue `labelSide`). */ labelSide?: 'left' | 'right'; /** Positioned items of the cue (cue `items`). */ items?: PaintedItem[]; /** A frame-0 plate laid by the C_seamless loop blend. */ incoming?: boolean};
 export type PaintedState = {plates: PaintedPlate[]; opacity: number};
 
 const platesAt = (spans: PaintedSpan[], frame: number, fps: number): PaintedPlate[] => {
@@ -125,7 +130,7 @@ const platesAt = (spans: PaintedSpan[], frame: number, fps: number): PaintedPlat
   const plate = (s: PaintedSpan, alpha: number, overlayOpacity: number): PaintedPlate => {
     const f = frame - s.startFrame + s.fromFrame;
     const label = frame - s.startFrame >= s.labelFrames ? s.label : undefined;
-    return {shot: s.shot, tl: f / fps, frame: f, alpha, overlayOpacity, label, ...(label !== undefined && s.labelTop !== undefined ? {labelTop: s.labelTop} : {}), ...(s.items ? {items: s.items} : {})};
+    return {shot: s.shot, tl: f / fps, frame: f, alpha, overlayOpacity, label, ...(label !== undefined && s.labelTop !== undefined ? {labelTop: s.labelTop} : {}), ...(label !== undefined && s.labelSide !== undefined ? {labelSide: s.labelSide} : {}), ...(s.items ? {items: s.items} : {})};
   };
   const prev = spans[k - 1];
   if (span.dissolveFrames > 0 && prev && prev.endFrame === span.startFrame && frame < span.startFrame + span.dissolveFrames) {
