@@ -176,8 +176,6 @@ const paintCabin = (p: Painter, proj: Proj, dx: number, seed: number, courtesy: 
   const head = box(1.18, 1.32, -1.75, -1.25, 4.5);
   if (head.length) {
     solid(p, seed + 333, '#2b3133', head, 4, 0.04, 0.08);
-    const topEdge = projectPoly(proj, [[dx - 1.75, 1.32, 4.5], [dx - 1.25, 1.32, 4.5]] as V3[]);
-    if (topEdge.length > 1) inkLine(p, seed + 334, topEdge, {closed: false, weight: 1.0, color: '#4a5254'});
   }
   // Steering-wheel rim (r 0.19 m about (-1.00, 1.02) at z 4.55), drawn only where it lies inside the opening (x <= -0.93).
   const rim = Array.from({length: 40}, (_, i): V3 => {
@@ -188,10 +186,7 @@ const paintCabin = (p: Painter, proj: Proj, dx: number, seed: number, courtesy: 
     const pts = projectPoly(proj, rim);
     if (pts.length > 2) inkLine(p, seed + 335, pts, {closed: false, weight: 2, color: '#15191a'});
   }
-  const dash = projectPoly(proj, [[dx - 1.90, 1.0, 4.6], [dx - 0.95, 1.0, 4.6]] as V3[]);
-  if (dash.length > 1) inkLine(p, seed + 336, dash, {closed: false, weight: 1.5, color: '#3a4144'});
-  // Far-door armrest / trim line at 0.70 m (SS-R3.5), across the inner panel from the B-pillar side to the free edge. A 2-point
-  // line: `projectPoly` needs 3 vertices and would drop it, so the points are projected one by one.
+  // Far-door armrest / trim line at 0.70 m (SS-R3.5), across the inner panel from the B-pillar side to the free edge.
   const trim = onSide([[-1.88, 0.70], [-0.93, 0.70]], dx).map((q): Pt => proj.P(q));
   inkLine(p, seed + 337, trim, {closed: false, weight: 1.0, color: '#23292b'});
   // Courtesy light (dome, warm #d8b878 at most 0.30) while the door is open: the far-door upper third (1.07-1.40 m, which holds
@@ -228,10 +223,6 @@ export const paintSedanBody = (p: Painter, proj: Proj, dx: number, door: number,
   face(onSide(SIDE, dx), BODY, 6, true);
   face(onSide(bandY(SIDE, 0, 0.62), dx), mixColor(BODY, '#4a5154', 0.35), 4, false);
   face(onSide(bandY(SIDE, 0, 0.30), dx), '#4a5154', 4, false);
-  const crease = projectPoly(proj, onSide([[-3.40, 0.62], [0.25, 0.62]], dx));
-  if (crease.length) inkLine(p, seed + 430, crease, {closed: false, weight: 0.8, color: '#4d5457'});
-  const chrome = projectPoly(proj, onSide([[-3.30, 0.91], [0.25, 0.91]], dx));
-  if (chrome.length) inkLine(p, seed + 431, chrome, {closed: false, weight: 0.8, color: '#a6acae'});
   // Side glass with one reflection streak.
   face(onSide(GLASS_FRONT, dx, z + 0.01), GLASS, 6, false);
   face(onSide(GLASS_REAR, dx, z + 0.01), GLASS, 6, false);
@@ -250,12 +241,6 @@ export const paintSedanBody = (p: Painter, proj: Proj, dx: number, door: number,
   if (door > 0.01) {
     // Open door: the opening (never a flat quad) shows the cabin; the door panel itself is `paintSedanDoor`.
     paintCabin(p, proj, dx, seed, courtesy);
-  } else {
-    // Shut door: its seams at the hinge and the B-pillar.
-    const seamF = projectPoly(proj, onSide([[-0.90, 0.30], [-0.90, 0.98]], dx));
-    if (seamF.length) inkLine(p, seed + 420, seamF, {closed: false, weight: 0.8, color: '#23292b'});
-    const seamB = projectPoly(proj, onSide([[-1.92, 0.30], [-1.92, 1.40]], dx));
-    if (seamB.length) inkLine(p, seed + 421, seamB, {closed: false, weight: 0.8, color: '#23292b'});
   }
   // Lamps: warm headlamp at the nose, red tail.
   const head = proj.P([dx + 0.30, 0.65, z]), tail = proj.P([dx - 4.10, 0.65, z]);

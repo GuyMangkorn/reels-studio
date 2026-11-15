@@ -95,7 +95,7 @@ Episode-specific files are under [Episodes](#episodes); shared topics come first
 - Shots per episode: [src/painted/shots/](../src/painted/shots/worldfog.tsx); look spikes and sheets (standalone entry, not in Root): [spike/index.ts](../src/painted/spike/index.ts); 3D-camera parallax test `PARALLAX-BEFORE`/`PARALLAX-AFTER` ([spike/ParallaxTest.tsx](../src/painted/spike/ParallaxTest.tsx), entry [spike/parallax-index.ts](../src/painted/spike/parallax-index.ts)); 360-degree orbit with a yaw camera `PARALLAX-ORBIT360` ([spike/Orbit360.tsx](../src/painted/spike/Orbit360.tsx)); four body views in a set seen at 45 degrees `SET45-BACK`/`-FRONT`/`-SIDE` ([spike/Set45.tsx](../src/painted/spike/Set45.tsx), entry [spike/set45-index.ts](../src/painted/spike/set45-index.ts))
 - Scripts: [painted-kit/](../scripts/painted-kit/build-notes.md) ([catalog.mjs](../scripts/painted-kit/catalog.mjs), [regress.mjs](../scripts/painted-kit/regress.mjs), [compare.py](../scripts/painted-kit/compare.py), [plates.ts](../scripts/painted-kit/plates.ts)), [paint-bench.mjs](../scripts/paint-bench.mjs), [paint-bench-compare.mjs](../scripts/paint-bench-compare.mjs)
 - Findings: [dev-findings index](dev-findings.md) (entries `DF-*-painted-*`, `DF-*-p5brush-*`)
-- Tests: [painted](../tests/painted.test.ts), [environment-kit](../tests/environment-kit.test.ts), [plates](../tests/plates.test.ts)
+- Tests: [painted](../tests/painted.test.ts), [environment-kit](../tests/environment-kit.test.ts), [plates](../tests/plates.test.ts), [draw-project-line](../tests/draw-project-line.test.ts) (`projectLine`, `projectPoly` guard)
 
 ## Render, stills and scene cache
 

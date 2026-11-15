@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Prepares a checkout after a clone, a move to a new folder or a new machine; safe to re-run.
 # Usage: bash scripts/setup.sh [--no-venvs] [--repair-worktrees]
-# Does: npm ci (when node_modules is missing or stale), the three local Python venvs (.venv-whisper for
+# Does: npm ci (when node_modules is missing, stale or partial per `npm ls`), the three local Python venvs (.venv-whisper for
 # transcribe.py, out/gemini-venv for gemini-tts.py, out/voice-venv for voice-preset.py; each rebuilt only when it
 # does not run, since a venv breaks when its folder moves), store.py fetch + verify ($REELS_STORE, default
 # ~/ReelsStore), and with --repair-worktrees `git worktree repair` for every registered worktree.
@@ -14,7 +14,14 @@ for a in "$@"; do case "$a" in --no-venvs) venvs=0;; --repair-worktrees) repair=
 fail=0
 step() { local name=$1; shift; if "$@" > "out/logs/setup-$name.log" 2>&1; then echo "ok    $name"; else echo "FAIL  $name (out/logs/setup-$name.log)"; fail=1; fi; }
 
-if [ ! -d node_modules ] || [ package-lock.json -nt node_modules ]; then step npm npm ci; else echo "ok    npm (node_modules up to date)"; fi
+# Empty Finder-style duplicates ("@types/react 2") break typecheck with TS2688; only empty folders are removed.
+[ -d node_modules/@types ] && find node_modules/@types -maxdepth 1 -type d -name '* [0-9]*' -empty -delete
+# A partial install (folder present, packages missing or extraneous) fails `npm ls`; it shows up later as a bundle error.
+if [ -L node_modules ]; then
+  if npm ls --depth=0 > out/logs/setup-npm.log 2>&1; then echo "ok    npm (node_modules is a symlink, install complete)"
+  else echo "FAIL  npm (node_modules is a symlink to a partial install; replace it with a folder and re-run, out/logs/setup-npm.log)"; fail=1; fi
+elif [ ! -d node_modules ] || [ package-lock.json -nt node_modules ] || ! npm ls --depth=0 > /dev/null 2>&1; then step npm npm ci
+else echo "ok    npm (node_modules up to date)"; fi
 
 venv() {  # venv <dir> <import check> <packages...>
   local dir=$1 check=$2; shift 2

@@ -2,7 +2,7 @@
 # DF-20261026-duplicate-types
 
 - Owner: Boss for development revalidation; recorded by the coordinator from actual command results during documentation task #36.
-- First observed: 26 October 2026; last checked: 26 October 2026; status: `workaround`; type: `unknown` (local dependency environment); tags: tooling / typecheck.
+- First observed: 26 October 2026; last checked: 26 October 2026; status: `fixed` on 2026-11-15 (see the last history line); type: `unknown` (local dependency environment); tags: tooling / typecheck.
 - Scope: checkout `codex/36-dev-findings`, baseline `1ab2ca1`, with documentation/agent-instruction changes only; Node `24.5.0`, npm `11.5.1`, TypeScript `5.8.3`; `tsconfig.json`, `node_modules/@types/`. Duplicate-directory origin remains unknown.
 - Consumers: code checks in this checkout; no visually affected brief decisions/board shots yet.
 
@@ -33,3 +33,4 @@ PYCODE
 - Result: TS2688/duplicate declarations did not occur in this checkout. Current dependency setup is a checkout-specific workaround, not proof of the original root cause or a `main` fix.
 - History: 2026-10-26 / `1ab2ca1` + documentation diff → typecheck failed, lint passed → `open`; 2026-10-26 / `906a85e` after current dependency setup → no duplicate directories, typecheck/lint passed, 26 tests passed → `workaround`. No fix PR or brief/board changes yet.
 - 2026-10-30 r7 (`claude/world-fog-next-steps-2817bc`, uncommitted): `npm run typecheck` exited 2 with TS2688 on `node_modules/@types/react 2`, an empty directory (no `index.d.ts` or `package.json`). Removed with `rmdir` (empty only); typecheck exit 0, lint exit 0, `npm test` 125 of 125. Same class as the 2026-10-26 entry; origin of the stray directory still unknown; status stays `workaround`.
+- 2026-11-15, `claude/dev-finding-review-b2efff` (working tree): `scripts/setup.sh` deletes empty `node_modules/@types/* N` folders (the 2026-10-30 cause of TS2688) before its install check. The origin of the stray folder is still unknown, and a non-empty duplicate is left alone. Not reproduced here (no duplicate present). Status fixed for the empty-folder case.

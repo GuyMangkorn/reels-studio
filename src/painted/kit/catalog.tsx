@@ -59,7 +59,7 @@ const CELLS: Cell[] = [
     inkLine(p, 44, rectPts(240, 195, 350, 255), {color: '#3f6f6a', curve: 0.05});
     inkLine(p, 45, [[290, 90], [320, 110], [340, 80], [355, 130]], {closed: false, weight: 1.6});
   }},
-  {title: 'draw · projectPoly / quadX,Y,Z / bbox', note: 'projectPoly(proj,V3[]) near-clip+project (clipScreen) · quadX/Y/Z world quads · bbox(pts) · proj = cardProjector(g,k,x0)', paint: (p) => {
+  {title: 'draw · projectPoly / quadX,Y,Z / bbox', note: 'projectPoly(proj,V3[]) near-clip+project (clipScreen), 3+ points · projectLine(proj,a,b) for a 2-point line · quadX/Y/Z world quads · bbox(pts) · proj = cardProjector(g,k,x0)', paint: (p) => {
     const pr = cardProjector([150, 255], 90, 0);
     const front = projectPoly(pr, quadZ(0, -1, 1, 0, 1.6));
     washAt(p, 51, '#b98c5c', 210, front, 0.1, 0.4);

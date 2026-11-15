@@ -161,8 +161,23 @@ export const band = (id: number, y0: number, y1: number, amp: number): Pt[] => [
   [-200, y1],
 ];
 
-/** Clip a world polygon to depth >= NEAR (Sutherland-Hodgman on one plane), then project it. */
+/**
+ * Clip a world segment to depth >= NEAR, then project it: two screen points, or none when the whole segment is behind
+ * the near plane. For a thin line (seam, crease, trim); `projectPoly` is for polygons.
+ */
+export const projectLine = (proj: Proj, a: V3, b: V3): Pt[] => {
+  const da = proj.rawDepth(a) - NEAR, db = proj.rawDepth(b) - NEAR;
+  if (da < 0 && db < 0) return [];
+  const cut = (u: number): V3 => [a[0] + (b[0] - a[0]) * u, a[1] + (b[1] - a[1]) * u, a[2] + (b[2] - a[2]) * u];
+  return [da >= 0 ? a : cut(da / (da - db)), db >= 0 ? b : cut(da / (da - db))].map(proj.P);
+};
+
+/**
+ * Clip a world polygon to depth >= NEAR (Sutherland-Hodgman on one plane), then project it. Needs at least three points:
+ * two used to return nothing without an error, so a line never drew (DF-20261030-projectpoly-two-point-line).
+ */
 export const projectPoly = (proj: Proj, pts: V3[]): Pt[] => {
+  if (pts.length < 3) throw new Error(`projectPoly needs a polygon of 3+ points, got ${pts.length}; use projectLine for a line`);
   const out: V3[] = [];
   for (let i = 0; i < pts.length; i++) {
     const a = pts[i], b = pts[(i + 1) % pts.length];
