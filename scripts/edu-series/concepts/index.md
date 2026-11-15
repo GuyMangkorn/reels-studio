@@ -6,7 +6,7 @@ One row per concept the channel has made. Each concept has its own file `C<nn>.m
 
 ## How a new round is filed
 
-1. Preaw writes one file per concept, `C61.md` onward (next free ID: **C69**), with the pitch and the [ER08](../../../channels/edu/script.md) pitch check, and adds a row here with status `pitched` and the round ID (`R11`, ...).
+1. Preaw writes one file per concept, `C61.md` onward (next free ID: **C73**), with the pitch and the [ER08](../../../channels/edu/script.md) pitch check, and adds a row here with status `pitched` and the round ID (`R11`, ...).
 2. Film adds a `## Film annotation (W0.2)` section to each concept file of the round.
 3. After the user picks, the coordinator sets each row: `picked` (with the episode ID), `dropped`, or leaves `pitched`. Write the round's pick note (user's words, date) in `../delivery.md`.
 4. When the episode is published, set the row to `made`.
@@ -29,5 +29,9 @@ One row per concept the channel has made. Each concept has its own file `C<nn>.m
 | C61 | ทำไมสายอินเทอร์เน็ตต้องอยู่ใต้ทะเล (และสมอเรือที่ตัดมัน) | picked | EDU-EP17-SHORT | user | [C61.md](C61.md) |
 | C67 | ป่าเงียบ: ทำไมคนฉลาดถึงไม่ตอบ | picked | EDU-EP16-SHORT | R12 | [C67.md](C67.md) |
 | C68 | ถ้าการซ่อนคือทางรอด โลกเราซ่อนไม่ทันแล้ว | pitched | - | R12 | [C68.md](C68.md) |
+| C69 | ฮิปโปที่ฆ่าคนเยอะที่สุด (หักมุม) | picked | EDU-EP18-SHORT | R13 | [C69.md](C69.md) |
+| C70 | หน้าอ้อนที่หมาป่าทำไม่ได้ (dog) | pitched | - | R13 | [C70.md](C70.md) |
+| C71 | หมากินน้ำเลอะ เพราะมันกินเก่ง (dog) | pitched | - | R13 | [C71.md](C71.md) |
+| C72 | ห้าก้าวก็รู้ว่าคุณไปทางไหน (dog) | picked | EDU-EP19-SHORT | R13 | [C72.md](C72.md) |
 
 Pitch lessons from past rounds: [lessons.md](lessons.md).
