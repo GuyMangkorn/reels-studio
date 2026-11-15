@@ -1,0 +1,154 @@
+{
+  "public/audio/bed/bed_cold-sub-drone-down-semitone_01.wav": {
+    "store": "library/sound/ambience/bed/bed_cold-sub-drone-down-semitone_01.wav",
+    "sha256": "013903523253339d83acd896513d9d782041b52f0d703262e4c578a9acd7996a"
+  },
+  "public/audio/bed/bed_cold-sub-drone-loop_01.wav": {
+    "store": "library/sound/ambience/bed/bed_cold-sub-drone-loop_01.wav",
+    "sha256": "a5524c5cd96cb58adf8892b2c5dbf171fcd4d90e9f0233ba962fe3c0e31e63dd"
+  },
+  "public/audio/city/city_rooftop-night-bangkok-far_01.wav": {
+    "store": "library/sound/ambience/city/city_rooftop-night-bangkok-far_01.wav",
+    "sha256": "af277841479c87782519e9357d681313bee06ed2b78051afa272579ce97297e7"
+  },
+  "public/audio/city/city_still-night-air_01.wav": {
+    "store": "library/sound/ambience/city/city_still-night-air_01.wav",
+    "sha256": "e23ad796b110223bf868caf1b184aee0d5012d0ae60f5ebc78a9227cc9f7d4d1"
+  },
+  "public/audio/edu/EDU-EP16-SHORT-draft-stem-v2.wav": {
+    "store": "projects/edu/EDU/audio/ep16-w7/EDU-EP16-SHORT-draft-stem-v2.wav",
+    "sha256": "4949b232bb15a02f00bca24fc28e60232f9a653f1914b12e9127c2a414d10d2a"
+  },
+  "public/audio/foley/foley_flashlight-click_01.wav": {
+    "store": "library/sound/sfx/foley/foley_flashlight-click_01.wav",
+    "sha256": "56518caae87cfb3d975d3c34ee39372b5fef667c8b3d469ea6e8b3a773f90c1c"
+  },
+  "public/audio/foley/foley_headphone-band-creak_01.wav": {
+    "store": "library/sound/sfx/foley/foley_headphone-band-creak_01.wav",
+    "sha256": "f68f5b7e1e113d7cb437ec4f48988171a2a4a62381f0417832c1bf13f448bccc"
+  },
+  "public/audio/foley/foley_held-breath-in_01.wav": {
+    "store": "library/sound/sfx/foley/foley_held-breath-in_01.wav",
+    "sha256": "efc921ea10e4ea2101aaee1f70890a016855a7bbbcce51d9e9b9d1e06e88b5c1"
+  },
+  "public/audio/foley/foley_knit-sleeve-rustle_01.wav": {
+    "store": "library/sound/sfx/foley/foley_knit-sleeve-rustle_01.wav",
+    "sha256": "a214513669ce9bfd72bd94c3ee2e5b3f25d8b6c0360cb1fd35ab5125f0b08d47"
+  },
+  "public/audio/foley/foley_knit-sleeve-rustle_02.wav": {
+    "store": "library/sound/sfx/foley/foley_knit-sleeve-rustle_02.wav",
+    "sha256": "e921e1925a2e5c0088a64b13faa243890c2be7fdd060cda3e9eb36076a611c75"
+  },
+  "public/audio/foley/foley_swallow-small_01.wav": {
+    "store": "library/sound/sfx/foley/foley_swallow-small_01.wav",
+    "sha256": "81ef566f543c96a95b02ec37ef478717a6f49b1bba414cd74ac17e07bdb9eca5"
+  },
+  "public/audio/impact/impact_dull-sub-thud-muffled_01.wav": {
+    "store": "library/sound/sfx/impact/impact_dull-sub-thud-muffled_01.wav",
+    "sha256": "b4373f6620d2983b2fd6ea5c7b609370f8c7dcb973eaf41509347c05ec67421e"
+  },
+  "public/audio/impact/impact_dull-sub-thud-muffled_02.wav": {
+    "store": "library/sound/sfx/impact/impact_dull-sub-thud-muffled_02.wav",
+    "sha256": "5822cbf49d3e6df69b8e0438fbf737e565dd712d706c73deba553be59552cc64"
+  },
+  "public/audio/mechanical/mechanical_soft-clock-ticks-slow_01.wav": {
+    "store": "library/sound/sfx/mechanical/mechanical_soft-clock-ticks-slow_01.wav",
+    "sha256": "2440bfb2b0b4bfb31d00d3d78f7eff425ba2714f28a6742c493e7e742027ae12"
+  },
+  "public/audio/nature/nature_forest-leaf-wind-insects-stop_01.wav": {
+    "store": "library/sound/ambience/nature/nature_forest-leaf-wind-insects-stop_01.wav",
+    "sha256": "d112849fb124bf944082b3bcf041e316eda4cb2429978d6f8535422c3f6f83be"
+  },
+  "public/audio/reveal/reveal_thought-bubble-bloom_01.wav": {
+    "store": "library/sound/sfx/reveal/reveal_thought-bubble-bloom_01.wav",
+    "sha256": "cdf947a134b641b44ac6a0390bd49e460496fea27dbaa9cbfe2ac6981e9e89e9"
+  },
+  "public/audio/reveal/reveal_warm-two-note-shimmer_01.wav": {
+    "store": "library/sound/sfx/reveal/reveal_warm-two-note-shimmer_01.wav",
+    "sha256": "632d9de6e88943f8b2f2d1e9c4b66fea5e63c4a47175c1ff4aeafb851c0397e9"
+  },
+  "public/audio/space/space_inside-head-air_01.wav": {
+    "store": "library/sound/ambience/space/space_inside-head-air_01.wav",
+    "sha256": "0bd6d60bfc01291ff4d79e3ac1df75be663fbfc4a546360f7d4763745c5f4feb"
+  },
+  "public/audio/tension/tension_airy-swell-stop-dead_01.wav": {
+    "store": "library/sound/sfx/tension/tension_airy-swell-stop-dead_01.wav",
+    "sha256": "ebd644610e556f4a1c81e3ccae1f607eff8300a46142bf7f290250762fb09f74"
+  },
+  "public/audio/tension/tension_breathy-swell-left_01.wav": {
+    "store": "library/sound/sfx/tension/tension_breathy-swell-left_01.wav",
+    "sha256": "51c0769dc2acf346a8284189c3a1ad5cc8ffcaac57a4cf30dbf18009064c375c"
+  },
+  "public/audio/tension/tension_breathy-swell-right_01.wav": {
+    "store": "library/sound/sfx/tension/tension_breathy-swell-right_01.wav",
+    "sha256": "7d0a5648481cdfcba3e40fbda2642433c1560b4eb36f44c9c0d74c1103d19085"
+  },
+  "public/audio/tension/tension_low-breath-rise_01.wav": {
+    "store": "library/sound/sfx/tension/tension_low-breath-rise_01.wav",
+    "sha256": "70185c03e64e202a3d8341313c430320b5b1af9f3c550b41fd3aec0724c63a15"
+  },
+  "public/audio/tension/tension_pressure-riser-choked_01.wav": {
+    "store": "library/sound/sfx/tension/tension_pressure-riser-choked_01.wav",
+    "sha256": "341a5dc8e72d1861ff0c775977234f81c8e4336f6432760a6cd376b2db3dcce4"
+  },
+  "public/audio/tension/tension_travel-tone-bead-up-down_01.wav": {
+    "store": "library/sound/sfx/tension/tension_travel-tone-bead-up-down_01.wav",
+    "sha256": "702ac3c33b4e813432238430d8cbee4cdb808e1f811499295a682ad4a7d4db03"
+  },
+  "public/audio/tension/tension_travel-tone-slow-low_01.wav": {
+    "store": "library/sound/sfx/tension/tension_travel-tone-slow-low_01.wav",
+    "sha256": "c1c4a9cd3b4d8001afa7e76fd9722a187c485b1c62d29ffb4e6cede75f477a00"
+  },
+  "public/audio/tone/tone_cold-glass-pad-sparse_01.wav": {
+    "store": "library/sound/music/tone/tone_cold-glass-pad-sparse_01.wav",
+    "sha256": "ad853300327dd9d29298093b8c306f34e0ff27052fb800bc9d114f1c8c362bb2"
+  },
+  "public/audio/tone/tone_end-lonely-note_01.wav": {
+    "store": "library/sound/music/tone/tone_end-lonely-note_01.wav",
+    "sha256": "3737a238803085b71cd9ff604158399a8f90bf508b56efc16200380d06ed793e"
+  },
+  "public/audio/tone/tone_end-sky-sine-fade_01.wav": {
+    "store": "library/sound/music/tone/tone_end-sky-sine-fade_01.wav",
+    "sha256": "4ae526fa86c75b67bdc37f3ab98c2f0dc4e9708e8d1d2f458225e3ab50642ab3"
+  },
+  "public/audio/tone/tone_end-sky-sine-fade_02.wav": {
+    "store": "library/sound/music/tone/tone_end-sky-sine-fade_02.wav",
+    "sha256": "314f4cb3ba4f89ee616fb1c1f0301cb2505851d21efe4acd944168d5bc8cb3c5"
+  },
+  "public/audio/ui/ui_old-electronic-ping-eerie_01.wav": {
+    "store": "library/sound/sfx/ui/ui_old-electronic-ping-eerie_01.wav",
+    "sha256": "9567f16b336d2895b2a691100d03f47c47c685f805efb13f5ce693bb1d479d42"
+  },
+  "public/audio/ui/ui_soft-blip-short_01.wav": {
+    "store": "library/sound/sfx/ui/ui_soft-blip-short_01.wav",
+    "sha256": "81f98471d3c34667e3e7f04b94455dcecc4ee63d5fe637b494ad90bd111df8f1"
+  },
+  "public/audio/vocal/vocal_happy-gasp-young-woman_01.wav": {
+    "store": "library/sound/sfx/vocal/vocal_happy-gasp-young-woman_01.wav",
+    "sha256": "2a7974d3149bd0b272c3ea252890b16c21b63330d68d0fcf5cf5f07ac87c584d"
+  },
+  "public/audio/whoosh/whoosh_exhale-out-of-thought_01.wav": {
+    "store": "library/sound/sfx/whoosh/whoosh_exhale-out-of-thought_01.wav",
+    "sha256": "bdb66b2898461c1e31b03cdae5b51d9e8accd7ac4f9222bc61c53aa7604b51ee"
+  },
+  "public/audio/whoosh/whoosh_inhale-into-thought_01.wav": {
+    "store": "library/sound/sfx/whoosh/whoosh_inhale-into-thought_01.wav",
+    "sha256": "a4829d6501861093df52108b92aa1a9a3b8bdab588dc064a68a8e3e42a653b01"
+  },
+  "public/audio/whoosh/whoosh_muffled-iris-in_01.wav": {
+    "store": "library/sound/sfx/whoosh/whoosh_muffled-iris-in_01.wav",
+    "sha256": "3a27e1310cb2375080deaa3af0094046a97d0ad792a2bb9175d35892d15c45cb"
+  },
+  "public/audio/whoosh/whoosh_muffled-iris-out_01.wav": {
+    "store": "library/sound/sfx/whoosh/whoosh_muffled-iris-out_01.wav",
+    "sha256": "8abc77a27c63b6b514d24d5a8f8e9f0459289c1fd3ddfc2a515a578acaf0e5a0"
+  },
+  "public/narration/EDU-EP16-SHORT-narration-placed-v2.wav": {
+    "store": "projects/edu/EDU/narration/ep16-w7/EDU-EP16-SHORT-narration-placed-v2.wav",
+    "sha256": "53ce3d3aeb385c4421c487bd1415350230c66255768173f703cb48b4bd1edc19"
+  },
+  "public/narration/EDU-EP16-SHORT-narration-v2.wav": {
+    "store": "projects/edu/EDU/narration/full_x1.029.wav",
+    "sha256": "ff46edb0c785859e19eb852051c2c123d32b91065fb23bb296dc95af09eea1b3"
+  }
+}

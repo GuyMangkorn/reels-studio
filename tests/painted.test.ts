@@ -63,6 +63,15 @@ test('a cue label can start inside the cue (labelAtSec) and move its box (labelT
   assert.throws(() => validateTimeline([painted([{shot: 'SHIPWRECK-SH01', atSec: 0, label: 'x', labelAtSec: 1}, {shot: 'SHIPWRECK-SH06', atSec: 1}])]), /label must start before/);
 });
 
+test('a cue label can sit on the right (labelSide); without it plates carry no labelSide key', () => {
+  const tl = [painted([{shot: 'SHIPWRECK-SH01', atSec: 0, label: 'ภาพจำลอง', labelTop: 148, labelSide: 'right'}], {durationSec: 4})];
+  validateTimeline(tl);
+  assert.deepEqual(state(tl, 10)!.plates.map((p) => [p.label, p.labelTop, p.labelSide]), [['ภาพจำลอง', 148, 'right']]);
+  assert.equal('labelSide' in state(paintedProofTimeline, 150)!.plates[0], false);
+  assert.throws(() => validateTimeline([painted([{shot: 'SHIPWRECK-SH01', atSec: 0, labelSide: 'right'}])]), /labelSide: needs a label/);
+  assert.throws(() => validateTimeline([painted([{shot: 'SHIPWRECK-SH01', atSec: 0, label: 'x', labelSide: 'top' as 'left'}])]), /labelSide/);
+});
+
 test('direct seeks resolve the same state as sequential playback, and the ending hold applies to plates', () => {
   const forward = Array.from({length: 447}, (_, f) => JSON.stringify(state(paintedProofTimeline, f)));
   for (const f of [446, 0, 300, 192, 113, 221, 60]) assert.equal(JSON.stringify(state(paintedProofTimeline, f)), forward[f]);

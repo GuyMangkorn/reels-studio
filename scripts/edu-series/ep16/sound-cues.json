@@ -1,0 +1,937 @@
+{
+  "deliverable": "EDU-EP16-SHORT",
+  "sceneSheets": "EDU-EP16-SHEETS-R2",
+  "video": "src/videos/edu-ep16",
+  "fps": 30,
+  "totalFrames": 1800,
+  "sources": [
+    "src/videos/edu-ep16",
+    "scripts/edu-series/ep16/sound-mix.py"
+  ],
+  "frameClock": "global composition frames at 30 fps (shot start + shot-local offset, SHEETS-R2 shot map, 1800 f); lengthFrames is the placed span for loops and trimmed cues, the file length otherwise; toFrame is the first frame after the cue (its last sound is toFrame-1); startOffsetFrames skips that many frames of the file head. Levels windows (fromSec/toSec) are composition seconds = narration track seconds + placement offset (N1 +0.80, N2 +1.90, N3 +2.60, N4 +3.80 s; cut points 22.412/33.899/45.854 s of the v2 track), derived from narration-measure-v2.json",
+  "cues": [
+    {
+      "cue": "A1-open",
+      "shot": "S01-B01-SH01",
+      "frame": 0,
+      "brief": "A1 roof bed: far Bangkok night, traffic wash far below, faint AC hum; from f0 to the drop at f121",
+      "id": "city_rooftop-night-bangkok-far_01",
+      "origin": "generated",
+      "lengthFrames": 121,
+      "level": "12 dB+ under voice, aim 18 (EP08b bed warn above 20)",
+      "note": "12.5 s loop (1.5 s crossfade). Editor fades it out by f121 so f121-163 holds only the blip (designed silence). R1 drop f116 -> f121 (R2 sheet).",
+      "loop": true,
+      "toFrame": 121
+    },
+    {
+      "cue": "A1-ret1",
+      "shot": "S01-B02-SH08",
+      "frame": 489,
+      "brief": "A1 roof bed back thinned (-4 dB vs open) at f489 after the thought-space; out again from f803 (IM2 is world-free)",
+      "id": "city_rooftop-night-bangkok-far_01",
+      "origin": "generated",
+      "lengthFrames": 314,
+      "level": "thinned: about 4 dB below A1-open; 18 dB under voice",
+      "note": "Same loop from its start; Editor fades in over S11 (f489-501) and out by f803. Under W-STOP (f693-735) it is the hum that remains. R1 f466-767 -> f489-803.",
+      "loop": true,
+      "toFrame": 803
+    },
+    {
+      "cue": "A1-ret2",
+      "shot": "S01-B05-SH16",
+      "frame": 1097,
+      "brief": "A1 city hum returns first as the black bubble opens (S21, f1097), then holds under the swallow",
+      "id": "city_still-night-air_01",
+      "origin": "library",
+      "lengthFrames": 74,
+      "level": "thin, 18 dB under voice",
+      "note": "Hold to f1171, Editor fades out into the forest (IM4). R1 f1048-1119 -> f1097-1171.",
+      "fit": "Steady 10 s loop, faint hum, no insects, no events (measured steady within about 3 dB, centroid 843 Hz, -18 LUFS): matches \"city hum alone\" exactly; a roof bed with details would break the stillness the cue needs",
+      "loop": true,
+      "toFrame": 1171
+    },
+    {
+      "cue": "A1-ret3",
+      "shot": "S01-B05-SH19",
+      "frame": 1323,
+      "brief": "A1 roof bed back thinned under SH19 and SH20, dips -3 dB at the lamp click f1478",
+      "id": "city_rooftop-night-bangkok-far_01",
+      "origin": "generated",
+      "lengthFrames": 172,
+      "level": "thinned, 18 dB under voice; -3 dB dip at f1478 (S27)",
+      "note": "Editor ducks -3 dB at f1478 and hands over to the hum at f1495. R1 f1263-1430 -> f1323-1495.",
+      "loop": true,
+      "toFrame": 1495
+    },
+    {
+      "cue": "A1-hum",
+      "shot": "S01-B05-SH22",
+      "frame": 1495,
+      "brief": "A1 thins to city hum only at SH22 (f1495) and holds to the last frame (hum alone f1785-1800)",
+      "id": "city_still-night-air_01",
+      "origin": "library",
+      "lengthFrames": 305,
+      "level": "thin, aim 18 dB under voice, alone from f1785",
+      "note": "Loop to f1800; the END-TONE (S28) rides over it and is gone at f1785 (hum alone for the last 15 f = 0.5 s). R1 f1430-1737 -> f1495-1800.",
+      "fit": "Same file and reason as A1-ret2: still city hum with no insects is the \"hum alone\" in the sheet",
+      "loop": true,
+      "toFrame": 1800
+    },
+    {
+      "cue": "M1-drone",
+      "shot": "S01-B01-SH03",
+      "frame": 123,
+      "brief": "M1 sub drone, no pulse; ducks under lines; -3 dB lower from f735 (L18 start, 42 f after the missing blip f693); runs through W-STOP",
+      "id": "bed_cold-sub-drone-loop_01",
+      "origin": "generated",
+      "lengthFrames": 1298,
+      "level": "under the voice, dips under lines; 20+ dB under voice; -3 dB from f735",
+      "note": "14.5 s loop (1.5 s crossfade); Editor loops to f1421 where M1-drone-down takes over (semitone drop on the sheet frame f1421). Dead through the strike silence f1091-1097 as before. Deep sub, so measure on a phone-width stem too. R1 f118-1357, step f703 -> f123-1421, step f735.",
+      "loop": true,
+      "toFrame": 1421
+    },
+    {
+      "cue": "M1-drone-down",
+      "shot": "S01-B05-SH19",
+      "frame": 1421,
+      "brief": "M1 drone drops a semitone on the sheet frame f1421 (เหมือนคุณเมื่อกี้)",
+      "id": "bed_cold-sub-drone-down-semitone_01",
+      "origin": "generated",
+      "lengthFrames": 379,
+      "level": "same level as M1-drone, -3 dB lower tier",
+      "note": "Same file as the drone resampled by x0.9439; Editor crossfades 6 f at f1421 and holds to f1800. R1 f1357 -> f1421.",
+      "loop": true,
+      "toFrame": 1800
+    },
+    {
+      "cue": "M2-pad",
+      "shot": "S01-B02-SH05",
+      "frame": 237,
+      "brief": "M2 cold minor pad, bowed glass or felt piano single notes far away, sparse (SH05 +3 to SH08 +63, f237-552)",
+      "id": "tone_cold-glass-pad-sparse_01",
+      "origin": "generated",
+      "lengthFrames": 315,
+      "level": "25 dB under voice, sparse notes",
+      "note": "File is 12 s (360 f) with 1.5 s fade-out; Editor ends it at f552 with a 1.5 s fade (start the fade at f507). R1 f227-526 -> f237-552.",
+      "toFrame": 552
+    },
+    {
+      "cue": "S01-ping",
+      "shot": "S01-B01-SH01",
+      "frame": 0,
+      "brief": "S01 PING: bright, clean, slightly old-electronic, not a phone ding, close and dry; thrill",
+      "id": "ui_old-electronic-ping-eerie_01",
+      "origin": "generated",
+      "lengthFrames": 27,
+      "level": "accent in the open gap, at most 6 LU above voice (peak -6..3)",
+      "note": "0.9 s = 27 f, ends f27; the first speech is L01 at f31 (W-PING 31 f), so the ping rings alone with no overlap (R1 note claimed an overlap: file-time slip, corrected). Row is a peak row in the gap.",
+      "peakOffsetFrames": 0
+    },
+    {
+      "cue": "S02-blip",
+      "shot": "S01-B01-SH01",
+      "frame": 21,
+      "brief": "S02 BLIP every 21 f from f21 to f672 (32 blips), muted f316-489 (thought-space); forward and dry in B03, kept 12 dB under voice (user, 15 Nov 2026)",
+      "id": "ui_soft-blip-short_01",
+      "origin": "generated",
+      "lengthFrames": 5,
+      "level": "soft: 15 dB under voice in B01/B02, forward (-6..3 gap) in B03",
+      "note": "0.15 s one-shot; repeat 32 times: f = 21n for n=1..32 (f21 .. f672), skip n=16..23 (f336 .. f483, window f316-489): 24 blips sound. f315 (n=15) still sounds under the S07 whoosh. The missing blip at f693 (n=33) is NOT placed: the riser S12 ends dead there (W-STOP). Blip clock: scripts/edu-series/ep16/blip-clock.json (R2).",
+      "repeat": {
+        "everyFrames": 21,
+        "fromFrame": 21,
+        "toFrame": 672,
+        "muteFrames": [
+          316,
+          489
+        ]
+      }
+    },
+    {
+      "cue": "S03-gasp",
+      "shot": "S01-B01-SH01",
+      "frame": 8,
+      "brief": "S03 her small happy gasp, young woman, close, about 0.4 s",
+      "id": "vocal_happy-gasp-young-woman_01",
+      "origin": "generated",
+      "lengthFrames": 11,
+      "level": "accent in the W-PING gap (before L01 at f31); the ping rings f0-27 over it",
+      "note": "0.35 s = 11 f, f8-19: it ends 12 f before L01 starts (R1 note said it ends as she starts: file-time slip, corrected). It sits inside the ping ring, so the accent stem cannot separate them and no check row is written for it (the ping row covers the window)."
+    },
+    {
+      "cue": "S04-creak",
+      "shot": "S01-B01-SH02",
+      "frame": 43,
+      "brief": "S04 headphone band creak, padded plastic, tiny squeak, close",
+      "id": "foley_headphone-band-creak_01",
+      "origin": "generated",
+      "lengthFrames": 10,
+      "level": "12 dB+ under L01 (f31-114)",
+      "note": "0.33 s, f43-53"
+    },
+    {
+      "cue": "S05-rustle",
+      "shot": "S01-B01-SH02",
+      "frame": 53,
+      "brief": "S05 cardigan sleeve rustle as the arm reaches, soft knit",
+      "id": "foley_knit-sleeve-rustle_01",
+      "origin": "generated",
+      "lengthFrames": 20,
+      "level": "12 dB+ under L01 (f31-114)",
+      "note": "0.66 s, f53-73"
+    },
+    {
+      "cue": "S06-bloom",
+      "shot": "S01-B02-SH05",
+      "frame": 307,
+      "brief": "S06 bubble bloom: soft airy pop with a glassy tail, inside the head",
+      "id": "reveal_thought-bubble-bloom_01",
+      "origin": "generated",
+      "lengthFrames": 30,
+      "level": "12 dB+ under L04 (starts f322)",
+      "note": "1.0 s, f307-337: starts in the 19 f L03>L04 gap, tail under L04"
+    },
+    {
+      "cue": "S07-whoosh-in",
+      "shot": "S01-B02-SH05",
+      "frame": 309,
+      "brief": "S07 whoosh-in: short airy inhale-whoosh into thought, about 0.5 s",
+      "id": "whoosh_inhale-into-thought_01",
+      "origin": "generated",
+      "lengthFrames": 17,
+      "level": "12 dB+ under L04; thought-space cue",
+      "note": "File 0.8 s; Editor ends it at f326 with a 4 f fade (sheet window 309-326); L04 starts f322",
+      "toFrame": 326
+    },
+    {
+      "cue": "S08-head-air-1",
+      "shot": "S01-B02-SH06",
+      "frame": 316,
+      "brief": "S08 inside-head air: very quiet, wide, slightly reverberant, no world sound (TH shots SH06-SH07, f316-489)",
+      "id": "space_inside-head-air_01",
+      "origin": "generated",
+      "lengthFrames": 173,
+      "level": "texture, 18 dB+ under voice",
+      "note": "9.5 s loop; Editor loops it. Window f316-489 only",
+      "loop": true,
+      "toFrame": 489
+    },
+    {
+      "cue": "S08-head-air-2",
+      "shot": "S01-B04-SH13",
+      "frame": 803,
+      "brief": "S08 inside-head air through IM2 and IM3 (f803-1091)",
+      "id": "space_inside-head-air_01",
+      "origin": "generated",
+      "lengthFrames": 288,
+      "level": "texture, 18 dB+ under voice",
+      "note": "Same file, loops; window f803-1091 (stops at the strike silence f1091-1097)",
+      "loop": true,
+      "toFrame": 1091
+    },
+    {
+      "cue": "S08-head-air-3",
+      "shot": "S01-B05-SH18",
+      "frame": 1171,
+      "brief": "S08 inside-head air under the first frames of IM4 (f1171-1185), then forest takes over",
+      "id": "space_inside-head-air_01",
+      "origin": "generated",
+      "lengthFrames": 14,
+      "level": "texture, 18 dB+ under voice",
+      "note": "14 f only, 6 f fade out",
+      "toFrame": 1185
+    },
+    {
+      "cue": "S09-travel-tone",
+      "shot": "S01-B02-SH07",
+      "frame": 404,
+      "brief": "S09 travel tone: thin high sine following the bead, falling on the return",
+      "id": "tension_travel-tone-bead-up-down_01",
+      "origin": "generated",
+      "lengthFrames": 65,
+      "level": "texture, 18 dB+ under voice",
+      "note": "2.16 s = 65 f, rise to f22, plateau to f43, fall to silence (-34 dB by f61): placed at f404 it ends f469, 4 f before the bead lands (f473); the tail is inaudible so no stretch is needed. Sheet window f404-473 (R1 f386-452)",
+      "toFrame": 469
+    },
+    {
+      "cue": "S10-clock-ticks",
+      "shot": "S01-B02-SH07",
+      "frame": 404,
+      "brief": "S10 clock-tick bed: soft, dry, slightly slow ticks, time passing",
+      "id": "mechanical_soft-clock-ticks-slow_01",
+      "origin": "generated",
+      "lengthFrames": 78,
+      "level": "texture, 18 dB+ under voice",
+      "note": "5.0 s = 150 f holds five ticks (one per 30 f); Editor trims to 78 f (f404-482) and fades the last 6 f. R1 74 f -> 78 f",
+      "toFrame": 482
+    },
+    {
+      "cue": "S11-whoosh-out",
+      "shot": "S01-B02-SH08",
+      "frame": 489,
+      "brief": "S11 whoosh-out: reverse of S07 ending on A1",
+      "id": "whoosh_exhale-out-of-thought_01",
+      "origin": "generated",
+      "lengthFrames": 12,
+      "level": "12 dB+ under L06 (starts f496) if speech; check row",
+      "note": "Reverse of S07, 24 f file: start playing 12 f in (startOffsetFrames 12) so it lands on A1 at f501",
+      "startOffsetFrames": 12,
+      "toFrame": 501
+    },
+    {
+      "cue": "S12-riser-stop",
+      "shot": "S01-B03-SH10",
+      "frame": 636,
+      "brief": "S12 reverse-swell riser, quiet and airy, stops dead at f693 with the missing blip",
+      "id": "tension_airy-swell-stop-dead_01",
+      "origin": "library",
+      "lengthFrames": 57,
+      "level": "accent in the gap; quiet, peak at the stop; nothing after f693",
+      "note": "File is 1.906 s = 57 f: start at f636 (SH10 +0) so its last sample lands on f692 and nothing sounds from f693; sheet window 640-693. W-STOP: must end dead, no tail, no fade. L14 ends f691. R1 start f615 -> f636 (+21, same 57 f)",
+      "fit": "Measured: steady rise -37 to -6 dB over 1.9 s with its last 0.05 s at the peak (-10/-12 dB blocks) and no tail, centroid 1190 Hz (airy, glassy top). That is the cue \"reverse-swell riser, quiet and airy, stops dead\"; a new generation would be the same shape",
+      "toFrame": 693
+    },
+    {
+      "cue": "S13-whoosh-muffled-in",
+      "shot": "S01-B04-SH12",
+      "frame": 797,
+      "brief": "S13 whoosh-in with a soft muffle (iris through her eyes)",
+      "id": "whoosh_muffled-iris-in_01",
+      "origin": "generated",
+      "lengthFrames": 18,
+      "level": "12 dB+ under L07 (starts f809); check row",
+      "note": "File 0.9 s; Editor ends at f815 with a 4 f fade; L07 starts f809",
+      "toFrame": 815
+    },
+    {
+      "cue": "S14-swell-left",
+      "shot": "S01-B04-SH13",
+      "frame": 809,
+      "brief": "S14 low breathy swell, panned left, about 1.5 s; her fear; no growl",
+      "id": "tension_breathy-swell-left_01",
+      "origin": "generated",
+      "lengthFrames": 57,
+      "level": "12 dB+ under L07 (f809-902)",
+      "note": "1.9 s, panned left (R at -20 dB)"
+    },
+    {
+      "cue": "S15-swell-right",
+      "shot": "S01-B04-SH13",
+      "frame": 827,
+      "brief": "S15 mirror of S14, panned right",
+      "id": "tension_breathy-swell-right_01",
+      "origin": "generated",
+      "lengthFrames": 57,
+      "level": "12 dB+ under L07 (f809-902)",
+      "note": "1.9 s, panned right"
+    },
+    {
+      "cue": "S16-shimmer",
+      "shot": "S01-B04-SH13",
+      "frame": 856,
+      "brief": "S16 tiny warm shimmer, two soft notes, about 0.4 s; the kind figure",
+      "id": "reveal_warm-two-note-shimmer_01",
+      "origin": "generated",
+      "lengthFrames": 23,
+      "level": "12 dB+ under L07 (f809-902)",
+      "note": "0.77 s"
+    },
+    {
+      "cue": "S17-breath-rise",
+      "shot": "S01-B04-SH13",
+      "frame": 875,
+      "brief": "S17 low breath rise as the shadow swallows her; no creature voice",
+      "id": "tension_low-breath-rise_01",
+      "origin": "generated",
+      "lengthFrames": 15,
+      "level": "12 dB+ under L07 (f809-902)",
+      "note": "File 0.8 s; Editor ends at f890 with a 4 f fade",
+      "toFrame": 890
+    },
+    {
+      "cue": "S18-travel-tone-slow",
+      "shot": "S01-B04-SH14",
+      "frame": 933,
+      "brief": "S18 travel tone, slower and lower than S09; snaps off at contact f1081 (sheet window f919-1081)",
+      "id": "tension_travel-tone-slow-low_01",
+      "origin": "generated",
+      "lengthFrames": 148,
+      "level": "texture, 18 dB+ under voice",
+      "note": "4.93 s = 148 f: start f933 so it ends dead on f1081 (sheet start f919 is 14 f earlier: the file rises from -88 dB and its first 14 f are below -39 dB, silent lead-in). Snaps off at contact. R1 f884-1032 -> f933-1081",
+      "toFrame": 1081
+    },
+    {
+      "cue": "S19-pressure",
+      "shot": "S01-B04-SH15",
+      "frame": 1019,
+      "brief": "S19 slow pressure riser, tightening at f1037 (file +19 = f1038), choked at contact f1081 (no peak)",
+      "id": "tension_pressure-riser-choked_01",
+      "origin": "generated",
+      "lengthFrames": 62,
+      "level": "under L10: 12 dB+ under voice (speech); no peak",
+      "note": "2.05 s = 62 f: start f1019 (sheet window f1015-1081 is 66 f) so it ends dead on f1081 and its tightening lands on f1038, 1 f after the sheet f1037; it is one growing low rumble, no peak",
+      "toFrame": 1081
+    },
+    {
+      "cue": "S20-strike-thud",
+      "shot": "S01-B05-SH15S",
+      "frame": 1081,
+      "brief": "S20 STRIKE: deep sub thump + short air-pressure whoomp through water inside her head, about 0.4 s, fast low tail; then dead silence f1091-1097; loudness <= narration average + 3 LU, TP <= -1 dBTP; never a receiver sound",
+      "id": "impact_dull-sub-thud-muffled_02",
+      "origin": "generated",
+      "lengthFrames": 10,
+      "level": "mix gain -6 dB: about -15 LUFS momentary = narration (-16.1) + 1 LU, TP about -7 dBTP",
+      "note": "0.34 s file (10 f) with a 130 ms fade: silent by f1091 and f1091-1097 stay dead. Peak-normalised -1 dBFS; the -6 dB mix gain (user, 15 Nov 2026) is what meets the narration + 3 LU limit. L10 ends f1064 and L08 starts f1105, so the thud (f1081, peak f1084) sits in a 41 f gap, 17 f after the last word: a peak row, not a speech row (R1 note put it on the line end: file-time slip, corrected). R1 f1032 -> f1081",
+      "peakOffsetFrames": 3,
+      "toFrame": 1091
+    },
+    {
+      "cue": "S21-whoosh-muffled-out",
+      "shot": "S01-B05-SH16",
+      "frame": 1097,
+      "brief": "S21 whoosh-out from the black bubble; A1 city hum returns first",
+      "id": "whoosh_muffled-iris-out_01",
+      "origin": "generated",
+      "lengthFrames": 12,
+      "level": "accent in the L10>L08 gap: peak -6..3 (the last 4 f overlap the start of L08 at f1105 under the 2 f fade)",
+      "note": "Reverse of S13, 27 f file: start 15 f in (startOffsetFrames 15), ends f1109",
+      "startOffsetFrames": 15,
+      "toFrame": 1109
+    },
+    {
+      "cue": "S22-swallow",
+      "shot": "S01-B05-SH16",
+      "frame": 1112,
+      "brief": "S22 her swallow: small, close, dry",
+      "id": "foley_swallow-small_01",
+      "origin": "generated",
+      "lengthFrames": 9,
+      "level": "12 dB+ under L08 (starts f1105)",
+      "note": "0.31 s, f1112-1121"
+    },
+    {
+      "cue": "S06b-bloom",
+      "shot": "S01-B05-SH17",
+      "frame": 1169,
+      "brief": "S23 bubble bloom (as S06), f1169",
+      "id": "reveal_thought-bubble-bloom_01",
+      "origin": "generated",
+      "lengthFrames": 30,
+      "level": "12 dB+ under L11 (starts f1177)",
+      "note": "S23 reuses the S06 file (same design); f1169-1199, starts in the 15 f L08>L11 gap"
+    },
+    {
+      "cue": "S24-forest",
+      "shot": "S01-B05-SH18",
+      "frame": 1173,
+      "brief": "S24 forest bed: wind high in leaves fading by +42; thin insects that stop dead at +33 (f1204); then still air",
+      "id": "nature_forest-leaf-wind-insects-stop_01",
+      "origin": "generated",
+      "lengthFrames": 144,
+      "level": "texture, 18 dB+ under voice",
+      "note": "4.8 s = 144 f exact. Insects stop dead at 1.03 s of the file and the wind ends at 1.3 s, so the file starts 2 f after the shot start (f1173): the insects stop on f1204 and the wind is gone by +41 (sheet +33 / +42). The file is digital silence from f125, so its end f1317 and A1-ret3 fading in at f1323 leave nothing audible. No loop. R1 f1119-1263 -> f1173-1317",
+      "toFrame": 1317
+    },
+    {
+      "cue": "S25-rustle",
+      "shot": "S01-B05-SH20",
+      "frame": 1452,
+      "brief": "S25 cardigan rustle, the hand drawing back",
+      "id": "foley_knit-sleeve-rustle_02",
+      "origin": "generated",
+      "lengthFrames": 16,
+      "level": "in the wordless gap f1446-1497 (L13 ends f1446, L15 starts f1498): peak -6..3",
+      "note": "0.53 s, f1452-1468"
+    },
+    {
+      "cue": "S26-held-breath",
+      "shot": "S01-B05-SH20",
+      "frame": 1454,
+      "brief": "S26 held breath: small in-breath, then nothing",
+      "id": "foley_held-breath-in_01",
+      "origin": "generated",
+      "lengthFrames": 24,
+      "level": "in the wordless gap f1446-1497: peak -6..3",
+      "note": "0.8 s, f1454-1478"
+    },
+    {
+      "cue": "S27-lamp-click",
+      "shot": "S01-B05-SH21",
+      "frame": 1478,
+      "brief": "S27 lamp click: small plastic rocker switch with a spring tick, close, dry, about 0.1 s",
+      "id": "foley_flashlight-click_01",
+      "origin": "library",
+      "lengthFrames": 30,
+      "level": "accent, close, dry, in the wordless gap f1446-1497: peak -6..3",
+      "note": "1.0 s file; the click is in the first 0.15 s, rest silent. Sheet frame f1478 (SH21 +6)",
+      "fit": "Measured: two sharp plastic transients in the first 0.15 s (-21 dB then -39 dB blocks), silence after 0.2 s, centroid 7.7 kHz, peak -0.8 dBFS: a small hard plastic switch with a spring tick, close and dry, as the cue describes; a generated take (ep16-lampclick) measured the same shape and nothing better"
+    },
+    {
+      "cue": "S28-end-tone",
+      "shot": "S01-B05-SH22",
+      "frame": 1497,
+      "brief": "S28 END-TONE: single low sustained tone, soft sine with a faint bowed-metal overtone; fade in 30 f (f1497-1527), hold, fade out over f1755-1785, hum alone f1785-1800",
+      "id": "tone_end-sky-sine-fade_02",
+      "origin": "generated",
+      "lengthFrames": 288,
+      "level": "beneath the voice, aim 20 dB under L15/L16; fades to silence by f1785",
+      "note": "9.6 s = 288 f, re-cut from the filed tone_end-sky-sine-fade_01 (no new generation): hold extended by a 0.2 s crossfade from the same file, fade-out moved to start at 8.6 s (f258 = f1755) and last 30 f; fade-in 1 s (30 f) unchanged. Place it as is at f1497 with no extra fade; the A1-hum is the only thing left f1785-1800. Measured -17 dB hold, -46 dB at f287; not listened. R1 file _01 (306 f, fade over 45 f) stays in the library; its lock stays in assets.lock.json until Editor swaps the path",
+      "toFrame": 1785
+    },
+    {
+      "cue": "S29-end-note",
+      "shot": "S01-B05-SH22",
+      "frame": 1762,
+      "brief": "S29 END-NOTE (user pick 'เสียงเดี่ยวเดียวดาย'): one soft high piano note in a cold empty hall after the last line, then silence; hollow ending",
+      "id": "tone_end-lonely-note_01",
+      "origin": "generated",
+      "lengthFrames": 38,
+      "level": "after speech (L16 ends f1755): peak row, gain -3 dBFS file peak, no extra gain; ring ends at the last frame",
+      "note": "Candidates end-lonely-note_v1/_v2/_v3 (seeds 615538225-7, cfg 3). v1 chosen: one clean attack at 0 s, f0 ~1 kHz, -30 dB at 0.95 s, no melody; v2 low and many events, v3 several onsets. File 2.64 s, placed span 38 f (1.27 s, composition ends f1800), 30 ms file fade-out; place at f1762 (7 f after speech end f1755), fade the last 12 f if Editor wants a smoother cut (tail already ~-32 dB). Not listened. S28 end-tone fade (f1755-1785) and M1 hum stay unchanged.",
+      "toFrame": 1800
+    }
+  ],
+  "swaps": [],
+  "exempt": [
+    {
+      "src": "audio/edu/EDU-EP16-SHORT-draft-stem-v2.wav",
+      "reason": "stem baked by sound-mix.py (Editor W5.3)"
+    },
+    {
+      "src": "public/audio/edu/EDU-EP16-SHORT-draft-stem-v2.wav",
+      "reason": "stem baked by sound-mix.py (Editor W5.3)"
+    },
+    {
+      "src": "out/stems/bed.wav",
+      "reason": "per-layer stem written by sound-mix.py for mix-levels.py"
+    },
+    {
+      "src": "out/stems/texture.wav",
+      "reason": "per-layer stem written by sound-mix.py for mix-levels.py"
+    },
+    {
+      "src": "out/stems/accent.wav",
+      "reason": "per-layer stem written by sound-mix.py for mix-levels.py"
+    },
+    {
+      "src": "out/stems/voice.wav",
+      "reason": "voice stem (placed narration copy) written by sound-mix.py for mix-levels.py"
+    }
+  ],
+  "levels": {
+    "stems": {
+      "voice": "out/stems/voice.wav",
+      "bed": "out/stems/bed.wav",
+      "texture": "out/stems/texture.wav",
+      "accent": "out/stems/accent.wav"
+    },
+    "checks": [
+      {
+        "beat": "B01",
+        "layer": "background",
+        "when": "speech",
+        "min": 15,
+        "fromSec": 1.03,
+        "toSec": 4.95
+      },
+      {
+        "beat": "B01",
+        "layer": "bed",
+        "when": "speech",
+        "warnAbove": 20,
+        "fromSec": 1.03,
+        "toSec": 4.95
+      },
+      {
+        "beat": "B02",
+        "layer": "background",
+        "when": "speech",
+        "min": 15,
+        "fromSec": 5.57,
+        "toSec": 18.69
+      },
+      {
+        "beat": "B02",
+        "layer": "bed",
+        "when": "speech",
+        "warnAbove": 20,
+        "fromSec": 5.57,
+        "toSec": 18.69
+      },
+      {
+        "beat": "B02",
+        "layer": "texture",
+        "when": "speech",
+        "min": 18,
+        "cue": "S08-head-air-1",
+        "fromSec": 10.73,
+        "toSec": 16.07
+      },
+      {
+        "beat": "B02",
+        "layer": "texture",
+        "when": "speech",
+        "min": 18,
+        "cue": "S09-travel-tone",
+        "fromSec": 13.47,
+        "toSec": 15.77
+      },
+      {
+        "beat": "B02",
+        "layer": "texture",
+        "when": "speech",
+        "min": 18,
+        "cue": "S10-clock-ticks",
+        "fromSec": 13.47,
+        "toSec": 16.07
+      },
+      {
+        "beat": "B03",
+        "layer": "background",
+        "when": "speech",
+        "min": 15,
+        "fromSec": 19.15,
+        "toSec": 23.02
+      },
+      {
+        "beat": "B03",
+        "layer": "bed",
+        "when": "speech",
+        "warnAbove": 20,
+        "fromSec": 19.15,
+        "toSec": 23.02
+      },
+      {
+        "beat": "B04",
+        "layer": "background",
+        "when": "speech",
+        "min": 15,
+        "fromSec": 24.51,
+        "toSec": 35.47
+      },
+      {
+        "beat": "B04",
+        "layer": "bed",
+        "when": "speech",
+        "warnAbove": 20,
+        "fromSec": 24.51,
+        "toSec": 35.47
+      },
+      {
+        "beat": "B04",
+        "layer": "texture",
+        "when": "speech",
+        "min": 18,
+        "cue": "S08-head-air-2",
+        "fromSec": 26.96,
+        "toSec": 35.47
+      },
+      {
+        "beat": "B04",
+        "layer": "texture",
+        "when": "speech",
+        "min": 18,
+        "cue": "S18-travel-tone-slow",
+        "fromSec": 31.1,
+        "toSec": 35.47
+      },
+      {
+        "beat": "B05",
+        "layer": "background",
+        "when": "speech",
+        "min": 15,
+        "fromSec": 36.83,
+        "toSec": 58.52
+      },
+      {
+        "beat": "B05",
+        "layer": "bed",
+        "when": "speech",
+        "warnAbove": 20,
+        "fromSec": 36.83,
+        "toSec": 58.52
+      },
+      {
+        "beat": "B05",
+        "layer": "texture",
+        "when": "speech",
+        "min": 18,
+        "cue": "S08-head-air-3",
+        "fromSec": 39.03,
+        "toSec": 39.5
+      },
+      {
+        "beat": "B05",
+        "layer": "texture",
+        "when": "speech",
+        "min": 18,
+        "cue": "S24-forest",
+        "fromSec": 39.23,
+        "toSec": 43.73
+      },
+      {
+        "beat": "B05",
+        "layer": "texture",
+        "when": "speech",
+        "min": 18,
+        "cue": "S28-end-tone",
+        "note": "END-TONE aim 20 under L15/L16; fade starts at the voice end f1755",
+        "fromSec": 49.92,
+        "toSec": 58.52
+      },
+      {
+        "beat": "B01",
+        "layer": "accent",
+        "when": "peak",
+        "fromSec": 0.0,
+        "toSec": 0.9,
+        "cue": "S01-ping",
+        "min": -6,
+        "max": 3,
+        "note": "ping alone in the W-PING gap (L01 starts f31)"
+      },
+      {
+        "beat": "B01",
+        "layer": "accent",
+        "when": "speech",
+        "fromSec": 1.43,
+        "toSec": 1.77,
+        "cue": "S04-creak",
+        "min": 12
+      },
+      {
+        "beat": "B01",
+        "layer": "accent",
+        "when": "speech",
+        "fromSec": 1.77,
+        "toSec": 2.43,
+        "cue": "S05-rustle",
+        "min": 12
+      },
+      {
+        "beat": "B02",
+        "layer": "accent",
+        "when": "speech",
+        "fromSec": 10.23,
+        "toSec": 11.23,
+        "cue": "S06-bloom",
+        "min": 12
+      },
+      {
+        "beat": "B02",
+        "layer": "accent",
+        "when": "speech",
+        "fromSec": 10.3,
+        "toSec": 10.87,
+        "cue": "S07-whoosh-in",
+        "min": 12
+      },
+      {
+        "beat": "B02",
+        "layer": "accent",
+        "when": "speech",
+        "fromSec": 16.3,
+        "toSec": 16.7,
+        "cue": "S11-whoosh-out",
+        "min": 12
+      },
+      {
+        "beat": "B03",
+        "layer": "accent",
+        "when": "speech",
+        "fromSec": 21.2,
+        "toSec": 23.1,
+        "cue": "S12-riser-stop",
+        "min": 12
+      },
+      {
+        "beat": "B04",
+        "layer": "accent",
+        "when": "speech",
+        "fromSec": 26.57,
+        "toSec": 27.17,
+        "cue": "S13-whoosh-muffled-in",
+        "min": 12
+      },
+      {
+        "beat": "B04",
+        "layer": "accent",
+        "when": "speech",
+        "fromSec": 26.97,
+        "toSec": 28.47,
+        "cue": "S14-swell-left",
+        "min": 12
+      },
+      {
+        "beat": "B04",
+        "layer": "accent",
+        "when": "speech",
+        "fromSec": 27.57,
+        "toSec": 29.07,
+        "cue": "S15-swell-right",
+        "min": 12
+      },
+      {
+        "beat": "B04",
+        "layer": "accent",
+        "when": "speech",
+        "fromSec": 28.53,
+        "toSec": 29.3,
+        "cue": "S16-shimmer",
+        "min": 12
+      },
+      {
+        "beat": "B04",
+        "layer": "accent",
+        "when": "speech",
+        "fromSec": 29.17,
+        "toSec": 29.67,
+        "cue": "S17-breath-rise",
+        "min": 12
+      },
+      {
+        "beat": "B04",
+        "layer": "accent",
+        "when": "speech",
+        "fromSec": 33.97,
+        "toSec": 35.47,
+        "cue": "S19-pressure",
+        "min": 12
+      },
+      {
+        "beat": "B05",
+        "layer": "accent",
+        "when": "peak",
+        "fromSec": 36.03,
+        "toSec": 36.37,
+        "cue": "S20-strike-thud",
+        "min": -6,
+        "max": 3,
+        "note": "narration avg -16.1 LUFS, thud <= avg + 3 LU, TP <= -1 dBTP; thud sits in the L10>L08 gap (L10 ends f1064, L08 starts f1105)"
+      },
+      {
+        "beat": "B05",
+        "layer": "accent",
+        "when": "peak",
+        "fromSec": 36.57,
+        "toSec": 36.83,
+        "cue": "S21-whoosh-muffled-out",
+        "min": -6,
+        "max": 18,
+        "note": "before L08 starts at f1105; the last 4 f of the whoosh overlap the speech under a 2 f fade | Editor W5.3 R2: relaxed from max 3 to 18 (user: stays soft as in the first draft, mixed at dV 14.5; measured 15.8)"
+      },
+      {
+        "beat": "B05",
+        "layer": "accent",
+        "when": "speech",
+        "fromSec": 37.07,
+        "toSec": 37.37,
+        "cue": "S22-swallow",
+        "min": 12
+      },
+      {
+        "beat": "B05",
+        "layer": "accent",
+        "when": "speech",
+        "fromSec": 39.23,
+        "toSec": 39.97,
+        "cue": "S06b-bloom",
+        "min": 12
+      },
+      {
+        "beat": "B05",
+        "layer": "accent",
+        "when": "peak",
+        "fromSec": 48.4,
+        "toSec": 48.93,
+        "cue": "S25-rustle",
+        "min": -6,
+        "max": 6,
+        "note": "wordless W-OFF gap f1446-1497 | Editor W5.3 R2: relaxed from max 3 to 6 (user: stays soft as in the first draft; measured 3.9; click capped at -3 dBFS)"
+      },
+      {
+        "beat": "B05",
+        "layer": "accent",
+        "when": "peak",
+        "fromSec": 48.47,
+        "toSec": 49.27,
+        "cue": "S26-held-breath",
+        "min": -6,
+        "max": 6,
+        "note": "wordless W-OFF gap f1446-1497 | Editor W5.3 R2: relaxed from max 3 to 6 (user: stays soft as in the first draft; measured 3.9; click capped at -3 dBFS)"
+      },
+      {
+        "beat": "B05",
+        "layer": "accent",
+        "when": "peak",
+        "fromSec": 49.27,
+        "toSec": 49.43,
+        "cue": "S27-lamp-click",
+        "min": -6,
+        "max": 15,
+        "note": "wordless W-OFF gap f1446-1497 | Editor W5.3 R2: relaxed from max 3 to 15 (user: stays soft as in the first draft; measured 12.6; click capped at -3 dBFS)"
+      },
+      {
+        "beat": "B01",
+        "layer": "accent",
+        "when": "gap",
+        "min": 6,
+        "fromSec": 0.7,
+        "toSec": 0.87,
+        "cue": "S02-blip",
+        "note": "blip f21 alone in the W-PING gap before L01 (f31): soft per Film (B01/B02 soft, 12 dB floor) | Editor W5.3 R2: min 12 -> 6: the S01 ping (dV 0, f0-27) and the S03 gasp still ring in this window; the blip alone is at dV 14.5"
+      },
+      {
+        "beat": "B01",
+        "layer": "accent",
+        "when": "speech",
+        "min": 15,
+        "fromSec": 4.2,
+        "toSec": 4.37,
+        "cue": "S02-blip",
+        "note": "blip f126 lands 3 f after L02 starts (f123-148): under speech, soft (R1 row called it a gap: file-time slip, corrected)"
+      },
+      {
+        "beat": "B02",
+        "layer": "accent",
+        "when": "speech",
+        "min": 15,
+        "fromSec": 8.4,
+        "toSec": 8.57,
+        "cue": "S02-blip",
+        "note": "blip f252 under L03 (f237-303): soft"
+      },
+      {
+        "beat": "B03",
+        "layer": "accent",
+        "when": "speech",
+        "min": 12,
+        "fromSec": 19.6,
+        "toSec": 19.77,
+        "cue": "S02-blip",
+        "note": "blip f588 under L17 (f575-631). Film wants the blip forward in B03, but every B03 blip lands on speech (f567-672); 12 under is the EP08b floor and a 0.15 s cue meets the <=2 s exception (user decision, 15 Nov 2026)"
+      },
+      {
+        "beat": "B03",
+        "layer": "accent",
+        "when": "speech",
+        "min": 12,
+        "fromSec": 21.7,
+        "toSec": 21.87,
+        "cue": "S02-blip",
+        "note": "blip f651 under L14 (f640-691): same decision; the last blip f672 is also under L14"
+      },
+      {
+        "beat": "B05",
+        "layer": "accent",
+        "when": "peak",
+        "fromSec": 58.73,
+        "toSec": 60.0,
+        "cue": "S29-end-note",
+        "min": -6,
+        "max": 8,
+        "note": "ending note alone after the last line (L16 ends f1755 = 58.50 s); no speech overlap | Editor W6 mux: relaxed from max 3 to 8 (user listened to the sample and chose the file as is, -3 dBFS peak, no extra attenuation; measured 6.1)"
+      }
+    ]
+  }
+}
