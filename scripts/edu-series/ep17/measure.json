@@ -1,0 +1,222 @@
+{
+ "deliverable": "EDU-EP17-SHORT",
+ "step": "W4",
+ "script_revision": "EDU-EP17-SCRIPT-R1.2.1",
+ "date": "2026-11-15",
+ "read": {
+  "store": "projects/edu/EDU/audio/2026-11-15_ep17-nar-kore-fullread-x1.05.wav",
+  "raw_take": "projects/edu/EDU/audio/2026-11-15_ep17-nar-kore-fullread-raw.wav",
+  "paused_raw": "projects/edu/EDU/audio/2026-11-15_ep17-nar-kore-fullread-paused-raw.wav",
+  "pause_map": "projects/edu/EDU/audio/2026-11-15_ep17-nar-pause-map.json",
+  "tts_text": "projects/edu/EDU/audio/2026-11-15_ep17-nar-tts.txt",
+  "lines_text": "projects/edu/EDU/audio/2026-11-15_ep17-nar-lines.txt",
+  "model": "gemini-3.8-flash-tts",
+  "voice": "Kore",
+  "style": "warm, friendly, smiling storyteller, speaking rapidly",
+  "atempo": 1.05,
+  "pauses": "26 pauses (11 script ellipses + 15 line boundaries) set to 0.40 s raw each (= 0.381 s in the x1.05 file) by scripts/edu-series/ep17/narration-pauses.py",
+  "requests": 1,
+  "retries": 0,
+  "lines": "L01-L07, L09, L10, L12-L15, L17-L19 (16 NAR rows; L08, L11, L16 retired); ellipsis sent as comma; L14 year spoken as words",
+  "listened": false,
+  "note": "NOT LISTENED by the Editor agent; the user listens and approves"
+ },
+ "measured": {
+  "raw_take_s": 55.28,
+  "paused_raw_s": 56.5,
+  "file_s": 53.819,
+  "speech_start_s": 0.22,
+  "speech_end_s": 53.55,
+  "method": "ffmpeg silencedetect -25 dB / 0.08 s for gaps and onsets (line onset = end of the preceding pause, line end = start of the following pause), checked against faster-whisper word times (rough, Thai +-0.3 s); times in the x1.05 file"
+ },
+ "line_onsets_s": {
+  "L01": 0.22,
+  "L02": 3.92,
+  "L03": 6.14,
+  "L04": 8.78,
+  "L05": 11.71,
+  "L06": 14.58,
+  "L07": 17.64,
+  "L09": 22.18,
+  "L10": 23.57,
+  "L12": 27.59,
+  "L13": 31.81,
+  "L14": 34.33,
+  "L15": 39.6,
+  "L17": 44.64,
+  "L18": 48.32,
+  "L19": 51.23
+ },
+ "line_end_s": {
+  "L01": 3.54,
+  "L02": 5.76,
+  "L03": 8.4,
+  "L04": 11.32,
+  "L05": 14.2,
+  "L06": 17.26,
+  "L07": 21.8,
+  "L09": 23.19,
+  "L10": 27.2,
+  "L12": 31.43,
+  "L13": 33.95,
+  "L14": 39.22,
+  "L15": 44.26,
+  "L17": 47.94,
+  "L18": 50.85,
+  "L19": 53.55
+ },
+ "ellipsis_pause_s": {
+  "L01…": [
+   1.64,
+   2.02
+  ],
+  "L04…": [
+   10.14,
+   10.52
+  ],
+  "L05…": [
+   12.59,
+   12.97
+  ],
+  "L07…": [
+   18.53,
+   18.91
+  ],
+  "L10…": [
+   24.17,
+   24.55
+  ],
+  "L12…": [
+   28.54,
+   28.92
+  ],
+  "L13…": [
+   32.83,
+   33.21
+  ],
+  "L14…": [
+   36.06,
+   36.44
+  ],
+  "L15…": [
+   40.47,
+   40.85
+  ],
+  "L18…": [
+   48.93,
+   49.32
+  ],
+  "L19…": [
+   52.28,
+   52.66
+  ]
+ },
+ "line_boundary_pause_s": {
+  "L01|L02": [
+   3.54,
+   3.92
+  ],
+  "L02|L03": [
+   5.76,
+   6.14
+  ],
+  "L03|L04": [
+   8.4,
+   8.78
+  ],
+  "L04|L05": [
+   11.32,
+   11.71
+  ],
+  "L05|L06": [
+   14.2,
+   14.58
+  ],
+  "L06|L07": [
+   17.26,
+   17.64
+  ],
+  "L07|L09": [
+   21.8,
+   22.18
+  ],
+  "L09|L10": [
+   23.19,
+   23.57
+  ],
+  "L10|L12": [
+   27.2,
+   27.59
+  ],
+  "L12|L13": [
+   31.43,
+   31.81
+  ],
+  "L13|L14": [
+   33.95,
+   34.33
+  ],
+  "L14|L15": [
+   39.22,
+   39.6
+  ],
+  "L15|L17": [
+   44.26,
+   44.64
+  ],
+  "L17|L18": [
+   47.94,
+   48.32
+  ],
+  "L18|L19": [
+   50.85,
+   51.23
+  ]
+ },
+ "character_takes": {
+  "V01": {
+   "store": "projects/edu/EDU/audio/2026-11-15_ep17-char-v01-algenib.wav",
+   "file_s": 2.04,
+   "voiced_span_s": [
+    0.152,
+    1.793
+   ],
+   "voice": "Algenib"
+  },
+  "V02": {
+   "store": "projects/edu/EDU/audio/2026-11-15_ep17-char-v02-algenib.wav",
+   "file_s": 1.72,
+   "voiced_span_s": [
+    0.302,
+    1.406
+   ],
+   "voice": "Algenib"
+  },
+  "V03": {
+   "store": "projects/edu/EDU/audio/2026-11-15_ep17-char-v03-algenib.wav",
+   "file_s": 0.88,
+   "voiced_span_s": [
+    0.292,
+    0.88
+   ],
+   "voice": "Algenib"
+  },
+  "SISTER-LAUGH": {
+   "store": "projects/edu/EDU/audio/2026-11-15_ep17-sister-laugh-aoede.wav",
+   "file_s": 2.16,
+   "voiced_span_s": [
+    0.258,
+    1.867
+   ],
+   "voice": "Aoede"
+  }
+ },
+ "length_check": {
+  "target_s": "54-60 (script N1 window; delivery cap per script)",
+  "nar_file_s": 53.82,
+  "nar_speech_span_s": "0.22-53.55 (53.33 s)",
+  "estimate_was_s": "NAR 53.9 at 1.08 (50.2 at 1.15); video 59.9 at 1.08",
+  "implied_video_s": "about 59.9 s with no padding (0.3 lead + 53.33 NAR span + 3.33 voiced V01-V03 + ~1.0 W-SKY + ~2.0 hold); about 60-61 s with ~0.2 s breathing room at each V edge",
+  "verdict": "NAR is 0.1 s under the estimate at 1.08; video sits at or just over the 60 s top of the window (inside the 5 % rule: 63 s). N1 trims T1-T2 remain available."
+ }
+}

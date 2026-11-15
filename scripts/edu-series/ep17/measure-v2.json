@@ -1,0 +1,535 @@
+{
+ "deliverable": "EDU-EP17-SHORT",
+ "step": "W4 voice re-lock",
+ "script_revision": "EDU-EP17-SCRIPT-R1.2.1",
+ "date": "2026-11-15",
+ "supersedes": "measure.json (v1 lock, 53.82 s)",
+ "read": {
+  "store": "projects/edu/EDU/audio/2026-11-15_ep17-nar-v2-B-fullread-x1.05.wav",
+  "raw_take": "projects/edu/EDU/audio/2026-11-15_ep17-nar-v2-B-fullread-raw.wav (+ .json sidecar)",
+  "model": "gemini-3.8-flash-tts",
+  "voice": "Kore",
+  "style": "warm, friendly, smiling storyteller, speaking rapidly",
+  "atempo": 1.05,
+  "pauses": "the take as spoken: no pause surgery, no inserted silence",
+  "lines": "L01-L07, L09, L10, L12-L15, L17-L19 (16 NAR rows; L08, L11, L16 retired); ellipsis sent as comma; L14 year spoken as words",
+  "listened": false,
+  "note": "user picked candidate B on 2026-11-15; NOT LISTENED by the Editor agent"
+ },
+ "measured": {
+  "file_s": 50.256,
+  "speech_start_s": 0.231,
+  "speech_end_s": 49.918,
+  "method": "ffmpeg silencedetect -25 dB / 0.10 s; line onset = end of the preceding gap, line end = start of the following gap (as v1); 35 gaps mapped to the 26 script pause slots in script order, confirmed by a per-phrase syllable count (cumulative position within +-0.3 s at every gap) and faster-whisper word times (rough); times in the x1.05 file"
+ },
+ "line_onsets_s": {
+  "L01": 0.231,
+  "L02": 3.366,
+  "L03": 5.305,
+  "L04": 7.785,
+  "L05": 10.147,
+  "L06": 12.635,
+  "L07": 15.545,
+  "L09": 19.862,
+  "L10": 21.245,
+  "L12": 25.079,
+  "L13": 28.809,
+  "L14": 31.181,
+  "L15": 35.935,
+  "L17": 41.381,
+  "L18": 44.818,
+  "L19": 47.755
+ },
+ "line_end_s": {
+  "L01": 3.241,
+  "L02": 5.022,
+  "L03": 7.369,
+  "L04": 9.689,
+  "L05": 12.345,
+  "L06": 15.054,
+  "L07": 19.298,
+  "L09": 20.857,
+  "L10": 24.693,
+  "L12": 28.46,
+  "L13": 30.703,
+  "L14": 35.559,
+  "L15": 40.933,
+  "L17": 44.429,
+  "L18": 47.365,
+  "L19": 49.918
+ },
+ "ellipsis_pause_s": {
+  "L01…": [
+   1.533,
+   1.725
+  ],
+  "L05…": [
+   11.255,
+   11.536
+  ],
+  "L07…": [
+   16.269,
+   16.48
+  ],
+  "L10…": [
+   21.778,
+   22.094
+  ],
+  "L12…": [
+   25.878,
+   26.103
+  ],
+  "L13…": [
+   29.809,
+   30.05
+  ],
+  "L14…": [
+   32.65,
+   32.905
+  ],
+  "L15…": [
+   36.833,
+   37.454
+  ],
+  "L18…": [
+   45.744,
+   46.119
+  ],
+  "L19…": [
+   48.812,
+   49.052
+  ]
+ },
+ "line_boundary_pause_s": {
+  "L01|L02": [
+   3.241,
+   3.366
+  ],
+  "L02|L03": [
+   5.022,
+   5.305
+  ],
+  "L03|L04": [
+   7.369,
+   7.785
+  ],
+  "L04|L05": [
+   9.689,
+   10.147
+  ],
+  "L05|L06": [
+   12.345,
+   12.635
+  ],
+  "L06|L07": [
+   15.054,
+   15.545
+  ],
+  "L07|L09": [
+   19.298,
+   19.862
+  ],
+  "L09|L10": [
+   20.857,
+   21.245
+  ],
+  "L10|L12": [
+   24.693,
+   25.079
+  ],
+  "L12|L13": [
+   28.46,
+   28.809
+  ],
+  "L13|L14": [
+   30.703,
+   31.181
+  ],
+  "L14|L15": [
+   35.559,
+   35.935
+  ],
+  "L15|L17": [
+   40.933,
+   41.381
+  ],
+  "L17|L18": [
+   44.429,
+   44.818
+  ],
+  "L18|L19": [
+   47.365,
+   47.755
+  ]
+ },
+ "ellipsis_without_gap": [
+  "L04…"
+ ],
+ "word_internal_gaps_s": [
+  {
+   "gap": 6,
+   "start": 10.891,
+   "end": 11.021
+  },
+  {
+   "gap": 9,
+   "start": 13.684,
+   "end": 13.796
+  },
+  {
+   "gap": 12,
+   "start": 17.48,
+   "end": 17.748
+  },
+  {
+   "gap": 16,
+   "start": 23.686,
+   "end": 23.867
+  },
+  {
+   "gap": 19,
+   "start": 27.627,
+   "end": 27.732
+  },
+  {
+   "gap": 24,
+   "start": 34.196,
+   "end": 34.459
+  },
+  {
+   "gap": 27,
+   "start": 38.531,
+   "end": 38.779
+  },
+  {
+   "gap": 31,
+   "start": 46.424,
+   "end": 46.632
+  }
+ ],
+ "confidence": {
+  "L01…": "high",
+  "L01|L02": "medium: gap only 0.125 s at -25 dB (0.114 s at -35 dB); dip real, order and whisper word \"มัน\" 3.2 s agree",
+  "L02|L03": "high",
+  "L03|L04": "high",
+  "L04|L05": "high",
+  "L05…": "high",
+  "L05|L06": "high",
+  "L06|L07": "high",
+  "L07…": "high",
+  "L07|L09": "high",
+  "L09|L10": "high",
+  "L10…": "high",
+  "L10|L12": "high",
+  "L12…": "high",
+  "L12|L13": "high",
+  "L13…": "high",
+  "L13|L14": "high",
+  "L14…": "high",
+  "L14|L15": "high",
+  "L15…": "high",
+  "L15|L17": "high",
+  "L17|L18": "high",
+  "L18…": "high",
+  "L18|L19": "high",
+  "L19…": "high"
+ },
+ "min_gap_before_line_start_s": 0.125,
+ "character_takes": {
+  "V01": {
+   "store": "projects/edu/EDU/audio/2026-11-15_ep17-char-v01-algenib.wav",
+   "voiced_span_s": [
+    0.152,
+    1.793
+   ]
+  },
+  "V02": {
+   "store": "projects/edu/EDU/audio/2026-11-15_ep17-char-v02-algenib.wav",
+   "voiced_span_s": [
+    0.302,
+    1.406
+   ]
+  },
+  "V03": {
+   "store": "projects/edu/EDU/audio/2026-11-15_ep17-char-v03-algenib.wav",
+   "voiced_span_s": [
+    0.292,
+    0.88
+   ]
+  }
+ },
+ "sister_laugh": {
+  "store": "projects/edu/EDU/audio/2026-11-15_ep17-sister-laugh-aoede.wav",
+  "voiced_span_s": [
+   0.258,
+   1.867
+  ]
+ },
+ "placement_proposal": {
+  "rule": "v1 slot gaps kept (voiced end -> voiced onset, frames): L03->V01 8.6, V01->L04 7.8, L04->L05 33.8, L07->V02 7.3, V02->L09 7.9, L10->V03 10.4, V03->L12 6.4, L15->L17 31.6; lead L01 onset G12; W-HOLD 60.7 f after L19; laugh voiced onset = L19 onset - 4 f. Each gap extension is crossfaded room tone (quietest 0.16 s of the cut gap, tiled with 40 ms crossfades), never digital silence. A proposal for Film to retime against, not a decision.",
+  "cuts": [
+   {
+    "after": "L03",
+    "before": "L04",
+    "cut_file_s": 7.577,
+    "natural_gap_f": 12.5,
+    "needed_gap_f": 65.6,
+    "insert_f": 53.1,
+    "v1_inserted_f": 52,
+    "take": "V01"
+   },
+   {
+    "after": "L04",
+    "before": "L05",
+    "cut_file_s": 9.918,
+    "natural_gap_f": 13.7,
+    "needed_gap_f": 33.8,
+    "insert_f": 20.1,
+    "v1_inserted_f": 22,
+    "take": null
+   },
+   {
+    "after": "L07",
+    "before": "L09",
+    "cut_file_s": 19.58,
+    "natural_gap_f": 16.9,
+    "needed_gap_f": 48.3,
+    "insert_f": 31.4,
+    "v1_inserted_f": 36,
+    "take": "V02"
+   },
+   {
+    "after": "L10",
+    "before": "L12",
+    "cut_file_s": 24.886,
+    "natural_gap_f": 11.6,
+    "needed_gap_f": 34.4,
+    "insert_f": 22.8,
+    "v1_inserted_f": 23,
+    "take": "V03"
+   },
+   {
+    "after": "L15",
+    "before": "L17",
+    "cut_file_s": 41.157,
+    "natural_gap_f": 13.4,
+    "needed_gap_f": 31.6,
+    "insert_f": 18.2,
+    "v1_inserted_f": 20,
+    "take": null
+   }
+  ],
+  "V_voiced_G": {
+   "V01": [
+    234.7,
+    283.9
+   ],
+   "V02": [
+    664.5,
+    697.6
+   ],
+   "V03": [
+    860.8,
+    878.4
+   ]
+  },
+  "V_file_start_s": {
+   "V01": 7.672,
+   "V02": 21.849,
+   "V03": 28.402
+  },
+  "sister_laugh": {
+   "voiced_G": [
+    1579.3,
+    1627.5
+   ],
+   "file_start_s": 52.385
+  },
+  "segment_offset_s": {
+   "A": 0.169,
+   "B": 1.94,
+   "C": 2.609,
+   "D": 3.655,
+   "E": 4.415,
+   "F": 5.021
+  },
+  "line_onset_G": {
+   "L01": 12.0,
+   "L02": 106.1,
+   "L03": 164.2,
+   "L04": 291.7,
+   "L05": 382.7,
+   "L06": 457.3,
+   "L07": 544.6,
+   "L09": 705.5,
+   "L10": 747.0,
+   "L12": 884.8,
+   "L13": 996.7,
+   "L14": 1067.9,
+   "L15": 1210.5,
+   "L17": 1392.1,
+   "L18": 1495.2,
+   "L19": 1583.3
+  },
+  "line_end_G": {
+   "L01": 102.3,
+   "L02": 155.7,
+   "L03": 226.1,
+   "L04": 348.9,
+   "L05": 448.6,
+   "L06": 529.9,
+   "L07": 657.2,
+   "L09": 735.4,
+   "L10": 850.4,
+   "L12": 986.3,
+   "L13": 1053.6,
+   "L14": 1199.2,
+   "L15": 1360.5,
+   "L17": 1483.5,
+   "L18": 1571.6,
+   "L19": 1648.2
+  },
+  "old_line_onset_G": {
+   "L01": 12.0,
+   "L02": 123.0,
+   "L03": 189.6,
+   "L04": 323.0,
+   "L05": 433.0,
+   "L06": 519.1,
+   "L07": 610.9,
+   "L09": 784.0,
+   "L10": 825.7,
+   "L12": 969.0,
+   "L13": 1095.6,
+   "L14": 1171.2,
+   "L15": 1329.3,
+   "L17": 1501.0,
+   "L18": 1611.4,
+   "L19": 1698.7
+  },
+  "old_line_end_G": {
+   "L01": 111.6,
+   "L02": 178.2,
+   "L03": 257.4,
+   "L04": 399.2,
+   "L05": 507.7,
+   "L06": 599.5,
+   "L07": 735.7,
+   "L09": 814.3,
+   "L10": 934.6,
+   "L12": 1084.2,
+   "L13": 1159.8,
+   "L14": 1317.9,
+   "L15": 1469.1,
+   "L17": 1600.0,
+   "L18": 1687.3,
+   "L19": 1768.3
+  },
+  "segments": {
+   "A": {
+    "lines": [
+     "L01",
+     "L02",
+     "L03"
+    ],
+    "c_s": 0.169,
+    "old_first_onset_G": 12.0,
+    "new_first_onset_G": 12.0,
+    "delta_onset_f": 0.0,
+    "old_last_end_G": 257.4,
+    "new_last_end_G": 226.1,
+    "delta_end_f": -31.3,
+    "old_content_f": 245.4,
+    "new_content_f": 214.1,
+    "delta_content_f": -31.3
+   },
+   "B": {
+    "lines": [
+     "L04"
+    ],
+    "c_s": 1.94,
+    "old_first_onset_G": 323.0,
+    "new_first_onset_G": 291.7,
+    "delta_onset_f": -31.3,
+    "old_last_end_G": 399.2,
+    "new_last_end_G": 348.9,
+    "delta_end_f": -50.3,
+    "old_content_f": 76.2,
+    "new_content_f": 57.2,
+    "delta_content_f": -19.0
+   },
+   "C": {
+    "lines": [
+     "L05",
+     "L06",
+     "L07"
+    ],
+    "c_s": 2.609,
+    "old_first_onset_G": 433.0,
+    "new_first_onset_G": 382.7,
+    "delta_onset_f": -50.3,
+    "old_last_end_G": 735.7,
+    "new_last_end_G": 657.2,
+    "delta_end_f": -78.5,
+    "old_content_f": 302.7,
+    "new_content_f": 274.5,
+    "delta_content_f": -28.2
+   },
+   "D": {
+    "lines": [
+     "L09",
+     "L10"
+    ],
+    "c_s": 3.655,
+    "old_first_onset_G": 784.0,
+    "new_first_onset_G": 705.5,
+    "delta_onset_f": -78.5,
+    "old_last_end_G": 934.6,
+    "new_last_end_G": 850.4,
+    "delta_end_f": -84.2,
+    "old_content_f": 150.6,
+    "new_content_f": 144.9,
+    "delta_content_f": -5.7
+   },
+   "E": {
+    "lines": [
+     "L12",
+     "L13",
+     "L14",
+     "L15"
+    ],
+    "c_s": 4.415,
+    "old_first_onset_G": 969.0,
+    "new_first_onset_G": 884.8,
+    "delta_onset_f": -84.2,
+    "old_last_end_G": 1469.1,
+    "new_last_end_G": 1360.5,
+    "delta_end_f": -108.6,
+    "old_content_f": 500.1,
+    "new_content_f": 475.7,
+    "delta_content_f": -24.4
+   },
+   "F": {
+    "lines": [
+     "L17",
+     "L18",
+     "L19"
+    ],
+    "c_s": 5.021,
+    "old_first_onset_G": 1501.0,
+    "new_first_onset_G": 1392.1,
+    "delta_onset_f": -108.9,
+    "old_last_end_G": 1768.3,
+    "new_last_end_G": 1648.2,
+    "delta_end_f": -120.1,
+    "old_content_f": 267.3,
+    "new_content_f": 256.1,
+    "delta_content_f": -11.2
+   }
+  },
+  "total_f": 1709,
+  "total_s": 56.967,
+  "old_total_f": 1829,
+  "delta_total_f": -120
+ }
+}

@@ -26,6 +26,7 @@ One row per concept the channel has made. Each concept has its own file `C<nn>.m
 | C39 | ถ้าหมัดตัวเท่าคน (the animal concept) | made | EDU-EP13-SHORT | R7 | [C39.md](C39.md) |
 | C37 | ถ้าฝนตกโดยไม่มีอากาศ | made | EDU-EP14-SHORT | R7 | [C37.md](C37.md) |
 | C43 | จิ้งจกบนเพดาน ห้อยคุณไว้ได้ทั้งตัว (animal) | made | EDU-EP15-SHORT | R8 | [C43.md](C43.md) |
+| C61 | ทำไมสายอินเทอร์เน็ตต้องอยู่ใต้ทะเล (และสมอเรือที่ตัดมัน) | picked | EDU-EP17-SHORT | user | [C61.md](C61.md) |
 | C67 | ป่าเงียบ: ทำไมคนฉลาดถึงไม่ตอบ | picked | EDU-EP16-SHORT | R12 | [C67.md](C67.md) |
 | C68 | ถ้าการซ่อนคือทางรอด โลกเราซ่อนไม่ทันแล้ว | pitched | - | R12 | [C68.md](C68.md) |
 
