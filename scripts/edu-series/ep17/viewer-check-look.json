@@ -1,0 +1,46 @@
+{
+ "LF01": {
+  "hash": "b79e9efd9f88bf21",
+  "result": "pass"
+ },
+ "LF01R": {
+  "hash": "28b7630335fa450a",
+  "result": "pass"
+ },
+ "LF02": {
+  "hash": "a59fc94b64c15a31",
+  "result": "pass"
+ },
+ "LF03": {
+  "hash": "d7b75e2da4fd8c27",
+  "result": "pass"
+ },
+ "LF04": {
+  "hash": "1c93081f379a09c9",
+  "result": "pass"
+ },
+ "LF05": {
+  "hash": "1d92221f60b62803",
+  "result": "pass"
+ },
+ "LF06": {
+  "hash": "d4cbb7a611164d9f",
+  "result": "pass"
+ },
+ "LF07": {
+  "hash": "bafc709e8bb4393e",
+  "result": "pass"
+ },
+ "LF07S1": {
+  "hash": "6b0f74026a908d18",
+  "result": "pass"
+ },
+ "LF07S2": {
+  "hash": "0065acaf94497193",
+  "result": "pass"
+ },
+ "LF07S3": {
+  "hash": "0916e7bcf421d983",
+  "result": "pass"
+ }
+}

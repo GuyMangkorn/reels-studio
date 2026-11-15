@@ -1,0 +1,162 @@
+{
+  "public/audio/bed/bed_curious-explainer-light_01.wav": {
+    "store": "library/sound/music/bed/bed_curious-explainer-light_01.wav",
+    "sha256": "5e192ec386593d4348fcb9c450f156b9392e4c258da7dfd82ac8e52048b03405"
+  },
+  "public/audio/bed/bed_dark-pulse-felt-piano_01.wav": {
+    "store": "library/sound/music/bed/bed_dark-pulse-felt-piano_01.wav",
+    "sha256": "8033a95269a2e764a990aa827738f11944438c7acdce9e3ca0818e63b3a56573"
+  },
+  "public/audio/bed/bed_held-note-marimba-pad_01.wav": {
+    "store": "library/sound/music/bed/bed_held-note-marimba-pad_01.wav",
+    "sha256": "a590d3eb23c9d80ad2a930928fec92d69e51417fad5d645f1a11b81eed1864c2"
+  },
+  "public/audio/edu/EDU-EP17-SHORT-draft-stem-v2.wav": {
+    "store": "projects/edu/EDU/narration/ep17/EDU-EP17-SHORT-stem-v2-w11.wav",
+    "sha256": "c4c2173a8b4f8bf954f59843b2fda7c9185c3e09de0ad3158b1865217b4c3f1a"
+  },
+  "public/audio/nature/nature_open-sea-overcast_01.wav": {
+    "store": "library/sound/ambience/nature/nature_open-sea-overcast_01.wav",
+    "sha256": "858a57eb2b31d71f8e114b0ee8d71bfcc3b7c6543dcda17816ddf7097dd173ed"
+  },
+  "public/audio/nature/nature_seaside-yard-afternoon_01.wav": {
+    "store": "library/sound/ambience/nature/nature_seaside-yard-afternoon_01.wav",
+    "sha256": "0cdcde9e2ef9dcf4f0cfacea767e47bc20681ab1d75428326603ad2ac79aea8e"
+  },
+  "public/audio/water/water_deep-hush-empty_01.wav": {
+    "store": "library/sound/ambience/water/water_deep-hush-empty_01.wav",
+    "sha256": "6b568a48f7fc72aed9b5115814367a509f641dc57e97e7f089d477e547e588da"
+  },
+  "public/audio/water/water_shallows-engines-far_01.wav": {
+    "store": "library/sound/ambience/water/water_shallows-engines-far_01.wav",
+    "sha256": "c96ec67d71e90af04b91870a4b39d5a62adaa4090e0c8d28eef019ab2e14f3a9"
+  },
+  "public/audio/water/water_shallows-hush-bubbles_01.wav": {
+    "store": "library/sound/ambience/water/water_shallows-hush-bubbles_01.wav",
+    "sha256": "23774ea64ef8dee64bc3602ca4010c47e0e038b4438689494ce581d471652cd6"
+  },
+  "public/narration/EDU-EP17-SHORT-narration-v2.wav": {
+    "store": "projects/edu/EDU/narration/ep17/EDU-EP17-SHORT-placed-v2-L19slow.wav",
+    "sha256": "e76ca188df09c187889a7dcdf424df69de78ebaaa134d4a29dfd294b8648360a"
+  },
+  "public/sfx/comedy/comedy_cartoon-brake_01.wav": {
+    "store": "library/sound/sfx/comedy/comedy_cartoon-brake_01.wav",
+    "sha256": "e5ff3a187adb13f1c16540664aa4c5cca39ea4a4a597a83b41e9ac090de22e35"
+  },
+  "public/sfx/comedy/comedy_hose-pinch-squeak_01.wav": {
+    "store": "library/sound/sfx/comedy/comedy_hose-pinch-squeak_01.wav",
+    "sha256": "a595a69b6de14a4e22397b84c3fef5d0cfc22332637ef16a4d7dac26e94a8011"
+  },
+  "public/sfx/comedy/comedy_toy-helicopter-flutter_01.wav": {
+    "store": "library/sound/sfx/comedy/comedy_toy-helicopter-flutter_01.wav",
+    "sha256": "6e9093e06add6b83017c6c9ab8d102e35aee86e3c7c30f7eeb04508e5866749e"
+  },
+  "public/sfx/electric/electric_call-chime-phone_01.wav": {
+    "store": "library/sound/sfx/electric/electric_call-chime-phone_01.wav",
+    "sha256": "8760c51c2f86731b09848146bc5a7cae075e882a4873d7c04006f13792d383ea"
+  },
+  "public/sfx/electric/electric_glide-soft-tone_01.wav": {
+    "store": "library/sound/sfx/electric/electric_glide-soft-tone_01.wav",
+    "sha256": "a5a7655d3d622572d79e82f93284ca14ce4be32fcd831a0526e468b10815e953"
+  },
+  "public/sfx/electric/electric_glitch-blip-soft_01.wav": {
+    "store": "library/sound/sfx/electric/electric_glitch-blip-soft_01.wav",
+    "sha256": "03a0a83b4a943b2a84eb639c796dbf8e3eb56e6c2115bc9225682770b88246f1"
+  },
+  "public/sfx/electric/electric_signal-zip-up_01.wav": {
+    "store": "library/sound/sfx/electric/electric_signal-zip-up_01.wav",
+    "sha256": "58828182c8daadd723d7745c3f12989699dc95663071b07ae64655d50de798cf"
+  },
+  "public/sfx/electric/electric_spark-crackle-tiny_01.wav": {
+    "store": "library/sound/sfx/electric/electric_spark-crackle-tiny_01.wav",
+    "sha256": "ff01aa13c8f951678226d3e47e2881fe7b234f1695e7c8e525f887c88bbc74d8"
+  },
+  "public/sfx/electric/electric_spark-crackle-tiny_02.wav": {
+    "store": "library/sound/sfx/electric/electric_spark-crackle-tiny_02.wav",
+    "sha256": "9286d1b83e2bcf677e8fbbd56f377c3b958b7c2f97425d701f1c652b3926781e"
+  },
+  "public/sfx/electric/electric_spark-crackle-tiny_03.wav": {
+    "store": "library/sound/sfx/electric/electric_spark-crackle-tiny_03.wav",
+    "sha256": "35fe383ae01ff0e35c8db3075441c96ce693a635ac4b5c65e6b86ce5a0d68945"
+  },
+  "public/sfx/electric/electric_spark-crackle-tiny_04.wav": {
+    "store": "library/sound/sfx/electric/electric_spark-crackle-tiny_04.wav",
+    "sha256": "b68cf518b31a60c1dc976949f2de7d938f40070e11081d209d86a89cbad49810"
+  },
+  "public/sfx/mechanical/mechanical_anchor-drag-snap_01.wav": {
+    "store": "library/sound/sfx/mechanical/mechanical_anchor-drag-snap_01.wav",
+    "sha256": "5fbbbdef3e338659acd23901032e5187324215d39286047fe790b387d05729d2"
+  },
+  "public/sfx/mechanical/mechanical_anchor-furrow-drag_01.wav": {
+    "store": "library/sound/sfx/mechanical/mechanical_anchor-furrow-drag_01.wav",
+    "sha256": "412d12e2582143946b305f4b64f28424a0c377736f4a6ad866dbb4fc7addc623"
+  },
+  "public/sfx/mechanical/mechanical_chain-clinks-underwater_01.wav": {
+    "store": "library/sound/sfx/mechanical/mechanical_chain-clinks-underwater_01.wav",
+    "sha256": "bc65defb6cf3fc67e5d94e644911f39fef2e6237b726ee334b116eaf2769d50d"
+  },
+  "public/sfx/mechanical/mechanical_chain-runout-heavy_01.wav": {
+    "store": "library/sound/sfx/mechanical/mechanical_chain-runout-heavy_01.wav",
+    "sha256": "91533bd516a8c8b63a3d56120fc7d25229b995ce5d3b908117310f0acd447994"
+  },
+  "public/sfx/mechanical/mechanical_hull-groan-distant_01.wav": {
+    "store": "library/sound/sfx/mechanical/mechanical_hull-groan-distant_01.wav",
+    "sha256": "5e49751a8ef8f06c899c0bd5769fee984d2008118549b9ac69e7c8498a032d5f"
+  },
+  "public/sfx/mechanical/mechanical_trawl-scrape-sand_01.wav": {
+    "store": "library/sound/sfx/mechanical/mechanical_trawl-scrape-sand_01.wav",
+    "sha256": "a2c642cd12520a53b0d7117c2a94a9ae8a23f99c0b15543c974b6ec34ba28cac"
+  },
+  "public/sfx/pulse/pulse_data-tick-sonar_01.wav": {
+    "store": "library/sound/sfx/pulse/pulse_data-tick-sonar_01.wav",
+    "sha256": "eee91fd7bf94461b05a6b154051a41617ef1d1e3b19cfaaa2c6c70f444b73c97"
+  },
+  "public/sfx/pulse/pulse_underwater-soft-thump_01.wav": {
+    "store": "library/sound/sfx/pulse/pulse_underwater-soft-thump_01.wav",
+    "sha256": "a11ec6c4653f8e3b63efc8ab3889e774cc9c5e9ef3c95dd6aa981cbfe2204dbf"
+  },
+  "public/sfx/reveal/reveal_glass-shimmer-soft_01.wav": {
+    "store": "library/sound/sfx/reveal/reveal_glass-shimmer-soft_01.wav",
+    "sha256": "89ff0fa14a783ff3b312762d7a00d391edf5df4f49cd01389238cbc9367901c7"
+  },
+  "public/sfx/reveal/reveal_glass-twinkle-sustain_01.wav": {
+    "store": "library/sound/sfx/reveal/reveal_glass-twinkle-sustain_01.wav",
+    "sha256": "7b375c36f69188a0f3272b965d7df38a80f5a83e5ee33c703cb5ce4e3479e136"
+  },
+  "public/sfx/stinger/stinger_low-muted-hit_01.wav": {
+    "store": "library/sound/sfx/stinger/stinger_low-muted-hit_01.wav",
+    "sha256": "47d98153c9092e3de68697db7369b266cad3c1ab0a6d37af71a6bad601b22cc0"
+  },
+  "public/sfx/stinger/stinger_marimba-call-ending_01.wav": {
+    "store": "library/sound/sfx/stinger/stinger_marimba-call-ending_01.wav",
+    "sha256": "8b7eb5cda6f07ea5ccf1085bf88b227237ad97ba7429e02623fffe6f00725ee6"
+  },
+  "public/sfx/stinger/stinger_marimba-turn-sting_01.wav": {
+    "store": "library/sound/sfx/stinger/stinger_marimba-turn-sting_01.wav",
+    "sha256": "e1d82b35dd764d0b93317e967bc932c67aff00712617a6560497758de466c998"
+  },
+  "public/sfx/tension/tension_underwater-riser-soft_01.wav": {
+    "store": "library/sound/sfx/tension/tension_underwater-riser-soft_01.wav",
+    "sha256": "3f789a26d8bb6df8a4a5b1269ce16be9ab45cfaf47bd9f061e46d5235ff1b95b"
+  },
+  "public/sfx/ui/ui_pop-soft-tail_01.wav": {
+    "store": "library/sound/sfx/ui/ui_pop-soft-tail_01.wav",
+    "sha256": "577c97f98eb76deb1d35676710f9a42fea29adcf3294e6559e1a6603b40e686c"
+  },
+  "public/sfx/vehicle/vehicle_motorway-to-hum_01.wav": {
+    "store": "library/sound/sfx/vehicle/vehicle_motorway-to-hum_01.wav",
+    "sha256": "7a0cb04ee24f8d632390abce62468fd202fa667e81bc3f80e9d22f30a178fe89"
+  },
+  "public/sfx/water/water_hose-flow-loop_01.wav": {
+    "store": "library/sound/sfx/water/water_hose-flow-loop_01.wav",
+    "sha256": "975bdff6ffe7b944db044333061b0fc85dbac67c646322caabf77b990159950d"
+  },
+  "public/sfx/water/water_hose-spray-loop_01.wav": {
+    "store": "library/sound/sfx/water/water_hose-spray-loop_01.wav",
+    "sha256": "5b49f81d1f4400356f0717405a39427364d417f0429ff41907cc6e71842dc8fa"
+  },
+  "public/sfx/water/water_splash-whoosh-dive_01.wav": {
+    "store": "library/sound/sfx/water/water_splash-whoosh-dive_01.wav",
+    "sha256": "559844d8d1772cb653be4fd1416a164a4f28422396c0eda90eaa45b99b2578a9"
+  }
+}

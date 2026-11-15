@@ -6,7 +6,7 @@ One row per concept the channel has made. Each concept has its own file `C<nn>.m
 
 ## How a new round is filed
 
-1. Preaw writes one file per concept, `C61.md` onward (next free ID: **C61**), with the pitch and the [ER08](../../../channels/edu/script.md) pitch check, and adds a row here with status `pitched` and the round ID (`R11`, ...).
+1. Preaw writes one file per concept, `C61.md` onward (next free ID: **C62**), with the pitch and the [ER08](../../../channels/edu/script.md) pitch check, and adds a row here with status `pitched` and the round ID (`R11`, ...).
 2. Film adds a `## Film annotation (W0.2)` section to each concept file of the round.
 3. After the user picks, the coordinator sets each row: `picked` (with the episode ID), `dropped`, or leaves `pitched`. Write the round's pick note (user's words, date) in `../delivery.md`.
 4. When the episode is published, set the row to `made`.
@@ -26,5 +26,6 @@ One row per concept the channel has made. Each concept has its own file `C<nn>.m
 | C39 | ถ้าหมัดตัวเท่าคน (the animal concept) | made | EDU-EP13-SHORT | R7 | [C39.md](C39.md) |
 | C37 | ถ้าฝนตกโดยไม่มีอากาศ | made | EDU-EP14-SHORT | R7 | [C37.md](C37.md) |
 | C43 | จิ้งจกบนเพดาน ห้อยคุณไว้ได้ทั้งตัว (animal) | made | EDU-EP15-SHORT | R8 | [C43.md](C43.md) |
+| C61 | ทำไมสายอินเทอร์เน็ตต้องอยู่ใต้ทะเล (และสมอเรือที่ตัดมัน) | picked | EDU-EP17-SHORT | user | [C61.md](C61.md) |
 
 Pitch lessons from past rounds: [lessons.md](lessons.md).

@@ -145,3 +145,18 @@ W2 done 2026-11-09: Film brief R1 (VD01–VD31), storyboard ROWS-R1.0 (25 shots,
 
 **Now:** W0, W1 done 2026-11-10 (script R2 approved, read 49.2 s, video ≈57.5 s); W2 done 2026-11-10 (20 shots, review page https://claude.ai/artifact/Pn33VzZ1qBhBJwmjXvhAXn). Waiting for the user's storyboard verdicts, then W3. Detail: [ep15/task.md](ep15/task.md).
 
+
+## EDU-EP17-SHORT
+
+**Now:** EP17 delivered and published with cover C8 (2026-11-15); W8 done **Next:** Commit + PR the branch (user decision)
+
+- [x] W0 Ideation (C61, user concept 2026-11-14; Short Thai)
+- [x] W1 Script lock (R1.2.1 approved by user 2026-11-14, structured question)
+- [x] W2 Brief and storyboard (ROWS-R1.1, 25/25 shots passed by user 2026-11-15)
+- [x] W3 Look frames and storyboard pass (LF01-LF07 locked by user 2026-11-15; viewer check 11/11)
+- [x] W4 Voice lock (Kore 1.05 full read 53.82 s, MAN Algenib V01-V03, sister Aoede laugh; locked by user 2026-11-15)
+- [ ] W5 Draft
+- [x] W5.3  Draft passed with the final cut (user, 2026-11-15, chat, full-size final cut passed incl. stroke-only captions on pale backgrounds); Editor draft cut v2 history in build-notes
+- [x] W6  Final passed (25/25 shots, user, 2026-11-15, chat; final cut _final_cut.full.mp4 1709 f, 56.97 s, stroke-only captions on pale backgrounds accepted)
+- [x] W7  Pinned (25/25 scenes, 2026-11-15, `pin.mjs EDU-EP17-SHORT pin-rows ep17/review-rows.json --ending=A_fade`, render 2026-11-15T06:37Z; ending is A_fade, the registry ending the final cut used, not C_seamless)
+- [ ] W8  Deliver: W8.1/W8.2 video done 2026-11-15 (delivery render 25/25 reused, -14.0 LUFS, -1.5 dBTP, 56.97 s; published without cover to publish/edu/EDU/EDU-EP17-SHORT/); OPEN: no cover picked (W8.0), so W8.2 is not ticked; W8.3 posting is the user's

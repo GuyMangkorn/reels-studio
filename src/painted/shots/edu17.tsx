@@ -1,0 +1,58 @@
+import type {PaintedShot} from '../shot';
+import {shot as shot_S01_B01_SH01} from '../edu17/shots/S01-B01-SH01';
+import {shot as shot_S01_B01_SH02} from '../edu17/shots/S01-B01-SH02';
+import {shot as shot_S01_B01_SH03} from '../edu17/shots/S01-B01-SH03';
+import {shot as shot_S01_B01_SH04} from '../edu17/shots/S01-B01-SH04';
+import {shot as shot_S01_B01_SH05} from '../edu17/shots/S01-B01-SH05';
+import {shot as shot_S01_B02_SH01} from '../edu17/shots/S01-B02-SH01';
+import {shot as shot_S01_B02_SH02} from '../edu17/shots/S01-B02-SH02';
+import {shot as shot_S01_B02_SH03} from '../edu17/shots/S01-B02-SH03';
+import {shot as shot_S01_B03_SH01} from '../edu17/shots/S01-B03-SH01';
+import {shot as shot_S01_B03_SH02} from '../edu17/shots/S01-B03-SH02';
+import {shot as shot_S01_B03_SH03} from '../edu17/shots/S01-B03-SH03';
+import {shot as shot_S01_B04_SH01} from '../edu17/shots/S01-B04-SH01';
+import {shot as shot_S01_B04_SH02} from '../edu17/shots/S01-B04-SH02';
+import {shot as shot_S01_B04_SH03} from '../edu17/shots/S01-B04-SH03';
+import {shot as shot_S01_B04_SH04} from '../edu17/shots/S01-B04-SH04';
+import {shot as shot_S01_B04_SH05} from '../edu17/shots/S01-B04-SH05';
+import {shot as shot_S01_B05_SH01} from '../edu17/shots/S01-B05-SH01';
+import {shot as shot_S01_B05_SH02} from '../edu17/shots/S01-B05-SH02';
+import {shot as shot_S01_B05_SH03} from '../edu17/shots/S01-B05-SH03';
+import {shot as shot_S01_B05_SH04} from '../edu17/shots/S01-B05-SH04';
+import {shot as shot_S01_B05_SH05} from '../edu17/shots/S01-B05-SH05';
+import {shot as shot_S01_B06_SH01} from '../edu17/shots/S01-B06-SH01';
+import {shot as shot_S01_B06_SH02} from '../edu17/shots/S01-B06-SH02';
+import {shot as shot_S01_B06_SH03} from '../edu17/shots/S01-B06-SH03';
+import {shot as shot_S01_B06_SH04} from '../edu17/shots/S01-B06-SH04';
+// new-shot: imports
+
+// edu17 inventory. One shot, one file (docs/sequence-workflow.md#one-shot-one-file): list each shot file here and
+// do nothing else with it, so a fix to one shot repaints only that shot. Add shots with scripts/new-shot.mjs.
+export const edu17Shots: PaintedShot[] = [
+  shot_S01_B01_SH01,
+  shot_S01_B01_SH02,
+  shot_S01_B01_SH03,
+  shot_S01_B01_SH04,
+  shot_S01_B01_SH05,
+  shot_S01_B02_SH01,
+  shot_S01_B02_SH02,
+  shot_S01_B02_SH03,
+  shot_S01_B03_SH01,
+  shot_S01_B03_SH02,
+  shot_S01_B03_SH03,
+  shot_S01_B04_SH01,
+  shot_S01_B04_SH02,
+  shot_S01_B04_SH03,
+  shot_S01_B04_SH04,
+  shot_S01_B04_SH05,
+  shot_S01_B05_SH01,
+  shot_S01_B05_SH02,
+  shot_S01_B05_SH03,
+  shot_S01_B05_SH04,
+  shot_S01_B05_SH05,
+  shot_S01_B06_SH01,
+  shot_S01_B06_SH02,
+  shot_S01_B06_SH03,
+  shot_S01_B06_SH04,
+  // new-shot: shots
+];

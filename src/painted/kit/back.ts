@@ -2,7 +2,7 @@ import {BONE, H, SKIRT_LATE, bodyFrame, ikElbow, type CastDef, type FigAnchors, 
 import {INK, VD18, capsule, ell, glaze, inkLine, limb, lineOf, modelPart, solid, toneOf, washAt} from './draw';
 import {hatFront} from './gear';
 import {CHIN, HEAD_SPAN, headOutline, type HeadStyle} from './head';
-import {hairFront, isNewCut} from './hair';
+import {hairFront, isNewCut, spikes} from './hair';
 import {lerp, mixColor, type Painter, type Pt} from './painter';
 import {clipHalf, quarterGeo} from './quarter';
 
@@ -485,6 +485,8 @@ export const drawFigureBack = (p: Painter, def: CastDef, g: Pt, unit: number, po
     const volume = nc?.back && (cut === 'curly' || cut === 'perm') ? nc.back[0] : null;
     const crown: Pt[] = cut === 'bowl' ? [...cap(1.1, 1.14, -0.04), [0.99, 0.3], [0.8, 0.5], [0, 0.54], [-0.8, 0.5], [-0.99, 0.3]]
       : cut === 'pixie' ? [...cap(1.08, 1.13, -0.04), ...NAPE(0.9)]
+      // Spiky: the front's spike crown seen from behind (mirrored, left to right), so the silhouette matches the front and profile views.
+      : cut === 'spiky' ? [...spikes().map(([x, y]): Pt => [-x, y]).reverse(), ...NAPE(1.0)]
       : [...cap(1.06, 1.1, -0.03), ...NAPE(1.0)];
     hairFill(hairBase, volume ?? crown, false, !!volume);
     if (cut === 'tied') fill(style.hair, H2(ell(0.05, -1.12, 0.32, 0.22, 18).map((q) => q as Pt)), true, 6);

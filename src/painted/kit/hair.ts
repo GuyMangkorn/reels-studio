@@ -42,8 +42,9 @@ const bumpy = (x0: number, x1: number, y: number, bumps: number, h: number, n = 
 const band = (x: number, y: number, w: number, h: number, a: number): Pt[] =>
   ([[-w, -h], [w, -h], [w, h], [-w, h]] as Pt[]).map(([u, v]): Pt => [x + u * Math.cos(a) - v * Math.sin(a), y + u * Math.sin(a) + v * Math.cos(a)]);
 
-/** Spiky crown: valleys on the skull, tips pushed out; right-to-left edge is a zigzag fringe. */
-const spikes = (): Pt[] => {
+/** Spiky crown: valleys on the skull, tips pushed out; right-to-left edge is a zigzag fringe. Exported for the back view (`back.ts`), which
+ *  mirrors it so the spikes read the same from behind (EDU-EP17 LF01/LF04, 15 Nov 2026: the back view drew a smooth round cap). */
+export const spikes = (): Pt[] => {
   const pts: Pt[] = [];
   const N = 9;
   for (let i = 0; i <= N; i++) {
