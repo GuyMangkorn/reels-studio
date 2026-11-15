@@ -146,6 +146,50 @@ W2 done 2026-11-09: Film brief R1 (VD01–VD31), storyboard ROWS-R1.0 (25 shots,
 **Now:** W0, W1 done 2026-11-10 (script R2 approved, read 49.2 s, video ≈57.5 s); W2 done 2026-11-10 (20 shots, review page https://claude.ai/artifact/Pn33VzZ1qBhBJwmjXvhAXn). Waiting for the user's storyboard verdicts, then W3. Detail: [ep15/task.md](ep15/task.md).
 
 
+## EDU-EP19-SHORT
+
+**Now:** Boat fact-check of R1 done (ready-for-storyboard, no must-fix; optional O1–O8) **Next:** W1.4 narrator sample/length check, then user approval (W1.5)
+
+- [x] W0 Ideation — C72, R13, user pick 2026-11-15 (dog Short)
+  - [x] W0.1 Preaw concepts (concepts/C72.md)
+  - [ ] W0.2 Film annotation (not recorded for C72)
+  - [x] W0.3 User picks a concept
+- [ ] W1 Script lock
+  - [x] W1.1 Boat research R1 (ep19/research.md, 2026-11-15)
+  - [x] W1.2 Preaw script R1 (ep19/short/script.md, 2026-11-15; draft, timing estimated ≈ 48.5 s at 1.08, ≈ 46 s at 1.15)
+  - [x] W1.3 Boat fact-check (R1 2026-11-15, ready-for-storyboard, ep19/short/fact-check.md)
+  - [ ] W1.4 Length check
+  - [ ] W1.5 User approves the script
+- [ ] W2 Brief and storyboard
+- [ ] W3 Look frames and storyboard pass
+- [ ] W4 Voice lock
+- [ ] W5 Draft
+- [ ] W6 Final
+- [ ] W7 Pinned
+- [ ] W8 Deliver
+
+## EDU-EP18-SHORT
+
+**Now:** Boat fact-check of R1 done (revision-required, M1); Preaw script R2 applies M1 to L17–L18 (ep18/short/script.md, 2026-11-15; est. ≈ 56.5 s at 1.08) Boat recheck of R2 done: ready-for-storyboard, no must-fix. **Next:** W1.4 narrator sample/length check, then user approval (W1.5)
+
+- [x] W0 Ideation — C69, R13, user pick 2026-11-15 (twist: the ~500 a year was never counted; user override of ER07/ER10 recorded in delivery.md)
+  - [x] W0.1 Preaw concepts (concepts/C69.md)
+  - [ ] W0.2 Film annotation (not recorded for C69)
+  - [x] W0.3 User picks a concept
+- [ ] W1 Script lock
+  - [x] W1.1 Boat research R1 (hippo-research/research.md, 2026-11-15)
+  - [x] W1.2 Preaw script R1 (ep18/short/script.md, 2026-11-15; draft, timing estimated ≈ 55 s at 1.08, ≈ 52.5 s at 1.15)
+  - [x] W1.3 Boat fact-check (R1 revision-required M1; R2 recheck 2026-11-15: ready-for-storyboard, no must-fix)
+  - [ ] W1.4 Length check
+  - [ ] W1.5 User approves the script
+- [ ] W2 Brief and storyboard
+- [ ] W3 Look frames and storyboard pass
+- [ ] W4 Voice lock
+- [ ] W5 Draft
+- [ ] W6 Final
+- [ ] W7 Pinned
+- [ ] W8 Deliver
+
 ## EDU-EP17-SHORT
 
 **Now:** EP17 delivered and published with cover C8 (2026-11-15); W8 done **Next:** Commit + PR the branch (user decision)
