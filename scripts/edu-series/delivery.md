@@ -10,6 +10,8 @@
 
 | Deliverable | Stage / Next owner | Script | Evidence / open items |
 | --- | --- | --- | --- |
+| EDU-EP20-SHORT | Writing handoff complete — SCRIPT-R1 + HOOK-R1, FACT-R1 ready-for-storyboard; W1.4/W1.5 open | [script](ep20/short/script.md) | [episode record](ep20/delivery.md), [task](ep20/task.md), [Hook Guide](ep20/hook-guide.md); writing scope only |
+| EDU-EP21-SHORT | Writing handoff complete — SCRIPT-R1 + HOOK-R1, FACT-R1 ready-for-storyboard; W1.4/W1.5 open | [script](ep21/short/script.md) | [episode record](ep21/delivery.md), [task](ep21/task.md), [Hook Guide](ep21/hook-guide.md); writing scope only |
 | EDU-EP01-SHORT | W5.1 timed sheets ready-for-dev (EDU-SHEETS-R1.1, 1860 f = 62.00 s); W5.2 Boss picture draft built 2026-11-04 (composition `EDU-EP01-SHORT`, `src/videos/edu-ep01/index.ts`); W5.3 Editor Draft assembly built 2026-11-04 (narration, captions + shade 0.30, tag, name card, sound stem, 23 draft clips, review page not yet published); next user Draft review | [research.md](research.md); [EDU-SCRIPT-R1.1](short/script.md) ([fact-check](short/fact-check.md)) | voice: Achernar candidate v1, **audio-measured** 59.53 s ([narration-measure.json](short/narration-measure.json), store `projects/edu/EDU/audio/voice-lock-v1/`); open: user approval W4.3, L06 gasp performer, Film sets the jolt gap (3.02 s placeholder) |
 
 ## EDU-EP02-SHORT (หัวหอมแก้แค้น, C1)

@@ -1,6 +1,6 @@
 # User taste
 
-**Status:** Requirement to read before painting a look frame, thumbnail or plate, and before a [viewer check](sequence-workflow.md#viewer-check) (user, 3 Nov 2026). The entries are Reference: the user's repeated review notes, each with its evidence. A brief or scene sheet may override an entry for one shot with a recorded reason.
+**Status:** Requirement to read before painting a look frame, thumbnail or plate, and before a [viewer check](sequence-workflow.md#viewer-check) (user, 3 Nov 2026). For analytics or research presentations, read [UT16](#ut-data-presentation) (user, 15 Nov 2026). The entries are Reference: the user's review notes and explicit preferences, each with its evidence. A brief or scene sheet may override an entry for one shot with a recorded reason.
 
 Why this file exists: in WDG-EP01-SHORT one look frame went through seven painted rounds, and KSO-EP01-SHORT took three Draft fix rounds on arms and mouths. Most of those notes had been given before on another episode. An agent checks its picture against this list before the user sees it.
 
@@ -56,3 +56,8 @@ Why this file exists: in WDG-EP01-SHORT one look frame went through seven painte
 
 <a id="ut-edu-end-tag"></a>
 - **UT15 — Education series ending sound** moved (11 Nov 2026) to the edu channel: [channels/edu/channel.md](../channels/edu/channel.md#ut-edu-end-tag).
+
+## Data and research presentation
+
+<a id="ut-data-presentation"></a>
+- **UT16 — Use the approved analytics dashboard as a flexible presentation reference.** For data-rich answers, use readable charts, comparisons and useful interactions when they help the user inspect the evidence and decide. The [2026-11-15 channel analytics](../channels/edu/analytics/2026-11-15.md) and its inline HTML dashboard are an approved example, not a fixed layout, chart set or minimum amount of detail. The approved HTML is preserved in the asset store at `projects/edu/EDU/research/2026-11-15-analytics/dashboard.html`. Adapt the visual form and depth to the question and available evidence; richer or smaller presentations are both welcome. Evidence: user, 15 Nov 2026, explicitly asked to retain this example for later presentations: "ไม่ fixed ว่าเป็นแบบนี้เลยนะ ... น้อยกว่าก็ได้ขึ้นอยู่กับข้อมูล". Scope: coordinator-facing analytics/research presentation across channels; this does not change either channel's video look.
