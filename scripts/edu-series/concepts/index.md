@@ -6,7 +6,7 @@ One row per concept the channel has made. Each concept has its own file `C<nn>.m
 
 ## How a new round is filed
 
-1. Preaw writes one file per concept, `C61.md` onward (next free ID: **C73**), with the pitch and the [ER08](../../../channels/edu/script.md) pitch check, and adds a row here with status `pitched` and the round ID (`R11`, ...).
+1. Preaw writes one file per concept, `C61.md` onward (next free ID: **C82**), with the pitch and the [ER08](../../../channels/edu/script.md) pitch check, and adds a row here with status `pitched` and the round ID (`R11`, ...).
 2. Film adds a `## Film annotation (W0.2)` section to each concept file of the round.
 3. After the user picks, the coordinator sets each row: `picked` (with the episode ID), `dropped`, or leaves `pitched`. Write the round's pick note (user's words, date) in `../delivery.md`.
 4. When the episode is published, set the row to `made`.
@@ -33,5 +33,14 @@ One row per concept the channel has made. Each concept has its own file `C<nn>.m
 | C70 | หน้าอ้อนที่หมาป่าทำไม่ได้ (dog) | pitched | - | R13 | [C70.md](C70.md) |
 | C71 | หมากินน้ำเลอะ เพราะมันกินเก่ง (dog) | pitched | - | R13 | [C71.md](C71.md) |
 | C72 | ห้าก้าวก็รู้ว่าคุณไปทางไหน (dog) | picked | EDU-EP19-SHORT | R13 | [C72.md](C72.md) |
+| C73 | ทำไมเสียงตัวเองในคลิปฟังแปลก | pitched | - | R14 | [C73.md](C73.md) |
+| C74 | ทำไมนิ้วเหี่ยวตอนแช่น้ำ | pitched | - | R14 | [C74.md](C74.md) |
+| C75 | ทำไมน้ำทะเลเค็ม ทั้งที่แม่น้ำจืด | pitched | - | R14 | [C75.md](C75.md) |
+| C76 | ทำไมนกเกาะสายไฟแล้วไม่ถูกไฟช็อต | pitched | - | R14 | [C76.md](C76.md) |
+| C77 | ทำไมใบไม้แก่กลายเป็นสีเหลือง | pitched | - | R14 | [C77.md](C77.md) |
+| C78 | ทำไมหน้าต่างเครื่องบินไม่มีมุมเหลี่ยม (wild card) | pitched | - | R14 | [C78.md](C78.md) |
+| C79 | ทำไมแมวตกจากที่สูงแล้วลงสี่ขาได้ทุกที (animal) | pitched | - | R14 | [C79.md](C79.md) |
+| C80 | ทำไมยีราฟก้มหัวกินน้ำแล้วไม่เป็นลม (animal) | pitched | - | R14 | [C80.md](C80.md) |
+| C81 | ทำไมวัวกระทิงพุ่งใส่ผ้าแดง ทั้งที่มันไม่ได้เกลียดสีแดง (animal) | pitched | - | R14 | [C81.md](C81.md) |
 
 Pitch lessons from past rounds: [lessons.md](lessons.md).
