@@ -1,3 +1,4 @@
+// test-scope: shared
 import {test} from 'node:test';
 import assert from 'node:assert/strict';
 import {timelineFrames, validateTimeline} from '../src/scenes/timeline';
