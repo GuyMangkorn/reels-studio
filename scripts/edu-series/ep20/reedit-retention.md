@@ -9,7 +9,7 @@ Revision: EDU-EP20-RETENTION-R1, Editor, 2026-11-16. Scope: canonical narration 
 - Existing `narration.py` PCM decoding verifies **2,307,537 mono samples at 48 kHz** before and after MP3 encoding: exact decoded duration **48.0736875 s**; ffprobe container duration **48.073688 s**. Zero-lag PCM correlation is **0.9999982602**, signal-to-encoding-error ratio **30.4402 dB**. MP3 is lossy, so neither encoded bytes nor decoded samples are claimed identical to the WAV. Equal decoded sample count and zero-lag alignment establish no conversion timing shift; this is not a new listening or pronunciation review.
 - Added **`src/videos/edu-ep20/EDU-EP20-SHORT.amplitude.json`**, SHA256 `c0e630aa377889e25ab57f887a6191881dcd8c57d006d86af9356c0588ce458d`. Uses the existing `narration.py` convention: decode the canonical MP3 to mono 48 kHz; RMS over 1,600 samples per 30 fps frame; divide by the peak RMS; round to four decimals. **1,443 values**, including the final partial block; range **0.0003–1.0**. The envelope covers the narration duration, not the video's silent ending tail.
 
-Runtime status of the canonical MP3/envelope: **exists-unintegrated** intentionally. They are retention inputs for Git and later re-editing, not replacements in this approved timeline. Integration would be a later edit with the usual pinned-scene checks. Both new files are untracked and ready for the coordinator to commit; this Editor pass did not commit them. Conversion evidence: `out/logs/edu20-retention-audio.txt`, `out/qa/edu20/retention/audio-identity.json`.
+Runtime status of the canonical MP3/envelope: **exists-unintegrated** intentionally. They are retention inputs for Git and later re-editing, not replacements in this approved timeline. Integration would be a later edit with the usual pinned-scene checks. The coordinator subsequently committed both files with the final production source checkpoint below; this Editor pass itself did not commit them. Conversion evidence: `out/logs/edu20-retention-audio.txt`, `out/qa/edu20/retention/audio-identity.json`.
 
 ## Delivered-picture reference set
 
@@ -34,3 +34,7 @@ Stills render time **15.69 s**. Logs: `out/logs/edu20-retention-references.txt`,
 ## Coordinator integration
 
 Index this handoff, canonical MP3 and amplitude JSON in `docs/context-map.md`, and commit them with the production sources. Preserve the runtime WAV's existing asset lock and immutable source. Record the reference set and sampled PSNR in the final task/delivery/build notes. All Editor jobs are complete; no approval or production re-render is needed for these retention-only inputs.
+
+## Final source checkpoint — coordinator
+
+Final production source snapshot: `bf9b167eb1a9161d26c0454d17277a5b1a1410a1` on `GuyMangkorn/ep20-helium-continuation`. It contains the exact checked runtime/scene/cover sources, asset lock, canonical approved-read MP3, amplitude sidecar and scene/review handoffs. The delivery and reference store paths retain their historical c420a2c dirty-render labels; use this checkpoint, rather than baseline c420a2c alone, with `store.py fetch` to recover the final inputs. Runtime WAV cache stays out of Git and is restored from its verified asset lock. No remote push or posting occurred.

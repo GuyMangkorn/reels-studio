@@ -67,3 +67,7 @@ This is one of two different-content Shorts. Topic, hook and audience effects re
 **W5.3 Draft passed, 2026-11-16:** user replied "ผ่าน" to the Draft round (EDU-EP20-SS-R5, page v3). Pass covers outro melody A and narration R2 (L13 spliced; nobody has listened to the seam). Next: Boss caption precision fix, then W6 full-size final cut.
 
 **W6 Final published, 2026-11-16:** same private Artifact https://claude.ai/artifact/K3HpSYNFUmvqZmeCEC1S4b (v4), Final tab: 1080x1920 final cut out/EDU-EP20-SHORT/clips/_final_cut.full.mp4 (SHA256 3f36ef79...), 540 proxy on the page; L03c split into L03c1/L03c2. User Final verdicts pending; audio never listened to; no pins, no delivery.
+
+## Final source checkpoint — coordinator
+
+Final production source snapshot: `bf9b167eb1a9161d26c0454d17277a5b1a1410a1` on `GuyMangkorn/ep20-helium-continuation`. It contains the exact checked runtime/scene/cover sources, asset lock, canonical approved-read MP3, amplitude sidecar and scene/review handoffs. The delivery and reference store paths retain their historical c420a2c dirty-render labels; use this checkpoint, rather than baseline c420a2c alone, with `store.py fetch` to recover the final inputs. Runtime WAV cache stays out of Git and is restored from its verified asset lock. No remote push or posting occurred.
