@@ -1,0 +1,297 @@
+{
+ "deliverable": "EDU-EP18-SHORT",
+ "step": "W4 voice lock step 2 (full read)",
+ "script_revision": "EDU-EP18-SCRIPT-R2 (v1 read); L12 swapped for EDU-EP18-SCRIPT-R2.1 in narration v2",
+ "date": "2026-11-16",
+ "timing_status": "audio-measured (NOT LISTENED by Editor); not yet user-approved; not placed in public/",
+ "read": {
+  "file": "out/ep18/voice/full/ep18_nar_kore_x1.05.wav",
+  "raw": "out/ep18/voice/full/ep18_nar_kore_raw.wav (say output, loudnorm -16)",
+  "tts_text": "out/ep18/voice/full/ep18_nar_tts.txt",
+  "model": "gemini-3.8-flash-tts",
+  "voice": "Kore",
+  "style": "warm, friendly, smiling storyteller, speaking rapidly",
+  "atempo": 1.05,
+  "loudness": "loudnorm two-pass I=-16 TP=-1.5 (measured -16.0 LUFS, -1.5 dBTP)",
+  "requests": 1,
+  "retries": 0,
+  "sample_rate": 48000,
+  "channels": 1,
+  "pause_surgery": "none",
+  "ellipsis": "sent as comma",
+  "fps": 30
+ },
+ "file_s": 56.625917,
+ "speech_start_s": 0.189,
+ "speech_end_s": 56.198,
+ "method": "ffmpeg silencedetect -25 dB / 0.08 s; gaps mapped to lines in script order and cross-checked with char-level faster-whisper times (rough, Thai +-0.3 s) and syllable-position; line onset = end of preceding gap, line end = start of following gap. L16|L17 = merged 0.63 s pause (two adjacent detections 48.618-48.958, 48.964-49.247).",
+ "lines": {
+  "L01": {
+   "on_s": 0.189,
+   "end_s": 2.991,
+   "on_f": 6,
+   "end_f": 90,
+   "dur_s": 2.802
+  },
+  "L02": {
+   "on_s": 3.322,
+   "end_s": 5.009,
+   "on_f": 100,
+   "end_f": 150,
+   "dur_s": 1.687
+  },
+  "L03": {
+   "on_s": 5.456,
+   "end_s": 7.937,
+   "on_f": 164,
+   "end_f": 238,
+   "dur_s": 2.481
+  },
+  "L04": {
+   "on_s": 8.317,
+   "end_s": 11.039,
+   "on_f": 250,
+   "end_f": 331,
+   "dur_s": 2.722
+  },
+  "L05": {
+   "on_s": 11.343,
+   "end_s": 14.948,
+   "on_f": 340,
+   "end_f": 448,
+   "dur_s": 3.605
+  },
+  "L06": {
+   "on_s": 15.561,
+   "end_s": 18.282,
+   "on_f": 467,
+   "end_f": 548,
+   "dur_s": 2.72
+  },
+  "L07": {
+   "on_s": 18.749,
+   "end_s": 23.075,
+   "on_f": 562,
+   "end_f": 692,
+   "dur_s": 4.327
+  },
+  "L08": {
+   "on_s": 23.441,
+   "end_s": 25.003,
+   "on_f": 703,
+   "end_f": 750,
+   "dur_s": 1.562
+  },
+  "L09": {
+   "on_s": 25.444,
+   "end_s": 26.841,
+   "on_f": 763,
+   "end_f": 805,
+   "dur_s": 1.398
+  },
+  "L10": {
+   "on_s": 27.419,
+   "end_s": 30.028,
+   "on_f": 823,
+   "end_f": 901,
+   "dur_s": 2.609
+  },
+  "L11": {
+   "on_s": 30.418,
+   "end_s": 32.935,
+   "on_f": 913,
+   "end_f": 988,
+   "dur_s": 2.517
+  },
+  "L12": {
+   "on_s": 33.379,
+   "end_s": 35.717,
+   "on_f": 1001,
+   "end_f": 1072,
+   "dur_s": 2.338
+  },
+  "L13": {
+   "on_s": 36.199,
+   "end_s": 38.711,
+   "on_f": 1086,
+   "end_f": 1161,
+   "dur_s": 2.512
+  },
+  "L14": {
+   "on_s": 39.08,
+   "end_s": 41.968,
+   "on_f": 1172,
+   "end_f": 1259,
+   "dur_s": 2.888
+  },
+  "L15": {
+   "on_s": 42.554,
+   "end_s": 46.062,
+   "on_f": 1277,
+   "end_f": 1382,
+   "dur_s": 3.508
+  },
+  "L16": {
+   "on_s": 46.552,
+   "end_s": 48.618,
+   "on_f": 1397,
+   "end_f": 1459,
+   "dur_s": 2.066
+  },
+  "L17": {
+   "on_s": 49.247,
+   "end_s": 50.947,
+   "on_f": 1477,
+   "end_f": 1528,
+   "dur_s": 1.7
+  },
+  "L18": {
+   "on_s": 51.17,
+   "end_s": 56.198,
+   "on_f": 1535,
+   "end_f": 1686,
+   "dur_s": 5.027
+  }
+ },
+ "boundary_gaps": {
+  "L01|L02": [
+   2.991,
+   3.322
+  ],
+  "L02|L03": [
+   5.009,
+   5.456
+  ],
+  "L03|L04": [
+   7.937,
+   8.317
+  ],
+  "L04|L05": [
+   11.039,
+   11.343
+  ],
+  "L05|L06": [
+   14.948,
+   15.561
+  ],
+  "L06|L07": [
+   18.282,
+   18.749
+  ],
+  "L07|L08": [
+   23.075,
+   23.441
+  ],
+  "L08|L09": [
+   25.003,
+   25.444
+  ],
+  "L09|L10": [
+   26.841,
+   27.419
+  ],
+  "L10|L11": [
+   30.028,
+   30.418
+  ],
+  "L11|L12": [
+   32.935,
+   33.379
+  ],
+  "L12|L13": [
+   35.717,
+   36.199
+  ],
+  "L13|L14": [
+   38.711,
+   39.08
+  ],
+  "L14|L15": [
+   41.968,
+   42.554
+  ],
+  "L15|L16": [
+   46.062,
+   46.552
+  ],
+  "L16|L17": [
+   48.618,
+   49.247
+  ],
+  "L17|L18": [
+   50.947,
+   51.17
+  ]
+ },
+ "internal_gaps": {
+  "L03…": [
+   6.198,
+   6.318
+  ],
+  "L05 mid": [
+   12.129,
+   12.607
+  ],
+  "L05…": [
+   13.526,
+   13.863
+  ],
+  "L06…": [
+   16.788,
+   17.038
+  ],
+  "L12…": [
+   34.695,
+   34.818
+  ],
+  "L15…": [
+   43.682,
+   44.031
+  ],
+  "L16…": [
+   47.571,
+   47.933
+  ],
+  "L18…": [
+   53.295,
+   53.694
+  ]
+ },
+ "confidence_notes": {
+  "L03…": "weak: only 0.12 s dip at 6.20 s (word-internal gap 5.66 s 0.13 s is the alternative)",
+  "L07|L08": "medium: 0.37 s gap at 23.08, whisper has no L08 words",
+  "L10|L11": "medium: 0.39 s gap at 30.03; two weak dips at 28.04/28.26 are inside L10",
+  "L11|L12": "medium: 0.51 s gap at 32.93 (0.11 s dip at 32.54 is inside L11)",
+  "L13|L14": "medium: 0.37 s gap at 38.71",
+  "others": "high (gap >= 0.3 s and whisper onset within 0.3 s)",
+  "L12 (v2)": "measured by silencedetect -25 dB / 0.08 s on narration-v2 (high); v1 L11|L12 note unchanged for the gap start"
+ },
+ "r21_l12_swap": {
+  "date": "2026-11-16",
+  "file": "public/narration/EDU-EP18-SHORT-narration-v2.wav",
+  "script": "scripts/edu-series/ep18/short/narration-l12-swap.py",
+  "new_text": "แต่ที่หนึ่ง… ตัวเล็กนิดเดียว แต่ฆ่าได้มากกว่านั้นอีก",
+  "tts": "1 request, gemini-3.8-flash-tts, Kore, same style; text = L11 lead-in + L12 (ellipsis as comma); atempo 1.05; gain -0.8 dB (clip -15.3 LUFS -> -16.1 like L11 -16.1 / L13 -16.2, peak -2.4 dBFS); no loudnorm pass on the clip",
+  "takes": 1,
+  "raw": "out/ep18/voice/l12/l11l12_raw.wav",
+  "clip": "out/ep18/voice/l12/l12_x1.05.wav",
+  "fit": "speech onset 2 f earlier (33.378 s) and 0.10 s cut from the 0.238 s pause after \"แต่ที่หนึ่ง\" so L12 end stays at v1 end; natural unfitted length 2.447 s (+0.159 s = +4.8 f)",
+  "v1_L12": {
+   "on_s": 33.445,
+   "end_s": 35.733,
+   "on_f": 1003,
+   "end_f": 1072,
+   "dur_s": 2.288
+  },
+  "v2_L12": {
+   "on_s": 33.379,
+   "end_s": 35.717,
+   "on_f": 1001,
+   "end_f": 1072,
+   "dur_s": 2.338
+  },
+  "file_s": 56.625917,
+  "others": "every sample outside file 33.340-35.966 s identical to v1 (checked)",
+  "listened": "no"
+ }
+}

@@ -214,7 +214,7 @@ W2 done 2026-11-09: Film brief R1 (VD01–VD31), storyboard ROWS-R1.0 (25 shots,
 
 ## EDU-EP18-SHORT
 
-**Now:** Boat fact-check of R1 done (revision-required, M1); Preaw script R2 applies M1 to L17–L18 (ep18/short/script.md, 2026-11-15; est. ≈ 56.5 s at 1.08) Boat recheck of R2 done: ready-for-storyboard, no must-fix. **Next:** W1.4 narrator sample/length check, then user approval (W1.5)
+**Now:** Boat fact-check of R1 done (revision-required, M1); Preaw script R2 applies M1 to L17–L18 (ep18/short/script.md, 2026-11-15; est. ≈ 56.5 s at 1.08) Boat recheck of R2 done: ready-for-storyboard, no must-fix. W1.4 length check done (≈ 56.5–62 s, cap 63 s). W1.5 approved by user (R2, 2026-11-15). W2.1/W2.2 done (Film, 2026-11-15): brief EDU-EP18-BRIEF-R1 + untimed rows EDU-EP18-ROWS-R1.0 (24 shots, 4 questions), review page: pending. **Next:** coordinator publishes the storyboard page (W2.3 published 2026-11-15 https://claude.ai/artifact/6N87bZ4ad7yffD1nj4wYVw (ROWS-R1.0, 24 shots, db declared; verdicts under reviews/<shot>@board; Q1-Q4 answered, see delivery.md)) and asks Q1–Q4; then W3 look frames (Film/Boss) and W4 voice lock (Editor)
 
 - [x] W0 Ideation — C69, R13, user pick 2026-11-15 (twist: the ~500 a year was never counted; user override of ER07/ER10 recorded in delivery.md)
   - [x] W0.1 Preaw concepts (concepts/C69.md)
@@ -224,15 +224,33 @@ W2 done 2026-11-09: Film brief R1 (VD01–VD31), storyboard ROWS-R1.0 (25 shots,
   - [x] W1.1 Boat research R1 (hippo-research/research.md, 2026-11-15)
   - [x] W1.2 Preaw script R1 (ep18/short/script.md, 2026-11-15; draft, timing estimated ≈ 55 s at 1.08, ≈ 52.5 s at 1.15)
   - [x] W1.3 Boat fact-check (R1 revision-required M1; R2 recheck 2026-11-15: ready-for-storyboard, no must-fix)
-  - [ ] W1.4 Length check
-  - [ ] W1.5 User approves the script
-- [ ] W2 Brief and storyboard
+  - [x] W1.4 Length check (projection, no full read, 2026-11-15): 228 syll; at the EP16 Kore 1.08 locked-read rate (215 syll in 51.9 s speech incl. pauses = 4.14/s) narration ≈ 55 s, + wordless beats and 2 s hold; script's own estimate ≈ 56.5 s. Range ≈ 56.5–62 s vs target 50–60 s, cap 63 s (+5 %): pass, thin margin at the high end; trims ready (T1 cut L08 −1.9 s, T2 cut "ลองเอาไปเทียบดู" from L05 −0.9 s). Re-measure at voice lock (W4)
+  - [x] W1.5 User approves the script (R2, 2026-11-15, structured question)
+- [x] W2 Brief and storyboard (Storyboard passed 24/24 shots (user, 2026-11-15, page verdicts `ok` + chat "ตรวจละ ผ่าน"; ROWS-R1.0).)
+  - [x] W2.1 Film brief (text) — EDU-EP18-BRIEF-R1 on script R2 (ep18/short/film-brief.md, 2026-11-15; VD01–VD14, N1–N14, look frames LF01/LF02/LF02B/LF03/LF03B planned + LF04 optional)
+  - [x] W2.2 Film storyboard rows (EDU-EP18-ROWS-R1.0, 24 shots, untimed, ep18/short/review-rows.json; schema checked with build.py locally, not published; questions Q1–Q4)
+  - [ ] W2.3 Storyboard page published (coordinator)
 - [ ] W3 Look frames and storyboard pass
-- [ ] W4 Voice lock
-- [ ] W5 Draft
-- [ ] W6 Final
-- [ ] W7 Pinned
-- [ ] W8 Deliver
+  - [ ] W3.0 Comp cards (user request 2026-11-15): snake + mosquito approved; hippo = three.js v8 (creature-kit-v8-three) approved 2026-11-16; dog (src/painted/edu18/dog.ts, drawDog18) and hen v6 approved 2026-11-16 (note: in the lineup the far legs are hidden behind the hippo's legs, accepted); pass B (girl, outfits, poses, canoe, paddle, post) approved 2026-11-16
+  - [x] W3.1 Film look frames (2026-11-16): LF01, LF02, LF02B, LF03, LF03L, LF03B finished (LF04 not painted, Q6/T1); review-rows EDU-EP18-ROWS-R1.1 with `looks` + `look` per beat, questions Q5–Q6; store `projects/edu/EDU/ep18-c69-looks-w3(-clean)/`; brief change log 2026-11-16; build-notes "EP18 W3 look frames"
+  - [x] W3.2 Look frames approved (look lock; user in chat 2026-11-16: Q5 LF01 re-blocking accepted; Q6 first T1, then reversed by user 2026-11-16: paint LF04 stadium (high angle), keep L08 and B03-SH04; look check hippo/snake/mosquito in their sets, B03 long lens, B04 eye 0.7 m, moved lamp table + fan all passed; review page not republished for looks)
+  - [x] W3.3 LF04 stadium painted (high angle, 52 deg down, az 65; user approved 2026-11-16 incl. pale cool tone; ROWS-R1.2, 24 shots, script R2 unchanged). W3 done; page not republished (looks approved in chat like EP01)
+- [x] W4 Voice lock
+  - [x] W4.1 Voice chosen (user 2026-11-16: Kore x1.05, GIRL Leda V01-V05 approved)
+  - [x] W4.2 Narration generated and measured (Editor, 2026-11-16): Kore, 1 Gemini call, atempo 1.05, 56.63 s, speech 0.19-56.20 s; [narration-measure.json](ep18/short/narration-measure.json) audio-measured on script R2; NOT LISTENED by Editor; not placed in public/
+  - [x] W4.3 User approves the read (chat 2026-11-16 "ผ่าน ล็อกเสียง"); locked: public/narration/EDU-EP18-SHORT-narration-v1.wav + store.py use (edu-ep18 lock)
+  - [x] W4.3b Script R2.1 L12 change (user, chat 2026-11-16, option B): narration v2 (L12 re-read, 1 Gemini request) locked in edu-ep18, placed-v2 in the composition, half-size draft v3; L12 R2.1 approved by ear (user, 2026-11-16, chat); Boat to recheck the L12 "ฆ่า" wording ([build notes](build-notes.md#ep18-script-r21-l12-change-and-narration-v2-2026-11-16-editor))
+- [x] W5 Draft
+  - [x] W5.2s Ton sounds and cue sheet (EDU-EP18-SHEETS-R1.0, 2026-11-16): 60 cue placements from 38 sound files (29 generated new, 9 library); all locked in src/videos/edu-ep18/assets.lock.json; [short/sound-cues.json](ep18/short/sound-cues.json); none listened to; models unloaded
+  - [x] W5.2e Editor draft cut v1 (2026-11-16): EDU-EP18-SHORT registered (src/videos/edu-ep18, plates src/painted/shots/edu18.tsx -> src/painted/edu18/shots/*), 24 shots/1872 f, narration placed-v1 + stem draft-stem-v1 (cue sheet [short/sound-cues.json](ep18/short/sound-cues.json), 60 placements, sound-cues.py OK, nothing listened), captions 28 cues (caption-breaks 0 MAY-WRAP); half-size draft `~/ReelsStore/projects/edu/EDU/draft/EDU-EP18-SHORT-draft-v1.mp4` (966.8 s, 540x960); per-shot sheets out/qa/s00-s07.png; samples out/samples/edu-series/EDU-EP18-SHORT/w5-draft-v1/. Open defects in build-notes "EP18 W5 Editor draft v1". W5.3 user pass not given.
+  - [x] W5.3e Draft v2 fix round (2026-11-16, Editor): six CHANGE shots (B01-SH01, B01-SH04, B03-SH01, B03-SH03, B04-SH01, B06-SH05) fixed, half-size cut `projects/edu/EDU/draft/EDU-EP18-SHORT-draft-v2.mp4`, review-rows draftCut updated, page not built; awaiting the user's review ([build notes](build-notes.md#ep18-w5-draft-fix-round-v2-2026-11-16-editor-six-change-shots-from-the-users-review-of-draft-v1))
+  - [x] W5.3 Draft passed (24/24 shots, user, 2026-11-16, chat: draft v3 "ผ่านทั้งหมด"; script R2.1, narration placed-v2, L12 approved by ear). Open, not blockers: Boat has not rechecked the L12 "ฆ่าได้" wording ([build notes](build-notes.md#ep18-script-r21-l12-change-and-narration-v2-2026-11-16-editor)); Film has not blessed the scene-sheets R1.1 text-only edits (L12 captions)
+- [x] W6 Final (24/24 shots passed, user chat 2026-11-16, W6b cut)
+  - [ ] W6.1 Editor final cut (2026-11-16): mix rebuilt (stem-v2; mix-levels 0 FAIL 12 warn; S19 row edited), `clips.mjs --full` full size 1872 f, -15.9 LUFS TP -2.8, store `projects/edu/EDU/final-cut-ep18-w6/`; nothing listened; awaiting the user's final verdicts ([build notes](build-notes.md#ep18-w6-final-cut-2026-11-16-editor))
+  - [ ] W6.1b Editor final cut re-render after EDU18-INK-SINGLE (2026-11-16): `clips.mjs --full --gl=angle`, 24 of 24 repainted, 1676 s, 1872 f 62.400 s 1080x1920, -15.9 LUFS; store `projects/edu/EDU/final-cut-ep18-w6b/`; review-rows finalCut refreshed, page built not published; awaiting the user's Final verdicts ([build notes](build-notes.md#ep18-w6b-final-cut-re-render-2026-11-16-editor))
+- [x] W7 Pinned (24/24 scenes, 2026-11-16, `pin.mjs EDU-EP18-SHORT pin-rows ep18/short/review-rows.json`, ending A_fade, render 2026-11-16T10:51Z; first needed a cache-writing re-run of the final cut, see build-notes "EP18 W7")
+- [ ] W8 Deliver: W8.1 delivery render done 2026-11-16 (24 of 24 reused, 190 s, 1872 f 62.40 s, -14.1 LUFS, -1.5 dBTP); W8.2 published video-only to publish/edu/EDU/EDU-EP18-SHORT/ (no cover yet; W8.0 cover pick OPEN); then user posts (W8.3), Boss kit intake (W8.4)
+  - [x] W8.0 Cover pick 1 (Film, 2026-11-16): `EDU-EP18-SHORT-PIC-COVERS` five pictures ([covers/edu-ep18.ts](../../src/videos/covers/edu-ep18.ts)): P2/P3/P5 plate frames rendered, P1/P4 needs-paint (sheets EDU18-CV1/CV2, [cover-sheets.md](ep18/short/cover-sheets.md)); user picked E = P5 (2026-11-16). Pick 2 (Film, 2026-11-16): `EDU-EP18-SHORT-COVERS` five texts on P5 (C1 รอดมั้ย?, C2 ข้างหลัง/คุณ!, C3 ปีละ/500?, C4 อย่าดู/ที่ความดุ, C5 ยิ่งดุ/ยิ่งฆ่าเยอะ?) + five titles T1-T5 in the file header; scores C1 24, C3 24 (corrected from 25), C2 22, C5 22, C4 20; **user picked C3 + T4 (chat, 2026-11-16)**; cover rendered and published (delivery.md); W8.3 posting and W8.4 kit intake stay open ([build notes](build-notes.md#ep18-w80-cover-pick-1-2026-11-16-film-edu-ep18-short-pic-covers), [pick 2](build-notes.md#ep18-w80-cover-pick-2-2026-11-16-film-edu-ep18-short-covers))
 
 ## EDU-EP17-SHORT
 

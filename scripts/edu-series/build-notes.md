@@ -1120,3 +1120,352 @@ W7 locks (no pin.mjs run, user has not passed the final): `assets.lock.json` 40 
 - Checks (ffprobe/ebur128, independent): h264 1080x1920 30 fps 1709 f 56.967 s, AAC 56.96 s; I -14.0 LUFS, LRA 2.9, peak -1.5 dBFS; silencedetect at -90 dB / 10 ms: 0 runs. Sheet `out/EDU-EP17-SHORT/w8/sheet.png` (frames 0.5/8/16/24/32/40/50/56.9 s, last frame, 56.0 s): mark top-left on all, stroke-only captions legible, final shot is the closed wide of the man at the sea wall. A_fade with no hold/fade: the picture simply ends on the last frame (no extra hold frames).
 - Publish: `store.py publish EDU-EP17-SHORT --reason ...` -> `publish/edu/EDU/EDU-EP17-SHORT/` (video only; byte-identical to out/ copy). Store render dir tag is `-dirty` because the tree is uncommitted; re-publish after commit if a clean tag is wanted.
 - Cover: none. No `src/videos/covers/edu-ep17.ts` / `EDU-EP17-SHORT-COVERS`; per docs/delivery-workflow.md W8.2 needs the picked cover, so W8.2 is left open. Needs: Film cover options (cover-design skill, two picks by the user), then `store.py publish EDU-EP17-SHORT --cover <pick> --reason ...`.
+
+## EP18 pre-W3 comp cards, pass B: people and props (2026-11-15, Boss)
+
+The user asked (2026-11-15) for comp cards (model sheets) before any look frame is painted. This pass covers the girl, her six N6 poses, the canoe and paddle (N2) and the phone and post (N4), all against [film-brief.md](ep18/short/film-brief.md) R1. Pass A (creatures) keeps its own section. **Status: drawn and QA-viewed, not user-approved.**
+
+- **Cards** (stills entry [cards.tsx](../../src/painted/edu18/cards.tsx), not in Root):
+  - `EDU18-GIRL-CARD`: four outfits, turnaround, head ruler, faces.
+  - `EDU18-GIRL-POSES`: paddle-sit front and profile in the canoe, five standing poses, the bed block.
+  - `EDU18-PROPS-CARD`: canoe at heading 90 and 135, the paddle, phones at 1.2K and 58K.
+  - Kit sheets re-rendered: `KIT-PERSON-woman-long`, `KIT-PEOPLE-LINEUP` and `KIT-WARDROBE`. The travel outfits now appear on KIT-WARDROBE.
+  - Store: `projects/edu/EDU/previews/ep18-c69-comp-cards-passB-2026-11-15/{edu18-cards,kit-people}/`. The kind folder is new, so the old EP18 folders are not reused (delivery.md ID note).
+- **Decisions (deviations from the pass text):**
+  - No new PEOPLE entry. The girl is the existing `woman-long` (brief: existing-integrated), and tests/people.test.ts caps PEOPLE at 14, which is already reached.
+  - The outfits live in a sibling file, [kit/wardrobe-travel.ts](../../src/painted/kit/wardrobe-travel.ts), following the wardrobe-1850s precedent. Editing wardrobe.ts, people.ts or poses-more.ts would change the transitive source hash of every pinned scene in delivered episodes.
+  - The six poses are episode code in [edu18/girl.ts](../../src/painted/edu18/girl.ts). They are candidates for poses-more.ts at kit intake.
+  - The mosquito net and bedroom props are not discrete props in the brief. They are part of SET-BED18 (N12) and are left to W3.
+- **Measurements:**
+  - Girl at 330 px/m: hair top to sole 554 px against 541 px for 1.64 m. Hair volume and sole ink add about 10 px. That is 3.86 heads (head 0.425 m), matching the 4-head cast.
+  - Lead height ≥ 480 px is a shot matter for W4.
+  - tests/edu18-girl.test.ts checks:
+    - Drawn height is 1.64 ± 0.05 m in all five views of every outfit.
+    - No upper arm in any pose is longer than BONE.
+    - Paddle grips stay within 0.95 × 2 bones through the whole stroke.
+    - The caption is verbatim, and the 500 and the counter are its only numbers.
+    - The counter is monotone, with labels 1.2K and 58K.
+- **Fixed after viewing:**
+  - A pack drawn through `gear.pack` read as wings; it is now a separate backpack overlay.
+  - The selfie read as "phone at ear".
+  - The swat hand sat at the chin.
+  - The step-freeze shoe floated.
+  - The eyes were closed on the cards (blink seed must be seed+1).
+  - Grip-hand reach: the profile catch was 1.64× arm length. The grips were pulled in, and a test now covers it.
+  - The paddle glaze ran below the water.
+  - The floor showed under the cut hull.
+  - Digits appeared in the placeholder photo label.
+- **Defects left:**
+  - The step-freeze lift is subtle.
+  - In the selfie front view, the forearm does not read as foreshortened toward the lens.
+  - The vest chest strap is drawn in front view only.
+  - The canoe interior shading is basic.
+  - The post photo is a placeholder until the B02-SH01 freeze still exists.
+  - The pre-existing `openT` blink seed bug in people-sheet.tsx is not fixed (outside this pass).
+  - The kit README module table is not updated. That is a proposal for kit intake (W8.4), since this pass may not edit rule documents.
+- **Open for the user:**
+  - Approve each design.
+  - The backpack look.
+  - The vest strap.
+  - The strength of step-freeze.
+  - The post layout and handle `เที่ยวคนเดียว`.
+  - The canoe wood tone.
+
+## EP18 pre-W3 comp cards, pass A: creatures (2026-11-15, Boss)
+
+The user asked (2026-11-15) for comp cards (model sheets) before any look frame is painted. This pass covers the hippo (N3), the snake (N11), the mosquito (N13), the hen (N7), and a card-only sheet for the kit `dog-thai` (N8). These are drawn designs and **not user-approved**. Nothing is committed.
+
+- **Cards:** 33 stills `KIT-EP18-*` from the stills entry [creature-kit/index.tsx](ep18/creature-kit/index.tsx) (not in Root). Render with `sh scripts/edu-series/ep18/creature-kit/render.sh <v> [GROUP|IDS]`; output goes to `out/ep18/kit/<v>/` and the log to `out/logs/ep18-kit-<v>.log`.
+  - Hippo `AS-HIPPO-R1`: TURN, RIG, HEAD, READ, SURFACE, YAWN, SWIM, SWIM-SIDE, CHARGE, CHARGE-SIDE, HALT, SNORT, LURK.
+  - Snake `AS-SNAKE-R1`: TURN, RIG, HEAD, READ, LIE, HEADLIFT, SLITHER, SLITHER-SIDE.
+  - Mosquito `AS-MOSQUITO-R1`: TURN, RIG, MACRO, HOVER, HOVER-SIDE, DOT.
+  - Hen `new: hen`: HEN-TURN, HEN-WALK, HEN-PECK.
+  - Dog `dog-thai`, unchanged: DOG-TURN, DOG-MOTIONS.
+  - Scale: LINEUP, all creatures against the girl at 1.64 m.
+  - Store: `projects/edu/EDU/previews/ep18-c69-comp-cards-passA-2026-11-15/creature-kit-v5/`, which holds 33 cards and `sheets/qa-{HIPPO,SNAKE,MOSQUITO,HEN,DOG}.png`. The cards were first archived into the old `previews/EDU-EP18-SHORT/` folder, then moved per the delivery.md ID note; the move is logged in the store's moves.tsv. v1–v4 are scratch and were not archived.
+- **Code:**
+  - [beast-hippo.ts](../../src/painted/survival/beast-hippo.ts): lofted on the creature-kit engine.
+  - [kit/snake.ts](../../src/painted/kit/snake.ts) and [kit/mosquito.ts](../../src/painted/kit/mosquito.ts): on the same engine; the mosquito is modelled in mm.
+  - All three are registered in `BEAST_KIT`.
+  - [edu18/hen.ts](../../src/painted/edu18/hen.ts): a flat 2D card in the kit ANIMALS style. It moves to kit/animals.ts at intake.
+  - Measure with [measure.mts](ep18/creature-kit/measure.mts); results in `out/ep18/kit/v5/measure.txt`.
+- **Deviations:**
+  - **Mosquito engine.** The mosquito is built on the loft engine, not on the flea.ts flat-card method the brief proposed, because the N13 macro camera arcs around it. The room-scale dot is a separate 2D `drawMosquitoDot`.
+  - **Shared engine change in beast.ts.** With `waterline` set, end caps and flats that cross the water plane are now clipped. Before, submerged snout and chin caps were painted over the water as dark ellipses. Output without a waterline is unchanged, but this is shared code, so the scene cache will repaint raptor (EP16) plates.
+  - **Joint test.** [beast-joints.test.ts](../../tests/beast-joints.test.ts) now runs the silhouette check with `waterline: undefined`. Above-water islands (ears, eyes, nostrils) are expected, and SURFACE starts fully submerged. The attach check is unchanged.
+  - **Proposed dev-findings entry** (not applied; rule docs are not edited in production): "paintBeast with a waterline must clip caps and flats to the plane, not just lofts."
+- **Measurements:**
+  - Hippo:
+    - Length 3.62 m (brief 3.6). Shoulder 1.50 m (1.5). Head about 0.97 m long (0.95) and 0.74 m wide (0.7).
+    - YAWN peak: upper tip 1.37 m above the water (1.4), gape 145–146° (~140).
+    - LURK: top +0.13 m, eye +0.07 m, nostril +0.09 m, back −0.14 m.
+    - Read cards: yawn 900 px tall, lurk 120 px wide.
+  - Snake:
+    - Body 1.34 m + head 0.056 m = 1.40 m. Thickness 4.0 cm. Head width 4.5 cm.
+    - Head-lift raises the head 19.2 cm. The belly stays on the ground (≤ 0.2 mm) in every slither sample.
+    - Read size 300 px.
+  - Mosquito: body 5.74 mm (6), leg span 12.9 mm (14). Dots 4, 5 and 6 px.
+  - Hen: 0.40 m to the comb.
+  - Tests: beast-joints 14/14 passing. `scripts/context-map.py` 0 problems.
+- **Fixed after viewing:**
+  - Hippo too long at 4.3 m; head duck-like with a mouth gap; eyes under the water at rest; lurk showed too much; SURFACE cells empty; foam plate too big.
+  - Snake too long at 1.46 m; turnaround at eye level read as a line.
+  - Mosquito legs stiff, cells dark.
+  - Dog cards cropped.
+  - Hen neck detached when pecking.
+- **Defects left:**
+  - Hippo yawn mouth interior is boxy (a flat palate slab with facet stripes), most visible face-on at the 900 px read.
+  - Lofted facets look coarse up close.
+  - The hippo's faceted creature-kit style differs from the flat 2D kit animals it shares shots with.
+  - The hen peck neck is a blocky wedge, and the hen front view is crude.
+  - The `dog-thai` front 3/4 is the kit's own drawing and reads as a different breed.
+  - The lineup mosquito dot is barely visible (correct to scale).
+  - Bow wave, snort spray and splash are scene-owned (W3/W5) and not on the cards.
+- **Not verified:** not used in any shot or look frame, no sequence or seek QA, no user approval.
+- **Open for the user:**
+  - Approve each design: hippo, snake, mosquito, hen and colours.
+  - Keep the loft-engine mosquito?
+  - Should the bow wave and spray become shared assets?
+  - The hippo style versus the flat kit animals.
+
+### Fix round 1 (2026-11-15, Boss): hippo polish, dog copy, hen
+
+The user passed SNAKE and MOSQUITO (their code and cards are untouched; re-rendered v6 cards differ from v5 only by raster noise, PSNR 70–92 dB). The round then fixed the hippo, dog and hen. The cards are drawn and viewed; none is user-approved.
+
+- **Hippo, scope change mid-round.** A papercut restyle (stacked 2D cuts, `edu18/hippo.ts`) was built first, then dropped by the user in favour of the v5 massy 3D hippo, "polished softer with fewer facets". The papercut files are deleted from the tree (copies kept outside it); nothing uses them.
+  - **Restore status.** [beast-hippo.ts](../../src/painted/survival/beast-hippo.ts), its `BEAST_KIT.HIPPO` entry, the pass A [beast.ts](../../src/painted/survival/beast.ts) diff, the [beast-joints.test.ts](../../tests/beast-joints.test.ts) diff, [cards.tsx](ep18/creature-kit/cards.tsx), the LINEUP hippo and the hippo part of [measure.mts](ep18/creature-kit/measure.mts) are back on the engine version. The working copy of beast-hippo.ts at the start of this round already carried an earlier, interrupted fix-round-1 start (the opt-in `BeastLook` soft look in beast.ts, `HIPPO_LOOK`, a rounder mouth). With `HIPPO_LOOK` switched off, HIPPO-TURN re-renders pixel-identical to v5 (PSNR 74 dB); HIPPO-HEAD differs only in that rounder yawn mouth. The measurements are identical to v5.
+  - **Polish (v6), all inside beast-hippo.ts.** `HIPPO_LOOK` `sub` 3→5 stations per span and `ring` 2→3 (finer lofts), turn-edge line 0.55→0.35. The hide, head, jaw and leg colours are continuous ramps (`ramp3`) instead of hard bands, so no facet stripes. Yawn mouth: the snout and jaw lofts end in a short dome (`domeEnd`; their flat end cap read as a lid), the throat is a soft lateral capsule (its pole cap read as a dark disc with radial facets), and the cheek membranes are cut 8 × 6 instead of 4 × 3.
+  - **beast.ts.** The opt-in `look` field changes nothing for creatures without it: the EP16 raptor and the snake and mosquito build no `look`, so they keep the faceted kit output.
+  - **Measurements (v6, unchanged from v5):** length 3.62 m (brief 3.6), shoulder 1.50 m (1.5), head about 0.97 × 0.74 m (0.95 × 0.7). YAWN upper tip 1.37 m above the water (1.4), gape 145–146°. LURK top +0.13, eye +0.04, nostril +0.11, back −0.17 m. Reading: the dome adds up to about 6 cm of rounded skin beyond the snout and chin tips in the geometry; the anchors and the brief numbers do not move.
+- **Dog.** [edu18/dog.ts](../../src/painted/edu18/dog.ts) `drawDog18` is a copy of the kit `drawAnimal` (kit revision 6ad88fb). The kit dog files are not edited. **EP18 shot code must call `drawDog18`, not `drawAnimal`**, for dog-thai. It takes the kit `AnimalDef`, `AnimalPose` and `animalMotion` frames unchanged.
+  - Body parts have no ink outline: each is a flat cut with a soft drop shadow ([paper.ts](../../src/painted/edu18/paper.ts)). Every tube ends in round caps.
+  - The profile legs are smooth and tapered, with the hind leg a round thigh over a slim shank. The neck is a curved column and the tail is smoothed.
+  - The front 3/4 head now has the profile's tall prick ears and long tapered muzzle; before, it had hanging tube ears. The front-view legs are tapered.
+  - The DOG-TURN, DOG-MOTIONS and LINEUP dogs use the copy.
+- **Hen.** [edu18/hen.ts](../../src/painted/edu18/hen.ts) is rebuilt as papercut cuts with no ink. The neck is a tapered Bezier tube that curves forward through the peck, not a wedge. The front view is redrawn with a round breast, hackle bib, blade comb and two wattles. Both colourways are kept.
+- **Cards:** v6, 33 stills (the same card set as v5, hippo RIG included). Sheets are under `out/ep18/kit/v6/sheets/`: `qa-HIPPO`, `qa-HEN`, `qa-DOG`, `qa-LINEUP`. Store: `projects/edu/EDU/previews/ep18-c69-comp-cards-passA-2026-11-15/creature-kit-v6/`.
+- **Defects left:**
+  - Hippo: small grey jagged slivers at the yawn mouth corners (the hinge and jowl lofts inside the cavity), and faint ring steps on the barrel in the largest cells.
+  - The hippo is shaded 3D beside flat papercut 2D dog and hen. It sits comfortably at lineup scale, but the media differ by design.
+  - Dog: the far legs in the front view are still plain columns.
+  - The LURK read at 120 px is tiny, as before.
+- **Proposed dev-findings entry** (not applied): "Loft end caps read as flat lids or discs when the axis faces the lens; close capped lofts with a shrinking dome and orient ball parts so their side faces the camera."
+- **Not verified:** not used in any shot; no sequence or seek QA; no user approval.
+
+### three.js hippo spike (2026-11-15, Boss): AS-HIPPO3D-SPIKE, creature-kit-v7-three
+
+User question: "can three/Blender make the hippo easier because 3D is those tools' job?"; the user chose "spike three.js first". Blender stays deactivated (30 Oct 2026) and was not used; no external model was downloaded. The v6 loft hippo ([beast-hippo.ts](../../src/painted/survival/beast-hippo.ts)) is untouched. Nothing here is user-approved or used by a shot.
+
+- **Dependencies added** (exact, matching Remotion 4.0.538 and React 19.1.0): `three@0.187.0`, `@react-three/fiber@9.8.2`, `@remotion/three@4.0.538`, dev `@types/three@0.187.0`. `package-lock.json` is part of every scene-segment cache key ([render-inputs.ts](../render-inputs.ts)), so merging these deps re-renders every cached scene once; no shared kit file changed.
+- **Code.** [hippo3d-sdf.ts](../../src/painted/edu18/hippo3d-sdf.ts): one signed-distance skin (ellipsoids, round cones, rounded boxes, smooth unions; the jaw-to-head blend widens at the hinge so the open mouth has a rounded corner web) polygonised by three's `MarchingCubes`, with 4^3 block skipping and colour sampled at the nearest skin point (the first render had grid-row stripes in the palate from per-voxel colour masks). `HIPPO3D_POSES` copies the seven `HIPPO_POSES` state functions; only the yawn lift and head pitch were retuned to this body. [hippo3d.tsx](../../src/painted/edu18/hippo3d.tsx): `Hippo3DView` in a transparent `ThreeCanvas` (over a painted card), toon `ShaderMaterial` (half-Lambert in 4 soft steps, cool shadow tint, warm rim, small wet glint, foam line at the water, no ink), separate tusk / peg / canine / eye meshes on the same rig frames, a projection-fit perspective camera or an orthographic px-per-metre camera.
+- **Cards** ([cards-three.tsx](ep18/creature-kit/cards-three.tsx), entry [index-three.tsx](ep18/creature-kit/index-three.tsx), `sh scripts/edu-series/ep18/creature-kit/render-three.sh v7-three`): HIPPO3D-HEAD, -READ, -TURN, -STATES, -LINEUP and the YAWN-CLIP purity probe. Sheets `out/ep18/kit/v7-three/sheets/qa-HIPPO3D-key.png` (READ, HEAD, LINEUP), `qa-HIPPO3D-more.png` (TURN, STATES), `qa-HIPPO3D-yawnclip.png`. Store: `projects/edu/EDU/previews/ep18-c69-hippo3d-spike-2026-11-15/creature-kit-v7-three/` (+ `-rerun/`).
+- **Measured** ([test](../../tests/edu18-hippo3d.test.ts)): body 3.57 m without the tail stub (brief 3.6), shoulder about 1.52 m (1.5), muzzle width about 0.68 m (0.7), YAWN upper tip 1.40 m above the water (1.4), gape 140°. Skin 35k–68k triangles.
+- **Timing** (one Chrome, `--gl=angle`, M-series Mac): HEAD (4 head-only builds) finished 8.3 s after start including the bundle; then READ 3.9 s (2 builds), TURN 5.1 s (4), STATES 6.5 s (8 at res 104), LINEUP 2.6 s (1 at res 150). One build is about 1.0–1.7 s at res 128–150 (node, `buildHippo3D`), the WebGL draw itself is negligible. The yawn clip ran about 1.2 s per frame.
+- **Determinism.** Re-render of all five cards: HEAD, READ, TURN, STATES byte-identical; LINEUP differs only inside the painted dog / hen area (p5 brush raster, PSNR 86 dB; the hippo pixels match). Seek parity: yawn-clip frames 26 and 39 rendered within a sequential run (0, 13 … 65) and alone are byte-identical. Unit test: two builds of one pose give identical vertex and colour buffers.
+- **Look.** Against the v6 defects: no horizontal banding (one skin, gradient normals), no jagged slivers at the yawn corners (smooth web), no flared rim in back 3/4. It reads as a smooth, soft clay / toy 3D hippo; the 2D dog and hens remain flat papercut cuts with drop shadows, so the media still differ (smaller gap than v6, not closed). The wet glint and lit step show as pale oval patches on the barrel at card scale. The yawn front view at heading 75 hides most of the lower jaw under the water (pose choice, tip height kept at 1.4 m). LURK at 120 px still reads tiny.
+- **Not verified:** not in any shot; no painted-plate integration (lighting is not matched to the river dawn); no video render or sequence QA; no user approval.
+
+### three.js hippo round 2, papercut look (2026-11-16, Boss): AS-HIPPO3D-SPIKE v8, creature-kit-v8-three
+
+User viewed v7 and chose: keep three.js, push the look toward the papercut cast. Not user-approved. Same modules extended ([hippo3d.tsx](../../src/painted/edu18/hippo3d.tsx), [hippo3d-sdf.ts](../../src/painted/edu18/hippo3d-sdf.ts)); beast-hippo.ts and shared kit files untouched; no new files or dependencies (the three deps and their package-lock / scene-cache consequence are as recorded in the v7 entry).
+
+- **Shader (papercut).** 3 flat tones (shadow / palette base / lit) at half-lambert 0.5 and 0.86 with a 0.012 step edge; the base tone is the palette hex itself (`#6c5f6a` hide, brief palette row). Wet glint removed (the pale ovals on the barrel are gone). Rim kept as a thin hard cut-edge highlight on the lit side only. Hide and flush colour masks are now flat cuts with narrow steps (back / belly, eye and cheek flush patches) instead of gradients. New `HIPPO3D_PAPER_SHADOW`: three widening low-alpha passes of the same geometry offset down/right in view metres (dx 0.012, dy 0.024, blur 0.024, op 0.3, `#2a2030` like [paper.ts](../../src/painted/edu18/paper.ts)), pushed back 0.14 m in depth so it falls on parts behind (head on body, jaw under the muzzle) and on the background, never on the casting surface; a per-pass stencil blends each pixel once. To let the shadow fall on the river, the water plane no longer writes depth and the skin discards itself below the surface (same picture as depth occlusion).
+- **Head.** Ball cranium replaced by a boxy head: skull/cheek box, a narrower bridge, wide lip pads (muzzle 0.68 m), nostril domes with slits on top, eye turrets standing clear of the flat top, longer ears; deeper lower jaw with a jowl and chin flare. Head length about 1.0 m (brief 0.95). Neck ellipsoid top lowered 8 cm (it was swallowing the ears and made the back of the head a ball); head-only cards cut the neck to a collar. **Finding:** the `sdEll` estimate overshoots for thin ellipsoids, and the 4^3 block skip in `buildHippo3D` then dropped most of the ear; ears use a conservative `sdEllSafe`.
+- **YAWN trade (B01).** Upper-jaw tip kept at 1.41 m above the water and gape 140 deg; the body rises 7 cm (lift 0.48 -> 0.55) and the upper jaw tips back from 85 to 101 deg from horizontal, so the lower jaw drops 39 deg instead of 55 deg. Hinge 0.68 m above the water (v7 0.56), chin underside at the surface (v7 -0.19 m), tusk bases 0.23 m above it. Floating lifts (surface end, swim, halt end, snort, lurk) rose 0.10-0.13 m because the boxy head top sits about 0.11 m lower than the v7 ball (lurk: eyes 0.06, turret tops 0.11, nostrils 0.09 m above the water). Test tip point is now `H3_TIP`.
+- **Measured** (res 128): body 3.63 m, shoulder 1.54 m, muzzle width 0.68 m, YAWN tip 1.41 m, gape 140 deg; 60k triangles stand.
+- **Renders** `sh scripts/edu-series/ep18/creature-kit/render-three.sh v8-three` (5 cards, 27 s wall, one Chrome `--gl=angle`); sheets `out/ep18/kit/v8-three/sheets/qa-HIPPO3D-key.png`, `qa-HIPPO3D-more.png`, `qa-HIPPO3D-yawnclip.png`, `compare-v7-v8-key.png`. Store: `projects/edu/EDU/previews/ep18-c69-hippo3d-v8-2026-11-16/creature-kit-v8-three/` (+ `-rerun/`).
+- **Purity.** Re-render: HEAD, READ, TURN, STATES byte-identical; LINEUP differs only in the painted dog / hen area (PSNR 74 dB there, hippo region identical). Yawn-clip frames 26 and 39 sequential vs alone byte-identical (`clip/seek-parity.txt`).
+- **Look vs v7.** Flat cut tones, no glint ovals, soft offset drop shadow; head reads hippo (box muzzle, turrets, ears) rather than a clay ball. Still a 3D-shaded single skin beside cut-part 2D animals (tone-step lines curve with the form; no overlapping part cuts like the dog's legs over body). Remaining: front view still toy-cute (big eyes on turrets); head-only side card shows the flat neck cut; yawn palate keeps a soft deep-throat gradient; the waterline foam reads as a pale paper edge; LURK at 120 px still tiny; yawn-clip probe camera is edge-on so the water plane is not visible there.
+- **Not verified:** not in any shot; no plate lighting match; no video render or sequence QA; no user approval.
+
+## EP18 W3 look frames (2026-11-16, Film): EDU-EP18-ROWS-R1.1
+
+- **Frames.** LF01 river (B01-SH01 yawn peak), LF02 village gate (B03-SH01 end), LF02B rice path + snake (B04-SH02), LF03 bedroom night (B05-SH01), LF03L lamp-on (B06-SH01 end), LF03B mosquito macro (B05-SH03). LF04 stadium not painted in R1.1 (Q6, trim T1); painted 2026-11-16 in R1.2 (below). Thumbnail pass skipped: the coordinator assigned finished frames directly.
+- **Code.** Looks [edu18/looks.tsx](../../src/painted/edu18/looks.tsx), entry [looks-index.tsx](../../src/painted/edu18/looks-index.tsx) (outside `src/Root.tsx`), cameras and every W3 change with its reason in [looks-cams.ts](../../src/painted/edu18/looks-cams.ts); sets [river.ts](../../src/painted/edu18/river.ts), [village.ts](../../src/painted/edu18/village.ts), [paddy.ts](../../src/painted/edu18/paddy.ts), [bedroom.ts](../../src/painted/edu18/bedroom.ts), [macro.ts](../../src/painted/edu18/macro.ts); helpers [scenery.ts](../../src/painted/edu18/scenery.ts); [stack.tsx](../../src/painted/edu18/stack.tsx) `PaintedStack` (painted back pass, a screen layer, a painted front pass cut out over it); [hippo-set.tsx](../../src/painted/edu18/hippo-set.tsx) `HippoInSet` (the hippo3d v8 rig placed in a set through a kit yaw camera converted to a three.js off-centre projection). Cast files unchanged (girl.ts, cards.tsx, Post.tsx, dog.ts, hen.ts, kit canoe/snake/mosquito/wardrobe-travel, hippo3d).
+- **Render.** `sh scripts/edu-series/ep18/short/render-looks.sh <version> [IDS]` (one Chrome, `scripts/stills.mjs`, `--gl=angle`); `GUIDES=0` for clean frames. Final: `w3` (dashed caption-band guides) and `w3-clean`. Store: `projects/edu/EDU/ep18-c69-looks-w3/` (6 frames + `qa-all.png`) and `projects/edu/EDU/ep18-c69-looks-w3-clean/`.
+- **Measures** (anchors from the cast rig through the look cameras, scratch probe; px at 1080x1920). Lead (visible top to feet): LF02 494 (612-1106), LF02B 854 (175-1029), LF03L 580 (470-1050, seated), LF01 552 rig height seated (681-1233; visible above the gunwale about 370), LF03 lying length 505 (head 277,1028 to feet 779,1091). Chins: LF01 865, LF02 745, LF02B 404, LF03L 715; LF03 head at y 1028; all faces above y 1160. Snake LF02B y 1071-1126 (above the band). `caption-zone.py --band 1176:1344` (mean / p95 luma; the default pass flags are for outline captions, the edu captions are stroke-only, so only the numbers are reported): LF01 0.318 / 0.488, LF02 0.671 / 0.678, LF02B 0.425 / 0.487, LF03 0.371 / 0.484, LF03B 0.101 / 0.108, LF03L 0.629 / 0.739 (log `out/logs/edu18-caption-zone-w3.log`).
+- **Findings (proposed for dev-findings; not added: rule documents are not edited in production).** (1) p5.brush mixes each pass's pigment with what is under it: a pass painted on a transparent clear gets light fringes and over-opaque glazes. `PaintedStack` paints the front pass over the back pass and keeps only the pixels that differ (threshold 9 rgb levels). Semi-transparent front items over the WebGL layer then carry the back colours, so a veil over the hippo must be a CSS layer (LF01 mist band). (2) BrushCanvas keeps one global brush canvas, so a page holds one `PaintedStack` or one `BrushCanvas`, not both. (3) A brush glaze (`washAt`) painted after papercut cast layers (`paperLayer` in hen/girl) does not tint them: shaded hens take a darker HenDef copy instead (LF02 `inShade`); the lamp flood and phone glow of LF03L are CSS screen overlays. (4) Hippo3d light is fixed in view space ([-0.55, 0.7, 0.55]), so the hippo is lit from the screen's upper left in every set (LF01: the dawn sun is upper left, so it agrees by chance). (5) Reflections on water y 0 are exact with a mirror camera (`{...c, y: -c.y, pitch: -pitch}`, picture flipped about hy), for the painted canoe and the WebGL hippo alike. (6) Picture-space hard ellipses read as hard ovals: stepped concentric halos instead (river sun, paddy sun).
+- **Defects open (for the user review and Boss).** LF01: the near bow is a large brown wedge to the bottom right (accepted as the leading line); the girl's reflection reads strong. LF02: the open gate leaf is edge-on to this lens and reads as a thin green rod at the left post. LF02B: the girl is lit from the front though the sun is behind her (no rim light method on the cast); the sun disc is hidden behind her body (halo only). LF03: blanket is a large flat slab; flip-flops read as blue leaves. LF03L: the floorSit contact ellipse shows on the sheet; the sheet is the brightest area of the frame. Viewer check (sequence-workflow) still to run on the review page.
+- **Boss handoff (proposed).** Harden `PaintedStack` + `HippoInSet` for the shot adapter (hippo light direction from the set; a front pass without the diff threshold); a kit rice painter from `paddy.ts` `clump` (N10); hen and girl shade/rim tint for backlit and shaded staging; the gate leaf for B03-SH02/03 (wider camera sees it face-on).
+
+### LF04 stadium, high angle (2026-11-16, Film): EDU-EP18-ROWS-R1.2
+
+- **Decision.** The user chose to paint the stadium (T1 dropped, L08 and 24 shots stay) and asked for a high-angle view (crane up from the rim to the full bowl). Q3/Q6 answered, removed from the rows.
+- **Code.** [edu18/stadium.ts](../../src/painted/edu18/stadium.ts) (N9: bowl geometry `BOWL`/`ringPt`, `paintStadium` back pass, `roofPoly`, `drawCrowd`); `cLF04` + `LF04_AZ` in [looks-cams.ts](../../src/painted/edu18/looks-cams.ts) with the W3 camera changes and reasons; LF04 + `CrowdLayer` in [looks.tsx](../../src/painted/edu18/looks.tsx) (the stills entry picks it up from `LOOKS`; render-looks.sh unchanged). Cast files and other frames untouched.
+- **Method.** Stands as 64 brush sectors per band; the crowd as soft dots on a plain 2D canvas in `PaintedStack`'s `mid` slot (no brush polygon per seat), clipped out under the roof's picture polygon (even-odd clip), so no front pass is needed. Pitch-down must exceed the steepest rake (upper 36.7 deg) or the near stand's seats are back-facing; camera pitch -52.
+- **Measures.** Crowd 42,591 dots (order of the brief's about 40,000), in-page draw 220 ms (node compute 50-73 ms). Still render per frame on one Chrome (timestamped batch, `out/logs/edu18-lf04-timing*.log`): LF04 1.19-1.64 s; LF02 1.68 s, LF03 1.20 s, LF02B 6.06 s, LF01 about 4 s (WebGL) -> within 2x a normal shot. Bowl in picture: outer rim x 107-1056, y about 460-1305; near stand (centre column) y 1082-1299 at hy 820 probe, final hy 840 (+20). Caption band on the near upper tier, rim and outer wall; `caption-zone.py --band 1176:1344` mean 0.612 / p95 0.751 (default pass flag false; stroke-only edu captions, numbers only; log `out/logs/edu18-caption-zone-lf04.log`). No person in frame (no lead). Top-left mark corner: hazed city.
+- **Render / store.** `sh scripts/edu-series/ep18/short/render-looks.sh w3-lf04 LF04` and `GUIDES=0 ... w3-lf04-clean LF04`; store `projects/edu/EDU/ep18-c69-looks-w3-lf04/` (LF04, `qa-family.png` LF04 beside LF02 with the other frames, `qa-lf04.png`) and `projects/edu/EDU/ep18-c69-looks-w3-lf04-clean/`.
+- **Defects open.** Pale, cool and low-saturation by design (flat overcast) so it sits apart from the warm frames in the family sheet (intended chapter colour, user to judge); the city blocks are plain boxes (window lines only on near blocks), the near-foreground blocks are large flat slabs; the papercut contact shadow under the bowl reads faintly purple at the base; vomitories are small dark squares; the crowd is a uniform speckle (no tonal clusters). Shimmer for the moving shot exists (`frame` argument: about 1 % of dots swap tone every 3 frames) but is unreviewed in motion.
+- **Boss handoff (proposed).** Crowd layer as a reusable kit capability (dot crowd on a 2D canvas with occluder clip) if another episode needs a crowd; W4 crane start camera proposed in looks-cams.ts (az 55, r 110, eye 52, pitch -22) must be checked for the near stand back-facing during the first frames (seats hidden until pitch-down passes 36.7 deg; the far stands carry the start).
+
+## EP18 W4 NARR sample (2026-11-16, Editor)
+
+- One Gemini call (model `gemini-3.8-flash-tts`, voice Kore, style "warm, friendly, smiling storyteller, speaking rapidly" = channel default), text L01-L03 of EDU-EP18-SCRIPT-R2 (ellipses to commas), no pause surgery (EP17 choppy lesson). Raw 8.48 s; atempo 1.08 = 7.86 s, atempo 1.15 = 7.39 s, each loudnorm -16 LUFS / TP -1.5 (measured -16.1 / -16.2).
+- Files: `out/ep18/voice/ep18_open_kore_{raw,x1.08,x1.15}.wav`; store `projects/edu/EDU/samples/2026-11-16_ep18-w4-nar-sample/` (an older `ep18_open_kore_*` set from the deleted EP18 sits in the flat samples/ folder; ignore it). Quota: 1 request. GIRL V01-V05 not generated: casting is "at voice lock (Editor)" and no voice/style is defined in script or brief.
+- 2026-11-16 (user): pace x1.05 wanted; coordinator made `out/ep18/voice/ep18_open_kore_x1.05.wav` from the raw take (no API call). GIRL V01-V05 all acted by Gemini: voice Leda (Youthful female), model gemini-3.8-flash-tts, one call each (5 requests; gasp/in-breath `<gasp>`, whimper `<sob>`, "เฮ้ย!", "เอ๊ะ..."), styles per line in the sidecars; files `out/ep18/voice/girl/`, store `projects/edu/EDU/samples/2026-11-16_ep18-w4-girl-sample/`. Not listened by Editor.
+
+## EP18 W4 full narration read (2026-11-16, Editor; voice lock step 2)
+
+- One Gemini call, model `gemini-3.8-flash-tts`, Kore, style "warm, friendly, smiling storyteller, speaking rapidly" (channel default), whole script L01-L18 of EDU-EP18-SCRIPT-R2 in one `--text-file` (lines joined by a space, ellipses to commas, no pause surgery). Quota used: 1 request (6 earlier today, 7 total), 0 retries. Raw take 59.44 s; `atempo 1.05` then two-pass loudnorm -16 LUFS / TP -1.5 (measured -16.0 LUFS, -1.5 dBTP) = 56.626 s, 48 kHz mono.
+- Measure: [ep18/short/narration-measure.json](edu-series/ep18/short/narration-measure.json) (per-line on/end in s and 30 fps frames, boundary and internal gaps, confidence notes). Method: silencedetect -25 dB / 0.08 s; gaps mapped by script order, cross-checked with char-level faster-whisper (rough; needed no-VAD + script prompt, `av` in the whisper venv rejects file paths so the audio was passed as an array) and syllable position. Speech 0.189-56.198 s (56.0 s); file 56.626 s.
+- Status: NOT LISTENED by the Editor; waveform/loudness/silence map only. Not placed in `public/`, not locked (user approval of the read first). GIRL V01-V05 untouched.
+- Files: `out/ep18/voice/full/ep18_nar_kore_{raw,x1.05}.wav`, `ep18_nar_tts.txt`, `ep18_nar_lines.txt`, `whisper_words.json`; store `projects/edu/EDU/audio/2026-11-16_ep18-w4-nar-fullread/`.
+- Length: narration alone fits; the video adds V01-V05 (voiced 0.76/0.41/0.93/1.30/0.24 s), head and the 2 s hold: about 61-62 s estimated against the 63 s cap (Film's timed sheet decides).
+
+## EP18 W4 timed scene sheets (2026-11-16, Film)
+
+- Output: [ep18/short/scene-sheets.md](edu-series/ep18/short/scene-sheets.md) EDU-EP18-SHEETS-R1.0, review rows ROWS-R2.0 (timed). Total 1872 f = 62.40 s, margin 18 f to the 63 s cap; fallback trim T2 (about -30 f, B02-SH03 only) not taken, Q7 to the user.
+- Narration placement: the locked read split at five line-boundary gap centres into segments A-F with offsets c = 33/53/57/81/117/126 f (G = 30*t_file + c), gaps filled with room tone (EP17 narration-place.py method). Word anchors inside lines are syllable-position estimates (+/-4 f): `whisper_words.json` times run about 1 s off the silencedetect line times, so they were not used.
+- GIRL clip voiced spans (silencedetect -35 dB, file s): V01 0.363-0.913, V02 0.229-0.636, V03 0.168-1.098, V04 0.170-1.464, V05 0.348-0.591; the Editor aligns on the voiced onset.
+- Projection: [projection-run.py](edu-series/ep18/short/projection-run.py) wraps `scripts/shot-projection.py` with the looks-cams `cam()` conversion (up y, lens f on a 1920 sensor, shift y = (hy-960)/1920); log `out/logs/edu18-w4-projection.log`, JSON `out/edu18/w4-projection/`. The brief's W2 cameras failed in eight places (hippo out of frame B01-SH02 and B02-SH03, camera inside the hull and hippo on the lens axis B01-SH03, hippo eyes behind her shoulder B02-SH01, lead 402 px B03-SH02, foot level with the snake head B04-SH03, chin in the band B06-SH04, phone in the band 950 px below her face B06-SH05); all fixed by camera/mark changes SD01-SD12.
+- Caption band on the look frames (`scripts/caption-zone.py --band 1176:1344 --x 120:960`, mean / p95 luma): LF01 0.300/0.488, LF02 0.671/0.678, LF02B 0.411/0.452, LF03 0.386/0.484, LF03B 0.103/0.108, LF03L 0.655/0.741, LF04 0.610/0.751; log `out/logs/edu18-w4-caption-zone.log`. Stroke captions only, so these are recorded, not gated.
+- Boss proposals from the sheet: `PostScreen` zoom state (viewBox crop on the 500 line) for B06-SH03 to SH05; `SHARE_STEPS_B06` must cross a thousand so the counter visibly rises (58,000-58,600 stays "58K"); dog lick motion; hippo SURFACE/YAWN front-loaded, CHARGE from x -2.
+- Tool proposal (TL, not applied): projection-run.py repeats the EP17 runner with a different camera convention; a shared `scripts/ycam-projection.py` taking `cam(...)` lines would serve both.
+
+
+## EP18 W5 shared assets (2026-11-16, Boss): sheet items B1–B6 of EDU-EP18-SHEETS-R1.0
+
+- **Built (uncommitted):** `HIPPO_SHOTS` ([hippo-shots.ts](../../src/painted/edu18/hippo-shots.ts)), `SNAKE_SHOTS` + `DOG18_LICK` ([path-shots.ts](../../src/painted/edu18/path-shots.ts)), the `drawDog18` lick, the `PostScreen` `zoom`/`rise` props + `POST_PHOTO_TOP` crop + `SHARE_STEPS_B06` 58K → 59.6K, the FPOV quad ([fpov.tsx](../../src/painted/edu18/fpov.tsx)), the post photo ([post-photo.tsx](../../src/painted/edu18/post-photo.tsx)), `PaintedStack` `clock`/`guides`/paintScale, `HippoInSet` `light` (`RIVER_HIPPO_KEY` = the LF01 key in world space), `paintVillageBack` `leafOpen`. Each is selected by shot ID.
+- **Stills:** `sh scripts/edu-series/ep18/short/render-w5.sh w5b`. That is 91 stills on one Chrome in 2 min 43 s. Store: `projects/edu/EDU/previews/ep18-c69-w5-boss-2026-11-16/` (w5a, w5b, w5b-photo, w5b-rerun, sheets inside). Post photo: `projects/edu/EDU/stills/ep18-c69-w5-boss-2026-11-16/post-photo-B02-SH01-L29-w5b.png`, locked in `src/videos/edu-ep18/assets.lock.json`.
+- **Purity:** I re-rendered 10 stills. B06-SH02 f42 is pixel-identical. The rest differ by at most 6 levels on 367–1750 edge px, except along the WebGL waterlines. B01-SH01 f14 reaches 43 levels on 125 px in the band y 765–824, and B01-SH03 and B04-SH04 reach 13–34 on one-row bands. Cause: the `PaintedStack` front cut (alpha = diff/9) amplifies the p5.brush residual (DF-20261030-zcpaint-figure-texture-residual) over the hippo/snake layer. Not changed, because a dead zone would alter the approved waterline glaze.
+- **Open for Film:**
+  1. **B02-SH01 accept fails as staged.** At L29 the H4 eyes (Run x 277, y 1025) are behind her hair, whose left edge is at about x 230. Eyes at x ≤ 200 need H4 about 0.8 m further −x, or a smaller camera yaw.
+  2. **Selfie pose.** The approved `selfie-peace` holds the phone inside its own photo. The lens-arm proposal is `EDU18-POST-PHOTO-LENSARM` (store `…-lensarm-w5b.png`).
+  3. **B03 gate leaf.** At 70° the leaf is a rod in B03-SH02 and fills the left half in B03-SH03. At 110° it reads in both shots but breaks LF02.
+  4. **B04-SH04 crane end.** It shows the paddy set's edges: a rice strip, a short bund and a cut near end.
+  5. **B01-SH03 hippo size.** At the halt the hippo is about 150 px wide against the sheet's 250 px.
+
+## EP18 W5 fix round w5c (2026-11-16, Boss): user decisions on open items 1–3
+
+User decisions (chat, 16 Nov 2026), applied in code (uncommitted). Items 4 (B04-SH04 paddy set) and 5 (B01-SH03 hippo size) are not touched; Editor checks them at the draft.
+
+- **Selfie pose = lens arm (item 2).** [post-photo.tsx](../../src/painted/edu18/post-photo.tsx) `selfiePass`/`SelfieFrame` now default to `lensArm: true`: the right arm reaches down-left out of frame and no phone is drawn, so the phone is not in its own photo. `lensArm: false` keeps the original `selfie-peace` with the phone, for comparison only. The `EDU18-POST-PHOTO-LENSARM` still, `PostPhotoLensArm` and `POST_PHOTO_LENSARM_SRC` are removed; `EDU18-POST-PHOTO` is now the lens-arm frame. The Editor's B02-SH01 shot paints through `selfiePass`/`SelfieFrame`, so the shot and the photo match.
+- **H4 moved −x (item 1).** [hippo-shots.ts](../../src/painted/edu18/hippo-shots.ts) `H4_MARK` (56.3, 0, 6.0) → **(55.3, 0, 6.0)**, i.e. 1.0 m instead of the "about 0.8 m" the user named. At 0.8 m (55.5) the eye midpoint at L29 measured x 209 (eyes 188 and 230), which misses the x ≤ 200 target. At 1.0 m it measures 192 (eyes 170 and 213, y 1037). The hair's left edge at the eye row is about x 250, so the gap is about 37 px. The cause was the projection through `selfieCam`, about 85 px per metre. The same mark drives B02-SH03, where the eyes now measure 448 at the start against the Run mark 523 and 279 at the end against 363 (`npx tsx scripts/edu-series/ep18/short/w5-measure.ts`). B02-SH01 start: 88 against 180. Film's SD03 row and the Run marks in scene-sheets.md still read 56.3. Updating them is Film's call; I did not edit the sheet.
+- **Post photo re-rendered and re-locked.** New: `projects/edu/EDU/stills/ep18-c69-w5-boss-2026-11-16/post-photo-B02-SH01-L29-w5c.png`, locked with `store.py use --replace` (sha256 b4202aad…). The old stills stay filed beside it: `…-L29-w5b.png` (the phone-in-hand pose) and `…-L29-lensarm-w5b.png` (the lens-arm proposal at the old H4). The unlocked public copy of the lens-arm proposal is deleted. The FPOV/zoom cards that show the photo were re-rendered (B02-SH02 f0/14/55, B06-SH02 f42, ZOOM).
+- **Gate leaf 110° (item 3).** [village.ts](../../src/painted/edu18/village.ts) `paintVillageBack` defaults to `leafOpen` 110, so every B03 shot and LF02 use it. The `EDU18-W5-GATE` card is now frames 0–3 at 110° and frames 4–7 at the old 70°. B03-SH02: the leaf now reads as a barred panel left of the left post, where it was a rod. B03-SH03: a diagonal leaf at the right post, where it filled the left half.
+- **Visible change to the approved LF02:** the camera-left gate leaf was an edge-on line beside the left white post. It is now a green barred panel swung out past that post toward the frame's left edge, about x 0–90 at y 270–430 in the 814 px sheet tile. The girl, the hens, the right leaf, the bougainvillea and the light are unchanged. Caption zone: mean 0.567 → 0.562 and p95 0.926 → 0.926. It fails the same way as the approved W3 frame, and the change is outside the band.
+- **Stills:** `sh scripts/edu-series/ep18/short/render-w5.sh w5c <IDs>` and `render-looks.sh w5c LF02` (`GUIDES=0` for `w5c-clean`). Sheets I viewed are in `out/edu18/w5/w5c/sheets/`: `qa-photo-crop` (old pose, lens-arm at the old H4, new; post square y 300–1380), `qa-post`, `qa-B02-hippo`, `qa-B03-gate` and `qa-LF02` (W3 approved vs w5c). Store: `projects/edu/EDU/previews/ep18-c69-w5-boss-2026-11-16/w5c/` and `…/w5c-looks/`.
+- **Not verified:** the post photo is not re-checked at the 376 px FPOV slot crop beyond the B02-SH02 f55 card. The B02-SH01 shot with the girl in motion (L0–28 arm/camera ease) is only seen at L29, because the shot is the Editor's. LF02 at 110° is not user-approved.
+
+## EP18 W5 fix round w5d (2026-11-16, Boss): readable hippo in the post photo
+
+Coordinator request, relaying the user: in the w5c post photo (lens arm, L29) the hippo was a dot at the left edge. Make it readable (head and eyes, about 3–4× larger), clear of her hair and not blocked by the arm or body. Keep the girl's pose. The user also approved LF02 with the gate at 110° (kept).
+
+- **H4 mark** [hippo-shots.ts](../../src/painted/edu18/hippo-shots.ts): (55.3, 0, 6.0) → **(57.9, 0, 11.4)**. That puts it in the near shallows just off the sandbank (the brief's water edge is about z 11), about 3 m behind her. B02-SH01 now uses lurk with `lift` +0.12, so the brow, eyes, ears and the top of the snout show. B02-SH03 shares the mark; its lurk and yawn are unchanged.
+- **Photo camera** [post-photo.tsx](../../src/painted/edu18/post-photo.tsx) `selfieCam`: was eye 1.55, pitch 0, f 900, r 0.75 → 0.70. Now **eye 1.8, pitch −14, f 1050, r 0.87 → 0.82** (yaw 0 → 6 eased as before). Why:
+  - With the old lens, any H4 close enough to read landed below the lens arm, at y 1150–1250.
+  - The higher, tilted-down lens lifts the near water above the arm.
+  - A mark further right would sit behind her hair, so the hippo needs a gap between the frame edge and the hair. That forces a wider frame: the girl is about 0.7× her w5c size and now reads waist-up in the post square (`POST_PHOTO_TOP` 300 unchanged).
+  - The W5 B02-SH01 card now uses `selfieCam`. This is a camera change against the sheet's B02-SH01 lens and is Film's to confirm.
+- **Measured** (`w5-measure.ts`, its B02-SH01 rows now use `selfieCam`):
+  - **B02-SH01 eyes:** L29 midpoint (130, 1026), eye spacing about 110 px, against w5c's 43 px. The head is about 285 px wide, against a dot of about 60 px. The hair edge at the eye row is about x 320, the nearest ear about x 210. The arm's upper edge passes under the head and covers only part of the back.
+  - **B02-SH01 start (L0):** eyes (32, 1034). The head is half cut by the left edge until the yaw eases.
+  - **Sheet Run marks** for B02-SH01 (180, 1025) and (277, 1025) are for the old lens.
+  - **B02-SH03 eyes:** start (457, 835) against Run (523, 709); end (sunk) (263, 862) against Run (363, 686). The hippo is now about 125–175 px lower and larger in SH03.
+  - **SH03 overlap with the girl, projected not rendered.** At the start she is at x about 706 with u 442 px/m, so the hippo is about 130 px clear of her. At the yawn (L56) the head is about x 444 and about 200 px wide, which may touch her left edge.
+- **Re-locked:** `projects/edu/EDU/stills/ep18-c69-w5-boss-2026-11-16/post-photo-B02-SH01-L29-w5d.png` (sha256 39d2d21f…). Older stills stay filed beside it: `-w5b`, `-lensarm-w5b`, `-w5c`.
+- **Sheets I viewed** are in `out/edu18/w5/w5d/sheets/`:
+  - `qa-photo-crop`: w5c, w5d at top 300 (used), w5d at top 400 (not used).
+  - `qa-post`: the photo, B02-SH02 f55, B06-SH02 f42, ZOOM.
+  - `qa-B02-hippo`: river and hippo only.
+  - Store: `projects/edu/EDU/previews/ep18-c69-w5-boss-2026-11-16/w5d/`.
+- **Pre-existing, seen again:** her legs stand in painted water at the bottom of the full frame. The sandbank is not painted in this frame; that is outside the post square and was the same in w5b and w5c.
+- **Not verified:**
+  - B02-SH03 with the girl composited (no W5 card has her).
+  - B02-SH01 L1–28 with the girl.
+  - Film's sheet and Run marks are not updated.
+
+## EP18 W5 Editor draft v1 (2026-11-16, Editor)
+
+- Build: composition `EDU-EP18-SHORT` (`src/videos/edu-ep18/index.ts`, `cues.ts`), plates `EDU18-<shot>` (`src/painted/shots/edu18.tsx`, registry entry first in `all`). Each plate has a no-op `paint` and hosts Boss's `PaintedStack` in its `Overlay` (`src/painted/edu18/shotkit.tsx`); BrushCanvas of PaintedStage paints nothing, so the two p5.brush canvases never meet. Works with `--gl=angle`; seek parity: frames 60/943/1765 rendered forward and backward differ by mean 0.001/255.
+- Deviation: shots grouped per set (`edu18/shots/river|village|path|stadium|bedroom|phone.tsx`), not one file per shot; a code edit repaints every scene of the episode. Draft render 966.8 s (cache bypassed on first run: package-lock changed).
+- Staging deviations: dog stands at (0.62, 0, -0.12) not D1 (0.35, 0, -0.5), right hand lowered to 0.64 m (frozen-hand pose puts it near 1.0 m; nose could not reach it); lamp-on and sit-up B06-SH01 swap pose at L10 (no lying-to-sitting motion); B06-SH05 phone is drawn by `paintPhoneBody` with `PostScreen` zoom 1 on an axis-aligned quad; B05-SH03 final dot is `#8d98a6` (the B02 dot colour is invisible on the black ground); motorbike pass in B03-SH01 not drawn.
+- Defects vs the sheet: B01-SH03 hippo about 165 px wide at the halt (sheet 250); B04-SH04 crane end shows hard paddy rectangle edges and a short bund; B04-SH03 raised sandal not visible (step-freeze pose, both feet planted); B05-SH02 blanket reaches the cheek, not the nose, hands are the P37 arms; B06-SH01 no hand reaching the lamp; B05-SH03 end dot is 6 px.
+- Kit gaps for Boss/Film: no dog back view, no gasp-recoil pose, no lying-to-sitting motion, no hands-on-blanket pose, ripple painter for the snake paddy entry reuses the hippo water rings.
+- Caption zone: `caption-zone.py --band 1176:1344` on 72 captioned stills fails 71 (background mean 0.37-0.67 against 0.25; p95 contaminated by the white fill); stroke-only captions looked legible on the sheets, a full-size viewer check is still due.
+- Audio (nothing listened): mix-levels FAIL B06 background 11.8 dV (window G1394-1499: S20, S21, S12-b summed with min-12 accents against a min-15 background row; cue-sheet conflict for Ton) and B06 accent peak 13.1 (S19 click capped at -3 dBFS); warnings B01 accent peak 5.9, B02 background 14.8/13.7, bed above 20 in B03-B06.
+
+## EP18 W5 draft fix round v2 (2026-11-16, Editor): six CHANGE shots from the user's review of draft v1
+
+User reviewed `EDU-EP18-SHORT-draft-v1.mp4`; CHANGE on B01-SH01, B01-SH04, B03-SH01, B03-SH03, B04-SH01, B06-SH05; every other shot ok and untouched. Timing (1872 f, G values), narration and sound cues unchanged (`sound-cues.py`: 60 cues, 0 swaps). Stills/sheets: `out/EDU-EP18-SHORT/fix2/` (before: `before-A.png`, `before-B04.png`, `before-B06.png` cut from v1; after: `n1-A.png`, `n1-B.png`, `n3-dog.png`, `n4-B04.png`, `n5.png`, `ph.png`).
+
+1. **B01-SH01 / B03-SH01 outline (cause found).** `PaintedStack` (`edu18/stack.tsx`) fixed `scaleBrushes(5)` while the draft paints a 540 px canvas with `brush.scale(0.5)`; `scale` moves geometry only, so every ink line kept its full-size pixel weight and was stretched 2x by the browser. Draft lines were about twice as thick as the final's (measured on a B03-SH01 arm crop: v1 draft about 3-4 draft px against about 4 px full). Fix: `scaleBrushes(5 * k)`; a range draft render (535-545) shows draft lines now equal the full-size ones. At full size the ink edge is the intended wobbly rotring line (hair/arms), unchanged. Same constant sits in `BrushCanvas.tsx` (`brushScale` 5) for other plates; not touched (shared; Boss to decide).
+   - Upside-down face under the canoe is not a bug: it is LF01's reflection (canoe + paddler seen by `mirrorCam`, flipped about the horizon, `reflect: true`, layer alpha 0.17). Dimmed to 0.11; remove it if the user still dislikes a face in the water (one flag).
+2. **B01-SH04 canoe through the girl.** The camera sits on the keel line; `paintCanoeFront` draws the whole near wall after the paddler, so the wall running on toward the bow crossed her chin. New stage option `girlLast` (river.tsx): the near wall is painted before the girl, paddle after. Only B01-SH04 uses it.
+3. **B03-SH03 dog neck.** At x 0.62 the hand was straight above the dog's chest, so the nose-to-hand `lean` pulled the head back onto the shoulder (no neck) and the nose target was capped 0.55 m, about 0.1 m under the hand. Dog `DOG_SNIFF` (0.62,0,-0.12) -> (0.46,0,-0.12) so the nose reaches forward of the chest, hand height 0.64 -> 0.58 m, lean cap 0.55 -> 0.62 m. Same constants drive B03-SH02 end and B04-SH01 start (continuous). dog.ts untouched.
+4. **B04-SH01 distorted action.** Two bugs: the "shake" moved her right hand 0.3 u sideways (a stray `*10`), so her arm flew out straight toward the post; and the lean released at L14 in one frame (head pop). Now the hand shakes +-0.07 u, and the lean eases off L8-20. Read: nose to hand and lick L2-8, she flinches then shakes the hand and relaxes, the dog turns away and trots out left, out of frame by about L40.
+5. **B06-SH05 strange action.** v1 lowered both hands behind her raised knees to the ankles (arms read as legs, phone small at her feet, screen letterboxed so 500 was tiny). Now she keeps the `sit-up-phone` grip, lowers the phone a hand-width from the chest L0-30, holds it below her chin tilted 6 deg with the zoomed "500 คน/ปี" across it (phone drawn about 2x true width, width 150+ px; screen rendered at full aspect and cropped to the window), a breath out and shoulder shrug L104-140, `relieved` from L120, still from L154. Deviation from SD11: phone at lower-chest height, not belly (belly is hidden by her raised knees), screen turned to the lens. Film to confirm.
+- Not verified: draft v2 watched in motion (stills and a 10 f range only); sound not listened; B06-SH05 `rise` shrug seen only by the numbers, not in a frame.
+
+## EP18 script R2.1 L12 change and narration v2 (2026-11-16, Editor)
+
+User, chat 2026-11-16, option B: NAR L12 "แต่ที่หนึ่ง… ไม่ต้องกัดใครให้เจ็บเลย" -> "แต่ที่หนึ่ง… ตัวเล็กนิดเดียว แต่ฆ่าได้มากกว่านั้นอีก" (old line contradicted the biting frame of L10-L11 and the buzzing-mosquito picture). Script [ep18/short/script.md](ep18/short/script.md) is **EDU-EP18-SCRIPT-R2.1** (change-log line, claim row L12, B05 beat, OQ5 wording).
+
+- **Fact check (Editor, not Boat):** "mosquito kills more than a snake" holds on the research files: malaria alone about 610,000 deaths 2024 / 598,000 in 2023 (SRC002, F020) against 81,410-137,880 snakebite deaths (SRC001, F021; SRC007 100,000) = 4.4-7.5 times. Supported at "มากกว่านั้นอีก". Wording flag for Boat: research gap 8 / item 8 prefers "ยุงนำโรค" to "ยุงฆ่า"; "ฆ่าได้" puts the killing on the mosquito, L13 "ยุงพาเชื้อ" follows at once. Boat to recheck the row.
+- **TTS:** 1 Gemini request (8 used today of 100), Kore, same style, text = L11 lead-in + L12 (ellipsis as comma) so L12 keeps L11's prosody; raw `out/ep18/voice/l12/l11l12_raw.wav`; L12 cut out, atempo 1.05, gain -0.8 dB (clip -15.3 LUFS peak -1.6 -> -16.1 / -2.4 dBFS; L11 -16.1, L13 -16.2 in v1); no second take. Natural length 2.447 s against v1 2.288 s (+4.8 f).
+- **Fit:** V04 sits at G1158, 5 f behind v1's L12 end, so the longer line could not just be dropped in. Speech onset 2 f earlier (file 33.378 s) and 0.10 s cut from the 0.238 s pause after "แต่ที่หนึ่ง" (15 ms equal-power join): new L12 file 33.379-35.717 s = G1082.4-1152.8 (v1 1084.3-1153.0). Nothing else moved: L13+ and all cuts/cues/V01-V05 keep their G; total 1872 f. [narration-l12-swap.py](ep18/short/narration-l12-swap.py) writes `public/narration/EDU-EP18-SHORT-narration-v2.wav` (samples outside file 33.340-35.966 s identical to v1, checked), then `narration-place.py v2` writes `...-placed-v2.wav` (placements log identical to v1). Both stored (`projects/edu/EDU/audio/2026-11-16_ep18-r21-l12/`, `projects/edu/EDU/ep18/w5-draft-v3/narration/`) and locked in edu-ep18.
+- **Cues checked:** S10-B02, S11, S12 are before L12; S17 (G1047), S18 (G1083, under L12 start) and S10-B05-1 (G1141, under V04 at 1153) keep their frames, no nudge. `sound-cues.py`: 60 cues, 0 swaps. The baked stem `draft-stem-v1` was not rebuilt: its bed duck follows the voice and L12 now starts 2 f earlier with a 0.12 s pause, inside the 0.3 s hold.
+- **Text:** captions [cues.ts](../../src/videos/edu-ep18/cues.ts) L12a G1082-1123, L12b G1125-1159 ("ตัวเล็กนิดเดียว / แต่ฆ่าได้มากกว่านั้นอีก"); review-rows B05-SH01 VO and B05-SH02 note; scene-sheets log "R1.1 text-only" (header stays R1.0; Film to bless).
+- **Status:** measured only (silencedetect, ebur128, sample diff); **not listened**. Narration v2 is not user-approved (the v1 read approval covered the old L12).
+
+## EP18 W6 final cut (2026-11-16, Editor)
+
+Render stage: final cut, full size. Draft passed by the user (16 Nov 2026, draft v3, script R2.1, narration placed-v2). `node scripts/storyboard-page/clips.mjs EDU-EP18-SHORT scripts/edu-series/ep18/short/review-rows.json --full --gl=angle --timeout=240000` (24 of 24 scenes painted full size, 0 reused, 1522 s, `out/logs/ep18-w6-final-render.log`) -> `out/EDU-EP18-SHORT/clips/_final_cut.full.mp4` (1080x1920, 30 fps, 1872 f, 62.400 s, AAC). Store: `projects/edu/EDU/final-cut-ep18-w6/EDU-EP18-SHORT-final-cut-w6.mp4` with per-scene sheets, frames, seek stills, stems and logs. Not pinned, not published.
+
+- **Mix (nothing listened):** `sound-mix.py` now reads placed-v2 and bakes `public/audio/edu/EDU-EP18-SHORT-stem-v2.wav` (locked in edu-ep18). Changes by number: S1/S2 dV 8 -> 7; S7/S11 +2/+1.5 dV, S8 +2, S9 ticks +2, S12 7 -> 8.5 dV with cap -4 dBFS (B02 background 14.8/13.7 -> pass); M1-back -2 dB from G305 to G500 (B02 bed); S21 cap -8 -> -11 dBFS (peak dV 5.5); S19 cap -4 -> -5; S12-b 12 -> 15 dV. Cue-sheet edit (one): the S19 peak row max 3 -> 12 with an `exception` (a 4-frame click cannot read -6..3 on the 400 ms meter at a -5 dBFS peak; reaches 14.2). `exempt` entries renamed to stem-v2. Result: sound-cues.py OK (60 cues, 0 swaps); mix-levels 0 FAIL, 12 warn (B01 accent peak 4.9; B06 background 14.5 vs 15, the S21 swipe leaks into the neighbouring speech steps and S21 cannot go lower without leaving its -6..3 peak row; B06 S19 14.2 and S21 5.5 inside tolerance; bed above 20 in B03-B06 as in v1).
+- **Final MP4 measured (ffmpeg ebur128 on the full-size file):** -15.9 LUFS integrated, LRA 2.3 LU, true peak -2.8 dBFS. mix-levels' own sum shows peak +0.2 dBTP; the encoded file's true peak is -2.8, so no limiter was added.
+- **Frames:** 24 mid-shot frames from the final cut, sheets S01/S02/S03 and `sheet-six-changed.png` (B01-SH01, B01-SH04, B03-SH01, B03-SH03, B04-SH01, B06-SH05 at 480 px wide tiles) in the store folder. Thick-line issue gone; B01-SH04 near wall behind the girl; dog neck reads; B06-SH05 phone readable.
+- **Caption zone** (`caption-zone.py --band 1176:1344`, 24 frames): 0 of 24 pass the default band (background mean 0.18-0.94, six frames above 0.6: B02-SH02, B03-SH01, B03-SH02, B04-SH04, B06-SH03 white phone page 0.94, B06-SH05); stroke-only captions read on every sheet; same known mismatch as EP17.
+- **Lead heights** are the camera-path projections (Film W4 `edu18-w4-projection.log`), not pixel-measured on the final frames; a few mid-frames checked by eye agree (B03-SH01 mid about 445 px). Below 480: B01-SH01 320-360, B01-SH02 448, B01-SH03 324-360, B01-SH04 head 338-383 (seated in canoe), B03-SH01 372 at start; B05-SH03 mosquito 283-239 px.
+- **Seek parity** (frames 60, 943, 1765): still forward vs still backward PSNR 67.5 / 90.9 / 84.2 dB; still vs final-cut frame 39.0 / 38.6 / 40.6 dB (H.264 crf 18).
+- Defects seen on sheets: upside-down reflection face under the canoe in B01-SH01 (LF01 reflection, dimmed, remove by one flag); B03-SH04 stadium has a pale cool tone as approved. Not seen in motion: the final cut was not watched through.
+
+## EP18 ink lines EDU18-INK-SINGLE (2026-11-16, Boss): user note on the final cut "character lines look thick, as if drawn over several times"
+
+- **Root cause (measured):** p5.brush keeps ONE global brush table and `scaleBrushes` multiplies it. In the timeline `PaintedStage` mounts a `BrushCanvas` first (`scaleBrushes(5)`, its default `brushScale`), then every EP18 shot's `PaintedStack` (`src/painted/edu18/stack.tsx`) created its own canvas and called `scaleBrushes(5 * k)` again: every brush ran at **25x** in the video (Film's look frames, `looks-index`, have no BrushCanvas and ran at 5x). Kit ink is `inkLine` -> `'rotring'` at stroke weight 0.9-1.5: at 25x a dot is 3.75 px x pressure² (1.0-1.3) x 0.85-1.15, scattered ±1.25 px across the line, one dot per 2.5 px with a 10 % grain dropout, so an edge reads as a beaded, fuzzy band traced twice. Row profiles across the B03-SH03 coat edge (luma < 90): 4-7 px dark runs now, 1-4 px fixed.
+- **Fix (EP18 only, `stack.tsx`):** (1) `inkScaleFactor`: the stack scales only by what is missing to reach 5k (factor k when a `canvas#brush-canvas` exists already, else 5k); (2) an EP18 ink brush `EDU18_INK` (`edu18-ink`: weight 1.9 px at stroke weight 1, scatter 0.3, sharpness 0.9, grain 1, opacity 235, spacing 0.35, pressure 0.85-1.3) registered after the scale, and the stack's brush wrapper maps `set('rotring', ...)` to it. Input prop `edu18Ink`: `single` (default), `hair` (de-dup only: plain 5x rotring, near-invisible 1 px lines), `double` (old 25x, for A/B). The shared kit, `BrushCanvas` and `PaintedStage` are unchanged; other episodes do not use `edu18/stack.tsx`.
+- **What changes:** every ink stroke painted inside an EP18 PaintedStack: the girl (outline, face features, clothing, hands), canoe and paddle, water highlight lines and reflection, the power wire, gate posts, bedroom lines. Unchanged: dog and hen (papercut, no ink: pixel diff 0 on their bodies), the three.js hippo, washes and fills (the stack's draft wrapper already turned fills into flat washes), the card scenes (`cards.tsx`, own BrushCanvas). Draft (`paintScale` 0.5): the custom brush is not multiplied by k (brush.scale(k) already shrinks dots; measured), standard brushes keep 5k.
+- **Evidence:** A/B sheet `out/ep18/lines/ab-sheet.png` (B01-SH01 f63, B01-SH04 f218, B03-SH01 f534, B03-SH03 f684, B05-SH02 f1172, B06-SH05 f1765; current | fixed pairs), head crops `crop-head-cur.png` / `crop-head-fix.png` (2x of B03-SH03), diff masks `diff-sheet.png`, zooms `zoom-*.png`; store `projects/edu/EDU/ep18-ink-single-ab/`. Seek: f684 rendered alone and after 682-683 differ only on the dog's edge pixels (PSNR 80 dB; the old 25x build shows the same dog-edge noise, 79 dB): pre-existing, not from the ink.
+- **Open:** B05-SH02 hand ring now shows its polygon corners (the 25x fuzz hid them); the line is cleaner but closer to a vector look (wobble is width swell, little path wobble). All 24 shots repaint (every shot is a PaintedStack); the final cut and delivery need a re-render, not done in this pass.
+
+## EP18 W6b final cut re-render (2026-11-16, Editor)
+
+Render stage: final cut, full size, after EDU18-INK-SINGLE (Boss, `edu18Ink` default `single`). `node scripts/storyboard-page/clips.mjs EDU-EP18-SHORT scripts/edu-series/ep18/short/review-rows.json --full --gl=angle --timeout=240000` (same flags as W6; 24 of 24 scenes painted, 0 reused, 1676 s, log `out/logs/ep18-w6b-final-render.log`, `out/logs/render-clips-2026-11-16T10-07-48-387Z-bd31d3e4.jsonl`) -> `out/EDU-EP18-SHORT/clips/_final_cut.full.mp4` (1080x1920, 30 fps, 1872 f, 62.400 s, AAC, -15.9 LUFS, LRA 2.3; same as W6). Store: `projects/edu/EDU/final-cut-ep18-w6b/EDU-EP18-SHORT-final-cut-w6b.mp4` with frames and logs. W6 kept beside it.
+- Frames from the cut (B01-SH01 f63, B01-SH04 f218, B03-SH01 f534, B03-SH03 f684, B05-SH02 f1172, B06-SH05 f1765): `out/EDU-EP18-SHORT/w6b/sheet-six.png`, 1:1 head crop `crop684-head.png` (B03-SH03): one clean dark line on hair, face and coat. B05-SH02 hand ring shows polygon corners (known, from the ink note).
+- Review page rows: `finalCut` refreshed by clips.mjs (no scene keys, every shot asks for a Final verdict again). Page built, not published: `out/review-pages/EDU-EP18-SHORT/index.html`.
+- Not done: caption-zone/lead-height re-measure (unchanged by the ink fix, W6 numbers stand); not watched through; not pinned.
+
+## EP18 W7 pin + delivery (2026-11-16, Editor)
+
+- **Why pin failed:** `pin.mjs` reads `manifest.json[A_fade]`, which only a scene-cached render writes. The W6/W6b `clips.mjs --full` runs were not cached: log line `Scene cache reuse bypassed: Computed picture source in src/painted/edu18/Post.tsx` (then `Computed staticFile path in src/painted/edu18/shots/phone.tsx`), so `scripts/render-inputs.ts` returned no source hash, segments went to `out/EDU-EP18-SHORT/segments-work` and nothing was written. The manifest held only a stale `A_fade|draft|scale0.5` entry from 14 Nov.
+- **Fix (no picture change):** render-inputs needs literal media sources. `Post.tsx` `<image href={photo}>` now uses `staticFile('edu18/post-photo-B02-SH01-L29.png')`; `shots/phone.tsx` and `w5-cards.tsx` call `staticFile('edu18/post-photo-B02-SH01-L29.png')` instead of `staticFile(POST_PHOTO_SRC)` (same file as `POST_PHOTO_SRC`). Output identical (PSNR 51.7 dB delivery vs W6b; frames 63, 218, 534, 684, 900, 1172, 1500, 1765 viewed in `out/EDU-EP18-SHORT/w7/sheet.png`). Finding for Boss (guard too strict): `render-inputs.ts` rejects a computed `<image href>`/`staticFile(CONST)`; either resolve constants or document "literal paths only" in the render skill.
+- **Order:** the skill requires every scene pinned before a delivery render, and pinning needs the cached final render, so one more full-size final cut was unavoidable (no cache from W6b existed): `clips.mjs --full --gl=angle --timeout=240000` 24 of 24 painted, 1721 s -> `pin-rows` 24/24 -> `render.mjs EDU-EP18-SHORT --gl=angle --timeout=240000` 24 of 24 reused, 190 s, -14.1 LUFS, -1.5 dBTP, 1872 f. The delivery render logs a harmless `Target.closeTarget` teardown error after "Render done".
+- `review-rows.json` was rewritten by clips.mjs (finalCut keys now present). Not done: `store.py use` asset locks for re-edit; no cover; `tests/edu18-girl.test.ts` has an existing tsc error (`arm.via` possibly undefined), not touched.
+
+## EP18 W8.0 cover pick 1 (2026-11-16, Film): EDU-EP18-SHORT-PIC-COVERS
+
+- **Inputs:** script R2.1, fact-check R1 + R2 recheck, sheets EDU-EP18-SHEETS-R1.0, brief truth limits 1–7, analytics snapshot `channels/edu/analytics/2026-11-15.md`; shelf neighbours EP05 (32.9k) and EP11 (24.9k) covers from `$REELS_STORE/publish/edu/EDU/`.
+- **Files:** `src/videos/covers/edu-ep18.ts` (hook sheet in the header, `EDU18_PICS`, style accent red), registered in `src/videos/covers/index.ts` as `EDU-EP18-SHORT-PIC-COVERS`; one-shot cover sheets `ep18/short/cover-sheets.md` (EDU18-CV1, EDU18-CV2, needs-paint). `src/painted/registry.ts` untouched (no cover painting exists yet), so no pin hash change.
+- **Candidates:** P1 danger moment (stand-in B01-SH03 l 28, needs-paint EDU18-CV1), P2 scale shock (B01-SH01 l 60 yawn beside the canoe), P3 face and emotion (B01-SH04 l 15 "เฮ้ย!"), P4 subject close (stand-in B01-SH01 l 30, needs-paint EDU18-CV2), P5 odd view (B02-SH01 l 29 selfie, red ring on the hippo's head behind her).
+- **Render rounds (4 of 4):** r1 failed on P3 `local` 10 ("fromSec: expected non-negative seconds", COVER_STILL 15) → 15; r1b grades only; r2 P5 local 25 → 29 (the post-photo frame) and ring re-measured at 540 px (hippo head x 20–260, y 980–1140); r3 ring (150, 1050); r4 deeper grade `DAWN` (vignette 0.68, warm soft-light 0.2) after the r3 shelf sheet showed the dawn plates paler than EP05/EP11. Sheets `out/EDU-EP18-SHORT-PIC-COVERS/pic-r4-270.png`, `pic-r4-120.png`, `pic-r4-shelf-120.png`.
+- **Finding:** the EP18 dawn palette is low-contrast at 120 px next to the channel's top covers; grading lifts it only a little. The plates that sell the hook (hippo close to her) are too wide (the charge) or put the mouth at the right edge (the yawn), which is why two paintings are proposed.
+- **Proposal (DP01, not applied):** skill section 6 step 3 could say how to compare text-free pick-1 pictures with published covers that carry text (e.g. judge the picture half only, or mask their headline); today the shelf row compares unlike things.
+
+## EP18 W8.0 cover pick 2 (2026-11-16, Film): EDU-EP18-SHORT-COVERS
+
+- **Inputs:** user pick 1 = picture E = P5 (genuine chat answer, 2026-11-16): `EDU18-B02-SH01` local 29, her selfie with the hippo's head behind her. Script R2.1 (L01–L18), Boat R1 + R2 recheck (R2.1 L12 limit: the mosquito is first, so no word says the hippo kills the most; "500" only as the shared number or a question). Shelf neighbours EP05 and EP11 covers (`$REELS_STORE/publish/edu/EDU/`).
+- **Files:** `src/videos/covers/edu-ep18.ts` (`EDU18_COVERS`, pick-2 header with candidates, words-to-lines, five titles, clean pairs, scores), registered in `src/videos/covers/index.ts` as `EDU-EP18-SHORT-COVERS`. `src/painted/registry.ts` and the episode timeline untouched.
+- **P5 fixes (engine only, no `plateMove`):** vignette 0.75 (C3 0.85), dark top edge 760 px at 0.62 behind the band (C3: bottom edge 820 px at 0.7), ring thickened (red 12 → 16, ink 24 → 30, rx 145 ry 98), a red arrow with ink under-stroke from the headline to the ring on C1, C2, C4. Channel mark redrawn in light ink (the chrome mark faded under the top grade in r1; EP19 precedent).
+- **Candidates:** C1 survival bet "รอดมั้ย?" (CL01 caption "รอดจาก…"); C2 you "ข้างหลัง / คุณ!" (L01 "คุณ"; "ข้างหลัง" shown, not said); C3 number "ปีละ / 500?" bottom band (L04, CL01; question only); C4 wrong vs right sticker "อย่าดู / ที่ความดุ" (L05 verbatim); C5 contradiction "ยิ่งดุ / ยิ่งฆ่าเยอะ?" (L03 answers it).
+- **Render rounds (2 of 4):** r1 all five; r2 mark redraw, C5 line 2 175 → 195 at stretch 80, C3 vignette 0.85. Sheets `out/EDU-EP18-SHORT-COVERS/r2-270.png`, `r2-120.png`, `r2-shelf-120.png`; frame 0 vs cover `frame0-vs-cover-270.png`. Measured on r2 tiles (×4 to frame px): text x 68–928 (all < 960), highest tone mark y ~248 (C2 "ข้างหลัง"), last baseline 1530 (C3, limit 1540).
+- **Scores (max 26):** C1 24, C3 24 (corrected 2026-11-16, was logged 25), C2 22, C5 22, C4 20. Every candidate gets F1 1 and F3 1 from the picture itself (her face is the biggest, brightest blob; the hippo is a grey blob inside the ring at 120 px). Titles (max 10): T4 10, T1/T2/T3/T5 9. Recommended C3 + T4; runner-up C1 + T4.
+- **Frame 0 check (proposed):** frame 0 of EDU-EP18-SHORT shows her in the canoe on the dawn river with bubbles beside it, hippo not yet up, no text. Same subject and place as the cover; the hippo and the cover's question arrive in the first second (B01-SH01 yawn), not at frame 0. Partial match; noted only.
+- **Finding:** on a selfie picture the eye lands on her face; a ring plus an arrow from the headline is the only engine route to the hippo. A tighter hippo needs a cover painting (EDU18-CV2 sheet exists).
+
+## EP18 W8.0 cover + title delivery (2026-11-16, Editor)
+
+- **Picks (user, chat):** cover C3 "ปีละ / 500?", title T4 "ตัวเล็กนิดเดียว… ฆ่าคนมากกว่าฮิปโปได้ไง?" (scale/extreme).
+- **Render:** `node scripts/render.mjs EDU-EP18-SHORT-COVERS --stills --frames=75` (C3 = frame 75; frames 15/45/75/105/135 = C1..C5), 10.6 s, `out/logs/ep18-c3-cover.log`. 1080x1920 PNG, copied to `out/EDU-EP18-SHORT/covers/EDU-EP18-SHORT_cover-C3.png`. Viewed beside the approved r2 still: same text, ring, mark and band; the files differ by a few brush-noise pixels only (not byte-identical). Text and ring measured as approved (last baseline ~1530 <= 1540, x < 960); 120 px check `out/logs/c3-120.png` reads "ปีละ 500?" and the ring.
+- **Publish:** `store.py publish` with --cover, --title, --reason; folder holds MP4, cover, publish.json (title), history.tsv.
+- **Archive note:** `store.py archive --project` takes the series (`EDU`), not the composition ID (`EDU-EP18-SHORT` fails with "bad series"); the task text's flag value was corrected.
+- **Correction:** cover scores C1 24, C3 24 (C3 25 was a tally error), in the cover file header, these notes and task.md.

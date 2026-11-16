@@ -1,0 +1,202 @@
+{
+  "public/audio/bed/bed_cello-held-breath_01.wav": {
+    "store": "library/sound/music/bed/bed_cello-held-breath_01.wav",
+    "sha256": "255406f11884989b08f464510717f2fecf343502e1a35b0bb09474dd8959e912"
+  },
+  "public/audio/bed/bed_kalimba-explainer-100_01.wav": {
+    "store": "library/sound/music/bed/bed_kalimba-explainer-100_01.wav",
+    "sha256": "d509e6fd3a7d0acdeb98b432f5b23fc35a95745c86dc1f47dbc516755b0f9a81"
+  },
+  "public/audio/bed/bed_kalimba-home-sparse_01.wav": {
+    "store": "library/sound/music/bed/bed_kalimba-home-sparse_01.wav",
+    "sha256": "9bdc9fd7178e2ee85b8146ab00902d2f3db82af89b3c6b2f4b9307687b15496a"
+  },
+  "public/audio/bed/bed_kalimba-low-pulse_01.wav": {
+    "store": "library/sound/music/bed/bed_kalimba-low-pulse_01.wav",
+    "sha256": "1c7fefecc2a1310556453289ab33d45c5dcbdef42814eab94b8c94457f6c60b4"
+  },
+  "public/audio/bed/bed_sub-swell-rise_01.wav": {
+    "store": "library/sound/music/bed/bed_sub-swell-rise_01.wav",
+    "sha256": "05a4bba0006a66cd479374160c869465d81fa182a6a6ab3782c19d812993d577"
+  },
+  "public/audio/bed/bed_warm-pad-felt-third_01.wav": {
+    "store": "library/sound/music/bed/bed_warm-pad-felt-third_01.wav",
+    "sha256": "137d2ece5ad9c6f843602a5a4503c171629fe029ab65ee13e1960594e4bfe5bf"
+  },
+  "public/audio/city/city_stadium-hush-far_01.wav": {
+    "store": "library/sound/ambience/city/city_stadium-hush-far_01.wav",
+    "sha256": "336e32eebeb5b5cc9878dba948971114687ae7ebdc68876af5c4a137c79836ba"
+  },
+  "public/audio/edu/EDU-EP18-SHORT-draft-stem-v1.wav": {
+    "store": "projects/edu/EDU/ep18/w5-draft-v1/audio/EDU-EP18-SHORT-draft-stem-v1.wav",
+    "sha256": "d7c4d3fe017e96f6c38247f9be7aac472a8e0e0d0a87e7401c139681977d4e26"
+  },
+  "public/audio/edu/EDU-EP18-SHORT-stem-v2.wav": {
+    "store": "projects/edu/EDU/ep18/w6-final/audio/EDU-EP18-SHORT-stem-v2.wav",
+    "sha256": "2e905ca94133d1d3e8080cb9be9600814a896aa5ec15c84c40b1b4b8a14d1395"
+  },
+  "public/audio/nature/nature_night-crickets_01.wav": {
+    "store": "library/sound/ambience/nature/nature_night-crickets_01.wav",
+    "sha256": "d5e29d06183eb01c3d6864135e516c51cf3005c78be9e20850840d17d34f6d6e"
+  },
+  "public/audio/nature/nature_rice-field-wind_01.wav": {
+    "store": "library/sound/ambience/nature/nature_rice-field-wind_01.wav",
+    "sha256": "7976b67d9b973529a567af1f4a4867f5c16aad59a6c6769b4d261444e82fb307"
+  },
+  "public/audio/nature/nature_river-bank-morning_01.wav": {
+    "store": "library/sound/ambience/nature/nature_river-bank-morning_01.wav",
+    "sha256": "6e4cdebf2b935f3488d51a23af08f1143ea63f97502e250c04643c9961c0bc5b"
+  },
+  "public/audio/nature/nature_river-dawn-hull_01.wav": {
+    "store": "library/sound/ambience/nature/nature_river-dawn-hull_01.wav",
+    "sha256": "70a931788eccb5ff473df0903451404984e881c742829a21c451c5cb16836dbe"
+  },
+  "public/audio/nature/nature_village-lane-afternoon_01.wav": {
+    "store": "library/sound/ambience/nature/nature_village-lane-afternoon_01.wav",
+    "sha256": "cd9e8b8d5440406a91294e89c6d1da2b6b4b4b3063bedf2553c8739223977b28"
+  },
+  "public/audio/room/room_fan-night-oscillating_01.wav": {
+    "store": "library/sound/ambience/room/room_fan-night-oscillating_01.wav",
+    "sha256": "22bc58f873a5064355a86817d76d5dc3b2862a64bf65d59226c370bc4a411bda"
+  },
+  "public/edu18/post-photo-B02-SH01-L29.png": {
+    "store": "projects/edu/EDU/stills/ep18-c69-w5-boss-2026-11-16/post-photo-B02-SH01-L29-w5d.png",
+    "sha256": "39d2d21fdcd9515b0a115f733fad9fd8d516948349ced6be6c005a9c2b1cd206"
+  },
+  "public/narration/EDU-EP18-SHORT-narration-placed-v1.wav": {
+    "store": "projects/edu/EDU/ep18/w5-draft-v1/narration/EDU-EP18-SHORT-narration-placed-v1.wav",
+    "sha256": "43e258a28b536c3e23ae7a1bbe21f429c19939a1651a7ba3d12258d80999f7a0"
+  },
+  "public/narration/EDU-EP18-SHORT-narration-placed-v2.wav": {
+    "store": "projects/edu/EDU/ep18/w5-draft-v3/narration/EDU-EP18-SHORT-narration-placed-v2.wav",
+    "sha256": "dd5a95eb052ac241752c87c213152098fb59ab585ece5239e09e26e3a0fdfc43"
+  },
+  "public/narration/EDU-EP18-SHORT-narration-v1.wav": {
+    "store": "projects/edu/EDU/audio/2026-11-16_ep18-w4-nar-fullread/ep18_nar_kore_x1.05.wav",
+    "sha256": "27534001487a82245dd43f319ae3229cb3397fa04a0af53099fcd5288a5f1ee6"
+  },
+  "public/narration/EDU-EP18-SHORT-narration-v2.wav": {
+    "store": "projects/edu/EDU/audio/2026-11-16_ep18-r21-l12/EDU-EP18-SHORT-narration-v2.wav",
+    "sha256": "503c9ac8a661edb62d5a320bfaa07b5ef3cdd770891dfb3c007a5f11abe45bae"
+  },
+  "public/narration/edu18-voice/v01_gasp.wav": {
+    "store": "projects/edu/EDU/ep18/w5-draft-v1/voice/v01_gasp.wav",
+    "sha256": "a2991ce401603d765c193a7390c7cbbfb814d1fc098c2e952942bd0a1fe64094"
+  },
+  "public/narration/edu18-voice/v02_hey.wav": {
+    "store": "projects/edu/EDU/ep18/w5-draft-v1/voice/v02_hey.wav",
+    "sha256": "49ec001c6193a710125b81e4e266927bfd6550b20cf20afdc12218de76ce5109"
+  },
+  "public/narration/edu18-voice/v03_inbreath.wav": {
+    "store": "projects/edu/EDU/ep18/w5-draft-v1/voice/v03_inbreath.wav",
+    "sha256": "95996c8647668ea0f3aedd8dd8f185fc38ceefe53613405dbb57c7c48e1128a4"
+  },
+  "public/narration/edu18-voice/v04_whimper.wav": {
+    "store": "projects/edu/EDU/ep18/w5-draft-v1/voice/v04_whimper.wav",
+    "sha256": "28b4d81b974413634e2a12902fe431e6d77a924e9ba9e02e3d2cb18dfd17a19c"
+  },
+  "public/narration/edu18-voice/v05_eh.wav": {
+    "store": "projects/edu/EDU/ep18/w5-draft-v1/voice/v05_eh.wav",
+    "sha256": "f77dc854f4a767a327b14ed67e8adcb8b3a50c30684bc2882ceaef4da973a339"
+  },
+  "public/sfx/action/action_slap-forearm_01.wav": {
+    "store": "library/sound/sfx/action/action_slap-forearm_01.wav",
+    "sha256": "8e3ddf5b614ec1ba1eced574a99b412bf8cefd67063db9162ca4fcf3372c7795"
+  },
+  "public/sfx/creature/creature_dog-lick-hand_01.wav": {
+    "store": "library/sound/sfx/creature/creature_dog-lick-hand_01.wav",
+    "sha256": "c0cd0fb21d9cb56ede1eb32a91bf19dc80a194abfc5911d7b9724794bc652efd"
+  },
+  "public/sfx/creature/creature_dog-sniff-snuffle_01.wav": {
+    "store": "library/sound/sfx/creature/creature_dog-sniff-snuffle_01.wav",
+    "sha256": "a84447bda4fcb20a2820642566912b2eb3a6d12c0abfcc715218e4bc5c6f09be"
+  },
+  "public/sfx/creature/creature_hippo-snort-spray_01.wav": {
+    "store": "library/sound/sfx/creature/creature_hippo-snort-spray_01.wav",
+    "sha256": "0238b95d37941b42995a979f5f36f0eb55a9f7b2b80380d844dffdc82939d4e1"
+  },
+  "public/sfx/creature/creature_hippo-yawn-bellow_01.wav": {
+    "store": "library/sound/sfx/creature/creature_hippo-yawn-bellow_01.wav",
+    "sha256": "76e7c0d2afb6c3f63b55c6833da493cc9f8f638f43f3dabc1020237f6dbe1acb"
+  },
+  "public/sfx/creature/creature_mosquito-whine-close_01.wav": {
+    "store": "library/sound/sfx/creature/creature_mosquito-whine-close_01.wav",
+    "sha256": "503d86f9203f75c77c322c3aab161a5e136a6636d1ea5a394d3fdf5bc662cbbc"
+  },
+  "public/sfx/creature/creature_snake-slither-hiss_01.wav": {
+    "store": "library/sound/sfx/creature/creature_snake-slither-hiss_01.wav",
+    "sha256": "28ecc09a517a5bbeb5a3dbcbd6cd984b6054abe32c92bd46c33ef9fd01aa2738"
+  },
+  "public/sfx/electric/electric_phone-shutter-flash_01.wav": {
+    "store": "library/sound/sfx/electric/electric_phone-shutter-flash_01.wav",
+    "sha256": "bd238ae237929f4f9b7a6fc59e87cc62cf094809dd6e2838d736f37a0f8f1e75"
+  },
+  "public/sfx/electric/electric_phone-wake-click_01.wav": {
+    "store": "library/sound/sfx/electric/electric_phone-wake-click_01.wav",
+    "sha256": "d7a68ed9af9b6ecaf657ad56f54d44386be6dece8389ac40ba93b1602e564df5"
+  },
+  "public/sfx/electric/electric_post-send-whoop_01.wav": {
+    "store": "library/sound/sfx/electric/electric_post-send-whoop_01.wav",
+    "sha256": "a91d9b5509215bd88c2fe583525ead98d65c59fbb5591867e016862b56802573"
+  },
+  "public/sfx/electric/electric_scroll-swipe-glass_01.wav": {
+    "store": "library/sound/sfx/electric/electric_scroll-swipe-glass_01.wav",
+    "sha256": "71be35c842aa39e146d71889e57ad57b8f26d3d2fba3152ebe769c7bae2984ee"
+  },
+  "public/sfx/foley/foley_blanket-settle-sigh_01.wav": {
+    "store": "library/sound/sfx/foley/foley_blanket-settle-sigh_01.wav",
+    "sha256": "40a5cc10aea964432a3cc81260178877d6268891f57ae6b378613729841cada0"
+  },
+  "public/sfx/foley/foley_dog-trot-dirt_01.wav": {
+    "store": "library/sound/sfx/foley/foley_dog-trot-dirt_01.wav",
+    "sha256": "e8e5502e2fa44eab924d18337f2847eb700df0de0fc306c7f52cf7ca506638bc"
+  },
+  "public/sfx/foley/foley_lamp-rocker-click_01.wav": {
+    "store": "library/sound/sfx/foley/foley_lamp-rocker-click_01.wav",
+    "sha256": "873d52a72c6cf461ee0c76e8956e26b95a39a21218cbf9b4291e08b7267ae5b1"
+  },
+  "public/sfx/foley/foley_sandal-step-dirt-a_01.wav": {
+    "store": "library/sound/sfx/foley/foley_sandal-step-dirt-a_01.wav",
+    "sha256": "02d68b870e6a8a1876a71f651451cc6c6dfd8542497e064d41501fc413add825"
+  },
+  "public/sfx/foley/foley_sandal-step-dirt-b_01.wav": {
+    "store": "library/sound/sfx/foley/foley_sandal-step-dirt-b_01.wav",
+    "sha256": "9e4f569810b75c7d5c3af59b8f94ee9e6bb439c486123b66222c6a712ffbd936"
+  },
+  "public/sfx/stinger/stinger_kalimba-shrug-ending_01.wav": {
+    "store": "library/sound/sfx/stinger/stinger_kalimba-shrug-ending_01.wav",
+    "sha256": "ed724a6b98bcce39bbdaf26e96bd9fe09d5341d12405afa95f17bfd1b127c920"
+  },
+  "public/sfx/stinger/stinger_low-muted-hit_01.wav": {
+    "store": "library/sound/sfx/stinger/stinger_low-muted-hit_01.wav",
+    "sha256": "47d98153c9092e3de68697db7369b266cad3c1ab0a6d37af71a6bad601b22cc0"
+  },
+  "public/sfx/ui/ui_click-tick_01.wav": {
+    "store": "library/sound/sfx/ui/ui_click-tick_01.wav",
+    "sha256": "edfafbe6bfb91e1c01aa9b3e13ca051dcf257406ae63d3ac54178aaf3991babb"
+  },
+  "public/sfx/vehicle/vehicle_motorbike-pass-doppler_01.wav": {
+    "store": "library/sound/sfx/vehicle/vehicle_motorbike-pass-doppler_01.wav",
+    "sha256": "5c1598ac94f33121970ac289eeedd6ed9c54eabd2756abf72229355898283205"
+  },
+  "public/sfx/water/water_charge-surge-bow-wave_01.wav": {
+    "store": "library/sound/sfx/water/water_charge-surge-bow-wave_01.wav",
+    "sha256": "4712fcf28e52bf66c79199267a85bde1bf384a4da99d6f5419f50eccb1a9a160"
+  },
+  "public/sfx/water/water_halt-slap-snort_01.wav": {
+    "store": "library/sound/sfx/water/water_halt-slap-snort_01.wav",
+    "sha256": "7debbba3d1be9818bf73a43a32dad15b5757ce3a60f7654db912603add102172"
+  },
+  "public/sfx/water/water_paddle-strokes-canoe_01.wav": {
+    "store": "library/sound/sfx/water/water_paddle-strokes-canoe_01.wav",
+    "sha256": "6b081f87e180e677a0d6218ed32c7ec66d9ca278590cfb5a8ba03ae4593bbe6c"
+  },
+  "public/sfx/water/water_paddy-entry-slide_01.wav": {
+    "store": "library/sound/sfx/water/water_paddy-entry-slide_01.wav",
+    "sha256": "406f590fac2ffe1a318ec1ac3bbb16fc2ab64bcb9cda642b653ce9b9fcd4b514"
+  },
+  "public/sfx/water/water_river-bulge-surface_01.wav": {
+    "store": "library/sound/sfx/water/water_river-bulge-surface_01.wav",
+    "sha256": "b4b32d1e08802bae484cb6827b1f6847bb741c618cdd7d0a81177f9bb1766b34"
+  }
+}
