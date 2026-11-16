@@ -1,7 +1,7 @@
 import {test} from 'node:test';
 import assert from 'node:assert/strict';
 import {timelineFrames, validateTimeline} from '../src/scenes/timeline';
-import {paintedSpans, paintedStateAt} from '../src/scenes/painted';
+import {crossfadeOf, paintedSpans, paintedStateAt} from '../src/scenes/painted';
 import {cameraAt, paintedShotIds, paintedShots} from '../src/painted/registry';
 import {SH03B} from '../src/painted/shots/shipwreck';
 import {paintedProofTimeline} from '../src/painted/spike/timelineProof';
@@ -127,4 +127,18 @@ test('cue items (positioned labels and cards) are frame-based, validated, and ab
   assert.throws(() => validateTimeline(bad({x: 'a'})), /items\[0\]\.x/);
   assert.throws(() => validateTimeline(bad({untilFrame: 10})), /untilFrame/);
   assert.throws(() => validateTimeline(bad({w: 10})), /card only/);
+});
+
+test('crossfade: only a dissolve into an opted-in plate is composited as a picture; EDU20 B04-SH01 settled opts in', () => {
+  const timeline: Timeline = [painted([{shot: 'SHIPWRECK-SH01', atSec: 0}]), painted([{shot: 'SHIPWRECK-SH06', atSec: 0, dissolveSec: 0.5}]), painted([{shot: 'SHIPWRECK-SH01', atSec: 0}])];
+  const yes = () => true, no = () => false;
+  const mid = state(timeline, 67)!.plates;
+  assert.equal(mid.length, 2);
+  assert.deepEqual(crossfadeOf(mid, yes), {plate: mid[1], index: 1});
+  assert.equal(crossfadeOf(mid, no), null, 'default: mark-over-mark dissolve, unchanged for every other plate');
+  assert.equal(crossfadeOf(state(timeline, 10)!.plates, yes), null, 'one plate: nothing to mix');
+  assert.equal(crossfadeOf(state(timeline, 80)!.plates, yes), null, 'after the dissolve');
+  assert.equal(crossfadeOf([{...mid[0]}, {...mid[1], incoming: true}], yes), null, 'C_seamless loop blend keeps its own path');
+  assert.equal(paintedShots['EDU20-B04-SH01-SETTLED'].crossfade, true);
+  assert.equal(Object.values(paintedShots).filter((s) => s.crossfade).map((s) => s.id).join(), 'EDU20-B04-SH01-SETTLED');
 });

@@ -1,0 +1,110 @@
+{
+  "deliverable": "EDU-EP20-SHORT",
+  "evidence": "ผ่านทั้ง 11 ช็อต ใช้ต่อได้",
+  "source": "explicit user chat, 2026-11-16",
+  "publishedRevision": "EDU-EP20-LOOK-R1",
+  "currentTimedRevision": "EDU-EP20-SS-R1",
+  "hashPolicy": "shared builder storyboard hash; timing excluded",
+  "artifactDb": false,
+  "verdicts": [
+    {
+      "shot": "EDU-EP20-SHORT-S01-B01-SH01",
+      "stage": "board",
+      "status": "ok",
+      "hash": "59f590767b29",
+      "rev": "EDU-EP20-LOOK-R1",
+      "note": "User explicitly approved all 11 storyboard shots in chat",
+      "updatedAt": "2026-11-16"
+    },
+    {
+      "shot": "EDU-EP20-SHORT-S01-B01-SH02",
+      "stage": "board",
+      "status": "ok",
+      "hash": "b292e269aba9",
+      "rev": "EDU-EP20-LOOK-R1",
+      "note": "User explicitly approved all 11 storyboard shots in chat",
+      "updatedAt": "2026-11-16"
+    },
+    {
+      "shot": "EDU-EP20-SHORT-S01-B01-SH03",
+      "stage": "board",
+      "status": "ok",
+      "hash": "bb62a5e4722d",
+      "rev": "EDU-EP20-LOOK-R1",
+      "note": "User explicitly approved all 11 storyboard shots in chat",
+      "updatedAt": "2026-11-16"
+    },
+    {
+      "shot": "EDU-EP20-SHORT-S01-B02-SH01",
+      "stage": "board",
+      "status": "ok",
+      "hash": "991fcb50f6a2",
+      "rev": "EDU-EP20-LOOK-R1",
+      "note": "User explicitly approved all 11 storyboard shots in chat",
+      "updatedAt": "2026-11-16"
+    },
+    {
+      "shot": "EDU-EP20-SHORT-S01-B03-SH01",
+      "stage": "board",
+      "status": "ok",
+      "hash": "dcd163242833",
+      "rev": "EDU-EP20-LOOK-R1",
+      "note": "User explicitly approved all 11 storyboard shots in chat",
+      "updatedAt": "2026-11-16"
+    },
+    {
+      "shot": "EDU-EP20-SHORT-S01-B03-SH02",
+      "stage": "board",
+      "status": "ok",
+      "hash": "44338c78b018",
+      "rev": "EDU-EP20-LOOK-R1",
+      "note": "User explicitly approved all 11 storyboard shots in chat",
+      "updatedAt": "2026-11-16"
+    },
+    {
+      "shot": "EDU-EP20-SHORT-S01-B04-SH01",
+      "stage": "board",
+      "status": "ok",
+      "hash": "688274a1613f",
+      "rev": "EDU-EP20-LOOK-R1",
+      "note": "User explicitly approved all 11 storyboard shots in chat",
+      "updatedAt": "2026-11-16"
+    },
+    {
+      "shot": "EDU-EP20-SHORT-S01-B04-SH02",
+      "stage": "board",
+      "status": "ok",
+      "hash": "56db798395fc",
+      "rev": "EDU-EP20-LOOK-R1",
+      "note": "User explicitly approved all 11 storyboard shots in chat",
+      "updatedAt": "2026-11-16"
+    },
+    {
+      "shot": "EDU-EP20-SHORT-S01-B05-SH01",
+      "stage": "board",
+      "status": "ok",
+      "hash": "ced44b17f99a",
+      "rev": "EDU-EP20-LOOK-R1",
+      "note": "User explicitly approved all 11 storyboard shots in chat",
+      "updatedAt": "2026-11-16"
+    },
+    {
+      "shot": "EDU-EP20-SHORT-S01-B05-SH02",
+      "stage": "board",
+      "status": "ok",
+      "hash": "2a6bdda18e0e",
+      "rev": "EDU-EP20-LOOK-R1",
+      "note": "User explicitly approved all 11 storyboard shots in chat",
+      "updatedAt": "2026-11-16"
+    },
+    {
+      "shot": "EDU-EP20-SHORT-S01-B05-SH03",
+      "stage": "board",
+      "status": "ok",
+      "hash": "1b7f59717192",
+      "rev": "EDU-EP20-LOOK-R1",
+      "note": "User explicitly approved all 11 storyboard shots in chat",
+      "updatedAt": "2026-11-16"
+    }
+  ]
+}

@@ -296,13 +296,21 @@ export function pictureMoveAt(scene: Scene, frame: number, fps: number) {
   }
   return {x: from.x, y: from.y, scale: from.scale};
 }
-/** Subtitle cues use scene-local seconds and hold until the next cue. */
+/**
+ * Rounding slack in frames for cue onsets. Frame-clock onsets rounded to 4 decimals of a second (assembly `precision: 4`,
+ * e.g. 197/30 → 6.5667) land up to 0.0015 frame (30 fps) after their frame and must still start on it; onsets authored in
+ * seconds that fall genuinely between frames (≥ 0.01 frame past one, e.g. 0.401 s = frame 12.03) keep starting on the next.
+ */
+export const CUE_FRAME_SLACK = 0.01;
+/** First scene-local frame on which a cue at `atSec` shows: frame-exact for frame-clock onsets, `ceil` otherwise. */
+export const cueStartFrame = (atSec: number, fps: number) => Math.max(0, Math.ceil(atSec * fps - CUE_FRAME_SLACK));
+/** Subtitle cues use scene-local seconds and hold until the next cue; each cue starts on `cueStartFrame`. */
 export function subtitleAt(scene: Scene, frame: number, fps: number) {
   if (!scene.subtitleCues?.length) return scene.subtitle;
-  const seconds = Math.max(0, frame / fps);
+  const local = Math.max(0, frame);
   let text = scene.subtitleCues[0].text;
   for (const cue of scene.subtitleCues) {
-    if (seconds < cue.atSec) break;
+    if (local < cueStartFrame(cue.atSec, fps)) break;
     text = cue.text;
   }
   return text;

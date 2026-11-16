@@ -11,7 +11,7 @@ import {layoutWorldActor, layoutWorldProp, orthographicViewAt, worldPositionAt, 
 import {mouthAt} from '../rig/drivers';
 import {DEFAULT_LOOP_BLEND_FRAMES, endingState, loopBlendOpacity, type Ending, type EndingOptions} from './endings';
 import type {AudioTrack, CaptionStyle, ChromeStyle, Timeline, Scene} from './types';
-import {defaultChrome, validateVideoStyle} from './media';
+import {channelLabelLook, defaultChrome, validateVideoStyle} from './media';
 import {AudioTracks, EntryTransition, MediaLayer, QuadTextLayer, SceneSounds} from './MediaLayers';
 import {visualAt} from '../assets/visuals/types';
 import {VisualStage} from '../assets/visuals/VisualStage';
@@ -132,7 +132,7 @@ const SceneView = ({scene, index, total, previous, start, narration, ending, end
       {!portrait && chrome.channelLabel !== false && <span lang="th" style={{fontSize: 19, color: ink, marginLeft: chrome.progressBar ? 12 : 'auto'}}>{chrome.channelLabel}</span>}
     </div>}
     {/* Portrait: top-left corner, outside the caption-safe box by choice (user 2026-10-30), clear of the platform's bottom UI. */}
-    {!entering && portrait && chrome.channelLabel !== false && <span lang="th" style={{position: 'absolute', top: 128, left: 120, fontSize: 22, color: ink}}>{chrome.channelLabel}</span>}
+    {!entering && portrait && chrome.channelLabel !== false && <span lang="th" style={{position: 'absolute', top: 128, left: 120, fontSize: 22, ...channelLabelLook(chrome.channelLabelStyle, ink)}}>{chrome.channelLabel}</span>}
   </AbsoluteFill>;
 };
 /** Scenes are intentionally data-driven: edit JSON, never duplicate layout for aspect ratios. */
