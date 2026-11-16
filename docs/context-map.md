@@ -191,6 +191,8 @@ Episode-specific files are under [Episodes](#episodes); shared topics come first
 
 ## Delivery workflow
 
+- EP21 independent production continuation: [record](../scripts/edu-series/ep21/delivery.md), [task](../scripts/edu-series/ep21/task.md), [selected-setting timing projection](../scripts/edu-series/ep21/short/timing-projection.md), [short voice auditions](../scripts/edu-series/ep21/short/voice-samples.md) and [audition manifest](../scripts/edu-series/ep21/short/voice-samples.json) (SCRIPT-R1 preserved; W1.4 and explicit user approval remain separate).
+
 **Read when:** selecting deliverables, style profile, tier, delivery record, agent invocation, or finishing a PR.
 
 - Docs: [delivery-workflow](delivery-workflow.md) ([style profile](delivery-workflow.md#style-profile), [visual engine](delivery-workflow.md#visual-engine), [pipeline](delivery-workflow.md#pipeline-tiers), [task file](delivery-workflow.md#task-file), [agent invocation](delivery-workflow.md#agent-invocation), [delivery record](delivery-workflow.md#delivery-record-and-handoff-checks)), [production-requirements](production-requirements.md), [editor-workflow](editor-workflow.md), [editor-principles](editor-principles.md), [contributing](contributing.md); original design [spec](superpowers/specs/2026-10-27-video-delivery-workflow-design.md) and [plan](superpowers/plans/2026-10-27-video-delivery-workflow.md)
