@@ -6,7 +6,7 @@
 - Integrated origin/main `4c587d0` (12 intervening commits) rather than rewriting the delivered checkpoint. Resolved three additive registry/index conflicts, preserving EP18, EP19 V2 covers and all EP20 entries. Open production retains its starting cover workflow; no already-approved picture, copy, duration or voice was redone for newer rule changes.
 - Installed the merged lockfile's missing Three/Remotion dependencies with `npm ci --ignore-scripts`. Final checks: 730 tests pass, one existing store-adopt assertion fails, and one unchanged-from-main beast-joints file was stopped after 155 s without completion (one cancelled). No full-suite pass is claimed. Typecheck has six diagnostics in test files byte-identical to origin/main; full lint reports 87 findings (80 errors, 7 warnings). Scoped changed-source lint has one pre-existing `ComponentType<any>` error in the overlay dispatch declaration. No unrelated fixes were made.
 - Current caption impact audit after integration: 238 of 2097 cues move one frame earlier, including 17 in newly integrated EP18 and 12 in EP20; historical 221/2019 remains the dated pre-EP18 evidence. Context map: 451 modules / zero uncovered; links: 31 files / zero problems; diff checks pass. Logs: `out/logs/edu20-pr-{typecheck-final,tests-final,lint,scoped-lint,caption-impact}.txt`.
-- Ready for feature-branch push and PR into main; no merge, media posting or delivery-file change is authorized by this Git-publication step.
+- Feature branch pushed and [PR #352](https://github.com/GuyMangkorn/reels-studio/pull/352) opened into main, closing #351 when merged. No merge, media posting or delivery-file change occurred; the user owns merge.
 
 ## Final selected package and source retention — 2026-11-16
 

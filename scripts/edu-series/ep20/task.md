@@ -56,4 +56,4 @@ Record: [delivery.md](delivery.md) · Updated: 2026-11-16, coordinator (continua
 
 - [x] Final production source committed (`bf9b167`) and checkpoint recorded (`caea088`).
 - [x] Production issue #351, owner:codex; branch `codex/351-ep20-delivery`. Latest main integrated, EP18/EP19/EP20 registrations preserved; verification limitations recorded in build-notes.
-- [ ] Feature branch pushed and PR opened into main; user owns merge.
+- [x] Feature branch pushed; [PR #352](https://github.com/GuyMangkorn/reels-studio/pull/352) opened into main, closes #351. Verification limits are explicit in the PR; user owns merge.
