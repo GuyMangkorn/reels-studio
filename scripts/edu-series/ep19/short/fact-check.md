@@ -63,7 +63,7 @@ Classification: fact / hypothesis / fiction. Severity column: MF = must-fix, opt
 - **Q1.** Yes. "หมาตามรอยที่ฝึกมา" + "บอกได้" + the mid-trail picture read as a trained-dog capability, not a rule for every dog. A2 is not needed. Residual (pre-selected dogs) is O1, optional.
 - **Q2.** Acceptable. L03b is the same hedged idea as a picture, marked by "เหมือน"; no second hedge needed (ER10). Not a misleading analogy.
 - **Q3.** Fair. Plain wording is true of SRC002 (4 trained dogs, 10 grass trials, 20 minutes). Leaving out "ทุกครั้ง" is right. The study placed the dogs mid-track, matching the staging.
-- **Q4.** Fair as written, no narrowing needed; the line states what SRC001 found (could not determine direction). Optional softening O6.
+- **Q4.** Fair as written, no narrowing needed; the line states what SRC001 found (could not determine direction). Optional softening O6. **R3 update (2026-11-15):** the result half stays supported; the added middle phrase is F004 stated without a hedge, needs-qualification, optional; see [R3 recheck](#r3-recheck).
 - **Q5.** "เธอ" scopes it enough; a fading trail "never hides anyone" is not what the line says. Optional O3 removes the clash with L03.
 - **Q6 (with Film).** No "ภาพจำลอง" label for round 3. It stages a documented experiment as a child's trick with fictional characters and claims no real event, and the result in L08 is a true narrator line. Condition for Film: draw the glow clearly stylised (only near the nose, never realistic scent trails) and do not add on-screen text implying a real filmed trial. If Film or the user prefer one, a label would be harmless but is not required. (Film's view not yet recorded; this is Boat's fact position.)
 - **Q7.** Clarity pass below: "หมาตามรอย" is everyday enough; "ลำดับ" is clear with mats on screen.
@@ -87,3 +87,26 @@ No `too-technical` and no `misleading-analogy` finding. ER09: longest answer 7.3
 - **`ready-for-storyboard` for EDU-EP19-SCRIPT-R1 only.** Zero must-fix.
 - Uncertainties: Hepper & Wells 2005 full text lead-only (abstract only; trail age, breed and the authors' reasoning about faintness unread); F004 stays a hypothesis, hedged once in L03; samples are tiny (6, 4, 2 dogs); pet dogs and SRC007 stay out; no measurement of how a print's smell fades. A dependent recheck is needed only if Preaw changes L01, L03-L05, L08 or L10 wording.
 - Readiness records factual status only, not user approval or timing.
+
+<a id="r3-recheck"></a>
+## R3 recheck (Boat, 2026-11-15)
+
+Scope: L08 only, EDU-EP19-SCRIPT-R3 wording "พอสลับลำดับรอย… กลิ่นจางกับกลิ่นชัดก็เรียงมั่ว หมาตามรอยก็บอกทางไม่ได้" (user-approved). Read: script R3 (L03, L03b, L08, CL04, B03, Q4), this file's R1, research F003, F004, SRC001, SRC003 (abstracts only; no new source opened, no new access).
+
+| ID | Claim in L08 | Type | Verdict | Evidence | Note | Severity |
+| --- | --- | --- | --- | --- | --- | --- |
+| R3-C1 | "พอสลับลำดับรอย… หมาตามรอยก็บอกทางไม่ได้" | fact | **supported** (unchanged from R1) | SRC001 abstract: shuffling the order of the carpet squares removed the dogs' ability (6 trained dogs) | Scope "หมาตามรอย" kept by L01. | none |
+| R3-C2 | "กลิ่นจางกับกลิ่นชัดก็เรียงมั่ว" (the reason the shuffle defeats the dog) | hypothesis | **needs-qualification** | SRC003 abstract: dogs "comparing the scents of consecutive prints… direction of increasing intensity" (a suggestion from indirect tests). SRC001 abstract: shuffle removes the ability, but says only that the odour information "changes"; it does not say older steps are fainter. | F004 gap unchanged: the faint-to-strong gradient is never measured, and SRC001 does not state it as the reason for the failure. The phrase is the same idea as L03, not a new claim, but it has the shape "A, so B" about the shuffle's cause, in the narrator's voice, with no hedge of its own. L03's "น่าจะ" is about 30 s earlier (L03 to L08, five lines) and L03b is an analogy for the arrow, not a hedge. A listener hears the mechanism as established at the payoff, the highest-attention beat. | opt |
+
+**Verdict:** needs-qualification. **Severity: optional.** Not must-fix: the premise, the reveal and L10's takeaway (the order hid her, not the time) stand on the documented result (R3-C1); the mechanism is the field's leading explanation (SRC003), not false, and it is staged as illustration (CL04). No health, person or order-of-magnitude issue. Preaw may decline.
+
+**Answer to Q4 (R3):** the phrase does widen F004 from "the earlier print is probably fainter" (hedged, L03) to "the faint/strong order is why the shuffle fails" (unhedged, narrator). It stays inside what SRC003 suggests, but SRC001's abstract does not state it. The user's idea (explain why the shuffle breaks the cue) is kept by either wording below.
+
+**Alternatives (user-approved wording, so the coordinator decides with the user; both keep the explanation):**
+- **A, preferred, no new hedge:** "พอสลับลำดับรอย… ลำดับกลิ่นก็มั่ว หมาตามรอยก็บอกทางไม่ได้" (-3 syll, about -0.5 s). It says only that the order of smells is scrambled, which is true by construction of the shuffle; the faint/strong gradient stays implicit in L03/L03b and the glow picture (CL04). Keep the visual slide on "ลำดับกลิ่นก็มั่ว".
+- **B, keeps the user's words, one narrow hedge:** "พอสลับลำดับรอย… กลิ่นจางกับกลิ่นชัดก็น่าจะเรียงมั่ว หมาตามรอยก็บอกทางไม่ได้" (+3 syll, about +0.55 s at 1.08). The hedge sits on the mechanism only; the result stays plain. This is a second "น่าจะ" (ER10 allows a narrow hedge on the hypothesis; script's "one hedge" note and N1 timing/syllable count would need updating; OQ4 answer stays under 10 s, about 6 s).
+- Leaving it as is: acceptable only as an optional-finding decline; keep the glow shown as illustration, no on-screen text stating the mechanism.
+
+Clarity (ER05): "เรียงมั่ว" plain, no too-technical, no misleading-analogy. ER09: one cause, answer about 5.5 s, unchanged.
+
+Dependent recheck: only if Preaw edits L08 again (A or B) or L10. Readiness for R3: factual status ready-for-storyboard with one optional finding open; not approval, timing or audio validation.

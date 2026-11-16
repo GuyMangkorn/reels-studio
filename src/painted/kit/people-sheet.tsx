@@ -167,6 +167,7 @@ const WARD_WHO: Record<OutfitId | PeriodOutfitId, {adult: PersonId; child?: Pers
   office: {adult: 'man-parted'}, police: {adult: 'man-buzz'}, nurse: {adult: 'woman-ponytail'}, doctor: {adult: 'woman-pixie'},
   monk: {adult: 'man-crop'}, vendor: {adult: 'woman-curly'}, rider: {adult: 'man-spiky'}, hoodie: {adult: 'woman-pixie'},
   guard: {adult: 'man-elder'}, yukata: {adult: 'woman-ponytail'}, kimono: {adult: 'woman-curly'}, 'kitchen-apron': {adult: 'woman-curly'}, 'park-casual': {adult: 'man-crop'}, 'eva-suit': {adult: 'woman-bob'}, 'home-lounge': {adult: 'woman-curly'},
+  'trainer-vest': {adult: 'woman-ponytail'},
   'frock-1850s': {adult: 'man-parted'}, 'bonnet-1850s': {adult: 'woman-curly'},
 };
 const WARD_ALL: (OutfitId | PeriodOutfitId)[] = [...OUTFIT_IDS, ...PERIOD_OUTFIT_IDS];

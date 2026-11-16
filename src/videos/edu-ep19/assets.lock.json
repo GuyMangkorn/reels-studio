@@ -1,0 +1,162 @@
+{
+  "public/audio/bed/bed_comic-pizz-marimba-pulse_01.wav": {
+    "store": "library/sound/music/bed/bed_comic-pizz-marimba-pulse_01.wav",
+    "sha256": "fcdca81f74979801e819c82075b9f1a480c172495ca18c5006c15b1e9a2a38ec"
+  },
+  "public/audio/city/city_soi-stall-dusk_01.wav": {
+    "store": "library/sound/ambience/city/city_soi-stall-dusk_01.wav",
+    "sha256": "5d394d71586fcacf43f55505fe4250c03d610660ed1185eadc0be60621393725"
+  },
+  "public/audio/edu/EDU-EP19-SHORT-draft-stem-v1.wav": {
+    "store": "projects/edu/EDU/narration/ep19/EDU-EP19-SHORT-stem-v1.wav",
+    "sha256": "e758bd1858c4c1cc595847d54315a66743d0883cfbae02ce7df4679bf90d125b"
+  },
+  "public/audio/nature/nature_training-field-afternoon_01.wav": {
+    "store": "library/sound/ambience/nature/nature_training-field-afternoon_01.wav",
+    "sha256": "274e9c4a8d20e41bd2e978e9e713cd4dfe894bd8b34f6ad5d329506531c58b75"
+  },
+  "public/audio/stinger/stinger_guitar-pizz-resolve-c_01.wav": {
+    "store": "library/sound/music/stinger/stinger_guitar-pizz-resolve-c_01.wav",
+    "sha256": "550435968d895ec4881014fef2e15258cf4bfbae76f4e37fd4f4085807781e93"
+  },
+  "public/narration/EDU-EP19-SHORT-narration-v1.wav": {
+    "store": "projects/edu/EDU/narration/ep19/EDU-EP19-SHORT-placed-v1.wav",
+    "sha256": "97016c1f06f3722e9c945a41e53603a40b35297a34adc9f0ba4f0a5df208836e"
+  },
+  "public/sfx/comedy/comedy_harp-idea-pluck_01.wav": {
+    "store": "library/sound/sfx/comedy/comedy_harp-idea-pluck_01.wav",
+    "sha256": "5c8bc513020169f633a19cf435f97450599ae655ca1e64df635c5ae4145a3f72"
+  },
+  "public/sfx/comedy/comedy_pizz-run-up-c_01.wav": {
+    "store": "library/sound/sfx/comedy/comedy_pizz-run-up-c_01.wav",
+    "sha256": "97cf858dfe89601b9b204a60144b0731a09daf79ea60c40436b678937b0c4d75"
+  },
+  "public/sfx/comedy/comedy_pluck-question-bend_01.wav": {
+    "store": "library/sound/sfx/comedy/comedy_pluck-question-bend_01.wav",
+    "sha256": "0d4a0ecdf264ccbe10b9636fdff7495c18b588fddc6529d0c68d69ff27954526"
+  },
+  "public/sfx/comedy/comedy_wood-bonk-deflate_01.wav": {
+    "store": "library/sound/sfx/comedy/comedy_wood-bonk-deflate_01.wav",
+    "sha256": "426e412cade21c2b11bdacc08b17502e2e5d2cd594101e754e476efed9366ab0"
+  },
+  "public/sfx/creature/creature_dog-pant-lick_01.wav": {
+    "store": "library/sound/sfx/creature/creature_dog-pant-lick_01.wav",
+    "sha256": "48f971b83b8eb2abe426c9e3045b3151430f221f5a8f352b12658d2973a508a2"
+  },
+  "public/sfx/creature/creature_dog-sniff-long-deliberate_01.wav": {
+    "store": "library/sound/sfx/creature/creature_dog-sniff-long-deliberate_01.wav",
+    "sha256": "04dd34ca3726c7ea17789f3a86ea7e9b675aa7de44607f889934588200be007f"
+  },
+  "public/sfx/creature/creature_dog-sniff-quick_01.wav": {
+    "store": "library/sound/sfx/creature/creature_dog-sniff-quick_01.wav",
+    "sha256": "412a6887e0bd3a7a79e93aebadc28554befa745c64842ee34339ad02ed6ad79d"
+  },
+  "public/sfx/creature/creature_dog-sniff-slow-trio_01.wav": {
+    "store": "library/sound/sfx/creature/creature_dog-sniff-slow-trio_01.wav",
+    "sha256": "6bd5dcb1c4576d9602d768811a8512cafcfaf89e4a3039205294eea0e55e396c"
+  },
+  "public/sfx/creature/creature_dog-whimper-huh_02.wav": {
+    "store": "library/sound/sfx/creature/creature_dog-whimper-huh_02.wav",
+    "sha256": "17ee0b4eba3af15e67a242537750e424fc2e6058bb2e41dcc23ed03c734d81e2"
+  },
+  "public/sfx/foley/foley_child-sit-flop-grass_01.wav": {
+    "store": "library/sound/sfx/foley/foley_child-sit-flop-grass_01.wav",
+    "sha256": "e3f628604e66c34e18dc42b477195fdcea80ffae149f590ea1626ac3cada85c2"
+  },
+  "public/sfx/foley/foley_dog-harness-jingle-trot_01.wav": {
+    "store": "library/sound/sfx/foley/foley_dog-harness-jingle-trot_01.wav",
+    "sha256": "6f52c3fa26ee146faf5d59b652a84ba4088acded0a2e3d4f81c9da2cd141cae9"
+  },
+  "public/sfx/foley/foley_dog-harness-shake_01.wav": {
+    "store": "library/sound/sfx/foley/foley_dog-harness-shake_01.wav",
+    "sha256": "6d5d2c29aff063fafe179371197a2bbc34d01eebba789b7cb92c9d65f89d2233"
+  },
+  "public/sfx/foley/foley_dog-paws-patter-walk_01.wav": {
+    "store": "library/sound/sfx/foley/foley_dog-paws-patter-walk_01.wav",
+    "sha256": "aff17ce8596d8885d5cd2b237f369e7359c428bb9ea6ece3c70ffab3d1a2c602"
+  },
+  "public/sfx/foley/foley_dog-paws-trot-grass_01.wav": {
+    "store": "library/sound/sfx/foley/foley_dog-paws-trot-grass_01.wav",
+    "sha256": "94ab0bb8f51a73745a6ea1d87271988eb9d75f139cfca366e39d39c28232af4c"
+  },
+  "public/sfx/foley/foley_grass-muzzle-rustle-loop_01.wav": {
+    "store": "library/sound/sfx/foley/foley_grass-muzzle-rustle-loop_01.wav",
+    "sha256": "22477d3cf549fe957a9a52fc7b84ce801bb5eddc248254b5f9e908c8abb98146"
+  },
+  "public/sfx/foley/foley_mat-drag-foam_01.wav": {
+    "store": "library/sound/sfx/foley/foley_mat-drag-foam_01.wav",
+    "sha256": "d4331dfae55017b2e6224f5d861aecc275607459b871dc2300776b0f4ba7482e"
+  },
+  "public/sfx/foley/foley_mat-lift-flop_01.wav": {
+    "store": "library/sound/sfx/foley/foley_mat-lift-flop_01.wav",
+    "sha256": "b9a56f36644dae4496e371c84bec5b4fd2ff8f5264cd4f0486f3ae2ee05e8e28"
+  },
+  "public/sfx/foley/foley_mat-lift-flop_02.wav": {
+    "store": "library/sound/sfx/foley/foley_mat-lift-flop_02.wav",
+    "sha256": "8b3c5361aea1922127d24275b7e1eba3bd2264450f749d1b1da9f85d4766255f"
+  },
+  "public/sfx/foley/foley_mat-slap-grass_01.wav": {
+    "store": "library/sound/sfx/foley/foley_mat-slap-grass_01.wav",
+    "sha256": "696750716502d1b61fe0c36415194b5d8d79c740a364ced3e75462cbcdab83be"
+  },
+  "public/sfx/foley/foley_sneaker-hops-mats_01.wav": {
+    "store": "library/sound/sfx/foley/foley_sneaker-hops-mats_01.wav",
+    "sha256": "6fc26e8744e4fa38182d0a166489f3453cc01d9a84f8fd85c9ecf2e59142969c"
+  },
+  "public/sfx/foley/foley_sneakers-dash-grass_01.wav": {
+    "store": "library/sound/sfx/foley/foley_sneakers-dash-grass_01.wav",
+    "sha256": "3473e9c74f9d1d50fa180bc6ab2f055b0efc17fade39d8f2cb39336ace6a50be"
+  },
+  "public/sfx/foley/foley_sneakers-patter-grass-sneaky_01.wav": {
+    "store": "library/sound/sfx/foley/foley_sneakers-patter-grass-sneaky_01.wav",
+    "sha256": "758a0ad217c524c2f5bf4234dabaa2e59ef977915cc9b20f3a49b669d3341682"
+  },
+  "public/sfx/foley/foley_stopwatch-click-far_01.wav": {
+    "store": "library/sound/sfx/foley/foley_stopwatch-click-far_01.wav",
+    "sha256": "a1a6277abd9530a9633a77325219e40d8ce99f309e75d09ad4db141158363716"
+  },
+  "public/sfx/foley/foley_stopwatch-tick-accelerate_01.wav": {
+    "store": "library/sound/sfx/foley/foley_stopwatch-tick-accelerate_01.wav",
+    "sha256": "f62c51bb0bec113907cf3fb8a3d2c155b667d3579d7de4214ca8196132ba6c4e"
+  },
+  "public/sfx/foley/foley_wok-toss-sizzle-swell_01.wav": {
+    "store": "library/sound/sfx/foley/foley_wok-toss-sizzle-swell_01.wav",
+    "sha256": "dfaebd62d3d83c36708ee50c2288216a9de2a6035bb20a3fff43b970b93c388c"
+  },
+  "public/sfx/reveal/reveal_glow-tone-a-celesta_01.wav": {
+    "store": "library/sound/sfx/reveal/reveal_glow-tone-a-celesta_01.wav",
+    "sha256": "7d5085355ab52c6e7b545e7c51f2dac0a7205f37ce0229e3a35b9c18e730525e"
+  },
+  "public/sfx/reveal/reveal_glow-tone-c-celesta_01.wav": {
+    "store": "library/sound/sfx/reveal/reveal_glow-tone-c-celesta_01.wav",
+    "sha256": "14a6cd6f894503d56e94e2324ac717a5663f9c06d9e30b2584e572aafaa22576"
+  },
+  "public/sfx/reveal/reveal_glow-tone-d-celesta_01.wav": {
+    "store": "library/sound/sfx/reveal/reveal_glow-tone-d-celesta_01.wav",
+    "sha256": "52e005230b515d55d0401f89d8b8e5c473bafa0a8fffed33e37a181264c7dfc1"
+  },
+  "public/sfx/reveal/reveal_glow-tone-e-celesta_01.wav": {
+    "store": "library/sound/sfx/reveal/reveal_glow-tone-e-celesta_01.wav",
+    "sha256": "afc902ed6bfd46c1f8e0ad2479826c1398447c38c1436b5cfe250308759e8e61"
+  },
+  "public/sfx/reveal/reveal_glow-tone-g-celesta_01.wav": {
+    "store": "library/sound/sfx/reveal/reveal_glow-tone-g-celesta_01.wav",
+    "sha256": "73c15bbf5cc96f6d71e1a72e92d3bbe549bad23c4b2e52b640e7b07cc32403bb"
+  },
+  "public/sfx/stinger/stinger_glow-motif-unscrambled_01.wav": {
+    "store": "library/sound/sfx/stinger/stinger_glow-motif-unscrambled_01.wav",
+    "sha256": "e5bd6537e57b2a3c9eed06606b6e652162044b3b779d4b3a4940e2873fddcdc0"
+  },
+  "public/sfx/ui/ui_toy-bell-smug_01.wav": {
+    "store": "library/sound/sfx/ui/ui_toy-bell-smug_01.wav",
+    "sha256": "f575c52029ccc2af33bcb8098d1ed475f8bdff0d6cfa81efd89164f922f93b04"
+  },
+  "public/sfx/vocal/vocal_child-yawn-sleepy_01.wav": {
+    "store": "library/sound/sfx/vocal/vocal_child-yawn-sleepy_01.wav",
+    "sha256": "bde91b200e22c4762a585344674e281dafc1389df15ee530d88cf425c9a187b6"
+  },
+  "public/sfx/whoosh/whoosh_time-air-soft_01.wav": {
+    "store": "library/sound/sfx/whoosh/whoosh_time-air-soft_01.wav",
+    "sha256": "baa0d736eae7deba1c2a963ecf9f80e257a2915575ed0c96fec03d70219ea436"
+  }
+}

@@ -16,6 +16,7 @@ export const ANIMAL_MOTION_IDS = [
   'walk-in-from-left', 'walk-in-from-right', 'walk-out-to-left', 'walk-out-to-right', 'run-left-to-right', 'run-right-to-left',
   'sit-down', 'stand-up', 'lie-down', 'get-up',
   'step-up', 'head-rub', 'head-lift-sigh',
+  'sniff-track', 'look-left-right', 'head-tilt', 'lick',
 ] as const;
 export type AnimalMotionId = (typeof ANIMAL_MOTION_IDS)[number];
 
@@ -52,6 +53,10 @@ export const ANIMAL_MOTION_INFO: Record<AnimalMotionId, {description: string; lo
   'get-up': {description: 'Lying down to stand.'},
   'step-up': {description: 'A small hop onto a higher surface (0.18 m rise by default, over 0.33 s = 10 frames; the arc clears the edge by 0.06 m), landing mid-stride so a walk can follow. Offset carries the rise. A negative `rise` is a step DOWN: no arc, the drop accelerates and lands on the contact frame.'},
   'head-lift-sigh': {description: 'A lying dog (EDU-EP13 N13b, `lie` state, any profile): eyes open (lid 0.2) and the nose up 5 degrees over 0.33 s, a slow nose-down sigh with the mouth open (0.2-1.4 s, 7 degrees), then eyes shut at the rest angle by 2 s. The head only rotates about the skull: no `lean`, no neck stretch, nothing leaves the body outline. Eyes start shut (lid 1).'},
+  'sniff-track': {description: 'Tracking a trail (EDU-EP19 N5): profile views walk at half speed with the head low (sniff 0.85), a quick nose dip every 0.8 s, `distance` m (default 2.4, or 6 shoulder heights for a small animal) then stop nose-down; the front view stays planted, head low, the nose sweeping left and right (`look`) once per 1.6 s. Offset carries the walk.'},
+  'look-left-right': {description: 'Front view (EDU-EP19 N5): a puzzled check: the head turns screen left at 0.13 s, right at 0.4 s, left at 0.67 s (8 frames apart at 30 fps), holding each turn briefly, then back to centre by 1.1 s.'},
+  'head-tilt': {description: 'Front view (EDU-EP19 N5): the puzzled head tilt: crown rolls 14 deg toward screen right over 0.3 s with the flop ears lifting (`earLift`), held to the end (1.6 s).'},
+  'lick': {description: 'Profile or front (EDU-EP19 N5): three quick licks over 0.75 s (tongue out and up toward the head side), tail wagging; ends mouth open, panting.'},
   'head-rub': {description: 'Neck stretches, skull top meets a hand point; head tilt and two cheek-pushes along it, eyes at half-close (lid 0.5); releases.'},
 };
 
@@ -69,7 +74,8 @@ export const animalMotionDuration = (id: AnimalMotionId, c: AnimalMotionCtx): nu
   if (id.startsWith('walk-out')) return walkDistance(def, c) / v + STOP / 2;
   if (id.startsWith('run-')) return (2 * runDistance(c)) / animalWalkSpeed(def, 'run');
   if (TRANSITION[id]) return TRANSITION[id]!;
-  return {idle: 3, 'happy-wag': 2, speak: 1.4, sniff: 3.6, 'startle-hop': 1.0}[id as string] ?? 2;
+  if (id === 'sniff-track') return c.view === 'front' ? 3.2 : (c.distance ?? Math.min(2.4, 6 * def.height)) / (0.5 * v);
+  return {idle: 3, 'happy-wag': 2, speak: 1.4, sniff: 3.6, 'startle-hop': 1.0, 'look-left-right': 1.2, 'head-tilt': 1.6, lick: 0.75}[id as string] ?? 2;
 };
 
 /** Distance travelled (m) and stride 0..1 at time t of a walk that cruises at v and eases to a stop over STOP s. */
@@ -142,6 +148,26 @@ export const animalMotion = (id: AnimalMotionId, t: number, c: AnimalMotionCtx):
       const d = ease(ease(tt / (10 / 30))) * (1 - ease(ease((tt - 1.6) / 0.4))), sigh = ease((tt - 0.2) / 1.2);
       return {pose: {view, state: 'lie', lid: d > 0.15 ? 0.2 : 1, tilt: -5 * d + 7 * Math.sin(Math.PI * sigh), mouth: tt >= 0.27 && tt < 1.07 ? 'open' : 'closed'}, offset: [0, 0]};
     }
+    case 'sniff-track': {
+      // N5: half-speed walk with the head low; the gait clock follows the distance so the paws stay planted. Front: planted, nose sweeping.
+      const dip = 0.85 + 0.1 * Math.max(0, Math.sin(2 * Math.PI * tt / 0.8));
+      if (view === 'front') return still({sniff: dip, headLow: true, look: Math.sin(2 * Math.PI * tt / 1.6)});
+      const sgn = view === 'left' ? -1 : 1, s = 0.5 * animalWalkSpeed(def) * tt;
+      return {pose: {view, state: 'stand', walk: gaitClock(def, s, 'walk'), sniff: dip}, offset: [sgn * s, 0]};
+    }
+    case 'look-left-right': {
+      const k = (a: number, b: number) => ease((tt - a) / (b - a));
+      const look = -k(0, 0.13) + 2 * k(0.2, 0.4) - 2 * k(0.47, 0.67) + k(0.8, 1.1);
+      return still({view: 'front', look});
+    }
+    case 'head-tilt': {
+      const u = ease(tt / 0.3);
+      return still({view: 'front', roll: 14 * u, earLift: u});
+    }
+    case 'lick': {
+      const l = Math.abs(Math.sin((3 * Math.PI * tt) / 0.75));
+      return still({lick: tt < 0.75 ? l : 0, mouth: 'open', wag: 1});
+    }
     case 'head-rub': {
       // K5: lean in over 0.5 s, two rubs (0.7 s each) pushing the skull top along the hand, release over 0.4 s. `tilt` follows the push.
       const to = c.target ?? [0.2, 0.3], lean = ease(tt / 0.5) * ease((dur - tt) / 0.4), ph = Math.max(0, Math.min(1, (tt - 0.6) / 1.4)), rub = Math.sin(2 * Math.PI * 2 * ph) * Math.sin(Math.PI * ph) ** 0.5;
@@ -181,6 +207,10 @@ export const ANIMAL_REEL: AnimalReelEntry[] = [
   {motion: 'step-up', cast: lanes('right', 'right', 'dog-thai', 'cat-orange-tabby')},
   {motion: 'head-rub', cast: lanes('right', 'right', 'dog-pom', 'cat-orange-tabby')},
   {motion: 'head-lift-sigh', cast: lanes('left', 'left', 'dog-golden', 'cat-calico')},
+  {motion: 'sniff-track', cast: lanes('right', 'front', 'dog-black-lab', 'cat-gray-tabby')},
+  {motion: 'look-left-right', cast: lanes('front', 'front', 'dog-black-lab', 'cat-orange-tabby')},
+  {motion: 'head-tilt', cast: lanes('front', 'front', 'dog-black-lab', 'cat-white')},
+  {motion: 'lick', cast: lanes('right', 'front', 'dog-golden', 'cat-tuxedo')},
 ];
 export const ANIMAL_REEL_HOLD = 0.5;
 export const animalReelSceneSec = (e: AnimalReelEntry): number => {

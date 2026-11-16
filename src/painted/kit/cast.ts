@@ -49,6 +49,8 @@ export type Gear = {
   pockets?: boolean;
   /** Kimono / yukata sleeves: the forearm cloth hangs in a wide flap. */
   wideSleeves?: boolean;
+  /** Belt pouch (dog-trainer treat pouch, EDU-EP19 `trainer-vest`): a small bag with a flap hanging from the waist band on the wearer's right hip (front: screen left; profile: at the hip). */
+  pouch?: string;
 };
 /**
  * `headScale` and `armScale` (default 1) shrink the head and the arm bones of the 4-head adult rig for children (people library);
@@ -929,7 +931,7 @@ export const drawFigure = (p: Painter, def: CastDef, g: Pt, unit: number, pose: 
   }
 
   // ----------------------------------------------------------------- wardrobe gear (wardrobe.ts): absent on every existing character
-  if (G && !coat && (G.collar || G.tie || G.belt || G.overcoat || G.drape || G.badge || G.pockets)) {
+  if (G && !coat && (G.collar || G.tie || G.belt || G.overcoat || G.drape || G.badge || G.pockets || G.pouch)) {
     const sp = part, sl = line;
     part = 100;
     line = 100;
@@ -985,6 +987,11 @@ export const drawFigure = (p: Painter, def: CastDef, g: Pt, unit: number, pose: 
       }
       if (G.badge) fill(G.badge, Uqf([[0.04, shV - 0.075], [0.1, shV - 0.075], [0.1, shV - 0.105], [0.04, shV - 0.105]]), true, 6);
       if (G.pockets) for (const sd of [-1, 1]) crease(o.shirt, Uqf([[sd * 0.04, shV - 0.13], [sd * 0.1, shV - 0.13], [sd * 0.1, shV - 0.2], [sd * 0.04, shV - 0.2], [sd * 0.04, shV - 0.13]]));
+      if (G.pouch) {
+        const e = edge(bandV1), top = bandV1 + 0.012, bot = bandV1 - 0.1;
+        fill(G.pouch, Uqf([[-(e + 0.025), top], [-(e - 0.075), top], [-(e - 0.07), bot], [-(e + 0.02), bot + 0.006]]), true, 6);
+        fill(mixColor(G.pouch, INK, 0.25), Uqf([[-(e + 0.025), top], [-(e - 0.075), top], [-(e - 0.073), top - 0.035], [-(e + 0.023), top - 0.035]]), true, 6);
+      }
     } else {
       if (G.drape) {
         fill(G.drape, Uq([[-0.18 * HD, shV], [0.14 * HD, shV], [0.22 * HD, shV - 0.085], [0.18 * HD, hip0 + 0.0255], [-0.05 * HD, hip0 + 0.0255], [-0.21 * HD, hip0 + 0.16]]));
@@ -999,6 +1006,11 @@ export const drawFigure = (p: Painter, def: CastDef, g: Pt, unit: number, pose: 
       if (G.belt) {
         const h = G.belt.h ?? 0.035, v0 = bandV1 + h;
         fill(G.belt.color, Uq([[-0.2 * HD, v0], [0.185 * HD, v0], [0.185 * HD, bandV1], [-0.2 * HD, bandV1]]));
+      }
+      if (G.pouch) {
+        const top = bandV1 + 0.012, bot = bandV1 - 0.1;
+        fill(G.pouch, Uq([[-0.16 * HD, top], [-0.02 * HD, top], [-0.03 * HD, bot], [-0.15 * HD, bot + 0.006]]), true, 6);
+        fill(mixColor(G.pouch, INK, 0.25), Uq([[-0.16 * HD, top], [-0.02 * HD, top], [-0.02 * HD, top - 0.035], [-0.16 * HD, top - 0.035]]), true, 6);
       }
       if (G.overcoat) {
         const hem = Math.min(G.overcoat.hem, kneeV + 0.12);

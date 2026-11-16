@@ -17,6 +17,7 @@ import {mixColor} from './painter';
 export const OUTFIT_IDS = [
   'student-th-trousers', 'student-th-skirt', 'school-jp-sailor', 'school-jp-gakuran', 'office', 'police', 'nurse', 'doctor',
   'monk', 'vendor', 'rider', 'hoodie', 'guard', 'yukata', 'kimono', 'kitchen-apron', 'park-casual', 'home-lounge', 'eva-suit',
+  'trainer-vest',
 ] as const;
 export type OutfitId = (typeof OUTFIT_IDS)[number];
 
@@ -120,6 +121,13 @@ export const WARDROBE: Record<OutfitId, Outfit> = {
     shoulder: SHOULDER, shirt: '#e3b23c', sleeve: '#e3b23c', longSleeves: false, pants: '#4a6f9e', shoes: '#f2f0ea', shorts: {sock: '#f4f1ea'},
     gear: {hat: {kind: 'cap', color: '#2f5fb8', band: mixColor('#2f5fb8', '#0b1a3a', 0.45)}},
   },
+  // EDU-EP19-SHORT comp card (W2.4, 15 Nov 2026; Film casting `woman-ponytail + new: trainer vest`, EDU-EP19-BRIEF-R1 N6). Proposed for kit
+  // intake at W8.4: an open olive vest (`jacket` panels) over a grey tee, khaki cargo trousers, dark belt with the treat pouch on the right hip.
+  // The stopwatch is a hand prop (`paintStopwatch`, props.ts), not part of the outfit.
+  'trainer-vest': {
+    shoulder: SHOULDER, shirt: '#a9a8a1', sleeve: '#a9a8a1', longSleeves: false, jacket: '#68703f', pants: '#b3a078', shoes: '#5a4a3c',
+    gear: {pockets: true, belt: {color: '#3e3528', h: 0.03}, pouch: '#5b4330'},
+  },
 };
 
 export type OutfitInfo = {
@@ -154,6 +162,7 @@ export const WARDROBE_INFO: Record<OutfitId, OutfitInfo> = {
   'home-lounge': {group: 'casual', description: 'At home in the evening: loose oatmeal knit cardigan over a dusty-rose T-shirt, grey lounge trousers, cream socks (EDU-EP06 owner; front, profile).'},
   'eva-suit': {group: 'work', description: 'EVA spacesuit: white long-sleeve suit with boots, blue neck lock collar, backpack and belt; wider shoulder for the bulk. Gloves, neck ring and the bubble / visor / 1966 round helmet come from `paintEva` (eva.ts); `evaSuit()` adds the CREW / 1960s tints (four views and front three-quarter).', bulk: EVA_BULK},
   'park-casual': {group: 'casual', description: 'Weekend park walk: mustard crew-neck tee, denim-blue knee-length shorts with bare shins and white socks, white sneakers, blue baseball cap (four views).'},
+  'trainer-vest': {group: 'work', description: 'Dog trainer: open olive multi-pocket vest over a grey short-sleeve tee, khaki cargo trousers, dark belt with a brown treat pouch on the right hip, trail shoes (EDU-EP19; stopwatch = props.ts `paintStopwatch`).'},
 };
 
 /**
