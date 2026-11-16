@@ -4,7 +4,7 @@
 - Script revision: **EDU-EP21-SCRIPT-R1**, Preaw, 2026-11-15.
 - Record: [delivery](../delivery.md) **EDU-EP21-DELIVERY-R1**; research: [C83 packet](../../ab-hook-pilot/research-c83.md) **C83-RESEARCH-R1**; hook handoff: [Guide](../hook-guide.md) **EDU-EP21-HOOK-R1**.
 - Mode: fiction-with-factual-knowledge. Passenger, strike and selected damage are dramatized possibilities, not a documented person's survival.
-- Target: 40–60 s; editorial layout **about 40 s**, including a 3 s closing hold. Timing **estimated**, not read-aloud/audio-tested. Factual readiness: **ready-for-storyboard**, [EDU-EP21-FACT-R1](fact-check.md); user approval not recorded.
+- Target: 40–60 s; R1 editorial layout **about 40 s**, including a 3 s closing hold. Timing **estimated**, not full-read/audio-tested; current selected-setting audit: [EDU-EP21-TIMING-R2](timing-projection.md). Factual readiness: **ready-for-storyboard**, [EDU-EP21-FACT-R1](fact-check.md); user approval not recorded.
 
 ## Story core and ending
 
@@ -89,7 +89,9 @@ Clues are hypothetical explanatory staging, not incident documentation or a mode
 
 ## Timing evidence and change log
 
-R1 manual spoken-syllable audit, L01–L12: **14, 17, 12, 13, 19, 12, 17, 10, 17, 13, 16, 17 = about 177 syllables**. This approximate pronunciation count is neither automated nor audio measured. Rough channel-rate sensitivity: 177/5.5 = 32.2 s or 177/5.9 = 30 s, plus about 4–5 s of pauses and a 3 s hold: approximately **37–40 s**. The table budgets 40 s, at the lower edge of the 40–60 s target. Do not pad or assume the faster setting passes duration. Rates are documented in [channel voice](../../../../channels/edu/channel.md#voice), not selected for this episode. Final recount, pacing and the chosen setting's calibration remain W1.4 work; no pass or audio test is claimed.
+**Current timing audit, 2026-11-16:** [EDU-EP21-TIMING-R1](timing-projection.md) recounts **176 syllables** (L10 is 12, resolving optional O21-02), four ellipses and eleven line boundaries. It separates explicit pauses from pause-inclusive calibration so they are not charged twice. The episode setting is unselected; W1.4 and script approval remain open. Spoken text and SCRIPT-R1/FACT-R1 coverage are unchanged.
+
+Historical R1 sensitivity, 2026-11-15: the initial count was **14, 17, 12, 13, 19, 12, 17, 10, 17, 13, 16, 17 = about 177 syllables**. Dividing by the channel's approximate 5.5/5.9 syllables/s and adding 4–5 s pauses plus the 3 s hold gave **37–40 s**. That was a provisional reference calculation, not a selected-setting projection; the rate's pause convention was not established. The R1 table remains an editorial layout, not measured timing. The current linked audit supersedes that count and calibration method. Do not pad or assume the faster setting passes duration.
 
 R1: first complete independent EP21 script; result/myth-reversal opening and vehicle conditions in speech. No final script approval. Boat checks all lines, proposed visuals and the matching Guide; exact electrical paths and individualized safety advice remain excluded.
 

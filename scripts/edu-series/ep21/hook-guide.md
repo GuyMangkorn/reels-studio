@@ -74,3 +74,5 @@ does not grant audio, rendering, upload or scheduling permission.
 ```
 
 Coordinator status synchronization, 2026-11-15: EDU-EP21-FACT-R1 covers the R1 script and Guide. Hook wording, advice and copyable prompt unchanged; readiness remains distinct from user approval and timing lock.
+
+Coordinator continuation, 2026-11-16: [delivery.md](delivery.md) EDU-EP21-DELIVERY-R2 records this session's full-production authorization and exclusive EP21 ownership. Earlier R1 writing-only boundaries above are historical; the opening/story/factual contract is unchanged. W1.4 is complete: the user selected Kore ×1.05, projected 43.97 s; W1.5 script approval remains explicitly deferred. Use the current delivery/task and episode timing/sample evidence when continuing; no full narration before W2.3 publication. The user subsequently authorized commit, push and PR for this continuation; uploading/scheduling/posting media and merging remain separately unauthorized.
