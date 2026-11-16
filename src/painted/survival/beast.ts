@@ -39,7 +39,14 @@ export type Flat = {bone: string; pts: L3[]; col: string; two?: boolean; op?: nu
 /** A bone: `parent` null for the root; `joint` names the entry of `Build.joints` where it hangs on its parent (the pivot it rotates about). */
 export type Bone = {id: string; parent: string | null; joint: string | null};
 /** A built creature in one pose: the parts, its skeleton (`bones`, `joints` in creature-local metres) and the anchors the shot code reads. */
-export type Build = {parts: Part[]; flats: Flat[]; bones: Bone[]; joints: Record<string, L3>; feet: L3[]; shadow: {s: number; l: number; rs: number; rl: number}; anchors: Record<string, L3>};
+/** Opt-in soft look (EDU-EP18 hippo fix round 1, 15 Nov 2026; absent = the faceted kit look byte for byte): `sub` extra stations per loft span and `ring` x ring segments (a rounder,
+ * finer loft), continuous light instead of the 4 value bands, a soft `rim` colour on the edges that turn away from the lens, thin low-contrast silhouette `edge` lines (weight),
+ * no fold rings, `far` the darkening of the far flank (default 0.28). Meant to sit beside the flat 2D kit animals (painted soft wash) without a style clash. */
+export type BeastLook = {sub?: number; ring?: number; rim?: string; rimK?: number; edge?: number; far?: number;
+  /** with a `waterline` set, parts and flats on bones whose id contains one of these strings are not painted (legs tucked under the opaque water: their tops sat inside the body
+   * above the plane and were depth-sorted in front of it as spikes along the waterline) */
+  wetHide?: string[]};
+export type Build = {parts: Part[]; flats: Flat[]; bones: Bone[]; joints: Record<string, L3>; feet: L3[]; shadow: {s: number; l: number; rs: number; rl: number}; anchors: Record<string, L3>; look?: BeastLook};
 
 export type BeastPlace = {at: [number, number]; heading: number; ground?: number; /** nose-up pitch and bank about the body axis (rad), for fliers */ pitch?: number; bank?: number; seed?: number; sun?: V3; amb?: string; ambK?: number; shadowOp?: number; haze?: number; hazeCol?: string; /** comp-card skeleton overlay: joint dots and bone links drawn on top, see-through */ rig?: boolean; /** world y of a water plane: parts below it are clipped away (a wader's legs hidden below the knee); the scene paints the water and the splash rings at `waterRing` */ waterline?: number; /** N16-19: draw only the bones for which this is true (parts, flats and the ground shadow), so a creature can be painted as separate depth-sorted items; the shadow goes with `only('body')`-style root bone (the one with no parent) */ /** B-R15B-05 localized light: a warm band along the segment `a`..`b` (creature-local metres), `r` m wide on each side. Only lofted skin quads facing up (normal y > 0.2) take it, never flats (teeth, mouth lining); the core (d < 0.55 r) mixes `k` of `col` into the shaded colour, the edge half of that. */ glow?: {a: L3; b: L3; r: number; col: string; k: number}; only?: (bone: string) => boolean; /** N16-19 depth slab: draw only the quads/flats whose centre is between `d0` and `d1` m (horizontal) from the camera; `shadow` draws the ground shadow with this slab */ slab?: {d0: number; d1: number; shadow?: boolean; /** bone -> world point used for the slab test of ALL its quads (keeps a head in one slab) */ pin?: Record<string, V3>}};
 export type DrawnPoly = {bone: string; poly: Pt[]};
@@ -60,9 +67,15 @@ export const paintBeast = (p: Painter | null, c: YCam, B: Build, o: BeastPlace):
   const sun = o.sun ? nrm(o.sun as L3) : SUN, cam: L3 = [c.x, c.y, c.z];
   const toward = (pl: L3, nl: L3) => dot(WN(nl), sub(cam, W(pl) as L3)) > 0;
   const gl = o.glow, glowAt = (pl: L3, n: L3): number => { if (!gl || n[1] < 0.2) return 0; const ab = sub(gl.b, gl.a), t = clamp(dot(sub(pl, gl.a), ab) / (dot(ab, ab) || 1)), d = Math.hypot(...sub(pl, add(gl.a, mul(ab, t)))); return d < gl.r * 0.55 ? gl.k : d < gl.r ? gl.k * 0.5 : 0; };
+  const LK = B.look;
   const shade = (col: string, nl: L3, dim: number, pl: L3, lit = false) => {
     const n = WN(nl), lam = Math.max(0, dot(n, sun)), band = lam < 0.12 ? 0 : lam < 0.4 ? 1 : lam < 0.7 ? 2 : 3;
-    let k = mixColor(mixColor(col, '#16140f', 0.42), mixColor(col, '#f4ecd0', 0.22), [0, 0.38, 0.7, 1][band]);
+    let k: string;
+    if (LK) {   // soft look: a gentle continuous ramp (lighter shadow side) plus a soft rim where the surface turns away from the lens
+      const r = clamp(lam * 1.1), e = r * r * (3 - 2 * r);
+      k = mixColor(mixColor(col, '#1a1714', 0.3), mixColor(col, '#f6eedc', 0.2), 0.12 + 0.88 * e);
+      if (LK.rim) { const v = nrm(sub(cam, W(pl) as L3)), fr = clamp((1 - Math.abs(dot(n, v)) - 0.55) / 0.45); k = mixColor(k, LK.rim, (LK.rimK ?? 0.35) * fr * fr); }
+    } else k = mixColor(mixColor(col, '#16140f', 0.42), mixColor(col, '#f4ecd0', 0.22), [0, 0.38, 0.7, 1][band]);
     if (n[1] < -0.35) k = mixColor(k, '#2a2a1e', 0.12);   // belly bounce stays cool and dark
     if (pl[1] < 0.6) k = mixColor(k, '#1c1a14', 0.18 * (1 - pl[1] / 0.6));   // contact darkening toward the ground
     if (lit) { const g = glowAt(pl, n); if (g) k = mixColor(k, gl!.col, g); }
@@ -77,9 +90,9 @@ export const paintBeast = (p: Painter | null, c: YCam, B: Build, o: BeastPlace):
   let id = 0;
   const drawn: DrawnPoly[] = [];
   for (const part of B.parts) {
-    if (o.only && !o.only(part.bone)) { id++; continue; }   // keep the part ids (and so every fill seed) the same as in an unsplit paint
-    const ks = part.keys, n = ks.length, m = part.m;
-    const mid = ks[Math.floor(n / 2)].p, far = part.side ? dot(WN([0, 0, part.side]), nrm(sub(W(mid) as L3, cam))) > 0.2 : false, dim = far ? 0.28 : 0;
+    if ((o.only && !o.only(part.bone)) || (LK?.wetHide && o.waterline !== undefined && LK.wetHide.some((w) => part.bone.includes(w)))) { id++; continue; }   // keep the part ids (and so every fill seed) the same as in an unsplit paint
+    const ks = LK?.sub && part.keys.length > 2 ? spline(part.keys, LK.sub) : part.keys, n = ks.length, m = LK?.ring ? Math.round(part.m * LK.ring) : part.m;
+    const mid = ks[Math.floor(n / 2)].p, far = part.side ? dot(WN([0, 0, part.side]), nrm(sub(W(mid) as L3, cam))) > 0.2 : false, dim = far ? LK?.far ?? 0.28 : 0;
     const rv: L3[][] = [], rn: L3[][] = [];
     ks.forEach((k, i) => {
       const T = nrm(sub(ks[Math.min(n - 1, i + 1)].p, ks[Math.max(0, i - 1)].p));
@@ -116,7 +129,7 @@ export const paintBeast = (p: Painter | null, c: YCam, B: Build, o: BeastPlace):
       const edges: [Pt, Pt][] = [];
       if (qq.length === 4 && !front[i][(j + m - 1) % m]) edges.push([qq[0], qq[3]]);
       if (qq.length === 4 && !front[i][j2]) edges.push([qq[1], qq[2]]);
-      const fold = part.fold && i % part.fold === 0 && i > 0 && Math.abs(nl[1]) < 0.85;
+      const fold = !LK && part.fold && i % part.fold === 0 && i > 0 && Math.abs(nl[1]) < 0.85;
       const fid = seed + pid * 4000 + i * m + j;
       items.push({d: camDepth(c, W(ctr)), f: () => {
         if (!p) return;
@@ -133,18 +146,35 @@ export const paintBeast = (p: Painter | null, c: YCam, B: Build, o: BeastPlace):
           }
         }
         if (fold) inkLine(p, fid + 900000, [qq[0], qq[1]], {closed: false, weight: 0.5, color: mixColor(col, '#1a1a16', 0.35), still: true});
-        edges.forEach(([a, b], e) => inkLine(p, fid + 500000 + e, [a, b], {closed: false, weight: 1.1, color: part.ink ?? mixColor(col, '#100e0a', 0.6), still: true}));
+        edges.forEach(([a, b], e) => inkLine(p, fid + 500000 + e, [a, b], {closed: false, weight: LK ? LK.edge ?? 0.6 : 1.1, color: part.ink ?? mixColor(col, '#100e0a', LK ? 0.32 : 0.6), still: true}));
       }});
     }
     if (part.cap) for (const end of [n - 1, 0]) {   // end caps (closed tubes): drawn when facing the camera, and counted in the silhouette
-      const q = scr[end], nl = end ? nrm(sub(ks[n - 1].p, ks[n - 2].p)) : nrm(sub(ks[0].p, ks[1].p));
+      let q: (Pt | null)[] = scr[end];
+      const nl = end ? nrm(sub(ks[n - 1].p, ks[n - 2].p)) : nrm(sub(ks[0].p, ks[1].p));
+      if (o.waterline !== undefined) {   // EDU-EP18 (15 Nov 2026): caps are clipped to the water plane like the quads (a submerged snout/chin cap was drawn over the water)
+        const wl = o.waterline, wq = rv[end].map((v) => W(v));
+        if (Math.max(...wq.map((v) => v[1])) <= wl) continue;
+        if (Math.min(...wq.map((v) => v[1])) < wl) {
+          const cl: V3[] = [];
+          wq.forEach((a, k) => { const b = wq[(k + 1) % wq.length], ina = a[1] >= wl, inb = b[1] >= wl; if (ina) cl.push(a); if (ina !== inb) { const u = (wl - a[1]) / (b[1] - a[1]); cl.push([a[0] + (b[0] - a[0]) * u, wl, a[2] + (b[2] - a[2]) * u]); } });
+          if (cl.length < 3) continue;
+          q = cl.map((v) => camPoint(c, v));
+        }
+      }
       if (q.every(Boolean) && toward(ks[end].p, nl) && inSlab(W(ks[end].p), part.bone)) { const col = shade(part.col(end ? 1 : 0, 0), nl, dim, ks[end].p), cq = q as Pt[]; drawn.push({bone: part.bone, poly: cq}); all.push(...cq); items.push({d: camDepth(c, W(ks[end].p)) - 0.02, f: () => { if (p) hardFill(p, seed + pid * 4000 + 3999 - end, col, grow(cq, 1)); }}); }
     }
   }
   B.flats.forEach((fl, k) => {
-    if (o.only && !o.only(fl.bone)) return;
+    if ((o.only && !o.only(fl.bone)) || (LK?.wetHide && o.waterline !== undefined && LK.wetHide.some((w) => fl.bone.includes(w)))) return;
     if (o.waterline !== undefined && fl.pts.every((v) => W(v)[1] <= o.waterline!)) return;
-    const q = fl.pts.map((v) => camPoint(c, W(v)));
+    let q = fl.pts.map((v) => camPoint(c, W(v)));
+    if (o.waterline !== undefined && fl.pts.some((v) => W(v)[1] < o.waterline!)) {   // EDU-EP18: a flat crossing the water plane is clipped to its part above
+      const wl = o.waterline, wq = fl.pts.map((v) => W(v)), cl: V3[] = [];
+      wq.forEach((a, k) => { const b = wq[(k + 1) % wq.length], ina = a[1] >= wl, inb = b[1] >= wl; if (ina) cl.push(a); if (ina !== inb) { const u = (wl - a[1]) / (b[1] - a[1]); cl.push([a[0] + (b[0] - a[0]) * u, wl, a[2] + (b[2] - a[2]) * u]); } });
+      if (cl.length < 3) return;
+      q = cl.map((v) => camPoint(c, v));
+    }
     if (!q.every(Boolean)) return;
     const ctr = mul(fl.pts.reduce((a, v) => add(a, v), [0, 0, 0] as L3), 1 / fl.pts.length);
     let nl = nrm(cross(sub(fl.pts[1], fl.pts[0]), sub(fl.pts[fl.pts.length - 1], fl.pts[0])));

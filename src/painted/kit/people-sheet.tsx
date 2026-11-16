@@ -15,6 +15,7 @@ import {poseArms} from './poses';
 import {inkLine} from './draw';
 import {OUTFIT_IDS, WARDROBE_INFO, dress, tintHoodie, type OutfitId} from './wardrobe';
 import {PERIOD_OUTFIT_IDS, WARDROBE_1850S_INFO, dressPeriod, type PeriodOutfitId} from './wardrobe-1850s';
+import {TRAVEL_OUTFIT_IDS, WARDROBE_TRAVEL_INFO, dressTravel, paintBackpack, paintTravelGear, type TravelOutfitId} from './wardrobe-travel';
 
 const h = createElement;
 const LINEUP_W = 2400, LINEUP_H = 1120;
@@ -156,10 +157,11 @@ const Expressions = () => (
 );
 
 // ------------------------------------------------------------------------------------------------ KIT-WARDROBE
-const WARD_COLS = 5, WARD_CELL_W = 620, WARD_CELL_H = 760, WARD_W = WARD_COLS * WARD_CELL_W, WARD_H = 130 + Math.ceil((OUTFIT_IDS.length + PERIOD_OUTFIT_IDS.length) / WARD_COLS) * WARD_CELL_H;
+const WARD_COLS = 5, WARD_CELL_W = 620, WARD_CELL_H = 760, WARD_W = WARD_COLS * WARD_CELL_W, WARD_H = 130 + Math.ceil((OUTFIT_IDS.length + PERIOD_OUTFIT_IDS.length + TRAVEL_OUTFIT_IDS.length) / WARD_COLS) * WARD_CELL_H;
 const WARD_UNIT = 290, WARD_GROUND = 645;
 /** Who wears each outfit on the sheet (any PEOPLE adult fits) and, for the school uniforms, the child who wears it too. */
-const WARD_WHO: Record<OutfitId | PeriodOutfitId, {adult: PersonId; child?: PersonId}> = {
+type WardId = OutfitId | PeriodOutfitId | TravelOutfitId;
+const WARD_WHO: Record<WardId, {adult: PersonId; child?: PersonId}> = {
   'student-th-trousers': {adult: 'man-spiky', child: 'boy-school'},
   'student-th-skirt': {adult: 'woman-ponytail', child: 'girl-school'},
   'school-jp-sailor': {adult: 'woman-pixie', child: 'girl-school'},
@@ -169,10 +171,12 @@ const WARD_WHO: Record<OutfitId | PeriodOutfitId, {adult: PersonId; child?: Pers
   guard: {adult: 'man-elder'}, yukata: {adult: 'woman-ponytail'}, kimono: {adult: 'woman-curly'}, 'kitchen-apron': {adult: 'woman-curly'}, 'park-casual': {adult: 'man-crop'}, 'eva-suit': {adult: 'woman-bob'}, 'home-lounge': {adult: 'woman-curly'},
   'trainer-vest': {adult: 'woman-ponytail'},
   'frock-1850s': {adult: 'man-parted'}, 'bonnet-1850s': {adult: 'woman-curly'},
+  'travel-safari': {adult: 'woman-long'}, 'life-vest': {adult: 'woman-long'}, 'travel-backpack': {adult: 'woman-long'}, 'home-lounge-night': {adult: 'woman-long'},
 };
-const WARD_ALL: (OutfitId | PeriodOutfitId)[] = [...OUTFIT_IDS, ...PERIOD_OUTFIT_IDS];
-const wardInfo = (oid: OutfitId | PeriodOutfitId) => (WARDROBE_INFO as Record<string, typeof WARDROBE_INFO[OutfitId]>)[oid] ?? WARDROBE_1850S_INFO[oid as PeriodOutfitId];
-const wardDress = (def: CastDef, oid: OutfitId | PeriodOutfitId) => ((PERIOD_OUTFIT_IDS as readonly string[]).includes(oid) ? dressPeriod(def, oid as PeriodOutfitId) : dress(def, oid as OutfitId));
+const WARD_ALL: WardId[] = [...OUTFIT_IDS, ...PERIOD_OUTFIT_IDS, ...TRAVEL_OUTFIT_IDS];
+const isTravel = (oid: WardId): oid is TravelOutfitId => (TRAVEL_OUTFIT_IDS as readonly string[]).includes(oid);
+const wardInfo = (oid: WardId) => (WARDROBE_INFO as Record<string, typeof WARDROBE_INFO[OutfitId]>)[oid] ?? (isTravel(oid) ? WARDROBE_TRAVEL_INFO[oid] : WARDROBE_1850S_INFO[oid as PeriodOutfitId]);
+const wardDress = (def: CastDef, oid: WardId) => (isTravel(oid) ? dressTravel(def, oid) : (PERIOD_OUTFIT_IDS as readonly string[]).includes(oid) ? dressPeriod(def, oid as PeriodOutfitId) : dress(def, oid as OutfitId));
 const wardCell = (i: number) => ({x: (i % WARD_COLS) * WARD_CELL_W, y: 130 + Math.floor(i / WARD_COLS) * WARD_CELL_H});
 
 const Wardrobe = () => (
@@ -190,7 +194,10 @@ const Wardrobe = () => (
         figs.forEach(({def, view, cx}, f) => {
           const g: Pt = [cx, ground], pose: FigPose = view === 'front' ? {view, face: EXPRESSIONS.neutral, ...poseArms('P01', def, g, WARD_UNIT)} : {view, face: EXPRESSIONS.neutral};
           const seed = 5000 + i * 10 + f;
-          drawFigure(p, def, g, WARD_UNIT, pose, openT(seed), seed);
+          // Travel outfits (wardrobe-travel.ts): the daypack, pouch and vest strap are painted over the rig.
+          if (isTravel(oid) && oid === 'travel-backpack') paintBackpack(p, def, g, WARD_UNIT, pose, 'behind', seed * 10 + 5);
+          const an = drawFigure(p, def, g, WARD_UNIT, pose, openT(seed), seed);
+          if (isTravel(oid)) paintTravelGear(p, oid, def, an, pose, WARD_UNIT, seed * 10 + 7);
         });
       });
     }} />
