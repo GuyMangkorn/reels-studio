@@ -54,6 +54,20 @@ export type AnimalPose = {
   lid?: number | [number, number]; ears?: number; headDown?: number;
   lean?: number; leanTo?: [number, number]; leanAnchor?: 'nose' | 'top'; tilt?: number;
   curl?: number; tailTo?: [number, number]; contact?: number;
+  /**
+   * Dog gear (EDU-EP19 comp card W2.4, brief N4; opt-in, absent = unchanged). `harness`: a Y-front tracking harness in `color` (girth strap behind the
+   * forelegs, chest strap, back pad with a metal `ring` for the long line) in the profile and front stand/sit/lie views (not the three-quarter or charge
+   * views). The ring point is returned in `anchors.ring`. `roll` (front view, degrees, + = crown toward screen right): the head tilt of a puzzled dog.
+   */
+  harness?: {color: string; ring?: string};
+  roll?: number;
+  /**
+   * Dog head acting (EDU-EP19 W3 look frames, brief N5; opt-in, absent = unchanged). `look` -1..1 (front view): the head turns toward screen
+   * left (-) or right (+): the skull slides 0.07 shoulder-heights that way and the muzzle, nose and eyes 0.1 further, the far eye narrows (look-left-right,
+   * the nose sweep of sniff-track). `earLift` 0..1: flop ears lift at the base and swing up and out (the puzzled head tilt with `roll`).
+   * `lick` 0..1 (profile and front): mouth open, the tongue reaches out and up from the mouth (a lick on a cheek).
+   */
+  look?: number; earLift?: number; lick?: number;
   /** Cat, profile (EDU-EP06 draft review): smooth centrelines for legs and tail (no visible joints), a thicker arched neck, and a targeted curled tail that stays low in front of the chin instead of crossing the head. Off by default so other episodes keep their painted look. */
   polish?: boolean;
 };
@@ -87,6 +101,14 @@ export type AnimalDef = {
   fluffy?: boolean;
   /** Retriever coat, front view: a smooth feathered outline (tufts only on the chest and the back of the forelegs), a longer muzzle and tapered legs instead of the curly round fluff. Profile unchanged. */
   feathered?: boolean;
+  /**
+   * Opt-in soft dog (EDU-EP19 draft review, user 16 Nov 2026: "the black coat reads as boxes, too angular, the cut lines too sharp"). Every part's
+   * corners are rounded (two Chaikin passes), legs follow smooth centrelines in every pose with a soft shoulder and thigh mass over their tops, the
+   * profile neck is a curved column inked on its sides only, the profile muzzle is a rounded capsule, the outlines are a shade near the coat (the cut
+   * lines between overlapping parts nearly vanish on a dark coat), far legs are a darker shade of the coat instead of dusk violet, the belly shade is
+   * dropped and the tongue is a curved, tapered tongue with a centre groove. Dogs only; absent = the drawing before, byte for byte.
+   */
+  soft?: boolean;
   /** Iris colour. */
   eye: string;
   seed: number;
@@ -154,6 +176,7 @@ export const animalBlink = (t: number, seed: number) => (t / (2.5 + hash(seed) *
 
 type UV = [number, number];
 const add = (a: UV, b: UV): UV => [a[0] + b[0], a[1] + b[1]];
+const sub2 = (a: UV, b: UV): UV => [a[0] - b[0], a[1] - b[1]];
 /** Paw offset (du, dv) of one leg at gait phase `ph` (cycles): planted and sliding back for the stance, then a lifted swing. */
 const pawStep = (ph: number, gait: AnimalGait): UV => {
   const {stride: S, stance, lift} = GAITS[gait];
@@ -230,6 +253,11 @@ const hull = (pts: UV[]): UV[] => {
   const half = (arr: UV[]) => { const h: UV[] = []; for (const x of arr) { while (h.length >= 2 && cross(h[h.length - 2], h[h.length - 1], x) <= 0) h.pop(); h.push(x); } h.pop(); return h; };
   return [...half(q), ...half([...q].reverse())];
 };
+/** One Chaikin corner-cutting pass on a closed polygon (soft dog parts). */
+const chaikin = (pts: UV[]): UV[] => pts.flatMap((q, i): UV[] => {
+  const r = pts[(i + 1) % pts.length];
+  return [[0.75 * q[0] + 0.25 * r[0], 0.75 * q[1] + 0.25 * r[1]], [0.25 * q[0] + 0.75 * r[0], 0.25 * q[1] + 0.75 * r[1]]];
+});
 const rotAbout = (o: UV, a: number) => ([u, v]: UV): UV => [o[0] + (u - o[0]) * Math.cos(a) - (v - o[1]) * Math.sin(a), o[1] + (u - o[0]) * Math.sin(a) + (v - o[1]) * Math.cos(a)];
 
 /** Tail centrelines in shoulder heights from the tail root, for stand / sit / lie. */
@@ -243,7 +271,7 @@ const TAILS: Record<AnimalDef['tail'], {stand: UV[]; sit: UV[]; lie: UV[]; w: [n
 };
 
 /** Optional out-parameter of `drawAnimal`: picture points (px) of the posed animal, written while it paints. `mouth` = where a carried ball sits (bottom-front of the muzzle; profile and front views), a pure function of the pose and clock (head bob, sniff, sit blend). */
-export type AnimalAnchors = {mouth?: Pt; /** Top of the skull (between the ears), for a hand that pats the head. */ top?: Pt; /** Tip of the tail (profile views). */ tailTip?: Pt; /** The visible eye centre (profile) or the screen-left eye (front). */ eye?: Pt};
+export type AnimalAnchors = {mouth?: Pt; /** Top of the skull (between the ears), for a hand that pats the head. */ top?: Pt; /** Tip of the tail (profile views). */ tailTip?: Pt; /** The visible eye centre (profile) or the screen-left eye (front). */ eye?: Pt; /** The harness back ring (`pose.harness`), where a long line attaches. */ ring?: Pt};
 
 /**
  * Paints one animal. `g` ground point (px) under the body centre, `unit` px per metre, `pose` view/state/walk/wag/mouth,
@@ -263,21 +291,37 @@ export const drawAnimal = (p: Painter, seed: number, def: AnimalDef, g: Pt, unit
   });
 
   let n = 0;
-  const outline = (c: string) => mixColor(c, INK, def.inkMix ?? 0.55);
+  /** `def.soft` (EDU-EP19): rounded parts, near-coat outlines, smooth limbs (see AnimalDef.soft). */
+  const smooth = !!def.soft && !isCat;
+  const outline = (c: string) => mixColor(c, INK, smooth ? 0.14 : def.inkMix ?? 0.55);
   /** Legs and paws: a darker shade of the fur instead of the ink line (user, 2 Nov 2026). */
-  const furLine = (c: string) => mixColor(c, INK, 0.28);
-  const fill = (c: string, pts: UV[], passes = 4) => solid(p, seed * 1000 + ++n, c, Q(pts), passes, 0.07, 0.2);
+  const furLine = (c: string) => mixColor(c, INK, smooth ? 0.1 : 0.28);
+  /** Soft polygons: two Chaikin corner-cutting passes on any part with corners (ellipses with many points are left as they are). */
+  const round = (pts: UV[]): UV[] => (smooth && pts.length >= 3 && pts.length < 40 ? chaikin(chaikin(pts)) : pts);
+  const fill = (c: string, pts: UV[], passes = 4) => solid(p, seed * 1000 + ++n, c, Q(round(pts)), passes, 0.07, 0.2);
   const ink = (pts: UV[], c: string, weight = 1.0, closed = true, curve = 0.15, soft = false) =>
-    inkLine(p, seed * 1000 + 500 + ++n, Q(pts), {color: soft ? furLine(c) : outline(c), weight: weight * Math.min(1.4, Math.max(0.6, s / 120)), closed, curve});
+    inkLine(p, seed * 1000 + 500 + ++n, Q(closed ? round(pts) : pts), {color: soft ? furLine(c) : outline(c), weight: weight * (smooth ? 0.75 : 1) * Math.min(1.4, Math.max(0.6, s / 120)), closed, curve});
   const part = (c: string, pts: UV[], fur = false, soft = false) => {
     const q = fur && def.fluffy ? fluff(pts, 0.035, seed + n) : pts;
     fill(c, q);
     ink(q, c, 1.0, true, 0.15, soft);
   };
   const leg = (c: string, pts: UV[], fur = false) => part(c, pts, fur, true);
+  /** Soft dog tongue (EDU-EP19 B01-SH07 "polish the tongue"): a curved centreline, fuller toward the rounded tip, a darker rim, a centre groove
+   *  and a small wet highlight, instead of a straight pink bar with flat ends. `w` the widest width (shoulder heights). */
+  const softTongue = (line: UV[], w: number) => {
+    const sm = smoothLine(line.length > 2 ? line : [line[0], lerpUV(line[0], line[1], 0.5), line[1]], 5), k = sm.length - 1;
+    const widths = sm.map((_, i) => w * (0.72 + 0.28 * Math.sin((Math.PI / 2) * Math.min(1, (i / k) * 1.4))));
+    const body = tube(sm, widths);
+    fill('#e0707a', body, 4);
+    ink(body, '#b04456', 0.8);
+    ink(sm.slice(1, Math.ceil(k * 0.72)), '#b8485a', 0.55, false, 0.3);
+    const hl = sm[Math.round(k * 0.78)], d = sub2(sm[Math.min(k, Math.round(k * 0.78) + 1)], sm[Math.round(k * 0.78) - 1]), dl = Math.hypot(d[0], d[1]) || 1;
+    fill('#f4b0b4', ellUV(add(hl, [(-d[1] / dl) * w * 0.22, (d[0] / dl) * w * 0.22]), w * 0.1, w * 0.16, Math.atan2(d[1], d[0]), 10), 3);
+  };
 
   const coat = def.pattern === 'calico' ? def.light ?? '#f4efe6' : def.coat;
-  const far = mixColor(coat, '#3a2a40', def.farMix ?? 0.28);
+  const far = smooth ? mixColor(coat, '#141018', 0.35) : mixColor(coat, '#3a2a40', def.farMix ?? 0.28);
   const light = def.light ?? coat;
   const dark = def.dark ?? mixColor(def.coat, INK, 0.4);
   const points = def.pattern === 'points';
@@ -324,10 +368,12 @@ export const drawAnimal = (p: Painter, seed: number, def: AnimalDef, g: Pt, unit
     const skull = ellUV(H, r[0], r[1]);
     const muzzle: UV[] = isCat
       ? ellUV(add(H, [0.15 * hs, -0.07 * hs]), 0.09 * hs, 0.07 * hs)
+      : smooth ? hull([...ellUV(add(H, [0.07 * hs, -0.06 * hs]), 0.09 * hs, 0.075 * hs, 0, 16), ...ellUV(add(H, [(0.06 + 0.22 * mz) * hs, -0.075 * hs]), 0.065 * hs, 0.06 * hs, 0, 16)])
       : tube([add(H, [0.04 * hs, -0.04 * hs]), add(H, [(0.08 + 0.22 * mz) * hs, -0.07 * hs])], [0.2 * hs, 0.13 * hs]);
     part(points ? light : coat, skull, true);
     const mzC = points ? dark : def.pattern === 'chest' || def.pattern === 'tuxedo' || def.pattern === 'tabby' ? light : coat;
-    part(mzC, muzzle);
+    if (smooth) fill(mzC, muzzle); // soft: no outline, so no seam runs from the eye to the nose across the head
+    else part(mzC, muzzle);
     if (points) fill(dark, ellUV(add(H, [0.08 * hs, -0.03 * hs]), 0.12 * hs, 0.11 * hs), 3);
     if (def.pattern === 'tabby') for (const k of [0, 1, 2]) ink([add(H, [(-0.06 + 0.05 * k) * hs, 0.17 * hs]), add(H, [(-0.05 + 0.05 * k) * hs, 0.09 * hs])], dark, 1.2, false, 0);
     if (def.pattern === 'calico') fill(def.dark ?? INK, ellUV(add(H, [-0.06 * hs, 0.06 * hs]), 0.1 * hs, 0.09 * hs), 3);
@@ -338,10 +384,19 @@ export const drawAnimal = (p: Painter, seed: number, def: AnimalDef, g: Pt, unit
     fill(isCat ? '#d98a8a' : '#2a2224', ellUV(tip, (isCat ? 0.025 : 0.04) * hs, (isCat ? 0.02 : 0.035) * hs, 0, 10), 4);
     const mouthY = isCat ? -0.11 : -0.1;
     if (anchors) { anchors.mouth = Q([add(tip, [-0.06 * hs, -0.06 * hs])])[0]; anchors.top = Q([add(H, [0, 0.18 * hs])])[0]; }
-    if (pose.mouth === 'open') {
+    const lickP = !isCat ? clamp(pose.lick ?? 0) : 0;
+    if (lickP > 0) {
+      // N5 lick (profile): mouth open, the tongue sweeps out past the nose and up.
       const m0 = add(tip, [-0.02 * hs, (mouthY + 0.04) * hs]);
       fill('#5a2a2a', [m0, add(m0, [-0.12 * hs, -0.02 * hs]), add(m0, [-0.04 * hs, -0.08 * hs])], 4);
-      if (!isCat) part('#e0707a', tube([add(m0, [-0.05 * hs, -0.04 * hs]), add(m0, [-0.03 * hs, -0.14 * hs])], [0.07 * hs, 0.06 * hs]));
+      const lk: UV[] = [add(m0, [-0.06 * hs, -0.03 * hs]), add(m0, [(0.02 + 0.06 * lickP) * hs, (-0.06 + 0.05 * lickP) * hs]), add(m0, [(0.05 + 0.1 * lickP) * hs, (-0.02 + 0.12 * lickP) * hs])];
+      if (smooth) softTongue(lk, 0.068 * hs);
+      else part('#e0707a', tube(lk, [0.065 * hs, 0.06 * hs, 0.05 * hs]));
+    } else if (pose.mouth === 'open') {
+      const m0 = add(tip, [-0.02 * hs, (mouthY + 0.04) * hs]);
+      fill('#5a2a2a', [m0, add(m0, [-0.12 * hs, -0.02 * hs]), add(m0, [-0.04 * hs, -0.08 * hs])], 4);
+      if (smooth) { const b = 0.008 * Math.sin(t * 2 * Math.PI * 3); softTongue([add(m0, [-0.065 * hs, -0.03 * hs]), add(m0, [-0.05 * hs, -0.09 * hs]), add(m0, [-0.025 * hs, (-0.145 + b) * hs])], 0.075 * hs); }
+      else if (!isCat) part('#e0707a', tube([add(m0, [-0.05 * hs, -0.04 * hs]), add(m0, [-0.03 * hs, -0.14 * hs])], [0.07 * hs, 0.06 * hs]));
     } else ink([add(tip, [-0.01 * hs, -0.04 * hs]), add(tip, [-0.05 * hs, (mouthY + 0.02) * hs]), add(tip, [-0.12 * hs, (mouthY + 0.03) * hs])], INK, 1.0, false, 0.4);
     if (isCat) for (const dy of [-0.01, -0.04]) ink([add(tip, [-0.04 * hs, (dy - 0.02) * hs]), add(tip, [0.14 * hs, (dy + 0.01) * hs])], '#f4efe6', 0.7, false, 0.3);
     const E = add(H, [(isCat ? 0.08 : 0.06) * hs, 0.04 * hs]);
@@ -361,12 +416,17 @@ export const drawAnimal = (p: Painter, seed: number, def: AnimalDef, g: Pt, unit
     }
   };
 
-  const headFront = (H: UV, down = 0) => {
+  const headFront = (H0: UV, down = 0) => {
     const r: [number, number] = [0.21 * hs, 0.19 * hs];
     const earC = points ? dark : coat;
+    // N5 (EDU-EP19): `look` slides the skull 0.07 hs and the face 0.17 hs toward the turn; `earLift` raises the flop ears.
+    const lk = isCat ? 0 : Math.max(-1, Math.min(1, pose.look ?? 0)), el = isCat ? 0 : clamp(pose.earLift ?? 0);
+    const H: UV = [H0[0] + lk * 0.07 * hs, H0[1]], fx = lk * 0.1 * hs;
     for (const sd of [-1, 1]) {
       if (def.ears === 'flop') {
-        part(mixColor(coat, INK, 0.08), [[H[0] + sd * 0.12 * hs, H[1] + 0.15 * hs], [H[0] + sd * 0.25 * hs, H[1] + 0.08 * hs], [H[0] + sd * 0.27 * hs, H[1] - 0.12 * hs], [H[0] + sd * 0.2 * hs, H[1] - 0.16 * hs], [H[0] + sd * 0.15 * hs, H[1] - 0.02 * hs]], true);
+        const e = el * (1 - 0.35 * Math.max(0, sd * lk)), ex = -lk * 0.03 * hs;
+        const E = (u: number, v: number, u1: number, v1: number): UV => [H[0] + ex + sd * (u + (u1 - u) * e) * hs, H[1] + (v + (v1 - v) * e) * hs];
+        part(mixColor(coat, INK, 0.08), [E(0.12, 0.15, 0.12, 0.17), E(0.25, 0.08, 0.29, 0.17), E(0.27, -0.12, 0.36, 0.05), E(0.2, -0.16, 0.3, -0.02), E(0.15, -0.02, 0.17, 0.07)], true);
         continue;
       }
       const k = def.ears === 'big' ? 1.6 : isCat ? 0.9 : 1, spread = def.ears === 'big' ? 0.12 : 0.04;
@@ -380,7 +440,7 @@ export const drawAnimal = (p: Painter, seed: number, def: AnimalDef, g: Pt, unit
     if (def.pattern === 'tabby') for (const dx of [-0.05, 0, 0.05]) ink([[H[0] + dx * hs, H[1] + 0.17 * hs], [H[0] + dx * 0.8 * hs, H[1] + 0.09 * hs]], dark, 1.2, false, 0);
     if (def.pattern === 'calico') fill(def.dark ?? INK, ellUV([H[0] - 0.09 * hs, H[1] + 0.08 * hs], 0.1 * hs, 0.09 * hs), 3);
     if (def.pattern === 'calico') fill(def.coat, ellUV([H[0] + 0.1 * hs, H[1] + 0.1 * hs], 0.08 * hs, 0.07 * hs), 3);
-    const M: UV = [H[0], H[1] - ((isCat ? 0.07 : def.feathered ? 0.125 : 0.08) + 0.03 * down) * hs];
+    const M: UV = [H[0] + fx, H[1] - ((isCat ? 0.07 : def.feathered ? 0.125 : 0.08) + 0.03 * down) * hs];
     const mzC = points ? dark : def.pattern === 'solid' || def.pattern === 'calico' ? coat : light;
     const mzW = isCat ? 0.09 : 0.08 + 0.05 * Math.min(1, def.muzzle);
     if (points) fill(dark, ellUV([H[0], H[1] - 0.02 * hs], 0.14 * hs, 0.13 * hs), 3);
@@ -388,13 +448,22 @@ export const drawAnimal = (p: Painter, seed: number, def: AnimalDef, g: Pt, unit
     const nose: UV = [M[0], M[1] + (def.feathered ? 0.072 : 0.03) * hs];
     if (anchors) { anchors.mouth = Q([[M[0], M[1] - 0.02 * hs]])[0]; anchors.top = Q([[H[0], H[1] + 0.19 * hs]])[0]; }
     fill(isCat ? '#d98a8a' : '#2a2224', isCat ? [[nose[0] - 0.025 * hs, nose[1] + 0.01 * hs], [nose[0] + 0.025 * hs, nose[1] + 0.01 * hs], [nose[0], nose[1] - 0.015 * hs]] : ellUV(nose, 0.045 * hs, 0.03 * hs, 0, 10), 4);
-    if (pose.mouth === 'open') {
+    const lickF = !isCat ? clamp(pose.lick ?? 0) : 0;
+    if (lickF > 0) {
+      // N5 lick (front): the tongue curls up past the nose toward the side the head turns to.
+      const sx = lk >= 0 ? 1 : -1;
       fill('#5a2a2a', ellUV([M[0], M[1] - 0.05 * hs], 0.05 * hs, 0.035 * hs, 0, 10), 4);
-      if (!isCat) part('#e0707a', tube([[M[0], M[1] - 0.05 * hs], [M[0], M[1] - 0.15 * hs]], [0.07 * hs, 0.06 * hs]));
+      const lkF: UV[] = [[M[0], M[1] - 0.06 * hs], [M[0] + sx * 0.06 * lickF * hs, M[1] - (0.1 - 0.06 * lickF) * hs], [M[0] + sx * 0.11 * lickF * hs, M[1] + 0.02 * lickF * hs]];
+      if (smooth) softTongue(lkF, 0.072 * hs);
+      else part('#e0707a', tube(lkF, [0.07 * hs, 0.06 * hs, 0.05 * hs]));
+    } else if (pose.mouth === 'open') {
+      fill('#5a2a2a', ellUV([M[0], M[1] - 0.05 * hs], 0.05 * hs, 0.035 * hs, 0, 10), 4);
+      if (smooth) { const b = 0.008 * Math.sin(t * 2 * Math.PI * 3); softTongue([[M[0], M[1] - 0.045 * hs], [M[0] + 0.006 * hs, M[1] - 0.1 * hs], [M[0], M[1] - (0.155 - b) * hs]], 0.08 * hs); }
+      else if (!isCat) part('#e0707a', tube([[M[0], M[1] - 0.05 * hs], [M[0], M[1] - 0.15 * hs]], [0.07 * hs, 0.06 * hs]));
     } else for (const sd of [-1, 1]) ink([[nose[0], nose[1] - 0.02 * hs], [nose[0] + sd * 0.01 * hs, nose[1] - 0.05 * hs], [nose[0] + sd * 0.05 * hs, nose[1] - 0.05 * hs]], INK, 1.0, false, 0.4);
     if (isCat) for (const sd of [-1, 1]) for (const dy of [0, -0.03]) ink([[M[0] + sd * 0.06 * hs, M[1] + dy * hs], [M[0] + sd * 0.24 * hs, M[1] + (dy + 0.02 + dy) * hs]], '#f4efe6', 0.7, false, 0.3);
     for (const sd of [-1, 1]) {
-      const E: UV = [H[0] + sd * 0.085 * hs, H[1] + (0.04 + 0.05 * down) * hs];
+      const E: UV = [H[0] + fx * 0.8 + sd * 0.085 * hs * (1 - 0.22 * Math.max(0, -sd * lk)), H[1] + (0.04 + 0.05 * down) * hs];
       if (anchors && sd < 0) anchors.eye = Q([E])[0];
       const lidF = lidAt(sd < 0 ? 0 : 1);
       if (isCat && lidF !== undefined) lidEye(E, 0.045 * hs, 0.038 * hs, lidF, E, 0.012 * hs, 0.032 * hs);
@@ -538,7 +607,8 @@ export const drawAnimal = (p: Painter, seed: number, def: AnimalDef, g: Pt, unit
     const nose: UV = [T[0], T[1] + 0.03 * hs * c];
     if (pose.mouth === 'open') {
       fill('#5a2a2a', ellUV([nose[0] - 0.01 * hs * sn, nose[1] - (0.07 + 0.01 * c) * hs], 0.05 * hs, 0.032 * hs, 0, 10), 4);
-      part('#e0707a', tube([[nose[0] - 0.01 * hs * sn, nose[1] - 0.07 * hs], [nose[0] - 0.02 * hs * sn, nose[1] - 0.17 * hs]], [0.07 * hs, 0.06 * hs]));
+      if (smooth) softTongue([[nose[0] - 0.01 * hs * sn, nose[1] - 0.065 * hs], [nose[0] - 0.012 * hs * sn, nose[1] - 0.12 * hs], [nose[0] - 0.025 * hs * sn, nose[1] - 0.17 * hs]], 0.078 * hs);
+      else part('#e0707a', tube([[nose[0] - 0.01 * hs * sn, nose[1] - 0.07 * hs], [nose[0] - 0.02 * hs * sn, nose[1] - 0.17 * hs]], [0.07 * hs, 0.06 * hs]));
     }
     fill('#2a2224', ellUV(nose, (0.036 + 0.01 * c) * hs, 0.03 * hs, 0, 10), 4);
     if (pose.mouth !== 'open') ink([add(nose, [0, -0.025 * hs]), add(nose, [-0.03 * hs, -0.07 * hs]), add(nose, [-0.1 * hs * sn - 0.03 * hs, -0.07 * hs])], INK, 1.0, false, 0.4);
@@ -609,11 +679,13 @@ export const drawAnimal = (p: Painter, seed: number, def: AnimalDef, g: Pt, unit
         paw(limbC, q[3], isFar);
         return;
       }
-      if ((def.smoothLimbs && moving) || (pose.polish && isCat)) {
+      if ((def.smoothLimbs && moving) || (pose.polish && isCat) || smooth) {
         const sm = smoothLine(q, 4);
         leg(isFar ? far : limbC, tube(sm, sm.map((_, i) => { const x = (i / (sm.length - 1)) * (w0.length - 1), a = Math.floor(x), b = Math.min(w0.length - 1, a + 1); return w0[a] + (w0[b] - w0[a]) * (x - a); })), true);
       } else leg(isFar ? far : limbC, tube(q, w0), true);
       paw(limbC, q[3], isFar);
+      // Soft dog: a shoulder / thigh mass over the leg top with no outline, so the leg grows out of the body instead of a cut-on column.
+      if (smooth && !isFar && state === 'stand' && from === 'stand') fill(coat, isFront ? ellUV(lerpUV(q[0], q[1], 0.3), 0.15, 0.2, 0.15, 18) : ellUV(lerpUV(q[0], q[1], 0.35), 0.19, 0.22, 0.3, 18), 4);
     };
     limb(R.fb, false, true);
     limb(R.ff, true, true);
@@ -627,7 +699,7 @@ export const drawAnimal = (p: Painter, seed: number, def: AnimalDef, g: Pt, unit
     fill(coat, body, 4);
     // Under-side shade and pattern marks stay inside the body ellipse.
     const inBody = (k: number, du: number, dv: number): UV => add(mid, [Math.cos(ang) * du * k - Math.sin(ang) * dv, Math.sin(ang) * du * k + Math.cos(ang) * dv]);
-    fill(mixColor(coat, '#3a2a40', 0.14), ellUV(inBody(1, 0, -0.12 * def.build), bodyLen / 2, 0.08 * def.build, ang, 16), 3);
+    if (!smooth) fill(mixColor(coat, '#3a2a40', 0.14), ellUV(inBody(1, 0, -0.12 * def.build), bodyLen / 2, 0.08 * def.build, ang, 16), 3);
     if (def.pattern === 'chest' || def.pattern === 'tuxedo') fill(light, ellUV(add(sh, [0.08, -0.06]), 0.14, 0.17 * def.build, ang, 14), 4);
     if (def.pattern === 'tabby') for (let i = -2; i <= 2; i++) {
       const a = inBody(1, i * bodyLen * 0.2, 0.16 * def.build), b = inBody(1, i * bodyLen * 0.2 - 0.03, -0.02);
@@ -649,20 +721,33 @@ export const drawAnimal = (p: Painter, seed: number, def: AnimalDef, g: Pt, unit
     const neck = arch
       ? tube([add(sh, [-0.06, 0.02]), add(sh, [0.12, 0.0]), lerpUV(add(sh, [0.12, 0.0]), add(H, [-0.1, 0.02]), 0.55), add(H, [-0.06, 0.0])], [0.5 * def.build, 0.42 * def.build, 0.34 * hs, 0.3 * hs])
       : tube([add(sh, [0.06, 0.1]), add(H, [-0.04, -0.06])], [isCat ? 0.28 : 0.3 * def.build, 0.24 * hs]);
-    if (pose.polish && isCat && !arch) {
+    if (((pose.polish && isCat) || smooth) && !arch) {
       // Soft cat neck (draft review 2026-11-07, "neck like a rod"): a curved column that starts deep in the chest and flows into the skull, filled without an
       // outline at either end, so only its two sides are inked and it reads as one body with the shoulder and the head.
       const a0 = add(sh, [-0.02, -0.04]), b0 = add(H, [-0.05, -0.07]), m0 = lerpUV(a0, b0, 0.5), sm = smoothLine([a0, add(m0, [-0.015, 0.035]), b0], 6);
-      const wd = (i: number) => 0.4 - 0.12 * Math.sin((Math.PI / 2) * (i / (sm.length - 1))), L: UV[] = [], Rr: UV[] = [];
+      const wd = (i: number) => (smooth ? 0.4 * def.build : 0.4) - (smooth ? 0.16 : 0.12) * Math.sin((Math.PI / 2) * (i / (sm.length - 1))), L: UV[] = [], Rr: UV[] = [];
       sm.forEach((q, i) => {
         const pa = sm[Math.max(0, i - 1)], pb = sm[Math.min(sm.length - 1, i + 1)], dx = pb[0] - pa[0], dy = pb[1] - pa[1], ln = Math.hypot(dx, dy) || 1, w = wd(i) / 2;
         L.push([q[0] - (dy / ln) * w, q[1] + (dx / ln) * w]); Rr.push([q[0] + (dy / ln) * w, q[1] - (dx / ln) * w]);
       });
       fill(coat, [...L, ...Rr.slice().reverse()], 4);
-      ink(L.slice(3), coat, 1.0, false, 0.15, true); ink(Rr.slice(3), coat, 1.0, false, 0.15, true);
+      ink(L.slice(3, smooth ? -2 : undefined), coat, 1.0, false, 0.15, true); ink(Rr.slice(3, smooth ? -2 : undefined), coat, 1.0, false, 0.15, true);
     } else part(coat, neck, true);
     if (arch) { if (def.pattern === 'chest' || def.pattern === 'tuxedo') fill(mixColor(coat, light, 0.55), ellUV(add(sh, [0.16, -0.12]), 0.07, 0.15, -0.3, 14), 4); }
     else if (def.pattern === 'chest' || def.pattern === 'tuxedo') fill(light, tube([add(sh, [0.14, 0.02]), add(H, [0.04, -0.12])], [0.14, 0.1]), 3);
+    if (pose.harness && !isCat) {
+      // N4 harness, profile: girth band just behind the forelegs, chest strap from the back pad round the front of the chest, back pad and ring.
+      const hc = pose.harness.color, B = Math.max(wR, wC) / 2, A = bodyLen / 2 + B, gU = bodyLen * 0.2;
+      const edgeV = (du: number) => B * Math.sqrt(Math.max(0, 1 - (du / A) ** 2));
+      const sw = 0.06; // shoulder heights: about 3.5 cm on a 0.58 m dog
+      const e0 = edgeV(gU - sw / 2), e1 = edgeV(gU + sw / 2);
+      part(hc, [inBody(1, gU - sw / 2, e0 * 1.04), inBody(1, gU + sw / 2, e1 * 1.04), inBody(1, gU + sw / 2, -e1 * 1.02), inBody(1, gU - sw / 2, -e0 * 1.02)]);
+      part(hc, tube([inBody(1, gU + sw * 0.6, edgeV(gU) * 1.02), inBody(1, A * 0.72, B * 0.62), inBody(1, A * 0.98, -B * 0.12)], [sw, sw * 0.95, sw * 0.9]));
+      part(mixColor(hc, INK, 0.18), ellUV(inBody(1, gU + sw * 0.4, edgeV(gU) * 1.03), sw * 1.5, sw * 0.55, ang, 12));
+      const rc = inBody(1, gU + sw * 0.4, edgeV(gU) * 1.03 + sw * 0.75);
+      ink(ellUV(rc, sw * 0.42, sw * 0.42, 0, 12), pose.harness.ring ?? '#c3c6ca', 1.3);
+      if (anchors) anchors.ring = Q([rc])[0];
+    }
     if (tailOver) tail(R.tail, false);
     if (pose.tilt) { headRot.c = H; headRot.a = tiltA; }
     headSide(H);
@@ -766,5 +851,24 @@ export const drawAnimal = (p: Painter, seed: number, def: AnimalDef, g: Pt, unit
     fill(def.dark ?? INK, ellUV([chest[0] + 0.13, chest[1] - 0.05], 0.1, 0.09, 0, 14), 4);
   }
   if (!def.feathered) { frontLegs(); neckBlock(); }
+  if (pose.harness && !isCat) {
+    // N4 harness, front: Y straps from the shoulders to the breastbone plate, one strap down between the forelegs, the girth at the chest sides.
+    const hc = pose.harness.color, sw = 0.06, jc: UV = [0, chest[1] + cry * 0.02];
+    if (lowFront && ease01(sniff) > 0.5) {
+      // Head-low sniff: the chest is behind the lowered head; only the strap over the shoulders shows above it (past half way down, so a shallow
+      // dip keeps the Y straps instead of popping to the strap at the first frame of the dip).
+      part(hc, tube([[-crx * 0.8, chest[1] + cry * 0.7], [0, chest[1] + cry * 0.9], [crx * 0.8, chest[1] + cry * 0.7]], [sw, sw, sw]));
+    } else {
+      for (const sd of [-1, 1]) {
+        part(hc, tube([[sd * crx * 0.66, chest[1] + cry * 0.86], [sd * crx * 0.3, chest[1] + cry * 0.42], jc], [sw, sw, sw]));
+        part(hc, [[sd * crx * 0.84, chest[1] - cry * 0.5], [sd * crx * 0.96, chest[1] - cry * 0.42], [sd * crx * 0.96, chest[1] + cry * 0.16], [sd * crx * 0.86, chest[1] + cry * 0.2]]);
+      }
+      part(hc, tube([jc, [0, chest[1] - cry * 0.88]], [sw, sw * 0.9]));
+      part(mixColor(hc, INK, 0.18), ellUV(jc, sw * 0.9, sw * 0.7, 0, 12));
+    }
+    if (anchors) anchors.ring = Q([[0, chest[1] + cry * 1.02]])[0];
+  }
+  if (pose.roll) { headRot.c = H; headRot.a = -(pose.roll * Math.PI) / 180; }
   headFront(H, lowFront ? ease01(sniff) : 0);
+  headRot.a = 0;
 };
