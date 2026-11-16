@@ -68,7 +68,7 @@ For a deliverable whose style profile asks for a seamless loop (`C_seamless` end
 <a id="โครงทดลองประมาณ-45-วินาที"></a>
 ## Experimental structure for roughly 45 seconds
 
-This timing split is an experiment, not a Reels/Shorts requirement or a formula for every story:
+This timing split is an experiment, not a Reels/Shorts requirement or a formula for every story. It is not a length target: a Short's length comes from the delivery record's target ([duration defaults](production-requirements.md#outputs-and-story-timing)):
 
 | Approximate time | Purpose |
 | --- | --- |

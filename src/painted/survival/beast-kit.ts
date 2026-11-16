@@ -1,6 +1,9 @@
 import type {Build} from './beast';
 import type {BeastPlace} from './beast';
 import {buildRaptor, RAPTOR_POSES} from './beast-raptor';
+import {buildHippo, HIPPO_POSES, HIPPO_WATER} from './beast-hippo';
+import {buildSnake, SNAKE_POSES} from '../kit/snake';
+import {buildMosquito, MOSQ_Y0, MOSQUITO_POSES} from '../kit/mosquito';
 
 // EDU-EP16 creature kit registry (Boss, 14 Nov 2026): one entry per creature with its size, the animations a shot may use and how to build each pose. Comp cards
 // (scripts/edu-series/ep16/creature-kit), the joint-integrity test (tests/beast-joints.test.ts) and shot code iterate this, so a new animation is checked the day it is listed.
@@ -25,6 +28,32 @@ export const BEAST_KIT: Record<string, BeastKitEntry> = {
       STAND: {cycle: false, build: () => buildRaptor(RAPTOR_POSES.stand()), note: 'stand, wings folded, mouth a little open'},
       WALK: {cycle: true, side: true, build: (t) => buildRaptor(RAPTOR_POSES.walk(t)), note: 'walk, 0.5 m stride, stiff tail swaying from its base'},
       POUNCE: {cycle: false, build: (t) => buildRaptor(RAPTOR_POSES.pounce(t)), note: 'pounce: crouch, push off, leap nose-up with the feet and sickle claws swung forward, wings spread'},
+    },
+  },
+  HIPPO: {
+    id: 'AS-HIPPO-R1', label: 'Hippopotamus 3.6 m, shoulder 1.5 m, head 0.95 x 0.7 m; EDU-EP18 N3 (comp cards 15 Nov 2026, not user-approved)', size: 3.8, hc: 0.9, stand: () => buildHippo(HIPPO_POSES.stand()),
+    anims: {
+      SURFACE: {cycle: false, build: (t) => buildHippo(HIPPO_POSES.surface(t)), note: 'rises from under the surface: head (eyes, ears, nostrils) first, then the back; ears flick', place: {waterline: HIPPO_WATER}},
+      YAWN: {cycle: false, build: (t) => buildHippo(HIPPO_POSES.yawn(t)), note: 'yawn: chest up, head back, jaw to the full 140 deg gape (hold), closes', place: {waterline: HIPPO_WATER}},
+      SWIM: {cycle: true, side: true, build: (t) => buildHippo(HIPPO_POSES.swim(t)), note: 'swim / bottom-walk at the surface, slow bob, legs paddling below', place: {waterline: HIPPO_WATER}},
+      CHARGE: {cycle: true, side: true, build: (t) => buildHippo(HIPPO_POSES.charge(t)), note: 'charge: surging bounds, head high, chest pushing a bow wave (the scene paints the wave)', place: {waterline: HIPPO_WATER}},
+      HALT: {cycle: false, build: (t) => buildHippo(HIPPO_POSES.halt(t)), note: 'halt: from the charge to a stop, head drops, mouth closes, last lurch', place: {waterline: HIPPO_WATER}},
+      SNORT: {cycle: false, build: (t) => buildHippo(HIPPO_POSES.snort(t)), note: 'snort: nostrils flare and blow (the scene adds spray), ears flick', place: {waterline: HIPPO_WATER}},
+      LURK: {cycle: true, build: (t) => buildHippo(HIPPO_POSES.lurk(t)), note: 'lurk: eyes, ears, nostrils and a thin line of head above the water', place: {waterline: HIPPO_WATER}},
+    },
+  },
+  SNAKE: {
+    id: 'AS-SNAKE-R1', label: 'Generic snake 1.4 m, 0.04 m thick, head 0.045 m wide, olive-brown with dark saddles; EDU-EP18 N11 (kit/snake.ts; comp cards 15 Nov 2026, not user-approved)', size: 1.5, hc: 0.05, stand: () => buildSnake(SNAKE_POSES.lie(0)),
+    anims: {
+      LIE: {cycle: true, build: (t) => buildSnake(SNAKE_POSES.lie(t)), note: 'lie: resting S on the ground, head turns slowly'},
+      HEADLIFT: {cycle: false, build: (t) => buildSnake(SNAKE_POSES.headLift(t)), note: 'head-lift: the neck rises in an S, head level, tongue flicks twice'},
+      SLITHER: {cycle: true, side: true, build: (t) => buildSnake(SNAKE_POSES.slither(t)), note: 'slither: the body slides one wavelength along a fixed path (move it at SNAKE_SLITHER.speed), belly on the ground'},
+    },
+  },
+  MOSQUITO: {
+    id: 'AS-MOSQUITO-R1', label: 'Mosquito macro in MILLIMETRES: body 6 mm, legs ~14 mm, black with pale bands, rim light; EDU-EP18 N13 (kit/mosquito.ts; comp cards 15 Nov 2026, not user-approved)', size: 14, hc: MOSQ_Y0 - 1, stand: () => buildMosquito(MOSQUITO_POSES.rest()),
+    anims: {
+      HOVER: {cycle: true, side: true, build: (t) => buildMosquito(MOSQUITO_POSES.hover(t)), note: 'hover: wing-beat blur fan, slow bob, legs dangle and sway'},
     },
   },
 };

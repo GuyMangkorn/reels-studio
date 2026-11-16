@@ -51,3 +51,9 @@ Record: [delivery.md](delivery.md) · Updated: 2026-11-16, coordinator (continua
   - [x] W8.6 Cover pick 2 — user selected "A — ตามคุณ / ใช่ไหม? (แนะนำ)"; exact checked A-follow-you cover published with video. Boat and independent Film checks pass 5/5. [Text handoff](cover-pick2.md), [copy review](cover-copy-check.md), [visual review](../../../storyboards/edu-ep20/short/cover-text-review/viewer-check-look-r1.md).
 
   - [x] W8.7 Re-edit retention — canonical final MP3 + 1,443-frame amplitude sidecar retained, 12 reference stills + hashes stored, minimum delivery PSNR 50.63 dB, all 11 pins unchanged. [Evidence](reedit-retention.md). Final source checkpoint `bf9b167eb1a9`; runtime WAV remains a restorable store cache.
+
+## Git publication — user authorized "commit + pr"
+
+- [x] Final production source committed (`bf9b167`) and checkpoint recorded (`caea088`).
+- [x] Production issue #351, owner:codex; branch `codex/351-ep20-delivery`. Latest main integrated, EP18/EP19/EP20 registrations preserved; verification limitations recorded in build-notes.
+- [ ] Feature branch pushed and PR opened into main; user owns merge.
