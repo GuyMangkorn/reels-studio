@@ -4,7 +4,7 @@ Record: [delivery.md](delivery.md) · Updated: 2026-11-16, coordinator
 
 ## EDU-EP22-SHORT
 
-**Now:** W2.1 done; W2.2 storyboard rows need user go-ahead **Next:** User
+**Now:** W2 done; user reviews the storyboard page; Q-SB1 open **Next:** User
 
 - [x] W0 Ideation — user named the topic (C88).
 - [ ] W1 Script lock
