@@ -59,3 +59,28 @@ Manual per-line figures sum to **195**. At the documented reference rates, narra
 ## Handoff
 
 No premise-critical claim or must-fix remains unresolved. Optional suggestions do not hold factual readiness. Later changes to factual wording, reveal order or visual motion need changed/dependent-claim coverage; no exact transient, fan threshold or actual filmed experiment is established. Coordinator synchronizes script/Guide status and records independently; this review edits neither.
+
+## FACT-R2 — changed-claim recheck (L13 only)
+
+- Review: **EDU-EP20-FACT-R2**, Boat, 2026-11-16. Scope: [script](script.md) **EDU-EP20-SCRIPT-R2**, L13 only; L01–L12 are unchanged from the FACT-R1 text and keep that coverage. Evidence: the C82 packet (`../../ab-hook-pilot/research-c82.md`) C82-F002/F004 and its pressure-balance derivation (steps 1–2, about lines 43–49), plus the FACT-R1 reopened SRC001/SRC002/C82-SRC003. No new source was opened. Access gap as in FACT-R1: no instrumented braking trial.
+- Reviewed wording (retained): "เพราะคราวนี้ อากาศด้านหน้ากลับดันแรงกว่าด้านหลังนั่นเอง" (TTS spelling `เพราะคราวนี้, อากาศด้านหน้า กลับดันแรงกว่าด้านหลัง นั่นเอง`).
+
+| Claim / line | Verdict | Evidence and scope |
+| --- | --- | --- |
+| CK20-13 / L13 (R2) | **supported** (qualitative mechanism; derived reversal) | FACT-R1 covered the reversal only implicitly ("เปลี่ยนฝั่ง"). R2 states it outright: during braking the air in front pushes harder than the air behind. This is the same pressure-balance derivation as L06 with the acceleration sign flipped: the packet gives a pressure gradient that is higher toward the side opposite the acceleration. Forward acceleration therefore gives higher pressure at the rear (L06). Braking is backward acceleration while the car still moves forward (C82-F004), so pressure is higher at the front, and the net buoyant force on the balloon points toward the rear (L12). No new source is needed. FACT-R1's C82-F002/F004 coverage already contains the explicit front/rear statement. |
+
+**Dependent claims.** L06 (CK20-06) and L12 (CK20-12) are unchanged and consistent: L13 now mirrors L06 with front and rear swapped, and it gives the cause of L12's rearward lean. L11 is unchanged. "คราวนี้" correctly points at the braking case. No claim is added about magnitude, onset time or an instant flip.
+
+**Wording-risk notes (none holds readiness).**
+- "อากาศ...ดัน" is a qualitative everyday statement of a pressure gradient: the higher-pressure side pushes the balloon toward the lower-pressure side. It does not say that the air mass moves or blows, or that a gale or vacuum forms. Keep the cabin air schematic labelled ภาพจำลอง (simulation); the visuals must not show a wind rush, a dense wall or an empty front half. This matches the FACT-R1 visual coverage.
+- "กลับดันแรงกว่า" means the pressure difference now points the other way. It does not mean that the front pressure exceeds the rear in the absolute sense. A reader will not take it that way, so no change is needed. A purist could add "ความดัน", but that would only add a technical term (ER05) and is not recommended.
+- The statement stays at the level of the pressure-balance deduction. It claims no measured braking data. It also keeps the steady-speed state as the neutral case (L09–L10).
+- "นั่นเอง" is a closing particle with no factual content.
+
+**Findings.**
+- No must-fix.
+- **O20-03 — optional:** none required. Optional only: if L13 is later shortened, keep "ด้านหน้า...ด้านหลัง" so the rule stays explicit.
+
+**Timing and sound.** The R2 syllable estimate (about 198, L13 about 15 syllables) is Preaw's own estimate and is not audited here. The L13 re-voice and the remeasure are timing and audio work outside this factual review. The approved E take still carries R1 L13. L13 needs 15 syllables, which is well under 10 s; ER09 holds. The sound intent for B05 (payoff accent, no siren or crash) implies no unsupported event.
+
+**Readiness.** **ready-for-storyboard / matching handoff to Film for EDU-EP20-SCRIPT-R2 + FACT-R2**, as factual readiness only (not user approval, voice, timing or visual validation). The prior FACT-R1 verdict holds for L01–L12. Open items that are not factual: re-voice and remeasure L13, and keep ภาพจำลอง on the cabin air graphics.

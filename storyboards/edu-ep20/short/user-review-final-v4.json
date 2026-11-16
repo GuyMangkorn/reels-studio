@@ -1,0 +1,120 @@
+{
+  "deliverable": "EDU-EP20-SHORT",
+  "source": "Explicit user chat in the supplied read-only Orca handoff transcript, 2026-11-16",
+  "evidence": "ผ่าน",
+  "context": "User response immediately after Final v4 presentation; all 11 shots approved in one round",
+  "publishedUrl": "https://claude.ai/artifact/K3HpSYNFUmvqZmeCEC1S4b",
+  "publishedVersion": "v4",
+  "revision": "EDU-EP20-SS-R5",
+  "artifactDbRead": false,
+  "hashPolicy": "clips.final.key from authoritative rows; these are the shared builder clip hashes",
+  "finalCut": {
+    "full": "out/EDU-EP20-SHORT/clips/_final_cut.full.mp4",
+    "fullSha256": "3f36ef797f2583cb44bf82a6ffd50c00afa945b94a8bae86ca97469d6f91dc0e",
+    "proxy": "out/EDU-EP20-SHORT/clips/_final_cut.mp4",
+    "proxySha256": "b1f69120f908383d49b34b4f832f980437e3d0befb2d027cad9c2c013a445e6f",
+    "frames": 1619
+  },
+  "acceptanceLimit": "User Final acceptance is recorded; whether the user listened is not independently observed. No agent listening pass is claimed.",
+  "verdicts": [
+    {
+      "shot": "EDU-EP20-SHORT-S01-B01-SH01",
+      "stage": "final",
+      "status": "ok",
+      "hash": "61fa542e973420d0",
+      "rev": "EDU-EP20-SS-R5",
+      "note": "Explicit user approval of Final v4, entire cut",
+      "updatedAt": "2026-11-16"
+    },
+    {
+      "shot": "EDU-EP20-SHORT-S01-B01-SH02",
+      "stage": "final",
+      "status": "ok",
+      "hash": "77da102b9cc79371",
+      "rev": "EDU-EP20-SS-R5",
+      "note": "Explicit user approval of Final v4, entire cut",
+      "updatedAt": "2026-11-16"
+    },
+    {
+      "shot": "EDU-EP20-SHORT-S01-B01-SH03",
+      "stage": "final",
+      "status": "ok",
+      "hash": "56b70e204a0543e6",
+      "rev": "EDU-EP20-SS-R5",
+      "note": "Explicit user approval of Final v4, entire cut",
+      "updatedAt": "2026-11-16"
+    },
+    {
+      "shot": "EDU-EP20-SHORT-S01-B02-SH01",
+      "stage": "final",
+      "status": "ok",
+      "hash": "6e63e4860f62c87a",
+      "rev": "EDU-EP20-SS-R5",
+      "note": "Explicit user approval of Final v4, entire cut",
+      "updatedAt": "2026-11-16"
+    },
+    {
+      "shot": "EDU-EP20-SHORT-S01-B03-SH01",
+      "stage": "final",
+      "status": "ok",
+      "hash": "aad0b6ca4033bf76",
+      "rev": "EDU-EP20-SS-R5",
+      "note": "Explicit user approval of Final v4, entire cut",
+      "updatedAt": "2026-11-16"
+    },
+    {
+      "shot": "EDU-EP20-SHORT-S01-B03-SH02",
+      "stage": "final",
+      "status": "ok",
+      "hash": "a3542bf2ac9c0ff8",
+      "rev": "EDU-EP20-SS-R5",
+      "note": "Explicit user approval of Final v4, entire cut",
+      "updatedAt": "2026-11-16"
+    },
+    {
+      "shot": "EDU-EP20-SHORT-S01-B04-SH01",
+      "stage": "final",
+      "status": "ok",
+      "hash": "e2387b04c57daa5e",
+      "rev": "EDU-EP20-SS-R5",
+      "note": "Explicit user approval of Final v4, entire cut",
+      "updatedAt": "2026-11-16"
+    },
+    {
+      "shot": "EDU-EP20-SHORT-S01-B04-SH02",
+      "stage": "final",
+      "status": "ok",
+      "hash": "8b08487810c77245",
+      "rev": "EDU-EP20-SS-R5",
+      "note": "Explicit user approval of Final v4, entire cut",
+      "updatedAt": "2026-11-16"
+    },
+    {
+      "shot": "EDU-EP20-SHORT-S01-B05-SH01",
+      "stage": "final",
+      "status": "ok",
+      "hash": "157380eb1603133a",
+      "rev": "EDU-EP20-SS-R5",
+      "note": "Explicit user approval of Final v4, entire cut",
+      "updatedAt": "2026-11-16"
+    },
+    {
+      "shot": "EDU-EP20-SHORT-S01-B05-SH02",
+      "stage": "final",
+      "status": "ok",
+      "hash": "901848255f6b692e",
+      "rev": "EDU-EP20-SS-R5",
+      "note": "Explicit user approval of Final v4, entire cut",
+      "updatedAt": "2026-11-16"
+    },
+    {
+      "shot": "EDU-EP20-SHORT-S01-B05-SH03",
+      "stage": "final",
+      "status": "ok",
+      "hash": "1125268073539977",
+      "rev": "EDU-EP20-SS-R5",
+      "note": "Explicit user approval of Final v4, entire cut",
+      "updatedAt": "2026-11-16"
+    }
+  ]
+}

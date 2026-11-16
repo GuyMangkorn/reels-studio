@@ -62,8 +62,9 @@ export type AudioTrack = {
 };
 /** `lower` puts the block's bottom edge at y 1240 of 1920 (production-requirements caption-safe box; MK-WF-DEP-08). */
 export type CaptionStyle = {preset?: 'outline' | 'box' | 'none'; position?: 'bottom' | 'middle' | 'top' | 'lower'; /** Composition y (px from the top) of the caption block's bottom edge; overrides `position` when set. */ bottomEdgeY?: number; /** Composition y of the caption block's vertical CENTRE (a 1-, 2- or 3-line cue grows symmetrically about it); overrides `bottomEdgeY` and `position`. Pair it with `CaptionShade centerY` (src/scenes/captionLayout.ts). */ centerY?: number; color?: string; scale?: number; /** `outline` only, all optional (unset = the channel look `CAPTION_OUTLINE` in src/scenes/media.ts: 14 px #2b1a12 stroke plus a soft dark halo): stroke width in px (centred, paint-order stroke fill, so half shows), stroke colour, CSS text-shadow list (e.g. a soft dark halo). */ strokeWidth?: number; strokeColor?: string; textShadow?: string; /** C_seamless only: the final scene's captions stay on and fade out across the loop blend instead of vanishing when it opens. Default off. */ fadeOutWithLoop?: boolean};
-/** Channel label (false hides it) and the scene progress bar. */
-export type ChromeStyle = {channelLabel?: string | false; progressBar?: boolean};
+/** Channel label (false hides it), its portrait look and the scene progress bar. `channelLabelStyle`: `ink` (default) the scene ink
+ * colour; `outline` a light fill with the edu caption stroke for a mark over dark picture (`channelLabelLook` in src/scenes/media.ts). */
+export type ChromeStyle = {channelLabel?: string | false; channelLabelStyle?: 'ink' | 'outline'; progressBar?: boolean};
 /**
  * Text warped onto a screen-space quadrilateral that moves per frame (e.g. a blank sign plate in a pre-rendered clip).
  * `quads[i]` is the plate's TL,TR,BR,BL in output pixels at scene-local frame `startFrame + i`; frames after the last key hold it.

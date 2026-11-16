@@ -1,7 +1,7 @@
 # EP20 — the balloon that goes the other way
 
 - Deliverable: **EDU-EP20-SHORT**; concept C82; channel `edu`.
-- Script revision: **EDU-EP20-SCRIPT-R1**, Preaw, 2026-11-15.
+- Script revision: **EDU-EP20-SCRIPT-R2**, Preaw, 2026-11-16 (L13 only; L01–L12 unchanged from R1, 2026-11-15).
 - Record: [delivery](../delivery.md) **EDU-EP20-DELIVERY-R1**; research: [C82 packet](../../ab-hook-pilot/research-c82.md) **C82-RESEARCH-R1**; hook handoff: [Guide](../hook-guide.md) **EDU-EP20-HOOK-R1**.
 - Mode: fiction-with-factual-knowledge. The passenger, journey and observation are staged, not a named real experiment.
 - Target: 40–60 s; editorial layout **about 47 s**, including a 3 s closing hold. Timing **estimated**, not read-aloud/audio-tested. Factual readiness: **ready-for-storyboard**, [EDU-EP20-FACT-R1](fact-check.md); user approval not recorded.
@@ -32,7 +32,7 @@ Only the Thai text in this table is narration. Ellipses are delivery pauses, not
 | L10 | 31.5–34 s | ตัวที่ทำให้เอน คือการเร่ง ไม่ใช่ความเร็ว |
 | L11 | 34–39.5 s | ทีนี้ทายอีกรอบ ถ้ารถยังวิ่งไปข้างหน้า แต่กำลังชะลอ คราวนี้คุณเอนไปหน้า... |
 | L12 | 39.5–41.5 s | ส่วนลูกโป่งกลับเอนไปท้ายรถ! |
-| L13 | 41.5–44 s | อากาศรอบมัน เปลี่ยนฝั่งที่ดันแรงกว่าแล้วไง |
+| L13 | 41.5–44 s | เพราะคราวนี้ อากาศด้านหน้ากลับดันแรงกว่าด้านหลังนั่นเอง |
 | — | 44–47 s | [No speech; hold the opposed passenger/balloon result.] |
 
 L09's “ลอง” introduces the staged thought demonstration, not a viewer driving instruction. A seated, restrained passenger observes; no driver manipulates props. L03/L11 describe relative body tendency, with no violent unrestrained movement.
@@ -91,3 +91,5 @@ R1 manual spoken-syllable audit, by line L01–L13: **9, 18, 23, 7, 11, 19, 12, 
 R1: first full spoken version, selected question/prediction approach, shared research preserved without duplication. All lines and their visual implications require Boat's first factual/clarity pass. No unresolved premise-critical claim is knowingly introduced; exact timing remains open.
 
 Coordinator metadata synchronization, 2026-11-15: recorded EDU-EP20-FACT-R1; narration, beat wording and factual implications unchanged. Applied optional O20-01: header editorial budget corrected to 47 s to match the table; the 39–44 s sensitivity remains separate.
+
+R2, 2026-11-16, Preaw: the user explicitly chose a new L13 closing line, "เพราะคราวนี้ อากาศด้านหน้ากลับดันแรงกว่าด้านหลังนั่นเอง" (TTS spelling `เพราะคราวนี้, อากาศด้านหน้า กลับดันแรงกว่าด้านหลัง นั่นเอง`), replacing R1 "อากาศรอบมัน เปลี่ยนฝั่งที่ดันแรงกว่าแล้วไง". Reason: the R1 line only said the stronger side "changed"; R2 names which side now pushes harder (front over rear), so the braking payoff states the reversed L06 rule outright and mirrors its wording (ER03 refrain). L01–L12, beats, clues, the claim mapping (L11–L13 → C82-F004/F002) and the Film constraints are unchanged. Affected for Boat recheck: L13 / CK20-13 (claim now explicit: during braking, front air pressure is higher than rear); no new source needed beyond C82-F002/F004 and the packet's reversal derivation. Timing: L13 rises from about 12 to about 15 spoken syllables (เพราะ-คราว-นี้ / อา-กาศ-ด้าน-หน้า / กลับ-ดัน-แรง-กว่า-ด้าน-หลัง / นั่น-เอง), total about 198; estimated only. The approved full E voice take and every measured timing (VOICE-MEASURE-R2, cues, scene-sheet windows) still carry R1 L13 and need a re-voiced L13 and remeasure before they match this revision.

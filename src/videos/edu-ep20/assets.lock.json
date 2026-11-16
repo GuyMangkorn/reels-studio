@@ -1,0 +1,38 @@
+{
+  "public/audio/bed/bed_wood-mallet-sparse-curious_01.wav": {
+    "store": "library/sound/music/bed/bed_wood-mallet-sparse-curious_01.wav",
+    "sha256": "8e26b76d69770527e2b5e6ebdb3b563867366abb62dd381c477aec2602effd74"
+  },
+  "public/audio/edu/EDU-EP20-SHORT-draft-stem-v3.wav": {
+    "store": "projects/edu/EDU/audio/EDU-EP20-SHORT/EDU-EP20-SHORT-draft-stem-v3.wav",
+    "sha256": "5a02adee73e07e379f0ad00f400b7fbb873c6d974d4f5cc944f0d8f35da0fb9e"
+  },
+  "public/audio/foley/foley_wood-tap-soft_01.wav": {
+    "store": "library/sound/sfx/foley/foley_wood-tap-soft_01.wav",
+    "sha256": "a5c8433ce7ad6904bc9e704897d8ce7ba7924bc29a7e76d3818b931762f4446b"
+  },
+  "public/audio/foley/foley_woodblock-tick-soft_01.wav": {
+    "store": "library/sound/sfx/foley/foley_woodblock-tick-soft_01.wav",
+    "sha256": "a890bb4b9f7b5e9fb5b5c567fe1c704de2086ccbad9563ab6aeb1d42aa8501dc"
+  },
+  "public/audio/room/room_car-cabin-cruise-quiet_01.wav": {
+    "store": "library/sound/ambience/room/room_car-cabin-cruise-quiet_01.wav",
+    "sha256": "512bc1c551f81fc767237e7b0e5913c77c56498aea61b32237303fc360fd542f"
+  },
+  "public/audio/stinger/stinger_marimba-outro-falling-open_01.wav": {
+    "store": "library/sound/music/stinger/stinger_marimba-outro-falling-open_01.wav",
+    "sha256": "dacea1acdee370047e3066a27ec8e96cd427fb66515551136a946b0d9bddd717"
+  },
+  "public/audio/stinger/stinger_wood-answer-two-notes_01.wav": {
+    "store": "library/sound/sfx/stinger/stinger_wood-answer-two-notes_01.wav",
+    "sha256": "db29b2a07341c8ae2c2ee77792eca8dce9c67e8014fba9b824dd643779fa951c"
+  },
+  "public/audio/stinger/stinger_wood-two-note-tag-end_01.wav": {
+    "store": "library/sound/music/stinger/stinger_wood-two-note-tag-end_01.wav",
+    "sha256": "38ad27035c500031128b3860867240997fbabd9b8c442029fabc4c2bfc4b0128"
+  },
+  "public/narration/EDU-EP20-SHORT-narration-E.wav": {
+    "store": "projects/edu/EDU/narration/edu-ep20-r2/kore-full-selected-E-L13r2.wav",
+    "sha256": "b6f8490d2af1ea5975ba612dc35cae308719a8296e1126189d441cdc5ce11d68"
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "deliverable": "EDU-EP20-SHORT-COVERS",
+  "revision": "EDU-EP20-COVER-TEXT-R1",
+  "purpose": "Isolated static cover text review; preserves the original picture-review state",
+  "looks": {
+    "A": {"src": "out/qa/edu20/cover-pick2/final/frames/A.png", "caption": "The approved P5 passenger, upright balloon and equal opposing arrows remain unchanged. Headline ตามคุณ / ใช่ไหม? asks whether the balloon follows the passenger; it must read as a question and not disclose the result."},
+    "B": {"src": "out/qa/edu20/cover-pick2/final/frames/B.png", "caption": "Same approved P5 picture. Headline อะไรดัน? asks for the hidden cause; readable at phone-grid size, without disclosing the air-pressure answer."},
+    "C": {"src": "out/qa/edu20/cover-pick2/final/frames/C.png", "caption": "Same approved P5 picture. Headline วิ่งเร็ว / เอนค้าง? poses the steady-speed question; a question rather than a statement that speed maintains the lean."},
+    "D": {"src": "out/qa/edu20/cover-pick2/final/frames/D.png", "caption": "Same approved P5 picture. Headline ทาย / อีกรอบ invites a guess, with the balloon and equal arrows supplying the subject; it does not show the winning direction."},
+    "E": {"src": "out/qa/edu20/cover-pick2/final/frames/E.png", "caption": "Same approved P5 picture. Headline รถชะลอ / เอนไปไหน? poses the braking-direction question, without showing its answer. Both lines should be fully readable in the safe crop."}
+  },
+  "shots": [],
+  "beats": []
+}
