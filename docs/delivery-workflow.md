@@ -84,6 +84,17 @@ Handoff checks apply to every stage: matching revisions, deliverable ID, covered
 **Default (user, 3 Nov 2026):** the coordinator proposes the open deliverable closest to W8 first; see [coordinator](coordinator.md#wip-limit).
 
 <a id="length-check"></a>
+<a id="hook-pick"></a>
+### Hook pick
+
+**Requirement (user, 16 Nov 2026):** the user picks each deliverable's hook before Preaw writes the full script (W1.2).
+
+1. **Preaw proposes** (one invocation, after Boat research) `scripts/<episode>/<short|long>/hook-options.md` and returns without writing the script. It holds 3–4 options for this story. Each option has a hook ID from the [hook catalogue](research/2026-11-16-shorts-hook-types.md#2-hook-catalogue) (or `new: <shape>`), the spoken Thai opening line(s), the beat shape in one line and the channel rules it bends (for example, HK04 pays the hook after ER02's ~30 %). One option is marked **recommended**, with one line on why it suits this story.
+2. **The coordinator asks the user** with the structured-question tool: one question whose options are the hook options, the recommended one first and labelled "(Recommended)", each showing its opening line. The user may pick one, merge two or write their own.
+3. `delivery.md` records the hook ID, the opening line and the user's words. Preaw writes the script with that hook. Where the picked hook bends a channel Default (ER01's hook shape, ER02's ~30 % payoff), the pick is the recorded override, and Boat checks the script against the picked shape.
+
+A Long picks one hook for its opening. Skip the question when the user names the hook in the prompt (record their words) and for re-edits of an existing script (`W1.1b N/A — <reason>`).
+
 ### Length check at script lock
 
 **Requirement (user, 3 Nov 2026; projection in place of a full read: user, 12 Nov 2026):** before the user approves a script (W1.5), its length is projected and recorded in `delivery.md`. Preaw counts the narration's syllables and pauses, multiplies them by the rate of the voice setting the episode will use and adds the planned time without narration (example: EP18 N1 (`scripts/edu-series/ep18/script.md#n1` at commit 8cf02ff; episode removed 13 Nov 2026)). The rate comes from a measured read in that same voice, style and pace (the channel's latest locked read), or from a ≤ 10 s sample when the setting is new; a word count or a rate from another setting does not count. A projection more than 5 % over the target goes back to Preaw for trims before approval. No full narration is read at this step: the one full read is the [voice lock](#voice-lock) (W4), after the first storyboard page is published (W2.3). When that read measures more than 5 % over the target, Preaw trims and the lock re-opens for the affected beats. Evidence: `ZOMBIE-7ELEVEN` was approved at an estimated ≈116 s while a sample read paced it at ≈130–140 s, and `WFOG-EP01-SHORT` went to script R6 and scene sheets SS-R6 after the picture was built. A full read at W1.4 pulled the voice pick and re-tune rounds ahead of the storyboard (`EDU-EP18-SHORT`, 11 Nov 2026), where the projection was within 4 % of the read (39.9 s against 41.44 s); on `EDU-EP16-SHORT` a projection at another style's rate ran 14 % long (52.3 s against 45.80 s).
@@ -133,6 +144,7 @@ Record: [delivery.md](delivery.md) · Updated: <YYYY-MM-DD>, <role>
   - [ ] W0.3 User picks a concept
 - [ ] W1 Script lock
   - [ ] W1.1 Boat research
+  - [ ] W1.1b Hook pick: Preaw options, user picks (hook ID)
   - [ ] W1.2 Preaw script
   - [ ] W1.3 Boat fact-check
   - [ ] W1.4 Length check: projected length ≤ target + 5 % (s; no full read)

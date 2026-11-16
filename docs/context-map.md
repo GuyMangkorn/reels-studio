@@ -168,6 +168,7 @@ Episode-specific files are under [Episodes](#episodes); shared topics come first
 **Read when:** ideation concepts, Boat research, Preaw script, fact-check.
 
 - Docs: [editorial skill](../.agents/skills/editorial/SKILL.md) (old anchors at [editorial-workflow](editorial-workflow.md)), [scriptwriting-principles](scriptwriting-principles.md)
+- Research: [Shorts hook types](research/2026-11-16-shorts-hook-types.md) (HK01–HK11 catalogue, rehook chain, rule format, proposed ER changes; 2026-11-16)
 - Per episode: `scripts/<episode>/research.md`, `topic-brief.md`, script files under `short/` or `long/`
 - Edu A/B hook discovery: [record](../scripts/edu-series/ab-hook-pilot/delivery.md), [task](../scripts/edu-series/ab-hook-pilot/task.md), [source scouting](../scripts/edu-series/ab-hook-pilot/research.md), [build notes](../scripts/edu-series/ab-hook-pilot/build-notes.md) (2026-11-15, researched topic options; no production or posting).
 - R15 researched A/B pitches: [presentation data](../scripts/edu-series/ab-hook-pilot/pitches.json), [C82 helium](../scripts/edu-series/concepts/C82.md), [C83 lightning](../scripts/edu-series/concepts/C83.md), [C84 liquefaction](../scripts/edu-series/concepts/C84.md), [C85 astronaut height](../scripts/edu-series/concepts/C85.md), [C86 chilli](../scripts/edu-series/concepts/C86.md), [C87 microgravity flame](../scripts/edu-series/concepts/C87.md); indexed in [concepts](../scripts/edu-series/concepts/index.md).

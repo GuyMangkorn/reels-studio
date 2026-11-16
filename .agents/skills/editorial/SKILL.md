@@ -64,7 +64,7 @@ Research is complete when every premise-critical claim has evidence and limitati
 <a id="script-pack--แพรว"></a>
 ## Script pack — Preaw
 
-Record deliverable/episode/chapter IDs, the delivery-record path, script revision, brief/research revision, story mode, target duration and timing status (`estimated` / `read-aloud` / `audio-tested`) in the header. Keep user approval separate from writing and factual-review status.
+Record deliverable/episode/chapter IDs, the delivery-record path, script revision, brief/research revision, story mode, the hook the user picked at the [hook pick](../../../docs/delivery-workflow.md#hook-pick) (hook ID and opening line), target duration and timing status (`estimated` / `read-aloud` / `audio-tested`) in the header. Keep user approval separate from writing and factual-review status.
 
 Create one complete script pack per selected deliverable. With both selected, write two complete spoken versions with independent beats/timing and claim coverage. Short has a standalone hook/question/payoff; Long develops the story without forced fixed-length chapters. Sources and claims may be shared; shortening wording still requires review. A second crop or chapter outline is not a second script.
 
