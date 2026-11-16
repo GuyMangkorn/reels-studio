@@ -80,6 +80,13 @@ The handoff contains:
 - **Film brief → scene sheets:** what must be seen/heard, what must stay hidden until which beat, essential continuity and story constraints. Film chooses the approach using the [brief workflow](../../../docs/film-visual-brief-workflow.md); Film develops the scene sheets. Both receive matching script/review revisions.
 - **Change log / open questions:** changes in this revision, affected claims/clues/scenes and Boat's recheck scope.
 
+<a id="script-pack-files"></a>**Two files (Requirement; usage review, 16 Nov 2026).** The pack is split by reader, because every later role rereads `script.md` in full (measured: packs of 30–41 KB whose spoken script is about 25 lines; one was read 12 times in an episode):
+
+- `script.md` holds what Film, Ton and Editor need: header, story core, truth and ending, scene / beat list, full script, sound intent, clue ledger and the Film brief notes.
+- `script-notes.md` beside it holds what only Preaw and Boat need: claim mapping and claim status table, change log, open questions, notes and any rule self-audit (for edu, ER01–ER10). Its header names the `script.md` revision it describes.
+- The change log keeps the current revision's changes only. Earlier revisions' change sections ("R4 changes for Boat") are deleted once Boat has rechecked them; Git keeps the history (`git log -p -- <path>`).
+- A brief to Film, Ton or Editor names `script.md` only. An existing single-file pack is split the next time Preaw revises it; shipped episodes stay as they are.
+
 Preaw makes routine creative decisions within the brief, including the topic for an open assignment, hook, beats and twist. Read aloud or use test audio before claiming the timing works; a Thai word count alone does not establish duration. Follow the channel rules linked from AGENTS.md. The 45-second structure is an experiment, not a required formula.
 
 A draft is complete when the requested scope has full spoken wording and applicable beats/clues/claims, with visible gaps. A premise-critical gap keeps it a draft requiring more research.

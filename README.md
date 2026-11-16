@@ -92,7 +92,7 @@ Check contracts and representative frames before a visual PR (full requirements:
 ```bash
 npm run lint
 npm run typecheck
-npm test
+npm run test:all
 npx remotion render src/index.ts Short out/short-check.mp4 --frames=0-5
 npx remotion render src/index.ts Long out/long-check.mp4 --frames=0-5
 ```

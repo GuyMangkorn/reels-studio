@@ -1,3 +1,4 @@
+// test-scope: shared
 import assert from 'node:assert/strict';
 import {test} from 'node:test';
 import type {Brush} from '../src/painted/BrushCanvas';

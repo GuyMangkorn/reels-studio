@@ -215,6 +215,7 @@ scripts/<episode>/
   research.md
   short/
     script.md
+    script-notes.md           # claims, change log, self-audit (Preaw and Boat only)
     fact-check.md
     timeline.json             # only after explicit runtime implementation
   long/

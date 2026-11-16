@@ -247,7 +247,7 @@ The documented ESLint 10 setup requires Node.js 20.19+, 22.13+, or 24+. Check `n
 ```bash
 npm run lint
 npm run typecheck
-npm test
+npm run test:all
 npx remotion versions
 npx remotion render src/index.ts Short out/short-check.mp4 --frames=0-5
 npx remotion render src/index.ts Long out/long-check.mp4 --frames=0-5
