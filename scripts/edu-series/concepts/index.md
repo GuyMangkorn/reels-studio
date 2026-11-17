@@ -6,7 +6,7 @@ One row per concept the channel has made. Each concept has its own file `C<nn>.m
 
 ## How a new round is filed
 
-1. Preaw writes one file per concept, `C61.md` onward (next free ID: **C88**), with the pitch and the [ER08](../../../channels/edu/script.md) pitch check, inside the round's picked [category](../../../channels/edu/categories.md#category-pick), and adds a row here with status `pitched` and the round ID (`R11`, ...).
+1. Preaw writes one file per concept, `C61.md` onward (next free ID: **C95**), with the pitch and the [ER08](../../../channels/edu/script.md) pitch check, inside the round's picked [category](../../../channels/edu/categories.md#category-pick), and adds a row here with status `pitched` and the round ID (`R11`, ...).
 2. Film adds a `## Film annotation (W0.2)` section to each concept file of the round.
 3. After the user picks, the coordinator sets each row: `picked` (with the episode ID), `dropped`, or leaves `pitched`. Write the round's pick note (user's words, date) in `../delivery.md`.
 4. When the episode is published, set the row to `made`.
@@ -49,5 +49,11 @@ One row per concept the channel has made. Each concept has its own file `C<nn>.m
 | C86 | พริกทำคุณเผ็ด ทำไมไก่ไม่แสบแบบเดียวกัน | pitched | - | R15 | [C86.md](C86.md) |
 | C87 | ทำไมไฟในห้องทดลองอวกาศถึงกลม | pitched | - | R15 | [C87.md](C87.md) |
 | C88 | ขันทีชิมยาพิษ | picked | EP22 | - | [C88.md](C88.md) |
+| C89 | คนที่คุณคุยด้วย ถูกสลับตัวไปแล้ว (CAT04) | picked | EDU-EP23-SHORT | R16 | [C89.md](C89.md) |
+| C90 | ประมูลแบงก์ร้อย ทำไมคนยอมจ่ายเกินร้อย (CAT05) | picked | EDU-EP24-SHORT | R16 | [C90.md](C90.md) |
+| C91 | กระโดดร่มลงดาวพฤหัส แต่ไม่มีวันถึงพื้น (CAT01) | pitched | - | R16 | [C91.md](C91.md) |
+| C92 | ลอยกลางทะเลที่จุดนีโม คนที่ใกล้คุณที่สุดอยู่นอกโลก (CAT03) | picked | EDU-EP25-SHORT | R16 | [C92.md](C92.md) |
+| C93 | เขายูนิคอร์นของจริง ที่ไม่ใช่เขา (CAT06) | pitched | - | R16 | [C93.md](C93.md) |
+| C94 | AI ที่แยกหมากับหมาป่าได้ แต่ไม่เคยมองตัวสัตว์ (wild card) (CAT01) | pitched | - | R16 | [C94.md](C94.md) |
 
 Pitch lessons from past rounds: [lessons.md](lessons.md).

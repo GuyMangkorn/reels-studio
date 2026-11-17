@@ -1,0 +1,1 @@
+- 2026-11-17: EDU-EP24-SCRIPT-R1 approved by user (W1.5), words: "อนุมัติ แก้ F-2, F-4". Applied inline: L14 drop "ตั้งแต่", L16 "เขายอมแพ้ที่ร้อยห้า" (net +1 syllable, ~59.9 s at x0.9975, estimate). L02 kept. Next: Film brief and scene sheets after voice lock (W4).
