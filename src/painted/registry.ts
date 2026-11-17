@@ -35,12 +35,13 @@ import {edu20CoverShots} from './shots/edu20-covers';
 import {edu19CoverShots} from './shots/edu19-covers';
 import {edu21Shots} from './shots/edu21';
 import {edu21CoverShots} from './shots/edu21-covers';
+import {edu22CoverShots} from './shots/edu22-covers';
 
 /**
  * Painted plates by stable ID. A timeline selects them with `scene.painted.shots[].shot`; the validator rejects unknown
  * IDs. Add an episode's plates by appending its list here (one owner module per episode under `src/painted/shots/`).
  */
-const all: PaintedShot[] = [...edu22Shots, ...edu21Shots, ...edu21CoverShots, ...edu20CoverShots, ...edu20Shots, ...edu19Shots, ...edu19CoverShots, ...edu18Shots, ...edu17Shots, ...edu16Shots, ...edu07Shots, ...edu08Shots, ...edu09Shots, ...edu11Shots, ...edu13Shots, ...edu14Shots, ...edu15Shots, ...shipwreckShots, ...worldfogShots, ...zcpaintShots, ...bloopShots, ...hanakoShots, ...kuchisakeShots, ...wendigoShots, ...kitShots, ...alvarengaShots, ...everyoneGoneShots, ...everyoneGoneEp02Shots, ...zc2Shots, ...edu01Shots, ...edu02Shots, ...edu03Shots, ...edu04Shots, ...edu05Shots, ...edu06Shots];
+const all: PaintedShot[] = [...edu22Shots, ...edu22CoverShots, ...edu21Shots, ...edu21CoverShots, ...edu20CoverShots, ...edu20Shots, ...edu19Shots, ...edu19CoverShots, ...edu18Shots, ...edu17Shots, ...edu16Shots, ...edu07Shots, ...edu08Shots, ...edu09Shots, ...edu11Shots, ...edu13Shots, ...edu14Shots, ...edu15Shots, ...shipwreckShots, ...worldfogShots, ...zcpaintShots, ...bloopShots, ...hanakoShots, ...kuchisakeShots, ...wendigoShots, ...kitShots, ...alvarengaShots, ...everyoneGoneShots, ...everyoneGoneEp02Shots, ...zc2Shots, ...edu01Shots, ...edu02Shots, ...edu03Shots, ...edu04Shots, ...edu05Shots, ...edu06Shots];
 
 export const paintedShots: Readonly<Record<string, PaintedShot>> = Object.freeze(Object.fromEntries(all.map((shot) => [shot.id, shot])));
 if (Object.keys(paintedShots).length !== all.length) throw new Error('Duplicate painted shot ID in src/painted/registry.ts');

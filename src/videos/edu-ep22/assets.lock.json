@@ -19,6 +19,10 @@
     "store": "library/sound/music/tone/tone_bowed-bass-drone-d_01.wav",
     "sha256": "472e13858161960de8af569b6c3aa0e79a0cedcf1563b79935ef71097899cfc1"
   },
+  "public/narration/EDU-EP22-SHORT-V01-child-boy-v1.wav": {
+    "store": "projects/edu/EDU/narration/EP22_V01_child-boy_p5.wav",
+    "sha256": "f2f7b72679683d7da6ceee3d368baf9387dd3d6f0cb8ebb8960df740c20ab15f"
+  },
   "public/sfx/comedy/comedy_pluck-pop-round_01.wav": {
     "store": "library/sound/sfx/comedy/comedy_pluck-pop-round_01.wav",
     "sha256": "f0e6edeaed957b62b3b19e78df7786dc5de72f0e3534d7b8cb3fb1626d506b62"

@@ -4,7 +4,7 @@ Record: [delivery.md](delivery.md) · Updated: 2026-11-16, coordinator
 
 ## EDU-EP22-SHORT
 
-**Now:** Draft r4 approved, 20/20 shots (user, 2026-11-17). **Next:** V01 samples and hero-cue listen; Final cut (full size), final review, pins, cover/title and publish.
+**Now:** Draft r4 approved, 20/20 shots (user, 2026-11-17); V01 child voice: user picked C (child-boy +5%, 2026-11-17), locked at G 247 and approved (user "อ๋อผ่าน", 2026-11-17). Hero cues END1, S11, S2 approved (user "ผ่าน", 2026-11-17). W6 Final cut r1 passed 20/20 (user "ผ่าน", 2026-11-17); 20 scenes pinned. Cover C3-number-30 and title T1 picked (user, 2026-11-17). Delivery render done and published (status ready, 2026-11-17). **Next:** commit/PR, user posts.
 
 - [x] W0 Ideation — user named the topic (C88).
 - [ ] W1 Script lock
