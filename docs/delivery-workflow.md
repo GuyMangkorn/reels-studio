@@ -12,8 +12,8 @@ The coordinator resolves the selection, records it in `scripts/<episode>/deliver
 
 | Field | Choices (extend as needed) |
 | --- | --- |
-| Channel | `edu` or `fiction` ([channels](../channels/README.md)); asked in the selection call when the request does not make it clear, and an existing series keeps its channel; the channel file sets that channel's mark, voice, script rules and other values ([CH01–CH02](../channels/README.md#rules)) |
-| Genre / purpose | the [channel file](../channels/README.md)'s genre (`edu`: educational; `fiction`: invented stories), which a request may narrow; other values for one-off work: mystery-educational, comedy, explainer/tutorial, vlog or documentary cut, news/recap, review, ad/promo, music/lyric video, slideshow/photo story, screen recording, motivational |
+| Channel | `edu` ([channels](../channels/README.md)); asked in the selection call when the request does not make it clear, and an existing series keeps its channel; the channel file sets that channel's mark, voice, script rules and other values ([CH01–CH02](../channels/README.md#rules)) |
+| Genre / purpose | the [channel file](../channels/README.md)'s genre (`edu`: educational), which a request may narrow; other values for one-off work: mystery-educational, comedy, explainer/tutorial, vlog or documentary cut, news/recap, review, ad/promo, music/lyric video, slideshow/photo story, screen recording, motivational |
 | Visual medium | illustrated 2D/3D/hybrid (existing library), user footage, stock/licensed footage, still images, typography/kinetic text, screen recording, mixed |
 | Visual engine | for illustrated/animated media: painted 2D (p5.brush) with the [painted 3D camera](film-visual-brief-workflow.md#painted-3d-camera) + Remotion SVG (project default), a mix of these, Film's choice, or the user's own answer ([visual engine](#visual-engine)) |
 | Voice | Gemini TTS ([project default](#project-defaults)), Niwat TTS (male, Edge), Premwadee TTS (female, Edge), user-supplied recording, on-camera audio, no voice |
