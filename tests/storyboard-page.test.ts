@@ -53,3 +53,52 @@ test('a clip carries the hash of its file, so a re-render under the same name as
   const d = build(rows);
   assert.match(d.shots[0].clips.draft.hash, /^[0-9a-f]{12}$/);
 });
+
+test('verdicts.py marks an answer stale once its shot changes, and --pass-open fills only open shots', () => {
+  const dir = mkdtempSync(path.join(tmpdir(), 'sb-verdicts-'));
+  const rows = path.join(dir, 'review-rows.json');
+  writeFileSync(rows, JSON.stringify(example));
+  const d = build(example);
+  const [a, b] = d.shots;
+  writeFileSync(path.join(dir, 'reviews.json'), JSON.stringify({
+    [`${a.id}@board`]: {shot: a.id, stage: 'board', status: 'ok', note: '', rev: 'SS-R1', hash: a.hash},
+    [`${b.id}@board`]: {shot: b.id, stage: 'board', status: 'change', note: 'x', rev: 'SS-R1', hash: b.hash},
+  }));
+  const next = structuredClone(example);
+  next.shots[1].seen = 'นักดำน้ำว่ายเข้ามาจากซ้าย';
+  writeFileSync(rows, JSON.stringify(next));
+  const verdicts = path.resolve('scripts/storyboard-page/verdicts.py');
+  const run = (...args: string[]) => {
+    const r = spawnSync('python3', ['-I', verdicts, rows, ...args], {encoding: 'utf8'});
+    assert.equal(r.status, 0, r.stderr);
+    return r.stdout;
+  };
+  const read = () => JSON.parse(run('--json')).reviews;
+  assert.equal(read()[`${a.id}@board`].current, true);
+  assert.equal(read()[`${b.id}@board`].current, false);
+  run('--pass-open', 'board', '--round', '2026-11-17');
+  const after = read();
+  assert.equal(after[`${a.id}@board`].note, '');
+  assert.equal(after[`${b.id}@board`].status, 'ok');
+  assert.equal(after[`${b.id}@board`].note, 'default (round 2026-11-17)');
+  assert.equal(after[`${d.shots[2].id}@board`].current, true);
+});
+
+test('--drafts-passed needs a current ok on every draft, and the Final tab has one verdict on the delivery file', () => {
+  const dir = mkdtempSync(path.join(tmpdir(), 'sb-final-'));
+  const rows = path.join(dir, 'review-rows.json');
+  const media = 'public/images/oldest-shipwreck/arad-jar-card.png';
+  const next = structuredClone(example);
+  next.shots.forEach((s: {clips?: unknown}, i: number) => { s.clips = {draft: {src: media, in: i, out: i + 1, cut: true, key: `k${i}`}}; });
+  next.finalCut = {src: media};
+  writeFileSync(rows, JSON.stringify(next));
+  const verdicts = path.resolve('scripts/storyboard-page/verdicts.py');
+  const run = (...args: string[]) => spawnSync('python3', ['-I', verdicts, rows, ...args], {encoding: 'utf8'});
+  assert.equal(run('--drafts-passed').status, 1);
+  assert.equal(run('--pass-open', 'draft', '--round', '2026-11-17').status, 0);
+  assert.equal(run('--drafts-passed').status, 0);
+  const d = build(next);
+  assert.match(d.finalCut.hash, /^[0-9a-f]{12}$/);
+  assert.equal(d.finalCut.label, media);
+  assert.match(run().stdout, /^final: open · public\/images/m);
+});

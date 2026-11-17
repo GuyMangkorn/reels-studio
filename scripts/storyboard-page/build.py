@@ -1,22 +1,24 @@
 """Build the user storyboard review page from Film's review rows (docs/mark-storyboard-workflow.md#user-storyboard-review-page).
 
 Usage: python3 -I scripts/storyboard-page/build.py storyboards/<episode>/<variant>/review-rows.json [--out DIR]
-Default DIR: out/review-pages/<deliverable>/ (one page per deliverable, republished to the same URL for every revision,
+Default DIR: out/review-pages/<deliverable>/ (one page per deliverable, rebuilt into the same folder for every revision,
 draft and final). Writes DIR/index.html from template.html and copies every preview, question image, element capture
 and shot clip into DIR/pv/, downscaled to 540 px wide JPEG (videos copied as is).
-Shot-by-shot fields per shot (optional): "clips": {"draft"|"final": {"src", "in", "out"}} (360x640 proxies from
-scripts/storyboard-page/clips.mjs; in/out are the shot's seconds inside the padded clip) and "pinned": true once
-scripts/pin.mjs pinned it. With top-level "draftCut" / "finalCut": {"src"} (clips.mjs --full [--draft]) the Draft /
-Final tab shows that one cut, and each shot's clip of that tab points into it; a clip "key" (the shot's scene-cache keys) replaces the file hash, so a re-cut
-keeps the answers of unchanged shots. The page has three tabs (storyboard, draft, final); verdicts are stored per shot and tab.
+Shot-by-shot fields per shot (optional): "clips": {"draft": {"src", "in", "out"}} (from scripts/storyboard-page/clips.mjs;
+in/out are the shot's seconds inside the clip) and "pinned": true once scripts/pin.mjs pinned it. With top-level
+"draftCut": {"src"} (clips.mjs --full --draft) the Draft tab shows that one cut, and each shot's draft clip points into it;
+a clip "key" (the shot's scene-cache keys) replaces the file hash, so a re-cut keeps the answers of unchanged shots.
+Top-level "finalCut": {"src"} is the delivery render itself (render.mjs --rows writes it): the Final tab shows that one
+file whole, with one verdict for the video (key "video@final"). The page has three tabs (storyboard, draft, final);
+storyboard and draft verdicts are stored per shot. Per-shot "clips.final" from older rows is accepted and not shown.
 Answers survive revisions: build.py stamps each shot, question and clip with a content hash, and the page keeps a saved
 answer while its hash is unchanged. A changed item shows its old answer and asks again; an optional "changed" text on a
 shot says what changed. The storyboard hash leaves out id, beat, timing, media, "pinned" and "changed", so a retime
 after the voice lock keeps the answers.
 Look frames (Film, W3, added after the first storyboard pass): top-level "looks": {"<lookId>": {"src", "caption"}} and "look": "<lookId>" on each beat that
 uses it; the storyboard tab is text only and shows each location's look frame in its beat header.
-DIR/preview.html is a local check copy (open it through a local HTTP server); publish index.html, never preview.html.
-Image and video paths in the JSON are repository-relative. Exits 1 on schema errors; prints the publish call.
+DIR/index.html is a plain HTML page: open it through serve.py, which saves verdicts to reviews.json beside the rows.
+Image and video paths in the JSON are repository-relative. Exits 1 on schema errors; prints the serve command.
 """
 import hashlib, json, os, shutil, subprocess, sys
 
@@ -101,6 +103,19 @@ def copy_media(path, dest_dir, used):
     return used[path]
 
 
+def stamp(d):
+    """Add the content hashes a verdict is checked against (shots, clips, questions); media paths still repository-relative."""
+    for s in d['shots']:
+        s['hash'] = digest({k: v for k, v in s.items() if k not in UNHASHED})
+        for c in (s.get('clips') or {}).values():
+            c['hash'] = c.get('key') or file_digest(c['src'])
+    for q in d.get('questions', []):
+        q['hash'] = digest({k: q.get(k) for k in ('question', 'detail', 'images')})
+    if d.get('finalCut'):
+        d['finalCut'].setdefault('label', d['finalCut']['src'])
+        d['finalCut']['hash'] = d['finalCut'].get('key') or file_digest(d['finalCut']['src'])
+
+
 def main():
     args = sys.argv[1:]
     if not args or args[0].startswith('-'):
@@ -117,12 +132,7 @@ def main():
     shutil.rmtree(pv, ignore_errors=True)
     os.makedirs(pv)
     used = {}  # repository path -> published path
-    for s in d['shots']:
-        s['hash'] = digest({k: v for k, v in s.items() if k not in UNHASHED})
-        for c in (s.get('clips') or {}).values():
-            c['hash'] = c.get('key') or file_digest(c['src'])
-    for q in d.get('questions', []):
-        q['hash'] = digest({k: q.get(k) for k in ('question', 'detail', 'images')})
+    stamp(d)
     for s in d['shots']:
         for p in s.get('previews', []):
             p['src'] = copy_media(p['src'], pv, used)
@@ -147,15 +157,14 @@ def main():
     html = html.replace('__TITLE__', d.get('pageTitle', d['deliverable'] + ' Storyboard')).replace('__DATA__', data)
     with open(os.path.join(out, 'index.html'), 'w', encoding='utf-8') as f:
         f.write(html)
-    # Local check copy: the Artifact tool adds this skeleton at publish time; preview.html is never published.
-    with open(os.path.join(out, 'preview.html'), 'w', encoding='utf-8') as f:
-        f.write('<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1">'
-                '<style>body{margin:0}</style></head><body>' + html + '</body></html>')
+    stale = os.path.join(out, 'preview.html')
+    if os.path.exists(stale):
+        os.remove(stale)
 
     files = sorted(used.values())
     print(f'wrote {os.path.relpath(out, ROOT)}/index.html · {len(d["shots"])} shots · {len(files)} media files')
-    print('publish: Artifact file_path=<that index.html>, root=<that folder>, files=' + json.dumps(files)
-          + ', capabilities={"db": {}} on the first publish; same file_path on republish')
+    serve = f'python3 -I scripts/storyboard-page/serve.py {os.path.relpath(os.path.abspath(rows_path), ROOT)}'
+    print(f'serve: {serve}' + (f' --out {out}' if '--out' in args else '') + ' [--lan]  (an open page reloads itself)')
 
 
 if __name__ == '__main__':

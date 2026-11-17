@@ -128,7 +128,7 @@ Concepts are pitches, not research: no claim in `concepts.md` or a concept file 
 - **Read first** when the user asks for progress ("ทำถึงไหนแล้ว"): answer from the `Now` line and the open steps, and open `delivery.md` only for detail.
 - **Marks:** `[x]` done, `[ ]` open, `[x] … N/A — <reason>` for a step with no subject. Each line is one step plus at most one short note (revision, count, date); link instead of copying.
 - **Per-shot steps** (W3.3, W5, W6, W7) carry a count, e.g. `12/26 shots passed`; the per-shot verdicts stay on the storyboard review page.
-- For a deliverable whose engine is not painted 2D, W3.1–W3.2 are `N/A`; W5 is Editor's integration reviewed as the half-size draft cut split into storyboard shots, W6 the full-size final cut once every shot passed, and W7 pins, as for painted work ([render stage](render-rules.md#render-stage)).
+- For a deliverable whose engine is not painted 2D, W3.1–W3.2 are `N/A`; W5 is Editor's integration reviewed as the half-size draft cut split into storyboard shots, W6 the delivery render shown whole on the Final tab once every shot passed (`render.mjs --rows`), and W7 pins, as for painted work ([render stage](render-rules.md#render-stage)).
 
 ```markdown
 # Tasks — <EPISODE>
@@ -247,7 +247,7 @@ Keep `delivery.md` compact, linking authoritative packs instead of copying their
 
 **Stage / Next owner:** one line per deliverable that answers "where is it and who acts next" without reading the other columns. Name the last completed stage from the tier's pipeline (e.g. `fact-checked`, `handoff ready-for-dev`, `integrated`), then the next owner (a role, `User` for a pending approval, or `Boss #<issue>` for a named dependency) and the revision they act on. The role that finishes a stage updates this cell in the same change as the handoff; a skipped stage reads `N/A`, and a finished deliverable reads `done — no next owner`. The coordinator reads this cell when the user asks for status and when choosing which role agent to invoke next. It records state only and adds no approval gate or automatic runner.
 
-**Published artifacts (user, 31 Oct 2026):** every Artifact the coordinator publishes for a deliverable (storyboard review page, scene samples, any page the user reviews) gets its URL recorded in `delivery.md` and the episode `handoff.md` in the turn it is published, with what it shows (revision, version) and where its data lives (e.g. the `db` collection holding verdicts), and the record is updated when the page is republished.
+**Published pages (user, 31 Oct 2026; plain HTML since 17 Nov 2026):** every page the coordinator publishes for a deliverable (storyboard review page, scene samples, any page the user reviews) gets its URL or serve command recorded in `delivery.md` and the episode `handoff.md` in the turn it is published, with what it shows (revision, version) and where its data lives (for the review page, `reviews.json` beside `review-rows.json`), and the record is updated when the page is republished.
 
 Before each handoff, confirm the deliverable ID, matching source revisions, covered beats and timing status. A passing review/handoff for one deliverable does not pass the other. Update stale readiness labels after a recheck; retain dated prior results as history. Record user approval only with evidence, separately from selection and readiness; this workflow adds no blanket approval gate.
 

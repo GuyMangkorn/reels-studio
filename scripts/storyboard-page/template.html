@@ -1,5 +1,9 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>__TITLE__</title>
-<meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans+Thai:wght@400;500;600&family=Noto+Serif+Thai:wght@600;700&display=swap">
 <style>
@@ -21,7 +25,7 @@
   --accent: #e39a4f; --ok: #6cc58c; --ok-bg: #1f3327; --change: #ef7c6e; --flag-bg: #33291d; color-scheme: dark }
 
 [hidden] { display: none !important; }
-body { background: var(--bg); color: var(--fg); font-family: var(--font-body); font-size: 15px; line-height: 1.6; }
+body { margin: 0; background: var(--bg); color: var(--fg); font-family: var(--font-body); font-size: 15px; line-height: 1.6; }
 .wrap { max-width: 1180px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 32px 64px; display: grid; gap: 24px; }
 header { display: grid; gap: 10px; }
 .eyebrow { font-family: var(--font-mono); font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
@@ -110,6 +114,12 @@ textarea { font: inherit; font-size: 13px; width: 100%; box-sizing: border-box; 
 .shot[hidden], .beat[hidden] { display: none; }
 
 .clip { display: grid; gap: 6px; }
+/* Final tab: one video, the file that will be published, and one verdict for the whole video. */
+.final { display: flex; flex-wrap: wrap; gap: 24px; align-items: flex-start; padding: 16px 0; }
+.final video { max-height: 78vh; max-width: 100%; border-radius: 6px; background: #0d1110; border: 1px solid var(--line); display: block; }
+.final .side { flex: 1 1 280px; display: grid; gap: 10px; align-content: start; }
+.final .side p { margin: 0; }
+.final .file { font-family: var(--font-mono); font-size: 12px; color: var(--muted); word-break: break-all; }
 .clip video { width: 140px; max-width: 100%; aspect-ratio: 9 / 16; border-radius: 4px; background: #0d1110; border: 1px solid var(--line); display: block; object-fit: cover; cursor: pointer; }
 .clip .row { display: flex; gap: 6px; flex-wrap: wrap; }
 .clip .btn { font-size: 12px; padding: 3px 8px; }
@@ -144,7 +154,8 @@ dialog button { margin-top: 8px; }
 }
 @media (prefers-reduced-motion: reduce) { .meter .bar i { transition: none; } }
 </style>
-
+</head>
+<body>
 <div class="wrap">
   <header>
     <div class="eyebrow" id="eyebrow"></div>
@@ -159,6 +170,7 @@ dialog button { margin-top: 8px; }
       <span class="store" id="store">กำลังเชื่อมที่เก็บคำตอบ…</span>
       <span class="todo" id="todo"></span>
       <span class="sp"></span>
+      <button class="btn" id="acceptAll" type="button">ยอมรับทั้งหมด</button>
       <button class="btn" id="only" type="button" aria-pressed="false">ดูเฉพาะที่ต้องตอบ</button>
       <button class="btn" id="copy" type="button">คัดลอกคำตอบทั้งหมด</button>
     </div>
@@ -191,20 +203,22 @@ const FPS = D.fps || 30;
 const REV = D.revision;
 const PREV = D.previousVerdicts || {};
 const STAGES = ["board", "draft", "final"];
+// Shots are reviewed on the storyboard and draft tabs; the Final tab has one verdict for the whole published file.
+const SHOT_STAGES = ["board", "draft"];
+const FINAL_KEY = "video@final";
 const NAME = { board: "สตอรีบอร์ด", draft: "Draft", final: "Final" };
 const NOTE = {
-  board: "อ่านแผนของแต่ละช็อต: เสียงพากย์ สิ่งที่เห็น กล้อง ถ้าผ่าน Claude จะทำ draft ของช็อตนั้นต่อ",
-  draft: "ดูจังหวะ ท่าทาง มุมกล้อง จาก draft (ภาพครึ่งขนาด ทำได้เร็ว) ถ้าผ่าน Claude จะวาดภาพจริงต่อ",
-  draftCut: "ดูคลิป draft เต็มรอบเดียว (ภาพครึ่งขนาด) แล้วกด \"แก้\" เฉพาะช็อตที่ต้องแก้ พร้อมโน้ต (บอกเวลาได้) ช็อตที่ไม่ได้กด Claude จะถามก่อนว่าให้ผ่านทั้งหมดไหม แล้ววาดภาพจริงเต็มขนาดต่อ",
-  final: "ดูภาพจริงที่จะส่ง ถ้าผ่าน ช็อตนั้นจะถูกปักและไปถึงงานส่งตามที่เห็น",
-  cut: "ดูคลิปเต็มรอบเดียว แล้วกด \"แก้\" เฉพาะช็อตที่ต้องแก้ พร้อมโน้ต (บอกเวลาได้) ช็อตที่ไม่ได้กด Claude จะถามก่อนว่าให้ผ่านทั้งหมดไหม แล้วปักทุกช็อตพร้อมกัน",
+  board: "อ่านแผนของแต่ละช็อต: เสียงพากย์ สิ่งที่เห็น กล้อง ถ้าผ่าน เอเจนต์ จะทำ draft ของช็อตนั้นต่อ",
+  draft: "ดูจังหวะ ท่าทาง มุมกล้อง จาก draft (ภาพครึ่งขนาด ทำได้เร็ว) ถ้าผ่าน เอเจนต์ จะวาดภาพจริงต่อ",
+  draftCut: "ดูคลิป draft เต็มรอบเดียว (ภาพครึ่งขนาด) แล้วกด \"แก้\" เฉพาะช็อตที่ต้องแก้ พร้อมโน้ต (บอกเวลาได้) ช็อตที่เหลือกด \"ยอมรับทั้งหมด\" ได้ แล้ว เอเจนต์ จะ render ไฟล์ส่งให้ดูในแท็บ Final",
+  final: "ดูคลิปเต็มที่จะ publish (ไฟล์เดียวกับที่จะส่ง) ถ้าผ่าน ทุกช็อตจะถูกปักและไฟล์นี้ไปที่โฟลเดอร์ publish ถ้าต้องแก้ กด \"แก้\" แล้วเขียนเวลาและสิ่งที่ต้องแก้",
 };
 
 const fmt = f => { const s = f / FPS; const m = Math.floor(s / 60); return m + ":" + (s - m * 60).toFixed(1).padStart(4, "0"); };
 const len = (a, b) => ((b - a) / FPS).toFixed(1) + " วิ";
 const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
 
-// Verdicts: key "<shot>@<stage>" (db doc reviews/<shot>@<stage>); questions keep "<Qid>".
+// Verdicts: key "<shot>@<stage>" (entry in reviews.json); questions keep "<Qid>".
 // Each verdict stores the hash of what it judged (build.py): the shot's storyboard text, the clip file or the question.
 // It carries over to later revisions while that hash is unchanged; otherwise it moves to `stale` and the item asks again.
 const state = {}, stale = {};
@@ -214,6 +228,7 @@ const fmtTime = sec => { const s = Math.max(0, Number(sec) || 0); return `${Math
 const verdictKey = (id, stage) => stage ? `${id}@${stage}` : id;
 const shotOf = id => D.shots.find(x => x.id === id);
 function expected(key) {
+  if (key === FINAL_KEY) return D.finalCut?.hash;
   const [id, stage] = key.split("@");
   if (!stage) return (D.questions || []).find(q => q.id === id)?.hash;
   const s = shotOf(id);
@@ -221,21 +236,27 @@ function expected(key) {
 }
 const current = (s, stage) => { const r = state[verdictKey(s.id, stage)]; return r && (stage === "board" || r.clip === clipId(clipOf(s, stage))) ? r : null; };
 const accepted = (s, stage) => current(s, stage)?.status === "ok";
-const needs = (s, stage) => (stage === "board" || clipOf(s, stage)) && !current(s, stage)?.status;
+const needs = (s, stage) => SHOT_STAGES.includes(stage) && (stage === "board" || clipOf(s, stage)) && !current(s, stage)?.status;
+const finalVerdict = () => { const r = state[FINAL_KEY]; return D.finalCut && r && r.clip === D.finalCut.hash ? r : null; };
 const said = p => `${p.status === "ok" ? "ผ่าน" : p.status === "change" ? "แก้" : "ยังไม่เลือก"}${p.note ? " · " + p.note : ""}`;
 let tab = "board", onlyOpen = false;
-let db = null;
+// Verdicts live in reviews.json beside review-rows.json, served by serve.py at /api/reviews.
+// `pending` holds keys edited here and not yet saved, so a poll never overwrites them.
+let online = false;
+const pending = new Set();
+const put = (key, v) => fetch("api/reviews/" + encodeURIComponent(key), { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(v) })
+  .then(r => { if (!r.ok) throw new Error(r.status); });
 
-function reviewHTML(id, stage, s) {
+function reviewHTML(id, stage, s, placeholder = "หมายเหตุ (ถ้ามี)") {
   const key = verdictKey(id, stage);
   const p = stage === "board" || !stage ? PREV[id] : null;
-  if (stage && stage !== "board" && !clipOf(s, stage)) return `<div class="wait">ยังไม่มี${NAME[stage]} จะขึ้นเมื่อ Claude render เสร็จ</div>`;
+  if (stage === "draft" && !clipOf(s, stage)) return `<div class="wait">ยังไม่มี${NAME[stage]} จะขึ้นเมื่อ เอเจนต์ render เสร็จ</div>`;
   return `<div class="review" data-key="${esc(key)}">
     <div class="seg" role="group" aria-label="ผลตรวจ ${esc(key)}">
       <button type="button" data-v="ok" aria-pressed="false">ผ่าน${stage ? " " + NAME[stage] : ""}</button>
       <button type="button" data-v="change" aria-pressed="false">แก้</button>
     </div>
-    <textarea id="note-${esc(key)}" placeholder="หมายเหตุ (ถ้ามี)" aria-label="หมายเหตุ ${esc(key)}"></textarea>
+    <textarea id="note-${esc(key)}" placeholder="${esc(placeholder)}" aria-label="หมายเหตุ ${esc(key)}"></textarea>
     <div class="saved" id="saved-${esc(key)}"></div>
     <div class="prev" id="prev-${esc(key)}" data-legacy="${p ? esc(`รอบ ${D.previousRevision || "ก่อน"}: ${said({ status: p[0], note: p[1] })}`) : ""}"></div>
   </div>`;
@@ -266,7 +287,7 @@ function lookHTML(b) {
   if (!l) return "";
   return `<div class="look"><img src="${esc(l.src)}" alt="${esc(l.caption || b.look)}" loading="lazy"><span><span class="lk">look frame · ${esc(b.look)}</span>${esc(l.caption || "")}</span></div>`;
 }
-const dots = s => `<div class="dots" aria-label="ผ่านแล้ว">${STAGES.map(k => { const r = current(s, k); return `<span class="${r?.status || ""}" title="${NAME[k]}"></span>`; }).join("")}</div>`;
+const dots = s => `<div class="dots" aria-label="ผ่านแล้ว">${SHOT_STAGES.map(k => { const r = current(s, k); return `<span class="${r?.status || ""}" title="${NAME[k]}"></span>`; }).join("")}</div>`;
 
 function renderStatic() {
   const total = D.shots.length && !D.untimed ? D.shots[D.shots.length - 1].end - D.shots[0].start : 0;
@@ -295,8 +316,10 @@ function renderStatic() {
 // The shot table: the same rows on every tab; the media column and the accept step follow the tab.
 function renderRows() {
   document.querySelectorAll(".tab").forEach(b => b.setAttribute("aria-selected", String(b.dataset.tab === tab)));
-  const cut = (tab === "draft" && D.draftCut) || (tab === "final" && D.finalCut);
-  document.getElementById("tabnote").innerHTML = esc(cut ? NOTE[tab === "draft" ? "draftCut" : "cut"] : NOTE[tab])
+  document.getElementById("only").hidden = document.getElementById("acceptAll").hidden = tab === "final";
+  if (tab === "final") return renderFinal();
+  const cut = tab === "draft" && D.draftCut;
+  document.getElementById("tabnote").innerHTML = esc(cut ? NOTE.draftCut : NOTE[tab])
     + (cut ? ` <button class="btn play" type="button" data-video="${esc(cut.src)}">▶ ดูทั้งคลิป</button>` : "");
   // The storyboard tab is text only: the look of each location sits in its beat header.
   const media = tab !== "board", mediaHead = "คลิป " + NAME[tab];
@@ -318,8 +341,28 @@ function renderRows() {
   document.querySelectorAll("#beats .review").forEach(box => paint(box.dataset.key));
   filter(); count();
 }
+// Final tab: the delivery render itself (render.mjs --rows writes finalCut), watched whole, one verdict.
+function renderFinal() {
+  document.getElementById("tabnote").textContent = NOTE.final;
+  const beats = document.getElementById("beats");
+  beats.classList.remove("no-media");
+  const f = D.finalCut;
+  beats.innerHTML = f ? `<section class="final" aria-label="Final">
+      <video src="${esc(f.src)}" controls playsinline preload="metadata" aria-label="คลิป final ที่จะ publish"></video>
+      <div class="side">
+        <h2>คลิปที่จะ publish</h2>
+        <p class="note">ดูให้จบทั้งคลิป ถ้าผ่าน เอเจนต์ จะปักทุกช็อตแล้วส่งไฟล์นี้ไปที่โฟลเดอร์ publish</p>
+        ${f.label ? `<p class="file">${esc(f.label)}</p>` : ""}
+        ${reviewHTML("video", "final", null, "ถ้าแก้ บอกเวลาและสิ่งที่ต้องแก้ เช่น 0:12 ซับทับหน้า")}
+      </div>
+    </section>`
+    : `<p class="wait">ยังไม่มีคลิป final จะขึ้นเมื่อทุกช็อตผ่าน draft และ render ไฟล์ส่งเสร็จ</p>`;
+  if (f) paint(FINAL_KEY);
+  count();
+}
 // "ดูเฉพาะที่ต้องตอบ" hides the rows already answered on this tab; applied on toggle and tab change, not per click.
 function filter() {
+  if (tab === "final") return;
   document.querySelectorAll("#beats .shot").forEach(row => { row.hidden = onlyOpen && !needs(shotOf(row.id), tab); });
   document.querySelectorAll("#beats .beat").forEach(b => { b.hidden = onlyOpen && !b.querySelector(".shot:not([hidden])"); });
   const btn = document.getElementById("only");
@@ -351,16 +394,29 @@ function paint(key) {
 }
 function count() {
   const n = D.shots.length;
-  STAGES.forEach(k => {
+  SHOT_STAGES.forEach(k => {
     const ok = D.shots.filter(s => accepted(s, k)).length;
     document.getElementById("m-" + k).textContent = `${ok}/${n}`;
     document.getElementById("b-" + k).style.width = (n ? 100 * ok / n : 0) + "%";
     document.getElementById("t-" + k).textContent = `${ok}/${n}`;
     document.getElementById("tab-" + k).classList.toggle("full", n > 0 && ok === n);
   });
+  const fv = finalVerdict()?.status;
+  const ftext = !D.finalCut ? "ยังไม่มี" : fv === "ok" ? "ผ่าน" : fv === "change" ? "แก้" : "รอดู";
+  document.getElementById("m-final").textContent = ftext;
+  document.getElementById("b-final").style.width = fv === "ok" ? "100%" : "0%";
+  document.getElementById("t-final").textContent = ftext;
+  document.getElementById("tab-final").classList.toggle("full", fv === "ok");
+  if (tab === "final") {
+    document.getElementById("todo").textContent = !D.finalCut ? "Final: ยังไม่มีคลิป" : fv ? `Final: ${ftext}` : "Final: รอคำตอบ" + (stale[FINAL_KEY] ? " · ไฟล์เปลี่ยนหลังคุณตอบ" : "");
+    return;
+  }
   const need = D.shots.filter(s => needs(s, tab)).length;
   const chg = D.shots.filter(s => needs(s, tab) && stale[verdictKey(s.id, tab)]).length;
   document.getElementById("todo").textContent = `${NAME[tab]}: รอคำตอบ ${need} ช็อต` + (chg ? ` · เปลี่ยนหลังคุณตอบ ${chg}` : "");
+  const all = document.getElementById("acceptAll");
+  all.textContent = need ? `ยอมรับทั้งหมด (${need})` : "ยอมรับทั้งหมด";
+  all.disabled = !need;
 }
 
 async function save(key) {
@@ -368,16 +424,31 @@ async function save(key) {
   const [id, stage] = key.split("@");
   const s = D.shots.find(x => x.id === id);
   r.updatedAt = new Date().toISOString();
-  r.clip = s && stage && stage !== "board" ? clipId(clipOf(s, stage)) || "" : "";
+  r.clip = key === FINAL_KEY ? D.finalCut?.hash || "" : s && stage && stage !== "board" ? clipId(clipOf(s, stage)) || "" : "";
   if (!r.prev && stale[key]) r.prev = stale[key];
   paint(key); count();
-  if (!db) { document.getElementById("saved-" + key).textContent = "ยังไม่ได้บันทึกขึ้นที่เก็บ ใช้ปุ่มคัดลอกแทน"; return; }
+  if (!online) { document.getElementById("saved-" + key).textContent = "ยังไม่ได้บันทึกขึ้นที่เก็บ ใช้ปุ่มคัดลอกแทน"; pending.delete(key); return; }
   try {
-    await db.doc("reviews/" + key).set({ shot: id, stage: stage || "", status: r.status || "", note: r.note || "", rev: REV, hash: expected(key) || "",
+    await put(key, { shot: id, stage: stage || "", status: r.status || "", note: r.note || "", rev: REV, hash: expected(key) || "",
       clip: r.clip, updatedAt: r.updatedAt, ...(r.prev ? { prev: r.prev } : {}) });
+    document.getElementById("saved-" + key).textContent = "";
   } catch (e) {
     document.getElementById("saved-" + key).textContent = "บันทึกไม่สำเร็จ ใช้ปุ่มคัดลอกแทน";
   }
+  pending.delete(key);
+}
+
+// "ยอมรับทั้งหมด": every shot on this tab with no answer yet passes; shots marked "แก้" keep their answer.
+function acceptAll() {
+  const open = D.shots.filter(s => needs(s, tab));
+  if (!open.length || !confirm(`ยอมรับ ${open.length} ช็อตที่ยังไม่ตอบในแท็บ ${NAME[tab]} ว่าผ่าน?\nช็อตที่กด "แก้" ไว้จะไม่เปลี่ยน`)) return;
+  open.forEach(s => {
+    const key = verdictKey(s.id, tab);
+    state[key] = { ...(current(s, tab) || {}), status: "ok" };
+    pending.add(key);
+    save(key);
+  });
+  filter();
 }
 
 function setTab(k) {
@@ -392,6 +463,7 @@ function wire() {
     const t = e.target.closest(".tab");
     if (t) { setTab(t.dataset.tab); return; }
     if (e.target.closest("#only")) { onlyOpen = !onlyOpen; filter(); return; }
+    if (e.target.closest("#acceptAll")) { acceptAll(); return; }
     const b = e.target.closest(".seg button");
     if (b) {
       const key = b.closest(".review").dataset.key;
@@ -399,6 +471,7 @@ function wire() {
       const s = D.shots.find(x => x.id === id);
       const prev = s && stage ? current(s, stage) : state[key];
       state[key] = { ...(prev || {}), status: prev?.status === b.dataset.v ? "" : b.dataset.v };
+      pending.add(key);
       save(key);
     }
     const img = e.target.closest(".el-grid img, .thumbs img, .look img");
@@ -422,6 +495,7 @@ function wire() {
     const [id, stage] = key.split("@");
     const s = D.shots.find(x => x.id === id);
     state[key] = { ...((s && stage ? current(s, stage) : state[key]) || {}), note: e.target.value };
+    pending.add(key);
     clearTimeout(timers[key]);
     timers[key] = setTimeout(() => save(key), 700);
   });
@@ -432,7 +506,8 @@ function wire() {
   document.getElementById("copy").addEventListener("click", async () => {
     const lines = [`${D.deliverable} ${REV} review`];
     (D.questions || []).forEach(q => { const r = state[q.id] || {}; lines.push(`${q.id}\t-\t${r.status || "-"}\t${(r.note || "").replace(/\s+/g, " ")}`); });
-    D.shots.forEach(s => STAGES.forEach(k => { const r = current(s, k); if (r?.status || r?.note) lines.push(`${s.id}\t${k}\t${r.status || "-"}\t${(r.note || "").replace(/\s+/g, " ")}`); }));
+    { const r = finalVerdict(); if (r?.status || r?.note) lines.push(`video\tfinal\t${r.status || "-"}\t${(r.note || "").replace(/\s+/g, " ")}`); }
+    D.shots.forEach(s => SHOT_STAGES.forEach(k => { const r = current(s, k); if (r?.status || r?.note) lines.push(`${s.id}\t${k}\t${r.status || "-"}\t${(r.note || "").replace(/\s+/g, " ")}`); }));
     const text = lines.join("\n");
     const btn = document.getElementById("copy");
     try { await navigator.clipboard.writeText(text); btn.textContent = "คัดลอกแล้ว"; }
@@ -449,29 +524,53 @@ renderRows(); wire(); count();
 
 (async () => {
   const storeEl = document.getElementById("store");
-  try { db = window.claude ? await window.claude.use("db") : null; } catch { db = null; }
-  if (!db) { storeEl.textContent = "ไม่ได้เชื่อมที่เก็บคำตอบ คำตอบจะไม่ถูกบันทึก ใช้ปุ่มคัดลอกส่งให้ Claude"; return; }
-  storeEl.textContent = "คำตอบบันทึกอัตโนมัติ Claude อ่านได้";
-  db.collection("reviews").onSnapshot(snap => {
-    snap.docs.forEach(d => {
-      const v = d.data();
+  const apply = reviews => {
+    Object.entries(reviews).forEach(([raw, v]) => {
       if (!v) return;
-      // Pages built before the tabs stored storyboard verdicts as reviews/<shot>: read them as the storyboard tab.
-      const key = !d.id.includes("@") && D.shots.some(x => x.id === d.id) ? d.id + "@board" : d.id;
-      if (key !== d.id && state[key]) return;
+      // Pages built before the tabs stored storyboard verdicts as <shot>: read them as the storyboard tab.
+      const key = !raw.includes("@") && D.shots.some(x => x.id === raw) ? raw + "@board" : raw;
+      if (pending.has(key) || (key !== raw && state[key])) return;
       const [id, stage] = key.split("@");
       const want = expected(key), c = stage && stage !== "board" ? clipOf(shotOf(id) || {}, stage) : null;
       let clip = v.clip, ok = v.hash ? v.hash === want : v.rev === REV && (!c || v.clip === c.src);
       // A verdict saved before hashes counts for this revision (and its clip path): stamp it once so it carries over.
       if (ok && !v.hash) {
         if (c) clip = clipId(c);
-        if (want && key === d.id) db.doc("reviews/" + key).set({ ...v, hash: want, clip }).catch(() => {});
+        if (want && key === raw) put(key, { ...v, hash: want, clip }).catch(() => {});
       }
       if (ok) { state[key] = { status: v.status, note: v.note, clip, updatedAt: v.updatedAt, prev: v.prev }; delete stale[key]; }
       else if (v.hash && (v.status || v.note)) stale[key] = { status: v.status || "", note: v.note || "", rev: v.rev || "" };
       paint(key);
     });
     count();
-  }, () => { storeEl.textContent = "เชื่อมที่เก็บคำตอบไม่ได้ ใช้ปุ่มคัดลอกส่งให้ Claude"; });
+  };
+  // Poll every 2 s: picks up answers from other tabs or devices, agent edits to reviews.json, and a rebuilt page.
+  let etag = "", page = null;
+  const poll = async () => {
+    try {
+      const r = await fetch("api/reviews", { headers: etag ? { "If-None-Match": etag } : {}, cache: "no-store" });
+      if (r.status === 304) return;
+      if (!r.ok) throw new Error(r.status);
+      const body = await r.json();
+      etag = r.headers.get("ETag") || "";
+      if (!online) { online = true; storeEl.textContent = "คำตอบบันทึกอัตโนมัติ เอเจนต์อ่านได้"; }
+      if (page === null) page = body.page;
+      else if (body.page !== page) {
+        // A rebuilt page reloads itself once nothing is unsaved or being typed.
+        if (!pending.size && document.activeElement?.tagName !== "TEXTAREA") return location.reload();
+        storeEl.textContent = "มีหน้าเวอร์ชันใหม่ จะโหลดใหม่เมื่อบันทึกเสร็จ";
+        etag = "";
+      }
+      apply(body.reviews || {});
+    } catch {
+      etag = "";
+      storeEl.textContent = online ? "ขาดการเชื่อมกับที่เก็บคำตอบ กำลังลองใหม่…" : "ไม่ได้เปิดผ่าน serve.py คำตอบจะไม่ถูกบันทึก ใช้ปุ่มคัดลอกส่งให้เอเจนต์";
+    } finally {
+      setTimeout(poll, 2000);
+    }
+  };
+  poll();
 })();
 </script>
+</body>
+</html>

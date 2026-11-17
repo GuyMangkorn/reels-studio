@@ -60,3 +60,10 @@ test('--unreviewed needs a reason', () => {
   assert.throws(() => parseRenderArgs(['ZCPAINT-SHORT-TH', '--unreviewed']), /--unreviewed needs a reason/);
   assert.throws(() => parseRenderArgs(['ZCPAINT-SHORT-TH', '--unreviewed=']), /--unreviewed needs a reason/);
 });
+
+test('--rows names one deliverable\'s review rows', () => {
+  assert.equal(parseRenderArgs(['ZCPAINT-SHORT-TH', '--rows=storyboards/x/short/review-rows.json']).rows, 'storyboards/x/short/review-rows.json');
+  assert.equal(parseRenderArgs(['ZCPAINT-SHORT-TH']).rows, undefined);
+  assert.throws(() => parseRenderArgs(['ZCPAINT-SHORT-TH', '--rows']), /--rows needs/);
+  assert.throws(() => parseRenderArgs(['A', 'B', '--rows=r.json']), /one composition ID/);
+});

@@ -24,6 +24,9 @@ def main():
     ], check=True)
     page = out / 'index.html'
     fragment = page.read_text(encoding='utf-8')
+    if fragment.lstrip().lower().startswith('<!doctype'):
+        print(f'{page}: template is already a full HTML page; nothing to add')
+        return
     host = ('<!doctype html>\n<html lang="th">\n'
             '<meta charset="utf-8">\n'
             '<meta name="viewport" content="width=device-width, initial-scale=1">\n')
