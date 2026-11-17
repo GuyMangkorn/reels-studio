@@ -1,6 +1,10 @@
+// test-scope: shared
 import {test} from 'node:test';
 import assert from 'node:assert/strict';
 import {assemblePaintedTimeline} from '../src/scenes/assemble';
+import {cueStartFrame, sceneFrames, subtitleAt} from '../src/scenes/timeline';
+import edu20 from '../src/videos/edu-ep20/index';
+import {EDU20_CUES} from '../src/videos/edu-ep20/cues';
 import {buildTimeline as buildZcpaintTimeline} from '../src/videos/zombie-condo-paint';
 
 const cuts = [{id: 'A', start: 0, end: 30}, {id: 'B', start: 30, end: 60}];
@@ -90,4 +94,41 @@ test('ZCPAINT rejects a caption authored outside its beat instead of assigning i
       {beat: 'B', startSec: 1, shots: [{shot: 'SHOT-B', atSec: 1}]},
     ],
   }), /A.*caption.*outside/);
+});
+
+test('precision-4 frame-clock captions start and end on their exact frame (no 1/3-frame round-up delay)', () => {
+  // One cue per local frame 1..90 after a long cut offset: every residue mod 3, the old late case being frame ≡ 2 (mod 3).
+  const start = 1332;
+  const events = [{at: start, text: 'f0'}, ...Array.from({length: 90}, (_, i) => ({at: start + 1 + i, text: `f${i + 1}`}))];
+  const [scene] = assemblePaintedTimeline({clockRate: 30, precision: 4, cuts: [{id: 'C', start, end: start + 120}],
+    shots: [{at: start, cue: {shot: 'S'}}], captions: events});
+  assert.equal(scene.subtitleCues![17].atSec, 0.5667, 'local 17 ≡ 2 (mod 3) is stored rounded up');
+  for (let f = 0; f <= 90; f++) {
+    assert.equal(cueStartFrame(scene.subtitleCues![f].atSec, 30), f);
+    assert.equal(subtitleAt(scene, f, 30), `f${f}`, `local frame ${f}`);
+  }
+  assert.equal(subtitleAt(scene, 119, 30), 'f90');
+  // Seconds-authored onsets between frames still start on the next frame (ZCPAINT 0.401 s = frame 12.03 → 13).
+  assert.equal(cueStartFrame(0.401, 30), 13);
+  assert.equal(cueStartFrame(2, 30), 60);
+  assert.equal(cueStartFrame(2.001, 30), 61);
+});
+
+test('EDU-EP20-SHORT captions start on their sheet frame, incl. L13a/L13b G1384 and the END20 hard-off at G1529', () => {
+  const {timeline} = edu20.videos[0];
+  const starts = timeline.reduce<number[]>((acc, s, i) => [...acc, i ? acc[i - 1] + sceneFrames(timeline[i - 1].durationSec, 30) : 0], []);
+  const captionAt = (g: number) => {
+    const i = starts.filter(s => s <= g).length - 1;
+    return subtitleAt(timeline[i], g - starts[i], 30);
+  };
+  for (const cue of EDU20_CUES) {
+    assert.equal(captionAt(cue.from), cue.text, `${cue.id} on G${cue.from}`);
+    if (cue.from > 0) assert.notEqual(captionAt(cue.from - 1), cue.text, `${cue.id} not before G${cue.from}`);
+    assert.equal(captionAt(cue.to - 1), cue.text, `${cue.id} through G${cue.to - 1}`);
+  }
+  const l13b = EDU20_CUES.find(c => c.id === 'L13b')!;
+  assert.deepEqual([l13b.from, l13b.to], [1384, 1529]);
+  assert.equal(captionAt(1528), l13b.text);
+  assert.equal(captionAt(1529), '');
+  assert.equal(captionAt(1530), '');
 });

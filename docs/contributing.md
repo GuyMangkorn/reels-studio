@@ -9,7 +9,7 @@ Tasks are GitHub issues on `GuyMangkorn/reels-studio`.
 - Assign one owner label, `owner:codex` or `owner:grokbot`.
 - Start one branch per issue from `main`: `codex/<issue>-<slug>` or `grokbot/<issue>-<slug>`.
 - Keep a PR focused on one asset, shared foundation, scene, capability, bugfix or documentation change. Scene-sized PRs follow the shared [sequence and dependency order](sequence-workflow.md#shared-sequence-and-continuity). Preserve unrelated work already in the checkout.
-- Run `npm run lint` and `npm run typecheck` before a runtime/visual PR. For changed runtime logic, run the relevant tests. For changed visuals, render a few frames of every affected composition and inspect representative scene handoff beats, including the relevant camera/reveal frames.
+- Run `npm run lint` and `npm run typecheck` before a runtime/visual PR. For changed runtime logic, run the relevant tests: `npm test` during work (shared tests plus the tests of episodes changed since `main`, [scripts/test.mjs](../scripts/test.mjs)) and `npm run test:all` once before the PR. Do not run the full suite after every edit: it takes about 2.5 minutes and was run 1,218 times in two weeks (usage review, 16 Nov 2026). For changed visuals, render a few frames of every affected composition and inspect representative scene handoff beats, including the relevant camera/reveal frames.
 
 ```bash
 npm run lint

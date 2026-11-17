@@ -1,0 +1,23 @@
+{
+ "deliverable": "EDU-EP20-SHORT",
+ "revision": "EDU-EP20-THUMB-R1",
+ "untimed": true,
+ "shots": [],
+ "looks": {
+  "EDU20-THUMB-A": {
+   "src": "out/edu20-cabin-thumbnails-r1/A.png",
+   "caption": "Enclosed daylight passenger car, front screen-right; restrained adult right-profile passenger and upright coral helium balloon with one continuous string to a low floor ring. No acceleration/braking result. Warm balanced daylight.",
+   "note": "P-M: large flat dark lower floor (UT12/UT03); H-M: faint tether/ring; A-M: unclear hands. Independent pass; minor notes retained, no polish fix requested."
+  },
+  "EDU20-THUMB-B": {
+   "src": "out/edu20-cabin-thumbnails-r1/B.png",
+   "caption": "Enclosed daylight passenger car, front screen-right; restrained adult right-profile passenger and upright coral helium balloon with one continuous string to a low floor ring. No acceleration/braking result. Slightly closer cool cabin with warm window.",
+   "note": "P-M: large flat dark lower floor (UT12/UT03); H-M: faint tether; A-M: unclear hands. Balloon contrast strongest. Independent pass; minor notes retained, no polish fix requested."
+  },
+  "EDU20-THUMB-C": {
+   "src": "out/edu20-cabin-thumbnails-r1/C.png",
+   "caption": "Enclosed daylight passenger car, front screen-right; restrained adult right-profile passenger and upright coral helium balloon with one continuous string to a low floor ring. No acceleration/braking result. Slightly lower side view with soft cream bounce.",
+   "note": "P-M: slight floor/cabin line mismatch (UT12/UT03); H-M: faint tether; A-M: unclear hands. Independent pass; minor notes retained, no polish fix requested."
+  }
+ }
+}

@@ -29,6 +29,11 @@ export type PaintedShot = {
    * overlay layers (grade, glow, shade); frame 0's ink is not laid at partial alpha (faded ink mixes toward paper and bleaches the picture
    * mid-blend, EDU-EP01 W5.3) and cuts in on the last frame, which equals the frame before it. */
   loopExact?: boolean;
+  /** In-canvas dissolve INTO this plate as a picture crossfade: the plate is painted whole in its own pass and shown over the outgoing
+   * plate at the dissolve opacity (`BrushCanvas` `layer`), instead of laying every wash and ink mark at partial alpha over it (faded ink
+   * draws full strength in a paper tint and stacked translucent washes bleach the frame; EDU-EP20 B04-SH01, DF-20261029). Default off:
+   * other dissolves keep their mark-over-mark look. */
+  crossfade?: boolean;
   /** World marks, painted inside the camera transform. */
   paint: (p: Painter, ctx: ShotContext) => void;
   /** Screen-space marks after the camera (rain, particles). */

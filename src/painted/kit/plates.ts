@@ -89,6 +89,8 @@ export const PLATES: PlateEntry[] = [
   {id: 'PL-EDU-FIELD19-MATS', episode: 'EDU', title: 'The same park lawn in deep gold: a row of square mats in four muted colours toward the tree, size-step scent glows, a dog sitting by the row', kind: 'exterior', time: 'dusk', mood: ['warm', 'playful', 'golden'], palette: ['#464c37', '#61744d', '#909750', '#97a94d', '#e2c08d'], kitLayers: ['ENV-SKY'], shot: 'EDU19-B04-SH02', t: 6.5},
   {id: 'PL-EDU-SOI-DUSK-IRIS', episode: 'EDU', title: 'Round inset over a dimmed field: a Thai soi at dusk, cool blue shophouses, one warm stall bulb and a wok, a scent curl to a walker', kind: 'exterior', time: 'dusk', mood: ['cool', 'cosy', 'nostalgic'], palette: ['#434553', '#606e62', '#6e775b', '#738253', '#9e9e9b'], kitLayers: ['ENV-SKY'], shot: 'EDU19-B01-SH05', t: 1.2},
   {id: 'PL-EDU-FLEA-SEE-THROUGH', episode: 'EDU', title: 'See-through flea at macro: translucent plates, the thorax window showing an amber pad and the catch', kind: 'diagram', time: 'unlit', mood: ['clinical', 'curious'], palette: ['#a67659', '#dbc9ae', '#e1d6bf', '#e2d9c6', '#ece5d5'], kitLayers: [], shot: 'EDU13-S01-B03-SH03', t: 1.8},
+  // EDU-EP20 intake (W8.4, KIT-P01, 16 Nov 2026): approved LF20-CABIN-B, opening pre-result state.
+  {id: 'PL-EDU-CABIN20', episode: 'EDU', title: 'Closed car cabin in cool daylight with a warm road window: restrained passenger in a blue hoodie beside a coral helium balloon tethered to the floor', kind: 'vehicle', time: 'day', mood: ['cool', 'curious', 'calm'], palette: ['#2d3742', '#4b5f72', '#63768a', '#bfc9cb', '#eee1c5'], kitLayers: [], shot: 'EDU20-B01-SH01', t: 1.167},
 ];
 
 export type PlateQuery = Partial<{episode: string; kind: PlateKind; time: PlateTime; mood: string; layer: string}>;

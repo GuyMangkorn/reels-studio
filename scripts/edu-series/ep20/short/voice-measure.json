@@ -1,0 +1,1117 @@
+{
+ "revision": "EDU-EP20-VOICE-MEASURE-R3",
+ "deliverable": "EDU-EP20-SHORT",
+ "channel": "edu",
+ "date": "2026-11-16",
+ "scriptRevision": "EDU-EP20-SCRIPT-R2",
+ "factRevision": "EDU-EP20-FACT-R1",
+ "hookRevision": "EDU-EP20-HOOK-R1",
+ "storyboardRevision": "EDU-EP20-BOARD-R1",
+ "checkout": "c420a2cf7d96f5aa7a3a63c5c744a7dc7c75603b + working changes (branch GuyMangkorn/ep20-helium-continuation)",
+ "voice": {
+  "model": "gemini-3.8-flash-tts",
+  "voice": "Kore",
+  "style": "warm, friendly, smiling storyteller, speaking rapidly",
+  "text": "รถเร่ง,ลูกโป่งจะเอนไปทางไหน? เอาลูกโป่งฮีเลียมที่ลอยได้ ผูกเชือกไว้กับพื้นรถ แล้วปิดกระจก พอรถเร่งไปข้างหน้า คุณเอนติดเบาะ ลูกโป่งก็น่าจะเอนไปข้างหลังตามคุณ,ใช่ไหม? ผิด! มันกลับเอนไปข้างหน้า แต่ไม่มีใครจับมันดัน แล้วอะไรดัน? อากาศในรถไง ตอนรถเร่ง แรงดันอากาศด้านหลังจะมากกว่าด้านหน้า มันเลยดันลูกโป่งที่ลอยได้ ไปทางหน้ารถ แต่ถ้าตอนนี้รถยังวิ่งเร็วอยู่ คุณว่าลูกโป่งจะเอนค้างแบบนั้นไปตลอดไหม? ลองวิ่งตรงด้วยความเร็วคงที่ รอให้ลูกโป่งหยุดแกว่ง มันกลับมาตั้งตรง ตัวที่ทำให้เอน คือการเร่ง ไม่ใช่ความเร็ว ทีนี้ทายอีกรอบ ถ้ารถยังวิ่งไปข้างหน้า แต่กำลังชะลอ คราวนี้คุณเอนไปหน้า, ส่วนลูกโป่งกลับเอนไปท้ายรถ! เพราะคราวนี้, อากาศด้านหน้า กลับดันแรงกว่าด้านหลัง นั่นเอง",
+  "cache": "f0d13294169b6bf7",
+  "atempo": 0.967575,
+  "apiCallsThisPass": 0,
+  "automaticRetries": 0,
+  "fallbackKeyDisabled": true,
+  "relativeAtTempoFromD": 0.97,
+  "l13Source": "fresh one-call L13 from sample B (cache e174b9b5a09fe36c), atempo 0.967575; L01-L12 from locked E"
+ },
+ "narrationInputSha256": "c0e92f7bcc0631514ba3cce94002477f46b8f4c21eea52c85aff9bb5c1866378",
+ "selectedAudio": {
+  "file": "kore-full-selected-E-L13r2.wav",
+  "sha256": "b6f8490d2af1ea5975ba612dc35cae308719a8296e1126189d441cdc5ce11d68",
+  "sampleRate": 48000,
+  "samples": 2307537,
+  "durationSec": 48.0736875,
+  "endFrame30": 1442.210625,
+  "firstEnergySec": 0.17,
+  "lastEnergySec": 47.92,
+  "lastPeakEnergySec": 47.928604,
+  "tailAfterLastPeakEnergySec": 0.145083
+ },
+ "rawNormalizedAudio": {
+  "sha256": "bc2436c53a35b7a10be7479cb044284513c643079ae99835d9dccb4413f7b775",
+  "sampleRate": 48000,
+  "samples": 2188800,
+  "durationSec": 45.6,
+  "firstEnergySec": 0.18,
+  "lastEnergySec": 45.33,
+  "energySpanSec": 45.15,
+  "aboveThresholdSec": 32.97
+ },
+ "storePrefix": "projects/edu/EDU/narration/edu-ep20-r2/",
+ "fpsForHandoff": 30,
+ "frameRounding": "round(seconds * 30); audio-relative frames only, not composition-global or authored shot/cut frames",
+ "alignment": {
+  "tool": "R1 alignment transformed by seconds / 0.97; no fresh ASR",
+  "model": "faster-whisper large-v3-turbo, CPU int8",
+  "matchRatio": 0.939,
+  "semanticTimingAccuracySec": "R1 approximately +/-0.1-0.2 s scaled by 1/0.97 (~0.103-0.206 s), plus unquantified local atempo mapping error",
+  "energyMethod": "R1 per-line envelopes scaled by 1/0.97; transformed estimates, not newly measured E per-line boundaries",
+  "speechSpanMethod": "E actual PCM 10 ms RMS >= -40dBFS",
+  "listeningStatus": "not human-listened or pronunciation-approved",
+  "lineBoundaryStatus": "Transformed R1 estimates only; not E phoneme or frame-exact proof",
+  "unmatchedExpectedCharacters": 37,
+  "differenceEvidenceStoreFile": "asr-differences.json",
+  "differenceAssessment": "37 unmatched expected Unicode characters; additional ASR insertions excluded from that number. Differences cluster in repeated ลูกโป่ง variants, ฮีเลียม/ฮีเรียม, เชือกไว้/เชียกไป, เบาะ/บ่อ, ไม่มี/มิมี, มัน/บัน, อะไร/ว่าไล, ลอย/รอย, ค้าง/ครั้ง, คงที่/ของที่, หยุดแกว่ง/อยู่ดกว่าง, and ท้าย/ทาย. Plausible phonetic/ASR substitutions, not established audible pronunciation errors. No complete line absent in ASR alignment; this cannot certify every spoken word. Listen especially to low-tether setup L02, causal question L05 and settled constant-speed/waiting qualification L09. No definite audio omission established."
+ },
+ "lines": [
+  {
+   "id": "L01",
+   "beat": "EDU-EP20-SHORT-S01-B01",
+   "anchor": "B01-a1",
+   "text": "รถเร่ง...ลูกโป่งจะเอนไปทางไหน?",
+   "asrOnSec": 0.0,
+   "asrEndSec": 2.123711,
+   "asrOnFrame30": 0,
+   "asrEndFrame30": 64,
+   "energyOnSec": 0.105091,
+   "energyEndSec": 2.274012,
+   "energyOnFrame30": 3,
+   "energyEndFrame30": 68,
+   "boundaryStatus": "Transformed R1 ASR-associated envelope /0.97; not E measured phoneme boundary; listening pending"
+  },
+  {
+   "id": "L02",
+   "beat": "EDU-EP20-SHORT-S01-B01",
+   "anchor": "B01-a2",
+   "text": "เอาลูกโป่งฮีเลียมที่ลอยได้ ผูกเชือกไว้กับพื้นรถ แล้วปิดกระจก",
+   "asrOnSec": 2.556701,
+   "asrEndSec": 6.206186,
+   "asrOnFrame30": 77,
+   "asrEndFrame30": 186,
+   "energyOnSec": 2.548711,
+   "energyEndSec": 6.257818,
+   "energyOnFrame30": 76,
+   "energyEndFrame30": 188,
+   "boundaryStatus": "Transformed R1 ASR-associated envelope /0.97; not E measured phoneme boundary; listening pending"
+  },
+  {
+   "id": "L03",
+   "beat": "EDU-EP20-SHORT-S01-B01",
+   "anchor": "B01-a3",
+   "text": "พอรถเร่งไปข้างหน้า คุณเอนติดเบาะ ลูกโป่งก็น่าจะเอนไปข้างหลังตามคุณ...ใช่ไหม?",
+   "asrOnSec": 6.57732,
+   "asrEndSec": 11.237113,
+   "asrOnFrame30": 197,
+   "asrEndFrame30": 337,
+   "energyOnSec": 6.412843,
+   "energyEndSec": 11.332775,
+   "energyOnFrame30": 192,
+   "energyEndFrame30": 340,
+   "boundaryStatus": "Transformed R1 ASR-associated envelope /0.97; not E measured phoneme boundary; listening pending"
+  },
+  {
+   "id": "L04",
+   "beat": "EDU-EP20-SHORT-S01-B02",
+   "anchor": "B02-a1",
+   "text": "ผิด! มันกลับเอนไปข้างหน้า",
+   "asrOnSec": 11.773196,
+   "asrEndSec": 13.896907,
+   "asrOnFrame30": 353,
+   "asrEndFrame30": 417,
+   "energyOnSec": 11.840851,
+   "energyEndSec": 13.593127,
+   "energyOnFrame30": 355,
+   "energyEndFrame30": 408,
+   "boundaryStatus": "Transformed R1 ASR-associated envelope /0.97; not E measured phoneme boundary; listening pending"
+  },
+  {
+   "id": "L05",
+   "beat": "EDU-EP20-SHORT-S01-B02",
+   "anchor": "B02-a2",
+   "text": "แต่ไม่มีใครจับมันดัน แล้วอะไรดัน?",
+   "asrOnSec": 13.896907,
+   "asrEndSec": 16.123711,
+   "asrOnFrame30": 417,
+   "asrEndFrame30": 484,
+   "energyOnSec": 13.986856,
+   "energyEndSec": 16.249055,
+   "energyOnFrame30": 420,
+   "energyEndFrame30": 487,
+   "boundaryStatus": "Transformed R1 ASR-associated envelope /0.97; not E measured phoneme boundary; listening pending"
+  },
+  {
+   "id": "L06",
+   "beat": "EDU-EP20-SHORT-S01-B03",
+   "anchor": "B03-a1",
+   "text": "อากาศในรถไง ตอนรถเร่ง แรงดันอากาศด้านหลังจะมากกว่าด้านหน้า",
+   "asrOnSec": 16.453608,
+   "asrEndSec": 21.010309,
+   "asrOnFrame30": 494,
+   "asrEndFrame30": 630,
+   "energyOnSec": 16.557173,
+   "energyEndSec": 21.171457,
+   "energyOnFrame30": 497,
+   "energyEndFrame30": 635,
+   "boundaryStatus": "Transformed R1 ASR-associated envelope /0.97; not E measured phoneme boundary; listening pending"
+  },
+  {
+   "id": "L07",
+   "beat": "EDU-EP20-SHORT-S01-B03",
+   "anchor": "B03-a2",
+   "text": "มันเลยดันลูกโป่งที่ลอยได้ ไปทางหน้ารถ",
+   "asrOnSec": 21.195876,
+   "asrEndSec": 23.463918,
+   "asrOnFrame30": 636,
+   "asrEndFrame30": 704,
+   "energyOnSec": 21.276804,
+   "energyEndSec": 23.510825,
+   "energyOnFrame30": 638,
+   "energyEndFrame30": 705,
+   "boundaryStatus": "Transformed R1 ASR-associated envelope /0.97; not E measured phoneme boundary; listening pending"
+  },
+  {
+   "id": "L08",
+   "beat": "EDU-EP20-SHORT-S01-B03",
+   "anchor": "B03-a3",
+   "text": "แต่ถ้าตอนนี้รถยังวิ่งเร็วอยู่ คุณว่าลูกโป่งจะเอนค้างแบบนั้นไปตลอดไหม?",
+   "asrOnSec": 23.814433,
+   "asrEndSec": 28.020619,
+   "asrOnFrame30": 714,
+   "asrEndFrame30": 841,
+   "energyOnSec": 23.696457,
+   "energyEndSec": 28.09753,
+   "energyOnFrame30": 711,
+   "energyEndFrame30": 843,
+   "boundaryStatus": "Transformed R1 ASR-associated envelope /0.97; not E measured phoneme boundary; listening pending"
+  },
+  {
+   "id": "L09",
+   "beat": "EDU-EP20-SHORT-S01-B04",
+   "anchor": "B04-a1",
+   "text": "ลองวิ่งตรงด้วยความเร็วคงที่ รอให้ลูกโป่งหยุดแกว่ง มันกลับมาตั้งตรง",
+   "asrOnSec": 28.494845,
+   "asrEndSec": 33.072165,
+   "asrOnFrame30": 855,
+   "asrEndFrame30": 992,
+   "energyOnSec": 28.564411,
+   "energyEndSec": 33.136233,
+   "energyOnFrame30": 857,
+   "energyEndFrame30": 994,
+   "boundaryStatus": "Transformed R1 ASR-associated envelope /0.97; not E measured phoneme boundary; listening pending"
+  },
+  {
+   "id": "L10",
+   "beat": "EDU-EP20-SHORT-S01-B04",
+   "anchor": "B04-a2",
+   "text": "ตัวที่ทำให้เอน คือการเร่ง ไม่ใช่ความเร็ว",
+   "asrOnSec": 33.072165,
+   "asrEndSec": 36.123711,
+   "asrOnFrame30": 992,
+   "asrEndFrame30": 1084,
+   "energyOnSec": 33.228888,
+   "energyEndSec": 36.120189,
+   "energyOnFrame30": 997,
+   "energyEndFrame30": 1084,
+   "boundaryStatus": "Transformed R1 ASR-associated envelope /0.97; not E measured phoneme boundary; listening pending"
+  },
+  {
+   "id": "L11",
+   "beat": "EDU-EP20-SHORT-S01-B05",
+   "anchor": "B05-a1",
+   "text": "ทีนี้ทายอีกรอบ ถ้ารถยังวิ่งไปข้างหน้า แต่กำลังชะลอ คราวนี้คุณเอนไปหน้า...",
+   "asrOnSec": 36.494845,
+   "asrEndSec": 42.329897,
+   "asrOnFrame30": 1095,
+   "asrEndFrame30": 1270,
+   "energyOnSec": 36.572272,
+   "energyEndSec": 42.265335,
+   "energyOnFrame30": 1097,
+   "energyEndFrame30": 1268,
+   "boundaryStatus": "Transformed R1 ASR-associated envelope /0.97; not E measured phoneme boundary; listening pending"
+  },
+  {
+   "id": "L12",
+   "beat": "EDU-EP20-SHORT-S01-B05",
+   "anchor": "B05-a2",
+   "text": "ส่วนลูกโป่งกลับเอนไปท้ายรถ!",
+   "asrOnSec": 42.474227,
+   "asrEndSec": 44.061856,
+   "asrOnFrame30": 1274,
+   "asrEndFrame30": 1322,
+   "energyOnSec": 42.465042,
+   "energyEndSec": 44.355125,
+   "energyOnFrame30": 1274,
+   "energyEndFrame30": 1331,
+   "boundaryStatus": "Measured directly on R3 file: 10 ms peak >=300/32767 sample-precise first/last inside the line partition (seam 44.401 s); listening pending; ASR values remain R2 transformed estimates",
+   "rms40OnEndSec": [
+    42.48,
+    44.03
+   ]
+  },
+  {
+   "id": "L13",
+   "beat": "EDU-EP20-SHORT-S01-B05",
+   "anchor": "B05-a3",
+   "text": "เพราะคราวนี้ อากาศด้านหน้ากลับดันแรงกว่าด้านหลังนั่นเอง",
+   "ttsText": "เพราะคราวนี้, อากาศด้านหน้า กลับดันแรงกว่าด้านหลัง นั่นเอง",
+   "asrOnSec": 44.3485,
+   "asrEndSec": 47.7885,
+   "asrOnFrame30": 1330,
+   "asrEndFrame30": 1434,
+   "asrTranscript": "เพราะคราวนี้อากาศด้านหน้ากลับดันแรงกว่าด้านหลังนั่นเอง",
+   "asrMatchesScript": true,
+   "energyOnSec": 44.447313,
+   "energyEndSec": 47.928604,
+   "energyOnFrame30": 1333,
+   "energyEndFrame30": 1438,
+   "rms40OnEndSec": [
+    44.44,
+    47.92
+   ],
+   "boundaryStatus": "Measured directly on R3 file: 10 ms peak >=300/32767 sample-precise first/last inside the line partition (seam 44.401 s); listening pending; ASR = local faster-whisper large-v3-turbo on 42.3285-48.0737 s segment (+-0.1-0.2 s)"
+  }
+ ],
+ "beats": [
+  {
+   "id": "EDU-EP20-SHORT-S01-B01",
+   "firstLine": "L01",
+   "lastLine": "L03",
+   "anchorText": "รถเร่ง...ลูกโป่งจะเอนไปทางไหน?",
+   "asrOnSec": 0.0,
+   "energyOnSec": 0.105091,
+   "energyOnFrame30": 3,
+   "energyEndSec": 11.332775,
+   "energyEndFrame30": 340
+  },
+  {
+   "id": "EDU-EP20-SHORT-S01-B02",
+   "firstLine": "L04",
+   "lastLine": "L05",
+   "anchorText": "ผิด! มันกลับเอนไปข้างหน้า",
+   "asrOnSec": 11.773196,
+   "energyOnSec": 11.840851,
+   "energyOnFrame30": 355,
+   "energyEndSec": 16.249055,
+   "energyEndFrame30": 487
+  },
+  {
+   "id": "EDU-EP20-SHORT-S01-B03",
+   "firstLine": "L06",
+   "lastLine": "L08",
+   "anchorText": "อากาศในรถไง ตอนรถเร่ง แรงดันอากาศด้านหลังจะมากกว่าด้านหน้า",
+   "asrOnSec": 16.453608,
+   "energyOnSec": 16.557173,
+   "energyOnFrame30": 497,
+   "energyEndSec": 28.09753,
+   "energyEndFrame30": 843
+  },
+  {
+   "id": "EDU-EP20-SHORT-S01-B04",
+   "firstLine": "L09",
+   "lastLine": "L10",
+   "anchorText": "ลองวิ่งตรงด้วยความเร็วคงที่ รอให้ลูกโป่งหยุดแกว่ง มันกลับมาตั้งตรง",
+   "asrOnSec": 28.494845,
+   "energyOnSec": 28.564411,
+   "energyOnFrame30": 857,
+   "energyEndSec": 36.120189,
+   "energyEndFrame30": 1084
+  },
+  {
+   "id": "EDU-EP20-SHORT-S01-B05",
+   "firstLine": "L11",
+   "lastLine": "L13",
+   "anchorText": "ทีนี้ทายอีกรอบ ถ้ารถยังวิ่งไปข้างหน้า แต่กำลังชะลอ คราวนี้คุณเอนไปหน้า...",
+   "asrOnSec": 36.494845,
+   "energyOnSec": 36.572272,
+   "energyOnFrame30": 1097,
+   "energyEndSec": 47.928604,
+   "energyEndFrame30": 1438
+  }
+ ],
+ "interLineBoundaries": [
+  {
+   "after": "L01",
+   "before": "L02",
+   "asrMidSec": 2.340206,
+   "energyGapSec": [
+    2.278351,
+    2.546392
+   ],
+   "energyGapDurationSec": 0.268041,
+   "measurementPartitionSec": 2.412371,
+   "notAnAuthoredEdit": true
+  },
+  {
+   "after": "L02",
+   "before": "L03",
+   "asrMidSec": 6.391753,
+   "energyGapSec": [
+    6.268041,
+    6.412371
+   ],
+   "energyGapDurationSec": 0.14433,
+   "measurementPartitionSec": 6.340206,
+   "notAnAuthoredEdit": true
+  },
+  {
+   "after": "L03",
+   "before": "L04",
+   "asrMidSec": 11.505155,
+   "energyGapSec": [
+    11.340206,
+    11.835052
+   ],
+   "energyGapDurationSec": 0.494845,
+   "measurementPartitionSec": 11.587629,
+   "notAnAuthoredEdit": true
+  },
+  {
+   "after": "L04",
+   "before": "L05",
+   "asrMidSec": 13.896907,
+   "energyGapSec": [
+    13.597938,
+    13.979381
+   ],
+   "energyGapDurationSec": 0.381443,
+   "measurementPartitionSec": 13.78866,
+   "notAnAuthoredEdit": true
+  },
+  {
+   "after": "L05",
+   "before": "L06",
+   "asrMidSec": 16.28866,
+   "energyGapSec": [
+    16.257732,
+    16.556701
+   ],
+   "energyGapDurationSec": 0.298969,
+   "measurementPartitionSec": 16.407216,
+   "notAnAuthoredEdit": true
+  },
+  {
+   "after": "L06",
+   "before": "L07",
+   "asrMidSec": 21.103093,
+   "energyGapSec": [
+    21.175258,
+    21.268041
+   ],
+   "energyGapDurationSec": 0.092784,
+   "measurementPartitionSec": 21.221649,
+   "notAnAuthoredEdit": true
+  },
+  {
+   "after": "L07",
+   "before": "L08",
+   "asrMidSec": 23.639175,
+   "energyGapSec": [
+    23.515464,
+    23.690722
+   ],
+   "energyGapDurationSec": 0.175258,
+   "measurementPartitionSec": 23.603093,
+   "notAnAuthoredEdit": true
+  },
+  {
+   "after": "L08",
+   "before": "L09",
+   "asrMidSec": 28.257732,
+   "energyGapSec": [
+    28.103093,
+    28.556701
+   ],
+   "energyGapDurationSec": 0.453608,
+   "measurementPartitionSec": 28.329897,
+   "notAnAuthoredEdit": true
+  },
+  {
+   "after": "L09",
+   "before": "L10",
+   "asrMidSec": 33.072165,
+   "energyGapSec": [
+    33.14433,
+    33.226804
+   ],
+   "energyGapDurationSec": 0.082474,
+   "measurementPartitionSec": 33.185567,
+   "notAnAuthoredEdit": true
+  },
+  {
+   "after": "L10",
+   "before": "L11",
+   "asrMidSec": 36.309278,
+   "energyGapSec": [
+    36.123711,
+    36.56701
+   ],
+   "energyGapDurationSec": 0.443299,
+   "measurementPartitionSec": 36.345361,
+   "notAnAuthoredEdit": true
+  },
+  {
+   "after": "L11",
+   "before": "L12",
+   "asrMidSec": 42.402062,
+   "energyGapSec": [
+    42.268041,
+    42.474227
+   ],
+   "energyGapDurationSec": 0.206186,
+   "measurementPartitionSec": 42.371134,
+   "notAnAuthoredEdit": true
+  },
+  {
+   "after": "L12",
+   "before": "L13",
+   "energyGapSec": [
+    44.36,
+    44.44
+   ],
+   "energyGapDurationSec": 0.08,
+   "rms40GapSec": [
+    44.03,
+    44.44
+   ],
+   "seamSec": 44.401,
+   "measuredOnR3": true,
+   "notAnAuthoredEdit": true
+  }
+ ],
+ "timing": {
+  "editorialBudgetSec": 47,
+  "fivePercentReferenceSec": 49.35,
+  "finalHoldSec": 3,
+  "untrimmedFilePlusHoldSec": 51.0736875,
+  "energySpanPlusHoldSec": 50.75,
+  "headTailRemovalIsNotAuthored": true,
+  "extraGapBudgetTo49_35UntrimmedSec": -1.723687,
+  "mandatoryExtraGapsSec": null,
+  "extraGapsNote": "No automatic extra gaps, trims or padding. E is user-selected 3% slower than D; actual file+3s hold exceeds former 49.35s reference but remains within channel 40-60s. Film owns hold and reaction placement.",
+  "conditionalThreeToFiveExtraGapsPlusHoldSec": [
+   54.0736875,
+   56.0736875
+  ],
+  "answerSpansSec": {
+   "forwardPayment": 1.752276,
+   "airMechanism": 6.953652,
+   "constantSpeedAnswer": 7.555777,
+   "brakingAnswer": 5.463562
+  },
+  "earlyPaymentOnSec": 11.840851,
+  "earlyPaymentPercentUntrimmedPlusHold": 23.631023301278468,
+  "ssR4TotalRule": "total = ceil(narrationEndFrame30) + 176",
+  "narrationEndFrame30": 1442.2106,
+  "ssR4TotalFrames": 1619,
+  "estimateFromVoiceR2": {
+   "narrationEndFrame30": 1445.6,
+   "totalFrames": 1622,
+   "note": "estimate assumed E's 0.267 s post-speech tail; the fresh L13 clip's tail is 0.145 s, so the measured end is 3.4 f earlier"
+  },
+  "previousNarrationEndFrame30": 1413.2,
+  "previousTotalFrames": 1590,
+  "deltaNarrationEndFrames": 28.99,
+  "holdIfTotalStays1590": "if total stays 1590 f, 147.8 f remain after the file end (R2: 176.8 f); Film decides"
+ },
+ "limitations": [
+  "No native word timestamps from Gemini; ASR cannot certify pronunciation.",
+  "Energy thresholds measure envelopes, not phonemes or physical settling time.",
+  "Frame references describe continuous selected audio before any Film editorial offset.",
+  "No timeline integration, art, music/SFX, final MP3/amplitude or full-read approval in this pass.",
+  "E line/beat/gap anchors are scaled R1 estimates; actual E duration/RMS/loudness were measured independently. AtTempo is not a guarantee of sample-exact local scaling.",
+  "R3: L01-L12 anchors (except L12 energy) remain the R2 /0.97 transformed estimates; audio before 44.398 s is sample-identical to E.",
+  "R3: nobody has listened to the full R2 file, the 44.401 s seam or L13 pronunciation; approval of the full read rests on the user's pick of sample B."
+ ],
+ "rawApiSource": {
+  "cacheKey": "f0d13294169b6bf7",
+  "storeFile": "gemini-source-raw.wav",
+  "sha256": "7cbdf7af47146cfb0f243b3f876a3a5f7f40ea7d14af556295e9eb52f4a07196"
+ },
+ "selectedLoudness": {
+  "input_i": "-15.90",
+  "input_tp": "-1.51",
+  "input_lra": "2.00",
+  "input_thresh": "-26.10",
+  "units": "LUFS / dBTP / LU / LUFS"
+ },
+ "checks": {
+  "onlyTtsEllipsesNormalized": true,
+  "all13AnchorsMatchedInsidePhrase": true,
+  "fallbackAnchors": 0,
+  "lineOnsetsMonotonic": true,
+  "allAnswerSpansUnder10Sec": true,
+  "noJobsRunningAtHandoff": "verified after completion; no render initiated",
+  "all13ScriptLinesPreservedInTtsInputOnly": true,
+  "spokenExactTextCertified": false,
+  "l01ToL12AudioSampleIdenticalToE": true,
+  "l13AsrExactTextMatch": true
+ },
+ "sourceMeasureRevision": "EDU-EP20-VOICE-MEASURE-R2",
+ "sourceMeasureStoreFile": "projects/edu/EDU/narration/edu-ep20-r2/voice-measure-r2-preserved.json (R1: projects/edu/EDU/narration/edu-ep20-r1/voice-measure-r1-preserved.json)",
+ "previousSelectedAudio": {
+  "sha256": "ebfe0bd3b3d730e9668a89638cea3677f12716a7132b9bb14cd4fdbd42148a0f",
+  "sampleRate": 48000,
+  "samples": 2261147,
+  "durationSec": 47.10722916666667,
+  "firstEnergySec": 0.17,
+  "lastEnergySec": 46.84,
+  "aboveThresholdSec": 34.67,
+  "energySpanSec": 46.67,
+  "file": "kore-full-selected-E-slower3.wav"
+ },
+ "userPaceApproval": {
+  "quote": "ใช้ความเร็วนี้",
+  "date": "2026-11-16",
+  "candidate": "E",
+  "sampleDurationSec": 6.317979,
+  "fullReadListeningApproval": false
+ },
+ "splice": {
+  "eSeamSec": 44.401,
+  "eSeamFrame30": 1332.0300000000002,
+  "l13SourceStartSec": 0.121,
+  "fadeMs": 3,
+  "gainChangeDb": 0,
+  "apiCalls": 0,
+  "eIdenticalUntilSec": 44.398,
+  "sampleBReproducedBitExact": true,
+  "script": "projects/edu/EDU/narration/edu-ep20-r2/splice-full.py"
+ },
+ "userFullReadApproval": {
+  "quote": "B ต่อเข้าเทคที่ล็อก",
+  "date": "2026-11-16",
+  "scope": "pick of <=10 s sample B (splice into locked E); authorizes this full read only",
+  "fullFileListened": false,
+  "seamListened": false,
+  "l13PronunciationListened": false
+ },
+ "r2Record": {
+  "revision": "EDU-EP20-VOICE-MEASURE-R2",
+  "deliverable": "EDU-EP20-SHORT",
+  "channel": "edu",
+  "date": "2026-11-16",
+  "scriptRevision": "EDU-EP20-SCRIPT-R1",
+  "factRevision": "EDU-EP20-FACT-R1",
+  "hookRevision": "EDU-EP20-HOOK-R1",
+  "storyboardRevision": "EDU-EP20-BOARD-R1",
+  "checkout": "c420a2cf7d96f5aa7a3a63c5c744a7dc7c75603b + concurrent working changes",
+  "voice": {
+   "model": "gemini-3.8-flash-tts",
+   "voice": "Kore",
+   "style": "warm, friendly, smiling storyteller, speaking rapidly",
+   "text": "รถเร่ง,ลูกโป่งจะเอนไปทางไหน? เอาลูกโป่งฮีเลียมที่ลอยได้ ผูกเชือกไว้กับพื้นรถ แล้วปิดกระจก พอรถเร่งไปข้างหน้า คุณเอนติดเบาะ ลูกโป่งก็น่าจะเอนไปข้างหลังตามคุณ,ใช่ไหม? ผิด! มันกลับเอนไปข้างหน้า แต่ไม่มีใครจับมันดัน แล้วอะไรดัน? อากาศในรถไง ตอนรถเร่ง แรงดันอากาศด้านหลังจะมากกว่าด้านหน้า มันเลยดันลูกโป่งที่ลอยได้ ไปทางหน้ารถ แต่ถ้าตอนนี้รถยังวิ่งเร็วอยู่ คุณว่าลูกโป่งจะเอนค้างแบบนั้นไปตลอดไหม? ลองวิ่งตรงด้วยความเร็วคงที่ รอให้ลูกโป่งหยุดแกว่ง มันกลับมาตั้งตรง ตัวที่ทำให้เอน คือการเร่ง ไม่ใช่ความเร็ว ทีนี้ทายอีกรอบ ถ้ารถยังวิ่งไปข้างหน้า แต่กำลังชะลอ คราวนี้คุณเอนไปหน้า, ส่วนลูกโป่งกลับเอนไปท้ายรถ! อากาศรอบมัน เปลี่ยนฝั่งที่ดันแรงกว่าแล้วไง",
+   "cache": "f0d13294169b6bf7",
+   "atempo": 0.967575,
+   "apiCallsThisPass": 0,
+   "automaticRetries": 0,
+   "fallbackKeyDisabled": true,
+   "relativeAtTempoFromD": 0.97
+  },
+  "narrationInputSha256": "71bd60a2cab5390504133dc201a301c3fd8e52dbda1eba8a76a2380d058441ca",
+  "selectedAudio": {
+   "sha256": "ebfe0bd3b3d730e9668a89638cea3677f12716a7132b9bb14cd4fdbd42148a0f",
+   "sampleRate": 48000,
+   "samples": 2261147,
+   "durationSec": 47.10722916666667,
+   "firstEnergySec": 0.17,
+   "lastEnergySec": 46.84,
+   "aboveThresholdSec": 34.67,
+   "energySpanSec": 46.67,
+   "file": "kore-full-selected-E-slower3.wav"
+  },
+  "rawNormalizedAudio": {
+   "sha256": "bc2436c53a35b7a10be7479cb044284513c643079ae99835d9dccb4413f7b775",
+   "sampleRate": 48000,
+   "samples": 2188800,
+   "durationSec": 45.6,
+   "firstEnergySec": 0.18,
+   "lastEnergySec": 45.33,
+   "energySpanSec": 45.15,
+   "aboveThresholdSec": 32.97
+  },
+  "storePrefix": "projects/edu/EDU/narration/edu-ep20-r1/",
+  "fpsForHandoff": 30,
+  "frameRounding": "round(seconds * 30); audio-relative frames only, not composition-global or authored shot/cut frames",
+  "alignment": {
+   "tool": "R1 alignment transformed by seconds / 0.97; no fresh ASR",
+   "model": "faster-whisper large-v3-turbo, CPU int8",
+   "matchRatio": 0.939,
+   "semanticTimingAccuracySec": "R1 approximately +/-0.1-0.2 s scaled by 1/0.97 (~0.103-0.206 s), plus unquantified local atempo mapping error",
+   "energyMethod": "R1 per-line envelopes scaled by 1/0.97; transformed estimates, not newly measured E per-line boundaries",
+   "speechSpanMethod": "E actual PCM 10 ms RMS >= -40dBFS",
+   "listeningStatus": "not human-listened or pronunciation-approved",
+   "lineBoundaryStatus": "Transformed R1 estimates only; not E phoneme or frame-exact proof",
+   "unmatchedExpectedCharacters": 37,
+   "differenceEvidenceStoreFile": "asr-differences.json",
+   "differenceAssessment": "37 unmatched expected Unicode characters; additional ASR insertions excluded from that number. Differences cluster in repeated ลูกโป่ง variants, ฮีเลียม/ฮีเรียม, เชือกไว้/เชียกไป, เบาะ/บ่อ, ไม่มี/มิมี, มัน/บัน, อะไร/ว่าไล, ลอย/รอย, ค้าง/ครั้ง, คงที่/ของที่, หยุดแกว่ง/อยู่ดกว่าง, and ท้าย/ทาย. Plausible phonetic/ASR substitutions, not established audible pronunciation errors. No complete line absent in ASR alignment; this cannot certify every spoken word. Listen especially to low-tether setup L02, causal question L05 and settled constant-speed/waiting qualification L09. No definite audio omission established."
+  },
+  "lines": [
+   {
+    "id": "L01",
+    "beat": "EDU-EP20-SHORT-S01-B01",
+    "anchor": "B01-a1",
+    "text": "รถเร่ง...ลูกโป่งจะเอนไปทางไหน?",
+    "asrOnSec": 0.0,
+    "asrEndSec": 2.123711,
+    "asrOnFrame30": 0,
+    "asrEndFrame30": 64,
+    "energyOnSec": 0.105091,
+    "energyEndSec": 2.274012,
+    "energyOnFrame30": 3,
+    "energyEndFrame30": 68,
+    "boundaryStatus": "Transformed R1 ASR-associated envelope /0.97; not E measured phoneme boundary; listening pending"
+   },
+   {
+    "id": "L02",
+    "beat": "EDU-EP20-SHORT-S01-B01",
+    "anchor": "B01-a2",
+    "text": "เอาลูกโป่งฮีเลียมที่ลอยได้ ผูกเชือกไว้กับพื้นรถ แล้วปิดกระจก",
+    "asrOnSec": 2.556701,
+    "asrEndSec": 6.206186,
+    "asrOnFrame30": 77,
+    "asrEndFrame30": 186,
+    "energyOnSec": 2.548711,
+    "energyEndSec": 6.257818,
+    "energyOnFrame30": 76,
+    "energyEndFrame30": 188,
+    "boundaryStatus": "Transformed R1 ASR-associated envelope /0.97; not E measured phoneme boundary; listening pending"
+   },
+   {
+    "id": "L03",
+    "beat": "EDU-EP20-SHORT-S01-B01",
+    "anchor": "B01-a3",
+    "text": "พอรถเร่งไปข้างหน้า คุณเอนติดเบาะ ลูกโป่งก็น่าจะเอนไปข้างหลังตามคุณ...ใช่ไหม?",
+    "asrOnSec": 6.57732,
+    "asrEndSec": 11.237113,
+    "asrOnFrame30": 197,
+    "asrEndFrame30": 337,
+    "energyOnSec": 6.412843,
+    "energyEndSec": 11.332775,
+    "energyOnFrame30": 192,
+    "energyEndFrame30": 340,
+    "boundaryStatus": "Transformed R1 ASR-associated envelope /0.97; not E measured phoneme boundary; listening pending"
+   },
+   {
+    "id": "L04",
+    "beat": "EDU-EP20-SHORT-S01-B02",
+    "anchor": "B02-a1",
+    "text": "ผิด! มันกลับเอนไปข้างหน้า",
+    "asrOnSec": 11.773196,
+    "asrEndSec": 13.896907,
+    "asrOnFrame30": 353,
+    "asrEndFrame30": 417,
+    "energyOnSec": 11.840851,
+    "energyEndSec": 13.593127,
+    "energyOnFrame30": 355,
+    "energyEndFrame30": 408,
+    "boundaryStatus": "Transformed R1 ASR-associated envelope /0.97; not E measured phoneme boundary; listening pending"
+   },
+   {
+    "id": "L05",
+    "beat": "EDU-EP20-SHORT-S01-B02",
+    "anchor": "B02-a2",
+    "text": "แต่ไม่มีใครจับมันดัน แล้วอะไรดัน?",
+    "asrOnSec": 13.896907,
+    "asrEndSec": 16.123711,
+    "asrOnFrame30": 417,
+    "asrEndFrame30": 484,
+    "energyOnSec": 13.986856,
+    "energyEndSec": 16.249055,
+    "energyOnFrame30": 420,
+    "energyEndFrame30": 487,
+    "boundaryStatus": "Transformed R1 ASR-associated envelope /0.97; not E measured phoneme boundary; listening pending"
+   },
+   {
+    "id": "L06",
+    "beat": "EDU-EP20-SHORT-S01-B03",
+    "anchor": "B03-a1",
+    "text": "อากาศในรถไง ตอนรถเร่ง แรงดันอากาศด้านหลังจะมากกว่าด้านหน้า",
+    "asrOnSec": 16.453608,
+    "asrEndSec": 21.010309,
+    "asrOnFrame30": 494,
+    "asrEndFrame30": 630,
+    "energyOnSec": 16.557173,
+    "energyEndSec": 21.171457,
+    "energyOnFrame30": 497,
+    "energyEndFrame30": 635,
+    "boundaryStatus": "Transformed R1 ASR-associated envelope /0.97; not E measured phoneme boundary; listening pending"
+   },
+   {
+    "id": "L07",
+    "beat": "EDU-EP20-SHORT-S01-B03",
+    "anchor": "B03-a2",
+    "text": "มันเลยดันลูกโป่งที่ลอยได้ ไปทางหน้ารถ",
+    "asrOnSec": 21.195876,
+    "asrEndSec": 23.463918,
+    "asrOnFrame30": 636,
+    "asrEndFrame30": 704,
+    "energyOnSec": 21.276804,
+    "energyEndSec": 23.510825,
+    "energyOnFrame30": 638,
+    "energyEndFrame30": 705,
+    "boundaryStatus": "Transformed R1 ASR-associated envelope /0.97; not E measured phoneme boundary; listening pending"
+   },
+   {
+    "id": "L08",
+    "beat": "EDU-EP20-SHORT-S01-B03",
+    "anchor": "B03-a3",
+    "text": "แต่ถ้าตอนนี้รถยังวิ่งเร็วอยู่ คุณว่าลูกโป่งจะเอนค้างแบบนั้นไปตลอดไหม?",
+    "asrOnSec": 23.814433,
+    "asrEndSec": 28.020619,
+    "asrOnFrame30": 714,
+    "asrEndFrame30": 841,
+    "energyOnSec": 23.696457,
+    "energyEndSec": 28.09753,
+    "energyOnFrame30": 711,
+    "energyEndFrame30": 843,
+    "boundaryStatus": "Transformed R1 ASR-associated envelope /0.97; not E measured phoneme boundary; listening pending"
+   },
+   {
+    "id": "L09",
+    "beat": "EDU-EP20-SHORT-S01-B04",
+    "anchor": "B04-a1",
+    "text": "ลองวิ่งตรงด้วยความเร็วคงที่ รอให้ลูกโป่งหยุดแกว่ง มันกลับมาตั้งตรง",
+    "asrOnSec": 28.494845,
+    "asrEndSec": 33.072165,
+    "asrOnFrame30": 855,
+    "asrEndFrame30": 992,
+    "energyOnSec": 28.564411,
+    "energyEndSec": 33.136233,
+    "energyOnFrame30": 857,
+    "energyEndFrame30": 994,
+    "boundaryStatus": "Transformed R1 ASR-associated envelope /0.97; not E measured phoneme boundary; listening pending"
+   },
+   {
+    "id": "L10",
+    "beat": "EDU-EP20-SHORT-S01-B04",
+    "anchor": "B04-a2",
+    "text": "ตัวที่ทำให้เอน คือการเร่ง ไม่ใช่ความเร็ว",
+    "asrOnSec": 33.072165,
+    "asrEndSec": 36.123711,
+    "asrOnFrame30": 992,
+    "asrEndFrame30": 1084,
+    "energyOnSec": 33.228888,
+    "energyEndSec": 36.120189,
+    "energyOnFrame30": 997,
+    "energyEndFrame30": 1084,
+    "boundaryStatus": "Transformed R1 ASR-associated envelope /0.97; not E measured phoneme boundary; listening pending"
+   },
+   {
+    "id": "L11",
+    "beat": "EDU-EP20-SHORT-S01-B05",
+    "anchor": "B05-a1",
+    "text": "ทีนี้ทายอีกรอบ ถ้ารถยังวิ่งไปข้างหน้า แต่กำลังชะลอ คราวนี้คุณเอนไปหน้า...",
+    "asrOnSec": 36.494845,
+    "asrEndSec": 42.329897,
+    "asrOnFrame30": 1095,
+    "asrEndFrame30": 1270,
+    "energyOnSec": 36.572272,
+    "energyEndSec": 42.265335,
+    "energyOnFrame30": 1097,
+    "energyEndFrame30": 1268,
+    "boundaryStatus": "Transformed R1 ASR-associated envelope /0.97; not E measured phoneme boundary; listening pending"
+   },
+   {
+    "id": "L12",
+    "beat": "EDU-EP20-SHORT-S01-B05",
+    "anchor": "B05-a2",
+    "text": "ส่วนลูกโป่งกลับเอนไปท้ายรถ!",
+    "asrOnSec": 42.474227,
+    "asrEndSec": 44.061856,
+    "asrOnFrame30": 1274,
+    "asrEndFrame30": 1322,
+    "energyOnSec": 42.479811,
+    "energyEndSec": 44.364304,
+    "energyOnFrame30": 1274,
+    "energyEndFrame30": 1331,
+    "boundaryStatus": "Transformed R1 ASR-associated envelope /0.97; not E measured phoneme boundary; listening pending"
+   },
+   {
+    "id": "L13",
+    "beat": "EDU-EP20-SHORT-S01-B05",
+    "anchor": "B05-a3",
+    "text": "อากาศรอบมัน เปลี่ยนฝั่งที่ดันแรงกว่าแล้วไง",
+    "asrOnSec": 44.350515,
+    "asrEndSec": 46.659794,
+    "asrOnFrame30": 1331,
+    "asrEndFrame30": 1400,
+    "energyOnSec": 44.460115,
+    "energyEndSec": 46.848003,
+    "energyOnFrame30": 1334,
+    "energyEndFrame30": 1405,
+    "boundaryStatus": "Transformed R1 ASR-associated envelope /0.97; not E measured phoneme boundary; listening pending"
+   }
+  ],
+  "beats": [
+   {
+    "id": "EDU-EP20-SHORT-S01-B01",
+    "firstLine": "L01",
+    "lastLine": "L03",
+    "anchorText": "รถเร่ง...ลูกโป่งจะเอนไปทางไหน?",
+    "asrOnSec": 0.0,
+    "energyOnSec": 0.105091,
+    "energyOnFrame30": 3,
+    "energyEndSec": 11.332775,
+    "energyEndFrame30": 340
+   },
+   {
+    "id": "EDU-EP20-SHORT-S01-B02",
+    "firstLine": "L04",
+    "lastLine": "L05",
+    "anchorText": "ผิด! มันกลับเอนไปข้างหน้า",
+    "asrOnSec": 11.773196,
+    "energyOnSec": 11.840851,
+    "energyOnFrame30": 355,
+    "energyEndSec": 16.249055,
+    "energyEndFrame30": 487
+   },
+   {
+    "id": "EDU-EP20-SHORT-S01-B03",
+    "firstLine": "L06",
+    "lastLine": "L08",
+    "anchorText": "อากาศในรถไง ตอนรถเร่ง แรงดันอากาศด้านหลังจะมากกว่าด้านหน้า",
+    "asrOnSec": 16.453608,
+    "energyOnSec": 16.557173,
+    "energyOnFrame30": 497,
+    "energyEndSec": 28.09753,
+    "energyEndFrame30": 843
+   },
+   {
+    "id": "EDU-EP20-SHORT-S01-B04",
+    "firstLine": "L09",
+    "lastLine": "L10",
+    "anchorText": "ลองวิ่งตรงด้วยความเร็วคงที่ รอให้ลูกโป่งหยุดแกว่ง มันกลับมาตั้งตรง",
+    "asrOnSec": 28.494845,
+    "energyOnSec": 28.564411,
+    "energyOnFrame30": 857,
+    "energyEndSec": 36.120189,
+    "energyEndFrame30": 1084
+   },
+   {
+    "id": "EDU-EP20-SHORT-S01-B05",
+    "firstLine": "L11",
+    "lastLine": "L13",
+    "anchorText": "ทีนี้ทายอีกรอบ ถ้ารถยังวิ่งไปข้างหน้า แต่กำลังชะลอ คราวนี้คุณเอนไปหน้า...",
+    "asrOnSec": 36.494845,
+    "energyOnSec": 36.572272,
+    "energyOnFrame30": 1097,
+    "energyEndSec": 46.848003,
+    "energyEndFrame30": 1405
+   }
+  ],
+  "interLineBoundaries": [
+   {
+    "after": "L01",
+    "before": "L02",
+    "asrMidSec": 2.340206,
+    "energyGapSec": [
+     2.278351,
+     2.546392
+    ],
+    "energyGapDurationSec": 0.268041,
+    "measurementPartitionSec": 2.412371,
+    "notAnAuthoredEdit": true
+   },
+   {
+    "after": "L02",
+    "before": "L03",
+    "asrMidSec": 6.391753,
+    "energyGapSec": [
+     6.268041,
+     6.412371
+    ],
+    "energyGapDurationSec": 0.14433,
+    "measurementPartitionSec": 6.340206,
+    "notAnAuthoredEdit": true
+   },
+   {
+    "after": "L03",
+    "before": "L04",
+    "asrMidSec": 11.505155,
+    "energyGapSec": [
+     11.340206,
+     11.835052
+    ],
+    "energyGapDurationSec": 0.494845,
+    "measurementPartitionSec": 11.587629,
+    "notAnAuthoredEdit": true
+   },
+   {
+    "after": "L04",
+    "before": "L05",
+    "asrMidSec": 13.896907,
+    "energyGapSec": [
+     13.597938,
+     13.979381
+    ],
+    "energyGapDurationSec": 0.381443,
+    "measurementPartitionSec": 13.78866,
+    "notAnAuthoredEdit": true
+   },
+   {
+    "after": "L05",
+    "before": "L06",
+    "asrMidSec": 16.28866,
+    "energyGapSec": [
+     16.257732,
+     16.556701
+    ],
+    "energyGapDurationSec": 0.298969,
+    "measurementPartitionSec": 16.407216,
+    "notAnAuthoredEdit": true
+   },
+   {
+    "after": "L06",
+    "before": "L07",
+    "asrMidSec": 21.103093,
+    "energyGapSec": [
+     21.175258,
+     21.268041
+    ],
+    "energyGapDurationSec": 0.092784,
+    "measurementPartitionSec": 21.221649,
+    "notAnAuthoredEdit": true
+   },
+   {
+    "after": "L07",
+    "before": "L08",
+    "asrMidSec": 23.639175,
+    "energyGapSec": [
+     23.515464,
+     23.690722
+    ],
+    "energyGapDurationSec": 0.175258,
+    "measurementPartitionSec": 23.603093,
+    "notAnAuthoredEdit": true
+   },
+   {
+    "after": "L08",
+    "before": "L09",
+    "asrMidSec": 28.257732,
+    "energyGapSec": [
+     28.103093,
+     28.556701
+    ],
+    "energyGapDurationSec": 0.453608,
+    "measurementPartitionSec": 28.329897,
+    "notAnAuthoredEdit": true
+   },
+   {
+    "after": "L09",
+    "before": "L10",
+    "asrMidSec": 33.072165,
+    "energyGapSec": [
+     33.14433,
+     33.226804
+    ],
+    "energyGapDurationSec": 0.082474,
+    "measurementPartitionSec": 33.185567,
+    "notAnAuthoredEdit": true
+   },
+   {
+    "after": "L10",
+    "before": "L11",
+    "asrMidSec": 36.309278,
+    "energyGapSec": [
+     36.123711,
+     36.56701
+    ],
+    "energyGapDurationSec": 0.443299,
+    "measurementPartitionSec": 36.345361,
+    "notAnAuthoredEdit": true
+   },
+   {
+    "after": "L11",
+    "before": "L12",
+    "asrMidSec": 42.402062,
+    "energyGapSec": [
+     42.268041,
+     42.474227
+    ],
+    "energyGapDurationSec": 0.206186,
+    "measurementPartitionSec": 42.371134,
+    "notAnAuthoredEdit": true
+   },
+   {
+    "after": "L12",
+    "before": "L13",
+    "asrMidSec": 44.206186,
+    "energyGapSec": [
+     44.371134,
+     44.453608
+    ],
+    "energyGapDurationSec": 0.082474,
+    "measurementPartitionSec": 44.412371,
+    "notAnAuthoredEdit": true
+   }
+  ],
+  "timing": {
+   "editorialBudgetSec": 47,
+   "fivePercentReferenceSec": 49.35,
+   "finalHoldSec": 3,
+   "untrimmedFilePlusHoldSec": 50.10722916666667,
+   "energySpanPlusHoldSec": 49.67,
+   "headTailRemovalIsNotAuthored": true,
+   "extraGapBudgetTo49_35UntrimmedSec": -0.7572291666666686,
+   "mandatoryExtraGapsSec": null,
+   "extraGapsNote": "No automatic extra gaps, trims or padding. E is user-selected 3% slower than D; actual file+3s hold exceeds former 49.35s reference but remains within channel 40-60s. Film owns hold and reaction placement.",
+   "conditionalThreeToFiveExtraGapsPlusHoldSec": [
+    53.10722916666667,
+    55.10722916666667
+   ],
+   "answerSpansSec": {
+    "forwardPayment": 1.752276,
+    "airMechanism": 6.953652,
+    "constantSpeedAnswer": 7.555777,
+    "brakingAnswer": 4.368192
+   },
+   "earlyPaymentOnSec": 11.840851,
+   "earlyPaymentPercentUntrimmedPlusHold": 23.631023301278468
+  },
+  "limitations": [
+   "No native word timestamps from Gemini; ASR cannot certify pronunciation.",
+   "Energy thresholds measure envelopes, not phonemes or physical settling time.",
+   "Frame references describe continuous selected audio before any Film editorial offset.",
+   "No timeline integration, art, music/SFX, final MP3/amplitude or full-read approval in this pass.",
+   "E line/beat/gap anchors are scaled R1 estimates; actual E duration/RMS/loudness were measured independently. AtTempo is not a guarantee of sample-exact local scaling."
+  ],
+  "rawApiSource": {
+   "cacheKey": "f0d13294169b6bf7",
+   "storeFile": "gemini-source-raw.wav",
+   "sha256": "7cbdf7af47146cfb0f243b3f876a3a5f7f40ea7d14af556295e9eb52f4a07196"
+  },
+  "selectedLoudness": {
+   "input_i": "-15.92",
+   "input_tp": "-1.51",
+   "input_lra": "2.30",
+   "input_thresh": "-26.14",
+   "units": "LUFS / dBTP / LU / LUFS"
+  },
+  "checks": {
+   "onlyTtsEllipsesNormalized": true,
+   "all13AnchorsMatchedInsidePhrase": true,
+   "fallbackAnchors": 0,
+   "lineOnsetsMonotonic": true,
+   "allAnswerSpansUnder10Sec": true,
+   "noJobsRunningAtHandoff": "verified after completion; no render initiated",
+   "all13ScriptLinesPreservedInTtsInputOnly": true,
+   "spokenExactTextCertified": false
+  },
+  "sourceMeasureRevision": "EDU-EP20-VOICE-MEASURE-R1",
+  "sourceMeasureStoreFile": "voice-measure-r1-preserved.json",
+  "previousSelectedAudio": {
+   "sha256": "9839d787e154f2fa98fe365e658e2a3b348ebc26bad91f9372a7040d7b17055f",
+   "sampleRate": 48000,
+   "samples": 2193917,
+   "durationSec": 45.706604166666665,
+   "firstEnergySec": 0.18,
+   "lastEnergySec": 45.44,
+   "energySpanSec": 45.26,
+   "aboveThresholdSec": 33.16
+  },
+  "userPaceApproval": {
+   "quote": "ใช้ความเร็วนี้",
+   "date": "2026-11-16",
+   "candidate": "E",
+   "sampleDurationSec": 6.317979,
+   "fullReadListeningApproval": false
+  }
+ }
+}

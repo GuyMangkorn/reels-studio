@@ -165,15 +165,23 @@ let profiler: ReturnType<typeof profiled> | null = null;
  * Renders a p5.brush (standalone build) painting for the current Remotion frame.
  * The canvas is cleared, reseeded and repainted synchronously on every frame, so any frame renders in isolation.
  */
-export const BrushCanvas = ({paint, paper = '#efe6d2', boilEvery = 2, brushScale = 5}: {
+/**
+ * A second picture composited over the canvas: `paint` runs first in its own full pass (cleared to `paper`), the result is copied
+ * into a 2D canvas above the WebGL one and shown at CSS `opacity`, then the main `paint` runs. The two pictures mix as images
+ * (out x (1 - opacity) + in x opacity), never mark over mark: a true crossfade (DF-20261029-painted-timeline-dissolve follow-up).
+ */
+export type BrushLayer = {paint: (ctx: PaintContext) => void; opacity: number; paper?: string};
+export const BrushCanvas = ({paint, paper = '#efe6d2', boilEvery = 2, brushScale = 5, layer}: {
   paint: (ctx: PaintContext) => void;
   paper?: string;
   boilEvery?: number;
   brushScale?: number;
+  layer?: BrushLayer;
 }) => {
   const frame = useCurrentFrame();
   const {fps, width, height} = useVideoConfig();
   const host = useRef<HTMLDivElement>(null);
+  const over = useRef<HTMLCanvasElement>(null);
   const scale = paintScale();
 
   useLayoutEffect(() => {
@@ -201,22 +209,38 @@ export const BrushCanvas = ({paint, paper = '#efe6d2', boilEvery = 2, brushScale
       b.seed(n);
       b.noiseSeed(n);
     };
-    brush.clear(paper);
-    brush.push();
-    // The standalone runtime puts the origin at the canvas centre; scenes draw in top-left pixel coordinates.
-    brush.translate(-width * scale / 2, -height * scale / 2);
-    if (scale !== 1) brush.scale(scale);
-    deferred?.begin();
-    profiler?.begin();
-    reseed(1);
-    paint({brush: b, t: frame / fps, frame, width, height, still: (id) => reseed(id + 1), boil: (id) => reseed(id * 7919 + step + 1), textured: inner});
-    deferred?.end();
-    brush.pop();
+    const pass = (draw: (ctx: PaintContext) => void, clearTo: string) => {
+      brush.clear(clearTo);
+      brush.push();
+      // The standalone runtime puts the origin at the canvas centre; scenes draw in top-left pixel coordinates.
+      brush.translate(-width * scale / 2, -height * scale / 2);
+      if (scale !== 1) brush.scale(scale);
+      deferred?.begin();
+      profiler?.begin();
+      reseed(1);
+      draw({brush: b, t: frame / fps, frame, width, height, still: (id) => reseed(id + 1), boil: (id) => reseed(id * 7919 + step + 1), textured: inner});
+      deferred?.end();
+      brush.pop();
+    };
+    if (layer && over.current && canvas) {
+      // Layer pass first; copied in the same task as its render, so the WebGL buffer needs no preserveDrawingBuffer.
+      pass(layer.paint, layer.paper ?? paper);
+      brush.render();
+      const ctx = over.current.getContext('2d')!;
+      if (over.current.width !== canvas.width || over.current.height !== canvas.height) Object.assign(over.current, {width: canvas.width, height: canvas.height});
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.drawImage(canvas, 0, 0);
+    }
+    pass(paint, paper);
     if (profiler) console.log(`paint-profile ${JSON.stringify({frame, ...profiler.end()})}`);
     else brush.render();
-  }, [frame, fps, width, height, paint, paper, boilEvery, scale]);
+  }, [frame, fps, width, height, paint, paper, boilEvery, scale, layer]);
 
-  return <AbsoluteFill ref={host} />;
+  // Same element tree with or without a layer, so the host (which holds the shared WebGL canvas) is never remounted.
+  return <>
+    <AbsoluteFill ref={host} />
+    {layer && <canvas ref={over} style={{position: 'absolute', inset: 0, width: '100%', height: '100%', opacity: layer.opacity}} />}
+  </>;
 };
 
 export {hash} from './kit/hash';

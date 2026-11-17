@@ -121,6 +121,7 @@ export function validateVideoStyle(video: {audio?: unknown; captionStyle?: unkno
     if (!record(video.chrome)) fail('chrome', 'expected object');
     const chrome = video.chrome as Record<string, unknown>;
     if (chrome.channelLabel !== undefined && chrome.channelLabel !== false && typeof chrome.channelLabel !== 'string') fail('chrome.channelLabel', 'expected text or false');
+    if (chrome.channelLabelStyle !== undefined && chrome.channelLabelStyle !== 'ink' && chrome.channelLabelStyle !== 'outline') fail('chrome.channelLabelStyle', "expected 'ink' or 'outline'");
     if (chrome.progressBar !== undefined && typeof chrome.progressBar !== 'boolean') fail('chrome.progressBar', 'expected boolean');
   }
 }
@@ -179,4 +180,11 @@ export const outlineLook = (style?: CaptionStyle) => {
   return {WebkitTextStroke: `${strokeWidth}px ${strokeColor}`, paintOrder: 'stroke fill', textShadow};
 };
 export const defaultCaptionStyle: Required<Omit<CaptionStyle, 'color' | 'bottomEdgeY' | 'centerY' | 'fadeOutWithLoop' | 'strokeWidth' | 'strokeColor' | 'textShadow'>> & {color: string; bottomEdgeY?: number; centerY?: number} = {preset: 'outline', position: 'bottom', color: '#fff', scale: 1};
-export const defaultChrome: Required<ChromeStyle> = {channelLabel: '@TamMaiLa', progressBar: false};
+export const defaultChrome: Required<ChromeStyle> = {channelLabel: '@TamMaiLa', channelLabelStyle: 'ink', progressBar: false};
+/** Text look of the portrait channel mark (position and 22 px size are SceneRenderer's and never change). `ink`: the scene ink colour,
+ * as every video before EDU-EP20. `outline`: light #fff1da fill, semibold, 6 px edu caption stroke (paint-order stroke fill, so 3 px
+ * shows) and the `CAPTION_OUTLINE` halo, the look EDU-EP11 drew by hand on its sepia shots; it reads on dark hair and pale walls alike
+ * (EDU-EP20 Draft round 1: the ink mark vanished over the passenger's hair on cameras A, D, D-R). */
+export const channelLabelLook = (style: ChromeStyle['channelLabelStyle'], ink: string) => style === 'outline'
+  ? {color: '#fff1da', fontWeight: 600, WebkitTextStroke: `6px ${CAPTION_OUTLINE.strokeColor}`, paintOrder: 'stroke fill', textShadow: CAPTION_OUTLINE.textShadow}
+  : {color: ink};

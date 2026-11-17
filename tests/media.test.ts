@@ -1,7 +1,7 @@
 import {test} from 'node:test';
 import assert from 'node:assert/strict';
 import {timelineFrames, validateTimeline} from '../src/scenes/timeline';
-import {duckGainAt, entryTransitionStyle, outlineLook, trackFadeAt, validateVideoStyle} from '../src/scenes/media';
+import {CAPTION_OUTLINE, channelLabelLook, defaultChrome, duckGainAt, entryTransitionStyle, outlineLook, trackFadeAt, validateVideoStyle} from '../src/scenes/media';
 import type {Scene} from '../src/scenes/types';
 
 const plain = (extra: Partial<Scene> = {}): Scene => ({durationSec: 2, bg: 'none', actors: [], subtitle: '', ...extra});
@@ -77,4 +77,16 @@ test('outline look: unset fields take the channel caption outline', () => {
   assert.deepEqual(outlineLook(), channel);
   assert.deepEqual(outlineLook({preset: 'outline', position: 'bottom', bottomEdgeY: 1248}), channel);
   assert.deepEqual(outlineLook({strokeWidth: 8, strokeColor: '#101018', textShadow: '0 0 8px #000'}), {WebkitTextStroke: '8px #101018', paintOrder: 'stroke fill', textShadow: '0 0 8px #000'});
+});
+
+test('channel mark: ink by default (every earlier video), outline opt-in with the edu caption stroke', () => {
+  assert.equal(defaultChrome.channelLabelStyle, 'ink');
+  assert.deepEqual(channelLabelLook(undefined, '#49445c'), {color: '#49445c'});
+  assert.deepEqual(channelLabelLook('ink', '#fff1da'), {color: '#fff1da'});
+  const o = channelLabelLook('outline', '#49445c');
+  assert.equal(o.color, '#fff1da');
+  assert.equal((o as {WebkitTextStroke: string}).WebkitTextStroke, `6px ${CAPTION_OUTLINE.strokeColor}`);
+  assert.equal((o as {textShadow: string}).textShadow, CAPTION_OUTLINE.textShadow);
+  validateVideoStyle({chrome: {channelLabelStyle: 'outline'}}, 'X');
+  assert.throws(() => validateVideoStyle({chrome: {channelLabelStyle: 'white'}}, 'X'), /chrome\.channelLabelStyle/);
 });

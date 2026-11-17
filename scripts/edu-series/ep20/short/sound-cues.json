@@ -1,0 +1,358 @@
+{
+  "deliverable": "EDU-EP20-SHORT",
+  "sceneSheets": "EDU-EP20-SS-R5",
+  "video": "src/videos/edu-ep20",
+  "fps": 30,
+  "totalFrames": 1619,
+  "frameClock": "global composition frames at 30 fps (G = shot start + shot-local frame); frameLocal is shot-local; lengthFrames is the processed file length at 30 fps; endFrame is where Editor stops the cue; store is the library master, file is the public/ path after store.py use",
+  "narration": "projects/edu/EDU/narration/edu-ep20-r2/kore-full-selected-E-L13r2.wav (narration R2 / VOICE-MEASURE-R3, SHA256 b6f8490d2af1ea5975ba612dc35cae308719a8296e1126189d441cdc5ce11d68, 48.073688 s = G1442.2, -15.90 LUFS integrated, last word energy G1437.9)",
+  "sources": [
+    "src/videos/edu-ep20",
+    "scripts/edu-series/ep20/sound-mix.py"
+  ],
+  "cues": [
+    {
+      "cue": "AMB20",
+      "shot": "EDU-EP20-SHORT-S01-B01-SH01",
+      "frame": 0,
+      "frameLocal": 0,
+      "layer": "ambience",
+      "brief": "AMB20 one continuous low enclosed closed-window car cabin/road texture, soft even engine support, no roar, no gear change, no wind gust; never restarted per shot",
+      "id": "room_car-cabin-cruise-quiet_01",
+      "origin": "generated",
+      "store": "library/sound/ambience/room/room_car-cabin-cruise-quiet_01.wav",
+      "file": "public/audio/room/room_car-cabin-cruise-quiet_01.wav",
+      "lengthFrames": 1620,
+      "endFrame": 1619,
+      "level": "ambience: gain -23 dB (file -14 LUFS to ~-37 LUFS, voice -15.9 LUFS): dV about 21 alone, with MUS20 background about 18",
+      "note": "One pass, no loop, 54 s file (1620 f); Editor cuts it at G1619. Starts G0 (built-in 300 ms fade-in), continuous under every shot, no dead room. SS-R5 END20 (FD20-R5-04, +29 f): hold level through the outro and END tag, then a 40 f linear fade-out G1579-1619 with the picture's A_fade (SS-R4 1550-1590, SS-R3 1480-1504). The file still covers it (1620 f > 1619), no new file. File's own 1.5 s fade sits at 54 s, outside the video.",
+      "listened": "no",
+      "fadeInFrames": 9
+    },
+    {
+      "cue": "MUS20",
+      "shot": "EDU-EP20-SHORT-S01-B01-SH01",
+      "frame": 0,
+      "frameLocal": 0,
+      "layer": "bed",
+      "brief": "MUS20 sparse warm muted mallet/plucked-wood pulse about 94 BPM, inquisitive, no drums, no sting",
+      "id": "bed_wood-mallet-sparse-curious_01",
+      "origin": "generated",
+      "store": "library/sound/music/bed/bed_wood-mallet-sparse-curious_01.wav",
+      "file": "public/audio/bed/bed_wood-mallet-sparse-curious_01.wav",
+      "lengthFrames": 1560,
+      "endFrame": 1443,
+      "level": "bed: gain -23 dB from the -14 LUFS file (about -37 LUFS, dV about 21); automation below",
+      "note": "Starts G0, one pass, no restart. Gain automation (Editor, ramps >= 12 f, never abrupt): G0-348 0 dB; G348 -> G352 ramp down to silence (-30 dB or off) = planned gap before the tap; stays out to G373 (SH01 B02 local21), then ramps back up over 12 f to -3 dB (thin); G520 area hold -3 dB; G1094-1264 -3 dB then 'thin for renewed question'; B04-SH01 ellipsis G905-955 (local60-110) thin to -6 dB without ticking or stopping; G1264 -> G1289 anticipation gap: ramp to silence by G1268, stay silent to G1289 (SFX20-ANSWER at G1290 ends it), return at -6 dB at G1295. SS-R5 release (FD20-R5-04, +29 f after the longer L13): automation points (1301,-6 dB), (1409,-6 dB), (1443,OFF) = hold -6 dB under เพราะคราวนี้ / อากาศด้านหน้า, linear release G1409 -> G1443 during กลับดันแรงกว่า...นั่นเอง (SS-R4 (1380,-6),(1414,OFF)). File ends at 52 s (G1560), so Editor cuts it at G1443 with that release; MUS20-OUTRO takes over at G1445.",
+      "listened": "no"
+    },
+    {
+      "cue": "SFX20-TAP",
+      "shot": "EDU-EP20-SHORT-S01-B02-SH01",
+      "frame": 365,
+      "frameLocal": 13,
+      "layer": "accent",
+      "brief": "SFX20-TAP single dry soft fingertip-sized wooden tap, enclosed/near, ~0.12 s, light surprise not collision",
+      "id": "foley_wood-tap-soft_01",
+      "origin": "generated",
+      "store": "library/sound/sfx/foley/foley_wood-tap-soft_01.wav",
+      "file": "public/audio/foley/foley_wood-tap-soft_01.wav",
+      "lengthFrames": 3,
+      "endFrame": 369,
+      "level": "accent: gain -6 dB (SS-R4 round 1: was -8; the draft stem at -8 read speech-row dV 21.5 against the 12..20 target, +2 dB gives about 19.5; peak about -5 dBFS). Sits in the 0.40 s word pause G360-372 (voice -47..-64 dB), about 10 dB under the voice at 50 ms resolution; levels row re-targeted to EP08b 'SFX accent over speech' (Ton)",
+      "note": "Attack at file frame 0, so frame = G365. Picked of 4 for the shortest tail (0.10 s to -30 dB) and a rounded non-metallic transient.",
+      "listened": "no"
+    },
+    {
+      "cue": "SFX20-TICK",
+      "shot": "EDU-EP20-SHORT-S01-B03-SH01",
+      "frame": 520,
+      "frameLocal": 24,
+      "layer": "accent",
+      "brief": "SFX20-TICK one subdued woodblock tick, short rounded transient, indicates the explanatory inset (not wind), no repeat on arrows",
+      "id": "foley_woodblock-tick-soft_01",
+      "origin": "generated",
+      "store": "library/sound/sfx/foley/foley_woodblock-tick-soft_01.wav",
+      "file": "public/audio/foley/foley_woodblock-tick-soft_01.wav",
+      "lengthFrames": 3,
+      "endFrame": 523,
+      "level": "accent: gain -6 dB (peak -4 dBFS in the stem). Plays over L06 speech, about 10 dB under the voice at 50 ms resolution; levels row re-targeted to EP08b 'SFX accent over speech' (Ton, SS-R4 round 1)",
+      "note": "Placed once at G520. Brief asked ~0.18 s with a ~0.18 s room tail; the picked take is 0.09 s (all four candidates had tails <=0.15 s to -30 dB). It is a short rounded tick; if Film wants a longer tail, send a fix through fixlist.md for a new generation.",
+      "listened": "no"
+    },
+    {
+      "cue": "SFX20-ANSWER",
+      "shot": "EDU-EP20-SHORT-S01-B05-SH02",
+      "frame": 1290,
+      "frameLocal": 17,
+      "layer": "accent",
+      "brief": "SFX20-ANSWER two small warm wooden/mallet notes rising gently, near, dry, soft enclosed tail; responds to the revealed opposition",
+      "id": "stinger_wood-answer-two-notes_01",
+      "origin": "generated",
+      "store": "library/sound/sfx/stinger/stinger_wood-answer-two-notes_01.wav",
+      "file": "public/audio/stinger/stinger_wood-answer-two-notes_01.wav",
+      "lengthFrames": 35,
+      "endFrame": 1325,
+      "level": "accent: gain -9.5 dB (Ton confirms Editor's draft change from -6: at -6 the sum clipped +0.9 dBTP at G1303 where the tail meets L12; at -9.5 the peak row measured dV 2.6, inside -6..3)",
+      "note": "Starts G1290 (SH02 local17), after the anticipation gap. File 1.16 s (brief ~0.45 s for the notes; the extra is natural decay, ends clean at -90 dB). Bed returns at G1295 at -6 dB and does not mask the tail.",
+      "listened": "no"
+    },
+    {
+      "cue": "MUS20-OUTRO",
+      "shot": "EDU-EP20-SHORT-S01-B05-SH03",
+      "frame": 1445,
+      "frameLocal": 113,
+      "layer": "bed",
+      "brief": "MUS20-OUTRO short warm melody, solo soft muted marimba lead with a few plucked-wood answer notes, ~6 beats at 94 BPM (115 f), gently descending, quietly satisfied, no drums/pad/strings, dry intimate room, same key and tonic as MUS20, ends on an open note (degree 2 or 5) that SFX20-END resolves",
+      "id": "stinger_marimba-outro-falling-open_01",
+      "origin": "generated",
+      "store": "library/sound/music/stinger/stinger_marimba-outro-falling-open_01.wav",
+      "file": "public/audio/stinger/stinger_marimba-outro-falling-open_01.wav",
+      "lengthFrames": 116,
+      "endFrame": 1561,
+      "level": "bed (release): gain -6 dB from the -14 LUFS file = -19.6 LUFS integrated, momentary max -17.0 (Film: about -20 LUFS short-term); EP08b bed peak >= 0 dV",
+      "note": "SS-R5 (FD20-R5-04): moved G1416 -> G1445 (same file, same gain), 7 f after the last word's energy (G1437.9) and 2.8 f after the narration file end (G1442.2), so it never sits under the voice. Grid measured on the file itself (Ton SS-R5, 5 ms-hop energy onsets): attacks at 0.010, 0.340, 0.637, 0.797, 0.953, 1.110, 1.300, 1.462, 1.623, 1.782, 1.935, 2.547, 2.888, 3.205, 3.362, 3.515, 3.672 s = eighth/sixteenth positions of a 94 BPM grid anchored at file 0 (0.03, 1.07, 2.0 ... 11.51 eighths); six quarters = 3.830 s (3.840 s from the 0.010 s first attack) = 114.9 f -> G1559.9, so the sixth-beat downbeat lands on SFX20-END at G1560. Last attacks G4 at 3.515 s (G1550.5) with a soft 3.672 s re-strike (G1555.2); trimmed at 3.85 s with a 150 ms fade, file end G1560.5 (endFrame 1561), overlap with END 1 frame (sheet allows 14). No gain automation needed; play at -6 dB to the file end.",
+      "listened": "no",
+      "candidates": "12 generations + 4 inpaint tries in library/sound/_raw (mus20-outro-a/b/c_v1-4, mus20-outro-a2-ring_v1-4). Picked a_v2 (seed 20417): only take that falls, stays in MUS20's set and ends on degree 2. Listening previews G1380-1590 in context (voice tail, MUS20 release, OUTRO -6 dB, END -6 dB, AMB20 fade): store projects/edu/EDU/samples/MUS20-OUTRO-candidate-{A,B,C}-in-context.wav (A = filed pick; B = c_v3 sparse rising F G A Bb then tonic; C = b_v4 fuller cfg-4 take F F A Bb A, ends on tonic)."
+    },
+    {
+      "cue": "SFX20-END",
+      "shot": "EDU-EP20-SHORT-S01-B05-SH03",
+      "frame": 1560,
+      "frameLocal": 228,
+      "layer": "accent",
+      "brief": "SFX20-END restrained two-note plucked wood/mallet closing tag, the episode's UT15 ending sound; SS-R5: lands at G1560 as the cadence of MUS20-OUTRO (onset 1445 + 6 beats at 94 BPM = 115 f; second, lower note = tonic); -30 dB about G1590, audible tail about G1604, file end G1618",
+      "id": "stinger_wood-two-note-tag-end_01",
+      "origin": "generated",
+      "store": "library/sound/music/stinger/stinger_wood-two-note-tag-end_01.wav",
+      "file": "public/audio/stinger/stinger_wood-two-note-tag-end_01.wav",
+      "lengthFrames": 58,
+      "endFrame": 1618,
+      "level": "accent: gain -6 dB; EP08b accent -6..3 dV at its peak (after the voice, under no speech)",
+      "note": "SS-R5 (FD20-R5-04): moved G1531 -> G1560 (same file, same gain; SS-R3 G1405), attack at file frame 0. Measured pitch F4 then F3 = MUS20 tonic F, so it resolves the outro's open G4 with no pitch shift. File 1.93 s (58 f): -30 dB about 1.0 s after its attack in 100 ms RMS (G1590), audible tail to about G1604, file end G1618, inside the A_fade G1579-1619 and before G1619.",
+      "listened": "no"
+    }
+  ],
+  "swaps": [],
+  "exempt": [
+    {
+      "src": "out/stems/voice.wav",
+      "reason": "per-layer stem for mix-levels.py"
+    },
+    {
+      "src": "out/stems/bed.wav",
+      "reason": "per-layer stem"
+    },
+    {
+      "src": "out/stems/ambience.wav",
+      "reason": "per-layer stem"
+    },
+    {
+      "src": "out/stems/accent.wav",
+      "reason": "per-layer stem"
+    },
+    {
+      "src": "public/audio/edu/EDU-EP20-SHORT-draft-stem-v3.wav",
+      "reason": "the baked sound stem (bed + ambience + accent of this cue sheet) written by scripts/edu-series/ep20/sound-mix.py (Editor W5.3; v3 = SS-R5 narration R2 re-cut, 7 cues, 1619 f; v2 = SS-R4, 1590 f)"
+    }
+  ],
+  "levels": {
+    "layers": "bed = MUS20; ambience = AMB20; accent = SFX20-TAP/TICK/ANSWER/END; background = sum of non-voice stems",
+    "stems": {
+      "voice": "out/stems/voice.wav",
+      "bed": "out/stems/bed.wav",
+      "ambience": "out/stems/ambience.wav",
+      "accent": "out/stems/accent.wav"
+    },
+    "checks": [
+      {
+        "beat": "B01",
+        "layer": "background",
+        "when": "speech",
+        "fromSec": 0,
+        "toSec": 11.73,
+        "min": 15
+      },
+      {
+        "beat": "B01",
+        "layer": "bed",
+        "when": "speech",
+        "fromSec": 0,
+        "toSec": 11.73,
+        "warnAbove": 20
+      },
+      {
+        "beat": "B01",
+        "layer": "ambience",
+        "when": "speech",
+        "fromSec": 0,
+        "toSec": 11.73,
+        "warnAbove": 20
+      },
+      {
+        "beat": "B02",
+        "layer": "background",
+        "when": "speech",
+        "fromSec": 11.73,
+        "toSec": 16.53,
+        "min": 15
+      },
+      {
+        "beat": "B02",
+        "layer": "bed",
+        "when": "speech",
+        "fromSec": 11.73,
+        "toSec": 16.53,
+        "warnAbove": 20
+      },
+      {
+        "beat": "B02",
+        "layer": "ambience",
+        "when": "speech",
+        "fromSec": 11.73,
+        "toSec": 16.53,
+        "warnAbove": 20
+      },
+      {
+        "beat": "B03",
+        "layer": "background",
+        "when": "speech",
+        "fromSec": 16.53,
+        "toSec": 28.17,
+        "min": 15
+      },
+      {
+        "beat": "B03",
+        "layer": "bed",
+        "when": "speech",
+        "fromSec": 16.53,
+        "toSec": 28.17,
+        "warnAbove": 20
+      },
+      {
+        "beat": "B03",
+        "layer": "ambience",
+        "when": "speech",
+        "fromSec": 16.53,
+        "toSec": 28.17,
+        "warnAbove": 20
+      },
+      {
+        "beat": "B04",
+        "layer": "background",
+        "when": "speech",
+        "fromSec": 28.17,
+        "toSec": 36.47,
+        "min": 15
+      },
+      {
+        "beat": "B04",
+        "layer": "bed",
+        "when": "speech",
+        "fromSec": 28.17,
+        "toSec": 36.47,
+        "warnAbove": 20
+      },
+      {
+        "beat": "B04",
+        "layer": "ambience",
+        "when": "speech",
+        "fromSec": 28.17,
+        "toSec": 36.47,
+        "warnAbove": 20
+      },
+      {
+        "beat": "B05",
+        "layer": "background",
+        "when": "speech",
+        "fromSec": 36.47,
+        "toSec": 48.07,
+        "min": 15
+      },
+      {
+        "beat": "B05",
+        "layer": "bed",
+        "when": "speech",
+        "fromSec": 36.47,
+        "toSec": 48.07,
+        "warnAbove": 20
+      },
+      {
+        "beat": "B05",
+        "layer": "ambience",
+        "when": "speech",
+        "fromSec": 36.47,
+        "toSec": 48.07,
+        "warnAbove": 20
+      },
+      {
+        "beat": "B02",
+        "layer": "accent",
+        "when": "speech",
+        "fromSec": 12.1,
+        "toSec": 13.0,
+        "min": 12,
+        "max": 20,
+        "reason": "Ton SS-R4 round 1: 0.1 s soft foley transient (TAP in a 0.40 s word pause, TICK over speech); the 400 ms meter reads it about 5 LU under its 50 ms level, and the -6..3 hit row would need about +14 dB and peaks above 0 dBFS, against 'subdued / not collision'. EP08b 'SFX accent over speech' >= 12; max 20 keeps it audible (about 15 dB under the voice at 50 ms)."
+      },
+      {
+        "beat": "B03",
+        "layer": "accent",
+        "when": "speech",
+        "fromSec": 17.2,
+        "toSec": 17.9,
+        "min": 12,
+        "max": 20,
+        "reason": "Ton SS-R4 round 1: 0.1 s soft foley transient (TAP in a 0.40 s word pause, TICK over speech); the 400 ms meter reads it about 5 LU under its 50 ms level, and the -6..3 hit row would need about +14 dB and peaks above 0 dBFS, against 'subdued / not collision'. EP08b 'SFX accent over speech' >= 12; max 20 keeps it audible (about 15 dB under the voice at 50 ms)."
+      },
+      {
+        "beat": "B05",
+        "layer": "bed",
+        "when": "drop",
+        "fromSec": 42.13,
+        "toSec": 43.0,
+        "min": 30
+      },
+      {
+        "beat": "B05",
+        "layer": "accent",
+        "when": "peak",
+        "fromSec": 42.9,
+        "toSec": 44.3,
+        "min": -6,
+        "max": 3
+      },
+      {
+        "beat": "B05",
+        "layer": "accent",
+        "when": "peak",
+        "fromSec": 52.0,
+        "toSec": 53.0,
+        "min": -6,
+        "max": 3,
+        "cue": "SFX20-END"
+      },
+      {
+        "beat": "B05",
+        "layer": "bed",
+        "when": "peak",
+        "fromSec": 44.0,
+        "toSec": 48.07,
+        "min": 0
+      },
+      {
+        "beat": "B05-END20",
+        "layer": "bed",
+        "when": "peak",
+        "fromSec": 48.17,
+        "toSec": 52.0,
+        "min": 0,
+        "max": 8,
+        "cue": "MUS20-OUTRO",
+        "reason": "Film SS-R4/SS-R5: after the voice the melody may come forward to about -20 LUFS short-term (dV about 4); never above the voice. SS-R5 window G1445-1560 (onset to END)"
+      }
+    ],
+    "windows": "SS-R5 (Ton): B05 speech rows end at the narration R2 file end 48.07 s (G1442.2; SS-R4 47.1); MUS20-OUTRO row 48.17-52.0 s (G1445-1560); SFX20-END row 52.0-53.0 s (G1560-1590). B01-B04 rows and the B05 drop/ANSWER rows are unchanged (narration identical before the 44.401 s seam; SFX20-ANSWER still G1290)."
+  },
+  "key": "MUS20 measured (chroma over 0-47 s, scratch keyan.py): tonal centre F, pitch set F G Bb C Eb (no third in the bed; tuning about -3 cents); last 8 s before G1414 F/C only. SFX20-END = F4 then F3 (both tonic). MUS20-OUTRO = F4 A4 G4 C5 Bb4 A4 F4 A4 G4 G4 (F mixolydian/major set, no E or Ab), ends on G4 = degree 2; END resolves it to F on the next beat. No pitch shift needed."
+}

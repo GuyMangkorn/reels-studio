@@ -1,0 +1,31 @@
+{
+  "deliverable": "EDU-EP20-SHORT-PIC-COVERS",
+  "revision": "EDU-EP20-COVER-PIC-R1",
+  "title": "EP20 cover picture choices",
+  "untimed": true,
+  "purpose": "Isolated viewer-check input for five cover pictures; not the film storyboard or an approval record",
+  "looks": {
+    "P1": {
+      "src": "out/EDU-EP20-SHORT-PIC-COVERS/stills/15.png",
+      "caption": "Balloon close: one upright coral helium balloon, its tether and floor ring dominate the cabin. A partial seated passenger is context, not the subject. Approved LF20-CABIN-B set. Casting: man-crop + hoodie, P31 seated, right profile. Every balloon stays upright; no result direction or unequal-pressure answer is shown."
+    },
+    "P2": {
+      "src": "out/EDU-EP20-SHORT-PIC-COVERS/stills/45.png",
+      "caption": "Low floor view: an imagined low viewpoint looks up along the tether toward the upright balloon and the closed cabin window. Approved LF20-CABIN-B set. Casting: man-crop + hoodie, P31 seated, right profile. Every balloon stays upright; no result direction or unequal-pressure answer is shown."
+    },
+    "P3": {
+      "src": "out/EDU-EP20-SHORT-PIC-COVERS/stills/75.png",
+      "caption": "Face and emotion: the restrained seated passenger reacts to the upright balloon beside him; the face and balloon form one curious pair. Approved LF20-CABIN-B set. Casting: man-crop + hoodie, P31 seated, right profile. Every balloon stays upright; no result direction or unequal-pressure answer is shown."
+    },
+    "P4": {
+      "src": "out/EDU-EP20-SHORT-PIC-COVERS/stills/105.png",
+      "caption": "Tether setup: the upright balloon is visibly attached to the floor; a drawn ring points at the low anchor rather than a motion result. Approved LF20-CABIN-B set. Casting: man-crop + hoodie, P31 seated, right profile. Every balloon stays upright; no result direction or unequal-pressure answer is shown."
+    },
+    "P5": {
+      "src": "out/EDU-EP20-SHORT-PIC-COVERS/stills/135.png",
+      "caption": "Direction question: a seated passenger and upright balloon with equal opposing left/right arrows; the arrows are possible answers, not pressure vectors or the real result. Approved LF20-CABIN-B set. Casting: man-crop + hoodie, P31 seated, right profile. Every balloon stays upright; no result direction or unequal-pressure answer is shown."
+    }
+  },
+  "beats": [],
+  "shots": []
+}

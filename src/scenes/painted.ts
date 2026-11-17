@@ -140,6 +140,14 @@ const platesAt = (spans: PaintedSpan[], frame: number, fps: number): PaintedPlat
   return [plate(span, 1, 1)];
 };
 
+/** The incoming plate of a timeline dissolve (two plates, the second partial and not a C_seamless loop-blend plate) whose shot opts into
+ * `PaintedShot.crossfade` (`isCrossfade(shot id)`); null otherwise. PaintedStage paints that plate whole on the canvas layer. */
+export const crossfadeOf = (plates: PaintedPlate[], isCrossfade: (shot: string) => boolean): {plate: PaintedPlate; index: number} | null => {
+  if (plates.length !== 2) return null;
+  const plate = plates[1];
+  return !plate.incoming && plate.alpha > 0 && plate.alpha < 1 && isCrossfade(plate.shot) ? {plate, index: 1} : null;
+};
+
 /**
  * Pure painted state of a composition frame: which plates to paint, at which shot time and opacity. The final scene
  * follows the renderer's ending (B_loop/A_fade hold the last three seconds; A_fade fades); C_seamless blends frame 0's

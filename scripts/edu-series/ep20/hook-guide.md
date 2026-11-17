@@ -1,7 +1,7 @@
 # EP20 Hook Guide — prediction before explanation
 
 - Revision: **EDU-EP20-HOOK-R1**, Preaw, 2026-11-15.
-- Exact script dependency: [short/script.md](short/script.md), **EDU-EP20-SCRIPT-R1**; research: [C82](../ab-hook-pilot/research-c82.md), **C82-RESEARCH-R1**; governing [delivery](delivery.md), **EDU-EP20-DELIVERY-R1**.
+- Exact script dependency: [short/script.md](short/script.md), **EDU-EP20-SCRIPT-R2** (L13 only changed from R1); research: [C82](../ab-hook-pilot/research-c82.md), **C82-RESEARCH-R1**; governing [delivery](delivery.md), **EDU-EP20-DELIVERY-R1**.
 - Paired portable manifest: [script-handoff.md](../ab-hook-pilot/script-handoff.md). Other treatment: [EP21 Guide](../ep21/hook-guide.md), **EDU-EP21-HOOK-R1**.
 - Status: proposed editorial execution; factual readiness **ready-for-storyboard** in [EDU-EP20-FACT-R1](short/fact-check.md). No user approval, measured hook duration, visual QA or retention result is claimed.
 
@@ -26,7 +26,7 @@ Do not ask the viewer to perform a driving experiment. The demonstration is stag
 | Renew curiosity | L05, 14–16.5 s | “What pushes it?” grows directly from the observed result. |
 | One-cause answer | L06–L07, 16.5–23 s | Surrounding-air pressure, in one short explanation. No effective-gravity, inertia or pressure-gradient terminology lecture. |
 | Counterexample | L08–L10, 23–34 s | Constant straight speed after settling tests whether speed was the cause. |
-| Final application | L11–L13, 34–44 s | Ask again during forward-travel braking, then reverse the passenger/balloon contrast. Hold about 3 s. |
+| Final application | L11–L13, 34–44 s | Ask again during forward-travel braking, then reverse the passenger/balloon contrast; L13 names the side that now pushes harder (front over rear). Hold about 3 s. |
 
 These times are estimated. The script's open-question map, not this Guide, owns line timing. Another agent must recount/reproject at the eventual selected voice setting before lock.
 
@@ -53,7 +53,7 @@ Continue EDU-EP20-SHORT (C82 helium balloon), channel edu, Short only.
 First read AGENTS.md and the workflow/core docs it routes for your stage.
 Read scripts/edu-series/ep20/delivery.md (EDU-EP20-DELIVERY-R1),
 scripts/edu-series/ep20/task.md,
-scripts/edu-series/ep20/short/script.md (EDU-EP20-SCRIPT-R1),
+scripts/edu-series/ep20/short/script.md (EDU-EP20-SCRIPT-R2),
 scripts/edu-series/ep20/hook-guide.md (EDU-EP20-HOOK-R1),
 scripts/edu-series/ab-hook-pilot/research-c82.md (C82-RESEARCH-R1),
 scripts/edu-series/ab-hook-pilot/script-handoff.md,
@@ -70,3 +70,7 @@ stage. Do not infer audio/render/upload permission from this handoff.
 ```
 
 Coordinator status synchronization, 2026-11-15: EDU-EP20-FACT-R1 covers the R1 script and Guide. Hook wording, advice and copyable prompt unchanged; readiness remains distinct from user approval and timing lock.
+
+Coordinator continuation note, 2026-11-16: the live [delivery record](delivery.md), EDU-EP20-DELIVERY-R2, now authorizes independent full production of this episode only. The R1 opening/reveal/factual contract above and the writing-only copyable prompt remain historical and unchanged; use the live record for current scope. See the new [conditional timing audit](short/timing-projection.md) and [≤10 s voice audition](voice-audition.md). Pace choice and script approval remain separate open gates; no full read, storyboard, visual approval or posting is implied.
+
+Preaw script sync, 2026-11-16: dependency moved to **EDU-EP20-SCRIPT-R2**. The user explicitly chose the new L13 closing line "เพราะคราวนี้ อากาศด้านหน้ากลับดันแรงกว่าด้านหลังนั่นเอง" in place of R1 "อากาศรอบมัน เปลี่ยนฝั่งที่ดันแรงกว่าแล้วไง". The opening contract, hook advice and beat order are unchanged, so the Guide keeps EDU-EP20-HOOK-R1; only the Final application row now states what L13 names.
