@@ -39,7 +39,7 @@ These apply to every role; agent configs link here instead of repeating them.
 - **CB02 — Logs to files.** Send long command output (Blender, renders, installs, test suites, `tsc`) to a file under `out/logs/`. Print only a summary line, the errors or the tail. Every other command prints under about 40 lines or pipes through `head`, `tail` or `grep -m`. Measured: a Mark run reached 412k context with no images from unbounded output and whole-file reads (ZCPAINT, 30 Oct 2026).
 - **CB03 — Small images.** View frames through `scripts/qa-sheet.sh`, which tiles frames at 270 px or downscales a single frame with `--width 540`. Use full resolution only for a pixel-level judgment that measured numbers cannot settle. Boss's labelled review contact sheets are unchanged.
 - **CB04 — Invocations and sessions** follow [AI01–AI13](docs/delivery-workflow.md#agent-invocation): a fresh invocation per pass instead of one agent resumed across passes (AI04), no return while the agent's own background job runs ([AI10](docs/delivery-workflow.md#ai10)), and inputs read from files by path and revision (AI11).
-- **CB05 — Measure workflow changes** with `python3 -I scripts/usage-report.py [--since YYYY-MM-DD]`, before and after.
+- **CB05 — Measure workflow changes.** For Claude Code transcripts, run `python3 -I scripts/usage-report.py [--since YYYY-MM-DD]` before and after. For Codex, record any measurements from the Codex run with its model and revision.
 
 <a id="coordinator-and-agent-parity"></a><a id="coordinator-duties"></a>
 ## Coordinator and agent parity
