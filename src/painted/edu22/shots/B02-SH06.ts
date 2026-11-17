@@ -8,7 +8,7 @@ import {childItems, lifterItems, paintSpread, sheetMove, shotCam} from '../stage
 import {CS_AT} from '../tableware';
 
 // B02-SH06 · G 400-456 (56 f) · about twenty dishes (EDU-EP22-SCENES-R1). High angle over CT: the 20 open dishes on four trays; CHILD front
-// (pitch cue) P31, his right mitten picks up CS l 10-20 and lifts it over RB, `laugh` from l 13; carriers K1-K4 walk out to screen right, out of
+// (pitch cue) P31, his right mitten picks up CS l 10-20 and lifts it over RB, `laugh` from l 13; carriers K2 and K4 (R2) walk out to screen right, out of
 // frame by l 40. W5.1 deviation: no steam (the hall has no steam asset; the dishes read as hot food by colour only).
 const N = 56;
 const M = sheetMove([0.0, 0.7, -0.1], [15, 12], [1.55, 1.35], 1.7, {f: 1050, hy: 700, pitch: [-35, -35]});
@@ -26,7 +26,8 @@ export const def: Shot22 = {
       items: [
         ...childItems({t, face: L >= 13 ? 'laugh' : 'happy', look: [0.15, 0.6], rHand, lHand, spoon, armPass: true}, pr),
         ...lifterItems(t),
-        ...[0, 1, 2, 3].flatMap((k) => carrierItems(k, carrierSH06(k, L), t)),
+        // R2 (SCENES-R2 fix 7): only K2 and K4 (the paths behind CT); K1 and K3 left across the cut
+        ...[1, 3].flatMap((k) => carrierItems(k, carrierSH06(k, L), t)),
       ],
     });
   },

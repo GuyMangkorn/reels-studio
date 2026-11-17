@@ -4,7 +4,7 @@ Record: [delivery.md](delivery.md) · Updated: 2026-11-16, coordinator
 
 ## EDU-EP22-SHORT
 
-**Now:** W6.1 Draft cut rendered (2026-11-17) **Next:** viewer check (fresh film), republish page Draft tab, user review
+**Now:** user reviews Draft r3 on the review page **Next:** read db verdicts; V01 samples + hero-cue listen; Final cut (full size), pins, cover/title, publish
 
 - [x] W0 Ideation — user named the topic (C88).
 - [ ] W1 Script lock

@@ -374,8 +374,12 @@ export type HallState = {
 export const paintHall = (p: Painter, c: YCam, st: HallState = {}) => {
   const L = st.light ?? {};
   paintHallBack(p, c, L);
+  // R2 (SCENES-R2 fix 1): the x -5 columns stand against the far wall behind LT, the lifters and everything else from every EP22 camera (all at
+  // x > -4.05, so the plane x -4.74 at the column bases separates them from the rest of the set): painted first, far to near among themselves,
+  // instead of by distance (LT's item key with bias 0.3 sorted behind the column (-5, 0, 0) base, which then painted over LT: SH09 "grey box").
+  paintSorted(p, c, [-3.6, 0, 3.6].map((z) => columnItem([-5.0, 0, z], L)));
   const items: Item[] = [];
-  for (const x of [-5.0, 5.0]) for (const z of [-3.6, 0, 3.6]) items.push(columnItem([x, 0, z], L));
+  for (const z of [-3.6, 0, 3.6]) items.push(columnItem([5.0, 0, z], L));
   items.push(...armchairItems(L), ...dressingItems(L));
   items.push({at: [0, 0, 0], bias: -0.05, draw: (p2, c2) => { paintTable(p2, c2, 25000, CT, L); st.onChildTable?.(p2, c2); }});
   items.push(longTableItem(L, st.longTable ?? {covers: 'on'}));

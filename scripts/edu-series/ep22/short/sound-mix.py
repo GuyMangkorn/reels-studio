@@ -62,6 +62,8 @@ OVERRIDE = {
     'M2': (150, 700, 1211),
 }
 # Editor mix offsets (dB), set from mix-levels.py on the draft stems (see the W6.1 report); empty means the cue sheet gain stands
+# Master level (dB) on the two delivered files (narration track and baked stem), so the cut peaks at <= -1.0 dBTP without a post-trim (W6.2 r3; r2 needed -0.5 dB in ffmpeg outside the composition). Per-layer stems stay unscaled for mix-levels.py.
+MASTER_DB = -0.5
 TWEAK = json.load(open('scripts/edu-series/ep22/short/sound-tweak.json')) if os.path.exists('scripts/edu-series/ep22/short/sound-tweak.json') else {}
 
 filters, labels = [], {'bed': [], 'ambience': [], 'texture': [], 'accent': []}
@@ -108,8 +110,9 @@ cmd = ['ffmpeg', '-v', 'error', '-y'] + inputs + ['-/filter_complex', 'out/logs/
 for layer in outs: cmd += ['-map', f'[{layer}]', '-c:a', 'pcm_f32le', '-ar', str(SR), 'out/stems/' + layer + '.f32' + EXT]
 subprocess.run(cmd, check=True)
 # narration at G 0, padded to the composition length; voice stem = the same, stereo-free mono
-subprocess.run(['ffmpeg', '-v', 'error', '-y', '-i', NARR, '-af', f'apad=whole_len={N},atrim=end_sample={N}', '-ac', '1', '-c:a', 'pcm_s16le', 'public/narration/EDU-EP22-SHORT-narration-v1.wav'], check=True)
-subprocess.run(['ffmpeg', '-v', 'error', '-y', '-i', 'public/narration/EDU-EP22-SHORT-narration-v1.wav', '-c:a', 'pcm_f32le', 'out/stems/' + 'voice.wav'], check=True)
+subprocess.run(['ffmpeg', '-v', 'error', '-y', '-i', NARR, '-af', f'apad=whole_len={N},atrim=end_sample={N}', '-ac', '1', '-c:a', 'pcm_f32le', 'out/stems/' + 'narration.unscaled' + EXT], check=True)
+subprocess.run(['ffmpeg', '-v', 'error', '-y', '-i', 'out/stems/' + 'narration.unscaled' + EXT, '-c:a', 'pcm_f32le', 'out/stems/' + 'voice.wav'], check=True)
+subprocess.run(['ffmpeg', '-v', 'error', '-y', '-i', 'out/stems/' + 'narration.unscaled' + EXT, '-af', f'volume={MASTER_DB}dB', '-c:a', 'pcm_s16le', 'public/narration/EDU-EP22-SHORT-narration-v1.wav'], check=True)
 # stems: float files re-written as s16 with +-1 LSB dither (mix-levels' ebur128 never sees all-zero windows, EP15 finding) is skipped here: ebur128 reads float fine
 def dither(src, dst):   # stems only: -90 dBFS white noise keeps mix-levels.py's ebur128 from seeing all-zero 400 ms windows (EP15 finding); s16
     subprocess.run(['ffmpeg', '-v', 'error', '-y', '-i', src, '-f', 'lavfi', '-i', f'anoisesrc=a=0.00003:c=white:r={SR}:d={TOTAL / FPS}', '-filter_complex', '[0:a][1:a]amix=inputs=2:normalize=0:duration=first,aformat=channel_layouts=stereo[a]' if 'voice' not in dst else '[0:a][1:a]amix=inputs=2:normalize=0:duration=first[a]', '-map', '[a]', '-c:a', 'pcm_s16le', dst], check=True)
@@ -120,5 +123,5 @@ sum_cmd = ['ffmpeg', '-v', 'error', '-y'] + sum((['-i', 'out/stems/' + l + '.wav
 subprocess.run(sum_cmd, check=True)
 pk = subprocess.run(['ffmpeg', '-hide_banner', '-nostats', '-i', 'out/stems/' + 'sum.tmp' + EXT, '-af', 'astats=measure_overall=Peak_level', '-f', 'null', '-'], capture_output=True, text=True).stderr
 print([l for l in pk.splitlines() if 'Peak level dB' in l][-1])
-subprocess.run(['ffmpeg', '-v', 'error', '-y', '-i', 'out/stems/' + 'sum.tmp' + EXT, '-c:a', 'pcm_s16le', 'public/audio/edu/EDU-EP22-SHORT-draft-stem-v1.wav'], check=True)
+subprocess.run(['ffmpeg', '-v', 'error', '-y', '-i', 'out/stems/' + 'sum.tmp' + EXT, '-af', f'volume={MASTER_DB}dB', '-c:a', 'pcm_s16le', 'public/audio/edu/EDU-EP22-SHORT-draft-stem-v1.wav'], check=True)
 print('stems in out/stems, sound stem public/audio/edu/EDU-EP22-SHORT-draft-stem-v1.wav, narration public/narration/EDU-EP22-SHORT-narration-v1.wav')

@@ -11,7 +11,8 @@ import {paintCover, paintSpoonHeld} from '../tableware';
 // the right mitten dips the spoon into A01 l 12-18, spoon to the mouth l 18-30, a small nod l 30-36, the spoon rests on SAU l 36-44, the left
 // mitten lifts A01's cover from its rest point back onto the bowl l 44-56 (`coverLift` reverse), a half step -z toward A02 l 56-66 (0.18 m).
 const N = 66;
-const M = sheetMove([-3.2, 1.2, 1.75], [8, 3], [2.3, 2.1], 1.5, {f: 1100, hy: 680});
+// R2 (SCENES-R2 fix 2): medium shot, T from the cap to the hips (R1 at (-3.2, 1.2, 1.75), yaw 8 -> 3, r 2.3 -> 2.1, eye 1.5, f 1100, hy 680).
+const M = sheetMove([-3.15, 1.15, 1.85], [12, 9], [1.3, 1.2], 1.4, {f: 1000, hy: 640, pitch: [-10, -10]});
 const FOOD: V3 = [LT_BOWLS[BOWL_A01].at[0] + 0.02, 0.875, LT_BOWLS[BOWL_A01].at[2]];
 const STEP: V3 = add3(T_MARK, [0, 0, -0.18]);
 export const def: Shot22 = {
