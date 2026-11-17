@@ -1,0 +1,282 @@
+{
+ "B01-SH01@board": {
+  "clip": "",
+  "hash": "929d53d28b38",
+  "note": "",
+  "rev": "EDU-EP24-SCENES-R2",
+  "shot": "B01-SH01",
+  "stage": "board",
+  "status": "ok",
+  "updatedAt": "2026-11-17T16:14:07.485Z"
+ },
+ "B01-SH02@board": {
+  "clip": "",
+  "hash": "a465f3bec3ea",
+  "note": "",
+  "rev": "EDU-EP24-SCENES-R2",
+  "shot": "B01-SH02",
+  "stage": "board",
+  "status": "ok",
+  "updatedAt": "2026-11-17T16:14:07.486Z"
+ },
+ "B01-SH03@board": {
+  "clip": "",
+  "hash": "0f0e2496a62d",
+  "note": "",
+  "rev": "EDU-EP24-SCENES-R2",
+  "shot": "B01-SH03",
+  "stage": "board",
+  "status": "ok",
+  "updatedAt": "2026-11-17T16:14:07.487Z"
+ },
+ "B01-SH04@board": {
+  "clip": "",
+  "hash": "8c36938779f3",
+  "note": "",
+  "rev": "EDU-EP24-SCENES-R2",
+  "shot": "B01-SH04",
+  "stage": "board",
+  "status": "ok",
+  "updatedAt": "2026-11-17T16:14:07.487Z"
+ },
+ "B01-SH05@board": {
+  "clip": "",
+  "hash": "04a06d9723b4",
+  "note": "",
+  "rev": "EDU-EP24-SCENES-R2",
+  "shot": "B01-SH05",
+  "stage": "board",
+  "status": "ok",
+  "updatedAt": "2026-11-17T16:14:07.488Z"
+ },
+ "B01-SH06@board": {
+  "clip": "",
+  "hash": "e29ca970545c",
+  "note": "",
+  "rev": "EDU-EP24-SCENES-R2",
+  "shot": "B01-SH06",
+  "stage": "board",
+  "status": "ok",
+  "updatedAt": "2026-11-17T16:14:07.488Z"
+ },
+ "B01-SH07@board": {
+  "clip": "",
+  "hash": "e4315c0cfab5",
+  "note": "",
+  "rev": "EDU-EP24-SCENES-R2",
+  "shot": "B01-SH07",
+  "stage": "board",
+  "status": "ok",
+  "updatedAt": "2026-11-17T16:14:07.489Z"
+ },
+ "B02-SH08@board": {
+  "clip": "",
+  "hash": "f5d3beb3947e",
+  "note": "",
+  "rev": "EDU-EP24-SCENES-R2",
+  "shot": "B02-SH08",
+  "stage": "board",
+  "status": "ok",
+  "updatedAt": "2026-11-17T16:14:01.402Z"
+ },
+ "B02-SH09@board": {
+  "clip": "",
+  "hash": "6a96efd2fbc0",
+  "note": "",
+  "rev": "EDU-EP24-SCENES-R2",
+  "shot": "B02-SH09",
+  "stage": "board",
+  "status": "ok",
+  "updatedAt": "2026-11-17T16:14:07.489Z"
+ },
+ "B02-SH10@board": {
+  "clip": "",
+  "hash": "22511ff69152",
+  "note": "",
+  "rev": "EDU-EP24-SCENES-R2",
+  "shot": "B02-SH10",
+  "stage": "board",
+  "status": "ok",
+  "updatedAt": "2026-11-17T16:14:07.490Z"
+ },
+ "B02-SH11@board": {
+  "clip": "",
+  "hash": "430fcef75b72",
+  "note": "",
+  "rev": "EDU-EP24-SCENES-R2",
+  "shot": "B02-SH11",
+  "stage": "board",
+  "status": "ok",
+  "updatedAt": "2026-11-17T16:14:07.491Z"
+ },
+ "B02-SH12@board": {
+  "clip": "",
+  "hash": "8a1fc626690c",
+  "note": "",
+  "rev": "EDU-EP24-SCENES-R2",
+  "shot": "B02-SH12",
+  "stage": "board",
+  "status": "ok",
+  "updatedAt": "2026-11-17T16:14:07.491Z"
+ },
+ "B02-SH13@board": {
+  "clip": "",
+  "hash": "0fe9f12fcca4",
+  "note": "",
+  "rev": "EDU-EP24-SCENES-R2",
+  "shot": "B02-SH13",
+  "stage": "board",
+  "status": "ok",
+  "updatedAt": "2026-11-17T16:14:07.491Z"
+ },
+ "B03-SH14@board": {
+  "clip": "",
+  "hash": "1578fe82261d",
+  "note": "",
+  "rev": "EDU-EP24-SCENES-R2",
+  "shot": "B03-SH14",
+  "stage": "board",
+  "status": "ok",
+  "updatedAt": "2026-11-17T16:14:07.492Z"
+ },
+ "B03-SH14B@board": {
+  "clip": "",
+  "hash": "202156783420",
+  "note": "",
+  "rev": "EDU-EP24-SCENES-R2",
+  "shot": "B03-SH14B",
+  "stage": "board",
+  "status": "ok",
+  "updatedAt": "2026-11-17T16:14:07.492Z"
+ },
+ "B03-SH15@board": {
+  "clip": "",
+  "hash": "f234cb9ab163",
+  "note": "",
+  "rev": "EDU-EP24-SCENES-R2",
+  "shot": "B03-SH15",
+  "stage": "board",
+  "status": "ok",
+  "updatedAt": "2026-11-17T16:14:07.493Z"
+ },
+ "B03-SH16@board": {
+  "clip": "",
+  "hash": "c5bb6e5388fa",
+  "note": "",
+  "rev": "EDU-EP24-SCENES-R2",
+  "shot": "B03-SH16",
+  "stage": "board",
+  "status": "ok",
+  "updatedAt": "2026-11-17T16:14:07.493Z"
+ },
+ "B03-SH17@board": {
+  "clip": "",
+  "hash": "4464d49b6da9",
+  "note": "",
+  "rev": "EDU-EP24-SCENES-R2",
+  "shot": "B03-SH17",
+  "stage": "board",
+  "status": "ok",
+  "updatedAt": "2026-11-17T16:14:07.493Z"
+ },
+ "B03-SH18@board": {
+  "clip": "",
+  "hash": "7a81a0db89d7",
+  "note": "",
+  "rev": "EDU-EP24-SCENES-R2",
+  "shot": "B03-SH18",
+  "stage": "board",
+  "status": "ok",
+  "updatedAt": "2026-11-17T16:14:07.494Z"
+ },
+ "B03-SH19@board": {
+  "clip": "",
+  "hash": "30caae02fb7e",
+  "note": "",
+  "rev": "EDU-EP24-SCENES-R2",
+  "shot": "B03-SH19",
+  "stage": "board",
+  "status": "ok",
+  "updatedAt": "2026-11-17T16:14:07.494Z"
+ },
+ "B04-SH20@board": {
+  "clip": "",
+  "hash": "455112b7596a",
+  "note": "",
+  "rev": "EDU-EP24-SCENES-R2",
+  "shot": "B04-SH20",
+  "stage": "board",
+  "status": "ok",
+  "updatedAt": "2026-11-17T16:14:07.494Z"
+ },
+ "B04-SH21@board": {
+  "clip": "",
+  "hash": "1f271b73b02b",
+  "note": "",
+  "rev": "EDU-EP24-SCENES-R2",
+  "shot": "B04-SH21",
+  "stage": "board",
+  "status": "ok",
+  "updatedAt": "2026-11-17T16:14:07.495Z"
+ },
+ "B05-SH22@board": {
+  "clip": "",
+  "hash": "c9e45925e253",
+  "note": "",
+  "rev": "EDU-EP24-SCENES-R2",
+  "shot": "B05-SH22",
+  "stage": "board",
+  "status": "ok",
+  "updatedAt": "2026-11-17T16:14:07.495Z"
+ },
+ "B05-SH23@board": {
+  "clip": "",
+  "hash": "e5ba6b05684d",
+  "note": "",
+  "rev": "EDU-EP24-SCENES-R2",
+  "shot": "B05-SH23",
+  "stage": "board",
+  "status": "ok",
+  "updatedAt": "2026-11-17T16:14:07.496Z"
+ },
+ "B05-SH24@board": {
+  "clip": "",
+  "hash": "e13ab680903f",
+  "note": "",
+  "rev": "EDU-EP24-SCENES-R2",
+  "shot": "B05-SH24",
+  "stage": "board",
+  "status": "ok",
+  "updatedAt": "2026-11-17T16:14:07.496Z"
+ },
+ "B05-SH25@board": {
+  "clip": "",
+  "hash": "ffb37dd7aada",
+  "note": "",
+  "rev": "EDU-EP24-SCENES-R2",
+  "shot": "B05-SH25",
+  "stage": "board",
+  "status": "ok",
+  "updatedAt": "2026-11-17T16:14:07.497Z"
+ },
+ "B05-SH26@board": {
+  "clip": "",
+  "hash": "bc18ffe04531",
+  "note": "",
+  "rev": "EDU-EP24-SCENES-R2",
+  "shot": "B05-SH26",
+  "stage": "board",
+  "status": "ok",
+  "updatedAt": "2026-11-17T16:14:07.497Z"
+ },
+ "B05-SH27@board": {
+  "clip": "",
+  "hash": "712acd36c4b4",
+  "note": "",
+  "rev": "EDU-EP24-SCENES-R2",
+  "shot": "B05-SH27",
+  "stage": "board",
+  "status": "ok",
+  "updatedAt": "2026-11-17T16:14:07.497Z"
+ }
+}
