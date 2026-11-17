@@ -159,12 +159,26 @@ export const paintSpoon = (p: Painter, c: YCam, seed: number, at: V3, a: number)
   if (bowl.length >= 3) inkLine(p, seed + 2, bowl, {weight: 1.0, color: mixColor(TABLE.blue, INK, 0.35), still: true});
 };
 
-/** Porcelain spoon in a hand (W5.1 N5): the handle end at `hand`, the bowl centre at `bowl` (world), the bowl held level. */
-export const paintSpoonHeld = (p: Painter, c: YCam, seed: number, hand: V3, bowl: V3) => {
+/** Porcelain spoon in a hand (W5.1 N5): the handle end at `hand`, the bowl centre at `bowl` (world), the oval bowl follows the handle axis. */
+export const paintSpoonHeld = (p: Painter, c: YCam, seed: number, hand: V3, bowl: V3, shape: 'round' | 'oval' = 'round') => {
   const dx = bowl[0] - hand[0], dz = bowl[2] - hand[2], L = Math.hypot(dx, dz) || 1, n: V3 = [(-dz / L) * 0.006, 0, (dx / L) * 0.006];
-  const e: V3 = [bowl[0] - (dx / L) * 0.022, bowl[1] + 0.004, bowl[2] - (dz / L) * 0.022];
+  const dy = bowl[1] - hand[1];
+  const axisLength = Math.hypot(dx, dy, dz) || 1;
+  const neck = 0.018 / axisLength;
+  const e: V3 = shape === 'oval'
+    ? [bowl[0] - dx * neck, bowl[1] - dy * neck, bowl[2] - dz * neck]
+    : [bowl[0] - (dx / L) * 0.022, bowl[1] + 0.004, bowl[2] - (dz / L) * 0.022];
   wFill(p, c, seed + 1, TABLE.porcelain, [[e[0] + n[0], e[1], e[2] + n[2]], [hand[0] + n[0] * 0.7, hand[1], hand[2] + n[2] * 0.7], [hand[0] - n[0] * 0.7, hand[1], hand[2] - n[2] * 0.7], [e[0] - n[0], e[1], e[2] - n[2]]]);
-  const b = ring(c, bowl, 0.03, bowl[1], 14);
+  const b = shape === 'round' ? ring(c, bowl, 0.03, bowl[1], 14) : Array.from({length: 16}, (_, i) => {
+    const angle = i * Math.PI / 8;
+    const along = Math.cos(angle) * 0.023;
+    const across = Math.sin(angle) * 0.012;
+    return camPoint(c, [
+      bowl[0] + dx * along / axisLength - dz * across / L,
+      bowl[1] + dy * along / axisLength,
+      bowl[2] + dz * along / axisLength + dx * across / L,
+    ]);
+  }).filter((point): point is Pt => point !== null);
   if (b.length >= 3) { hardFill(p, seed, TABLE.porcelain, hull(b)); inkLine(p, seed + 2, hull(b), {weight: 1.0, color: mixColor(TABLE.blue, INK, 0.35), still: true}); }
 };
 
