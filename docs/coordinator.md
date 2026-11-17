@@ -24,13 +24,23 @@ The **coordinator** is the chat session the user talks to (Claude Code or Codex)
 
 [Role configs](../AGENTS.md#coordinator-and-agent-parity) install no runner; a role agent never invokes the next role.
 
-`.claude/agents/<role>.md` and `.codex/agents/<role>.toml` must carry the same name, description and instructions. `tests/agents.test.ts` enforces this, so edit both in the same change. Claude front matter also carries a required `tools:` allowlist (Claude-only) that keeps each role's startup context small. Add a tool there before a role depends on it. Optional Claude-only `model:` and `effort:` lines pin a role's model and reasoning effort; the front matter is the current record and `git log -p .claude/agents/` its history. The coordinator may override them per call. OpenCode copies (`.opencode/agents/<role>.md`) are generated from the Claude files by `python3 -I scripts/opencode-agents.py`, together with `<role>-gpt` twins on the Codex subagent model from `.codex/config.toml` (pick the twin to run a role on OpenAI); rerun it after editing a role (the same test checks them). OpenCode reads skills from `.claude/skills` and `.agents/skills` directly and MCP servers from `opencode.json`. ZCode copies (`.zcode/agents/<role>.md`, GLM-5.3) are generated the same way by `python3 -I scripts/zcode-agents.py`; ZCode reads skills from `.agents/skills` and MCP servers from `.agents/mcp.json`, a symlink to `.mcp.json`.
+`.claude/agents/<role>.md` and `.codex/agents/<role>.toml` must carry the same name, description and instructions. `tests/agents.test.ts` enforces this, so edit both in the same change. Claude front matter also carries a required `tools:` allowlist (Claude-only) that keeps each role's startup context small. Add a tool there before a role depends on it. Optional Claude-only `model:` and `effort:` lines pin a role's model and reasoning effort; the front matter is the current record and `git log -p .claude/agents/` its history. The coordinator may override them per call. OpenCode copies (`.opencode/agents/<role>.md`) are generated from the Claude files by `python3 -I scripts/opencode-agents.py`, together with `<role>-gpt` twins on the Codex subagent model from `.codex/config.toml` (the default pick in OpenCode, see [native OpenCode role calls](#native-opencode-role-calls)); rerun it after editing a role (the same test checks them). OpenCode reads skills from `.claude/skills` and `.agents/skills` directly and MCP servers from `opencode.json`. ZCode copies (`.zcode/agents/<role>.md`, GLM-5.3) are generated the same way by `python3 -I scripts/zcode-agents.py`; ZCode reads skills from `.agents/skills` and MCP servers from `.agents/mcp.json`, a symlink to `.mcp.json`.
 
 ## Native Codex role calls
 
 - Start a fresh session in the trusted project to load the role files and [project config](../.codex/config.toml). Use the assigned role name from `.codex/agents/`. For an eligible same-pass follow-up under AI04, send input to that existing agent while the session can still reach it.
 - The project defaults native subagents to `gpt-6.1-sol` at `medium`, matching the Codex worker setting in [AI14](#ai14). Use a per-call override when the user requests one. The Film and Boss Claude model-by-pass rules apply to Claude calls.
 - Codex role agents inherit the coordinator's available tools and permissions. Check the [project MCP setup](../README.md#claude-code--codex-setup) when a pass needs a local server. Use the [storyboard publishing instructions](../.agents/skills/review-page/SKILL.md#review-page) for review pages.
+
+<a id="native-opencode-role-calls"></a>
+## Native OpenCode role calls
+
+**Default (user, 17 Nov 2026).** In OpenCode, the coordinator runs each role pass on the `<role>-gpt` twin (`gpt-6.1-sol` at `medium`) first.
+
+- **Usage-limit fallback:** when a `-gpt` call stops on an OpenAI usage or rate limit (quota exhausted, 429), start the same brief on the Claude agent `<role>` without asking, and tell the user which role and pass moved. That role stays on Claude until the end of the session. Do not retry the same pass on GPT. A real task failure goes to the user, not to the other provider.
+- **Claude calls** use the model in the role's front matter and the Film and Boss model-by-pass rules ([Film](#film-model-by-pass), [Boss](#boss-model-by-pass)) through the subagent `model` override.
+- **User choice wins:** when the user names a provider or model for a pass, use it.
+- **Orca workers** follow [AI14](#ai14), not this section.
 
 <a id="resolve-the-selection"></a>
 ## Resolve the selection before writing
