@@ -1,0 +1,572 @@
+{
+ "deliverable": "EDU-EP21-SHORT",
+ "sceneSheets": "EDU-EP21-SHEETS-R4",
+ "video": "src/videos/edu-ep21",
+ "fps": 30,
+ "frameBasis": "global composition frame G (SHEETS-R1), 30 fps",
+ "sources": [
+  "src/videos/edu-ep21",
+  "scripts/edu-series/ep21/sound-mix.py"
+ ],
+ "status": "W5.2s done 2026-11-17 (SHEETS-R4 end strikes): TG1-TG5 done (17 cue placements, 14 sounds: 13 + S9b); all measured, none listened",
+ "cues": [
+  {
+   "cue": "A1-exterior-storm",
+   "shot": "B01-SH01",
+   "frame": 0,
+   "brief": "A1 exterior storm: heavy tropical rain on wet asphalt and a car's sheet-metal roof heard from outside, wind; steady bed, loop. Used again as A1 on every exterior segment (see placements); A3 = A1 low-passed, -8 dB.",
+   "id": "weather_car-roof-rain-storm-outside_01",
+   "origin": "generated",
+   "group": "TG1",
+   "status": "done",
+   "listened": "no",
+   "loop": true,
+   "lengthSec": 12.9,
+   "notes": "Brief asked for sparse far thunder rumbles inside the bed; left out so the loop is steady (v1/v3 swung 10-20 dB). S1 tail and S7 carry the thunder."
+  },
+  {
+   "cue": "A2-cabin",
+   "shot": "B01-SH04",
+   "frame": 223,
+   "brief": "A2 cabin: the same rain heard from inside a closed car, dense muffled drumming overhead, water on glass, no wind; 3 f crossfade from A1.",
+   "id": "room_car-cabin-heavy-rain_01",
+   "origin": "generated",
+   "group": "TG1",
+   "status": "done",
+   "listened": "no",
+   "loop": true,
+   "lengthSec": 11.4
+  },
+  {
+   "cue": "M1-music-bed",
+   "shot": "B01-SH02",
+   "frame": 29,
+   "brief": "M1 curious explainer bed: muted felt piano ostinato, warm pad, low pulse, light shaker, no drums; fade in over 10 f at energy 1.5 after the strike. Re-entries and cut: see placements.",
+   "id": "bed_curious-felt-piano-pulse-92_01",
+   "origin": "generated",
+   "group": "TG1",
+   "status": "done",
+   "listened": "no",
+   "lengthSec": 41.5,
+   "notes": "One 41.5 s file. Tempo (92 bpm requested) not verifiable by measurement. Editor plays it from file offsets for the later entries (placements) and cuts dead at G802."
+  },
+  {
+   "cue": "S1-strike",
+   "shot": "B01-SH01",
+   "frame": 12,
+   "brief": "S1 extremely close lightning crack, tearing whip with bright sizzle, low pressure thud under it, short rolling tail, 1.6 s; startle not horror; peak ducked under the first syllable.",
+   "id": "impact_lightning-strike-close_01",
+   "origin": "generated",
+   "group": "TG2",
+   "status": "done",
+   "listened": "no",
+   "lengthSec": 1.6,
+   "notes": "Crack at file 0.13 s: place file start so the crack lands on G12 (file start G8 at 30 fps = 0.13 s earlier). R4: unchanged at G12; S9a reuses this file."
+  },
+  {
+   "cue": "S3-glint-1",
+   "shot": "B01-SH03",
+   "frame": 153,
+   "brief": "S3 glint tick 1 (roof sweep): one tiny soft glassy tick, close and soft.",
+   "id": "reveal_glass-glint-tick_01",
+   "origin": "generated",
+   "group": "TG2",
+   "status": "done",
+   "listened": "no",
+   "lengthSec": 0.06
+  },
+  {
+   "cue": "S3-glint-2",
+   "shot": "B01-SH03",
+   "frame": 168,
+   "brief": "S3 glint tick 2 (body sweep).",
+   "id": "reveal_glass-glint-tick_01",
+   "origin": "generated",
+   "group": "TG2",
+   "status": "done",
+   "listened": "no",
+   "lengthSec": 0.06
+  },
+  {
+   "cue": "S3-glint-3",
+   "shot": "B01-SH03",
+   "frame": 189,
+   "brief": "S3 glint tick 3 (window sweep).",
+   "id": "reveal_glass-glint-tick_01",
+   "origin": "generated",
+   "group": "TG2",
+   "status": "done",
+   "listened": "no",
+   "lengthSec": 0.06
+  },
+  {
+   "cue": "S7-far-thunder",
+   "shot": "B02-SH05",
+   "frame": 323,
+   "brief": "S7 one far thunder roll across the paddy behind rain: slow swell, decay, low air rumble, no crack, far and wide, about 3 s; unease under the question, -20 dB under VO.",
+   "id": "impact_thunder-roll-far-swell_01",
+   "origin": "generated",
+   "group": "TG2",
+   "status": "done",
+   "listened": "no",
+   "lengthSec": 3.47,
+   "notes": "Library candidate weather_thunder-roll-distant_01 rejected: measured crack at onset 0.02 s and peak at 0.38 s, brief says no crack. New file swells from about 0.8 s and peaks at 1.28 s; place file start at G323 (the roll builds under the first words of L04)."
+  },
+  {
+   "cue": "S4-route-glow",
+   "shot": "B02-SH06",
+   "frame": 419,
+   "brief": "S4 route glow: soft airy rising shimmer like a breath through fine wind chimes, warm, no electric buzz, travelling left to right, 2.5 s.",
+   "id": "reveal_breath-chime-glow-rise_01",
+   "origin": "generated",
+   "group": "TG3",
+   "status": "done",
+   "listened": "no",
+   "lengthSec": 2.5,
+   "notes": "Library check: reveal_glass-shimmer-soft_01 (1.4 s, immediate onset, no rise) and ui_metal-glint-chime_01 do not fit a 2.5 s rising breath through wind chimes; generated new. Picked v2 of 4 (swell -36 to -17 dB over 1.1 s, centroid rising 7 to 12 kHz, no clipping, peak 1.14 s). Measured, not listened. Swell peaks about 1.1 s into the file: start the file at G419 so the glow builds across the left-to-right travel."
+  },
+  {
+   "cue": "S5-tyre",
+   "shot": "B03-SH08",
+   "frame": 636,
+   "brief": "S5 tyre: slow thin air hiss from a split tyre, rubber settling with a soft creak onto wet asphalt, faint steam tick, small, close, dry, 2.5 s.",
+   "id": "vehicle_split-tyre-air-hiss-settle_01",
+   "origin": "generated",
+   "group": "TG4",
+   "status": "done",
+   "listened": "no",
+   "lengthSec": 2.26,
+   "notes": "Generated new (library search for tyre, hiss, steam, creak found vehicle_bike-pass-rain_01 (passing bike, tyre hiss on wet asphalt, peak 0.9 s) and comedy_plunger-leak-slip_01 (0.97 s plunger), neither a slow split-tyre leak settling over 2.5 s). v1 of 4: steady thin hiss then a settle event near 1.3 s and small late events, silent by 2.0 s; sheet 2.5 s, file 2.26 s (trimmed silence). Peak-normalised to -1 dBFS, hiss body about -24 dB RMS under peak, so Editor sets the clip gain to the S5 row. Place file start at G636. Measured, not listened."
+  },
+  {
+   "cue": "S6-radio-cutout",
+   "shot": "B04-SH09",
+   "frame": 794,
+   "brief": "S6 radio press + cutout: soft plastic button click L29 (G794), tiny relay tick G797, falling two-note blip dying mid-note G798-806; 0.6 s, close, eerie. Library candidate for the blip only: electric_glitch-blip-soft_01.",
+   "id": "electric_radio-press-cutout-blip_01",
+   "origin": "generated",
+   "group": "TG4",
+   "status": "done",
+   "listened": "no",
+   "lengthSec": 0.38,
+   "notes": "Fit check: electric_glitch-blip-soft_01 (EP17 S22) is 0.3 s, one glitch burst in the first 0.1 s (100 ms RMS -13, then -65), centroid 0.9 kHz; it has no click-then-tick-then-falling-two-note shape and no pitch fall, so it does not fit as well as a new take; generated new. Picked v2 of 4: events at about 0, 0.1-0.3 s with centroid falling 8 -> 11 -> 4.4 -> 0.3 kHz then hard silence at 0.4 s (dies mid-note). File is 0.38 s against 0.6 s on the sheet; the click, tick and blip are not separately verifiable by measurement. Place file start at G794. Measured, not listened."
+  },
+  {
+   "cue": "S4-reprise",
+   "shot": "B04-SH10",
+   "frame": 822,
+   "brief": "S4 reprise, shorter 1.8 s, same shimmer.",
+   "id": "reveal_breath-chime-glow-short_01",
+   "origin": "generated",
+   "group": "TG3",
+   "status": "done",
+   "listened": "no",
+   "lengthSec": 1.8,
+   "notes": "Same take as S4-route-glow cut at 1.8 s with a 0.4 s fade (separate file so the length is exact)."
+  },
+  {
+   "cue": "S8-inner-branch",
+   "shot": "B04-SH10",
+   "frame": 852,
+   "brief": "S8 inner branch: one thin high glassy filament sweep, much smaller than S4, sliding inward and down, ending on a soft dull tick, 0.8 s.",
+   "id": "reveal_glass-filament-sweep-down_01",
+   "origin": "generated",
+   "group": "TG3",
+   "status": "done",
+   "listened": "no",
+   "lengthSec": 1.0,
+   "notes": "R2 D-S8: plays whole, untrimmed, 1.0 s at G852-882; ends one frame before the cluster flicker (L60), no trim needed. Its late peak (0.93 s) lands as the branch reaches the dash, just before the word at G881. File v2 of 4: centroid 4.8 to 2.3 kHz over the first 0.9 s = slides down. The 'soft dull tick' ending is weak by measurement; the falling sweep carries the beat (tick optional). Smaller than S4 (see levels). Listen first."
+  },
+  {
+   "cue": "S4-echo",
+   "shot": "B05-SH13",
+   "frame": 1181,
+   "brief": "S4 echo: faint (-6 dB on SH06's) repeat of the route glow.",
+   "id": "reveal_breath-chime-glow-rise_01",
+   "origin": "generated",
+   "group": "TG3",
+   "status": "done",
+   "listened": "no",
+   "lengthSec": 2.5,
+   "notes": "Same file as S4-route-glow, placed at -6 dB under SH06's level (Editor sets the clip gain); may be trimmed to the shot's end."
+  },
+  {
+   "cue": "S9a-end-strike-1",
+   "shot": "B05-SH13",
+   "frame": 1248,
+   "brief": "S9a end strike E1 (rear roof edge, G1248): the S1 file reused as a deliberate rhyme with the hook, placed 2 dB under the S1 placement.",
+   "id": "impact_lightning-strike-close_01",
+   "origin": "library",
+   "group": "TG5",
+   "status": "done",
+   "listened": "no",
+   "lengthSec": 1.6,
+   "fit": "Same source, action and space as S1: lightning crack on the same car's roof edge in heavy rain, tearing crack, sizzle, short rolling tail; the brief asks for the rhyme, so the same file fits as well as a new take. File start G1244 (crack at file 0.13 s lands G1248); placement gain -2 dB vs S1 (its measured peak lands 2 dB under S1's). Not an obvious-copy check by ear yet: if it reads as a copy of the opening, make a sibling take of S1 (same brief, new seed).",
+   "notes": "Placement gain -2 dB under S1; nothing in the hold peaks above S1. Measured, not listened."
+  },
+  {
+   "cue": "S9b-end-strike-2",
+   "shot": "B05-SH13",
+   "frame": 1266,
+   "brief": "S9b end strike E2 (bonnet, G1266): lightning bolt hitting a car's steel bonnet a few metres away in heavy rain; instant tearing crack, second snap about 0.1 s later (the restrike), bright sizzle, short sharp ring of struck sheet steel, quick rolling tail by 1.2 s; crisp bright top, solid low thud, wet; outdoors, close, slightly wide; crack within the first 0.1 s; same family as S1, a touch brighter and closer, no horror boom; peak 1 dB under S1.",
+   "id": "impact_lightning-bonnet-strike-double_01",
+   "origin": "generated",
+   "group": "TG5",
+   "status": "done",
+   "listened": "no",
+   "lengthSec": 0.82,
+   "notes": "Library check: impact_lightning-strike-close_01 (S1/S9a) is a single crack with the peak at 0.14 s and no second snap, so it does not fit the double strike on the bonnet; generated new (4 candidates, seeds 265243621-24, sfx, cfg 1). Measured per 10 ms RMS: v1 sustained one long crack, no second event; v2 first event -17 dB at 0.06 s and main -7 dB at 0.19 s (second louder than first, crack not within 0.1 s); v4 main at 0.10 s but a weak first event; v3 picked: crack onset 0.02 s (-11 dB), second snap 0.08-0.09 s (-7 dB, 70 ms after), body down to -40 dB by 0.3 s. File is 0.82 s, shorter than the 1.2 s asked (tail below -50 dB trimmed; the rolling tail past 0.4 s is rain-level and left to A1). File peak -1 dBFS (equal to S1's file): place at -1 dB so it sits 1 dB under S1; file start G1266 (crack 0.02 s in = G1266.6); tail ducked -6 dB from G1272 (Editor, under END1). Measured, not listened; ear check: crack reads as steel, second snap is audible as a restrike, no horror boom, same family as S1."
+  },
+  {
+   "cue": "END1-storm-passing",
+   "shot": "B05-SH13",
+   "frame": 1272,
+   "brief": "END1 storm passing: one warm open felt-piano chord (major ninth) over the last rain and a far receding thunder roll, a soft high glass-like harmonic ringing out, 2.8 s, relief and understanding. R4: moved G1230 -> G1272, the answer to the two end strikes.",
+   "id": "stinger_storm-passing-piano-chord_01",
+   "origin": "generated",
+   "group": "TG1",
+   "status": "done",
+   "listened": "no",
+   "lengthSec": 3.35,
+   "notes": "UT15: Film's own ending. Not a probe of 'major ninth' by ear; measured tonal clarity only. Rings into A_fade by G1320. R4 placement: file start G1272. Measured head: soft transient -36 dB at 0.01 s, chord onset -27 dB at 0.12 s and full (-6 dB) at 0.13-0.14 s, so the chord is audible within 0.15 s without trimming the head (the attack lands 4 f after G1272). Ducking: S9b tail -6 dB from G1272."
+  }
+ ],
+ "placements": [
+  {
+   "layer": "ambience",
+   "map": "A1 G0-223, A2 G223-315, A1 G315-408, A3 (A1 low-passed -8 dB) G408-548, A1 G548-765, A2 G765-822, A3 G822-930, A1 G930-1011, A2 G1011-1105, A1 G1105-1320 (A3-light G1178-1240; R4: A1 eases -6 dB and low-passes G1272-1320, fades under A_fade). 3 f crossfades on the cuts.",
+   "files": [
+    "weather_car-roof-rain-storm-outside_01",
+    "room_car-cabin-heavy-rain_01"
+   ],
+   "source": "SHEETS-R1 sound plan"
+  },
+  {
+   "layer": "music",
+   "map": "M1 in G29 (10 f fade) -> out over 8 f from G315 -> back with the pulse G410 -> lighter G548-765 -> cut dead G802 -> silent G802-822 -> sparse re-entry G822 -> warmer G930 -> pulse stops G1171 -> tail fades out G1230-1244 (R4; gone before E1 at G1248).",
+   "file": "bed_curious-felt-piano-pulse-92_01",
+   "source": "SHEETS-R1 music map, revised SHEETS-R2 D-M1",
+   "editorNote": "One 41.5 s file; no stem needed: texture states are gain/EQ only (R2 D-M1). Offsets follow offsetRule.",
+   "offsetRule": "R2 D-M1: every entry after G29 starts at file offset (G-29)/30 s snapped to the nearest bar start within +-1 bar (92 bpm, about 2.61 s per 4/4 bar; Editor reads the bar grid from the file's onsets); 3 f fade-in unless the map gives one.",
+   "states": [
+    "G548-765: -4 dB and high-pass about 180 Hz (lighter, pulse thinned)",
+    "G822: -6 dB rising to -3 dB by G852 (sparse re-entry)",
+    "G930: plain bed, no filter (warmer)",
+    "G1110: major colour dropped; END1 carries the major resolution",
+    "G1171: high-pass back on (pulse stops); R4: tail fades out G1230-1244, silent from G1244"
+   ]
+  }
+ ],
+ "swaps": [],
+ "exempt": [
+  {
+   "src": "out/stems/voice.wav",
+   "reason": "per-layer stem for mix-levels.py"
+  },
+  {
+   "src": "out/stems/bed.wav",
+   "reason": "per-layer stem"
+  },
+  {
+   "src": "out/stems/ambience.wav",
+   "reason": "per-layer stem"
+  },
+  {
+   "src": "out/stems/accent.wav",
+   "reason": "per-layer stem"
+  },
+  {
+   "src": "public/audio/edu/EDU-EP21-SHORT-draft-stem-v1.wav",
+   "reason": "the baked sound stem (bed + ambience + accent of this cue sheet) written by scripts/edu-series/ep21/sound-mix.py (Editor W5.3 Draft, 15 cues, 1320 f)"
+  }
+ ],
+ "levels": {
+  "stems": {
+   "voice": "out/stems/voice.wav",
+   "bed": "out/stems/bed.wav",
+   "ambience": "out/stems/ambience.wav",
+   "accent": "out/stems/accent.wav"
+  },
+  "stemsNote": "Editor fills after the first draft stems; rows marked provisional wait for their sounds.",
+  "checks": [
+   {
+    "beat": "B01",
+    "layer": "background",
+    "when": "speech",
+    "fromSec": 0,
+    "toSec": 10.5,
+    "min": 6,
+    "relation": "S1 crack inside the window: background (bed+ambience+accent) dV 8.1 with the louder S1, was >= 15 (measured 15+ in v3) | user 2026-11-17 breakrule: louder strike"
+   },
+   {
+    "beat": "B01",
+    "layer": "bed",
+    "when": "speech",
+    "fromSec": 0,
+    "toSec": 10.5,
+    "warnAbove": 20
+   },
+   {
+    "beat": "B01",
+    "layer": "ambience",
+    "when": "speech",
+    "fromSec": 0,
+    "toSec": 10.5,
+    "min": 15
+   },
+   {
+    "beat": "B02",
+    "layer": "background",
+    "when": "speech",
+    "fromSec": 10.5,
+    "toSec": 18.27,
+    "min": 15
+   },
+   {
+    "beat": "B02",
+    "layer": "bed",
+    "when": "speech",
+    "fromSec": 10.5,
+    "toSec": 18.27,
+    "warnAbove": 20
+   },
+   {
+    "beat": "B02",
+    "layer": "ambience",
+    "when": "speech",
+    "fromSec": 10.5,
+    "toSec": 18.27,
+    "min": 15
+   },
+   {
+    "beat": "B03",
+    "layer": "background",
+    "when": "speech",
+    "fromSec": 18.27,
+    "toSec": 25.5,
+    "min": 15
+   },
+   {
+    "beat": "B03",
+    "layer": "bed",
+    "when": "speech",
+    "fromSec": 18.27,
+    "toSec": 25.5,
+    "warnAbove": 20
+   },
+   {
+    "beat": "B03",
+    "layer": "ambience",
+    "when": "speech",
+    "fromSec": 18.27,
+    "toSec": 25.5,
+    "min": 15
+   },
+   {
+    "beat": "B04",
+    "layer": "background",
+    "when": "speech",
+    "fromSec": 25.5,
+    "toSec": 31.0,
+    "min": 15
+   },
+   {
+    "beat": "B04",
+    "layer": "bed",
+    "when": "speech",
+    "fromSec": 25.5,
+    "toSec": 31.0,
+    "warnAbove": 20
+   },
+   {
+    "beat": "B04",
+    "layer": "ambience",
+    "when": "speech",
+    "fromSec": 25.5,
+    "toSec": 31.0,
+    "min": 15
+   },
+   {
+    "beat": "B05",
+    "layer": "background",
+    "when": "speech",
+    "fromSec": 31.0,
+    "toSec": 44.0,
+    "min": 15
+   },
+   {
+    "beat": "B05",
+    "layer": "bed",
+    "when": "speech",
+    "fromSec": 31.0,
+    "toSec": 44.0,
+    "warnAbove": 20
+   },
+   {
+    "beat": "B05",
+    "layer": "ambience",
+    "when": "speech",
+    "fromSec": 31.0,
+    "toSec": 44.0,
+    "min": 15
+   },
+   {
+    "beat": "B01",
+    "layer": "accent",
+    "when": "speech",
+    "fromSec": 0.4,
+    "toSec": 0.6,
+    "min": -6,
+    "max": 3,
+    "relation": "user 2026-11-17 audibility override (Draft v2 listen: the opening lightning could not be heard): the crack G12-18 peaks at or above the voice, dV <= 3, replaces the old min 4 (D-S1); the voice is dipped -5 dB G12-20 under it | v4 breakrule: S1 compressed + soft-clipped, peak -1.7 dBFS, voice dipped -9 dB; measured -5.5 | user 2026-11-17 breakrule: louder strike",
+    "exception": "brief S1 strike over 'ใช่', 6 f (G12-18): the opening hook, must read as lightning on the bolt frame G12. user 2026-11-17 audibility override of SHEETS-R2 D-S1 (was >= 4, ear check may raise to >= 8)",
+    "cue": "S1-strike"
+   },
+   {
+    "beat": "B01",
+    "layer": "accent",
+    "when": "speech",
+    "fromSec": 0.6,
+    "toSec": 2.0,
+    "min": 0,
+    "cue": "S1-strike",
+    "relation": "S1 pushed into a soft clip and compressed (body + tail ring), no -4 dB tail; accent dV 2.0 over 0.6-2.0 s, was >= 12 | user 2026-11-17 breakrule: louder strike"
+   },
+   {
+    "beat": "B01",
+    "layer": "accent",
+    "when": "speech",
+    "fromSec": 5.0,
+    "toSec": 6.6,
+    "min": 10,
+    "exception": "SHEETS-R1 SH03: ticks 10 dB under VO",
+    "cue": "S3-glint"
+   },
+   {
+    "beat": "B02",
+    "layer": "accent",
+    "when": "speech",
+    "fromSec": 10.7,
+    "toSec": 13.0,
+    "min": 18,
+    "cue": "S7-far-thunder"
+   },
+   {
+    "beat": "B02",
+    "layer": "bed",
+    "when": "drop",
+    "fromSec": 10.6,
+    "toSec": 13.5,
+    "min": 30,
+    "cue": "M1 rests under L04"
+   },
+   {
+    "beat": "B02",
+    "layer": "accent",
+    "when": "speech",
+    "fromSec": 13.9,
+    "toSec": 16.5,
+    "min": 12,
+    "cue": "S4-route-glow"
+   },
+   {
+    "beat": "B03",
+    "layer": "accent",
+    "when": "peak",
+    "fromSec": 21.1,
+    "toSec": 21.5,
+    "min": -6,
+    "max": 3,
+    "cue": "S5-tyre"
+   },
+   {
+    "beat": "B04",
+    "layer": "accent",
+    "when": "speech",
+    "fromSec": 26.4,
+    "toSec": 26.9,
+    "min": 12,
+    "cue": "S6-radio-cutout"
+   },
+   {
+    "beat": "B04",
+    "layer": "bed",
+    "when": "drop",
+    "fromSec": 26.73,
+    "toSec": 27.4,
+    "min": 30,
+    "cue": "M1 cut dead at G802"
+   },
+   {
+    "beat": "B05",
+    "layer": "accent",
+    "when": "peak",
+    "fromSec": 42.4,
+    "toSec": 44.0,
+    "min": -6,
+    "max": 3,
+    "cue": "END1-storm-passing"
+   },
+   {
+    "beat": "B04",
+    "layer": "accent",
+    "when": "speech",
+    "fromSec": 27.4,
+    "toSec": 29.2,
+    "min": 12,
+    "cue": "S4-reprise"
+   },
+   {
+    "beat": "B04",
+    "layer": "accent",
+    "when": "speech",
+    "fromSec": 28.4,
+    "toSec": 29.4,
+    "min": 15,
+    "cue": "S8-inner-branch"
+   },
+   {
+    "beat": "B05",
+    "layer": "accent",
+    "when": "speech",
+    "fromSec": 39.37,
+    "toSec": 40.9,
+    "min": 18,
+    "cue": "S4-echo"
+   },
+   {
+    "beat": "B05",
+    "layer": "accent",
+    "when": "peak",
+    "fromSec": 41.2,
+    "toSec": 42.0,
+    "min": -6,
+    "max": 3,
+    "cue": "S9a-end-strike-1",
+    "relation": "user 2026-11-17 audibility override: S1 raised +8.5 dB, S9a stays 2 dB under it (S1 peak dV 1.2), so the bound is 3..10 (was 12..20) | peak <= S1 peak (S9a placed 2 dB under S1); no speech in the hold, so dV is against the voice's mean speech level; Ton checks the S1 comparison on the stems | R4 coordinator fix 2026-11-17: dV is against the voice, S1 peak dV is 12.5, so \"peak <= S1\" means dV >= 12 (was -6..3, a wrong bound) | v4 breakrule: strikes shaped like S1 (S9a -2 dB, S9b -1 dB under S1 on file, limited at -0.1 dBFS), peak dV now -6..3 (measured -1.8 and -3.8; was 3..10) | user 2026-11-17 breakrule: louder strike"
+   },
+   {
+    "beat": "B05",
+    "layer": "accent",
+    "when": "peak",
+    "fromSec": 42.0,
+    "toSec": 42.5,
+    "min": -6,
+    "max": 3,
+    "cue": "S9b-end-strike-2",
+    "relation": "user 2026-11-17 audibility override: S1 raised +8.5 dB, S9b stays 1 dB under it (+0.5 dB v3), so the bound is 3..10 (was 12..20) | peak <= S1 peak (S9b placed 1 dB under S1); tail -6 dB from G1272 | R4 coordinator fix 2026-11-17: dV is against the voice, S1 peak dV is 12.5, so \"peak <= S1\" means dV >= 12 (was -6..3, a wrong bound) | v4 breakrule: strikes shaped like S1 (S9a -2 dB, S9b -1 dB under S1 on file, limited at -0.1 dBFS), peak dV now -6..3 (measured -1.8 and -3.8; was 3..10) | user 2026-11-17 breakrule: louder strike"
+   },
+   {
+    "beat": "B05",
+    "layer": "accent",
+    "when": "peak",
+    "fromSec": 42.4,
+    "toSec": 44.0,
+    "min": -6,
+    "max": 3,
+    "cue": "END1-storm-passing",
+    "relation": "END1 >= 6 dB over the rain (ambience layer) at G1275-1295 (42.5-43.17 s); measured against the ambience stem by Ton, not by mix-levels.py"
+   }
+  ]
+ }
+}

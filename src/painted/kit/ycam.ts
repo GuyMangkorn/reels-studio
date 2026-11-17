@@ -11,14 +11,26 @@ import type {V3} from './space';
 // but cannot paint what the set lacks (see `src/painted/spike/Orbit360.tsx` for a closed crossroads).
 
 /** `near` (optional, m): this camera's near plane instead of `YCAM_NEAR`, for a lens a few centimetres over a counter (EDU-EP02 board-level inserts); absent = 0.3 as before. */
-export type YCam = {x: number; y: number; z: number; yaw: number; f: number; hy: number; pitch?: number; cx?: number; near?: number};
+export type YCam = {x: number; y: number; z: number; yaw: number; f: number; hy: number; pitch?: number; cx?: number; near?: number;
+  /** `body` (optional, EDU-EP21 BG4, 16 Nov 2026): a rigid pre-transform of every world point this camera sees, v -> o + m (v - o), `m` a
+   *  row-major 3x3 rotation about the pivot `o`. A prop that tilts as one body (a car sagging on a flat tyre) is painted through such a camera
+   *  so everything drawn with it (body, glass, cabin, the figure inside) stays rigid together. Absent = unchanged. */
+  body?: YBody};
+/** Rigid body pre-transform of a `YCam` (pivot and row-major rotation). */
+export type YBody = {o: V3; m: readonly number[]};
+/** A world point moved by a camera's `body` transform. */
+export const bodyPoint = (b: YBody, [x, y, z]: V3): V3 => {
+  const dx = x - b.o[0], dy = y - b.o[1], dz = z - b.o[2], m = b.m;
+  return [b.o[0] + m[0] * dx + m[1] * dy + m[2] * dz, b.o[1] + m[3] * dx + m[4] * dy + m[5] * dz, b.o[2] + m[6] * dx + m[7] * dy + m[8] * dz];
+};
 /** Camera space: `r` right, `u` up, `d` depth along the view axis (m). */
 export type CamPt = {r: number; u: number; d: number};
 /** Nearest depth (m) a polygon may reach before it is cut. */
 export const YCAM_NEAR = 0.3;
 
 /** A world point in camera space (yaw about the vertical axis, then pitch). */
-export const camSpace = (c: YCam, [x, y, z]: V3): CamPt => {
+export const camSpace = (c: YCam, v: V3): CamPt => {
+  const [x, y, z] = c.body ? bodyPoint(c.body, v) : v;
   const dx = x - c.x, dz = z - c.z, s = Math.sin(c.yaw), co = Math.cos(c.yaw);
   const r = dx * co + dz * s, u = y - c.y, d = dx * s - dz * co;
   if (!c.pitch) return {r, u, d};

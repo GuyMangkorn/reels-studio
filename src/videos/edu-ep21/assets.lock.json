@@ -1,0 +1,62 @@
+{
+  "public/audio/bed/bed_curious-felt-piano-pulse-92_01.wav": {
+    "store": "library/sound/music/bed/bed_curious-felt-piano-pulse-92_01.wav",
+    "sha256": "c9f4e21d611e2c98414724e1bfda720d04ca7d7ab3618a27cd9bc8319de7a1df"
+  },
+  "public/audio/edu/EDU-EP21-SHORT-draft-stem-v1.wav": {
+    "store": "projects/edu/EDU/audio/EDU-EP21-SHORT-draft-stem-v1.wav",
+    "sha256": "3c6905f122f3929e2dd2481aecc53972a4744a1b3b658d14fc9e8e4b029d227a"
+  },
+  "public/audio/room/room_car-cabin-heavy-rain_01.wav": {
+    "store": "library/sound/ambience/room/room_car-cabin-heavy-rain_01.wav",
+    "sha256": "f626b4c600dd7f476e1666514623272ce9dd1e84e52790cf84468037c61d3072"
+  },
+  "public/audio/weather/weather_car-roof-rain-storm-outside_01.wav": {
+    "store": "library/sound/ambience/weather/weather_car-roof-rain-storm-outside_01.wav",
+    "sha256": "56a20467643f110bd0752c6bf5b76087a5d55383553e99e510f474d2b8f5aa1c"
+  },
+  "public/narration/EDU-EP21-SHORT-narration-v1.wav": {
+    "store": "projects/edu/EDU/narration/EDU-EP21-SHORT-narration-v1.wav",
+    "sha256": "46364761a4b41314b1341a0a934b7f75cc24f0f7bb10ec1399695721dd3e3b9b"
+  },
+  "public/sfx/electric/electric_radio-press-cutout-blip_01.wav": {
+    "store": "library/sound/sfx/electric/electric_radio-press-cutout-blip_01.wav",
+    "sha256": "5331b503269e0bb43280b6c40665bb652845d11c18d2d9d38b2197d7a5ed0c20"
+  },
+  "public/sfx/impact/impact_lightning-bonnet-strike-double_01.wav": {
+    "store": "library/sound/sfx/impact/impact_lightning-bonnet-strike-double_01.wav",
+    "sha256": "5f87f4217291c4274d06dcea1ded2a15e835e56eea01dccf1a7f308cc07bf487"
+  },
+  "public/sfx/impact/impact_lightning-strike-close_01.wav": {
+    "store": "library/sound/sfx/impact/impact_lightning-strike-close_01.wav",
+    "sha256": "6556b10eabd5af3a2280ef648c9df9a59352e78aa87bf4f0c68e3c72e522f29e"
+  },
+  "public/sfx/impact/impact_thunder-roll-far-swell_01.wav": {
+    "store": "library/sound/sfx/impact/impact_thunder-roll-far-swell_01.wav",
+    "sha256": "bc4590fbe4daccae1d306bd72085055ddf36f50009c9d6bb7754f10b51758e32"
+  },
+  "public/sfx/reveal/reveal_breath-chime-glow-rise_01.wav": {
+    "store": "library/sound/sfx/reveal/reveal_breath-chime-glow-rise_01.wav",
+    "sha256": "fd13980d97fcbd208cf82a899559247d0504373ce8b2dc60df7f4825b101410d"
+  },
+  "public/sfx/reveal/reveal_breath-chime-glow-short_01.wav": {
+    "store": "library/sound/sfx/reveal/reveal_breath-chime-glow-short_01.wav",
+    "sha256": "4463fe91909188c1b30558f2aef798e9eeb9b09d88cf1822d80863ddd560d921"
+  },
+  "public/sfx/reveal/reveal_glass-filament-sweep-down_01.wav": {
+    "store": "library/sound/sfx/reveal/reveal_glass-filament-sweep-down_01.wav",
+    "sha256": "dd19a4aa7edf644d41be12651f720818e5a87524c8563a985a070061214fa9b1"
+  },
+  "public/sfx/reveal/reveal_glass-glint-tick_01.wav": {
+    "store": "library/sound/sfx/reveal/reveal_glass-glint-tick_01.wav",
+    "sha256": "e088b5a10875f7952d388e768546d6a8ebc46cb48b270d2cf146772349e53767"
+  },
+  "public/sfx/stinger/stinger_storm-passing-piano-chord_01.wav": {
+    "store": "library/sound/sfx/stinger/stinger_storm-passing-piano-chord_01.wav",
+    "sha256": "7700072e0ff612b873a86a84c37311570286ca2041fa237c61e51a410c934002"
+  },
+  "public/sfx/vehicle/vehicle_split-tyre-air-hiss-settle_01.wav": {
+    "store": "library/sound/sfx/vehicle/vehicle_split-tyre-air-hiss-settle_01.wav",
+    "sha256": "38a8872783918f29363aa18dc6c14e4ebacb802662c0c294b88c5a8364b9edaa"
+  }
+}

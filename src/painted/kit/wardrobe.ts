@@ -17,7 +17,7 @@ import {mixColor} from './painter';
 export const OUTFIT_IDS = [
   'student-th-trousers', 'student-th-skirt', 'school-jp-sailor', 'school-jp-gakuran', 'office', 'police', 'nurse', 'doctor',
   'monk', 'vendor', 'rider', 'hoodie', 'guard', 'yukata', 'kimono', 'kitchen-apron', 'park-casual', 'home-lounge', 'eva-suit',
-  'trainer-vest',
+  'trainer-vest', 'commuter',
 ] as const;
 export type OutfitId = (typeof OUTFIT_IDS)[number];
 
@@ -128,6 +128,9 @@ export const WARDROBE: Record<OutfitId, Outfit> = {
     shoulder: SHOULDER, shirt: '#a9a8a1', sleeve: '#a9a8a1', longSleeves: false, jacket: '#68703f', pants: '#b3a078', shoes: '#5a4a3c',
     gear: {pockets: true, belt: {color: '#3e3528', h: 0.03}, pouch: '#5b4330'},
   },
+  // EDU-EP21-SHORT DRIVER (KIT-P01 intake, W8.4, 17 Nov 2026; Film casting `woman-ponytail + new: commuter`, EDU-EP21-BRIEF-R1 N3). Copy of
+  // edu21/cast.ts DRIVER.outfit colours (the episode keeps its own); the episode drew it on woman-ponytail's 0.36 shoulder.
+  commuter: {shoulder: SHOULDER, shirt: '#d9a23a', sleeve: '#d9a23a', longSleeves: false, pants: '#2f3a55', shoes: '#2a2a2c'},
 };
 
 export type OutfitInfo = {
@@ -163,6 +166,7 @@ export const WARDROBE_INFO: Record<OutfitId, OutfitInfo> = {
   'eva-suit': {group: 'work', description: 'EVA spacesuit: white long-sleeve suit with boots, blue neck lock collar, backpack and belt; wider shoulder for the bulk. Gloves, neck ring and the bubble / visor / 1966 round helmet come from `paintEva` (eva.ts); `evaSuit()` adds the CREW / 1960s tints (four views and front three-quarter).', bulk: EVA_BULK},
   'park-casual': {group: 'casual', description: 'Weekend park walk: mustard crew-neck tee, denim-blue knee-length shorts with bare shins and white socks, white sneakers, blue baseball cap (four views).'},
   'trainer-vest': {group: 'work', description: 'Dog trainer: open olive multi-pocket vest over a grey short-sleeve tee, khaki cargo trousers, dark belt with a brown treat pouch on the right hip, trail shoes (EDU-EP19; stopwatch = props.ts `paintStopwatch`).'},
+  commuter: {group: 'casual', description: 'Weekday commuter: mustard short-sleeve blouse, navy trousers, dark flats; reads warm through tinted car glass (EDU-EP21 DRIVER on woman-ponytail, seated with car-seat.ts).'},
 };
 
 /**
