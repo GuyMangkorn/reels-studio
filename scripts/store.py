@@ -60,11 +60,12 @@ METADATA = ('.json', '.md')  # sidecars and indexes: edited in place (selection 
 MEDIA = {'.mp4', '.mov', '.webm', '.mp3', '.wav', '.m4a', '.ogg', '.flac', '.png', '.jpg', '.jpeg', '.webp', '.gif'}
 SKIP_PARTS = ('bundle', 'venv', 'node_modules', 'logs', 'tmp', 'qa')  # scratch under out/ that is never archived
 ALIASES = {'ZCPAINT': 'ZCONDO'}  # composition ID prefix -> project folder, only where they differ
-# Channel folders under projects/ and publish/ (channels/README.md): edu and fiction are the two channels, legacy holds
+# Channel folders under projects/ and publish/ (channels/README.md): edu and fiction are the two channels (fiction is written by the
+# reels-fiction repository, which shares this store), legacy holds
 # series made before the channels were split, shared holds material both channels use.
 CHANNELS = ('edu', 'fiction', 'legacy', 'shared')
 # Series (project folder) -> channel folder. A new series is added here before its first file is stored.
-SERIES = {'EDU': 'edu', 'MGF': 'fiction', 'KIT': 'shared', '_shared': 'shared',
+SERIES = {'EDU': 'edu', 'KIT': 'shared', '_shared': 'shared',
           **{name: 'legacy' for name in ('ALVARENGA', 'BLOOP', 'CATBOX', 'EG', 'HANAKO', 'KSO', 'LAKENYOS', 'POOLDEPTH', 'SHIPWRECK',
                                          'WDG', 'WFOG', 'ZCONDO', 'ZCONDO2', '_legacy', '_unsorted')}}
 

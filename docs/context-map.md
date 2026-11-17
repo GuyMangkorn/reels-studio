@@ -236,7 +236,7 @@ Episode-specific files are under [Episodes](#episodes); shared topics come first
 
 - Docs: [channels](../channels/README.md) (folder layout, [CH01–CH05](../channels/README.md#rules), [adding a channel](../channels/README.md#adding-a-channel)); the `Channel` row of the [style profile](delivery-workflow.md#style-profile)
 - Edu (`@TamMaiLa`): [channel file](../channels/edu/channel.md) (identity, [voice](../channels/edu/channel.md#voice), [ending sound UT15](../channels/edu/channel.md#ut-edu-end-tag)), [script rules ER01–ER10](../channels/edu/script.md#edu-short-retention), [performance](../channels/edu/performance.md)
-- Fiction (`@mg.fiction`): [channel file](../channels/fiction/channel.md) (identity only; style `open` until the pilot)
+- Fiction (`@mg.fiction`): moved to its own repository, `reels-fiction` (17 Nov 2026); its store series `MGF` stays in the shared store under `projects/fiction/`
 - Code: `CHANNEL_MARKS`, `ChannelId` and `EpisodeVideos.channel` in [videos/types.ts](../src/videos/types.ts), applied by `collectEpisodes` in [videos/registry.ts](../src/videos/registry.ts); the `edu` mark is also `defaultChrome` in [media.ts](../src/scenes/media.ts) (portrait look `chrome.channelLabelStyle` `ink` default / `outline` via `channelLabelLook`, test [media](../tests/media.test.ts)); test [videos](../tests/videos.test.ts)
 
 ## Agents, roles and tooling
@@ -280,7 +280,6 @@ Episode-specific files are under [Episodes](#episodes); shared topics come first
 | Kuchisake-onna | [kuchisake-onna/](../scripts/kuchisake-onna/delivery.md) | [kuchisake-onna](../src/videos/kuchisake-onna/index.ts) `KSO-EP01-SHORT-B`, `-C` | [kuchisake/](../src/painted/kuchisake/cast.ts), [shots/kuchisake.tsx](../src/painted/shots/kuchisake.tsx) | [kuchisake-shots](../tests/kuchisake-shots.test.ts), [kuchisake-timeline](../tests/kuchisake-timeline.test.ts) |
 | Alvarenga 438 days | [alvarenga/](../scripts/alvarenga/delivery.md) | [alvarenga](../src/videos/alvarenga/index.ts) `ALV-LOOK` (look frames) | [alvarenga/](../src/painted/alvarenga/cast.ts) ([set](../src/painted/alvarenga/set.ts), [palette](../src/painted/alvarenga/palette.ts)), [shots/alvarenga.tsx](../src/painted/shots/alvarenga.tsx) | — |
 | Lake Nyos | [lake-nyos/](../scripts/lake-nyos/delivery.md) | — | [nyos/](../src/painted/nyos/index.ts) | — |
-| MGF fiction series EP01 (Mom's Texts, Long 16:9) | [mgf-series/](../scripts/mgf-series/delivery.md) (concept files cleared 15 Nov 2026 for a new direction; [ep01/](../scripts/mgf-series/ep01/task.md): script R2.1, voice measure, [film-brief](../scripts/mgf-series/ep01/film-brief.md), [review-rows](../scripts/mgf-series/ep01/review-rows.json)) | — (`MGF-EP01-LONG` not registered yet) | — | — |
 | Onoda 29 years | [onoda/](../scripts/onoda/delivery.md) | — | — | — |
 | Among us (1 in 5) | [among-us/](../scripts/among-us/delivery.md) | — | — | — |
 | Oldest shipwreck | [oldest-shipwreck/](../scripts/oldest-shipwreck/) | [oldest-shipwreck](../src/videos/oldest-shipwreck/index.ts) `SHIPWRECK-SHORT` | [ship.ts](../src/painted/ship.ts), [sea.ts](../src/painted/sea.ts), [diver.ts](../src/painted/diver.ts), [jar.ts](../src/painted/jar.ts), [shots/shipwreck.tsx](../src/painted/shots/shipwreck.tsx) | [oldest-shipwreck](../tests/oldest-shipwreck.test.ts) |

@@ -5,7 +5,7 @@
 | Channel | ID | Folder | Status |
 | --- | --- | --- | --- |
 | Education (`@TamMaiLa`) | `edu` | [edu/](edu/channel.md) | active |
-| Fiction (`@mg.fiction`) | `fiction` | [fiction/](fiction/channel.md) | active, identity only; the style files grow from a pilot episode |
+| Fiction (`@mg.fiction`) | `fiction` | — | moved to its own repository, `reels-fiction` (user, 17 Nov 2026); the code keeps its mark for the channel machinery test |
 
 ## What a channel folder holds
 
