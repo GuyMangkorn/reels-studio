@@ -9,7 +9,7 @@ import {paintCover, paintSpoonHeld} from '../tableware';
 
 // B01-SH02 · G 37-140 (103 f) · "you" are the taster (EDU-EP22-SCENES-R1). Over T's right shoulder at the near end of LT, the domes receding up
 // and right. N5 `new: spoon-taste` + one-hand `new: cover-lift` (Boss W5.1): the left mitten lifts A01's cover l 3-15 and holds it beside the bowl,
-// the right mitten (spoon) dips l 50, lifts l 50-60, tastes l 60-74 (out of frame top-right), the cover goes back on l 76-86, T turns half a step
+// the right mitten (spoon) dips l 50, lifts l 50-60, tastes l 60-74 (at the upper right), the cover goes back on l 76-86, T turns half a step
 // toward A02 l 88-103. A01 = LT_BOWLS[1] (z 1.68, the sheet's tag bowl; stage.ts BOWL_A01).
 const N = 103;
 const M = sheetMove([-3.35, 0.88, 1.68], [30, 27], [1.1, 1.02], 1.55, {f: 1100, hy: 760, pitch: [-25, -25]});
@@ -30,9 +30,12 @@ export const def: Shot22 = {
     // the spoon hand: rest -> over the bowl (l 40-50 dip) -> lifted (l 60) -> at the mouth (l 66-74) -> rest (l 88)
     const base: PersonOpts = {at: T_MARK, t, facing, kitFacing: true, seed: TASTER.seed};
     const rest = onBody(TASTER, T_MARK, F0, 0.2, 0.16, 0.5), mouth = cardMouth(c, TASTER, base) ?? add3(T_MARK, [-0.1, 1.5, 0]);
-    const dipHand: V3 = add3(FOOD, [0.08, 0.05, 0.0]), up: V3 = [-3.12, 1.12, 1.72], atMouth: V3 = add3(mouth, [0.03, -0.09, 0]);
+    const dipHand: V3 = add3(FOOD, [0.08, 0.05, 0.0]), up: V3 = [-3.12, 1.12, 1.72], atMouth: V3 = add3(mouth, [0.048, -0.023, 0.022]);
     const hand = track(L, [[38, rest], [50, dipHand], [60, up], [66, atMouth], [74, atMouth], [88, rest]]);
-    const spoonTo: V3 = L < 55 ? FOOD : L < 80 ? mouth : add3(hand, [-0.1, -0.05, 0]);
+    const dipBowl = spoonBowlToward(hand, FOOD);
+    const tasteBowl = spoonBowlToward(hand, mouth, 0.058);
+    const restBowl = add3(hand, [-0.08, -0.035, 0]);
+    const spoonBowl = track(L, [[50, dipBowl], [60, tasteBowl], [74, tasteBowl], [88, restBowl]]);
     const wr = ramp(L, 34, 40) * (1 - ramp(L, 88, 96));
     const T = tasterItem({...base, held: (q, a, u) => { if (wr <= 0) paintSpoonPx(q, 26600, a.rHand, Math.PI / 2 + 0.25, u); }}, -0.2);
     paintHall(p, c, {
@@ -42,7 +45,7 @@ export const def: Shot22 = {
         const hp = blendHands(cc, TASTER, base, {l: [add3(cover, [0, 0.07, 0]), wl], r: [hand, wr]});
         if (held) paintCover(q, cc, 24100 + BOWL_A01 * 60 + 10, cover, true);
         tasterItem({...base, handsPx: hp, held: (qq, a, u) => { if (wr <= 0) paintSpoonPx(qq, 26600, a.rHand, Math.PI / 2 + 0.25, u); }}).draw(q, cc);
-        if (wr > 0) paintSpoonHeld(q, cc, 26620, hand, spoonBowlToward(hand, spoonTo));
+        if (wr > 0) paintSpoonHeld(q, cc, 26620, hand, spoonBowl, 'oval');
       }}],
     });
   },

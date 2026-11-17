@@ -4,7 +4,7 @@ Record: [delivery.md](delivery.md) · Updated: 2026-11-16, coordinator
 
 ## EDU-EP22-SHORT
 
-**Now:** user reviews Draft r3 on the review page **Next:** read db verdicts; V01 samples + hero-cue listen; Final cut (full size), pins, cover/title, publish
+**Now:** Draft r4 approved, 20/20 shots (user, 2026-11-17). **Next:** V01 samples and hero-cue listen; Final cut (full size), final review, pins, cover/title and publish.
 
 - [x] W0 Ideation — user named the topic (C88).
 - [ ] W1 Script lock
