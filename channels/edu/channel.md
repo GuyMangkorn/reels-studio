@@ -17,6 +17,7 @@
 ## Rules of this channel
 
 - **Script:** [script.md](script.md) (ER01–ER11: hook, levels, one rule that flips, audience level, open-question map, short answers, hedges, pitch check, story-led mix).
+- **Categories:** [categories.md](categories.md) (CAT01–CAT10, the category index); the user picks categories before Preaw pitches ([category pick](categories.md#category-pick); user, 17 Nov 2026).
 - **Numbers:** [performance.md](performance.md); the coordinator adds a row per posted video ([performance record](../../docs/delivery-workflow.md#performance-record)).
 - **Look:** the [project defaults](../../docs/delivery-workflow.md#project-defaults) (painted 3D camera, the four-head cast) with the [retention camera](../../docs/cinematography-principles.md#retention-camera). No `look.md` yet.
 - **Captions:** the shared [caption look](../../docs/production-requirements.md#caption-look), which came from EDU-EP02/EP03. No channel override.
