@@ -1,0 +1,114 @@
+{
+  "public/audio/bed/bed_court-ceremonial-brisk-104_01.wav": {
+    "store": "library/sound/music/bed/bed_court-ceremonial-brisk-104_01.wav",
+    "sha256": "c49afd6383b0955374b6810d0ea9aa3ce67aa9868377b4090a2143c11056de76"
+  },
+  "public/audio/bed/bed_court-pizz-zither-playful-104_01.wav": {
+    "store": "library/sound/music/bed/bed_court-pizz-zither-playful-104_01.wav",
+    "sha256": "ce0a40013dda47ea2245c55aa153877c4d9bb3b732da42e48a8c9bba0a0a5df2"
+  },
+  "public/audio/room/room_palace-hall-late-morning_01.wav": {
+    "store": "library/sound/ambience/room/room_palace-hall-late-morning_01.wav",
+    "sha256": "38293366d45df9ec455b402d61f1539f3944f3c2362177ec07ef10ee97de0842"
+  },
+  "public/audio/room/room_small-clinical-hum_01.wav": {
+    "store": "library/sound/ambience/room/room_small-clinical-hum_01.wav",
+    "sha256": "0b24117dab37c65a333071c6b1b60eff11ed36c9876101b6c5d064f1410a87b3"
+  },
+  "public/audio/tone/tone_bowed-bass-drone-d_01.wav": {
+    "store": "library/sound/music/tone/tone_bowed-bass-drone-d_01.wav",
+    "sha256": "472e13858161960de8af569b6c3aa0e79a0cedcf1563b79935ef71097899cfc1"
+  },
+  "public/sfx/comedy/comedy_pluck-pop-round_01.wav": {
+    "store": "library/sound/sfx/comedy/comedy_pluck-pop-round_01.wav",
+    "sha256": "f0e6edeaed957b62b3b19e78df7786dc5de72f0e3534d7b8cb3fb1626d506b62"
+  },
+  "public/sfx/comedy/comedy_pluck-question-bend_01.wav": {
+    "store": "library/sound/sfx/comedy/comedy_pluck-question-bend_01.wav",
+    "sha256": "0d4a0ecdf264ccbe10b9636fdff7495c18b588fddc6529d0c68d69ff27954526"
+  },
+  "public/sfx/foley/foley_cloth-shoes-trays-approach_01.wav": {
+    "store": "library/sound/sfx/foley/foley_cloth-shoes-trays-approach_01.wav",
+    "sha256": "2949acdf00996547eae1fc407bdd3e037b3f952520cc0568e0a4fbd525c297fd"
+  },
+  "public/sfx/foley/foley_porcelain-spoon-tick_01.wav": {
+    "store": "library/sound/sfx/foley/foley_porcelain-spoon-tick_01.wav",
+    "sha256": "5385e0d3087f78a788ec2f1acb77dc23f4ab537f0fdb207023232d303b6a83dc"
+  },
+  "public/sfx/foley/foley_silver-cover-lift-scrape-ring_01.wav": {
+    "store": "library/sound/sfx/foley/foley_silver-cover-lift-scrape-ring_01.wav",
+    "sha256": "3b9e67c39b50da8019c7a29e7c8b67f6e02daac6dffa268dd3bae2f7ca4370f4"
+  },
+  "public/sfx/foley/foley_silver-cover-setdown_01.wav": {
+    "store": "library/sound/sfx/foley/foley_silver-cover-setdown_01.wav",
+    "sha256": "797aaf38466e2a232229888b72263ecd7794e94960b5b6937cb9c65bed682003"
+  },
+  "public/sfx/foley/foley_silver-covers-ripple-left-to-right_01.wav": {
+    "store": "library/sound/sfx/foley/foley_silver-covers-ripple-left-to-right_01.wav",
+    "sha256": "b4b11a13c9774ea8769304b14265fcdaf729630688adc2447e2e2827a445cd44"
+  },
+  "public/sfx/foley/foley_silver-strip-egg-yolk_01.wav": {
+    "store": "library/sound/sfx/foley/foley_silver-strip-egg-yolk_01.wav",
+    "sha256": "768279eaf8820372b6fd6dd57af74a4e60bd1170f1dbe0c3e6635a95d68c47e4"
+  },
+  "public/sfx/foley/foley_silver-strip-water-plink_01.wav": {
+    "store": "library/sound/sfx/foley/foley_silver-strip-water-plink_01.wav",
+    "sha256": "c1b0faa61da07d5ef7878ffb785b547709f5488b573d05c85b94c130e5fe2a29"
+  },
+  "public/sfx/foley/foley_spoon-rice-bowl-taps_01.wav": {
+    "store": "library/sound/sfx/foley/foley_spoon-rice-bowl-taps_01.wav",
+    "sha256": "a4274f359543d1fd2d329181a1ca8b434ab368e33d85c71887aa850cae99f5be"
+  },
+  "public/sfx/foley/foley_spoon-sauce-dip-drip_01.wav": {
+    "store": "library/sound/sfx/foley/foley_spoon-sauce-dip-drip_01.wav",
+    "sha256": "7a30050e4f0471ea0d7aaa7efa6bbf42d56cebc08c9ade3c119f41b80da95542"
+  },
+  "public/sfx/foley/foley_tray-set-down-a_01.wav": {
+    "store": "library/sound/sfx/foley/foley_tray-set-down-a_01.wav",
+    "sha256": "1abbba60f3f497d33442f8a1e4e6b1f86132e10c3305ca21bb3d940f8681d8bb"
+  },
+  "public/sfx/foley/foley_tray-set-down-b_01.wav": {
+    "store": "library/sound/sfx/foley/foley_tray-set-down-b_01.wav",
+    "sha256": "d756ec77fec2cfd52fa1b99fa7ca683cac5776c4899700745904a2bb079efd12"
+  },
+  "public/sfx/foley/foley_tray-set-down-c_01.wav": {
+    "store": "library/sound/sfx/foley/foley_tray-set-down-c_01.wav",
+    "sha256": "5be09f91f1d66630ecd1e3853154ff541fc0c01239c46c20536ca1baee843394"
+  },
+  "public/sfx/foley/foley_tray-set-down-d_01.wav": {
+    "store": "library/sound/sfx/foley/foley_tray-set-down-d_01.wav",
+    "sha256": "8d84fe7aeb4ade4f55f7f240746c70d183a1c486b6fe77fbadc47c754b1aa158"
+  },
+  "public/sfx/reveal/reveal_silver-tarnish-dull-fall_01.wav": {
+    "store": "library/sound/sfx/reveal/reveal_silver-tarnish-dull-fall_01.wav",
+    "sha256": "ea5464ef9beb3cdf6b9dccf3f3bb86750cd3dc0372de74a796d3c008273ac78b"
+  },
+  "public/sfx/stinger/stinger_riser-warm-chord-zither_01.wav": {
+    "store": "library/sound/sfx/stinger/stinger_riser-warm-chord-zither_01.wav",
+    "sha256": "609b05e477cd7d070ed6327641bd16e7a74e5bb931ed5123d29aeab654741601"
+  },
+  "public/sfx/stinger/stinger_zither-end-note1-d_01.wav": {
+    "store": "library/sound/sfx/stinger/stinger_zither-end-note1-d_01.wav",
+    "sha256": "71c79d74924b0dfd2d231e9b3dfe8456c3be82d8491a23a944ef8a7858a3cac6"
+  },
+  "public/sfx/stinger/stinger_zither-end-note2-ring_01.wav": {
+    "store": "library/sound/sfx/stinger/stinger_zither-end-note2-ring_01.wav",
+    "sha256": "8067a4655c8622e3e6bfeed29c742c5dc646f70be7c38b2f75f23383254f59c4"
+  },
+  "public/sfx/stinger/stinger_zither-pluck-d-a_01.wav": {
+    "store": "library/sound/sfx/stinger/stinger_zither-pluck-d-a_01.wav",
+    "sha256": "dd15af78db7a38a351f6bbcf6ec67767ce834ff311049bed4636fa6995ca7ab4"
+  },
+  "public/sfx/stinger/stinger_zither-pluck-d-b_01.wav": {
+    "store": "library/sound/sfx/stinger/stinger_zither-pluck-d-b_01.wav",
+    "sha256": "dee643e81fcd0eddf3e64d8f1f6b09643b93331c1383082dcfae93d5a7e76a46"
+  },
+  "public/sfx/ui/ui_checkpoint-chime-dimmed_01.wav": {
+    "store": "library/sound/sfx/ui/ui_checkpoint-chime-dimmed_01.wav",
+    "sha256": "1bf0417452d579e47da2c75efbee35a9c326583b94a5af57959e977e3aee956e"
+  },
+  "public/sfx/ui/ui_checkpoint-chime-rising-three_01.wav": {
+    "store": "library/sound/sfx/ui/ui_checkpoint-chime-rising-three_01.wav",
+    "sha256": "f3a6a8c22a881f53c5c3607f0fed8dcb0ed777be885b7b6ca10f8a0f767e8472"
+  }
+}

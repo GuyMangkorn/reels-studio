@@ -7,7 +7,7 @@
 The **coordinator** is the chat session the user talks to (Claude Code or Codex). It does the following:
 
 - selects deliverables, style profile and tier;
-- invokes role agents for the assigned scope (Claude Code: the `Agent` tool with `subagent_type` set to the role name; Codex: the custom agent of that name);
+- invokes role agents for the assigned scope through Claude Code's `Agent` tool (`subagent_type: <role>`) or Codex's `spawn_agent` (`agent_type: <role>`);
 - passes matching revisions;
 - publishes the [user storyboard review page](../.agents/skills/review-page/SKILL.md) whenever Film returns a `ready-for-dev` scene-sheet revision or Film adds look frames, built with `scripts/storyboard-page/build.py` from Film's `review-rows.json`, and relays the verdicts back;
 - follows the [agent invocation defaults](#agent-invocation): whole stage per call (shot groups for painting and rendering), inline mechanical edits, separate checking.
@@ -25,6 +25,12 @@ The **coordinator** is the chat session the user talks to (Claude Code or Codex)
 [Role configs](../AGENTS.md#coordinator-and-agent-parity) install no runner; a role agent never invokes the next role.
 
 `.claude/agents/<role>.md` and `.codex/agents/<role>.toml` must carry the same name, description and instructions. `tests/agents.test.ts` enforces this, so edit both in the same change. Claude front matter also carries a required `tools:` allowlist (Claude-only) that keeps each role's startup context small. Add a tool there before a role depends on it. Optional Claude-only `model:` and `effort:` lines pin a role's model and reasoning effort; the front matter is the current record and `git log -p .claude/agents/` its history. The coordinator may override them per call. OpenCode copies (`.opencode/agents/<role>.md`) are generated from the Claude files by `python3 -I scripts/opencode-agents.py`; rerun it after editing a role (the same test checks them). OpenCode reads skills from `.claude/skills` and `.agents/skills` directly and MCP servers from `opencode.json`. ZCode copies (`.zcode/agents/<role>.md`, GLM-5.3) are generated the same way by `python3 -I scripts/zcode-agents.py`; ZCode reads skills from `.agents/skills` and MCP servers from `.agents/mcp.json`, a symlink to `.mcp.json`.
+
+## Native Codex role calls
+
+- Start a fresh session in the trusted project to load the role files and [project config](../.codex/config.toml). Use the assigned role name from `.codex/agents/`. For an eligible same-pass follow-up under AI04, send input to that existing agent while the session can still reach it.
+- The project defaults native subagents to `gpt-6.1-sol` at `medium`, matching the Codex worker setting in [AI14](#ai14). Use a per-call override when the user requests one. The Film and Boss Claude model-by-pass rules apply to Claude calls.
+- Codex role agents inherit the coordinator's available tools and permissions. Check the [project MCP setup](../README.md#claude-code--codex-setup) when a pass needs a local server. Use the [storyboard publishing instructions](../.agents/skills/review-page/SKILL.md#review-page) for review pages.
 
 <a id="resolve-the-selection"></a>
 ## Resolve the selection before writing

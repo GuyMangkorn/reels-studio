@@ -1,0 +1,22 @@
+# Match the Codex worker default in docs/coordinator.md (AI14).
+[agents]
+default_subagent_model = "gpt-6.1-sol"
+default_subagent_reasoning_effort = "medium"
+
+[mcp_servers.audio-studio]
+command = "/bin/sh"
+args = ["-c", '''
+  server_dir="${REELS_AUDIO_STUDIO_DIR:-$HOME/Developer/audio-studio-mcp}"
+  export PYTHONPATH="$server_dir/src"
+  export AUDIO_STUDIO_OUTPUT_DIR="${REELS_STORE:-$HOME/ReelsStore}/library/sound/_raw"
+  exec "$server_dir/.venv/bin/audio-studio-mcp"
+''']
+env_vars = ["REELS_AUDIO_STUDIO_DIR", "REELS_STORE"]
+
+[mcp_servers.youtube-analytics]
+command = "/bin/sh"
+args = ["-c", '''
+  server_dir="${REELS_YOUTUBE_ANALYTICS_DIR:-$HOME/Developer/youtube-analytics-mcp}"
+  exec "$server_dir/.venv/bin/python" "$server_dir/server.py"
+''']
+env_vars = ["REELS_YOUTUBE_ANALYTICS_DIR", "YT_MCP_DIR"]
