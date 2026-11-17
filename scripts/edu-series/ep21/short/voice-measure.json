@@ -1,0 +1,305 @@
+{
+ "deliverable": "EDU-EP21-SHORT",
+ "step": "W4.2",
+ "script_revision": "EDU-EP21-SCRIPT-R1",
+ "measure_revision": "EDU-EP21-VOICE-R2",
+ "date": "2026-11-16",
+ "timing_status": "audio-measured (NOT LISTENED by Editor; user approval W4.3 pending)",
+ "narration": {
+  "raw": "out/ep21-narr/full_source.wav",
+  "raw_duration_s": 40.84,
+  "r1_take": "out/ep21-narr/full_1.05.wav",
+  "take": "out/ep21-narr/full_1.05x0.95.wav",
+  "duration_s": 40.945,
+  "atempo": "1.05 then 0.95 (net x0.9975 of the raw take)",
+  "trim": "none",
+  "text_file": "out/ep21-narr/tts-input.txt",
+  "engine": "Gemini TTS gemini-3.8-flash-tts, Kore, style \"warm, friendly, smiling storyteller, speaking rapidly\"",
+  "gemini_calls_this_step": 0,
+  "store": "projects/edu/EDU/narration/ep21/2026-11-16_kore-x0.9975-r2/"
+ },
+ "method": "the user-chosen full_1.05x0.95.wav (full_1.05.wav at atempo 0.95, no trimming); line boundaries at the centre of the gap between audible runs (10 ms peak blocks >= 800/32767) nearest the Whisper large-v3-turbo word times (decoded 16 kHz samples); line edges = first/last block >= 800; lines cut with 30 ms pad and 20 ms fades, loudnorm-measured, gained to -16 LUFS (alimiter 0.89, level disabled). Boundaries L08|L09 (blip at 27.16-27.22 s assigned to L09) and L10|L11 (33.36 s, shallow trough) are +-0.1 s.",
+ "whisper_note": "large-v3-turbo mishears several words in this voice (also at the W1.4 sample); a heard difference is a prompt to listen, not a pronunciation verdict.",
+ "nar_lines": {
+  "L01": {
+   "text": "ไม่ใช่ยางนะ,ที่ช่วยป้องกันคนในรถถูกฟ้าผ่า",
+   "start_s": 0.1,
+   "end_s": 3.18,
+   "dur_s": 3.08,
+   "lufs_raw": -15.1,
+   "gain_db": -0.9,
+   "lufs_norm": -16.0,
+   "peak_dbfs": -2.5,
+   "internal_gaps_ge_0p12": [
+    [
+     0.11,
+     0.2
+    ]
+   ],
+   "syllables": 14,
+   "whisper_heard": "ไม่ใช่อย่างที่ช่วยป้องกันคนในรถถูกฟ้าผ่า",
+   "whisper_heard_note": "carried from R1 (same words, 1.05 take); not re-run on the slowed take",
+   "file": "out/ep21-narr/lines_norm_r2/L01.wav",
+   "store": "projects/edu/EDU/narration/ep21/2026-11-16_kore-x0.9975-r2/lines_norm/L01.wav"
+  },
+  "L02": {
+   "text": "ต้องเป็นรถปิดมิดชิด หลังคากับตัวถังโลหะ ปิดกระจกด้วย",
+   "start_s": 3.43,
+   "end_s": 7.2,
+   "dur_s": 3.77,
+   "lufs_raw": -15.3,
+   "gain_db": -0.7,
+   "lufs_norm": -16.0,
+   "peak_dbfs": -2.2,
+   "internal_gaps_ge_0p12": [
+    [
+     3.46,
+     0.17
+    ],
+    [
+     4.82,
+     0.33
+    ]
+   ],
+   "syllables": 17,
+   "whisper_heard": "ต้องเป็นรถปิดมิดชิด รังค่ากับตัวถังโลหะปิดกระจกด้วย",
+   "whisper_heard_note": "carried from R1 (same words, 1.05 take); not re-run on the slowed take",
+   "file": "out/ep21-narr/lines_norm_r2/L02.wav",
+   "store": "projects/edu/EDU/narration/ep21/2026-11-16_kore-x0.9975-r2/lines_norm/L02.wav"
+  },
+  "L03": {
+   "text": "ตัวที่ช่วยป้องกัน กลับเป็นเปลือกโลหะรอบคุณ",
+   "start_s": 7.61,
+   "end_s": 10.19,
+   "dur_s": 2.58,
+   "lufs_raw": -13.5,
+   "gain_db": -2.5,
+   "lufs_norm": -16.0,
+   "peak_dbfs": -4.0,
+   "internal_gaps_ge_0p12": [],
+   "syllables": 12,
+   "whisper_heard": "ตัวที่ช่วยป้องกัน ปลับเป็นเปลือกโลหารอบคุณ",
+   "whisper_heard_note": "carried from R1 (same words, 1.05 take); not re-run on the slowed take",
+   "file": "out/ep21-narr/lines_norm_r2/L03.wav",
+   "store": "projects/edu/EDU/narration/ep21/2026-11-16_kore-x0.9975-r2/lines_norm/L03.wav"
+  },
+  "L04": {
+   "text": "เดี๋ยว,โลหะนำไฟฟ้า แล้วมันจะช่วยได้ยังไง?",
+   "start_s": 10.67,
+   "end_s": 13.28,
+   "dur_s": 2.61,
+   "lufs_raw": -14.4,
+   "gain_db": -1.6,
+   "lufs_norm": -16.0,
+   "peak_dbfs": -3.5,
+   "internal_gaps_ge_0p12": [
+    [
+     10.95,
+     0.3
+    ],
+    [
+     12.12,
+     0.2
+    ]
+   ],
+   "syllables": 13,
+   "whisper_heard": "เดี๋ยว เราหาดังไฟฟ้า แล้วมันจะช่วยได้ยังไง",
+   "whisper_heard_note": "carried from R1 (same words, 1.05 take); not re-run on the slowed take",
+   "file": "out/ep21-narr/lines_norm_r2/L04.wav",
+   "store": "projects/edu/EDU/narration/ep21/2026-11-16_kore-x0.9975-r2/lines_norm/L04.wav"
+  },
+  "L05": {
+   "text": "เพราะกระแสไฟไหลไปตามเปลือกโลหะด้านนอก รอบคนข้างใน แล้วลงดิน",
+   "start_s": 13.78,
+   "end_s": 18.12,
+   "dur_s": 4.34,
+   "lufs_raw": -16.1,
+   "gain_db": 0.1,
+   "lufs_norm": -16.0,
+   "peak_dbfs": -1.4,
+   "internal_gaps_ge_0p12": [
+    [
+     16.07,
+     0.24
+    ],
+    [
+     17.25,
+     0.19
+    ]
+   ],
+   "syllables": 19,
+   "whisper_heard": "เพราะก็แสไฟไหลไปตามเปลือกลูหาด้านนอก รอบขนข้างใน แล้วลงดิน",
+   "whisper_heard_note": "carried from R1 (same words, 1.05 take); not re-run on the slowed take",
+   "file": "out/ep21-narr/lines_norm_r2/L05.wav",
+   "store": "projects/edu/EDU/narration/ep21/2026-11-16_kore-x0.9975-r2/lines_norm/L05.wav"
+  },
+  "L06": {
+   "text": "แต่ถ้าคิดว่ารถไม่เป็นอะไร,ดูยางก่อน",
+   "start_s": 18.41,
+   "end_s": 21.07,
+   "dur_s": 2.66,
+   "lufs_raw": -14.6,
+   "gain_db": -1.4,
+   "lufs_norm": -16.2,
+   "peak_dbfs": -3.4,
+   "internal_gaps_ge_0p12": [
+    [
+     19.76,
+     0.16
+    ]
+   ],
+   "syllables": 12,
+   "whisper_heard": "แต่ถ้าคิดว่ารวนไม่เป็นอะไร ดูยางก่อน",
+   "whisper_heard_note": "carried from R1 (same words, 1.05 take); not re-run on the slowed take",
+   "file": "out/ep21-narr/lines_norm_r2/L06.wav",
+   "store": "projects/edu/EDU/narration/ep21/2026-11-16_kore-x0.9975-r2/lines_norm/L06.wav"
+  },
+  "L07": {
+   "text": "ฟ้าผ่ายังทำให้ยางเสียหายได้ มันไม่ได้หยุดอยู่เหนือยางนะ",
+   "start_s": 21.2,
+   "end_s": 24.77,
+   "dur_s": 3.57,
+   "lufs_raw": -15.8,
+   "gain_db": -0.2,
+   "lufs_norm": -16.0,
+   "peak_dbfs": -2.0,
+   "internal_gaps_ge_0p12": [
+    [
+     23.09,
+     0.26
+    ]
+   ],
+   "syllables": 17,
+   "whisper_heard": "ฟ้าผ่ายังทำให้ยางเสียหายได้ มันไม่ได้หยุดอยู่เนื้วยางนะ",
+   "whisper_heard_note": "carried from R1 (same words, 1.05 take); not re-run on the slowed take",
+   "file": "out/ep21-narr/lines_norm_r2/L07.wav",
+   "store": "projects/edu/EDU/narration/ep21/2026-11-16_kore-x0.9975-r2/lines_norm/L07.wav"
+  },
+  "L08": {
+   "text": "งั้นทำไมไฟหน้าปัดถึงดับไปด้วย?",
+   "start_s": 25.36,
+   "end_s": 26.97,
+   "dur_s": 1.61,
+   "lufs_raw": -15.4,
+   "gain_db": -0.6,
+   "lufs_norm": -16.0,
+   "peak_dbfs": -2.5,
+   "internal_gaps_ge_0p12": [],
+   "syllables": 10,
+   "whisper_heard": "งั้นทำไมไฟหน้าปัดถึงดับไปด้วย",
+   "whisper_heard_note": "carried from R1 (same words, 1.05 take); not re-run on the slowed take",
+   "file": "out/ep21-narr/lines_norm_r2/L08.wav",
+   "store": "projects/edu/EDU/narration/ep21/2026-11-16_kore-x0.9975-r2/lines_norm/L08.wav"
+  },
+  "L09": {
+   "text": "เพราะกระแสไฟบางส่วนอาจเข้าไปทำลายระบบไฟของรถได้",
+   "start_s": 27.15,
+   "end_s": 30.47,
+   "dur_s": 3.32,
+   "lufs_raw": -18.2,
+   "gain_db": 2.2,
+   "lufs_norm": -16.2,
+   "peak_dbfs": -1.0,
+   "internal_gaps_ge_0p12": [
+    [
+     27.22,
+     0.17
+    ]
+   ],
+   "syllables": 17,
+   "whisper_heard": "เพราะก็แสไฟบางส่วน อาจเขาไปทำลายระบบไฟของรถได้",
+   "whisper_heard_note": "carried from R1 (same words, 1.05 take); not re-run on the slowed take",
+   "file": "out/ep21-narr/lines_norm_r2/L09.wav",
+   "store": "projects/edu/EDU/narration/ep21/2026-11-16_kore-x0.9975-r2/lines_norm/L09.wav"
+  },
+  "L10": {
+   "text": "ช่วยป้องกันคน ไม่ได้แปลว่ารถจะไม่พัง",
+   "start_s": 30.86,
+   "end_s": 33.29,
+   "dur_s": 2.43,
+   "lufs_raw": -16.8,
+   "gain_db": 0.8,
+   "lufs_norm": -16.0,
+   "peak_dbfs": -1.0,
+   "internal_gaps_ge_0p12": [
+    [
+     31.85,
+     0.13
+    ]
+   ],
+   "syllables": 12,
+   "whisper_heard": "ช่วยปองกันขน ไม่ได้แปลว่าเราจะไม่พัง",
+   "whisper_heard_note": "carried from R1 (same words, 1.05 take); not re-run on the slowed take",
+   "file": "out/ep21-narr/lines_norm_r2/L10.wav",
+   "store": "projects/edu/EDU/narration/ep21/2026-11-16_kore-x0.9975-r2/lines_norm/L10.wav"
+  },
+  "L11": {
+   "text": "แล้วก็ไม่ได้รับประกันว่าคนข้างในจะปลอดภัยทุกครั้ง",
+   "start_s": 33.42,
+   "end_s": 36.19,
+   "dur_s": 2.77,
+   "lufs_raw": -16.3,
+   "gain_db": 0.3,
+   "lufs_norm": -16.0,
+   "peak_dbfs": -1.2,
+   "internal_gaps_ge_0p12": [],
+   "syllables": 16,
+   "whisper_heard": "และก็ไม่ได้รับประกันว่าคนข้างในจะปลอดภัยทุกครั้ง",
+   "whisper_heard_note": "carried from R1 (same words, 1.05 take); not re-run on the slowed take",
+   "file": "out/ep21-narr/lines_norm_r2/L11.wav",
+   "store": "projects/edu/EDU/narration/ep21/2026-11-16_kore-x0.9975-r2/lines_norm/L11.wav"
+  },
+  "L12": {
+   "text": "โลหะที่คุณกลัวว่านำไฟ,กลับเป็นทางให้ไฟผ่านรอบตัวคุณ",
+   "start_s": 36.67,
+   "end_s": 40.67,
+   "dur_s": 4.0,
+   "lufs_raw": -17.3,
+   "gain_db": 1.3,
+   "lufs_norm": -16.1,
+   "peak_dbfs": -1.0,
+   "internal_gaps_ge_0p12": [
+    [
+     38.36,
+     0.33
+    ]
+   ],
+   "syllables": 17,
+   "whisper_heard": "โลหาที่คุณกลัวว่าน่ำไฟ กลับเป็นทางให้ไฟผ่านรอบตัวคุณ",
+   "whisper_heard_note": "carried from R1 (same words, 1.05 take); not re-run on the slowed take",
+   "file": "out/ep21-narr/lines_norm_r2/L12.wav",
+   "store": "projects/edu/EDU/narration/ep21/2026-11-16_kore-x0.9975-r2/lines_norm/L12.wav"
+  }
+ },
+ "line_gaps_s": {
+  "L01>L02": 0.25,
+  "L02>L03": 0.41,
+  "L03>L04": 0.48,
+  "L04>L05": 0.5,
+  "L05>L06": 0.29,
+  "L06>L07": 0.13,
+  "L07>L08": 0.59,
+  "L08>L09": 0.18,
+  "L09>L10": 0.39,
+  "L10>L11": 0.13,
+  "L11>L12": 0.48
+ },
+ "totals": {
+  "sum_line_durations_s": 36.74,
+  "speech_span_s": 40.57,
+  "between_line_gaps_s": 3.83,
+  "internal_gaps_ge_0p12_s": 2.68,
+  "first_onset_s": 0.1,
+  "last_end_s": 40.67,
+  "syllables": 176,
+  "projection_timing_r2": {
+   "speech_plus_authored_pauses_s": 40.97,
+   "with_3s_hold_s": 43.97
+  },
+  "measured_speech_plus_natural_gaps_s": 40.57,
+  "measured_with_3s_hold_s": 43.57,
+  "deviation_s": -0.4
+ },
+ "supersedes": "EDU-EP21-VOICE-R1",
+ "supersede_reason": "User pace choice 2026-11-16, exact words \"เอาช้าลง 5% เนี่ยแหละ\": the Kore x1.05 take (R1) is slowed 5% (atempo 0.95). Pace choice only; NOT W4.3 voice approval."
+}

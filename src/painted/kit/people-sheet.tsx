@@ -170,6 +170,7 @@ const WARD_WHO: Record<WardId, {adult: PersonId; child?: PersonId}> = {
   monk: {adult: 'man-crop'}, vendor: {adult: 'woman-curly'}, rider: {adult: 'man-spiky'}, hoodie: {adult: 'woman-pixie'},
   guard: {adult: 'man-elder'}, yukata: {adult: 'woman-ponytail'}, kimono: {adult: 'woman-curly'}, 'kitchen-apron': {adult: 'woman-curly'}, 'park-casual': {adult: 'man-crop'}, 'eva-suit': {adult: 'woman-bob'}, 'home-lounge': {adult: 'woman-curly'},
   'trainer-vest': {adult: 'woman-ponytail'},
+  commuter: {adult: 'woman-ponytail'},
   'frock-1850s': {adult: 'man-parted'}, 'bonnet-1850s': {adult: 'woman-curly'},
   'travel-safari': {adult: 'woman-long'}, 'life-vest': {adult: 'woman-long'}, 'travel-backpack': {adult: 'woman-long'}, 'home-lounge-night': {adult: 'woman-long'},
 };
