@@ -1,0 +1,209 @@
+{
+ "revision": "EDU-EP24-NARRATION-R2",
+ "script": "EDU-EP24-SCRIPT-R1",
+ "engine": "gemini-3.8-flash-tts",
+ "voice": "Kore",
+ "style": "warm, friendly, smiling storyteller, speaking rapidly",
+ "atempo": 0.95,
+ "requests": 1,
+ "take": "out/ep24-voice/full/EDU-EP24-SHORT_narration_kore_r2.wav",
+ "durationSec": 60.88,
+ "speechStartSec": 0.33,
+ "speechEndSec": 60.65,
+ "timingStatus": "audio-measured",
+ "accuracy": "onsets snapped to energy run starts (threshold 600/32767); where a line starts inside a continuous run (L15->L16) the value is the Whisper word start, +-0.15 s. Ends are the last audible sample before the next line (L15 end Whisper).",
+ "cutNote": "cut = quietest 20 ms between lines (all <= -58 dBFS RMS against speech about -15.5), where a planned gap can be inserted without clipping a word",
+ "lines": {
+  "L01": {
+   "beat": "EDU-EP24-SHORT-S01-B01",
+   "onsetSec": 0.33,
+   "endSec": 3.68,
+   "cutBeforeSec": 0.0,
+   "cutAfterSec": 3.87
+  },
+  "L02": {
+   "beat": "EDU-EP24-SHORT-S01-B01",
+   "onsetSec": 3.91,
+   "endSec": 8.75,
+   "cutBeforeSec": 3.87,
+   "cutAfterSec": 8.85
+  },
+  "L03": {
+   "beat": "EDU-EP24-SHORT-S01-B01",
+   "onsetSec": 8.86,
+   "endSec": 11.29,
+   "cutBeforeSec": 8.85,
+   "cutAfterSec": 11.46
+  },
+  "L04": {
+   "beat": "EDU-EP24-SHORT-S01-B01",
+   "onsetSec": 11.51,
+   "endSec": 14.22,
+   "cutBeforeSec": 11.46,
+   "cutAfterSec": 14.35
+  },
+  "L05": {
+   "beat": "EDU-EP24-SHORT-S01-B02",
+   "onsetSec": 14.37,
+   "endSec": 19.41,
+   "cutBeforeSec": 14.35,
+   "cutAfterSec": 19.51
+  },
+  "L06": {
+   "beat": "EDU-EP24-SHORT-S01-B02",
+   "onsetSec": 19.53,
+   "endSec": 22.75,
+   "cutBeforeSec": 19.51,
+   "cutAfterSec": 22.79
+  },
+  "L07": {
+   "beat": "EDU-EP24-SHORT-S01-B02",
+   "onsetSec": 22.86,
+   "endSec": 25.43,
+   "cutBeforeSec": 22.79,
+   "cutAfterSec": 25.68
+  },
+  "L08": {
+   "beat": "EDU-EP24-SHORT-S01-B02",
+   "onsetSec": 25.69,
+   "endSec": 27.17,
+   "cutBeforeSec": 25.68,
+   "cutAfterSec": 27.23
+  },
+  "L09": {
+   "beat": "EDU-EP24-SHORT-S01-B03",
+   "onsetSec": 27.25,
+   "endSec": 30.02,
+   "cutBeforeSec": 27.23,
+   "cutAfterSec": 30.28
+  },
+  "L10": {
+   "beat": "EDU-EP24-SHORT-S01-B03",
+   "onsetSec": 30.33,
+   "endSec": 34.59,
+   "cutBeforeSec": 30.28,
+   "cutAfterSec": 34.8
+  },
+  "L11": {
+   "beat": "EDU-EP24-SHORT-S01-B03",
+   "onsetSec": 34.82,
+   "endSec": 36.91,
+   "cutBeforeSec": 34.8,
+   "cutAfterSec": 37.01
+  },
+  "L12": {
+   "beat": "EDU-EP24-SHORT-S01-B03",
+   "onsetSec": 37.03,
+   "endSec": 41.27,
+   "cutBeforeSec": 37.01,
+   "cutAfterSec": 41.52
+  },
+  "L13": {
+   "beat": "EDU-EP24-SHORT-S01-B04",
+   "onsetSec": 41.53,
+   "endSec": 42.93,
+   "cutBeforeSec": 41.52,
+   "cutAfterSec": 43.0
+  },
+  "L14": {
+   "beat": "EDU-EP24-SHORT-S01-B04",
+   "onsetSec": 43.16,
+   "endSec": 46.16,
+   "cutBeforeSec": 43.0,
+   "cutAfterSec": 46.19
+  },
+  "L15": {
+   "beat": "EDU-EP24-SHORT-S01-B04",
+   "onsetSec": 46.28,
+   "endSec": 48.78,
+   "cutBeforeSec": 46.19,
+   "cutAfterSec": 49.06
+  },
+  "L16": {
+   "beat": "EDU-EP24-SHORT-S01-B05",
+   "onsetSec": 49.07,
+   "endSec": 51.75,
+   "cutBeforeSec": 49.06,
+   "cutAfterSec": 51.94
+  },
+  "L17": {
+   "beat": "EDU-EP24-SHORT-S01-B05",
+   "onsetSec": 51.99,
+   "endSec": 54.09,
+   "cutBeforeSec": 51.94,
+   "cutAfterSec": 54.45
+  },
+  "L18": {
+   "beat": "EDU-EP24-SHORT-S01-B05",
+   "onsetSec": 54.51,
+   "endSec": 57.98,
+   "cutBeforeSec": 54.45,
+   "cutAfterSec": 58.11
+  },
+  "L19": {
+   "beat": "EDU-EP24-SHORT-S01-B05",
+   "onsetSec": 58.13,
+   "endSec": 60.65,
+   "cutBeforeSec": 58.11,
+   "cutAfterSec": 60.88
+  }
+ },
+ "beats": {
+  "EDU-EP24-SHORT-S01-B01": {
+   "lines": "L01-L04",
+   "onsetSec": 0.33,
+   "endSec": 14.22
+  },
+  "EDU-EP24-SHORT-S01-B02": {
+   "lines": "L05-L08",
+   "onsetSec": 14.37,
+   "endSec": 27.17
+  },
+  "EDU-EP24-SHORT-S01-B03": {
+   "lines": "L09-L12",
+   "onsetSec": 27.25,
+   "endSec": 41.27
+  },
+  "EDU-EP24-SHORT-S01-B04": {
+   "lines": "L13-L15",
+   "onsetSec": 41.53,
+   "endSec": 48.78
+  },
+  "EDU-EP24-SHORT-S01-B05": {
+   "lines": "L16-L19",
+   "onsetSec": 49.07,
+   "endSec": 60.65
+  }
+ },
+ "keyAnchors": {
+  "B02 dead stop on \"แต่\" (L05 onset)": 13.65,
+  "B02 gasp/riffle gap L05 end -> L06 onset": [
+   18.44,
+   18.55
+  ],
+  "B03 L11 \"เกินร้อยแล้ว\" onset (riser peak)": 34.23,
+  "B03 L11 end -> L12 onset (near-silence)": [
+   35.06,
+   35.18
+  ],
+  "B04 L13 \"แต่\" onset (D1 pad enters)": 39.45,
+  "B04 L14 year \"พันเก้าร้อยเจ็ดสิบเอ็ด\" onset (gavel tap)": 42.72,
+  "B04 L15 onset / end (sepia pause)": [
+   43.97,
+   46.34
+  ],
+  "B05 L18 \"ที่ไม่ได้เสนอสักบาท\" onset": 52.52,
+  "B05 L18 \"เก็บไป\" onset": 53.62,
+  "B05 L18 \"สองร้อยสิบห้า\" onset (ka-ching / tally)": 54.06,
+  "B05 L18 end -> L19 onset": [
+   55.08,
+   55.22
+  ],
+  "B05 L19 onset / speech end": [
+   55.22,
+   57.62
+  ]
+ },
+ "store": "projects/EDU/EDU/narration/EDU-EP24-SHORT_narration_kore_r1.wav (per-line cuts: projects/EDU/EDU/narration/lines/L01..L19.wav), under $REELS_STORE",
+ "note": "R2 = R1 take slowed by atempo 0.95 (user, 2026-11-17 \"ช้าลง 5%\"); every time in seconds = R1 / 0.95 (computed, not re-measured; gaps and onsets scale linearly)"
+}
