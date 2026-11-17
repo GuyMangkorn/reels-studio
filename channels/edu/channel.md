@@ -9,14 +9,14 @@
 | Channel ID | `edu` |
 | Channel mark | `@TamMaiLa`, top-left on every deliverable (code default `defaultChrome` in `src/scenes/media.ts`; placement in [production requirements](../../docs/production-requirements.md#thai-subtitles-narration-and-channel-label); user, 3 Nov 2026) |
 | Direction | Education (user, 11 Nov 2026: the channel's direction is education from here on) |
-| Genre / purpose | Educational Shorts in Thai: one surprising, true answer told through a character who meets each problem on screen ([script rules](script.md)) |
-| Factual claims | General knowledge or a named real case, so Boat researches, fact-checks and runs the [clarity pass](../../docs/editorial-workflow.md#clarity-pass) on every script |
+| Genre / purpose | Story-led Thai Shorts with a light fact: an openly hypothetical story ("สมมุติว่า…", "ถ้า…") about 70 % of the runtime, carrying one or two true, surprising facts about 30 % ([ER11](script.md#er11); user, 17 Nov 2026). Before 17 Nov 2026: one surprising, true answer told through a character who meets each problem on screen |
+| Factual claims | The fact lines only (general knowledge or a named real case): Boat researches, fact-checks and runs the [clarity pass](../../docs/editorial-workflow.md#clarity-pass) on them. Story lines are checked only for the [ER11](script.md#er11) limits, not for evidence |
 | Episode records | `scripts/edu-series/` (series `delivery.md`, `task.md`, [`concepts/`](../../scripts/edu-series/concepts/index.md) with one file per concept; one folder per episode); deliverable IDs `EDU-EPnn-SHORT`; store folders `projects/edu/EDU/` and `publish/edu/EDU/` ([asset store](../../README.md#asset-store)) |
 | Earlier work | Mystery and horror episodes made under the same mark before 11 Nov 2026 (WORLD FOG, KSO and others) keep their own records and are not re-labelled |
 
 ## Rules of this channel
 
-- **Script:** [script.md](script.md) (ER01–ER10: hook, levels, one rule that flips, audience level, open-question map, short answers, hedges, pitch check).
+- **Script:** [script.md](script.md) (ER01–ER11: hook, levels, one rule that flips, audience level, open-question map, short answers, hedges, pitch check, story-led mix).
 - **Numbers:** [performance.md](performance.md); the coordinator adds a row per posted video ([performance record](../../docs/delivery-workflow.md#performance-record)).
 - **Look:** the [project defaults](../../docs/delivery-workflow.md#project-defaults) (painted 3D camera, the four-head cast) with the [retention camera](../../docs/cinematography-principles.md#retention-camera). No `look.md` yet.
 - **Captions:** the shared [caption look](../../docs/production-requirements.md#caption-look), which came from EDU-EP02/EP03. No channel override.
