@@ -1,10 +1,11 @@
-# Storyboard and scene index — EDU-EP22-SHORT (EDU-EP22-STORYBOARD-R1)
+# Storyboard and scene index — EDU-EP22-SHORT (EDU-EP22-STORYBOARD-R2)
 
-- **Deliverable:** `EDU-EP22-SHORT` (channel **edu**) · **Revision:** EDU-EP22-STORYBOARD-R1 (Film W2.2, untimed first storyboard pass, 2026-11-16) · **Status:** `ready-for-review` (untimed first pass for the user's storyboard tab; becomes `ready-for-dev` only in the timed W4 sheet after the voice lock) · **Timing:** `estimated`, VO-relative only ("on the word X"); no frame ranges exist yet.
-- **Evidence:** runtime none · render/frames none (no look frame, plate or still exists) · audio/subtitle sync none (no full read; pace pick Kore x0.95 only) · user approval: SCRIPT-R3 text, Q1 (no demo label), Q2 (look check at LF01), storyboard go-ahead "Start storyboard" (delivery record). Readiness is not approval, runtime proof or visual proof.
+- **Deliverable:** `EDU-EP22-SHORT` (channel **edu**) · **Revision:** EDU-EP22-STORYBOARD-R2 (Film W3 look frames added, 2026-11-16; R1 Film W2.2 untimed first storyboard pass, same day) · **Status:** `ready-for-review` (untimed first pass for the user's storyboard tab; becomes `ready-for-dev` only in the timed W4 sheet after the voice lock) · **Timing:** `estimated`, VO-relative only ("on the word X"); no frame ranges exist yet.
+- **Evidence:** runtime none · render/frames: look frames LF01, LF01b, LF02 only (`out/edu22/looks/v1/`, store `projects/edu/EDU/previews/ep22-w3-looks-v1/`; Film viewer check PASS with minor notes, `out/edu22/viewer-check-looks.md`); no plate or shot render · audio/subtitle sync none (no full read; pace pick Kore x0.95 only) · user approval: SCRIPT-R3 text, Q1 (no demo label), Q2 (look check at LF01), storyboard go-ahead "Start storyboard" (delivery record). Readiness is not approval, runtime proof or visual proof.
 - **Inputs (by revision):** script **EDU-EP22-SCRIPT-R3** ([script.md](script.md): beats S01-B01..B05, lines L01–L16, clues CL22-01..04, Film constraints); fact-check **EDU-EP22-FACT-R3** ([fact-check.md](fact-check.md), ready-for-storyboard; F06 and O1 bind the spread scale); brief **EDU-EP22-BRIEF-R1** ([film-brief.md](film-brief.md): VD01–VD12, N1–N7, truth limits 1–8, [SET-HALL22](film-brief.md#set-plan--set-hall22-space-h-metres-est), [DEMO22](film-brief.md#set-plan--demo22-space-d-metres-est), [sound direction](film-brief.md#sound-direction), [per-beat visual intent](film-brief.md#per-beat-visual-intent-for-the-scene-sheet-pass-untimed)); timing **EDU-EP22-TIMING-R1** (55.0 s projection, estimate); delivery record **EDU-EP22-DELIVERY-R1** ([../delivery.md](../delivery.md)).
 - **Target:** branch `claude/ep22-khun-tee-chim-yaphit-3ae8d2` at `31abb81` · 30 fps · `durationFrames` unset (W4) · 1080×1920 · composition `missing` (Editor registers it, never in `src/Root.tsx`) · ending closed, ~3 s hold, no loop seam.
-- **Review rows:** [review-rows.json](review-rows.json) **EDU-EP22-ROWS-R1** (Thai, `"untimed": true`, no `start`/`end`, no `looks` yet because no look frame exists; build.py requires a `src` per look). Review page: pending.
+- **Timed sheets:** superseded for every timed and numeric value by [scene-sheets.md](scene-sheets.md) **EDU-EP22-SCENES-R1** (W4.2, `ready-for-dev`, from the locked narration); this file keeps casting, purposes and truth limits per shot, and the scene sheet wins on conflict.
+- **Review rows:** [review-rows.json](review-rows.json) **EDU-EP22-ROWS-R2** (now ROWS-R3, timed, written with SCENES-R1) (Thai, `"untimed": true`, no `start`/`end`; `looks` LF01/LF02/LF01b added, beats B01–B03 → LF01, B04 → LF02, B05 → LF01b; shot text, VO, seen and sound unchanged so answers carry over). Review page: pending.
 
 ## Units and conventions
 
@@ -32,11 +33,17 @@ Designed from the script first (brief, Visual intent); kit matches and `new:` li
 
 | Look | Shot / frame | Carries | Status |
 | --- | --- | --- | --- |
-| LF01 | B01-SH01 first frame (child on the big seat, LT covers running out of frame at left, lifters) | look check N1 hall, N2 child, N3 eunuchs, N4 covers (user Q2: approve at LF01) | `missing` |
-| LF02 | B04-SH14 mid-shot (strip pressed in the yolk, tip half darkened) | N6 demo set, tarnish look | `missing` |
-| LF01b (decided here, brief left it to this pass) | B05-SH20 last hold frame (child eating at his spread of 20 dishes, LT soft and far at screen-left) | N4 open dish set and food at hero size, the ending composition; LF01 has an empty CT, so it cannot show the dishes | `missing`; user confirmation asked (Q-SB1) because it adds a third still |
+| LF01 | B01-SH01 first frame (child on the big seat, LT covers running out of frame at left, lifters) | look check N1 hall, N2 child, N3 eunuchs, N4 covers (user Q2: approve at LF01) | painted `out/edu22/looks/v1/LF01.png`; viewer check PASS (M); user approval pending |
+| LF02 | B04-SH14 mid-shot (strip pressed in the yolk, tip half darkened) | N6 demo set, tarnish look | painted `out/edu22/looks/v1/LF02.png`; viewer check PASS (M); user approval pending |
+| LF01b (decided here, brief left it to this pass) | B05-SH20 last hold frame (child eating at his spread of 20 dishes, LT soft and far at screen-left) | N4 open dish set and food at hero size, the ending composition; LF01 has an empty CT, so it cannot show the dishes | painted `out/edu22/looks/v1/LF01b.png` (user Q-SB1: paint); viewer check PASS (M); user approval pending |
 
-The L06 tag close, the ripple and the L15 crane share the LF01 family; the B02 high-angle spread (SH06) shares LF01b. `looks` / `look` keys enter `review-rows.json` when the stills exist.
+The L06 tag close, the ripple and the L15 crane share the LF01 family; the B02 high-angle spread (SH06) shares LF01b. `looks` / `look` keys are in `review-rows.json` (R2); B02 shows LF01 (two of its three shots), B04 shows LF02 (SH17 returns to LF01).
+
+**Boss deviations from the R1 camera lines (painted look frames; Film decisions, recorded in the brief R2 Look frames section):**
+
+- **B01-SH01:** `hy 580` (the sheet left hy open; `src/painted/edu22/looks.ts` `SH01`). Binding for Boss and Editor: SH01 renders with hy 580. Minor: LT reads as a thin shelf; add an apron or cloth drop if cheap.
+- **B04-SH14:** `hy 880` and `r 0.19 → 0.15` (yaw 9 → 4, aim (0.03, 0.012, −0.005)) replace `r 0.30 → 0.24` so the tarnish reads; accepted, W4 takes these numbers. Tarnish grey-black instead of brown-black, accepted. Minor: contact shadow under hand and strip tip.
+- **B05-SH20 (LF01b):** censer H (−2.05, 0, −3.65) and floor vase H (2.05, 0, −3.65) added as dressing; **accepted** as continuous hall dressing in every shot that sees the back wall. Minor: spoon too small, cup contact, dishes and hands inside the caption band (lower the camera 3–4 % if the cut check needs it).
 
 ## Shot map
 
@@ -344,3 +351,5 @@ Deviations from the brief's per-beat intent (Film, this pass): (1) L01 is split 
 ## Change log
 
 - 2026-11-16 EDU-EP22-STORYBOARD-R1 (Film W2.2): first untimed storyboard, 20 shots, on SCRIPT-R3 / FACT-R3 / BRIEF-R1; review rows EDU-EP22-ROWS-R1 written beside it. LF01b decided (SH20 hold frame) pending user confirmation Q-SB1. No timing, picture or sound produced.
+- 2026-11-16 EDU-EP22-STORYBOARD-R2 (Film W3): look frames LF01, LF01b, LF02 (Boss, viewer check PASS with minor notes) added to review rows EDU-EP22-ROWS-R2 (`looks` + `look` per beat only); Boss camera deviations recorded (SH01 hy 580; SH14 hy 880, r 0.19 → 0.15) and accepted; censer and vase accepted; grey-black tarnish accepted (brief R2). No shot text, VO, seen, sound or timing change.
+- 2026-11-16 (Film W4.2): timing and numeric staging moved to [scene-sheets.md](scene-sheets.md) EDU-EP22-SCENES-R1; its change log lists the camera and staging values that differ from this file (SH02 shoulder side, carrier plan, caller Y stand-by, G-COVER on A05, hy per shot). This file's shot text is otherwise unchanged.

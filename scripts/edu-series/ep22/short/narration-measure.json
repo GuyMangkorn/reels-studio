@@ -1,0 +1,259 @@
+{
+ "revision": "EDU-EP22-NARRATION-MEASURE-R2",
+ "supersedes": "EDU-EP22-NARRATION-MEASURE-R1",
+ "deliverable": "EDU-EP22-SHORT",
+ "script_revision": "EDU-EP22-SCRIPT-R3",
+ "fps": 30,
+ "audio": "atempo 0.9025 (= 0.95 x 0.95, source-relative) of the cached Gemini Kore read (gemini-3.8-flash-tts, style 'warm, friendly, smiling storyteller, speaking rapidly'); no new Gemini call",
+ "times_relative_to": "start of the x0.9025 file (lead silence included)",
+ "container_s": 54.59,
+ "container_frames": 1638,
+ "speech_start_s": 0.26,
+ "speech_end_s": 54.24,
+ "speech_end_frame": 1627,
+ "closing_hold_s": 3.0,
+ "total_with_hold_s": 57.24,
+ "total_with_hold_frames": 1717,
+ "method": "10 ms RMS windows at -40 dBFS, gaps <120 ms merged, measured directly on the x0.9025 file; line boundaries are the RMS segment edges nearest the R1 Whisper-guided boundaries scaled by 0.95/0.9025 (all within 0.01 s except L06 onset, 0.07 s later). Anchors are R1 Whisper word times scaled by 0.95/0.9025 (+-0.15 s). faster-whisper not installed in this checkout, so no new Whisper pass. Nobody has listened.",
+ "sha256_x0_9025_wav": "ca6ca18736172ff0219405e07c9fea1b074b7e9436330900cdd4698ea8fdf602",
+ "sha256_source_wav": "7c4fe184b75653a83607e0ab5be94aa85c95179dbe3aa72f55712f9373c2adc7",
+ "lines": [
+  {
+   "line": "L01",
+   "onset_s": 0.26,
+   "onset_frame": 8,
+   "end_s": 4.4,
+   "end_frame": 132,
+   "gap_before_s": null,
+   "anchors": [
+    {
+     "phrase": "คุณต้องชิมก่อนทุกจาน",
+     "onset_s": 2.84,
+     "onset_frame": 85
+    }
+   ]
+  },
+  {
+   "line": "L02",
+   "onset_s": 4.85,
+   "onset_frame": 146,
+   "end_s": 8.11,
+   "end_frame": 243,
+   "gap_before_s": 0.45,
+   "anchors": [
+    {
+     "phrase": "ไม่แตะ",
+     "onset_s": 6.11,
+     "onset_frame": 183
+    }
+   ]
+  },
+  {
+   "line": "L03",
+   "onset_s": 8.78,
+   "onset_frame": 263,
+   "end_s": 10.08,
+   "end_frame": 302,
+   "gap_before_s": 0.67,
+   "anchors": [
+    {
+     "phrase": "เด็กคนนี้",
+     "onset_s": 9.33,
+     "onset_frame": 280
+    }
+   ]
+  },
+  {
+   "line": "L04",
+   "onset_s": 10.7,
+   "onset_frame": 321,
+   "end_s": 14.57,
+   "end_frame": 437,
+   "gap_before_s": 0.62,
+   "anchors": [
+    {
+     "phrase": "ราว ๆ ยี่สิบจาน",
+     "onset_s": 13.52,
+     "onset_frame": 406
+    }
+   ]
+  },
+  {
+   "line": "L05",
+   "onset_s": 15.42,
+   "onset_frame": 463,
+   "end_s": 17.99,
+   "end_frame": 540,
+   "gap_before_s": 0.85,
+   "anchors": [
+    {
+     "phrase": "โต๊ะยาวนั่น",
+     "onset_s": 16.74,
+     "onset_frame": 502
+    }
+   ]
+  },
+  {
+   "line": "L06",
+   "onset_s": 18.83,
+   "onset_frame": 565,
+   "end_s": 22.06,
+   "end_frame": 662,
+   "gap_before_s": 0.84,
+   "anchors": [
+    {
+     "phrase": "ทุกจาน",
+     "onset_s": 19.79,
+     "onset_frame": 594
+    }
+   ]
+  },
+  {
+   "line": "L07",
+   "onset_s": 22.56,
+   "onset_frame": 677,
+   "end_s": 26.88,
+   "end_frame": 806,
+   "gap_before_s": 0.5,
+   "anchors": [
+    {
+     "phrase": "แล้วขันทีน้อย",
+     "onset_s": 24.79,
+     "onset_frame": 744
+    },
+    {
+     "phrase": "เปิดฝา",
+     "onset_s": 26.15,
+     "onset_frame": 784
+    }
+   ]
+  },
+  {
+   "line": "L08",
+   "onset_s": 27.42,
+   "onset_frame": 823,
+   "end_s": 29.35,
+   "end_frame": 880,
+   "gap_before_s": 0.54,
+   "anchors": []
+  },
+  {
+   "line": "L09",
+   "onset_s": 29.59,
+   "onset_frame": 888,
+   "end_s": 32.27,
+   "end_frame": 968,
+   "gap_before_s": 0.24,
+   "anchors": []
+  },
+  {
+   "line": "L10",
+   "onset_s": 32.46,
+   "onset_frame": 974,
+   "end_s": 33.98,
+   "end_frame": 1019,
+   "gap_before_s": 0.19,
+   "anchors": [
+    {
+     "phrase": "ทำเงินดำ",
+     "onset_s": 33.01,
+     "onset_frame": 990
+    }
+   ]
+  },
+  {
+   "line": "L11",
+   "onset_s": 34.4,
+   "onset_frame": 1032,
+   "end_s": 38.04,
+   "end_frame": 1141,
+   "gap_before_s": 0.42,
+   "anchors": [
+    {
+     "phrase": "เงินดำเพราะมัน",
+     "onset_s": 35.89,
+     "onset_frame": 1077
+    }
+   ]
+  },
+  {
+   "line": "L12",
+   "onset_s": 38.2,
+   "onset_frame": 1146,
+   "end_s": 40.38,
+   "end_frame": 1211,
+   "gap_before_s": 0.16,
+   "anchors": [
+    {
+     "phrase": "เงินก็เฉย",
+     "onset_s": 39.66,
+     "onset_frame": 1190
+    }
+   ]
+  },
+  {
+   "line": "L13",
+   "onset_s": 40.82,
+   "onset_frame": 1225,
+   "end_s": 42.68,
+   "end_frame": 1280,
+   "gap_before_s": 0.44,
+   "anchors": []
+  },
+  {
+   "line": "L14",
+   "onset_s": 43.45,
+   "onset_frame": 1304,
+   "end_s": 45.43,
+   "end_frame": 1363,
+   "gap_before_s": 0.77,
+   "anchors": [
+    {
+     "phrase": "โต๊ะยาวนั่น",
+     "onset_s": 44.41,
+     "onset_frame": 1332
+    }
+   ]
+  },
+  {
+   "line": "L15",
+   "onset_s": 46.15,
+   "onset_frame": 1384,
+   "end_s": 48.53,
+   "end_frame": 1456,
+   "gap_before_s": 0.72,
+   "anchors": [
+    {
+     "phrase": "ไม่ได้ทำไว้กิน",
+     "onset_s": 47.64,
+     "onset_frame": 1429
+    }
+   ]
+  },
+  {
+   "line": "L16",
+   "onset_s": 48.77,
+   "onset_frame": 1463,
+   "end_s": 54.24,
+   "end_frame": 1627,
+   "gap_before_s": 0.24,
+   "anchors": [
+    {
+     "phrase": "มีไว้ให้ดูจริง ๆ",
+     "onset_s": 49.77,
+     "onset_frame": 1493
+    },
+    {
+     "phrase": "ส่วนที่ปูยีกินจริง",
+     "onset_s": 51.53,
+     "onset_frame": 1546
+    },
+    {
+     "phrase": "จานตรงหน้าเขา",
+     "onset_s": 53.33,
+     "onset_frame": 1600
+    }
+   ]
+  }
+ ]
+}

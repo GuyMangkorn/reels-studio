@@ -4,7 +4,7 @@ Record: [delivery.md](delivery.md) · Updated: 2026-11-16, coordinator
 
 ## EDU-EP22-SHORT
 
-**Now:** W2 done; user reviews the storyboard page; Q-SB1 answered: paint LF01b **Next:** User
+**Now:** W6.1 Draft cut rendered (2026-11-17) **Next:** viewer check (fresh film), republish page Draft tab, user review
 
 - [x] W0 Ideation — user named the topic (C88).
 - [ ] W1 Script lock

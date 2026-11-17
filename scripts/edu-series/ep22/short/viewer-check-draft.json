@@ -1,0 +1,82 @@
+{
+ "B01-SH01": {
+  "hash": "5bfd2a10e3415dae",
+  "result": "pass"
+ },
+ "B01-SH02": {
+  "hash": "f027f61b55fc0a34",
+  "result": "pass"
+ },
+ "B01-SH03": {
+  "hash": "373ca9caf10aa154",
+  "result": "pass"
+ },
+ "B02-SH04": {
+  "hash": "8331649120a94cdd",
+  "result": "pass"
+ },
+ "B02-SH05": {
+  "hash": "c513eb872acfb6f8",
+  "result": "pass"
+ },
+ "B02-SH06": {
+  "hash": "7aac2d3978b64fe3",
+  "result": "pass"
+ },
+ "B03-SH07": {
+  "hash": "8a89b180dce11a13",
+  "result": "pass"
+ },
+ "B03-SH08": {
+  "hash": "93f3df68824b0e5c",
+  "result": "pass"
+ },
+ "B03-SH09": {
+  "hash": "e273481b1884bc2e",
+  "result": "fail"
+ },
+ "B03-SH10": {
+  "hash": "508522bf83dbe822",
+  "result": "pass"
+ },
+ "B03-SH11": {
+  "hash": "58f624a540c73f8c",
+  "result": "pass"
+ },
+ "B03-SH12": {
+  "hash": "d01fe97afce76fc2",
+  "result": "fail"
+ },
+ "B04-SH13": {
+  "hash": "4a34e7d8ff09adb6",
+  "result": "pass"
+ },
+ "B04-SH14": {
+  "hash": "3eeef1eea7f8dc51",
+  "result": "pass"
+ },
+ "B04-SH15": {
+  "hash": "e9a469331205cdbf",
+  "result": "fail"
+ },
+ "B04-SH16": {
+  "hash": "512b030f114baebb",
+  "result": "fail"
+ },
+ "B04-SH17": {
+  "hash": "cbb213d1d6545d7c",
+  "result": "fail"
+ },
+ "B05-SH18": {
+  "hash": "22d94202d5c98c43",
+  "result": "pass"
+ },
+ "B05-SH19": {
+  "hash": "bd37786a5d0d7d2c",
+  "result": "pass"
+ },
+ "B05-SH20": {
+  "hash": "35fcfbf9dec1b05f",
+  "result": "pass"
+ }
+}
