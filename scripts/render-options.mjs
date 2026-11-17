@@ -19,6 +19,9 @@ export const parseRenderArgs = argv => {
   };
   const unreviewed = value('unreviewed');
   if (argv.includes('--unreviewed') || unreviewed === '') throw new Error('--unreviewed needs a reason quoting the user\'s choice, e.g. --unreviewed="user skipped the review, 7 Nov 2026"');
+  const rows = value('rows');
+  if (argv.includes('--rows') || rows === '') throw new Error('--rows needs the deliverable\'s review-rows.json, e.g. --rows=storyboards/<ep>/short/review-rows.json');
+  if (rows && argv.filter(arg => !arg.startsWith('--')).length > 1) throw new Error('--rows belongs to one deliverable: render one composition ID with it');
   const gl = value('gl') ?? 'angle';
   if (gl !== undefined && !GL.includes(gl)) throw new Error(`--gl must be one of ${GL.join(', ')}; got "${gl}"`);
   return {
@@ -43,6 +46,8 @@ export const parseRenderArgs = argv => {
     range: parseRange(value('range')),
     // Delivery render with unpinned scenes, only after the user chose to skip the review (docs/render-rules.md#render-stage).
     unreviewed,
+    // Storyboard review rows: a delivery render may start once every draft passed, and writes the file to the Final tab.
+    rows,
   };
 };
 

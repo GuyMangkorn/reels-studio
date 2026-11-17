@@ -14,7 +14,9 @@
 // Pinned finals (scripts/pin.mjs): a render stops when a pinned scene would change; --keep-pinned reuses the approved
 // segment, --repaint=<shot,...|all> renders it again and unpins it for a new review.
 // Delivery gate (docs/render-rules.md#render-stage): a delivery render (no --range, --draft, --stills or --covers)
-// stops before painting while any scene of the ending is unpinned, i.e. before the user passed the final cut.
+// stops before painting while any scene of the ending is unpinned, unless --rows=<review-rows.json> shows every
+// shot's draft passed (storyboard-page/verdicts.py --drafts-passed): that render is the file the Final tab shows, and
+// its path is written to the rows as finalCut. After the user passes it, pin.mjs pin-rows pins every scene.
 // --unreviewed="<reason>" renders anyway, only after the user chose to skip the review; the reason is logged.
 // Measurements: docs/dev-findings/DF-20261031-render-speed.md.
 // Each run bundles into its own temp directory, lets Remotion pick a free port and writes only under
@@ -30,14 +32,14 @@ import {bundle} from '@remotion/bundler';
 import {openBrowser, selectComposition, renderMedia} from '@remotion/renderer';
 import {renderStills} from './stills.mjs';
 import path from 'node:path';
-import {mkdir, copyFile} from 'node:fs/promises';
+import {mkdir, copyFile, readFile, writeFile} from 'node:fs/promises';
 import {spawnSync} from 'node:child_process';
 import {describeLoudness, normalizeLoudness} from './loudness.mjs';
 import {endingsFor, parseRenderArgs} from './render-options.mjs';
 import {pinsFile, readJson, renderSegmented, unpinnedScenes, variantOf} from './segments.mjs';
 import {withRenderLog} from './render-log.mjs';
 
-const {ids, stills, covers: coversOnly, frames, endings: requestedEndings, gl, timeoutInMilliseconds, concurrency, draft, noCache, range, keepPinned, repaint, unreviewed} = parseRenderArgs(process.argv.slice(2));
+const {ids, stills, covers: coversOnly, frames, endings: requestedEndings, gl, timeoutInMilliseconds, concurrency, draft, noCache, range, keepPinned, repaint, unreviewed, rows: rowsPath} = parseRenderArgs(process.argv.slice(2));
 if (!ids.length) throw new Error('Name at least one composition ID, e.g. npm run render -- CATBOX-C01-Short');
 
 const browserExecutable = process.env.BROWSER_EXECUTABLE ?? null;
@@ -82,11 +84,17 @@ try {
       for (const ending of endings) {
         const open = unpinnedScenes(pins[variantOf(base, {ending})], sceneCount);
         if (!open.length) continue;
+        if (rowsPath) {
+          const check = spawnSync('python3', ['-I', 'scripts/storyboard-page/verdicts.py', rowsPath, '--drafts-passed'], {encoding: 'utf8'});
+          const line = (check.stdout || check.stderr || '').trim();
+          if (check.status === 0) { console.log(`Final review render: ${open.length} scenes not pinned yet; ${line} (${rowsPath})`); continue; }
+          console.log(`Final review render not allowed: ${line}`);
+        }
         const list = open.slice(0, 12).map((i) => i + 1).join(', ') + (open.length > 12 ? ', ...' : '');
         const summary = `${id} ${ending}: ${open.length} of ${sceneCount} scenes are not pinned (scenes ${list})`;
         if (!unreviewed) {
           throw new Error(`delivery render stopped: ${summary}. Stages (docs/render-rules.md#render-stage): the half-size draft cut `
-            + '(storyboard-page/clips.mjs --full --draft), the final cut (clips.mjs --full), pins (pin.mjs pin-rows), then this render. '
+            + '(storyboard-page/clips.mjs --full --draft) passed shot by shot, then this render with --rows=<review-rows.json> for the Final tab, then pins (pin.mjs pin-rows). '
             + 'For a review render use --range or --draft. Only if the user chose to skip the review: --unreviewed="<reason>".');
         }
         metrics.event('unreviewed', {id, ending, unpinned: open.length, scenes: sceneCount, reason: unreviewed});
@@ -114,6 +122,12 @@ try {
       if (ending === endings.at(-1)) await copyFile(output, `${outDir}/${id}.mp4`);
     }
     if (draft || range) continue;
+    if (rowsPath) {
+      const rows = JSON.parse(await readFile(rowsPath, 'utf8'));
+      rows.finalCut = {src: `${outDir}/${id}.mp4`};
+      await writeFile(rowsPath, JSON.stringify(rows, null, 1) + '\n');
+      console.log(`Final tab: ${rowsPath} finalCut = ${outDir}/${id}.mp4; build: python3 -I scripts/storyboard-page/build.py ${rowsPath}`);
+    }
     await renderCovers(id);
     try {
       const archived = await metrics.time('archive', () => {

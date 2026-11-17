@@ -3,7 +3,8 @@
 // docs/render-rules.md#render-stage). Renders go through the scene cache with the same keys as scripts/render.mjs.
 //
 //   node scripts/storyboard-page/clips.mjs <CompositionId> <review-rows.json> --full --draft   W5 draft cut
-//   node scripts/storyboard-page/clips.mjs <CompositionId> <review-rows.json> --full [--keep-pinned]   W6 final cut
+//   node scripts/storyboard-page/clips.mjs <CompositionId> <review-rows.json> --full [--keep-pinned]   full-size cut (no longer a
+//     stage since 17 Nov 2026: the Final tab shows the delivery render, scripts/render.mjs --rows=<review-rows.json>)
 //   node scripts/storyboard-page/clips.mjs <CompositionId> <review-rows.json> --shots=a,b | --missing [--draft]
 //   common: [--gl=angle] [--timeout=180000]
 //
