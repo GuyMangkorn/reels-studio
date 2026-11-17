@@ -48,5 +48,6 @@ One row per concept the channel has made. Each concept has its own file `C<nn>.m
 | C85 | โตเต็มวัยแล้ว ทำไมไปอวกาศถึงสูงขึ้นได้ | pitched | - | R15 | [C85.md](C85.md) |
 | C86 | พริกทำคุณเผ็ด ทำไมไก่ไม่แสบแบบเดียวกัน | pitched | - | R15 | [C86.md](C86.md) |
 | C87 | ทำไมไฟในห้องทดลองอวกาศถึงกลม | pitched | - | R15 | [C87.md](C87.md) |
+| C88 | ขันทีชิมยาพิษ | picked | EP22 | - | [C88.md](C88.md) |
 
 Pitch lessons from past rounds: [lessons.md](lessons.md).

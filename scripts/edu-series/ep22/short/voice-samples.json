@@ -1,0 +1,123 @@
+{
+  "revision": "EDU-EP22-VOICE-SAMPLES-R1",
+  "script_revision": "EDU-EP22-SCRIPT-R3",
+  "lines": [
+    "L01",
+    "L02"
+  ],
+  "lines_requested": [
+    "L01",
+    "L02",
+    "L03",
+    "L04"
+  ],
+  "script_sha256": "3c28883fbe20708b7fff655ae7f85b4cb37a08300ddd93eb66b54901f8f0e77d",
+  "spoken_script_text": "ถ้าคุณเป็นขันที ชิมอาหารให้ฮ่องเต้จีน... คุณต้องชิมก่อนทุกจาน\nแต่ฮ่องเต้องค์สุดท้าย... ไม่แตะโต๊ะเกือบสามสิบจานนั้นเลยนะ",
+  "tts_input": "ถ้าคุณเป็นขันที ชิมอาหารให้ฮ่องเต้จีน, คุณต้องชิมก่อนทุกจาน\nแต่ฮ่องเต้องค์สุดท้าย, ไม่แตะโต๊ะเกือบสามสิบจานนั้นเลยนะ",
+  "syllables": {
+    "L01": 18,
+    "L02": 16,
+    "total": 34,
+    "source": "SCRIPT-R3 table"
+  },
+  "cap_note": "L01-L04 is 61 syllables (~14 s at the source rate 4.17 syl/s); L01-L03 is 42 (~10.1 s at x1.00), both over the 10 s audition cap. Sample limited to L01-L02 (8.16 s source). L03-L04 not sampled.",
+  "settings": {
+    "model": "gemini-3.8-flash-tts",
+    "voice": "Kore",
+    "style": "warm, friendly, smiling storyteller, speaking rapidly"
+  },
+  "cache_key": "7dd90bbc46066467",
+  "api_calls_this_pass": 1,
+  "additional_api_takes": 0,
+  "generation_exit": 0,
+  "candidates": [
+    1.05,
+    1.0
+  ],
+  "selection": "PENDING (user); not script approval, not voice lock",
+  "listening_and_Thai_pronunciation_approval": "PENDING (not listened to by an agent)",
+  "dry_only": true,
+  "store_prefix": "projects/edu/EDU/samples/ep22/2026-11-16_r1-7dd90bbc46066467",
+  "store_absolute_prefix": "/Users/mangkornkatawong/ReelsStore/projects/edu/EDU/samples/ep22/2026-11-16_r1-7dd90bbc46066467",
+  "cache_absolute_prefix": "/Users/mangkornkatawong/Developer/reels-creator/.claude/worktrees/brave-visvesvaraya-700270/out/ep22-voice-samples-r1",
+  "files": [
+    {
+      "id": "source-wav",
+      "cache_path": "out/ep22-voice-samples-r1/EP22_L01-L02_kore_source.wav",
+      "store_path": "projects/edu/EDU/samples/ep22/2026-11-16_r1-7dd90bbc46066467/EP22_L01-L02_kore_source.wav",
+      "sha256": "f1d4e30db2af02c167d6aa8fe95746721c822ca091b74aaf5771a10f08216a1c",
+      "duration_sec": 8.16,
+      "under10s": true,
+      "atempo": 1,
+      "34_syllables_per_container_sec": 4.166666666666667
+    },
+    {
+      "id": "x1.00-wav",
+      "cache_path": "out/ep22-voice-samples-r1/EP22_L01-L02_kore_x1.00.wav",
+      "store_path": "projects/edu/EDU/samples/ep22/2026-11-16_r1-7dd90bbc46066467/EP22_L01-L02_kore_x1.00.wav",
+      "sha256": "f1d4e30db2af02c167d6aa8fe95746721c822ca091b74aaf5771a10f08216a1c",
+      "duration_sec": 8.16,
+      "under10s": true,
+      "atempo": 1.0,
+      "34_syllables_per_container_sec": 4.166666666666667,
+      "gross_span_sec": 7.62,
+      "34_syllables_per_gross_span_sec": 4.4619422572178475,
+      "lufs": "-16.1",
+      "line_gap_sec": [
+        4.31,
+        4.63
+      ],
+      "baseline_span_sec_minus_line_gap": 7.3,
+      "34_syllables_per_baseline_sec": 4.658
+    },
+    {
+      "id": "x1.00-mp3",
+      "cache_path": "out/ep22-voice-samples-r1/EP22_L01-L02_kore_x1.00.mp3",
+      "store_path": "projects/edu/EDU/samples/ep22/2026-11-16_r1-7dd90bbc46066467/EP22_L01-L02_kore_x1.00.mp3",
+      "sha256": "538d803ddf46f5a25ce7abb0a9d92944020da258b2a69ad5df22850d6125e60b",
+      "duration_sec": 8.16,
+      "under10s": true,
+      "atempo": 1.0,
+      "34_syllables_per_container_sec": 4.166666666666667
+    },
+    {
+      "id": "x1.05-wav",
+      "cache_path": "out/ep22-voice-samples-r1/EP22_L01-L02_kore_x1.05.wav",
+      "store_path": "projects/edu/EDU/samples/ep22/2026-11-16_r1-7dd90bbc46066467/EP22_L01-L02_kore_x1.05.wav",
+      "sha256": "4ed6ac48b3c9ac8599fe9538d010a20b26a97c7c5c4ce3dc2cecd1bf392c938d",
+      "duration_sec": 7.781208,
+      "under10s": true,
+      "atempo": 1.05,
+      "34_syllables_per_container_sec": 4.369501496425747,
+      "gross_span_sec": 7.25,
+      "34_syllables_per_gross_span_sec": 4.689655172413793,
+      "lufs": "-16.0",
+      "line_gap_sec": [
+        4.11,
+        4.41
+      ],
+      "baseline_span_sec_minus_line_gap": 6.95,
+      "34_syllables_per_baseline_sec": 4.892
+    },
+    {
+      "id": "x1.05-mp3",
+      "cache_path": "out/ep22-voice-samples-r1/EP22_L01-L02_kore_x1.05.mp3",
+      "store_path": "projects/edu/EDU/samples/ep22/2026-11-16_r1-7dd90bbc46066467/EP22_L01-L02_kore_x1.05.mp3",
+      "sha256": "0d6a464cd595651eb8e56be0aa4ed34af0d8d89d4acc6a0d27aebed18da57289",
+      "duration_sec": 7.781208,
+      "under10s": true,
+      "atempo": 1.05,
+      "34_syllables_per_container_sec": 4.369501496425747
+    }
+  ],
+  "date": "2026-11-16",
+  "owner": "Editor",
+  "reproduction": {
+    "generation": "zsh -c \"source ~/.zshrc; unset GEMINI_API_KEY_REEL_EXTRA; out/gemini-venv/bin/python -I scripts/gemini-tts.py say --voice Kore --style \"warm, friendly, smiling storyteller, speaking rapidly\" --text-file out/ep22-voice-samples-r1/tts-input.txt out/ep22-voice-samples-r1/EP22_L01-L02_kore_source.wav\"",
+    "pace": "ffmpeg -i source.wav -af atempo=<1.05> -ar 48000 -ac 1 out.wav (x1.00 = copy of source)",
+    "mp3": "libmp3lame -q:a 2",
+    "measurement": "measure-auditions.py, 10 ms RMS windows, -40 dBFS, gaps >=200 ms; ebur128 integrated LUFS",
+    "branch": "claude/ep22-khun-tee-chim-yaphit-3ae8d2",
+    "checkout": "28bc6410324b6140e487d8dfa98192fbaf668ba3"
+  }
+}
