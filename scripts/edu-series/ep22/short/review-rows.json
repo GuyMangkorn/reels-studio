@@ -107,6 +107,13 @@
      "out": 1.233,
      "cut": true,
      "key": "b638f071b6abe1b8"
+    },
+    "final": {
+     "src": "out/EDU-EP22-SHORT/clips/_final_cut.mp4",
+     "in": 0,
+     "out": 1.233,
+     "cut": true,
+     "key": "d2271c2d8df14ccb"
     }
    }
   },
@@ -135,6 +142,13 @@
      "out": 4.667,
      "cut": true,
      "key": "d7120da00527fd86"
+    },
+    "final": {
+     "src": "out/EDU-EP22-SHORT/clips/_final_cut.mp4",
+     "in": 1.233,
+     "out": 4.667,
+     "cut": true,
+     "key": "15588193784cc14a"
     }
    }
   },
@@ -162,6 +176,13 @@
      "out": 8.133,
      "cut": true,
      "key": "c16eedbe0b561e32"
+    },
+    "final": {
+     "src": "out/EDU-EP22-SHORT/clips/_final_cut.mp4",
+     "in": 4.667,
+     "out": 8.133,
+     "cut": true,
+     "key": "5ddc131b13b125e0"
     }
    }
   },
@@ -190,6 +211,13 @@
      "out": 9.133,
      "cut": true,
      "key": "057e2ee73a778994"
+    },
+    "final": {
+     "src": "out/EDU-EP22-SHORT/clips/_final_cut.mp4",
+     "in": 8.133,
+     "out": 9.133,
+     "cut": true,
+     "key": "aafcf70c501fecef"
     }
    }
   },
@@ -222,6 +250,13 @@
      "out": 13.333,
      "cut": true,
      "key": "1cbfea607c95e703"
+    },
+    "final": {
+     "src": "out/EDU-EP22-SHORT/clips/_final_cut.mp4",
+     "in": 9.133,
+     "out": 13.333,
+     "cut": true,
+     "key": "0cd25f9c41caf2a1"
     }
    }
   },
@@ -249,6 +284,13 @@
      "out": 15.2,
      "cut": true,
      "key": "aa01c636d75a3aab"
+    },
+    "final": {
+     "src": "out/EDU-EP22-SHORT/clips/_final_cut.mp4",
+     "in": 13.333,
+     "out": 15.2,
+     "cut": true,
+     "key": "affb28f45e0d44e2"
     }
    }
   },
@@ -276,6 +318,13 @@
      "out": 18.733,
      "cut": true,
      "key": "93b5bf35b462444e"
+    },
+    "final": {
+     "src": "out/EDU-EP22-SHORT/clips/_final_cut.mp4",
+     "in": 15.2,
+     "out": 18.733,
+     "cut": true,
+     "key": "ea9a9723a066a8aa"
     }
    }
   },
@@ -303,6 +352,13 @@
      "out": 22.467,
      "cut": true,
      "key": "3c68e041819e027e"
+    },
+    "final": {
+     "src": "out/EDU-EP22-SHORT/clips/_final_cut.mp4",
+     "in": 18.733,
+     "out": 22.467,
+     "cut": true,
+     "key": "4fcc4a839e9525bb"
     }
    }
   },
@@ -330,6 +386,13 @@
      "out": 24.667,
      "cut": true,
      "key": "a3782a5c50f522ea"
+    },
+    "final": {
+     "src": "out/EDU-EP22-SHORT/clips/_final_cut.mp4",
+     "in": 22.467,
+     "out": 24.667,
+     "cut": true,
+     "key": "7e6b13b4c85b902f"
     }
    },
    "changed": "แก้รอบ Draft: กล้องใกล้ขึ้นให้เห็นการชิม และเอากล่องเทาบนโต๊ะออก"
@@ -359,6 +422,13 @@
      "out": 26.667,
      "cut": true,
      "key": "b091675872fd0cc9"
+    },
+    "final": {
+     "src": "out/EDU-EP22-SHORT/clips/_final_cut.mp4",
+     "in": 24.667,
+     "out": 26.667,
+     "cut": true,
+     "key": "5283eefb4965a084"
     }
    }
   },
@@ -380,6 +450,13 @@
      "out": 28.2,
      "cut": true,
      "key": "d058bae477217206"
+    },
+    "final": {
+     "src": "out/EDU-EP22-SHORT/clips/_final_cut.mp4",
+     "in": 26.667,
+     "out": 28.2,
+     "cut": true,
+     "key": "88ed0b142fd0cb50"
     }
    }
   },
@@ -408,6 +485,13 @@
      "out": 29.533,
      "cut": true,
      "key": "b7d164d3e1bdaf1d"
+    },
+    "final": {
+     "src": "out/EDU-EP22-SHORT/clips/_final_cut.mp4",
+     "in": 28.2,
+     "out": 29.533,
+     "cut": true,
+     "key": "455e803d16104ab0"
     }
    },
    "changed": "แก้รอบ Draft: มุมใกล้ขึ้นที่สามด่าน แสงทองใหญ่และชัดขึ้น"
@@ -436,6 +520,13 @@
      "out": 32.4,
      "cut": true,
      "key": "13ccebe7939d8e7a"
+    },
+    "final": {
+     "src": "out/EDU-EP22-SHORT/clips/_final_cut.mp4",
+     "in": 29.533,
+     "out": 32.4,
+     "cut": true,
+     "key": "ea0ec9157d53533e"
     }
    }
   },
@@ -464,6 +555,13 @@
      "out": 34.2,
      "cut": true,
      "key": "7bdd603c1bd650b4"
+    },
+    "final": {
+     "src": "out/EDU-EP22-SHORT/clips/_final_cut.mp4",
+     "in": 32.4,
+     "out": 34.2,
+     "cut": true,
+     "key": "0128267ca2bac7e8"
     }
    }
   },
@@ -491,6 +589,13 @@
      "out": 38.133,
      "cut": true,
      "key": "117ac0032ea42cc6"
+    },
+    "final": {
+     "src": "out/EDU-EP22-SHORT/clips/_final_cut.mp4",
+     "in": 34.2,
+     "out": 38.133,
+     "cut": true,
+     "key": "0e714507bcb682c5"
     }
    },
    "changed": "แก้รอบ Draft: จุดเหลืองใหญ่ขึ้น เกาะส่วนที่ยังเงาวาวแล้วค่อยดำ"
@@ -519,6 +624,13 @@
      "out": 40.667,
      "cut": true,
      "key": "b5c21c2b72a73400"
+    },
+    "final": {
+     "src": "out/EDU-EP22-SHORT/clips/_final_cut.mp4",
+     "in": 38.133,
+     "out": 40.667,
+     "cut": true,
+     "key": "759e617008052dd3"
     }
    },
    "changed": "แก้รอบ Draft: ยกแผ่นเงินพ้นน้ำให้เห็นเงาวาวบนพื้นเข้ม วางแผ่นดำไว้ข้างกัน"
@@ -547,6 +659,13 @@
      "out": 43.067,
      "cut": true,
      "key": "17407616081a82f3"
+    },
+    "final": {
+     "src": "out/EDU-EP22-SHORT/clips/_final_cut.mp4",
+     "in": 40.667,
+     "out": 43.067,
+     "cut": true,
+     "key": "3f4f7d444cf5db1b"
     }
    },
    "changed": "แก้รอบ Draft: มุมใหม่ใกล้กว่าช็อตสามด่าน แสงที่แผ่นเงินดับให้เห็นชัด"
@@ -575,6 +694,13 @@
      "out": 46,
      "cut": true,
      "key": "cd28107e52c53d02"
+    },
+    "final": {
+     "src": "out/EDU-EP22-SHORT/clips/_final_cut.mp4",
+     "in": 43.067,
+     "out": 46,
+     "cut": true,
+     "key": "2b010cde05d954fd"
     }
    }
   },
@@ -602,6 +728,13 @@
      "out": 48.667,
      "cut": true,
      "key": "661382a2496be1cf"
+    },
+    "final": {
+     "src": "out/EDU-EP22-SHORT/clips/_final_cut.mp4",
+     "in": 46,
+     "out": 48.667,
+     "cut": true,
+     "key": "7f46866f279101da"
     }
    }
   },
@@ -631,12 +764,23 @@
      "out": 57.233,
      "cut": true,
      "key": "4803e020a661201d"
+    },
+    "final": {
+     "src": "out/EDU-EP22-SHORT/clips/_final_cut.mp4",
+     "in": 48.667,
+     "out": 57.233,
+     "cut": true,
+     "key": "7cd5d38a03e78e9b"
     }
    }
   }
  ],
  "draftCut": {
   "src": "out/EDU-EP22-SHORT/clips/_draft_cut.mp4",
+  "frames": 1717
+ },
+ "finalCut": {
+  "src": "out/EDU-EP22-SHORT/clips/_final_cut.mp4",
   "frames": 1717
  }
 }

@@ -110,7 +110,10 @@ cmd = ['ffmpeg', '-v', 'error', '-y'] + inputs + ['-/filter_complex', 'out/logs/
 for layer in outs: cmd += ['-map', f'[{layer}]', '-c:a', 'pcm_f32le', '-ar', str(SR), 'out/stems/' + layer + '.f32' + EXT]
 subprocess.run(cmd, check=True)
 # narration at G 0, padded to the composition length; voice stem = the same, stereo-free mono
-subprocess.run(['ffmpeg', '-v', 'error', '-y', '-i', NARR, '-af', f'apad=whole_len={N},atrim=end_sample={N}', '-ac', '1', '-c:a', 'pcm_f32le', 'out/stems/' + 'narration.unscaled' + EXT], check=True)
+# V01 child "หืม?" (user pick C, child-boy +5%, 2026-11-17) at G 247, -1.5 dB with S7 tweak -3 dB so the coincident G249 peak stays under the -1 dBTP ceiling (Final cut r1 raw peak was -0.4), mixed into the voice track (not subtitled)
+V01 = 'public/narration/EDU-EP22-SHORT-V01-child-boy-v1.wav'; V01_G = 247
+d01 = round(V01_G * SR / FPS)
+subprocess.run(['ffmpeg', '-v', 'error', '-y', '-i', NARR, '-i', V01, '-filter_complex', f'[0:a]aformat=channel_layouts=mono[n];[1:a]aformat=channel_layouts=mono,volume=-1.5dB,adelay={d01}S[v];[n][v]amix=inputs=2:normalize=0:duration=longest,apad=whole_len={N},atrim=end_sample={N}[a]', '-map', '[a]', '-ac', '1', '-c:a', 'pcm_f32le', 'out/stems/' + 'narration.unscaled' + EXT], check=True)
 subprocess.run(['ffmpeg', '-v', 'error', '-y', '-i', 'out/stems/' + 'narration.unscaled' + EXT, '-c:a', 'pcm_f32le', 'out/stems/' + 'voice.wav'], check=True)
 subprocess.run(['ffmpeg', '-v', 'error', '-y', '-i', 'out/stems/' + 'narration.unscaled' + EXT, '-af', f'volume={MASTER_DB}dB', '-c:a', 'pcm_s16le', 'public/narration/EDU-EP22-SHORT-narration-v1.wav'], check=True)
 # stems: float files re-written as s16 with +-1 LSB dither (mix-levels' ebur128 never sees all-zero windows, EP15 finding) is skipped here: ebur128 reads float fine
