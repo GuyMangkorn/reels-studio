@@ -31,6 +31,10 @@ test('OpenCode role agents match Claude (python3 -I scripts/opencode-agents.py)'
     const match = readFileSync(`.opencode/agents/${role}.md`, 'utf8').match(/^---\ndescription: "(.+)"\nmode: subagent\n[\s\S]*?\n---\n\n([\s\S]+)$/);
     assert.ok(match, `.opencode/agents/${role}.md exists with description/mode front matter`);
     assert.deepEqual({description: match[1], instructions: match[2].trim()}, {description: claude.description, instructions: claude.instructions}, role);
+    const gpt = readFileSync(`.opencode/agents/${role}-gpt.md`, 'utf8').match(/^---\ndescription: "(.+) Runs on (openai\/.+)\."\nmode: subagent\nmodel: (.+)\n[\s\S]*?\n---\n\n([\s\S]+)$/);
+    assert.ok(gpt, `.opencode/agents/${role}-gpt.md exists with description/mode/model front matter`);
+    assert.equal(gpt[2], gpt[3], `${role}-gpt description names its model`);
+    assert.deepEqual({description: gpt[1], instructions: gpt[4].trim()}, {description: claude.description, instructions: claude.instructions}, `${role}-gpt`);
   }
 });
 

@@ -1,7 +1,7 @@
 ---
 description: "Boss (บอส): reusable asset and shared renderer programmer; supplies verified assets/capabilities to Editor and fixes contact/projection in their owners."
 mode: subagent
-model: anthropic/claude-sonnet-5-5#medium
+model: anthropic/claude-opus-5-5#medium
 permissions:
   - action: websearch
     resource: "*"
