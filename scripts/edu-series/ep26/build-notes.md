@@ -24,3 +24,15 @@ Film and coordinator inspected the 270 px QA sheet against the user's extra-arm 
 - `EDU26-LF01`, frame 0, 1080 × 1920. SHA256 `e0f45b11368351df9effa3e3ed561ddd4438e2a0b7ca4daec7c848f9b8de2fcf`. Scoped TypeScript check passed.
 - Visible customer height 1,018 px. Stain bounds x561–661 and y1058–1116, 60 px above the caption band. Caption white fill x240–837 and y1264–1329, readable at 270 px. Background band luma mean 0.380 and p95 0.677 exceed the dark-scene defaults.
 - R3 full frame and QA stored in `projects/edu/EDU/ep26-workshop-look-r3/`. User review pending.
+
+## W3 redesign look set, 2026-11-18
+
+Film on `gpt-6.2-sol` at `medium` painted three standalone stills on [BRIEF-R2](short/film-brief-r2.md) and archived them with QA in `projects/edu/EDU/ep26-wash-bench-look-r1/`. Source `src/painted/edu26/wash-bench-look-index.tsx`, one Chrome through `scripts/stills.mjs` with ANGLE, output 1080 × 1920. Film and the coordinator viewed the 270 px QA sheet. Scoped TypeScript and ESLint passed.
+
+| Still | Shot | Visible lead height | Visual evidence | White caption bounds |
+| --- | --- | ---: | --- | --- |
+| LF01 | B01-SH01 | ~525 px | 155 × 35 px stain, customer points across the bench and blue cuff receives from the opposite side. | x300–779, y1275–1331 |
+| LF02 | B02-SH03 | ≥498 px | Terracotta jar projects about 140 × 178 px, grounded on the bench. Stained cloth remains visible. | x233–845, y1275–1320 |
+| LF03 | B04-SH03 | ≥529 px | Matching double stitch and clean hem in the same workshop. Cloth low point y1196. | x404–676, y1277–1320 |
+
+All sample glyphs fit the portrait safe box and remain legible at 270 px with a 0.21 shade and outline. Measured background mean/p95 luma is 0.322/0.444, 0.483/0.730 and 0.317/0.421. These exceed the dark-scene defaults. The [independent Film viewer check](short/viewer-check-look.json) passed 3/3. Minor findings: angular cloth folds at intake/payoff, jar partly hides coworker's placing hand, and customer's gaze remains fairly forward at payoff.
