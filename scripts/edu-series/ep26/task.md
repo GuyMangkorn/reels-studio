@@ -17,9 +17,10 @@ Record [delivery.md](delivery.md) · Updated 2026-11-18, coordinator
   - [x] W2.2 Film untimed shot plan and [EDU-EP26-ROWS-R1](short/review-rows.json), 13 shots
   - [x] W2.3 First [storyboard review page](http://127.0.0.1:8766/) served locally, 2026-11-18
 - [ ] W3 Look frames and storyboard pass
-  - [x] W3.1 Film rendered LF01 from B01-SH01, 1/1 workshop looks — [QA notes](build-notes.md#w31-workshop-look-lf01-2026-11-18)
-  - [ ] W3.2 User reviews LF01 R3. [Fix list](fixlist.md) and [R3 checks](build-notes.md#w32-lf01-r3-2026-11-18).
-  - [x] W3.3 Storyboard passed 13/13 — [verdicts](short/reviews.json), user, 2026-11-18
+  - [x] W3 BRIEF-R2 Film redesign, user requested Sol 6.2 medium — [new brief](short/film-brief-r2.md)
+  - [x] W3.1 Film rendered and checked all three [BRIEF-R2 looks](build-notes.md#w3-redesign-look-set-2026-11-18).
+  - [x] W3.2 User approved all three BRIEF-R2 workshop looks, 2026-11-18.
+  - [ ] W3.3 [ROWS-R2](short/review-rows.json) published. Three unchanged verdicts current, 10 revised shots open.
 - [ ] W4 Voice lock
 - [ ] W5 Draft
 - [ ] W6 Final pass

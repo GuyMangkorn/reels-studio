@@ -10,7 +10,7 @@ const readClaude = (role: string) => {
   return {name: match[1], description: match[2], instructions: match[3].trim()};
 };
 const readCodex = (role: string) => {
-  const match = readFileSync(`.codex/agents/${role}.toml`, 'utf8').match(/^name = "(.+)"\ndescription = "(.+)"\ndeveloper_instructions = """\n([\s\S]+?)"""\s*$/);
+  const match = readFileSync(`.codex/agents/${role}.toml`, 'utf8').match(/^name = "(.+)"\ndescription = "(.+)"\n(?:model = "[^"]+"\n)?(?:model_reasoning_effort = "(?:low|medium|high|xhigh|max|ultra)"\n)?developer_instructions = """\n([\s\S]+?)"""\s*$/);
   assert.ok(match, `${role}.toml has name/description/developer_instructions`);
   return {name: match[1], description: match[2], instructions: match[3].trim()};
 };

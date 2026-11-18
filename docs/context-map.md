@@ -259,9 +259,11 @@ EDU ideation R17 (CAT02, historical role simulations): [C95–C100 in the concep
 
 EDU-EP26-SHORT (C95, Roman laundry apprentice): [delivery record](../scripts/edu-series/ep26/delivery.md), [task file](../scripts/edu-series/ep26/task.md), [research](../scripts/edu-series/ep26/research.md), [hook options](../scripts/edu-series/ep26/short/hook-options.md), [script](../scripts/edu-series/ep26/short/script.md), [timing projection](../scripts/edu-series/ep26/short/script-notes.md#timing-projection) and [fact-check](../scripts/edu-series/ep26/short/fact-check.md).
 
-EDU-EP26 W2: [visual brief](../scripts/edu-series/ep26/short/film-brief.md), [shot plan](../scripts/edu-series/ep26/short/storyboard.md), [review rows](../scripts/edu-series/ep26/short/review-rows.json) and [review page handoff](../scripts/edu-series/ep26/handoff.md).
+EDU-EP26 W2: [visual brief R1](../scripts/edu-series/ep26/short/film-brief.md), [redesign brief R2](../scripts/edu-series/ep26/short/film-brief-r2.md), [shot plan](../scripts/edu-series/ep26/short/storyboard.md), [review rows](../scripts/edu-series/ep26/short/review-rows.json) and [review page handoff](../scripts/edu-series/ep26/handoff.md).
 
 EDU-EP26 W3: [workshop painter](../src/painted/edu26/workshop.ts), [LF01 still entry](../src/painted/edu26/look-index.tsx), [storyboard verdicts](../scripts/edu-series/ep26/short/reviews.json), [look viewer check](../scripts/edu-series/ep26/short/viewer-check-look.json), [look fixes](../scripts/edu-series/ep26/fixlist.md) and [build notes](../scripts/edu-series/ep26/build-notes.md).
+
+EDU-EP26 W3 redesign: [wash-bench set](../src/painted/edu26/wash-bench-set.ts), [look painter](../src/painted/edu26/wash-bench-look.ts), and [three-still entry](../src/painted/edu26/wash-bench-look-index.tsx).
 
 | Episode | Scripts | Videos (composition IDs) | Painted source | Tests |
 | --- | --- | --- | --- | --- |
