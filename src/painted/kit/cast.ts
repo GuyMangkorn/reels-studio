@@ -74,7 +74,9 @@ export type Arm = {to: Pt; out?: number; via?: Pt; behind?: 'upper' | 'all'; toC
   /** `InteriorLight.shaped` only (UT14): an open mitten hand; the value is the side the thumb lobe lies on. */
   open?: 1 | -1;
   /** With `open`: hide the thumb lobe (mitten outline without it), e.g. a hand clamped over the mouth where the thumb is behind the palm. */
-  noThumb?: boolean};
+  noThumb?: boolean;
+  /** Draw the arm without its hand (the arm ends at `to`): a five-finger macro hand from the gesture kit is painted there instead (`hand-gestures.ts`, `mid-hands.ts`). Absent = the hand as before. */
+  noHand?: boolean};
 export type Prop =
   | {kind: 'torch'; angle: number; on: number}
   | {kind: 'phone'}
@@ -615,7 +617,7 @@ export const drawFigure = (p: Painter, def: CastDef, g: Pt, unit: number, pose: 
   const hangX = childHangExtra(def);
   const hang = (s: number): Pt => (profile ? U([0.01 + 0.02 * Math.sin(ph + (s > 0 ? Math.PI : 0)) * (walk === undefined ? 0 : 6 * (pose.stride ?? 1)), shV - 0.03 - 2 * AB + 0.02]) : U([qg ? (s === qdir ? s * (sw - 0.0255 + 0.02 + hangX) * kr * 0.62 : s * lerp(sw - 0.0255 + 0.04 + hangX, (sw - 0.0255 + 0.034 + hangX) * kr, late)) : s * (sw - 0.0255 + 0.034 + hangX) * kr, shV - 0.0255 - 2 * AB + 0.02]));
   /** Run: arms pump opposite to the leg on their side (profile: elbow ~80 deg; front: hands rise to the chest and drop to the hip). */
-  type ArmGeo = {Sh: Pt; E: Pt; T: Pt; cam?: number; finger?: boolean; fist?: 1 | -1; open?: 1 | -1; noThumb?: boolean};
+  type ArmGeo = {Sh: Pt; E: Pt; T: Pt; cam?: number; finger?: boolean; fist?: 1 | -1; open?: 1 | -1; noThumb?: boolean; noHand?: boolean};
   /** Three-quarter front, an arm pointing at the lens (`toCam`, not `behind`): drawn turned forward and over the torso (KIT-ARM-DEPTH A). */
   const qFwd = (a?: Arm): boolean => !!(qg && a?.toCam && !a.behind);
   const runArm = (s: number, Sh: Pt): ArmGeo => {
@@ -662,13 +664,13 @@ export const drawFigure = (p: Painter, def: CastDef, g: Pt, unit: number, pose: 
       const z = Math.sqrt(Math.max(0, reach * reach - ox * ox - oy * oy)) * Math.min(1, a0.toCam ?? 0);
       const T: Pt = [Sh[0] + (ox * kp + qdir * sinq * z) * unit, Sh[1] + oy * unit];
       const E: Pt = [(Sh[0] + T[0]) / 2, (Sh[1] + T[1]) / 2 + 0.015 * unit];
-      return {Sh, E, T, cam: Math.max(0, Math.min(1, a0.toCam ?? 0)) * kp, finger: a0.finger};
+      return {Sh, E, T, cam: Math.max(0, Math.min(1, a0.toCam ?? 0)) * kp, finger: a0.finger, noHand: a0.noHand};
     }
     const a = a0 && pose.quarter ? {...a0, to: qx(a0.to), via: a0.via && qx(a0.via)} : a0;
     if (!a && mode?.kind === 'run') return runArm(s, Sh);
     const T = a?.via ? a.to : reachTo(Sh, a?.to ?? hang(s), Lpx);
     const E = a?.via ?? (a ? ikElbow(Sh, T, Lpx, a.out ?? (profile ? -dir : s)) : ([lerp(Sh[0], T[0], 0.5) + (profile ? -dir * 0.02 * unit : s * 0.02 * unit), lerp(Sh[1], T[1], 0.5)] as Pt));
-    return a?.toCam && !profile ? {Sh, E, T, cam: Math.max(0, Math.min(1, a.toCam)), finger: a.finger} : {Sh, E, T, fist: a?.fist, open: a?.open, noThumb: a?.noThumb};
+    return a?.toCam && !profile ? {Sh, E, T, cam: Math.max(0, Math.min(1, a.toCam)), finger: a.finger, noHand: a.noHand} : {Sh, E, T, fist: a?.fist, open: a?.open, noThumb: a?.noThumb, noHand: a?.noHand};
   };
   const R = arm('r'), Lm = arm('l');
   const drawArm = (A: ArmGeo, hold: Prop | undefined, k: number, far: boolean, only?: 'upper' | 'lower') => {
@@ -725,7 +727,7 @@ export const drawFigure = (p: Painter, def: CastDef, g: Pt, unit: number, pose: 
         fill(slc, shapedLimb(A.Sh, hemEnd, 0.1 * unit, 0.078 * unit, {bulge: 0.012 * unit, peak: 0.35, asym: 0.15, capB: false, flare: 0.012 * unit}), true);
         fold(sl, [[A.E[0] - (ax / al) * 0.05 * unit - (ay / al) * 0.03 * unit, A.E[1] - (ay / al) * 0.05 * unit + (ax / al) * 0.03 * unit], [A.E[0] - (ax / al) * 0.03 * unit, A.E[1] - (ay / al) * 0.03 * unit], [A.E[0] - (ax / al) * 0.05 * unit + (ay / al) * 0.03 * unit, A.E[1] - (ay / al) * 0.05 * unit - (ax / al) * 0.03 * unit]]);
       }
-      if (only === 'upper') return A.T;
+      if (only === 'upper' || A.noHand) return A.T;
       const ang = Math.atan2(uy, ux);
       // HL1 hands (ZCONDO2, 4 Nov 2026): flat skin with one warm shade down the side away from the key and the arm's falloff, no cool
       // form glaze (it left a purple bruise on the small round shape); one smooth outline, short dark strokes only.
@@ -796,6 +798,7 @@ export const drawFigure = (p: Painter, def: CastDef, g: Pt, unit: number, pose: 
       const ax = A.E[0] - A.Sh[0], ay = A.E[1] - A.Sh[1], al = Math.hypot(ax, ay) || 1, ux = ax / al, uy = ay / al;
       for (const d of [0.025, 0.06]) fold(sl, [[A.E[0] - ux * d * unit - uy * 0.03 * unit, A.E[1] - uy * d * unit + ux * 0.03 * unit], [A.E[0] - ux * (d - 0.015) * unit, A.E[1] - uy * (d - 0.015) * unit], [A.E[0] - ux * d * unit + uy * 0.025 * unit, A.E[1] - uy * d * unit - ux * 0.025 * unit]]);
     }
+    if (A.noHand) return A.T;
     const ang = Math.atan2(A.T[1] - A.E[1], A.T[0] - A.E[0]);
     const hand: Pt = [A.T[0] + Math.cos(ang) * 0.03 * unit, A.T[1] + Math.sin(ang) * 0.03 * unit];
     if (hold?.kind === 'torch') drawTorch(p, seed * 1000 + 200 + k * 10, hand, hold.angle, unit, hold.on);
