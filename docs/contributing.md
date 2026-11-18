@@ -43,7 +43,7 @@ Stop when the success criteria and required checks pass. Repeat affected checks 
 
 **DP — document proposals, applied only after user review.**
 
-- **DP01 — Propose, don't edit.** While doing production work, roles do not edit rule documents: `AGENTS.md`, `docs/*.md`, `.claude/agents/`, `.codex/agents/`, `scripts/README.md`. Production records are excluded and keep their own owners: dev-findings entries, briefs, scene sheets, delivery records and build notes. When a rule is wrong, unclear, missing, contradicts another rule or costs needless work, the role adds a `DPnn` entry to the episode's build notes.
+- **DP01 — Propose, don't edit.** While doing production work, roles do not edit rule documents: `AGENTS.md`, `docs/*.md`, `.claude/agents/`, `.codex/agents/`, `scripts/README.md`. Production records are excluded and keep their own owners: dev-findings entries, briefs, scene sheets, delivery records and build notes. [docs/user-taste.md](user-taste.md) is also excluded: any role edits it directly, with no proposal or approval (user, 18 Nov 2026). When a rule is wrong, unclear, missing, contradicts another rule or costs needless work, the role adds a `DPnn` entry to the episode's build notes.
 - **DP02 — Entry content.** Each entry gives:
   - the document and section anchor;
   - what happened, as evidence (command, shot, revision or quote);
