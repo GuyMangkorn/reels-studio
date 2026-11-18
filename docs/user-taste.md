@@ -4,7 +4,7 @@
 
 Why this file exists: in WDG-EP01-SHORT one look frame went through seven painted rounds, and KSO-EP01-SHORT took three Draft fix rounds on arms and mouths. Most of those notes had been given before on another episode. An agent checks its picture against this list before the user sees it.
 
-**Adding an entry.** When the user gives the same kind of note on a second episode, the coordinator adds it here with both episodes as evidence. One-episode notes stay in that episode's records.
+**Changing this file (Requirement; user, 18 Nov 2026).** Any role adds, sharpens or corrects entries here directly, at any time, during production work too, without a DP proposal or waiting for the user's approval (exception to [DP01](contributing.md#tools-and-document-improvements)); the commit or handoff names what changed. **Adding an entry.** When the user gives the same kind of note on a second episode, add it here with both episodes as evidence. One-episode notes stay in that episode's records.
 
 ## Reading
 

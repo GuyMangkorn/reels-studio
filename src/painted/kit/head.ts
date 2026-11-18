@@ -35,7 +35,7 @@ export type Cut = 'short' | 'tied' | 'bob' | 'hood' | 'long' | NewCut;
  * only; every PEOPLE entry has a look).
  */
 export type HeadStyle = {skin: string; hair: string; cut: Cut; hood?: string; /** Profile hood only: a wide opening that leaves the whole face visible (set by the hood-up state, `back.ts` `hoodUpHead`); absent = the WFOG hood. */ hoodOpen?: boolean; lines?: boolean; accent?: string; facial?: 'stubble' | 'mustache' | 'beard'; glasses?: boolean; brows?: string; look?: FaceLook;
-  /** Profile views only (`paintHeadSide`): hair strands with a lit edge, an iris eye with lid line, crease, lash and catch-light, a nose wing and nostril (no drawn lips in profile). Follows `look` (iris colour, `lash: false`). Default absent = the plain WFOG profile; front, back and turned views ignore it. */
+  /** Profile views only (`paintHeadSide`): hair strands with a lit edge, a side-view wedge eye with iris, lid line, crease, lash and catch-light, a nose wing and nostril, the mouth from the lip seam (no drawn lips in profile). Follows `look` (iris colour, `lash: false`). Front and turned views (18 Nov 2026): the look's nose 30% larger with a bridge shade, a ringed iris with a second catch-light and a full lower lid, a lower-lip shade on `line`/`thin` mouths. The head outline is the same egg in every view. Default absent = the plain WFOG heads; back views ignore it. */
   sideDetail?: boolean;
   /** `long` hair, front view only (EDU-EP11 N5 `hair-float`, spike SP1): 0..1 lifts the shoulder-length hair off the shoulders and fans it up round the head (free fall); 0 or absent = as before. */
   hairRise?: number;
@@ -75,6 +75,11 @@ const jawOf = (face: FaceState): number => {
   return 0;
 };
 export const jawOpenOf = (face: FaceState): number => (face.jaw === undefined ? jawOf(face) : Math.max(0, Math.min(1, face.jaw)) * jawOf(face));
+/** `sideDetail` talk jaw (user, 18 Nov 2026): plain speech moves the chin at 10% (about 1% of the head), as cartoon dialogue changes
+ *  the mouth more than the jaw; shout, gasp, grin and an explicit `face.jaw` keep their full drop. */
+export const TALK_JAW_DETAIL = 0.1;
+const headJawOf = (face: FaceState, style: HeadStyle): number =>
+  jawOpenOf(face) * (style.sideDetail === true && face.mouth === 'talk' && face.jaw === undefined ? TALK_JAW_DETAIL : 1);
 /** Chin drop in head units at full jaw opening. */
 const JAW_DROP = 0.24;
 /** Profile jaw: the point `[x, y]` of the head egg after the lower jaw drops by `jaw` (0..1): below the lip line it drops and swings back a little. */
@@ -326,7 +331,7 @@ const lidAt = (lk: FaceLook, side: number, ex: number, ey: number, eyes: Eyes, s
   return {up, lo, hu};
 };
 
-const lookEye = (lk: FaceLook, side: number, ex: number, ey: number, eyes: Eyes, sq: number, look: Pt, fill: Fill, ink: Ink, skin: string) => {
+const lookEye = (lk: FaceLook, side: number, ex: number, ey: number, eyes: Eyes, sq: number, look: Pt, fill: Fill, ink: Ink, skin: string, det = false) => {
   const {up, lo, hu} = lidAt(lk, side, ex, ey, eyes, sq);
   const n = 16, us = Array.from({length: n + 1}, (_, i) => i / n);
   const upper = us.map(up), lower = us.map(lo);
@@ -343,12 +348,17 @@ const lookEye = (lk: FaceLook, side: number, ex: number, ey: number, eyes: Eyes,
     const a = (i / 20) * Math.PI * 2, px = icx + r * Math.cos(a), py = icy + r * 1.05 * Math.sin(a);
     return [px, Math.min(Math.max(py, yAt(upper, px)), yAt(lower, px))];
   });
-  fill(lk.iris ?? IRIS, iris, 5);
-  fill(INK, iris.map(([px, py]): Pt => [icx + (px - icx) * 0.45, icy + (py - icy) * 0.45]), 4);
+  const irisC = lk.iris ?? IRIS, at = (k: number) => iris.map(([px, py]): Pt => [icx + (px - icx) * k, icy + (py - icy) * k]);
+  fill(irisC, iris, 5);
+  // `sideDetail` (18 Nov 2026): a lighter inner iris inside a darker ring, so the iris reads as an iris and not a dot.
+  if (det) fill(mixColor(irisC, '#c89a62', 0.3), at(0.72), 4);
+  fill(INK, at(0.45), 4);
+  if (det) ink(iris, 0.7, 0.4, true, mixColor(irisC, INK, 0.6));
   if (hu > 0.05) fill(WHITE, ell(icx - 0.025, icy - 0.03, 0.018, 0.018, 8), 3);
+  if (det && hu > 0.05) fill(WHITE, ell(icx + 0.03, icy + 0.03, 0.008, 0.008, 6), 2);
   // Lash line: heavier upper lid, light partial lower lid. `lash: false` keeps a plain thin upper lid (men).
   ink(upper, lk.lash === false ? 1.0 : lk.eye === 'hooded' ? 2.4 : 1.8, 0.4, false, LID);
-  ink(lower.slice(5), 0.7, 0.4, false);
+  ink(det ? lower.slice(2, 15) : lower.slice(5), 0.7, 0.4, false);
   if (lk.eye === 'hooded' && lk.wing !== false && lk.lash !== false) {
     const o = up(1);
     ink([up(0.8), o, [o[0] + side * 0.07, o[1] - 0.05]], 2.4, 0.3, false, LID); // outer wing
@@ -360,18 +370,28 @@ const lookEye = (lk: FaceLook, side: number, ex: number, ey: number, eyes: Eyes,
 };
 
 /** Brow polygon of a `look` brow from inner x 0.17 to outer x 0.62, inner and outer heights given. */
-const lookBrow = (lk: FaceLook, side: number, inner: number, outer: number): Pt[] => {
-  const n = 10, top: Pt[] = [], bot: Pt[] = [];
-  for (let i = 0; i <= n; i++) {
-    const u = i / n, x = side * (0.17 + 0.45 * u);
-    const arc = lk.brow === 'arch' ? 0.06 * Math.sin(Math.PI * Math.min(1, u / 0.7) * 0.5) * (u < 0.7 ? 1 : 1 - (u - 0.7) / 0.3 * 0.9) : lk.brow === 'tapered' ? 0.02 * Math.sin(Math.PI * u) : 0;
-    const y = inner + (outer - inner) * u - arc + (lk.brow === 'tapered' && u > 0.75 ? (u - 0.75) * 0.12 : 0);
-    const w = lk.brow === 'thick' ? 0.065 - 0.015 * u : lk.brow === 'tapered' ? 0.062 * (1 - u) + 0.01 : 0.055 * (1 - u * 0.7);
+const lookBrow = (lk: FaceLook, side: number, inner: number, outer: number): Pt[] => browShape(lk.brow, (u) => side * (0.17 + 0.45 * u), inner, outer);
+/** Brow centre line and half widths of a brow kind along u 0..1 (inner to outer end), x given by `xAt`. */
+const browLine = (brow: FaceLook['brow'], xAt: (u: number) => number, inner: number, outer: number, n = 10) => Array.from({length: n + 1}, (_, i) => {
+  const u = i / n, x = xAt(u);
+  const arc = brow === 'arch' ? 0.06 * Math.sin(Math.PI * Math.min(1, u / 0.7) * 0.5) * (u < 0.7 ? 1 : 1 - (u - 0.7) / 0.3 * 0.9) : brow === 'tapered' ? 0.02 * Math.sin(Math.PI * u) : 0;
+  const y = inner + (outer - inner) * u - arc + (brow === 'tapered' && u > 0.75 ? (u - 0.75) * 0.12 : 0);
+  const w = brow === 'thick' ? 0.065 - 0.015 * u : brow === 'tapered' ? 0.062 * (1 - u) + 0.01 : 0.055 * (1 - u * 0.7);
+  return {u, x, y, w};
+});
+const browShape = (brow: FaceLook['brow'], xAt: (u: number) => number, inner: number, outer: number): Pt[] => {
+  const top: Pt[] = [], bot: Pt[] = [];
+  for (const {x, y, w} of browLine(brow, xAt, inner, outer)) {
     top.push([x, y - w * 0.55]);
     bot.push([x, y + w * 0.45]);
   }
   return [...top, ...bot.reverse()];
 };
+
+/** `sideDetail` brow hairs (18 Nov 2026): short strokes across the brow, leaning toward the tail, in a tone between brow and skin, so
+ * the brow reads as hair with a soft edge. `dir` is the screen direction of the tail (+1 / -1). */
+const browHairs = (brow: FaceLook['brow'], xAt: (u: number) => number, inner: number, outer: number, dir: number): Pt[][] =>
+  browLine(brow, xAt, inner, outer, 14).slice(0, 13).map(({x, y, w}, i): Pt[] => [[x - dir * 0.01, y + w * (0.55 + 0.15 * (i % 2))], [x + dir * (0.035 + 0.008 * (i % 3)), y - w * (0.8 + 0.2 * ((i + 1) % 2))]]);
 
 /** Front nose marks; shadow side is screen-right. */
 const lookNose = (lk: FaceLook, fill: Fill, ink: Ink, skin: string, line: string) => {
@@ -404,7 +424,7 @@ const lookNose = (lk: FaceLook, fill: Fill, ink: Ink, skin: string, line: string
 };
 
 /** Closed `look` mouths centred on y `my`; returns false when the mouth keeps its legacy drawing. */
-const lookMouth = (lk: FaceLook, m: Mouth, open: number, my: number, fill: Fill, ink: Ink, skin: string, line: string) => {
+const lookMouth = (lk: FaceLook, m: Mouth, open: number, my: number, fill: Fill, ink: Ink, skin: string, line: string, det = false) => {
   const closed = m === 'flat' || m === 'frown' || (m === 'talk' && open < 0.08);
   if (!lk.mouth || !closed) return false;
   const lip = mixColor(skin, '#a4504a', 0.32), shade = mixColor(skin, '#7a4a38', 0.25);
@@ -413,6 +433,11 @@ const lookMouth = (lk: FaceLook, m: Mouth, open: number, my: number, fill: Fill,
   if (lk.mouth === 'thin') {
     ink([[-0.15, my + sag * 0.5], [0, my - 0.01], [0.15, my + sag * 0.5]], 1.2, 0.5);
     for (const side of [-1, 1]) ink([[side * 0.17, my - 0.01 + sag], [side * 0.2, my + 0.03 + sag]], 0.8, 0);
+  }
+  if (det && (lk.mouth === 'line' || lk.mouth === 'thin')) {
+    // `sideDetail` (18 Nov 2026): a soft shade under the lower lip and a short lower-lip line, so the closed mouth has a lip below it.
+    fill(shade, [[-0.08, my + 0.06], [0.08, my + 0.06], [0.055, my + 0.09], [-0.055, my + 0.09]], 3, 0.1);
+    ink([[-0.06, my + 0.07], [0.06, my + 0.07]], 0.7, 0.5, false, line);
   }
   if (lk.mouth === 'lip') {
     ink([[-0.21, my + sag], [-0.06, my - 0.005], [0, my + 0.01], [0.06, my - 0.005], [0.21, my + sag]], 1.3, 0.5);
@@ -434,6 +459,7 @@ export const paintHeadFront = (p: Painter, seed: number, cx: number, cy: number,
   const P0 = turn ? ([u, v]: Pt): Pt => [cx + turnU(turn, u, v) * K, cy + v * K] : ([u, v]: Pt): Pt => [cx + u * K, cy + v * K];
   // `pitch` (VA03): the vertical sphere shift on top of the turn; 0 = the old mapping exactly.
   const P = pitch ? ([u, v]: Pt): Pt => { const q = P0([u, v]); return [q[0], cy + pitchV(pitch, u, v) * K]; } : P0;
+  const det = style.sideDetail === true;
   /** Turned head: a mark with every point on the hidden side is not drawn. */
   const hidden = (pts: Pt[]) => turn !== 0 && !pts.some(([u, v]) => turnVisible(turn, u, v));
   const Q = (pts: Pt[]) => pts.map(P);
@@ -464,7 +490,7 @@ export const paintHeadFront = (p: Painter, seed: number, cx: number, cy: number,
     : cut === 'tied' ? ell(0.05, -1.12, 0.32, 0.22, 18)
     : null;
   // Turned head (7 Nov 2026): the lower jaw drops with `open` (the chin of the skull and of the face window move down), and `chew` bulges the near cheek.
-  const jawT = turn ? jawOpenOf(face) : 0, jawDown = (pts: Pt[]): Pt[] => (jawT > 0 ? pts.map(([u, v]): Pt => [u, v + JAW_DROP * 0.8 * jawT * smooth01(0.45, 1.05, v)]) : pts);
+  const jawT = turn ? headJawOf(face, style) : 0, jawDown = (pts: Pt[]): Pt[] => (jawT > 0 ? pts.map(([u, v]): Pt => [u, v + JAW_DROP * 0.8 * jawT * smooth01(0.45, 1.05, v)]) : pts);
   const hairs: Pt[][] = nc ? nc.hair : [legacyFrontHair(cut)];
   const hairFill = nc?.tone ? mixColor(hairC, skin, nc.tone) : hairC;
   // Three-quarter head (pass 4, 4 Nov 2026; user: the r3 hair read as a wig sliding off the skull). Skull and hair are one solid: the
@@ -645,7 +671,7 @@ export const paintHeadFront = (p: Painter, seed: number, cx: number, cy: number,
       continue;
     }
     if (lk) {
-      lookEye(lk, side, ex, ey, eyes, sq, [lx, ly], fill, ink, skin);
+      lookEye(lk, side, ex, ey, eyes, sq, [lx, ly], fill, ink, skin, det);
       continue;
     }
     const ry = (eyes === 'wide' ? 0.15 : 0.12) * sq;
@@ -664,13 +690,21 @@ export const paintHeadFront = (p: Painter, seed: number, cx: number, cy: number,
     let [inner, outer] = browY(face);
     if (face.brow === 'quirk' && side === 1) [inner, outer] = [-0.34, -0.36];
     if (lk) fill(browColor(style), lookBrow(lk, side, inner + lk.browDrop, outer + lk.browDrop), 6);
+    if (lk && det) browHairs(lk.brow, (u) => side * (0.17 + 0.45 * u), inner + lk.browDrop, outer + lk.browDrop, side).forEach((h) => ink(h, 0.8, 0, false, mixColor(browColor(style), skin, 0.3)));
     else fill(browColor(style), [[side * 0.22, inner - 0.03], [side * 0.6, outer - 0.03], [side * 0.6, outer + 0.03], [side * 0.22, inner + 0.03]], 6);
   }
   if (lk) {
     part = 56;
     line = 56;
     // Past 50 deg the turned nose at the cheek line is the nose (VA04): the front marks would sit inside it as a second nose.
-    if (Math.abs(turn) <= (50 * Math.PI) / 180) lookNose(lk, fill, ink, skin, lineOf(skin, L));
+    if (Math.abs(turn) <= (50 * Math.PI) / 180) {
+      if (det) {
+        // sideDetail (18 Nov 2026): the look's nose 30% larger about its base and a faint bridge shade, so the front nose matches the profile nose.
+        const S = (pts: Pt[]): Pt[] => pts.map(([u, v]): Pt => [u * 1.3, 0.4 + (v - 0.4) * 1.3]);
+        if (lk.nose !== 'ell') fill(mixColor(skin, '#7a4a38', 0.14), [[0.03, 0.06], [0.075, 0.08], [0.085, 0.32], [0.03, 0.3]], 3, 0.1);
+        lookNose(lk, (c, pts, ps, a) => fill(c, S(pts), ps, a), (pts, w, cu, cl, col) => ink(S(pts), w, cu, cl, col), skin, lineOf(skin, L));
+      } else lookNose(lk, fill, ink, skin, lineOf(skin, L));
+    }
     line = 50;
   }
   if (style.facial) {
@@ -683,7 +717,7 @@ export const paintHeadFront = (p: Painter, seed: number, cx: number, cy: number,
   }
   const my = 0.6;
   const m = face.mouth;
-  const lookShut = lk ? lookMouth(lk, m, face.open ?? 0, my, fill, ink, skin, lineOf(skin, L)) : false;
+  const lookShut = lk ? lookMouth(lk, m, face.open ?? 0, my, fill, ink, skin, lineOf(skin, L), det) : false;
   if (!lookShut && (m === 'flat' || (m === 'talk' && (face.open ?? 0) < 0.08))) ink([[-0.2, my], [0.2, my]], 1.3, 0);
   if (!lookShut && m === 'frown') ink([[-0.18, my + 0.05], [0, my - 0.03], [0.18, my + 0.05]], 1.4, 0.8);
   if (m === 'wavy') ink(Array.from({length: 9}, (_, i): Pt => [-0.24 + i * 0.06, my + (i % 2 ? 0.035 : -0.01)]), 1.2, 0.6);
@@ -785,6 +819,66 @@ export const paintHeadFront = (p: Painter, seed: number, cx: number, cy: number,
   }
 };
 
+/** Point-in-polygon (even-odd) in head units. */
+const inside = ([x, y]: Pt, poly: Pt[]): boolean => {
+  let r = false;
+  for (let i = 0, j = poly.length - 1; i < poly.length; j = i++) {
+    const [xi, yi] = poly[i], [xj, yj] = poly[j];
+    if (yi > y !== yj > y && x < ((xj - xi) * (y - yi)) / (yj - yi) + xi) r = !r;
+  }
+  return r;
+};
+/** Runs of `curve` that lie inside `poly` (at least `min` points each), with a small inset so a run never touches the outline. */
+const clipRuns = (curve: Pt[], poly: Pt[], min = 4): Pt[][] => {
+  const runs: Pt[][] = [];
+  let cur: Pt[] = [];
+  const ok = ([x, y]: Pt) => inside([x, y], poly) && [[0.04, 0], [-0.04, 0], [0, 0.04], [0, -0.04]].every(([dx, dy]) => inside([x + dx, y + dy], poly));
+  for (const q of curve) {
+    if (ok(q)) cur.push(q);
+    else { if (cur.length >= min) runs.push(cur); cur = []; }
+  }
+  if (cur.length >= min) runs.push(cur);
+  return runs;
+};
+const lumaOf = (hex: string): number => {
+  const v = /^#?([0-9a-f]{6})$/i.exec(hex);
+  if (!v) return 0.5;
+  const n = parseInt(v[1], 16);
+  return (0.299 * ((n >> 16) & 255) + 0.587 * ((n >> 8) & 255) + 0.114 * (n & 255)) / 255;
+};
+/**
+ * Profile hair detail (`HeadStyle.sideDetail`, user 18 Nov 2026), in head units, face toward +x: strand lines that follow the skull
+ * (arcs round the head centre) above the ear line and hang down below it, each clipped to the hair shape, plus a lit band along the
+ * crown. Strands are lighter than dark hair and darker than light hair. Returns open polylines with their colour and weight.
+ */
+const sideHairStrands = (poly: Pt[], hair: string, seed: number): {pts: Pt[]; color: string; weight: number}[] => {
+  const dark = lumaOf(hair) < 0.45;
+  const strand = mixColor(hair, dark ? '#ffffff' : '#000000', dark ? 0.24 : 0.26), lit = mixColor(hair, '#ffffff', dark ? 0.34 : 0.5);
+  const out: {pts: Pt[]; color: string; weight: number}[] = [];
+  const rnd = (k: number) => { const v = Math.sin(k * 12.9898 + seed * 78.233) * 43758.5453; return v - Math.floor(v); };
+  const arc = (r: number, a0: number, a1: number, wob: number, ph: number): Pt[] => Array.from({length: 41}, (_, i): Pt => {
+    const u = i / 40, a = a0 + (a1 - a0) * u, rr = r - 0.05 * u + wob * Math.sin(u * Math.PI * 2 + ph);
+    return [rr * Math.cos(a), rr * 1.05 * Math.sin(a) - 0.02];
+  });
+  // Over the skull: combed strands from the front hairline back over the crown, staggered in radius, start and length so they
+  // read as hair and not as rings; each drifts a little inward toward the back.
+  for (let k = 0; k < 11; k++) {
+    const r = 0.58 + 0.042 * k + 0.02 * (rnd(k) - 0.5), start = -0.4 - 0.45 * rnd(k + 20), len = 0.9 + 1.5 * rnd(k + 40);
+    const curve = arc(r, start, start - len, 0.01, k).filter(([, y]) => y < 0.15);
+    clipRuns(curve, poly).forEach((pts) => out.push({pts, color: strand, weight: 0.6 + 0.4 * rnd(k + 60)}));
+  }
+  // Hanging hair (bob, long, ponytail ends): gently curved lines down the back, uneven spacing and lengths.
+  for (let k = 0, x = -1.18; x <= 0.3; k++, x += 0.09 + 0.08 * rnd(k + 80)) {
+    const y0 = -0.15 + 0.25 * rnd(k + 100), y1 = y0 + 1.1 + 0.7 * rnd(k + 120);
+    const curve = Array.from({length: 33}, (_, i): Pt => { const u = i / 32; return [x + 0.05 * Math.sin(u * 2.4 + x * 3 + k), y0 + (y1 - y0) * u]; });
+    clipRuns(curve, poly, 5).forEach((pts) => out.push({pts, color: strand, weight: 0.6 + 0.4 * rnd(k + 140)}));
+  }
+  // Lit band on the crown toward the front: one broad stroke and a thin one beside it.
+  clipRuns(arc(0.97, -0.85, -1.95, 0, 0), poly, 6).forEach((pts) => out.push({pts, color: lit, weight: 2.4}));
+  clipRuns(arc(0.9, -0.95, -1.7, 0, 0), poly, 6).forEach((pts) => out.push({pts, color: mixColor(lit, hair, 0.4), weight: 1.1}));
+  return out;
+};
+
 /**
  * Profile head centred on (cx, cy), facing `dir` (+1 screen-right, -1 screen-left); same egg, one eye and brow, nose,
  * ear. Hood, bob, long and bun variants; age lines for the older occupant.
@@ -799,6 +893,11 @@ export const paintHeadSide = (p: Painter, seed: number, cx: number, cy: number, 
   let line = 0;
   const ink = (pts: Pt[], weight = 1.0, curve = 0.15, closed = true, color?: string) => inkLine(p, seed * 100 + ++line, Q(pts), {weight, curve, closed, color});
   const skin = toneOf(skinOf(style, warm), L);
+  /** `sideDetail` hair strands and the lit crown band on one hair polygon (own seed range, so other lines keep their seeds). */
+  const strands = (poly: Pt[], color: string) => {
+    if (style.sideDetail !== true) return;
+    sideHairStrands(poly, color, seed % 7).forEach(({pts, color: c, weight}, i) => inkLine(p, seed * 100 + 400 + i + 20 * (part % 10), Q(pts), {weight, curve: 0.5, closed: false, color: toneOf(c, L)}));
+  };
   const hairC = toneOf(style.hair, L);
   const {cut} = style;
   const nc = isNewCut(cut) ? hairSide(cut) : null;
@@ -812,16 +911,19 @@ export const paintHeadSide = (p: Painter, seed: number, cx: number, cy: number, 
     const back: Pt[] = [[0.1, -0.9], [-0.7, -0.8], [-1.12, -0.2], [-1.2, 0.7], [-1.0, 1.55], [-0.45, 1.6], [-0.3, 0.9], [-0.1, 0.3]];
     fill(hairC, back, 6);
     if (L) modelPart(p, seed * 100 + part, hairC, Q(back), L);
+    strands(back, style.hair);
   }
   nc?.back?.forEach((poly) => {
     fill(hairC, poly, 6);
     if (L) modelPart(p, seed * 100 + part, hairC, Q(poly), L);
+    strands(poly, style.hair);
     ink(poly, 1.0, 0.15, true, lineOf(hairC, L));
   });
   part = 6;
   // The jaw follows `open` (the chin outline moves down and back with the lower lip), the near cheek bulges with `chew`.
-  const jaw = jawOpenOf(face), chewK = Math.min(1, face.chew ?? 0);
+  const jaw = headJawOf(face, style), chewK = Math.min(1, face.chew ?? 0);
   const jawQ = (pts: Pt[]): Pt[] => pts.map((q) => jawSide(jaw, q));
+  const det = style.sideDetail === true, lk = style.look;
   const head = headOutline(120).map(([x, y]): Pt => {
     const [jx, jy] = jawSide(jaw, [x, y]);
     if (chewK <= 0) return [jx, jy];
@@ -830,10 +932,21 @@ export const paintHeadSide = (p: Painter, seed: number, cx: number, cy: number, 
   });
   fill(skin, head, 8);
   if (L) faceModel(p, seed, skin, Q(head), L, [[cx + dir * 0.55 * K, cy + 0.36 * K, 0.2 * K, 0.11 * K]]);
-  fill(skin, [[0.9, 0.1], [1.13, 0.34], [0.95, 0.43]], 4); // nose
-  ink(head, 1.0, 0.15, true, lineOf(skin, L));
-  ink([[0.9, 0.1], [1.13, 0.34], [0.95, 0.43]], 1.0, 0.15, false, lineOf(skin, L));
-  const det = style.sideDetail === true, lk = style.look, skinLine = lineOf(skin, L);
+  const skinLine = lineOf(skin, L);
+  if (det) {
+    // Detailed nose on the egg (18 Nov 2026): a bridge out to a round tip and a tucked underside, painted over the egg line, then the
+    // nose wing (a curve round the nostril) and the nostril under it.
+    const nose: Pt[] = [[0.975, 0.05], [1.03, 0.16], [1.09, 0.27], [1.13, 0.33], [1.12, 0.375], [1.07, 0.4], [1.0, 0.415], [0.94, 0.43]];
+    ink(head, 1.0, 0.15, true, skinLine);
+    fill(skin, [...nose, [0.9, 0.3], [0.92, 0.1]], 4);
+    ink(nose, 1.0, 0.4, false, skinLine);
+    ink([[1.0, 0.3], [0.95, 0.31], [0.93, 0.36], [0.955, 0.4], [0.99, 0.41]], 0.9, 0.6, false, skinLine);
+    fill(mixColor(skin, MOUTH, 0.55), ell(1.01, 0.385, 0.026, 0.01, 10), 3);
+  } else {
+    fill(skin, [[0.9, 0.1], [1.13, 0.34], [0.95, 0.43]], 4); // nose
+    ink(head, 1.0, 0.15, true, skinLine);
+    ink([[0.9, 0.1], [1.13, 0.34], [0.95, 0.43]], 1.0, 0.15, false, skinLine);
+  }
   part = 12;
   line = 10;
   if (cut === 'hood') {
@@ -850,6 +963,7 @@ export const paintHeadSide = (p: Painter, seed: number, cx: number, cy: number, 
     const bob: Pt[] = [...(det ? bangs : [[0.8, -0.42]] as Pt[]), ...arc(1.12, -1.0, -Math.PI), [-1.14, 0.6], [-1.0, 0.8], [0.1, 0.8], [0.22, 0.3], [0.3, -0.3]];
     fill(hairC, bob, 6);
     if (L) modelPart(p, seed * 100 + part, hairC, Q(bob), L);
+    strands(bob, style.hair);
     ink(bob, 1.0, 0.15, true, lineOf(hairC, L));
   } else if (cut === 'long') {
     // Cap from a low front hairline over the skull, down behind the ear; strands frame the face and stay off the eye.
@@ -859,12 +973,14 @@ export const paintHeadSide = (p: Painter, seed: number, cx: number, cy: number, 
       modelPart(p, seed * 100 + part, hairC, Q(cap), L);
       sheen(p, seed * 100 + 90, hairC, [Q(Array.from({length: 7}, (_, i): Pt => [0.6 - 1.1 * (i / 6), -1.0 + 0.15 * Math.sin(Math.PI * (i / 6))]))]);
     }
+    strands(cap, style.hair);
     ink(cap, 1.0, 0.15, true, lineOf(hairC, L));
   } else if (nc) {
     const hairFill = nc.tone ? mixColor(hairC, skin, nc.tone) : hairC;
     nc.hair.forEach((poly) => {
       fill(hairFill, poly, 6);
       if (L) modelPart(p, seed * 100 + part, hairFill, Q(poly), L);
+      strands(poly, nc.tone ? mixColor(style.hair, skinOf(style, warm), nc.tone) : style.hair);
       ink(poly, 1.0, 0.15, true, lineOf(hairFill, L));
     });
     if (L && nc.sheen) sheen(p, seed * 100 + 90, hairC, [Q(Array.from({length: 7}, (_, i): Pt => [0.6 - 1.1 * (i / 6), -1.0 + 0.15 * Math.sin(Math.PI * (i / 6))]))]);
@@ -880,6 +996,7 @@ export const paintHeadSide = (p: Painter, seed: number, cx: number, cy: number, 
     const fringe = Array.from({length: 9}, (_, i): Pt => [0.2 + (0.62 * i) / 8, -0.4 - (0.08 * i) / 8 + 0.05 * Math.abs(Math.sin((i / 8) * 2 * Math.PI))]);
     const cap: Pt[] = [...arc(1.08, -1.0, -Math.PI - 0.55), [-0.62, 0.5], [-0.36, 0.06], [-0.12, -0.14], [0.18, -0.34], ...fringe];
     fill(style.hair, cap, 6);
+    strands(cap, style.hair);
     ink(cap);
     fill(skin, ell(-0.12, 0.12, 0.15, 0.22, 16), 8);
     ink([[-0.08, 0.0], [-0.17, 0.1], [-0.08, 0.22]], 0.9, 0.6, false);
@@ -890,28 +1007,32 @@ export const paintHeadSide = (p: Painter, seed: number, cx: number, cy: number, 
   const [lx, ly] = face.look;
   const lash = det && lk !== undefined && lk.lash !== false;
   if (eyes === 'none') { /* the shot paints its own eye */ }
-  else if (eyes === 'shut') {
+  else if (eyes === 'shut' && det) {
+    // Closed side eye: the lid line from the outer corner to the front, bowed down, with the lash at the front.
+    ink([[0.6, 0.06], [0.7, 0.1], [0.8, 0.075]], 1.4, 0.5, false, LID);
+    if (lash) ink([[0.79, 0.08], [0.84, 0.12]], 1.1, 0.3, false, LID);
+  } else if (eyes === 'shut') {
     ink([[0.5, 0.05], [0.62, 0.1], [0.74, 0.05]], 1.4, 0.5, false);
     if (lash) ink([[0.7, 0.08], [0.75, 0.13]], 1.1, 0.3, false, LID);
   } else if (det) {
-    // Profile eye: white, coloured iris, pupil, catch-light, heavier upper lid, lid crease, lower lid, front lash (looks with lashes).
-    const sq = 1 - 0.6 * (face.squint ?? 0), ry = (eyes === 'wide' ? 0.15 : 0.12) * sq;
-    const white = ell(0.62, 0.05, 0.13, ry, 16), icx = 0.67 + 0.03 * lx, icy = 0.05 + 0.05 * ly;
+    // Side-view eye (18 Nov 2026): a wedge with its point at the outer corner and the eyeball curve at the front, set back behind the
+    // bridge; a narrow iris and pupil at the front (seen edge-on), catch-light, heavy upper lid, crease, thin lower lid, front lash.
+    const sq = 1 - 0.6 * (face.squint ?? 0), ry = (eyes === 'wide' ? 0.12 : 0.095) * sq, cy0 = 0.06;
+    const up = Array.from({length: 9}, (_, i): Pt => { const u = i / 8; return [0.6 + 0.2 * u, cy0 - ry * Math.pow(Math.sin((Math.PI / 2) * u), 0.7)]; });
+    const lo = Array.from({length: 7}, (_, i): Pt => { const u = 1 - i / 6; return [0.6 + 0.19 * u, cy0 + 0.65 * ry * Math.pow(Math.sin((Math.PI / 2) * u), 0.8)]; });
+    const white: Pt[] = [...up, [0.825, cy0 - 0.2 * ry], [0.83, cy0 + 0.2 * ry], ...lo];
+    const icx = 0.775 + 0.012 * lx, icy = cy0 - 0.005 + 0.03 * ly, iry = Math.min(0.07 * sq, ry * 0.85);
     fill(WHITE, white, 3);
-    fill(lk?.iris ?? IRIS, ell(icx, icy, 0.06, Math.min(0.085 * sq, ry - 0.012), 12), 5);
-    fill(INK, ell(icx + 0.005, icy, 0.032, 0.045 * sq, 10), 4);
-    if (sq > 0.6) fill(WHITE, ell(icx - 0.015, icy - 0.03 * sq, 0.016, 0.016, 8), 3);
-    ink(white, 1.0, 0.4);
-    const lid = (k: number, dy: number, a0: number, a1: number): Pt[] => Array.from({length: 9}, (_, i): Pt => {
-      const a = a0 + ((a1 - a0) * i) / 8;
-      return [0.62 + 0.13 * k * Math.cos(a), 0.05 + dy + ry * Math.sin(a)];
-    });
-    ink(lid(1, 0, Math.PI, 2 * Math.PI), lash ? 1.8 : 1.2, 0.4, false, LID);
-    if (lk?.eye !== 'round') ink(lid(0.9, -0.05, Math.PI + 0.45, 2 * Math.PI - 0.35), 0.8, 0.5, false, mixColor(skin, LID, 0.5));
-    ink([[0.58, 0.05 + ry + 0.025], [0.7, 0.05 + ry + 0.012]], 0.6, 0.4, false, skinLine);
+    fill(lk?.iris ?? IRIS, ell(icx, icy, 0.036, iry, 12), 5);
+    fill(INK, ell(icx + 0.012, icy, 0.018, iry * 0.6, 10), 4);
+    if (sq > 0.6) fill(WHITE, ell(icx + 0.006, icy - 0.025 * sq, 0.011, 0.013, 8), 3);
+    ink(up, lash ? 1.9 : 1.5, 0.4, false, LID);
+    ink([[0.8, cy0 - ry], [0.825, cy0 - 0.2 * ry], [0.83, cy0 + 0.2 * ry], [0.79, cy0 + 0.65 * ry]], 0.7, 0.5, false, skinLine);
+    ink(lo, 0.7, 0.4, false, skinLine);
+    if (lk?.eye !== 'round') ink([[0.62, cy0 - ry - 0.03], [0.7, cy0 - ry - 0.065], [0.79, cy0 - ry - 0.04]], 0.8, 0.5, false, mixColor(skin, LID, 0.5));
     if (lash) {
-      ink([[0.72, 0.05 - ry * 0.75], [0.78, 0.05 - ry * 1.05], [0.82, 0.05 - ry * 1.05]], 1.5, 0.4, false, LID);
-      ink([[0.68, 0.05 - ry * 0.95], [0.72, 0.05 - ry * 1.4]], 1.1, 0.3, false, LID);
+      ink([[0.79, cy0 - ry], [0.83, cy0 - ry * 1.25], [0.86, cy0 - ry * 1.2]], 1.4, 0.4, false, LID);
+      ink([[0.75, cy0 - ry * 1.02], [0.78, cy0 - ry * 1.5]], 1.0, 0.3, false, LID);
     }
   } else {
     const sq = 1 - 0.6 * (face.squint ?? 0);
@@ -923,7 +1044,12 @@ export const paintHeadSide = (p: Painter, seed: number, cx: number, cy: number, 
   part = 50;
   line = 50;
   const [inner, outer] = browY(face);
-  fill(browColor(style), [[0.46, outer - 0.03], [0.8, inner - 0.03], [0.8, inner + 0.03], [0.46, outer + 0.03]], 6);
+  if (det) {
+    // Shaped profile brow (18 Nov 2026): the look's brow kind seen from the side, inner end at the brow ridge, tail toward the ear.
+    const kind = lk?.brow ?? 'tapered', drop = lk?.browDrop ?? 0, xAt = (u: number) => 0.84 - 0.36 * u;
+    fill(browColor(style), browShape(kind, xAt, inner + drop, outer + drop), 6);
+    browHairs(kind, xAt, inner + drop, outer + drop, -1).forEach((h) => ink(h, 0.8, 0, false, mixColor(browColor(style), skin, 0.3)));
+  } else fill(browColor(style), [[0.46, outer - 0.03], [0.8, inner - 0.03], [0.8, inner + 0.03], [0.46, outer + 0.03]], 6);
   if (style.facial) {
     const sp = part, sl = line;
     part = 60;
@@ -942,7 +1068,7 @@ export const paintHeadSide = (p: Painter, seed: number, cx: number, cy: number, 
     else if (m === 'grin') {
       fill(MOUTH, J([[0.58, 0.52], [0.94, 0.5], [0.9, 0.7], [0.78, 0.8], [0.64, 0.74]]), 4);
       fill(WHITE, [[0.62, 0.53], [0.92, 0.51], [0.91, 0.6], [0.64, 0.62]], 3);
-    } else if (m === 'smirk') ink([[0.7, 0.66], [0.84, 0.66], [0.96, 0.58]], 1.3, 0.5, false);
+    } else if (m === 'smirk') ink(det ? [[0.83, 0.625], [0.77, 0.627], [0.735, 0.6]] : [[0.7, 0.66], [0.84, 0.66], [0.96, 0.58]], 1.3, 0.5, false);
     else if (m === 'gape') fill(MOUTH, J(ell(0.83, 0.61, 0.095, 0.03 + 0.05 * Math.max(0, Math.min(1, face.open ?? 1)), 12)), 4); // the jaw adds the height
     else if (m === 'clench') {
       // Gritted teeth in profile: a plain strip of teeth with the bite line, no drawn lips (7 Nov 2026 rule); the jaw stays shut.
@@ -952,18 +1078,19 @@ export const paintHeadSide = (p: Painter, seed: number, cx: number, cy: number, 
       ink([[0.73, 0.628], [0.945, 0.622]], 0.8, 0, false);
     }
     else if (m === 'shout') fill(MOUTH, J(ell(0.76, 0.64, 0.07 + 0.03 * (face.open ?? 1), 0.08, 14)), 4); // the jaw adds the height
-    else if (m === 'frown') ink([[0.7, 0.66], [0.8, 0.6], [0.92, 0.64]], 1.4, 0.6, false);
+    else if (m === 'frown') ink(det ? [[0.83, 0.625], [0.77, 0.635], [0.73, 0.67]] : [[0.7, 0.66], [0.8, 0.6], [0.92, 0.64]], 1.4, 0.6, false);
     else if (m === 'wavy') ink([[0.7, 0.62], [0.76, 0.59], [0.82, 0.63], [0.88, 0.59], [0.93, 0.62]], 1.1, 0.5, false);
     else if (m === 'o' || m === 'gasp' || (m === 'talk' && (o >= 0.08 || jaw > 0.03))) {
       // Open mouth: a dark gap whose lower edge rides the dropped jaw.
       const h = m === 'talk' ? 0.02 + 0.03 * o : 0.06;
-      fill(MOUTH, J(ell(0.84, 0.6, 0.08, h, 12)), 4);
-    } else ink([[0.72, 0.62], [0.93, 0.62]], 1.2, 0, false);
+      fill(MOUTH, J(det ? ell(0.785, 0.62, 0.05, h, 12) : ell(0.84, 0.6, 0.08, h, 12)), 4);
+    } else if (det) ink([[0.83, 0.625], [0.77, 0.632], [0.735, 0.645]], 1.2, 0.4, false); // closed: from the face edge at the lip line, back into the cheek
+    else ink([[0.72, 0.62], [0.93, 0.62]], 1.2, 0, false);
     if (chewK > 0) ink([[0.5, 0.52], [0.58, 0.6], [0.55, 0.7]], 0.8 + 0.4 * chewK, 0.6, false, mixColor(skinLine, '#a4504a', 0.3)); // bulging cheek: a short crease round it
   }
   if (style.glasses) {
     line = 70;
-    ink(ell(0.62, 0.05, 0.22, 0.22, 22), 1.5, 0.3, true, GLASSES);
+    ink(ell(det ? 0.7 : 0.62, 0.05, 0.22, 0.22, 22), 1.5, 0.3, true, GLASSES);
     ink([[0.42, 0.0], [-0.1, -0.02]], 1.3, 0.2, false, GLASSES);
     ink([[0.82, 0.03], [1.0, 0.1]], 1.3, 0.2, false, GLASSES);
   }
