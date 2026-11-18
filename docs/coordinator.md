@@ -29,7 +29,7 @@ The **coordinator** is the chat session the user talks to (Claude Code or Codex)
 ## Native Codex role calls
 
 - Start a fresh session in the trusted project to load the role files and [project config](../.codex/config.toml). Use the assigned role name from `.codex/agents/`. For an eligible same-pass follow-up under AI04, send input to that existing agent while the session can still reach it.
-- The project defaults native subagents to `gpt-6.1-sol` at `medium`, matching the Codex worker setting in [AI14](#ai14). Use a per-call override when the user requests one. The Film and Boss Claude model-by-pass rules apply to Claude calls.
+- The project defaults native subagents to `gpt-6.1-sol` at `medium`, matching the Codex worker setting in [AI14](#ai14). Native Codex Film and Boss pin `gpt-6.2-sol` at `medium` in their role TOML files. Use a per-call override for an unpinned role when the user requests one. The Film and Boss Claude model-by-pass rules apply to Claude calls.
 - Codex role agents inherit the coordinator's available tools and permissions. Check the [project MCP setup](../README.md#claude-code--codex-setup) when a pass needs a local server. Use the [storyboard publishing instructions](../.agents/skills/review-page/SKILL.md#review-page) for review pages.
 
 <a id="native-opencode-role-calls"></a>
