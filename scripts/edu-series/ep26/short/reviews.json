@@ -1,0 +1,132 @@
+{
+ "B01-SH01@board": {
+  "clip": "",
+  "hash": "3025d9a5b9f5",
+  "note": "default (round 2026-11-18)",
+  "rev": "EDU-EP26-ROWS-R1",
+  "shot": "B01-SH01",
+  "stage": "board",
+  "status": "ok",
+  "updatedAt": "2026-11-18T03:28:10Z"
+ },
+ "B01-SH02@board": {
+  "clip": "",
+  "hash": "90b496b72473",
+  "note": "default (round 2026-11-18)",
+  "rev": "EDU-EP26-ROWS-R1",
+  "shot": "B01-SH02",
+  "stage": "board",
+  "status": "ok",
+  "updatedAt": "2026-11-18T03:28:10Z"
+ },
+ "B01-SH03@board": {
+  "clip": "",
+  "hash": "33c408899948",
+  "note": "default (round 2026-11-18)",
+  "rev": "EDU-EP26-ROWS-R1",
+  "shot": "B01-SH03",
+  "stage": "board",
+  "status": "ok",
+  "updatedAt": "2026-11-18T03:28:10Z"
+ },
+ "B02-SH01@board": {
+  "clip": "",
+  "hash": "40c167027010",
+  "note": "default (round 2026-11-18)",
+  "rev": "EDU-EP26-ROWS-R1",
+  "shot": "B02-SH01",
+  "stage": "board",
+  "status": "ok",
+  "updatedAt": "2026-11-18T03:28:10Z"
+ },
+ "B02-SH02@board": {
+  "clip": "",
+  "hash": "8a216c71645c",
+  "note": "default (round 2026-11-18)",
+  "rev": "EDU-EP26-ROWS-R1",
+  "shot": "B02-SH02",
+  "stage": "board",
+  "status": "ok",
+  "updatedAt": "2026-11-18T03:28:10Z"
+ },
+ "B02-SH03@board": {
+  "clip": "",
+  "hash": "7e3cececc77e",
+  "note": "default (round 2026-11-18)",
+  "rev": "EDU-EP26-ROWS-R1",
+  "shot": "B02-SH03",
+  "stage": "board",
+  "status": "ok",
+  "updatedAt": "2026-11-18T03:28:10Z"
+ },
+ "B03-SH01@board": {
+  "clip": "",
+  "hash": "82732f5c415c",
+  "note": "default (round 2026-11-18)",
+  "rev": "EDU-EP26-ROWS-R1",
+  "shot": "B03-SH01",
+  "stage": "board",
+  "status": "ok",
+  "updatedAt": "2026-11-18T03:28:10Z"
+ },
+ "B03-SH02@board": {
+  "clip": "",
+  "hash": "46452dd85d42",
+  "note": "default (round 2026-11-18)",
+  "rev": "EDU-EP26-ROWS-R1",
+  "shot": "B03-SH02",
+  "stage": "board",
+  "status": "ok",
+  "updatedAt": "2026-11-18T03:28:10Z"
+ },
+ "B03-SH03@board": {
+  "clip": "",
+  "hash": "7cf94eb05d1b",
+  "note": "default (round 2026-11-18)",
+  "rev": "EDU-EP26-ROWS-R1",
+  "shot": "B03-SH03",
+  "stage": "board",
+  "status": "ok",
+  "updatedAt": "2026-11-18T03:28:10Z"
+ },
+ "B04-SH01@board": {
+  "clip": "",
+  "hash": "52493c4fec4c",
+  "note": "default (round 2026-11-18)",
+  "rev": "EDU-EP26-ROWS-R1",
+  "shot": "B04-SH01",
+  "stage": "board",
+  "status": "ok",
+  "updatedAt": "2026-11-18T03:28:10Z"
+ },
+ "B04-SH02@board": {
+  "clip": "",
+  "hash": "9b3ab375c9dd",
+  "note": "default (round 2026-11-18)",
+  "rev": "EDU-EP26-ROWS-R1",
+  "shot": "B04-SH02",
+  "stage": "board",
+  "status": "ok",
+  "updatedAt": "2026-11-18T03:28:10Z"
+ },
+ "B04-SH03@board": {
+  "clip": "",
+  "hash": "dc67e5ec58a3",
+  "note": "default (round 2026-11-18)",
+  "rev": "EDU-EP26-ROWS-R1",
+  "shot": "B04-SH03",
+  "stage": "board",
+  "status": "ok",
+  "updatedAt": "2026-11-18T03:28:10Z"
+ },
+ "B04-SH04@board": {
+  "clip": "",
+  "hash": "8a24d76d826e",
+  "note": "default (round 2026-11-18)",
+  "rev": "EDU-EP26-ROWS-R1",
+  "shot": "B04-SH04",
+  "stage": "board",
+  "status": "ok",
+  "updatedAt": "2026-11-18T03:28:10Z"
+ }
+}

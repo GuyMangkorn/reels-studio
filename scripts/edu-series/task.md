@@ -2,6 +2,13 @@
 
 Record: [delivery.md](delivery.md) · Updated: 2026-11-05, Film
 
+## Ideation R17 — CAT02 History
+
+- [x] W0 Category pick — CAT02 History, user, 2026-11-18
+- [x] W0.1 Preaw pitched six historical simulations — [C95–C100](concepts/index.md)
+- [x] W0.2 Film annotated all six pitches — proposed visual approach, buildability and size
+- [x] W0.3 User picked C95 for production — [EDU-EP26-SHORT task file](ep26/task.md)
+
 ## EDU-EP01-SHORT
 
 **Now:** W5.3 Draft passed 23/23 (user, 2026-11-05). Previously: W5.2 passed (user, 2026-11-04, after 4 repaint rounds on stills; viewer check v3 pass). **Next:** W5.3 Editor Draft: narration Kore v1 + L06 gasp, captions with shade (UT12), tag, name card, SFX/BGM, per-shot draft clips (`clips.mjs --draft`), then user Draft review B06-SH02 W5.3 clip re-rendered with the 3/4 dog (Editor, 2026-11-06; build-notes "W5.3 Editor"), awaiting user Draft check.

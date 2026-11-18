@@ -1,0 +1,25 @@
+# EP26 — The Roman laundry shift
+
+- Record `EDU-EP26-DELIVERY-R1`, 2026-11-18.
+- Channel `edu`, project `EDU`. Short only, Full pipeline. Target 50–60 s, estimated from the selected pitch.
+- Selection [C95, round R17](../concepts/C95.md), CAT02 History. User instruction “ทำ C95”, 2026-11-18.
+- Style profile. Thai story-led fiction with factual knowledge (ER11), following a fictional laundry apprentice in second person from accepting a stained garment to returning it. Painted 2D with a painted 3D camera, default four-head cast, Kore narration, outline captions and `@TamMaiLa` mark. Ton designs sound from the later Film cue handoff.
+- Editorial direction, 2026-11-18. User: “เน้น story ให้ความรู้สั้น ๆ ก็พอ”. Carry the viewer through the apprentice's first shift and the customer's return. Use one brief in-scene history line (F001) when the coworker offers the jar, show the rest of the wash through action, and pay off the opening stain at handover.
+- W1.1b hook pick, 2026-11-18. User: “เอาอันนี้”, referring to the revised B / `HK04` opening. Locked spoken text: “วันแรกที่คุณทำงานร้านซักผ้าในโรม ลูกค้าฝากเสื้อเปื้อนน้ำมันไว้ พอคุณขยี้เท่าไหร่ก็ไม่ออก คนข้าง ๆ ก็ยื่นไหฉี่ให้คุณ”. Establish the fictional reconstruction on screen from the opening. The jar enters the hook, and the customer's verdict pays off the finishing question at pickup.
+- W1.4 timing projection, 2026-11-18. [50.29 s estimated](short/script-notes.md#timing-projection), including the closing hold. The estimate uses the matching Kore warm-smiling reference at 1.08. The episode's voice selection and full-read measurement are pending.
+- W1.5 script lock, 2026-11-18. User approved `EDU-EP26-SCRIPT-R1` and commissioned Film's visual planning: “ใช้บทนี้ ให้ฟิล์มวางภาพ”.
+- W2.3 review page, 2026-11-18. [EDU-EP26-ROWS-R1](short/review-rows.json), 13 untimed shots on `EDU-EP26-BRIEF-R1`, served at [localhost:8766](http://127.0.0.1:8766/). `python3 -I scripts/storyboard-page/serve.py scripts/edu-series/ep26/short/review-rows.json --port 8766`. Verdicts save in `short/reviews.json` under `<shot ID>@<stage>` with `rev`. HTTP page and verdict endpoint verified. [Handoff and rebuild command](handoff.md).
+- W2.3 mobile access, 2026-11-18. Restarted the same review server on port 8766 with `--lan` for a phone on the same Wi-Fi. The Mac reached the LAN HTML and verdict endpoint. Phone access is pending.
+- W3 storyboard approval, 2026-11-18. User said “ผ่านหมดทำ lookframe”. All 13 storyboard verdicts are `ok` and current for `EDU-EP26-ROWS-R1`. Film proceeds with the B01-SH01 workshop look frame.
+- W3.1 look frame, 2026-11-18. `LF01`, B01-SH01 frame 0, at 1080 × 1920, attached to the same review page and ROWS-R1. [QA and viewer findings](build-notes.md#w31-workshop-look-lf01-2026-11-18). The reviewed media lives at `projects/edu/EDU/ep26-workshop-look-reviewed/`. Mobile preview served at `/pv/LF01.jpg` on port 8766. User look approval is next.
+- W3.2 look feedback, 2026-11-18. User selected “ขอปรับลุคก่อน” for LF01. The look remains open while the coordinator collects the specific adjustment for Film.
+- W3.2 LF01 revision direction, 2026-11-18. User selected “ฉากร้านซักผ้า — ให้เห็นอ่าง ผ้าผึ่ง และร่องรอยคนทำงานชัดขึ้น”. Film repaints the workshop set and checks the revised view at mobile scale.
+- W3.2 LF01 follow-up direction, 2026-11-18. User added “ปรับคนซักผ้าดูมีหลายแขน polish ภาพให่สมูท”. Film clarifies arm ownership and softens the visual joins in the same look revision. [Fix list](fixlist.md).
+- W3.2 LF01 R2, 2026-11-18. Film applied both notes in one pass, rendered and checked the final still. Same ROWS-R1 and port 8766, with the LF01 look media replaced on the review page. [Measured R2 QA](build-notes.md#w32-lf01-r2-2026-11-18). Store `projects/edu/EDU/ep26-workshop-look-r2/`.
+- W3.2 LF01 R3 requested, 2026-11-18. User flagged “คนซักผ้าแขนเกินมาข้างนึงไหม”. Film separates the suspended garment from the silhouette of the customer at phone scale. [Fix list](fixlist.md).
+- W3.2 LF01 R3 available, 2026-11-18. Film folded and lowered the held shirt to separate it from the standing figure, concealing the confusing grip. Same ROWS-R1 and port 8766. [Measured R3 QA](build-notes.md#w32-lf01-r3-2026-11-18). Store `projects/edu/EDU/ep26-workshop-look-r3/`.
+- Task file [task.md](task.md).
+
+| Deliverable ID | Stage / Next owner | Editorial and timing | Production |
+| --- | --- | --- | --- |
+| `EDU-EP26-SHORT` | W3.2 user reviews LF01 R3. | [EDU-EP26-SCRIPT-R1](short/script.md), [EDU-EP26-FACT-R1](short/fact-check.md), zero must-fix findings, 50.29 s estimated. | Storyboard [13/13 passed](short/reviews.json), [LF01 R3 QA](build-notes.md#w32-lf01-r3-2026-11-18), look selection and voice measurement pending. |

@@ -255,6 +255,14 @@ Episode-specific files are under [Episodes](#episodes); shared topics come first
 
 **Read when:** working on one episode. Script folder holds research, script, delivery record, scene sheets and build notes; `src/videos/<episode>/index.ts` registers its compositions.
 
+EDU ideation R17 (CAT02, historical role simulations): [C95–C100 in the concept index](../scripts/edu-series/concepts/index.md), with round selection and status in the series [delivery record](../scripts/edu-series/delivery.md) and [task file](../scripts/edu-series/task.md#ideation-r17--cat02-history).
+
+EDU-EP26-SHORT (C95, Roman laundry apprentice): [delivery record](../scripts/edu-series/ep26/delivery.md), [task file](../scripts/edu-series/ep26/task.md), [research](../scripts/edu-series/ep26/research.md), [hook options](../scripts/edu-series/ep26/short/hook-options.md), [script](../scripts/edu-series/ep26/short/script.md), [timing projection](../scripts/edu-series/ep26/short/script-notes.md#timing-projection) and [fact-check](../scripts/edu-series/ep26/short/fact-check.md).
+
+EDU-EP26 W2: [visual brief](../scripts/edu-series/ep26/short/film-brief.md), [shot plan](../scripts/edu-series/ep26/short/storyboard.md), [review rows](../scripts/edu-series/ep26/short/review-rows.json) and [review page handoff](../scripts/edu-series/ep26/handoff.md).
+
+EDU-EP26 W3: [workshop painter](../src/painted/edu26/workshop.ts), [LF01 still entry](../src/painted/edu26/look-index.tsx), [storyboard verdicts](../scripts/edu-series/ep26/short/reviews.json), [look viewer check](../scripts/edu-series/ep26/short/viewer-check-look.json), [look fixes](../scripts/edu-series/ep26/fixlist.md) and [build notes](../scripts/edu-series/ep26/build-notes.md).
+
 | Episode | Scripts | Videos (composition IDs) | Painted source | Tests |
 | --- | --- | --- | --- | --- |
 | Cat boxes (SVG, legacy) | [cat-boxes/](../scripts/cat-boxes/delivery.md), [storyboards/](../storyboards/cat-boxes/blockout.md) | [cat-boxes](../src/videos/cat-boxes/index.ts) | — ([assets/](../src/assets/backgrounds/CatboxRoom.tsx)) | [catbox-shorts](../tests/catbox-shorts.test.ts), [catbox-long-baseline](../tests/catbox-long-baseline.test.ts) |

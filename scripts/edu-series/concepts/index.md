@@ -6,7 +6,7 @@ One row per concept the channel has made. Each concept has its own file `C<nn>.m
 
 ## How a new round is filed
 
-1. Preaw writes one file per concept, `C61.md` onward (next free ID: **C95**), with the pitch and the [ER08](../../../channels/edu/script.md) pitch check, inside the round's picked [category](../../../channels/edu/categories.md#category-pick), and adds a row here with status `pitched` and the round ID (`R11`, ...).
+1. Preaw writes one file per concept, `C61.md` onward (next free ID: **C101**), with the pitch and the [ER08](../../../channels/edu/script.md) pitch check, inside the round's picked [category](../../../channels/edu/categories.md#category-pick), and adds a row here with status `pitched` and the round ID (`R11`, ...).
 2. Film adds a `## Film annotation (W0.2)` section to each concept file of the round.
 3. After the user picks, the coordinator sets each row: `picked` (with the episode ID), `dropped`, or leaves `pitched`. Write the round's pick note (user's words, date) in `../delivery.md`.
 4. When the episode is published, set the row to `made`.
@@ -55,5 +55,11 @@ One row per concept the channel has made. Each concept has its own file `C<nn>.m
 | C92 | ลอยกลางทะเลที่จุดนีโม คนที่ใกล้คุณที่สุดอยู่นอกโลก (CAT03) | picked | EDU-EP25-SHORT | R16 | [C92.md](C92.md) |
 | C93 | เขายูนิคอร์นของจริง ที่ไม่ใช่เขา (CAT06) | pitched | - | R16 | [C93.md](C93.md) |
 | C94 | AI ที่แยกหมากับหมาป่าได้ แต่ไม่เคยมองตัวสัตว์ (wild card) (CAT01) | pitched | - | R16 | [C94.md](C94.md) |
+| C95 | ซักเสื้อขาวด้วยน้ำฉี่ (CAT02) | picked | EDU-EP26-SHORT | R17 | [C95.md](C95.md) |
+| C96 | คุณจะหาข้าวโพดที่หายด้วยปมเชือกได้ไหม (CAT02) | pitched | - | R17 | [C96.md](C96.md) |
+| C97 | คุณจะยกข้าวให้คนที่จ่ายด้วยกระดาษไหม (CAT02) | pitched | - | R17 | [C97.md](C97.md) |
+| C98 | คุณจะเอาน้ำแข็งข้ามทะเลยังไง (CAT02) | pitched | - | R17 | [C98.md](C98.md) |
+| C99 | คุณตรงเวลาของเมือง แต่เกือบสายสำหรับรถไฟ (CAT02) | pitched | - | R17 | [C99.md](C99.md) |
+| C100 | คุณอ่านไม่ออก แต่คนทั้งเมืองอ่านได้ (wild card) (CAT02) | pitched | - | R17 | [C100.md](C100.md) |
 
 Pitch lessons from past rounds: [lessons.md](lessons.md).

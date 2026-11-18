@@ -1,0 +1,35 @@
+# EDU-EP26-SHORT — C95 research packet
+
+- Revision `EDU-EP26-RESEARCH-R1`, Boat, 2026-11-18. Mode `fiction-with-factual-knowledge`, channel `edu`, Thai Short, pitch estimate 50–60 s. Input [C95, R17](../concepts/C95.md).
+- Brief. The viewer works a first shift in an unnamed Roman fullery. A customer leaves a pale garment with a conspicuous oily mark. The viewer must decide whether to trust the jar offered by a coworker and finish the order.
+- Historical frame. Roman Italy in the first century CE, with recovered Pompeian basins as design references. The named archaeological property stays outside the story. The ancient texts and surviving structures are different kinds of evidence and do not record the same workshop visit.
+- Central question. Why would a Roman cloth worker reach for a jar of urine while cleaning a garment? The historical takeaway is that urine was one material Roman fullers used to treat cloth. Its frequency, source and exact use varied or remain uncertain.
+
+## Inspected source registry
+
+All sources accessed 2026-11-18. Access scope is recorded per source.
+
+| ID | Source and locator | Evidence and limits |
+| --- | --- | --- |
+| SRC001 | Pliny the Elder, *Naturalis Historia* 28.91, first century CE, Karl Mayhoff's Latin edition, [LacusCurtius](https://penelope.uchicago.edu/Thayer/L/Roman/Texts/Pliny_the_Elder/28%2A.html#91), inspected passage and adjacent sections | The author reports urine being useful to fullers. The paragraph concerns camels, alongside ancient remedies. The line is direct ancient literary evidence for a connection with fulling, with limited scope for a specific source species or workshop procedure. |
+| SRC002 | Archaeological Park of Pompeii, undated, *Along the streets of Pompeii*, “Fullonica” and “The Eumachia Building,” [park interpretation](https://pompeiisites.org/en/pompeii-map/analysis/along-the-streets-of-pompeii/), inspected | Describes a washing basin made from the house's atrium basin, basins in the back and a drying terrace at the fullery associated with Stephanus. The separate discussion of a dolium at the Eumachia Building uses tentative language for urine collection. Use the fullery architecture for reference. |
+| SRC003 | Giovanni De Feo and Sabino De Gisi, 2013, *Water and wastewater management in the treatment process of a Roman fullonica*, [University of Salerno repository](https://www.iris.unisa.it/handle/11386/3959404), inspected abstract | Case study of Stephanus's fullery. Describes a rinsing stage and considers the importance assigned to urine overstated. The authors find the collection and transport methods unclear. Repository provides the abstract without an attached full text. |
+| SRC004 | Martial, *Epigrams* 6.93.1–2, late first century CE, W. C. A. Ker translation, pp. 416–417, [Warburg Institute scan](https://resources.warburg.sas.ac.uk/pdf/eph325b2400650v1.pdf), inspected Latin and facing translation | A satirical smell comparison uses an old fuller’s jar just broken in the street. The poem does not say what was in the jar or describe its collection use. The translator's footnote supplies an inference about street collection. |
+| SRC005 | Miko Flohr, 2014, *How Roman fullers did not collect their urine*, [author's excerpt from his 2013 research monograph](https://www.mikoflohr.org/blog/2014/01/04/how-roman-fullers-did-not-collect-their-urine/), inspected excerpt | Evaluates literary and excavated evidence for pots in front of workshops. Roman sources refer to containers and street urination in different contexts. Archaeological identifications cited for the practice lack a secure link to fulleries. The source of urine used by fullers remains unclear. |
+| SRC006 | Benjamin A. Edsall, 2025, *From Unfulled Rag to New Cloak*, *New Testament Studies* 71, pp. 23–24, notes 23–29, [published article](https://doi.org/10.1017/S0028688524000195), inspected publisher PDF | Summarizes ancient fulling and traces material and textual evidence. Describes working cleaning agents including urine or suitable earth into garments before rinsing and drying. The urine footnote cites SRC001, so this is a scholarly interpretation of the underlying testimony, with independent material evidence for some other operations. |
+
+## Claim ledger
+
+| ID | Assertion, scope and evidence | Usable Thai and decision |
+| --- | --- | --- |
+| F001 | Roman-period fullers used urine as one cloth-treatment aid. SRC001 §91 gives the ancient report in a camel context. SRC005 and SRC006 interpret urine in the broader trade. SRC003 challenges its assumed importance and collection story. Confidence is good for historical use at the trade level. Specific species, prevalence and a claim for any one excavated shop remain open. | **Core fact** “สมัยโรมัน ช่างซักผ้าใช้ฉี่เป็นตัวช่วยซักผ้าด้วย” |
+| F002 | Fullers had a rinse stage. SRC003 abstract and SRC006 pp. 23–24 support the stage. SRC002 supports a layout with multiple basins and room to dry garments. Confidence is good at this level. Duration, the basin's exact contents and water flow in the fictional room are unspecified. | **Optional in-scene fact** “เสร็จแล้วก็ต้องล้างผ้าในน้ำอีกที” or show the rinse. |
+| F003 | Urine alone removes the episode's specific stain under identifiable conditions. The sources establish a treatment use and a broader process, with no directly comparable oil-stain test in the inspected set. | **Omit as fact.** The mark can look diminished after the whole wash and rinse in the fictional shift. Avoid an uninterrupted pour-to-disappearance shot or a universal chemistry explanation. |
+| F004 | A named Pompeii workshop used public collection jars, a particular liquid or a particular animal source. SRC002 discusses a tentative dolium interpretation in a different building. SRC003 and SRC005 dispute the general collection story, and SRC004 supplies a smell association only. | **Omit as fact.** The prop jar belongs to the invented setting. Its supply history can stay off screen. |
+
+## Story and staging boundaries
+
+- Open with an explicit hypothetical. The viewer, coworker, customer, garment, mark, choice and clean handover belong to the invented shift. Keep the surprise with the coworker offering the jar. Introduce F001 as the viewer takes in what it is. Let the viewer work, rinse and check the same spot before handing the garment back.
+- The preferred ending keeps the customer's hand checking the spot after the rinse and drying ellipsis. If the stain beat starts to look like a demonstration of one ingredient, use a softened mark and the customer accepting the finished job as the payoff. Preserve the apprentice's choice, the jar and the handover in one work area.
+- Visual references can use a plastered work area, terracotta vessel and separate wash or rinse basins. A real-site name, jar supply system, diagnostic color for the liquid, subtitled recipe or instant chemical effect would make new claims. Use fictional water, cloth and shop sounds with the reconstruction.
+- Ready for Preaw's hook options on this packet. Boat's independent fact-check follows the selected hook and exact script revision.
