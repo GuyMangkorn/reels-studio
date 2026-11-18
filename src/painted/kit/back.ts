@@ -297,7 +297,7 @@ export const drawFigureBack = (p: Painter, def: CastDef, g: Pt, unit: number, po
     line = l0 + 2;
     const dx = a.T[0] - a.E[0], dy = a.T[1] - a.E[1], d = Math.hypot(dx, dy) || 1;
     const hand: Pt = [a.T[0] + (dx / d) * 0.03 * unit * sc, a.T[1] + (dy / d) * 0.03 * unit * sc];
-    fill(skinShade, ell(hand[0], hand[1], 0.036 * unit * sc, 0.046 * unit * sc, 14, Math.atan2(dy, dx) - Math.PI / 2), true, 4);
+    if (!(s === 1 ? pose.rArm : pose.lArm)?.noHand) fill(skinShade, ell(hand[0], hand[1], 0.036 * unit * sc, 0.046 * unit * sc, 14, Math.atan2(dy, dx) - Math.PI / 2), true, 4);
     void M;
     return hand;
   };
