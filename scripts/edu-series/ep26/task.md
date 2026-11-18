@@ -12,6 +12,7 @@ Record [delivery.md](delivery.md) · Updated 2026-11-18, coordinator
   - [x] W1.3 Boat fact-check — [EDU-EP26-FACT-R1](short/fact-check.md), on SCRIPT-R1
   - [x] W1.4 Length projection — [50.29 s estimated](short/script-notes.md#timing-projection)
   - [x] W1.5 User approved SCRIPT-R1, 2026-11-18
+  - [ ] W1.6 Fun-bar rewrite (user, 2026-11-18: R1 reads dry). Preaw [EDU-EP26-SCRIPT-R2-CANDIDATE](short/script.md); user approved its voice ("ใช่ ส่งโบ็ตเช็ก"). Boat [EDU-EP26-RESEARCH-R2](research.md) and [fact-check](short/fact-check-r2-candidate.md): `ready-for-storyboard`, 0 must-fix; optional O2 (L08) and O4 (L11) wording applied inline by the coordinator, recheck pending. User chose it over R1 (“ใช้บทใหม่”); Preaw is completing the pack as [EDU-EP26-SCRIPT-R2](short/script.md). W2–W3 reopen: Film checks BRIEF-R2, ROWS-R2 and the looks against R2.
 - [x] W2 Brief and storyboard
   - [x] W2.1 Film visual and technical brief — [EDU-EP26-BRIEF-R1](short/film-brief.md)
   - [x] W2.2 Film untimed shot plan and [EDU-EP26-ROWS-R1](short/review-rows.json), 13 shots
