@@ -125,7 +125,7 @@ const solveGunner = (c: YCam, def: CastDef, at: V3, o: GunnerOpts) => {
   const L = BONE * (def.armScale ?? 1) * u, mk = (S: Pt, W: Pt, back: boolean, side: 'right' | 'left'): {arm: NonNullable<FigPose['rArm']>; ratio: number} => {
     const dir = pview === 'right' ? 1 : -1, out = pview === 'right' ? -dir : g[0] > S[0] ? 1 : -1, E = ikElbow(S, W, L, out);
     void back;
-    return {arm: {to: W, via: E, exact: true, fist: mittenThumbSide(side, 'back')}, ratio: Math.max(Math.hypot(E[0] - S[0], E[1] - S[1]), Math.hypot(W[0] - E[0], W[1] - E[1])) / L};
+    return {arm: {to: W, via: E, exact: true, flatFist: true, fist: mittenThumbSide(side, 'back')}, ratio: Math.max(Math.hypot(E[0] - S[0], E[1] - S[1]), Math.hypot(W[0] - E[0], W[1] - E[1])) / L};
   };
   const R = mk(an.rShoulder, T.r, view === 'back', 'right'), Lf = mk(an.lShoulder, T.l, view === 'back', 'left');
   return {fig: {...base(body), rArm: R.arm, lArm: Lf.arm} as Partial<FigPose>, pview, check: {rRatio: R.ratio, lRatio: Lf.ratio, turn: pj, turn0: p0, shoulder: [(an.rShoulder[0] + an.lShoulder[0]) / 2, (an.rShoulder[1] + an.lShoulder[1]) / 2] as Pt, rShoulder: an.rShoulder, lShoulder: an.lShoulder} as GunnerCheck};
