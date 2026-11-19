@@ -1,5 +1,5 @@
 # T34 — a registered plate can restyle the shared canvas (newsreel filter, weave, shake, 1.05 overscan) through an optional `canvasStyle` hook
-Deliverable: EDU-EP30-SHORT · Revision: r1 · Status: ready
+Deliverable: EDU-EP30-SHORT · Revision: r1 · Status: done
 Class: capability · Hard: no
 Blocked by: T03 (r2 fix pass first: both write `edu30/shot.tsx`) · Consumers: every registered EP30 plate; blocks T24 and T27 (see index)
 Model: sonnet, medium
@@ -8,7 +8,7 @@ Read first: [common rules](index.md#common-rules); [T03 r2 decisions](T03-plate-
 
 ## Build
 `PaintedStage` paints every plate on one shared `BrushCanvas` outside the plate's `Overlay`, so a registered plate cannot filter, weave, shake or scale its picture. Add one optional field `canvasStyle` to `PaintedShot`; `PaintedStage` always renders the canvas inside one stable wrapper `div` (so the single p5.brush canvas never remounts) and applies the first visible plate's `canvasStyle` to that wrapper when exactly one plate is visible. `makeShot` in `edu30/shot.tsx` supplies it, composes the same filter, weave, shake and overscan the QA `PlateStack` uses, and the registered `paint` uses `stackCam` (overscan-compensated camera) like the stack.
-Files: `src/painted/shot.ts`, `src/painted/PaintedStage.tsx`, `src/painted/edu30/shot.tsx`, `tests/painted-canvas-style.test.ts` (new), `docs/context-map.md` (add the test to the EP30 entry)
+Files: `src/painted/edu30/registered-index.tsx` (new, registered-plate still entry for the proof), `src/painted/shot.ts`, `src/painted/PaintedStage.tsx`, `src/painted/edu30/shot.tsx`, `tests/painted-canvas-style.test.ts` (new), `docs/context-map.md` (add the test to the EP30 entry)
 
 ## Decided values
 | What | Value | Source |
@@ -39,4 +39,9 @@ References: none (no look change; the QA stack picture is the reference).
 | B01-SH01 L 0 titles-free frame | no vignette double: single `NewsreelOverlay` vignette | corner luma equals the QA stack ± 3 |
 
 ## Result (Boss fills)
-Commit · proof sheet path · measured numbers · fix passes used · open question, if blocked
+- Commit: see the branch tip (`git log --grep T34`), worktree branch `worktree-agent-ae4ad9dbac4269975`, on `claude/ep30-continuation-493a12` at `8bbfa0d`.
+- Built: `PaintedShot.canvasStyle` + pure `stageCanvasStyle` (shot.ts); `PaintedStage` always renders the stable wrapper div; `canvasStyleOf` shared by `PlateStack` and `makeShot`; registered `paint` uses `stackCam`. `PlateStack` now renders one `AbsoluteFill` with the helper style around the canvas (same composed transform as the old NewsreelPicture + inner div, weave outermost). New proof entry `src/painted/edu30/registered-index.tsx` (`EDU30-REG-<shot id>`: `PaintedStage` over a one-scene timeline, `C_seamless` so the pose clock is not held).
+- Proof: `tsc` shows only 8 pre-existing errors in tests/ and scripts (`out/logs/T34-tsc.log`, none in src). `node scripts/test.mjs tests/painted-canvas-style.test.ts` 5/5 pass.
+- Frames (registered vs QA stack, `out/edu30-T34/compare.log`): B03-SH01 L2 MAD 0.000; L40 MAD 0.378; B01-SH01 L0 MAD 0.000; B07-SH01 L4 MAD 0.000 (all <= 2); corner luma equal on all four (130.11, 130.11, 129.93, 133.90). Sheet (top row QA: B01 L0, B03 L2, B03 L40, B07 L4; bottom row registered): `out/edu30-T34/sheet.png`; store `~/ReelsStore/projects/edu/EDU/T34-canvas-style-proof/` (kind `T34-canvas-style-proof`).
+- Values not followed as written: (1) no built shot sets `shake` yet (B03-SH01 is a T03 stub, T04 `shakeAt` comes with the T24 plate), so "picture shifted by the round-0 shake" and test (d)'s shake term on B03-SH01 L2 cannot show on the real def; test (d) asserts no shake on the real def and the exact `translate(3px, -2px) rotate(0.4deg) scale(1.05)` tail on a def with a synthetic shake. (2) B03-SH01 L40 (G 728) sits inside the "แผน 1" title range (704-734): the title shows on both frames (the comparison still holds); no title-free L is requested there. (3) The lead-point probe prints nothing for stubs (no leads recorded), so "lead point equals sheet value" is not measurable until a plate paints leads. (4) `canvasStyle` context is typed `ShotContext & {fps}` because `ShotContext` has no `fps`. (5) Test (c) checks the always-present wrapper by a source pattern on `PaintedStage.tsx` (no hook-free render). (6) The ticket's frame-script needed numpy and Pillow, installed in a scratchpad venv.
+- Fix passes used: 0 · open question: none blocking; Film to confirm (1)-(3) are accepted until T24 supplies `shake`.

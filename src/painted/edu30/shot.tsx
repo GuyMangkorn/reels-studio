@@ -3,7 +3,7 @@ import {AbsoluteFill, Composition, getInputProps, useCurrentFrame} from 'remotio
 import {BrushCanvas, type PaintContext} from '../BrushCanvas';
 import {STILL_CAMERA} from '../kit/camera';
 import {makePainter, type Painter} from '../kit/painter';
-import {Grain, NewsreelOverlay, NewsreelPicture, type NewsreelTint} from '../kit/screen';
+import {Grain, NewsreelOverlay, newsreelFilter, newsreelWeave, type NewsreelTint} from '../kit/screen';
 import {span} from '../sea';
 import type {PaintedShot} from '../shot';
 import type {YCam} from '../kit/ycam';
@@ -18,10 +18,8 @@ import {NewsreelTitle, TITLES} from './titles';
 // Screen order (`PlateStack`, no Grade since T03 r2: it sat under the opaque canvas): NewsreelPicture (the plate canvas, with the VD30-11 shake and the overscan scale on the canvas element
 // only), NewsreelOverlay, Grain 0.06, the shot's `TITLES` cards. Captions, mark, label and caption shade are the Editor's.
 //
-// RUNTIME GAP (returned to Film as a question, see ticket T03 Result): `PaintedStage` paints every plate on one shared BrushCanvas outside
-// the plate's `Overlay`, so the registered plate's Overlay can draw NewsreelOverlay, Grain and titles but cannot filter, weave, shake
-// or scale the canvas. The full stack (`PlateStack`, used by the QA and proof entries) does. Until a canvas wrapper is added to
-// `PaintedShot` / `PaintedStage`, the registered plate paints the sheet camera unscaled (no overscan compensation) and without shake.
+// Registered plate (T34): `PaintedShot.canvasStyle` styles the shared canvas wrapper (filter, weave, shake, overscan) from `canvasStyleOf`, the same helper `PlateStack`
+// uses, and `paint` uses the overscan-compensated `stackCam`; the registered Overlay adds NewsreelOverlay, Grain and titles.
 
 export type Reel30 = {strength: number; tint: NewsreelTint; tintAmount?: number; tintMix?: number; pop?: number};
 /** Shake offset on the plate canvas: px and rotation in degrees (VD30-11 step 5). */
@@ -69,15 +67,22 @@ export const frameOf = (tl: number, N: number) => Math.max(0, Math.min(N - 1, Ma
 
 const GUIDE_BAND = {top: 1150, bottom: 1344}, GUIDE_LINE = 1100;
 
-/** Newsreel picture (canvas), newsreel overlay, grain and titles for one plate frame; `canvas` is the BrushCanvas node. */
-export const PlateStack = ({def, L, G, canvas}: {def: Shot30; L: number; G: number; canvas: ReactNode}) => {
+/** CSS of the plate canvas for shot-local frame L (global G): newsreel filter and weave, then shake, then overscan about (540, 960). One source for `PlateStack` and the registered plate (T34). */
+export const canvasStyleOf = (def: Shot30, L: number, G: number): CSSProperties => {
   const r = {...DEFAULT_REEL, ...def.reel(L)}, sh = def.shake?.(L);
   const o = {frame: G, strength: r.strength, tint: r.tint, tintAmount: r.tintAmount, tintMix: r.tintMix, pop: r.pop};
-  const inner: CSSProperties = {position: 'absolute', inset: 0, transformOrigin: '540px 960px',
-    transform: [sh ? `translate(${sh.dx}px, ${sh.dy}px) rotate(${sh.rot}deg)` : '', def.overscan ? `scale(${OVERSCAN})` : ''].filter(Boolean).join(' ') || 'none'};
+  const weave = newsreelWeave(o).transform;
+  return {transformOrigin: '540px 960px', filter: newsreelFilter(o),
+    transform: [weave && weave !== 'none' ? weave : '', sh ? `translate(${sh.dx}px, ${sh.dy}px) rotate(${sh.rot}deg)` : '', def.overscan ? `scale(${OVERSCAN})` : ''].filter(Boolean).join(' ') || 'none'};
+};
+
+/** Newsreel picture (canvas), newsreel overlay, grain and titles for one plate frame; `canvas` is the BrushCanvas node. */
+export const PlateStack = ({def, L, G, canvas}: {def: Shot30; L: number; G: number; canvas: ReactNode}) => {
+  const r = {...DEFAULT_REEL, ...def.reel(L)};
+  const o = {frame: G, strength: r.strength, tint: r.tint, tintAmount: r.tintAmount, tintMix: r.tintMix, pop: r.pop};
   return (
     <AbsoluteFill style={{backgroundColor: def.paper}}>
-      <NewsreelPicture {...o}><div style={inner}>{canvas}</div></NewsreelPicture>
+      <AbsoluteFill style={canvasStyleOf(def, L, G)}>{canvas}</AbsoluteFill>
       <NewsreelOverlay {...o} />
       <Grain opacity={0.06} />
       {TITLES.filter((t) => t.shot === def.id).map((t) => <NewsreelTitle key={t.in} text={t.text} frame={G} inFrame={t.in} outFrame={t.out} size={t.size} />)}
@@ -119,7 +124,8 @@ export const makeShot = (def: Shot30): PaintedShot => {
   SHOT_DEFS[def.id] = def;
   return {
     id: `EDU30-${def.id}`, serves: [def.id], paper: def.paper, camera: () => STILL_CAMERA,
-    paint: (p, ctx) => { const L = frameOf(ctx.tl, N); def.paint(p, L, def.cam(L)); },
+    paint: (p, ctx) => { const L = frameOf(ctx.tl, N); def.paint(p, L, stackCam(def, L)); },
+    canvasStyle: ({tl}) => { const L = frameOf(tl, N); return canvasStyleOf(def, L, rowStart(def.id) + L); },
     Overlay: ({opacity, tl}) => {
       const L = frameOf(tl, N), G = rowStart(def.id) + L, r = {...DEFAULT_REEL, ...def.reel(L)};
       const o = {frame: G, strength: r.strength, tint: r.tint, tintAmount: r.tintAmount, tintMix: r.tintMix, pop: r.pop};
