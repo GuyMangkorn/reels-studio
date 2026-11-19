@@ -133,6 +133,22 @@ const solveGunner = (c: YCam, def: CastDef, at: V3, o: GunnerOpts) => {
 /** Bone ratios and drawn shoulders of a gun-fitted placement (no painting). */
 export const gunnerCheck = (c: YCam, def: CastDef, at: V3, o: GunnerOpts & {grip: V3; stock: V3}): GunnerCheck | null => solveGunner(c, def, at, o)?.check ?? null;
 
+/**
+ * T36 r2: repaints only the two flat fists of `paintSeatedGunner` (same solve, same fill, ink and seeds) on `p`. A caller that paints the gun after the man calls this
+ * right after the gun, so the fists cover the grip and stock they hold. No grip/stock: nothing to repaint.
+ */
+export const paintGunnerFists = (p: Painter, c: YCam, def: CastDef, at: V3, o: GunnerOpts): void => {
+  if (!o.grip || !o.stock) return;
+  const s = solveGunner(c, def, at, o);
+  if (!s) return;
+  const redraws: ((q: Painter) => void)[] = [];
+  const hook = (a: FigPose['rArm']) => a && {...a, onFlatFist: (r: (q: Painter) => void) => { redraws.push(r); }};
+  const view = o.view ?? 'front', hatView = view === 'back' ? 'back' : view === 'right' ? 'right' : 'front';
+  paintFigureAt(dryPainter(), c, def, {at, view: s.pview, face: o.face ?? 'neutral', t: o.t, tint: o.tint, seed: o.seed, shadow: false,
+    fig: {...s.fig, rArm: hook(s.fig.rArm), lArm: hook(s.fig.lArm), ...(o.nod ? {nod: o.nod} : {})} as never, held: (q, an, uu) => paintHat(q, an, uu, o.seed + 900, {kind: 'slouch', view: hatView})});
+  redraws.forEach((r) => r(p));
+};
+
 export const paintSeatedGunner = (p: Painter, c: YCam, def: CastDef, at: V3, o: GunnerOpts): (FigAnchors & {check?: GunnerCheck}) | null => {
   const view = o.view ?? 'front', hatView = view === 'back' ? 'back' : view === 'right' ? 'right' : 'front';
   const faceState = o.mouth ? {mouth: o.mouth} : undefined;

@@ -9,7 +9,7 @@ import {mittenThumbSide} from '../src/painted/kit/hand-gestures';
 import {makePainter, type Pt} from '../src/painted/kit/painter';
 import {PEOPLE} from '../src/painted/kit/people';
 import {camPoint, camUnit} from '../src/painted/kit/ycam';
-import {GUNNER1, paintSeatedGunner} from '../src/painted/edu30/cast';
+import {GUNNER1, paintGunnerFists, paintSeatedGunner} from '../src/painted/edu30/cast';
 import {GUNNER_PROOFS, gunnerProofAt} from '../src/painted/edu30/proof-cast';
 
 // EDU-EP30-SHORT ticket T36: `Arm.flatFist`, the unshaped kit fist with its thumb on a held point (front, profile and back views).
@@ -63,7 +63,7 @@ test('b) flat fist centre within 0.01 hu of the held point, never more than 0.05
     assert.ok(Math.max(...u) <= 0.05, `past T ${Math.max(...u)}`);
     const w = Math.max(...v) - Math.min(...v), l = Math.max(...u) - Math.min(...u);
     console.log(`fist bbox ang ${ang.toFixed(2)} side ${side}: along ${l.toFixed(3)} across ${w.toFixed(3)} hu, centre ${uc.toFixed(4)}`);
-    assert.ok(Math.abs(l - 0.097) < 0.01 && Math.abs(w - 0.069) < 0.01);
+    assert.ok(Math.abs(l - 0.080) <= 0.003 && Math.abs(w - 0.069) <= 0.003, `bbox ${l} x ${w}`);
     const tv = F.thumbCrease.map(([x, y]) => -(x - T[0]) * s + (y - T[1]) * c);
     assert.ok(tv.every((q) => q * side > 0), `thumb side ${side}`);
     assert.equal(F.creases.length, 3);
@@ -111,4 +111,20 @@ test('c) gunner: fist on the grip and stock, thumb on the mittenThumbSide edge (
       assert.ok(err <= Math.max(3, 0.01 * camUnit(d.cam, d.seat)), `${d.id} ${name} fist on point ${err}`);
     }
   }
+});
+
+test('d) paintGunnerFists repaints exactly the two fists of paintSeatedGunner (same strokes), and nothing without grip and stock', () => {
+  for (const d of GUNNER_PROOFS) {
+    const {a, jolt} = gunnerProofAt(d, 0), o = {view: d.view, grip: a.grip, stock: a.stock, jolt, t: 1.2, seed: 33200} as const;
+    const man = recorder(), fi = recorder();
+    paintSeatedGunner(man.p, d.cam, GUNNER1, d.seat, o);
+    paintGunnerFists(fi.p, d.cam, GUNNER1, d.seat, o);
+    const key = (sp: Pt[]) => sp.map(([x, y]) => `${x.toFixed(2)},${y.toFixed(2)}`).join(' ');
+    const have = new Set(man.splines.map(key));
+    assert.ok(fi.splines.length > 0 && fi.splines.length <= 10, `${d.id} ${fi.splines.length} strokes`);
+    assert.ok(fi.splines.every((sp) => have.has(key(sp))), `${d.id}: every repainted stroke is a stroke of the man`);
+  }
+  const r = recorder();
+  paintGunnerFists(r.p, GUNNER_PROOFS[0].cam, GUNNER1, GUNNER_PROOFS[0].seat, {view: 'front', t: 1.2, seed: 1});
+  assert.equal(r.splines.length, 0);
 });

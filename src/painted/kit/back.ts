@@ -88,7 +88,8 @@ export const drawFigureBack = (p: Painter, def: CastDef, g: Pt, unit: number, po
   };
 
   let part = 0, line = 0;
-  const fill = (color: string, pts: Pt[], outline = true, passes = 4) => {
+  const fill = (color: string, pts: Pt[], outline = true, passes = 4, pp: Painter = p) => {
+    const p = pp;
     const base = sil ?? toneOf(color, L);
     solid(p, seed * 1000 + ++part, base, pts, sil ? 8 : passes, sil ? 0.02 : L ? 0 : 0.07, sil ? 0.03 : 0.2);
     if (L && !sil) modelPart(p, seed * 1000 + part, base, pts, L);
@@ -316,9 +317,18 @@ export const drawFigureBack = (p: Painter, def: CastDef, g: Pt, unit: number, po
     if (pa?.flatFist && pa.fist && !pa.noHand) {
       // T36: the unshaped flat fist centred on the held point `a.T` (same placement rule as cast.ts).
       const an = Math.atan2(dy, dx), fx0 = Math.cos(an), fy0 = Math.sin(an), hu = unit * sc, F = flatFistAt(a.T, an, hu, pa.fist);
-      fill(skinShade, F.back, true, 4);
-      const ink = lineOf(skinShade, L);
-      [...F.creases, F.thumbCrease].forEach((cr) => inkLine(p, seed * 1000 + ++line, cr, {closed: false, weight: L ? VD18.lineOuter : 1.0, curve: 0.5, color: ink}));
+      const part0 = part, line0 = line;
+      const draw = (q: Painter, restore = false) => {
+        const pe = part, le = line;
+        part = part0;
+        line = line0;
+        fill(skinShade, F.back, true, 4, q);
+        const ink = lineOf(skinShade, L);
+        [...F.creases, F.thumbCrease].forEach((cr) => inkLine(q, seed * 1000 + ++line, cr, {closed: false, weight: L ? VD18.lineOuter : 1.0, curve: 0.5, color: ink}));
+        if (restore) { part = pe; line = le; }
+      };
+      draw(p);
+      pa.onFlatFist?.((q) => draw(q, true));
       void M;
       return [a.T[0] + fx0 * 0.05 * hu, a.T[1] + fy0 * 0.05 * hu] as Pt;
     }

@@ -81,7 +81,9 @@ export type Arm = {to: Pt; out?: number; via?: Pt; behind?: 'upper' | 'all'; toC
    *  not pull them toward its centre (the turn remap for front-pose targets). Absent = remapped as before. EDU-EP26 draft fix B, 19 Nov 2026. */
   exact?: boolean;
   /** With `fist` and not `InteriorLight.shaped` (T36, EDU-EP30): the unshaped hand is the `fistParts` fist in flat skin with its finger and thumb creases, centred on `to` (the held point), instead of the plain oval. The fist reaches at most 0.05 m past `to`. Absent = the oval as before. */
-  flatFist?: boolean};
+  flatFist?: boolean;
+  /** T36 r2: called with a function that repaints this flat fist (same fill, ink, seeds) on another painter, so a caller can draw the fist over a prop painted after the figure. */
+  onFlatFist?: (redraw: (q: Painter) => void) => void};
 export type Prop =
   | {kind: 'torch'; angle: number; on: number}
   | {kind: 'phone'}
@@ -428,7 +430,8 @@ export const drawFigure = (p: Painter, def: CastDef, g: Pt, unit: number, pose: 
   const L = pose.light;
   const sil = pose.silhouette;
   let part = 0, line = 0;
-  const fill = (color: string, pts: Pt[], outline = true, passes = 4) => {
+  const fill = (color: string, pts: Pt[], outline = true, passes = 4, pp: Painter = p) => {
+    const p = pp;
     const base = sil ?? toneOf(color, L);
     if (L?.under && !sil) hardFill(p, seed * 1000 + part + 500, base, pts);
     solid(p, seed * 1000 + ++part, base, pts, sil ? 8 : passes, sil ? 0.02 : L ? 0 : 0.07, sil ? 0.03 : 0.2);
@@ -627,7 +630,7 @@ export const drawFigure = (p: Painter, def: CastDef, g: Pt, unit: number, pose: 
   const hangX = childHangExtra(def);
   const hang = (s: number): Pt => (profile ? U([0.01 + 0.02 * Math.sin(ph + (s > 0 ? Math.PI : 0)) * (walk === undefined ? 0 : 6 * (pose.stride ?? 1)), shV - 0.03 - 2 * AB + 0.02]) : U([qg ? (s === qdir ? s * (sw - 0.0255 + 0.02 + hangX) * kr * 0.62 : s * lerp(sw - 0.0255 + 0.04 + hangX, (sw - 0.0255 + 0.034 + hangX) * kr, late)) : s * (sw - 0.0255 + 0.034 + hangX) * kr, shV - 0.0255 - 2 * AB + 0.02]));
   /** Run: arms pump opposite to the leg on their side (profile: elbow ~80 deg; front: hands rise to the chest and drop to the hip). */
-  type ArmGeo = {Sh: Pt; E: Pt; T: Pt; cam?: number; finger?: boolean; fist?: 1 | -1; open?: 1 | -1; noThumb?: boolean; noHand?: boolean; flatFist?: boolean};
+  type ArmGeo = {Sh: Pt; E: Pt; T: Pt; cam?: number; finger?: boolean; fist?: 1 | -1; open?: 1 | -1; noThumb?: boolean; noHand?: boolean; flatFist?: boolean; onFlatFist?: Arm['onFlatFist']};
   /** Three-quarter front, an arm pointing at the lens (`toCam`, not `behind`): drawn turned forward and over the torso (KIT-ARM-DEPTH A). */
   const qFwd = (a?: Arm): boolean => !!(qg && a?.toCam && !a.behind);
   const runArm = (s: number, Sh: Pt): ArmGeo => {
@@ -680,14 +683,14 @@ export const drawFigure = (p: Painter, def: CastDef, g: Pt, unit: number, pose: 
     if (!a && mode?.kind === 'run') return runArm(s, Sh);
     const T = a?.via ? a.to : reachTo(Sh, a?.to ?? hang(s), Lpx);
     const E = a?.via ?? (a ? ikElbow(Sh, T, Lpx, a.out ?? (profile ? -dir : s)) : ([lerp(Sh[0], T[0], 0.5) + (profile ? -dir * 0.02 * unit : s * 0.02 * unit), lerp(Sh[1], T[1], 0.5)] as Pt));
-    return a?.toCam && !profile ? {Sh, E, T, cam: Math.max(0, Math.min(1, a.toCam)), finger: a.finger, noHand: a.noHand} : {Sh, E, T, fist: a?.fist, open: a?.open, noThumb: a?.noThumb, noHand: a?.noHand, flatFist: a?.flatFist};
+    return a?.toCam && !profile ? {Sh, E, T, cam: Math.max(0, Math.min(1, a.toCam)), finger: a.finger, noHand: a.noHand} : {Sh, E, T, fist: a?.fist, open: a?.open, noThumb: a?.noThumb, noHand: a?.noHand, flatFist: a?.flatFist, onFlatFist: a?.onFlatFist};
   };
   const R = arm('r'), Lm = arm('l');
   const drawArm = (A: ArmGeo, hold: Prop | undefined, k: number, far: boolean, only?: 'upper' | 'lower') => {
     part = 70 + k * 10;
-    const fillA = (color: string, pts: Pt[], outline = true, passes = 4) => {
+    const fillA = (color: string, pts: Pt[], outline = true, passes = 4, pp: Painter = p) => {
       const q = far && clothHem !== undefined ? clipArmCloth(pts) : far && farHip ? clipFarHip(pts) : pts;
-      if (q.length > 2) fill(color, q, outline, passes);
+      if (q.length > 2) fill(color, q, outline, passes, pp);
     };
     line = 70 + k * 10;
     const sl = far ? mixColor(sleeve, '#000000', 0.15) : sleeve;
@@ -814,11 +817,17 @@ export const drawFigure = (p: Painter, def: CastDef, g: Pt, unit: number, pose: 
     if (A.flatFist && A.fist) {
       // T36: the fist centre (u ~ 0.045 hu) sits on the held point `A.T`; the origin steps back along the forearm.
       const fx0 = Math.cos(ang), fy0 = Math.sin(ang), F = flatFistAt(A.T, ang, unit, A.fist);
-      part = 70 + k * 10 + 8;
-      line = 70 + k * 10 + 8;
-      fillA(skinHand, F.back, true, 4);
-      const ink = lineOf(skinHand, L);
-      [...F.creases, F.thumbCrease].forEach((cr) => inkLine(p, seed * 1000 + ++line, cr, {closed: false, weight: L ? palOf(L).lineOuter : 1.0, curve: 0.5, color: ink}));
+      const draw = (q: Painter, restore = false) => {
+        const p0 = part, l0 = line;
+        part = 70 + k * 10 + 8;
+        line = 70 + k * 10 + 8;
+        fillA(skinHand, F.back, true, 4, q);
+        const ink = lineOf(skinHand, L);
+        [...F.creases, F.thumbCrease].forEach((cr) => inkLine(q, seed * 1000 + ++line, cr, {closed: false, weight: L ? palOf(L).lineOuter : 1.0, curve: 0.5, color: ink}));
+        if (restore) { part = p0; line = l0; }
+      };
+      draw(p);
+      A.onFlatFist?.((q) => draw(q, true));
       return [A.T[0] + fx0 * 0.05 * unit, A.T[1] + fy0 * 0.05 * unit] as Pt;
     }
     if (hold?.kind === 'torch') drawTorch(p, seed * 1000 + 200 + k * 10, hand, hold.angle, unit, hold.on);
