@@ -16,7 +16,7 @@ Inputs: scene sheets [EDU-EP30-SCENE-R2](../short/scene-sheets/index.md) (ready-
 | [T06](T06-emu-wings-reactions.md) emu wing rig, mixer, gait contact, startle/duck-flap/hop | figure | yes | T03 | ready | 0 | — |
 | [T07](T07-emu-head-face.md) emu head: lens turn, blink, nod, beak-talk, sac, relief emu | figure | yes | T06 | ready | 0 | — |
 | [T08](T08-flock-paddock.md) flock in the paddock: buffet, extras, heads field, scatter, burst, halves, fence birds, slow line | movement | yes | T07 | ready (Q8 answered) | 0 | — |
-| [T09](T09-paddock-states.md) paddock states, ruts, high view, fence from the track | set | no | T03 | ready | 0 | — |
+| [T09](T09-paddock-states.md) paddock states, ruts, high view, fence from the track | set | no | T03 | blocked (built; P2 stripe measure 38.96 vs 12 and sheet post (1020, 991) vs locked posts: Q-A, Q-B; Q-C, Q-D in Result) | 0 | this commit on the T09 worktree branch |
 | [T10](T10-dam-shore-path.md) dam: east approach, queue path, reflect, stone, near slope + clearance | set | no | T03 | ready | 0 | — |
 | [T11](T11-seated-gunner.md) seated gunner four views + recoil jolt | figure | yes | T13, T03 | ready | 0 | — |
 | [T12](T12-crew-farmer-poses.md) crew and farmer poses (salute, P30, P44-back, loader, farmer) | figure | yes | T11, T13 | ready | 0 | — |
