@@ -52,7 +52,7 @@ These override any older value in this ticket that they name.
 | render time | — | one 60-bird half-size frame time logged |
 
 ## Result (Boss fills)
-Commit `COMMIT` (branch `worktree-agent-a3187762f86199def`, on `4f81e77`) · fix passes used: 0 · Boss, Sonnet medium, 2026-11-20.
+Commit `6441144` (branch `worktree-agent-a3187762f86199def`, on `4f81e77`) · fix passes used: 0 · Boss, Sonnet medium, 2026-11-20.
 Proof: store `projects/edu/EDU/previews/T08-sheet.png` (18 frames, 5 cols, 270 px) and the frames `T08-<comp>-<L>.png` in the same folder; tests `node scripts/test.mjs tests/edu30-flock.test.ts` 13/13 pass; `tsc` has no edu30 error; `npm test` 340 pass / 19 fail, none in edu30 (12 are the missing `@remotion/three` in this worktree, HIPPO joints stack overflow, media/loudness/store tests).
 Built in `flock.ts`: `paddockExtras`, `emu1State`, `buffetRow`, `headsField`, `scatter`, `burst` (+ `paintBurstDust`), `halves` (+ `halvesDust`), `fenceBirds` (+ `fenceCountB06`, `emuFront`), `slowLine` (+ `slowDust`), `blendPoses`, `footEvents`, `paintFlock`, `strideForAdvance`; `EmuPaint.lod` forces a detail level. `proof-flock.tsx`: FL30-buffet, -heads, -scatter, -burst, -halves, -fence, -slow, -cost.
 | Row | Measured | Verdict |
