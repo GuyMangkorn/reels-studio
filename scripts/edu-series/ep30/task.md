@@ -4,7 +4,7 @@ Record [delivery.md](delivery.md) · Updated 2026-11-19, Film (W5.2 plate ticket
 
 ## EDU-EP30-SHORT
 
-**Now:** dispatch Boss (one fresh Sonnet medium invocation per ticket, parallel worktrees) on the dispatchable tickets of [EDU-EP30-TICKETS-R3](tickets/index.md): r3 fix passes T04, T06, T09, T10, and T11, T34, T35 (new); coordinator publishes ROWS-R7 (review page: pending). **Next:** Film's look check of the T06 r3 sheet (before T08, T16); T05, T07, T12, T14 as their blockers land; Ton's cue sheet is done; then the plates and the Draft
+**Now:** dispatch Boss (one fresh Sonnet medium invocation per ticket, parallel worktrees) on the dispatchable tickets of [EDU-EP30-TICKETS-R3](tickets/index.md): r3 fix passes T04, T06, T09, T10, and T11, T34, T35 (new; T35 built 2026-11-19, blocked only on Film confirming one proof range, see its Result); coordinator publishes ROWS-R7 (review page: pending). **Next:** Film's look check of the T06 r3 sheet (before T08, T16); T05, T07, T12, T14 as their blockers land; Ton's cue sheet is done; then the plates and the Draft
 
 - [x] W0 Ideation
   - [x] W0.1 Preaw concepts — [C110 R19](../concepts/C110.md)

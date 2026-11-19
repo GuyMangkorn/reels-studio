@@ -9,7 +9,7 @@ import {buildEmu, EMU_POSES, type EmuPose} from './emu';
 // and facing, one build per pose key (cached, so a 40-bird frame does not rebuild per bird), and a painted far mass for "thousands"
 // (silhouettes beyond `far` m: a dark body blob, a neck stroke and a head dot, no rig).
 
-export type EmuMember = {at: V3; heading: number; pose: EmuPose; scale: number; seed: number; hero?: boolean};
+export type EmuMember = {at: V3; heading: number; pose: EmuPose; scale: number; seed: number; hero?: boolean; /** T35: metres above the ground (a hop), body only */ air?: number};
 const cache = new Map<string, Build>();
 const key = (o: EmuPose) => JSON.stringify(o);
 export const emuBuild = (o: EmuPose): Build => {
@@ -36,7 +36,7 @@ const lodCache = new Map<Build, Build>();
 const farBuild = (B: Build): Build => { let f = lodCache.get(B); if (!f) { f = {...B, parts: B.parts.map((q) => ({...q, tex: undefined})), look: {sub: 0, ring: 1, edge: 0.3, far: 0.2}}; lodCache.set(B, f); } return f; };
 export const paintEmu = (p: Painter | null, c: YCam, m: EmuMember, o: EmuPaint = {}): BeastAnchors => {
   const B0 = emuBuild({...m.pose, hero: m.hero}), near = camUnit(c, [m.at[0], 1, m.at[2]]) >= LOD_PX;
-  return paintBeast(p, c, scaled(near ? B0 : farBuild(B0), m.scale), {at: [m.at[0], m.at[2]], heading: m.heading, ground: m.at[1], seed: m.seed, sun: o.sun, shadowOp: o.shadowOp ?? 80, haze: o.haze, hazeCol: o.hazeCol, amb: o.amb, ambK: o.ambK});
+  return paintBeast(p, c, scaled(near ? B0 : farBuild(B0), m.scale), {at: [m.at[0], m.at[2]], heading: m.heading, ground: m.at[1], air: m.air, seed: m.seed, sun: o.sun, shadowOp: o.shadowOp ?? 80, haze: o.haze, hazeCol: o.hazeCol, amb: o.amb, ambK: o.ambK});
 };
 
 const hh = (n: number) => { const s = Math.sin(n * 78.233 + 12.9898) * 43758.5453; return s - Math.floor(s); };
