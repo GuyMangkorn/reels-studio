@@ -39,8 +39,8 @@ const DEG = Math.PI / 180;
 export const yawTo = (from: V3, to: V3) => Math.atan2(to[0] - from[0], -(to[2] - from[2]));
 
 // ------------------------------------------------------------------ space P set stack
-type PadOpts = {light?: PadLight; eaten?: number; flock?: EmuMember[]; far?: {n: number; x: [number, number]; z: [number, number]}; stalks?: V3[]; truck?: V3 | null; texture?: [number, number]};
-const paintPaddock = (p: Painter, c: YCam, o: PadOpts, cast: () => void) => {
+export type PadOpts = {light?: PadLight; eaten?: number; flock?: EmuMember[]; far?: {n: number; x: [number, number]; z: [number, number]}; stalks?: V3[]; truck?: V3 | null; texture?: [number, number]};
+export const paintPaddock = (p: Painter, c: YCam, o: PadOpts, cast: () => void) => {
   const light = o.light ?? 'morning', sun = SUN[light];
   paintPadSky(p, c, light);
   paintScrub(p, c, 30100, 300);
@@ -63,7 +63,7 @@ const paintPaddock = (p: Painter, c: YCam, o: PadOpts, cast: () => void) => {
 };
 
 /** G1 crew at the gun position (space P, all facing -z), sorted far to near by the caller's camera. */
-const crewAtGun = (p: Painter, c: YCam, id: string, t: number, o: {hero?: EmuMember; extra?: EmuMember[]; gear?: boolean} = {}) => {
+export const crewAtGun = (p: Painter, c: YCam, id: string, t: number, o: {hero?: EmuMember; extra?: EmuMember[]; gear?: boolean} = {}) => {
   type It = {at: V3; f: () => void};
   const sun = SUN.morning;
   const items: It[] = [
@@ -84,7 +84,7 @@ const EYE_LF01: V3 = [-3.2, 0.95, -3.4];
 export const CAM_LF01: YCam = {x: EYE_LF01[0], y: EYE_LF01[1], z: EYE_LF01[2], yaw: 134.5 * DEG, pitch: 6 * DEG, f: 1450, hy: 640};
 /** EMU-HERO beside the gun, facing -x, neck lowered so its head is just in front of the muzzle with its left eye to the bore (birds look
  *  with one eye): the hook's "inspecting the barrel". BOARD-R1 had it at (+0.6, 0, -1.6) screen right; W3 moves it so the lens sees it. */
-const HERO_LF01: EmuMember = {at: [0.75, 0, -0.95], heading: Math.PI, pose: {head: [0.7, 0.68, 0], neckMid: [0.52, 1.02, 0], headDir: [1, -0.08, 0], pitch: -0.06}, scale: 1, seed: 34000, hero: true};
+export const HERO_LF01: EmuMember = {at: [0.75, 0, -0.95], heading: Math.PI, pose: {head: [0.7, 0.68, 0], neckMid: [0.52, 1.02, 0], headDir: [1, -0.08, 0], pitch: -0.06}, scale: 1, seed: 34000, hero: true};
 const lf01 = (amount: number, id: string) => (): LookDef => {
   const c = CAM_LF01, t = 1.2;
   return {shot: 'B01-SH01 frame 0 (L01)', cam: c, t, paper: '#efe6d0', reel: {tint: 'warm', amount}, caption: 'ออสเตรเลียเคยส่งทหาร\nพร้อมปืนกลไปรบกับนกอีมู…', paint: (p) => {
@@ -127,7 +127,7 @@ const tP3 = (): LookDef => {
  *  lens behind the crew (three backs, the water a thin grazing band that read as a road) failed two viewer checks. */
 const EYE_LF02: V3 = [0.5, 0.85, -6.4];
 export const CAM_LF02: YCam = {x: EYE_LF02[0], y: EYE_LF02[1], z: EYE_LF02[2], yaw: -110 * DEG, pitch: 0, f: 950, hy: 810};
-const onBank = (x: number, z: number): V3 => [x, southBankY(z), z];
+export const onBank = (x: number, z: number): V3 => [x, southBankY(z), z];
 /** LF02 crew marks (ground from `southBankY`): all three at the waterline: MEREDITH nearest (the lead), GUNNER-2, GUNNER-1 seated at G1.
  *  West of the queue's path: the queue (B04-SH02) comes in from the east approach along the shore and its head stops at (3.0, 0.6, -5.2). */
 export const LF02_MARKS = {mer: onBank(-1.25, -4.95), g2: onBank(-3.6, -4.95), g1: onBank(-6.2, -4.75), gun: onBank(-5.6, -5.0)};
@@ -135,7 +135,7 @@ export const LF02_MARKS = {mer: onBank(-1.25, -4.95), g2: onBank(-3.6, -4.95), g
 const armRel = (sh: Pt, u: number, via: Pt, to: Pt, d = 1) => ({via: [sh[0] + d * via[0] * u, sh[1] - via[1] * u] as Pt, to: [sh[0] + d * to[0] * u, sh[1] - to[1] * u] as Pt});
 /** The LF02 crew, far to near. `mirror`: paint their reflections in the water instead (flipped about the waterline under each mark, toned
  *  toward the water, no lead measure). */
-const crewAtDam = (p: Painter, c: YCam, id: string, t: number, mirror = false) => {
+export const crewAtDam = (p: Painter, c: YCam, id: string, t: number, mirror = false) => {
   const sun = SUN.morning, m = LF02_MARKS, view = 'right' as const;
   const sh = (def: CastDef, at: V3, body: Record<string, number>, side: 'r' | 'l') => shoulderPoint(def, camPoint(c, at)!, camUnit(c, at), {view, ...body}, side);
   const tint = mirror ? {to: DAM.reflection, u: 0.7} : undefined, rec = (name: string, a: Parameters<typeof lead>[2]) => { if (!mirror) lead(id, name, a); };
@@ -184,7 +184,7 @@ const tD2 = (): LookDef => {
 const EYE_LF03: V3 = [-0.3, 2.6, 4.5];
 /** B07-SH01 end: the whole coat of arms in frame, kangaroo left, emu right, sunlit sandstone, blue sky (no newsreel layer). */
 export const CAM_LF03: YCam = {x: EYE_LF03[0], y: EYE_LF03[1], z: EYE_LF03[2], yaw: 0, pitch: 20 * DEG, f: 1200, hy: 760};
-const armsLook = (c: YCam, id: string, shot: string, caption: string, emuYaw?: number) => (): LookDef => ({shot, cam: c, t: 0, paper: '#e8d8b8', caption, word: {at: [0, 2.94, 0.17], text: 'AUSTRALIA', h: 0.13}, paint: (p) => {
+export const armsLook = (c: YCam, id: string, shot: string, caption: string, emuYaw?: number) => (): LookDef => ({shot, cam: c, t: 0, paper: '#e8d8b8', caption, word: {at: [0, 2.94, 0.17], text: 'AUSTRALIA', h: 0.13}, paint: (p) => {
   MEASURE[id] = [];
   paintArmsSky(p, c);
   paintSandstoneWall(p, c, 41000);
@@ -195,12 +195,12 @@ const armsLook = (c: YCam, id: string, shot: string, caption: string, emuYaw?: n
 }});
 /** Thumbnail A2: the B07-SH02 push-in end on the emu supporter, head turned to the lens (the callback of B01-SH03). */
 const EYE_A2: V3 = [0.95, 3.9, 2.4];
-const CAM_A2: YCam = {x: EYE_A2[0], y: EYE_A2[1], z: EYE_A2[2], yaw: 4 * DEG, pitch: 16 * DEG, f: 1000, hy: 900};
+export const CAM_A2: YCam = {x: EYE_A2[0], y: EYE_A2[1], z: EYE_A2[2], yaw: 4 * DEG, pitch: 16 * DEG, f: 1000, hy: 900};
 
 // ------------------------------------------------------------------ KP-EMU key poses (look check), plain paddock ground, caption band shown
-const KP_EYE: V3 = [0, 1.05, 2.5];
+export const KP_EYE: V3 = [0, 1.05, 2.5];
 const KP_CAM: YCam = {x: KP_EYE[0], y: KP_EYE[1], z: KP_EYE[2], yaw: 0, pitch: 0, f: 1000, hy: 760};
-const kp = (name: string, member: () => EmuMember, caption: string) => (): LookDef => ({shot: `KP-EMU ${name}`, cam: KP_CAM, t: 0, paper: '#efe6d0', reel: {tint: 'warm', amount: 1}, caption, paint: (p) => {
+export const kp = (name: string, member: () => EmuMember, caption: string) => (): LookDef => ({shot: `KP-EMU ${name}`, cam: KP_CAM, t: 0, paper: '#efe6d0', reel: {tint: 'warm', amount: 1}, caption, paint: (p) => {
   const c = KP_CAM, id = `KP-${name}`;
   setNoClearing(true);
   MEASURE[id] = [];
@@ -215,7 +215,7 @@ const kp = (name: string, member: () => EmuMember, caption: string) => (): LookD
 }});
 /** Head yaw that turns the head toward the lens, held `off` rad short of square (a three-quarter look reads the bill; square-on reads as an owl). */
 const lensYaw = (at: V3, heading: number, off = 0.45) => { const toCam = Math.atan2(KP_EYE[2] - at[2], KP_EYE[0] - at[0]); let d = toCam - heading; while (d > Math.PI) d -= 2 * Math.PI; while (d < -Math.PI) d += 2 * Math.PI; return -d - Math.sign(-d) * off; };
-const KP_AT: V3 = [0, 0, -0.2];
+export const KP_AT: V3 = [0, 0, -0.2];
 
 export const LOOK_DEFS: Record<string, () => LookDef> = {
   LF01a: lf01(1, 'LF01a'),

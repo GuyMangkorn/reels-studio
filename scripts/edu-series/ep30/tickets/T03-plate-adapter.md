@@ -1,5 +1,5 @@
 # T03 — 28 registered EP30 plates exist (stubs) behind one adapter, with a QA still entry, a lead probe, the proof entries and the calibration sheet
-Deliverable: EDU-EP30-SHORT · Revision: r1 · Status: ready (shot table depends on open Q7/Q8, see below)
+Deliverable: EDU-EP30-SHORT · Revision: r1 · Status: done (questions: see Result)
 Class: capability · Hard: no
 Blocked by: T01, T02 · Consumers: every plate ticket (T19–T33); every proof composition (T04–T18); Editor (W5.3 composition)
 Model: sonnet, medium
@@ -43,4 +43,13 @@ Files: `src/painted/edu30/shot.tsx` (new), `src/painted/edu30/shots/index.ts` (n
 | tests | context map, tsc | 0 errors |
 
 ## Result (Boss fills)
-Commit · proof sheet path · measured numbers · fix passes used · open question, if blocked
+Commit: this commit on the Boss worktree branch (see index) · proof sheet: `out/edu30-T03/sheet.png` (store `projects/edu/EDU/previews/sheet.png`, `CAL.png`, `SEQ_*.png`, `B03-SH01_L0.png`) · fix passes: 0.
+Q7 and Q8 answered by the user (19 Nov 2026): table built as written (B04-SH05 at 1086, B03-SH01 at 688); no revision needed.
+Measured (`measure-shots.ts CAL 0`, tsc 0 errors in the new files): MEREDITH top 806 bottom 1110 h **304** (range 283 +- 15 = 268-298: **outside by 6 px**, value not followed, see Q-A); EMU-HERO h 274 (pass); gun length (silhouette right-left) 222 (range 213 +- 15: pass; the gun's 1.26 m barrel-to-stock at 6 m would be 210). CAL frame: man, emu and gun stand on one ground line, emu head top 28 px below the man's hat top (834 vs 806; the brief wants them level, tied to Q-A). SEQ tags read exactly B01-SH01 L0 (G0), B04-SH03 L0 (G993), B04-SH05 L0 (G1086), B07-SH02 L121 (G1976). B03-SH01 L0: the y 1100 guide occupies rows 1100-1101 at full strength, unscaled by the 1.05 overscan.
+Checks: `npx tsc --noEmit -p .` shows 22 errors, none in `src/painted/edu30/*`, `src/painted/shots/edu30.tsx` or `measure-shots.ts` (all pre-existing: `three` / `@remotion/three` not installed in this checkout, plus old test typings). `npm test`: 220/236 pass; the 16 failures are environmental (`Cannot find module '@remotion/three'` x12 through the registry/kit imports, Node `fs.globSync` missing); `docs/context-map.md` check passes. Registry load (`painted.test.ts`, `plates.test.ts`) could not be exercised here for that reason.
+Built from the ticket: `Shot30`, 28 stubs (sheet camera line at L0 taken from `scripts/edu-series/ep30/short/projection-shots.json` `cams.start`), table asserted at load, registry entry, `EDU30-<ID>` / `EDU30-SEQ` / `EDU30-CAL` QA entry, six empty `proof-*.tsx` entries with `Proof30`, probe and `measure-shots.ts`, `looks.ts` exports (the 11 named; `LF02_MARKS`, `LF02_DAM`, `CAM_LF01-03`, `kp` family were already exported or are `export const kp`).
+Questions for Film (values the ticket left undecided; none resolved by Boss):
+- Q-A (CAL man height): MEREDITH `man-parted` + slouch hat + P01 projects 304 px, not 283 +- 15 (about 1.82 m at 6 m; the hat adds to `top`). Decide: widen the range, or scale the cast.
+- Q-B (registered plate cannot wear the newsreel picture): `PaintedStage` paints all plates on one shared BrushCanvas outside the plate `Overlay`, so a registered plate cannot filter, weave, shake or 1.05-scale its canvas. The full stack (`PlateStack` in `shot.tsx`) does all of it in the QA and proof entries. The registered plate's Overlay draws Grade, NewsreelOverlay, Grain 0.06 and titles only, paints the raw sheet camera (no overscan compensation, no shake). Fixing it needs an optional canvas wrapper on `PaintedShot` and `PaintedStage` (files outside this ticket's list). Needs a ticket.
+- Q-C (screen order): the ticket lists `Grade` before `NewsreelPicture`; built literally (Grade first in the DOM, so it sits under the opaque canvas in the full stack, and over the canvas in the registered Overlay). `NewsreelOverlay` already has its own vignette. Decide whether Grade stays.
+- Q-D (small choices made to build; confirm): `Shake30.rot` in degrees; CAL gun heading 0 (side-on, muzzle +x) while the emu keeps heading -PI/2 as written (this faces away from the lens: heading h faces (cos h, sin h) in x, z, and KP uses PI for a side view); `Reel30` gets an optional `tintAmount`; the probe prints an extra ` w <px>` for props; CAL ground uses the plain paddock (`setNoClearing`).
