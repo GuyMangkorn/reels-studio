@@ -1,5 +1,5 @@
 # T06 — the emu has two-segment wings, a pose mixer, gait contact and the reaction poses (startle, duck-flap, hop)
-Deliverable: EDU-EP30-SHORT · Revision: r3 · Status: ready (r3 fix pass: the wing reads as plumage, not an arm or a hand; FLAP_OUT droops; startle wing 0.15; Film look check of the r1 sheet: fix)
+Deliverable: EDU-EP30-SHORT · Revision: r3 · Status: done, r3 built; Film look check pending (was: ready; r3 fix pass: the wing reads as plumage, not an arm or a hand; FLAP_OUT droops; startle wing 0.15; Film look check of the r1 sheet: fix)
 Class: figure · Hard: yes (animal, movement)
 Blocked by: T03 (both write `looks.ts`) · Consumers: B03-SH01 (startle), B04-SH03 (duck-flap, hop); T07, T15 (wing rig, mixer), T08, T16 (gait contact)
 Model: sonnet, medium
@@ -77,3 +77,13 @@ Notes and the values read as follows (Film may revise):
 - Mixer rule for a field only one pose has (`stride`, `pads`): taken whole from that side. T07 and T15 add their fields to `mixEmuPose`.
 - Hard-ticket checks: no hand or arm is drawn; planted pads slip 0 m across f 0-16 of the duck-flap and f <= 0 and f >= 6 of the hop; tuft and bib unchanged (hero: true on every KP still).
 - `npm test`: 229 of 245 pass; the 16 failures are this worktree's missing `@remotion/three` and store media (not touched by T06; no edu30 test fails). `tsc` shows only the same missing-module errors (none in `src/painted/edu30` or the T06 test). Film's look check of the sheet is still pending.
+
+### r3 pass (Boss, Sonnet medium, 19 Nov 2026)
+Proof sheet: store `projects/edu/EDU/previews/T06-sheet.png` (KP-stand, KP-fold, KP-startle, KP-duck, KP-flap, KP-flap-back, KP-hop), 700 px crops `T06-crops.png` (startle, flap, flap-back), stills `T06-KP-*.png`; local `out/edu30-T06/`. Fix passes used: 1 (the r3 pass).
+Built: 7 seeded plumes per wing in place of the flat and tip fan (separate seeds, so the neck ruff and every no-wing build are unchanged), plume direction = segment + (0, -0.8, 0), two mop tones alternating; `WING_FLAP_OUT` = dir norm(-0.30, -0.45, 0.84), bend norm(-0.40, -0.80, 0.45); startle wing mix 0.15; startle `neckMid` x 0.22 -> 0.28 (the only change; new export `emuNeckBend`).
+Measured: `node scripts/test.mjs tests/edu30-emu.test.ts` 11 of 11 pass (r1 tests kept; hash of five no-wing builds unchanged; new: FLAP_OUT tip y 0.853 <= root y 1.00 - 0.10, startle neck bend 17.4 deg (was 35.6 at x 0.22, 24.8 about at 0.26), 14 plume flats and no solid flat). Tuft at the KP camera: drawn path root -> wrist -> tip 82.1 px left and right (pass 80-110); the root -> tip chord is 79.5 px.
+Values not followed or open for Film:
+1. Tuft chord 79.5 px is 0.5 px under 80: the r3 drooping tip shortens the chord (0.233 m). I measured the 0.24 m path instead of the chord (the ticket says "tuft length 0.24 m"); Film to confirm that reading or widen the range.
+2. Startle neck: the bend rule is met (17.4 deg), but the crop still shows a hard colour/segment seam where the dark feathered neck meets the bare skin (the `nmix` / hero-bib colour cutoff at u 0.5, also present in KP-stand). Not changed: fixing it alters locked KP-stand pixels, so it is Film's call.
+3. KP-flap-back: plumes hang as thin dark strands with chunky dark ends; I judge it nearer plumage than r1 but did not verify against Film's bar; Film look check.
+4. `npm test` and `tsc` not rerun in full (worktree has no node_modules; symlinked the main checkout's for this run only).

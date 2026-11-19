@@ -19,7 +19,7 @@ export const EMU_LOOK: NonNullable<Build['look']> = {sub: 3, ring: 2, rim: '#d9c
 /** A wing given for the LEFT wing (the right negates z): inner segment root -> wrist along `dir`, outer wrist -> tip along `bend`, `reach` 0 (real vestigial 0.24 m) .. 1 (mime 0.85 m). */
 export type WingPose = {dir: L3; bend: L3; reach: number};
 export const WING_FOLD: WingPose = {dir: [-0.55, -0.83, 0.08], bend: [-0.55, -0.83, 0.02], reach: 0};
-export const WING_FLAP_OUT: WingPose = {dir: [-0.15, -0.25, 0.96], bend: [-0.15, -0.25, 0.96], reach: 0};
+export const WING_FLAP_OUT: WingPose = {dir: nrm([-0.30, -0.45, 0.84]), bend: nrm([-0.40, -0.80, 0.45]), reach: 0};
 export const WING_ROOT: L3 = [0.10, 1.00, 0.21];
 export const wingLen = (reach: number): [number, number] => [0.13 + 0.32 * reach, 0.11 + 0.29 * reach];
 
@@ -78,6 +78,14 @@ const defaultNeckMid = (pitch: number, bob: number, head: L3): L3 => {
   return lerp(onLoft(emuBodyKeys(P), 0.9, 0, 0.3), head, 0.5);
 };
 
+/** Neck bend (deg) of a pose at its neck mid point: the angle between base -> `neckMid` and `neckMid` -> head (T06 r3: startle <= 25). */
+export const emuNeckBend = (o: EmuPose): number => {
+  const bob = o.bob ?? 0, pitch = o.pitch ?? 0, P = (q: L3): L3 => { const r = pitchAbout(q, EMU_HIP, pitch); return [r[0], r[1] + bob, r[2]]; };
+  const nb = onLoft(emuBodyKeys(P), 0.9, 0, 0.3), hj = o.head ?? [0.42, 1.6 + bob, 0], nm = o.neckMid ?? lerp(nb, hj, 0.5);
+  const a = nrm(sub(nm, nb)), b = nrm(sub(hj, nm));
+  return Math.acos(Math.max(-1, Math.min(1, a[0] * b[0] + a[1] * b[1] + a[2] * b[2]))) * 180 / Math.PI;
+};
+
 export const buildEmu = (o: EmuPose = {}): Build => {
   const R = newRig(), bob = o.bob ?? 0, pitch = o.pitch ?? 0, tone = o.tone ?? 0;
   const tc = (c: string) => (tone >= 0 ? mixColor(c, EMU_PX.bodyPale, tone * 0.5) : mixColor(c, EMU_PX.bodyDark, -tone * 0.5));
@@ -110,14 +118,13 @@ export const buildEmu = (o: EmuPose = {}): Build => {
       const rootB: L3 = [WING_ROOT[0], WING_ROOT[1], g * (WING_ROOT[2] - 0.02 * (1 - out))];
       const wristB = add(rootB, mul(d0, l1)), tipB = add(wristB, mul(d1, l2));
       const ref = nrm(lerp([0, 0, 1], [1, 0, 0], out)), dm = nrm(add(d0, d1)), wv = nrm([dm[1] * ref[2] - dm[2] * ref[1], dm[2] * ref[0] - dm[0] * ref[2], dm[0] * ref[1] - dm[1] * ref[0]]);
-      const fw = l1 / (l1 + l2), hw = (f: number) => 0.045 - 0.03 * f;
       const [rp, wp2, tp] = [rootB, wristB, tipB].map(P);
-      const side = (q: L3, h: number, k: number): L3 => add(q, mul(wv, h * k));
-      const col = tc(EMU_PX.bodyDark);
-      R.flat(root, {pts: [side(rp, hw(0), 1), side(wp2, hw(fw), 1), side(tp, hw(1), 1), side(tp, hw(1), -1), side(wp2, hw(fw), -1), side(rp, hw(0), -1)], col, two: true});
-      for (let k = -1; k <= 1; k++) {
-        const base = add(tp, mul(wv, 0.012 * k));
-        feather(R, root, add(base, mul(wv, -0.015)), add(base, mul(wv, 0.015)), nrm(add(nrm(sub(tp, wp2)), mul(wv, 0.35 * k))), 0.10, tc(EMU_PX.neckFeather), 0.3);
+      // r3: no solid flat, no tip fan; 7 seeded loose plumes along the two segments, each hanging (segment direction + (0, -0.8, 0)), two mop tones alternating
+      for (let k = 0; k < 7; k++) {
+        const r1 = hsh(5000 + wi * 40 + k), r2 = hsh(5100 + wi * 40 + k), tt = clamp((k + 0.5 + (r1 - 0.5) * 0.5) / 7), s1 = l1 / (l1 + l2);
+        const inner = tt <= s1, base = inner ? add(rootB, mul(d0, l1 * (tt / s1))) : add(wristB, mul(d1, l2 * ((tt - s1) / (1 - s1)))), sd = inner ? d0 : d1;
+        const dir = pitchAbout(nrm(add(sd, [0, -0.8, 0])), [0, 0, 0], pitch), q = P(base), len = (0.08 + 0.08 * r2) * (1 + wp.reach);
+        feather(R, root, add(q, mul(wv, -0.022)), add(q, mul(wv, 0.022)), dir, len, tc(mixColor(EMU_PX.body, EMU_PX.bodyDark, k % 2 ? 0.55 : 0.15)), 0.5);
       }
       R.B.anchors[`wingRoot${n}`] = rp; R.B.anchors[`wingWrist${n}`] = wp2; R.B.anchors[`wingTip${n}`] = tp;
     });
@@ -207,8 +214,8 @@ export const EMU_POSES = {
   bow: (o: Partial<EmuPose> = {}): EmuPose => ({pitch: -0.3, head: [0.72, 0.86, 0], neckMid: [0.66, 1.22, 0], headDir: [0.45, -1, 0], lid: 0.55, pads: [[0.12, 0, 0.12], [-0.18, 0, -0.11]], ...o}),
   /** look to the lens (B01-SH03, B07 callback): upright, head turned by `yaw` toward the camera, deadpan half-lid */
   look: (yaw: number, o: Partial<EmuPose> = {}): EmuPose => ({head: [0.4, 1.62, 0], headYaw: yaw, lid: 0.3, ...o}),
-  /** startle (T06, B03-SH01): head snaps up and back, eyes wide, the wing tuft twitches out a little; feet = `o.pads` (the pads of the pose it comes from, planted) */
-  startle: (o: Partial<EmuPose> = {}): EmuPose => ({head: [0.30, 1.70, 0], neckMid: [0.22, 1.36, 0], headDir: [0.6, 0.3, 0], pitch: 0.08, lid: 0, wing: wingMix(WING_FOLD, WING_FLAP_OUT, 0.4), ...o}),
+  /** startle (T06, B03-SH01): head snaps up and back, eyes wide, the wing tuft ruffles a little (mix 0.15); feet = `o.pads` (the pads of the pose it comes from, planted) */
+  startle: (o: Partial<EmuPose> = {}): EmuPose => ({head: [0.30, 1.70, 0], neckMid: [0.28, 1.36, 0], headDir: [0.6, 0.3, 0], pitch: 0.08, lid: 0, wing: wingMix(WING_FOLD, WING_FLAP_OUT, 0.15), ...o}),
   /** duck (T06, B04-SH03): head and neck dip forward and low, half-lid; feet = `o.pads`, planted */
   duck: (o: Partial<EmuPose> = {}): EmuPose => ({head: [0.55, 1.15, 0], neckMid: [0.40, 1.20, 0], headDir: [0.8, -0.3, 0], pitch: -0.10, bob: -0.04, lid: 0.2, ...o}),
 };
