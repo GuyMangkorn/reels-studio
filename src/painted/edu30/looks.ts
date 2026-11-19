@@ -5,7 +5,7 @@ import {shoulderPoint, type CastDef} from '../kit/cast';
 import type {Pt} from '../kit/painter';
 import {paintCrew, paintSeatedGunner, GUNNER1, GUNNER2, MEREDITH} from './cast';
 import {paintEmu, flockIn, paintFarFlock, type EmuMember} from './flock';
-import {EMU_POSES, emuHop, wingMix, WING_FLAP_OUT, WING_FOLD} from './emu';
+import {EMU_POSES, type EmuPose, blinkLid, emuHop, emuLensYaw, wingMix, WING_FLAP_OUT, WING_FOLD} from './emu';
 import {CLEARING, setNoClearing, paintKpPatch, paintWheatRidges, paintCamp, paintClearing, paintFarmhouse, paintFence, paintGum, paintNearStalks, paintPadGround, paintPadSky, paintScrub, paintWheatTexture, SUN, type PadLight} from './paddock';
 import {withSquash} from '../kit/figure-at';
 import {buildLewisGun, paintGear, paintTruck, placeBuild} from './props';
@@ -214,9 +214,20 @@ export const kp = (name: string, member: () => EmuMember, caption: string) => ()
   setNoClearing(false);
 }});
 /** Head yaw that turns the head toward the lens, held `off` rad short of square (a three-quarter look reads the bill; square-on reads as an owl). */
-const lensYaw = (at: V3, heading: number, off = 0.45) => { const toCam = Math.atan2(KP_EYE[2] - at[2], KP_EYE[0] - at[0]); let d = toCam - heading; while (d > Math.PI) d -= 2 * Math.PI; while (d < -Math.PI) d += 2 * Math.PI; return -d - Math.sign(-d) * off; };
+const lensYaw = (at: V3, heading: number, off = 0.45) => emuLensYaw(at, heading, {x: KP_EYE[0], y: KP_EYE[1], z: KP_EYE[2]}, off);
 export const KP_AT: V3 = [0, 0, -0.2];
 
+/** B01-SH03 close camera (head and neck fill the upper half, front three-quarter) with a pose override: KP-face and the T07 head stills. */
+const kpFace = (id: string, o: Partial<EmuPose>) => (): LookDef => {
+  const c: YCam = {x: 0.1, y: 1.58, z: 1.05, yaw: 0, pitch: -2 * DEG, f: 1000, hy: 640};
+  return {shot: `KP-EMU ${id} (B01-SH03 close)`, cam: c, t: 0, paper: '#efe6d0', reel: {tint: 'warm', amount: 1}, caption: 'สองรอบ', paint: (p) => {
+    MEASURE[id] = [];
+    setNoClearing(true);
+    paintPadSky(p, c); paintScrub(p, c, 30100, 300); paintPadGround(p, c, 30300, {eaten: 0}); paintWheatRidges(p, c, 30600, {r0: 6});
+    lead(id, 'EMU-HERO', paintEmu(p, c, {at: [0, 0, -0.2], heading: Math.PI / 2 - 0.4, pose: EMU_POSES.stand(o), scale: 1, seed: 36000, hero: true}, {sun: SUN.morning}));
+    setNoClearing(false);
+  }};
+};
 export const LOOK_DEFS: Record<string, () => LookDef> = {
   LF01a: lf01(1, 'LF01a'),
   LF01b: lf01(0.45, 'LF01b'),
@@ -231,13 +242,19 @@ export const LOOK_DEFS: Record<string, () => LookDef> = {
   'KP-peck': kp('peck', () => ({at: KP_AT, heading: Math.PI - 0.35, pose: EMU_POSES.peck(), scale: 1, seed: 36000, hero: true}), 'peck'),
   'KP-run': kp('run', () => ({at: [0.2, 0, -0.6], heading: 0.2, pose: EMU_POSES.run(0.62), scale: 1, seed: 36000, hero: true}), 'run'),
   'KP-bow': kp('bow', () => ({at: KP_AT, heading: Math.PI / 2 - 0.5, pose: EMU_POSES.bow(), scale: 1, seed: 36000, hero: true}), 'bow'),
-  'KP-face': (): LookDef => {   // B01-SH03 close: head and neck fill the upper half, front three-quarter, deadpan half-lid
-    const c: YCam = {x: 0.1, y: 1.58, z: 1.05, yaw: 0, pitch: -2 * DEG, f: 1000, hy: 640}, id = 'KP-face';
-    return {shot: 'KP-EMU face (B01-SH03 close)', cam: c, t: 0, paper: '#efe6d0', reel: {tint: 'warm', amount: 1}, caption: 'สองรอบ', paint: (p) => {
+  'KP-face': kpFace('KP-face', {lid: 0.32, headYaw: 0.25}),
+  // T07 head stills on the KP-face camera: open beak, neck-sac boom (sac 1), blink frame 1 (lid 1.0), nod peak (0.04 m), look back over the shoulder (B02-SH06 mark, camera at local 44)
+  'KP-beak': kpFace('KP-beak', {lid: 0.32, headYaw: 0.25, beak: 1}),
+  'KP-sac': kpFace('KP-sac', {lid: 0.32, headYaw: 0.25, sac: 1}),
+  'KP-blink': kpFace('KP-blink', {lid: blinkLid(1, 0.32), headYaw: 0.25}),
+  'KP-nod': kpFace('KP-nod', {lid: 0.32, headYaw: 0.25, nod: 0.04}),
+  'KP-lookback': (): LookDef => {
+    const c: YCam = {x: 2.2, y: 1.55, z: -10.6, yaw: 190 * DEG, pitch: -2 * DEG, f: 1000, hy: 860}, id = 'KP-lookback', at: V3 = [1.0, 0, -8.0], heading = Math.PI / 2;
+    return {shot: 'KP-EMU lookback (B02-SH06 local 44)', cam: c, t: 0, paper: '#efe6d0', reel: {tint: 'warm', amount: 1}, caption: 'สามคนเหรอ', paint: (p) => {
       MEASURE[id] = [];
       setNoClearing(true);
       paintPadSky(p, c); paintScrub(p, c, 30100, 300); paintPadGround(p, c, 30300, {eaten: 0}); paintWheatRidges(p, c, 30600, {r0: 6});
-      lead(id, 'EMU-HERO', paintEmu(p, c, {at: [0, 0, -0.2], heading: Math.PI / 2 - 0.4, pose: EMU_POSES.stand({lid: 0.32, headYaw: 0.25}), scale: 1, seed: 36000, hero: true}, {sun: SUN.morning}));
+      lead(id, 'EMU-HERO', paintEmu(p, c, {at, heading, pose: EMU_POSES.stand({lid: 0.3, headYaw: emuLensYaw(at, heading, c)}), scale: 1, seed: 36000, hero: true}, {sun: SUN.morning}));
       setNoClearing(false);
     }};
   },
