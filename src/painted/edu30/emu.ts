@@ -42,6 +42,12 @@ export type EmuPose = {
   lift?: number;
   /** wing(s) (T06): one value = both; [left, right]. Absent = no wing geometry at all (the locked look); FOLD hides in the plumage. */
   wing?: WingPose | [WingPose, WingPose];
+  /** T07: head nod, m down (the head joint and `nod` x 0.5 of the neck mid move down) */
+  nod?: number;
+  /** T07: beak, two states 0 (shut) or 1 (lower mandible 18 deg down, dark interior); values from a mix are read as >= 0.5 open */
+  beak?: number;
+  /** T07: neck-sac boom 0..1 (throat front swells at neck u 0.25-0.55, bare-skin patch) */
+  sac?: number;
   hero?: boolean;
   /** look-frame flock variety: plumage tone shift -1..1 (darker .. paler) */
   tone?: number;
@@ -131,17 +137,37 @@ export const buildEmu = (o: EmuPose = {}): Build => {
   }
   // neck: from the chest top, an S up to the head joint; feathered dark low, bare blue-grey skin above with sparse dark hair
   const nb = onLoft(body, 0.9, 0, 0.3);
-  const hj: L3 = o.head ?? [0.42, 1.6 + bob, 0];
-  const nm: L3 = o.neckMid ?? lerp(nb, hj, 0.5);
+  const hj0: L3 = o.head ?? [0.42, 1.6 + bob, 0], nod = o.nod ?? 0;
+  const hj: L3 = [hj0[0], hj0[1] - nod, hj0[2]];   // T07 nod: the head joint moves down by nod, the neck mid by nod x 0.5
+  const nm0: L3 = o.neckMid ?? lerp(nb, hj0, 0.5), nm: L3 = [nm0[0], nm0[1] - 0.5 * nod, nm0[2]];
   const neck = R.bone('neck', root, 'neck.base', nb);
-  const nk = spline([{p: nb, a: 0.1, b: 0.1}, {p: lerp(nb, nm, 0.5), a: 0.072, b: 0.075}, {p: nm, a: 0.056, b: 0.058}, {p: lerp(nm, hj, 0.6), a: 0.044, b: 0.046}, {p: hj, a: 0.04, b: 0.042}], 3);
+  const sac = clamp(o.sac ?? 0);
+  const nk0 = spline([{p: nb, a: 0.1, b: 0.1}, {p: lerp(nb, nm, 0.5), a: 0.072, b: 0.075}, {p: nm, a: 0.056, b: 0.058}, {p: lerp(nm, hj, 0.6), a: 0.044, b: 0.046}, {p: hj, a: 0.04, b: 0.042}], 6);
+  /** T07 sac: along neck u 0.25-0.55 the front-side radius grows x (1 + 0.6 sac) (centre moved forward by 0.3 sac of the radius, so the back of the neck stays), the sides x (1 + 0.6 sac) too (the throat swells all round its front half; widths tuned to the 1.45-1.75 row) */
+  const nkN = nk0.length - 1;
+  const nk = sac <= 0 ? nk0 : nk0.map((k, i) => {
+    const u = i / nkN, w = u > 0.25 && u < 0.55 ? Math.sin(Math.PI * (u - 0.25) / 0.30) ** 2 : 0;
+    if (w <= 0) return k;
+    const T = nrm(sub(nk0[Math.min(nkN, i + 1)].p, nk0[Math.max(0, i - 1)].p)), fwd = nrm(sub([1, 0, 0], mul(T, T[0])));
+    const g = 0.3 * sac * w;
+    return {p: add(k.p, mul(fwd, g * k.b)), a: k.a * (1 + 0.6 * sac * w), b: k.b * (1 + g)};
+  });
   const nmix = (u: number) => Math.max(0, Math.min(1, (u - 0.3) / 0.35));   // feathered base -> bare blue-grey skin, a soft blend (no collar edge)
   R.loft(neck, {m: 12, tex: {n: 2, amp: 0.06, px: 9}, keys: nk, col: (u, sd) => {
     const neckCol = mixColor(tc(EMU_PX.neckFeather), sd > 0.4 ? EMU_PX.skinDark : EMU_PX.skin, nmix(u));
     if (!(o.hero && u < 0.5 && sd < -0.1)) return neckCol;
     const bibCol = mixColor(EMU_PX.bib, EMU_PX.skin, nmix(u) * 0.6);
-    return u < 0.40 ? bibCol : mixColor(bibCol, neckCol, (u - 0.40) / 0.10);   // r4: the bib fades into the neck colour over u 0.40-0.50 (no step at u 0.5)
+    return u < 0.15 ? bibCol : mixColor(bibCol, neckCol, (u - 0.15) / 0.35);   // r5 N1: the bib fades into the neck colour over u 0.15-0.50 (no step at u 0.5)
   }});
+  if (sac > 0.02) {   // T07 sac patch: an oval of bare skin 0.10 x 0.14 m at sac 1 (scaling with sac) on the throat front at u 0.40, painted over the neck colour (its own colour)
+    const iu = Math.round(0.4 * nkN), kk = nk[iu], T = nrm(sub(nk[Math.min(nkN, iu + 1)].p, nk[Math.max(0, iu - 1)].p)), fwd = nrm(sub([1, 0, 0], mul(T, T[0])));
+    const hw = 0.05 * sac, hh = 0.07 * sac;   // half width (across the neck) and half height (along it)
+    const pts: L3[] = Array.from({length: 14}, (_, q) => {   // conforms to the swollen neck ellipse (a across, b front-back) and floats 14 mm off it (the painter sorts quads by depth: closer in, the neck quads draw over the patch)
+      const th = (q / 14) * Math.PI * 2, zl = hw * Math.cos(th), ul = hh * Math.sin(th), front = kk.b * Math.sqrt(Math.max(0.04, 1 - (zl / kk.a) ** 2)) + 0.014;
+      return add(add(add(kk.p, mul(fwd, front)), mul([0, 0, 1], zl)), mul(T, ul));
+    });
+    R.flat(neck, {pts, col: mixColor(EMU_PX.skin, '#ffffff', 0.18), two: true});
+  }
   for (let i = 0; i < 9; i++) for (const g of [1, -1]) {   // neck-base ruff
     const u = 0.05 + i * 0.045, r = hsh(++fk), a = onLoft(nk, u, g * 0.95, 0), b = onLoft(nk, u + 0.04, g * 0.95, 0);
     feather(R, neck, a, b, nrm([-0.3, -1, g * 0.3]), 0.07 * (0.7 + 0.5 * r), o.hero && i < 6 ? mixColor(EMU_PX.bib, EMU_PX.neckFeather, 0.25 + 0.3 * r) : tc(EMU_PX.neckFeather), 0.3);
@@ -153,7 +179,16 @@ export const buildEmu = (o: EmuPose = {}): Build => {
   const HP = (f: number, up: number, side: number): L3 => add(add(add(hc, mul(hd, f)), mul(hup, up)), mul(hside, side));
   R.loft(skull, {m: 12, cap: true, col: (u, sd) => (sd > 0.45 ? EMU_PX.neckFeather : EMU_PX.skin), tex: {n: 2, amp: 0.1, px: 4}, keys: [
     {p: HP(-0.05, 0.0, 0), a: 0.02, b: 0.02}, {p: HP(-0.03, 0.005, 0), a: 0.04, b: 0.042}, {p: HP(0.01, 0.006, 0), a: 0.046, b: 0.046}, {p: HP(0.045, 0.0, 0), a: 0.036, b: 0.034}, {p: HP(0.07, -0.006, 0), a: 0.024, b: 0.02}]});
-  R.loft(skull, {m: 10, cap: true, col: () => EMU_PX.bill, keys: [{p: HP(0.065, -0.008, 0), a: 0.024, b: 0.016}, {p: HP(0.1, -0.012, 0), a: 0.02, b: 0.011}, {p: HP(0.128, -0.018, 0), a: 0.011, b: 0.006}]});
+  const billK = [{f: 0.065, u: -0.008, a: 0.024, b: 0.016}, {f: 0.1, u: -0.012, a: 0.02, b: 0.011}, {f: 0.128, u: -0.018, a: 0.011, b: 0.006}];
+  if ((o.beak ?? 0) < 0.5) R.loft(skull, {m: 10, cap: true, col: () => EMU_PX.bill, keys: billK.map((k) => ({p: HP(k.f, k.u, 0), a: k.a, b: k.b}))});
+  else {   // T07 beak open (two states): upper mandible flatter and a little up, lower mandible rotated 18 deg down about the bill hinge (the bill base), dark interior
+    const th = 18 * Math.PI / 180, cs = Math.cos(th), sn = Math.sin(th), f0 = billK[0].f, u0 = billK[0].u;
+    const low = (f: number, u: number): [number, number] => [f0 + (f - f0) * cs + (u - u0) * sn, u0 - (f - f0) * sn + (u - u0) * cs];
+    R.loft(skull, {m: 10, cap: true, col: () => EMU_PX.bill, keys: billK.map((k) => ({p: HP(k.f, k.u + 0.4 * k.b, 0), a: k.a, b: k.b * 0.6}))});
+    R.loft(skull, {m: 10, cap: true, col: () => EMU_PX.bill, keys: billK.map((k) => { const [f, u] = low(k.f, k.u - 0.4 * k.b); return {p: HP(f, u, 0), a: k.a * 0.92, b: k.b * 0.6}; })});
+    const kt = billK[2], ut = kt.u + 0.4 * kt.b - 0.6 * kt.b, [lf, lu] = low(kt.f, kt.u - 0.4 * kt.b), lt = lu + 0.6 * kt.b, kb = billK[0], ub = kb.u + 0.4 * kb.b - 0.6 * kb.b, [bf, bu] = low(kb.f, kb.u - 0.4 * kb.b), lb = bu + 0.6 * kb.b;
+    R.flat(skull, {pts: [HP(kb.f, ub, 0), HP(kt.f, ut, 0), HP(lf, lt, 0), HP(bf, lb, 0)], col: '#2a1d16', two: true});
+  }
   for (let i = 0; i < 7; i++) {   // crown hair
     const r = hsh(++fk), a = HP(-0.04 + i * 0.012, 0.035, (r - 0.5) * 0.04), b = HP(-0.03 + i * 0.012, 0.035, (r - 0.5) * 0.04);
     feather(R, skull, a, b, nrm(add(mul(hup, 0.4), mul(hd, -1))), 0.035 + 0.02 * r, EMU_PX.neckFeather, 0.4);
@@ -169,7 +204,9 @@ export const buildEmu = (o: EmuPose = {}): Build => {
     R.loft(eb, {m: 12, col: () => EMU_PX.eyeRing, keys: ballKeys(e, 0.021, out)});
     R.loft(eb, {m: 12, col: () => EMU_PX.iris, keys: ballKeys(add(e, mul(out, 0.006)), 0.0165, out)});
     R.loft(eb, {m: 6, col: () => EMU_PX.catch, keys: ballKeys(add(add(e, mul(out, 0.02)), add(mul(hup, 0.006), mul(hd, 0.004))), 0.0045, out)});
-    if (lid > 0.02) {   // the lid: a skin-coloured cap over the upper part of the eye, its edge a straight line
+    if (lid > 0.7) {   // T07 blink frames (lid 0.8, 1.0): a skin-coloured lid ball over the whole eye, so a shut eye hides ring and iris from any view (a flat cap slid off the eye in three-quarter views)
+      R.loft(eb, {m: 12, col: () => EMU_PX.skinDark, keys: ballKeys(add(e, mul(out, 0.007)), 0.026, out)});
+    } else if (lid > 0.02) {   // the lid: a skin-coloured cap over the upper part of the eye, its edge a straight line
       const c0 = add(e, mul(out, 0.022)), top = 0.026, edge = top - lid * 0.052;
       R.flat(eb, {pts: [add(add(c0, mul(hd, -0.026)), mul(hup, top)), add(add(c0, mul(hd, 0.026)), mul(hup, top)), add(add(c0, mul(hd, 0.026)), mul(hup, edge)), add(add(c0, mul(hd, -0.026)), mul(hup, edge))], col: EMU_PX.skinDark, two: true, ink: '#2a2f36'});
     }
@@ -247,8 +284,8 @@ const DEFAULT_HEAD_DIR: L3 = [1, -0.12, 0];
  *  build default (FOLD; the loft rig's mid-neck). T07 and T15 add their fields here. */
 export const mixEmuPose = (a: EmuPose, b: EmuPose, u0: number): EmuPose => {
   const u = clamp(u0), r: EmuPose = {};
-  const num = (k: 'walk' | 'pitch' | 'bob' | 'headYaw' | 'lid' | 'lift') => { if (a[k] !== undefined || b[k] !== undefined) r[k] = mixNum(a[k] ?? 0, b[k] ?? 0, u); };
-  (['walk', 'pitch', 'bob', 'headYaw', 'lid', 'lift'] as const).forEach(num);
+  const num = (k: 'walk' | 'pitch' | 'bob' | 'headYaw' | 'lid' | 'lift' | 'nod' | 'beak' | 'sac') => { if (a[k] !== undefined || b[k] !== undefined) r[k] = mixNum(a[k] ?? 0, b[k] ?? 0, u); };
+  (['walk', 'pitch', 'bob', 'headYaw', 'lid', 'lift', 'nod', 'beak', 'sac'] as const).forEach(num);   // T07: nod, beak, sac mix from their build default 0 when one side lacks them
   if (a.stride !== undefined || b.stride !== undefined) r.stride = a.stride !== undefined && b.stride !== undefined ? mixNum(a.stride, b.stride, u) : (a.stride ?? b.stride);
   const bobA = a.bob ?? 0, bobB = b.bob ?? 0, headDef = (o: EmuPose, bob: number): L3 => o.head ?? [0.42, 1.6 + bob, 0];
   if (a.head || b.head) r.head = mix3(headDef(a, bobA), headDef(b, bobB), u);
@@ -297,3 +334,24 @@ export const emuHop = (f: number, o: {side: 1 | -1; dist: number; from?: EmuPose
   const w = keyAt([[0, 0], [0.001, 0.8], [6, 0.8], [9, 0]], f);
   return {pose: {...from, pads, bob, pitch, wing: wingMix(WING_FOLD, WING_FLAP_OUT, w)}, offset: [0, h, o.side * o.dist * lat]};
 };
+
+// ------------------------------------------------------------------ T07 head controls (pure functions of the frame)
+const easeInOut = (t: number) => { const x = clamp(t); return x * x * (3 - 2 * x); };
+/** Head yaw (rad, + = the bird's left) that turns the head toward a camera eye, held `off` rad short of square, clamped to +-1.2 (KP-look math, any camera). `heading` = the bird's forward angle in the (x, z) plane. */
+export const emuLensYaw = (at: [number, number, number], heading: number, cam: {x: number; y: number; z: number}, off = 0.45): number => {
+  const toCam = Math.atan2(cam.z - at[2], cam.x - at[0]); let d = toCam - heading;
+  while (d > Math.PI) d -= 2 * Math.PI; while (d < -Math.PI) d += 2 * Math.PI;
+  return Math.max(-1.2, Math.min(1.2, -d - Math.sign(-d) * off));
+};
+/** A head turn at frame f: ease-in-out from `from` (rad) at f0 to `to` at f1, held after. */
+export const emuLookTurn = (f: number, f0: number, f1: number, from: number, to: number): number => mixNum(from, to, easeInOut((f - f0) / (f1 - f0)));
+/** Blink lid at frame f of a blink that starts at frame 0: 0.8, 1.0, 0.6, then `base` (f < 0 or f > 3 = `base`). */
+export const blinkLid = (f: number, base: number): number => (f < 0 || f > 3 ? base : [0.8, 1.0, 0.6, base][f]);
+/** Two-state talking beak at frame L: 1 on frames onset, onset + 1, onset + 2 of any onset, else 0. */
+export const talkBeak = (L: number, onsets: number[]): 0 | 1 => (onsets.some((o) => L >= o && L <= o + 2) ? 1 : 0);
+/** Nod depth (m) at frame f of a nod that starts at s: s 0, s + 3 0.04 (ease-out), s + 6 0 (ease-in-out). */
+export const nodDepth = (f: number, s: number): number => (f <= s || f >= s + 6 ? 0 : f <= s + 3 ? 0.04 * easeOut((f - s) / 3) : 0.04 * (1 - easeInOut((f - s - 3) / 3)));
+/** Nod depth at frame f for several nods (one start each). */
+export const emuNod = (f: number, starts: number[]): number => Math.max(0, ...starts.map((s) => nodDepth(f, s)));
+/** Sac keys at B01-SH03 local frame L: 26 0, 34 1.0 (ease-out), hold to 40, 48 0.2 (ease-in-out), 50 0.1. */
+export const emuSac = (L: number): number => (L <= 26 ? 0 : L <= 34 ? easeOut((L - 26) / 8) : L <= 40 ? 1 : L <= 48 ? mixNum(1, 0.2, easeInOut((L - 40) / 8)) : L <= 50 ? mixNum(0.2, 0.1, (L - 48) / 2) : 0.1);

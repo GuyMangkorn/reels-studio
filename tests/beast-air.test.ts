@@ -18,7 +18,8 @@ const recorder = (): {p: Painter; ops: Op[]} => {
 };
 const hash = (ops: Op[]) => createHash('sha1').update(JSON.stringify(ops)).digest('hex');
 const C: YCam = {x: 0, y: 1.05, z: 2.5, yaw: 0, pitch: 0, f: 1000, hy: 760};
-const GOLD: Record<string, string> = {emu: '5b025d09100beb3c58a53ef73b4ab56272323717', raptor: 'eed0377cf914680c011af4f2189480ca05444efe'};
+// emu re-taken 20 Nov 2026 (EDU-EP30 T06 r5 neck rows inside T07: neck spline subdivision 3 -> 6 gives 25 rings); before: 5b025d09100beb3c58a53ef73b4ab56272323717
+const GOLD: Record<string, string> = {emu: '44f17e483b60c50368d6417c3281a7d034b51d11', raptor: 'eed0377cf914680c011af4f2189480ca05444efe'};
 const paint = (B: Build, o: Record<string, unknown> = {}) => { const r = recorder(); const a = paintBeast(r.p, C, B, {at: [0, -0.2], heading: Math.PI, ground: 0.2, seed: 36000, shadowOp: 80, ...o}); return {...r, a}; };
 const emuB = () => buildEmu(EMU_POSES.stand());
 const rapB = () => BEAST_KIT.RAPTOR.stand();
