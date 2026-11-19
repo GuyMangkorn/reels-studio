@@ -56,7 +56,14 @@ const QS: number[] = QP.reduce<number[]>((a, v, i) => { a.push(i === 0 ? 0 : a[i
 export const QUEUE_LEN = QS[QS.length - 1];
 const qSeg = (s: number) => { const t = Math.max(0, Math.min(QUEUE_LEN, s)); let i = 0; while (i < QP.length - 2 && QS[i + 1] < t) i++; return {i, u: (t - QS[i]) / (QS[i + 1] - QS[i])}; };
 /** Position at arc length s (m) from the gun end (-3.0, 0.33, -4.9) back along the path (clamped). y is the water surface (DAM.water) wherever the point is over water (the east-shore wade, r3 Q-1), else the bank height. */
-export const queuePoint = (s: number): V3 => { const {i, u} = qSeg(s), a = QP[i], b = QP[i + 1]; const x = a[0] + (b[0] - a[0]) * u, z = a[2] + (b[2] - a[2]) * u; return [x, overWater(x, z) ? DAM.water : a[1] + (b[1] - a[1]) * u, z]; };
+const qXZ = (s: number): [number, number] => { const {i, u} = qSeg(s), a = QP[i], b = QP[i + 1]; return [a[0] + (b[0] - a[0]) * u, a[2] + (b[2] - a[2]) * u]; };
+const EASE_LEN = 0.6, EASE_STEP = 0.01;
+/** Wet flags every 0.01 m of arc length; the dry side of each waterline crossing eases to the surface over EASE_LEN (r4). */
+let QWETC: boolean[] | null = null;
+const qWet = () => QWETC ??= Array.from({length: Math.floor(QUEUE_LEN / EASE_STEP) + 1}, (_, k) => { const [x, z] = qXZ(k * EASE_STEP); return overWater(x, z); });
+const wetDist = (s: number) => { const k = Math.round(s / EASE_STEP), n = Math.ceil(EASE_LEN / EASE_STEP); const W = qWet(); for (let d = 0; d <= n; d++) if (W[k - d] || W[k + d]) return d * EASE_STEP; return EASE_LEN; };
+/** Position at arc length s (m) from the gun end (-3.0, 0.33, -4.9) back along the path (clamped). y is the water surface (DAM.water) wherever the point is over water (the east-shore wade, r3 Q-1); over the EASE_LEN (0.6 m) of arc on the dry side of each waterline crossing it eases linearly from the bank height to the surface (r4), else the bank height. */
+export const queuePoint = (s: number): V3 => { const {i, u} = qSeg(s), a = QP[i], b = QP[i + 1]; const x = a[0] + (b[0] - a[0]) * u, z = a[2] + (b[2] - a[2]) * u; const bank = a[1] + (b[1] - a[1]) * u; if (overWater(x, z)) return [x, DAM.water, z]; const w = wetDist(Math.max(0, Math.min(QUEUE_LEN, s))) / EASE_LEN; return [x, DAM.water + (bank - DAM.water) * w, z]; };
 /** Unit tangent at arc length s, pointing away from the gun end (the way back along the path). */
 export const queueTangent = (s: number): V3 => { const {i} = qSeg(s), a = QP[i], b = QP[i + 1], l = Math.hypot(b[0] - a[0], b[1] - a[1], b[2] - a[2]); return [(b[0] - a[0]) / l, (b[1] - a[1]) / l, (b[2] - a[2]) / l]; };
 /** Arc length of the rim point at world x (rim segment x 8.0 .. -3.0): x 4.6 -> 7.6, x 1.6 -> 4.6. */

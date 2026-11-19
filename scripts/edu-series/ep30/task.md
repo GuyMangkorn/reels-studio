@@ -4,7 +4,7 @@ Record [delivery.md](delivery.md) · Updated 2026-11-19, Film (W5.2 plate ticket
 
 ## EDU-EP30-SHORT
 
-**Now:** dispatch Boss (one fresh Sonnet medium invocation per ticket, parallel worktrees) on the dispatchable tickets of [EDU-EP30-TICKETS-R4](tickets/index.md): r4 fix passes T04 (per-circle smoke alpha), T06 (flap-back wing, bib-to-neck blend), T10 (waterline ease), new T36 (unshaped fist with thumb) and T14; coordinator publishes ROWS-R7 (review page: pending) and shows the user the T06 r4 neck before/after crop (touches the approved emu). **Next:** Film's look checks of the T06 r4 sheet (before T08, T16) and the T36 fist (before T12); T05, T07 as T04 r4 and T06 r4 land; then T08, T15, T12, T16, T17, T18; Ton's cue sheet is done; then the plates and the Draft
+**Now:** dispatch Boss (one fresh Sonnet medium invocation per ticket, parallel worktrees) on the dispatchable tickets of [EDU-EP30-TICKETS-R4](tickets/index.md): r4 fix passes T04 (per-circle smoke alpha), T06 (flap-back wing, bib-to-neck blend), T10 (waterline ease, built r4 `a6907b7`, awaiting Film review), new T36 (unshaped fist with thumb) and T14; coordinator publishes ROWS-R7 (review page: pending) and shows the user the T06 r4 neck before/after crop (touches the approved emu). **Next:** Film's look checks of the T06 r4 sheet (before T08, T16) and the T36 fist (before T12); T05, T07 as T04 r4 and T06 r4 land; then T08, T15, T12, T16, T17, T18; Ton's cue sheet is done; then the plates and the Draft
 
 - [x] W0 Ideation
   - [x] W0.1 Preaw concepts — [C110 R19](../concepts/C110.md)
