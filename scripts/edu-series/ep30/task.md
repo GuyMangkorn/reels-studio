@@ -1,10 +1,10 @@
 # Tasks — EP30
 
-Record [delivery.md](delivery.md) · Updated 2026-11-19, coordinator
+Record [delivery.md](delivery.md) · Updated 2026-11-19, Film (W5.1 timed scene sheets SCENE-R1; ROWS-R6)
 
 ## EDU-EP30-SHORT
 
-**Now:** W2 Film brief and storyboard (not started) **Next:** Film — brief on EDU-EP30-SCRIPT-R1
+**Now:** coordinator publishes ROWS-R6 (review page: pending); Film plate tickets from [short/scene-sheets/](short/scene-sheets/index.md) (EDU-EP30-SCENE-R1, 26 shots, 2012 f; plate-tickets trial); Editor fixes the L17/L18 voice split (sheets index O1) **Next:** W5.2 Boss plates and W5.2s Ton sounds in parallel, then W5.3 Draft
 
 - [x] W0 Ideation
   - [x] W0.1 Preaw concepts — [C110 R19](../concepts/C110.md)
@@ -18,19 +18,19 @@ Record [delivery.md](delivery.md) · Updated 2026-11-19, coordinator
   - [x] W1.4 Length check: est. 59.4-63 s, no cut; measure at voice sample (user, 2026-11-19)
   - [x] W1.5 User approval of SCRIPT-R1 with L17=1908, Meredith silent, L05 kept (2026-11-19)
 - [ ] W2 Brief and storyboard
-  - [ ] W2.1 Film brief (text)
-  - [ ] W2.2 Film storyboard rows (review-rows.json)
-  - [ ] W2.3 Storyboard page published
+  - [x] W2.1 Film brief (text) — [EDU-EP30-BRIEF-R1](short/film-brief.md), 2026-11-19
+  - [x] W2.2 Film storyboard rows (review-rows.json) — [EDU-EP30-BOARD-R1](short/storyboard.md) / EDU-EP30-ROWS-R1, 26 shots untimed, 2026-11-19
+  - [x] W2.3 Storyboard page published (2026-11-19, artifact v1795071139-b24a)
 - [ ] W3 Look frames and storyboard pass
-  - [ ] W3.1 Look frames on the page (0/L locations)
-  - [ ] W3.2 Look frames approved (look lock)
-  - [ ] W3.3 Storyboard passed (0/N shots)
+  - [x] W3.1 Look frames in the rows (3/3 locations: LF01a/b paddock, LF02 dam, LF03 arms; + KP-EMU 7 stills) — [brief#look-frames](short/film-brief.md#look-frames), EDU-EP30-ROWS-R4 (R3 fixed LF02 colour, LF03 shield size; R4 redesigns LF02 after its second failed viewer check), 2026-11-19 (review page: pending)
+  - [x] W3.2 Look frames approved (look lock): user, 2026-11-19 — Q3 LF01a full tint (VD30-01a), Q4 KP-EMU incl. bow (VD30-05b), Q5 P1/D3/A1; LF01a, LF02 (R4, known water/reflection limits), LF03, KP-EMU locked ([brief#w32-look-lock](short/film-brief.md#w32-look-lock))
+  - [x] W3.3 Storyboard passed (26/26, user 2026-11-19: Q6 three-quarter B04-SH03; all shots accepted via round pass, ROWS-R5)
 - [ ] W4 Voice lock
-  - [ ] W4.1 Voice chosen
-  - [ ] W4.2 Narration generated and measured
-  - [ ] W4.3 User approves the voice
+  - [x] W4.1 Voice chosen — samples made 2026-11-19 (Editor): NARR Kore L01 x1.08 (6.5 s) and x1.15 (6.1 s), FARMER Algenib L03 (3.0 s), EMU Puck L07 (2.9 s); store `projects/edu/EDU/samples/ep30/`; FARMER Algenib and EMU Puck accepted (user, 2026-11-19); no cut for length; new pace samples x1.05 (6.71 s) and x1.00 (7.05 s) made, awaiting the pace pick. Projection from the sample: about 69.5 s (x1.08) / 65.8 s (x1.15) against 60-63 s, so cuts are needed (see delivery.md log)
+  - [x] W4.2 Narration generated and measured — EDU-EP30-VOICE-R1 ([short/voice-lock.md](short/voice-lock.md)), Kore x1.05, speech ends 65.07 s, 67.07 s with the 2.0 s hold, 2026-11-19
+  - [x] W4.3 User approves the voice (VOICE-R1, 67.07 s, user 2026-11-19, structured question)
 - [ ] W5 Draft
-  - [ ] W5.1 Film timed scene sheets
+  - [x] W5.1 Film timed scene sheets — [EDU-EP30-SCENE-R1](short/scene-sheets/index.md), 26 shots, 2012 frames (67.07 s), ready-for-dev; rows EDU-EP30-ROWS-R6 timed, 2026-11-19 (review page: pending)
   - [ ] W5.2 Boss assets and plates (shot groups 0/G)
   - [ ] W5.2s Ton sounds and cue sheet (0/C cues; generated/library)
   - [ ] W5.3 Draft passed (0/N shots)

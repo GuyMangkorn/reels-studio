@@ -1,0 +1,312 @@
+{
+ "B01-SH01@board": {
+  "clip": "",
+  "hash": "3118066d63e1",
+  "note": "default (round 2026-11-19)",
+  "rev": "EDU-EP30-ROWS-R5",
+  "shot": "B01-SH01",
+  "stage": "board",
+  "status": "ok",
+  "updatedAt": "2026-11-19T09:32:55Z"
+ },
+ "B01-SH02@board": {
+  "clip": "",
+  "hash": "3aa5fdf55ad1",
+  "note": "default (round 2026-11-19)",
+  "rev": "EDU-EP30-ROWS-R5",
+  "shot": "B01-SH02",
+  "stage": "board",
+  "status": "ok",
+  "updatedAt": "2026-11-19T09:32:55Z"
+ },
+ "B01-SH03@board": {
+  "clip": "",
+  "hash": "1e8f631a0fd8",
+  "note": "default (round 2026-11-19)",
+  "rev": "EDU-EP30-ROWS-R5",
+  "shot": "B01-SH03",
+  "stage": "board",
+  "status": "ok",
+  "updatedAt": "2026-11-19T09:32:55Z"
+ },
+ "B02-SH01@board": {
+  "clip": "",
+  "hash": "e62cc1b05898",
+  "note": "default (round 2026-11-19)",
+  "rev": "EDU-EP30-ROWS-R5",
+  "shot": "B02-SH01",
+  "stage": "board",
+  "status": "ok",
+  "updatedAt": "2026-11-19T09:32:55Z"
+ },
+ "B02-SH02@board": {
+  "clip": "",
+  "hash": "27b3d12eb22f",
+  "note": "default (round 2026-11-19)",
+  "rev": "EDU-EP30-ROWS-R5",
+  "shot": "B02-SH02",
+  "stage": "board",
+  "status": "ok",
+  "updatedAt": "2026-11-19T09:32:55Z"
+ },
+ "B02-SH03@board": {
+  "clip": "",
+  "hash": "8670ccbedd45",
+  "note": "default (round 2026-11-19)",
+  "rev": "EDU-EP30-ROWS-R5",
+  "shot": "B02-SH03",
+  "stage": "board",
+  "status": "ok",
+  "updatedAt": "2026-11-19T09:32:55Z"
+ },
+ "B02-SH04@board": {
+  "clip": "",
+  "hash": "7010dcd5aaee",
+  "note": "default (round 2026-11-19)",
+  "rev": "EDU-EP30-ROWS-R5",
+  "shot": "B02-SH04",
+  "stage": "board",
+  "status": "ok",
+  "updatedAt": "2026-11-19T09:32:55Z"
+ },
+ "B02-SH05@board": {
+  "clip": "",
+  "hash": "20b443ad8799",
+  "note": "default (round 2026-11-19)",
+  "rev": "EDU-EP30-ROWS-R5",
+  "shot": "B02-SH05",
+  "stage": "board",
+  "status": "ok",
+  "updatedAt": "2026-11-19T09:32:55Z"
+ },
+ "B03-SH01@board": {
+  "clip": "",
+  "hash": "0f2a3f1f2aec",
+  "note": "default (round 2026-11-19)",
+  "rev": "EDU-EP30-ROWS-R5",
+  "shot": "B03-SH01",
+  "stage": "board",
+  "status": "ok",
+  "updatedAt": "2026-11-19T09:32:55Z"
+ },
+ "B03-SH02@board": {
+  "clip": "",
+  "hash": "9afeac785018",
+  "note": "default (round 2026-11-19)",
+  "rev": "EDU-EP30-ROWS-R5",
+  "shot": "B03-SH02",
+  "stage": "board",
+  "status": "ok",
+  "updatedAt": "2026-11-19T09:32:55Z"
+ },
+ "B03-SH03@board": {
+  "clip": "",
+  "hash": "92b034e24335",
+  "note": "default (round 2026-11-19)",
+  "rev": "EDU-EP30-ROWS-R5",
+  "shot": "B03-SH03",
+  "stage": "board",
+  "status": "ok",
+  "updatedAt": "2026-11-19T09:32:55Z"
+ },
+ "B03-SH04@board": {
+  "clip": "",
+  "hash": "1b1acc3fb0df",
+  "note": "default (round 2026-11-19)",
+  "rev": "EDU-EP30-ROWS-R5",
+  "shot": "B03-SH04",
+  "stage": "board",
+  "status": "ok",
+  "updatedAt": "2026-11-19T09:32:55Z"
+ },
+ "B04-SH01@board": {
+  "clip": "",
+  "hash": "d3f2ef940937",
+  "note": "default (round 2026-11-19)",
+  "rev": "EDU-EP30-ROWS-R5",
+  "shot": "B04-SH01",
+  "stage": "board",
+  "status": "ok",
+  "updatedAt": "2026-11-19T09:32:55Z"
+ },
+ "B04-SH02@board": {
+  "clip": "",
+  "hash": "6871213d2cf5",
+  "note": "default (round 2026-11-19)",
+  "rev": "EDU-EP30-ROWS-R5",
+  "shot": "B04-SH02",
+  "stage": "board",
+  "status": "ok",
+  "updatedAt": "2026-11-19T09:32:55Z"
+ },
+ "B04-SH03@board": {
+  "clip": "",
+  "hash": "81ea946835b3",
+  "note": "default (round 2026-11-19)",
+  "rev": "EDU-EP30-ROWS-R5",
+  "shot": "B04-SH03",
+  "stage": "board",
+  "status": "ok",
+  "updatedAt": "2026-11-19T09:32:55Z"
+ },
+ "B04-SH04@board": {
+  "clip": "",
+  "hash": "c388cd40da28",
+  "note": "default (round 2026-11-19)",
+  "rev": "EDU-EP30-ROWS-R5",
+  "shot": "B04-SH04",
+  "stage": "board",
+  "status": "ok",
+  "updatedAt": "2026-11-19T09:32:55Z"
+ },
+ "B04-SH05@board": {
+  "clip": "",
+  "hash": "2d98a10364e1",
+  "note": "default (round 2026-11-19)",
+  "rev": "EDU-EP30-ROWS-R5",
+  "shot": "B04-SH05",
+  "stage": "board",
+  "status": "ok",
+  "updatedAt": "2026-11-19T09:32:55Z"
+ },
+ "B05-SH01@board": {
+  "clip": "",
+  "hash": "6273b7b44bad",
+  "note": "default (round 2026-11-19)",
+  "rev": "EDU-EP30-ROWS-R5",
+  "shot": "B05-SH01",
+  "stage": "board",
+  "status": "ok",
+  "updatedAt": "2026-11-19T09:32:55Z"
+ },
+ "B05-SH02@board": {
+  "clip": "",
+  "hash": "fb5bae3e0559",
+  "note": "default (round 2026-11-19)",
+  "rev": "EDU-EP30-ROWS-R5",
+  "shot": "B05-SH02",
+  "stage": "board",
+  "status": "ok",
+  "updatedAt": "2026-11-19T09:32:55Z"
+ },
+ "B05-SH03@board": {
+  "clip": "",
+  "hash": "d629b84ece5c",
+  "note": "default (round 2026-11-19)",
+  "rev": "EDU-EP30-ROWS-R5",
+  "shot": "B05-SH03",
+  "stage": "board",
+  "status": "ok",
+  "updatedAt": "2026-11-19T09:32:55Z"
+ },
+ "B06-SH01@board": {
+  "clip": "",
+  "hash": "5596e8c4dad8",
+  "note": "default (round 2026-11-19)",
+  "rev": "EDU-EP30-ROWS-R5",
+  "shot": "B06-SH01",
+  "stage": "board",
+  "status": "ok",
+  "updatedAt": "2026-11-19T09:32:55Z"
+ },
+ "B06-SH02@board": {
+  "clip": "",
+  "hash": "3398e23c75fe",
+  "note": "default (round 2026-11-19)",
+  "rev": "EDU-EP30-ROWS-R5",
+  "shot": "B06-SH02",
+  "stage": "board",
+  "status": "ok",
+  "updatedAt": "2026-11-19T09:32:55Z"
+ },
+ "B06-SH03@board": {
+  "clip": "",
+  "hash": "459f3a03488a",
+  "note": "default (round 2026-11-19)",
+  "rev": "EDU-EP30-ROWS-R5",
+  "shot": "B06-SH03",
+  "stage": "board",
+  "status": "ok",
+  "updatedAt": "2026-11-19T09:32:55Z"
+ },
+ "B06-SH04@board": {
+  "clip": "",
+  "hash": "0a5f5f55fd57",
+  "note": "default (round 2026-11-19)",
+  "rev": "EDU-EP30-ROWS-R5",
+  "shot": "B06-SH04",
+  "stage": "board",
+  "status": "ok",
+  "updatedAt": "2026-11-19T09:32:55Z"
+ },
+ "B07-SH01@board": {
+  "clip": "",
+  "hash": "cb8ba6710c9f",
+  "note": "default (round 2026-11-19)",
+  "rev": "EDU-EP30-ROWS-R5",
+  "shot": "B07-SH01",
+  "stage": "board",
+  "status": "ok",
+  "updatedAt": "2026-11-19T09:32:55Z"
+ },
+ "B07-SH02@board": {
+  "clip": "",
+  "hash": "22cdfeda2383",
+  "note": "default (round 2026-11-19)",
+  "rev": "EDU-EP30-ROWS-R5",
+  "shot": "B07-SH02",
+  "stage": "board",
+  "status": "ok",
+  "updatedAt": "2026-11-19T09:32:55Z"
+ },
+ "Q1": {
+  "clip": "",
+  "hash": "11d7e79477d5",
+  "note": "",
+  "rev": "EDU-EP30-ROWS-R1",
+  "shot": "Q1",
+  "stage": "",
+  "status": "ok",
+  "updatedAt": "2026-11-19T06:52:28.643Z"
+ },
+ "Q2": {
+  "clip": "",
+  "hash": "c9f3a9e56d00",
+  "note": "",
+  "rev": "EDU-EP30-ROWS-R1",
+  "shot": "Q2",
+  "stage": "",
+  "status": "ok",
+  "updatedAt": "2026-11-19T06:52:32.263Z"
+ },
+ "Q3": {
+  "clip": "",
+  "hash": "b5d5642f6a69",
+  "note": "",
+  "rev": "EDU-EP30-ROWS-R4",
+  "shot": "Q3",
+  "stage": "",
+  "status": "ok",
+  "updatedAt": "2026-11-19T08:39:01.318Z"
+ },
+ "Q4": {
+  "clip": "",
+  "hash": "16b26dfa9f2c",
+  "note": "",
+  "rev": "EDU-EP30-ROWS-R4",
+  "shot": "Q4",
+  "stage": "",
+  "status": "ok",
+  "updatedAt": "2026-11-19T08:38:55.289Z"
+ },
+ "Q5": {
+  "clip": "",
+  "hash": "5128153ac1f5",
+  "note": "",
+  "rev": "EDU-EP30-ROWS-R4",
+  "shot": "Q5",
+  "stage": "",
+  "status": "ok",
+  "updatedAt": "2026-11-19T08:38:59.900Z"
+ }
+}
