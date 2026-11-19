@@ -1,0 +1,198 @@
+{
+  "public/audio/bed/bed_comic-plod-squelch-groove_01.wav": {
+    "store": "library/sound/music/bed/bed_comic-plod-squelch-groove_01.wav",
+    "sha256": "385ae75a256a42ff435d0d789088b57c6e7a1afcecb335bc2b8d25b69539391b"
+  },
+  "public/audio/bed/bed_comic-roman-pluck-groove-120_01.wav": {
+    "store": "library/sound/music/bed/bed_comic-roman-pluck-groove-120_01.wav",
+    "sha256": "c28f435a9b1147290f237374e10e10ef86822ed74cd8d3769aefa14ad37e7158"
+  },
+  "public/audio/bed/bed_hopeful-evening-pad_01.wav": {
+    "store": "library/sound/music/bed/bed_hopeful-evening-pad_01.wav",
+    "sha256": "714ca8b7b0c2284b1697e792b302e75db03bbf86a6fcce5b25d712626b8fe288"
+  },
+  "public/audio/bed/bed_mock-brass-held-chord_01.wav": {
+    "store": "library/sound/music/bed/bed_mock-brass-held-chord_01.wav",
+    "sha256": "3fb5d5e38f829707174f012a6ffcfab4570836d6d75cf76647988c6967ccdf64"
+  },
+  "public/audio/bed/bed_mock-fanfare-intro_01.wav": {
+    "store": "library/sound/music/bed/bed_mock-fanfare-intro_01.wav",
+    "sha256": "1d3f5eec992c7af750be6a0be39ed124fe42acf9dd41a6f40dac9609354d05eb"
+  },
+  "public/audio/city/city_roman-street-dusk-murmur_01.wav": {
+    "store": "library/sound/ambience/city/city_roman-street-dusk-murmur_01.wav",
+    "sha256": "b718ca09e169165a20af33ad3c1bd3715e779ef315c1198fa5154b9be9ee8a8c"
+  },
+  "public/audio/city/city_roman-street-evening-murmur_01.wav": {
+    "store": "library/sound/ambience/city/city_roman-street-evening-murmur_01.wav",
+    "sha256": "b4dd25a0847d3dae068f4f9bf318b0353b800446e4def407314b2ed110055bb8"
+  },
+  "public/audio/edu/EDU-EP26-SHORT-draft-stem-v1.wav": {
+    "store": "projects/edu/EDU/audio/EDU-EP26-SHORT/EDU-EP26-SHORT-final-stem-v1.wav",
+    "sha256": "ec0ea00e65f47d87d1eeb830d726668c1fa0e9bf5ee8b3bba7b92ec98e8c9cc3"
+  },
+  "public/audio/room/room_marble-hall-hush_01.wav": {
+    "store": "library/sound/ambience/room/room_marble-hall-hush_01.wav",
+    "sha256": "bc02968178a3754c2b0a6ac0fff494786b93eebd0eb19ee6995b2d9066ff0d77"
+  },
+  "public/audio/room/room_roman-workshop-tub-tone_01.wav": {
+    "store": "library/sound/ambience/room/room_roman-workshop-tub-tone_01.wav",
+    "sha256": "bf20c1a9cbae2d4144b9b9200417c1a01ac3bc0717c6fed8ea37dee7f6b7d906"
+  },
+  "public/narration/EDU-EP26-SHORT-narration-v1.wav": {
+    "store": "projects/edu/EDU/audio/EDU-EP26-SHORT/EDU-EP26-SHORT-narration-v1.wav",
+    "sha256": "e83b234cd88bdeb53190579491409b300aca6f603d4c761f550d8d16223b508e"
+  },
+  "public/sfx/comedy/comedy_bassoon-sag-sigh_01.wav": {
+    "store": "library/sound/sfx/comedy/comedy_bassoon-sag-sigh_01.wav",
+    "sha256": "79d40fc54ebfaa9ff3632d8c3f6c075ebc9d1e030d5e56843dd22b18c89d3b08"
+  },
+  "public/sfx/comedy/comedy_brass-note-wah-droop_01.wav": {
+    "store": "library/sound/sfx/comedy/comedy_brass-note-wah-droop_01.wav",
+    "sha256": "fe2aba4a6461e3494f835d9d150e29f7a168655dc036ddd4e171686109143669"
+  },
+  "public/sfx/comedy/comedy_brass-stab-woodblock-button_01.wav": {
+    "store": "library/sound/sfx/comedy/comedy_brass-stab-woodblock-button_01.wav",
+    "sha256": "3e1ed3dc348463d90b87ead24ef0f1bba745dd166564128181f34e917cd8b496"
+  },
+  "public/sfx/comedy/comedy_deadpan-record-stop-tick_01.wav": {
+    "store": "library/sound/sfx/comedy/comedy_deadpan-record-stop-tick_01.wav",
+    "sha256": "1c1e40083bbf3a5f7ec9d7c076bd906283389923ddd380ae376671e91a6a3959"
+  },
+  "public/sfx/comedy/comedy_double-stomp-pluck-stab_01.wav": {
+    "store": "library/sound/sfx/comedy/comedy_double-stomp-pluck-stab_01.wav",
+    "sha256": "c584b0f687edd602fbce50f97616136c9644c3379e61cfdbe351e6a56a8bc389"
+  },
+  "public/sfx/comedy/comedy_phew-resolve-pluck_01.wav": {
+    "store": "library/sound/sfx/comedy/comedy_phew-resolve-pluck_01.wav",
+    "sha256": "f68003a7eb7ec87bc3c4bbda13362cd74a7044470fa4365db45bd22723dbeff5"
+  },
+  "public/sfx/comedy/comedy_pizz-wry-tag_01.wav": {
+    "store": "library/sound/sfx/comedy/comedy_pizz-wry-tag_01.wav",
+    "sha256": "4849c41aac756693ea1d457ca33b63c69df7805c2503d9d40ef1a1ee2dab4ae5"
+  },
+  "public/sfx/comedy/comedy_pluck-bend-down-two-note_01.wav": {
+    "store": "library/sound/sfx/comedy/comedy_pluck-bend-down-two-note_01.wav",
+    "sha256": "7af5e4fd1bb0143eb80d139f6287222964b7c0fb07b959c1e69070e0b5e239c6"
+  },
+  "public/sfx/comedy/comedy_sly-pluck-smirk_01.wav": {
+    "store": "library/sound/sfx/comedy/comedy_sly-pluck-smirk_01.wav",
+    "sha256": "afcdddcfcdb943fb1b0b70ef172cb28c3e6d4460dd3fab7a43a74ff609fed6aa"
+  },
+  "public/sfx/comedy/comedy_tuba-wobble-smell_01.wav": {
+    "store": "library/sound/sfx/comedy/comedy_tuba-wobble-smell_01.wav",
+    "sha256": "34c830e1c0423c513729476d91a0804d7f280b51e3353aa218956e50d9a39e55"
+  },
+  "public/sfx/comedy/comedy_woodblock-tension-tick_01.wav": {
+    "store": "library/sound/sfx/comedy/comedy_woodblock-tension-tick_01.wav",
+    "sha256": "de80087d3573a0d2c2575a496c6c94d5b4f230e519c6613d0c19e440f68120c3"
+  },
+  "public/sfx/creature/creature_dog-bark-far_01.wav": {
+    "store": "library/sound/sfx/creature/creature_dog-bark-far_01.wav",
+    "sha256": "6a2be78b8240bb04b2c6750774123f25bf2df8ef98d456f45595f2eae70adc8c"
+  },
+  "public/sfx/foley/foley_bare-toes-wet-rim-pat_01.wav": {
+    "store": "library/sound/sfx/foley/foley_bare-toes-wet-rim-pat_01.wav",
+    "sha256": "9668e30ff035761475fe3e294b96fff9d9ad2c13b4ccb4b5722f8948025a6fe3"
+  },
+  "public/sfx/foley/foley_bronze-coin-palm-clink_01.wav": {
+    "store": "library/sound/sfx/foley/foley_bronze-coin-palm-clink_01.wav",
+    "sha256": "4abcc7cbc702df8a7e1b8bd78bdb1aa0a3840d7c839c21c22cbf98fb671a70fd"
+  },
+  "public/sfx/foley/foley_jar-base-clunk_01.wav": {
+    "store": "library/sound/sfx/foley/foley_jar-base-clunk_01.wav",
+    "sha256": "1097a06613ee38f0cae5375c62780a9f020501cd9111781e0429ddc7c084c664"
+  },
+  "public/sfx/foley/foley_jar-lid-scrape-pop_02.wav": {
+    "store": "library/sound/sfx/foley/foley_jar-lid-scrape-pop_02.wav",
+    "sha256": "9c5972786abc2b1c8714eb604f9dec9cedde41ddbd6c52fb35dc56234a666a71"
+  },
+  "public/sfx/foley/foley_jar-slide-stone_01.wav": {
+    "store": "library/sound/sfx/foley/foley_jar-slide-stone_01.wav",
+    "sha256": "61cb4e6f8617b637cd90f0567f886cbe5b4b68d449e94abd01e908160eb1b016"
+  },
+  "public/sfx/foley/foley_linen-snap-bright_01.wav": {
+    "store": "library/sound/sfx/foley/foley_linen-snap-bright_01.wav",
+    "sha256": "54457271abea61abbe9ca48111685847131ca4d03537d227e77691ed1653a800"
+  },
+  "public/sfx/foley/foley_nervous-swallow-close_01.wav": {
+    "store": "library/sound/sfx/foley/foley_nervous-swallow-close_01.wav",
+    "sha256": "26c29923e5c4b6d946810e9c2d4e94faea6521713bc1cf130ac545f019796a2a"
+  },
+  "public/sfx/foley/foley_sandal-threshold-street-swell_01.wav": {
+    "store": "library/sound/sfx/foley/foley_sandal-threshold-street-swell_01.wav",
+    "sha256": "0f97ac0804ae10fd4013a2eeaefc439b686ce8f2b4ad549b4dde6bb21b057a7a"
+  },
+  "public/sfx/foley/foley_sandals-stone-two-steps-stop_01.wav": {
+    "store": "library/sound/sfx/foley/foley_sandals-stone-two-steps-stop_01.wav",
+    "sha256": "8419792628485972be861d469ed370c28e9aee8be78f2da946096a426f5d4870"
+  },
+  "public/sfx/foley/foley_sniff-close-dry_01.wav": {
+    "store": "library/sound/sfx/foley/foley_sniff-close-dry_01.wav",
+    "sha256": "0190ac60a1ecd2522432834b36c8978b905f19d8bb84fabf5f9af032d0a4a7c6"
+  },
+  "public/sfx/foley/foley_wet-foot-stomp-wool_01.wav": {
+    "store": "library/sound/sfx/foley/foley_wet-foot-stomp-wool_01.wav",
+    "sha256": "820f00b458423c094ef437ebc847294a629c56a437ecf7a68cfbb0db86c611c8"
+  },
+  "public/sfx/foley/foley_wet-foot-stomp-wool_02.wav": {
+    "store": "library/sound/sfx/foley/foley_wet-foot-stomp-wool_02.wav",
+    "sha256": "e2c7e978bb2ff75f044909fefd4d9dfe130da9289c89664a7f9034d9101cc558"
+  },
+  "public/sfx/foley/foley_wet-foot-stomp-wool_03.wav": {
+    "store": "library/sound/sfx/foley/foley_wet-foot-stomp-wool_03.wav",
+    "sha256": "e4425d5a6a82dd38068bc24c44f77610b1207002bd10d3a59289cdf9e2a02817"
+  },
+  "public/sfx/nature/nature_swifts-chirps-evening_01.wav": {
+    "store": "library/sound/sfx/nature/nature_swifts-chirps-evening_01.wav",
+    "sha256": "30db066d13160b741dcf6aff7e382daa588d973b2eab29e143a43c1cf3c2c9d6"
+  },
+  "public/sfx/stinger/stinger_brass-sting-bright_01.wav": {
+    "store": "library/sound/sfx/stinger/stinger_brass-sting-bright_01.wav",
+    "sha256": "4e1e45576ba92af29b8d7627da9d146acc7f8f120e660a47430eb0301ba38c9a"
+  },
+  "public/sfx/stinger/stinger_brass-ta-da-pompous_01.wav": {
+    "store": "library/sound/sfx/stinger/stinger_brass-ta-da-pompous_01.wav",
+    "sha256": "1f4a39d8ce8d077494d628025b8303511f826473935cf035c30ae95068ed6a11"
+  },
+  "public/sfx/stinger/stinger_bronze-coin-chime_01.wav": {
+    "store": "library/sound/sfx/stinger/stinger_bronze-coin-chime_01.wav",
+    "sha256": "5cab075179545ccd2cf7711d5694d06fc58b641b17f6917c335c8df91b287956"
+  },
+  "public/sfx/stinger/stinger_coin-glint-shimmer_01.wav": {
+    "store": "library/sound/sfx/stinger/stinger_coin-glint-shimmer_01.wav",
+    "sha256": "480ff59411b7281b24537ff26a52f62ec1b3e6f78b320671a994fe67d911a61f"
+  },
+  "public/sfx/stinger/stinger_soft-horn-wry-note_01.wav": {
+    "store": "library/sound/sfx/stinger/stinger_soft-horn-wry-note_01.wav",
+    "sha256": "91e9f53da214404f9d7362ab22a5b76e6162f576e7cef2230bfae994cd94d0a5"
+  },
+  "public/sfx/water/water_deep-tub-stomp-wool_01.wav": {
+    "store": "library/sound/sfx/water/water_deep-tub-stomp-wool_01.wav",
+    "sha256": "ea0f71cef9415a8027589c2c13ece0d4d820fb098b8dea0f8e4756a6316d1ed9"
+  },
+  "public/sfx/water/water_deep-tub-stomp-wool_02.wav": {
+    "store": "library/sound/sfx/water/water_deep-tub-stomp-wool_02.wav",
+    "sha256": "c41e3698be35e0d0da80d91ad2060ccc94146a3439b731c590fe816cfb412e0f"
+  },
+  "public/sfx/water/water_deep-tub-stomp-wool_03.wav": {
+    "store": "library/sound/sfx/water/water_deep-tub-stomp-wool_03.wav",
+    "sha256": "fae02d60fccb955dd42d99b18a3a86d42feef10405d70f970fd689d5155d908f"
+  },
+  "public/sfx/water/water_foot-murky-slow-squelch_01.wav": {
+    "store": "library/sound/sfx/water/water_foot-murky-slow-squelch_01.wav",
+    "sha256": "aba0f20a21b22e87598862dc6e9a8f5a90a7ab8ddd913e20a212907aca9e2fb8"
+  },
+  "public/sfx/water/water_foot-murky-squelch-short_01.wav": {
+    "store": "library/sound/sfx/water/water_foot-murky-squelch-short_01.wav",
+    "sha256": "57ce3f1a7a10d90263ee5619b11ca13323e9c05cb5acc7fd009b2695f6eb15de"
+  },
+  "public/sfx/whoosh/whoosh_bronze-coin-spin-by_01.wav": {
+    "store": "library/sound/sfx/whoosh/whoosh_bronze-coin-spin-by_01.wav",
+    "sha256": "ebeca886795de2f1a8a39f86c373fb0bf2138316994f6e91c598f19feb207a2d"
+  },
+  "public/sfx/whoosh/whoosh_whip-pan-swish_01.wav": {
+    "store": "library/sound/sfx/whoosh/whoosh_whip-pan-swish_01.wav",
+    "sha256": "6ae7ddd70e2762efc638c3d6893590d772d52bcca48e26648a5fde8f144691a2"
+  }
+}

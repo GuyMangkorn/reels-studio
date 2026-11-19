@@ -1,0 +1,61 @@
+{
+ "LF04": {
+  "hash": "94b3dbbd3ffb2682",
+  "result": "pass",
+  "findings": [
+   "A-m: Marcus left arm still a thin straight rod (UT06), length in bounds (reach 0.41)",
+   "H-m: smell wisps faint (carried from R4)"
+  ]
+ },
+ "LF05": {
+  "hash": "d0693a520fc433aa",
+  "result": "pass",
+  "findings": [
+   "R4 fail fixed: green tubs with ripple rings and splash dots read as water at phone scale; plaster top and bottom shards resolved",
+   "A-m: arms in bounds (reach 0.37-0.71), Marcus far hand a small pointed mitten, senior arms stiff",
+   "P-m: lower 35% is busy beige tub rim, low interest but not empty"
+  ]
+ },
+ "LF06": {
+  "hash": "90d02cb32fc6e2c7",
+  "result": "pass",
+  "findings": [
+   "R4 fail fixed: no 3D forearm tube, Vespasian near arm runs from shoulder to wrist, reach 0.95 (not too long)",
+   "H-m: coin ~25 px at 540 between fingertips and nose, readable as gold disc but small (UT02)",
+   "A-m: Titus near arm and Vespasian upper arm straight rods"
+  ]
+ },
+ "LF07": {
+  "hash": "87a6c4e3bf7c87b2",
+  "result": "pass",
+  "findings": [
+   "R4 fail fixed: coin ~40 px at 540 with halo and sparkle, reads as a coin held up; not a lollipop",
+   "A-m: raised upper arm leaves the shoulder horizontally then folds up, stiff but attached",
+   "H-m: halo plus sparkle makes the coin close to a glowing ball at thumbnail size"
+  ]
+ },
+ "KP-INSET": {
+  "hash": "46497612a5b20c0f",
+  "result": "pass",
+  "findings": [
+   "P-M: senior's head top and legs poke out above and below the circular inset edge, reads as a leftover; edge itself clean with white ring and shadow",
+   "A-m: arms in bounds"
+  ]
+ },
+ "KP-MARCUS": {
+  "hash": "5650de7ae94881d3",
+  "result": "pass",
+  "findings": [
+   "No defects; four views squared, arms attached"
+  ]
+ },
+ "KP-MARCUS-CLOSE": {
+  "hash": "06efefeca90d5dbe",
+  "result": "pass",
+  "findings": [
+   "R4 fail fixed: coin visible at nose in profile cell, arm attached from shoulder, bones 0.27/0.26",
+   "A-m: front sniff cell, 3D fist covers the eye/brow rather than the nose bridge",
+   "A-m: arm sleeve stub at shoulder then thin skin forearm, stiff"
+  ]
+ }
+}

@@ -1,0 +1,597 @@
+{
+ "deliverable": "EDU-EP26-SHORT",
+ "step": "W4.2 (first full read, length check)",
+ "script_revision": "EDU-EP26-SCRIPT-R2",
+ "measure_revision": "EDU-EP26-VOICE-R1",
+ "date": "2026-11-18",
+ "timing_status": "audio-measured (line durations and placement from the generated audio; anchor onsets from Whisper large-v3-turbo, +-0.1-0.2 s, entries with match < 0.8 low confidence). NOT LISTENED by Editor; user approval W4.3 pending",
+ "engine": {
+  "model": "gemini-3.8-flash-tts",
+  "narr": "Kore, style \"warm, friendly, smiling storyteller, speaking rapidly\", pace x1.00 (user pick), one request for L01,L02,L04,L07,L08,L09,L11,L12,L15,L17-L20 (ellipsis -> comma), lines separated by newlines",
+  "marcus": "voice_4xj4954gxcfv (ep26-marcus-a)",
+  "senior": "voice_dpqh7onft873 (ep26-senior-a)",
+  "customer": "voice_8vvgi5hd0f6f (ep26-customer-a)",
+  "gemini_requests_this_step": 4,
+  "reused_step1_takes": [
+   "L03",
+   "L05",
+   "L06",
+   "L13"
+  ],
+  "new_character_takes": {
+   "L10": "weary, plaintive, half-laughing in disbelief",
+   "L14": "nervous, bluffing, awkward hesitation",
+   "L16": "quietly relieved, small happy exhale"
+  }
+ },
+ "assembly": {
+  "order": "L01..L20",
+  "gap_between_lines_s": 0.2,
+  "gap_note": "0.20 s digital silence between lines (script estimate used 0.30 s); lines trimmed to first/last audible 10 ms block >= 800/32767 with 30 ms pad (NARR) / silenceremove -42 dB (characters), 20 ms fades; no internal pause trimming; NARR lines cut at the widest gap between audible runs nearest the Whisper boundaries",
+  "full": "EP26-narration-full.wav",
+  "sample_rate": 48000
+ },
+ "totals": {
+  "speech_end_s": 70.346,
+  "closing_hold_s": 2.0,
+  "runtime_s": 72.35,
+  "target_s": "50-60",
+  "over_target_s": 12.35,
+  "over_target_pct_of_60": 20.6,
+  "estimate_s": 55.86,
+  "est_speech_end_s": 53.86,
+  "delta_vs_estimate_s": 16.49,
+  "narr_speech_s": 46.78,
+  "character_speech_s": 19.77,
+  "gaps_s": 3.8
+ },
+ "strong_joke_gap_L01_L04": {
+  "L01_punch_onset_s": 2.72,
+  "L01_end_s": 4.68,
+  "L04_punch_ฝาเปิดปุ๊บ_onset_s": 14.78,
+  "L04_smell_line_กลิ่นมาถึงก่อน_onset_s": 15.72,
+  "L04_end_s": 17.646,
+  "gap_L01_end_to_L04_lid_onset_s": 10.1,
+  "gap_L01_onset_to_L04_lid_onset_s": 12.06,
+  "gap_L01_onset_to_L04_smell_onset_s": 13.0,
+  "rule": "< 10 s",
+  "verdict": "over (10.1 s end-to-onset, 12.1 s onset-to-onset)"
+ },
+ "lines": {
+  "L01": {
+   "line": "L01",
+   "speaker": "NARR",
+   "start_s": 0.0,
+   "end_s": 4.68,
+   "dur_s": 4.68,
+   "atempo": 1.0,
+   "text": "ช่างซักผ้าโรมัน ซักผ้าด้วยฉี่ ใช่ ฉี่ ฟังไม่ผิดหรอก",
+   "est_start_s": 0,
+   "est_end_s": 2.77,
+   "est_dur_s": 2.77,
+   "delta_vs_est_s": 1.91,
+   "file": "lines/L01.wav",
+   "anchors": {
+    "ใช่ ฉี่": {
+     "on_s": 2.72,
+     "end_s": 3.74,
+     "match": 1.0
+    }
+   },
+   "rate_note": "NARR: cut from the one continuous Kore read, x1.00, no atempo (user pick)"
+  },
+  "L02": {
+   "line": "L02",
+   "speaker": "NARR",
+   "start_s": 4.88,
+   "end_s": 8.23,
+   "dur_s": 3.35,
+   "atempo": 1.0,
+   "text": "วันนี้เป็นวันแรกของมาร์คุส และยังไม่มีใครบอกเขา",
+   "est_start_s": 3.07,
+   "est_end_s": 5.83,
+   "est_dur_s": 2.76,
+   "delta_vs_est_s": 0.59,
+   "file": "lines/L02.wav",
+   "anchors": {
+    "วันนี้เป็นวันแรก": {
+     "on_s": 5.14,
+     "end_s": 6.0,
+     "match": 1.0
+    },
+    "ยังไม่มีใครบอกเขา": {
+     "on_s": 7.02,
+     "end_s": 8.23,
+     "match": 1.0
+    }
+   },
+   "rate_note": "NARR: cut from the one continuous Kore read, x1.00, no atempo (user pick)"
+  },
+  "L03": {
+   "line": "L03",
+   "speaker": "MARCUS",
+   "start_s": 8.43,
+   "end_s": 12.176,
+   "dur_s": 3.746,
+   "atempo": 1.15,
+   "text": "ผมจะทำให้เสื้อตัวนี้ขาวที่สุดในโรม ด้วยสองมือนี้เลยครับ",
+   "est_start_s": 6.13,
+   "est_end_s": 9.45,
+   "est_dur_s": 3.32,
+   "delta_vs_est_s": 0.43,
+   "file": "lines/L03.wav",
+   "anchors": {
+    "ผมจะทำให้เสื้อ": {
+     "on_s": 8.43,
+     "end_s": 9.18,
+     "match": 1.0
+    },
+    "ขาวที่สุด": {
+     "on_s": 9.44,
+     "end_s": 10.34,
+     "match": 1.0
+    },
+    "ด้วยสองมือ": {
+     "on_s": 8.96,
+     "end_s": 11.7,
+     "match": 0.9
+    }
+   },
+   "rate_note": "x1.15: bright eager line, gen 4.30 s trimmed -> 3.75 s; still 0.4 s over the 3.32 s slot"
+  },
+  "L04": {
+   "line": "L04",
+   "speaker": "NARR",
+   "start_s": 12.376,
+   "end_s": 17.646,
+   "dur_s": 5.27,
+   "atempo": 1.0,
+   "text": "รุ่นพี่ยิ้ม ยื่นไหให้ใบหนึ่ง ฝาเปิดปุ๊บ กลิ่นมาถึงก่อนคำอธิบาย",
+   "est_start_s": 9.75,
+   "est_end_s": 13.26,
+   "est_dur_s": 3.51,
+   "delta_vs_est_s": 1.76,
+   "file": "lines/L04.wav",
+   "anchors": {
+    "ยื่นไหให้ใบหนึ่ง": {
+     "on_s": 13.38,
+     "end_s": 14.78,
+     "match": 0.94
+    },
+    "ฝาเปิดปุ๊บ": {
+     "on_s": 14.78,
+     "end_s": 15.72,
+     "match": 1.0
+    },
+    "กลิ่นมาถึงก่อน": {
+     "on_s": 15.72,
+     "end_s": 16.88,
+     "match": 1.0
+    }
+   },
+   "rate_note": "NARR: cut from the one continuous Kore read, x1.00, no atempo (user pick)"
+  },
+  "L05": {
+   "line": "L05",
+   "speaker": "MARCUS",
+   "start_s": 17.846,
+   "end_s": 21.099,
+   "dur_s": 3.253,
+   "atempo": 1.08,
+   "text": "พี่… ไหนี่มันฉี่ใช่ไหม",
+   "est_start_s": 13.56,
+   "est_end_s": 15.15,
+   "est_dur_s": 1.59,
+   "delta_vs_est_s": 1.66,
+   "file": "lines/L05.wav",
+   "anchors": {
+    "ไหนี่มันฉี่": {
+     "on_s": 18.96,
+     "end_s": 20.66,
+     "match": 0.73
+    }
+   },
+   "rate_note": "x1.08 only: the stunned hesitant ellipsis is the joke; 3.51 -> 3.25 s, 1.7 s over the 1.59 s slot (cannot fit by rate)"
+  },
+  "L06": {
+   "line": "L06",
+   "speaker": "SENIOR",
+   "start_s": 21.299,
+   "end_s": 23.605,
+   "dur_s": 2.306,
+   "atempo": 1.15,
+   "text": "ของดีนะ ใส่เยอะ ๆ ไม่ต้องเกรงใจ",
+   "est_start_s": 15.45,
+   "est_end_s": 17.29,
+   "est_dur_s": 1.84,
+   "delta_vs_est_s": 0.47,
+   "file": "lines/L06.wav",
+   "anchors": {
+    "ของดีนะ": {
+     "on_s": 21.3,
+     "end_s": 21.9,
+     "match": 1.0
+    },
+    "ไม่ต้องเกรงใจ": {
+     "on_s": 22.9,
+     "end_s": 23.56,
+     "match": 0.85
+    }
+   },
+   "rate_note": "x1.15: casual line 2.65 -> 2.31 s"
+  },
+  "L07": {
+   "line": "L07",
+   "speaker": "NARR",
+   "start_s": 23.805,
+   "end_s": 26.095,
+   "dur_s": 2.29,
+   "atempo": 1.0,
+   "text": "มาร์คุสคิดว่านี่แย่สุดแล้ว ผิดจ้ะ",
+   "est_start_s": 17.59,
+   "est_end_s": 19.44,
+   "est_dur_s": 1.85,
+   "delta_vs_est_s": 0.44,
+   "file": "lines/L07.wav",
+   "anchors": {
+    "ผิดจ้ะ": {
+     "on_s": 25.52,
+     "end_s": 26.08,
+     "match": 1.0
+    }
+   },
+   "rate_note": "NARR: cut from the one continuous Kore read, x1.00, no atempo (user pick)"
+  },
+  "L08": {
+   "line": "L08",
+   "speaker": "NARR",
+   "start_s": 26.295,
+   "end_s": 31.625,
+   "dur_s": 5.33,
+   "atempo": 1.0,
+   "text": "สองมือที่สัญญาไว้ เปลี่ยนเป็นสองเท้า ลงไปยืนในอ่าง ย่ำผ้าในน้ำผสมฉี่",
+   "est_start_s": 19.74,
+   "est_end_s": 23.8,
+   "est_dur_s": 4.06,
+   "delta_vs_est_s": 1.27,
+   "file": "lines/L08.wav",
+   "anchors": {
+    "สองมือที่สัญญาไว้": {
+     "on_s": 26.3,
+     "end_s": 27.48,
+     "match": 1.0
+    },
+    "เปลี่ยนเป็นสองเท้า": {
+     "on_s": 27.48,
+     "end_s": 28.84,
+     "match": 1.0
+    },
+    "ย่ำผ้า": {
+     "on_s": 26.86,
+     "end_s": 30.58,
+     "match": 0.67
+    }
+   },
+   "rate_note": "NARR: cut from the one continuous Kore read, x1.00, no atempo (user pick)"
+  },
+  "L09": {
+   "line": "L09",
+   "speaker": "NARR",
+   "start_s": 31.825,
+   "end_s": 34.835,
+   "dur_s": 3.01,
+   "atempo": 1.0,
+   "text": "เหมือนย่ำองุ่นทำไวน์ แค่อันนี้ไม่มีใครอยากชิม",
+   "est_start_s": 24.1,
+   "est_end_s": 26.68,
+   "est_dur_s": 2.58,
+   "delta_vs_est_s": 0.43,
+   "file": "lines/L09.wav",
+   "anchors": {
+    "ย่ำองุ่น": {
+     "on_s": 32.0,
+     "end_s": 32.62,
+     "match": 0.62
+    },
+    "ไม่มีใครอยากชิม": {
+     "on_s": 33.72,
+     "end_s": 34.7,
+     "match": 1.0
+    }
+   },
+   "rate_note": "NARR: cut from the one continuous Kore read, x1.00, no atempo (user pick)"
+  },
+  "L10": {
+   "line": "L10",
+   "speaker": "MARCUS",
+   "start_s": 35.035,
+   "end_s": 38.733,
+   "dur_s": 3.699,
+   "atempo": 1.08,
+   "text": "แม่ครับ… ผมสมัครงานผิดร้านแน่เลย",
+   "est_start_s": 26.98,
+   "est_end_s": 29.12,
+   "est_dur_s": 2.14,
+   "delta_vs_est_s": 1.56,
+   "file": "lines/L10.wav",
+   "anchors": {
+    "แม่ครับ": {
+     "on_s": 35.06,
+     "end_s": 35.64,
+     "match": 1.0
+    },
+    "สมัครงานผิดร้าน": {
+     "on_s": 36.76,
+     "end_s": 37.64,
+     "match": 1.0
+    }
+   },
+   "rate_note": "x1.08 only: plaintive half-laugh needs room; 3.98 -> 3.70 s"
+  },
+  "L11": {
+   "line": "L11",
+   "speaker": "NARR",
+   "start_s": 38.933,
+   "end_s": 42.873,
+   "dur_s": 3.94,
+   "atempo": 1.0,
+   "text": "ย่ำเสร็จยังต้องล้างน้ำอีกอ่าง ลูกค้าไม่ได้จ่ายเงินซื้อกลิ่นนี้นะ",
+   "est_start_s": 29.42,
+   "est_end_s": 32.74,
+   "est_dur_s": 3.32,
+   "delta_vs_est_s": 0.62,
+   "file": "lines/L11.wav",
+   "anchors": {
+    "ล้างน้ำอีกอ่าง": {
+     "on_s": 39.72,
+     "end_s": 40.66,
+     "match": 0.93
+    },
+    "ไม่ได้จ่ายเงินซื้อกลิ่น": {
+     "on_s": 41.4,
+     "end_s": 42.56,
+     "match": 1.0
+    }
+   },
+   "rate_note": "NARR: cut from the one continuous Kore read, x1.00, no atempo (user pick)"
+  },
+  "L12": {
+   "line": "L12",
+   "speaker": "NARR",
+   "start_s": 43.073,
+   "end_s": 45.743,
+   "dur_s": 2.67,
+   "atempo": 1.0,
+   "text": "ตกเย็น ลูกค้ามารับ ยกเสื้อขึ้นส่องแดด",
+   "est_start_s": 33.04,
+   "est_end_s": 35.07,
+   "est_dur_s": 2.03,
+   "delta_vs_est_s": 0.64,
+   "file": "lines/L12.wav",
+   "anchors": {
+    "ตกเย็น": {
+     "on_s": 43.07,
+     "end_s": 43.52,
+     "match": 1.0
+    },
+    "ส่องแดด": {
+     "on_s": 44.86,
+     "end_s": 45.74,
+     "match": 0.86
+    }
+   },
+   "rate_note": "NARR: cut from the one continuous Kore read, x1.00, no atempo (user pick)"
+  },
+  "L13": {
+   "line": "L13",
+   "speaker": "CUSTOMER",
+   "start_s": 45.943,
+   "end_s": 47.814,
+   "dur_s": 1.871,
+   "atempo": 1.15,
+   "text": "ขาวดีนะ ใช้อะไรซักเนี่ย",
+   "est_start_s": 35.37,
+   "est_end_s": 36.85,
+   "est_dur_s": 1.48,
+   "delta_vs_est_s": 0.39,
+   "file": "lines/L13.wav",
+   "anchors": {
+    "ขาวดีนะ": {
+     "on_s": 45.94,
+     "end_s": 46.64,
+     "match": 1.0
+    },
+    "ใช้อะไรซัก": {
+     "on_s": 46.8,
+     "end_s": 47.46,
+     "match": 0.9
+    }
+   },
+   "rate_note": "x1.15: 2.14 -> 1.87 s, 0.4 s over the 1.48 s slot"
+  },
+  "L14": {
+   "line": "L14",
+   "speaker": "MARCUS",
+   "start_s": 48.014,
+   "end_s": 50.485,
+   "dur_s": 2.471,
+   "atempo": 1.15,
+   "text": "เอ่อ… สูตรลับของร้านครับ",
+   "est_start_s": 37.15,
+   "est_end_s": 38.55,
+   "est_dur_s": 1.4,
+   "delta_vs_est_s": 1.07,
+   "file": "lines/L14.wav",
+   "anchors": {
+    "สูตรลับของร้าน": {
+     "on_s": 48.94,
+     "end_s": 50.24,
+     "match": 0.86
+    }
+   },
+   "rate_note": "x1.15: 2.84 -> 2.47 s"
+  },
+  "L15": {
+   "line": "L15",
+   "speaker": "NARR",
+   "start_s": 50.685,
+   "end_s": 53.965,
+   "dur_s": 3.28,
+   "atempo": 1.0,
+   "text": "ได้ค่าแรงเหรียญแรก มาร์คุสรีบยกขึ้นมาดม",
+   "est_start_s": 38.85,
+   "est_end_s": 41.07,
+   "est_dur_s": 2.22,
+   "delta_vs_est_s": 1.06,
+   "file": "lines/L15.wav",
+   "anchors": {
+    "เหรียญแรก": {
+     "on_s": 51.46,
+     "end_s": 52.1,
+     "match": 0.78
+    },
+    "ยกขึ้นมาดม": {
+     "on_s": 53.12,
+     "end_s": 53.88,
+     "match": 1.0
+    }
+   },
+   "rate_note": "NARR: cut from the one continuous Kore read, x1.00, no atempo (user pick)"
+  },
+  "L16": {
+   "line": "L16",
+   "speaker": "MARCUS",
+   "start_s": 54.165,
+   "end_s": 56.586,
+   "dur_s": 2.421,
+   "atempo": 1.15,
+   "text": "ไม่มีกลิ่น… รอดแล้ว",
+   "est_start_s": 41.37,
+   "est_end_s": 42.59,
+   "est_dur_s": 1.22,
+   "delta_vs_est_s": 1.2,
+   "file": "lines/L16.wav",
+   "anchors": {
+    "ไม่มีกลิ่น": {
+     "on_s": 54.68,
+     "end_s": 55.32,
+     "match": 1.0
+    },
+    "รอดแล้ว": {
+     "on_s": 55.96,
+     "end_s": 56.54,
+     "match": 1.0
+    }
+   },
+   "rate_note": "x1.15: 2.77 -> 2.42 s"
+  },
+  "L17": {
+   "line": "L17",
+   "speaker": "NARR",
+   "start_s": 56.786,
+   "end_s": 60.236,
+   "dur_s": 3.45,
+   "atempo": 1.0,
+   "text": "ตลกคือ จักรพรรดิเวสปาเซียนเก็บภาษีฉี่จริง ๆ",
+   "est_start_s": 42.89,
+   "est_end_s": 45.66,
+   "est_dur_s": 2.77,
+   "delta_vs_est_s": 0.68,
+   "file": "lines/L17.wav",
+   "anchors": {
+    "เวสปาเซียน": {
+     "on_s": 58.08,
+     "end_s": 58.8,
+     "match": 1.0
+    },
+    "ภาษีฉี่": {
+     "on_s": 57.82,
+     "end_s": 59.44,
+     "match": 0.43
+    }
+   },
+   "rate_note": "NARR: cut from the one continuous Kore read, x1.00, no atempo (user pick)"
+  },
+  "L18": {
+   "line": "L18",
+   "speaker": "NARR",
+   "start_s": 60.436,
+   "end_s": 63.656,
+   "dur_s": 3.22,
+   "atempo": 1.0,
+   "text": "ลูกชายบ่น เขาเลยเอาเหรียญจ่อจมูกลูก ถามว่าเหม็นไหม",
+   "est_start_s": 45.96,
+   "est_end_s": 48.72,
+   "est_dur_s": 2.76,
+   "delta_vs_est_s": 0.46,
+   "file": "lines/L18.wav",
+   "anchors": {
+    "เหรียญจ่อจมูก": {
+     "on_s": 61.02,
+     "end_s": 62.34,
+     "match": 0.85
+    },
+    "เหม็นไหม": {
+     "on_s": 63.2,
+     "end_s": 63.64,
+     "match": 0.88
+    }
+   },
+   "rate_note": "NARR: cut from the one continuous Kore read, x1.00, no atempo (user pick)"
+  },
+  "L19": {
+   "line": "L19",
+   "speaker": "NARR",
+   "start_s": 63.856,
+   "end_s": 67.306,
+   "dur_s": 3.45,
+   "atempo": 1.0,
+   "text": "ลูกบอกไม่ เขาก็บอก นั่นแหละ ได้มาจากฉี่",
+   "est_start_s": 49.02,
+   "est_end_s": 51.24,
+   "est_dur_s": 2.22,
+   "delta_vs_est_s": 1.23,
+   "file": "lines/L19.wav",
+   "anchors": {
+    "ลูกบอกไม่": {
+     "on_s": 63.92,
+     "end_s": 65.0,
+     "match": 1.0
+    },
+    "ได้มาจากฉี่": {
+     "on_s": 66.58,
+     "end_s": 67.22,
+     "match": 0.82
+    }
+   },
+   "rate_note": "NARR: cut from the one continuous Kore read, x1.00, no atempo (user pick)"
+  },
+  "L20": {
+   "line": "L20",
+   "speaker": "NARR",
+   "start_s": 67.506,
+   "end_s": 70.346,
+   "dur_s": 2.84,
+   "atempo": 1.0,
+   "text": "เงินน่ะไม่มีกลิ่นหรอก… แต่มาร์คุสยังมี",
+   "est_start_s": 51.54,
+   "est_end_s": 53.86,
+   "est_dur_s": 2.32,
+   "delta_vs_est_s": 0.52,
+   "file": "lines/L20.wav",
+   "anchors": {
+    "ไม่มีกลิ่นหรอก": {
+     "on_s": 67.84,
+     "end_s": 68.8,
+     "match": 1.0
+    },
+    "แต่มาร์คุสยังมี": {
+     "on_s": 69.18,
+     "end_s": 70.2,
+     "match": 0.87
+    }
+   },
+   "rate_note": "NARR: cut from the one continuous Kore read, x1.00, no atempo (user pick)"
+  }
+ }
+}

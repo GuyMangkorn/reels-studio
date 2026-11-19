@@ -1,132 +1,342 @@
 {
- "B01-SH01@board": {
-  "clip": "",
-  "hash": "3025d9a5b9f5",
-  "note": "default (round 2026-11-18)",
-  "rev": "EDU-EP26-ROWS-R1",
-  "shot": "B01-SH01",
-  "stage": "board",
-  "status": "ok",
-  "updatedAt": "2026-11-18T03:28:10Z"
- },
- "B01-SH02@board": {
-  "clip": "",
-  "hash": "90b496b72473",
-  "note": "default (round 2026-11-18)",
-  "rev": "EDU-EP26-ROWS-R1",
-  "shot": "B01-SH02",
-  "stage": "board",
-  "status": "ok",
-  "updatedAt": "2026-11-18T03:28:10Z"
- },
- "B01-SH03@board": {
-  "clip": "",
-  "hash": "33c408899948",
-  "note": "default (round 2026-11-18)",
-  "rev": "EDU-EP26-ROWS-R1",
-  "shot": "B01-SH03",
-  "stage": "board",
-  "status": "ok",
-  "updatedAt": "2026-11-18T03:28:10Z"
- },
- "B02-SH01@board": {
-  "clip": "",
-  "hash": "40c167027010",
-  "note": "default (round 2026-11-18)",
-  "rev": "EDU-EP26-ROWS-R1",
-  "shot": "B02-SH01",
-  "stage": "board",
-  "status": "ok",
-  "updatedAt": "2026-11-18T03:28:10Z"
- },
- "B02-SH02@board": {
-  "clip": "",
-  "hash": "8a216c71645c",
-  "note": "default (round 2026-11-18)",
-  "rev": "EDU-EP26-ROWS-R1",
-  "shot": "B02-SH02",
-  "stage": "board",
-  "status": "ok",
-  "updatedAt": "2026-11-18T03:28:10Z"
- },
- "B02-SH03@board": {
-  "clip": "",
-  "hash": "7e3cececc77e",
-  "note": "default (round 2026-11-18)",
-  "rev": "EDU-EP26-ROWS-R1",
-  "shot": "B02-SH03",
-  "stage": "board",
-  "status": "ok",
-  "updatedAt": "2026-11-18T03:28:10Z"
- },
- "B03-SH01@board": {
-  "clip": "",
-  "hash": "82732f5c415c",
-  "note": "default (round 2026-11-18)",
-  "rev": "EDU-EP26-ROWS-R1",
-  "shot": "B03-SH01",
-  "stage": "board",
-  "status": "ok",
-  "updatedAt": "2026-11-18T03:28:10Z"
- },
- "B03-SH02@board": {
-  "clip": "",
-  "hash": "46452dd85d42",
-  "note": "default (round 2026-11-18)",
-  "rev": "EDU-EP26-ROWS-R1",
-  "shot": "B03-SH02",
-  "stage": "board",
-  "status": "ok",
-  "updatedAt": "2026-11-18T03:28:10Z"
- },
- "B03-SH03@board": {
-  "clip": "",
-  "hash": "7cf94eb05d1b",
-  "note": "default (round 2026-11-18)",
-  "rev": "EDU-EP26-ROWS-R1",
-  "shot": "B03-SH03",
-  "stage": "board",
-  "status": "ok",
-  "updatedAt": "2026-11-18T03:28:10Z"
- },
- "B04-SH01@board": {
-  "clip": "",
-  "hash": "52493c4fec4c",
-  "note": "default (round 2026-11-18)",
-  "rev": "EDU-EP26-ROWS-R1",
-  "shot": "B04-SH01",
-  "stage": "board",
-  "status": "ok",
-  "updatedAt": "2026-11-18T03:28:10Z"
- },
- "B04-SH02@board": {
-  "clip": "",
-  "hash": "9b3ab375c9dd",
-  "note": "default (round 2026-11-18)",
-  "rev": "EDU-EP26-ROWS-R1",
-  "shot": "B04-SH02",
-  "stage": "board",
-  "status": "ok",
-  "updatedAt": "2026-11-18T03:28:10Z"
- },
- "B04-SH03@board": {
-  "clip": "",
-  "hash": "dc67e5ec58a3",
-  "note": "default (round 2026-11-18)",
-  "rev": "EDU-EP26-ROWS-R1",
-  "shot": "B04-SH03",
-  "stage": "board",
-  "status": "ok",
-  "updatedAt": "2026-11-18T03:28:10Z"
- },
- "B04-SH04@board": {
-  "clip": "",
-  "hash": "8a24d76d826e",
-  "note": "default (round 2026-11-18)",
-  "rev": "EDU-EP26-ROWS-R1",
-  "shot": "B04-SH04",
-  "stage": "board",
-  "status": "ok",
-  "updatedAt": "2026-11-18T03:28:10Z"
- }
+  "B01-SH01@board": {
+    "clip": "",
+    "hash": "3025d9a5b9f5",
+    "note": "default (round 2026-11-18)",
+    "rev": "EDU-EP26-ROWS-R1",
+    "shot": "B01-SH01",
+    "stage": "board",
+    "status": "ok",
+    "updatedAt": "2026-11-18T03:28:10Z"
+  },
+  "B01-SH02@board": {
+    "clip": "",
+    "hash": "90b496b72473",
+    "note": "default (round 2026-11-18)",
+    "rev": "EDU-EP26-ROWS-R1",
+    "shot": "B01-SH02",
+    "stage": "board",
+    "status": "ok",
+    "updatedAt": "2026-11-18T03:28:10Z"
+  },
+  "B01-SH03@board": {
+    "clip": "",
+    "hash": "33c408899948",
+    "note": "default (round 2026-11-18)",
+    "rev": "EDU-EP26-ROWS-R1",
+    "shot": "B01-SH03",
+    "stage": "board",
+    "status": "ok",
+    "updatedAt": "2026-11-18T03:28:10Z"
+  },
+  "B01-SH04@draft": {
+    "clip": "8b5be336d732da42",
+    "hash": "8b5be336d732da42",
+    "note": "default (round 2026-11-19)",
+    "rev": "EDU-EP26-ROWS-R6",
+    "shot": "B01-SH04",
+    "stage": "draft",
+    "status": "ok",
+    "updatedAt": "2026-11-19T03:25:53Z"
+  },
+  "B01-SH05@draft": {
+    "clip": "29357ef3a3ed9172",
+    "hash": "29357ef3a3ed9172",
+    "note": "default (round 2026-11-19)",
+    "rev": "EDU-EP26-ROWS-R6",
+    "shot": "B01-SH05",
+    "stage": "draft",
+    "status": "ok",
+    "updatedAt": "2026-11-19T03:25:53Z"
+  },
+  "B01-SH06@draft": {
+    "clip": "0e462d78f5438e8b",
+    "hash": "0e462d78f5438e8b",
+    "note": "default (round 2026-11-19)",
+    "rev": "EDU-EP26-ROWS-R6",
+    "shot": "B01-SH06",
+    "stage": "draft",
+    "status": "ok",
+    "updatedAt": "2026-11-19T03:25:53Z"
+  },
+  "B02-SH01@board": {
+    "clip": "",
+    "hash": "40c167027010",
+    "note": "default (round 2026-11-18)",
+    "rev": "EDU-EP26-ROWS-R1",
+    "shot": "B02-SH01",
+    "stage": "board",
+    "status": "ok",
+    "updatedAt": "2026-11-18T03:28:10Z"
+  },
+  "B02-SH01@draft": {
+    "clip": "ece1279b41e04391",
+    "hash": "ece1279b41e04391",
+    "note": "default (round 2026-11-19)",
+    "rev": "EDU-EP26-ROWS-R6",
+    "shot": "B02-SH01",
+    "stage": "draft",
+    "status": "ok",
+    "updatedAt": "2026-11-19T03:25:53Z"
+  },
+  "B02-SH02@board": {
+    "clip": "",
+    "hash": "8a216c71645c",
+    "note": "default (round 2026-11-18)",
+    "rev": "EDU-EP26-ROWS-R1",
+    "shot": "B02-SH02",
+    "stage": "board",
+    "status": "ok",
+    "updatedAt": "2026-11-18T03:28:10Z"
+  },
+  "B02-SH02@draft": {
+    "clip": "c638a1587c7e3aa4",
+    "hash": "c638a1587c7e3aa4",
+    "note": "default (round 2026-11-19)",
+    "rev": "EDU-EP26-ROWS-R6",
+    "shot": "B02-SH02",
+    "stage": "draft",
+    "status": "ok",
+    "updatedAt": "2026-11-19T03:25:53Z"
+  },
+  "B02-SH03@board": {
+    "clip": "",
+    "hash": "7e3cececc77e",
+    "note": "default (round 2026-11-18)",
+    "rev": "EDU-EP26-ROWS-R1",
+    "shot": "B02-SH03",
+    "stage": "board",
+    "status": "ok",
+    "updatedAt": "2026-11-18T03:28:10Z"
+  },
+  "B02-SH03@draft": {
+    "clip": "c2f8f7e2097e4805",
+    "hash": "c2f8f7e2097e4805",
+    "note": "default (round 2026-11-19)",
+    "rev": "EDU-EP26-ROWS-R6",
+    "shot": "B02-SH03",
+    "stage": "draft",
+    "status": "ok",
+    "updatedAt": "2026-11-19T03:25:53Z"
+  },
+  "B02-SH04@draft": {
+    "clip": "fe60e40e435a8220",
+    "hash": "fe60e40e435a8220",
+    "note": "default (round 2026-11-19)",
+    "rev": "EDU-EP26-ROWS-R6",
+    "shot": "B02-SH04",
+    "stage": "draft",
+    "status": "ok",
+    "updatedAt": "2026-11-19T03:25:53Z"
+  },
+  "B02-SH05@draft": {
+    "clip": "7cc7be198bece284",
+    "hash": "7cc7be198bece284",
+    "note": "default (round 2026-11-19)",
+    "rev": "EDU-EP26-ROWS-R6",
+    "shot": "B02-SH05",
+    "stage": "draft",
+    "status": "ok",
+    "updatedAt": "2026-11-19T03:25:53Z"
+  },
+  "B03-SH01@board": {
+    "clip": "",
+    "hash": "82732f5c415c",
+    "note": "default (round 2026-11-18)",
+    "rev": "EDU-EP26-ROWS-R1",
+    "shot": "B03-SH01",
+    "stage": "board",
+    "status": "ok",
+    "updatedAt": "2026-11-18T03:28:10Z"
+  },
+  "B03-SH02@board": {
+    "clip": "",
+    "hash": "46452dd85d42",
+    "note": "default (round 2026-11-18)",
+    "rev": "EDU-EP26-ROWS-R1",
+    "shot": "B03-SH02",
+    "stage": "board",
+    "status": "ok",
+    "updatedAt": "2026-11-18T03:28:10Z"
+  },
+  "B03-SH02@draft": {
+    "clip": "1c3fd5044d3e6c86",
+    "hash": "1c3fd5044d3e6c86",
+    "note": "default (round 2026-11-19)",
+    "rev": "EDU-EP26-ROWS-R6",
+    "shot": "B03-SH02",
+    "stage": "draft",
+    "status": "ok",
+    "updatedAt": "2026-11-19T03:25:53Z"
+  },
+  "B03-SH03@board": {
+    "clip": "",
+    "hash": "7cf94eb05d1b",
+    "note": "default (round 2026-11-18)",
+    "rev": "EDU-EP26-ROWS-R1",
+    "shot": "B03-SH03",
+    "stage": "board",
+    "status": "ok",
+    "updatedAt": "2026-11-18T03:28:10Z"
+  },
+  "B03-SH04@draft": {
+    "clip": "9629b678f44920dc",
+    "hash": "9629b678f44920dc",
+    "note": "default (round 2026-11-19)",
+    "rev": "EDU-EP26-ROWS-R6",
+    "shot": "B03-SH04",
+    "stage": "draft",
+    "status": "ok",
+    "updatedAt": "2026-11-19T03:25:53Z"
+  },
+  "B03-SH06@draft": {
+    "clip": "84a4f29b360a1431+08f55fc9ea1112f4",
+    "hash": "84a4f29b360a1431+08f55fc9ea1112f4",
+    "note": "default (round 2026-11-19)",
+    "rev": "EDU-EP26-ROWS-R6",
+    "shot": "B03-SH06",
+    "stage": "draft",
+    "status": "ok",
+    "updatedAt": "2026-11-19T03:25:53Z"
+  },
+  "B04-SH01@board": {
+    "clip": "",
+    "hash": "52493c4fec4c",
+    "note": "default (round 2026-11-18)",
+    "rev": "EDU-EP26-ROWS-R1",
+    "shot": "B04-SH01",
+    "stage": "board",
+    "status": "ok",
+    "updatedAt": "2026-11-18T03:28:10Z"
+  },
+  "B04-SH01@draft": {
+    "clip": "08f55fc9ea1112f4",
+    "hash": "08f55fc9ea1112f4",
+    "note": "default (round 2026-11-19)",
+    "rev": "EDU-EP26-ROWS-R6",
+    "shot": "B04-SH01",
+    "stage": "draft",
+    "status": "ok",
+    "updatedAt": "2026-11-19T03:25:53Z"
+  },
+  "B04-SH02@board": {
+    "clip": "",
+    "hash": "9b3ab375c9dd",
+    "note": "default (round 2026-11-18)",
+    "rev": "EDU-EP26-ROWS-R1",
+    "shot": "B04-SH02",
+    "stage": "board",
+    "status": "ok",
+    "updatedAt": "2026-11-18T03:28:10Z"
+  },
+  "B04-SH03@board": {
+    "clip": "",
+    "hash": "dc67e5ec58a3",
+    "note": "default (round 2026-11-18)",
+    "rev": "EDU-EP26-ROWS-R1",
+    "shot": "B04-SH03",
+    "stage": "board",
+    "status": "ok",
+    "updatedAt": "2026-11-18T03:28:10Z"
+  },
+  "B04-SH03@draft": {
+    "clip": "10f43b96664487cb",
+    "hash": "10f43b96664487cb",
+    "note": "default (round 2026-11-19)",
+    "rev": "EDU-EP26-ROWS-R6",
+    "shot": "B04-SH03",
+    "stage": "draft",
+    "status": "ok",
+    "updatedAt": "2026-11-19T03:25:53Z"
+  },
+  "B04-SH04@board": {
+    "clip": "",
+    "hash": "8a24d76d826e",
+    "note": "default (round 2026-11-18)",
+    "rev": "EDU-EP26-ROWS-R1",
+    "shot": "B04-SH04",
+    "stage": "board",
+    "status": "ok",
+    "updatedAt": "2026-11-18T03:28:10Z"
+  },
+  "B04-SH05@draft": {
+    "clip": "05376ed58a4cb966",
+    "hash": "05376ed58a4cb966",
+    "note": "default (round 2026-11-19)",
+    "rev": "EDU-EP26-ROWS-R6",
+    "shot": "B04-SH05",
+    "stage": "draft",
+    "status": "ok",
+    "updatedAt": "2026-11-19T03:25:53Z"
+  },
+  "B05-SH01@draft": {
+    "clip": "34026a2a702703fd",
+    "hash": "34026a2a702703fd",
+    "note": "default (round 2026-11-19)",
+    "rev": "EDU-EP26-ROWS-R6",
+    "shot": "B05-SH01",
+    "stage": "draft",
+    "status": "ok",
+    "updatedAt": "2026-11-19T03:25:53Z"
+  },
+  "B06-SH01@draft": {
+    "clip": "ccc2a48559b2eb7d",
+    "hash": "ccc2a48559b2eb7d",
+    "note": "default (round 2026-11-19)",
+    "rev": "EDU-EP26-ROWS-R6",
+    "shot": "B06-SH01",
+    "stage": "draft",
+    "status": "ok",
+    "updatedAt": "2026-11-19T03:25:53Z"
+  },
+  "B06-SH02@draft": {
+    "clip": "1e2cdd66bb646e55",
+    "hash": "1e2cdd66bb646e55",
+    "note": "default (round 2026-11-19)",
+    "rev": "EDU-EP26-ROWS-R6",
+    "shot": "B06-SH02",
+    "stage": "draft",
+    "status": "ok",
+    "updatedAt": "2026-11-19T03:25:53Z"
+  },
+  "B06-SH03@draft": {
+    "clip": "ec87d4cc12ff2a35",
+    "hash": "ec87d4cc12ff2a35",
+    "note": "default (round 2026-11-19)",
+    "rev": "EDU-EP26-ROWS-R6",
+    "shot": "B06-SH03",
+    "stage": "draft",
+    "status": "ok",
+    "updatedAt": "2026-11-19T03:25:53Z"
+  },
+  "B06-SH04@draft": {
+    "clip": "92495a8ed1dcf31b",
+    "hash": "92495a8ed1dcf31b",
+    "note": "default (round 2026-11-19)",
+    "rev": "EDU-EP26-ROWS-R6",
+    "shot": "B06-SH04",
+    "stage": "draft",
+    "status": "ok",
+    "updatedAt": "2026-11-19T03:25:53Z"
+  },
+  "B06-SH05@draft": {
+    "clip": "c71353435a2729ce",
+    "hash": "c71353435a2729ce",
+    "note": "default (round 2026-11-19)",
+    "rev": "EDU-EP26-ROWS-R6",
+    "shot": "B06-SH05",
+    "stage": "draft",
+    "status": "ok",
+    "updatedAt": "2026-11-19T03:25:53Z"
+  },
+  "video@final": {
+    "clip": "out/EDU-EP26-SHORT/EDU-EP26-SHORT.mp4",
+    "hash": "b07c884fe987",
+    "note": "ผ่าน (user, chat 2026-11-19, relayed by the coordinator) after A1 water ambience -4.5 dB; recorded by Editor, not marked on the page",
+    "rev": "EDU-EP26-ROWS-R6",
+    "shot": "video",
+    "stage": "final",
+    "status": "ok",
+    "updatedAt": "2026-11-19T03:50:00Z"
+  }
 }

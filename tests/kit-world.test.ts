@@ -97,3 +97,19 @@ test('figureItem paints through paintSorted and hands out the anchors', () => {
   paintSorted(makePainter(recorder().brush, {t: 0, frame: 0}), cam, [figureItem(PEOPLE['man-parted'], {at: [0, 0, 0], view: 'back', t: 0}, {out})]);
   assert.ok(out.a);
 });
+
+test('Arm.exact keeps a projected hand point on a turned body (front and back three-quarter); without it the turn pulls it in', () => {
+  // EDU-EP26 draft fix B (19 Nov 2026): 3D hands and held props sat off the painted arm ends because the turn remapped `to`.
+  for (const o of [135, 45]) {
+    const c = orbitYCam([0, 0, 0], 3, o * DEG, 1.5, 900, 880), v = viewAtCam(c, {at: [0, 0, 0], facing: [0, -1]});
+    assert.ok(v.quarter, `orbit ${o}: a three-quarter view`);
+    const to: Pt = [470, 1000], via: Pt = [500, 1080];
+    const run = (exact: boolean) => paintFigureAt(makePainter(recorder().brush, {t: 0, frame: 0}), c, PEOPLE['man-parted'],
+      {at: [0, 0, 0], facing: [0, -1], t: 0, fig: {rArm: {to, via, noHand: true, ...(exact ? {exact: true} : {})}}})!;
+    const a = run(true), b = run(false);
+    // the back view's hand anchor is the hand centre, 3 cm past the arm end along the forearm
+    const da = Math.hypot(a.rHand[0] - to[0], a.rHand[1] - to[1]), db = Math.hypot(b.rHand[0] - to[0], b.rHand[1] - to[1]), tol = 0.035 * camUnit(c, [0, 1, 0]);
+    assert.ok(da < tol, `orbit ${o}: exact hand ${a.rHand} on ${to} (${da.toFixed(1)} px, tol ${tol.toFixed(1)})`);
+    assert.ok(db > da + 5, `orbit ${o}: remapped hand moves (${db.toFixed(1)} px)`);
+  }
+});

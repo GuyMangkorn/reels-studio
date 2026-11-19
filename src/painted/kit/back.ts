@@ -100,8 +100,9 @@ export const drawFigureBack = (p: Painter, def: CastDef, g: Pt, unit: number, po
 
   // Ground shadow like every figure (front and profile draw the same one).
   const sh = ell(g[0], g[1] + 0.01 * unit, 0.26 * (L ? 1.15 : 1) * unit, (L ? 0.07 : 0.06) * unit, 16);
-  if (!pose.seated && !sitK && !L) washAt(p, seed * 1000 + 999, sil ?? '#1e2324', 70, sh, 0.5, 0.3);
-  if (!pose.seated && !sitK && L) glaze(p, seed * 1000 + 999, '#0e1213', 120, sh, {border: 0.1, bleed: 0.15});
+  // `noShadow` (figure-at `shadow: false`) is honoured from behind too (it was front-only; EDU-EP26 draft fix B, 19 Nov 2026)
+  if (!pose.seated && !sitK && !pose.noShadow && !L) washAt(p, seed * 1000 + 999, sil ?? '#1e2324', 70, sh, 0.5, 0.3);
+  if (!pose.seated && !sitK && !pose.noShadow && L) glaze(p, seed * 1000 + 999, '#0e1213', 120, sh, {border: 0.1, bleed: 0.15});
 
   // ------------------------------------------------------------------ legs, skirt, feet
   const bodyC = o.coat ?? o.jacket ?? o.shirt;
@@ -215,6 +216,15 @@ export const drawFigureBack = (p: Painter, def: CastDef, g: Pt, unit: number, po
     // foreshortening, toward the profile's legs together (at 75 deg two thin legs stood apart with a gap; 13 Nov 2026).
     const lb = qb?.late ?? 0, cS = lerp(1, qb?.kr ?? 1, lb), wS = lerp(1, 1 / kq, lb);
     const hip: Pt = [s * 0.0725 * sc * cS, hip0], ankle: Pt = [s * 0.085 * sc * cS, ankleV + lift], knee: Pt = [s * 0.08 * sc * cS, (hip0 + ankleV) / 2 + lift / 2];
+    // `footLift` (draft fix B, 19 Nov 2026): the ankle rises and the leg folds two-bone (thigh = shank = half the standing leg), knee forward
+    const fl = Math.min(pose.footLift?.[s > 0 ? 'r' : 'l'] ?? 0, 0.8 * (hip0 - ankleV));
+    if (fl > 0) {
+      const seg = (hip0 - ankleV) / 2;
+      ankle[1] = ankleV + fl;
+      const mx = (hip[0] + ankle[0]) / 2, my = (hip[1] + ankle[1]) / 2, h = Math.sqrt(Math.max(0, seg * seg - ((hip[1] - ankle[1]) / 2) ** 2 - ((hip[0] - ankle[0]) / 2) ** 2));
+      knee[0] = mx + s * 0.3 * h; // the knee points away from the lens: seen from behind the folded leg reads short, its knee only a little out
+      knee[1] = my;
+    }
     const pc = mixColor(o.pants, '#000000', s > 0 ? 0.05 : 0);
     // The thigh starts where the torso hem ends (hip0 - 0.07), not at hip0: the 7 cm above lay under the translucent torso and showed through it
     // as two dark blocks across the hem (4 Nov 2026, bug: YOU2 back). The visible edges are the same lines; the ids and the lower part are unchanged.
@@ -245,7 +255,12 @@ export const drawFigureBack = (p: Painter, def: CastDef, g: Pt, unit: number, po
   const armGeom = (s: -1 | 1, a?: FigPose['rArm']) => {
     const Sh = shoulderOf(s), Lpx = AB * unit;
     let T: Pt, E: Pt;
-    if (a) {
+    if (a?.exact) {
+      // `Arm.exact` (EDU-EP26 draft fix B, 19 Nov 2026): `to` / `via` are projected world points (a held prop, a 3D hand), not front-view
+      // targets: no mirror, no turn scale, no reach clamp (the caller's two-bone fit keeps the bones)
+      T = a.to;
+      E = a.via ?? ikElbow(Sh, T, Lpx, s);
+    } else if (a) {
       T = mirrorX(g, a.to);
       if (qb) T = [g[0] + (T[0] - g[0]) * kq * armK(s), T[1]];
       const d = Math.hypot(T[0] - Sh[0], T[1] - Sh[1]), m = 2 * Lpx - 0.5;
