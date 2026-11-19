@@ -20,7 +20,7 @@ Inputs: scene sheets [EDU-EP30-SCENE-R2](../short/scene-sheets/index.md) (ready-
 | [T10](T10-dam-shore-path.md) dam: east approach, queue path, reflect, stone, near slope + clearance | set | no | T03 | done (see Result: 6 values to confirm) | 0 | this commit on the T10 worktree branch |
 | [T11](T11-seated-gunner.md) seated gunner four views + recoil jolt | figure | yes | T13, T03 | ready | 0 | — |
 | [T12](T12-crew-farmer-poses.md) crew and farmer poses (salute, P30, P44-back, loader, farmer) | figure | yes | T11, T13 | ready | 0 | — |
-| [T13](T13-lewis-gun-mechanics.md) Lewis gun anchors, recoil, pan, jam, cocking rack | prop | yes | T03 | ready (Q8 answered) | 0 | — |
+| [T13](T13-lewis-gun-mechanics.md) Lewis gun anchors, recoil, pan, jam, cocking rack | prop | yes | T03 | built, blocked on Film anchor values A1-A5 (Result) | 0 | T13 commit, branch `worktree-agent-a72562b1a2e567b2d` |
 | [T14](T14-truck-rig.md) truck rig and every drive schedule | movement | yes | T13, T11 | ready | 0 | — |
 | [T15](T15-emu-mime-gestures.md) emu mime: wing flick, watch check, foot tap, wave front + back | movement | yes | T07 | ready (Q7 answered) | 0 | — |
 | [T16](T16-queue-motion.md) queue at the dam: walk, unison step, flinch/hop, stare, turn-away | movement | yes | T10, T08 | ready (Q7 answered) | 0 | — |

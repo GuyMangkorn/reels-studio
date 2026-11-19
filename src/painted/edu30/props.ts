@@ -1,7 +1,7 @@
-import {mixColor, type Painter} from '../kit/painter';
+import {mixColor, ring, type Painter} from '../kit/painter';
 import type {V3} from '../kit/space';
 import {paintBox, wFill, wInk, type Box} from '../kit/world';
-import {camPoint, type YCam} from '../kit/ycam';
+import {camPoint, camUnit, type YCam} from '../kit/ycam';
 import {add, lerp, mul, newRig, nrm, paintBeast, type Build, type L3} from '../survival/beast';
 
 // EDU-EP30 props (VD30-07, Film W3 look assets 2026-11-19; Boss hardens): `new: lewis-gun` and the bell tent as beast-loft builds (any yaw,
@@ -11,11 +11,25 @@ import {add, lerp, mul, newRig, nrm, paintBeast, type Build, type L3} from '../s
 const SOFT: NonNullable<Build['look']> = {sub: 2, ring: 2, rim: '#d8ccb0', rimK: 0.22, edge: 0.45, far: 0.15};
 export const GUN_PX = {metal: '#34332f', shroud: '#45443e', fin: '#5d5b53', wood: '#6e4b2c', mag: '#2b2a27', magRim: '#56544c'} as const;
 
+export type LewisRecoil = {back: number; rise: number};
+type GunOpts = {elev?: number; tripod?: boolean; recoil?: LewisRecoil; cock?: number};
+/** Pan magazine turn per round (rad): 360 degrees over the 47-round pan = 7.66 degrees (VD30-11 step 3). */
+export const PAN_STEP = (7.66 * Math.PI) / 180;
+const COCK_TRAVEL = 0.12, COCK_S = -0.17, PAN_TOP = 0.022;   // handle travel back along -dir (m); handle rest position along the barrel from the tripod head; pan half thickness (m)
+/** Gun-local frame shared by the build and `lewisAnchors`: +x barrel, +y up, local z = the gun's left (paintBeast `l`). The gun body pitches up
+ *  by `recoil.rise` about the tripod head `pv` and slides `recoil.back` along -dir; the tripod legs stay on `pv` and their feet. */
+const gunFrame = (o: GunOpts) => {
+  const e = (o.elev ?? 0.04) + (o.recoil?.rise ?? 0), pv: L3 = [0, 0.56, 0], ax: L3 = [Math.cos(e), Math.sin(e), 0], up: L3 = [-Math.sin(e), Math.cos(e), 0];
+  const org = add(pv, mul(ax, -(o.recoil?.back ?? 0)));
+  const A = (s: number, h = 0, w = 0): L3 => add(add(add(org, mul(ax, s)), mul(up, h)), [0, 0, w]);
+  return {pv, ax, up, A, mc: A(-0.18, 0.075), port: A(-0.08, -0.02, -0.05), cock: (k = 0) => A(COCK_S - COCK_TRAVEL * k, -0.03, -0.09)};
+};
+
 /** Lewis gun on its low tripod. Local frame: +x along the barrel (muzzle), +y up, origin on the ground under the tripod head. `elev` raises the
- *  barrel (rad); `tripod` false = the gun alone (truck pedestal). Anchors: muzzle, grip, mag (pan centre), stock. */
-export const buildLewisGun = (o: {elev?: number; tripod?: boolean; magTurn?: number} = {}): Build => {
-  const R = newRig(), e = o.elev ?? 0.04, pv: L3 = [0, 0.56, 0], ax: L3 = [Math.cos(e), Math.sin(e), 0], up: L3 = [-Math.sin(e), Math.cos(e), 0];
-  const A = (s: number, h = 0, w = 0): L3 => add(add(add(pv, mul(ax, s)), mul(up, h)), [0, 0, w]);
+ *  barrel (rad); `tripod` false = the gun alone (truck pedestal). `recoil` is `lewisRecoil` (body only, tripod feet fixed); `cock` 0..1 draws the cocking handle (absent = not drawn). Anchors: muzzle,
+ *  grip, mag (pan centre), stock, port, cock. */
+export const buildLewisGun = (o: GunOpts = {}): Build => {
+  const R = newRig(), F = gunFrame(o), {pv, up, A, mc} = F;
   const g = R.bone('gun', null);
   R.loft(g, {m: 10, cap: true, col: () => GUN_PX.wood, keys: [{p: A(-0.66, -0.02), a: 0.022, b: 0.06}, {p: A(-0.5, -0.005), a: 0.022, b: 0.045}, {p: A(-0.34, 0.0), a: 0.024, b: 0.034}]});   // butt stock
   R.loft(g, {m: 10, cap: true, col: () => GUN_PX.metal, keys: [{p: A(-0.36, 0), a: 0.034, b: 0.045}, {p: A(-0.2, 0.005), a: 0.04, b: 0.05}, {p: A(-0.04, 0), a: 0.04, b: 0.046}]});   // receiver
@@ -23,16 +37,78 @@ export const buildLewisGun = (o: {elev?: number; tripod?: boolean; magTurn?: num
   R.loft(g, {m: 8, cap: true, col: () => GUN_PX.metal, keys: [{p: A(0.6, 0), a: 0.016, b: 0.016}, {p: A(0.66, 0), a: 0.014, b: 0.014}]});   // muzzle
   R.loft(g, {m: 8, cap: true, col: () => GUN_PX.wood, keys: [{p: A(-0.28, -0.03), a: 0.016, b: 0.02}, {p: A(-0.3, -0.1), a: 0.017, b: 0.022}, {p: A(-0.31, -0.14), a: 0.016, b: 0.02}]});   // grip
   // pan magazine: a flat drum on top of the receiver (its axis along `up`), dark with a lighter rim
-  const mc = A(-0.18, 0.075);
   R.loft(g, {m: 18, cap: true, col: (u) => (u < 0.2 || u > 0.8 ? GUN_PX.magRim : GUN_PX.mag), keys: [{p: add(mc, mul(up, -0.022)), a: 0.135, b: 0.135}, {p: add(mc, mul(up, 0.0)), a: 0.137, b: 0.137}, {p: add(mc, mul(up, 0.022)), a: 0.135, b: 0.135}]});
   if (o.tripod !== false) for (const [fx, fz] of [[0.42, 0.34], [0.42, -0.34], [-0.52, 0]] as const) {
     R.loft(g, {m: 6, col: () => GUN_PX.metal, keys: [{p: pv, a: 0.016, b: 0.016}, {p: lerp(pv, [fx, 0.02, fz], 0.5), a: 0.014, b: 0.014}, {p: [fx, 0.02, fz], a: 0.012, b: 0.012}]});
   }
   R.B.shadow = {s: -0.05, l: 0, rs: 0.55, rl: 0.3};
   R.B.feet = [];
-  R.B.anchors = {muzzle: A(0.66), grip: A(-0.3, -0.12), mag: mc, stock: A(-0.6, -0.02)};
+  const handle = F.cock(o.cock ?? 0);
+  if (o.cock !== undefined) {   // cocking handle: a short stem out of the receiver's right side and a round knob
+    R.loft(g, {m: 8, cap: true, col: () => GUN_PX.metal, keys: [{p: A(COCK_S - COCK_TRAVEL * o.cock, -0.03, -0.045), a: 0.006, b: 0.006}, {p: handle, a: 0.007, b: 0.007}]});
+    R.loft(g, {m: 8, cap: true, col: () => GUN_PX.fin, keys: [{p: add(handle, [0, 0, 0.012]), a: 0.015, b: 0.015}, {p: add(handle, [0, 0, -0.012]), a: 0.015, b: 0.015}]});
+  }
+  R.B.anchors = {muzzle: A(0.66), grip: A(-0.3, -0.12), mag: mc, stock: A(-0.6, -0.02), port: F.port, cock: handle};
   R.B.look = SOFT;
   return R.B;
+};
+
+/** Pan ticks (T13): a long and a short pale mark on the pan top that turn with the pan, so each round's step shows. `magTurn` in rad (`lewisPanTurn`,
+ *  anticlockwise seen from above). Painted in world space after the gun (a loft cap would hide the far half of a tick by centre-depth sort), only
+ *  while the pan top faces the lens. `at`, `heading`, `o` as `lewisAnchors`. */
+export const paintLewisPanTicks = (p: Painter, c: YCam, seed: number, at: V3, heading: number, magTurn: number, o: {elev?: number; recoil?: LewisRecoil} = {}) => {
+  const F = gunFrame(o), fx = Math.cos(heading), fz = Math.sin(heading), lx = Math.sin(heading), lz = -Math.cos(heading);
+  const W = ([s, y, l]: L3): V3 => [at[0] + s * fx + l * lx, at[1] + y, at[2] + s * fz + l * lz];
+  const top = add(F.mc, mul(F.up, PAN_TOP + 0.0015)), wt = W(top), wu = W(add(top, F.up));
+  if ((wu[0] - wt[0]) * (c.x - wt[0]) + (wu[1] - wt[1]) * (c.y - wt[1]) + (wu[2] - wt[2]) * (c.z - wt[2]) <= 0) return;   // pan top faces away from the lens
+  const ticks = [{a0: 0, r0: 0.035, r1: 0.125, hw: 0.008, col: '#b5af98'}, {a0: Math.PI, r0: 0.075, r1: 0.125, hw: 0.006, col: '#8c8775'}];
+  ticks.forEach((t, i) => {
+    const a = magTurn + t.a0, d = add(mul(F.ax, Math.cos(a)), [0, 0, Math.sin(a)]), n = add(mul(F.ax, -Math.sin(a)), [0, 0, Math.cos(a)]);
+    const P = (r: number, w: number): V3 => W(add(top, add(mul(d, r), mul(n, w))));
+    wFill(p, c, seed + i, t.col, [P(t.r0, -t.hw), P(t.r1, -t.hw), P(t.r1, t.hw), P(t.r0, t.hw)]);
+  });
+};
+
+/** World anchors of the Lewis gun placed by `placeBuild(p, c, buildLewisGun(o), at, heading)` (same transform as paintBeast, no pitch or bank):
+ *  `muzzle`, `port` (ejection port, receiver right), `pan` (pan centre, top face), `grip` (pistol grip mid), `stock` (stock comb mid), `cock`
+ *  (cocking-handle knob, receiver right), plus the unit barrel direction `dir`. `o.recoil` / `o.cock` as in `buildLewisGun`. */
+export const lewisAnchors = (at: V3, heading: number, o: {elev?: number; recoil?: LewisRecoil; cock?: number} = {}) => {
+  const F = gunFrame(o), fx = Math.cos(heading), fz = Math.sin(heading), lx = Math.sin(heading), lz = -Math.cos(heading);
+  const W = ([s, y, l]: L3): V3 => [at[0] + s * fx + l * lx, at[1] + y, at[2] + s * fz + l * lz];
+  const d = F.ax;
+  return {muzzle: W(F.A(0.66)), port: W(F.port), pan: W(add(F.mc, mul(F.up, PAN_TOP))), grip: W(F.A(-0.3, -0.12)), stock: W(F.A(-0.6, -0.02)), cock: W(F.cock(o.cock ?? 0)),
+    dir: [d[0] * fx + d[2] * lx, d[1], d[0] * fz + d[2] * lz] as L3};
+};
+
+/** Per-round recoil of the gun body (VD30-11 step 3): k = frames since the latest round frame in `rounds` (k 0: 5 mm back and 0.3 deg up, k 1: half,
+ *  k >= 2 or before the first round: none). The tripod feet never move. `rise` in rad. */
+export const lewisRecoil = (L: number, rounds: readonly number[]): LewisRecoil => {
+  let last = -1;
+  for (const r of rounds) if (r <= L && r > last) last = r;
+  const k = last < 0 ? 2 : L - last;
+  return k === 0 ? {back: 0.005, rise: (0.3 * Math.PI) / 180} : k === 1 ? {back: 0.0025, rise: (0.15 * Math.PI) / 180} : {back: 0, rise: 0};
+};
+/** Pan turn (rad) at frame L: one `PAN_STEP` per round frame <= L (the step lands on the round frame). */
+export const lewisPanTurn = (L: number, rounds: readonly number[]): number => PAN_STEP * rounds.filter((r) => r <= L).length;
+
+const easeOut = (u: number) => 1 - (1 - u) * (1 - u), easeIn = (u: number) => u * u, unit = (v: number) => Math.max(0, Math.min(1, v));
+/** B04-SH04 jam nudge (rad, added to the 11-round pan turn): +2 degrees over local 4..11 (ease-out), then still. */
+export const lewisJamNudge = (L: number): number => ((2 * Math.PI) / 180) * easeOut(unit((L - 4) / 7));
+/** B04-SH06 cocking rack, `cock` 0..1: local 0 -> 3 ease-out to 1, 3 -> 6 ease-in back to 0. */
+export const lewisCock = (L: number): number => (L <= 3 ? easeOut(unit(L / 3)) : 1 - easeIn(unit((L - 3) / 3)));
+
+/** The jam smoke from the port. `shot` 'B04-SH04': local 12..21, three circles r 0.02 -> 0.09 m, #8f8a80, alpha 0.7 -> 0, rising 0.05 m and drifting
+ *  0.04 m toward +z (the three are spread 0 / +0.025 / -0.025 m along x as they grow). 'B04-SH06': local 0..12, one wisp r 0.05 m, alpha 0.3 -> 0,
+ *  rising 0.06 m. `port` is the world port anchor. Plain flat fills. */
+export const paintLewisPuff = (p: Painter, c: YCam, port: V3, shot: 'B04-SH04' | 'B04-SH06', L: number) => {
+  const puff = shot === 'B04-SH04', u = puff ? (L - 12) / 9 : L / 12;
+  if (u < 0 || u > 1) return;
+  const specs = puff ? [0, 0.025, -0.025].map((dx) => ({dx, r: 0.02 + 0.07 * u, a: 0.7 * (1 - u), up: 0.05 * u, dz: 0.04 * u})) : [{dx: 0, r: 0.05, a: 0.3 * (1 - u), up: 0.06 * u, dz: 0}];
+  specs.forEach((s) => {
+    const w: V3 = [port[0] + s.dx * u, port[1] + s.up, port[2] + s.dz], q = camPoint(c, w);
+    if (!q || s.a <= 0.004) return;
+    p.layer(s.a, 0).flat('#8f8a80', ring(q[0], q[1], s.r * camUnit(c, w), s.r * camUnit(c, w), 16));
+  });
 };
 
 /** Bell tent: canvas cone on a short wall, a dark door slit and a pole tip. Local: origin at the centre of the floor. */
