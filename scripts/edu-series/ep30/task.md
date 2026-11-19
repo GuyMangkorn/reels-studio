@@ -4,7 +4,7 @@ Record [delivery.md](delivery.md) · Updated 2026-11-19, Preaw (W1.9 SCRIPT-R2.2
 
 ## EDU-EP30-SHORT
 
-**Now:** Film re-boards brief/storyboard/rows/scene sheets/tickets on R2.2 and VOICE-R2.2, then Boss/Ton. **Next:** user approves VOICE-R2 (W4.3), then W5 Film timed sheets and tickets, Boss plates, Ton sounds, Draft
+**Now:** Film re-boards brief/storyboard/rows/scene sheets/tickets on R2.2 and VOICE-R2.2, then Boss/Ton. **Next:** W5 Film timed sheets and tickets, Boss plates, Ton sounds, Draft
 
 - [x] W0 Ideation
   - [x] W0.1 Preaw concepts — [C110 R19](../concepts/C110.md)
