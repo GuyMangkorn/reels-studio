@@ -1,5 +1,5 @@
 # T10 — the farm dam has its east approach, the queue path, a reflection helper, the jam stone, and the near inner slope under the B04-SH06 lens (slope clearance checked)
-Deliverable: EDU-EP30-SHORT · Revision: r1 · Status: ready
+Deliverable: EDU-EP30-SHORT · Revision: r1 · Status: done
 Class: set · Hard: no
 Blocked by: T03 (`proof-dam.tsx` exists) · Consumers: B04-SH01 … B04-SH06; T16 (queue path)
 Model: sonnet, medium
@@ -42,4 +42,14 @@ References (store): `projects/edu/EDU/previews/LF02.58933d6b.png` (LF02 R4, lock
 | D30-sh06 | lit slope in the lower frame falling to the wet rim, water and far bank beyond, test post at the gunner mark | post top near (454 ± 30, 537 ± 30) px; no unpainted ground pixel below the horizon |
 
 ## Result (Boss fills)
-Commit · proof sheet path · measured numbers · fix passes used · open question, if blocked
+Commit: this commit on the T10 worktree branch (see index) · proof sheet: `out/edu30-T10/sheet.png` (store `projects/edu/EDU/previews/`: `sheet.png`, `D30-*.png`, `base_LF02.png`) · fix passes: 0 (tests: `node scripts/test.mjs tests/edu30-dam.test.ts` 7/7).
+Measured (newsreel off, clean frames): D30-LF02 mean abs RGB diff vs the pre-change render **0.0003** (range <= 2); D30-queue corner dot centre **(712, 859)** (range 712 +- 25, 869 +- 25: pass, y is 10 px off), the chain of dots runs along the rim, round the corner and up the east shore; D30-sh05 dot at s 4.6 **x 507** (507 +- 25); D30-jam stone centre **(676, 1337)** (674 +- 25, 1361 +- 25: pass, y is 24 px off, at the edge); D30-sh06 post top **(453, 508)** (454 +- 30, 537 +- 30: pass, y 29 px off, at the edge), base (464, 1130), post blob min y 504; paper-colour pixels below the horizon (row 620) **0**. Clearance table asserted from `southBankY` (0.70/0.72, 0.75, 0.49, 0.47, 0.55, 0.55, 0.62 m, all >= 0.3). Test/render notes: `QUEUE_LEN` 106.87 m; checks: `npx tsc --noEmit -p .` 22 errors, none in edu30 files (same pre-existing set as T03); `npm test` 227/243, the 16 failures are the environmental set of T03 (`three` / `@remotion/three` missing, `fs.globSync`); context-map check passes.
+Built: `dam.ts` (`bankTop`, `QUEUE_PATH`, `queuePoint`, `queueTangent`, `sAtRimX`, `QUEUE_LEN`, `reflect`, `overWater`, `reflectClip`, `REFLECT_TONE`, `STONE_AT`, `paintStone`, `CREW_WITHDRAWN`, `G1_AIM`, `B04_EYES`, `DAM_CAMS`, `paintDam({nearSlope})`, track, east approach, east-bay wet rim); `proof-dam.tsx` (five `D30-*`); `tests/edu30-dam.test.ts`.
+Values read as follows, none changed (Film to confirm or revise):
+- Q-1 (path in the water): the east-shore points (14.5, 0.45, -12), (14.5, 0.40, -5.2 .. -9) and (14.8, 0.5, -20) lie inside the `SHORE` loop east bay for z < about -8 (shore x 15.2 at z -8.8, 16.3 at -12.2, 15.1 at -19.8), so the queue walks in the shallows there (as the D2 thumbnail does); built as written, nothing moved.
+- Q-2 (East approach geometry): "lowers to y 0.5 between x 12 and 16, ramp 1.5 m each side" built as crest 1.2 to x 10.5, ramp to 0.5 at x 12, level to 16, ramp to ground 0 at x 17.5 (`bankTop(x)`); `southBankY` (a function of z only) is unchanged. The approach, track and east rim are always on (not behind an option), because the D30-queue proof runs `paintDam` at defaults; the LF02 view does not see them (diff 0.0003).
+- Q-3 (wet rim "to the corner (14.5, 0.4, -5.2)"): that point is not on `SHORE` (it is dry slope); the rim is extended along the east bay waterline points (13.4, -6.4) .. (16.4, -16.0), 0.25 m, not to the exact corner.
+- Q-4 (track): painted before the water, over the north spoil bank where it crosses it (x about 23 at z -28); claw marks are 40 dashes along the last leg only (40,0,-45) -> (14.8,0.5,-20).
+- Q-5 (stone shading): `paintBox` with `#8d806d` and face tones 0.3 toward dark, not exactly `#5f5547` on the shade faces.
+- Q-6 (small exports): `reflect` clip test is `reflectClip(v)` (the mirrored point's x, z inside `SHORE`); `G1_AIM.fire` is the vector [1, 0, 0]; the clearance eyes and the four proof cameras are exported from `dam.ts` (`B04_EYES`, `DAM_CAMS`) so the test and the proof share them.
+Open question for the sheet: none blocking.
