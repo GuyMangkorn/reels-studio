@@ -4,7 +4,7 @@ Record [delivery.md](delivery.md) · Updated 2026-11-19, Preaw (W1.6 SCRIPT-R2.1
 
 ## EDU-EP30-SHORT
 
-**Now:** voice redo for R2.1 (Editor): samples for MEREDITH and GUNNER voices (user picks), then Puck L19/L21, Kore re-read without L05/L08/L11 incl. L16–L18 take D (store samples/ep30/r2-lines), then VOICE-R2 lock; Film re-boards brief/storyboard/rows/scene sheets/tickets on R2.1 (stopped half-done on R1). **Next:** W4 voice lock, then W5 Film timed sheets and tickets, Boss plates, Ton sounds, Draft
+**Now:** EDU-EP30-VOICE-R2 built and measured (Editor, 66.91 s, user approval pending, W4.3); Film re-boards brief/storyboard/rows/scene sheets/tickets on R2.1 (stopped half-done on R1). **Next:** user approves VOICE-R2 (W4.3), then W5 Film timed sheets and tickets, Boss plates, Ton sounds, Draft
 
 - [x] W0 Ideation
   - [x] W0.1 Preaw concepts — [C110 R19](../concepts/C110.md)
@@ -30,8 +30,10 @@ Record [delivery.md](delivery.md) · Updated 2026-11-19, Preaw (W1.6 SCRIPT-R2.1
   - [x] W3.3 Storyboard passed (26/26, user 2026-11-19: Q6 three-quarter B04-SH03; all shots accepted via round pass, ROWS-R5)
 - [ ] W4 Voice lock
   - [x] W4.1 Voice chosen — samples made 2026-11-19 (Editor): NARR Kore L01 x1.08 (6.5 s) and x1.15 (6.1 s), FARMER Algenib L03 (3.0 s), EMU Puck L07 (2.9 s); store `projects/edu/EDU/samples/ep30/`; FARMER Algenib and EMU Puck accepted (user, 2026-11-19); no cut for length; new pace samples x1.05 (6.71 s) and x1.00 (7.05 s) made, awaiting the pace pick. Projection from the sample: about 69.5 s (x1.08) / 65.8 s (x1.15) against 60-63 s, so cuts are needed (see delivery.md log)
-  - [x] W4.2 Narration generated and measured — EDU-EP30-VOICE-R1 ([short/voice-lock.md](short/voice-lock.md)), Kore x1.05, speech ends 65.07 s, 67.07 s with the 2.0 s hold, 2026-11-19
-  - [x] W4.3 User approves the voice (VOICE-R1, 67.07 s, user 2026-11-19, structured question)
+  - [x] W4.2-R1 Narration generated and measured — EDU-EP30-VOICE-R1 ([short/voice-lock.md](short/voice-lock.md)), Kore x1.05, speech ends 65.07 s, 67.07 s with the 2.0 s hold, 2026-11-19
+  - [x] W4.2a VOICE-R1 approved by the user (67.07 s, 2026-11-19, structured question); superseded by R2 after the script R2.1 dialogue pass
+  - [x] W4.2 (R2) Narration for SCRIPT-R2.1 built and measured — EDU-EP30-VOICE-R2 ([short/voice-lock.md](short/voice-lock.md#voice-r2)): 19 lines, MEREDITH Alnilam, GUNNER Umbriel, EMU Puck, L16–L18 take D; speech ends 64.88 s, total 66.91 s with the 2.0 s hold; store `projects/edu/EDU/narration/ep30-voice-r2/`, 2026-11-19
+  - [ ] W4.3 User approves VOICE-R2 (66.91 s) — pending
 - [ ] W5 Draft
   - [x] W5.1 Film timed scene sheets — [EDU-EP30-SCENE-R1](short/scene-sheets/index.md), 26 shots, 2012 frames (67.07 s), ready-for-dev; rows EDU-EP30-ROWS-R6 timed, 2026-11-19 (review page: pending)
   - [ ] W5.2 Boss assets and plates (shot groups 0/G)

@@ -41,3 +41,63 @@ Store `projects/edu/EDU/narration/ep30-voice-r1/` (preview.wav, narr_raw.wav, ti
 
 - **R1.1, 2026-11-19, Editor** (user decision by structured question, same day: move the gap to after "แปด"). O1: the L17/L18 cut fell inside the spoken year "1908" (L17 ended "...ปีพัน(เก้า)", L18 began "(เก้า)ร้อยแปด"), leaving a 0.2 s silent hole at 61.77-61.97 s. Fix: the hole is removed and the same 0.2 s is inserted in the middle of L18's own pause after "แปด" (file offset 0.775 s). No re-generation, line files untouched, total stays 67.07 s (2012 frames). Script: [voice-lock-join-r11.py](voice-lock-join-r11.py) (input = the R1 build output kept as `out/ep30-voice/preview-R1.wav` + `timing-R1.json`; output `preview.wav`, `timing.json` with a `join_fix` key). The L18 row above is the R1 listing; in R1.1 the year runs unbroken 61.77-62.42 s, the pause after "แปด" is 62.42-62.87 s (0.46 s, was 0.26 s), and everything from "วันนี้" on is at its R1 time (speech to 65.07 s). Measured: envelope of preview.wav differs from R1 only at 61.77-62.73 s; no silence run inside the year; start/end of every other line unchanged. Effect on the scene sheets: the tail of the year ("ร้อยแปด") now ends at 62.42 s (frame 1873) instead of 62.62 s (frame 1879), 6 frames earlier; L18's later words (onset 62.87 s, frame 1886) are unchanged. Film to confirm the 1879 anchor in the L17 row may read 1873 (one cell, no shot change).
 - Join check by ear-proxy (envelope at each cut, R1 build): L13/L14 joins on a 0.01 s dip inside continuous sound (L13 tail 1192 with 10 ms trailing silence, L14 head 1727 with 0 ms lead): speech to speech with no pause, possibly a clipped onset on "แมเจอร์"; needs a listen. L16/L17 cut sits on a 0.07 s dip (natural comma, passes). All other cuts sit in 0.15-0.75 s silences (pass).
+
+<a id="voice-r2"></a>
+# EDU-EP30-VOICE-R2 (voice lock for script R2.1)
+
+Editor, 2026-11-19, for script [EDU-EP30-SCRIPT-R2.1](script.md) (user-approved). Status: **measured, user approval pending (W4.3)**. Replaces VOICE-R1.1 (kept intact in store `ep30-voice-r1/`). Build: [voice-lock-build-r2.py](voice-lock-build-r2.py); anchors: `VO_DIR=out/ep30-voice-r2 python3 -I vo-anchors.py` (10 ms peak envelope, speech above 1500, 30 fps). Store `projects/edu/EDU/narration/ep30-voice-r2/` (preview.wav, narr.wav = narrator lines only on the timeline, lines/, lines.json, timing.json, anchors-R2.txt, takeD_raw_L16-18.wav). No new API calls.
+
+## Voices (user picks, 2026-11-19, structured question)
+
+- NARR: Kore x1.05. L01-L04, L06, L09, L10, L12-L14 are the R1 Kore cuts re-used (the retired L05, L08, L11 were separate cuts, so they simply drop; no splice remains inside a retired line's neighbours). L16-L18 are re-read take D (store `samples/ep30/r2-lines`, chosen earlier with the 0.33 s lead; the lead is now moot, the lines are placed on the new timeline).
+- FARMER L03 Algenib, EMU L07/L15 Puck: R1 takes. MEREDITH L22 Alnilam, GUNNER L23 Umbriel, EMU L19 `Puck L19_a`, L21 `Puck L21_a` from store `samples/ep30/w4-char/`.
+- Character takes: leading and trailing silence trimmed at -45 dB (as R1). Gaps 0.2 s between lines (18), hold 2.0 s after L18.
+
+## Per-line timing (seconds and 30 fps frames, timeline 0 = L01 file start)
+
+"File" is the whole take on the timeline; "Speech" is the measured on/off (frames = round(s x 30)).
+
+| Line | Speaker | File | Speech on-off (s) | Speech frames | Dur |
+| --- | --- | --- | --- | --- | ---: |
+| L01 | NARR | 0.00-6.05 | 0.06-5.93 | 2-178 | 6.05 |
+| L02 | NARR | 6.25-11.74 | 6.88-11.69 | 206-351 | 5.49 |
+| L03 | FARMER | 11.94-14.35 | 11.94-14.35 | 358-431 | 2.42 |
+| L04 | NARR | 14.55-19.67 | 14.99-19.60 | 450-588 | 5.12 |
+| L19 | EMU | 19.87-22.24 | 19.89-22.22 | 597-667 | 2.36 |
+| L22 | MEREDITH | 22.44-22.76 | 22.44-22.75 | 673-683 | 0.33 |
+| L06 | NARR | 22.96-26.95 | 23.48-26.87 | 704-806 | 3.99 |
+| L07 | EMU | 27.15-29.43 | 27.15-29.43 | 815-883 | 2.28 |
+| L09 | NARR | 29.63-33.67 | 29.96-33.61 | 899-1008 | 4.04 |
+| L10 | NARR | 33.87-36.05 | 34.20-35.96 | 1026-1079 | 2.19 |
+| L23 | GUNNER | 36.25-38.29 | 36.39-38.27 | 1092-1148 | 2.03 |
+| L12 | NARR | 38.49-43.57 | 38.89-43.50 | 1167-1305 | 5.08 |
+| L13 | NARR | 43.77-46.99 | 44.14-46.77 | 1324-1403 | 3.22 |
+| L21 | EMU | 47.19-48.27 | 47.19-48.24 | 1416-1447 | 1.07 |
+| L14 | NARR | 48.47-52.22 | 48.82-52.18 | 1465-1565 | 3.75 |
+| L15 | EMU | 52.42-53.54 | 52.45-53.54 | 1574-1606 | 1.13 |
+| L16 | NARR | 53.74-58.81 | 53.77-58.76 | 1613-1763 | 5.06 |
+| L17 | NARR | 59.01-62.69 | 59.02-62.64 | 1771-1879 | 3.68 |
+| L18 | NARR | 62.89-64.91 | 62.90-64.88 | 1887-1946 | 2.02 |
+
+Last speech at **64.88 s** (frame 1946); with the 2.0 s hold the short is **66.91 s** (2007 frames; preview.wav 66.905 s). That is 0.16 s shorter than R1.1 (67.07 s) and 0.09 s shorter than the script estimate (about 67.0 s): the user's 67 s ceiling holds, nothing must be tightened. GUNNER L23 trimmed to 2.03 s (raw take 2.60 s: the rest was padding, speech 1.88 s); MEREDITH L22 is 0.33 s of speech (raw 0.88 s). Per-line internal pauses and syllable onsets: `anchors-R2.txt` in the store.
+
+## Change log vs R1.1
+
+- Retired L05, L08, L11 removed; new L19 (after L04), L22 (before L06), L23 (after L10), L21 (after L13), in script order L01-L04, L19, L22, L06, L07, L09, L10, L23, L12, L13, L21, L14, L15, L16-L18.
+- L16-L18 replaced by take D: L17 contains the whole year, "ตั้งแต่ปี 1908" with no cut inside it (the R1.1 gap hole in "1908" is gone; L17 and L18 are separate takes, 0.2 s gap after "1908", L18 starts "วันนี้"). Whisper transcript of L17 reads "...ตั้งแต่ปี 1908".
+- L13 file end trimmed by 0.10 s: the R1 cut carried a 40 ms noise tick (about -28 dBFS) after "หนึ่ง" that the anchor script read as speech; R2 L13 speech off is 46.77 s (frame 1403).
+- The L13/L14 R1 join is gone: L21 sits between them, so L14's onset (48.82 s) follows a 0.35 s lead in its own file; no clipped "แมเจอร์" (Whisper reads "เมเจอร์เองยังพูดเลยว่า...").
+- All narrator and farmer/emu R1 lines are unchanged files; their on/off differ from R1 only by the new timeline offsets.
+
+## Checks done
+
+Whisper (large-v3-turbo) transcription of every R2 line file, 0.5 s padded: every line reads its script words (Thai ASR spelling noise only: "ออสเตรลียา", "ร่ายข้าวสาริ", "โหเฮ้ย" for "โธ่เอ๊ย", "ไว้มาไหมนะ" for "ไว้มาใหม่นะ"). Envelope at every cut: each line starts and ends in silence or decay, except the points under open items. Not heard by ear.
+
+## Open items (for the listening pass / user)
+
+1. **L16 "ธันวา…"**: the script text ends the word at "ธันวา" with an ellipsis, so the take says "ธันวา" and stops (Whisper reads "ทันวา"). It is the script's wording, not a clipped cut; Preaw/user may prefer "ธันวาคม".
+2. **L19 internal pause**: the comma "สามคนเหรอ… เรามีสองหมื่นนะ" is a 0.77 s pause (20.63-21.40 s) inside a 2.36 s line; it works as the emu's beat but is long. L21 Puck is louder (-16.0 LUFS) than L19 (-20.5 LUFS) and L07/L15 (-18.3/-20.0): level matching belongs to the mix.
+3. **L22 "ยิง!"** is only 0.33 s of speech and L23 is 1.88 s of speech; both fit their slots (script estimates 0.8 s and 1.4 s) but the scene sheets must be re-timed (see below).
+4. **Narrator lead silences kept as R1**: L06, L09, L10, L12, L13, L14 carry 0.3-0.5 s of low room noise before the first word (R1 behaviour, approved), so audible gaps before them are 0.5-0.7 s rather than 0.2 s. Say if the user wants them trimmed to a flat 0.2 s (would shorten the total by about 2 s).
+5. **Scene sheets**: every anchor from L19 on changed against SCENE-R1 (timed to R1.1) and the order changed; Film re-times from this table. Editor did not edit scene sheets.
+6. Not heard by ear: user approval of VOICE-R2 (W4.3) covers it.
