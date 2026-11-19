@@ -1,14 +1,14 @@
 import {newsreelWeave} from './newsreel';
 
-// EDU-EP30 newsreel title cards (VD30-09; ticket T02 r1). Screen space, drawn by the T03 adapter above the NewsreelOverlay and below the captions.
+// EDU-EP30 newsreel title cards (VD30-09; ticket T02 r2). Screen space, drawn by the T03 adapter above the NewsreelOverlay and below the captions.
 // Outside the CSS tint filter (cream is already in the tint family); moves with the gate weave only, never with the VD30-11 canvas shake.
 
-export type TitleSize = 92 | 58;
+export type TitleSize = 92 | 48;
 export type TitleRow = {shot: string; text: string; in: number; out: number; size: TitleSize};
 
 /** The six cards in global frames [in, out) (SCENE-R2 Title overlay lines). */
 export const TITLES: TitleRow[] = [
-  {shot: 'B02-SH01', text: 'แคมเปียน รัฐเวสเทิร์นออสเตรเลีย · 1932', in: 206, out: 240, size: 58},
+  {shot: 'B02-SH01', text: 'แคมเปียน รัฐเวสเทิร์นออสเตรเลีย · 1932', in: 206, out: 240, size: 48},
   {shot: 'B03-SH01', text: 'แผน 1', in: 704, out: 734, size: 92},
   {shot: 'B04-SH01', text: 'แผน 2', in: 868, out: 898, size: 92},
   {shot: 'B05-SH01', text: 'แผน 3', in: 1150, out: 1180, size: 92},
@@ -16,7 +16,7 @@ export const TITLES: TitleRow[] = [
   {shot: 'B06-SH04', text: 'ถอนทัพ รอบที่ 2', in: 1715, out: 1737, size: 92},
 ];
 
-export const BAND = {top: 300, bottom: 475, cx: 540, pad: 72, minW: 420} as const;
+export const BAND = {top: 300, bottom: 475, cx: 540, pad: 72, placePad: 56, minW: 420} as const;
 export const FLICKER = [0, 0.8, 0.35, 1] as const;
 const CREAM = '#efe3c4';
 const SPACING = 0.02;
@@ -30,7 +30,7 @@ export const textWidth = (text: string, size: number): number => {
   const em = EM[text] ?? text.replace(COMBINING, '').length * 0.5;
   return em * size + text.length * SPACING * size;
 };
-export const boxWidth = (text: string, size: number): number => Math.max(BAND.minW, textWidth(text, size) + 2 * BAND.pad);
+export const boxWidth = (text: string, size: number): number => Math.max(BAND.minW, textWidth(text, size) + 2 * (size === 48 ? BAND.placePad : BAND.pad));
 
 /** Frame opacity: 0.0, 0.8, 0.35, 1.0 over in+0 … in+3, then 1.0. */
 export const titleOpacity = (frame: number, inFrame: number): number => (frame - inFrame < FLICKER.length ? FLICKER[frame - inFrame] : 1);

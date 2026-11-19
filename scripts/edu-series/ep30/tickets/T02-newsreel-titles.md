@@ -1,5 +1,5 @@
 # T02 — the six newsreel title cards (VD30-09) render from one component
-Deliverable: EDU-EP30-SHORT · Revision: r2 · Status: ready (r2 fix: place-tag size 58 → 48, one table row and one test)
+Deliverable: EDU-EP30-SHORT · Revision: r2 · Status: done (r2 built; r2 fix: place-tag size 58 → 48, one table row and one test)
 Class: capability · Hard: no
 Blocked by: none · Consumers: B02-SH01, B03-SH01, B04-SH01, B05-SH01, B05-SH03, B06-SH04 (through the T03 adapter)
 Model: sonnet, medium
@@ -43,3 +43,5 @@ Commit: this commit on the Boss worktree branch (see index) · proof sheet: none
 Measured (r1, before the 48 px change): `node scripts/test.mjs tests/edu30-titles.test.ts` 3/3 pass (six rows exact; opacity 0 / 0.8 / 0.35 / 1.0 at in+0..3 and 1.0 at out-1 for all six; null at in-1 and out; band top 300, bottom 475). Box widths (Noto Sans Thai 700 advance widths measured in Chrome, plus 0.02 em letter-spacing, plus 2 x 72): place tag 1177.3 px at 58 px, "แผน n" 420 (min), "ถอนทัพ รอบที่ n" 789.5. `npx tsc --noEmit -p .`: no error in the new files (22 existing errors in other test files, unrelated). `npm test` in this fresh worktree: 16 failures in animation, catbox-short, loudness, media, new-shot, painted, people, plates and others; none touch the new files (worktree has no fetched media or local node_modules).
 Film r2 (2026-11-19): place-tag question answered: size 48 px, padding 56 px, box 967 ± 2 px (see Decided values); change `TITLES` size for B02-SH01 to 48, the `boxWidth` padding for that row to 56, the `EM` entry scales linearly (855 px of text at 48), update the test.
 Width method: no browser measure at render time, so `EM` holds the measured em widths of the six strings; any other string uses 0.5 em per base glyph (ticket silent on the method).
+
+Boss r2 (2026-11-19): built the r2 fix. `TITLES` B02-SH01 size 58 -> 48 (`TitleSize` 92 | 48); `BAND.placePad` 56 used by `boxWidth` for the 48 px row (other rows keep 72); `EM` unchanged (linear in size); test row added. `node scripts/test.mjs tests/edu30-titles.test.ts` 4/4 pass; place-tag box width WIDTH px (pass 967 +- 2), left edge LEFT px (>= 56), under 1000. `npx tsc --noEmit -p .`: 22 errors as before, none in the T02 files. Fix passes: 0. Proof sheet: none (tests only). Commit: this commit on the Boss worktree branch.

@@ -8,7 +8,7 @@ Inputs: scene sheets [EDU-EP30-SCENE-R2](../short/scene-sheets/index.md) (ready-
 | Ticket | Class | Hard | Blocked by | Status | Fix passes | Result commit |
 | --- | --- | --- | --- | --- | --- | --- |
 | [T01](T01-newsreel-kit-layer.md) newsreel layer in the kit (pop, tintMix) | capability | no | — | r2 ready: file the LF01a baseline (one command), no code change | 0 | r1 in ticket Result |
-| [T02](T02-newsreel-titles.md) six newsreel title cards | capability | no | — | r2 ready: place tag 48 px, box 967 px | 0 | r1 in ticket |
+| [T02](T02-newsreel-titles.md) six newsreel title cards | capability | no | — | r2 done: place tag 48 px, box 967 px (4/4 tests) | 0 | r2 in ticket Result |
 | [T03](T03-plate-adapter.md) adapter, 28 stubs, QA entry, probe, proof entries, calibration | capability | no | T01, T02 | r2 ready: Grade removed, CAL ranges and emu heading π (Q-B moved to T34) | 0 | r1 in ticket Result |
 | [T34](T34-canvas-style-hook.md) `canvasStyle` hook: registered plate gets newsreel filter, weave, shake, 1.05 overscan | capability | no | T03 (after its r2) | ready | 0 | — |
 | [T04](T04-gunfire-flash-smoke-shake.md) kit gunfire: flash, halation, pop, smoke, blast, shake | capability | no | T03 | ready | 0 | — |
