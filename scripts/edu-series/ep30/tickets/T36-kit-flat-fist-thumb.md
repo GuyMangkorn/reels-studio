@@ -1,5 +1,5 @@
 # T36 — an unshaped kit figure can close a thumbed fist on a held point (the GUNNER-1 grip and stock), and T11's proofs show the thumb
-Deliverable: EDU-EP30-SHORT · Revision: r1 · Status: ready (new in TICKETS-R4, from the T11 thumb question)
+Deliverable: EDU-EP30-SHORT · Revision: r1 · Status: built, Film look check pending (r1 built 2026-11-20; two rows could not follow the ticket's words, see Result)
 Class: capability · Hard: yes (hand)
 Blocked by: T11 (done; same files `edu30/cast.ts`, `proof-cast.tsx`, `tests/edu30-cast.test.ts`) · Consumers: T11 (proof re-render), T12, T17, T18 (crew fists, the cocking pull, the order chop), T24 (B03-SH01 back view), T27 (B04-SH03 right forearm and mitten), T29 (B05-SH01/SH02 right profile), T22, T23 (through T12); any later unshaped figure holding a prop
 Model: sonnet, medium
@@ -44,3 +44,30 @@ References (store): `projects/edu/EDU/previews/T11-cropfront-j0.png`, `T11-cropr
 Result goes to Film for a look check at the index Look checks (fist reads as a closed fist, not a paw or a ball) before T12 dispatches.
 
 ## Result (Boss fills)
+
+Commit: see `git log` on branch `worktree-agent-aea0e4818090654d0` (T36 commit; started from `claude/ep30-continuation-493a12` at `ea37ad9`). Files: `src/painted/kit/draw.ts` (new `flatFistAt`), `kit/cast.ts` (`Arm.flatFist`, unshaped front/profile/3/4 path), `kit/back.ts` (back view), `edu30/cast.ts` (`flatFist: true` on the `grip`/`stock` chains only), `tests/kit-flat-fist.test.ts` (new), `docs/context-map.md`. `tests/edu30-cast.test.ts` unchanged, 4/4 pass.
+
+**Proof.** Store `projects/edu/EDU/previews/`: `T36-sheet.png` (8 frames, 270 px), `T36-crops.png` (hand crops front, back, right, 3/4 at 540 px), `T36-gunner-{front,back,right,34}-j{0,1}.png`, `T36-crop-*.png`. Local `out/edu30-T36/`; logs `out/logs/T36-{flat,cast,tsc,test}.log`.
+
+**Tests (kit-flat-fist, 4/4).** (a) `flatFist` absent: stroke-list hashes equal the build before T36 (`ea37ad9`) for `man-crop` front, `man-parted` back, `man-elder` right (`39e4b2d3867d`, `ef68705b3b89`, `73a01e4ee318`) and the LF01a gunner call (`8ac3d266aa4a`); identical strokes means pixel difference 0 (no LF01a pixel render was made). (b) fist centre within 0.01 hu of `T` (measured 0.0005 hu), reach past `T` 0.048 hu, bbox 0.097 x 0.069 hu at six forearm angles and both sides. (c) thumb crease on the `side` edge in the hand frame for fist +1 and -1.
+
+**Per-hand lines (measured on the drawn strokes; fist centre to the projected point; fist size; thumb-crease offset from the centre).** Rule (hand-drawing section 2): back of a RIGHT hand = thumb counter-clockwise of wrist-to-fingers; back of a LEFT hand = clockwise. All 16 hand-frames agree with it.
+| Frame | Hand | Fingers (screen) | Thumb lies | Centre error | Fist px | Thumb offset px |
+| --- | --- | --- | --- | --- | --- | --- |
+| front j0/j1 | RIGHT | (-0.91, -0.42) | down | 0.84 | 27.4 x 19.3 | (-2.4, 5.7) |
+| front j0/j1 | LEFT | (-0.84, -0.54) | up | 0.84 | 27.4 x 19.3 | (3.5, -5.1) |
+| back j0/j1 | RIGHT | (1.00, -0.01) | up | 3.28 | 106.7 x 75.1 | (-1.2, -23.9) |
+| back j0/j1 | LEFT | (0.16, -0.99) | right | 3.28 | 106.7 x 75.1 | (23.5, 4.6) |
+| right j0/j1 | RIGHT | (1.00, 0.04) | up | 1.35 | 44.0 x 30.9 | (0.0, -9.9) |
+| right j0/j1 | LEFT | (0.41, -0.91) | right | 1.35 | 44.0 x 30.9 | (8.8, 4.4) |
+| 3/4 j0/j1 | RIGHT | (0.81, 0.59) | up | 1.42 | 46.3 x 32.6 | (5.8, -8.6) |
+| 3/4 j0/j1 | LEFT | (0.93, -0.36) | down | 1.42 | 46.3 x 32.6 | (3.4, 9.8) |
+Right view: the far LEFT fist is drawn (not hidden): the gun's near side does not cover the stock point in the proof camera.
+thumb check (rule, code `mittenThumbSide` and picture agree): GUNNER-1 RIGHT and LEFT ok in all four views. arm check: arm ratios unchanged from T11 (the tests above call the same solve; `edu30-cast` ratio test passes, max <= 1.05); the forearm capsule ends on the fist (viewed in the crops, no gap).
+
+**Values I could not follow as written (Film to decide).**
+1. The ticket's thumb words (`screen right` / `screen left` for front, 3/4, right; `screen left` / `screen right` for back) do not describe these frames: the forearms lie nearly horizontal on screen (fingers point sideways), so the thumb crease lies above or below the fist, not left or right (table above). Line, code and picture agree with the section 2 rule, so I recorded the measured sides and did not change the arm solve. Question: accept the measured sides as the thumb check for T11's proofs, or is a different arm direction wanted?
+2. Front j0 fist is 27 x 19 px (thumb crease about 10 px long against finger creases about 4.5 px), small but the thumb crease reads as the longer stroke on the back-side edge in the 540 px crop; at 3/4 and right 44-46 px it is clear. The ticket's blocked-if-unreadable rule is not triggered, but Film judges it at the look check.
+3. Fist-centre error is 3.3 px in the back view (0.0037 hu at 880 px/m, inside the 0.01 hu bound; the ticket's 3 px applies to the front view, 0.84 px).
+
+**Repo checks.** `tsc`: 22 errors, none in changed files (missing `three` / `@remotion/three` types in this checkout, test typing already in `ea37ad9`). `npm test`: 295 pass, 20 fail, all in modules this ticket does not touch (12 need `@remotion/three`, which is not installed in the shared `node_modules`; `beast-joints` hippo "Maximum call stack"; store adopt; loudness); the context-map test failed on my new test until the map entry was added and passes now. Fix passes used: 0. Open: Film's look check (fist reads as a closed fist, not a paw or a ball) before T12.
