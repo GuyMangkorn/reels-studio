@@ -1,5 +1,5 @@
 # T01 — the newsreel screen layer lives in the kit with exposure pop, flare and a warm-to-cool mix
-Deliverable: EDU-EP30-SHORT · Revision: r1 · Status: ready
+Deliverable: EDU-EP30-SHORT · Revision: r1 · Status: done
 Class: capability · Hard: no
 Blocked by: none · Consumers: every plate B01-SH01 … B06-SH04 (strength 1), B07-SH01 (burn-out); T03 adapter
 Model: sonnet, medium
@@ -36,4 +36,9 @@ References (store): `projects/edu/EDU/previews/EDU-EP30-W3-r1/LF01a.png` (warm, 
 | tests (a)–(d) | as listed | all pass |
 
 ## Result (Boss fills)
-Commit · proof sheet path · measured numbers · fix passes used · open question, if blocked
+- Commit: the commit that carries this edit on branch `worktree-agent-a2532a012de0fa7ed` (2026-11-19, Boss, Sonnet medium). Fix passes: 0.
+- Built: newsreel layer moved into `src/painted/kit/screen.tsx` with `pop` and `tintMix`; `src/painted/edu30/newsreel.tsx` is a re-export; `tests/newsreel.test.ts` (4 tests (a)-(d), all pass). `tsc`: 22 errors, all in untouched files (tests/loudness, tests/render-options, ...), none in the changed files (`out/logs/T01-tsc.log`).
+- Proof frame: `out/edu30/looks/T01/LF01a.png` (worktree, archived to the store with `store.py archive`).
+- Measured: mean abs diff vs store LF01a = 3.58 (limit 2): NOT within range. The same still rendered from the pre-move code (HEAD) differs from the store by the same 3.58, and new vs old render differs by max 8 / 255 at one pixel value (mean not above rounding), so the gap is store-still drift, not this change.
+- Deviations to note: strength 0 now returns filter `none` and weave `none` (ticket rule) which changes the old `strength: 0` output from a no-op-looking string; the cool string is byte-identical to the old one at `tint: 'cool'` (tintMix 1); `hue-rotate` appears only when `tintMix` > 0.
+- Open question for Film: the LF01a store still is not reproducible within <= 2 from the locked code (3.58 with old code too). Re-baseline the proof number on the current render, or re-key the store still?
