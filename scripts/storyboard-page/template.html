@@ -240,12 +240,14 @@ const needs = (s, stage) => SHOT_STAGES.includes(stage) && (stage === "board" ||
 const finalVerdict = () => { const r = state[FINAL_KEY]; return D.finalCut && r && r.clip === D.finalCut.hash ? r : null; };
 const said = p => `${p.status === "ok" ? "ผ่าน" : p.status === "change" ? "แก้" : "ยังไม่เลือก"}${p.note ? " · " + p.note : ""}`;
 let tab = "board", onlyOpen = false;
-// Verdicts live in reviews.json beside review-rows.json, served by serve.py at /api/reviews.
-// `pending` holds keys edited here and not yet saved, so a poll never overwrites them.
-let online = false;
+// Verdicts live in the Claude Artifact's db (docs reviews/<key>) when the page is published as an artifact;
+// otherwise in reviews.json beside review-rows.json, served by serve.py at /api/reviews.
+// `pending` holds keys edited here and not yet saved, so an incoming update never overwrites them.
+let online = false, db = null;
 const pending = new Set();
-const put = (key, v) => fetch("api/reviews/" + encodeURIComponent(key), { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(v) })
-  .then(r => { if (!r.ok) throw new Error(r.status); });
+const put = (key, v) => db ? db.doc("reviews/" + key).set(v)
+  : fetch("api/reviews/" + encodeURIComponent(key), { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(v) })
+    .then(r => { if (!r.ok) throw new Error(r.status); });
 
 function reviewHTML(id, stage, s, placeholder = "หมายเหตุ (ถ้ามี)") {
   const key = verdictKey(id, stage);
@@ -544,7 +546,19 @@ renderRows(); wire(); count();
     });
     count();
   };
-  // Poll every 2 s: picks up answers from other tabs or devices, agent edits to reviews.json, and a rebuilt page.
+  // Published as a Claude Artifact: verdicts in its db, live across tabs and devices.
+  try { db = window.claude ? await window.claude.use("db") : null; } catch { db = null; }
+  if (db) {
+    online = true;
+    storeEl.textContent = "คำตอบบันทึกอัตโนมัติ เอเจนต์อ่านได้";
+    db.collection("reviews").onSnapshot(snap => {
+      const reviews = {};
+      snap.docs.forEach(d => { reviews[d.id] = d.data(); });
+      apply(reviews);
+    }, () => { storeEl.textContent = "เชื่อมที่เก็บคำตอบไม่ได้ ใช้ปุ่มคัดลอกส่งให้เอเจนต์"; });
+    return;
+  }
+  // Served by serve.py: poll every 2 s; picks up answers from other tabs or devices, agent edits to reviews.json, and a rebuilt page.
   let etag = "", page = null;
   const poll = async () => {
     try {
@@ -564,7 +578,7 @@ renderRows(); wire(); count();
       apply(body.reviews || {});
     } catch {
       etag = "";
-      storeEl.textContent = online ? "ขาดการเชื่อมกับที่เก็บคำตอบ กำลังลองใหม่…" : "ไม่ได้เปิดผ่าน serve.py คำตอบจะไม่ถูกบันทึก ใช้ปุ่มคัดลอกส่งให้เอเจนต์";
+      storeEl.textContent = online ? "ขาดการเชื่อมกับที่เก็บคำตอบ กำลังลองใหม่…" : "ไม่ได้เชื่อมที่เก็บคำตอบ คำตอบจะไม่ถูกบันทึก ใช้ปุ่มคัดลอกส่งให้เอเจนต์";
     } finally {
       setTimeout(poll, 2000);
     }

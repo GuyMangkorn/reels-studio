@@ -84,6 +84,36 @@ test('verdicts.py marks an answer stale once its shot changes, and --pass-open f
   assert.equal(after[`${d.shots[2].id}@board`].current, true);
 });
 
+test('verdicts.py --pull reads the artifact db docs, and --pass-open prints db_write ops with ifVersion', () => {
+  const dir = mkdtempSync(path.join(tmpdir(), 'sb-pull-'));
+  const rows = path.join(dir, 'review-rows.json');
+  writeFileSync(rows, JSON.stringify(example));
+  const d = build(example);
+  const [a, b] = d.shots;
+  const pull = path.join(dir, 'db.jsonl');
+  writeFileSync(pull, [
+    {id: `reviews/${a.id}@board`, version: 3, data: {shot: a.id, stage: 'board', status: 'change', note: 'n', rev: 'SS-R1', hash: a.hash}},
+    {id: `${b.id}@board`, version: 2, data: {shot: b.id, stage: 'board', status: 'ok', note: '', rev: 'SS-R0', hash: 'old'}},
+  ].map((x) => JSON.stringify(x)).join('\n'));
+  const verdicts = path.resolve('scripts/storyboard-page/verdicts.py');
+  const run = (...args: string[]) => {
+    const r = spawnSync('python3', ['-I', verdicts, rows, ...args], {encoding: 'utf8'});
+    assert.equal(r.status, 0, r.stderr);
+    return r.stdout;
+  };
+  const got = JSON.parse(run('--json', '--pull', pull)).reviews;
+  assert.equal(got[`${a.id}@board`].current, true);
+  assert.equal(got[`${a.id}@board`].status, 'change');
+  assert.equal(got[`${b.id}@board`].current, false);
+  const out = run('--pass-open', 'board', '--round', '2026-11-19', '--pull', pull);
+  const ops = JSON.parse(out.split('\n').find((l) => l.startsWith('db_write ops: '))!.slice(14));
+  assert.ok(!ops.some((o: {path: string}) => o.path === `reviews/${a.id}@board`));
+  const opB = ops.find((o: {path: string}) => o.path === `reviews/${b.id}@board`);
+  assert.equal(opB.ifVersion, 2);
+  assert.equal(opB.data.status, 'ok');
+  assert.equal(ops.length, d.shots.length - 1);
+});
+
 test('--drafts-passed needs a current ok on every draft, and the Final tab has one verdict on the delivery file', () => {
   const dir = mkdtempSync(path.join(tmpdir(), 'sb-final-'));
   const rows = path.join(dir, 'review-rows.json');

@@ -17,8 +17,10 @@ shot says what changed. The storyboard hash leaves out id, beat, timing, media, 
 after the voice lock keeps the answers.
 Look frames (Film, W3, added after the first storyboard pass): top-level "looks": {"<lookId>": {"src", "caption"}} and "look": "<lookId>" on each beat that
 uses it; the storyboard tab is text only and shows each location's look frame in its beat header.
-DIR/index.html is a plain HTML page: open it through serve.py, which saves verdicts to reviews.json beside the rows.
-Image and video paths in the JSON are repository-relative. Exits 1 on schema errors; prints the serve command.
+DIR/index.html is published as a Claude Artifact (index.html plus every pv/ file, db capability); the page saves verdicts
+to the artifact's db under reviews/<key>. Without the artifact tools, serve.py serves the same page and saves to
+reviews.json beside the rows. Image and video paths in the JSON are repository-relative. Exits 1 on schema errors;
+prints the publish files and the serve fallback.
 """
 import hashlib, json, os, shutil, subprocess, sys
 
@@ -163,8 +165,10 @@ def main():
 
     files = sorted(used.values())
     print(f'wrote {os.path.relpath(out, ROOT)}/index.html · {len(d["shots"])} shots · {len(files)} media files')
+    print('publish: Claude Artifact, files index.html + ' + ' '.join(files) + f' from {os.path.relpath(out, ROOT)}/'
+          + '; declare capabilities {"db": {}} after the first publish; republish to the same artifact for every revision')
     serve = f'python3 -I scripts/storyboard-page/serve.py {os.path.relpath(os.path.abspath(rows_path), ROOT)}'
-    print(f'serve: {serve}' + (f' --out {out}' if '--out' in args else '') + ' [--lan]  (an open page reloads itself)')
+    print(f'fallback (no artifact tools): {serve}' + (f' --out {out}' if '--out' in args else '') + ' [--lan]  (an open page reloads itself)')
 
 
 if __name__ == '__main__':
