@@ -6,7 +6,7 @@ One row per concept the channel has made. Each concept has its own file `C<nn>.m
 
 ## How a new round is filed
 
-1. Preaw writes one file per concept, `C61.md` onward (next free ID: **C101**), with the pitch and the [ER08](../../../channels/edu/script.md) pitch check, inside the round's picked [category](../../../channels/edu/categories.md#category-pick), and adds a row here with status `pitched` and the round ID (`R11`, ...).
+1. Preaw writes one file per concept, `C61.md` onward (next free ID: **C113**), with the pitch and the [ER08](../../../channels/edu/script.md) pitch check, inside the round's picked [category](../../../channels/edu/categories.md#category-pick), and adds a row here with status `pitched` and the round ID (`R11`, ...).
 2. Film adds a `## Film annotation (W0.2)` section to each concept file of the round.
 3. After the user picks, the coordinator sets each row: `picked` (with the episode ID), `dropped`, or leaves `pitched`. Write the round's pick note (user's words, date) in `../delivery.md`.
 4. When the episode is published, set the row to `made`.
@@ -61,5 +61,17 @@ One row per concept the channel has made. Each concept has its own file `C<nn>.m
 | C98 | คุณจะเอาน้ำแข็งข้ามทะเลยังไง (CAT02) | pitched | - | R17 | [C98.md](C98.md) |
 | C99 | คุณตรงเวลาของเมือง แต่เกือบสายสำหรับรถไฟ (CAT02) | pitched | - | R17 | [C99.md](C99.md) |
 | C100 | คุณอ่านไม่ออก แต่คนทั้งเมืองอ่านได้ (wild card) (CAT02) | pitched | - | R17 | [C100.md](C100.md) |
+| C101 | ขึ้นอวกาศ 15 นาที แต่ปวดฉี่มา 4 ชั่วโมง (CAT01) | picked | EDU-EP27-SHORT | R18 | [C101.md](C101.md) |
+| C102 | รอดูพระอาทิตย์ขึ้นบนดาวศุกร์ (CAT01) | pitched | - | R18 | [C102.md](C102.md) |
+| C103 | AI ที่ชนะเกมด้วยการไม่เล่นเกม (wild card) (CAT01) | pitched | - | R18 | [C103.md](C103.md) |
+| C104 | มาราธอนโอลิมปิกที่ป่วงที่สุดในประวัติศาสตร์ (CAT07) | pitched | - | R18 | [C104.md](C104.md) |
+| C105 | กฎข้อเดียวของโกลตอนจุดโทษ: อย่าพุ่ง (CAT07) | dropped | - | R18 | [C105.md](C105.md) |
+| C106 | ถ้าคุณได้ขับรถ F1 หนึ่งรอบ คอคุณจะยอมไหม (CAT07) | pitched | - | R18 | [C106.md](C106.md) |
+| C107 | ถ้าคุณตัวใหญ่ขึ้นสิบเท่า ก้าวแรกขาหัก (CAT01) | pitched | - | R19 | [C107.md](C107.md) |
+| C108 | เทพเจ้าสายฟ้าในชุดเจ้าสาว (wild card) (CAT06) | pitched | - | R19 | [C108.md](C108.md) |
+| C109 | ทิวลิปหัวเดียว ราคาเท่าบ้านริมคลอง (CAT05) | picked | EDU-EP29-SHORT | R19 | [C109.md](C109.md) |
+| C110 | ออสเตรเลียส่งปืนกลไปรบกับนกอีมู แล้วแพ้ (CAT02) | picked | EDU-EP30-SHORT | R19 | [C110.md](C110.md) |
+| C111 | เสื้อที่คุณคิดว่าทั้งห้องเห็น (CAT04) | pitched | - | R19 | [C111.md](C111.md) |
+| C112 | คนที่ขายหอไอเฟลได้สองครั้ง (CAT08) | pitched | - | R19 | [C112.md](C112.md) |
 
 Pitch lessons from past rounds: [lessons.md](lessons.md).
