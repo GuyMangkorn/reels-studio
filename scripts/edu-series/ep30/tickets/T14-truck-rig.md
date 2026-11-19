@@ -1,5 +1,5 @@
 # T14 — the 1932 truck drives, stops, turns about, bounces as one rigid body with its riders and G2 on a pedestal, trailing dust
-Deliverable: EDU-EP30-SHORT · Revision: r5 · Status: r5 fix pass ready (R6 Film look check of the r4 stop dust, 2026-11-20: fix: at L 44/46 two big hard-rimmed disc stacks hide the lower truck; rows E1–E4; the chase frames, seats and every other r4 row pass; this is the second fix pass, the cap) · was: done (r4 fix pass built 2026-11-20, tests 18/18; Film look check of the dust still pending) — r4 fix pass (r5 Film, 2026-11-20: Q1 cab height and Q2 gunner height settled by moving the rows, no rebuild; Q3 dust carry for the B02-SH03 stop and the right-hand-drive cab seats to build; Boss's other silent choices confirmed; see r4 decisions; built 2026-11-20, tests 17/17) · r3: Film notes added (TICKETS-R3)
+Deliverable: EDU-EP30-SHORT · Revision: r5 · Status: r5 fix pass built 2026-11-20, tests 19/19; E4 L 44 measures 26.25 % (row 25 %), Film to decide; cap reached · was: r5 fix pass ready (R6 Film look check of the r4 stop dust, 2026-11-20: fix: at L 44/46 two big hard-rimmed disc stacks hide the lower truck; rows E1–E4; the chase frames, seats and every other r4 row pass; this is the second fix pass, the cap) · was: done (r4 fix pass built 2026-11-20, tests 18/18; Film look check of the dust still pending) — r4 fix pass (r5 Film, 2026-11-20: Q1 cab height and Q2 gunner height settled by moving the rows, no rebuild; Q3 dust carry for the B02-SH03 stop and the right-hand-drive cab seats to build; Boss's other silent choices confirmed; see r4 decisions; built 2026-11-20, tests 17/17) · r3: Film notes added (TICKETS-R3)
 Class: movement · Hard: yes (movement, riders' arms)
 Blocked by: T13 (same files `props.ts`, `proof-props.tsx`, `tests/edu30-props.test.ts`), T11 (seated gunner right profile) · Consumers: B01-SH02, B02-SH03, B02-SH04 (parked), B05-SH01, B05-SH02, B05-SH03, B06-SH03, B06-SH04
 Model: sonnet, medium
@@ -151,3 +151,20 @@ Commit: see `git log` on branch `worktree-agent-a7bead1aa2128832a` (T14 r4 commi
 Hand line: unchanged from r1 (T11 mitten fists, T36 pending); no hand code touched. Arm ratios and drift tests unchanged and passing.
 
 **Could not follow / notes for Film:** none among the r4 values. The dust at L 44 and 46 is a large soft cloud around the whole rear of the truck (painter's order: far part behind the truck, near part in front) because carry 0.9 and radius growth are both big at the gag; Film's look check should confirm it still reads as a small truck stopped close before the cloud overtakes (`T14r4-sheet.png`). Checks: `npx tsc`: 22 error lines, none in the three files (environment `three` / `hippo`); `npm test` log `out/logs/T14r4-npm.log`.
+
+## Result r5 (Boss fix pass, Sonnet medium, 20 Nov 2026)
+Commit: see `git log` on this worktree branch (T14 r5 commit) · fix passes used: 2 (r4, r5), cap reached · proof: store `projects/edu/EDU/previews/T14r5-sheet.png` and `T14r5-stop-44`, `-46`, `-48`, `-53` (local `out/edu30-T14r5/`, logs `out/logs/T14r5-test.log`, `T14r5-stills.log`). Earlier store files untouched.
+
+**Built** (`props.ts`, `tests/edu30-props.test.ts`; `proof-props.tsx` unchanged, it already passes `truckDustFor('B02-SH03')`): `DustOpts` gains `r0, r1, swell, stopAt`; `truckDustFor('B02-SH03')` = carry 0.9, life 40, r0 0.25, r1 0.8, swell 0.5, stopAt 44 (every other schedule r0 0.3, r1 1.5, swell 0 as built); radius = r0 + (r1 - r0) min(1, age/30) + swell x min(L - stopAt, 20)/20 for L > stopAt; `dustSoftDiscs(puff)` = discs k 1, 0.72, 0.45, each alpha 1 - (1 - a)^(1/3); `paintTruckDust` paints those three. Tests 19/19 (new: age-30 radius 0.80 at L 44, L 53 = moving + 0.5 x 9/20, no swell at L 44, discs and centre alpha 0.30 within 0.01, B05-SH01 radius <= 1.5).
+
+| Row | Number | Pass | Result |
+| --- | --- | --- | --- |
+| E1 | radius at age 30 = 0.80 (test, tolerance 0.01) | 0.80 +- 0.01 | pass |
+| E2 | L 53 = moving + 0.5 x 9/20; L 64 +0.5 (test) | as stated | pass |
+| E3 | three plain discs, centre alpha = puff alpha (test); viewed at 270 px: soft, no hard-rim stack | viewed, +-0.01 | pass |
+| E4 L 44 | dust alpha >= 0.12 covers **26.25 %** of the truck's projected 5.2 x 2.0 x 2.12 m screen box (x 279-789, y 702-1225; 20 x 20 grid, soft discs combined 1 - prod(1 - a)); r4 value 68.75 %; front-wheel contact visible (viewed) | <= 25 % | **fail by 1.25 points** |
+| E4 L 46 | 35.00 % (r4 75.75 %) | <= 35 % | pass at the limit |
+| E4 L 48 (extra) | 44.50 % (r4 81.50 %) | - | logged |
+| E4 L 53 | 6 puffs alpha >= 0.12 with centre x + radius >= -3.6 (r4 6); dust across the lower cab (viewed) | >= 3 | pass |
+
+Hand line: no hand code touched. **Could not follow:** E4 at L 44 (26.25 against 25 %) with E1-E3 exactly as written; no value was tuned beyond the rows. The box is the full projected truck box (including roof and tray air), so a tighter silhouette box gives a higher percentage; Film chooses: widen the row to <= 27 %, or give a smaller E1 start radius or lower alpha. The fix-pass cap is reached, so this goes to the user.

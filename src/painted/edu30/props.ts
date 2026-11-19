@@ -348,13 +348,14 @@ export const paintTruckRig = (p: Painter, c: YCam, o: TruckRigOpts) => {
 
 export type DustPuff = {at: V3; r: number; alpha: number; seed: number};
 /** Dust options per schedule (T14 r4): the B02-SH03 stop gag carries the cloud on past the cab (carry 0.9, 40 f life); every other schedule trails (carry 0.3, 30 f). */
-export type DustOpts = {carry?: number; life?: number};
+/** r5 (B02-SH03 only): radius `r0` -> `r1` over 30 f; from `stopAt` each live puff swells on by `swell` m over 20 f. */
+export type DustOpts = {carry?: number; life?: number; r0?: number; r1?: number; swell?: number; stopAt?: number};
 export const DUST_STOP_DECAY = 0.95;
-export const truckDustFor = (shot: TruckShotId): Required<DustOpts> => (shot === 'B02-SH03' ? {carry: 0.9, life: 40} : {carry: 0.3, life: 30});
+export const truckDustFor = (shot: TruckShotId): Required<DustOpts> => (shot === 'B02-SH03' ? {carry: 0.9, life: 40, r0: 0.25, r1: 0.8, swell: 0.5, stopAt: 44} : {carry: 0.3, life: 30, r0: 0.3, r1: 1.5, swell: 0, stopAt: 0});
 /** Dust puffs alive at frame L behind a truck driven by `track` (T14): one per 2 frames at each rear wheel while the truck moves; radius 0.3 -> 1.5 m and alpha 0.40 -> 0 over 30 f; velocity
  *  `carry` x the truck's velocity at birth plus seeded +-0.2 m/s; once the truck is stopped a puff's velocity decays x0.95 per frame (so the cloud rolls on past it). Radius 0.3 -> 1.5 m over 30 f then held; alpha 0.40 -> 0 over `life` f. Pure in L. */
 export const truckDustPuffs = (L: number, track: (L: number) => TruckState | null, seed = 14500, d: DustOpts = {}): DustPuff[] => {
-  const carry = d.carry ?? 0.3, life = d.life ?? 30;
+  const carry = d.carry ?? 0.3, life = d.life ?? 30, r0 = d.r0 ?? 0.3, r1 = d.r1 ?? 1.5, swell = d.swell ?? 0, stopAt = d.stopAt ?? 0;
   const speedAt = (f: number): V3 | null => { const a = track(f), b = track(f + 1); return a && b ? [(b.centre[0] - a.centre[0]) * T14_FPS, 0, (b.centre[2] - a.centre[2]) * T14_FPS] : null; };
   const moving = (f: number) => { const v = speedAt(f); return !!v && Math.hypot(v[0], v[2]) > 0.05; };
   const factor = (f: number) => { if (moving(f)) return 1; let n = 1; while (n < 120 && !moving(f - n)) n++; return DUST_STOP_DECAY ** n; };
@@ -366,12 +367,14 @@ export const truckDustPuffs = (L: number, track: (L: number) => TruckState | nul
       const sd = seed + b * 13 + s * 5, jx = (hash(sd) * 2 - 1) * 0.2, jz = (hash(sd + 1) * 2 - 1) * 0.2, vel: V3 = [carry * v[0] + jx, 0, carry * v[2] + jz];
       const at0 = truckPoint(st.centre, st.dir, -1.5, 0, s * 0.95), at: V3 = [at0[0], 0, at0[2]];
       for (let f = b; f < L; f++) { const k = factor(f) / T14_FPS; at[0] += vel[0] * k; at[2] += vel[2] * k; }
-      const u = (L - b) / life, r = 0.3 + 1.2 * Math.min(1, (L - b) / 30);
+      const u = (L - b) / life, r = r0 + (r1 - r0) * Math.min(1, (L - b) / 30) + (swell && L > stopAt ? swell * Math.min(L - stopAt, 20) / 20 : 0);
       out.push({at: [at[0], 0.15 + 0.5 * r, at[2]], r, alpha: 0.4 * (1 - u), seed: sd});
     }
   }
   return out;
 };
+/** Three concentric plain discs (r, 0.72 r, 0.45 r) per puff, each alpha 1 - (1 - a)^(1/3), so the centre equals the puff alpha and the rim is soft (T14 r5 E3). */
+export const dustSoftDiscs = (q: DustPuff): {k: number; alpha: number}[] => { const a = 1 - (1 - q.alpha) ** (1 / 3); return [1, 0.72, 0.45].map((k) => ({k, alpha: a})); };
 /** Paints the dust of `truckDustPuffs` as plain `#b08a62` circles, far to near. `part` splits it around the truck for painter's order: 'far' (farther than `truckAt`, before the truck) and 'near' (after it); absent = all. */
 export const paintTruckDust = (p: Painter, c: YCam, L: number, track: (L: number) => TruckState | null, o: {seed?: number; part?: 'far' | 'near'; truckAt?: V3} & DustOpts = {}) => {
   const ref = o.truckAt ? camDistTo(c, o.truckAt) : 0;
@@ -379,6 +382,6 @@ export const paintTruckDust = (p: Painter, c: YCam, L: number, track: (L: number
     const m = camPoint(c, q.at);
     if (!m || q.alpha <= 0) return;
     const R = q.r * camUnit(c, q.at);
-    washAt(p, q.seed, '#b08a62', q.alpha * 255, ring(m[0], m[1], R, R, 16), 0, 0);
+    for (const sd of dustSoftDiscs(q)) washAt(p, q.seed, '#b08a62', sd.alpha * 255, ring(m[0], m[1], R * sd.k, R * sd.k, 16), 0, 0);
   });
 };

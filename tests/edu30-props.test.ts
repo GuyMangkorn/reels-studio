@@ -1,6 +1,6 @@
 import {test} from 'node:test';
 import assert from 'node:assert/strict';
-import {buildLewisGun, bumpsB05Sh01, G2_PIVOT, invertBody, lewisAnchors, lewisCock, lewisJamNudge, lewisPanTurn, lewisRecoil, PAN_STEP, paintTruckRig, truckBody, truckCam, truckDustPuffs, truckDustFor, DUST_STOP_DECAY, truckPoint, truckSetCam, truckState} from '../src/painted/edu30/props';
+import {buildLewisGun, bumpsB05Sh01, G2_PIVOT, invertBody, lewisAnchors, lewisCock, lewisJamNudge, lewisPanTurn, lewisRecoil, PAN_STEP, paintTruckRig, truckBody, truckCam, truckDustPuffs, truckDustFor, dustSoftDiscs, DUST_STOP_DECAY, truckPoint, truckSetCam, truckState} from '../src/painted/edu30/props';
 import {camLine} from '../src/painted/edu30/shot';
 import type {Brush} from '../src/painted/BrushCanvas';
 import {makePainter} from '../src/painted/kit/painter';
@@ -162,21 +162,21 @@ test('truck dust: pure in L, radius 0.3 to 1.5 and alpha 0.40 to 0 over 30 f, no
   assert.deepEqual(a, b);
   const born = truckDustPuffs(30, track, 14500, D).filter((q) => q.alpha > 0.399);
   assert.equal(born.length, 2, 'two rear wheels, one puff per 2 f');
-  assert.ok(Math.abs(born[0].r - 0.3) < 1e-9);
-  assert.ok(truckDustPuffs(60, track, 14500, D).every((q) => q.alpha > 0 && q.r <= 1.5 + 1e-9));
+  assert.ok(Math.abs(born[0].r - 0.25) < 1e-9);
+  assert.ok(truckDustPuffs(60, track, 14500, D).every((q) => q.alpha > 0 && q.r <= 0.8 + 0.5 + 1e-9));
   const x = (L: number) => truckDustPuffs(L, track, 14500, D).find((q) => q.seed === a[a.length - 1].seed)?.at[0] ?? NaN;
   const d1 = x(48) - x(47), d2 = x(49) - x(48);
   assert.ok(Math.abs(d2) < Math.abs(d1) + 1e-12, 'velocity decays once the truck is stopped');
 });
 
 test('T14 r4 dust: carry per schedule, B02-SH03 life 40 f, closed-form decay x0.95, B05-SH01 puffs trail', () => {
-  assert.deepEqual(truckDustFor('B02-SH03'), {carry: 0.9, life: 40});
-  assert.deepEqual(truckDustFor('B05-SH01'), {carry: 0.3, life: 30});
+  assert.deepEqual(truckDustFor('B02-SH03'), {carry: 0.9, life: 40, r0: 0.25, r1: 0.8, swell: 0.5, stopAt: 44});
+  assert.deepEqual(truckDustFor('B05-SH01'), {carry: 0.3, life: 30, r0: 0.3, r1: 1.5, swell: 0, stopAt: 0});
   assert.equal(DUST_STOP_DECAY, 0.95);
   const tr = (l: number) => truckState('B02-SH03', l), D = truckDustFor('B02-SH03');
   const old = truckDustPuffs(60, tr, 14500, D);
-  assert.ok(old.every((q) => q.alpha > 0 && q.r <= 1.5 + 1e-9));
-  assert.ok(old.some((q) => q.r > 1.499 && q.alpha > 0), 'a puff older than 30 f is still alive');
+  assert.ok(old.every((q) => q.alpha > 0));
+  assert.ok(old.some((q) => q.alpha > 0), 'a puff older than 30 f is still alive');
   // closed form: x(46 + k) - x(46) = d1 (1 - 0.95^k) / 0.05 with d1 the first step, summed frame by frame
   const seed = truckDustPuffs(46, tr, 14500, D).slice(-1)[0].seed;
   const xs = (L: number) => truckDustPuffs(L, tr, 14500, D).find((q) => q.seed === seed)!.at[0];
@@ -192,6 +192,28 @@ test('T14 r4 dust: carry per schedule, B02-SH03 life 40 f, closed-form decay x0.
   const young = truckDustPuffs(b0 + 10, tb, 14500, Db).filter((q) => Math.abs(q.alpha - 0.4 * (1 - 10 / 30)) < 1e-9);
   assert.equal(young.length, 2);
   for (const q of young) assert.ok(wheel(b0 + 10) - q.at[0] >= 0.6 * travel, 'trails behind the wheel');
+});
+
+test('T14 r5 dust: E1 radius 0.25 -> 0.8 over 30 f, E2 swell +0.5 m over 20 f after the stop, E3 three soft discs', () => {
+  const tr = (l: number) => truckState('B02-SH03', l), D = truckDustFor('B02-SH03');
+  // a puff born at b = 20 (even, moving), followed by seed
+  const seed = truckDustPuffs(20, tr, 14500, D).filter((q) => q.alpha > 0.399)[0].seed;
+  const rAt = (L: number) => truckDustPuffs(L, tr, 14500, D).find((q) => q.seed === seed)!.r;
+  assert.ok(Math.abs(rAt(50) - 0.80) <= 0.01 + 0.5 * 6 / 20, 'age 30 radius is 0.80 + swell');
+  assert.ok(Math.abs(rAt(43) - (0.25 + 0.55 * 23 / 30)) < 1e-9, 'moving radius before the stop');
+  const moving53 = 0.25 + 0.55 * Math.min(1, (53 - 20) / 30);
+  assert.ok(Math.abs(rAt(53) - (moving53 + 0.5 * 9 / 20)) < 1e-9, 'L 53 = moving radius + 0.5 x 9/20');
+  assert.ok(Math.abs(rAt(44) - (0.25 + 0.55 * 24 / 30)) < 1e-9, 'no swell at the stop frame');
+  const s2 = truckDustPuffs(30, tr, 14500, D).filter((q) => q.alpha > 0.399)[0].seed;
+  const r2 = (L: number) => truckDustPuffs(L, tr, 14500, D).find((q) => q.seed === s2)?.r ?? NaN;
+  assert.ok(Math.abs(r2(64) - (0.8 + 0.5)) < 1e-9 || Number.isNaN(r2(64)), 'L 64: full +0.5');
+  // the age-30 radius without the swell (before the stop) is 0.80 +- 0.01
+  const s3 = truckDustPuffs(14, tr, 14500, D).filter((q) => q.alpha > 0.399)[0].seed;
+  assert.ok(Math.abs(truckDustPuffs(44, tr, 14500, D).find((q) => q.seed === s3)!.r - 0.80) <= 0.01, 'radius at age 30 = 0.80');
+  const q = {at: [0, 0, 0] as [number, number, number], r: 1, alpha: 0.3, seed: 1}, dd = dustSoftDiscs(q);
+  assert.deepEqual(dd.map((x) => x.k), [1, 0.72, 0.45]);
+  assert.ok(Math.abs(1 - (1 - dd[0].alpha) ** 3 - 0.3) < 0.01, 'centre alpha of three stacked discs = puff alpha');
+  assert.equal(truckDustPuffs(46, (l) => truckState('B05-SH01', l), 14500, truckDustFor('B05-SH01')).every((p) => p.r <= 1.5 + 1e-9), true);
 });
 
 const dry = () => makePainter(new Proxy({}, {get: () => () => undefined}) as Brush, {t: 0, frame: 0});
