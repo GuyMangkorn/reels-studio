@@ -108,3 +108,46 @@ None.
 - Recheck on revision: L17 (year), L13 and L16 if the cause or "ถูกเรียกกลับ" wording changes, L09 and L11 as a pair, any changed on-screen label, and any new line about the medals, kills or the report.
 - Readiness for Film handoff: **supported** for the script as written (R1), given no must-fix; the optional edits above would need a quick re-check of only the changed lines. Not user-approved, not audio or picture validated, timing still `estimated` (FC06).
 - Sound implications: no sound asserts an event, place or casualty; all generated and labelled. No real recording needs a source.
+
+---
+
+# EDU-EP30-FACTCHECK-R2
+
+- ID `EDU-EP30-FACTCHECK-R2`, 2026-11-19, Boat (W1.7). Checks the new/changed lines of `EDU-EP30-SCRIPT-R2.1` (script.md sections `#r2-changes` / `#r21-changes`, as read this pass; script-notes.md read for the change log) against `EDU-EP30-RESEARCH-R1` (F001–F014, CAT02) and `EDU-EP30-FACTCHECK-R1`. Channel `edu` (ER11, ER13). Scope is the recheck list only; unchanged fact lines L01, L02, L04, L06, L09, L10, L12, L13, L14, L16, L17, L18 are not re-verified (FACTCHECK-R1 stands, text unchanged).
+- Access: no new source opened this pass. The recheck rests on the R1 inspected secondary sources (SRC001, SRC002) and their limits (no Trove, NAA or Hansard). Confidence stays medium; nothing below depends on a number.
+
+## Verdicts
+
+| Line | Speaker | Verdict | Severity | Notes |
+| --- | --- | --- | --- | --- |
+| L22 "ยิง!" | MEREDITH | pass (dramatization of a documented act) | none; one optional note | F002: Meredith commanded the three-man unit and the guns; F007: the unit fired on the flock (phase one, scatter, high confidence). A commander ordering the unit to fire is the least-inventive reading of that. One command word, no opinion, motive, personality or reaction, so inside research CAT02 "Allowed: documented acts". Gap: no source Boat opened says who gave the order at the first attempt (2 Nov, F001) or in what words. So it must stay an unmarked-as-quote dramatization, as the script already says. |
+| L23 "โธ่เอ๊ย… ติดตอนนี้เนี่ยนะ!" | GUNNER (unnamed) | pass | none; one optional note | Blames timing of the gun, not the men: no incompetence or cowardice reading (research CAT02 "do not say incompetent or cowardly"). "ตอนนี้" rests on L09 (a thousand birds walk in) plus L10 (jam after a dozen), both F005; no jam date is spoken, so dispute 5 is untouched. Neither McMurray nor O'Halloran is named; research forbids "a named soldier doing a specific gag" and this is unnamed. Residual risk: only two gunner-type men existed (F002), so a viewer may map the voice onto one of them. The label covers it (see optional O1). |
+| L19 "สามคนเหรอ… เรามีสองหมื่นนะ" | EMU | pass | none | Talking bird, not a person's words. "สามคน" matches L04 and F002 (Meredith plus two). "สองหมื่น" repeats L02's hedged estimate (F003, "ราว ๆ" spoken in L02); as a joke in a bird's mouth it adds no new figure. No causation implied. |
+| L21 "ไว้มาใหม่นะ!" | EMU | pass | none | Comic wave-off from a bird. Placement after L13 does not say the birds caused the return (F001: operations resumed after the Minister approved renewal, 12–13 Nov) or that the minister reacted to them. It echoes a return that did happen (L16), nothing more. |
+| L06 after L22 | NARR | pass | none | "ยิง!" then "แผนแรก ยิงใส่ฝูง… นกแตกฝูง วิ่งหนีออกนอกระยะ" still reads as "they fired on the flock and it scattered" (F007, high). No count, no kills, no date. Order of command then narrator's plan label is a rhythm matter, not a fact issue. |
+
+## Orphan check (retired L05, L08, L11, L20)
+
+- No spoken fact line depended on a retired line. L16 callback moved from CL01 (L05) to CL04 (L21); FC01's L09/L11 pairing now reads L09/L10/L23 with the same F005 basis (verdict above). Retired rows drop cleanly from the fact-line table.
+- Stale text left in the paper trail (not spoken, not a fact error): script-notes.md still lists L05, L08, L11 in its older R1 laugh-mark list (about line 38) and its ER self-audit (about line 53) counts emu lines "L19, L07, L20, L21, L15" and six character lines, where R2.1 has FARMER, MEREDITH, GUNNER and four EMU lines (L19, L07, L21, L15). script.md "R2 downstream" note already says Film's R1 rows still cite L05, L08, L11 and have no shots for the new lines; that is the Film/Editor redo, as recorded.
+
+## Findings
+
+Must-fix: none.
+
+Optional (Preaw may decline):
+
+- O1 (L23, optional) Keep the speaker unlabelled: no caption or card names the voice "GUNNER", "มือปืน", McMurray or O'Halloran; Film shows a generic soldier, no likeness. Spoken wording unchanged. Reason: the viewer could read the only two real gunners onto the voice.
+- O2 (L22, optional) Same rule: Meredith's "ยิง!" appears only as a spoken/captioned line, never on a title card as a quote; generic painted figure, no portrait claim. Matches script.md's own statement; no wording change.
+- O3 (housekeeping, optional) Refresh the stale script-notes lines named above before Film reads them.
+
+No safer wording needed: all five lines pass as written.
+
+## Sound implications
+
+Reconstructed gunfire, the "ยิง!" music cut, the trigger clicks under L23 and the emu sounds assert no event, place or casualty beyond the fact lines; they are covered by the on-screen label. The dry clicks under L23 follow L10's jam (F005), not a new jam. No real recording needs a source.
+
+## Uncertainties and readiness
+
+- Gaps unchanged: Trove, NAA MP742/1 17/5/219 and Hansard unopened; who gave which order on 2 Nov is not documented in anything Boat read, hence L22 stays a labelled dramatization.
+- Readiness for Film handoff: **supported** for SCRIPT-R2.1 as written, no must-fix, on the condition that the voice redo (MEREDITH, GUNNER, Puck lines) and the Film brief/scene sheets are re-cut to R2.1; user approval of R2.1 still pending. Not a runtime, audio or picture validation.

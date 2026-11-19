@@ -1,10 +1,10 @@
 # Tasks — EP30
 
-Record [delivery.md](delivery.md) · Updated 2026-11-19, Film (W5.1 timed scene sheets SCENE-R1; ROWS-R6)
+Record [delivery.md](delivery.md) · Updated 2026-11-19, Preaw (W1.6 SCRIPT-R2.1 written; voice, scene sheets and tickets still R1)
 
 ## EDU-EP30-SHORT
 
-**Now:** coordinator publishes ROWS-R6 (review page: pending); Film plate tickets from [short/scene-sheets/](short/scene-sheets/index.md) (EDU-EP30-SCENE-R1, 26 shots, 2012 f; plate-tickets trial); Editor fixes the L17/L18 voice split (sheets index O1) **Next:** W5.2 Boss plates and W5.2s Ton sounds in parallel, then W5.3 Draft
+**Now:** voice redo for R2.1 (Editor): samples for MEREDITH and GUNNER voices (user picks), then Puck L19/L21, Kore re-read without L05/L08/L11 incl. L16–L18 take D (store samples/ep30/r2-lines), then VOICE-R2 lock; Film re-boards brief/storyboard/rows/scene sheets/tickets on R2.1 (stopped half-done on R1). **Next:** W4 voice lock, then W5 Film timed sheets and tickets, Boss plates, Ton sounds, Draft
 
 - [x] W0 Ideation
   - [x] W0.1 Preaw concepts — [C110 R19](../concepts/C110.md)
@@ -17,6 +17,9 @@ Record [delivery.md](delivery.md) · Updated 2026-11-19, Film (W5.1 timed scene 
   - [x] W1.3 Boat fact-check (EDU-EP30-FACTCHECK-R1: pass, no must-fix, optional fixes)
   - [x] W1.4 Length check: est. 59.4-63 s, no cut; measure at voice sample (user, 2026-11-19)
   - [x] W1.5 User approval of SCRIPT-R1 with L17=1908, Meredith silent, L05 kept (2026-11-19)
+  - [x] W1.6 Preaw script R2 (EDU-EP30-SCRIPT-R2, user dialogue request 2026-11-19): new EMU lines L19/L20/L21, retired L05/L08/L11; then R2.1 (EDU-EP30-SCRIPT-R2.1, user answers 2026-11-19): MEREDITH "ยิง!" L22 before L06, unnamed GUNNER L23 replaces EMU L20 (retired), one emu voice Puck; ~67.0 s est. with hold; no fact line changed
+  - [x] W1.7 (EDU-EP30-FACTCHECK-R2, 2026-11-19, Boat: L19, L21, L22, L23 and L06 pass, no must-fix; optional O1-O3 in short/fact-check.md) Boat recheck of SCRIPT-R2.1 new/changed lines: L22 Meredith order (CAT02 documented-act basis), L23 gunner line (ER11/CAT02: unnamed, invented-reaction limit, no incompetence), L19 and L21 (ER11/CAT02), L06 glance after L22, no fact line orphaned by retiring L05/L08/L11/L20 (short/script.md#r21-changes)
+  - [x] W1.8 User approval of SCRIPT-R2.1 as written, "ยิง!" echo kept (user, 2026-11-19, structured question)
 - [ ] W2 Brief and storyboard
   - [x] W2.1 Film brief (text) — [EDU-EP30-BRIEF-R1](short/film-brief.md), 2026-11-19
   - [x] W2.2 Film storyboard rows (review-rows.json) — [EDU-EP30-BOARD-R1](short/storyboard.md) / EDU-EP30-ROWS-R1, 26 shots untimed, 2026-11-19

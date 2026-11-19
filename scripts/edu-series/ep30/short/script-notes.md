@@ -1,8 +1,8 @@
 # EP30 Short — script notes
 
-- Describes [script.md](script.md) **`EDU-EP30-SCRIPT-R1`** (Preaw, 2026-11-19). Readers: Preaw and Boat ([two-file pack](../../../../.agents/skills/editorial/SKILL.md#script-pack-files)).
+- Describes [script.md](script.md) **`EDU-EP30-SCRIPT-R2.1`** (Preaw, 2026-11-19; R1 rows kept where unchanged, retired rows marked). Readers: Preaw and Boat ([two-file pack](../../../../.agents/skills/editorial/SKILL.md#script-pack-files)).
 - Research `EDU-EP30-RESEARCH-R1`, hooks `EDU-EP30-HOOKS-R1` (H1 picked), delivery `EDU-EP30-DELIVERY-R1`.
-- Status: not fact-checked, not approved, timing estimated only. Research numbers stay medium confidence until Trove, Hansard and the NAA file are read (research access limits).
+- Status: R1 fact-checked (`EDU-EP30-FACTCHECK-R1`, no must-fix) and user-approved. **R2.1: Boat recheck of L19, L21, L22, L23 pending, user approval pending**, timing estimated (about 67.0 s; new lines not voiced; MEREDITH and GUNNER voices not chosen). Research numbers stay medium confidence until Trove, Hansard and the NAA file are read (research access limits).
 
 ## Claim mapping
 
@@ -12,15 +12,20 @@
 | L02 | ปี 1932 นกอีมูราว ๆ สองหมื่นตัว ลงกินไร่ข้าวสาลี | F001, F003, F004 | SRC001 [3] (Gill 2007), SRC002 | needs-fact-check | One hedge "ราว ๆ" on the estimate. "เป็นบุฟเฟต์" is a joke. No drought or wheat-price cause stated. |
 | L03 | กินหมดไร่แล้ว! เรียกทหารมาเลย! | F004 (implied request) | SRC002 | not-factual (dramatization) | Generic farmer type, no named person. "กินหมดไร่" is a farmer's exaggeration, not a damage figure. |
 | L04 | กองทัพส่งมา… แมเจอร์เมอร์เรดิธ ทหารอีกสองนาย ปืนกลสองกระบอก | F002 | SRC001 [1][7][9][10], SRC002 | needs-fact-check | "เต็มกำลัง" is irony (ER13 not-factual), not a claim that this was the army's full force. 10,000 rounds left out for length. Name spoken as "เมอร์เรดิธ"; please confirm the Thai transliteration. |
-| L05 | ฟังดูแล้ว… สองสัปดาห์ก็จบมั้ง | none | — | not-factual (narrator's joke guess) | Not attributed to Meredith or anyone; never a quote or title card (research CAT02 check, open question 5). |
-| L06 | ยิงใส่ฝูง… นกแตกฝูง วิ่งหนีออกนอกระยะ | F007 (scatter only) | SRC002 | needs-fact-check | No kill count or round count (F007 disputed). |
-| L07, L15 | Emu lines | none | — | not-factual (talking bird) | Comic, plainly impossible. |
-| L08 | นกไม่ได้อ่านแผนรบมาด้วยนะ | none | — | not-factual (deadpan) | — |
+| L05 | ~~ฟังดูแล้ว… สองสัปดาห์ก็จบมั้ง~~ | none | — | **retired R2** | Replaced by L19. |
+| L19 (new R2) | สามคนเหรอ… เรามีสองหมื่นนะ | F002, F003 (echo only) | — | not-factual (talking bird); **needs Boat recheck** (ER11/CAT02) | Emu repeats L02's hedged estimate and L04's three men as a joke count; adds no figure. Not a real person's words. |
+| L22 (new R2.1) | ยิง! (MEREDITH) | F002, F007 (documented act: he commanded the unit that fired on the flock) | SRC001 [1][7], SRC002 | dramatized wording of a documented act; **needs Boat recheck** (CAT02) | User choice, 2026-11-19. One order only: no opinion, motive, personality or later reaction (research CAT02 "Allowed: Meredith's documented acts"). Not a quote; no title card. **Please confirm** the sources support Meredith directing the first firing (2 Nov, about 50 emus, F001), or that a commander's order is a fair dramatization of his unit firing. |
+| L06 | ยิงใส่ฝูง… นกแตกฝูง วิ่งหนีออกนอกระยะ | F007 (scatter only) | SRC002 | needs-fact-check | No kill count or round count (F007 disputed). Text unchanged; in R2.1 it follows L22, so "ยิง!… แผนแรก ยิงใส่ฝูง" echoes the verb on purpose (order, then narration of it). |
+| L07, L15 | Emu lines | none | — | not-factual (talking bird) | Comic, plainly impossible. Unchanged in R2 and R2.1. All emu lines (L19, L07, L21, L15) are one bird, one voice (Puck; user, 2026-11-19). |
+| L08 | ~~นกไม่ได้อ่านแผนรบมาด้วยนะ~~ | none | — | **retired R2** | Cut; L07 carries the scatter bit. |
 | L09 | ซุ่มที่เขื่อน นกเป็นพันเดินเข้ามาเอง | F005 | SRC001 [9] (Burton 2013) | needs-fact-check | **Please check "เดินเข้ามาเอง":** F005 says more than 1,000 were "sighted near a dam" during an ambush. If "walked into range" goes beyond the source, a true replacement as punchy: "นกเป็นพันมาเดินเล่นแถวเขื่อนพอดี". "เหมือนต่อคิว" is a joke. |
 | L10 | ยิงไปได้แค่สิบกว่าตัว… ปืนกลติด | F005 | SRC001 [9] | needs-fact-check | Safe wording, not "ไม่กี่นัด" (must-fix honoured). Dispute 5 (jam day) untouched: no date is spoken. |
-| L11 | วันที่นกยอมมาเองแท้ ๆ… ปืนดันไม่ยอม | F005 (framing) | — | not-factual (irony) | Depends on L09 staying true; if L09 changes, L11 becomes "วันที่นกมากันเต็มเขื่อน… ปืนดันไม่ยอม". |
+| L11 | ~~วันที่นกยอมมาเองแท้ ๆ… ปืนดันไม่ยอม~~ | — | — | **retired R2** | Irony moved to the emu (L20). |
+| L20 (R2) | ~~อ้าว ปืนเสียเหรอ… ไม่เป็นไร พวกเรารอได้~~ | — | — | **retired R2.1** | Jam reaction moved to the GUNNER (L23), user choice. Queue callback kept as picture only (optional emu foot-tap; no line). |
+| L23 (new R2.1) | โธ่เอ๊ย… ติดตอนนี้เนี่ยนะ! (GUNNER) | F005 (framing) | — | not-factual (dramatization); **needs Boat recheck** (ER11/CAT02) | Unnamed generic gunner; neither McMurray nor O'Halloran (F002) is named, captioned or implied as the speaker. Research CAT02 lists "a named soldier doing a specific gag" and "invented reactions" as must-not; the user accepted this as plain comedy under the on-screen label (2026-11-19). The line blames the gun's timing, never the men's skill (no incompetence, no cowardice). "ตอนนี้" leans on L09 "เดินเข้ามาเอง" (FC01: supported) and L10's jam (F005); no date spoken (dispute 5 untouched). |
 | L12 | เอาปืนกลขึ้นรถไล่ตาม… รถตามไม่ทัน ทางกระเด้งจนเล็งไม่ได้ | F006 | SRC001 [1] | needs-fact-check | "ตามไม่ทัน", not a race or a speed (F006, F014). The barrel-at-the-sky picture is a visual gag only, not spoken. |
-| L13 | ผ่านไปหกวัน รัฐมนตรีสั่งถอนทัพ… รอบที่หนึ่ง | F001, F011 | SRC001 [1][4][7][8] | needs-fact-check | 2 Nov to 8 Nov = six days. The reason (critical press) is left out. |
+| L13 | ผ่านไปหกวัน รัฐมนตรีสั่งถอนทัพ… รอบที่หนึ่ง | F001, F011 | SRC001 [1][4][7][8] | supported-with-limits (FC03) | 2 Nov to 8 Nov = six days. The reason (critical press) is left out. |
+| L21 (new R2) | ไว้มาใหม่นะ! | F001 (return, implied by L16) | — | not-factual (talking bird); **needs Boat recheck** | A wave-off joke. It must not imply the birds caused the return or that anyone answered them; L16's return (about 13 Nov) is the fact. |
 | L14 | แมเจอร์เองยังพูดเลยว่า… นกพวกนี้ทนปืนกลได้อย่างกับรถถัง | F010 | SRC001 [13], SRC002; SRC009 citing *Western Mail* 10 Nov 1932; *Sunday Herald* 5 Jul 1953 | needs-fact-check | Something he **said**, no venue, no tense, not "his report" (must-fix honoured). Placed after the first withdrawal (8 Nov) and before the return, matching SRC009's 10 Nov date, and followed by the emu's "ขอบคุณที่ชมครับ" so it plays as praise, not a lament after losing. Please confirm the placement implies nothing false. |
 | L16 | ไม่กี่วันก็กลับมา… ลากยาวไปถึงธันวา… แล้วก็ถอนอีก รอบที่สอง | F001 | SRC001 [1][16][17] | needs-fact-check | Return about 12–13 Nov; recall 10 Dec (not "8 December"). "ภาคสอง" is a joke. Phase two being more productive per Meredith (F008) is not contradicted: the line says only that it ended in a second withdrawal. |
 | L17 | นกอีมู อยู่บนตราแผ่นดินออสเตรเลียมาตั้งแต่ปี 1908 | F013 | SRC010 (APH page not opened; textbook-level) | needs-fact-check | Safe wording verbatim. **Please check:** Preaw's recollection (not research) is that the earlier 1908 arms also had the emu and kangaroo; if so, "มาตั้งแต่ปี 1912" is still true but understated. Keep 1912 unless Boat prefers "ก่อนสงครามยี่สิบกว่าปี". |
@@ -28,15 +33,31 @@
 
 Unused on purpose: F007 and F008 numbers (kill counts, 986/9,860, "ten rounds per emu"), F009 ("dignity"), F012 (medals), F014 (speed), 10,000 rounds (F002), the ex-soldier farmers (F004), the bounty system.
 
-## Bar test (Preaw self-check, silent read, not aloud)
+## Bar test R1 (Preaw self-check, silent read, not aloud)
 
 Marks where a listener would laugh or say "จริงดิ" (estimated end time): L01 "สองรอบ" (5.6), L02 buffet (9.8), L03 farmer (12.0), L04 "เต็มกำลัง" three-man list (16.8), L05 two weeks (18.9), L07 "แยกวง" (23.5), L08 battle plan (25.3), L09 queue (28.4), L10 jam (30.9), L11 "ปืนดันไม่ยอม" (33.7), L12 truck, rule of three (37.8), L13 "รอบที่หนึ่ง" (40.9), L14 tanks "จริงดิ" (44.8), L15 emu bow (46.2), L16 sequel, "รอบที่สอง" (50.7), L17 1912 "จริงดิ" (54.9), L18 punchline (57.4). 17 marks; longest gap about 4.6 s (L03 to L04). Passes the bar on paper; the aloud read at the voice sample is the real test.
 
 ER self-audit: ER11 victim is the mission (Major Meredith's unit), a real case told with attitude, label on screen; ER12 bit kinds: character line, deadpan aside, today comparison, exaggeration/rule of three, visual gag, callback, irony (7 kinds); ER04 gossiping narrator on the birds' side, three character lines (FARMER L03, EMU L07, EMU L15); ER02 scatter → jam on the one good day → truck cannot follow → withdrawn → back → withdrawn again; ER03 callback punchline L18 with 2.0 s hold; ER01 locked H1; ER07/ER10 three bold wow lines (L01, L14, L17), no hedge beyond "ราว ๆ" (L02, not bold); ER05/ER09 no explanation block, no technical term ("ปืนกล", not "ปืนกลเบา Lewis"); ER06 the narrator asks no question after the hook.
 
+## Bar test R2 (Preaw self-check, silent read, not aloud)
+
+Marks (estimated end time, R2 timeline): L01 "สองรอบ" (6.05), L02 buffet (11.74), L03 farmer (14.35), L04 "เต็มกำลัง" (19.67), L19 emu counts the army (22.07), L07 "แยกวง" (28.74), L09 queue (32.98), L10 jam (35.37), L20 emu offers to wait (37.97), L12 truck, rule of three (43.25), L13 "รอบที่หนึ่ง" (46.77), L21 "ไว้มาใหม่นะ" (47.97), L14 tanks "จริงดิ" (51.92), L15 emu bow (53.25), L16 sequel, "รอบที่สอง", CL04 pays (58.41), L17 1908 "จริงดิ" (61.70), L18 punchline (65.00). 17 marks; longest gap about 6.6 s (L19 22.07 to L07 28.74, the scatter picture carries it). Character lines: 6 of 17 marks (R1: 3 of 17). Passes on paper; the aloud read at the voice redo is the real test.
+
+<a id="bar-test-r21"></a>
+## Bar test R2.1 (Preaw self-check, silent read, not aloud)
+
+Marks (estimated end time, R2.1 timeline): L01 "สองรอบ" (6.05), L02 buffet (11.74), L03 farmer (14.35), L04 "เต็มกำลัง" (19.67), L19 emu counts the army (22.07), L22 the major's "ยิง!" answering the emu, war-film parody (23.07), L07 "แยกวง" (29.74), L09 queue (33.98), L10 jam (36.37), L23 gunner "ติดตอนนี้เนี่ยนะ!" (37.97), L12 truck, rule of three (43.25), L13 "รอบที่หนึ่ง" (46.77), L21 "ไว้มาใหม่นะ" (47.97), L14 tanks "จริงดิ" (51.92), L15 emu bow (53.25), L16 sequel, "รอบที่สอง", CL04 pays (58.41), L17 1908 "จริงดิ" (61.70), L18 punchline (65.00). 18 marks; longest gap about 6.7 s (L22 23.07 to L07 29.74, the scatter picture carries it). Character lines: 7 of 18 marks (FARMER, MEREDITH, GUNNER, four EMU). Fun-bar note: the human side now gets two straight lines (the order, the groan) that the birds undercut, which sharpens the war-movie parody; the gunner's groan is funnier than R2's polite emu because it is the victim's own frustration (ER11: the mission keeps getting it worse). Passes on paper; the aloud read at the voice redo is the real test.
+
+ER self-audit R2.1: ER04 seven character lines across four voices (FARMER, MEREDITH, GUNNER, EMU), all short (0.8–2.3 s), by the user's dialogue request; the narrator still gossips and carries the facts and the ending. ER11/CAT02: Meredith speaks one documented-act order only; the gunner is unnamed and blames the gun; no real person's quote on any title card. All other ER points as R1.
+
+ER self-audit R2: ER04 asks for two or three character lines; R2 has six (FARMER L03, EMU L19, L07, L20, L21, L15) by the user's request to move jokes from the narrator to characters (2026-11-19), all short (1.0–2.4 s). The narrator still gossips and carries the facts and the ending. ER11/CAT02 unchanged: no real person speaks; the gunners have no lines. All other ER points as R1.
+
 ## Change log
 
 - R1 (2026-11-19): first script on H1. Boat W1.3 scope: fact lines L01, L02, L04, L06, L09, L10, L12, L13, L14, L16, L17, L18 ("ยังอยู่"), and the ER11/CAT02 limits on story lines L03, L05, L07, L08, L11, L15, L18 ("ไม่เคยถอยสักรอบ").
+- R2 (2026-11-19, user request by structured question: more character dialogue, cut weak narrator jokes, stay at or under about 67 s with the hold): new EMU lines L19 (after L04), L20 (after L10), L21 (after L13); retired L05 (predictable), L08 (mild), L11 (irony moved to L20). CL01 retired; CL03 and CL04 added. No fact line changed. Header text aligned with the approved L17 year (1908). Length: R1 voiced 67.07 s; R2 estimate about 67.0 s (cuts 5.68 s of NARR plus 3 gaps, adds about 5.6 s of EMU plus 3 gaps). **Boat recheck scope:** L19, L20, L21 (ER11/CAT02 limits only), plus a glance that removing L05/L08/L11 leaves no fact line orphaned. Downstream (not touched): voice VOICE-R1.1, brief, storyboard, rows, scene sheets SCENE-R1 and tickets all reference R1.
+
+- R2.1 (2026-11-19, user answers to the R2 questions by structured question): (1) MEREDITH speaks the order "ยิง!" as new L22 before L06 (single documented-act command, no invented opinion); (2) an unnamed GUNNER speaks the jam reaction as new L23 "โธ่เอ๊ย… ติดตอนนี้เนี่ยนะ!" (Preaw refined the user's example "ติดตอนนี้เนี่ยนะ!" with the exasperated opener "โธ่เอ๊ย…"), replacing R2's EMU L20 (retired; ID not reused; its queue callback survives only as an optional picture gag, no line); (3) one emu voice, Puck, for L19, L07, L21, L15. No fact line changed. Length: L22 +0.8 s plus a 0.2 s gap, L23 about 1.0 s shorter than L20, so the estimate stays about 67.0 s and L12 onwards keep their R2 times. **Boat recheck scope (W1.7):** L22 (CAT02: documented-act basis for Meredith ordering the firing), L23 (ER11/CAT02: unnamed gunner, invented-reaction limit, no incompetence, "ตอนนี้" rests on L09/L10), L19 and L21 (ER11/CAT02 as listed in R2), a glance at L06 after L22, and a glance that retiring L05/L08/L11/L20 leaves no fact line orphaned. Downstream still not touched: voice VOICE-R1.1, brief, storyboard, rows, scene sheets SCENE-R1 and tickets.
 
 ## Open questions
 
@@ -55,3 +76,19 @@ ER self-audit: ER11 victim is the mission (Major Meredith's unit), a real case t
 - Meredith stays silent (no voiced line). L05 "สองสัปดาห์ก็จบมั้ง" kept.
 - Spelling "เมเรดิธ" applied in L04/L14 (Boat convention, low-medium confidence; check at voice sample).
 - Length: no cut yet; decide after the voice sample is measured. Pre-cut order: "เป็นบุฟเฟต์", "เหมือนต่อคิว", L08.
+
+## R2 open questions (2026-11-19) — answered by the user 2026-11-19, applied in R2.1
+
+Q1 → MEREDITH speaks "ยิง!" (L22). Q2 → GUNNER (unnamed) at the jam (L23), L20 retired. Q3 → one bird, one voice (Puck). Q4 and Q5 carry over into the R2.1 questions below.
+
+1. **User (via coordinator): Meredith speaks or stays silent?** R2 keeps him silent (user's R1 choice). If the user now wants him to speak, Preaw's safest option is one documented-act command, MEREDITH "ยิง!" before L06 (about +0.8 s; he did order the firing, no invented opinion). A confident line such as "อาทิตย์เดียวก็เสร็จ" would invent his view and breaks the research CAT02 check (no invented Meredith dialogue, personality or motives); not recommended even under the label.
+2. **User (via coordinator): a human voice at the jam instead of the emu?** The user's example was a gunner grumbling when the gun jams. The two gunners are real, identifiable men (Sgt McMurray, Gunner O'Halloran) and research CAT02 forbids a soldier doing a specific gag or invented reactions, so R2 gives the jam reaction to the emu (L20). Alternative if the user accepts it as plain comedy under the label: GUNNER (unnamed) "ติดตอนนี้เนี่ยนะ!" in place of L20 (about −1.0 s); needs Boat's CAT02 call.
+3. **User:** five of the six character lines are the same emu. Keep one bird (continuity with KP-EMU, recommended), or give L07 "แยกวง!" to a second emu voice for variety (new voice sample needed)?
+4. **Boat:** recheck L19, L20, L21 as above.
+5. **Editor/coordinator:** R2 needs a voice redo: L19–L21 new Puck takes; the narrator lines are textually unchanged but the continuous Kore read included L05, L08, L11, so either re-cut the R1 read (removing those three lines) or re-read. Timing stays `estimated` until then.
+
+## R2.1 open questions (2026-11-19)
+
+1. **Boat (W1.7):** recheck L22, L23, L19, L21 and the L06 glance as scoped in the change log.
+2. **Editor/coordinator (voice redo, not done here):** two new voices are needed, MEREDITH (crisp straight command) and GUNNER (exasperated ordinary soldier), each distinct from FARMER Algenib and EMU Puck; short samples for the user to pick before the redo (sample-before-full rule). New takes: L19, L21 (Puck), L22, L23; the Kore narration needs L05, L08, L11 removed from the R1 read or a re-read. Timing stays `estimated` until then.
+3. **User (optional, at R2.1 approval):** "ยิง!" (L22) is followed straight by L06 "แผนแรก ยิงใส่ฝูง…", so the verb is heard twice in about 1.5 s. Preaw reads it as a deliberate echo (order, then the narrator's report) and left L06 unchanged because the brief allowed no other line change; if it sounds heavy at the voice read, the trim would be L06 "แผนแรก ระดมยิงใส่ฝูง…" or "แผนแรก… นกแตกฝูง วิ่งหนีออกนอกระยะ" (needs the user's OK and a Boat glance).

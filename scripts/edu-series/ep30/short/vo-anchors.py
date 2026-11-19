@@ -3,7 +3,8 @@ Reads out/ep30-voice/timing.json and lines/Lnn.wav (store projects/edu/EDU/narra
 speech > 1500, pause = >= 60 ms below 1000, syllable onset = rise above 15000 after a dip below 6000. Run from the checkout root:
 python3 -I scripts/edu-series/ep30/short/vo-anchors.py"""
 import array, json, subprocess
-D = 'out/ep30-voice'
+import os
+D = os.environ.get('VO_DIR', 'out/ep30-voice')  # VO_DIR=out/ep30-voice-r2 for VOICE-R2
 fr = lambda t: int(t * 30 + 0.5)
 for l in json.load(open(f'{D}/timing.json'))['lines']:
     k, s = l['line'], l['start']
