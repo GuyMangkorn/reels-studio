@@ -93,21 +93,28 @@ export const paintMuzzleFlash = (p: Painter, c: YCam, muzzle: V3, dir: V3, L: nu
 
 export type SmokeOpts = {drift: V3; seed: number; fadeAfter: number};
 export type Puff = {at: V3; r: number; alpha: number; seed: number};
-/** Smoke puffs alive at frame L (one per round born at the muzzle; radius 0.12 to 0.45 m and alpha 0.55 to 0.30 over 30 f; fade after the last round). `fade: false` skips the fade (the proof's reference). */
+/** Smoke puffs alive at frame L (one per round born at the muzzle; radius 0.12 to 0.45 m and alpha 0.35 to 0.15 over 30 f; fade after the last round; alphas before the haze cap, `hazeCap`). `fade: false` skips the fade (the proof's reference). */
 export const smokePuffs = (muzzle: V3, L: number, rounds: number[], o: SmokeOpts, fade = true): Puff[] => {
   const last = rounds[rounds.length - 1], f = fade && L > last ? Math.max(0, 1 - (L - last) / o.fadeAfter) : 1;
   const out: Puff[] = [];
   rounds.forEach((r, i) => {
     if (r > L) return;
     const age = L - r, u = clamp01(age / 30);
-    out.push({at: addK(muzzle, o.drift, age / FPS), r: lerp(0.12, 0.45, u), alpha: lerp(0.55, 0.3, u) * f, seed: o.seed + i * 53});
+    out.push({at: addK(muzzle, o.drift, age / FPS), r: lerp(0.12, 0.45, u), alpha: lerp(0.35, 0.15, u) * f, seed: o.seed + i * 53});
   });
   return out;
 };
 
+/** Haze cap (T04 r3): every live puff's alpha x min(1, cap / sum of live alphas), so overlapping puffs cover at most 1 - e^-cap. */
+export const SMOKE_CAP = 0.6, BLAST_CAP = 0.5;
+export const hazeCap = (puffs: Puff[], cap: number): Puff[] => {
+  const sum = puffs.reduce((a, q) => a + q.alpha, 0), k = sum > cap ? cap / sum : 1;
+  return puffs.map((q) => ({...q, alpha: q.alpha * k}));
+};
+
 /** Smoke haze (VD30-11 step 2): each puff is 5 overlapping circles seeded +-0.3 radius, colour `#6b5f50`. */
 export const paintSmoke = (p: Painter, c: YCam, muzzle: V3, L: number, rounds: number[], o: SmokeOpts) => {
-  for (const f of smokePuffs(muzzle, L, rounds, o)) {
+  for (const f of hazeCap(smokePuffs(muzzle, L, rounds, o), SMOKE_CAP)) {
     if (f.alpha <= 0) continue;
     const q = camPoint(c, f.at);
     if (!q) continue;
@@ -123,7 +130,7 @@ export type BlastOpts = {ground: 'wheat' | 'mud'; seed: number};
 /** Ground blast puffs at frame L: one added per round on the ground (y 0) 2.0 m ahead of the muzzle along `dir`; radius 0.3 to 1.2 m over 40 f. No fade (T04 states none). */
 export const blastPuffs = (muzzle: V3, dir: V3, L: number, rounds: number[], o: BlastOpts): Puff[] => {
   const d = unit3([dir[0], 0, dir[2]]), centre: V3 = [muzzle[0] + d[0] * 2, 0, muzzle[2] + d[2] * 2];
-  const alpha = o.ground === 'mud' ? 0.25 : 0.35, out: Puff[] = [];
+  const alpha = o.ground === 'mud' ? 0.15 : 0.2, out: Puff[] = [];
   rounds.forEach((r, i) => {
     if (r > L) return;
     const rad = lerp(0.3, 1.2, clamp01((L - r) / 40)), s = o.seed + i * 47;
@@ -132,9 +139,9 @@ export const blastPuffs = (muzzle: V3, dir: V3, L: number, rounds: number[], o: 
   return out;
 };
 
-/** Muzzle blast cloud on the ground ahead of the gun (VD30-11 step 6): `#a08a66` alpha 0.35 on wheat, `#7d6a52` 0.25 on mud, a ground-flat ellipse (height 0.6 of width). */
+/** Muzzle blast cloud on the ground ahead of the gun (VD30-11 step 6): `#a08a66` alpha 0.20 on wheat, `#7d6a52` 0.15 on mud, summed alpha capped at 0.5, a ground-flat ellipse (height 0.6 of width). */
 export const paintBlast = (p: Painter, c: YCam, muzzle: V3, dir: V3, L: number, rounds: number[], o: BlastOpts) => {
-  for (const f of blastPuffs(muzzle, dir, L, rounds, o)) {
+  for (const f of hazeCap(blastPuffs(muzzle, dir, L, rounds, o), BLAST_CAP)) {
     const q = camPoint(c, f.at);
     if (!q) continue;
     const R = f.r * camUnit(c, f.at);

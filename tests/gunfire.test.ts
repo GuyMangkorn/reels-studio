@@ -2,7 +2,7 @@
 import {test} from 'node:test';
 import assert from 'node:assert/strict';
 import {
-  blastLean, blastPuffs, flashPolygon, GUNFIRE_GLOW_PEAK, GUNFIRE_PRESETS, paintMuzzleFlash, popFor, roundFrames, roundPhase, shakeAt, smokePuffs,
+  blastLean, blastPuffs, BLAST_CAP, hazeCap, SMOKE_CAP, flashPolygon, GUNFIRE_GLOW_PEAK, GUNFIRE_PRESETS, paintMuzzleFlash, popFor, roundFrames, roundPhase, shakeAt, smokePuffs,
 } from '../src/painted/kit/gunfire';
 import type {Painter} from '../src/painted/kit/painter';
 import type {YCam} from '../src/painted/kit/ycam';
@@ -64,19 +64,26 @@ test('shakeAt: impulse factors 1.0 / 0.5 / 0.2 and tremor bound', () => {
 test('smoke: one puff per round born at the muzzle, radius 0.12 to 0.45 m over 30 f, fade 1 - (L - last)/45', () => {
   const o = {...GUNFIRE_PRESETS.B03_SH01.smoke, seed: 1}, m: [number, number, number] = [0.5, 0.6, 0];
   assert.equal(smokePuffs(m, 1, B03, o).length, 0); assert.equal(smokePuffs(m, 2, B03, o).length, 1); assert.equal(smokePuffs(m, 68, B03, o).length, 23);
-  const born = smokePuffs(m, 2, B03, o)[0]; assert.deepEqual(born.at, m); assert.ok(Math.abs(born.r - 0.12) < 1e-9 && Math.abs(born.alpha - 0.55) < 1e-9);
-  const aged = smokePuffs(m, 32, B03, o)[0]; assert.ok(Math.abs(aged.r - 0.45) < 1e-9 && Math.abs(aged.alpha - 0.3) < 1e-9);
+  const born = smokePuffs(m, 2, B03, o)[0]; assert.deepEqual(born.at, m); assert.ok(Math.abs(born.r - 0.12) < 1e-9 && Math.abs(born.alpha - 0.35) < 1e-9);
+  const aged = smokePuffs(m, 32, B03, o)[0]; assert.ok(Math.abs(aged.r - 0.45) < 1e-9 && Math.abs(aged.alpha - 0.15) < 1e-9);
   assert.ok(Math.abs(aged.at[0] - (0.5 - 0.25)) < 1e-9);
   const L = 75, a = smokePuffs(m, L, B03, o), r = smokePuffs(m, L, B03, o, false);
   a.forEach((q, i) => assert.ok(Math.abs(q.alpha / r[i].alpha - (1 - 7 / 45)) < 1e-9));
   assert.ok(smokePuffs(m, 68 + 45, B03, o).every((q) => q.alpha === 0));
 });
 
+test('haze caps: summed live alpha at L 68 <= 0.6 smoke and <= 0.5 blast', () => {
+  const m: [number, number, number] = [0.5, 0.6, 0], o = {...GUNFIRE_PRESETS.B03_SH01.smoke, seed: 1};
+  const sm = hazeCap(smokePuffs(m, 68, B03, o), SMOKE_CAP), bl = hazeCap(blastPuffs(m, [-1, 0, 0], 68, B03, {ground: 'wheat', seed: 3}), BLAST_CAP);
+  assert.ok(sm.reduce((a, q) => a + q.alpha, 0) <= SMOKE_CAP + 1e-9); assert.ok(bl.reduce((a, q) => a + q.alpha, 0) <= BLAST_CAP + 1e-9);
+  assert.ok(smokePuffs(m, 68, B03, o).reduce((a, q) => a + q.alpha, 0) > SMOKE_CAP);
+});
+
 test('blast: puff per round 2.0 m ahead on the ground, radius 0.3 to 1.2 over 40 f; lean 0.44 / 0.17 / eases to 0', () => {
   const m: [number, number, number] = [0.54, 0.58, 0], b = blastPuffs(m, [-1, 0, 0], 2, B03, {ground: 'wheat', seed: 3});
-  assert.equal(b.length, 1); assert.ok(Math.abs(b[0].r - 0.3) < 1e-9 && b[0].alpha === 0.35 && b[0].at[1] === 0);
+  assert.equal(b.length, 1); assert.ok(Math.abs(b[0].r - 0.3) < 1e-9 && b[0].alpha === 0.2 && b[0].at[1] === 0);
   assert.ok(Math.abs(b[0].at[0] - (0.54 - 2)) <= 0.3 * 0.3 + 1e-9);
-  assert.equal(blastPuffs(m, [-1, 0, 0], 42, B03, {ground: 'mud', seed: 3})[0].alpha, 0.25);
+  assert.equal(blastPuffs(m, [-1, 0, 0], 42, B03, {ground: 'mud', seed: 3})[0].alpha, 0.15);
   assert.ok(Math.abs(blastPuffs(m, [-1, 0, 0], 42, B03, {ground: 'wheat', seed: 3})[0].r - 1.2) < 1e-9);
   assert.equal(blastLean(1, B03, 2), 0); assert.equal(blastLean(2, B03, 2), 0.44); assert.equal(blastLean(3, B03, 2), 0.17); assert.equal(blastLean(2, B03, 4), 0);
   assert.ok(blastLean(75, B03, 2) < 0.17 && blastLean(75, B03, 2) > 0); assert.equal(blastLean(83, B03, 2), 0); assert.equal(blastLean(120, B03, 2), 0);

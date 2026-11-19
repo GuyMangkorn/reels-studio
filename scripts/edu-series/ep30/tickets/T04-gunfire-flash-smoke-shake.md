@@ -1,5 +1,5 @@
 # T04 — kit gunfire effects: round schedule, muzzle flash with halation, smoke haze, muzzle blast and canvas shake
-Deliverable: EDU-EP30-SHORT · Revision: r3 · Status: ready (r3 fix pass: smoke and blast haze caps; the sky tie and the centre clip test accepted, see r3 decisions; r1 built, Q8 answered: rounds as written)
+Deliverable: EDU-EP30-SHORT · Revision: r3 · Status: needs-input (r3 fix pass built as written; the smoke cover check fails, see Result r3; r3 fix pass: smoke and blast haze caps; the sky tie and the centre clip test accepted, see r3 decisions; r1 built, Q8 answered: rounds as written)
 Class: capability · Hard: no
 Blocked by: T03 (`proof-fx.tsx` exists) · Consumers: B03-SH01, B04-SH03, B05-SH02 (two single shots); T05
 Model: sonnet, medium
@@ -70,3 +70,22 @@ Built by Boss (Sonnet medium), 2026-11-19, branch `worktree-agent-a58fca69d4e9c2
   2. Smoke build-up as written (alpha 0.55 to 0.30 per puff, 23 puffs, no cap on the sum) reads as a solid mass, not a haze. Keep, or give a haze alpha cap or a lower per-puff alpha for the 23-round list (the 11-round B04 list builds less).
   3. `o.clip` for the B04-SH03 water mirror is a centre test; if T10 needs the mirrored flash cut along the shore line, say so and give the polygon test, which this module does not have.
 - Answered r3 (Film): 1 tie accepted; 2 haze caps and lower alphas (fix pass); 3 no mirror in B04-SH03 (TF20: the mirrored flash would sit on the bank from this lens), `o.clip` unused.
+
+### r3 fix pass 1 (Boss, Sonnet medium, 2026-11-19, worktree branch `worktree-agent-a8355525945b878e7` from `8bbfa0d`; commit = the commit carrying this edit, see index)
+- Built exactly as the r3 table: `smokePuffs` alpha 0.35 → 0.15 (pre-cap, fade unchanged), `blastPuffs` 0.20 / mud 0.15, new `hazeCap(puffs, cap)` (alpha × min(1, cap / Σ live alphas)) with `SMOKE_CAP` 0.6 and `BLAST_CAP` 0.5 applied inside `paintSmoke` and `paintBlast`. `GUNFIRE_PRESETS` unchanged. Files: `src/painted/kit/gunfire.ts`, `tests/gunfire.test.ts` (alphas updated, one new test: summed live alpha at L 68 ≤ cap, and the uncapped smoke sum is > 0.6; 11 pass). `proof-fx.tsx` unchanged. `npx tsc` 22 errors, all in untouched files as in r1; `npm test` 264 pass, 16 fail, the same 16 outside this ticket as r1.
+- Proof: `out/edu30-T04/sheet.png` (fx00 fx02 fx03 fx04 fx30 fx75, viewed), measure script `out/edu30-T04/measure.py`, logs `out/logs/T04-measure.log` (as built) and `T04-measure-variant.log` (variant below). Store: `projects/edu/EDU/previews/` (the `out/edu30-T04` files, archived 14).
+- Measured (cover = (L_fx00 − L_frame) / (L_fx00 − L_colour), 16 × 16 boxes on flat ground, stepped 4 px, figures excluded by a flatness test; `L_colour` is the luma of the colour under the newsreel grade, 108.7 smoke and 170.2 blast, read from the same effect drawn at alpha 1, because the raw hex lumas 96.9 and 140.5 are not what the grade shows):
+
+| Frame | Check | Number | Range | Result |
+| --- | --- | --- | --- | --- |
+| fx02 | core ≥ 250, nothing outside the core lighter than the core max (sky tie) | core max 255, 2552 of the bbox px ≥ 250; frame max 255 (tie with the clipped sky) | pass | pass |
+| fx03 | half-size decay | flash code unchanged since r1, area ratio 0.25 (r1) | 20–35 % | pass (not re-measured) |
+| fx04 | smoke darker than ground | box (622, 1004): 111.3 vs 180.4 | smoke < ground | pass |
+| fx75 | alpha ratio on the pre-cap alpha | 1 − 7/45 = 0.844 (unit test, exact) | ≤ 0.9 | pass |
+| fx30 | blast cover, densest box (360, 1072) | 0.274 | ≤ 0.40 | pass |
+| fx30 | smoke cover, densest box (600, 1016) | **0.900** | ≤ 0.45 | **FAIL** |
+
+- Why the smoke cover fails although the alphas follow the table: each puff is 5 overlapping circles, each filled at the puff alpha (the r1 rule "each puff = 5 overlapping circles" says nothing about dividing the alpha), so one puff already reads 1 − (1 − 0.34)^5 ≈ 0.87 at its centre (measured at fx04: one puff at alpha 0.34 gives luma 111.3, the alpha-1 value is 108.7, cover 0.97). The Σ 0.6 cap then limits the puffs against each other, not the circles inside a puff. The blast puff is one ellipse, so its numbers are literal and pass.
+- Variant tried and not committed (a value Boss may not pick): each circle at alpha_c = 1 − (1 − puff alpha)^(1/5), so the 5 stacked circles give the puff alpha at the centre. Measured with `measure.py x`: smoke cover 0.245 at fx30 (box (604, 1012)), 0.316 at fx75; blast unchanged 0.274; the picture keeps the emu legs and gun readable.
+- fx30 and fx75 as built: the haze at the muzzle is still a dark, mostly opaque disc (about 100 px at fx75) with the emu's lower body dimmed but its legs readable; the blast is a pale, thin ground cloud.
+- **Open question for Film (blocks done):** which per-circle alpha for the five circles of a smoke puff? (a) the variant above, alpha_c = 1 − (1 − α)^(1/5) (smoke cover 0.245 at fx30, inside ≤ 0.45); (b) per-circle alpha α / 5 (cover lower still); (c) keep as built and change the pass range. One line in the table fixes it; the code change is one expression in `paintSmoke`. The same rule then holds for T24, T27, T29.
