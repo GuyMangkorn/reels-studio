@@ -112,6 +112,9 @@ export const hazeCap = (puffs: Puff[], cap: number): Puff[] => {
   return puffs.map((q) => ({...q, alpha: q.alpha * k}));
 };
 
+/** Per-circle alpha of a puff's five stacked circles (T04 r4): 1 - (1 - alpha)^(1/5), so the stack reads `alpha` at the centre. */
+export const circleAlpha = (alpha: number) => 1 - Math.pow(1 - alpha, 1 / 5);
+
 /** Smoke haze (VD30-11 step 2): each puff is 5 overlapping circles seeded +-0.3 radius, colour `#6b5f50`. */
 export const paintSmoke = (p: Painter, c: YCam, muzzle: V3, L: number, rounds: number[], o: SmokeOpts) => {
   for (const f of hazeCap(smokePuffs(muzzle, L, rounds, o), SMOKE_CAP)) {
@@ -119,9 +122,10 @@ export const paintSmoke = (p: Painter, c: YCam, muzzle: V3, L: number, rounds: n
     const q = camPoint(c, f.at);
     if (!q) continue;
     const R = f.r * camUnit(c, f.at);
+    const ac = circleAlpha(f.alpha);
     for (let j = 0; j < 5; j++) {
       const ox = (hash(f.seed + j * 3 + 1) * 2 - 1) * 0.3 * R, oy = (hash(f.seed + j * 3 + 2) * 2 - 1) * 0.3 * R;
-      washAt(p, f.seed + j, '#6b5f50', op(f.alpha), ring(q[0] + ox, q[1] + oy, R, R, 16), 0, 0);
+      washAt(p, f.seed + j, '#6b5f50', op(ac), ring(q[0] + ox, q[1] + oy, R, R, 16), 0, 0);
     }
   }
 };

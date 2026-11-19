@@ -2,7 +2,7 @@
 import {test} from 'node:test';
 import assert from 'node:assert/strict';
 import {
-  blastLean, blastPuffs, BLAST_CAP, hazeCap, SMOKE_CAP, flashPolygon, GUNFIRE_GLOW_PEAK, GUNFIRE_PRESETS, paintMuzzleFlash, popFor, roundFrames, roundPhase, shakeAt, smokePuffs,
+  blastLean, blastPuffs, BLAST_CAP, circleAlpha, hazeCap, SMOKE_CAP, flashPolygon, GUNFIRE_GLOW_PEAK, GUNFIRE_PRESETS, paintMuzzleFlash, popFor, roundFrames, roundPhase, shakeAt, smokePuffs,
 } from '../src/painted/kit/gunfire';
 import type {Painter} from '../src/painted/kit/painter';
 import type {YCam} from '../src/painted/kit/ycam';
@@ -77,6 +77,11 @@ test('haze caps: summed live alpha at L 68 <= 0.6 smoke and <= 0.5 blast', () =>
   const sm = hazeCap(smokePuffs(m, 68, B03, o), SMOKE_CAP), bl = hazeCap(blastPuffs(m, [-1, 0, 0], 68, B03, {ground: 'wheat', seed: 3}), BLAST_CAP);
   assert.ok(sm.reduce((a, q) => a + q.alpha, 0) <= SMOKE_CAP + 1e-9); assert.ok(bl.reduce((a, q) => a + q.alpha, 0) <= BLAST_CAP + 1e-9);
   assert.ok(smokePuffs(m, 68, B03, o).reduce((a, q) => a + q.alpha, 0) > SMOKE_CAP);
+});
+
+test('smoke circle alpha: 0.34 gives 0.0797 and five stacked circles give back the puff alpha (T04 r4)', () => {
+  assert.ok(Math.abs(circleAlpha(0.34) - 0.0797) < 0.0005);
+  for (const a of [0.15, 0.34, 0.6]) assert.ok(Math.abs(1 - Math.pow(1 - circleAlpha(a), 5) - a) < 1e-12);
 });
 
 test('blast: puff per round 2.0 m ahead on the ground, radius 0.3 to 1.2 over 40 f; lean 0.44 / 0.17 / eases to 0', () => {
