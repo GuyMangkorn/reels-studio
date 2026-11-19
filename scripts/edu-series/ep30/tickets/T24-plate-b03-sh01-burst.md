@@ -1,7 +1,7 @@
 # T24 — plate B03-SH01, the first full-frame firing beat (VD30-11, 23 rounds from the order), is built and proven
-Deliverable: EDU-EP30-SHORT · Revision: r1 · Status: ready (round schedule depends on open Q8)
+Deliverable: EDU-EP30-SHORT · Revision: r2 · Status: ready (Q8 answered: burst from the order as written; r2 adds T34 to Blocked by: the registered plate needs the overscan and shake canvas hook)
 Class: set (plate) · Hard: yes (gunner arms and jolt, flock startle and scatter)
-Blocked by: T03, T04, T05, T06, T08, T09, T11, T13 · Consumers: B03-SH01 (global 688–759)
+Blocked by: T03, T04, T05, T06, T08, T09, T11, T13, T34 · Consumers: B03-SH01 (global 688–759)
 Model: sonnet, medium
 
 Read first: [common rules](index.md#common-rules); shot block [b03.md](../short/scene-sheets/b03.md) B03-SH01 (authoritative; SD13); brief [VD30-11](../short/film-brief.md#vd30-11) (per-round grammar, value, fallback order).

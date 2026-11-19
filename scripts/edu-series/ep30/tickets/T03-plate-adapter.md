@@ -1,5 +1,5 @@
 # T03 — 28 registered EP30 plates exist (stubs) behind one adapter, with a QA still entry, a lead probe, the proof entries and the calibration sheet
-Deliverable: EDU-EP30-SHORT · Revision: r1 · Status: done (questions: see Result)
+Deliverable: EDU-EP30-SHORT · Revision: r2 · Status: ready (r2 fix pass: Q-A, Q-C, Q-D below; Q-B moved to T34)
 Class: capability · Hard: no
 Blocked by: T01, T02 · Consumers: every plate ticket (T19–T33); every proof composition (T04–T18); Editor (W5.3 composition)
 Model: sonnet, medium
@@ -17,7 +17,7 @@ Files: `src/painted/edu30/shot.tsx` (new), `src/painted/edu30/shots/index.ts` (n
 | Registry ID | `EDU30-<SHOT-ID>` (e.g. `EDU30-B02-SH06`); no pre-roll; shot-local `L = round(tl × 30)` clamped to [0, N−1] | EP26 pattern |
 | `Shot30` type | `{id; N; cam(L): YCam; paint(p, L, c, pr?): void; reel(L): {strength; tint; tintMix?; pop?}; shake?(L): {dx; dy; rot}; overscan?: boolean; paper: string}` | ticket |
 | Default `reel` | `{strength: 1, tint: 'warm', tintAmount: 1, pop: 0}` (VD30-01a) | brief w32-look-lock |
-| Screen order in the plate overlay | `Grade` → `NewsreelPicture` (plate canvas) → `NewsreelOverlay` → `Grain` (0.06) → `NewsreelTitle` for the shot's rows in `TITLES` (T02); nothing else (captions, mark, label, caption shade are the Editor's) | brief technical handoff, Composition seam |
+| Screen order (r2, Film fix TF16) | `NewsreelPicture` (plate canvas, T34 on the registered plate) → `NewsreelOverlay` → `Grain` (0.06) → `NewsreelTitle` for the shot's rows in `TITLES` (T02); **no `Grade`** in `PlateStack` or in the registered `Overlay`: it sat under the opaque canvas and did nothing in the QA stack, the locked looks never had it, and `NewsreelOverlay` already carries the vignette. Captions, mark, label, caption shade are the Editor's | Film r2 (overrides the brief Composition seam's Grade) |
 | Shake | `translate(dx, dy) rotate(rot)` on the plate canvas element only, inside the newsreel weave; titles and overlay never move | VD30-11 step 5 |
 | Overscan shots | `overscan: true` on **B03-SH01 and B04-SH03 only** (the two bursts). The plate canvas is scaled 1.05 about (540, 960) for the whole shot and the camera compensates exactly: `f' = f / 1.05`, `hy' = 960 + (hy − 960) / 1.05`, so every projected point equals the sheet numbers; margin 27 px x, 48 px y. B03-SH02 has no shake: round 23 (B03-SH01 local 68) decays by local 70, before the cut at 72 (Film fix: the sheet's "decays across the cut" cannot happen) | VD30-11 step 5; b03 B03-SH01 Cut |
 | Stub shot files | each exports a `Shot30` with the sheet camera line at L 0 held still, `paint` = sky wash `#efe6d0` + ground `#8a7253` below the horizon row; plate tickets replace the body | ticket |
@@ -26,9 +26,9 @@ Files: `src/painted/edu30/shot.tsx` (new), `src/painted/edu30/shots/index.ts` (n
 | Proof entries | `proof-<topic>.tsx`: `registerRoot` with a `Proof30` helper that takes `{id, N, cam(L), paint(p, L, c), reel?}` and the same guides/tag props; each later ticket adds its compositions named in its own Proof section | ticket (keeps T04–T18 off the plate files) |
 | Probe | `pr.lead(name, {top, bottom, x})` records feet-to-head spans in px; `measure-shots.ts <SHOT-ID> <L,L,…>` prints `SHOT L name top bottom h x` per lead per frame without a browser (as `measure-looks.ts`) | ticket |
 | Exports from `looks.ts` | `paintPaddock`, `PadOpts`, `crewAtGun`, `crewAtDam`, `HERO_LF01`, `onBank`, `CAM_LF01`, `CAM_LF02`, `CAM_LF03`, `CAM_A2`, `LF02_MARKS`, `LF02_DAM`, `armsLook`, `KP_EYE`, `KP_AT`, `kp` | ticket |
-| Calibration sheet `EDU30-CAL` | space P, `SUN.morning`, newsreel strength 0: MEREDITH `P01` front at (−1.2, 0, 0), EMU-HERO `EMU_POSES.stand()` heading −π/2 at (0, 0, 0), G1 `buildLewisGun()` side at (1.2, 0, 0); camera eye (0, 0.9, 6.0), yaw 0, pitch 0, f 1000, hy 960 | brief technical handoff, Scale baseline |
+| Calibration sheet `EDU30-CAL` | space P, `SUN.morning`, newsreel strength 0: MEREDITH `P01` front at (−1.2, 0, 0), EMU-HERO `EMU_POSES.stand()` heading **π** (side view, faces −x toward MEREDITH; r2, was −π/2 = tail to the lens) at (0, 0, 0), G1 `buildLewisGun()` heading 0 (side-on, muzzle +x) at (1.2, 0, 0); camera eye (0, 0.9, 6.0), yaw 0, pitch 0, f 1000, hy 960; ground = the plain paddock (`setNoClearing`) | brief technical handoff, Scale baseline; Film r2 |
 
-**Open-question dependency.** The table is SCENE-R2 as written. Q7 (index O8) could move the B04-SH06 / B04-SH05 boundary from 1086 to 1076 or 1096; Q8 (O9) could move B03-SH05 / B03-SH01 from 688 to 704. Either answer changes two rows of the table only; Film then bumps this ticket to r2.
+**Open questions Q7 and Q8 are answered (user, 19 Nov 2026):** the table stands as written (B04-SH05 at 1086, B03-SH01 at 688).
 
 ## Proof
 - `npx tsc --noEmit -p . > out/logs/T03-tsc.log 2>&1; tail -5 out/logs/T03-tsc.log` · `npm test > out/logs/T03-test.log 2>&1; tail -15 out/logs/T03-test.log` (includes `scripts/context-map.py`)
@@ -37,14 +37,21 @@ Files: `src/painted/edu30/shot.tsx` (new), `src/painted/edu30/shots/index.ts` (n
 
 | Frame | What must be visible | Measured number and its pass range |
 | --- | --- | --- |
-| CAL 0 | man, emu and gun side by side on one ground line, emu head level with the man's head (the brief's joke) | MEREDITH h and EMU h each 283 ± 15 px (1000 × 1.70 / 6.0); gun length 213 ± 15 px |
+| CAL 0 | man, emu and gun side by side on one ground line, emu head top level with the man's head top, hat excluded (the brief's joke) | r2: MEREDITH hat-top h **304 ± 10 px** (the kit `man-parted` + slouch hat is about 1.82 m to the hat top; head top 1.70 m = 283 px, hat about 21 px); EMU h 274 ± 15 px; emu head top within ±15 px of y 827 (MEREDITH feet y 1110 − 283); gun length 222 ± 15 px. The cast is not scaled (locked looks) |
 | SEQ 0 / 993 / 1086 / 1976 | tag shows B01-SH01 L0 / B04-SH03 L0 / B04-SH05 L0 / B07-SH02 L121 | exact shot and L |
 | B03-SH01 L0 | stub with overscan; tag and guides unscaled | guide line at y 1100 exactly |
 | tests | context map, tsc | 0 errors |
 
+## r2 decisions (Film, 2026-11-19): fix pass for the built T03
+- **Q-A:** no cast scaling (locked kit proportions). The CAL range is re-stated above: MEREDITH 304 ± 10 px to the hat top; the emu's 28 px gap is the hat (about 21 px) plus 7 px inside the ±15 px tolerance, so no emu change either. Consequence for every later ticket: a man's lead height measured to the hat top is 1.074 × the 1.70 m number (index common rules).
+- **Q-B:** moved to ticket T34 (new; this ticket's registered plate stays as built until T34 lands; the QA and proof entries already show the full stack).
+- **Q-C:** `Grade` removed from `PlateStack` and from the registered `Overlay` (edit both, delete the import if unused).
+- **Q-D:** confirmed: `Shake30.rot` in degrees (T04 `shakeAt` gives `rot` in degrees and the stack writes `rotate(${rot}deg)`); `Reel30` optional `tintAmount`; the probe's extra ` w <px>` for props; CAL ground = plain paddock. Changed: the CAL emu heading π and gun heading 0 (table above).
+- r2 work for Boss: remove Grade (2 lines), set the CAL emu heading to `Math.PI`, update the comment lines in `calibration.ts` and `shot.tsx`, re-run `EDU30-CAL` and `SEQ_0000`, record the new measured numbers. Files touched: `src/painted/edu30/shot.tsx`, `src/painted/edu30/calibration.ts`.
+
 ## Result (Boss fills)
 Commit: this commit on the Boss worktree branch (see index) · proof sheet: `out/edu30-T03/sheet.png` (store `projects/edu/EDU/previews/sheet.png`, `CAL.png`, `SEQ_*.png`, `B03-SH01_L0.png`) · fix passes: 0.
-Q7 and Q8 answered by the user (19 Nov 2026): table built as written (B04-SH05 at 1086, B03-SH01 at 688); no revision needed.
+Q7 and Q8 answered by the user (19 Nov 2026): table built as written (B04-SH05 at 1086, B03-SH01 at 688); no revision needed. (r1 Result below; r2 values above win where they differ.)
 Measured (`measure-shots.ts CAL 0`, tsc 0 errors in the new files): MEREDITH top 806 bottom 1110 h **304** (range 283 +- 15 = 268-298: **outside by 6 px**, value not followed, see Q-A); EMU-HERO h 274 (pass); gun length (silhouette right-left) 222 (range 213 +- 15: pass; the gun's 1.26 m barrel-to-stock at 6 m would be 210). CAL frame: man, emu and gun stand on one ground line, emu head top 28 px below the man's hat top (834 vs 806; the brief wants them level, tied to Q-A). SEQ tags read exactly B01-SH01 L0 (G0), B04-SH03 L0 (G993), B04-SH05 L0 (G1086), B07-SH02 L121 (G1976). B03-SH01 L0: the y 1100 guide occupies rows 1100-1101 at full strength, unscaled by the 1.05 overscan.
 Checks: `npx tsc --noEmit -p .` shows 22 errors, none in `src/painted/edu30/*`, `src/painted/shots/edu30.tsx` or `measure-shots.ts` (all pre-existing: `three` / `@remotion/three` not installed in this checkout, plus old test typings). `npm test`: 220/236 pass; the 16 failures are environmental (`Cannot find module '@remotion/three'` x12 through the registry/kit imports, Node `fs.globSync` missing); `docs/context-map.md` check passes. Registry load (`painted.test.ts`, `plates.test.ts`) could not be exercised here for that reason.
 Built from the ticket: `Shot30`, 28 stubs (sheet camera line at L0 taken from `scripts/edu-series/ep30/short/projection-shots.json` `cams.start`), table asserted at load, registry entry, `EDU30-<ID>` / `EDU30-SEQ` / `EDU30-CAL` QA entry, six empty `proof-*.tsx` entries with `Proof30`, probe and `measure-shots.ts`, `looks.ts` exports (the 11 named; `LF02_MARKS`, `LF02_DAM`, `CAM_LF01-03`, `kp` family were already exported or are `export const kp`).

@@ -1,5 +1,5 @@
 # T01 — the newsreel screen layer lives in the kit with exposure pop, flare and a warm-to-cool mix
-Deliverable: EDU-EP30-SHORT · Revision: r1 · Status: done
+Deliverable: EDU-EP30-SHORT · Revision: r2 · Status: ready (r2 fix: file the baseline, one command; no code change)
 Class: capability · Hard: no
 Blocked by: none · Consumers: every plate B01-SH01 … B06-SH04 (strength 1), B07-SH01 (burn-out); T03 adapter
 Model: sonnet, medium
@@ -20,8 +20,8 @@ Files: `src/painted/kit/screen.tsx`, `src/painted/edu30/newsreel.tsx`, `tests/ne
 | New input `tintMix` | 0..1; default 0 for `tint: 'warm'`, 1 for `'cool'`; the filter interpolates the warm and cool sepia/hue/saturate values linearly by `tintMix`, and the vignette colour `40,24,10` → `16,18,22` by the same mix | b05 B05-SH03/SH04 (cool), b06 B06-SH03 (tint cools over local 95–98), B06-SH04 (cool) |
 | Plate tint schedule | warm (`tintMix` 0): B01-SH01 … B05-SH02, B06-SH01, B06-SH02, B06-SH03 local 0–94 · mix 0 → 1 linear over B06-SH03 local 95–98 · cool (1): B05-SH03, B05-SH04, B06-SH04, B07-SH01 local 0 (burn-out start) | sheets |
 | Flare for the burn-out | no new input: B07-SH01 passes `pop` 0.15 on local 0, 0.10 on 1, 0.05 on 2, 0 after, and `strength` 1 → 0 linear over local 0–9 | b07 B07-SH01 Newsreel burn-out |
-| strength 0 | identity: filter `none`, weave transform `none`, overlay renders nothing | b07 B07-SH01 (from local 10 no grain, weave, tint) |
-| Layer order | the T03 adapter composes Grade → NewsreelPicture(plate canvas) → NewsreelOverlay → Grain → titles (T02); captions, mark and label are the Editor's, above all | brief technical handoff, Composition seam |
+| strength 0 | identity: filter `none`, weave transform `none`, overlay renders nothing. Accepted (r2): callers of the old `strength: 0` string are only `tests/newsreel.test.ts` and the T03 CAL reel (`calibration.ts`, wants plain colour); `look.tsx`, the W3 stills and every plate use strength > 0 or the default 1 | b07 B07-SH01 (from local 10 no grain, weave, tint) |
+| Layer order | the T03 adapter and T34 compose NewsreelPicture(plate canvas) → NewsreelOverlay → Grain → titles (T02); no Grade (r2, TF16); captions, mark and label are the Editor's, above all | brief technical handoff, Composition seam |
 
 References (store): `projects/edu/EDU/previews/EDU-EP30-W3-r1/LF01a.png` (warm, full tint), `projects/edu/EDU/previews/EDU-EP30-W3-r1/thumbs/TP3.png` (cool).
 
@@ -32,8 +32,12 @@ References (store): `projects/edu/EDU/previews/EDU-EP30-W3-r1/LF01a.png` (warm, 
 
 | Frame | What must be visible | Measured number and its pass range |
 | --- | --- | --- |
-| LF01a re-render | identical look to the locked still | mean absolute pixel difference vs store LF01a ≤ 2 (0–255), short PIL script, number logged |
+| LF01a re-render | identical look to the locked still | r2: mean absolute pixel difference vs the **T01 baseline** (below) ≤ 2 and vs the pre-move render of `63fa4f6` ≤ 0.5 with max ≤ 8 (0–255), short PIL script, numbers logged. The locked store still `LF01a.png` is not the reference any more (drifted, 3.58 from both old and new code) |
 | tests (a)–(d) | as listed | all pass |
+
+## r2 decision (Film, 2026-11-19): re-baseline, do not re-key
+The store LF01a is a drifted old render of a picture the user already approved; new code and the pre-move code agree (max 8 / 255, mean under rounding), so the move is clean and the locked picture is unchanged. The store still stays untouched (it is the user's approved picture). The proof baseline is the current render, filed once:
+`python3 -I scripts/store.py put out/edu30/looks/T01/LF01a.png projects/edu/EDU/previews/EDU-EP30-W3-r1/LF01a.baseline-63fa4f6.png` with a sidecar: "LF01a render of the pre-move code at 63fa4f6 on 2026-11-19; baseline for the T01 ≤ 2 proof; the approved still LF01a.png differs by mean 3.58 (store drift)". Every later extension of `kit/screen.tsx` compares against this baseline, not LF01a.png. Result r2 line to add: baseline path, mean new-vs-baseline (expect 0), mean new-vs-old (expect < 0.5).
 
 ## Result (Boss fills)
 - Commit: the commit that carries this edit on branch `worktree-agent-a2532a012de0fa7ed` (2026-11-19, Boss, Sonnet medium). Fix passes: 0.

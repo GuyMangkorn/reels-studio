@@ -1,56 +1,61 @@
 # EDU-EP30-SHORT — plate tickets (index)
 
-Revision **`EDU-EP30-TICKETS-R1`** · Film, 2026-11-19 · procedure: [plate-tickets skill](../../../../.agents/skills/plate-tickets/SKILL.md) (trial, 19 Nov 2026)
+Revision **`EDU-EP30-TICKETS-R2`** · Film, 2026-11-19 (R1 → R2: fix pass on T01, T02, T03, new T34, Q7/Q8 answered; see the change log) · procedure: [plate-tickets skill](../../../../.agents/skills/plate-tickets/SKILL.md) (trial, 19 Nov 2026)
 Inputs: scene sheets [EDU-EP30-SCENE-R2](../short/scene-sheets/index.md) (ready-for-dev; 28 shots, 1977 f; b01–b07), brief [EDU-EP30-BRIEF-R3](../short/film-brief.md#r3-changes) (VD30-01 … VD30-13, W3.2 look lock), look-lock assets in `src/painted/edu30/` and `src/painted/kit/` at `63fa4f6` (branch `claude/ep30-continuation-493a12`). Evidence: planning only; no ticket built, no runtime or picture evidence.
 
 ## Tickets
 
 | Ticket | Class | Hard | Blocked by | Status | Fix passes | Result commit |
 | --- | --- | --- | --- | --- | --- | --- |
-| [T01](T01-newsreel-kit-layer.md) newsreel layer in the kit (pop, tintMix) | capability | no | — | done (question: LF01a diff 3.58 vs 2) | 0 | see ticket Result |
-| [T02](T02-newsreel-titles.md) six newsreel title cards | capability | no | — | done (question: place-tag width) | 0 | see ticket |
-| [T03](T03-plate-adapter.md) adapter, 28 stubs, QA entry, probe, proof entries, calibration | capability | no | T01, T02 | done (questions Q-A..Q-D in ticket) | 0 | see ticket Result |
-| [T04](T04-gunfire-flash-smoke-shake.md) kit gunfire: flash, halation, pop, smoke, blast, shake | capability | no | T03 | ready (Q8) | 0 | — |
-| [T05](T05-gunfire-casings-strikes.md) kit gunfire debris: casings, spurts, spouts, splash | capability | no | T04 | ready (Q8) | 0 | — |
+| [T01](T01-newsreel-kit-layer.md) newsreel layer in the kit (pop, tintMix) | capability | no | — | r2 ready: file the LF01a baseline (one command), no code change | 0 | r1 in ticket Result |
+| [T02](T02-newsreel-titles.md) six newsreel title cards | capability | no | — | r2 ready: place tag 48 px, box 967 px | 0 | r1 in ticket |
+| [T03](T03-plate-adapter.md) adapter, 28 stubs, QA entry, probe, proof entries, calibration | capability | no | T01, T02 | r2 ready: Grade removed, CAL ranges and emu heading π (Q-B moved to T34) | 0 | r1 in ticket Result |
+| [T34](T34-canvas-style-hook.md) `canvasStyle` hook: registered plate gets newsreel filter, weave, shake, 1.05 overscan | capability | no | T03 (after its r2) | ready | 0 | — |
+| [T04](T04-gunfire-flash-smoke-shake.md) kit gunfire: flash, halation, pop, smoke, blast, shake | capability | no | T03 | ready | 0 | — |
+| [T05](T05-gunfire-casings-strikes.md) kit gunfire debris: casings, spurts, spouts, splash | capability | no | T04 | ready (Q8 answered) | 0 | — |
 | [T06](T06-emu-wings-reactions.md) emu wing rig, mixer, gait contact, startle/duck-flap/hop | figure | yes | T03 | ready | 0 | — |
 | [T07](T07-emu-head-face.md) emu head: lens turn, blink, nod, beak-talk, sac, relief emu | figure | yes | T06 | ready | 0 | — |
-| [T08](T08-flock-paddock.md) flock in the paddock: buffet, extras, heads field, scatter, burst, halves, fence birds, slow line | movement | yes | T07 | ready (Q8) | 0 | — |
+| [T08](T08-flock-paddock.md) flock in the paddock: buffet, extras, heads field, scatter, burst, halves, fence birds, slow line | movement | yes | T07 | ready (Q8 answered) | 0 | — |
 | [T09](T09-paddock-states.md) paddock states, ruts, high view, fence from the track | set | no | T03 | ready | 0 | — |
 | [T10](T10-dam-shore-path.md) dam: east approach, queue path, reflect, stone, near slope + clearance | set | no | T03 | ready | 0 | — |
 | [T11](T11-seated-gunner.md) seated gunner four views + recoil jolt | figure | yes | T13, T03 | ready | 0 | — |
 | [T12](T12-crew-farmer-poses.md) crew and farmer poses (salute, P30, P44-back, loader, farmer) | figure | yes | T11, T13 | ready | 0 | — |
-| [T13](T13-lewis-gun-mechanics.md) Lewis gun anchors, recoil, pan, jam, cocking rack | prop | yes | T03 | ready (Q8) | 0 | — |
+| [T13](T13-lewis-gun-mechanics.md) Lewis gun anchors, recoil, pan, jam, cocking rack | prop | yes | T03 | ready (Q8 answered) | 0 | — |
 | [T14](T14-truck-rig.md) truck rig and every drive schedule | movement | yes | T13, T11 | ready | 0 | — |
-| [T15](T15-emu-mime-gestures.md) emu mime: wing flick, watch check, foot tap, wave front + back | movement | yes | T07 | ready (Q7) | 0 | — |
-| [T16](T16-queue-motion.md) queue at the dam: walk, unison step, flinch/hop, stare, turn-away | movement | yes | T10, T08 | ready (Q7) | 0 | — |
-| [T17](T17-cocking-pull-gunner-face.md) cocking pull + angry talking face (`man-crop` three-quarter) | figure | yes | T12, T13 | ready (Q7) | 0 | — |
-| [T18](T18-order-chop.md) MEREDITH order-chop + shouted mouth | figure | yes | T17 | ready (Q8) | 0 | — |
+| [T15](T15-emu-mime-gestures.md) emu mime: wing flick, watch check, foot tap, wave front + back | movement | yes | T07 | ready (Q7 answered) | 0 | — |
+| [T16](T16-queue-motion.md) queue at the dam: walk, unison step, flinch/hop, stare, turn-away | movement | yes | T10, T08 | ready (Q7 answered) | 0 | — |
+| [T17](T17-cocking-pull-gunner-face.md) cocking pull + angry talking face (`man-crop` three-quarter) | figure | yes | T12, T13 | ready (Q7 answered) | 0 | — |
+| [T18](T18-order-chop.md) MEREDITH order-chop + shouted mouth | figure | yes | T17 | ready (Q8 answered) | 0 | — |
 | [T19](T19-plates-b01.md) plates B01-SH01, SH02, SH03 | set | yes | T03, T07, T08, T09, T11, T14 | ready | 0 | — |
 | [T20](T20-plates-b02-crane-farmer.md) plates B02-SH01, SH02 | set | yes | T03, T08, T09, T12 | ready | 0 | — |
 | [T21](T21-plates-b02-army.md) plates B02-SH03, SH04 | set | yes | T03, T09, T12, T13, T14 | ready | 0 | — |
 | [T22](T22-plate-b02-sh06-heads.md) plate B02-SH06 | set | yes | T03, T07, T08, T09, T11, T12, T13 | ready | 0 | — |
-| [T23](T23-plate-b03-sh05-order.md) plate B03-SH05 | set | yes | T03, T09, T11, T12, T13, T18 | ready (Q8) | 0 | — |
-| [T24](T24-plate-b03-sh01-burst.md) plate B03-SH01 (burst) | set | yes | T03, T04, T05, T06, T08, T09, T11, T13 | ready (Q8) | 0 | — |
+| [T23](T23-plate-b03-sh05-order.md) plate B03-SH05 | set | yes | T03, T09, T11, T12, T13, T18 | ready (Q8 answered) | 0 | — |
+| [T24](T24-plate-b03-sh01-burst.md) plate B03-SH01 (burst) | set | yes | T03, T04, T05, T06, T08, T09, T11, T13, T34 | ready (Q8 answered) | 0 | — |
 | [T25](T25-plates-b03-scatter-signal.md) plates B03-SH02, SH03 (L07 mime) | set | yes | T03, T04, T05, T07, T08, T09, T11, T12, T15 | ready | 0 | — |
 | [T26](T26-plates-b04-ambush-queue.md) plates B04-SH01, SH02 | set | yes | T03, T10, T11, T12, T16 | ready | 0 | — |
-| [T27](T27-plates-b04-burst-jam.md) plates B04-SH03, SH04 | set | yes | T03, T04, T05, T06, T10, T11, T13, T16 | ready | 0 | — |
-| [T28](T28-plates-b04-gunner-watch.md) plates B04-SH06, SH05 (PB01) | set | yes | T03, T05, T07, T10, T11, T13, T15, T16, T17 | ready (Q7) | 0 | — |
+| [T27](T27-plates-b04-burst-jam.md) plates B04-SH03, SH04 | set | yes | T03, T04, T05, T06, T10, T11, T13, T16, T34 | ready | 0 | — |
+| [T28](T28-plates-b04-gunner-watch.md) plates B04-SH06, SH05 (PB01) | set | yes | T03, T05, T07, T10, T11, T13, T15, T16, T17 | ready (Q7 answered) | 0 | — |
 | [T29](T29-plates-b05-chase.md) plates B05-SH01, SH02 | set | yes | T03, T04, T06, T08, T09, T11, T14 | ready | 0 | — |
 | [T30](T30-plates-b05-withdrawal-wave.md) retreat vantage + plates B05-SH03, SH04 | set | yes | T03, T07, T08, T09, T14, T15 | ready | 0 | — |
 | [T31](T31-plates-b06-tanks-bow.md) plates B06-SH01, SH02 (L15 mime) | set | yes | T03, T06, T07, T08, T09, T12 | ready | 0 | — |
 | [T32](T32-plates-b06-timelapse-withdrawal.md) plates B06-SH03, SH04 | set | yes | T30, T01, T03, T08, T09, T14, T15 | ready | 0 | — |
 | [T33](T33-plates-b07-arms.md) plates B07-SH01, SH02 | set | yes | T01, T03, T07 | ready | 0 | — |
 
-33 tickets: 18 asset/capability (T01–T18), 15 plate tickets covering all 28 shots once. `needs-input`: none (every value decided; the two open user questions are carried as dependencies below, with the scene-sheet values as written). Same-file chains: `emu.ts`/`looks.ts`/`tests/edu30-emu.test.ts` T06 → T07 → T15; `flock.ts`/`proof-flock.tsx` T08 → T16; `cast.ts`/`proof-cast.tsx` T11 → T12 → T17 → T18; `props.ts`/`proof-props.tsx` T13 → T14; `kit/gunfire.ts`/`proof-fx.tsx` T04 → T05; every plate writes only its own `shots/<ID>.tsx` (T30 also `vantage.ts`, read by T32). First wave (no blockers): T01, T02; then T03; then T04, T06, T09, T10, T13 in parallel.
+34 tickets: 19 asset/capability (T01–T18, T34), 15 plate tickets covering all 28 shots once. `needs-input`: none (every value decided; the two open user questions are carried as dependencies below, with the scene-sheet values as written). Same-file chains: `emu.ts`/`looks.ts`/`tests/edu30-emu.test.ts` T06 → T07 → T15; `flock.ts`/`proof-flock.tsx` T08 → T16; `cast.ts`/`proof-cast.tsx` T11 → T12 → T17 → T18; `props.ts`/`proof-props.tsx` T13 → T14; `kit/gunfire.ts`/`proof-fx.tsx` T04 → T05; every plate writes only its own `shots/<ID>.tsx` (T30 also `vantage.ts`, read by T32). First wave (no blockers): T01, T02; then T03; then T04, T06, T09, T10, T13 in parallel.
 
-## Open user questions these tickets depend on
+## User questions Q7 and Q8: answered (user, 19 Nov 2026)
 
-The scene-sheet values are built as written. On an answer, Film revises the named tickets (rN+1) before they are dispatched or, if already built, as a fix ticket.
+Both answers keep the scene-sheet values: **Q7** PB01 length as written (gunner B04-SH06 [1062, 1086), emu B04-SH05 [1086, 1150)); **Q8** the B03 burst starts at the order as written (B03-SH05 [667, 688); 23 rounds at B03-SH01 local 2 … 68, about 2.2 s after the order). No ticket changes; the "(Q7 answered)" and "(Q8 answered)" marks in the table above replace the old open marks. The table below is kept only to show what a different answer would have touched.
 
 | Question | Index item | As written | Tickets that change on a different answer |
 | --- | --- | --- | --- |
 | Q7 — PB01 on-screen length | [O8](../short/scene-sheets/index.md#dependencies-and-open-items) (SD14) | gunner B04-SH06 [1062, 1086), emu B04-SH05 [1086, 1150) | T03 (two shot-table rows), T15 (B04-SH05 local keys), T16 (turn-away local key), T17 (shot length: shake/talk keys), T28 (both plates) |
 | Q8 — B03 burst from the order vs the narrator's "ยิง" | [O9](../short/scene-sheets/index.md#dependencies-and-open-items) (SD13) | B03-SH05 [667, 688); 23 rounds at B03-SH01 local 2 … 68 | T03 (two rows), T04 (B03 round list), T05 (casing count), T08 (scatter keys), T13 (pan total), T18 (hold length), T23, T24 |
+
+## Plate tickets and T34 (registered-plate canvas hook)
+
+T34 lets a registered plate wear the newsreel picture filter, gate weave, gunfire shake and the 1.05 overscan (T03 Q-B). **Blocks T24 (B03-SH01) and T27 (B04-SH03), the two overscan and shake shots: they cannot be `done` without it.** Does not block T04–T23, T25, T26, T28–T33: their proof runs through the QA stack (`shots-index.tsx`), which already shows the full picture; their registered-plate look is covered by T34's registered-vs-QA numbers and, per plate, by the Editor's W5.3 composition check. T34 itself waits for T03 r2 (both write `edu30/shot.tsx`). Dependency order: T03 r2 → T34 → T24, T27.
 
 ## Common rules
 <a id="common-rules"></a>
@@ -59,6 +64,7 @@ Every ticket links here. A ticket's own value wins over this section.
 
 - **Dispatch and model.** One ticket per fresh Boss invocation on Sonnet, `medium` ([plate-tickets skill](../../../../.agents/skills/plate-tickets/SKILL.md#coordinator-dispatch)); brief = ticket path + revision + model line. Tickets with no shared `Files` and no edge run in parallel, each in its own worktree. Fix-pass cap: two per ticket, then the user decides (one option: rerun on Opus); record it in Fix passes.
 - **What is authoritative.** The linked shot block's Staging, Camera, Projection and Acceptance; the ticket adds build decisions. A ticket row marked **Film fix** overrides the sheet value it names (listed below for the next sheet revision). A missing or conflicting value: set `Status: blocked`, write the question in Result and return; Film answers by revising the ticket.
+- **Man height (r2).** The kit man (`man-parted` + slouch hat) measures about 1.82 m to the hat top (304 px at 6 m, f 1000; T03 CAL); the 1.70 m cast height is the head top (283 px). A pass range computed for a man from 1.70 m is read to the head top; a probe `top` that includes the hat is 1.074 × it. The cast is never scaled to match.
 - **Locked looks.** LF01a, LF02 (R4), LF03 (R2) and KP-EMU (r1) are user-locked (W3.2). At default options every extended module reproduces them (mean absolute pixel difference ≤ 2 on the 0–255 scale against a pre-change render, unless the ticket names another bound). Known limits accepted with the lock are fixed only where a ticket says so.
 - **Clocks.** Story events (head turns, nods, wing gestures, taps, bow, rounds, scatter, jam, rack, time-lapse) on the shot clock; walk/peck/run phases, wheat sway, water ripples and the windmill on the ambient clock ([DF-20261030-painted-story-hold-ambient-clock](../../../../docs/dev-findings.md#df-20261030-painted-story-hold-ambient-clock)). Every helper is a pure function of the frame: frame L computed alone equals frame L after 0…L.
 - **Screen layers.** Shake and weave move the plate canvas only; titles, captions, the `@TamMaiLa` mark and the label never move ([DF-20261030-painted-screen-layers-overlay](../../../../docs/dev-findings.md#df-20261030-painted-screen-layers-overlay)). Plates draw no caption, mark or label (Editor).
@@ -97,6 +103,7 @@ Each is decided in the named ticket; the sheets still carry the old wording unti
 | TF12 | T15 | watch wrist (1.45, 1.45, −4.6) → (1.19, 1.52, −4.57); wave tip (0.35, 1.95, 5.3) → (0.14, 1.73, 5.40) | wing reach (0.85 m max) from the 1.0 m root |
 | TF13 | T16 | B04-SH02 head "walks 0.3 m/s from 4.6, 4.0 by local 49" → stands to L 40, steps L 41–49, walks on | both cannot hold with a 0.6 m step |
 | TF14 | T18 | B03-SH05 "the near (right) arm" → the right arm is the far arm (screen left) | the lens is at his left front |
+| TF16 | T03 | brief Composition seam "Grade → Newsreel → Grain" → no `Grade` in the plate stack (the Editor may add one above the plates) | it sat under the opaque canvas and did nothing; the locked looks never had it; `NewsreelOverlay` carries the vignette |
 | TF15 | T32 | fence birds added at L 66, 74, 82, 90 → per-jump counts 5, 6, 7, 8, 8, 9 | the time-lapse shows held states |
 
 ## Coverage (every Boss row of SCENE-R2 → ticket)
@@ -140,5 +147,7 @@ Not ticketed here (other owners): sounds and the cue sheet (Ton, index O4), Edit
 The SCENE-R1 tickets T01–T23 (written from `EDU-EP30-SCENE-R1`, stopped at T23 before B05-SH03, never dispatched) were deleted in this revision; their numbers are reused here with SCENE-R2 content, and T01–T14 keep their subjects. Dropped with the retired shots and lines: B02-SH05 plate (heads rising behind the crew, `new: loader-kneel-back`, its woodblock beats), B03-SH04 plate (`new: binoculars-at-eyes`, the feather on the pan, the empty paddock), the emu head cock (B04-SH05 stare, L11), the emu talking while running in the B03-SH03 run-past, the tracking followers of the old B03-SH03, the tiny wing flaps of B05-SH03 and B06-SH04 (SD16), and the 26-shot / 2012-frame shot table. Old plate tickets T15–T23 are replaced by T19–T28.
 
 ## Change log
+
+- 2026-11-19, Film, `EDU-EP30-TICKETS-R2` (fix pass on the three built tickets, nothing built): **T01 r2** re-baselines the proof on the current render, filed as `projects/edu/EDU/previews/EDU-EP30-W3-r1/LF01a.baseline-63fa4f6.png` (the approved store still untouched, drift 3.58 accepted; `strength 0` identity accepted, only the CAL reel and tests call it). **T02 r2** place tag 48 px, padding 56 px, box 967 ± 2 px. **T03 r2** CAL man 304 ± 10 px (hat), emu unchanged, CAL emu heading π and gun heading 0, `Grade` dropped (TF16), Shake30.rot degrees confirmed and Q-D confirmed. **T34 new** (`canvasStyle` hook), blocks T24 and T27. Q7 and Q8 answered by the user, values as written, no ticket change. Common rule "Man height" added.
 
 - 2026-11-19, Film, `EDU-EP30-TICKETS-R1`: first ticket set from SCENE-R2 + BRIEF-R3 (33 tickets, all `ready`, none `needs-input`; Q7/Q8 carried as dependencies). The stale SCENE-R1 tickets deleted. TF01–TF15 recorded for the next sheet revision.

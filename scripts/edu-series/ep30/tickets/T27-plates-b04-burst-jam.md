@@ -1,7 +1,7 @@
 # T27 — plates B04-SH03 (second firing beat, stop dead at E) and B04-SH04 (the jam close-up) are built and proven
-Deliverable: EDU-EP30-SHORT · Revision: r1 · Status: ready
+Deliverable: EDU-EP30-SHORT · Revision: r2 · Status: ready (r2 adds T34 to Blocked by: the registered plate needs the overscan and shake canvas hook)
 Class: set (plates) · Hard: yes (queue flinch and hops, gunner mitten, jam action)
-Blocked by: T03, T04, T05, T06, T10, T11, T13, T16 · Consumers: B04-SH03, B04-SH04 (global 993–1061)
+Blocked by: T03, T04, T05, T06, T10, T11, T13, T16, T34 · Consumers: B04-SH03, B04-SH04 (global 993–1061)
 Model: sonnet, medium
 
 Read first: [common rules](index.md#common-rules); shot blocks [b04.md](../short/scene-sheets/b04.md) B04-SH03 and B04-SH04 (authoritative; SD07, SD08); brief [VD30-11](../short/film-brief.md#vd30-11) (Stop, Value).
