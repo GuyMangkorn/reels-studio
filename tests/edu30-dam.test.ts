@@ -15,7 +15,7 @@ test('queuePoint(sAtRimX(4.6)) is (4.6, 0.33, -4.9) and x 1.6 is s 4.6', () => {
 
 test('the path is continuous, ends at both ends of QUEUE_PATH, tangents are unit', () => {
   let prev = queuePoint(0);
-  for (let s = 0.05; s <= QUEUE_LEN; s += 0.05) { const q = queuePoint(s); assert.ok(Math.hypot(q[0] - prev[0], q[2] - prev[2]) < 0.06 && Math.abs(q[1] - prev[1]) < 0.21); prev = q; const t = queueTangent(s); near(Math.hypot(...t), 1, 1e-9); }
+  for (let s = 0.05; s <= QUEUE_LEN; s += 0.05) { const q = queuePoint(s); assert.ok(Math.hypot(q[0] - prev[0], q[2] - prev[2]) < 0.06 && Math.abs(q[1] - prev[1]) <= 0.02); prev = q; const t = queueTangent(s); near(Math.hypot(...t), 1, 1e-9); }
   const end = queuePoint(QUEUE_LEN); near(end[0], 70, 1e-6); near(end[2], -70, 1e-6);
   assert.equal(QUEUE_PATH.length, 7);
   assert.deepEqual(queuePoint(-5), queuePoint(0));
@@ -34,8 +34,15 @@ test('the east approach: 1.2 m crest to x 10.5, 0.5 m between x 12 and 16, ramps
 
 test('r3 wading y: 0.30 where the leg is over water, the bank height where it is not', () => {
   const a = queuePoint(25); assert.ok(overWater(a[0], a[2])); near(a[0], 14.53, 0.02); near(a[2], -12.69, 0.02); near(a[1], 0.30, 1e-9);
-  const b = queuePoint(20); assert.ok(!overWater(b[0], b[2])); near(b[2], -7.69, 0.02); assert.ok(b[1] > 0.38 && b[1] < 0.46, String(b[1]));
+  const b = queuePoint(20); assert.ok(!overWater(b[0], b[2])); near(b[2], -7.69, 0.02); assert.ok(b[1] > 0.30 && b[1] < 0.41, 'r4 eased ' + b[1]);
+  const c = queuePoint(18); assert.ok(!overWater(c[0], c[2])); assert.ok(c[1] > 0.38 && c[1] < 0.46, String(c[1]));
   near(STONE_AT[0], -5.63, 1e-9); near(B04_EYES['B04-SH04'][0][0], -5.68, 1e-9); near(DAM_CAMS.jam.x, -5.68, 1e-9);
+});
+
+test('r4 ease: the step at each waterline crossing is <= 0.15 m (expected <= 0.01)', () => {
+  let n = 0, prev = queuePoint(0), pw = overWater(prev[0], prev[2]);
+  for (let s = 0.01; s <= QUEUE_LEN; s += 0.01) { const q = queuePoint(s), w = overWater(q[0], q[2]); if (w !== pw) { n++; assert.ok(Math.abs(q[1] - prev[1]) <= 0.15, String(q[1] - prev[1])); assert.ok(Math.abs(q[1] - prev[1]) <= 0.01); } prev = q; pw = w; }
+  assert.ok(n >= 2, 'crossings ' + n);
 });
 
 test('G1 aim values are exported', () => { assert.equal(G1_AIM.sh01, 0.55); assert.deepEqual(G1_AIM.fire, [1, 0, 0]); });
