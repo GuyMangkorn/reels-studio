@@ -1,10 +1,10 @@
 # Tasks — EP30
 
-Record [delivery.md](delivery.md) · Updated 2026-11-19, Preaw (W1.9 SCRIPT-R2.2 written; voice, scene sheets and tickets not touched)
+Record [delivery.md](delivery.md) · Updated 2026-11-19, Film (W2.4 BRIEF-R3 / BOARD-R3 / ROWS-R7 and W5.1 SCENE-R2 on SCRIPT-R2.2 + VOICE-R2.2; plate tickets not written)
 
 ## EDU-EP30-SHORT
 
-**Now:** Film re-boards brief/storyboard/rows/scene sheets/tickets on R2.2 and VOICE-R2.2, then Boss/Ton. **Next:** W5 Film timed sheets and tickets, Boss plates, Ton sounds, Draft
+**Now:** coordinator publishes ROWS-R7 (review page: pending) and asks Q7 (PB01 length) and Q8 (B03 burst from the order); Film writes plate tickets from SCENE-R2 (separate pass). **Next:** Boss plates and Ton sounds (in parallel) from SCENE-R2, then the Draft
 
 - [x] W0 Ideation
   - [x] W0.1 Preaw concepts — [C110 R19](../concepts/C110.md)
@@ -27,6 +27,8 @@ Record [delivery.md](delivery.md) · Updated 2026-11-19, Preaw (W1.9 SCRIPT-R2.2
   - [x] W2.1 Film brief (text) — [EDU-EP30-BRIEF-R1](short/film-brief.md), 2026-11-19
   - [x] W2.2 Film storyboard rows (review-rows.json) — [EDU-EP30-BOARD-R1](short/storyboard.md) / EDU-EP30-ROWS-R1, 26 shots untimed, 2026-11-19
   - [x] W2.3 Storyboard page published (2026-11-19, artifact v1795071139-b24a)
+  - [x] W2.4 Film re-board to SCRIPT-R2.2 + VOICE-R2.2 — [EDU-EP30-BRIEF-R3](short/film-brief.md#r3-changes) (VD30-12 emu mime, VD30-13 speaking characters) / [EDU-EP30-BOARD-R3](short/storyboard.md) / EDU-EP30-ROWS-R7 (28 shots, timed; Q7, Q8 open), 2026-11-19 (review page: pending)
+  - [ ] W2.5 ROWS-R7 page republished and the 6 new/re-staged shots passed (B02-SH06, B03-SH05, B03-SH03, B04-SH06, B04-SH05, B05-SH04; plus B06-SH02 mime and the B03-SH01/B05-SH03/B06-SH04 changes)
 - [ ] W3 Look frames and storyboard pass
   - [x] W3.1 Look frames in the rows (3/3 locations: LF01a/b paddock, LF02 dam, LF03 arms; + KP-EMU 7 stills) — [brief#look-frames](short/film-brief.md#look-frames), EDU-EP30-ROWS-R4 (R3 fixed LF02 colour, LF03 shield size; R4 redesigns LF02 after its second failed viewer check), 2026-11-19 (review page: pending)
   - [x] W3.2 Look frames approved (look lock): user, 2026-11-19 — Q3 LF01a full tint (VD30-01a), Q4 KP-EMU incl. bow (VD30-05b), Q5 P1/D3/A1; LF01a, LF02 (R4, known water/reflection limits), LF03, KP-EMU locked ([brief#w32-look-lock](short/film-brief.md#w32-look-lock))
@@ -39,7 +41,8 @@ Record [delivery.md](delivery.md) · Updated 2026-11-19, Preaw (W1.9 SCRIPT-R2.2
   - [x] W4.2 (R2.1) VOICE-R2.1 built for SCRIPT-R2.2 — [short/voice-lock.md](short/voice-lock.md#voice-r21): L07 and L15 emu takes removed to silent mime slots (frames 815–883, 1574–1606), every other line and the 66.91 s / 2007 f total unchanged; store `projects/edu/EDU/narration/ep30-voice-r2-1/`, 2026-11-19
   - [x] W4.3 User approved VOICE-R2.1 with the mime slots tightened (2026-11-19, structured question) -> VOICE-R2.2 built ([short/voice-lock.md](short/voice-lock.md#voice-r22)): L07 slot 2.28 to 1.50 s, L15 1.13 to 0.90 s, total 65.90 s / 1977 f; store `projects/edu/EDU/narration/ep30-voice-r2-2/`
 - [ ] W5 Draft
-  - [x] W5.1 Film timed scene sheets — [EDU-EP30-SCENE-R1](short/scene-sheets/index.md), 26 shots, 2012 frames (67.07 s), ready-for-dev; rows EDU-EP30-ROWS-R6 timed, 2026-11-19 (review page: pending)
+  - [x] W5.1 Film timed scene sheets — [EDU-EP30-SCENE-R2](short/scene-sheets/index.md), 28 shots, **1977 frames (65.90 s)**, ready-for-dev, on SCRIPT-R2.2 + VOICE-R2.2; rows EDU-EP30-ROWS-R7 timed, 2026-11-19 (review page: pending). Supersedes SCENE-R1 (26 shots, 2012 frames, VOICE-R1)
+  - [ ] W5.1t Film plate tickets from SCENE-R2 (plate-tickets skill; separate pass)
   - [ ] W5.2 Boss assets and plates (shot groups 0/G)
   - [ ] W5.2s Ton sounds and cue sheet (0/C cues; generated/library)
   - [ ] W5.3 Draft passed (0/N shots)
