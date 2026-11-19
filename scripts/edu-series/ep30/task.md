@@ -1,10 +1,10 @@
 # Tasks — EP30
 
-Record [delivery.md](delivery.md) · Updated 2026-11-19, Film (W2.4 BRIEF-R3 / BOARD-R3 / ROWS-R7 and W5.1 SCENE-R2 on SCRIPT-R2.2 + VOICE-R2.2; plate tickets not written)
+Record [delivery.md](delivery.md) · Updated 2026-11-19, Film (W5.1t plate tickets EDU-EP30-TICKETS-R1 from SCENE-R2; before: W2.4 BRIEF-R3 / BOARD-R3 / ROWS-R7 and W5.1 SCENE-R2 on SCRIPT-R2.2 + VOICE-R2.2)
 
 ## EDU-EP30-SHORT
 
-**Now:** coordinator publishes ROWS-R7 (review page: pending) and asks Q7 (PB01 length) and Q8 (B03 burst from the order); Film writes plate tickets from SCENE-R2 (separate pass). **Next:** Boss plates and Ton sounds (in parallel) from SCENE-R2, then the Draft
+**Now:** coordinator publishes ROWS-R7 (review page: pending) and asks Q7 (PB01 length) and Q8 (B03 burst from the order); dispatch Boss on the ready plate tickets ([EDU-EP30-TICKETS-R1](tickets/index.md): T01, T02 first) and Ton on the cue sheet. **Next:** Film revises the Q7/Q8-dependent tickets on the answers; Boss plates and Ton sounds in parallel, then the Draft
 
 - [x] W0 Ideation
   - [x] W0.1 Preaw concepts — [C110 R19](../concepts/C110.md)
@@ -42,8 +42,8 @@ Record [delivery.md](delivery.md) · Updated 2026-11-19, Film (W2.4 BRIEF-R3 / B
   - [x] W4.3 User approved VOICE-R2.1 with the mime slots tightened (2026-11-19, structured question) -> VOICE-R2.2 built ([short/voice-lock.md](short/voice-lock.md#voice-r22)): L07 slot 2.28 to 1.50 s, L15 1.13 to 0.90 s, total 65.90 s / 1977 f; store `projects/edu/EDU/narration/ep30-voice-r2-2/`
 - [ ] W5 Draft
   - [x] W5.1 Film timed scene sheets — [EDU-EP30-SCENE-R2](short/scene-sheets/index.md), 28 shots, **1977 frames (65.90 s)**, ready-for-dev, on SCRIPT-R2.2 + VOICE-R2.2; rows EDU-EP30-ROWS-R7 timed, 2026-11-19 (review page: pending). Supersedes SCENE-R1 (26 shots, 2012 frames, VOICE-R1)
-  - [ ] W5.1t Film plate tickets from SCENE-R2 (plate-tickets skill; separate pass)
-  - [ ] W5.2 Boss assets and plates (shot groups 0/G)
+  - [x] W5.1t Film plate tickets — [EDU-EP30-TICKETS-R1](tickets/index.md) from SCENE-R2 + BRIEF-R3, 33 tickets (T01–T18 assets/capabilities, T19–T33 plates over all 28 shots), all `ready`, none `needs-input`; Q7 and Q8 carried as dependencies (index table); Film fixes TF01–TF15 queued for the next sheet revision; SCENE-R1 tickets deleted, 2026-11-19
+  - [ ] W5.2 Boss assets and plates from [EDU-EP30-TICKETS-R1](tickets/index.md) (0/33 tickets done; one ticket per fresh Boss invocation, Sonnet medium; status in the ticket index)
   - [ ] W5.2s Ton sounds and cue sheet (0/C cues; generated/library)
   - [ ] W5.3 Draft passed (0/N shots)
 - [ ] W6 Final passed (0/N shots)

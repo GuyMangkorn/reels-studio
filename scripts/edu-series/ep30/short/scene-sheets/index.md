@@ -165,7 +165,7 @@ Relevant findings (consulted at the brief, not revalidated here): DF-20261030-pa
 | O11 | Editor / Ton | B04-SH06 rack leaves 2 f of silence before L23 (SD15); Editor may nudge the rack earlier by up to 2 f | open |
 | O12 | Editor | L16 and L17 word anchors are RMS segment estimates (`est`, ±3–4 f; no Whisper here): "ภาคสอง" 1619 (trailer hit, B06-SH03), "มาตั้งแต่ปี" 1821 / year 1832–1849 (caption split, B07-SH01). Ear-check at the draft; a correction moves one cue onset, no shot boundary | open |
 | O13 | Editor | B06-SH04 → B07-SH01: the reused 1.0 s bugle overruns the cut by 8 f; fade it over 1733–1741 | open |
-| O14 | Film (next pass) | Plate tickets for SCENE-R2 (plate-tickets skill), not written in this pass | open |
+| O14 | Film (next pass) | Plate tickets for SCENE-R2 (plate-tickets skill) | **closed**: [EDU-EP30-TICKETS-R1](../../tickets/index.md) (33 tickets); its Film fixes TF01–TF15 override named sheet values until the next sheet revision |
 
 Element captures: the locked looks (store `projects/edu/EDU/previews/EDU-EP30-W3-r1/`, `-r2/`, `LF02.58933d6b.png`; brief [look frames](../film-brief.md#look-frames)) are the only captures; no new capture in this pass. Editor scene sample proposal: B04-SH04 → B04-SH06 → B04-SH05 (frames 1040–1150: the click on "ติด", the gunner's groan, the watch check and the three taps in the 18-frame gap), the beat with the tightest sync.
 
@@ -173,3 +173,4 @@ Element captures: the locked looks (store `projects/edu/EDU/previews/EDU-EP30-W3
 
 - 2026-11-19, Film, `EDU-EP30-SCENE-R1`: first timed sheets from VOICE-R1 (67.07 s, 2012 frames). All 26 BOARD-R2 shots kept; deviations SD01–SD12; voice-lock defect O1 found. Rows ROWS-R6. Review page: pending.
 - 2026-11-19, Film, `EDU-EP30-SCENE-R2`: re-boarded and re-timed to SCRIPT-R2.2 and VOICE-R2.2 (65.90 s, **1977 frames**). 28 shots: B02-SH05 (L05) and B03-SH04 (L08) retired; new B02-SH06 (EMU L19), B03-SH05 (MEREDITH L22), B04-SH06 (GUNNER L23), B05-SH04 (EMU L21); B03-SH03 re-staged as the L07 wing-signal mime, B04-SH05 as PB01 (invisible watch, foot taps), B06-SH02 as the silent L15 bow; L11 content gone with its line. Every frame re-measured from `anchors-R2.2.txt`; B01 and B02-SH01–SH03 frames unchanged. Burst B03 from the order (SD13); SD14–SD18 recorded. Projection re-run on the changed shots (`out/logs/ep30-projection-r2.txt`). Mime-beat sound table for Ton. Rows ROWS-R7 (timed). Review page: pending.
+- 2026-11-19, Film, `EDU-EP30-SCENE-R2` (status only, no content change): O14 closed by the plate tickets `EDU-EP30-TICKETS-R1`; the ticket index lists Film fixes TF01–TF15 to fold into SCENE-R2.1.
