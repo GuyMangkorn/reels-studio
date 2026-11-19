@@ -8,7 +8,7 @@ import {ring, type Painter} from '../kit/painter';
 import type {V3} from '../kit/space';
 import {camPoint, type YCam} from '../kit/ycam';
 import {camLine, Proof30, stubPaint, type ProofDef} from './shot';
-import {buildLewisGun, lewisAnchors, lewisCock, lewisJamNudge, lewisPanTurn, lewisRecoil, PAN_STEP, paintLewisPanTicks, paintLewisPuff, paintTruckDust, paintTruckRig, placeBuild, truckCam, truckPoint, truckSetCam, truckState} from './props';
+import {buildLewisGun, lewisAnchors, lewisCock, lewisJamNudge, lewisPanTurn, lewisRecoil, PAN_STEP, paintLewisPanTicks, paintLewisPuff, paintTruckDust, paintTruckRig, truckDustFor, placeBuild, truckCam, truckPoint, truckSetCam, truckState} from './props';
 import {wFill, wInk} from '../kit/world';
 
 // T13 (Boss, 2026-11-19): the Lewis gun at the three cameras of its sheet rows. Anchor dots in magenta (muzzle, port, pan, cock), newsreel off.
@@ -78,9 +78,9 @@ PROOFS.push(
   {id: 'R30-truck-stop', N: 54, cam: () => STOP_CAM, reel: OFF, paint: (p, L, c) => {
     stubSet(p, c);
     const {st, args} = rigAt('B02-SH03', L, {riders: 'silhouettes', gear: 'cases'}), at = truckPoint(st.centre, 1, 0, 0, 0), track = (l: number) => truckState('B02-SH03', l);
-    paintTruckDust(p, c, L, track, {part: 'far', truckAt: at});
+    paintTruckDust(p, c, L, track, {part: 'far', truckAt: at, ...truckDustFor('B02-SH03')});
     paintTruckRig(p, c, args);
-    paintTruckDust(p, c, L, track, {part: 'near', truckAt: at});
+    paintTruckDust(p, c, L, track, {part: 'near', truckAt: at, ...truckDustFor('B02-SH03')});
   }},
   {id: 'R30-truck-chase', N: 60, cam: (L) => truckCam(truckState('B05-SH01', L)!.centre, {eye: [-3.0, 2.4, 2.2], yaw: 60, pitch: -6, f: 1100, hy: 860}), reel: OFF, paint: (p, L, c) => {
     const {st, args} = rigAt('B05-SH01', L, {riders: 'chase', gear: 'pedestal'});

@@ -23,7 +23,7 @@ Inputs: scene sheets [EDU-EP30-SCENE-R2](../short/scene-sheets/index.md) (ready-
 | [T11](T11-seated-gunner.md) seated gunner four views + recoil jolt | figure | yes | T13 (done), T03 | done (r4 Film: built rows accepted, 3/4 lead to the hat crown 572.1, j 1 reach bound 0.546 m; thumb rows move to T36; TF21) | 0 | `1bc0904` |
 | [T12](T12-crew-farmer-poses.md) crew and farmer poses (salute, P30, P44-back, loader, farmer) | figure | yes | T36, T11, T13 | ready (r4 notes: `flatFist` on unlocked fists) | 0 | — |
 | [T13](T13-lewis-gun-mechanics.md) Lewis gun anchors, recoil, pan, jam, cocking rack | prop | yes | T03 | done (r3 Film: A1–A5 answered, the locked gun wins; consumers call `paintLewisPanTicks`; no Boss pass) | 0 | `e7a496e` (r1) |
-| [T14](T14-truck-rig.md) truck rig and every drive schedule | movement | yes | T13, T11 | r4 ready — **dispatchable** fix pass (R5: rows moved to cab height 440 ± 25 and GUNNER-1 ≥ 430, no rebuild; build the B02-SH03 dust carry 0.9 with × 0.95 decay and 40 f life, and the right-hand-drive cab seats z +0.45; other silent choices confirmed) | 1 (r4) | `150e469` (r1) |
+| [T14](T14-truck-rig.md) truck rig and every drive schedule | movement | yes | T13, T11 | r4 built (18/18 tests; Film look check of the stop dust pending); fix pass was (R5: rows moved to cab height 440 ± 25 and GUNNER-1 ≥ 430, no rebuild; build the B02-SH03 dust carry 0.9 with × 0.95 decay and 40 f life, and the right-hand-drive cab seats z +0.45; other silent choices confirmed) | 1 (r4) | `150e469` (r1); r4 see `git log` |
 | [T15](T15-emu-mime-gestures.md) emu mime: wing flick, watch check, foot tap, wave front + back | movement | yes | T07 | ready (Q7 answered) | 0 | — |
 | [T16](T16-queue-motion.md) queue at the dam: walk, unison step, flinch/hop, stare, turn-away | movement | yes | T10 (r4), T08, T35 | ready (Q7 answered; r3 notes: wading, hop `air`; r4 notes: waterline ease) | 0 | — |
 | [T17](T17-cocking-pull-gunner-face.md) cocking pull + angry talking face (`man-crop` three-quarter) | figure | yes | T12, T13 | ready (Q7 answered; r4 notes: TF21, fists) | 0 | — |
@@ -46,7 +46,7 @@ Inputs: scene sheets [EDU-EP30-SCENE-R2](../short/scene-sheets/index.md) (ready-
 
 36 tickets: 21 asset/capability (T01–T18, T34–T36), 15 plate tickets covering all 28 shots once. `needs-input`: none. Same-file chains: `emu.ts`/`looks.ts`/`tests/edu30-emu.test.ts` T06 → T07 → T15; `flock.ts`/`proof-flock.tsx` T35 → T08 → T16; `cast.ts`/`proof-cast.tsx` T11 → T36 → T12 → T17 → T18 (T36 also `kit/cast.ts`, `kit/back.ts`); `props.ts`/`proof-props.tsx` T13 → T14; `kit/gunfire.ts`/`proof-fx.tsx` T04 → T05; `dam.ts` T10 alone; every plate writes only its own `shots/<ID>.tsx` (T30 also `vantage.ts`, read by T32).
 
-**Done (11):** T01, T02, T03, T04, T05, T09, T10, T11, T13, T34, T35. **Built, fix pass to run (2):** T36 r2, T14 r4. **T06:** r4 accepted except the neck rows N1–N4, which wait on Q-R5-1.
+**Done (12):** T01, T02, T03, T04, T05, T09, T10, T11, T13, T14 (r4 built, look check pending), T34, T35. **Built, fix pass to run (1):** T36 r2. **T06:** r4 accepted except the neck rows N1–N4, which wait on Q-R5-1.
 
 **Dispatchable now (R5), in parallel, no shared file:**
 1. **T36 r2** — Files: `src/painted/kit/draw.ts`, `src/painted/edu30/cast.ts`, `src/painted/edu30/proof-cast.tsx`, `tests/kit-flat-fist.test.ts` (plus `kit/cast.ts` / `kit/back.ts` only to export the flat-fist fill).
