@@ -94,7 +94,7 @@ test('blast lean tilts stalks away from the muzzle only where lean is non-zero',
   assert.equal(base.hash(), still.hash());
 });
 
-test('high view: no ridge rows beyond 30 m, texture and patches instead; low view unchanged', () => {
+test('high view: no ridge rows at any distance, texture and patches instead; low view unchanged', () => {
   const HI = camLine({eye: [0, 22, 12], yaw: 0, pitch: -40, f: 820, hy: 960});
   const flat = camLine({eye: [0, 22, 12], yaw: 0, pitch: -10, f: 820, hy: 960});
   const hi = recorder(), lo = recorder();
@@ -106,6 +106,13 @@ test('high view: no ridge rows beyond 30 m, texture and patches instead; low vie
   assert.ok(gh.n() < gl.n());
   // patches are world-fixed: moving the camera 1 m keeps a far patch's colour list a subset
   assert.ok(pad.HIGH_NEAR === 30 && pad.HIGH_PITCH < -0.34 && pad.HIGH_PITCH > -0.35);
+  // r3: no ridge row at any distance. Ridge faces are hardFill calls (brush.* fills at ridge radii); the high view paints only the patches' wFill
+  // and the texture's ink strokes. A high view with the ridge radius range limited to 3 m (r1 = 3) draws the same strokes as the default range.
+  const wide = recorder(), narrow = recorder();
+  pad.paintWheatRidges(wide.p, HI, 1, {}); pad.paintWheatRidges(narrow.p, HI, 1, {r0: 2.5, r1: 3, rows: 2});
+  assert.equal(wide.hash(), narrow.hash());
+  // the texture covers the near ground (d0 0): a stroke inside 30 m exists
+  assert.ok(wide.n() > 1000);
 });
 
 test('ruts: two, at z 8.6 and 10.4, 0.25 m wide, on the track band', () => {
@@ -125,4 +132,33 @@ test('fence from the track: verge band z 6.0-7.5 in dry grass with 40 marks, the
   const wire = camPoint(REV, [-0.5, 1.02, 6])!, post = camPoint(REV, [0, 1.1, 6])!;
   console.log(`B05-SH04 start: wire x -0.5 -> (${wire[0].toFixed(0)}, ${wire[1].toFixed(0)}) sheet (501, 1033); post x 0 top -> (${post[0].toFixed(0)}, ${post[1].toFixed(0)}) sheet (1020, 991)`);
   assert.ok(Math.abs(wire[0] - 501) <= 30 && Math.abs(wire[1] - 1033) <= 30);
+});
+
+test('fence wire option: weight and colour only on request; wires with a far end behind the lens draw as spans', () => {
+  const REV = camLine({eye: [-0.2, 1.35, 7.9], yaw: -6.6, pitch: 0, f: 950, hy: 860});
+  const def = recorder(), opt = recorder(), same = recorder();
+  pad.paintFence(def.p, C1, 4); pad.paintFence(opt.p, C1, 4, -60, 60, undefined, {wireW: 2.5, wireCol: '#3e3226'}); pad.paintFence(same.p, C1, 4, -60, 60, undefined, {});
+  assert.equal(def.hash(), same.hash());
+  assert.ok(opt.log.some((l) => l.includes('#3e3226') && l.includes('2.5')));
+  assert.ok(!def.log.some((l) => l.includes('#3e3226')));
+  // from the track the whole-wire polyline has an end behind the lens: it must still draw (spans), and the top wire shows near x 501
+  const r = recorder();
+  pad.paintFence(r.p, REV, 4, -60, 60, 1, {wireW: 2.5, wireCol: '#3e3226'});
+  assert.ok(r.log.filter((l) => l.includes('#3e3226')).length >= 3);
+  const post = camPoint(REV, [0, 1.1, 6])!;
+  assert.ok(Math.abs(post[0] - 753) <= 30 && Math.abs(post[1] - 987) <= 30, `post x 0 top (${post[0].toFixed(0)}, ${post[1].toFixed(0)})`);
+});
+
+test('paintPaddockScene: bare variant is ground and wheat only; cast and fence order; defaults paint the locked stack', () => {
+  const REV = camLine({eye: [-0.2, 1.35, 7.9], yaw: -6.6, pitch: 0, f: 950, hy: 860});
+  const bare = recorder(), full = recorder();
+  pad.paintPaddockScene(bare.p, C1, {eaten: 0, bare: true}); pad.paintPaddockScene(full.p, C1, {eaten: 0});
+  assert.ok(bare.n() < full.n());
+  const order = (c: typeof C1) => { const log: string[] = []; const r = recorder(); pad.paintPaddockScene(r.p, c, {}, () => { log.push('cast@' + r.n()); }); return {at: Number(log[0].split('@')[1]), n: r.n()}; };
+  assert.ok(order(C1).at < order(C1).n);
+  assert.ok(order(REV).at < order(REV).n);
+  const a = recorder(), b = recorder();
+  pad.paintPaddockScene(a.p, C1, {}); pad.paintPaddockScene(b.p, C1, {stubble: 0});
+  assert.notEqual(a.n(), 0);
+  assert.equal(a.hash(), b.hash());
 });
