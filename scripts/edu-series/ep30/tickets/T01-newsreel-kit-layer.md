@@ -1,5 +1,5 @@
 # T01 — the newsreel screen layer lives in the kit with exposure pop, flare and a warm-to-cool mix
-Deliverable: EDU-EP30-SHORT · Revision: r2 · Status: ready (r2 fix: file the baseline, one command; no code change)
+Deliverable: EDU-EP30-SHORT · Revision: r2 · Status: done (r2: baseline filed, proof numbers recorded; no code change)
 Class: capability · Hard: no
 Blocked by: none · Consumers: every plate B01-SH01 … B06-SH04 (strength 1), B07-SH01 (burn-out); T03 adapter
 Model: sonnet, medium
@@ -45,4 +45,7 @@ The store LF01a is a drifted old render of a picture the user already approved; 
 - Proof frame: `out/edu30/looks/T01/LF01a.png` (worktree, archived to the store with `store.py archive`).
 - Measured: mean abs diff vs store LF01a = 3.58 (limit 2): NOT within range. The same still rendered from the pre-move code (HEAD) differs from the store by the same 3.58, and new vs old render differs by max 8 / 255 at one pixel value (mean not above rounding), so the gap is store-still drift, not this change.
 - Deviations to note: strength 0 now returns filter `none` and weave `none` (ticket rule) which changes the old `strength: 0` output from a no-op-looking string; the cool string is byte-identical to the old one at `tint: 'cool'` (tintMix 1); `hue-rotate` appears only when `tintMix` > 0.
-- Open question for Film: the LF01a store still is not reproducible within <= 2 from the locked code (3.58 with old code too). Re-baseline the proof number on the current render, or re-key the store still?
+- Open question for Film: the LF01a store still is not reproducible within <= 2 from the locked code (3.58 with old code too). Re-baseline the proof number on the current render, or re-key the store still? (Answered r2: re-baseline.)
+- r2 pass (Boss, Sonnet medium, 2026-11-19, fix passes: 0): no code change. Baseline rendered from the pre-move code (detached checkout of `63fa4f6`, `render-looks.sh T01old LF01a`) and filed with `store.py put` at `projects/edu/EDU/previews/EDU-EP30-W3-r1/LF01a.baseline-63fa4f6.png`; the sidecar `.json` with the ticket's wording was copied into the store beside it (`put` stores no sidecar from the file path alone). The moved code was re-rendered from this branch (`render-looks.sh T01 LF01a`, `out/edu30/looks/T01/LF01a.png`).
+- Proof numbers r2: mean abs diff new vs baseline = 0.0004 (limit <= 2), max 8 / 255; new vs the pre-move render of `63fa4f6` = 0.0004 (limit <= 0.5), max 8 (limit <= 8). The baseline is that pre-move render, so both numbers are one measurement; not exactly 0 because of one-value rounding at isolated pixels. For reference, new vs the approved store `LF01a.png` = 3.53 (drift, not a pass criterion). Measured with a PIL/numpy script in a scratch venv (PIL is not installed system-wide).
+- Open question: none.
