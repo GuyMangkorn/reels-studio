@@ -1,5 +1,5 @@
 # T36 — an unshaped kit figure can close a thumbed fist on a held point (the GUNNER-1 grip and stock), and T11's proofs show the thumb
-Deliverable: EDU-EP30-SHORT · Revision: r2 · Status: r2 built, awaiting Film look check — r2 fix pass (r5 Film look check, 2026-11-20: fix on two items: the flat fist is too long and reads as a bun or paw in the large back view, and in the front view the grip is painted over the fist; thumb sides and the front fist size accepted; see r2 decisions; r1 built 2026-11-20, tests 4/4)
+Deliverable: EDU-EP30-SHORT · Revision: r3 (Film) · Status: done (R6 Film look check of r2, 2026-11-20: pass; the grip ending inside the front fist accepted; the `front34` `fists()` line moves to T12 row G0; r2 built, fix passes used 1) · was: r2 fix pass after the R5 look check
 Class: capability · Hard: yes (hand)
 Blocked by: T11 (done; same files `edu30/cast.ts`, `proof-cast.tsx`, `tests/edu30-cast.test.ts`) · Consumers: T11 (proof re-render), T12, T17, T18 (crew fists, the cocking pull, the order chop), T24 (B03-SH01 back view), T27 (B04-SH03 right forearm and mitten), T29 (B05-SH01/SH02 right profile), T22, T23 (through T12); any later unshaped figure holding a prop
 Model: sonnet, medium
@@ -61,6 +61,14 @@ Viewed: store `T36-sheet.png` at about 270 px a tile, `T36-crops.png` downscaled
 | F3 lock | LF01a call (no `grip`/`stock`) unchanged | stroke hash equals r1 (`8ac3d266aa4a`) |
 
 Proof: re-render the eight T11 proof frames and the 540 crops as r1, archive as `T36r2-*.png`; log per hand: fist px, thumb-crease length, finger-stroke length, and the thumb line in the measured wording (`thumb check: GUNNER-1 RIGHT: down ok`). Film looks again at the index Look checks before T12.
+
+## r3 decisions (Film, 2026-11-20, `EDU-EP30-TICKETS-R6`): look check of the r2 crops
+Viewed: `T36r2-crop-{front,back,34,right}-j0.png` side by side at 400 px a crop.
+- **Back: pass.** At 88.7 × 74.8 px (aspect 1.19) the fist is round with the thumb across: it reads as a closed fist, no longer a bun or paw.
+- **Front: pass; the grip ending inside the fist accepted.** The grip comes down into the RIGHT fist and the fist covers its lower end: that is how a hand holds a short pistol grip (the little finger wraps its foot). "Above and below" was Film's wording for a longer grip; do not move the grip (the gun is locked, TF17).
+- **Right: pass** (as r1).
+- **3/4: fix, moved to T12 row G0.** `C30-gunner-34` paints the gun after the man, and the grip is drawn across the near RIGHT fist (as the front view was in r1). The 3/4 view is the B04-SH06 gunner (T17, T28; TF21), so it matters. Boss's one line (`fists()` after the gun for `front34`) is right; it runs as the first row of T12 (same files `edu30/cast.ts`, `proof-cast.tsx`), not a T36 r3 pass. Common rule "Fists over held parts" already binds every plate.
+- F1, F3 and the per-hand thumb lines accepted as measured. T36 is done.
 
 ## Result (Boss fills)
 

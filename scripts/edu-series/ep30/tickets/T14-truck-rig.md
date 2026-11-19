@@ -1,5 +1,5 @@
 # T14 — the 1932 truck drives, stops, turns about, bounces as one rigid body with its riders and G2 on a pedestal, trailing dust
-Deliverable: EDU-EP30-SHORT · Revision: r4 · Status: done (r4 fix pass built 2026-11-20, tests 18/18; Film look check of the dust still pending) — r4 fix pass (r5 Film, 2026-11-20: Q1 cab height and Q2 gunner height settled by moving the rows, no rebuild; Q3 dust carry for the B02-SH03 stop and the right-hand-drive cab seats to build; Boss's other silent choices confirmed; see r4 decisions; built 2026-11-20, tests 17/17) · r3: Film notes added (TICKETS-R3)
+Deliverable: EDU-EP30-SHORT · Revision: r5 · Status: r5 fix pass ready (R6 Film look check of the r4 stop dust, 2026-11-20: fix: at L 44/46 two big hard-rimmed disc stacks hide the lower truck; rows E1–E4; the chase frames, seats and every other r4 row pass; this is the second fix pass, the cap) · was: done (r4 fix pass built 2026-11-20, tests 18/18; Film look check of the dust still pending) — r4 fix pass (r5 Film, 2026-11-20: Q1 cab height and Q2 gunner height settled by moving the rows, no rebuild; Q3 dust carry for the B02-SH03 stop and the right-hand-drive cab seats to build; Boss's other silent choices confirmed; see r4 decisions; built 2026-11-20, tests 17/17) · r3: Film notes added (TICKETS-R3)
 Class: movement · Hard: yes (movement, riders' arms)
 Blocked by: T13 (same files `props.ts`, `proof-props.tsx`, `tests/edu30-props.test.ts`), T11 (seated gunner right profile) · Consumers: B01-SH02, B02-SH03, B02-SH04 (parked), B05-SH01, B05-SH02, B05-SH03, B06-SH03, B06-SH04
 Model: sonnet, medium
@@ -62,6 +62,24 @@ Viewed: store `T14-stop-44`, `T14-stop-53`, `T14-chase-00`, `T14-chase-10`, `T14
 | C1 seats | cab heads: silhouettes mode MEREDITH at the wheel T(1.6, 1.90 head, **+0.45**); chase mode GUNNER-2 driving at T(1.6, ·, **+0.45**), MEREDITH at T(1.6, ·, **−0.45**) | R30-truck-chase 0: the driver's head on the camera side of the cab (logged x); rider drift still 0 px |
 
 Proof: re-render R30-truck-stop 44, 46, 48, 53 and R30-truck-chase 0, 10; archive as `T14r4-*.png`; every other row stands as measured.
+
+## r5 decisions (Film, 2026-11-20, `EDU-EP30-TICKETS-R6`): look check of the r4 dust
+Viewed: store `T14r4-sheet.png` (six frames at 270 px).
+- **Chase 0 / 10: pass** (GUNNER-1 444 px, driver on the camera side, tray and cab read).
+- **Stop 44 / 46: fix.** The stop must read as a small truck pulled up close, clear, before its own dust rolls past (B02-SH03 gag). In r4 the truck is already inside two round clouds at L 44: the rear-wheel puffs ride with it at carry 0.9 and have grown to about 1.5 m, so seen front-on they stand on both sides of and over the bonnet and front wheels, and the many overlapping plain discs show a stack of hard rims (bubbles, not dust). Stop 53: the overtake reads; keep it, but smaller and softer.
+- **Carry 0.9, decay 0.95, life 40 f: stand** (r4 D1–D3). The fix is size and edge.
+- **Seats (C1): stand.** R5-B1 is closed by Film without a Boat pass (index).
+
+**r5 values (Boss builds exactly these).** Files: `src/painted/edu30/props.ts`, `src/painted/edu30/proof-props.tsx` (only if a proof call changes), `tests/edu30-props.test.ts`. Applies to the B02-SH03 schedule (`truckDustFor('B02-SH03')`) only; every other schedule as built.
+
+| Row | Value | Pass |
+| --- | --- | --- |
+| E1 size while moving | radius 0.25 → **0.8 m** over 30 f of age (was 0.3 → 1.5 m) | test: radius at age 30 = 0.80 m ± 0.01 |
+| E2 swell after the stop | from the stop frame (L 44), each live puff's radius grows on by **+0.5 m over the next 20 f** (linear in min(k, 20)), so the cloud swells only as it overtakes; pure function of L | test: L 53 radius = moving radius + 0.5 × 9/20; L 64 + 0.5 |
+| E3 soft edge | each puff paints as **3** concentric plain discs (r, 0.72 r, 0.45 r), each with α_c = 1 − (1 − α)^(1/3) (the T04 smoke rule), colour as built `#b08a62` | viewed at 270 px: no row of hard rims; centre alpha of a lone puff equals the r4 alpha ± 0.01 (test) |
+| E4 the truck reads at the stop | — | R30-truck-stop 44: dust with alpha ≥ 0.12 covers **≤ 25 %** of the truck's screen box (cab, bonnet, front wheels; 20 × 20 sample grid, logged; log the r4 value too); front-wheel ground contact visible. L 46: ≤ 35 %. L 53: ≥ 3 puffs with alpha ≥ 0.12 reaching x ≥ −3.6 (r4 row) and dust across the lower cab (viewed) |
+
+Proof: re-render R30-truck-stop 44, 46, 48, 53; archive as `T14r5-*.png` with `T14r5-sheet.png`. The fix-pass cap is reached after r5: a further miss goes to the user.
 
 ## Proof
 - `node scripts/test.mjs tests/edu30-props.test.ts`: `truckBody(c, 0, 0)` is identity; B02-SH03 cab front at L 30 = −5.95 ± 0.01 and L 44 = −3.60 ± 0.01; a rider point and the deck point keep a constant distance at every B05-SH02 frame; B06-SH03 parked x 2.0 at L 45 and L 89.

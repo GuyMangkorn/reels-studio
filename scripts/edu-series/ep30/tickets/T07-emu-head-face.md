@@ -1,7 +1,7 @@
 # T07 — the emu head acts: lens turn, blink, nod, two-state talking beak, neck-sac boom puff (and the relief emu)
-Deliverable: EDU-EP30-SHORT · Revision: r5 · Status: built r5, Film look check pending, T06 neck row N4 open (was: ready; r5: the T06 neck rows N1–N4 run first in this ticket when the user answers index Q-R5-1 with (a); with (b) T06 r5 runs first on Opus and this ticket waits for it; with (c) skip them) · r3, r4: Film notes
+Deliverable: EDU-EP30-SHORT · Revision: r6 · Status: r6 fix pass ready after T37 (R6 Film look check of r5: face, beak, nod, lookback pass; sac patch and blink ball fix rows S1–S3; N4 moves to T37) · r5 built (Boss Sonnet, 2026-11-20, T06 neck rows N1–N3 in `f21fdc0`) · r3, r4, r5: Film notes
 Class: figure · Hard: yes (animal face)
-Blocked by: T06 (its r4 fix pass first; same files `emu.ts`, `looks.ts`, `tests/edu30-emu.test.ts`; uses `mixEmuPose`) · Consumers: B01-SH01, B01-SH03, B02-SH06, B03-SH03, B04-SH05, B05-SH04, B06-SH02, B07-SH02 (relief emu through `arms.ts`); T08 (heads field, queue stare), T15
+Blocked by: T37 (r6: same test file `tests/edu30-emu.test.ts`, its hash re-takes first; the sac seam at u 0.25 is T37's fix), T06 (its r4 fix pass first; same files `emu.ts`, `looks.ts`, `tests/edu30-emu.test.ts`; uses `mixEmuPose`) · Consumers: B01-SH01, B01-SH03, B02-SH06, B03-SH03, B04-SH05, B05-SH04, B06-SH02, B07-SH02 (relief emu through `arms.ts`); T08 (heads field, queue stare), T15
 Model: sonnet, medium
 
 Read first: [common rules](index.md#common-rules) (Hard-ticket checks); shot blocks b01 B01-SH01/SH03 Staging, b02 B02-SH06 Staging, b05 B05-SH04 Staging, b07 B07-SH02 Staging; [emu.ts](../../../../src/painted/edu30/emu.ts) `lid`, `headYaw`, `EMU_POSES.look`; looks.ts `lensYaw`; [arms.ts](../../../../src/painted/edu30/arms.ts) `ArmsOpts.emuPose`.
@@ -44,6 +44,30 @@ These override any older value in this ticket that they name.
 - **T06 neck rows first (Q-R5-1 (a) only).** Before the head work, build rows **N1–N4** of [T06 r5 decisions](T06-emu-wings-reactions.md) exactly (blend u 0.15–0.50; image step ≤ 8; the subdivision fallback; the outline check), commit them as their own commit ("T06 r5 neck, inside T07"), then build T07 on top. Archive the neck proof as `T07-neck-*.png` and fill the N rows in this Result under a "T06 neck rows" heading. The coordinator writes the user's Q-R5-1 answer into the index before dispatch; if it is (b) or (c), skip this note.
 - **Head keys over the new neck.** KP-sac's pale throat patch sits at u 0.4, inside the widened bib blend: the sac patch is painted over the neck colour as before (its own colour, not blended); the KP-sac width row is unchanged. Re-take every hero hash after N1 (and N3 if used) and log both.
 - **KP-face lock row.** Compare KP-face against a render made after the N rows (the face is not in the neck band, but the lower neck is in frame); log the difference against the store KP-face too.
+
+## r6 decisions (Film, 2026-11-20, `EDU-EP30-TICKETS-R6`): look check of the r5 proofs
+Viewed: store `T07-sheet.png` (270 px tiles), `T07-heads-crops.png` (full-size crops, downscaled to 1600 px wide), `T07-neck-before-after.png` (2400 px, viewed at 2000), and `EDU-EP30-W3-r1/KP-face.png` beside `T07-KP-face.png` and a crop of `T07-KP-lookback.png`.
+- **KP-face: pass.** Matches the store face (the brow plank and the thin neck seam line are in the locked look).
+- **KP-beak: pass.** Two mandibles, a dark gap, shut look between; the 2 px gap at 270 px is fine because the talk shots (B02-SH06, B05-SH04) are judged at full size.
+- **KP-nod: pass** (46.4 px at the KP-face camera for 4 cm).
+- **KP-lookback: pass; Boss reading 1 accepted (`headYaw` +1.2, the clamp).** At +1.2 the head is in profile with its left eye to the lens: a bird looks at you with one eye, so this reads as looking back at the camera, and a 2.26 rad (129°) twist would wring the neck. The ticket's ≈ 1.15 was Film's estimate. The clamp stays ±1.2. T22 checks the eye at plate size.
+- **N4 (neck-mid notch 3 and 8 px): not accepted.** `T07-neck-before-after.png` still shows the pinch at the startle bend and two light slits across the duck neck: a visible break in the bird's main line in two reaction poses that play in several shots. Fixed at its cause in the shared painter: new ticket [T37](T37-beast-ring-frame.md) (continuous ring frame in `survival/beast.ts`). **N3 (6 subdivisions) stays.** N1 and N2 stand as built.
+- **KP-sac: fix (patch).** The swelling itself reads (Boss reading 2 accepted: the side radius swells × (1 + 0.6 sac) too, width 1.53 in range). The bare-skin patch does not: a flat pale oval nearly as wide as the neck, with a hard rim and a blocky step at its lower left, reads as a plate stuck on the throat, not the bird's own skin showing between parted feathers (Judgment above). The light crescent at u 0.25 and the blocky step are the T37 seam.
+- **KP-blink: Boss reading 3 accepted with one row.** The skin ball for lid > 0.7 reads as a shut eye; the far eye's ball bulges past the head outline near the bill base, a visible lump on the two shut frames.
+- **Beak threshold 0.5: accepted (Boss reading 4).** `talkBeak` gives exact 0 or 1; the threshold only matters inside a mixer ease, where a two-state beak must snap.
+- **Relief emu (reading 5): accepted**; a relief blink still is added below.
+
+**r6 values (Boss builds exactly these, after T37 merges).** Files: `src/painted/edu30/emu.ts`, `src/painted/edu30/looks.ts` (only if a KP call changes), `tests/edu30-emu.test.ts`.
+
+| Row | Value | Pass |
+| --- | --- | --- |
+| S1 sac patch size and colour | at sac 1 the patch is **0.055 × 0.085 m** (was 0.10 × 0.14), scaling with sac as built; colour = the neck colour at u 0.4 mixed **35 %** toward `EMU_PX.skin` (no extra lightening); centred on the front of the swell, 14 mm off the neck as built | KP-sac: patch screen width ≤ 0.45 × the neck width at u 0.4 (logged); patch mean luma within ± 25 of the neck pixels 10 px beside it (logged, and the r5 value for comparison) |
+| S2 feathers part around it | a soft rim: one plain disc 1.25 × the patch, colour halfway between neck and patch, painted first; then **6** short dark strokes (the neck plume ink, 0.012–0.018 m long, seeded) on the rim pointing down and out, like feathers lifted around the skin | KP-sac at 270 px: reads as skin between feathers, no hard pale oval (viewed); `T07r6-sac-crop.png` at full size |
+| S3 blink ball inside the head | at lid > 0.7 the ball radius is capped so each eye's ball stays inside the head silhouette (both eyes, KP-face camera and the B02-SH06 / B07-SH02 cameras) | KP-blink: ball pixels outside the head outline ≤ 2 px at lid 0.8 and 1.0, each eye (logged); no iris pixel (as r5) |
+| S4 relief blink | render the relief emu (TA2 camera through `arms.ts`) at B07-SH02 local 54–57 | `T07r6-relief-blink-{54..57}.png`: no iris at local 55 (lid 1.0); outline intact |
+| S5 lock | KP-face, KP-look, KP-stand vs the T37 renders | mean abs ≤ 2 |
+
+Proof: re-render KP-sac, KP-blink (and lid 0.8), KP-face, KP-lookback after T37; archive as `T07r6-*.png`; Film looks again before T15 dispatches.
 
 ## Proof
 - `node scripts/test.mjs tests/edu30-emu.test.ts`: defaults (`nod` 0, `beak` 0, `sac` 0) give the pre-change build; `blinkLid` sequence; `talkBeak` is exactly 0 or 1 and 0 outside the onset windows.

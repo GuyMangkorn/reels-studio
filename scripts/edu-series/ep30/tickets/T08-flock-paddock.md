@@ -1,5 +1,5 @@
 # T08 — flock motion in the paddock: buffet peck sync, strolling extras, the field of rising heads, scatter, six-group burst, the split by halves, fence birds, the slow-motion line
-Deliverable: EDU-EP30-SHORT · Revision: r3 · Status: ready (Q8 answered by the user: values as written) · r3: Film notes added (TICKETS-R3)
+Deliverable: EDU-EP30-SHORT · Revision: r4 · Status: ready, dispatchable (R6: T07 r5 head API merged at `707d757`; runs in parallel with T37) · r3: Film notes added (TICKETS-R3) · r4: Film notes added (TICKETS-R6)
 Class: movement · Hard: yes (animal movement)
 Blocked by: T35 (same file `flock.ts`, first), T07 (uses T06 poses, `mixEmuPose`, `gaitAdvance` and T07 `emuLensYaw`, `nod`) · Consumers: B01-SH02, B02-SH01, B02-SH06, B03-SH01, B03-SH02, B03-SH03 (the group), B05-SH03, B05-SH04, B06-SH01, B06-SH03, B06-SH04; T16
 Model: sonnet, medium
@@ -32,6 +32,11 @@ Files: `src/painted/edu30/flock.ts`, `src/painted/edu30/proof-flock.tsx` (adds `
 ## r3 notes (Film, 2026-11-19, `EDU-EP30-TICKETS-R3`)
 These override any older value in this ticket that they name.
 - **Blocked by T35 (r3).** T35 changes `flock.ts` (`EmuMember.air`, ground shadow) first; build on it. Startle uses the T06 r3 wing 0.15.
+
+## r4 notes (Film, 2026-11-20, `EDU-EP30-TICKETS-R6`)
+These override any older value in this ticket that they name.
+- **T07 r5 API.** Use `emuLensYaw` (clamp ±1.2 stands), `emuLookTurn`, `nodDepth` / `emuNod`, `blinkLid`, `talkBeak` as exported in `emu.ts`; do not edit `emu.ts` (T07 r6 and T15 write it).
+- **Runs beside T37.** T37 changes the ring frame in `survival/beast.ts`, so bent necks (startle, duck in the scatter and burst) still show the T06 N4 pinch or slits in this ticket's stills: ignore those seams; Film judges them on T37's proof. `tests/edu30-flock.test.ts` checks positions, headings, pose values and keys only, **no stroke or pixel hash of a painted emu** (it would break when T37 merges).
 
 ## Proof
 - `node scripts/test.mjs tests/edu30-flock.test.ts`: `buffetRow(135)` all six at full peck, none fully down at 134 or 140; `headsField` keeps every member outside the sightline band; `fenceBirds` bodies behind the wire; stance-foot slip ≤ 0.02 m over 30 f for EMU1; frame L alone equals frame L after 0…L.
