@@ -1,5 +1,5 @@
 # T04 — kit gunfire effects: round schedule, muzzle flash with halation, smoke haze, muzzle blast and canvas shake
-Deliverable: EDU-EP30-SHORT · Revision: r4 · Status: built r4 (fix pass 1 done: per-circle smoke alpha, smoke cover 0.245 at fx30, awaiting Film's look check; r4 was: one expression, the per-circle smoke alpha, see r4 decisions; r3 built: haze caps, blast cover 0.274 pass, smoke cover 0.900 failed because every circle took the full puff alpha; r1 built, Q8 answered: rounds as written)
+Deliverable: EDU-EP30-SHORT · Revision: r5 · Status: done (r5 Film look check, 2026-11-20: pass, no Boss pass; r4 built: per-circle smoke alpha, smoke cover 0.245, blast 0.274; r3 built: haze caps; r1 built, Q8 answered: rounds as written)
 Class: capability · Hard: no
 Blocked by: T03 (`proof-fx.tsx` exists) · Consumers: B03-SH01, B04-SH03, B05-SH02 (two single shots); T05
 Model: sonnet, medium
@@ -55,6 +55,9 @@ Viewed: the r3 sheet `out/edu30-T04/sheet.png` (fx00 … fx75, worktree `agent-a
 2. **The rule holds for every gunfire plate**: T24 (B03-SH01, 23 rounds), T27 (B04-SH03, 11 rounds), T29 (B05-SH02 single shots); no plate overrides the smoke alpha. The caps (smoke Σ 0.6, blast Σ 0.5) and the fade are unchanged and are applied before α_c.
 3. Pass ranges unchanged: smoke cover ≤ 0.45 and blast cover ≤ 0.40 in the densest 16 × 16 box at fx30, measured as in r3 (`measure.py`, `L_colour` from the alpha-1 draw).
 - r4 work for Boss: the one expression in `paintSmoke` (each circle's alpha); one test in `tests/gunfire.test.ts` (α_c for α 0.34 = 0.0797 ± 0.0005 and 1 − (1 − α_c)^5 = α); re-run `FX30-fire` fx00, fx02, fx04, fx30, fx75, the sheet and `measure.py`; record smoke and blast cover at fx30 and fx75 in Result. Files: `src/painted/kit/gunfire.ts`, `tests/gunfire.test.ts`. Proof archive: `--path out/edu30-T04`, files renamed `T04r4-*.png` before archiving so the shared store `sheet.png` is not overwritten.
+
+## r5 look check (Film, 2026-11-20, `EDU-EP30-TICKETS-R5`)
+Viewed: store `T04r4-sheet.png` (fx00, fx02, fx03, fx04, fx30, fx75) downscaled to 1100 px wide (about 180 px a tile). **Pass.** fx02 reads as one hot flash at the muzzle with a warm halo; fx03/fx04 decay without a hard edge; at fx30 and fx75 the smoke is a thin grey haze that leaves the gun, the emu's legs and the figure readable, and the blast is a low pale ground puff, not a wall. No change. The plate look (shake, overscan, newsreel filter over the flash) is judged in T24 and T27. Status **done**.
 
 ## Result (Boss fills)
 Built by Boss (Sonnet medium), 2026-11-19, branch `worktree-agent-a58fca69d4e9c2d39` on `3c3d6d3`; commit = the commit that carries this edit (see index). 0 fix passes. Q8: B03 list kept at `roundFrames(2, 23, 3)`.

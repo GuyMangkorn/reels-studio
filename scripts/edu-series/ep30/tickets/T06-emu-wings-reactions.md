@@ -1,5 +1,5 @@
 # T06 — the emu has two-segment wings, a pose mixer, gait contact and the reaction poses (startle, duck-flap, hop)
-Deliverable: EDU-EP30-SHORT · Revision: r4 · Status: built-r4, Film look check pending; one open question on the neck blend (see Result r4) (r4 fix pass: FLAP_OUT closer to the flank, thinner and lighter plumes, the hero bib blends into the neck at u 0.40–0.50; Film look check of the r3 sheet: fix, see r4 decisions; r3 built: plume wings, startle 0.15, neck bend 17.4°)
+Deliverable: EDU-EP30-SHORT · Revision: r5 · Status: r4 accepted except the neck (r5 Film look check, 2026-11-20: flap-back, tuft and the reactions pass; the neck join (luma step 20) and the neck-mid notch are fixed by rows N1–N4, which run inside T07 or as a T06 r5 pass on Opus by the user's answer to index Q-R5-1, because T06 has used its two fix passes; r4 built: FLAP_OUT, plume tone and width, bib blend u 0.40–0.50; r3 built: plume wings, startle 0.15, neck bend 17.4°)
 Class: figure · Hard: yes (animal, movement)
 Blocked by: T03 (both write `looks.ts`) · Consumers: B03-SH01 (startle), B04-SH03 (duck-flap, hop); T07, T15 (wing rig, mixer), T08, T16 (gait contact)
 Model: sonnet, medium
@@ -65,6 +65,25 @@ Viewed: store `T06-sheet.png` (7 stills at 270 px) and `T06-crops.png` (startle,
 5. KP-stand, KP-fold, KP-duck, KP-flap (profile) and KP-hop pass.
 - r4 work for Boss: FLAP_OUT, plume tone and width, the neck blend in `emu.ts`; tests: keep every r3 test (the no-wing hash of five builds changes only if a hero build is in it: re-take that hash after the blend and log both), new: FLAP_OUT tip y ≤ 0.82; re-render the seven KP stills and the three crops plus a neck crop of KP-stand before/after (the user sees it); archive as `T06r4-*.png`. Files: `src/painted/edu30/emu.ts`, `tests/edu30-emu.test.ts`.
 
+## r5 decisions (Film, 2026-11-20, `EDU-EP30-TICKETS-R5`): look check of the r4 sheet
+Viewed: store `T06r4-sheet.png` (7 stills, about 155 px a tile), `T06r4-crops.png` (startle, flap, flap-back) downscaled to 1100 px wide, `T06r4-flap-back-before-after.png` at 700 px, `T06r4-neck-before-after.png` at 1100 px and `T06r4-neck-startle-after.png` at full size (500 px crop).
+1. **KP-flap-back: pass.** The two tufts now hang as loose fringes along the flanks, lighter and thinner; they no longer read as arms in sleeves (r3 left vs r4 right in the before/after).
+2. **Tuft path 80.7 px against the 80 floor: pass, as measured.** It is inside the range; the r4 thinner plume was asked for, and the flap still reads as a wing at 270 px (KP-flap). No change.
+3. **Neck join: fix, widen the blend (the option offered to the user as recommended).** The r4 step 45 → 20 is still a visible band edge in KP-startle and KP-duck (the pale skin section sits on a darker collar). More rings alone would change the neck silhouette for a colour fault; the colour ramp is the cause, so widen it first and use finer rings only as the fallback the numbers call for (N3).
+4. **Neck-mid notch: fix.** The full-size startle crop shows a pale wedge and a sideways step in the neck outline just above the dark band, at the neck-mid seam; at 270 px it reads as a joint or a broken neck in the startle head-snap (B03-SH01) and the duck (B04-SH03), the two shots that use these poses. The 17.4° bend rule stays; the outline must be continuous.
+5. Everything else of r4 stands (FLAP_OUT, plume tone 0.35, width 0.030, the duck-flap and hop w keys, the no-wing hash).
+
+**Rows N1–N4 (the neck; written once here, run where Q-R5-1 says).** Files: `src/painted/edu30/emu.ts`, `tests/edu30-emu.test.ts`.
+
+| Row | Value | Pass |
+| --- | --- | --- |
+| N1 blend | hero bib colour → neck colour over **u 0.15–0.50** (was 0.40–0.50): `u < 0.15 ? bibCol : mixColor(bibCol, neckCol, (u − 0.15) / 0.35)`; equal at u 0.5 as r4; non-hero, back of neck (`sd ≥ −0.1`) and the hero neck feathers (`i < 6`) untouched | colour function step at u 0.5 = 0; test updated to the new start |
+| N2 image step | measure as r4: KP-startle front edge x 449, 6 px means down the join | worst adjacent step **≤ 8** (log every step) |
+| N3 fallback (only if N2 fails after N1) | neck spline subdivision `spline(…, 3)` → `spline(…, 6)` (25 rings; the same five keys, so the curve and widths are the same, sampled twice as finely); nothing else | N2 ≤ 8; KP-stand vs store `KP-stand` mean abs ≤ 2 (the KP-EMU lock) |
+| N4 outline | on KP-startle and KP-duck, trace the neck's front and back silhouette edges row by row over the neck-mid seam ± 40 px (full size) | largest x jump between adjacent rows **≤ 3 px** on both edges, and no background pixel inside the outline; if N4 fails after N1, apply N3 (if not yet applied) and re-measure; if it still fails, set `blocked` with the per-row numbers and change nothing else |
+
+Proof: re-render KP-stand, KP-startle, KP-duck and the neck before/after crops (store `T06r4-neck-*` as the before), archive as `T06r5-*.png` (or `T07-neck-*.png` inside T07). The user sees the after crop with the result (touches the KP-EMU hero neck band).
+
 ## Result (Boss fills)
 Commit: see the branch tip `T06` commit (EDU-EP30 T06) · proof sheet: `out/edu30-T06/sheet.png` (KP-stand, KP-startle, KP-duck, KP-hop, KP-flap, KP-flap-back); archived with the stills and `fold-diff.png` to the store `projects/edu/EDU/previews/` (`sheet.png`, `KP-startle.png`, `KP-duck.png`, `KP-hop.png`, `KP-flap.png`, `KP-flap-back.png`, `KP-fold.png`, `fold-diff.png`) · fix passes used: 0
 
@@ -114,5 +133,6 @@ Measured (`node scripts/test.mjs tests/edu30-emu.test.ts`: 13 of 13 pass; new te
 | Image luma step at the bib/neck join, KP-startle, front edge x 449, 6 px means | r3: 87 -> 132 (45); r4: 87 -> 107 (20), then 107 -> 119 -> 133 | <= 8 | **not met** |
 | No-wing hash of five builds | unchanged (the hash covers geometry, not colour; hero builds included, so both values are equal) | unchanged | pass |
 | `npm test` | 294 pass, 19 fail, none in edu30 or emu (missing store media and modules, as in r1/r3); `tsc` 22 errors, none in `src/painted/edu30` or the test | | as before |
+
 Value not followed (returned as a question): the pixel luma step <= 8 at the join. The colour function is smooth, but the neck loft paints one flat colour per quad (`part.col(i / (n - 1))`) and `spline(..., 3)` gives 13 rings, so u 0.40-0.50 covers about 1.2 quads: the 45-step becomes 20 + 16 + 13. Reaching <= 8 needs a wider blend (about u 0.15-0.50) or a finer neck loft (about 5x the rings, which also changes the whole neck silhouette). Film decides which; I changed neither. Also: the visible kink at the neck-mid segment seam in KP-startle and KP-duck (a geometric wedge, not colour) remains; startle neck bend 17.4 deg passes the ticket's rule, so it is not changed here. KP-stand is visibly unchanged (the bib is on the far side of the neck at that heading); only KP-startle and KP-duck change at the neck.
 Look check for Film: flap-back now reads as small loose tufts hanging off the flanks (r3 left vs r4 right in the before/after); judge whether the plumes still read as sleeves.

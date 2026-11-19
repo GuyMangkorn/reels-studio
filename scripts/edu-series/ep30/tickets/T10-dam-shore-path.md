@@ -1,5 +1,5 @@
 # T10 — the farm dam has its east approach, the queue path, a reflection helper, the jam stone, and the near inner slope under the B04-SH06 lens (slope clearance checked)
-Deliverable: EDU-EP30-SHORT · Revision: r4 · Status: built r4 (Boss 2026-11-19; awaiting Film review; r4 fix pass: the path eases into and out of the water over 0.6 m, so the 0.20 m step at the z −20 shore entry goes; see r4 decisions; r3 built, see Result r3; was ready: r3 fix pass: wading y on the water leg, the jam stone and the B04-SH04 eye moved with the locked gun; readings Q-1 to Q-6 confirmed; r1 built)
+Deliverable: EDU-EP30-SHORT · Revision: r5 · Status: done (r5 Film, 2026-11-20: the linear ease is confirmed, no Boss pass; r4 built: `queuePoint` eases y linearly over 0.6 m at each waterline crossing, tests 9/9; r3 built: wading y, stone, B04-SH04 eye; r1 built)
 Class: set · Hard: no
 Blocked by: T03 (`proof-dam.tsx` exists) · Consumers: B04-SH01 … B04-SH06; T16 (queue path)
 Model: sonnet, medium
@@ -57,6 +57,10 @@ References (store): `projects/edu/EDU/previews/LF02.58933d6b.png` (LF02 R4, lock
 - **Shore-entry step: ease, not a moved point.** The 0.20 m step at (14.9, 0.5, −20.1) is the east-approach bank (y 0.5, locked R4 terrain) meeting the water surface 0.30, not the path point's own y, so lowering (14.8, 0.5, −20) to 0.45 would leave the bank height under it and the step in place. A bird that drops 0.20 m in one frame pops in T16; a 0.6 m ease (one emu stride) reads as stepping down into the shallows. Rule in the Decided values (Wading y, r4). The same ease applies at the second crossing (z −7.87, step 0.12 today). The test bound goes back to ≤ 0.15 at each crossing (expected ≤ 0.01) plus the 0.02 m sample-to-sample bound.
 - Viewed: store `T10-dam-shore-path-r3/T10-r3_D30-queue.png` at 270 px: the queue dots run along the rim and into the east bay; the z −20 entry is far up the path and too small to judge there, so the step is settled by the numbers (and seen again in T16's B04-SH02 frames).
 - r4 work for Boss: the ease inside `queuePoint` in `dam.ts`; `tests/edu30-dam.test.ts` (crossing step ≤ 0.15, sample step ≤ 0.02 m over s 0 … `QUEUE_LEN` at 0.05 m); re-render `D30-queue` and the sheet, archive as `T10r4-*.png`. Files: `src/painted/edu30/dam.ts`, `tests/edu30-dam.test.ts`.
+
+## r5 decision (Film, 2026-11-20, `EDU-EP30-TICKETS-R5`)
+- **Linear ease confirmed.** The r4 table's "linearly (smoothstep on the arc parameter)" was self-contradictory; **linear wins**. Smoothstep peaks at 1.5 × the mean slope (0.025 m per 0.05 m sample for the 0.20 m drop), over the 0.02 m sample bound the same table set; linear gives 0.017 m. A 0.6 m linear ramp is one emu stride and the slope corners are hidden under the waterline and the feet (T16 hides the ankles in the water), so no ease shape is visible. Built r4 values stand: crossing step ≤ 0.01 m, sample step ≤ 0.02 m.
+- Status **done**; T16 reads `queuePoint` as built at the r4 commit. Fix passes used: 2 (r3, r4), cap reached, none needed.
 
 ## Result (Boss fills)
 Commit: this commit on the T10 worktree branch (see index) · proof sheet: `out/edu30-T10/sheet.png` (store `projects/edu/EDU/previews/`: `sheet.png`, `D30-*.png`, `base_LF02.png`) · fix passes: 0 (tests: `node scripts/test.mjs tests/edu30-dam.test.ts` 7/7).

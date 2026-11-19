@@ -1,5 +1,5 @@
 # T25 — plates B03-SH02 (top shot: six groups burst out) and B03-SH03 (EMU-HERO's silent wing signal splits its group, L07 mime) are built and proven
-Deliverable: EDU-EP30-SHORT · Revision: r3 · Status: ready · r3: Film notes added (TICKETS-R3)
+Deliverable: EDU-EP30-SHORT · Revision: r3 · Status: ready · r3: Film notes added (TICKETS-R3) · r5: Film note added (TICKETS-R5)
 Class: set (plates) · Hard: yes (running flock, wing gestures)
 Blocked by: T03, T04, T05, T07, T08, T09, T11, T12, T15 · Consumers: B03-SH02, B03-SH03 (global 760–867)
 Model: sonnet, medium
@@ -29,6 +29,10 @@ Files: `src/painted/edu30/shots/B03-SH02.tsx`, `src/painted/edu30/shots/B03-SH03
 ## r3 notes (Film, 2026-11-19, `EDU-EP30-TICKETS-R3`)
 These override any older value in this ticket that they name.
 - **Lewis gun (T13 r3).** After the gun's `placeBuild`, call `paintLewisPanTicks(p, c, seed, at, heading, magTurn, {elev, recoil})` in the next paint slot (before anything in front of the gun); without it the pan step per round is invisible. Every gun point (muzzle, pan, port, grip, stock, cock) comes from `lewisAnchors(at, heading, {elev, recoil, cock})`, never from a sheet literal: the locked gun is 1.32 m long with the muzzle 0.66 m ahead of the tripod head, so the sheet anchors that assumed a 1.1 m gun are superseded (index TF17).
+
+## r5 notes (Film, 2026-11-20, `EDU-EP30-TICKETS-R5`)
+These override any older value in this ticket that they name.
+- **B03-SH02 casings continue B03-SH01 (T05 r5).** Ten of the 23 casings are still in the air at the B03-SH01 cut, so B03-SH02 paints them with `paintCasings(p, c, 72 + L, rounds, spec)` (the B03-SH01 rounds, spec and seed; L = B03-SH02 local), not `restingCasings`: the last ten land by local 26 and stay. Proof row: at B03-SH02 local 0 the count at rest equals T05's count at B03-SH01 L 72 (logged), and at local 26 all 23 rest inside the B03 box.
 
 ## Proof
 - Stills (`out/edu30-T25/`): SH02 L 0, 14, 30, 45; SH03 L 0, 6, 10, 16, 22, 26, 34, 40, 56.

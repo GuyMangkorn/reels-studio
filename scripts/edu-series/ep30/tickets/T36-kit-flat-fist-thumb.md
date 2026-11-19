@@ -1,5 +1,5 @@
 # T36 — an unshaped kit figure can close a thumbed fist on a held point (the GUNNER-1 grip and stock), and T11's proofs show the thumb
-Deliverable: EDU-EP30-SHORT · Revision: r1 · Status: built, Film look check pending (r1 built 2026-11-20; two rows could not follow the ticket's words, see Result)
+Deliverable: EDU-EP30-SHORT · Revision: r2 · Status: ready — r2 fix pass (r5 Film look check, 2026-11-20: fix on two items: the flat fist is too long and reads as a bun or paw in the large back view, and in the front view the grip is painted over the fist; thumb sides and the front fist size accepted; see r2 decisions; r1 built 2026-11-20, tests 4/4)
 Class: capability · Hard: yes (hand)
 Blocked by: T11 (done; same files `edu30/cast.ts`, `proof-cast.tsx`, `tests/edu30-cast.test.ts`) · Consumers: T11 (proof re-render), T12, T17, T18 (crew fists, the cocking pull, the order chop), T24 (B03-SH01 back view), T27 (B04-SH03 right forearm and mitten), T29 (B05-SH01/SH02 right profile), T22, T23 (through T12); any later unshaped figure holding a prop
 Model: sonnet, medium
@@ -43,6 +43,25 @@ References (store): `projects/edu/EDU/previews/T11-cropfront-j0.png`, `T11-cropr
 
 Result goes to Film for a look check at the index Look checks (fist reads as a closed fist, not a paw or a ball) before T12 dispatches.
 
+## r2 decisions (Film, 2026-11-20, `EDU-EP30-TICKETS-R5`): look check of the r1 crops
+Viewed: store `T36-sheet.png` at about 270 px a tile, `T36-crops.png` downscaled to 1100 px wide, `T36-crop-back-j0.png` and `T36-crop-front-j0.png` at 540 px. At 270 px every view reads as a man gripping the gun. In the crops:
+- **3/4 and right: pass.** The near RIGHT fist wraps the grip (grip stub above and below it), round enough, the thumb crease is the longest stroke on the stated side. Right view: the far LEFT fist is drawn on the stock (the gun does not cover it from this camera); accepted, its thumb line is `LEFT: right ok` as measured (the r1 row's `hidden` is superseded).
+- **Back: fix (shape).** At 107 × 75 px (aspect 1.42) the fist is a long loaf with the three finger strokes at its end: it reads as a bun or a paw, not a closed fist (UT14: "a round shape with the thumb across"). This is the view at its largest (B03-SH01 over the shoulder).
+- **Front: fix (paint order).** The proof paints the man, then the gun (the gun is between the lens and the gunner), so the grip is drawn across the middle of the RIGHT fist and the hand reads as a blob behind a stick. A hand wraps the grip: the fist covers the grip's middle from every side.
+- **Thumb sides (Boss question 1): accept the measured sides.** The forearms lie near-horizontal on screen, so the thumb crease lies above or below the fist; line, code (`mittenThumbSide`) and picture agree with hand-drawing §2 in all 16 hand-frames. The r1 rows' screen-left/right words were Film's estimates from the sheet's arm directions and are superseded by the measured table in Result (r1). New common rule (index, R5): a thumb check names the measured screen side (up, down, left or right).
+- **Front fist 27 × 19 px (Boss question 2): accept.** The thumb crease (about 10 px) reads as the longer stroke against the 4.5 px finger strokes in the 540 crop, and the front view is the smallest use (B-shots use the 3/4, right and back views larger). Do not enlarge the hand.
+- **Back-view fist-centre error 3.3 px (Boss note 3): accept** (0.0037 hu, inside the 0.01 hu bound; the 3 px row was for the front view).
+
+**r2 values (Boss builds exactly these).** Files: `src/painted/kit/draw.ts`, `src/painted/edu30/cast.ts`, `src/painted/edu30/proof-cast.tsx`, `tests/kit-flat-fist.test.ts` (and `src/painted/kit/cast.ts` / `kit/back.ts` only if the fill and ink of the flat fist must be exported for the helper below).
+
+| Row | Value | Pass |
+| --- | --- | --- |
+| F1 rounder fist | `flatFistAt` scales `fistParts` along the forearm by **0.825** (along 0.097 → **0.080 hu**; across unchanged 0.069 hu; aspect 1.16); origin `T − 0.037 · hu · (forearm unit)` so the fist centre stays on `T`; the shaped-path `fistParts` call is unchanged | test (b): centre within 0.01 hu of `T`, reach past `T` ≤ 0.05 hu, bbox 0.080 × 0.069 hu ± 0.003 at six angles, both sides; (a) and (c) unchanged |
+| F2 fists over the held part | new export in `edu30/cast.ts`: `paintGunnerFists(p, c, def, at, o)` repaints only the two flat fists of `paintSeatedGunner` (same `solveGunner`, same `flatFistAt` points, fill and ink as the figure's); a caller that paints the gun **after** the man calls it right after the gun. `C30-gunner-front` becomes `man(); gun(); fists()`; the views with `gunFirst` are unchanged | front j0/j1 540 crop: grip visible above and below the RIGHT fist, no grip pixel inside the central 60 % of the fist bbox (logged); every other view's stroke list unchanged (hash) |
+| F3 lock | LF01a call (no `grip`/`stock`) unchanged | stroke hash equals r1 (`8ac3d266aa4a`) |
+
+Proof: re-render the eight T11 proof frames and the 540 crops as r1, archive as `T36r2-*.png`; log per hand: fist px, thumb-crease length, finger-stroke length, and the thumb line in the measured wording (`thumb check: GUNNER-1 RIGHT: down ok`). Film looks again at the index Look checks before T12.
+
 ## Result (Boss fills)
 
 Commit: see `git log` on branch `worktree-agent-aea0e4818090654d0` (T36 commit; started from `claude/ep30-continuation-493a12` at `ea37ad9`). Files: `src/painted/kit/draw.ts` (new `flatFistAt`), `kit/cast.ts` (`Arm.flatFist`, unshaped front/profile/3/4 path), `kit/back.ts` (back view), `edu30/cast.ts` (`flatFist: true` on the `grip`/`stock` chains only), `tests/kit-flat-fist.test.ts` (new), `docs/context-map.md`. `tests/edu30-cast.test.ts` unchanged, 4/4 pass.
@@ -62,6 +81,7 @@ Commit: see `git log` on branch `worktree-agent-aea0e4818090654d0` (T36 commit; 
 | right j0/j1 | LEFT | (0.41, -0.91) | right | 1.35 | 44.0 x 30.9 | (8.8, 4.4) |
 | 3/4 j0/j1 | RIGHT | (0.81, 0.59) | up | 1.42 | 46.3 x 32.6 | (5.8, -8.6) |
 | 3/4 j0/j1 | LEFT | (0.93, -0.36) | down | 1.42 | 46.3 x 32.6 | (3.4, 9.8) |
+
 Right view: the far LEFT fist is drawn (not hidden): the gun's near side does not cover the stock point in the proof camera.
 thumb check (rule, code `mittenThumbSide` and picture agree): GUNNER-1 RIGHT and LEFT ok in all four views. arm check: arm ratios unchanged from T11 (the tests above call the same solve; `edu30-cast` ratio test passes, max <= 1.05); the forearm capsule ends on the fist (viewed in the crops, no gap).
 

@@ -1,5 +1,5 @@
 # T07 — the emu head acts: lens turn, blink, nod, two-state talking beak, neck-sac boom puff (and the relief emu)
-Deliverable: EDU-EP30-SHORT · Revision: r3 · Status: ready · r3: Film notes added (TICKETS-R3) · r4: Film notes added (TICKETS-R4)
+Deliverable: EDU-EP30-SHORT · Revision: r5 · Status: ready (r5: the T06 neck rows N1–N4 run first in this ticket when the user answers index Q-R5-1 with (a); with (b) T06 r5 runs first on Opus and this ticket waits for it; with (c) skip them) · r3, r4: Film notes
 Class: figure · Hard: yes (animal face)
 Blocked by: T06 (its r4 fix pass first; same files `emu.ts`, `looks.ts`, `tests/edu30-emu.test.ts`; uses `mixEmuPose`) · Consumers: B01-SH01, B01-SH03, B02-SH06, B03-SH03, B04-SH05, B05-SH04, B06-SH02, B07-SH02 (relief emu through `arms.ts`); T08 (heads field, queue stare), T15
 Model: sonnet, medium
@@ -38,6 +38,12 @@ These override any older value in this ticket that they name.
 ## r4 notes (Film, 2026-11-19, `EDU-EP30-TICKETS-R4`)
 These override any older value in this ticket that they name.
 - **T06 r4.** FLAP_OUT moves closer to the flank (tip (0.010, 0.812, 0.319)), plume tones 0.15 / 0.35 at 0.030 m, and the hero bib blends into the neck over u 0.40–0.50: T07's head and neck keys (lens turn, nod, beak-talk, sac) build on that neck colour; re-take any hero hash after T06 r4. Build after the T06 r4 commit (same files).
+
+## r5 notes (Film, 2026-11-20, `EDU-EP30-TICKETS-R5`)
+These override any older value in this ticket that they name.
+- **T06 neck rows first (Q-R5-1 (a) only).** Before the head work, build rows **N1–N4** of [T06 r5 decisions](T06-emu-wings-reactions.md) exactly (blend u 0.15–0.50; image step ≤ 8; the subdivision fallback; the outline check), commit them as their own commit ("T06 r5 neck, inside T07"), then build T07 on top. Archive the neck proof as `T07-neck-*.png` and fill the N rows in this Result under a "T06 neck rows" heading. The coordinator writes the user's Q-R5-1 answer into the index before dispatch; if it is (b) or (c), skip this note.
+- **Head keys over the new neck.** KP-sac's pale throat patch sits at u 0.4, inside the widened bib blend: the sac patch is painted over the neck colour as before (its own colour, not blended); the KP-sac width row is unchanged. Re-take every hero hash after N1 (and N3 if used) and log both.
+- **KP-face lock row.** Compare KP-face against a render made after the N rows (the face is not in the neck band, but the lower neck is in frame); log the difference against the store KP-face too.
 
 ## Proof
 - `node scripts/test.mjs tests/edu30-emu.test.ts`: defaults (`nod` 0, `beak` 0, `sac` 0) give the pre-change build; `blinkLid` sequence; `talkBeak` is exactly 0 or 1 and 0 outside the onset windows.

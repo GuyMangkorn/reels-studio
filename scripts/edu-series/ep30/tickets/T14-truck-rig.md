@@ -1,5 +1,5 @@
 # T14 — the 1932 truck drives, stops, turns about, bounces as one rigid body with its riders and G2 on a pedestal, trailing dust
-Deliverable: EDU-EP30-SHORT · Revision: r3 · Status: built, three proof rows open (Q1 cab height, Q2 gunner height, Q3 dust; Film answers in Result) · r3: Film notes added (TICKETS-R3)
+Deliverable: EDU-EP30-SHORT · Revision: r4 · Status: ready — r4 fix pass (r5 Film, 2026-11-20: Q1 cab height and Q2 gunner height settled by moving the rows, no rebuild; Q3 dust carry for the B02-SH03 stop and the right-hand-drive cab seats to build; Boss's other silent choices confirmed; see r4 decisions; built 2026-11-20, tests 17/17) · r3: Film notes added (TICKETS-R3)
 Class: movement · Hard: yes (movement, riders' arms)
 Blocked by: T13 (same files `props.ts`, `proof-props.tsx`, `tests/edu30-props.test.ts`), T11 (seated gunner right profile) · Consumers: B01-SH02, B02-SH03, B02-SH04 (parked), B05-SH01, B05-SH02, B05-SH03, B06-SH03, B06-SH04
 Model: sonnet, medium
@@ -44,6 +44,25 @@ These override any older value in this ticket that they name.
 - **G2 muzzle (r3, T13 r3 / TF17).** The locked gun mounts with its tripod-head point on the pivot T(−0.55, 1.80, −0.1); the muzzle is `lewisAnchors(...).muzzle`, 0.66 m from the head (was 0.80 m): at rest (elevation 10°, yaw 14° toward −z) about T(0.08, 1.91, −0.26) (estimate; the build value wins). The bump kick keeps 10° → 50° → 10°: the muzzle peaks at y ≈ 1.80 + 0.66 sin 50° = 2.31 (TF10 2.41 → 2.31). Proof row R30-truck-side 8 / 11: muzzle **100–220 px** higher at L 11 than at L 8 (was 120–260, scaled by the shorter arm).
 - **Lewis gun (T13 r3).** After the gun's `placeBuild`, call `paintLewisPanTicks(p, c, seed, at, heading, magTurn, {elev, recoil})` in the next paint slot (before anything in front of the gun); without it the pan step per round is invisible. Every gun point (muzzle, pan, port, grip, stock, cock) comes from `lewisAnchors(at, heading, {elev, recoil, cock})`, never from a sheet literal: the locked gun is 1.32 m long with the muzzle 0.66 m ahead of the tripod head, so the sheet anchors that assumed a 1.1 m gun are superseded (index TF17).
 
+## r4 decisions (Film, 2026-11-20, `EDU-EP30-TICKETS-R5`): Boss's three proof rows and silent choices
+Viewed: store `T14-stop-44`, `T14-stop-53`, `T14-chase-00`, `T14-chase-10`, `T14-side-11`, `T14-vantage-46` tiled at 270 px.
+1. **Q1 cab height: keep the world, move the row.** The drive schedule (cab front −3.60 at L 44, centre = cab front − 2.6, the locked 5.2 m truck) is the plan, tested, and the front-low point already lands where the sheet put it (1225 vs 1223, x 542 vs 541). The sheet's 486 assumed the roof's front edge stands over the bumper; on the locked truck the bonnet is ahead of the cab, so the roof edge is about a metre further from the lens and lower on screen. Row R30-truck-stop 44 → **cab height 440 ± 25 px** (measured 440: pass). Sheet fix TF22.
+2. **Q2 GUNNER-1 height: keep the seat, move the row.** T11 is done and the built seated figure is 1.12 m top to bottom; moving him 0.16 m toward the lens would take his fists off G2's grip and stock. The chase frames read well at 444 px (he fills the left third, the tray and cab behind). Row R30-truck-chase 0 / 10 → **GUNNER-1 ≥ 430 px** (measured 444: pass); B05-SH02 gives 495. Sheet fix TF23.
+3. **Q3 dust: build (D1–D3).** The stop beat (B02-SH03 L 44–53) is a gag: the truck stops and its own dust cloud rolls on past the cab. A 0.3 carry is right for a trail (the dust falls behind) but cannot overtake.
+4. **Cab seats: right-hand drive (build, C1).** The ticket meant a right-hand-drive Australian Army truck (1932; Australia drives on the left) but wrote z −0.45, which is the truck's left with the cab at +x (right = forward × up = +z in space T, as Boss read). The driver sits at **T(1.6, ·, +0.45)**, the camera side in the chase. Boat check, low stakes (silhouettes and a chase-cab glimpse): question R5-B1 in the tickets index.
+5. **Confirmed as built (no change):** the rig's side wheels (axle along z, tyre 0.18 m) through `wheelTurn`, with the locked `paintTruck` default untouched (LF01a keeps its approved truck; every plate paints the truck only through `paintTruckRig`, index common rule R5); the hollow tray (floor, boards 0.03 m, 1.1–1.45 m); gun cases at T(−0.05, 1.1, ±0.33); the silhouette shapes; B05-SH01 bump gaps counted from L −9 (a bump under way at L 10, L 0 level) and G2 back to 10° at k + 9; B06-SH03 dir −1 from arrival and dir +1 from the first jump state L 59 (TF11); puff centre y = 0.15 + 0.5 r, one plain disc per puff.
+
+**r4 values (Boss builds exactly these).** Files: `src/painted/edu30/props.ts`, `src/painted/edu30/proof-props.tsx` (only if a proof call changes), `tests/edu30-props.test.ts`.
+
+| Row | Value | Pass |
+| --- | --- | --- |
+| D1 carry | `paintTruckDust` / `truckDustPuffs` take `carry` per schedule: **0.9** for B02-SH03, **0.3** for every other schedule (as built); puff velocity = `carry` × truck velocity at emission + seeded ± 0.2 m/s, constant while the truck moves | test: a B05-SH01 puff still trails (10 f after emission its x is behind the emitting wheel's current x by ≥ 0.6 × the truck's travel in those 10 f); pure function of L |
+| D2 after the stop | from the truck's stop frame (B02-SH03 L 44) every live puff's velocity decays × **0.95** per frame (was 0.92), closed form `v · 0.95 (1 − 0.95^k) / 0.05` after k frames | test: closed form = frame-by-frame sum within 0.001 m |
+| D3 B02-SH03 life | B02-SH03 puffs live **40 f** (alpha 0.40 → 0 over 40 f; radius 0.3 → 1.5 m over 30 f, then held); other schedules 30 f as built | R30-truck-stop 53: at least 3 puffs with alpha ≥ 0.12 whose disc reaches x ≥ −3.6 (the cab front; centre x + radius), logged; the still shows dust in front of the lower cab; R30-truck-stop 44: dust still behind and beside the rear wheels |
+| C1 seats | cab heads: silhouettes mode MEREDITH at the wheel T(1.6, 1.90 head, **+0.45**); chase mode GUNNER-2 driving at T(1.6, ·, **+0.45**), MEREDITH at T(1.6, ·, **−0.45**) | R30-truck-chase 0: the driver's head on the camera side of the cab (logged x); rider drift still 0 px |
+
+Proof: re-render R30-truck-stop 44, 46, 48, 53 and R30-truck-chase 0, 10; archive as `T14r4-*.png`; every other row stands as measured.
+
 ## Proof
 - `node scripts/test.mjs tests/edu30-props.test.ts`: `truckBody(c, 0, 0)` is identity; B02-SH03 cab front at L 30 = −5.95 ± 0.01 and L 44 = −3.60 ± 0.01; a rider point and the deck point keep a constant distance at every B05-SH02 frame; B06-SH03 parked x 2.0 at L 45 and L 89.
 - `proof-props.tsx`: `R30-truck-stop` (B02-SH03 camera `eye (−0.2, 0.4, 9.8), yaw −85, pitch 8, f 850, hy 1000`) at L 0, 30, 44, 46, 48, 53; `R30-truck-chase` (B05-SH01 truck-local camera) at L 0, 10, 20; `R30-truck-side` (B05-SH02 camera) at L 8, 11, 16, 72; `R30-truck-vantage` (B05-SH03 start camera) at L 0, 46, 93.
@@ -70,6 +89,7 @@ Commit: see `git log` on this worktree branch (T14 commit) · fix passes used: 0
 **Tests** `node scripts/test.mjs tests/edu30-props.test.ts`: 17/17 pass (identity; cab front L 30 -5.95 and L 44 -3.60 ± 0.01; rider/deck/pivot distances constant at all 84 B05-SH02 frames; pitch keys 3, -2; G2 10 -> 50 -> 10 and muzzle y 2.31; B05-SH01 bump gaps 12-18, peak 1.5 x s; chase rider drift 0 px over 60 f; B06-SH03 parked 2.0 at L 45 and L 89, absent / present states; dust pure, radius and alpha, decay after the stop). `npx tsc`: no new errors (existing `three` / `hippo` errors from the shared node_modules). `npm test`: 301 pass, 19 fail, all environment (missing `three`, store), none in my files.
 
 **Measured against the Proof table**
+
 | Row | Number | Pass range | Result |
 | --- | --- | --- | --- |
 | R30-truck-stop 44 | front low (ground under the radiator) y 1225, centre x 542 (sheet 1223, 541: match); roof front edge y 785 (sheet 737); height **440** px | 486 ± 25 | **fail** (21 px short): see Q1 |

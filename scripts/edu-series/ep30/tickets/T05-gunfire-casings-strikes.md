@@ -1,5 +1,5 @@
 # T05 — kit gunfire debris: ejected casings, strike spurts, water spouts and splashes
-Deliverable: EDU-EP30-SHORT · Revision: r4 · Status: built, 2 open questions for Film (Q8 answered by the user: values as written) · r3: Film notes added (TICKETS-R3) · r4: Film notes added (TICKETS-R4)
+Deliverable: EDU-EP30-SHORT · Revision: r5 · Status: done (r5 Film, 2026-11-20: casings still falling at the B03-SH01 cut accepted, proof row moved to L 71 / L 98; jam-casing angles and heading decided for T27; no Boss pass; r1 built, tests 18/18) · r3, r4: Film notes
 Class: capability · Hard: no
 Blocked by: T04 (r4 fix pass first; same files `kit/gunfire.ts`, `tests/gunfire.test.ts`, `proof-fx.tsx`; uses `roundPhase`), T10 (r3: `STONE_AT`) · Consumers: B03-SH01, B04-SH03, B04-SH04 (jam casing), B04-SH06 and B04-SH05 (casings at rest)
 Model: sonnet, medium
@@ -49,6 +49,23 @@ These override any older value in this ticket that they name.
 | L 8 | casings in the air with one glint; a dust spurt at height | spurt height 0.6–1.2 m (projected, logged) |
 | L 75 | 23 casings at rest right of the gun; no spurt left | all 23 inside the box (logged) |
 | L 14 | spout column and splash crown readable at 270 px | spout width ≥ 3 px at 270 px scale |
+
+## r5 decisions (Film, 2026-11-20, `EDU-EP30-TICKETS-R5`): Boss's two questions
+Viewed: store `T05-sheet.png` (L 3, 8, 14, 22, 75) at about 220 px a tile. Casings, glint, dust spurts, the spout column and the splash are readable; the splash crown reads as a small white cone at this size, accepted for the capability (T27 judges it in the plate at its real size).
+1. **L 75 row: accept the casings still falling at the cut; the row moves.** The ballistics are right (0.54 m port height, 2.6–3.1 m/s up: about 21 f in the air), and the burst runs to the last frames of the shot, so brass still in the air at the cut is what a real burst looks like and keeps the motion going into the hard cut. Replaced proof row: **L 71** (B03-SH01's last frame): 13 of 23 at rest, the other 10 in the air, none under the ground (measured 13 at L 71: pass); **L 98**: all 23 at rest inside the B03 box (the test at L 140 covers it: pass). No re-render.
+2. **Continuity into B03-SH02 (new, T25).** B03-SH02 must not show all 23 at rest one frame after 10 were airborne: T25 paints the B03-SH02 casings with `paintCasings(p, c, 72 + L, rounds, spec)` (the B03-SH01 spec, rounds and seed; L = B03-SH02 local), so the last 10 land during B03-SH02 local 0–26, instead of `restingCasings` (note in T25 r5). B04-SH06 and B04-SH05 keep `restingCasings` (their burst ended four shots earlier).
+3. **Jam casing (B04-SH04), keys with angle and heading.** `angle` is the tilt of the casing axis out of the horizontal (rad, as `casingAt`); `heading` 0 at every key (the axis along world x, side-on to the B04-SH04 lens, which looks roughly −z, so the casing shows its 56 mm length, not its end):
+
+| Key | L (B04-SH04 local) | pos | angle (rad) | Reading |
+| --- | --- | --- | --- | --- |
+| leaves the port | 13 | `lewisAnchors([−5.6, 0.32, −5.0], 0).port` = (−5.679, 0.857, −4.95) | 0 | axis level as it is kicked out |
+| hits the stone | 17 | `STONE_AT` + (0, 0.05, 0) = (−5.63, 0.38, −4.9) | 5.80 (one turn less 0.48 rad: base end down 27°) | strikes base first (the "tink") |
+| bounce apex | 19 | stone top + (0, 0.04, 0) | 6.78 (2π + 0.50) | flips up off the stone |
+| rest | 21 | stone top | 9.42 (3π: lying flat) | settles on its side to the last frame |
+
+`casingKeyed` lerps angle linearly (as built). No glint on the jam casing (it is not ejected by firing). T27 reads these values (note in T27 r5).
+4. **Plain defaults Boss chose (spurt rise/fall, streak widths, splash crown five spikes, second ring +3 f, glint frame rounded, second flight half a turn): accepted as built.**
+- Fix passes used: 0. Status **done**.
 
 ## Result (Boss fills)
 - Built 2026-11-19 (Boss, Sonnet medium) on `worktree-agent-a07e395bd5f082c0f` after T04 r4 and T10 r4; commit: this edit. Files: `src/painted/kit/gunfire.ts` (`casingAt`, `restingCasings`, `paintCasing`, `paintCasings`, `paintRing`, `casingKeyed`, `spurtHeight`, `spurtProfile`, `paintSpurts`, `strikePoints`, `paintSplash`; `CasingSpec` carries `port`, `side`, `seed`, `dir` (barrel direction, needed for the gun frame), `ground`, `water`, `box`), `tests/gunfire.test.ts` (18 pass, 6 new), `src/painted/edu30/proof-fx.tsx` (`FX30-debris`, 80 f; G1 at the origin, barrel -z, with T13 pan ticks and recoil).
