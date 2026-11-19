@@ -1,5 +1,5 @@
 # T14 — the 1932 truck drives, stops, turns about, bounces as one rigid body with its riders and G2 on a pedestal, trailing dust
-Deliverable: EDU-EP30-SHORT · Revision: r4 · Status: ready — r4 fix pass (r5 Film, 2026-11-20: Q1 cab height and Q2 gunner height settled by moving the rows, no rebuild; Q3 dust carry for the B02-SH03 stop and the right-hand-drive cab seats to build; Boss's other silent choices confirmed; see r4 decisions; built 2026-11-20, tests 17/17) · r3: Film notes added (TICKETS-R3)
+Deliverable: EDU-EP30-SHORT · Revision: r4 · Status: done (r4 fix pass built 2026-11-20, tests 18/18; Film look check of the dust still pending) — r4 fix pass (r5 Film, 2026-11-20: Q1 cab height and Q2 gunner height settled by moving the rows, no rebuild; Q3 dust carry for the B02-SH03 stop and the right-hand-drive cab seats to build; Boss's other silent choices confirmed; see r4 decisions; built 2026-11-20, tests 17/17) · r3: Film notes added (TICKETS-R3)
 Class: movement · Hard: yes (movement, riders' arms)
 Blocked by: T13 (same files `props.ts`, `proof-props.tsx`, `tests/edu30-props.test.ts`), T11 (seated gunner right profile) · Consumers: B01-SH02, B02-SH03, B02-SH04 (parked), B05-SH01, B05-SH02, B05-SH03, B06-SH03, B06-SH04
 Model: sonnet, medium
@@ -112,3 +112,24 @@ Hand line: GUNNER-1 right mitten on the stock, left mitten on the grip (T11's `p
 - B05-SH01 bump gaps count from L -9 (first bump at L 6 for the default seed 14000), so a bump is under way at the L 10 proof frame; L 0 is level (the table's bump starts could not give a tilt at both L 0 and L 10). G2 returns to 10 deg at k + 9 (the table gives only 10 -> 25 -> 10); B05-SH02 pitch +3 / -2 and elevation 10/50/10 as written.
 - B06-SH03: dir -1 from arrival (L 27..58 parked at 2.0 from L 45), dir +1 from the first jump state (L 59).
 - Dust: puff centre y = 0.15 + 0.5 r; one disc per puff (`washAt`, plain). Dust frames: the chase frame ground is a stub ground quad (the world tilt is slight, 1.5 deg peaks).
+
+## Result r4 (Boss fix pass, Sonnet medium, 20 Nov 2026)
+Commit: see `git log` on branch `worktree-agent-a7bead1aa2128832a` (T14 r4 commit) · fix passes used: 1 (r4) · proof: store `projects/edu/EDU/previews/T14r4-sheet.png` (6 frames) and `T14r4-stop-44`, `-46`, `-48`, `-53`, `T14r4-chase-00`, `-10` (local `out/edu30-T14r4/`, log `out/logs/T14r4-stills.log`). The earlier `T14-*` store files are untouched.
+
+**Built** (`props.ts`, `proof-props.tsx`, `tests/edu30-props.test.ts`): `DustOpts {carry, life}`, `truckDustFor(shot)` (B02-SH03 carry 0.9 / life 40, all else 0.3 / 30), `DUST_STOP_DECAY = 0.95` (was 0.92); `truckDustPuffs(L, track, seed, opts)` and `paintTruckDust(..., {…, carry, life})`; radius 0.3 -> 1.5 m over 30 f then held, alpha 0.40 -> 0 over `life`; the post-stop decay window widened from 40 to 120 f. Cab seats right-hand drive: silhouettes MEREDITH at T(1.6, head 1.90, +0.45); chase GUNNER-2 +0.45, MEREDITH -0.45. `R30-truck-stop` proof passes `truckDustFor('B02-SH03')`. The locked `paintTruck` default and every other schedule are unchanged.
+
+**Tests** `node scripts/test.mjs tests/edu30-props.test.ts`: 18/18 (new: carry/life per schedule; closed form `d1 (1 - 0.95^k)/0.05` equals the frame-by-frame sum within 0.001 m for k 1..8 and the step ratio is 0.95; B05-SH01 puff trails the emitting wheel by >= 0.6 x the 10 f travel; puffs older than 30 f stay alive to 40 f). The cab-height (440) and chase drift (0 px) tests still pass.
+
+| Row | Number | Pass | Result |
+| --- | --- | --- | --- |
+| D1 carry, B05-SH01 trails | both puffs 10 f after emission are behind the wheel by >= 0.6 x travel (tested) | test | pass |
+| D2 decay closed form | sum vs closed form < 0.001 m, ratio 0.95 | test | pass |
+| D3 R30-truck-stop 53 | 6 puffs with alpha >= 0.12 and centre x + radius >= -3.6 (e.g. x -3.79, r 1.38, alpha 0.13); at L 48 there are 3, at L 44 and 46 none; puff centre x range at 53: -7.51 to -3.74, cab front -3.60; the still shows dust across the lower cab | >= 3 | pass |
+| D3 R30-truck-stop 44 | dust behind and beside the rear wheels (viewed `T14r4-stop-44.png`); no puff reaches the cab front | viewed | pass |
+| C1 R30-truck-chase 0 | driver (z +0.45) head at screen (717, 858), the other cab head (z -0.45) at (541, 848): the driver is on the camera side; rider drift 0 px (test) | camera side; 0 px | pass |
+| R30-truck-stop 44 height | 440 px (unchanged) | 440 ± 25 | pass |
+| R30-truck-chase 0 / 10 GUNNER-1 | 444 px (unchanged) | >= 430 | pass |
+
+Hand line: unchanged from r1 (T11 mitten fists, T36 pending); no hand code touched. Arm ratios and drift tests unchanged and passing.
+
+**Could not follow / notes for Film:** none among the r4 values. The dust at L 44 and 46 is a large soft cloud around the whole rear of the truck (painter's order: far part behind the truck, near part in front) because carry 0.9 and radius growth are both big at the gag; Film's look check should confirm it still reads as a small truck stopped close before the cloud overtakes (`T14r4-sheet.png`). Checks: `npx tsc`: 22 error lines, none in the three files (environment `three` / `hippo`); `npm test` log `out/logs/T14r4-npm.log`.

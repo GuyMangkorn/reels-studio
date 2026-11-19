@@ -339,38 +339,43 @@ export const paintTruckRig = (p: Painter, c: YCam, o: TruckRigOpts) => {
     paintSorted(p, cb, items);
   };
   const inCab = () => {
-    if (o.riders === 'silhouettes') paintSilhouette(p, cb, o.seed + 470, P(1.6, 1.12, -0.45), {shoulders: false});
-    if (o.riders === 'chase') for (const s of [-1, 1]) paintSilhouette(p, cb, o.seed + 470 + s * 7, P(1.6, 1.12, s * 0.45), {shoulders: false});
+    if (o.riders === 'silhouettes') paintSilhouette(p, cb, o.seed + 470, P(1.6, 1.12, 0.45), {shoulders: false});   // right-hand drive: the wheel is on the truck's right (+z, the camera side in the chase)
+    if (o.riders === 'chase') for (const s of [-1, 1]) paintSilhouette(p, cb, o.seed + 470 + s * 7, P(1.6, 1.12, -s * 0.45), {shoulders: false});
   };
   paintTruck(p, cb, o.seed, centre, dir, {hollow: true, inTray, inCab, wheelTurn: o.wheelTurn ?? 0, trayAt: P(-0.95, 1.1, 0)});
   return {cam: cb, anchors: an, muzzle: camPoint(cb, an.muzzle), gunner};
 };
 
 export type DustPuff = {at: V3; r: number; alpha: number; seed: number};
+/** Dust options per schedule (T14 r4): the B02-SH03 stop gag carries the cloud on past the cab (carry 0.9, 40 f life); every other schedule trails (carry 0.3, 30 f). */
+export type DustOpts = {carry?: number; life?: number};
+export const DUST_STOP_DECAY = 0.95;
+export const truckDustFor = (shot: TruckShotId): Required<DustOpts> => (shot === 'B02-SH03' ? {carry: 0.9, life: 40} : {carry: 0.3, life: 30});
 /** Dust puffs alive at frame L behind a truck driven by `track` (T14): one per 2 frames at each rear wheel while the truck moves; radius 0.3 -> 1.5 m and alpha 0.40 -> 0 over 30 f; velocity
- *  0.3 x the truck's velocity at birth plus seeded +-0.2 m/s; once the truck is stopped a puff's velocity decays x0.92 per frame (so the cloud rolls on past it). Pure in L. */
-export const truckDustPuffs = (L: number, track: (L: number) => TruckState | null, seed = 14500): DustPuff[] => {
+ *  `carry` x the truck's velocity at birth plus seeded +-0.2 m/s; once the truck is stopped a puff's velocity decays x0.95 per frame (so the cloud rolls on past it). Radius 0.3 -> 1.5 m over 30 f then held; alpha 0.40 -> 0 over `life` f. Pure in L. */
+export const truckDustPuffs = (L: number, track: (L: number) => TruckState | null, seed = 14500, d: DustOpts = {}): DustPuff[] => {
+  const carry = d.carry ?? 0.3, life = d.life ?? 30;
   const speedAt = (f: number): V3 | null => { const a = track(f), b = track(f + 1); return a && b ? [(b.centre[0] - a.centre[0]) * T14_FPS, 0, (b.centre[2] - a.centre[2]) * T14_FPS] : null; };
   const moving = (f: number) => { const v = speedAt(f); return !!v && Math.hypot(v[0], v[2]) > 0.05; };
-  const factor = (f: number) => { if (moving(f)) return 1; let n = 1; while (n < 40 && !moving(f - n)) n++; return 0.92 ** n; };
+  const factor = (f: number) => { if (moving(f)) return 1; let n = 1; while (n < 120 && !moving(f - n)) n++; return DUST_STOP_DECAY ** n; };
   const out: DustPuff[] = [];
-  for (let b = Math.max(0, L - 29); b <= L; b++) {   // a puff aged 30 f has alpha 0
+  for (let b = Math.max(0, L - life + 1); b <= L; b++) {   // a puff aged `life` f has alpha 0
     if (b % 2 || !moving(b)) continue;
     const st = track(b)!, v = speedAt(b)!;
     for (const s of [-1, 1]) {
-      const sd = seed + b * 13 + s * 5, jx = (hash(sd) * 2 - 1) * 0.2, jz = (hash(sd + 1) * 2 - 1) * 0.2, vel: V3 = [0.3 * v[0] + jx, 0, 0.3 * v[2] + jz];
+      const sd = seed + b * 13 + s * 5, jx = (hash(sd) * 2 - 1) * 0.2, jz = (hash(sd + 1) * 2 - 1) * 0.2, vel: V3 = [carry * v[0] + jx, 0, carry * v[2] + jz];
       const at0 = truckPoint(st.centre, st.dir, -1.5, 0, s * 0.95), at: V3 = [at0[0], 0, at0[2]];
       for (let f = b; f < L; f++) { const k = factor(f) / T14_FPS; at[0] += vel[0] * k; at[2] += vel[2] * k; }
-      const u = (L - b) / 30, r = 0.3 + 1.2 * u;
+      const u = (L - b) / life, r = 0.3 + 1.2 * Math.min(1, (L - b) / 30);
       out.push({at: [at[0], 0.15 + 0.5 * r, at[2]], r, alpha: 0.4 * (1 - u), seed: sd});
     }
   }
   return out;
 };
 /** Paints the dust of `truckDustPuffs` as plain `#b08a62` circles, far to near. `part` splits it around the truck for painter's order: 'far' (farther than `truckAt`, before the truck) and 'near' (after it); absent = all. */
-export const paintTruckDust = (p: Painter, c: YCam, L: number, track: (L: number) => TruckState | null, o: {seed?: number; part?: 'far' | 'near'; truckAt?: V3} = {}) => {
+export const paintTruckDust = (p: Painter, c: YCam, L: number, track: (L: number) => TruckState | null, o: {seed?: number; part?: 'far' | 'near'; truckAt?: V3} & DustOpts = {}) => {
   const ref = o.truckAt ? camDistTo(c, o.truckAt) : 0;
-  truckDustPuffs(L, track, o.seed).filter((q) => !o.part || (camDistTo(c, q.at) > ref) === (o.part === 'far')).sort((a, b) => camDistTo(c, b.at) - camDistTo(c, a.at)).forEach((q) => {
+  truckDustPuffs(L, track, o.seed, o).filter((q) => !o.part || (camDistTo(c, q.at) > ref) === (o.part === 'far')).sort((a, b) => camDistTo(c, b.at) - camDistTo(c, a.at)).forEach((q) => {
     const m = camPoint(c, q.at);
     if (!m || q.alpha <= 0) return;
     const R = q.r * camUnit(c, q.at);
