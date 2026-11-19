@@ -1,5 +1,5 @@
 # T02 — the six newsreel title cards (VD30-09) render from one component
-Deliverable: EDU-EP30-SHORT · Revision: r1 · Status: ready
+Deliverable: EDU-EP30-SHORT · Revision: r1 · Status: done
 Class: capability · Hard: no
 Blocked by: none · Consumers: B02-SH01, B03-SH01, B04-SH01, B05-SH01, B05-SH03, B06-SH04 (through the T03 adapter)
 Model: sonnet, medium
@@ -38,4 +38,7 @@ References (store): `projects/edu/EDU/previews/LF02.58933d6b.png` (LF02 R4 shows
 The cards are first seen over their plates in T20, T24, T26, T29, T30 and T32 at 270 px.
 
 ## Result (Boss fills)
-Commit · proof sheet path · measured numbers · fix passes used · open question, if blocked
+Commit: this commit on the Boss worktree branch (see index) · proof sheet: none (the ticket proves by tests; cards are first seen in T20/T24/T26/T29/T30/T32) · fix passes: 0.
+Measured: `node scripts/test.mjs tests/edu30-titles.test.ts` 3/3 pass (six rows exact; opacity 0 / 0.8 / 0.35 / 1.0 at in+0..3 and 1.0 at out-1 for all six; null at in-1 and out; band top 300, bottom 475). Box widths (Noto Sans Thai 700 advance widths measured in Chrome, plus 0.02 em letter-spacing, plus 2 x 72): place tag 1177.3 px at 58 px, "แผน n" 420 (min), "ถอนทัพ รอบที่ n" 789.5. `npx tsc --noEmit -p .`: no error in the new files (22 existing errors in other test files, unrelated). `npm test` in this fresh worktree: 16 failures in animation, catbox-short, loudness, media, new-shot, painted, people, plates and others; none touch the new files (worktree has no fetched media or local node_modules).
+Open question for Film (value not followed): the place tag B02-SH01 at 58 px on one line is 989 + 38 x 1.16 = about 1033 px of text, so the ticket's box rule (text + 144) gives 1177 px, wider than the 1080 px frame (clipped about 48 px each side). The ticket gives no maximum. Options: reduce side padding for that card, drop the size, or allow two lines inside the 175 px band. Built exactly as written (no clamp) until Film decides; the change is one line in `boxWidth`/`TITLES` in `src/painted/edu30/titles.tsx`.
+Width method: no browser measure at render time, so `EM` holds the measured em widths of the six strings; any other string uses 0.5 em per base glyph (ticket silent on the method).
