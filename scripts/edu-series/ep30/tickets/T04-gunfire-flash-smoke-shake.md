@@ -1,5 +1,5 @@
 # T04 — kit gunfire effects: round schedule, muzzle flash with halation, smoke haze, muzzle blast and canvas shake
-Deliverable: EDU-EP30-SHORT · Revision: r4 · Status: ready (r4 fix pass: one expression, the per-circle smoke alpha, see r4 decisions; r3 built: haze caps, blast cover 0.274 pass, smoke cover 0.900 failed because every circle took the full puff alpha; r1 built, Q8 answered: rounds as written)
+Deliverable: EDU-EP30-SHORT · Revision: r4 · Status: built r4 (fix pass 1 done: per-circle smoke alpha, smoke cover 0.245 at fx30, awaiting Film's look check; r4 was: one expression, the per-circle smoke alpha, see r4 decisions; r3 built: haze caps, blast cover 0.274 pass, smoke cover 0.900 failed because every circle took the full puff alpha; r1 built, Q8 answered: rounds as written)
 Class: capability · Hard: no
 Blocked by: T03 (`proof-fx.tsx` exists) · Consumers: B03-SH01, B04-SH03, B05-SH02 (two single shots); T05
 Model: sonnet, medium
@@ -97,3 +97,21 @@ Built by Boss (Sonnet medium), 2026-11-19, branch `worktree-agent-a58fca69d4e9c2
 - fx30 and fx75 as built: the haze at the muzzle is still a dark, mostly opaque disc (about 100 px at fx75) with the emu's lower body dimmed but its legs readable; the blast is a pale, thin ground cloud.
 - **Open question for Film (blocks done):** which per-circle alpha for the five circles of a smoke puff? (a) the variant above, alpha_c = 1 − (1 − α)^(1/5) (smoke cover 0.245 at fx30, inside ≤ 0.45); (b) per-circle alpha α / 5 (cover lower still); (c) keep as built and change the pass range. One line in the table fixes it; the code change is one expression in `paintSmoke`. The same rule then holds for T24, T27, T29.
 - Answered r4 (Film): per-circle alpha (a), see r4 decisions.
+
+### r4 fix pass 1 (Boss, Sonnet medium, 2026-11-19, worktree branch `worktree-agent-a1ef5e47577572fc7` from `ea37ad9`; commit = the commit carrying this edit, see index)
+- Built exactly as the r4 table: new `circleAlpha(a) = 1 - (1 - a)^(1/5)` in `src/painted/kit/gunfire.ts`, used for each of the five circles in `paintSmoke` (applied after fade and `hazeCap`). `tests/gunfire.test.ts`: one new test (`circleAlpha(0.34)` = 0.0797 ± 0.0005 and `1 - (1 - α_c)^5 = α` for α 0.15, 0.34, 0.6); 12 pass (`out/logs/T04r4-test.log`). `npx tsc` 22 errors, none in `gunfire` (`out/logs/T04r4-tsc.log`). `proof-fx.tsx` unchanged.
+- Proof (store `projects/edu/EDU/previews/`, ticket-prefixed): `T04r4-sheet.png` (fx00 fx02 fx03 fx04 fx30 fx75, viewed), `T04r4-crop30.png`, `T04r4-crop75.png` (700 x 500 muzzle crops, crop75 viewed), `T04r4-fx*.png`. Measure script `out/edu30-T04/measure.py` (r3's, unchanged; the alpha-1 references `opaque30/31` came from a temporary patch making `hazeCap` return alpha 1 and `circleAlpha` 1, reverted, not committed), logs `out/logs/T04r4-measure.log`, `T04r4-checks.log`.
+- Measured:
+
+| Frame | Check | Number | Range | Result |
+| --- | --- | --- | --- | --- |
+| fx02 | core ≥ 250, frame max in the core (sky tie) | core max 255, 2532 px ≥ 250; frame max 255 (tie with clipped sky) | pass | pass |
+| fx03 | half-size decay | flash code unchanged since r1: area ratio 0.25 (r1); not re-measured | 20–35 % | pass (carried) |
+| fx04 | smoke darker than ground | box (622, 1004): 168.1 vs 180.4 | smoke < ground | pass |
+| fx75 | alpha ratio on the pre-cap alpha | 1 − 7/45 = 0.844 (unit test, unchanged) | ≤ 0.9 | pass |
+| fx30 | smoke cover, densest box (604, 1012) | **0.245** (L_colour 108.7) | ≤ 0.45 | pass |
+| fx30 | blast cover, densest box (360, 1072) | 0.274 (L_colour 170.2) | ≤ 0.40 | pass |
+| fx75 | smoke cover, densest box (588, 1012) | 0.316 | n/a (logged) | logged |
+
+- Picture: at fx30 and fx75 the smoke is a soft translucent haze about 100 px wide; the emu's legs and the gun's muzzle end read through it; the blast is a thin pale ground cloud. fx04 is lighter than r3 (168 vs 111) because one puff now reads its table alpha, not 0.87.
+- Fix passes used: 1 (r4). Open questions: none. Values not followed: none.
