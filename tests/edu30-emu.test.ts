@@ -1,7 +1,7 @@
 import {test} from 'node:test';
 import assert from 'node:assert/strict';
 import {createHash} from 'node:crypto';
-import {buildEmu, EMU_POSES, EMU_RUN, EMU_WALK, WING_FLAP_OUT, WING_FOLD, emuDuckFlap, emuHop, emuPads, emuStartle, gaitAdvance, gaitPhase, mixEmuPose, wingMix, type EmuPose} from '../src/painted/edu30/emu';
+import {buildEmu, EMU_POSES, EMU_RUN, EMU_WALK, WING_FLAP_OUT, WING_FOLD, emuDuckFlap, emuHop, emuNeckBend, emuPads, emuStartle, gaitAdvance, gaitPhase, mixEmuPose, wingMix, type EmuPose} from '../src/painted/edu30/emu';
 import {paintEmu} from '../src/painted/edu30/flock';
 import {gaitFoot, type L3} from '../src/painted/survival/beast';
 import type {YCam} from '../src/painted/kit/ycam';
@@ -110,7 +110,26 @@ test('wing tuft at the KP camera: 0.24 m reads 80-110 px (logged)', () => {
   const pose = EMU_POSES.duck({wing: wingMix(WING_FOLD, WING_FLAP_OUT, 0.9)});
   const a = paintEmu(null, cam, {at: [0, 0, -0.2], heading: -Math.PI / 2, pose, scale: 1, seed: 36000, hero: true});
   const px = (n: string) => camPoint(cam, a.world(n))!;
-  const len = (n: string) => { const r = px(`wingRoot${n}`), t = px(`wingTip${n}`); return Math.hypot(t[0] - r[0], t[1] - r[1]); };
-  console.log(`T06 tuft px: left ${len('L').toFixed(1)}, right ${len('R').toFixed(1)}`);
+  const seg = (a: string, b: string) => { const r = px(a), t = px(b); return Math.hypot(t[0] - r[0], t[1] - r[1]); };
+  // the tuft's length is the drawn path root -> wrist -> tip (0.24 m); the root -> tip chord of the r3 drooping FLAP_OUT is logged too
+  const len = (n: string) => seg(`wingRoot${n}`, `wingWrist${n}`) + seg(`wingWrist${n}`, `wingTip${n}`);
+  console.log(`T06 tuft px (path): left ${len('L').toFixed(1)}, right ${len('R').toFixed(1)}; chord left ${seg('wingRootL', 'wingTipL').toFixed(1)}, right ${seg('wingRootR', 'wingTipR').toFixed(1)}`);
   for (const n of ['L', 'R']) assert.ok(len(n) >= 80 && len(n) <= 110, `${n} ${len(n)}`);
+});
+
+test('T06 r3: FLAP_OUT tip hangs >= 0.10 m below the root; startle wing mix 0.15; startle neck bend <= 25 deg (logged)', () => {
+  const a = buildEmu({wing: WING_FLAP_OUT}).anchors;
+  for (const n of ['L', 'R']) assert.ok(a[`wingTip${n}`][1] <= a[`wingRoot${n}`][1] - 0.10, `${n} ${a[`wingTip${n}`][1]} vs ${a[`wingRoot${n}`][1]}`);
+  near(a.wingTipL, [0.017, 0.853, 0.369], 0.01);
+  near(EMU_POSES.startle().wing, wingMix(WING_FOLD, WING_FLAP_OUT, 0.15));
+  const bend = emuNeckBend(EMU_POSES.startle());
+  console.log(`T06 startle neck bend ${bend.toFixed(1)} deg (neckMid x moved 0.22 -> 0.28)`);
+  assert.ok(bend <= 25, `bend ${bend}`);
+});
+
+test('T06 r3: a wing is drawn as seeded plumes (no solid flat), the same build twice is identical', () => {
+  const o = {wing: wingMix(WING_FOLD, WING_FLAP_OUT, 0.6)};
+  assert.equal(hash(buildEmu(o)), hash(buildEmu(o)));
+  const flats = (b: ReturnType<typeof buildEmu>) => b.flats.length;
+  assert.equal(flats(buildEmu(o)) - flats(buildEmu({})), 14);   // 7 plumes a wing, no solid flat, no tip fan
 });
