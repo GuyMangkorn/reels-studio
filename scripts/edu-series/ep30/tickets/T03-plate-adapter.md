@@ -1,5 +1,5 @@
 # T03 — 28 registered EP30 plates exist (stubs) behind one adapter, with a QA still entry, a lead probe, the proof entries and the calibration sheet
-Deliverable: EDU-EP30-SHORT · Revision: r2 · Status: ready (r2 fix pass: Q-A, Q-C, Q-D below; Q-B moved to T34)
+Deliverable: EDU-EP30-SHORT · Revision: r2 · Status: done (r2 built 2026-11-19; r2 fix pass: Q-A, Q-C, Q-D below; Q-B moved to T34)
 Class: capability · Hard: no
 Blocked by: T01, T02 · Consumers: every plate ticket (T19–T33); every proof composition (T04–T18); Editor (W5.3 composition)
 Model: sonnet, medium
@@ -60,3 +60,10 @@ Questions for Film (values the ticket left undecided; none resolved by Boss):
 - Q-B (registered plate cannot wear the newsreel picture): `PaintedStage` paints all plates on one shared BrushCanvas outside the plate `Overlay`, so a registered plate cannot filter, weave, shake or 1.05-scale its canvas. The full stack (`PlateStack` in `shot.tsx`) does all of it in the QA and proof entries. The registered plate's Overlay draws Grade, NewsreelOverlay, Grain 0.06 and titles only, paints the raw sheet camera (no overscan compensation, no shake). Fixing it needs an optional canvas wrapper on `PaintedShot` and `PaintedStage` (files outside this ticket's list). Needs a ticket.
 - Q-C (screen order): the ticket lists `Grade` before `NewsreelPicture`; built literally (Grade first in the DOM, so it sits under the opaque canvas in the full stack, and over the canvas in the registered Overlay). `NewsreelOverlay` already has its own vignette. Decide whether Grade stays.
 - Q-D (small choices made to build; confirm): `Shake30.rot` in degrees; CAL gun heading 0 (side-on, muzzle +x) while the emu keeps heading -PI/2 as written (this faces away from the lens: heading h faces (cos h, sin h) in x, z, and KP uses PI for a side view); `Reel30` gets an optional `tintAmount`; the probe prints an extra ` w <px>` for props; CAL ground uses the plain paddock (`setNoClearing`).
+
+## Result r2 (Boss, 2026-11-19)
+Commit: this commit on the Boss worktree branch (from `claude/ep30-continuation-493a12` 3c3d6d3) · proof: `out/edu30-T03/sheet.png` (CAL + SEQ_0000, viewed; store `projects/edu/EDU/previews/`) · fix passes: 1 (this r2).
+Done: `Grade` removed from `PlateStack` and the registered `Overlay` (import deleted); CAL emu heading `Math.PI`; comments in `shot.tsx` and `calibration.ts` updated.
+Measured (`measure-shots.ts CAL 0`): MEREDITH top 806 bottom 1110 h **304** (304 +- 10: pass); EMU-HERO top **825** bottom 1115 h **290** w 189 (head top vs y 827: 2 px, pass; h range 274 +- 15 = 259-289: **out by 1 px, value not followed**, the side view is a taller silhouette than the old tail-on view; no change made); gun length (w) **222** (222 +- 15: pass). Frame viewed: man, emu in side view facing the man, gun on one ground line, emu head top level with the man's hat top. SEQ_0000 tag B01-SH01 G0 L0.
+Checks: `tsc` 8 errors, none in edu30 files (pre-existing test typings); `npm test` 345/350, the 5 failures (loudness, new-shot, render-inputs, segments, store adopt) are store/audio-fixture related and outside this change.
+Question for Film: widen the emu h range to about 275-295 (feet at 1115 include the side-view toes), or change the emu? Decide; Boss changed nothing.
