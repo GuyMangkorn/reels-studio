@@ -1,5 +1,5 @@
 # T06 — the emu has two-segment wings, a pose mixer, gait contact and the reaction poses (startle, duck-flap, hop)
-Deliverable: EDU-EP30-SHORT · Revision: r4 · Status: ready (r4 fix pass: FLAP_OUT closer to the flank, thinner and lighter plumes, the hero bib blends into the neck at u 0.40–0.50; Film look check of the r3 sheet: fix, see r4 decisions; r3 built: plume wings, startle 0.15, neck bend 17.4°)
+Deliverable: EDU-EP30-SHORT · Revision: r4 · Status: built-r4, Film look check pending; one open question on the neck blend (see Result r4) (r4 fix pass: FLAP_OUT closer to the flank, thinner and lighter plumes, the hero bib blends into the neck at u 0.40–0.50; Film look check of the r3 sheet: fix, see r4 decisions; r3 built: plume wings, startle 0.15, neck bend 17.4°)
 Class: figure · Hard: yes (animal, movement)
 Blocked by: T03 (both write `looks.ts`) · Consumers: B03-SH01 (startle), B04-SH03 (duck-flap, hop); T07, T15 (wing rig, mixer), T08, T16 (gait contact)
 Model: sonnet, medium
@@ -99,3 +99,20 @@ Values not followed or open for Film:
 2. Startle neck: the bend rule is met (17.4 deg), but the crop still shows a hard colour/segment seam where the dark feathered neck meets the bare skin (the `nmix` / hero-bib colour cutoff at u 0.5, also present in KP-stand). Not changed: fixing it alters locked KP-stand pixels, so it is Film's call.
 3. KP-flap-back: plumes hang as thin dark strands with chunky dark ends; I judge it nearer plumage than r1 but did not verify against Film's bar; Film look check.
 4. `npm test` and `tsc` not rerun in full (worktree has no node_modules; symlinked the main checkout's for this run only).
+
+### r4 pass (Boss, Sonnet medium, 20 Nov 2026)
+Proof (store `projects/edu/EDU/previews/`, local `out/edu30-T06r4/`): `T06r4-sheet.png` (stand, fold, startle, duck, flap, flap-back, hop at 270 px), `T06r4-crops.png` (startle, flap, flap-back at 700 px), `T06r4-flap-back-before-after.png` (r3 left, r4 right), **`T06r4-neck-before-after.png`** (KP-stand and KP-startle, before then after; for the user), `T06r4-KP-*.png`. Fix passes used: 1 (the r4 pass; index count 2).
+Built in `src/painted/edu30/emu.ts`: FLAP_OUT dir norm(-0.35, -0.70, 0.62), bend norm(-0.40, -0.88, 0.25); darker plume tone 0.55 -> 0.35; plume half-width 0.022 -> 0.015 (width 0.030); hero bib colour blends into the neck colour over u 0.40-0.50 (equal at u 0.5, unchanged below 0.40, non-hero and back of neck untouched).
+Measured (`node scripts/test.mjs tests/edu30-emu.test.ts`: 13 of 13 pass; new tests for FLAP_OUT tip y, bib blend, tip extent):
+| Check | Number | Range | Result |
+| --- | --- | --- | --- |
+| FLAP_OUT tip (reach 0) | y 0.812 m, z 0.319 | y <= 0.82 | pass |
+| KP-flap tuft, drawn path | 80.7 px left and right (chord 79.1) | 80-110 | pass, 0.7 px over the floor |
+| KP-flap-back tip beyond the body silhouette | 0.042 m = 16.9 px (geometric: tip z 0.301 at w 0.9 minus body half-width 0.26, f 1000, d 2.5 m; not measured on the image) | <= 30 px | pass |
+| KP-stand r4 vs store KP-stand | mean abs 0.00013; 176 changed px (a store-vs-r3 render already shows 216 changed px, so this is render noise) | <= 2, changes inside the neck bbox | pass for the mean; the changed px are not confined to the neck bbox (bbox x 330-746, y 521-1189, same noise as r3) |
+| Bib colour function, u 0.5 | equal to the non-hero colour (step 0.00); worst neighbouring-sample luma step 2.30 | <= 8 | pass (analytic) |
+| Image luma step at the bib/neck join, KP-startle, front edge x 449, 6 px means | r3: 87 -> 132 (45); r4: 87 -> 107 (20), then 107 -> 119 -> 133 | <= 8 | **not met** |
+| No-wing hash of five builds | unchanged (the hash covers geometry, not colour; hero builds included, so both values are equal) | unchanged | pass |
+| `npm test` | 294 pass, 19 fail, none in edu30 or emu (missing store media and modules, as in r1/r3); `tsc` 22 errors, none in `src/painted/edu30` or the test | | as before |
+Value not followed (returned as a question): the pixel luma step <= 8 at the join. The colour function is smooth, but the neck loft paints one flat colour per quad (`part.col(i / (n - 1))`) and `spline(..., 3)` gives 13 rings, so u 0.40-0.50 covers about 1.2 quads: the 45-step becomes 20 + 16 + 13. Reaching <= 8 needs a wider blend (about u 0.15-0.50) or a finer neck loft (about 5x the rings, which also changes the whole neck silhouette). Film decides which; I changed neither. Also: the visible kink at the neck-mid segment seam in KP-startle and KP-duck (a geometric wedge, not colour) remains; startle neck bend 17.4 deg passes the ticket's rule, so it is not changed here. KP-stand is visibly unchanged (the bib is on the far side of the neck at that heading); only KP-startle and KP-duck change at the neck.
+Look check for Film: flap-back now reads as small loose tufts hanging off the flanks (r3 left vs r4 right in the before/after); judge whether the plumes still read as sleeves.

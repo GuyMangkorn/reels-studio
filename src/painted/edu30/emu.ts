@@ -19,7 +19,7 @@ export const EMU_LOOK: NonNullable<Build['look']> = {sub: 3, ring: 2, rim: '#d9c
 /** A wing given for the LEFT wing (the right negates z): inner segment root -> wrist along `dir`, outer wrist -> tip along `bend`, `reach` 0 (real vestigial 0.24 m) .. 1 (mime 0.85 m). */
 export type WingPose = {dir: L3; bend: L3; reach: number};
 export const WING_FOLD: WingPose = {dir: [-0.55, -0.83, 0.08], bend: [-0.55, -0.83, 0.02], reach: 0};
-export const WING_FLAP_OUT: WingPose = {dir: nrm([-0.30, -0.45, 0.84]), bend: nrm([-0.40, -0.80, 0.45]), reach: 0};
+export const WING_FLAP_OUT: WingPose = {dir: nrm([-0.35, -0.70, 0.62]), bend: nrm([-0.40, -0.88, 0.25]), reach: 0};
 export const WING_ROOT: L3 = [0.10, 1.00, 0.21];
 export const wingLen = (reach: number): [number, number] => [0.13 + 0.32 * reach, 0.11 + 0.29 * reach];
 
@@ -124,7 +124,7 @@ export const buildEmu = (o: EmuPose = {}): Build => {
         const r1 = hsh(5000 + wi * 40 + k), r2 = hsh(5100 + wi * 40 + k), tt = clamp((k + 0.5 + (r1 - 0.5) * 0.5) / 7), s1 = l1 / (l1 + l2);
         const inner = tt <= s1, base = inner ? add(rootB, mul(d0, l1 * (tt / s1))) : add(wristB, mul(d1, l2 * ((tt - s1) / (1 - s1)))), sd = inner ? d0 : d1;
         const dir = pitchAbout(nrm(add(sd, [0, -0.8, 0])), [0, 0, 0], pitch), q = P(base), len = (0.08 + 0.08 * r2) * (1 + wp.reach);
-        feather(R, root, add(q, mul(wv, -0.022)), add(q, mul(wv, 0.022)), dir, len, tc(mixColor(EMU_PX.body, EMU_PX.bodyDark, k % 2 ? 0.55 : 0.15)), 0.5);
+        feather(R, root, add(q, mul(wv, -0.015)), add(q, mul(wv, 0.015)), dir, len, tc(mixColor(EMU_PX.body, EMU_PX.bodyDark, k % 2 ? 0.35 : 0.15)), 0.5);
       }
       R.B.anchors[`wingRoot${n}`] = rp; R.B.anchors[`wingWrist${n}`] = wp2; R.B.anchors[`wingTip${n}`] = tp;
     });
@@ -136,7 +136,12 @@ export const buildEmu = (o: EmuPose = {}): Build => {
   const neck = R.bone('neck', root, 'neck.base', nb);
   const nk = spline([{p: nb, a: 0.1, b: 0.1}, {p: lerp(nb, nm, 0.5), a: 0.072, b: 0.075}, {p: nm, a: 0.056, b: 0.058}, {p: lerp(nm, hj, 0.6), a: 0.044, b: 0.046}, {p: hj, a: 0.04, b: 0.042}], 3);
   const nmix = (u: number) => Math.max(0, Math.min(1, (u - 0.3) / 0.35));   // feathered base -> bare blue-grey skin, a soft blend (no collar edge)
-  R.loft(neck, {m: 12, tex: {n: 2, amp: 0.06, px: 9}, keys: nk, col: (u, sd) => (o.hero && u < 0.5 && sd < -0.1 ? mixColor(EMU_PX.bib, EMU_PX.skin, nmix(u) * 0.6) : mixColor(tc(EMU_PX.neckFeather), sd > 0.4 ? EMU_PX.skinDark : EMU_PX.skin, nmix(u)))});
+  R.loft(neck, {m: 12, tex: {n: 2, amp: 0.06, px: 9}, keys: nk, col: (u, sd) => {
+    const neckCol = mixColor(tc(EMU_PX.neckFeather), sd > 0.4 ? EMU_PX.skinDark : EMU_PX.skin, nmix(u));
+    if (!(o.hero && u < 0.5 && sd < -0.1)) return neckCol;
+    const bibCol = mixColor(EMU_PX.bib, EMU_PX.skin, nmix(u) * 0.6);
+    return u < 0.40 ? bibCol : mixColor(bibCol, neckCol, (u - 0.40) / 0.10);   // r4: the bib fades into the neck colour over u 0.40-0.50 (no step at u 0.5)
+  }});
   for (let i = 0; i < 9; i++) for (const g of [1, -1]) {   // neck-base ruff
     const u = 0.05 + i * 0.045, r = hsh(++fk), a = onLoft(nk, u, g * 0.95, 0), b = onLoft(nk, u + 0.04, g * 0.95, 0);
     feather(R, neck, a, b, nrm([-0.3, -1, g * 0.3]), 0.07 * (0.7 + 0.5 * r), o.hero && i < 6 ? mixColor(EMU_PX.bib, EMU_PX.neckFeather, 0.25 + 0.3 * r) : tc(EMU_PX.neckFeather), 0.3);

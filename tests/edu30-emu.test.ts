@@ -120,7 +120,8 @@ test('wing tuft at the KP camera: 0.24 m reads 80-110 px (logged)', () => {
 test('T06 r3: FLAP_OUT tip hangs >= 0.10 m below the root; startle wing mix 0.15; startle neck bend <= 25 deg (logged)', () => {
   const a = buildEmu({wing: WING_FLAP_OUT}).anchors;
   for (const n of ['L', 'R']) assert.ok(a[`wingTip${n}`][1] <= a[`wingRoot${n}`][1] - 0.10, `${n} ${a[`wingTip${n}`][1]} vs ${a[`wingRoot${n}`][1]}`);
-  near(a.wingTipL, [0.017, 0.853, 0.369], 0.01);
+  near(a.wingTipL, [0.010, 0.812, 0.319], 0.01);   // r4
+  for (const n of ['L', 'R']) assert.ok(a[`wingTip${n}`][1] <= 0.82, `r4 tip y ${a[`wingTip${n}`][1]}`);
   near(EMU_POSES.startle().wing, wingMix(WING_FOLD, WING_FLAP_OUT, 0.15));
   const bend = emuNeckBend(EMU_POSES.startle());
   console.log(`T06 startle neck bend ${bend.toFixed(1)} deg (neckMid x moved 0.22 -> 0.28)`);
@@ -132,4 +133,28 @@ test('T06 r3: a wing is drawn as seeded plumes (no solid flat), the same build t
   assert.equal(hash(buildEmu(o)), hash(buildEmu(o)));
   const flats = (b: ReturnType<typeof buildEmu>) => b.flats.length;
   assert.equal(flats(buildEmu(o)) - flats(buildEmu({})), 14);   // 7 plumes a wing, no solid flat, no tip fan
+});
+
+test('T06 r4: the hero bib blends into the neck colour over u 0.40-0.50 (no luma step at u 0.5); non-hero and u < 0.40 unchanged', () => {
+  const luma = (c: string) => { const m = c.match(/[0-9a-f]{2}/gi)!.slice(-3).map((h) => parseInt(h, 16)); return 0.299 * m[0] + 0.587 * m[1] + 0.114 * m[2]; };
+  const col = (hero: boolean) => buildEmu({hero}).parts.find((q) => q.bone === 'neck')!.col as (u: number, sd: number) => string;
+  const h = col(true), n = col(false);
+  let worst = 0;
+  for (let i = 0; i < 100; i++) worst = Math.max(worst, Math.abs(luma(h(0.4 + (i + 1) * 0.0015, -0.5)) - luma(h(0.4 + i * 0.0015, -0.5))), Math.abs(luma(h(0.5 + (i + 1) * 0.0005, -0.5)) - luma(h(0.5 + i * 0.0005, -0.5))));
+  const step = Math.abs(luma(h(0.4999, -0.5)) - luma(h(0.5001, -0.5)));
+  console.log(`T06 r4 neck luma step at u 0.5: ${step.toFixed(2)}; worst neighbouring-sample luma step ${worst.toFixed(2)}; h(0.5) = ${h(0.5, -0.5)} vs non-hero ${n(0.5, -0.5)}`);
+  assert.ok(step <= 8, `step ${step}`);
+  assert.equal(h(0.5, -0.5), n(0.5, -0.5));
+  assert.equal(h(0.3, -0.5), buildEmu({hero: true}).parts.find((q) => q.bone === 'neck')!.col(0.3, -0.5));
+  assert.notEqual(h(0.3, -0.5), n(0.3, -0.5));   // the bib below u 0.40 is still the bib
+  assert.equal(h(0.45, 0.5), n(0.45, 0.5));       // the back of the neck was never the bib
+});
+
+test('T06 r4: from behind each tuft tip stands out <= 30 px beyond the body silhouette (geometric, logged)', () => {
+  const b = buildEmu({hero: true, wing: wingMix(WING_FOLD, WING_FLAP_OUT, 0.9)});
+  const body = b.parts.find((q) => q.bone === 'body')!.keys as unknown as {a: number; b: number}[];
+  const half = Math.max(...body.map((k) => Math.max(k.a, k.b)));   // widest half-width of the body loft (m)
+  const ext = Math.abs(b.anchors.wingTipL[2]) - half, px = (ext * 1000) / 2.5;   // KP camera: f 1000, d about 2.5 m
+  console.log(`T06 r4 flap-back tip beyond body: ${ext.toFixed(3)} m = ${px.toFixed(1)} px (body half-width ${half.toFixed(2)} m, tip z ${b.anchors.wingTipL[2].toFixed(3)}, tip y ${b.anchors.wingTipL[1].toFixed(3)})`);
+  assert.ok(px <= 30, `${px}`);
 });
