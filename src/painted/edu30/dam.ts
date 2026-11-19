@@ -55,8 +55,8 @@ const QS: number[] = QP.reduce<number[]>((a, v, i) => { a.push(i === 0 ? 0 : a[i
 /** Total arc length of the path (m). */
 export const QUEUE_LEN = QS[QS.length - 1];
 const qSeg = (s: number) => { const t = Math.max(0, Math.min(QUEUE_LEN, s)); let i = 0; while (i < QP.length - 2 && QS[i + 1] < t) i++; return {i, u: (t - QS[i]) / (QS[i + 1] - QS[i])}; };
-/** Position at arc length s (m) from the gun end (-3.0, 0.33, -4.9) back along the path (clamped). */
-export const queuePoint = (s: number): V3 => { const {i, u} = qSeg(s), a = QP[i], b = QP[i + 1]; return [a[0] + (b[0] - a[0]) * u, a[1] + (b[1] - a[1]) * u, a[2] + (b[2] - a[2]) * u]; };
+/** Position at arc length s (m) from the gun end (-3.0, 0.33, -4.9) back along the path (clamped). y is the water surface (DAM.water) wherever the point is over water (the east-shore wade, r3 Q-1), else the bank height. */
+export const queuePoint = (s: number): V3 => { const {i, u} = qSeg(s), a = QP[i], b = QP[i + 1]; const x = a[0] + (b[0] - a[0]) * u, z = a[2] + (b[2] - a[2]) * u; return [x, overWater(x, z) ? DAM.water : a[1] + (b[1] - a[1]) * u, z]; };
 /** Unit tangent at arc length s, pointing away from the gun end (the way back along the path). */
 export const queueTangent = (s: number): V3 => { const {i} = qSeg(s), a = QP[i], b = QP[i + 1], l = Math.hypot(b[0] - a[0], b[1] - a[1], b[2] - a[2]); return [(b[0] - a[0]) / l, (b[1] - a[1]) / l, (b[2] - a[2]) / l]; };
 /** Arc length of the rim point at world x (rim segment x 8.0 .. -3.0): x 4.6 -> 7.6, x 1.6 -> 4.6. */
@@ -74,20 +74,20 @@ export const reflectClip = (v: V3) => overWater(v[0], v[2]);
 export const REFLECT_TONE = DAM.reflection;
 
 /** The jam stone: one flat stone 0.14 x 0.10 x 0.05 m, lit `#8d806d`, shade `#5f5547`, centred at `at` (B04-SH04, SD07). */
-export const STONE_AT: V3 = [-5.4, 0.33, -4.9];
+export const STONE_AT: V3 = [-5.63, 0.33, -4.9];
 export const paintStone = (p: Painter, c: YCam, at: V3 = STONE_AT, seed = 0) => {
   paintBox(p, c, seed, {x0: at[0] - 0.07, x1: at[0] + 0.07, y0: at[1], y1: at[1] + 0.05, z0: at[2] - 0.05, z1: at[2] + 0.05}, '#8d806d', {front: 0.3, back: 0.3, left: 0.3, right: 0.3, bottom: 0.3}, {ink: false});
 };
 /** B04 lens eyes (start, then end where the sheet moves) whose clearance over the ground is tested; `DAM_CAMS` are the four slope-lens camera lines of the proof. */
 const D = Math.PI / 180;
 export const B04_EYES: Record<string, V3[]> = {
-  'B04-SH06': [[-4.6, 1.45, -3.9], [-4.68, 1.45, -3.95]], 'B04-SH05': [[-1.6, 1.15, -4.75]], 'B04-SH02': [[1.5, 1.1, -4.25]], 'B04-SH04': [[-5.45, 1.0, -4.45]],
+  'B04-SH06': [[-4.6, 1.45, -3.9], [-4.68, 1.45, -3.95]], 'B04-SH05': [[-1.6, 1.15, -4.75]], 'B04-SH02': [[1.5, 1.1, -4.25]], 'B04-SH04': [[-5.68, 1.0, -4.45]],
   'B04-SH01': [[0.5, 0.85, -6.4], [0.22, 0.85, -6.3]], 'B04-SH03': [[-6.3, 0.92, -5.75]],
 };
 export const DAM_CAMS = {
   queue: {x: 1.5, y: 1.1, z: -4.25, yaw: 75 * D, pitch: 0, f: 900, hy: 820} as YCam,
   sh05: {x: -1.6, y: 1.15, z: -4.75, yaw: 89.3 * D, pitch: -2 * D, f: 950, hy: 860} as YCam,
-  jam: {x: -5.45, y: 1.0, z: -4.45, yaw: -5 * D, pitch: -32 * D, f: 1100, hy: 860} as YCam,
+  jam: {x: -5.68, y: 1.0, z: -4.45, yaw: -5 * D, pitch: -32 * D, f: 1100, hy: 860} as YCam,
   sh06: {x: -4.6, y: 1.45, z: -3.9, yaw: -57 * D, pitch: -12 * D, f: 950, hy: 800} as YCam,
 };
 /** Crew withdrawal marks, for the record (nothing painted). */
