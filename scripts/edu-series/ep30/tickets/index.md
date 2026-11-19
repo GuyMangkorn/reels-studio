@@ -8,7 +8,7 @@ Inputs: scene sheets [EDU-EP30-SCENE-R2](../short/scene-sheets/index.md) (ready-
 | Ticket | Class | Hard | Blocked by | Status | Fix passes | Result commit |
 | --- | --- | --- | --- | --- | --- | --- |
 | [T01](T01-newsreel-kit-layer.md) newsreel layer in the kit (pop, tintMix) | capability | no | — | ready | 0 | — |
-| [T02](T02-newsreel-titles.md) six newsreel title cards | capability | no | — | ready | 0 | — |
+| [T02](T02-newsreel-titles.md) six newsreel title cards | capability | no | — | done (question: place-tag width) | 0 | see ticket |
 | [T03](T03-plate-adapter.md) adapter, 28 stubs, QA entry, probe, proof entries, calibration | capability | no | T01, T02 | ready (Q7, Q8) | 0 | — |
 | [T04](T04-gunfire-flash-smoke-shake.md) kit gunfire: flash, halation, pop, smoke, blast, shake | capability | no | T03 | ready (Q8) | 0 | — |
 | [T05](T05-gunfire-casings-strikes.md) kit gunfire debris: casings, spurts, spouts, splash | capability | no | T04 | ready (Q8) | 0 | — |

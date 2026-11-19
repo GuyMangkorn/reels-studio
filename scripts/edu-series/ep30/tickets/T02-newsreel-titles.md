@@ -1,5 +1,5 @@
 # T02 — the six newsreel title cards (VD30-09) render from one component
-Deliverable: EDU-EP30-SHORT · Revision: r1 · Status: ready
+Deliverable: EDU-EP30-SHORT · Revision: r1 · Status: done
 Class: capability · Hard: no
 Blocked by: none · Consumers: B02-SH01, B03-SH01, B04-SH01, B05-SH01, B05-SH03, B06-SH04 (through the T03 adapter)
 Model: sonnet, medium
